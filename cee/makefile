@@ -17,6 +17,8 @@ define cee_amalgamation
 	@echo "#endif" >> $(1)
 endef
 
+.PHONY: release clean distclean
+
 all: tester
 
 cee-one.c: $(CEE_SRC)
@@ -26,7 +28,7 @@ cee-one.o: cee-one.c
 	$(CC) -c -g cee-one.c
 
 
-release: $(CEE_SRC)
+release:
 	$(call cee_amalgamation, cee.c,-P)
 	@mv cee.c  release
 	@cp cee.h  release
