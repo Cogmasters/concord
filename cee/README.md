@@ -122,6 +122,8 @@ any memory blocks pointed by a cee struct can be freed with `cee_del` like the f
 ```
 
 ## How to test It ?
+```
 cd orca/cee
 make
 ./a.out
+```
