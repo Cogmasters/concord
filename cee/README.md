@@ -4,8 +4,8 @@
 
 1. Download the two files;
 ```
-  wget https://github.com/cee-studio/orca/cee/release/cee.h
-  wget https://github.com/cee-studio/orca/cee/release/cee.c
+  wget https://raw.githubusercontent.com/cee-studio/orca/master/cee/release/cee.h
+  wget https://raw.githubusercontent.com/cee-studio/orca/master/cee/release/cee.c
 ```
 2. Add them to your source folder
 
@@ -133,6 +133,7 @@ All memory access violations will be detected and reproted.
 
 
 ### Using your computer
+
 ```
 git clone https://github.com/cee-studio/orca.git
 cd orca/cee
