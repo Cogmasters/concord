@@ -1,4 +1,4 @@
-# Build useful software and keep your sanity: A project to support C for high-level programming
+# A project to support C for high-level programming
 
 Software development is a process, developers have different primary
 concerns at different phases of the process. We need to provide
