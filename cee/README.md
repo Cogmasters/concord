@@ -1,4 +1,6 @@
-# A single file library to provide C++ STL like functionalities
+# A single file library to provide similar productivity of C++ STL
+
+But it does not intend to replicate C++ STL
 
 ## How to use it ?
 
