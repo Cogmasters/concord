@@ -139,3 +139,6 @@ cd orca/cee
 make
 ./a.out
 ```
+
+## Contirubtion are welcome
+Join our discord [https://discord.gg/nBUqrWf](https://discord.gg/nBUqrWf)

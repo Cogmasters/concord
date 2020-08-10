@@ -21,3 +21,12 @@ phases:
    
    - Peformance critical parts can be replaced easily with more C
      idiomatic implementations.
+
+
+
+Other considerations:
+1. Readability and debuggability triumph over everything else
+2. Use minimum syntax sugar, use modern IDE auto-completion
+3. No premature abstraction, no premature optimization
+
+Contirubtion are welcome, Join our discord: https://discord.gg/nBUqrWf
