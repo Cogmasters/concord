@@ -14,11 +14,10 @@
 *  Easy to build correct POC by using the default settings,
    e.g. memory leaks are considered benign in POC.
 
-*  Easy things should be easy and hard things should be possible,
-   e.g. memory leaks can be detected and fixed with the help of
-   https://cee.studio, ASAN, or valgrind
+*  Easy things should be easy and hard things should be possible.
 
 *  Memory leak removal is considered as an optimization, it should be
-   handled easily in later iterations with advanced tooling like cee.studio
+   handled easily in later iterations with advanced tooling like 
+   https://cee.studio, valgrind, or ASAN.
 
-*  Performance optimziation should be easy to do.
+*  Performance optimziation should be easy to do by removing abstraction
