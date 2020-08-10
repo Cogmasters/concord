@@ -123,22 +123,25 @@ any memory blocks pointed by a `cee struct` can be freed with `cee_del` like the
 
 ## How to test/develop it ?
 
-###Using https://cee.studio cloud IDE
+### Using https://cee.studio cloud IDE
 1. click [https://cee.studio/?bucket=orca&name=cee](https://cee.studio/?bucket=orca&name=cee)
 2. clone to my account
 3. click Start
 4. run it Terminal
 
-All memory access violations will be detected and reproted.
+All memory access violations will be detected and reproted. 
 
 
-###Using your computer
+### Using your computer
 ```
 git clone https://github.com/cee-studio/orca.git
 cd orca/cee
 make
 ./a.out
 ```
+
+## Rationale
+[DESIGN](./DESIGN.md)
 
 ## Contirubtion are welcome
 Join our discord [https://discord.gg/nBUqrWf](https://discord.gg/nBUqrWf)
