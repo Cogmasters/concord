@@ -1,11 +1,11 @@
-# A project to support C for high-level programming
+# A project to support using C for high-level programming
 
 Software development is a process, developers have different primary
 concerns at different phases of the process. We need to provide
-sufficient support for each phase. The following are the primary
+sufficient support for using C in each phase. The following are the primary
 phases:
 
-* POC:
+* Proof of Concept (POC):
   The default settings should be easy to use to support a quick POC development. 
   The correctness of a POC is the primary concern, but performance and 
   memory usage are not.
