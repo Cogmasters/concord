@@ -13,7 +13,7 @@
 
 ## Usage Examples
 
-** string **
+**string**
 ```
   #include "cee.h"
 
@@ -34,7 +34,7 @@
   cee_del(s2);
 ```
 
-** vector **
+**vector**
 ```
   #include "cee.h"
   struct cee_vect *v;
@@ -53,7 +53,7 @@
   cee_del(v);
 ```
 
-** set **
+**set**
 ```
   #include "cee.h"
 
@@ -68,7 +68,7 @@
   cee_del(st);
 ```
 
-** map **
+**map**
 ```
   #include "cee.h"
 
@@ -104,7 +104,7 @@
   cee_del(stack);
 ```
 
-** free any memory blocks of struct cee_* **
+**free any memory blocks of `struct cee_*`**
 any memory blocks pointed by a cee struct can be freed with `cee_del` like the following:
 ```
    #include "cee.h"
