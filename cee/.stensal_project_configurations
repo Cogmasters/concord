@@ -1,0 +1,20 @@
+[
+	{
+		"+build-machine" :	null,
+		"+configuration-name" :	"build",
+		"+execution-mode" :	"execute-build",
+		"+make-arguments" :	null
+	}
+	,
+	{
+		"+build-machine" :	null,
+		"+cli-arguments" :	null,
+		"+configuration-name" :	"build+run",
+		"+executable" :	"a.out",
+		"+execution-mode" :	"execute-build+run",
+		"+make-arguments" :	null,
+		"+output-file" :	null,
+		"+stdin" :	null
+	}
+	
+]
