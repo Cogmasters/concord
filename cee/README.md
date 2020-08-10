@@ -1,6 +1,5 @@
 # A single file library to provide C++ STL like functionalities
 
-
 ## How to use it ?
 
 1. Download the two files;
@@ -90,7 +89,7 @@
   cee_del(mp);
 ```
 
-** stack **
+**stack**
 ```
   #include "cee.h"
 
@@ -105,7 +104,8 @@
 ```
 
 **free any memory blocks of `struct cee_*`**
-any memory blocks pointed by a cee struct can be freed with `cee_del` like the following:
+
+any memory blocks pointed by a `cee struct` can be freed with `cee_del` like the following:
 ```
    #include "cee.h"
 
@@ -121,8 +121,20 @@ any memory blocks pointed by a cee struct can be freed with `cee_del` like the f
    struct cee_stack * sp = ..;
 ```
 
-## How to test It ?
+## How to test/develop it ?
+
+###Using https://cee.studio cloud IDE###
+1. click [https://cee.studio/?bucket=200810-bE9&name=cee](https://cee.studio/?bucket=200810-bE9&name=cee)
+2. clone to my account
+3. click Start
+4. run it Terminal
+
+All memory access violations will be detected and reproted. 
+
+
+###Using your computer###
 ```
+git clone https://github.com/cee-studio/orca.git
 cd orca/cee
 make
 ./a.out

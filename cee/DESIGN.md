@@ -1,7 +1,7 @@
 # Cee: a single file C library to provide similiar functionalities of C++ STL
 
 
-## goals
+## Goals
 *  Easy to maniupate strings 
 *  Ready to use vector, set, map, stack, and dict
 
@@ -18,9 +18,7 @@
    e.g. memory leaks can be detected and fixed with the help of
    https://cee.studio, ASAN, or valgrind
 
+*  Memory leak removal is considered as an optimization, it should be
+   handled easily in later iterations with advanced tooling like cee.studio
 
-## Later iterations
-
-* Memory leak removal is considered as an optimization, it should be
-   handled in later iterations.
-* Performance optimziation should be easy to do.
+*  Performance optimziation should be easy to do.
