@@ -1,10 +1,8 @@
-# Cee: a single file C library to provide similiar functionalities of C++ STL
-
+# The Design Goals and Principles
 
 ## Goals
 *  Easy to maniupate strings 
 *  Ready to use vector, set, map, stack, and dict
-
 
 ## Design principles
 
