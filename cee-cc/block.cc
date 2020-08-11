@@ -17,7 +17,8 @@
 #endif
 
 namespace cee {
-namespace block {
+  namespace block {
+
 struct S(header) {
   uintptr_t capacity;
   enum del_policy del_policy;
@@ -46,7 +47,8 @@ void * mk (size_t n) {
   m->cs.mem_block_size = mem_block_size;
   m->cs.cmp = (void *)memcmp;
   m->capacity = n;
-  return (struct block::data *)(m->_);
+  return (block::data *)(m->_);
 }
-}
+
+  }
 }

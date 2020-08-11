@@ -4,8 +4,8 @@ CEE_SRC=cee-common.cc box.cc str.cc dict.cc map.cc set.cc stack.cc tuple.cc trip
 HEADERS=stdio.h string.h stdlib.h stdarg.h search.h assert.h errno.h
 
 define cee_amalgamation
-	@echo "#define CEE_AMALGAMATION" > tmp.c
-	@for ii in $(CEE_SRC); do echo '#include "'$$ii'"' >> tmp.c; done
+	@echo "#define CEE_AMALGAMATION" > tmp.cc
+	@for ii in $(CEE_SRC); do echo '#include "'$$ii'"' >> tmp.cc; done
 	@echo "#ifndef CEE_ONE" > $(1)
 	@echo "#define CEE_ONE" >> $(1)
 	@echo "#define _GNU_SOURCE" >> $(1)
@@ -13,7 +13,7 @@ define cee_amalgamation
 	@cat cee.h >> $(1)
 	@echo " " >> $(1)
 	@cat cee-internal.h >> $(1)
-	$(CXX) -E $(2) -nostdinc tmp.c >> $(1)
+	$(CXX) -E $(2) -nostdinc tmp.cc >> $(1)
 	@echo "#endif" >> $(1)
 endef
 

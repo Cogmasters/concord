@@ -28,7 +28,7 @@ static void S(del)(void * v) {
 }
 
 
-struct tuple::data * mk_e (enum del_policy o[2], void * v1, void * v2) {
+tuple::data * mk_e (enum del_policy o[2], void * v1, void * v2) {
   size_t mem_block_size = sizeof(struct S(header));
   struct S(header) * m = (struct S(header) *) malloc(mem_block_size);
   ZERO_CEE_SECT(&m->cs);
@@ -42,10 +42,10 @@ struct tuple::data * mk_e (enum del_policy o[2], void * v1, void * v2) {
     m->del_policies[i] = o[i];
     incr_indegree(o[i], m->_[i]);
   }
-  return (struct tuple::data *)&m->_;
+  return (tuple::data *)&m->_;
 }
 
-struct tuple::data * mk (void * v1, void * v2) {
+tuple::data * mk (void * v1, void * v2) {
   enum del_policy o[2] = { CEE_DEFAULT_DEL_POLICY, CEE_DEFAULT_DEL_POLICY };
   return mk_e(o, v1, v2);
 }

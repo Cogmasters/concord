@@ -52,7 +52,7 @@ static struct S(header) * cee_n_tuple_v (size_t ntuple,
   return m;
 }
 
-struct data * mk (size_t ntuple, ...) {
+n_tuple::data * mk (size_t ntuple, ...) {
   va_list ap;
   va_start(ap, ntuple);
   enum del_policy * o = (enum del_policy *)malloc(ntuple * sizeof (enum del_policy));
@@ -62,7 +62,7 @@ struct data * mk (size_t ntuple, ...) {
   
   struct S(header) * h = cee_n_tuple_v(ntuple, o, ap);
   free(o);
-  return (struct data *)(h->_);
+  return (n_tuple::data *)(h->_);
 }
     
   }

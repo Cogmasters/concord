@@ -1,5 +1,5 @@
 # A single file C++ library to provide similar productivity of C++ STL
-It's basically C code with C++'s namespace.  It does not intend to replicate C++ STL
+It's basically C with C++'s namespace.  It does not intend to replicate C++ STL
 
 ## How to use it ?
 

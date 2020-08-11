@@ -34,7 +34,7 @@ static void S(del)(void *d) {
   free(m);
 }
 
-struct dict::data * mk_e (enum del_policy o, size_t size) {
+dict::data * mk_e (enum del_policy o, size_t size) {
   size_t mem_block_size = sizeof(struct S(header));
   struct S(header) * m = (struct S(header) *)malloc(mem_block_size);
   m->del_policy = o;
@@ -53,7 +53,7 @@ struct dict::data * mk_e (enum del_policy o, size_t size) {
   size_t  hsize = (size_t)((float)size * 1.25);
   memset(m->_, 0, sizeof(struct hsearch_data));
   if (hcreate_r(hsize, m->_))
-    return (struct dict::data *)(m->_);
+    return (dict::data *)(m->_);
   else {
     del(m->keys);
     del(m->vals);
@@ -62,11 +62,11 @@ struct dict::data * mk_e (enum del_policy o, size_t size) {
   }
 }
 
-struct dict::data * mk (size_t size) {
+dict::data * mk (size_t size) {
   return dict::mk_e (CEE_DEFAULT_DEL_POLICY, size);
 }
 
-void add (struct data * d, char * key, void * value) {
+void add (dict::data * d, char * key, void * value) {
   struct S(header) * m = FIND_HEADER(d);
   ENTRY n, *np;
   n.key = key;
@@ -77,7 +77,7 @@ void add (struct data * d, char * key, void * value) {
   m->vals = append(m->vals, value);
 }
 
-void * find(struct data * d, char * key) {
+void * find(dict::data * d, char * key) {
   struct S(header) * m = FIND_HEADER(d);
   ENTRY n, *np;
   n.key = key;
@@ -87,5 +87,6 @@ void * find(struct data * d, char * key) {
   printf ("%s\n", strerror(errno));
   return NULL;
 }
-}
+  
+  }
 }

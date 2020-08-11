@@ -27,7 +27,7 @@ static void S(del)(void * v) {
   free(b);
 }
 
-struct triple::data * mk_e (enum del_policy o[3], void * v1, void * v2, void * v3) {
+triple::data * mk_e (enum del_policy o[3], void * v1, void * v2, void * v3) {
   size_t mem_block_size = sizeof(struct S(header));
   struct S(header) * m = (struct S(header) *)malloc(mem_block_size);
   ZERO_CEE_SECT(&m->cs);
@@ -42,14 +42,14 @@ struct triple::data * mk_e (enum del_policy o[3], void * v1, void * v2, void * v
     m->del_policies[i] = o[i];
     incr_indegree(o[i], m->_[i]);
   }
-  return (struct triple::data *)&m->_;
+  return (triple::data *)&m->_;
 }
 
-struct triple::data * mk (void * v1, void * v2, void *v3) {
+triple::data * mk (void * v1, void * v2, void *v3) {
   enum del_policy o[3] = { CEE_DEFAULT_DEL_POLICY, 
                           CEE_DEFAULT_DEL_POLICY, 
                           CEE_DEFAULT_DEL_POLICY };
-  return triple::mk_e(o, v1, v2, v3);
+  return mk_e(o, v1, v2, v3);
 }
     
   }

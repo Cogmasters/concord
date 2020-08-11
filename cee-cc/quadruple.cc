@@ -27,7 +27,8 @@ static void S(del)(void * v) {
   free(b);
 }
 
-struct data * mk_e (enum del_policy o[4], void * v1, void * v2, void * v3, void * v4) {
+quadruple::data * mk_e (enum del_policy o[4], void * v1, void * v2, void * v3, 
+                        void * v4) {
   size_t mem_block_size = sizeof(struct S(header));
   struct S(header) * m = (struct S(header) *) malloc(mem_block_size);
   ZERO_CEE_SECT(&m->cs);
@@ -44,7 +45,7 @@ struct data * mk_e (enum del_policy o[4], void * v1, void * v2, void * v3, void 
     m->del_policies[i] = o[i];
     incr_indegree(o[i], m->_[i]);
   }
-  return (struct data *)&m->_;
+  return (quadruple::data *)&m->_;
 }
   
   }

@@ -49,7 +49,7 @@ static int S(cmp) (const void * v1, const void * v2) {
     segfault();
 }
 
-struct map::data * mk (int (*cmp)(const void *, const void *)) {
+map::data * mk (int (*cmp)(const void *, const void *)) {
   size_t mem_block_size = sizeof(struct S(header));
   struct S(header) * m = (struct S(header) *)malloc(mem_block_size);
   m->context = NULL;
@@ -63,7 +63,7 @@ struct map::data * mk (int (*cmp)(const void *, const void *)) {
   m->cs.cmp_stop_at_null = 0;
   m->cs.n_product = 2; // key, value
   m->_[0] = 0;
-  return (struct map::data *)m->_;
+  return (map::data *)m->_;
 }
 
 uintptr_t size(struct map::data * m) {
@@ -71,7 +71,7 @@ uintptr_t size(struct map::data * m) {
   return b->size;
 }
 
-void add(struct map::data * m, void * key, void * value) {
+void add(map::data * m, void * key, void * value) {
   struct S(header) * b = FIND_HEADER(m);
   struct S(pair) * triple = (struct S(pair) *) malloc(sizeof(struct S(pair)));
   triple->h = b;
@@ -86,7 +86,7 @@ void add(struct map::data * m, void * key, void * value) {
   return;
 }
 
-void * find(struct map::data * m, void * key) {
+void * find(map::data * m, void * key) {
   struct S(header) * b = FIND_HEADER(m);
   struct tuple::data t = { key, 0 };
   struct S(pair) keyp = { .value = &t, .h = b };
@@ -99,7 +99,7 @@ void * find(struct map::data * m, void * key) {
   }
 }
 
-void * remove(struct map::data * m, void * key) {
+void * remove(map::data * m, void * key) {
   struct S(header) * b = FIND_HEADER(m);
   void ** oldp = (void **)tdelete(key, b->_, S(cmp));
   if (oldp == NULL)
@@ -133,10 +133,10 @@ static void S(get_key) (const void *nodep, const VISIT which, const int depth) {
   }
 }
 
-struct vect::data * keys(struct map::data * m) {
+vect::data * keys(map::data * m) {
   uintptr_t s = map::size(m);
   struct S(header) * b = FIND_HEADER(m);
-  struct vect::data * keys = vect::mk(s);
+  vect::data * keys = vect::mk(s);
   b->context = keys;
   twalk(b->_[0], S(get_key));
   return keys;
@@ -146,14 +146,14 @@ struct vect::data * keys(struct map::data * m) {
 static void S(get_value) (const void *nodep, const VISIT which, const int depth) {
   struct S(pair) * p;
   struct S(header) * h;
-  struct vect::data * values;
+  vect::data * values;
   switch (which) 
   {
     case preorder:
     case leaf:
       p = (struct S(pair) *)*(void **)nodep;
       h = p->h;
-      values = (struct vect::data *)h->context;
+      values = (vect::data *)h->context;
       h->context = vect::append(values, p->value->_[1]);
       break;
     default:
@@ -161,11 +161,10 @@ static void S(get_value) (const void *nodep, const VISIT which, const int depth)
   }
 }
 
-
-struct vect::data * values(struct map::data * m) {
+vect::data * values(map::data * m) {
   uintptr_t s = map::size(m);
   struct S(header) * b = FIND_HEADER(m);
-  struct vect::data * values = vect::mk(s);
+  vect::data * values = vect::mk(s);
   b->context = values;
   twalk(b->_[0], S(get_value));
   return values;

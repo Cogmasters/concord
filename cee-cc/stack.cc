@@ -32,7 +32,7 @@ static void S(del) (void * v) {
   free(m);
 }
 
-struct stack::data * mk_e (enum del_policy o, size_t size) {
+stack::data * mk_e (enum del_policy o, size_t size) {
   uintptr_t mem_block_size = sizeof(struct S(header)) + size * sizeof(void *);
   struct S(header) * m = (struct S(header) *)malloc(mem_block_size);
   m->capacity = size;
@@ -42,14 +42,14 @@ struct stack::data * mk_e (enum del_policy o, size_t size) {
   ZERO_CEE_SECT(&m->cs);
   m->cs.del = S(del);
   m->cs.mem_block_size = mem_block_size;
-  return (struct stack::data *)(m->_);
+  return (stack::data *)(m->_);
 }
 
-struct stack::data * mk (size_t size) {
+stack::data * mk (size_t size) {
   return mk_e(CEE_DEFAULT_DEL_POLICY, size);
 }
 
-int push (struct stack::data * v, void *e) {
+int push (stack::data * v, void *e) {
   struct S(header) * m = FIND_HEADER((void **)v);
   if (m->used == m->capacity)
     return 0;
@@ -61,7 +61,7 @@ int push (struct stack::data * v, void *e) {
   return 1;
 }
 
-void * pop (struct stack::data * v) {
+void * pop (stack::data * v) {
   struct S(header) * b = FIND_HEADER((void **)v);
   if (b->used == 0) {
     return NULL;
@@ -79,7 +79,7 @@ void * pop (struct stack::data * v) {
  *  nth: 0 -> the topest element
  *       1 -> 1 element way from the topest element
  */
-void * top (struct stack::data * v, uintptr_t nth) {
+void * top (stack::data * v, uintptr_t nth) {
   struct S(header) * b = FIND_HEADER(v);
   if (b->used == 0 || nth >= b->used)
     return NULL;
@@ -87,24 +87,24 @@ void * top (struct stack::data * v, uintptr_t nth) {
     return b->_[b->top-nth];
 }
 
-uintptr_t size (struct stack::data *x) {
+uintptr_t size (stack::data *x) {
   struct S(header) * m = FIND_HEADER((void **)x);
   return m->used;
 }
 
 /*
-uintptr_t stack::capacity (struct stack::data *s) {
+uintptr_t stack::capacity (stack::data *s) {
   struct S(header) * m = FIND_HEADER(s);
   return m->capacity;
 }
 */
 
-bool empty (struct stack::data *x) {
+bool empty (stack::data *x) {
   struct S(header) * b = FIND_HEADER(x);
   return b->used == 0;
 }
 
-bool full (struct stack::data *x) {
+bool full (stack::data *x) {
   struct S(header) * b = FIND_HEADER(x);
   return b->used >= b->capacity;
 }

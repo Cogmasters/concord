@@ -56,7 +56,7 @@ static int S(cmp) (const void * v1, const void * v2) {
  * its two elements are decided by cmp
  * dt: specify how its elements should be handled if the set is deleted.
  */
-struct set::data * mk_e (enum del_policy o, int (*cmp)(const void *, const void *)) 
+set::data * mk_e (enum del_policy o, int (*cmp)(const void *, const void *)) 
 {
   struct S(header) * m = (struct S(header) *)malloc(sizeof(struct S(header)));
   m->cmp = cmp;
@@ -68,19 +68,19 @@ struct set::data * mk_e (enum del_policy o, int (*cmp)(const void *, const void 
   m->context = NULL;
   m->_[0] = NULL;
   m->del_policy = o;
-  return (struct set::data *)m->_;
+  return (set::data *)m->_;
 }
 
-struct set::data * mk (int (*cmp)(const void *, const void *)) {
+set::data * mk (int (*cmp)(const void *, const void *)) {
   return set::mk_e(CEE_DEFAULT_DEL_POLICY, cmp);
 }
 
-size_t size (struct set::data * s) {
+size_t size (set::data * s) {
   struct S(header) * h = FIND_HEADER(s);
   return h->size;
 }
 
-bool empty (struct set::data * s) {
+bool empty (set::data * s) {
   struct S(header) * h = FIND_HEADER(s);
   return h->size == 0;
 }
@@ -89,7 +89,7 @@ bool empty (struct set::data * s) {
  * add an element key to the set m
  * 
  */
-void add(struct set::data *m, void * val) {
+void add(set::data *m, void * val) {
   struct S(header) * h = FIND_HEADER(m);
   void ** c = (void **)malloc(sizeof(void *) * 2);
   c[0] = val;
@@ -125,7 +125,7 @@ void cee_set_clear (struct cee_set * s) {
   h->size = 0;
 }
 
-void * find(struct data *m, void * value) {
+void * find(set::data *m, void * value) {
   struct S(header) * h = FIND_HEADER(m);
   struct S(pair) p = { value, h };
   void ***oldp = (void ***)tfind(&p, h->_, S(cmp));
@@ -153,16 +153,16 @@ static void S(get_value) (const void *nodep, const VISIT which, const int depth)
   }
 }
 
-struct vect::data * values(struct set::data * m) {
+vect::data * values(set::data * m) {
   uintptr_t s = set::size(m);
   struct S(header) * h = FIND_HEADER(m);
   h->context = vect::mk(s);
   use_realloc(h->context);
   twalk(h->_[0], S(get_value));
-  return (struct vect::data *)h->context;
+  return (vect::data *)h->context;
 }
 
-void * remove(struct set::data *m, void * key) {
+void * remove(set::data *m, void * key) {
   struct S(header) * h = FIND_HEADER(m);
   void ** old = (void **)tdelete(key, h->_, h->cmp);
   if (old == NULL)
@@ -176,7 +176,7 @@ void * remove(struct set::data *m, void * key) {
   }
 }
 
-struct set::data * union_set (struct set::data * s1, struct set::data * s2) {
+set::data * union_set (set::data * s1, set::data * s2) {
   struct S(header) * h1 = FIND_HEADER(s1);
   struct S(header) * h2 = FIND_HEADER(s2);
   if (h1->cmp == h2->cmp) {

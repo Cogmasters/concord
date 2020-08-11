@@ -58,12 +58,12 @@ static int S(cmp_double)(double v1, double v2) {
     return -1;
 }
 
-struct data * from_double (double d) {
+box::data * from_double (double d) {
   size_t mem_block_size = sizeof(struct data);
   struct S(header) * b = S(mk_header)(primitive_f64);
   b->cs.cmp = (void *)S(cmp_double);
   b->_[0].f64 = d;
-  return (struct data *)b->_;
+  return (box::data *)b->_;
 }
 
 static int S(cmp_float)(float v1, float v2) {
@@ -75,7 +75,7 @@ static int S(cmp_float)(float v1, float v2) {
     return -1;
 }
 
-struct data * from_float (float d) {
+box::data * from_float (float d) {
   size_t mem_block_size = sizeof(struct data);
   struct S(header) * b = S(mk_header)(primitive_f32);
   b->cs.cmp = (void *)S(cmp_float);
@@ -92,11 +92,11 @@ static int S(cmp_u64)(uint64_t v1, uint64_t v2) {
     return -1;
 }
 
-struct box::data * from_u64 (uint64_t d) {
+box::data * from_u64 (uint64_t d) {
   size_t mem_block_size = sizeof(struct data);
   struct S(header) * b = S(mk_header)(primitive_u64);
   b->_[0].u64 = d;
-  return (struct box::data *)b->_;
+  return (box::data *)b->_;
 }
 
 static int S(cmp_u32)(uint32_t v1, uint32_t v2) {
@@ -108,12 +108,12 @@ static int S(cmp_u32)(uint32_t v1, uint32_t v2) {
     return -1;
 }
 
-struct box::data * from_u32 (uint32_t d) {
+box::data * from_u32 (uint32_t d) {
   size_t mem_block_size = sizeof(struct data);
   struct S(header) * b = S(mk_header)(primitive_u32);
   b->cs.cmp = (void *)S(cmp_u32);
   b->_[0].u32 = d;
-  return (struct box::data *)b->_;
+  return (box::data *)b->_;
 }
 
 
@@ -126,12 +126,12 @@ static int S(cmp_u16)(uint16_t v1, uint16_t v2) {
     return -1;
 }
 
-struct box::data * from_u16 (uint16_t d) {
+box::data * from_u16 (uint16_t d) {
   size_t mem_block_size = sizeof(struct data);
   struct S(header) * b = S(mk_header)(primitive_u16);
   b->cs.cmp = (void *) S(cmp_u16);
   b->_[0].u16 = d;
-  return (struct box::data *)b->_;
+  return (box::data *)b->_;
 }
 
 
@@ -144,12 +144,12 @@ static int S(cmp_u8)(uint8_t v1, uint8_t v2) {
     return -1;
 }
 
-struct box::data * from_u8 (uint8_t d) {
+box::data * from_u8 (uint8_t d) {
   size_t mem_block_size = sizeof(struct data);
   struct S(header) * b = S(mk_header)(primitive_u8);
   b->cs.cmp = (void *)S(cmp_u8);
   b->_[0].u8 = d;
-  return (struct box::data *)b->_;
+  return (box::data *)b->_;
 }
 
 
@@ -162,12 +162,12 @@ static int S(cmp_i64)(int64_t v1, int64_t v2) {
     return -1;
 }
 
-struct box::data * from_i64 (int64_t d) {
+box::data * from_i64 (int64_t d) {
   size_t mem_block_size = sizeof(struct data);
   struct S(header) * b = S(mk_header)(primitive_i64);
   b->cs.cmp = (void *)S(cmp_i64);
   b->_[0].i64 = d;
-  return (struct box::data *)b->_;
+  return (box::data *)b->_;
 }
 
 static int S(cmp_i32)(int32_t v1, int32_t v2) {
@@ -179,12 +179,12 @@ static int S(cmp_i32)(int32_t v1, int32_t v2) {
     return -1;
 }
 
-struct box::data * from_i32 (int32_t d) {
+box::data * from_i32 (int32_t d) {
   size_t mem_block_size = sizeof(struct data);
   struct S(header) * b = S(mk_header)(primitive_i32);
   b->cs.cmp = (void *)S(cmp_i32);
   b->_[0].i32 = d;
-  return (struct box::data *)b->_;
+  return (box::data *)b->_;
 }
 
 static int S(cmp_i16)(int16_t v1, int16_t v2) {
@@ -196,12 +196,12 @@ static int S(cmp_i16)(int16_t v1, int16_t v2) {
     return -1;
 }
 
-struct box::data * from_i16 (int16_t d) {
-  size_t mem_block_size = sizeof(struct data);
+box::data * from_i16 (int16_t d) {
+  size_t mem_block_size = sizeof(struct box::data);
   struct S(header) * b = S(mk_header)(primitive_i16);
   b->cs.cmp = (void *)S(cmp_i16);
   b->_[0].i16 = d;
-  return (struct box::data *)b->_;
+  return (box::data *)b->_;
 }
 
 static int S(cmp_i8)(int8_t v1, int8_t v2) {
@@ -213,15 +213,15 @@ static int S(cmp_i8)(int8_t v1, int8_t v2) {
     return -1;
 }
 
-struct box::data * from_i8 (int8_t d) {
+box::data * from_i8 (int8_t d) {
   size_t mem_block_size = sizeof(struct data);
   struct S(header) * b = S(mk_header)(primitive_i8);
   b->cs.cmp = (void *)S(cmp_i8);
   b->_[0].i8 = d;
-  return (struct box::data *)b->_;
+  return (box::data *)b->_;
 }
 
-size_t snprintf (char * buf, size_t size, struct data * x) {
+size_t snprintf (char * buf, size_t size, box::data * x) {
   struct S(header) * h = FIND_HEADER(x);
   int s;
   switch(h->type)
@@ -255,10 +255,10 @@ size_t snprintf (char * buf, size_t size, struct data * x) {
   if (s > 0)
     return (size_t)s;
   else
-    segfault();    
+    segfault();
 }
 
-double as_double (struct data * x) {
+double as_double (box::data * x) {
   struct S(header) * h = FIND_HEADER(x);
   if (h->type == primitive_f64)
     return h->_[0].f64;
@@ -266,7 +266,7 @@ double as_double (struct data * x) {
     segfault();
 }
 
-float as_float (struct data * x) {
+float as_float (box::data * x) {
   struct S(header) * h = FIND_HEADER(x);
   if (h->type == primitive_f32)
     return h->_[0].f32;
@@ -274,7 +274,7 @@ float as_float (struct data * x) {
     segfault();
 }
 
-uint64_t as_u64 (struct data * x) {
+uint64_t as_u64 (box::data * x) {
   struct S(header) * h = FIND_HEADER(x);
   if (h->type == primitive_u64)
     return h->_[0].u64;
@@ -282,7 +282,7 @@ uint64_t as_u64 (struct data * x) {
     segfault();
 }
 
-uint32_t as_u32 (struct data * x) {
+uint32_t as_u32 (box::data * x) {
   struct S(header) * h = FIND_HEADER(x);
   if (h->type == primitive_u32)
     return h->_[0].u32;
@@ -290,7 +290,7 @@ uint32_t as_u32 (struct data * x) {
     segfault();
 }
 
-uint16_t as_u16 (struct data * x) {
+uint16_t as_u16 (box::data * x) {
   struct S(header) * h = FIND_HEADER(x);
   if (h->type == primitive_u16)
     return h->_[0].u16;
@@ -298,7 +298,7 @@ uint16_t as_u16 (struct data * x) {
     segfault();
 }
 
-uint8_t as_u8 (struct data * x) {
+uint8_t as_u8 (box::data * x) {
   struct S(header) * h = FIND_HEADER(x);
   if (h->type == primitive_u8)
     return h->_[0].u8;
@@ -307,7 +307,7 @@ uint8_t as_u8 (struct data * x) {
 }
 
 
-int64_t as_i64 (struct data * x) {
+int64_t as_i64 (box::data * x) {
   struct S(header) * h = FIND_HEADER(x);
   if (h->type == primitive_i64)
     return h->_[0].i64;
@@ -315,7 +315,7 @@ int64_t as_i64 (struct data * x) {
     segfault();
 }
 
-int32_t as_i32 (struct data * x) {
+int32_t as_i32 (box::data * x) {
   struct S(header) * h = FIND_HEADER(x);
   if (h->type == primitive_i32)
     return h->_[0].i32;
@@ -323,7 +323,7 @@ int32_t as_i32 (struct data * x) {
     segfault();
 }
 
-int16_t as_i16 (struct data * x) {
+int16_t as_i16 (box::data * x) {
   struct S(header) * h = FIND_HEADER(x);
   if (h->type == primitive_i16)
     return h->_[0].i16;
@@ -331,7 +331,7 @@ int16_t as_i16 (struct data * x) {
     segfault();
 }
 
-int8_t as_i8 (struct data * x) {
+int8_t as_i8 (box::data * x) {
   struct S(header) * h = FIND_HEADER(x);
   if (h->type == primitive_i8)
     return h->_[0].i8;

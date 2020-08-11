@@ -26,7 +26,7 @@ static void S(del) (void * v) {
   free(m);
 }
 
-struct tagged::data * mk_e (enum del_policy o, uintptr_t tag, void *p) {
+tagged::data * mk_e (enum del_policy o, uintptr_t tag, void *p) {
   size_t mem_block_size = sizeof(struct S(header));
   struct S(header) * b = (struct S(header) *)malloc(mem_block_size);
   ZERO_CEE_SECT(&b->cs);
@@ -40,7 +40,7 @@ struct tagged::data * mk_e (enum del_policy o, uintptr_t tag, void *p) {
   return &b->_;
 }
 
-struct tagged::data * mk (uintptr_t tag, void *p) {
+tagged::data * mk (uintptr_t tag, void *p) {
   return mk_e(CEE_DEFAULT_DEL_POLICY, tag, p);
 }
     

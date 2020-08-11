@@ -33,7 +33,7 @@ static void S(del) (void * p) {
   free(m);
 }
 
-struct str::data * mk (const char * fmt, ...) {
+str::data * mk (const char * fmt, ...) {
   if (!fmt) {
     // fmt cannot be null
     // intentionally cause a segfault
@@ -63,10 +63,10 @@ struct str::data * mk (const char * fmt, ...) {
   
   va_start(ap, fmt);
   vsnprintf(h->_, s, fmt, ap);
-  return (struct str::data *)(h->_);
+  return (str::data *)(h->_);
 } 
 
-struct str::data * mk_e (size_t n, const char * fmt, ...) {
+str::data * mk_e (size_t n, const char * fmt, ...) {
   uintptr_t s;
   va_list ap;
   
@@ -96,7 +96,7 @@ struct str::data * mk_e (size_t n, const char * fmt, ...) {
   else {
     m->_[0] = '\0'; // terminates with '\0'
   }
-  return (struct str::data *)(m->_);
+  return (str::data *)(m->_);
 }
 
 static void S(noop)(void * v) {}
@@ -113,7 +113,7 @@ struct cee_block * cee_block_empty () {
 /*
  * if it's not NULL terminated, NULL should be returned
  */
-char * end(struct str::data * str) {
+char * end(str::data * str) {
   struct S(header) * b = FIND_HEADER(str);
   // TODO: fixes this
   return (char *)str + strlen((char *)str);
@@ -130,24 +130,24 @@ char * end(struct str::data * str) {
 /*
  * append any char (including '\0') to str;
  */
-struct str::data * add(struct str::data * str, char c) {
+str::data * add(str::data * str, char c) {
   struct S(header) * b = FIND_HEADER(str);
   uint32_t slen = strlen((char *)str);
   if (slen < b->capacity) {
     b->_[slen] = c;
     b->_[slen+1] = '\0';
-    return (struct str::data *)(b->_);
+    return (str::data *)(b->_);
   } 
   else {
     struct S(header) * b1 = S(resize)(b, b->cs.mem_block_size + CEE_BLOCK);
     b1->capacity = b->capacity + CEE_BLOCK;
     b1->_[b->capacity] = c;
     b1->_[b->capacity+1] = '\0';
-    return (struct str::data *)(b1->_);
+    return (str::data *)(b1->_);
   }
 }
 
-struct str::data * catf(struct str::data * str, const char * fmt, ...) {
+str::data * catf(str::data * str, const char * fmt, ...) {
   struct S(header) * b = FIND_HEADER(str);
   if (!fmt)
     return str;
@@ -167,11 +167,11 @@ struct str::data * catf(struct str::data * str, const char * fmt, ...) {
   else {
     struct S(header) * b1 = S(resize)(b, slen + s);
     vsnprintf(b1->_ + slen, s, fmt, ap);
-    return (struct str::data *)(b1->_);
+    return (str::data *)(b1->_);
   }
 }
 
-struct str::data * ncat (struct str::data * str, char * s, size_t slen) {
+str::data * ncat (str::data * str, char * s, size_t slen) {
   return NULL;
 }
     

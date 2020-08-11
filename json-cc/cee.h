@@ -127,7 +127,7 @@ namespace str {
    *      cee_str ("%d", 10);
    *
    */
-  extern str::data  * mk (const char * fmt, ...);
+  extern struct str::data  * mk (const char * fmt, ...);
 
 
   /*
@@ -148,7 +148,7 @@ namespace str {
    *      cee_str_n(100, "%d", 10);
    *
    */
-  extern str::data  * mk_e (size_t n, const char * fmt, ...);
+  extern struct str::data  * mk_e (size_t n, const char * fmt, ...);
 
   /*
    * return the pointer of the null terminator;
@@ -166,14 +166,14 @@ namespace str {
    * return: the start address of a cee_block, a new cee_block will
    *         be allocated if the cee_block is too small.
    */
-  extern str::data * add (str::data * str, char);
+  extern struct str::data * add (struct str::data * str, char);
 
   /*
    * just like the standard strcat, but this function composes the src
    * string through a fmt string and its varadic arguments.
    */
-  extern str::data * catf (str::data *, const char * fmt, ...);
-  extern str::data * ncat (str::data *, char * s, size_t);
+  extern struct str::data * catf (struct str::data *, const char * fmt, ...);
+  extern struct str::data * ncat (struct str::data *, char * s, size_t);
 };
   
 namespace vect {
@@ -186,39 +186,39 @@ namespace vect {
    * size: the initial size of the vector
    * when the vector is deleted, its elements will not be deleted
    */
-  extern vect::data * mk (size_t size);
+  extern struct vect::data * mk (size_t size);
 
 
 
-  extern vect::data * mk_e (enum del_policy o, size_t size);
+  extern struct vect::data * mk_e (enum del_policy o, size_t size);
 
   /*
    * it may return a new vector if the parameter vector is too small
    */
-  extern vect::data * append(vect::data * v, void * e);
+  extern struct vect::data * append(struct vect::data * v, void * e);
 
 
   /*
    * it inserts an element e at index and shift the rest elements 
    * to higher indices
    */
-  extern vect::data * insert(vect::data * v, size_t index, void * e);
+  extern struct vect::data * insert(struct vect::data * v, size_t index, void * e);
 
   /*
    * it removes an element at index and shift the rest elements 
    * to lower indices
    */
-  extern vect::data * remove(vect::data * v, size_t index);
+  extern struct data * remove(struct data * v, size_t index);
 
   /*
    * returns the number of elements in the vector
    */
-  extern size_t size(vect::data *);
+  extern size_t size(struct data *);
 
   /*
    *
    */
-  extern size_t capacity (vect::data *);
+  extern size_t capacity (struct data *);
 };
 
   
@@ -233,8 +233,8 @@ namespace tuple {
    * v1: the first value of the tuple
    * v2: the second value of the tuple
    */
-  extern tuple::data * mk (void * v1, void * v2);
-  extern tuple::data * mk_e (enum del_policy o[2], void * v1, void * v2);
+  extern struct data * mk (void * v1, void * v2);
+  extern struct data * mk_e (enum del_policy o[2], void * v1, void * v2);
 }
 
 namespace triple {
@@ -249,8 +249,8 @@ namespace triple {
    * v3: the third value of the triple
    * when the triple is deleted, its elements will not be deleted
    */
-  extern triple::data * mk(void * v1, void * v2, void * v3);
-  extern triple::data * mk_e(enum del_policy o[3], void * v1, void * v2, void * v3);
+  extern struct data * mk(void * v1, void * v2, void * v3);
+  extern struct data * mk_e(enum del_policy o[3], void * v1, void * v2, void * v3);
 };
 
   
@@ -267,17 +267,17 @@ namespace quadruple {
    * v4: the fourth value of the quadruple
    * when the quadruple is deleted, its elements will not be deleted
    */
-  extern quadruple::data * mk(void * v1, void * v2, void * v3, void * v4);
+  extern struct data * mk(void * v1, void * v2, void * v3, void * v4);
 
-  extern quadruple::data * mk_e(enum del_policy o[4], void * v1, void * v2, void *v3, void *v4);
+  extern struct data * mk_e(enum del_policy o[4], void * v1, void * v2, void *v3, void *v4);
 }
 
 namespace n_tuple {
   struct data {
     void * _[1];  // n elements
   };
-  extern n_tuple::data * mk (size_t n, ...);
-  extern n_tuple::data * mk_e (size_t n, enum del_policy o[], ...);
+  extern struct data * mk (size_t n, ...);
+  extern struct data * mk_e (size_t n, enum del_policy o[], ...);
 };
 
 
@@ -297,18 +297,18 @@ namespace set {
    * dt: specifiy how its element should be handled when the set is deleted.
    *
    */
-  extern set::data * mk (int (*cmp)(const void *, const void *));
-  extern set::data * mk_e (enum del_policy o, 
-                           int (*cmp)(const void *, const void *));
+  extern struct set::data * mk (int (*cmp)(const void *, const void *));
+  extern struct set::data * mk_e (enum del_policy o, 
+                                  int (*cmp)(const void *, const void *));
 
-  extern void add(set::data * m, void * key);
-  extern void * find(set::data * m, void * key);
-  extern void * remove(set::data * m, void * key);
-  extern void clear (set::data * m);
-  extern size_t size(set::data * m);
-  extern bool empty(set::data * s);
-  extern vect::data * values(set::data * m);
-  extern set::data * union_sets (set::data * s1, set::data * s2);
+  extern void add(struct set::data * m, void * key);
+  extern void * find(struct set::data * m, void * key);
+  extern void * remove(struct set::data * m, void * key);
+  extern void clear (struct set::data * m);
+  extern size_t size(struct set::data * m);
+  extern bool empty(struct set::data * s);
+  extern struct vect::data * values(struct set::data * m);
+  extern struct data * union_sets (struct set::data * s1, struct set::data * s2);
 }
 
 namespace map {
@@ -320,15 +320,15 @@ namespace map {
    * map implementation based on binary tree
    * add/remove
    */
-  extern map::data * mk(cmp_fun cmp);
-  extern map::data * mk_e(enum del_policy o[2], cmp_fun cmp);
+  extern struct data * mk(cmp_fun cmp);
+  extern struct data * mk_e(enum del_policy o[2], cmp_fun cmp);
 
-  extern uintptr_t size(map::data *);
-  extern void add(map::data * m, void * key, void * value);
-  extern void * find(map::data * m, void * key);
-  extern void * remove(map::data *m, void * key);
-  extern vect::data * keys(map::data *m);
-  extern vect::data * values(map::data *m);
+  extern uintptr_t size(struct map::data *);
+  extern void add(struct map::data * m, void * key, void * value);
+  extern void * find(struct map::data * m, void * key);
+  extern void * remove(struct map::data *m, void * key);
+  extern struct vect::data * keys(struct data *m);
+  extern struct vect::data * values(struct data *m);
 };
 
 
@@ -348,11 +348,11 @@ namespace dict {
   /*
    *
    */
-  extern dict::data * mk (size_t s);
-  extern dict::data * mk_e (enum del_policy o, size_t s);
+  extern struct dict::data * mk (size_t s);
+  extern struct dict::data * mk_e (enum del_policy o, size_t s);
 
-  extern void add(dict::data * d, char * key, void * value);
-  extern void * find(dict::data * d, char * key);
+  extern void add(struct dict::data * d, char * key, void * value);
+  extern void * find(struct dict::data * d, char * key);
 };
 
 namespace stack {
@@ -367,47 +367,46 @@ namespace stack {
    * size: the size of the stack
    * dt: specify how its element should be handled when the stack is deleted.
    */
-  extern stack::data * mk(size_t size);
-  extern stack::data * mk_e (enum del_policy o, size_t size);
+  extern struct data * mk(size_t size);
+  extern struct data * mk_e (enum del_policy o, size_t size);
 
   /*
    * return the element nth element away from the top element
    */
-  extern void * top(stack::data *, size_t nth);
+  extern void * top(struct data *, size_t nth);
   /*
    * pop out the top element and return it
    */
-  extern void * pop(stack::data *);
+  extern void * pop(struct data *);
   /*
    * push an element to the top of the stack
    */
-  extern int push(stack::data *, void *);
+  extern int push(struct data *, void *);
   /*
    * test if the stack is empty
    */
-  extern bool empty (stack::data *);
+  extern bool empty (struct data *);
   /*
    * test if the stack is full
    */
-  extern bool full (stack::data *);
+  extern bool full (struct data *);
   /*
    * return the size of the stack
    */
-  extern uintptr_t size (stack::data *);
+  extern uintptr_t size (struct data *);
 };
   
   
 namespace singleton {  
-  /*
-   * singleton
-   */
-  struct data {
-    tag_t  tag;
-    uintptr_t val;
-  };
-  extern singleton::data * init(uintptr_t tag, void *);
-  #define CEE_SINGLETON_SIZE (sizeof(struct cee::singleton) + sizeof(struct cee::sect))
-
+/*
+ * singleton
+ */
+struct data {
+  tag_t  tag;
+  uintptr_t val;
+};
+extern struct singleton::data * init(uintptr_t tag, void *);
+#define CEE_SINGLETON_SIZE (sizeof(struct cee::singleton::data) + sizeof(struct cee::sect))
 }
   
   
@@ -445,51 +444,51 @@ namespace box {
     union primitive_value _;
   };
 
-  extern box::data * from_double(double);
-  extern box::data * from_float(float);
+  extern struct box::data * from_double(double);
+  extern struct box::data * from_float(float);
 
-  extern box::data * from_u64(uint64_t);
-  extern box::data * from_u32(uint32_t);
-  extern box::data * from_u16(uint16_t);
-  extern box::data * from_u8(uint8_t);
+  extern struct box::data * from_u64(uint64_t);
+  extern struct box::data * from_u32(uint32_t);
+  extern struct box::data * from_u16(uint16_t);
+  extern struct box::data * from_u8(uint8_t);
 
-  extern box::data * from_i64(int64_t);
-  extern box::data * from_i32(int32_t);
-  extern box::data * from_i16(int16_t);
-  extern box::data * from_i8(int8_t);
+  extern struct box::data * from_i64(int64_t);
+  extern struct box::data * from_i32(int32_t);
+  extern struct box::data * from_i16(int16_t);
+  extern struct box::data * from_i8(int8_t);
 
-  extern double as_double(box::data * x);
-  extern float as_float(box::data * x);
-  extern uint64_t as_u64(box::data * x);
-  extern uint32_t as_u32(box::data * x);
-  extern uint16_t as_u16(box::data * x);
-  extern uint8_t  as_u8(box::data * x);
+  extern double as_double(struct box::data * x);
+  extern float as_float(struct box::data * x);
+  extern uint64_t as_u64(struct box::data * x);
+  extern uint32_t as_u32(struct box::data * x);
+  extern uint16_t as_u16(struct box::data * x);
+  extern uint8_t  as_u8(struct box::data * x);
 
-  extern int64_t as_i64(box::data * x);
-  extern int32_t as_i32(box::data * x);
-  extern int16_t as_i16(box::data * x);
-  extern int8_t  as_i8(box::data * x);
+  extern int64_t as_i64(struct box::data * x);
+  extern int32_t as_i32(struct box::data * x);
+  extern int16_t as_i16(struct box::data * x);
+  extern int8_t  as_i8(struct box::data * x);
 
   /*
    * number of bytes needed to print out the value
    */
-  extern size_t snprintf(char * buf, size_t size, box::data *p);
+  extern size_t snprintf(char * buf, size_t size, struct box::data *p);
 };
 
 union ptr {
   void * _;
-  str::data       * str;
-  set::data       * set;
-  vect::data      * vect;
-  map::data       * map;
-  dict::data      * dict;
-  tuple::data     * tuple;
-  triple::data    * triple;
-  quadruple::data * quadruple;
-  block::data     * block;
-  box::data       * box;
-  singleton::data * singleton;
-  stack::data     * stack;
+  struct str::data       * str;
+  struct set::data       * set;
+  struct vect::data      * vect;
+  struct map::data       * map;
+  struct dict::data      * dict;
+  struct tuple::data     * tuple;
+  struct triple::data    * triple;
+  struct quadruple::data * quadruple;
+  struct cee_block     * block;
+  struct box::data       * box;
+  struct singleton::data * singleton;
+  struct stack::data     * stack;
 };
   
 namespace tagged {
@@ -505,8 +504,8 @@ struct data {
  * tag: any integer value
  * v: a value 
  */
-extern tagged::data * mk (uintptr_t tag, void * v);
-extern tagged::data * mk_e (enum del_policy o, uintptr_t tag, void *v);
+extern struct tagged::data * mk (uintptr_t tag, void * v);
+extern struct tagged::data * mk_e (enum del_policy o, uintptr_t tag, void *v);
 }
 
 namespace closure {

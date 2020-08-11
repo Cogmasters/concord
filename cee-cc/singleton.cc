@@ -27,7 +27,7 @@ static void S(noop)(void *p) {}
  * the parameter of this function has to be a global/static 
  * uintptr_t array of two elements
  */
-struct singleton::data * init(uintptr_t tag, void *s) {
+singleton::data * init(uintptr_t tag, void *s) {
   struct S(header) * b = (struct S(header) *)s;
   ZERO_CEE_SECT(&b->cs);
   b->cs.del = S(noop);
@@ -36,7 +36,7 @@ struct singleton::data * init(uintptr_t tag, void *s) {
   b->cs.n_product = 0;
   b->_ = tag;
   b->val = 0;
-  return (struct singleton::data *)&(b->_);
+  return (singleton::data *)&(b->_);
 }
     
   }
