@@ -182,7 +182,7 @@ static void str_append(char * out, uintptr_t *offp, char *begin, unsigned len) {
 /*
  * compute how many bytes are needed to serialize orca_json as a string
  */
-size_t snprintf (char * buf, size_t size, json::data * j, enum format f) {
+size_t snprint (char * buf, size_t size, json::data * j, enum format f) {
   tuple::data * cur;
   json::data * cur_orca_json;
   struct counter * ccnt;
@@ -247,9 +247,9 @@ size_t snprintf (char * buf, size_t size, json::data * j, enum format f) {
       case type_is_number:
         {
           pad(&offset, buf, ccnt, f);
-          incr = box::snprintf(NULL, 0, to_number(cur_orca_json));
+          incr = box::snprint(NULL, 0, to_number(cur_orca_json));
           if (buf) {
-            box::snprintf(buf+offset, incr, to_number(cur_orca_json));
+            box::snprint(buf+offset, incr, to_number(cur_orca_json));
           }
           offset+=incr;
           if (ccnt->more_siblings)
@@ -270,7 +270,7 @@ size_t snprintf (char * buf, size_t size, json::data * j, enum format f) {
               more_siblings = true;
             ccnt->next++;
             push (ccnt->tabs + 1, more_siblings, sp, (json::data *)(ccnt->array->_[i]));
-          } 
+          }
           else {
             delimiter(&offset, buf, f, ccnt, ']');
             if (ccnt->more_siblings)

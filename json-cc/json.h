@@ -80,7 +80,7 @@ extern void array_append_bool (json::data *, bool);
 extern void array_append_string (json::data *, char *);
 extern void array_append_number (json::data *, double);
 
-extern size_t snprintf(char * buf, size_t size, json::data *, enum format);
+extern size_t snprint (char * buf, size_t size, json::data *, enum format);
 
 extern bool parse(char * buf, uintptr_t len, json::data **out, bool force_eof,
                   int *error_at_line);
