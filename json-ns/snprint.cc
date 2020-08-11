@@ -1,4 +1,4 @@
-/* JSON snprintf
+/* JSON snprint
    C reimplementation of
      Artyom Beilis (Tonkikh) <artyomtnk@yahoo.com>'s orca_json.cpp
 */

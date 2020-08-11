@@ -5,18 +5,6 @@
 
 using namespace cee;
 
-int cmp (const void *v1, const void *v2) {
-  printf ("%s, %s\n", (char *)v1, (char *)v2);
-  return strcmp((char *)v1, (char *)v2);
-}
-
-int cmp1 (const void *v1, const void * v2) {
-  vect::data * vv1 = (vect::data *) v1;
-  vect::data * vv2 = (vect::data *) v2;
-  //printf ("%s, %s\n", (char *)(vv1->e[0]), (char *)(vv2->e[0]));
-  return strcmp((char *)(vv1->_[0]), (char *)(vv2->_[0]));
-}
-
 int main () {
   json::data * js = json::mk_object ();
   
