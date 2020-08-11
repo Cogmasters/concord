@@ -221,7 +221,7 @@ box::data * from_i8 (int8_t d) {
   return (box::data *)b->_;
 }
 
-size_t snprintf (char * buf, size_t size, box::data * x) {
+size_t snprint (char * buf, size_t size, box::data * x) {
   struct S(header) * h = FIND_HEADER(x);
   int s;
   switch(h->type)

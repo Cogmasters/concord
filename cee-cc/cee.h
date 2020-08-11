@@ -29,23 +29,23 @@ enum resize_method {
  * how the elements of the container will be handled once the container is 
  * deleted (freed).
  * 
- * cee_dp_del_rc: if a container is freed, its cee element's in-degree will be 
+ * dp_del_rc: if a container is freed, its cee element's in-degree will be 
  *         decreased by one. If any cee element's in-degree is zero, the element 
  *         will be freed. It's developer's responsibility to prevent cyclically
  *         pointed containers from having this policy.
  * 
- * cee_dp_del: if a container is freed, all its cee elements will be freed 
+ * dp_del: if a container is freed, all its cee elements will be freed 
  *         immediately. It's developer's responsiblity to prevent an element is 
  *         retained by multiple containers that have this policy.
  *
- * cee_dp_noop: if a container is freed, nothing will happen to its elements.
- *              It's developer's responsiblity to prevent memory leaks.
+ * dp_noop: if a container is freed, nothing will happen to its elements.
+ *          It's developer's responsiblity to prevent memory leaks.
  *
  * the default del_policy is cee_dp_del_rc, which can be configured at compile
  * time with CEE_DEFAULT_DEL_POLICY
  */
 enum del_policy {
-  dp_del_rc = 0,  
+  dp_del_rc = 0,
   dp_del = 1,
   dp_noop = 2
 };
@@ -473,7 +473,7 @@ namespace box {
   /*
    * number of bytes needed to print out the value
    */
-  extern size_t snprintf(char * buf, size_t size, box::data *p);
+  extern size_t snprint(char * buf, size_t size, box::data *p);
 };
 
 union ptr {
