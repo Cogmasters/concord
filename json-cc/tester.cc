@@ -33,16 +33,16 @@ int main () {
   json::array_append_string(js2, "true");
   json::object_set(js, "a1", js2);
   
-  size_t jlen = json::snprintf(NULL, 0, js, json::readable);
+  size_t jlen = json::snprint(NULL, 0, js, json::readable);
   printf (" %u\n", jlen);
-  jlen = json::snprintf(NULL, 0, js, json::compact);
+  jlen = json::snprint(NULL, 0, js, json::compact);
   printf (" %u\n", jlen);
   
   char buf[1000];
-  json::snprintf(buf, 109, js, json::readable);
+  json::snprint(buf, 109, js, json::readable);
   printf ("%s\n", buf);
   
-  json::snprintf(buf, 109, js, json::compact);
+  json::snprint(buf, 109, js, json::compact);
   printf ("%s\n", buf);
   json::data * result = NULL;
   int line;
@@ -50,7 +50,7 @@ int main () {
   json::parse(buf, jlen, &result, true, &line);
   printf ("end of parsing\n");
   
-  json::snprintf(buf, 109, result, json::compact);
+  json::snprint(buf, 109, result, json::compact);
   printf ("parsed -> printed\n");
   printf ("%s\n", buf);
   

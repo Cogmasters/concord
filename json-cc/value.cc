@@ -170,9 +170,9 @@ json::data * load_from_file (FILE * f, bool force_eof, int * error_at_line) {
 }
 
 bool save(json::data * j, FILE *f, enum format how) {
-  size_t s = json::snprintf(NULL, 0, j, how);
+  size_t s = json::snprint(NULL, 0, j, how);
   char * p = (char *)malloc(s+1);
-  snprintf(p, s+1, j, how);
+  snprint(p, s+1, j, how);
   if (fwrite(p, s+1, 1, f) != 1) {
     fprintf(stderr, "%s", strerror(errno));
     return false;

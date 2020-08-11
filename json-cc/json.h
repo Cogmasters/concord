@@ -28,13 +28,13 @@ enum type {
 struct data {
 	enum type t;
   union {
-    struct singleton::data * null;
-    struct singleton::data * undefined;
-    struct singleton::data * boolean;
-    struct box::data       * number;
-    struct str::data       * string;
-    struct vect::data      * array;
-    struct map::data       * object;
+    singleton::data * null;
+    singleton::data * undefined;
+    singleton::data * boolean;
+    box::data       * number;
+    str::data       * string;
+    vect::data      * array;
+    map::data       * object;
   } value;
 };
 
