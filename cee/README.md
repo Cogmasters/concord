@@ -1,4 +1,4 @@
-# A single file library to provide similar productivity of C++ STL
+# A single file C library to provide similar productivity of C++ STL
 
 But it does not intend to replicate C++ STL
 
@@ -144,7 +144,10 @@ make
 ```
 
 ## Rationale
+
 [DESIGN](./DESIGN.md)
 
+
 ## Contirubtion are welcome
-Join our discord [https://discord.gg/nBUqrWf](https://discord.gg/nBUqrWf)
+
+Please oin our discord [https://discord.gg/nBUqrWf](https://discord.gg/nBUqrWf)

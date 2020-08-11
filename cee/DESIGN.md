@@ -1,7 +1,7 @@
 # The Design Goals and Principles
 
 ## Goals
-*  Easy to maniupate strings 
+*  Easy to maniupate strings
 *  Ready to use vector, set, map, stack, and dict
 
 ## Design principles
