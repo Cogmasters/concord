@@ -1,4 +1,4 @@
-# The Design Goals and Principles
+# Design Goals and Principles
 
 ## Goals
 *  Easy to maniupate strings
@@ -18,4 +18,5 @@
    handled easily in later iterations with advanced tooling like 
    https://cee.studio, valgrind, or ASAN.
 
-*  Performance optimziation should be easy to do by removing abstraction
+*  Performance optimziation should be easy to do by removing abstraction and 
+   falling back to more C idiomatic implementations.
