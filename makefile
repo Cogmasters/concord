@@ -1,4 +1,4 @@
-CXXFLAGS := -DJSMN_PARENT_LINKS
+CXXFLAGS := -DJSMN_PARENT_LINKS -DJSMN_STRICT
 
 all: test_jsmn.exe simple.exe
 
