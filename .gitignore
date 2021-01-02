@@ -1,2 +1,5 @@
+*.exe
 .ccls-cache
+*.o
+a.out
 *~
