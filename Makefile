@@ -20,7 +20,7 @@ LIBS_LDFLAGS	:= $(LIBJSCON_LDFLAGS) $(LIBCURL_LDFLAGS) \
 LIBDISCORD_DLIB	:= $(LIBDIR)/libdiscord.so
 LIBDISCORD_SLIB	:= $(LIBDIR)/libdiscord.a
 
-CFLAGS := -Wall -Werror -pedantic \
+CFLAGS := -Wall -Wextra -pedantic \
 	-fPIC -std=c11 -O0 -g -D_XOPEN_SOURCE=600 -DLIBDISCORD_DEBUG
 
 

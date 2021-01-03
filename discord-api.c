@@ -66,7 +66,7 @@ _curl_resheader_cb(char *content, size_t size, size_t nmemb, void *p_userdata)
   res_pairs->field[res_pairs->size] = &content[strlen(content) + offset];
 
   ++res_pairs->size; //update header amount of key/field pairs
-  ASSERT_S(res_pairs->size <= MAX_HEADER_SIZE, "Stack overflow");
+  ASSERT_S(res_pairs->size < MAX_HEADER_SIZE, "Stack overflow");
 
   return realsize;
 }
@@ -100,8 +100,9 @@ _discord_easy_init(struct discord_api_s *api)
 
   CURLcode ecode;
   /* uncomment for verbose */
-  //ecode = curl_easy_setopt(new_ehandle, CURLOPT_VERBOSE, 2L);
-  //ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
+  ecode = curl_easy_setopt(new_ehandle, CURLOPT_VERBOSE, 2L);
+  ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
+  /* * * * * * * * * * * * */
 
   //set ptr to request header we will be using for API communication
   ecode = curl_easy_setopt(new_ehandle, CURLOPT_HTTPHEADER, api->req_header);
@@ -135,6 +136,9 @@ Discord_api_init(struct discord_api_s *api, char token[])
 {
   api->req_header = _discord_reqheader_init(token);
   api->easy_handle = _discord_easy_init(api);
+  api->res_body.str = NULL;
+  api->res_body.size = 0;
+  api->res_pairs.size = 0;
 }
 
 void
@@ -143,11 +147,9 @@ Discord_api_cleanup(struct discord_api_s *api)
   curl_slist_free_all(api->req_header);
   curl_easy_cleanup(api->easy_handle); 
 
-  for (int i=0; i < api->res_pairs.size; ++i)
-    free(api->res_pairs.key[i]);
-
-  if (api->res_body.str)
+  if (api->res_body.str) {
     free(api->res_body.str);
+  }
 }
 
 /* set specific http method used for the request */
@@ -217,6 +219,12 @@ _discord_perform_request(
     case HTTP_OK:
         (*load_cb)(p_object, &api->res_body);
         D_NOTOP_PUTS("Object loaded with API response"); 
+
+        //clean response for next iteration
+        free(api->res_body.str);
+        api->res_body.str = NULL;
+        api->res_body.size = 0;
+
         return; /* DONE */
     case HTTP_TOO_MANY_REQUESTS:
     /* @todo dealing with ratelimits solely by checking for
@@ -234,6 +242,11 @@ _discord_perform_request(
         D_PRINT("%s", message);
 
         usleep(retry_after*1000);
+
+        //clean response for next iteration
+        free(api->res_body.str);
+        api->res_body.str = NULL;
+        api->res_body.size = 0;
 
         break;
      }

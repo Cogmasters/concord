@@ -10,7 +10,7 @@ discord_t*
 discord_init(char token[])
 {
   discord_t *new_client = malloc(sizeof *new_client);
-  ASSERT_S(NULL != new_client, "Out of memory");
+  if (NULL == new_client) return NULL;
 
   //trim token at non-printable character (if any)
   for (int i=0; token[i] != '\0'; ++i) {

@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <assert.h>
 
 #include <libdiscord.h>
@@ -13,9 +14,17 @@ int main(void)
     fclose(f_bot_token);
 
     discord_global_init();
-
     discord_t *client = discord_init(bot_token);
-    discord_cleanup(client);
+    assert(NULL != client);
 
+    discord_user_t *user = discord_user_init(); 
+    assert(NULL != user);
+
+    discord_get_client(client, &user);
+    printf("Greetings, %s#%s!\n", user->username, user->discriminator);
+
+    discord_user_cleanup(user);
+
+    discord_cleanup(client);
     discord_global_cleanup();
 }

@@ -16,7 +16,7 @@ struct api_response_s {
   size_t size; //the response str length
 };
 
-#define MAX_HEADER_SIZE 15
+#define MAX_HEADER_SIZE 25
 
 struct api_header_s {
   char *key[MAX_HEADER_SIZE];
@@ -51,7 +51,7 @@ enum discord_limits {
   MAX_TOPIC_LEN          = 1024,
   MAX_DESCRIPTION_LEN    = 1024,
   MAX_USERNAME_LEN       = 32,
-  MAX_DISCRIMINATOR_LEN  = 4,
+  MAX_DISCRIMINATOR_LEN  = 5,
   MAX_HASH_LEN           = 1024,
   MAX_LOCALE_LEN         = 15,
   MAX_EMAIL_LEN          = 254,
