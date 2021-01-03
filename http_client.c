@@ -7,7 +7,7 @@ void print_response(FILE * fp, struct response * resp) {
   fprintf(fp, "code %d\n", resp->code);
   fprintf(fp, "status %ld\n", resp->status);
   fprintf(fp, "body: %s\n", resp->body);
-  fprintf(fp, "body_size: %d\n", resp->body_size);
+  fprintf(fp, "body_size: %zd\n", resp->body_size);
   return;
 }
 
