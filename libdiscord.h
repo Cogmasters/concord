@@ -130,4 +130,10 @@ void discord_cleanup(discord_t *client);
 void discord_global_init();
 void discord_global_cleanup();
 
+/* discord-public-guild.c */
+
+discord_guild_t* discord_guild_init();
+void discord_guild_destroy(discord_guild_t *guild);
+void discord_get_guild(discord_t *discord, char guild_id[], discord_guild_t **p_guild);
+
 #endif

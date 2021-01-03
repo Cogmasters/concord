@@ -6,10 +6,7 @@
 #include <curl/curl.h>
 #include <libjscon.h>
 
-#include "tool-debug.h"
-
-
-#define DEBUG_MODE 1 //1 to enable debug_mode @todo activate this by setting -D
+#include "discord-tool-debug.h"
 
 #define BASE_API_URL "https://discord.com/api"
 #define BASE_GATEWAY_URL "wss://gateway.discord.gg/?v=6&encoding=json"

@@ -1,21 +1,16 @@
 CC			:= stensal-c
-SRCDIR	:= src
 OBJDIR	:= obj
-INCLDIR	:= include
 LIBDIR	:= lib
 
-SRC		:= $(wildcard src/*.c)
-_OBJS	:= $(patsubst src/%.c, %.o, $(SRC))
-OBJS 	:= $(addprefix $(OBJDIR)/, $(_OBJS))
-
-#LIBCURL_CFLAGS	:= $(shell pkg-config --cflags libcurl)
-#LIBCURL_LDFLAGS	:= $(shell pkg-config --libs libcurl)
+SRC			:= $(wildcard *.c)
+_OBJS		:= $(patsubst %.c, %.o, $(SRC))
+OBJS 		:= $(addprefix $(OBJDIR)/, $(_OBJS))
 
 LIBJSCON_CFLAGS		:= -I./JSCON/include
 LIBJSCON_LDFLAGS	:= "-Wl,-rpath,./JSCON/lib" -L./JSCON/lib -ljscon
 
-LIBDISCORD_CFLAGS		:= -I$(INCLDIR)
-LIBDISCORD_LDFLAGS	:= -lcurl -lbearssl
+LIBDISCORD_CFLAGS		:= -I./
+LIBDISCORD_LDFLAGS	:= "-Wl,-rpath,./lib" -L$(LIBDIR) -ldiscord -lcurl -lbearssl
 
 LIBS_CFLAGS		:= $(LIBJSCON_CFLAGS) $(LIBCURL_CFLAGS) \
 									$(LIBDISCORD_CFLAGS)
@@ -26,17 +21,21 @@ LIBDISCORD_DLIB	:= $(LIBDIR)/libdiscord.so
 LIBDISCORD_SLIB	:= $(LIBDIR)/libdiscord.a
 
 CFLAGS := -Wall -Werror -pedantic \
-	-fPIC -std=c11 -O0 -g -D_XOPEN_SOURCE=600
+	-fPIC -std=c11 -O0 -g -D_XOPEN_SOURCE=600 -DLIBDISCORD_DEBUG
 
 
 .PHONY : all mkdir install clean purge
 
 all : mkdir $(OBJS) $(LIBDISCORD_DLIB) $(LIBDISCORD_SLIB)
 
+test : all test-api.c
+	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \
+		test-api.c -o test-api $(LIBS_LDFLAGS)
+
 mkdir :
 	mkdir -p $(OBJDIR) $(LIBDIR)
 
-$(OBJDIR)/%.o : $(SRCDIR)/%.c
+$(OBJDIR)/%.o : %.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \
 		-c -o $@ $<
 
@@ -49,13 +48,12 @@ $(LIBDISCORD_SLIB) :
 
 # @todo better install solution
 install : all
-	cp $(INCLDIR)/* /usr/local/include && \
+	cp $(INCLUDE) /usr/local/include && \
 	cp $(LIBDISCORD_DLIB) /usr/local/lib && \
 	ldconfig
 
 clean :
-	rm -rf $(OBJDIR)
+	rm -rf $(OBJDIR) test-api
 
 purge : clean
 	rm -rf $(LIBDIR)
-	$(MAKE) -C test clean
