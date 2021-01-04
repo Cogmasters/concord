@@ -8,3 +8,4 @@ cmake-build-debug
 bot_token
 obj
 lib
+test-api
