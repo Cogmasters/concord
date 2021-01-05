@@ -2,7 +2,7 @@ CC			:= stensal-c
 OBJDIR	:= obj
 LIBDIR	:= lib
 
-SRC			:= $(wildcard *.c)
+SRC			:= $(wildcard discord-*.c curl-websocket.c)
 _OBJS		:= $(patsubst %.c, %.o, $(SRC))
 OBJS 		:= $(addprefix $(OBJDIR)/, $(_OBJS))
 
@@ -20,8 +20,8 @@ LIBS_LDFLAGS	:= $(LIBJSCON_LDFLAGS) $(LIBCURL_LDFLAGS) \
 LIBDISCORD_DLIB	:= $(LIBDIR)/libdiscord.so
 LIBDISCORD_SLIB	:= $(LIBDIR)/libdiscord.a
 
-CFLAGS := -Wall -Wextra -pedantic \
-	-fPIC -std=c11 -O0 -g -D_XOPEN_SOURCE=600 -DLIBDISCORD_DEBUG
+CFLAGS := -Wall -Wextra -pedantic -fPIC -std=c11 -O0 -g \
+	-DLIBDISCORD_DEBUG -D_DEFAULT_SOURCE -D_XOPEN_SOURCE=700
 
 
 .PHONY : all mkdir install clean purge
@@ -35,9 +35,13 @@ test : all test-api.c
 mkdir :
 	mkdir -p $(OBJDIR) $(LIBDIR)
 
-$(OBJDIR)/%.o : %.c
+$(OBJDIR)/discord-%.o : discord-%.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \
 		-c -o $@ $<
+
+$(OBJDIR)/curl-websocket.o : curl-websocket.c
+	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \
+		-U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=1 -c -o $@ $<
 
 $(LIBDISCORD_DLIB) :
 	$(CC) $(LIBS_CFLAGS) \
