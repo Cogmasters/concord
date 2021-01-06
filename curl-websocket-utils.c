@@ -21,7 +21,8 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-//#include <openssl/evp.h>
+#ifdef __stensal__
+
 #include <bearssl_hash.h>
 #define _GNU_SOURCE
 #include <stdio.h>
@@ -32,28 +33,22 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-static inline void
-_cws_debug(const char *prefix, const void *buffer, size_t len)
+static void
+_cws_sha1(const void *input, const size_t input_len, void *output)
 {
-    const uint8_t *bytes = buffer;
-    size_t i;
-    if (prefix)
-        fprintf(stderr, "%s:", prefix);
-    for (i = 0; i < len; i++) {
-        uint8_t b = bytes[i];
-        if (isprint(b))
-            fprintf(stderr, " %#04x(%c)", b, b);
-        else
-            fprintf(stderr, " %#04x", b);
-    }
-    if (prefix)
-        fprintf(stderr, "\n");
+    br_sha1_context cxt;
+    br_sha1_init(&cxt);
+    br_sha1_update(&cxt, input, input_len);
+    br_sha1_out(&cxt, output);
 }
+
+#else
+
+#include <openssl/evp.h>
 
 static void
 _cws_sha1(const void *input, const size_t input_len, void *output)
 {
-/*
     static const EVP_MD *md = NULL;
     EVP_MD_CTX *ctx;
 
@@ -71,11 +66,26 @@ _cws_sha1(const void *input, const size_t input_len, void *output)
     EVP_DigestFinal_ex(ctx, output, NULL);
 
     EVP_MD_CTX_free(ctx);
-*/
-    br_sha1_context cxt;
-    br_sha1_init(&cxt);
-    br_sha1_update(&cxt, input, input_len);
-    br_sha1_out(&cxt, output);
+}
+
+#endif
+
+static inline void
+_cws_debug(const char *prefix, const void *buffer, size_t len)
+{
+    const uint8_t *bytes = buffer;
+    size_t i;
+    if (prefix)
+        fprintf(stderr, "%s:", prefix);
+    for (i = 0; i < len; i++) {
+        uint8_t b = bytes[i];
+        if (isprint(b))
+            fprintf(stderr, " %#04x(%c)", b, b);
+        else
+            fprintf(stderr, " %#04x", b);
+    }
+    if (prefix)
+        fprintf(stderr, "\n");
 }
 
 static void

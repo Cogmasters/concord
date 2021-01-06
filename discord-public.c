@@ -21,6 +21,7 @@ discord_init(char token[])
   }
 
   Discord_api_init(&new_client->api, token);
+  Discord_ws_init(&new_client->ws, token);
 
   return new_client;
 }
@@ -28,6 +29,7 @@ discord_init(char token[])
 void
 discord_cleanup(discord_t *client) {
   Discord_api_cleanup(&client->api);
+  Discord_ws_cleanup(&client->ws);
   free(client);
 }
 

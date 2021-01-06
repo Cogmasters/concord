@@ -8,6 +8,7 @@
 #include <libdiscord.h>
 #include "discord-common.h"
 
+#define BASE_API_URL "https://discord.com/api"
 
 /* initialize curl_slist's request header utility
  * @todo create distinction between bot and bearer token */
@@ -135,7 +136,7 @@ void
 Discord_api_init(struct discord_api_s *api, char token[])
 {
   api->req_header = _discord_reqheader_init(token);
-  api->easy_handle = _discord_easy_init(api);
+  api->ehandle = _discord_easy_init(api);
   api->res_body.str = NULL;
   api->res_body.size = 0;
   api->res_pairs.size = 0;
@@ -145,7 +146,7 @@ void
 Discord_api_cleanup(struct discord_api_s *api)
 {
   curl_slist_free_all(api->req_header);
-  curl_easy_cleanup(api->easy_handle); 
+  curl_easy_cleanup(api->ehandle); 
 
   if (api->res_body.str) {
     free(api->res_body.str);
@@ -159,19 +160,19 @@ _discord_set_method(struct discord_api_s *api, enum http_method method)
   CURLcode ecode;
   switch (method) {
   case DELETE:
-      ecode = curl_easy_setopt(api->easy_handle, CURLOPT_CUSTOMREQUEST, "DELETE");
+      ecode = curl_easy_setopt(api->ehandle, CURLOPT_CUSTOMREQUEST, "DELETE");
       break;
   case GET:
-      ecode = curl_easy_setopt(api->easy_handle, CURLOPT_HTTPGET, 1L);
+      ecode = curl_easy_setopt(api->ehandle, CURLOPT_HTTPGET, 1L);
       break;
   case POST:
-      ecode = curl_easy_setopt(api->easy_handle, CURLOPT_POST, 1L);
+      ecode = curl_easy_setopt(api->ehandle, CURLOPT_POST, 1L);
       break;
   case PATCH:
-      ecode = curl_easy_setopt(api->easy_handle, CURLOPT_CUSTOMREQUEST, "PATCH");
+      ecode = curl_easy_setopt(api->ehandle, CURLOPT_CUSTOMREQUEST, "PATCH");
       break;
   case PUT:
-      ecode = curl_easy_setopt(api->easy_handle, CURLOPT_UPLOAD, 1L);
+      ecode = curl_easy_setopt(api->ehandle, CURLOPT_UPLOAD, 1L);
       break;
   default:
       ERROR("Unknown http method (code: %d)", method);
@@ -185,7 +186,7 @@ _discord_set_url(struct discord_api_s *api, char endpoint[])
 {
   char base_url[MAX_URL_LEN] = BASE_API_URL;
 
-  CURLcode ecode = curl_easy_setopt(api->easy_handle, CURLOPT_URL, strcat(base_url, endpoint));
+  CURLcode ecode = curl_easy_setopt(api->ehandle, CURLOPT_URL, strcat(base_url, endpoint));
   ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 }
 
@@ -202,15 +203,15 @@ _discord_perform_request(
   CURLcode ecode;
   do {
     //perform the request
-    ecode = curl_easy_perform(api->easy_handle);
+    ecode = curl_easy_perform(api->ehandle);
     ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
     //get response's http code
-    ecode = curl_easy_getinfo(api->easy_handle, CURLINFO_RESPONSE_CODE, &http_code);
+    ecode = curl_easy_getinfo(api->ehandle, CURLINFO_RESPONSE_CODE, &http_code);
     ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
     //get request's url
-    ecode = curl_easy_getinfo(api->easy_handle, CURLINFO_EFFECTIVE_URL, &url);
+    ecode = curl_easy_getinfo(api->ehandle, CURLINFO_EFFECTIVE_URL, &url);
     ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
     D_PRINT("Request URL: %s", url);

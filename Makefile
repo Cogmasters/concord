@@ -12,10 +12,8 @@ LIBJSCON_LDFLAGS	:= "-Wl,-rpath,./JSCON/lib" -L./JSCON/lib -ljscon
 LIBDISCORD_CFLAGS		:= -I./
 LIBDISCORD_LDFLAGS	:= "-Wl,-rpath,./lib" -L$(LIBDIR) -ldiscord -lcurl -lbearssl
 
-LIBS_CFLAGS		:= $(LIBJSCON_CFLAGS) $(LIBCURL_CFLAGS) \
-									$(LIBDISCORD_CFLAGS)
-LIBS_LDFLAGS	:= $(LIBJSCON_LDFLAGS) $(LIBCURL_LDFLAGS) \
-									$(LIBDISCORD_LDFLAGS)
+LIBS_CFLAGS		:= $(LIBJSCON_CFLAGS) $(LIBCURL_CFLAGS) $(LIBDISCORD_CFLAGS)
+LIBS_LDFLAGS	:= $(LIBJSCON_LDFLAGS) $(LIBCURL_LDFLAGS) $(LIBDISCORD_LDFLAGS)
 
 LIBDISCORD_DLIB	:= $(LIBDIR)/libdiscord.so
 LIBDISCORD_SLIB	:= $(LIBDIR)/libdiscord.a
@@ -28,9 +26,11 @@ CFLAGS := -Wall -Wextra -pedantic -fPIC -std=c11 -O0 -g \
 
 all : mkdir $(OBJS) $(LIBDISCORD_DLIB) $(LIBDISCORD_SLIB)
 
-test : all test-api.c
+test : all test-api.c test-ws.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \
 		test-api.c -o test-api $(LIBS_LDFLAGS)
+	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \
+		test-ws.c -o test-ws $(LIBS_LDFLAGS)
 
 mkdir :
 	mkdir -p $(OBJDIR) $(LIBDIR)
@@ -57,7 +57,7 @@ install : all
 	ldconfig
 
 clean :
-	rm -rf $(OBJDIR) test-api
+	rm -rf $(OBJDIR) test-api test-ws
 
 purge : clean
 	rm -rf $(LIBDIR)

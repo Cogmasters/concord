@@ -8,35 +8,6 @@
 
 #include "discord-tool-debug.h"
 
-#define BASE_API_URL "https://discord.com/api"
-#define BASE_GATEWAY_URL "wss://gateway.discord.gg/?v=6&encoding=json"
-
-struct api_response_s {
-  char *str; //the response str
-  size_t size; //the response str length
-};
-
-#define MAX_HEADER_SIZE 25
-
-struct api_header_s {
-  char *key[MAX_HEADER_SIZE];
-  char *field[MAX_HEADER_SIZE];
-  int size;
-};
-
-struct discord_api_s {
-  CURL *easy_handle; //the curl's easy handle used to perform requests
-  struct curl_slist *req_header; //the request header sent to the api
-  struct api_response_s res_body; //the api response string
-  struct api_header_s res_pairs; //the key/field pairs response header
-};
-
-typedef struct discord_s {
-  struct discord_api_s api;
-} discord_t;
-
-typedef void (discord_load_obj_ft)(void **p_object, struct api_response_s *res_body);
-
 enum http_method {
   NONE,
   DELETE,
@@ -78,6 +49,42 @@ enum discord_http_code {
   CURL_NO_RESPONSE              = 0,
 };
 
+/* GATEWAY OPCODES
+https://discord.com/developers/docs/topics/opcodes-and-status-codes#gateway-gateway-opcodes */
+enum ws_opcode {
+    GATEWAY_DISPATCH              = 0,
+    GATEWAY_HEARTBEAT             = 1,
+    GATEWAY_IDENTIFY              = 2,
+    GATEWAY_PRESENCE_UPDATE       = 3,
+    GATEWAY_VOICE_STATE_UPDATE    = 4,
+    GATEWAY_RESUME                = 6,
+    GATEWAY_RECONNECT             = 7,
+    GATEWAY_REQUEST_GUILD_MEMBERS = 8,
+    GATEWAY_INVALID_SESSION       = 9,
+    GATEWAY_HELLO                 = 10,
+    GATEWAY_HEARTBEAT_ACK         = 11,
+};
+
+/* GATEWAY INTENTS
+https://discord.com/developers/docs/topics/gateway#identify-identify-structure */
+enum ws_intents {
+    GUILDS                        = 1 << 0,
+    GUILD_MEMBERS                 = 1 << 1,
+    GUILD_BANS                    = 1 << 2,
+    GUILD_EMOJIS                  = 1 << 3,
+    GUILD_INTEGRATIONS            = 1 << 4,
+    GUILD_WEBHOOKS                = 1 << 5,
+    GUILD_INVITES                 = 1 << 6,
+    GUILD_VOICE_STATES            = 1 << 7,
+    GUILD_PRESENCES               = 1 << 8,
+    GUILD_MESSAGES                = 1 << 9,
+    GUILD_MESSAGE_REACTIONS       = 1 << 10,
+    GUILD_MESSAGE_TYPING          = 1 << 11,
+    DIRECT_MESSAGES               = 1 << 12,
+    DIRECT_MESSAGE_REACTIONS      = 1 << 13,
+    DIRECT_MESSAGE_TYPING         = 1 << 14,
+};
+
 /* SNOWFLAKES
 https://discord.com/developers/docs/reference#snowflakes */
 enum discord_snowflake {
@@ -97,6 +104,50 @@ enum discord_snowflake {
 #define USERS              "/users/%s"
 #define USERS_GUILDS       USERS"/guilds"
 
+
+struct api_response_s {
+  char *str; //the response str
+  size_t size; //the response str length
+};
+
+typedef void (discord_load_obj_ft)(void **p_object, struct api_response_s *res_body);
+
+#define MAX_HEADER_SIZE 25
+
+struct api_header_s {
+  char *key[MAX_HEADER_SIZE];
+  char *field[MAX_HEADER_SIZE];
+  int size;
+};
+
+struct discord_api_s {
+  CURL *ehandle; //the curl's easy handle used to perform requests
+  struct curl_slist *req_header; //the request header sent to the api
+  struct api_response_s res_body; //the api response string
+  struct api_header_s res_pairs; //the key/field pairs response header
+};
+
+struct discord_ws_s {
+  CURLM *mhandle;
+  CURL *ehandle;
+
+  /*@todo replace event_data jscon_item_t datatype with string 
+   * containing the unparsed json field, which can then be parsed
+   * inside the specific opcode functions */
+  struct { /* PAYLOAD STRUCTURE */
+    enum ws_opcode opcode; //field 'op'
+    int seq_number; //field 's'
+    char event_name[25]; //field 't'
+    jscon_item_t *event_data; //field 'd'
+  } payload;
+};
+
+typedef struct discord_s {
+  struct discord_api_s api;
+  struct discord_ws_s ws;
+} discord_t;
+
+
 /* discord-api.c */
 
 void Discord_api_init(struct discord_api_s *api, char token[]);
@@ -109,5 +160,10 @@ void Discord_api_request(
   enum http_method http_method,
   char endpoint[],
   ...);
+
+/* discord-websockets.c */
+
+void Discord_ws_init(struct discord_ws_s *ws, char token[]);
+void Discord_ws_cleanup(struct discord_ws_s *ws);
 
 #endif

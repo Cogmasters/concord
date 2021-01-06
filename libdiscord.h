@@ -143,4 +143,8 @@ void discord_user_cleanup(discord_user_t *user);
 void discord_get_user(discord_t *discord, char user_id[], discord_user_t **p_user);
 void discord_get_client(discord_t *discord, discord_user_t **p_client);
 
+/* discord-websockets.c */ //@todo move to discord-public.c
+
+void discord_connect(discord_t *discord);
+
 #endif
