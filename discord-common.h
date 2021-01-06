@@ -52,37 +52,37 @@ enum discord_http_code {
 /* GATEWAY OPCODES
 https://discord.com/developers/docs/topics/opcodes-and-status-codes#gateway-gateway-opcodes */
 enum ws_opcode {
-    GATEWAY_DISPATCH              = 0,
-    GATEWAY_HEARTBEAT             = 1,
-    GATEWAY_IDENTIFY              = 2,
-    GATEWAY_PRESENCE_UPDATE       = 3,
-    GATEWAY_VOICE_STATE_UPDATE    = 4,
-    GATEWAY_RESUME                = 6,
-    GATEWAY_RECONNECT             = 7,
-    GATEWAY_REQUEST_GUILD_MEMBERS = 8,
-    GATEWAY_INVALID_SESSION       = 9,
-    GATEWAY_HELLO                 = 10,
-    GATEWAY_HEARTBEAT_ACK         = 11,
+  GATEWAY_DISPATCH              = 0,
+  GATEWAY_HEARTBEAT             = 1,
+  GATEWAY_IDENTIFY              = 2,
+  GATEWAY_PRESENCE_UPDATE       = 3,
+  GATEWAY_VOICE_STATE_UPDATE    = 4,
+  GATEWAY_RESUME                = 6,
+  GATEWAY_RECONNECT             = 7,
+  GATEWAY_REQUEST_GUILD_MEMBERS = 8,
+  GATEWAY_INVALID_SESSION       = 9,
+  GATEWAY_HELLO                 = 10,
+  GATEWAY_HEARTBEAT_ACK         = 11,
 };
 
 /* GATEWAY INTENTS
 https://discord.com/developers/docs/topics/gateway#identify-identify-structure */
 enum ws_intents {
-    GUILDS                        = 1 << 0,
-    GUILD_MEMBERS                 = 1 << 1,
-    GUILD_BANS                    = 1 << 2,
-    GUILD_EMOJIS                  = 1 << 3,
-    GUILD_INTEGRATIONS            = 1 << 4,
-    GUILD_WEBHOOKS                = 1 << 5,
-    GUILD_INVITES                 = 1 << 6,
-    GUILD_VOICE_STATES            = 1 << 7,
-    GUILD_PRESENCES               = 1 << 8,
-    GUILD_MESSAGES                = 1 << 9,
-    GUILD_MESSAGE_REACTIONS       = 1 << 10,
-    GUILD_MESSAGE_TYPING          = 1 << 11,
-    DIRECT_MESSAGES               = 1 << 12,
-    DIRECT_MESSAGE_REACTIONS      = 1 << 13,
-    DIRECT_MESSAGE_TYPING         = 1 << 14,
+  GUILDS                        = 1 << 0,
+  GUILD_MEMBERS                 = 1 << 1,
+  GUILD_BANS                    = 1 << 2,
+  GUILD_EMOJIS                  = 1 << 3,
+  GUILD_INTEGRATIONS            = 1 << 4,
+  GUILD_WEBHOOKS                = 1 << 5,
+  GUILD_INVITES                 = 1 << 6,
+  GUILD_VOICE_STATES            = 1 << 7,
+  GUILD_PRESENCES               = 1 << 8,
+  GUILD_MESSAGES                = 1 << 9,
+  GUILD_MESSAGE_REACTIONS       = 1 << 10,
+  GUILD_MESSAGE_TYPING          = 1 << 11,
+  DIRECT_MESSAGES               = 1 << 12,
+  DIRECT_MESSAGE_REACTIONS      = 1 << 13,
+  DIRECT_MESSAGE_TYPING         = 1 << 14,
 };
 
 /* SNOWFLAKES
@@ -127,19 +127,28 @@ struct discord_api_s {
   struct api_header_s res_pairs; //the key/field pairs response header
 };
 
+enum ws_status {
+  WS_DISCONNECTED, //connected to ws
+  WS_CONNECTED //disconnected from ws
+};
+
 struct discord_ws_s {
+  enum ws_status status;
+
   CURLM *mhandle;
   CURL *ehandle;
 
-  /*@todo replace event_data jscon_item_t datatype with string 
-   * containing the unparsed json field, which can then be parsed
-   * inside the specific opcode functions */
   struct { /* PAYLOAD STRUCTURE */
     enum ws_opcode opcode; //field 'op'
     int seq_number; //field 's'
-    char event_name[25]; //field 't'
-    jscon_item_t *event_data; //field 'd'
+    char event_name[16]; //field 't'
+    char event_data[512]; //field 'd'
   } payload;
+
+  struct { /* HEARTBEAT STRUCTURE */
+    long interval_ms; //interval between heartbeats
+    long start_ms; //start pulse in milliseconds
+  } hbeat;
 };
 
 typedef struct discord_s {
