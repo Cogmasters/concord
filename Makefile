@@ -1,4 +1,4 @@
-CC			:= stensal-c
+CC			?= gcc
 OBJDIR	:= obj
 LIBDIR	:= lib
 
