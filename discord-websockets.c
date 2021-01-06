@@ -1,3 +1,5 @@
+#include <time.h>
+#include <math.h> //for lround()
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -40,10 +42,30 @@ _discord_payload_strevent(enum ws_opcode opcode)
     CASE_RETURN_STR(GATEWAY_HEARTBEAT_ACK);
 
   default:
-    ERROR("Invalid ws opcode:\t%d", opcode);
+    ERROR("Invalid ws opcode (code: %d)", opcode);
   }
 }
 
+static long
+_curr_timestamp_ms()
+{
+  struct timespec t;
+  clock_gettime(CLOCK_REALTIME, &t);
+
+  return t.tv_sec*1000 + lround(t.tv_nsec/1.0e6);
+}
+
+static void
+_discord_on_ws_hello(struct discord_ws_s *ws)
+{
+  ws->status = WS_CONNECTED;
+
+  ws->hbeat.interval_ms = 0;
+  ws->hbeat.start_ms = _curr_timestamp_ms();
+
+  jscon_scanf(ws->payload.event_data, "%ld[heartbeat_interval]", &ws->hbeat.interval_ms);
+  ASSERT_S(ws->hbeat.interval_ms > 0, "Invalid heartbeat_ms");
+}
 
 static void
 _ws_on_text_cb(void *data, CURL *ehandle, const char *text, size_t len)
@@ -56,20 +78,27 @@ _ws_on_text_cb(void *data, CURL *ehandle, const char *text, size_t len)
               "%s[t]" \
               "%d[s]" \
               "%d[op]" \
-              "%ji[d]",
+              "%S[d]",
                ws->payload.event_name,
                &ws->payload.seq_number,
                &ws->payload.opcode,
-               &ws->payload.event_data);
+               ws->payload.event_data);
 
-  D_NOTOP_PRINT("OP:\t\t%s\n\tEVENT_NAME:\t%s\n\tSEQ_NUMBER:\t%d", 
-              _discord_payload_strevent(ws->payload.opcode), 
-              !*ws->payload.event_name //if event name exists
-                 ? "NULL" //print NULL
-                 : ws->payload.event_name, //otherwise, event name
-              ws->payload.seq_number);
+  D_NOTOP_PRINT("OP:\t\t%s\n\t" \
+                "EVENT_NAME:\t%s\n\t" \
+                "SEQ_NUMBER:\t%d\n\t" \
+                "EVENT_DATA:\t%s", 
+                _discord_payload_strevent(ws->payload.opcode), 
+                *ws->payload.event_name //if event name exists
+                   ? ws->payload.event_name //prints event name
+                   : "UNDEFINED_EVENT", //otherwise, print this
+                ws->payload.seq_number,
+                ws->payload.event_data);
 
   switch (ws->payload.opcode){
+  case GATEWAY_HELLO:
+      _discord_on_ws_hello(ws);
+      break;
   case GATEWAY_HEARTBEAT_ACK:
       break; 
   default:
@@ -134,6 +163,7 @@ Discord_ws_init(struct discord_ws_s *ws, char token[])
 {
   ws->ehandle = _discord_easy_init(ws);
   ws->mhandle = _discord_multi_init();
+  ws->status = WS_DISCONNECTED;
 
   (void)token;
 }
@@ -143,6 +173,23 @@ Discord_ws_cleanup(struct discord_ws_s *ws)
 {
   curl_multi_cleanup(ws->mhandle);
   cws_free(ws->ehandle);
+}
+
+static void
+_ws_send_heartbeat(struct discord_ws_s *ws)
+{
+  char str[250];
+
+  if (0 == ws->payload.seq_number)
+    snprintf(str, sizeof(str), "{\"op\": 1, \"d\": null}");
+  else
+    snprintf(str, sizeof(str), "{\"op\": 1, \"d\": %d}", ws->payload.seq_number);
+
+  D_NOTOP_PRINT("HEARTBEAT_PAYLOAD:\n\t\t%s", str);
+  bool ret = cws_send_text(ws->ehandle, str);
+  ASSERT_S(true == ret, "Couldn't send heartbeat payload");
+
+  ws->hbeat.start_ms = _curr_timestamp_ms();
 }
 
 static void
@@ -164,6 +211,16 @@ _ws_main_loop(struct discord_ws_s *ws)
     //wait for activity or timeout
     mcode = curl_multi_poll(ws->mhandle, NULL, 0, 1000, &numfds);
     ASSERT_S(CURLM_OK == mcode, curl_multi_strerror(mcode));
+
+    /*check if timespan since first pulse is greater than
+     * minimum heartbeat interval required*/
+    if ((WS_CONNECTED == ws->status)
+        && 
+        ws->hbeat.interval_ms < _curr_timestamp_ms() - ws->hbeat.start_ms) 
+    {
+      _ws_send_heartbeat(ws);
+    }
+
   } while(is_running);
 
   curl_multi_remove_handle(ws->mhandle, ws->ehandle);
