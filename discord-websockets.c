@@ -52,10 +52,15 @@ _ws_on_text_cb(void *data, CURL *ehandle, const char *text, size_t len)
 
   D_PRINT("ON_TEXT:\n\t\t%s", text);
 
-  jscon_scanf((char*)text, "%s[t]", ws->payload.event_name);
-  jscon_scanf((char*)text, "%d[s]", &ws->payload.seq_number);
-  jscon_scanf((char*)text, "%d[op]", &ws->payload.opcode);
-  jscon_scanf((char*)text, "%ji[d]", &ws->payload.event_data);
+  jscon_scanf((char*)text, 
+              "%s[t]" \
+              "%d[s]" \
+              "%d[op]" \
+              "%ji[d]",
+               ws->payload.event_name,
+               &ws->payload.seq_number,
+               &ws->payload.opcode,
+               &ws->payload.event_data);
 
   D_NOTOP_PRINT("OP:\t\t%s\n\tEVENT_NAME:\t%s\n\tSEQ_NUMBER:\t%d", 
               _discord_payload_strevent(ws->payload.opcode), 

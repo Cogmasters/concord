@@ -234,8 +234,11 @@ _discord_perform_request(
         char message[256] = {0};
         long long retry_after;
 
-        jscon_scanf(api->res_body.str, "%s[message]", message);
-        jscon_scanf(api->res_body.str, "%lld[retry_after]", &retry_after);
+        jscon_scanf(api->res_body.str,
+                    "%s[message]" \
+                    "%lld[retry_after]",
+                    message,
+                    &retry_after);
 
         D_PRINT("%s", message);
 

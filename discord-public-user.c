@@ -65,19 +65,33 @@ _discord_load_user(void **p_user, struct api_response_s *res_body)
 {
   discord_user_t *user = *p_user;
 
-  jscon_scanf(res_body->str, "%s[id]", user->id);
-  jscon_scanf(res_body->str, "%s[username]", user->username);
-  jscon_scanf(res_body->str, "%s[discriminator]", user->discriminator);
-  jscon_scanf(res_body->str, "%s[avatar]", user->avatar);
-  jscon_scanf(res_body->str, "%b[bot]", &user->bot);
-  jscon_scanf(res_body->str, "%b[system]", &user->sys);
-  jscon_scanf(res_body->str, "%b[mfa_enabled]", &user->mfa_enabled);
-  jscon_scanf(res_body->str, "%s[locale]", user->locale);
-  jscon_scanf(res_body->str, "%b[verified]", &user->verified);
-  jscon_scanf(res_body->str, "%s[email]", user->email);
-  jscon_scanf(res_body->str, "%d[flags]", &user->flags);
-  jscon_scanf(res_body->str, "%d[premium_type]", &user->premium_type);
-  jscon_scanf(res_body->str, "%d[public_flags]", &user->public_flags);
+  jscon_scanf(res_body->str,
+     "%s[id]" \
+     "%s[username]" \
+     "%s[discriminator]" \
+     "%s[avatar]" \
+     "%b[bot]" \
+     "%b[system]" \
+     "%b[mfa_enabled]" \
+     "%s[locale]" \
+     "%b[verified]" \
+     "%s[email]" \
+     "%d[flags]" \
+     "%d[premium_type]" \
+     "%d[public_flags]",
+      user->id,
+      user->username,
+      user->discriminator,
+      user->avatar,
+      &user->bot,
+      &user->sys,
+      &user->mfa_enabled,
+      user->locale,
+      &user->verified,
+      user->email,
+      &user->flags,
+      &user->premium_type,
+      &user->public_flags);
 
   *p_user = user;
 }
