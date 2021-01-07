@@ -2,29 +2,29 @@ CC			?= gcc
 OBJDIR	:= obj
 LIBDIR	:= lib
 
-SRC			:= $(wildcard orca-*.c curl-websocket.c)
+SRC			:= $(wildcard discord-*.c curl-websocket.c)
 _OBJS		:= $(patsubst %.c, %.o, $(SRC))
 OBJS 		:= $(addprefix $(OBJDIR)/, $(_OBJS))
 
 LIBJSCON_CFLAGS		:= -I./JSCON/include
 LIBJSCON_LDFLAGS	:= "-Wl,-rpath,./JSCON/lib" -L./JSCON/lib -ljscon
 
-LIBORCA_CFLAGS		:= -I./
-LIBORCA_LDFLAGS	:= "-Wl,-rpath,./lib" -L$(LIBDIR) -lorca -lcurl -lbearssl
+LIBDISCORD_CFLAGS		:= -I./
+LIBDISCORD_LDFLAGS	:= "-Wl,-rpath,./lib" -L$(LIBDIR) -ldiscord -lcurl -lbearssl
 
-LIBS_CFLAGS		:= $(LIBJSCON_CFLAGS) $(LIBCURL_CFLAGS) $(LIBORCA_CFLAGS)
-LIBS_LDFLAGS	:= $(LIBJSCON_LDFLAGS) $(LIBCURL_LDFLAGS) $(LIBORCA_LDFLAGS)
+LIBS_CFLAGS		:= $(LIBJSCON_CFLAGS) $(LIBCURL_CFLAGS) $(LIBDISCORD_CFLAGS)
+LIBS_LDFLAGS	:= $(LIBJSCON_LDFLAGS) $(LIBCURL_LDFLAGS) $(LIBDISCORD_LDFLAGS)
 
-LIBORCA_DLIB	:= $(LIBDIR)/liborca.so
-LIBORCA_SLIB	:= $(LIBDIR)/liborca.a
+LIBDISCORD_DLIB	:= $(LIBDIR)/libdiscord.so
+LIBDISCORD_SLIB	:= $(LIBDIR)/libdiscord.a
 
 CFLAGS := -Wall -Wextra -pedantic -fPIC -std=c11 -O0 -g \
-	-DLIBORCA_DEBUG -D_DEFAULT_SOURCE -D_XOPEN_SOURCE=700
+	-DLIBDISCORD_DEBUG -D_DEFAULT_SOURCE -D_XOPEN_SOURCE=700
 
 
 .PHONY : all mkdir install clean purge
 
-all : mkdir $(OBJS) $(LIBORCA_DLIB) $(LIBORCA_SLIB)
+all : mkdir $(OBJS) $(LIBDISCORD_DLIB) $(LIBDISCORD_SLIB)
 
 test : all test-api.c test-ws.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \
@@ -35,7 +35,7 @@ test : all test-api.c test-ws.c
 mkdir :
 	mkdir -p $(OBJDIR) $(LIBDIR)
 
-$(OBJDIR)/orca-%.o : orca-%.c
+$(OBJDIR)/discord-%.o : discord-%.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \
 		-c -o $@ $<
 
@@ -43,17 +43,17 @@ $(OBJDIR)/curl-websocket.o : curl-websocket.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \
 		-U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=1 -c -o $@ $<
 
-$(LIBORCA_DLIB) :
+$(LIBDISCORD_DLIB) :
 	$(CC) $(LIBS_CFLAGS) \
 	  $(OBJS) -shared -o $@ $(LIBS_LDFLAGS)
 
-$(LIBORCA_SLIB) :
+$(LIBDISCORD_SLIB) :
 	$(AR) -cvq $@ $(OBJS)
 
 # @todo better install solution
 install : all
 	cp $(INCLUDE) /usr/local/include && \
-	cp $(LIBORCA_DLIB) /usr/local/lib && \
+	cp $(LIBDISCORD_DLIB) /usr/local/lib && \
 	ldconfig
 
 clean :

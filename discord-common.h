@@ -1,12 +1,12 @@
-#ifndef LIBORCA_COMMON_H_
-#define LIBORCA_COMMON_H_
+#ifndef LIBDISCORD_COMMON_H_
+#define LIBDISCORD_COMMON_H_
 
-//#include <liborca.h> (implicit)
+//#include <libdiscord.h> (implicit)
 
 #include <curl/curl.h>
 #include <libjscon.h>
 
-#include "orca-tool-debug.h"
+#include "discord-tool-debug.h"
 
 enum http_method {
   NONE,
@@ -74,9 +74,9 @@ struct api_response_s {
   size_t size; //the response str length
 };
 
-/*allows using Orca_api_request() as a template for every
+/*allows using Discord_api_request() as a template for every
  * kind of transfer*/
-typedef void (orca_load_obj_cb)(void **p_obj, struct api_response_s *res_body);
+typedef void (discord_load_obj_cb)(void **p_obj, struct api_response_s *res_body);
 
 #define MAX_HEADER_SIZE 25
 
@@ -86,7 +86,7 @@ struct api_header_s {
   int size;
 };
 
-struct orca_api_s {
+struct discord_api_s {
   CURL *ehandle; //the curl's easy handle used to perform requests
   struct curl_slist *req_header; //the request header sent to the api
   struct api_response_s res_body; //the api response string
@@ -134,7 +134,7 @@ enum ws_status {
   WS_CONNECTED //disconnected from ws
 };
 
-struct orca_ws_s {
+struct discord_ws_s {
   enum ws_status status;
   char *identify;
 
@@ -157,36 +157,36 @@ struct orca_ws_s {
   } hbeat;
 
   struct {
-    orca_ws_cb *on_message;
-    orca_ws_cb *on_ready;
+    discord_ws_cb *on_message;
+    discord_ws_cb *on_ready;
   } callbacks;
 };
 
-typedef struct orca_s {
-  struct orca_api_s api;
-  struct orca_ws_s ws;
-} orca_t;
+typedef struct discord_s {
+  struct discord_api_s api;
+  struct discord_ws_s ws;
+} discord_t;
 
 
-/* orca-api.c */
+/* discord-api.c */
 
-void Orca_api_init(struct orca_api_s *api, char token[]);
-void Orca_api_cleanup(struct orca_api_s *api);
+void Discord_api_init(struct discord_api_s *api, char token[]);
+void Discord_api_cleanup(struct discord_api_s *api);
 
-void Orca_api_request(
-  struct orca_api_s *api, 
+void Discord_api_request(
+  struct discord_api_s *api, 
   void **p_object, 
-  orca_load_obj_cb *load_cb,
+  discord_load_obj_cb *load_cb,
   enum http_method http_method,
   char endpoint[],
   ...);
 
-/* orca-websockets.c */
+/* discord-websockets.c */
 
-void Orca_ws_init(struct orca_ws_s *ws, char token[]);
-void Orca_ws_cleanup(struct orca_ws_s *ws);
+void Discord_ws_init(struct discord_ws_s *ws, char token[]);
+void Discord_ws_cleanup(struct discord_ws_s *ws);
 
-void Orca_ws_set_callback(struct orca_ws_s *ws, enum orca_events event, orca_ws_cb *callback); 
-void Orca_ws_connect(struct orca_ws_s *ws);
+void Discord_ws_set_callback(struct discord_ws_s *ws, enum discord_events event, discord_ws_cb *callback); 
+void Discord_ws_connect(struct discord_ws_s *ws);
 
 #endif

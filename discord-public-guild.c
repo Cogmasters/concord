@@ -2,14 +2,14 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <liborca.h>
+#include <libdiscord.h>
 
-#include "orca-common.h"
+#include "discord-common.h"
 
-orca_guild_t*
-orca_guild_init()
+discord_guild_t*
+discord_guild_init()
 {
-  orca_guild_t *new_guild = calloc(1, sizeof *new_guild);
+  discord_guild_t *new_guild = calloc(1, sizeof *new_guild);
   if (NULL == new_guild) return NULL;
 
   new_guild->id = malloc(SNOWFLAKE_INTERNAL_WORKER_ID);
@@ -115,7 +115,7 @@ cleanupA:
 }
 
 void
-orca_guild_cleanup(orca_guild_t *guild)
+discord_guild_cleanup(discord_guild_t *guild)
 {
   free(guild->id);
   free(guild->name);
@@ -140,9 +140,9 @@ orca_guild_cleanup(orca_guild_t *guild)
 }
 
 static void
-_orca_load_guild(void **p_guild, struct api_response_s *res_body)
+_discord_load_guild(void **p_guild, struct api_response_s *res_body)
 {
-  orca_guild_t *guild = *p_guild;
+  discord_guild_t *guild = *p_guild;
 
   jscon_scanf(res_body->str,
      "%s[id]" \
@@ -162,11 +162,11 @@ _orca_load_guild(void **p_guild, struct api_response_s *res_body)
 }
 
 void
-orca_get_guild(orca_t *client, char guild_id[], orca_guild_t **p_guild)
+discord_get_guild(discord_t *client, char guild_id[], discord_guild_t **p_guild)
 {
-  Orca_api_request( 
+  Discord_api_request( 
     &client->api,
     (void**)p_guild,
-    &_orca_load_guild,
+    &_discord_load_guild,
     GET, GUILD, guild_id);
 }

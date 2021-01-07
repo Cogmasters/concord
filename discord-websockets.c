@@ -3,8 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include <liborca.h>
-#include "orca-common.h"
+#include <libdiscord.h>
+#include "discord-common.h"
 #include "curl-websocket.h"
 
 #define BASE_WEBSOCKETS_URL "wss://gateway.discord.gg/?v=6&encoding=json"
@@ -44,7 +44,7 @@ _timestamp_ms()
 }
 
 static void
-_ws_send_identify(struct orca_ws_s *ws)
+_ws_send_identify(struct discord_ws_s *ws)
 {
   D_PRINT("IDENTIFY PAYLOAD:\n\t%s", ws->identify);
 
@@ -53,7 +53,7 @@ _ws_send_identify(struct orca_ws_s *ws)
 }
 
 static void
-_orca_on_hello(struct orca_ws_s *ws)
+_discord_on_hello(struct discord_ws_s *ws)
 {
   ws->status = WS_CONNECTED;
 
@@ -69,7 +69,7 @@ _orca_on_hello(struct orca_ws_s *ws)
 static void
 _ws_on_connect_cb(void *data, CURL *ehandle, const char *ws_protocols)
 {
-  struct orca_ws_s *ws = data;
+  struct discord_ws_s *ws = data;
   (void)ws;
 
   D_PRINT("Connected, WS-Protocols: '%s'", ws_protocols);
@@ -81,7 +81,7 @@ _ws_on_connect_cb(void *data, CURL *ehandle, const char *ws_protocols)
 static void
 _ws_on_close_cb(void *data, CURL *ehandle, enum cws_close_reason cwscode, const char *reason, size_t len)
 {
-    struct orca_ws_s *ws = data;
+    struct discord_ws_s *ws = data;
     ws->status = WS_DISCONNECTED;
 
     D_PRINT("CLOSE=%4d %zd bytes '%s'", cwscode, len, reason);
@@ -95,7 +95,7 @@ _ws_on_close_cb(void *data, CURL *ehandle, enum cws_close_reason cwscode, const 
 static void
 _ws_on_text_cb(void *data, CURL *ehandle, const char *text, size_t len)
 {
-  struct orca_ws_s *ws = data;
+  struct discord_ws_s *ws = data;
 
   D_PRINT("ON_TEXT:\n\t\t%s", text);
 
@@ -122,7 +122,7 @@ _ws_on_text_cb(void *data, CURL *ehandle, const char *text, size_t len)
 
   switch (ws->payload.opcode){
   case GATEWAY_HELLO:
-      _orca_on_hello(ws);
+      _discord_on_hello(ws);
       break;
   case GATEWAY_DISPATCH:
       break;
@@ -138,7 +138,7 @@ _ws_on_text_cb(void *data, CURL *ehandle, const char *text, size_t len)
 
 /* init easy handle with some default opt */
 static CURL*
-_orca_easy_init(struct orca_ws_s *ws)
+_discord_easy_init(struct discord_ws_s *ws)
 {
   //missing on_binary, on_ping, on_pong
   struct cws_callbacks cws_cbs = {
@@ -162,7 +162,7 @@ _orca_easy_init(struct orca_ws_s *ws)
 }
 
 static CURLM*
-_orca_multi_init()
+_discord_multi_init()
 {
   CURLM *new_mhandle = curl_multi_init();
   ASSERT_S(NULL != new_mhandle, "Out of memory");
@@ -172,10 +172,10 @@ _orca_multi_init()
 
 //@todo allow for user input
 static char*
-_orca_identify_init(char token[])
+_discord_identify_init(char token[])
 {
   const char fmt_properties[] = \
-    "{\"$os\":\"%s\",\"$browser\":\"liborca\",\"$device\":\"liborca\"}";
+    "{\"$os\":\"%s\",\"$browser\":\"libdiscord\",\"$device\":\"libdiscord\"}";
   const char fmt_presence[] = \
     "{\"since\":%s,\"activities\":%s,\"status\":\"%s\",\"afk\":%s}";
   const char fmt_event_data[] = \
@@ -211,16 +211,16 @@ _orca_identify_init(char token[])
 }
 
 void
-Orca_ws_init(struct orca_ws_s *ws, char token[])
+Discord_ws_init(struct discord_ws_s *ws, char token[])
 {
-  ws->identify = _orca_identify_init(token);
-  ws->ehandle = _orca_easy_init(ws);
-  ws->mhandle = _orca_multi_init();
+  ws->identify = _discord_identify_init(token);
+  ws->ehandle = _discord_easy_init(ws);
+  ws->mhandle = _discord_multi_init();
   ws->status = WS_DISCONNECTED;
 }
 
 void
-Orca_ws_cleanup(struct orca_ws_s *ws)
+Discord_ws_cleanup(struct discord_ws_s *ws)
 {
   free(ws->identify);
   curl_multi_cleanup(ws->mhandle);
@@ -230,7 +230,7 @@ Orca_ws_cleanup(struct orca_ws_s *ws)
 /* send heartbeat pulse to websockets server in order
  *  to maintain connection alive */
 static void
-_ws_send_heartbeat(struct orca_ws_s *ws)
+_ws_send_heartbeat(struct discord_ws_s *ws)
 {
   char str[64];
 
@@ -248,7 +248,7 @@ _ws_send_heartbeat(struct orca_ws_s *ws)
 
 /* main websockets event loop */
 static void
-_ws_main_loop(struct orca_ws_s *ws)
+_ws_main_loop(struct discord_ws_s *ws)
 {
   int is_running = 0;
 
@@ -277,7 +277,7 @@ _ws_main_loop(struct orca_ws_s *ws)
 }
 
 void
-Orca_ws_set_callback(struct orca_ws_s *ws, enum orca_events event, orca_ws_cb *user_callback)
+Discord_ws_set_callback(struct discord_ws_s *ws, enum discord_events event, discord_ws_cb *user_callback)
 {
   switch (event) {
   case ON_READY:
@@ -293,7 +293,7 @@ Orca_ws_set_callback(struct orca_ws_s *ws, enum orca_events event, orca_ws_cb *u
 
 /* connects to the discord websockets server */
 void
-Orca_ws_connect(struct orca_ws_s *ws)
+Discord_ws_connect(struct discord_ws_s *ws)
 {
   curl_multi_add_handle(ws->mhandle, ws->ehandle);
   _ws_main_loop(ws);
