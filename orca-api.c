@@ -5,15 +5,15 @@
 #include <unistd.h> //for usleep
 #include <stdarg.h>
 
-#include <libdiscord.h>
-#include "discord-common.h"
+#include <liborca.h>
+#include "orca-common.h"
 
 #define BASE_API_URL "https://discord.com/api"
 
 /* initialize curl_slist's request header utility
  * @todo create distinction between bot and bearer token */
 static struct curl_slist*
-_discord_reqheader_init(char token[])
+_orca_reqheader_init(char token[])
 {
   char auth[MAX_HEADER_LEN] = "Authorization: Bot "; 
 
@@ -26,7 +26,7 @@ _discord_reqheader_init(char token[])
   tmp = curl_slist_append(new_header, strcat(auth, token));
   ASSERT_S(NULL != tmp, "Out of memory");
 
-  tmp = curl_slist_append(new_header,"User-Agent: libdiscord (http://github.com/cee-studio/libdiscord, v"LIBDISCORD_VERSION")");
+  tmp = curl_slist_append(new_header,"User-Agent: liborca (http://github.com/cee-studio/liborca, v"LIBORCA_VERSION")");
   ASSERT_S(NULL != tmp, "Out of memory");
 
   tmp = curl_slist_append(new_header,"Content-Type: application/json");
@@ -94,7 +94,7 @@ _curl_resbody_cb(char *content, size_t size, size_t nmemb, void *p_userdata)
 
 /* initialize curl's easy handle with some default opt */
 static CURL*
-_discord_easy_init(struct discord_api_s *api)
+_orca_easy_init(struct orca_api_s *api)
 {
   CURL *new_ehandle = curl_easy_init();
   ASSERT_S(NULL != new_ehandle, "Out of memory");
@@ -133,17 +133,17 @@ _discord_easy_init(struct discord_api_s *api)
 }
 
 void
-Discord_api_init(struct discord_api_s *api, char token[])
+Orca_api_init(struct orca_api_s *api, char token[])
 {
-  api->req_header = _discord_reqheader_init(token);
-  api->ehandle = _discord_easy_init(api);
+  api->req_header = _orca_reqheader_init(token);
+  api->ehandle = _orca_easy_init(api);
   api->res_body.str = NULL;
   api->res_body.size = 0;
   api->res_pairs.size = 0;
 }
 
 void
-Discord_api_cleanup(struct discord_api_s *api)
+Orca_api_cleanup(struct orca_api_s *api)
 {
   curl_slist_free_all(api->req_header);
   curl_easy_cleanup(api->ehandle); 
@@ -155,7 +155,7 @@ Discord_api_cleanup(struct discord_api_s *api)
 
 /* set specific http method used for the request */
 static void
-_discord_set_method(struct discord_api_s *api, enum http_method method)
+_orca_set_method(struct orca_api_s *api, enum http_method method)
 {
   CURLcode ecode;
   switch (method) {
@@ -182,7 +182,7 @@ _discord_set_method(struct discord_api_s *api, enum http_method method)
 
 /* set specific url used for request */
 static void
-_discord_set_url(struct discord_api_s *api, char endpoint[])
+_orca_set_url(struct orca_api_s *api, char endpoint[])
 {
   char base_url[MAX_URL_LEN] = BASE_API_URL;
 
@@ -192,10 +192,10 @@ _discord_set_url(struct discord_api_s *api, char endpoint[])
 
 /* perform the request */
 static void
-_discord_perform_request(
-  struct discord_api_s *api,
+_orca_perform_request(
+  struct orca_api_s *api,
   void **p_object, 
-  discord_load_obj_cb *load_cb)
+  orca_load_obj_cb *load_cb)
 {
   //try to perform the request and analyze output
   enum discord_http_code http_code; //the http response code
@@ -261,10 +261,10 @@ _discord_perform_request(
 
 /* template function for performing requests */
 void
-Discord_api_request(
-  struct discord_api_s *api, 
+Orca_api_request(
+  struct orca_api_s *api, 
   void **p_object, 
-  discord_load_obj_cb *load_cb,
+  orca_load_obj_cb *load_cb,
   enum http_method http_method,
   char endpoint[],
   ...)
@@ -279,9 +279,9 @@ Discord_api_request(
   va_end(args);
 
   //set the request method
-  _discord_set_method(api, http_method);
+  _orca_set_method(api, http_method);
   //set the request URL
-  _discord_set_url(api, url_route);
+  _orca_set_url(api, url_route);
   //perform the request
-  _discord_perform_request(api, p_object, load_cb);
+  _orca_perform_request(api, p_object, load_cb);
 }
