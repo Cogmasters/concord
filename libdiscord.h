@@ -11,8 +11,18 @@
 #define LIBDISCORD_VERSION_MINOR 0
 #define LIBDISCORD_VERSION_PATCH 0
 
+//discord events that can be triggered and have callbacks set by users
+enum discord_events {
+  ON_READY,
+  ON_MESSAGE,
+};
+
 //forward declaration. see discord-common.h for full definition
 typedef struct discord_s discord_t;
+//
+//function template for user specified websocket callbacks
+typedef void (discord_ws_cb)(discord_t *client);
+
 
 /* CHANNEL TYPES
  * https://discord.com/developers/docs/resources/channel#channel-object-channel-types */
@@ -118,17 +128,24 @@ typedef struct discord_user_s {
   int flags;
   int premium_type;
   int public_flags;
-    struct discord_guild_s **guilds;
+  struct discord_guild_s **guilds;
 } discord_user_t;
 
 
 /* discord-public.c */
 
+void discord_global_init();
+void discord_global_cleanup();
+
 discord_t* discord_init(char token[]);
 void discord_cleanup(discord_t *client);
 
-void discord_global_init();
-void discord_global_cleanup();
+void discord_set_callback(
+  discord_t *client, 
+  enum discord_events event,
+  discord_ws_cb *user_callback);
+
+void discord_connect(discord_t *discord);
 
 /* discord-public-guild.c */
 
@@ -142,9 +159,5 @@ discord_user_t* discord_user_init();
 void discord_user_cleanup(discord_user_t *user);
 void discord_get_user(discord_t *discord, char user_id[], discord_user_t **p_user);
 void discord_get_client(discord_t *discord, discord_user_t **p_client);
-
-/* discord-websockets.c */ //@todo move to discord-public.c
-
-void discord_connect(discord_t *discord);
 
 #endif

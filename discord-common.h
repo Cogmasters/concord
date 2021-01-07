@@ -49,20 +49,48 @@ enum discord_http_code {
   CURL_NO_RESPONSE              = 0,
 };
 
-/* GATEWAY OPCODES
-https://discord.com/developers/docs/topics/opcodes-and-status-codes#gateway-gateway-opcodes */
-enum ws_opcode {
-  GATEWAY_DISPATCH              = 0,
-  GATEWAY_HEARTBEAT             = 1,
-  GATEWAY_IDENTIFY              = 2,
-  GATEWAY_PRESENCE_UPDATE       = 3,
-  GATEWAY_VOICE_STATE_UPDATE    = 4,
-  GATEWAY_RESUME                = 6,
-  GATEWAY_RECONNECT             = 7,
-  GATEWAY_REQUEST_GUILD_MEMBERS = 8,
-  GATEWAY_INVALID_SESSION       = 9,
-  GATEWAY_HELLO                 = 10,
-  GATEWAY_HEARTBEAT_ACK         = 11,
+/* SNOWFLAKES
+https://discord.com/developers/docs/reference#snowflakes */
+enum discord_snowflake {
+  SNOWFLAKE_INCREMENT           = 12,
+  SNOWFLAKE_PROCESS_ID          = 17,
+  SNOWFLAKE_INTERNAL_WORKER_ID  = 22,
+  SNOWFLAKE_TIMESTAMP           = 64,
+};
+
+/* ENDPOINTS */
+#define CHANNEL           "/channels/%s"
+#define CHANNEL_MESSAGES  CHANNEL"/messages"
+
+#define GUILD             "/guilds/%s"
+#define GUILD_CHANNELS    GUILD"/channels"
+
+#define USER              "/users/%s"
+#define USER_GUILDS       USER"/guilds"
+
+
+struct api_response_s {
+  char *str; //the response str
+  size_t size; //the response str length
+};
+
+/*allows using Discord_api_request() as a template for every
+ * kind of transfer*/
+typedef void (discord_load_obj_cb)(void **p_obj, struct api_response_s *res_body);
+
+#define MAX_HEADER_SIZE 25
+
+struct api_header_s {
+  char *key[MAX_HEADER_SIZE];
+  char *field[MAX_HEADER_SIZE];
+  int size;
+};
+
+struct discord_api_s {
+  CURL *ehandle; //the curl's easy handle used to perform requests
+  struct curl_slist *req_header; //the request header sent to the api
+  struct api_response_s res_body; //the api response string
+  struct api_header_s res_pairs; //the key/field pairs response header
 };
 
 /* GATEWAY INTENTS
@@ -85,46 +113,20 @@ enum ws_intents {
   DIRECT_MESSAGE_TYPING         = 1 << 14,
 };
 
-/* SNOWFLAKES
-https://discord.com/developers/docs/reference#snowflakes */
-enum discord_snowflake {
-  SNOWFLAKE_INCREMENT           = 12,
-  SNOWFLAKE_PROCESS_ID          = 17,
-  SNOWFLAKE_INTERNAL_WORKER_ID  = 22,
-  SNOWFLAKE_TIMESTAMP           = 64,
-};
-
-/* ENDPOINTS */
-#define CHANNELS           "/channels/%s"
-#define CHANNELS_MESSAGES  CHANNELS"/messages"
-
-#define GUILDS             "/guilds/%s"
-#define GUILDS_CHANNELS    GUILDS"/channels"
-
-#define USERS              "/users/%s"
-#define USERS_GUILDS       USERS"/guilds"
-
-
-struct api_response_s {
-  char *str; //the response str
-  size_t size; //the response str length
-};
-
-typedef void (discord_load_obj_ft)(void **p_object, struct api_response_s *res_body);
-
-#define MAX_HEADER_SIZE 25
-
-struct api_header_s {
-  char *key[MAX_HEADER_SIZE];
-  char *field[MAX_HEADER_SIZE];
-  int size;
-};
-
-struct discord_api_s {
-  CURL *ehandle; //the curl's easy handle used to perform requests
-  struct curl_slist *req_header; //the request header sent to the api
-  struct api_response_s res_body; //the api response string
-  struct api_header_s res_pairs; //the key/field pairs response header
+/* GATEWAY OPCODES
+https://discord.com/developers/docs/topics/opcodes-and-status-codes#gateway-gateway-opcodes */
+enum ws_opcode {
+  GATEWAY_DISPATCH              = 0,
+  GATEWAY_HEARTBEAT             = 1,
+  GATEWAY_IDENTIFY              = 2,
+  GATEWAY_PRESENCE_UPDATE       = 3,
+  GATEWAY_VOICE_STATE_UPDATE    = 4,
+  GATEWAY_RESUME                = 6,
+  GATEWAY_RECONNECT             = 7,
+  GATEWAY_REQUEST_GUILD_MEMBERS = 8,
+  GATEWAY_INVALID_SESSION       = 9,
+  GATEWAY_HELLO                 = 10,
+  GATEWAY_HEARTBEAT_ACK         = 11,
 };
 
 enum ws_status {
@@ -134,6 +136,7 @@ enum ws_status {
 
 struct discord_ws_s {
   enum ws_status status;
+  char *identify;
 
   CURLM *mhandle;
   CURL *ehandle;
@@ -142,13 +145,18 @@ struct discord_ws_s {
     enum ws_opcode opcode; //field 'op'
     int seq_number; //field 's'
     char event_name[16]; //field 't'
-    char event_data[512]; //field 'd'
+    char event_data[2048]; //field 'd'
   } payload;
 
   struct { /* HEARTBEAT STRUCTURE */
     long interval_ms; //interval between heartbeats
     long start_ms; //start pulse in milliseconds
   } hbeat;
+
+  struct {
+    discord_ws_cb *on_message;
+    discord_ws_cb *on_ready;
+  } callbacks;
 };
 
 typedef struct discord_s {
@@ -165,7 +173,7 @@ void Discord_api_cleanup(struct discord_api_s *api);
 void Discord_api_request(
   struct discord_api_s *api, 
   void **p_object, 
-  discord_load_obj_ft *load_cb,
+  discord_load_obj_cb *load_cb,
   enum http_method http_method,
   char endpoint[],
   ...);
@@ -174,5 +182,8 @@ void Discord_api_request(
 
 void Discord_ws_init(struct discord_ws_s *ws, char token[]);
 void Discord_ws_cleanup(struct discord_ws_s *ws);
+
+void Discord_ws_set_callback(struct discord_ws_s *ws, enum discord_events event, discord_ws_cb *callback); 
+void Discord_ws_connect(struct discord_ws_s *ws);
 
 #endif

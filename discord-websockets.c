@@ -1,4 +1,4 @@
-#include <time.h>
+#include <time.h> //for clock_gettime()
 #include <math.h> //for lround()
 #include <stdio.h>
 #include <stdlib.h>
@@ -9,20 +9,8 @@
 
 #define BASE_WEBSOCKETS_URL "wss://gateway.discord.gg/?v=6&encoding=json"
 
-static void
-_ws_on_connect_cb(void *data, CURL *ehandle, const char *ws_protocols)
-{
-  struct discord_ws_s *ws = data;
-  (void)ws;
-
-  D_PRINT("Connected, WS-Protocols: '%s'", ws_protocols);
-
-  (void)ehandle;
-  (void)ws_protocols;
-}
-
 static char*
-_discord_payload_strevent(enum ws_opcode opcode)
+_payload_strevent(enum ws_opcode opcode)
 {
 
 //if case matches return token as string
@@ -42,12 +30,12 @@ _discord_payload_strevent(enum ws_opcode opcode)
     CASE_RETURN_STR(GATEWAY_HEARTBEAT_ACK);
 
   default:
-    ERROR("Invalid ws opcode (code: %d)", opcode);
+    ERROR("Invalid WebSockets opcode (code: %d)", opcode);
   }
 }
 
 static long
-_curr_timestamp_ms()
+_timestamp_ms()
 {
   struct timespec t;
   clock_gettime(CLOCK_REALTIME, &t);
@@ -56,15 +44,52 @@ _curr_timestamp_ms()
 }
 
 static void
-_discord_on_ws_hello(struct discord_ws_s *ws)
+_ws_send_identify(struct discord_ws_s *ws)
+{
+  D_PRINT("IDENTIFY PAYLOAD:\n\t%s", ws->identify);
+
+  bool ret = cws_send_text(ws->ehandle, ws->identify);
+  ASSERT_S(true == ret, "Couldn't send identify payload");
+}
+
+static void
+_discord_on_hello(struct discord_ws_s *ws)
 {
   ws->status = WS_CONNECTED;
 
   ws->hbeat.interval_ms = 0;
-  ws->hbeat.start_ms = _curr_timestamp_ms();
+  ws->hbeat.start_ms = _timestamp_ms();
 
   jscon_scanf(ws->payload.event_data, "%ld[heartbeat_interval]", &ws->hbeat.interval_ms);
   ASSERT_S(ws->hbeat.interval_ms > 0, "Invalid heartbeat_ms");
+
+  _ws_send_identify(ws);
+}
+
+static void
+_ws_on_connect_cb(void *data, CURL *ehandle, const char *ws_protocols)
+{
+  struct discord_ws_s *ws = data;
+  (void)ws;
+
+  D_PRINT("Connected, WS-Protocols: '%s'", ws_protocols);
+
+  (void)ehandle;
+  (void)ws_protocols;
+}
+
+static void
+_ws_on_close_cb(void *data, CURL *ehandle, enum cws_close_reason cwscode, const char *reason, size_t len)
+{
+    struct discord_ws_s *ws = data;
+    ws->status = WS_DISCONNECTED;
+
+    D_PRINT("CLOSE=%4d %zd bytes '%s'", cwscode, len, reason);
+
+    (void)ehandle;
+    (void)cwscode;
+    (void)len;
+    (void)reason;
 }
 
 static void
@@ -88,7 +113,7 @@ _ws_on_text_cb(void *data, CURL *ehandle, const char *text, size_t len)
                 "EVENT_NAME:\t%s\n\t" \
                 "SEQ_NUMBER:\t%d\n\t" \
                 "EVENT_DATA:\t%s", 
-                _discord_payload_strevent(ws->payload.opcode), 
+                _payload_strevent(ws->payload.opcode), 
                 *ws->payload.event_name //if event name exists
                    ? ws->payload.event_name //prints event name
                    : "UNDEFINED_EVENT", //otherwise, print this
@@ -97,32 +122,19 @@ _ws_on_text_cb(void *data, CURL *ehandle, const char *text, size_t len)
 
   switch (ws->payload.opcode){
   case GATEWAY_HELLO:
-      _discord_on_ws_hello(ws);
+      _discord_on_hello(ws);
+      break;
+  case GATEWAY_DISPATCH:
       break;
   case GATEWAY_HEARTBEAT_ACK:
       break; 
   default:
-      ERROR("Unknown gateway opcode (code: %d)", ws->payload.opcode);
+      ERROR("Invalid Discord Gateway opcode (code: %d)", ws->payload.opcode);
   }
 
   (void)len;
   (void)ehandle;
 }
-
-static void
-_ws_on_close_cb(void *data, CURL *ehandle, enum cws_close_reason cwscode, const char *reason, size_t len)
-{
-    struct discord_ws_s *ws = data;
-    (void)ws;
-
-    D_PRINT("CLOSE=%4d %zd bytes '%s'", cwscode, len, reason);
-
-    (void)ehandle;
-    (void)cwscode;
-    (void)len;
-    (void)reason;
-}
-
 
 /* init easy handle with some default opt */
 static CURL*
@@ -158,46 +170,87 @@ _discord_multi_init()
   return new_mhandle;
 }
 
+//@todo allow for user input
+static char*
+_discord_identify_init(char token[])
+{
+  const char fmt_properties[] = \
+    "{\"$os\":\"%s\",\"$browser\":\"libdiscord\",\"$device\":\"libdiscord\"}";
+  const char fmt_presence[] = \
+    "{\"since\":%s,\"activities\":%s,\"status\":\"%s\",\"afk\":%s}";
+  const char fmt_event_data[] = \
+    "{\"token\":\"%s\",\"intents\":%d,\"properties\":%s,\"presence\":%s}";
+  const char fmt_identify[] = \
+    "{\"op\":2,\"d\":%s}"; //op:2 means GATEWAY_IDENTIFY
+
+  //https://discord.com/developers/docs/topics/gateway#identify-identify-connection-properties
+  /* @todo $os detection */
+  char properties[512];
+  snprintf(properties, sizeof(properties)-1, fmt_properties, "Linux");
+
+  //https://discord.com/developers/docs/topics/gateway#sharding
+  /* @todo */
+
+  //https://discord.com/developers/docs/topics/gateway#update-status-gateway-status-update-structure
+  char presence[512];
+  snprintf(presence, sizeof(presence)-1, fmt_presence, 
+           "null", "null", "online", "false");
+
+  //https://discord.com/developers/docs/topics/gateway#identify-identify-structure
+  char event_data[512];
+  int len = sizeof(fmt_identify);
+  len += snprintf(event_data, sizeof(event_data)-1, fmt_event_data,
+                  token, GUILD_MESSAGES, properties, presence);
+
+  char *identify = malloc(len);
+  ASSERT_S(NULL != identify, "Out of memory");
+
+  snprintf(identify, len-1, fmt_identify, event_data);
+
+  return identify;
+}
+
 void
 Discord_ws_init(struct discord_ws_s *ws, char token[])
 {
+  ws->identify = _discord_identify_init(token);
   ws->ehandle = _discord_easy_init(ws);
   ws->mhandle = _discord_multi_init();
   ws->status = WS_DISCONNECTED;
-
-  (void)token;
 }
 
 void
 Discord_ws_cleanup(struct discord_ws_s *ws)
 {
+  free(ws->identify);
   curl_multi_cleanup(ws->mhandle);
   cws_free(ws->ehandle);
 }
 
+/* send heartbeat pulse to websockets server in order
+ *  to maintain connection alive */
 static void
 _ws_send_heartbeat(struct discord_ws_s *ws)
 {
-  char str[250];
+  char str[64];
 
-  if (0 == ws->payload.seq_number)
-    snprintf(str, sizeof(str), "{\"op\": 1, \"d\": null}");
+  if (!ws->payload.seq_number)
+    snprintf(str, sizeof(str)-1, "{\"op\":1,\"d\":null}");
   else
-    snprintf(str, sizeof(str), "{\"op\": 1, \"d\": %d}", ws->payload.seq_number);
+    snprintf(str, sizeof(str)-1, "{\"op\": 1,\"d\":%d}", ws->payload.seq_number);
 
-  D_NOTOP_PRINT("HEARTBEAT_PAYLOAD:\n\t\t%s", str);
+  D_PRINT("HEARTBEAT_PAYLOAD:\n\t\t%s", str);
   bool ret = cws_send_text(ws->ehandle, str);
   ASSERT_S(true == ret, "Couldn't send heartbeat payload");
 
-  ws->hbeat.start_ms = _curr_timestamp_ms();
+  ws->hbeat.start_ms = _timestamp_ms();
 }
 
+/* main websockets event loop */
 static void
 _ws_main_loop(struct discord_ws_s *ws)
 {
   int is_running = 0;
-
-  curl_multi_add_handle(ws->mhandle, ws->ehandle);
 
   curl_multi_perform(ws->mhandle, &is_running);
 
@@ -216,18 +269,34 @@ _ws_main_loop(struct discord_ws_s *ws)
      * minimum heartbeat interval required*/
     if ((WS_CONNECTED == ws->status)
         && 
-        ws->hbeat.interval_ms < _curr_timestamp_ms() - ws->hbeat.start_ms) 
+        (ws->hbeat.interval_ms < (_timestamp_ms() - ws->hbeat.start_ms))) 
     {
       _ws_send_heartbeat(ws);
     }
 
   } while(is_running);
-
-  curl_multi_remove_handle(ws->mhandle, ws->ehandle);
 }
 
 void
-discord_connect(discord_t *discord)
+Discord_ws_set_callback(struct discord_ws_s *ws, enum discord_events event, discord_ws_cb *user_callback)
 {
-  _ws_main_loop(&discord->ws);
+  switch (event) {
+  case ON_READY:
+      ws->callbacks.on_ready = user_callback;
+      break;
+  case ON_MESSAGE:
+      ws->callbacks.on_message = user_callback;
+      break;
+  default:
+      ERROR("Undefined Discord event (code: %d)", event);
+  }
+}
+
+/* connects to the discord websockets server */
+void
+Discord_ws_connect(struct discord_ws_s *ws)
+{
+  curl_multi_add_handle(ws->mhandle, ws->ehandle);
+  _ws_main_loop(ws);
+  curl_multi_remove_handle(ws->mhandle, ws->ehandle);
 }
