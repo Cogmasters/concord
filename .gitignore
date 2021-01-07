@@ -1,2 +1,13 @@
 .stensal*
 *.tar
+*.exe
+.ccls-cache
+*.o
+a.out
+*~
+.idea
+cmake-build-debug
+bot_token
+obj
+lib
+test-api
