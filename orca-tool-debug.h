@@ -1,5 +1,5 @@
-#ifndef LIBDISCORD_DEBUG_H_
-#define LIBDISCORD_DEBUG_H_
+#ifndef LIBORCA_DEBUG_H_
+#define LIBORCA_DEBUG_H_
 
 
 #define D_OUT stderr
@@ -24,7 +24,7 @@
         } while(0)
 
 
-#if LIBDISCORD_DEBUG /* DEBUG MODE ACTIVE */
+#if LIBORCA_DEBUG /* DEBUG MODE ACTIVE */
 
 /* @param msg string to be printed in debug mode */
 #       define D_PUTS(msg) fprintf(D_OUT, D_FMT_PREFIX "%s\n", D_FMT_ARGS, msg)

@@ -2,14 +2,14 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <libdiscord.h>
+#include <liborca.h>
 
-#include "discord-common.h"
+#include "orca-common.h"
 
-discord_user_t*
-discord_user_init()
+orca_user_t*
+orca_user_init()
 {
-  discord_user_t *new_user = calloc(1, sizeof *new_user);
+  orca_user_t *new_user = calloc(1, sizeof *new_user);
   if (NULL == new_user) return NULL;
 
   new_user->id = malloc(SNOWFLAKE_INTERNAL_WORKER_ID);
@@ -49,7 +49,7 @@ cleanupA:
 }
 
 void
-discord_user_cleanup(discord_user_t *user)
+orca_user_cleanup(orca_user_t *user)
 {
   free(user->id);
   free(user->username);
@@ -61,9 +61,9 @@ discord_user_cleanup(discord_user_t *user)
 }
 
 static void
-_discord_load_user(void **p_user, struct api_response_s *res_body)
+_orca_load_user(void **p_user, struct api_response_s *res_body)
 {
-  discord_user_t *user = *p_user;
+  orca_user_t *user = *p_user;
 
   jscon_scanf(res_body->str,
      "%s[id]" \
@@ -97,21 +97,21 @@ _discord_load_user(void **p_user, struct api_response_s *res_body)
 }
 
 void
-discord_get_user(discord_t *discord, char user_id[], discord_user_t **p_user)
+orca_get_user(orca_t *client, char user_id[], orca_user_t **p_user)
 {
-  Discord_api_request( 
-    &discord->api,
+  Orca_api_request( 
+    &client->api,
     (void**)p_user,
-    &_discord_load_user,
-    GET, USERS, user_id);
+    &_orca_load_user,
+    GET, USER, user_id);
 }
 
 void 
-discord_get_client(discord_t *discord, discord_user_t **p_client)
+orca_get_client(orca_t *client, orca_user_t **p_user)
 {
-  Discord_api_request( 
-    &discord->api,
-    (void**)p_client,
-    &_discord_load_user,
-    GET, USERS, "@me");
+  Orca_api_request( 
+    &client->api,
+    (void**)p_user,
+    &_orca_load_user,
+    GET, USER, "@me");
 }

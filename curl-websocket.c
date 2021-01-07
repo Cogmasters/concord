@@ -35,7 +35,7 @@
 #include <errno.h>
 
 #include "curl-websocket-utils.c"
-#include "discord-tool-debug.h"
+#include "orca-tool-debug.h"
 
 #define STR_OR_EMPTY(p) (p != NULL ? p : "")
 

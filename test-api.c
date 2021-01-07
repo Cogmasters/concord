@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <assert.h>
 
-#include <libdiscord.h>
+#include <liborca.h>
 
 int main(void)
 {
@@ -13,18 +13,18 @@ int main(void)
     fgets(bot_token, 99, f_bot_token);
     fclose(f_bot_token);
 
-    discord_global_init();
-    discord_t *client = discord_init(bot_token);
+    orca_global_init();
+    orca_t *client = orca_init(bot_token);
     assert(NULL != client);
 
-    discord_user_t *user = discord_user_init(); 
+    orca_user_t *user = orca_user_init(); 
     assert(NULL != user);
 
-    discord_get_client(client, &user);
+    orca_get_client(client, &user);
     printf("Greetings, %s#%s!\n", user->username, user->discriminator);
 
-    discord_user_cleanup(user);
+    orca_user_cleanup(user);
 
-    discord_cleanup(client);
-    discord_global_cleanup();
+    orca_cleanup(client);
+    orca_global_cleanup();
 }

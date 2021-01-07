@@ -1,18 +1,28 @@
-#ifndef LIBDISCORD_H_
-#define LIBDISCORD_H_
+#ifndef LIBORCA_H_
+#define LIBORCA_H_
 
 /* This is the version number of the package from which this header
  *  file originates */
-#define LIBDISCORD_VERSION "0.0.0-DEV"
+#define LIBORCA_VERSION "0.0.0-DEV"
 
 /* The numeric version number is also available "in parts" by using
  *  these defines: */
-#define LIBDISCORD_VERSION_MAJOR 0
-#define LIBDISCORD_VERSION_MINOR 0
-#define LIBDISCORD_VERSION_PATCH 0
+#define LIBORCA_VERSION_MAJOR 0
+#define LIBORCA_VERSION_MINOR 0
+#define LIBORCA_VERSION_PATCH 0
 
-//forward declaration. see discord-common.h for full definition
-typedef struct discord_s discord_t;
+//discord events that can be triggered and have callbacks set by users
+enum orca_events {
+  ON_READY,
+  ON_MESSAGE,
+};
+
+//forward declaration. see orca-common.h for full definition
+typedef struct orca_s orca_t;
+//
+//function template for user specified websocket callbacks
+typedef void (orca_ws_cb)(orca_t *client);
+
 
 /* CHANNEL TYPES
  * https://discord.com/developers/docs/resources/channel#channel-object-channel-types */
@@ -28,12 +38,12 @@ enum discord_channel_types {
 
 /* CHANNEL OBJECT
  * https://discord.com/developers/docs/resources/channel#channel-object-channel-structure */
-typedef struct discord_channel_s {
+typedef struct orca_channel_s {
   char *id;
   int type;
   char *guild_id;
   int position;
-  //struct discord_overwrite_s **permission_overwrites;
+  //struct orca_overwrite_s **permission_overwrites;
   char *name;
   char *topic;
   _Bool nsfw;
@@ -41,18 +51,18 @@ typedef struct discord_channel_s {
   int bitrate;
   int user_limit;
   int rate_limit_per_user;
-  struct discord_user_s **recipients;
+  struct orca_user_s **recipients;
   char *icon;
   char *owner_id;
   char *application_id;
   char *parent_id;
   char *last_pin_timestamp;
-  //struct discord_message_s **messages;
-} discord_channel_t;
+  //struct orca_message_s **messages;
+} orca_channel_t;
 
 /* GUILD OBJECT
  * https://discord.com/developers/docs/resources/guild#guild-object-guild-structure */
-typedef struct discord_guild_s {
+typedef struct orca_guild_s {
   char *id;
   char *name;
   char *icon;
@@ -70,8 +80,8 @@ typedef struct discord_guild_s {
   int verification_level;
   int default_message_notifications;
   int explicit_content_filter;
-  //struct discord_role_t **roles;
-  //struct discord_emoji_t **emojis;
+  //struct orca_role_t **roles;
+  //struct orca_emoji_t **emojis;
   char **features;
   int mfa_level;
   char *application_id;
@@ -84,10 +94,10 @@ typedef struct discord_guild_s {
   _Bool large;
   _Bool unavailable;
   int member_count;
-  //struct discord_voicestate_s **voice_states;
-  //struct discord_member_s **members;
-  struct discord_channel_s **channels;
-  //struct discord_presence_s **presences;
+  //struct orca_voicestate_s **voice_states;
+  //struct orca_member_s **members;
+  struct orca_channel_s **channels;
+  //struct orca_presence_s **presences;
   int max_presences;
   int mas_members;
   char *vanity_url_code;
@@ -100,11 +110,11 @@ typedef struct discord_guild_s {
   int max_video_channel_users;
   int approximate_member_count;
   int approximate_presence_count;
-} discord_guild_t;
+} orca_guild_t;
 
 /* USER OBJECT
  * https://discord.com/developers/docs/resources/user#user-object-user-structure */
-typedef struct discord_user_s {
+typedef struct orca_user_s {
   char *id;
   char *username;
   char *discriminator;
@@ -118,33 +128,36 @@ typedef struct discord_user_s {
   int flags;
   int premium_type;
   int public_flags;
-    struct discord_guild_s **guilds;
-} discord_user_t;
+  struct orca_guild_s **guilds;
+} orca_user_t;
 
 
-/* discord-public.c */
+/* orca-public.c */
 
-discord_t* discord_init(char token[]);
-void discord_cleanup(discord_t *client);
+void orca_global_init();
+void orca_global_cleanup();
 
-void discord_global_init();
-void discord_global_cleanup();
+orca_t* orca_init(char token[]);
+void orca_cleanup(orca_t *client);
 
-/* discord-public-guild.c */
+void orca_set_callback(
+  orca_t *client, 
+  enum orca_events event,
+  orca_ws_cb *user_callback);
 
-discord_guild_t* discord_guild_init();
-void discord_guild_cleanup(discord_guild_t *guild);
-void discord_get_guild(discord_t *discord, char guild_id[], discord_guild_t **p_guild);
+void orca_connect(orca_t *client);
 
-/* discord-public-user.c */
+/* orca-public-guild.c */
 
-discord_user_t* discord_user_init();
-void discord_user_cleanup(discord_user_t *user);
-void discord_get_user(discord_t *discord, char user_id[], discord_user_t **p_user);
-void discord_get_client(discord_t *discord, discord_user_t **p_client);
+orca_guild_t* orca_guild_init();
+void orca_guild_cleanup(orca_guild_t *guild);
+void orca_get_guild(orca_t *client, char guild_id[], orca_guild_t **p_guild);
 
-/* discord-websockets.c */ //@todo move to discord-public.c
+/* orca-public-user.c */
 
-void discord_connect(discord_t *discord);
+orca_user_t* orca_user_init();
+void orca_user_cleanup(orca_user_t *user);
+void orca_get_user(orca_t *client, char user_id[], orca_user_t **p_user);
+void orca_get_client(orca_t *client, orca_user_t **p_user);
 
 #endif
