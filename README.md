@@ -8,10 +8,14 @@ Step 1: Get a discord bot token
 
 2. Click ![New Application](/docs/new-application.png)
 
-3. Fill in the ![form](/docs/create-an-application.png) with your bot name,
-   and Click "Create"
+3. Fill in the following form with your bot name, and then Click "Create"
 
-4. Click Copy that is under the ![form](/docs/client-secret.png)'s CLIENT SECRET.
+   ![form](/docs/create-an-application.png)
+
+4. Copy bot token by clicking "Copy" that is under the CLIENT SECRET of the
+   following form
+
+   ![form](/docs/client-secret.png)
 
 5. Create a file `bot_token` and paste the client secret to this file.
 
