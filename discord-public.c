@@ -43,3 +43,13 @@ void
 discord_global_cleanup() {
   curl_global_cleanup();
 }
+
+void
+discord_set_callback(discord_t *client, enum discord_events event, discord_ws_cb *user_callback){
+  Discord_ws_set_callback(&client.ws, event, user_callback);
+}
+
+void
+discord_connect(discord_t *client){
+  Discord_ws_connect(&client->ws);
+}

@@ -195,7 +195,7 @@ static void
 _discord_perform_request(
   struct discord_api_s *api,
   void **p_object, 
-  discord_load_obj_ft *load_cb)
+  discord_load_obj_cb *load_cb)
 {
   //try to perform the request and analyze output
   enum discord_http_code http_code; //the http response code
@@ -264,7 +264,7 @@ void
 Discord_api_request(
   struct discord_api_s *api, 
   void **p_object, 
-  discord_load_obj_ft *load_cb,
+  discord_load_obj_cb *load_cb,
   enum http_method http_method,
   char endpoint[],
   ...)
