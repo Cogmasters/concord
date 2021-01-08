@@ -11,18 +11,9 @@
 #define LIBDISCORD_VERSION_MINOR 0
 #define LIBDISCORD_VERSION_PATCH 0
 
-//discord events that can be triggered and have callbacks set by users
-enum discord_events {
-  ON_READY,
-  ON_MESSAGE,
-};
 
 //forward declaration. see discord-common.h for full definition
 typedef struct discord_s discord_t;
-//
-//function template for user specified websocket callbacks
-typedef void (discord_ws_cb)(discord_t *client);
-
 
 /* CHANNEL TYPES
  * https://discord.com/developers/docs/resources/channel#channel-object-channel-types */
@@ -59,6 +50,37 @@ typedef struct discord_channel_s {
   char *last_pin_timestamp;
   //struct discord_message_s **messages;
 } discord_channel_t;
+
+/* DISCORD MESSAGE OBJECT
+ * https://discord.com/developers/docs/resources/channel#message-object*/
+typedef struct discord_message_s {
+  char *id;
+  char *channel_id;
+  char *guild_id;
+  struct discord_user_s *author;
+  //struct discord_guildmember_s *member;
+  char *content;
+  char *timestamp;
+  char *edited_timestamp;
+  _Bool tts;
+  _Bool mention_everyone;
+  struct discord_user_s **mentions;
+  //struct discord_role_t **mention_roles;
+  //struct discord_channelmention_s **mention_channels;
+  //struct discord_attachment_s **attachments;
+  //struct discord_embed_s **embeds;
+  //strict discord_reaction_s **reactions;
+  char *nonce;
+  _Bool pinned;
+  char *webhook_id;
+  int type;
+  //struct discord_messageactivity_s *activity;
+  //struct discord_messageapplication_s *application;
+  //struct discord_messagereference_s *message_reference;
+  int flags;
+  //struct discord_sticker_s **stickers;
+  struct discord_message_s *referenced_message;
+} discord_message_t;
 
 /* GUILD OBJECT
  * https://discord.com/developers/docs/resources/guild#guild-object-guild-structure */
@@ -131,6 +153,8 @@ typedef struct discord_user_s {
   struct discord_guild_s **guilds;
 } discord_user_t;
 
+typedef void (discord_onrdy_cb)(struct discord_s *client);
+typedef void (discord_onmsg_cb)(struct discord_s *client, struct discord_message_s *message);
 
 /* discord-public.c */
 
@@ -140,12 +164,10 @@ void discord_global_cleanup();
 discord_t* discord_init(char token[]);
 void discord_cleanup(discord_t *client);
 
-void discord_set_callback(
-  discord_t *client, 
-  enum discord_events event,
-  discord_ws_cb *user_callback);
+void discord_set_on_ready(discord_t *client, discord_onrdy_cb *user_cb);
+void discord_set_on_message(discord_t *client, discord_onmsg_cb *user_cb);
 
-void discord_connect(discord_t *client);
+void discord_run(discord_t *client);
 
 /* discord-public-guild.c */
 
@@ -158,6 +180,6 @@ void discord_get_guild(discord_t *client, char guild_id[], discord_guild_t **p_g
 discord_user_t* discord_user_init();
 void discord_user_cleanup(discord_user_t *user);
 void discord_get_user(discord_t *client, char user_id[], discord_user_t **p_user);
-void discord_get_client(discord_t *client, discord_user_t **p_user);
+void discord_get_client_user(discord_t *client, discord_user_t **p_user);
 
 #endif

@@ -17,13 +17,13 @@ int main(void)
   discord_t *client = discord_init(bot_token);
   assert(NULL != client);
 
-  discord_user_t *user = discord_user_init(); 
-  assert(NULL != user);
+  discord_user_t *self = discord_user_init(); 
+  assert(NULL != self);
 
-  discord_get_client(client, &user);
-  printf("Greetings, %s#%s!\n", user->username, user->discriminator);
+  discord_get_client_user(client, &self);
+  printf("Greetings, %s#%s!\n", self->username, self->discriminator);
 
-  discord_user_cleanup(user);
+  discord_user_cleanup(self);
 
   discord_cleanup(client);
   discord_global_cleanup();

@@ -45,11 +45,16 @@ discord_global_cleanup() {
 }
 
 void
-discord_set_callback(discord_t *client, enum discord_events event, discord_ws_cb *user_callback){
-  Discord_ws_set_callback(&client->ws, event, user_callback);
+discord_set_on_ready(discord_t *client, discord_onrdy_cb *user_cb){
+  Discord_ws_set_on_ready(&client->ws, user_cb);
 }
 
 void
-discord_connect(discord_t *client){
-  Discord_ws_connect(&client->ws);
+discord_set_on_message(discord_t *client, discord_onmsg_cb *user_cb){
+  Discord_ws_set_on_message(&client->ws, user_cb);
+}
+
+void
+discord_run(discord_t *client){
+  Discord_ws_run(&client->ws);
 }

@@ -67,13 +67,29 @@ _discord_on_hello(struct discord_ws_s *ws)
 }
 
 static void
+_discord_on_dispatch(struct discord_ws_s *ws)
+{
+  if (ws->cbs.on_ready
+      && !strcmp("READY", ws->payload.event_name))
+  {
+    (*ws->cbs.on_ready)((discord_t*)ws);
+  }/*
+  else if (ws->cbs.on_message
+           && !strcmp("MESSAGE", ws->payload.event_name))
+  {
+    (*ws->cbs.on_message)((discord_t*)ws,);
+  }*/
+  else {
+    ERROR("Unknown GATEWAY_DISPATCH event: %s", ws->payload.event_name);
+  }
+}
+
+static void
 _ws_on_connect_cb(void *data, CURL *ehandle, const char *ws_protocols)
 {
-  struct discord_ws_s *ws = data;
-  (void)ws;
-
   D_PRINT("Connected, WS-Protocols: '%s'", ws_protocols);
 
+  (void)data;
   (void)ehandle;
   (void)ws_protocols;
 }
@@ -125,6 +141,9 @@ _ws_on_text_cb(void *data, CURL *ehandle, const char *text, size_t len)
       _discord_on_hello(ws);
       break;
   case GATEWAY_DISPATCH:
+      _discord_on_dispatch(ws);
+      break;
+  case GATEWAY_RECONNECT:
       break;
   case GATEWAY_HEARTBEAT_ACK:
       break; 
@@ -213,10 +232,14 @@ _discord_identify_init(char token[])
 void
 Discord_ws_init(struct discord_ws_s *ws, char token[])
 {
+  ws->status = WS_DISCONNECTED;
+
   ws->identify = _discord_identify_init(token);
   ws->ehandle = _discord_easy_init(ws);
   ws->mhandle = _discord_multi_init();
-  ws->status = WS_DISCONNECTED;
+
+  ws->cbs.on_ready = NULL;
+  ws->cbs.on_message = NULL;
 }
 
 void
@@ -276,26 +299,21 @@ _ws_main_loop(struct discord_ws_s *ws)
   } while(is_running);
 }
 
-void
-Discord_ws_set_callback(struct discord_ws_s *ws, enum discord_events event, discord_ws_cb *user_callback)
-{
-  switch (event) {
-  case ON_READY:
-      ws->callbacks.on_ready = user_callback;
-      break;
-  case ON_MESSAGE:
-      ws->callbacks.on_message = user_callback;
-      break;
-  default:
-      ERROR("Undefined Discord event (code: %d)", event);
-  }
-}
-
 /* connects to the discord websockets server */
 void
-Discord_ws_connect(struct discord_ws_s *ws)
+Discord_ws_run(struct discord_ws_s *ws)
 {
   curl_multi_add_handle(ws->mhandle, ws->ehandle);
   _ws_main_loop(ws);
   curl_multi_remove_handle(ws->mhandle, ws->ehandle);
+}
+
+void
+Discord_ws_set_on_ready(struct discord_ws_s *ws, discord_onrdy_cb *user_cb){
+  ws->cbs.on_ready = user_cb;
+}
+
+void
+Discord_ws_set_on_message(struct discord_ws_s *ws, discord_onmsg_cb *user_cb){
+  ws->cbs.on_message = user_cb;
 }
