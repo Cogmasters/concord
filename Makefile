@@ -1,19 +1,19 @@
-CC			?= gcc
+CC	?= gcc
 OBJDIR	:= obj
 LIBDIR	:= lib
 
-SRC			:= $(wildcard discord-*.c curl-websocket.c)
+SRC		:= $(wildcard discord-*.c curl-websocket.c)
 _OBJS		:= $(patsubst %.c, %.o, $(SRC))
 OBJS 		:= $(addprefix $(OBJDIR)/, $(_OBJS))
 
 LIBJSCON_CFLAGS		:= -I./JSCON/include
-LIBJSCON_LDFLAGS	:= "-Wl,-rpath,./JSCON/lib" -L./JSCON/lib -ljscon
+LIBJSCON_LDFLAGS	:= -L./JSCON/lib -ljscon
 
 LIBDISCORD_CFLAGS		:= -I./
-LIBDISCORD_LDFLAGS	:= "-Wl,-rpath,./lib" -L$(LIBDIR) -ldiscord -lcurl -lbearssl
+LIBDISCORD_LDFLAGS	:=  -L./$(LIBDIR) -ldiscord -lcurl -lbearssl  -static
 
 LIBS_CFLAGS		:= $(LIBJSCON_CFLAGS) $(LIBCURL_CFLAGS) $(LIBDISCORD_CFLAGS)
-LIBS_LDFLAGS	:= $(LIBJSCON_LDFLAGS) $(LIBCURL_LDFLAGS) $(LIBDISCORD_LDFLAGS)
+LIBS_LDFLAGS	:= $(LIBCURL_LDFLAGS) $(LIBDISCORD_LDFLAGS) $(LIBJSCON_LDFLAGS)
 
 LIBDISCORD_DLIB	:= $(LIBDIR)/libdiscord.so
 LIBDISCORD_SLIB	:= $(LIBDIR)/libdiscord.a
@@ -24,7 +24,7 @@ CFLAGS := -Wall -Wextra -pedantic -fPIC -std=c11 -O0 -g \
 
 .PHONY : all mkdir install clean purge
 
-all : mkdir $(OBJS) $(LIBDISCORD_DLIB) $(LIBDISCORD_SLIB)
+all : mkdir $(OBJS) $(LIBDISCORD_SLIB)
 
 test : all test-api.c test-ws.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \
