@@ -81,7 +81,8 @@ char *__jscon_strerror(jscon_errcode code, char codetag[], void *where, char ent
 #define IS_LEAF(item) (IS_PRIMITIVE(item) || IS_EMPTY_COMPOSITE(item))
 #define IS_ROOT(item) (NULL == item->parent)
 
-
+  
+#if 0
 /* JSCON COMPOSITE STRUCTURE
  *  if jscon_item type is of composite type (object or array) it will
  *  include a jscon_composite_t struct with the following attributes:
@@ -107,13 +108,13 @@ typedef struct jscon_composite_s {
     struct jscon_composite_s *prev;
 } jscon_composite_t;
 
-#if 0
+
 void Jscon_composite_link_r(struct jscon_item_s *item, jscon_composite_t **last_accessed_comp);
 void Jscon_composite_build(struct jscon_item_s *item);
 struct jscon_item_s* Jscon_composite_get(const char *key, struct jscon_item_s *item);
 struct jscon_item_s* Jscon_composite_set(const char *key, struct jscon_item_s *item);
 void Jscon_composite_remake(jscon_item_t *item);
-#endif
+
 
 
 /* JSCON ITEM STRUCTURE
@@ -136,6 +137,7 @@ typedef struct jscon_item_s {
     char *key;
     struct jscon_item_s *parent;
 } jscon_item_t;
+#endif
 
 /*
  * jscon-common.c
@@ -145,7 +147,7 @@ void Jscon_decode_static_string(char **p_buffer, const long len, const long offs
 double Jscon_decode_double(char **p_buffer);
 bool Jscon_decode_boolean(char **p_buffer);
 void Jscon_decode_null(char **p_buffer);
-jscon_composite_t* Jscon_decode_composite(char **p_buffer, size_t n_branch);
+//jscon_composite_t* Jscon_decode_composite(char **p_buffer, size_t n_branch);
 
 
 #endif
