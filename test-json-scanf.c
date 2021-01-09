@@ -28,12 +28,12 @@
 #include <string.h>
 #include <locale.h>
 
-#include <libjscon.h>
+#include "json-scanf.h"
 
 
 FILE *select_output(int argc, char *argv[]);
 char *get_json_text(char filename[]);
-jscon_item_t *callback_test(jscon_item_t *item);
+//jscon_item_t *callback_test(jscon_item_t *item);
 
 int main(int argc, char *argv[])
 {
@@ -44,19 +44,17 @@ int main(int argc, char *argv[])
     char *json_text = get_json_text(argv[1]);
     char *buffer = NULL;
 
-    jscon_item_t *item[3] = {NULL};
+    //jscon_item_t *item[3] = {NULL};
     int integer1=0, integer2=0;
     char str1[25] = {0};
 
     jscon_scanf(json_text, 
-                "%s[t]" \
-                "%d[s]" \
-                "%d[op]" \
-                "%ji[d][user]",
-                 str1,
-                 &integer1,
-                 &integer2,
-                 &item[0]);
+	       "%s[t]" 
+	       "%d[s]" 
+	       "%d[op]",
+	       str1,
+	       &integer1,
+	       &integer2);
 
 #if 0    
     for (size_t i=0; i < 3; ++i){

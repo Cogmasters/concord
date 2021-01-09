@@ -25,9 +25,9 @@
 #include <stdarg.h>
 #include <string.h>
 #include <ctype.h>
+#include <stdbool.h>
 
-
-#include <libjscon.h>
+#include "json-scanf.h"
 
 #include "jscon-common.h"
 #include "debug.h"
@@ -141,10 +141,12 @@ _jscon_format_info(char *specifier, size_t *p_tmp)
         *n_bytes = sizeof(bool);
         return "bool*";
     }
+#if 0    
     if (STREQ(specifier, "ji")){
         *n_bytes = sizeof(jscon_item_t*);
         return "jscon_item_t**";
     }
+#endif    
 
     *n_bytes = 0;
     return "";

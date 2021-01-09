@@ -28,10 +28,10 @@ void bot_settings_init(char * filename, struct bot_settings * settings) {
   
   printf ("'%s' %p\n", str, str);
   jscon_scanf(str,
-              "%s[discord][token] %s[logging][filename] %s[logging][level]",
-              settings->discord.token,
-              settings->logging.filename, 
-              settings->logging.level);
+	     "%s[discord][token] %s[logging][filename] %s[logging][level]",
+	     settings->discord.token,
+	     settings->logging.filename, 
+	     settings->logging.level);
   free(str);
   return;
 }

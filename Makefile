@@ -16,18 +16,17 @@ else
 endif
 
 
-LIBS_CFLAGS		:= $(LIBJSCON_CFLAGS) $(LIBCURL_CFLAGS) $(LIBDISCORD_CFLAGS)
+LIBS_CFLAGS	:= $(LIBJSCON_CFLAGS) $(LIBCURL_CFLAGS) $(LIBDISCORD_CFLAGS)
 LIBS_LDFLAGS	:= $(LIBCURL_LDFLAGS) $(LIBDISCORD_LDFLAGS) $(LIBJSCON_LDFLAGS)
 
 LIBDISCORD_SLIB	:= $(LIBDIR)/libdiscord.a
 
-CFLAGS := -Wall -Wextra -pedantic -std=c11 -O0 -g \
-	-DLIBDISCORD_DEBUG  -D_XOPEN_SOURCE=700
+CFLAGS := -Wall -Wextra -pedantic -std=c11 -O0 -g -DLIBDISCORD_DEBUG  
 
 ifeq ($(CC),stensal-c)
 	CFLAGS += -D_DEFAULT_SOURCE
 else
-	CFLAGS += -fPIC
+	CFLAGS += -fPIC -D_XOPEN_SOURCE=700
 endif
 
 .PHONY : all mkdir install clean purge

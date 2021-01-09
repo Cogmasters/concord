@@ -26,8 +26,9 @@
 #include <string.h>
 #include <ctype.h>
 #include <limits.h>
+#include <stdbool.h>
 
-#include <libjscon.h>
+//#include <libjscon.h>
 #include "jscon-common.h"
 
 #include "debug.h"
