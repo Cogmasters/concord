@@ -15,7 +15,7 @@ LIBDISCORD_LDFLAGS	:=  -L./$(LIBDIR) -ldiscord -lcurl
 ifeq ($(CC),stensal-c)
 	LIBDISCORD_LDFLAGS += -lbearssl -static 
 else
-	LIBDISCORD_LDFLAGS += $(pkg-config --libs --cflags libcurl) -lm
+	LIBDISCORD_LDFLAGS += $(pkg-config --libs --cflags libcurl) -lcrypto -lm
 endif
 
 
