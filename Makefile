@@ -14,6 +14,8 @@ LIBDISCORD_LDFLAGS	:=  -L./$(LIBDIR) -ldiscord -lcurl -lpthread  -static
 
 ifeq ($(CC),stensal-c)
 	LIBDISCORD_LDFLAGS += -lbearssl
+else
+	LIBDISCORD_LDFLAGS += -lssl
 endif
 
 
