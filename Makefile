@@ -10,12 +10,12 @@ LIBJSCON_CFLAGS		:= -I./JSCON/include
 LIBJSCON_LDFLAGS	:= -L./JSCON/lib -ljscon
 
 LIBDISCORD_CFLAGS	:= -I./
-LIBDISCORD_LDFLAGS	:=  -L./$(LIBDIR) -ldiscord -lcurl -lpthread  -static
+LIBDISCORD_LDFLAGS	:=  -L./$(LIBDIR) -ldiscord -lcurl
 
 ifeq ($(CC),stensal-c)
-	LIBDISCORD_LDFLAGS += -lbearssl
+	LIBDISCORD_LDFLAGS += -lbearssl -static 
 else
-	LIBDISCORD_LDFLAGS += -lssl
+	LIBDISCORD_LDFLAGS += $(pkg-config --libs --cflags libcurl) -lm
 endif
 
 
@@ -31,6 +31,10 @@ LIBDISCORD_SLIB	:= $(LIBDIR)/libdiscord.a
 CFLAGS := -Wall -Wextra -pedantic -std=c11 -O0 -g \
 	-DLIBDISCORD_DEBUG -D_DEFAULT_SOURCE -D_XOPEN_SOURCE=700
 
+ifeq ($(CC),stensal-c)
+else
+	CFLAGS += -fPIC
+endif
 
 .PHONY : all mkdir install clean purge
 
