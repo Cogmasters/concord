@@ -34,11 +34,13 @@ endif
 
 all : mkdir $(OBJS) $(LIBDISCORD_SLIB)
 
-test : all test-api.c test-ws.c
+test : all test-api.c test-ws.c test-json-scanf.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \
 		test-api.c -o test-api.exe $(LIBS_LDFLAGS)
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \
 		test-ws.c -o test-ws.exe $(LIBS_LDFLAGS)
+	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \
+		test-json-scanf.c -o test-json-scanf.exe $(LIBS_LDFLAGS)
 
 mkdir :
 	mkdir -p $(OBJDIR) $(LIBDIR)
