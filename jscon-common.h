@@ -147,6 +147,7 @@ void Jscon_decode_static_string(char **p_buffer, const long len, const long offs
 double Jscon_decode_double(char **p_buffer);
 bool Jscon_decode_boolean(char **p_buffer);
 void Jscon_decode_null(char **p_buffer);
+size_t strscpy(char *dest, const char *src, size_t n);
 //jscon_composite_t* Jscon_decode_composite(char **p_buffer, size_t n_branch);
 
 
