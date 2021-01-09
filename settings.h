@@ -1,5 +1,5 @@
-#ifndef ORCA_H
-#define ORCA_H
+#ifndef SETTINGS_H
+#define SETTINGS_H
 #include <linux/limits.h>
 #define TOKEN_MAX_LEN 512
 
@@ -13,5 +13,5 @@ struct bot_settings {
   } logging;
 };
 
-extern void bot_settings_init (char * filename, struct orca_settings *);
-#endif // ORCA_H
+extern void bot_settings_init (char * filename, struct bot_settings *);
+#endif // SETTINGS_H

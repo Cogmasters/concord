@@ -1,4 +1,4 @@
-#include "orca.h"
+#include "settings.h"
 #include <stdio.h>
 #include <errno.h>
 #include <string.h>
@@ -23,7 +23,7 @@ static char * load_whole_file(char * filename) {
   return string;
 }
 
-void bot_settings_init(char * filename, struct orca_settings * settings) {
+void bot_settings_init(char * filename, struct bot_settings * settings) {
   char * str = load_whole_file(filename);
   
   printf ("%p\n", str);
