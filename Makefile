@@ -9,8 +9,8 @@ OBJS 		:= $(addprefix $(OBJDIR)/, $(_OBJS))
 LIBJSCON_CFLAGS		:= -I./JSCON/include
 LIBJSCON_LDFLAGS	:= -L./JSCON/lib -ljscon
 
-LIBDISCORD_CFLAGS		:= -I./
-LIBDISCORD_LDFLAGS	:=  -L./$(LIBDIR) -ldiscord -lcurl -lbearssl  -static
+LIBDISCORD_CFLAGS	:= -I./
+LIBDISCORD_LDFLAGS	:=  -L./$(LIBDIR) -ldiscord -lcurl -lbearssl -lpthread  -static
 
 LIBS_CFLAGS		:= $(LIBJSCON_CFLAGS) $(LIBCURL_CFLAGS) $(LIBDISCORD_CFLAGS)
 LIBS_LDFLAGS	:= $(LIBCURL_LDFLAGS) $(LIBDISCORD_LDFLAGS) $(LIBJSCON_LDFLAGS)
