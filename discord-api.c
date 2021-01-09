@@ -32,6 +32,9 @@ _discord_reqheader_init(char token[])
   tmp = curl_slist_append(new_header,"Content-Type: application/json");
   ASSERT_S(NULL != tmp, "Out of memory");
 
+  tmp = curl_slist_append(new_header,"Accept: application/json");
+  ASSERT_S(NULL != tmp, "Out of memory");
+
   return new_header;
 }
 
@@ -218,7 +221,9 @@ _discord_perform_request(
 
     switch (http_code) {
     case HTTP_OK:
-        (*load_cb)(p_object, &api->res_body);
+        if (NULL == load_cb) return;
+
+        (*load_cb)(p_object, api->res_body.str);
         D_NOTOP_PUTS("Object loaded with API response"); 
 
         //clean response for next iteration
@@ -259,6 +264,124 @@ _discord_perform_request(
   } while (HTTP_OK != http_code);
 }
 
+void
+Discord_api_load_message(void **p_message, char *str)
+{
+  discord_message_t *message = *p_message;
+
+  char str_author[512] = {0};
+  char str_mentions[512];
+  char str_referenced_message[512];
+
+  jscon_scanf(str, 
+              "%s[content]" \
+              "%s[channel_id]" \
+              "%S[author]", 
+              message->content, 
+              message->channel_id,
+              str_author);
+
+  if (NULL == message->author) {
+    message->author = calloc(1, sizeof *message->author);
+    ASSERT_S(NULL != message->author, "Out of memory");
+  }
+
+  Discord_api_load_user(&message->author, str_author);
+/*
+  jscon_scanf(str,
+     "%s[id]" \
+     "%s[channel_id]" \
+     "%s[guild_id]" \
+     "%S[author]" \
+     "%s[content]" \
+     "%s[timestamp]" \
+     "%s[edited_timestamp]" \
+     "%b[tts]" \
+     "%b[mention_everyone]" \
+     "%S[mentions]" \
+     "%s[nonce]" \
+     "%b[pinned]" \
+     "%s[webhook_id]" \
+     "%d[type]" \
+     "%d[flags]" \
+     "%S[referenced_message]",
+      message->id,
+      message->channel_id,
+      message->guild_id,
+      str_author,
+      message->content,
+      message->timestamp,
+      message->edited_timestamp,
+      &message->tts,
+      &message->mention_everyone,
+      str_mentions,
+      message->nonce,
+      &message->pinned,
+      message->webhook_id,
+      &message->flags,
+      str_referenced_message);
+*/
+  *p_message = message;
+}
+
+void
+Discord_api_load_guild(void **p_guild, char *str)
+{
+  discord_guild_t *guild = *p_guild;
+
+  jscon_scanf(str,
+     "%s[id]" \
+     "%s[name]" \
+     "%s[icon]" \
+     "%b[owner]" \
+     "%d[permissions]" \
+     "%s[permissions_new]",
+      guild->id,
+      guild->name,
+      guild->icon,
+      &guild->owner,
+      &guild->permissions,
+      guild->permissions_new);
+
+  *p_guild = guild;
+}
+
+void
+Discord_api_load_user(void **p_user, char *str)
+{
+  discord_user_t *user = *p_user;
+
+  jscon_scanf(str,
+     "%s[id]" \
+     "%s[username]" \
+     "%s[discriminator]" \
+     "%s[avatar]" \
+     "%b[bot]" \
+     "%b[system]" \
+     "%b[mfa_enabled]" \
+     "%s[locale]" \
+     "%b[verified]" \
+     "%s[email]" \
+     "%d[flags]" \
+     "%d[premium_type]" \
+     "%d[public_flags]",
+      user->id,
+      user->username,
+      user->discriminator,
+      user->avatar,
+      &user->bot,
+      &user->sys,
+      &user->mfa_enabled,
+      user->locale,
+      &user->verified,
+      user->email,
+      &user->flags,
+      &user->premium_type,
+      &user->public_flags);
+
+  *p_user = user;
+}
+
 /* template function for performing requests */
 void
 Discord_api_request(
@@ -285,3 +408,4 @@ Discord_api_request(
   //perform the request
   _discord_perform_request(api, p_object, load_cb);
 }
+

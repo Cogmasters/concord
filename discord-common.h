@@ -4,7 +4,7 @@
 //#include <libdiscord.h> (implicit)
 
 #include <curl/curl.h>
-#include <libjscon.h>
+#include "json-scanf.h"
 
 #include "discord-tool-debug.h"
 
@@ -16,6 +16,17 @@ enum http_method {
   PATCH,
   PUT,
 };
+
+/* ENDPOINTS */
+#define CHANNEL           "/channels/%s"
+#define CHANNEL_MESSAGES  CHANNEL"/messages"
+
+#define GUILD             "/guilds/%s"
+#define GUILD_CHANNELS    GUILD"/channels"
+
+#define USER              "/users/%s"
+#define USER_GUILDS       USER"/guilds"
+
 
 enum discord_limits {
   MAX_NAME_LEN           = 100,
@@ -29,6 +40,7 @@ enum discord_limits {
   MAX_REGION_LEN         = 15,
   MAX_HEADER_LEN         = 512,
   MAX_URL_LEN            = 512,
+  MAX_MESSAGE_LEN        = 2000,
 };
 
 /* HTTP RESPONSE CODES
@@ -58,17 +70,6 @@ enum discord_snowflake {
   SNOWFLAKE_TIMESTAMP           = 64,
 };
 
-/* ENDPOINTS */
-#define CHANNEL           "/channels/%s"
-#define CHANNEL_MESSAGES  CHANNEL"/messages"
-
-#define GUILD             "/guilds/%s"
-#define GUILD_CHANNELS    GUILD"/channels"
-
-#define USER              "/users/%s"
-#define USER_GUILDS       USER"/guilds"
-
-
 struct api_response_s {
   char *str; //the response str
   size_t size; //the response str length
@@ -76,9 +77,9 @@ struct api_response_s {
 
 /*allows using Discord_api_request() as a template for every
  * kind of transfer*/
-typedef void (discord_load_obj_cb)(void **p_obj, struct api_response_s *res_body);
+typedef void (discord_load_obj_cb)(void **p_obj, char *str);
 
-#define MAX_HEADER_SIZE 25
+#define MAX_HEADER_SIZE 50
 
 struct api_header_s {
   char *key[MAX_HEADER_SIZE];
@@ -168,6 +169,10 @@ typedef struct discord_s {
 
 void Discord_api_init(struct discord_api_s *api, char token[]);
 void Discord_api_cleanup(struct discord_api_s *api);
+
+void Discord_api_load_message(void **p_message, char *str);
+void Discord_api_load_guild(void **p_guild, char *str);
+void Discord_api_load_user(void **p_user, char *str);
 
 void Discord_api_request(
   struct discord_api_s *api, 

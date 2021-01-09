@@ -60,49 +60,13 @@ discord_user_cleanup(discord_user_t *user)
   free(user);
 }
 
-static void
-_discord_load_user(void **p_user, struct api_response_s *res_body)
-{
-  discord_user_t *user = *p_user;
-
-  jscon_scanf(res_body->str,
-     "%s[id]" \
-     "%s[username]" \
-     "%s[discriminator]" \
-     "%s[avatar]" \
-     "%b[bot]" \
-     "%b[system]" \
-     "%b[mfa_enabled]" \
-     "%s[locale]" \
-     "%b[verified]" \
-     "%s[email]" \
-     "%d[flags]" \
-     "%d[premium_type]" \
-     "%d[public_flags]",
-      user->id,
-      user->username,
-      user->discriminator,
-      user->avatar,
-      &user->bot,
-      &user->sys,
-      &user->mfa_enabled,
-      user->locale,
-      &user->verified,
-      user->email,
-      &user->flags,
-      &user->premium_type,
-      &user->public_flags);
-
-  *p_user = user;
-}
-
 void
 discord_get_user(discord_t *client, char user_id[], discord_user_t **p_user)
 {
   Discord_api_request( 
     &client->api,
     (void**)p_user,
-    &_discord_load_user,
+    &Discord_api_load_user,
     GET, USER, user_id);
 }
 
@@ -112,6 +76,6 @@ discord_get_client_user(discord_t *client, discord_user_t **p_user)
   Discord_api_request( 
     &client->api,
     (void**)p_user,
-    &_discord_load_user,
+    &Discord_api_load_user,
     GET, USER, "@me");
 }
