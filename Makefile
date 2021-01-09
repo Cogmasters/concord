@@ -2,12 +2,9 @@ CC	?= gcc
 OBJDIR	:= obj
 LIBDIR	:= lib
 
-SRC		:= $(wildcard discord-*.c curl-websocket.c settings.c)
+SRC		:= $(wildcard discord-*.c curl-websocket.c settings.c json-scanf.c strscpy.c jscon-common.c)
 _OBJS		:= $(patsubst %.c, %.o, $(SRC))
 OBJS 		:= $(addprefix $(OBJDIR)/, $(_OBJS))
-
-LIBJSCON_CFLAGS		:= -I./JSCON/include
-LIBJSCON_LDFLAGS	:= -L./JSCON/lib -ljscon
 
 LIBDISCORD_CFLAGS	:= -I./
 LIBDISCORD_LDFLAGS	:=  -L./$(LIBDIR) -ldiscord -lcurl
@@ -21,10 +18,6 @@ endif
 
 LIBS_CFLAGS		:= $(LIBJSCON_CFLAGS) $(LIBCURL_CFLAGS) $(LIBDISCORD_CFLAGS)
 LIBS_LDFLAGS	:= $(LIBCURL_LDFLAGS) $(LIBDISCORD_LDFLAGS) $(LIBJSCON_LDFLAGS)
-
-
-
-
 
 LIBDISCORD_SLIB	:= $(LIBDIR)/libdiscord.a
 
@@ -54,6 +47,15 @@ $(OBJDIR)/discord-%.o : discord-%.c
 		-c -o $@ $<
 
 $(OBJDIR)/settings.o : settings.c
+	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
+
+$(OBJDIR)/json-scanf.o : json-scanf.c
+	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
+
+$(OBJDIR)/strscpy.o : strscpy.c
+	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
+
+$(OBJDIR)/jscon-common.o : jscon-common.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 
 $(OBJDIR)/curl-websocket.o : curl-websocket.c
