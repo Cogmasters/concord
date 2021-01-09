@@ -36,9 +36,9 @@ all : mkdir $(OBJS) $(LIBDISCORD_SLIB)
 
 test : all test-api.c test-ws.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \
-		test-api.c -o test-api $(LIBS_LDFLAGS)
+		test-api.c -o test-api.exe $(LIBS_LDFLAGS)
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \
-		test-ws.c -o test-ws $(LIBS_LDFLAGS)
+		test-ws.c -o test-ws.exe $(LIBS_LDFLAGS)
 
 mkdir :
 	mkdir -p $(OBJDIR) $(LIBDIR)
@@ -71,7 +71,7 @@ install : all
 	cp $(INCLUDE) /usr/local/include
 
 clean :
-	rm -rf $(OBJDIR) test-api test-ws lib/*
+	rm -rf $(OBJDIR) *.exe lib/*
 
 purge : clean
 	rm -rf $(LIBDIR)
