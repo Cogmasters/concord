@@ -10,10 +10,19 @@ LIBJSCON_CFLAGS		:= -I./JSCON/include
 LIBJSCON_LDFLAGS	:= -L./JSCON/lib -ljscon
 
 LIBDISCORD_CFLAGS	:= -I./
-LIBDISCORD_LDFLAGS	:=  -L./$(LIBDIR) -ldiscord -lcurl -lbearssl -lpthread  -static
+LIBDISCORD_LDFLAGS	:=  -L./$(LIBDIR) -ldiscord -lcurl -lpthread  -static
+
+ifeq ($(CC),stensal-c)
+	LIBDISCORD_LDFLAGS += -lbearssl
+endif
+
 
 LIBS_CFLAGS		:= $(LIBJSCON_CFLAGS) $(LIBCURL_CFLAGS) $(LIBDISCORD_CFLAGS)
 LIBS_LDFLAGS	:= $(LIBCURL_LDFLAGS) $(LIBDISCORD_LDFLAGS) $(LIBJSCON_LDFLAGS)
+
+
+
+
 
 LIBDISCORD_SLIB	:= $(LIBDIR)/libdiscord.a
 
