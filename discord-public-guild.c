@@ -139,34 +139,12 @@ discord_guild_cleanup(discord_guild_t *guild)
   free(guild);
 }
 
-static void
-_discord_load_guild(void **p_guild, struct api_response_s *res_body)
-{
-  discord_guild_t *guild = *p_guild;
-
-  jscon_scanf(res_body->str,
-     "%s[id]" \
-     "%s[name]" \
-     "%s[icon]" \
-     "%b[owner]" \
-     "%d[permissions]" \
-     "%s[permissions_new]",
-      guild->id,
-      guild->name,
-      guild->icon,
-      &guild->owner,
-      &guild->permissions,
-      guild->permissions_new);
-
-  *p_guild = guild;
-}
-
 void
 discord_get_guild(discord_t *client, char guild_id[], discord_guild_t **p_guild)
 {
   Discord_api_request( 
     &client->api,
     (void**)p_guild,
-    &_discord_load_guild,
+    &Discord_api_load_guild,
     GET, GUILD, guild_id);
 }

@@ -48,7 +48,7 @@ typedef struct discord_channel_s {
   char *application_id;
   char *parent_id;
   char *last_pin_timestamp;
-  //struct discord_message_s **messages;
+  struct discord_message_s **messages;
 } discord_channel_t;
 
 /* DISCORD MESSAGE OBJECT
@@ -181,5 +181,11 @@ discord_user_t* discord_user_init();
 void discord_user_cleanup(discord_user_t *user);
 void discord_get_user(discord_t *client, char user_id[], discord_user_t **p_user);
 void discord_get_client_user(discord_t *client, discord_user_t **p_user);
+
+/* discord-public-message.c */
+
+discord_message_t* discord_message_init();
+void discord_message_cleanup(discord_message_t *message);
+void discord_send_message(discord_t *client, char channel_id[], char content[]);
 
 #endif

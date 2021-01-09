@@ -69,16 +69,24 @@ _discord_on_hello(struct discord_ws_s *ws)
 static void
 _discord_on_dispatch(struct discord_ws_s *ws)
 {
-  if (ws->cbs.on_ready
-      && !strcmp("READY", ws->payload.event_name))
-  {
+  if (!strcmp("READY", ws->payload.event_name)) {
+    if (NULL == ws->cbs.on_ready) return;
+
     (*ws->cbs.on_ready)((discord_t*)ws);
-  }/*
-  else if (ws->cbs.on_message
-           && !strcmp("MESSAGE", ws->payload.event_name))
-  {
-    (*ws->cbs.on_message)((discord_t*)ws,);
-  }*/
+  }
+  else if (!strcmp("MESSAGE_CREATE", ws->payload.event_name)) {
+    if (NULL == ws->cbs.on_message) return;
+
+    discord_message_t *message = discord_message_init();
+    ASSERT_S(NULL != message, "Out of memory");
+
+    Discord_api_load_message((void**)&message, ws->payload.event_data);
+    D_PUTS("Message loaded with WS response"); 
+
+    (*ws->cbs.on_message)((discord_t*)ws, message);
+
+    discord_message_cleanup(message);
+  }
   else {
     ERROR("Unknown GATEWAY_DISPATCH event: %s", ws->payload.event_name);
   }

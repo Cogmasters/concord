@@ -26,7 +26,7 @@ static char * load_whole_file(char * filename) {
 void bot_settings_init(char * filename, struct bot_settings * settings) {
   char * str = load_whole_file(filename);
   
-  printf ("%p\n", str);
+  printf ("'%s' %p\n", str, str);
   jscon_scanf(str,
 	     "%s[discord][token] %s[logging][filename] %s[logging][level]",
 	     settings->discord.token,
