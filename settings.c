@@ -3,7 +3,7 @@
 #include <errno.h>
 #include <string.h>
 #include <stdlib.h>
-#include "libjscon.h"
+#include "json-scanf.h"
 
 static char * load_whole_file(char * filename) {
   FILE *f = fopen(filename,"rb"); 
@@ -28,10 +28,10 @@ void bot_settings_init(char * filename, struct bot_settings * settings) {
   
   printf ("%p\n", str);
   jscon_scanf(str,
-              "%s[discord][token] %s[logging][filename] %s[logging][level]",
-              settings->discord.token,
-              settings->logging.filename, 
-              settings->logging.level);
+	     "%s[discord][token] %s[logging][filename] %s[logging][level]",
+	     settings->discord.token,
+	     settings->logging.filename, 
+	     settings->logging.level);
   free(str);
   return;
 }

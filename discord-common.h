@@ -4,7 +4,7 @@
 //#include <libdiscord.h> (implicit)
 
 #include <curl/curl.h>
-#include <libjscon.h>
+#include "json-scanf.h"
 
 #include "discord-tool-debug.h"
 
