@@ -79,7 +79,7 @@ struct api_response_s {
  * kind of transfer*/
 typedef void (discord_load_obj_cb)(void **p_obj, char *str);
 
-#define MAX_HEADER_SIZE 25
+#define MAX_HEADER_SIZE 20000
 
 struct api_header_s {
   char *key[MAX_HEADER_SIZE];
