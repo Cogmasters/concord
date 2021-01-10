@@ -60,7 +60,7 @@ _discord_on_hello(struct discord_ws_s *ws)
   ws->hbeat.interval_ms = 0;
   ws->hbeat.start_ms = _timestamp_ms();
 
-  jscon_scanf(ws->payload.event_data, "%ld[heartbeat_interval]", &ws->hbeat.interval_ms);
+  json_scanf(ws->payload.event_data, "%ld[heartbeat_interval]", &ws->hbeat.interval_ms);
   ASSERT_S(ws->hbeat.interval_ms > 0, "Invalid heartbeat_ms");
 
   _ws_send_identify(ws);
@@ -69,12 +69,12 @@ _discord_on_hello(struct discord_ws_s *ws)
 static void
 _discord_on_dispatch(struct discord_ws_s *ws)
 {
-  if (!strcmp("READY", ws->payload.event_name)) {
+  if (0 == strcmp("READY", ws->payload.event_name)) {
     if (NULL == ws->cbs.on_ready) return;
 
     (*ws->cbs.on_ready)((discord_t*)ws);
   }
-  else if (!strcmp("MESSAGE_CREATE", ws->payload.event_name)) {
+  else if (0 == strcmp("MESSAGE_CREATE", ws->payload.event_name)) {
     if (NULL == ws->cbs.on_message) return;
 
     discord_message_t *message = discord_message_init();
@@ -88,7 +88,7 @@ _discord_on_dispatch(struct discord_ws_s *ws)
     discord_message_cleanup(message);
   }
   else {
-    ERROR("Unknown GATEWAY_DISPATCH event: %s", ws->payload.event_name);
+    ERROR("Unimplemented GATEWAY_DISPATCH event: %s", ws->payload.event_name);
   }
 }
 
@@ -123,7 +123,7 @@ _ws_on_text_cb(void *data, CURL *ehandle, const char *text, size_t len)
 
   D_PRINT("ON_TEXT:\n\t\t%s", text);
 
-  jscon_scanf((char*)text, 
+  json_scanf((char*)text, 
               "%s[t]" \
               "%d[s]" \
               "%d[op]" \

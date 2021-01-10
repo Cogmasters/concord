@@ -40,7 +40,7 @@ enum discord_limits {
   MAX_REGION_LEN         = 15,
   MAX_HEADER_LEN         = 512,
   MAX_URL_LEN            = 512,
-  MAX_MESSAGE_LEN        = 2000,
+  MAX_MESSAGE_LEN        = 2048,
 };
 
 /* HTTP RESPONSE CODES
@@ -79,7 +79,7 @@ struct api_response_s {
  * kind of transfer*/
 typedef void (discord_load_obj_cb)(void **p_obj, char *str);
 
-#define MAX_HEADER_SIZE 50
+#define MAX_HEADER_SIZE 25
 
 struct api_header_s {
   char *key[MAX_HEADER_SIZE];

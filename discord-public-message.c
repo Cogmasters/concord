@@ -69,6 +69,10 @@ discord_message_cleanup(discord_message_t *message)
   free(message->edited_timestamp);
   free(message->nonce);
   free(message->webhook_id);
+
+  if (message->author)
+      free(message->author);
+
   free(message);
 }
 
