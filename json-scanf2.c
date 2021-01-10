@@ -342,7 +342,9 @@ static struct extractor_specifier * format_parse(char *format, size_t * n) {
 
 /*
  *  format grammar:
- *      ([key1]|[][number])+(%<d|ld\lld|f\lf|b\s\S>)
+ *      ([key1]|[]|[<n>])+%(d|ld|lld|f|lf|b|<n>s|<n>S)
+ *
+ *      n is an integer
  *
  *  usage:
  *      json_scanf2(str, "[k1][k2]%d", &i);
