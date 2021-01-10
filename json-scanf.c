@@ -45,7 +45,6 @@ struct pair_s {
 
     char *key;
     void *value; /* value being NULL means its a parent */
-    bool is_parent; /* is the parent of a nested object */
 };
 
 inline static void
