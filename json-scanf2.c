@@ -246,7 +246,7 @@ static char * parse_path_specifier (char * format, struct extractor_specifier * 
         format ++; // eat up ']'
         if (*format == '[') {
             format ++;
-            struct path_specifier * next_path = malloc(sizeof(*next_path));
+            struct path_specifier * next_path = calloc(1, sizeof(*next_path));
             curr_path->next = next_path;
             return parse_path_specifier(format, p, next_path);
         }
