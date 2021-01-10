@@ -332,11 +332,10 @@ parse_extractor_specifiers(char * format, size_t n)
 {
   struct extractor_specifier *nes = calloc(n, sizeof(*nes));
 
-  SKIP_SPACES(format);
-
   size_t i = 0;
   while (*format) 
   {
+    SKIP_SPACES(format);
     if (*format == '[') {
       ++format; //eat up '['
       format = parse_path_specifier(format, nes+i, &nes[i].path_specifier);
@@ -362,13 +361,12 @@ format_parse(char *format, size_t *n)
 
 /*
  *  format grammar:
- *      ([key1]|[]|[<n>])+%(d|ld|lld|f|lf|b|<n>s|<n>S)
+ *      ([key1]|[<n>])+%(d|ld|lld|f|lf|b|<n>s|<n>S) <space>
  *
  *      n is an integer
  *
  *  usage:
- *      json_scanf2(str, "[k1][k2]%d", &i);
- *
+ *      json_scanf2(str, "[k1][k2]%d  [k2][1]%s", &i, str);
  */
 int
 json_scanf2(char *buffer, char *format, ...)
