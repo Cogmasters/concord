@@ -26,7 +26,6 @@
 #include <string.h>
 #include <ctype.h>
 #include <stdbool.h>
-#include <assert.h>
 
 #include "json-scanf.h"
 
@@ -40,179 +39,185 @@
 #define KEY_MAX 256
 
 struct path_specifier {
-    enum {
-        KEY,
-        INDEX,
-    } type;
-    union {
-        char key[KEY_MAX];
-        int index;
-    } path;
-    struct path_specifier * next;
+  enum {
+    KEY,
+    INDEX,
+  } type;
+  union {
+    char key[KEY_MAX];
+    int index;
+  } path;
+  struct path_specifier * next;
 };
 
 struct extractor_specifier {
-    struct path_specifier path_specifier;
-    char type_specifier[10];
-    size_t size;
-    void * recipient; /* it should be a pointer */
-    bool applied;
+  struct path_specifier path_specifier;
+  char type_specifier[10];
+  size_t size;
+  void *recipient; /* must be a pointer */
+  bool is_applied;
 };
 
 
-static int jsoneq(const char *json, jsmntok_t *tok, const char *s) {
-    if (tok->type == JSMN_STRING
-        && (int)strlen(s) == tok->end - tok->start
-        && strncmp(json + tok->start, s, tok->end - tok->start) == 0) {
-        return 0;
-    }
-    return -1;
+static int
+jsoneq(const char *json, jsmntok_t *tok, const char *s)
+{
+  if (tok->type == JSMN_STRING
+      && (int)strlen(s) == tok->end - tok->start
+      && STRNEQ(json + tok->start, s, tok->end - tok->start))
+  {
+    return 0;
+  }
+  return -1;
 }
 
-static void match_path (char * buffer,
-                        jsmntok_t * t, size_t n_tokens, int start_token,
-                        struct extractor_specifier * es,
-                        struct path_specifier * p) {
-    char * end = 0;
-    int i = start_token;
-    if (!p) {
-        es->applied = true;
-        if (STREQ(es->type_specifier, "char*")){
-            if (es->size) {
-                strncpy((char *) es->recipient, buffer + t[i].start, es->size);
-            }
-            else {
-                strscpy((char *) es->recipient, buffer + t[i].start,
-                        t[i].end - t[i].start + 1);
-            }
-        }
-        else if (STREQ(es->type_specifier, "bool*")) {
-            if (jsoneq(buffer, &t[i], "true") == 0) {
-                *(bool *)es->recipient = true;
-            }
-            else if (jsoneq(buffer, &t[i], "false") == 0){
-                *(bool *)es->recipient = false;
-            }
-            else {
-                goto type_error;
-            }
-        }
-        else if (STREQ(es->type_specifier, "int*")) {
-            *(int *)es->recipient = (int)strtol(buffer + t[i].start, &end, 10);
-            if (end != buffer + t[i].end) goto type_error;
-        }
-        else if (STREQ(es->type_specifier, "long*")) {
-            *(long *)es->recipient = strtol(buffer + t[i].start, &end, 10);
-            if (end != buffer + t[i].end) goto type_error;
-        }
-        else if (STREQ(es->type_specifier, "long long*")) {
-            *(long long *)es->recipient = strtoll(buffer + t[i].start, &end, 10);
-            if (end != buffer + t[i].end) goto type_error;
-        }
-        else if (STREQ(es->type_specifier, "float*")) {
-            *(float *)es->recipient = strtof(buffer + t[i].start, &end);
-            if (end != buffer + t[i].end) goto type_error;
-        }
-        else if (STREQ(es->type_specifier, "double*")) {
-            *(double *)es->recipient = strtod(buffer + t[i].start, &end);
-            if (end != buffer + t[i].end) goto type_error;
-        }
-        else {
-            //strscpy(err_typeis, "float*, double* or jscon_item_t**", sizeof(err_typeis));
-            goto type_error;
-        }
-        return;
+static void
+match_path (char *buffer,
+            jsmntok_t *t, size_t n_toks, int start_tok,
+            struct extractor_specifier *es,
+            struct path_specifier *path)
+{
+  char *end = 0;
+  int i = start_tok;
+  if (path) {
+    match_path(buffer, t, n_toks, i, es, path);
+    return;
+  }
+
+  es->is_applied = true;
+  if (STREQ(es->type_specifier, "char*")){
+    if (es->size) {
+        strscpy((char *)es->recipient, buffer + t[i].start, es->size + 1);
     }
     else {
-        match_path(buffer, t, n_tokens, i, es, p);
-        return;
+        strscpy((char *)es->recipient, buffer + t[i].start, 
+            t[i].end - t[i].start + 1);
     }
+  }
+  else if (STREQ(es->type_specifier, "bool*")) {
+    if (0 == jsoneq(buffer, &t[i], "true")) {
+        *(bool *)es->recipient = true;
+    }
+    else if (0 == jsoneq(buffer, &t[i], "false")){
+        *(bool *)es->recipient = false;
+    }
+    else {
+        goto type_error;
+    }
+  }
+  else if (STREQ(es->type_specifier, "int*")) {
+      *(int *)es->recipient = (int)strtol(buffer + t[i].start, &end, 10);
+      if (end != buffer + t[i].end) goto type_error;
+  }
+  else if (STREQ(es->type_specifier, "long*")) {
+      *(long *)es->recipient = strtol(buffer + t[i].start, &end, 10);
+      if (end != buffer + t[i].end) goto type_error;
+  }
+  else if (STREQ(es->type_specifier, "long long*")) {
+      *(long long *)es->recipient = strtoll(buffer + t[i].start, &end, 10);
+      if (end != buffer + t[i].end) goto type_error;
+  }
+  else if (STREQ(es->type_specifier, "float*")) {
+      *(float *)es->recipient = strtof(buffer + t[i].start, &end);
+      if (end != buffer + t[i].end) goto type_error;
+  }
+  else if (STREQ(es->type_specifier, "double*")) {
+      *(double *)es->recipient = strtod(buffer + t[i].start, &end);
+      if (end != buffer + t[i].end) goto type_error;
+  }
+  else {
+      goto type_error;
+  }
 
-    type_error:
-    ERROR("Expected specifier %s but found: '%.*s' )\n", es->type_specifier, t[i].end - t[i].start, buffer + t[i].start);
-    // report errors;
-    return;
+  return;
+
+type_error:
+  ERROR("Expected specifier %s but found: '%.*s' )\n", es->type_specifier, t[i].end - t[i].start, buffer + t[i].start);
+  // report errors;
+  return;
 }
 
-static void apply(char * test_string, jsmntok_t * t, size_t n_tokens,
-                  struct extractor_specifier * es) {
-    size_t ik = 1, iv = 2;
-    do {
-        // t[ik] must be a toplevel key, and t[iv] must be its value
-        assert(t[ik].type == JSMN_STRING); // make sure it's a key
-        assert(t[ik].parent == 0); // make sure it's at the toplevel
-        if (jsoneq(test_string, &t[ik], es->path_specifier.path.key) == 0) {
-            match_path(test_string, t, n_tokens, iv, es, es->path_specifier.next);
-            break;
-        }
-        // skip all children tokens of t[i_1]
-        ik = iv + 1;
-        if (ik < n_tokens) { // find the next toplevel key
-            for (ik = iv + 1; t[ik].end < t[iv].end; ik++);
-            iv = ik + 1;
-        }
-        else { // we are done
-            break;
-        }
-    } while (ik < n_tokens && iv < n_tokens);
+static void
+apply(char *test_string, jsmntok_t *tok, size_t n_toks, struct extractor_specifier *es)
+{
+  size_t ik = 1, iv = 2;
+  do {
+    // tok[ik] must be a toplevel key, and t[iv] must be its value
+    ASSERT_S(tok[ik].type == JSMN_STRING, "Not a key"); // make sure it's a key
+    ASSERT_S(tok[ik].parent == 0, "Token is not at top level"); // make sure it's at the toplevel
+
+    if (0 == jsoneq(test_string, &tok[ik], es->path_specifier.path.key)) {
+      match_path(test_string, tok, n_toks, iv, es, es->path_specifier.next);
+      break;
+    }
+    
+    // skip all children toks of t[i_1]
+    ik = iv + 1;
+    if (ik >= n_toks) {
+      break; // we are done
+    }
+
+    // find the next toplevel key
+
+    for (ik = iv + 1; tok[ik].end < tok[iv].end; ik++)
+        continue;
+
+    iv = ik + 1;
+  } while (ik < n_toks && iv < n_toks);
 }
 
 
-static char* parse_type_specifier(char *specifier, struct extractor_specifier *  p) {
-    char * start = specifier, * end;
-    long size = strtol(start, &end, 10);
+static char*
+parse_type_specifier(char *specifier, struct extractor_specifier *  p)
+{
+  char *start = specifier, * end;
+  long size = strtol(start, &end, 10);
 
-    bool size_is_valid = false;
-    if (end != start) {
-        size_is_valid = true;
-        specifier = end;
-    }
+  bool is_valid_size = false;
+  if (end != start) {
+    is_valid_size = true;
+    specifier = end;
+  }
 
-    if (strncmp(specifier, "s", 1) == 0 || strncmp(specifier, "S", 1) == 0){
-        strcpy(p->type_specifier, "char*");
-        if (size_is_valid)
-            p->size = size;
-        else
-            p->size = 0;
-        return specifier + 1;
-    }
-    else if (strncmp(specifier, "d", 1) == 0) {
-        p->size = sizeof(int);
-        strcpy(p->type_specifier, "int*");
-        return specifier + 1;
-    }
-    else if (strncmp(specifier, "ld", 2) == 0) {
-        p->size = sizeof(long);
-        strcpy(p->type_specifier, "long*");
-        return specifier + 2;
-    }
-    else if (strncmp(specifier, "lld", 3) == 0) {
-        p->size = sizeof(long long);
-        strcpy(p->type_specifier, "long long *");
-        return specifier + 3;
-    }
-    else if (strncmp(specifier, "f", 1) == 0) {
-        p->size = sizeof(float);
-        strcpy(p->type_specifier, "float*");
-        return specifier + 1;
-    }
-    else if (strncmp(specifier, "lf", 2) == 0) {
-        p->size = sizeof(double);
-        strcpy(p->type_specifier, "double*");
-        return specifier + 2;
-    }
-    else if (strncmp(specifier, "b", 1) == 0){
-        p->size = sizeof(bool);
-        strcpy(p->type_specifier, "bool*");
-        return specifier + 1;
-    }
-#if 0
-    if (STREQ(specifier, "ji")){
-        *n_bytes = sizeof(jscon_item_t*);
-        return "jscon_item_t**";
-    }
-#endif
-    return 0;
+  if (STRNEQ(specifier, "s", 1) || STRNEQ(specifier, "S", 1)){
+    strcpy(p->type_specifier, "char*");
+
+    p->size = (is_valid_size) ? size : 0;
+
+    return specifier + 1;
+  }
+  if (STRNEQ(specifier, "d", 1)) {
+    p->size = sizeof(int);
+    strcpy(p->type_specifier, "int*");
+    return specifier + 1;
+  }
+  if (STRNEQ(specifier, "ld", 2)) {
+    p->size = sizeof(long);
+    strcpy(p->type_specifier, "long*");
+    return specifier + 2;
+  }
+  if (STRNEQ(specifier, "lld", 3)) {
+    p->size = sizeof(long long);
+    strcpy(p->type_specifier, "long long*");
+    return specifier + 3;
+  }
+  if (STRNEQ(specifier, "f", 1)) {
+    p->size = sizeof(float);
+    strcpy(p->type_specifier, "float*");
+    return specifier + 1;
+  }
+  if (STRNEQ(specifier, "lf", 2)) {
+    p->size = sizeof(double);
+    strcpy(p->type_specifier, "double*");
+    return specifier + 2;
+  }
+  if (STRNEQ(specifier, "b", 1)){
+    p->size = sizeof(bool);
+    strcpy(p->type_specifier, "bool*");
+    return specifier + 1;
+  }
+
+  return 0;
 }
 
 /*
@@ -225,135 +230,134 @@ static char* parse_type_specifier(char *specifier, struct extractor_specifier * 
  *      abc
  *      10
  */
-static char * parse_path_specifier (char * format, struct extractor_specifier * p,
-                                    struct path_specifier * curr_path) {
-    char * start = format;
-    bool is_index = true;
-    do {
-        if (!isdigit(*format))
-            is_index = false;
-        format++;
-    } while (*format && *format != ']' && *format != '%');
-    size_t len = format - start;
+static char*
+parse_path_specifier(char * format, struct extractor_specifier *es, struct path_specifier *curr_path)
+{
+  //@todo does this accounts for objects with numerical keys?
+  
+  char *start = format;
+  bool is_index = true;
 
-    if (len >= KEY_MAX) { // report key is too long
-        return 0;
+  do {
+    if (!isdigit(*format)) {
+      is_index = false;
     }
-    else {
-        if (len == 0) {
-            // report this as an error
-        }
-        else if (is_index) { // array indexing
-            char * end;
-            long l = strtol(start, &end, 10);
-            if (end == format) {
-                curr_path->path.index = l;
-                curr_path->type = INDEX;
-            }
-            else {
-                // invalid characters in the number strings
-            }
-        }
-        else { // key
-            strncpy(curr_path->path.key, start, len);
-            curr_path->path.key[len] = 0;
-            curr_path->type = KEY;
-        }
-        format ++; // eat up ']'
-        if (*format == '[') {
-            format ++;
-            struct path_specifier * next_path = calloc(1, sizeof(*next_path));
-            curr_path->next = next_path;
-            return parse_path_specifier(format, p, next_path);
-        }
-        else if (*format == '%'){
-            format ++;
-            return parse_type_specifier(format, p);
+    format++;
+  } while (*format && *format != ']' && *format != '%');
+
+  size_t len = format - start; 
+  ASSERT_S(len < KEY_MAX, "Key is too long (Buffer Overflow)");
+  ASSERT_S(0 != len, "Key has invalid size 0");
+
+  if (is_index) { // array indexing
+    char *end;
+    long l_num = strtol(start, &end, 10);
+    ASSERT_S(end == format, "Invalid characters in the numerical string");
+
+    curr_path->path.index = l_num;
+    curr_path->type = INDEX;
+  }
+  else { // key indexing
+    strscpy(curr_path->path.key, start, len + 1);
+    curr_path->type = KEY;
+  }
+
+  ++format; // eat up ']'
+  if (*format == '[') {
+    ++format; // eat up '['
+    struct path_specifier *next_path = calloc(1, sizeof(*next_path));
+    curr_path->next = next_path;
+    return parse_path_specifier(format, es, next_path);
+  }
+  else if (*format == '%'){
+    ++format;
+    return parse_type_specifier(format, es);
+  }
+
+  return NULL;
+}
+
+/* count amount of keys and check for formatting errors */
+static void
+format_analyze(char *format, size_t *num_keys)
+{
+  bool is_open = false;
+  while (*format) /* run until end of string found */
+  {
+    // search for open bracket
+    while (*format) {
+      if ('[' == *format) {
+        ++format;
+        is_open = true;
+        break;
+      }
+      ++format;
+    }
+    ASSERT_S(is_open && *format, "Missing '[' token in format string");
+
+    // search for close bracket
+    while (*format) {
+      if (']' == *format) {
+        is_open = false;
+        if (*++format != '[') {
+          break;
         }
         else {
-            return 0;
+          is_open = true;
         }
+      }
+      ++format;
     }
+    ASSERT_S(!is_open, "Missing ']' token in format string");
+
+    /* find % occurrence */
+    while (*format) {
+      if ('%' == *format){
+        do {
+          // skip type specifier
+          ++format;
+        } while (*format && *format != '[');
+        break;
+      }
+      ++format;
+    }
+    ++*num_keys;
+  }
 }
 
 #define SKIP_SPACES(s)   { while (isspace(*s)) ++s; }
 
-static struct extractor_specifier * parse_extractor_specifiers (char * format, size_t n) {
-    size_t i = 0;
-    struct extractor_specifier * nes = calloc(n, sizeof(*nes));
-    SKIP_SPACES(format);
-    while (*format) {
-        if (*format == '[') {
-            format++;
-            format = parse_path_specifier(format, nes+i, &nes[i].path_specifier);
-        }
-        else {
-            //error
-            free(nes);
-            return 0;
-        }
-        i++;
+static struct extractor_specifier*
+parse_extractor_specifiers(char * format, size_t n)
+{
+  struct extractor_specifier *nes = calloc(n, sizeof(*nes));
+
+  SKIP_SPACES(format);
+
+  size_t i = 0;
+  while (*format) 
+  {
+    if (*format == '[') {
+      ++format; //eat up '['
+      format = parse_path_specifier(format, nes+i, &nes[i].path_specifier);
     }
-    return nes;
+    else {
+      free(nes);
+      return NULL;
+    }
+
+    i++;
+  }
+
+  return nes;
 }
 
-/* count amount of keys and check for formatting errors */
-static void format_analyze(char *format, size_t *num_keys) {
-    bool opened = false;
-    while (*format) { /* run until end of string found */
-        // search for open bracket
-        while (*format) {
-            if ('[' == *format) {
-                ++format;
-                opened = true;
-                break;
-            }
-            ++format;
-        }
-        if (!opened && !*format) {
-            // report no open bracket;
-            return;
-        }
+static struct extractor_specifier*
+format_parse(char *format, size_t *n)
+{
+  format_analyze(format, n);
 
-        // search for close bracket
-        while (*format) {
-            if (']' == *format) {
-                opened = false;
-                if (*++format != '[') {
-                    break;
-                }
-                else {
-                    opened = true;
-                    ++format;
-                    continue;
-                }
-            }
-            ++format;
-        }
-
-        if (opened) {
-            // report unmatched bracket;
-            return;
-        }
-        /* find % occurrence */
-        while (*format) {
-            if ('%' == *format){
-                do {
-                    // skip type specifier
-                    ++format;
-                } while (*format && *format != '[');
-                break;
-            }
-            ++format;
-        }
-        (*num_keys) ++;
-    }
-}
-
-static struct extractor_specifier * format_parse(char *format, size_t * n) {
-    format_analyze(format, n);
-    struct extractor_specifier * nes = parse_extractor_specifiers(format, *n);
-    return nes;
+  return parse_extractor_specifiers(format, *n);
 }
 
 /*
@@ -366,56 +370,55 @@ static struct extractor_specifier * format_parse(char *format, size_t * n) {
  *      json_scanf2(str, "[k1][k2]%d", &i);
  *
  */
-int json_scanf2(char *buffer, char *format, ...) {
-    va_list ap;
-    size_t num_keys = 0;
-    struct extractor_specifier * nes;
-    nes = format_parse(format, &num_keys);
+int
+json_scanf2(char *buffer, char *format, ...)
+{
+  va_list ap;
+  size_t num_keys = 0;
 
-    va_start(ap, format);
-    size_t i = 0;
-    for (i = 0; i < num_keys; i++) {
-        void * e = va_arg(ap, void *);;
-        if (!e) {
-            // this cannot be null, report error
-            return 0;
-        }
-        nes[i].recipient = e;
+  struct extractor_specifier *nes;
+  nes = format_parse(format, &num_keys);
 
-    }
-    va_end(ap);
+  if (NULL == nes) return 0;
 
-    jsmn_parser p;
-    jsmn_init(&p);
+  va_start(ap, format);
+  for (size_t i = 0; i < num_keys ; ++i) {
+    void *p_value = va_arg(ap, void*);;
+    ASSERT_S(NULL != p_value, "NULL pointer given as argument parameter");
 
-    // calculate how many tokens are needed
-    int r = jsmn_parse(&p, buffer, strlen(buffer), NULL, 0);
+    nes[i].recipient = p_value;
+  }
+  va_end(ap);
 
-    printf("need tokens = %d \n", r);
-    jsmntok_t *t = malloc(sizeof(jsmntok_t) * r);
-    jsmn_init(&p);
-    r = jsmn_parse(&p, buffer, strlen(buffer), t, r);
+  jsmn_parser parser;
+  jsmn_init(&parser);
 
-    if (r < 0) {
-        printf("Failed to parse JSON: %d\n", r);
-        free(t);
-        free(nes);
-        return 0;
-    }
+  //calculate how many tokens are needed
+  int ret = jsmn_parse(&parser, buffer, strlen(buffer), NULL, 0);
 
-    /* Assume the top-level element is an object */
-    if (r < 1 || t[0].type != JSMN_OBJECT) {
-        printf("Object expected\n");
-        free(t);
-        free(nes);
-        return 0;
-    }
+  D_PRINT("Necessary tokens = %d", ret);
+  jsmntok_t *tok = malloc(sizeof(jsmntok_t) * ret);
+  jsmn_init(&parser);
+  ret = jsmn_parse(&parser, buffer, strlen(buffer), tok, ret);
 
-    size_t n = 0;
-    for (n = 0; n < num_keys; n++) {
-        apply(buffer, t, r, nes+n);
-    }
-    free(t);
-    free(nes);
-    return 0;
+  if (ret < 0) {
+    D_PRINT("Failed to parse JSON: %d", ret);
+    goto cleanup;
+  }
+
+  /* Assume the top-level element is an object */
+  if (ret < 1 || tok[0].type != JSMN_OBJECT) {
+    D_PRINT("Object expected");
+    goto cleanup;
+  }
+
+  for (size_t i = 0; i < num_keys; ++i) {
+    apply(buffer, tok, ret, nes+i);
+  }
+
+cleanup:
+  free(tok);
+  free(nes);
+
+  return 0;
 }
