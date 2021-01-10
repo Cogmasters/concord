@@ -45,6 +45,7 @@ struct pair_s {
 
     char *key;
     void *value; /* value being NULL means its a parent */
+    bool is_parent; /* is the parent of a nested object */
 };
 
 inline static void
@@ -346,10 +347,13 @@ store_pair(char buf[], struct pair_s **pairs, int *num_pairs, va_list *ap)
     new_pair->key = strdup(&buf[strlen(buf)+1]);
     ASSERT_S(new_pair->key != NULL, jscon_strerror(JSCON_EXT__OUT_MEM, new_pair->key));
 
-    if (NULL != *ap)
+    if (NULL != *ap) {
         new_pair->value = va_arg(*ap, void*);
-    else
+        ASSERT_S(NULL != new_pair->value, "NULL pointer given as argument parameter");
+    }
+    else {
         new_pair->value = NULL;
+    }
 
     pairs[*num_pairs] = new_pair;
     ++*num_pairs;
