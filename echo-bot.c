@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <assert.h>
 
 #include <libdiscord.h>
@@ -11,7 +12,10 @@ void on_message(discord_t *client, discord_message_t *message)
 
   discord_get_client_user(client, &self);
 
-  //discord_send_message(client, message->channel_id, message->content);
+  // make sure it doesn't echoes itself
+  if (strcmp(self->username, message->author->username)){
+    discord_send_message(client, message->channel_id, message->content);
+  }
 
   discord_user_cleanup(self);
 }

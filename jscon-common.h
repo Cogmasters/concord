@@ -26,8 +26,6 @@
 #include <limits.h>
 
 /* #include <libjscon.h> (implicit) */
-//#include "hashtable.h"
-
 
 #define DEBUG_MODE 1
 
@@ -81,74 +79,16 @@ char *__jscon_strerror(jscon_errcode code, char codetag[], void *where, char ent
 #define IS_LEAF(item) (IS_PRIMITIVE(item) || IS_EMPTY_COMPOSITE(item))
 #define IS_ROOT(item) (NULL == item->parent)
 
-  
-#if 0
-/* JSCON COMPOSITE STRUCTURE
- *  if jscon_item type is of composite type (object or array) it will
- *  include a jscon_composite_t struct with the following attributes:
- *      branch: for sorting through object's properties/array elements
- *      num_branch: amount of enumerable properties/elements contained
- *      last_accessed_branch: simulate stack trace by storing the last
- *          accessed branch address. this is used for movement 
- *          functions that require state to be preserved between 
- *          calls, while also adhering to tree traversal rules. 
- *          (check public.c jscon_iter_next() for example)
- *      hashtable: easy reference to its key-value pairs
- *      p_item: reference to the item the composite is part of
- *      next: points to next composite
- *      prev: points to previous composite */
-typedef struct jscon_composite_s {
-    struct jscon_item_s **branch;
-    size_t num_branch;
-    size_t last_accessed_branch;
-
-    struct hashtable_s *hashtable;
-    struct jscon_item_s *p_item;
-    struct jscon_composite_s *next;
-    struct jscon_composite_s *prev;
-} jscon_composite_t;
-
-
-void Jscon_composite_link_r(struct jscon_item_s *item, jscon_composite_t **last_accessed_comp);
-void Jscon_composite_build(struct jscon_item_s *item);
-struct jscon_item_s* Jscon_composite_get(const char *key, struct jscon_item_s *item);
-struct jscon_item_s* Jscon_composite_set(const char *key, struct jscon_item_s *item);
-void Jscon_composite_remake(jscon_item_t *item);
-
-
-
-/* JSCON ITEM STRUCTURE
- *  key: item's jscon key (NULL if root)
- *  parent: object or array that its part of (NULL if root)
- *  type: item's jscon datatype (check enum jscon_type_e for flags) 
- *  union {string, d_number, i_number, boolean, comp}:
- *      string,d_number,i_number,boolean: item literal value, denoted 
- *      by its type.  */
-typedef struct jscon_item_s {
-    union {
-        char *string;
-        double d_number;
-        long long i_number;
-        bool boolean;
-        jscon_composite_t *comp;
-    };
-    enum jscon_type type;
-
-    char *key;
-    struct jscon_item_s *parent;
-} jscon_item_t;
-#endif
-
 /*
  * jscon-common.c
  */
+
 char* Jscon_decode_string(char **p_buffer);
 void Jscon_decode_static_string(char **p_buffer, const long len, const long offset, char set_str[]);
 double Jscon_decode_double(char **p_buffer);
 bool Jscon_decode_boolean(char **p_buffer);
 void Jscon_decode_null(char **p_buffer);
 size_t strscpy(char *dest, const char *src, size_t n);
-//jscon_composite_t* Jscon_decode_composite(char **p_buffer, size_t n_branch);
 
 
 #endif

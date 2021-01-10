@@ -231,7 +231,7 @@ _discord_perform_request(
         api->res_body.str = NULL;
         api->res_body.size = 0;
 
-        return; /* DONE */
+        break; /* DONE */
     case HTTP_TOO_MANY_REQUESTS:
     /* @todo dealing with ratelimits solely by checking for
      *  HTTP_TOO_MANY REQUESTS is not discord compliant */
@@ -239,7 +239,7 @@ _discord_perform_request(
         char message[256] = {0};
         long long retry_after;
 
-        jscon_scanf(api->res_body.str,
+        json_scanf(api->res_body.str,
                     "%s[message]" \
                     "%lld[retry_after]",
                     message,
@@ -262,6 +262,8 @@ _discord_perform_request(
         ERROR("Unknown HTTP code %d", http_code);
     }
   } while (HTTP_OK != http_code);
+
+  api->res_pairs.size = 0; //reset header size for the next iteration
 }
 
 void
@@ -269,26 +271,12 @@ Discord_api_load_message(void **p_message, char *str)
 {
   discord_message_t *message = *p_message;
 
-  char str_author[512] = {0};
+  char str_author[512];
   char str_mentions[512];
   char str_referenced_message[512];
 
-  jscon_scanf(str, 
-              "%s[content]" \
-              "%s[channel_id]" \
-              "%S[author]", 
-              message->content, 
-              message->channel_id,
-              str_author);
-
-  if (NULL == message->author) {
-    message->author = calloc(1, sizeof *message->author);
-    ASSERT_S(NULL != message->author, "Out of memory");
-  }
-
-  Discord_api_load_user(&message->author, str_author);
 /*
-  jscon_scanf(str,
+  json_scanf(str,
      "%s[id]" \
      "%s[channel_id]" \
      "%s[guild_id]" \
@@ -321,6 +309,22 @@ Discord_api_load_message(void **p_message, char *str)
       &message->flags,
       str_referenced_message);
 */
+
+  json_scanf(str, 
+              "%s[content]" \
+              "%s[channel_id]" \
+              "%S[author]", 
+              message->content, 
+              message->channel_id,
+              str_author);
+
+  if (NULL == message->author) {
+    message->author = discord_user_init();
+    ASSERT_S(NULL != message->author, "Out of memory");
+  }
+
+  Discord_api_load_user(&message->author, str_author);
+
   *p_message = message;
 }
 
@@ -329,7 +333,7 @@ Discord_api_load_guild(void **p_guild, char *str)
 {
   discord_guild_t *guild = *p_guild;
 
-  jscon_scanf(str,
+  json_scanf(str,
      "%s[id]" \
      "%s[name]" \
      "%s[icon]" \
@@ -351,7 +355,7 @@ Discord_api_load_user(void **p_user, char *str)
 {
   discord_user_t *user = *p_user;
 
-  jscon_scanf(str,
+  json_scanf(str,
      "%s[id]" \
      "%s[username]" \
      "%s[discriminator]" \
