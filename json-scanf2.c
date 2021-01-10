@@ -26,11 +26,15 @@
 #include <string.h>
 #include <ctype.h>
 #include <stdbool.h>
+#include <assert.h>
 
 #include "json-scanf.h"
 
 #include "jscon-common.h"
 #include "debug.h"
+
+#define JSMN_PARENT_LINKS
+#define JSMN_STRICT
 #include "jsmn.h"
 
 #define KEY_MAX 256
@@ -39,7 +43,6 @@ struct path_specifier {
     enum {
         KEY,
         INDEX,
-        ARRAY
     } type;
     union {
         char key[KEY_MAX];
@@ -106,11 +109,11 @@ static void match_path (char * buffer,
             *(long long *)es->recipient = strtoll(buffer + t[i].start, &end, 10);
             if (end != buffer + t[i].end) goto type_error;
         }
-        else if (STREQ(es->type_specifier, "float *")) {
+        else if (STREQ(es->type_specifier, "float*")) {
             *(float *)es->recipient = strtof(buffer + t[i].start, &end);
             if (end != buffer + t[i].end) goto type_error;
         }
-        else if (STREQ(es->type_specifier, "double *")) {
+        else if (STREQ(es->type_specifier, "double*")) {
             *(double *)es->recipient = strtod(buffer + t[i].start, &end);
             if (end != buffer + t[i].end) goto type_error;
         }
@@ -133,13 +136,25 @@ static void match_path (char * buffer,
 
 static void apply(char * test_string, jsmntok_t * t, size_t n_tokens,
                   struct extractor_specifier * es) {
-    size_t i;
-    for (i = 1; i < n_tokens; i++) {
-        if (jsoneq(test_string, &t[i], es->path_specifier.path.key) == 0) {
-            i++;
-            match_path(test_string, t, n_tokens, i, es, es->path_specifier.next);
+    size_t ik = 1, iv = 2;
+    do {
+        // t[ik] must be a toplevel key, and t[iv] must be its value
+        assert(t[ik].type == JSMN_STRING); // make sure it's a key
+        assert(t[ik].parent == 0); // make sure it's at the toplevel
+        if (jsoneq(test_string, &t[ik], es->path_specifier.path.key) == 0) {
+            match_path(test_string, t, n_tokens, iv, es, es->path_specifier.next);
+            break;
         }
-    }
+        // skip all children tokens of t[i_1]
+        ik = iv + 1;
+        if (ik < n_tokens) { // find the next toplevel key
+            for (ik = iv + 1; t[ik].end < t[iv].end; ik++);
+            iv = ik + 1;
+        }
+        else { // we are done
+            break;
+        }
+    } while (ik < n_tokens && iv < n_tokens);
 }
 
 
@@ -215,7 +230,7 @@ static char * parse_path_specifier (char * format, struct extractor_specifier * 
     char * start = format;
     bool is_index = true;
     do {
-        if (isalpha(*format))
+        if (!isdigit(*format))
             is_index = false;
         format++;
     } while (*format && *format != ']' && *format != '%');
@@ -226,13 +241,14 @@ static char * parse_path_specifier (char * format, struct extractor_specifier * 
     }
     else {
         if (len == 0) {
-            curr_path->type = ARRAY;
+            // report this as an error
         }
         else if (is_index) { // array indexing
             char * end;
             long l = strtol(start, &end, 10);
             if (end == format) {
                 curr_path->path.index = l;
+                curr_path->type = INDEX;
             }
             else {
                 // invalid characters in the number strings
@@ -359,7 +375,13 @@ int json_scanf2(char *buffer, char *format, ...) {
     va_start(ap, format);
     size_t i = 0;
     for (i = 0; i < num_keys; i++) {
-        nes[i].recipient = va_arg(ap, void *);
+        void * e = va_arg(ap, void *);;
+        if (!e) {
+            // this cannot be null, report error
+            return 0;
+        }
+        nes[i].recipient = e;
+
     }
     va_end(ap);
 
