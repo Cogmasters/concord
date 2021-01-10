@@ -143,8 +143,6 @@ static void apply(char * test_string, jsmntok_t * t, size_t n_tokens,
 }
 
 
-#define SKIP_SPACES(s)   { while (isspace(*s)) ++s; }
-
 static char* parse_type_specifier(char *specifier, struct extractor_specifier *  p) {
     char * start = specifier, * end;
     long size = strtol(start, &end, 10);
@@ -246,7 +244,6 @@ static char * parse_path_specifier (char * format, struct extractor_specifier * 
             curr_path->type = KEY;
         }
         format ++; // eat up ']'
-        //SKIP_SPACES(format);
         if (*format == '[') {
             format ++;
             struct path_specifier * next_path = malloc(sizeof(*next_path));
@@ -262,6 +259,8 @@ static char * parse_path_specifier (char * format, struct extractor_specifier * 
         }
     }
 }
+
+#define SKIP_SPACES(s)   { while (isspace(*s)) ++s; }
 
 static struct extractor_specifier * parse_extractor_specifiers (char * format, size_t n) {
     size_t i = 0;
@@ -342,12 +341,12 @@ static struct extractor_specifier * format_parse(char *format, size_t * n) {
 }
 
 /*
- * works like sscanf, will parse stuff only for the keys specified to the format string parameter.
- *  the variables assigned to ... must be in
- *  the correct order, and type, as the requested keys.  
+ *  format grammar:
+ *      ([key1]|[][number])+(%<d|ld\lld|f\lf|b\s\S>)
  *
- * every key found that doesn't match any of the requested keys will be ignored along with all of 
- *  its contents.
+ *  usage:
+ *      json_scanf2(str, "[k1][k2]%d", &i);
+ *
  */
 int json_scanf2(char *buffer, char *format, ...) {
     va_list ap;
@@ -364,6 +363,8 @@ int json_scanf2(char *buffer, char *format, ...) {
 
     jsmn_parser p;
     jsmn_init(&p);
+
+    // calculate how many tokens are needed
     int r = jsmn_parse(&p, buffer, strlen(buffer), NULL, 0);
 
     printf("need tokens = %d \n", r);
