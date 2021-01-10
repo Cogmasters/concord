@@ -2,7 +2,7 @@ CC	?= gcc
 OBJDIR	:= obj
 LIBDIR	:= lib
 
-SRC		:= $(wildcard discord-*.c curl-websocket.c settings.c json-scanf.c jscon-common.c)
+SRC		:= $(wildcard discord-*.c curl-websocket.c settings.c json-scanf.c jscon-common.c json-scanf2.c)
 _OBJS		:= $(patsubst %.c, %.o, $(SRC))
 OBJS 		:= $(addprefix $(OBJDIR)/, $(_OBJS))
 
@@ -40,6 +40,8 @@ test : all test-api.c test-ws.c test-json-scanf.c
 		test-ws.c -o test-ws.exe $(LIBS_LDFLAGS)
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \
 		test-json-scanf.c -o test-json-scanf.exe $(LIBS_LDFLAGS)
+	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \
+		test-json-scanf2.c -o test-json-scanf2.exe $(LIBS_LDFLAGS)
 
 mkdir :
 	mkdir -p $(OBJDIR) $(LIBDIR)
@@ -52,6 +54,9 @@ $(OBJDIR)/settings.o : settings.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 
 $(OBJDIR)/json-scanf.o : json-scanf.c
+	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
+
+$(OBJDIR)/json-scanf2.o : json-scanf2.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 
 $(OBJDIR)/jscon-common.o : jscon-common.c
