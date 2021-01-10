@@ -36,7 +36,8 @@
 #define JSMN_STRICT
 #include "jsmn.h"
 
-#define KEY_MAX 256
+#define N_PATH_MAX 8
+#define KEY_MAX 128
 
 struct path_specifier {
   enum {
@@ -51,7 +52,7 @@ struct path_specifier {
 };
 
 struct extractor_specifier {
-  struct path_specifier path_specifier;
+  struct path_specifier path_specifiers[N_PATH_MAX];
   char type_specifier[10];
   size_t size;
   void *recipient; /* must be a pointer */
@@ -146,19 +147,18 @@ apply(char *test_string, jsmntok_t *tok, size_t n_toks, struct extractor_specifi
     ASSERT_S(tok[ik].type == JSMN_STRING, "Not a key"); // make sure it's a key
     ASSERT_S(tok[ik].parent == 0, "Token is not at top level"); // make sure it's at the toplevel
 
-    if (0 == jsoneq(test_string, &tok[ik], es->path_specifier.path.key)) {
-      match_path(test_string, tok, n_toks, iv, es, es->path_specifier.next);
+    if (0 == jsoneq(test_string, &tok[ik], es->path_specifiers[0].path.key)) {
+      match_path(test_string, tok, n_toks, iv, es, es->path_specifiers[0].next);
       break;
     }
     
-    // skip all children toks of t[i_1]
+    // skip all children toks of t[iv]
     ik = iv + 1;
     if (ik >= n_toks) {
       break; // we are done
     }
 
     // find the next toplevel key
-
     for (ik = iv + 1; tok[ik].end < tok[iv].end; ik++)
         continue;
 
@@ -231,10 +231,12 @@ parse_type_specifier(char *specifier, struct extractor_specifier *  p)
  *      10
  */
 static char*
-parse_path_specifier(char * format, struct extractor_specifier *es, struct path_specifier *curr_path)
+parse_path_specifier(char * format, struct extractor_specifier *es,
+                     struct path_specifier *curr_path, int next_path_idx)
 {
   //@todo does this accounts for objects with numerical keys?
-  
+  ASSERT_S(next_path_idx < N_PATH_MAX, "Too many path specifiers");
+
   char *start = format;
   bool is_index = true;
 
@@ -248,6 +250,7 @@ parse_path_specifier(char * format, struct extractor_specifier *es, struct path_
   size_t len = format - start; 
   ASSERT_S(len < KEY_MAX, "Key is too long (Buffer Overflow)");
   ASSERT_S(0 != len, "Key has invalid size 0");
+
 
   if (is_index) { // array indexing
     char *end;
@@ -265,9 +268,9 @@ parse_path_specifier(char * format, struct extractor_specifier *es, struct path_
   ++format; // eat up ']'
   if (*format == '[') {
     ++format; // eat up '['
-    struct path_specifier *next_path = calloc(1, sizeof(*next_path));
+    struct path_specifier *next_path = es->path_specifiers+next_path_idx;
     curr_path->next = next_path;
-    return parse_path_specifier(format, es, next_path);
+    return parse_path_specifier(format, es, next_path, next_path_idx+1);
   }
   else if (*format == '%'){
     ++format;
@@ -338,7 +341,7 @@ parse_extractor_specifiers(char * format, size_t n)
     SKIP_SPACES(format);
     if (*format == '[') {
       ++format; //eat up '['
-      format = parse_path_specifier(format, nes+i, &nes[i].path_specifier);
+      format = parse_path_specifier(format, nes+i, nes[i].path_specifiers+0, 1);
     }
     else {
       free(nes);
