@@ -38,6 +38,7 @@ int main() {
   jsmntok_t t[128]; /* We expect no more than 128 tokens */
 
   jsmn_init(&p);
+  printf ("%s\n", test_string);
   r = jsmn_parse(&p, test_string, strlen(test_string), t,
                  sizeof(t) / sizeof(t[0]));
   if (r < 0) {
@@ -82,8 +83,10 @@ int main() {
              test_string + t[i].start);
     }
   }
+
   for (i = 0; i < r; i++) {
-    printf("[%d]%s\n", i, print_token(t[i].type));
+    printf("[%d][size:%d]%s (%.*s)\n", i, t[i].size, print_token(t[i].type),
+           t[i].end - t[i].start, test_string + t[i].start);
   }
   return EXIT_SUCCESS;
 }
