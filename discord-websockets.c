@@ -175,7 +175,7 @@ ws_on_text_cb(void *data, CURL *ehandle, const char *text, size_t len)
     timestamp_str(timestr, sizeof(timestr)-1);
 
     fprintf( ((discord_t*)ws)->settings.f_dump,
-      "\r\r\r\r%s\n%s\n", timestr, text);
+      "\r\r\r\rRECEIVED - %s\n%s\n", timestr, text);
     fflush( ((discord_t*)ws)->settings.f_dump );
   }
 
