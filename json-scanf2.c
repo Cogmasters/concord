@@ -139,29 +139,54 @@ match_path (char *buffer, jsmntok_t *t, size_t n_toks, int start_tok,
     }
   }
   else if (STREQ(es->type_specifier, "int*")) {
-      ASSERT_S(t[i].type == JSMN_PRIMITIVE, "Not a primitive");
-      *(int *)es->recipient = (int)strtol(buffer + t[i].start, &end, 10);
-      if (end != buffer + t[i].end) goto type_error;
+    ASSERT_S(t[i].type == JSMN_PRIMITIVE, "Not a primitive");
+    switch(buffer[t[i].start]) {
+      case 'n': *(int *) es->recipient = 0; break;
+      default:
+        *(int *) es->recipient = (int) strtol(buffer + t[i].start, &end, 10);
+        if (end != buffer + t[i].end) goto type_error;
+        break;
+    }
   }
   else if (STREQ(es->type_specifier, "long*")) {
-      ASSERT_S(t[i].type == JSMN_PRIMITIVE, "Not a primitive");
-      *(long *)es->recipient = strtol(buffer + t[i].start, &end, 10);
-      if (end != buffer + t[i].end) goto type_error;
+    ASSERT_S(t[i].type == JSMN_PRIMITIVE, "Not a primitive");
+    switch(buffer[t[i].start]) {
+      case 'n': *(long *) es->recipient = 0; break;
+      default:
+        *(long *) es->recipient = strtol(buffer + t[i].start, &end, 10);
+        if (end != buffer + t[i].end) goto type_error;
+        break;
+    }
   }
   else if (STREQ(es->type_specifier, "long long*")) {
-      ASSERT_S(t[i].type == JSMN_PRIMITIVE, "Not a primitive");
-      *(long long *)es->recipient = strtoll(buffer + t[i].start, &end, 10);
-      if (end != buffer + t[i].end) goto type_error;
+    ASSERT_S(t[i].type == JSMN_PRIMITIVE, "Not a primitive");
+    switch(buffer[t[i].start]) {
+      case 'n': *(long long *) es->recipient = 0; break;
+      default:
+        *(long long *) es->recipient = strtoll(buffer + t[i].start, &end, 10);
+        if (end != buffer + t[i].end) goto type_error;
+        break;
+    }
   }
   else if (STREQ(es->type_specifier, "float*")) {
-      ASSERT_S(t[i].type == JSMN_PRIMITIVE, "Not a primitive");
-      *(float *)es->recipient = strtof(buffer + t[i].start, &end);
-      if (end != buffer + t[i].end) goto type_error;
+    ASSERT_S(t[i].type == JSMN_PRIMITIVE, "Not a primitive");
+    switch(buffer[t[i].start]) {
+      case 'n': *(float *) es->recipient = 0; break;
+      default:
+        *(float *) es->recipient = strtof(buffer + t[i].start, &end);
+        if (end != buffer + t[i].end) goto type_error;
+        break;
+    }
   }
   else if (STREQ(es->type_specifier, "double*")) {
-      ASSERT_S(t[i].type == JSMN_PRIMITIVE, "Not a primitive");
-      *(double *)es->recipient = strtod(buffer + t[i].start, &end);
-      if (end != buffer + t[i].end) goto type_error;
+    ASSERT_S(t[i].type == JSMN_PRIMITIVE, "Not a primitive");
+    switch(buffer[t[i].start]) {
+      case 'n': *(double *) es->recipient = 0; break;
+      default:
+        *(double *) es->recipient = strtod(buffer + t[i].start, &end);
+        if (end != buffer + t[i].end) goto type_error;
+        break;
+    }
   }
   else {
       goto type_error;
