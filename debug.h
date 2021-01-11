@@ -1,26 +1,24 @@
 #ifndef DEBUG_H_
 #define DEBUG_H_
 
+#ifdef __stensal__
+#define ABORT()    { char * p = 0; * p = 0; }
+#else
+#define ABORT()    abort()
+#endif
+
 
 #define D_OUT stderr
 #define D_FMT_PREFIX "[%s:%d] %s()\n\t"
 #define D_FMT_ARGS __FILE__, __LINE__, __func__
 
-
 #define __ERROR(fmt, ...) fprintf(D_OUT, D_FMT_PREFIX "ERROR:\t"fmt"\n%s", D_FMT_ARGS, __VA_ARGS__)
-#ifdef __stensal__
 #define ERROR(...) \
         do { \
             __ERROR(__VA_ARGS__, ""); \
-            char * p = 0; *p = 0; \
+            ABORT(); \
         } while (0)
-#else
-#define ERROR(...) \
-        do { \
-            __ERROR(__VA_ARGS__, ""); \
-            abort(); \
-        } while (0)
-#endif
+
 /* minimalistic error message */
 #define ERROR_MIN(err_macro) ERROR("%d %s", err_macro, #err_macro)
 /* assert with diagnose string */
