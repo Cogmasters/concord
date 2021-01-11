@@ -229,9 +229,9 @@ perform_request(
 
     switch (http_code) {
     case HTTP_OK:
-        if (NULL == load_cb) return;
-
-        (*load_cb)(p_object, api->res_body.str);
+        if (load_cb) {
+          (*load_cb)(p_object, api->res_body.str);
+        }
 
         //clean response for next iteration
         free(api->res_body.str);
