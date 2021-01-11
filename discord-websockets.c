@@ -68,6 +68,9 @@ static void
 on_dispatch(struct discord_ws_s *ws)
 {
   if (0 == strcmp("READY", ws->payload.event_name)) {
+    json_scanf(ws->payload.event_data, "%s[session_id]", ws->session_id);
+    ASSERT_S(ws->session_id, "Couldn't fetch session_id from READY event");
+
     if (NULL == ws->cbs.on_ready) return;
 
     (*ws->cbs.on_ready)((discord_t*)ws);
@@ -86,8 +89,29 @@ on_dispatch(struct discord_ws_s *ws)
     discord_message_cleanup(message);
   }
   else {
-    ERROR("Not yet implemented GATEWAY_DISPATCH event: %s", ws->payload.event_name);
+    D_PRINT("Not yet implemented GATEWAY_DISPATCH event: %s", ws->payload.event_name);
   }
+}
+
+static void
+on_reconnect(struct discord_ws_s *ws)
+{
+  D_PRINT("Attempting to reconnect to Discord WebSockets ...");
+
+  char fmt_payload[] = \
+    "{\"op\":6,\"d\":{\"token\":\"%s\",\"session_id\":\"%s\",\"seq\":%d}}";
+  char payload[MAX_PAYLOAD_LEN];
+
+  char token[64]; //fetch token from stored identify payload
+  json_scanf(ws->identify, "%s[d][token]", token);
+
+  snprintf(payload, sizeof(payload)-1, fmt_payload,
+      token, ws->session_id, ws->payload.seq_number);
+
+  D_NOTOP_PRINT("RESUME PAYLOAD:\n\t%s", payload);
+
+  bool ret = cws_send_text(ws->ehandle, payload);
+  ASSERT_S(true == ret, "Couldn't send resume payload");
 }
 
 static void
@@ -97,7 +121,6 @@ ws_on_connect_cb(void *data, CURL *ehandle, const char *ws_protocols)
 
   (void)data;
   (void)ehandle;
-  (void)ws_protocols;
 }
 
 static void
@@ -109,9 +132,6 @@ ws_on_close_cb(void *data, CURL *ehandle, enum cws_close_reason cwscode, const c
     D_PRINT("CLOSE=%4d %zd bytes '%s'", cwscode, len, reason);
 
     (void)ehandle;
-    (void)cwscode;
-    (void)len;
-    (void)reason;
 }
 
 static void
@@ -121,24 +141,26 @@ ws_on_text_cb(void *data, CURL *ehandle, const char *text, size_t len)
 
   D_PRINT("ON_TEXT:\n\t\t%s", text);
 
+  int tmp_seq_number; //check value first, then assign
   json_scanf((char*)text, 
-              "%s[t]" \
-              "%d[s]" \
-              "%d[op]" \
-              "%S[d]",
+              "%s[t] %d[s] %d[op] %S[d]",
                ws->payload.event_name,
-               &ws->payload.seq_number,
+               &tmp_seq_number,
                &ws->payload.opcode,
                ws->payload.event_data);
 
-  D_NOTOP_PRINT("OP:\t\t%s\n\t" \
-                "EVENT_NAME:\t%s\n\t" \
-                "SEQ_NUMBER:\t%d\n\t" \
+  if (tmp_seq_number) {
+    ws->payload.seq_number = tmp_seq_number;
+  }
+
+  D_NOTOP_PRINT("OP:\t\t%s\n\t"
+                "EVENT_NAME:\t%s\n\t"
+                "SEQ_NUMBER:\t%d\n\t"
                 "EVENT_DATA:\t%s", 
                 payload_strevent(ws->payload.opcode), 
                 *ws->payload.event_name //if event name exists
                    ? ws->payload.event_name //prints event name
-                   : "NOT_EVENT", //otherwise, print this
+                   : "NULL", //otherwise prints NULL
                 ws->payload.seq_number,
                 ws->payload.event_data);
 
@@ -150,6 +172,7 @@ ws_on_text_cb(void *data, CURL *ehandle, const char *text, size_t len)
       on_dispatch(ws);
       break;
   case GATEWAY_RECONNECT:
+      on_reconnect(ws);
       break;
   case GATEWAY_HEARTBEAT_ACK:
       break; 
@@ -241,8 +264,13 @@ Discord_ws_init(struct discord_ws_s *ws, char token[])
   ws->status = WS_DISCONNECTED;
 
   ws->identify = identify_init(token);
+  ws->session_id = malloc(SNOWFLAKE_TIMESTAMP);
+  ASSERT_S(NULL != ws->session_id, "Out of memory");
+
   ws->ehandle = custom_easy_init(ws);
   ws->mhandle = custom_multi_init();
+
+  ws->payload.seq_number = 0;
 
   ws->cbs.on_ready = NULL;
   ws->cbs.on_message = NULL;
@@ -252,6 +280,8 @@ void
 Discord_ws_cleanup(struct discord_ws_s *ws)
 {
   free(ws->identify);
+  free(ws->session_id);
+
   curl_multi_cleanup(ws->mhandle);
   cws_free(ws->ehandle);
 }

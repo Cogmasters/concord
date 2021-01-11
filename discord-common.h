@@ -76,10 +76,6 @@ struct api_response_s {
   size_t size; //the response str length
 };
 
-/*allows using Discord_api_request() as a template for every
- * kind of transfer*/
-typedef void (discord_load_obj_cb)(void **p_obj, char *str);
-
 #define MAX_HEADER_SIZE 1000
 
 struct api_header_s {
@@ -139,6 +135,7 @@ enum ws_status {
 struct discord_ws_s {
   enum ws_status status;
   char *identify;
+  char *session_id;
 
   CURLM *mhandle;
   CURL *ehandle;
@@ -162,9 +159,13 @@ struct discord_ws_s {
 };
 
 typedef struct discord_s {
-  struct discord_ws_s ws; //ws can be expanded to discord_t by casting
-  struct discord_api_s api;
+  struct discord_ws_s ws; //discord_t == (discord_t)(ws)
+  struct discord_api_s api; //discord_t == (discord_t)(api-sizeof(ws))
 } discord_t;
+
+/*for using Discord_api_request() as a template for every
+ * kind of transfer*/
+typedef void (discord_load_obj_cb)(void **p_obj, char *str);
 
 /* discord-api.c */
 
