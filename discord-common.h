@@ -9,7 +9,6 @@
 #include "discord-tool-debug.h"
 
 enum http_method {
-  NONE,
   DELETE,
   GET,
   POST,
@@ -158,9 +157,15 @@ struct discord_ws_s {
   } cbs;
 };
 
+struct _settings_s { //@todo this whole struct is temporary
+  char *token;
+  FILE *f_dump;
+};
+
 typedef struct discord_s {
   struct discord_ws_s ws; //discord_t == (discord_t)(ws)
   struct discord_api_s api; //discord_t == (discord_t)(api-sizeof(ws))
+  struct _settings_s settings;
 } discord_t;
 
 /*for using Discord_api_request() as a template for every

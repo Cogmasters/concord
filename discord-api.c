@@ -232,7 +232,6 @@ perform_request(
         if (NULL == load_cb) return;
 
         (*load_cb)(p_object, api->res_body.str);
-        D_NOTOP_PUTS("Object loaded with API response"); 
 
         //clean response for next iteration
         free(api->res_body.str);
@@ -247,11 +246,9 @@ perform_request(
         char message[256] = {0};
         long long retry_after;
 
-        json_scanf(api->res_body.str,
-                    "%s[message]" \
-                    "%lld[retry_after]",
-                    message,
-                    &retry_after);
+        json_scanf2(api->res_body.str,
+                    "[message]%s [retry_after]%lld",
+                    message, &retry_after);
 
         D_PRINT("%s", message);
 
@@ -318,13 +315,8 @@ Discord_api_load_message(void **p_message, char *str)
       str_referenced_message);
 */
 
-  json_scanf(str, 
-              "%s[content]" \
-              "%s[channel_id]" \
-              "%S[author]", 
-              message->content, 
-              message->channel_id,
-              str_author);
+  json_scanf2(str, "[content]%s [channel_id]%s [author]%S", 
+              message->content, message->channel_id, str_author);
 
   if (NULL == message->author) {
     message->author = discord_user_init();
@@ -334,6 +326,8 @@ Discord_api_load_message(void **p_message, char *str)
   Discord_api_load_user((void**)&message->author, str_author);
 
   *p_message = message;
+
+  D_PUTS("Message loaded with API response"); 
 }
 
 void
@@ -341,13 +335,13 @@ Discord_api_load_guild(void **p_guild, char *str)
 {
   discord_guild_t *guild = *p_guild;
 
-  json_scanf(str,
-     "%s[id]" \
-     "%s[name]" \
-     "%s[icon]" \
-     "%b[owner]" \
-     "%d[permissions]" \
-     "%s[permissions_new]",
+  json_scanf2(str,
+     "[id]%s"
+     "[name]%s"
+     "[icon]%s"
+     "[owner]%b"
+     "[permissions]%d"
+     "[permissions_new]%s",
       guild->id,
       guild->name,
       guild->icon,
@@ -356,6 +350,8 @@ Discord_api_load_guild(void **p_guild, char *str)
       guild->permissions_new);
 
   *p_guild = guild;
+
+  D_PUTS("Guild loaded with API response"); 
 }
 
 void
@@ -363,20 +359,20 @@ Discord_api_load_user(void **p_user, char *str)
 {
   discord_user_t *user = *p_user;
 
-  json_scanf(str,
-     "%s[id]" \
-     "%s[username]" \
-     "%s[discriminator]" \
-     "%s[avatar]" \
-     "%b[bot]" \
-     "%b[system]" \
-     "%b[mfa_enabled]" \
-     "%s[locale]" \
-     "%b[verified]" \
-     "%s[email]" \
-     "%d[flags]" \
-     "%d[premium_type]" \
-     "%d[public_flags]",
+  json_scanf2(str,
+     "[id]%s"
+     "[username]%s"
+     "[discriminator]%s"
+     "[avatar]%s"
+     "[bot]%b"
+     "[system]%b"
+     "[mfa_enabled]%b"
+     "[locale]%s"
+     "[verified]%b"
+     "[email]%s"
+     "[flags]%d"
+     "[premium_type]%d"
+     "[public_flags]%d",
       user->id,
       user->username,
       user->discriminator,
@@ -392,6 +388,8 @@ Discord_api_load_user(void **p_user, char *str)
       &user->public_flags);
 
   *p_user = user;
+
+  D_PUTS("User loaded with API response"); 
 }
 
 /* template function for performing requests */

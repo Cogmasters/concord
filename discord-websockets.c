@@ -42,6 +42,16 @@ timestamp_ms()
 }
 
 static void
+timestamp_str(char str[], int len)
+{
+  time_t t = time(NULL);
+  struct tm *tm = localtime(&t);
+
+  int ret = strftime(str, len, "%c", tm);
+  ASSERT_S(ret != 0, "Could not retrieve string timestamp");
+}
+
+static void
 ws_send_identify(struct discord_ws_s *ws)
 {
   D_PRINT("IDENTIFY PAYLOAD:\n\t%s", ws->identify);
@@ -58,7 +68,7 @@ on_hello(struct discord_ws_s *ws)
   ws->hbeat.interval_ms = 0;
   ws->hbeat.start_ms = timestamp_ms();
 
-  json_scanf(ws->payload.event_data, "%ld[heartbeat_interval]", &ws->hbeat.interval_ms);
+  json_scanf2(ws->payload.event_data, "[heartbeat_interval]%ld", &ws->hbeat.interval_ms);
   ASSERT_S(ws->hbeat.interval_ms > 0, "Invalid heartbeat_ms");
 
   ws_send_identify(ws);
@@ -68,7 +78,7 @@ static void
 on_dispatch(struct discord_ws_s *ws)
 {
   if (0 == strcmp("READY", ws->payload.event_name)) {
-    json_scanf(ws->payload.event_data, "%s[session_id]", ws->session_id);
+    json_scanf2(ws->payload.event_data, "[session_id]%s", ws->session_id);
     ASSERT_S(ws->session_id, "Couldn't fetch session_id from READY event");
 
     if (NULL == ws->cbs.on_ready) return;
@@ -82,7 +92,6 @@ on_dispatch(struct discord_ws_s *ws)
     ASSERT_S(NULL != message, "Out of memory");
 
     Discord_api_load_message((void**)&message, ws->payload.event_data);
-    D_PUTS("Message loaded with WS response"); 
 
     (*ws->cbs.on_message)((discord_t*)ws, message);
 
@@ -101,12 +110,9 @@ on_reconnect(struct discord_ws_s *ws)
   char fmt_payload[] = \
     "{\"op\":6,\"d\":{\"token\":\"%s\",\"session_id\":\"%s\",\"seq\":%d}}";
   char payload[MAX_PAYLOAD_LEN];
-
-  char token[64]; //fetch token from stored identify payload
-  json_scanf(ws->identify, "%s[d][token]", token);
-
+  discord_t *client = (discord_t*)ws;
   snprintf(payload, sizeof(payload)-1, fmt_payload,
-      token, ws->session_id, ws->payload.seq_number);
+      client->settings.token, ws->session_id, ws->payload.seq_number);
 
   D_NOTOP_PRINT("RESUME PAYLOAD:\n\t%s", payload);
 
@@ -142,8 +148,8 @@ ws_on_text_cb(void *data, CURL *ehandle, const char *text, size_t len)
   D_PRINT("ON_TEXT:\n\t\t%s", text);
 
   int tmp_seq_number; //check value first, then assign
-  json_scanf((char*)text, 
-              "%s[t] %d[s] %d[op] %S[d]",
+  json_scanf2((char*)text, 
+              "[t]%s [s]%d [op]%d [d]%S",
                ws->payload.event_name,
                &tmp_seq_number,
                &ws->payload.opcode,
@@ -163,6 +169,15 @@ ws_on_text_cb(void *data, CURL *ehandle, const char *text, size_t len)
                    : "NULL", //otherwise prints NULL
                 ws->payload.seq_number,
                 ws->payload.event_data);
+
+  if ( ((discord_t*)ws)->settings.f_dump ) {
+    char timestr[64];
+    timestamp_str(timestr, sizeof(timestr)-1);
+
+    fprintf( ((discord_t*)ws)->settings.f_dump,
+      "\r\r\r\r%s\n%s\n", timestr, text);
+    fflush( ((discord_t*)ws)->settings.f_dump );
+  }
 
   switch (ws->payload.opcode){
   case GATEWAY_HELLO:

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h> //@todo remove when settings is updated
 #include <ctype.h>
 
 #include <libdiscord.h>
@@ -23,6 +24,11 @@ discord_init(char token[])
   Discord_api_init(&new_client->api, token);
   Discord_ws_init(&new_client->ws, token);
 
+  /* THIS IS TEMPORARY */
+  new_client->settings.token = strdup(token);
+  new_client->settings.f_dump = NULL;
+  /* * * * * * * * * * */
+
   return new_client;
 }
 
@@ -30,6 +36,10 @@ void
 discord_cleanup(discord_t *client) {
   Discord_api_cleanup(&client->api);
   Discord_ws_cleanup(&client->ws);
+  if (client->settings.token)
+    free(client->settings.token);
+  if (client->settings.f_dump)
+    fclose(client->settings.f_dump);
   free(client);
 }
 
@@ -57,4 +67,13 @@ discord_set_on_message(discord_t *client, discord_onmsg_cb *user_cb){
 void
 discord_run(discord_t *client){
   Discord_ws_run(&client->ws);
+}
+
+void
+discord_dump_json(discord_t *client, char file[])
+{
+  FILE *f_dump = fopen(file, "a+");
+  ASSERT_S(NULL != f_dump, "Could not create dump file");
+
+  client->settings.f_dump = f_dump;  
 }
