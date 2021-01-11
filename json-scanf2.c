@@ -274,20 +274,18 @@ parse_path_specifier(char * format, struct extractor_specifier *es,
   ASSERT_S(next_path_idx < N_PATH_MAX, "Too many path specifiers");
 
   char *start = format;
-  do {
-    ++format;
-  } while (*format && *format != ']' && *format != '%');
+  for (;*format && *format != ']'; format++)
+    continue;  // until find a ']' or '\0'
 
-  size_t len = format - start; 
-  ASSERT_S(len < KEY_MAX, "Key is too long (Buffer Overflow)");
+  ASSERT_S(*format == ']', "A close bracket ']' is missing");
+
+  size_t len = format - start;
+  ASSERT_S(len + 1 < KEY_MAX, "Key is too long (Buffer Overflow)");
   ASSERT_S(0 != len, "Key has invalid size 0");
 
   strscpy(curr_path->key, start, len + 1);
 
-  if (']' == *format) {
-    ++format; // eat up ']'
-  }
-
+  ++format; // eat up ']'
   switch (*format) {
   case '[':
    {
