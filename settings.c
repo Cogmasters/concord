@@ -27,8 +27,10 @@ void bot_settings_init(char * filename, struct bot_settings * settings) {
   char * str = load_whole_file(filename);
   
   printf ("'%s' %p\n", str, str);
-  json_scanf(str,
-	     "%s[discord][token] %s[logging][filename] %s[logging][level]",
+  json_scanf2(str,
+	     "[discord][token]%s"
+	     "[logging][filename]%s"
+	     "[logging][level]%s",
 	     settings->discord.token,
 	     settings->logging.filename, 
 	     settings->logging.level);
