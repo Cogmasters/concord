@@ -1,6 +1,7 @@
 #ifndef SETTINGS_H
 #define SETTINGS_H
 #include <linux/limits.h>
+#include <stdbool.h>
 #define TOKEN_MAX_LEN 512
 
 struct bot_settings {
@@ -10,6 +11,10 @@ struct bot_settings {
   struct {
     char filename[PATH_MAX];
     char level[128];
+    struct {
+        char filename[PATH_MAX];
+        bool enable;
+    } dump_json;
   } logging;
 };
 
