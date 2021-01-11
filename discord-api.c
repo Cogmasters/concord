@@ -13,7 +13,7 @@
 /* initialize curl_slist's request header utility
  * @todo create distinction between bot and bearer token */
 static struct curl_slist*
-_discord_reqheader_init(char token[])
+reqheader_init(char token[])
 {
   char auth[MAX_HEADER_LEN] = "Authorization: Bot "; 
 
@@ -41,7 +41,7 @@ _discord_reqheader_init(char token[])
 /* a simple http header parser, splits key/field pairs at ':'
  * see: https://curl.se/libcurl/c/CURLOPT_HEADERFUNCTION.html */
 static size_t
-_curl_resheader_cb(char *content, size_t size, size_t nmemb, void *p_userdata)
+curl_resheader_cb(char *content, size_t size, size_t nmemb, void *p_userdata)
 {
   size_t realsize = size * nmemb;
   struct api_header_s *res_pairs = p_userdata;
@@ -78,7 +78,7 @@ _curl_resheader_cb(char *content, size_t size, size_t nmemb, void *p_userdata)
 /* get api response body string
  * see: https://curl.se/libcurl/c/CURLOPT_WRITEFUNCTION.html */
 static size_t
-_curl_resbody_cb(char *content, size_t size, size_t nmemb, void *p_userdata)
+curl_resbody_cb(char *content, size_t size, size_t nmemb, void *p_userdata)
 {
   size_t realsize = size * nmemb;
   struct api_response_s *res_body = p_userdata;
@@ -97,7 +97,7 @@ _curl_resbody_cb(char *content, size_t size, size_t nmemb, void *p_userdata)
 
 /* initialize curl's easy handle with some default opt */
 static CURL*
-_discord_easy_init(struct discord_api_s *api)
+custom_easy_init(struct discord_api_s *api)
 {
   CURL *new_ehandle = curl_easy_init();
   ASSERT_S(NULL != new_ehandle, "Out of memory");
@@ -117,7 +117,7 @@ _discord_easy_init(struct discord_api_s *api)
   ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
   //set response body callback
-  ecode = curl_easy_setopt(new_ehandle, CURLOPT_WRITEFUNCTION, &_curl_resbody_cb);
+  ecode = curl_easy_setopt(new_ehandle, CURLOPT_WRITEFUNCTION, &curl_resbody_cb);
   ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
   //set ptr to response body to be filled at callback
@@ -125,7 +125,7 @@ _discord_easy_init(struct discord_api_s *api)
   ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
   //set response header callback
-  ecode = curl_easy_setopt(new_ehandle, CURLOPT_HEADERFUNCTION, &_curl_resheader_cb);
+  ecode = curl_easy_setopt(new_ehandle, CURLOPT_HEADERFUNCTION, &curl_resheader_cb);
   ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
   //set ptr to response header to be filled at callback
@@ -138,8 +138,8 @@ _discord_easy_init(struct discord_api_s *api)
 void
 Discord_api_init(struct discord_api_s *api, char token[])
 {
-  api->req_header = _discord_reqheader_init(token);
-  api->ehandle = _discord_easy_init(api);
+  api->req_header = reqheader_init(token);
+  api->ehandle = custom_easy_init(api);
   api->res_body.str = NULL;
   api->res_body.size = 0;
   api->res_pairs.size = 0;
@@ -151,14 +151,13 @@ Discord_api_cleanup(struct discord_api_s *api)
   curl_slist_free_all(api->req_header);
   curl_easy_cleanup(api->ehandle); 
 
-  if (api->res_body.str) {
+  if (api->res_body.str)
     free(api->res_body.str);
-  }
 }
 
 /* set specific http method used for the request */
 static void
-_discord_set_method(struct discord_api_s *api, enum http_method method)
+set_method(struct discord_api_s *api, enum http_method method)
 {
   CURLcode ecode;
   switch (method) {
@@ -185,7 +184,7 @@ _discord_set_method(struct discord_api_s *api, enum http_method method)
 
 /* set specific url used for request */
 static void
-_discord_set_url(struct discord_api_s *api, char endpoint[])
+set_url(struct discord_api_s *api, char endpoint[])
 {
   char base_url[MAX_URL_LEN] = BASE_API_URL;
 
@@ -195,15 +194,24 @@ _discord_set_url(struct discord_api_s *api, char endpoint[])
 
 /* perform the request */
 static void
-_discord_perform_request(
+perform_request(
   struct discord_api_s *api,
   void **p_object, 
-  discord_load_obj_cb *load_cb)
+  discord_load_obj_cb *load_cb,
+  char send_payload[])
 {
+  CURLcode ecode;
+
+  //store send payload in curl internals
+  if (NULL != send_payload) {
+    //set ptr to payload that will be sent via POST/PUT
+    ecode = curl_easy_setopt(api->ehandle, CURLOPT_POSTFIELDS, send_payload);
+    ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
+  }
+
   //try to perform the request and analyze output
   enum discord_http_code http_code; //the http response code
   char *url = NULL; //the request URL
-  CURLcode ecode;
   do {
     //perform the request
     ecode = curl_easy_perform(api->ehandle);
@@ -257,9 +265,9 @@ _discord_perform_request(
         break;
      }
     case CURL_NO_RESPONSE: //@todo implement circumvention
-        ERROR_MIN(CURL_NO_RESPONSE);
+        ERROR("Curl couldn't fetch a HTTP response");
     default:
-        ERROR("Unknown HTTP code %d", http_code);
+        ERROR("Unknown HTTP response code %d", http_code);
     }
   } while (HTTP_OK != http_code);
 
@@ -323,7 +331,7 @@ Discord_api_load_message(void **p_message, char *str)
     ASSERT_S(NULL != message->author, "Out of memory");
   }
 
-  Discord_api_load_user(&message->author, str_author);
+  Discord_api_load_user((void**)&message->author, str_author);
 
   *p_message = message;
 }
@@ -392,6 +400,7 @@ Discord_api_request(
   struct discord_api_s *api, 
   void **p_object, 
   discord_load_obj_cb *load_cb,
+  char send_payload[],
   enum http_method http_method,
   char endpoint[],
   ...)
@@ -406,10 +415,10 @@ Discord_api_request(
   va_end(args);
 
   //set the request method
-  _discord_set_method(api, http_method);
+  set_method(api, http_method);
   //set the request URL
-  _discord_set_url(api, url_route);
+  set_url(api, url_route);
   //perform the request
-  _discord_perform_request(api, p_object, load_cb);
+  perform_request(api, p_object, load_cb, send_payload);
 }
 

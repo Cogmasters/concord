@@ -146,5 +146,6 @@ discord_get_guild(discord_t *client, char guild_id[], discord_guild_t **p_guild)
     &client->api,
     (void**)p_guild,
     &Discord_api_load_guild,
+    NULL,
     GET, GUILD, guild_id);
 }

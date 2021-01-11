@@ -71,7 +71,7 @@ discord_message_cleanup(discord_message_t *message)
   free(message->webhook_id);
 
   if (message->author)
-      free(message->author);
+    free(message->author);
 
   free(message);
 }
@@ -80,18 +80,15 @@ discord_message_cleanup(discord_message_t *message)
 void
 discord_send_message(discord_t *client, char channel_id[], char content[])
 {
-  char fmt_json[] = "{\"content\":\"%s\"}";
-  char json[MAX_MESSAGE_LEN];
+  char fmt_payload[] = "{\"content\":\"%s\"}";
+  char payload[MAX_PAYLOAD_LEN];
   
-  snprintf(json, MAX_MESSAGE_LEN-1, fmt_json, content);
-
-  //set ptr to data data that will be read by callback
-  CURLcode ecode = curl_easy_setopt(client->api.ehandle, CURLOPT_POSTFIELDS, json);
-  ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
+  snprintf(payload, sizeof(payload)-1, fmt_payload, content);
 
   Discord_api_request( 
     &client->api,
     NULL,
     NULL,
+    payload,
     POST, CHANNEL_MESSAGES, channel_id);
 }

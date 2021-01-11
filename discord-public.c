@@ -36,7 +36,7 @@ discord_cleanup(discord_t *client) {
 void
 discord_global_init() {
   int code = curl_global_init(CURL_GLOBAL_DEFAULT);
-  ASSERT_S(!code, "Couldn't start curl_global_init()");
+  ASSERT_S(!code, "Couldn't start libcurl's globals configurations");
 }
 
 void
