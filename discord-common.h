@@ -33,7 +33,7 @@ enum discord_limits {
   MAX_TOPIC_LEN          = 1024,
   MAX_DESCRIPTION_LEN    = 1024,
   MAX_USERNAME_LEN       = 32,
-  MAX_DISCRIMINATOR_LEN  = 5,
+  MAX_DISCRIMINATOR_LEN  = 4,
   MAX_HASH_LEN           = 1024,
   MAX_LOCALE_LEN         = 15,
   MAX_EMAIL_LEN          = 254,
@@ -41,6 +41,7 @@ enum discord_limits {
   MAX_HEADER_LEN         = 512,
   MAX_URL_LEN            = 512,
   MAX_MESSAGE_LEN        = 2048,
+  MAX_PAYLOAD_LEN        = 4096,
 };
 
 /* HTTP RESPONSE CODES
@@ -79,7 +80,7 @@ struct api_response_s {
  * kind of transfer*/
 typedef void (discord_load_obj_cb)(void **p_obj, char *str);
 
-#define MAX_HEADER_SIZE 20000
+#define MAX_HEADER_SIZE 1000
 
 struct api_header_s {
   char *key[MAX_HEADER_SIZE];
@@ -178,6 +179,7 @@ void Discord_api_request(
   struct discord_api_s *api, 
   void **p_object, 
   discord_load_obj_cb *load_cb,
+  char send_payload[], //only for POST/PUT methods
   enum http_method http_method,
   char endpoint[],
   ...);

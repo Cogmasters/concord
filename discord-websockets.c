@@ -9,33 +9,31 @@
 
 #define BASE_WEBSOCKETS_URL "wss://gateway.discord.gg/?v=6&encoding=json"
 
-static char*
-_payload_strevent(enum ws_opcode opcode)
-{
-
 //if case matches return token as string
 #define CASE_RETURN_STR(opcode) case opcode: return #opcode
 
+static char*
+payload_strevent(enum ws_opcode opcode)
+{
   switch(opcode) {
-    CASE_RETURN_STR(GATEWAY_DISPATCH);
-    CASE_RETURN_STR(GATEWAY_HEARTBEAT);
-    CASE_RETURN_STR(GATEWAY_IDENTIFY);
-    CASE_RETURN_STR(GATEWAY_PRESENCE_UPDATE);
-    CASE_RETURN_STR(GATEWAY_VOICE_STATE_UPDATE);
-    CASE_RETURN_STR(GATEWAY_RESUME);
-    CASE_RETURN_STR(GATEWAY_RECONNECT);
-    CASE_RETURN_STR(GATEWAY_REQUEST_GUILD_MEMBERS);
-    CASE_RETURN_STR(GATEWAY_INVALID_SESSION);
-    CASE_RETURN_STR(GATEWAY_HELLO);
-    CASE_RETURN_STR(GATEWAY_HEARTBEAT_ACK);
-
+      CASE_RETURN_STR(GATEWAY_DISPATCH);
+      CASE_RETURN_STR(GATEWAY_HEARTBEAT);
+      CASE_RETURN_STR(GATEWAY_IDENTIFY);
+      CASE_RETURN_STR(GATEWAY_PRESENCE_UPDATE);
+      CASE_RETURN_STR(GATEWAY_VOICE_STATE_UPDATE);
+      CASE_RETURN_STR(GATEWAY_RESUME);
+      CASE_RETURN_STR(GATEWAY_RECONNECT);
+      CASE_RETURN_STR(GATEWAY_REQUEST_GUILD_MEMBERS);
+      CASE_RETURN_STR(GATEWAY_INVALID_SESSION);
+      CASE_RETURN_STR(GATEWAY_HELLO);
+      CASE_RETURN_STR(GATEWAY_HEARTBEAT_ACK);
   default:
-    ERROR("Invalid WebSockets opcode (code: %d)", opcode);
+      ERROR("Invalid WebSockets opcode received (code: %d)", opcode);
   }
 }
 
 static long
-_timestamp_ms()
+timestamp_ms()
 {
   struct timespec t;
   clock_gettime(CLOCK_REALTIME, &t);
@@ -44,7 +42,7 @@ _timestamp_ms()
 }
 
 static void
-_ws_send_identify(struct discord_ws_s *ws)
+ws_send_identify(struct discord_ws_s *ws)
 {
   D_PRINT("IDENTIFY PAYLOAD:\n\t%s", ws->identify);
 
@@ -53,21 +51,21 @@ _ws_send_identify(struct discord_ws_s *ws)
 }
 
 static void
-_discord_on_hello(struct discord_ws_s *ws)
+on_hello(struct discord_ws_s *ws)
 {
   ws->status = WS_CONNECTED;
 
   ws->hbeat.interval_ms = 0;
-  ws->hbeat.start_ms = _timestamp_ms();
+  ws->hbeat.start_ms = timestamp_ms();
 
   json_scanf(ws->payload.event_data, "%ld[heartbeat_interval]", &ws->hbeat.interval_ms);
   ASSERT_S(ws->hbeat.interval_ms > 0, "Invalid heartbeat_ms");
 
-  _ws_send_identify(ws);
+  ws_send_identify(ws);
 }
 
 static void
-_discord_on_dispatch(struct discord_ws_s *ws)
+on_dispatch(struct discord_ws_s *ws)
 {
   if (0 == strcmp("READY", ws->payload.event_name)) {
     if (NULL == ws->cbs.on_ready) return;
@@ -88,12 +86,12 @@ _discord_on_dispatch(struct discord_ws_s *ws)
     discord_message_cleanup(message);
   }
   else {
-    ERROR("Unimplemented GATEWAY_DISPATCH event: %s", ws->payload.event_name);
+    ERROR("Not yet implemented GATEWAY_DISPATCH event: %s", ws->payload.event_name);
   }
 }
 
 static void
-_ws_on_connect_cb(void *data, CURL *ehandle, const char *ws_protocols)
+ws_on_connect_cb(void *data, CURL *ehandle, const char *ws_protocols)
 {
   D_PRINT("Connected, WS-Protocols: '%s'", ws_protocols);
 
@@ -103,7 +101,7 @@ _ws_on_connect_cb(void *data, CURL *ehandle, const char *ws_protocols)
 }
 
 static void
-_ws_on_close_cb(void *data, CURL *ehandle, enum cws_close_reason cwscode, const char *reason, size_t len)
+ws_on_close_cb(void *data, CURL *ehandle, enum cws_close_reason cwscode, const char *reason, size_t len)
 {
     struct discord_ws_s *ws = data;
     ws->status = WS_DISCONNECTED;
@@ -117,7 +115,7 @@ _ws_on_close_cb(void *data, CURL *ehandle, enum cws_close_reason cwscode, const 
 }
 
 static void
-_ws_on_text_cb(void *data, CURL *ehandle, const char *text, size_t len)
+ws_on_text_cb(void *data, CURL *ehandle, const char *text, size_t len)
 {
   struct discord_ws_s *ws = data;
 
@@ -137,26 +135,26 @@ _ws_on_text_cb(void *data, CURL *ehandle, const char *text, size_t len)
                 "EVENT_NAME:\t%s\n\t" \
                 "SEQ_NUMBER:\t%d\n\t" \
                 "EVENT_DATA:\t%s", 
-                _payload_strevent(ws->payload.opcode), 
+                payload_strevent(ws->payload.opcode), 
                 *ws->payload.event_name //if event name exists
                    ? ws->payload.event_name //prints event name
-                   : "UNDEFINED_EVENT", //otherwise, print this
+                   : "NOT_EVENT", //otherwise, print this
                 ws->payload.seq_number,
                 ws->payload.event_data);
 
   switch (ws->payload.opcode){
   case GATEWAY_HELLO:
-      _discord_on_hello(ws);
+      on_hello(ws);
       break;
   case GATEWAY_DISPATCH:
-      _discord_on_dispatch(ws);
+      on_dispatch(ws);
       break;
   case GATEWAY_RECONNECT:
       break;
   case GATEWAY_HEARTBEAT_ACK:
       break; 
   default:
-      ERROR("Invalid Discord Gateway opcode (code: %d)", ws->payload.opcode);
+      ERROR("Not yet implemented WebSockets opcode (code: %d)", ws->payload.opcode);
   }
 
   (void)len;
@@ -165,13 +163,13 @@ _ws_on_text_cb(void *data, CURL *ehandle, const char *text, size_t len)
 
 /* init easy handle with some default opt */
 static CURL*
-_discord_easy_init(struct discord_ws_s *ws)
+custom_easy_init(struct discord_ws_s *ws)
 {
   //missing on_binary, on_ping, on_pong
   struct cws_callbacks cws_cbs = {
-    .on_connect = &_ws_on_connect_cb,
-    .on_text = &_ws_on_text_cb,
-    .on_close = &_ws_on_close_cb,
+    .on_connect = &ws_on_connect_cb,
+    .on_text = &ws_on_text_cb,
+    .on_close = &ws_on_close_cb,
     .data = ws,
   };
 
@@ -189,7 +187,7 @@ _discord_easy_init(struct discord_ws_s *ws)
 }
 
 static CURLM*
-_discord_multi_init()
+custom_multi_init()
 {
   CURLM *new_mhandle = curl_multi_init();
   ASSERT_S(NULL != new_mhandle, "Out of memory");
@@ -199,7 +197,7 @@ _discord_multi_init()
 
 //@todo allow for user input
 static char*
-_discord_identify_init(char token[])
+identify_init(char token[])
 {
   const char fmt_properties[] = \
     "{\"$os\":\"%s\",\"$browser\":\"libdiscord\",\"$device\":\"libdiscord\"}";
@@ -242,9 +240,9 @@ Discord_ws_init(struct discord_ws_s *ws, char token[])
 {
   ws->status = WS_DISCONNECTED;
 
-  ws->identify = _discord_identify_init(token);
-  ws->ehandle = _discord_easy_init(ws);
-  ws->mhandle = _discord_multi_init();
+  ws->identify = identify_init(token);
+  ws->ehandle = custom_easy_init(ws);
+  ws->mhandle = custom_multi_init();
 
   ws->cbs.on_ready = NULL;
   ws->cbs.on_message = NULL;
@@ -261,7 +259,7 @@ Discord_ws_cleanup(struct discord_ws_s *ws)
 /* send heartbeat pulse to websockets server in order
  *  to maintain connection alive */
 static void
-_ws_send_heartbeat(struct discord_ws_s *ws)
+ws_send_heartbeat(struct discord_ws_s *ws)
 {
   char str[64];
 
@@ -274,12 +272,12 @@ _ws_send_heartbeat(struct discord_ws_s *ws)
   bool ret = cws_send_text(ws->ehandle, str);
   ASSERT_S(true == ret, "Couldn't send heartbeat payload");
 
-  ws->hbeat.start_ms = _timestamp_ms();
+  ws->hbeat.start_ms = timestamp_ms();
 }
 
 /* main websockets event loop */
 static void
-_ws_main_loop(struct discord_ws_s *ws)
+ws_main_loop(struct discord_ws_s *ws)
 {
   int is_running = 0;
 
@@ -300,9 +298,9 @@ _ws_main_loop(struct discord_ws_s *ws)
      * minimum heartbeat interval required*/
     if ((WS_CONNECTED == ws->status)
         && 
-        (ws->hbeat.interval_ms < (_timestamp_ms() - ws->hbeat.start_ms))) 
+        (ws->hbeat.interval_ms < (timestamp_ms() - ws->hbeat.start_ms))) 
     {
-      _ws_send_heartbeat(ws);
+      ws_send_heartbeat(ws);
     }
   } while(is_running);
 }
@@ -312,7 +310,7 @@ void
 Discord_ws_run(struct discord_ws_s *ws)
 {
   curl_multi_add_handle(ws->mhandle, ws->ehandle);
-  _ws_main_loop(ws);
+  ws_main_loop(ws);
   curl_multi_remove_handle(ws->mhandle, ws->ehandle);
 }
 

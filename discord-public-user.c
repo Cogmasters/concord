@@ -67,6 +67,7 @@ discord_get_user(discord_t *client, char user_id[], discord_user_t **p_user)
     &client->api,
     (void**)p_user,
     &Discord_api_load_user,
+    NULL,
     GET, USER, user_id);
 }
 
@@ -77,5 +78,6 @@ discord_get_client_user(discord_t *client, discord_user_t **p_user)
     &client->api,
     (void**)p_user,
     &Discord_api_load_user,
+    NULL,
     GET, USER, "@me");
 }
