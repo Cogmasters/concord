@@ -16,7 +16,7 @@ void on_ready(struct discord_s *client)
   discord_user_cleanup(self);
 }
 
-int main(void)
+int main(int argc, char *argv[])
 {
   FILE *f_bot_token = fopen("bot_token","rb");
   assert(NULL != f_bot_token);
@@ -28,6 +28,10 @@ int main(void)
   discord_global_init();
   discord_t *client = discord_init(bot_token);
   assert(NULL != client);
+
+  if (argc > 1) {
+    discord_dump_json(client, argv[1]);
+  }
 
   discord_set_on_ready(client, &on_ready);
 

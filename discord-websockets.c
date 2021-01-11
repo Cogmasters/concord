@@ -42,6 +42,16 @@ timestamp_ms()
 }
 
 static void
+timestamp_str(char str[], int len)
+{
+  time_t t = time(NULL);
+  struct tm *tm = localtime(&t);
+
+  int ret = strftime(str, len, "%c", tm);
+  ASSERT_S(ret != 0, "Could not retrieve string timestamp");
+}
+
+static void
 ws_send_identify(struct discord_ws_s *ws)
 {
   D_PRINT("IDENTIFY PAYLOAD:\n\t%s", ws->identify);
@@ -82,7 +92,6 @@ on_dispatch(struct discord_ws_s *ws)
     ASSERT_S(NULL != message, "Out of memory");
 
     Discord_api_load_message((void**)&message, ws->payload.event_data);
-    D_PUTS("Message loaded with WS response"); 
 
     (*ws->cbs.on_message)((discord_t*)ws, message);
 
@@ -101,9 +110,9 @@ on_reconnect(struct discord_ws_s *ws)
   char fmt_payload[] = \
     "{\"op\":6,\"d\":{\"token\":\"%s\",\"session_id\":\"%s\",\"seq\":%d}}";
   char payload[MAX_PAYLOAD_LEN];
-
+  discord_t *client = (discord_t*)ws;
   snprintf(payload, sizeof(payload)-1, fmt_payload,
-      ws->token, ws->session_id, ws->payload.seq_number);
+      client->settings.token, ws->session_id, ws->payload.seq_number);
 
   D_NOTOP_PRINT("RESUME PAYLOAD:\n\t%s", payload);
 
@@ -160,6 +169,15 @@ ws_on_text_cb(void *data, CURL *ehandle, const char *text, size_t len)
                    : "NULL", //otherwise prints NULL
                 ws->payload.seq_number,
                 ws->payload.event_data);
+
+  if ( ((discord_t*)ws)->settings.f_dump ) {
+    char timestr[64];
+    timestamp_str(timestr, sizeof(timestr)-1);
+
+    fprintf( ((discord_t*)ws)->settings.f_dump,
+      "\r\r\r\r%s\n%s\n", timestr, text);
+    fflush( ((discord_t*)ws)->settings.f_dump );
+  }
 
   switch (ws->payload.opcode){
   case GATEWAY_HELLO:
@@ -271,8 +289,6 @@ Discord_ws_init(struct discord_ws_s *ws, char token[])
 
   ws->cbs.on_ready = NULL;
   ws->cbs.on_message = NULL;
-
-  ws->token = strdup(token); //temporary
 }
 
 void
@@ -283,8 +299,6 @@ Discord_ws_cleanup(struct discord_ws_s *ws)
 
   curl_multi_cleanup(ws->mhandle);
   cws_free(ws->ehandle);
-
-  free(ws->token); //temporary
 }
 
 /* send heartbeat pulse to websockets server in order

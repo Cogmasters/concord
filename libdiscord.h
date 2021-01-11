@@ -169,6 +169,8 @@ void discord_set_on_message(discord_t *client, discord_onmsg_cb *user_cb);
 
 void discord_run(discord_t *client);
 
+void discord_dump_json(discord_t *client, char file[]);
+
 /* discord-public-guild.c */
 
 discord_guild_t* discord_guild_init();

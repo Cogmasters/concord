@@ -232,7 +232,6 @@ perform_request(
         if (NULL == load_cb) return;
 
         (*load_cb)(p_object, api->res_body.str);
-        D_NOTOP_PUTS("Object loaded with API response"); 
 
         //clean response for next iteration
         free(api->res_body.str);
@@ -334,6 +333,8 @@ Discord_api_load_message(void **p_message, char *str)
   Discord_api_load_user((void**)&message->author, str_author);
 
   *p_message = message;
+
+  D_PUTS("Message loaded with API response"); 
 }
 
 void
@@ -356,6 +357,8 @@ Discord_api_load_guild(void **p_guild, char *str)
       guild->permissions_new);
 
   *p_guild = guild;
+
+  D_PUTS("Guild loaded with API response"); 
 }
 
 void
@@ -392,6 +395,8 @@ Discord_api_load_user(void **p_user, char *str)
       &user->public_flags);
 
   *p_user = user;
+
+  D_PUTS("User loaded with API response"); 
 }
 
 /* template function for performing requests */
