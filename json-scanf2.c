@@ -127,8 +127,15 @@ match_path (char *buffer, jsmntok_t *t, size_t n_toks, int start_tok,
 
           break;
       default:
-          goto type_error;
+        goto type_error;
       }
+  }
+  else if (STREQ(es->type_specifier, "copy")) {
+    if (es->size)
+      strscpy((char *) es->recipient, buffer + t[i].start, es->size);
+    else
+      strscpy((char *) es->recipient, buffer + t[i].start,
+              t[i].end - t[i].start + 1);
   }
   else if (STREQ(es->type_specifier, "bool*")) {
     ASSERT_S(t[i].type == JSMN_PRIMITIVE, "Not a primitive");
@@ -241,37 +248,42 @@ parse_type_specifier(char *specifier, struct extractor_specifier *  p)
     specifier = end;
   }
 
-  if (STRNEQ(specifier, "s", 1) || STRNEQ(specifier, "S", 1)){
+  if (STRNEQ(specifier, "s", 1)){
     p->size = (is_valid_size) ? size : 0;
     strcpy(p->type_specifier, "char*");
     return specifier + 1;
   }
-  if (STRNEQ(specifier, "d", 1)) {
+  else if (STRNEQ(specifier, "S", 1)) {
+    p->size = (is_valid_size) ? size : 0;
+    strcpy(p->type_specifier, "copy");
+    return specifier + 1;
+  }
+  else if (STRNEQ(specifier, "d", 1)) {
     p->size = sizeof(int);
     strcpy(p->type_specifier, "int*");
     return specifier + 1;
   }
-  if (STRNEQ(specifier, "ld", 2)) {
+  else if (STRNEQ(specifier, "ld", 2)) {
     p->size = sizeof(long);
     strcpy(p->type_specifier, "long*");
     return specifier + 2;
   }
-  if (STRNEQ(specifier, "lld", 3)) {
+  else if (STRNEQ(specifier, "lld", 3)) {
     p->size = sizeof(long long);
     strcpy(p->type_specifier, "long long*");
     return specifier + 3;
   }
-  if (STRNEQ(specifier, "f", 1)) {
+  else if (STRNEQ(specifier, "f", 1)) {
     p->size = sizeof(float);
     strcpy(p->type_specifier, "float*");
     return specifier + 1;
   }
-  if (STRNEQ(specifier, "lf", 2)) {
+  else if (STRNEQ(specifier, "lf", 2)) {
     p->size = sizeof(double);
     strcpy(p->type_specifier, "double*");
     return specifier + 2;
   }
-  if (STRNEQ(specifier, "b", 1)){
+  else if (STRNEQ(specifier, "b", 1)){
     p->size = sizeof(bool);
     strcpy(p->type_specifier, "bool*");
     return specifier + 1;
