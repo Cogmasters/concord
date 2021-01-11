@@ -131,13 +131,12 @@ match_path (char *buffer, jsmntok_t *t, size_t n_toks, int start_tok,
       }
   }
   else if (STREQ(es->type_specifier, "bool*")) {
-      ASSERT_S(t[i].type == JSMN_PRIMITIVE, "Not a primitive");
-      if (0 == jsoneq(buffer, &t[i], "true"))
-        *(bool *)es->recipient = true;
-      else if (0 == jsoneq(buffer, &t[i], "false"))
-        *(bool *)es->recipient = false;
-      else
-        goto type_error;
+    ASSERT_S(t[i].type == JSMN_PRIMITIVE, "Not a primitive");
+    switch (buffer[t[i].start]) {
+      case 't': *(bool *)es->recipient = true; break;
+      case 'f': *(bool *)es->recipient = false; break;
+      default: goto type_error; 
+    }
   }
   else if (STREQ(es->type_specifier, "int*")) {
       ASSERT_S(t[i].type == JSMN_PRIMITIVE, "Not a primitive");

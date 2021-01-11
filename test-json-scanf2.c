@@ -35,18 +35,19 @@ int main(void) {
   char *locale = setlocale(LC_CTYPE, "");
   assert(NULL != locale);
 
-  int integer1=0, integer2=0, i3 =0, i4=0;
+  int integer1=0, integer2=0, i3 =0, i4=0, i5=0;
   char str1[25] = {0}, str2[25] = {0};
   char * str = "{ \"t\":\"abc\", \"s\":10, \"op\":100 "
           ", \"k1\": {  \"v1\": 10 }  "
           ", \"a1\": [ 112, 2, 3 ] "
+          ", \"b\": true "
           ", \"nstr\":null }";
 
   printf("%s\n", str);
 
   json_scanf2(str,
-       "[a1][0]%d [t]%s [s]%d [op]%d [nstr]%s [k1][v1]%d",
-       &i4, str1, &integer1, &integer2, str2, &i3);
+       "[a1][0]%d [t]%s [s]%d [op]%d [nstr]%s [k1][v1]%d [b]%b",
+       &i4, str1, &integer1, &integer2, str2, &i3, &i5);
 
   printf("t %s, s %d, op %d, nstr %s, i3 %d, i4 %d\n",
          str1, integer1, integer2, str2, i3, i4);
