@@ -32,7 +32,7 @@ enum discord_limits {
   MAX_TOPIC_LEN          = 1024,
   MAX_DESCRIPTION_LEN    = 1024,
   MAX_USERNAME_LEN       = 32,
-  MAX_DISCRIMINATOR_LEN  = 4,
+  MAX_DISCRIMINATOR_LEN  = 10,
   MAX_HASH_LEN           = 1024,
   MAX_LOCALE_LEN         = 15,
   MAX_EMAIL_LEN          = 254,
