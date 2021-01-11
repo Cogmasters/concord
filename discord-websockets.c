@@ -102,11 +102,8 @@ on_reconnect(struct discord_ws_s *ws)
     "{\"op\":6,\"d\":{\"token\":\"%s\",\"session_id\":\"%s\",\"seq\":%d}}";
   char payload[MAX_PAYLOAD_LEN];
 
-  char token[64]; //fetch token from stored identify payload
-  json_scanf(ws->identify, "%s[d][token]", token);
-
   snprintf(payload, sizeof(payload)-1, fmt_payload,
-      token, ws->session_id, ws->payload.seq_number);
+      ws->token, ws->session_id, ws->payload.seq_number);
 
   D_NOTOP_PRINT("RESUME PAYLOAD:\n\t%s", payload);
 
@@ -274,6 +271,8 @@ Discord_ws_init(struct discord_ws_s *ws, char token[])
 
   ws->cbs.on_ready = NULL;
   ws->cbs.on_message = NULL;
+
+  ws->token = strdup(token); //temporary
 }
 
 void
@@ -284,6 +283,8 @@ Discord_ws_cleanup(struct discord_ws_s *ws)
 
   curl_multi_cleanup(ws->mhandle);
   cws_free(ws->ehandle);
+
+  free(ws->token); //temporary
 }
 
 /* send heartbeat pulse to websockets server in order

@@ -137,6 +137,8 @@ struct discord_ws_s {
   char *identify;
   char *session_id;
 
+  char *token; //this is temporary
+
   CURLM *mhandle;
   CURL *ehandle;
 
