@@ -36,20 +36,22 @@ int main(void) {
   assert(NULL != locale);
 
   int integer1=0, integer2=0;
-  char str1[25] = {0};
-  char * str = "{ \"t\":\"abc\", \"s\":10, \"op\":100 }";
+  char str1[25] = {0}, str2[25] = {0};
+  char * str = "{ \"t\":\"abc\", \"s\":10, \"op\":100, \"nstr\":null }";
 
   printf("%s\n", str);
 
   json_scanf2(str,
        "[t]%s"
        "[s]%d"
-       "[op]%d",
+       "[op]%d"
+       "[nstr]%s",
        str1,
        &integer1,
-       &integer2);
+       &integer2,
+       str2);
 
-  printf("t %s, s %d, op %d\n", str1, integer1, integer2);
+  printf("t %s, s %d, op %d nstr %s\n", str1, integer1, integer2, str2);
 
   return EXIT_SUCCESS;
 }

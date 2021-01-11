@@ -87,53 +87,68 @@ match_path (char *buffer,
 
   es->is_applied = true;
   if (STREQ(es->type_specifier, "char*")){
-    if (es->size) {
-        strscpy((char *)es->recipient, buffer + t[i].start, es->size + 1);
+    if (t[i].type == JSMN_STRING) {
+      if (es->size) {
+        strscpy((char *) es->recipient, buffer + t[i].start, es->size + 1);
+      } else {
+        strscpy((char *) es->recipient, buffer + t[i].start,
+                t[i].end - t[i].start + 1);
+      }
+    }
+    else if (t[i].type == JSMN_PRIMITIVE
+            && strncmp(buffer + t[i].start, "null", 4) == 0){
+      *(char *)es->recipient = '\0'; // we need a better way to represent null
     }
     else {
-        strscpy((char *)es->recipient, buffer + t[i].start, 
-            t[i].end - t[i].start + 1);
+      goto type_error;
     }
   }
   else if (STREQ(es->type_specifier, "bool*")) {
+    ASSERT_S(t[i].type == JSMN_PRIMITIVE, "Not a primitive");
     if (0 == jsoneq(buffer, &t[i], "true")) {
-        *(bool *)es->recipient = true;
+      *(bool *)es->recipient = true;
     }
     else if (0 == jsoneq(buffer, &t[i], "false")){
-        *(bool *)es->recipient = false;
+      *(bool *)es->recipient = false;
     }
     else {
-        goto type_error;
+      goto type_error;
     }
   }
   else if (STREQ(es->type_specifier, "int*")) {
-      *(int *)es->recipient = (int)strtol(buffer + t[i].start, &end, 10);
-      if (end != buffer + t[i].end) goto type_error;
+    ASSERT_S(t[i].type == JSMN_PRIMITIVE, "Not a primitive");
+    *(int *)es->recipient = (int)strtol(buffer + t[i].start, &end, 10);
+    if (end != buffer + t[i].end) goto type_error;
   }
   else if (STREQ(es->type_specifier, "long*")) {
-      *(long *)es->recipient = strtol(buffer + t[i].start, &end, 10);
-      if (end != buffer + t[i].end) goto type_error;
+    ASSERT_S(t[i].type == JSMN_PRIMITIVE, "Not a primitive");
+    *(long *)es->recipient = strtol(buffer + t[i].start, &end, 10);
+    if (end != buffer + t[i].end) goto type_error;
   }
   else if (STREQ(es->type_specifier, "long long*")) {
-      *(long long *)es->recipient = strtoll(buffer + t[i].start, &end, 10);
-      if (end != buffer + t[i].end) goto type_error;
+    ASSERT_S(t[i].type == JSMN_PRIMITIVE, "Not a primitive");
+    *(long long *)es->recipient = strtoll(buffer + t[i].start, &end, 10);
+    if (end != buffer + t[i].end) goto type_error;
   }
   else if (STREQ(es->type_specifier, "float*")) {
-      *(float *)es->recipient = strtof(buffer + t[i].start, &end);
-      if (end != buffer + t[i].end) goto type_error;
+    ASSERT_S(t[i].type == JSMN_PRIMITIVE, "Not a primitive");
+    *(float *)es->recipient = strtof(buffer + t[i].start, &end);
+    if (end != buffer + t[i].end) goto type_error;
   }
   else if (STREQ(es->type_specifier, "double*")) {
-      *(double *)es->recipient = strtod(buffer + t[i].start, &end);
-      if (end != buffer + t[i].end) goto type_error;
+    ASSERT_S(t[i].type == JSMN_PRIMITIVE, "Not a primitive");
+    *(double *)es->recipient = strtod(buffer + t[i].start, &end);
+    if (end != buffer + t[i].end) goto type_error;
   }
   else {
-      goto type_error;
+    goto type_error;
   }
 
   return;
 
 type_error:
-  ERROR("Expected specifier %s but found: '%.*s' )\n", es->type_specifier, t[i].end - t[i].start, buffer + t[i].start);
+  ERROR("Expected specifier %s but found: '%.*s' )\n", es->type_specifier,
+        t[i].end - t[i].start, buffer + t[i].start);
   // report errors;
   return;
 }
