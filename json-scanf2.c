@@ -53,6 +53,19 @@ struct extractor_specifier {
 };
 
 
+static char*
+print_token(jsmntype_t type)
+{
+  switch (type) {
+    case JSMN_UNDEFINED:  return "undefined";
+    case JSMN_OBJECT:     return "object";
+    case JSMN_ARRAY:      return "array";
+    case JSMN_STRING:     return "string";
+    case JSMN_PRIMITIVE:  return "primitive";
+    default:              ERROR("Unknown JSMN_XXXX type encountered (code: %d)", type);
+  }
+}
+
 static int
 jsoneq(const char *json, jsmntok_t *tok, const char *str)
 {
@@ -209,16 +222,21 @@ type_error:
 }
 
 static void
-apply(char *test_string, jsmntok_t *tok, size_t n_toks, struct extractor_specifier *es)
+apply(char *str, jsmntok_t *tok, size_t n_toks, struct extractor_specifier *es)
 {
   size_t ik = 1, iv = 2;
   do {
     // tok[ik] must be a toplevel key, and tok[iv] must be its value
+    if (tok[ik].type != JSMN_STRING) {
+      D_PRINT("[%d][p:%d][size:%d]%s (%.*s)\n", ik, tok[ik].parent,
+              tok[ik].size, print_token(tok[ik].type),
+              tok[ik].end - tok[ik].start, str + tok[ik].start);
+    }
     ASSERT_S(tok[ik].type == JSMN_STRING, "Not a key"); // make sure it's a key
     ASSERT_S(tok[ik].parent == 0, "Token is not at top level"); // make sure it's at the toplevel
 
-    if (0 == jsoneq(test_string, &tok[ik], es->path_specifiers[0].key)) {
-      match_path(test_string, tok, n_toks, iv, es, es->path_specifiers[0].next);
+    if (0 == jsoneq(str, &tok[ik], es->path_specifiers[0].key)) {
+      match_path(str, tok, n_toks, iv, es, es->path_specifiers[0].next);
       break;
     }
     
@@ -422,19 +440,6 @@ format_parse(char *format, size_t *n)
   format_analyze(format, n);
 
   return parse_extractor_specifiers(format, *n);
-}
-
-static char*
-print_token(jsmntype_t type) 
-{
-  switch (type) {
-    case JSMN_UNDEFINED:  return "undefined";
-    case JSMN_OBJECT:     return "object";
-    case JSMN_ARRAY:      return "array";
-    case JSMN_STRING:     return "string";
-    case JSMN_PRIMITIVE:  return "primitive";
-    default:              ERROR("Unknown JSMN_XXXX type encountered (code: %d)", type);
-  }
 }
 
 /*
