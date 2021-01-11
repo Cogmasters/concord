@@ -68,7 +68,7 @@ on_hello(struct discord_ws_s *ws)
   ws->hbeat.interval_ms = 0;
   ws->hbeat.start_ms = timestamp_ms();
 
-  json_scanf(ws->payload.event_data, "%ld[heartbeat_interval]", &ws->hbeat.interval_ms);
+  json_scanf2(ws->payload.event_data, "[heartbeat_interval]%ld", &ws->hbeat.interval_ms);
   ASSERT_S(ws->hbeat.interval_ms > 0, "Invalid heartbeat_ms");
 
   ws_send_identify(ws);
@@ -78,7 +78,7 @@ static void
 on_dispatch(struct discord_ws_s *ws)
 {
   if (0 == strcmp("READY", ws->payload.event_name)) {
-    json_scanf(ws->payload.event_data, "%s[session_id]", ws->session_id);
+    json_scanf2(ws->payload.event_data, "[session_id]%s", ws->session_id);
     ASSERT_S(ws->session_id, "Couldn't fetch session_id from READY event");
 
     if (NULL == ws->cbs.on_ready) return;
@@ -148,8 +148,8 @@ ws_on_text_cb(void *data, CURL *ehandle, const char *text, size_t len)
   D_PRINT("ON_TEXT:\n\t\t%s", text);
 
   int tmp_seq_number; //check value first, then assign
-  json_scanf((char*)text, 
-              "%s[t] %d[s] %d[op] %S[d]",
+  json_scanf2((char*)text, 
+              "[t]%s [s]%d [op]%d [d]%S",
                ws->payload.event_name,
                &tmp_seq_number,
                &ws->payload.opcode,
