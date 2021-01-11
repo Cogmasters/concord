@@ -73,15 +73,31 @@ jsoneq(const char *json, jsmntok_t *tok, const char *s)
 }
 
 static void
-match_path (char *buffer,
-            jsmntok_t *t, size_t n_toks, int start_tok,
+match_path (char *buffer, jsmntok_t *t, size_t n_toks, int start_tok,
             struct extractor_specifier *es,
             struct path_specifier *path)
 {
   char *end = 0;
-  int i = start_tok;
+  int i = start_tok, ic;
   if (path) {
-    match_path(buffer, t, n_toks, i, es, path);
+    if (t[i].type == JSMN_OBJECT) {
+      ASSERT_S(path->type == KEY, "Path is not key");
+      for (ic = i + 1; t[ic].start < t[i].end; ic++) {
+        if (t[ic].parent == i) { // top level key within t[i]
+          if (jsoneq(buffer, &t[ic], path->path.key) == 0) {
+            match_path(buffer, t, n_toks, ic+1, es, path->next);
+            return;
+          }
+        }
+      }
+    }
+    else if (t[i].type == JSMN_ARRAY) {
+      // todo
+      ASSERT_S(path->type == INDEX, "Path is not an index");
+    }
+    else {
+      // report error
+    }
     return;
   }
 
@@ -377,6 +393,16 @@ format_parse(char *format, size_t *n)
   return parse_extractor_specifiers(format, *n);
 }
 
+static char * print_token(jsmntype_t t) {
+  switch(t) {
+    case JSMN_UNDEFINED: return "undefined";
+    case JSMN_OBJECT: return "object";
+    case JSMN_ARRAY: return "array";
+    case JSMN_STRING: return "string";
+    case JSMN_PRIMITIVE: return "primitive";
+  }
+}
+
 /*
  *  format grammar:
  *      ([key1]|[<n>])+%(d|ld|lld|f|lf|b|<n>s|<n>S) <space>
@@ -427,7 +453,12 @@ json_scanf2(char *buffer, char *format, ...)
     D_PRINT("Object expected");
     goto cleanup;
   }
-
+  int i = 0;
+  for (i = 0; i < ret; i++) {
+    printf("[%d][p:%d][size:%d]%s (%.*s)\n", i, tok[i].parent,
+           tok[i].size, print_token(tok[i].type),
+           tok[i].end - tok[i].start, buffer + tok[i].start);
+  }
   for (size_t i = 0; i < num_keys; ++i) {
     apply(buffer, tok, ret, nes+i);
   }
