@@ -75,25 +75,28 @@ jsoneq(const char *json, jsmntok_t *tok, const char *s)
 static void
 match_path (char *buffer, jsmntok_t *t, size_t n_toks, int start_tok,
             struct extractor_specifier *es,
-            struct path_specifier *path)
+            struct path_specifier *ps)
 {
   char *end = 0;
   int i = start_tok, ic;
-  if (path) {
+  if (ps) {
     if (t[i].type == JSMN_OBJECT) {
-      ASSERT_S(path->type == KEY, "Path is not key");
+      ASSERT_S(ps->type == KEY, "Path is not key");
       for (ic = i + 1; t[ic].start < t[i].end; ic++) {
         if (t[ic].parent == i) { // top level key within t[i]
-          if (jsoneq(buffer, &t[ic], path->path.key) == 0) {
-            match_path(buffer, t, n_toks, ic+1, es, path->next);
+          if (jsoneq(buffer, &t[ic], ps->path.key) == 0) {
+            match_path(buffer, t, n_toks, ic+1, es, ps->next);
             return;
           }
         }
       }
     }
     else if (t[i].type == JSMN_ARRAY) {
-      // todo
-      ASSERT_S(path->type == INDEX, "Path is not an index");
+      ASSERT_S(ps->type == INDEX, "Path is not an index");
+      ASSERT_S(ps->path.index >= 0, "Index is not zero or positive");
+      ASSERT_S(ps->path.index < t[i].size, "Index is out-of-bound");
+      match_path(buffer, t, n_toks, i+1+ps->path.index, es, ps->next);
+      return;
     }
     else {
       // report error
