@@ -26,18 +26,17 @@ static char * load_whole_file(char * filename) {
 void bot_settings_init(char * filename, struct bot_settings * settings) {
   char * str = load_whole_file(filename);
   json_scanf2(str,
-	     "[discord][token]%s"
-	     "[logging][filename]%s"
-	     "[logging][level]%s"
-         "[logging][dump_json][filename]%s"
-         "[logging][dump_json][enable]%b"
-         "",
-	     settings->discord.token,
-	     settings->logging.filename, 
-	     settings->logging.level,
-         settings->logging.dump_json.filename,
-         &settings->logging.dump_json.enable
-  );
+             "[discord][token]%s"
+             "[logging][filename]%s"
+             "[logging][level]%s"
+             "[logging][dump_json][filename]%s"
+             "[logging][dump_json][enable]%b"
+             "",
+             settings->discord.token,
+             settings->logging.filename, 
+             settings->logging.level,
+             settings->logging.dump_json.filename,
+             &(settings->logging.dump_json.enable));
   printf(" discord.token %s\n", settings->discord.token);
   printf(" logging.filename %s\n", settings->logging.filename);
   printf(" logging.level %s\n", settings->logging.level);
