@@ -40,14 +40,7 @@
 #define KEY_MAX 128
 
 struct path_specifier {
-  enum {
-    KEY,
-    INDEX,
-  } type;
-  union {
-    char key[KEY_MAX];
-    int index;
-  } path;
+  char key[KEY_MAX];
   struct path_specifier * next;
 };
 
@@ -81,10 +74,9 @@ match_path (char *buffer, jsmntok_t *t, size_t n_toks, int start_tok,
   int i = start_tok, ic;
   if (ps) {
     if (t[i].type == JSMN_OBJECT) {
-      ASSERT_S(ps->type == KEY, "Path is not key");
       for (ic = i + 1; t[ic].start < t[i].end; ic++) {
         if (t[ic].parent == i) { // top level key within t[i]
-          if (jsoneq(buffer, &t[ic], ps->path.key) == 0) {
+          if (jsoneq(buffer, &t[ic], ps->key) == 0) {
             match_path(buffer, t, n_toks, ic+1, es, ps->next);
             return;
           }
@@ -92,15 +84,17 @@ match_path (char *buffer, jsmntok_t *t, size_t n_toks, int start_tok,
       }
     }
     else if (t[i].type == JSMN_ARRAY) {
-      ASSERT_S(ps->type == INDEX, "Path is not an index");
-      ASSERT_S(ps->path.index >= 0, "Index is not zero or positive");
-      ASSERT_S(ps->path.index < t[i].size, "Index is out-of-bound");
+      char * end;
+      int index = strtol(ps->key, &end, 10);
+      ASSERT_S(*end == 0, "Index is not a number");
+      ASSERT_S(index >= 0, "Index is not zero or positive");
+      ASSERT_S(index < t[i].size, "Index is out-of-bound");
       ic = i + 1; // the first child of i;
-      match_path(buffer, t, n_toks, ic + ps->path.index, es, ps->next);
+      match_path(buffer, t, n_toks, ic + index, es, ps->next);
       return;
     }
     else {
-      // report error
+      // report a path match error, this is different from type error
     }
     return;
   }
@@ -182,7 +176,7 @@ apply(char *test_string, jsmntok_t *tok, size_t n_toks, struct extractor_specifi
     ASSERT_S(tok[ik].type == JSMN_STRING, "Not a key"); // make sure it's a key
     ASSERT_S(tok[ik].parent == 0, "Token is not at top level"); // make sure it's at the toplevel
 
-    if (0 == jsoneq(test_string, &tok[ik], es->path_specifiers[0].path.key)) {
+    if (0 == jsoneq(test_string, &tok[ik], es->path_specifiers[0].key)) {
       match_path(test_string, tok, n_toks, iv, es, es->path_specifiers[0].next);
       break;
     }
@@ -273,12 +267,7 @@ parse_path_specifier(char * format, struct extractor_specifier *es,
   ASSERT_S(next_path_idx < N_PATH_MAX, "Too many path specifiers");
 
   char *start = format;
-  bool is_index = true;
-
   do {
-    if (!isdigit(*format)) {
-      is_index = false;
-    }
     format++;
   } while (*format && *format != ']' && *format != '%');
 
@@ -286,19 +275,7 @@ parse_path_specifier(char * format, struct extractor_specifier *es,
   ASSERT_S(len < KEY_MAX, "Key is too long (Buffer Overflow)");
   ASSERT_S(0 != len, "Key has invalid size 0");
 
-
-  if (is_index) { // array indexing
-    char *end;
-    long l_num = strtol(start, &end, 10);
-    ASSERT_S(end == format, "Invalid characters in the numerical string");
-
-    curr_path->path.index = l_num;
-    curr_path->type = INDEX;
-  }
-  else { // key indexing
-    strscpy(curr_path->path.key, start, len + 1);
-    curr_path->type = KEY;
-  }
+  strscpy(curr_path->key, start, len + 1);
 
   ++format; // eat up ']'
   if (*format == '[') {
