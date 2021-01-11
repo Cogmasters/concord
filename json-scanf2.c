@@ -284,7 +284,10 @@ parse_path_specifier(char * format, struct extractor_specifier *es,
 
   strscpy(curr_path->key, start, len + 1);
 
-  ++format; // eat up ']'
+  if (']' == *format) {
+    ++format; // eat up ']'
+  }
+
   switch (*format) {
   case '[':
    {
