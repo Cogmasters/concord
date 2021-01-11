@@ -95,7 +95,8 @@ match_path (char *buffer, jsmntok_t *t, size_t n_toks, int start_tok,
       ASSERT_S(ps->type == INDEX, "Path is not an index");
       ASSERT_S(ps->path.index >= 0, "Index is not zero or positive");
       ASSERT_S(ps->path.index < t[i].size, "Index is out-of-bound");
-      match_path(buffer, t, n_toks, i+1+ps->path.index, es, ps->next);
+      ic = i + 1; // the first child of i;
+      match_path(buffer, t, n_toks, ic + ps->path.index, es, ps->next);
       return;
     }
     else {
