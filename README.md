@@ -1,6 +1,6 @@
 # README
 
-Orca is a discord bot framework that is designed with minimum dependencies to
+Orca is a bot framework that is designed with minimum dependencies to
 make bot deployment dead simple.  The primary design goals of this framework are:
 
 - easy to debug (networking and logic) errors with extensive logging facilities.
