@@ -82,7 +82,7 @@ install : all
 	cp $(INCLUDE) /usr/local/include
 
 clean :
-	rm -rf $(OBJDIR) *.exe lib/*
+	rm -rf $(OBJDIR) $(LIBDIR) *.exe 
 
 purge : clean
 	rm -rf $(LIBDIR)

@@ -12,13 +12,14 @@ apt-get install -y libcurl2-openssl-dev
 ```
 
 ### Compile
-CC=gcc make echo-bot
+make echo-bot
 
 
 ## Run the bot
-1. get your bot token and replace the one in `bot_token`
+1. get your bot token and paste it to `bot.config` to
+   replace "replace-this-with-your-bot-token"
 2. invite your bot to your server
-3. run `./echo-bot.exe` in the same folder of `bot_token`
+3. run `./echo-bot.exe` in the same folder of `bot.config`
 
 
 ## Get support
