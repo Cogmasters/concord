@@ -1,5 +1,8 @@
+## This is for testing only, you won't be able to build all code with this cmake file
+## There is no plan to support cmake to build all code.
 cmake_minimum_required(VERSION 3.8)
 project(orca)
+
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_C_STANDARD 11)
