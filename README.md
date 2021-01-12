@@ -18,9 +18,6 @@ make bot deployment dead simple.  The primary design goals of this framework are
 
 ## Build
 ### Install dependencies:
-    - gcc, make
-    - libc
-    - libcurl (using openssl for SSL/TSL)
 For debian and ubuntu
 ```
 apt-get install -y build-essential
