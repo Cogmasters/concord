@@ -8,8 +8,11 @@ make bot deployment dead simple.  The primary design goals of this framework are
 - easy to reason about the code: we use the most native data structures,
    the simplest algorithms, and intuitive interfaces.
 
-- easy to use for the end users: asynchrous programming model is hard to reasonable.
-  Our lib uses multi-threading and synchronous IO to support concurrency.
+- easy to use for the end users: we use multi-threading and
+  synchronous IO to support concurrency so you only need to focus on
+  the business logic.  We carefully craft the library to use computing
+  resource super efficient so performance should never be an issue
+  for you.
 
 - superior reliability
 
