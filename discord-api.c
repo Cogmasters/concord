@@ -16,6 +16,7 @@ static struct curl_slist*
 reqheader_init(char token[])
 {
   char auth[MAX_HEADER_LEN] = "Authorization: Bot "; 
+  strscat(auth, token, MAX_HEADER_LEN);
 
   struct curl_slist *new_header = NULL;
   void *tmp; //for checking potential allocation error
@@ -23,7 +24,7 @@ reqheader_init(char token[])
   new_header = curl_slist_append(new_header,"X-RateLimit-Precision: millisecond");
   ASSERT_S(NULL != new_header, "Out of memory");
 
-  tmp = curl_slist_append(new_header, strcat(auth, token));
+  tmp = curl_slist_append(new_header, auth);
   ASSERT_S(NULL != tmp, "Out of memory");
 
   tmp = curl_slist_append(new_header,"User-Agent: libdiscord (http://github.com/cee-studio/libdiscord, v"LIBDISCORD_VERSION")");
@@ -192,8 +193,9 @@ static void
 set_url(struct discord_api_s *api, char endpoint[])
 {
   char base_url[MAX_URL_LEN] = BASE_API_URL;
+  strscat(base_url, endpoint, MAX_URL_LEN);
 
-  CURLcode ecode = curl_easy_setopt(api->ehandle, CURLOPT_URL, strcat(base_url, endpoint));
+  CURLcode ecode = curl_easy_setopt(api->ehandle, CURLOPT_URL, base_url);
   ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 }
 
