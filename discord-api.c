@@ -194,7 +194,7 @@ static void
 set_url(struct discord_api_s *api, char endpoint[])
 {
   char base_url[MAX_URL_LEN];
-  int ret = snprintf(base_url, MAX_URL_LEN, "%s%s", BASE_API_URL, endpoint);
+  int ret = snprintf(base_url, MAX_URL_LEN, BASE_API_URL "%s", endpoint);
   ASSERT_S(ret < MAX_URL_LEN, "out-of-bounds write of base_url");
 
   CURLcode ecode = curl_easy_setopt(api->ehandle, CURLOPT_URL, base_url);
