@@ -8,7 +8,7 @@
 For debian and ubuntu
 ```
 apt-get install -y build-essential
-apt-get install -y libcurl2-openssl-dev
+apt-get install -y libcurl4-openssl-dev
 ```
 
 ### Compile
