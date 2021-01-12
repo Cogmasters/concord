@@ -7,7 +7,7 @@ a.out
 *~
 .idea
 cmake-build-debug
-bot.config
+dev.config
 obj
 lib
 test-api
