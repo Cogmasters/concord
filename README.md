@@ -1,7 +1,7 @@
 # README
 
 Orca is a bot framework that is designed with minimum dependencies to
-make bot deployment deadly simple.  The primary design goals of this framework are:
+make bot deployment deadly simple.  The primary design goals are:
 
 - easy to debug (networking and logic) errors with extensive logging facilities.
 
