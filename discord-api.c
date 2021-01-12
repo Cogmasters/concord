@@ -157,7 +157,7 @@ Discord_api_cleanup(struct discord_api_s *api)
 
 /* set specific http method used for the request */
 static void
-set_method(struct discord_api_s *api, enum http_method method)
+set_method(struct discord_api_s *api, enum http_method method, char send_payload[])
 {
   CURLcode ecode;
   switch (method) {
@@ -169,6 +169,11 @@ set_method(struct discord_api_s *api, enum http_method method)
       break;
   case POST:
       ecode = curl_easy_setopt(api->ehandle, CURLOPT_POST, 1L);
+      ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
+      
+      //set ptr to payload that will be sent via POST/PUT
+      ecode = curl_easy_setopt(api->ehandle, CURLOPT_POSTFIELDS, send_payload);
+
       break;
   case PATCH:
       ecode = curl_easy_setopt(api->ehandle, CURLOPT_CUSTOMREQUEST, "PATCH");
@@ -197,17 +202,9 @@ static void
 perform_request(
   struct discord_api_s *api,
   void **p_object, 
-  discord_load_obj_cb *load_cb,
-  char send_payload[])
+  discord_load_obj_cb *load_cb)
 {
   CURLcode ecode;
-
-  //store send payload in curl internals
-  if (NULL != send_payload) {
-    //set ptr to payload that will be sent via POST/PUT
-    ecode = curl_easy_setopt(api->ehandle, CURLOPT_POSTFIELDS, send_payload);
-    ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
-  }
 
   //try to perform the request and analyze output
   enum discord_http_code http_code; //the http response code
@@ -280,24 +277,23 @@ Discord_api_load_message(void **p_message, char *str)
   char str_mentions[512];
   char str_referenced_message[512];
 
-/*
   json_scanf(str,
-     "%s[id]" \
-     "%s[channel_id]" \
-     "%s[guild_id]" \
-     "%S[author]" \
-     "%s[content]" \
-     "%s[timestamp]" \
-     "%s[edited_timestamp]" \
-     "%b[tts]" \
-     "%b[mention_everyone]" \
-     "%S[mentions]" \
-     "%s[nonce]" \
-     "%b[pinned]" \
-     "%s[webhook_id]" \
-     "%d[type]" \
-     "%d[flags]" \
-     "%S[referenced_message]",
+     "[id]%s"
+     "[channel_id]%s"
+     "[guild_id]%s"
+     "[author]%S"
+     "[content]%s"
+     "[timestamp]%s"
+     "[edited_timestamp]%s"
+     "[tts]%b"
+     "[mention_everyone]%b"
+     "[mentions]%S"
+     "[nonce]%s"
+     "[pinned]%b"
+     "[webhook_id]%s"
+     "[type]%d"
+     "[flags]%d"
+     "[referenced_message]%S",
       message->id,
       message->channel_id,
       message->guild_id,
@@ -313,10 +309,6 @@ Discord_api_load_message(void **p_message, char *str)
       message->webhook_id,
       &message->flags,
       str_referenced_message);
-*/
-
-  json_scanf(str, "[content]%s [channel_id]%s [author]%S", 
-              message->content, message->channel_id, str_author);
 
   if (NULL == message->author) {
     message->author = discord_user_init();
@@ -413,10 +405,10 @@ Discord_api_request(
   va_end(args);
 
   //set the request method
-  set_method(api, http_method);
+  set_method(api, http_method, send_payload);
   //set the request URL
   set_url(api, url_route);
   //perform the request
-  perform_request(api, p_object, load_cb, send_payload);
+  perform_request(api, p_object, load_cb);
 }
 

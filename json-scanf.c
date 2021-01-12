@@ -24,13 +24,12 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <string.h>
+#include <limits.h>
 #include <ctype.h>
 #include <stdbool.h>
 
 #include "json-scanf.h"
-
-#include "jscon-common.h"
-#include "debug.h"
+#include "json-common.h"
 
 #define JSMN_PARENT_LINKS
 #define JSMN_STRICT
@@ -53,7 +52,22 @@ struct extractor_specifier {
 };
 
 
-static char*
+static size_t strscpy(char *dest, const char *src, size_t n)
+{
+  size_t i;
+  for (i = 0; i < n; ++i){
+    if ('\0' == (dest[i] = src[i])) 
+      return i > SSIZE_MAX ? 0 : i;
+  }
+
+  if (0 == i) return 0;
+
+  dest[i-1] = '\0';
+
+  return 0;
+}
+
+char*
 print_token(jsmntype_t type)
 {
   switch (type) {
@@ -507,4 +521,63 @@ cleanup:
   free(nes);
 
   return 0;
+}
+
+char*
+__json_strerror(json_errcode code, char codetag[], void *where, char entity[])
+{
+  char err_is[128];
+  switch (code){
+  case JSON_EXT__OUT_MEM:
+      snprintf(err_is, sizeof(err_is)-1, "Out of Memory");
+      break;
+  case JSON_EXT__INVALID_TOKEN:
+      snprintf(err_is, sizeof(err_is)-1, "Invalid Token: '%c'", *((char*)where));
+      break;
+  case JSON_EXT__INVALID_STRING:
+      snprintf(err_is, sizeof(err_is)-1, "Missing string token: ' \" '");
+      break;
+  case JSON_EXT__INVALID_BOOLEAN:
+      snprintf(err_is, sizeof(err_is)-1, "Missing boolean token: 't' or 'f'");
+      break;
+  case JSON_EXT__INVALID_NUMBER:
+      snprintf(err_is, sizeof(err_is)-1, "Missing number tokens: '+-.0-9e'");
+      break;
+  case JSON_EXT__INVALID_COMPOSITE:
+      snprintf(err_is, sizeof(err_is)-1, "Missing Object or Array tokens: '{}[]'");
+      break;
+  case JSON_EXT__NOT_STRING:
+      snprintf(err_is, sizeof(err_is)-1, "Item is not a string");
+      break;
+  case JSON_EXT__NOT_BOOLEAN:
+      snprintf(err_is, sizeof(err_is)-1, "Item is not a boolean");
+      break;
+  case JSON_EXT__NOT_NUMBER:
+      snprintf(err_is, sizeof(err_is)-1, "Item is not a number");
+      break;
+  case JSON_EXT__NOT_COMPOSITE:
+      snprintf(err_is, sizeof(err_is)-1, "Item is not a Object or Array");
+      break;
+  case JSON_EXT__EMPTY_FIELD:
+      snprintf(err_is, sizeof(err_is)-1, "Field is missing");
+      break;
+  case JSON_INT__NOT_FREED:
+      snprintf(err_is, sizeof(err_is)-1, "JSON couldn't free memory");
+      break;
+  case JSON_INT__OVERFLOW:
+      snprintf(err_is, sizeof(err_is)-1, "JSON tried to access forbidden memory (Overflow)");
+      break;
+  default:
+      snprintf(err_is, sizeof(err_is)-1, "Unknown Error");
+      break;
+  }
+
+  char errbuf[512];
+  snprintf(errbuf, sizeof(errbuf)-1, "%s (Code: %d)\n\t%s\n\tAt '%s' (addr: %p)", codetag, code, err_is, entity, where);
+
+  char *errdynm = strdup(errbuf);
+  if (NULL == errdynm)
+    ERROR("%s", errbuf);
+
+  return  errdynm;
 }
