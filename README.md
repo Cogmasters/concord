@@ -69,3 +69,5 @@ void on_message(discord_t *client, discord_message_t *message)
   
 ## Get support
 Join our discord server:
+
+## Contributions are welcome!
