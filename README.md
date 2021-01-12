@@ -38,7 +38,8 @@ make echo-bot
    well written instructions from [discord-irc](https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token) about 
    how to get token and join bot to a server.
    
-2. invite your bot to your server
+2. invite your bot to a testing server. We can invite your bots
+   to our testing servers. 
 3. run `./echo-bot.exe` in the same folder of `bot.config`
 
 ## Test echo-bot
