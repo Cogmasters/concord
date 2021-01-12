@@ -44,5 +44,11 @@ make echo-bot
 ## Test echo-bot
 type any message in any channel of the server that the bot is invited.
 
+
+## Supported Features:
+  - rate limiting
+  - ws resuming
+  - basic discord rest API endpoints
+  
 ## Get support
 Join our discord server:
