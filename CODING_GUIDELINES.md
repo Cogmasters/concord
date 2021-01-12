@@ -34,8 +34,6 @@ To keep the code away from deep nesting one should always check for false condit
 Instead of checking only for true, like so:
 
 ```c
-int a = 128;
-
 if (IS_PAIR(a)) {
   if (IS_BASE_TWO(a)) {
     if (a > 100) {
@@ -50,8 +48,6 @@ if (IS_PAIR(a)) {
 We can achieve a code with better flow and minimal nesting by checking for false conditions, as follows:
 
 ```c
-int a = 128;
-
 if (!IS_PAIR(a)) return;
 if (!IS_BASE_TWO(a)) return;
 if (a <= 100) return;
