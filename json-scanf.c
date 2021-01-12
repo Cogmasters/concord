@@ -145,11 +145,19 @@ match_path (char *buffer, jsmntok_t *t, size_t n_toks, int start_tok,
   if (STREQ(es->type_specifier, "char*")){
       switch (t[i].type) {
       case JSMN_STRING:
-          if (es->size)
-            strscpy((char *) es->recipient, buffer + t[i].start, es->size + 1);
-          else
-            strscpy((char *) es->recipient, buffer + t[i].start,
-                    t[i].end - t[i].start + 1);
+          if (es->size) {
+            int ret = snprintf((char *) es->recipient, es->size,
+                               "%.*s", t[i].end - t[i].start,
+                               buffer+t[i].start);
+            ASSERT_S((size_t)ret < es->size, "out-of-bounds write");
+          }
+          else {
+            // we have to allow this potential oob write as
+            // we don't know the buffer size of recipient.
+            sprintf((char *) es->recipient, "%.*s",
+                    t[i].end - t[i].start,
+                    buffer + t[i].start);
+          }
           break;
       case JSMN_PRIMITIVE:
           //something is wrong if is not null primitive
@@ -354,10 +362,10 @@ parse_path_specifier(char * format, struct extractor_specifier *es,
   ASSERT_S(*format == ']', "A close bracket ']' is missing");
 
   size_t len = format - start;
-  ASSERT_S(len + 1 < KEY_MAX, "Key is too long (Buffer Overflow)");
   ASSERT_S(0 != len, "Key has invalid size 0");
 
-  strscpy(curr_path->key, start, len + 1);
+  int ret = snprintf (curr_path->key, KEY_MAX, "%.*s", len, start);
+  ASSERT_S(ret < KEY_MAX, "Key is too long (out-of-bounds write)");
 
   ++format; // eat up ']'
   switch (*format) {
