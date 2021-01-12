@@ -37,8 +37,6 @@ test : all test-api.c test-ws.c test-json-scanf.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \
 		test-api.c -o test-api.exe $(LIBS_LDFLAGS)
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \
-		test-api2.c -o test-api2.exe $(LIBS_LDFLAGS)
-	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \
 		test-ws.c -o test-ws.exe $(LIBS_LDFLAGS)
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \
 		test-json-scanf.c -o test-json-scanf.exe $(LIBS_LDFLAGS)
@@ -48,8 +46,6 @@ test : all test-api.c test-ws.c test-json-scanf.c
 echo-bot : all echo-bot.c echo-bot2.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \
 		echo-bot.c -o echo-bot.exe $(LIBS_LDFLAGS)
-	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \
-		echo-bot2.c -o echo-bot2.exe $(LIBS_LDFLAGS)
 
 mkdir :
 	mkdir -p $(OBJDIR) $(LIBDIR)

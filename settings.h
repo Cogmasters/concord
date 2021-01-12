@@ -1,7 +1,9 @@
 #ifndef SETTINGS_H
 #define SETTINGS_H
+
 #include <linux/limits.h>
 #include <stdbool.h>
+
 #define TOKEN_MAX_LEN 512
 
 struct bot_settings {
@@ -18,5 +20,6 @@ struct bot_settings {
   } logging;
 };
 
-extern void bot_settings_init (char * filename, struct bot_settings *);
+extern void bot_settings_init (struct bot_settings*, char *filename);
+
 #endif // SETTINGS_H
