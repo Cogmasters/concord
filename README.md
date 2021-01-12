@@ -68,7 +68,7 @@ void on_message(discord_t *client, discord_message_t *message)
   - discord gateway ws resuming
   - basic discord rest API endpoints
   
-## Get support
-Join our discord server:
+## Participate in discussions and get tech support
+Join our discord server: https://discord.gg/2jfycwXVM3
 
 ## Contributions are welcome!
