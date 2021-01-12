@@ -22,15 +22,16 @@ load_whole_file(char filename[]) {
   char *string = malloc(fsize + 1);
   fread(string, 1, fsize, f);
   fclose(f);
+
   return string;
 }
 
 void
 bot_settings_init(struct bot_settings *settings, char filename[])
 {
-  char * str = load_whole_file(filename);
+  char *str = load_whole_file(filename);
 
-  json_scanf2(str,
+  json_scanf(str,
              "[discord][token]%s"
              "[logging][filename]%s"
              "[logging][level]%s"

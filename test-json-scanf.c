@@ -29,50 +29,28 @@
 #include <locale.h>
 
 #include "json-scanf.h"
-#include "libdiscord.h"
 
-#define JSON_TEXT "{" \
-  "\"username\":\"john_doe\"," \
-  "\"public_flags\":128," \
-  "\"id\":\"111111111111111111\"," \
-  "\"discriminator\":\"1111\"," \
-  "\"avatar\":\"aaa1aa11111a111a11a11a11a1aa111a\"" \
-"}"
 
-int main(void)
-{
+int main(void) {
   char *locale = setlocale(LC_CTYPE, "");
   assert(NULL != locale);
 
-  discord_user_t *user = discord_user_init();
+  int integer1=0, integer2=0, i3 =0, i4=0, i5=0;
+  char str1[25] = {0}, str2[25] = {0};
+  char *str = "{ \"t\":\"abc\", \"s\":10, \"op\":100 "
+          ", \"k1\": {  \"v1\": 10 }  "
+          ", \"a1\": [ 112, 2, 3 ] "
+          ", \"b\": true "
+          ", \"nstr\":null }";
 
-  json_scanf(JSON_TEXT,
-     "%s[id]" \
-     "%s[username]" \
-     "%s[discriminator]" \
-     "%s[avatar]" \
-     "%d[public_flags]",
-      user->id,
-      user->username,
-      user->discriminator,
-      user->avatar,
-      &user->public_flags);
+  printf("%s\n", str);
 
-  fprintf(stderr,
-          "{"\
-            "\"username\":\"%s\"," \
-            "\"public_flags\":%d," \
-            "\"id\":\"%s\"," \
-            "\"discriminator\":\"%s\"," \
-            "\"avatar\":\"%s\"" \
-           "}",
-          user->username,
-          user->public_flags,
-          user->id, 
-          user->discriminator,
-          user->avatar);
+  json_scanf(str,
+       "[a1][0]%d [t]%s [s]%d [op]%d [nstr]%s [k1][v1]%d [b]%b",
+       &i4, str1, &integer1, &integer2, str2, &i3, &i5);
 
-  discord_user_cleanup(user);
+  printf("t %s, s %d, op %d, nstr %s, i3 %d, i4 %d\n",
+         str1, integer1, integer2, str2, i3, i4);
 
   return EXIT_SUCCESS;
 }
