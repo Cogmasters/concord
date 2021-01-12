@@ -1,6 +1,6 @@
 # CODING GUIDELINES
 
-In order to keep the code concise and easy to comprehend, there are a few rules to follow. (This is still a work in progress)
+In order to keep the code concise and easy to comprehend there are a few rules to follow. (This is still a work in progress)
 
 ## Line Width
 
@@ -8,7 +8,7 @@ Try to use lines at most 80 characters long, this is an amount of text that is e
 
 ## Indentation
 
-Overall we will stick with two space identation. But if readability becomes an issue, you better judgment should tell you wether you need more identation. For compactness and readability, this is the preferred identation style:
+Overall we will stick with two space identation. But if readability becomes an issue, your better judgment should tell you wether you need more or less identation. For compactness and readability this is the preferred identation style:
 
 ```c
 for (int i=0; i < n; ++i) {
@@ -23,13 +23,15 @@ for (int i=0; i < n; ++i) {
   }
 }
 ```
-Use your surrounding code as guide.
+Use your surrounding code as a guide.
 
 ## Conditional Statements
 
 ### Nesting
 
-To keep the code away from deep nesting one should always check for false conditions. Instead of checking only for true, like so:
+To keep the code away from deep nesting one should always check for false conditions.
+
+Instead of checking only for true, like so:
 
 ```c
 int a = 128;
@@ -45,7 +47,7 @@ if (IS_PAIR(a)) {
 }
 ```
 
-We can achieve a code with better flow and easier comprehension by checking for false conditions:
+We can achieve a code with better flow and minimal nesting by checking for false conditions, as following:
 
 ```c
 int a = 128;
@@ -61,7 +63,7 @@ for (int i=0; i < a; ++i) {
 
 ### Switch vs Else If
 
-If you are in a situation where a variable can assume multiple values and those values are known at compile time, then use switch. As a general rule using switch is always preferrable as it makes your intents clearer and the code easier to read. Remember to always include the `default` case even if you assume it will never be used, in which case it will be a valuable tool for covering potential errors.
+If you are in a situation where a variable can assume many values of which are known at compile time, then use switch. As a general rule using switch is always preferrable as it makes your intents clearer and the code easier to read. Remember to always include the `default` case even if you assume that it will never be used (in which case it will be a valuable tool for covering potential errors).
 
 And remember to always explicitly comment your fallthroughs.
 
