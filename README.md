@@ -1,5 +1,13 @@
 # README
 
+Orca is a discord bot framework that is designed with minimum dependencies to
+make bot deployment dead simple.  The primary design goals of this framework are:
+
+- easy to debug (networking and logic) errors with extensive logging facilities
+- easy to reason about the code
+- easy to use for the end users: asynchrous programming model is hard to reasonable.
+  Our lib uses multi-threading and synchronous IO to support concurrency.
+
 ## Build
 ### Install dependencies:
     - gcc, make
@@ -29,4 +37,4 @@ make echo-bot
 type any message in any channel of the server that the bot is invited.
 
 ## Get support
-Join our discord server: 
+Join our discord server:
