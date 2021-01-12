@@ -32,7 +32,6 @@ apt-get install -y libcurl4-openssl-dev
 make echo-bot
 ```
 
-
 ## Run echo-bot
 1. get your bot token and paste it to `bot.config` to
    replace "replace-this-with-your-bot-token". There is a 
@@ -44,6 +43,24 @@ make echo-bot
 ## Test echo-bot
 type any message in any channel of the server that the bot is invited.
 
+
+## Usage example
+```c
+void on_message(discord_t *client, discord_message_t *message)
+{
+  discord_user_t *self = discord_user_init();
+  assert(NULL != self);
+
+  discord_get_client_user(client, &self);
+
+  // make sure it doesn't echoes itself
+  if (strcmp(self->username, message->author->username)){
+    discord_send_message(client, message->channel_id, message->content);
+  }
+
+  discord_user_cleanup(self);
+}
+```
 
 ## Supported Features:
   - rate limiting
