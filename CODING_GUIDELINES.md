@@ -1,0 +1,88 @@
+# CODING GUIDELINES
+
+In order to keep the code concise and easy to comprehend, there are a few rules to follow. (This is still a work in progress)
+
+## Line Width
+
+Try to use lines at most 80 characters long, this is an amount of text that is easy to fit in most monitors. Don't be afraid to break a long function in many lines.
+
+## Indentation
+
+Overall we will stick with two space identation. But if readability becomes an issue, you better judgment should tell you wether you need more identation. For compactness and readability, this is the preferred identation style:
+
+```c
+for (int i=0; i < n; ++i) {
+  if (something) {
+    //do something
+  }
+  else if (something else) {
+    //do something else
+  } 
+  else {
+    //this is it
+  }
+}
+```
+Use your surrounding code as guide.
+
+## Conditional Statements
+
+### Nesting
+
+To keep the code away from deep nesting one should always check for false conditions. Instead of checking only for true, like so:
+
+```c
+int a = 128;
+
+if (IS_PAIR(a)) {
+  if (IS_BASE_TWO(a)) {
+    if (a > 100) {
+      for (int i=0; i < a; ++i) {
+        //do something
+      }
+    }
+  }
+}
+```
+
+We can achieve a code with better flow and easier comprehension by checking for false conditions:
+
+```c
+int a = 128;
+
+if (!IS_PAIR(a)) return;
+if (!IS_BASE_TWO(a)) return;
+if (a <= 100) return;
+
+for (int i=0; i < a; ++i) {
+  //do something
+}
+```
+
+### Switch vs Else If
+
+If you are in a situation where a variable can assume multiple values and those values are known at compile time, then use switch. As a general rule using switch is always preferrable as it makes your intents clearer and the code easier to read. Remember to always include the `default` case even if you assume it will never be used, in which case it will be a valuable tool for covering potential errors.
+
+And remember to always explicitly comment your fallthroughs.
+
+Try to keep up with the following format:
+
+```c
+  switch (a) {
+  case 0:
+      //do something
+      break;
+  case 1:
+      //do another thing
+      break;
+  case 2:
+      //do something else
+  /* fall through */
+  case 3:
+      //the other thing
+      break;
+  default:
+      ERROR("This shouldn't happen.");
+      break;
+  }
+```
