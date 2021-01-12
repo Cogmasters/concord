@@ -40,7 +40,7 @@ make echo-bot
 3. run `./echo-bot.exe` in the same folder of `bot.config`
 
 ## Test echo-bot
-type any message in any channel of the server that the bot is invited.
+Type any message in any channel of the server that the bot is invited.
 
 
 ## Usage example
@@ -70,3 +70,5 @@ void on_message(discord_t *client, discord_message_t *message)
 Join our discord server: https://discord.gg/2jfycwXVM3
 
 ## Contributions are welcome!
+Check our development [Roadmap](ROADMAP.md)
+
