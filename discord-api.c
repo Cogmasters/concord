@@ -246,7 +246,7 @@ perform_request(
         char message[256] = {0};
         long long retry_after;
 
-        json_scanf2(api->res_body.str,
+        json_scanf(api->res_body.str,
                     "[message]%s [retry_after]%lld",
                     message, &retry_after);
 
@@ -315,7 +315,7 @@ Discord_api_load_message(void **p_message, char *str)
       str_referenced_message);
 */
 
-  json_scanf2(str, "[content]%s [channel_id]%s [author]%S", 
+  json_scanf(str, "[content]%s [channel_id]%s [author]%S", 
               message->content, message->channel_id, str_author);
 
   if (NULL == message->author) {
@@ -335,7 +335,7 @@ Discord_api_load_guild(void **p_guild, char *str)
 {
   discord_guild_t *guild = *p_guild;
 
-  json_scanf2(str,
+  json_scanf(str,
      "[id]%s"
      "[name]%s"
      "[icon]%s"
@@ -359,7 +359,7 @@ Discord_api_load_user(void **p_user, char *str)
 {
   discord_user_t *user = *p_user;
 
-  json_scanf2(str,
+  json_scanf(str,
      "[id]%s"
      "[username]%s"
      "[discriminator]%s"

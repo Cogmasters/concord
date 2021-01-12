@@ -7,7 +7,8 @@ a.out
 *~
 .idea
 cmake-build-debug
-bot_token
+botdev.config
 obj
 lib
 test-api
+*.json

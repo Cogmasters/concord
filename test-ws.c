@@ -3,6 +3,7 @@
 #include <assert.h>
 
 #include <libdiscord.h>
+#include "settings.h"
 
 void on_ready(struct discord_s *client)
 {
@@ -18,19 +19,19 @@ void on_ready(struct discord_s *client)
 
 int main(int argc, char *argv[])
 {
-  FILE *f_bot_token = fopen("bot_token","rb");
-  assert(NULL != f_bot_token);
+  static struct bot_settings settings;
 
-  char bot_token[100];
-  fgets(bot_token, 99, f_bot_token);
-  fclose(f_bot_token);
+  if (argc > 1)
+    bot_settings_init(&settings, argv[1]);
+  else
+    bot_settings_init(&settings, "bot.config");
 
   discord_global_init();
-  discord_t *client = discord_init(bot_token);
+  discord_t *client = discord_init(settings.discord.token);
   assert(NULL != client);
 
-  if (argc > 1) {
-    discord_dump_json(client, argv[1]);
+  if (settings.logging.dump_json.enable) {
+    discord_dump_json(client, settings.logging.dump_json.filename);
   }
 
   discord_set_on_ready(client, &on_ready);

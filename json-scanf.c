@@ -32,491 +32,479 @@
 #include "jscon-common.h"
 #include "debug.h"
 
+#define JSMN_PARENT_LINKS
+#define JSMN_STRICT
+#include "jsmn.h"
 
+#define N_PATH_MAX 8
+#define KEY_MAX 128
 
-struct utils_s {
-    char *buffer;   /* the json string to be parsed */
-    char key[256];  /* holds key ptr to be received by item */
-    long offset;    /* key offset used for concatenating unique keys for nested objects */
+struct path_specifier {
+  char key[KEY_MAX];
+  struct path_specifier *next;
 };
 
-struct pair_s {
-    char specifier[5];
-
-    char *key;
-    void *value; /* value being NULL means its a parent */
+struct extractor_specifier {
+  struct path_specifier path_specifiers[N_PATH_MAX];
+  char type_specifier[10];
+  size_t size;
+  void *recipient; //must be a pointer
+  bool is_applied;
 };
 
-inline static void
-skip_string(struct utils_s *utils)
-{
-    /* loops until null terminator or end of string are found */
-    do {
-        /* skips escaped characters */
-        if ('\\' == *utils->buffer++){
-            ++utils->buffer;
-        }
-    } while ('\0' != *utils->buffer && '\"' != *utils->buffer);
-    ASSERT_S('\"' == *utils->buffer, jscon_strerror(JSCON_EXT__INVALID_STRING, utils->buffer));
-    ++utils->buffer; /* skip double quotes */
-}
-
-inline static void
-skip_composite(int ldelim, int rdelim, struct utils_s *utils)
-{
-    /* skips the item and all of its nests, special care is taken for any
-     *  inner string is found, as it might contain a delim character that
-     *  if not treated as a string will incorrectly trigger depth action*/
-    int depth = 0;
-    do {
-        if ('\"' == *utils->buffer){ /* treat string separately */
-            skip_string(utils);
-            continue; /* all necessary tokens skipped, and doesn't impact depth */
-        } else if (ldelim == *utils->buffer) {
-            ++depth;
-        } else if (rdelim == *utils->buffer) {
-            --depth;
-        }
-
-        ++utils->buffer; /* skips token */
-
-        if (0 == depth) return; /* entire item has been skipped, return */
-
-    } while ('\0' != *utils->buffer);
-}
-
-static void
-skip(struct utils_s *utils)
-{
-    switch (*utils->buffer){
-    case '{':/*OBJECT DETECTED*/
-        skip_composite('{', '}', utils);
-        return;
-    case '[':/*ARRAY DETECTED*/
-        skip_composite('[', ']', utils);
-        return;
-    case '\"':/*STRING DETECTED*/
-        skip_string(utils);
-        return;
-    default:
-        /* skip tokens while not end of string or not new key */
-        while ('\0' != *utils->buffer && ',' != *utils->buffer){
-            ++utils->buffer;
-        }
-        return;
-    }
-}
 
 static char*
-format_info(char *specifier, size_t *p_tmp)
+print_token(jsmntype_t type)
 {
-    size_t discard; /* throw values here if p_tmp is NULL */
-    size_t *n_bytes = (p_tmp != NULL) ? p_tmp : &discard;
+  switch (type) {
+    case JSMN_UNDEFINED:  return "undefined";
+    case JSMN_OBJECT:     return "object";
+    case JSMN_ARRAY:      return "array";
+    case JSMN_STRING:     return "string";
+    case JSMN_PRIMITIVE:  return "primitive";
+    default:              ERROR("Unknown JSMN_XXXX type encountered (code: %d)", type);
+  }
+}
 
-    if (STREQ(specifier, "s") || STREQ(specifier, "S") || STREQ(specifier, "c")){
-        *n_bytes = sizeof(char);
-        return "char*";
-    }
-    if (STREQ(specifier, "d")){
-        *n_bytes = sizeof(int);
-        return "int*";
-    }
-    if (STREQ(specifier, "ld")){
-        *n_bytes = sizeof(long);
-        return "long*";
-    }
-    if (STREQ(specifier, "lld")){
-        *n_bytes = sizeof(long long);
-        return "long long*";
-    }
-    if (STREQ(specifier, "f")){
-        *n_bytes = sizeof(float);
-        return "float*";
-    }
-    if (STREQ(specifier, "lf")){
-        *n_bytes = sizeof(double);
-        return "double*";
-    }
-    if (STREQ(specifier, "b")){
-        *n_bytes = sizeof(bool);
-        return "bool*";
-    }
-
-    *n_bytes = 0;
-    return "";
+static int
+jsoneq(const char *json, jsmntok_t *tok, const char *str)
+{
+  if (tok->type == JSMN_STRING
+      && (int)strlen(str) == tok->end - tok->start
+      && STRNEQ(json + tok->start, str, tok->end - tok->start))
+  {
+    return 0;
+  }
+  return -1;
 }
 
 static void
-apply(struct utils_s *utils, struct pair_s *pair, bool *is_nest)
+match_path (char *buffer, jsmntok_t *t, size_t n_toks, int start_tok,
+            struct extractor_specifier *es,
+            struct path_specifier *ps)
 {
-    /* first thing, we check if this pair has no value assigned to */
-    if (NULL == pair->value){
-        *is_nest = true;
-        return;
-    }
+  char *end = 0;
+  int i = start_tok, ic;
+  if (ps) {
+    switch (t[i].type) {
+    case JSMN_OBJECT:
+        for (ic = i + 1; t[ic].start < t[i].end; ic++)
+        {
+          if (i != t[ic].parent)
+            continue;
 
-    /* is not nest or reached last item from nest that can be fetched */
-
-    *is_nest = false;
-
-    /* if specifier is S, we will retrieve the json text from the key
-     *  without parsing it */
-    if (STREQ(pair->specifier, "S")){
-       char *start = utils->buffer; 
-       skip(utils);
-       char *offset = utils->buffer;
-
-       strscpy((char *)pair->value, start, 1 + (offset - start));
-
-       return;
-    }
-
-    char err_typeis[50]; /* specifier must be a primitive */
-
-    switch (*utils->buffer){
-    case '\"':/*STRING DETECTED*/
-        if (STREQ(pair->specifier, "c")){
-            *(char *)pair->value = utils->buffer[1];
-            skip_string(utils);
-        } else if (STREQ(pair->specifier, "s")){
-            char *src = Jscon_decode_string(&utils->buffer);
-            strscpy((char *)pair->value, src, strlen(src)+1);
-            free(src);
-        } else {
-            strscpy(err_typeis, "char*", sizeof(err_typeis));
-            goto type_error;
+          // top level key within t[i]
+          
+          if (0 == jsoneq(buffer, &t[ic], ps->key)) {
+            match_path(buffer, t, n_toks, ic+1, es, ps->next);
+            return;
+          }
         }
-
-        return;
-    case 't':/*CHECK FOR*/
-    case 'f':/* BOOLEAN */
-        if (!STRNEQ(utils->buffer,"true",4) && !STRNEQ(utils->buffer,"false",5))
-            goto token_error;
-
-        if (STREQ(pair->specifier, "b")){
-            switch (sizeof(bool)){
-            case sizeof(char):
-                *(char *) pair->value = Jscon_decode_boolean(&utils->buffer);
-                break;
-            case sizeof(int):
-                *(int *) pair->value = Jscon_decode_boolean(&utils->buffer);
-                break;
-            default:
-                ERROR("Incompatible bool size (%u bytes)", (unsigned int)sizeof(bool));
-            }
-        } else {
-            strscpy(err_typeis, "bool*", sizeof(err_typeis));
-            goto type_error;
-        }
-
-        return;
-    case 'n':/*CHECK FOR NULL*/
+        break;
+    case JSMN_ARRAY:
      {
-        if (!STRNEQ(utils->buffer,"null",4))
-            goto token_error; 
+        char *end;
+        int index = strtol(ps->key, &end, 10);
+        ASSERT_S(*end == 0, "Index is not a number");
+        ASSERT_S(index >= 0, "Index is not zero or positive");
+        ASSERT_S(index < t[i].size, "Index is out-of-bound");
 
-        Jscon_decode_null(&utils->buffer);
+        ic = i + 1; // the first child of i;
+        match_path(buffer, t, n_toks, ic + index, es, ps->next);
 
-        /* null conversion */
-        size_t n_bytes; /* get amount of bytes to be set to 0 */
-        format_info(pair->specifier, &n_bytes);
-        memset(pair->value, 0, n_bytes);
-        return;
+        break;
      }
-    case '{':/*OBJECT DETECTED*/
-    case '[':/*ARRAY DETECTED*/
-        strscpy(err_typeis, "jscon_item_t**", sizeof(err_typeis));
+    default:
+        ERROR("Patch match error (not an Object or Array)");
+    }
+
+    return;
+  }
+
+  es->is_applied = true;
+  if (STREQ(es->type_specifier, "char*")){
+      switch (t[i].type) {
+      case JSMN_STRING:
+          if (es->size)
+            strscpy((char *) es->recipient, buffer + t[i].start, es->size + 1);
+          else
+            strscpy((char *) es->recipient, buffer + t[i].start,
+                    t[i].end - t[i].start + 1);
+          break;
+      case JSMN_PRIMITIVE:
+          //something is wrong if is not null primitive
+          if (!STRNEQ(buffer + t[i].start, "null", 4))
+              goto type_error;
+
+          *(char *)es->recipient = '\0'; //@todo we need a better way to represent null
+
+          break;
+      default:
         goto type_error;
-    case '-': case '0': case '1': case '2':
-    case '3': case '4': case '5': case '6':
-    case '7': case '8': case '9':
-     {
-        double num = Jscon_decode_double(&utils->buffer);
-        if (DOUBLE_IS_INTEGER(num)){
-            if (STREQ(pair->specifier, "d")){
-                *(int *)pair->value = (int)num;
-            } else if (STREQ(pair->specifier, "ld")){
-                *(long *)pair->value = (long)num;
-            } else if (STREQ(pair->specifier, "lld")){
-                *(long long *)pair->value = (long long)num;
-            } else {
-                strscpy(err_typeis, "short*, int*, long*, long long*", sizeof(err_typeis));
-                goto type_error;
-            }
-        } else {
-            if (STREQ(pair->specifier, "f")){
-                *(float *)pair->value = (float)num;
-            } else if (STREQ(pair->specifier, "lf")){
-                *(double *)pair->value = num;
-            } else {
-                strscpy(err_typeis, "float*, double*", sizeof(err_typeis));
-                goto type_error;
-            }
-        }
-
-        return;
-     }
-    default: 
-        goto token_error;
+      }
+  }
+  else if (STREQ(es->type_specifier, "copy")) {
+    if (es->size)
+      strscpy((char *) es->recipient, buffer + t[i].start, es->size);
+    else
+      strscpy((char *) es->recipient, buffer + t[i].start,
+              t[i].end - t[i].start + 1);
+  }
+  else if (STREQ(es->type_specifier, "bool*")) {
+    ASSERT_S(t[i].type == JSMN_PRIMITIVE, "Not a primitive");
+    switch (buffer[t[i].start]) {
+      case 't': *(bool *)es->recipient = true; break;
+      case 'f': *(bool *)es->recipient = false; break;
+      default: goto type_error; 
     }
+  }
+  else if (STREQ(es->type_specifier, "int*")) {
+    ASSERT_S(t[i].type == JSMN_PRIMITIVE, "Not a primitive");
+    switch(buffer[t[i].start]) {
+      case 'n': *(int *) es->recipient = 0; break;
+      default:
+        *(int *) es->recipient = (int) strtol(buffer + t[i].start, &end, 10);
+        if (end != buffer + t[i].end) goto type_error;
+        break;
+    }
+  }
+  else if (STREQ(es->type_specifier, "long*")) {
+    ASSERT_S(t[i].type == JSMN_PRIMITIVE, "Not a primitive");
+    switch(buffer[t[i].start]) {
+      case 'n': *(long *) es->recipient = 0; break;
+      default:
+        *(long *) es->recipient = strtol(buffer + t[i].start, &end, 10);
+        if (end != buffer + t[i].end) goto type_error;
+        break;
+    }
+  }
+  else if (STREQ(es->type_specifier, "long long*")) {
+    ASSERT_S(t[i].type == JSMN_PRIMITIVE, "Not a primitive");
+    switch(buffer[t[i].start]) {
+      case 'n': *(long long *) es->recipient = 0; break;
+      default:
+        *(long long *) es->recipient = strtoll(buffer + t[i].start, &end, 10);
+        if (end != buffer + t[i].end) goto type_error;
+        break;
+    }
+  }
+  else if (STREQ(es->type_specifier, "float*")) {
+    ASSERT_S(t[i].type == JSMN_PRIMITIVE, "Not a primitive");
+    switch(buffer[t[i].start]) {
+      case 'n': *(float *) es->recipient = 0; break;
+      default:
+        *(float *) es->recipient = strtof(buffer + t[i].start, &end);
+        if (end != buffer + t[i].end) goto type_error;
+        break;
+    }
+  }
+  else if (STREQ(es->type_specifier, "double*")) {
+    ASSERT_S(t[i].type == JSMN_PRIMITIVE, "Not a primitive");
+    switch(buffer[t[i].start]) {
+      case 'n': *(double *) es->recipient = 0; break;
+      default:
+        *(double *) es->recipient = strtod(buffer + t[i].start, &end);
+        if (end != buffer + t[i].end) goto type_error;
+        break;
+    }
+  }
+  else {
+      goto type_error;
+  }
 
+  return;
 
 type_error:
-    ERROR("Expected specifier %s but specifier is %s( found: \"%s\" )\n", err_typeis, format_info(pair->specifier, NULL), pair->specifier);
+  ERROR("Expected specifier %s but found: '%.*s' )\n", es->type_specifier,
+        t[i].end - t[i].start, buffer + t[i].start);
+  // report errors;
+  return;
+}
 
-token_error:
-    ERROR("Invalid JSON Token: %c", *utils->buffer);
+static void
+apply(char *str, jsmntok_t *tok, size_t n_toks, struct extractor_specifier *es)
+{
+  size_t ik = 1, iv = 2;
+  do {
+    // tok[ik] must be a toplevel key, and tok[iv] must be its value
+    if (tok[ik].type != JSMN_STRING) {
+      D_PRINT("[%ld][p:%d][size:%d]%s (%.*s)\n", ik, tok[ik].parent,
+              tok[ik].size, print_token(tok[ik].type),
+              tok[ik].end - tok[ik].start, str + tok[ik].start);
+    }
+    ASSERT_S(tok[ik].type == JSMN_STRING, "Not a key"); // make sure it's a key
+    ASSERT_S(tok[ik].parent == 0, "Token is not at top level"); // make sure it's at the toplevel
+
+    if (0 == jsoneq(str, &tok[ik], es->path_specifiers[0].key)) {
+      match_path(str, tok, n_toks, iv, es, es->path_specifiers[0].next);
+      break;
+    }
+    
+    // skip all children toks of tok[iv]
+    ik = iv + 1;
+    if (ik >= n_toks)
+      break; // we are done
+
+    // find the next toplevel key
+    for (ik = iv + 1; tok[ik].end < tok[iv].end; ik++)
+      continue;
+
+    iv = ik + 1;
+  } while (ik < n_toks && iv < n_toks);
+}
+
+
+static char*
+parse_type_specifier(char *specifier, struct extractor_specifier *  p)
+{
+  char *start = specifier, * end;
+  long size = strtol(start, &end, 10);
+
+  bool is_valid_size = false;
+  if (end != start) {
+    is_valid_size = true;
+    specifier = end;
+  }
+
+  if (STRNEQ(specifier, "s", 1)){
+    p->size = (is_valid_size) ? size : 0;
+    strcpy(p->type_specifier, "char*");
+    return specifier + 1;
+  }
+  else if (STRNEQ(specifier, "S", 1)) {
+    p->size = (is_valid_size) ? size : 0;
+    strcpy(p->type_specifier, "copy");
+    return specifier + 1;
+  }
+  else if (STRNEQ(specifier, "d", 1)) {
+    p->size = sizeof(int);
+    strcpy(p->type_specifier, "int*");
+    return specifier + 1;
+  }
+  else if (STRNEQ(specifier, "ld", 2)) {
+    p->size = sizeof(long);
+    strcpy(p->type_specifier, "long*");
+    return specifier + 2;
+  }
+  else if (STRNEQ(specifier, "lld", 3)) {
+    p->size = sizeof(long long);
+    strcpy(p->type_specifier, "long long*");
+    return specifier + 3;
+  }
+  else if (STRNEQ(specifier, "f", 1)) {
+    p->size = sizeof(float);
+    strcpy(p->type_specifier, "float*");
+    return specifier + 1;
+  }
+  else if (STRNEQ(specifier, "lf", 2)) {
+    p->size = sizeof(double);
+    strcpy(p->type_specifier, "double*");
+    return specifier + 2;
+  }
+  else if (STRNEQ(specifier, "b", 1)){
+    p->size = sizeof(bool);
+    strcpy(p->type_specifier, "bool*");
+    return specifier + 1;
+  }
+
+  return 0;
+}
+
+/*
+ * legit inputs:
+ *      abc]
+ *      ]
+ *      10]
+ *
+ * illegit inputs:
+ *      abc
+ *      10
+ */
+static char*
+parse_path_specifier(char * format, struct extractor_specifier *es,
+                     struct path_specifier *curr_path, int next_path_idx)
+{
+  //@todo does this accounts for objects with numerical keys?
+  ASSERT_S(next_path_idx < N_PATH_MAX, "Too many path specifiers");
+
+  char *start = format;
+  for (;*format && *format != ']'; format++)
+    continue;  // until find a ']' or '\0'
+
+  ASSERT_S(*format == ']', "A close bracket ']' is missing");
+
+  size_t len = format - start;
+  ASSERT_S(len + 1 < KEY_MAX, "Key is too long (Buffer Overflow)");
+  ASSERT_S(0 != len, "Key has invalid size 0");
+
+  strscpy(curr_path->key, start, len + 1);
+
+  ++format; // eat up ']'
+  switch (*format) {
+  case '[':
+   {
+      ++format; // eat up '['
+      struct path_specifier *next_path = es->path_specifiers+next_path_idx;
+      curr_path->next = next_path;
+
+      return parse_path_specifier(format, es, next_path, next_path_idx+1);
+   }
+  case '%':
+      ++format; // eat up '%'
+
+      return parse_type_specifier(format, es);
+  default:
+      return NULL;
+  }
 }
 
 /* count amount of keys and check for formatting errors */
 static void
-format_analyze(char *format, int *num_keys)
+format_analyze(char *format, size_t *num_keys)
 {
-    while (true) /* run until end of string found */
+  bool is_open = false;
+  while (*format) /* run until end of string found */
+  {
+    // search for open bracket
+    while (*format)
     {
-        /* 1st STEP: find % occurrence */
-        while (true)
-        {
-            if ('%' == *format){
-                ++format;
-                break;
-            }
-            if ('\0' == *format){
-                ASSERT_S(*num_keys != 0, "Format missing type specifiers");
-                return;
-            }
-            ASSERT_S(']' != *format, "Found extra ']' in key specifier");
-
-            ++format;
-        }
-
-        /* 2nd STEP: check specifier validity */
-        while (true)
-        {
-            if ('[' == *format){
-                ++format;
-                break;
-            }
-
-            if ('\0' == *format)
-                ERROR("Missing format '[' key prefix token\n\tFound: '%c'", *format);
-            if (!isalpha(*format))
-                ERROR("Unknown type specifier token\n\tFound: '%c'", *format);
-
-            ++format;
-        }
-
-        /* 3rd STEP: check key validity */
-        while (true)
-        {
-            if (']' == *format)
-            {
-                if (*++format != '[')
-                    break;
-
-                /* we've got a parent of a nested object. */
-
-                ++format;
-                ++*num_keys;
-
-                continue;
-            }
-
-            if ('\0' == *format)
-                ERROR("Missing format ']' key suffix token\n\tFound: '%c'", *format);
-
-            ++format;
-        }
-
-        ++*num_keys;
+      if ('[' == *format) {
+        is_open = true;
+        ++format; // eat up '['
+        break;
+      }
+      ++format;
     }
-}
+    ASSERT_S(is_open && *format, "Missing '[' token in format string");
 
-static void
-store_pair(char buf[], struct pair_s **pairs, int *num_pairs, va_list *ap)
-{
-    struct pair_s *new_pair = malloc(sizeof *new_pair);
-    ASSERT_S(new_pair != NULL, jscon_strerror(JSCON_EXT__OUT_MEM, new_pair));
-
-    strscpy(new_pair->specifier, buf, sizeof(new_pair->specifier)); /* get specifier string */
-
-    if (STREQ("", format_info(new_pair->specifier, NULL)))
-        ERROR("Unknown type specifier token %%%s", new_pair->specifier);
-
-    new_pair->key = strdup(&buf[strlen(buf)+1]);
-    ASSERT_S(new_pair->key != NULL, jscon_strerror(JSCON_EXT__OUT_MEM, new_pair->key));
-
-    if (NULL != *ap) {
-        new_pair->value = va_arg(*ap, void*);
-        ASSERT_S(NULL != new_pair->value, "NULL pointer given as argument parameter");
-    }
-    else {
-        new_pair->value = NULL;
-    }
-
-    pairs[*num_pairs] = new_pair;
-    ++*num_pairs;
-}
-
-static void
-format_decode(char *format, struct pair_s **pairs, int *num_pairs, va_list *ap)
-{
-    char buf[256];
-
-    /* split keys from its type specifier */
-    size_t i; /* buf char index */
-    while (true) /* run until end of string found */
+    // search for close bracket
+    while (*format)
     {
-        /* 1st STEP: find % occurrence */
-        while (true){
-            if ('%' == *format){
-                ++format;
-                break;
-            }
-
-            if ('\0' == *format) return;
-
-            ++format;
-        }
-
-        i = 0;
-
-        /* 2nd STEP: fetch type specifier */
-        while (true){
-            ++i;
-            ASSERT_S(i <= sizeof(buf), jscon_strerror(JSCON_INT__OVERFLOW, buf));
-
-            if ('[' == *format){
-                ++format;
-                buf[i-1] = '\0';
-                break;
-            }
-
-            buf[i-1] = *format++;
-        }
-
-        /* 3rd STEP: type specifier is formed, proceed to fetch the key and store
-         *  it in an array */
-        while (true)
-        {
-            if (']' == *format)
-            {
-                buf[i] = '\0';
-
-                if (*++format != '['){
-                    /* most significand key */
-                    store_pair(buf, pairs, num_pairs, ap);
-
-                    break;
-                }
-
-                /* we've got a parent of a nested object.
-                 *  it will be identified by its pair->value
-                 *  being NULL */
-
-                store_pair(buf, pairs, num_pairs, NULL);
-
-                ++format; /* skips '[' token */
-
-                continue;
-            }
-
-            buf[i] = *format++;
-
-            ++i;
-            ASSERT_S(i <= sizeof(buf), jscon_strerror(JSCON_INT__OVERFLOW, buf+i));
-        }
-    }
-}
-
-/* works like sscanf, will parse stuff only for the keys specified to the format string parameter.
- *  the variables assigned to ... must be in
- *  the correct order, and type, as the requested keys.  
- *
- * every key found that doesn't match any of the requested keys will be ignored along with all of 
- *  its contents. */
-void
-json_scanf(char *buffer, char *format, ...)
-{
-    ASSERT_S(buffer != NULL, jscon_strerror(JSCON_EXT__EMPTY_FIELD, buffer));
-    ASSERT_S(format != NULL, jscon_strerror(JSCON_EXT__EMPTY_FIELD, format));
-
-    CONSUME_BLANK_CHARS(buffer);
-    ASSERT_S(*buffer == '{', "Missing Object token '{'");
-
-    struct utils_s utils = {
-        .key     = "",
-        .buffer  = buffer
-    };
-
-    va_list ap;
-    va_start(ap, format);
-
-    int num_keys = 0;
-    format_analyze(format, &num_keys);
-    ASSERT_S(num_keys > 0, "No keys are given in format");
-
-    int num_pairs = 0;
-    struct pair_s **pairs = malloc(num_keys * sizeof *pairs);
-    ASSERT_S(NULL != pairs, jscon_strerror(JSCON_EXT__OUT_MEM, pairs));
-
-    format_decode(format, pairs, &num_pairs, &ap);
-    ASSERT_S(num_keys == num_pairs, "Number of keys encountered is different than allocated");
-
-    bool is_nest = false; /* condition to form nested keys */
-    while (*utils.buffer != '\0')
-    {
-        if ('\"' == *utils.buffer)
-        {
-            /* for nests we use offset position in order to
-             *  concatenate keys, which will guarantee that
-             *  its unique */
-            if (true == is_nest)
-                utils.offset = strlen(utils.key);
-            else
-                utils.offset = 0;
-
-            /* decode key string */
-            Jscon_decode_static_string(
-                &utils.buffer,
-                sizeof(utils.key),
-                utils.offset, 
-                utils.key);
-
-            /* is key token, check if key has a match from given format */
-            ASSERT_S(':' == *utils.buffer, jscon_strerror(JSCON_EXT__INVALID_TOKEN, utils.buffer)); /* check for key's assign token  */
-            ++utils.buffer; /* consume ':' */
-
-            CONSUME_BLANK_CHARS(utils.buffer);
-
-            /* linear search to try and find matching key */
-            struct pair_s *p_pair = NULL;
-            for (int i=0; i < num_pairs; ++i){
-                if (STREQ(utils.key, pairs[i]->key)){
-                    p_pair = pairs[i];
-                    break;
-                }
-            }
-
-            if (p_pair != NULL) { /* match, fetch value and apply to corresponding arg */
-                apply(&utils, p_pair, &is_nest);
-            } else { /* doesn't match, skip tokens until different key is detected */
-                skip(&utils);
-                utils.key[utils.offset] = '\0'; /* resets unmatched key */
-            }
+      if (']' == *format) {
+        if (*++format != '[') {
+          is_open = false;
+          break;
         }
         else {
-            /* not a key token, skip it */
-            ++utils.buffer;
+          is_open = true;
         }
+      }
+      ++format;
+    }
+    ASSERT_S(!is_open, "Missing ']' token in format string");
+
+    /* find % occurrence */
+    while (*format)
+    {
+      if ('%' == *format){
+        do { // skip type specifier
+          ++format;
+        } while (*format && *format != '[');
+        break;
+      }
+      ++format;
+    }
+    ++*num_keys;
+  }
+}
+
+#define SKIP_SPACES(s)   { while (isspace(*s)) ++s; }
+
+static struct extractor_specifier*
+parse_extractor_specifiers(char * format, size_t n)
+{
+  struct extractor_specifier *nes = calloc(n, sizeof(*nes));
+
+  size_t i = 0;
+  while (*format) 
+  {
+    SKIP_SPACES(format);
+    if (*format == '[') {
+      ++format; //eat up '['
+      format = parse_path_specifier(format, nes+i, nes[i].path_specifiers+0, 1);
+    }
+    else {
+      free(nes);
+      return NULL;
     }
 
-    va_end(ap);
+    i++;
+  }
 
-    /* clean resources */
-    for (int i=0; i < num_pairs; ++i){
-        free(pairs[i]->key);
-        free(pairs[i]);
-    }
-    free(pairs);
+  return nes;
+}
+
+static struct extractor_specifier*
+format_parse(char *format, size_t *n)
+{
+  format_analyze(format, n);
+
+  return parse_extractor_specifiers(format, *n);
+}
+
+/*
+ *  format grammar:
+ *      ([key1]|[<n>])+%(d|ld|lld|f|lf|b|<n>s|<n>S) <space>
+ *
+ *      n is an integer
+ *
+ *  usage:
+ *      json_scanf(str, "[k1][k2]%d  [k2][1]%s", &i, str);
+ */
+int
+json_scanf(char *buffer, char *format, ...)
+{
+  va_list ap;
+  size_t num_keys = 0;
+  struct extractor_specifier *nes;
+
+  nes = format_parse(format, &num_keys);
+  if (NULL == nes) return 0;
+
+  va_start(ap, format);
+  for (size_t i = 0; i < num_keys ; ++i) {
+    void *p_value = va_arg(ap, void*);
+    ASSERT_S(NULL != p_value, "NULL pointer given as argument parameter");
+
+    nes[i].recipient = p_value;
+  }
+  va_end(ap);
+
+  jsmn_parser parser;
+  jsmn_init(&parser);
+
+  //calculate how many tokens are needed
+  int ret = jsmn_parse(&parser, buffer, strlen(buffer), NULL, 0);
+
+  D_PRINT("# of tokens = %d", ret);
+  jsmntok_t *tok = malloc(sizeof(jsmntok_t) * ret);
+  jsmn_init(&parser);
+  ret = jsmn_parse(&parser, buffer, strlen(buffer), tok, ret);
+
+  if (ret < 0) {
+    D_PRINT("Failed to parse JSON: %d", ret);
+    goto cleanup;
+  }
+
+  /* Assume the top-level element is an object */
+  if (ret < 1 || tok[0].type != JSMN_OBJECT) {
+    D_PRINT("Object expected");
+    goto cleanup;
+  }
+
+  for (int i = 0; i < ret; i++) {
+    D_PRINT("[%d][p:%d][size:%d]%s (%.*s)\n", i, tok[i].parent,
+           tok[i].size, print_token(tok[i].type),
+           tok[i].end - tok[i].start, buffer + tok[i].start);
+  }
+
+  for (size_t i = 0; i < num_keys; ++i) {
+    apply(buffer, tok, ret, nes+i);
+  }
+
+cleanup:
+  free(tok);
+  free(nes);
+
+  return 0;
 }
