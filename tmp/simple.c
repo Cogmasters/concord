@@ -11,7 +11,7 @@
 
 static const char *test_string =
     "{\"user\": \"johndoe\", \"admin\": false, \"uid\": 1000,\n  "
-    "\"groups\": [\"users\", \"wheel\", \"audio\", \"video\"]}";
+    "\"groups\": [\"users\", \"wheel\", \"audio\", \"video\", null]}";
 
 static int jsoneq(const char *json, jsmntok_t *tok, const char *s) {
   if (tok->type == JSMN_STRING && (int)strlen(s) == tok->end - tok->start &&
