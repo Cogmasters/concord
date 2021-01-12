@@ -47,7 +47,7 @@ if (IS_PAIR(a)) {
 }
 ```
 
-We can achieve a code with better flow and minimal nesting by checking for false conditions, as following:
+We can achieve a code with better flow and minimal nesting by checking for false conditions, as follows:
 
 ```c
 int a = 128;
@@ -63,7 +63,7 @@ for (int i=0; i < a; ++i) {
 
 ### Switch vs Else If
 
-If you are in a situation where a variable can assume many values of which are known at compile time, then use switch. As a general rule using switch is always preferrable as it makes your intents clearer and the code easier to read. Remember to always include the `default` case even if you assume that it will never be used (in which case it will be a valuable tool for covering potential errors).
+If you are in a situation where a variable can assume many values that are known at compile time, then use switch. As a general rule using switch is always preferrable as it makes your intents clearer and the code easier to read. Remember to always include the `default` case even if you assume that it will never be used (in which case it will be a valuable tool for covering potential errors).
 
 And remember to always explicitly comment your fallthroughs.
 
