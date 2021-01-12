@@ -36,8 +36,7 @@ bot_settings_init(struct bot_settings *settings, char filename[])
              "[logging][filename]%s"
              "[logging][level]%s"
              "[logging][dump_json][filename]%s"
-             "[logging][dump_json][enable]%b"
-             "",
+             "[logging][dump_json][enable]%b",
              settings->discord.token,
              settings->logging.filename, 
              settings->logging.level,
