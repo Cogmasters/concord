@@ -20,10 +20,14 @@ void on_message(discord_t *client, discord_message_t *message)
   discord_user_cleanup(self);
 }
 
-int main()
+int main(int argc, char *argv[])
 {
   static struct bot_settings settings;
-  bot_settings_init(&settings, "bot.config");
+
+  if (argc > 1)
+    bot_settings_init(&settings, argv[1]);
+  else
+    bot_settings_init(&settings, "bot.config");
   
   discord_global_init();
   discord_t *client = discord_init(settings.discord.token);
