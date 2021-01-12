@@ -64,8 +64,8 @@ void on_message(discord_t *client, discord_message_t *message)
 ```
 
 ## Supported Features:
-  - rate limiting
-  - ws resuming
+  - discord gateway rate limiting
+  - discord gateway ws resuming
   - basic discord rest API endpoints
   
 ## Get support
