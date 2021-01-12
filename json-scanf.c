@@ -59,16 +59,16 @@ strscpy(char *dest, const char *src, size_t n){
 }
 
 char*
-strscat(char *dest, const char *str2, size_t n)
+strscat(char *dest, const char *src, size_t n)
 {
-  char *str1 = malloc(n);
-  if (NULL == str1) return NULL;
+  char *tmp = malloc(n);
+  if (NULL == tmp) return NULL;
 
-  strscpy(str1, dest, strlen(dest)+1);
+  strscpy(tmp, dest, strlen(dest)+1);
 
-  snprintf(dest, n, "%s%s", str1, str2);
+  snprintf(dest, n, "%s%s", tmp, src);
 
-  free(str1);
+  free(tmp);
 
   return dest;
 }

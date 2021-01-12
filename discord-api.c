@@ -232,11 +232,6 @@ perform_request(
           (*load_cb)(p_object, api->res_body.str);
         }
 
-        //clean response for next iteration
-        free(api->res_body.str);
-        api->res_body.str = NULL;
-        api->res_body.size = 0;
-
         break; /* DONE */
     case HTTP_TOO_MANY_REQUESTS:
     /* @todo dealing with ratelimits solely by checking for
@@ -253,11 +248,6 @@ perform_request(
 
         usleep(retry_after*1000);
 
-        //clean response for next iteration
-        free(api->res_body.str);
-        api->res_body.str = NULL;
-        api->res_body.size = 0;
-
         break;
      }
     case CURL_NO_RESPONSE: //@todo implement circumvention
@@ -265,9 +255,16 @@ perform_request(
     default:
         ERROR("Unknown HTTP response code %d", http_code);
     }
-  } while (HTTP_OK != http_code);
+    
+    //clean response for the next iteration
+    free(api->res_body.str);
+    api->res_body.str = NULL;
+    api->res_body.size = 0;
+    
+    //reset header size for the next iteration
+    api->res_pairs.size = 0;
 
-  api->res_pairs.size = 0; //reset header size for the next iteration
+  } while (HTTP_OK != http_code);
 }
 
 void
@@ -278,7 +275,7 @@ Discord_api_load_message(void **p_message, char *str)
   char str_author[512];
   char str_mentions[512];
   char str_referenced_message[512];
-
+/*
   json_scanf(str,
      "[id]%s"
      "[channel_id]%s"
@@ -311,6 +308,9 @@ Discord_api_load_message(void **p_message, char *str)
       message->webhook_id,
       &message->flags,
       str_referenced_message);
+*/
+   json_scanf(str, "[content]%s [channel_id]%s [author]%S", 
+              message->content, message->channel_id, str_author);
 
   if (NULL == message->author) {
     message->author = discord_user_init();
