@@ -45,9 +45,11 @@ test : all test-api.c test-ws.c test-json-scanf.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \
 		test-json-scanf2.c -o test-json-scanf2.exe $(LIBS_LDFLAGS)
 
-echo-bot : all echo-bot.c
+echo-bot : all echo-bot.c echo-bot2.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \
 		echo-bot.c -o echo-bot.exe $(LIBS_LDFLAGS)
+	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \
+		echo-bot2.c -o echo-bot2.exe $(LIBS_LDFLAGS)
 
 mkdir :
 	mkdir -p $(OBJDIR) $(LIBDIR)

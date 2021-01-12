@@ -7,7 +7,6 @@
 
 int main(void)
 {
-  printf ("main\n");
   static struct bot_settings settings;
   bot_settings_init("bot.config", &settings);
 

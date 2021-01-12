@@ -1,10 +1,25 @@
 # README
 
-## Quick Steps on how to create a discord demo bot
+## Build
+### Install dependencies:
+    - gcc, make
+    - libc
+    - libcurl (using openssl for SSL/TSL)
+For debian and ubuntu
+```
+apt-get install -y build-essential
+apt-get install -y libcurl2-openssl-dev
+```
 
-Step 1: Join our tester server
+### Compile
+CC=gcc make echo-bot
 
-Step 2: Use the following tokens:
-bot-alice: Nzk2NjU4NzM0NjcxNzI0NTc1.X_bIQw.6UV_duQBbHev8_WieO7kAnYjpfA
 
-Step 3.
+## Run the bot
+1. get your bot token and replace the one in `bot_token`
+2. invite your bot to your server
+3. run `./echo-bot.exe` in the same folder of `bot_token`
+
+
+## Get support
+Join our discord server: 
