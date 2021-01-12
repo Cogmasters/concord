@@ -476,7 +476,7 @@ json_scanf2(char *buffer, char *format, ...)
   //calculate how many tokens are needed
   int ret = jsmn_parse(&parser, buffer, strlen(buffer), NULL, 0);
 
-  D_PRINT("Necessary tokens = %d", ret);
+  D_PRINT("# of tokens = %d", ret);
   jsmntok_t *tok = malloc(sizeof(jsmntok_t) * ret);
   jsmn_init(&parser);
   ret = jsmn_parse(&parser, buffer, strlen(buffer), tok, ret);
