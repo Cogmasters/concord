@@ -15,8 +15,9 @@
 static struct curl_slist*
 reqheader_init(char token[])
 {
-  char auth[MAX_HEADER_LEN] = "Authorization: Bot "; 
-  strscat(auth, token, MAX_HEADER_LEN);
+  char auth[MAX_HEADER_LEN];
+  int ret = snprintf(auth, MAX_HEADER_LEN, "Authorization: Bot %s", token);
+  ASSERT_S(ret < MAX_HEADER_LEN, "out-of-bounds write of auth");
 
   struct curl_slist *new_header = NULL;
   void *tmp; //for checking potential allocation error
@@ -192,8 +193,9 @@ set_method(struct discord_api_s *api, enum http_method method, char send_payload
 static void
 set_url(struct discord_api_s *api, char endpoint[])
 {
-  char base_url[MAX_URL_LEN] = BASE_API_URL;
-  strscat(base_url, endpoint, MAX_URL_LEN);
+  char base_url[MAX_URL_LEN];
+  int ret = snprintf(base_url, MAX_URL_LEN, "%s%s", BASE_API_URL, endpoint);
+  ASSERT_S(ret < MAX_URL_LEN, "out-of-bounds write of base_url");
 
   CURLcode ecode = curl_easy_setopt(api->ehandle, CURLOPT_URL, base_url);
   ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));

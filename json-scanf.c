@@ -172,11 +172,15 @@ match_path (char *buffer, jsmntok_t *t, size_t n_toks, int start_tok,
       }
   }
   else if (STREQ(es->type_specifier, "copy")) {
-    if (es->size)
-      strscpy((char *) es->recipient, buffer + t[i].start, es->size);
-    else
-      strscpy((char *) es->recipient, buffer + t[i].start,
-              t[i].end - t[i].start + 1);
+    if (es->size) {
+      int ret = snprintf((char *) es->recipient, es->size,
+                         "%.*s", t[i].end - t[i].start, buffer + t[i].start);
+      ASSERT_S((size_t)ret < es->size, "out-of-bounds write");
+    }
+    else {
+      sprintf((char *) es->recipient, "%.*s", t[i].end - t[i].start,
+              buffer + t[i].start);
+    }
   }
   else if (STREQ(es->type_specifier, "bool*")) {
     ASSERT_S(t[i].type == JSMN_PRIMITIVE, "Not a primitive");
