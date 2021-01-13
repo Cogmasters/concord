@@ -80,10 +80,10 @@ discord_message_cleanup(discord_message_t *message)
 void
 discord_send_message(discord_t *client, char channel_id[], char content[])
 {
-  char fmt_payload[] = "{\"content\":\"%s\"}";
   char payload[MAX_PAYLOAD_LEN];
-  
-  snprintf(payload, sizeof(payload)-1, fmt_payload, content);
+
+  int ret = snprintf(payload, MAX_PAYLOAD_LEN, "{\"content\":\"%s\"}", content);
+  ASSERT_S(ret < MAX_PAYLOAD_LEN, "out-of-bounds write of payload");
 
   Discord_api_request( 
     &client->api,
