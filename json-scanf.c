@@ -257,10 +257,12 @@ apply(char *str, jsmntok_t *tok, size_t n_toks, struct extractor_specifier *es)
       break; // we are done
 
     // find the next toplevel key
-    for (ik = iv + 1; tok[ik].end < tok[iv].end; ik++)
+    for (ik = iv + 1; ik < n_toks && tok[ik].end < tok[iv].end; ik++)
       continue;
 
     iv = ik + 1;
+    if (ik >= n_toks || iv >= n_toks)
+      break; // we are done
   } while (ik < n_toks && iv < n_toks);
 }
 
