@@ -239,7 +239,7 @@ perform_request(
     /* @todo dealing with ratelimits solely by checking for
      *  HTTP_TOO_MANY REQUESTS is not discord compliant */
      {
-        char message[256] = {0};
+        char message[256];
         long long retry_after;
 
         json_scanf(api->res_body.str, api->res_body.size,
@@ -259,9 +259,11 @@ perform_request(
     }
     
     //clean response for the next iteration
-    free(api->res_body.str);
-    api->res_body.str = NULL;
-    api->res_body.size = 0;
+    if (NULL != api->res_body.str) {
+      free(api->res_body.str);
+      api->res_body.str = NULL;
+      api->res_body.size = 0;
+    }
     
     //reset header size for the next iteration
     api->res_pairs.size = 0;
@@ -276,8 +278,8 @@ Discord_api_load_message(void **p_message, char *str, size_t len)
 
   char str_author[512];
   char str_mentions[512];
-  char str_referenced_message[512];
-/*
+  char str_referenced_message[4096];
+
   json_scanf(str, len,
      "[id]%s"
      "[channel_id]%s"
@@ -310,10 +312,6 @@ Discord_api_load_message(void **p_message, char *str, size_t len)
       message->webhook_id,
       &message->flags,
       str_referenced_message);
-*/
-   json_scanf(str, len,
-              "[content]%s [channel_id]%s [author]%S", 
-              message->content, message->channel_id, str_author);
 
   if (NULL == message->author) {
     message->author = discord_user_init();

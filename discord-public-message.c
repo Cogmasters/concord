@@ -71,7 +71,7 @@ discord_message_cleanup(discord_message_t *message)
   free(message->webhook_id);
 
   if (message->author)
-    free(message->author);
+    discord_user_cleanup(message->author);
 
   free(message);
 }

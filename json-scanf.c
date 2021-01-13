@@ -76,7 +76,8 @@ jsoneq(const char *json, jsmntok_t *tok, const char *str)
 }
 
 static void
-match_path (char *buffer, jsmntok_t *t, size_t n_toks, int start_tok,
+match_path (char *buffer, jsmntok_t *t,
+            size_t n_toks, int start_tok,
             struct extractor_specifier *es,
             struct path_specifier *ps)
 {
@@ -264,9 +265,9 @@ apply(char *str, jsmntok_t *tok, size_t n_toks, struct extractor_specifier *es)
 
 
 static char*
-parse_type_specifier(char *specifier, struct extractor_specifier *  p)
+parse_type_specifier(char *specifier, struct extractor_specifier *es)
 {
-  char *start = specifier, * end;
+  char *start = specifier, *end;
   long size = strtol(start, &end, 10);
 
   bool is_valid_size = false;
@@ -276,43 +277,43 @@ parse_type_specifier(char *specifier, struct extractor_specifier *  p)
   }
 
   if (STRNEQ(specifier, "s", 1)){
-    p->size = (is_valid_size) ? size : 0;
-    strcpy(p->type_specifier, "char*");
+    es->size = (is_valid_size) ? size : 0;
+    strcpy(es->type_specifier, "char*");
     return specifier + 1;
   }
   else if (STRNEQ(specifier, "S", 1)) {
-    p->size = (is_valid_size) ? size : 0;
-    strcpy(p->type_specifier, "copy");
+    es->size = (is_valid_size) ? size : 0;
+    strcpy(es->type_specifier, "copy");
     return specifier + 1;
   }
   else if (STRNEQ(specifier, "d", 1)) {
-    p->size = sizeof(int);
-    strcpy(p->type_specifier, "int*");
+    es->size = sizeof(int);
+    strcpy(es->type_specifier, "int*");
     return specifier + 1;
   }
   else if (STRNEQ(specifier, "ld", 2)) {
-    p->size = sizeof(long);
-    strcpy(p->type_specifier, "long*");
+    es->size = sizeof(long);
+    strcpy(es->type_specifier, "long*");
     return specifier + 2;
   }
   else if (STRNEQ(specifier, "lld", 3)) {
-    p->size = sizeof(long long);
-    strcpy(p->type_specifier, "long long*");
+    es->size = sizeof(long long);
+    strcpy(es->type_specifier, "long long*");
     return specifier + 3;
   }
   else if (STRNEQ(specifier, "f", 1)) {
-    p->size = sizeof(float);
-    strcpy(p->type_specifier, "float*");
+    es->size = sizeof(float);
+    strcpy(es->type_specifier, "float*");
     return specifier + 1;
   }
   else if (STRNEQ(specifier, "lf", 2)) {
-    p->size = sizeof(double);
-    strcpy(p->type_specifier, "double*");
+    es->size = sizeof(double);
+    strcpy(es->type_specifier, "double*");
     return specifier + 2;
   }
   else if (STRNEQ(specifier, "b", 1)){
-    p->size = sizeof(bool);
-    strcpy(p->type_specifier, "bool*");
+    es->size = sizeof(bool);
+    strcpy(es->type_specifier, "bool*");
     return specifier + 1;
   }
 
@@ -427,25 +428,25 @@ format_analyze(char *format, size_t *num_keys)
 static struct extractor_specifier*
 parse_extractor_specifiers(char * format, size_t n)
 {
-  struct extractor_specifier *nes = calloc(n, sizeof(*nes));
+  struct extractor_specifier *es = calloc(n, sizeof(*es));
 
   size_t i = 0;
   while (*format) 
   {
     SKIP_SPACES(format);
-    if (*format == '[') {
+    if ('[' == *format) {
       ++format; //eat up '['
-      format = parse_path_specifier(format, nes+i, nes[i].path_specifiers+0, 1);
+      format = parse_path_specifier(format, es+i, es[i].path_specifiers+0, 1);
     }
     else {
-      free(nes);
+      free(es);
       return NULL;
     }
 
-    i++;
+    ++i;
   }
 
-  return nes;
+  return es;
 }
 
 static struct extractor_specifier*
@@ -468,18 +469,18 @@ format_parse(char *format, size_t *n)
 int
 json_scanf(char *buffer, size_t buf_size, char *format, ...)
 {
-  va_list ap;
   size_t num_keys = 0;
-  struct extractor_specifier *nes = format_parse(format, &num_keys);
-  if (NULL == nes) return 0;
+  struct extractor_specifier *es = format_parse(format, &num_keys);
+  if (NULL == es) return 0;
 
+  va_list ap;
   va_start(ap, format);
 
   for (size_t i = 0; i < num_keys ; ++i) {
     void *p_value = va_arg(ap, void*);
     ASSERT_S(NULL != p_value, "NULL pointer given as argument parameter");
 
-    nes[i].recipient = p_value;
+    es[i].recipient = p_value;
   }
 
   va_end(ap);
@@ -514,12 +515,12 @@ json_scanf(char *buffer, size_t buf_size, char *format, ...)
   }
 
   for (size_t i = 0; i < num_keys; ++i) {
-    apply(buffer, tok, num_tok, nes+i);
+    apply(buffer, tok, num_tok, es+i);
   }
 
 cleanup:
   free(tok);
-  free(nes);
+  free(es);
 
   return 0;
 }

@@ -128,6 +128,7 @@ enum ws_opcode {
 
 enum ws_status {
   WS_DISCONNECTED, //connected to ws
+  WS_RECONNECTING, //attempting reconnection to ws
   WS_CONNECTED //disconnected from ws
 };
 
@@ -143,7 +144,7 @@ struct discord_ws_s {
     enum ws_opcode opcode; //field 'op'
     int seq_number; //field 's'
     char event_name[16]; //field 't'
-    char event_data[2048]; //field 'd'
+    char event_data[4096]; //field 'd'
   } payload;
 
   struct { /* HEARTBEAT STRUCTURE */

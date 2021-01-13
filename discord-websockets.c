@@ -93,7 +93,7 @@ on_dispatch(struct discord_ws_s *ws)
     discord_message_t *message = discord_message_init();
     ASSERT_S(NULL != message, "Out of memory");
 
-    Discord_api_load_message((void**)&message, ws->payload.event_data, sizeof(ws->payload.event_data));
+    Discord_api_load_message((void**)&message, ws->payload.event_data, sizeof(ws->payload.event_data)-1);
 
     (*ws->cbs.on_message)((discord_t*)ws, message);
 
@@ -109,17 +109,13 @@ on_reconnect(struct discord_ws_s *ws)
 {
   D_PRINT("Attempting to reconnect to Discord WebSockets ...");
 
-  char fmt_payload[] = \
-    "{\"op\":6,\"d\":{\"token\":\"%s\",\"session_id\":\"%s\",\"seq\":%d}}";
-  char payload[MAX_PAYLOAD_LEN];
-  discord_t *client = (discord_t*)ws;
-  snprintf(payload, sizeof(payload)-1, fmt_payload,
-      client->settings.token, ws->session_id, ws->payload.seq_number);
+  char reason[] = "Attempting to reconnect.";
+  cws_close(ws->ehandle, CWS_CLOSE_REASON_NORMAL, reason, sizeof(reason)-1),
 
-  D_NOTOP_PRINT("RESUME PAYLOAD:\n\t%s", payload);
+  curl_multi_remove_handle(ws->mhandle, ws->ehandle);
 
-  bool ret = cws_send_text(ws->ehandle, payload);
-  ASSERT_S(true == ret, "Couldn't send resume payload");
+  ws->status = WS_RECONNECTING;
+  Discord_ws_run(ws);
 }
 
 static void
@@ -322,6 +318,22 @@ ws_send_heartbeat(struct discord_ws_s *ws)
   ws->hbeat.start_ms = timestamp_ms();
 }
 
+static void
+try_resume(struct discord_ws_s *ws)
+{
+  char fmt_payload[] = \
+    "{\"op\":6,\"d\":{\"token\":\"%s\",\"session_id\":\"%s\",\"seq\":%d}}";
+  char payload[MAX_PAYLOAD_LEN];
+  discord_t *client = (discord_t*)ws;
+  snprintf(payload, sizeof(payload)-1, fmt_payload,
+      client->settings.token, ws->session_id, ws->payload.seq_number);
+
+  D_NOTOP_PRINT("RESUME PAYLOAD:\n\t%s", payload);
+
+  bool ret = cws_send_text(ws->ehandle, payload);
+  ASSERT_S(true == ret, "Couldn't send resume payload");
+}
+
 /* main websockets event loop */
 static void
 ws_main_loop(struct discord_ws_s *ws)
@@ -329,6 +341,10 @@ ws_main_loop(struct discord_ws_s *ws)
   int is_running = 0;
 
   curl_multi_perform(ws->mhandle, &is_running);
+
+  if (WS_RECONNECTING == ws->status) {
+    try_resume(ws);
+  }
 
   CURLMcode mcode;
   do {
