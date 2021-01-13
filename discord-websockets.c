@@ -79,8 +79,6 @@ ws_send_identify(struct discord_ws_s *ws)
 static void
 on_hello(struct discord_ws_s *ws)
 {
-  ws->status = WS_CONNECTED;
-
   ws->hbeat.interval_ms = 0;
   ws->hbeat.start_ms = timestamp_ms();
 
@@ -90,23 +88,30 @@ on_hello(struct discord_ws_s *ws)
 
   if (WS_RECONNECTING == ws->status)
     ws_send_resume(ws);
-  else
+  else //WS_DISCONNECTED
     ws_send_identify(ws);
+
+  ws->status = WS_CONNECTED;
 }
 
 static void
 on_dispatch(struct discord_ws_s *ws)
 {
-  if (0 == strcmp("READY", ws->payload.event_name)) {
+  discord_t *client = (discord_t*)ws;
+  Discord_api_load_user((void*)client->self, ws->payload.event_data, sizeof(ws->payload.event_data)-1);
+
+  if (0 == strcmp("READY", ws->payload.event_name))
+  {
     json_scanf(ws->payload.event_data, sizeof(ws->payload.event_data),
                "[session_id]%s", ws->session_id);
     ASSERT_S(ws->session_id, "Couldn't fetch session_id from READY event");
 
     if (NULL == ws->cbs.on_ready) return;
 
-    (*ws->cbs.on_ready)((discord_t*)ws);
+    (*ws->cbs.on_ready)(client, client->self);
   }
-  else if (0 == strcmp("MESSAGE_CREATE", ws->payload.event_name)) {
+  else if (0 == strcmp("MESSAGE_CREATE", ws->payload.event_name))
+  {
     if (NULL == ws->cbs.on_message) return;
 
     discord_message_t *message = discord_message_init();
@@ -114,7 +119,7 @@ on_dispatch(struct discord_ws_s *ws)
 
     Discord_api_load_message((void*)message, ws->payload.event_data, sizeof(ws->payload.event_data)-1);
 
-    (*ws->cbs.on_message)((discord_t*)ws, message);
+    (*ws->cbs.on_message)(client, client->self, message);
 
     discord_message_cleanup(message);
   }

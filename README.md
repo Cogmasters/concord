@@ -46,19 +46,15 @@ Type any message in any channel of the server that the bot is invited.
 
 ## Usage example
 ```c
-void on_message(discord_t *client, discord_message_t *message)
+void on_message(
+    discord_t *client,
+    discord_user_t *self,
+    discord_message_t *message)
 {
-  discord_user_t *self = discord_user_init();
-  assert(NULL != self);
-
-  discord_get_client_user(client, &self);
-
   // make sure it doesn't echoes itself
   if (strcmp(self->username, message->author->username)){
     discord_send_message(client, message->channel_id, message->content);
   }
-
-  discord_user_cleanup(self);
 }
 ```
 

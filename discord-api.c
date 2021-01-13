@@ -165,9 +165,11 @@ set_method(struct discord_api_s *api, enum http_method method, char send_payload
   switch (method) {
   case DELETE:
       ecode = curl_easy_setopt(api->ehandle, CURLOPT_CUSTOMREQUEST, "DELETE");
+      ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
       break;
   case GET:
       ecode = curl_easy_setopt(api->ehandle, CURLOPT_HTTPGET, 1L);
+      ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
       break;
   case POST:
       ecode = curl_easy_setopt(api->ehandle, CURLOPT_POST, 1L);
@@ -175,18 +177,20 @@ set_method(struct discord_api_s *api, enum http_method method, char send_payload
       
       //set ptr to payload that will be sent via POST/PUT
       ecode = curl_easy_setopt(api->ehandle, CURLOPT_POSTFIELDS, send_payload);
+      ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
       break;
   case PATCH:
       ecode = curl_easy_setopt(api->ehandle, CURLOPT_CUSTOMREQUEST, "PATCH");
+      ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
       break;
   case PUT:
       ecode = curl_easy_setopt(api->ehandle, CURLOPT_UPLOAD, 1L);
+      ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
       break;
   default:
       ERROR("Unknown http method (code: %d)", method);
   }
-  ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 }
 
 /* set specific url used for request */
