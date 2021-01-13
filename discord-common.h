@@ -140,6 +140,8 @@ struct _settings_s { //@todo this whole struct is temporary
 typedef struct discord_s {
   struct discord_ws_s ws; //discord_t == (discord_t)(ws)
   struct discord_api_s api; //discord_t == (discord_t)(api-sizeof(ws))
+  discord_user_t *self;
+
   struct _settings_s settings;
 } discord_t;
 

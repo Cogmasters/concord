@@ -178,8 +178,8 @@ typedef struct discord_user_s {
   struct discord_guild_s **guilds;
 } discord_user_t;
 
-typedef void (discord_onrdy_cb)(struct discord_s *client);
-typedef void (discord_onmsg_cb)(struct discord_s *client, struct discord_message_s *message);
+typedef void (discord_onrdy_cb)(struct discord_s *client, discord_user_t *self);
+typedef void (discord_onmsg_cb)(struct discord_s *client, discord_user_t *self, struct discord_message_s *message);
 
 /* discord-public.c */
 

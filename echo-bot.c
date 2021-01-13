@@ -5,19 +5,24 @@
 #include <libdiscord.h>
 #include "settings.h"
 
-void on_message(discord_t *client, discord_message_t *message)
+
+void on_ready(discord_t *client, discord_user_t *self)
 {
-  discord_user_t *self = discord_user_init();
-  assert(NULL != self);
+  fprintf(stderr, "\n\nEcho-Bot succesfully connected to Discord as %s#%s!\n\n",
+      self->username, self->discriminator);
 
-  discord_get_client_user(client, self);
+  (void)client;
+}
 
+void on_message(
+    discord_t *client,
+    discord_user_t *self,
+    discord_message_t *message)
+{
   // make sure it doesn't echoes itself
   if (strcmp(self->username, message->author->username)){
     discord_send_message(client, message->channel_id, message->content);
   }
-
-  discord_user_cleanup(self);
 }
 
 int main(int argc, char *argv[])
@@ -37,6 +42,7 @@ int main(int argc, char *argv[])
     discord_dump_json(client, settings.logging.dump_json.filename);
   }
 
+  discord_set_on_ready(client, &on_ready);
   discord_set_on_message(client, &on_message);
 
   discord_run(client);

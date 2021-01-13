@@ -5,16 +5,13 @@
 #include <libdiscord.h>
 #include "settings.h"
 
-void on_ready(struct discord_s *client)
-{
-  discord_user_t *self = discord_user_init();
-  assert(NULL != self);
 
-  discord_get_client_user(client, self);
+void on_ready(discord_t *client, discord_user_t *self)
+{
   fprintf(stderr, "\n\nSuccesfully connected to Discord as %s#%s!\n\n",
       self->username, self->discriminator);
 
-  discord_user_cleanup(self);
+  (void)client;
 }
 
 int main(int argc, char *argv[])
