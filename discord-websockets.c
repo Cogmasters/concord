@@ -156,15 +156,13 @@ on_dispatch(struct discord_ws_s *ws)
 static void
 on_reconnect(struct discord_ws_s *ws)
 {
-  D_PRINT("Attempting to reconnect to Discord WebSockets ...");
-
-  char reason[] = "Attempting to reconnect.";
-  cws_close(ws->ehandle, CWS_CLOSE_REASON_NORMAL, reason, sizeof(reason)-1),
-
-  curl_multi_remove_handle(ws->mhandle, ws->ehandle);
-
   ws->status = WS_RECONNECTING;
-  Discord_ws_run(ws);
+
+  char reason[] = "Attempting to reconnect to Discord WebSockets ...";
+  D_PUTS(reason);
+
+  cws_close(ws->ehandle, CWS_CLOSE_REASON_NORMAL,
+      reason, sizeof(reason)-1);
 }
 
 static void
@@ -180,7 +178,10 @@ static void
 ws_on_close_cb(void *data, CURL *ehandle, enum cws_close_reason cwscode, const char *reason, size_t len)
 {
     struct discord_ws_s *ws = data;
-    ws->status = WS_DISCONNECTED;
+   
+    if (ws->status != WS_RECONNECTING) {
+      ws->status = WS_DISCONNECTED;
+    }
 
     D_PRINT("CLOSE=%4d %zd bytes '%s'", cwscode, len, reason);
 
@@ -408,9 +409,20 @@ ws_main_loop(struct discord_ws_s *ws)
 void
 Discord_ws_run(struct discord_ws_s *ws)
 {
-  curl_multi_add_handle(ws->mhandle, ws->ehandle);
-  ws_main_loop(ws);
-  curl_multi_remove_handle(ws->mhandle, ws->ehandle);
+  int attempts = 0; //count reconnection attempts
+  do {
+    curl_multi_add_handle(ws->mhandle, ws->ehandle);
+    ws_main_loop(ws);
+    curl_multi_remove_handle(ws->mhandle, ws->ehandle);
+
+    if (attempts < 5 && WS_RECONNECTING == ws->status) {
+      usleep(5000);
+      ++attempts; //increment attempt
+      continue;
+    }
+  } while (1);
+
+  ASSERT_S(WS_DISCONNECTED == ws->status, "Couldn't reconnect to WebSockets");
 }
 
 void
