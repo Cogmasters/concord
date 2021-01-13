@@ -57,13 +57,23 @@ discord_global_cleanup() {
 }
 
 void
-discord_set_on_ready(discord_t *client, discord_onrdy_cb *user_cb){
-  Discord_ws_set_on_ready(&client->ws, user_cb);
+discord_setcb_ready(discord_t *client, discord_onrdy_cb *user_cb){
+  Discord_ws_setcb_ready(&client->ws, user_cb);
 }
 
 void
-discord_set_on_message(discord_t *client, discord_onmsg_cb *user_cb){
-  Discord_ws_set_on_message(&client->ws, user_cb);
+discord_setcb_message_create(discord_t *client, discord_onmsg_cb *user_cb){
+  Discord_ws_setcb_message_create(&client->ws, user_cb);
+}
+
+void
+discord_setcb_message_update(discord_t *client, discord_onmsg_cb *user_cb){
+  Discord_ws_setcb_message_update(&client->ws, user_cb);
+}
+
+void
+discord_setcb_message_delete(discord_t *client, discord_onmsg_cb *user_cb){
+  Discord_ws_setcb_message_delete(&client->ws, user_cb);
 }
 
 void

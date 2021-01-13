@@ -14,7 +14,7 @@ void on_ready(discord_t *client, discord_user_t *self)
   (void)client;
 }
 
-void on_message(
+void on_message_create(
     discord_t *client,
     discord_user_t *self,
     discord_message_t *message)
@@ -23,6 +23,30 @@ void on_message(
   if (strcmp(self->username, message->author->username)){
     discord_send_message(client, message->channel_id, message->content);
   }
+}
+
+void on_message_update(
+    discord_t *client,
+    discord_user_t *self,
+    discord_message_t *message)
+{
+  char text[] = "I see what you did there.";
+
+  discord_send_message(client, message->channel_id, text);
+  
+  (void)self;
+}
+
+void on_message_delete(
+    discord_t *client,
+    discord_user_t *self,
+    discord_message_t *message)
+{
+  char text[] = "Did that message just disappear?!";
+
+  discord_send_message(client, message->channel_id, text);
+  
+  (void)self;
 }
 
 int main(int argc, char *argv[])
@@ -42,8 +66,10 @@ int main(int argc, char *argv[])
     discord_dump_json(client, settings.logging.dump_json.filename);
   }
 
-  discord_set_on_ready(client, &on_ready);
-  discord_set_on_message(client, &on_message);
+  discord_setcb_ready(client, &on_ready);
+  discord_setcb_message_create(client, &on_message_create);
+  discord_setcb_message_update(client, &on_message_update);
+  discord_setcb_message_delete(client, &on_message_delete);
 
   discord_run(client);
 

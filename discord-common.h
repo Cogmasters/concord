@@ -126,10 +126,13 @@ struct discord_ws_s {
     long start_ms; //start pulse in milliseconds
   } hbeat;
 
-  struct { /* CALLBACKS STRUCTURE */
-    discord_onrdy_cb *on_ready;
-    discord_onmsg_cb *on_message;
-  } cbs;
+  discord_onrdy_cb *on_ready; /* ON READY CB */
+
+  struct { /* MESSAGE CALLBACKS STRUCTURE */
+    discord_onmsg_cb *create; /* ON MESSAGE_CREATE CB */
+    discord_onmsg_cb *update; /* ON MESSAGE_UPDATE CB */
+    discord_onmsg_cb *delete; /* ON MESSAGE_DELETE CB */
+  } on_message;
 
   discord_user_t *self;
 };
@@ -173,8 +176,10 @@ void Discord_api_request(
 void Discord_ws_init(struct discord_ws_s *ws, char token[]);
 void Discord_ws_cleanup(struct discord_ws_s *ws);
 
-void Discord_ws_set_on_ready(struct discord_ws_s *ws, discord_onrdy_cb *user_cb);
-void Discord_ws_set_on_message(struct discord_ws_s *ws, discord_onmsg_cb *user_cb);
+void Discord_ws_setcb_ready(struct discord_ws_s *ws, discord_onrdy_cb *user_cb);
+void Discord_ws_setcb_message_create(struct discord_ws_s *ws, discord_onmsg_cb *user_cb);
+void Discord_ws_setcb_message_update(struct discord_ws_s *ws, discord_onmsg_cb *user_cb);
+void Discord_ws_setcb_message_delete(struct discord_ws_s *ws, discord_onmsg_cb *user_cb);
 
 void Discord_ws_run(struct discord_ws_s *ws);
 

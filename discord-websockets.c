@@ -105,20 +105,46 @@ on_dispatch(struct discord_ws_s *ws)
                "[session_id]%s", ws->session_id);
     ASSERT_S(ws->session_id, "Couldn't fetch session_id from READY event");
 
-    if (NULL == ws->cbs.on_ready) return;
+    if (NULL == ws->on_ready) return;
 
-    (*ws->cbs.on_ready)((discord_t*)ws, ws->self);
+    (*ws->on_ready)((discord_t*)ws, ws->self);
   }
   else if (0 == strcmp("MESSAGE_CREATE", ws->payload.event_name))
   {
-    if (NULL == ws->cbs.on_message) return;
+    if (NULL == ws->on_message.create) return;
 
     discord_message_t *message = discord_message_init();
     ASSERT_S(NULL != message, "Out of memory");
 
     Discord_api_load_message((void*)message, ws->payload.event_data, sizeof(ws->payload.event_data)-1);
 
-    (*ws->cbs.on_message)((discord_t*)ws, ws->self, message);
+    (*ws->on_message.create)((discord_t*)ws, ws->self, message);
+
+    discord_message_cleanup(message);
+  }
+  else if (0 == strcmp("MESSAGE_UPDATE", ws->payload.event_name))
+  {
+    if (NULL == ws->on_message.update) return;
+
+    discord_message_t *message = discord_message_init();
+    ASSERT_S(NULL != message, "Out of memory");
+
+    Discord_api_load_message((void*)message, ws->payload.event_data, sizeof(ws->payload.event_data)-1);
+
+    (*ws->on_message.update)((discord_t*)ws, ws->self, message);
+
+    discord_message_cleanup(message);
+  }
+  else if (0 == strcmp("MESSAGE_DELETE", ws->payload.event_name))
+  {
+    if (NULL == ws->on_message.delete) return;
+
+    discord_message_t *message = discord_message_init();
+    ASSERT_S(NULL != message, "Out of memory");
+
+    Discord_api_load_message((void*)message, ws->payload.event_data, sizeof(ws->payload.event_data)-1);
+
+    (*ws->on_message.delete)((discord_t*)ws, ws->self, message);
 
     discord_message_cleanup(message);
   }
@@ -308,8 +334,10 @@ Discord_ws_init(struct discord_ws_s *ws, char token[])
 
   ws->payload.seq_number = 0;
 
-  ws->cbs.on_ready = NULL;
-  ws->cbs.on_message = NULL;
+  ws->on_ready = NULL;
+  ws->on_message.create = NULL;
+  ws->on_message.update = NULL;
+  ws->on_message.delete = NULL;
 
   ws->self = discord_user_init();
   discord_get_client_user((discord_t*)ws, ws->self);
@@ -386,11 +414,21 @@ Discord_ws_run(struct discord_ws_s *ws)
 }
 
 void
-Discord_ws_set_on_ready(struct discord_ws_s *ws, discord_onrdy_cb *user_cb){
-  ws->cbs.on_ready = user_cb;
+Discord_ws_setcb_ready(struct discord_ws_s *ws, discord_onrdy_cb *user_cb){
+  ws->on_ready = user_cb;
 }
 
 void
-Discord_ws_set_on_message(struct discord_ws_s *ws, discord_onmsg_cb *user_cb){
-  ws->cbs.on_message = user_cb;
+Discord_ws_setcb_message_create(struct discord_ws_s *ws, discord_onmsg_cb *user_cb){
+  ws->on_message.create = user_cb;
+}
+
+void
+Discord_ws_setcb_message_update(struct discord_ws_s *ws, discord_onmsg_cb *user_cb){
+  ws->on_message.update = user_cb;
+}
+
+void
+Discord_ws_setcb_message_delete(struct discord_ws_s *ws, discord_onmsg_cb *user_cb){
+  ws->on_message.delete = user_cb;
 }
