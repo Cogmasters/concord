@@ -1,7 +1,8 @@
-## This is for testing only, you won't be able to build all code with this cmake file
-## There is no plan to support cmake to build all code.
 cmake_minimum_required(VERSION 3.8)
 project(orca)
+## This is for testing only, you won't be able to build all code with this cmake file
+## There is no plan to support cmake to build all code.
+
 
 
 set(CMAKE_CXX_STANDARD 11)
@@ -15,9 +16,7 @@ set(CMAKE_CXX_FLAGS "-DJSMN_PARENT_LINKS -DJSMN_STRICT -fPIC -D_XOPEN_SOURCE=700
 set(CMAKE_EXE_LINKER_FLAGS "")
 
 set(JSON_SCANF
-        debug.h
-        jscon-common.c
-        jscon-common.h
+        json-common.h
         jsmn.h
         json-scanf.c
         json-scanf.h)

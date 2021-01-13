@@ -48,9 +48,10 @@ struct extractor_specifier {
   size_t size;
   void *recipient; //must be a pointer
   bool is_applied;
+  bool has_dynamic_size;
 };
 
-char*
+static char*
 print_token(jsmntype_t type)
 {
   switch (type) {
@@ -273,7 +274,11 @@ parse_type_specifier(char *specifier, struct extractor_specifier *es)
   bool is_valid_size = false;
   if (end != start) {
     is_valid_size = true;
-    specifier = end;
+    specifier = end; // jump to the end of number
+  }
+  else if ('.' == *specifier && '*' == *(specifier+1)) {
+    es->has_dynamic_size = true;
+    specifier += 2; // eat up '.' and '*'
   }
 
   if (STRNEQ(specifier, "s", 1)){
@@ -323,11 +328,11 @@ parse_type_specifier(char *specifier, struct extractor_specifier *es)
 /*
  * legit inputs:
  *      abc]
- *      ]
  *      10]
  *
  * illegit inputs:
  *      abc
+ *      ]
  *      10
  */
 static char*
@@ -477,14 +482,17 @@ json_scanf(char *buffer, size_t buf_size, char *format, ...)
   va_start(ap, format);
 
   for (size_t i = 0; i < num_keys ; ++i) {
+    if (es[i].has_dynamic_size)  {
+      es[i].size = va_arg(ap, int); // use this as a size
+    }
     void *p_value = va_arg(ap, void*);
     ASSERT_S(NULL != p_value, "NULL pointer given as argument parameter");
-
     es[i].recipient = p_value;
   }
 
   va_end(ap);
 
+  // debugging print out es
 
   //calculate how many tokens are needed
   jsmn_parser parser;
@@ -575,7 +583,9 @@ __json_strerror(json_errcode code, char codetag[], void *where, char entity[])
   }
 
   char errbuf[512];
-  snprintf(errbuf, sizeof(errbuf)-1, "%s (Code: %d)\n\t%s\n\tAt '%s' (addr: %p)", codetag, code, err_is, entity, where);
+  errbuf[511] = 0; // pre-terminate the string
+  snprintf(errbuf, sizeof(errbuf)-1, "%s (Code: %d)\n\t%s\n\tAt '%s' (addr: %p)",
+           codetag, code, err_is, entity, where);
 
   char *errdynm = strdup(errbuf);
   if (NULL == errdynm)
