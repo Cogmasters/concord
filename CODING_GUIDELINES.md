@@ -15,7 +15,7 @@ for (int i=0; i < n; ++i) {
   if (something) {
     //do something
   }
-  else if (something else) {
+  else if (something_else) {
     //do something else
   } 
   else {
