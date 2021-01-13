@@ -271,23 +271,25 @@ parse_type_specifier(char *specifier, struct extractor_specifier *es)
   char *start = specifier, *end;
   long size = strtol(start, &end, 10);
 
-  bool is_valid_size = false;
+  bool is_valid_size = false, has_dsize = false;
   if (end != start) {
     is_valid_size = true;
     specifier = end; // jump to the end of number
   }
   else if ('.' == *specifier && '*' == *(specifier+1)) {
-    es->has_dynamic_size = true;
+    has_dsize = true;
     specifier += 2; // eat up '.' and '*'
   }
 
   if (STRNEQ(specifier, "s", 1)){
     es->size = (is_valid_size) ? size : 0;
+    es->has_dynamic_size = has_dsize;
     strcpy(es->type_specifier, "char*");
     return specifier + 1;
   }
   else if (STRNEQ(specifier, "S", 1)) {
     es->size = (is_valid_size) ? size : 0;
+    es->has_dynamic_size = has_dsize;
     strcpy(es->type_specifier, "copy");
     return specifier + 1;
   }

@@ -310,6 +310,7 @@ Discord_api_load_message(void **p_message, char *str, size_t len)
       message->nonce,
       &message->pinned,
       message->webhook_id,
+      &message->type,
       &message->flags,
       str_referenced_message);
 
