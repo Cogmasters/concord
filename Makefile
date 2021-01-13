@@ -29,6 +29,8 @@ else
 	CFLAGS += -fPIC -D_XOPEN_SOURCE=700
 endif
 
+PREFIX ?= /usr/local
+
 .PHONY : all mkdir install clean purge
 
 all : mkdir $(OBJS) $(LIBDISCORD_SLIB)
@@ -70,7 +72,10 @@ $(LIBDISCORD_SLIB) : $(OBJS)
 
 # @todo better install solution
 install : all
-	cp $(INCLUDE) /usr/local/include
+	install -d $(PREFIX)/lib/
+	install -m 644 $(LIBDISCORD_SLIB) $(PREFIX)/lib/
+	install -d $(PREFIX)/include/
+	install -m 644 libdiscord.h $(PREFIX)/include/
 
 clean :
 	rm -rf $(OBJDIR) $(LIBDIR) *.exe 
