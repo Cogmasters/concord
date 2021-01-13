@@ -130,6 +130,8 @@ struct discord_ws_s {
     discord_onrdy_cb *on_ready;
     discord_onmsg_cb *on_message;
   } cbs;
+
+  discord_user_t *self;
 };
 
 struct _settings_s { //@todo this whole struct is temporary
@@ -140,7 +142,6 @@ struct _settings_s { //@todo this whole struct is temporary
 typedef struct discord_s {
   struct discord_ws_s ws; //discord_t == (discord_t)(ws)
   struct discord_api_s api; //discord_t == (discord_t)(api-sizeof(ws))
-  discord_user_t *self;
 
   struct _settings_s settings;
 } discord_t;

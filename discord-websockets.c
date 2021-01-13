@@ -97,8 +97,7 @@ on_hello(struct discord_ws_s *ws)
 static void
 on_dispatch(struct discord_ws_s *ws)
 {
-  discord_t *client = (discord_t*)ws;
-  Discord_api_load_user((void*)client->self, ws->payload.event_data, sizeof(ws->payload.event_data)-1);
+  Discord_api_load_user(ws->self, ws->payload.event_data, sizeof(ws->payload.event_data)-1);
 
   if (0 == strcmp("READY", ws->payload.event_name))
   {
@@ -108,7 +107,7 @@ on_dispatch(struct discord_ws_s *ws)
 
     if (NULL == ws->cbs.on_ready) return;
 
-    (*ws->cbs.on_ready)(client, client->self);
+    (*ws->cbs.on_ready)((discord_t*)ws, ws->self);
   }
   else if (0 == strcmp("MESSAGE_CREATE", ws->payload.event_name))
   {
@@ -119,7 +118,7 @@ on_dispatch(struct discord_ws_s *ws)
 
     Discord_api_load_message((void*)message, ws->payload.event_data, sizeof(ws->payload.event_data)-1);
 
-    (*ws->cbs.on_message)(client, client->self, message);
+    (*ws->cbs.on_message)((discord_t*)ws, ws->self, message);
 
     discord_message_cleanup(message);
   }
@@ -311,6 +310,9 @@ Discord_ws_init(struct discord_ws_s *ws, char token[])
 
   ws->cbs.on_ready = NULL;
   ws->cbs.on_message = NULL;
+
+  ws->self = discord_user_init();
+  discord_get_client_user((discord_t*)ws, ws->self);
 }
 
 void
@@ -318,6 +320,8 @@ Discord_ws_cleanup(struct discord_ws_s *ws)
 {
   free(ws->identify);
   free(ws->session_id);
+
+  discord_user_cleanup(ws->self);
 
   curl_multi_cleanup(ws->mhandle);
   cws_free(ws->ehandle);
