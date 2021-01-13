@@ -52,6 +52,22 @@ timestamp_str(char str[], int len)
 }
 
 static void
+ws_send_resume(struct discord_ws_s *ws)
+{
+  char fmt_payload[] = \
+    "{\"op\":6,\"d\":{\"token\":\"%s\",\"session_id\":\"%s\",\"seq\":%d}}";
+  char payload[MAX_PAYLOAD_LEN];
+  discord_t *client = (discord_t*)ws;
+  snprintf(payload, sizeof(payload)-1, fmt_payload,
+      client->settings.token, ws->session_id, ws->payload.seq_number);
+
+  D_NOTOP_PRINT("RESUME PAYLOAD:\n\t%s", payload);
+
+  bool ret = cws_send_text(ws->ehandle, payload);
+  ASSERT_S(true == ret, "Couldn't send resume payload");
+}
+
+static void
 ws_send_identify(struct discord_ws_s *ws)
 {
   D_PRINT("IDENTIFY PAYLOAD:\n\t%s", ws->identify);
@@ -72,7 +88,10 @@ on_hello(struct discord_ws_s *ws)
              "[heartbeat_interval]%ld", &ws->hbeat.interval_ms);
   ASSERT_S(ws->hbeat.interval_ms > 0, "Invalid heartbeat_ms");
 
-  ws_send_identify(ws);
+  if (WS_RECONNECTING == ws->status)
+    ws_send_resume(ws);
+  else
+    ws_send_identify(ws);
 }
 
 static void
@@ -318,22 +337,6 @@ ws_send_heartbeat(struct discord_ws_s *ws)
   ws->hbeat.start_ms = timestamp_ms();
 }
 
-static void
-try_resume(struct discord_ws_s *ws)
-{
-  char fmt_payload[] = \
-    "{\"op\":6,\"d\":{\"token\":\"%s\",\"session_id\":\"%s\",\"seq\":%d}}";
-  char payload[MAX_PAYLOAD_LEN];
-  discord_t *client = (discord_t*)ws;
-  snprintf(payload, sizeof(payload)-1, fmt_payload,
-      client->settings.token, ws->session_id, ws->payload.seq_number);
-
-  D_NOTOP_PRINT("RESUME PAYLOAD:\n\t%s", payload);
-
-  bool ret = cws_send_text(ws->ehandle, payload);
-  ASSERT_S(true == ret, "Couldn't send resume payload");
-}
-
 /* main websockets event loop */
 static void
 ws_main_loop(struct discord_ws_s *ws)
@@ -341,10 +344,6 @@ ws_main_loop(struct discord_ws_s *ws)
   int is_running = 0;
 
   curl_multi_perform(ws->mhandle, &is_running);
-
-  if (WS_RECONNECTING == ws->status) {
-    try_resume(ws);
-  }
 
   CURLMcode mcode;
   do {
