@@ -71,5 +71,5 @@ void on_message(discord_t *client, discord_message_t *message)
 Join our discord server: https://discord.gg/2jfycwXVM3
 
 ## Contributions are welcome!
-Check our development [Roadmap](ROADMAP.md)
+Check our development [Roadmap](ROADMAP.md) and [Coding Guidelines](CODING_GUIDELINES.md) to get started
 
