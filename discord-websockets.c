@@ -112,7 +112,7 @@ on_dispatch(struct discord_ws_s *ws)
     discord_message_t *message = discord_message_init();
     ASSERT_S(NULL != message, "Out of memory");
 
-    Discord_api_load_message((void**)&message, ws->payload.event_data, sizeof(ws->payload.event_data)-1);
+    Discord_api_load_message((void*)message, ws->payload.event_data, sizeof(ws->payload.event_data)-1);
 
     (*ws->cbs.on_message)((discord_t*)ws, message);
 
