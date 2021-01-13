@@ -189,8 +189,10 @@ void discord_global_cleanup();
 discord_t* discord_init(char token[]);
 void discord_cleanup(discord_t *client);
 
-void discord_set_on_ready(discord_t *client, discord_onrdy_cb *user_cb);
-void discord_set_on_message(discord_t *client, discord_onmsg_cb *user_cb);
+void discord_setcb_ready(discord_t *client, discord_onrdy_cb *user_cb);
+void discord_setcb_message_create(discord_t *client, discord_onmsg_cb *user_cb);
+void discord_setcb_message_update(discord_t *client, discord_onmsg_cb *user_cb);
+void discord_setcb_message_delete(discord_t *client, discord_onmsg_cb *user_cb);
 
 void discord_run(discord_t *client);
 

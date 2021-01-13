@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
     discord_dump_json(client, settings.logging.dump_json.filename);
   }
 
-  discord_set_on_ready(client, &on_ready);
+  discord_setcb_ready(client, &on_ready);
 
   discord_run(client);
 
