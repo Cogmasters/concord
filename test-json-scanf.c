@@ -49,8 +49,10 @@ int main(void) {
   char bigs[128];
 
   json_scanf(str, sizeof(str),
-       "[a1][0]%d [t]%s [s]%d [op]%d [nstr]%s [k1][v1]%d [b]%b [bigs]%.*s",
-       &i4, str1, &integer1, &integer2, str2, &i3, &i5, 128, bigs);
+       "[a1][0]%d [t]%s [s]%d [op]%d [nstr]%s [k1][v1]%d [b]%b"
+       "[bigs]%.*s",
+       &i4, str1, &integer1, &integer2, str2, &i3, &i5,
+             128 /* size of bigs */, bigs);
 
   printf("t %s, s %d, op %d, nstr %s, i3 %d, i4 %d, bigs %s\n",
          str1, integer1, integer2, str2, i3, i4, bigs);
