@@ -128,6 +128,7 @@ enum ws_opcode {
 
 enum ws_status {
   WS_DISCONNECTED, //connected to ws
+  WS_RECONNECTING, //attempting reconnection to ws
   WS_CONNECTED //disconnected from ws
 };
 
@@ -143,7 +144,7 @@ struct discord_ws_s {
     enum ws_opcode opcode; //field 'op'
     int seq_number; //field 's'
     char event_name[16]; //field 't'
-    char event_data[2048]; //field 'd'
+    char event_data[4096]; //field 'd'
   } payload;
 
   struct { /* HEARTBEAT STRUCTURE */
@@ -170,16 +171,16 @@ typedef struct discord_s {
 
 /*for using Discord_api_request() as a template for every
  * kind of transfer*/
-typedef void (discord_load_obj_cb)(void **p_obj, char *str);
+typedef void (discord_load_obj_cb)(void **p_obj, char *str, size_t len);
 
 /* discord-api.c */
 
 void Discord_api_init(struct discord_api_s *api, char token[]);
 void Discord_api_cleanup(struct discord_api_s *api);
 
-void Discord_api_load_message(void **p_message, char *str);
-void Discord_api_load_guild(void **p_guild, char *str);
-void Discord_api_load_user(void **p_user, char *str);
+void Discord_api_load_message(void **p_message, char *str, size_t len);
+void Discord_api_load_guild(void **p_guild, char *str, size_t len);
+void Discord_api_load_user(void **p_user, char *str, size_t len);
 
 void Discord_api_request(
   struct discord_api_s *api, 

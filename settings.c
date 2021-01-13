@@ -7,7 +7,7 @@
 #include "json-scanf.h"
 
 static char*
-load_whole_file(char filename[]) {
+load_whole_file(char filename[], size_t *len) {
   FILE *f = fopen(filename,"rb"); 
   if (!f) {
     char * s = strerror(errno);
@@ -16,11 +16,11 @@ load_whole_file(char filename[]) {
   }
   
   fseek(f, 0, SEEK_END);
-  long fsize = ftell(f);
+  *len = ftell(f);
   fseek(f, 0, SEEK_SET);
 
-  char *string = malloc(fsize + 1);
-  fread(string, 1, fsize, f);
+  char *string = malloc(*len);
+  fread(string, 1, *len, f);
   fclose(f);
 
   return string;
@@ -29,9 +29,10 @@ load_whole_file(char filename[]) {
 void
 bot_settings_init(struct bot_settings *settings, char filename[])
 {
-  char *str = load_whole_file(filename);
+  size_t len;
+  char *str = load_whole_file(filename, &len);
 
-  json_scanf(str,
+  json_scanf(str, len,
              "[discord][token]%s"
              "[logging][filename]%s"
              "[logging][level]%s"

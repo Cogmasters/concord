@@ -37,7 +37,7 @@ int main(void) {
 
   int integer1=0, integer2=0, i3 =0, i4=0, i5=0;
   char str1[25] = {0}, str2[25] = {0};
-  char *str = "{ \"t\":\"abc\", \"s\":10, \"op\":100 "
+  char str[] = "{ \"t\":\"abc\", \"s\":10, \"op\":100 "
           ", \"k1\": {  \"v1\": 10 }  "
           ", \"a1\": [ 112, 2, 3 ] "
           ", \"b\": true "
@@ -45,7 +45,7 @@ int main(void) {
 
   printf("%s\n", str);
 
-  json_scanf(str,
+  json_scanf(str, sizeof(str),
        "[a1][0]%d [t]%s [s]%d [op]%d [nstr]%s [k1][v1]%d [b]%b",
        &i4, str1, &integer1, &integer2, str2, &i3, &i5);
 
