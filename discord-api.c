@@ -205,7 +205,7 @@ set_url(struct discord_api_s *api, char endpoint[])
 static void
 perform_request(
   struct discord_api_s *api,
-  void **p_object, 
+  void *p_object, 
   discord_load_obj_cb *load_cb)
 {
   CURLcode ecode;
@@ -258,13 +258,8 @@ perform_request(
         ERROR("Unknown HTTP response code %d", http_code);
     }
     
-    //clean response for the next iteration
-    if (NULL != api->res_body.str) {
-      free(api->res_body.str);
-      api->res_body.str = NULL;
-      api->res_body.size = 0;
-    }
-    
+    //reset response body size for the next iteration
+    api->res_body.size = 0;
     //reset header size for the next iteration
     api->res_pairs.size = 0;
 
@@ -272,9 +267,9 @@ perform_request(
 }
 
 void
-Discord_api_load_message(void **p_message, char *str, size_t len)
+Discord_api_load_message(void *p_message, char *str, size_t len)
 {
-  discord_message_t *message = *p_message;
+  discord_message_t *message = p_message;
 
   char str_author[512];
   char str_mentions[512];
@@ -314,22 +309,15 @@ Discord_api_load_message(void **p_message, char *str, size_t len)
       &message->flags,
       str_referenced_message);
 
-  if (NULL == message->author) {
-    message->author = discord_user_init();
-    ASSERT_S(NULL != message->author, "Out of memory");
-  }
-
-  Discord_api_load_user((void**)&message->author, str_author, sizeof(str_author));
-
-  *p_message = message;
+  Discord_api_load_user(message->author, str_author, sizeof(str_author)-1);
 
   D_PUTS("Message loaded with API response"); 
 }
 
 void
-Discord_api_load_guild(void **p_guild, char *str, size_t len)
+Discord_api_load_guild(void *p_guild, char *str, size_t len)
 {
-  discord_guild_t *guild = *p_guild;
+  discord_guild_t *guild = p_guild;
 
   json_scanf(str, len,
      "[id]%s"
@@ -345,15 +333,13 @@ Discord_api_load_guild(void **p_guild, char *str, size_t len)
       &guild->permissions,
       guild->permissions_new);
 
-  *p_guild = guild;
-
   D_PUTS("Guild loaded with API response"); 
 }
 
 void
-Discord_api_load_user(void **p_user, char *str, size_t len)
+Discord_api_load_user(void *p_user, char *str, size_t len)
 {
-  discord_user_t *user = *p_user;
+  discord_user_t *user = p_user;
 
   json_scanf(str, len,
      "[id]%s"
@@ -383,8 +369,6 @@ Discord_api_load_user(void **p_user, char *str, size_t len)
       &user->premium_type,
       &user->public_flags);
 
-  *p_user = user;
-
   D_PUTS("User loaded with API response"); 
 }
 
@@ -392,7 +376,7 @@ Discord_api_load_user(void **p_user, char *str, size_t len)
 void
 Discord_api_request(
   struct discord_api_s *api, 
-  void **p_object, 
+  void *p_object, 
   discord_load_obj_cb *load_cb,
   char send_payload[],
   enum http_method http_method,
@@ -415,4 +399,3 @@ Discord_api_request(
   //perform the request
   perform_request(api, p_object, load_cb);
 }
-

@@ -10,7 +10,7 @@ void on_message(discord_t *client, discord_message_t *message)
   discord_user_t *self = discord_user_init();
   assert(NULL != self);
 
-  discord_get_client_user(client, &self);
+  discord_get_client_user(client, self);
 
   // make sure it doesn't echoes itself
   if (strcmp(self->username, message->author->username)){

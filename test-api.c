@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
   discord_user_t *self = discord_user_init(); 
   assert(NULL != self);
 
-  discord_get_client_user(client, &self);
+  discord_get_client_user(client, self);
   printf("Greetings, %s#%s!\n", self->username, self->discriminator);
 
   discord_user_cleanup(self);

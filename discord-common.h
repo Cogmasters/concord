@@ -26,23 +26,6 @@ enum http_method {
 #define USER              "/users/%s"
 #define USER_GUILDS       USER"/guilds"
 
-
-enum discord_limits {
-  MAX_NAME_LEN           = 100,
-  MAX_TOPIC_LEN          = 1024,
-  MAX_DESCRIPTION_LEN    = 1024,
-  MAX_USERNAME_LEN       = 32,
-  MAX_DISCRIMINATOR_LEN  = 10,
-  MAX_HASH_LEN           = 1024,
-  MAX_LOCALE_LEN         = 15,
-  MAX_EMAIL_LEN          = 254,
-  MAX_REGION_LEN         = 15,
-  MAX_HEADER_LEN         = 512,
-  MAX_URL_LEN            = 512,
-  MAX_MESSAGE_LEN        = 2048,
-  MAX_PAYLOAD_LEN        = 4096,
-};
-
 /* HTTP RESPONSE CODES
 https://discord.com/developers/docs/topics/opcodes-and-status-codes#http-http-response-codes */
 enum discord_http_code {
@@ -59,15 +42,6 @@ enum discord_http_code {
   HTTP_GATEWAY_UNAVAILABLE      = 502,
 
   CURL_NO_RESPONSE              = 0,
-};
-
-/* SNOWFLAKES
-https://discord.com/developers/docs/reference#snowflakes */
-enum discord_snowflake {
-  SNOWFLAKE_INCREMENT           = 12,
-  SNOWFLAKE_PROCESS_ID          = 17,
-  SNOWFLAKE_INTERNAL_WORKER_ID  = 22,
-  SNOWFLAKE_TIMESTAMP           = 64,
 };
 
 struct api_response_s {
@@ -144,7 +118,7 @@ struct discord_ws_s {
     enum ws_opcode opcode; //field 'op'
     int seq_number; //field 's'
     char event_name[16]; //field 't'
-    char event_data[4096]; //field 'd'
+    char event_data[8192]; //field 'd'
   } payload;
 
   struct { /* HEARTBEAT STRUCTURE */
@@ -171,20 +145,20 @@ typedef struct discord_s {
 
 /*for using Discord_api_request() as a template for every
  * kind of transfer*/
-typedef void (discord_load_obj_cb)(void **p_obj, char *str, size_t len);
+typedef void (discord_load_obj_cb)(void *p_obj, char *str, size_t len);
 
 /* discord-api.c */
 
 void Discord_api_init(struct discord_api_s *api, char token[]);
 void Discord_api_cleanup(struct discord_api_s *api);
 
-void Discord_api_load_message(void **p_message, char *str, size_t len);
-void Discord_api_load_guild(void **p_guild, char *str, size_t len);
-void Discord_api_load_user(void **p_user, char *str, size_t len);
+void Discord_api_load_message(void *p_message, char *str, size_t len);
+void Discord_api_load_guild(void *p_guild, char *str, size_t len);
+void Discord_api_load_user(void *p_user, char *str, size_t len);
 
 void Discord_api_request(
   struct discord_api_s *api, 
-  void **p_object, 
+  void *p_object, 
   discord_load_obj_cb *load_cb,
   char send_payload[], //only for POST/PUT methods
   enum http_method http_method,
