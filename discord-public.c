@@ -10,7 +10,7 @@
 discord_t*
 discord_init(char token[])
 {
-  discord_t *new_client = malloc(sizeof *new_client);
+  discord_t *new_client = calloc(1, sizeof *new_client);
   if (NULL == new_client) return NULL;
 
   //trim token at non-printable character (if any)
@@ -21,12 +21,16 @@ discord_init(char token[])
     }
   }
 
+  new_client->api.p_client = new_client;
+  new_client->ws.p_client = new_client;
+
   Discord_api_init(&new_client->api, token);
   Discord_ws_init(&new_client->ws, token);
 
   /* THIS IS TEMPORARY */
   new_client->settings.token = strdup(token);
-  new_client->settings.f_dump = NULL;
+  new_client->settings.f_json_dump = NULL;
+  new_client->settings.f_curl_dump = NULL;
   /* * * * * * * * * * */
 
   return new_client;
@@ -40,8 +44,10 @@ discord_cleanup(discord_t *client)
 
   if (client->settings.token)
     free(client->settings.token);
-  if (client->settings.f_dump)
-    fclose(client->settings.f_dump);
+  if (client->settings.f_json_dump)
+    fclose(client->settings.f_json_dump);
+  if (client->settings.f_curl_dump)
+    fclose(client->settings.f_curl_dump);
   free(client);
 }
 
@@ -92,7 +98,16 @@ discord_dump_json(discord_t *client, char file[])
   FILE *f_dump = fopen(file, "a+");
   ASSERT_S(NULL != f_dump, "Could not create dump file");
 
-  client->settings.f_dump = f_dump;  
+  client->settings.f_json_dump = f_dump;  
+}
+
+void
+discord_dump_curl(discord_t *client, char file[])
+{
+  FILE *f_dump = fopen(file, "a+");
+  ASSERT_S(NULL != f_dump, "Could not create dump file");
+
+  client->settings.f_curl_dump = f_dump;  
 }
 
 void*

@@ -105,10 +105,16 @@ custom_easy_init(struct discord_api_s *api)
   ASSERT_S(NULL != new_ehandle, "Out of memory");
 
   CURLcode ecode;
-  /* uncomment for verbose */
-  ecode = curl_easy_setopt(new_ehandle, CURLOPT_VERBOSE, 2L);
-  ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
-  /* * * * * * * * * * * * */
+  /* DEBUG ONLY FUNCTIONS */
+  D_ONLY(ecode = curl_easy_setopt(new_ehandle, CURLOPT_DEBUGFUNCTION, &Discord_utils_debug_cb));
+  D_ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
+
+  D_ONLY(ecode = curl_easy_setopt(new_ehandle, CURLOPT_DEBUGDATA, &api->p_client->settings));
+  D_ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
+
+  D_ONLY(ecode = curl_easy_setopt(new_ehandle, CURLOPT_VERBOSE, 2L));
+  D_ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
+  /* * * * * * * * * * * */
 
   //set ptr to request header we will be using for API communication
   ecode = curl_easy_setopt(new_ehandle, CURLOPT_HTTPHEADER, api->req_header);
@@ -142,9 +148,6 @@ Discord_api_init(struct discord_api_s *api, char token[])
 {
   api->req_header = reqheader_init(token);
   api->ehandle = custom_easy_init(api);
-  api->res_body.str = NULL;
-  api->res_body.size = 0;
-  api->res_pairs.size = 0;
 }
 
 void

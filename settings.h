@@ -6,6 +6,11 @@
 
 #define TOKEN_MAX_LEN 512
 
+struct dump_s {
+  char filename[PATH_MAX];
+  bool enable;
+};
+
 struct bot_settings {
   struct {
     char token[TOKEN_MAX_LEN]; // set it to long enough
@@ -13,10 +18,8 @@ struct bot_settings {
   struct {
     char filename[PATH_MAX];
     char level[128];
-    struct {
-        char filename[PATH_MAX];
-        bool enable;
-    } dump_json;
+    struct dump_s dump_json;
+    struct dump_s dump_curl;
   } logging;
 };
 

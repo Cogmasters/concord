@@ -86,22 +86,12 @@ timestamp_ms()
 }
 
 static void
-timestamp_str(char str[], int len)
-{
-  time_t t = time(NULL);
-  struct tm *tm = localtime(&t);
-
-  int ret = strftime(str, len, "%c", tm);
-  ASSERT_S(ret != 0, "Could not retrieve string timestamp");
-}
-
-static void
 ws_send_resume(struct discord_ws_s *ws)
 {
   char fmt_payload[] = \
     "{\"op\":6,\"d\":{\"token\":\"%s\",\"session_id\":\"%s\",\"seq\":%d}}";
   char payload[MAX_PAYLOAD_LEN];
-  discord_t *client = (discord_t*)ws;
+  discord_t *client = ws->p_client;
   snprintf(payload, sizeof(payload)-1, fmt_payload,
       client->settings.token, ws->session_id, ws->payload.seq_number);
 
@@ -287,15 +277,6 @@ ws_on_text_cb(void *data, CURL *ehandle, const char *text, size_t len)
                 ws->payload.seq_number,
                 ws->payload.event_data);
 
-  if ( ((discord_t*)ws)->settings.f_dump ) {
-    char timestr[64];
-    timestamp_str(timestr, sizeof(timestr)-1);
-
-    fprintf( ((discord_t*)ws)->settings.f_dump,
-      "\r\r\r\rRECEIVED - %s\n%s\n", timestr, text);
-    fflush( ((discord_t*)ws)->settings.f_dump );
-  }
-
   switch (ws->payload.opcode){
   case GATEWAY_HELLO:
       on_hello(ws);
@@ -332,9 +313,18 @@ custom_easy_init(struct discord_ws_s *ws)
   ASSERT_S(NULL != new_ehandle, "Out of memory");
 
   CURLcode ecode;
-  D_ONLY(ecode = curl_easy_setopt(new_ehandle, CURLOPT_VERBOSE, 2L));
+  /* DEBUG ONLY FUNCTIONS */
+  D_ONLY(ecode = curl_easy_setopt(new_ehandle, CURLOPT_DEBUGFUNCTION, &Discord_utils_debug_cb));
   D_ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
+  D_ONLY(ecode = curl_easy_setopt(new_ehandle, CURLOPT_DEBUGDATA, &ws->p_client->settings));
+  D_ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
+
+  D_ONLY(ecode = curl_easy_setopt(new_ehandle, CURLOPT_VERBOSE, 2L));
+  D_ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
+  /* * * * * * * * * * * */
+
+  //enable follow redirections
   ecode = curl_easy_setopt(new_ehandle, CURLOPT_FOLLOWLOCATION, 2L);
   ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
@@ -402,16 +392,8 @@ Discord_ws_init(struct discord_ws_s *ws, char token[])
   ws->ehandle = custom_easy_init(ws);
   ws->mhandle = custom_multi_init();
 
-  ws->payload.seq_number = 0;
-
-  ws->cbs.on_idle = NULL;
-  ws->cbs.on_ready = NULL;
-  ws->cbs.on_message.create = NULL;
-  ws->cbs.on_message.update = NULL;
-  ws->cbs.on_message.delete = NULL;
-
   ws->self = discord_user_init();
-  discord_get_client_user((discord_t*)ws, ws->self);
+  discord_get_client_user(ws->p_client, ws->self);
 }
 
 void
@@ -469,7 +451,7 @@ ws_main_loop(struct discord_ws_s *ws)
     if (ws->hbeat.interval_ms < (timestamp_ms() - ws->hbeat.start_ms))
       ws_send_heartbeat(ws);
     if (ws->cbs.on_idle)
-      (*ws->cbs.on_idle)((discord_t*)ws, ws->self);
+      (*ws->cbs.on_idle)(ws->p_client, ws->self);
 
   } while(is_running);
 }
