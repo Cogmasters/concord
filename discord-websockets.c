@@ -404,6 +404,7 @@ Discord_ws_init(struct discord_ws_s *ws, char token[])
 
   ws->payload.seq_number = 0;
 
+  ws->cbs.on_idle = NULL;
   ws->cbs.on_ready = NULL;
   ws->cbs.on_message.create = NULL;
   ws->cbs.on_message.update = NULL;
