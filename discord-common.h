@@ -28,7 +28,7 @@ enum http_method {
 
 /* HTTP RESPONSE CODES
 https://discord.com/developers/docs/topics/opcodes-and-status-codes#http-http-response-codes */
-enum discord_http_code {
+enum api_http_code {
   HTTP_OK                       = 200,
   HTTP_CREATED                  = 201,
   HTTP_NO_CONTENT               = 204,
@@ -64,6 +64,25 @@ struct discord_api_s {
   struct api_header_s res_pairs; //the key/field pairs response header
 };
 
+/* GATEWAY CLOSE EVENT CODES
+https://discord.com/developers/docs/topics/opcodes-and-status-codes#gateway-gateway-close-event-codes */
+enum ws_close_code {
+  WS_CLOSE_UNKNOWN_ERROR          = 4000,
+  WS_CLOSE_UNKNOWN_OPCODE         = 4001,
+  WS_CLOSE_DECODE_ERROR           = 4002,
+  WS_CLOSE_NOT_AUTHENTICATED      = 4003,
+  WS_CLOSE_AUTHENTICATION_FAILED  = 4004,
+  WS_CLOSE_ALREADY_AUTHENTICATED  = 4005,
+  WS_CLOSE_INVALID_SEQUENCE       = 4007,
+  WS_CLOSE_RATE_LIMITED           = 4008,
+  WS_CLOSE_SESSION_TIMED_OUT      = 4009,
+  WS_CLOSE_INVALID_SHARD          = 4010,
+  WS_CLOSE_SHARDING_REQUIRED      = 4011,
+  WS_CLOSE_INVALID_API_VERSION    = 4012,
+  WS_CLOSE_INVALID_INTENTS        = 4013,
+  WS_CLOSE_DISALLOWED_INTENTS     = 4014,
+};
+
 /* GATEWAY INTENTS
 https://discord.com/developers/docs/topics/gateway#identify-identify-structure */
 enum ws_intents {
@@ -84,9 +103,9 @@ enum ws_intents {
   DIRECT_MESSAGE_TYPING         = 1 << 14,
 };
 
-/* GATEWAY OPCODES
+/* GATEWAY DISPATCH EVENT CODES
 https://discord.com/developers/docs/topics/opcodes-and-status-codes#gateway-gateway-opcodes */
-enum ws_opcode {
+enum ws_dispatch_code {
   GATEWAY_DISPATCH              = 0,
   GATEWAY_HEARTBEAT             = 1,
   GATEWAY_IDENTIFY              = 2,
@@ -103,7 +122,7 @@ enum ws_opcode {
 enum ws_status {
   WS_DISCONNECTED, //connected to ws
   WS_RECONNECTING, //attempting reconnection to ws
-  WS_CONNECTED //disconnected from ws
+  WS_CONNECTED,    //disconnected from ws
 };
 
 struct discord_ws_s {
@@ -115,7 +134,7 @@ struct discord_ws_s {
   CURL *ehandle;
 
   struct { /* PAYLOAD STRUCTURE */
-    enum ws_opcode opcode; //field 'op'
+    enum ws_dispatch_code opcode; //field 'op'
     int seq_number; //field 's'
     char event_name[16]; //field 't'
     char event_data[8192]; //field 'd'
