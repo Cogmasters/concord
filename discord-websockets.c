@@ -13,9 +13,9 @@
 #define CASE_RETURN_STR(opcode) case opcode: return #opcode
 
 static char*
-payload_strevent(enum ws_opcode opcode)
+gateway_opcode_name(enum ws_dispatch_code opcode)
 {
-  switch(opcode) {
+  switch (opcode) {
       CASE_RETURN_STR(GATEWAY_DISPATCH);
       CASE_RETURN_STR(GATEWAY_HEARTBEAT);
       CASE_RETURN_STR(GATEWAY_IDENTIFY);
@@ -28,7 +28,51 @@ payload_strevent(enum ws_opcode opcode)
       CASE_RETURN_STR(GATEWAY_HELLO);
       CASE_RETURN_STR(GATEWAY_HEARTBEAT_ACK);
   default:
-      ERROR("Invalid WebSockets opcode received (code: %d)", opcode);
+      ERROR("Invalid Gateway opcode (code: %d)", opcode);
+  }
+}
+
+static char*
+close_opcode_name(enum ws_close_code discord_opcode)
+{
+  switch (discord_opcode) {
+      CASE_RETURN_STR(WS_CLOSE_UNKNOWN_ERROR);
+      CASE_RETURN_STR(WS_CLOSE_UNKNOWN_OPCODE);
+      CASE_RETURN_STR(WS_CLOSE_DECODE_ERROR);
+      CASE_RETURN_STR(WS_CLOSE_NOT_AUTHENTICATED);
+      CASE_RETURN_STR(WS_CLOSE_AUTHENTICATION_FAILED);
+      CASE_RETURN_STR(WS_CLOSE_ALREADY_AUTHENTICATED);
+      CASE_RETURN_STR(WS_CLOSE_INVALID_SEQUENCE);
+      CASE_RETURN_STR(WS_CLOSE_RATE_LIMITED);
+      CASE_RETURN_STR(WS_CLOSE_SESSION_TIMED_OUT);
+      CASE_RETURN_STR(WS_CLOSE_INVALID_SHARD);
+      CASE_RETURN_STR(WS_CLOSE_SHARDING_REQUIRED);
+      CASE_RETURN_STR(WS_CLOSE_INVALID_API_VERSION);
+      CASE_RETURN_STR(WS_CLOSE_INVALID_INTENTS);
+      CASE_RETURN_STR(WS_CLOSE_DISALLOWED_INTENTS);
+  default: 
+   {
+      enum cws_close_reason normal_opcode = discord_opcode;
+      switch (normal_opcode) {
+          CASE_RETURN_STR(CWS_CLOSE_REASON_NORMAL);
+          CASE_RETURN_STR(CWS_CLOSE_REASON_GOING_AWAY);
+          CASE_RETURN_STR(CWS_CLOSE_REASON_PROTOCOL_ERROR);
+          CASE_RETURN_STR(CWS_CLOSE_REASON_UNEXPECTED_DATA);
+          CASE_RETURN_STR(CWS_CLOSE_REASON_NO_REASON);
+          CASE_RETURN_STR(CWS_CLOSE_REASON_ABRUPTLY);
+          CASE_RETURN_STR(CWS_CLOSE_REASON_INCONSISTENT_DATA);
+          CASE_RETURN_STR(CWS_CLOSE_REASON_POLICY_VIOLATION);
+          CASE_RETURN_STR(CWS_CLOSE_REASON_TOO_BIG);
+          CASE_RETURN_STR(CWS_CLOSE_REASON_MISSING_EXTENSION);
+          CASE_RETURN_STR(CWS_CLOSE_REASON_SERVER_ERROR);
+          CASE_RETURN_STR(CWS_CLOSE_REASON_IANA_REGISTRY_START);
+          CASE_RETURN_STR(CWS_CLOSE_REASON_IANA_REGISTRY_END);
+          CASE_RETURN_STR(CWS_CLOSE_REASON_PRIVATE_START);
+          CASE_RETURN_STR(CWS_CLOSE_REASON_PRIVATE_END);
+      default:
+          ERROR("Invalid WebSockets close opcode (code: %d)", normal_opcode);
+      }
+   }
   }
 }
 
@@ -160,9 +204,7 @@ on_reconnect(struct discord_ws_s *ws)
 
   char reason[] = "Attempting to reconnect to Discord WebSockets ...";
   D_PUTS(reason);
-
-  cws_close(ws->ehandle, CWS_CLOSE_REASON_NORMAL,
-      reason, sizeof(reason)-1);
+  cws_close(ws->ehandle, CWS_CLOSE_REASON_NORMAL, reason, sizeof(reason)-1);
 }
 
 static void
@@ -178,12 +220,33 @@ static void
 ws_on_close_cb(void *data, CURL *ehandle, enum cws_close_reason cwscode, const char *reason, size_t len)
 {
     struct discord_ws_s *ws = data;
+    enum ws_close_code close_opcode = cwscode;
    
-    if (ws->status != WS_RECONNECTING) {
-      ws->status = WS_DISCONNECTED;
+    switch (close_opcode) {
+    case WS_CLOSE_UNKNOWN_OPCODE:
+    case WS_CLOSE_DECODE_ERROR:
+    case WS_CLOSE_NOT_AUTHENTICATED:
+    case WS_CLOSE_AUTHENTICATION_FAILED:
+    case WS_CLOSE_ALREADY_AUTHENTICATED:
+    case WS_CLOSE_RATE_LIMITED:
+    case WS_CLOSE_SHARDING_REQUIRED:
+    case WS_CLOSE_INVALID_API_VERSION:
+    case WS_CLOSE_INVALID_INTENTS:
+    case WS_CLOSE_DISALLOWED_INTENTS:
+        ws->status = WS_DISCONNECTED;
+        break;
+    case WS_CLOSE_UNKNOWN_ERROR:
+    case WS_CLOSE_INVALID_SEQUENCE:
+    case WS_CLOSE_SESSION_TIMED_OUT:
+    default: //websocket/clouflare opcodes
+        ws->status = WS_RECONNECTING;
+        break;
     }
 
-    D_PRINT("CLOSE=%4d %zd bytes '%s'", cwscode, len, reason);
+    D_PRINT("%s (code: %4d) : %zd bytes\n\t"
+            "REASON: '%s'", 
+            close_opcode_name(close_opcode), close_opcode, len,
+            reason);
 
     (void)ehandle;
 }
@@ -211,7 +274,7 @@ ws_on_text_cb(void *data, CURL *ehandle, const char *text, size_t len)
                 "EVENT_NAME:\t%s\n\t"
                 "SEQ_NUMBER:\t%d\n\t"
                 "EVENT_DATA:\t%s", 
-                payload_strevent(ws->payload.opcode), 
+                gateway_opcode_name(ws->payload.opcode), 
                 *ws->payload.event_name //if event name exists
                    ? ws->payload.event_name //prints event name
                    : "NULL", //otherwise prints NULL
@@ -362,11 +425,7 @@ static void
 ws_send_heartbeat(struct discord_ws_s *ws)
 {
   char str[64];
-
-  if (!ws->payload.seq_number)
-    snprintf(str, sizeof(str)-1, "{\"op\":1,\"d\":null}");
-  else
-    snprintf(str, sizeof(str)-1, "{\"op\": 1,\"d\":%d}", ws->payload.seq_number);
+  snprintf(str, sizeof(str)-1, "{\"op\":1,\"d\":%d}", ws->payload.seq_number);
 
   D_PRINT("HEARTBEAT_PAYLOAD:\n\t\t%s", str);
   bool ret = cws_send_text(ws->ehandle, str);
@@ -397,8 +456,8 @@ ws_main_loop(struct discord_ws_s *ws)
     /*check if timespan since first pulse is greater than
      * minimum heartbeat interval required*/
     if ((WS_CONNECTED == ws->status)
-        && 
-        (ws->hbeat.interval_ms < (timestamp_ms() - ws->hbeat.start_ms))) 
+        &&
+       (ws->hbeat.interval_ms < (timestamp_ms() - ws->hbeat.start_ms)) )
     {
       ws_send_heartbeat(ws);
     }
@@ -409,17 +468,23 @@ ws_main_loop(struct discord_ws_s *ws)
 void
 Discord_ws_run(struct discord_ws_s *ws)
 {
-  int attempts = 0; //count reconnection attempts
+  int reconnect_attempt = 0;
   do {
     curl_multi_add_handle(ws->mhandle, ws->ehandle);
     ws_main_loop(ws);
     curl_multi_remove_handle(ws->mhandle, ws->ehandle);
 
-    if (attempts < 5 && WS_RECONNECTING == ws->status) {
-      usleep(5000);
-      ++attempts; //increment attempt
-      continue;
-    }
+    if (WS_DISCONNECTED == ws->status) break;
+    if (reconnect_attempt >= 5) break;
+
+    /* guarantees full shutdown of old connection
+     * @todo find a better alternative */
+    cws_free(ws->ehandle);
+    ws->ehandle = custom_easy_init(ws);
+    /* * * * * * * * * * * * * * * * * * * * * */
+
+    ++reconnect_attempt;
+
   } while (1);
 
   ASSERT_S(WS_DISCONNECTED == ws->status, "Couldn't reconnect to WebSockets");

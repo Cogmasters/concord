@@ -215,7 +215,7 @@ perform_request(
   CURLcode ecode;
 
   //try to perform the request and analyze output
-  enum discord_http_code http_code; //the http response code
+  enum api_http_code http_code; //the http response code
   char *url = NULL; //the request URL
   do {
     //perform the request
