@@ -158,11 +158,7 @@ on_reconnect(struct discord_ws_s *ws)
 {
   ws->status = WS_RECONNECTING;
 
-  char reason[] = "Attempting to reconnect to Discord WebSockets ...";
-  D_PUTS(reason);
-
-  cws_close(ws->ehandle, CWS_CLOSE_REASON_NORMAL,
-      reason, sizeof(reason)-1);
+  D_PUTS("Attempting to reconnect to Discord WebSockets ...");
 }
 
 static void
@@ -179,9 +175,7 @@ ws_on_close_cb(void *data, CURL *ehandle, enum cws_close_reason cwscode, const c
 {
     struct discord_ws_s *ws = data;
    
-    if (ws->status != WS_RECONNECTING) {
-      ws->status = WS_DISCONNECTED;
-    }
+    ws->status = WS_DISCONNECTED;
 
     D_PRINT("CLOSE=%4d %zd bytes '%s'", cwscode, len, reason);
 
@@ -379,6 +373,8 @@ ws_send_heartbeat(struct discord_ws_s *ws)
 static void
 ws_main_loop(struct discord_ws_s *ws)
 {
+  ws->status = WS_DISCONNECTED;
+
   int is_running = 0;
 
   curl_multi_perform(ws->mhandle, &is_running);
@@ -396,11 +392,16 @@ ws_main_loop(struct discord_ws_s *ws)
 
     /*check if timespan since first pulse is greater than
      * minimum heartbeat interval required*/
-    if ((WS_CONNECTED == ws->status)
-        && 
-        (ws->hbeat.interval_ms < (timestamp_ms() - ws->hbeat.start_ms))) 
-    {
-      ws_send_heartbeat(ws);
+    switch (ws->status) {
+    case WS_CONNECTED:
+        if (ws->hbeat.interval_ms < (timestamp_ms() - ws->hbeat.start_ms)) {
+          ws_send_heartbeat(ws);
+        }
+        break;
+    case WS_RECONNECTING:
+        return; /* EARLY EXIT */
+    case WS_DISCONNECTED: default:
+        break;
     }
   } while(is_running);
 }
