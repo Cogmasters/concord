@@ -64,7 +64,7 @@ discord_message_cleanup(discord_message_t *message)
 
 /* See: https://discord.com/developers/docs/resources/channel#create-message */
 void
-discord_send_message(discord_t *client, char channel_id[], char content[])
+discord_send_message(discord_t *client, const char channel_id[], const char content[])
 {
   char payload[MAX_PAYLOAD_LEN];
 

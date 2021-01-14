@@ -149,46 +149,46 @@ on_dispatch(struct discord_ws_s *ws)
                "[session_id]%s", ws->session_id);
     ASSERT_S(ws->session_id, "Couldn't fetch session_id from READY event");
 
-    if (NULL == ws->on_ready) return;
+    if (NULL == ws->cbs.on_ready) return;
 
-    (*ws->on_ready)((discord_t*)ws, ws->self);
+    (*ws->cbs.on_ready)((discord_t*)ws, ws->self);
   }
   else if (0 == strcmp("MESSAGE_CREATE", ws->payload.event_name))
   {
-    if (NULL == ws->on_message.create) return;
+    if (NULL == ws->cbs.on_message.create) return;
 
     discord_message_t *message = discord_message_init();
     ASSERT_S(NULL != message, "Out of memory");
 
     Discord_api_load_message((void*)message, ws->payload.event_data, sizeof(ws->payload.event_data)-1);
 
-    (*ws->on_message.create)((discord_t*)ws, ws->self, message);
+    (*ws->cbs.on_message.create)((discord_t*)ws, ws->self, message);
 
     discord_message_cleanup(message);
   }
   else if (0 == strcmp("MESSAGE_UPDATE", ws->payload.event_name))
   {
-    if (NULL == ws->on_message.update) return;
+    if (NULL == ws->cbs.on_message.update) return;
 
     discord_message_t *message = discord_message_init();
     ASSERT_S(NULL != message, "Out of memory");
 
     Discord_api_load_message((void*)message, ws->payload.event_data, sizeof(ws->payload.event_data)-1);
 
-    (*ws->on_message.update)((discord_t*)ws, ws->self, message);
+    (*ws->cbs.on_message.update)((discord_t*)ws, ws->self, message);
 
     discord_message_cleanup(message);
   }
   else if (0 == strcmp("MESSAGE_DELETE", ws->payload.event_name))
   {
-    if (NULL == ws->on_message.delete) return;
+    if (NULL == ws->cbs.on_message.delete) return;
 
     discord_message_t *message = discord_message_init();
     ASSERT_S(NULL != message, "Out of memory");
 
     Discord_api_load_message((void*)message, ws->payload.event_data, sizeof(ws->payload.event_data)-1);
 
-    (*ws->on_message.delete)((discord_t*)ws, ws->self, message);
+    (*ws->cbs.on_message.delete)((discord_t*)ws, ws->self, message);
 
     discord_message_cleanup(message);
   }
@@ -398,10 +398,10 @@ Discord_ws_init(struct discord_ws_s *ws, char token[])
 
   ws->payload.seq_number = 0;
 
-  ws->on_ready = NULL;
-  ws->on_message.create = NULL;
-  ws->on_message.update = NULL;
-  ws->on_message.delete = NULL;
+  ws->cbs.on_ready = NULL;
+  ws->cbs.on_message.create = NULL;
+  ws->cbs.on_message.update = NULL;
+  ws->cbs.on_message.delete = NULL;
 
   ws->self = discord_user_init();
   discord_get_client_user((discord_t*)ws, ws->self);
@@ -453,14 +453,17 @@ ws_main_loop(struct discord_ws_s *ws)
     mcode = curl_multi_poll(ws->mhandle, NULL, 0, 1000, &numfds);
     ASSERT_S(CURLM_OK == mcode, curl_multi_strerror(mcode));
 
+    if (ws->status != WS_CONNECTED) continue; //perform until a connection is established
+
+    /* CONNECTION IS ESTABLISHED */
+
     /*check if timespan since first pulse is greater than
      * minimum heartbeat interval required*/
-    if ((WS_CONNECTED == ws->status)
-        &&
-       (ws->hbeat.interval_ms < (timestamp_ms() - ws->hbeat.start_ms)) )
-    {
+    if (ws->hbeat.interval_ms < (timestamp_ms() - ws->hbeat.start_ms))
       ws_send_heartbeat(ws);
-    }
+    if (ws->cbs.on_idle)
+      (*ws->cbs.on_idle)((discord_t*)ws, ws->self);
+
   } while(is_running);
 }
 
@@ -491,21 +494,25 @@ Discord_ws_run(struct discord_ws_s *ws)
 }
 
 void
-Discord_ws_setcb_ready(struct discord_ws_s *ws, discord_onrdy_cb *user_cb){
-  ws->on_ready = user_cb;
+Discord_ws_setcb_idle(struct discord_ws_s *ws, discord_idle_cb *user_cb){
+  ws->cbs.on_idle = user_cb;
+}
+void
+Discord_ws_setcb_ready(struct discord_ws_s *ws, discord_idle_cb *user_cb){
+  ws->cbs.on_ready = user_cb;
 }
 
 void
-Discord_ws_setcb_message_create(struct discord_ws_s *ws, discord_onmsg_cb *user_cb){
-  ws->on_message.create = user_cb;
+Discord_ws_setcb_message_create(struct discord_ws_s *ws, discord_message_cb *user_cb){
+  ws->cbs.on_message.create = user_cb;
 }
 
 void
-Discord_ws_setcb_message_update(struct discord_ws_s *ws, discord_onmsg_cb *user_cb){
-  ws->on_message.update = user_cb;
+Discord_ws_setcb_message_update(struct discord_ws_s *ws, discord_message_cb *user_cb){
+  ws->cbs.on_message.update = user_cb;
 }
 
 void
-Discord_ws_setcb_message_delete(struct discord_ws_s *ws, discord_onmsg_cb *user_cb){
-  ws->on_message.delete = user_cb;
+Discord_ws_setcb_message_delete(struct discord_ws_s *ws, discord_message_cb *user_cb){
+  ws->cbs.on_message.delete = user_cb;
 }
