@@ -52,7 +52,7 @@ close_opcode_name(enum ws_close_code discord_opcode)
       CASE_RETURN_STR(WS_CLOSE_DISALLOWED_INTENTS);
   default: 
    {
-      enum cws_close_reason normal_opcode = discord_opcode;
+      enum cws_close_reason normal_opcode = (enum cws_close_reason)discord_opcode;
       switch (normal_opcode) {
           CASE_RETURN_STR(CWS_CLOSE_REASON_NORMAL);
           CASE_RETURN_STR(CWS_CLOSE_REASON_GOING_AWAY);
@@ -226,7 +226,7 @@ static void
 ws_on_close_cb(void *data, CURL *ehandle, enum cws_close_reason cwscode, const char *reason, size_t len)
 {
     struct discord_ws_s *ws = data;
-    enum ws_close_code close_opcode = cwscode;
+    enum ws_close_code close_opcode = (enum ws_close_code)cwscode;
    
     switch (close_opcode) {
     case WS_CLOSE_UNKNOWN_OPCODE:
