@@ -143,7 +143,7 @@ on_dispatch(struct discord_ws_s *ws)
 
     (*ws->cbs.on_ready)((discord_t*)ws, ws->self);
   }
-  else if (0 == strcmp("RESUME", ws->payload.event_name))
+  else if (0 == strcmp("RESUMED", ws->payload.event_name))
   {
     ws->status = WS_CONNECTED;
 
