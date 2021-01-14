@@ -62,6 +62,8 @@ struct discord_api_s {
   struct curl_slist *req_header; //the request header sent to the api
   struct api_response_s res_body; //the api response string
   struct api_header_s res_pairs; //the key/field pairs response header
+
+  discord_t *p_client; //points to client this struct is a part of
 };
 
 /* GATEWAY CLOSE EVENT CODES
@@ -156,11 +158,14 @@ struct discord_ws_s {
   } cbs;
 
   discord_user_t *self;
+
+  discord_t *p_client; //points to client this struct is a part of
 };
 
 struct _settings_s { //@todo this whole struct is temporary
   char *token;
-  FILE *f_dump;
+  FILE *f_json_dump;
+  FILE *f_curl_dump;
 };
 
 typedef struct discord_s {
@@ -181,8 +186,15 @@ typedef struct discord_s {
 typedef void (discord_load_obj_cb)(void *p_obj, char *str, size_t len);
 
 /* discord-utils.c */
+
 void* Discord_utils_set_data(discord_t *client, void *data);
 void* Discord_utils_get_data(discord_t *client);
+int Discord_utils_debug_cb(
+    CURL *ehandle,
+    curl_infotype type,
+    char *data,
+    size_t size,
+    void *p_userdata);
 
 /* discord-api.c */
 

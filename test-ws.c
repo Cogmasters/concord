@@ -27,9 +27,10 @@ int main(int argc, char *argv[])
   discord_t *client = discord_init(settings.discord.token);
   assert(NULL != client);
 
-  if (settings.logging.dump_json.enable) {
+  if (settings.logging.dump_json.enable)
     discord_dump_json(client, settings.logging.dump_json.filename);
-  }
+  if (settings.logging.dump_curl.enable)
+    discord_dump_curl(client, settings.logging.dump_curl.filename);
 
   discord_setcb_ready(client, &on_ready);
 
