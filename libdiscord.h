@@ -198,6 +198,8 @@ void discord_setcb_message_delete(discord_t *client, discord_message_cb *user_cb
 void discord_run(discord_t *client);
 
 void discord_dump_json(discord_t *client, char file[]);
+void* discord_set_data(discord_t *client, void *data);
+void* discord_get_data(discord_t *client);
 
 /* discord-public-guild.c */
 

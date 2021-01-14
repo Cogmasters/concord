@@ -94,3 +94,13 @@ discord_dump_json(discord_t *client, char file[])
 
   client->settings.f_dump = f_dump;  
 }
+
+void*
+discord_set_data(discord_t *client, void *data) {
+  return Discord_utils_set_data(client, data);
+}
+
+void*
+discord_get_data(discord_t *client) {
+  return Discord_utils_get_data(client);
+}

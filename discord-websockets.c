@@ -134,8 +134,6 @@ on_hello(struct discord_ws_s *ws)
     ws_send_resume(ws);
   else //WS_DISCONNECTED
     ws_send_identify(ws);
-
-  ws->status = WS_CONNECTED;
 }
 
 static void
@@ -145,6 +143,8 @@ on_dispatch(struct discord_ws_s *ws)
 
   if (0 == strcmp("READY", ws->payload.event_name))
   {
+    ws->status = WS_CONNECTED;
+
     json_scanf(ws->payload.event_data, sizeof(ws->payload.event_data),
                "[session_id]%s", ws->session_id);
     ASSERT_S(ws->session_id, "Couldn't fetch session_id from READY event");
@@ -152,6 +152,12 @@ on_dispatch(struct discord_ws_s *ws)
     if (NULL == ws->cbs.on_ready) return;
 
     (*ws->cbs.on_ready)((discord_t*)ws, ws->self);
+  }
+  else if (0 == strcmp("RESUME", ws->payload.event_name))
+  {
+    ws->status = WS_CONNECTED;
+
+    D_PRINT("Resume connection succesfully to Discord!");
   }
   else if (0 == strcmp("MESSAGE_CREATE", ws->payload.event_name))
   {

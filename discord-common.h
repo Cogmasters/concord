@@ -166,6 +166,12 @@ struct _settings_s { //@todo this whole struct is temporary
 typedef struct discord_s {
   struct discord_ws_s ws; //discord_t == (discord_t)(ws)
   struct discord_api_s api; //discord_t == (discord_t)(api-sizeof(ws))
+  
+  /* space for user-defined arbitrary data, libdiscord does not use
+   *  this field.
+   * can be set by discord_set_data() and retrieved by 
+   *  discord_get_data() */
+  void *data;
 
   struct _settings_s settings;
 } discord_t;
@@ -173,6 +179,10 @@ typedef struct discord_s {
 /*for using Discord_api_request() as a template for every
  * kind of transfer*/
 typedef void (discord_load_obj_cb)(void *p_obj, char *str, size_t len);
+
+/* discord-utils.c */
+void* Discord_utils_set_data(discord_t *client, void *data);
+void* Discord_utils_get_data(discord_t *client);
 
 /* discord-api.c */
 
