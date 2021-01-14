@@ -145,13 +145,15 @@ struct discord_ws_s {
     long start_ms; //start pulse in milliseconds
   } hbeat;
 
-  discord_onrdy_cb *on_ready; /* ON READY CB */
-
-  struct { /* MESSAGE CALLBACKS STRUCTURE */
-    discord_onmsg_cb *create; /* ON MESSAGE_CREATE CB */
-    discord_onmsg_cb *update; /* ON MESSAGE_UPDATE CB */
-    discord_onmsg_cb *delete; /* ON MESSAGE_DELETE CB */
-  } on_message;
+  struct { /* CALLBACKS STRUCTURE */
+    discord_idle_cb *on_idle;   /* ON IDLE CB */
+    discord_idle_cb *on_ready; /* ON READY CB */
+    struct { /* MESSAGE CALLBACKS STRUCTURE */
+      discord_message_cb *create; /* ON MESSAGE_CREATE CB */
+      discord_message_cb *update; /* ON MESSAGE_UPDATE CB */
+      discord_message_cb *delete; /* ON MESSAGE_DELETE CB */
+    } on_message;
+  } cbs;
 
   discord_user_t *self;
 };
@@ -164,6 +166,12 @@ struct _settings_s { //@todo this whole struct is temporary
 typedef struct discord_s {
   struct discord_ws_s ws; //discord_t == (discord_t)(ws)
   struct discord_api_s api; //discord_t == (discord_t)(api-sizeof(ws))
+  
+  /* space for user-defined arbitrary data, libdiscord does not use
+   *  this field.
+   * can be set by discord_set_data() and retrieved by 
+   *  discord_get_data() */
+  void *data;
 
   struct _settings_s settings;
 } discord_t;
@@ -171,6 +179,10 @@ typedef struct discord_s {
 /*for using Discord_api_request() as a template for every
  * kind of transfer*/
 typedef void (discord_load_obj_cb)(void *p_obj, char *str, size_t len);
+
+/* discord-utils.c */
+void* Discord_utils_set_data(discord_t *client, void *data);
+void* Discord_utils_get_data(discord_t *client);
 
 /* discord-api.c */
 
@@ -195,10 +207,11 @@ void Discord_api_request(
 void Discord_ws_init(struct discord_ws_s *ws, char token[]);
 void Discord_ws_cleanup(struct discord_ws_s *ws);
 
-void Discord_ws_setcb_ready(struct discord_ws_s *ws, discord_onrdy_cb *user_cb);
-void Discord_ws_setcb_message_create(struct discord_ws_s *ws, discord_onmsg_cb *user_cb);
-void Discord_ws_setcb_message_update(struct discord_ws_s *ws, discord_onmsg_cb *user_cb);
-void Discord_ws_setcb_message_delete(struct discord_ws_s *ws, discord_onmsg_cb *user_cb);
+void Discord_ws_setcb_idle(struct discord_ws_s *ws, discord_idle_cb *user_cb);
+void Discord_ws_setcb_ready(struct discord_ws_s *ws, discord_idle_cb *user_cb);
+void Discord_ws_setcb_message_create(struct discord_ws_s *ws, discord_message_cb *user_cb);
+void Discord_ws_setcb_message_update(struct discord_ws_s *ws, discord_message_cb *user_cb);
+void Discord_ws_setcb_message_delete(struct discord_ws_s *ws, discord_message_cb *user_cb);
 
 void Discord_ws_run(struct discord_ws_s *ws);
 

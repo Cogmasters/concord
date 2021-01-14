@@ -178,8 +178,8 @@ typedef struct discord_user_s {
   struct discord_guild_s **guilds;
 } discord_user_t;
 
-typedef void (discord_onrdy_cb)(struct discord_s *client, discord_user_t *self);
-typedef void (discord_onmsg_cb)(struct discord_s *client, discord_user_t *self, struct discord_message_s *message);
+typedef void (discord_idle_cb)(discord_t *client, const discord_user_t *self);
+typedef void (discord_message_cb)(discord_t *client, const discord_user_t *self, const discord_message_t *message);
 
 /* discord-public.c */
 
@@ -189,14 +189,17 @@ void discord_global_cleanup();
 discord_t* discord_init(char token[]);
 void discord_cleanup(discord_t *client);
 
-void discord_setcb_ready(discord_t *client, discord_onrdy_cb *user_cb);
-void discord_setcb_message_create(discord_t *client, discord_onmsg_cb *user_cb);
-void discord_setcb_message_update(discord_t *client, discord_onmsg_cb *user_cb);
-void discord_setcb_message_delete(discord_t *client, discord_onmsg_cb *user_cb);
+void discord_setcb_idle(discord_t *client, discord_idle_cb *user_cb);
+void discord_setcb_ready(discord_t *client, discord_idle_cb *user_cb);
+void discord_setcb_message_create(discord_t *client, discord_message_cb *user_cb);
+void discord_setcb_message_update(discord_t *client, discord_message_cb *user_cb);
+void discord_setcb_message_delete(discord_t *client, discord_message_cb *user_cb);
 
 void discord_run(discord_t *client);
 
 void discord_dump_json(discord_t *client, char file[]);
+void* discord_set_data(discord_t *client, void *data);
+void* discord_get_data(discord_t *client);
 
 /* discord-public-guild.c */
 
@@ -215,6 +218,6 @@ void discord_get_client_user(discord_t *client, discord_user_t *p_user);
 
 discord_message_t* discord_message_init();
 void discord_message_cleanup(discord_message_t *message);
-void discord_send_message(discord_t *client, char channel_id[], char content[]);
+void discord_send_message(discord_t *client, const char channel_id[], const char content[]);
 
 #endif

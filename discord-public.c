@@ -57,22 +57,27 @@ discord_global_cleanup() {
 }
 
 void
-discord_setcb_ready(discord_t *client, discord_onrdy_cb *user_cb){
+discord_setcb_idle(discord_t *client, discord_idle_cb *user_cb){
+  Discord_ws_setcb_idle(&client->ws, user_cb);
+}
+
+void
+discord_setcb_ready(discord_t *client, discord_idle_cb *user_cb){
   Discord_ws_setcb_ready(&client->ws, user_cb);
 }
 
 void
-discord_setcb_message_create(discord_t *client, discord_onmsg_cb *user_cb){
+discord_setcb_message_create(discord_t *client, discord_message_cb *user_cb){
   Discord_ws_setcb_message_create(&client->ws, user_cb);
 }
 
 void
-discord_setcb_message_update(discord_t *client, discord_onmsg_cb *user_cb){
+discord_setcb_message_update(discord_t *client, discord_message_cb *user_cb){
   Discord_ws_setcb_message_update(&client->ws, user_cb);
 }
 
 void
-discord_setcb_message_delete(discord_t *client, discord_onmsg_cb *user_cb){
+discord_setcb_message_delete(discord_t *client, discord_message_cb *user_cb){
   Discord_ws_setcb_message_delete(&client->ws, user_cb);
 }
 
@@ -88,4 +93,14 @@ discord_dump_json(discord_t *client, char file[])
   ASSERT_S(NULL != f_dump, "Could not create dump file");
 
   client->settings.f_dump = f_dump;  
+}
+
+void*
+discord_set_data(discord_t *client, void *data) {
+  return Discord_utils_set_data(client, data);
+}
+
+void*
+discord_get_data(discord_t *client) {
+  return Discord_utils_get_data(client);
 }

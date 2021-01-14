@@ -6,7 +6,7 @@
 #include "settings.h"
 
 
-void on_ready(discord_t *client, discord_user_t *self)
+void on_ready(discord_t *client, const discord_user_t *self)
 {
   fprintf(stderr, "\n\nEcho-Bot succesfully connected to Discord as %s#%s!\n\n",
       self->username, self->discriminator);
@@ -16,8 +16,8 @@ void on_ready(discord_t *client, discord_user_t *self)
 
 void on_message_create(
     discord_t *client,
-    discord_user_t *self,
-    discord_message_t *message)
+    const discord_user_t *self,
+    const discord_message_t *message)
 {
   // make sure it doesn't echoes itself
   if (strcmp(self->username, message->author->username)){
@@ -27,8 +27,8 @@ void on_message_create(
 
 void on_message_update(
     discord_t *client,
-    discord_user_t *self,
-    discord_message_t *message)
+    const discord_user_t *self,
+    const discord_message_t *message)
 {
   char text[] = "I see what you did there.";
 
@@ -39,8 +39,8 @@ void on_message_update(
 
 void on_message_delete(
     discord_t *client,
-    discord_user_t *self,
-    discord_message_t *message)
+    const discord_user_t *self,
+    const discord_message_t *message)
 {
   char text[] = "Did that message just disappear?!";
 
