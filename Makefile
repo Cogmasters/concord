@@ -46,6 +46,9 @@ test : all test-api.c test-ws.c test-json-scanf.c
 echo-bot : all echo-bot.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \
 		echo-bot.c -o echo-bot.exe $(LIBS_LDFLAGS)
+pin-bot : all pin-bot.c
+	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \
+		pin-bot.c -o pin-bot.exe $(LIBS_LDFLAGS)
 
 mkdir :
 	mkdir -p $(OBJDIR) $(LIBDIR)
