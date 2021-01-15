@@ -66,6 +66,15 @@ discord_message_cleanup(discord_message_t *message)
 void
 discord_send_message(discord_t *client, const char channel_id[], const char content[])
 {
+  if (IS_EMPTY_STRING(channel_id)) {
+    D_PUTS("Can't send message to Discord: missing 'channel_id'");
+    return;
+  }
+  if (IS_EMPTY_STRING(content)) {
+    D_PUTS("Can't send an empty message to Discord: missing 'content'");
+    return;
+  }
+
   char payload[MAX_PAYLOAD_LEN];
 
   int ret = snprintf(payload, MAX_PAYLOAD_LEN, "{\"content\":\"%s\"}", content);
