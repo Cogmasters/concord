@@ -191,6 +191,8 @@ set_method(struct discord_api_s *api, enum http_method method, char send_payload
   case PUT:
       ecode = curl_easy_setopt(api->ehandle, CURLOPT_UPLOAD, 1L);
       ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
+      ecode = curl_easy_setopt(api->ehandle, CURLOPT_POSTFIELDS, send_payload);
+      ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
       break;
   default:
       ERROR("Unknown http method (code: %d)", method);
@@ -240,7 +242,8 @@ perform_request(
         if (load_cb) {
           (*load_cb)(p_object, api->body.str, api->body.size);
         }
-
+    /* fall through */
+    case HTTP_NO_CONTENT:
         break; /* DONE */
     case HTTP_TOO_MANY_REQUESTS:
     /* @todo dealing with ratelimits solely by checking for
@@ -269,7 +272,7 @@ perform_request(
     api->body.size = 0;
     api->pairs.size = 0;
 
-  } while (HTTP_OK != http_code);
+  } while (http_code > 204);
 }
 
 void

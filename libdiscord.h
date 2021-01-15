@@ -202,11 +202,24 @@ void discord_dump_curl(discord_t *client, char file[]);
 void* discord_set_data(discord_t *client, void *data);
 void* discord_get_data(discord_t *client);
 
+/* discord-public-channel.c */
+
+discord_channel_t* discord_channel_init();
+void discord_channel_cleanup(discord_channel_t *channel);
+void discord_pin_message(discord_t *client, const char channel_id[], const char message_id[]);
+void discord_unpin_message(discord_t *client, const char channel_id[], const char message_id[]);
+
 /* discord-public-guild.c */
 
 discord_guild_t* discord_guild_init();
 void discord_guild_cleanup(discord_guild_t *guild);
 void discord_get_guild(discord_t *client, const char guild_id[], discord_guild_t *p_guild);
+
+/* discord-public-message.c */
+
+discord_message_t* discord_message_init();
+void discord_message_cleanup(discord_message_t *message);
+void discord_send_message(discord_t *client, const char channel_id[], const char content[]);
 
 /* discord-public-user.c */
 
@@ -214,11 +227,5 @@ discord_user_t* discord_user_init();
 void discord_user_cleanup(discord_user_t *user);
 void discord_get_user(discord_t *client, const char user_id[], discord_user_t *p_user);
 void discord_get_client_user(discord_t *client, discord_user_t *p_user);
-
-/* discord-public-message.c */
-
-discord_message_t* discord_message_init();
-void discord_message_cleanup(discord_message_t *message);
-void discord_send_message(discord_t *client, const char channel_id[], const char content[]);
 
 #endif
