@@ -27,10 +27,11 @@ set(SOURCE_FILES
         curl-websocket.h
         discord-api.c
         discord-common.h
+        discord-public.c
         discord-public-guild.c
         discord-public-user.c
-        discord-public.c
         discord-tool-debug.h
+        discord-utils.c
         discord-websockets.c
         libdiscord.h
         settings.c
