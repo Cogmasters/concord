@@ -10,7 +10,7 @@
 #define BASE_WEBSOCKETS_URL "wss://gateway.discord.gg/?v=6&encoding=json"
 
 static char*
-gateway_opcode_name(enum ws_dispatch_code opcode)
+ws_opcode_print(enum ws_opcodes opcode)
 {
   switch (opcode) {
       CASE_RETURN_STR(GATEWAY_DISPATCH);
@@ -30,27 +30,27 @@ gateway_opcode_name(enum ws_dispatch_code opcode)
 }
 
 static char*
-close_opcode_name(enum ws_close_code discord_opcode)
+ws_close_opcode_print(enum ws_close_opcodes gateway_opcode)
 {
-  switch (discord_opcode) {
-      CASE_RETURN_STR(WS_CLOSE_UNKNOWN_ERROR);
-      CASE_RETURN_STR(WS_CLOSE_UNKNOWN_OPCODE);
-      CASE_RETURN_STR(WS_CLOSE_DECODE_ERROR);
-      CASE_RETURN_STR(WS_CLOSE_NOT_AUTHENTICATED);
-      CASE_RETURN_STR(WS_CLOSE_AUTHENTICATION_FAILED);
-      CASE_RETURN_STR(WS_CLOSE_ALREADY_AUTHENTICATED);
-      CASE_RETURN_STR(WS_CLOSE_INVALID_SEQUENCE);
-      CASE_RETURN_STR(WS_CLOSE_RATE_LIMITED);
-      CASE_RETURN_STR(WS_CLOSE_SESSION_TIMED_OUT);
-      CASE_RETURN_STR(WS_CLOSE_INVALID_SHARD);
-      CASE_RETURN_STR(WS_CLOSE_SHARDING_REQUIRED);
-      CASE_RETURN_STR(WS_CLOSE_INVALID_API_VERSION);
-      CASE_RETURN_STR(WS_CLOSE_INVALID_INTENTS);
-      CASE_RETURN_STR(WS_CLOSE_DISALLOWED_INTENTS);
-  default: 
-   {
-      enum cws_close_reason normal_opcode = (enum cws_close_reason)discord_opcode;
-      switch (normal_opcode) {
+  switch (gateway_opcode) {
+      CASE_RETURN_STR(GATEWAY_CLOSE_REASON_UNKNOWN_ERROR);
+      CASE_RETURN_STR(GATEWAY_CLOSE_REASON_UNKNOWN_OPCODE);
+      CASE_RETURN_STR(GATEWAY_CLOSE_REASON_DECODE_ERROR);
+      CASE_RETURN_STR(GATEWAY_CLOSE_REASON_NOT_AUTHENTICATED);
+      CASE_RETURN_STR(GATEWAY_CLOSE_REASON_AUTHENTICATION_FAILED);
+      CASE_RETURN_STR(GATEWAY_CLOSE_REASON_ALREADY_AUTHENTICATED);
+      CASE_RETURN_STR(GATEWAY_CLOSE_REASON_INVALID_SEQUENCE);
+      CASE_RETURN_STR(GATEWAY_CLOSE_REASON_RATE_LIMITED);
+      CASE_RETURN_STR(GATEWAY_CLOSE_REASON_SESSION_TIMED_OUT);
+      CASE_RETURN_STR(GATEWAY_CLOSE_REASON_INVALID_SHARD);
+      CASE_RETURN_STR(GATEWAY_CLOSE_REASON_SHARDING_REQUIRED);
+      CASE_RETURN_STR(GATEWAY_CLOSE_REASON_INVALID_API_VERSION);
+      CASE_RETURN_STR(GATEWAY_CLOSE_REASON_INVALID_INTENTS);
+      CASE_RETURN_STR(GATEWAY_CLOSE_REASON_DISALLOWED_INTENTS);
+  default: {
+      enum cws_close_reason cws_opcode = \
+            (enum cws_close_reason)gateway_opcode;
+      switch (cws_opcode) {
           CASE_RETURN_STR(CWS_CLOSE_REASON_NORMAL);
           CASE_RETURN_STR(CWS_CLOSE_REASON_GOING_AWAY);
           CASE_RETURN_STR(CWS_CLOSE_REASON_PROTOCOL_ERROR);
@@ -67,12 +67,13 @@ close_opcode_name(enum ws_close_code discord_opcode)
           CASE_RETURN_STR(CWS_CLOSE_REASON_PRIVATE_START);
           CASE_RETURN_STR(CWS_CLOSE_REASON_PRIVATE_END);
       default:
-          ERROR("Invalid WebSockets close opcode (code: %d)", normal_opcode);
+          ERROR("Unknown WebSockets close opcode (code: %d)", cws_opcode);
       }
    }
   }
 }
 
+/* returns current timestamp in milliseconds */
 static long
 timestamp_ms()
 {
@@ -98,9 +99,8 @@ ws_send_resume(struct discord_ws_s *ws)
   char fmt_payload[] = \
     "{\"op\":6,\"d\":{\"token\":\"%s\",\"session_id\":\"%s\",\"seq\":%d}}";
   char payload[MAX_PAYLOAD_LEN];
-  discord_t *client = ws->p_client;
   snprintf(payload, sizeof(payload)-1, fmt_payload,
-      client->settings.token, ws->session_id, ws->payload.seq_number);
+      ws->p_client->settings.token, ws->session_id, ws->payload.seq_number);
 
   D_NOTOP_PRINT("RESUME PAYLOAD:\n\t%s", payload);
   ws_send_payload(ws, payload);
@@ -119,7 +119,7 @@ on_hello(struct discord_ws_s *ws)
   ws->hbeat.interval_ms = 0;
   ws->hbeat.start_ms = timestamp_ms();
 
-  json_scanf(ws->payload.event_data, sizeof(ws->payload.event_data),
+  json_scanf(ws->payload.event_data, sizeof(ws->payload.event_data)-1,
              "[heartbeat_interval]%ld", &ws->hbeat.interval_ms);
   ASSERT_S(ws->hbeat.interval_ms > 0, "Invalid heartbeat_ms");
 
@@ -139,7 +139,7 @@ on_dispatch(struct discord_ws_s *ws)
     ws->status = WS_CONNECTED;
     ws->reconnect_attempts = 0;
 
-    json_scanf(ws->payload.event_data, sizeof(ws->payload.event_data),
+    json_scanf(ws->payload.event_data, sizeof(ws->payload.event_data)-1,
                "[session_id]%s", ws->session_id);
     ASSERT_S(ws->session_id, "Couldn't fetch session_id from READY event");
 
@@ -233,24 +233,24 @@ static void
 ws_on_close_cb(void *data, CURL *ehandle, enum cws_close_reason cwscode, const char *reason, size_t len)
 {
     struct discord_ws_s *ws = data;
-    enum ws_close_code close_opcode = (enum ws_close_code)cwscode;
+    enum ws_close_opcodes opcode = (enum ws_close_opcodes)cwscode;
    
-    switch (close_opcode) {
-    case WS_CLOSE_UNKNOWN_OPCODE:
-    case WS_CLOSE_DECODE_ERROR:
-    case WS_CLOSE_NOT_AUTHENTICATED:
-    case WS_CLOSE_AUTHENTICATION_FAILED:
-    case WS_CLOSE_ALREADY_AUTHENTICATED:
-    case WS_CLOSE_RATE_LIMITED:
-    case WS_CLOSE_SHARDING_REQUIRED:
-    case WS_CLOSE_INVALID_API_VERSION:
-    case WS_CLOSE_INVALID_INTENTS:
-    case WS_CLOSE_DISALLOWED_INTENTS:
+    switch (opcode) {
+    case GATEWAY_CLOSE_REASON_UNKNOWN_OPCODE:
+    case GATEWAY_CLOSE_REASON_DECODE_ERROR:
+    case GATEWAY_CLOSE_REASON_NOT_AUTHENTICATED:
+    case GATEWAY_CLOSE_REASON_AUTHENTICATION_FAILED:
+    case GATEWAY_CLOSE_REASON_ALREADY_AUTHENTICATED:
+    case GATEWAY_CLOSE_REASON_RATE_LIMITED:
+    case GATEWAY_CLOSE_REASON_SHARDING_REQUIRED:
+    case GATEWAY_CLOSE_REASON_INVALID_API_VERSION:
+    case GATEWAY_CLOSE_REASON_INVALID_INTENTS:
+    case GATEWAY_CLOSE_REASON_DISALLOWED_INTENTS:
         ws->status = WS_DISCONNECTED;
         break;
-    case WS_CLOSE_UNKNOWN_ERROR:
-    case WS_CLOSE_INVALID_SEQUENCE:
-    case WS_CLOSE_SESSION_TIMED_OUT:
+    case GATEWAY_CLOSE_REASON_UNKNOWN_ERROR:
+    case GATEWAY_CLOSE_REASON_INVALID_SEQUENCE:
+    case GATEWAY_CLOSE_REASON_SESSION_TIMED_OUT:
     default: //websocket/clouflare opcodes
         ws->status = WS_RECONNECTING;
         break;
@@ -258,7 +258,7 @@ ws_on_close_cb(void *data, CURL *ehandle, enum cws_close_reason cwscode, const c
 
     D_PRINT("%s (code: %4d) : %zd bytes\n\t"
             "REASON: '%s'", 
-            close_opcode_name(close_opcode), close_opcode, len,
+            ws_close_opcode_print(opcode), opcode, len,
             reason);
 
     (void)ehandle;
@@ -290,7 +290,7 @@ ws_on_text_cb(void *data, CURL *ehandle, const char *text, size_t len)
                 "EVENT_NAME:\t%s\n\t"
                 "SEQ_NUMBER:\t%d\n\t"
                 "EVENT_DATA:\t%s", 
-                gateway_opcode_name(ws->payload.opcode), 
+                ws_opcode_print(ws->payload.opcode), 
                 *ws->payload.event_name //if event name exists
                    ? ws->payload.event_name //prints event name
                    : "NULL", //otherwise prints NULL
@@ -334,13 +334,16 @@ custom_easy_init(struct discord_ws_s *ws)
 
   CURLcode ecode;
   /* DEBUG ONLY FUNCTIONS */
+  //set debug callback
   D_ONLY(ecode = curl_easy_setopt(new_ehandle, CURLOPT_DEBUGFUNCTION, &Discord_utils_debug_cb));
   D_ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
+  //set ptr to settings containing dump files
   D_ONLY(ecode = curl_easy_setopt(new_ehandle, CURLOPT_DEBUGDATA, &ws->p_client->settings));
   D_ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
-  D_ONLY(ecode = curl_easy_setopt(new_ehandle, CURLOPT_VERBOSE, 2L));
+  //enable verbose
+  D_ONLY(ecode = curl_easy_setopt(new_ehandle, CURLOPT_VERBOSE, 1L));
   D_ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
   /* * * * * * * * * * * */
 

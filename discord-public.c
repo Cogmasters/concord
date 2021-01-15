@@ -13,6 +13,14 @@ discord_init(char token[])
   discord_t *new_client = calloc(1, sizeof *new_client);
   if (NULL == new_client) return NULL;
 
+  /* @todo this is a temporary solution */
+  new_client->settings.token = strdup(token);
+  if (NULL == new_client->settings.token) goto cleanup;
+
+  new_client->settings.f_json_dump = NULL;
+  new_client->settings.f_curl_dump = NULL;
+  /* * * * * * * * * * */
+
   //trim token at non-printable character (if any)
   for (int i=0; token[i] != '\0'; ++i) {
     if (!isgraph(token[i])) {
@@ -27,34 +35,36 @@ discord_init(char token[])
   Discord_api_init(&new_client->api, token);
   Discord_ws_init(&new_client->ws, token);
 
-  /* THIS IS TEMPORARY */
-  new_client->settings.token = strdup(token);
-  new_client->settings.f_json_dump = NULL;
-  new_client->settings.f_curl_dump = NULL;
-  /* * * * * * * * * * */
-
   return new_client;
+
+cleanup:
+  free(new_client);
+
+  return NULL;
 }
 
 void
 discord_cleanup(discord_t *client)
 {
-  Discord_api_cleanup(&client->api);
-  Discord_ws_cleanup(&client->ws);
-
+  /* @todo this is a temporary solution */
   if (client->settings.token)
     free(client->settings.token);
   if (client->settings.f_json_dump)
     fclose(client->settings.f_json_dump);
   if (client->settings.f_curl_dump)
     fclose(client->settings.f_curl_dump);
+  /* * * * * * * * * * */
+
+  Discord_api_cleanup(&client->api);
+  Discord_ws_cleanup(&client->ws);
+
   free(client);
 }
 
 void
 discord_global_init() {
-  int code = curl_global_init(CURL_GLOBAL_DEFAULT);
-  ASSERT_S(!code, "Couldn't start libcurl's globals configurations");
+  ASSERT_S(0 == curl_global_init(CURL_GLOBAL_DEFAULT),
+      "Couldn't start libcurl's globals configurations");
 }
 
 void
@@ -92,6 +102,7 @@ discord_run(discord_t *client){
   Discord_ws_run(&client->ws);
 }
 
+//@todo find a better solution using settings.h logger
 void
 discord_dump_json(discord_t *client, char file[])
 {
@@ -101,6 +112,7 @@ discord_dump_json(discord_t *client, char file[])
   client->settings.f_json_dump = f_dump;  
 }
 
+//@todo find a better solution using settings.h logger
 void
 discord_dump_curl(discord_t *client, char file[])
 {

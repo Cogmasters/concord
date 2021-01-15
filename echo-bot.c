@@ -19,6 +19,10 @@ void on_message_create(
     const discord_user_t *self,
     const discord_message_t *message)
 {
+  // make sure bot doesn't echoes other bots
+  if (true == message->author->bot)
+    return;
+
   // make sure it doesn't echoes itself
   if (strcmp(self->username, message->author->username)){
     discord_send_message(client, message->channel_id, message->content);

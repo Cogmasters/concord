@@ -19,8 +19,13 @@ discord_user_cleanup(discord_user_t *user) {
 }
 
 void
-discord_get_user(discord_t *client, char user_id[], discord_user_t *p_user)
+discord_get_user(discord_t *client, const char user_id[], discord_user_t *p_user)
 {
+  if (IS_EMPTY_STRING(user_id)) {
+    D_PUTS("Missing 'user_id'");
+    return;
+  }
+
   Discord_api_request( 
     &client->api,
     (void*)p_user,
