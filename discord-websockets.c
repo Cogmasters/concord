@@ -86,6 +86,16 @@ timestamp_ms()
 }
 
 static void
+ws_send_payload(struct discord_ws_s *ws, char payload[])
+{
+  Discord_utils_json_dump("SEND PAYLOAD",
+      &ws->p_client->settings, payload);
+
+  bool ret = cws_send_text(ws->ehandle, payload);
+  ASSERT_S(true == ret, "Couldn't send payload");
+}
+
+static void
 ws_send_resume(struct discord_ws_s *ws)
 {
   char fmt_payload[] = \
@@ -96,9 +106,7 @@ ws_send_resume(struct discord_ws_s *ws)
       client->settings.token, ws->session_id, ws->payload.seq_number);
 
   D_NOTOP_PRINT("RESUME PAYLOAD:\n\t%s", payload);
-
-  bool ret = cws_send_text(ws->ehandle, payload);
-  ASSERT_S(true == ret, "Couldn't send resume payload");
+  ws_send_payload(ws, payload);
 }
 
 static void
@@ -106,8 +114,8 @@ ws_send_identify(struct discord_ws_s *ws)
 {
   D_PRINT("IDENTIFY PAYLOAD:\n\t%s", ws->identify);
 
-  bool ret = cws_send_text(ws->ehandle, ws->identify);
-  ASSERT_S(true == ret, "Couldn't send identify payload");
+  D_NOTOP_PRINT("RESUME PAYLOAD:\n\t%s", ws->identify);
+  ws_send_payload(ws, ws->identify);
 }
 
 static void
@@ -141,13 +149,13 @@ on_dispatch(struct discord_ws_s *ws)
 
     if (NULL == ws->cbs.on_ready) return;
 
-    (*ws->cbs.on_ready)((discord_t*)ws, ws->self);
+    (*ws->cbs.on_ready)(ws->p_client, ws->self);
   }
   else if (0 == strcmp("RESUMED", ws->payload.event_name))
   {
     ws->status = WS_CONNECTED;
 
-    D_PRINT("Resume connection succesfully to Discord!");
+    D_PRINT("Succesfully resumed connection to Discord!");
   }
   else if (0 == strcmp("MESSAGE_CREATE", ws->payload.event_name))
   {
@@ -158,7 +166,7 @@ on_dispatch(struct discord_ws_s *ws)
 
     Discord_api_load_message((void*)message, ws->payload.event_data, sizeof(ws->payload.event_data)-1);
 
-    (*ws->cbs.on_message.create)((discord_t*)ws, ws->self, message);
+    (*ws->cbs.on_message.create)(ws->p_client, ws->self, message);
 
     discord_message_cleanup(message);
   }
@@ -171,7 +179,7 @@ on_dispatch(struct discord_ws_s *ws)
 
     Discord_api_load_message((void*)message, ws->payload.event_data, sizeof(ws->payload.event_data)-1);
 
-    (*ws->cbs.on_message.update)((discord_t*)ws, ws->self, message);
+    (*ws->cbs.on_message.update)(ws->p_client, ws->self, message);
 
     discord_message_cleanup(message);
   }
@@ -184,7 +192,7 @@ on_dispatch(struct discord_ws_s *ws)
 
     Discord_api_load_message((void*)message, ws->payload.event_data, sizeof(ws->payload.event_data)-1);
 
-    (*ws->cbs.on_message.delete)((discord_t*)ws, ws->self, message);
+    (*ws->cbs.on_message.delete)(ws->p_client, ws->self, message);
 
     discord_message_cleanup(message);
   }
@@ -253,6 +261,9 @@ ws_on_text_cb(void *data, CURL *ehandle, const char *text, size_t len)
   struct discord_ws_s *ws = data;
 
   D_PRINT("ON_TEXT:\n\t\t%s", text);
+
+  Discord_utils_json_dump("RECEIVE PAYLOAD",
+      &ws->p_client->settings, text);
 
   int tmp_seq_number; //check value first, then assign
   json_scanf((char*)text, len,
@@ -413,12 +424,11 @@ Discord_ws_cleanup(struct discord_ws_s *ws)
 static void
 ws_send_heartbeat(struct discord_ws_s *ws)
 {
-  char str[64];
-  snprintf(str, sizeof(str)-1, "{\"op\":1,\"d\":%d}", ws->payload.seq_number);
+  char payload[64];
+  snprintf(payload, sizeof(payload)-1, "{\"op\":1,\"d\":%d}", ws->payload.seq_number);
 
-  D_PRINT("HEARTBEAT_PAYLOAD:\n\t\t%s", str);
-  bool ret = cws_send_text(ws->ehandle, str);
-  ASSERT_S(true == ret, "Couldn't send heartbeat payload");
+  D_PRINT("HEARTBEAT_PAYLOAD:\n\t\t%s", payload);
+  ws_send_payload(ws, payload);
 
   ws->hbeat.start_ms = timestamp_ms();
 }

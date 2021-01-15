@@ -191,7 +191,7 @@ typedef void (discord_load_obj_cb)(void *p_obj, char *str, size_t len);
 
 void* Discord_utils_set_data(discord_t *client, void *data);
 void* Discord_utils_get_data(discord_t *client);
-void Discord_utils_json_dump(const char *text, struct _settings_s settings, unsigned char *ptr);
+void Discord_utils_json_dump(const char *text, struct _settings_s *settings, const char *data);
 int Discord_utils_debug_cb(
     CURL *ehandle,
     curl_infotype type,

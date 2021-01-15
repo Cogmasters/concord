@@ -62,7 +62,7 @@ curl_dump(const char *text, FILE *stream, unsigned char *ptr, size_t size)
 }
 
 void
-Discord_utils_json_dump(const char *text, struct _settings_s settings, unsigned char *ptr)
+Discord_utils_json_dump(const char *text, struct _settings_s *settings, const char *data)
 {
   if (!settings->f_json_dump) return;
   FILE *f_dump = settings->f_json_dump;
@@ -70,28 +70,32 @@ Discord_utils_json_dump(const char *text, struct _settings_s settings, unsigned 
   char timestr[64];
   timestamp_str(timestr, sizeof(timestr)-1);
 
-  fprintf(settings->f_json_dump, "\r\r\r\r%s %10.10ld bytes (0x%8.8lx) - %s\n%s\n", text, timestr, ptr);
-  fflush(settings->f_json_dump);
+  fprintf(f_dump, "\r\r\r\r%s - %s\n%s\n", text, timestr, data);
+  fflush(f_dump);
 }
 
 int
-Discord_utils_curldebug_cb(
+Discord_utils_debug_cb(
     CURL *ehandle,
     curl_infotype type,
     char *data,
     size_t size,
     void *p_userdata)
 {
+  struct _settings_s *settings = p_userdata;
   if (!settings->f_curl_dump) return 0;
   FILE *f_dump = settings->f_curl_dump;
 
-  struct _settings_s *settings = p_userdata;
   const char *text;
-
   switch (type) {
   case CURLINFO_TEXT:
-      fprintf(stream, "\r\r\r\rCURL INFO - %s\n%s\n", timestr, ptr);
-      fflush(stream);
+   {
+      char timestr[64];
+      timestamp_str(timestr, sizeof(timestr)-1);
+
+      fprintf(f_dump, "\r\r\r\rCURL INFO - %s\n%s\n", timestr, data);
+      fflush(f_dump);
+   }
   /* fallthrough */
   default:
       return 0;
