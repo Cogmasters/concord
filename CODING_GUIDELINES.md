@@ -1,10 +1,10 @@
 # CODING GUIDELINES
 
-In order to keep the code concise and easy to comprehend there are a few rules to follow. (This is still a work in progress)
+In order to keep the code concise and easy to read, there are a few rules to follow. Feel free to use this coding guidelines outside of this project. (This is still a work in progress)
 
 ## Line Width
 
-Try to use lines at most 80 characters long, this is an amount of text that is easy to fit in most monitors. Don't be afraid to break a long function in many lines.
+Try to use lines that are at most 80 characters long. This is an amount of text that is easy to fit in most monitors. Don't be afraid to break a long function into many lines.
 
 ## Indentation
 
@@ -59,11 +59,11 @@ for (int i=0; i < a; ++i) {
 
 ### Switch vs Else If
 
-If you are in a situation where a variable can assume many values that are known at compile time, then use switch. As a general rule using switch is always preferrable as it makes your intents clearer and the code easier to read. Remember to always include the `default` case even if you assume that it will never be used (in which case it will be a valuable tool for covering potential errors).
+If you are in a situation where a variable can assume many values that are known at compile time, then use switch. As a general rule, using switch is always preferrable as it makes your intents clearer and the code easier to read. Remember to always include the `default` case even if you assume that it will never be used (in which case it will be a valuable tool for covering potential errors).
 
-And remember to always explicitly comment your fallthroughs.
+And remember to always explicitly comment your fall throughs.
 
-Try to keep up with the following format:
+Try to keep your switch statement similar to the following format:
 
 ```c
   switch (a) {
@@ -80,7 +80,7 @@ Try to keep up with the following format:
       //the other thing
       break;
   default:
-      ERROR("This shouldn't happen.");
+      ERROR("This shouldn't happen."); //leave this statement out if you are planning on using default
       break;
   }
 ```

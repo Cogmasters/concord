@@ -6,14 +6,13 @@ make bot deployment deadly simple.  The primary design goals are:
 - easy to reason about the code: we use the most native data structures,
    the simplest algorithms, and intuitive interfaces.
 
-- easy to debug (networking and logic) errors with extensive assertion 
+- easy to debug (networking and logic) errors: extensive assertion 
   and logging facilities.
 
 - easy to use for the end users: we use multi-threading and
   synchronous IO to support concurrency so you only need to focus on
-  the business logic.  We carefully craft the library to use computing
-  resource super efficient so performance should never be an issue
-  for you.
+  the logic.  We carefully craft the library to use computing
+  resources efficiently so performance should never be an issue.
 
 - superior reliability
 
@@ -31,14 +30,15 @@ make echo-bot
 ```
 
 ## Run echo-bot
-1. get your bot token and paste it to `bot.config` to
-   replace "replace-this-with-your-bot-token". There is a 
-   well written instructions from [discord-irc](https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token) about 
-   how to get token and join bot to a server.
+1. Get your bot token and paste it to `bot.config` to
+   replace "replace-this-with-your-bot-token". There are 
+   well written instructions from the [discord-irc](https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token) about 
+   how to get token and add a bot to a server.
    
-2. invite your bot to a testing server. We can invite your bots
+2. Invite your bot to a testing server. We can invite your bots
    to our testing servers. 
-3. run `./echo-bot.exe` in the same folder of `bot.config`
+
+3. Run `./echo-bot.exe` in the same folder of `bot.config`
 
 ## Test echo-bot
 Type any message in any channel of the server that the bot is invited.
