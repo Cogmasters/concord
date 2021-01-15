@@ -17,7 +17,7 @@ reqheader_init(char token[])
 {
   char auth[MAX_HEADER_LEN];
   int ret = snprintf(auth, MAX_HEADER_LEN, "Authorization: Bot %s", token);
-  ASSERT_S(ret < MAX_HEADER_LEN, "out-of-bounds write of auth");
+  ASSERT_S(ret < MAX_HEADER_LEN, "Out of bounds write attempt");
 
   struct curl_slist *new_header = NULL;
   void *tmp; //for checking potential allocation error
@@ -43,36 +43,36 @@ reqheader_init(char token[])
 /* a simple http header parser, splits key/field pairs at ':'
  * see: https://curl.se/libcurl/c/CURLOPT_HEADERFUNCTION.html */
 static size_t
-curl_resheader_cb(char *content, size_t size, size_t nmemb, void *p_userdata)
+curl_resheader_cb(char *str, size_t size, size_t nmemb, void *p_userdata)
 {
   size_t realsize = size * nmemb;
-  struct api_header_s *res_pairs = p_userdata;
+  struct api_header_s *pairs = p_userdata;
 
   char *ptr;
-  if ( !(ptr = strchr(content, ':')) ) { //ptr is NULL if can't find ':' token match
+  if ( !(ptr = strchr(str, ':')) ) { //returns if can't find ':' token match
     return realsize;
   }
 
-  *ptr = '\0'; //replace ':' with '\0' to isolate key
+  *ptr = '\0'; //replace ':' with '\0' to separate key from field
   
-  res_pairs->key[res_pairs->size] = content;
+  pairs->key[pairs->size] = str; //get the key part from string
 
-  if ( !(ptr = strstr(ptr+1, "\r\n")) ) {//ptr is NULL if can't find CRLF match
+  if ( !(ptr = strstr(ptr+1, "\r\n")) ) {//returns if can't find CRLF match
     return realsize;
   }
 
   *ptr = '\0'; //replace CRLF with '\0' to isolate key
 
-  //try to catch space tokens at start of field and adjust position
-  int offset = 1; //start after key's '\0'
-  while (isspace(content[strlen(content) + offset])) {
+  //adjust offset to start of field
+  int offset = 1; //offset starts after '\0' separator token
+  while (isspace(str[strlen(str) + offset])) {
     ++offset;
   }
 
-  res_pairs->field[res_pairs->size] = &content[strlen(content) + offset];
+  pairs->field[pairs->size] = &str[strlen(str) + offset]; //get the field part from string
 
-  ++res_pairs->size; //update header amount of key/field pairs
-  ASSERT_S(res_pairs->size < MAX_HEADER_SIZE, "Stack overflow");
+  ++pairs->size; //update header amount of key/field pairs
+  ASSERT_S(pairs->size < MAX_HEADER_SIZE, "Out of bounds write attempt");
 
   return realsize;
 }
@@ -80,19 +80,19 @@ curl_resheader_cb(char *content, size_t size, size_t nmemb, void *p_userdata)
 /* get api response body string
  * see: https://curl.se/libcurl/c/CURLOPT_WRITEFUNCTION.html */
 static size_t
-curl_resbody_cb(char *content, size_t size, size_t nmemb, void *p_userdata)
+curl_resbody_cb(char *str, size_t size, size_t nmemb, void *p_userdata)
 {
   size_t realsize = size * nmemb;
-  struct api_response_s *res_body = p_userdata;
+  struct api_resbody_s *body = p_userdata;
 
   //update response body string size
-  char *tmp = realloc(res_body->str, res_body->size + realsize + 1);
+  char *tmp = realloc(body->str, body->size + realsize + 1);
   ASSERT_S(NULL != tmp, "Out of memory");
 
-  res_body->str = tmp;
-  memcpy(res_body->str + res_body->size, content, realsize);
-  res_body->size += realsize;
-  res_body->str[res_body->size] = '\0';
+  body->str = tmp;
+  memcpy(body->str + body->size, str, realsize);
+  body->size += realsize;
+  body->str[body->size] = '\0';
 
   return realsize;
 }
@@ -106,13 +106,16 @@ custom_easy_init(struct discord_api_s *api)
 
   CURLcode ecode;
   /* DEBUG ONLY FUNCTIONS */
+  //set debug callback
   D_ONLY(ecode = curl_easy_setopt(new_ehandle, CURLOPT_DEBUGFUNCTION, &Discord_utils_debug_cb));
   D_ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
+  //set ptr to settings containing dump files
   D_ONLY(ecode = curl_easy_setopt(new_ehandle, CURLOPT_DEBUGDATA, &api->p_client->settings));
   D_ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
-  D_ONLY(ecode = curl_easy_setopt(new_ehandle, CURLOPT_VERBOSE, 2L));
+  //enable verbose
+  D_ONLY(ecode = curl_easy_setopt(new_ehandle, CURLOPT_VERBOSE, 1L));
   D_ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
   /* * * * * * * * * * * */
 
@@ -129,7 +132,7 @@ custom_easy_init(struct discord_api_s *api)
   ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
   //set ptr to response body to be filled at callback
-  ecode = curl_easy_setopt(new_ehandle, CURLOPT_WRITEDATA, &api->res_body);
+  ecode = curl_easy_setopt(new_ehandle, CURLOPT_WRITEDATA, &api->body);
   ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
   //set response header callback
@@ -137,7 +140,7 @@ custom_easy_init(struct discord_api_s *api)
   ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
   //set ptr to response header to be filled at callback
-  ecode = curl_easy_setopt(new_ehandle, CURLOPT_HEADERDATA, &api->res_pairs);
+  ecode = curl_easy_setopt(new_ehandle, CURLOPT_HEADERDATA, &api->pairs);
   ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
   return new_ehandle;
@@ -156,8 +159,8 @@ Discord_api_cleanup(struct discord_api_s *api)
   curl_slist_free_all(api->req_header);
   curl_easy_cleanup(api->ehandle); 
 
-  if (api->res_body.str)
-    free(api->res_body.str);
+  if (api->body.str)
+    free(api->body.str);
 }
 
 /* set specific http method used for the request */
@@ -177,11 +180,9 @@ set_method(struct discord_api_s *api, enum http_method method, char send_payload
   case POST:
       ecode = curl_easy_setopt(api->ehandle, CURLOPT_POST, 1L);
       ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
-      
       //set ptr to payload that will be sent via POST/PUT
       ecode = curl_easy_setopt(api->ehandle, CURLOPT_POSTFIELDS, send_payload);
       ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
-
       break;
   case PATCH:
       ecode = curl_easy_setopt(api->ehandle, CURLOPT_CUSTOMREQUEST, "PATCH");
@@ -201,8 +202,8 @@ static void
 set_url(struct discord_api_s *api, char endpoint[])
 {
   char base_url[MAX_URL_LEN];
-  int ret = snprintf(base_url, MAX_URL_LEN, BASE_API_URL "%s", endpoint);
-  ASSERT_S(ret < MAX_URL_LEN, "out-of-bounds write of base_url");
+  int ret = snprintf(base_url, MAX_URL_LEN, BASE_API_URL"%s", endpoint);
+  ASSERT_S(ret < MAX_URL_LEN, "Out of bounds write attempt");
 
   CURLcode ecode = curl_easy_setopt(api->ehandle, CURLOPT_URL, base_url);
   ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
@@ -215,11 +216,10 @@ perform_request(
   void *p_object, 
   discord_load_obj_cb *load_cb)
 {
-  CURLcode ecode;
-
   //try to perform the request and analyze output
   enum api_http_code http_code; //the http response code
   char *url = NULL; //the request URL
+  CURLcode ecode;
   do {
     //perform the request
     ecode = curl_easy_perform(api->ehandle);
@@ -238,7 +238,7 @@ perform_request(
     switch (http_code) {
     case HTTP_OK:
         if (load_cb) {
-          (*load_cb)(p_object, api->res_body.str, api->res_body.size);
+          (*load_cb)(p_object, api->body.str, api->body.size);
         }
 
         break; /* DONE */
@@ -249,7 +249,7 @@ perform_request(
         char message[256];
         long long retry_after;
 
-        json_scanf(api->res_body.str, api->res_body.size,
+        json_scanf(api->body.str, api->body.size,
                     "[message]%s [retry_after]%lld",
                     message, &retry_after);
 
@@ -265,10 +265,9 @@ perform_request(
         ERROR("Unknown HTTP response code %d", http_code);
     }
     
-    //reset response body size for the next iteration
-    api->res_body.size = 0;
-    //reset header size for the next iteration
-    api->res_pairs.size = 0;
+    //reset the size of response body and header for a fresh start
+    api->body.size = 0;
+    api->pairs.size = 0;
 
   } while (HTTP_OK != http_code);
 }

@@ -206,13 +206,13 @@ void* discord_get_data(discord_t *client);
 
 discord_guild_t* discord_guild_init();
 void discord_guild_cleanup(discord_guild_t *guild);
-void discord_get_guild(discord_t *client, char guild_id[], discord_guild_t *p_guild);
+void discord_get_guild(discord_t *client, const char guild_id[], discord_guild_t *p_guild);
 
 /* discord-public-user.c */
 
 discord_user_t* discord_user_init();
 void discord_user_cleanup(discord_user_t *user);
-void discord_get_user(discord_t *client, char user_id[], discord_user_t *p_user);
+void discord_get_user(discord_t *client, const char user_id[], discord_user_t *p_user);
 void discord_get_client_user(discord_t *client, discord_user_t *p_user);
 
 /* discord-public-message.c */

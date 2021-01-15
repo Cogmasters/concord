@@ -19,8 +19,13 @@ discord_guild_cleanup(discord_guild_t *guild) {
 }
 
 void
-discord_get_guild(discord_t *client, char guild_id[], discord_guild_t *p_guild)
+discord_get_guild(discord_t *client, const char guild_id[], discord_guild_t *p_guild)
 {
+  if (IS_EMPTY_STRING(guild_id)) {
+    D_PUTS("Missing 'guild_id'");
+    return;
+  }
+
   Discord_api_request( 
     &client->api,
     (void*)p_guild,

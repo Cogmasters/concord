@@ -26,45 +26,44 @@ timestamp_str(char str[], int len)
 }
 
 static void
-curl_dump(const char *text, FILE *stream, unsigned char *ptr, size_t size)
+curl_dump(const char *text, FILE *f_dump, unsigned char *ptr, size_t size)
 {
-  size_t i;
-  size_t c;
-  unsigned int width=0x10;
+  const unsigned int WIDTH = 0x10;
 
   char timestr[64];
   timestamp_str(timestr, sizeof(timestr)-1);
  
-  fprintf(stream, "\r\r\r\r%s %10.10ld bytes (0x%8.8lx) - %s\n%s\n",
+  fprintf(f_dump, "\r\r\r\r%s %10.10ld bytes (0x%8.8lx) - %s\n%s\n",
           text, (long)size, (long)size, timestr, ptr);
  
-  for(i=0; i<size; i+= width) {
-    fprintf(stream, "%4.4lx: ", (long)i);
+  for(size_t i=0; i < size; i += WIDTH)
+  {
+    fprintf(f_dump, "%4.4lx: ", (long)i);
  
     //show hex to the left
-    for(c = 0; c < width; c++) {
+    for(size_t c = 0; c < WIDTH; c++) {
       if(i+c < size)
-        fprintf(stream, "%02x ", ptr[i+c]);
+        fprintf(f_dump, "%02x ", ptr[i+c]);
       else
-        fputs("   ", stream);
+        fputs("   ", f_dump);
     }
  
     //show data on the right
-    for(c = 0; (c < width) && (i+c < size); c++) {
+    for(size_t c = 0; (c < WIDTH) && (i+c < size); c++) {
       char x = (ptr[i+c] >= 0x20 && ptr[i+c] < 0x80) ? ptr[i+c] : '.';
-      fputc(x, stream);
+      fputc(x, f_dump);
     }
  
-    fputc('\n', stream); //newline
+    fputc('\n', f_dump); //newline
   }
 
-  fflush(stream);
+  fflush(f_dump);
 }
 
 void
 Discord_utils_json_dump(const char *text, struct _settings_s *settings, const char *data)
 {
-  if (!settings->f_json_dump) return;
+  if (NULL == settings->f_json_dump) return;
   FILE *f_dump = settings->f_json_dump;
 
   char timestr[64];
@@ -83,7 +82,7 @@ Discord_utils_debug_cb(
     void *p_userdata)
 {
   struct _settings_s *settings = p_userdata;
-  if (!settings->f_curl_dump) return 0;
+  if (NULL == settings->f_curl_dump) return 0;
   FILE *f_dump = settings->f_curl_dump;
 
   const char *text;
