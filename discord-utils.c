@@ -26,7 +26,7 @@ timestamp_str(char str[], int len)
 }
 
 static void
-strict_dump(const char *text, FILE *stream, unsigned char *ptr, size_t size)
+curl_dump(const char *text, FILE *stream, unsigned char *ptr, size_t size)
 {
   size_t i;
   size_t c;
@@ -61,67 +61,61 @@ strict_dump(const char *text, FILE *stream, unsigned char *ptr, size_t size)
   fflush(stream);
 }
 
-static void
-dump(const char *text, FILE *stream, unsigned char *ptr, size_t size)
+void
+Discord_utils_json_dump(const char *text, struct _settings_s settings, unsigned char *ptr)
 {
+  if (!settings->f_json_dump) return;
+  FILE *f_dump = settings->f_json_dump;
+
   char timestr[64];
   timestamp_str(timestr, sizeof(timestr)-1);
 
-  fprintf(stream, "\r\r\r\r%s %10.10ld bytes (0x%8.8lx) - %s\n%s\n",
-          text, (long)size, (long)size, timestr, ptr);
-  fflush(stream);
+  fprintf(settings->f_json_dump, "\r\r\r\r%s %10.10ld bytes (0x%8.8lx) - %s\n%s\n", text, timestr, ptr);
+  fflush(settings->f_json_dump);
 }
 
 int
-Discord_utils_debug_cb(
+Discord_utils_curldebug_cb(
     CURL *ehandle,
     curl_infotype type,
     char *data,
     size_t size,
     void *p_userdata)
 {
+  if (!settings->f_curl_dump) return 0;
+  FILE *f_dump = settings->f_curl_dump;
+
   struct _settings_s *settings = p_userdata;
   const char *text;
 
-  FILE *f_json_dump = (settings->f_json_dump) ? settings->f_json_dump : stderr;
-  FILE *f_curl_dump = (settings->f_curl_dump) ? settings->f_curl_dump : stderr;
-
-  int is_strict = 0;
   switch (type) {
   case CURLINFO_TEXT:
-      is_strict = 1;
-      text = "CURL INFO";
-      break;
+      fprintf(stream, "\r\r\r\rCURL INFO - %s\n%s\n", timestr, ptr);
+      fflush(stream);
+  /* fallthrough */
+  default:
+      return 0;
   case CURLINFO_HEADER_OUT:
-      is_strict = 1;
       text = "SEND HEADER";
       break;
   case CURLINFO_DATA_OUT:
       text = "SEND DATA";
       break;
   case CURLINFO_SSL_DATA_OUT:
-      is_strict = 1;
       text = "SEND SSL DATA";
       break;
   case CURLINFO_HEADER_IN:
-      is_strict = 1;
       text = "RECEIVE HEADER";
       break;
   case CURLINFO_DATA_IN:
       text = "RECEIVE DATA";
       break;
   case CURLINFO_SSL_DATA_IN:
-      is_strict = 1;
       text = "RECEIVE SSL DATA";
       break;
-  default:
-      return 0;
   }
 
-  if (is_strict)
-    strict_dump(text, f_curl_dump, (unsigned char*)data, size);
-  else
-    dump(text, f_json_dump, (unsigned char*)data, size);
+  curl_dump(text, f_dump, (unsigned char*)data, size);
 
   return 0;
 
