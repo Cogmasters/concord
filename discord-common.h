@@ -8,7 +8,13 @@
 
 #include "discord-tool-debug.h"
 
+/* UTILITY MACROS */
+#define STREQ(str1, str2) (0 == strcmp(str1, str2))
+#define STRNEQ(str1, str2, n) (0 == strncmp(str1, str2, n))
+//check if string is empty
 #define IS_EMPTY_STRING(str) (!(str) || !*(str))
+//if case matches return token as string
+#define CASE_RETURN_STR(opcode) case opcode: return #opcode
 
 enum http_method {
   DELETE,
@@ -131,6 +137,8 @@ enum ws_status {
 
 struct discord_ws_s {
   enum ws_status status;
+  int reconnect_attempts; //hard limit 5 reconnection attempts @todo make configurable
+
   char *identify;
   char *session_id;
 

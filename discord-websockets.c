@@ -9,9 +9,6 @@
 
 #define BASE_WEBSOCKETS_URL "wss://gateway.discord.gg/?v=6&encoding=json"
 
-//if case matches return token as string
-#define CASE_RETURN_STR(opcode) case opcode: return #opcode
-
 static char*
 gateway_opcode_name(enum ws_dispatch_code opcode)
 {
@@ -113,8 +110,6 @@ static void
 ws_send_identify(struct discord_ws_s *ws)
 {
   D_PRINT("IDENTIFY PAYLOAD:\n\t%s", ws->identify);
-
-  D_NOTOP_PRINT("RESUME PAYLOAD:\n\t%s", ws->identify);
   ws_send_payload(ws, ws->identify);
 }
 
@@ -139,9 +134,10 @@ on_dispatch(struct discord_ws_s *ws)
 {
   Discord_api_load_user(ws->self, ws->payload.event_data, sizeof(ws->payload.event_data)-1);
 
-  if (0 == strcmp("READY", ws->payload.event_name))
+  if (STREQ("READY", ws->payload.event_name))
   {
     ws->status = WS_CONNECTED;
+    ws->reconnect_attempts = 0;
 
     json_scanf(ws->payload.event_data, sizeof(ws->payload.event_data),
                "[session_id]%s", ws->session_id);
@@ -150,14 +146,20 @@ on_dispatch(struct discord_ws_s *ws)
     if (NULL == ws->cbs.on_ready) return;
 
     (*ws->cbs.on_ready)(ws->p_client, ws->self);
+
+    return;
   }
-  else if (0 == strcmp("RESUMED", ws->payload.event_name))
+
+  if (STREQ("RESUMED", ws->payload.event_name))
   {
     ws->status = WS_CONNECTED;
+    ws->reconnect_attempts = 0;
 
     D_PRINT("Succesfully resumed connection to Discord!");
+    return;
   }
-  else if (0 == strcmp("MESSAGE_CREATE", ws->payload.event_name))
+
+  if (STREQ("MESSAGE_CREATE", ws->payload.event_name))
   {
     if (NULL == ws->cbs.on_message.create) return;
 
@@ -169,8 +171,11 @@ on_dispatch(struct discord_ws_s *ws)
     (*ws->cbs.on_message.create)(ws->p_client, ws->self, message);
 
     discord_message_cleanup(message);
+
+    return;
   }
-  else if (0 == strcmp("MESSAGE_UPDATE", ws->payload.event_name))
+
+  if (STREQ("MESSAGE_UPDATE", ws->payload.event_name))
   {
     if (NULL == ws->cbs.on_message.update) return;
 
@@ -182,8 +187,11 @@ on_dispatch(struct discord_ws_s *ws)
     (*ws->cbs.on_message.update)(ws->p_client, ws->self, message);
 
     discord_message_cleanup(message);
+
+    return;
   }
-  else if (0 == strcmp("MESSAGE_DELETE", ws->payload.event_name))
+
+  if (STREQ("MESSAGE_DELETE", ws->payload.event_name))
   {
     if (NULL == ws->cbs.on_message.delete) return;
 
@@ -195,10 +203,11 @@ on_dispatch(struct discord_ws_s *ws)
     (*ws->cbs.on_message.delete)(ws->p_client, ws->self, message);
 
     discord_message_cleanup(message);
+
+    return;
   }
-  else {
-    D_PRINT("Not yet implemented GATEWAY_DISPATCH event: %s", ws->payload.event_name);
-  }
+
+  D_PRINT("Not yet implemented GATEWAY_DISPATCH event: %s", ws->payload.event_name);
 }
 
 static void
@@ -470,26 +479,27 @@ ws_main_loop(struct discord_ws_s *ws)
 void
 Discord_ws_run(struct discord_ws_s *ws)
 {
-  int reconnect_attempt = 0;
   do {
     curl_multi_add_handle(ws->mhandle, ws->ehandle);
     ws_main_loop(ws);
     curl_multi_remove_handle(ws->mhandle, ws->ehandle);
 
     if (WS_DISCONNECTED == ws->status) break;
-    if (reconnect_attempt >= 5) break;
+    if (ws->reconnect_attempts >= 5) break;
 
     /* guarantees full shutdown of old connection
-     * @todo find a better alternative */
+     * @todo find a better solution */
     cws_free(ws->ehandle);
     ws->ehandle = custom_easy_init(ws);
     /* * * * * * * * * * * * * * * * * * * * * */
-
-    ++reconnect_attempt;
-
+    ++ws->reconnect_attempts;
   } while (1);
 
-  ASSERT_S(WS_DISCONNECTED == ws->status, "Couldn't reconnect to WebSockets");
+  if (WS_DISCONNECTED != ws->status) {
+    D_PRINT("Failed all reconnect attempts (%d)",
+        ws->reconnect_attempts);
+    ws->status = WS_DISCONNECTED;
+  }
 }
 
 void
