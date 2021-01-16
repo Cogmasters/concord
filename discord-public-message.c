@@ -84,5 +84,5 @@ discord_send_message(discord_t *client, const char channel_id[], const char cont
     NULL,
     NULL,
     payload,
-    POST, CHANNEL_MESSAGES, channel_id);
+    POST, CHANNEL "/messages", channel_id);
 }
