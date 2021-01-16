@@ -31,7 +31,7 @@ curl_dump(const char *text, FILE *f_dump, unsigned char *ptr, size_t size)
   const unsigned int WIDTH = 0x10;
 
   char timestr[64];
-  timestamp_str(timestr, sizeof(timestr)-1);
+  timestamp_str(timestr, sizeof(timestr));
  
   fprintf(f_dump, "\r\r\r\r%s %10.10ld bytes (0x%8.8lx) - %s\n%s\n",
           text, (long)size, (long)size, timestr, ptr);
@@ -67,7 +67,7 @@ Discord_utils_json_dump(const char *text, struct _settings_s *settings, const ch
   FILE *f_dump = settings->f_json_dump;
 
   char timestr[64];
-  timestamp_str(timestr, sizeof(timestr)-1);
+  timestamp_str(timestr, sizeof(timestr));
 
   fprintf(f_dump, "\r\r\r\r%s - %s\n%s\n", text, timestr, data);
   fflush(f_dump);
@@ -90,7 +90,7 @@ Discord_utils_debug_cb(
   case CURLINFO_TEXT:
    {
       char timestr[64];
-      timestamp_str(timestr, sizeof(timestr)-1);
+      timestamp_str(timestr, sizeof(timestr));
 
       fprintf(f_dump, "\r\r\r\rCURL INFO - %s\n%s\n", timestr, data);
       fflush(f_dump);

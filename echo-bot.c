@@ -22,11 +22,11 @@ void on_message_create(
   // make sure bot doesn't echoes other bots
   if (true == message->author->bot)
     return;
-
   // make sure it doesn't echoes itself
-  if (strcmp(self->username, message->author->username)){
-    discord_send_message(client, message->channel_id, message->content);
-  }
+  if (0 == strcmp(self->username, message->author->username)
+    return;
+
+  discord_send_message(client, message->channel_id, message->content);
 }
 
 void on_message_update(
