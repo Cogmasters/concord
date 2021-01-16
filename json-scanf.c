@@ -161,6 +161,11 @@ match_path (char *buffer, jsmntok_t *t,
               buffer + t[i].start);
     }
   }
+  else if (STREQ(es->type_specifier, "token")) {
+    struct json_token * tk = es->recipient;
+    tk->start = buffer + t[i].start;
+    tk->length = t[i].end - t[i].start;
+  }
   else if (STREQ(es->type_specifier, "bool*")) {
     ASSERT_S(t[i].type == JSMN_PRIMITIVE, "Not a primitive");
     switch (buffer[t[i].start]) {
@@ -295,6 +300,10 @@ parse_type_specifier(char *specifier, struct extractor_specifier *es)
     strcpy(es->type_specifier, "copy");
     return specifier + 1;
   }
+  else if (STRNEQ(specifier, "T", 1)) {
+    strcpy(es->type_specifier, "token");
+    return specifier + 1;
+  }
   else if (STRNEQ(specifier, "d", 1)) {
     es->size = sizeof(int);
     strcpy(es->type_specifier, "int*");
@@ -358,7 +367,7 @@ parse_path_specifier(char * format, struct extractor_specifier *es,
   ASSERT_S(*format == ']', "A close bracket ']' is missing");
 
   int len = format - start;
-  ASSERT_S(0 != len, "Key has invalid size 0");
+  ASSERT_S(len > 0, "Key is missing");
 
   int ret = snprintf (curr_path->key, KEY_MAX, "%.*s", len, start);
   ASSERT_S(ret < KEY_MAX, "Key is too long (out-of-bounds write)");

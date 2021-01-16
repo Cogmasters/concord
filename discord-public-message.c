@@ -76,14 +76,13 @@ discord_send_message(discord_t *client, const char channel_id[], const char cont
   }
 
   char payload[MAX_PAYLOAD_LEN];
-
-  int ret = snprintf(payload, MAX_PAYLOAD_LEN, "{\"content\":\"%s\"}", content);
-  ASSERT_S(ret < MAX_PAYLOAD_LEN, "out-of-bounds write of payload");
+  int ret = snprintf(payload, sizeof(payload), "{\"content\":\"%s\"}", content);
+  ASSERT_S(ret < sizeof(payload), "out-of-bounds write of payload");
 
   Discord_api_request( 
     &client->api,
     NULL,
     NULL,
     payload,
-    POST, CHANNEL_MESSAGES, channel_id);
+    POST, CHANNEL "/messages", channel_id);
 }
