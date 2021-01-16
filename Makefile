@@ -1,8 +1,8 @@
-CC	?= gcc
+CC			?= gcc
 OBJDIR	:= obj
 LIBDIR	:= lib
 
-SRC		:= $(wildcard discord-*.c curl-websocket.c settings.c json-scanf.c jscon-common.c)
+SRC			:= $(wildcard discord-*.c curl-websocket.c settings.c json-scanf.c jscon-common.c)
 _OBJS		:= $(patsubst %.c, %.o, $(SRC))
 OBJS 		:= $(addprefix $(OBJDIR)/, $(_OBJS))
 
@@ -16,8 +16,8 @@ else
 endif
 
 
-LIBS_CFLAGS	:= $(LIBJSCON_CFLAGS) $(LIBCURL_CFLAGS) $(LIBDISCORD_CFLAGS)
-LIBS_LDFLAGS	:= $(LIBCURL_LDFLAGS) $(LIBDISCORD_LDFLAGS) $(LIBJSCON_LDFLAGS)
+LIBS_CFLAGS		:= $(LIBDISCORD_CFLAGS)
+LIBS_LDFLAGS	:= $(LIBDISCORD_LDFLAGS)
 
 LIBDISCORD_SLIB	:= $(LIBDIR)/libdiscord.a
 
@@ -35,6 +35,9 @@ PREFIX ?= /usr/local
 
 all : mkdir $(OBJS) $(LIBDISCORD_SLIB)
 
+mkdir :
+	mkdir -p $(OBJDIR) $(LIBDIR)
+
 test : all test-api.c test-ws.c test-json-scanf.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \
 		test-api.c -o test-api.exe $(LIBS_LDFLAGS)
@@ -50,22 +53,14 @@ pin-bot : all pin-bot.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \
 		pin-bot.c -o pin-bot.exe $(LIBS_LDFLAGS)
 
-mkdir :
-	mkdir -p $(OBJDIR) $(LIBDIR)
-
 $(OBJDIR)/discord-%.o : discord-%.c
-	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \
-		-c -o $@ $<
-
+	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 $(OBJDIR)/settings.o : settings.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
-
 $(OBJDIR)/json-scanf.o : json-scanf.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
-
 $(OBJDIR)/jscon-common.o : jscon-common.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
-
 $(OBJDIR)/curl-websocket.o : curl-websocket.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \
 		-U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=1 -c -o $@ $<
@@ -73,7 +68,6 @@ $(OBJDIR)/curl-websocket.o : curl-websocket.c
 $(LIBDISCORD_SLIB) : $(OBJS)
 	$(AR) -cvq $@ $(OBJS)
 
-# @todo better install solution
 install : all
 	install -d $(PREFIX)/lib/
 	install -m 644 $(LIBDISCORD_SLIB) $(PREFIX)/lib/
