@@ -50,9 +50,9 @@ Discord_public_load_message(void *p_message, char *str, size_t len)
 {
   discord_message_t *message = p_message;
 
-  struct json_token token_author;
-  struct json_token token_mentions;
-  struct json_token token_referenced_message;
+  struct json_token token_author = {NULL, 0};
+  struct json_token token_mentions = {NULL, 0};
+  struct json_token token_referenced_message = {NULL, 0};
 
   json_scanf(str, len,
      "[id]%s"
