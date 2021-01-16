@@ -124,8 +124,8 @@ discord_send_message(discord_t *client, const char channel_id[], const char cont
   }
 
   char payload[MAX_PAYLOAD_LEN];
-  int ret = snprintf(payload, sizeof(payload), "{\"content\":\"%s\"}", content);
-  ASSERT_S(ret < sizeof(payload), "out-of-bounds write of payload");
+  int ret = snprintf(payload, sizeof(payload)-1, "{\"content\":\"%s\"}", content);
+  ASSERT_S(ret < (int)sizeof(payload)-1, "out-of-bounds write of payload");
 
   Discord_api_request( 
     &client->api,

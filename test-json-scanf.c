@@ -63,6 +63,6 @@ int main(void) {
   printf("t %s, s %d, op %d, nstr %s, i3 %d, i4 %d, bigs %s, bigS %s\n",
          str1, integer1, integer2, str2, i3, i4, bigs, bigS);
 
-  printf ("tok %.*s\n", tok.length, tok.start);
+  printf ("tok %.*s\n", (int)tok.length, tok.start);
   return EXIT_SUCCESS;
 }
