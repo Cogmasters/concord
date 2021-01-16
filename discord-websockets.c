@@ -452,7 +452,7 @@ ws_send_heartbeat(struct discord_ws_s *ws)
 {
   char payload[64];
   int ret = snprintf(payload, sizeof(payload), "{\"op\":1,\"d\":%d}", ws->payload.seq_number);
-  ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
+  ASSERT_S(ret < (int)sizeof(payload), "Out of bounds write attempt");
 
   D_PRINT("HEARTBEAT_PAYLOAD:\n\t\t%s", payload);
   ws_send_payload(ws, payload);
