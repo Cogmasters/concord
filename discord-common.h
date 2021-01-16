@@ -23,13 +23,14 @@ enum http_method {
 
 /* ENDPOINTS */
 #define CHANNEL               "/channels/%s"
-#define CHANNEL_MESSAGES      CHANNEL"/messages/%s"
+#define CHANNEL_MESSAGES      CHANNEL"/messages"
+#define CHANNEL_MESSAGE       CHANNEL_MESSAGES"/%s"
 
 #define REACTION_EMOJI        CHANNEL_MESSAGE"/reactions/%s"
 #define REACTION_EMOJI_USER   CHANNEL_MESSAGE"/reactions/%s/%s"
 
-#define PINNED_MESSAGES         CHANNEL"/pins"
-#define PINNED_MESSAGE          PINNED_MESSAGES"/%s"
+#define PINNED_MESSAGES       CHANNEL"/pins"
+#define PINNED_MESSAGE        PINNED_MESSAGES"/%s"
 
 #define GUILD                 "/guilds/%s"
 #define GUILD_CHANNELS        GUILD"/channels"
@@ -207,20 +208,22 @@ int Discord_utils_debug_cb(
     size_t size,
     void *p_userdata);
 
+/* discord-public*.c */
+
+void Discord_public_load_guild(void *p_guild, char *str, size_t len);
+void Discord_public_load_user(void *p_user, char *str, size_t len);
+void Discord_public_load_message(void *p_message, char *str, size_t len);
+
 /* discord-api.c */
 
 void Discord_api_init(struct discord_api_s *api, char token[]);
 void Discord_api_cleanup(struct discord_api_s *api);
 
-void Discord_api_load_message(void *p_message, char *str, size_t len);
-void Discord_api_load_guild(void *p_guild, char *str, size_t len);
-void Discord_api_load_user(void *p_user, char *str, size_t len);
-
 void Discord_api_request(
   struct discord_api_s *api, 
   void *p_object, 
   discord_load_obj_cb *load_cb,
-  char send_payload[], //only for POST/PUT methods
+  char postfields[], //only for POST/PUT methods
   enum http_method http_method,
   char endpoint[],
   ...);
