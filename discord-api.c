@@ -397,7 +397,8 @@ Discord_api_request(
   va_start (args, endpoint);
 
   char url_route[MAX_URL_LEN];
-  vsprintf(url_route, endpoint, args);
+  int ret = vsnprintf(url_route, sizeof(url_route), endpoint, args);
+  ASSERT_S(ret < sizeof(url_route), "out-of-bounds write of url_route");
 
   va_end(args);
 
