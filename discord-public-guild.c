@@ -19,7 +19,7 @@ discord_guild_cleanup(discord_guild_t *guild) {
 }
 
 void
-Discord_public_load_guild(void *p_guild, char *str, size_t len)
+Discord_guild_load(void *p_guild, char *str, size_t len)
 {
   discord_guild_t *guild = p_guild;
 
@@ -51,7 +51,7 @@ discord_get_guild(discord_t *client, const char guild_id[], discord_guild_t *p_g
   Discord_api_request( 
     &client->api,
     (void*)p_guild,
-    &Discord_public_load_guild,
+    &Discord_guild_load,
     NULL,
     GET, GUILD, guild_id);
 }

@@ -210,9 +210,9 @@ int Discord_utils_debug_cb(
 
 /* discord-public*.c */
 
-void Discord_public_load_guild(void *p_guild, char *str, size_t len);
-void Discord_public_load_user(void *p_user, char *str, size_t len);
-void Discord_public_load_message(void *p_message, char *str, size_t len);
+void Discord_guild_load(void *p_guild, char *str, size_t len);
+void Discord_user_load(void *p_user, char *str, size_t len);
+void Discord_message_load(void *p_message, char *str, size_t len);
 
 /* discord-api.c */
 

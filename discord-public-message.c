@@ -46,7 +46,7 @@ cleanupA:
 }
 
 void
-Discord_public_load_message(void *p_message, char *str, size_t len)
+Discord_message_load(void *p_message, char *str, size_t len)
 {
   discord_message_t *message = p_message;
 
@@ -88,7 +88,7 @@ Discord_public_load_message(void *p_message, char *str, size_t len)
       &message->flags,
       &token_referenced_message);
 
-  Discord_public_load_user(message->author, token_author.start, token_author.length);
+  Discord_user_load(message->author, token_author.start, token_author.length);
 
   D_PUTS("Message loaded with API response"); 
 }
