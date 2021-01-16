@@ -208,14 +208,16 @@ int Discord_utils_debug_cb(
     size_t size,
     void *p_userdata);
 
+/* discord-public*.c */
+
+void Discord_public_load_guild(void *p_guild, char *str, size_t len);
+void Discord_public_load_user(void *p_user, char *str, size_t len);
+void Discord_public_load_message(void *p_message, char *str, size_t len);
+
 /* discord-api.c */
 
 void Discord_api_init(struct discord_api_s *api, char token[]);
 void Discord_api_cleanup(struct discord_api_s *api);
-
-void Discord_api_load_message(void *p_message, char *str, size_t len);
-void Discord_api_load_guild(void *p_guild, char *str, size_t len);
-void Discord_api_load_user(void *p_user, char *str, size_t len);
 
 void Discord_api_request(
   struct discord_api_s *api, 

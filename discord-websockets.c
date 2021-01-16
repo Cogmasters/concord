@@ -132,7 +132,8 @@ on_hello(struct discord_ws_s *ws)
 static void
 on_dispatch(struct discord_ws_s *ws)
 {
-  Discord_api_load_user(ws->self, ws->payload.event_data, sizeof(ws->payload.event_data)-1);
+  Discord_public_load_user(ws->self,
+      ws->payload.event_data, sizeof(ws->payload.event_data)-1);
 
   if (STREQ("READY", ws->payload.event_name))
   {
@@ -166,7 +167,8 @@ on_dispatch(struct discord_ws_s *ws)
     discord_message_t *message = discord_message_init();
     ASSERT_S(NULL != message, "Out of memory");
 
-    Discord_api_load_message((void*)message, ws->payload.event_data, sizeof(ws->payload.event_data)-1);
+    Discord_public_load_message((void*)message,
+        ws->payload.event_data, sizeof(ws->payload.event_data)-1);
 
     (*ws->cbs.on_message.create)(ws->p_client, ws->self, message);
 
@@ -182,7 +184,8 @@ on_dispatch(struct discord_ws_s *ws)
     discord_message_t *message = discord_message_init();
     ASSERT_S(NULL != message, "Out of memory");
 
-    Discord_api_load_message((void*)message, ws->payload.event_data, sizeof(ws->payload.event_data)-1);
+    Discord_public_load_message((void*)message,
+        ws->payload.event_data, sizeof(ws->payload.event_data)-1);
 
     (*ws->cbs.on_message.update)(ws->p_client, ws->self, message);
 
@@ -198,7 +201,8 @@ on_dispatch(struct discord_ws_s *ws)
     discord_message_t *message = discord_message_init();
     ASSERT_S(NULL != message, "Out of memory");
 
-    Discord_api_load_message((void*)message, ws->payload.event_data, sizeof(ws->payload.event_data)-1);
+    Discord_public_load_message((void*)message,
+        ws->payload.event_data, sizeof(ws->payload.event_data)-1);
 
     (*ws->cbs.on_message.delete)(ws->p_client, ws->self, message);
 
@@ -215,7 +219,7 @@ on_reconnect(struct discord_ws_s *ws)
 {
   ws->status = WS_RECONNECTING;
 
-  char reason[] = "Attempting to reconnect to Discord WebSockets ...";
+  char reason[] = "Attempting to reconnect to WebSockets";
   D_PUTS(reason);
   cws_close(ws->ehandle, CWS_CLOSE_REASON_NORMAL, reason, sizeof(reason)-1);
 }

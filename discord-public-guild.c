@@ -19,6 +19,28 @@ discord_guild_cleanup(discord_guild_t *guild) {
 }
 
 void
+Discord_public_load_guild(void *p_guild, char *str, size_t len)
+{
+  discord_guild_t *guild = p_guild;
+
+  json_scanf(str, len,
+     "[id]%s"
+     "[name]%s"
+     "[icon]%s"
+     "[owner]%b"
+     "[permissions]%d"
+     "[permissions_new]%s",
+      guild->id,
+      guild->name,
+      guild->icon,
+      &guild->owner,
+      &guild->permissions,
+      guild->permissions_new);
+
+  D_PUTS("Guild loaded with API response"); 
+}
+
+void
 discord_get_guild(discord_t *client, const char guild_id[], discord_guild_t *p_guild)
 {
   if (IS_EMPTY_STRING(guild_id)) {
@@ -29,7 +51,7 @@ discord_get_guild(discord_t *client, const char guild_id[], discord_guild_t *p_g
   Discord_api_request( 
     &client->api,
     (void*)p_guild,
-    &Discord_api_load_guild,
+    &Discord_public_load_guild,
     NULL,
     GET, GUILD, guild_id);
 }
