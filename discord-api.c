@@ -239,7 +239,7 @@ perform_request(
 
     switch (http_code) {
     case HTTP_OK:
-        if (load_cb) {
+        if (p_object && load_cb) {
           (*load_cb)(p_object, api->body.str, api->body.size);
         }
     /* fall through */
@@ -291,8 +291,8 @@ Discord_api_request(
   va_start (args, endpoint);
 
   char url_route[MAX_URL_LEN];
-  int ret = vsnprintf(url_route, sizeof(url_route)-1, endpoint, args);
-  ASSERT_S(ret < (int)sizeof(url_route)-1, "Out of bounds write of 'url_route'");
+  int ret = vsnprintf(url_route, MAX_URL_LEN, endpoint, args);
+  ASSERT_S(ret < MAX_URL_LEN, "Out of bounds write of 'url_route'");
 
   va_end(args);
 
