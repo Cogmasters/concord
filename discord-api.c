@@ -280,45 +280,45 @@ Discord_api_load_message(void *p_message, char *str, size_t len)
 {
   discord_message_t *message = p_message;
 
-  char str_author[512];
-  char str_mentions[512];
-  char str_referenced_message[4096];
+  struct json_token token_author;
+  struct json_token token_mentions;
+  struct json_token token_referenced_message;
 
   json_scanf(str, len,
      "[id]%s"
      "[channel_id]%s"
      "[guild_id]%s"
-     "[author]%S"
+     "[author]%T"
      "[content]%s"
      "[timestamp]%s"
      "[edited_timestamp]%s"
      "[tts]%b"
      "[mention_everyone]%b"
-     "[mentions]%S"
+     "[mentions]%T"
      "[nonce]%s"
      "[pinned]%b"
      "[webhook_id]%s"
      "[type]%d"
      "[flags]%d"
-     "[referenced_message]%S",
+     "[referenced_message]%T",
       message->id,
       message->channel_id,
       message->guild_id,
-      str_author,
+      &token_author,
       message->content,
       message->timestamp,
       message->edited_timestamp,
       &message->tts,
       &message->mention_everyone,
-      str_mentions,
+      &token_mentions,
       message->nonce,
       &message->pinned,
       message->webhook_id,
       &message->type,
       &message->flags,
-      str_referenced_message);
+      &token_referenced_message);
 
-  Discord_api_load_user(message->author, str_author, sizeof(str_author)-1);
+  Discord_api_load_user(message->author, token_author.start, token_author.length);
 
   D_PUTS("Message loaded with API response"); 
 }
