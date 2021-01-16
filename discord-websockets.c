@@ -402,7 +402,7 @@ identify_init(char token[])
   //https://discord.com/developers/docs/topics/gateway#identify-identify-structure
   char event_data[512];
   ret = snprintf(event_data, sizeof(event_data), fmt_event_data,
-                  token, GUILD_MESSAGES, properties, presence);
+                  token, WS_INTENT_GUILD_MESSAGES, properties, presence);
   ASSERT_S(ret < (int)sizeof(presence), "Out of bounds write attempt");
 
   int len = sizeof(fmt_identify);
