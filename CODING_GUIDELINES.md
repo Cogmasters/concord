@@ -84,3 +84,20 @@ Try to keep your switch statement similar to the following format:
       break;
   }
 ```
+
+## Importing
+
+### Include guards in header files/files for importing
+
+When making files for importing, adding `#IFNDEF` and `#DEFINE` in the beginning of the file with a specified tag and `#ENDIF` at the end disallows double declarations. The tag is normally the name of the file in uppercase, with dots and spaces represented as underscores.
+
+For example, a file called `test.h` should have:
+
+```c
+#IFNDEF TEST_H
+#DEFINE TEST_H
+
+//put code here
+
+#ENDIF
+```
