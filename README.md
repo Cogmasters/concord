@@ -24,6 +24,11 @@ apt-get install -y build-essential
 apt-get install -y libcurl4-openssl-dev
 ```
 
+Make sure you also have libssl as well
+```
+sudo apt-get install libssl-dev
+```
+
 ### Compile
 ```
 make echo-bot
