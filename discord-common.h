@@ -23,13 +23,14 @@ enum http_method {
 
 /* ENDPOINTS */
 #define CHANNEL               "/channels/%s"
-#define CHANNEL_MESSAGES      CHANNEL"/messages/%s"
+#define CHANNEL_MESSAGES      CHANNEL"/messages"
+#define CHANNEL_MESSAGE       CHANNEL_MESSAGES"/%s"
 
 #define REACTION_EMOJI        CHANNEL_MESSAGE"/reactions/%s"
 #define REACTION_EMOJI_USER   CHANNEL_MESSAGE"/reactions/%s/%s"
 
-#define PINNED_MESSAGES         CHANNEL"/pins"
-#define PINNED_MESSAGE          PINNED_MESSAGES"/%s"
+#define PINNED_MESSAGES       CHANNEL"/pins"
+#define PINNED_MESSAGE        PINNED_MESSAGES"/%s"
 
 #define GUILD                 "/guilds/%s"
 #define GUILD_CHANNELS        GUILD"/channels"
