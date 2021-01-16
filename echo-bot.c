@@ -23,7 +23,7 @@ void on_message_create(
   if (true == message->author->bot)
     return;
   // make sure it doesn't echoes itself
-  if (0 == strcmp(self->username, message->author->username)
+  if (0 == strcmp(self->username, message->author->username))
     return;
 
   discord_send_message(client, message->channel_id, message->content);
