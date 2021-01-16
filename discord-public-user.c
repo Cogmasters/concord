@@ -19,7 +19,7 @@ discord_user_cleanup(discord_user_t *user) {
 }
 
 void
-Discord_public_load_user(void *p_user, char *str, size_t len)
+Discord_user_load(void *p_user, char *str, size_t len)
 {
   discord_user_t *user = p_user;
 
@@ -65,7 +65,7 @@ discord_get_user(discord_t *client, const char user_id[], discord_user_t *p_user
   Discord_api_request( 
     &client->api,
     (void*)p_user,
-    &Discord_public_load_user,
+    &Discord_user_load,
     NULL,
     GET, USER, user_id);
 }
@@ -76,7 +76,7 @@ discord_get_client_user(discord_t *client, discord_user_t *p_user)
   Discord_api_request( 
     &client->api,
     (void*)p_user,
-    &Discord_public_load_user,
+    &Discord_user_load,
     NULL,
     GET, USER, "@me");
 }

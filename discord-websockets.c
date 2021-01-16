@@ -133,7 +133,7 @@ on_hello(struct discord_ws_s *ws)
 static void
 on_dispatch(struct discord_ws_s *ws)
 {
-  Discord_public_load_user(ws->self,
+  Discord_user_load(ws->self,
       ws->payload.event_data, sizeof(ws->payload.event_data));
 
   if (STREQ("READY", ws->payload.event_name))
@@ -169,7 +169,7 @@ on_dispatch(struct discord_ws_s *ws)
     discord_message_t *message = discord_message_init();
     ASSERT_S(NULL != message, "Out of memory");
 
-    Discord_public_load_message((void*)message,
+    Discord_message_load((void*)message,
         ws->payload.event_data, sizeof(ws->payload.event_data));
 
     (*ws->cbs.on_message.create)(ws->p_client, ws->self, message);
@@ -186,7 +186,7 @@ on_dispatch(struct discord_ws_s *ws)
     discord_message_t *message = discord_message_init();
     ASSERT_S(NULL != message, "Out of memory");
 
-    Discord_public_load_message((void*)message,
+    Discord_message_load((void*)message,
         ws->payload.event_data, sizeof(ws->payload.event_data));
 
     (*ws->cbs.on_message.update)(ws->p_client, ws->self, message);
@@ -203,7 +203,7 @@ on_dispatch(struct discord_ws_s *ws)
     discord_message_t *message = discord_message_init();
     ASSERT_S(NULL != message, "Out of memory");
 
-    Discord_public_load_message((void*)message,
+    Discord_message_load((void*)message,
         ws->payload.event_data, sizeof(ws->payload.event_data));
 
     (*ws->cbs.on_message.delete)(ws->p_client, ws->self, message);
