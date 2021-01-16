@@ -165,7 +165,7 @@ Discord_api_cleanup(struct discord_api_s *api)
 
 /* set specific http method used for the request */
 static void
-set_method(struct discord_api_s *api, enum http_method method, char send_payload[])
+set_method(struct discord_api_s *api, enum http_method method, char postfields[])
 {
   CURLcode ecode;
   switch (method) {
@@ -181,7 +181,7 @@ set_method(struct discord_api_s *api, enum http_method method, char send_payload
       ecode = curl_easy_setopt(api->ehandle, CURLOPT_POST, 1L);
       ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
       //set ptr to payload that will be sent via POST/PUT
-      ecode = curl_easy_setopt(api->ehandle, CURLOPT_POSTFIELDS, send_payload);
+      ecode = curl_easy_setopt(api->ehandle, CURLOPT_POSTFIELDS, postfields);
       ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
       break;
   case PATCH:
@@ -191,7 +191,7 @@ set_method(struct discord_api_s *api, enum http_method method, char send_payload
   case PUT:
       ecode = curl_easy_setopt(api->ehandle, CURLOPT_UPLOAD, 1L);
       ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
-      ecode = curl_easy_setopt(api->ehandle, CURLOPT_POSTFIELDS, send_payload);
+      ecode = curl_easy_setopt(api->ehandle, CURLOPT_POSTFIELDS, postfields);
       ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
       break;
   default:
@@ -281,7 +281,7 @@ Discord_api_request(
   struct discord_api_s *api, 
   void *p_object, 
   discord_load_obj_cb *load_cb,
-  char send_payload[],
+  char postfields[],
   enum http_method http_method,
   char endpoint[],
   ...)
@@ -291,13 +291,13 @@ Discord_api_request(
   va_start (args, endpoint);
 
   char url_route[MAX_URL_LEN];
-  int ret = vsnprintf(url_route, sizeof(url_route), endpoint, args);
-  ASSERT_S(ret < sizeof(url_route), "out-of-bounds write of url_route");
+  int ret = vsnprintf(url_route, sizeof(url_route)-1, endpoint, args);
+  ASSERT_S(ret < sizeof(url_route)-1, "Out of bounds write of 'url_route'");
 
   va_end(args);
 
   //set the request method
-  set_method(api, http_method, send_payload);
+  set_method(api, http_method, postfields);
   //set the request URL
   set_url(api, url_route);
   //perform the request

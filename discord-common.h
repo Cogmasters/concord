@@ -223,7 +223,7 @@ void Discord_api_request(
   struct discord_api_s *api, 
   void *p_object, 
   discord_load_obj_cb *load_cb,
-  char send_payload[], //only for POST/PUT methods
+  char postfields[], //only for POST/PUT methods
   enum http_method http_method,
   char endpoint[],
   ...);
