@@ -17,7 +17,7 @@ reqheader_init(char token[])
 {
   char auth[MAX_HEADER_LEN];
   int ret = snprintf(auth, MAX_HEADER_LEN, "Authorization: Bot %s", token);
-  ASSERT_S(ret < MAX_HEADER_LEN, "Out of bounds write attempt");
+  ASSERT_S(ret < (int)sizeof(auth), "Out of bounds write attempt");
 
   struct curl_slist *new_header = NULL;
   void *tmp; //for checking potential allocation error
@@ -205,7 +205,7 @@ set_url(struct discord_api_s *api, char endpoint[])
 {
   char base_url[MAX_URL_LEN];
   int ret = snprintf(base_url, MAX_URL_LEN, BASE_API_URL"%s", endpoint);
-  ASSERT_S(ret < MAX_URL_LEN, "Out of bounds write attempt");
+  ASSERT_S(ret < (int)sizeof(base_url), "Out of bounds write attempt");
 
   CURLcode ecode = curl_easy_setopt(api->ehandle, CURLOPT_URL, base_url);
   ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
@@ -292,7 +292,7 @@ Discord_api_request(
 
   char url_route[MAX_URL_LEN];
   int ret = vsnprintf(url_route, MAX_URL_LEN, endpoint, args);
-  ASSERT_S(ret < MAX_URL_LEN, "Out of bounds write of 'url_route'");
+  ASSERT_S(ret < (int)sizeof(url_route), "Out of bounds write attempt");
 
   va_end(args);
 
