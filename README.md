@@ -20,14 +20,10 @@ make bot deployment deadly simple.  The primary design goals are:
 ### Install dependencies:
 For debian and ubuntu
 ```
-apt-get install -y build-essential
-apt-get install -y libcurl4-openssl-dev
+sudo apt-get install -y build-essential
+sudo apt-get install -y libcurl4-openssl-dev libssl-dev
 ```
 
-Make sure you also have libssl as well
-```
-sudo apt-get install libssl-dev
-```
 
 ### Compile
 ```
