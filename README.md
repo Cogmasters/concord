@@ -17,7 +17,7 @@ make bot deployment deadly simple.  The primary design goals are:
 - superior reliability
 
 ## Build
-### Install dependencies:
+#### Install dependencies:
 The only dependencies that is needed is curl-7.64.0 or higher built with openssl
 
 For Ubuntu and Debian
@@ -28,7 +28,7 @@ sudo apt-get install -y libcurl4-openssl-dev
 
 \* If you do not have Ubuntu or Debian but have Windows 10, you can install WSL2 and get either Ubuntu or Debian [here](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
 
-### Compile
+#### Compile
 ```
 make echo-bot
 ```
@@ -44,10 +44,10 @@ make echo-bot
 
 3. Run `./echo-bot.exe` in the same folder of `bot.config`
 
-### Test echo-bot
+#### Test echo-bot
 Type any message in any public channel of the server that the bot is invited.
 
-### Terminate echo-bot
+#### Terminate echo-bot
 Close the Terminal that echo-bot is running or type "Ctrl-C" to kill it.
 
 
