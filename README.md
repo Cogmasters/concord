@@ -33,10 +33,6 @@ sudo apt-get install -y libcurl4-openssl-dev
 make echo-bot
 ```
 
-## Tutorial on how to make a bot
-
-Instructions on how to make a ping-pong bot is found [here](/docs/BUILDING_A_BOT.md).
-
 ## Run echo-bot
 1. Get your bot token and paste it to `bot.config` to
    replace `YOUR-BOT-TOKEN`. There are 
@@ -55,16 +51,9 @@ Type any message in any public channel of the server that the bot is invited.
 Close the Terminal that echo-bot is running or type "Ctrl-C" to kill it.
 
 
-## Usage example
-```c
-void on_message(discord_t *client, discord_user_t *self, discord_message_t *message)
-{
-  // make sure it doesn't echoes itself
-  if (strcmp(self->username, message->author->username)){
-    discord_send_message(client, message->channel_id, message->content);
-  }
-}
-```
+## Tutorial on how to make a bot
+
+Instructions on how to make a ping-pong bot is found [here](/docs/BUILDING_A_BOT.md).
 
 ## Supported Features:
   - discord gateway rate limiting
