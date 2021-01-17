@@ -184,7 +184,15 @@ discord_run(client);
 ## discord_global_cleanup
 `discord_global_cleanup()`: function that cleans up the bot after using `discord_global_init()`
 
-# running the bot
+# Running the bot
 
 For `ping-pong-bot.c`, use `make ping-pong-bot` to compile the bot.
 Change the makefile appropriately when needed.
+
+Then, run the bot by using `./ping-pong-bot.exe`.
+
+#### Testing the bot
+Type "ping" in any public channel of the server that the bot is invited.
+
+#### Closing the bot
+Close the Terminal that ping-pong-bot is running or type "Ctrl-C" to kill it.

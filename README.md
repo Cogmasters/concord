@@ -28,28 +28,6 @@ sudo apt-get install -y libcurl4-openssl-dev
 
 \* If you do not have Ubuntu or Debian but have Windows 10, you can install WSL2 and get either Ubuntu or Debian [here](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
 
-#### Compile
-```
-make echo-bot
-```
-
-## Run echo-bot
-1. Get your bot token and paste it to `bot.config` to
-   replace `YOUR-BOT-TOKEN`. There are 
-   well written instructions from the [discord-irc](https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token) about 
-   how to get token and add a bot to a server.
-   
-2. Invite your bot to a testing server. We can invite your bots
-   to our testing servers. 
-
-3. Run `./echo-bot.exe` in the same folder of `bot.config`
-
-#### Test echo-bot
-Type any message in any public channel of the server that the bot is invited.
-
-#### Terminate echo-bot
-Close the Terminal that echo-bot is running or type "Ctrl-C" to kill it.
-
 
 ## Tutorial on how to make a bot
 
