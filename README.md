@@ -63,10 +63,7 @@ Close the Terminal that echo-bot is running or type "Ctrl-C" to kill it.
 
 ## Usage example
 ```c
-void on_message(
-    discord_t *client,
-    discord_user_t *self,
-    discord_message_t *message)
+void on_message(discord_t *client, discord_user_t *self, discord_message_t *message)
 {
   // make sure it doesn't echoes itself
   if (strcmp(self->username, message->author->username)){
