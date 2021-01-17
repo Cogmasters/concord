@@ -482,12 +482,14 @@ format_parse(char *format, size_t *n)
  *      n is an integer
  *
  *  usage:
+ *
  *      json_scanf(buf_start, buf_size, "[k1][k2]%d  [k2][1]%s", &i, str);
  *      %d, %f, %lf, %s, %.*s have the same effects as if they are used in scanf
  *
- *      %T will capture the start and length of any JSON value
+ *      %T captures the start position and length of any JSON value within
+ *      the buf range (buf_start, buf_start + buf_size]
  *
- *      %S will copy over any JSON value as a string
+ *      %S clones any JSON value as a string
  *
  *      %<n>s %<n>S: length modifier can be applied to %s to limit how many bytes
  *      can be copied to the receiving parameter.
