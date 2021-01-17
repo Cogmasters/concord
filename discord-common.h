@@ -66,8 +66,8 @@ struct api_resbody_s {
 #define MAX_HEADER_SIZE 1000
 
 struct api_header_s {
-  char *key[MAX_HEADER_SIZE];
   char *field[MAX_HEADER_SIZE];
+  char *value[MAX_HEADER_SIZE];
   int size;
 };
 
@@ -76,14 +76,23 @@ struct api_bucket_s {
   int remaining; //simultaneous connections this bucket can do
 };
 
+struct api_route_s {
+  char *key; //this route key
+  struct api_bucket_s *bucket; //bucket this route is part of
+};
+
 struct discord_api_s {
   struct curl_slist *req_header; //the request header sent to the api
 
   struct api_resbody_s body; //the api response string
   struct api_header_s pairs; //the key/field pairs response header
 
-  struct api_bucket_s *client_buckets;
-  size_t num_buckets;
+  struct { /* RATELIMITING STRUCTURE */
+    void *routes; //check GNU tree functions from search.h
+
+    struct api_bucket_s *client_buckets;
+    size_t num_buckets;
+  } ratelimit;
 
   CURL *ehandle; //the curl's easy handle used to perform requests
 
@@ -238,6 +247,13 @@ void Discord_api_request(
   enum http_method http_method,
   char endpoint[],
   ...);
+
+/* discord-api-ratelimit.c */
+
+char* Discord_ratelimit_route(char endpoint[]);
+int Discord_ratelimit_remaining(struct api_header_s *header);
+long long Discord_ratelimit_delay(int remaining, struct api_header_s *header, _Bool use_clock);
+char* Discord_ratelimit_bucket(struct api_header_s *header);
 
 /* discord-websockets.c */
 

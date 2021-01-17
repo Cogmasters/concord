@@ -61,7 +61,7 @@ reqheader_init(char token[])
   return new_header;
 }
 
-/* a simple http header parser, splits key/field pairs at ':'
+/* a simple http header parser, splits field/value pairs at ':'
  * see: https://curl.se/libcurl/c/CURLOPT_HEADERFUNCTION.html */
 static size_t
 curl_resheader_cb(char *str, size_t size, size_t nmemb, void *p_userdata)
@@ -74,25 +74,25 @@ curl_resheader_cb(char *str, size_t size, size_t nmemb, void *p_userdata)
     return realsize;
   }
 
-  *ptr = '\0'; //replace ':' with '\0' to separate key from field
+  *ptr = '\0'; //replace ':' with '\0' to separate field from value
   
-  pairs->key[pairs->size] = str; //get the key part from string
+  pairs->field[pairs->size] = str; //get the field part from string
 
   if ( !(ptr = strstr(ptr+1, "\r\n")) ) {//returns if can't find CRLF match
     return realsize;
   }
 
-  *ptr = '\0'; //replace CRLF with '\0' to isolate key
+  *ptr = '\0'; //replace CRLF with '\0' to isolate field
 
-  //adjust offset to start of field
+  //adjust offset to start of value
   int offset = 1; //offset starts after '\0' separator token
   while (isspace(str[strlen(str) + offset])) {
     ++offset;
   }
 
-  pairs->field[pairs->size] = &str[strlen(str) + offset]; //get the field part from string
+  pairs->value[pairs->size] = &str[strlen(str) + offset]; //get the value part from string
 
-  ++pairs->size; //update header amount of key/field pairs
+  ++pairs->size; //update header amount of field/value pairs
   ASSERT_S(pairs->size < MAX_HEADER_SIZE, "Out of bounds write attempt");
 
   return realsize;
@@ -237,8 +237,11 @@ static void
 perform_request(
   struct discord_api_s *api,
   void *p_object, 
-  discord_load_obj_cb *load_cb)
+  discord_load_obj_cb *load_cb,
+  char bucket_route[])
 {
+  (void)bucket_route;
+
   //try to perform the request and analyze output
   bool retry;
   do {
@@ -342,14 +345,27 @@ perform_request(
 
         break;
     }
-    
-    //print useful diagnostics
-    if ( (true == retry || code < 400) ) //diagnostics and proceed
+
+    if (true == retry || code < 400) {
       D_NOTOP_PRINT("(%d)%s - %s", code, http_code_print(code), reason);
-    else //error and abort
+
+      /* WORK IN PROGRESS, THE FOLLOWING SHOULD BE IGNORED FOR REVIEW *
+
+      int remaining = Discord_ratelimit_remaining(&api->pairs);
+      long long delay_ms = Discord_ratelimit_delay(remaining, &api->pairs, true);
+      char *bucket_hash = Discord_ratelimit_bucket(&api->pairs);
+
+      (void)remaining;
+      (void)delay_ms;
+      (void)bucket_hash;
+
+      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+    }
+    else {
       ERROR("(%d)%s - %s", code, http_code_print(code), reason);
-    
-    //reset the size of response body and header for a fresh start
+    }
+
+    //reset the size of response body and header pairs for a fresh start
     api->body.size = 0;
     api->pairs.size = 0;
 
@@ -372,15 +388,15 @@ Discord_api_request(
   va_start (args, endpoint);
 
   char url_route[MAX_URL_LEN];
-  int ret = vsnprintf(url_route, MAX_URL_LEN, endpoint, args);
+  int ret = vsnprintf(url_route, sizeof(url_route), endpoint, args);
   ASSERT_S(ret < (int)sizeof(url_route), "Out of bounds write attempt");
 
   va_end(args);
 
-  //set the request method
-  set_method(api, http_method, postfields);
-  //set the request URL
-  set_url(api, url_route);
-  //perform the request
-  perform_request(api, p_object, load_cb);
+  set_method(api, http_method, postfields); //set the request method
+  set_url(api, url_route); //set the request URL
+
+  //route that we will attempt to match a bucket with
+  char *route = Discord_ratelimit_route(endpoint);
+  perform_request(api, p_object, load_cb, route); //perform the request
 }
