@@ -34,6 +34,7 @@ sudo apt-get install -y build-essential libssl-dev
 Get the latest libcurl from https://packages.debian.org/unstable/libcurl4-openssl-dev
 ```
 wget http://ftp.us.debian.org/debian/pool/main/c/curl/libcurl4-openssl-dev_7.74.0-1_amd64.deb
+sudo apt-get remove libcurl4-openssl-dev
 sudo dpkg -i libcurl4-openssl-dev_7.74.0-1_amd64.deb
 ```
 
