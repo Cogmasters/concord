@@ -36,7 +36,7 @@ make echo-bot
 
 ## Run echo-bot
 1. Get your bot token and paste it to `bot.config` to
-   replace "replace-this-with-your-bot-token". There are 
+   replace `YOUR-BOT-TOKEN`. There are 
    well written instructions from the [discord-irc](https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token) about 
    how to get token and add a bot to a server.
    
