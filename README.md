@@ -1,4 +1,4 @@
-# README
+# Orca: a C bot framework 
 
 Orca is a bot framework that is designed with minimum dependencies to
 make bot deployment deadly simple.  The primary design goals are:
