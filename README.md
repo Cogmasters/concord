@@ -18,6 +18,8 @@ make bot deployment deadly simple.  The primary design goals are:
 
 ## Build
 ### Install dependencies:
+The only dependencies that is needed is curl-7.66.0 or higher built with openssl
+
 For Ubuntu
 ```
 sudo apt-get install -y build-essential libssl-dev
