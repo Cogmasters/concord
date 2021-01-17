@@ -68,5 +68,5 @@ void on_message(
 Join our discord server: https://discord.gg/2jfycwXVM3
 
 ## Contributions are welcome!
-Check our development [Roadmap](ROADMAP.md) and [Coding Guidelines](CODING_GUIDELINES.md) to get started
+Check our development [Roadmap](docs/ROADMAP.md) and [Coding Guidelines](docs/CODING_GUIDELINES.md) to get started
 
