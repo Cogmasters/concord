@@ -20,22 +20,10 @@ make bot deployment deadly simple.  The primary design goals are:
 ### Install dependencies:
 The only dependencies that is needed is curl-7.66.0 or higher built with openssl
 
-For Ubuntu
+For Ubuntu and Debian
 ```
 sudo apt-get install -y build-essential libssl-dev
 sudo apt-get install -y libcurl4-openssl-dev
-```
-
-
-For Debian
-```
-sudo apt-get install -y build-essential libssl-dev
-```
-Get the latest libcurl from https://packages.debian.org/unstable/libcurl4-openssl-dev
-```
-wget http://ftp.us.debian.org/debian/pool/main/c/curl/libcurl4-openssl-dev_7.74.0-1_amd64.deb
-sudo apt-get remove libcurl4-openssl-dev
-sudo dpkg -i libcurl4-openssl-dev_7.74.0-1_amd64.deb
 ```
 
 
