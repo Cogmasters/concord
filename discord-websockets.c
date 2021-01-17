@@ -310,6 +310,7 @@ ws_on_text_cb(void *data, CURL *ehandle, const char *text, size_t len)
   case GATEWAY_DISPATCH:
       on_dispatch(ws);
       break;
+  case GATEWAY_INVALID_SESSION: //@todo see if this is a valid solution
   case GATEWAY_RECONNECT:
       on_reconnect(ws);
       break;

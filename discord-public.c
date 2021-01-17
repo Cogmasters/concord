@@ -15,7 +15,10 @@ discord_init(char token[])
 
   /* @todo this is a temporary solution */
   new_client->settings.token = strdup(token);
-  if (NULL == new_client->settings.token) goto cleanup;
+  if (NULL == new_client->settings.token) {
+    free(new_client);
+    return NULL;
+  }
 
   new_client->settings.f_json_dump = NULL;
   new_client->settings.f_curl_dump = NULL;
@@ -36,11 +39,6 @@ discord_init(char token[])
   Discord_ws_init(&new_client->ws, token);
 
   return new_client;
-
-cleanup:
-  free(new_client);
-
-  return NULL;
 }
 
 void
