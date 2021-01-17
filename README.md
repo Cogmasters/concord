@@ -53,7 +53,10 @@ make echo-bot
 3. Run `./echo-bot.exe` in the same folder of `bot.config`
 
 ## Test echo-bot
-Type any message in any channel of the server that the bot is invited.
+Type any message in any public channel of the server that the bot is invited.
+
+## Terminate echo-bot
+Close the Terminal that echo-bot is running or type "Ctrl-C" to kill it.
 
 
 ## Usage example
