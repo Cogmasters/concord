@@ -37,7 +37,7 @@ Discord_guild_load(void *p_guild, char *str, size_t len)
       &guild->permissions,
       guild->permissions_new);
 
-  D_PUTS("Guild loaded with API response"); 
+  D_NOTOP_PUTS("Guild loaded with API response"); 
 }
 
 void

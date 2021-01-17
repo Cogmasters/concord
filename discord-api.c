@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <string.h>
 #include <ctype.h>
 #include <unistd.h> //for usleep
@@ -9,6 +10,26 @@
 #include "discord-common.h"
 
 #define BASE_API_URL "https://discord.com/api"
+
+static char*
+http_code_print(enum http_code code)
+{
+  switch (code) {
+      CASE_RETURN_STR(HTTP_OK);
+      CASE_RETURN_STR(HTTP_CREATED);
+      CASE_RETURN_STR(HTTP_NO_CONTENT);
+      CASE_RETURN_STR(HTTP_NOT_MODIFIED);
+      CASE_RETURN_STR(HTTP_BAD_REQUEST);
+      CASE_RETURN_STR(HTTP_UNAUTHORIZED);
+      CASE_RETURN_STR(HTTP_FORBIDDEN);
+      CASE_RETURN_STR(HTTP_NOT_FOUND);
+      CASE_RETURN_STR(HTTP_METHOD_NOT_ALLOWED);
+      CASE_RETURN_STR(HTTP_TOO_MANY_REQUESTS);
+      CASE_RETURN_STR(HTTP_GATEWAY_UNAVAILABLE);
+  default:
+      ERROR("Invalid HTTP response code (code: %d)", code);
+  }
+}
 
 /* initialize curl_slist's request header utility
  * @todo create distinction between bot and bearer token */
@@ -219,33 +240,70 @@ perform_request(
   discord_load_obj_cb *load_cb)
 {
   //try to perform the request and analyze output
-  enum api_http_code http_code; //the http response code
-  char *url = NULL; //the request URL
-  CURLcode ecode;
+  bool retry;
   do {
+    CURLcode ecode;
     //perform the request
     ecode = curl_easy_perform(api->ehandle);
     ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
     //get response's http code
-    ecode = curl_easy_getinfo(api->ehandle, CURLINFO_RESPONSE_CODE, &http_code);
+    enum http_code code; //the http response code
+    ecode = curl_easy_getinfo(api->ehandle, CURLINFO_RESPONSE_CODE, &code);
     ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
     //get request's url
+    char *url = NULL; //the request URL
     ecode = curl_easy_getinfo(api->ehandle, CURLINFO_EFFECTIVE_URL, &url);
     ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
     D_PRINT("Request URL: %s", url);
 
-    switch (http_code) {
+    char *reason;
+    switch (code) {
     case HTTP_OK:
-        if (p_object && load_cb) {
+        reason = "The request was completed succesfully.";
+        retry = false;
+
+        if (p_object && load_cb)
           (*load_cb)(p_object, api->body.str, api->body.size);
-        }
-    /* fall through */
+
+        break;
+    case HTTP_CREATED:
+        reason = "The entity was created succesfully.";
+        retry = false;
+        break;
     case HTTP_NO_CONTENT:
-        break; /* DONE */
+        reason = "The request completed succesfully but returned no content.";
+        retry = false;
+        break;
+    case HTTP_NOT_MODIFIED:
+        reason = "The entity was not modified (no action was taken).";
+        retry = false;
+        break;
+    case HTTP_BAD_REQUEST:
+        reason = "The request was improperly formatted, or the server couldn't understand it.";
+        retry = false;
+        break;
+    case HTTP_UNAUTHORIZED:
+        reason = "The Authorization header was missing or invalid.";
+        retry = false;
+        break;
+    case HTTP_FORBIDDEN:
+        reason = "The Authorization token you passed did not have permission to the resource.";
+        retry = false;
+        break;
+    case HTTP_NOT_FOUND:
+        reason = "The resource at the location specified doesn't exist.";
+        retry = false;
+        break;
+    case HTTP_METHOD_NOT_ALLOWED:
+        reason = "The HTTP method used is not valid for the location specified.";
+        retry = false;
+        break;
     case HTTP_TOO_MANY_REQUESTS:
+        reason = "You got ratelimited.";
+        retry = true;
     /* @todo dealing with ratelimits solely by checking for
      *  HTTP_TOO_MANY REQUESTS is not discord compliant */
      {
@@ -256,23 +314,46 @@ perform_request(
                     "[message]%s [retry_after]%lld",
                     message, &retry_after);
 
-        D_PRINT("%s", message);
+        D_NOTOP_PRINT("Ratelimit Message: %s", message);
 
         usleep(retry_after*1000);
 
         break;
      }
-    case CURL_NO_RESPONSE: //@todo implement circumvention
-        ERROR("Curl couldn't fetch a HTTP response");
+    case HTTP_GATEWAY_UNAVAILABLE:
+        reason = "There was not a gateway available to process your request. Wait a bit and retry.";
+        retry = true;
+
+        usleep(5000); //wait a bit
+        break;
+    case CURL_NO_RESPONSE:
+        reason = "Curl couldn't fetch a HTTP response.";
+        retry = true;
+        break;
     default:
-        ERROR("Unknown HTTP response code %d", http_code);
+        if (code >= 500) {
+          reason = "The server had an error processing your request.";
+          retry = true;
+        }
+        else {
+          reason = "Unknown HTTP method.";
+          retry = false;
+        }
+
+        break;
     }
+    
+    //print useful diagnostics
+    if ( (true == retry || code < 400) ) //diagnostics and proceed
+      D_NOTOP_PRINT("(%d)%s - %s", code, http_code_print(code), reason);
+    else //error and abort
+      ERROR("(%d)%s - %s", code, http_code_print(code), reason);
     
     //reset the size of response body and header for a fresh start
     api->body.size = 0;
     api->pairs.size = 0;
 
-  } while (http_code > 204);
+  } while (true == retry);
 }
 
 /* template function for performing requests */

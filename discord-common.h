@@ -28,8 +28,8 @@ enum http_method {
 #define CHANNELS              "/channels"
 #define CHANNEL               CHANNELS"/%s"
 
-#define REACTION_EMOJI        CHANNEL MESSAGE "/reactions/%s"
-#define REACTION_EMOJI_USER   CHANNEL MESSAGE "/reactions/%s/%s"
+#define REACTION_EMOJI        CHANNEL MESSAGE"/reactions/%s"
+#define REACTION_EMOJI_USER   REACTION_EMOJI"/%s"
 
 #define PINNED_MESSAGES       CHANNEL"/pins"
 #define PINNED_MESSAGE        PINNED_MESSAGES"/%s"
@@ -42,7 +42,7 @@ enum http_method {
 
 /* HTTP RESPONSE CODES
 https://discord.com/developers/docs/topics/opcodes-and-status-codes#http-http-response-codes */
-enum api_http_code {
+enum http_code {
   HTTP_OK                       = 200,
   HTTP_CREATED                  = 201,
   HTTP_NO_CONTENT               = 204,
@@ -71,11 +71,19 @@ struct api_header_s {
   int size;
 };
 
+struct api_bucket_s {
+  char *hash_key; //the hash key associated with this bucket
+  int remaining; //simultaneous connections this bucket can do
+};
+
 struct discord_api_s {
   struct curl_slist *req_header; //the request header sent to the api
 
   struct api_resbody_s body; //the api response string
   struct api_header_s pairs; //the key/field pairs response header
+
+  struct api_bucket_s *client_buckets;
+  size_t num_buckets;
 
   CURL *ehandle; //the curl's easy handle used to perform requests
 

@@ -51,7 +51,7 @@ Discord_user_load(void *p_user, char *str, size_t len)
       &user->premium_type,
       &user->public_flags);
 
-  D_PUTS("User loaded with API response"); 
+  D_NOTOP_PUTS("User loaded with API response"); 
 }
 
 void
