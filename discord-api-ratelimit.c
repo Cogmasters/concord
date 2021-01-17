@@ -23,8 +23,7 @@ timestamp_ms()
 static char*
 get_header_value(struct api_header_s *pairs, char header_field[])
 {
-  int i=0;
-  for ( ; i < pairs->size; ++i) {
+  for (int i=0; i < pairs->size; ++i) {
     if (STREQ(pairs->field[i], header_field)) {
       return pairs->value[i];
     }
