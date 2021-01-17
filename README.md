@@ -26,6 +26,7 @@ sudo apt-get install -y build-essential libssl-dev
 sudo apt-get install -y libcurl4-openssl-dev
 ```
 
+\* If you do not have Ubuntu or Debian but have Windows 10, you can install WSL2 and get either Ubuntu or Debian [here](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
 
 ### Compile
 ```
