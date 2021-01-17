@@ -52,6 +52,9 @@ echo-bot : all echo-bot.c
 pin-bot : all pin-bot.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \
 		pin-bot.c -o pin-bot.exe $(LIBS_LDFLAGS)
+ping-pong-bot : all ping-pong-bot.c
+	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \
+		ping-pong-bot.c -o ping-pong-bot.exe $(LIBS_LDFLAGS)
 
 $(OBJDIR)/discord-%.o : discord-%.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<

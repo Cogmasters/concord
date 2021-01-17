@@ -32,6 +32,10 @@ sudo apt-get install -y libcurl4-openssl-dev
 make echo-bot
 ```
 
+## Tutorial on how to make a bot
+
+Instructions on how to make a ping-pong bot is found [here](/docs/BUILDING_A_BOT.md).
+
 ## Run echo-bot
 1. Get your bot token and paste it to `bot.config` to
    replace `YOUR-BOT-TOKEN`. There are 
