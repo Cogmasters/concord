@@ -89,15 +89,15 @@ Try to keep your switch statement similar to the following format:
 
 ### Include guards in header files/files for importing
 
-When making files for importing, adding `#IFNDEF` and `#DEFINE` in the beginning of the file with a specified tag and `#ENDIF` at the end disallows double declarations. The tag is normally the name of the file in uppercase, with dots and spaces represented as underscores.
+When making files for importing, adding `#ifndef` and `#define` in the beginning of the file with a specified tag and `#endif` at the end disallows double declarations. The tag is normally the name of the file in uppercase, with dots and spaces represented as underscores.
 
 For example, a file called `test.h` should have:
 
 ```c
-#IFNDEF TEST_H
-#DEFINE TEST_H
+#ifndef TEST_H
+#define TEST_H
 
 //put code here
 
-#ENDIF
+#endif // TEST_H
 ```
