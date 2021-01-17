@@ -243,7 +243,10 @@ perform_request(
   (void)bucket_route;
 
   //try to perform the request and analyze output
-  bool retry;
+  enum http_action {
+    DONE, RETRY, ABORT
+  } action;
+
   do {
     CURLcode ecode;
     //perform the request
@@ -266,7 +269,7 @@ perform_request(
     switch (code) {
     case HTTP_OK:
         reason = "The request was completed succesfully.";
-        retry = false;
+        action = DONE;
 
         if (p_object && load_cb)
           (*load_cb)(p_object, api->body.str, api->body.size);
@@ -274,42 +277,43 @@ perform_request(
         break;
     case HTTP_CREATED:
         reason = "The entity was created succesfully.";
-        retry = false;
+        action = DONE;
         break;
     case HTTP_NO_CONTENT:
         reason = "The request completed succesfully but returned no content.";
-        retry = false;
+        action = DONE;
         break;
     case HTTP_NOT_MODIFIED:
         reason = "The entity was not modified (no action was taken).";
-        retry = false;
+        action = DONE;
         break;
     case HTTP_BAD_REQUEST:
         reason = "The request was improperly formatted, or the server couldn't understand it.";
-        retry = false;
+        action = ABORT;
         break;
     case HTTP_UNAUTHORIZED:
         reason = "The Authorization header was missing or invalid.";
-        retry = false;
+        action = ABORT;
         break;
     case HTTP_FORBIDDEN:
         reason = "The Authorization token you passed did not have permission to the resource.";
-        retry = false;
+        action = DONE;
         break;
     case HTTP_NOT_FOUND:
         reason = "The resource at the location specified doesn't exist.";
-        retry = false;
+        action = ABORT;
         break;
     case HTTP_METHOD_NOT_ALLOWED:
         reason = "The HTTP method used is not valid for the location specified.";
-        retry = false;
+        action = ABORT;
         break;
     case HTTP_TOO_MANY_REQUESTS:
-        reason = "You got ratelimited.";
-        retry = true;
     /* @todo dealing with ratelimits solely by checking for
      *  HTTP_TOO_MANY REQUESTS is not discord compliant */
      {
+        reason = "You got ratelimited.";
+        action = RETRY;
+
         char message[256];
         long long retry_after;
 
@@ -325,51 +329,54 @@ perform_request(
      }
     case HTTP_GATEWAY_UNAVAILABLE:
         reason = "There was not a gateway available to process your request. Wait a bit and retry.";
-        retry = true;
+        action = RETRY;
 
         usleep(5000); //wait a bit
         break;
     case CURL_NO_RESPONSE:
         reason = "Curl couldn't fetch a HTTP response.";
-        retry = true;
+        action = DONE;
         break;
     default:
         if (code >= 500) {
           reason = "The server had an error processing your request.";
-          retry = true;
+          action = RETRY;
         }
         else {
           reason = "Unknown HTTP method.";
-          retry = false;
+          action = ABORT;
         }
 
         break;
     }
 
-    if (true == retry || code < 400) {
-      D_NOTOP_PRINT("(%d)%s - %s", code, http_code_print(code), reason);
+    switch (action) {
+    case DONE:
+        /* WORK IN PROGRESS, THE FOLLOWING SHOULD BE IGNORED FOR REVIEW *
 
-      /* WORK IN PROGRESS, THE FOLLOWING SHOULD BE IGNORED FOR REVIEW *
+        int remaining = Discord_ratelimit_remaining(&api->pairs);
+        long long delay_ms = Discord_ratelimit_delay(remaining, &api->pairs, true);
+        char *bucket_hash = Discord_ratelimit_bucket(&api->pairs);
 
-      int remaining = Discord_ratelimit_remaining(&api->pairs);
-      long long delay_ms = Discord_ratelimit_delay(remaining, &api->pairs, true);
-      char *bucket_hash = Discord_ratelimit_bucket(&api->pairs);
+        (void)remaining;
+        (void)delay_ms;
+        (void)bucket_hash;
 
-      (void)remaining;
-      (void)delay_ms;
-      (void)bucket_hash;
+        * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+    /* fall through */    
+    case RETRY:
+        D_NOTOP_PRINT("(%d)%s - %s", code, http_code_print(code), reason);
 
-      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+        //reset the size of response body and header pairs for a fresh start
+        api->body.size = 0;
+        api->pairs.size = 0;
+
+        break;
+    case ABORT: default:
+        ERROR("(%d)%s - %s", code, http_code_print(code), reason);
     }
-    else {
-      ERROR("(%d)%s - %s", code, http_code_print(code), reason);
-    }
 
-    //reset the size of response body and header pairs for a fresh start
-    api->body.size = 0;
-    api->pairs.size = 0;
-
-  } while (true == retry);
+  } while (RETRY == action);
 }
 
 /* template function for performing requests */
