@@ -1,7 +1,7 @@
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
-#include <linux/limits.h>
+#include <limits.h>
 #include <stdbool.h>
 
 #define TOKEN_MAX_LEN 512
