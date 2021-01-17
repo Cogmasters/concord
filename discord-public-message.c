@@ -90,7 +90,7 @@ Discord_message_load(void *p_message, char *str, size_t len)
 
   Discord_user_load(message->author, token_author.start, token_author.length);
 
-  D_NOTOP_PUTS("Message loaded with API response"); 
+  D_NOTOP_PUTS("Message object loaded with API response"); 
 }
 
 static void

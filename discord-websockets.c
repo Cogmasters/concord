@@ -74,7 +74,7 @@ ws_close_opcode_print(enum ws_close_opcodes gateway_opcode)
 }
 
 /* returns current timestamp in milliseconds */
-static long
+static long long
 timestamp_ms()
 {
   struct timespec t;
@@ -477,7 +477,7 @@ ws_main_loop(struct discord_ws_s *ws)
     ASSERT_S(CURLM_OK == mcode, curl_multi_strerror(mcode));
     
     //wait for activity or timeout
-    mcode = curl_multi_poll(ws->mhandle, NULL, 0, 1000, &numfds);
+    mcode = curl_multi_wait(ws->mhandle, NULL, 0, 1000, &numfds);
     ASSERT_S(CURLM_OK == mcode, curl_multi_strerror(mcode));
 
     if (ws->status != WS_CONNECTED) continue; //perform until a connection is established
