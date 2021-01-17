@@ -55,11 +55,6 @@ Close the Terminal that echo-bot is running or type "Ctrl-C" to kill it.
 
 Instructions on how to make a ping-pong bot is found [here](/docs/BUILDING_A_BOT.md).
 
-## Supported Features:
-  - discord gateway rate limiting
-  - discord gateway ws resuming
-  - basic discord rest API endpoints
-  
 ## Participate in discussions and get tech support
 Join our discord server: https://discord.gg/2jfycwXVM3
 
