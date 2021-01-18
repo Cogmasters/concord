@@ -128,7 +128,7 @@ Discord_ratelimit_assign_bucket(struct discord_api_s *api, char *bucket_route)
     ASSERT_S(NULL != ret, "Out of memory");
 
     api->ratelimit.buckets = ret;
-    api->ratelimit.buckets[api->ratelimit.num_buckets] = new_bucket;
+    api->ratelimit.buckets[api->ratelimit.num_buckets-1] = new_bucket;
 
     new_route->p_bucket = new_bucket;
   }
