@@ -130,7 +130,7 @@ custom_easy_init(struct discord_api_s *api)
   ASSERT_S(NULL != new_ehandle, "Out of memory");
 
   CURLcode ecode;
-  /* DEBUG ONLY FUNCTIONS */
+  /* DEBUG ONLY FUNCTIONS 
   //set debug callback
   D_ONLY(ecode = curl_easy_setopt(new_ehandle, CURLOPT_DEBUGFUNCTION, &Discord_utils_debug_cb));
   D_ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
@@ -138,7 +138,7 @@ custom_easy_init(struct discord_api_s *api)
   //set ptr to settings containing dump files
   D_ONLY(ecode = curl_easy_setopt(new_ehandle, CURLOPT_DEBUGDATA, &api->p_client->settings));
   D_ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
-
+*/
   //enable verbose
   D_ONLY(ecode = curl_easy_setopt(new_ehandle, CURLOPT_VERBOSE, 1L));
   D_ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
@@ -250,18 +250,15 @@ perform_request(
   } action;
 
   struct api_bucket_s *bucket = Discord_ratelimit_tryget_bucket(api, bucket_route);
-
   do {
     CURLcode ecode;
 
     if (bucket) {
+      D_PRINT("ROUTE/BUCKET PAIR FOUND:\n\t"
+              "%s / %s", bucket_route, bucket->hash);
       //how long to wait before performing a connection in this bucket
-      long long delay_ms = Discord_ratelimit_delay(&api->pairs, false);
-
-      D_PRINT("DELAY: %lld", delay_ms);
-      if (delay_ms) { //sleep for a while if we're on cooldown
-        usleep(delay_ms);
-      }
+      long long delay_ms = Discord_ratelimit_delay(bucket, true);
+      usleep(delay_ms * 1000);
     }
 
     ecode = curl_easy_perform(api->ehandle); //perform the connection
@@ -370,6 +367,7 @@ perform_request(
         if (!bucket) {
           bucket = Discord_ratelimit_assign_bucket(api, bucket_route);
         }
+        Discord_ratelimit_parse_header(bucket, &api->pairs);
     /* fall through */    
     case RETRY:
         D_NOTOP_PRINT("(%d)%s - %s", code, http_code_print(code), reason);

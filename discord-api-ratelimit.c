@@ -36,34 +36,21 @@ get_header_value(struct api_header_s *pairs, char header_field[])
 }
 
 long long
-Discord_ratelimit_delay(struct api_header_s *pairs, bool use_clock)
+Discord_ratelimit_delay(struct api_bucket_s *bucket, bool use_clock)
 {
-  char *value = get_header_value(pairs, "x-ratelimit-remaining");
-  if (NULL == value) return 0;
-
-  int remaining =  strtol(value, NULL, 10);
-  if (remaining) return 0; //means we don't have any delay
-
-  value = get_header_value(pairs, "x-ratelimit-reset-after");
-  if (NULL == value) return 0;
-
-  long long reset_after = strtoll(value, NULL, 10);
-  ERROR("reset_after: %lld", reset_after);
+  if (bucket->remaining) return 0; //means we don't have any delay
 
   long long delay_ms;
-  if (true == use_clock || !reset_after) {
+  if (true == use_clock || !bucket->reset_after) {
     long long utc = timestamp_ms();
 
-    value = get_header_value(pairs, "x-ratelimit-reset");
-    if (NULL == value) return 0;
-
-    long long reset = 1000 * strtoll(value, NULL, 10);
-
-    delay_ms = ((reset - utc) >= 0) ? (reset - utc) : 0;
-    ERROR("reset: %lld\n\tutc: %lld\n\tdelay_ms: %lld", reset, utc, delay_ms);
+    delay_ms = bucket->reset - utc;
+    if (delay_ms < 0) {
+      delay_ms = 0;
+    }
   }
   else {
-    delay_ms = 1000 * reset_after;
+    delay_ms = bucket->reset_after;
   }
 
   return delay_ms;
@@ -98,6 +85,7 @@ Discord_ratelimit_tryget_bucket(struct discord_api_s *api, char *bucket_route)
   return (ret) ? (*(struct api_route_s**)ret)->p_bucket : NULL;
 }
 
+//assign route to exiting / new bucket
 struct api_bucket_s*
 Discord_ratelimit_assign_bucket(struct discord_api_s *api, char *bucket_route)
 {
@@ -120,7 +108,8 @@ Discord_ratelimit_assign_bucket(struct discord_api_s *api, char *bucket_route)
     struct api_bucket_s *new_bucket = calloc(1, sizeof *new_bucket);
     ASSERT_S(NULL != new_bucket, "Out of memory");
 
-    new_bucket->hash = bucket_hash;
+    new_bucket->hash = strdup(bucket_hash);
+    ASSERT_S(NULL != new_bucket->hash, "Our of memory");
 
     ++api->ratelimit.num_buckets; //increase num of active buckets
 
@@ -132,13 +121,29 @@ Discord_ratelimit_assign_bucket(struct discord_api_s *api, char *bucket_route)
 
     new_route->p_bucket = new_bucket;
   }
-  else {
-    free(bucket_hash);
-  }
 
-  // add new bucket to tree
+  // add new route to tree
   void *ret = tsearch(new_route, &api->ratelimit.root_routes, &routecmp);
   ASSERT_S((*(struct api_route_s**)ret) == new_route, "Couldn't create new bucket route");
 
   return new_route->p_bucket;
+}
+
+void
+Discord_ratelimit_parse_header(struct api_bucket_s *bucket, struct api_header_s *pairs)
+{ 
+  char *value = get_header_value(pairs, "x-ratelimit-remaining");
+  if (NULL != value) {
+    bucket->remaining =  strtol(value, NULL, 10);
+  }
+
+  value = get_header_value(pairs, "x-ratelimit-reset-after");
+  if (NULL != value) {
+    bucket->reset_after = 1000 * strtoll(value, NULL, 10);
+  }
+
+  value = get_header_value(pairs, "x-ratelimit-reset");
+  if (NULL != value) {
+    bucket->reset = 1000 * strtoll(value, NULL, 10);
+  }
 }
