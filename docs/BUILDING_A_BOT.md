@@ -1,10 +1,10 @@
 # Building a Basic Ping-Pong Bot
 
-Building a bot is pretty simple with this library, but there are some basic things you have to do before brefore starting:
+Building a bot is pretty simple with this library, but there are some basic things you have to do before starting:
 
 1. Make sure you have all the build dependencies. The dependencies are listed in the [README](/README.md) of this project.
 
-2. Make sure that you have a bot token. If you do not [discord-irc](https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token) has instructions on building a bot. But your bot token in `bot.config`, replacing the `YOUR-BOT-TOKEN` with your own token. We will be using this file as needed.
+2. Make sure that you have a bot token. If you do not [discord-irc](https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token) has instructions on building a bot. Put your bot token in `bot.config`, replacing the `YOUR-BOT-TOKEN` with your own token. We will be using this file as needed.
 
 # Ping-pong bot code
 
