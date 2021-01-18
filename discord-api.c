@@ -283,7 +283,7 @@ perform_request(
     switch (code) {
     case HTTP_OK:
         reason = "The request was completed succesfully.";
-        action |= DONE;
+        action = DONE;
 
         if (p_object && load_cb)
           (*load_cb)(p_object, api->body.str, api->body.size);
@@ -291,15 +291,15 @@ perform_request(
         break;
     case HTTP_CREATED:
         reason = "The entity was created succesfully.";
-        action |= DONE;
+        action = DONE;
         break;
     case HTTP_NO_CONTENT:
         reason = "The request completed succesfully but returned no content.";
-        action |= DONE;
+        action = DONE;
         break;
     case HTTP_NOT_MODIFIED:
         reason = "The entity was not modified (no action was taken).";
-        action |= DONE;
+        action = DONE;
         break;
     case HTTP_BAD_REQUEST:
         reason = "The request was improperly formatted, or the server couldn't understand it.";
