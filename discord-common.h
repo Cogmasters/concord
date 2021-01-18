@@ -72,13 +72,15 @@ struct api_header_s {
 };
 
 struct api_route_s {
-  char *str; //this route string
+  char *str; //bucket route
   struct api_bucket_s *p_bucket; //bucket assigned to this route
 };
 
 struct api_bucket_s {
   char *hash; //the hash associated with this bucket
   int remaining; //connections this bucket can do before cooldown
+  long long reset_after;
+  long long reset;
 };
 
 struct discord_api_s {
@@ -250,10 +252,11 @@ void Discord_api_request(
 
 /* discord-api-ratelimit.c */
 
-long long Discord_ratelimit_delay(struct api_header_s *header, _Bool use_clock);
+long long Discord_ratelimit_delay(struct api_bucket_s *bucket, _Bool use_clock);
 char* Discord_ratelimit_route(char endpoint[]);
 struct api_bucket_s* Discord_ratelimit_tryget_bucket(struct discord_api_s *api, char *bucket_route);
 struct api_bucket_s* Discord_ratelimit_assign_bucket(struct discord_api_s *api, char *bucket_route);
+void Discord_ratelimit_parse_header(struct api_bucket_s *bucket, struct api_header_s *pairs);
 
 /* discord-websockets.c */
 
