@@ -63,22 +63,22 @@ struct api_resbody_s {
   size_t size; //the response str length
 };
 
-#define MAX_HEADER_SIZE 1000
+#define MAX_HEADER_SIZE 100
 
 struct api_header_s {
-  char *field[MAX_HEADER_SIZE];
-  char *value[MAX_HEADER_SIZE];
+  char field[MAX_HEADER_SIZE][MAX_HEADER_LEN];
+  char value[MAX_HEADER_SIZE][MAX_HEADER_LEN];
   int size;
 };
 
-struct api_bucket_s {
-  char *hash_key; //the hash key associated with this bucket
-  int remaining; //simultaneous connections this bucket can do
+struct api_route_s {
+  char *str; //this route string
+  struct api_bucket_s *p_bucket; //bucket assigned to this route
 };
 
-struct api_route_s {
-  char *key; //this route key
-  struct api_bucket_s *bucket; //bucket this route is part of
+struct api_bucket_s {
+  char *hash; //the hash associated with this bucket
+  int remaining; //connections this bucket can do before cooldown
 };
 
 struct discord_api_s {
@@ -88,9 +88,9 @@ struct discord_api_s {
   struct api_header_s pairs; //the key/field pairs response header
 
   struct { /* RATELIMITING STRUCTURE */
-    void *routes; //check GNU tree functions from search.h
+    void *root_routes; //check GNU tree functions from search.h
 
-    struct api_bucket_s *client_buckets;
+    struct api_bucket_s **buckets;
     size_t num_buckets;
   } ratelimit;
 
@@ -250,10 +250,10 @@ void Discord_api_request(
 
 /* discord-api-ratelimit.c */
 
+long long Discord_ratelimit_delay(struct api_header_s *header, _Bool use_clock);
 char* Discord_ratelimit_route(char endpoint[]);
-int Discord_ratelimit_remaining(struct api_header_s *header);
-long long Discord_ratelimit_delay(int remaining, struct api_header_s *header, _Bool use_clock);
-char* Discord_ratelimit_bucket(struct api_header_s *header);
+struct api_bucket_s* Discord_ratelimit_tryget_bucket(struct discord_api_s *api, char *bucket_route);
+struct api_bucket_s* Discord_ratelimit_assign_bucket(struct discord_api_s *api, char *bucket_route);
 
 /* discord-websockets.c */
 

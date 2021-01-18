@@ -46,6 +46,9 @@ reqheader_init(char token[])
   new_header = curl_slist_append(new_header,"X-RateLimit-Precision: millisecond");
   ASSERT_S(NULL != new_header, "Out of memory");
 
+  tmp = curl_slist_append(new_header,"Accept: application/json");
+  ASSERT_S(NULL != tmp, "Out of memory");
+
   tmp = curl_slist_append(new_header, auth);
   ASSERT_S(NULL != tmp, "Out of memory");
 
@@ -53,9 +56,6 @@ reqheader_init(char token[])
   ASSERT_S(NULL != tmp, "Out of memory");
 
   tmp = curl_slist_append(new_header,"Content-Type: application/json");
-  ASSERT_S(NULL != tmp, "Out of memory");
-
-  tmp = curl_slist_append(new_header,"Accept: application/json");
   ASSERT_S(NULL != tmp, "Out of memory");
 
   return new_header;
@@ -76,7 +76,9 @@ curl_resheader_cb(char *str, size_t size, size_t nmemb, void *p_userdata)
 
   *ptr = '\0'; //replace ':' with '\0' to separate field from value
   
-  pairs->field[pairs->size] = str; //get the field part from string
+  int ret;
+  ret = snprintf(pairs->field[pairs->size], MAX_HEADER_LEN, "%s", str);
+  ASSERT_S(ret < MAX_HEADER_LEN, "Out of bounds write attempt");
 
   if ( !(ptr = strstr(ptr+1, "\r\n")) ) {//returns if can't find CRLF match
     return realsize;
@@ -90,7 +92,9 @@ curl_resheader_cb(char *str, size_t size, size_t nmemb, void *p_userdata)
     ++offset;
   }
 
-  pairs->value[pairs->size] = &str[strlen(str) + offset]; //get the value part from string
+  //get the value part from string
+  ret = snprintf(pairs->value[pairs->size], MAX_HEADER_LEN, "%s", &str[strlen(str) + offset]);
+  ASSERT_S(ret < MAX_HEADER_LEN, "Out of bounds write attempt");
 
   ++pairs->size; //update header amount of field/value pairs
   ASSERT_S(pairs->size < MAX_HEADER_SIZE, "Out of bounds write attempt");
@@ -225,7 +229,7 @@ static void
 set_url(struct discord_api_s *api, char endpoint[])
 {
   char base_url[MAX_URL_LEN];
-  int ret = snprintf(base_url, MAX_URL_LEN, BASE_API_URL"%s", endpoint);
+  int ret = snprintf(base_url, sizeof(base_url), BASE_API_URL"%s", endpoint);
   ASSERT_S(ret < (int)sizeof(base_url), "Out of bounds write attempt");
 
   CURLcode ecode = curl_easy_setopt(api->ehandle, CURLOPT_URL, base_url);
@@ -238,19 +242,29 @@ perform_request(
   struct discord_api_s *api,
   void *p_object, 
   discord_load_obj_cb *load_cb,
-  char bucket_route[])
+  char *bucket_route)
 {
-  (void)bucket_route;
-
   //try to perform the request and analyze output
   enum http_action {
     DONE, RETRY, ABORT
   } action;
 
+  struct api_bucket_s *bucket = Discord_ratelimit_tryget_bucket(api, bucket_route);
+
   do {
     CURLcode ecode;
-    //perform the request
-    ecode = curl_easy_perform(api->ehandle);
+
+    if (bucket) {
+      //how long to wait before performing a connection in this bucket
+      long long delay_ms = Discord_ratelimit_delay(&api->pairs, false);
+
+      D_PRINT("DELAY: %lld", delay_ms);
+      if (delay_ms) { //sleep for a while if we're on cooldown
+        usleep(delay_ms);
+      }
+    }
+
+    ecode = curl_easy_perform(api->ehandle); //perform the connection
     ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
     //get response's http code
@@ -259,17 +273,17 @@ perform_request(
     ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
     //get request's url
-    char *url = NULL; //the request URL
+    const char *url = NULL; //the request URL
     ecode = curl_easy_getinfo(api->ehandle, CURLINFO_EFFECTIVE_URL, &url);
     ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
     D_PRINT("Request URL: %s", url);
 
-    char *reason;
+    const char *reason;
     switch (code) {
     case HTTP_OK:
         reason = "The request was completed succesfully.";
-        action = DONE;
+        action |= DONE;
 
         if (p_object && load_cb)
           (*load_cb)(p_object, api->body.str, api->body.size);
@@ -277,15 +291,15 @@ perform_request(
         break;
     case HTTP_CREATED:
         reason = "The entity was created succesfully.";
-        action = DONE;
+        action |= DONE;
         break;
     case HTTP_NO_CONTENT:
         reason = "The request completed succesfully but returned no content.";
-        action = DONE;
+        action |= DONE;
         break;
     case HTTP_NOT_MODIFIED:
         reason = "The entity was not modified (no action was taken).";
-        action = DONE;
+        action |= DONE;
         break;
     case HTTP_BAD_REQUEST:
         reason = "The request was improperly formatted, or the server couldn't understand it.";
@@ -321,7 +335,8 @@ perform_request(
                     "[message]%s [retry_after]%lld",
                     message, &retry_after);
 
-        D_NOTOP_PRINT("Ratelimit Message: %s", message);
+        D_NOTOP_PRINT("Ratelimit Message: %s (wait: %llds)",
+            message, retry_after);
 
         usleep(retry_after*1000);
 
@@ -352,17 +367,9 @@ perform_request(
 
     switch (action) {
     case DONE:
-        /* WORK IN PROGRESS, THE FOLLOWING SHOULD BE IGNORED FOR REVIEW *
-
-        int remaining = Discord_ratelimit_remaining(&api->pairs);
-        long long delay_ms = Discord_ratelimit_delay(remaining, &api->pairs, true);
-        char *bucket_hash = Discord_ratelimit_bucket(&api->pairs);
-
-        (void)remaining;
-        (void)delay_ms;
-        (void)bucket_hash;
-
-        * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+        if (!bucket) {
+          bucket = Discord_ratelimit_assign_bucket(api, bucket_route);
+        }
     /* fall through */    
     case RETRY:
         D_NOTOP_PRINT("(%d)%s - %s", code, http_code_print(code), reason);
@@ -403,7 +410,6 @@ Discord_api_request(
   set_method(api, http_method, postfields); //set the request method
   set_url(api, url_route); //set the request URL
 
-  //route that we will attempt to match a bucket with
-  char *route = Discord_ratelimit_route(endpoint);
-  perform_request(api, p_object, load_cb, route); //perform the request
+  char *bucket_route = Discord_ratelimit_route(endpoint);
+  perform_request(api, p_object, load_cb, bucket_route); //perform the request
 }
