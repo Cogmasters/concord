@@ -27,6 +27,9 @@ http_code_print(enum http_code code)
       CASE_RETURN_STR(HTTP_TOO_MANY_REQUESTS);
       CASE_RETURN_STR(HTTP_GATEWAY_UNAVAILABLE);
   default:
+      if (code >= 500) {
+        return "5xx SERVER ERROR";
+      }
       ERROR("Invalid HTTP response code (code: %d)", code);
   }
 }
