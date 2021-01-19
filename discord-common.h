@@ -79,8 +79,8 @@ struct api_route_s {
 struct api_bucket_s {
   char *hash; //the hash associated with this bucket
   int remaining; //connections this bucket can do before cooldown
-  long long reset_after;
-  long long reset;
+  long long reset_after_ms;
+  long long reset_ms;
 };
 
 struct discord_api_s {
@@ -158,9 +158,10 @@ enum ws_opcodes {
 };
 
 enum ws_status {
-  WS_DISCONNECTED, //connected to ws
-  WS_RECONNECTING, //attempting reconnection to ws
-  WS_CONNECTED,    //disconnected from ws
+  WS_DISCONNECTED,  //disconnected from ws
+  WS_RESUME,        //attempt to resume ws session
+  WS_FRESH,         //attempt a fresh ws session (session timed out)
+  WS_CONNECTED,     //connected to ws
 };
 
 struct discord_ws_s {
@@ -252,10 +253,10 @@ void Discord_api_request(
 
 /* discord-api-ratelimit.c */
 
+void Discord_ratelimit_buckets_cleanup(struct discord_api_s *api);
 long long Discord_ratelimit_delay(struct api_bucket_s *bucket, _Bool use_clock);
-char* Discord_ratelimit_route(char endpoint[]);
-struct api_bucket_s* Discord_ratelimit_tryget_bucket(struct discord_api_s *api, char *bucket_route);
-struct api_bucket_s* Discord_ratelimit_assign_bucket(struct discord_api_s *api, char *bucket_route);
+struct api_bucket_s* Discord_ratelimit_tryget_bucket(struct discord_api_s *api, char endpoint[]);
+struct api_bucket_s* Discord_ratelimit_assign_bucket(struct discord_api_s *api, char endpoint[]);
 void Discord_ratelimit_parse_header(struct api_bucket_s *bucket, struct api_header_s *pairs);
 
 /* discord-websockets.c */

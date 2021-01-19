@@ -124,9 +124,9 @@ on_hello(struct discord_ws_s *ws)
              "[heartbeat_interval]%ld", &ws->hbeat.interval_ms);
   ASSERT_S(ws->hbeat.interval_ms > 0, "Invalid heartbeat_ms");
 
-  if (WS_RECONNECTING == ws->status)
+  if (WS_RESUME == ws->status)
     ws_send_resume(ws);
-  else //WS_DISCONNECTED
+  else // WS_FRESH || WS_DISCONNECTED
     ws_send_identify(ws);
 }
 
@@ -140,7 +140,7 @@ on_dispatch(struct discord_ws_s *ws)
   {
     ws->status = WS_CONNECTED;
     ws->reconnect_attempts = 0;
-    D_PRINT("Succesfully connected to Discord!");
+    D_PRINT("Succesfully started a Discord session!");
 
     json_scanf(ws->payload.event_data, sizeof(ws->payload.event_data),
                "[session_id]%s", ws->session_id);
@@ -157,7 +157,7 @@ on_dispatch(struct discord_ws_s *ws)
   {
     ws->status = WS_CONNECTED;
     ws->reconnect_attempts = 0;
-    D_PRINT("Succesfully resumed connection to Discord!");
+    D_PRINT("Succesfully resumed a Discord session!");
 
     return;
   }
@@ -217,11 +217,21 @@ on_dispatch(struct discord_ws_s *ws)
 }
 
 static void
+on_invalid_session(struct discord_ws_s *ws)
+{
+  ws->status = WS_FRESH;
+
+  char reason[] = "Attempting to a start a fresh session";
+  D_PUTS(reason);
+  cws_close(ws->ehandle, CWS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
+}
+
+static void
 on_reconnect(struct discord_ws_s *ws)
 {
-  ws->status = WS_RECONNECTING;
+  ws->status = WS_RESUME;
 
-  char reason[] = "Attempting to reconnect to WebSockets";
+  char reason[] = "Attempting to session resume";
   D_PUTS(reason);
   cws_close(ws->ehandle, CWS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
 }
@@ -256,9 +266,11 @@ ws_on_close_cb(void *data, CURL *ehandle, enum cws_close_reason cwscode, const c
         break;
     case GATEWAY_CLOSE_REASON_UNKNOWN_ERROR:
     case GATEWAY_CLOSE_REASON_INVALID_SEQUENCE:
+        ws->status = WS_RESUME;
+        break;
     case GATEWAY_CLOSE_REASON_SESSION_TIMED_OUT:
     default: //websocket/clouflare opcodes
-        ws->status = WS_RECONNECTING;
+        ws->status = WS_FRESH;
         break;
     }
 
@@ -310,7 +322,9 @@ ws_on_text_cb(void *data, CURL *ehandle, const char *text, size_t len)
   case GATEWAY_DISPATCH:
       on_dispatch(ws);
       break;
-  case GATEWAY_INVALID_SESSION: //@todo see if this is a valid solution
+  case GATEWAY_INVALID_SESSION:
+      on_invalid_session(ws);
+      break;
   case GATEWAY_RECONNECT:
       on_reconnect(ws);
       break;

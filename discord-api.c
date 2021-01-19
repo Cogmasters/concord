@@ -11,6 +11,18 @@
 
 #define BASE_API_URL "https://discord.com/api"
 
+
+static void
+sleep_ms(const long long delay_ms)
+{
+  const struct timespec t = {
+    .tv_sec = delay_ms / 1000,
+    .tv_nsec = (delay_ms % 1000) * 1e6
+  };
+
+  nanosleep(&t, NULL);
+}
+
 static char*
 http_code_print(enum http_code code)
 {
@@ -27,6 +39,9 @@ http_code_print(enum http_code code)
       CASE_RETURN_STR(HTTP_TOO_MANY_REQUESTS);
       CASE_RETURN_STR(HTTP_GATEWAY_UNAVAILABLE);
   default:
+      if (code >= 500) {
+        return "5xx SERVER ERROR";
+      }
       ERROR("Invalid HTTP response code (code: %d)", code);
   }
 }
@@ -181,11 +196,14 @@ Discord_api_init(struct discord_api_s *api, char token[])
 void
 Discord_api_cleanup(struct discord_api_s *api)
 {
+  Discord_ratelimit_buckets_cleanup(api);
+
   curl_slist_free_all(api->req_header);
   curl_easy_cleanup(api->ehandle); 
 
-  if (api->body.str)
+  if (api->body.str) {
     free(api->body.str);
+  }
 }
 
 /* set specific http method used for the request */
@@ -242,23 +260,27 @@ perform_request(
   struct discord_api_s *api,
   void *p_object, 
   discord_load_obj_cb *load_cb,
-  char *bucket_route)
+  char endpoint[])
 {
   //try to perform the request and analyze output
   enum http_action {
     DONE, RETRY, ABORT
   } action;
 
-  struct api_bucket_s *bucket = Discord_ratelimit_tryget_bucket(api, bucket_route);
+  struct api_bucket_s *bucket = Discord_ratelimit_tryget_bucket(api, endpoint);
   do {
     CURLcode ecode;
 
     if (bucket) {
-      D_PRINT("ROUTE/BUCKET PAIR FOUND:\n\t"
-              "%s / %s", bucket_route, bucket->hash);
       //how long to wait before performing a connection in this bucket
       long long delay_ms = Discord_ratelimit_delay(bucket, true);
-      usleep(delay_ms * 1000);
+      D_PRINT("RATELIMITING (reach bucket's connection threshold):\n\t"
+              "\tEndpoint:\t%s\n\t"
+              "\tBucket:\t\t%s\n\t"
+              "\tWait for:\t%lld ms",
+              endpoint, bucket->hash, delay_ms);
+
+      sleep_ms(delay_ms);
     }
 
     ecode = curl_easy_perform(api->ehandle); //perform the connection
@@ -332,10 +354,10 @@ perform_request(
                     "[message]%s [retry_after]%lld",
                     message, &retry_after);
 
-        D_NOTOP_PRINT("Ratelimit Message: %s (wait: %llds)",
+        D_NOTOP_PRINT("Ratelimit Message: %s (wait: %lld ms)",
             message, retry_after);
 
-        usleep(retry_after*1000);
+        sleep_ms(retry_after);
 
         break;
      }
@@ -343,7 +365,7 @@ perform_request(
         reason = "There was not a gateway available to process your request. Wait a bit and retry.";
         action = RETRY;
 
-        usleep(5000); //wait a bit
+        sleep_ms(5000); //wait a bit
         break;
     case CURL_NO_RESPONSE:
         reason = "Curl couldn't fetch a HTTP response.";
@@ -365,7 +387,7 @@ perform_request(
     switch (action) {
     case DONE:
         if (!bucket) {
-          bucket = Discord_ratelimit_assign_bucket(api, bucket_route);
+          bucket = Discord_ratelimit_assign_bucket(api, endpoint);
         }
         Discord_ratelimit_parse_header(bucket, &api->pairs);
     /* fall through */    
@@ -407,7 +429,5 @@ Discord_api_request(
 
   set_method(api, http_method, postfields); //set the request method
   set_url(api, url_route); //set the request URL
-
-  char *bucket_route = Discord_ratelimit_route(endpoint);
-  perform_request(api, p_object, load_cb, bucket_route); //perform the request
+  perform_request(api, p_object, load_cb, endpoint); //perform the request
 }

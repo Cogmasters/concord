@@ -7,7 +7,7 @@
 
 void on_ready(discord_t *client, const discord_user_t *self)
 {
-  fprintf(stderr, "\n\nEcho-Bot succesfully connected to Discord as %s#%s!\n\n",
+  fprintf(stderr, "\n\nPingPong-Bot succesfully connected to Discord as %s#%s!\n\n",
       self->username, self->discriminator);
 
   (void)client;
@@ -19,14 +19,16 @@ void on_message_create(
     const discord_message_t *message)
 {
   // make sure bot doesn't echoes other bots
-  if (true == message->author->bot)
+  if (message->author->bot)
+    return;
+  // make sure it doesn't echoes itself
+  if (0 == strcmp(self->username, message->author->username))
     return;
 
-  char response[] = "pong", reaction[] = "ping";
-
-  if (0 == strcmp(message->content, reaction)){
-    discord_send_message(client, message->channel_id, response);
-  }
+  if (0 == strcmp(message->content, "ping"))
+    discord_send_message(client, message->channel_id, "pong");
+  else if (0 == strcmp(message->content, "pong"))
+    discord_send_message(client, message->channel_id, "ping");
 
   (void)self;
 }

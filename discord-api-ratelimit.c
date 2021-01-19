@@ -3,7 +3,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <math.h> //for lround
-#include <search.h> //for tsearch, tfind, etc
+#include <search.h> //for tfind, tsearch, tdestroy
 
 #include <libdiscord.h>
 #include "discord-common.h"
@@ -23,37 +23,18 @@ timestamp_ms()
   return t.tv_sec*1000 + lround(t.tv_nsec/1.0e6);
 }
 
-static char*
-get_header_value(struct api_header_s *pairs, char header_field[])
-{
-  for (int i=0; i < pairs->size; ++i) {
-    if (STREQ(header_field, pairs->field[i])) {
-      return pairs->value[i];
-    }
-  }
-
-  return NULL;
-}
-
 long long
 Discord_ratelimit_delay(struct api_bucket_s *bucket, bool use_clock)
 {
   if (bucket->remaining) return 0; //means we don't have any delay
 
-  long long delay_ms;
-  if (true == use_clock || !bucket->reset_after) {
-    long long utc = timestamp_ms();
-
-    delay_ms = bucket->reset - utc;
-    if (delay_ms < 0) {
-      delay_ms = 0;
-    }
-  }
-  else {
-    delay_ms = bucket->reset_after;
+  if (true == use_clock || !bucket->reset_after_ms) {
+    long long delay_ms = bucket->reset_ms - timestamp_ms();
+    if (delay_ms < 0) return 0;
+    if (delay_ms < bucket->reset_after_ms) return delay_ms;
   }
 
-  return delay_ms;
+  return bucket->reset_after_ms;
 }
 
 static int
@@ -66,8 +47,8 @@ routecmp(const void *p_route1, const void *p_route2)
 }
 
 /* get the route to be matched with a bucket */
-char*
-Discord_ratelimit_route(char endpoint[])
+static char*
+bucket_route(char endpoint[])
 {
   if (strstr(endpoint, CHANNEL)) return "channel_major";
   if (strstr(endpoint, GUILD)) return "guild_major";
@@ -77,17 +58,32 @@ Discord_ratelimit_route(char endpoint[])
 }
 
 struct api_bucket_s*
-Discord_ratelimit_tryget_bucket(struct discord_api_s *api, char *bucket_route)
+Discord_ratelimit_tryget_bucket(struct discord_api_s *api, char endpoint[])
 {
-  struct api_route_s search_route = {.str = bucket_route};
+  struct api_route_s search_route = {
+    .str = bucket_route(endpoint)
+  };
+
   void *ret = tfind(&search_route, &api->ratelimit.root_routes, &routecmp);
 
   return (ret) ? (*(struct api_route_s**)ret)->p_bucket : NULL;
 }
 
+static char*
+get_header_value(struct api_header_s *pairs, char header_field[])
+{
+  for (int i=0; i < pairs->size; ++i) {
+    if (STREQ(header_field, pairs->field[i])) {
+      return pairs->value[i];
+    }
+  }
+
+  return NULL;
+}
+
 //assign route to exiting / new bucket
 struct api_bucket_s*
-Discord_ratelimit_assign_bucket(struct discord_api_s *api, char *bucket_route)
+Discord_ratelimit_assign_bucket(struct discord_api_s *api, char endpoint[])
 {
   char *bucket_hash = get_header_value(&api->pairs, "x-ratelimit-bucket");
   if (NULL == bucket_hash) return NULL;
@@ -95,7 +91,7 @@ Discord_ratelimit_assign_bucket(struct discord_api_s *api, char *bucket_route)
   struct api_route_s *new_route = calloc(1, sizeof *new_route);
   ASSERT_S(NULL != new_route, "Out of memory");
 
-  new_route->str = strdup(bucket_route);
+  new_route->str = strdup(bucket_route(endpoint));
   ASSERT_S(NULL != new_route->str, "Out of memory");
 
   for (size_t i=0; i < api->ratelimit.num_buckets; ++i) {
@@ -139,11 +135,24 @@ Discord_ratelimit_parse_header(struct api_bucket_s *bucket, struct api_header_s 
 
   value = get_header_value(pairs, "x-ratelimit-reset-after");
   if (NULL != value) {
-    bucket->reset_after = 1000 * strtoll(value, NULL, 10);
+    bucket->reset_after_ms = 1000 * strtoll(value, NULL, 10);
   }
 
   value = get_header_value(pairs, "x-ratelimit-reset");
   if (NULL != value) {
-    bucket->reset = 1000 * strtoll(value, NULL, 10);
+    bucket->reset_ms = 1000 * strtoll(value, NULL, 10);
   }
+}
+
+void
+Discord_ratelimit_buckets_cleanup(struct discord_api_s *api)
+{
+  //clean bucket routes
+  tdestroy(&api->ratelimit.root_routes, &free);
+  
+  //clean client buckets
+  for (size_t i=0; i < api->ratelimit.num_buckets; ++i) {
+    free(api->ratelimit.buckets[i]);
+  }
+  free(api->ratelimit.buckets);
 }
