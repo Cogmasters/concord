@@ -257,10 +257,14 @@ perform_request(
     CURLcode ecode;
 
     if (bucket) {
-      D_PRINT("ROUTE/BUCKET PAIR FOUND:\n\t"
-              "%s / %s", bucket_route, bucket->hash);
       //how long to wait before performing a connection in this bucket
       long long delay_ms = Discord_ratelimit_delay(bucket, true);
+      D_PRINT("RATELIMITING (reach bucket's connection threshold):\n\t"
+              "\tRoute:\t\t%s\n\t"
+              "\tBucket:\t\t%s\n\t"
+              "\tWait for:\t%lld ms",
+              bucket_route, bucket->hash, delay_ms);
+
       usleep(delay_ms * 1000);
     }
 
