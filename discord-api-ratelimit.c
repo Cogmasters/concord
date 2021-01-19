@@ -144,11 +144,20 @@ Discord_ratelimit_parse_header(struct api_bucket_s *bucket, struct api_header_s 
   }
 }
 
+static void
+route_cleanup(void *p_route)
+{
+  struct api_route_s *route = p_route;
+
+  free(route->str);
+  free(route);
+}
+
 void
 Discord_ratelimit_buckets_cleanup(struct discord_api_s *api)
 {
   //clean bucket routes
-  tdestroy(&api->ratelimit.root_routes, &free);
+  tdestroy(&api->ratelimit.root_routes, &route_cleanup);
   
   //clean client buckets
   for (size_t i=0; i < api->ratelimit.num_buckets; ++i) {
