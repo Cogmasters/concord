@@ -3,7 +3,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <math.h> //for lround
-#include <search.h> //for tsearch, tfind, etc
+#include <search.h> //for tfind, tsearch, tdestroy
 
 #include <libdiscord.h>
 #include "discord-common.h"
@@ -47,8 +47,8 @@ routecmp(const void *p_route1, const void *p_route2)
 }
 
 /* get the route to be matched with a bucket */
-char*
-Discord_ratelimit_route(char endpoint[])
+static char*
+bucket_route(char endpoint[])
 {
   if (strstr(endpoint, CHANNEL)) return "channel_major";
   if (strstr(endpoint, GUILD)) return "guild_major";
@@ -58,9 +58,12 @@ Discord_ratelimit_route(char endpoint[])
 }
 
 struct api_bucket_s*
-Discord_ratelimit_tryget_bucket(struct discord_api_s *api, char *bucket_route)
+Discord_ratelimit_tryget_bucket(struct discord_api_s *api, char endpoint[])
 {
-  struct api_route_s search_route = {.str = bucket_route};
+  struct api_route_s search_route = {
+    .str = bucket_route(endpoint)
+  };
+
   void *ret = tfind(&search_route, &api->ratelimit.root_routes, &routecmp);
 
   return (ret) ? (*(struct api_route_s**)ret)->p_bucket : NULL;
@@ -80,7 +83,7 @@ get_header_value(struct api_header_s *pairs, char header_field[])
 
 //assign route to exiting / new bucket
 struct api_bucket_s*
-Discord_ratelimit_assign_bucket(struct discord_api_s *api, char *bucket_route)
+Discord_ratelimit_assign_bucket(struct discord_api_s *api, char endpoint[])
 {
   char *bucket_hash = get_header_value(&api->pairs, "x-ratelimit-bucket");
   if (NULL == bucket_hash) return NULL;
@@ -88,7 +91,7 @@ Discord_ratelimit_assign_bucket(struct discord_api_s *api, char *bucket_route)
   struct api_route_s *new_route = calloc(1, sizeof *new_route);
   ASSERT_S(NULL != new_route, "Out of memory");
 
-  new_route->str = strdup(bucket_route);
+  new_route->str = strdup(bucket_route(endpoint));
   ASSERT_S(NULL != new_route->str, "Out of memory");
 
   for (size_t i=0; i < api->ratelimit.num_buckets; ++i) {
@@ -139,4 +142,17 @@ Discord_ratelimit_parse_header(struct api_bucket_s *bucket, struct api_header_s 
   if (NULL != value) {
     bucket->reset_ms = 1000 * strtoll(value, NULL, 10);
   }
+}
+
+void
+Discord_ratelimit_buckets_cleanup(struct discord_api_s *api)
+{
+  //clean bucket routes
+  tdestroy(&api->ratelimit.root_routes, &free);
+  
+  //clean client buckets
+  for (size_t i=0; i < api->ratelimit.num_buckets; ++i) {
+    free(api->ratelimit.buckets[i]);
+  }
+  free(api->ratelimit.buckets);
 }

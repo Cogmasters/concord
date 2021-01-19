@@ -196,11 +196,14 @@ Discord_api_init(struct discord_api_s *api, char token[])
 void
 Discord_api_cleanup(struct discord_api_s *api)
 {
+  Discord_ratelimit_buckets_cleanup(api);
+
   curl_slist_free_all(api->req_header);
   curl_easy_cleanup(api->ehandle); 
 
-  if (api->body.str)
+  if (api->body.str) {
     free(api->body.str);
+  }
 }
 
 /* set specific http method used for the request */
@@ -257,14 +260,14 @@ perform_request(
   struct discord_api_s *api,
   void *p_object, 
   discord_load_obj_cb *load_cb,
-  char *bucket_route)
+  char endpoint[])
 {
   //try to perform the request and analyze output
   enum http_action {
     DONE, RETRY, ABORT
   } action;
 
-  struct api_bucket_s *bucket = Discord_ratelimit_tryget_bucket(api, bucket_route);
+  struct api_bucket_s *bucket = Discord_ratelimit_tryget_bucket(api, endpoint);
   do {
     CURLcode ecode;
 
@@ -272,10 +275,10 @@ perform_request(
       //how long to wait before performing a connection in this bucket
       long long delay_ms = Discord_ratelimit_delay(bucket, true);
       D_PRINT("RATELIMITING (reach bucket's connection threshold):\n\t"
-              "\tRoute:\t\t%s\n\t"
+              "\tEndpoint:\t%s\n\t"
               "\tBucket:\t\t%s\n\t"
               "\tWait for:\t%lld ms",
-              bucket_route, bucket->hash, delay_ms);
+              endpoint, bucket->hash, delay_ms);
 
       sleep_ms(delay_ms);
     }
@@ -384,7 +387,7 @@ perform_request(
     switch (action) {
     case DONE:
         if (!bucket) {
-          bucket = Discord_ratelimit_assign_bucket(api, bucket_route);
+          bucket = Discord_ratelimit_assign_bucket(api, endpoint);
         }
         Discord_ratelimit_parse_header(bucket, &api->pairs);
     /* fall through */    
@@ -426,7 +429,5 @@ Discord_api_request(
 
   set_method(api, http_method, postfields); //set the request method
   set_url(api, url_route); //set the request URL
-
-  char *bucket_route = Discord_ratelimit_route(endpoint);
-  perform_request(api, p_object, load_cb, bucket_route); //perform the request
+  perform_request(api, p_object, load_cb, endpoint); //perform the request
 }
