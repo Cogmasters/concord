@@ -20,7 +20,7 @@ void on_message_create(
     const discord_message_t *message)
 {
   // make sure bot ignores msgs from other bots
-  if (true == message->author->bot)
+  if (message->author->bot)
     return;
   // make sure it ignores itself
   if (0 == strcmp(self->username, message->author->username))
