@@ -158,9 +158,10 @@ enum ws_opcodes {
 };
 
 enum ws_status {
-  WS_DISCONNECTED, //connected to ws
-  WS_RECONNECTING, //attempting reconnection to ws
-  WS_CONNECTED,    //disconnected from ws
+  WS_DISCONNECTED,  //disconnected from ws
+  WS_RESUME,        //attempt to resume ws session
+  WS_FRESH,         //attempt a fresh ws session (session timed out)
+  WS_CONNECTED,     //connected to ws
 };
 
 struct discord_ws_s {
