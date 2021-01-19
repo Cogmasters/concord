@@ -23,37 +23,18 @@ timestamp_ms()
   return t.tv_sec*1000 + lround(t.tv_nsec/1.0e6);
 }
 
-static char*
-get_header_value(struct api_header_s *pairs, char header_field[])
-{
-  for (int i=0; i < pairs->size; ++i) {
-    if (STREQ(header_field, pairs->field[i])) {
-      return pairs->value[i];
-    }
-  }
-
-  return NULL;
-}
-
 long long
 Discord_ratelimit_delay(struct api_bucket_s *bucket, bool use_clock)
 {
   if (bucket->remaining) return 0; //means we don't have any delay
 
-  long long delay_ms;
-  if (true == use_clock || !bucket->reset_after) {
-    long long utc = timestamp_ms();
-
-    delay_ms = bucket->reset - utc;
-    if (delay_ms < 0) {
-      delay_ms = 0;
-    }
-  }
-  else {
-    delay_ms = bucket->reset_after;
+  if (true == use_clock || !bucket->reset_after_ms) {
+    long long delay_ms = bucket->reset_ms - timestamp_ms();
+    if (delay_ms < 0) return 0;
+    if (delay_ms < bucket->reset_after_ms) return delay_ms;
   }
 
-  return delay_ms;
+  return bucket->reset_after_ms;
 }
 
 static int
@@ -83,6 +64,18 @@ Discord_ratelimit_tryget_bucket(struct discord_api_s *api, char *bucket_route)
   void *ret = tfind(&search_route, &api->ratelimit.root_routes, &routecmp);
 
   return (ret) ? (*(struct api_route_s**)ret)->p_bucket : NULL;
+}
+
+static char*
+get_header_value(struct api_header_s *pairs, char header_field[])
+{
+  for (int i=0; i < pairs->size; ++i) {
+    if (STREQ(header_field, pairs->field[i])) {
+      return pairs->value[i];
+    }
+  }
+
+  return NULL;
 }
 
 //assign route to exiting / new bucket
@@ -139,11 +132,11 @@ Discord_ratelimit_parse_header(struct api_bucket_s *bucket, struct api_header_s 
 
   value = get_header_value(pairs, "x-ratelimit-reset-after");
   if (NULL != value) {
-    bucket->reset_after = 1000 * strtoll(value, NULL, 10);
+    bucket->reset_after_ms = 1000 * strtoll(value, NULL, 10);
   }
 
   value = get_header_value(pairs, "x-ratelimit-reset");
   if (NULL != value) {
-    bucket->reset = 1000 * strtoll(value, NULL, 10);
+    bucket->reset_ms = 1000 * strtoll(value, NULL, 10);
   }
 }

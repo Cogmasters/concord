@@ -11,6 +11,18 @@
 
 #define BASE_API_URL "https://discord.com/api"
 
+
+static void
+sleep_ms(const long long delay_ms)
+{
+  const struct timespec t = {
+    .tv_sec = delay_ms / 1000,
+    .tv_nsec = (delay_ms % 1000) * 1e6
+  };
+
+  nanosleep(&t, NULL);
+}
+
 static char*
 http_code_print(enum http_code code)
 {
@@ -265,7 +277,7 @@ perform_request(
               "\tWait for:\t%lld ms",
               bucket_route, bucket->hash, delay_ms);
 
-      usleep(delay_ms * 1000);
+      sleep_ms(delay_ms);
     }
 
     ecode = curl_easy_perform(api->ehandle); //perform the connection
@@ -339,10 +351,10 @@ perform_request(
                     "[message]%s [retry_after]%lld",
                     message, &retry_after);
 
-        D_NOTOP_PRINT("Ratelimit Message: %s (wait: %llds)",
+        D_NOTOP_PRINT("Ratelimit Message: %s (wait: %lld ms)",
             message, retry_after);
 
-        usleep(retry_after*1000);
+        sleep_ms(retry_after);
 
         break;
      }
@@ -350,7 +362,7 @@ perform_request(
         reason = "There was not a gateway available to process your request. Wait a bit and retry.";
         action = RETRY;
 
-        usleep(5000); //wait a bit
+        sleep_ms(5000); //wait a bit
         break;
     case CURL_NO_RESPONSE:
         reason = "Curl couldn't fetch a HTTP response.";

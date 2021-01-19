@@ -79,8 +79,8 @@ struct api_route_s {
 struct api_bucket_s {
   char *hash; //the hash associated with this bucket
   int remaining; //connections this bucket can do before cooldown
-  long long reset_after;
-  long long reset;
+  long long reset_after_ms;
+  long long reset_ms;
 };
 
 struct discord_api_s {
