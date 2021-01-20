@@ -71,11 +71,6 @@ struct api_header_s {
   int size;
 };
 
-struct api_route_s {
-  char *str; //bucket route
-  struct api_bucket_s *p_bucket; //bucket assigned to this route
-};
-
 struct api_bucket_s {
   char *hash; //the hash associated with this bucket
   int remaining; //connections this bucket can do before cooldown

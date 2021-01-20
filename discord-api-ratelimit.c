@@ -12,6 +12,11 @@
 https://discord.com/developers/docs/topics/rate-limits#rate-limits */
 
 
+struct route_s {
+  char *str; //bucket route (endpoint, major parameter)
+  struct api_bucket_s *p_bucket; //bucket assigned to this route
+};
+
 /* returns current timestamp in milliseconds */
 //@todo move to discord-utils.c
 static long long
@@ -40,33 +45,30 @@ Discord_ratelimit_delay(struct api_bucket_s *bucket, bool use_clock)
 static int
 routecmp(const void *p_route1, const void *p_route2)
 {
-  struct api_route_s *route1 = (struct api_route_s*)p_route1;
-  struct api_route_s *route2 = (struct api_route_s*)p_route2;
+  struct route_s *route1 = (struct route_s*)p_route1;
+  struct route_s *route2 = (struct route_s*)p_route2;
 
-  return strcmp(route1->str, route2->str);
-}
+  int ret = strcmp(route1->str, route2->str);
+  if (0 == ret) return 0;
 
-/* get the route to be matched with a bucket */
-static char*
-bucket_route(char endpoint[])
-{
-  if (strstr(endpoint, CHANNEL)) return "channel_major";
-  if (strstr(endpoint, GUILD)) return "guild_major";
-/* @todo implement WEBHOOK
-  if (strstr(endpoint, WEBHOOK)) return "webhook_major"; */
-  return endpoint;
+  /* check if its a major parameter */
+  if (strstr(route1->str, CHANNEL) && strstr(route2->str, CHANNEL)) return 0;
+  if (strstr(route2->str, GUILD) && strstr(route2->str, GUILD)) return 0;
+//if (strstr(route2->str, WEBHOOK) && strstr(route2->str, WEBHOOK)) return 0;
+
+  return ret;
 }
 
 struct api_bucket_s*
 Discord_ratelimit_tryget_bucket(struct discord_api_s *api, char endpoint[])
 {
-  struct api_route_s search_route = {
-    .str = bucket_route(endpoint)
+  struct route_s search_route = {
+    .str = endpoint
   };
 
   void *ret = tfind(&search_route, &api->ratelimit.root_routes, &routecmp);
 
-  return (ret) ? (*(struct api_route_s**)ret)->p_bucket : NULL;
+  return (ret) ? (*(struct route_s**)ret)->p_bucket : NULL;
 }
 
 static char*
@@ -88,10 +90,10 @@ Discord_ratelimit_assign_bucket(struct discord_api_s *api, char endpoint[])
   char *bucket_hash = get_header_value(&api->pairs, "x-ratelimit-bucket");
   if (NULL == bucket_hash) return NULL;
 
-  struct api_route_s *new_route = calloc(1, sizeof *new_route);
+  struct route_s *new_route = calloc(1, sizeof *new_route);
   ASSERT_S(NULL != new_route, "Out of memory");
 
-  new_route->str = strdup(bucket_route(endpoint));
+  new_route->str = strdup(endpoint);
   ASSERT_S(NULL != new_route->str, "Out of memory");
 
   for (size_t i=0; i < api->ratelimit.num_buckets; ++i) {
@@ -120,7 +122,7 @@ Discord_ratelimit_assign_bucket(struct discord_api_s *api, char endpoint[])
 
   // add new route to tree
   void *ret = tsearch(new_route, &api->ratelimit.root_routes, &routecmp);
-  ASSERT_S((*(struct api_route_s**)ret) == new_route, "Couldn't create new bucket route");
+  ASSERT_S((*(struct route_s**)ret) == new_route, "Couldn't create new bucket route");
 
   return new_route->p_bucket;
 }
@@ -147,21 +149,18 @@ Discord_ratelimit_parse_header(struct api_bucket_s *bucket, struct api_header_s 
 static void
 route_cleanup(void *p_route)
 {
-  struct api_route_s *route = p_route;
+  struct route_s *route = p_route;
 
   free(route->str);
+  free(route->p_bucket);
+
   free(route);
 }
 
 void
 Discord_ratelimit_buckets_cleanup(struct discord_api_s *api)
 {
-  //clean bucket routes
+  //clean routes and buckets
   tdestroy(&api->ratelimit.root_routes, &route_cleanup);
-  
-  //clean client buckets
-  for (size_t i=0; i < api->ratelimit.num_buckets; ++i) {
-    free(api->ratelimit.buckets[i]);
-  }
   free(api->ratelimit.buckets);
 }
