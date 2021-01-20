@@ -9,6 +9,7 @@
 #include <libdiscord.h>
 #include "discord-common.h"
 
+
 #define BASE_API_URL "https://discord.com/api"
 
 
@@ -145,7 +146,7 @@ custom_easy_init(struct discord_api_s *api)
   ASSERT_S(NULL != new_ehandle, "Out of memory");
 
   CURLcode ecode;
-  /* DEBUG ONLY FUNCTIONS 
+  /* DEBUG ONLY FUNCTIONS */
   //set debug callback
   D_ONLY(ecode = curl_easy_setopt(new_ehandle, CURLOPT_DEBUGFUNCTION, &Discord_utils_debug_cb));
   D_ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
@@ -153,7 +154,7 @@ custom_easy_init(struct discord_api_s *api)
   //set ptr to settings containing dump files
   D_ONLY(ecode = curl_easy_setopt(new_ehandle, CURLOPT_DEBUGDATA, &api->p_client->settings));
   D_ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
-*/
+
   //enable verbose
   D_ONLY(ecode = curl_easy_setopt(new_ehandle, CURLOPT_VERBOSE, 1L));
   D_ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
@@ -262,17 +263,14 @@ perform_request(
   discord_load_obj_cb *load_cb,
   char endpoint[])
 {
-  //try to perform the request and analyze output
-  enum http_action {
+  enum { //possible actions taken after a http response code
     DONE, RETRY, ABORT
   } action;
 
+  //attempt to fetch a bucket handling connections from this endpoint
   struct api_bucket_s *bucket = Discord_ratelimit_tryget_bucket(api, endpoint);
   do {
-    CURLcode ecode;
-
-    if (bucket) {
-      //how long to wait before performing a connection in this bucket
+    if (bucket) { //bucket exists, we will check for pending delays
       long long delay_ms = Discord_ratelimit_delay(bucket, true);
       D_PRINT("RATELIMITING (reach bucket's connection threshold):\n\t"
               "\tEndpoint:\t%s\n\t"
@@ -280,32 +278,37 @@ perform_request(
               "\tWait for:\t%lld ms",
               endpoint, bucket->hash, delay_ms);
 
-      sleep_ms(delay_ms);
+      sleep_ms(delay_ms); //sleep for delay amount (if any)
     }
 
-    ecode = curl_easy_perform(api->ehandle); //perform the connection
+
+    CURLcode ecode;
+    //perform the connection
+    ecode = curl_easy_perform(api->ehandle);
     ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
-    //get response's http code
-    enum http_code code; //the http response code
+    //get response's code
+    const enum http_code code;
     ecode = curl_easy_getinfo(api->ehandle, CURLINFO_RESPONSE_CODE, &code);
     ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
     //get request's url
-    const char *url = NULL; //the request URL
+    const char *url = NULL;
     ecode = curl_easy_getinfo(api->ehandle, CURLINFO_EFFECTIVE_URL, &url);
     ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
     D_PRINT("Request URL: %s", url);
 
-    const char *reason;
+
+    const char *reason; //verbose reason of http code
     switch (code) {
     case HTTP_OK:
         reason = "The request was completed succesfully.";
         action = DONE;
 
-        if (p_object && load_cb)
+        if (p_object && load_cb) {
           (*load_cb)(p_object, api->body.str, api->body.size);
+        }
 
         break;
     case HTTP_CREATED:
@@ -386,10 +389,8 @@ perform_request(
 
     switch (action) {
     case DONE:
-        if (!bucket) {
-          bucket = Discord_ratelimit_assign_bucket(api, endpoint);
-        }
-        Discord_ratelimit_parse_header(bucket, &api->pairs);
+        //build and updates bucket's rate limiting information
+        Discord_ratelimit_build_bucket(api, bucket, endpoint);
     /* fall through */    
     case RETRY:
         D_NOTOP_PRINT("(%d)%s - %s", code, http_code_print(code), reason);
@@ -426,6 +427,7 @@ Discord_api_request(
   ASSERT_S(ret < (int)sizeof(url_route), "Out of bounds write attempt");
 
   va_end(args);
+
 
   set_method(api, http_method, postfields); //set the request method
   set_url(api, url_route); //set the request URL
