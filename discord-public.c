@@ -5,6 +5,7 @@
 
 #include <libdiscord.h>
 #include "discord-common.h"
+#include "settings.h"
 
 
 discord_t*
@@ -24,7 +25,6 @@ discord_init(char token[])
   new_client->settings.f_curl_dump = NULL;
   /* * * * * * * * * * */
 
-  //trim token at non-printable character (if any)
   for (int i=0; token[i] != '\0'; ++i) {
     if (!isgraph(token[i])) {
       token[i] = '\0';
@@ -39,6 +39,27 @@ discord_init(char token[])
   Discord_ws_init(&new_client->ws, token);
 
   return new_client;
+}
+
+discord_t*
+discord_fast_init(const char config_file[])
+{
+  struct bot_settings settings;
+
+  bot_settings_init(&settings, config_file);
+
+  discord_t *client;
+  if (settings.discord.token) {
+    client = discord_init(settings.discord.token);
+    if (NULL == client) return NULL;
+  }
+
+  if (settings.logging.dump_json.enable)
+    discord_dump_json(client, settings.logging.dump_json.filename);
+  if (settings.logging.dump_curl.enable)
+    discord_dump_curl(client, settings.logging.dump_curl.filename);
+
+  return client;
 }
 
 void

@@ -23,6 +23,6 @@ struct bot_settings {
   } logging;
 };
 
-extern void bot_settings_init (struct bot_settings*, char *filename);
+extern void bot_settings_init (struct bot_settings*, const char filename[]);
 
 #endif // SETTINGS_H
