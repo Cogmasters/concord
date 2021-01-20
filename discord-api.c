@@ -389,10 +389,8 @@ perform_request(
 
     switch (action) {
     case DONE:
-        if (!bucket) { //first time endpoint is used, assign it to a bucket
-          bucket = Discord_ratelimit_assign_bucket(api, endpoint);
-        }
-        Discord_ratelimit_parse_header(bucket, &api->pairs);
+        //build and updates bucket's rate limiting information
+        Discord_ratelimit_build_bucket(api, bucket, endpoint);
     /* fall through */    
     case RETRY:
         D_NOTOP_PRINT("(%d)%s - %s", code, http_code_print(code), reason);

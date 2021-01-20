@@ -252,8 +252,7 @@ void Discord_api_request(
 void Discord_ratelimit_buckets_cleanup(struct discord_api_s *api);
 long long Discord_ratelimit_delay(struct api_bucket_s *bucket, _Bool use_clock);
 struct api_bucket_s* Discord_ratelimit_tryget_bucket(struct discord_api_s *api, char endpoint[]);
-struct api_bucket_s* Discord_ratelimit_assign_bucket(struct discord_api_s *api, char endpoint[]);
-void Discord_ratelimit_parse_header(struct api_bucket_s *bucket, struct api_header_s *pairs);
+void Discord_ratelimit_build_bucket(struct discord_api_s *api, struct api_bucket_s *bucket, char endpoint[]);
 
 /* discord-websockets.c */
 
