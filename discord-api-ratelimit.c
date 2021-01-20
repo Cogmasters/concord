@@ -12,7 +12,10 @@
 https://discord.com/developers/docs/topics/rate-limits#rate-limits */
 
 
-struct route_s {
+/* this struct contains the bucket's route string and a pointer 
+ * to the bucket assigned to this route. it will be stored and 
+ * retrieved by with tree functions from search.h */
+struct _route_s {
   char *str; //bucket route (endpoint, major parameter)
   struct api_bucket_s *p_bucket; //bucket assigned to this route
 };
@@ -45,16 +48,16 @@ Discord_ratelimit_delay(struct api_bucket_s *bucket, bool use_clock)
 static int
 routecmp(const void *p_route1, const void *p_route2)
 {
-  struct route_s *route1 = (struct route_s*)p_route1;
-  struct route_s *route2 = (struct route_s*)p_route2;
+  struct _route_s *route1 = (struct _route_s*)p_route1;
+  struct _route_s *route2 = (struct _route_s*)p_route2;
 
   int ret = strcmp(route1->str, route2->str);
   if (0 == ret) return 0;
 
   /* check if its a major parameter */
   if (strstr(route1->str, CHANNEL) && strstr(route2->str, CHANNEL)) return 0;
-  if (strstr(route2->str, GUILD) && strstr(route2->str, GUILD)) return 0;
-//if (strstr(route2->str, WEBHOOK) && strstr(route2->str, WEBHOOK)) return 0;
+  if (strstr(route1->str, GUILD) && strstr(route2->str, GUILD)) return 0;
+//if (strstr(route1->str, WEBHOOK) && strstr(route2->str, WEBHOOK)) return 0;
 
   return ret;
 }
@@ -62,13 +65,13 @@ routecmp(const void *p_route1, const void *p_route2)
 struct api_bucket_s*
 Discord_ratelimit_tryget_bucket(struct discord_api_s *api, char endpoint[])
 {
-  struct route_s search_route = {
+  struct _route_s search_route = {
     .str = endpoint
   };
 
-  void *ret = tfind(&search_route, &api->ratelimit.root_routes, &routecmp);
+  void *ret = tfind(&search_route, &api->ratelimit.routes_root, &routecmp);
 
-  return (ret) ? (*(struct route_s**)ret)->p_bucket : NULL;
+  return (ret) ? (*(struct _route_s**)ret)->p_bucket : NULL;
 }
 
 static char*
@@ -90,7 +93,7 @@ Discord_ratelimit_assign_bucket(struct discord_api_s *api, char endpoint[])
   char *bucket_hash = get_header_value(&api->pairs, "x-ratelimit-bucket");
   if (NULL == bucket_hash) return NULL;
 
-  struct route_s *new_route = calloc(1, sizeof *new_route);
+  struct _route_s *new_route = calloc(1, sizeof *new_route);
   ASSERT_S(NULL != new_route, "Out of memory");
 
   new_route->str = strdup(endpoint);
@@ -121,8 +124,8 @@ Discord_ratelimit_assign_bucket(struct discord_api_s *api, char endpoint[])
   }
 
   // add new route to tree
-  void *ret = tsearch(new_route, &api->ratelimit.root_routes, &routecmp);
-  ASSERT_S((*(struct route_s**)ret) == new_route, "Couldn't create new bucket route");
+  void *ret = tsearch(new_route, &api->ratelimit.routes_root, &routecmp);
+  ASSERT_S((*(struct _route_s**)ret) == new_route, "Couldn't create new bucket route");
 
   return new_route->p_bucket;
 }
@@ -130,7 +133,9 @@ Discord_ratelimit_assign_bucket(struct discord_api_s *api, char endpoint[])
 void
 Discord_ratelimit_parse_header(struct api_bucket_s *bucket, struct api_header_s *pairs)
 { 
-  char *value = get_header_value(pairs, "x-ratelimit-remaining");
+  char *value; //fetch header value as string
+
+  value = get_header_value(pairs, "x-ratelimit-remaining");
   if (NULL != value) {
     bucket->remaining =  strtol(value, NULL, 10);
   }
@@ -149,18 +154,23 @@ Discord_ratelimit_parse_header(struct api_bucket_s *bucket, struct api_header_s 
 static void
 route_cleanup(void *p_route)
 {
-  struct route_s *route = p_route;
+  struct _route_s *route = p_route;
 
-  free(route->str);
-  free(route->p_bucket);
-
+  free(route->str); //clean the bucket route string
   free(route);
 }
 
+/* clean routes and buckets */
 void
 Discord_ratelimit_buckets_cleanup(struct discord_api_s *api)
 {
-  //clean routes and buckets
-  tdestroy(&api->ratelimit.root_routes, &route_cleanup);
+  //destroy every route encountered
+  tdestroy(&api->ratelimit.routes_root, &route_cleanup);
+
+  //destroy every client bucket found
+  for (size_t i=0; i < api->ratelimit.num_buckets; ++i) {
+    free(api->ratelimit.buckets[i]->hash);
+    free(api->ratelimit.buckets[i]);
+  }
   free(api->ratelimit.buckets);
 }

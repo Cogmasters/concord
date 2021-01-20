@@ -85,10 +85,11 @@ struct discord_api_s {
   struct api_header_s pairs; //the key/field pairs response header
 
   struct { /* RATELIMITING STRUCTURE */
-    void *root_routes; //check GNU tree functions from search.h
-
-    struct api_bucket_s **buckets;
-    size_t num_buckets;
+    struct api_bucket_s **buckets; //active client buckets
+    size_t num_buckets; //amount of active client buckets
+    
+    //check GNU tree functions from search.h
+    void *routes_root; //the encountered routes tree's root
   } ratelimit;
 
   CURL *ehandle; //the curl's easy handle used to perform requests
