@@ -187,6 +187,7 @@ void discord_global_init();
 void discord_global_cleanup();
 
 discord_t* discord_init(char token[]);
+discord_t* discord_fast_init(const char config_file[]);
 void discord_cleanup(discord_t *client);
 
 void discord_setcb_idle(discord_t *client, discord_idle_cb *user_cb);

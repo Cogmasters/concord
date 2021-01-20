@@ -1,21 +1,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
-
 #include <libdiscord.h>
-#include "settings.h"
+
 
 int main(int argc, char *argv[])
 {
-  static struct bot_settings settings;
-
+  const char *config_file;
   if (argc > 1)
-    bot_settings_init(&settings, argv[1]);
+    config_file = argv[1];
   else
-    bot_settings_init(&settings, "bot.config");
+    config_file = "bot.config";
 
   discord_global_init();
-  discord_t *client = discord_init(settings.discord.token);
+
+  discord_t *client = discord_fast_init(config_file);
   assert(NULL != client);
 
   discord_user_t *self = discord_user_init(); 
@@ -27,5 +26,6 @@ int main(int argc, char *argv[])
   discord_user_cleanup(self);
 
   discord_cleanup(client);
+
   discord_global_cleanup();
 }

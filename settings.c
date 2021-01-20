@@ -8,7 +8,7 @@
 
 
 static char*
-load_whole_file(char filename[], size_t *len) {
+load_whole_file(const char filename[], size_t *len) {
   FILE *f = fopen(filename,"rb"); 
   if (!f) {
     char *s = strerror(errno);
@@ -28,7 +28,7 @@ load_whole_file(char filename[], size_t *len) {
 }
 
 void
-bot_settings_init(struct bot_settings *settings, char filename[])
+bot_settings_init(struct bot_settings *settings, const char filename[])
 {
   size_t len;
   char *str = load_whole_file(filename, &len);
