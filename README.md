@@ -22,8 +22,8 @@ The only dependencies that is needed is curl-7.64.0 or higher built with openssl
 
 For Ubuntu and Debian
 ```
-sudo apt-get install -y build-essential libssl-dev
-sudo apt-get install -y libcurl4-openssl-dev
+sudo apt-get install -y build-essential 
+sudo apt-get install -y libcurl4-openssl-dev libssl-dev
 ```
 
 \* If you do not have Ubuntu or Debian but have Windows 10, you can install WSL2 and get either Ubuntu or Debian [here](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
