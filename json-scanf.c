@@ -49,6 +49,7 @@ struct extractor_specifier {
   void *recipient; //must be a pointer
   bool is_applied;
   bool has_dynamic_size;
+  bool has_unknown_size;
 };
 
 static char*
@@ -124,7 +125,14 @@ match_path (char *buffer, jsmntok_t *t,
   if (STREQ(es->type_specifier, "char*")){
       switch (t[i].type) {
       case JSMN_STRING:
-          if (es->size) {
+          if (es->has_unknown_size) {
+            char ** p = (char **) es->recipient;
+            size_t len = t[i].end - t[i].start + 1;
+            *p = malloc(len);
+            int ret = snprintf(*p, len, "%.*s", len - 1, buffer+t[i].start);
+            ASSERT_S((size_t) ret < len, "out-of-bounds write");
+          }
+          else if (es->size) {
             int ret = snprintf((char *) es->recipient, es->size,
                                "%.*s", t[i].end - t[i].start,
                                buffer+t[i].start);
@@ -151,7 +159,14 @@ match_path (char *buffer, jsmntok_t *t,
       }
   }
   else if (STREQ(es->type_specifier, "copy")) {
-    if (es->size) {
+    if (es->has_unknown_size) {
+      char ** p = (char **) es->recipient;
+      size_t len = t[i].end - t[i].start + 1;
+      *p = malloc(len);
+      int ret = snprintf(*p, len, "%.*s", len - 1, buffer+t[i].start);
+      ASSERT_S((size_t) ret < len, "out-of-bounds write");
+    }
+    else if (es->size) {
       int ret = snprintf((char *) es->recipient, es->size,
                          "%.*s", t[i].end - t[i].start, buffer + t[i].start);
       ASSERT_S((size_t)ret < es->size, "out-of-bounds write");
@@ -278,7 +293,7 @@ parse_type_specifier(char *specifier, struct extractor_specifier *es)
   char *start = specifier, *end;
   long size = strtol(start, &end, 10);
 
-  bool is_valid_size = false, has_dsize = false;
+  bool is_valid_size = false, has_dsize = false, has_unknown_size = false;
   if (end != start) {
     is_valid_size = true;
     specifier = end; // jump to the end of number
@@ -287,16 +302,22 @@ parse_type_specifier(char *specifier, struct extractor_specifier *es)
     has_dsize = true;
     specifier += 2; // eat up '.' and '*'
   }
+  else if ('?' == *specifier) {
+    has_unknown_size = true;
+    specifier ++;
+  }
 
   if (STRNEQ(specifier, "s", 1)){
     es->size = (is_valid_size) ? size : 0;
     es->has_dynamic_size = has_dsize;
+    es->has_unknown_size = has_unknown_size;
     strcpy(es->type_specifier, "char*");
     return specifier + 1;
   }
   else if (STRNEQ(specifier, "S", 1)) {
     es->size = (is_valid_size) ? size : 0;
     es->has_dynamic_size = has_dsize;
+    es->has_unknown_size = has_unknown_size;
     strcpy(es->type_specifier, "copy");
     return specifier + 1;
   }
@@ -476,8 +497,9 @@ format_parse(char *format, size_t *n)
 }
 
 /*
+ *
  *  format grammar:
- *      ([key1]|[<n>])+%(d|ld|lld|f|lf|b|<n>s|<n>S|T) <space>
+ *      ([key1]|[<n>])+%(d|ld|lld|f|lf|b|<n>s|<n>S|.*s|.*S|?s|?S|T) <space>
  *
  *      n is an integer
  *
@@ -493,6 +515,11 @@ format_parse(char *format, size_t *n)
  *
  *      %<n>s %<n>S: length modifier can be applied to %s to limit how many bytes
  *      can be copied to the receiving parameter.
+ *
+ *      %.*s %.*S:
+ *
+ *      %?s %?S:
+ *
  */
 int
 json_scanf(char *buffer, size_t buf_size, char *format, ...)

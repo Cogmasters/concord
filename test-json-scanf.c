@@ -63,6 +63,18 @@ int main(void) {
   printf("t %s, s %d, op %d, nstr %s, i3 %d, i4 %d, bigs %s, bigS %s\n",
          str1, integer1, integer2, str2, i3, i4, bigs, bigS);
 
+  char * p = NULL, *q = NULL;
+  json_scanf(str, strlen(str), "[bigs]%?s [bigs]%?S", &p, &q);
+  if (p) {
+    printf("unknown string size: bigs %s\n", p);
+    free(p);
+  }
+
+  if (q) {
+    printf("unknown string size: bigS %s\n", q);
+    free(q);
+  }
+
   printf ("tok %.*s\n", (int)tok.length, tok.start);
   return EXIT_SUCCESS;
 }
