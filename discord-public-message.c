@@ -122,6 +122,10 @@ discord_send_message(discord_t *client, const char channel_id[], const char cont
     D_PUTS("Can't send an empty message to Discord: missing 'content'");
     return;
   }
+  if (strlen(content) >= MAX_MESSAGE_LEN) {
+    D_PRINT("Content length exceeds 2000 characters threshold (%ld)", strlen(content));
+    return;
+  }
 
   char payload[MAX_PAYLOAD_LEN];
   int ret = snprintf(payload, MAX_PAYLOAD_LEN, "{\"content\":\"%s\"}", content);
