@@ -36,6 +36,8 @@ set(SOURCE_FILES
         libdiscord.h
         settings.c
         settings.h
+        gthb-v3.h
+        gthb-v3-git-database.cpp
         ${JSON_SCANF})
 
 
