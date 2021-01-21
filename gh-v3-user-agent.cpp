@@ -72,8 +72,7 @@ namespace github { namespace v3 { namespace user_agent {
     struct curl_slist *new_header = NULL;
     curl_slist_append(new_header, "Accept: application/vnd.github.v3+json");
     curl_slist_append(new_header, "Content-Type: application/json");
-    curl_slist_append(new_header,
-                      "User-Agent: orca (https://www.cee-studio/orca, 0.1)");
+    curl_slist_append(new_header, "User-Agent: curl");
     return new_header;
   }
 
