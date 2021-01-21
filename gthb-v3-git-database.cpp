@@ -1,4 +1,3 @@
-#include "json_scanf.h"
 #include "gthb-v3.h"
 
 namespace github { namespace v3 { namespace git_database {
@@ -20,7 +19,7 @@ namespace github { namespace v3 { namespace git_database {
                       resp,
                       load_resp,
                       post_field,
-                      "POST",
+                      POST,
                       "/repos/%s/%s/git/blobs",
                       d->owner,
                       d->repo);
@@ -52,7 +51,7 @@ namespace github { namespace v3 { namespace git_database {
                       resp,
                       load_resp,
                       NULL,
-                      "GET",
+                      GET,
                       "/repos/%s/%s/git/blobs/%s",
                       p->owner,
                       p->repo,

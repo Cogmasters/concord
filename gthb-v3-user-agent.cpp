@@ -5,24 +5,18 @@
 #include <ctype.h>
 #include <unistd.h> //for usleep
 #include <stdarg.h>
+#include <stddef.h>
+//#include "discord-tool-debug.h"
+//#include "libdiscord.h"
+#include "json-common.h"
+#include "http-common.h"
+#include "json-scanf.h"
 
 #define BASE_API_URL   "https://api.github.com"
 
 namespace github {
 namespace v3 { 
 namespace user_agent {
-
-#define MAX_HEADER_SIZE 100
-
-struct api_resbody_s {
-    char *str; //the response str
-    size_t size; //the response str length
-};
-struct api_header_s {
-    char field[MAX_HEADER_SIZE][MAX_HEADER_LEN];
-    char value[MAX_HEADER_SIZE][MAX_HEADER_LEN];
-    int size;
-};
 
 struct data {
   struct curl_slist *req_header; //the request header sent to the api
@@ -31,46 +25,9 @@ struct data {
   struct api_header_s pairs; //the key/field pairs response header
   CURL *ehandle; //the curl's easy handle used to perform requests
 
-  struct _settings_s { //@todo this whole struct is temporary
-    char *token;
-    FILE *f_json_dump;
-    FILE *f_curl_dump;
-  } settings;
+  struct _settings_s settings;
 };
 
-static void
-sleep_ms(const long long delay_ms)
-{
-  const struct timespec t = {
-          .tv_sec = delay_ms / 1000,
-          .tv_nsec = (delay_ms % 1000) * 1e6
-  };
-
-  nanosleep(&t, NULL);
-}
-
-static char*
-http_code_print(enum http_code code)
-{
-  switch (code) {
-    CASE_RETURN_STR(HTTP_OK);
-    CASE_RETURN_STR(HTTP_CREATED);
-    CASE_RETURN_STR(HTTP_NO_CONTENT);
-    CASE_RETURN_STR(HTTP_NOT_MODIFIED);
-    CASE_RETURN_STR(HTTP_BAD_REQUEST);
-    CASE_RETURN_STR(HTTP_UNAUTHORIZED);
-    CASE_RETURN_STR(HTTP_FORBIDDEN);
-    CASE_RETURN_STR(HTTP_NOT_FOUND);
-    CASE_RETURN_STR(HTTP_METHOD_NOT_ALLOWED);
-    CASE_RETURN_STR(HTTP_TOO_MANY_REQUESTS);
-    CASE_RETURN_STR(HTTP_GATEWAY_UNAVAILABLE);
-    default:
-      if (code >= 500) {
-        return "5xx SERVER ERROR";
-      }
-      ERROR("Invalid HTTP response code (code: %d)", code);
-  }
-}
 static struct curl_slist*
 reqheader_init()
 {
@@ -81,127 +38,19 @@ reqheader_init()
   return new_header;
 }
 
-/* a simple http header parser, splits field/value pairs at ':'
-* see: https://curl.se/libcurl/c/CURLOPT_HEADERFUNCTION.html */
-static size_t
-curl_resheader_cb(char *str, size_t size, size_t nmemb, void *p_userdata)
-{
-  size_t realsize = size * nmemb;
-  struct api_header_s *pairs = p_userdata;
-
-  char *ptr;
-  if (!(ptr = strchr(str, ':'))) { //returns if can't find ':' token match
-    return realsize;
-  }
-
-  *ptr = '\0'; //replace ':' with '\0' to separate field from value
-
-  int ret = snprintf(pairs->field[pairs->size], MAX_HEADER_LEN, "%s", str);
-  ASSERT_S(ret < MAX_HEADER_LEN, "oob of paris->field");
-
-  if (!(ptr = strstr(ptr + 1, "\r\n"))) {//returns if can't find CRLF match
-    return realsize;
-  }
-
-  *ptr = '\0'; //replace CRLF with '\0' to isolate field
-
-  //adjust offset to start of value
-  int offset = 1; //offset starts after '\0' separator token
-  while (isspace(str[strlen(str) + offset])) {
-    ++offset;
-  }
-
-  //get the value part from string
-  ret = snprintf(pairs->value[pairs->size], MAX_HEADER_LEN, "%s",
-                 &str[strlen(str) + offset]);
-  ASSERT_S(ret < MAX_HEADER_LEN, "oob write attempt");
-
-  ++pairs->size; //update header amount of field/value pairs
-  ASSERT_S(pairs->size < MAX_HEADER_SIZE, "oob write of pairs");
-
-  return realsize;
-}
-
-/* get api response body string
-* see: https://curl.se/libcurl/c/CURLOPT_WRITEFUNCTION.html */
-static size_t
-curl_resbody_cb(char *str, size_t size, size_t nmemb, void *p_userdata)
-{
-  size_t realsize = size * nmemb;
-  struct api_resbody_s *body = p_userdata;
-
-  //update response body string size
-  char *tmp = realloc(body->str, body->size + realsize + 1);
-  body->str = tmp;
-  memcpy(body->str + body->size, str, realsize);
-  body->size += realsize;
-  body->str[body->size] = '\0';
-
-  return realsize;
-}
-
-/* initialize curl's easy handle with some default opt */
-static CURL*
-custom_easy_init(struct data *api)
-{
-  CURL *new_ehandle = curl_easy_init();
-
-  CURLcode ecode;
-  /* DEBUG ONLY FUNCTIONS */
-  //set debug callback
-  D_ONLY(ecode = curl_easy_setopt(new_ehandle, CURLOPT_DEBUGFUNCTION,
-                                  &Discord_utils_debug_cb));
-  D_ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
-
-  //set ptr to settings containing dump files
-  D_ONLY(ecode = curl_easy_setopt(new_ehandle, CURLOPT_DEBUGDATA,
-                                  &api->settings));
-  D_ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
-
-  //enable verbose
-  D_ONLY(ecode = curl_easy_setopt(new_ehandle, CURLOPT_VERBOSE, 1L));
-  D_ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
-  /* * * * * * * * * * * */
-
-  //set ptr to request header we will be using for API communication
-  ecode = curl_easy_setopt(new_ehandle, CURLOPT_HTTPHEADER,
-                           api->req_header);
-  ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
-
-  //enable follow redirections
-  ecode = curl_easy_setopt(new_ehandle, CURLOPT_FOLLOWLOCATION, 1L);
-  ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
-
-  //set response body callback
-  ecode = curl_easy_setopt(new_ehandle, CURLOPT_WRITEFUNCTION,
-                           &curl_resbody_cb);
-  ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
-
-  //set ptr to response body to be filled at callback
-  ecode = curl_easy_setopt(new_ehandle, CURLOPT_WRITEDATA, &api->body);
-  ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
-
-  //set response header callback
-  ecode = curl_easy_setopt(new_ehandle, CURLOPT_HEADERFUNCTION,
-                           &curl_resheader_cb);
-  ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
-
-  //set ptr to response header to be filled at callback
-  ecode = curl_easy_setopt(new_ehandle, CURLOPT_HEADERDATA, &api->pairs);
-  ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
-
-  return new_ehandle;
-}
-
 void
 init(struct data *api, char username[], char token[])
 {
   api->req_header = reqheader_init();
-  api->ehandle = custom_easy_init(api);
+  api->ehandle = custom_easy_init(&(api->settings),
+                                  NULL,
+                                  api->req_header,
+                                  &api->pairs,
+                                  &api->body);
 }
 
 void
-cleanup(struct discord_api_s *api)
+cleanup(struct data *api)
 {
   curl_slist_free_all(api->req_header);
   curl_easy_cleanup(api->ehandle);
@@ -211,38 +60,6 @@ cleanup(struct discord_api_s *api)
   }
 }
 
-/* set specific http method used for the request */
-static void
-set_method(struct data *api, enum http_method method, char postfields[])
-{
-  CURLcode ecode;
-  switch (method) {
-    case DELETE:
-      ecode = curl_easy_setopt(api->ehandle, CURLOPT_CUSTOMREQUEST, "DELETE");
-      break;
-    case GET:
-      ecode = curl_easy_setopt(api->ehandle, CURLOPT_HTTPGET, 1L);
-      break;
-    case POST:
-      ecode = curl_easy_setopt(api->ehandle, CURLOPT_POST, 1L);
-      //set ptr to payload that will be sent via POST/PUT
-      ecode = curl_easy_setopt(api->ehandle, CURLOPT_POSTFIELDS,
-                               postfields);
-      ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
-      break;
-    case PATCH:
-      ecode = curl_easy_setopt(api->ehandle, CURLOPT_CUSTOMREQUEST, "PATCH");
-      break;
-    case PUT:
-      ecode = curl_easy_setopt(api->ehandle, CURLOPT_UPLOAD, 1L);
-      ecode = curl_easy_setopt(api->ehandle, CURLOPT_POSTFIELDS,
-                               postfields);
-      ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
-      break;
-    default:
-      ERROR("Unknown http method (code: %d)", method);
-  }
-}
 
 /* set specific url used for request */
 static void
@@ -368,7 +185,7 @@ perform_request(struct data *api, void *p_object, load_obj_cb *load_cb,
     switch (action) {
       case DONE:
         //build and updates bucket's rate limiting information
-        Discord_ratelimit_build_bucket(api, bucket, endpoint);
+        //Discord_ratelimit_build_bucket(api, bucket, endpoint);
         /* fall through */
       case RETRY:
         D_NOTOP_PRINT("(%d)%s - %s", code, http_code_print(code),

@@ -3,8 +3,8 @@
 #include <curl/curl.h>
 
 /* UTILITY MACROS */
-#define STREQ(str1, str2) (0 == strcmp(str1, str2))
-#define STRNEQ(str1, str2, n) (0 == strncmp(str1, str2, n))
+//#define STREQ(str1, str2) (0 == strcmp(str1, str2))
+//#define STRNEQ(str1, str2, n) (0 == strncmp(str1, str2, n))
 //check if string is empty
 #define IS_EMPTY_STRING(str) (!(str) || !*(str))
 //if case matches return token as string
@@ -40,6 +40,8 @@ struct api_resbody_s {
 };
 
 #define MAX_HEADER_SIZE 100
+#define MAX_URL_LEN     512
+#define MAX_HEADER_LEN  512
 
 struct api_header_s {
   char field[MAX_HEADER_SIZE][MAX_HEADER_LEN];
