@@ -128,4 +128,60 @@ set_method(CURL *ehandle, enum http_method method, char postfields[])
   }
 }
 
+static size_t
+curl_resheader_cb(char *str, size_t size, size_t nmemb, void *p_userdata)
+{
+  size_t realsize = size * nmemb;
+  struct api_header_s *pairs = p_userdata;
+
+  char *ptr;
+  if (!(ptr = strchr(str, ':'))) { //returns if can't find ':' token match
+    return realsize;
+  }
+
+  *ptr = '\0'; //replace ':' with '\0' to separate field from value
+
+  int ret = snprintf(pairs->field[pairs->size], MAX_HEADER_LEN, "%s", str);
+  ASSERT_S(ret < MAX_HEADER_LEN, "oob of paris->field");
+
+  if (!(ptr = strstr(ptr + 1, "\r\n"))) {//returns if can't find CRLF match
+    return realsize;
+  }
+
+  *ptr = '\0'; //replace CRLF with '\0' to isolate field
+
+  //adjust offset to start of value
+  int offset = 1; //offset starts after '\0' separator token
+  while (isspace(str[strlen(str) + offset])) {
+    ++offset;
+  }
+
+  //get the value part from string
+  ret = snprintf(pairs->value[pairs->size], MAX_HEADER_LEN, "%s",
+                 &str[strlen(str) + offset]);
+  ASSERT_S(ret < MAX_HEADER_LEN, "oob write attempt");
+
+  ++pairs->size; //update header amount of field/value pairs
+  ASSERT_S(pairs->size < MAX_HEADER_SIZE, "oob write of pairs");
+
+  return realsize;
+}
+
+/* get api response body string
+* see: https://curl.se/libcurl/c/CURLOPT_WRITEFUNCTION.html */
+static size_t
+curl_resbody_cb(char *str, size_t size, size_t nmemb, void *p_userdata)
+{
+  size_t realsize = size * nmemb;
+  struct api_resbody_s *body = p_userdata;
+
+  //update response body string size
+  char *tmp = realloc(body->str, body->size + realsize + 1);
+  body->str = tmp;
+  memcpy(body->str + body->size, str, realsize);
+  body->size += realsize;
+  body->str[body->size] = '\0';
+
+  return realsize;
+}
 #endif
