@@ -56,7 +56,12 @@ struct _settings_s { //@todo this whole struct is temporary
 
 //callback for object to be loaded by api response
 typedef void (load_obj_cb)(void *p_obj, char *str, size_t len);
-
+typedef void (curl_debug_cb)(
+        CURL *ehandle,
+        curl_infotype type,
+        char *data,
+        size_t size,
+        void *p_userdata);
 
 static void
 sleep_ms(const long long delay_ms)
@@ -183,5 +188,58 @@ curl_resbody_cb(char *str, size_t size, size_t nmemb, void *p_userdata)
   body->str[body->size] = '\0';
 
   return realsize;
+}
+
+static CURL*
+custom_easy_init(struct _settings_s * settings,
+                 curl_debug_cb debug_cb,
+                 struct curl_slist * req_header,
+                 struct api_header_s * pairs,
+                 struct api_resbody_s * body)
+{
+  CURL *new_ehandle = curl_easy_init();
+
+  CURLcode ecode;
+  /* DEBUG ONLY FUNCTIONS */
+  //set debug callback
+  D_ONLY(ecode = curl_easy_setopt(new_ehandle, CURLOPT_DEBUGFUNCTION, debug_cb));
+  D_ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
+
+  //set ptr to settings containing dump files
+  D_ONLY(ecode = curl_easy_setopt(new_ehandle, CURLOPT_DEBUGDATA, settings));
+  D_ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
+
+  //enable verbose
+  D_ONLY(ecode = curl_easy_setopt(new_ehandle, CURLOPT_VERBOSE, 1L));
+  D_ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
+  /* * * * * * * * * * * */
+
+  //set ptr to request header we will be using for API communication
+  ecode = curl_easy_setopt(new_ehandle, CURLOPT_HTTPHEADER, req_header);
+  ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
+
+  //enable follow redirections
+  ecode = curl_easy_setopt(new_ehandle, CURLOPT_FOLLOWLOCATION, 1L);
+  ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
+
+  //set response body callback
+  ecode = curl_easy_setopt(new_ehandle, CURLOPT_WRITEFUNCTION,
+                           &curl_resbody_cb);
+  ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
+
+  //set ptr to response body to be filled at callback
+  ecode = curl_easy_setopt(new_ehandle, CURLOPT_WRITEDATA, body);
+  ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
+
+  //set response header callback
+  ecode = curl_easy_setopt(new_ehandle, CURLOPT_HEADERFUNCTION,
+                           &curl_resheader_cb);
+  ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
+
+  //set ptr to response header to be filled at callback
+  ecode = curl_easy_setopt(new_ehandle, CURLOPT_HEADERDATA, pairs);
+  ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
+
+  return new_ehandle;
 }
 #endif
