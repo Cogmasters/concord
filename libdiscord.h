@@ -16,18 +16,18 @@
 typedef struct discord_s discord_t;
 
 enum discord_limits {
-  MAX_NAME_LEN           = 100,
+  MAX_NAME_LEN           = 101,
   MAX_TOPIC_LEN          = 1024,
   MAX_DESCRIPTION_LEN    = 1024,
-  MAX_USERNAME_LEN       = 32,
-  MAX_DISCRIMINATOR_LEN  = 10,
+  MAX_USERNAME_LEN       = 32 + 1,
+  MAX_DISCRIMINATOR_LEN  = 4 + 1,
   MAX_HASH_LEN           = 1024,
-  MAX_LOCALE_LEN         = 15,
+  MAX_LOCALE_LEN         = 16,
   MAX_EMAIL_LEN          = 254,
-  MAX_REGION_LEN         = 15,
+  MAX_REGION_LEN         = 16,
   MAX_HEADER_LEN         = 512,
   MAX_URL_LEN            = 512,
-  MAX_MESSAGE_LEN        = 2048,
+  MAX_MESSAGE_LEN        = 2000 + 1,
   MAX_PAYLOAD_LEN        = 4096,
 };
 
