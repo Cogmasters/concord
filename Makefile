@@ -46,15 +46,15 @@ test : all test-api.c test-ws.c test-json-scanf.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \
 		test-json-scanf.c -o test-json-scanf.exe $(LIBS_LDFLAGS)
 
-echo-bot : all echo-bot.c
+bot-echo : all bot-echo.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \
-		echo-bot.c -o echo-bot.exe $(LIBS_LDFLAGS)
-pin-bot : all pin-bot.c
+		bot-echo.c -o bot-echo.exe $(LIBS_LDFLAGS)
+bot-pin : all bot-pin.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \
-		pin-bot.c -o pin-bot.exe $(LIBS_LDFLAGS)
-ping-pong-bot : all ping-pong-bot.c
+		bot-pin.c -o bot-pin.exe $(LIBS_LDFLAGS)
+bot-ping-pong : all bot-ping-pong.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \
-		ping-pong-bot.c -o ping-pong-bot.exe $(LIBS_LDFLAGS)
+		bot-ping-pong.c -o bot-ping-pong.exe $(LIBS_LDFLAGS)
 
 $(OBJDIR)/discord-%.o : discord-%.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
