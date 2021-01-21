@@ -87,7 +87,7 @@ perform_request(struct data *api, void *p_object, load_obj_cb *load_cb,
     ecode = curl_easy_perform(api->ehandle);
 
     //get response's code
-    const enum http_code code;
+    const enum http_code code = CURL_NO_RESPONSE;
     ecode = curl_easy_getinfo(api->ehandle, CURLINFO_RESPONSE_CODE, &code);
 
     //get request's url

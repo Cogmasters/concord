@@ -97,6 +97,7 @@ http_code_print(enum http_code code)
       }
       ERROR("Invalid HTTP response code (code: %d)", code);
   }
+  return NULL;
 }
 
 /* set specific http method used for the request */
@@ -139,7 +140,7 @@ static size_t
 curl_resheader_cb(char *str, size_t size, size_t nmemb, void *p_userdata)
 {
   size_t realsize = size * nmemb;
-  struct api_header_s *pairs = p_userdata;
+  struct api_header_s *pairs = (struct api_header_s *)p_userdata;
 
   char *ptr;
   if (!(ptr = strchr(str, ':'))) { //returns if can't find ':' token match
@@ -180,10 +181,10 @@ static size_t
 curl_resbody_cb(char *str, size_t size, size_t nmemb, void *p_userdata)
 {
   size_t realsize = size * nmemb;
-  struct api_resbody_s *body = p_userdata;
+  struct api_resbody_s *body = (struct api_resbody_s *)p_userdata;
 
   //update response body string size
-  char *tmp = realloc(body->str, body->size + realsize + 1);
+  char *tmp = (char *)realloc(body->str, body->size + realsize + 1);
   body->str = tmp;
   memcpy(body->str + body->size, str, realsize);
   body->size += realsize;
