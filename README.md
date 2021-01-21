@@ -28,7 +28,7 @@ sudo apt-get install -y libcurl4-openssl-dev libssl-dev
 
 \* If you do not have Ubuntu or Debian but have Windows 10, you can install WSL2 and get either Ubuntu or Debian [here](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
 
-### Compile
+#### Compile
 ```
 make bot-echo
 ```
@@ -44,10 +44,10 @@ make bot-echo
 
 3. Run `./bot-echo.exe` in the same folder of `bot.config`
 
-### Test bot-echo
+#### Test bot-echo
 Type any message in any public channel of the server that the bot is invited.
 
-### Terminate bot-echo
+#### Terminate bot-echo
 Close the Terminal that bot-echo is running or type "Ctrl-C" to kill it.
 
 
