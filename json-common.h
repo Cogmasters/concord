@@ -36,7 +36,7 @@
 #define D_FMT_PREFIX "[%s:%d] %s()\n\t"
 #define D_FMT_ARGS __FILE__, __LINE__, __func__
 
-#define __ERROR(fmt, ...) fprintf(D_OUT, D_FMT_PREFIX "ERROR:\t"fmt"\n%s", D_FMT_ARGS, __VA_ARGS__)
+#define __ERROR(fmt, ...) fprintf(D_OUT, D_FMT_PREFIX "ERROR:\t" fmt "\n%s", D_FMT_ARGS, __VA_ARGS__)
 #define ERROR(...) \
         do { \
             __ERROR(__VA_ARGS__, ""); \

@@ -32,9 +32,9 @@ static struct curl_slist*
 reqheader_init()
 {
   struct curl_slist *new_header = NULL;
-  curl_slist_append(new_header, "Accept: application/vnd.github.v3+json");
-  curl_slist_append(new_header, "Content-Type: application/json");
-  curl_slist_append(new_header, "User-Agent: curl");
+  new_header = curl_slist_append(new_header, "Accept: application/vnd.github.v3+json");
+  new_header = curl_slist_append(new_header, "Content-Type: application/json");
+  new_header = curl_slist_append(new_header, "User-Agent: curl");
   return new_header;
 }
 

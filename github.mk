@@ -18,7 +18,7 @@ LIBS_LDFLAGS	:= $(LIBDISCORD_LDFLAGS)
 
 LIBDISCORD_SLIB	:= $(LIBDIR)/libdiscord.a
 
-CFLAGS := -Wno-write-strings -fpermissive -O0 -g -DLIBDISCORD_DEBUG -D__stensal__
+CFLAGS := -std=c++03 -Wno-write-strings -fpermissive -O0 -g -DLIBDISCORD_DEBUG -D__stensal__
 
 CFLAGS += -D_DEFAULT_SOURCE
 
