@@ -36,14 +36,13 @@ int commit (char * username, char * token,
   run(&data, &file_sha, load_file_sha, NULL,
       GET, "/repos/%s/%s/contents/%s", username, repo_name, filename);
 
-  body.size =
-          asprintf(&body.str,
-                   "{"
-                           "\"message\": \"update file\","
-                           "\"content\": \"%s\","
-                           "\"branch\": \"%s\","
-                           "}",
-           content, branch_name);
+  body.size = json_asprintf(&body.str,
+                            "{"
+                                    "|message|: |update file|,"
+                                    "|content|: |%s|,"
+                                    "|branch|: |%s|,"
+                             "}",
+                            content, branch_name);
 
   init(&data, username, token);
   run(&data, NULL, NULL, &body,
@@ -51,13 +50,13 @@ int commit (char * username, char * token,
 
 
   body.size = asprintf(&body.str,
-           "{"
-                   "\"title\":\"%s\","
-           "\"body\":\"please pull this in\","
-           "\"head\":\"%s\","
-           "\"base\":\"master\""
-           "}",
-           branch_name, branch_name);
+                       "{"
+                               "|title|:|%s|,"
+                               "|body|:|please pull this in|,"
+                               "|head|:|%s|,"
+                               "|base|:|master|"
+                       "}",
+                       branch_name, branch_name);
 
   init(&data, username, token);
   run(&data, NULL, NULL, &body,
