@@ -42,7 +42,7 @@ int commit (char * username, char * token,
                                     "|message|: |update file|,"
                                     "|content|: |%s|,"
                                     "|branch|: |%s|,"
-                             "}",
+                            "}",
                             content, branch_name);
 
   init(&data, username, token);
@@ -50,14 +50,14 @@ int commit (char * username, char * token,
       PUT, "/repos/%s/%s/contents/%s", username, repo_name, filename);
 
 
-  body.size = asprintf(&body.str,
-                       "{"
+  body.size = json_asprintf(&body.str,
+                            "{"
                                "|title|:|%s|,"
                                "|body|:|please pull this in|,"
                                "|head|:|%s|,"
                                "|base|:|master|"
-                       "}",
-                       branch_name, branch_name);
+                            "}",
+                            branch_name, branch_name);
 
   init(&data, username, token);
   run(&data, NULL, NULL, &body,
