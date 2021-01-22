@@ -2,9 +2,9 @@ CC			?= gcc
 OBJDIR	:= obj
 LIBDIR	:= lib
 
-SRC			:= $(wildcard discord-*.c curl-websocket.c settings.c json-scanf.c json-asprintf.c)
-_OBJS		:= $(patsubst %.c, %.o, $(SRC))
-OBJS 		:= $(addprefix $(OBJDIR)/, $(_OBJS))
+SRC	:= $(wildcard discord-*.c curl-websocket.c settings.c json-scanf.c json-printf.c)
+_OBJS	:= $(patsubst %.c, %.o, $(SRC))
+OBJS 	:= $(addprefix $(OBJDIR)/, $(_OBJS))
 
 LIBDISCORD_CFLAGS	:= -I./
 LIBDISCORD_LDFLAGS	:=  -L./$(LIBDIR) -ldiscord -lcurl
@@ -62,7 +62,7 @@ $(OBJDIR)/settings.o : settings.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 $(OBJDIR)/json-scanf.o : json-scanf.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
-$(OBJDIR)/json-asprintf.o : json-asprintf.c
+$(OBJDIR)/json-printf.o : json-printf.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 $(OBJDIR)/curl-websocket.o : curl-websocket.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \

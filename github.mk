@@ -1,7 +1,7 @@
 OBJDIR	:= obj
 LIBDIR	:= lib
 
-SRC		:= $(wildcard github-v3-user-agent.cpp github-v3-git-database.cpp json-scanf.c settings.c tester-user-agent.cpp)
+SRC	:= $(wildcard github-v3-user-agent.cpp github-v3-git-database.cpp json-scanf.c json-printf.c settings.c tester-user-agent.cpp)
 _OBJS	:= $(patsubst %.cpp, %.o, $(SRC))
 OBJS1   += $(patsubst %.c, %.o, $(_OBJS))
 OBJS 	:= $(addprefix $(OBJDIR)/, $(OBJS1))
@@ -40,7 +40,8 @@ $(OBJDIR)/settings.o : settings.c
 
 $(OBJDIR)/json-scanf.o : json-scanf.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
-$(OBJDIR)/jscon-common.o : jscon-common.c
+
+$(OBJDIR)/json-printf.o : json-printf.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 
 $(OBJDIR)/tester-user-agent.o: tester-user-agent.cpp
