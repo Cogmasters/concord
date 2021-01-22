@@ -35,6 +35,8 @@ bot_settings_init(struct bot_settings *settings, const char filename[])
 
   json_scanf(str, len,
              "[discord][token]%s"
+             "[github][username]%s"
+             "[github][token]%s"
              "[logging][filename]%s"
              "[logging][level]%s"
              "[logging][dump_json][filename]%s"
@@ -42,6 +44,8 @@ bot_settings_init(struct bot_settings *settings, const char filename[])
              "[logging][dump_curl][filename]%s"
              "[logging][dump_curl][enable]%b",
              settings->discord.token,
+             settings->github.username,
+             settings->github.token,
              settings->logging.filename, 
              settings->logging.level,
              settings->logging.dump_json.filename,
@@ -50,6 +54,9 @@ bot_settings_init(struct bot_settings *settings, const char filename[])
              &settings->logging.dump_curl.enable);
 
   printf("discord.token %s\n", settings->discord.token);
+  printf("github.username %s\n", settings->github.username);
+  printf("github.token %s\n", settings->github.token);
+
   printf("logging.filename %s\n", settings->logging.filename);
   printf("logging.level %s\n", settings->logging.level);
   printf("logging.dump_json.filename %s\n", settings->logging.dump_json.filename);

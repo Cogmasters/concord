@@ -11,22 +11,13 @@
 #include "json-common.h"
 #include "http-common.h"
 #include "json-scanf.h"
+#include "github-v3.h"
 
 #define BASE_API_URL   "https://api.github.com"
 
 namespace github {
 namespace v3 { 
 namespace user_agent {
-
-struct data {
-  struct curl_slist *req_header; //the request header sent to the api
-
-  struct api_resbody_s body; //the api response string
-  struct api_header_s pairs; //the key/field pairs response header
-  CURL *ehandle; //the curl's easy handle used to perform requests
-
-  struct _settings_s settings;
-};
 
 static struct curl_slist*
 reqheader_init()

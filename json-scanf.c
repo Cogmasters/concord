@@ -524,14 +524,14 @@ format_parse(char *format, size_t *n)
 int
 json_scanf(char *buffer, size_t buf_size, char *format, ...)
 {
-  size_t num_keys = 0;
+  size_t num_keys = 0, i;
   struct extractor_specifier *es = format_parse(format, &num_keys);
   if (NULL == es) return 0;
 
   va_list ap;
   va_start(ap, format);
 
-  for (size_t i = 0; i < num_keys ; ++i) {
+  for (i = 0; i < num_keys ; ++i) {
     if (es[i].has_dynamic_size)  {
       es[i].size = va_arg(ap, int); // use this as a size
     }
@@ -566,13 +566,13 @@ json_scanf(char *buffer, size_t buf_size, char *format, ...)
     goto cleanup;
   }
 
-  for (int i = 0; i < num_tok; i++) {
+  for (i = 0; i < num_tok; i++) {
     D_PRINT("[%d][p:%d][size:%d]%s (%.*s)\n", i, tok[i].parent,
            tok[i].size, print_token(tok[i].type),
            tok[i].end - tok[i].start, buffer + tok[i].start);
   }
 
-  for (size_t i = 0; i < num_keys; ++i) {
+  for (i = 0; i < num_keys; ++i) {
     apply(buffer, tok, num_tok, es+i);
   }
 

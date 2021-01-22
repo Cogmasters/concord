@@ -16,6 +16,10 @@ struct bot_settings {
     char token[TOKEN_MAX_LEN]; // set it to long enough
   } discord;
   struct {
+    char username[TOKEN_MAX_LEN];
+    char token[TOKEN_MAX_LEN];
+  } github;
+  struct {
     char filename[PATH_MAX];
     char level[128];
     struct dump_s dump_json;
