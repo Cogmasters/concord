@@ -21,8 +21,8 @@ reqheader_init()
 {
   struct curl_slist *new_header = NULL;
   new_header = curl_slist_append(new_header, "Accept: application/json");
-  new_header = curl_slist_append(new_header, "Content-Type: application/json");
-  new_header = curl_slist_append(new_header, "User-Agent: curl");
+  curl_slist_append(new_header, "Content-Type: application/json");
+  curl_slist_append(new_header, "User-Agent: curl");
   return new_header;
 }
 
@@ -197,7 +197,7 @@ void run(struct data *api,
   ASSERT_S(ret < (int) sizeof(url_route), "oob write of url_route");
   va_end(args);
 
-  set_method(api, http_method, body); //set the request method
+  set_method(api->ehandle, http_method, body); //set the request method
   set_url(api->ehandle, api->base_url, url_route); //set the request URL
   perform_request(api, p_object, load_cb, endpoint); //perform the request
 }

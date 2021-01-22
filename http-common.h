@@ -116,7 +116,7 @@ set_method(CURL *ehandle, enum http_method method, struct api_resbody_s * body)
       ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
       break;
     case POST:
-      //curl_easy_setopt(ehandle, CURLOPT_POST, 1L);
+      curl_easy_setopt(ehandle, CURLOPT_POST, 1L);
       //set ptr to payload that will be sent via POST/PUT
       curl_easy_setopt(ehandle, CURLOPT_POSTFIELDS, body->str);
       curl_easy_setopt(ehandle, CURLOPT_POSTFIELDSIZE, body->size);
