@@ -45,7 +45,6 @@ init(struct data *api, char username[], char token[])
 {
   api->req_header = reqheader_init();
   api->ehandle = custom_easy_init(&(api->settings),
-                                  NULL,
                                   api->req_header,
                                   &api->pairs,
                                   &api->body);

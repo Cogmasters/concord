@@ -19,12 +19,11 @@ struct data {
   struct api_resbody_s body; //the api response string
   struct api_header_s pairs; //the key/field pairs response header
   CURL *ehandle; //the curl's easy handle used to perform requests
+  char * base_url;
   struct _settings_s settings;
 };
 
-extern void init(struct data *api,
-                 char username[],
-                 char token[]);
+extern void init(struct data *api, char * base_url);
 
 extern void run(struct data *api,
                 void *p_object,

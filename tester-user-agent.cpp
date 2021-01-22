@@ -13,8 +13,6 @@
 #include "json-scanf.h"
 #include "tester.h"
 
-#define BASE_API_URL   "http://localhost:3010"
-
 namespace tester {
 namespace user_agent {
 
@@ -40,17 +38,14 @@ cleanup(struct data *api)
 }
 
 void
-init(struct data *api, char username[], char token[])
+init(struct data *api, char * base_url)
 {
   api->req_header = reqheader_init();
   api->ehandle = custom_easy_init(&(api->settings),
-                                  NULL,
                                   api->req_header,
                                   &api->pairs,
                                   &api->body);
-
-  curl_easy_setopt(api->ehandle, CURLOPT_USERNAME, username);
-  curl_easy_setopt(api->ehandle, CURLOPT_USERPWD, token);
+  api->base_url = base_url;
 }
 
 
@@ -203,7 +198,7 @@ void run(struct data *api,
   va_end(args);
 
   set_method(api, http_method, body); //set the request method
-  set_url(api->ehandle, BASE_API_URL, url_route); //set the request URL
+  set_url(api->ehandle, api->base_url, url_route); //set the request URL
   perform_request(api, p_object, load_cb, endpoint); //perform the request
 }
 
