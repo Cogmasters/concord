@@ -547,18 +547,21 @@ json_scanf(char *buffer, size_t buf_size, char *format, ...)
   //calculate how many tokens are needed
   jsmn_parser parser;
   jsmn_init(&parser);
+  jsmntok_t * tok = NULL;
   int num_tok = jsmn_parse(&parser, buffer, buf_size, NULL, 0);
   D_PRINT("# of tokens = %d", num_tok);
+  if (num_tok < 0) {
+    D_PRINT("Failed to parse JSON: %.*s", buf_size, buffer);
+    D_PRINT("Returned token number: %d", num_tok);
+    goto cleanup;
+  }
 
-  jsmntok_t *tok = malloc(sizeof(jsmntok_t) * num_tok);
+  tok = malloc(sizeof(jsmntok_t) * num_tok);
 
   jsmn_init(&parser);
   num_tok = jsmn_parse(&parser, buffer, buf_size, tok, num_tok);
 
-  if (num_tok < 0) {
-    D_PRINT("Failed to parse JSON: %d", num_tok);
-    goto cleanup;
-  }
+
 
   /* Assume the top-level element is an object */
   if (num_tok < 1 || tok[0].type != JSMN_OBJECT) {
@@ -577,7 +580,7 @@ json_scanf(char *buffer, size_t buf_size, char *format, ...)
   }
 
 cleanup:
-  free(tok);
+  if (tok) free(tok);
   free(es);
 
   return 0;

@@ -18,6 +18,7 @@ set(JSON_SCANF
         json-common.h
         jsmn.h
         json-scanf.c
+        json-asprintf.c
         json-scanf.h)
 
 set(SOURCE_FILES

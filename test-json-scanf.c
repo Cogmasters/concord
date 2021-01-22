@@ -37,19 +37,25 @@ int main(void) {
 
   int integer1=0, integer2=0, i3 =0, i4=0, i5=0;
   char str1[25] = {0}, str2[25] = {0};
-  char str[] = "{ \"t\":\"abc\", \"s\":10, \"op\":100 "
-          ", \"k1\": {  \"v1\": 10 }  "
-          ", \"a1\": [ 112, 2, 3 ] "
-          ", \"b\": true "
-          ", \"bigs\": \"lllllllllllllllllllllong\" "
-          ", \"nstr\":null }";
+  char pretty_str[] =
+          "{ |t|:|abc|, |s|:10, |op|:100 "
+                  ", |k1|: {  |v1|: 10 }  "
+                  ", |a1|: [ 112, 2, 3 ] "
+                  ", |b|: true "
+                  ", |bigs|: |lllllllllllllllllllllong|"
+                  ", |nstr|:null "
+                  "}";
 
-  printf("%s\n", str);
+  char * str;
 
-  char bigs[128], bigS[128];
+  json_asprintf(&str, pretty_str);
+
+  printf("input string: %s\n", str);
+
+  char bigs[128] = {0}, bigS[128] = {0};
   struct json_token tok;
 
-  json_scanf(str, sizeof(str),
+  json_scanf(str, strlen(str),
        "[a1][0]%d [t]%s [s]%d [op]%d [nstr]%s [k1][v1]%d [b]%b"
        "[bigs]%.*s"
        "[bigs]%.*S"
@@ -62,7 +68,7 @@ int main(void) {
 
   printf("t %s, s %d, op %d, nstr %s, i3 %d, i4 %d, bigs %s, bigS %s\n",
          str1, integer1, integer2, str2, i3, i4, bigs, bigS);
-
+  
   char * p = NULL, *q = NULL;
   json_scanf(str, strlen(str), "[bigs]%?s [bigs]%?S", &p, &q);
   if (p) {

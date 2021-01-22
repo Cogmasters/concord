@@ -11,6 +11,7 @@ extern "C" {
 #endif
 
 extern int json_scanf(char *buffer, size_t buf_size, char *format, ...);
+extern int json_asprintf(char ** buf, char * format, ...);
 
 #ifdef __cplusplus
 }
