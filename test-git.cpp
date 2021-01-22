@@ -24,8 +24,9 @@ int commit (char * username, char * token,
   run(&data, &last_sha, load, NULL,
       GET, "/repos/%s/%s/git/refs/heads/master",  username, repo_name);
 
-  body.size = asprintf(&body.str, "{ [ref]: [refs/heads/%s], [sha]:[%s] }",
-           branch_name, last_sha);
+  body.size = json_asprintf(&body.str,
+                            "{ |ref|: |refs/heads/%s|, |sha|:|%s| }",
+                            branch_name, last_sha);
 
   init(&data, username, token);
   run(&data, NULL, NULL, &body,
