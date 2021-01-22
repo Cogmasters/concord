@@ -27,7 +27,7 @@ PREFIX ?= /usr/local
 
 .PHONY : all mkdir install clean purge
 
-all : mkdir $(OBJS) $(LIBDISCORD_SLIB) bot-git
+all : mkdir $(OBJS) $(LIBDISCORD_SLIB) test-git.exe
 
 mkdir :
 	mkdir -p $(OBJDIR) $(LIBDIR)
@@ -50,8 +50,8 @@ $(OBJDIR)/github-v3-git-database.o: github-v3-git-database.cpp
 $(OBJDIR)/github-v3-repositories.o: github-v3-repositories.cpp
 	$(CXX) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 
-bot-git: bot-git.cpp $(OBJS)
-	$(CXX) $(CFLAGS) $(LIBS_CFLAGS) -o bot-git.exe $< $(OBJS) -lcurl
+test-git.exe: test-git.cpp $(OBJS)
+	$(CXX) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(OBJS) -lcurl
 
 $(LIBDISCORD_SLIB) : $(OBJS)
 	$(AR) -cvq $@ $(OBJS)
