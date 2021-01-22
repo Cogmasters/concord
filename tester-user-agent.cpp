@@ -11,19 +11,18 @@
 #include "json-common.h"
 #include "http-common.h"
 #include "json-scanf.h"
-#include "github-v3.h"
+#include "tester.h"
 
-#define BASE_API_URL   "https://api.github.com"
+#define BASE_API_URL   "http://localhost:3010"
 
-namespace github {
-namespace v3 { 
+namespace tester {
 namespace user_agent {
 
 static struct curl_slist*
 reqheader_init()
 {
   struct curl_slist *new_header = NULL;
-  new_header = curl_slist_append(new_header, "Accept: application/vnd.github.v3+json");
+  new_header = curl_slist_append(new_header, "Accept: application/json");
   new_header = curl_slist_append(new_header, "Content-Type: application/json");
   new_header = curl_slist_append(new_header, "User-Agent: curl");
   return new_header;
@@ -53,6 +52,7 @@ init(struct data *api, char username[], char token[])
   curl_easy_setopt(api->ehandle, CURLOPT_USERNAME, username);
   curl_easy_setopt(api->ehandle, CURLOPT_USERPWD, token);
 }
+
 
 /* perform the request */
 static void
@@ -208,5 +208,4 @@ void run(struct data *api,
 }
 
 } // namespace user_agent
-} // namespace v3
-} // namespace github
+} // namespace cee

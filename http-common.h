@@ -34,6 +34,7 @@ enum http_code {
   CURL_NO_RESPONSE              = 0,
 };
 
+
 struct api_resbody_s {
   char *str; //the response str
   size_t size; //the response str length
@@ -102,7 +103,7 @@ http_code_print(enum http_code code)
 
 /* set specific http method used for the request */
 static void
-set_method(CURL *ehandle, enum http_method method, char postfields[])
+set_method(CURL *ehandle, enum http_method method, struct api_resbody_s * body)
 {
   CURLcode ecode;
   switch (method) {
@@ -115,25 +116,33 @@ set_method(CURL *ehandle, enum http_method method, char postfields[])
       ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
       break;
     case POST:
-      ecode = curl_easy_setopt(ehandle, CURLOPT_POST, 1L);
-      ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
+      //curl_easy_setopt(ehandle, CURLOPT_POST, 1L);
       //set ptr to payload that will be sent via POST/PUT
-      ecode = curl_easy_setopt(ehandle, CURLOPT_POSTFIELDS, postfields);
-      ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
+      curl_easy_setopt(ehandle, CURLOPT_POSTFIELDS, body->str);
+      curl_easy_setopt(ehandle, CURLOPT_POSTFIELDSIZE, body->size);
       break;
     case PATCH:
-      ecode = curl_easy_setopt(ehandle, CURLOPT_CUSTOMREQUEST, "PATCH");
-      ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
+      curl_easy_setopt(ehandle, CURLOPT_CUSTOMREQUEST, "PATCH");
       break;
     case PUT:
-      ecode = curl_easy_setopt(ehandle, CURLOPT_UPLOAD, 1L);
-      ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
-      ecode = curl_easy_setopt(ehandle, CURLOPT_POSTFIELDS, postfields);
-      ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
+      curl_easy_setopt(ehandle, CURLOPT_UPLOAD, 1L);
+      curl_easy_setopt(ehandle, CURLOPT_POSTFIELDS, body->str);
+      curl_easy_setopt(ehandle, CURLOPT_POSTFIELDSIZE, body->size);
       break;
     default:
       ERROR("Unknown http method (code: %d)", method);
   }
+}
+
+static void
+set_url(CURL * ehandle, char * base_api_url, char endpoint[])
+{
+  char base_url[MAX_URL_LEN];
+  int ret = snprintf(base_url, sizeof(base_url), "%s%s", base_api_url, endpoint);
+  ASSERT_S(ret < (int)sizeof(base_url), "Out of bounds write attempt");
+
+  CURLcode ecode = curl_easy_setopt(ehandle, CURLOPT_URL, base_url);
+  ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 }
 
 static size_t
@@ -190,6 +199,7 @@ curl_resbody_cb(char *str, size_t size, size_t nmemb, void *p_userdata)
   body->size += realsize;
   body->str[body->size] = '\0';
 
+  fprintf (stderr, "%s\n", body->str);
   return realsize;
 }
 

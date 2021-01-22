@@ -65,7 +65,7 @@
    @param ... arguments to be parsed into fmt */
 #       define __D_PRINT(fmt, ...) fprintf(D_OUT, D_FMT_PREFIX fmt"\n%s", D_FMT_ARGS, __VA_ARGS__)
 #       define D_PRINT(...) __D_PRINT(__VA_ARGS__, "")
-#       define __D_NOTOP_PRINT(fmt, ...) fprintf(D_OUT, "\t"fmt"\n%s", __VA_ARGS__)
+#       define __D_NOTOP_PRINT(fmt, ...) fprintf(D_OUT, "\t" /* force */fmt /* force */"\n%s", __VA_ARGS__)
 #       define D_NOTOP_PRINT(...) __D_NOTOP_PRINT(__VA_ARGS__, "")
 #       define D_ERROR(...) ERROR(__VA_ARGS__)
 #       define D_ASSERT_S(expr, msg) ASSERT_S(expr, msg)

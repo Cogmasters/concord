@@ -9,9 +9,8 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_C_STANDARD 11)
 
 set(CMAKE_BUILD_TYPE DEBUG)
-set(CMAKE_C_FLAGS "-DJSMN_PARENT_LINKS -DJSMN_STRICT -fPIC -DLIBDISCORD_DEBUG -D_XOPEN_SOURCE=700 --include=stdint.h --include=stdbool.h")
-set(CMAKE_CXX_FLAGS "-DJSMN_PARENT_LINKS -DJSMN_STRICT -fPIC -D_XOPEN_SOURCE=700")
-#set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS} -fpermissive")
+set(CMAKE_C_FLAGS "-DLIBDISCORD_DEBUG -D_XOPEN_SOURCE=700 --include=stdint.h --include=stdbool.h")
+set(CMAKE_CXX_FLAGS "-DLIBDISCORD_DEBUG -D_XOPEN_SOURCE=700 -DJSON_SCANF_DEBUG")
 
 set(CMAKE_EXE_LINKER_FLAGS "")
 
@@ -36,10 +35,25 @@ set(SOURCE_FILES
         libdiscord.h
         settings.c
         settings.h
-        gthb-v3.h
-        gthb-v3-git-database.cpp
         ${JSON_SCANF})
 
+set(GITHUB_FILES
+        http-common.h
+        github-v3.h
+        github-v3-user-agent.cpp
+        github-v3-git-database.cpp
+        github-v3-repositories.cpp
+        settings.h
+        settings.c
+        ${JSON_SCANF})
+
+set(CEE_FILES
+        http-common.h
+        tester.h
+        tester-user-agent.cpp
+        settings.h
+        settings.c
+        ${JSON_SCANF})
 
 
 set(ORCA_INCLUDE_PATH  ${CMAKE_SOURCE_DIR})
@@ -52,3 +66,9 @@ target_link_libraries(test-api.exe curl ssl crypto)
 
 add_executable(test-ws.exe ${SOURCE_FILES} test-ws.c)
 add_executable(test-json-scanf.exe ${JSON_SCANF} test-json-scanf.c)
+
+add_executable(test-git.exe ${GITHUB_FILES}  test-git.cpp)
+target_link_libraries(test-git.exe curl ssl crypto)
+
+add_executable(test-cee.exe ${CEE_FILES}  test-cee.cpp)
+target_link_libraries(test-cee.exe curl ssl crypto)

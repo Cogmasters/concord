@@ -30,7 +30,7 @@ extern void init(struct data *api,
 extern void run(struct data *api,
                 void *p_object,
                 load_obj_cb *load_cb,
-                char postfields[],
+                struct api_resbody_s * body,
                 enum http_method http_method,
                 char endpoint[],
                 ...);

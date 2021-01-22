@@ -4,6 +4,10 @@
 #include <limits.h>
 #include <stdbool.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define TOKEN_MAX_LEN 512
 
 struct dump_s {
@@ -29,4 +33,7 @@ struct bot_settings {
 
 extern void bot_settings_init (struct bot_settings*, const char filename[]);
 
+#ifdef __cplusplus
+}
+#endif
 #endif // SETTINGS_H
