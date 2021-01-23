@@ -20,17 +20,6 @@ struct _route_s {
   struct api_bucket_s *p_bucket; //bucket assigned to this route
 };
 
-/* returns current timestamp in milliseconds */
-//@todo move to discord-utils.c
-static long long
-timestamp_ms()
-{
-  struct timespec t;
-  clock_gettime(CLOCK_REALTIME, &t);
-
-  return t.tv_sec*1000 + lround(t.tv_nsec/1.0e6);
-}
-
 /* return the expected delay for a connection within this bucket
  *  in milliseconds */
 long long
@@ -80,19 +69,6 @@ Discord_ratelimit_tryget_bucket(struct discord_api_s *api, char endpoint[])
   p_route = tfind(&search_route, &api->ratelimit.routes_root, &routecmp);
   //if found matching route, return its bucket, otherwise NULL
   return (p_route) ? (*p_route)->p_bucket : NULL;
-}
-
-/* attempt to get value from matching header field */
-static char*
-get_header_value(struct api_header_s *pairs, char header_field[])
-{
-  for (int i=0; i < pairs->size; ++i) {
-    if (STREQ(header_field, pairs->field[i])) {
-      return pairs->value[i]; //found header field, return its value
-    }
-  }
-
-  return NULL; //couldn't find header field
 }
 
 /* attempt to parse rate limit's header fields to the bucket

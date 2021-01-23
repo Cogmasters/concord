@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
+#include <math.h>
 
 #include "http-common.h"
 #include "orca-debug.h"
@@ -17,6 +18,16 @@ sleep_ms(const long long delay_ms)
   nanosleep(&t, NULL);
 }
 
+/* returns current timestamp in milliseconds */
+long long
+timestamp_ms()
+{
+  struct timespec t;
+  clock_gettime(CLOCK_REALTIME, &t);
+
+  return t.tv_sec*1000 + lround(t.tv_nsec/1.0e6);
+}
+
 void
 timestamp_str(char str[], int len)
 {
@@ -25,6 +36,19 @@ timestamp_str(char str[], int len)
 
   int ret = strftime(str, len, "%c", tm);
   ASSERT_S(ret != 0, "Could not retrieve string timestamp");
+}
+
+/* attempt to get value from matching header field */
+char*
+get_header_value(struct api_header_s *pairs, char header_field[])
+{
+  for (int i=0; i < pairs->size; ++i) {
+    if (STREQ(header_field, pairs->field[i])) {
+      return pairs->value[i]; //found header field, return its value
+    }
+  }
+
+  return NULL; //couldn't find header field
 }
 
 char*

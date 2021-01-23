@@ -7,10 +7,8 @@ OBJS1   += $(patsubst %.c, %.o, $(_OBJS))
 OBJS 	:= $(addprefix $(OBJDIR)/, $(OBJS1))
 
 LIBDISCORD_CFLAGS	:= -I./
-LIBDISCORD_LDFLAGS	:=  -L./$(LIBDIR) -ldiscord -lcurl
-
-
-LIBDISCORD_LDFLAGS += -lbearssl -static
+LIBDISCORD_LDFLAGS	:=  -L./$(LIBDIR) -ldiscord -lcurl \
+												-lbearssl -static
 
 
 LIBS_CFLAGS	:= $(LIBDISCORD_CFLAGS)
@@ -18,9 +16,8 @@ LIBS_LDFLAGS	:= $(LIBDISCORD_LDFLAGS)
 
 LIBDISCORD_SLIB	:= $(LIBDIR)/libdiscord.a
 
-CFLAGS := -Wall -Wno-write-strings -fpermissive -O0 -g -D_ORCA_DEBUG -D__stensal__
-
-CFLAGS += -D_DEFAULT_SOURCE -DJSON_SCANF_DEBUG
+CFLAGS := -Wall -Wno-write-strings -fpermissive -O0 -g -D_ORCA_DEBUG -D__stensal__ \
+					-D_DEFAULT_SOURCE -DJSON_SCANF_DEBUG
 
 CXXFLAGS = -std=c++03
 

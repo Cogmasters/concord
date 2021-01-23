@@ -73,16 +73,6 @@ ws_close_opcode_print(enum ws_close_opcodes gateway_opcode)
   }
 }
 
-/* returns current timestamp in milliseconds */
-static long long
-timestamp_ms()
-{
-  struct timespec t;
-  clock_gettime(CLOCK_REALTIME, &t);
-
-  return t.tv_sec*1000 + lround(t.tv_nsec/1.0e6);
-}
-
 static void
 ws_send_payload(struct discord_ws_s *ws, char payload[])
 {
