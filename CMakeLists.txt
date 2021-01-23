@@ -36,12 +36,13 @@ set(SOURCE_FILES
         libdiscord.h
         settings.c
         settings.h
+        discord-api.cpp
         ${JSON_SCANF})
 
 set(GITHUB_FILES
         http-common.h
         github-v3.h
-        github-v3-user-agent.cpp
+        github-v3-ua.cpp
         github-v3-git-database.cpp
         github-v3-repositories.cpp
         settings.h
