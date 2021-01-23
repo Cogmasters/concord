@@ -72,12 +72,22 @@ int main () {
   }
    */
 
+  printf ("test []%%A\n");
   struct json_token * tokens = NULL;
   json_scanf(array_tok.start, array_tok.length, "[]%A", &tokens);
   for (i = 0; tokens[i].start; i++) {
     printf ("token [%p, %d]\n", tokens[i].start, tokens[i].length);
     printf ("token %.*s\n", tokens[i].length, tokens[i].start);
   }
+  free(tokens);
+
+  printf ("test [tree]%%A\n");
+  json_scanf(json_str, s, "[tree]%A", &tokens);
+  for (i = 0; tokens[i].start; i++) {
+    printf ("token [%p, %d]\n", tokens[i].start, tokens[i].length);
+    printf ("token %.*s\n", tokens[i].length, tokens[i].start);
+  }
+
   return 0;
 }
 
