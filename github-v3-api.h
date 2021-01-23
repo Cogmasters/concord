@@ -9,6 +9,10 @@
 #include "http-common.h"
 #include "github-v3-ua.h"
 
+/*
+ * There is a 1-1 mapping between https://docs.github.com/en/rest/reference
+ * and APIs defined here
+ */
 namespace github {
 namespace v3 {
 namespace git_database {
