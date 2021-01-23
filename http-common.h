@@ -28,6 +28,7 @@ enum http_code {
   HTTP_FORBIDDEN                = 403,
   HTTP_NOT_FOUND                = 404,
   HTTP_METHOD_NOT_ALLOWED       = 405,
+  HTTP_UNPROCESSABLE_ENTITY     = 422,
   HTTP_TOO_MANY_REQUESTS        = 429,
   HTTP_GATEWAY_UNAVAILABLE      = 502,
 
@@ -90,6 +91,7 @@ http_code_print(enum http_code code)
     CASE_RETURN_STR(HTTP_FORBIDDEN);
     CASE_RETURN_STR(HTTP_NOT_FOUND);
     CASE_RETURN_STR(HTTP_METHOD_NOT_ALLOWED);
+    CASE_RETURN_STR(HTTP_UNPROCESSABLE_ENTITY);
     CASE_RETURN_STR(HTTP_TOO_MANY_REQUESTS);
     CASE_RETURN_STR(HTTP_GATEWAY_UNAVAILABLE);
     default:
@@ -126,7 +128,7 @@ set_method(CURL *ehandle, enum http_method method, struct api_resbody_s * body)
       curl_easy_setopt(ehandle, CURLOPT_CUSTOMREQUEST, "PATCH");
       break;
     case PUT:
-      curl_easy_setopt(ehandle, CURLOPT_UPLOAD, 1L);
+      curl_easy_setopt(ehandle, CURLOPT_CUSTOMREQUEST, "PUT");
       curl_easy_setopt(ehandle, CURLOPT_POSTFIELDS, body->str);
       curl_easy_setopt(ehandle, CURLOPT_POSTFIELDSIZE, body->size);
       break;
