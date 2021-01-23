@@ -106,6 +106,7 @@ static void
 set_method(CURL *ehandle, enum http_method method, struct api_resbody_s * body)
 {
   CURLcode ecode;
+  curl_easy_setopt(ehandle, CURLOPT_CUSTOMREQUEST, NULL);
   switch (method) {
     case DELETE:
       ecode = curl_easy_setopt(ehandle, CURLOPT_CUSTOMREQUEST, "DELETE");
