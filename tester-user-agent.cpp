@@ -6,8 +6,6 @@
 #include <unistd.h> //for usleep
 #include <stdarg.h>
 #include <stddef.h>
-//#include "discord-tool-debug.h"
-//#include "libdiscord.h"
 #include "json-common.h"
 #include "http-common.h"
 #include "json-scanf.h"

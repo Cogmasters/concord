@@ -56,7 +56,7 @@ init(struct data *api, char username[], char token[])
 /* perform the request */
 static void
 perform_request(struct data *api, void *p_object, load_obj_cb *load_cb,
-        char endpoint[])
+                char endpoint[])
 {
   enum { //possible actions taken after a http response code
     DONE, RETRY, ABORT

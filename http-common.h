@@ -103,6 +103,19 @@ http_code_print(enum http_code code)
   return NULL;
 }
 
+static char*
+http_method_print(enum http_method m) {
+  switch(m) {
+    CASE_RETURN_STR(DELETE);
+    CASE_RETURN_STR(GET);
+    CASE_RETURN_STR(POST);
+    CASE_RETURN_STR(PATCH);
+    CASE_RETURN_STR(PUT);
+    default:
+      ERROR("Invalid HTTP method (code: %d)", m);
+  }
+}
+
 /* set specific http method used for the request */
 static void
 set_method(CURL *ehandle, enum http_method method, struct api_resbody_s * body)

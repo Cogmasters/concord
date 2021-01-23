@@ -20,32 +20,35 @@ int commit (char * username, char * token,
   init (&data, username, token);
   struct api_resbody_s  body = { 0, 0 };
 
+  //1. get the head of the master branch
   char * last_sha = NULL;
   run(&data, &last_sha, load, NULL,
       GET, "/repos/%s/%s/git/refs/heads/master",  username, repo_name);
 
+  //2. create a new branch from last commit
   body.size = json_asprintf(&body.str,
                             "{ |ref|: |refs/heads/%s|, |sha|:|%s| }",
                             branch_name, last_sha);
 
-  init(&data, username, token);
-  run(&data, NULL, NULL, &body,
-      POST, "/repos/%s/%s/git/refs/", username, repo_name);
+  fprintf(stderr, "%.*s\n", body.size, body.str);
+  run(&data, NULL, NULL, &body, POST, "/repos/%s/%s/git/refs", username, repo_name);
 
+  //3. get sha of file be replaced
   char * file_sha = NULL;
-  init(&data, username, token);
   run(&data, &file_sha, load_file_sha, NULL,
       GET, "/repos/%s/%s/contents/%s", username, repo_name, filename);
 
+  //4. update a file
   body.size = json_asprintf(&body.str,
                             "{"
                                     "|message|: |update file|,"
                                     "|content|: |%s|,"
                                     "|branch|: |%s|,"
+                                    "|sha|: |%s|"
                             "}",
-                            content, branch_name);
+                            content, branch_name, file_sha);
 
-  init(&data, username, token);
+  fprintf(stderr, "%.*s\n", body.size, body.str);
   run(&data, NULL, NULL, &body,
       PUT, "/repos/%s/%s/contents/%s", username, repo_name, filename);
 
@@ -59,7 +62,6 @@ int commit (char * username, char * token,
                             "}",
                             branch_name, branch_name);
 
-  init(&data, username, token);
   run(&data, NULL, NULL, &body,
       POST, "/repos/%s/%s/pulls", username, repo_name);
   curl_global_cleanup();
@@ -78,6 +80,6 @@ int main (int argc, char ** argv)
   bot_settings_init (&settings, config_file);
 
   commit(settings.github.username, settings.github.token,
-         "test_repo", "test_branch", "test.c", "/*new code*/");
+         "test_repo", "test_2", "test.c", "LypuZXcgY29kZSovCg==");
   return 0;
 }
