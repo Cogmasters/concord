@@ -1,5 +1,6 @@
 #ifndef JSON_SCANF
 #define JSON_SCANF
+#include <stddef.h> // for size_t
 
 struct json_token {
   char *start;

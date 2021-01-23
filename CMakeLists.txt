@@ -18,7 +18,7 @@ set(JSON_SCANF
         json-common.h
         jsmn.h
         json-scanf.c
-        json-asprintf.c
+        json-printf.c
         json-scanf.h)
 
 set(SOURCE_FILES
@@ -67,6 +67,8 @@ target_link_libraries(test-api.exe curl ssl crypto)
 
 add_executable(test-ws.exe ${SOURCE_FILES} test-ws.c)
 add_executable(test-json-scanf.exe ${JSON_SCANF} test-json-scanf.c)
+
+add_executable(test-json-scanf-array.exe ${JSON_SCANF} test-json-scanf-array.c)
 
 add_executable(test-git.exe ${GITHUB_FILES}  test-git.cpp)
 target_link_libraries(test-git.exe curl ssl crypto)

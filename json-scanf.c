@@ -30,8 +30,9 @@
 #include "json-scanf.h"
 #include "json-common.h"
 
-#define JSMN_PARENT_LINKS
-#define JSMN_STRICT
+#define JSMN_STATIC  // dont expose jsmn symbols
+#define JSMN_PARENT_LINKS // add parent links to jsmn_tok, which are needed
+#define JSMN_STRICT  // parse json in strict mode
 #include "jsmn.h"
 
 #define N_PATH_MAX 8
@@ -519,6 +520,11 @@ format_parse(char *format, size_t *n)
  *      %.*s %.*S:
  *
  *      %?s %?S:
+ *
+ *      json_token * tok;
+ *      json_scanf(buf, buf_size, "[]%A", tok);
+ *
+ *
  *
  */
 int

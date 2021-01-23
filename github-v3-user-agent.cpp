@@ -201,7 +201,7 @@ void run(struct data *api,
   ASSERT_S(ret < (int) sizeof(url_route), "oob write of url_route");
   va_end(args);
 
-  set_method(api, http_method, body); //set the request method
+  set_method(api->ehandle, http_method, body); //set the request method
   set_url(api->ehandle, BASE_API_URL, url_route); //set the request URL
   perform_request(api, p_object, load_cb, endpoint); //perform the request
 }
