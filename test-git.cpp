@@ -19,10 +19,13 @@ int commit (char * username, char * token,
   curl_global_init(CURL_GLOBAL_ALL);
   user_agent::init (&data, username, token);
   struct api_resbody_s  body = { 0, 0 };
+  struct resp_handle handle = { NULL, NULL};
 
   //1. get the head of the master branch
   char * last_sha = NULL;
-  user_agent::run(&data, &last_sha, load, NULL,
+  handle.cb = load;
+  handle.obj = &last_sha;
+  user_agent::run(&data, &handle, NULL,
       GET, "/repos/%s/%s/git/refs/heads/master",  username, repo_name);
 
   //2. create a new branch from last commit
@@ -31,12 +34,16 @@ int commit (char * username, char * token,
                             branch_name, last_sha);
 
   fprintf(stderr, "%.*s\n", body.size, body.str);
-  user_agent::run(&data, NULL, NULL, &body, POST, "/repos/%s/%s/git/refs",
+  handle.cb = NULL;
+  handle.obj = NULL;
+  user_agent::run(&data, NULL, &body, POST, "/repos/%s/%s/git/refs",
                   username, repo_name);
 
   //3. get sha of file be replaced
   char * file_sha = NULL;
-  user_agent::run(&data, &file_sha, load_file_sha, NULL,
+  handle.cb = load_file_sha;
+  handle.obj = &file_sha;
+  user_agent::run(&data, &handle, NULL,
       GET, "/repos/%s/%s/contents/%s", username, repo_name, filename);
 
   //4. update a file
@@ -50,7 +57,7 @@ int commit (char * username, char * token,
                             content, branch_name, file_sha);
 
   fprintf(stderr, "%.*s\n", body.size, body.str);
-  user_agent::run(&data, NULL, NULL, &body,
+  user_agent::run(&data, NULL, &body,
       PUT, "/repos/%s/%s/contents/%s", username, repo_name, filename);
 
 
@@ -64,7 +71,7 @@ int commit (char * username, char * token,
                             "}",
                             branch_name, branch_name);
 
-  user_agent::run(&data, NULL, NULL, &body,
+  user_agent::run(&data, NULL, &body,
                   POST, "/repos/%s/%s/pulls", username, repo_name);
   curl_global_cleanup();
   return 0;

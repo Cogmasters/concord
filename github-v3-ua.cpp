@@ -55,8 +55,7 @@ init(struct data *api, char username[], char token[])
 
 /* perform the request */
 static void
-perform_request(struct data *api, void *p_object, load_obj_cb *load_cb,
-                char endpoint[])
+perform_request(struct data *api, struct resp_handle * handle, char endpoint[])
 {
   enum { //possible actions taken after a http response code
     DONE, RETRY, ABORT
@@ -83,8 +82,8 @@ perform_request(struct data *api, void *p_object, load_obj_cb *load_cb,
         reason = "The request was completed succesfully.";
         action = DONE;
 
-        if (p_object && load_cb) {
-          (*load_cb)(p_object, api->body.str, api->body.size);
+        if (handle) {
+          (*handle->cb)(handle->obj, api->body.str, api->body.size);
         }
 
         break;
@@ -186,8 +185,7 @@ perform_request(struct data *api, void *p_object, load_obj_cb *load_cb,
 
 /* template function for performing requests */
 void run(struct data *api,
-         void *p_object,
-         load_obj_cb *load_cb,
+         struct resp_handle * resp_handle,
          struct api_resbody_s * body,
          enum http_method http_method,
          char endpoint[],
@@ -203,7 +201,7 @@ void run(struct data *api,
 
   set_method(api->ehandle, http_method, body); //set the request method
   set_url(api->ehandle, BASE_API_URL, url_route); //set the request URL
-  perform_request(api, p_object, load_cb, endpoint); //perform the request
+  perform_request(api, resp_handle, endpoint); //perform the request
 }
 
 } // namespace user_agent

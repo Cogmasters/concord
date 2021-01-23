@@ -9,7 +9,7 @@
 #include "http-common.h"
 
 
-typedef void (load_obj_cb)(void *p_obj, char *str, size_t len);
+//typedef void (load_obj_cb)(void *p_obj, char *str, size_t len);
 
 namespace tester {
 namespace user_agent {
@@ -26,8 +26,7 @@ struct data {
 extern void init(struct data *api, char * base_url);
 
 extern void run(struct data *api,
-                void *p_object,
-                load_obj_cb *load_cb,
+                struct resp_handle * handle,
                 struct api_resbody_s * body,
                 enum http_method http_method,
                 char endpoint[],

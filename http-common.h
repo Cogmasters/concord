@@ -37,8 +37,8 @@ enum http_code {
 
 
 struct api_resbody_s {
-  char *str; //the response str
-  size_t size; //the response str length
+  char *str; //the request/response str
+  size_t size; //the request/response str length
 };
 
 #define MAX_HEADER_SIZE 100
@@ -60,6 +60,13 @@ struct _settings_s { //@todo this whole struct is temporary
 
 //callback for object to be loaded by api response
 typedef void (load_obj_cb)(void *p_obj, char *str, size_t len);
+
+// response handle
+struct resp_handle {
+    load_obj_cb * cb;
+    void * obj; // the pointer to be passed to cb
+};
+
 typedef void (curl_debug_cb)(
         CURL *ehandle,
         curl_infotype type,
@@ -214,8 +221,6 @@ curl_resbody_cb(char *str, size_t size, size_t nmemb, void *p_userdata)
   memcpy(body->str + body->size, str, realsize);
   body->size += realsize;
   body->str[body->size] = '\0';
-
-  fprintf (stderr, "%s\n", body->str);
   return realsize;
 }
 

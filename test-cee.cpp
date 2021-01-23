@@ -4,12 +4,9 @@
 using namespace tester::user_agent;
 
 void load(void * ptr, char * str, size_t len) {
-  json_scanf(str, len, "[object][sha]%?s", ptr);
+  fprintf(stderr, "%.*s", len, str);
 }
 
-void load_file_sha(void * ptr, char * str, size_t len) {
-  json_scanf(str, len, "[sha]%?s", ptr);
-}
 
 int commit (char * base_url)
 {
@@ -20,12 +17,14 @@ int commit (char * base_url)
   body.str = "{ }";
   body.size = strlen(body.str);
 
+  struct resp_handle handle = { .cb = load, .obj = NULL };
 
-  run(&data, NULL, NULL, &body, POST, "/echo?m=POST");
-  run(&data, NULL, NULL, &body, PATCH, "/echo?m=PATCH");
-  run(&data, NULL, NULL, &body, GET, "/echo?m=GET");
-  run(&data, NULL, NULL, &body, PUT, "/echo?m=PUT");
-  run(&data, NULL, NULL, &body, DELETE, "/echo?m=DELETE");
+
+  run(&data, &handle, &body, POST, "/echo?m=POST");
+  run(&data, &handle, &body, PATCH, "/echo?m=PATCH");
+  run(&data, &handle, &body, GET, "/echo?m=GET");
+  run(&data, &handle, &body, PUT, "/echo?m=PUT");
+  run(&data, &handle, &body, DELETE, "/echo?m=DELETE");
 
   curl_global_cleanup();
   return 0;

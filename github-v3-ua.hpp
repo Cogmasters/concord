@@ -28,8 +28,7 @@ extern void init(struct data *api,
                  char token[]);
 
 extern void run(struct data *api,
-                void *p_object,
-                load_obj_cb *load_cb,
+                struct resp_handle * handle,
                 struct api_resbody_s * body,
                 enum http_method http_method,
                 char endpoint[],
