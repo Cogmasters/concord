@@ -1,5 +1,9 @@
 #include <stdarg.h>
 #include <stddef.h> // size_t
+#include <string.h>
+#include <stdlib.h>
+#define _GNU_SOURCE
+#include <stdio.h>
 static char * normalize_fmt (char * fmt) {
   char * fmt1 = malloc(strlen(fmt) + 1);
   char * s = fmt, * d = fmt1;

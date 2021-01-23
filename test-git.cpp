@@ -41,10 +41,10 @@ int commit (char * username, char * token,
   //4. update a file
   body.size = json_asprintf(&body.str,
                             "{"
-                                    "|message|: |update file|,"
-                                    "|content|: |%s|,"
-                                    "|branch|: |%s|,"
-                                    "|sha|: |%s|"
+                                    "|message|:|update file|,"
+                                    "|content|:|%s|,"
+                                    "|branch|:|%s|,"
+                                    "|sha|:|%s|"
                             "}",
                             content, branch_name, file_sha);
 

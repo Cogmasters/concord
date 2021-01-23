@@ -51,7 +51,7 @@ set(GITHUB_FILES
 set(CEE_FILES
         http-common.h
         tester.h
-        tester-user-agent.cpp
+        tester-ua.cpp
         settings.h
         settings.c
         ${JSON_SCANF})
