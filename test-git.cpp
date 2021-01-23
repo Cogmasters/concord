@@ -53,6 +53,7 @@ int commit (char * username, char * token,
       PUT, "/repos/%s/%s/contents/%s", username, repo_name, filename);
 
 
+  // 5. create a pull request
   body.size = json_asprintf(&body.str,
                             "{"
                                "|title|:|%s|,"
