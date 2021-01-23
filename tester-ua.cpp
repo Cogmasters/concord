@@ -6,10 +6,9 @@
 #include <unistd.h> //for usleep
 #include <stdarg.h>
 #include <stddef.h>
-#include "json-common.h"
-#include "http-common.h"
-#include "json-scanf.h"
+
 #include "tester.h"
+#include "json-scanf.h"
 
 namespace tester {
 namespace user_agent {

@@ -4,7 +4,6 @@
 #include <string.h>
 #include <ctype.h>
 #include <stdlib.h>
-#include "json-common.h"
 #include "json-scanf.h"
 #include "http-common.h"
 #include "github-v3-ua.hpp"

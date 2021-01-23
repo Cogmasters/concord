@@ -86,8 +86,7 @@ timestamp_ms()
 static void
 ws_send_payload(struct discord_ws_s *ws, char payload[])
 {
-  Discord_utils_json_dump("SEND PAYLOAD",
-      &ws->p_client->settings, payload);
+  json_dump("SEND PAYLOAD", &ws->p_client->settings, payload);
 
   bool ret = cws_send_text(ws->ehandle, payload);
   ASSERT_S(true == ret, "Couldn't send payload");
@@ -289,8 +288,7 @@ ws_on_text_cb(void *data, CURL *ehandle, const char *text, size_t len)
 
   D_PRINT("ON_TEXT:\n\t\t%s", text);
 
-  Discord_utils_json_dump("RECEIVE PAYLOAD",
-      &ws->p_client->settings, text);
+  json_dump("RECEIVE PAYLOAD", &ws->p_client->settings, text);
 
   int tmp_seq_number; //check value first, then assign
   json_scanf((char*)text, len,
@@ -340,7 +338,7 @@ ws_on_text_cb(void *data, CURL *ehandle, const char *text, size_t len)
 
 /* init easy handle with some default opt */
 static CURL*
-custom_easy_init(struct discord_ws_s *ws)
+custom_cws_new(struct discord_ws_s *ws)
 {
   //missing on_binary, on_ping, on_pong
   struct cws_callbacks cws_cbs = {
@@ -356,7 +354,7 @@ custom_easy_init(struct discord_ws_s *ws)
   CURLcode ecode;
   /* DEBUG ONLY FUNCTIONS */
   //set debug callback
-  D_ONLY(ecode = curl_easy_setopt(new_ehandle, CURLOPT_DEBUGFUNCTION, &Discord_utils_debug_cb));
+  D_ONLY(ecode = curl_easy_setopt(new_ehandle, CURLOPT_DEBUGFUNCTION, &curl_debug_cb));
   D_ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
   //set ptr to settings containing dump files
@@ -441,7 +439,7 @@ Discord_ws_init(struct discord_ws_s *ws, char token[])
   ws->session_id = malloc(SNOWFLAKE_TIMESTAMP);
   ASSERT_S(NULL != ws->session_id, "Out of memory");
 
-  ws->ehandle = custom_easy_init(ws);
+  ws->ehandle = custom_cws_new(ws);
   ws->mhandle = custom_multi_init();
 
   ws->self = discord_user_init();
@@ -523,7 +521,7 @@ Discord_ws_run(struct discord_ws_s *ws)
     /* guarantees full shutdown of old connection
      * @todo find a better solution */
     cws_free(ws->ehandle);
-    ws->ehandle = custom_easy_init(ws);
+    ws->ehandle = custom_cws_new(ws);
     /* * * * * * * * * * * * * * * * * * * * * */
     ++ws->reconnect_attempts;
   } while (1);

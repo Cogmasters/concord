@@ -6,10 +6,6 @@
 #include <unistd.h> //for usleep
 #include <stdarg.h>
 #include <stddef.h>
-//#include "discord-tool-debug.h"
-//#include "libdiscord.h"
-#include "json-common.h"
-#include "http-common.h"
 #include "json-scanf.h"
 #include "github-v3.hpp"
 
@@ -44,7 +40,7 @@ void
 init(struct data *api, char username[], char token[])
 {
   api->req_header = reqheader_init();
-  api->ehandle = custom_easy_init(&(api->settings),
+  api->ehandle = custom_easy_init(&api->settings,
                                   api->req_header,
                                   &api->pairs,
                                   &api->body);

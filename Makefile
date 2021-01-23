@@ -2,7 +2,7 @@ CC			?= gcc
 OBJDIR	:= obj
 LIBDIR	:= lib
 
-SRC	:= $(wildcard discord-*.c curl-websocket.c settings.c json-scanf.c json-printf.c)
+SRC	:= $(wildcard http-common.c discord-*.c curl-websocket.c settings.c json-scanf.c json-printf.c)
 _OBJS	:= $(patsubst %.c, %.o, $(SRC))
 OBJS 	:= $(addprefix $(OBJDIR)/, $(_OBJS))
 
@@ -56,6 +56,8 @@ bot-ping-pong : all bot-ping-pong.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \
 		bot-ping-pong.c -o bot-ping-pong.exe $(LIBS_LDFLAGS)
 
+$(OBJDIR)/http-common.o : http-common.c
+	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 $(OBJDIR)/discord-%.o : discord-%.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 $(OBJDIR)/settings.o : settings.c

@@ -6,20 +6,8 @@
 #include <curl/curl.h>
 #include "json-scanf.h"
 
-#include "discord-tool-debug.h"
+#include "http-common.h"
 
-/* UTILITY MACROS */
-#define STREQ(str1, str2) (0 == strcmp(str1, str2))
-#define STRNEQ(str1, str2, n) (0 == strncmp(str1, str2, n))
-//check if string is empty
-#define IS_EMPTY_STRING(str) (!(str) || !*(str))
-//if case matches return token as string
-#define CASE_RETURN_STR(opcode) case opcode: return #opcode
-
-//possible http methods
-enum http_method {
-  DELETE, GET, POST, PATCH, PUT
-};
 
 /* ENDPOINTS */
 #define MESSAGES              "/messages"
@@ -39,37 +27,6 @@ enum http_method {
 
 #define USERS                 "/users"
 #define USER                  USERS"/%s"
-
-/* HTTP RESPONSE CODES
-https://discord.com/developers/docs/topics/opcodes-and-status-codes#http-http-response-codes */
-enum http_code {
-  HTTP_OK                       = 200,
-  HTTP_CREATED                  = 201,
-  HTTP_NO_CONTENT               = 204,
-  HTTP_NOT_MODIFIED             = 304,
-  HTTP_BAD_REQUEST              = 400,
-  HTTP_UNAUTHORIZED             = 401,
-  HTTP_FORBIDDEN                = 403,
-  HTTP_NOT_FOUND                = 404,
-  HTTP_METHOD_NOT_ALLOWED       = 405,
-  HTTP_TOO_MANY_REQUESTS        = 429,
-  HTTP_GATEWAY_UNAVAILABLE      = 502,
-
-  CURL_NO_RESPONSE              = 0,
-};
-
-struct api_resbody_s {
-  char *str; //the response str
-  size_t size; //the response str length
-};
-
-#define MAX_HEADER_SIZE 100
-
-struct api_header_s {
-  char field[MAX_HEADER_SIZE][MAX_HEADER_LEN];
-  char value[MAX_HEADER_SIZE][MAX_HEADER_LEN];
-  int size;
-};
 
 struct api_bucket_s {
   char *hash; //the hash associated with this bucket
@@ -197,12 +154,6 @@ struct discord_ws_s {
   discord_t *p_client; //points to client this struct is a part of
 };
 
-struct _settings_s { //@todo this whole struct is temporary
-  char *token;
-  FILE *f_json_dump;
-  FILE *f_curl_dump;
-};
-
 typedef struct discord_s {
   struct discord_ws_s ws;
   struct discord_api_s api;
@@ -212,20 +163,10 @@ typedef struct discord_s {
   struct _settings_s settings;
 } discord_t;
 
-//callback for object to be loaded by api response
-typedef void (discord_load_obj_cb)(void *p_obj, char *str, size_t len);
-
 /* discord-utils.c */
 
 void* Discord_utils_set_data(discord_t *client, void *data);
 void* Discord_utils_get_data(discord_t *client);
-void Discord_utils_json_dump(const char *text, struct _settings_s *settings, const char *data);
-int Discord_utils_debug_cb(
-    CURL *ehandle,
-    curl_infotype type,
-    char *data,
-    size_t size,
-    void *p_userdata);
 
 /* discord-public*.c */
 
@@ -241,7 +182,7 @@ void Discord_api_cleanup(struct discord_api_s *api);
 void Discord_api_request(
   struct discord_api_s *api, 
   void *p_object, 
-  discord_load_obj_cb *load_cb,
+  load_obj_cb *load_cb,
   char postfields[], //only for POST/PUT methods
   enum http_method http_method,
   char endpoint[],

@@ -1,15 +1,13 @@
 #ifndef GITHUB_V3_UA_H
 #define GITHUB_V3_UA_H
+
 #include <stddef.h>
 #include <string.h>
 #include <ctype.h>
 #include <stdlib.h>
-#include "json-common.h"
 #include "json-scanf.h"
 #include "http-common.h"
 
-
-typedef void (load_obj_cb)(void *p_obj, char *str, size_t len);
 
 namespace github {
 namespace v3 {
@@ -37,4 +35,5 @@ extern void run(struct data *api,
 } // user_agent
 } // v3
 } // github
+
 #endif //GITHUB_V3_UA_H
