@@ -260,7 +260,7 @@ apply(char *str, jsmntok_t *tok, size_t n_toks, struct extractor_specifier *es)
   do {
     // tok[ik] must be a toplevel key, and tok[iv] must be its value
     if (tok[ik].type != JSMN_STRING) {
-      D_PRINT("[%ld][p:%d][size:%d]%s (%.*s)\n", ik, tok[ik].parent,
+      D_PRINT("[%zu][p:%d][size:%d]%s (%.*s)\n", ik, tok[ik].parent,
               tok[ik].size, print_token(tok[ik].type),
               tok[ik].end - tok[ik].start, str + tok[ik].start);
     }

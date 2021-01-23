@@ -1,7 +1,7 @@
 OBJDIR	:= obj
 LIBDIR	:= lib
 
-SRC	:= $(wildcard github-v3-ua.cpp github-v3-git-database.cpp json-scanf.c json-printf.c settings.c tester-ua.cpp)
+SRC	:= $(wildcard http-common.c github-v3-ua.cpp github-v3-git-database.cpp json-scanf.c json-printf.c settings.c tester-ua.cpp)
 _OBJS	:= $(patsubst %.cpp, %.o, $(SRC))
 OBJS1   += $(patsubst %.c, %.o, $(_OBJS))
 OBJS 	:= $(addprefix $(OBJDIR)/, $(OBJS1))
@@ -35,24 +35,20 @@ mkdir :
 	mkdir -p $(OBJDIR) $(LIBDIR)
 	echo $(OBJS)
 
+$(OBJDIR)/http-common.o : http-common.c
+	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 $(OBJDIR)/settings.o : settings.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
-
 $(OBJDIR)/json-scanf.o : json-scanf.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
-
 $(OBJDIR)/json-printf.o : json-printf.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
-
 $(OBJDIR)/tester-ua.o: tester-ua.cpp
 	$(CXX) $(CFLAGS) $(CXXFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
-
 $(OBJDIR)/github-v3-ua.o: github-v3-ua.cpp
 	$(CXX) $(CFLAGS) $(CXXFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
-
 $(OBJDIR)/github-v3-git-database.o: github-v3-git-database.cpp
 	$(CXX) $(CFLAGS) $(CXXFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
-
 $(OBJDIR)/github-v3-repositories.o: github-v3-repositories.cpp
 	$(CXX) $(CFLAGS) $(CXXFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 

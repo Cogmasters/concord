@@ -1,3 +1,6 @@
+#include <stdio.h>
+#include <string.h>
+
 #include "tester.h"
 #include "settings.h"
 
@@ -7,18 +10,16 @@ void load(void * ptr, char * str, size_t len) {
   fprintf(stderr, "%.*s", len, str);
 }
 
-
-int commit (char * base_url)
+int commit (char *base_url)
 {
   data data = {0};
   curl_global_init(CURL_GLOBAL_ALL);
-  init (&data, base_url);
-  struct api_resbody_s  body = { 0, 0 };
+  init(&data, base_url);
+  struct api_resbody_s body = {NULL, 0};
   body.str = "{ }";
   body.size = strlen(body.str);
 
-  struct resp_handle handle = { .cb = load, .obj = NULL };
-
+  struct resp_handle handle = {.ok_cb = load, .ok_obj = NULL};
 
   run(&data, &handle, &body, POST, "/echo?m=POST");
   run(&data, &handle, &body, PATCH, "/echo?m=PATCH");
@@ -27,10 +28,11 @@ int commit (char * base_url)
   run(&data, &handle, &body, DELETE, "/echo?m=DELETE");
 
   curl_global_cleanup();
+
   return 0;
 }
 
-int main (int argc, char ** argv)
+int main(int argc, char *argv[])
 {
   const char *config_file;
   if (argc > 1)
@@ -42,5 +44,6 @@ int main (int argc, char ** argv)
   bot_settings_init (&settings, config_file);
 
   commit("https://cee.studio");
+
   return 0;
 }

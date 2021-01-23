@@ -1,9 +1,9 @@
-#ifndef HTTP_COMMON_H_
-#define HTTP_COMMON_H_
+#ifndef HTTP_COMMON_H
+#define HTTP_COMMON_H
 
 #ifdef __cplusplus
 extern "C" {
-#endif
+#endif // __cplusplus
 
 #include <curl/curl.h>
 #include "orca-debug.h"
@@ -63,16 +63,16 @@ struct _settings_s { //@todo this whole struct is temporary
   FILE *f_curl_dump;
 };
 
-
 //callback for object to be loaded by api response
 typedef void (load_obj_cb)(void *p_obj, char *str, size_t len);
 
 // response handle
 struct resp_handle {
     load_obj_cb *ok_cb;
-    void * ok_obj; // the pointer to be passed to cb
+    void *ok_obj; // the pointer to be passed to ok_cb
+
     load_obj_cb *err_cb;
-    void * err_obj;
+    void *err_obj;
 };
 
 void sleep_ms(const long long delay_ms);
@@ -96,6 +96,6 @@ int curl_debug_cb(CURL *ehandle, curl_infotype type, char *data, size_t size, vo
 
 #ifdef __cplusplus
 }
-#endif
+#endif // __cplusplus
 
-#endif
+#endif // HTTP_COMMON_H
