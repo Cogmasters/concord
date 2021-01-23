@@ -1,7 +1,7 @@
-#include "github-v3.h"
+#include "github-v3-ua.h"
 #include "settings.h"
 
-using namespace github::v3::user_agent;
+using namespace github::v3;
 
 void load(void * ptr, char * str, size_t len) {
   json_scanf(str, len, "[object][sha]%?s", ptr);
@@ -15,14 +15,14 @@ int commit (char * username, char * token,
             char * repo_name, char * branch_name,
             char * filename, char * content)
 {
-  data data = {0};
+  user_agent::data data = {0};
   curl_global_init(CURL_GLOBAL_ALL);
-  init (&data, username, token);
+  user_agent::init (&data, username, token);
   struct api_resbody_s  body = { 0, 0 };
 
   //1. get the head of the master branch
   char * last_sha = NULL;
-  run(&data, &last_sha, load, NULL,
+  user_agent::run(&data, &last_sha, load, NULL,
       GET, "/repos/%s/%s/git/refs/heads/master",  username, repo_name);
 
   //2. create a new branch from last commit
@@ -31,11 +31,12 @@ int commit (char * username, char * token,
                             branch_name, last_sha);
 
   fprintf(stderr, "%.*s\n", body.size, body.str);
-  run(&data, NULL, NULL, &body, POST, "/repos/%s/%s/git/refs", username, repo_name);
+  user_agent::run(&data, NULL, NULL, &body, POST, "/repos/%s/%s/git/refs",
+                  username, repo_name);
 
   //3. get sha of file be replaced
   char * file_sha = NULL;
-  run(&data, &file_sha, load_file_sha, NULL,
+  user_agent::run(&data, &file_sha, load_file_sha, NULL,
       GET, "/repos/%s/%s/contents/%s", username, repo_name, filename);
 
   //4. update a file
@@ -49,7 +50,7 @@ int commit (char * username, char * token,
                             content, branch_name, file_sha);
 
   fprintf(stderr, "%.*s\n", body.size, body.str);
-  run(&data, NULL, NULL, &body,
+  user_agent::run(&data, NULL, NULL, &body,
       PUT, "/repos/%s/%s/contents/%s", username, repo_name, filename);
 
 
@@ -63,8 +64,8 @@ int commit (char * username, char * token,
                             "}",
                             branch_name, branch_name);
 
-  run(&data, NULL, NULL, &body,
-      POST, "/repos/%s/%s/pulls", username, repo_name);
+  user_agent::run(&data, NULL, NULL, &body,
+                  POST, "/repos/%s/%s/pulls", username, repo_name);
   curl_global_cleanup();
   return 0;
 }
