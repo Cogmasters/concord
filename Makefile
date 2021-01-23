@@ -45,6 +45,8 @@ test : all test-api.c test-ws.c test-json-scanf.c
 		test-ws.c -o test-ws.exe $(LIBS_LDFLAGS)
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \
 		test-json-scanf.c -o test-json-scanf.exe $(LIBS_LDFLAGS)
+	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \
+		test-json-scanf-array.c -o test-json-scanf-array.exe $(LIBS_LDFLAGS)
 
 bot-echo : all bot-echo.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \

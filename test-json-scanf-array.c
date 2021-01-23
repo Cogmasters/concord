@@ -49,24 +49,34 @@ int main () {
   char * json_str = NULL;
   int s = json_asprintf(&json_str, test_string);
   //printf("%s\n", json_str);
-  struct json_token tok;
-  json_scanf(json_str, s, "[tree]%T", &tok);
-  printf ("%.*s\n", tok.length, tok.start);
+  struct json_token array_tok = { .start = NULL, .length = 0 };
+  json_scanf(json_str, s, "[tree]%T", &array_tok);
+  printf ("json_array_string:\n%.*s\n", array_tok.length, array_tok.start);
 
   jsmn_parser parser;
   jsmn_init(&parser);
   jsmntok_t * t = NULL;
-  int num_tok = jsmn_parse(&parser, tok.start, tok.length, NULL, 0);
+  int num_tok = jsmn_parse(&parser, array_tok.start, array_tok.length, NULL, 0);
   //printf ("%d\n", num_tok);
 
   t = malloc(sizeof(jsmntok_t) * num_tok);
   jsmn_init(&parser);
-  num_tok = jsmn_parse(&parser, tok.start, tok.length, t, num_tok+1);
+  num_tok = jsmn_parse(&parser, array_tok.start, array_tok.length, t, num_tok+1);
 
   int i;
+  /*
+  printf ("\n ---print out tokens---\n");
   for (i = 0; i < num_tok; i++) {
     printf("[%d][size:%d]%s (%.*s)\n", i, t[i].size, print_token(t[i].type),
-           t[i].end - t[i].start, tok.start + t[i].start);
+           t[i].end - t[i].start, array_tok.start + t[i].start);
+  }
+   */
+
+  struct json_token * tokens = NULL;
+  json_scanf(array_tok.start, array_tok.length, "[]%A", &tokens);
+  for (i = 0; tokens[i].start; i++) {
+    printf ("token [%p, %d]\n", tokens[i].start, tokens[i].length);
+    printf ("token %.*s\n", tokens[i].length, tokens[i].start);
   }
   return 0;
 }

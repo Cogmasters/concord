@@ -44,6 +44,7 @@ struct path_specifier {
 };
 
 struct extractor_specifier {
+  bool match_toplevel_array; // if this is true, there is no path_specifiers.
   struct path_specifier path_specifiers[N_PATH_MAX];
   char type_specifier[10];
   size_t size;
@@ -177,6 +178,27 @@ match_path (char *buffer, jsmntok_t *t,
               buffer + t[i].start);
     }
   }
+  else if (STREQ(es->type_specifier, "array")) {
+    struct json_token * token_array;
+    if (JSMN_ARRAY == t[i].type) {
+      int n = t[i].size;
+      token_array = malloc(sizeof(struct json_token) * (n + 1));
+      token_array[n].start = NULL; // terminate this array with NULL;
+      int idx;
+      for (idx = 0, ic = i + 1; ic < n_toks && idx < n; ic++) {
+        if (t[ic].parent != i) continue;
+
+        token_array[idx].start = buffer + t[ic].start;
+        token_array[idx].length = t[ic].end - t[ic].start;
+        idx ++;
+      }
+      *(struct json_token **)(es->recipient) = token_array;
+    }
+    else {
+      // something is wrong
+      goto type_error;
+    }
+  }
   else if (STREQ(es->type_specifier, "token")) {
     struct json_token * tk = es->recipient;
     tk->start = buffer + t[i].start;
@@ -254,7 +276,21 @@ type_error:
 }
 
 static void
-apply(char *str, jsmntok_t *tok, size_t n_toks, struct extractor_specifier *es)
+apply_array (char *str, jsmntok_t * tok, size_t n_toks,
+             struct extractor_specifier *es)
+{
+  if (es->match_toplevel_array) {
+    match_path(str, tok, n_toks, 0, es, es->path_specifiers[0].next);
+  }
+  else {
+    ERROR("Toplevel array does not match extractor_specifier %s)\n",
+          es->path_specifiers[0].key);
+  }
+}
+
+static void
+apply_object(char *str, jsmntok_t *tok, size_t n_toks,
+             struct extractor_specifier *es)
 {
   size_t ik = 1, iv = 2;
   do {
@@ -322,6 +358,10 @@ parse_type_specifier(char *specifier, struct extractor_specifier *es)
     strcpy(es->type_specifier, "copy");
     return specifier + 1;
   }
+  else if (STRNEQ(specifier, "A", 1)) {
+    strcpy(es->type_specifier, "array");
+    return specifier + 1;
+  }
   else if (STRNEQ(specifier, "T", 1)) {
     strcpy(es->type_specifier, "token");
     return specifier + 1;
@@ -379,6 +419,7 @@ parse_path_specifier(char * format, struct extractor_specifier *es,
 
   // until find a ']' or '\0'
   char *start = format;
+  bool match_toplevel_array = false;
   while (*format) {
     if (']' == *format) {
       break;
@@ -389,7 +430,13 @@ parse_path_specifier(char * format, struct extractor_specifier *es,
   ASSERT_S(*format == ']', "A close bracket ']' is missing");
 
   int len = format - start;
-  ASSERT_S(len > 0, "Key is missing");
+  if (0 == len && 1 == next_path_idx) { // this is the first path specifier
+    es->match_toplevel_array = true;
+  }
+  else {
+    // we don't allow empty [] at other places like this: [key][]
+    ASSERT_S(len > 0, "Key is missing");
+  }
 
   int ret = snprintf (curr_path->key, KEY_MAX, "%.*s", len, start);
   ASSERT_S(ret < KEY_MAX, "Key is too long (out-of-bounds write)");
@@ -401,12 +448,10 @@ parse_path_specifier(char * format, struct extractor_specifier *es,
       ++format; // eat up '['
       struct path_specifier *next_path = es->path_specifiers+next_path_idx;
       curr_path->next = next_path;
-
       return parse_path_specifier(format, es, next_path, next_path_idx+1);
    }
   case '%':
       ++format; // eat up '%'
-
       return parse_type_specifier(format, es);
   default:
       return NULL;
@@ -482,7 +527,6 @@ parse_extractor_specifiers(char * format, size_t n)
       free(es);
       return NULL;
     }
-
     ++i;
   }
 
@@ -521,10 +565,15 @@ format_parse(char *format, size_t *n)
  *
  *      %?s %?S:
  *
- *      json_token * tok;
- *      json_scanf(buf, buf_size, "[]%A", tok);
+ *      json_token * toks = NULL;
+ *      json_scanf(buf, buf_size, "[]%A", &toks);
+ *      json_scanf(buf, buf_size, "[key]%A", &toks);
  *
- *
+ *      if the call succeeds, toks points to a null terminated array.
+ *      for (int i = 0; toks[i]; i++) {
+ *          // deserialize each element of the json array
+ *          json_scanf(toks[i].start, toks[i].length, "...", ...);
+ *      }
  *
  */
 int
@@ -536,7 +585,6 @@ json_scanf(char *buffer, size_t buf_size, char *format, ...)
 
   va_list ap;
   va_start(ap, format);
-
   for (size_t i = 0; i < num_keys ; ++i) {
     if (es[i].has_dynamic_size)  {
       es[i].size = va_arg(ap, int); // use this as a size
@@ -545,7 +593,6 @@ json_scanf(char *buffer, size_t buf_size, char *format, ...)
     ASSERT_S(NULL != p_value, "NULL pointer given as argument parameter");
     es[i].recipient = p_value;
   }
-
   va_end(ap);
 
   // debugging print out es
@@ -567,11 +614,9 @@ json_scanf(char *buffer, size_t buf_size, char *format, ...)
   jsmn_init(&parser);
   num_tok = jsmn_parse(&parser, buffer, buf_size, tok, num_tok);
 
-
-
   /* Assume the top-level element is an object */
-  if (num_tok < 1 || tok[0].type != JSMN_OBJECT) {
-    D_PRINT("Object expected");
+  if (num_tok < 1 || !(tok[0].type == JSMN_OBJECT || tok[0].type == JSMN_ARRAY)) {
+    D_PRINT("Object or array expected");
     goto cleanup;
   }
 
@@ -582,7 +627,14 @@ json_scanf(char *buffer, size_t buf_size, char *format, ...)
   }
 
   for (size_t i = 0; i < num_keys; ++i) {
-    apply(buffer, tok, num_tok, es+i);
+    switch (tok[0].type) {
+      case JSMN_OBJECT:
+        apply_object(buffer, tok, num_tok, es + i);
+        break;
+      case JSMN_ARRAY:
+        apply_array(buffer, tok, num_tok, es+i);
+        break;
+    }
   }
 
 cleanup:

@@ -9,7 +9,7 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_C_STANDARD 11)
 
 set(CMAKE_BUILD_TYPE DEBUG)
-set(CMAKE_C_FLAGS "-DLIBDISCORD_DEBUG -D_XOPEN_SOURCE=700 --include=stdint.h --include=stdbool.h")
+set(CMAKE_C_FLAGS "-DLIBDISCORD_DEBUG -D_XOPEN_SOURCE=700 --include=stdint.h --include=stdbool.h -DJSON_SCANF_DEBUG")
 set(CMAKE_CXX_FLAGS "-DLIBDISCORD_DEBUG -D_XOPEN_SOURCE=700 -DJSON_SCANF_DEBUG")
 
 set(CMAKE_EXE_LINKER_FLAGS "")
@@ -36,7 +36,6 @@ set(SOURCE_FILES
         libdiscord.h
         settings.c
         settings.h
-        discord-api.cpp
         ${JSON_SCANF})
 
 set(GITHUB_FILES
