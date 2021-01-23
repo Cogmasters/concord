@@ -26,18 +26,18 @@
         } while(0)
 
 
-#if ORCA_DEBUG /* DEBUG MODE ACTIVE */
+#if _ORCA_DEBUG /* DEBUG MODE ACTIVE */
 
 /* @param msg string to be printed in debug mode */
 #       define D_PUTS(msg) fprintf(D_OUT, D_FMT_PREFIX "%s\n", D_FMT_ARGS, msg)
 #       define D_NOTOP_PUTS(msg) fprintf(D_OUT, "\t%s\n", msg)
 /* @param fmt like printf
    @param ... arguments to be parsed into fmt */
-#       define __D_PRINT(fmt, ...) fprintf(D_OUT, D_FMT_PREFIX fmt"\n%s", D_FMT_ARGS, __VA_ARGS__)
+#       define __D_PRINT(fmt, ...) fprintf(D_OUT, D_FMT_PREFIX /* force spaces */ fmt /* force spaces */"\n%s", D_FMT_ARGS, __VA_ARGS__)
 #       define D_PRINT(...) __D_PRINT(__VA_ARGS__, "")
-#       define __D_NOTOP_PRINT(fmt, ...) fprintf(D_OUT, "\t"fmt"\n%s", __VA_ARGS__)
+#       define __D_NOTOP_PRINT(fmt, ...) fprintf(D_OUT, "\t" /* force spaces */ fmt /* force spaces */"\n%s", __VA_ARGS__)
+#       define D_NOTOP_PRINT(...) __D_NOTOP_PRINT(__VA_ARGS__, "")
 #       define D_ERROR(...) ERROR(__VA_ARGS__)
-#       define __D_NOTOP_PRINT(fmt, ...) fprintf(D_OUT, "\t" /* force */fmt /* force */"\n%s", __VA_ARGS__)
 #       define D_ASSERT_S(expr, msg) ASSERT_S(expr, msg)
 #       define D_ONLY(arg) (arg)
 

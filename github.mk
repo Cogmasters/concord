@@ -18,7 +18,7 @@ LIBS_LDFLAGS	:= $(LIBDISCORD_LDFLAGS)
 
 LIBDISCORD_SLIB	:= $(LIBDIR)/libdiscord.a
 
-CFLAGS := -Wall -Wno-write-strings -fpermissive -O0 -g -DLIBDISCORD_DEBUG -D__stensal__
+CFLAGS := -Wall -Wno-write-strings -fpermissive -O0 -g -D_ORCA_DEBUG -D__stensal__
 
 CFLAGS += -D_DEFAULT_SOURCE -DJSON_SCANF_DEBUG
 

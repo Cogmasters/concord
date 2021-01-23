@@ -52,7 +52,7 @@ bot_settings_init(struct bot_settings *settings, const char filename[])
              &settings->logging.dump_json.enable,
              settings->logging.dump_curl.filename,
              &settings->logging.dump_curl.enable);
-
+/*
   printf("discord.token %s\n", settings->discord.token);
   printf("github.username %s\n", settings->github.username);
   printf("github.token %s\n", settings->github.token);
@@ -63,8 +63,6 @@ bot_settings_init(struct bot_settings *settings, const char filename[])
   printf("logging.dump_json.enable %d\n", settings->logging.dump_json.enable);
   printf("logging.dump_curl.filename %s\n", settings->logging.dump_curl.filename);
   printf("logging.dump_curl.enable %d\n", settings->logging.dump_curl.enable);
-
+*/
   free(str);
-
-  return;
 }

@@ -127,11 +127,11 @@ match_path (char *buffer, jsmntok_t *t,
       switch (t[i].type) {
       case JSMN_STRING:
           if (es->has_unknown_size) {
-            char ** p = (char **) es->recipient;
-            size_t len = t[i].end - t[i].start + 1;
+            char **p = (char **) es->recipient;
+            int len = t[i].end - t[i].start + 1;
             *p = malloc(len);
             int ret = snprintf(*p, len, "%.*s", len - 1, buffer+t[i].start);
-            ASSERT_S((size_t) ret < len, "out-of-bounds write");
+            ASSERT_S(ret < len, "out-of-bounds write");
           }
           else if (es->size) {
             int ret = snprintf((char *) es->recipient, es->size,
@@ -162,10 +162,10 @@ match_path (char *buffer, jsmntok_t *t,
   else if (STREQ(es->type_specifier, "copy")) {
     if (es->has_unknown_size) {
       char ** p = (char **) es->recipient;
-      size_t len = t[i].end - t[i].start + 1;
+      int len = t[i].end - t[i].start + 1;
       *p = malloc(len);
       int ret = snprintf(*p, len, "%.*s", len - 1, buffer+t[i].start);
-      ASSERT_S((size_t) ret < len, "out-of-bounds write");
+      ASSERT_S(ret < len, "out-of-bounds write");
     }
     else if (es->size) {
       int ret = snprintf((char *) es->recipient, es->size,
@@ -530,14 +530,14 @@ format_parse(char *format, size_t *n)
 int
 json_scanf(char *buffer, size_t buf_size, char *format, ...)
 {
-  size_t num_keys = 0, i;
+  size_t num_keys = 0;
   struct extractor_specifier *es = format_parse(format, &num_keys);
   if (NULL == es) return 0;
 
   va_list ap;
   va_start(ap, format);
 
-  for (i = 0; i < num_keys ; ++i) {
+  for (size_t i = 0; i < num_keys ; ++i) {
     if (es[i].has_dynamic_size)  {
       es[i].size = va_arg(ap, int); // use this as a size
     }
@@ -575,13 +575,13 @@ json_scanf(char *buffer, size_t buf_size, char *format, ...)
     goto cleanup;
   }
 
-  for (i = 0; i < num_tok; i++) {
+  for (int i = 0; i < num_tok; i++) {
     D_PRINT("[%d][p:%d][size:%d]%s (%.*s)\n", i, tok[i].parent,
            tok[i].size, print_token(tok[i].type),
            tok[i].end - tok[i].start, buffer + tok[i].start);
   }
 
-  for (i = 0; i < num_keys; ++i) {
+  for (size_t i = 0; i < num_keys; ++i) {
     apply(buffer, tok, num_tok, es+i);
   }
 
@@ -598,52 +598,52 @@ __json_strerror(json_errcode code, char codetag[], void *where, char entity[])
   char err_is[128];
   switch (code){
   case JSON_EXT__OUT_MEM:
-      snprintf(err_is, sizeof(err_is)-1, "Out of Memory");
+      snprintf(err_is, sizeof(err_is), "Out of Memory");
       break;
   case JSON_EXT__INVALID_TOKEN:
-      snprintf(err_is, sizeof(err_is)-1, "Invalid Token: '%c'", *((char*)where));
+      snprintf(err_is, sizeof(err_is), "Invalid Token: '%c'", *((char*)where));
       break;
   case JSON_EXT__INVALID_STRING:
-      snprintf(err_is, sizeof(err_is)-1, "Missing string token: ' \" '");
+      snprintf(err_is, sizeof(err_is), "Missing string token: ' \" '");
       break;
   case JSON_EXT__INVALID_BOOLEAN:
-      snprintf(err_is, sizeof(err_is)-1, "Missing boolean token: 't' or 'f'");
+      snprintf(err_is, sizeof(err_is), "Missing boolean token: 't' or 'f'");
       break;
   case JSON_EXT__INVALID_NUMBER:
-      snprintf(err_is, sizeof(err_is)-1, "Missing number tokens: '+-.0-9e'");
+      snprintf(err_is, sizeof(err_is), "Missing number tokens: '+-.0-9e'");
       break;
   case JSON_EXT__INVALID_COMPOSITE:
-      snprintf(err_is, sizeof(err_is)-1, "Missing Object or Array tokens: '{}[]'");
+      snprintf(err_is, sizeof(err_is), "Missing Object or Array tokens: '{}[]'");
       break;
   case JSON_EXT__NOT_STRING:
-      snprintf(err_is, sizeof(err_is)-1, "Item is not a string");
+      snprintf(err_is, sizeof(err_is), "Item is not a string");
       break;
   case JSON_EXT__NOT_BOOLEAN:
-      snprintf(err_is, sizeof(err_is)-1, "Item is not a boolean");
+      snprintf(err_is, sizeof(err_is), "Item is not a boolean");
       break;
   case JSON_EXT__NOT_NUMBER:
-      snprintf(err_is, sizeof(err_is)-1, "Item is not a number");
+      snprintf(err_is, sizeof(err_is), "Item is not a number");
       break;
   case JSON_EXT__NOT_COMPOSITE:
-      snprintf(err_is, sizeof(err_is)-1, "Item is not a Object or Array");
+      snprintf(err_is, sizeof(err_is), "Item is not a Object or Array");
       break;
   case JSON_EXT__EMPTY_FIELD:
-      snprintf(err_is, sizeof(err_is)-1, "Field is missing");
+      snprintf(err_is, sizeof(err_is), "Field is missing");
       break;
   case JSON_INT__NOT_FREED:
-      snprintf(err_is, sizeof(err_is)-1, "JSON couldn't free memory");
+      snprintf(err_is, sizeof(err_is), "JSON couldn't free memory");
       break;
   case JSON_INT__OVERFLOW:
-      snprintf(err_is, sizeof(err_is)-1, "JSON tried to access forbidden memory (Overflow)");
+      snprintf(err_is, sizeof(err_is), "JSON tried to access forbidden memory (Overflow)");
       break;
   default:
-      snprintf(err_is, sizeof(err_is)-1, "Unknown Error");
+      snprintf(err_is, sizeof(err_is), "Unknown Error");
       break;
   }
 
   char errbuf[512];
   errbuf[511] = 0; // pre-terminate the string
-  snprintf(errbuf, sizeof(errbuf)-1, "%s (Code: %d)\n\t%s\n\tAt '%s' (addr: %p)",
+  snprintf(errbuf, sizeof(errbuf), "%s (Code: %d)\n\t%s\n\tAt '%s' (addr: %p)",
            codetag, code, err_is, entity, where);
 
   char *errdynm = strdup(errbuf);
