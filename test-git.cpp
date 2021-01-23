@@ -4,11 +4,17 @@
 using namespace github::v3;
 
 void load(void * ptr, char * str, size_t len) {
+  fprintf (stderr, "%.*s\n", len, str);
   json_scanf(str, len, "[object][sha]%?s", ptr);
 }
 
 void load_file_sha(void * ptr, char * str, size_t len) {
+  fprintf (stderr, "%.*s\n", len, str);
   json_scanf(str, len, "[sha]%?s", ptr);
+}
+
+void log(void * ptr, char * str, size_t len) {
+  fprintf (stderr, "%.*s\n", len, str);
 }
 
 int commit (char * username, char * token,
@@ -19,12 +25,15 @@ int commit (char * username, char * token,
   curl_global_init(CURL_GLOBAL_ALL);
   user_agent::init (&data, username, token);
   struct api_resbody_s  body = { 0, 0 };
-  struct resp_handle handle = { NULL, NULL};
+  struct resp_handle handle = {
+          .ok_cb = NULL, .ok_obj = NULL,
+          .err_cb = log, .err_obj = NULL
+  };
 
   //1. get the head of the master branch
   char * last_sha = NULL;
-  handle.cb = load;
-  handle.obj = &last_sha;
+  handle.ok_cb = load;
+  handle.ok_obj = &last_sha;
   user_agent::run(&data, &handle, NULL,
       GET, "/repos/%s/%s/git/refs/heads/master",  username, repo_name);
 
@@ -34,15 +43,15 @@ int commit (char * username, char * token,
                             branch_name, last_sha);
 
   fprintf(stderr, "%.*s\n", body.size, body.str);
-  handle.cb = NULL;
-  handle.obj = NULL;
-  user_agent::run(&data, NULL, &body, POST, "/repos/%s/%s/git/refs",
+  handle.ok_cb = log;
+  handle.ok_obj = NULL;
+  user_agent::run(&data, &handle, &body, POST, "/repos/%s/%s/git/refs",
                   username, repo_name);
 
   //3. get sha of file be replaced
   char * file_sha = NULL;
-  handle.cb = load_file_sha;
-  handle.obj = &file_sha;
+  handle.ok_cb = load_file_sha;
+  handle.ok_obj = &file_sha;
   user_agent::run(&data, &handle, NULL,
       GET, "/repos/%s/%s/contents/%s", username, repo_name, filename);
 
@@ -57,7 +66,9 @@ int commit (char * username, char * token,
                             content, branch_name, file_sha);
 
   fprintf(stderr, "%.*s\n", body.size, body.str);
-  user_agent::run(&data, NULL, &body,
+  handle.ok_cb = log;
+  handle.ok_obj = NULL;
+  user_agent::run(&data, &handle, &body,
       PUT, "/repos/%s/%s/contents/%s", username, repo_name, filename);
 
 
@@ -71,7 +82,9 @@ int commit (char * username, char * token,
                             "}",
                             branch_name, branch_name);
 
-  user_agent::run(&data, NULL, &body,
+  handle.ok_cb = log;
+  handle.ok_obj = NULL;
+  user_agent::run(&data, &handle, &body,
                   POST, "/repos/%s/%s/pulls", username, repo_name);
   curl_global_cleanup();
   return 0;

@@ -18,7 +18,7 @@ bool run (user_agent::data * ua, struct params * d, struct response * resp)
 {
   char * post_field [2] = { 0 };
   post_field[0] = d->content;
-  struct resp_handle handle = { .cb = load_resp, .obj = resp};
+  struct resp_handle handle = { .ok_cb = load_resp, .ok_obj = resp};
   user_agent::run(ua,
                   &handle,
                   NULL,
@@ -53,7 +53,7 @@ load_resp (void * p, char * str, size_t len)
   return;
 }
 bool run (user_agent::data * ua, struct params * p, struct response * resp) {
-  struct resp_handle handle = { .cb = load_resp, .obj = resp };
+  struct resp_handle handle = { .ok_cb = load_resp, .ok_obj = resp };
   user_agent::run(ua,
                   &handle,
                   NULL,

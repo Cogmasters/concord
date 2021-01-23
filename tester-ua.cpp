@@ -76,8 +76,8 @@ perform_request(struct data *api, struct resp_handle * resp_handle, char endpoin
         reason = "The request was completed succesfully.";
         action = DONE;
 
-        if (resp_handle) {
-          (*resp_handle->cb)(resp_handle->obj, api->body.str, api->body.size);
+        if (resp_handle && resp_handle->ok_cb) {
+          (*resp_handle->ok_cb)(resp_handle->ok_obj, api->body.str, api->body.size);
         }
 
         break;
@@ -171,6 +171,9 @@ perform_request(struct data *api, struct resp_handle * resp_handle, char endpoin
 
         break;
       case ABORT:
+        if (resp_handle && resp_handle->err_cb) {
+          (*resp_handle->err_cb)(resp_handle->err_obj, api->body.str, api->body.size);
+        }
       default:
         ERROR("(%d)%s - %s", code, http_code_print(code), reason);
     }

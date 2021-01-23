@@ -63,8 +63,10 @@ typedef void (load_obj_cb)(void *p_obj, char *str, size_t len);
 
 // response handle
 struct resp_handle {
-    load_obj_cb * cb;
-    void * obj; // the pointer to be passed to cb
+    load_obj_cb * ok_cb;
+    void * ok_obj; // the pointer to be passed to cb
+    load_obj_cb * err_cb;
+    void * err_obj;
 };
 
 typedef void (curl_debug_cb)(
