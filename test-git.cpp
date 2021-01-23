@@ -1,4 +1,4 @@
-#include "github-v3-ua.h"
+#include "github-v3-ua.hpp"
 #include "settings.h"
 
 using namespace github::v3;

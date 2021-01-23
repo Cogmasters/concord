@@ -7,7 +7,7 @@
 #include "json-common.h"
 #include "json-scanf.h"
 #include "http-common.h"
-#include "github-v3-ua.h"
+#include "github-v3-ua.hpp"
 
 /*
  * There is a 1-1 mapping between https://docs.github.com/en/rest/reference
@@ -16,6 +16,7 @@
 namespace github {
 namespace v3 {
 namespace git_database {
+// https://docs.github.com/en/rest/reference/git
 
 struct author {
   char * date;
@@ -222,8 +223,14 @@ namespace get_a_tree {
   };
 } // get_a_tree
 
-}
-}
-}
+} // git_database
+
+
+namespace repositories {
+
+} // repositories
+
+} // v3
+} // github
 
 #endif //GITHUB_V3_API_H

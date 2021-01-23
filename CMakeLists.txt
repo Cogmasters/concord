@@ -41,7 +41,7 @@ set(SOURCE_FILES
 
 set(GITHUB_FILES
         http-common.h
-        github-v3.h
+        github-v3.hpp
         github-v3-ua.cpp
         github-v3-git-database.cpp
         github-v3-repositories.cpp

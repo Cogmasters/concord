@@ -1,4 +1,4 @@
-#include "github-v3.h"
+#include "github-v3.hpp"
 
 namespace github {
 namespace v3 {

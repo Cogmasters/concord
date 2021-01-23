@@ -11,7 +11,7 @@
 #include "json-common.h"
 #include "http-common.h"
 #include "json-scanf.h"
-#include "github-v3.h"
+#include "github-v3.hpp"
 
 #define BASE_API_URL   "https://api.github.com"
 
