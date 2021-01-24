@@ -13,6 +13,7 @@
 #define BASE_API_URL "https://discord.com/api"
 
 namespace discord {
+namespace user_agent {
 
 /* initialize curl_slist's request header utility
  * @todo create distinction between bot and bearer token */
@@ -45,33 +46,33 @@ reqheader_init(char token[])
 }
 
 void
-Discord_api_init(struct discord_api_s *api, char token[])
+init(user_agent::data *ua, char token[])
 {
-  api->req_header = reqheader_init(token);
-  api->ehandle = custom_easy_init(
-                  &api->p_client->settings,
-                  api->req_header,
-                  &api->pairs,
-                  &api->body);
+  ua->req_header = reqheader_init(token);
+  ua->ehandle = custom_easy_init(
+                  &ua->p_client->settings,
+                  ua->req_header,
+                  &ua->pairs,
+                  &ua->body);
 }
 
 void
-Discord_api_cleanup(struct discord_api_s *api)
+cleanup(user_agent::data *ua)
 {
-  Discord_ratelimit_buckets_cleanup(api);
+  bucket::cleanup(ua);
 
-  curl_slist_free_all(api->req_header);
-  curl_easy_cleanup(api->ehandle); 
+  curl_slist_free_all(ua->req_header);
+  curl_easy_cleanup(ua->ehandle); 
 
-  if (api->body.str) {
-    free(api->body.str);
+  if (ua->body.str) {
+    free(ua->body.str);
   }
 }
 
 /* perform the request */
 static void
 perform_request(
-  struct discord_api_s *api,
+  user_agent::data *ua,
   void *p_object, 
   load_obj_cb *load_cb,
   char endpoint[])
@@ -81,10 +82,10 @@ perform_request(
   } action;
 
   //attempt to fetch a bucket handling connections from this endpoint
-  struct api_bucket_s *bucket = Discord_ratelimit_tryget_bucket(api, endpoint);
+  bucket::data *bucket = bucket::try_get(ua, endpoint);
   do {
     if (bucket) { //bucket exists, we will check for pending delays
-      long long delay_ms = Discord_ratelimit_delay(bucket, true);
+      long long delay_ms = bucket::cooldown(bucket, true);
       D_PRINT("RATELIMITING (reach bucket's connection threshold):\n\t"
               "\tEndpoint:\t%s\n\t"
               "\tBucket:\t\t%s\n\t"
@@ -97,17 +98,17 @@ perform_request(
 
     CURLcode ecode;
     //perform the connection
-    ecode = curl_easy_perform(api->ehandle);
+    ecode = curl_easy_perform(ua->ehandle);
     ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
     //get response's code
     enum http_code code;
-    ecode = curl_easy_getinfo(api->ehandle, CURLINFO_RESPONSE_CODE, &code);
+    ecode = curl_easy_getinfo(ua->ehandle, CURLINFO_RESPONSE_CODE, &code);
     ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
     //get request's url
     const char *url = NULL;
-    ecode = curl_easy_getinfo(api->ehandle, CURLINFO_EFFECTIVE_URL, &url);
+    ecode = curl_easy_getinfo(ua->ehandle, CURLINFO_EFFECTIVE_URL, &url);
     ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
     D_PRINT("Request URL: %s", url);
@@ -120,7 +121,7 @@ perform_request(
         action = DONE;
 
         if (p_object && load_cb) {
-          (*load_cb)(p_object, api->body.str, api->body.size);
+          (*load_cb)(p_object, ua->body.str, ua->body.size);
         }
 
         break;
@@ -166,7 +167,7 @@ perform_request(
         char message[256];
         long long retry_after;
 
-        json_scanf(api->body.str, api->body.size,
+        json_scanf(ua->body.str, ua->body.size,
                     "[message]%s [retry_after]%lld",
                     message, &retry_after);
 
@@ -203,14 +204,14 @@ perform_request(
     switch (action) {
     case DONE:
         //build and updates bucket's rate limiting information
-        Discord_ratelimit_build_bucket(api, bucket, endpoint);
+        bucket::build(ua, bucket, endpoint);
     /* fall through */    
     case RETRY:
         D_NOTOP_PRINT("(%d)%s - %s", code, http_code_print(code), reason);
 
         //reset the size of response body and header pairs for a fresh start
-        api->body.size = 0;
-        api->pairs.size = 0;
+        ua->body.size = 0;
+        ua->pairs.size = 0;
 
         break;
     case ABORT: default:
@@ -222,8 +223,8 @@ perform_request(
 
 /* template function for performing requests */
 void
-Discord_api_request(
-  struct discord_api_s *api, 
+run(
+  user_agent::data *ua, 
   void *p_object, 
   load_obj_cb *load_cb,
   char postfields[],
@@ -247,9 +248,10 @@ Discord_api_request(
     .size = postfields ? strlen(postfields) : 0
   };
 
-  set_method(api->ehandle, http_method, &body); //set the request method
-  set_url(api->ehandle, BASE_API_URL, url_route); //set the request URL
-  perform_request(api, p_object, load_cb, endpoint); //perform the request
+  set_method(ua->ehandle, http_method, &body); //set the request method
+  set_url(ua->ehandle, BASE_API_URL, url_route); //set the request URL
+  perform_request(ua, p_object, load_cb, endpoint); //perform the request
 }
 
+} // namespace user_agent
 } // namespace discord

@@ -7,9 +7,10 @@
 #include "discord-common.h"
 
 namespace discord {
+namespace guild {
 
 void
-Discord_guild_load(void *p_guild, char *str, size_t len)
+json_load(void *p_guild, char *str, size_t len)
 {
   guild::data *guild = (guild::data*)p_guild;
 
@@ -30,32 +31,30 @@ Discord_guild_load(void *p_guild, char *str, size_t len)
   D_NOTOP_PUTS("Guild object loaded with API response"); 
 }
 
-namespace guild {
-
-struct data*
+guild::data*
 init()
 {
-  struct data *new_guild = (struct data*)calloc(1, sizeof *new_guild);
+  guild::data *new_guild = (guild::data*)calloc(1, sizeof *new_guild);
   return new_guild;
 }
 
 void
-cleanup(struct data *guild) {
+cleanup(guild::data *guild) {
   free(guild);
 }
 
 void
-get(discord_t *client, const char guild_id[], struct data *p_guild)
+get(discord::client *client, const char guild_id[], guild::data *p_guild)
 {
   if (IS_EMPTY_STRING(guild_id)) {
     D_PUTS("Missing 'guild_id'");
     return;
   }
 
-  Discord_api_request( 
-    &client->api,
+  user_agent::run( 
+    &client->ua,
     (void*)p_guild,
-    &Discord_guild_load,
+    &guild::json_load,
     NULL,
     GET, GUILD, guild_id);
 }

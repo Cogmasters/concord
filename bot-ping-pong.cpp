@@ -6,7 +6,7 @@
 
 using namespace discord;
 
-void on_ready(discord_t *client, const user::data *self)
+void on_ready(discord::client *client, const user::data *self)
 {
   fprintf(stderr, "\n\nPingPong-Bot succesfully connected to Discord as %s#%s!\n\n",
       self->username, self->discriminator);
@@ -15,7 +15,7 @@ void on_ready(discord_t *client, const user::data *self)
 }
 
 void on_message_create(
-    discord_t *client,
+    discord::client *client,
     const user::data *self,
     const message::data *msg)
 {
@@ -27,9 +27,9 @@ void on_message_create(
     return;
 
   if (0 == strcmp(msg->content, "ping"))
-    message::send(client, msg->channel_id, "pong");
+    message::create(client, msg->channel_id, "pong");
   else if (0 == strcmp(msg->content, "pong"))
-    message::send(client, msg->channel_id, "ping");
+    message::create(client, msg->channel_id, "ping");
 
   (void)self;
 }
@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
 
   global_init();
 
-  discord_t *client = fast_init(config_file);
+  discord::client *client = fast_init(config_file);
   assert(NULL != client);
 
   setcb_ready(client, &on_ready);

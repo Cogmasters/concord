@@ -9,20 +9,20 @@
 namespace discord {
 namespace channel {
 
-struct data*
+channel::data*
 init()
 {
-  struct data *new_channel = (struct data*)calloc(1, sizeof *new_channel);
+  channel::data *new_channel = (channel::data*)calloc(1, sizeof *new_channel);
   return new_channel;
 }
 
 void
-cleanup(struct data *channel) {
+cleanup(channel::data *channel) {
   free(channel);
 }
 
 void
-pin_message(discord_t *client, const char channel_id[], const char message_id[])
+pin_message(discord::client *client, const char channel_id[], const char message_id[])
 {
   if (IS_EMPTY_STRING(channel_id)) {
     D_PUTS("Missing 'channel_id'");
@@ -33,8 +33,8 @@ pin_message(discord_t *client, const char channel_id[], const char message_id[])
     return;
   }
 
-  Discord_api_request( 
-    &client->api,
+  user_agent::run( 
+    &client->ua,
     NULL,
     NULL,
     "", //empty POSTFIELDS
@@ -42,7 +42,7 @@ pin_message(discord_t *client, const char channel_id[], const char message_id[])
 }
 
 void
-unpin_message(discord_t *client, const char channel_id[], const char message_id[])
+unpin_message(discord::client *client, const char channel_id[], const char message_id[])
 {
   if (IS_EMPTY_STRING(channel_id)) {
     D_PUTS("Missing 'channel_id'");
@@ -53,8 +53,8 @@ unpin_message(discord_t *client, const char channel_id[], const char message_id[
     return;
   }
 
-  Discord_api_request( 
-    &client->api,
+  user_agent::run( 
+    &client->ua,
     NULL,
     NULL,
     "", //empty POSTFIELDS

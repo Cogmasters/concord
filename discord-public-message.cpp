@@ -7,9 +7,10 @@
 #include "discord-common.h"
 
 namespace discord {
+namespace message {
 
 void
-Discord_message_load(void *p_message, char *str, size_t len)
+json_load(void *p_message, char *str, size_t len)
 {
   message::data *message = (message::data*)p_message;
 
@@ -51,17 +52,15 @@ Discord_message_load(void *p_message, char *str, size_t len)
       &message->flags,
       &token_referenced_message);
 
-  Discord_user_load(message->author, token_author.start, token_author.length);
+  user::json_load(message->author, token_author.start, token_author.length);
 
   D_NOTOP_PUTS("Message object loaded with API response"); 
 }
 
-namespace message {
-
-static struct data*
+static message::data*
 referenced_message_init()
 {
-  struct data *new_message = (struct data*)calloc(1, sizeof *new_message);
+  message::data *new_message = (message::data*)calloc(1, sizeof *new_message);
   if (NULL == new_message) return NULL;
 
   new_message->author = user::init();
@@ -75,10 +74,10 @@ cleanup:
   return NULL;
 }
 
-struct data*
+message::data*
 init()
 {
-  struct data *new_message = (struct data*)calloc(1, sizeof *new_message);
+  message::data *new_message = (message::data*)calloc(1, sizeof *new_message);
   if (NULL == new_message) return NULL;
 
   new_message->author = user::init();
@@ -98,7 +97,7 @@ cleanupA:
 }
 
 static void
-referenced_message_cleanup(struct data *message)
+referenced_message_cleanup(message::data *message)
 {
   user::cleanup(message->author);
 
@@ -106,7 +105,7 @@ referenced_message_cleanup(struct data *message)
 }
 
 void
-cleanup(struct data *message)
+cleanup(message::data *message)
 {
   user::cleanup(message->author);
   referenced_message_cleanup(message->referenced_message);
@@ -116,7 +115,7 @@ cleanup(struct data *message)
 
 /* See: https://discord.com/developers/docs/resources/channel#create-message */
 void
-send(discord_t *client, const char channel_id[], const char content[])
+create(discord::client *client, const char channel_id[], const char content[])
 {
   if (IS_EMPTY_STRING(channel_id)) {
     D_PUTS("Can't send message to Discord: missing 'channel_id'");
@@ -135,8 +134,8 @@ send(discord_t *client, const char channel_id[], const char content[])
   int ret = snprintf(payload, MAX_PAYLOAD_LEN, "{\"content\":\"%s\"}", content);
   ASSERT_S(ret < MAX_PAYLOAD_LEN, "Out of bounds write attempt");
 
-  Discord_api_request( 
-    &client->api,
+  user_agent::run( 
+    &client->ua,
     NULL,
     NULL,
     payload,
@@ -144,5 +143,4 @@ send(discord_t *client, const char channel_id[], const char content[])
 }
 
 } // namespace message
-
 } // namespace discord

@@ -6,17 +6,18 @@
 
 #include "http-common.h"
 
-namespace discord { struct discord_s; }
 
 namespace discord {
+
+struct client;
 
 namespace message { struct data; }
 namespace channel { struct data; }
 namespace user { struct data; }
 namespace guild { struct data; }
 
-typedef void (discord_idle_cb)(struct discord_s *client, const user::data *self);
-typedef void (discord_message_cb)(struct discord_s *client, const user::data *self, const message::data *message);
+typedef void (idle_cb)(discord::client *client, const user::data *self);
+typedef void (message_cb)(discord::client *client, const user::data *self, const message::data *message);
 
 /* ENDPOINTS */
 #define MESSAGES              "/messages"
@@ -37,21 +38,28 @@ typedef void (discord_message_cb)(struct discord_s *client, const user::data *se
 #define USERS                 "/users"
 #define USER                  USERS"/%s"
 
-struct api_bucket_s {
+namespace user_agent {
+
+namespace bucket {
+
+struct data {
   char *hash; //the hash associated with this bucket
   int remaining; //connections this bucket can do before cooldown
   long long reset_after_ms;
   long long reset_ms;
 };
 
-struct discord_api_s {
+} // namespace bucket
+
+
+struct data {
   struct curl_slist *req_header; //the request header sent to the api
 
   struct api_resbody_s body; //the api response string
   struct api_header_s pairs; //the key/field pairs response header
 
   struct { /* RATELIMITING STRUCTURE */
-    struct api_bucket_s **buckets; //active client buckets
+    bucket::data **buckets; //active client buckets
     size_t num_buckets; //amount of active client buckets
     
     //check GNU tree functions from search.h
@@ -60,8 +68,36 @@ struct discord_api_s {
 
   CURL *ehandle; //the curl's easy handle used to perform requests
 
-  struct discord_s *p_client; //points to client this struct is a part of
+  discord::client *p_client; //points to client this struct is a part of
 };
+
+namespace bucket {
+
+/* discord-ratelimit.cpp */
+
+void cleanup(user_agent::data *ua);
+long long cooldown(bucket::data *bucket, bool use_clock);
+bucket::data* try_get(user_agent::data *ua, char endpoint[]);
+void build(user_agent::data *ua, bucket::data *bucket, char endpoint[]);
+
+} // namespace bucket
+
+/* discord-user-agent.cpp */
+
+void init(user_agent::data *ua, char token[]);
+void cleanup(user_agent::data *ua);
+void run(
+  user_agent::data *ua, 
+  void *p_object, 
+  load_obj_cb *load_cb,
+  char postfields[], //only for POST/PUT methods
+  enum http_method http_method,
+  char endpoint[],
+  ...);
+
+} // namespace user_agent
+
+namespace websockets {
 
 /* GATEWAY CLOSE EVENT CODES
 https://discord.com/developers/docs/topics/opcodes-and-status-codes#gateway-gateway-close-event-codes */
@@ -120,13 +156,13 @@ enum ws_opcodes {
 };
 
 enum ws_status {
-  WS_DISCONNECTED,  //disconnected from ws
-  WS_RESUME,        //attempt to resume ws session
-  WS_FRESH,         //attempt a fresh ws session (session timed out)
-  WS_CONNECTED,     //connected to ws
+  DISCONNECTED,  //disconnected from ws
+  RESUME,        //attempt to resume ws session
+  FRESH,         //attempt a fresh ws session (session timed out)
+  CONNECTED,     //connected to ws
 };
 
-struct discord_ws_s {
+struct data {
   enum ws_status status; //connection to discord status
   int reconnect_attempts; //hard limit 5 reconnection attempts @todo make configurable
 
@@ -149,73 +185,36 @@ struct discord_ws_s {
   } hbeat;
 
   struct { /* CALLBACKS STRUCTURE */
-    discord_idle_cb *on_idle;   //triggers in every event loop iteration
-    discord_idle_cb *on_ready; //triggers when connection first establishes
+    idle_cb *on_idle;   //triggers in every event loop iteration
+    idle_cb *on_ready; //triggers when connection first establishes
     struct { /* MESSAGE CALLBACKS STRUCTURE */
-      discord_message_cb *create; //triggers when a message is created
-      discord_message_cb *update; //triggers when a message is updated (edited)
-      discord_message_cb *del; //triggers when a message is deleted
+      message_cb *create; //triggers when a message is created
+      message_cb *update; //triggers when a message is updated (edited)
+      message_cb *del; //triggers when a message is deleted
     } on_message;
   } cbs;
 
   user::data *self; //the user associated with this client
 
-  struct discord_s *p_client; //points to client this struct is a part of
+  discord::client *p_client; //points to client this struct is a part of
 };
 
-typedef struct discord_s {
-  struct discord_ws_s ws;
-  struct discord_api_s api;
+/* discord-websockets.cpp */
+
+void init(websockets::data *ws, char token[]);
+void cleanup(websockets::data *ws);
+void run(websockets::data *ws);
+
+} // namespace websockets
+
+struct client {
+  websockets::data ws;
+  user_agent::data ua;
   
   void *data; //space for user arbitrary data
 
   struct _settings_s settings;
-} discord_t;
-
-/* discord-utils.c */
-
-void* Discord_utils_set_data(discord_t *client, void *data);
-void* Discord_utils_get_data(discord_t *client);
-
-/* discord-public*.c */
-
-void Discord_guild_load(void *p_guild, char *str, size_t len);
-void Discord_user_load(void *p_user, char *str, size_t len);
-void Discord_message_load(void *p_message, char *str, size_t len);
-
-/* discord-api.c */
-
-void Discord_api_init(struct discord_api_s *api, char token[]);
-void Discord_api_cleanup(struct discord_api_s *api);
-
-void Discord_api_request(
-  struct discord_api_s *api, 
-  void *p_object, 
-  load_obj_cb *load_cb,
-  char postfields[], //only for POST/PUT methods
-  enum http_method http_method,
-  char endpoint[],
-  ...);
-
-/* discord-api-ratelimit.c */
-
-void Discord_ratelimit_buckets_cleanup(struct discord_api_s *api);
-long long Discord_ratelimit_delay(struct api_bucket_s *bucket, bool use_clock);
-struct api_bucket_s* Discord_ratelimit_tryget_bucket(struct discord_api_s *api, char endpoint[]);
-void Discord_ratelimit_build_bucket(struct discord_api_s *api, struct api_bucket_s *bucket, char endpoint[]);
-
-/* discord-websockets.c */
-
-void Discord_ws_init(struct discord_ws_s *ws, char token[]);
-void Discord_ws_cleanup(struct discord_ws_s *ws);
-
-void Discord_ws_setcb_idle(struct discord_ws_s *ws, discord_idle_cb *user_cb);
-void Discord_ws_setcb_ready(struct discord_ws_s *ws, discord_idle_cb *user_cb);
-void Discord_ws_setcb_message_create(struct discord_ws_s *ws, discord_message_cb *user_cb);
-void Discord_ws_setcb_message_update(struct discord_ws_s *ws, discord_message_cb *user_cb);
-void Discord_ws_setcb_message_delete(struct discord_ws_s *ws, discord_message_cb *user_cb);
-
-void Discord_ws_run(struct discord_ws_s *ws);
+};
 
 } // namespace discord
 

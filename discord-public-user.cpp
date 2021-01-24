@@ -7,9 +7,10 @@
 
 
 namespace discord {
+namespace user {
 
 void
-Discord_user_load(void *p_data, char *str, size_t len)
+json_load(void *p_data, char *str, size_t len)
 {
   user::data *data = (discord::user::data*)p_data;
 
@@ -44,43 +45,41 @@ Discord_user_load(void *p_data, char *str, size_t len)
   D_NOTOP_PUTS("User object loaded with API response"); 
 }
 
-namespace user {
-
-struct data*
+user::data*
 init()
 {
-  struct data *new_data = (struct data*)calloc(1, sizeof *new_data);
+  user::data *new_data = (user::data*)calloc(1, sizeof *new_data);
   return new_data;
 }
 
 void
-cleanup(struct data *data) {
+cleanup(user::data *data) {
   free(data);
 }
 
 void
-get(discord_t *client, const char user_id[], struct data *p_data)
+get(discord::client *client, const char user_id[], user::data *p_data)
 {
   if (IS_EMPTY_STRING(user_id)) {
     D_PUTS("Missing 'user_id'");
     return;
   }
 
-  Discord_api_request( 
-    &client->api,
+  user_agent::run( 
+    &client->ua,
     (void*)p_data,
-    &Discord_user_load,
+    &user::json_load,
     NULL,
     GET, USER, user_id);
 }
 
 void 
-get_self(discord_t *client, struct data *p_data)
+get_self(discord::client *client, user::data *p_data)
 {
-  Discord_api_request( 
-    &client->api,
+  user_agent::run( 
+    &client->ua,
     (void*)p_data,
-    &Discord_user_load,
+    &user::json_load,
     NULL,
     GET, USER, "@me");
 }

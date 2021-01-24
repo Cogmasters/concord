@@ -9,6 +9,7 @@
 #include "discord-common.h"
 
 namespace discord {
+namespace user_agent::bucket {
 
 /* See:
 https://discord.com/developers/docs/topics/rate-limits#rate-limits */
@@ -19,13 +20,13 @@ https://discord.com/developers/docs/topics/rate-limits#rate-limits */
  *  retrieved by search.h tree functions */
 struct _route_s {
   char *str; //bucket route (endpoint, major parameter)
-  struct api_bucket_s *p_bucket; //bucket assigned to this route
+  bucket::data *p_bucket; //bucket assigned to this route
 };
 
-/* return the expected delay for a connection within this bucket
+/* return the expected cooldown for a connection within this bucket
  *  in milliseconds */
 long long
-Discord_ratelimit_delay(struct api_bucket_s *bucket, bool use_clock)
+cooldown(bucket::data *bucket, bool use_clock)
 {
   if (bucket->remaining) return 0; //means we don't have any delay
 
@@ -60,15 +61,15 @@ routecmp(const void *p_route1, const void *p_route2)
 }
 
 /* attempt to find a bucket associated with this endpoint */
-struct api_bucket_s*
-Discord_ratelimit_tryget_bucket(struct discord_api_s *api, char endpoint[])
+bucket::data*
+try_get(user_agent::data *ua, char endpoint[])
 {
   struct _route_s search_route = {
     .str = endpoint
   };
 
   struct _route_s **p_route;
-  p_route = (struct _route_s**)tfind(&search_route, &api->ratelimit.routes_root, &routecmp);
+  p_route = (struct _route_s**)tfind(&search_route, &ua->ratelimit.routes_root, &routecmp);
   //if found matching route, return its bucket, otherwise NULL
   return (p_route) ? (*p_route)->p_bucket : NULL;
 }
@@ -76,7 +77,7 @@ Discord_ratelimit_tryget_bucket(struct discord_api_s *api, char endpoint[])
 /* attempt to parse rate limit's header fields to the bucket
  *  linked with the connection which was performed */
 static void
-parse_ratelimits(struct api_bucket_s *bucket, struct api_header_s *pairs)
+parse_ratelimits(bucket::data *bucket, struct api_header_s *pairs)
 { 
   char *value; //fetch header value as string
 
@@ -101,9 +102,9 @@ parse_ratelimits(struct api_bucket_s *bucket, struct api_header_s *pairs)
  *  client buckets.
  * If no match is found then we create a new client bucket */
 static void
-create_route(struct discord_api_s *api, char endpoint[])
+create_route(user_agent::data *ua, char endpoint[])
 {
-  char *bucket_hash = get_header_value(&api->pairs, "x-ratelimit-bucket");
+  char *bucket_hash = get_header_value(&ua->pairs, "x-ratelimit-bucket");
   if (NULL == bucket_hash) return; //no hash information in header
 
   // create new route that will link the endpoint with a bucket
@@ -114,54 +115,54 @@ create_route(struct discord_api_s *api, char endpoint[])
   ASSERT_S(NULL != new_route->str, "Out of memory");
 
   //attempt to match hash to client bucket hashes
-  for (size_t i=0; i < api->ratelimit.num_buckets; ++i) {
-    if (STREQ(bucket_hash, api->ratelimit.buckets[i]->hash)) {
-      new_route->p_bucket = api->ratelimit.buckets[i];
+  for (size_t i=0; i < ua->ratelimit.num_buckets; ++i) {
+    if (STREQ(bucket_hash, ua->ratelimit.buckets[i]->hash)) {
+      new_route->p_bucket = ua->ratelimit.buckets[i];
     }
   }
 
   if (!new_route->p_bucket) { //couldn't find match, create new bucket
-    struct api_bucket_s *new_bucket = (struct api_bucket_s*) calloc(1, sizeof *new_bucket);
+    bucket::data *new_bucket = (bucket::data*) calloc(1, sizeof *new_bucket);
     ASSERT_S(NULL != new_bucket, "Out of memory");
 
     new_bucket->hash = strdup(bucket_hash);
     ASSERT_S(NULL != new_bucket->hash, "Our of memory");
 
-    ++api->ratelimit.num_buckets; //increments client buckets
+    ++ua->ratelimit.num_buckets; //increments client buckets
 
-    void *tmp = realloc(api->ratelimit.buckets, api->ratelimit.num_buckets * sizeof(struct api_bucket_s*));
+    void *tmp = realloc(ua->ratelimit.buckets, ua->ratelimit.num_buckets * sizeof(bucket::data*));
     ASSERT_S(NULL != tmp, "Out of memory");
 
-    api->ratelimit.buckets = (struct api_bucket_s**)tmp;
-    api->ratelimit.buckets[api->ratelimit.num_buckets-1] = new_bucket;
+    ua->ratelimit.buckets = (bucket::data**)tmp;
+    ua->ratelimit.buckets[ua->ratelimit.num_buckets-1] = new_bucket;
 
     new_route->p_bucket = new_bucket; //route points to new bucket
   }
 
   //add new route to tree
   struct _route_s **p_route;
-  p_route = (struct _route_s**)tsearch(new_route, &api->ratelimit.routes_root, &routecmp);
+  p_route = (struct _route_s**)tsearch(new_route, &ua->ratelimit.routes_root, &routecmp);
   ASSERT_S(*p_route == new_route, "Couldn't create new bucket route");
 
-  parse_ratelimits(new_route->p_bucket, &api->pairs);
+  parse_ratelimits(new_route->p_bucket, &ua->pairs);
 }
 
 /* Attempt to build and/or updates bucket's rate limiting information.
  * In case that the endpoint doesn't have a bucket for routing, no 
  *  clashing will occur */
 void
-Discord_ratelimit_build_bucket(struct discord_api_s *api, struct api_bucket_s *bucket, char endpoint[])
+build(user_agent::data *ua, bucket::data *bucket, char endpoint[])
 {
   /* for the first use of an endpoint, we attempt to establish a
       route between it and a bucket (create a new bucket if needed) */
   if (!bucket) {
-    create_route(api, endpoint);
+    create_route(ua, endpoint);
     return;
   }
 
   // otherwise we just update the bucket rate limit values
 
-  parse_ratelimits(bucket, &api->pairs);
+  parse_ratelimits(bucket, &ua->pairs);
 }
 
 static void
@@ -175,17 +176,18 @@ route_cleanup(void *p_route)
 
 /* clean routes and buckets */
 void
-Discord_ratelimit_buckets_cleanup(struct discord_api_s *api)
+cleanup(user_agent::data *ua)
 {
   //destroy every route encountered
-  tdestroy(&api->ratelimit.routes_root, &route_cleanup);
+  tdestroy(&ua->ratelimit.routes_root, &route_cleanup);
 
   //destroy every client bucket found
-  for (size_t i=0; i < api->ratelimit.num_buckets; ++i) {
-    free(api->ratelimit.buckets[i]->hash);
-    free(api->ratelimit.buckets[i]);
+  for (size_t i=0; i < ua->ratelimit.num_buckets; ++i) {
+    free(ua->ratelimit.buckets[i]->hash);
+    free(ua->ratelimit.buckets[i]);
   }
-  free(api->ratelimit.buckets);
+  free(ua->ratelimit.buckets);
 }
 
+} // namespace user_agent::bucket
 } // namespace discord

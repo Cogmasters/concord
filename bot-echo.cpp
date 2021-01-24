@@ -7,7 +7,7 @@
 
 using namespace discord;
 
-void on_ready(discord_t *client, const user::data *self)
+void on_ready(discord::client *client, const user::data *self)
 {
   fprintf(stderr, "\n\nEcho-Bot succesfully connected to Discord as %s#%s!\n\n",
       self->username, self->discriminator);
@@ -16,7 +16,7 @@ void on_ready(discord_t *client, const user::data *self)
 }
 
 void on_message_create(
-    discord_t *client,
+    discord::client *client,
     const user::data *self,
     const message::data *msg)
 {
@@ -27,29 +27,29 @@ void on_message_create(
   if (0 == strcmp(self->username, msg->author->username))
     return;
 
-  message::send(client, msg->channel_id, msg->content);
+  message::create(client, msg->channel_id, msg->content);
 }
 
 void on_message_update(
-    discord_t *client,
+    discord::client *client,
     const user::data *self,
     const message::data *msg)
 {
   char text[] = "I see what you did there.";
 
-  message::send(client, msg->channel_id, text);
+  message::create(client, msg->channel_id, text);
   
   (void)self;
 }
 
 void on_message_delete(
-    discord_t *client,
+    discord::client *client,
     const user::data *self,
     const message::data *msg)
 {
   char text[] = "Did that message just disappear?!";
 
-  message::send(client, msg->channel_id, text);
+  message::create(client, msg->channel_id, text);
   
   (void)self;
 }
@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
 
   global_init();
 
-  discord_t *client = fast_init(config_file);
+  discord::client *client = fast_init(config_file);
   assert(NULL != client);
 
   setcb_ready(client, &on_ready);

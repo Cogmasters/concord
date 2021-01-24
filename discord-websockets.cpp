@@ -10,6 +10,7 @@
 #define BASE_WEBSOCKETS_URL "wss://gateway.discord.gg/?v=6&encoding=json"
 
 namespace discord {
+namespace websockets {
 
 static char*
 ws_opcode_print(enum ws_opcodes opcode)
@@ -76,7 +77,7 @@ ws_close_opcode_print(enum ws_close_opcodes gateway_opcode)
 }
 
 static void
-ws_send_payload(struct discord_ws_s *ws, char payload[])
+ws_send_payload(websockets::data *ws, char payload[])
 {
   json_dump("SEND PAYLOAD", &ws->p_client->settings, payload);
 
@@ -85,7 +86,7 @@ ws_send_payload(struct discord_ws_s *ws, char payload[])
 }
 
 static void
-ws_send_resume(struct discord_ws_s *ws)
+ws_send_resume(websockets::data *ws)
 {
   char fmt_payload[] = \
     "{\"op\":6,\"d\":{\"token\":\"%s\",\"session_id\":\"%s\",\"seq\":%d}}";
@@ -99,14 +100,14 @@ ws_send_resume(struct discord_ws_s *ws)
 }
 
 static void
-ws_send_identify(struct discord_ws_s *ws)
+ws_send_identify(websockets::data *ws)
 {
   D_PRINT("IDENTIFY PAYLOAD:\n\t%s", ws->identify);
   ws_send_payload(ws, ws->identify);
 }
 
 static void
-on_hello(struct discord_ws_s *ws)
+on_hello(websockets::data *ws)
 {
   ws->hbeat.interval_ms = 0;
   ws->hbeat.start_ms = timestamp_ms();
@@ -115,21 +116,21 @@ on_hello(struct discord_ws_s *ws)
              "[heartbeat_interval]%ld", &ws->hbeat.interval_ms);
   ASSERT_S(ws->hbeat.interval_ms > 0, "Invalid heartbeat_ms");
 
-  if (WS_RESUME == ws->status)
+  if (RESUME == ws->status)
     ws_send_resume(ws);
-  else // WS_FRESH || WS_DISCONNECTED
+  else // FRESH || DISCONNECTED
     ws_send_identify(ws);
 }
 
 static void
-on_dispatch(struct discord_ws_s *ws)
+on_dispatch(websockets::data *ws)
 {
-  Discord_user_load(ws->self,
+  user::json_load(ws->self,
       ws->payload.event_data, sizeof(ws->payload.event_data));
 
   if (STREQ("READY", ws->payload.event_name))
   {
-    ws->status = WS_CONNECTED;
+    ws->status = CONNECTED;
     ws->reconnect_attempts = 0;
     D_PRINT("Succesfully started a Discord session!");
 
@@ -146,7 +147,7 @@ on_dispatch(struct discord_ws_s *ws)
 
   if (STREQ("RESUMED", ws->payload.event_name))
   {
-    ws->status = WS_CONNECTED;
+    ws->status = CONNECTED;
     ws->reconnect_attempts = 0;
     D_PRINT("Succesfully resumed a Discord session!");
 
@@ -160,7 +161,7 @@ on_dispatch(struct discord_ws_s *ws)
     message::data *message = message::init();
     ASSERT_S(NULL != message, "Out of memory");
 
-    Discord_message_load((void*)message,
+    message::json_load((void*)message,
         ws->payload.event_data, sizeof(ws->payload.event_data));
 
     (*ws->cbs.on_message.create)(ws->p_client, ws->self, message);
@@ -177,7 +178,7 @@ on_dispatch(struct discord_ws_s *ws)
     message::data *message = message::init();
     ASSERT_S(NULL != message, "Out of memory");
 
-    Discord_message_load((void*)message,
+    message::json_load((void*)message,
         ws->payload.event_data, sizeof(ws->payload.event_data));
 
     (*ws->cbs.on_message.update)(ws->p_client, ws->self, message);
@@ -194,7 +195,7 @@ on_dispatch(struct discord_ws_s *ws)
     message::data *message = message::init();
     ASSERT_S(NULL != message, "Out of memory");
 
-    Discord_message_load((void*)message,
+    message::json_load((void*)message,
         ws->payload.event_data, sizeof(ws->payload.event_data));
 
     (*ws->cbs.on_message.del)(ws->p_client, ws->self, message);
@@ -208,9 +209,9 @@ on_dispatch(struct discord_ws_s *ws)
 }
 
 static void
-on_invalid_session(struct discord_ws_s *ws)
+on_invalid_session(websockets::data *ws)
 {
-  ws->status = WS_FRESH;
+  ws->status = FRESH;
 
   char reason[] = "Attempting to a start a fresh session";
   D_PUTS(reason);
@@ -218,9 +219,9 @@ on_invalid_session(struct discord_ws_s *ws)
 }
 
 static void
-on_reconnect(struct discord_ws_s *ws)
+on_reconnect(websockets::data *ws)
 {
-  ws->status = WS_RESUME;
+  ws->status = RESUME;
 
   char reason[] = "Attempting to session resume";
   D_PUTS(reason);
@@ -239,7 +240,7 @@ ws_on_connect_cb(void *data, CURL *ehandle, const char *ws_protocols)
 static void
 ws_on_close_cb(void *data, CURL *ehandle, enum cws_close_reason cwscode, const char *reason, size_t len)
 {
-    struct discord_ws_s *ws = (struct discord_ws_s*)data;
+    websockets::data *ws = (websockets::data*)data;
     enum ws_close_opcodes opcode = (enum ws_close_opcodes)cwscode;
    
     switch (opcode) {
@@ -253,15 +254,15 @@ ws_on_close_cb(void *data, CURL *ehandle, enum cws_close_reason cwscode, const c
     case GATEWAY_CLOSE_REASON_INVALID_API_VERSION:
     case GATEWAY_CLOSE_REASON_INVALID_INTENTS:
     case GATEWAY_CLOSE_REASON_DISALLOWED_INTENTS:
-        ws->status = WS_DISCONNECTED;
+        ws->status = DISCONNECTED;
         break;
     case GATEWAY_CLOSE_REASON_UNKNOWN_ERROR:
     case GATEWAY_CLOSE_REASON_INVALID_SEQUENCE:
-        ws->status = WS_RESUME;
+        ws->status = RESUME;
         break;
     case GATEWAY_CLOSE_REASON_SESSION_TIMED_OUT:
     default: //websocket/clouflare opcodes
-        ws->status = WS_FRESH;
+        ws->status = FRESH;
         break;
     }
 
@@ -276,7 +277,7 @@ ws_on_close_cb(void *data, CURL *ehandle, enum cws_close_reason cwscode, const c
 static void
 ws_on_text_cb(void *data, CURL *ehandle, const char *text, size_t len)
 {
-  struct discord_ws_s *ws = (struct discord_ws_s*)data;
+  websockets::data *ws = (websockets::data*)data;
 
   D_PRINT("ON_TEXT:\n\t\t%s", text);
 
@@ -330,7 +331,7 @@ ws_on_text_cb(void *data, CURL *ehandle, const char *text, size_t len)
 
 /* init easy handle with some default opt */
 static CURL*
-custom_cws_new(struct discord_ws_s *ws)
+custom_cws_new(websockets::data *ws)
 {
   //missing on_binary, on_ping, on_pong
   struct cws_callbacks cws_cbs = {
@@ -423,9 +424,9 @@ identify_init(char token[])
 }
 
 void
-Discord_ws_init(struct discord_ws_s *ws, char token[])
+init(websockets::data *ws, char token[])
 {
-  ws->status = WS_DISCONNECTED;
+  ws->status = DISCONNECTED;
 
   ws->identify = identify_init(token);
   ws->session_id = (char*)malloc(SNOWFLAKE_TIMESTAMP);
@@ -439,7 +440,7 @@ Discord_ws_init(struct discord_ws_s *ws, char token[])
 }
 
 void
-Discord_ws_cleanup(struct discord_ws_s *ws)
+cleanup(websockets::data *ws)
 {
   free(ws->identify);
   free(ws->session_id);
@@ -453,7 +454,7 @@ Discord_ws_cleanup(struct discord_ws_s *ws)
 /* send heartbeat pulse to websockets server in order
  *  to maintain connection alive */
 static void
-ws_send_heartbeat(struct discord_ws_s *ws)
+ws_send_heartbeat(websockets::data *ws)
 {
   char payload[64];
   int ret = snprintf(payload, sizeof(payload), "{\"op\":1,\"d\":%d}", ws->payload.seq_number);
@@ -467,7 +468,7 @@ ws_send_heartbeat(struct discord_ws_s *ws)
 
 /* main websockets event loop */
 static void
-ws_main_loop(struct discord_ws_s *ws)
+ws_main_loop(websockets::data *ws)
 {
   int is_running = 0;
 
@@ -484,7 +485,7 @@ ws_main_loop(struct discord_ws_s *ws)
     mcode = curl_multi_wait(ws->mhandle, NULL, 0, 1000, &numfds);
     ASSERT_S(CURLM_OK == mcode, curl_multi_strerror(mcode));
 
-    if (ws->status != WS_CONNECTED) continue; //perform until a connection is established
+    if (ws->status != CONNECTED) continue; //perform until a connection is established
 
     /* CONNECTION IS ESTABLISHED */
 
@@ -500,14 +501,14 @@ ws_main_loop(struct discord_ws_s *ws)
 
 /* connects to the discord websockets server */
 void
-Discord_ws_run(struct discord_ws_s *ws)
+run(websockets::data *ws)
 {
   do {
     curl_multi_add_handle(ws->mhandle, ws->ehandle);
     ws_main_loop(ws);
     curl_multi_remove_handle(ws->mhandle, ws->ehandle);
 
-    if (WS_DISCONNECTED == ws->status) break;
+    if (DISCONNECTED == ws->status) break;
     if (ws->reconnect_attempts >= 5) break;
 
     /* guarantees full shutdown of old connection
@@ -518,35 +519,12 @@ Discord_ws_run(struct discord_ws_s *ws)
     ++ws->reconnect_attempts;
   } while (1);
 
-  if (WS_DISCONNECTED != ws->status) {
+  if (DISCONNECTED != ws->status) {
     D_PRINT("Failed all reconnect attempts (%d)",
         ws->reconnect_attempts);
-    ws->status = WS_DISCONNECTED;
+    ws->status = DISCONNECTED;
   }
 }
 
-void
-Discord_ws_setcb_idle(struct discord_ws_s *ws, discord_idle_cb *user_cb){
-  ws->cbs.on_idle = user_cb;
-}
-void
-Discord_ws_setcb_ready(struct discord_ws_s *ws, discord_idle_cb *user_cb){
-  ws->cbs.on_ready = user_cb;
-}
-
-void
-Discord_ws_setcb_message_create(struct discord_ws_s *ws, discord_message_cb *user_cb){
-  ws->cbs.on_message.create = user_cb;
-}
-
-void
-Discord_ws_setcb_message_update(struct discord_ws_s *ws, discord_message_cb *user_cb){
-  ws->cbs.on_message.update = user_cb;
-}
-
-void
-Discord_ws_setcb_message_delete(struct discord_ws_s *ws, discord_message_cb *user_cb){
-  ws->cbs.on_message.del = user_cb;
-}
-
+} // namespace websockets
 } // namespace discord

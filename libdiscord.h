@@ -77,6 +77,12 @@ struct data {
   message::data **messages;
 };
 
+channel::data* init();
+void cleanup(channel::data *channel);
+
+void pin_message(discord::client *client, const char channel_id[], const char message_id[]);
+void unpin_message(discord::client *client, const char channel_id[], const char message_id[]);
+
 } // namespace channel
 
 namespace message {
@@ -111,6 +117,12 @@ struct data {
   //struct discord_sticker_s **stickers;
   struct data *referenced_message;
 };
+
+message::data* init();
+void cleanup(message::data *message);
+void json_load(void *p_message, char *str, size_t len);
+
+void create(discord::client *client, const char channel_id[], const char content[]);
 
 } // namespace message
 
@@ -168,6 +180,12 @@ struct data {
   int approximate_presence_count;
 };
 
+guild::data* init();
+void cleanup(guild::data *guild);
+void json_load(void *p_guild, char *str, size_t len);
+
+void get(discord::client *client, const char guild_id[], guild::data *p_guild);
+
 } // namespace guild
 
 namespace user {
@@ -191,41 +209,12 @@ struct data {
   guild::data **guilds;
 };
 
-} // namespace user
+user::data* init();
+void cleanup(user::data *user);
+void json_load(void *p_user, char *str, size_t len);
 
-namespace channel { /* discord-public-channel.c */
-
-struct data* init();
-void cleanup(struct data *channel);
-void pin_message(discord_t *client, const char channel_id[], const char message_id[]);
-void unpin_message(discord_t *client, const char channel_id[], const char message_id[]);
-
-} // namespace channel
-
-namespace guild {
-
-/* discord-public-guild.c */
-
-struct data* init();
-void cleanup(struct data *guild);
-void get(discord_t *client, const char guild_id[], struct data *p_guild);
-
-} // namespace guild
-
-namespace message { /* discord-public-message.c */
-
-struct data* init();
-void cleanup(struct data *message);
-void send(discord_t *client, const char channel_id[], const char content[]);
-
-} // namespace message
-
-namespace user { /* discord-public-user.c */
-
-struct data* init();
-void cleanup(struct data *user);
-void get(discord_t *client, const char user_id[], struct data *p_user);
-void get_self(discord_t *client, struct data *p_user);
+void get(discord::client *client, const char user_id[], user::data *p_user);
+void get_self(discord::client *client, user::data *p_user);
 
 } // namespace user
 
@@ -234,22 +223,22 @@ void get_self(discord_t *client, struct data *p_user);
 void global_init();
 void global_cleanup();
 
-discord_t* init(char token[]);
-discord_t* fast_init(const char config_file[]);
-void cleanup(discord_t *client);
+discord::client* init(char token[]);
+discord::client* fast_init(const char config_file[]);
+void cleanup(discord::client *client);
 
-void setcb_idle(discord_t *client, discord_idle_cb *user_cb);
-void setcb_ready(discord_t *client, discord_idle_cb *user_cb);
-void setcb_message_create(discord_t *client, discord_message_cb *user_cb);
-void setcb_message_update(discord_t *client, discord_message_cb *user_cb);
-void setcb_message_delete(discord_t *client, discord_message_cb *user_cb);
+void setcb_idle(discord::client *client, discord::idle_cb *user_cb);
+void setcb_ready(discord::client *client, discord::idle_cb *user_cb);
+void setcb_message_create(discord::client *client, discord::message_cb *user_cb);
+void setcb_message_update(discord::client *client, discord::message_cb *user_cb);
+void setcb_message_delete(discord::client *client, discord::message_cb *user_cb);
 
-void run(discord_t *client);
+void run(discord::client *client);
 
-void dump_json(discord_t *client, char file[]);
-void dump_curl(discord_t *client, char file[]);
-void* set_data(discord_t *client, void *data);
-void* get_data(discord_t *client);
+void dump_json(discord::client *client, char file[]);
+void dump_curl(discord::client *client, char file[]);
+void* set_data(discord::client *client, void *data);
+void* get_data(discord::client *client);
 
 } // namespace discord
 
