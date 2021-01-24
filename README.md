@@ -30,7 +30,7 @@ sudo apt-get install -y libcurl4-openssl-dev libssl-dev
 
 #### Compile
 ```
-make bot-echo
+make -f discord.mk
 ```
 
 ## Run bot-echo

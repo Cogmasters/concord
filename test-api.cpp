@@ -13,20 +13,20 @@ int main(int argc, char *argv[])
   else
     config_file = "bot.config";
 
-  discord_global_init();
+  global_init();
 
-  discord_t *client = discord_fast_init(config_file);
+  client *client = fast_init(config_file);
   assert(NULL != client);
 
-  user::discord_user_s *self = user::discord_user_init(); 
+  user::data *self = user::init(); 
   assert(NULL != self);
 
-  user::discord_get_client_user(client, self);
+  user::get_self(client, self);
   printf("Greetings, %s#%s!\n", self->username, self->discriminator);
 
-  user::discord_user_cleanup(self);
+  user::cleanup(self);
 
-  discord_cleanup(client);
+  cleanup(client);
 
-  discord_global_cleanup();
+  global_cleanup();
 }

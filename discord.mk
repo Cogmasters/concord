@@ -31,7 +31,7 @@ PREFIX ?= /usr/local
 
 .PHONY : all mkdir install clean purge
 
-all : mkdir $(OBJS) $(LIBDISCORD_SLIB) bot-echo bot-pin bot-ping-pong#test-api test-ws
+all : mkdir $(OBJS) $(LIBDISCORD_SLIB) bot-echo bot-pin bot-ping-pong test-api test-ws
 
 mkdir :
 	mkdir -p $(OBJDIR) $(LIBDIR)
@@ -53,12 +53,12 @@ $(OBJDIR)/curl-websocket.o : curl-websocket.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \
 		-U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=1 -c -o $@ $<
 
-#test-api : test-api.cpp
-#	$(CXX) $(CFLAGS) $(LIBS_CFLAGS) \
-#		test-api.cpp $(OBJS) -o test-api.exe $(LIBS_LDFLAGS)
-#test-ws : test-ws.cpp
-#	$(CXX) $(CFLAGS) $(LIBS_CFLAGS) \
-#		test-ws.cpp $(OBJS) -o test-ws.exe $(LIBS_LDFLAGS)
+test-api : test-api.cpp
+	$(CXX) $(CFLAGS) $(LIBS_CFLAGS) \
+		test-api.cpp $(OBJS) -o test-api.exe $(LIBS_LDFLAGS)
+test-ws : test-ws.cpp
+	$(CXX) $(CFLAGS) $(LIBS_CFLAGS) \
+		test-ws.cpp $(OBJS) -o test-ws.exe $(LIBS_LDFLAGS)
 
 bot-echo : bot-echo.cpp
 	$(CXX) $(CFLAGS) $(LIBS_CFLAGS) \

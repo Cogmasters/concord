@@ -5,7 +5,7 @@
 
 using namespace discord;
 
-void on_ready(discord_t *client, const user::discord_user_t *self)
+void on_ready(client *client, const user::data *self)
 {
   fprintf(stderr, "\n\nSuccesfully connected to Discord as %s#%s!\n\n",
       self->username, self->discriminator);
@@ -21,17 +21,17 @@ int main(int argc, char *argv[])
   else
     config_file = "bot.config";
 
-  discord_global_init();
+  global_init();
 
-  discord_t *client = discord_fast_init(config_file);
+  client *client = fast_init(config_file);
   assert(NULL != client);
 
-  discord_setcb_ready(client, &on_ready);
+  setcb_ready(client, &on_ready);
 
-  discord_run(client);
+  run(client);
 
-  discord_cleanup(client);
+  cleanup(client);
 
-  discord_global_cleanup();
+  global_cleanup();
 }
 

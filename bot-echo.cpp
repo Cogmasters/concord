@@ -7,7 +7,7 @@
 
 using namespace discord;
 
-void on_ready(discord::client *client, const user::data *self)
+void on_ready(client *client, const user::data *self)
 {
   fprintf(stderr, "\n\nEcho-Bot succesfully connected to Discord as %s#%s!\n\n",
       self->username, self->discriminator);
@@ -16,7 +16,7 @@ void on_ready(discord::client *client, const user::data *self)
 }
 
 void on_message_create(
-    discord::client *client,
+    client *client,
     const user::data *self,
     const message::data *msg)
 {
@@ -31,7 +31,7 @@ void on_message_create(
 }
 
 void on_message_update(
-    discord::client *client,
+    client *client,
     const user::data *self,
     const message::data *msg)
 {
@@ -43,7 +43,7 @@ void on_message_update(
 }
 
 void on_message_delete(
-    discord::client *client,
+    client *client,
     const user::data *self,
     const message::data *msg)
 {
@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
 
   global_init();
 
-  discord::client *client = fast_init(config_file);
+  client *client = fast_init(config_file);
   assert(NULL != client);
 
   setcb_ready(client, &on_ready);
