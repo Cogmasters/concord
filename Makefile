@@ -2,7 +2,7 @@ CC			?= gcc
 OBJDIR	:= obj
 LIBDIR	:= lib
 
-SRC	:= $(wildcard http-common.c discord-*.c curl-websocket.c settings.c null_term_list.c json-scanf.c json-printf.c)
+SRC	:= $(wildcard http-common.c discord-*.c curl-websocket.c settings.c ntl.c json-scanf.c json-printf.c)
 _OBJS	:= $(patsubst %.c, %.o, $(SRC))
 OBJS 	:= $(addprefix $(OBJDIR)/, $(_OBJS))
 
@@ -38,11 +38,7 @@ all : mkdir $(OBJS) $(LIBDISCORD_SLIB)
 mkdir :
 	mkdir -p $(OBJDIR) $(LIBDIR)
 
-test : all test-api.c test-ws.c test-json-scanf.c
-	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \
-		test-api.c -o test-api.exe $(LIBS_LDFLAGS)
-	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \
-		test-ws.c -o test-ws.exe $(LIBS_LDFLAGS)
+test : all test-json-scanf.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \
 		test-json-scanf.c -o test-json-scanf.exe $(LIBS_LDFLAGS)
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \
@@ -64,7 +60,7 @@ $(OBJDIR)/discord-%.o : discord-%.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 $(OBJDIR)/settings.o : settings.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
-$(OBJDIR)/null_term_list.o : null_term_list.c
+$(OBJDIR)/ntl.o : ntl.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 $(OBJDIR)/json-scanf.o : json-scanf.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<

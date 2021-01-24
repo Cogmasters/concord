@@ -3,6 +3,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdbool.h>
+#include "json-common.h"
 
 static char *
 normalize_fmt (char *fmt)
@@ -26,6 +28,24 @@ normalize_fmt (char *fmt)
   }
   *d = '\0';
   return fmt1;
+}
+
+struct specifier {
+  bool is_nullable;
+};
+
+
+
+static void
+format_analyze(char *format, size_t *num_keys)
+{
+  /* find % occurrence */
+  while (*format) {
+    if ('%' == *format) {
+      ++*num_keys;
+    }
+    ++format;
+  }
 }
 
 /*

@@ -17,6 +17,8 @@ set(CMAKE_EXE_LINKER_FLAGS "")
 set(JSON_SCANF
         json-common.h
         jsmn.h
+        ntl.c
+        ntl.h
         json-scanf.c
         json-printf.c
         json-scanf.h)

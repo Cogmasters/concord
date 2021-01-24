@@ -36,9 +36,9 @@ struct response {
   char * url;
   char * sha;
 };
-extern bool run (user_agent::data * ua,
-                 struct params * p,
-                 struct response * resp);
+bool run (user_agent::data * ua,
+          struct params * p,
+          struct response * resp);
 
 } // create_a_blob
 
@@ -57,15 +57,72 @@ struct response {
   int size;
   char * node_id;
 };
-extern bool run (user_agent::data * ua,
-                 struct params * p,
-                 struct response * resp);
+bool run (user_agent::data * ua,
+          struct params * p,
+          struct response * resp);
 } // get_a_blob
 
 namespace create_a_commit {
 }
 namespace get_a_commit {
 
+}
+
+inline namespace tree {
+struct tree {
+  char *path;
+  char *mode;
+  char *type;
+  int size;
+  char *sha;
+  char *url;
+};
+
+struct response {
+  char * sha;
+  char * url;
+  struct tree ** tree;
+  bool truncated;
+};
+
+namespace create_a_tree {
+struct params {
+  char *owner;
+  char *repo;
+  struct tree {
+    char * path;
+    char * mode;
+    char * type;
+    char * sha;  // either sha or content
+    char * content;
+  } ** tree;
+  char * base_tree;
+};
+bool run(user_agent::data *ua, struct params *p, struct response *resp);
+void free_params (struct params *p);
+void free_response (struct response * resp);
+}
+
+
+
+namespace get_a_tree {
+struct params {
+  char *owner;
+  char *repo;
+  char *tree_sha;
+  char *recursive;
+};
+struct response {
+  char *sha;
+  char *url;
+  struct tree *tree; // NULL TOKEN terminated
+  bool truncated;
+};
+
+bool run(user_agent::data *ua,
+         struct params *p,
+         struct response *resp);
+}
 }
 
 namespace list_matching_references {

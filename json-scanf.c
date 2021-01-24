@@ -34,7 +34,7 @@
 #define JSMN_PARENT_LINKS // add parent links to jsmn_tok, which are needed
 #define JSMN_STRICT  // parse json in strict mode
 #include "jsmn.h"
-#include "null_term_list.h"
+#include "ntl.h"
 
 #define N_PATH_MAX 8
 #define KEY_MAX 128
@@ -186,13 +186,11 @@ match_path (char *buffer, jsmntok_t *t,
     if (JSMN_ARRAY == t[i].type) {
       size_t n = t[i].size;
       token_array = (struct json_token **)
-
-      null_term_list_malloc(n, sizeof(struct json_token));
-
-      for (size_t idx = 0, ic = i + 1; ic < n_toks && idx < n; ic++) {
-        if (t[ic].parent != i)
+        ntl_malloc(n, sizeof(struct json_token));
+      int idx;
+      for (idx = 0, ic = i + 1; ic < n_toks && idx < n; ic++) {
+        if (t[ic].parent != i) 
           continue;
-
         token_array[idx]->start = buffer + t[ic].start;
         token_array[idx]->length = t[ic].end - t[ic].start;
 
@@ -647,6 +645,7 @@ json_scanf(char *buffer, size_t buf_size, char *format, ...)
            tok[i].end - tok[i].start, buffer + tok[i].start);
   }
 
+  int extracted_values = 0;
   for (size_t i = 0; i < num_keys; ++i) {
     switch (tok[0].type) {
       case JSMN_OBJECT:
@@ -656,13 +655,15 @@ json_scanf(char *buffer, size_t buf_size, char *format, ...)
         apply_array(buffer, tok, num_tok, es+i);
         break;
     }
+
+    if (es[i].is_applied) extracted_values ++;
   }
 
 cleanup:
   if (tok) free(tok);
   free(es);
 
-  return 0;
+  return extracted_values;
 }
 
 char*

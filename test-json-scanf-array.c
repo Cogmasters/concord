@@ -84,7 +84,7 @@ int main () {
   printf ("test [tree]%%L\n");
   tokens = NULL;
   json_scanf(json_str, s, "[tree]%L", &tokens);
-  for (i = 0; i < tokens[i]; i++) {
+  for (i = 0; tokens[i]; i++) {
     printf ("token [%p, %d]\n", tokens[i]->start, tokens[i]->length);
     printf ("token %.*s\n", tokens[i]->length, tokens[i]->start);
   }
