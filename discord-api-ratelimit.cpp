@@ -8,6 +8,8 @@
 #include <libdiscord.h>
 #include "discord-common.h"
 
+namespace discord {
+
 /* See:
 https://discord.com/developers/docs/topics/rate-limits#rate-limits */
 
@@ -66,7 +68,7 @@ Discord_ratelimit_tryget_bucket(struct discord_api_s *api, char endpoint[])
   };
 
   struct _route_s **p_route;
-  p_route = tfind(&search_route, &api->ratelimit.routes_root, &routecmp);
+  p_route = (struct _route_s**)tfind(&search_route, &api->ratelimit.routes_root, &routecmp);
   //if found matching route, return its bucket, otherwise NULL
   return (p_route) ? (*p_route)->p_bucket : NULL;
 }
@@ -105,7 +107,7 @@ create_route(struct discord_api_s *api, char endpoint[])
   if (NULL == bucket_hash) return; //no hash information in header
 
   // create new route that will link the endpoint with a bucket
-  struct _route_s *new_route = calloc(1, sizeof *new_route);
+  struct _route_s *new_route = (struct _route_s*) calloc(1, sizeof *new_route);
   ASSERT_S(NULL != new_route, "Out of memory");
 
   new_route->str = strdup(endpoint);
@@ -119,7 +121,7 @@ create_route(struct discord_api_s *api, char endpoint[])
   }
 
   if (!new_route->p_bucket) { //couldn't find match, create new bucket
-    struct api_bucket_s *new_bucket = calloc(1, sizeof *new_bucket);
+    struct api_bucket_s *new_bucket = (struct api_bucket_s*) calloc(1, sizeof *new_bucket);
     ASSERT_S(NULL != new_bucket, "Out of memory");
 
     new_bucket->hash = strdup(bucket_hash);
@@ -130,7 +132,7 @@ create_route(struct discord_api_s *api, char endpoint[])
     void *tmp = realloc(api->ratelimit.buckets, api->ratelimit.num_buckets * sizeof(struct api_bucket_s*));
     ASSERT_S(NULL != tmp, "Out of memory");
 
-    api->ratelimit.buckets = tmp;
+    api->ratelimit.buckets = (struct api_bucket_s**)tmp;
     api->ratelimit.buckets[api->ratelimit.num_buckets-1] = new_bucket;
 
     new_route->p_bucket = new_bucket; //route points to new bucket
@@ -138,7 +140,7 @@ create_route(struct discord_api_s *api, char endpoint[])
 
   //add new route to tree
   struct _route_s **p_route;
-  p_route = tsearch(new_route, &api->ratelimit.routes_root, &routecmp);
+  p_route = (struct _route_s**)tsearch(new_route, &api->ratelimit.routes_root, &routecmp);
   ASSERT_S(*p_route == new_route, "Couldn't create new bucket route");
 
   parse_ratelimits(new_route->p_bucket, &api->pairs);
@@ -165,7 +167,7 @@ Discord_ratelimit_build_bucket(struct discord_api_s *api, struct api_bucket_s *b
 static void
 route_cleanup(void *p_route)
 {
-  struct _route_s *route = p_route;
+  struct _route_s *route = (struct _route_s*)p_route;
 
   free(route->str); //clean the endpoint associaited to this route
   free(route);
@@ -185,3 +187,5 @@ Discord_ratelimit_buckets_cleanup(struct discord_api_s *api)
   }
   free(api->ratelimit.buckets);
 }
+
+} // namespace discord

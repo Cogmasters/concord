@@ -6,20 +6,23 @@
 
 #include "discord-common.h"
 
-discord_channel_t*
-discord_channel_init()
+namespace discord {
+namespace channel {
+
+struct data*
+init()
 {
-  discord_channel_t *new_channel = calloc(1, sizeof *new_channel);
+  struct data *new_channel = (struct data*)calloc(1, sizeof *new_channel);
   return new_channel;
 }
 
 void
-discord_channel_cleanup(discord_channel_t *channel) {
+cleanup(struct data *channel) {
   free(channel);
 }
 
 void
-discord_pin_message(discord_t *client, const char channel_id[], const char message_id[])
+pin_message(discord_t *client, const char channel_id[], const char message_id[])
 {
   if (IS_EMPTY_STRING(channel_id)) {
     D_PUTS("Missing 'channel_id'");
@@ -39,7 +42,7 @@ discord_pin_message(discord_t *client, const char channel_id[], const char messa
 }
 
 void
-discord_unpin_message(discord_t *client, const char channel_id[], const char message_id[])
+unpin_message(discord_t *client, const char channel_id[], const char message_id[])
 {
   if (IS_EMPTY_STRING(channel_id)) {
     D_PUTS("Missing 'channel_id'");
@@ -57,3 +60,6 @@ discord_unpin_message(discord_t *client, const char channel_id[], const char mes
     "", //empty POSTFIELDS
     DELETE, PINNED_MESSAGE, channel_id, message_id);
 }
+
+} // namespace channel
+} // namespace discord

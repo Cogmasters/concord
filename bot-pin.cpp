@@ -4,8 +4,9 @@
 #include <assert.h>
 #include <libdiscord.h>
 
+using namespace discord;
 
-void on_ready(discord_t *client, const discord_user_t *self)
+void on_ready(discord_t *client, const user::data *self)
 {
   fprintf(stderr, "\n\nPin-Bot succesfully connected to Discord as %s#%s!\n\n",
       self->username, self->discriminator);
@@ -15,18 +16,18 @@ void on_ready(discord_t *client, const discord_user_t *self)
 
 void on_message_create(
     discord_t *client,
-    const discord_user_t *self,
-    const discord_message_t *message)
+    const user::data *self,
+    const message::data *msg)
 {
   // make sure bot ignores msgs from other bots
-  if (message->author->bot)
+  if (msg->author->bot)
     return;
   // make sure it ignores itself
-  if (0 == strcmp(self->username, message->author->username))
+  if (0 == strcmp(self->username, msg->author->username))
     return;
 
-  if (strstr(message->content, "pin me")) 
-    discord_pin_message(client, message->channel_id, message->id);
+  if (strstr(msg->content, "pin me")) 
+    channel::pin_message(client, msg->channel_id, msg->id);
 }
 
 int main(int argc, char *argv[])
@@ -37,19 +38,19 @@ int main(int argc, char *argv[])
   else
     config_file = "bot.config";
 
-  discord_global_init();
+  global_init();
 
-  discord_t *client = discord_fast_init(config_file);
+  discord_t *client = fast_init(config_file);
   assert(NULL != client);
 
-  discord_setcb_ready(client, &on_ready);
-  discord_setcb_message_create(client, &on_message_create);
+  setcb_ready(client, &on_ready);
+  setcb_message_create(client, &on_message_create);
 
-  discord_run(client);
+  run(client);
 
-  discord_cleanup(client);
+  cleanup(client);
 
-  discord_global_cleanup();
+  global_cleanup();
 }
 
 

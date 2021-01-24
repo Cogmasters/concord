@@ -9,6 +9,8 @@
 
 #define BASE_WEBSOCKETS_URL "wss://gateway.discord.gg/?v=6&encoding=json"
 
+namespace discord {
+
 static char*
 ws_opcode_print(enum ws_opcodes opcode)
 {
@@ -155,7 +157,7 @@ on_dispatch(struct discord_ws_s *ws)
   {
     if (NULL == ws->cbs.on_message.create) return;
 
-    discord_message_t *message = discord_message_init();
+    message::data *message = message::init();
     ASSERT_S(NULL != message, "Out of memory");
 
     Discord_message_load((void*)message,
@@ -163,7 +165,7 @@ on_dispatch(struct discord_ws_s *ws)
 
     (*ws->cbs.on_message.create)(ws->p_client, ws->self, message);
 
-    discord_message_cleanup(message);
+    message::cleanup(message);
 
     return;
   }
@@ -172,7 +174,7 @@ on_dispatch(struct discord_ws_s *ws)
   {
     if (NULL == ws->cbs.on_message.update) return;
 
-    discord_message_t *message = discord_message_init();
+    message::data *message = message::init();
     ASSERT_S(NULL != message, "Out of memory");
 
     Discord_message_load((void*)message,
@@ -180,24 +182,24 @@ on_dispatch(struct discord_ws_s *ws)
 
     (*ws->cbs.on_message.update)(ws->p_client, ws->self, message);
 
-    discord_message_cleanup(message);
+    message::cleanup(message);
 
     return;
   }
 
   if (STREQ("MESSAGE_DELETE", ws->payload.event_name))
   {
-    if (NULL == ws->cbs.on_message.delete) return;
+    if (NULL == ws->cbs.on_message.del) return;
 
-    discord_message_t *message = discord_message_init();
+    message::data *message = message::init();
     ASSERT_S(NULL != message, "Out of memory");
 
     Discord_message_load((void*)message,
         ws->payload.event_data, sizeof(ws->payload.event_data));
 
-    (*ws->cbs.on_message.delete)(ws->p_client, ws->self, message);
+    (*ws->cbs.on_message.del)(ws->p_client, ws->self, message);
 
-    discord_message_cleanup(message);
+    message::cleanup(message);
 
     return;
   }
@@ -237,7 +239,7 @@ ws_on_connect_cb(void *data, CURL *ehandle, const char *ws_protocols)
 static void
 ws_on_close_cb(void *data, CURL *ehandle, enum cws_close_reason cwscode, const char *reason, size_t len)
 {
-    struct discord_ws_s *ws = data;
+    struct discord_ws_s *ws = (struct discord_ws_s*)data;
     enum ws_close_opcodes opcode = (enum ws_close_opcodes)cwscode;
    
     switch (opcode) {
@@ -274,7 +276,7 @@ ws_on_close_cb(void *data, CURL *ehandle, enum cws_close_reason cwscode, const c
 static void
 ws_on_text_cb(void *data, CURL *ehandle, const char *text, size_t len)
 {
-  struct discord_ws_s *ws = data;
+  struct discord_ws_s *ws = (struct discord_ws_s*)data;
 
   D_PRINT("ON_TEXT:\n\t\t%s", text);
 
@@ -411,7 +413,7 @@ identify_init(char token[])
   int len = sizeof(fmt_identify);
   len += ret;
 
-  char *identify = malloc(len);
+  char *identify = (char*)malloc(len);
   ASSERT_S(NULL != identify, "Out of memory");
 
   ret = snprintf(identify, len-1, fmt_identify, event_data);
@@ -426,14 +428,14 @@ Discord_ws_init(struct discord_ws_s *ws, char token[])
   ws->status = WS_DISCONNECTED;
 
   ws->identify = identify_init(token);
-  ws->session_id = malloc(SNOWFLAKE_TIMESTAMP);
+  ws->session_id = (char*)malloc(SNOWFLAKE_TIMESTAMP);
   ASSERT_S(NULL != ws->session_id, "Out of memory");
 
   ws->ehandle = custom_cws_new(ws);
   ws->mhandle = custom_multi_init();
 
-  ws->self = discord_user_init();
-  discord_get_client_user(ws->p_client, ws->self);
+  ws->self = user::init();
+  user::get_self(ws->p_client, ws->self);
 }
 
 void
@@ -442,7 +444,7 @@ Discord_ws_cleanup(struct discord_ws_s *ws)
   free(ws->identify);
   free(ws->session_id);
 
-  discord_user_cleanup(ws->self);
+  user::cleanup(ws->self);
 
   curl_multi_cleanup(ws->mhandle);
   cws_free(ws->ehandle);
@@ -544,5 +546,7 @@ Discord_ws_setcb_message_update(struct discord_ws_s *ws, discord_message_cb *use
 
 void
 Discord_ws_setcb_message_delete(struct discord_ws_s *ws, discord_message_cb *user_cb){
-  ws->cbs.on_message.delete = user_cb;
+  ws->cbs.on_message.del = user_cb;
 }
+
+} // namespace discord

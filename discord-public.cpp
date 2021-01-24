@@ -8,10 +8,12 @@
 #include "settings.h"
 
 
+namespace discord {
+
 discord_t*
-discord_init(char token[])
+init(char token[])
 {
-  discord_t *new_client = calloc(1, sizeof *new_client);
+  discord_t *new_client = (discord_t*) calloc(1, sizeof *new_client);
   if (NULL == new_client) return NULL;
 
   /* @todo this is a temporary solution */
@@ -42,7 +44,7 @@ discord_init(char token[])
 }
 
 discord_t*
-discord_fast_init(const char config_file[])
+fast_init(const char config_file[])
 {
   struct bot_settings settings;
 
@@ -50,20 +52,20 @@ discord_fast_init(const char config_file[])
 
   discord_t *client;
   if (settings.discord.token) {
-    client = discord_init(settings.discord.token);
+    client = init(settings.discord.token);
     if (NULL == client) return NULL;
   }
 
   if (settings.logging.dump_json.enable)
-    discord_dump_json(client, settings.logging.dump_json.filename);
+    dump_json(client, settings.logging.dump_json.filename);
   if (settings.logging.dump_curl.enable)
-    discord_dump_curl(client, settings.logging.dump_curl.filename);
+    dump_curl(client, settings.logging.dump_curl.filename);
 
   return client;
 }
 
 void
-discord_cleanup(discord_t *client)
+cleanup(discord_t *client)
 {
   /* @todo this is a temporary solution */
   if (client->settings.token)
@@ -81,49 +83,49 @@ discord_cleanup(discord_t *client)
 }
 
 void
-discord_global_init() {
+global_init() {
   ASSERT_S(0 == curl_global_init(CURL_GLOBAL_DEFAULT),
       "Couldn't start libcurl's globals configurations");
 }
 
 void
-discord_global_cleanup() {
+global_cleanup() {
   curl_global_cleanup();
 }
 
 void
-discord_setcb_idle(discord_t *client, discord_idle_cb *user_cb){
+setcb_idle(discord_t *client, discord_idle_cb *user_cb){
   Discord_ws_setcb_idle(&client->ws, user_cb);
 }
 
 void
-discord_setcb_ready(discord_t *client, discord_idle_cb *user_cb){
+setcb_ready(discord_t *client, discord_idle_cb *user_cb){
   Discord_ws_setcb_ready(&client->ws, user_cb);
 }
 
 void
-discord_setcb_message_create(discord_t *client, discord_message_cb *user_cb){
+setcb_message_create(discord_t *client, discord_message_cb *user_cb){
   Discord_ws_setcb_message_create(&client->ws, user_cb);
 }
 
 void
-discord_setcb_message_update(discord_t *client, discord_message_cb *user_cb){
+setcb_message_update(discord_t *client, discord_message_cb *user_cb){
   Discord_ws_setcb_message_update(&client->ws, user_cb);
 }
 
 void
-discord_setcb_message_delete(discord_t *client, discord_message_cb *user_cb){
+setcb_message_delete(discord_t *client, discord_message_cb *user_cb){
   Discord_ws_setcb_message_delete(&client->ws, user_cb);
 }
 
 void
-discord_run(discord_t *client){
+run(discord_t *client){
   Discord_ws_run(&client->ws);
 }
 
 //@todo find a better solution using settings.h logger
 void
-discord_dump_json(discord_t *client, char file[])
+dump_json(discord_t *client, char file[])
 {
   FILE *f_dump = fopen(file, "a+");
   ASSERT_S(NULL != f_dump, "Could not create dump file");
@@ -133,7 +135,7 @@ discord_dump_json(discord_t *client, char file[])
 
 //@todo find a better solution using settings.h logger
 void
-discord_dump_curl(discord_t *client, char file[])
+dump_curl(discord_t *client, char file[])
 {
   FILE *f_dump = fopen(file, "a+");
   ASSERT_S(NULL != f_dump, "Could not create dump file");
@@ -142,11 +144,13 @@ discord_dump_curl(discord_t *client, char file[])
 }
 
 void*
-discord_set_data(discord_t *client, void *data) {
+set_data(discord_t *client, void *data) {
   return Discord_utils_set_data(client, data);
 }
 
 void*
-discord_get_data(discord_t *client) {
+get_data(discord_t *client) {
   return Discord_utils_get_data(client);
 }
+
+} // namespace discord

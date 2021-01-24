@@ -1,13 +1,22 @@
-#ifndef LIBDISCORD_COMMON_H_
-#define LIBDISCORD_COMMON_H_
-
-//#include <libdiscord.h> (implicit)
+#ifndef LIBDISCORD_COMMON_H
+#define LIBDISCORD_COMMON_H
 
 #include <curl/curl.h>
 #include "json-scanf.h"
 
 #include "http-common.h"
 
+namespace discord { struct discord_s; }
+
+namespace discord {
+
+namespace message { struct data; }
+namespace channel { struct data; }
+namespace user { struct data; }
+namespace guild { struct data; }
+
+typedef void (discord_idle_cb)(struct discord_s *client, const user::data *self);
+typedef void (discord_message_cb)(struct discord_s *client, const user::data *self, const message::data *message);
 
 /* ENDPOINTS */
 #define MESSAGES              "/messages"
@@ -51,7 +60,7 @@ struct discord_api_s {
 
   CURL *ehandle; //the curl's easy handle used to perform requests
 
-  discord_t *p_client; //points to client this struct is a part of
+  struct discord_s *p_client; //points to client this struct is a part of
 };
 
 /* GATEWAY CLOSE EVENT CODES
@@ -145,13 +154,13 @@ struct discord_ws_s {
     struct { /* MESSAGE CALLBACKS STRUCTURE */
       discord_message_cb *create; //triggers when a message is created
       discord_message_cb *update; //triggers when a message is updated (edited)
-      discord_message_cb *delete; //triggers when a message is deleted
+      discord_message_cb *del; //triggers when a message is deleted
     } on_message;
   } cbs;
 
-  discord_user_t *self; //the user associated with this client
+  user::data *self; //the user associated with this client
 
-  discord_t *p_client; //points to client this struct is a part of
+  struct discord_s *p_client; //points to client this struct is a part of
 };
 
 typedef struct discord_s {
@@ -191,7 +200,7 @@ void Discord_api_request(
 /* discord-api-ratelimit.c */
 
 void Discord_ratelimit_buckets_cleanup(struct discord_api_s *api);
-long long Discord_ratelimit_delay(struct api_bucket_s *bucket, _Bool use_clock);
+long long Discord_ratelimit_delay(struct api_bucket_s *bucket, bool use_clock);
 struct api_bucket_s* Discord_ratelimit_tryget_bucket(struct discord_api_s *api, char endpoint[]);
 void Discord_ratelimit_build_bucket(struct discord_api_s *api, struct api_bucket_s *bucket, char endpoint[]);
 
@@ -208,4 +217,6 @@ void Discord_ws_setcb_message_delete(struct discord_ws_s *ws, discord_message_cb
 
 void Discord_ws_run(struct discord_ws_s *ws);
 
-#endif
+} // namespace discord
+
+#endif // LIBDISCORD_COMMON_H

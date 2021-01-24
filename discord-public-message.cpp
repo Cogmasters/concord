@@ -6,49 +6,12 @@
 
 #include "discord-common.h"
 
-static discord_message_t*
-referenced_message_init()
-{
-  discord_message_t *new_message = calloc(1, sizeof *new_message);
-  if (NULL == new_message) return NULL;
-
-  new_message->author = discord_user_init();
-  if (NULL == new_message->author) goto cleanup;
-
-  return new_message;
-
-cleanup:
-  free(new_message);
-
-  return NULL;
-}
-
-discord_message_t*
-discord_message_init()
-{
-  discord_message_t *new_message = calloc(1, sizeof *new_message);
-  if (NULL == new_message) return NULL;
-
-  new_message->author = discord_user_init();
-  if (NULL == new_message->author) goto cleanupA;
-  
-  new_message->referenced_message = referenced_message_init();
-  if (NULL == new_message->referenced_message) goto cleanupB;
-
-  return new_message;
-
-cleanupB:
-  free(new_message->author);
-cleanupA:
-  free(new_message);
-
-  return NULL;
-}
+namespace discord {
 
 void
 Discord_message_load(void *p_message, char *str, size_t len)
 {
-  discord_message_t *message = p_message;
+  message::data *message = (message::data*)p_message;
 
   struct json_token token_author = {NULL, 0};
   struct json_token token_mentions = {NULL, 0};
@@ -93,18 +56,59 @@ Discord_message_load(void *p_message, char *str, size_t len)
   D_NOTOP_PUTS("Message object loaded with API response"); 
 }
 
-static void
-referenced_message_cleanup(discord_message_t *message)
+namespace message {
+
+static struct data*
+referenced_message_init()
 {
-  discord_user_cleanup(message->author);
+  struct data *new_message = (struct data*)calloc(1, sizeof *new_message);
+  if (NULL == new_message) return NULL;
+
+  new_message->author = user::init();
+  if (NULL == new_message->author) goto cleanup;
+
+  return new_message;
+
+cleanup:
+  free(new_message);
+
+  return NULL;
+}
+
+struct data*
+init()
+{
+  struct data *new_message = (struct data*)calloc(1, sizeof *new_message);
+  if (NULL == new_message) return NULL;
+
+  new_message->author = user::init();
+  if (NULL == new_message->author) goto cleanupA;
+  
+  new_message->referenced_message = referenced_message_init();
+  if (NULL == new_message->referenced_message) goto cleanupB;
+
+  return new_message;
+
+cleanupB:
+  free(new_message->author);
+cleanupA:
+  free(new_message);
+
+  return NULL;
+}
+
+static void
+referenced_message_cleanup(struct data *message)
+{
+  user::cleanup(message->author);
 
   free(message);
 }
 
 void
-discord_message_cleanup(discord_message_t *message)
+cleanup(struct data *message)
 {
-  discord_user_cleanup(message->author);
+  user::cleanup(message->author);
   referenced_message_cleanup(message->referenced_message);
 
   free(message);
@@ -112,7 +116,7 @@ discord_message_cleanup(discord_message_t *message)
 
 /* See: https://discord.com/developers/docs/resources/channel#create-message */
 void
-discord_send_message(discord_t *client, const char channel_id[], const char content[])
+send(discord_t *client, const char channel_id[], const char content[])
 {
   if (IS_EMPTY_STRING(channel_id)) {
     D_PUTS("Can't send message to Discord: missing 'channel_id'");
@@ -138,3 +142,7 @@ discord_send_message(discord_t *client, const char channel_id[], const char cont
     payload,
     POST, CHANNEL MESSAGES, channel_id);
 }
+
+} // namespace message
+
+} // namespace discord

@@ -12,6 +12,8 @@
 
 #define BASE_API_URL "https://discord.com/api"
 
+namespace discord {
+
 /* initialize curl_slist's request header utility
  * @todo create distinction between bot and bearer token */
 static struct curl_slist*
@@ -33,7 +35,7 @@ reqheader_init(char token[])
   tmp = curl_slist_append(new_header, auth);
   ASSERT_S(NULL != tmp, "Out of memory");
 
-  tmp = curl_slist_append(new_header,"User-Agent: orca (http://github.com/cee-studio/orca, v"LIBDISCORD_VERSION")");
+  tmp = curl_slist_append(new_header,"User-Agent: orca (http://github.com/cee-studio/orca, v" LIBDISCORD_VERSION ")");
   ASSERT_S(NULL != tmp, "Out of memory");
 
   tmp = curl_slist_append(new_header,"Content-Type: application/json");
@@ -99,7 +101,7 @@ perform_request(
     ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
     //get response's code
-    const enum http_code code;
+    enum http_code code;
     ecode = curl_easy_getinfo(api->ehandle, CURLINFO_RESPONSE_CODE, &code);
     ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
@@ -249,3 +251,5 @@ Discord_api_request(
   set_url(api->ehandle, BASE_API_URL, url_route); //set the request URL
   perform_request(api, p_object, load_cb, endpoint); //perform the request
 }
+
+} // namespace discord

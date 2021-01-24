@@ -1,6 +1,10 @@
 #ifndef LIBDISCORD_H_
 #define LIBDISCORD_H_
 
+#include <stdbool.h>
+
+#include "discord-common.h"
+
 /* This is the version number of the package from which this header
  *  file originates */
 #define LIBDISCORD_VERSION "0.0.0-DEV"
@@ -11,34 +15,27 @@
 #define LIBDISCORD_VERSION_MINOR 0
 #define LIBDISCORD_VERSION_PATCH 0
 
-
-//forward declaration. see discord-common.h for full definition
-typedef struct discord_s discord_t;
-
-enum discord_limits {
-  MAX_NAME_LEN           = 101,
-  MAX_TOPIC_LEN          = 1024,
-  MAX_DESCRIPTION_LEN    = 1024,
-  MAX_USERNAME_LEN       = 32 + 1,
-  MAX_DISCRIMINATOR_LEN  = 4 + 1,
-  MAX_HASH_LEN           = 1024,
-  MAX_LOCALE_LEN         = 16,
-  MAX_EMAIL_LEN          = 254,
-  MAX_REGION_LEN         = 16,
-  MAX_HEADER_LEN         = 512,
-  MAX_URL_LEN            = 512,
-  MAX_MESSAGE_LEN        = 2000 + 1,
-  MAX_PAYLOAD_LEN        = 4096,
-};
+//size limits encountered reading the Docs and searching the web
+#define MAX_NAME_LEN           100 + 1
+#define MAX_TOPIC_LEN          1024
+#define MAX_DESCRIPTION_LEN    1024
+#define MAX_USERNAME_LEN       32 + 1
+#define MAX_DISCRIMINATOR_LEN  4 + 1
+#define MAX_HASH_LEN           1024
+#define MAX_LOCALE_LEN         16
+#define MAX_EMAIL_LEN          254
+#define MAX_REGION_LEN         16
+#define MAX_HEADER_LEN         512
+#define MAX_URL_LEN            512
+#define MAX_MESSAGE_LEN        2000 + 1
+#define MAX_PAYLOAD_LEN        4096
 
 /* SNOWFLAKES
 https://discord.com/developers/docs/reference#snowflakes */
-enum discord_snowflake {
-  SNOWFLAKE_INCREMENT           = 12,
-  SNOWFLAKE_PROCESS_ID          = 17,
-  SNOWFLAKE_INTERNAL_WORKER_ID  = 22,
-  SNOWFLAKE_TIMESTAMP           = 64,
-};
+#define SNOWFLAKE_INCREMENT           12
+#define SNOWFLAKE_PROCESS_ID          17
+#define SNOWFLAKE_INTERNAL_WORKER_ID  22
+#define SNOWFLAKE_TIMESTAMP           64
 
 /* CHANNEL TYPES
  * https://discord.com/developers/docs/resources/channel#channel-object-channel-types */
@@ -52,9 +49,13 @@ enum discord_channel_types {
   GUILD_STORE     = 6,
 };
 
+namespace discord {
+
+namespace channel {
+
 /* CHANNEL OBJECT
  * https://discord.com/developers/docs/resources/channel#channel-object-channel-structure */
-typedef struct discord_channel_s {
+struct data {
   char id[SNOWFLAKE_INTERNAL_WORKER_ID];
   int type;
   char guild_id[SNOWFLAKE_INTERNAL_WORKER_ID];
@@ -62,41 +63,45 @@ typedef struct discord_channel_s {
   //struct discord_overwrite_s **permission_overwrites;
   char name[MAX_NAME_LEN];
   char topic[MAX_TOPIC_LEN];
-  _Bool nsfw;
+  bool nsfw;
   char last_message_id[SNOWFLAKE_INTERNAL_WORKER_ID];
   int bitrate;
   int user_limit;
   int rate_limit_per_user;
-  struct discord_user_s **recipients;
+  user::data **recipients;
   char icon[MAX_HASH_LEN];
   char owner_id[SNOWFLAKE_INTERNAL_WORKER_ID];
   char application_id[SNOWFLAKE_INTERNAL_WORKER_ID];
   char parent_id[SNOWFLAKE_INTERNAL_WORKER_ID];
   char last_pin_timestamp[SNOWFLAKE_TIMESTAMP];
-  struct discord_message_s **messages;
-} discord_channel_t;
+  message::data **messages;
+};
+
+} // namespace channel
+
+namespace message {
 
 /* DISCORD MESSAGE OBJECT
  * https://discord.com/developers/docs/resources/channel#message-object*/
-typedef struct discord_message_s {
+struct data {
   char id[SNOWFLAKE_INTERNAL_WORKER_ID];
   char channel_id[SNOWFLAKE_INTERNAL_WORKER_ID];
   char guild_id[SNOWFLAKE_INTERNAL_WORKER_ID];
-  struct discord_user_s *author;
+  user::data *author;
   //struct discord_guildmember_s *member;
   char content[MAX_MESSAGE_LEN];
   char timestamp[SNOWFLAKE_TIMESTAMP];
   char edited_timestamp[SNOWFLAKE_TIMESTAMP];
-  _Bool tts;
-  _Bool mention_everyone;
-  struct discord_user_s **mentions;
+  bool tts;
+  bool mention_everyone;
+  user::data **mentions;
   //struct discord_role_t **mention_roles;
   //struct discord_channelmention_s **mention_channels;
   //struct discord_attachment_s **attachments;
   //struct discord_embed_s **embeds;
   //strict discord_reaction_s **reactions;
   char nonce[SNOWFLAKE_INTERNAL_WORKER_ID];
-  _Bool pinned;
+  bool pinned;
   char webhook_id[SNOWFLAKE_INTERNAL_WORKER_ID];
   int type;
   //struct discord_messageactivity_s *activity;
@@ -104,25 +109,29 @@ typedef struct discord_message_s {
   //struct discord_messagereference_s *message_reference;
   int flags;
   //struct discord_sticker_s **stickers;
-  struct discord_message_s *referenced_message;
-} discord_message_t;
+  struct data *referenced_message;
+};
+
+} // namespace message
+
+namespace guild {
 
 /* GUILD OBJECT
  * https://discord.com/developers/docs/resources/guild#guild-object-guild-structure */
-typedef struct discord_guild_s {
+struct data {
   char id[SNOWFLAKE_INTERNAL_WORKER_ID];
   char name[MAX_NAME_LEN];
   char icon[MAX_HASH_LEN];
   char splash[MAX_HASH_LEN];
   char discovery_splash[MAX_HASH_LEN];
-  _Bool owner;
+  bool owner;
   char owner_id[SNOWFLAKE_INTERNAL_WORKER_ID];
   int permissions;
   char permissions_new[SNOWFLAKE_INCREMENT];
   char region[MAX_REGION_LEN];
   char afk_channel_id[SNOWFLAKE_INTERNAL_WORKER_ID];
   int afk_timeout;
-  _Bool embed_enabled;
+  bool embed_enabled;
   char embed_channel_id[SNOWFLAKE_INTERNAL_WORKER_ID];
   int verification_level;
   int default_message_notifications;
@@ -132,18 +141,18 @@ typedef struct discord_guild_s {
   char **features;
   int mfa_level;
   char application_id[SNOWFLAKE_INTERNAL_WORKER_ID];
-  _Bool widget_enabled;
+  bool widget_enabled;
   char widget_channel_id[SNOWFLAKE_INTERNAL_WORKER_ID];
   char system_channel_id[SNOWFLAKE_INTERNAL_WORKER_ID];
   int system_channel_flags;
   char rules_channel_id[SNOWFLAKE_INTERNAL_WORKER_ID];
   char joined_at[SNOWFLAKE_TIMESTAMP];
-  _Bool large;
-  _Bool unavailable;
+  bool large;
+  bool unavailable;
   int member_count;
   //struct discord_voicestate_s **voice_states;
   //struct discord_member_s **members;
-  struct discord_channel_s **channels;
+  channel::data **channels;
   //struct discord_presence_s **presences;
   int max_presences;
   int mas_members;
@@ -157,76 +166,91 @@ typedef struct discord_guild_s {
   int max_video_channel_users;
   int approximate_member_count;
   int approximate_presence_count;
-} discord_guild_t;
+};
+
+} // namespace guild
+
+namespace user {
 
 /* USER OBJECT
  * https://discord.com/developers/docs/resources/user#user-object-user-structure */
-typedef struct discord_user_s {
+struct data {
   char id[SNOWFLAKE_INTERNAL_WORKER_ID];
   char username[MAX_USERNAME_LEN];
   char discriminator[MAX_DISCRIMINATOR_LEN];
   char avatar[MAX_HASH_LEN];
-  _Bool bot;
-  _Bool sys;
-  _Bool mfa_enabled;
+  bool bot;
+  bool sys;
+  bool mfa_enabled;
   char locale[MAX_LOCALE_LEN];
-  _Bool verified;
+  bool verified;
   char email[MAX_EMAIL_LEN];
   int flags;
   int premium_type;
   int public_flags;
-  struct discord_guild_s **guilds;
-} discord_user_t;
+  guild::data **guilds;
+};
 
-typedef void (discord_idle_cb)(discord_t *client, const discord_user_t *self);
-typedef void (discord_message_cb)(discord_t *client, const discord_user_t *self, const discord_message_t *message);
+} // namespace user
 
-/* discord-public.c */
+namespace channel { /* discord-public-channel.c */
 
-void discord_global_init();
-void discord_global_cleanup();
+struct data* init();
+void cleanup(struct data *channel);
+void pin_message(discord_t *client, const char channel_id[], const char message_id[]);
+void unpin_message(discord_t *client, const char channel_id[], const char message_id[]);
 
-discord_t* discord_init(char token[]);
-discord_t* discord_fast_init(const char config_file[]);
-void discord_cleanup(discord_t *client);
+} // namespace channel
 
-void discord_setcb_idle(discord_t *client, discord_idle_cb *user_cb);
-void discord_setcb_ready(discord_t *client, discord_idle_cb *user_cb);
-void discord_setcb_message_create(discord_t *client, discord_message_cb *user_cb);
-void discord_setcb_message_update(discord_t *client, discord_message_cb *user_cb);
-void discord_setcb_message_delete(discord_t *client, discord_message_cb *user_cb);
-
-void discord_run(discord_t *client);
-
-void discord_dump_json(discord_t *client, char file[]);
-void discord_dump_curl(discord_t *client, char file[]);
-void* discord_set_data(discord_t *client, void *data);
-void* discord_get_data(discord_t *client);
-
-/* discord-public-channel.c */
-
-discord_channel_t* discord_channel_init();
-void discord_channel_cleanup(discord_channel_t *channel);
-void discord_pin_message(discord_t *client, const char channel_id[], const char message_id[]);
-void discord_unpin_message(discord_t *client, const char channel_id[], const char message_id[]);
+namespace guild {
 
 /* discord-public-guild.c */
 
-discord_guild_t* discord_guild_init();
-void discord_guild_cleanup(discord_guild_t *guild);
-void discord_get_guild(discord_t *client, const char guild_id[], discord_guild_t *p_guild);
+struct data* init();
+void cleanup(struct data *guild);
+void get(discord_t *client, const char guild_id[], struct data *p_guild);
 
-/* discord-public-message.c */
+} // namespace guild
 
-discord_message_t* discord_message_init();
-void discord_message_cleanup(discord_message_t *message);
-void discord_send_message(discord_t *client, const char channel_id[], const char content[]);
+namespace message { /* discord-public-message.c */
 
-/* discord-public-user.c */
+struct data* init();
+void cleanup(struct data *message);
+void send(discord_t *client, const char channel_id[], const char content[]);
 
-discord_user_t* discord_user_init();
-void discord_user_cleanup(discord_user_t *user);
-void discord_get_user(discord_t *client, const char user_id[], discord_user_t *p_user);
-void discord_get_client_user(discord_t *client, discord_user_t *p_user);
+} // namespace message
+
+namespace user { /* discord-public-user.c */
+
+struct data* init();
+void cleanup(struct data *user);
+void get(discord_t *client, const char user_id[], struct data *p_user);
+void get_self(discord_t *client, struct data *p_user);
+
+} // namespace user
+
+/* discord-public.c */
+
+void global_init();
+void global_cleanup();
+
+discord_t* init(char token[]);
+discord_t* fast_init(const char config_file[]);
+void cleanup(discord_t *client);
+
+void setcb_idle(discord_t *client, discord_idle_cb *user_cb);
+void setcb_ready(discord_t *client, discord_idle_cb *user_cb);
+void setcb_message_create(discord_t *client, discord_message_cb *user_cb);
+void setcb_message_update(discord_t *client, discord_message_cb *user_cb);
+void setcb_message_delete(discord_t *client, discord_message_cb *user_cb);
+
+void run(discord_t *client);
+
+void dump_json(discord_t *client, char file[]);
+void dump_curl(discord_t *client, char file[]);
+void* set_data(discord_t *client, void *data);
+void* get_data(discord_t *client);
+
+} // namespace discord
 
 #endif

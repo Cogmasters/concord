@@ -3,8 +3,9 @@
 #include <assert.h>
 #include <libdiscord.h>
 
+using namespace discord;
 
-void on_ready(discord_t *client, const discord_user_t *self)
+void on_ready(discord_t *client, const user::discord_user_t *self)
 {
   fprintf(stderr, "\n\nSuccesfully connected to Discord as %s#%s!\n\n",
       self->username, self->discriminator);

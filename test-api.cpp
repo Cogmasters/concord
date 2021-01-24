@@ -3,6 +3,7 @@
 #include <assert.h>
 #include <libdiscord.h>
 
+using namespace discord;
 
 int main(int argc, char *argv[])
 {
@@ -17,13 +18,13 @@ int main(int argc, char *argv[])
   discord_t *client = discord_fast_init(config_file);
   assert(NULL != client);
 
-  discord_user_t *self = discord_user_init(); 
+  user::discord_user_s *self = user::discord_user_init(); 
   assert(NULL != self);
 
-  discord_get_client_user(client, self);
+  user::discord_get_client_user(client, self);
   printf("Greetings, %s#%s!\n", self->username, self->discriminator);
 
-  discord_user_cleanup(self);
+  user::discord_user_cleanup(self);
 
   discord_cleanup(client);
 

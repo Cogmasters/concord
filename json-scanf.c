@@ -54,7 +54,7 @@ struct extractor_specifier {
   bool has_dynamic_size;
   bool has_unknown_size;
   bool is_funptr;
-  void * funptr;
+  void *funptr;
 };
 
 static char*
@@ -165,7 +165,7 @@ match_path (char *buffer, jsmntok_t *t,
   }
   else if (STREQ(es->type_specifier, "copy")) {
     if (es->has_unknown_size) {
-      char ** p = (char **) es->recipient;
+      char **p = (char **) es->recipient;
       int len = t[i].end - t[i].start + 1;
       *p = malloc(len);
       int ret = snprintf(*p, len, "%.*s", len - 1, buffer+t[i].start);
@@ -182,17 +182,21 @@ match_path (char *buffer, jsmntok_t *t,
     }
   }
   else if (STREQ(es->type_specifier, "array")) {
-    struct json_token ** token_array;
+    struct json_token **token_array;
     if (JSMN_ARRAY == t[i].type) {
-      int n = t[i].size;
+      size_t n = t[i].size;
       token_array = (struct json_token **)
-        null_term_list_malloc(n, sizeof(struct json_token));
-      int idx;
-      for (idx = 0, ic = i + 1; ic < n_toks && idx < n; ic++) {
-        if (t[ic].parent != i) continue;
+
+      null_term_list_malloc(n, sizeof(struct json_token));
+
+      for (size_t idx = 0, ic = i + 1; ic < n_toks && idx < n; ic++) {
+        if (t[ic].parent != i)
+          continue;
+
         token_array[idx]->start = buffer + t[ic].start;
         token_array[idx]->length = t[ic].end - t[ic].start;
-        idx ++;
+
+        ++idx;
       }
       *(struct json_token ***)es->recipient = token_array;
     }
@@ -202,7 +206,7 @@ match_path (char *buffer, jsmntok_t *t,
     }
   }
   else if (STREQ(es->type_specifier, "funptr")) {
-    extractor * e = (extractor *) es->funptr;
+    extractor *e = (extractor *)es->funptr;
     (*e)(buffer + t[i].start, t[i].end - t[i].start, es->recipient);
   }
   else if (STREQ(es->type_specifier, "token")) {
@@ -434,7 +438,6 @@ parse_path_specifier(char * format, struct extractor_specifier *es,
 
   // until find a ']' or '\0'
   char *start = format;
-  bool match_toplevel_array = false;
   while (*format) {
     if (']' == *format) {
       break;
@@ -605,7 +608,7 @@ json_scanf(char *buffer, size_t buf_size, char *format, ...)
       es[i].size = va_arg(ap, int); // use this as a size
     }
     else if (es[i].is_funptr) {
-      es[i].funptr = va_arg(ap,int);
+      es[i].funptr = va_arg(ap, void*);
     }
     void *p_value = va_arg(ap, void*);
     ASSERT_S(NULL != p_value, "NULL pointer given as argument parameter");
@@ -722,5 +725,3 @@ __json_strerror(json_errcode code, char codetag[], void *where, char entity[])
 
   return  errdynm;
 }
-
-
