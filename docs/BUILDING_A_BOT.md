@@ -18,7 +18,7 @@ The entire code of ping-pong bot is below. We will go over it in further down:
 
 using namespace discord;
 
-void on_ready(discord::client *client, const user::data *self)
+void on_ready(client *client, const user::data *self)
 {
   fprintf(stderr, "\n\nPingPong-Bot succesfully connected to Discord as %s#%s!\n\n",
       self->username, self->discriminator);
@@ -27,7 +27,7 @@ void on_ready(discord::client *client, const user::data *self)
 }
 
 void on_message_create(
-    discord::client *client,
+    client *client,
     const user::data *self,
     const message::data *msg)
 {
@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
 
   global_init();
 
-  discord::client *client = fast_init(config_file);
+  client *client = fast_init(config_file);
   assert(NULL != client);
 
   setcb_ready(client, &on_ready);
@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
 # Setting up the bot settings
 
 You can set it automatically, by using the `fast_init()` function when
-initializing a new client. Simply by passing the bot settings file as parameter:
+initializing your client by passing the bot settings file name as a parameter:
 ```c++
   // using namespace discord;
 
@@ -87,7 +87,7 @@ initializing a new client. Simply by passing the bot settings file as parameter:
   assert(NULL != client);
 ```
 
-Or you can do it manually, and:
+Or you can do it manually, like so:
 ```c++
   // using namespace discord;
 
