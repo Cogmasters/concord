@@ -9,7 +9,8 @@
 #include "discord-common.h"
 
 namespace discord {
-namespace user_agent::bucket {
+namespace user_agent {
+namespace bucket {
 
 /* See:
 https://discord.com/developers/docs/topics/rate-limits#rate-limits */
@@ -189,5 +190,6 @@ cleanup(user_agent::data *ua)
   free(ua->ratelimit.buckets);
 }
 
-} // namespace user_agent::bucket
+} // namespace bucket
+} // namespace user_agent
 } // namespace discord

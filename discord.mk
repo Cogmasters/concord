@@ -1,7 +1,7 @@
 OBJDIR	:= obj
 LIBDIR	:= lib
 
-SRC	:= $(wildcard http-common.c discord-*.cpp curl-websocket.c settings.c null_term_list.c json-scanf.c json-printf.c)
+SRC	:= $(wildcard http-common.c discord-*.cpp curl-websocket.c settings.c ntl.c json-scanf.c json-printf.c)
 
 _OBJS	:= $(patsubst %.cpp, %.o, $(SRC))
 OBJS1   += $(patsubst %.c, %.o, $(_OBJS))
@@ -43,7 +43,7 @@ $(OBJDIR)/settings.o : settings.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 $(OBJDIR)/discord-%.o : discord-%.cpp
 	$(CXX) $(CFLAGS) $(CXXFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
-$(OBJDIR)/null_term_list.o : null_term_list.c
+$(OBJDIR)/ntl.o : ntl.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 $(OBJDIR)/json-scanf.o : json-scanf.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
