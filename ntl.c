@@ -1,4 +1,5 @@
 #include "ntl.h"
+#include <stdlib.h>
 
 void **
 ntl_malloc (size_t nmem,  size_t elem_size)
@@ -19,7 +20,8 @@ size_t
 ntl_length (void **p)
 {
   int i;
-  for (i = 0; p[i]; i++);
+  for (i = 0; p[i]; i++) /* empty body */;
+
   return i;
 }
 
