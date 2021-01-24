@@ -34,6 +34,7 @@
 #define JSMN_PARENT_LINKS // add parent links to jsmn_tok, which are needed
 #define JSMN_STRICT  // parse json in strict mode
 #include "jsmn.h"
+#include "null_term_list.h"
 
 #define N_PATH_MAX 8
 #define KEY_MAX 128
@@ -52,6 +53,8 @@ struct extractor_specifier {
   bool is_applied;
   bool has_dynamic_size;
   bool has_unknown_size;
+  bool is_funptr;
+  void * funptr;
 };
 
 static char*
@@ -179,25 +182,28 @@ match_path (char *buffer, jsmntok_t *t,
     }
   }
   else if (STREQ(es->type_specifier, "array")) {
-    struct json_token * token_array;
+    struct json_token ** token_array;
     if (JSMN_ARRAY == t[i].type) {
       int n = t[i].size;
-      token_array = malloc(sizeof(struct json_token) * (n + 1));
-      token_array[n].start = NULL; // terminate this array with NULL;
+      token_array = (struct json_token **)
+        null_term_list_malloc(n, sizeof(struct json_token));
       int idx;
       for (idx = 0, ic = i + 1; ic < n_toks && idx < n; ic++) {
         if (t[ic].parent != i) continue;
-
-        token_array[idx].start = buffer + t[ic].start;
-        token_array[idx].length = t[ic].end - t[ic].start;
+        token_array[idx]->start = buffer + t[ic].start;
+        token_array[idx]->length = t[ic].end - t[ic].start;
         idx ++;
       }
-      *(struct json_token **)(es->recipient) = token_array;
+      *(struct json_token ***)es->recipient = token_array;
     }
     else {
       // something is wrong
       goto type_error;
     }
+  }
+  else if (STREQ(es->type_specifier, "funptr")) {
+    extractor * e = (extractor *) es->funptr;
+    (*e)(buffer + t[i].start, t[i].end - t[i].start, es->recipient);
   }
   else if (STREQ(es->type_specifier, "token")) {
     struct json_token * tk = es->recipient;
@@ -358,8 +364,17 @@ parse_type_specifier(char *specifier, struct extractor_specifier *es)
     strcpy(es->type_specifier, "copy");
     return specifier + 1;
   }
+  else if (STRNEQ(specifier, "L", 1)) {
+    strcpy(es->type_specifier, "array");
+    return specifier + 1;
+  }
   else if (STRNEQ(specifier, "A", 1)) {
     strcpy(es->type_specifier, "array");
+    return specifier + 1;
+  }
+  else if (STRNEQ(specifier, "F", 1)) {
+    strcpy(es->type_specifier, "funptr");
+    es->is_funptr = true;
     return specifier + 1;
   }
   else if (STRNEQ(specifier, "T", 1)) {
@@ -589,6 +604,9 @@ json_scanf(char *buffer, size_t buf_size, char *format, ...)
     if (es[i].has_dynamic_size)  {
       es[i].size = va_arg(ap, int); // use this as a size
     }
+    else if (es[i].is_funptr) {
+      es[i].funptr = va_arg(ap,int);
+    }
     void *p_value = va_arg(ap, void*);
     ASSERT_S(NULL != p_value, "NULL pointer given as argument parameter");
     es[i].recipient = p_value;
@@ -704,3 +722,5 @@ __json_strerror(json_errcode code, char codetag[], void *where, char entity[])
 
   return  errdynm;
 }
+
+

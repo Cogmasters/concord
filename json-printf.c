@@ -4,8 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-
-static char*
+static char *
 normalize_fmt (char *fmt)
 {
   char *fmt1 = malloc(strlen(fmt) + 1);
@@ -43,9 +42,7 @@ json_asprintf(char **buf, char *json_fmt, ...)
   char * fmt1 = normalize_fmt(json_fmt);
   int ret = vasprintf(buf, fmt1, ap);
   va_end(ap);
-
   free(fmt1);
-
   return ret;
 }
 
@@ -57,9 +54,7 @@ json_snprintf(char *str, size_t size, char *json_fmt, ...)
   char * fmt1 = normalize_fmt(json_fmt);
   int ret = vsnprintf (str, size, fmt1, ap);
   va_end(ap);
-
   free(fmt1);
 
   return ret;
 }
-
