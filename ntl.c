@@ -1,5 +1,6 @@
 #include "ntl.h"
 #include <stdlib.h>
+#include <string.h>
 
 void **
 ntl_malloc (size_t nmem,  size_t elem_size)
@@ -14,6 +15,15 @@ ntl_malloc (size_t nmem,  size_t elem_size)
   }
   array[i] = 0;
   return array;
+}
+
+void **
+ntl_calloc (size_t nmem,  size_t elem_size)
+{
+  void ** p = ntl_malloc(nmem, elem_size);
+  char * start_to_zero = (char *)p + (nmem * sizeof(void *));
+  memset(start_to_zero, 0, nmem * elem_size);
+  return p;
 }
 
 size_t
