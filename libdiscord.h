@@ -1,8 +1,6 @@
 #ifndef LIBDISCORD_H_
 #define LIBDISCORD_H_
 
-#include <stdbool.h>
-
 #include "discord-common.h"
 
 /* This is the version number of the package from which this header
@@ -122,7 +120,27 @@ data* init();
 void cleanup(data *message);
 void json_load(void *p_message, char *str, size_t len);
 
-void create(client *client, const char channel_id[], const char content[]);
+/* https://discord.com/developers/docs/resources/channel#create-message */
+namespace create {
+
+struct params {
+  char *content;
+  char *nonce;
+  bool tts;
+  char *file;
+  //embed object
+  char *payload_json;
+  //allowed mentions
+  struct message_reference {
+    char message_id[SNOWFLAKE_INTERNAL_WORKER_ID];
+    char channel_id[SNOWFLAKE_INTERNAL_WORKER_ID];
+    char guild_id[SNOWFLAKE_INTERNAL_WORKER_ID];
+  };
+};
+
+void run(client *client, const char channel_id[], params *params);
+
+} // namespace create
 
 } // namespace message
 

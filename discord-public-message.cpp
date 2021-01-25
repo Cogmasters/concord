@@ -113,25 +113,26 @@ cleanup(data *message)
   free(message);
 }
 
-/* See: https://discord.com/developers/docs/resources/channel#create-message */
+namespace create {
+
 void
-create(client *client, const char channel_id[], const char content[])
+run(client *client, const char channel_id[], params *params)
 {
   if (IS_EMPTY_STRING(channel_id)) {
     D_PUTS("Can't send message to Discord: missing 'channel_id'");
     return;
   }
-  if (IS_EMPTY_STRING(content)) {
+  if (IS_EMPTY_STRING(params->content)) {
     D_PUTS("Can't send an empty message to Discord: missing 'content'");
     return;
   }
-  if (strlen(content) >= MAX_MESSAGE_LEN) {
-    D_PRINT("Content length exceeds 2000 characters threshold (%ld)", strlen(content));
+  if (strlen(params->content) >= MAX_MESSAGE_LEN) {
+    D_PRINT("Content length exceeds 2000 characters threshold (%ld)", strlen(params->content));
     return;
   }
 
   char payload[MAX_PAYLOAD_LEN];
-  int ret = snprintf(payload, MAX_PAYLOAD_LEN, "{\"content\":\"%s\"}", content);
+  int ret = snprintf(payload, MAX_PAYLOAD_LEN, "{\"content\":\"%s\"}", params->content);
   ASSERT_S(ret < MAX_PAYLOAD_LEN, "Out of bounds write attempt");
 
   user_agent::run( 
@@ -141,6 +142,8 @@ create(client *client, const char channel_id[], const char content[])
     payload,
     POST, CHANNEL MESSAGES, channel_id);
 }
+
+} // namespace create
 
 } // namespace message
 } // namespace discord
