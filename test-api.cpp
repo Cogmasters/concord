@@ -21,12 +21,21 @@ int main(int argc, char *argv[])
   user::data *self = user::init(); 
   assert(NULL != self);
 
-  user::get_self(client, self);
+  user::self::get(client, self);
   printf("Greetings, %s#%s!\n", self->username, self->discriminator);
+
+  guild::data *guilds = NULL;
+  user::self::get_guilds(client, &guilds);
+
+  for (size_t i=0; guilds + i; ++i) {
+    D_PRINT("%s", guilds[i].id);
+  }
+
+  //guild::list_cleanup(&guilds);
 
   user::cleanup(self);
 
-  cleanup(client);
+  //cleanup(client);
 
   global_cleanup();
 }

@@ -436,7 +436,7 @@ init(websockets::data *ws, char token[])
   ws->mhandle = custom_multi_init();
 
   ws->self = user::init();
-  user::get_self(ws->p_client, ws->self);
+  user::self::get(ws->p_client, ws->self);
 }
 
 void
