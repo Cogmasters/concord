@@ -1,10 +1,28 @@
-#ifndef NULL_TERM_LIST_H
-#define NULL_TERM_LIST_H
+#ifndef NTL_H
+#define NTL_H
 #include <stddef.h> // for size_t
 #include <stdbool.h>
 
 /*
- * Null terminated list implementation
+ * a null terminated list implementation
+ *
+ * a null terminated list of n elements of type struct E is defined as
+ *
+ * struct {
+ *    void * indices[n+1];  // indices[n] = NULL
+ *    struct E e[n];
+ * };
+ *
+ *  +---------------+
+ *  |               |
+ * [ | | | | | | |0][e_0]...............[e_(n-1)]
+ * \--indices[n+1--/ \-------- e[n]-----------/
+ *
+ * a pointer p of type (struct E **) points ot the begin of this struct
+ *
+ *  for (int i = 0; p[i]; i++)
+ *    // do something here for each element
+ *
  */
 #ifdef __cplusplus
 extern "C" {
@@ -31,4 +49,4 @@ int ntl_as2str(char **str, void **p, sn2str * x);
 }
 #endif // __cplusplus
 
-#endif //NULL_TERM_LIST_H
+#endif //NTL_H
