@@ -46,7 +46,7 @@ json_list_load(void *p_guild_list, char *str, size_t len)
     ++amt;
   }
 
-  data *new_guilds = (data*)ntl_calloc(1, amt, sizeof(data));
+  data *new_guilds = (data*)ntl_malloc(amt, sizeof(data));
   for (size_t i=0; i < amt; ++i) {
     json_load(new_guilds+i, toks[i]->start, toks[i]->length);
   }
