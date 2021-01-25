@@ -101,3 +101,8 @@ For example, a file called `test.h` should have:
 
 #endif // TEST_H
 ```
+
+
+## Commit and Merge
+To avoid creating redundant merge commits the following methods are recommanded:
+https://stackoverflow.com/questions/30052104/how-to-avoid-merge-commits-from-git-pull-when-pushing-to-remote
