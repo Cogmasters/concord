@@ -31,7 +31,6 @@ set(SOURCE_FILES
         discord-public.cpp
         discord-public-guild.cpp
         discord-public-user.cpp
-        discord-tool-debug.h
         discord-websockets.cpp
         libdiscord.h
         settings.c
