@@ -38,10 +38,13 @@ void on_message_create(
   if (0 == strcmp(self->username, msg->author->username))
     return;
 
+  message::create::params params = {0};
   if (0 == strcmp(msg->content, "ping"))
-    message::create(client, msg->channel_id, "pong");
+    params.content = "pong";
   else if (0 == strcmp(msg->content, "pong"))
-    message::create(client, msg->channel_id, "ping");
+    params.content = "ping";
+
+  message::create::run(client, msg->channel_id, &params);
 
   (void)self;
 }
