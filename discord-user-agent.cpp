@@ -46,7 +46,7 @@ reqheader_init(char token[])
 }
 
 void
-init(user_agent::data *ua, char token[])
+init(data *ua, char token[])
 {
   ua->req_header = reqheader_init(token);
   ua->ehandle = custom_easy_init(
@@ -57,7 +57,7 @@ init(user_agent::data *ua, char token[])
 }
 
 void
-cleanup(user_agent::data *ua)
+cleanup(data *ua)
 {
   bucket::cleanup(ua);
 
@@ -72,7 +72,7 @@ cleanup(user_agent::data *ua)
 /* perform the request */
 static void
 perform_request(
-  user_agent::data *ua,
+  data *ua,
   void *p_object, 
   load_obj_cb *load_cb,
   char endpoint[])
@@ -224,7 +224,7 @@ perform_request(
 /* template function for performing requests */
 void
 run(
-  user_agent::data *ua, 
+  data *ua, 
   void *p_object, 
   load_obj_cb *load_cb,
   char postfields[],

@@ -10,9 +10,9 @@ namespace discord {
 namespace user {
 
 void
-json_load(void *p_data, char *str, size_t len)
+json_load(void *p_user, char *str, size_t len)
 {
-  user::data *data = (discord::user::data*)p_data;
+  data *user = (data*)p_user;
 
   json_scanf(str, len,
      "[id]%s"
@@ -28,37 +28,37 @@ json_load(void *p_data, char *str, size_t len)
      "[flags]%d"
      "[premium_type]%d"
      "[public_flags]%d",
-      data->id,
-      data->username,
-      data->discriminator,
-      data->avatar,
-      &data->bot,
-      &data->sys,
-      &data->mfa_enabled,
-      data->locale,
-      &data->verified,
-      data->email,
-      &data->flags,
-      &data->premium_type,
-      &data->public_flags);
+      user->id,
+      user->username,
+      user->discriminator,
+      user->avatar,
+      &user->bot,
+      &user->sys,
+      &user->mfa_enabled,
+      user->locale,
+      &user->verified,
+      user->email,
+      &user->flags,
+      &user->premium_type,
+      &user->public_flags);
 
   D_NOTOP_PUTS("User object loaded with API response"); 
 }
 
-user::data*
+data*
 init()
 {
-  user::data *new_data = (user::data*)calloc(1, sizeof *new_data);
-  return new_data;
+  data *new_user = (data*)calloc(1, sizeof *new_user);
+  return new_user;
 }
 
 void
-cleanup(user::data *data) {
-  free(data);
+cleanup(data *user) {
+  free(user);
 }
 
 void
-get(discord::client *client, const char user_id[], user::data *p_data)
+get(client *client, const char user_id[], data *p_user)
 {
   if (IS_EMPTY_STRING(user_id)) {
     D_PUTS("Missing 'user_id'");
@@ -67,23 +67,22 @@ get(discord::client *client, const char user_id[], user::data *p_data)
 
   user_agent::run( 
     &client->ua,
-    (void*)p_data,
-    &user::json_load,
+    (void*)p_user,
+    &json_load,
     NULL,
     GET, USER, user_id);
 }
 
 void 
-get_self(discord::client *client, user::data *p_data)
+get_self(client *client, data *p_user)
 {
   user_agent::run( 
     &client->ua,
-    (void*)p_data,
-    &user::json_load,
+    (void*)p_user,
+    &json_load,
     NULL,
     GET, USER, "@me");
 }
 
 } // namespace user
-
 } // namespace discord

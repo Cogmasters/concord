@@ -229,18 +229,18 @@ on_reconnect(websockets::data *ws)
 }
 
 static void
-ws_on_connect_cb(void *data, CURL *ehandle, const char *ws_protocols)
+ws_on_connect_cb(void *p_ws, CURL *ehandle, const char *ws_protocols)
 {
   D_PRINT("Connected, WS-Protocols: '%s'", ws_protocols);
 
-  (void)data;
+  (void)p_ws;
   (void)ehandle;
 }
 
 static void
-ws_on_close_cb(void *data, CURL *ehandle, enum cws_close_reason cwscode, const char *reason, size_t len)
+ws_on_close_cb(void *p_ws, CURL *ehandle, enum cws_close_reason cwscode, const char *reason, size_t len)
 {
-    websockets::data *ws = (websockets::data*)data;
+    websockets::data *ws = (websockets::data*)p_ws;
     enum ws_close_opcodes opcode = (enum ws_close_opcodes)cwscode;
    
     switch (opcode) {
@@ -275,9 +275,9 @@ ws_on_close_cb(void *data, CURL *ehandle, enum cws_close_reason cwscode, const c
 }
 
 static void
-ws_on_text_cb(void *data, CURL *ehandle, const char *text, size_t len)
+ws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
 {
-  websockets::data *ws = (websockets::data*)data;
+  websockets::data *ws = (websockets::data*)p_ws;
 
   D_PRINT("ON_TEXT:\n\t\t%s", text);
 
@@ -516,12 +516,12 @@ run(websockets::data *ws)
     cws_free(ws->ehandle);
     ws->ehandle = custom_cws_new(ws);
     /* * * * * * * * * * * * * * * * * * * * * */
+
     ++ws->reconnect_attempts;
   } while (1);
 
   if (DISCONNECTED != ws->status) {
-    D_PRINT("Failed all reconnect attempts (%d)",
-        ws->reconnect_attempts);
+    D_PRINT("Failed all reconnect attempts (%d)", ws->reconnect_attempts);
     ws->status = DISCONNECTED;
   }
 }

@@ -9,20 +9,20 @@
 namespace discord {
 namespace channel {
 
-channel::data*
+data*
 init()
 {
-  channel::data *new_channel = (channel::data*)calloc(1, sizeof *new_channel);
+  data *new_channel = (data*)calloc(1, sizeof *new_channel);
   return new_channel;
 }
 
 void
-cleanup(channel::data *channel) {
+cleanup(data *channel) {
   free(channel);
 }
 
 void
-pin_message(discord::client *client, const char channel_id[], const char message_id[])
+pin_message(client *client, const char channel_id[], const char message_id[])
 {
   if (IS_EMPTY_STRING(channel_id)) {
     D_PUTS("Missing 'channel_id'");
@@ -42,7 +42,7 @@ pin_message(discord::client *client, const char channel_id[], const char message
 }
 
 void
-unpin_message(discord::client *client, const char channel_id[], const char message_id[])
+unpin_message(client *client, const char channel_id[], const char message_id[])
 {
   if (IS_EMPTY_STRING(channel_id)) {
     D_PUTS("Missing 'channel_id'");
