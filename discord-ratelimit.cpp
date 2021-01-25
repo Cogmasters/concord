@@ -141,9 +141,9 @@ create_route(user_agent::data *ua, char endpoint[])
   }
 
   //add new route to tree
-  struct _route_s **p_route;
-  p_route = (struct _route_s**)tsearch(new_route, &ua->ratelimit.routes_root, &routecmp);
-  ASSERT_S(*p_route == new_route, "Couldn't create new bucket route");
+  struct _route_s *route_check;
+  route_check = *(struct _route_s **)tsearch(new_route, &ua->ratelimit.routes_root, &routecmp);
+  ASSERT_S(route_check == new_route, "Couldn't create new bucket route");
 
   parse_ratelimits(new_route->p_bucket, &ua->pairs);
 }
@@ -169,9 +169,12 @@ build(user_agent::data *ua, bucket::data *bucket, char endpoint[])
 /* This comparison routines can be used with tdelete()
  * when explicity deleting a root node, as no comparison
  * is necessary. */
-static int
-delete_root(const void *node1, const void *node2) {
-  return 0;
+static void
+route_cleanup(void *p_route) {
+  struct _route_s *route = (struct _route_s*)p_route;
+
+  free(route->str);
+  free(route);
 }
 
 /* clean routes and buckets */
@@ -179,15 +182,7 @@ void
 cleanup(user_agent::data *ua)
 {
   //destroy every route encountered
-  struct _route_s *iter;
-  while (ua->ratelimit.routes_root != NULL) {
-    iter = *(struct _route_s **)ua->ratelimit.routes_root;
-
-    tdelete((void *)iter, &ua->ratelimit.routes_root, &delete_root);
-
-    free(iter->str); //clean the endpoint associated to this route
-    free(iter); //clean the route node
-  }
+  tdestroy(ua->ratelimit.routes_root, &route_cleanup);
 
   //destroy every client bucket found
   for (size_t i=0; i < ua->ratelimit.num_buckets; ++i) {
