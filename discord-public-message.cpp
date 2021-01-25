@@ -12,7 +12,7 @@ namespace message {
 void
 json_load(void *p_message, char *str, size_t len)
 {
-  message::data *message = (message::data*)p_message;
+  data *message = (data*)p_message;
 
   struct json_token token_author = {NULL, 0};
   struct json_token token_mentions = {NULL, 0};
@@ -57,10 +57,10 @@ json_load(void *p_message, char *str, size_t len)
   D_NOTOP_PUTS("Message object loaded with API response"); 
 }
 
-static message::data*
+static data*
 referenced_message_init()
 {
-  message::data *new_message = (message::data*)calloc(1, sizeof *new_message);
+  data *new_message = (data*)calloc(1, sizeof *new_message);
   if (NULL == new_message) return NULL;
 
   new_message->author = user::init();
@@ -74,10 +74,10 @@ cleanup:
   return NULL;
 }
 
-message::data*
+data*
 init()
 {
-  message::data *new_message = (message::data*)calloc(1, sizeof *new_message);
+  data *new_message = (data*)calloc(1, sizeof *new_message);
   if (NULL == new_message) return NULL;
 
   new_message->author = user::init();
@@ -97,7 +97,7 @@ cleanupA:
 }
 
 static void
-referenced_message_cleanup(message::data *message)
+referenced_message_cleanup(data *message)
 {
   user::cleanup(message->author);
 
@@ -105,7 +105,7 @@ referenced_message_cleanup(message::data *message)
 }
 
 void
-cleanup(message::data *message)
+cleanup(data *message)
 {
   user::cleanup(message->author);
   referenced_message_cleanup(message->referenced_message);
@@ -115,7 +115,7 @@ cleanup(message::data *message)
 
 /* See: https://discord.com/developers/docs/resources/channel#create-message */
 void
-create(discord::client *client, const char channel_id[], const char content[])
+create(client *client, const char channel_id[], const char content[])
 {
   if (IS_EMPTY_STRING(channel_id)) {
     D_PUTS("Can't send message to Discord: missing 'channel_id'");

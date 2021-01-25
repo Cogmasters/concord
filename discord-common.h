@@ -6,19 +6,6 @@
 
 #include "http-common.h"
 
-
-namespace discord {
-
-struct client;
-
-namespace message { struct data; }
-namespace channel { struct data; }
-namespace user { struct data; }
-namespace guild { struct data; }
-
-typedef void (idle_cb)(discord::client *client, const user::data *self);
-typedef void (message_cb)(discord::client *client, const user::data *self, const message::data *message);
-
 /* ENDPOINTS */
 #define MESSAGES              "/messages"
 #define MESSAGE               MESSAGES"/%s"
@@ -38,19 +25,21 @@ typedef void (message_cb)(discord::client *client, const user::data *self, const
 #define USERS                 "/users"
 #define USER                  USERS"/%s"
 
-namespace user_agent {
 
-namespace bucket {
+namespace discord {
 
-struct data {
-  char *hash; //the hash associated with this bucket
-  int remaining; //connections this bucket can do before cooldown
-  long long reset_after_ms;
-  long long reset_ms;
-};
+struct client; // forward declaration
+namespace message { struct data; } // forward declaration
+namespace channel { struct data; } // forward declaration
+namespace user { struct data; } // forward declaration
+namespace guild { struct data; } // forward declaration
 
-} // namespace bucket
+typedef void (idle_cb)(discord::client *client, const user::data *self);
+typedef void (message_cb)(discord::client *client, const user::data *self, const message::data *message);
 
+namespace user_agent { /* discord-user-agent.cpp */
+
+namespace bucket { struct data; } //forward declaration
 
 struct data {
   struct curl_slist *req_header; //the request header sent to the api
@@ -71,19 +60,6 @@ struct data {
   discord::client *p_client; //points to client this struct is a part of
 };
 
-namespace bucket {
-
-/* discord-ratelimit.cpp */
-
-void cleanup(user_agent::data *ua);
-long long cooldown(bucket::data *bucket, bool use_clock);
-bucket::data* try_get(user_agent::data *ua, char endpoint[]);
-void build(user_agent::data *ua, bucket::data *bucket, char endpoint[]);
-
-} // namespace bucket
-
-/* discord-user-agent.cpp */
-
 void init(user_agent::data *ua, char token[]);
 void cleanup(user_agent::data *ua);
 void run(
@@ -95,9 +71,24 @@ void run(
   char endpoint[],
   ...);
 
+namespace bucket { /* discord-ratelimit.cpp */
+
+struct data {
+  char *hash; //the hash associated with this bucket
+  int remaining; //connections this bucket can do before cooldown
+  long long reset_after_ms;
+  long long reset_ms;
+};
+
+void cleanup(user_agent::data *ua);
+long long cooldown(bucket::data *bucket, bool use_clock);
+bucket::data* try_get(user_agent::data *ua, char endpoint[]);
+void build(user_agent::data *ua, bucket::data *bucket, char endpoint[]);
+
+} // namespace bucket
 } // namespace user_agent
 
-namespace websockets {
+namespace websockets { /* discord-websockets.cpp */
 
 /* GATEWAY CLOSE EVENT CODES
 https://discord.com/developers/docs/topics/opcodes-and-status-codes#gateway-gateway-close-event-codes */
@@ -198,8 +189,6 @@ struct data {
 
   discord::client *p_client; //points to client this struct is a part of
 };
-
-/* discord-websockets.cpp */
 
 void init(websockets::data *ws, char token[]);
 void cleanup(websockets::data *ws);
