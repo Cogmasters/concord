@@ -12,7 +12,7 @@ namespace guild {
 void
 json_load(void *p_guild, char *str, size_t len)
 {
-  guild::data *guild = (guild::data*)p_guild;
+  data *guild = (data*)p_guild;
 
   json_scanf(str, len,
      "[id]%s"
@@ -31,20 +31,20 @@ json_load(void *p_guild, char *str, size_t len)
   D_NOTOP_PUTS("Guild object loaded with API response"); 
 }
 
-guild::data*
+data*
 init()
 {
-  guild::data *new_guild = (guild::data*)calloc(1, sizeof *new_guild);
+  data *new_guild = (data*)calloc(1, sizeof *new_guild);
   return new_guild;
 }
 
 void
-cleanup(guild::data *guild) {
+cleanup(data *guild) {
   free(guild);
 }
 
 void
-get(discord::client *client, const char guild_id[], guild::data *p_guild)
+get(client *client, const char guild_id[], data *p_guild)
 {
   if (IS_EMPTY_STRING(guild_id)) {
     D_PUTS("Missing 'guild_id'");
@@ -54,7 +54,7 @@ get(discord::client *client, const char guild_id[], guild::data *p_guild)
   user_agent::run( 
     &client->ua,
     (void*)p_guild,
-    &guild::json_load,
+    &json_load,
     NULL,
     GET, GUILD, guild_id);
 }

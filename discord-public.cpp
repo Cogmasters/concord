@@ -9,10 +9,10 @@
 
 namespace discord {
 
-discord::client*
+client*
 init(char token[])
 {
-  discord::client *new_client = (discord::client*)calloc(1, sizeof *new_client);
+  client *new_client = (client*)calloc(1, sizeof *new_client);
   if (NULL == new_client) return NULL;
 
   /* @todo this is a temporary solution */
@@ -42,14 +42,14 @@ init(char token[])
   return new_client;
 }
 
-discord::client*
+client*
 fast_init(const char config_file[])
 {
   struct bot_settings settings;
 
   bot_settings_init(&settings, config_file);
 
-  discord::client *client;
+  client *client;
   if (settings.discord.token) {
     client = init(settings.discord.token);
     if (NULL == client) return NULL;
@@ -64,7 +64,7 @@ fast_init(const char config_file[])
 }
 
 void
-cleanup(discord::client *client)
+cleanup(client *client)
 {
   /* @todo this is a temporary solution */
   if (client->settings.token)
@@ -93,38 +93,38 @@ global_cleanup() {
 }
 
 void
-setcb_idle(discord::client *client, idle_cb *user_cb){
+setcb_idle(client *client, idle_cb *user_cb){
   client->ws.cbs.on_idle = user_cb;
 }
 
 void
-setcb_ready(discord::client *client, idle_cb *user_cb){
+setcb_ready(client *client, idle_cb *user_cb){
   client->ws.cbs.on_ready = user_cb;
 }
 
 void
-setcb_message_create(discord::client *client, message_cb *user_cb){
+setcb_message_create(client *client, message_cb *user_cb){
   client->ws.cbs.on_message.create = user_cb;
 }
 
 void
-setcb_message_update(discord::client *client, message_cb *user_cb){
+setcb_message_update(client *client, message_cb *user_cb){
   client->ws.cbs.on_message.update = user_cb;
 }
 
 void
-setcb_message_delete(discord::client *client, message_cb *user_cb){
+setcb_message_delete(client *client, message_cb *user_cb){
   client->ws.cbs.on_message.del = user_cb;
 }
 
 void
-run(discord::client *client){
+run(client *client){
   websockets::run(&client->ws);
 }
 
 //@todo find a better solution using settings.h logger
 void
-dump_json(discord::client *client, char file[])
+dump_json(client *client, char file[])
 {
   FILE *f_dump = fopen(file, "a+");
   ASSERT_S(NULL != f_dump, "Could not create dump file");
@@ -134,7 +134,7 @@ dump_json(discord::client *client, char file[])
 
 //@todo find a better solution using settings.h logger
 void
-dump_curl(discord::client *client, char file[])
+dump_curl(client *client, char file[])
 {
   FILE *f_dump = fopen(file, "a+");
   ASSERT_S(NULL != f_dump, "Could not create dump file");
@@ -143,12 +143,12 @@ dump_curl(discord::client *client, char file[])
 }
 
 void*
-set_data(discord::client *client, void *data) {
+set_data(client *client, void *data) {
   return client->data = data;
 }
 
 void*
-get_data(discord::client *client) {
+get_data(client *client) {
   return client->data;
 }
 
