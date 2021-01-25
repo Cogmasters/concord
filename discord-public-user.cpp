@@ -73,7 +73,7 @@ get(client *client, const char user_id[], data *p_user)
     GET, USER, user_id);
 }
 
-namespace self {
+namespace me {
 
 void 
 get(client *client, data *p_user)
@@ -86,18 +86,22 @@ get(client *client, data *p_user)
     GET, USER, "@me");
 }
 
-void
-get_guilds(client *client, guild::data **p_guilds)
+guild::data**
+get_guilds(client *client)
 {
+  guild::data **new_guilds = NULL;
+
   user_agent::run( 
     &client->ua,
-    (void*)p_guilds,
+    (void*)&new_guilds,
     &guild::json_list_load,
     NULL,
     GET, USER GUILDS, "@me");
+
+  return new_guilds;
 }
 
-} // namespace self
+} // namespace me
 
 } // namespace user
 } // namespace discord

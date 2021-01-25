@@ -7,24 +7,24 @@
 
 using namespace discord;
 
-void on_ready(client *client, const user::data *self)
+void on_ready(client *client, const user::data *me)
 {
   fprintf(stderr, "\n\nEcho-Bot succesfully connected to Discord as %s#%s!\n\n",
-      self->username, self->discriminator);
+      me->username, me->discriminator);
 
   (void)client;
 }
 
 void on_message_create(
     client *client,
-    const user::data *self,
+    const user::data *me,
     const message::data *msg)
 {
   // make sure bot doesn't echoes other bots
   if (msg->author->bot)
     return;
-  // make sure it doesn't echoes itself
-  if (0 == strcmp(self->username, msg->author->username))
+  // make sure it doesn't echoes itme
+  if (0 == strcmp(me->username, msg->author->username))
     return;
 
   message::create::params params = {
@@ -36,7 +36,7 @@ void on_message_create(
 
 void on_message_update(
     client *client,
-    const user::data *self,
+    const user::data *me,
     const message::data *msg)
 {
   message::create::params params = {
@@ -45,12 +45,12 @@ void on_message_update(
 
   message::create::run(client, msg->channel_id, &params);
   
-  (void)self;
+  (void)me;
 }
 
 void on_message_delete(
     client *client,
-    const user::data *self,
+    const user::data *me,
     const message::data *msg)
 {
   message::create::params params = {
@@ -59,7 +59,7 @@ void on_message_delete(
 
   message::create::run(client, msg->channel_id, &params);
   
-  (void)self;
+  (void)me;
 }
 
 int main(int argc, char *argv[])

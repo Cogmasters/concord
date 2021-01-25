@@ -166,13 +166,12 @@ build(user_agent::data *ua, bucket::data *bucket, char endpoint[])
   parse_ratelimits(bucket, &ua->pairs);
 }
 
-static void
-route_cleanup(void *p_route)
-{
-  struct _route_s *route = (struct _route_s*)p_route;
-
-  free(route->str); //clean the endpoint associaited to this route
-  free(route);
+/* This comparison routines can be used with tdelete()
+ * when explicity deleting a root node, as no comparison
+ * is necessary. */
+static int
+delete_root(const void *node1, const void *node2) {
+  return 0;
 }
 
 /* clean routes and buckets */
@@ -180,7 +179,15 @@ void
 cleanup(user_agent::data *ua)
 {
   //destroy every route encountered
-  tdestroy(&ua->ratelimit.routes_root, &route_cleanup);
+  struct _route_s *iter;
+  while (ua->ratelimit.routes_root != NULL) {
+    iter = *(struct _route_s **)ua->ratelimit.routes_root;
+
+    tdelete((void *)iter, &ua->ratelimit.routes_root, &delete_root);
+
+    free(iter->str); //clean the endpoint associated to this route
+    free(iter); //clean the route node
+  }
 
   //destroy every client bucket found
   for (size_t i=0; i < ua->ratelimit.num_buckets; ++i) {

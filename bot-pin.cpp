@@ -6,24 +6,24 @@
 
 using namespace discord;
 
-void on_ready(client *client, const user::data *self)
+void on_ready(client *client, const user::data *me)
 {
   fprintf(stderr, "\n\nPin-Bot succesfully connected to Discord as %s#%s!\n\n",
-      self->username, self->discriminator);
+      me->username, me->discriminator);
 
   (void)client;
 }
 
 void on_message_create(
     client *client,
-    const user::data *self,
+    const user::data *me,
     const message::data *msg)
 {
   // make sure bot ignores msgs from other bots
   if (msg->author->bot)
     return;
-  // make sure it ignores itself
-  if (0 == strcmp(self->username, msg->author->username))
+  // make sure it ignores itme
+  if (0 == strcmp(me->username, msg->author->username))
     return;
 
   if (strstr(msg->content, "pin me")) 

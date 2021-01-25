@@ -200,11 +200,11 @@ struct data {
 
 data* init();
 void cleanup(data *guild);
+void list_cleanup(data **guild);
 void json_load(void *p_guild, char *str, size_t len);
-void json_list_load(void *p_guild_list, char *str, size_t len);
+void json_list_load(void *p_guilds, char *str, size_t len);
 
 void get(client *client, const char guild_id[], data *p_guild);
-void get_self(client *client, data *p_guild);
 
 } // namespace guild
 
@@ -235,12 +235,12 @@ void json_load(void *p_user, char *str, size_t len);
 
 void get(client *client, const char user_id[], data *p_user);
 
-namespace self {
+namespace me {
 
 void get(client *client, data *p_user);
-void get_guilds(client *client, guild::data **p_guilds);
+guild::data** get_guilds(client *client);
 
-} // namespace self
+} // namespace me
 
 } // namespace user
 

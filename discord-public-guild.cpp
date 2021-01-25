@@ -33,29 +33,23 @@ json_load(void *p_guild, char *str, size_t len)
 }
 
 void
-json_list_load(void *p_guild_list, char *str, size_t len)
+json_list_load(void *p_guilds, char *str, size_t len)
 {
-  ASSERT_S(NULL == *(data **)p_guild_list, "List is already initialized, otherwise it should be set to NULL");
-
   json_token **toks = NULL;
   json_scanf(str, len, "[]%A", &toks);
 
   // get amount of elements
-  size_t amt=0;
-  while (toks[amt] != NULL) {
-    ++amt;
-  }
+  size_t amt = ntl_length((void**)toks);
 
-  data *new_guilds = (data*)ntl_malloc(amt, sizeof(data));
+  data **new_guilds = (data**)ntl_malloc(amt, sizeof(data*));
   for (size_t i=0; i < amt; ++i) {
-    json_load(new_guilds+i, toks[i]->start, toks[i]->length);
+    new_guilds[i] = init();
+    json_load(new_guilds[i], toks[i]->start, toks[i]->length);
   }
+  
+  free(toks);
 
-  for (int i=0; new_guilds+i /* null terminated */; ++i){
-    D_PRINT("%s", new_guilds[i].id);
-  }
-
-  *(data **)p_guild_list = new_guilds;
+  *(data ***)p_guilds = new_guilds;
 }
 
 data*
@@ -68,6 +62,15 @@ init()
 void
 cleanup(data *guild) {
   free(guild);
+}
+
+void
+list_cleanup(data **guilds)
+{
+  for (size_t i=0; guilds[i]; ++i) {
+    cleanup(guilds[i]);
+  }
+  free(guilds);
 }
 
 void

@@ -45,7 +45,7 @@ init(char token[])
 client*
 fast_init(const char config_file[])
 {
-  struct bot_settings settings;
+  struct bot_settings settings = {0};
 
   bot_settings_init(&settings, config_file);
 
