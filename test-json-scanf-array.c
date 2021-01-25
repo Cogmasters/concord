@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "jsmn.h"
+#include "ntl.h"
 
 static char * print_token(jsmntype_t t) {
   switch(t) {
@@ -45,6 +46,37 @@ char test_string [] =
   "|truncated|: false\n"
 "}";
 
+struct tree_node {
+  char * path;
+  char * mode;
+  char * type;
+  int size;
+  char * sha;
+  char * url;
+};
+
+void load_tree_node (char * str, size_t len, void * p) {
+  struct tree_node * n = (struct tree_node *)p;
+  json_scanf(str, len,
+             "[path]%?s"
+             "[mode]%?s"
+             "[type]%?s"
+             "[size]%d"
+             "[sha]%?s"
+             "[url]%?s",
+             &n->path,
+             &n->mode,
+             &n->type,
+             &n->size,
+             &n->sha,
+             &n->url);
+}
+static int
+print_array (char * str, size_t len, void * p, bool is_last)
+{
+  return snprintf(str, len, "[ 10, 9, 8, 7 ]");
+}
+
 int main () {
   char * json_str = NULL;
   int s = json_asprintf(&json_str, test_string);
@@ -64,13 +96,6 @@ int main () {
   num_tok = jsmn_parse(&parser, array_tok.start, array_tok.length, t, num_tok+1);
 
   int i;
-  /*
-  printf ("\n ---print out tokens---\n");
-  for (i = 0; i < num_tok; i++) {
-    printf("[%d][size:%d]%s (%.*s)\n", i, t[i].size, print_token(t[i].type),
-           t[i].end - t[i].start, array_tok.start + t[i].start);
-  }
-   */
 
   printf ("test []%%L\n");
   struct json_token ** tokens = NULL;
@@ -88,6 +113,37 @@ int main () {
     printf ("token [%p, %d]\n", tokens[i]->start, tokens[i]->length);
     printf ("token %.*s\n", tokens[i]->length, tokens[i]->start);
   }
+
+  int wsize;
+  char buf[1024];
+  json_snprintf(buf, 1024, "{|a|:%d}", 10);
+  fprintf (stderr, "%s\n", buf);
+
+  json_snprintf(buf, 1024, "{|a|:%b}", true);
+  fprintf (stderr, "%s\n", buf);
+
+  json_snprintf(buf, 1024, "{|a|:%b}", false);
+  fprintf (stderr, "%s\n", buf);
+
+  json_snprintf(buf, 1024, "{|a|:%S}", NULL);
+  fprintf (stderr, "%s\n", buf);
+
+  json_snprintf(buf, 1024, "{|a|:%S}", "abc");
+  fprintf (stderr, "%s\n", buf);
+
+  json_snprintf(buf, 1024, "{|a|:|%s|}", "abc");
+  fprintf (stderr, "%s\n", buf);
+
+  wsize = json_snprintf(NULL, 0, "{|a|:|%s|, |b|:%d, |x|:%F }", "abc",
+                        10, print_array, NULL);
+  fprintf (stderr, "%d\n", wsize);
+
+  wsize++;
+  char * b = malloc(wsize);
+
+  wsize = json_snprintf(b, wsize, "{|a|:|%s|, |b|:%d, |x|:%F }", "abc",
+                        10, print_array, NULL);
+  fprintf (stderr, "%d %s\n", wsize, b);
   return 0;
 }
 
