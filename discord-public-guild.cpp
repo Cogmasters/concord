@@ -5,6 +5,7 @@
 #include <libdiscord.h>
 
 #include "discord-common.h"
+#include "ntl.h"
 
 namespace discord {
 namespace guild {
@@ -31,6 +32,26 @@ json_load(void *p_guild, char *str, size_t len)
   D_NOTOP_PUTS("Guild object loaded with API response"); 
 }
 
+void
+json_list_load(void *p_guilds, char *str, size_t len)
+{
+  json_token **toks = NULL;
+  json_scanf(str, len, "[]%A", &toks);
+
+  // get amount of elements
+  size_t amt = ntl_length((void**)toks);
+
+  data **new_guilds = (data**)ntl_malloc(amt, sizeof(data*));
+  for (size_t i=0; i < amt; ++i) {
+    new_guilds[i] = init();
+    json_load(new_guilds[i], toks[i]->start, toks[i]->length);
+  }
+  
+  free(toks);
+
+  *(data ***)p_guilds = new_guilds;
+}
+
 data*
 init()
 {
@@ -41,6 +62,15 @@ init()
 void
 cleanup(data *guild) {
   free(guild);
+}
+
+void
+list_cleanup(data **guilds)
+{
+  for (size_t i=0; guilds[i]; ++i) {
+    cleanup(guilds[i]);
+  }
+  free(guilds);
 }
 
 void

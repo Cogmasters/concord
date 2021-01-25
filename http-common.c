@@ -197,7 +197,7 @@ curl_dump(const char *text, FILE *f_dump, unsigned char *ptr, size_t size)
 {
   const unsigned int WIDTH = 0x10;
 
-  char timestr[64];
+  char timestr[64] = {0};
   timestamp_str(timestr, sizeof(timestr));
 
   fprintf(f_dump, "\r\r\r\r%s %10.10ld bytes (0x%8.8lx) - %s\n%s\n",
@@ -233,7 +233,7 @@ json_dump(const char *text, struct _settings_s *settings, const char *data)
   if (NULL == settings->f_json_dump) return;
   FILE *f_dump = settings->f_json_dump;
 
-  char timestr[64];
+  char timestr[64] = {0};
   timestamp_str(timestr, sizeof(timestr));
 
   fprintf(f_dump, "\r\r\r\r%s - %s\n%s\n", text, timestr, data);
@@ -250,13 +250,14 @@ curl_debug_cb(
 {
   struct _settings_s *settings = (struct _settings_s *)p_userdata;
   if (NULL == settings->f_curl_dump) return 0;
+
   FILE *f_dump = settings->f_curl_dump;
 
-  const char *text;
+  const char *text = NULL;
   switch (type) {
   case CURLINFO_TEXT:
     {
-      char timestr[64];
+      char timestr[64] = {0};
       timestamp_str(timestr, sizeof(timestr));
 
       fprintf(f_dump, "\r\r\r\rCURL INFO - %s\n%s\n", timestr, data);

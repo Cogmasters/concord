@@ -125,7 +125,7 @@ on_hello(websockets::data *ws)
 static void
 on_dispatch(websockets::data *ws)
 {
-  user::json_load(ws->self,
+  user::json_load(ws->me,
       ws->payload.event_data, sizeof(ws->payload.event_data));
 
   if (STREQ("READY", ws->payload.event_name))
@@ -140,7 +140,7 @@ on_dispatch(websockets::data *ws)
 
     if (NULL == ws->cbs.on_ready) return;
 
-    (*ws->cbs.on_ready)(ws->p_client, ws->self);
+    (*ws->cbs.on_ready)(ws->p_client, ws->me);
 
     return;
   }
@@ -164,7 +164,7 @@ on_dispatch(websockets::data *ws)
     message::json_load((void*)message,
         ws->payload.event_data, sizeof(ws->payload.event_data));
 
-    (*ws->cbs.on_message.create)(ws->p_client, ws->self, message);
+    (*ws->cbs.on_message.create)(ws->p_client, ws->me, message);
 
     message::cleanup(message);
 
@@ -181,7 +181,7 @@ on_dispatch(websockets::data *ws)
     message::json_load((void*)message,
         ws->payload.event_data, sizeof(ws->payload.event_data));
 
-    (*ws->cbs.on_message.update)(ws->p_client, ws->self, message);
+    (*ws->cbs.on_message.update)(ws->p_client, ws->me, message);
 
     message::cleanup(message);
 
@@ -198,7 +198,7 @@ on_dispatch(websockets::data *ws)
     message::json_load((void*)message,
         ws->payload.event_data, sizeof(ws->payload.event_data));
 
-    (*ws->cbs.on_message.del)(ws->p_client, ws->self, message);
+    (*ws->cbs.on_message.del)(ws->p_client, ws->me, message);
 
     message::cleanup(message);
 
@@ -435,8 +435,8 @@ init(websockets::data *ws, char token[])
   ws->ehandle = custom_cws_new(ws);
   ws->mhandle = custom_multi_init();
 
-  ws->self = user::init();
-  user::get_self(ws->p_client, ws->self);
+  ws->me = user::init();
+  user::me::get(ws->p_client, ws->me);
 }
 
 void
@@ -445,7 +445,7 @@ cleanup(websockets::data *ws)
   free(ws->identify);
   free(ws->session_id);
 
-  user::cleanup(ws->self);
+  user::cleanup(ws->me);
 
   curl_multi_cleanup(ws->mhandle);
   cws_free(ws->ehandle);
@@ -494,7 +494,7 @@ ws_main_loop(websockets::data *ws)
     if (ws->hbeat.interval_ms < (timestamp_ms() - ws->hbeat.start_ms))
       ws_send_heartbeat(ws);
     if (ws->cbs.on_idle)
-      (*ws->cbs.on_idle)(ws->p_client, ws->self);
+      (*ws->cbs.on_idle)(ws->p_client, ws->me);
 
   } while(is_running);
 }

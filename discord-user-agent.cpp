@@ -107,7 +107,7 @@ perform_request(
     ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
     //get request's url
-    const char *url = NULL;
+    char *url = NULL;
     ecode = curl_easy_getinfo(ua->ehandle, CURLINFO_EFFECTIVE_URL, &url);
     ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
@@ -120,7 +120,7 @@ perform_request(
         reason = "The request was completed succesfully.";
         action = DONE;
 
-        if (p_object && load_cb) {
+        if (load_cb) {
           (*load_cb)(p_object, ua->body.str, ua->body.size);
         }
 
@@ -242,7 +242,7 @@ run(
 
   va_end(args);
 
-  //@todo this is temporary
+  // @todo this is temporary
   struct api_resbody_s body = {
     .str = postfields,
     .size = postfields ? strlen(postfields) : 0

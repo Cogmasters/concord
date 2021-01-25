@@ -34,8 +34,8 @@ namespace channel { struct data; } // forward declaration
 namespace user { struct data; } // forward declaration
 namespace guild { struct data; } // forward declaration
 
-typedef void (idle_cb)(discord::client *client, const user::data *self);
-typedef void (message_cb)(discord::client *client, const user::data *self, const message::data *message);
+typedef void (idle_cb)(discord::client *client, const user::data *me);
+typedef void (message_cb)(discord::client *client, const user::data *me, const message::data *message);
 
 namespace user_agent { /* discord-user-agent.cpp */
 
@@ -185,7 +185,7 @@ struct data {
     } on_message;
   } cbs;
 
-  user::data *self; //the user associated with this client
+  user::data *me; //the user associated with this client
 
   discord::client *p_client; //points to client this struct is a part of
 };
