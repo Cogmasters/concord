@@ -29,6 +29,7 @@ extern "C" {
 #endif // __cplusplus
 
 void ** ntl_malloc (size_t nmem,  size_t elem_size);
+void ** ntl_calloc (size_t nmem,  size_t elem_size);
 void ** ntl_dup (void ** p, size_t elem_size);
 size_t ntl_length (void **p);
 
