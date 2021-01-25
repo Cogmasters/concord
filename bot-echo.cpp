@@ -27,7 +27,11 @@ void on_message_create(
   if (0 == strcmp(self->username, msg->author->username))
     return;
 
-  message::create(client, msg->channel_id, msg->content);
+  message::create::params params = {
+    .content = (char*)msg->content //this won't be modified
+  };
+
+  message::create::run(client, msg->channel_id, &params);
 }
 
 void on_message_update(
@@ -35,9 +39,11 @@ void on_message_update(
     const user::data *self,
     const message::data *msg)
 {
-  char text[] = "I see what you did there.";
+  message::create::params params = {
+    .content = "I see what you did there."
+  };
 
-  message::create(client, msg->channel_id, text);
+  message::create::run(client, msg->channel_id, &params);
   
   (void)self;
 }
@@ -47,9 +53,11 @@ void on_message_delete(
     const user::data *self,
     const message::data *msg)
 {
-  char text[] = "Did that message just disappear?!";
+  message::create::params params = {
+    .content = "Did that message just disappear?"
+  };
 
-  message::create(client, msg->channel_id, text);
+  message::create::run(client, msg->channel_id, &params);
   
   (void)self;
 }
