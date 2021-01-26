@@ -38,12 +38,8 @@ json_list_load(void *p_guilds, char *str, size_t len)
   json_token **toks = NULL;
   json_scanf(str, len, "[]%A", &toks);
 
-  // get amount of elements
-  size_t amt = ntl_length((void**)toks);
-
-  data **new_guilds = (data**)ntl_malloc(amt, sizeof(data*));
-  for (size_t i=0; i < amt; ++i) {
-    new_guilds[i] = init();
+  data **new_guilds = (data**)ntl_dup((void**)toks, sizeof(data));
+  for (size_t i=0; toks[i]; ++i) {
     json_load(new_guilds[i], toks[i]->start, toks[i]->length);
   }
   
@@ -65,11 +61,7 @@ cleanup(data *guild) {
 }
 
 void
-list_cleanup(data **guilds)
-{
-  for (size_t i=0; guilds[i]; ++i) {
-    cleanup(guilds[i]);
-  }
+list_cleanup(data **guilds) {
   free(guilds);
 }
 
