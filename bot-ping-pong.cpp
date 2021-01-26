@@ -31,6 +31,8 @@ void on_message_create(
     params.content = "pong";
   else if (0 == strcmp(msg->content, "pong"))
     params.content = "ping";
+  else
+    return; //nothing to do here
 
   message::create::run(client, msg->channel_id, &params);
 
