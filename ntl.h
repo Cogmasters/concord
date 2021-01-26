@@ -14,7 +14,7 @@
  * };
  *
  * the list can be allocated as
- * p = ntl_malloc(n, size);
+ * p = ntl_calloc(n, size);
  *
  *
  *       +-----------------+
@@ -39,8 +39,20 @@
 extern "C" {
 #endif // __cplusplus
 
-void ** ntl_malloc (size_t nelems,  size_t elem_size);
+/*
+ * this is the preferred method to allocate a ntl
+ */
 void ** ntl_calloc (size_t nelems,  size_t elem_size);
+
+/*
+ * unless you have a very good reason, don't use this
+ */
+void ** ntl_malloc (size_t nelems,  size_t elem_size);
+
+/*
+ * the duplicated ntl of elements of elem_size is
+ * zero initialized.
+ */
 void ** ntl_dup (void ** p, size_t elem_size);
 
 /*
