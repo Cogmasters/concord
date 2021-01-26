@@ -33,15 +33,20 @@ normalize_fmt (char *fmt)
 
 struct specifier {
   enum {
-    IS_NULLABLE = 1,
+    IS_STR_NULLABLE = 1,
+    IS_BOOL_NULLABLE,
+    IS_INT_NULLABLE,
+    IS_LONG_NULLABLE,
+    IS_FLOAT_NULLABLE,
+    IS_DOUBLE_NULLABLE,
     IS_STR,
     IS_BOOL,
-    IS_FUNPTR,
     IS_INT,
     IS_LONG,
     IS_LONG_LONG,
     IS_FLOAT,
-    IS_DOUBLE
+    IS_DOUBLE,
+    IS_FUNPTR
   } type;
   char specifier[10];
   union {
@@ -91,7 +96,7 @@ parse_format_specifiers (char * format, size_t n)
           strcpy(s[i].specifier, "%s");
           break;
         case 'S':
-          s[i].type = IS_NULLABLE;
+          s[i].type = IS_STR_NULLABLE;
           strcpy(s[i].specifier, "%s");
           break;
         case 'd':
@@ -212,7 +217,7 @@ json_vsnprintf(char * str, size_t len, char * fmt, va_list ap)
       case IS_STR:
         slen = snprintf(cur_ptr, len,  sp[i].specifier, sp[i].provider.p);
         break;
-      case IS_NULLABLE:
+      case IS_STR_NULLABLE:
         if (sp[i].provider.p == NULL)
           slen = snprintf(cur_ptr, len, "null");
         else
