@@ -8,6 +8,11 @@
 #include "ntl.h"
 #include "json-scanf.h"
 
+// include jsmn to do post json validation
+#define JSMN_STATIC  // dont expose jsmn symbols
+#define JSMN_STRICT  // parse json in strict mode
+#include "jsmn.h"
+
 static char *
 normalize_fmt (char *fmt)
 {
@@ -293,5 +298,14 @@ json_snprintf(char *buf, size_t len, char *json_fmt, ...)
   va_start(ap, json_fmt);
   int ret = json_vsnprintf(buf, len, json_fmt, ap);
   va_end(ap);
+
+  if (buf) {
+    jsmn_parser parser;
+    jsmn_init(&parser);
+    int num_tok = jsmn_parse(&parser, buf, ret, NULL, 0);
+    if (num_tok < 0) {
+      ERROR("illegal json %.*s", buf, ret);
+    }
+  }
   return ret;
 }
