@@ -10,21 +10,29 @@
  *
  * struct ntl {
  *    void * indices[n+1];  // indices[n] = NULL
- *    struct E e[n];
+ *    struct E e[n];  // sizeof (struct E) == size
  * };
  *
+ * the list can be allocated as
  * p = ntl_malloc(n, size);
  *
- *      +---------------+
- *      |               |
+ *
+ *       +-----------------+
+ *       |                 |
  * p -> [ | | | | | | |0][e_0]...............[e_(n-1)]
  *      \--indices[n+1]-/ \--------- e[n]-----------/
  *
- * a pointer p of type (struct E **) points to the begin of this struct
+ * p points to the begin of the memory block which overlaps with indices.
+ *
+ * p[0] points to e_0
+ * p[1] points to e_1
+ * ...
+ * p[n-1] points to e_(n-1)
+ * p[n] points to NULL
+ *
  *
  *  for (int i = 0; p[i]; i++)
  *    // do something here for each element
- *    p[i] == &((struct ntl *)p->e[n])
  *
  */
 #ifdef __cplusplus
