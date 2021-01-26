@@ -6,7 +6,7 @@
 
 using namespace tester::user_agent;
 
-void load(void * ptr, char * str, size_t len) {
+void load(char * str, size_t len, void * ptr) {
   fprintf(stderr, "%.*s", len, str);
 }
 

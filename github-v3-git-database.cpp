@@ -8,13 +8,13 @@ namespace git_database {
 namespace create_a_blob {
 
 static void
-log_resp (void * p, char * str, size_t len)
+log_resp (char * str, size_t len, void * p)
 {
   fprintf(stderr, "%.*s", len, str);
 }
 
 static void
-load_resp (void * p, char * str, size_t len)
+load_resp (char * str, size_t len, void * p)
 {
   struct response * rep = (struct response *)p;
   json_scanf(str, len, "[url]%?s [sha]%?s", &rep->url, &rep->sha);
@@ -46,7 +46,7 @@ bool run (user_agent::data * ua, struct params * d, struct response * resp)
 namespace get_a_blob {
 
 static void
-load_resp (void * p, char * str, size_t len)
+load_resp (char * str, size_t len, void * p)
 {
   struct response * rep = (struct response *)p;
   json_scanf(str, len,
@@ -101,7 +101,7 @@ static void token_to_tree (void * from, void * to)
 }
 
 static void
-load_resp(void * p, char * str, size_t len) {
+load_resp(char * str, size_t len, void * p) {
   struct response * resp = (struct response *)p;
   struct json_token ** token_ptrs = NULL;;
   json_scanf(str, len,

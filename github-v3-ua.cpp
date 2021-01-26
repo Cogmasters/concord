@@ -73,19 +73,23 @@ perform_request(struct data *api, struct resp_handle * handle, char endpoint[])
     D_PRINT("Request URL: %s", url);
 
     const char *reason; //verbose reason of http code
+    fprintf(stderr, "http code:%s\n", http_code_print(code));
     switch (code) {
       case HTTP_OK:
         reason = "The request was completed succesfully.";
         action = DONE;
 
         if (handle && handle->ok_cb) {
-          (*handle->ok_cb)(handle->ok_obj, api->body.str, api->body.size);
+          (*handle->ok_cb)(api->body.str, api->body.size, handle->ok_obj);
         }
 
         break;
       case HTTP_CREATED:
-        reason = "The entity was created succesfully.";
+        reason = "The entity was created successfully.";
         action = DONE;
+        if (handle && handle->ok_cb) {
+          (*handle->ok_cb)(api->body.str, api->body.size, handle->ok_obj);
+        }
         break;
       case HTTP_NO_CONTENT:
         reason = "The request completed succesfully but returned no content.";
@@ -174,7 +178,7 @@ perform_request(struct data *api, struct resp_handle * handle, char endpoint[])
         break;
       case ABORT:
         if (handle && handle->err_cb) {
-          (*handle->err_cb)(handle->err_obj, api->body.str, api->body.size);
+          (*handle->err_cb)(api->body.str, api->body.size, handle->err_obj);
         }
       default:
         ERROR("(%d)%s - %s", code, http_code_print(code), reason);
