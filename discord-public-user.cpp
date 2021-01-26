@@ -10,7 +10,7 @@ namespace user {
 void
 json_load(char *str, size_t len, void *p_user)
 {
-  data *user = (data*)p_user;
+  dati *user = (dati*)p_user;
 
   json_scanf(str, len,
      "[id]%s"
@@ -43,20 +43,20 @@ json_load(char *str, size_t len, void *p_user)
   D_NOTOP_PUTS("User object loaded with API response"); 
 }
 
-data*
+dati*
 init()
 {
-  data *new_user = (data*)calloc(1, sizeof *new_user);
+  dati *new_user = (dati*)calloc(1, sizeof *new_user);
   return new_user;
 }
 
 void
-cleanup(data *user) {
+cleanup(dati *user) {
   free(user);
 }
 
 void
-get(client *client, const char user_id[], data *p_user)
+get(client *client, const char user_id[], dati *p_user)
 {
   if (IS_EMPTY_STRING(user_id)) {
     D_PUTS("Missing 'user_id'");
@@ -74,7 +74,7 @@ get(client *client, const char user_id[], data *p_user)
 namespace me {
 
 void 
-get(client *client, data *p_user)
+get(client *client, dati *p_user)
 {
   user_agent::run( 
     &client->ua,
@@ -84,10 +84,10 @@ get(client *client, data *p_user)
     GET, USER, "@me");
 }
 
-guild::data**
+guild::dati**
 get_guilds(client *client)
 {
-  guild::data **new_guilds = NULL;
+  guild::dati **new_guilds = NULL;
 
   user_agent::run( 
     &client->ua,

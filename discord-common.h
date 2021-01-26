@@ -29,26 +29,26 @@
 namespace discord {
 
 struct client; // forward declaration
-namespace message { struct data; } // forward declaration
-namespace channel { struct data; } // forward declaration
-namespace user { struct data; } // forward declaration
-namespace guild { struct data; } // forward declaration
+namespace message { struct dati; } // forward declaration
+namespace channel { struct dati; } // forward declaration
+namespace user { struct dati; } // forward declaration
+namespace guild { struct dati; } // forward declaration
 
-typedef void (idle_cb)(discord::client *client, const user::data *me);
-typedef void (message_cb)(discord::client *client, const user::data *me, const message::data *message);
+typedef void (idle_cb)(discord::client *client, const user::dati *me);
+typedef void (message_cb)(discord::client *client, const user::dati *me, const message::dati *message);
 
 namespace user_agent { /* discord-user-agent.cpp */
 
-namespace bucket { struct data; } //forward declaration
+namespace bucket { struct dati; } //forward declaration
 
-struct data {
+struct dati {
   struct curl_slist *req_header; //the request header sent to the api
 
   struct api_resbody_s body; //the api response string
   struct api_header_s pairs; //the key/field pairs response header
 
   struct { /* RATELIMITING STRUCTURE */
-    bucket::data **buckets; //active client buckets
+    bucket::dati **buckets; //active client buckets
     size_t num_buckets; //amount of active client buckets
     
     //check GNU tree functions from search.h
@@ -60,10 +60,10 @@ struct data {
   discord::client *p_client; //points to client this struct is a part of
 };
 
-void init(user_agent::data *ua, char token[]);
-void cleanup(user_agent::data *ua);
+void init(user_agent::dati *ua, char token[]);
+void cleanup(user_agent::dati *ua);
 void run(
-  user_agent::data *ua, 
+  user_agent::dati *ua, 
   void *p_object, 
   load_obj_cb *load_cb,
   char postfields[], //only for POST/PUT methods
@@ -73,17 +73,17 @@ void run(
 
 namespace bucket { /* discord-ratelimit.cpp */
 
-struct data {
+struct dati {
   char *hash; //the hash associated with this bucket
   int remaining; //connections this bucket can do before cooldown
   long long reset_after_ms;
   long long reset_ms;
 };
 
-void cleanup(user_agent::data *ua);
-long long cooldown(bucket::data *bucket, bool use_clock);
-bucket::data* try_get(user_agent::data *ua, char endpoint[]);
-void build(user_agent::data *ua, bucket::data *bucket, char endpoint[]);
+void cleanup(user_agent::dati *ua);
+long long cooldown(bucket::dati *bucket, bool use_clock);
+bucket::dati* try_get(user_agent::dati *ua, char endpoint[]);
+void build(user_agent::dati *ua, bucket::dati *bucket, char endpoint[]);
 
 } // namespace bucket
 } // namespace user_agent
@@ -153,7 +153,7 @@ enum ws_status {
   CONNECTED,     //connected to ws
 };
 
-struct data {
+struct dati {
   enum ws_status status; //connection to discord status
   int reconnect_attempts; //hard limit 5 reconnection attempts @todo make configurable
 
@@ -185,20 +185,20 @@ struct data {
     } on_message;
   } cbs;
 
-  user::data *me; //the user associated with this client
+  user::dati *me; //the user associated with this client
 
   discord::client *p_client; //points to client this struct is a part of
 };
 
-void init(websockets::data *ws, char token[]);
-void cleanup(websockets::data *ws);
-void run(websockets::data *ws);
+void init(websockets::dati *ws, char token[]);
+void cleanup(websockets::dati *ws);
+void run(websockets::dati *ws);
 
 } // namespace websockets
 
 struct client {
-  websockets::data ws;
-  user_agent::data ua;
+  websockets::dati ws;
+  user_agent::dati ua;
   
   void *data; //space for user arbitrary data
 

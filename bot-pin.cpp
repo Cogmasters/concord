@@ -6,7 +6,7 @@
 
 using namespace discord;
 
-void on_ready(client *client, const user::data *me)
+void on_ready(client *client, const user::dati *me)
 {
   fprintf(stderr, "\n\nPin-Bot succesfully connected to Discord as %s#%s!\n\n",
       me->username, me->discriminator);
@@ -16,8 +16,8 @@ void on_ready(client *client, const user::data *me)
 
 void on_message_create(
     client *client,
-    const user::data *me,
-    const message::data *msg)
+    const user::dati *me,
+    const message::dati *msg)
 {
   // make sure bot ignores msgs from other bots
   if (msg->author->bot)

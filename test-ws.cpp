@@ -5,7 +5,7 @@
 
 using namespace discord;
 
-void on_ready(client *client, const user::data *me)
+void on_ready(client *client, const user::dati *me)
 {
   fprintf(stderr, "\n\nSuccesfully connected to Discord as %s#%s!\n\n",
       me->username, me->discriminator);

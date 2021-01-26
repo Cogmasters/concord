@@ -7,15 +7,15 @@
 namespace discord {
 namespace channel {
 
-data*
+dati*
 init()
 {
-  data *new_channel = (data*)calloc(1, sizeof *new_channel);
+  dati *new_channel = (dati*)calloc(1, sizeof *new_channel);
   return new_channel;
 }
 
 void
-cleanup(data *channel) {
+cleanup(dati *channel) {
   free(channel);
 }
 

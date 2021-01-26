@@ -7,7 +7,7 @@
 
 using namespace discord;
 
-void on_ready(client *client, const user::data *me)
+void on_ready(client *client, const user::dati *me)
 {
   fprintf(stderr, "\n\nEcho-Bot succesfully connected to Discord as %s#%s!\n\n",
       me->username, me->discriminator);
@@ -17,8 +17,8 @@ void on_ready(client *client, const user::data *me)
 
 void on_message_create(
     client *client,
-    const user::data *me,
-    const message::data *msg)
+    const user::dati *me,
+    const message::dati *msg)
 {
   // make sure bot doesn't echoes other bots
   if (msg->author->bot)
@@ -36,8 +36,8 @@ void on_message_create(
 
 void on_message_update(
     client *client,
-    const user::data *me,
-    const message::data *msg)
+    const user::dati *me,
+    const message::dati *msg)
 {
   message::create::params params = {
     .content = "I see what you did there."
@@ -50,8 +50,8 @@ void on_message_update(
 
 void on_message_delete(
     client *client,
-    const user::data *me,
-    const message::data *msg)
+    const user::dati *me,
+    const message::dati *msg)
 {
   message::create::params params = {
     .content = "Did that message just disappear?"

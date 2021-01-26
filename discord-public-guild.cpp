@@ -12,7 +12,7 @@ namespace guild {
 void
 json_load(char *str, size_t len, void *p_guild)
 {
-  data *guild = (data*)p_guild;
+  dati *guild = (dati*)p_guild;
 
   json_scanf(str, len,
      "[id]%s"
@@ -37,35 +37,35 @@ json_list_load(char *str, size_t len, void *p_guilds)
   json_token **toks = NULL;
   json_scanf(str, len, "[]%A", &toks);
 
-  data **new_guilds = (data**)ntl_dup((void**)toks, sizeof(data));
+  dati **new_guilds = (dati**)ntl_dup((void**)toks, sizeof(dati));
   for (size_t i=0; toks[i]; ++i) {
     json_load(toks[i]->start, toks[i]->length, new_guilds[i]);
   }
   
   free(toks);
 
-  *(data ***)p_guilds = new_guilds;
+  *(dati ***)p_guilds = new_guilds;
 }
 
-data*
+dati*
 init()
 {
-  data *new_guild = (data*)calloc(1, sizeof *new_guild);
+  dati *new_guild = (dati*)calloc(1, sizeof *new_guild);
   return new_guild;
 }
 
 void
-cleanup(data *guild) {
+cleanup(dati *guild) {
   free(guild);
 }
 
 void
-list_cleanup(data **guilds) {
+list_cleanup(dati **guilds) {
   free(guilds);
 }
 
 void
-get(client *client, const char guild_id[], data *p_guild)
+get(client *client, const char guild_id[], dati *p_guild)
 {
   if (IS_EMPTY_STRING(guild_id)) {
     D_PUTS("Missing 'guild_id'");

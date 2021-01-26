@@ -53,7 +53,7 @@ namespace channel {
 
 /* CHANNEL OBJECT
  * https://discord.com/developers/docs/resources/channel#channel-object-channel-structure */
-struct data {
+struct dati {
   char id[SNOWFLAKE_INTERNAL_WORKER_ID];
   int type;
   char guild_id[SNOWFLAKE_INTERNAL_WORKER_ID];
@@ -66,17 +66,17 @@ struct data {
   int bitrate;
   int user_limit;
   int rate_limit_per_user;
-  user::data **recipients;
+  user::dati **recipients;
   char icon[MAX_HASH_LEN];
   char owner_id[SNOWFLAKE_INTERNAL_WORKER_ID];
   char application_id[SNOWFLAKE_INTERNAL_WORKER_ID];
   char parent_id[SNOWFLAKE_INTERNAL_WORKER_ID];
   char last_pin_timestamp[SNOWFLAKE_TIMESTAMP];
-  message::data **messages;
+  message::dati **messages;
 };
 
-data* init();
-void cleanup(data *channel);
+dati* init();
+void cleanup(dati *channel);
 
 void pin_message(client *client, const char channel_id[], const char message_id[]);
 void unpin_message(client *client, const char channel_id[], const char message_id[]);
@@ -87,18 +87,18 @@ namespace message {
 
 /* DISCORD MESSAGE OBJECT
  * https://discord.com/developers/docs/resources/channel#message-object*/
-struct data {
+struct dati {
   char id[SNOWFLAKE_INTERNAL_WORKER_ID];
   char channel_id[SNOWFLAKE_INTERNAL_WORKER_ID];
   char guild_id[SNOWFLAKE_INTERNAL_WORKER_ID];
-  user::data *author;
+  user::dati *author;
   //struct discord_guildmember_s *member;
   char content[MAX_MESSAGE_LEN];
   char timestamp[SNOWFLAKE_TIMESTAMP];
   char edited_timestamp[SNOWFLAKE_TIMESTAMP];
   bool tts;
   bool mention_everyone;
-  user::data **mentions;
+  user::dati **mentions;
   //struct discord_role_t **mention_roles;
   //struct discord_channelmention_s **mention_channels;
   //struct discord_attachment_s **attachments;
@@ -113,11 +113,11 @@ struct data {
   //struct discord_messagereference_s *message_reference;
   int flags;
   //struct discord_sticker_s **stickers;
-  data *referenced_message;
+  dati *referenced_message;
 };
 
-data* init();
-void cleanup(data *message);
+dati* init();
+void cleanup(dati *message);
 void json_load(char *str, size_t len, void *p_message);
 
 /* https://discord.com/developers/docs/resources/channel#create-message */
@@ -148,7 +148,7 @@ namespace guild {
 
 /* GUILD OBJECT
  * https://discord.com/developers/docs/resources/guild#guild-object-guild-structure */
-struct data {
+struct dati {
   char id[SNOWFLAKE_INTERNAL_WORKER_ID];
   char name[MAX_NAME_LEN];
   char icon[MAX_HASH_LEN];
@@ -182,7 +182,7 @@ struct data {
   int member_count;
   //struct discord_voicestate_s **voice_states;
   //struct discord_member_s **members;
-  channel::data **channels;
+  channel::dati **channels;
   //struct discord_presence_s **presences;
   int max_presences;
   int mas_members;
@@ -198,13 +198,13 @@ struct data {
   int approximate_presence_count;
 };
 
-data* init();
-void cleanup(data *guild);
-void list_cleanup(data **guild);
+dati* init();
+void cleanup(dati *guild);
+void list_cleanup(dati **guild);
 void json_load(char *str, size_t len, void *p_guild);
 void json_list_load(char *str, size_t len, void *p_guilds);
 
-void get(client *client, const char guild_id[], data *p_guild);
+void get(client *client, const char guild_id[], dati *p_guild);
 
 } // namespace guild
 
@@ -212,7 +212,7 @@ namespace user {
 
 /* USER OBJECT
  * https://discord.com/developers/docs/resources/user#user-object-user-structure */
-struct data {
+struct dati {
   char id[SNOWFLAKE_INTERNAL_WORKER_ID];
   char username[MAX_USERNAME_LEN];
   char discriminator[MAX_DISCRIMINATOR_LEN];
@@ -226,19 +226,19 @@ struct data {
   int flags;
   int premium_type;
   int public_flags;
-  guild::data **guilds;
+  guild::dati **guilds;
 };
 
-data* init();
-void cleanup(data *user);
+dati* init();
+void cleanup(dati *user);
 void json_load(char *str, size_t len, void *p_user);
 
-void get(client *client, const char user_id[], data *p_user);
+void get(client *client, const char user_id[], dati *p_user);
 
 namespace me {
 
-void get(client *client, data *p_user);
-guild::data** get_guilds(client *client);
+void get(client *client, dati *p_user);
+guild::dati** get_guilds(client *client);
 
 } // namespace me
 

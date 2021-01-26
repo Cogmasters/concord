@@ -44,7 +44,7 @@ reqheader_init(char token[])
 }
 
 void
-init(data *ua, char token[])
+init(dati *ua, char token[])
 {
   ua->req_header = reqheader_init(token);
   ua->ehandle = custom_easy_init(
@@ -55,7 +55,7 @@ init(data *ua, char token[])
 }
 
 void
-cleanup(data *ua)
+cleanup(dati *ua)
 {
   bucket::cleanup(ua);
 
@@ -70,7 +70,7 @@ cleanup(data *ua)
 /* perform the request */
 static void
 perform_request(
-  data *ua,
+  dati *ua,
   void *p_object, 
   load_obj_cb *load_cb,
   char endpoint[])
@@ -80,7 +80,7 @@ perform_request(
   } action;
 
   //attempt to fetch a bucket handling connections from this endpoint
-  bucket::data *bucket = bucket::try_get(ua, endpoint);
+  bucket::dati *bucket = bucket::try_get(ua, endpoint);
   do {
     if (bucket) { //bucket exists, we will check for pending delays
       long long delay_ms = bucket::cooldown(bucket, true);
@@ -222,7 +222,7 @@ perform_request(
 /* template function for performing requests */
 void
 run(
-  data *ua, 
+  dati *ua, 
   void *p_object, 
   load_obj_cb *load_cb,
   char postfields[],

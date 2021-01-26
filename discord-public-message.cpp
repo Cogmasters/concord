@@ -10,7 +10,7 @@ namespace message {
 void
 json_load(char *str, size_t len, void *p_message)
 {
-  data *message = (data*)p_message;
+  dati *message = (dati*)p_message;
 
   json_scanf(str, len,
      "[id]%s"
@@ -47,10 +47,10 @@ json_load(char *str, size_t len, void *p_message)
   D_NOTOP_PUTS("Message object loaded with API response"); 
 }
 
-static data*
+static dati*
 referenced_message_init()
 {
-  data *new_message = (data*)calloc(1, sizeof *new_message);
+  dati *new_message = (dati*)calloc(1, sizeof *new_message);
   if (NULL == new_message) return NULL;
 
   new_message->author = user::init();
@@ -64,10 +64,10 @@ cleanup:
   return NULL;
 }
 
-data*
+dati*
 init()
 {
-  data *new_message = (data*)calloc(1, sizeof *new_message);
+  dati *new_message = (dati*)calloc(1, sizeof *new_message);
   if (NULL == new_message) return NULL;
 
   new_message->author = user::init();
@@ -87,7 +87,7 @@ cleanupA:
 }
 
 static void
-referenced_message_cleanup(data *message)
+referenced_message_cleanup(dati *message)
 {
   user::cleanup(message->author);
 
@@ -95,7 +95,7 @@ referenced_message_cleanup(data *message)
 }
 
 void
-cleanup(data *message)
+cleanup(dati *message)
 {
   user::cleanup(message->author);
   referenced_message_cleanup(message->referenced_message);

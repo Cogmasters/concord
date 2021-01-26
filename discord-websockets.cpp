@@ -77,7 +77,7 @@ ws_close_opcode_print(enum ws_close_opcodes gateway_opcode)
 }
 
 static void
-ws_send_payload(websockets::data *ws, char payload[])
+ws_send_payload(websockets::dati *ws, char payload[])
 {
   json_dump("SEND PAYLOAD", &ws->p_client->settings, payload);
 
@@ -86,7 +86,7 @@ ws_send_payload(websockets::data *ws, char payload[])
 }
 
 static void
-ws_send_resume(websockets::data *ws)
+ws_send_resume(websockets::dati *ws)
 {
   char fmt_payload[] = \
     "{\"op\":6,\"d\":{\"token\":\"%s\",\"session_id\":\"%s\",\"seq\":%d}}";
@@ -100,14 +100,14 @@ ws_send_resume(websockets::data *ws)
 }
 
 static void
-ws_send_identify(websockets::data *ws)
+ws_send_identify(websockets::dati *ws)
 {
   D_PRINT("IDENTIFY PAYLOAD:\n\t%s", ws->identify);
   ws_send_payload(ws, ws->identify);
 }
 
 static void
-on_hello(websockets::data *ws)
+on_hello(websockets::dati *ws)
 {
   ws->hbeat.interval_ms = 0;
   ws->hbeat.start_ms = timestamp_ms();
@@ -123,7 +123,7 @@ on_hello(websockets::data *ws)
 }
 
 static void
-on_dispatch(websockets::data *ws)
+on_dispatch(websockets::dati *ws)
 {
   user::json_load(ws->payload.event_data,
       sizeof(ws->payload.event_data), (void*)ws->me);
@@ -158,7 +158,7 @@ on_dispatch(websockets::data *ws)
   {
     if (NULL == ws->cbs.on_message.create) return;
 
-    message::data *message = message::init();
+    message::dati *message = message::init();
     ASSERT_S(NULL != message, "Out of memory");
 
     message::json_load(ws->payload.event_data,
@@ -175,7 +175,7 @@ on_dispatch(websockets::data *ws)
   {
     if (NULL == ws->cbs.on_message.update) return;
 
-    message::data *message = message::init();
+    message::dati *message = message::init();
     ASSERT_S(NULL != message, "Out of memory");
 
     message::json_load(ws->payload.event_data,
@@ -192,7 +192,7 @@ on_dispatch(websockets::data *ws)
   {
     if (NULL == ws->cbs.on_message.del) return;
 
-    message::data *message = message::init();
+    message::dati *message = message::init();
     ASSERT_S(NULL != message, "Out of memory");
 
     message::json_load(ws->payload.event_data,
@@ -209,7 +209,7 @@ on_dispatch(websockets::data *ws)
 }
 
 static void
-on_invalid_session(websockets::data *ws)
+on_invalid_session(websockets::dati *ws)
 {
   ws->status = FRESH;
 
@@ -219,7 +219,7 @@ on_invalid_session(websockets::data *ws)
 }
 
 static void
-on_reconnect(websockets::data *ws)
+on_reconnect(websockets::dati *ws)
 {
   ws->status = RESUME;
 
@@ -240,7 +240,7 @@ ws_on_connect_cb(void *p_ws, CURL *ehandle, const char *ws_protocols)
 static void
 ws_on_close_cb(void *p_ws, CURL *ehandle, enum cws_close_reason cwscode, const char *reason, size_t len)
 {
-    websockets::data *ws = (websockets::data*)p_ws;
+    websockets::dati *ws = (websockets::dati*)p_ws;
     enum ws_close_opcodes opcode = (enum ws_close_opcodes)cwscode;
    
     switch (opcode) {
@@ -277,7 +277,7 @@ ws_on_close_cb(void *p_ws, CURL *ehandle, enum cws_close_reason cwscode, const c
 static void
 ws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
 {
-  websockets::data *ws = (websockets::data*)p_ws;
+  websockets::dati *ws = (websockets::dati*)p_ws;
 
   D_PRINT("ON_TEXT:\n\t\t%s", text);
 
@@ -331,7 +331,7 @@ ws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
 
 /* init easy handle with some default opt */
 static CURL*
-custom_cws_new(websockets::data *ws)
+custom_cws_new(websockets::dati *ws)
 {
   //missing on_binary, on_ping, on_pong
   struct cws_callbacks cws_cbs = {
@@ -424,7 +424,7 @@ identify_init(char token[])
 }
 
 void
-init(websockets::data *ws, char token[])
+init(websockets::dati *ws, char token[])
 {
   ws->status = DISCONNECTED;
 
@@ -440,7 +440,7 @@ init(websockets::data *ws, char token[])
 }
 
 void
-cleanup(websockets::data *ws)
+cleanup(websockets::dati *ws)
 {
   free(ws->identify);
   free(ws->session_id);
@@ -454,7 +454,7 @@ cleanup(websockets::data *ws)
 /* send heartbeat pulse to websockets server in order
  *  to maintain connection alive */
 static void
-ws_send_heartbeat(websockets::data *ws)
+ws_send_heartbeat(websockets::dati *ws)
 {
   char payload[64];
   int ret = snprintf(payload, sizeof(payload), "{\"op\":1,\"d\":%d}", ws->payload.seq_number);
@@ -468,7 +468,7 @@ ws_send_heartbeat(websockets::data *ws)
 
 /* main websockets event loop */
 static void
-ws_main_loop(websockets::data *ws)
+ws_main_loop(websockets::dati *ws)
 {
   int is_running = 0;
 
@@ -501,7 +501,7 @@ ws_main_loop(websockets::data *ws)
 
 /* connects to the discord websockets server */
 void
-run(websockets::data *ws)
+run(websockets::dati *ws)
 {
   do {
     curl_multi_add_handle(ws->mhandle, ws->ehandle);

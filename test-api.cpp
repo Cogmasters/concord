@@ -18,13 +18,13 @@ int main(int argc, char *argv[])
   client *client = fast_init(config_file);
   assert(NULL != client);
 
-  user::data *me = user::init(); 
+  user::dati *me = user::init(); 
   assert(NULL != me);
 
   user::me::get(client, me);
   printf("Greetings, %s#%s!\n", me->username, me->discriminator);
 
-  guild::data **guilds = user::me::get_guilds(client);
+  guild::dati **guilds = user::me::get_guilds(client);
   for (size_t i=0; guilds[i]; ++i) {
     D_PRINT("%s", guilds[i]->id);
   }
