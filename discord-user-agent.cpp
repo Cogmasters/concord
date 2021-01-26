@@ -7,8 +7,6 @@
 #include <stdarg.h>
 
 #include <libdiscord.h>
-#include "discord-common.h"
-
 
 #define BASE_API_URL "https://discord.com/api"
 
@@ -121,7 +119,7 @@ perform_request(
         action = DONE;
 
         if (load_cb) {
-          (*load_cb)(p_object, ua->body.str, ua->body.size);
+          (*load_cb)(ua->body.str, ua->body.size, p_object);
         }
 
         break;

@@ -64,15 +64,15 @@ struct _settings_s { //@todo this whole struct is temporary
 };
 
 //callback for object to be loaded by api response
-typedef void (load_obj_cb)(void *p_obj, char *str, size_t len);
+typedef void (load_obj_cb)(char *str, size_t len, void *p_obj);
 
 // response handle
 struct resp_handle {
-    load_obj_cb *ok_cb;
-    void *ok_obj; // the pointer to be passed to ok_cb
+  load_obj_cb *ok_cb;
+  void *ok_obj; // the pointer to be passed to ok_cb
 
-    load_obj_cb *err_cb;
-    void *err_obj;
+  load_obj_cb *err_cb;
+  void *err_obj;
 };
 
 void sleep_ms(const long long delay_ms);

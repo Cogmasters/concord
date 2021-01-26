@@ -118,7 +118,7 @@ struct data {
 
 data* init();
 void cleanup(data *message);
-void json_load(void *p_message, char *str, size_t len);
+void json_load(char *str, size_t len, void *p_message);
 
 /* https://discord.com/developers/docs/resources/channel#create-message */
 namespace create {
@@ -201,8 +201,8 @@ struct data {
 data* init();
 void cleanup(data *guild);
 void list_cleanup(data **guild);
-void json_load(void *p_guild, char *str, size_t len);
-void json_list_load(void *p_guilds, char *str, size_t len);
+void json_load(char *str, size_t len, void *p_guild);
+void json_list_load(char *str, size_t len, void *p_guilds);
 
 void get(client *client, const char guild_id[], data *p_guild);
 
@@ -231,7 +231,7 @@ struct data {
 
 data* init();
 void cleanup(data *user);
-void json_load(void *p_user, char *str, size_t len);
+void json_load(char *str, size_t len, void *p_user);
 
 void get(client *client, const char user_id[], data *p_user);
 

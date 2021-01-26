@@ -6,7 +6,6 @@
 #include <search.h> //for tfind, tsearch, tdestroy
 
 #include <libdiscord.h>
-#include "discord-common.h"
 
 namespace discord {
 namespace user_agent {

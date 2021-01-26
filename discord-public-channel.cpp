@@ -4,8 +4,6 @@
 
 #include <libdiscord.h>
 
-#include "discord-common.h"
-
 namespace discord {
 namespace channel {
 
