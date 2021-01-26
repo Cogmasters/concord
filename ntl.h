@@ -8,37 +8,49 @@
  *
  * a null terminated list of n elements of type struct E is defined as
  *
- * struct {
+ * struct ntl {
  *    void * indices[n+1];  // indices[n] = NULL
  *    struct E e[n];
  * };
  *
- *  +---------------+
- *  |               |
- * [ | | | | | | |0][e_0]...............[e_(n-1)]
- * \--indices[n+1--/ \-------- e[n]-----------/
+ * p = ntl_malloc(n, size);
  *
- * a pointer p of type (struct E **) points ot the begin of this struct
+ *      +---------------+
+ *      |               |
+ * p -> [ | | | | | | |0][e_0]...............[e_(n-1)]
+ *      \--indices[n+1]-/ \--------- e[n]-----------/
+ *
+ * a pointer p of type (struct E **) points to the begin of this struct
  *
  *  for (int i = 0; p[i]; i++)
  *    // do something here for each element
+ *    p[i] == &((struct ntl *)p->e[n])
  *
  */
 #ifdef __cplusplus
 extern "C" {
 #endif // __cplusplus
 
-void ** ntl_malloc (size_t nmem,  size_t elem_size);
-void ** ntl_calloc (size_t nmem,  size_t elem_size);
+void ** ntl_malloc (size_t nelems,  size_t elem_size);
+void ** ntl_calloc (size_t nelems,  size_t elem_size);
 void ** ntl_dup (void ** p, size_t elem_size);
+
+/*
+ * for each element e, calls free_elem(e)
+ * free(p);
+ */
 void ntl_free(void **p, void (*free_elem)(void *));
 
 size_t ntl_length (void **p);
 
+/*
+ * for each element e, calls f(e)
+ */
+void ntl_apply(void **p, void (*f)(void *p));
+
 typedef void (ntl_converter)(void * from, void * to);
-void ** ntl_fmap(void ** from_list,
-                 size_t to_elem_size,
-                 ntl_converter * f);
+void ** ntl_fmap(void ** from_list, size_t to_elem_size, ntl_converter * f);
+
 
 /*
  * sn2str(NULL, 0, p) will calculate the size needed to print *p

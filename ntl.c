@@ -3,13 +3,13 @@
 #include <string.h>
 
 void **
-ntl_malloc (size_t nmem,  size_t elem_size)
+ntl_malloc (size_t nelems,  size_t elem_size)
 {
-  char * p = (char *)malloc((nmem + 1) * sizeof(void *) + nmem * elem_size);
-  char * elem_start = p + (nmem + 1) * sizeof(void *);
+  char * p = (char *)malloc((nelems + 1) * sizeof(void *) + nelems * elem_size);
+  char * elem_start = p + (nelems + 1) * sizeof(void *);
   void ** array = (void **)p;
   int i;
-  for (i = 0; i < nmem; i++) {
+  for (i = 0; i < nelems; i++) {
     array[i] = (void *)elem_start;
     elem_start += elem_size;
   }
@@ -18,11 +18,11 @@ ntl_malloc (size_t nmem,  size_t elem_size)
 }
 
 void **
-ntl_calloc (size_t nmem,  size_t elem_size)
+ntl_calloc (size_t nelems,  size_t elem_size)
 {
-  void ** p = ntl_malloc(nmem, elem_size);
-  char * start_to_zero = (char *)p + ((nmem + 1) * sizeof(void *));
-  memset(start_to_zero, 0, nmem * elem_size);
+  void ** p = ntl_malloc(nelems, elem_size);
+  char * start_to_zero = (char *)p + ((nelems + 1) * sizeof(void *));
+  memset(start_to_zero, 0, nelems * elem_size);
   return p;
 }
 
@@ -47,9 +47,18 @@ ntl_length (void **p)
 void **
 ntl_dup (void ** p, size_t elem_size)
 {
-  return ntl_malloc(ntl_length(p), elem_size);
+  // use calloc to make the dupcated list safer
+  return ntl_calloc(ntl_length(p), elem_size);
 }
 
+
+void
+ntl_apply(void **p, void (*f)(void *p))
+{
+  int i;
+  for (i = 0; p[i]; i++)
+    (*f)(p[i]);
+}
 
 /*
  * null_term_list_snp(NULL, 0, p, x) will calculate the size needed to print p
