@@ -4,14 +4,13 @@
 
 #include <libdiscord.h>
 
-#include "discord-common.h"
 #include "ntl.h"
 
 namespace discord {
 namespace guild {
 
 void
-json_load(void *p_guild, char *str, size_t len)
+json_load(char *str, size_t len, void *p_guild)
 {
   data *guild = (data*)p_guild;
 
@@ -33,14 +32,14 @@ json_load(void *p_guild, char *str, size_t len)
 }
 
 void
-json_list_load(void *p_guilds, char *str, size_t len)
+json_list_load(char *str, size_t len, void *p_guilds)
 {
   json_token **toks = NULL;
   json_scanf(str, len, "[]%A", &toks);
 
   data **new_guilds = (data**)ntl_dup((void**)toks, sizeof(data));
   for (size_t i=0; toks[i]; ++i) {
-    json_load(new_guilds[i], toks[i]->start, toks[i]->length);
+    json_load(toks[i]->start, toks[i]->length, new_guilds[i]);
   }
   
   free(toks);

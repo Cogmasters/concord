@@ -3,14 +3,12 @@
 #include <string.h>
 
 #include <libdiscord.h>
-#include "discord-common.h"
-
 
 namespace discord {
 namespace user {
 
 void
-json_load(void *p_user, char *str, size_t len)
+json_load(char *str, size_t len, void *p_user)
 {
   data *user = (data*)p_user;
 

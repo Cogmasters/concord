@@ -192,6 +192,19 @@ curl_resbody_cb(char *str, size_t size, size_t nmemb, void *p_userdata)
   return realsize;
 }
 
+void
+json_dump(const char *text, struct _settings_s *settings, const char *data)
+{
+  if (NULL == settings->f_json_dump) return;
+  FILE *f_dump = settings->f_json_dump;
+
+  char timestr[64] = {0};
+  timestamp_str(timestr, sizeof(timestr));
+
+  fprintf(f_dump, "\r\r\r\r%s - %s\n%s\n", text, timestr, data);
+  fflush(f_dump);
+}
+
 static void
 curl_dump(const char *text, FILE *f_dump, unsigned char *ptr, size_t size)
 {
@@ -224,19 +237,6 @@ curl_dump(const char *text, FILE *f_dump, unsigned char *ptr, size_t size)
     fputc('\n', f_dump); //newline
   }
 
-  fflush(f_dump);
-}
-
-void
-json_dump(const char *text, struct _settings_s *settings, const char *data)
-{
-  if (NULL == settings->f_json_dump) return;
-  FILE *f_dump = settings->f_json_dump;
-
-  char timestr[64] = {0};
-  timestamp_str(timestr, sizeof(timestr));
-
-  fprintf(f_dump, "\r\r\r\r%s - %s\n%s\n", text, timestr, data);
   fflush(f_dump);
 }
 

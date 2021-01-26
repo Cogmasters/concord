@@ -4,7 +4,7 @@
 #include <stdlib.h>
 
 #include <libdiscord.h>
-#include "discord-common.h"
+
 #include "curl-websocket.h"
 
 #define BASE_WEBSOCKETS_URL "wss://gateway.discord.gg/?v=6&encoding=json"
@@ -125,8 +125,8 @@ on_hello(websockets::data *ws)
 static void
 on_dispatch(websockets::data *ws)
 {
-  user::json_load(ws->me,
-      ws->payload.event_data, sizeof(ws->payload.event_data));
+  user::json_load(ws->payload.event_data,
+      sizeof(ws->payload.event_data), (void*)ws->me);
 
   if (STREQ("READY", ws->payload.event_name))
   {
@@ -161,8 +161,8 @@ on_dispatch(websockets::data *ws)
     message::data *message = message::init();
     ASSERT_S(NULL != message, "Out of memory");
 
-    message::json_load((void*)message,
-        ws->payload.event_data, sizeof(ws->payload.event_data));
+    message::json_load(ws->payload.event_data,
+        sizeof(ws->payload.event_data), (void*)message);
 
     (*ws->cbs.on_message.create)(ws->p_client, ws->me, message);
 
@@ -178,8 +178,8 @@ on_dispatch(websockets::data *ws)
     message::data *message = message::init();
     ASSERT_S(NULL != message, "Out of memory");
 
-    message::json_load((void*)message,
-        ws->payload.event_data, sizeof(ws->payload.event_data));
+    message::json_load(ws->payload.event_data,
+        sizeof(ws->payload.event_data), (void*)message);
 
     (*ws->cbs.on_message.update)(ws->p_client, ws->me, message);
 
@@ -195,8 +195,8 @@ on_dispatch(websockets::data *ws)
     message::data *message = message::init();
     ASSERT_S(NULL != message, "Out of memory");
 
-    message::json_load((void*)message,
-        ws->payload.event_data, sizeof(ws->payload.event_data));
+    message::json_load(ws->payload.event_data,
+        sizeof(ws->payload.event_data), (void*)message);
 
     (*ws->cbs.on_message.del)(ws->p_client, ws->me, message);
 

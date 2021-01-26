@@ -4,55 +4,45 @@
 
 #include <libdiscord.h>
 
-#include "discord-common.h"
-
 namespace discord {
 namespace message {
 
 void
-json_load(void *p_message, char *str, size_t len)
+json_load(char *str, size_t len, void *p_message)
 {
   data *message = (data*)p_message;
-
-  struct json_token token_author = {NULL, 0};
-  struct json_token token_mentions = {NULL, 0};
-  struct json_token token_referenced_message = {NULL, 0};
 
   json_scanf(str, len,
      "[id]%s"
      "[channel_id]%s"
      "[guild_id]%s"
-     "[author]%T"
+     "[author]%F"
      "[content]%s"
      "[timestamp]%s"
      "[edited_timestamp]%s"
      "[tts]%b"
      "[mention_everyone]%b"
-     "[mentions]%T"
+     //"[mentions]%F"
      "[nonce]%s"
      "[pinned]%b"
      "[webhook_id]%s"
      "[type]%d"
-     "[flags]%d"
-     "[referenced_message]%T",
+     "[flags]%d",
+     //"[referenced_message]%F",
       message->id,
       message->channel_id,
       message->guild_id,
-      &token_author,
+      &user::json_load, message->author,
       message->content,
       message->timestamp,
       message->edited_timestamp,
       &message->tts,
       &message->mention_everyone,
-      &token_mentions,
       message->nonce,
       &message->pinned,
       message->webhook_id,
       &message->type,
-      &message->flags,
-      &token_referenced_message);
-
-  user::json_load(message->author, token_author.start, token_author.length);
+      &message->flags);
 
   D_NOTOP_PUTS("Message object loaded with API response"); 
 }
