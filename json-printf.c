@@ -6,6 +6,7 @@
 #include <stdbool.h>
 #include "json-common.h"
 #include "ntl.h"
+#include "json-scanf.h"
 
 static char *
 normalize_fmt (char *fmt)
@@ -46,7 +47,7 @@ struct specifier {
     IS_LONG_LONG,
     IS_FLOAT,
     IS_DOUBLE,
-    IS_FUNPTR
+    IS_FUNPTR,
   } type;
   char specifier[10];
   union {
@@ -82,9 +83,10 @@ parse_format_specifiers (char * format, size_t n)
 {
   struct specifier * s = calloc(n, sizeof (struct specifier));
   int start = 0;
-  char * start_ptr = format;
+  const char * start_ptr = format, * end_ptr = format + strlen(format) + 1;
+
   int i = 0;
-  while(*format) {
+  while(format < end_ptr) {
     if ('%' == *format) {
       s[i].start = start;
       s[i].end = format - start_ptr;
@@ -131,6 +133,10 @@ parse_format_specifiers (char * format, size_t n)
           break;
         case 'F':
           s[i].type = IS_FUNPTR;
+          break;
+        case 'c':
+          s[i].type = IS_INT; // promoted to int
+          strcpy(s[i].specifier, "%c");
           break;
         default:
           ERROR("Unsupported format specifier %c)\n", *format);
@@ -239,7 +245,7 @@ json_vsnprintf(char * str, size_t len, char * fmt, va_list ap)
         slen = snprintf(cur_ptr, len, sp[i].specifier, sp[i].provider.d);
         break;
       case IS_FUNPTR:
-        slen = ((sn2str *) sp[i].funptr)(cur_ptr, len, sp[i].provider.p, false);
+        slen = ((extractor *) sp[i].funptr)(cur_ptr, len, sp[i].provider.p);
         break;
     }
     //cur_ptr += slen;
@@ -260,9 +266,6 @@ json_vsnprintf(char * str, size_t len, char * fmt, va_list ap)
   return total_size;
 }
 
-
-
-#if 1
 int
 json_asprintf(char **buf, char *json_fmt, ...)
 {
@@ -282,19 +285,6 @@ json_asprintf(char **buf, char *json_fmt, ...)
     *buf = NULL;
   return ret;
 }
-#else
-int
-json_asprintf(char **buf, char *json_fmt, ...)
-{
-  va_list ap;
-  va_start(ap, json_fmt);
-  char * fmt1 = normalize_fmt(json_fmt);
-  int ret = vasprintf(buf, fmt1, ap);
-  va_end(ap);
-  free(fmt1);
-  return ret;
-}
-#endif
 
 int
 json_snprintf(char *buf, size_t len, char *json_fmt, ...)
@@ -305,20 +295,3 @@ json_snprintf(char *buf, size_t len, char *json_fmt, ...)
   va_end(ap);
   return ret;
 }
-
-
-
-#if 0
-int 
-json_snprintf(char *str, size_t size, char *json_fmt, ...)
-{
-  va_list ap;
-  va_start(ap, json_fmt);
-  char * fmt1 = normalize_fmt(json_fmt);
-  int ret = vsnprintf (str, size, fmt1, ap);
-  va_end(ap);
-  free(fmt1);
-
-  return ret;
-}
-#endif

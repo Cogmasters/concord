@@ -66,27 +66,27 @@ ntl_apply(void **p, void (*f)(void *p))
 int
 ntl_sn2str(char *str, size_t size, void **p, sn2str * x)
 {
-  char * start = str;
+  const char * start = str;
   int i, tsize = 0;
+
   if (start) {
     str[0] = '[';
     str ++;
   }
-
   tsize ++;
+
   for(i = 0; p[i]; i++) {
     bool is_last = (NULL == p[i+1]);
-    int psize = (*x)(NULL, 0, p[i], is_last);
-    tsize += psize;
-
+    int psize = (*x)(str, size, p[i], is_last);
     if(start) {
-      (*x)(str, psize, p[i], is_last);
-      str += psize;
+      str += psize; // move to next available byte
     }
+    tsize += psize;
   }
 
   if (start) {
     str[0] = ']';
+    str ++;
   }
   tsize ++;
   return tsize;

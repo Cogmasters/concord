@@ -74,7 +74,33 @@ void load_tree_node (char * str, size_t len, void * p) {
 static int
 print_array (char * str, size_t len, void * p, bool is_last)
 {
-  return snprintf(str, len, "[ 10, 9, 8, 7 ]");
+  struct tree_node * n = (struct tree_node *)p;
+
+  char * c = " ";
+  if(!is_last) c = ",\n";
+
+  return json_snprintf(str, len,
+                       "{"
+                         "|path|:%S,"
+                         "|mode|:%S,"
+                         "|type|:%S,"
+                         "|size|:%d,"
+                         "|sha|:%S,"
+                         "|url|:%S"
+                         "}%s",
+                  n->path,
+                  n->mode,
+                  n->type,
+                  n->size,
+                  n->sha,
+                  n->url,
+                  c);
+}
+
+static int
+print_all (char * str, size_t len, void * p)
+{
+  return ntl_sn2str(str, len, (void **)p, print_array);
 }
 
 int main () {
@@ -109,9 +135,11 @@ int main () {
   printf ("test [tree]%%L\n");
   tokens = NULL;
   json_scanf(json_str, s, "[tree]%L", &tokens);
+  struct tree_node ** nodes = ntl_dup(tokens, sizeof(struct tree_node));
   for (i = 0; tokens[i]; i++) {
     printf ("token [%p, %d]\n", tokens[i]->start, tokens[i]->length);
     printf ("token %.*s\n", tokens[i]->length, tokens[i]->start);
+    load_tree_node(tokens[i]->start, tokens[i]->length, nodes[i]);
   }
 
   int wsize;
@@ -135,14 +163,14 @@ int main () {
   fprintf (stderr, "%s\n", buf);
 
   wsize = json_snprintf(NULL, 0, "{|a|:|%s|, |b|:%d, |x|:%F }", "abc",
-                        10, print_array, NULL);
+                        10, print_all, nodes);
   fprintf (stderr, "%d\n", wsize);
 
   wsize++;
   char * b = malloc(wsize);
 
   wsize = json_snprintf(b, wsize, "{|a|:|%s|, |b|:%d, |x|:%F }", "abc",
-                        10, print_array, NULL);
+                        10, print_all, nodes);
   fprintf (stderr, "%d %s\n", wsize, b);
   return 0;
 }
