@@ -32,6 +32,7 @@ ntl_free(void **p, void (*free_elem)(void *p))
   int i;
   for (i = 0; p[i]; i++)
     (*free_elem)(p[i]);
+  free(p);
 }
 
 size_t
