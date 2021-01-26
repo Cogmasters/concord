@@ -76,9 +76,20 @@ void ** ntl_fmap(void ** from_list, size_t to_elem_size, ntl_converter * f);
  * sn2str(NULL, 0, p) will calculate the size needed to print *p
  * sn2str(buf, n, p) will print to buffer
  */
-typedef int (sn2str)(char * str, size_t size, void *p, bool is_last);
-int ntl_sn2str(char *str, size_t size, void **p, sn2str * x);
-int ntl_as2str(char **str, void **p, sn2str * x);
+typedef int (sn2str)(char * str, size_t size, void *p);
+
+struct ntl_str_delimiter {
+  char * element_delimiter;
+  char * last_element_delimiter;
+};
+
+int ntl_sn2str(char *buf, size_t buf_size, void **p,
+               struct ntl_str_delimiter  * d,
+               sn2str * x);
+
+int ntl_as2str(char **buf_ptr, void **p,
+               struct ntl_str_delimiter  * d,
+               sn2str * x);
 
 #ifdef __cplusplus
 }

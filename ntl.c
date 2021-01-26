@@ -64,10 +64,11 @@ ntl_apply(void **p, void (*f)(void *p))
  * null_term_list_snp(NULL, 0, p, x) will calculate the size needed to print p
  */
 int
-ntl_sn2str(char *str, size_t size, void **p, sn2str * x)
+ntl_sn2str(char *str, size_t size, void **p,
+           struct ntl_str_delimiter * d, sn2str * x)
 {
   const char * start = str;
-  int i, tsize = 0;
+  int i, tsize = 0, psize;
 
   if (start) {
     str[0] = '[';
@@ -77,9 +78,24 @@ ntl_sn2str(char *str, size_t size, void **p, sn2str * x)
 
   for(i = 0; p[i]; i++) {
     bool is_last = (NULL == p[i+1]);
-    int psize = (*x)(str, size, p[i], is_last);
+    psize = (*x)(str, size, p[i]);
     if(start) {
       str += psize; // move to next available byte
+    }
+    tsize += psize;
+    if (is_last) {
+      psize = strlen (d->last_element_delimiter);
+      if (start) {
+        memcpy(str, d->last_element_delimiter, psize);
+        str += psize;
+      }
+    }
+    else {
+      psize = strlen (d->element_delimiter);
+      if (start) {
+        memcpy(str, d->element_delimiter, psize);
+        str += psize;
+      }
     }
     tsize += psize;
   }
@@ -93,11 +109,13 @@ ntl_sn2str(char *str, size_t size, void **p, sn2str * x)
 }
 
 int
-ntl_as2str(char ** str, void **p, sn2str * x)
+ntl_as2str(char ** str, void **p,
+           struct ntl_str_delimiter * d,
+           sn2str * x)
 {
-  int s = ntl_sn2str(NULL, 0, p, x);
+  int s = ntl_sn2str(NULL, 0, p, d, x);
   *str = (char *)malloc(s);
-  return ntl_sn2str(*str, s, p, x);
+  return ntl_sn2str(*str, s, p, d, x);
 }
 
 void **

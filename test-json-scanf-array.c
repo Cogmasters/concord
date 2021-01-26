@@ -4,6 +4,7 @@
 #include "jsmn.h"
 #include "ntl.h"
 
+#if 0
 static char * print_token(jsmntype_t t) {
   switch(t) {
     case JSMN_UNDEFINED: return "undefined";
@@ -13,6 +14,7 @@ static char * print_token(jsmntype_t t) {
     case JSMN_PRIMITIVE: return "primitive";
   }
 }
+#endif
 
 char test_string [] =
 "{\n"
@@ -72,12 +74,9 @@ void load_tree_node (char * str, size_t len, void * p) {
              &n->url);
 }
 static int
-print_array (char * str, size_t len, void * p, bool is_last)
+print_array (char * str, size_t len, void * p)
 {
   struct tree_node * n = (struct tree_node *)p;
-
-  char * c = " ";
-  if(!is_last) c = ",\n";
 
   return json_snprintf(str, len,
                        "{"
@@ -87,20 +86,23 @@ print_array (char * str, size_t len, void * p, bool is_last)
                          "|size|:%d,"
                          "|sha|:%S,"
                          "|url|:%S"
-                         "}%s",
+                         "}",
                   n->path,
                   n->mode,
                   n->type,
                   n->size,
                   n->sha,
-                  n->url,
-                  c);
+                  n->url);
 }
 
 static int
 print_all (char * str, size_t len, void * p)
 {
-  return ntl_sn2str(str, len, (void **)p, print_array);
+  struct ntl_str_delimiter d = {
+    .element_delimiter = ",\n",
+    .last_element_delimiter = ""
+  };
+  return ntl_sn2str(str, len, (void **)p, &d, print_array);
 }
 
 int main () {
@@ -169,7 +171,13 @@ int main () {
   wsize++;
   char * b = malloc(wsize);
 
+  fprintf (stderr, "test json_snprintf\n");
   wsize = json_snprintf(b, wsize, "{|a|:|%s|, |b|:%d, |x|:%F }", "abc",
+                        10, print_all, nodes);
+  fprintf (stderr, "%d %s\n", wsize, b);
+
+  fprintf(stderr, "test json_asprintf\n");
+  wsize = json_asprintf(&b, "{|a|:|%s|, |b|:%d, |x|:%F }", "abc",
                         10, print_all, nodes);
   fprintf (stderr, "%d %s\n", wsize, b);
   return 0;
