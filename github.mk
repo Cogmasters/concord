@@ -1,7 +1,7 @@
 OBJDIR	:= obj
 LIBDIR	:= lib
 
-SRC	:= $(wildcard http-common.c github-v3-ua.cpp github-v3-git-database.cpp json-scanf.c json-printf.c settings.c tester-ua.cpp)
+SRC	:= $(wildcard http-common.c github-v3-ua.cpp github-v3-git-database.cpp json-scanf.c json-printf.c settings.c tester-ua.cpp ntl.c)
 _OBJS	:= $(patsubst %.cpp, %.o, $(SRC))
 OBJS1   += $(patsubst %.c, %.o, $(_OBJS))
 OBJS 	:= $(addprefix $(OBJDIR)/, $(OBJS1))
@@ -32,6 +32,8 @@ mkdir :
 	mkdir -p $(OBJDIR) $(LIBDIR)
 	echo $(OBJS)
 
+$(OBJDIR)/ntl.o : ntl.c
+	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 $(OBJDIR)/http-common.o : http-common.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 $(OBJDIR)/settings.o : settings.c

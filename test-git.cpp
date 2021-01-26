@@ -120,14 +120,14 @@ void create_blobs (user_agent::data * data, struct file ** files,
     user_agent::run(data, &handle, &body,
                     POST, "/repos/%s/%s/git/blobs", owner, repo);
     files[i]->sha = file_sha;
+    free(body.str);
   }
 }
 
 static int
-to_tree_node(char * str, size_t size, void *p, bool is_last)
+to_tree_node(char * str, size_t size, void *p)
 {
   struct file * f = (struct file *)p;
-  char comma = is_last ? ' ' : ',';
   return json_snprintf(str, size,
                 "{"
                   "|path|:|%s|,"
@@ -136,7 +136,14 @@ to_tree_node(char * str, size_t size, void *p, bool is_last)
                   "|sha|:|%s|,"
                 "}%c",
                 f->path,
-                f->sha, comma);
+                f->sha);
+}
+
+static int
+nodes_to_json (char * str, size_t size, void *p)
+{
+  struct ntl_str_delimiter d = { ",", "" };
+  return ntl_sn2str(str, size, (void **)p, &d, to_tree_node);
 }
 
 static char *
@@ -148,20 +155,18 @@ create_tree (user_agent::data * data, struct file ** files,
     .ok_cb = NULL, .ok_obj = NULL,
     .err_cb = log, .err_obj = NULL
   };
-  body.size = ntl_as2str(&body.str, (void **)files, to_tree_node);
-  fprintf (stderr, "%s\n", body.str);
 
   body.size = json_asprintf(&body.str,
                             "{"
-                            "|tree|:%s,"
+                            "|tree|:%F,"
                             "|base_tree|:|%s|"
-                            "}", body.str, tree_sha);
-
+                            "}", nodes_to_json, files, tree_sha);
   char * new_tree_sha = NULL;
   handle.ok_cb = load_file_sha;
   handle.ok_obj = &new_tree_sha;
   user_agent::run(data, &handle, &body,
                   POST, "/repos/%s/%s/git/trees", owner, repo);
+  free(body.str);
   return new_tree_sha;
 }
 
@@ -188,6 +193,7 @@ create_a_commit (user_agent::data * data, char * tree_sha,
                             message, tree_sha, last_cmmit_sha);
   user_agent::run(data, &handle, &body,
                   POST, "/repos/%s/%s/git/commits", owner, repo);
+  free(body.str);
   return new_commit_sha;
 }
 

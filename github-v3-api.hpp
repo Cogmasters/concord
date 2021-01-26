@@ -103,8 +103,6 @@ void free_params (struct params *p);
 void free_response (struct response * resp);
 }
 
-
-
 namespace get_a_tree {
 struct params {
   char *owner;
@@ -227,6 +225,7 @@ namespace get_a_tag {
 }
 
 namespace create_a_tree {
+#if 0
 struct params {
   char * owner;
   char * repo;
@@ -238,6 +237,7 @@ struct params {
     char * content;
   } * tree; // a null terminated array
 };
+#endif
 struct response {
   char * sha;
   char * url;
@@ -258,6 +258,7 @@ extern bool run(user_agent::data * ua,
 
 
 namespace get_a_tree {
+#if 0
   struct params {
     char * owner;
     char * repo;
@@ -277,6 +278,7 @@ namespace get_a_tree {
     } * tree;
     bool truncated;
   };
+#endif
 } // get_a_tree
 
 } // git_database

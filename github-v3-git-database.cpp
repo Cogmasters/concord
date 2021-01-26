@@ -120,7 +120,7 @@ load_resp(void * p, char * str, size_t len) {
 
 namespace create_a_tree {
 static int
-print_tree (char * str, size_t size, void *p, bool is_last) {
+print_tree (char * str, size_t size, void *p) {
   struct params::tree * t = (struct params::tree *)p;
   int ret =
     json_snprintf(str, size,
@@ -133,7 +133,7 @@ print_tree (char * str, size_t size, void *p, bool is_last) {
 
 static int
 tree_to_json (char * str, size_t size, struct params::tree ** tree) {
-  return ntl_sn2str(str, size, (void **) tree, print_tree);
+  return ntl_sn2str(str, size, (void **) tree, NULL, print_tree);
 }
 
 static void
