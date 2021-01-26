@@ -98,11 +98,7 @@ print_array (char * str, size_t len, void * p)
 static int
 print_all (char * str, size_t len, void * p)
 {
-  struct ntl_str_delimiter d = {
-    .element_delimiter = ",\n",
-    .last_element_delimiter = ""
-  };
-  return ntl_sn2str(str, len, (void **)p, &d, print_array);
+  return ntl_sn2str(str, len, (void **)p, NULL, print_array);
 }
 
 int main () {

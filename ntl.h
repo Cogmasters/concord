@@ -79,8 +79,10 @@ void ** ntl_fmap(void ** from_list, size_t to_elem_size, ntl_converter * f);
 typedef int (sn2str)(char * str, size_t size, void *p);
 
 struct ntl_str_delimiter {
+  char start_delimiter;
   char * element_delimiter;
   char * last_element_delimiter;
+  char end_delimiter;
 };
 
 int ntl_sn2str(char *buf, size_t buf_size, void **p,

@@ -67,14 +67,14 @@ int
 ntl_sn2str(char *str, size_t size, void **p,
            struct ntl_str_delimiter * d, sn2str * x)
 {
-  struct ntl_str_delimiter dx = { ",", "" };
+  struct ntl_str_delimiter dx = { '[', ",", "", ']' };
   if (!d) d = &dx;
 
   const char * start = str;
   int i, tsize = 0, psize;
 
   if (start) {
-    str[0] = '[';
+    str[0] = d->start_delimiter;
     str ++;
   }
   tsize ++;
@@ -104,7 +104,7 @@ ntl_sn2str(char *str, size_t size, void **p,
   }
 
   if (start) {
-    str[0] = ']';
+    str[0] = d->end_delimiter;
     str ++;
   }
   tsize ++;
