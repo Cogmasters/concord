@@ -26,6 +26,15 @@ ntl_calloc (size_t nmem,  size_t elem_size)
   return p;
 }
 
+void
+ntl_free(void **p, void (*free_elem)(void *p))
+{
+  int i;
+  for (i = 0; p[i]; i++)
+    (*free_elem)(p[i]);
+  free(p);
+}
+
 size_t
 ntl_length (void **p)
 {

@@ -31,6 +31,8 @@ extern "C" {
 void ** ntl_malloc (size_t nmem,  size_t elem_size);
 void ** ntl_calloc (size_t nmem,  size_t elem_size);
 void ** ntl_dup (void ** p, size_t elem_size);
+void ntl_free(void **p, void (*free_elem)(void *));
+
 size_t ntl_length (void **p);
 
 typedef void (ntl_converter)(void * from, void * to);

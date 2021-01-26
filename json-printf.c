@@ -257,7 +257,7 @@ json_vsnprintf(char * str, size_t len, char * fmt, va_list ap)
 
 
 
-#if 0
+#if 1
 int
 json_asprintf(char **buf, char *json_fmt, ...)
 {
