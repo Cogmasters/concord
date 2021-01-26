@@ -39,11 +39,7 @@ json_list_load(char *str, size_t len, void *p_guilds)
 
   data **new_guilds = (data**)ntl_dup((void**)toks, sizeof(data));
   for (size_t i=0; toks[i]; ++i) {
-<<<<<<< HEAD
     json_load(toks[i]->start, toks[i]->length, new_guilds[i]);
-=======
-    json_load(new_guilds[i], toks[i]->start, toks[i]->length);
->>>>>>> 988e328ba24deaea824cc0c5a1a3ad47cfcf002f
   }
   
   free(toks);
