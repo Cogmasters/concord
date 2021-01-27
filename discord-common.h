@@ -28,6 +28,9 @@
 #define MEMBERS               "/members"
 #define MEMBER                MEMBERS"/%s"
 
+#define GATEWAY               "/gateway"
+#define BOT                   "/bot"
+
 
 namespace discord {
 
@@ -44,7 +47,7 @@ namespace user_agent { /* discord-user-agent.cpp */
 
 namespace bucket { struct dati; } //forward declaration
 
-struct dati {
+struct dati { /* USER AGENT STRUCTURE */
   struct curl_slist *req_header; //the request header sent to the api
 
   struct api_resbody_s body; //the api response string
@@ -76,7 +79,7 @@ void run(
 
 namespace bucket { /* discord-ratelimit.cpp */
 
-struct dati {
+struct dati { /* BUCKET STRUCTURE */
   char *hash; //the hash associated with this bucket
   int remaining; //connections this bucket can do before cooldown
   long long reset_after_ms;
@@ -156,7 +159,9 @@ enum ws_status {
   CONNECTED,     //connected to ws
 };
 
-struct dati {
+/* @todo find a better name for start_ms that better
+ *  reflect its role */
+struct dati { /* WEBSOCKETS STRUCTURE */
   enum ws_status status; //connection to discord status
   int reconnect_attempts; //hard limit 5 reconnection attempts @todo make configurable
 
@@ -174,9 +179,25 @@ struct dati {
   } payload;
 
   struct { /* HEARTBEAT STRUCTURE */
-    long interval_ms; //interval between heartbeats
+    long interval_ms; //fixed interval between heartbeats
     long start_ms; //start pulse in milliseconds
   } hbeat;
+
+  struct { /* SESSION START LIMIT STRUCTURE */
+    char url[MAX_URL_LEN];
+    int shards;
+
+    int total;
+    int remaining;
+    int reset_after;
+    int max_concurrency;
+
+    int concurrent;
+    long identify_ms; //identify timestamp in ms
+
+    long event_ms; //event timestamp in ms (resets every 60s)
+    int event_count; //count elements to avoid reaching 120/60sec limit
+  } session;
 
   struct { /* CALLBACKS STRUCTURE */
     idle_cb *on_idle;   //triggers in every event loop iteration

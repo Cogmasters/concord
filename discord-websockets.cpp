@@ -102,8 +102,23 @@ ws_send_resume(websockets::dati *ws)
 static void
 ws_send_identify(websockets::dati *ws)
 {
+  long now_ms = timestamp_ms();
+  if ( (now_ms - ws->session.identify_ms) < 5 ) {
+    ++ws->session.concurrent;
+
+    if (ws->session.concurrent >= ws->session.max_concurrency)
+      PRINT_ERR("Reach identify requests threshold (%d every 5 seconds)",
+                ws->session.max_concurrency);
+  }
+  else {
+    ws->session.concurrent = 0;
+  }
+
   D_PRINT("IDENTIFY PAYLOAD:\n\t%s", ws->identify);
   ws_send_payload(ws, ws->identify);
+
+  //get timestamp for this identify
+  ws->session.identify_ms = now_ms;
 }
 
 static void
@@ -127,6 +142,16 @@ on_dispatch(websockets::dati *ws)
 {
   user::json_load(ws->payload.event_data,
       sizeof(ws->payload.event_data), (void*)ws->me);
+
+  long now_ms = timestamp_ms();
+  if ( (now_ms - ws->session.event_ms) < 60 ) {
+    if (++ws->session.event_count >= 120)
+      PRINT_ERR("Reach event dispatch threshold (120 every 60 seconds)");
+  }
+  else {
+    ws->session.event_ms = now_ms;
+    ws->session.event_count = 0;
+  }
 
   if (STREQ("READY", ws->payload.event_name))
   {
@@ -454,7 +479,7 @@ cleanup(websockets::dati *ws)
 /* send heartbeat pulse to websockets server in order
  *  to maintain connection alive */
 static void
-ws_send_heartbeat(websockets::dati *ws, long now_ms)
+ws_send_heartbeat(websockets::dati *ws)
 {
   char payload[64];
   int ret = snprintf(payload, sizeof(payload), "{\"op\":1,\"d\":%d}", ws->payload.seq_number);
@@ -462,14 +487,59 @@ ws_send_heartbeat(websockets::dati *ws, long now_ms)
 
   D_PRINT("HEARTBEAT_PAYLOAD:\n\t\t%s", payload);
   ws_send_payload(ws, payload);
+}
 
-  ws->hbeat.start_ms = now_ms;
+static void
+json_load(char *str, size_t len, void *p_ws)
+{
+  dati *ws = (dati*)p_ws;
+
+  struct json_token token = {NULL, 0};
+
+  json_scanf(str, len,
+     "[url]%s"
+     "[shards]%d"
+     "[session_start_limit]%T",
+     ws->session.url,
+     &ws->session.shards,
+     &token);
+
+  json_scanf(token.start, token.length,
+      "[total]%d"
+      "[remaining]%d"
+      "[reset_after]%d"
+      "[max_concurrency]%d",
+      &ws->session.total,
+      &ws->session.remaining,
+      &ws->session.reset_after,
+      &ws->session.max_concurrency);
+
+  D_NOTOP_PUTS("Session Start Limit object loaded with API response"); 
+}
+
+static void
+get_bot(client *client)
+{
+  user_agent::run( 
+    &client->ua,
+    (void*)&client->ws,
+    &json_load,
+    NULL,
+    HTTP_GET, GATEWAY BOT);
 }
 
 /* main websockets event loop */
 static void
 ws_main_loop(websockets::dati *ws)
 {
+  //get session info before starting it
+  get_bot(ws->p_client);
+
+  if (!ws->session.remaining)
+    PRINT_ERR("Reach session starts threshold (%d)\n\t"
+              "Please wait %d seconds and try again", 
+        ws->session.total, ws->session.reset_after/1000);
+
   int is_running = 0;
 
   curl_multi_perform(ws->mhandle, &is_running);
@@ -492,10 +562,15 @@ ws_main_loop(websockets::dati *ws)
     /*check if timespan since first pulse is greater than
      * minimum heartbeat interval required*/
     long now_ms = timestamp_ms();
-    if (ws->hbeat.interval_ms < (now_ms - ws->hbeat.start_ms))
-      ws_send_heartbeat(ws, now_ms);
-    if (ws->cbs.on_idle)
+    if (ws->hbeat.interval_ms < (now_ms - ws->hbeat.start_ms)) {
+      ws_send_heartbeat(ws);
+
+      ws->hbeat.start_ms = now_ms; //update heartbeat timestamp
+    }
+
+    if (ws->cbs.on_idle) {
       (*ws->cbs.on_idle)(ws->p_client, ws->me);
+    }
 
   } while(is_running);
 }
@@ -512,11 +587,9 @@ run(websockets::dati *ws)
     if (DISCONNECTED == ws->status) break;
     if (ws->reconnect_attempts >= 5) break;
 
-    /* guarantees full shutdown of old connection
-     * @todo find a better solution */
+    // full shutdown of old connection before reconnecting
     cws_free(ws->ehandle);
     ws->ehandle = custom_cws_new(ws);
-    /* * * * * * * * * * * * * * * * * * * * * */
 
     ++ws->reconnect_attempts;
   } while (1);
