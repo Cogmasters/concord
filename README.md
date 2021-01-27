@@ -1,7 +1,13 @@
-# Orca: a C bot framework 
+# Orca: a bot framework 
 
-Orca is a bot framework that is designed with minimum dependencies to
-make bot deployment deadly simple.  The primary design goals are:
+## Design
+
+The primary design goals are:
+
+- easy to use for the end users: we use multi-threading and
+  synchronous IO to support concurrency so you only need to focus on
+  the logic.  We carefully craft the library to use computing
+  resources efficiently so performance should never be an issue.
 
 - easy to reason about the code: we use the most native data structures,
    the simplest algorithms, and intuitive interfaces.
@@ -9,12 +15,23 @@ make bot deployment deadly simple.  The primary design goals are:
 - easy to debug (networking and logic) errors: extensive assertion 
   and logging facilities.
 
-- easy to use for the end users: we use multi-threading and
-  synchronous IO to support concurrency so you only need to focus on
-  the logic.  We carefully craft the library to use computing
-  resources efficiently so performance should never be an issue.
-
 - superior reliability
+
+## Implementation
+
+Orca is implemented in plain C, but we also use C++'s namespace to
+organize symbols so we could establish 1-1 mappings between Orca APIs
+and supported rest APIs.
+
+Establishing these 1-1 mappings has two purposes:
+
+1.  Reduce the need of documenting every Orca API
+
+2.  Reduce our user's cognitive burden of having to read both Orca API
+documenation and supported rest API documentation.
+
+Orca is implemented with minimum external dependencies to make bot
+deployment deadly simple.
 
 ## Build
 #### Install dependencies:
