@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "jsmn.h"
 #include "ntl.h"
+#include <string.h>
 
 #if 0
 static char * print_token(jsmntype_t t) {
@@ -101,7 +102,13 @@ print_all (char * str, size_t len, void * p)
   return ntl_sn2str(str, len, (void **)p, NULL, print_array);
 }
 
-int main () {
+int main ()
+{
+  char tx [] = {'1', '2', '3', '\n', '\0'};
+  size_t x = 0;
+  char * yx = json_escape_string(tx, 4, &x);
+  fprintf(stderr, "%.*s\n", x, yx);
+
   char * json_str = NULL;
   int s = json_asprintf(&json_str, test_string);
   //printf("%s\n", json_str);
@@ -161,6 +168,12 @@ int main () {
   json_snprintf(buf, 1024, "{|a|:|%s|}", "abc");
   fprintf (stderr, "%s\n", buf);
 
+  json_snprintf(buf, 1024, "{|a|:|%.*s|}", 4, tx);
+  fprintf (stderr, "%s\n", buf);
+
+  json_snprintf(buf, 1024, "{|a|:%.*S}", 4, tx);
+  fprintf (stderr, "%s\n", buf);
+
   wsize = json_snprintf(NULL, 0, "{|a|:|%s|, |b|:%d, |x|:%F }", "abc",
                         10, print_all, nodes);
   fprintf (stderr, "%d\n", wsize);
@@ -177,6 +190,7 @@ int main () {
   wsize = json_asprintf(&b, "{|a|:|%s|, |b|:%d, |x|:%F }", "abc",
                         10, print_all, nodes);
   fprintf (stderr, "%d %s\n", wsize, b);
+
   return 0;
 }
 

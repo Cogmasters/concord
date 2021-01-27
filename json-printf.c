@@ -55,6 +55,7 @@ struct specifier {
     IS_FUNPTR,
   } type;
   char specifier[10];
+  bool has_print_size;
   union {
     void * p;
     bool b;
@@ -63,6 +64,7 @@ struct specifier {
     double d;
   } provider;
   void * funptr;
+  size_t print_size;
   int start;
   int end;
   int after_specifier_pos;
@@ -100,11 +102,26 @@ parse_format_specifiers (char * format, int n)
       {
         case 's':
           s[i].type = IS_STR;
-          strcpy(s[i].specifier, "%s");
+          strcpy(s[i].specifier, "%.*s");
           break;
         case 'S':
           s[i].type = IS_STR_NULLABLE;
-          strcpy(s[i].specifier, "%s");
+          strcpy(s[i].specifier, "\"%.*s\"");
+          break;
+        case '.':
+          format ++; // eat up '.'
+          if ('*' == * format && ('s' == *(format +1) || 'S' == *(format + 1))){
+            if ('s' == *(format + 1)) {
+              s[i].type = IS_STR;
+              strcpy(s[i].specifier, "%.*s");
+            }
+            else {
+              s[i].type = IS_STR_NULLABLE;
+              strcpy(s[i].specifier, "\"%.*s\"");
+            }
+            format ++; // eat up 's';
+            s[i].has_print_size = true;
+          }
           break;
         case 'd':
           s[i].type = IS_INT;
@@ -165,6 +182,73 @@ format_parse(char *format, int *n)
 }
 
 
+char *
+json_escape_string (char * input, size_t len, size_t * new_len)
+{
+  int extra_bytes = 0;
+  char * const start = input, * const end = input + len;
+  char * output_start = NULL, * output = NULL;
+  char * addon = NULL, buf[8] = "\\u00";
+  char * p;
+  /*
+   * 1st iteration, output is NULL and count all chars that need to be escaped
+   * 2st iteration, output is not NULL, and does escaping.
+   */
+restart:
+  for (p = start; p < end; p++) {
+    addon = NULL;
+    unsigned char c = * p;
+    switch (c) {
+      case 0x22: addon = "\\\""; break;
+      case 0x5C: addon = "\\\\"; break;
+      case '\b': addon = "\\b"; break;
+      case '\f': addon = "\\f"; break;
+      case '\n': addon = "\\n"; break;
+      case '\r': addon = "\\r"; break;
+      case '\t': addon = "\\t"; break;
+      default:
+        if(c<=0x1F) {
+          static char const tohex[]="0123456789abcdef";
+          buf[4]=tohex[c >>  4];
+          buf[5]=tohex[c & 0xF];
+          buf[6]=0;
+          addon = buf;
+        }
+    }
+    if (addon) {
+      int slen = strlen(addon);
+      extra_bytes += (slen - 1 /* c */);
+      if (output_start) {
+        for (int i = 0; addon[i]; i++, output++) {
+          *output = addon[i];
+        }
+      }
+    } else {
+      if (output_start) {
+        *output = c;
+        output++;
+      }
+    }
+  }
+
+  if (output_start) return output_start;
+
+  /*
+   * 1 iteration reach here
+   */
+  *new_len = len + extra_bytes;
+  if (0 == extra_bytes) {
+    return start;
+  } else {
+    output_start = (char *)malloc(*new_len);
+    output = output_start;
+    p = start;
+    extra_bytes = 0;
+    // start 2nd iteration
+    goto restart;
+  }
+}
+
 /*
  *
  *  To improve the clarity of json format string,
@@ -172,7 +256,7 @@ format_parse(char *format, int *n)
  *
  *  supported format strings:
  *
- *  \a|:|%s|  |a|:|abc|
+ *  |a|:|%s|  |a|:|abc|
  *  |a|:%S    |a|:null or |a|:|abc|
  *  |a|:%b    |a|:true |a|:false
  *  |a|:%d    |a|:10
@@ -189,6 +273,9 @@ json_vsnprintf(char * str, size_t len, char * fmt, va_list ap)
   for (i = 0; i < number_of_specifiers; i++) {
     if (sp[i].type == IS_FUNPTR) {
       sp[i].funptr = va_arg(ap, void *);
+    }
+    else if (sp[i].has_print_size) {
+      sp[i].print_size = (size_t)va_arg(ap, int);
     }
     switch(sp[i].type)
     {
@@ -211,7 +298,7 @@ json_vsnprintf(char * str, size_t len, char * fmt, va_list ap)
   }
 
 #define ASSIGN_IF_NOT_ZERO(lhs, exp)   if (lhs) { lhs = exp; }
-  char * cur_ptr = str;
+  char * cur_ptr = str, * ep = NULL;
   int slen = 0, total_size = 0;
   for (i = 0; i < number_of_specifiers; i++) {
     slen = sp[i].end - sp[i].start;
@@ -225,13 +312,21 @@ json_vsnprintf(char * str, size_t len, char * fmt, va_list ap)
     switch (sp[i].type)
     {
       case IS_STR:
-        slen = snprintf(cur_ptr, len,  sp[i].specifier, sp[i].provider.p);
-        break;
       case IS_STR_NULLABLE:
-        if (sp[i].provider.p == NULL)
-          slen = snprintf(cur_ptr, len, "null");
-        else
-          slen = snprintf(cur_ptr, len, "\"%s\"", sp[i].provider.p);
+        if (NULL == sp[i].provider.p) {
+          if (IS_STR_NULLABLE == sp[i].type)
+            slen = snprintf(cur_ptr, len, "null");
+          else
+            slen = snprintf(cur_ptr, len, "");
+        }
+        else {
+          size_t new_len = 0, old_len;
+          old_len = sp[i].has_print_size ? sp[i].print_size :
+                    strlen((char *)sp[i].provider.p);
+          ep = json_escape_string(sp[i].provider.p, old_len, &new_len);
+          slen = snprintf(cur_ptr, len, sp[i].specifier, new_len, ep);
+          if (new_len != old_len) free(ep);
+        }
         break;
       case IS_BOOL:
         if (sp[i].provider.b)
