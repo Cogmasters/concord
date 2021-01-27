@@ -22,7 +22,7 @@ load_resp (char * str, size_t len, void * p)
 }
 
 
-bool run (user_agent::data * ua, struct params * d, struct response * resp)
+bool run (user_agent::dati * ua, struct params * d, struct response * resp)
 {
   struct resp_handle handle = {
           .ok_cb = load_resp, .ok_obj = resp,
@@ -65,7 +65,7 @@ load_resp (char * str, size_t len, void * p)
              &rep->node_id);
   return;
 }
-bool run (user_agent::data * ua, struct params * p, struct response * resp) {
+bool run (user_agent::dati * ua, struct params * p, struct response * resp) {
   struct resp_handle handle = { .ok_cb = load_resp, .ok_obj = resp };
   user_agent::run(ua,
                   &handle,
@@ -141,7 +141,7 @@ params_to_body (char ** buf, struct params * p) {
   json_asprintf(buf, "");
 }
 
-bool run(user_agent::data *ua, struct params *p, struct response *resp) {
+bool run(user_agent::dati *ua, struct params *p, struct response *resp) {
   struct resp_handle handle = {.ok_cb = load_resp, .ok_obj = resp};
   struct api_resbody_s body;
 

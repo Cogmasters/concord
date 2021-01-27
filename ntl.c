@@ -8,7 +8,7 @@ ntl_malloc (size_t nelems,  size_t elem_size)
   char * p = (char *)malloc((nelems + 1) * sizeof(void *) + nelems * elem_size);
   char * elem_start = p + (nelems + 1) * sizeof(void *);
   void ** array = (void **)p;
-  int i;
+  size_t i;
   for (i = 0; i < nelems; i++) {
     array[i] = (void *)elem_start;
     elem_start += elem_size;
