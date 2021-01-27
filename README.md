@@ -1,4 +1,4 @@
-# Orca: a bot framework 
+# Orca: a bot framework for Discord
 
 ## Design
 
