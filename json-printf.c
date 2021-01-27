@@ -188,7 +188,7 @@ json_escape_string (size_t * new_len, char * input, size_t len)
   int extra_bytes = 0;
   char * const start = input, * const end = input + len;
   char * output_start = NULL, * output = NULL;
-  char * addon = NULL, buf[8] = "\\u00";
+  char * escaped = NULL, buf[8] = "\\u00";
 
   /*
    * 1st iteration, output is NULL and count extra_bytes needed for escaping
@@ -196,39 +196,38 @@ json_escape_string (size_t * new_len, char * input, size_t len)
    */
 second_iter:
   for (char * s = start; s < end; s++) {
-    addon = NULL;
+    escaped = NULL;
     unsigned char c = * s;
     switch (c) {
-      case 0x22: addon = "\\\""; break;
-      case 0x5C: addon = "\\\\"; break;
-      case '\b': addon = "\\b"; break;
-      case '\f': addon = "\\f"; break;
-      case '\n': addon = "\\n"; break;
-      case '\r': addon = "\\r"; break;
-      case '\t': addon = "\\t"; break;
+      case 0x22: escaped = "\\\""; break;
+      case 0x5C: escaped = "\\\\"; break;
+      case '\b': escaped = "\\b"; break;
+      case '\f': escaped = "\\f"; break;
+      case '\n': escaped = "\\n"; break;
+      case '\r': escaped = "\\r"; break;
+      case '\t': escaped = "\\t"; break;
       default:
         if(c<=0x1F) {
           static char const tohex[]="0123456789abcdef";
           buf[4]=tohex[c >>  4];
           buf[5]=tohex[c & 0xF];
           buf[6]=0;
-          addon = buf;
+          escaped = buf;
         }
     }
-    if (addon) {
-      int slen;
-      for (slen = 0; addon[slen]; slen++) {
-        if (output_start) {
-          *output = addon[slen];
-          output ++;
-        }
+    if (escaped) {
+      int i;
+      for (i = 0; escaped[i]; i++) {
+        if (NULL == output_start) continue;
+
+        *output = escaped[i];
+        output ++;
       }
-      extra_bytes += (slen - 1 /* c */);
-    } else {
-      if (output_start) {
-        *output = c;
-        output++;
-      }
+      extra_bytes += (i - 1 /* c */);
+    }
+    else if (output_start) {
+      *output = c;
+      output++;
     }
   }
 
