@@ -183,21 +183,21 @@ format_parse(char *format, int *n)
 
 
 char *
-json_escape_string (char * input, size_t len, size_t * new_len)
+json_escape_string (size_t * new_len, char * input, size_t len)
 {
   int extra_bytes = 0;
   char * const start = input, * const end = input + len;
   char * output_start = NULL, * output = NULL;
   char * addon = NULL, buf[8] = "\\u00";
-  char * p;
+
   /*
-   * 1st iteration, output is NULL and count all chars that need to be escaped
+   * 1st iteration, output is NULL and count extra_bytes needed for escaping
    * 2st iteration, output is not NULL, and does escaping.
    */
-restart:
-  for (p = start; p < end; p++) {
+second_iter:
+  for (char * s = start; s < end; s++) {
     addon = NULL;
-    unsigned char c = * p;
+    unsigned char c = * s;
     switch (c) {
       case 0x22: addon = "\\\""; break;
       case 0x5C: addon = "\\\\"; break;
@@ -216,13 +216,14 @@ restart:
         }
     }
     if (addon) {
-      int slen = strlen(addon);
-      extra_bytes += (slen - 1 /* c */);
-      if (output_start) {
-        for (int i = 0; addon[i]; i++, output++) {
-          *output = addon[i];
+      int slen;
+      for (slen = 0; addon[slen]; slen++) {
+        if (output_start) {
+          *output = addon[slen];
+          output ++;
         }
       }
+      extra_bytes += (slen - 1 /* c */);
     } else {
       if (output_start) {
         *output = c;
@@ -231,21 +232,21 @@ restart:
     }
   }
 
-  if (output_start) return output_start;
+  if (output_start)
+    return output_start;
 
   /*
    * 1 iteration reach here
    */
   *new_len = len + extra_bytes;
-  if (0 == extra_bytes) {
+  if (0 == extra_bytes) { // no need to escape
     return start;
-  } else {
+  }
+  else {
     output_start = (char *)malloc(*new_len);
     output = output_start;
-    p = start;
     extra_bytes = 0;
-    // start 2nd iteration
-    goto restart;
+    goto second_iter;
   }
 }
 
@@ -323,7 +324,7 @@ json_vsnprintf(char * str, size_t len, char * fmt, va_list ap)
           size_t new_len = 0, old_len;
           old_len = sp[i].has_print_size ? sp[i].print_size :
                     strlen((char *)sp[i].provider.p);
-          ep = json_escape_string(sp[i].provider.p, old_len, &new_len);
+          ep = json_escape_string(&new_len, sp[i].provider.p, old_len);
           slen = snprintf(cur_ptr, len, sp[i].specifier, new_len, ep);
           if (new_len != old_len) free(ep);
         }

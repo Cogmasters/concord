@@ -106,7 +106,7 @@ int main ()
 {
   char tx [] = {'1', '2', '3', '\n', '\0'};
   size_t x = 0;
-  char * yx = json_escape_string(tx, 4, &x);
+  char * yx = json_escape_string(&x, tx, 4);
   fprintf(stderr, "%.*s\n", x, yx);
 
   char * json_str = NULL;
