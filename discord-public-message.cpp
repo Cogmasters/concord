@@ -130,7 +130,7 @@ run(client *client, const char channel_id[], params *params)
     NULL,
     NULL,
     payload,
-    POST, CHANNEL MESSAGES, channel_id);
+    HTTP_POST, CHANNEL MESSAGES, channel_id);
 }
 
 } // namespace create

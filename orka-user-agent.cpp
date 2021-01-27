@@ -174,7 +174,7 @@ perform_request(struct dati *api, struct resp_handle * resp_handle, char endpoin
           (*resp_handle->err_cb)(api->body.str, api->body.size, resp_handle->err_obj);
         }
       default:
-        ERROR("(%d)%s - %s", code, http_code_print(code), reason);
+        PRINT_ERR("(%d)%s - %s", code, http_code_print(code), reason);
     }
   } while (RETRY == action);
 }

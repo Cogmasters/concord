@@ -21,11 +21,11 @@ int commit (char *base_url)
 
   struct resp_handle handle = {.ok_cb = load, .ok_obj = NULL};
 
-  run(&data, &handle, &body, POST, "/echo?m=POST");
-  run(&data, &handle, &body, PATCH, "/echo?m=PATCH");
-  run(&data, &handle, &body, GET, "/echo?m=GET");
-  run(&data, &handle, &body, PUT, "/echo?m=PUT");
-  run(&data, &handle, &body, DELETE, "/echo?m=DELETE");
+  run(&data, &handle, &body, HTTP_POST, "/echo?m=POST");
+  run(&data, &handle, &body, HTTP_PATCH, "/echo?m=PATCH");
+  run(&data, &handle, &body, HTTP_GET, "/echo?m=GET");
+  run(&data, &handle, &body, HTTP_PUT, "/echo?m=PUT");
+  run(&data, &handle, &body, HTTP_DELETE, "/echo?m=DELETE");
 
   curl_global_cleanup();
 

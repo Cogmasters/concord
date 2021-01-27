@@ -52,6 +52,3 @@ int main(int argc, char *argv[])
 
   global_cleanup();
 }
-
-
-
