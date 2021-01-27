@@ -25,6 +25,9 @@
 #define USERS                 "/users"
 #define USER                  USERS"/%s"
 
+#define MEMBERS               "/members"
+#define MEMBER                MEMBERS"/%s"
+
 
 namespace discord {
 

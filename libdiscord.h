@@ -206,6 +206,32 @@ void json_list_load(char *str, size_t len, void *p_guilds);
 
 void get(client *client, const char guild_id[], dati *p_guild);
 
+namespace member {
+
+/* GUILD MEMBER OBJECT
+ * https://discord.com/developers/docs/resources/guild#guild-member-object*/
+struct dati {
+  user::dati *user;
+  char nick[MAX_NAME_LEN];
+  //roles
+  char joined_at[SNOWFLAKE_TIMESTAMP];
+  char premium_since[SNOWFLAKE_TIMESTAMP];
+  bool deaf;
+  bool mute;
+  bool pending;
+  //permissions
+};
+
+dati* init();
+void cleanup(dati *member);
+void list_cleanup(dati **members);
+void json_load(char *str, size_t len, void *p_member);
+void json_list_load(char *str, size_t len, void *p_members);
+
+dati **get_list(client *client, const char guild_id[]);
+
+} // namespace member
+
 } // namespace guild
 
 namespace user {
@@ -231,7 +257,9 @@ struct dati {
 
 dati* init();
 void cleanup(dati *user);
+void list_cleanup(dati **users);
 void json_load(char *str, size_t len, void *p_user);
+void json_list_load(char *str, size_t len, void *p_users);
 
 void get(client *client, const char user_id[], dati *p_user);
 

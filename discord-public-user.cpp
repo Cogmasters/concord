@@ -4,6 +4,8 @@
 
 #include <libdiscord.h>
 
+#include "ntl.h"
+
 namespace discord {
 namespace user {
 
@@ -43,6 +45,22 @@ json_load(char *str, size_t len, void *p_user)
   D_NOTOP_PUTS("User object loaded with API response"); 
 }
 
+void
+json_list_load(char *str, size_t len, void *p_users)
+{
+  json_token **toks = NULL;
+  json_scanf(str, len, "[]%A", &toks);
+
+  dati **new_users = (dati**)ntl_dup((void**)toks, sizeof(dati));
+  for (size_t i=0; toks[i]; ++i) {
+    json_load(toks[i]->start, toks[i]->length, new_users[i]);
+  }
+  
+  free(toks);
+
+  *(dati ***)p_users = new_users;
+}
+
 dati*
 init()
 {
@@ -53,6 +71,11 @@ init()
 void
 cleanup(dati *user) {
   free(user);
+}
+
+void
+list_cleanup(dati **guilds) {
+  free(guilds);
 }
 
 void

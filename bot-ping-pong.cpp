@@ -22,7 +22,7 @@ void on_message_create(
   // make sure bot doesn't echoes other bots
   if (msg->author->bot)
     return;
-  // make sure it doesn't echoes itme
+  // make sure it doesn't echoes itself
   if (0 == strcmp(me->username, msg->author->username))
     return;
 
