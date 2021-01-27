@@ -306,7 +306,7 @@ custom_easy_init(struct _settings_s *settings,
   CURLcode ecode;
   /* DEBUG ONLY FUNCTIONS */
   //set debug callback
-  D_ONLY(ecode = curl_easy_setopt(new_ehandle, CURLOPT_DEBUGFUNCTION, NULL));
+  D_ONLY(ecode = curl_easy_setopt(new_ehandle, CURLOPT_DEBUGFUNCTION, curl_debug_cb));
   D_ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
   //set ptr to settings containing dump files
