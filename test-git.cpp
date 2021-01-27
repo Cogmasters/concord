@@ -1,6 +1,8 @@
 #include "github-v3-user-agent.hpp"
 #include "settings.h"
 #include "ntl.h"
+#include <dirent.h>
+#include <sys/stat.h>
 
 
 namespace ua = github::v3::user_agent;
@@ -249,6 +251,54 @@ create_a_pull_request (ua::dati * data, char * owner, char * repo,
           POST, "/repos/%s/%s/pulls", owner, repo);
 }
 
+
+static char *
+stat_to_type (const struct stat *st)
+{
+  switch(st->st_mode & S_IFMT) {
+    case S_IFREG:
+      return "file";
+      break;
+    case S_IFDIR:
+      return "folder";
+      break;
+    default:
+      return NULL;
+      break;
+  }
+}
+
+int list(void ** p, size_t n, char * path) {
+  struct dirent * dir;
+  DIR * d;
+
+  int total_files = 0;
+  d = opendir(path);
+  int fd = dirfd(d);
+  struct stat st = {0};
+  if (d) {
+    while ((dir = readdir(d)) != NULL) {
+      if (0 != strcmp(dir->d_name, ".") && 0 != strcmp(dir->d_name, "..")) {
+        if (fstatat(fd, dir->d_name, &st, 0) == 0) {
+          char * type = stat_to_type(&st);
+          if (type) {
+            if (0 == strcmp(type, "file"))
+            {
+              total_files ++;
+              fprintf(stderr, "%s\n", dir->d_name);
+            }
+            else { // nested folder
+              
+            }
+          }
+        }
+      }
+    }
+    closedir(d);
+  }
+  return total_files;
+}
+
 int main (int argc, char ** argv)
 {
   const char *config_file;
@@ -259,6 +309,12 @@ int main (int argc, char ** argv)
 
   struct bot_settings settings;
   bot_settings_init (&settings, config_file);
+
+  if (argc == 3) {
+    int x = list(NULL, 0, argv[2]);
+    fprintf(stderr, "%d\n", x);
+    return 0;
+  }
 
   ua::dati data = {0};
   curl_global_init(CURL_GLOBAL_ALL);
@@ -271,8 +327,8 @@ int main (int argc, char ** argv)
            repo, "test_2", "x/test.c", "LypuZXcgY29kZSovCg==");
   else {
     struct file files [] = {
-      {.path = "test/f.c", .content = "the contentxx of f.c"},
-      {.path = "test/g.c", .content = "the contentxx of g.c"}
+      {.path = "test/f.c", .content = "the content of f.c"},
+      {.path = "test/g.c", .content = "the content of g.c"}
     };
     struct file * fptrs [] = { &files[0], &files[1], NULL};
     create_blobs(&data, owner, repo, fptrs);
