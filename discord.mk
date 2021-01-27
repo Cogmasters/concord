@@ -31,7 +31,7 @@ PREFIX ?= /usr/local
 
 .PHONY : all mkdir install clean purge
 
-all : mkdir $(OBJS) $(LIBDISCORD_SLIB) bot-echo bot-pin bot-ping-pong test-api test-ws
+all : mkdir $(OBJS) $(LIBDISCORD_SLIB) bot-echo bot-pin bot-ping-pong bot-mimic test-api test-ws
 
 mkdir :
 	mkdir -p $(OBJDIR) $(LIBDIR)
@@ -69,6 +69,9 @@ bot-pin : bot-pin.cpp
 bot-ping-pong : bot-ping-pong.cpp
 	$(CXX) $(CFLAGS) $(LIBS_CFLAGS) \
 		bot-ping-pong.cpp $(OBJS) -o bot-ping-pong.exe $(LIBS_LDFLAGS)
+bot-mimic : bot-mimic.cpp
+	$(CXX) $(CFLAGS) $(LIBS_CFLAGS) \
+		bot-mimic.cpp $(OBJS) -o bot-mimic.exe $(LIBS_LDFLAGS)
 
 $(LIBDISCORD_SLIB) : $(OBJS)
 	$(AR) -cvq $@ $(OBJS)
