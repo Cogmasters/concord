@@ -184,7 +184,7 @@ match_path (char *buffer, jsmntok_t *t,
   else if (STREQ(es->type_specifier, "array")) {
     struct json_token **token_array;
     if (JSMN_ARRAY == t[i].type) {
-      size_t n = t[i].size;
+      int n = t[i].size;
       token_array = (struct json_token **)
         ntl_malloc(n, sizeof(struct json_token));
       int idx;

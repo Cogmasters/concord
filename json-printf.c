@@ -251,6 +251,8 @@ json_vsnprintf(char * str, size_t len, char * fmt, va_list ap)
       case IS_FUNPTR:
         slen = ((extractor *) sp[i].funptr)(cur_ptr, len, sp[i].provider.p);
         break;
+      default:
+        ERROR("unexpected case\n");
     }
     //cur_ptr += slen;
     ASSIGN_IF_NOT_ZERO(cur_ptr, (cur_ptr + slen));
@@ -303,7 +305,7 @@ json_snprintf(char *buf, size_t len, char *json_fmt, ...)
     jsmn_init(&parser);
     int num_tok = jsmn_parse(&parser, buf, ret, NULL, 0);
     if (num_tok < 0) {
-      ERROR("illegal json %.*s", buf, ret);
+      ERROR("illegal json %.*s", ret, buf);
     }
   }
   return ret;
