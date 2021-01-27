@@ -66,7 +66,7 @@ print_token(jsmntype_t type)
     case JSMN_ARRAY:      return "array";
     case JSMN_STRING:     return "string";
     case JSMN_PRIMITIVE:  return "primitive";
-    default:              ERROR("Unknown JSMN_XXXX type encountered (code: %d)", type);
+    default:              PRINT_ERR("Unknown JSMN_XXXX type encountered (code: %d)", type);
   }
 }
 
@@ -120,7 +120,7 @@ match_path (char *buffer, jsmntok_t *t,
         break;
      }
     default:
-        ERROR("Patch match error (not an Object or Array)");
+        PRINT_ERR("Patch match error (not an Object or Array)");
     }
 
     return;
@@ -277,7 +277,7 @@ match_path (char *buffer, jsmntok_t *t,
   return;
 
 type_error:
-  ERROR("Expected specifier %s but found: '%.*s' )\n", es->type_specifier,
+  PRINT_ERR("Expected specifier %s but found: '%.*s' )\n", es->type_specifier,
         t[i].end - t[i].start, buffer + t[i].start);
   // report errors;
   return;
@@ -291,7 +291,7 @@ apply_array (char *str, jsmntok_t * tok, int n_toks,
     match_path(str, tok, n_toks, 0, es, es->path_specifiers[0].next);
   }
   else {
-    ERROR("Toplevel array does not match extractor_specifier %s)\n",
+    PRINT_ERR("Toplevel array does not match extractor_specifier %s)\n",
           es->path_specifiers[0].key);
   }
 }
@@ -655,7 +655,7 @@ json_scanf(char *buffer, size_t buf_size, char *format, ...)
         apply_array(buffer, tok, num_tok, es+i);
         break;
       default:
-        ERROR("Unexpected toplevel token %s\n", print_token(tok[0].type));
+        PRINT_ERR("Unexpected toplevel token %s\n", print_token(tok[0].type));
         goto cleanup;
     }
 
@@ -725,7 +725,7 @@ __json_strerror(json_errcode code, char codetag[], void *where, char entity[])
 
   char *errdynm = strdup(errbuf);
   if (NULL == errdynm)
-    ERROR("%s", errbuf);
+    PRINT_ERR("%s", errbuf);
 
   return  errdynm;
 }

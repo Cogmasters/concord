@@ -5,7 +5,6 @@
 #include <math.h>
 
 #include "http-common.h"
-#include "orca-debug.h"
 
 void
 sleep_ms(const long long delay_ms)
@@ -70,7 +69,7 @@ http_code_print(enum http_code code)
   default:
       if (code >= 500) return "5xx SERVER ERROR";
 
-      ERROR("Invalid HTTP response code (code: %d)", code);
+      PRINT_ERR("Invalid HTTP response code (code: %d)", code);
   }
   return NULL;
 }
@@ -79,13 +78,13 @@ char*
 http_method_print(enum http_method method)
 {
   switch(method) {
-      CASE_RETURN_STR(DELETE);
-      CASE_RETURN_STR(GET);
-      CASE_RETURN_STR(POST);
-      CASE_RETURN_STR(PATCH);
-      CASE_RETURN_STR(PUT);
+      CASE_RETURN_STR(HTTP_DELETE);
+      CASE_RETURN_STR(HTTP_GET);
+      CASE_RETURN_STR(HTTP_POST);
+      CASE_RETURN_STR(HTTP_PATCH);
+      CASE_RETURN_STR(HTTP_PUT);
   default:
-      ERROR("Invalid HTTP method (code: %d)", method);
+      PRINT_ERR("Invalid HTTP method (code: %d)", method);
   }
 }
 
@@ -98,32 +97,32 @@ set_method(CURL *ehandle, enum http_method method, struct api_resbody_s *body)
 
   CURLcode ecode;
   switch (method) {
-  case DELETE:
+  case HTTP_DELETE:
       ecode = curl_easy_setopt(ehandle, CURLOPT_CUSTOMREQUEST, "DELETE");
       ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
       break;
-  case GET:
+  case HTTP_GET:
       ecode = curl_easy_setopt(ehandle, CURLOPT_HTTPGET, 1L);
       ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
       break;
-  case POST:
+  case HTTP_POST:
       curl_easy_setopt(ehandle, CURLOPT_POST, 1L);
       //set ptr to payload that will be sent via POST/PUT
       curl_easy_setopt(ehandle, CURLOPT_POSTFIELDS, body->str);
       curl_easy_setopt(ehandle, CURLOPT_POSTFIELDSIZE, body->size);
       break;
-  case PATCH:
+  case HTTP_PATCH:
       curl_easy_setopt(ehandle, CURLOPT_CUSTOMREQUEST, "PATCH");
       curl_easy_setopt(ehandle, CURLOPT_POSTFIELDS, body->str);
       curl_easy_setopt(ehandle, CURLOPT_POSTFIELDSIZE, body->size);
       break;
-  case PUT:
+  case HTTP_PUT:
       curl_easy_setopt(ehandle, CURLOPT_CUSTOMREQUEST, "PUT");
       curl_easy_setopt(ehandle, CURLOPT_POSTFIELDS, body->str);
       curl_easy_setopt(ehandle, CURLOPT_POSTFIELDSIZE, body->size);
       break;
   default:
-      ERROR("Unknown http method (code: %d)", method);
+      PRINT_ERR("Unknown http method (code: %d)", method);
   }
 }
 

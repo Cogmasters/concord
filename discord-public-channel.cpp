@@ -36,7 +36,7 @@ pin_message(client *client, const char channel_id[], const char message_id[])
     NULL,
     NULL,
     "", //empty POSTFIELDS
-    PUT, PINNED_MESSAGE, channel_id, message_id);
+    HTTP_PUT, PINNED_MESSAGE, channel_id, message_id);
 }
 
 void
@@ -56,7 +56,7 @@ unpin_message(client *client, const char channel_id[], const char message_id[])
     NULL,
     NULL,
     "", //empty POSTFIELDS
-    DELETE, PINNED_MESSAGE, channel_id, message_id);
+    HTTP_DELETE, PINNED_MESSAGE, channel_id, message_id);
 }
 
 } // namespace channel

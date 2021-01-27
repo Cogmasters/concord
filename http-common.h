@@ -6,7 +6,7 @@ extern "C" {
 #endif // __cplusplus
 
 #include <curl/curl.h>
-#include "orca-debug.h"
+#include "orka-debug.h"
 
 /* UTILITY MACROS */
 #define STREQ(str1, str2) (0 == strcmp(str1, str2))
@@ -18,7 +18,7 @@ extern "C" {
 
 //possible http methods
 enum http_method {
-  DELETE, GET, POST, PATCH, PUT
+  HTTP_DELETE, HTTP_GET, HTTP_POST, HTTP_PATCH, HTTP_PUT
 };
 
 

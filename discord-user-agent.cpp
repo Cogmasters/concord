@@ -213,7 +213,7 @@ perform_request(
 
         break;
     case ABORT: default:
-        ERROR("(%d)%s - %s", code, http_code_print(code), reason);
+        PRINT_ERR("(%d)%s - %s", code, http_code_print(code), reason);
     }
 
   } while (RETRY == action);

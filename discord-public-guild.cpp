@@ -77,7 +77,7 @@ get(client *client, const char guild_id[], dati *p_guild)
     (void*)p_guild,
     &json_load,
     NULL,
-    GET, GUILD, guild_id);
+    HTTP_GET, GUILD, guild_id);
 }
 
 namespace member {
@@ -164,7 +164,7 @@ get_list(client *client, const char guild_id[])
     (void*)&new_members,
     &json_list_load,
     NULL,
-    GET, GUILD MEMBERS "?limit=100", guild_id);
+    HTTP_GET, GUILD MEMBERS "?limit=100", guild_id);
 
   return new_members;
 }

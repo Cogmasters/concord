@@ -91,7 +91,7 @@ get(client *client, const char user_id[], dati *p_user)
     (void*)p_user,
     &json_load,
     NULL,
-    GET, USER, user_id);
+    HTTP_GET, USER, user_id);
 }
 
 namespace me {
@@ -104,7 +104,7 @@ get(client *client, dati *p_user)
     (void*)p_user,
     &json_load,
     NULL,
-    GET, USER, "@me");
+    HTTP_GET, USER, "@me");
 }
 
 guild::dati**
@@ -117,7 +117,7 @@ get_guilds(client *client)
     (void*)&new_guilds,
     &guild::json_list_load,
     NULL,
-    GET, USER GUILDS, "@me");
+    HTTP_GET, USER GUILDS, "@me");
 
   return new_guilds;
 }

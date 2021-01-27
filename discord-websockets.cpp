@@ -28,7 +28,7 @@ ws_opcode_print(enum ws_opcodes opcode)
       CASE_RETURN_STR(GATEWAY_HELLO);
       CASE_RETURN_STR(GATEWAY_HEARTBEAT_ACK);
   default:
-      ERROR("Invalid Gateway opcode (code: %d)", opcode);
+      PRINT_ERR("Invalid Gateway opcode (code: %d)", opcode);
   }
 }
 
@@ -70,7 +70,7 @@ ws_close_opcode_print(enum ws_close_opcodes gateway_opcode)
           CASE_RETURN_STR(CWS_CLOSE_REASON_PRIVATE_START);
           CASE_RETURN_STR(CWS_CLOSE_REASON_PRIVATE_END);
       default:
-          ERROR("Unknown WebSockets close opcode (code: %d)", cws_opcode);
+          PRINT_ERR("Unknown WebSockets close opcode (code: %d)", cws_opcode);
       }
    }
   }
@@ -322,7 +322,7 @@ ws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
   case GATEWAY_HEARTBEAT_ACK:
       break; 
   default:
-      ERROR("Not yet implemented WebSockets opcode (code: %d)", ws->payload.opcode);
+      PRINT_ERR("Not yet implemented WebSockets opcode (code: %d)", ws->payload.opcode);
   }
 
   (void)len;

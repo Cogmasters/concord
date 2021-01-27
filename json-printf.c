@@ -144,7 +144,7 @@ parse_format_specifiers (char * format, int n)
           strcpy(s[i].specifier, "%c");
           break;
         default:
-          ERROR("Unsupported format specifier %c)\n", *format);
+          PRINT_ERR("Unsupported format specifier %c)\n", *format);
       }
       format ++; // eat up format specifier
       start = format - start_ptr;
@@ -252,7 +252,7 @@ json_vsnprintf(char * str, size_t len, char * fmt, va_list ap)
         slen = ((extractor *) sp[i].funptr)(cur_ptr, len, sp[i].provider.p);
         break;
       default:
-        ERROR("unexpected case\n");
+        PRINT_ERR("unexpected case\n");
     }
     //cur_ptr += slen;
     ASSIGN_IF_NOT_ZERO(cur_ptr, (cur_ptr + slen));
@@ -305,7 +305,7 @@ json_snprintf(char *buf, size_t len, char *json_fmt, ...)
     jsmn_init(&parser);
     int num_tok = jsmn_parse(&parser, buf, ret, NULL, 0);
     if (num_tok < 0) {
-      ERROR("illegal json %.*s", ret, buf);
+      PRINT_ERR("illegal json %.*s", ret, buf);
     }
   }
   return ret;
