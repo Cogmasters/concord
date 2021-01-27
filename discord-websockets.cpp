@@ -454,7 +454,7 @@ cleanup(websockets::dati *ws)
 /* send heartbeat pulse to websockets server in order
  *  to maintain connection alive */
 static void
-ws_send_heartbeat(websockets::dati *ws)
+ws_send_heartbeat(websockets::dati *ws, long now_ms)
 {
   char payload[64];
   int ret = snprintf(payload, sizeof(payload), "{\"op\":1,\"d\":%d}", ws->payload.seq_number);
@@ -463,7 +463,7 @@ ws_send_heartbeat(websockets::dati *ws)
   D_PRINT("HEARTBEAT_PAYLOAD:\n\t\t%s", payload);
   ws_send_payload(ws, payload);
 
-  ws->hbeat.start_ms = timestamp_ms();
+  ws->hbeat.start_ms = now_ms;
 }
 
 /* main websockets event loop */
@@ -491,8 +491,9 @@ ws_main_loop(websockets::dati *ws)
 
     /*check if timespan since first pulse is greater than
      * minimum heartbeat interval required*/
-    if (ws->hbeat.interval_ms < (timestamp_ms() - ws->hbeat.start_ms))
-      ws_send_heartbeat(ws);
+    long now_ms = timestamp_ms();
+    if (ws->hbeat.interval_ms < (now_ms - ws->hbeat.start_ms))
+      ws_send_heartbeat(ws, now_ms);
     if (ws->cbs.on_idle)
       (*ws->cbs.on_idle)(ws->p_client, ws->me);
 
