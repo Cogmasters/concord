@@ -7,10 +7,10 @@
 #include <stdarg.h>
 #include <stddef.h>
 
-#include "tester.h"
+#include "orka.h"
 #include "json-scanf.h"
 
-namespace tester {
+namespace orka {
 namespace user_agent {
 
 static struct curl_slist*

@@ -1,9 +1,9 @@
-#ifndef CEE_H
-#define CEE_H
+#ifndef ORKA_H
+#define ORKA_H
 
 #include "http-common.h"
 
-namespace tester {
+namespace orka {
 namespace user_agent {
 
 struct dati {
@@ -25,6 +25,6 @@ extern void run(struct dati *api,
                 ...);
 
 } // namespace user_agent
-} // namespace tester
+} // namespace orca
 
-#endif //CEE_H
+#endif //ORKA_H
