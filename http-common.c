@@ -114,6 +114,8 @@ set_method(CURL *ehandle, enum http_method method, struct api_resbody_s *body)
       break;
   case PATCH:
       curl_easy_setopt(ehandle, CURLOPT_CUSTOMREQUEST, "PATCH");
+      curl_easy_setopt(ehandle, CURLOPT_POSTFIELDS, body->str);
+      curl_easy_setopt(ehandle, CURLOPT_POSTFIELDSIZE, body->size);
       break;
   case PUT:
       curl_easy_setopt(ehandle, CURLOPT_CUSTOMREQUEST, "PUT");
@@ -304,7 +306,7 @@ custom_easy_init(struct _settings_s *settings,
   CURLcode ecode;
   /* DEBUG ONLY FUNCTIONS */
   //set debug callback
-  D_ONLY(ecode = curl_easy_setopt(new_ehandle, CURLOPT_DEBUGFUNCTION, &curl_debug_cb));
+  D_ONLY(ecode = curl_easy_setopt(new_ehandle, CURLOPT_DEBUGFUNCTION, NULL));
   D_ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
   //set ptr to settings containing dump files
