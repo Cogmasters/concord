@@ -51,8 +51,8 @@ set(GITHUB_FILES
 set(CEE_FILES
         http-common.h
         http-common.c
-        tester.h
-        tester-user-agent.cpp
+        orka.h
+        orka-user-agent.cpp
         settings.h
         settings.c
         ${JSON_SCANF})

@@ -3,7 +3,7 @@ LIBDIR	:= lib
 
 SRC	:= $(wildcard http-common.c github-v3-user-agent.cpp \
           github-v3-git-database.cpp json-scanf.c \
-		  json-printf.c settings.c tester-user-agent.cpp ntl.c)
+		  json-printf.c settings.c orka-user-agent.cpp ntl.c)
 
 _OBJS	:= $(patsubst %.cpp, %.o, $(SRC))
 OBJS1   += $(patsubst %.c, %.o, $(_OBJS))
@@ -45,9 +45,9 @@ $(OBJDIR)/json-scanf.o : json-scanf.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 $(OBJDIR)/json-printf.o : json-printf.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
-$(OBJDIR)/tester-ua.o: tester-ua.cpp
+$(OBJDIR)/orka-user-agent.o: orka-user-agent.cpp
 	$(CXX) $(CFLAGS) $(CXXFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
-$(OBJDIR)/github-v3-ua.o: github-v3-ua.cpp
+$(OBJDIR)/github-v3-user-agent.o: github-v3-user-agent.cpp
 	$(CXX) $(CFLAGS) $(CXXFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 $(OBJDIR)/github-v3-git-database.o: github-v3-git-database.cpp
 	$(CXX) $(CFLAGS) $(CXXFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
