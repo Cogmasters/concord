@@ -6,7 +6,7 @@
 namespace tester {
 namespace user_agent {
 
-struct data {
+struct dati {
   struct curl_slist *req_header; //the request header sent to the api
   struct api_resbody_s body; //the api response string
   struct api_header_s pairs; //the key/field pairs response header
@@ -15,9 +15,9 @@ struct data {
   struct _settings_s settings;
 };
 
-extern void init(struct data *api, char *base_url);
+extern void init(struct dati *api, char *base_url);
 
-extern void run(struct data *api,
+extern void run(struct dati *api,
                 struct resp_handle *handle,
                 struct api_resbody_s *body,
                 enum http_method http_method,

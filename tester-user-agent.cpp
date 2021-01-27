@@ -6,27 +6,25 @@
 #include <unistd.h> //for usleep
 #include <stdarg.h>
 #include <stddef.h>
+
+#include "tester.h"
 #include "json-scanf.h"
-#include "github-v3.hpp"
 
-#define BASE_API_URL   "https://api.github.com"
-
-namespace github {
-namespace v3 { 
+namespace tester {
 namespace user_agent {
 
 static struct curl_slist*
 reqheader_init()
 {
   struct curl_slist *new_header = NULL;
-  new_header = curl_slist_append(new_header, "Accept: application/vnd.github.v3+json");
-  new_header = curl_slist_append(new_header, "Content-Type: application/json");
-  new_header = curl_slist_append(new_header, "User-Agent: curl");
+  new_header = curl_slist_append(new_header, "Accept: application/json");
+  curl_slist_append(new_header, "Content-Type: application/json");
+  curl_slist_append(new_header, "User-Agent: curl");
   return new_header;
 }
 
 void
-cleanup(struct data *api)
+cleanup(struct dati *api)
 {
   curl_slist_free_all(api->req_header);
   curl_easy_cleanup(api->ehandle);
@@ -37,21 +35,20 @@ cleanup(struct data *api)
 }
 
 void
-init(struct data *api, char username[], char token[])
+init(struct dati *api, char * base_url)
 {
   api->req_header = reqheader_init();
-  api->ehandle = custom_easy_init(&api->settings,
+  api->ehandle = custom_easy_init(&(api->settings),
                                   api->req_header,
                                   &api->pairs,
                                   &api->body);
-
-  curl_easy_setopt(api->ehandle, CURLOPT_USERNAME, username);
-  curl_easy_setopt(api->ehandle, CURLOPT_USERPWD, token);
+  api->base_url = base_url;
 }
+
 
 /* perform the request */
 static void
-perform_request(struct data *api, struct resp_handle * handle, char endpoint[])
+perform_request(struct dati *api, struct resp_handle * resp_handle, char endpoint[])
 {
   enum { //possible actions taken after a http response code
     DONE, RETRY, ABORT
@@ -73,23 +70,19 @@ perform_request(struct data *api, struct resp_handle * handle, char endpoint[])
     D_PRINT("Request URL: %s", url);
 
     const char *reason; //verbose reason of http code
-    fprintf(stderr, "http code:%s\n", http_code_print(code));
     switch (code) {
       case HTTP_OK:
         reason = "The request was completed succesfully.";
         action = DONE;
 
-        if (handle && handle->ok_cb) {
-          (*handle->ok_cb)(api->body.str, api->body.size, handle->ok_obj);
+        if (resp_handle && resp_handle->ok_cb) {
+          (*resp_handle->ok_cb)(api->body.str, api->body.size, resp_handle->ok_obj);
         }
 
         break;
       case HTTP_CREATED:
-        reason = "The entity was created successfully.";
+        reason = "The entity was created succesfully.";
         action = DONE;
-        if (handle && handle->ok_cb) {
-          (*handle->ok_cb)(api->body.str, api->body.size, handle->ok_obj);
-        }
         break;
       case HTTP_NO_CONTENT:
         reason = "The request completed succesfully but returned no content.";
@@ -177,8 +170,8 @@ perform_request(struct data *api, struct resp_handle * handle, char endpoint[])
 
         break;
       case ABORT:
-        if (handle && handle->err_cb) {
-          (*handle->err_cb)(api->body.str, api->body.size, handle->err_obj);
+        if (resp_handle && resp_handle->err_cb) {
+          (*resp_handle->err_cb)(api->body.str, api->body.size, resp_handle->err_obj);
         }
       default:
         ERROR("(%d)%s - %s", code, http_code_print(code), reason);
@@ -187,7 +180,7 @@ perform_request(struct data *api, struct resp_handle * handle, char endpoint[])
 }
 
 /* template function for performing requests */
-void run(struct data *api,
+void run(struct dati *api,
          struct resp_handle * resp_handle,
          struct api_resbody_s * body,
          enum http_method http_method,
@@ -203,10 +196,10 @@ void run(struct data *api,
   va_end(args);
 
   set_method(api->ehandle, http_method, body); //set the request method
-  set_url(api->ehandle, BASE_API_URL, url_route); //set the request URL
+  set_url(api->ehandle, api->base_url, url_route); //set the request URL
+
   perform_request(api, resp_handle, endpoint); //perform the request
 }
 
 } // namespace user_agent
-} // namespace v3
-} // namespace github
+} // namespace cee

@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include "json-scanf.h"
 #include "http-common.h"
-#include "github-v3-ua.hpp"
+#include "github-v3-user-agent.hpp"
 
 /*
  * There is a 1-1 mapping between https://docs.github.com/en/rest/reference
@@ -36,7 +36,7 @@ struct response {
   char * url;
   char * sha;
 };
-bool run (user_agent::data * ua,
+bool run (user_agent::dati * ua,
           struct params * p,
           struct response * resp);
 
@@ -57,7 +57,7 @@ struct response {
   int size;
   char * node_id;
 };
-bool run (user_agent::data * ua,
+bool run (user_agent::dati * ua,
           struct params * p,
           struct response * resp);
 } // get_a_blob
@@ -98,7 +98,7 @@ struct params {
   } ** tree;
   char * base_tree;
 };
-bool run(user_agent::data *ua, struct params *p, struct response *resp);
+bool run(user_agent::dati *ua, struct params *p, struct response *resp);
 void free_params (struct params *p);
 void free_response (struct response * resp);
 }
@@ -117,7 +117,7 @@ struct response {
   bool truncated;
 };
 
-bool run(user_agent::data *ua,
+bool run(user_agent::dati *ua,
          struct params *p,
          struct response *resp);
 }
@@ -213,7 +213,7 @@ struct params {
   char * repo;
   char * ref;
 };
-extern bool run (user_agent::data * ua, struct params * p);
+extern bool run (user_agent::dati * ua, struct params * p);
 }
 
 namespace create_a_tag {
@@ -251,7 +251,7 @@ struct response {
   } * tree;
   bool truncated;
 };
-extern bool run(user_agent::data * ua,
+extern bool run(user_agent::dati * ua,
                 struct params * p,
                 struct response * resp);
 }

@@ -1,7 +1,10 @@
 OBJDIR	:= obj
 LIBDIR	:= lib
 
-SRC	:= $(wildcard http-common.c github-v3-ua.cpp github-v3-git-database.cpp json-scanf.c json-printf.c settings.c tester-ua.cpp ntl.c)
+SRC	:= $(wildcard http-common.c github-v3-user-agent.cpp \
+          github-v3-git-database.cpp json-scanf.c \
+		  json-printf.c settings.c tester-user-agent.cpp ntl.c)
+
 _OBJS	:= $(patsubst %.cpp, %.o, $(SRC))
 OBJS1   += $(patsubst %.c, %.o, $(_OBJS))
 OBJS 	:= $(addprefix $(OBJDIR)/, $(OBJS1))

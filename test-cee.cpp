@@ -12,7 +12,7 @@ void load(char * str, size_t len, void * ptr) {
 
 int commit (char *base_url)
 {
-  data data = {0};
+  dati data = {0};
   curl_global_init(CURL_GLOBAL_ALL);
   init(&data, base_url);
   struct api_resbody_s body = {NULL, 0};

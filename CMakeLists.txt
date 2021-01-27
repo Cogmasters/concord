@@ -41,7 +41,7 @@ set(GITHUB_FILES
         http-common.h
         http-common.c
         github-v3.hpp
-        github-v3-ua.cpp
+        github-v3-user-agent.cpp
         github-v3-git-database.cpp
         github-v3-repositories.cpp
         settings.h
@@ -52,7 +52,7 @@ set(CEE_FILES
         http-common.h
         http-common.c
         tester.h
-        tester-ua.cpp
+        tester-user-agent.cpp
         settings.h
         settings.c
         ${JSON_SCANF})
