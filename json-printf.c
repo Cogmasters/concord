@@ -71,7 +71,7 @@ struct specifier {
 
 
 static void
-format_analyze(char *format, size_t *num_keys)
+format_analyze(char *format, int *num_keys)
 {
   /* find % occurrence */
   while (*format) {
@@ -84,7 +84,7 @@ format_analyze(char *format, size_t *num_keys)
 
 //d|ld|lld|f|lf
 static struct specifier*
-parse_format_specifiers (char * format, size_t n)
+parse_format_specifiers (char * format, int n)
 {
   struct specifier * s = calloc(n, sizeof (struct specifier));
   int start = 0;
@@ -158,7 +158,7 @@ parse_format_specifiers (char * format, size_t n)
 
 
 static struct specifier*
-format_parse(char *format, size_t *n)
+format_parse(char *format, int *n)
 {
   format_analyze(format, n);
   return parse_format_specifiers(format, *n);
@@ -181,7 +181,7 @@ format_parse(char *format, size_t *n)
 int
 json_vsnprintf(char * str, size_t len, char * fmt, va_list ap)
 {
-  size_t number_of_specifiers = 0;
+  int number_of_specifiers = 0;
   char * format = normalize_fmt(fmt);
   struct specifier * sp = format_parse(format, &number_of_specifiers);
 
@@ -213,7 +213,6 @@ json_vsnprintf(char * str, size_t len, char * fmt, va_list ap)
 #define ASSIGN_IF_NOT_ZERO(lhs, exp)   if (lhs) { lhs = exp; }
   char * cur_ptr = str;
   int slen = 0, total_size = 0;
-  char * format_next_start = format;
   for (i = 0; i < number_of_specifiers; i++) {
     slen = sp[i].end - sp[i].start;
     if (cur_ptr)

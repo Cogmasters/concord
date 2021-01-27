@@ -84,7 +84,7 @@ jsoneq(const char *json, jsmntok_t *tok, const char *str)
 
 static void
 match_path (char *buffer, jsmntok_t *t,
-            size_t n_toks, int start_tok,
+            int n_toks, int start_tok,
             struct extractor_specifier *es,
             struct path_specifier *ps)
 {
@@ -284,7 +284,7 @@ type_error:
 }
 
 static void
-apply_array (char *str, jsmntok_t * tok, size_t n_toks,
+apply_array (char *str, jsmntok_t * tok, int n_toks,
              struct extractor_specifier *es)
 {
   if (es->match_toplevel_array) {
@@ -297,10 +297,10 @@ apply_array (char *str, jsmntok_t * tok, size_t n_toks,
 }
 
 static void
-apply_object(char *str, jsmntok_t *tok, size_t n_toks,
+apply_object(char *str, jsmntok_t *tok, int n_toks,
              struct extractor_specifier *es)
 {
-  size_t ik = 1, iv = 2;
+  int ik = 1, iv = 2;
   do {
     // tok[ik] must be a toplevel key, and tok[iv] must be its value
     if (tok[ik].type != JSMN_STRING) {
@@ -596,6 +596,7 @@ int
 json_scanf(char *buffer, size_t buf_size, char *format, ...)
 {
   size_t num_keys = 0;
+  int extracted_values = 0;
   struct extractor_specifier *es = format_parse(format, &num_keys);
   if (NULL == es) return 0;
 
@@ -645,7 +646,6 @@ json_scanf(char *buffer, size_t buf_size, char *format, ...)
            tok[i].end - tok[i].start, buffer + tok[i].start);
   }
 
-  int extracted_values = 0;
   for (size_t i = 0; i < num_keys; ++i) {
     switch (tok[0].type) {
       case JSMN_OBJECT:
@@ -654,6 +654,9 @@ json_scanf(char *buffer, size_t buf_size, char *format, ...)
       case JSMN_ARRAY:
         apply_array(buffer, tok, num_tok, es+i);
         break;
+      default:
+        ERROR("Unexpected toplevel token %s\n", print_token(tok[0].type));
+        goto cleanup;
     }
 
     if (es[i].is_applied) extracted_values ++;
