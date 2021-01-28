@@ -74,3 +74,41 @@ list(void ** p, size_t n, char * path)
   }
   return total_files;
 }
+
+long long iso8601_to_unix_ms(const char *timestamp)
+{
+  struct tm tm;
+  double seconds = 0;
+  char tz_operator = 'Z';
+  int tz_hour = 0;
+  int tz_min = 0;
+  long long result = 0;
+  memset(&tm, 0, sizeof(tm));
+
+  sscanf(timestamp, "%d-%d-%dT%d:%d:%lf%c%d:%d", // ISO-8601 complete format
+  &tm.tm_year, &tm.tm_mon, &tm.tm_mday, // Date
+  &tm.tm_hour, &tm.tm_min, &seconds, // Time
+  &tz_operator, &tz_hour, &tz_min); // Timezone
+
+  tm.tm_mon--; // struct tm takes month from 0 to 11, instead of 1 to 12
+  tm.tm_year -= 1900; // struct tm takes years from 1900
+
+  result = (((long long) mktime(&tm) - timezone) * 1000) +
+  (long long) round(seconds * 1000.0);
+  switch(tz_operator)
+  {
+    case 'Z':
+      // UTC, don't do nothing
+      break;
+    case '+':
+      // Add hours and minutes
+      result += (tz_hour * 60 + tz_min) * 60 * 1000;
+      break;
+    case '-':
+      // Subtract hours and minutes
+      result -= (tz_hour * 60 + tz_min) * 60 * 1000;
+      break;
+  }
+
+  return result;
+}
