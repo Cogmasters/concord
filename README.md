@@ -1,42 +1,8 @@
 # Orca: a bot framework for Discord etc.
 
-## Design
+It provides an easy to use, easy to deploy, easy to debug way to build
+reliable Discord bots.
 
-The primary design goals are:
-
-- easy to use for the end users: we use multi-threading and
-  synchronous IO to support concurrency so you only need to focus on
-  the logic.  We carefully craft the library to use computing
-  resources efficiently so performance should never be an issue.
-
-- easy to reason about the code: we use the most native data structures,
-   the simplest algorithms, and intuitive interfaces.
-
-- easy to debug (networking and logic) errors: extensive assertion 
-  and logging facilities.
-
-- superior reliability
-
-## Implementation
-
-Orca is implemented primarily in plain C, but we also use C++'s
-namespace to organize symbols so we could establish 1-1 mappings
-between Orca APIs and supported REST APIs.
-
-Establishing these 1-1 mappings has two purposes:
-
-1.  Reduce the need of documenting every Orca API
-
-2.  Reduce our user's cognitive burden of having to read both Orca API
-documenation and supported REST API documentations.
-
-Orca is implemented in two parts: All the functions that do the heavy
-lifting are implemented in plain C code.  The functions that can be
-mapped to REST APIs are wrapped in C++'s namespace to establish the
-1-1 mappings.
-
-Orca's implemnetation has minimum external dependencies to make bot
-deployment deadly simple.
 
 ## Build
 #### Install dependencies:
@@ -77,9 +43,48 @@ Close the Terminal that bot-echo is running or type "Ctrl-C" to kill it.
 
 Instructions on how to make a ping-pong bot is found [here](/docs/BUILDING_A_BOT.md).
 
+
 ## Participate in discussions and get tech support
 Join our discord server: https://discord.gg/2jfycwXVM3
 
 ## Contributions are welcome!
 Check our development [Roadmap](docs/ROADMAP.md) and [Coding Guidelines](docs/CODING_GUIDELINES.md) to get started
 
+
+### Design
+
+The primary design goals are:
+
+- easy to use for the end users: we use multi-threading and
+  synchronous IO to support concurrency so you only need to focus on
+  the logic.  We carefully craft the library to use computing
+  resources efficiently so performance should never be an issue.
+
+- easy to reason about the code: we use the most native data structures,
+   the simplest algorithms, and intuitive interfaces.
+
+- easy to debug (networking and logic) errors: extensive assertion 
+  and logging facilities.
+
+- superior reliability
+
+### Implementation
+
+Orca is implemented primarily in plain C, but we also use C++'s
+namespace to organize symbols so we could establish 1-1 mappings
+between Orca APIs and supported REST APIs.
+
+Establishing these 1-1 mappings has two purposes:
+
+1.  Reduce the need of documenting every Orca API
+
+2.  Reduce our user's cognitive burden of having to read both Orca API
+documenation and supported REST API documentations.
+
+Orca is implemented in two parts: All the functions that do the heavy
+lifting are implemented in plain C code.  The functions that can be
+mapped to REST APIs are wrapped in C++'s namespace to establish the
+1-1 mappings.
+
+Orca's implemnetation has minimum external dependencies to make bot
+deployment deadly simple.
