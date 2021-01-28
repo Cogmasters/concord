@@ -51,8 +51,10 @@ json_list_load(char *str, size_t len, void *p_users)
   json_token **toks = NULL;
   json_scanf(str, len, "[]%A", &toks);
 
-  dati **new_users = (dati**)ntl_dup((void**)toks, sizeof(dati));
+  size_t n = ntl_length((void**)toks);
+  dati **new_users = (dati**)ntl_calloc(n, sizeof(dati*));
   for (size_t i=0; toks[i]; ++i) {
+    new_users[i] = init();
     json_load(toks[i]->start, toks[i]->length, new_users[i]);
   }
   

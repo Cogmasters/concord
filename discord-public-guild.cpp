@@ -37,8 +37,10 @@ json_list_load(char *str, size_t len, void *p_guilds)
   json_token **toks = NULL;
   json_scanf(str, len, "[]%A", &toks);
 
-  dati **new_guilds = (dati**)ntl_dup((void**)toks, sizeof(dati));
+  size_t n = ntl_length((void**)toks);
+  dati **new_guilds = (dati**)ntl_calloc(n, sizeof(dati*));
   for (size_t i=0; toks[i]; ++i) {
+    new_guilds[i] = init();
     json_load(toks[i]->start, toks[i]->length, new_guilds[i]);
   }
   
@@ -112,13 +114,10 @@ json_list_load(char *str, size_t len, void *p_members)
   json_token **toks = NULL;
   json_scanf(str, len, "[]%A", &toks);
 
-  dati **new_members = (dati**)ntl_dup((void**)toks, sizeof(dati));
+  size_t n = ntl_length((void**)toks);
+  dati **new_members = (dati**)ntl_calloc(n, sizeof(dati*));
   for (size_t i=0; toks[i]; ++i) {
-    /* @todo this should happen with members::init(),
-     * but ntl_dup forbids it */
-    new_members[i]->user = user::init();
-    /* * * * * * * * * * * * * * * * * * * */
-
+    new_members[i] = init();
     json_load(toks[i]->start, toks[i]->length, new_members[i]);
   }
   
