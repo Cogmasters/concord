@@ -34,7 +34,7 @@ bool run (user_agent::dati * ua, struct params * d, struct response * resp)
   user_agent::run(ua,
                   &handle,
                   &body,
-                  POST,
+                  HTTP_POST,
                   "/repos/%s/%s/git/blobs",
                   d->owner,
                   d->repo);
@@ -70,7 +70,7 @@ bool run (user_agent::dati * ua, struct params * p, struct response * resp) {
   user_agent::run(ua,
                   &handle,
                   NULL,
-                  GET,
+                  HTTP_GET,
                   "/repos/%s/%s/git/blobs/%s",
                   p->owner,
                   p->repo,

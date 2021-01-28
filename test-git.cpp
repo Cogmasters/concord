@@ -3,7 +3,27 @@
 #include "ntl.h"
 #include <dirent.h>
 #include <sys/stat.h>
+#include <errno.h>
+#include <stdlib.h>
 
+static char*
+load_whole_file(const char filename[], size_t *len) {
+  FILE *f = fopen(filename,"rb");
+  if (!f) {
+    char *s = strerror(errno);
+    fprintf (stderr, "%s '%s'\n", s, filename);
+    exit(1);
+  }
+
+  fseek(f, 0, SEEK_END);
+  *len = ftell(f);
+  fseek(f, 0, SEEK_SET);
+
+  char *string = (char *)malloc(*len);
+  fread(string, 1, *len, f);
+  fclose(f);
+  return string;
+}
 
 namespace ua = github::v3::user_agent;
 
@@ -41,7 +61,7 @@ int commit (ua::dati *data, char * owner, char * repo,
   handle.ok_cb = load_object_sha;
   handle.ok_obj = &last_sha;
   ua::run(data, &handle, NULL,
-      GET, "/repos/%s/%s/git/refs/heads/master",  owner, repo);
+      HTTP_GET, "/repos/%s/%s/git/refs/heads/master",  owner, repo);
 
   //2. create a new branch from last commit
   body.size = json_asprintf(&body.str,
@@ -52,14 +72,14 @@ int commit (ua::dati *data, char * owner, char * repo,
   handle.ok_cb = log;
   handle.ok_obj = NULL;
   ua::run(data, &handle, &body,
-                  POST, "/repos/%s/%s/git/refs", owner, repo);
+                  HTTP_POST, "/repos/%s/%s/git/refs", owner, repo);
 
   //3. get sha of file be replaced
   char * file_sha = NULL;
   handle.ok_cb = load_sha;
   handle.ok_obj = &file_sha;
   ua::run(data, &handle, NULL,
-      GET, "/repos/%s/%s/contents/%s", owner, repo, filename);
+      HTTP_GET, "/repos/%s/%s/contents/%s", owner, repo, filename);
 
   //4. update a file
   body.size = json_asprintf(&body.str,
@@ -75,7 +95,7 @@ int commit (ua::dati *data, char * owner, char * repo,
   handle.ok_cb = log;
   handle.ok_obj = NULL;
   ua::run(data, &handle, &body,
-      PUT, "/repos/%s/%s/contents/%s", owner, repo, filename);
+      HTTP_PUT, "/repos/%s/%s/contents/%s", owner, repo, filename);
 
 
   // 5. create a pull request
@@ -91,7 +111,7 @@ int commit (ua::dati *data, char * owner, char * repo,
   handle.ok_cb = log;
   handle.ok_obj = NULL;
   ua::run(data, &handle, &body,
-                  POST, "/repos/%s/%s/pulls", owner, repo);
+                  HTTP_POST, "/repos/%s/%s/pulls", owner, repo);
   curl_global_cleanup();
   return 0;
 }
@@ -104,7 +124,7 @@ get_head_commit (ua::dati * data, char * owner, char * repo, char * branch)
   handle.ok_cb = load_object_sha;
   handle.ok_obj = &sha;
   ua::run(data, &handle, NULL,
-          GET, "/repos/%s/%s/git/refs/heads/%s",  owner, repo, branch);
+          HTTP_GET, "/repos/%s/%s/git/refs/heads/%s",  owner, repo, branch);
   return sha;
 }
 
@@ -116,7 +136,7 @@ get_tree_sha(ua::dati * data, char * owner, char * repo, char * commit_sha)
   handle.ok_cb = load_sha;
   handle.ok_obj = &sha;
   ua::run(data, &handle, NULL,
-          GET, "/repos/%s/%s/git/trees/%s", owner, repo, commit_sha);
+          HTTP_GET, "/repos/%s/%s/git/trees/%s", owner, repo, commit_sha);
 
   fprintf(stderr, "tree-sha:%s\n", sha);
   return sha;
@@ -131,11 +151,14 @@ create_blobs (ua::dati * data, char * owner, char * repo, struct file ** files) 
 
   for (i = 0; files[i]; i++) {
     fprintf(stderr, "===creating blob for %s===\n", files[i]->path);
+    size_t len;
+    char * content = load_whole_file(files[i]->path, &len);
     body.size = json_asprintf(&body.str,
-                              "{ |content|:|%s|, |encoding|:|utf-8| }",
-                              files[i]->content);
+                              "{ |content|:|%.*s|, |encoding|:|utf-8| }",
+                              len, content);
+    fprintf(stderr, "%.*s\n", body.size, body.str);
     ua::run(data, &handle, &body,
-            POST, "/repos/%s/%s/git/blobs", owner, repo);
+            HTTP_POST, "/repos/%s/%s/git/blobs", owner, repo);
     fprintf(stderr, "file-sha %s\n", file_sha);
     files[i]->sha = file_sha;
     free(body.str);
@@ -176,7 +199,7 @@ create_tree (ua::dati * data, char * owner, char * repo, char * base_tree_sha,
   handle.ok_obj = &new_tree_sha;
   fprintf(stderr, "%s\n", body.str);
   ua::run(data, &handle, &body,
-          POST, "/repos/%s/%s/git/trees", owner, repo);
+          HTTP_POST, "/repos/%s/%s/git/trees", owner, repo);
   free(body.str);
   fprintf(stderr, "new-tree-sha:%s\n", new_tree_sha);
   return new_tree_sha;
@@ -199,7 +222,7 @@ create_a_commit (ua::dati * data,
                             "}",
                             message, tree_sha, parent_commit_sha);
   ua::run(data, &handle, &body,
-          POST, "/repos/%s/%s/git/commits", owner, repo);
+          HTTP_POST, "/repos/%s/%s/git/commits", owner, repo);
   free(body.str);
   fprintf(stderr, "commit-sha:%s\n", new_commit_sha);
   return new_commit_sha;
@@ -217,7 +240,7 @@ create_a_branch (ua::dati * data, char * owner, char * repo,
   handle.ok_cb = log;
   handle.ok_obj = NULL;
   ua::run(data, &handle, &body,
-          POST, "/repos/%s/%s/git/refs", owner, repo);
+          HTTP_POST, "/repos/%s/%s/git/refs", owner, repo);
 }
 
 static void
@@ -230,7 +253,7 @@ update_a_commit (ua::dati * data,
   body.size = json_asprintf(&body.str, "{|sha|:|%s|}", commit_sha);
   fprintf(stderr, "PATCH: %s\n", body.str);
   ua::run(data, &handle, &body,
-          PATCH, "/repos/%s/%s/git/refs/heads/%s", owner, repo, branch);
+          HTTP_PATCH, "/repos/%s/%s/git/refs/heads/%s", owner, repo, branch);
 }
 
 static void
@@ -248,7 +271,7 @@ create_a_pull_request (ua::dati * data, char * owner, char * repo,
                             branch, branch);
   handle.ok_cb = log;
   ua::run(data, &handle, &body,
-          POST, "/repos/%s/%s/pulls", owner, repo);
+          HTTP_POST, "/repos/%s/%s/pulls", owner, repo);
 }
 
 
@@ -268,7 +291,9 @@ stat_to_type (const struct stat *st)
   }
 }
 
-int list(void ** p, size_t n, char * path) {
+int
+list(void ** p, size_t n, char * path)
+{
   struct dirent * dir;
   DIR * d;
 
@@ -282,13 +307,12 @@ int list(void ** p, size_t n, char * path) {
         if (fstatat(fd, dir->d_name, &st, 0) == 0) {
           char * type = stat_to_type(&st);
           if (type) {
-            if (0 == strcmp(type, "file"))
-            {
+            if (0 == strcmp(type, "file")) {
               total_files ++;
               fprintf(stderr, "%s\n", dir->d_name);
             }
             else { // nested folder
-              
+
             }
           }
         }
@@ -310,9 +334,14 @@ int main (int argc, char ** argv)
   struct bot_settings settings;
   bot_settings_init (&settings, config_file);
 
-  if (argc == 3) {
-    int x = list(NULL, 0, argv[2]);
-    fprintf(stderr, "%d\n", x);
+  struct file ** files = NULL;
+  if (argc >= 3) {
+    files = (struct file **) ntl_calloc(argc - 2, sizeof(struct file));
+    for (int i = 2; files[i-2]; ++i) {
+      files[i-2]->path = argv[i];
+    }
+  }
+  else {
     return 0;
   }
 
@@ -326,18 +355,20 @@ int main (int argc, char ** argv)
     commit(&data, settings.github.username,
            repo, "test_2", "x/test.c", "LypuZXcgY29kZSovCg==");
   else {
+    /*
     struct file files [] = {
       {.path = "test/f.c", .content = "the content of f.c"},
       {.path = "test/g.c", .content = "the content of g.c"}
     };
     struct file * fptrs [] = { &files[0], &files[1], NULL};
-    create_blobs(&data, owner, repo, fptrs);
+     */
+    create_blobs(&data, owner, repo, files);
 
     char * head_commit_sha = get_head_commit(&data, owner, repo, NULL);
     char * base_tree_sha = get_tree_sha(&data, owner, repo, head_commit_sha);
 
     char * tree_sha =
-      create_tree(&data, owner, repo, base_tree_sha, fptrs);
+      create_tree(&data, owner, repo, base_tree_sha, files);
     char * commit_sha =
       create_a_commit(&data, owner, repo, tree_sha,
                       head_commit_sha, "committed thru github API");
