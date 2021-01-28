@@ -520,11 +520,13 @@ json_load(char *str, size_t len, void *p_ws)
 static void
 get_bot(client *client)
 {
+  struct resp_handle resp_handle = {&json_load, (void*)&client->ws};
+  struct api_resbody_s body = {NULL, 0};
+
   user_agent::run( 
     &client->ua,
-    (void*)&client->ws,
-    &json_load,
-    NULL,
+    &resp_handle,
+    &body,
     HTTP_GET, GATEWAY BOT);
 }
 

@@ -70,9 +70,8 @@ void init(user_agent::dati *ua, char token[]);
 void cleanup(user_agent::dati *ua);
 void run(
   user_agent::dati *ua, 
-  void *p_object, 
-  load_obj_cb *load_cb,
-  char postfields[], //only for POST/PUT methods
+  struct resp_handle *resp_handle,
+  struct api_resbody_s *body, // needed for POST/PUT/PATCH methods
   enum http_method http_method,
   char endpoint[],
   ...);

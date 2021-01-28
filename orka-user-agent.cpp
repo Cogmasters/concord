@@ -48,7 +48,10 @@ init(struct dati *api, char * base_url)
 
 /* perform the request */
 static void
-perform_request(struct dati *api, struct resp_handle * resp_handle, char endpoint[])
+perform_request(
+  struct dati *api,
+  struct resp_handle *resp_handle,
+  char endpoint[])
 {
   enum { //possible actions taken after a http response code
     DONE, RETRY, ABORT

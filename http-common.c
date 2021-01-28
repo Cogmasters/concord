@@ -75,6 +75,42 @@ http_code_print(enum http_code code)
 }
 
 char*
+http_reason_print(enum http_code code)
+{
+  switch (code) {
+  case HTTP_OK:
+      return "The request was completed succesfully.";
+  case HTTP_CREATED:
+      return "The entity was created succesfully.";
+  case HTTP_NO_CONTENT:
+      return "The request completed succesfully but returned no content.";
+  case HTTP_NOT_MODIFIED:
+      return "The entity was not modified (no action was taken).";
+  case HTTP_BAD_REQUEST:
+      return "The request was improperly formatted, or the server couldn't understand it.";
+  case HTTP_UNAUTHORIZED:
+      return "The Authorization header was missing or invalid.";
+  case HTTP_FORBIDDEN:
+      return "The Authorization token you passed did not have permission to the resource.";
+  case HTTP_NOT_FOUND:
+      return "The resource at the location specified doesn't exist.";
+  case HTTP_METHOD_NOT_ALLOWED:
+      return "The HTTP method used is not valid for the location specified.";
+  case HTTP_TOO_MANY_REQUESTS:
+      return "You got ratelimited.";
+  case HTTP_GATEWAY_UNAVAILABLE:
+      return "There was not a gateway available to process your request. Wait a bit and retry.";
+  case CURL_NO_RESPONSE:
+      return "Curl couldn't fetch a HTTP response.";
+  default:
+      if (code >= 500) {
+        return "The server had an error processing your request.";
+      }
+      return "Unknown HTTP method.";
+  }
+}
+
+char*
 http_method_print(enum http_method method)
 {
   switch(method) {

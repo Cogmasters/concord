@@ -125,11 +125,13 @@ run(client *client, const char channel_id[], params *params)
   int ret = snprintf(payload, MAX_PAYLOAD_LEN, "{\"content\":\"%s\"}", params->content);
   ASSERT_S(ret < MAX_PAYLOAD_LEN, "Out of bounds write attempt");
 
+  struct resp_handle resp_handle = {NULL, NULL};
+  struct api_resbody_s body = {payload, strlen(payload)};
+
   user_agent::run( 
     &client->ua,
-    NULL,
-    NULL,
-    payload,
+    &resp_handle,
+    &body,
     HTTP_POST, CHANNEL MESSAGES, channel_id);
 }
 

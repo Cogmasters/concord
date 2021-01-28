@@ -41,7 +41,6 @@ enum http_code {
   CURL_NO_RESPONSE              = 0,
 };
 
-
 struct api_resbody_s {
   char *str; //the request/response str
   size_t size; //the request/response str length
@@ -72,7 +71,7 @@ struct resp_handle {
   void *ok_obj; // the pointer to be passed to ok_cb
 
   load_obj_cb *err_cb;
-  void *err_obj;
+  void *err_obj; // the pointer to be passed to err_cb
 };
 
 void sleep_ms(const long long delay_ms);
@@ -81,6 +80,7 @@ void timestamp_str(char str[], int len);
 
 char* get_header_value(struct api_header_s *pairs, char header_field[]);
 char* http_code_print(enum http_code code);
+char* http_reason_print(enum http_code code);
 char* http_method_print(enum http_method method);
 
 /* set specific http method used for the request */

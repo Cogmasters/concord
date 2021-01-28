@@ -31,11 +31,13 @@ pin_message(client *client, const char channel_id[], const char message_id[])
     return;
   }
 
+  struct resp_handle resp_handle = {NULL, NULL};
+  struct api_resbody_s body = {"", 0};
+
   user_agent::run( 
     &client->ua,
-    NULL,
-    NULL,
-    "", //empty POSTFIELDS
+    &resp_handle,
+    &body, //empty POSTFIELDS
     HTTP_PUT, PINNED_MESSAGE, channel_id, message_id);
 }
 
@@ -51,11 +53,13 @@ unpin_message(client *client, const char channel_id[], const char message_id[])
     return;
   }
 
+  struct resp_handle resp_handle = {NULL, NULL};
+  struct api_resbody_s body = {"", 0};
+
   user_agent::run( 
     &client->ua,
-    NULL,
-    NULL,
-    "", //empty POSTFIELDS
+    &resp_handle,
+    &body, //empty POSTFIELDS
     HTTP_DELETE, PINNED_MESSAGE, channel_id, message_id);
 }
 

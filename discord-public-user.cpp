@@ -88,11 +88,13 @@ get(client *client, const char user_id[], dati *p_user)
     return;
   }
 
+  struct resp_handle resp_handle = {&json_load, (void*)p_user};
+  struct api_resbody_s body = {NULL, 0};
+
   user_agent::run( 
     &client->ua,
-    (void*)p_user,
-    &json_load,
-    NULL,
+    &resp_handle,
+    &body,
     HTTP_GET, USER, user_id);
 }
 
@@ -101,11 +103,13 @@ namespace me {
 void 
 get(client *client, dati *p_user)
 {
+  struct resp_handle resp_handle = {&json_load, (void*)p_user};
+  struct api_resbody_s body = {NULL, 0};
+
   user_agent::run( 
     &client->ua,
-    (void*)p_user,
-    &json_load,
-    NULL,
+    &resp_handle,
+    &body,
     HTTP_GET, USER, "@me");
 }
 
@@ -114,11 +118,14 @@ get_guilds(client *client)
 {
   guild::dati **new_guilds = NULL;
 
+  struct resp_handle resp_handle =
+    {&guild::json_list_load, (void*)&new_guilds};
+  struct api_resbody_s body = {NULL, 0};
+
   user_agent::run( 
     &client->ua,
-    (void*)&new_guilds,
-    &guild::json_list_load,
-    NULL,
+    &resp_handle,
+    &body,
     HTTP_GET, USER GUILDS, "@me");
 
   return new_guilds;

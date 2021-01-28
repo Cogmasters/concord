@@ -68,19 +68,56 @@ cleanup(dati *ua)
 }
 
 /* perform the request */
-static void
+static http_code
 perform_request(
   dati *ua,
-  void *p_object, 
-  load_obj_cb *load_cb,
+  struct resp_handle *resp_handle,
   char endpoint[])
+{ 
+  CURLcode ecode;
+  //perform the connection
+  ecode = curl_easy_perform(ua->ehandle);
+  ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
+
+  //get response's code
+  enum http_code code;
+  ecode = curl_easy_getinfo(ua->ehandle, CURLINFO_RESPONSE_CODE, &code);
+  ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
+
+  //get request's url
+  const char *url = NULL;
+  ecode = curl_easy_getinfo(ua->ehandle, CURLINFO_EFFECTIVE_URL, &url);
+  ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
+
+  D_PRINT("Request URL: %s", url);
+
+  return code;
+}
+
+/* template function for performing requests */
+void
+run(
+  dati *ua, 
+  struct resp_handle *resp_handle,
+  struct api_resbody_s *body,
+  enum http_method http_method,
+  char endpoint[],
+  ...)
 {
-  enum { //possible actions taken after a http response code
-    DONE, RETRY, ABORT
-  } action;
+  //create the url route
+  va_list args;
+  va_start (args, endpoint);
+  char url_route[MAX_URL_LEN];
+  int ret = vsnprintf(url_route, sizeof(url_route), endpoint, args);
+  ASSERT_S(ret < (int)sizeof(url_route), "oob write of url_route");
+  va_end(args);
+
+  set_method(ua->ehandle, http_method, body); //set the request method
+  set_url(ua->ehandle, BASE_API_URL, url_route); //set the request URL
 
   //attempt to fetch a bucket handling connections from this endpoint
   bucket::dati *bucket = bucket::try_get(ua, endpoint);
+  enum http_code http_code;
   do {
     if (bucket) { //bucket exists, we will check for pending delays
       long long delay_ms = bucket::cooldown(bucket, true);
@@ -92,76 +129,41 @@ perform_request(
 
       sleep_ms(delay_ms); //sleep for delay amount (if any)
     }
-
-
-    CURLcode ecode;
-    //perform the connection
-    ecode = curl_easy_perform(ua->ehandle);
-    ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
-
-    //get response's code
-    enum http_code code;
-    ecode = curl_easy_getinfo(ua->ehandle, CURLINFO_RESPONSE_CODE, &code);
-    ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
-
-    //get request's url
-    char *url = NULL;
-    ecode = curl_easy_getinfo(ua->ehandle, CURLINFO_EFFECTIVE_URL, &url);
-    ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
-
-    D_PRINT("Request URL: %s", url);
-
-
-    const char *reason; //verbose reason of http code
-    switch (code) {
+  
+    http_code = perform_request(ua, resp_handle, endpoint); //perform the request
+    switch (http_code) {
     case HTTP_OK:
-        reason = "The request was completed succesfully.";
-        action = DONE;
-
-        if (load_cb) {
-          (*load_cb)(ua->body.str, ua->body.size, p_object);
+        if (resp_handle->ok_cb) {
+          (*resp_handle->ok_cb)(ua->body.str, ua->body.size, resp_handle->ok_obj);
         }
-
-        break;
+    /* fall through */
     case HTTP_CREATED:
-        reason = "The entity was created succesfully.";
-        action = DONE;
-        break;
     case HTTP_NO_CONTENT:
-        reason = "The request completed succesfully but returned no content.";
-        action = DONE;
-        break;
     case HTTP_NOT_MODIFIED:
-        reason = "The entity was not modified (no action was taken).";
-        action = DONE;
-        break;
-    case HTTP_BAD_REQUEST:
-        reason = "The request was improperly formatted, or the server couldn't understand it.";
-        action = ABORT;
-        break;
-    case HTTP_UNAUTHORIZED:
-        reason = "The Authorization header was missing or invalid.";
-        action = ABORT;
-        break;
-    case HTTP_FORBIDDEN:
-        reason = "The Authorization token you passed did not have permission to the resource.";
-        action = DONE;
-        break;
-    case HTTP_NOT_FOUND:
-        reason = "The resource at the location specified doesn't exist.";
-        action = ABORT;
-        break;
-    case HTTP_METHOD_NOT_ALLOWED:
-        reason = "The HTTP method used is not valid for the location specified.";
-        action = ABORT;
-        break;
-    case HTTP_TOO_MANY_REQUESTS:
-    /* @todo dealing with ratelimits solely by checking for
-     *  HTTP_TOO_MANY REQUESTS is not discord compliant */
-     {
-        reason = "You got ratelimited.";
-        action = RETRY;
+    case CURL_NO_RESPONSE:
+        D_NOTOP_PRINT("(%d)%s - %s", 
+            http_code,
+            http_code_print(http_code),
+            http_reason_print(http_code));
 
+        //build and updates bucket's rate limiting information
+        bucket::build(ua, bucket, endpoint);
+
+        //reset the size of response body and header pairs for a fresh start
+        ua->body.size = 0;
+        ua->pairs.size = 0;
+
+        return; //EARLY EXIT (SUCCESS)
+    case HTTP_BAD_REQUEST:
+    case HTTP_UNAUTHORIZED:
+    case HTTP_FORBIDDEN:
+    case HTTP_NOT_FOUND:
+    case HTTP_TOO_MANY_REQUESTS:
+      D_NOTOP_PRINT("(%d)%s - %s", 
+          http_code,
+          http_code_print(http_code),
+          http_reason_print(http_code));
+     {
         char message[256];
         long long retry_after;
 
@@ -173,82 +175,36 @@ perform_request(
             message, retry_after);
 
         sleep_ms(retry_after);
-
         break;
      }
     case HTTP_GATEWAY_UNAVAILABLE:
-        reason = "There was not a gateway available to process your request. Wait a bit and retry.";
-        action = RETRY;
-
+        D_NOTOP_PRINT("(%d)%s - %s", 
+            http_code,
+            http_code_print(http_code),
+            http_reason_print(http_code));
         sleep_ms(5000); //wait a bit
         break;
-    case CURL_NO_RESPONSE:
-        reason = "Curl couldn't fetch a HTTP response.";
-        action = DONE;
-        break;
+    case HTTP_METHOD_NOT_ALLOWED:
     default:
-        if (code >= 500) {
-          reason = "The server had an error processing your request.";
-          action = RETRY;
-        }
-        else {
-          reason = "Unknown HTTP method.";
-          action = ABORT;
+        if (http_code >= 500) {// server related error, retry
+          D_NOTOP_PRINT("(%d)%s - %s", 
+              http_code,
+              http_code_print(http_code),
+              http_reason_print(http_code));
+          break;
         }
 
-        break;
+        PRINT_ERR("(%d)%s - %s", 
+            http_code,
+            http_code_print(http_code),
+            http_reason_print(http_code));
     }
 
-    switch (action) {
-    case DONE:
-        //build and updates bucket's rate limiting information
-        bucket::build(ua, bucket, endpoint);
-    /* fall through */    
-    case RETRY:
-        D_NOTOP_PRINT("(%d)%s - %s", code, http_code_print(code), reason);
+    //reset the size of response body and header pairs for a fresh start
+    ua->body.size = 0;
+    ua->pairs.size = 0;
 
-        //reset the size of response body and header pairs for a fresh start
-        ua->body.size = 0;
-        ua->pairs.size = 0;
-
-        break;
-    case ABORT: default:
-        PRINT_ERR("(%d)%s - %s", code, http_code_print(code), reason);
-    }
-
-  } while (RETRY == action);
-}
-
-/* template function for performing requests */
-void
-run(
-  dati *ua, 
-  void *p_object, 
-  load_obj_cb *load_cb,
-  char postfields[],
-  enum http_method http_method,
-  char endpoint[],
-  ...)
-{
-  //create the url route
-  va_list args;
-  va_start (args, endpoint);
-
-  char url_route[MAX_URL_LEN];
-  int ret = vsnprintf(url_route, sizeof(url_route), endpoint, args);
-  ASSERT_S(ret < (int)sizeof(url_route), "Out of bounds write attempt");
-
-  va_end(args);
-
-  // @todo this is temporary
-  struct api_resbody_s body = {
-    .str = postfields,
-    .size = postfields ? strlen(postfields) : 0
-  };
-
-  set_method(ua->ehandle, http_method, &body); //set the request method
-  set_url(ua->ehandle, BASE_API_URL, url_route); //set the request URL
-  perform_request(ua, p_object, load_cb, endpoint); //perform the request
+  } while (1);
 }
 
 } // namespace user_agent

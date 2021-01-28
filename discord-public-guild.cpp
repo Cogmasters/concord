@@ -74,11 +74,13 @@ get(client *client, const char guild_id[], dati *p_guild)
     return;
   }
 
+  struct resp_handle resp_handle = {&json_load, (void*)p_guild};
+  struct api_resbody_s body = {NULL, 0};
+
   user_agent::run( 
     &client->ua,
-    (void*)p_guild,
-    &json_load,
-    NULL,
+    &resp_handle,
+    &body,
     HTTP_GET, GUILD, guild_id);
 }
 
@@ -157,12 +159,15 @@ get_list(client *client, const char guild_id[])
   }
 
   dati **new_members = NULL;
+
+  struct resp_handle resp_handle =
+    {&json_list_load, (void*)&new_members};
+  struct api_resbody_s body = {NULL, 0};
   
   user_agent::run( 
     &client->ua,
-    (void*)&new_members,
-    &json_list_load,
-    NULL,
+    &resp_handle,
+    &body,
     HTTP_GET, GUILD MEMBERS "?limit=100", guild_id);
 
   return new_members;
