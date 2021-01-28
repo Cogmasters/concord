@@ -15,16 +15,20 @@ struct dati {
   struct _settings_s settings;
 };
 
-extern void init(struct dati *api, char *base_url);
+extern void
+init(struct dati *api, char *base_url);
 
-extern void run(struct dati *api,
-                struct resp_handle *handle,
-                struct api_resbody_s *body,
-                enum http_method http_method,
-                char endpoint[],
-                ...);
+extern void
+run(struct dati *api,
+    struct resp_handle *handle,
+    struct api_resbody_s *body,
+    enum http_method http_method,
+    char endpoint[], ...);
 
 } // namespace user_agent
 } // namespace orka
+
+
+
 
 #endif //ORKA_H

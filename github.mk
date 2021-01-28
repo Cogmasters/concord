@@ -2,8 +2,9 @@ OBJDIR	:= obj
 LIBDIR	:= lib
 
 SRC	:= $(wildcard http-common.c github-v3-user-agent.cpp \
-          github-v3-git-database.cpp json-scanf.c \
-		  json-printf.c settings.c orka-user-agent.cpp ntl.c)
+          json-scanf.c json-printf.c\
+		  github-v3-git-op.cpp orka-utils.c\
+		  settings.c orka-user-agent.cpp ntl.c)
 
 _OBJS	:= $(patsubst %.cpp, %.o, $(SRC))
 OBJS1   += $(patsubst %.c, %.o, $(_OBJS))
@@ -11,7 +12,7 @@ OBJS 	:= $(addprefix $(OBJDIR)/, $(OBJS1))
 
 LIBDISCORD_CFLAGS	:= -I./
 LIBDISCORD_LDFLAGS	:=  -L./$(LIBDIR) -ldiscord -lcurl \
-												-lbearssl -static
+						-lbearssl -static
 
 
 LIBS_CFLAGS	:= $(LIBDISCORD_CFLAGS)
@@ -29,7 +30,7 @@ PREFIX ?= /usr/local
 
 .PHONY : all mkdir install clean purge
 
-all : mkdir $(OBJS) $(LIBDISCORD_SLIB) test-git.exe test-cee.exe
+all : mkdir $(OBJS) $(LIBDISCORD_SLIB) test-git.exe test-git2.exe test-cee.exe
 
 mkdir :
 	mkdir -p $(OBJDIR) $(LIBDIR)
@@ -37,24 +38,38 @@ mkdir :
 
 $(OBJDIR)/ntl.o : ntl.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
+
 $(OBJDIR)/http-common.o : http-common.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
+
 $(OBJDIR)/settings.o : settings.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
+
 $(OBJDIR)/json-scanf.o : json-scanf.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
+
 $(OBJDIR)/json-printf.o : json-printf.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
+
+$(OBJDIR)/orka-utils.o: orka-utils.c
+	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
+
 $(OBJDIR)/orka-user-agent.o: orka-user-agent.cpp
 	$(CXX) $(CFLAGS) $(CXXFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
+
 $(OBJDIR)/github-v3-user-agent.o: github-v3-user-agent.cpp
 	$(CXX) $(CFLAGS) $(CXXFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
-$(OBJDIR)/github-v3-git-database.o: github-v3-git-database.cpp
+
+$(OBJDIR)/github-v3-git-op.o: github-v3-git-op.cpp
 	$(CXX) $(CFLAGS) $(CXXFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
+
 $(OBJDIR)/github-v3-repositories.o: github-v3-repositories.cpp
 	$(CXX) $(CFLAGS) $(CXXFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 
 test-git.exe: test-git.cpp $(OBJS)
+	$(CXX) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(OBJS) -lcurl -lbearssl -static
+
+test-git2.exe: test-git2.cpp $(OBJS)
 	$(CXX) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(OBJS) -lcurl -lbearssl -static
 
 test-cee.exe: test-cee.cpp $(OBJS)

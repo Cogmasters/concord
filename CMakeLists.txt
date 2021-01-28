@@ -37,21 +37,25 @@ set(SOURCE_FILES
         settings.h
         ${JSON_SCANF})
 
+set(ORKA_FILES
+        orka-utils.c
+        orka-utils.h)
+
 set(GITHUB_FILES
         http-common.h
         http-common.c
         github-v3.hpp
         github-v3-user-agent.cpp
-        github-v3-git-database.cpp
-        github-v3-repositories.cpp
+        github-v3-git-op.cpp
         settings.h
         settings.c
-        ${JSON_SCANF})
+        ${JSON_SCANF}
+        ${ORKA_FILES})
 
 set(CEE_FILES
         http-common.h
         http-common.c
-        orka.h
+        orka-user-agent.hpp
         orka-user-agent.cpp
         settings.h
         settings.c
@@ -73,6 +77,9 @@ add_executable(test-json-scanf-array.exe ${JSON_SCANF} test-json-scanf-array.c)
 
 add_executable(test-git.exe ${GITHUB_FILES}  test-git.cpp)
 target_link_libraries(test-git.exe curl ssl crypto)
+
+add_executable(test-git2.exe ${GITHUB_FILES}  test-git2.cpp)
+target_link_libraries(test-git2.exe curl ssl crypto)
 
 add_executable(test-cee.exe ${CEE_FILES}  test-cee.cpp)
 target_link_libraries(test-cee.exe curl ssl crypto)
