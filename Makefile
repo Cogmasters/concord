@@ -3,6 +3,7 @@ OBJDIR	:= obj
 LIBDIR	:= lib
 
 SRC	:= $(wildcard http-common.c discord-*.c curl-websocket.c \
+		orka-utils.c \
 		settings.c ntl.c json-scanf.c json-printf.c json-string.c)
 
 _OBJS	:= $(patsubst %.c, %.o, $(SRC))
@@ -71,6 +72,8 @@ $(OBJDIR)/json-scanf.o : json-scanf.c
 $(OBJDIR)/json-printf.o : json-printf.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 $(OBJDIR)/json-string.o : json-string.c
+	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
+$(OBJDIR)/orka-utils.o : orka-utils.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 $(OBJDIR)/curl-websocket.o : curl-websocket.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \
