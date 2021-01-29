@@ -122,7 +122,9 @@ run(client *client, const char channel_id[], params *params, dati *p_message)
   }
 
   char payload[MAX_PAYLOAD_LEN];
-  int ret = snprintf(payload, MAX_PAYLOAD_LEN, "{\"content\":\"%s\"}", params->content);
+  int ret = json_snprintf(payload, MAX_PAYLOAD_LEN,
+      "{|content|:|%s|}",
+      params->content);
   ASSERT_S(ret < MAX_PAYLOAD_LEN, "Out of bounds write attempt");
 
   struct resp_handle resp_handle = {.ok_cb = p_message ? json_load : NULL, .ok_obj = p_message, .err_cb = NULL, .err_obj = NULL};
