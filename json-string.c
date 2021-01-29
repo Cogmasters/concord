@@ -319,7 +319,7 @@ second_iter:
           struct utf8_seq s = { 0 };
           utf8_encode(x, &s);
           if (UNESCAPING == state) {
-            for (int i = 0; i < s.len; ++i, d++)
+            for (unsigned i = 0; i < s.len; ++i, d++)
               * d = s.c[i];
           }
         }
