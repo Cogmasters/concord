@@ -4,11 +4,14 @@
 #include <sys/stat.h>
 #include <errno.h>
 #include <stdlib.h>
+#include <string.h>
 #include "orka-utils.h"
+#include <math.h>
 
 char*
 orka_load_whole_file(const char filename[], size_t *len)
 {
+  size_t size = NULL;
   FILE *f = fopen(filename,"rb");
   if (!f) {
     char *s = strerror(errno);
@@ -17,12 +20,15 @@ orka_load_whole_file(const char filename[], size_t *len)
   }
 
   fseek(f, 0, SEEK_END);
-  *len = ftell(f);
+  size = ftell(f);
   fseek(f, 0, SEEK_SET);
 
-  char *string = (char *)malloc(*len);
-  fread(string, 1, *len, f);
+  char *string = (char *)malloc(size);
+  fread(string, 1, size, f);
   fclose(f);
+
+  if (len)
+    *len = size;
   return string;
 }
 

@@ -2,7 +2,7 @@ OBJDIR	:= obj
 LIBDIR	:= lib
 
 SRC	:= $(wildcard http-common.c github-v3-user-agent.cpp \
-          json-scanf.c json-printf.c\
+          json-scanf.c json-printf.c json-string.c \
 		  github-v3-git-op.cpp orka-utils.c\
 		  settings.c orka-user-agent.cpp ntl.c)
 
@@ -49,6 +49,9 @@ $(OBJDIR)/json-scanf.o : json-scanf.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 
 $(OBJDIR)/json-printf.o : json-printf.c
+	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
+
+$(OBJDIR)/json-string.o : json-string.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 
 $(OBJDIR)/orka-utils.o: orka-utils.c

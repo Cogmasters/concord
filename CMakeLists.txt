@@ -21,6 +21,7 @@ set(JSON_SCANF
         ntl.h
         json-scanf.c
         json-printf.c
+        json-string.c
         json-scanf.h)
 
 set(SOURCE_FILES
@@ -74,6 +75,8 @@ add_executable(test-ws.exe ${SOURCE_FILES} test-ws.cpp)
 add_executable(test-json-scanf.exe ${JSON_SCANF} test-json-scanf.c)
 
 add_executable(test-json-scanf-array.exe ${JSON_SCANF} test-json-scanf-array.c)
+add_executable(test-json-string.exe ${JSON_SCANF} ${ORKA_FILES} test-json-string.c)
+target_link_libraries(test-json-string.exe m)
 
 add_executable(test-git.exe ${GITHUB_FILES}  test-git.cpp)
 target_link_libraries(test-git.exe curl ssl crypto)
