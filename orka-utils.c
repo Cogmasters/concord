@@ -12,7 +12,7 @@
 char*
 orka_load_whole_file(const char filename[], size_t *len)
 {
-  size_t size = NULL;
+  size_t size = 0;
   FILE *f = fopen(filename,"rb");
   if (!f) {
     char *s = strerror(errno);
@@ -90,7 +90,7 @@ int orka_iso8601_to_unix_ms(char *timestamp, size_t s, void *p)
   int tz_hour = 0;
   int tz_min = 0;
   int64_t result = 0;
-  int64_t *recipient = (long long*) p;
+  int64_t *recipient = (int64_t*) p;
   char *buf = NULL;
   memset(&tm, 0, sizeof(tm));
 
