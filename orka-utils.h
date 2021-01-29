@@ -2,7 +2,6 @@
 #define ORKA_UTILS_H
 
 #include <stddef.h>
-#include <time.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -11,7 +10,7 @@ extern "C" {
 extern char *
 orka_load_whole_file(const char filename[], size_t *len);
 
-long long iso8601_to_unix_ms(const char *timestamp);
+int orka_iso8601_to_unix_ms(char *timestamp, size_t s, void *p);
 
 #ifdef __cplusplus
 }

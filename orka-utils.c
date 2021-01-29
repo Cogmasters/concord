@@ -7,6 +7,7 @@
 #include <string.h>
 #include "orka-utils.h"
 #include <math.h>
+#include <time.h>
 
 char*
 orka_load_whole_file(const char filename[], size_t *len)
@@ -81,26 +82,38 @@ list(void ** p, size_t n, char * path)
   return total_files;
 }
 
-long long iso8601_to_unix_ms(const char *timestamp)
+int orka_iso8601_to_unix_ms(char *timestamp, size_t s, void *p)
 {
   struct tm tm;
   double seconds = 0;
   char tz_operator = 'Z';
   int tz_hour = 0;
   int tz_min = 0;
-  long long result = 0;
+  int64_t result = 0;
+  int64_t *recipient = (long long*) p;
+  char *buf = NULL;
   memset(&tm, 0, sizeof(tm));
 
-  sscanf(timestamp, "%d-%d-%dT%d:%d:%lf%c%d:%d", // ISO-8601 complete format
+  /* Creating a temporary buffer and copying the string, because
+  sscanf receives a null-terminated string, and there's not
+  "snscanf" or something like that */
+  buf = malloc(s + 1);
+  if(!buf) return 0;
+  memcpy(buf, timestamp, s);
+  buf[s] = '\0';
+
+  sscanf(buf, "%d-%d-%dT%d:%d:%lf%c%d:%d", // ISO-8601 complete format
   &tm.tm_year, &tm.tm_mon, &tm.tm_mday, // Date
   &tm.tm_hour, &tm.tm_min, &seconds, // Time
   &tz_operator, &tz_hour, &tz_min); // Timezone
 
+  free(buf);
+
   tm.tm_mon--; // struct tm takes month from 0 to 11, instead of 1 to 12
   tm.tm_year -= 1900; // struct tm takes years from 1900
 
-  result = (((long long) mktime(&tm) - timezone) * 1000) +
-  (long long) round(seconds * 1000.0);
+  result = (((int64_t) mktime(&tm) - timezone) * 1000) +
+  (int64_t) round(seconds * 1000.0);
   switch(tz_operator)
   {
     case 'Z':
@@ -116,6 +129,7 @@ long long iso8601_to_unix_ms(const char *timestamp)
       break;
   }
 
-  return result;
-}
+  *recipient = result;
 
+  return 1;
+}
