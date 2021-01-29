@@ -316,7 +316,7 @@ second_iter:
           uint16_t x;
           if (!read_4_digits(&buf, buf_end, &x))
             goto return_err;
-          struct utf8_seq s = { 0 };
+          struct utf8_seq s = { {0}, 0 };
           utf8_encode(x, &s);
           if (UNESCAPING == state) {
             for (unsigned i = 0; i < s.len; ++i, d++)

@@ -19,10 +19,10 @@ char * get_tree_sha(dati * data, char * commit_sha);
 void create_blobs (dati * data, struct file ** files);
 char * create_tree (dati * data, char * base_tree_sha, struct file ** files);
 char * create_a_commit (dati * data, char * tree_sha,
-                        char * parent_commit_sha, char * message);
+                        char * parent_commit_sha, char * commit_msg);
 void create_a_branch (dati * data, char * head_commit_sha, char * branch);
 void update_a_commit (dati * d, char * branch, char * commit_sha);
-void create_a_pull_request (dati * d, char * branch);
+void create_a_pull_request (dati * d, char * branch, char * pull_msg);
 
 } // git_op
 } // v3

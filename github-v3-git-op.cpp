@@ -164,8 +164,8 @@ create_tree (dati * d, char * base_tree_sha, struct file ** files)
 }
 
 char *
-create_a_commit (dati * d, char * tree_sha,
-                 char * parent_commit_sha, char * message)
+create_a_commit (dati * d, char * tree_sha, 
+                 char * parent_commit_sha, char * commit_msg)
 {
   fprintf(stderr, "===create-a-commit===\n");
   char * new_commit_sha = NULL;
@@ -176,8 +176,8 @@ create_a_commit (dati * d, char * tree_sha,
                               " |message|:|%s|,"
                               " |tree|:|%s|,"
                               " |parents|: [ |%s| ]"
-                              "}",
-                            message, tree_sha, parent_commit_sha);
+                            "}",
+                            commit_msg, tree_sha, parent_commit_sha);
   user_agent::run(&d->ua_data, &d->handle, &d->body,
           HTTP_POST, "/repos/%s/%s/git/commits",
           d->config.owner, d->config.repo);
@@ -215,7 +215,7 @@ update_a_commit (dati * d, char * branch, char * commit_sha)
 }
 
 void
-create_a_pull_request (dati * d, char * branch) {
+create_a_pull_request (dati * d, char * branch, char * pull_msg) {
   // 5. create a pull request
   fprintf(stderr, "===create-a-pull-request===\n");
   d->body.size = json_asprintf(&d->body.str,
