@@ -5,6 +5,7 @@
 #include <errno.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdint.h>
 #include "orka-utils.h"
 #include <math.h>
 #include <time.h>
