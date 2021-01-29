@@ -31,7 +31,7 @@ void on_message_create(
     .content = (char*)msg->content //this won't be modified
   };
 
-  message::create::run(client, msg->channel_id, &params);
+  message::create::run(client, msg->channel_id, &params, NULL);
 }
 
 void on_message_update(
@@ -43,7 +43,7 @@ void on_message_update(
     .content = "I see what you did there."
   };
 
-  message::create::run(client, msg->channel_id, &params);
+  message::create::run(client, msg->channel_id, &params, NULL);
   
   (void)me;
 }
@@ -57,8 +57,8 @@ void on_message_delete(
     .content = "Did that message just disappear?"
   };
 
-  message::create::run(client, msg->channel_id, &params);
-  
+  message::create::run(client, msg->channel_id, &params, NULL);
+
   (void)me;
 }
 

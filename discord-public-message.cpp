@@ -106,7 +106,7 @@ cleanup(dati *message)
 namespace create {
 
 void
-run(client *client, const char channel_id[], params *params)
+run(client *client, const char channel_id[], params *params, dati *p_message)
 {
   if (IS_EMPTY_STRING(channel_id)) {
     D_PUTS("Can't send message to Discord: missing 'channel_id'");
@@ -125,7 +125,7 @@ run(client *client, const char channel_id[], params *params)
   int ret = snprintf(payload, MAX_PAYLOAD_LEN, "{\"content\":\"%s\"}", params->content);
   ASSERT_S(ret < MAX_PAYLOAD_LEN, "Out of bounds write attempt");
 
-  struct resp_handle resp_handle = {NULL, NULL};
+  struct resp_handle resp_handle = {.ok_cb = p_message ? json_load : NULL, .ok_obj = p_message, .err_cb = NULL, .err_obj = NULL};
   struct api_resbody_s body = {payload, strlen(payload)};
 
   user_agent::run( 

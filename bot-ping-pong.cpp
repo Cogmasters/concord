@@ -34,7 +34,7 @@ void on_message_create(
   else
     return; //nothing to do here
 
-  message::create::run(client, msg->channel_id, &params);
+  message::create::run(client, msg->channel_id, &params, NULL);
 
   (void)me;
 }

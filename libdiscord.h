@@ -138,7 +138,7 @@ struct params {
   };
 };
 
-void run(client *client, const char channel_id[], params *params);
+void run(client *client, const char channel_id[], params *params, dati *p_message);
 
 } // namespace create
 
