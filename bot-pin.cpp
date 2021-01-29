@@ -22,9 +22,6 @@ void on_message_create(
   // make sure bot ignores msgs from other bots
   if (msg->author->bot)
     return;
-  // make sure it ignores itself
-  if (0 == strcmp(me->username, msg->author->username))
-    return;
 
   if (strstr(msg->content, "pin me")) 
     channel::pin_message(client, msg->channel_id, msg->id);
