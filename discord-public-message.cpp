@@ -137,5 +137,29 @@ run(client *client, const char channel_id[], params *params, dati *p_message)
 
 } // namespace create
 
+void
+del(client *client, const char channel_id[], const char message_id[])
+{
+  if (IS_EMPTY_STRING(channel_id))
+  {
+    D_PUTS("Can't delete message: missing 'channel_id'");
+    return;
+  }
+  if (IS_EMPTY_STRING(message_id))
+  {
+    D_PUTS("Can't delete message: missing 'message_id'");
+    return;
+  }
+
+  struct resp_handle resp_handle = {NULL, NULL, NULL, NULL};
+  struct api_resbody_s body = {NULL, 0};
+
+  user_agent::run(
+    &client->ua,
+    &resp_handle,
+    &body,
+    HTTP_DELETE, CHANNEL MESSAGE, channel_id, message_id);
+}
+
 } // namespace message
 } // namespace discord

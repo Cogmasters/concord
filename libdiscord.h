@@ -142,6 +142,8 @@ void run(client *client, const char channel_id[], params *params, dati *p_messag
 
 } // namespace create
 
+void del(client *client, const char channel_id[], const char message_id[]);
+
 } // namespace message
 
 namespace guild {
