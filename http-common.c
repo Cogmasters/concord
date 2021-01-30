@@ -115,17 +115,17 @@ set_method(CURL *ehandle, enum http_method method, struct sized_buffer *body)
       curl_easy_setopt(ehandle, CURLOPT_POST, 1L);
       //set ptr to payload that will be sent via POST/PUT
       curl_easy_setopt(ehandle, CURLOPT_POSTFIELDS, body->start);
-      curl_easy_setopt(ehandle, CURLOPT_POSTFIELDSIZE, body->len);
+      curl_easy_setopt(ehandle, CURLOPT_POSTFIELDSIZE, body->size);
       break;
   case HTTP_PATCH:
       curl_easy_setopt(ehandle, CURLOPT_CUSTOMREQUEST, "PATCH");
       curl_easy_setopt(ehandle, CURLOPT_POSTFIELDS, body->start);
-      curl_easy_setopt(ehandle, CURLOPT_POSTFIELDSIZE, body->len);
+      curl_easy_setopt(ehandle, CURLOPT_POSTFIELDSIZE, body->size);
       break;
   case HTTP_PUT:
       curl_easy_setopt(ehandle, CURLOPT_CUSTOMREQUEST, "PUT");
       curl_easy_setopt(ehandle, CURLOPT_POSTFIELDS, body->start);
-      curl_easy_setopt(ehandle, CURLOPT_POSTFIELDSIZE, body->len);
+      curl_easy_setopt(ehandle, CURLOPT_POSTFIELDSIZE, body->size);
       break;
   default:
       ERR("Unknown http method (code: %d)", method);
@@ -191,11 +191,11 @@ curl_resbody_cb(char *str, size_t size, size_t nmemb, void *p_userdata)
   struct sized_buffer *body = (struct sized_buffer *)p_userdata;
 
   //update response body string size
-  char *tmp = (char *)realloc(body->start, body->len + realsize + 1);
+  char *tmp = (char *)realloc(body->start, body->size + realsize + 1);
   body->start = tmp;
-  memcpy(body->start + body->len, str, realsize);
-  body->len += realsize;
-  body->start[body->len] = '\0';
+  memcpy(body->start + body->size, str, realsize);
+  body->size += realsize;
+  body->start[body->size] = '\0';
   return realsize;
 }
 

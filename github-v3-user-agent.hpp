@@ -5,7 +5,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <stdlib.h>
-#include "json-scanf.h"
+
 #include "http-common.h"
 
 
@@ -15,7 +15,7 @@ namespace user_agent {
 
 struct dati {
   struct curl_slist *req_header; //the request header sent to the api
-  struct api_resbody_s body; //the api response string
+  struct sized_buffer body; //the api response string
   struct api_header_s pairs; //the key/field pairs response header
   CURL *ehandle; //the curl's easy handle used to perform requests
   struct _settings_s settings;
@@ -27,7 +27,7 @@ extern void init(struct dati * data,
 
 extern void run(struct dati * data,
                 struct resp_handle * handle,
-                struct api_resbody_s * body,
+                struct sized_buffer * body,
                 enum http_method http_method,
                 char endpoint[],
                 ...);

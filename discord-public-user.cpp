@@ -53,7 +53,7 @@ json_list_load(char *str, size_t len, void *p_users)
   dati **new_users = (dati**)ntl_calloc(n, sizeof(dati*));
   for (size_t i=0; buf[i]; ++i) {
     new_users[i] = init();
-    json_load(buf[i]->start, buf[i]->len, new_users[i]);
+    json_load(buf[i]->start, buf[i]->size, new_users[i]);
   }
   
   free(buf);

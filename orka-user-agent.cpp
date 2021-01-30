@@ -3,11 +3,12 @@
 #include <stdbool.h>
 #include <string.h>
 #include <ctype.h>
-#include <unistd.h> //for usleep
 #include <stdarg.h>
 #include <stddef.h>
 
 #include "orka-user-agent.hpp"
+
+#include "orka-utils.h"
 #include "json-scanf.h"
 
 namespace orka {
@@ -29,8 +30,8 @@ cleanup(struct dati *api)
   curl_slist_free_all(api->req_header);
   curl_easy_cleanup(api->ehandle);
 
-  if (api->body.str) {
-    free(api->body.str);
+  if (api->body.start) {
+    free(api->body.start);
   }
 }
 
@@ -58,17 +59,16 @@ perform_request(
   } action;
 
   do {
-    CURLcode ecode;
     //perform the connection
-    ecode = curl_easy_perform(api->ehandle);
+    curl_easy_perform(api->ehandle);
 
     //get response's code
     enum http_code code;
-    ecode = curl_easy_getinfo(api->ehandle, CURLINFO_RESPONSE_CODE, &code);
+    curl_easy_getinfo(api->ehandle, CURLINFO_RESPONSE_CODE, &code);
 
     //get request's url
     const char *url = NULL;
-    ecode = curl_easy_getinfo(api->ehandle, CURLINFO_EFFECTIVE_URL, &url);
+    curl_easy_getinfo(api->ehandle, CURLINFO_EFFECTIVE_URL, &url);
 
     D_PRINT("Request URL: %s", url);
 
@@ -79,7 +79,7 @@ perform_request(
         action = DONE;
 
         if (handle && handle->ok_cb) {
-          (*handle->ok_cb)(api->body.str, api->body.size, handle->ok_obj);
+          (*handle->ok_cb)(api->body.start, api->body.size, handle->ok_obj);
         }
 
         break;
@@ -87,7 +87,7 @@ perform_request(
         reason = "The entity was created succesfully.";
         action = DONE;
         if (handle && handle->ok_cb) {
-          (*handle->ok_cb)(api->body.str, api->body.size, handle->ok_obj);
+          (*handle->ok_cb)(api->body.start, api->body.size, handle->ok_obj);
         }
         break;
       case HTTP_NO_CONTENT:
@@ -128,14 +128,14 @@ perform_request(
         char message[256];
         long long retry_after;
 
-        json_scanf(api->body.str, api->body.size,
+        json_scanf(api->body.start, api->body.size,
                    "[message]%s [retry_after]%lld",
                    message, &retry_after);
 
         D_NOTOP_PRINT("Ratelimit Message: %s (wait: %lld ms)",
                       message, retry_after);
 
-        sleep_ms(retry_after);
+        orka_sleep_ms(retry_after);
 
         break;
       }
@@ -143,7 +143,7 @@ perform_request(
         reason = "There was not a gateway available to process your request. Wait a bit and retry.";
         action = RETRY;
 
-        sleep_ms(5000); //wait a bit
+        orka_sleep_ms(5000); //wait a bit
         break;
       case CURL_NO_RESPONSE:
         reason = "Curl couldn't fetch a HTTP response.";
@@ -177,7 +177,7 @@ perform_request(
         break;
       case ABORT:
         if (handle && handle->err_cb) {
-          (*handle->err_cb)(api->body.str, api->body.size, handle->err_obj);
+          (*handle->err_cb)(api->body.start, api->body.size, handle->err_obj);
         }
       default:
         ERR("(%d)%s - %s", code, http_code_print(code), reason);
@@ -188,7 +188,7 @@ perform_request(
 /* template function for performing requests */
 void vrun(struct dati *api,
           struct resp_handle * resp_handle,
-          struct api_resbody_s * body,
+          struct sized_buffer * body,
           enum http_method http_method,
           char endpoint[],
           va_list args)
@@ -206,7 +206,7 @@ void vrun(struct dati *api,
 /* template function for performing requests */
 void run(struct dati *api,
          struct resp_handle * resp_handle,
-         struct api_resbody_s * body,
+         struct sized_buffer * body,
          enum http_method http_method,
          char endpoint[],
          ...)

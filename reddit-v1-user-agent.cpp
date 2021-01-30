@@ -27,7 +27,7 @@ init(struct dati *d, char * username, char * password)
 /* template function for performing requests */
 void run(struct dati *api,
          struct resp_handle * resp_handle,
-         struct api_resbody_s * body,
+         struct sized_buffer * body,
          enum http_method http_method,
          char endpoint[], ...)
 {

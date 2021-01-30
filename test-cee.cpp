@@ -7,7 +7,7 @@
 using namespace orka::user_agent;
 
 void load(char * str, size_t len, void * ptr) {
-  fprintf(stderr, "%.*s", len, str);
+  fprintf(stderr, "%.*s", (int)len, str);
 }
 
 int commit (char *base_url)
@@ -15,9 +15,9 @@ int commit (char *base_url)
   dati data = {0};
   curl_global_init(CURL_GLOBAL_ALL);
   init(&data, base_url);
-  struct api_resbody_s body = {NULL, 0};
-  body.str = "{ }";
-  body.size = strlen(body.str);
+  struct sized_buffer body = {NULL, 0};
+  body.start = "{ }";
+  body.size = strlen(body.start);
 
   struct resp_handle handle = {.ok_cb = load, .ok_obj = NULL};
 

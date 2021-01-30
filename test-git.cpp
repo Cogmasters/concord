@@ -1,6 +1,8 @@
 #include "github-v3-user-agent.hpp"
+
 #include "settings.h"
 #include "ntl.h"
+#include "json-scanf.h"
 
 struct file {
   char * path;
@@ -10,20 +12,20 @@ struct file {
 namespace git = github::v3::user_agent;
 
 void load_object_sha(char * str, size_t len, void * ptr) {
-  fprintf (stderr, "%.*s\n", len, str);
+  fprintf (stderr, "%.*s\n", (int)len, str);
   json_scanf(str, len, "[object][sha]%?s", ptr);
 }
 
 void load_sha(char *str, size_t len, void *ptr) {
-  fprintf (stderr, "%.*s\n", len, str);
+  fprintf (stderr, "%.*s\n", (int)len, str);
   json_scanf(str, len, "[sha]%?s", ptr);
 }
 
 void log(char * str, size_t len, void * ptr) {
-  fprintf (stderr, "%.*s\n", len, str);
+  fprintf (stderr, "%.*s\n", (int)len, str);
 }
 
-static struct api_resbody_s  body = { 0, 0 };
+static struct sized_buffer  body = { 0, 0 };
 
 static struct resp_handle handle = {
   .ok_cb = NULL, .ok_obj = NULL,
@@ -40,11 +42,11 @@ int commit (git::dati *data, char * owner, char * repo,
       HTTP_GET, "/repos/%s/%s/git/refs/heads/master",  owner, repo);
 
   //2. create a new branch from last commit
-  body.size = json_asprintf(&body.str,
+  body.size = json_asprintf(&body.start,
                             "{ |ref|: |refs/heads/%s|, |sha|:|%s| }",
                             branch, last_sha);
 
-  fprintf(stderr, "%.*s\n", body.size, body.str);
+  fprintf(stderr, "%.*s\n", (int)body.size, body.start);
   handle.ok_cb = log;
   handle.ok_obj = NULL;
   git::run(data, &handle, &body,
@@ -58,7 +60,7 @@ int commit (git::dati *data, char * owner, char * repo,
       HTTP_GET, "/repos/%s/%s/contents/%s", owner, repo, filename);
 
   //4. update a file
-  body.size = json_asprintf(&body.str,
+  body.size = json_asprintf(&body.start,
                             "{"
                                     "|message|:|update file|,"
                                     "|content|:|%s|,"
@@ -67,7 +69,7 @@ int commit (git::dati *data, char * owner, char * repo,
                             "}",
                             content, branch, file_sha);
 
-  fprintf(stderr, "%.*s\n", body.size, body.str);
+  fprintf(stderr, "%.*s\n", (int)body.size, body.start);
   handle.ok_cb = log;
   handle.ok_obj = NULL;
   git::run(data, &handle, &body,
@@ -75,7 +77,7 @@ int commit (git::dati *data, char * owner, char * repo,
 
 
   // 5. create a pull request
-  body.size = json_asprintf(&body.str,
+  body.size = json_asprintf(&body.start,
                             "{"
                                "|title|:|%s|,"
                                "|body|:|please pull this in|,"

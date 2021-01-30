@@ -121,7 +121,7 @@ run(
   enum http_code http_code;
   do {
     if (bucket) {
-      bucket::cooldown(bucket);
+      bucket::try_cooldown(bucket);
     }
   
     http_code = perform_request(ua, resp_handle, endpoint); //perform the request
@@ -131,7 +131,7 @@ run(
 /* THE FOLLOWING WILL SUCCESFULLY RETURN */
     case HTTP_OK:
         if (resp_handle->ok_cb) {
-          (*resp_handle->ok_cb)(ua->body.start, ua->body.len, resp_handle->ok_obj);
+          (*resp_handle->ok_cb)(ua->body.start, ua->body.size, resp_handle->ok_obj);
         }
     /* fall through */
     case HTTP_CREATED:
@@ -146,7 +146,7 @@ run(
         bucket::build(ua, bucket, endpoint);
 
         //reset the size of response body and header pairs for a fresh start
-        ua->body.len = 0;
+        ua->body.size = 0;
         ua->pairs.size = 0;
 
         return; //EARLY EXIT (SUCCESS)
@@ -162,7 +162,7 @@ run(
         char message[256];
         long long retry_after = 0;
 
-        json_scanf(ua->body.start, ua->body.len,
+        json_scanf(ua->body.start, ua->body.size,
                     "[message]%s [retry_after]%lld",
                     message, &retry_after);
 
@@ -208,7 +208,7 @@ run(
 
     //reset the size of response body and header pairs for a fresh start
     
-    ua->body.len = 0;
+    ua->body.size = 0;
     ua->pairs.size = 0;
 
   } while (1);

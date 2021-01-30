@@ -39,7 +39,7 @@ json_list_load(char *str, size_t len, void *p_guilds)
   dati **new_guilds = (dati**)ntl_calloc(n, sizeof(dati*));
   for (size_t i=0; buf[i]; ++i) {
     new_guilds[i] = init();
-    json_load(buf[i]->start, buf[i]->len, new_guilds[i]);
+    json_load(buf[i]->start, buf[i]->size, new_guilds[i]);
   }
   
   free(buf);
@@ -118,7 +118,7 @@ json_list_load(char *str, size_t len, void *p_members)
   dati **new_members = (dati**)ntl_calloc(n, sizeof(dati*));
   for (size_t i=0; buf[i]; ++i) {
     new_members[i] = init();
-    json_load(buf[i]->start, buf[i]->len, new_members[i]);
+    json_load(buf[i]->start, buf[i]->size, new_members[i]);
   }
   
   free(buf);

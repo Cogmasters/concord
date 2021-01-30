@@ -1,6 +1,7 @@
 #include "github-v3-user-agent.hpp"
+
 #include "orka-utils.h"
-#include "ntl.h"
+#include "json-scanf.h"
 
 namespace github {
 namespace config {
@@ -27,7 +28,7 @@ namespace git_op { // high-level function
 struct dati {
   user_agent::dati ua_data;
   config::dati config;
-  struct api_resbody_s body;
+  struct sized_buffer body;
   struct resp_handle handle;
 };
 
@@ -39,19 +40,19 @@ struct file {
 
 static void
 load_object_sha(char * str, size_t len, void * ptr) {
-  fprintf (stderr, "%.*s\n", len, str);
+  fprintf(stderr, "%.*s\n", (int)len, str);
   json_scanf(str, len, "[object][sha]%?s", ptr);
 }
 
 static void
 load_sha(char *str, size_t len, void *ptr) {
-  fprintf (stderr, "%.*s\n", len, str);
+  fprintf(stderr, "%.*s\n", (int)len, str);
   json_scanf(str, len, "[sha]%?s", ptr);
 }
 
 static void
 log(char * str, size_t len, void * ptr) {
-  fprintf (stderr, "%.*s\n", len, str);
+  fprintf(stderr, "%.*s\n", (int)len, str);
 }
 
 dati *
@@ -64,7 +65,7 @@ init (char * username, char * token, char * repo_config)
   d->handle.ok_obj = NULL;
   d->handle.err_cb = log;
   d->handle.err_obj = NULL;
-  d->body.str = NULL;
+  d->body.start = NULL;
   d->body.size = 0;
   return d;
 }
@@ -107,17 +108,17 @@ create_blobs (dati * d, struct file ** files) {
     fprintf(stderr, "===creating blob for %s===\n", files[i]->path);
     size_t len;
     char * content = orka_load_whole_file(files[i]->path, &len);
-    d->body.size = json_asprintf(&d->body.str,
+    d->body.size = json_asprintf(&d->body.start,
                               "{ |content|:|%.*s|, |encoding|:|utf-8| }",
                               len, content);
-    fprintf(stderr, "%.*s\n", d->body.size, d->body.str);
+    fprintf(stderr, "%.*s\n", (int)d->body.size, d->body.start);
     user_agent::run(&d->ua_data, &d->handle, &d->body,
             HTTP_POST, "/repos/%s/%s/git/blobs",
             d->config.owner, d->config.repo);
 
     fprintf(stderr, "file-sha %s\n", file_sha);
     files[i]->sha = file_sha;
-    free(d->body.str);
+    free(d->body.start);
   }
 }
 
@@ -144,7 +145,7 @@ char *
 create_tree (dati * d, char * base_tree_sha, struct file ** files)
 {
   fprintf(stderr, "==create-tree==\n");
-  d->body.size = json_asprintf(&d->body.str,
+  d->body.size = json_asprintf(&d->body.start,
                             "{"
                               "|tree|:%F,"
                               "|base_tree|:|%s|"
@@ -153,12 +154,12 @@ create_tree (dati * d, char * base_tree_sha, struct file ** files)
   d->handle.ok_cb = load_sha;
   d->handle.ok_obj = &new_tree_sha;
 
-  fprintf(stderr, "%s\n", d->body.str);
+  fprintf(stderr, "%s\n", d->body.start);
   user_agent::run(&d->ua_data, &d->handle, &d->body,
           HTTP_POST, "/repos/%s/%s/git/trees",
           d->config.owner, d->config.repo);
 
-  free(d->body.str);
+  free(d->body.start);
   fprintf(stderr, "new-tree-sha:%s\n", new_tree_sha);
   return new_tree_sha;
 }
@@ -171,7 +172,7 @@ create_a_commit (dati * d, char * tree_sha,
   char * new_commit_sha = NULL;
   d->handle.ok_cb = load_sha;
   d->handle.ok_obj = &new_commit_sha;
-  d->body.size = json_asprintf(&d->body.str,
+  d->body.size = json_asprintf(&d->body.start,
                             "{"
                               " |message|:|%s|,"
                               " |tree|:|%s|,"
@@ -182,7 +183,7 @@ create_a_commit (dati * d, char * tree_sha,
           HTTP_POST, "/repos/%s/%s/git/commits",
           d->config.owner, d->config.repo);
 
-  free(d->body.str);
+  free(d->body.start);
   fprintf(stderr, "commit-sha:%s\n", new_commit_sha);
   return new_commit_sha;
 }
@@ -191,10 +192,10 @@ void
 create_a_branch (dati * d, char * head_commit_sha, char * branch)
 {
   fprintf(stderr, "===create-a-branch===\n");
-  d->body.size = json_asprintf(&d->body.str, "{ |ref|: |refs/heads/%s|, |sha|:|%s| }",
+  d->body.size = json_asprintf(&d->body.start, "{ |ref|: |refs/heads/%s|, |sha|:|%s| }",
                             branch, head_commit_sha);
 
-  fprintf(stderr, "%.*s\n", d->body.size, d->body.str);
+  fprintf(stderr, "%.*s\n", (int)d->body.size, d->body.start);
   d->handle.ok_cb = log;
   d->handle.ok_obj = NULL;
   user_agent::run(&d->ua_data, &d->handle, &d->body,
@@ -207,8 +208,8 @@ update_a_commit (dati * d, char * branch, char * commit_sha)
 {
   fprintf(stderr, "===update-a-commit===\n");
   d->handle.ok_cb = log;
-  d->body.size = json_asprintf(&d->body.str, "{|sha|:|%s|}", commit_sha);
-  fprintf(stderr, "PATCH: %s\n", d->body.str);
+  d->body.size = json_asprintf(&d->body.start, "{|sha|:|%s|}", commit_sha);
+  fprintf(stderr, "PATCH: %s\n", d->body.start);
   user_agent::run(&d->ua_data, &d->handle, &d->body,
           HTTP_PATCH, "/repos/%s/%s/git/refs/heads/%s",
           d->config.owner, d->config.repo, branch);
@@ -218,7 +219,7 @@ void
 create_a_pull_request (dati * d, char * branch, char * pull_msg) {
   // 5. create a pull request
   fprintf(stderr, "===create-a-pull-request===\n");
-  d->body.size = json_asprintf(&d->body.str,
+  d->body.size = json_asprintf(&d->body.start,
                             "{"
                               "|title|:|%s|,"
                               "|body|:|%s|,"

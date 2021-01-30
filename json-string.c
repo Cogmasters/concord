@@ -253,6 +253,7 @@ read_4_digits(char ** str_p, char * const buf_end, uint16_t *x)
     buf[i] = c;
     if(	('0'<= c && c<='9') || ('A'<= c && c<='F') || ('a'<= c && c<='f') )
       continue;
+
     return false;
   }
   unsigned v;
@@ -269,7 +270,6 @@ json_unescape_string (char ** new_str, size_t * new_len,
   unsigned char c;
   char * const start = buf, * const buf_end = buf + len;
   char * out_start = NULL, * d = NULL;
-  char * err = NULL;
 
   enum state {
     TESTING = 1,
@@ -289,7 +289,7 @@ second_iter:
       }
 
       if (buf == buf_end) {
-        err = strdup("input is not a well-formed json string");
+        //input is not a well-formed json string
         goto return_err;
       }
 
@@ -358,12 +358,10 @@ second_iter:
       break;
   }
 
-return_err: {
+return_err:
   return 0;
-};
 
-return_ok: {
+return_ok:
   return 1;
-};
 
 }

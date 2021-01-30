@@ -510,7 +510,7 @@ json_load(char *str, size_t len, void *p_ws)
      &ws->session.shards,
      &buf);
 
-  json_scanf(buf.start, buf.len,
+  json_scanf(buf.start, buf.size,
       "[total]%d"
       "[remaining]%d"
       "[reset_after]%d"

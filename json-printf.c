@@ -248,10 +248,13 @@ json_vsnprintf(char * str, size_t len, char * fmt, va_list ap)
       case IS_STR:
       case IS_STR_NULLABLE:
         if (NULL == sp[i].provider.p) {
-          if (IS_STR_NULLABLE == sp[i].type)
+          if (IS_STR_NULLABLE == sp[i].type) {
             slen = snprintf(cur_ptr, len, "null");
-          else
-            slen = snprintf(cur_ptr, len, "");
+          }
+          else {
+            *cur_ptr = '\0';
+            slen = len;
+          }
         }
         else {
           size_t new_len = 0, old_len;

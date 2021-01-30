@@ -69,6 +69,8 @@ print_token(jsmntype_t type)
     case JSMN_PRIMITIVE:  return "primitive";
     default:              ERR("Unknown JSMN_XXXX type encountered (code: %d)", type);
   }
+
+  return NULL; // avoid warning
 }
 
 static int
@@ -193,7 +195,7 @@ match_path (char *buffer, jsmntok_t *t,
         if (t[ic].parent != i) 
           continue;
         token_array[idx]->start = buffer + t[ic].start;
-        token_array[idx]->len = t[ic].end - t[ic].start;
+        token_array[idx]->size = t[ic].end - t[ic].start;
 
         ++idx;
       }
@@ -211,7 +213,7 @@ match_path (char *buffer, jsmntok_t *t,
   else if (STREQ(es->type_specifier, "token")) {
     struct sized_buffer * tk = es->recipient;
     tk->start = buffer + t[i].start;
-    tk->len = t[i].end - t[i].start;
+    tk->size = t[i].end - t[i].start;
   }
   else if (STREQ(es->type_specifier, "bool*")) {
     ASSERT_S(t[i].type == JSMN_PRIMITIVE, "Not a primitive");
@@ -305,9 +307,9 @@ apply_object(char *str, jsmntok_t *tok, int n_toks,
   do {
     // tok[ik] must be a toplevel key, and tok[iv] must be its value
     if (tok[ik].type != JSMN_STRING) {
-      D_PRINT("[%zu][p:%d][size:%d]%s (%.*s)\n", ik, tok[ik].parent,
+      D_PRINT("[%u][p:%d][size:%d]%s (%.*s)\n", ik, tok[ik].parent,
               tok[ik].size, print_token(tok[ik].type),
-              tok[ik].end - tok[ik].start, str + tok[ik].start);
+              (int)(tok[ik].end - tok[ik].start), str + tok[ik].start);
     }
     ASSERT_S(tok[ik].type == JSMN_STRING, "Not a key"); // make sure it's a key
     ASSERT_S(tok[ik].parent == 0, "Token is not at top level"); // make sure it's at the toplevel
@@ -589,7 +591,7 @@ format_parse(char *format, size_t *n)
  *      if the call succeeds, toks points to a null terminated array.
  *      for (int i = 0; toks[i]; i++) {
  *          // deserialize each element of the json array
- *          json_scanf(toks[i].start, toks[i].len, "...", ...);
+ *          json_scanf(toks[i].start, toks[i].size, "...", ...);
  *      }
  *
  */
@@ -625,7 +627,7 @@ json_scanf(char *buffer, size_t buf_size, char *format, ...)
   int num_tok = jsmn_parse(&parser, buffer, buf_size, NULL, 0);
   D_PRINT("# of tokens = %d", num_tok);
   if (num_tok < 0) {
-    D_PRINT("Failed to parse JSON: %.*s", buf_size, buffer);
+    D_PRINT("Failed to parse JSON: %.*s", (int)buf_size, buffer);
     D_PRINT("Returned token number: %d", num_tok);
     goto cleanup;
   }
@@ -644,7 +646,7 @@ json_scanf(char *buffer, size_t buf_size, char *format, ...)
   for (int i = 0; i < num_tok; i++) {
     D_PRINT("[%d][p:%d][size:%d]%s (%.*s)\n", i, tok[i].parent,
            tok[i].size, print_token(tok[i].type),
-           tok[i].end - tok[i].start, buffer + tok[i].start);
+           (int)(tok[i].end - tok[i].start), buffer + tok[i].start);
   }
 
   for (size_t i = 0; i < num_keys; ++i) {

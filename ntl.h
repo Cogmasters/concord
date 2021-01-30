@@ -42,7 +42,7 @@ extern "C" {
 
 struct sized_buffer {
   char *start;
-  size_t len;
+  size_t size;
 };
 
 /*

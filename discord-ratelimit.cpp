@@ -26,7 +26,7 @@ struct _route_s {
 
 /* sleep cooldown for a connection within this bucket in milliseconds */
 void
-cooldown(bucket::dati *bucket)
+try_cooldown(bucket::dati *bucket)
 {
   if (bucket->remaining) return; //means we don't have any delay
 
