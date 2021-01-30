@@ -47,9 +47,6 @@ int main (int argc, char ** argv)
     exit(EXIT_FAILURE);
   }
 
-  printf("name argument %d = %s\n", optind, argv[optind]);
-  printf("name argument %d = %s\n", optind+1, argv[optind+1]);
-
   struct bot_settings settings;
   bot_settings_init (&settings, config_file);
 

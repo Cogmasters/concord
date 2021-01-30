@@ -81,8 +81,8 @@ target_link_libraries(test-json-string.exe m)
 add_executable(test-git.exe ${GITHUB_FILES}  test-git.cpp)
 target_link_libraries(test-git.exe curl ssl crypto)
 
-add_executable(test-git2.exe ${GITHUB_FILES}  test-git2.cpp)
+add_executable(test-git2.exe ${GITHUB_FILES} settings.c ${ORKA_FILES} test-git2.cpp)
 target_link_libraries(test-git2.exe curl ssl crypto)
 
-add_executable(test-cee.exe ${CEE_FILES}  test-cee.cpp)
+add_executable(test-cee.exe ${CEE_FILES} settings.c ${ORKA_FILES} test-cee.cpp)
 target_link_libraries(test-cee.exe curl ssl crypto)
