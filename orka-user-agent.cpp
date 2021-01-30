@@ -50,7 +50,7 @@ init(struct dati *api, char * base_url)
 static void
 perform_request(
   struct dati *api,
-  struct resp_handle *resp_handle,
+  struct resp_handle *handle,
   char endpoint[])
 {
   enum { //possible actions taken after a http response code
@@ -78,14 +78,17 @@ perform_request(
         reason = "The request was completed succesfully.";
         action = DONE;
 
-        if (resp_handle && resp_handle->ok_cb) {
-          (*resp_handle->ok_cb)(api->body.str, api->body.size, resp_handle->ok_obj);
+        if (handle && handle->ok_cb) {
+          (*handle->ok_cb)(api->body.str, api->body.size, handle->ok_obj);
         }
 
         break;
       case HTTP_CREATED:
         reason = "The entity was created succesfully.";
         action = DONE;
+        if (handle && handle->ok_cb) {
+          (*handle->ok_cb)(api->body.str, api->body.size, handle->ok_obj);
+        }
         break;
       case HTTP_NO_CONTENT:
         reason = "The request completed succesfully but returned no content.";
@@ -173,13 +176,31 @@ perform_request(
 
         break;
       case ABORT:
-        if (resp_handle && resp_handle->err_cb) {
-          (*resp_handle->err_cb)(api->body.str, api->body.size, resp_handle->err_obj);
+        if (handle && handle->err_cb) {
+          (*handle->err_cb)(api->body.str, api->body.size, handle->err_obj);
         }
       default:
         PRINT_ERR("(%d)%s - %s", code, http_code_print(code), reason);
     }
   } while (RETRY == action);
+}
+
+/* template function for performing requests */
+void vrun(struct dati *api,
+          struct resp_handle * resp_handle,
+          struct api_resbody_s * body,
+          enum http_method http_method,
+          char endpoint[],
+          va_list args)
+{
+  char url_route[MAX_URL_LEN];
+  int ret = vsnprintf(url_route, sizeof(url_route), endpoint, args);
+  ASSERT_S(ret < (int) sizeof(url_route), "oob write of url_route");
+
+  set_method(api->ehandle, http_method, body); //set the request method
+  set_url(api->ehandle, api->base_url, url_route); //set the request URL
+
+  perform_request(api, resp_handle, endpoint); //perform the request
 }
 
 /* template function for performing requests */
@@ -193,15 +214,8 @@ void run(struct dati *api,
   //create the url route
   va_list args;
   va_start (args, endpoint);
-  char url_route[MAX_URL_LEN];
-  int ret = vsnprintf(url_route, sizeof(url_route), endpoint, args);
-  ASSERT_S(ret < (int) sizeof(url_route), "oob write of url_route");
+  vrun(api, resp_handle, body, http_method, endpoint, args);
   va_end(args);
-
-  set_method(api->ehandle, http_method, body); //set the request method
-  set_url(api->ehandle, api->base_url, url_route); //set the request URL
-
-  perform_request(api, resp_handle, endpoint); //perform the request
 }
 
 } // namespace user_agent

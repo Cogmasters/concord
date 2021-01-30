@@ -15,10 +15,17 @@ struct dati {
   struct _settings_s settings;
 };
 
-extern void
+void
 init(struct dati *api, char *base_url);
 
-extern void
+void
+vrun(struct dati *api,
+     struct resp_handle *handle,
+     struct api_resbody_s *body,
+     enum http_method http_method,
+     char endpoint[], va_list ap);
+
+void
 run(struct dati *api,
     struct resp_handle *handle,
     struct api_resbody_s *body,
