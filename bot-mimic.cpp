@@ -20,7 +20,7 @@ select_guild(client *client)
 {
   // get guilds bot is a part of
   guild::dati **guilds = user::me::get_guilds(client);
-  if (NULL == guilds[0]) PRINT_ERR("This bot is not part of any guild");
+  if (NULL == guilds[0]) ERR("This bot is not part of any guild");
 
   fprintf(stderr, "\n\nThe user you wish to mimic is part of which guild?");
   int i=0;
@@ -49,7 +49,7 @@ select_member(client *client, char *guild_id)
 {
   // get guilds bot is a part of
   guild::member::dati **members = guild::member::get_list(client, guild_id);
-  if (NULL == members[0]) PRINT_ERR("There are no members in this guild");
+  if (NULL == members[0]) ERR("There are no members in this guild");
 
   fprintf(stderr, "\n\nWho is the member you wish to mimic?");
   int i=0;
@@ -70,7 +70,7 @@ select_member(client *client, char *guild_id)
     num = strtol(strnum, NULL, 10);
     if (num >= 0 && num < i) {
       guild::member::list_cleanup(members);
-      PRINT_ERR("THIS IS A WORK IN PROGRESS.");
+      ERR("THIS IS A WORK IN PROGRESS.");
     }
   } while (1);
 }

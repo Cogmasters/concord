@@ -29,7 +29,7 @@ ws_opcode_print(enum ws_opcodes opcode)
       CASE_RETURN_STR(GATEWAY_HELLO);
       CASE_RETURN_STR(GATEWAY_HEARTBEAT_ACK);
   default:
-      PRINT_ERR("Invalid Gateway opcode (code: %d)", opcode);
+      ERR("Invalid Gateway opcode (code: %d)", opcode);
   }
 }
 
@@ -71,7 +71,7 @@ ws_close_opcode_print(enum ws_close_opcodes gateway_opcode)
           CASE_RETURN_STR(CWS_CLOSE_REASON_PRIVATE_START);
           CASE_RETURN_STR(CWS_CLOSE_REASON_PRIVATE_END);
       default:
-          PRINT_ERR("Unknown WebSockets close opcode (code: %d)", cws_opcode);
+          ERR("Unknown WebSockets close opcode (code: %d)", cws_opcode);
       }
    }
   }
@@ -109,7 +109,7 @@ ws_send_identify(websockets::dati *ws)
     ++ws->session.concurrent;
 
     if (ws->session.concurrent >= ws->session.max_concurrency)
-      PRINT_ERR("Reach identify requests threshold (%d every 5 seconds)",
+      ERR("Reach identify requests threshold (%d every 5 seconds)",
                 ws->session.max_concurrency);
   }
   else {
@@ -147,7 +147,7 @@ on_dispatch(websockets::dati *ws)
 
   if ( (ws->now_tstamp - ws->session.event_tstamp) < 60 ) {
     if (++ws->session.event_count >= 120)
-      PRINT_ERR("Reach event dispatch threshold (120 every 60 seconds)");
+      ERR("Reach event dispatch threshold (120 every 60 seconds)");
   }
   else {
     ws->session.event_tstamp = ws->now_tstamp;
@@ -352,7 +352,7 @@ ws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
       on_reconnect(ws);
       break;
   default:
-      PRINT_ERR("Not yet implemented WebSockets opcode (code: %d)", ws->payload.opcode);
+      ERR("Not yet implemented WebSockets opcode (code: %d)", ws->payload.opcode);
   }
 
   (void)len;
@@ -543,7 +543,7 @@ ws_main_loop(websockets::dati *ws)
   get_bot(ws->p_client);
 
   if (!ws->session.remaining)
-    PRINT_ERR("Reach session starts threshold (%d)\n\t"
+    ERR("Reach session starts threshold (%d)\n\t"
               "Please wait %d seconds and try again", 
         ws->session.total, ws->session.reset_after/1000);
 

@@ -180,7 +180,7 @@ perform_request(
           (*handle->err_cb)(api->body.str, api->body.size, handle->err_obj);
         }
       default:
-        PRINT_ERR("(%d)%s - %s", code, http_code_print(code), reason);
+        ERR("(%d)%s - %s", code, http_code_print(code), reason);
     }
   } while (RETRY == action);
 }

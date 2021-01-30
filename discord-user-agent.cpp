@@ -177,7 +177,7 @@ run(
         if (retry_after) // retry after attribute received
           D_NOTOP_PRINT("Ratelimit Message: %s (wait: %lld ms)", message, retry_after);
         else // no retry after included, we should abort
-          PRINT_ERR("Ratelimit Message: %s", message);
+          ERR("Ratelimit Message: %s", message);
 
         sleep_ms(retry_after);
 
@@ -209,7 +209,7 @@ run(
           break;
         }
 
-        PRINT_ERR("(%d)%s - %s", 
+        ERR("(%d)%s - %s", 
             http_code,
             http_code_print(http_code),
             http_reason_print(http_code));

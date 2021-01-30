@@ -69,7 +69,7 @@ http_code_print(enum http_code code)
   default:
       if (code >= 500) return "5xx SERVER ERROR";
 
-      PRINT_ERR("Invalid HTTP response code (code: %d)", code);
+      ERR("Invalid HTTP response code (code: %d)", code);
   }
   return NULL;
 }
@@ -120,7 +120,7 @@ http_method_print(enum http_method method)
       CASE_RETURN_STR(HTTP_PATCH);
       CASE_RETURN_STR(HTTP_PUT);
   default:
-      PRINT_ERR("Invalid HTTP method (code: %d)", method);
+      ERR("Invalid HTTP method (code: %d)", method);
   }
 }
 
@@ -158,7 +158,7 @@ set_method(CURL *ehandle, enum http_method method, struct sized_buffer *body)
       curl_easy_setopt(ehandle, CURLOPT_POSTFIELDSIZE, body->len);
       break;
   default:
-      PRINT_ERR("Unknown http method (code: %d)", method);
+      ERR("Unknown http method (code: %d)", method);
   }
 }
 

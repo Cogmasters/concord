@@ -185,7 +185,12 @@ run(client *client, const char channel_id[], params *params, dati *p_message)
       params->content);
   ASSERT_S(ret < MAX_PAYLOAD_LEN, "Out of bounds write attempt");
 
-  struct resp_handle resp_handle = {.ok_cb = p_message ? json_load : NULL, .ok_obj = p_message, .err_cb = NULL, .err_obj = NULL};
+  struct resp_handle resp_handle = {
+    .ok_cb = p_message ? json_load : NULL,
+    .ok_obj = p_message,
+    .err_cb = NULL, 
+    .err_obj = NULL};
+
   struct sized_buffer body = {payload, strlen(payload)};
 
   user_agent::run( 
@@ -200,13 +205,11 @@ run(client *client, const char channel_id[], params *params, dati *p_message)
 void
 del(client *client, const char channel_id[], const char message_id[])
 {
-  if (IS_EMPTY_STRING(channel_id))
-  {
+  if (IS_EMPTY_STRING(channel_id)) {
     D_PUTS("Can't delete message: missing 'channel_id'");
     return;
   }
-  if (IS_EMPTY_STRING(message_id))
-  {
+  if (IS_EMPTY_STRING(message_id)) {
     D_PUTS("Can't delete message: missing 'message_id'");
     return;
   }

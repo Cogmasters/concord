@@ -4,8 +4,6 @@
 
 #include <libdiscord.h>
 
-#include "ntl.h"
-
 namespace discord {
 namespace user {
 
