@@ -10,33 +10,33 @@ _OBJS	:= $(patsubst %.cpp, %.o, $(SRC))
 OBJS1   += $(patsubst %.c, %.o, $(_OBJS))
 OBJS 	:= $(addprefix $(OBJDIR)/, $(OBJS1))
 
-LIBDISCORD_CFLAGS	:= -I./
-LIBDISCORD_LDFLAGS	:=  -L./$(LIBDIR) -ldiscord -lcurl
+LIBGITHUB_CFLAGS	:= -I./
+LIBGITHUB_LDFLAGS	:=  -L./$(LIBDIR) -lcurl #-lgithub
 
-LIBS_CFLAGS	:= $(LIBDISCORD_CFLAGS)
-LIBS_LDFLAGS	:= $(LIBDISCORD_LDFLAGS)
+LIBS_CFLAGS	:= $(LIBGITHUB_CFLAGS)
+LIBS_LDFLAGS	:= $(LIBGITHUB_LDFLAGS)
 
-LIBDISCORD_SLIB	:= $(LIBDIR)/libdiscord.a
+LIBGITHUB_SLIB	:= $(LIBDIR)/libdiscord.a
 
-CFLAGS := -Wall -Wno-write-strings -O0 -g -D_ORCA_DEBUG -D__stensal__ \
+CFLAGS := -Wall -Wno-write-strings -O0 -g -D_ORCA_DEBUG \
 					-D_DEFAULT_SOURCE -DJSON_SCANF_DEBUG
 
-CXXFLAGS = -fpermissive -std=c++03
-
-
-ifeq ($(CC),stensal-c)
-	LIBDISCORD_LDFLAGS += -lbearssl -static 
-else
-	LIBDISCORD_LDFLAGS += $(pkg-config --libs --cflags libcurl) -lcrypto -lm
-	CFLAGS += -D__stensal__
-endif
-
+CXXFLAGS := -std=c++03
 
 PREFIX ?= /usr/local
 
+
+ifeq ($(CC),stensal-c)
+	LIBS_LDFLAGS += -lbearssl -static 
+	CFLAGS += -D__stensal__
+else
+	LIBS_LDFLAGS += $(pkg-config --libs --cflags libcurl) -lcrypto -lm
+endif
+
+
 .PHONY : all mkdir install clean purge
 
-all : mkdir $(OBJS) $(LIBDISCORD_SLIB) test-git.exe test-git2.exe test-cee.exe
+all : mkdir $(OBJS) $(LIBGITHUB_SLIB) test-git.exe test-git2.exe test-cee.exe
 
 mkdir :
 	mkdir -p $(OBJDIR) $(LIBDIR)
@@ -75,7 +75,7 @@ test-cee.exe: test-cee.cpp
 	$(CXX) $(CFLAGS) $(LIBS_CFLAGS) \
 		-o $@ $(OBJS) $^ $(LIBS_LDFLAGS)
 
-$(LIBDISCORD_SLIB) : $(OBJS)
+$(LIBGITHUB_SLIB) : $(OBJS)
 	$(AR) -cvq $@ $(OBJS)
 
 clean :

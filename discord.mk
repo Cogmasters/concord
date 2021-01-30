@@ -12,24 +12,27 @@ OBJS 	:= $(addprefix $(OBJDIR)/, $(OBJS1))
 LIBDISCORD_CFLAGS	:= -I./
 LIBDISCORD_LDFLAGS	:=  -L./$(LIBDIR) -ldiscord -lcurl
 
-ifeq ($(CC),stensal-c)
-	LIBDISCORD_LDFLAGS += -lbearssl -static 
-else
-	LIBDISCORD_LDFLAGS += $(pkg-config --libs --cflags libcurl) -lcrypto -lm
-endif
-
-
 LIBS_CFLAGS	:= $(LIBDISCORD_CFLAGS)
 LIBS_LDFLAGS	:= $(LIBDISCORD_LDFLAGS)
 
 LIBDISCORD_SLIB	:= $(LIBDIR)/libdiscord.a
 
 CFLAGS := -Wall -Wno-write-strings -O0 -g -D_ORCA_DEBUG \
-					-D_DEFAULT_SOURCE # -DJSON_SCANF_DEBUG -D__stensal__
+					-D_DEFAULT_SOURCE # -DJSON_SCANF_DEBUG
 
-CXXFLAGS = -std=c++03
+CXXFLAGS := -std=c++03
 
 PREFIX ?= /usr/local
+
+
+ifeq ($(CC),stensal-c)
+	LIBS_LDFLAGS += -lbearssl -static 
+	CFLAGS += -D__stensal__
+else
+	LIBS_LDFLAGS += $(pkg-config --libs --cflags libcurl) -lcrypto -lm
+endif
+
+
 
 .PHONY : all mkdir install clean purge
 
