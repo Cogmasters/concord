@@ -132,6 +132,9 @@ run(
   
     http_code = perform_request(ua, resp_handle, endpoint); //perform the request
     switch (http_code) {
+
+/* THE FOLLOWING WILL SUCCESFULLY RETURN */
+
     case HTTP_OK:
         if (resp_handle->ok_cb) {
           (*resp_handle->ok_cb)(ua->body.str, ua->body.size, resp_handle->ok_obj);
@@ -154,27 +157,30 @@ run(
         ua->pairs.size = 0;
 
         return; //EARLY EXIT (SUCCESS)
-    case HTTP_BAD_REQUEST:
-    case HTTP_UNAUTHORIZED:
-    case HTTP_FORBIDDEN:
-    case HTTP_NOT_FOUND:
+
+/* THE FOLLOWING WILL ATTEMPT RETRY WHEN TRIGGERED */
+
     case HTTP_TOO_MANY_REQUESTS:
-      D_NOTOP_PRINT("(%d)%s - %s", 
-          http_code,
-          http_code_print(http_code),
-          http_reason_print(http_code));
      {
+        D_NOTOP_PRINT("(%d)%s - %s", 
+            http_code,
+            http_code_print(http_code),
+            http_reason_print(http_code));
+
         char message[256];
-        long long retry_after;
+        long long retry_after = 0;
 
         json_scanf(ua->body.str, ua->body.size,
                     "[message]%s [retry_after]%lld",
                     message, &retry_after);
 
-        D_NOTOP_PRINT("Ratelimit Message: %s (wait: %lld ms)",
-            message, retry_after);
+        if (retry_after) // retry after attribute received
+          D_NOTOP_PRINT("Ratelimit Message: %s (wait: %lld ms)", message, retry_after);
+        else // no retry after included, we should abort
+          PRINT_ERR("Ratelimit Message: %s", message);
 
         sleep_ms(retry_after);
+
         break;
      }
     case HTTP_GATEWAY_UNAVAILABLE:
@@ -182,8 +188,17 @@ run(
             http_code,
             http_code_print(http_code),
             http_reason_print(http_code));
+
         sleep_ms(5000); //wait a bit
+
         break;
+
+/* THE FOLLOWING WILL ABORT WHEN TRIGGERED */
+
+    case HTTP_BAD_REQUEST:
+    case HTTP_UNAUTHORIZED:
+    case HTTP_FORBIDDEN:
+    case HTTP_NOT_FOUND:
     case HTTP_METHOD_NOT_ALLOWED:
     default:
         if (http_code >= 500) {// server related error, retry
@@ -201,6 +216,7 @@ run(
     }
 
     //reset the size of response body and header pairs for a fresh start
+    
     ua->body.size = 0;
     ua->pairs.size = 0;
 

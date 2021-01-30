@@ -81,8 +81,6 @@ void cleanup(dati *channel);
 void pin_message(client *client, const char channel_id[], const char message_id[]);
 void unpin_message(client *client, const char channel_id[], const char message_id[]);
 
-} // namespace channel
-
 namespace message {
 
 /* DISCORD MESSAGE OBJECT
@@ -145,6 +143,8 @@ void run(client *client, const char channel_id[], params *params, dati *p_messag
 void del(client *client, const char channel_id[], const char message_id[]);
 
 } // namespace message
+
+} // namespace channel
 
 namespace guild {
 

@@ -18,8 +18,10 @@ void on_ready(client *client, const user::dati *me)
 void on_message_create(
     client *client,
     const user::dati *me,
-    const message::dati *msg)
+    const channel::message::dati *msg)
 {
+  using namespace discord::channel;
+
   // make sure bot doesn't echoes other bots
   if (msg->author->bot)
     return;
@@ -34,8 +36,10 @@ void on_message_create(
 void on_message_update(
     client *client,
     const user::dati *me,
-    const message::dati *msg)
+    const channel::message::dati *msg)
 {
+  using namespace discord::channel;
+
   message::create::params params = {
     .content = "I see what you did there."
   };
@@ -48,8 +52,10 @@ void on_message_update(
 void on_message_delete(
     client *client,
     const user::dati *me,
-    const message::dati *msg)
+    const channel::message::dati *msg)
 {
+  using namespace discord::channel;
+
   message::create::params params = {
     .content = "Did that message just disappear?"
   };

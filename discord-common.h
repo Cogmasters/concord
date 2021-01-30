@@ -35,13 +35,15 @@
 namespace discord {
 
 struct client; // forward declaration
-namespace message { struct dati; } // forward declaration
-namespace channel { struct dati; } // forward declaration
+namespace channel { // forward declaration
+  struct dati; 
+  namespace message { struct dati; }
+} // namespace channel
 namespace user { struct dati; } // forward declaration
 namespace guild { struct dati; } // forward declaration
 
 typedef void (idle_cb)(discord::client *client, const user::dati *me);
-typedef void (message_cb)(discord::client *client, const user::dati *me, const message::dati *message);
+typedef void (message_cb)(discord::client *client, const user::dati *me, const channel::message::dati *message);
 
 namespace user_agent { /* discord-user-agent.cpp */
 

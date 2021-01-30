@@ -17,8 +17,10 @@ void on_ready(client *client, const user::dati *me)
 void on_message_create(
     client *client,
     const user::dati *me,
-    const message::dati *msg)
+    const channel::message::dati *msg)
 {
+  using namespace::channel;
+
   // make sure bot doesn't echoes other bots
   if (msg->author->bot)
     return;

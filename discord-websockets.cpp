@@ -183,15 +183,15 @@ on_dispatch(websockets::dati *ws)
   {
     if (NULL == ws->cbs.on_message.create) return;
 
-    message::dati *message = message::init();
+    channel::message::dati *message = channel::message::init();
     ASSERT_S(NULL != message, "Out of memory");
 
-    message::json_load(ws->payload.event_data,
+    channel::message::json_load(ws->payload.event_data,
         sizeof(ws->payload.event_data), (void*)message);
 
     (*ws->cbs.on_message.create)(ws->p_client, ws->me, message);
 
-    message::cleanup(message);
+    channel::message::cleanup(message);
 
     return;
   }
@@ -200,15 +200,15 @@ on_dispatch(websockets::dati *ws)
   {
     if (NULL == ws->cbs.on_message.update) return;
 
-    message::dati *message = message::init();
+    channel::message::dati *message = channel::message::init();
     ASSERT_S(NULL != message, "Out of memory");
 
-    message::json_load(ws->payload.event_data,
+    channel::message::json_load(ws->payload.event_data,
         sizeof(ws->payload.event_data), (void*)message);
 
     (*ws->cbs.on_message.update)(ws->p_client, ws->me, message);
 
-    message::cleanup(message);
+    channel::message::cleanup(message);
 
     return;
   }
@@ -217,15 +217,15 @@ on_dispatch(websockets::dati *ws)
   {
     if (NULL == ws->cbs.on_message.del) return;
 
-    message::dati *message = message::init();
+    channel::message::dati *message = channel::message::init();
     ASSERT_S(NULL != message, "Out of memory");
 
-    message::json_load(ws->payload.event_data,
+    channel::message::json_load(ws->payload.event_data,
         sizeof(ws->payload.event_data), (void*)message);
 
     (*ws->cbs.on_message.del)(ws->p_client, ws->me, message);
 
-    message::cleanup(message);
+    channel::message::cleanup(message);
 
     return;
   }
