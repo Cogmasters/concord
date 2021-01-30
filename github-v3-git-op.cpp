@@ -221,11 +221,11 @@ create_a_pull_request (dati * d, char * branch, char * pull_msg) {
   d->body.size = json_asprintf(&d->body.str,
                             "{"
                               "|title|:|%s|,"
-                              "|body|:|please pull this in|,"
+                              "|body|:|%s|,"
                               "|head|:|%s|,"
                               "|base|:|%s|"
                               "}",
-                            branch, branch, d->config.default_branch);
+                            branch, pull_msg, branch, d->config.default_branch);
   d->handle.ok_cb = log;
   user_agent::run(&d->ua_data, &d->handle, &d->body,
           HTTP_POST, "/repos/%s/%s/pulls", d->config.owner, d->config.repo);

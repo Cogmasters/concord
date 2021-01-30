@@ -57,7 +57,7 @@ int main (int argc, char ** argv)
 
   curl_global_init(CURL_GLOBAL_ALL);
   git::dati * data = git::init (settings.github.username,
-                                settings.github.token, "repo.config");
+                                settings.github.token, ".cee-repo.config");
 
   git::create_blobs(data, files);
   char * head_commit_sha = git::get_head_commit(data);
