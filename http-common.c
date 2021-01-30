@@ -126,7 +126,7 @@ http_method_print(enum http_method method)
 
 /* set specific http method used for the request */
 void
-set_method(CURL *ehandle, enum http_method method, struct api_resbody_s *body)
+set_method(CURL *ehandle, enum http_method method, struct sized_buffer *body)
 {
   // resets existing CUSTOMREQUEST
   curl_easy_setopt(ehandle, CURLOPT_CUSTOMREQUEST, NULL);
@@ -144,18 +144,18 @@ set_method(CURL *ehandle, enum http_method method, struct api_resbody_s *body)
   case HTTP_POST:
       curl_easy_setopt(ehandle, CURLOPT_POST, 1L);
       //set ptr to payload that will be sent via POST/PUT
-      curl_easy_setopt(ehandle, CURLOPT_POSTFIELDS, body->str);
-      curl_easy_setopt(ehandle, CURLOPT_POSTFIELDSIZE, body->size);
+      curl_easy_setopt(ehandle, CURLOPT_POSTFIELDS, body->start);
+      curl_easy_setopt(ehandle, CURLOPT_POSTFIELDSIZE, body->len);
       break;
   case HTTP_PATCH:
       curl_easy_setopt(ehandle, CURLOPT_CUSTOMREQUEST, "PATCH");
-      curl_easy_setopt(ehandle, CURLOPT_POSTFIELDS, body->str);
-      curl_easy_setopt(ehandle, CURLOPT_POSTFIELDSIZE, body->size);
+      curl_easy_setopt(ehandle, CURLOPT_POSTFIELDS, body->start);
+      curl_easy_setopt(ehandle, CURLOPT_POSTFIELDSIZE, body->len);
       break;
   case HTTP_PUT:
       curl_easy_setopt(ehandle, CURLOPT_CUSTOMREQUEST, "PUT");
-      curl_easy_setopt(ehandle, CURLOPT_POSTFIELDS, body->str);
-      curl_easy_setopt(ehandle, CURLOPT_POSTFIELDSIZE, body->size);
+      curl_easy_setopt(ehandle, CURLOPT_POSTFIELDS, body->start);
+      curl_easy_setopt(ehandle, CURLOPT_POSTFIELDSIZE, body->len);
       break;
   default:
       PRINT_ERR("Unknown http method (code: %d)", method);
@@ -218,14 +218,14 @@ static size_t
 curl_resbody_cb(char *str, size_t size, size_t nmemb, void *p_userdata)
 {
   size_t realsize = size * nmemb;
-  struct api_resbody_s *body = (struct api_resbody_s *)p_userdata;
+  struct sized_buffer *body = (struct sized_buffer *)p_userdata;
 
   //update response body string size
-  char *tmp = (char *)realloc(body->str, body->size + realsize + 1);
-  body->str = tmp;
-  memcpy(body->str + body->size, str, realsize);
-  body->size += realsize;
-  body->str[body->size] = '\0';
+  char *tmp = (char *)realloc(body->start, body->len + realsize + 1);
+  body->start = tmp;
+  memcpy(body->start + body->len, str, realsize);
+  body->len += realsize;
+  body->start[body->len] = '\0';
   return realsize;
 }
 
@@ -334,7 +334,7 @@ CURL*
 custom_easy_init(struct _settings_s *settings,
                  struct curl_slist *req_header,
                  struct api_header_s *pairs,
-                 struct api_resbody_s *body)
+                 struct sized_buffer *body)
 {
   CURL *new_ehandle = curl_easy_init();
 

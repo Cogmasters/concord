@@ -34,17 +34,17 @@ json_load(char *str, size_t len, void *p_guild)
 void
 json_list_load(char *str, size_t len, void *p_guilds)
 {
-  json_token **toks = NULL;
-  json_scanf(str, len, "[]%A", &toks);
+  struct sized_buffer **buf = NULL;
+  json_scanf(str, len, "[]%A", &buf);
 
-  size_t n = ntl_length((void**)toks);
+  size_t n = ntl_length((void**)buf);
   dati **new_guilds = (dati**)ntl_calloc(n, sizeof(dati*));
-  for (size_t i=0; toks[i]; ++i) {
+  for (size_t i=0; buf[i]; ++i) {
     new_guilds[i] = init();
-    json_load(toks[i]->start, toks[i]->length, new_guilds[i]);
+    json_load(buf[i]->start, buf[i]->len, new_guilds[i]);
   }
   
-  free(toks);
+  free(buf);
 
   *(dati ***)p_guilds = new_guilds;
 }
@@ -75,7 +75,7 @@ get(client *client, const char guild_id[], dati *p_guild)
   }
 
   struct resp_handle resp_handle = {&json_load, (void*)p_guild};
-  struct api_resbody_s body = {NULL, 0};
+  struct sized_buffer body = {NULL, 0};
 
   user_agent::run( 
     &client->ua,
@@ -113,17 +113,17 @@ json_load(char *str, size_t len, void *p_member)
 void
 json_list_load(char *str, size_t len, void *p_members)
 {
-  json_token **toks = NULL;
-  json_scanf(str, len, "[]%A", &toks);
+  struct sized_buffer **buf = NULL;
+  json_scanf(str, len, "[]%A", &buf);
 
-  size_t n = ntl_length((void**)toks);
+  size_t n = ntl_length((void**)buf);
   dati **new_members = (dati**)ntl_calloc(n, sizeof(dati*));
-  for (size_t i=0; toks[i]; ++i) {
+  for (size_t i=0; buf[i]; ++i) {
     new_members[i] = init();
-    json_load(toks[i]->start, toks[i]->length, new_members[i]);
+    json_load(buf[i]->start, buf[i]->len, new_members[i]);
   }
   
-  free(toks);
+  free(buf);
 
   *(dati ***)p_members = new_members;
 }
@@ -162,7 +162,7 @@ get_list(client *client, const char guild_id[])
 
   struct resp_handle resp_handle =
     {&json_list_load, (void*)&new_members};
-  struct api_resbody_s body = {NULL, 0};
+  struct sized_buffer body = {NULL, 0};
   
   user_agent::run( 
     &client->ua,

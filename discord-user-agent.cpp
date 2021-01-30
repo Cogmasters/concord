@@ -62,8 +62,8 @@ cleanup(dati *ua)
   curl_slist_free_all(ua->req_header);
   curl_easy_cleanup(ua->ehandle); 
 
-  if (ua->body.str) {
-    free(ua->body.str);
+  if (ua->body.start) {
+    free(ua->body.start);
   }
 }
 
@@ -99,7 +99,7 @@ void
 run(
   dati *ua, 
   struct resp_handle *resp_handle,
-  struct api_resbody_s *body,
+  struct sized_buffer *body,
   enum http_method http_method,
   char endpoint[],
   ...)
@@ -137,7 +137,7 @@ run(
 
     case HTTP_OK:
         if (resp_handle->ok_cb) {
-          (*resp_handle->ok_cb)(ua->body.str, ua->body.size, resp_handle->ok_obj);
+          (*resp_handle->ok_cb)(ua->body.start, ua->body.len, resp_handle->ok_obj);
         }
     /* fall through */
     case HTTP_CREATED:
@@ -153,7 +153,7 @@ run(
         bucket::build(ua, bucket, endpoint);
 
         //reset the size of response body and header pairs for a fresh start
-        ua->body.size = 0;
+        ua->body.len = 0;
         ua->pairs.size = 0;
 
         return; //EARLY EXIT (SUCCESS)
@@ -170,7 +170,7 @@ run(
         char message[256];
         long long retry_after = 0;
 
-        json_scanf(ua->body.str, ua->body.size,
+        json_scanf(ua->body.start, ua->body.len,
                     "[message]%s [retry_after]%lld",
                     message, &retry_after);
 
@@ -217,7 +217,7 @@ run(
 
     //reset the size of response body and header pairs for a fresh start
     
-    ua->body.size = 0;
+    ua->body.len = 0;
     ua->pairs.size = 0;
 
   } while (1);

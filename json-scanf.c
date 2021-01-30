@@ -29,6 +29,7 @@
 
 #include "json-scanf.h"
 #include "json-common.h"
+#include "ntl.h"
 
 #define JSMN_STATIC  // dont expose jsmn symbols
 #define JSMN_PARENT_LINKS // add parent links to jsmn_tok, which are needed
@@ -182,21 +183,21 @@ match_path (char *buffer, jsmntok_t *t,
     }
   }
   else if (STREQ(es->type_specifier, "array")) {
-    struct json_token **token_array;
+    struct sized_buffer **token_array;
     if (JSMN_ARRAY == t[i].type) {
       int n = t[i].size;
-      token_array = (struct json_token **)
-        ntl_malloc(n, sizeof(struct json_token));
+      token_array = (struct sized_buffer **)
+        ntl_malloc(n, sizeof(struct sized_buffer));
       int idx;
       for (idx = 0, ic = i + 1; ic < n_toks && idx < n; ic++) {
         if (t[ic].parent != i) 
           continue;
         token_array[idx]->start = buffer + t[ic].start;
-        token_array[idx]->length = t[ic].end - t[ic].start;
+        token_array[idx]->len = t[ic].end - t[ic].start;
 
         ++idx;
       }
-      *(struct json_token ***)es->recipient = token_array;
+      *(struct sized_buffer ***)es->recipient = token_array;
     }
     else {
       // something is wrong
@@ -208,9 +209,9 @@ match_path (char *buffer, jsmntok_t *t,
     (*e)(buffer + t[i].start, t[i].end - t[i].start, es->recipient);
   }
   else if (STREQ(es->type_specifier, "token")) {
-    struct json_token * tk = es->recipient;
+    struct sized_buffer * tk = es->recipient;
     tk->start = buffer + t[i].start;
-    tk->length = t[i].end - t[i].start;
+    tk->len = t[i].end - t[i].start;
   }
   else if (STREQ(es->type_specifier, "bool*")) {
     ASSERT_S(t[i].type == JSMN_PRIMITIVE, "Not a primitive");
@@ -581,14 +582,14 @@ format_parse(char *format, size_t *n)
  *
  *      %?s %?S:
  *
- *      json_token * toks = NULL;
+ *      sized_buffer * toks = NULL;
  *      json_scanf(buf, buf_size, "[]%A", &toks);
  *      json_scanf(buf, buf_size, "[key]%A", &toks);
  *
  *      if the call succeeds, toks points to a null terminated array.
  *      for (int i = 0; toks[i]; i++) {
  *          // deserialize each element of the json array
- *          json_scanf(toks[i].start, toks[i].length, "...", ...);
+ *          json_scanf(toks[i].start, toks[i].len, "...", ...);
  *      }
  *
  */

@@ -32,7 +32,7 @@ pin_message(client *client, const char channel_id[], const char message_id[])
   }
 
   struct resp_handle resp_handle = {NULL, NULL};
-  struct api_resbody_s body = {"", 0};
+  struct sized_buffer body = {"", 0};
 
   user_agent::run( 
     &client->ua,
@@ -54,7 +54,7 @@ unpin_message(client *client, const char channel_id[], const char message_id[])
   }
 
   struct resp_handle resp_handle = {NULL, NULL};
-  struct api_resbody_s body = {"", 0};
+  struct sized_buffer body = {"", 0};
 
   user_agent::run( 
     &client->ua,
@@ -186,7 +186,7 @@ run(client *client, const char channel_id[], params *params, dati *p_message)
   ASSERT_S(ret < MAX_PAYLOAD_LEN, "Out of bounds write attempt");
 
   struct resp_handle resp_handle = {.ok_cb = p_message ? json_load : NULL, .ok_obj = p_message, .err_cb = NULL, .err_obj = NULL};
-  struct api_resbody_s body = {payload, strlen(payload)};
+  struct sized_buffer body = {payload, strlen(payload)};
 
   user_agent::run( 
     &client->ua,
@@ -212,7 +212,7 @@ del(client *client, const char channel_id[], const char message_id[])
   }
 
   struct resp_handle resp_handle = {NULL, NULL, NULL, NULL};
-  struct api_resbody_s body = {NULL, 0};
+  struct sized_buffer body = {NULL, 0};
 
   user_agent::run(
     &client->ua,

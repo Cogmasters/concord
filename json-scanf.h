@@ -8,11 +8,6 @@
 extern "C" {
 #endif // __cplusplus
 
-struct json_token {
-  char *start;
-  int length;
-};
-
 typedef int (extractor)(char *, size_t, void *p);
 
 extern int json_scanf(char *buffer, size_t buf_size, char *format, ...);

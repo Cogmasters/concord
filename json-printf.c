@@ -4,9 +4,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
+
+#include "json-scanf.h"
 #include "json-common.h"
 #include "ntl.h"
-#include "json-scanf.h"
 
 // include jsmn to do post json validation
 #define JSMN_STATIC  // dont expose jsmn symbols

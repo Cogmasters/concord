@@ -6,6 +6,7 @@
 
 #include "http-common.h"
 
+
 /* ENDPOINTS */
 #define MESSAGES              "/messages"
 #define MESSAGE               MESSAGES"/%s"
@@ -52,7 +53,7 @@ namespace bucket { struct dati; } //forward declaration
 struct dati { /* USER AGENT STRUCTURE */
   struct curl_slist *req_header; //the request header sent to the api
 
-  struct api_resbody_s body; //the api response string
+  struct sized_buffer body; //the api response string
   struct api_header_s pairs; //the key/field pairs response header
 
   struct { /* RATELIMITING STRUCTURE */
@@ -73,7 +74,7 @@ void cleanup(user_agent::dati *ua);
 void run(
   user_agent::dati *ua, 
   struct resp_handle *resp_handle,
-  struct api_resbody_s *body, // needed for POST/PUT/PATCH methods
+  struct sized_buffer *body, // needed for POST/PUT/PATCH methods
   enum http_method http_method,
   char endpoint[],
   ...);
@@ -160,8 +161,6 @@ enum ws_status {
   CONNECTED,     //connected to ws
 };
 
-/* @todo find a better name for start_ms that better
- *  reflect its role */
 struct dati { /* WEBSOCKETS STRUCTURE */
   enum ws_status status; //connection to discord status
   int reconnect_attempts; //hard limit 5 reconnection attempts @todo make configurable
@@ -181,7 +180,7 @@ struct dati { /* WEBSOCKETS STRUCTURE */
 
   struct { /* HEARTBEAT STRUCTURE */
     long interval_ms; //fixed interval between heartbeats
-    long start_ms; //start pulse in milliseconds
+    long tstamp; //start pulse timestamp in milliseconds
   } hbeat;
 
   struct { /* SESSION START LIMIT STRUCTURE */
@@ -191,12 +190,12 @@ struct dati { /* WEBSOCKETS STRUCTURE */
     int total;
     int remaining;
     int reset_after;
-    int max_concurrency;
+    int max_concurrency; //max concurrent sessions we can handle
 
-    int concurrent;
-    long identify_ms; //identify timestamp in ms
+    int concurrent; //active concurrent sessions
+    long identify_tstamp; //identify timestamp in ms
 
-    long event_ms; //event timestamp in ms (resets every 60s)
+    long event_tstamp; //event timestamp in ms (resets every 60s)
     int event_count; //count elements to avoid reaching 120/60sec limit
   } session;
 
@@ -209,6 +208,11 @@ struct dati { /* WEBSOCKETS STRUCTURE */
       message_cb *del; //triggers when a message is deleted
     } on_message;
   } cbs;
+
+  long long now_tstamp; //timestamp updated every loop iteration
+
+  long long ping_tstamp; //timestamp updated for every request sent
+  int ping_ms; //latency between client and websockets server
 
   user::dati *me; //the user associated with this client
 

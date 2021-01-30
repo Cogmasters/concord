@@ -39,6 +39,12 @@
 extern "C" {
 #endif // __cplusplus
 
+
+struct sized_buffer {
+  char *start;
+  size_t len;
+};
+
 /*
  * this is the preferred method to allocate a ntl
  */

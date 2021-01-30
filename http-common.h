@@ -7,6 +7,8 @@ extern "C" {
 
 #include <curl/curl.h>
 #include "orka-debug.h"
+#include "ntl.h"
+
 
 /* UTILITY MACROS */
 #define STREQ(str1, str2) (0 == strcmp(str1, str2))
@@ -39,11 +41,6 @@ enum http_code {
   HTTP_GATEWAY_UNAVAILABLE      = 502,
 
   CURL_NO_RESPONSE              = 0,
-};
-
-struct api_resbody_s {
-  char *str; //the request/response str
-  size_t size; //the request/response str length
 };
 
 #define MAX_HEADER_SIZE 100
@@ -84,14 +81,14 @@ char* http_reason_print(enum http_code code);
 char* http_method_print(enum http_method method);
 
 /* set specific http method used for the request */
-void set_method(CURL *ehandle, enum http_method method, struct api_resbody_s *body);
+void set_method(CURL *ehandle, enum http_method method, struct sized_buffer *body);
 /* set url to be used for the request */
 void set_url(CURL *ehandle, char *base_api_url, char endpoint[]);
 
 CURL* custom_easy_init(struct _settings_s *settings,
                  struct curl_slist *req_header,
                  struct api_header_s *pairs,
-                 struct api_resbody_s *body);
+                 struct sized_buffer *body);
 
 void json_dump(const char *text, struct _settings_s *settings, const char *data);
 int curl_debug_cb(CURL *ehandle, curl_infotype type, char *data, size_t size, void *p_userdata);

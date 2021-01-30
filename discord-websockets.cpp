@@ -7,6 +7,7 @@
 
 #include "curl-websocket.h"
 
+
 #define BASE_WEBSOCKETS_URL "wss://gateway.discord.gg/?v=6&encoding=json"
 
 namespace discord {
@@ -79,6 +80,8 @@ ws_close_opcode_print(enum ws_close_opcodes gateway_opcode)
 static void
 ws_send_payload(websockets::dati *ws, char payload[])
 {
+  ws->ping_tstamp = ws->now_tstamp;
+
   json_dump("SEND PAYLOAD", &ws->p_client->settings, payload);
 
   bool ret = cws_send_text(ws->ehandle, payload);
@@ -102,8 +105,7 @@ ws_send_resume(websockets::dati *ws)
 static void
 ws_send_identify(websockets::dati *ws)
 {
-  long now_ms = timestamp_ms();
-  if ( (now_ms - ws->session.identify_ms) < 5 ) {
+  if ( (ws->now_tstamp - ws->session.identify_tstamp) < 5 ) {
     ++ws->session.concurrent;
 
     if (ws->session.concurrent >= ws->session.max_concurrency)
@@ -118,14 +120,14 @@ ws_send_identify(websockets::dati *ws)
   ws_send_payload(ws, ws->identify);
 
   //get timestamp for this identify
-  ws->session.identify_ms = now_ms;
+  ws->session.identify_tstamp = ws->now_tstamp;
 }
 
 static void
 on_hello(websockets::dati *ws)
 {
   ws->hbeat.interval_ms = 0;
-  ws->hbeat.start_ms = timestamp_ms();
+  ws->hbeat.tstamp = timestamp_ms();
 
   json_scanf(ws->payload.event_data, sizeof(ws->payload.event_data),
              "[heartbeat_interval]%ld", &ws->hbeat.interval_ms);
@@ -143,13 +145,12 @@ on_dispatch(websockets::dati *ws)
   user::json_load(ws->payload.event_data,
       sizeof(ws->payload.event_data), (void*)ws->me);
 
-  long now_ms = timestamp_ms();
-  if ( (now_ms - ws->session.event_ms) < 60 ) {
+  if ( (ws->now_tstamp - ws->session.event_tstamp) < 60 ) {
     if (++ws->session.event_count >= 120)
       PRINT_ERR("Reach event dispatch threshold (120 every 60 seconds)");
   }
   else {
-    ws->session.event_ms = now_ms;
+    ws->session.event_tstamp = ws->now_tstamp;
     ws->session.event_count = 0;
   }
 
@@ -265,45 +266,45 @@ ws_on_connect_cb(void *p_ws, CURL *ehandle, const char *ws_protocols)
 static void
 ws_on_close_cb(void *p_ws, CURL *ehandle, enum cws_close_reason cwscode, const char *reason, size_t len)
 {
-    websockets::dati *ws = (websockets::dati*)p_ws;
-    enum ws_close_opcodes opcode = (enum ws_close_opcodes)cwscode;
-   
-    switch (opcode) {
-    case GATEWAY_CLOSE_REASON_UNKNOWN_OPCODE:
-    case GATEWAY_CLOSE_REASON_DECODE_ERROR:
-    case GATEWAY_CLOSE_REASON_NOT_AUTHENTICATED:
-    case GATEWAY_CLOSE_REASON_AUTHENTICATION_FAILED:
-    case GATEWAY_CLOSE_REASON_ALREADY_AUTHENTICATED:
-    case GATEWAY_CLOSE_REASON_RATE_LIMITED:
-    case GATEWAY_CLOSE_REASON_SHARDING_REQUIRED:
-    case GATEWAY_CLOSE_REASON_INVALID_API_VERSION:
-    case GATEWAY_CLOSE_REASON_INVALID_INTENTS:
-    case GATEWAY_CLOSE_REASON_DISALLOWED_INTENTS:
-        ws->status = DISCONNECTED;
-        break;
-    case GATEWAY_CLOSE_REASON_UNKNOWN_ERROR:
-    case GATEWAY_CLOSE_REASON_INVALID_SEQUENCE:
-        ws->status = RESUME;
-        break;
-    case GATEWAY_CLOSE_REASON_SESSION_TIMED_OUT:
-    default: //websocket/clouflare opcodes
-        ws->status = FRESH;
-        break;
-    }
+  websockets::dati *ws = (websockets::dati*)p_ws;
+  enum ws_close_opcodes opcode = (enum ws_close_opcodes)cwscode;
+ 
+  switch (opcode) {
+  case GATEWAY_CLOSE_REASON_UNKNOWN_OPCODE:
+  case GATEWAY_CLOSE_REASON_DECODE_ERROR:
+  case GATEWAY_CLOSE_REASON_NOT_AUTHENTICATED:
+  case GATEWAY_CLOSE_REASON_AUTHENTICATION_FAILED:
+  case GATEWAY_CLOSE_REASON_ALREADY_AUTHENTICATED:
+  case GATEWAY_CLOSE_REASON_RATE_LIMITED:
+  case GATEWAY_CLOSE_REASON_SHARDING_REQUIRED:
+  case GATEWAY_CLOSE_REASON_INVALID_API_VERSION:
+  case GATEWAY_CLOSE_REASON_INVALID_INTENTS:
+  case GATEWAY_CLOSE_REASON_DISALLOWED_INTENTS:
+      ws->status = DISCONNECTED;
+      break;
+  case GATEWAY_CLOSE_REASON_UNKNOWN_ERROR:
+  case GATEWAY_CLOSE_REASON_INVALID_SEQUENCE:
+      ws->status = RESUME;
+      break;
+  case GATEWAY_CLOSE_REASON_SESSION_TIMED_OUT:
+  default: //websocket/clouflare opcodes
+      ws->status = FRESH;
+      break;
+  }
 
-    D_PRINT("%s (code: %4d) : %zd bytes\n\t"
-            "REASON: '%s'", 
-            ws_close_opcode_print(opcode), opcode, len,
-            reason);
+  D_PRINT("%s (code: %4d) : %zd bytes\n\t"
+          "REASON: '%s'", 
+          ws_close_opcode_print(opcode), opcode, len,
+          reason);
 
-    (void)ehandle;
+  (void)ehandle;
 }
 
 static void
 ws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
 {
   websockets::dati *ws = (websockets::dati*)p_ws;
-
+  
   D_PRINT("ON_TEXT:\n\t\t%s", text);
 
   json_dump("RECEIVE PAYLOAD", &ws->p_client->settings, text);
@@ -334,6 +335,12 @@ ws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
   switch (ws->payload.opcode){
   case GATEWAY_HELLO:
       on_hello(ws);
+  /* fall through */    
+  case GATEWAY_HEARTBEAT_ACK:
+      // get request / response interval in milliseconds
+      ws->ping_ms = timestamp_ms() - ws->ping_tstamp;
+      D_PRINT("PING: %d ms", ws->ping_ms);
+
       break;
   case GATEWAY_DISPATCH:
       on_dispatch(ws);
@@ -344,8 +351,6 @@ ws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
   case GATEWAY_RECONNECT:
       on_reconnect(ws);
       break;
-  case GATEWAY_HEARTBEAT_ACK:
-      break; 
   default:
       PRINT_ERR("Not yet implemented WebSockets opcode (code: %d)", ws->payload.opcode);
   }
@@ -494,7 +499,7 @@ json_load(char *str, size_t len, void *p_ws)
 {
   dati *ws = (dati*)p_ws;
 
-  struct json_token token = {NULL, 0};
+  struct sized_buffer buf = {NULL, 0};
 
   json_scanf(str, len,
      "[url]%s"
@@ -502,9 +507,9 @@ json_load(char *str, size_t len, void *p_ws)
      "[session_start_limit]%T",
      ws->session.url,
      &ws->session.shards,
-     &token);
+     &buf);
 
-  json_scanf(token.start, token.length,
+  json_scanf(buf.start, buf.len,
       "[total]%d"
       "[remaining]%d"
       "[reset_after]%d"
@@ -521,7 +526,7 @@ static void
 get_bot(client *client)
 {
   struct resp_handle resp_handle = {&json_load, (void*)&client->ws};
-  struct api_resbody_s body = {NULL, 0};
+  struct sized_buffer body = {NULL, 0};
 
   user_agent::run( 
     &client->ua,
@@ -550,29 +555,32 @@ ws_main_loop(websockets::dati *ws)
   do {
     int numfds;
 
+    ws->now_tstamp = timestamp_ms(); // updates our concept of 'now'
+
     mcode = curl_multi_perform(ws->mhandle, &is_running);
     ASSERT_S(CURLM_OK == mcode, curl_multi_strerror(mcode));
-    
+
     //wait for activity or timeout
     mcode = curl_multi_wait(ws->mhandle, NULL, 0, 1000, &numfds);
     ASSERT_S(CURLM_OK == mcode, curl_multi_strerror(mcode));
 
-    if (ws->status != CONNECTED) continue; //perform until a connection is established
+    if (ws->status != CONNECTED) continue; // wait until connection is established
 
     /* CONNECTION IS ESTABLISHED */
 
     /*check if timespan since first pulse is greater than
      * minimum heartbeat interval required*/
-    long now_ms = timestamp_ms();
-    if (ws->hbeat.interval_ms < (now_ms - ws->hbeat.start_ms)) {
+    if (ws->hbeat.interval_ms < (ws->now_tstamp - ws->hbeat.tstamp)) {
       ws_send_heartbeat(ws);
 
-      ws->hbeat.start_ms = now_ms; //update heartbeat timestamp
+      ws->hbeat.tstamp = ws->now_tstamp; //update heartbeat timestamp
     }
 
     if (ws->cbs.on_idle) {
       (*ws->cbs.on_idle)(ws->p_client, ws->me);
     }
+
+    cws_ping(ws->ehandle, NULL, 0);
 
   } while(is_running);
 }
