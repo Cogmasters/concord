@@ -32,6 +32,6 @@ bot_settings_init(struct bot_settings *settings, const char filename[])
              &settings->logging.dump_json.enable,
              settings->logging.dump_curl.filename,
              &settings->logging.dump_curl.enable);
-  ASSERT_S(ret == 9, "Failed to load bot config");
+  //ASSERT_S(ret == 9, "Failed to load bot config");
   free(str);
 }
