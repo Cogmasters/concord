@@ -16,11 +16,11 @@
  * the list can be allocated as
  * p = ntl_calloc(n, size);
  *
- *
- *       +-----------------+
- *       |                 |
+ *       /-indices[n+1]\  /--------- e[n]-----------\
  * p -> [ | | | | | | |0][e_0]...............[e_(n-1)]
- *      \--indices[n+1]-/ \--------- e[n]-----------/
+ *       |                 ^
+ *       |                 |
+ *       +---------->------+
  *
  * p points to the begin of the memory block which overlaps with indices.
  *
