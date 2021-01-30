@@ -6,6 +6,7 @@
 #include <libdiscord.h>
 
 #include "curl-websocket.h"
+#include "orka-utils.h"
 
 
 #define BASE_WEBSOCKETS_URL "wss://gateway.discord.gg/?v=6&encoding=json"
@@ -127,7 +128,7 @@ static void
 on_hello(websockets::dati *ws)
 {
   ws->hbeat.interval_ms = 0;
-  ws->hbeat.tstamp = timestamp_ms();
+  ws->hbeat.tstamp = orka_timestamp_ms();
 
   json_scanf(ws->payload.event_data, sizeof(ws->payload.event_data),
              "[heartbeat_interval]%ld", &ws->hbeat.interval_ms);
@@ -338,7 +339,7 @@ ws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
   /* fall through */    
   case GATEWAY_HEARTBEAT_ACK:
       // get request / response interval in milliseconds
-      ws->ping_ms = timestamp_ms() - ws->ping_tstamp;
+      ws->ping_ms = orka_timestamp_ms() - ws->ping_tstamp;
       D_PRINT("PING: %d ms", ws->ping_ms);
 
       break;
@@ -555,7 +556,7 @@ ws_main_loop(websockets::dati *ws)
   do {
     int numfds;
 
-    ws->now_tstamp = timestamp_ms(); // updates our concept of 'now'
+    ws->now_tstamp = orka_timestamp_ms(); // updates our concept of 'now'
 
     mcode = curl_multi_perform(ws->mhandle, &is_running);
     ASSERT_S(CURLM_OK == mcode, curl_multi_strerror(mcode));

@@ -71,10 +71,6 @@ struct resp_handle {
   void *err_obj; // the pointer to be passed to err_cb
 };
 
-void sleep_ms(const long long delay_ms);
-long long timestamp_ms();
-void timestamp_str(char str[], int len);
-
 char* get_header_value(struct api_header_s *pairs, char header_field[]);
 char* http_code_print(enum http_code code);
 char* http_reason_print(enum http_code code);

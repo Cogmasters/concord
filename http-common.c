@@ -5,37 +5,7 @@
 #include <math.h>
 
 #include "http-common.h"
-
-void
-sleep_ms(const long long delay_ms)
-{
-  const struct timespec t = {
-          .tv_sec = delay_ms / 1000,
-          .tv_nsec = (delay_ms % 1000) * 1e6
-  };
-
-  nanosleep(&t, NULL);
-}
-
-/* returns current timestamp in milliseconds */
-long long
-timestamp_ms()
-{
-  struct timespec t;
-  clock_gettime(CLOCK_REALTIME, &t);
-
-  return t.tv_sec*1000 + lround(t.tv_nsec/1.0e6);
-}
-
-void
-timestamp_str(char str[], int len)
-{
-  time_t t = time(NULL);
-  struct tm *tm = localtime(&t);
-
-  int ret = strftime(str, len, "%c", tm);
-  ASSERT_S(ret != 0, "Could not retrieve string timestamp");
-}
+#include "orka-utils.h"
 
 /* attempt to get value from matching header field */
 char*
@@ -236,7 +206,7 @@ json_dump(const char *text, struct _settings_s *settings, const char *data)
   FILE *f_dump = settings->f_json_dump;
 
   char timestr[64] = {0};
-  timestamp_str(timestr, sizeof(timestr));
+  orka_timestamp_str(timestr, sizeof(timestr));
 
   fprintf(f_dump, "\r\r\r\r%s - %s\n%s\n", text, timestr, data);
   fflush(f_dump);
@@ -248,7 +218,7 @@ curl_dump(const char *text, FILE *f_dump, unsigned char *ptr, size_t size)
   const unsigned int WIDTH = 0x10;
 
   char timestr[64] = {0};
-  timestamp_str(timestr, sizeof(timestr));
+  orka_timestamp_str(timestr, sizeof(timestr));
 
   fprintf(f_dump, "\r\r\r\r%s %10.10ld bytes (0x%8.8lx) - %s\n%s\n",
           text, (long)size, (long)size, timestr, ptr);
@@ -295,7 +265,7 @@ curl_debug_cb(
   case CURLINFO_TEXT:
     {
       char timestr[64] = {0};
-      timestamp_str(timestr, sizeof(timestr));
+      orka_timestamp_str(timestr, sizeof(timestr));
 
       fprintf(f_dump, "\r\r\r\rCURL INFO - %s\n%s\n", timestr, data);
       fflush(f_dump);

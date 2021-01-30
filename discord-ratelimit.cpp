@@ -6,6 +6,7 @@
 #include <search.h> //for tfind, tsearch, tdestroy
 
 #include <libdiscord.h>
+#include "orka-utils.h"
 
 namespace discord {
 namespace user_agent {
@@ -23,22 +24,26 @@ struct _route_s {
   bucket::dati *p_bucket; //bucket assigned to this route
 };
 
-/* return the expected cooldown for a connection within this bucket
- *  in milliseconds */
-long long
-cooldown(bucket::dati *bucket, bool use_clock)
+/* sleep cooldown for a connection within this bucket in milliseconds */
+void
+cooldown(bucket::dati *bucket)
 {
-  if (bucket->remaining) return 0; //means we don't have any delay
+  if (bucket->remaining) return; //means we don't have any delay
 
-  if (true == use_clock || !bucket->reset_after_ms) {
-    long long delay_ms = bucket->reset_ms - timestamp_ms();
-    if (delay_ms < 0) //no delay needed
-      return 0;
-    if (delay_ms < bucket->reset_after_ms) //don't delay longer than necessary
-      return delay_ms;
-  }
+  const int LEAST_MS = 1000; // wait for at least ms amount
 
-  return bucket->reset_after_ms; //delay for expected minimum
+  long long delay_ms = bucket->reset_ms - orka_timestamp_ms();
+  if (delay_ms < 0) //no delay needed
+    delay_ms = 0;
+  else if (delay_ms > bucket->reset_after_ms) //don't delay longer than necessary
+    delay_ms = bucket->reset_after_ms;
+
+  D_PRINT("RATELIMITING (reach bucket's connection threshold):\n\t"
+          "\tBucket:\t\t%s\n\t"
+          "\tWait for:\t%lld (+%d) ms",
+          bucket->hash, delay_ms, LEAST_MS);
+
+  orka_sleep_ms(LEAST_MS + delay_ms); //sleep for delay amount (if any)
 }
 
 /* works like strcmp, but will check if endpoing matches a major 

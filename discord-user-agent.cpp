@@ -7,6 +7,7 @@
 #include <stdarg.h>
 
 #include <libdiscord.h>
+#include "orka-utils.h"
 
 #define BASE_API_URL "https://discord.com/api"
 
@@ -119,22 +120,15 @@ run(
   bucket::dati *bucket = bucket::try_get(ua, endpoint);
   enum http_code http_code;
   do {
-    if (bucket) { //bucket exists, we will check for pending delays
-      long long delay_ms = bucket::cooldown(bucket, true);
-      D_PRINT("RATELIMITING (reach bucket's connection threshold):\n\t"
-              "\tEndpoint:\t%s\n\t"
-              "\tBucket:\t\t%s\n\t"
-              "\tWait for:\t%lld ms",
-              endpoint, bucket->hash, delay_ms);
-
-      sleep_ms(delay_ms); //sleep for delay amount (if any)
+    if (bucket) {
+      bucket::cooldown(bucket);
     }
   
     http_code = perform_request(ua, resp_handle, endpoint); //perform the request
     switch (http_code) {
+    case CURL_NO_RESPONSE: return; /* EARLY EXIT */
 
 /* THE FOLLOWING WILL SUCCESFULLY RETURN */
-
     case HTTP_OK:
         if (resp_handle->ok_cb) {
           (*resp_handle->ok_cb)(ua->body.start, ua->body.len, resp_handle->ok_obj);
@@ -143,7 +137,6 @@ run(
     case HTTP_CREATED:
     case HTTP_NO_CONTENT:
     case HTTP_NOT_MODIFIED:
-    case CURL_NO_RESPONSE:
         D_NOTOP_PRINT("(%d)%s - %s", 
             http_code,
             http_code_print(http_code),
@@ -159,7 +152,6 @@ run(
         return; //EARLY EXIT (SUCCESS)
 
 /* THE FOLLOWING WILL ATTEMPT RETRY WHEN TRIGGERED */
-
     case HTTP_TOO_MANY_REQUESTS:
      {
         D_NOTOP_PRINT("(%d)%s - %s", 
@@ -179,7 +171,7 @@ run(
         else // no retry after included, we should abort
           ERR("Ratelimit Message: %s", message);
 
-        sleep_ms(retry_after);
+        orka_sleep_ms(retry_after);
 
         break;
      }
@@ -189,12 +181,11 @@ run(
             http_code_print(http_code),
             http_reason_print(http_code));
 
-        sleep_ms(5000); //wait a bit
+        orka_sleep_ms(5000); //wait a bit
 
         break;
 
 /* THE FOLLOWING WILL ABORT WHEN TRIGGERED */
-
     case HTTP_BAD_REQUEST:
     case HTTP_UNAUTHORIZED:
     case HTTP_FORBIDDEN:

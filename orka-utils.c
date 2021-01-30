@@ -6,9 +6,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
-#include "orka-utils.h"
 #include <math.h>
 #include <time.h>
+
+#include "orka-utils.h"
+#include "orka-debug.h"
 
 char*
 orka_load_whole_file(const char filename[], size_t *len)
@@ -29,8 +31,10 @@ orka_load_whole_file(const char filename[], size_t *len)
   fread(string, 1, size, f);
   fclose(f);
 
-  if (len)
+  if (len) {
     *len = size;
+  }
+
   return string;
 }
 
@@ -39,18 +43,13 @@ static char *
 stat_to_type (const struct stat *st)
 {
   switch(st->st_mode & S_IFMT) {
-    case S_IFREG:
-      return "file";
-      break;
-    case S_IFDIR:
-      return "folder";
-      break;
-    default:
-      return NULL;
-      break;
+  case S_IFREG: return "file";
+  case S_IFDIR: return "folder";
+  default: return NULL;
   }
 }
 
+//@todo rename to orka_list ? this is not referenced in orka-utils.h
 int
 list(void ** p, size_t n, char * path)
 {
@@ -83,7 +82,8 @@ list(void ** p, size_t n, char * path)
   return total_files;
 }
 
-int orka_iso8601_to_unix_ms(char *timestamp, size_t s, void *p)
+int
+orka_iso8601_to_unix_ms(char *timestamp, size_t s, void *p)
 {
   struct tm tm;
   double seconds = 0;
@@ -115,22 +115,52 @@ int orka_iso8601_to_unix_ms(char *timestamp, size_t s, void *p)
 
   result = (((int64_t) mktime(&tm) - timezone) * 1000) +
   (int64_t) round(seconds * 1000.0);
-  switch(tz_operator)
-  {
-    case 'Z':
-      // UTC, don't do nothing
-      break;
-    case '+':
+  switch(tz_operator) {
+  case '+':
       // Add hours and minutes
       result += (tz_hour * 60 + tz_min) * 60 * 1000;
       break;
-    case '-':
+  case '-':
       // Subtract hours and minutes
       result -= (tz_hour * 60 + tz_min) * 60 * 1000;
       break;
-  }
+  case 'Z': // UTC, don't do nothing
+  default: // @todo should we check for error ?
+      break;
+}
 
   *recipient = result;
 
   return 1;
+}
+
+void
+orka_sleep_ms(const long long delay_ms)
+{
+  const struct timespec t = {
+          .tv_sec = delay_ms / 1000,
+          .tv_nsec = (delay_ms % 1000) * 1e6
+  };
+
+  nanosleep(&t, NULL);
+}
+
+/* returns current timestamp in milliseconds */
+long long
+orka_timestamp_ms()
+{
+  struct timespec t;
+  clock_gettime(CLOCK_REALTIME, &t);
+
+  return t.tv_sec*1000 + lround(t.tv_nsec/1.0e6);
+}
+
+void
+orka_timestamp_str(char str[], int len)
+{
+  time_t t = time(NULL);
+  struct tm *tm = localtime(&t);
+
+  int ret = strftime(str, len, "%c", tm);
+  ASSERT_S(ret != 0, "Could not retrieve string timestamp");
 }

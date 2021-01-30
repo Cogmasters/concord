@@ -89,7 +89,7 @@ struct dati { /* BUCKET STRUCTURE */
 };
 
 void cleanup(user_agent::dati *ua);
-long long cooldown(bucket::dati *bucket, bool use_clock);
+void cooldown(bucket::dati *bucket);
 bucket::dati* try_get(user_agent::dati *ua, char endpoint[]);
 void build(user_agent::dati *ua, bucket::dati *bucket, char endpoint[]);
 
