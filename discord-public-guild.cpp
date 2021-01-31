@@ -171,6 +171,27 @@ get_list(client *client, const char guild_id[])
   return new_members;
 }
 
+void kick(client *client, const char guild_id[], const char user_id[])
+{
+  if (IS_EMPTY_STRING(guild_id)) {
+    D_PUTS("Can't delete message: missing 'guild_id'");
+    return;
+  }
+  if (IS_EMPTY_STRING(user_id)) {
+    D_PUTS("Can't delete message: missing 'user_id'");
+    return;
+  }
+
+  struct resp_handle resp_handle = {NULL, NULL, NULL, NULL};
+  struct sized_buffer body = {NULL, 0};
+
+  user_agent::run(
+    &client->ua,
+    &resp_handle,
+    &body,
+    HTTP_DELETE, GUILD MEMBER, guild_id, user_id);
+}
+
 } // namespace member
 
 } // namespace guild

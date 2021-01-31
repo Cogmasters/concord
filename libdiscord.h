@@ -231,6 +231,7 @@ void json_load(char *str, size_t len, void *p_member);
 void json_list_load(char *str, size_t len, void *p_members);
 
 dati **get_list(client *client, const char guild_id[]);
+void kick(client *client, const char guild_id[], const char user_id[]);
 
 } // namespace member
 
