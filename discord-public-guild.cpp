@@ -212,7 +212,7 @@ json_load(char *str, size_t len, void *p_ban)
       ban->reason,
       &user::json_load, ban->user);
 
-  D_NOTOP_PUTS("Member object loaded with API response"); 
+  D_NOTOP_PUTS("Ban object loaded with API response"); 
 }
 
 void
