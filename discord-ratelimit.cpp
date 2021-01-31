@@ -28,7 +28,8 @@ struct _route_s {
 void
 try_cooldown(bucket::dati *bucket)
 {
-  if (bucket->remaining) return; //means we don't have any delay
+  if (NULL == bucket || bucket->remaining)
+    return;
 
   const int LEAST_MS = 1000; // wait for at least ms amount
 

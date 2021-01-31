@@ -116,13 +116,15 @@ run(
   set_method(ua->ehandle, http_method, body); //set the request method
   set_url(ua->ehandle, BASE_API_URL, url_route); //set the request URL
 
+  /* CALLBACK 1 */
   //attempt to fetch a bucket handling connections from this endpoint
   bucket::dati *bucket = bucket::try_get(ua, endpoint);
+  /* * * * * * */
   enum http_code http_code;
   do {
-    if (bucket) {
-      bucket::try_cooldown(bucket);
-    }
+    /* CALLBACK 2 */
+    bucket::try_cooldown(bucket);
+    /* * * * * * */
   
     http_code = perform_request(ua, resp_handle, endpoint); //perform the request
     switch (http_code) {
@@ -142,8 +144,10 @@ run(
             http_code_print(http_code),
             http_reason_print(http_code));
 
+        /* CALLBACK 3 */
         //build and updates bucket's rate limiting information
         bucket::build(ua, bucket, endpoint);
+        /* * * * * * */
 
         //reset the size of response body and header pairs for a fresh start
         ua->body.size = 0;
