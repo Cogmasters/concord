@@ -5,10 +5,10 @@
 #include <string.h>
 
 char *
-json_escape_string (size_t * new_len, char * input, size_t len)
+json_escape_string (size_t * output_len_p, char * input, size_t input_len)
 {
   int extra_bytes = 0;
-  char * const start = input, * const end = input + len;
+  char * const input_start = input, * const input_end = input + input_len;
   char * output_start = NULL, * output = NULL;
   char * escaped = NULL, buf[8] = "\\u00";
 
@@ -17,7 +17,7 @@ json_escape_string (size_t * new_len, char * input, size_t len)
    * 2st iteration, output is not NULL, and does escaping.
    */
   second_iter:
-  for (char * s = start; s < end; s++) {
+  for (char * s = input_start; s < input_end; s++) {
     escaped = NULL;
     unsigned char c = * s;
     switch (c) {
@@ -59,12 +59,12 @@ json_escape_string (size_t * new_len, char * input, size_t len)
   /*
    * 1 iteration reach here
    */
-  *new_len = len + extra_bytes;
+  *output_len_p = input_len + extra_bytes;
   if (0 == extra_bytes) { // no need to escape
-    return start;
+    return input_start;
   }
   else {
-    output_start = (char *)malloc(*new_len);
+    output_start = (char *)malloc(*output_len_p);
     output = output_start;
     extra_bytes = 0;
     goto second_iter;
