@@ -92,5 +92,11 @@ int main(void) {
   printf("%s\n", t_str);
   json_scanf(t_str, strlen(t_str), "[key]%?s", &px);
   printf("%s\n", px);
+
+
+  snprintf(t_str, 128, "{ \"key\":\"%s\", \"a\":10 }", "XXXXXXXXX");
+  printf("%s\n", t_str);
+  json_scanf(t_str, strlen(t_str), "[key]%?s", &px);
+  printf("%s\n", px);
   return EXIT_SUCCESS;
 }
