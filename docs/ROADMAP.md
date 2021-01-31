@@ -73,7 +73,7 @@
 - [X] [Get Guild Bans](https://discord.com/developers/docs/resources/guild#get-guild-bans)
 - [X] [Get Guild Ban](https://discord.com/developers/docs/resources/guild#get-guild-ban)
 - [x] [Create Guild Ban](https://discord.com/developers/docs/resources/guild#create-guild-ban)
-- [ ] [Remove Guild Ban](https://discord.com/developers/docs/resources/guild#remove-guild-ban)
+- [X] [Remove Guild Ban](https://discord.com/developers/docs/resources/guild#remove-guild-ban)
 - [ ] [Get Guild Roles](https://discord.com/developers/docs/resources/guild#get-guild-roles)
 - [ ] [Create Guild Role](https://discord.com/developers/docs/resources/guild#create-guild-role)
 - [ ] [Modify Guild Role Positions](https://discord.com/developers/docs/resources/guild#modify-guild-role-positions)

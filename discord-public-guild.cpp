@@ -322,7 +322,7 @@ create(client *client, const char guild_id[], const char user_id[], int delete_m
     return;
   }
 
-  char buf[1024];
+  char buf[MAX_PAYLOAD_LEN];
   buf[0] = '\0';
   char *str = buf;
   str += sprintf(str, "{");
@@ -348,6 +348,43 @@ create(client *client, const char guild_id[], const char user_id[], int delete_m
     &resp_handle,
     &body,
     HTTP_PUT, GUILD BAN, guild_id, user_id);
+}
+
+void
+remove(client *client, const char guild_id[], const char user_id[], const char reason[])
+{
+  if (IS_EMPTY_STRING(guild_id)) {
+    D_PUTS("Missing 'guild_id'");
+    return;
+  }
+  if (IS_EMPTY_STRING(user_id)) {
+    D_PUTS("Missing 'user_id'");
+    return;
+  }
+  if(reason && strlen(reason) > MAX_REASON_LEN) {
+    D_PRINT("Reason length exceeds %u characters threshold (%zu)", MAX_REASON_LEN, strlen(reason));
+    return;
+  }
+
+  char buf[MAX_PAYLOAD_LEN];
+  buf[0] = '\0';
+  char *str = buf;
+  str += sprintf(str, "{");
+
+  if(!IS_EMPTY_STRING(reason)) {
+    str += sprintf(str, "\"reason\":\"%s\"", reason);
+  }
+
+  str += sprintf(str, "}");
+
+  struct resp_handle resp_handle = { NULL, NULL };
+  struct sized_buffer body = {buf, (size_t) (str - buf)};
+
+  user_agent::run( 
+    &client->ua,
+    &resp_handle,
+    &body,
+    HTTP_DELETE, GUILD BAN, guild_id, user_id);
 }
 
 } // namespace ban

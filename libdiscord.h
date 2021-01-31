@@ -254,6 +254,7 @@ void json_list_load(char *str, size_t len, void *p_ban);
 void get(client *client, const char guild_id[], const char user_id[], dati *p_ban);
 dati **get_list(client *client, const char guild_id[]);
 void create(client *client, const char guild_id[], const char user_id[], int delete_message_days, const char reason[]);
+void remove(client *client, const char guild_id[], const char user_id[], const char reason[]);
 
 } // namespace ban
 
