@@ -19,7 +19,7 @@ set(JSON_SCANF
         jsmn.h
         ntl.c
         ntl.h
-        json-scanf2.c
+        json-scanf.c
         json-printf.c
         json-string.c
         json-scanf.h)
