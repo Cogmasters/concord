@@ -69,6 +69,8 @@ print_token(jsmntype_t type)
     case JSMN_PRIMITIVE:  return "primitive";
     default:              ERR("Unknown JSMN_XXXX type encountered (code: %d)", type);
   }
+
+  return NULL; // avoid warning
 }
 
 static int
@@ -154,33 +156,40 @@ match_path (char *buffer, jsmntok_t *t,
       switch (t[i].type) {
       case JSMN_STRING: {
         size_t new_size = 0;
+        int len = t[i].end - t[i].start;
+        char * escaped = copy_over_string(&new_size, buffer + t[i].start, len);
         if (es->has_unknown_size) {
           char **p = (char **) es->recipient;
           int len = t[i].end - t[i].start + 1;
-          *p = copy_over_string(&new_size, buffer + t[i].start, len);
+            *p = malloc(len);
+            int ret = snprintf(*p, len, "%.*s", len - 1, escaped);
+            ASSERT_S(ret < len, "out-of-bounds write");
         } else {
-          char *p = copy_over_string(&new_size, buffer + t[i].start,
-                                     t[i].end - t[i].start);
           if (es->size) {
             int ret = snprintf((char *) es->recipient, es->size,
-                               "%.*s", t[i].end - t[i].start, p);
+                               "%.*s", t[i].end - t[i].start, escaped);
             ASSERT_S((size_t) ret < es->size, "out-of-bounds write");
           } else {
             // we have to allow this potential oob write as
             // we don't know the buffer size of recipient.
-            sprintf((char *) es->recipient, "%.*s", new_size, p);
+            sprintf((char *) es->recipient, "%.*s", new_size, escaped);
           }
-          free(p);
         }
+        if (escaped != buffer + t[i].start)
+          free(escaped);
         break;
       }
       case JSMN_PRIMITIVE:
           //something is wrong if is not null primitive
           if (!STRNEQ(buffer + t[i].start, "null", 4))
               goto type_error;
-
-          *(char *)es->recipient = '\0'; //@todo we need a better way to represent null
-
+          if (es->has_unknown_size) {
+            char **p = (char **) es->recipient;
+            *p = NULL;
+          }
+          else {
+            *(char *) es->recipient = '\0'; //@todo we need a better way to represent null
+          }
           break;
       default:
         goto type_error;
