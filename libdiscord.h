@@ -72,7 +72,7 @@ struct dati {
   char owner_id[SNOWFLAKE_INTERNAL_WORKER_ID];
   char application_id[SNOWFLAKE_INTERNAL_WORKER_ID];
   char parent_id[SNOWFLAKE_INTERNAL_WORKER_ID];
-  char last_pin_timestamp[SNOWFLAKE_TIMESTAMP];
+  int64_t last_pin_timestamp;
   message::dati **messages;
 };
 
@@ -93,8 +93,8 @@ struct dati {
   user::dati *author;
   //struct discord_guildmember_s *member;
   char content[MAX_MESSAGE_LEN];
-  char timestamp[SNOWFLAKE_TIMESTAMP];
-  char edited_timestamp[SNOWFLAKE_TIMESTAMP];
+  int64_t timestamp;
+  int64_t edited_timestamp;
   bool tts;
   bool mention_everyone;
   user::dati **mentions;
@@ -179,7 +179,7 @@ struct dati {
   char system_channel_id[SNOWFLAKE_INTERNAL_WORKER_ID];
   int system_channel_flags;
   char rules_channel_id[SNOWFLAKE_INTERNAL_WORKER_ID];
-  char joined_at[SNOWFLAKE_TIMESTAMP];
+  int64_t joined_at;
   bool large;
   bool unavailable;
   int member_count;
@@ -217,8 +217,8 @@ struct dati {
   user::dati *user;
   char nick[MAX_NAME_LEN];
   //roles
-  char joined_at[SNOWFLAKE_TIMESTAMP];
-  char premium_since[SNOWFLAKE_TIMESTAMP];
+  int64_t joined_at;
+  int64_t premium_since;
   bool deaf;
   bool mute;
   bool pending;

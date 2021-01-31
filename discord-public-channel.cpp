@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include <libdiscord.h>
+#include <orka-utils.h>
 
 namespace discord {
 namespace channel {
@@ -76,8 +77,8 @@ json_load(char *str, size_t len, void *p_message)
      "[guild_id]%s"
      "[author]%F"
      "[content]%s"
-     "[timestamp]%s"
-     "[edited_timestamp]%s"
+     "[timestamp]%F"
+     "[edited_timestamp]%F"
      "[tts]%b"
      "[mention_everyone]%b"
      //"[mentions]%F"
@@ -92,8 +93,8 @@ json_load(char *str, size_t len, void *p_message)
       message->guild_id,
       &user::json_load, message->author,
       message->content,
-      message->timestamp,
-      message->edited_timestamp,
+      &orka_iso8601_to_unix_ms, &message->timestamp,
+      &orka_iso8601_to_unix_ms, &message->edited_timestamp,
       &message->tts,
       &message->mention_everyone,
       message->nonce,

@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include <libdiscord.h>
+#include <orka-utils.h>
 
 namespace discord {
 namespace guild {
@@ -95,15 +96,15 @@ json_load(char *str, size_t len, void *p_member)
   json_scanf(str, len,
      "[user]%F"
      "[nick]%s"
-     "[joined_at]%s"
-     "[premium_since]%s"
+     "[joined_at]%F"
+     "[premium_since]%F"
      "[deaf]%b"
      "[mute]%b"
      "[pending]%b",
       &user::json_load, member->user,
       member->nick,
-      member->joined_at,
-      member->premium_since,
+      &orka_iso8601_to_unix_ms, &member->joined_at,
+      &orka_iso8601_to_unix_ms, &member->premium_since,
       &member->deaf,
       &member->mute,
       &member->pending);

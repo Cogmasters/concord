@@ -146,7 +146,7 @@ orka_sleep_ms(const long long delay_ms)
 }
 
 /* returns current timestamp in milliseconds */
-long long
+int64_t
 orka_timestamp_ms()
 {
   struct timespec t;
