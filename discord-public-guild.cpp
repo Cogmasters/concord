@@ -171,7 +171,7 @@ get_list(client *client, const char guild_id[])
   return new_members;
 }
 
-void kick(client *client, const char guild_id[], const char user_id[])
+void remove(client *client, const char guild_id[], const char user_id[])
 {
   if (IS_EMPTY_STRING(guild_id)) {
     D_PUTS("Can't delete message: missing 'guild_id'");
