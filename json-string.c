@@ -349,7 +349,7 @@ second_iter:
     }
     case ALLOCATING:
     {
-      out_start = malloc(len);
+      out_start = calloc(1, len);
       d = out_start;
       state = UNESCAPING;
       goto second_iter;

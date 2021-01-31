@@ -112,28 +112,28 @@ int main ()
   char * json_str = NULL;
   int s = json_asprintf(&json_str, test_string);
   //printf("%s\n", json_str);
-  struct json_token array_tok = { .start = NULL, .length = 0 };
+  struct sized_buffer array_tok = { .start = NULL, .size = 0 };
   json_scanf(json_str, s, "[tree]%T", &array_tok);
-  printf ("json_array_string:\n%.*s\n", array_tok.length, array_tok.start);
+  printf ("json_array_string:\n%.*s\n", array_tok.size, array_tok.start);
 
   jsmn_parser parser;
   jsmn_init(&parser);
   jsmntok_t * t = NULL;
-  int num_tok = jsmn_parse(&parser, array_tok.start, array_tok.length, NULL, 0);
+  int num_tok = jsmn_parse(&parser, array_tok.start, array_tok.size, NULL, 0);
   //printf ("%d\n", num_tok);
 
   t = malloc(sizeof(jsmntok_t) * num_tok);
   jsmn_init(&parser);
-  num_tok = jsmn_parse(&parser, array_tok.start, array_tok.length, t, num_tok+1);
+  num_tok = jsmn_parse(&parser, array_tok.start, array_tok.size, t, num_tok+1);
 
   int i;
 
   printf ("test []%%L\n");
-  struct json_token ** tokens = NULL;
-  json_scanf(array_tok.start, array_tok.length, "[]%L", &tokens);
+  struct sized_buffer ** tokens = NULL;
+  json_scanf(array_tok.start, array_tok.size, "[]%L", &tokens);
   for (i = 0; tokens[i]; i++) {
-    printf ("token [%p, %d]\n", tokens[i]->start, tokens[i]->length);
-    printf ("token %.*s\n", tokens[i]->length, tokens[i]->start);
+    printf ("token [%p, %d]\n", tokens[i]->start, tokens[i]->size);
+    printf ("token %.*s\n", tokens[i]->size, tokens[i]->start);
   }
   free(tokens);
 
@@ -143,9 +143,9 @@ int main ()
   struct tree_node ** nodes =
     (struct tree_node **) ntl_dup((void **)tokens, sizeof(struct tree_node));
   for (i = 0; tokens[i]; i++) {
-    printf ("token [%p, %d]\n", tokens[i]->start, tokens[i]->length);
-    printf ("token %.*s\n", tokens[i]->length, tokens[i]->start);
-    load_tree_node(tokens[i]->start, tokens[i]->length, nodes[i]);
+    printf ("token [%p, %d]\n", tokens[i]->start, tokens[i]->size);
+    printf ("token %.*s\n", tokens[i]->size, tokens[i]->start);
+    load_tree_node(tokens[i]->start, tokens[i]->size, nodes[i]);
   }
 
   int wsize;

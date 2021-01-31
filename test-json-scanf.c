@@ -29,6 +29,7 @@
 #include <locale.h>
 
 #include "json-scanf.h"
+#include "ntl.h"
 
 
 int main(void) {
@@ -53,7 +54,7 @@ int main(void) {
   printf("input string: %s\n", str);
 
   char bigs[128] = {0}, bigS[128] = {0};
-  struct json_token tok;
+  struct sized_buffer tok;
 
   json_scanf(str, strlen(str),
        "[a1][0]%d [t]%s [s]%d [op]%d [nstr]%s [k1][v1]%d [b]%b"
@@ -81,6 +82,15 @@ int main(void) {
     free(q);
   }
 
-  printf ("tok %.*s\n", (int)tok.length, tok.start);
+  printf ("tok %.*s\n", (int)tok.size, tok.start);
+
+
+  char raw_str[] = { '1', '\\', 'n', '2', 0 };
+  char t_str[128];
+  snprintf(t_str, 128, "{ \"key\":\"%s\", \"a\":10 }", raw_str);
+  char * px = NULL;
+  printf("%s\n", t_str);
+  json_scanf(t_str, strlen(t_str), "[key]%?s", &px);
+  printf("%s\n", px);
   return EXIT_SUCCESS;
 }
