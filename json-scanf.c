@@ -85,6 +85,20 @@ jsoneq(const char *json, jsmntok_t *tok, const char *str)
   return -1;
 }
 
+static char * copy_over_string (size_t * new_size, char * str, size_t len)
+{
+  char * new_str = NULL;
+  if (json_unescape_string(&new_str, new_size, str, len)) {
+    return new_str;
+  }
+  else {
+    // ill formed string
+    char * p = NULL;
+    asprintf(&p, "cannot unescape an ill-formed-string %.*s", len, str);
+    *new_size = strlen(p) + 1;
+    return p;
+  }
+}
 static void
 match_path (char *buffer, jsmntok_t *t,
             int n_toks, int start_tok,
@@ -132,35 +146,42 @@ match_path (char *buffer, jsmntok_t *t,
   es->is_applied = true;
   if (STREQ(es->type_specifier, "char*")){
       switch (t[i].type) {
-      case JSMN_STRING:
-          if (es->has_unknown_size) {
-            char **p = (char **) es->recipient;
-            int len = t[i].end - t[i].start + 1;
+      case JSMN_STRING: {
+        size_t new_size = 0;
+        int len = t[i].end - t[i].start;
+        char * escaped = copy_over_string(&new_size, buffer + t[i].start, len);
+        if (es->has_unknown_size) {
+          char **p = (char **) es->recipient;
+          int len = t[i].end - t[i].start + 1;
             *p = malloc(len);
-            int ret = snprintf(*p, len, "%.*s", len - 1, buffer+t[i].start);
+            int ret = snprintf(*p, len, "%.*s", len - 1, escaped);
             ASSERT_S(ret < len, "out-of-bounds write");
-          }
-          else if (es->size) {
+        } else {
+          if (es->size) {
             int ret = snprintf((char *) es->recipient, es->size,
-                               "%.*s", t[i].end - t[i].start,
-                               buffer+t[i].start);
-            ASSERT_S((size_t)ret < es->size, "out-of-bounds write");
-          }
-          else {
+                               "%.*s", t[i].end - t[i].start, escaped);
+            ASSERT_S((size_t) ret < es->size, "out-of-bounds write");
+          } else {
             // we have to allow this potential oob write as
             // we don't know the buffer size of recipient.
-            sprintf((char *) es->recipient, "%.*s",
-                    t[i].end - t[i].start,
-                    buffer + t[i].start);
+            sprintf((char *) es->recipient, "%.*s", new_size, escaped);
           }
-          break;
+        }
+        if (escaped != buffer + t[i].start)
+          free(escaped);
+        break;
+      }
       case JSMN_PRIMITIVE:
           //something is wrong if is not null primitive
           if (!STRNEQ(buffer + t[i].start, "null", 4))
               goto type_error;
-
-          *(char *)es->recipient = '\0'; //@todo we need a better way to represent null
-
+          if (es->has_unknown_size) {
+            char **p = (char **) es->recipient;
+            *p = NULL;
+          }
+          else {
+            *(char *) es->recipient = '\0'; //@todo we need a better way to represent null
+          }
           break;
       default:
         goto type_error;
