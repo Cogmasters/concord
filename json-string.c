@@ -264,12 +264,12 @@ read_4_digits(char ** str_p, char * const buf_end, uint16_t *x)
 }
 
 int
-json_unescape_string (char ** new_str, size_t * new_len,
-                      char * buf, size_t len)
+json_unescape_string (char ** output_p, size_t * output_len_p,
+                      char * input, size_t input_len)
 {
   unsigned char c;
-  char * const start = buf, * const buf_end = buf + len;
-  char * out_start = NULL, * d = NULL;
+  char * const input_start = input, * const input_end = input + input_len;
+  char * out_start = NULL, * d = NULL, * s = NULL;
 
   enum state {
     TESTING = 1,
@@ -278,9 +278,9 @@ json_unescape_string (char ** new_str, size_t * new_len,
   } state = TESTING;
 
 second_iter:
-  for (buf = start; buf < buf_end;) {
-    c = * buf;
-    buf ++;
+  for (s = input_start; s < input_end;) {
+    c = * s;
+    s ++;
 
     if('\\' == c) {
       if (TESTING == state) {
@@ -288,13 +288,13 @@ second_iter:
         break; // break the while loop
       }
 
-      if (buf == buf_end) {
+      if (s == input_end) {
         //input is not a well-formed json string
         goto return_err;
       }
 
-      c = * buf ;
-      buf ++;
+      c = * s;
+      s ++;
 
       switch(c) {
         case	'"':
@@ -314,13 +314,13 @@ second_iter:
         {
           // don't support utf16
           uint16_t x;
-          if (!read_4_digits(&buf, buf_end, &x))
+          if (!read_4_digits(&s, input_end, &x))
             goto return_err;
-          struct utf8_seq s = { {0}, 0 };
-          utf8_encode(x, &s);
+          struct utf8_seq seq = { {0}, 0 };
+          utf8_encode(x, &seq);
           if (UNESCAPING == state) {
-            for (unsigned i = 0; i < s.len; ++i, d++)
-              * d = s.c[i];
+            for (unsigned i = 0; i < seq.len; ++i, d++)
+              * d = seq.c[i];
           }
         }
           break;
@@ -342,17 +342,23 @@ second_iter:
         goto return_err;
       else
       {
-        *new_str = out_start;
-        *new_len = d - out_start;
+        *output_p = out_start;
+        *output_len_p = d - out_start;
         goto return_ok;
       }
     }
     case ALLOCATING:
     {
-      out_start = calloc(1, len);
+      out_start = calloc(1, input_len);
       d = out_start;
       state = UNESCAPING;
       goto second_iter;
+    }
+    case TESTING:
+    {
+      *output_p = input_start;
+      *output_len_p = input_len;
+      return 1;
     }
     default:
       break;
