@@ -25,6 +25,7 @@
 #define MAX_REGION_LEN         16
 #define MAX_HEADER_LEN         512
 #define MAX_URL_LEN            512
+#define MAX_REASON_LEN         512
 #define MAX_MESSAGE_LEN        2000 + 1
 #define MAX_PAYLOAD_LEN        4096
 
@@ -234,6 +235,26 @@ dati **get_list(client *client, const char guild_id[]);
 void remove(client *client, const char guild_id[], const char user_id[]);
 
 } // namespace member
+
+namespace ban {
+
+/* GUILD BAN OBJECT
+ * https://discord.com/developers/docs/resources/guild#ban-object*/
+struct dati {
+  char reason[MAX_REASON_LEN + 1];
+  user::dati *user;
+};
+
+dati* init();
+void cleanup(dati *ban);
+void list_cleanup(dati **bans);
+void json_load(char *str, size_t len, void *p_ban);
+void json_list_load(char *str, size_t len, void *p_ban);
+
+void get(client *client, const char guild_id[], const char user_id[], dati *p_ban);
+dati **get_list(client *client, const char guild_id[]);
+
+} // namespace ban
 
 } // namespace guild
 

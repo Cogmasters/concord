@@ -61,6 +61,9 @@ cleanup(dati *guild) {
 
 void
 list_cleanup(dati **guilds) {
+  for(int i=0; guilds[i]; ++i) {
+    cleanup(guilds[i]);
+  }
   free(guilds);
 }
 
@@ -130,18 +133,20 @@ dati*
 init()
 {
   dati *new_member = (dati*)calloc(1, sizeof *new_member);
+  new_member->user = user::init();
   return new_member;
 }
 
 void
 cleanup(dati *member) {
+  user::cleanup(member->user);
   free(member);
 }
 
 void
 list_cleanup(dati **members) {
   for (int i=0; members[i]; ++i) {
-    user::cleanup(members[i]->user);
+    cleanup(members[i]);
   }
   free(members);
 }
@@ -193,6 +198,110 @@ void remove(client *client, const char guild_id[], const char user_id[])
 }
 
 } // namespace member
+
+namespace ban {
+
+void
+json_load(char *str, size_t len, void *p_ban)
+{
+  dati *ban = (dati*)p_ban;
+
+  json_scanf(str, len,
+     "[reason]%s"
+     "[user]%F",
+      ban->reason,
+      &user::json_load, ban->user);
+
+  D_NOTOP_PUTS("Member object loaded with API response"); 
+}
+
+void
+json_list_load(char *str, size_t len, void *p_bans)
+{
+  struct sized_buffer **buf = NULL;
+  json_scanf(str, len, "[]%A", &buf);
+
+  size_t n = ntl_length((void**)buf);
+  dati **new_bans = (dati**)ntl_calloc(n, sizeof(dati*));
+  for (size_t i=0; buf[i]; ++i) {
+    new_bans[i] = init();
+    json_load(buf[i]->start, buf[i]->size, new_bans[i]);
+  }
+
+  free(buf);
+
+  *(dati ***)p_bans = new_bans;
+}
+
+dati*
+init()
+{
+  dati *new_ban = (dati*)calloc(1, sizeof *new_ban);
+  new_ban->user = user::init();
+  return new_ban;
+}
+
+void
+cleanup(dati *ban) {
+  user::cleanup(ban->user);
+  free(ban);
+}
+
+void
+list_cleanup(dati **bans) {
+  for (int i=0; bans[i]; ++i) {
+    cleanup(bans[i]);
+  }
+  free(bans);
+}
+
+void
+get(client *client, const char guild_id[], const char user_id[], dati *p_ban)
+{
+  if (IS_EMPTY_STRING(guild_id)) {
+    D_PUTS("Missing 'guild_id'");
+    return;
+  }
+  if (IS_EMPTY_STRING(user_id)) {
+    D_PUTS("Missing 'user_id'");
+    return;
+  }
+
+  struct resp_handle resp_handle = {&json_load, (void*)p_ban};
+  struct sized_buffer body = {NULL, 0};
+
+  user_agent::run( 
+    &client->ua,
+    &resp_handle,
+    &body,
+    HTTP_GET, GUILD BAN, guild_id, user_id);
+}
+
+//@todo modifiable query string parameters
+dati**
+get_list(client *client, const char guild_id[])
+{
+  if (IS_EMPTY_STRING(guild_id)) {
+    D_PUTS("Missing 'guild_id'");
+    return NULL;
+  }
+
+  dati **new_bans = NULL;
+
+  struct resp_handle resp_handle =
+    {&json_list_load, (void*)&new_bans};
+  struct sized_buffer body = {NULL, 0};
+
+  user_agent::run( 
+    &client->ua,
+    &resp_handle,
+    &body,
+    HTTP_GET, GUILD BANS, guild_id);
+
+  return new_bans;
+}
+
+} // namespace ban
 
 } // namespace guild
 } // namespace discord

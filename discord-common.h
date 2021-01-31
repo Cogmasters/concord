@@ -29,6 +29,9 @@
 #define MEMBERS               "/members"
 #define MEMBER                MEMBERS"/%s"
 
+#define BANS                  "/bans"
+#define BAN                   BANS"/%s"
+
 #define GATEWAY               "/gateway"
 #define BOT                   "/bot"
 

@@ -74,8 +74,11 @@ cleanup(dati *user) {
 }
 
 void
-list_cleanup(dati **guilds) {
-  free(guilds);
+list_cleanup(dati **users) {
+  for(int i = 0; users[i]; i++) {
+    cleanup(users[i]);
+  }
+  free(users);
 }
 
 void
