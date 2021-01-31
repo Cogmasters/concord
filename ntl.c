@@ -2,14 +2,18 @@
 #include <stdlib.h>
 #include <string.h>
 
+
 void **
-ntl_malloc (size_t nelems,  size_t elem_size)
+ntl_malloc_init (size_t nelems,  size_t elem_size, void (*init)(void * elem_p))
 {
   char * p = (char *)malloc((nelems + 1) * sizeof(void *) + nelems * elem_size);
   char * elem_start = p + (nelems + 1) * sizeof(void *);
   void ** array = (void **)p;
   size_t i;
   for (i = 0; i < nelems; i++) {
+    if (init)
+      init(elem_start);
+
     array[i] = (void *)elem_start;
     elem_start += elem_size;
   }
@@ -18,12 +22,24 @@ ntl_malloc (size_t nelems,  size_t elem_size)
 }
 
 void **
-ntl_calloc (size_t nelems,  size_t elem_size)
+ntl_malloc (size_t nelems,  size_t elem_size)
 {
-  void ** p = ntl_malloc(nelems, elem_size);
+  return ntl_malloc_init(nelems, elem_size, NULL);
+}
+
+void **
+ntl_calloc_init (size_t nelems,  size_t elem_size, void (*init)(void * elem_p))
+{
+  void ** p = ntl_malloc_init(nelems, elem_size, init);
   char * start_to_zero = (char *)p + ((nelems + 1) * sizeof(void *));
   memset(start_to_zero, 0, nelems * elem_size);
   return p;
+}
+
+void **
+ntl_calloc (size_t nelems,  size_t elem_size)
+{
+  return ntl_calloc_init(nelems, elem_size, NULL);
 }
 
 void

@@ -47,13 +47,33 @@ struct sized_buffer {
 
 /*
  * this is the preferred method to allocate a ntl
+ * if init is NULL, it is the same as ntl_calloc
  */
-void ** ntl_calloc (size_t nelems,  size_t elem_size);
+void **
+ntl_calloc_init (size_t nelems,  size_t elem_size, void (*init)(void * elem_p));
+
 
 /*
- * unless you have a very good reason, don't use this
+ * this is the preferred method to allocate a ntl
+ */
+void **
+ntl_calloc (size_t nelems,  size_t elem_size);
+
+
+/*
+ * please use ntl_calloc_init unless you have a very good reason to use this
+ * if init is NULL, it is the same as ntl_malloc
+ */
+void **
+ntl_malloc_init (size_t nelems,  size_t elem_size, void (*init)(void * elem_p));
+
+
+/*
+ * please use ntl_calloc unless you have a very good reason to use this
  */
 void ** ntl_malloc (size_t nelems,  size_t elem_size);
+
+
 
 /*
  * the duplicated ntl of elements of elem_size is
