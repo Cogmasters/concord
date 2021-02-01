@@ -1,6 +1,7 @@
 #ifndef LIBDISCORD_H_
 #define LIBDISCORD_H_
 
+#include <stdint.h>
 #include "discord-common.h"
 
 /* This is the version number of the package from which this header
