@@ -141,7 +141,7 @@ int main ()
   tokens = NULL;
   json_scanf(json_str, s, "[tree]%L", &tokens);
   struct tree_node ** nodes =
-    (struct tree_node **) ntl_dup((void **)tokens, sizeof(struct tree_node));
+    (struct tree_node **) ntl_fmap((void **)tokens, sizeof(struct tree_node), NULL);
   for (i = 0; tokens[i]; i++) {
     printf ("token [%p, %d]\n", tokens[i]->start, tokens[i]->size);
     printf ("token %.*s\n", tokens[i]->size, tokens[i]->start);

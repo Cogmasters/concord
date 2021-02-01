@@ -6,8 +6,14 @@
 void **
 ntl_malloc_init (size_t nelems,  size_t elem_size, void (*init)(void * elem_p))
 {
-  char * p = (char *)malloc((nelems + 1) * sizeof(void *) + nelems * elem_size);
-  char * elem_start = p + (nelems + 1) * sizeof(void *);
+  char * p = (char *)malloc((nelems + 1) * sizeof(void *) // indices
+                            + sizeof(size_t) // elem_size;
+                            +  nelems * elem_size); // elements
+
+  char * size_p = p + (nelems + 1) * sizeof(void *);
+  *((size_t *)size_p) = elem_size;
+
+  char * elem_start = size_p + sizeof(size_t);
   void ** array = (void **)p;
   size_t i;
   for (i = 0; i < nelems; i++) {
@@ -60,11 +66,23 @@ ntl_length (void **p)
   return i;
 }
 
-void **
-ntl_dup (void ** p, size_t elem_size)
+size_t
+ntl_elem_size (void **p)
 {
-  // use calloc to make the dupcated list safer
-  return ntl_calloc(ntl_length(p), elem_size);
+  int i;
+  for (i = 0; p[i]; i++) /* empby body */;
+  size_t * size_p = (size_t *)(p+i+1);
+  return *size_p;
+}
+
+void **
+ntl_dup (void ** p)
+{
+  size_t elem_size = ntl_elem_size(p);
+  void ** o =  ntl_calloc(ntl_length(p), elem_size);
+  for (int i = 0; p[i]; i++)
+    memcpy(o[i], p[i], elem_size);
+  return o;
 }
 
 
@@ -128,9 +146,7 @@ ntl_sn2str(char *str, size_t size, void **p,
 }
 
 int
-ntl_as2str(char ** str, void **p,
-           struct ntl_str_delimiter * d,
-           sn2str * x)
+ntl_as2str(char ** str, void **p, struct ntl_str_delimiter * d, sn2str * x)
 {
   int s = ntl_sn2str(NULL, 0, p, d, x);
   *str = (char *)malloc(s);
@@ -140,9 +156,27 @@ ntl_as2str(char ** str, void **p,
 void **
 ntl_fmap(void ** from_list, size_t to_elem_size, ntl_converter * f)
 {
-  void ** to_list = ntl_dup(from_list, to_elem_size);
-  int i;
-  for (i = 0; from_list[i]; i++)
-    (*f)(&from_list[i], &to_list[i]);
+  void ** to_list = ntl_calloc(ntl_length(from_list), to_elem_size);
+  if (f) {
+    int i;
+    for (i = 0; from_list[i]; i++)
+      (*f)(from_list[i], to_list[i]);
+  }
   return to_list;
+}
+
+
+void **
+ntl_append(void ** p, void * added_elem)
+{
+  size_t len = ntl_length(p);
+  size_t elem_size = ntl_elem_size(p);
+
+  void ** o = ntl_malloc(len + 1, elem_size);
+  int i;
+  for (i = 0; p[i]; i++)
+    memcpy(o[i], p[i], elem_size);
+
+  memcpy(o[i], added_elem, elem_size);
+  return o;
 }

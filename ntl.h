@@ -10,17 +10,18 @@
  *
  * struct ntl {
  *    void * indices[n+1];  // indices[n] = NULL
+ *    size_t size;
  *    struct E e[n];  // sizeof (struct E) == size
  * };
  *
  * the list can be allocated as
  * p = ntl_calloc(n, size);
  *
- *       /-indices[n+1]\  /--------- e[n]-----------\
- * p -> [ | | | | | | |0][e_0]...............[e_(n-1)]
- *       |                 ^
- *       |                 |
- *       +---------->------+
+ *       /-indices[n+1]\        /--------- e[n]-----------\
+ * p -> [ | | | | | | |0][size][e_0]...............[e_(n-1)]
+ *       |                     ^
+ *       |                     |
+ *       +----------->---------+
  *
  * p points to the begin of the memory block which overlaps with indices.
  *
@@ -40,6 +41,11 @@ extern "C" {
 #endif // __cplusplus
 
 
+/*
+ * this is a very important data structure that is used
+ * pervasive in the conversion between JSON string and C structs,
+ * http request/response body
+ */
 struct sized_buffer {
   char *start;
   size_t size;
@@ -76,10 +82,9 @@ void ** ntl_malloc (size_t nelems,  size_t elem_size);
 
 
 /*
- * the duplicated ntl of elements of elem_size is
- * zero initialized.
+ * duplicate a ntl
  */
-void ** ntl_dup (void ** p, size_t elem_size);
+void ** ntl_dup (void ** p);
 
 /*
  * for each element e, calls free_elem(e)
@@ -88,6 +93,7 @@ void ** ntl_dup (void ** p, size_t elem_size);
 void ntl_free(void **p, void (*free_elem)(void *));
 
 size_t ntl_length (void **p);
+size_t ntl_elem_size (void **p);
 
 /*
  * for each element e, calls f(e)
@@ -97,6 +103,14 @@ void ntl_apply(void **p, void (*f)(void *p));
 typedef void (ntl_converter)(void * from, void * to);
 void ** ntl_fmap(void ** from_list, size_t to_elem_size, ntl_converter * f);
 
+/*
+ * Add one element to the end of ntl, this is not super efficient
+ * for many appends, but it's ok for a few appends.
+ *
+ * It caller's responsibility to make sure the added_elem has the
+ * same type and size as the element's type and size of the ntl
+ */
+void ** ntl_append(void ** p, void * added_elem);
 
 /*
  * sn2str(NULL, 0, p) will calculate the size needed to print *p
