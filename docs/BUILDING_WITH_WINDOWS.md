@@ -1,9 +1,15 @@
 # Building orca with Windows
 
 ### Install dependencies:
-If you want to build orca for Windows, the first thing you need to install is curl.
+The first thing you will need is a C compiler. I recommend you to use `gcc`, because you might have problems with other compilers.
+First, download `chocolatey`. It's an important tool to software managment, and, in my option, the better and simpler to install `gcc`.
+You can find the steps to download it [here](https://chocolatey.org/install).
+Then, open the command shell as administrator, type `choco install mingw`, press enter and wait.
+
+If you want to build orca for Windows, you'll also need curl.
 In Ubuntu, you could do this just using apt, but in Windows, you can download it manually [here](https://curl.se/windows/)
-You'll also need openssl, which you can download and install the binaries [here](https://slproweb.com/products/Win32OpenSSL.html).
+
+You'll also need OpenSSL, which you can download and install the binaries [here](https://slproweb.com/products/Win32OpenSSL.html).
 NOTE: don't install "Light" version, or you won't have the static libraries and include headers.
 You can choose install directory, but by default it uses `SomeRootDirectory:\Program Files\OpenSSL-Win64`.
 SomeRootDirectory can be each disk in your computer, like "C:", "D:", "E:" etc.
