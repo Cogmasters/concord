@@ -156,7 +156,7 @@ on_dispatch(websockets::dati *ws)
   if (STREQ("READY", ws->payload.event_name))
   {
     ws->status = CONNECTED;
-    ws->reconnect_attempts = 0;
+    ws->reconnect_attempts = 0; // resets
     D_PUTS("Succesfully started a Discord session!");
 
     json_scanf(ws->payload.event_data, sizeof(ws->payload.event_data),
@@ -173,8 +173,8 @@ on_dispatch(websockets::dati *ws)
   if (STREQ("RESUMED", ws->payload.event_name))
   {
     ws->status = CONNECTED;
-    ws->reconnect_attempts = 0;
-    PRINT("Succesfully resumed a Discord session!");
+    ws->reconnect_attempts = 0; // resets
+    PUTS("Succesfully resumed a Discord session!");
 
     return;
   }
@@ -230,16 +230,24 @@ on_dispatch(websockets::dati *ws)
     return;
   }
 
-  PRINT("Expected not yet implemented GATEWAY_DISPATCH event: %s",
+  PRINT("Expected not yet implemented GATEWAY DISPATCH event: %s",
       ws->payload.event_name);
 }
 
 static void
 on_invalid_session(websockets::dati *ws)
 {
-  ws->status = FRESH;
+  const char *reason;
 
-  char reason[] = "Attempting to a start a fresh session";
+  bool is_resumable = strcmp(ws->payload.event_data, "false");
+  if (is_resumable) {
+    ws->status = RESUME;
+    reason = "Attempting to session resume";
+  }
+  else {
+    ws->status = FRESH;
+    reason = "Attempting to start a fresh new session";
+  }
   PUTS(reason);
   cws_close(ws->ehandle, CWS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
 }
@@ -249,7 +257,7 @@ on_reconnect(websockets::dati *ws)
 {
   ws->status = RESUME;
 
-  char reason[] = "Attempting to session resume";
+  const char reason[] = "Attempting to session resume";
   PUTS(reason);
   cws_close(ws->ehandle, CWS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
 }
