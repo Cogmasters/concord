@@ -5,21 +5,21 @@ reliable Discord bots.
 
 
 ## Build
+### For Ubuntu and Debian
 #### Install dependencies:
 The only dependencies that is needed is curl-7.64.0 or higher built with openssl
-
-For Ubuntu and Debian
 ```
 sudo apt-get install -y build-essential 
 sudo apt-get install -y libcurl4-openssl-dev libssl-dev
 ```
 
-\* If you do not have Ubuntu or Debian but have Windows 10, you can install WSL2 and get either Ubuntu or Debian [here](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
-
 #### Compile
 ```
 make -f discord.mk
 ```
+
+\* If you do not have Ubuntu or Debian but have Windows 10, you can install WSL2 and get either Ubuntu or Debian [here](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
+\* If you have Windows but don't want to use WSL2, you can find a tutorial [here].(/docs/BUILDING_WITH_WINDOWS.md)
 
 ## Run bot-echo
 1. Get your bot token and paste it to `bot.config` to
