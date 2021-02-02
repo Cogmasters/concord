@@ -18,8 +18,9 @@ sudo apt-get install -y libcurl4-openssl-dev libssl-dev
 make -f discord.mk
 ```
 
-\* If you do not have Ubuntu or Debian but have Windows 10, you can install WSL2 and get either Ubuntu or Debian [here](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
-\* If you have Windows but don't want to use WSL2, you can find a tutorial [here](/docs/BUILDING_WITH_WINDOWS.md)
+### For Windows
+* If you do not have Ubuntu or Debian but have Windows 10, you can install WSL2 and get either Ubuntu or Debian [here](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
+* If you have Windows but don't want to use WSL2, you can find a tutorial [here](/docs/BUILDING_WITH_WINDOWS.md)
 
 ## Run bot-echo
 1. Get your bot token and paste it to `bot.config` to
