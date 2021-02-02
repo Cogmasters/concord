@@ -41,7 +41,6 @@ https://en.wikipedia.org/wiki/List_of_HTTP_status_codes */
 
 
 #define MAX_HEADER_SIZE 100
-#define MAX_URL_LEN     512
 #define MAX_HEADER_LEN  512
 
 struct api_header_s {
