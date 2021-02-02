@@ -81,8 +81,6 @@ ws_close_opcode_print(enum ws_close_opcodes gateway_opcode)
 static void
 ws_send_payload(websockets::dati *ws, char payload[])
 {
-  ws->ping_tstamp = ws->now_tstamp;
-
   json_dump("SEND PAYLOAD", &ws->p_client->settings, payload);
 
   bool ret = cws_send_text(ws->ehandle, payload);
@@ -159,7 +157,7 @@ on_dispatch(websockets::dati *ws)
   {
     ws->status = CONNECTED;
     ws->reconnect_attempts = 0;
-    D_PRINT("Succesfully started a Discord session!");
+    D_PUTS("Succesfully started a Discord session!");
 
     json_scanf(ws->payload.event_data, sizeof(ws->payload.event_data),
                "[session_id]%s", ws->session_id);
@@ -176,7 +174,7 @@ on_dispatch(websockets::dati *ws)
   {
     ws->status = CONNECTED;
     ws->reconnect_attempts = 0;
-    D_PRINT("Succesfully resumed a Discord session!");
+    PRINT("Succesfully resumed a Discord session!");
 
     return;
   }
@@ -232,7 +230,8 @@ on_dispatch(websockets::dati *ws)
     return;
   }
 
-  D_PRINT("Not yet implemented GATEWAY_DISPATCH event: %s", ws->payload.event_name);
+  PRINT("Expected not yet implemented GATEWAY_DISPATCH event: %s",
+      ws->payload.event_name);
 }
 
 static void
@@ -241,7 +240,7 @@ on_invalid_session(websockets::dati *ws)
   ws->status = FRESH;
 
   char reason[] = "Attempting to a start a fresh session";
-  D_PUTS(reason);
+  PUTS(reason);
   cws_close(ws->ehandle, CWS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
 }
 
@@ -251,7 +250,7 @@ on_reconnect(websockets::dati *ws)
   ws->status = RESUME;
 
   char reason[] = "Attempting to session resume";
-  D_PUTS(reason);
+  PUTS(reason);
   cws_close(ws->ehandle, CWS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
 }
 
@@ -293,7 +292,7 @@ ws_on_close_cb(void *p_ws, CURL *ehandle, enum cws_close_reason cwscode, const c
       break;
   }
 
-  D_PRINT("%s (code: %4d) : %zd bytes\n\t"
+  PRINT("%s (code: %4d) : %zd bytes\n\t"
           "REASON: '%s'", 
           ws_close_opcode_print(opcode), opcode, len,
           reason);
@@ -336,12 +335,6 @@ ws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
   switch (ws->payload.opcode){
   case GATEWAY_HELLO:
       on_hello(ws);
-  /* fall through */    
-  case GATEWAY_HEARTBEAT_ACK:
-      // get request / response interval in milliseconds
-      ws->ping_ms = orka_timestamp_ms() - ws->ping_tstamp;
-      D_PRINT("PING: %d ms", ws->ping_ms);
-
       break;
   case GATEWAY_DISPATCH:
       on_dispatch(ws);
@@ -351,6 +344,11 @@ ws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
       break;
   case GATEWAY_RECONNECT:
       on_reconnect(ws);
+      break;
+  case GATEWAY_HEARTBEAT_ACK:
+      // get request / response interval in milliseconds
+      ws->ping_ms = orka_timestamp_ms() - ws->hbeat.tstamp;
+      D_PRINT("PING: %d ms", ws->ping_ms);
       break;
   default:
       ERR("Not yet implemented WebSockets opcode (code: %d)", ws->payload.opcode);
@@ -606,7 +604,7 @@ run(websockets::dati *ws)
   } while (1);
 
   if (DISCONNECTED != ws->status) {
-    D_PRINT("Failed all reconnect attempts (%d)", ws->reconnect_attempts);
+    PRINT("Failed all reconnect attempts (%d)", ws->reconnect_attempts);
     ws->status = DISCONNECTED;
   }
 }

@@ -214,7 +214,6 @@ struct dati { /* WEBSOCKETS STRUCTURE */
 
   long long now_tstamp; //timestamp updated every loop iteration
 
-  long long ping_tstamp; //timestamp updated for every request sent
   int ping_ms; //latency between client and websockets server
 
   user::dati *me; //the user associated with this client

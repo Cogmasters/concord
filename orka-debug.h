@@ -7,6 +7,12 @@
 #define D_FMT_ARGS __FILE__, __LINE__, __func__
 
 
+#define PUTS(msg) fprintf(D_OUT, D_FMT_PREFIX "%s\n", D_FMT_ARGS, msg)
+#define NOTOP_PUTS(msg) fprintf(D_OUT, "\t%s\n", msg)
+#define __PRINT(fmt, ...) fprintf(D_OUT, D_FMT_PREFIX fmt "\n%s", D_FMT_ARGS, __VA_ARGS__)
+#define PRINT(...) __PRINT(__VA_ARGS__, "")
+#define __NOTOP_PRINT(fmt, ...) fprintf(D_OUT, "\t" fmt "\n%s", __VA_ARGS__)
+#define NOTOP_PRINT(...) __NOTOP_PRINT(__VA_ARGS__, "")
 #define __ERR(fmt, ...) fprintf(D_OUT, D_FMT_PREFIX "ERROR:\t" fmt "\n%s", D_FMT_ARGS, __VA_ARGS__)
 #define ERR(...) \
         do { \
@@ -24,14 +30,12 @@
 #if _ORCA_DEBUG /* DEBUG MODE ACTIVE */
 
 /* @param msg string to be printed in debug mode */
-#       define D_PUTS(msg) fprintf(D_OUT, D_FMT_PREFIX "%s\n", D_FMT_ARGS, msg)
-#       define D_NOTOP_PUTS(msg) fprintf(D_OUT, "\t%s\n", msg)
+#       define D_PUTS(msg) PUTS(msg)
+#       define D_NOTOP_PUTS(msg) NOTOP_PUTS(msg)
 /* @param fmt like printf
    @param ... arguments to be parsed into fmt */
-#       define __D_PRINT(fmt, ...) fprintf(D_OUT, D_FMT_PREFIX fmt "\n%s", D_FMT_ARGS, __VA_ARGS__)
-#       define D_PRINT(...) __D_PRINT(__VA_ARGS__, "")
-#       define __D_NOTOP_PRINT(fmt, ...) fprintf(D_OUT, "\t" fmt "\n%s", __VA_ARGS__)
-#       define D_NOTOP_PRINT(...) __D_NOTOP_PRINT(__VA_ARGS__, "")
+#       define D_PRINT(...) PRINT(__VA_ARGS__)
+#       define D_NOTOP_PRINT(...) NOTOP_PRINT(__VA_ARGS__)
 #       define D_ERR(...) ERR(__VA_ARGS__)
 #       define D_ASSERT_S(expr, msg) ASSERT_S(expr, msg)
 #       define D_ONLY(arg) (arg)

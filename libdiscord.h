@@ -16,19 +16,19 @@
 
 /* Size limits encountered in the Docs and searching the web */
 #define MAX_NAME_LEN           100 + 1
-#define MAX_TOPIC_LEN          1024
-#define MAX_DESCRIPTION_LEN    1024
+#define MAX_TOPIC_LEN          1024 + 1
+#define MAX_DESCRIPTION_LEN    2048 + 1
 #define MAX_USERNAME_LEN       32 + 1
 #define MAX_DISCRIMINATOR_LEN  4 + 1
-#define MAX_HASH_LEN           1024
-#define MAX_LOCALE_LEN         16
-#define MAX_EMAIL_LEN          254
-#define MAX_REGION_LEN         16
-#define MAX_HEADER_LEN         512
-#define MAX_URL_LEN            512
-#define MAX_REASON_LEN         512
+#define MAX_HASH_LEN           1024 + 1
+#define MAX_LOCALE_LEN         16 + 1
+#define MAX_EMAIL_LEN          254 + 1
+#define MAX_REGION_LEN         16 + 1
+#define MAX_HEADER_LEN         512 + 1
+#define MAX_URL_LEN            512 + 1
+#define MAX_REASON_LEN         512 + 1
 #define MAX_MESSAGE_LEN        2000 + 1
-#define MAX_PAYLOAD_LEN        4096
+#define MAX_PAYLOAD_LEN        4096 + 1
 
 /* SNOWFLAKES
 https://discord.com/developers/docs/reference#snowflakes */
@@ -242,7 +242,7 @@ namespace ban {
 /* GUILD BAN OBJECT
  * https://discord.com/developers/docs/resources/guild#ban-object*/
 struct dati {
-  char reason[MAX_REASON_LEN + 1];
+  char reason[MAX_REASON_LEN];
   user::dati *user;
 };
 

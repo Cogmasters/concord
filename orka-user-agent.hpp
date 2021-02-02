@@ -15,18 +15,15 @@ struct dati {
   struct _settings_s settings;
 };
 
-void
-init(struct dati *api, char *base_url);
+void init(struct dati *ua, char *base_url);
 
-void
-vrun(struct dati *api,
+void vrun(struct dati *ua,
      struct resp_handle *handle,
      struct sized_buffer *body,
      enum http_method http_method,
      char endpoint[], va_list ap);
 
-void
-run(struct dati *api,
+void run(struct dati *ua,
     struct resp_handle *handle,
     struct sized_buffer *body,
     enum http_method http_method,

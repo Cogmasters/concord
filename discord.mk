@@ -17,8 +17,8 @@ LIBS_LDFLAGS	:= $(LIBDISCORD_LDFLAGS)
 
 LIBDISCORD_SLIB	:= $(LIBDIR)/libdiscord.a
 
-CFLAGS := -Wall -Wno-write-strings -O0 -g -D_ORCA_DEBUG \
-					-D_DEFAULT_SOURCE # -DJSON_SCANF_DEBUG
+CFLAGS := -Wall -Wno-write-strings -O0 -g -D_DEFAULT_SOURCE \
+					-D_ORCA_DEBUG # -DJSON_SCANF_DEBUG
 
 CXXFLAGS := -std=c++03
 

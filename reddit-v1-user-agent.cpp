@@ -1,12 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <string.h>
-#include <ctype.h>
-#include <unistd.h> //for usleep
 #include <stdarg.h>
-#include <stddef.h>
-#include "json-scanf.h"
 #include "orka-user-agent.hpp"
 #include "reddit-v1-user-agent.hpp"
 
@@ -18,27 +10,37 @@ namespace user_agent {
 
 
 void
-init(struct dati *d, char * username, char * password)
+init(struct dati *d, char *username, char *password)
 {
   orka::user_agent::init(d->ua, BASE_API_URL);
   d->username =  username;
 }
 
 /* template function for performing requests */
-void run(struct dati *api,
-         struct resp_handle * resp_handle,
-         struct sized_buffer * body,
-         enum http_method http_method,
-         char endpoint[], ...)
+void 
+run(
+  struct dati *api,
+  struct resp_handle *resp_handle,
+  struct sized_buffer *response_body,
+  enum http_method http_method,
+  char endpoint[],
+  ...)
 {
   //create the url route
   va_list args;
   va_start (args, endpoint);
-  orka::user_agent::vrun(api->ua, resp_handle, body,
-                         http_method, endpoint, args);
+
+  orka::user_agent::vrun(
+    api->ua, 
+    resp_handle, 
+    response_body, 
+    http_method, 
+    endpoint, 
+    args);
+
   va_end(args);
 }
 
 } // namespace user_agent
-} // namespace v3
+} // namespace v1
 } // namespace reddit

@@ -21,9 +21,9 @@ get_header_value(struct api_header_s *pairs, char header_field[])
 }
 
 char*
-http_code_print(enum http_code code)
+http_code_print(int httpcode)
 {
-  switch (code) {
+  switch (httpcode) {
       CASE_RETURN_STR(HTTP_OK);
       CASE_RETURN_STR(HTTP_CREATED);
       CASE_RETURN_STR(HTTP_NO_CONTENT);
@@ -37,17 +37,20 @@ http_code_print(enum http_code code)
       CASE_RETURN_STR(HTTP_TOO_MANY_REQUESTS);
       CASE_RETURN_STR(HTTP_GATEWAY_UNAVAILABLE);
   default:
-      if (code >= 500) return "5xx SERVER ERROR";
-
-      ERR("Invalid HTTP response code (code: %d)", code);
+      if (httpcode >= 500) return "5xx SERVER ERROR";
+      if (httpcode >= 400) return "4xx CLIENT ERROR";
+      if (httpcode >= 300) return "3xx REDIRECTING";
+      if (httpcode >= 200) return "2xx SUCCESS";
+      if (httpcode >= 100) return "1xx INFO";
   }
-  return NULL;
+
+  return "UNUSUAL HTTP CODE";
 }
 
 char*
-http_reason_print(enum http_code code)
+http_reason_print(int httpcode)
 {
-  switch (code) {
+  switch (httpcode) {
   case HTTP_OK:
       return "The request was completed succesfully.";
   case HTTP_CREATED:
@@ -73,10 +76,18 @@ http_reason_print(enum http_code code)
   case CURL_NO_RESPONSE:
       return "Curl couldn't fetch a HTTP response.";
   default:
-      if (code >= 500) {
+      if (httpcode >= 500) 
         return "The server had an error processing your request.";
-      }
-      return "Unknown HTTP method.";
+      if (httpcode >= 400)
+        return "Client side error, request couldn't be processed.";
+      if (httpcode >= 300)
+        return "Client requires taking additional action to complete the request";
+      if (httpcode >= 200)
+        return "The action request was received, understood and accepted.";
+      if (httpcode >= 100)
+        return "The request was received and understood. The client must wait for a final response.";
+
+      return "Unusual HTTP method.";
   }
 }
 
@@ -96,9 +107,9 @@ http_method_print(enum http_method method)
 
 /* set specific http method used for the request */
 void
-set_method(CURL *ehandle, enum http_method method, struct sized_buffer *body)
+set_method(CURL *ehandle, enum http_method method, struct sized_buffer *request_body)
 {
-  // resets existing CUSTOMREQUEST
+  // resets any preexisting CUSTOMREQUEST
   curl_easy_setopt(ehandle, CURLOPT_CUSTOMREQUEST, NULL);
 
   CURLcode ecode;
@@ -113,34 +124,179 @@ set_method(CURL *ehandle, enum http_method method, struct sized_buffer *body)
       break;
   case HTTP_POST:
       curl_easy_setopt(ehandle, CURLOPT_POST, 1L);
-      //set ptr to payload that will be sent via POST/PUT
-      curl_easy_setopt(ehandle, CURLOPT_POSTFIELDS, body->start);
-      curl_easy_setopt(ehandle, CURLOPT_POSTFIELDSIZE, body->size);
       break;
   case HTTP_PATCH:
       curl_easy_setopt(ehandle, CURLOPT_CUSTOMREQUEST, "PATCH");
-      curl_easy_setopt(ehandle, CURLOPT_POSTFIELDS, body->start);
-      curl_easy_setopt(ehandle, CURLOPT_POSTFIELDSIZE, body->size);
       break;
   case HTTP_PUT:
       curl_easy_setopt(ehandle, CURLOPT_CUSTOMREQUEST, "PUT");
-      curl_easy_setopt(ehandle, CURLOPT_POSTFIELDS, body->start);
-      curl_easy_setopt(ehandle, CURLOPT_POSTFIELDSIZE, body->size);
       break;
   default:
       ERR("Unknown http method (code: %d)", method);
   }
+  
+  if (request_body && request_body->start) {
+    //set ptr to payload that will be sent via POST/PUT
+    curl_easy_setopt(ehandle, CURLOPT_POSTFIELDS, request_body->start);
+    curl_easy_setopt(ehandle, CURLOPT_POSTFIELDSIZE, request_body->size);
+  }
 }
 
 void
-set_url(CURL *ehandle, char *base_api_url, char endpoint[])
+set_url(CURL *ehandle, char base_api_url[], char endpoint[], va_list args)
 {
+  //create the url route
+  char url_route[MAX_URL_LEN];
+  int ret = vsnprintf(url_route, sizeof(url_route), endpoint, args);
+  ASSERT_S(ret < (int)sizeof(url_route), "oob write of url_route");
+
   char base_url[MAX_URL_LEN];
-  int ret = snprintf(base_url, sizeof(base_url), "%s%s", base_api_url, endpoint);
+  ret = snprintf(base_url, sizeof(base_url), "%s%s", base_api_url, url_route);
   ASSERT_S(ret < (int)sizeof(base_url), "Out of bounds write attempt");
 
   CURLcode ecode = curl_easy_setopt(ehandle, CURLOPT_URL, base_url);
   ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
+}
+
+static void
+default_cb(void *data)
+{ 
+  return; 
+  (void)data; 
+}
+
+static perform_action
+default_success_cb(
+  void *p_data,
+  int httpcode,
+  struct sized_buffer *request_body,
+  struct api_header_s *pairs)
+{ 
+  return ACTION_DONE;
+  (void)p_data; 
+  (void)httpcode; 
+  (void)request_body;
+  (void)pairs;
+}
+
+static perform_action
+default_retry_cb(
+  void *p_data,
+  int httpcode,
+  struct sized_buffer *request_body,
+  struct api_header_s *pairs)
+{
+  return ACTION_RETRY;
+  (void)p_data; 
+  (void)httpcode;
+  (void)request_body;
+  (void)pairs;
+}
+
+static perform_action 
+default_abort_cb(
+  void *p_data,
+  int httpcode,
+  struct sized_buffer *request_body,
+  struct api_header_s *pairs)
+{ 
+  return ACTION_ABORT; 
+  (void)p_data; 
+  (void)httpcode; 
+  (void)request_body;
+  (void)pairs;
+}
+
+void
+perform_request(
+  struct resp_handle *resp_handle,
+  struct sized_buffer *request_body,
+  struct api_header_s *pairs,
+  CURL *ehandle,
+  struct perform_cbs *cbs)
+{
+  ASSERT_S(NULL != cbs, "Missing pointer to callback struct");
+
+  /* SET DEFAULT CALLBACKS */
+  if (!cbs->before_perform) cbs->before_perform = &default_cb;
+  if (!cbs->on_1xx) cbs->on_1xx = &default_success_cb;
+  if (!cbs->on_2xx) cbs->on_2xx = &default_success_cb;
+  if (!cbs->on_3xx) cbs->on_3xx = &default_success_cb;
+  if (!cbs->on_4xx) cbs->on_4xx = &default_abort_cb;
+  if (!cbs->on_5xx) cbs->on_5xx = &default_retry_cb;
+
+  perform_action action;
+  do {
+    /* triggers on every start of loop iteration */
+    (*cbs->before_perform)(cbs->p_data);
+  
+    CURLcode ecode;
+    //perform the connection
+    ecode = curl_easy_perform(ehandle);
+    ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
+
+    //get response's code
+    int httpcode;
+    ecode = curl_easy_getinfo(ehandle, CURLINFO_RESPONSE_CODE, &httpcode);
+    ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
+
+    //get request's url
+    const char *url = NULL;
+    ecode = curl_easy_getinfo(ehandle, CURLINFO_EFFECTIVE_URL, &url);
+    ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
+
+    D_PRINT("Request URL: %s", url);
+
+    /* triggers response related callbacks */
+    if (httpcode >= 500) { // SERVER ERROR
+      action = (*cbs->on_5xx)(cbs->p_data, httpcode, request_body, pairs);
+
+      if (resp_handle && resp_handle->err_cb) {
+        (*resp_handle->err_cb)(
+            request_body->start,
+            request_body->size, 
+            resp_handle->err_obj);
+      }
+    }
+    else if (httpcode >= 400) { // CLIENT ERROR
+      action = (*cbs->on_4xx)(cbs->p_data, httpcode, request_body, pairs);
+
+      if (resp_handle && resp_handle->err_cb) {
+        (*resp_handle->err_cb)(
+            request_body->start,
+            request_body->size, 
+            resp_handle->err_obj);
+      }
+    }
+    else if (httpcode >= 300) { // REDIRECTING
+      action = (*cbs->on_3xx)(cbs->p_data, httpcode, request_body, pairs);
+    }
+    else if (httpcode >= 200) { // SUCCESS RESPONSES
+      action = (*cbs->on_2xx)(cbs->p_data, httpcode, request_body, pairs);
+
+      if (resp_handle && resp_handle->ok_cb) {
+        (*resp_handle->ok_cb)(
+            request_body->start,
+            request_body->size, 
+            resp_handle->ok_obj);
+      }
+    }
+    else if (httpcode >= 100) { // INFO RESPONSE
+      action = (*cbs->on_1xx)(cbs->p_data, httpcode, request_body, pairs);
+    }
+
+    // reset body and header for next possible iteration
+    
+    request_body->size = 0;
+    pairs->size = 0;
+
+    switch (action) {
+    case ACTION_DONE: return;
+    case ACTION_RETRY: break;
+    case ACTION_ABORT: default: abort();
+    }
+
+  } while (ACTION_RETRY == action);
 }
 
 static size_t
@@ -188,14 +344,14 @@ static size_t
 curl_resbody_cb(char *str, size_t size, size_t nmemb, void *p_userdata)
 {
   size_t realsize = size * nmemb;
-  struct sized_buffer *body = (struct sized_buffer *)p_userdata;
+  struct sized_buffer *response_body = (struct sized_buffer *)p_userdata;
 
   //update response body string size
-  char *tmp = (char *)realloc(body->start, body->size + realsize + 1);
-  body->start = tmp;
-  memcpy(body->start + body->size, str, realsize);
-  body->size += realsize;
-  body->start[body->size] = '\0';
+  char *tmp = (char *)realloc(response_body->start, response_body->size + realsize + 1);
+  response_body->start = tmp;
+  memcpy(response_body->start + response_body->size, str, realsize);
+  response_body->size += realsize;
+  response_body->start[response_body->size] = '\0';
   return realsize;
 }
 
@@ -304,7 +460,7 @@ CURL*
 custom_easy_init(struct _settings_s *settings,
                  struct curl_slist *req_header,
                  struct api_header_s *pairs,
-                 struct sized_buffer *body)
+                 struct sized_buffer *response_body)
 {
   CURL *new_ehandle = curl_easy_init();
 
@@ -337,7 +493,7 @@ custom_easy_init(struct _settings_s *settings,
   ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
   //set ptr to response body to be filled at callback
-  ecode = curl_easy_setopt(new_ehandle, CURLOPT_WRITEDATA, body);
+  ecode = curl_easy_setopt(new_ehandle, CURLOPT_WRITEDATA, response_body);
   ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
   //set response header callback

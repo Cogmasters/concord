@@ -5,26 +5,30 @@
 
 namespace github {
 namespace config {
+
 struct dati {
-  char * owner;
-  char * repo;
-  char * default_branch;
+  char *owner;
+  char *repo;
+  char *default_branch;
 };
 
 void
-init(struct dati * data, char * file)
+init(struct dati *data, char *file)
 {
   size_t len = 0;
-  char * content = orka_load_whole_file(file, &len);
+  char *content = orka_load_whole_file(file, &len);
 
   json_scanf(content, len, "[owner]%?s [repo]%?s [default_branch]%?s",
              &data->owner, &data->repo, &data->default_branch);
   free(content);
 }
-} // config
+
+} // namespace config
 
 namespace v3 {
+
 namespace git_op { // high-level function
+
 struct dati {
   user_agent::dati ua_data;
   config::dati config;
@@ -34,33 +38,37 @@ struct dati {
 
 
 struct file {
-  char * path;
-  char * sha;
+  char *path;
+  char *sha;
 };
 
 static void
-load_object_sha(char * str, size_t len, void * ptr) {
+load_object_sha(char *str, size_t len, void *ptr) 
+{
   fprintf(stderr, "%.*s\n", (int)len, str);
   json_scanf(str, len, "[object][sha]%?s", ptr);
 }
 
 static void
-load_sha(char *str, size_t len, void *ptr) {
+load_sha(char *str, size_t len, void *ptr)
+{
   fprintf(stderr, "%.*s\n", (int)len, str);
   json_scanf(str, len, "[sha]%?s", ptr);
 }
 
 static void
-log(char * str, size_t len, void * ptr) {
+log(char *str, size_t len, void *ptr) {
   fprintf(stderr, "%.*s\n", (int)len, str);
 }
 
-dati *
-init (char * username, char * token, char * repo_config)
+dati*
+init(char *username, char *token, char *repo_config)
 {
-  dati * d = (dati *)calloc(1, sizeof(dati));
+  dati *d = (dati *)calloc(1, sizeof(dati));
+
   user_agent::init (&d->ua_data, username, token);
   config::init(&d->config, repo_config);
+
   d->handle.ok_cb = NULL;
   d->handle.ok_obj = NULL;
   d->handle.err_cb = log;
@@ -71,9 +79,9 @@ init (char * username, char * token, char * repo_config)
 }
 
 char *
-get_head_commit (dati * d)
+get_head_commit(dati *d)
 {
-  char * sha = NULL;
+  char *sha = NULL;
   d->handle.ok_cb = load_object_sha;
   d->handle.ok_obj = &sha;
   user_agent::run(&d->ua_data, &d->handle, NULL,
@@ -83,10 +91,10 @@ get_head_commit (dati * d)
 }
 
 char *
-get_tree_sha(dati * d, char * commit_sha)
+get_tree_sha(dati *d, char *commit_sha)
 {
   fprintf(stderr, "===get-tree-sha==\n");
-  char * sha = NULL;
+  char *sha = NULL;
   d->handle.ok_cb = load_sha;
   d->handle.ok_obj = &sha;
   user_agent::run(&d->ua_data, &d->handle, NULL,
@@ -98,16 +106,16 @@ get_tree_sha(dati * d, char * commit_sha)
 }
 
 void
-create_blobs (dati * d, struct file ** files) {
-  int i;
-  char * file_sha = NULL;
+create_blobs(dati *d, struct file **files)
+{
+  char *file_sha = NULL;
   d->handle.ok_cb = load_sha;
   d->handle.ok_obj = &file_sha;
 
-  for (i = 0; files[i]; i++) {
+  for (int i = 0; files[i]; i++) {
     fprintf(stderr, "===creating blob for %s===\n", files[i]->path);
     size_t len;
-    char * content = orka_load_whole_file(files[i]->path, &len);
+    char *content = orka_load_whole_file(files[i]->path, &len);
     d->body.size = json_asprintf(&d->body.start,
                               "{ |content|:|%.*s|, |encoding|:|utf-8| }",
                               len, content);
@@ -123,9 +131,9 @@ create_blobs (dati * d, struct file ** files) {
 }
 
 static int
-node2json(char * str, size_t size, void *p)
+node2json(char *str, size_t size, void *p)
 {
-  struct file * f = (struct file *)p;
+  struct file *f = (struct file *)p;
   return json_snprintf(str, size,
                        "{"
                          "|path|:|%s|,"
@@ -136,13 +144,12 @@ node2json(char * str, size_t size, void *p)
 }
 
 static int
-node_list2json (char * str, size_t size, void *p)
-{
+node_list2json(char *str, size_t size, void *p) {
   return ntl_sn2str(str, size, (void **)p, NULL, node2json);
 }
 
 char *
-create_tree (dati * d, char * base_tree_sha, struct file ** files)
+create_tree(dati *d, char *base_tree_sha, struct file **files)
 {
   fprintf(stderr, "==create-tree==\n");
   d->body.size = json_asprintf(&d->body.start,
@@ -150,7 +157,7 @@ create_tree (dati * d, char * base_tree_sha, struct file ** files)
                               "|tree|:%F,"
                               "|base_tree|:|%s|"
                               "}", node_list2json, files, base_tree_sha);
-  char * new_tree_sha = NULL;
+  char *new_tree_sha = NULL;
   d->handle.ok_cb = load_sha;
   d->handle.ok_obj = &new_tree_sha;
 
@@ -161,15 +168,16 @@ create_tree (dati * d, char * base_tree_sha, struct file ** files)
 
   free(d->body.start);
   fprintf(stderr, "new-tree-sha:%s\n", new_tree_sha);
+
   return new_tree_sha;
 }
 
 char *
-create_a_commit (dati * d, char * tree_sha, 
-                 char * parent_commit_sha, char * commit_msg)
+create_a_commit(dati *d, char *tree_sha, 
+                 char *parent_commit_sha, char *commit_msg)
 {
   fprintf(stderr, "===create-a-commit===\n");
-  char * new_commit_sha = NULL;
+  char *new_commit_sha = NULL;
   d->handle.ok_cb = load_sha;
   d->handle.ok_obj = &new_commit_sha;
   d->body.size = json_asprintf(&d->body.start,
@@ -189,7 +197,7 @@ create_a_commit (dati * d, char * tree_sha,
 }
 
 void
-create_a_branch (dati * d, char * head_commit_sha, char * branch)
+create_a_branch(dati *d, char *head_commit_sha, char *branch)
 {
   fprintf(stderr, "===create-a-branch===\n");
   d->body.size = json_asprintf(&d->body.start, "{ |ref|: |refs/heads/%s|, |sha|:|%s| }",
@@ -204,7 +212,7 @@ create_a_branch (dati * d, char * head_commit_sha, char * branch)
 }
 
 void
-update_a_commit (dati * d, char * branch, char * commit_sha)
+update_a_commit(dati *d, char *branch, char *commit_sha)
 {
   fprintf(stderr, "===update-a-commit===\n");
   d->handle.ok_cb = log;
@@ -216,7 +224,7 @@ update_a_commit (dati * d, char * branch, char * commit_sha)
 }
 
 void
-create_a_pull_request (dati * d, char * branch, char * pull_msg) {
+create_a_pull_request(dati *d, char *branch, char *pull_msg) {
   // 5. create a pull request
   fprintf(stderr, "===create-a-pull-request===\n");
   d->body.size = json_asprintf(&d->body.start,
@@ -232,6 +240,6 @@ create_a_pull_request (dati * d, char * branch, char * pull_msg) {
           HTTP_POST, "/repos/%s/%s/pulls", d->config.owner, d->config.repo);
 }
 
-} // git_op
-} // v3
-} // github
+} // namespace git_op
+} // namespace v3
+} // namespace github

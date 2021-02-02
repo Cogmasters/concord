@@ -15,21 +15,21 @@ namespace user_agent {
 
 struct dati {
   orka::user_agent::dati ua;
-  char * base_url;
-  char * username;
+  char *base_url;
+  char *username;
 };
 
-extern void init(struct dati * data, char * username, char * password);
+extern void init(struct dati *data, char *username, char *password);
 
-extern void run(struct dati * data,
-                struct resp_handle * handle,
-                struct api_resbody_s * body,
+extern void run(struct dati *api,
+                struct resp_handle *resp_handle,
+                struct api_resbody_s *response_body,
                 enum http_method http_method,
                 char endpoint[],
                 ...);
 
-} // user_agent
-} // v3
-} // reddit
+} // namespace user_agent
+} // namespace v1
+} // namespace reddit
 
-#endif //REDDIT_V3_UA_H
+#endif // REDDIT_V3_UA_H

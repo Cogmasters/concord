@@ -21,19 +21,19 @@ struct dati {
   struct _settings_s settings;
 };
 
-extern void init(struct dati * data,
+extern void init(struct dati *data,
                  char username[],
                  char token[]);
 
-extern void run(struct dati * data,
-                struct resp_handle * handle,
-                struct sized_buffer * body,
+extern void run(struct dati *data,
+                struct resp_handle *handle,
+                struct sized_buffer *body,
                 enum http_method http_method,
                 char endpoint[],
                 ...);
 
-} // user_agent
-} // v3
-} // github
+} // namespace user_agent
+} // namespace v3
+} // namespace github
 
-#endif //GITHUB_V3_UA_H
+#endif // GITHUB_V3_UA_H
