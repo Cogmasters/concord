@@ -410,9 +410,8 @@ identify_init(int intents, char token[])
   int ret; //check snprintf return value
 
   //https://discord.com/developers/docs/topics/gateway#identify-identify-connection-properties
-  /* @todo $os detection */
   char properties[512];
-  ret = snprintf(properties, sizeof(properties), fmt_properties, "Linux");
+  ret = snprintf(properties, sizeof(properties), fmt_properties, ORKA_OS);
   ASSERT_S(ret < (int)sizeof(properties), "Out of bounds write attempt");
 
   //https://discord.com/developers/docs/topics/gateway#sharding
