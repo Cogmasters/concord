@@ -159,7 +159,7 @@ on_dispatch_message(websockets::dati *ws, int offset)
   }
   else if (STREQ("DELETE", ws->payload.event_name + offset)) {
     if (ws->cbs.on_message.del)
-      (*ws->cbs.on_message.del)(ws->p_client, ws->me, message);
+      (*ws->cbs.on_message.del)(ws->p_client, ws->me, message->id, message->channel_id, message->guild_id);
   }
 
   channel::message::cleanup(message);

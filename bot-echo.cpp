@@ -52,7 +52,9 @@ void on_message_update(
 void on_message_delete(
     client *client,
     const user::dati *me,
-    const channel::message::dati *msg)
+    const uint64_t id,
+    const uint64_t channel_id,
+    const uint64_t guild_id)
 {
   using namespace discord::channel;
 
@@ -60,7 +62,7 @@ void on_message_delete(
     .content = "Did that message just disappear?"
   };
 
-  message::create::run(client, msg->channel_id, &params, NULL);
+  message::create::run(client, channel_id, &params, NULL);
 
   (void)me;
 }

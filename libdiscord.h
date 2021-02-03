@@ -341,7 +341,7 @@ void setcb_idle(client *client, idle_cb *user_cb);
 void setcb_ready(client *client, idle_cb *user_cb);
 void setcb_message_create(client *client, message_cb *user_cb);
 void setcb_message_update(client *client, message_cb *user_cb);
-void setcb_message_delete(client *client, message_cb *user_cb);
+void setcb_message_delete(client *client, message_delete_cb *user_cb);
 
 void run(client *client);
 

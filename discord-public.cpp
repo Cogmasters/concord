@@ -117,7 +117,7 @@ setcb_message_update(client *client, message_cb *user_cb)
 }
 
 void
-setcb_message_delete(client *client, message_cb *user_cb)
+setcb_message_delete(client *client, message_delete_cb *user_cb)
 {
   client->ws.intents |= websockets::intents::GUILD_MESSAGES;
   client->ws.cbs.on_message.del = user_cb;

@@ -185,7 +185,7 @@ struct dati { /* WEBSOCKETS STRUCTURE */
     struct { /* MESSAGE CALLBACKS STRUCTURE */
       message_cb *create; //triggers when a message is created
       message_cb *update; //triggers when a message is updated (edited)
-      message_cb *del; //triggers when a message is deleted
+      message_delete_cb *del; //triggers when a message is deleted
     } on_message;
   } cbs;
 
