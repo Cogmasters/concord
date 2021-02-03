@@ -113,7 +113,7 @@ orka_iso8601_to_unix_ms(char *timestamp, size_t len, void *p_data)
   tm.tm_mon--; // struct tm takes month from 0 to 11
   tm.tm_year -= 1900; // struct tm takes years from 1900
 
-  int res = (((int64_t) mktime(&tm) - timezone) * 1000)
+  int64_t res = (((int64_t) mktime(&tm) - timezone) * 1000)
               + (int64_t) round(seconds * 1000.0);
   switch (tz_operator) {
   case '+': // Add hours and minutes
