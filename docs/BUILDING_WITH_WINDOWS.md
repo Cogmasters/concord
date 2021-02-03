@@ -8,6 +8,8 @@ Then, open the command shell as administrator, type `choco install mingw`, press
 
 If you want to build orca for Windows, you'll also need curl.
 In Ubuntu, you could do this just using apt, but in Windows, you can download it manually [here](https://curl.se/windows/)
+Then, copy the file `libcurl-x64.dll` from `CURL_DOWNLOAD_PATH\bin` to your project's binary directory.
+In my case, it's `C:\Users\Papaulo\Downloads\curl-7.74.0_2-win64-mingw\bin`.
 
 You'll also need OpenSSL, which you can download and install the binaries [here](https://slproweb.com/products/Win32OpenSSL.html).
 NOTE: don't install "Light" version, or you won't have the static libraries and include headers.
@@ -229,6 +231,18 @@ $(OBJDIR)/tdestroy.o : tdestroy.c
 $(OBJDIR)/strndup.o : strndup.c
     $(CC) $(CFLAGS) $(LIBS_CFLAGS) \
         -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=1 -c -o $@ $<
+```
+
+### Add native CA to curl options
+If we don't wanna get SSL certificate error, we need to add native CA to curl options.
+First, go to `http-common.c`. Then, find the function `custom_easy_init` and insert the following code add the end of the function (before returning):
+```c
+  ecode = curl_easy_setopt(new_ehandle, CURLOPT_SSL_OPTIONS, CURLSSLOPT_NATIVE_CA);
+  ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
+```
+Then, go to `curl-websocket.c`, find the function `cws_new` and insert the following code after setting the other options:
+```c
+    curl_easy_setopt(easy, CURLOPT_SSL_OPTIONS, CURLSSLOPT_NATIVE_CA);
 ```
 
 ### Compile
