@@ -40,11 +40,11 @@ https://en.wikipedia.org/wiki/List_of_HTTP_status_codes */
 #define HTTP_GATEWAY_UNAVAILABLE  502
 
 
-  
+
 #define MAX_HEADER_SIZE 100 + 1
 #define MAX_HEADER_LEN  512 + 1
 #define MAX_URL_LEN     512 + 1
-  
+
 
 struct api_header_s {
   char field[MAX_HEADER_SIZE][MAX_HEADER_LEN];
