@@ -71,8 +71,7 @@ json_load(char *str, size_t len, void *p_message)
 {
   dati *message = (dati*)p_message;
 
-  if (message->nonce)
-  {
+  if (message->nonce) {
     free(message->nonce);
     message->nonce = NULL;
   }
@@ -82,6 +81,7 @@ json_load(char *str, size_t len, void *p_message)
      "[channel_id]%F"
      "[guild_id]%F"
      "[author]%F"
+     "[member]%F"
      "[content]%s"
      "[timestamp]%F"
      "[edited_timestamp]%F"
@@ -98,6 +98,7 @@ json_load(char *str, size_t len, void *p_message)
       &orka_strtoull, &message->channel_id,
       &orka_strtoull, &message->guild_id,
       &user::json_load, message->author,
+      &guild::member::json_load, message->member,
       message->content,
       &orka_iso8601_to_unix_ms, &message->timestamp,
       &orka_iso8601_to_unix_ms, &message->edited_timestamp,
@@ -113,17 +114,22 @@ json_load(char *str, size_t len, void *p_message)
 }
 
 static dati*
-referenced_message_init()
+message_init()
 {
   dati *new_message = (dati*)calloc(1, sizeof *new_message);
   if (NULL == new_message) return NULL;
 
   new_message->author = user::init();
-  if (NULL == new_message->author) goto cleanup;
+  if (NULL == new_message->author) goto cleanupA;
+
+  new_message->member = guild::member::init();
+  if (NULL == new_message->member) goto cleanupB;
 
   return new_message;
 
-cleanup:
+cleanupB:
+  user::cleanup(new_message->author);
+cleanupA:
   free(new_message);
 
   return NULL;
@@ -132,33 +138,27 @@ cleanup:
 dati*
 init()
 {
-  dati *new_message = (dati*)calloc(1, sizeof *new_message);
+  dati *new_message = message_init();
   if (NULL == new_message) return NULL;
 
-  new_message->author = user::init();
-  if (NULL == new_message->author) goto cleanupA;
-  
-  new_message->referenced_message = referenced_message_init();
-  if (NULL == new_message->referenced_message) goto cleanupB;
+  new_message->referenced_message = message_init();
+  if (NULL == new_message->referenced_message) {
+    cleanup(new_message);
+    return NULL;
+  }
 
   return new_message;
-
-cleanupB:
-  free(new_message->author);
-cleanupA:
-  free(new_message);
-
-  return NULL;
 }
 
 static void
-referenced_message_cleanup(dati *message)
+message_cleanup(dati *message)
 {
-  if (message->nonce) {
+  if (message->nonce)
     free(message->nonce);
-  }
-
-  user::cleanup(message->author);
+  if (message->author)
+    user::cleanup(message->author);
+  if (message->member)
+    guild::member::cleanup(message->member);
 
   free(message);
 }
@@ -166,15 +166,10 @@ referenced_message_cleanup(dati *message)
 void
 cleanup(dati *message)
 {
-  if (message->nonce) {
-    free(message->nonce);
+  if (message->referenced_message) {
+    message_cleanup(message->referenced_message);
   }
-
-  user::cleanup(message->author);
-
-  referenced_message_cleanup(message->referenced_message);
-
-  free(message);
+  message_cleanup(message);
 }
 
 namespace create {

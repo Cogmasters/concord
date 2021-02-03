@@ -146,6 +146,9 @@ on_dispatch_message(websockets::dati *ws, int offset)
   channel::message::json_load(ws->payload.event_data,
       sizeof(ws->payload.event_data), (void*)message);
 
+
+  /* @todo implement MESSAGE DELETE BULK */
+
   if (STREQ("CREATE", ws->payload.event_name + offset)) {
     if (ws->cbs.on_message.create)
       (*ws->cbs.on_message.create)(ws->p_client, ws->me, message);
@@ -203,8 +206,8 @@ on_dispatch(websockets::dati *ws)
     return;
   }
 
-  if (STRNEQ("MESSAGE_", ws->payload.event_name, 8))
-  {
+
+  if (STRNEQ("MESSAGE_", ws->payload.event_name, 8)) {
     on_dispatch_message(ws, 8);
     return;
   }
@@ -393,10 +396,10 @@ custom_multi_init()
 
 //@todo allow for user input
 static char*
-identify_init(char token[])
+identify_init(int intents, char token[])
 {
   const char fmt_properties[] = \
-    "{\"$os\":\"%s\",\"$browser\":\"libdiscord\",\"$device\":\"libdiscord\"}";
+    "{\"$os\":\"%s\",\"$browser\":\"orca\",\"$device\":\"orca\"}";
   const char fmt_presence[] = \
     "{\"since\":%s,\"activities\":%s,\"status\":\"%s\",\"afk\":%s}";
   const char fmt_event_data[] = \
@@ -424,7 +427,7 @@ identify_init(char token[])
   //https://discord.com/developers/docs/topics/gateway#identify-identify-structure
   char event_data[512];
   ret = snprintf(event_data, sizeof(event_data), fmt_event_data,
-                  token, WS_INTENT_GUILD_MESSAGES, properties, presence);
+                  token, intents, properties, presence);
   ASSERT_S(ret < (int)sizeof(presence), "Out of bounds write attempt");
 
   int len = sizeof(fmt_identify);
@@ -444,8 +447,6 @@ init(websockets::dati *ws, char token[])
 {
   ws->status = DISCONNECTED;
 
-  ws->identify = identify_init(token);
-
   ws->ehandle = custom_cws_new(ws);
   ws->mhandle = custom_multi_init();
 
@@ -456,7 +457,8 @@ init(websockets::dati *ws, char token[])
 void
 cleanup(websockets::dati *ws)
 {
-  free(ws->identify);
+  if (ws->identify)
+    free(ws->identify);
 
   user::cleanup(ws->me);
 
@@ -572,6 +574,14 @@ ws_main_loop(websockets::dati *ws)
 void
 run(websockets::dati *ws)
 {
+  ASSERT_S(CONNECTED != ws->status, "Can't have recursive connections");
+  if (NULL != ws->identify) {
+    free(ws->identify);
+  }
+
+  char *token = ws->p_client->settings.token;
+  ws->identify = identify_init(ws->intents, token);
+
   do {
     curl_multi_add_handle(ws->mhandle, ws->ehandle);
     ws_main_loop(ws);
