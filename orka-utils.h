@@ -4,6 +4,10 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
+
 char* orka_load_whole_file(const char filename[], size_t *len);
 
 int orka_iso8601_to_unix_ms(char *timestamp, size_t len, void *p_data);
