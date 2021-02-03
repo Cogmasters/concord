@@ -104,10 +104,9 @@ ws_send_resume(websockets::dati *ws)
 static void
 ws_send_identify(websockets::dati *ws)
 {
+  /* Ratelimit check */
   if ( (ws->now_tstamp - ws->session.identify_tstamp) < 5 ) {
-    ++ws->session.concurrent;
-
-    if (ws->session.concurrent >= ws->session.max_concurrency)
+    if (++ws->session.concurrent >= ws->session.max_concurrency)
       ERR("Reach identify requests threshold (%d every 5 seconds)",
                 ws->session.max_concurrency);
   }
@@ -139,11 +138,37 @@ on_hello(websockets::dati *ws)
 }
 
 static void
+on_dispatch_message(websockets::dati *ws, int offset)
+{
+  channel::message::dati *message = channel::message::init();
+  ASSERT_S(NULL != message, "Out of memory");
+
+  channel::message::json_load(ws->payload.event_data,
+      sizeof(ws->payload.event_data), (void*)message);
+
+  if (STREQ("CREATE", ws->payload.event_name + offset)) {
+    if (ws->cbs.on_message.create)
+      (*ws->cbs.on_message.create)(ws->p_client, ws->me, message);
+  }
+  else if (STREQ("UPDATE", ws->payload.event_name + offset)) {
+    if (ws->cbs.on_message.update)
+      (*ws->cbs.on_message.update)(ws->p_client, ws->me, message);
+  }
+  else if (STREQ("DELETE", ws->payload.event_name + offset)) {
+    if (ws->cbs.on_message.del)
+      (*ws->cbs.on_message.del)(ws->p_client, ws->me, message);
+  }
+
+  channel::message::cleanup(message);
+}
+
+static void
 on_dispatch(websockets::dati *ws)
 {
   user::json_load(ws->payload.event_data,
       sizeof(ws->payload.event_data), (void*)ws->me);
 
+  /* Ratelimit check */
   if ( (ws->now_tstamp - ws->session.event_tstamp) < 60 ) {
     if (++ws->session.event_count >= 120)
       ERR("Reach event dispatch threshold (120 every 60 seconds)");
@@ -163,9 +188,8 @@ on_dispatch(websockets::dati *ws)
                "[session_id]%s", ws->session_id);
     ASSERT_S(ws->session_id, "Couldn't fetch session_id from READY event");
 
-    if (NULL == ws->cbs.on_ready) return;
-
-    (*ws->cbs.on_ready)(ws->p_client, ws->me);
+    if (ws->cbs.on_ready)
+      (*ws->cbs.on_ready)(ws->p_client, ws->me);
 
     return;
   }
@@ -179,54 +203,9 @@ on_dispatch(websockets::dati *ws)
     return;
   }
 
-  if (STREQ("MESSAGE_CREATE", ws->payload.event_name))
+  if (STRNEQ("MESSAGE_", ws->payload.event_name, 8))
   {
-    if (NULL == ws->cbs.on_message.create) return;
-
-    channel::message::dati *message = channel::message::init();
-    ASSERT_S(NULL != message, "Out of memory");
-
-    channel::message::json_load(ws->payload.event_data,
-        sizeof(ws->payload.event_data), (void*)message);
-
-    (*ws->cbs.on_message.create)(ws->p_client, ws->me, message);
-
-    channel::message::cleanup(message);
-
-    return;
-  }
-
-  if (STREQ("MESSAGE_UPDATE", ws->payload.event_name))
-  {
-    if (NULL == ws->cbs.on_message.update) return;
-
-    channel::message::dati *message = channel::message::init();
-    ASSERT_S(NULL != message, "Out of memory");
-
-    channel::message::json_load(ws->payload.event_data,
-        sizeof(ws->payload.event_data), (void*)message);
-
-    (*ws->cbs.on_message.update)(ws->p_client, ws->me, message);
-
-    channel::message::cleanup(message);
-
-    return;
-  }
-
-  if (STREQ("MESSAGE_DELETE", ws->payload.event_name))
-  {
-    if (NULL == ws->cbs.on_message.del) return;
-
-    channel::message::dati *message = channel::message::init();
-    ASSERT_S(NULL != message, "Out of memory");
-
-    channel::message::json_load(ws->payload.event_data,
-        sizeof(ws->payload.event_data), (void*)message);
-
-    (*ws->cbs.on_message.del)(ws->p_client, ws->me, message);
-
-    channel::message::cleanup(message);
-
+    on_dispatch_message(ws, 8);
     return;
   }
 
