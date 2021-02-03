@@ -67,7 +67,7 @@ list_cleanup(dati **guilds) {
 }
 
 void
-get(client *client, const uint64_t guild_id[], dati *p_guild)
+get(client *client, const uint64_t guild_id, dati *p_guild)
 {
   if (!guild_id) {
     D_PUTS("Missing 'guild_id'");
