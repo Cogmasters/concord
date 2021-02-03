@@ -15,7 +15,7 @@ void on_ready(client *client, const user::dati *me)
   (void)client;
 }
 
-char*
+uint64_t
 select_guild(client *client)
 {
   // get guilds bot is a part of
@@ -36,7 +36,7 @@ select_guild(client *client)
     fgets(strnum, sizeof(strnum), stdin);
     num = strtol(strnum, NULL, 10);
     if (num >= 0 && num < i) {
-      char *guild_id = strdup(guilds[num]->id);
+      uint64_t guild_id = guilds[num]->id;
       guild::list_cleanup(guilds);
 
       return guild_id;
@@ -45,7 +45,7 @@ select_guild(client *client)
 }
 
 void
-select_member(client *client, char *guild_id)
+select_member(client *client, uint64_t guild_id)
 {
   // get guilds bot is a part of
   guild::member::dati **members = guild::member::get_list(client, guild_id);
@@ -88,7 +88,7 @@ int main(int argc, char *argv[])
   client *client = fast_init(config_file);
   assert(NULL != client);
 
-  char *guild_id = select_guild(client);
+  uint64_t guild_id = select_guild(client);
   select_member(client, guild_id);
 
   cleanup(client);

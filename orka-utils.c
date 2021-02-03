@@ -11,26 +11,26 @@
 #include "orka-utils.h"
 #include "orka-debug.h"
 
+
 char*
 orka_load_whole_file(const char filename[], size_t *len)
 {
-  size_t size = 0;
+  size_t f_size = 0;
   FILE *f = fopen(filename,"rb");
   if (!f) {
-    char *s = strerror(errno);
-    ERR("%s '%s'\n", s, filename);
+    ERR("%s '%s'\n", strerror(errno), filename);
   }
 
   fseek(f, 0, SEEK_END);
-  size = ftell(f);
+  f_size = ftell(f);
   fseek(f, 0, SEEK_SET);
 
-  char *string = (char *)malloc(size);
-  fread(string, 1, size, f);
+  char *string = (char *)malloc(f_size);
+  fread(string, 1, f_size, f);
   fclose(f);
 
   if (len) {
-    *len = size;
+    *len = f_size;
   }
 
   return string;
@@ -114,7 +114,7 @@ orka_iso8601_to_unix_ms(char *timestamp, size_t len, void *p_data)
   tm.tm_year -= 1900; // struct tm takes years from 1900
 
   int res = (((int64_t) mktime(&tm) - timezone) * 1000)
-                  + (int64_t) round(seconds * 1000.0);
+              + (int64_t) round(seconds * 1000.0);
   switch (tz_operator) {
   case '+': // Add hours and minutes
       res += (tz_hour * 60 + tz_min) * 60 * 1000;
@@ -136,8 +136,8 @@ void
 orka_sleep_ms(const long long delay_ms)
 {
   const struct timespec t = {
-          .tv_sec = delay_ms / 1000,
-          .tv_nsec = (delay_ms % 1000) * 1e6
+    .tv_sec = delay_ms / 1000,
+    .tv_nsec = (delay_ms % 1000) * 1e6
   };
 
   nanosleep(&t, NULL);
@@ -161,4 +161,16 @@ orka_timestamp_str(char *p_str, int len)
 
   int ret = strftime(p_str, len, "%c", tm);
   ASSERT_S(ret != 0, "Could not retrieve string timestamp");
+}
+
+void
+orka_strtoll(char *str, size_t len, void *p_data) 
+{
+  uint64_t *recipient = (uint64_t*)p_data;
+  ASSERT_S(NULL != recipient, "No recipient provided by user");
+
+  *recipient = strtoull(str, NULL, 10);
+  D_PRINT("%p", recipient);
+
+  (void)len;
 }

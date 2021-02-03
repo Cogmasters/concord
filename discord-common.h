@@ -9,28 +9,29 @@
 
 /* ENDPOINTS */
 #define MESSAGES              "/messages"
-#define MESSAGE               MESSAGES"/%s"
+#define MESSAGE               MESSAGES"/%" PRIu64
 
 #define CHANNELS              "/channels"
-#define CHANNEL               CHANNELS"/%s"
+#define CHANNEL               CHANNELS"/%" PRIu64
 
-#define REACTION_EMOJI        CHANNEL MESSAGE"/reactions/%s"
-#define REACTION_EMOJI_USER   REACTION_EMOJI"/%s"
+#define REACTION_EMOJI        CHANNEL MESSAGE"/reactions/%" PRIu64
+#define REACTION_EMOJI_USER   REACTION_EMOJI"/%" PRIu64
 
 #define PINNED_MESSAGES       CHANNEL"/pins"
-#define PINNED_MESSAGE        PINNED_MESSAGES"/%s"
+#define PINNED_MESSAGE        PINNED_MESSAGES"/%" PRIu64
 
 #define GUILDS                "/guilds"
-#define GUILD                 GUILDS"/%s"
+#define GUILD                 GUILDS"/%" PRIu64
 
 #define USERS                 "/users"
-#define USER                  USERS"/%s"
+#define USER                  USERS"/%" PRIu64
+#define ME                    USERS"/@me"
 
 #define MEMBERS               "/members"
-#define MEMBER                MEMBERS"/%s"
+#define MEMBER                MEMBERS"/%" PRIu64
 
 #define BANS                  "/bans"
-#define BAN                   BANS"/%s"
+#define BAN                   BANS"/%" PRIu64
 
 #define GATEWAY               "/gateway"
 #define BOT                   "/bot"
@@ -169,7 +170,7 @@ struct dati { /* WEBSOCKETS STRUCTURE */
   int reconnect_attempts; //hard limit 5 reconnection attempts @todo make configurable
 
   char *identify; //the identify payload (for establishing a new connection)
-  char *session_id; //the session id (for resuming lost connections)
+  char session_id[512]; //the session id (for resuming lost connections)
 
   CURLM *mhandle;
   CURL *ehandle;

@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
 
   guild::dati **guilds = user::me::get_guilds(client);
   for (size_t i=0; guilds[i]; ++i) {
-    D_PRINT("%s", guilds[i]->id);
+    D_PRINT("%ld", guilds[i]->id);
   }
 
   guild::list_cleanup(guilds);

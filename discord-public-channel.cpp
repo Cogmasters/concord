@@ -21,13 +21,13 @@ cleanup(dati *channel) {
 }
 
 void
-pin_message(client *client, const char channel_id[], const char message_id[])
+pin_message(client *client, const uint64_t channel_id, const uint64_t message_id)
 {
-  if (IS_EMPTY_STRING(channel_id)) {
+  if (!channel_id) {
     D_PUTS("Missing 'channel_id'");
     return;
   }
-  if (IS_EMPTY_STRING(message_id)) {
+  if (!message_id) {
     D_PUTS("Missing 'message_id'");
     return;
   }
@@ -43,13 +43,13 @@ pin_message(client *client, const char channel_id[], const char message_id[])
 }
 
 void
-unpin_message(client *client, const char channel_id[], const char message_id[])
+unpin_message(client *client, const uint64_t channel_id, const uint64_t message_id)
 {
-  if (IS_EMPTY_STRING(channel_id)) {
+  if (!channel_id) {
     D_PUTS("Missing 'channel_id'");
     return;
   }
-  if (IS_EMPTY_STRING(message_id)) {
+  if (!message_id) {
     D_PUTS("Missing 'message_id'");
     return;
   }
@@ -71,10 +71,16 @@ json_load(char *str, size_t len, void *p_message)
 {
   dati *message = (dati*)p_message;
 
+  if (message->nonce)
+  {
+    free(message->nonce);
+    message->nonce = NULL;
+  }
+
   json_scanf(str, len,
-     "[id]%s"
-     "[channel_id]%s"
-     "[guild_id]%s"
+     "[id]%F"
+     "[channel_id]%F"
+     "[guild_id]%F"
      "[author]%F"
      "[content]%s"
      "[timestamp]%F"
@@ -82,24 +88,24 @@ json_load(char *str, size_t len, void *p_message)
      "[tts]%b"
      "[mention_everyone]%b"
      //"[mentions]%F"
-     "[nonce]%s"
+     "[nonce]%?s"
      "[pinned]%b"
-     "[webhook_id]%s"
+     "[webhook_id]%F"
      "[type]%d"
      "[flags]%d",
      //"[referenced_message]%F",
-      message->id,
-      message->channel_id,
-      message->guild_id,
+      &orka_strtoll, &message->id,
+      &orka_strtoll, &message->channel_id,
+      &orka_strtoll, &message->guild_id,
       &user::json_load, message->author,
       message->content,
       &orka_iso8601_to_unix_ms, &message->timestamp,
       &orka_iso8601_to_unix_ms, &message->edited_timestamp,
       &message->tts,
       &message->mention_everyone,
-      message->nonce,
+      &message->nonce,
       &message->pinned,
-      message->webhook_id,
+      &orka_strtoll, &message->webhook_id,
       &message->type,
       &message->flags);
 
@@ -148,6 +154,10 @@ cleanupA:
 static void
 referenced_message_cleanup(dati *message)
 {
+  if (message->nonce) {
+    free(message->nonce);
+  }
+
   user::cleanup(message->author);
 
   free(message);
@@ -156,7 +166,12 @@ referenced_message_cleanup(dati *message)
 void
 cleanup(dati *message)
 {
+  if (message->nonce) {
+    free(message->nonce);
+  }
+
   user::cleanup(message->author);
+
   referenced_message_cleanup(message->referenced_message);
 
   free(message);
@@ -165,9 +180,9 @@ cleanup(dati *message)
 namespace create {
 
 void
-run(client *client, const char channel_id[], params *params, dati *p_message)
+run(client *client, const uint64_t channel_id, params *params, dati *p_message)
 {
-  if (IS_EMPTY_STRING(channel_id)) {
+  if (!channel_id) {
     D_PUTS("Can't send message to Discord: missing 'channel_id'");
     return;
   }
@@ -182,8 +197,7 @@ run(client *client, const char channel_id[], params *params, dati *p_message)
 
   char payload[MAX_PAYLOAD_LEN];
   int ret = json_snprintf(payload, MAX_PAYLOAD_LEN,
-      "{|content|:|%s|}",
-      params->content);
+      "{|content|:|%s|}", params->content);
   ASSERT_S(ret < MAX_PAYLOAD_LEN, "Out of bounds write attempt");
 
   struct resp_handle resp_handle = {
@@ -204,13 +218,13 @@ run(client *client, const char channel_id[], params *params, dati *p_message)
 } // namespace create
 
 void
-del(client *client, const char channel_id[], const char message_id[])
+del(client *client, const uint64_t channel_id, const uint64_t message_id)
 {
-  if (IS_EMPTY_STRING(channel_id)) {
+  if (!channel_id) {
     D_PUTS("Can't delete message: missing 'channel_id'");
     return;
   }
-  if (IS_EMPTY_STRING(message_id)) {
+  if (!message_id) {
     D_PUTS("Can't delete message: missing 'message_id'");
     return;
   }

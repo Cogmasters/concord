@@ -466,8 +466,6 @@ init(websockets::dati *ws, char token[])
   ws->status = DISCONNECTED;
 
   ws->identify = identify_init(token);
-  ws->session_id = (char*)malloc(SNOWFLAKE_TIMESTAMP);
-  ASSERT_S(NULL != ws->session_id, "Out of memory");
 
   ws->ehandle = custom_cws_new(ws);
   ws->mhandle = custom_multi_init();
@@ -480,7 +478,6 @@ void
 cleanup(websockets::dati *ws)
 {
   free(ws->identify);
-  free(ws->session_id);
 
   user::cleanup(ws->me);
 

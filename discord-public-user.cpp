@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include <libdiscord.h>
+#include "orka-utils.h"
 
 namespace discord {
 namespace user {
@@ -13,7 +14,7 @@ json_load(char *str, size_t len, void *p_user)
   dati *user = (dati*)p_user;
 
   json_scanf(str, len,
-     "[id]%s"
+     "[id]%F"
      "[username]%s"
      "[discriminator]%s"
      "[avatar]%s"
@@ -26,7 +27,7 @@ json_load(char *str, size_t len, void *p_user)
      "[flags]%d"
      "[premium_type]%d"
      "[public_flags]%d",
-      user->id,
+      &orka_strtoll, &user->id,
       user->username,
       user->discriminator,
       user->avatar,
@@ -82,9 +83,9 @@ list_cleanup(dati **users) {
 }
 
 void
-get(client *client, const char user_id[], dati *p_user)
+get(client *client, const uint64_t user_id, dati *p_user)
 {
-  if (IS_EMPTY_STRING(user_id)) {
+  if (!user_id) {
     D_PUTS("Missing 'user_id'");
     return;
   }
@@ -111,7 +112,7 @@ get(client *client, dati *p_user)
     &client->ua,
     &resp_handle,
     &body,
-    HTTP_GET, USER, "@me");
+    HTTP_GET, ME);
 }
 
 guild::dati**
@@ -127,7 +128,7 @@ get_guilds(client *client)
     &client->ua,
     &resp_handle,
     &body,
-    HTTP_GET, USER GUILDS, "@me");
+    HTTP_GET, ME GUILDS);
 
   return new_guilds;
 }

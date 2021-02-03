@@ -14,18 +14,16 @@ json_load(char *str, size_t len, void *p_guild)
   dati *guild = (dati*)p_guild;
 
   json_scanf(str, len,
-     "[id]%s"
+     "[id]%F"
      "[name]%s"
      "[icon]%s"
      "[owner]%b"
-     "[permissions]%d"
-     "[permissions_new]%s",
-      guild->id,
+     "[permissions]%d",
+      &orka_strtoll, &guild->id,
       guild->name,
       guild->icon,
       &guild->owner,
-      &guild->permissions,
-      guild->permissions_new);
+      &guild->permissions);
 
   D_NOTOP_PUTS("Guild object loaded with API response"); 
 }
@@ -69,9 +67,9 @@ list_cleanup(dati **guilds) {
 }
 
 void
-get(client *client, const char guild_id[], dati *p_guild)
+get(client *client, const uint64_t guild_id[], dati *p_guild)
 {
-  if (IS_EMPTY_STRING(guild_id)) {
+  if (!guild_id) {
     D_PUTS("Missing 'guild_id'");
     return;
   }
@@ -155,9 +153,9 @@ list_cleanup(dati **members) {
 
 //@todo modifiable query string parameters
 dati**
-get_list(client *client, const char guild_id[])
+get_list(client *client, const uint64_t guild_id)
 {
-  if (IS_EMPTY_STRING(guild_id)) {
+  if (!guild_id) {
     D_PUTS("Missing 'guild_id'");
     return NULL;
   }
@@ -177,13 +175,13 @@ get_list(client *client, const char guild_id[])
   return new_members;
 }
 
-void remove(client *client, const char guild_id[], const char user_id[])
+void remove(client *client, const uint64_t guild_id, const uint64_t user_id)
 {
-  if (IS_EMPTY_STRING(guild_id)) {
+  if (!guild_id) {
     D_PUTS("Can't delete message: missing 'guild_id'");
     return;
   }
-  if (IS_EMPTY_STRING(user_id)) {
+  if (!user_id) {
     D_PUTS("Can't delete message: missing 'user_id'");
     return;
   }
@@ -257,13 +255,13 @@ list_cleanup(dati **bans) {
 }
 
 void
-get(client *client, const char guild_id[], const char user_id[], dati *p_ban)
+get(client *client, const uint64_t guild_id, const uint64_t user_id, dati *p_ban)
 {
-  if (IS_EMPTY_STRING(guild_id)) {
+  if (!guild_id) {
     D_PUTS("Missing 'guild_id'");
     return;
   }
-  if (IS_EMPTY_STRING(user_id)) {
+  if (!user_id) {
     D_PUTS("Missing 'user_id'");
     return;
   }
@@ -280,9 +278,9 @@ get(client *client, const char guild_id[], const char user_id[], dati *p_ban)
 
 //@todo modifiable query string parameters
 dati**
-get_list(client *client, const char guild_id[])
+get_list(client *client, const uint64_t guild_id)
 {
-  if (IS_EMPTY_STRING(guild_id)) {
+  if (!guild_id) {
     D_PUTS("Missing 'guild_id'");
     return NULL;
   }
@@ -303,23 +301,25 @@ get_list(client *client, const char guild_id[])
 }
 
 void
-create(client *client, const char guild_id[], const char user_id[], int delete_message_days, const char reason[])
+create(client *client, const uint64_t guild_id, const uint64_t user_id, int delete_message_days, const char reason[])
 {
   const int MAX_DELETE_MESSAGE_DAYS = 7;
-  if (IS_EMPTY_STRING(guild_id)) {
+  if (!guild_id) {
     D_PUTS("Missing 'guild_id'");
     return;
   }
-  if (IS_EMPTY_STRING(user_id)) {
+  if (!user_id) {
     D_PUTS("Missing 'user_id'");
     return;
   }
-  if(reason && strlen(reason) > MAX_REASON_LEN) {
-    D_PRINT("Reason length exceeds %u characters threshold (%zu)", MAX_REASON_LEN, strlen(reason));
+  if (reason && strlen(reason) > MAX_REASON_LEN) {
+    D_PRINT("Reason length exceeds %u characters threshold (%zu)",
+        MAX_REASON_LEN, strlen(reason));
     return;
   }
-  if(delete_message_days < 0 || delete_message_days > MAX_DELETE_MESSAGE_DAYS) {
-    D_PRINT("delete_message_days should be in the interval [0, %d]\n", MAX_DELETE_MESSAGE_DAYS);
+  if (delete_message_days < 0 || delete_message_days > MAX_DELETE_MESSAGE_DAYS) {
+    D_PRINT("Delete_message_days is outside the interval (0, %d)",
+        MAX_DELETE_MESSAGE_DAYS);
     return;
   }
 
@@ -352,18 +352,19 @@ create(client *client, const char guild_id[], const char user_id[], int delete_m
 }
 
 void
-remove(client *client, const char guild_id[], const char user_id[], const char reason[])
+remove(client *client, const uint64_t guild_id, const uint64_t user_id, const char reason[])
 {
-  if (IS_EMPTY_STRING(guild_id)) {
+  if (!guild_id) {
     D_PUTS("Missing 'guild_id'");
     return;
   }
-  if (IS_EMPTY_STRING(user_id)) {
+  if (!user_id) {
     D_PUTS("Missing 'user_id'");
     return;
   }
   if(reason && strlen(reason) > MAX_REASON_LEN) {
-    D_PRINT("Reason length exceeds %u characters threshold (%zu)", MAX_REASON_LEN, strlen(reason));
+    D_PRINT("Reason length exceeds %u characters threshold (%zu)",
+        MAX_REASON_LEN, strlen(reason));
     return;
   }
 
@@ -379,7 +380,7 @@ remove(client *client, const char guild_id[], const char user_id[], const char r
   str += sprintf(str, "}");
 
   struct resp_handle resp_handle = { NULL, NULL };
-  struct sized_buffer body = {buf, (size_t) (str - buf)};
+  struct sized_buffer body = {buf, (size_t)(str - buf)};
 
   user_agent::run( 
     &client->ua,

@@ -1,7 +1,7 @@
 #ifndef LIBDISCORD_H_
 #define LIBDISCORD_H_
 
-#include <stdint.h>
+#include <inttypes.h>
 #include "discord-common.h"
 
 /* This is the version number of the package from which this header
@@ -25,7 +25,6 @@
 #define MAX_EMAIL_LEN          254 + 1
 #define MAX_REGION_LEN         16 + 1
 #define MAX_HEADER_LEN         512 + 1
-#define MAX_URL_LEN            512 + 1
 #define MAX_REASON_LEN         512 + 1
 #define MAX_MESSAGE_LEN        2000 + 1
 #define MAX_PAYLOAD_LEN        4096 + 1
@@ -56,23 +55,23 @@ namespace channel {
 /* CHANNEL OBJECT
  * https://discord.com/developers/docs/resources/channel#channel-object-channel-structure */
 struct dati {
-  char id[SNOWFLAKE_INTERNAL_WORKER_ID];
+  uint64_t id;
   int type;
-  char guild_id[SNOWFLAKE_INTERNAL_WORKER_ID];
+  uint64_t guild_id;
   int position;
   //struct discord_overwrite_s **permission_overwrites;
   char name[MAX_NAME_LEN];
   char topic[MAX_TOPIC_LEN];
   bool nsfw;
-  char last_message_id[SNOWFLAKE_INTERNAL_WORKER_ID];
+  uint64_t last_message_id;
   int bitrate;
   int user_limit;
   int rate_limit_per_user;
   user::dati **recipients;
   char icon[MAX_HASH_LEN];
-  char owner_id[SNOWFLAKE_INTERNAL_WORKER_ID];
-  char application_id[SNOWFLAKE_INTERNAL_WORKER_ID];
-  char parent_id[SNOWFLAKE_INTERNAL_WORKER_ID];
+  uint64_t owner_id;
+  uint64_t application_id;
+  uint64_t parent_id;
   int64_t last_pin_timestamp;
   message::dati **messages;
 };
@@ -80,17 +79,17 @@ struct dati {
 dati* init();
 void cleanup(dati *channel);
 
-void pin_message(client *client, const char channel_id[], const char message_id[]);
-void unpin_message(client *client, const char channel_id[], const char message_id[]);
+void pin_message(client *client, const uint64_t channel_id, const uint64_t message_id);
+void unpin_message(client *client, const uint64_t channel_id, const uint64_t message_id);
 
 namespace message {
 
 /* DISCORD MESSAGE OBJECT
  * https://discord.com/developers/docs/resources/channel#message-object*/
 struct dati {
-  char id[SNOWFLAKE_INTERNAL_WORKER_ID];
-  char channel_id[SNOWFLAKE_INTERNAL_WORKER_ID];
-  char guild_id[SNOWFLAKE_INTERNAL_WORKER_ID];
+  uint64_t id;
+  uint64_t channel_id;
+  uint64_t guild_id;
   user::dati *author;
   //struct discord_guildmember_s *member;
   char content[MAX_MESSAGE_LEN];
@@ -104,9 +103,9 @@ struct dati {
   //struct discord_attachment_s **attachments;
   //struct discord_embed_s **embeds;
   //strict discord_reaction_s **reactions;
-  char nonce[SNOWFLAKE_INTERNAL_WORKER_ID];
+  char *nonce;
   bool pinned;
-  char webhook_id[SNOWFLAKE_INTERNAL_WORKER_ID];
+  uint64_t webhook_id;
   int type;
   //struct discord_messageactivity_s *activity;
   //struct discord_messageapplication_s *application;
@@ -132,17 +131,17 @@ struct params {
   char *payload_json;
   //allowed mentions
   struct message_reference {
-    char message_id[SNOWFLAKE_INTERNAL_WORKER_ID];
-    char channel_id[SNOWFLAKE_INTERNAL_WORKER_ID];
-    char guild_id[SNOWFLAKE_INTERNAL_WORKER_ID];
+    uint64_t message_id;
+    uint64_t channel_id;
+    uint64_t guild_id;
   };
 };
 
-void run(client *client, const char channel_id[], params *params, dati *p_message);
+void run(client *client, const uint64_t channel_id, params *params, dati *p_message);
 
 } // namespace create
 
-void del(client *client, const char channel_id[], const char message_id[]);
+void del(client *client, const uint64_t channel_id, const uint64_t message_id);
 
 } // namespace message
 
@@ -153,20 +152,19 @@ namespace guild {
 /* GUILD OBJECT
  * https://discord.com/developers/docs/resources/guild#guild-object-guild-structure */
 struct dati {
-  char id[SNOWFLAKE_INTERNAL_WORKER_ID];
+  uint64_t id;
   char name[MAX_NAME_LEN];
   char icon[MAX_HASH_LEN];
   char splash[MAX_HASH_LEN];
   char discovery_splash[MAX_HASH_LEN];
   bool owner;
-  char owner_id[SNOWFLAKE_INTERNAL_WORKER_ID];
+  uint64_t owner_id;
   int permissions;
-  char permissions_new[SNOWFLAKE_INCREMENT];
   char region[MAX_REGION_LEN];
-  char afk_channel_id[SNOWFLAKE_INTERNAL_WORKER_ID];
+  uint64_t afk_channel_id;
   int afk_timeout;
   bool embed_enabled;
-  char embed_channel_id[SNOWFLAKE_INTERNAL_WORKER_ID];
+  uint64_t embed_channel_id;
   int verification_level;
   int default_message_notifications;
   int explicit_content_filter;
@@ -174,12 +172,12 @@ struct dati {
   //struct discord_emoji_t **emojis;
   char **features;
   int mfa_level;
-  char application_id[SNOWFLAKE_INTERNAL_WORKER_ID];
+  uint64_t application_id;
   bool widget_enabled;
-  char widget_channel_id[SNOWFLAKE_INTERNAL_WORKER_ID];
-  char system_channel_id[SNOWFLAKE_INTERNAL_WORKER_ID];
+  uint64_t widget_channel_id;
+  uint64_t system_channel_id;
   int system_channel_flags;
-  char rules_channel_id[SNOWFLAKE_INTERNAL_WORKER_ID];
+  uint64_t rules_channel_id;
   int64_t joined_at;
   bool large;
   bool unavailable;
@@ -190,13 +188,13 @@ struct dati {
   //struct discord_presence_s **presences;
   int max_presences;
   int mas_members;
-  char vanity_url_code[SNOWFLAKE_INCREMENT];
+  char vanity_url_code[MAX_URL_LEN];
   char description[MAX_DESCRIPTION_LEN];
   char banner[MAX_HASH_LEN];
   int premium_tier;
   int premium_subscription_count;
   char preferred_locale[MAX_LOCALE_LEN];
-  char public_updates_channel_id[SNOWFLAKE_INTERNAL_WORKER_ID];
+  uint64_t public_updates_channel_id;
   int max_video_channel_users;
   int approximate_member_count;
   int approximate_presence_count;
@@ -208,7 +206,7 @@ void list_cleanup(dati **guild);
 void json_load(char *str, size_t len, void *p_guild);
 void json_list_load(char *str, size_t len, void *p_guilds);
 
-void get(client *client, const char guild_id[], dati *p_guild);
+void get(client *client, const uint64_t guild_id, dati *p_guild);
 
 namespace member {
 
@@ -232,8 +230,8 @@ void list_cleanup(dati **members);
 void json_load(char *str, size_t len, void *p_member);
 void json_list_load(char *str, size_t len, void *p_members);
 
-dati **get_list(client *client, const char guild_id[]);
-void remove(client *client, const char guild_id[], const char user_id[]);
+dati **get_list(client *client, const uint64_t guild_id);
+void remove(client *client, const uint64_t guild_id, const uint64_t user_id);
 
 } // namespace member
 
@@ -252,10 +250,10 @@ void list_cleanup(dati **bans);
 void json_load(char *str, size_t len, void *p_ban);
 void json_list_load(char *str, size_t len, void *p_ban);
 
-void get(client *client, const char guild_id[], const char user_id[], dati *p_ban);
-dati **get_list(client *client, const char guild_id[]);
-void create(client *client, const char guild_id[], const char user_id[], int delete_message_days, const char reason[]);
-void remove(client *client, const char guild_id[], const char user_id[], const char reason[]);
+void get(client *client, const uint64_t guild_id, const uint64_t user_id, dati *p_ban);
+dati **get_list(client *client, const uint64_t guild_id);
+void create(client *client, const uint64_t guild_id, const uint64_t user_id, int delete_message_days, const char reason[]);
+void remove(client *client, const uint64_t guild_id, const uint64_t user_id, const char reason[]);
 
 } // namespace ban
 
@@ -266,7 +264,7 @@ namespace user {
 /* USER OBJECT
  * https://discord.com/developers/docs/resources/user#user-object-user-structure */
 struct dati {
-  char id[SNOWFLAKE_INTERNAL_WORKER_ID];
+  uint64_t id;
   char username[MAX_USERNAME_LEN];
   char discriminator[MAX_DISCRIMINATOR_LEN];
   char avatar[MAX_HASH_LEN];
@@ -288,7 +286,7 @@ void list_cleanup(dati **users);
 void json_load(char *str, size_t len, void *p_user);
 void json_list_load(char *str, size_t len, void *p_users);
 
-void get(client *client, const char user_id[], dati *p_user);
+void get(client *client, const uint64_t user_id, dati *p_user);
 
 namespace me {
 
