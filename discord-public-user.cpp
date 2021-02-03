@@ -27,7 +27,7 @@ json_load(char *str, size_t len, void *p_user)
      "[flags]%d"
      "[premium_type]%d"
      "[public_flags]%d",
-      &orka_strtoll, &user->id,
+      &orka_strtoull, &user->id,
       user->username,
       user->discriminator,
       user->avatar,

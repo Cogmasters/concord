@@ -164,13 +164,12 @@ orka_timestamp_str(char *p_str, int len)
 }
 
 void
-orka_strtoll(char *str, size_t len, void *p_data) 
+orka_strtoull(char *str, size_t len, void *p_data) 
 {
   uint64_t *recipient = (uint64_t*)p_data;
   ASSERT_S(NULL != recipient, "No recipient provided by user");
 
   *recipient = strtoull(str, NULL, 10);
-  D_PRINT("%p", recipient);
 
   (void)len;
 }

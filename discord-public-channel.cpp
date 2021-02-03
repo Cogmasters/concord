@@ -94,9 +94,9 @@ json_load(char *str, size_t len, void *p_message)
      "[type]%d"
      "[flags]%d",
      //"[referenced_message]%F",
-      &orka_strtoll, &message->id,
-      &orka_strtoll, &message->channel_id,
-      &orka_strtoll, &message->guild_id,
+      &orka_strtoull, &message->id,
+      &orka_strtoull, &message->channel_id,
+      &orka_strtoull, &message->guild_id,
       &user::json_load, message->author,
       message->content,
       &orka_iso8601_to_unix_ms, &message->timestamp,
@@ -105,7 +105,7 @@ json_load(char *str, size_t len, void *p_message)
       &message->mention_everyone,
       &message->nonce,
       &message->pinned,
-      &orka_strtoll, &message->webhook_id,
+      &orka_strtoull, &message->webhook_id,
       &message->type,
       &message->flags);
 

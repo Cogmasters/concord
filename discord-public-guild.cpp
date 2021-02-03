@@ -19,7 +19,7 @@ json_load(char *str, size_t len, void *p_guild)
      "[icon]%s"
      "[owner]%b"
      "[permissions]%d",
-      &orka_strtoll, &guild->id,
+      &orka_strtoull, &guild->id,
       guild->name,
       guild->icon,
       &guild->owner,
