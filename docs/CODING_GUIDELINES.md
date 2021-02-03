@@ -84,6 +84,9 @@ Try to keep your switch statement similar to the following format:
       break;
   }
 ```
+## Conditional Compilation
+Conditional compilations are discouraged in this project.  It makes code harder to read and test. 
+Please only use the portable C/C++ features in the implementation.
 
 ## Importing
 
