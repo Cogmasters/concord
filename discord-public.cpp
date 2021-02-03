@@ -106,7 +106,7 @@ void
 setcb_message_create(client *client, message_cb *user_cb)
 {
   using namespace websockets;
-  client->ws.intents |= (websockets::intents::GUILD_MESSAGES | websockets::intents::DIRECT_MESSAGES);
+  client->ws.intents |= (intents::GUILD_MESSAGES | intents::DIRECT_MESSAGES);
   client->ws.cbs.on_message.create = user_cb;
 }
 
@@ -114,7 +114,7 @@ void
 setcb_message_update(client *client, message_cb *user_cb)
 {
   using namespace websockets;
-  client->ws.intents |= (websockets::intents::GUILD_MESSAGES | websockets::intents::DIRECT_MESSAGES);
+  client->ws.intents |= (intents::GUILD_MESSAGES | intents::DIRECT_MESSAGES);
   client->ws.cbs.on_message.update = user_cb;
 }
 
@@ -122,7 +122,7 @@ void
 setcb_message_delete(client *client, message_delete_cb *user_cb)
 {
   using namespace websockets;
-  client->ws.intents |= (websockets::intents::GUILD_MESSAGES | websockets::intents::DIRECT_MESSAGES);
+  client->ws.intents |= (intents::GUILD_MESSAGES | intents::DIRECT_MESSAGES);
   client->ws.cbs.on_message.del = user_cb;
 }
 
