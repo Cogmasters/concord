@@ -68,21 +68,21 @@ set(ORCA_INCLUDE_PATH  ${CMAKE_SOURCE_DIR})
 include_directories(${CMAKE_SOURCE_DIR})
 
 
-add_executable(test-api.exe ${SOURCE_FILES} test-api.cpp)
+add_executable(test-api.exe ${SOURCE_FILES} test/test-api.cpp)
 target_link_libraries(test-api.exe curl ssl crypto)
 
-add_executable(test-ws.exe ${SOURCE_FILES} test-ws.cpp)
-add_executable(test-json-scanf.exe ${JSON_SCANF} test-json-scanf.c)
+add_executable(test-ws.exe ${SOURCE_FILES} test/test-ws.cpp)
+add_executable(test-json-scanf.exe ${JSON_SCANF} test/test-json-scanf.c)
 
-add_executable(test-json-scanf-array.exe ${JSON_SCANF} test-json-scanf-array.c)
-add_executable(test-json-string.exe ${JSON_SCANF} ${ORKA_FILES} test-json-string.c)
+add_executable(test-json-scanf-array.exe ${JSON_SCANF} test/test-json-scanf-array.c)
+add_executable(test-json-string.exe ${JSON_SCANF} ${ORKA_FILES} test/test-json-string.c)
 target_link_libraries(test-json-string.exe m)
 
-add_executable(test-git.exe ${GITHUB_FILES}  test-git.cpp)
+add_executable(test-git.exe ${GITHUB_FILES}  test/test-git.cpp)
 target_link_libraries(test-git.exe curl ssl crypto)
 
-add_executable(test-git2.exe ${GITHUB_FILES} settings.c ${ORKA_FILES} test-git2.cpp)
+add_executable(test-git2.exe ${GITHUB_FILES} settings.c ${ORKA_FILES} test/test-git2.cpp)
 target_link_libraries(test-git2.exe curl ssl crypto)
 
-add_executable(test-cee.exe ${CEE_FILES} settings.c ${ORKA_FILES} test-cee.cpp)
+add_executable(test-cee.exe ${CEE_FILES} settings.c ${ORKA_FILES} test/test-cee.cpp)
 target_link_libraries(test-cee.exe curl ssl crypto)
