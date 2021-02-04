@@ -56,8 +56,8 @@ PREFIX ?= /usr/local
 
 .PHONY : all mkdir install clean purge
 
-all : mkdir $(OBJS) $(LIBDISCORD_SLIB)
-bot: all $(BOT_EXES)
+all : mkdir $(OBJS) $(LIBDISCORD_SLIB) bot
+bot: $(BOT_EXES)
 test: all $(TEST_EXES)
 
 
