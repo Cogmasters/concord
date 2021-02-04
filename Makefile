@@ -1,13 +1,27 @@
-CC			?= gcc
+CC	?= gcc
 OBJDIR	:= obj
 LIBDIR	:= lib
 
-SRC	:= $(wildcard http-common.c discord-*.c curl-websocket.c \
+SRC	:= $(wildcard http-common.c \
+		curl-websocket.c \
 		orka-utils.c \
-		settings.c ntl.c json-scanf.c json-printf.c json-string.c)
+		github-*.cpp \
+		discord-*.cpp \
+		orka-*.cpp \
+		settings.c ntl.c json-*.c)
 
-_OBJS	:= $(patsubst %.c, %.o, $(SRC))
-OBJS 	:= $(addprefix $(OBJDIR)/, $(_OBJS))
+_OBJS	:= $(patsubst %.cpp, %.o, $(SRC))
+OBJS1   += $(patsubst %.c, %.o, $(_OBJS))
+OBJS 	:= $(addprefix $(OBJDIR)/, $(OBJS1))
+
+
+BOT_SRC := $(wildcard bot-*.cpp)
+BOT_EXES := $(patsubst %.cpp, %.exe, $(BOT_SRC))
+
+TEST_SRC := $(wildcard test-*.cpp test-*.c)
+_TEST_EXES := $(patsubst %.cpp, %.exe, $(TEST_SRC))
+TEST_EXES := $(patsubst %.c, %.exe, $(_TEST_EXES))
+
 
 LIBDISCORD_CFLAGS	:= -I./
 LIBDISCORD_LDFLAGS	:=  -L./$(LIBDIR) -ldiscord -lcurl
@@ -19,17 +33,23 @@ else
 endif
 
 
-LIBS_CFLAGS		:= $(LIBDISCORD_CFLAGS)
+LIBS_CFLAGS	:= $(LIBDISCORD_CFLAGS)
 LIBS_LDFLAGS	:= $(LIBDISCORD_LDFLAGS)
 
 LIBDISCORD_SLIB	:= $(LIBDIR)/libdiscord.a
 
-CFLAGS := -Wall -Wextra -pedantic -std=c11 -O0 -g -D_ORCA_DEBUG -D_GNU_SOURCE
+CFLAGS   := -Wall -Wextra -pedantic -O0 -g -D_ORCA_DEBUG -D_GNU_SOURCE \
+		-Wno-unused-parameter -Wno-missing-field-initializers
+
+CXXFLAGS := -std=c++03 -O0 -g -D_ORCA_DEBUG -D_GNU_SOURCE \
+		-Wno-c++11-compat-deprecated-writable-strings
 
 ifeq ($(CC),stensal-c)
 	CFLAGS += -D_DEFAULT_SOURCE
+	CXXFLAGS += -D_DEFAULT_SOURCE
 else
 	CFLAGS += -fPIC -D_XOPEN_SOURCE=700
+	CXXFLAGS += -fPIC -D_XOPEN_SOURCE=700
 endif
 
 PREFIX ?= /usr/local
@@ -37,47 +57,22 @@ PREFIX ?= /usr/local
 .PHONY : all mkdir install clean purge
 
 all : mkdir $(OBJS) $(LIBDISCORD_SLIB)
+bot: all $(BOT_EXES)
+test: all $(TEST_EXES)
+
 
 mkdir :
 	mkdir -p $(OBJDIR) $(LIBDIR)
 
-test : all test-json-scanf.c
-	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \
-		test-json-scanf.c -o test-json-scanf.exe $(LIBS_LDFLAGS)
-	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \
-		test-json-scanf-array.c -o test-json-scanf-array.exe $(LIBS_LDFLAGS)
-	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \
-		test-json-string.c -o test-json-string.exe $(LIBS_LDFLAGS)
+$(OBJDIR)/%.o : %.c
+	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
+$(OBJDIR)/%.o: %.cpp
+	$(CXX) $(CXXFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 
-bot-echo : all bot-echo.c
-	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \
-		bot-echo.c -o bot-echo.exe $(LIBS_LDFLAGS)
-bot-pin : all bot-pin.c
-	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \
-		bot-pin.c -o bot-pin.exe $(LIBS_LDFLAGS)
-bot-ping-pong : all bot-ping-pong.c
-	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \
-		bot-ping-pong.c -o bot-ping-pong.exe $(LIBS_LDFLAGS)
-
-$(OBJDIR)/http-common.o : http-common.c
-	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
-$(OBJDIR)/discord-%.o : discord-%.c
-	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
-$(OBJDIR)/settings.o : settings.c
-	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
-$(OBJDIR)/ntl.o : ntl.c
-	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
-$(OBJDIR)/json-scanf.o : json-scanf.c
-	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
-$(OBJDIR)/json-printf.o : json-printf.c
-	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
-$(OBJDIR)/json-string.o : json-string.c
-	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
-$(OBJDIR)/orka-utils.o : orka-utils.c
-	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
-$(OBJDIR)/curl-websocket.o : curl-websocket.c
-	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \
-		-U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=1 -c -o $@ $<
+%.exe : %.c
+	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBS_LDFLAGS)
+%.exe: %.cpp
+	$(CXX) $(CXXFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBS_LDFLAGS)
 
 $(LIBDISCORD_SLIB) : $(OBJS)
 	$(AR) -cvq $@ $(OBJS)
