@@ -71,16 +71,16 @@ test-ws : test/test-ws.cpp
 
 bot-echo : bot/bot-echo.cpp
 	$(CXX) $(CFLAGS) $(LIBS_CFLAGS) \
-		bot/bot-echo.cpp $(OBJS) -o bot-echo.exe $(LIBS_LDFLAGS)
+		bots/bot-echo.cpp $(OBJS) -o bot-echo.exe $(LIBS_LDFLAGS)
 bot-pin : bot/bot-pin.cpp
 	$(CXX) $(CFLAGS) $(LIBS_CFLAGS) \
-		bot/bot-pin.cpp $(OBJS) -o bot-pin.exe $(LIBS_LDFLAGS)
+		bots/bot-pin.cpp $(OBJS) -o bot-pin.exe $(LIBS_LDFLAGS)
 bot-ping-pong : bot/bot-ping-pong.cpp
 	$(CXX) $(CFLAGS) $(LIBS_CFLAGS) \
-		bot/bot-ping-pong.cpp $(OBJS) -o bot-ping-pong.exe $(LIBS_LDFLAGS)
+		bots/bot-ping-pong.cpp $(OBJS) -o bot-ping-pong.exe $(LIBS_LDFLAGS)
 bot-mimic : bot/bot-mimic.cpp
 	$(CXX) $(CFLAGS) $(LIBS_CFLAGS) \
-		bot/bot-mimic.cpp $(OBJS) -o bot-mimic.exe $(LIBS_LDFLAGS)
+		bots/bot-mimic.cpp $(OBJS) -o bot-mimic.exe $(LIBS_LDFLAGS)
 
 $(LIBDISCORD_SLIB) : $(OBJS)
 	$(AR) -cvq $@ $(OBJS)

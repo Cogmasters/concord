@@ -186,7 +186,7 @@ run(client *client, const uint64_t channel_id, params *params, dati *p_message)
     return;
   }
   if (strlen(params->content) >= MAX_MESSAGE_LEN) {
-    D_PRINT("Content length exceeds 2000 characters threshold (%ld)", strlen(params->content));
+    D_PRINT("Content length exceeds 2000 characters threshold (%u)", strlen(params->content));
     return;
   }
 
