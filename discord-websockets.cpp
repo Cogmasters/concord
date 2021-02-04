@@ -166,6 +166,37 @@ on_dispatch_message(websockets::dati *ws, int offset)
 }
 
 static void
+on_dispatch_guild_member(websockets::dati *ws, int offset)
+{
+  guild::member::dati *member = guild::member::init();
+  ASSERT_S(NULL != member, "Out of memory");
+
+  guild::member::json_load(ws->payload.event_data,
+      sizeof(ws->payload.event_data), (void*)member);
+  uint64_t guild_id = 0;
+  json_scanf(
+      ws->payload.event_data,
+      sizeof(ws->payload.event_data),
+      "[guild_id]%F",
+      &orka_strtoull, &guild_id);
+
+  if (STREQ("ADD", ws->payload.event_name + offset)) {
+    if (ws->cbs.on_guild_member.add)
+      (*ws->cbs.on_guild_member.add)(ws->p_client, ws->me, guild_id, member);
+  }
+  else if (STREQ("UPDATE", ws->payload.event_name + offset)) {
+    if (ws->cbs.on_guild_member.update)
+      (*ws->cbs.on_guild_member.update)(ws->p_client, ws->me, guild_id, member);
+  }
+  else if (STREQ("REMOVE", ws->payload.event_name + offset)) {
+    if (ws->cbs.on_guild_member.remove)
+      (*ws->cbs.on_guild_member.remove)(ws->p_client, ws->me, guild_id, member->user);
+  }
+
+  guild::member::cleanup(member);
+}
+
+static void
 on_dispatch(websockets::dati *ws)
 {
   user::json_load(ws->payload.event_data,
@@ -206,9 +237,13 @@ on_dispatch(websockets::dati *ws)
     return;
   }
 
-
   if (STRNEQ("MESSAGE_", ws->payload.event_name, 8)) {
     on_dispatch_message(ws, 8);
+    return;
+  }
+
+  if (STRNEQ("GUILD_MEMBER_", ws->payload.event_name, 13)) {
+    on_dispatch_guild_member(ws, 13);
     return;
   }
 

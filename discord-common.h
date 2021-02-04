@@ -23,6 +23,8 @@ namespace guild { // forward declaration
 typedef void (idle_cb)(discord::client *client, const user::dati *me);
 typedef void (message_cb)(discord::client *client, const user::dati *me, const channel::message::dati *message);
 typedef void (message_delete_cb)(discord::client *client, const user::dati *me, const uint64_t id, const uint64_t channel_id, const uint64_t guild_id);
+typedef void (guild_member_cb)(discord::client *client, const user::dati *me, const uint64_t guild_id, const guild::member::dati *member);
+typedef void (guild_member_remove_cb)(discord::client *client, const user::dati *me, const uint64_t guild_id, const user::dati *user);
 
 namespace user_agent { /* discord-user-agent.cpp */
 
@@ -154,7 +156,7 @@ struct dati { /* WEBSOCKETS STRUCTURE */
   struct { /* PAYLOAD STRUCTURE */
     enum ws_opcodes opcode; //field 'op'
     int seq_number; //field 's'
-    char event_name[16]; //field 't'
+    char event_name[64]; //field 't'
     char event_data[8192]; //field 'd'
   } payload;
 
@@ -187,6 +189,11 @@ struct dati { /* WEBSOCKETS STRUCTURE */
       message_cb *update; //triggers when a message is updated (edited)
       message_delete_cb *del; //triggers when a message is deleted
     } on_message;
+    struct { /* GUILD MEMBER CALLBACKS STRUCTURE */
+      guild_member_cb *add; //triggers when a member joins a guild
+      guild_member_cb *update; //triggers when a member is updated
+      guild_member_remove_cb *remove; //triggers when a member leaves or is removed a guild
+    } on_guild_member;
   } cbs;
 
   long long now_tstamp; //timestamp updated every loop iteration

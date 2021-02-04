@@ -342,6 +342,9 @@ void setcb_ready(client *client, idle_cb *user_cb);
 void setcb_message_create(client *client, message_cb *user_cb);
 void setcb_message_update(client *client, message_cb *user_cb);
 void setcb_message_delete(client *client, message_delete_cb *user_cb);
+void setcb_guild_member_add(client *client, guild_member_cb *user_cb);
+void setcb_guild_member_update(client *client, guild_member_cb *user_cb);
+void setcb_guild_member_remove(client *client, guild_member_remove_cb *user_cb);
 
 void run(client *client);
 
