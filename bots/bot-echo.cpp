@@ -64,7 +64,6 @@ void on_message_delete(
 
   message::create::run(client, channel_id, &params, NULL);
 
-  printf("ID: %" PRIu64"\n", id);
   (void)me;
 }
 
