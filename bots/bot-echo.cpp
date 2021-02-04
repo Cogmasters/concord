@@ -64,6 +64,29 @@ void on_message_delete(
 
   message::create::run(client, channel_id, &params, NULL);
 
+  printf("ID: %" PRIu64"\n", id);
+  (void)me;
+}
+
+void on_message_delete_bulk(
+    client *client,
+    const user::dati *me,
+    const size_t nids,
+    const uint64_t ids[],
+    const uint64_t channel_id,
+    const uint64_t guild_id)
+{
+  using namespace discord::channel;
+
+  char buf[128];
+  snprintf(buf, sizeof(buf), "Did that %zu messages just disappear?", nids);
+
+  message::create::params params = {
+    .content = buf
+  };
+
+  message::create::run(client, channel_id, &params, NULL);
+
   (void)me;
 }
 
@@ -84,6 +107,7 @@ int main(int argc, char *argv[])
   setcb_message_create(client, &on_message_create);
   setcb_message_update(client, &on_message_update);
   setcb_message_delete(client, &on_message_delete);
+  setcb_message_delete_bulk(client, &on_message_delete_bulk);
 
   run(client);
 

@@ -140,14 +140,42 @@ on_hello(websockets::dati *ws)
 static void
 on_dispatch_message(websockets::dati *ws, int offset)
 {
+  if (STREQ("DELETE_BULK", ws->payload.event_name + offset)) {
+    if (ws->cbs.on_message.delete_bulk)
+    {
+      struct sized_buffer **buf = NULL;
+      uint64_t channel_id = 0, guild_id = 0;
+      json_scanf(ws->payload.event_data, sizeof(ws->payload.event_data),
+          "[ids]%A"
+          "[channel_id]%F"
+          "[guild_id]%F",
+          &buf,
+          &orka_strtoull, &channel_id,
+          &orka_strtoull, &guild_id);
+
+      size_t nids = ntl_length((void**) buf);
+      uint64_t *ids = (uint64_t*) malloc(nids * sizeof(uint64_t));
+      ASSERT_S(NULL != ids, "Out of memory");
+
+      size_t i;
+      for(i = 0; i < nids; i++)
+      {
+        orka_strtoull(buf[i]->start, buf[i]->size, ids + i);
+      }
+
+      free(buf);
+
+      (*ws->cbs.on_message.delete_bulk)(ws->p_client, ws->me, nids, ids, channel_id, guild_id);
+      free(ids);
+    }
+    return;
+  }
+
   channel::message::dati *message = channel::message::init();
   ASSERT_S(NULL != message, "Out of memory");
 
   channel::message::json_load(ws->payload.event_data,
       sizeof(ws->payload.event_data), (void*)message);
-
-
-  /* @todo implement MESSAGE DELETE BULK */
 
   if (STREQ("CREATE", ws->payload.event_name + offset)) {
     if (ws->cbs.on_message.create)

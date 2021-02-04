@@ -126,6 +126,12 @@ setcb_message_delete(client *client, message_delete_cb *user_cb)
   client->ws.cbs.on_message.del = user_cb;
 }
 
+void setcb_message_delete_bulk(client *client, message_delete_bulk_cb *user_cb)
+{
+  client->ws.intents |= websockets::intents::GUILD_MESSAGES;
+  client->ws.cbs.on_message.delete_bulk = user_cb;
+}
+
 void setcb_guild_member_add(client *client, guild_member_cb *user_cb)
 {
   client->ws.intents |= websockets::intents::GUILD_MEMBERS;

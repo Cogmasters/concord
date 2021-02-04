@@ -23,6 +23,7 @@ namespace guild { // forward declaration
 typedef void (idle_cb)(discord::client *client, const user::dati *me);
 typedef void (message_cb)(discord::client *client, const user::dati *me, const channel::message::dati *message);
 typedef void (message_delete_cb)(discord::client *client, const user::dati *me, const uint64_t id, const uint64_t channel_id, const uint64_t guild_id);
+typedef void (message_delete_bulk_cb)(discord::client *client, const user::dati *me, const size_t nids, const uint64_t ids[], const uint64_t channel_id, const uint64_t guild_id);
 typedef void (guild_member_cb)(discord::client *client, const user::dati *me, const uint64_t guild_id, const guild::member::dati *member);
 typedef void (guild_member_remove_cb)(discord::client *client, const user::dati *me, const uint64_t guild_id, const user::dati *user);
 
@@ -188,6 +189,7 @@ struct dati { /* WEBSOCKETS STRUCTURE */
       message_cb *create; //triggers when a message is created
       message_cb *update; //triggers when a message is updated (edited)
       message_delete_cb *del; //triggers when a message is deleted
+      message_delete_bulk_cb *delete_bulk; //triggers when multiple messages are deleted at once
     } on_message;
     struct { /* GUILD MEMBER CALLBACKS STRUCTURE */
       guild_member_cb *add; //triggers when a member joins a guild
