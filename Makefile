@@ -18,7 +18,7 @@ OBJS 	:= $(addprefix $(OBJDIR)/, $(OBJS1))
 BOT_SRC := $(wildcard bot-*.cpp)
 BOT_EXES := $(patsubst %.cpp, %.exe, $(BOT_SRC))
 
-TEST_SRC := $(wildcard test-*.cpp test-*.c)
+TEST_SRC := $(wildcard test/test-*.cpp test/test-*.c)
 _TEST_EXES := $(patsubst %.cpp, %.exe, $(TEST_SRC))
 TEST_EXES := $(patsubst %.c, %.exe, $(_TEST_EXES))
 
