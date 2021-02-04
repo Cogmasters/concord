@@ -154,8 +154,8 @@ next(char ** p, char * e, bool html)
 
   // Read the rest
   unsigned char tmp;
-  switch(trail_size) {
-    case 3:
+  switch(trail_size) { // @todo this could be replaced by a while loop 
+  case 3:
       if(*p==e)
         return utf_illegal;
       tmp = **p;
@@ -163,7 +163,8 @@ next(char ** p, char * e, bool html)
       if (!utf8_is_trail(tmp))
         return utf_illegal;
       c = (c << 6) | ( tmp & 0x3F);
-    case 2:
+  /* fall through */
+  case 2:
       if(*p==e)
         return utf_illegal;
       tmp = **p;
@@ -171,7 +172,8 @@ next(char ** p, char * e, bool html)
       if (!utf8_is_trail(tmp))
         return utf_illegal;
       c = (c << 6) | ( tmp & 0x3F);
-    case 1:
+  /* fall through */
+  case 1:
       if(*p==e)
         return utf_illegal;
       tmp = **p;
@@ -325,7 +327,6 @@ second_iter:
         }
           break;
         default:
-          if(0<= c && c <= 0x1F) /* report errors */
             goto return_err;
       }
     }

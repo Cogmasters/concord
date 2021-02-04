@@ -55,7 +55,7 @@ struct extractor_specifier {
   bool has_dynamic_size;
   bool allocate_memory;
   bool is_funptr;
-  void *funptr;
+  extractor *funptr;
 };
 
 static char*
@@ -94,7 +94,7 @@ static char * copy_over_string (size_t * new_size, char * str, size_t len)
   else {
     // ill formed string
     char * p = NULL;
-    asprintf(&p, "cannot unescape an ill-formed-string %.*s", len, str);
+    asprintf(&p, "cannot unescape an ill-formed-string %.*s", (int)len, str);
     *new_size = strlen(p) + 1;
     return p;
   }
@@ -164,7 +164,7 @@ match_path (char *buffer, jsmntok_t *t,
           } else {
             // we have to allow this potential oob write as
             // we don't know the buffer size of recipient.
-            sprintf((char *) es->recipient, "%.*s", new_size, escaped);
+            sprintf((char *) es->recipient, "%.*s", (int)new_size, escaped);
           }
         }
         if (escaped != buffer + t[i].start)
@@ -228,7 +228,7 @@ match_path (char *buffer, jsmntok_t *t,
     }
   }
   else if (STREQ(es->type_specifier, "funptr")) {
-    extractor *e = (extractor *)es->funptr;
+    extractor *e = es->funptr;
     (*e)(buffer + t[i].start, t[i].end - t[i].start, es->recipient);
   }
   else if (STREQ(es->type_specifier, "token")) {
@@ -643,7 +643,7 @@ json_scanf(char *buffer, size_t buf_size, char *format, ...)
       es[i].size = va_arg(ap, int); // use this as a size
     }
     else if (es[i].is_funptr) {
-      es[i].funptr = va_arg(ap, void*);
+      es[i].funptr = va_arg(ap, extractor*);
     }
     void *p_value = va_arg(ap, void*);
     ASSERT_S(NULL != p_value, "NULL pointer given as argument parameter");

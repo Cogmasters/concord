@@ -42,7 +42,7 @@ CFLAGS   := -Wall -Wextra -pedantic -O0 -g -D_ORCA_DEBUG -D_GNU_SOURCE \
 		-Wno-unused-parameter -Wno-missing-field-initializers
 
 CXXFLAGS := -std=c++03 -O0 -g -D_ORCA_DEBUG -D_GNU_SOURCE \
-		-Wno-c++11-compat-deprecated-writable-strings
+		-Wno-write-strings
 
 ifeq ($(CC),stensal-c)
 	CFLAGS += -D_DEFAULT_SOURCE

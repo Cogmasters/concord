@@ -64,7 +64,7 @@ struct specifier {
     float f;
     double d;
   } provider;
-  void * funptr;
+  extractor *funptr;
   size_t print_size;
   int start;
   int end;
@@ -206,7 +206,7 @@ json_vsnprintf(char * str, size_t len, char * fmt, va_list ap)
   int i = 0;
   for (i = 0; i < number_of_specifiers; i++) {
     if (sp[i].type == IS_FUNPTR) {
-      sp[i].funptr = va_arg(ap, void *);
+      sp[i].funptr = va_arg(ap, extractor*);
     }
     else if (sp[i].has_print_size) {
       sp[i].print_size = (size_t)va_arg(ap, int);
@@ -281,7 +281,7 @@ json_vsnprintf(char * str, size_t len, char * fmt, va_list ap)
         slen = snprintf(cur_ptr, len, sp[i].specifier, sp[i].provider.d);
         break;
       case IS_FUNPTR:
-        slen = ((extractor *) sp[i].funptr)(cur_ptr, len, sp[i].provider.p);
+        slen = (sp[i].funptr)(cur_ptr, len, sp[i].provider.p);
         break;
       default:
         ERR("unexpected case\n");
