@@ -61,15 +61,7 @@ vrun(
   set_method(ua->ehandle, http_method, body); //set the request method
   
   //@todo this is a temporary solution
-  struct perform_cbs cbs = {
-    NULL, 
-    NULL, 
-    NULL, 
-    NULL, 
-    NULL, 
-    NULL, 
-    NULL
-  };
+  struct perform_cbs cbs = {NULL};
   
   //perform the request
   perform_request(

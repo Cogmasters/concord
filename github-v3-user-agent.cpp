@@ -24,7 +24,7 @@ reqheader_init()
 
   new_header = curl_slist_append(new_header, "Accept: application/vnd.github.v3+json");
   curl_slist_append(new_header, "Content-Type: application/json");
-  curl_slist_append(new_header, "User-Agent: curl");
+  curl_slist_append(new_header, "User-Agent: orka");
 
   return new_header;
 }
@@ -71,15 +71,7 @@ void run(struct dati *ua,
   set_method(ua->ehandle, http_method, body); //set the request method
   
   //@todo this is a temporary solution
-  struct perform_cbs cbs = {
-    NULL, 
-    NULL, 
-    NULL, 
-    NULL, 
-    NULL, 
-    NULL, 
-    NULL
-  };
+  struct perform_cbs cbs = { NULL };
   
   //perform the request
   perform_request(
