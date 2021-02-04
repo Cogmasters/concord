@@ -14,7 +14,7 @@ json_escape_string (size_t * output_len_p, char * input, size_t input_len)
 
   /*
    * 1st iteration, output is NULL and count extra_bytes needed for escaping
-   * 2st iteration, output is not NULL, and does escaping.
+   * 2st iteration, output is not NULL, and does escaing.
    */
   second_iter:
   for (char * s = input_start; s < input_end; s++) {
@@ -154,8 +154,8 @@ next(char ** p, char * e, bool html)
 
   // Read the rest
   unsigned char tmp;
-  switch(trail_size) { // @todo this could be replaced by a while loop 
-  case 3:
+  switch(trail_size) {
+    case 3:
       if(*p==e)
         return utf_illegal;
       tmp = **p;
@@ -163,8 +163,7 @@ next(char ** p, char * e, bool html)
       if (!utf8_is_trail(tmp))
         return utf_illegal;
       c = (c << 6) | ( tmp & 0x3F);
-  /* fall through */
-  case 2:
+    case 2:
       if(*p==e)
         return utf_illegal;
       tmp = **p;
@@ -172,8 +171,7 @@ next(char ** p, char * e, bool html)
       if (!utf8_is_trail(tmp))
         return utf_illegal;
       c = (c << 6) | ( tmp & 0x3F);
-  /* fall through */
-  case 1:
+    case 1:
       if(*p==e)
         return utf_illegal;
       tmp = **p;
@@ -327,6 +325,7 @@ second_iter:
         }
           break;
         default:
+          if(0<= c && c <= 0x1F) /* report errors */
             goto return_err;
       }
     }
