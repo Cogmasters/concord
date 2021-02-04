@@ -24,7 +24,6 @@
 #ifdef __stensal__
 
 #include <bearssl_hash.h>
-#define _GNU_SOURCE
 #include <stdio.h>
 #include <ctype.h>
 #include <unistd.h>
