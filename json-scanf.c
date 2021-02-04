@@ -53,7 +53,7 @@ struct extractor_specifier {
   void *recipient; //must be a pointer
   bool is_applied;
   bool has_dynamic_size;
-  bool has_unknown_size;
+  bool allocate_memory;
   bool is_funptr;
   void *funptr;
 };
@@ -150,7 +150,7 @@ match_path (char *buffer, jsmntok_t *t,
         size_t new_size = 0;
         int len = t[i].end - t[i].start;
         char * escaped = copy_over_string(&new_size, buffer + t[i].start, len);
-        if (es->has_unknown_size) {
+        if (es->allocate_memory) {
           char **p = (char **) es->recipient;
           int len = t[i].end - t[i].start + 1;
             *p = malloc(len);
@@ -175,7 +175,7 @@ match_path (char *buffer, jsmntok_t *t,
           //something is wrong if is not null primitive
           if (!STRNEQ(buffer + t[i].start, "null", 4))
               goto type_error;
-          if (es->has_unknown_size) {
+          if (es->allocate_memory) {
             char **p = (char **) es->recipient;
             *p = NULL;
           }
@@ -188,7 +188,7 @@ match_path (char *buffer, jsmntok_t *t,
       }
   }
   else if (STREQ(es->type_specifier, "copy")) {
-    if (es->has_unknown_size) {
+    if (es->allocate_memory) {
       char **p = (char **) es->recipient;
       int len = t[i].end - t[i].start + 1;
       *p = malloc(len);
@@ -365,7 +365,7 @@ parse_type_specifier(char *specifier, struct extractor_specifier *es)
   char *start = specifier, *end;
   long size = strtol(start, &end, 10);
 
-  bool is_valid_size = false, has_dsize = false, has_unknown_size = false;
+  bool is_valid_size = false, has_dsize = false, allocate_memory = false;
   if (end != start) {
     is_valid_size = true;
     specifier = end; // jump to the end of number
@@ -375,21 +375,21 @@ parse_type_specifier(char *specifier, struct extractor_specifier *es)
     specifier += 2; // eat up '.' and '*'
   }
   else if ('?' == *specifier) {
-    has_unknown_size = true;
+    allocate_memory = true;
     specifier ++;
   }
 
   if (STRNEQ(specifier, "s", 1)){
     es->size = (is_valid_size) ? size : 0;
     es->has_dynamic_size = has_dsize;
-    es->has_unknown_size = has_unknown_size;
+    es->allocate_memory = allocate_memory;
     strcpy(es->type_specifier, "char*");
     return specifier + 1;
   }
   else if (STRNEQ(specifier, "S", 1)) {
     es->size = (is_valid_size) ? size : 0;
     es->has_dynamic_size = has_dsize;
-    es->has_unknown_size = has_unknown_size;
+    es->allocate_memory = allocate_memory;
     strcpy(es->type_specifier, "copy");
     return specifier + 1;
   }
@@ -408,7 +408,9 @@ parse_type_specifier(char *specifier, struct extractor_specifier *es)
   }
   else if (STRNEQ(specifier, "E", 1)) {
     strcpy(es->type_specifier, "exist");
-    es->is_funptr = true;
+    es->size = (is_valid_size) ? size : 0;
+    es->has_dynamic_size = has_dsize;
+    es->allocate_memory = allocate_memory;
     return specifier + 1;
   }
   else if (STRNEQ(specifier, "T", 1)) {
@@ -701,8 +703,13 @@ json_scanf(char *buffer, size_t buf_size, char *format, ...)
   }
 
   if (capture_existance) {
-    void ** has_values = ntl_calloc(extracted_values, sizeof(void *));
-    for (int i = 0, j = 0; i < num_keys; i++) {
+    void ** has_values = NULL;
+    if (capture_existance->allocate_memory)
+      has_values = ntl_calloc(extracted_values, sizeof(void *));
+    else
+      has_values = (void **) capture_existance->recipient;
+
+    for (size_t i = 0, j = 0; i < num_keys; i++) {
       if (es[i].is_applied) {
         has_values[j] = es[i].recipient;
         j++;
