@@ -294,6 +294,9 @@ match_path (char *buffer, jsmntok_t *t,
         break;
     }
   }
+  else if (STREQ(es->type_specifier, "exist")) {
+    // this has to be applied after all applications are done
+  }
   else {
       goto type_error;
   }
@@ -400,6 +403,11 @@ parse_type_specifier(char *specifier, struct extractor_specifier *es)
   }
   else if (STRNEQ(specifier, "F", 1)) {
     strcpy(es->type_specifier, "funptr");
+    es->is_funptr = true;
+    return specifier + 1;
+  }
+  else if (STRNEQ(specifier, "E", 1)) {
+    strcpy(es->type_specifier, "exist");
     es->is_funptr = true;
     return specifier + 1;
   }
@@ -624,6 +632,8 @@ json_scanf(char *buffer, size_t buf_size, char *format, ...)
   struct extractor_specifier *es = format_parse(format, &num_keys);
   if (NULL == es) return 0;
 
+  struct extractor_specifier * capture_existance = NULL;
+
   va_list ap;
   va_start(ap, format);
   for (size_t i = 0; i < num_keys ; ++i) {
@@ -636,6 +646,10 @@ json_scanf(char *buffer, size_t buf_size, char *format, ...)
     void *p_value = va_arg(ap, void*);
     ASSERT_S(NULL != p_value, "NULL pointer given as argument parameter");
     es[i].recipient = p_value;
+
+    if (STREQ(es[i].type_specifier, "exist")) {
+      capture_existance = &es[i];
+    }
   }
   va_end(ap);
 
@@ -684,6 +698,17 @@ json_scanf(char *buffer, size_t buf_size, char *format, ...)
     }
 
     if (es[i].is_applied) extracted_values ++;
+  }
+
+  if (capture_existance) {
+    void ** has_values = ntl_calloc(extracted_values, sizeof(void *));
+    for (int i = 0, j = 0; i < num_keys; i++) {
+      if (es[i].is_applied) {
+        has_values[j] = es[i].recipient;
+        j++;
+      }
+    }
+    *(void **)capture_existance->recipient = (void *) has_values;
   }
 
 cleanup:
