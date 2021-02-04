@@ -62,25 +62,25 @@ $(OBJDIR)/curl-websocket.o : curl-websocket.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) \
 		-U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=1 -c -o $@ $<
 
-test-api : test-api.cpp
+test-api : test/test-api.cpp
 	$(CXX) $(CFLAGS) $(LIBS_CFLAGS) \
-		test-api.cpp $(OBJS) -o test-api.exe $(LIBS_LDFLAGS)
-test-ws : test-ws.cpp
+		test/test-api.cpp $(OBJS) -o test-api.exe $(LIBS_LDFLAGS)
+test-ws : test/test-ws.cpp
 	$(CXX) $(CFLAGS) $(LIBS_CFLAGS) \
-		test-ws.cpp $(OBJS) -o test-ws.exe $(LIBS_LDFLAGS)
+		test/test-ws.cpp $(OBJS) -o test-ws.exe $(LIBS_LDFLAGS)
 
-bot-echo : bot-echo.cpp
+bot-echo : bot/bot-echo.cpp
 	$(CXX) $(CFLAGS) $(LIBS_CFLAGS) \
-		bot-echo.cpp $(OBJS) -o bot-echo.exe $(LIBS_LDFLAGS)
-bot-pin : bot-pin.cpp
+		bot/bot-echo.cpp $(OBJS) -o bot-echo.exe $(LIBS_LDFLAGS)
+bot-pin : bot/bot-pin.cpp
 	$(CXX) $(CFLAGS) $(LIBS_CFLAGS) \
-		bot-pin.cpp $(OBJS) -o bot-pin.exe $(LIBS_LDFLAGS)
-bot-ping-pong : bot-ping-pong.cpp
+		bot/bot-pin.cpp $(OBJS) -o bot-pin.exe $(LIBS_LDFLAGS)
+bot-ping-pong : bot/bot-ping-pong.cpp
 	$(CXX) $(CFLAGS) $(LIBS_CFLAGS) \
-		bot-ping-pong.cpp $(OBJS) -o bot-ping-pong.exe $(LIBS_LDFLAGS)
-bot-mimic : bot-mimic.cpp
+		bot/bot-ping-pong.cpp $(OBJS) -o bot-ping-pong.exe $(LIBS_LDFLAGS)
+bot-mimic : bot/bot-mimic.cpp
 	$(CXX) $(CFLAGS) $(LIBS_CFLAGS) \
-		bot-mimic.cpp $(OBJS) -o bot-mimic.exe $(LIBS_LDFLAGS)
+		bot/bot-mimic.cpp $(OBJS) -o bot-mimic.exe $(LIBS_LDFLAGS)
 
 $(LIBDISCORD_SLIB) : $(OBJS)
 	$(AR) -cvq $@ $(OBJS)
