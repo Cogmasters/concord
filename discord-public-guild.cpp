@@ -49,7 +49,7 @@ json_list_load(char *str, size_t len, void *p_guilds)
 dati*
 init()
 {
-  dati *new_guild = (dati*)calloc(1, sizeof *new_guild);
+  dati *new_guild = (dati*)calloc(1, sizeof(dati));
   return new_guild;
 }
 
@@ -75,12 +75,11 @@ get(client *client, const uint64_t guild_id, dati *p_guild)
   }
 
   struct resp_handle resp_handle = {&json_load, (void*)p_guild};
-  struct sized_buffer body = {NULL, 0};
 
   user_agent::run( 
     &client->ua,
     &resp_handle,
-    &body,
+    NULL,
     HTTP_GET, GUILD, guild_id);
 }
 
@@ -131,7 +130,7 @@ json_list_load(char *str, size_t len, void *p_members)
 dati*
 init()
 {
-  dati *new_member = (dati*)calloc(1, sizeof *new_member);
+  dati *new_member = (dati*)calloc(1, sizeof(dati));
   new_member->user = user::init();
   return new_member;
 }
@@ -164,12 +163,11 @@ get_list(client *client, const uint64_t guild_id)
 
   struct resp_handle resp_handle =
     {&json_list_load, (void*)&new_members};
-  struct sized_buffer body = {NULL, 0};
   
   user_agent::run( 
     &client->ua,
     &resp_handle,
-    &body,
+    NULL,
     HTTP_GET, GUILD MEMBERS "?limit=100", guild_id);
 
   return new_members;
@@ -186,13 +184,10 @@ void remove(client *client, const uint64_t guild_id, const uint64_t user_id)
     return;
   }
 
-  struct resp_handle resp_handle = {NULL, NULL, NULL, NULL};
-  struct sized_buffer body = {NULL, 0};
-
   user_agent::run(
     &client->ua,
-    &resp_handle,
-    &body,
+    NULL,
+    NULL,
     HTTP_DELETE, GUILD MEMBER, guild_id, user_id);
 }
 
@@ -235,7 +230,7 @@ json_list_load(char *str, size_t len, void *p_bans)
 dati*
 init()
 {
-  dati *new_ban = (dati*)calloc(1, sizeof *new_ban);
+  dati *new_ban = (dati*)calloc(1, sizeof(dati));
   new_ban->user = user::init();
   return new_ban;
 }
@@ -267,12 +262,11 @@ get(client *client, const uint64_t guild_id, const uint64_t user_id, dati *p_ban
   }
 
   struct resp_handle resp_handle = {&json_load, (void*)p_ban};
-  struct sized_buffer body = {NULL, 0};
 
   user_agent::run( 
     &client->ua,
     &resp_handle,
-    &body,
+    NULL,
     HTTP_GET, GUILD BAN, guild_id, user_id);
 }
 
@@ -289,12 +283,11 @@ get_list(client *client, const uint64_t guild_id)
 
   struct resp_handle resp_handle =
     {&json_list_load, (void*)&new_bans};
-  struct sized_buffer body = {NULL, 0};
 
   user_agent::run( 
     &client->ua,
     &resp_handle,
-    &body,
+    NULL,
     HTTP_GET, GUILD BANS, guild_id);
 
   return new_bans;
@@ -318,7 +311,7 @@ create(client *client, const uint64_t guild_id, const uint64_t user_id, int dele
     return;
   }
   if (delete_message_days < 0 || delete_message_days > MAX_DELETE_MESSAGE_DAYS) {
-    D_PRINT("Delete_message_days is outside the interval (0, %d)",
+    D_PRINT("'delete_message_days' is outside the interval (0, %d)",
         MAX_DELETE_MESSAGE_DAYS);
     return;
   }
@@ -341,12 +334,11 @@ create(client *client, const uint64_t guild_id, const uint64_t user_id, int dele
 
   str += sprintf(str, "}");
 
-  struct resp_handle resp_handle = { NULL, NULL };
-  struct sized_buffer body = { buf, (size_t) (str - buf) };
+  struct sized_buffer body = {buf, (size_t)(str - buf)};
 
   user_agent::run( 
     &client->ua,
-    &resp_handle,
+    NULL,
     &body,
     HTTP_PUT, GUILD BAN, guild_id, user_id);
 }
@@ -379,12 +371,11 @@ remove(client *client, const uint64_t guild_id, const uint64_t user_id, const ch
 
   str += sprintf(str, "}");
 
-  struct resp_handle resp_handle = { NULL, NULL };
   struct sized_buffer body = {buf, (size_t)(str - buf)};
 
   user_agent::run( 
     &client->ua,
-    &resp_handle,
+    NULL,
     &body,
     HTTP_DELETE, GUILD BAN, guild_id, user_id);
 }

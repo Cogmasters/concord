@@ -65,7 +65,7 @@ json_list_load(char *str, size_t len, void *p_users)
 dati*
 init()
 {
-  dati *new_user = (dati*)calloc(1, sizeof *new_user);
+  dati *new_user = (dati*)calloc(1, sizeof(dati));
   return new_user;
 }
 
@@ -91,12 +91,11 @@ get(client *client, const uint64_t user_id, dati *p_user)
   }
 
   struct resp_handle resp_handle = {&json_load, (void*)p_user};
-  struct sized_buffer body = {NULL, 0};
 
   user_agent::run( 
     &client->ua,
     &resp_handle,
-    &body,
+    NULL,
     HTTP_GET, USER, user_id);
 }
 
@@ -106,12 +105,11 @@ void
 get(client *client, dati *p_user)
 {
   struct resp_handle resp_handle = {&json_load, (void*)p_user};
-  struct sized_buffer body = {NULL, 0};
 
   user_agent::run( 
     &client->ua,
     &resp_handle,
-    &body,
+    NULL,
     HTTP_GET, ME);
 }
 
@@ -122,12 +120,11 @@ get_guilds(client *client)
 
   struct resp_handle resp_handle =
     {&guild::json_list_load, (void*)&new_guilds};
-  struct sized_buffer body = {NULL, 0};
 
   user_agent::run( 
     &client->ua,
     &resp_handle,
-    &body,
+    NULL,
     HTTP_GET, ME GUILDS);
 
   return new_guilds;

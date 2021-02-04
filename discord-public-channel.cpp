@@ -11,7 +11,7 @@ namespace channel {
 dati*
 init()
 {
-  dati *new_channel = (dati*)calloc(1, sizeof *new_channel);
+  dati *new_channel = (dati*)calloc(1, sizeof(dati));
   return new_channel;
 }
 
@@ -32,12 +32,11 @@ pin_message(client *client, const uint64_t channel_id, const uint64_t message_id
     return;
   }
 
-  struct resp_handle resp_handle = {NULL, NULL};
   struct sized_buffer body = {"", 0};
 
   user_agent::run( 
     &client->ua,
-    &resp_handle,
+    NULL,
     &body, //empty POSTFIELDS
     HTTP_PUT, PINNED_MESSAGE, channel_id, message_id);
 }
@@ -54,12 +53,11 @@ unpin_message(client *client, const uint64_t channel_id, const uint64_t message_
     return;
   }
 
-  struct resp_handle resp_handle = {NULL, NULL};
   struct sized_buffer body = {"", 0};
 
   user_agent::run( 
     &client->ua,
-    &resp_handle,
+    NULL,
     &body, //empty POSTFIELDS
     HTTP_DELETE, PINNED_MESSAGE, channel_id, message_id);
 }
@@ -116,7 +114,7 @@ json_load(char *str, size_t len, void *p_message)
 static dati*
 message_init()
 {
-  dati *new_message = (dati*)calloc(1, sizeof *new_message);
+  dati *new_message = (dati*)calloc(1, sizeof(dati));
   if (NULL == new_message) return NULL;
 
   new_message->author = user::init();
@@ -186,7 +184,7 @@ run(client *client, const uint64_t channel_id, params *params, dati *p_message)
     return;
   }
   if (strlen(params->content) >= MAX_MESSAGE_LEN) {
-    D_PRINT("Content length exceeds 2000 characters threshold (%u)", strlen(params->content));
+    D_PRINT("Content length exceeds 2000 characters threshold (%zu)", strlen(params->content));
     return;
   }
 
@@ -224,13 +222,10 @@ del(client *client, const uint64_t channel_id, const uint64_t message_id)
     return;
   }
 
-  struct resp_handle resp_handle = {NULL, NULL, NULL, NULL};
-  struct sized_buffer body = {NULL, 0};
-
   user_agent::run(
     &client->ua,
-    &resp_handle,
-    &body,
+    NULL,
+    NULL,
     HTTP_DELETE, CHANNEL MESSAGE, channel_id, message_id);
 }
 

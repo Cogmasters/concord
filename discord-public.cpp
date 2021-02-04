@@ -12,7 +12,7 @@ namespace discord {
 client*
 init(char token[])
 {
-  client *new_client = (client*)calloc(1, sizeof *new_client);
+  client *new_client = (client*)calloc(1, sizeof(client));
   if (NULL == new_client) return NULL;
 
   /* @todo this is a temporary solution */
