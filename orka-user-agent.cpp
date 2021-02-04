@@ -30,8 +30,8 @@ cleanup(struct dati *ua)
   curl_slist_free_all(ua->req_header);
   curl_easy_cleanup(ua->ehandle);
 
-  if (ua->body.start) {
-    free(ua->body.start);
+  if (ua->resp_body.start) {
+    free(ua->resp_body.start);
   }
 }
 
@@ -42,7 +42,7 @@ init(struct dati *ua, char *base_url)
   ua->ehandle = custom_easy_init(&(ua->settings),
                                   ua->req_header,
                                   &ua->pairs,
-                                  &ua->body);
+                                  &ua->resp_body);
   ua->base_url = base_url;
 }
 
@@ -51,14 +51,14 @@ void
 vrun(
   struct dati *ua,
   struct resp_handle *resp_handle,
-  struct sized_buffer *body,
+  struct sized_buffer *req_body,
   enum http_method http_method,
   char endpoint[],
   va_list args)
 {
   set_url(ua->ehandle, ua->base_url, endpoint, args);
 
-  set_method(ua->ehandle, http_method, body); //set the request method
+  set_method(ua->ehandle, http_method, req_body); //set the request method
   
   //@todo this is a temporary solution
   struct perform_cbs cbs = {NULL};
@@ -66,7 +66,7 @@ vrun(
   //perform the request
   perform_request(
     resp_handle, 
-    &ua->body, 
+    &ua->resp_body, 
     &ua->pairs, 
     ua->ehandle,
     &cbs);
@@ -77,7 +77,7 @@ void
 run(
   struct dati *ua,
   struct resp_handle *resp_handle,
-  struct sized_buffer *body,
+  struct sized_buffer *req_body,
   enum http_method http_method,
   char endpoint[],
   ...)
@@ -86,7 +86,7 @@ run(
   va_list args;
   va_start(args, endpoint);
 
-  vrun(ua, resp_handle, body, http_method, endpoint, args);
+  vrun(ua, resp_handle, req_body, http_method, endpoint, args);
 
   va_end(args);
 }

@@ -35,8 +35,8 @@ cleanup(struct dati *ua)
   curl_slist_free_all(ua->req_header);
   curl_easy_cleanup(ua->ehandle);
 
-  if (ua->body.start) {
-    free(ua->body.start);
+  if (ua->resp_body.start) {
+    free(ua->resp_body.start);
   }
 }
 
@@ -47,19 +47,20 @@ init(struct dati *ua, char username[], char token[])
   ua->ehandle = custom_easy_init(&ua->settings,
                                   ua->req_header,
                                   &ua->pairs,
-                                  &ua->body);
+                                  &ua->resp_body);
 
   curl_easy_setopt(ua->ehandle, CURLOPT_USERNAME, username);
   curl_easy_setopt(ua->ehandle, CURLOPT_USERPWD, token);
 }
 
 /* template function for performing requests */
-void run(struct dati *ua,
-         struct resp_handle *resp_handle,
-         struct sized_buffer *body,
-         enum http_method http_method,
-         char endpoint[],
-         ...)
+void run(
+  struct dati *ua,
+  struct resp_handle *resp_handle,
+  struct sized_buffer *req_body,
+  enum http_method http_method,
+  char endpoint[],
+  ...)
 {
   va_list args;
   va_start(args, endpoint);
@@ -68,15 +69,15 @@ void run(struct dati *ua,
 
   va_end(args);
 
-  set_method(ua->ehandle, http_method, body); //set the request method
+  set_method(ua->ehandle, http_method, req_body); //set the request method
   
   //@todo this is a temporary solution
-  struct perform_cbs cbs = { NULL };
+  struct perform_cbs cbs = {NULL};
   
   //perform the request
   perform_request(
     resp_handle, 
-    &ua->body,
+    &ua->resp_body,
     &ua->pairs, 
     ua->ehandle, 
     &cbs);

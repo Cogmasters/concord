@@ -8,7 +8,7 @@ namespace user_agent {
 
 struct dati {
   struct curl_slist *req_header; //the request header sent to the api
-  struct sized_buffer body; //the api response string
+  struct sized_buffer resp_body; //the api response string
   struct api_header_s pairs; //the key/field pairs response header
   CURL *ehandle; //the curl's easy handle used to perform requests
   char *base_url;
@@ -19,13 +19,13 @@ void init(struct dati *ua, char *base_url);
 
 void vrun(struct dati *ua,
      struct resp_handle *handle,
-     struct sized_buffer *body,
+     struct sized_buffer *req_body,
      enum http_method http_method,
      char endpoint[], va_list ap);
 
 void run(struct dati *ua,
     struct resp_handle *handle,
-    struct sized_buffer *body,
+    struct sized_buffer *req_body,
     enum http_method http_method,
     char endpoint[], ...);
 

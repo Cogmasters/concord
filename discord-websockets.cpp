@@ -573,12 +573,11 @@ static void
 get_bot(client *client)
 {
   struct resp_handle resp_handle = {&json_load, (void*)&client->ws};
-  struct sized_buffer body = {NULL, 0};
 
   user_agent::run( 
     &client->ua,
     &resp_handle,
-    &body,
+    NULL,
     HTTP_GET, GATEWAY BOT);
 }
 

@@ -23,7 +23,7 @@ extern void init(struct dati *data, char *username, char *password);
 
 extern void run(struct dati *api,
                 struct resp_handle *resp_handle,
-                struct api_resbody_s *response_body,
+                struct sized_buffer *req_body,
                 enum http_method http_method,
                 char endpoint[],
                 ...);

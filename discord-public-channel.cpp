@@ -32,12 +32,12 @@ pin_message(client *client, const uint64_t channel_id, const uint64_t message_id
     return;
   }
 
-  struct sized_buffer body = {"", 0};
+  struct sized_buffer req_body = {"", 0};
 
   user_agent::run( 
     &client->ua,
     NULL,
-    &body, //empty POSTFIELDS
+    &req_body, //empty POSTFIELDS
     HTTP_PUT, PINNED_MESSAGE, channel_id, message_id);
 }
 
@@ -53,12 +53,12 @@ unpin_message(client *client, const uint64_t channel_id, const uint64_t message_
     return;
   }
 
-  struct sized_buffer body = {"", 0};
+  struct sized_buffer req_body = {"", 0};
 
   user_agent::run( 
     &client->ua,
     NULL,
-    &body, //empty POSTFIELDS
+    &req_body, //empty POSTFIELDS
     HTTP_DELETE, PINNED_MESSAGE, channel_id, message_id);
 }
 
@@ -199,12 +199,12 @@ run(client *client, const uint64_t channel_id, params *params, dati *p_message)
     .err_cb = NULL, 
     .err_obj = NULL};
 
-  struct sized_buffer body = {payload, strlen(payload)};
+  struct sized_buffer req_body = {payload, strlen(payload)};
 
   user_agent::run( 
     &client->ua,
     &resp_handle,
-    &body,
+    &req_body,
     HTTP_POST, CHANNEL MESSAGES, channel_id);
 }
 

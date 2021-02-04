@@ -21,7 +21,7 @@ void
 run(
   struct dati *api,
   struct resp_handle *resp_handle,
-  struct sized_buffer *response_body,
+  struct sized_buffer *req_body,
   enum http_method http_method,
   char endpoint[],
   ...)
@@ -33,7 +33,7 @@ run(
   orka::user_agent::vrun(
     api->ua, 
     resp_handle, 
-    response_body, 
+    req_body, 
     http_method, 
     endpoint, 
     args);

@@ -52,7 +52,7 @@ init(dati *ua, char token[])
                   &ua->p_client->settings,
                   ua->req_header,
                   &ua->pairs,
-                  &ua->body);
+                  &ua->resp_body);
 }
 
 void
@@ -63,8 +63,8 @@ cleanup(dati *ua)
   curl_slist_free_all(ua->req_header);
   curl_easy_cleanup(ua->ehandle); 
 
-  if (ua->body.start) {
-    free(ua->body.start);
+  if (ua->resp_body.start) {
+    free(ua->resp_body.start);
   }
 }
 
@@ -85,7 +85,7 @@ static perform_action
 on_success_cb(
   void *p_data,
   int httpcode,
-  struct sized_buffer *body,
+  struct sized_buffer *resp_body,
   struct api_header_s *pairs)
 {
   D_NOTOP_PRINT("(%d)%s - %s", 
@@ -103,7 +103,7 @@ static perform_action
 on_failure_cb(
   void *p_data,
   int httpcode,
-  struct sized_buffer *body,
+  struct sized_buffer *resp_body,
   struct api_header_s *pairs)
 {
   if (httpcode >= 500) { // server related error, retry
@@ -140,7 +140,7 @@ on_failure_cb(
       char message[256];
       long long retry_after_ms = 0;
 
-      json_scanf(body->start, body->size,
+      json_scanf(resp_body->start, resp_body->size,
                   "[message]%s [retry_after]%lld",
                   message, &retry_after_ms);
 
@@ -179,7 +179,7 @@ void
 run(
   dati *ua, 
   struct resp_handle *resp_handle,
-  struct sized_buffer *body,
+  struct sized_buffer *req_body,
   enum http_method http_method,
   char endpoint[],
   ...)
@@ -191,7 +191,7 @@ run(
 
   va_end(args);
 
-  set_method(ua->ehandle, http_method, body); //set the request method
+  set_method(ua->ehandle, http_method, req_body); //set the request method
 
   struct _ratelimit ratelimit = {
     .ua = ua, 
@@ -215,7 +215,7 @@ run(
 
   perform_request(
     resp_handle,
-    &ua->body,
+    &ua->resp_body,
     &ua->pairs,
     ua->ehandle,
     &cbs);

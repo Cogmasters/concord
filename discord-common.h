@@ -34,7 +34,7 @@ namespace bucket { struct dati; } //forward declaration
 struct dati { /* USER AGENT STRUCTURE */
   struct curl_slist *req_header; //the request header sent to the api
 
-  struct sized_buffer body; //the api response string
+  struct sized_buffer resp_body; //the api response string
   struct api_header_s pairs; //the key/field pairs response header
 
   struct { /* RATELIMITING STRUCTURE */
@@ -55,7 +55,7 @@ void cleanup(user_agent::dati *ua);
 void run(
   user_agent::dati *ua, 
   struct resp_handle *resp_handle,
-  struct sized_buffer *body, // needed for POST/PUT/PATCH methods
+  struct sized_buffer *req_body, // needed for POST/PUT/PATCH methods
   enum http_method http_method,
   char endpoint[],
   ...);

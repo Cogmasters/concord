@@ -78,14 +78,14 @@ char* http_method_print(enum http_method method);
 /* set url to be used for the request */
 void set_url(CURL *ehandle, char base_api_url[], char endpoint[], va_list args);
 /* set specific http method used for the request */
-void set_method(CURL *ehandle, enum http_method method, struct sized_buffer *request_body);
+void set_method(CURL *ehandle, enum http_method method, struct sized_buffer *req_body);
 
 typedef enum { ACTION_DONE, ACTION_RETRY, ACTION_ABORT } perform_action;
 
 typedef perform_action (http_response_cb)(
     void *data,
     int httpcode, 
-    struct sized_buffer *request_body,
+    struct sized_buffer *resp_body,
     struct api_header_s *pairs);
 
 struct perform_cbs {
@@ -102,7 +102,7 @@ struct perform_cbs {
 
 void perform_request(
   struct resp_handle *resp_handle,
-  struct sized_buffer *request_body,
+  struct sized_buffer *resp_body,
   struct api_header_s *pairs,
   CURL *ehandle,
   struct perform_cbs *cbs);
@@ -110,7 +110,7 @@ void perform_request(
 CURL* custom_easy_init(struct _settings_s *settings,
                  struct curl_slist *req_header,
                  struct api_header_s *pairs,
-                 struct sized_buffer *response_body);
+                 struct sized_buffer *resp_body);
 
 void json_dump(const char *text, struct _settings_s *settings, const char *data);
 int curl_debug_cb(CURL *ehandle, curl_infotype type, char *data, size_t size, void *p_userdata);

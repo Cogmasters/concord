@@ -334,12 +334,12 @@ create(client *client, const uint64_t guild_id, const uint64_t user_id, int dele
 
   str += sprintf(str, "}");
 
-  struct sized_buffer body = {buf, (size_t)(str - buf)};
+  struct sized_buffer req_body = {buf, (size_t)(str - buf)};
 
   user_agent::run( 
     &client->ua,
     NULL,
-    &body,
+    &req_body,
     HTTP_PUT, GUILD BAN, guild_id, user_id);
 }
 
@@ -371,12 +371,12 @@ remove(client *client, const uint64_t guild_id, const uint64_t user_id, const ch
 
   str += sprintf(str, "}");
 
-  struct sized_buffer body = {buf, (size_t)(str - buf)};
+  struct sized_buffer req_body = {buf, (size_t)(str - buf)};
 
   user_agent::run( 
     &client->ua,
     NULL,
-    &body,
+    &req_body,
     HTTP_DELETE, GUILD BAN, guild_id, user_id);
 }
 
