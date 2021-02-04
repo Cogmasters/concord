@@ -105,6 +105,10 @@ For example, a file called `test.h` should have:
 #endif // TEST_H
 ```
 
+Don't use `pragam once` which is not supported by all C/C++ compilers
+
+## MISC
+For subjects that are not coverred here, we follow [Linux kernel coding style](https://www.kernel.org/doc/html/v4.10/process/coding-style.html#linux-kernel-coding-style)
 
 ## Commit and Merge
 To avoid creating redundant merge commits the following methods are recommanded:
