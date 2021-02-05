@@ -144,8 +144,8 @@ node2json(char *str, size_t size, void *p)
 }
 
 static int
-node_list2json(char *str, size_t size, void *p) {
-  return ntl_sn2str(str, size, (void **)p, NULL, node2json);
+node_list2json(char *buf, size_t size, void *p) {
+  return ntl_to_buf(buf, size, (void **)p, NULL, node2json);
 }
 
 char *

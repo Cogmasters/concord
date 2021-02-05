@@ -98,60 +98,60 @@ ntl_apply(void **p, void (*f)(void *p))
  *
  */
 int
-ntl_sn2str(char *str, size_t size, void **p, struct ntl_str_delimiter * d,
+ntl_to_buf(char *buf, size_t size, void **p, struct ntl_str_delimiter * d,
            ntl_elem_serializer * x)
 {
   static struct ntl_str_delimiter dx = { '[', ",", "", ']' };
   if (!d) d = &dx;
 
-  const char * start = str;
+  const char * start = buf;
   int i, tsize = 0, psize;
 
   if (start) {
-    str[0] = d->start_delimiter;
-    str ++;
+    buf[0] = d->start_delimiter;
+    buf ++;
   }
   tsize ++;
 
   for(i = 0; p[i]; i++) {
     bool is_last = (NULL == p[i+1]);
-    psize = (*x)(str, size, p[i]);
+    psize = (*x)(buf, size, p[i]);
     if(start) {
-      str += psize; // move to next available byte
+      buf += psize; // move to next available byte
     }
     tsize += psize;
     if (is_last) {
       psize = strlen (d->last_element_delimiter);
       if (start) {
-        memcpy(str, d->last_element_delimiter, psize);
-        str += psize;
+        memcpy(buf, d->last_element_delimiter, psize);
+        buf += psize;
       }
     }
     else {
       psize = strlen (d->element_delimiter);
       if (start) {
-        memcpy(str, d->element_delimiter, psize);
-        str += psize;
+        memcpy(buf, d->element_delimiter, psize);
+        buf += psize;
       }
     }
     tsize += psize;
   }
 
   if (start) {
-    str[0] = d->end_delimiter;
-    str ++;
+    buf[0] = d->end_delimiter;
+    buf ++;
   }
   tsize ++;
   return tsize;
 }
 
 int
-ntl_as2str(char ** buf_p, void **p, struct ntl_str_delimiter * d,
+ntl_to_abuf(char ** buf_p, void **p, struct ntl_str_delimiter * d,
            ntl_elem_serializer * x)
 {
-  int s = ntl_sn2str(NULL, 0, p, d, x);
+  int s = ntl_to_buf(NULL, 0, p, d, x);
   *buf_p = (char *)malloc(s);
-  return ntl_sn2str(*buf_p, s, p, d, x);
+  return ntl_to_buf(*buf_p, s, p, d, x);
 }
 
 void **

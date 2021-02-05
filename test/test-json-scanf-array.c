@@ -98,9 +98,9 @@ print_array (char * str, size_t len, void * p)
 }
 
 static int
-print_all (char * str, size_t len, void * p)
+print_all (char * buf, size_t len, void * p)
 {
-  return ntl_sn2str(str, len, (void **)p, NULL, print_array);
+  return ntl_to_buf(buf, len, (void **)p, NULL, print_array);
 }
 
 int main ()

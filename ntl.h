@@ -125,12 +125,22 @@ struct ntl_str_delimiter {
   char end_delimiter;
 };
 
-int ntl_sn2str(char *buf, size_t buf_size, void **p,
+/*
+ * ntl_to_buf behaviors like snprintf
+ *
+ * ntl_to_buf(NULL, 0, ..) return the number of bytes (excluding \0) needed to
+ *       serialize p
+ *
+ * ntl_to_buf(buf, n, ..) serialize p to buf and return the number of
+ *       bytes written excluding \0
+ */
+int ntl_to_buf(char *buf, size_t buf_size, void **p,
                struct ntl_str_delimiter  * d,
                ntl_elem_serializer * x);
 
-int ntl_as2str(char **buf_ptr, void **p, struct ntl_str_delimiter  * d,
-               ntl_elem_serializer * x);
+
+int ntl_to_abuf(char **buf_ptr, void **p, struct ntl_str_delimiter  * d,
+                ntl_elem_serializer * x);
 
 
 struct ntl_deserializer {
