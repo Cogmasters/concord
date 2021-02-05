@@ -188,9 +188,15 @@ int json_load_array (char *  str, size_t len, struct sized_buffer ***p) {
  * see test/test-json-scanf-array.c for usage examples
  */
 int
-json_array_str_to_ntl(char *str, size_t len,
-                      struct ntl_deserializer * ntl_deserializer)
+json_array_str_to_ntl(
+  char *str,
+  size_t len,
+  struct ntl_deserializer * ntl_deserializer)
 {
   ntl_deserializer->partition_as_sized_bufs = json_load_array;
-  return ntl_from_buf(str, len, ntl_deserializer);
+  int ret = ntl_from_buf(str, len, ntl_deserializer);
+  if (0 == ret)
+    return 0;
+  else
+    return 1;
 }
