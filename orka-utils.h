@@ -3,6 +3,7 @@
 
 #include <stddef.h>
 #include <stdint.h>
+#include "ntl.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -15,6 +16,13 @@ void orka_sleep_ms(const long long delay_ms);
 int64_t orka_timestamp_ms();
 void orka_timestamp_str(char *p_str, int len);
 void orka_strtoull(char *str, size_t len, void *p_data) ;
+
+
+int json_array_str_to_ntl(
+  char *str,
+  size_t size,
+  struct ntl_deserializer * deserializer);
+
 
 #ifdef __cplusplus
 }

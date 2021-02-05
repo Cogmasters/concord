@@ -10,6 +10,7 @@
 
 #include "orka-utils.h"
 #include "orka-debug.h"
+#include "json-scanf.h"
 
 
 char*
@@ -172,4 +173,24 @@ orka_strtoull(char *str, size_t len, void *p_data)
   *recipient = strtoull(str, NULL, 10);
 
   (void)len;
+}
+
+
+static
+int json_load_array (char *  str, size_t len, struct sized_buffer ***p) {
+  return json_scanf(str, len, "[]%A", p);
+}
+
+/*
+ * the buf has to be a string that starts with '[' and ends with ']', and
+ * the buf represents a legit json array
+ *
+ * see test/test-json-scanf-array.c for usage examples
+ */
+int
+json_array_str_to_ntl(char *str, size_t len,
+                      struct ntl_deserializer * ntl_deserializer)
+{
+  ntl_deserializer->partition_as_sized_bufs = json_load_array;
+  return ntl_from_buf(str, len, ntl_deserializer);
 }

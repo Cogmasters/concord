@@ -113,10 +113,10 @@ void ** ntl_fmap(void ** from_list, size_t to_elem_size, ntl_converter * f);
 void ** ntl_append(void ** p, void * added_elem);
 
 /*
- * sn2str(NULL, 0, p) will calculate the size needed to print *p
- * sn2str(buf, n, p) will print to buffer
+ * ntl_elem_serializer(NULL, 0, p) calculates the size needed to serializer p
+ * ntl_elem_serializer(buf, n, p) serialize p to a buffer
  */
-typedef int (sn2str)(char * str, size_t size, void *p);
+typedef int (ntl_elem_serializer)(char * buf, size_t size, void *p);
 
 struct ntl_str_delimiter {
   char start_delimiter;
@@ -127,11 +127,35 @@ struct ntl_str_delimiter {
 
 int ntl_sn2str(char *buf, size_t buf_size, void **p,
                struct ntl_str_delimiter  * d,
-               sn2str * x);
+               ntl_elem_serializer * x);
 
-int ntl_as2str(char **buf_ptr, void **p,
-               struct ntl_str_delimiter  * d,
-               sn2str * x);
+int ntl_as2str(char **buf_ptr, void **p, struct ntl_str_delimiter  * d,
+               ntl_elem_serializer * x);
+
+
+struct ntl_deserializer {
+  /* Required: this function partition a sized buffer to n sized buffers,
+   * each one represents one element */
+  int (*partition_as_sized_bufs)(char *, size_t, struct sized_buffer ***p);
+  /* Required: the size of each element, it will be used to allocate memory */
+  size_t elem_size;
+  /* Optional: the function to initialize an element, it can be NULL */
+  void (*init_elem)(void *);
+  /* Required: the function to load element data from buf to recipient */
+  void (*elem_from_buf)(char * buf, size_t size, void * recipient);
+
+  /* Required: a pointer of ntl that is to receive the reconstructed ntl */
+  void *** ntl_recipient_p;
+};
+
+/*
+ * The function reconstructs a ntl from a sized buffer
+ *
+ * ntl_deserializer: have all the information to reconstruct an element
+ *    from a sized buffer
+ */
+int
+ntl_from_buf (char *buf, size_t len, struct ntl_deserializer * ntl_deserializer);
 
 #ifdef __cplusplus
 }

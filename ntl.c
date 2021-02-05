@@ -95,11 +95,11 @@ ntl_apply(void **p, void (*f)(void *p))
 }
 
 /*
- * null_term_list_snp(NULL, 0, p, x) will calculate the size needed to print p
+ *
  */
 int
-ntl_sn2str(char *str, size_t size, void **p,
-           struct ntl_str_delimiter * d, sn2str * x)
+ntl_sn2str(char *str, size_t size, void **p, struct ntl_str_delimiter * d,
+           ntl_elem_serializer * x)
 {
   static struct ntl_str_delimiter dx = { '[', ",", "", ']' };
   if (!d) d = &dx;
@@ -146,11 +146,12 @@ ntl_sn2str(char *str, size_t size, void **p,
 }
 
 int
-ntl_as2str(char ** str, void **p, struct ntl_str_delimiter * d, sn2str * x)
+ntl_as2str(char ** buf_p, void **p, struct ntl_str_delimiter * d,
+           ntl_elem_serializer * x)
 {
   int s = ntl_sn2str(NULL, 0, p, d, x);
-  *str = (char *)malloc(s);
-  return ntl_sn2str(*str, s, p, d, x);
+  *buf_p = (char *)malloc(s);
+  return ntl_sn2str(*buf_p, s, p, d, x);
 }
 
 void **
@@ -179,4 +180,29 @@ ntl_append(void ** p, void * added_elem)
 
   memcpy(o[i], added_elem, elem_size);
   return o;
+}
+
+int
+ntl_from_buf(char *buf, size_t len, struct ntl_deserializer * deserializer)
+{
+  struct sized_buffer **elem_bufs = NULL;
+  int ret = (*deserializer->partition_as_sized_bufs)(buf, len, &elem_bufs);
+  if (0 == ret) {
+    *deserializer->ntl_recipient_p = NULL;
+    return 0;
+  }
+
+  size_t nelems = ntl_length((void **)elem_bufs);
+  void ** new_ntl =
+    ntl_calloc_init(nelems, deserializer->elem_size, deserializer->init_elem);
+
+  for (size_t i=0; elem_bufs[i]; ++i)
+    (*deserializer->elem_from_buf)(
+      elem_bufs[i]->start,
+      elem_bufs[i]->size,
+      new_ntl[i]);
+
+  free(elem_bufs);
+  *deserializer->ntl_recipient_p = new_ntl;
+  return nelems;
 }
