@@ -130,7 +130,26 @@ orka_iso8601_to_unix_ms(char *timestamp, size_t len, void *p_data)
 
   *recipient = res;
 
-  return 1; // SUCESS
+  return 1; // SUCSESS
+}
+
+int
+orka_strtoull(char *str, size_t len, void *p_data) 
+{
+  char *buf = malloc(len + 1);
+  if(NULL == buf) return 0; // ERROR @todo provide default value to recipient ?
+
+  memcpy(buf, str, len);
+  buf[len] = '\0';
+
+  uint64_t *recipient = (uint64_t*)p_data;
+  ASSERT_S(NULL != recipient, "No recipient provided by user");
+
+  *recipient = strtoull(buf, NULL, 10);
+
+  free(buf);
+
+  return 1;
 }
 
 void
@@ -163,18 +182,6 @@ orka_timestamp_str(char *p_str, int len)
   int ret = strftime(p_str, len, "%c", tm);
   ASSERT_S(ret != 0, "Could not retrieve string timestamp");
 }
-
-void
-orka_strtoull(char *str, size_t len, void *p_data) 
-{
-  uint64_t *recipient = (uint64_t*)p_data;
-  ASSERT_S(NULL != recipient, "No recipient provided by user");
-
-  *recipient = strtoull(str, NULL, 10);
-
-  (void)len;
-}
-
 
 static
 int json_load_array (char *  str, size_t len, struct sized_buffer ***p) {
