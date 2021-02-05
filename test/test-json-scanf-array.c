@@ -201,7 +201,7 @@ int main ()
     .elem_from_buf = load_tree_node,
     .ntl_recipient_p = (void ***)&nodes
   };
-  json_array_str_to_ntl(array_tok.start, array_tok.size, &deserializer);
+  orka_str_to_ntl(array_tok.start, array_tok.size, &deserializer);
 
   fprintf(stdout, "test json_array_str_to_ntl\n");
   wsize = json_asprintf(&b, "{|a|:|%s|, |b|:%d, |x|:%F }", "abc",
@@ -210,7 +210,7 @@ int main ()
   free(nodes);
 
   fprintf(stdout, "test json_array_str_to_ntl with %%F\n");
-  json_scanf(json_str, s, "[tree]%F", json_array_str_to_ntl, &deserializer);
+  json_scanf(json_str, s, "[tree]%F", orka_str_to_ntl, &deserializer);
   wsize = json_asprintf(&b, "{|a|:|%s|, |b|:%d, |x|:%F }", "abc",
                         10, print_all, nodes);
   fprintf (stdout, "%d %s\n", wsize, b);

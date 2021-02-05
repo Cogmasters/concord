@@ -18,7 +18,7 @@ void orka_timestamp_str(char *p_str, int len);
 void orka_strtoull(char *str, size_t len, void *p_data) ;
 
 
-int json_array_str_to_ntl(
+int orka_str_to_ntl(
   char *str,
   size_t size,
   struct ntl_deserializer * deserializer);
