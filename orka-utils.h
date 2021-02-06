@@ -1,10 +1,8 @@
 #ifndef ORKA_UTILS_H
 #define ORKA_UTILS_H
 
-#include <stddef.h>
-#include <stdint.h>
 #include <stdbool.h>
-#include <limits.h>
+#include <limits.h> // for PATH_MAX macro
 
 #include "ntl.h"
 

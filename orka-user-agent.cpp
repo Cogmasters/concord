@@ -1,15 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
 #include <string.h>
-#include <ctype.h>
 #include <stdarg.h>
-#include <stddef.h>
 
 #include "orka-user-agent.hpp"
-
 #include "orka-utils.h"
-#include "json-scanf.h"
 
 namespace orka {
 namespace user_agent {
@@ -21,6 +16,7 @@ reqheader_init()
   new_header = curl_slist_append(new_header, "Accept: application/json");
   curl_slist_append(new_header, "Content-Type: application/json");
   curl_slist_append(new_header, "User-Agent: orka");
+
   return new_header;
 }
 
@@ -92,4 +88,4 @@ run(
 }
 
 } // namespace user_agent
-} // namespace cee
+} // namespace orka

@@ -1,9 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
 #include <string.h>
-#include <math.h> //for lround
-#include <search.h> //for tfind, tsearch, tdestroy
+#include <search.h> // for POSIX tree (tfind, tsearch, tdestroy)
 
 #include <libdiscord.h>
 #include "orka-utils.h"

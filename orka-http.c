@@ -1,10 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <ctype.h>
+#include <ctype.h> //for isspace()
 #include <string.h>
-#include <math.h>
 
-#include "http-common.h"
+#include "orka-http.h"
 #include "orka-utils.h"
 
 /* attempt to get value from matching header field */

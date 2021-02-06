@@ -24,18 +24,17 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <string.h>
-#include <ctype.h>
 #include <stdbool.h>
 
 #include "json-scanf.h"
 #include "json-common.h"
+
 #include "ntl.h"
 
 #define JSMN_STATIC  // dont expose jsmn symbols
 #define JSMN_PARENT_LINKS // add parent links to jsmn_tok, which are needed
 #define JSMN_STRICT  // parse json in strict mode
 #include "jsmn.h"
-#include "ntl.h"
 
 #define N_PATH_MAX 8
 #define KEY_MAX 128

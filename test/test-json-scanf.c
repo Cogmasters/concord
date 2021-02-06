@@ -22,17 +22,16 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <assert.h>
-#include <stdio.h>
-#include <unistd.h> //for access()
 #include <string.h>
+#include <assert.h>
 #include <locale.h>
 
 #include "json-scanf.h"
 #include "ntl.h"
 
 
-int main(void) {
+int main(void)
+{
   char *locale = setlocale(LC_CTYPE, "");
   assert(NULL != locale);
 
@@ -98,5 +97,6 @@ int main(void) {
   printf("%s\n", t_str);
   json_scanf(t_str, strlen(t_str), "[key]%?s", &px);
   printf("%s\n", px);
+
   return EXIT_SUCCESS;
 }

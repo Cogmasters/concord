@@ -1,7 +1,7 @@
 #ifndef NTL_H
 #define NTL_H
+
 #include <stddef.h> // for size_t
-#include <stdbool.h>
 
 /*
  * a null terminated list implementation

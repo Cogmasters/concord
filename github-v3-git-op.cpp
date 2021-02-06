@@ -1,3 +1,6 @@
+#include <stdio.h>
+#include <stdlib.h>
+
 #include "github-v3-user-agent.hpp"
 
 #include "orka-utils.h"

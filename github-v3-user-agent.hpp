@@ -1,12 +1,7 @@
 #ifndef GITHUB_V3_UA_H
 #define GITHUB_V3_UA_H
 
-#include <stddef.h>
-#include <string.h>
-#include <ctype.h>
-#include <stdlib.h>
-
-#include "http-common.h"
+#include "orka-http.h"
 
 
 namespace github {

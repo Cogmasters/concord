@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h> //@todo remove when settings is updated
-#include <ctype.h>
+#include <ctype.h> //for isgraph()
 
 #include <libdiscord.h>
 #include "orka-utils.h"

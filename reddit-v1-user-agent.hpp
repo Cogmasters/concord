@@ -1,12 +1,6 @@
 #ifndef REDDIT_V3_UA_H
 #define REDDIT_V3_UA_H
 
-#include <stddef.h>
-#include <string.h>
-#include <ctype.h>
-#include <stdlib.h>
-#include "json-scanf.h"
-#include "http-common.h"
 #include "orka-user-agent.hpp"
 
 namespace reddit {

@@ -2,13 +2,14 @@ CC	?= gcc
 OBJDIR	:= obj
 LIBDIR	:= lib
 
-SRC	:= $(wildcard http-common.c \
+SRC	:= $(wildcard \
 		curl-websocket.c \
+		orka-http.c \
 		orka-utils.c \
 		github-*.cpp \
 		discord-*.cpp \
 		orka-*.cpp \
-		settings.c ntl.c json-*.c)
+		ntl.c json-*.c)
 
 _OBJS	:= $(patsubst %.cpp, %.o, $(SRC))
 OBJS1   += $(patsubst %.c, %.o, $(_OBJS))

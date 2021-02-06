@@ -1,7 +1,7 @@
 #ifndef ORKA_H
 #define ORKA_H
 
-#include "http-common.h"
+#include "orka-http.h"
 
 namespace orka {
 namespace user_agent {

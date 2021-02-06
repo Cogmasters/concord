@@ -1,12 +1,12 @@
-#include <stdarg.h>
-#include <stddef.h> // size_t
-#include <string.h>
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <stdarg.h>
 #include <stdbool.h>
+#include <string.h>
 
 #include "json-scanf.h"
 #include "json-common.h"
+
 #include "ntl.h"
 
 // include jsmn to do post json validation

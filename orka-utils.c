@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
-#include <math.h>
+#include <math.h> //for lround()
 #include <time.h>
 #include <sys/stat.h>
 #include <dirent.h>

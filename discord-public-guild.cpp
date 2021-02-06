@@ -3,7 +3,7 @@
 #include <string.h>
 
 #include <libdiscord.h>
-#include <orka-utils.h>
+#include "orka-utils.h"
 
 namespace discord {
 namespace guild {

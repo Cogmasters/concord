@@ -1,10 +1,11 @@
-#include "json-scanf.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include "jsmn.h"
-#include "ntl.h"
 #include <string.h>
+
 #include "orka-utils.h"
+
+#include "jsmn.h"
+#include "json-scanf.h"
 
 #if 0
 static char * print_token(jsmntype_t t) {
@@ -59,7 +60,7 @@ struct tree_node {
   char * url;
 };
 
-void load_tree_node (char * str, size_t len, void * p) {
+void load_tree_node(char * str, size_t len, void * p) {
   struct tree_node * n = (struct tree_node *)p;
   json_scanf(str, len,
              "[path]%?s"
@@ -76,7 +77,7 @@ void load_tree_node (char * str, size_t len, void * p) {
              &n->url);
 }
 static int
-print_array (char * str, size_t len, void * p)
+print_array(char * str, size_t len, void * p)
 {
   struct tree_node * n = (struct tree_node *)p;
 
@@ -98,30 +99,30 @@ print_array (char * str, size_t len, void * p)
 }
 
 static int
-print_all (char * buf, size_t len, void * p)
+print_all(char * buf, size_t len, void * p)
 {
   return ntl_to_buf(buf, len, (void **)p, NULL, print_array);
 }
 
-int main ()
+int main()
 {
   char tx [] = {'1', '2', '3', '\n', '\0'};
   size_t x = 0;
   char * yx = json_escape_string(&x, tx, 4);
-  fprintf(stdout, "%.*s\n", x, yx);
+  fprintf(stdout, "%.*s\n", (int)x, yx);
 
   char * json_str = NULL;
   int s = json_asprintf(&json_str, test_string);
   //printf("%s\n", json_str);
   struct sized_buffer array_tok = { .start = NULL, .size = 0 };
   json_scanf(json_str, s, "[tree]%T", &array_tok);
-  printf ("json_array_string:\n%.*s\n", array_tok.size, array_tok.start);
+  printf("json_array_string:\n%.*s\n", (int)array_tok.size, array_tok.start);
 
   jsmn_parser parser;
   jsmn_init(&parser);
   jsmntok_t * t = NULL;
   int num_tok = jsmn_parse(&parser, array_tok.start, array_tok.size, NULL, 0);
-  //printf ("%d\n", num_tok);
+  //printf("%d\n", num_tok);
 
   t = malloc(sizeof(jsmntok_t) * num_tok);
   jsmn_init(&parser);
@@ -129,68 +130,68 @@ int main ()
 
   int i;
 
-  printf ("test []%%L\n");
+  printf("test []%%L\n");
   struct sized_buffer ** tokens = NULL;
   json_scanf(array_tok.start, array_tok.size, "[]%L", &tokens);
   for (i = 0; tokens[i]; i++) {
-    printf ("token [%p, %d]\n", tokens[i]->start, tokens[i]->size);
-    printf ("token %.*s\n", tokens[i]->size, tokens[i]->start);
+    printf("token [%p, %ld]\n", tokens[i]->start, tokens[i]->size);
+    printf("token %.*s\n", (int)tokens[i]->size, tokens[i]->start);
   }
   free(tokens);
 
-  printf ("test [tree]%%L\n");
+  printf("test [tree]%%L\n");
   tokens = NULL;
   json_scanf(json_str, s, "[tree]%L", &tokens);
   struct tree_node ** nodes =
     (struct tree_node **) ntl_fmap((void **)tokens, sizeof(struct tree_node), NULL);
   for (i = 0; tokens[i]; i++) {
-    printf ("token [%p, %d]\n", tokens[i]->start, tokens[i]->size);
-    printf ("token %.*s\n", tokens[i]->size, tokens[i]->start);
+    printf("token [%p, %ld]\n", tokens[i]->start, tokens[i]->size);
+    printf("token %.*s\n", (int)tokens[i]->size, tokens[i]->start);
     load_tree_node(tokens[i]->start, tokens[i]->size, nodes[i]);
   }
 
   int wsize;
   char buf[1024];
   json_snprintf(buf, 1024, "{|a|:%d}", 10);
-  fprintf (stdout, "%s\n", buf);
+  fprintf(stdout, "%s\n", buf);
 
   json_snprintf(buf, 1024, "{|a|:%b}", true);
-  fprintf (stdout, "%s\n", buf);
+  fprintf(stdout, "%s\n", buf);
 
   json_snprintf(buf, 1024, "{|a|:%b}", false);
-  fprintf (stdout, "%s\n", buf);
+  fprintf(stdout, "%s\n", buf);
 
   json_snprintf(buf, 1024, "{|a|:%S}", NULL);
-  fprintf (stdout, "%s\n", buf);
+  fprintf(stdout, "%s\n", buf);
 
   json_snprintf(buf, 1024, "{|a|:%S}", "abc");
-  fprintf (stdout, "%s\n", buf);
+  fprintf(stdout, "%s\n", buf);
 
   json_snprintf(buf, 1024, "{|a|:|%s|}", "abc");
-  fprintf (stdout, "%s\n", buf);
+  fprintf(stdout, "%s\n", buf);
 
   json_snprintf(buf, 1024, "{|a|:|%.*s|}", 4, tx);
-  fprintf (stdout, "%s\n", buf);
+  fprintf(stdout, "%s\n", buf);
 
   json_snprintf(buf, 1024, "{|a|:%.*S}", 4, tx);
-  fprintf (stdout, "%s\n", buf);
+  fprintf(stdout, "%s\n", buf);
 
   wsize = json_snprintf(NULL, 0, "{|a|:|%s|, |b|:%d, |x|:%F }", "abc",
                         10, print_all, nodes);
-  fprintf (stdout, "%d\n", wsize);
+  fprintf(stdout, "%d\n", wsize);
 
   wsize++;
   char * b = malloc(wsize);
 
-  fprintf (stdout, "test json_snprintf\n");
+  fprintf(stdout, "test json_snprintf\n");
   wsize = json_snprintf(b, wsize, "{|a|:|%s|, |b|:%d, |x|:%F }", "abc",
                         10, print_all, nodes);
-  fprintf (stdout, "%d %s\n", wsize, b);
+  fprintf(stdout, "%d %s\n", wsize, b);
 
   fprintf(stdout, "test json_asprintf\n");
   wsize = json_asprintf(&b, "{|a|:|%s|, |b|:%d, |x|:%F }", "abc",
                         10, print_all, nodes);
-  fprintf (stdout, "%d %s\n", wsize, b);
+  fprintf(stdout, "%d %s\n", wsize, b);
 
 
   free(nodes);
@@ -206,14 +207,14 @@ int main ()
   fprintf(stdout, "test json_array_str_to_ntl\n");
   wsize = json_asprintf(&b, "{|a|:|%s|, |b|:%d, |x|:%F }", "abc",
                         10, print_all, nodes);
-  fprintf (stdout, "%d %s\n", wsize, b);
+  fprintf(stdout, "%d %s\n", wsize, b);
   free(nodes);
 
   fprintf(stdout, "test json_array_str_to_ntl with %%F\n");
   json_scanf(json_str, s, "[tree]%F", orka_str_to_ntl, &deserializer);
   wsize = json_asprintf(&b, "{|a|:|%s|, |b|:%d, |x|:%F }", "abc",
                         10, print_all, nodes);
-  fprintf (stdout, "%d %s\n", wsize, b);
+  fprintf(stdout, "%d %s\n", wsize, b);
   free(nodes);
   return 0;
 }

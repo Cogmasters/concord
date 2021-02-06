@@ -1,6 +1,8 @@
-#include <unistd.h>
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
+
 #include "github-v3.hpp"
 #include "orka-utils.h"
 

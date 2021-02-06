@@ -1,11 +1,9 @@
-#include <time.h> //for clock_gettime()
-#include <math.h> //for lround()
 #include <stdio.h>
 #include <stdlib.h>
 
 #include <libdiscord.h>
-
 #include "curl-websocket.h"
+
 #include "orka-utils.h"
 
 
