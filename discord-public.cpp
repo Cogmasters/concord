@@ -4,7 +4,7 @@
 #include <ctype.h>
 
 #include <libdiscord.h>
-#include "settings.h"
+#include "orka-utils.h"
 
 
 namespace discord {
@@ -15,16 +15,11 @@ init(char token[])
   client *new_client = (client*)calloc(1, sizeof(client));
   if (NULL == new_client) return NULL;
 
-  /* @todo this is a temporary solution */
   new_client->settings.token = strdup(token);
   if (NULL == new_client->settings.token) {
     free(new_client);
     return NULL;
   }
-
-  new_client->settings.f_json_dump = NULL;
-  new_client->settings.f_curl_dump = NULL;
-  /* * * * * * * * * * */
 
   for (int i=0; token[i] != '\0'; ++i) {
     if (!isgraph(token[i])) {
@@ -45,9 +40,9 @@ init(char token[])
 client*
 fast_init(const char config_file[])
 {
-  struct bot_settings settings = {0};
+  struct orka_settings settings = {0};
 
-  bot_settings_init(&settings, config_file);
+  orka_settings_init(&settings, config_file);
 
   client *client;
   if (settings.discord.token) {

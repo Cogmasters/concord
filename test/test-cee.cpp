@@ -2,7 +2,7 @@
 #include <string.h>
 
 #include "orka-user-agent.hpp"
-#include "settings.h"
+#include "orka-utils.h"
 
 using namespace orka::user_agent;
 
@@ -40,8 +40,8 @@ int main(int argc, char *argv[])
   else
     config_file = "bot.config";
 
-  struct bot_settings settings;
-  bot_settings_init (&settings, config_file);
+  struct orka_settings settings;
+  orka_settings_init (&settings, config_file);
 
   commit("https://cee.studio");
 

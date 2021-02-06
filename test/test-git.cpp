@@ -1,7 +1,5 @@
 #include "github-v3-user-agent.hpp"
-
-#include "settings.h"
-#include "ntl.h"
+#include "orka-utils.h"
 #include "json-scanf.h"
 
 struct file {
@@ -104,8 +102,8 @@ int main (int argc, char ** argv)
   else
     config_file = "bot.config";
 
-  struct bot_settings settings;
-  bot_settings_init (&settings, config_file);
+  struct orka_settings settings;
+  orka_settings_init (&settings, config_file);
 
   struct file ** files = NULL;
   if (argc >= 3) {

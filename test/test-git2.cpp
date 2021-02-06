@@ -2,8 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "github-v3.hpp"
-#include "settings.h"
-#include "ntl.h"
+#include "orka-utils.h"
 
 
 namespace git = github::v3::git_op;
@@ -47,8 +46,8 @@ int main (int argc, char ** argv)
     exit(EXIT_FAILURE);
   }
 
-  struct bot_settings settings;
-  bot_settings_init (&settings, config_file);
+  struct orka_settings settings;
+  orka_settings_init (&settings, config_file);
 
   git::file ** files = NULL;
   files = (git::file **) ntl_calloc(argc - optind, sizeof(git::file));
