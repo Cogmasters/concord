@@ -4,7 +4,7 @@ LIBDIR	:= lib
 
 SRC	:= $(wildcard \
 		curl-websocket.c \
-		orka-http.c \
+		http-common.c \
 		orka-utils.c \
 		github-*.cpp \
 		discord-*.cpp \
@@ -36,10 +36,10 @@ LIBS_LDFLAGS	:= $(LIBDISCORD_LDFLAGS)
 
 LIBDISCORD_SLIB	:= $(LIBDIR)/libdiscord.a
 
-CFLAGS   := -Wall -Wextra -O0 -g -D_ORCA_DEBUG -D_GNU_SOURCE \
+CFLAGS   := -Wall -Wextra -pedantic -O0 -g -D_ORCA_DEBUG -D_GNU_SOURCE \
 		-Wno-unused-parameter -Wno-missing-field-initializers
 
-CXXFLAGS := -std=c++03 -O0 -g -D_ORCA_DEBUG -D_GNU_SOURCE \
+CXXFLAGS := -Wall -std=c++03 -O0 -g -D_ORCA_DEBUG -D_GNU_SOURCE \
 		-Wno-write-strings
 
 ifeq ($(CC),stensal-c)
@@ -65,12 +65,12 @@ mkdir :
 $(OBJDIR)/%.o : %.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 $(OBJDIR)/%.o: %.cpp
-	$(CXX) $(CFLAGS) $(CXXFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
+	$(CXX) $(CXXFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 
 %.exe : %.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBS_LDFLAGS)
 %.exe: %.cpp
-	$(CXX) $(CFLAGS) $(CXXFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBS_LDFLAGS)
+	$(CXX) $(CXXFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBS_LDFLAGS)
 
 $(LIBDISCORD_SLIB) : $(OBJS)
 	$(AR) -cvq $@ $(OBJS)
