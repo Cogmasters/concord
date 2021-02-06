@@ -76,7 +76,7 @@ enum discord_channel_types {
   GROUP_DM        = 3,
   GUILD_CATEGORY  = 4,
   GUILD_NEWS      = 5,
-  GUILD_STORE     = 6,
+  GUILD_STORE     = 6
 };
 
 namespace discord {

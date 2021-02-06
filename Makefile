@@ -11,17 +11,14 @@ SRC	:= $(wildcard \
 		orka-*.cpp \
 		ntl.c json-*.c)
 
-_OBJS	:= $(patsubst %.cpp, %.o, $(SRC))
-OBJS1   += $(patsubst %.c, %.o, $(_OBJS))
-OBJS 	:= $(addprefix $(OBJDIR)/, $(OBJS1))
-
+_OBJS := $(filter %.o,$(SRC:.cpp=.o) $(SRC:.c=.o))
+OBJS 	:= $(addprefix $(OBJDIR)/, $(_OBJS))
 
 BOT_SRC := $(wildcard bots/bot-*.cpp)
 BOT_EXES := $(patsubst %.cpp, %.exe, $(BOT_SRC))
 
 TEST_SRC := $(wildcard test/test-*.cpp test/test-*.c)
-_TEST_EXES := $(patsubst %.cpp, %.exe, $(TEST_SRC))
-TEST_EXES := $(patsubst %.c, %.exe, $(_TEST_EXES))
+TEST_EXES := $(filter %.exe, $(TEST_SRC:.cpp=.exe) $(TEST_SRC:.c=.exe))
 
 
 LIBDISCORD_CFLAGS	:= -I./
@@ -39,7 +36,7 @@ LIBS_LDFLAGS	:= $(LIBDISCORD_LDFLAGS)
 
 LIBDISCORD_SLIB	:= $(LIBDIR)/libdiscord.a
 
-CFLAGS   := -Wall -Wextra -pedantic -O0 -g -D_ORCA_DEBUG -D_GNU_SOURCE \
+CFLAGS   := -Wall -Wextra -O0 -g -D_ORCA_DEBUG -D_GNU_SOURCE \
 		-Wno-unused-parameter -Wno-missing-field-initializers
 
 CXXFLAGS := -std=c++03 -O0 -g -D_ORCA_DEBUG -D_GNU_SOURCE \
@@ -68,12 +65,12 @@ mkdir :
 $(OBJDIR)/%.o : %.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 $(OBJDIR)/%.o: %.cpp
-	$(CXX) $(CXXFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
+	$(CXX) $(CFLAGS) $(CXXFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 
 %.exe : %.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBS_LDFLAGS)
 %.exe: %.cpp
-	$(CXX) $(CXXFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBS_LDFLAGS)
+	$(CXX) $(CFLAGS) $(CXXFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBS_LDFLAGS)
 
 $(LIBDISCORD_SLIB) : $(OBJS)
 	$(AR) -cvq $@ $(OBJS)
@@ -85,8 +82,8 @@ install : all
 	install -m 644 libdiscord.h $(PREFIX)/include/
 
 clean :
-	rm -rf $(OBJDIR) $(LIBDIR) *.exe \
-	test/*.exe bots/*.exe
+	rm -rf $(OBJDIR) $(LIBDIR) \
+	*.exe test/*.exe bots/*.exe
 
 purge : clean
 	rm -rf $(LIBDIR)

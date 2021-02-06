@@ -25,6 +25,7 @@
 #include <stdarg.h>
 #include <string.h>
 #include <stdbool.h>
+#include <ctype.h>
 
 #include "json-scanf.h"
 #include "json-common.h"

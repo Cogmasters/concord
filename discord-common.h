@@ -95,7 +95,7 @@ enum ws_close_opcodes {
   GATEWAY_CLOSE_REASON_SHARDING_REQUIRED      = 4011,
   GATEWAY_CLOSE_REASON_INVALID_API_VERSION    = 4012,
   GATEWAY_CLOSE_REASON_INVALID_INTENTS        = 4013,
-  GATEWAY_CLOSE_REASON_DISALLOWED_INTENTS     = 4014,
+  GATEWAY_CLOSE_REASON_DISALLOWED_INTENTS     = 4014
 };
 
 /* GATEWAY INTENTS
@@ -116,7 +116,7 @@ struct intents { // pre c++11 enum class
     GUILD_MESSAGE_TYPING          = 1 << 11,
     DIRECT_MESSAGES               = 1 << 12,
     DIRECT_MESSAGE_REACTIONS      = 1 << 13,
-    DIRECT_MESSAGE_TYPING         = 1 << 14,
+    DIRECT_MESSAGE_TYPING         = 1 << 14
   };
 };
 
@@ -133,14 +133,14 @@ enum ws_opcodes {
   GATEWAY_REQUEST_GUILD_MEMBERS = 8,
   GATEWAY_INVALID_SESSION       = 9,
   GATEWAY_HELLO                 = 10,
-  GATEWAY_HEARTBEAT_ACK         = 11,
+  GATEWAY_HEARTBEAT_ACK         = 11
 };
 
 enum ws_status {
   DISCONNECTED,  //disconnected from ws
   RESUME,        //attempt to resume ws session
   FRESH,         //attempt a fresh ws session (session timed out)
-  CONNECTED,     //connected to ws
+  CONNECTED     //connected to ws
 };
 
 struct dati { /* WEBSOCKETS STRUCTURE */
