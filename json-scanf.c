@@ -229,7 +229,9 @@ match_path (char *buffer, jsmntok_t *t,
   }
   else if (STREQ(es->type_specifier, "funptr")) {
     extractor *e = es->funptr;
-    (*e)(buffer + t[i].start, t[i].end - t[i].start, es->recipient);
+    int ret = (*e)(buffer + t[i].start, t[i].end - t[i].start, es->recipient);
+    if (0 == ret)
+      es->is_applied = false;
   }
   else if (STREQ(es->type_specifier, "token")) {
     struct sized_buffer * tk = es->recipient;
@@ -296,6 +298,7 @@ match_path (char *buffer, jsmntok_t *t,
   }
   else if (STREQ(es->type_specifier, "exist")) {
     // this has to be applied after all applications are done
+    es->is_applied = false;
   }
   else {
       goto type_error;
