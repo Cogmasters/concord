@@ -57,9 +57,21 @@ routecmp(const void *p_route1, const void *p_route2)
   if (0 == ret) return 0;
 
   /* check if fits major parameter criteria */
-  if (strstr(route1->str, CHANNEL) && strstr(route2->str, CHANNEL)) return 0;
-  if (strstr(route1->str, GUILD) && strstr(route2->str, GUILD)) return 0;
-//if (strstr(route1->str, WEBHOOK) && strstr(route2->str, WEBHOOK)) return 0;
+  if (strstr(route1->str, "/channels/%llu")
+   && strstr(route2->str, "/channels/%llu"))
+  {
+    return 0;
+  }
+  if (strstr(route1->str, "/guilds/%llu")
+   && strstr(route2->str, "/guilds/%llu"))
+  {
+    return 0;
+  }
+//if (strstr(route1->str, "/webhook/%llu"")
+// && strstr(route2->str, "/webhook/%llu"))
+//{
+//  return 0;
+//}
 
   return ret; //couldn't find any match, return strcmp diff value
 }

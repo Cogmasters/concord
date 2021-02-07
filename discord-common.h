@@ -81,21 +81,21 @@ namespace websockets { /* discord-websockets.cpp */
 
 /* GATEWAY CLOSE EVENT CODES
 https://discord.com/developers/docs/topics/opcodes-and-status-codes#gateway-gateway-close-event-codes */
-enum ws_close_opcodes {
-  GATEWAY_CLOSE_REASON_UNKNOWN_ERROR          = 4000,
-  GATEWAY_CLOSE_REASON_UNKNOWN_OPCODE         = 4001,
-  GATEWAY_CLOSE_REASON_DECODE_ERROR           = 4002,
-  GATEWAY_CLOSE_REASON_NOT_AUTHENTICATED      = 4003,
-  GATEWAY_CLOSE_REASON_AUTHENTICATION_FAILED  = 4004,
-  GATEWAY_CLOSE_REASON_ALREADY_AUTHENTICATED  = 4005,
-  GATEWAY_CLOSE_REASON_INVALID_SEQUENCE       = 4007,
-  GATEWAY_CLOSE_REASON_RATE_LIMITED           = 4008,
-  GATEWAY_CLOSE_REASON_SESSION_TIMED_OUT      = 4009,
-  GATEWAY_CLOSE_REASON_INVALID_SHARD          = 4010,
-  GATEWAY_CLOSE_REASON_SHARDING_REQUIRED      = 4011,
-  GATEWAY_CLOSE_REASON_INVALID_API_VERSION    = 4012,
-  GATEWAY_CLOSE_REASON_INVALID_INTENTS        = 4013,
-  GATEWAY_CLOSE_REASON_DISALLOWED_INTENTS     = 4014
+enum close_opcodes {
+  CLOSE_REASON_UNKNOWN_ERROR          = 4000,
+  CLOSE_REASON_UNKNOWN_OPCODE         = 4001,
+  CLOSE_REASON_DECODE_ERROR           = 4002,
+  CLOSE_REASON_NOT_AUTHENTICATED      = 4003,
+  CLOSE_REASON_AUTHENTICATION_FAILED  = 4004,
+  CLOSE_REASON_ALREADY_AUTHENTICATED  = 4005,
+  CLOSE_REASON_INVALID_SEQUENCE       = 4007,
+  CLOSE_REASON_RATE_LIMITED           = 4008,
+  CLOSE_REASON_SESSION_TIMED_OUT      = 4009,
+  CLOSE_REASON_INVALID_SHARD          = 4010,
+  CLOSE_REASON_SHARDING_REQUIRED      = 4011,
+  CLOSE_REASON_INVALID_API_VERSION    = 4012,
+  CLOSE_REASON_INVALID_INTENTS        = 4013,
+  CLOSE_REASON_DISALLOWED_INTENTS     = 4014
 };
 
 /* GATEWAY INTENTS
@@ -122,29 +122,33 @@ struct intents { // pre c++11 enum class
 
 /* GATEWAY OPCODES
 https://discord.com/developers/docs/topics/opcodes-and-status-codes#gateway-gateway-opcodes */
-enum ws_opcodes {
-  GATEWAY_DISPATCH              = 0,
-  GATEWAY_HEARTBEAT             = 1,
-  GATEWAY_IDENTIFY              = 2,
-  GATEWAY_PRESENCE_UPDATE       = 3,
-  GATEWAY_VOICE_STATE_UPDATE    = 4,
-  GATEWAY_RESUME                = 6,
-  GATEWAY_RECONNECT             = 7,
-  GATEWAY_REQUEST_GUILD_MEMBERS = 8,
-  GATEWAY_INVALID_SESSION       = 9,
-  GATEWAY_HELLO                 = 10,
-  GATEWAY_HEARTBEAT_ACK         = 11
+struct opcodes {
+  enum {
+    DISPATCH              = 0,
+    HEARTBEAT             = 1,
+    IDENTIFY              = 2,
+    PRESENCE_UPDATE       = 3,
+    VOICE_STATE_UPDATE    = 4,
+    RESUME                = 6,
+    RECONNECT             = 7,
+    REQUEST_GUILD_MEMBERS = 8,
+    INVALID_SESSION       = 9,
+    HELLO                 = 10,
+    HEARTBEAT_ACK         = 11
+  };
 };
 
-enum ws_status {
-  DISCONNECTED,  //disconnected from ws
-  RESUME,        //attempt to resume ws session
-  FRESH,         //attempt a fresh ws session (session timed out)
-  CONNECTED     //connected to ws
+struct status {
+  enum {
+    DISCONNECTED,  //disconnected from ws
+    RESUME,        //attempt to resume ws session
+    FRESH,         //attempt a fresh ws session (session timed out)
+    CONNECTED     //connected to ws
+  };
 };
 
 struct dati { /* WEBSOCKETS STRUCTURE */
-  enum ws_status status; //connection to discord status
+  int status; //connection to discord status
   int reconnect_attempts; //hard limit 5 reconnection attempts @todo make configurable
 
   char *identify; //the identify payload (for establishing a new connection)
@@ -155,7 +159,7 @@ struct dati { /* WEBSOCKETS STRUCTURE */
   CURL *ehandle;
 
   struct { /* PAYLOAD STRUCTURE */
-    enum ws_opcodes opcode; //field 'op'
+    int opcode; //field 'op'
     int seq_number; //field 's'
     char event_name[64]; //field 't'
     char event_data[8192]; //field 'd'

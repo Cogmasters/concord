@@ -29,37 +29,6 @@
 #define MAX_MESSAGE_LEN        2000 + 1
 #define MAX_PAYLOAD_LEN        4096 + 1
 
-
-/* ENDPOINTS */
-#define MESSAGES              "/messages"
-#define MESSAGE               MESSAGES"/%" PRIu64
-
-#define CHANNELS              "/channels"
-#define CHANNEL               CHANNELS"/%" PRIu64
-
-#define REACTION_EMOJI        CHANNEL MESSAGE"/reactions/%" PRIu64
-#define REACTION_EMOJI_USER   REACTION_EMOJI"/%" PRIu64
-
-#define PINNED_MESSAGES       CHANNEL"/pins"
-#define PINNED_MESSAGE        PINNED_MESSAGES"/%" PRIu64
-
-#define GUILDS                "/guilds"
-#define GUILD                 GUILDS"/%" PRIu64
-
-#define USERS                 "/users"
-#define USER                  USERS"/%" PRIu64
-#define ME                    USERS"/@me"
-
-#define MEMBERS               "/members"
-#define MEMBER                MEMBERS"/%" PRIu64
-
-#define BANS                  "/bans"
-#define BAN                   BANS"/%" PRIu64
-
-#define GATEWAY               "/gateway"
-#define BOT                   "/bot"
-
-
 /* SNOWFLAKES
 https://discord.com/developers/docs/reference#snowflakes */
 #define SNOWFLAKE_INCREMENT           12

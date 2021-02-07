@@ -13,43 +13,43 @@ namespace discord {
 namespace websockets {
 
 static char*
-ws_opcode_print(enum ws_opcodes opcode)
+ws_opcode_print(int opcode)
 {
   switch (opcode) {
-      CASE_RETURN_STR(GATEWAY_DISPATCH);
-      CASE_RETURN_STR(GATEWAY_HEARTBEAT);
-      CASE_RETURN_STR(GATEWAY_IDENTIFY);
-      CASE_RETURN_STR(GATEWAY_PRESENCE_UPDATE);
-      CASE_RETURN_STR(GATEWAY_VOICE_STATE_UPDATE);
-      CASE_RETURN_STR(GATEWAY_RESUME);
-      CASE_RETURN_STR(GATEWAY_RECONNECT);
-      CASE_RETURN_STR(GATEWAY_REQUEST_GUILD_MEMBERS);
-      CASE_RETURN_STR(GATEWAY_INVALID_SESSION);
-      CASE_RETURN_STR(GATEWAY_HELLO);
-      CASE_RETURN_STR(GATEWAY_HEARTBEAT_ACK);
+      CASE_RETURN_STR(opcodes::DISPATCH);
+      CASE_RETURN_STR(opcodes::HEARTBEAT);
+      CASE_RETURN_STR(opcodes::IDENTIFY);
+      CASE_RETURN_STR(opcodes::PRESENCE_UPDATE);
+      CASE_RETURN_STR(opcodes::VOICE_STATE_UPDATE);
+      CASE_RETURN_STR(opcodes::RESUME);
+      CASE_RETURN_STR(opcodes::RECONNECT);
+      CASE_RETURN_STR(opcodes::REQUEST_GUILD_MEMBERS);
+      CASE_RETURN_STR(opcodes::INVALID_SESSION);
+      CASE_RETURN_STR(opcodes::HELLO);
+      CASE_RETURN_STR(opcodes::HEARTBEAT_ACK);
   default:
       ERR("Invalid Gateway opcode (code: %d)", opcode);
   }
 }
 
 static char*
-ws_close_opcode_print(enum ws_close_opcodes gateway_opcode)
+ws_close_opcode_print(enum close_opcodes gateway_opcode)
 {
   switch (gateway_opcode) {
-      CASE_RETURN_STR(GATEWAY_CLOSE_REASON_UNKNOWN_ERROR);
-      CASE_RETURN_STR(GATEWAY_CLOSE_REASON_UNKNOWN_OPCODE);
-      CASE_RETURN_STR(GATEWAY_CLOSE_REASON_DECODE_ERROR);
-      CASE_RETURN_STR(GATEWAY_CLOSE_REASON_NOT_AUTHENTICATED);
-      CASE_RETURN_STR(GATEWAY_CLOSE_REASON_AUTHENTICATION_FAILED);
-      CASE_RETURN_STR(GATEWAY_CLOSE_REASON_ALREADY_AUTHENTICATED);
-      CASE_RETURN_STR(GATEWAY_CLOSE_REASON_INVALID_SEQUENCE);
-      CASE_RETURN_STR(GATEWAY_CLOSE_REASON_RATE_LIMITED);
-      CASE_RETURN_STR(GATEWAY_CLOSE_REASON_SESSION_TIMED_OUT);
-      CASE_RETURN_STR(GATEWAY_CLOSE_REASON_INVALID_SHARD);
-      CASE_RETURN_STR(GATEWAY_CLOSE_REASON_SHARDING_REQUIRED);
-      CASE_RETURN_STR(GATEWAY_CLOSE_REASON_INVALID_API_VERSION);
-      CASE_RETURN_STR(GATEWAY_CLOSE_REASON_INVALID_INTENTS);
-      CASE_RETURN_STR(GATEWAY_CLOSE_REASON_DISALLOWED_INTENTS);
+      CASE_RETURN_STR(CLOSE_REASON_UNKNOWN_ERROR);
+      CASE_RETURN_STR(CLOSE_REASON_UNKNOWN_OPCODE);
+      CASE_RETURN_STR(CLOSE_REASON_DECODE_ERROR);
+      CASE_RETURN_STR(CLOSE_REASON_NOT_AUTHENTICATED);
+      CASE_RETURN_STR(CLOSE_REASON_AUTHENTICATION_FAILED);
+      CASE_RETURN_STR(CLOSE_REASON_ALREADY_AUTHENTICATED);
+      CASE_RETURN_STR(CLOSE_REASON_INVALID_SEQUENCE);
+      CASE_RETURN_STR(CLOSE_REASON_RATE_LIMITED);
+      CASE_RETURN_STR(CLOSE_REASON_SESSION_TIMED_OUT);
+      CASE_RETURN_STR(CLOSE_REASON_INVALID_SHARD);
+      CASE_RETURN_STR(CLOSE_REASON_SHARDING_REQUIRED);
+      CASE_RETURN_STR(CLOSE_REASON_INVALID_API_VERSION);
+      CASE_RETURN_STR(CLOSE_REASON_INVALID_INTENTS);
+      CASE_RETURN_STR(CLOSE_REASON_DISALLOWED_INTENTS);
   default: {
       enum cws_close_reason cws_opcode = \
             (enum cws_close_reason)gateway_opcode;
@@ -129,9 +129,9 @@ on_hello(websockets::dati *ws)
              "[heartbeat_interval]%ld", &ws->hbeat.interval_ms);
   ASSERT_S(ws->hbeat.interval_ms > 0, "Invalid heartbeat_ms");
 
-  if (RESUME == ws->status)
+  if (status::RESUME == ws->status)
     ws_send_resume(ws);
-  else // FRESH || DISCONNECTED
+  else // status::FRESH || status::DISCONNECTED
     ws_send_identify(ws);
 }
 
@@ -240,7 +240,7 @@ on_dispatch(websockets::dati *ws)
 
   if (STREQ("READY", ws->payload.event_name))
   {
-    ws->status = CONNECTED;
+    ws->status = status::CONNECTED;
     ws->reconnect_attempts = 0; // resets
     D_PUTS("Succesfully started a Discord session!");
 
@@ -256,7 +256,7 @@ on_dispatch(websockets::dati *ws)
 
   if (STREQ("RESUMED", ws->payload.event_name))
   {
-    ws->status = CONNECTED;
+    ws->status = status::CONNECTED;
     ws->reconnect_attempts = 0; // resets
     PUTS("Succesfully resumed a Discord session!");
 
@@ -284,11 +284,11 @@ on_invalid_session(websockets::dati *ws)
 
   bool is_resumable = strcmp(ws->payload.event_data, "false");
   if (is_resumable) {
-    ws->status = RESUME;
+    ws->status = status::RESUME;
     reason = "Attempting to session resume";
   }
   else {
-    ws->status = FRESH;
+    ws->status = status::FRESH;
     reason = "Attempting to start a fresh new session";
   }
   PUTS(reason);
@@ -298,7 +298,7 @@ on_invalid_session(websockets::dati *ws)
 static void
 on_reconnect(websockets::dati *ws)
 {
-  ws->status = RESUME;
+  ws->status = status::RESUME;
 
   const char reason[] = "Attempting to session resume";
   PUTS(reason);
@@ -318,28 +318,28 @@ static void
 ws_on_close_cb(void *p_ws, CURL *ehandle, enum cws_close_reason cwscode, const char *reason, size_t len)
 {
   websockets::dati *ws = (websockets::dati*)p_ws;
-  enum ws_close_opcodes opcode = (enum ws_close_opcodes)cwscode;
+  enum close_opcodes opcode = (enum close_opcodes)cwscode;
  
   switch (opcode) {
-  case GATEWAY_CLOSE_REASON_UNKNOWN_OPCODE:
-  case GATEWAY_CLOSE_REASON_DECODE_ERROR:
-  case GATEWAY_CLOSE_REASON_NOT_AUTHENTICATED:
-  case GATEWAY_CLOSE_REASON_AUTHENTICATION_FAILED:
-  case GATEWAY_CLOSE_REASON_ALREADY_AUTHENTICATED:
-  case GATEWAY_CLOSE_REASON_RATE_LIMITED:
-  case GATEWAY_CLOSE_REASON_SHARDING_REQUIRED:
-  case GATEWAY_CLOSE_REASON_INVALID_API_VERSION:
-  case GATEWAY_CLOSE_REASON_INVALID_INTENTS:
-  case GATEWAY_CLOSE_REASON_DISALLOWED_INTENTS:
-      ws->status = DISCONNECTED;
+  case CLOSE_REASON_UNKNOWN_OPCODE:
+  case CLOSE_REASON_DECODE_ERROR:
+  case CLOSE_REASON_NOT_AUTHENTICATED:
+  case CLOSE_REASON_AUTHENTICATION_FAILED:
+  case CLOSE_REASON_ALREADY_AUTHENTICATED:
+  case CLOSE_REASON_RATE_LIMITED:
+  case CLOSE_REASON_SHARDING_REQUIRED:
+  case CLOSE_REASON_INVALID_API_VERSION:
+  case CLOSE_REASON_INVALID_INTENTS:
+  case CLOSE_REASON_DISALLOWED_INTENTS:
+      ws->status = status::DISCONNECTED;
       break;
-  case GATEWAY_CLOSE_REASON_UNKNOWN_ERROR:
-  case GATEWAY_CLOSE_REASON_INVALID_SEQUENCE:
-      ws->status = RESUME;
+  case CLOSE_REASON_UNKNOWN_ERROR:
+  case CLOSE_REASON_INVALID_SEQUENCE:
+      ws->status = status::RESUME;
       break;
-  case GATEWAY_CLOSE_REASON_SESSION_TIMED_OUT:
+  case CLOSE_REASON_SESSION_TIMED_OUT:
   default: //websocket/clouflare opcodes
-      ws->status = FRESH;
+      ws->status = status::FRESH;
       break;
   }
 
@@ -384,19 +384,19 @@ ws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
                 ws->payload.event_data);
 
   switch (ws->payload.opcode){
-  case GATEWAY_HELLO:
+  case opcodes::HELLO:
       on_hello(ws);
       break;
-  case GATEWAY_DISPATCH:
+  case opcodes::DISPATCH:
       on_dispatch(ws);
       break;
-  case GATEWAY_INVALID_SESSION:
+  case opcodes::INVALID_SESSION:
       on_invalid_session(ws);
       break;
-  case GATEWAY_RECONNECT:
+  case opcodes::RECONNECT:
       on_reconnect(ws);
       break;
-  case GATEWAY_HEARTBEAT_ACK:
+  case opcodes::HEARTBEAT_ACK:
       // get request / response interval in milliseconds
       ws->ping_ms = orka_timestamp_ms() - ws->hbeat.tstamp;
       D_PRINT("PING: %d ms", ws->ping_ms);
@@ -466,7 +466,7 @@ identify_init(int intents, char token[])
   const char fmt_event_data[] = \
     "{\"token\":\"%s\",\"intents\":%d,\"properties\":%s,\"presence\":%s}";
   const char fmt_identify[] = \
-    "{\"op\":2,\"d\":%s}"; //op:2 means GATEWAY_IDENTIFY
+    "{\"op\":2,\"d\":%s}"; //op:2 means IDENTIFY
 
   int ret; //check snprintf return value
 
@@ -505,7 +505,7 @@ identify_init(int intents, char token[])
 void
 init(websockets::dati *ws, char token[])
 {
-  ws->status = DISCONNECTED;
+  ws->status = status::DISCONNECTED;
 
   ws->ehandle = custom_cws_new(ws);
   ws->mhandle = custom_multi_init();
@@ -576,7 +576,8 @@ get_bot(client *client)
     &client->ua,
     &resp_handle,
     NULL,
-    HTTP_GET, GATEWAY BOT);
+    HTTP_GET,
+    "/gateway/bot");
 }
 
 /* main websockets event loop */
@@ -608,7 +609,7 @@ ws_main_loop(websockets::dati *ws)
     mcode = curl_multi_wait(ws->mhandle, NULL, 0, 1000, &numfds);
     ASSERT_S(CURLM_OK == mcode, curl_multi_strerror(mcode));
 
-    if (ws->status != CONNECTED) continue; // wait until connection is established
+    if (ws->status != status::CONNECTED) continue; // wait until connection is established
 
     /* CONNECTION IS ESTABLISHED */
 
@@ -633,7 +634,7 @@ ws_main_loop(websockets::dati *ws)
 void
 run(websockets::dati *ws)
 {
-  ASSERT_S(CONNECTED != ws->status, "Can't have recursive connections");
+  ASSERT_S(status::CONNECTED != ws->status, "Can't have recursive connections");
   if (NULL != ws->identify) {
     free(ws->identify);
   }
@@ -646,7 +647,7 @@ run(websockets::dati *ws)
     ws_main_loop(ws);
     curl_multi_remove_handle(ws->mhandle, ws->ehandle);
 
-    if (DISCONNECTED == ws->status) break;
+    if (status::DISCONNECTED == ws->status) break;
     if (ws->reconnect_attempts >= 5) break;
 
     // full shutdown of old connection before reconnecting
@@ -656,9 +657,9 @@ run(websockets::dati *ws)
     ++ws->reconnect_attempts;
   } while (1);
 
-  if (DISCONNECTED != ws->status) {
+  if (status::DISCONNECTED != ws->status) {
     PRINT("Failed all reconnect attempts (%d)", ws->reconnect_attempts);
-    ws->status = DISCONNECTED;
+    ws->status = status::DISCONNECTED;
   }
 }
 

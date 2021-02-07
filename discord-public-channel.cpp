@@ -80,7 +80,8 @@ get(client *client, const uint64_t channel_id, dati *p_channel)
     &client->ua,
     &resp_handle,
     NULL,
-    HTTP_GET, CHANNEL, channel_id);
+    HTTP_GET,
+    "/channels/%llu", channel_id);
 }
 
 void
@@ -101,7 +102,8 @@ pin_message(client *client, const uint64_t channel_id, const uint64_t message_id
     &client->ua,
     NULL,
     &req_body, //empty POSTFIELDS
-    HTTP_PUT, PINNED_MESSAGE, channel_id, message_id);
+    HTTP_PUT, 
+    "channels/%llu/pins/%llu", channel_id, message_id);
 }
 
 void
@@ -122,7 +124,8 @@ unpin_message(client *client, const uint64_t channel_id, const uint64_t message_
     &client->ua,
     NULL,
     &req_body, //empty POSTFIELDS
-    HTTP_DELETE, PINNED_MESSAGE, channel_id, message_id);
+    HTTP_DELETE,
+    "channels/%llu/pins/%llu", channel_id, message_id);
 }
 
 namespace message {
@@ -286,7 +289,8 @@ run(client *client, const uint64_t channel_id, params *params, dati *p_message)
     &client->ua,
     &resp_handle,
     &req_body,
-    HTTP_POST, CHANNEL MESSAGES, channel_id);
+    HTTP_POST, 
+    "/channels/%llu/messages", channel_id);
 }
 
 } // namespace create
@@ -307,7 +311,8 @@ del(client *client, const uint64_t channel_id, const uint64_t message_id)
     &client->ua,
     NULL,
     NULL,
-    HTTP_DELETE, CHANNEL MESSAGE, channel_id, message_id);
+    HTTP_DELETE,
+    "/channels/%llu/messages/%llu", channel_id, message_id);
 }
 
 } // namespace message

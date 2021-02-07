@@ -80,7 +80,8 @@ get(client *client, const uint64_t guild_id, dati *p_guild)
     &client->ua,
     &resp_handle,
     NULL,
-    HTTP_GET, GUILD, guild_id);
+    HTTP_GET, 
+    "/guilds/%llu", guild_id);
 }
 
 namespace member {
@@ -168,7 +169,8 @@ get_list(client *client, const uint64_t guild_id)
     &client->ua,
     &resp_handle,
     NULL,
-    HTTP_GET, GUILD MEMBERS "?limit=100", guild_id);
+    HTTP_GET,
+    "/guilds/%llu?limit=100", guild_id);
 
   return new_members;
 }
@@ -188,7 +190,8 @@ void remove(client *client, const uint64_t guild_id, const uint64_t user_id)
     &client->ua,
     NULL,
     NULL,
-    HTTP_DELETE, GUILD MEMBER, guild_id, user_id);
+    HTTP_DELETE,
+    "/guilds/%llu/members/%llu", guild_id, user_id);
 }
 
 } // namespace member
@@ -267,7 +270,8 @@ get(client *client, const uint64_t guild_id, const uint64_t user_id, dati *p_ban
     &client->ua,
     &resp_handle,
     NULL,
-    HTTP_GET, GUILD BAN, guild_id, user_id);
+    HTTP_GET,
+    "/guilds/%llu/bans/%llu", guild_id, user_id);
 }
 
 //@todo modifiable query string parameters
@@ -288,7 +292,8 @@ get_list(client *client, const uint64_t guild_id)
     &client->ua,
     &resp_handle,
     NULL,
-    HTTP_GET, GUILD BANS, guild_id);
+    HTTP_GET,
+    "/guilds/%llu/bans", guild_id);
 
   return new_bans;
 }
@@ -340,7 +345,8 @@ create(client *client, const uint64_t guild_id, const uint64_t user_id, int dele
     &client->ua,
     NULL,
     &req_body,
-    HTTP_PUT, GUILD BAN, guild_id, user_id);
+    HTTP_PUT,
+    "/guilds/%llu/bans/%llu", guild_id, user_id);
 }
 
 void
@@ -377,7 +383,8 @@ remove(client *client, const uint64_t guild_id, const uint64_t user_id, const ch
     &client->ua,
     NULL,
     &req_body,
-    HTTP_DELETE, GUILD BAN, guild_id, user_id);
+    HTTP_DELETE, 
+    "/guilds/%llu/ban/%llu", guild_id, user_id);
 }
 
 } // namespace ban

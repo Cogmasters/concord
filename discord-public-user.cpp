@@ -96,7 +96,8 @@ get(client *client, const uint64_t user_id, dati *p_user)
     &client->ua,
     &resp_handle,
     NULL,
-    HTTP_GET, USER, user_id);
+    HTTP_GET, 
+    "/users/%llu", user_id);
 }
 
 namespace me {
@@ -110,7 +111,8 @@ get(client *client, dati *p_user)
     &client->ua,
     &resp_handle,
     NULL,
-    HTTP_GET, ME);
+    HTTP_GET, 
+    "/users/@me");
 }
 
 guild::dati**
@@ -125,7 +127,8 @@ get_guilds(client *client)
     &client->ua,
     &resp_handle,
     NULL,
-    HTTP_GET, ME GUILDS);
+    HTTP_GET,
+    "/users/@me/guilds");
 
   return new_guilds;
 }
