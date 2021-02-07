@@ -107,8 +107,12 @@ struct dati {
   message::dati **messages;
 };
 
+void json_load(char *str, size_t len, void *p_channel);
+
 dati* init();
 void cleanup(dati *channel);
+
+void get(client *client, const uint64_t channel_id, dati *p_channel);
 
 void pin_message(client *client, const uint64_t channel_id, const uint64_t message_id);
 void unpin_message(client *client, const uint64_t channel_id, const uint64_t message_id);
@@ -149,6 +153,7 @@ struct dati {
 dati* init();
 void cleanup(dati *message);
 void json_load(char *str, size_t len, void *p_message);
+void json_list_load(char *str, size_t len, void *p_messages);
 
 /* https://discord.com/developers/docs/resources/channel#create-message */
 namespace create {

@@ -8,6 +8,51 @@
 namespace discord {
 namespace channel {
 
+void
+json_load(char *str, size_t len, void *p_channel) {
+    dati *channel = (dati*)p_channel;
+
+    json_scanf(str, len,
+               "[id]%F"
+               "[type]%d"
+               "[guild_id]%F"
+               "[position]%d"
+               "[name]%s"
+               "[topic]%s"
+               "[nfsw]%b"
+               "[last_message_id]%F"
+               "[bitrate]%d"
+               "[user_limit]%d"
+               "[rate_limit_per_user]%d"
+               "[recipients]%F"
+               "[icon]%s"
+               "[owner_id]%F"
+               "[application_id]%F"
+               "[parent_id]%F"
+               "[last_pin_timestamp]%F"
+               "[messages]%F",
+               &orka_strtoull, &channel->id,
+               &channel->type,
+               &orka_strtoull, &channel->guild_id,
+               &channel->position,
+               channel->name,
+               channel->topic,
+               &channel->nsfw,
+               &orka_strtoull, &channel->last_message_id,
+               &channel->bitrate,
+               &channel->user_limit,
+               &channel->rate_limit_per_user,
+               &user::json_list_load, &channel->recipients,
+               channel->icon,
+               &orka_strtoull, &channel->owner_id,
+               &orka_strtoull, &channel->application_id,
+               &orka_strtoull, &channel->parent_id,
+               &orka_iso8601_to_unix_ms, &channel->last_pin_timestamp,
+               &message::json_list_load, &channel->messages);
+
+    D_NOTOP_PUTS("Channel object loaded with API response");
+}
+
 dati*
 init()
 {
@@ -18,6 +63,24 @@ init()
 void
 cleanup(dati *channel) {
   free(channel);
+}
+
+void
+get(client *client, const uint64_t channel_id, dati *p_channel)
+{
+    if (!channel_id) {
+        D_PUTS("Missing 'channel_id");
+        return;
+    }
+
+    struct resp_handle resp_handle = {&json_load, (void*)p_channel};
+    struct sized_buffer body = {NULL, 0};
+
+    user_agent::run(
+            &client->ua,
+            &resp_handle,
+            &body,
+            HTTP_GET, CHANNEL, channel_id);
 }
 
 void
@@ -32,6 +95,7 @@ pin_message(client *client, const uint64_t channel_id, const uint64_t message_id
     return;
   }
 
+  struct resp_handle resp_handle = {NULL, NULL};
   struct sized_buffer req_body = {"", 0};
 
   user_agent::run( 
@@ -109,6 +173,24 @@ json_load(char *str, size_t len, void *p_message)
       &message->flags);
 
   D_NOTOP_PUTS("Message object loaded with API response"); 
+}
+
+void
+json_list_load(char *str, size_t len, void *p_messages)
+{
+    struct sized_buffer **buf = NULL;
+    json_scanf(str, len, "[]%A", &buf);
+
+    size_t n = ntl_length((void**)buf);
+    dati **new_messages = (dati **)ntl_calloc(n, sizeof(dati*));
+    for (size_t i = 0; buf[i]; i++) {
+        new_messages[i] = init();
+        json_load(buf[i]->start, buf[i]->size, new_messages[i]);
+    }
+
+    free(buf);
+
+    *(dati ***)p_messages = new_messages;
 }
 
 static dati*
@@ -221,6 +303,9 @@ del(client *client, const uint64_t channel_id, const uint64_t message_id)
     D_PUTS("Can't delete message: missing 'message_id'");
     return;
   }
+
+  struct resp_handle resp_handle = {NULL, NULL, NULL, NULL};
+  struct sized_buffer body = {NULL, 0};
 
   user_agent::run(
     &client->ua,
