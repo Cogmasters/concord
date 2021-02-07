@@ -134,7 +134,7 @@ int main()
   struct sized_buffer ** tokens = NULL;
   json_scanf(array_tok.start, array_tok.size, "[]%L", &tokens);
   for (i = 0; tokens[i]; i++) {
-    printf("token [%p, %ld]\n", tokens[i]->start, tokens[i]->size);
+    printf("token [%p, %zu]\n", tokens[i]->start, tokens[i]->size);
     printf("token %.*s\n", (int)tokens[i]->size, tokens[i]->start);
   }
   free(tokens);
@@ -145,7 +145,7 @@ int main()
   struct tree_node ** nodes =
     (struct tree_node **) ntl_fmap((void **)tokens, sizeof(struct tree_node), NULL);
   for (i = 0; tokens[i]; i++) {
-    printf("token [%p, %ld]\n", tokens[i]->start, tokens[i]->size);
+    printf("token [%p, %zu]\n", tokens[i]->start, tokens[i]->size);
     printf("token %.*s\n", (int)tokens[i]->size, tokens[i]->start);
     load_tree_node(tokens[i]->start, tokens[i]->size, nodes[i]);
   }

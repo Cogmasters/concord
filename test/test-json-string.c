@@ -15,18 +15,18 @@ int main(int argc, char *argv[])
   size_t size = 0;
   char * str = orka_load_whole_file(argv[1], &size);
 
-  fprintf(stderr, "raw string size\t%ld\n", size);
+  fprintf(stderr, "raw string size\t%zu\n", size);
   size_t new_size = 0;
   char * estr = json_escape_string(&new_size, str, size);
 
-  fprintf(stderr, "escaped size\t%ld\n", new_size);
+  fprintf(stderr, "escaped size\t%zu\n", new_size);
   //fprintf(stderr, "escaped string %.*s\n", new_size, estr);
 
   size_t unstr_size = 0;
   char * unstr = NULL;
   json_unescape_string(&unstr, &unstr_size, estr, new_size);
 
-  fprintf(stderr, "unescaped size\t%ld\n", unstr_size);
+  fprintf(stderr, "unescaped size\t%zu\n", unstr_size);
 
   if (0 != memcmp(str, unstr, size)) {
     fprintf(stderr, "escaping/unescaping failed\n");

@@ -3,6 +3,7 @@
 
 #include <stdbool.h>
 #include <limits.h> // for PATH_MAX macro
+#include <stdint.h>
 
 #include "ntl.h"
 
