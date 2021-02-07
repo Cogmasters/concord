@@ -2,24 +2,29 @@ CC	?= gcc
 OBJDIR	:= obj
 LIBDIR	:= lib
 
-SRC	:= $(wildcard \
+COMMON_SRC  := $(wildcard \
 		curl-websocket.c \
 		http-common.c \
 		orka-utils.c \
-		github-*.cpp \
-		discord-*.cpp \
-		orka-*.cpp \
 		ntl.c json-*.c)
 
-_OBJS := $(filter %.o,$(SRC:.cpp=.o) $(SRC:.c=.o))
-OBJS 	:= $(addprefix $(OBJDIR)/, $(_OBJS))
+
+DISCORD_SRC := $(wildcard discord-*.cpp)
+GITHUB_SRC  := $(wildcard github-*.cpp)
+ORKA_SRC    := $(wildcard orka-*.cpp)
+
+COMMON_OBJS := $(COMMON_SRC:%=$(OBJDIR)/%.o)
+DISCORD_OBJS := $(DISCORD_SRC:%=$(OBJDIR)/%.o)
+GITHUB_OBJS := $(GITHUB_SRC:%=$(OBJDIR)/%.o)
+ORKA_OBJS  := $(ORKA_SRC:%=$(OBJDIR)/%.o)
+
+OBJS := $(COMMON_OBJS) $(DISCORD_OBJS) $(GITHUB_OBJS) $(ORKA_OBJS)
 
 BOT_SRC := $(wildcard bots/bot-*.cpp)
 BOT_EXES := $(patsubst %.cpp, %.exe, $(BOT_SRC))
 
 TEST_SRC := $(wildcard test/test-*.cpp test/test-*.c)
 TEST_EXES := $(filter %.exe, $(TEST_SRC:.cpp=.exe) $(TEST_SRC:.c=.exe))
-
 
 LIBDISCORD_CFLAGS	:= -I./
 LIBDISCORD_LDFLAGS	:=  -L./$(LIBDIR) -ldiscord -lcurl
@@ -55,7 +60,13 @@ PREFIX ?= /usr/local
 
 .PHONY : all mkdir install clean purge
 
-all : mkdir $(OBJS) $(LIBDISCORD_SLIB) bot
+all : mkdir common discord github orka $(LIBDISCORD_SLIB) bot
+
+common: mkdir $(COMMON_OBJS)
+discord: mkdir $(DISCORD_OBJS)
+github: mkdir $(GITHUB_OBJS)
+orka: mkdir $(ORKA_OBJS)
+
 bot: $(BOT_EXES)
 test: all $(TEST_EXES)
 
@@ -63,13 +74,14 @@ test: all $(TEST_EXES)
 mkdir :
 	mkdir -p $(OBJDIR) $(LIBDIR)
 
-$(OBJDIR)/%.o : %.c
+$(OBJDIR)/%.c.o : %.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
-$(OBJDIR)/%.o: %.cpp
+$(OBJDIR)/%.cpp.o: %.cpp
 	$(CXX) $(CXXFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 
 %.exe : %.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBS_LDFLAGS)
+
 %.exe: %.cpp
 	$(CXX) $(CXXFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBS_LDFLAGS)
 
