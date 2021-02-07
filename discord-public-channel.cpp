@@ -95,7 +95,6 @@ pin_message(client *client, const uint64_t channel_id, const uint64_t message_id
     return;
   }
 
-  struct resp_handle resp_handle = {NULL, NULL};
   struct sized_buffer req_body = {"", 0};
 
   user_agent::run( 
@@ -303,9 +302,6 @@ del(client *client, const uint64_t channel_id, const uint64_t message_id)
     D_PUTS("Can't delete message: missing 'message_id'");
     return;
   }
-
-  struct resp_handle resp_handle = {NULL, NULL, NULL, NULL};
-  struct sized_buffer body = {NULL, 0};
 
   user_agent::run(
     &client->ua,
