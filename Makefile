@@ -39,11 +39,10 @@ endif
 LIBS_CFLAGS	:= $(LIBDISCORD_CFLAGS)
 LIBS_LDFLAGS	:= $(LIBDISCORD_LDFLAGS)
 
-LIBDISCORD_SLIB	:= $(LIBDIR)/libdiscord.a
+LIBDISCORD	:= $(LIBDIR)/libdiscord.a
 
-CFLAGS   := -Wall -Wextra -pedantic -O0 -g -D_ORCA_DEBUG -D_GNU_SOURCE \
-		-Wno-unused-parameter -Wno-missing-field-initializers \
-		-Wno-incompatible-pointer-types
+CFLAGS   := -Wall -Wextra -pedantic -std=c11 -O0 -g -D_ORCA_DEBUG -D_GNU_SOURCE \
+		-Wno-unused-parameter -Wno-missing-field-initializers
 
 CXXFLAGS := -Wall -std=c++03 -O0 -g -D_ORCA_DEBUG -D_GNU_SOURCE \
 		-Wno-write-strings
@@ -60,7 +59,7 @@ PREFIX ?= /usr/local
 
 .PHONY : all mkdir install clean purge
 
-all : mkdir common discord github orka $(LIBDISCORD_SLIB) bot
+all : mkdir common discord github orka $(LIBDISCORD) bot
 
 common: mkdir $(COMMON_OBJS)
 discord: mkdir $(DISCORD_OBJS)
@@ -79,18 +78,18 @@ $(OBJDIR)/%.c.o : %.c
 $(OBJDIR)/%.cpp.o: %.cpp
 	$(CXX) $(CXXFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 
-%.exe : %.c
+%.exe : %.c $(LIBDISCORD)
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBS_LDFLAGS)
 
-%.exe: %.cpp
+%.exe: %.cpp $(LIBDISCORD)
 	$(CXX) $(CXXFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBS_LDFLAGS)
 
-$(LIBDISCORD_SLIB) : $(OBJS)
+$(LIBDISCORD) : $(OBJS)
 	$(AR) -cvq $@ $(OBJS)
 
 install : all
 	install -d $(PREFIX)/lib/
-	install -m 644 $(LIBDISCORD_SLIB) $(PREFIX)/lib/
+	install -m 644 $(LIBDISCORD) $(PREFIX)/lib/
 	install -d $(PREFIX)/include/
 	install -m 644 libdiscord.h $(PREFIX)/include/
 
