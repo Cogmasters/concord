@@ -384,7 +384,7 @@ remove(client *client, const uint64_t guild_id, const uint64_t user_id, const ch
     NULL,
     &req_body,
     HTTP_DELETE, 
-    "/guilds/%llu/ban/%llu", guild_id, user_id);
+    "/guilds/%llu/bans/%llu", guild_id, user_id);
 }
 
 } // namespace ban
