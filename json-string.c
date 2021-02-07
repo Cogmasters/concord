@@ -82,7 +82,6 @@ utf_valid(uint32_t v)
   return true;
 }
 
-//namespace utf8 {
 static
 bool utf8_is_trail(char ci)
 {
