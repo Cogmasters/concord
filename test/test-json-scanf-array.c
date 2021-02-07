@@ -76,6 +76,21 @@ void load_tree_node(char * str, size_t len, void * p) {
              &n->sha,
              &n->url);
 }
+
+void free_tree_node(void *p) {
+  struct tree_node * tn = (struct tree_node *)p;
+  if (tn->path)
+    free(tn->path);
+  if (tn->mode)
+    free(tn->mode);
+  if (tn->type)
+    free(tn->type);
+  if (tn->sha)
+    free(tn->sha);
+  if (tn->url)
+    free(tn->url);
+}
+
 static int
 print_array(char * str, size_t len, void * p)
 {
@@ -110,6 +125,7 @@ int main()
   size_t x = 0;
   char * yx = json_escape_string(&x, tx, 4);
   fprintf(stdout, "%.*s\n", (int)x, yx);
+  free(yx);
 
   char * json_str = NULL;
   int s = json_asprintf(&json_str, test_string);
@@ -127,6 +143,7 @@ int main()
   t = malloc(sizeof(jsmntok_t) * num_tok);
   jsmn_init(&parser);
   num_tok = jsmn_parse(&parser, array_tok.start, array_tok.size, t, num_tok+1);
+  free(t);
 
   int i;
 
@@ -149,6 +166,7 @@ int main()
     printf("token %.*s\n", (int)tokens[i]->size, tokens[i]->start);
     load_tree_node(tokens[i]->start, tokens[i]->size, nodes[i]);
   }
+  free(tokens);
 
   int wsize;
   char buf[1024];
@@ -187,14 +205,16 @@ int main()
   wsize = json_snprintf(b, wsize, "{|a|:|%s|, |b|:%d, |x|:%F }", "abc",
                         10, print_all, nodes);
   fprintf(stdout, "%d %s\n", wsize, b);
+  free(b);
 
   fprintf(stdout, "test json_asprintf\n");
   wsize = json_asprintf(&b, "{|a|:|%s|, |b|:%d, |x|:%F }", "abc",
                         10, print_all, nodes);
   fprintf(stdout, "%d %s\n", wsize, b);
+  free(b);
 
 
-  free(nodes);
+  ntl_free((void **)nodes, free_tree_node);
   nodes = NULL;
   struct ntl_deserializer  deserializer = {
     .elem_size = sizeof(struct tree_node),
@@ -208,15 +228,16 @@ int main()
   wsize = json_asprintf(&b, "{|a|:|%s|, |b|:%d, |x|:%F }", "abc",
                         10, print_all, nodes);
   fprintf(stdout, "%d %s\n", wsize, b);
-  free(nodes);
+  free(b);
+  ntl_free(nodes, free_tree_node);
 
   fprintf(stdout, "test json_array_str_to_ntl with %%F\n");
   json_scanf(json_str, s, "[tree]%F", orka_str_to_ntl, &deserializer);
   wsize = json_asprintf(&b, "{|a|:|%s|, |b|:%d, |x|:%F }", "abc",
                         10, print_all, nodes);
   fprintf(stdout, "%d %s\n", wsize, b);
-  free(nodes);
+  free(b);
+  free(json_str);
+  ntl_free((void **)nodes, free_tree_node);
   return 0;
 }
-
-
