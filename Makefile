@@ -37,7 +37,8 @@ LIBS_LDFLAGS	:= $(LIBDISCORD_LDFLAGS)
 LIBDISCORD_SLIB	:= $(LIBDIR)/libdiscord.a
 
 CFLAGS   := -Wall -Wextra -pedantic -O0 -g -D_ORCA_DEBUG -D_GNU_SOURCE \
-		-Wno-unused-parameter -Wno-missing-field-initializers
+		-Wno-unused-parameter -Wno-missing-field-initializers \
+		-Wno-incompatible-pointer-types
 
 CXXFLAGS := -Wall -std=c++03 -O0 -g -D_ORCA_DEBUG -D_GNU_SOURCE \
 		-Wno-write-strings
