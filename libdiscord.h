@@ -36,21 +36,22 @@ https://discord.com/developers/docs/reference#snowflakes */
 #define SNOWFLAKE_INTERNAL_WORKER_ID  22
 #define SNOWFLAKE_TIMESTAMP           64
 
+namespace discord {
+namespace channel {
+
 /* CHANNEL TYPES
  * https://discord.com/developers/docs/resources/channel#channel-object-channel-types */
-enum discord_channel_types {
-  GUILD_TEXT      = 0,
-  DM              = 1,
-  GUILD_VOICE     = 2,
-  GROUP_DM        = 3,
-  GUILD_CATEGORY  = 4,
-  GUILD_NEWS      = 5,
-  GUILD_STORE     = 6
+struct channel_types {
+  enum {
+    GUILD_TEXT      = 0,
+    DM              = 1,
+    GUILD_VOICE     = 2,
+    GROUP_DM        = 3,
+    GUILD_CATEGORY  = 4,
+    GUILD_NEWS      = 5,
+    GUILD_STORE     = 6
+  };
 };
-
-namespace discord {
-
-namespace channel {
 
 /* CHANNEL OBJECT
  * https://discord.com/developers/docs/resources/channel#channel-object-channel-structure */
@@ -59,7 +60,7 @@ struct dati {
   int type;
   uint64_t guild_id;
   int position;
-  //struct discord_overwrite_s **permission_overwrites;
+  //@todo missing permission overwrites;
   char name[MAX_NAME_LEN];
   char topic[MAX_TOPIC_LEN];
   bool nsfw;
@@ -101,20 +102,20 @@ struct dati {
   bool tts;
   bool mention_everyone;
   user::dati **mentions;
-  //struct discord_role_t **mention_roles;
-  //struct discord_channelmention_s **mention_channels;
-  //struct discord_attachment_s **attachments;
-  //struct discord_embed_s **embeds;
-  //strict discord_reaction_s **reactions;
+  //@todo missing mention roles;
+  //@todo missing mention channels;
+  //@todo missing attachments;
+  //@todo missing embeds;
+  //@todo missing reactions;
   char *nonce;
   bool pinned;
   uint64_t webhook_id;
   int type;
-  //struct discord_messageactivity_s *activity;
-  //struct discord_messageapplication_s *application;
-  //struct discord_messagereference_s *message_reference;
+  //@todo missing activity;
+  //@todo missing application;
+  //@todo missing message_reference;
   int flags;
-  //struct discord_sticker_s **stickers;
+  //@todo missing stickers;
   dati *referenced_message;
 };
 
@@ -131,9 +132,9 @@ struct params {
   char *nonce;
   bool tts;
   char *file;
-  //embed object
+  //@todo missing embed object
   char *payload_json;
-  //allowed mentions
+  //@todo missing allowed mentions
   struct message_reference {
     uint64_t message_id;
     uint64_t channel_id;
@@ -172,8 +173,8 @@ struct dati {
   int verification_level;
   int default_message_notifications;
   int explicit_content_filter;
-  //struct discord_role_t **roles;
-  //struct discord_emoji_t **emojis;
+  //@todo missing roles;
+  //@todo missing emojis;
   char **features;
   int mfa_level;
   uint64_t application_id;
@@ -186,10 +187,10 @@ struct dati {
   bool large;
   bool unavailable;
   int member_count;
-  //struct discord_voicestate_s **voice_states;
-  //struct discord_member_s **members;
+  //@todo missing voice states;
+  //@todo missing members;
   channel::dati **channels;
-  //struct discord_presence_s **presences;
+  //@todo missing presences;
   int max_presences;
   int mas_members;
   char vanity_url_code[MAX_URL_LEN];
@@ -219,13 +220,13 @@ namespace member {
 struct dati {
   user::dati *user;
   char nick[MAX_NAME_LEN];
-  //roles
+  //@todo missing roles
   int64_t joined_at;
   int64_t premium_since;
   bool deaf;
   bool mute;
   bool pending;
-  //permissions
+  //@todo missing permissions
 };
 
 dati* init();
