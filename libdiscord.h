@@ -41,7 +41,7 @@ namespace channel {
 
 /* CHANNEL TYPES
  * https://discord.com/developers/docs/resources/channel#channel-object-channel-types */
-struct channel_types {
+struct types {
   enum {
     GUILD_TEXT      = 0,
     DM              = 1,
