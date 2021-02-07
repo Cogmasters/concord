@@ -107,10 +107,9 @@ struct dati {
   message::dati **messages;
 };
 
-void json_load(char *str, size_t len, void *p_channel);
-
 dati* init();
 void cleanup(dati *channel);
+void json_load(char *str, size_t len, void *p_channel);
 
 void get(client *client, const uint64_t channel_id, dati *p_channel);
 

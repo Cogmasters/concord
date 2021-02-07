@@ -9,48 +9,49 @@ namespace discord {
 namespace channel {
 
 void
-json_load(char *str, size_t len, void *p_channel) {
-    dati *channel = (dati*)p_channel;
+json_load(char *str, size_t len, void *p_channel)
+{
+  dati *channel = (dati*)p_channel;
 
-    json_scanf(str, len,
-               "[id]%F"
-               "[type]%d"
-               "[guild_id]%F"
-               "[position]%d"
-               "[name]%s"
-               "[topic]%s"
-               "[nfsw]%b"
-               "[last_message_id]%F"
-               "[bitrate]%d"
-               "[user_limit]%d"
-               "[rate_limit_per_user]%d"
-               "[recipients]%F"
-               "[icon]%s"
-               "[owner_id]%F"
-               "[application_id]%F"
-               "[parent_id]%F"
-               "[last_pin_timestamp]%F"
-               "[messages]%F",
-               &orka_strtoull, &channel->id,
-               &channel->type,
-               &orka_strtoull, &channel->guild_id,
-               &channel->position,
-               channel->name,
-               channel->topic,
-               &channel->nsfw,
-               &orka_strtoull, &channel->last_message_id,
-               &channel->bitrate,
-               &channel->user_limit,
-               &channel->rate_limit_per_user,
-               &user::json_list_load, &channel->recipients,
-               channel->icon,
-               &orka_strtoull, &channel->owner_id,
-               &orka_strtoull, &channel->application_id,
-               &orka_strtoull, &channel->parent_id,
-               &orka_iso8601_to_unix_ms, &channel->last_pin_timestamp,
-               &message::json_list_load, &channel->messages);
+  json_scanf(str, len,
+     "[id]%F"
+     "[type]%d"
+     "[guild_id]%F"
+     "[position]%d"
+     "[name]%s"
+     "[topic]%s"
+     "[nfsw]%b"
+     "[last_message_id]%F"
+     "[bitrate]%d"
+     "[user_limit]%d"
+     "[rate_limit_per_user]%d"
+     "[recipients]%F"
+     "[icon]%s"
+     "[owner_id]%F"
+     "[application_id]%F"
+     "[parent_id]%F"
+     "[last_pin_timestamp]%F"
+     "[messages]%F",
+     &orka_strtoull, &channel->id,
+     &channel->type,
+     &orka_strtoull, &channel->guild_id,
+     &channel->position,
+     channel->name,
+     channel->topic,
+     &channel->nsfw,
+     &orka_strtoull, &channel->last_message_id,
+     &channel->bitrate,
+     &channel->user_limit,
+     &channel->rate_limit_per_user,
+     &user::json_list_load, &channel->recipients,
+     channel->icon,
+     &orka_strtoull, &channel->owner_id,
+     &orka_strtoull, &channel->application_id,
+     &orka_strtoull, &channel->parent_id,
+     &orka_iso8601_to_unix_ms, &channel->last_pin_timestamp,
+     &message::json_list_load, &channel->messages);
 
-    D_NOTOP_PUTS("Channel object loaded with API response");
+  D_NOTOP_PUTS("Channel object loaded with API response");
 }
 
 dati*
@@ -68,19 +69,18 @@ cleanup(dati *channel) {
 void
 get(client *client, const uint64_t channel_id, dati *p_channel)
 {
-    if (!channel_id) {
-        D_PUTS("Missing 'channel_id");
-        return;
-    }
+  if (!channel_id) {
+    D_PUTS("Missing 'channel_id");
+    return;
+  }
 
-    struct resp_handle resp_handle = {&json_load, (void*)p_channel};
-    struct sized_buffer body = {NULL, 0};
+  struct resp_handle resp_handle = {&json_load, (void*)p_channel};
 
-    user_agent::run(
-            &client->ua,
-            &resp_handle,
-            &body,
-            HTTP_GET, CHANNEL, channel_id);
+  user_agent::run(
+    &client->ua,
+    &resp_handle,
+    NULL,
+    HTTP_GET, CHANNEL, channel_id);
 }
 
 void
@@ -178,19 +178,19 @@ json_load(char *str, size_t len, void *p_message)
 void
 json_list_load(char *str, size_t len, void *p_messages)
 {
-    struct sized_buffer **buf = NULL;
-    json_scanf(str, len, "[]%A", &buf);
+  struct sized_buffer **buf = NULL;
+  json_scanf(str, len, "[]%A", &buf);
 
-    size_t n = ntl_length((void**)buf);
-    dati **new_messages = (dati **)ntl_calloc(n, sizeof(dati*));
-    for (size_t i = 0; buf[i]; i++) {
-        new_messages[i] = init();
-        json_load(buf[i]->start, buf[i]->size, new_messages[i]);
-    }
+  size_t n = ntl_length((void**)buf);
+  dati **new_messages = (dati **)ntl_calloc(n, sizeof(dati*));
+  for (size_t i = 0; buf[i]; i++) {
+    new_messages[i] = init();
+    json_load(buf[i]->start, buf[i]->size, new_messages[i]);
+  }
 
-    free(buf);
+  free(buf);
 
-    *(dati ***)p_messages = new_messages;
+  *(dati ***)p_messages = new_messages;
 }
 
 static dati*
