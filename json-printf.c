@@ -301,6 +301,8 @@ json_vsnprintf(char * str, size_t len, char * fmt, va_list ap)
       strcpy(cur_ptr, format);
     total_size = strlen(format);
   }
+  free(format);
+  free(sp);
   return total_size;
 }
 
