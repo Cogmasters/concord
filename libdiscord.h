@@ -155,7 +155,7 @@ enum {
 https://discord.com/developers/docs/resources/channel#message-object-message-activity-structure */
 namespace activity {
 struct dati {
-  types::code type;
+  activity_types::code type;
   //@todo missing party_id;
 };
 
