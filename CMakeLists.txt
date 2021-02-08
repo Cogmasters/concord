@@ -10,7 +10,7 @@ set(CMAKE_C_STANDARD 11)
 
 set(CMAKE_BUILD_TYPE DEBUG)
 set(CMAKE_C_FLAGS "-DLIBDISCORD_DEBUG -D_XOPEN_SOURCE=700")
-set(CMAKE_CXX_FLAGS "-DLIBDISCORD_DEBUG -D_XOPEN_SOURCE=700 -Wno-c++11-compat-deprecated-writable-strings")
+set(CMAKE_CXX_FLAGS "-DLIBDISCORD_DEBUG -D_XOPEN_SOURCE=700 -Wno-write-strings -Wno-c++11-compat-deprecated-writable-strings")
 
 set(CMAKE_EXE_LINKER_FLAGS "")
 
@@ -34,8 +34,6 @@ set(SOURCE_FILES
         discord-public-user.cpp
         discord-websockets.cpp
         libdiscord.h
-        settings.c
-        settings.h
         ${JSON_SCANF})
 
 set(ORKA_FILES
@@ -48,8 +46,6 @@ set(GITHUB_FILES
         github-v3.hpp
         github-v3-user-agent.cpp
         github-v3-git-op.cpp
-        settings.h
-        settings.c
         ${JSON_SCANF}
         ${ORKA_FILES})
 
@@ -58,8 +54,6 @@ set(CEE_FILES
         http-common.c
         orka-user-agent.hpp
         orka-user-agent.cpp
-        settings.h
-        settings.c
         ${JSON_SCANF})
 
 
@@ -85,8 +79,8 @@ target_link_libraries(test-json-string.exe m)
 add_executable(test-git.exe ${GITHUB_FILES}  test/test-git.cpp)
 target_link_libraries(test-git.exe curl ssl crypto)
 
-add_executable(test-git2.exe ${GITHUB_FILES} settings.c ${ORKA_FILES} test/test-git2.cpp)
+add_executable(test-git2.exe ${GITHUB_FILES} ${ORKA_FILES} test/test-git2.cpp)
 target_link_libraries(test-git2.exe curl ssl crypto)
 
-add_executable(test-cee.exe ${CEE_FILES} settings.c ${ORKA_FILES} test/test-cee.cpp)
+add_executable(test-cee.exe ${CEE_FILES} ${ORKA_FILES} test/test-cee.cpp)
 target_link_libraries(test-cee.exe curl ssl crypto)
