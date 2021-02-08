@@ -36,8 +36,8 @@ int main (int argc, char ** argv)
   }
 
   if (NULL == config_file) {
-    fprintf(stderr, "Please specify: -c github.config\n");
-    exit(EXIT_FAILURE);
+    fprintf(stderr, "Using .cee-contributor as the user config\n");
+    config_file = ".cee-contributor";
   }
   else if (NULL == commit_msg) {
     fprintf(stderr, "Please specify: -m \"commit message\"\n");
@@ -58,7 +58,7 @@ int main (int argc, char ** argv)
 
   curl_global_init(CURL_GLOBAL_ALL);
   git::dati * data = git::init (settings.github.username,
-                                settings.github.token, ".cee-repo.config");
+                                settings.github.token, ".cee-repo");
 
   git::update_my_fork(data);
   git::create_blobs(data, files);
