@@ -100,66 +100,69 @@ enum close_opcodes {
 
 /* GATEWAY INTENTS
 https://discord.com/developers/docs/topics/gateway#identify-identify-structure */
-struct intents { // pre c++11 enum class
-  enum {
-    GUILDS                        = 1 << 0,
-    GUILD_MEMBERS                 = 1 << 1,
-    GUILD_BANS                    = 1 << 2,
-    GUILD_EMOJIS                  = 1 << 3,
-    GUILD_INTEGRATIONS            = 1 << 4,
-    GUILD_WEBHOOKS                = 1 << 5,
-    GUILD_INVITES                 = 1 << 6,
-    GUILD_VOICE_STATES            = 1 << 7,
-    GUILD_PRESENCES               = 1 << 8,
-    GUILD_MESSAGES                = 1 << 9,
-    GUILD_MESSAGE_REACTIONS       = 1 << 10,
-    GUILD_MESSAGE_TYPING          = 1 << 11,
-    DIRECT_MESSAGES               = 1 << 12,
-    DIRECT_MESSAGE_REACTIONS      = 1 << 13,
-    DIRECT_MESSAGE_TYPING         = 1 << 14
-  };
+namespace intents { // pre c++11 enum class
+typedef int code;
+enum {
+  GUILDS                        = 1 << 0,
+  GUILD_MEMBERS                 = 1 << 1,
+  GUILD_BANS                    = 1 << 2,
+  GUILD_EMOJIS                  = 1 << 3,
+  GUILD_INTEGRATIONS            = 1 << 4,
+  GUILD_WEBHOOKS                = 1 << 5,
+  GUILD_INVITES                 = 1 << 6,
+  GUILD_VOICE_STATES            = 1 << 7,
+  GUILD_PRESENCES               = 1 << 8,
+  GUILD_MESSAGES                = 1 << 9,
+  GUILD_MESSAGE_REACTIONS       = 1 << 10,
+  GUILD_MESSAGE_TYPING          = 1 << 11,
+  DIRECT_MESSAGES               = 1 << 12,
+  DIRECT_MESSAGE_REACTIONS      = 1 << 13,
+  DIRECT_MESSAGE_TYPING         = 1 << 14
 };
+} // namespace intents
 
 /* GATEWAY OPCODES
 https://discord.com/developers/docs/topics/opcodes-and-status-codes#gateway-gateway-opcodes */
-struct opcodes {
-  enum {
-    DISPATCH              = 0,
-    HEARTBEAT             = 1,
-    IDENTIFY              = 2,
-    PRESENCE_UPDATE       = 3,
-    VOICE_STATE_UPDATE    = 4,
-    RESUME                = 6,
-    RECONNECT             = 7,
-    REQUEST_GUILD_MEMBERS = 8,
-    INVALID_SESSION       = 9,
-    HELLO                 = 10,
-    HEARTBEAT_ACK         = 11
-  };
+namespace opcodes {
+typedef int code;
+enum {
+  DISPATCH              = 0,
+  HEARTBEAT             = 1,
+  IDENTIFY              = 2,
+  PRESENCE_UPDATE       = 3,
+  VOICE_STATE_UPDATE    = 4,
+  RESUME                = 6,
+  RECONNECT             = 7,
+  REQUEST_GUILD_MEMBERS = 8,
+  INVALID_SESSION       = 9,
+  HELLO                 = 10,
+  HEARTBEAT_ACK         = 11
 };
+} // namespace opcodes
 
-struct status {
-  enum {
-    DISCONNECTED,  //disconnected from ws
-    RESUME,        //attempt to resume ws session
-    FRESH,         //attempt a fresh ws session (session timed out)
-    CONNECTED     //connected to ws
-  };
+namespace status {
+typedef int code;
+enum {
+  DISCONNECTED,  //disconnected from ws
+  RESUME,        //attempt to resume ws session
+  FRESH,         //attempt a fresh ws session (session timed out)
+  CONNECTED     //connected to ws
 };
+} // namespace status
 
 struct dati { /* WEBSOCKETS STRUCTURE */
-  int status; //connection to discord status
+  status::code status; //connection to discord status
   int reconnect_attempts; //hard limit 5 reconnection attempts @todo make configurable
 
   char *identify; //the identify payload (for establishing a new connection)
-  int intents; //the gateway events to be listened to
+  intents::code intents; //the gateway events to be listened to
   char session_id[512]; //the session id (for resuming lost connections)
 
   CURLM *mhandle;
   CURL *ehandle;
 
   struct { /* PAYLOAD STRUCTURE */
-    int opcode; //field 'op'
+    opcodes::code opcode; //field 'op'
     int seq_number; //field 's'
     char event_name[64]; //field 't'
     char event_data[8192]; //field 'd'

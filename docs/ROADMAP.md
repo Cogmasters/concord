@@ -21,7 +21,7 @@
 - [ ] [Channel Mention Object](https://discord.com/developers/docs/resources/channel#channel-mention-object)
 - [ ] [Allowed Mentions Object](https://discord.com/developers/docs/resources/channel#allowed-mentions-object)
 - [ ] [Embed Limits](https://discord.com/developers/docs/resources/channel#embed-limits)
-- [ ] [Get Channel](https://discord.com/developers/docs/resources/channel#get-channel)
+- [x] [Get Channel](https://discord.com/developers/docs/resources/channel#get-channel)
 - [ ] [Modify Channel](https://discord.com/developers/docs/resources/channel#modify-channel)
 - [ ] [Delete/Close Channel](https://discord.com/developers/docs/resources/channel#deleteclose-channel)
 - [ ] [Get Channel Messages](https://discord.com/developers/docs/resources/channel#get-channel-messages)
