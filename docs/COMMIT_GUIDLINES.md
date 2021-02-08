@@ -11,12 +11,13 @@ this fork from your git command line
 ```
 git clone https://github.com/cee-studio/orca.git
 cd orca
-cat cp bots/bot.config .cee-contributor
+cp bots/bot.config .cee-contributor
 ```
 
 3. add replace "YOUR-GITHUB-USERNAME" and "YOUR-PERSONAL-ACCESS-TOKEN"
    with your github username and your personal access token (which can
-   be obtained thru this link)
+   be obtained thru this
+   [link](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token))
 
 5. run
 ```
