@@ -60,6 +60,7 @@ int main (int argc, char ** argv)
   git::dati * data = git::init (settings.github.username,
                                 settings.github.token, ".cee-repo.config");
 
+  git::update_my_fork(data);
   git::create_blobs(data, files);
   char * head_commit_sha = git::get_head_commit(data);
   char * base_tree_sha = git::get_tree_sha(data, head_commit_sha);

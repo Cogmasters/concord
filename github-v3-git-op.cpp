@@ -11,18 +11,20 @@ namespace config {
 
 struct dati {
   char *owner;
+  char *username;
   char *repo;
   char *default_branch;
 };
 
 void
-init(struct dati *data, char *file)
+init(struct dati *data, char * username, char *file)
 {
   size_t len = 0;
   char *content = orka_load_whole_file(file, &len);
 
   json_scanf(content, len, "[owner]%?s [repo]%?s [default_branch]%?s",
              &data->owner, &data->repo, &data->default_branch);
+  data->username = username;
   free(content);
 }
 
@@ -70,7 +72,7 @@ init(char *username, char *token, char *repo_config)
   dati *d = (dati *)calloc(1, sizeof(dati));
 
   user_agent::init (&d->ua_data, username, token);
-  config::init(&d->config, repo_config);
+  config::init(&d->config, username, repo_config);
 
   d->handle.ok_cb = NULL;
   d->handle.ok_obj = NULL;
@@ -81,6 +83,26 @@ init(char *username, char *token, char *repo_config)
   return d;
 }
 
+char * update_my_fork(dati *d)
+{
+  fprintf(stderr, "===update-my-fork===\n");
+  char *sha = NULL;
+  d->handle.ok_cb = load_object_sha;
+  d->handle.ok_obj = &sha;
+  user_agent::run(&d->ua_data, &d->handle, NULL,
+                  HTTP_GET, "/repos/%s/%s/git/refs/heads/%s",
+                  d->config.owner, d->config.repo, d->config.default_branch);
+
+  d->handle.ok_cb = log;
+  d->body.size = json_asprintf(&d->body.start, "{|sha|:|%s|}", sha);
+  fprintf(stderr, "PATCH: %s\n", d->body.start);
+  user_agent::run(&d->ua_data, &d->handle, &d->body,
+                  HTTP_PATCH, "/repos/%s/%s/git/refs/heads/%s",
+                  d->config.username, d->config.repo, d->config.default_branch);
+  return sha;
+}
+
+
 char *
 get_head_commit(dati *d)
 {
@@ -89,9 +111,10 @@ get_head_commit(dati *d)
   d->handle.ok_obj = &sha;
   user_agent::run(&d->ua_data, &d->handle, NULL,
           HTTP_GET, "/repos/%s/%s/git/refs/heads/%s",
-          d->config.owner, d->config.repo, d->config.default_branch);
+          d->config.username, d->config.repo, d->config.default_branch);
   return sha;
 }
+
 
 char *
 get_tree_sha(dati *d, char *commit_sha)
@@ -102,7 +125,7 @@ get_tree_sha(dati *d, char *commit_sha)
   d->handle.ok_obj = &sha;
   user_agent::run(&d->ua_data, &d->handle, NULL,
           HTTP_GET, "/repos/%s/%s/git/trees/%s",
-          d->config.owner, d->config.repo, commit_sha);
+          d->config.username, d->config.repo, commit_sha);
 
   fprintf(stderr, "tree-sha:%s\n", sha);
   return sha;
@@ -125,7 +148,7 @@ create_blobs(dati *d, struct file **files)
     fprintf(stderr, "%.*s\n", (int)d->body.size, d->body.start);
     user_agent::run(&d->ua_data, &d->handle, &d->body,
             HTTP_POST, "/repos/%s/%s/git/blobs",
-            d->config.owner, d->config.repo);
+            d->config.username, d->config.repo);
 
     fprintf(stderr, "file-sha %s\n", file_sha);
     files[i]->sha = file_sha;
@@ -167,7 +190,7 @@ create_tree(dati *d, char *base_tree_sha, struct file **files)
   fprintf(stderr, "%s\n", d->body.start);
   user_agent::run(&d->ua_data, &d->handle, &d->body,
           HTTP_POST, "/repos/%s/%s/git/trees",
-          d->config.owner, d->config.repo);
+          d->config.username, d->config.repo);
 
   free(d->body.start);
   fprintf(stderr, "new-tree-sha:%s\n", new_tree_sha);
@@ -192,7 +215,7 @@ create_a_commit(dati *d, char *tree_sha,
                             commit_msg, tree_sha, parent_commit_sha);
   user_agent::run(&d->ua_data, &d->handle, &d->body,
           HTTP_POST, "/repos/%s/%s/git/commits",
-          d->config.owner, d->config.repo);
+          d->config.username, d->config.repo);
 
   free(d->body.start);
   fprintf(stderr, "commit-sha:%s\n", new_commit_sha);
@@ -211,7 +234,7 @@ create_a_branch(dati *d, char *head_commit_sha, char *branch)
   d->handle.ok_obj = NULL;
   user_agent::run(&d->ua_data, &d->handle, &d->body,
           HTTP_POST, "/repos/%s/%s/git/refs",
-          d->config.owner, d->config.repo);
+          d->config.username, d->config.repo);
 }
 
 void
@@ -223,7 +246,7 @@ update_a_commit(dati *d, char *branch, char *commit_sha)
   fprintf(stderr, "PATCH: %s\n", d->body.start);
   user_agent::run(&d->ua_data, &d->handle, &d->body,
           HTTP_PATCH, "/repos/%s/%s/git/refs/heads/%s",
-          d->config.owner, d->config.repo, branch);
+          d->config.username, d->config.repo, branch);
 }
 
 void
@@ -234,10 +257,11 @@ create_a_pull_request(dati *d, char *branch, char *pull_msg) {
                             "{"
                               "|title|:|%s|,"
                               "|body|:|%s|,"
-                              "|head|:|%s|,"
+                              "|head|:|%s:%s|,"
                               "|base|:|%s|"
                               "}",
-                            branch, pull_msg, branch, d->config.default_branch);
+                               branch, pull_msg, d->config.username,
+                               branch, d->config.default_branch);
   d->handle.ok_cb = log;
   user_agent::run(&d->ua_data, &d->handle, &d->body,
           HTTP_POST, "/repos/%s/%s/pulls", d->config.owner, d->config.repo);

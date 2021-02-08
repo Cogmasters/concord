@@ -16,6 +16,7 @@ struct file {
 };
 
 dati* init(char *username, char *token, char *repo_config);
+char * update_my_fork(dati *d);
 char* get_head_commit(dati *data);
 char* get_tree_sha(dati *data, char *commit_sha);
 void create_blobs(dati *data, struct file **files);
