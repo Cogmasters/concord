@@ -10,5 +10,5 @@ cmake-build-debug
 botdev.config
 obj
 lib
-test-api
 dump.*
+.cee-contributor
