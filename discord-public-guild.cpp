@@ -169,7 +169,7 @@ get_list(client *client, const uint64_t guild_id)
     &resp_handle,
     NULL,
     HTTP_GET,
-    "/guilds/%llu?limit=100", guild_id);
+    "/guilds/%llu/members?limit=100", guild_id);
 
   return new_members;
 }
