@@ -29,6 +29,16 @@
 #define MAX_MESSAGE_LEN        2000 + 1
 #define MAX_PAYLOAD_LEN        4096 + 1
 
+/* EMBED LIMITS
+https://discord.com/developers/docs/resources/channel#embed-limits*/
+#define EMBED_TITLE_LEN       256 + 1
+#define EMBED_DESCRIPTION_LEN 2048 + 1
+#define EMBED_MAX_FIELDS      25
+#define EMBED_FIELD_NAME_LEN  256 + 1
+#define EMBED_FIELD_VALUE_LEN 1024 + 1
+#define EMBED_FOOTER_TEXT_LEN 2048 + 1
+#define EMBED_AUTHOR_NAME_LEN 256 + 1
+
 /* SNOWFLAKES
 https://discord.com/developers/docs/reference#snowflakes */
 #define SNOWFLAKE_INCREMENT           12
@@ -37,31 +47,15 @@ https://discord.com/developers/docs/reference#snowflakes */
 #define SNOWFLAKE_TIMESTAMP           64
 
 namespace discord {
+/* CHANNEL STRUCTURE
+https://discord.com/developers/docs/resources/channel#channel-object-channel-structure */
 namespace channel {
-
-/* CHANNEL TYPES
- * https://discord.com/developers/docs/resources/channel#channel-object-channel-types */
-namespace types {
-typedef int code;
-enum {
-  GUILD_TEXT      = 0,
-  DM              = 1,
-  GUILD_VOICE     = 2,
-  GROUP_DM        = 3,
-  GUILD_CATEGORY  = 4,
-  GUILD_NEWS      = 5,
-  GUILD_STORE     = 6
-};
-} // namespace types
-
-/* CHANNEL OBJECT
- * https://discord.com/developers/docs/resources/channel#channel-object-channel-structure */
 struct dati {
   uint64_t id;
-  int type;
+  types::code type;
   uint64_t guild_id;
   int position;
-  //@todo missing permission overwrites;
+  overwrite::dati **permission_overwrites; //@todo add to json_load
   char name[MAX_NAME_LEN];
   char topic[MAX_TOPIC_LEN];
   bool nsfw;
@@ -82,15 +76,28 @@ dati* init();
 void cleanup(dati *channel);
 void json_load(char *str, size_t len, void *p_channel);
 
+/* CHANNEL TYPES
+https://discord.com/developers/docs/resources/channel#channel-object-channel-types */
+namespace types {
+enum {
+  GUILD_TEXT      = 0,
+  DM              = 1,
+  GUILD_VOICE     = 2,
+  GROUP_DM        = 3,
+  GUILD_CATEGORY  = 4,
+  GUILD_NEWS      = 5,
+  GUILD_STORE     = 6
+};
+} // namespace types
+
 void get(client *client, const uint64_t channel_id, dati *p_channel);
 
 void pin_message(client *client, const uint64_t channel_id, const uint64_t message_id);
 void unpin_message(client *client, const uint64_t channel_id, const uint64_t message_id);
 
+/* MESSAGE STRUCTURE
+https://discord.com/developers/docs/resources/channel#message-object*/
 namespace message {
-
-/* DISCORD MESSAGE OBJECT
- * https://discord.com/developers/docs/resources/channel#message-object*/
 struct dati {
   uint64_t id;
   uint64_t channel_id;
@@ -104,19 +111,19 @@ struct dati {
   bool mention_everyone;
   user::dati **mentions;
   //@todo missing mention roles;
-  //@todo missing mention channels;
-  //@todo missing attachments;
-  //@todo missing embeds;
-  //@todo missing reactions;
+  mention::dati **mention_channels; //@todo add to json_load
+  attachment::dati **attachments; //@todo add to json_load
+  embed::dati **embeds; //@todo add to json_load
+  reaction::dati **reactions; //@todo add to json_load
   char *nonce;
   bool pinned;
   uint64_t webhook_id;
-  int type;
-  //@todo missing activity;
-  //@todo missing application;
-  //@todo missing message_reference;
-  int flags;
-  //@todo missing stickers;
+  types::code type;
+  activity::dati *activity; //@todo add to json_load
+  application::dati **application; //@todo add to json_load
+  reference::dati *message_reference; //@todo add to json_load
+  flags::code flags;
+  sticker::dati **stickers; //@todo add to json_load
   dati *referenced_message;
 };
 
@@ -125,8 +132,121 @@ void cleanup(dati *message);
 void json_load(char *str, size_t len, void *p_message);
 void json_list_load(char *str, size_t len, void *p_messages);
 
+/* MESSAGE TYPES
+https://discord.com/developers/docs/resources/channel#message-object-message-types */
+namespace types {
+enum {
+  DEFAULT                                 = 0,
+  RECIPIENT_ADD                           = 1,
+  RECIPIENT_REMOVE                        = 2,
+  CALL                                    = 3,
+  CHANNEL_NAME_CHANGE                     = 4,
+  CHANNEL_ICON_CHANGE                     = 5,
+  CHANNEL_PINNED_MESSAGE                  = 6,
+  GUILD_MEMBER_JOIN                       = 7,
+  USER_PREMIUM_GUILD_SUBSCRIPTION         = 8,
+  USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_1  = 9,
+  USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_2  = 10,
+  USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_3  = 11,
+  CHANNEL_FOLLOW_ADD                      = 12,
+  GUILD_DISCOVERY_DISQUALIFIED            = 14,
+  GUILD_DISCOVERY_REQUALIFIED             = 15,
+  REPLY                                   = 19, // only in v8 (0 in v6)
+  APPLICATION_COMMAND                     = 20  // only in v8 (0 in v6)
+};
+} // namespace types
+
+/* MESSAGE ACTIVITY STRUCTURE
+https://discord.com/developers/docs/resources/channel#message-object-message-activity-structure */
+namespace activity {
+struct dati {
+  types::code type;
+  //@todo missing party_id;
+};
+
+//@todo missing initialization functions
+
+} // namespace activity
+
+/* MESSAGE APPLICATION STRUCTURE
+https://discord.com/developers/docs/resources/channel#message-object-message-application-structure */
+namespace application {
+struct dati {
+  uint64_t id;
+  char *cover_image; //@todo find fixed size limit
+  char *description; //@todo find fixed size limit
+  char *icon; //@todo find fixed size limit
+  char *name; //@todo find fixed size limit
+};
+
+//@todo missing initialization functions
+
+} // namespace application
+
+/* MESSAGE REFERENCE STRUCTURE
+https://discord.com/developers/docs/resources/channel#message-object-message-reference-structure */
+namespace reference {
+struct dati {
+  uint64_t message_id;
+  uint64_t channel_id;
+  uint64_t guild_id;
+};
+
+//@todo missing initialization functions
+
+} // namespace reference
+
+/* MESSAGE ACTIVITY TYPES
+https://discord.com/developers/docs/resources/channel#message-object-message-activity-types */
+namespace activity_types {
+enum {
+  JOIN          = 1,
+  SPECTATE      = 2,
+  LISTEN        = 3,
+  JOIN_REQUEST  = 5
+};
+} // namespace activity_types
+
+/* MESSAGE FLAGS
+https://discord.com/developers/docs/resources/channel#message-object-message-flags */
+namespace flags {
+enum {
+  CROSSPOSTED             = 1 << 0,
+  IS_CROSSPOST            = 1 << 1,
+  SUPRESS_EMBEDS          = 1 << 2,
+  SOURCE_MESSAGE_DELETED  = 1 << 3,
+  URGENT                  = 1 << 4
+};    
+} // namespace flags
+
+/* MESSAGE STICKER STRUCTURE
+https://discord.com/developers/docs/resources/channel#message-object-message-sticker-structure */
+namespace sticker {
+struct dati {
+  uint64_t id;
+  uint64_t pack_id;
+  char *name; //@todo find fixed size limit
+  char *description; //@todo find fixed size limit
+  char *tags; //@todo find fixed size limit
+  char asset[MAX_HASH_LEN];
+  char preview_asset[MAX_HASH_LEN];
+  format_types::code type;
+};
+
+/* MESSAGE STICKER FORMAT TYPES
+https://discord.com/developers/docs/resources/channel#message-object-message-sticker-format-types */
+namespace format_types {
+enum {
+  PNG     = 1,
+  APNG    = 2,
+  LOTTIE  = 3
+};
+} // namespace format_types
+
+} // namespace sticker
+
 /* https://discord.com/developers/docs/resources/channel#create-message */
-namespace create {
+namespace create { // function wrapper
 
 struct params {
   char *content;
@@ -136,7 +256,7 @@ struct params {
   //@todo missing embed object
   char *payload_json;
   //@todo missing allowed mentions
-  struct message_reference {
+  struct message_reference { //@todo change to message::reference
     uint64_t message_id;
     uint64_t channel_id;
     uint64_t guild_id;
@@ -151,12 +271,192 @@ void del(client *client, const uint64_t channel_id, const uint64_t message_id);
 
 } // namespace message
 
+/* FOLLOWED CHANNEL STRUCTURE
+https://discord.com/developers/docs/resources/channel#followed-channel-object-followed-channel-structure */
+namespace followed_channel {
+struct dati {
+  uint64_t channel_id;
+  uint64_t webhook_id;
+};
+
+//@todo missing initialization functions
+
+} // namespace followed_channel
+
+/* REACTION STRUCTURE
+https://discord.com/developers/docs/resources/channel#reaction-object-reaction-structure */
+namespace reaction {
+struct dati {
+  int count;
+  bool me;
+  //@todo missing emoji
+};
+
+//@todo missing initialization functions
+
+} // namespace reaction
+
+/* OVERWRITE STRUCTURE
+https://discord.com/developers/docs/resources/channel#overwrite-object-overwrite-structure */
+namespace overwrite {
+struct dati {
+  uint64_t id;
+  int type; //either 0 (role) or 1 (member)
+  uint64_t allow; //@todo convert via orka_strtoull
+  uint64_t deny; //@todo convert via orka_strtoull
+};
+
+//@todo missing initialization functions
+
+} // namespace overwrite
+
+/* EMBED STRUCTURE
+https://discord.com/developers/docs/resources/channel#embed-object-embed-structure */
+namespace embed {
+struct dati {
+  char title[EMBED_TITLE_LEN];
+  char type[32];
+  char description[EMBED_DESCRIPTION_LEN];
+  char url[MAX_URL_LEN];
+  int64_t timestamp; //@todo convert via orka_iso8601_to_unix_ms
+  int color;
+  footer::dati *footer;
+  image::dati *image;
+  thumbnail::dati *thumbnail;
+  video::dati *video;
+  provider::dati *provider;
+  author::dati *author;
+  field::dati *fields[EMBED_MAX_FIELDS];
+};
+
+//@todo missing initialization functions
+
+/* EMBED THUMBNAIL STRUCTURE
+https://discord.com/developers/docs/resources/channel#embed-object-embed-thumbnail-structure */
+namespace thumbnail {
+struct dati {
+  char url[MAX_URL_LEN];
+  char proxy_url[MAX_URL_LEN];
+  int height;
+  int width;
+};
+
+//@todo missing initialization functions
+
+} // namespace thumbnail
+
+/* EMBED VIDEO STRUCTURE
+https://discord.com/developers/docs/resources/channel#embed-object-embed-video-structure */
+// using alias namespace video = thumbnail;
+
+/* EMBED IMAGE STRUCTURE
+https://discord.com/developers/docs/resources/channel#embed-object-embed-image-structure */
+// using alias namespace image = thumbnail;
+
+/* EMBED PROVIDER STRUCTURE
+https://discord.com/developers/docs/resources/channel#embed-object-embed-provider-structure */
+namespace provider {
+struct dati {
+  char name[EMBED_AUTHOR_NAME_LEN];
+  char url[MAX_URL_LEN];
+};
+
+//@todo missing initialization functions
+
+} // namespace provider
+
+/* EMBED AUTHOR STRUCTURE
+https://discord.com/developers/docs/resources/channel#embed-object-embed-author-structure */
+namespace author {
+struct dati {
+  char name[EMBED_AUTHOR_NAME_LEN];
+  char url[MAX_URL_LEN];
+  char icon_url[MAX_URL_LEN];
+  char proxy_icon_url[MAX_URL_LEN];
+};
+
+//@todo missing initialization functions
+
+} // namespace author
+
+/* EMBED FOOTER STRUCTURE
+https://discord.com/developers/docs/resources/channel#embed-object-embed-footer-structure */
+namespace footer {
+struct dati {
+  char text[EMBED_FOOTER_TEXT_LEN];
+  char icon_url[MAX_URL_LEN];
+  char proxy_icon_url[MAX_URL_LEN];
+};
+
+//@todo missing initialization functions
+
+} // namespace footer
+
+/* EMBED FIELD STRUCTURE
+https://discord.com/developers/docs/resources/channel#embed-object-embed-field-structure */
+namespace field {
+struct dati {
+  char name[EMBED_FIELD_NAME_LEN];
+  char value[EMBED_FIELD_VALUE_LEN];
+  bool Inline; //inline is a reserved keyword
+};
+
+//@todo missing initialization functions
+
+} // namespace field
+
+} // namespace embed
+
+/* ATTACHMENT STRUCTURE
+https://discord.com/developers/docs/resources/channel#attachment-object */
+namespace attachment {
+struct dati {
+  uint64_t id;
+  char filename[256]; //@todo check if is enough
+  int size; //@todo check if should use different type
+  char url[MAX_URL_LEN]; 
+  char proxy_url[MAX_URL_LEN];
+  int height;
+  int width;
+};
+
+//@todo missing initialization functions
+
+} // namespace attachment
+
+/* CHANNEL MENTION STRUCTURE
+https://discord.com/developers/docs/resources/channel#channel-mention-object-channel-mention-structure */
+namespace mention {
+struct dati {
+  uint64_t id;
+  uint64_t guild_id;
+  types::code type;
+  char *name; //@todo find fixed size limit
+};
+
+//@todo missing initialization functions
+
+} // namespace mention
+
+/* ALLOWED MENTIONS STRUCTURE
+https://discord.com/developers/docs/resources/channel#allowed-mentions-object-allowed-mentions-structure */
+namespace allowed_mentions {
+struct dati {
+  //@todo missing parse;
+  uint64_t roles[100];
+  uint64_t users[100];
+  bool replied_user;
+};
+
+//@todo missing initialization functions
+
+} // namespace allowed_mentions
+
 } // namespace channel
 
+/* GUILD STRUCTURE
+https://discord.com/developers/docs/resources/guild#guild-object-guild-structure */
 namespace guild {
-
-/* GUILD OBJECT
- * https://discord.com/developers/docs/resources/guild#guild-object-guild-structure */
 struct dati {
   uint64_t id;
   char name[MAX_NAME_LEN];
@@ -214,10 +514,9 @@ void json_list_load(char *str, size_t len, void *p_guilds);
 
 void get(client *client, const uint64_t guild_id, dati *p_guild);
 
+/* GUILD MEMBER STRUCTURE
+https://discord.com/developers/docs/resources/guild#guild-member-object*/
 namespace member {
-
-/* GUILD MEMBER OBJECT
- * https://discord.com/developers/docs/resources/guild#guild-member-object*/
 struct dati {
   user::dati *user;
   char nick[MAX_NAME_LEN];
@@ -241,10 +540,9 @@ void remove(client *client, const uint64_t guild_id, const uint64_t user_id);
 
 } // namespace member
 
+/* GUILD BAN STRUCTURE
+https://discord.com/developers/docs/resources/guild#ban-object*/
 namespace ban {
-
-/* GUILD BAN OBJECT
- * https://discord.com/developers/docs/resources/guild#ban-object*/
 struct dati {
   char reason[MAX_REASON_LEN];
   user::dati *user;
@@ -265,10 +563,9 @@ void remove(client *client, const uint64_t guild_id, const uint64_t user_id, con
 
 } // namespace guild
 
+/* USER STRUCTURE
+https://discord.com/developers/docs/resources/user#user-object-user-structure */
 namespace user {
-
-/* USER OBJECT
- * https://discord.com/developers/docs/resources/user#user-object-user-structure */
 struct dati {
   uint64_t id;
   char username[MAX_USERNAME_LEN];
@@ -294,6 +591,7 @@ void json_list_load(char *str, size_t len, void *p_users);
 
 void get(client *client, const uint64_t user_id, dati *p_user);
 
+// current user centered functions
 namespace me {
 
 void get(client *client, dati *p_user);

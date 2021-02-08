@@ -9,16 +9,50 @@
 
 namespace discord {
 
-struct client; // forward declaration
-namespace channel { // forward declaration
+/* * * * * * * * * * * * * * * * * * * * */
+/* FORWARD DECLARATION OF EVERY DATATYPE */
+
+struct client;
+namespace channel {
   struct dati; 
-  namespace message { struct dati; }
+  namespace types { typedef int code; }
+  namespace message { 
+    struct dati; 
+    namespace types { typedef int code; }
+    namespace activity { struct dati; }
+    namespace application { struct dati; }
+    namespace reference { struct dati; }
+    namespace activity_types { typedef int code; }
+    namespace flags { typedef int code; }
+    namespace sticker {
+      struct dati;
+      namespace format_types { typedef int code; }
+    } // namespace sticker
+  } // namespace message
+  namespace followed_channel { struct dati; }
+  namespace reaction { struct dati; }
+  namespace overwrite { struct dati; }
+  namespace embed { 
+    struct dati; 
+    namespace thumbnail { struct dati; }
+    namespace video = thumbnail;
+    namespace image = thumbnail;
+    namespace provider { struct dati; }
+    namespace author { struct dati; }
+    namespace footer { struct dati; }
+    namespace field { struct dati; }
+  } // namespace embed
+  namespace attachment { struct dati; }
+  namespace mention { struct dati; }
 } // namespace channel
-namespace user { struct dati; } // forward declaration
-namespace guild { // forward declaration
+namespace user { struct dati; }
+namespace guild {
   struct dati; 
   namespace member { struct dati; }
 } // namespace guild
+
+/* * * * END OF FORWARD DECLARATION * * * */
+/* * * * * * * * * * * * * * * * * * * * */
 
 typedef void (idle_cb)(discord::client *client, const user::dati *me);
 typedef void (message_cb)(discord::client *client, const user::dati *me, const channel::message::dati *message);
@@ -100,7 +134,7 @@ enum close_opcodes {
 
 /* GATEWAY INTENTS
 https://discord.com/developers/docs/topics/gateway#identify-identify-structure */
-namespace intents { // pre c++11 enum class
+namespace intents {
 typedef int code;
 enum {
   GUILDS                        = 1 << 0,
