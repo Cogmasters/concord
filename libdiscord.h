@@ -501,19 +501,142 @@ void list_cleanup(dati **guild);
 void json_load(char *str, size_t len, void *p_guild);
 void json_list_load(char *str, size_t len, void *p_guilds);
 
+/* DEFAULT MESSAGE NOTIFICATION LEVEL
+https://discord.com/developers/docs/resources/guild#guild-object-default-message-notification-level */
+namespace default_message_notification_level {
+enum {
+  ALL_MESSAGES  = 0,
+  ONLY_MENTIONS = 1
+};
+} // namespace default_message_notification_level
+
+/* EXPLICIT CONTENT FILTER LEVEL
+https://discord.com/developers/docs/resources/guild#guild-object-explicit-content-filter-level */
+namespace explicit_content_filter_level {
+enum {
+  DISABLED              = 0,
+  MEMBERS_WITHOUT_ROLES = 1,
+  ALL_MEMBERS           = 2
+};
+} // namespace explicit content_filter_level
+
+/* MFA LEVEL
+https://discord.com/developers/docs/resources/guild#guild-object-mfa-level */
+namespace mfa_level {
+enum {
+  NONE     = 0,
+  ELEVATED = 1
+};
+} // namespace mfa_level
+
+/* VERIFICATION LEVEL
+https://discord.com/developers/docs/resources/guild#guild-object-verification-level */
+namespace verification_level {
+enum {
+  NONE      = 0,
+  LOW       = 1,
+  MEDIUM    = 2,
+  HIGH      = 3,
+  VERY_HIGH = 4
+};
+} // namespace verification_level
+
+/* PREMIUM TIER
+https://discord.com/developers/docs/resources/guild#guild-object-premium-tier */
+namespace premium_tier {
+enum {
+  NONE   = 0,
+  TIER_1 = 1,
+  TIER_2 = 2,
+  TIER_3 = 3
+};
+} // namespace premium_tier
+
+/* SYSTEM CHANNEL FLAGS
+https://discord.com/developers/docs/resources/guild#guild-object-system-channel-flags */
+namespace system_channel_flags {
+enum {
+  SUPRESS_JOIN_NOTIFICATIONS     = 1 << 0,
+  SUPPRESS_PREMIUM_SUBSCRIPTIONS = 1 << 1
+};
+} // namespace system_channel_flags
+
+/* GUILD FEATURES
+https://discord.com/developers/docs/resources/guild#guild-object-guild-features */
+namespace guild_features {
+enum {
+  INVITE_SPLASH,
+  VIP_REGIONS,
+  VANITY_URL,
+  VERIFIED,
+  PARTNERED,
+  COMMUNITY,
+  COMMERCE,
+  NEWS,
+  DISCOVERABLE,
+  FEATURABLE,
+  ANIMATED_ICON,
+  BANNER,
+  WELCOME_SCREEN_ENABLED,
+  MEMBER_VERIFICATION_GATE_ENABLED,
+  PREVIEW_ENABLED
+};
+} // namespace guild_features
+
+/* UNAVAILABLE GUILD STRUCTURE
+https://discord.com/developers/docs/resources/guild#unavailable-guild-object */
+namespace unavailable_guild {
+struct dati {
+  uint64_t id;
+  bool unavailable;
+};
+} // namespace unavailable_guild
+
+/* GUILD PREVIEW STRUCTURE
+https://discord.com/developers/docs/resources/guild#guild-preview-object-guild-preview-structure */
+namespace preview {
+struct dati {
+  uint64_t id;
+  char name[MAX_NAME_LEN];
+  char icon[MAX_HASH_LEN];
+  char splash[MAX_HASH_LEN];
+  char discovery_splash[MAX_HASH_LEN];
+  emoji::dati **emojis;
+  //@todo missing features
+  int approximate_member_count;
+  int approximate_presence_count;
+  char description[MAX_DESCRIPTION_LEN];
+};
+
+//@todo missing initialization functions
+
+} // namespace preview
+
+/* GUILD WIDGET STRUCTURE
+https://discord.com/developers/docs/resources/guild#guild-widget-object-guild-widget-structure */
+namespace widget {
+struct dati {
+  bool enabled;
+  uint64_t channel_id;
+};
+
+//@todo missing initialization functions
+
+} // namespace widget
+
 /* GUILD MEMBER STRUCTURE
 https://discord.com/developers/docs/resources/guild#guild-member-object*/
 namespace member {
 struct dati {
   user::dati *user;
   char nick[MAX_NAME_LEN];
-  //@todo missing roles
+  uint64_t **roles; //@todo add to json_load
   int64_t joined_at;
   int64_t premium_since;
   bool deaf;
   bool mute;
   bool pending;
-  //@todo missing permissions
+  char *permissions; //@todo find fixed size limit
 };
 
 dati* init();
@@ -523,6 +646,68 @@ void json_load(char *str, size_t len, void *p_member);
 void json_list_load(char *str, size_t len, void *p_members);
 
 } // namespace member
+
+/* INTEGRATION STRUCTURE
+https://discord.com/developers/docs/resources/guild#integration-object-integration-structure */
+namespace integration {
+struct dati {
+  uint64_t id;
+  char *name; //@todo find fixed size limit
+  char *type; //@todo find fixed size limit
+  bool enabled;
+  bool syncing;
+  uint64_t role_id;
+  bool enable_emoticons;
+  expire_behaviors::code expire_behavior;
+  int expire_grace_period;
+  user::dati *user;
+  account::dati *account;
+  int64_t synced_at;
+  int subscriber_count;
+  bool revoked;
+  application::dati *application;
+};
+
+//@todo missing initialization functions
+
+/* INTEGRATION EXPIRE BEHAVIORS
+https://discord.com/developers/docs/resources/guild#integration-object-integration-expire-behaviors */
+namespace expire_behaviors {
+enum {
+  REMOVE_ROLE = 0,
+  KICK        = 1,
+};
+} // namespace expire_behaviors
+
+/* INTEGRATION ACCOUNT OBJECT
+https://discord.com/developers/docs/resources/guild#integration-account-object-integration-account-structure */
+namespace account {
+struct dati {
+  uint64_t id;
+  char *name; //@todo find fixed size limit
+};
+
+//@todo missing initialization functions
+
+} // namespace account
+
+/* INTEGRATION APPLICATION OBJECT
+https://discord.com/developers/docs/resources/guild#integration-application-object-integration-application-structure */
+namespace application {
+struct dati {
+  uint64_t id;
+  char *name; //@todo find fixed size limit
+  char icon[MAX_HASH_LEN];
+  char *description; //@todo find fixed size limit
+  char *summary; //@todo find fixed size limit
+  user::dati *bot;
+};
+
+//@todo missing initialization functions
+
+} // namespace application
+
+} // namespace integration
 
 /* GUILD BAN STRUCTURE
 https://discord.com/developers/docs/resources/guild#ban-object*/
@@ -539,6 +724,56 @@ void json_load(char *str, size_t len, void *p_ban);
 void json_list_load(char *str, size_t len, void *p_ban);
 
 } // namespace ban
+
+/* WELCOME SCREEN STRUCTURE
+https://discord.com/developers/docs/resources/guild#welcome-screen-object-welcome-screen-structure */
+namespace welcome_screen {
+struct dati {
+  char *description; //@todo find fixed size limit
+  screen_channel::dati **welcome_channels;
+};
+
+/* WELCOME SCREEN CHANNEL STRUCTURE
+https://discord.com/developers/docs/resources/guild#welcome-screen-object-welcome-screen-channel-structure */
+namespace screen_channel {
+struct dati {
+  uint64_t channel_id;
+  char *description; //@todo find fixed size limit
+  uint64_t emoji_id;
+  char *emoji_name; //@todo find fixed size limit
+};
+} // namespace screen_channel
+} // namespace welcome_screen
+
+/* MEMBERSHIP SCREENING STRUCTURE
+https://discord.com/developers/docs/resources/guild#membership-screening-object */
+namespace membership_screening {
+struct dati {
+  int64_t version;
+  field::dati **fields;
+  char *description; //@todo find fixed size limit
+};
+
+/* MEMBERSHIP SCREENING FIELD STRUCTURE
+https://discord.com/developers/docs/resources/guild#membership-screening-object-membership-screening-field-structure */
+namespace field {
+struct dati {
+  field_type::code field_type;   
+  char *label; //@todo find fixed size limit
+  char **values; //@todo find fixed size limit
+  bool required;
+};
+
+/* MEMBERSHIP SCREENING FIELD TYPES
+https://discord.com/developers/docs/resources/guild#membership-screening-object-membership-screening-field-types */
+namespace field_type {
+enum { TERMS }; //currently the only type
+} // namespace field_type
+
+} // namespace field
+
+} // namespace membership_screening
+
 
 } // namespace guild
 

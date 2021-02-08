@@ -48,7 +48,34 @@ namespace channel {
 namespace emoji { struct dati; }
 namespace guild {
   struct dati; 
+  namespace explicit_content_filter_level { typedef int code; }
+  namespace mfa_level { typedef int code; }
+  namespace verification_level { typedef int code; }
+  namespace premium_tier { typedef int code; }
+  namespace system_channel_flags { typedef int code; }
+  namespace guild_features { typedef int code; }
+  namespace unavailable_guild { struct dati; }
+  namespace preview { struct dati; }
+  namespace widget { struct dati; }
   namespace member { struct dati; }
+  namespace integration { 
+    struct dati; 
+    namespace expire_behaviors { typedef int code; }
+    namespace account { struct dati; }
+    namespace application { struct dati; }
+  } // namespace integration
+  namespace ban { struct dati; }
+  namespace welcome_screen { 
+    struct dati; 
+    namespace screen_channel { struct dati; }
+  } // namespace welcome_screen
+  namespace membership_screening {
+    struct dati;
+    namespace field {
+      struct dati;
+      namespace field_type { typedef int code; }
+    } // namespace field
+  } // namespace membsership_screening
 } // namespace guild
 namespace user { struct dati; }
 
