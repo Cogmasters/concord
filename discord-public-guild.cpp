@@ -150,7 +150,6 @@ list_cleanup(dati **members) {
   free(members);
 }
 
-
 //@todo modifiable query string parameters
 dati**
 get_list(client *client, const uint64_t guild_id)

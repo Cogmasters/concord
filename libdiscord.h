@@ -90,11 +90,6 @@ enum {
 };
 } // namespace types
 
-void get(client *client, const uint64_t channel_id, dati *p_channel);
-
-void pin_message(client *client, const uint64_t channel_id, const uint64_t message_id);
-void unpin_message(client *client, const uint64_t channel_id, const uint64_t message_id);
-
 /* MESSAGE STRUCTURE
 https://discord.com/developers/docs/resources/channel#message-object*/
 namespace message {
@@ -245,30 +240,6 @@ enum {
 
 } // namespace sticker
 
-/* https://discord.com/developers/docs/resources/channel#create-message */
-namespace create { // function wrapper
-
-struct params {
-  char *content;
-  char *nonce;
-  bool tts;
-  char *file;
-  //@todo missing embed object
-  char *payload_json;
-  //@todo missing allowed mentions
-  struct message_reference { //@todo change to message::reference
-    uint64_t message_id;
-    uint64_t channel_id;
-    uint64_t guild_id;
-  };
-};
-
-void run(client *client, const uint64_t channel_id, params *params, dati *p_message);
-
-} // namespace create
-
-void del(client *client, const uint64_t channel_id, const uint64_t message_id);
-
 } // namespace message
 
 /* FOLLOWED CHANNEL STRUCTURE
@@ -289,7 +260,7 @@ namespace reaction {
 struct dati {
   int count;
   bool me;
-  //@todo missing emoji
+  emoji::dati *emoji;
 };
 
 //@todo missing initialization functions
@@ -454,6 +425,24 @@ struct dati {
 
 } // namespace channel
 
+/* EMOJI STRUCTURE
+https://discord.com/developers/docs/resources/emoji#emoji-object-emoji-structure */
+namespace emoji {
+struct dati {
+  uint64_t id;
+  char *name; //@todo find fixed size limit
+  //@todo missing roles;
+  user::dati *user;
+  bool require_colons;
+  bool managed;
+  bool animated;
+  bool available;
+};
+
+//@todo missing initialization functions
+
+} // namespace emoji
+
 /* GUILD STRUCTURE
 https://discord.com/developers/docs/resources/guild#guild-object-guild-structure */
 namespace guild {
@@ -461,49 +450,49 @@ struct dati {
   uint64_t id;
   char name[MAX_NAME_LEN];
   char icon[MAX_HASH_LEN];
-  char splash[MAX_HASH_LEN];
-  char discovery_splash[MAX_HASH_LEN];
+  char icon_hash[MAX_HASH_LEN]; //@todo add to json_load
+  char splash[MAX_HASH_LEN]; //@todo add to json_load
+  char discovery_splash[MAX_HASH_LEN]; //@todo add to json_load
   bool owner;
-  uint64_t owner_id;
+  uint64_t owner_id; //@todo add to json_load
   int permissions;
-  char region[MAX_REGION_LEN];
-  uint64_t afk_channel_id;
-  int afk_timeout;
-  bool embed_enabled;
-  uint64_t embed_channel_id;
-  int verification_level;
-  int default_message_notifications;
-  int explicit_content_filter;
+  char region[MAX_REGION_LEN]; //@todo add to json_load
+  uint64_t afk_channel_id; //@todo add to json_load
+  int afk_timeout; //@todo add to json_load
+  bool widget_enabled; //@todo add to json_load
+  uint64_t widget_channel_id; //@todo add to json_load
+  int verification_level; //@todo add to json_load
+  int default_message_notifications; //@todo add to json_load
+  int explicit_content_filter; //@todo add to json_load
   //@todo missing roles;
-  //@todo missing emojis;
-  char **features;
-  int mfa_level;
-  uint64_t application_id;
-  bool widget_enabled;
-  uint64_t widget_channel_id;
-  uint64_t system_channel_id;
-  int system_channel_flags;
-  uint64_t rules_channel_id;
-  int64_t joined_at;
-  bool large;
-  bool unavailable;
-  int member_count;
-  //@todo missing voice states;
-  //@todo missing members;
-  channel::dati **channels;
-  //@todo missing presences;
-  int max_presences;
-  int mas_members;
-  char vanity_url_code[MAX_URL_LEN];
-  char description[MAX_DESCRIPTION_LEN];
-  char banner[MAX_HASH_LEN];
-  int premium_tier;
-  int premium_subscription_count;
-  char preferred_locale[MAX_LOCALE_LEN];
-  uint64_t public_updates_channel_id;
-  int max_video_channel_users;
-  int approximate_member_count;
-  int approximate_presence_count;
+  emoji::dati **emojis; //@todo add to json_load
+  char **features; //@todo add to json_load
+  int mfa_level; //@todo add to json_load
+  uint64_t application_id; //@todo add to json_load
+  uint64_t system_channel_id; //@todo add to json_load
+  int system_channel_flags; //@todo add to json_load
+  uint64_t rules_channel_id; //@todo add to json_load
+  int64_t joined_at; //@todo add to json_load
+  bool large; //@todo add to json_load
+  bool unavailable; //@todo add to json_load
+  int member_count; //@todo add to json_load
+  //@todo missing voice_states;
+  member::dati **members; //@todo add to json_load
+  channel::dati **channels; //@todo add to json_load
+  //@todo missing_presences;
+  int max_presences; //@todo add to json_load
+  int max_members; //@todo add to json_load
+  char vanity_url_code[MAX_URL_LEN]; //@todo add to json_load
+  char description[MAX_DESCRIPTION_LEN]; //@todo add to json_load
+  char banner[MAX_HASH_LEN]; //@todo add to json_load
+  int premium_tier; //@todo add to json_load
+  int premium_subscription_count; //@todo add to json_load
+  char preferred_locale[MAX_LOCALE_LEN]; //@todo add to json_load
+  uint64_t public_updates_channel_id; //@todo add to json_load
+  int max_video_channel_users; //@todo add to json_load
+  int approximate_member_count; //@todo add to json_load
+  int approximate_presence_count; //@todo add to json_load
+  //@todo missing welcome_screen;
 };
 
 dati* init();
@@ -511,8 +500,6 @@ void cleanup(dati *guild);
 void list_cleanup(dati **guild);
 void json_load(char *str, size_t len, void *p_guild);
 void json_list_load(char *str, size_t len, void *p_guilds);
-
-void get(client *client, const uint64_t guild_id, dati *p_guild);
 
 /* GUILD MEMBER STRUCTURE
 https://discord.com/developers/docs/resources/guild#guild-member-object*/
@@ -535,9 +522,6 @@ void list_cleanup(dati **members);
 void json_load(char *str, size_t len, void *p_member);
 void json_list_load(char *str, size_t len, void *p_members);
 
-dati **get_list(client *client, const uint64_t guild_id);
-void remove(client *client, const uint64_t guild_id, const uint64_t user_id);
-
 } // namespace member
 
 /* GUILD BAN STRUCTURE
@@ -553,11 +537,6 @@ void cleanup(dati *ban);
 void list_cleanup(dati **bans);
 void json_load(char *str, size_t len, void *p_ban);
 void json_list_load(char *str, size_t len, void *p_ban);
-
-void get(client *client, const uint64_t guild_id, const uint64_t user_id, dati *p_ban);
-dati **get_list(client *client, const uint64_t guild_id);
-void create(client *client, const uint64_t guild_id, const uint64_t user_id, int delete_message_days, const char reason[]);
-void remove(client *client, const uint64_t guild_id, const uint64_t user_id, const char reason[]);
 
 } // namespace ban
 
@@ -589,19 +568,14 @@ void list_cleanup(dati **users);
 void json_load(char *str, size_t len, void *p_user);
 void json_list_load(char *str, size_t len, void *p_users);
 
-void get(client *client, const uint64_t user_id, dati *p_user);
-
-// current user centered functions
-namespace me {
-
-void get(client *client, dati *p_user);
-guild::dati** get_guilds(client *client);
-
-} // namespace me
-
 } // namespace user
 
-/* discord-public.c */
+} // namespace discord
+
+
+/* * * * FUNCTION DECLARATIONS * * * */
+
+namespace discord { /* discord-public.c */
 
 void global_init();
 void global_cleanup();
@@ -626,6 +600,76 @@ void dump_json(client *client, char file[]);
 void dump_curl(client *client, char file[]);
 void* set_data(client *client, void *data);
 void* get_data(client *client);
+
+namespace channel { /* discord-public-channel.c */
+
+void get(client *client, const uint64_t channel_id, dati *p_channel);
+void pin_message(client *client, const uint64_t channel_id, const uint64_t message_id);
+void unpin_message(client *client, const uint64_t channel_id, const uint64_t message_id);
+
+namespace message {
+/* https://discord.com/developers/docs/resources/channel#create-message */
+namespace create { // function wrapper
+
+struct params {
+  char *content;
+  char *nonce;
+  bool tts;
+  char *file;
+  //@todo missing embed object
+  char *payload_json;
+  //@todo missing allowed mentions
+  struct message_reference { //@todo change to message::reference
+    uint64_t message_id;
+    uint64_t channel_id;
+    uint64_t guild_id;
+  };
+};
+
+void run(client *client, const uint64_t channel_id, params *params, dati *p_message);
+
+} // namespace create
+
+void del(client *client, const uint64_t channel_id, const uint64_t message_id);
+
+} // namespace message
+
+} // namespace channel
+
+namespace guild { /* discord-public-guild.cpp */
+
+void get(client *client, const uint64_t guild_id, dati *p_guild);
+
+namespace member {
+
+dati **get_list(client *client, const uint64_t guild_id);
+void remove(client *client, const uint64_t guild_id, const uint64_t user_id);
+
+} // namespace member
+
+namespace ban {
+
+void get(client *client, const uint64_t guild_id, const uint64_t user_id, dati *p_ban);
+dati **get_list(client *client, const uint64_t guild_id);
+void create(client *client, const uint64_t guild_id, const uint64_t user_id, int delete_message_days, const char reason[]);
+void remove(client *client, const uint64_t guild_id, const uint64_t user_id, const char reason[]);
+
+} // namespace ban
+
+} // namespace guild
+
+namespace user { /* discord-public-user.cpp */
+
+void get(client *client, const uint64_t user_id, dati *p_user);
+
+namespace me { // current user centered functions
+
+void get(client *client, dati *p_user);
+guild::dati** get_guilds(client *client);
+
+} // namespace me
+
+} // namespace user
 
 } // namespace discord
 

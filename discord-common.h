@@ -45,11 +45,12 @@ namespace channel {
   namespace attachment { struct dati; }
   namespace mention { struct dati; }
 } // namespace channel
-namespace user { struct dati; }
+namespace emoji { struct dati; }
 namespace guild {
   struct dati; 
   namespace member { struct dati; }
 } // namespace guild
+namespace user { struct dati; }
 
 /* * * * END OF FORWARD DECLARATION * * * */
 /* * * * * * * * * * * * * * * * * * * * */
