@@ -32,7 +32,7 @@ json_load(char *str, size_t len, void *p_user)
       user->discriminator,
       user->avatar,
       &user->bot,
-      &user->sys,
+      &user->System,
       &user->mfa_enabled,
       user->locale,
       &user->verified,

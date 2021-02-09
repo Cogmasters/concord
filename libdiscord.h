@@ -849,15 +849,14 @@ struct dati {
   char discriminator[MAX_DISCRIMINATOR_LEN];
   char avatar[MAX_HASH_LEN];
   bool bot;
-  bool sys;
+  bool System; //system is a reserved keyword
   bool mfa_enabled;
   char locale[MAX_LOCALE_LEN];
   bool verified;
   char email[MAX_EMAIL_LEN];
-  int flags;
-  int premium_type;
-  int public_flags;
-  guild::dati **guilds;
+  flags::code flags;
+  premium_types::code premium_type;
+  flags::code public_flags;
 };
 
 dati* init();
@@ -865,6 +864,65 @@ void cleanup(dati *user);
 void list_cleanup(dati **users);
 void json_load(char *str, size_t len, void *p_user);
 void json_list_load(char *str, size_t len, void *p_users);
+
+/* USER FLAGS
+https://discord.com/developers/docs/resources/user#user-object-user-flags */
+namespace flags {
+enum {
+  NONE                         = 0,
+  DISCORD_EMPLOYEE             = 1 << 0,
+  PARTNERED_SERVER_OWNER       = 1 << 1,
+  HYPESQUAD_EVENTS             = 1 << 2,
+  BUG_HUNTER_LEVEL_1           = 1 << 3,
+  HOUSE_BRAVERY                = 1 << 6,
+  HOUSE_BRILLIANCE             = 1 << 7,
+  HOUSE_BALANCE                = 1 << 8,
+  EARLY_SUPPORTER              = 1 << 9,
+  TEAM_USER                    = 1 << 10,
+  SYSTEM                       = 1 << 12,
+  BUG_HUNTER_LEVEL_2           = 1 << 14,
+  VERIFIED_BOT                 = 1 << 16,
+  EARLY_VERIFIED_BOT_DEVELOPER = 1 << 17
+};
+} // namespace flags
+
+/* PREMIUM TYPES 
+https://discord.com/developers/docs/resources/user#user-object-premium-types */
+namespace premium_types {
+enum {
+  NONE          = 0,
+  NITRO_CLASSIC = 1,
+  NITRO         = 2
+};
+} // namespace premium_types
+
+/* CONNECTION STRUCTURE
+https://discord.com/developers/docs/resources/user#connection-object-connection-structure */
+namespace connection {
+struct dati {
+  char *id; //@todo find fixed size limit
+  char *name; //@todo find fixed size limit
+  char *type; //@todo find fixed size limit
+  bool revoked;
+  guild::integration::dati **integrations;
+  bool verified;
+  bool friend_sync;
+  bool show_activity;
+  visibility_types::code visibility;
+};
+
+//@todo missing initialization functions
+
+/* VISIBILITY TYPES
+https://discord.com/developers/docs/resources/user#connection-object-visibility-types */
+namespace visibility_types {
+enum {
+  NONE     = 0,
+  EVERYONE = 1
+};
+} // namespace visibility_types
+
+} // namespace connection
 
 } // namespace user
 
