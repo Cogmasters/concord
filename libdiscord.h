@@ -50,6 +50,172 @@ https://discord.com/developers/docs/reference#snowflakes */
 /* * * * STRUCTURES DECLARATIONS * * * */
 
 namespace discord {
+
+/* AUDIT LOG STRUCTURE
+https://discord.com/developers/docs/resources/audit-log#audit-log-object-audit-log-structure */
+namespace audit_log {
+struct dati {
+  webhook::dati **webhooks;
+  user::dati **users;
+  entry::dati **audit_log_entries;
+  guild::integration::dati **integrations;
+};
+
+//@todo missing initialization functions
+
+/* AUDIT LOG ENTRY STRUCTURE
+https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-entry-structure */
+namespace entry {
+struct dati {
+  char *target_id; //@todo find fixed size limit
+  change::dati **changes;
+  uint64_t user_id;
+  uint64_t id;
+  events::code action_type;
+  optional_info::dati *options;
+  char reason[MAX_REASON_LEN];
+};
+
+//@todo missing initialization functions
+
+/* AUDIT LOG EVENTS
+https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-events */
+namespace events {
+enum {
+  GUILD_UPDATE             = 1,
+  CHANNEL_CREATE           = 10,
+  CHANNEL_UPDATE           = 11,
+  CHANNEL_DELETE           = 12,
+  CHANNEL_OVERWRITE_CREATE = 13,
+  CHANNEL_OVERWRITE_UPDATE = 14,
+  CHANNEL_OVERWRITE_DELETE = 15,
+  MEMBER_KICK              = 20,
+  MEMBER_PRUNE             = 21,
+  MEMBER_BAN_ADD           = 22,
+  MEMBER_BAN_REMOVE        = 23,
+  MEMBER_UPDATE            = 24,
+  MEMBER_ROLE_UPDATE       = 25,
+  MEMBER_MOVE              = 26,
+  MEMBER_DISCONNECT        = 27,
+  BOT_ADD                  = 28,
+  ROLE_CREATE              = 30,
+  ROLE_UPDATE              = 31,
+  ROLE_DELETE              = 32,
+  INVITE_CREATE            = 40,
+  INVITE_DELETE            = 42,
+  WEBHOOK_CREATE           = 50,
+  WEBHOOK_UPDATE           = 51,
+  WEBHOOK_DELETE           = 52,
+  EMOJI_CREATE             = 60,
+  EMOJI_UPDATE             = 61,
+  EMOJI_DELETE             = 62,
+  MESSAGE_DELETE           = 72,
+  MESSAGE_BULK_DELETE      = 73,
+  MESSAGE_PIN              = 74,
+  MESSAGE_UNPIN            = 75,
+  INTEGRATION_CREATE       = 80,
+  INTEGRATION_UPDATE       = 81,
+  INTEGRATION_DELETE       = 82
+};
+} // namespace events
+
+/* OPTIONAL AUDIT ENTRY INFO STRUCTURE
+https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-optional-audit-entry-info */
+namespace optional_info {
+struct dati {
+  char *delete_member_days; //@todo find fixed size limit
+  char *members_removed; //@todo find fixed size limit
+  uint64_t channel_id;
+  uint64_t message_id;
+  char *count; //@todo find fixed size limit
+  uint64_t id;
+  char *type; //@todo find fixed size limit
+  char *role; //@todo find fixed size limit
+};
+
+//@todo missing initialization functions
+
+} // namespace optional_entry
+
+} // namespace entry
+
+/* AUDIT LOG CHANGE STRUCTURE
+https://discord.com/developers/docs/resources/audit-log#audit-log-change-object-audit-log-change-structure */
+namespace change {
+struct dati {
+  void *new_value;
+  void *old_value;
+  char key[64];
+};
+
+//@todo missing initialization functions
+
+/* AUDIT LOG CHANGE KEY
+https://discord.com/developers/docs/resources/audit-log#audit-log-change-object-audit-log-change-key */
+namespace key {
+struct dati {
+   char name[MAX_NAME_LEN];
+   char description[MAX_DESCRIPTION_LEN];
+   char hash[MAX_HASH_LEN];
+   char splash_hash[MAX_HASH_LEN];
+   char discovery_splash_hash[MAX_HASH_LEN];
+   uint64_t banner_hash;
+   char region[MAX_REGION_LEN];
+   char preferred_locale[MAX_LOCALE_LEN];
+   uint64_t afk_channel_id;
+   int afk_timeout;
+   uint64_t rules_channel_id;
+   uint64_t public_updates_channel_id;
+   int mfa_level;
+   int verification_level;
+   int explicit_content_filter;
+   int default_message_notifications;
+   char vanity_url_code[MAX_URL_LEN];
+  //@todo missing add
+  //@todo missing remove
+   int prune_delete_days;
+   bool widget_enabled;
+   uint64_t widget_channel_id;
+   uint64_t system_channel_id;
+   int position;
+   char topic[MAX_TOPIC_LEN];
+   int bitrate;
+   channel::overwrite::dati **permission_overwrites;
+   bool nsfw;
+   uint64_t application_id;
+   int ratelimit_per_user;
+   char *permission; //@todo find fixed size limit
+   int color;
+   bool hoist;
+   bool mentionable;
+   char *allow; //@todo find fixed size limit
+   char *deny; //@todo find fixed size limit
+   char *code; //@todo find fixed size limit
+   uint64_t channel_id;
+   uint64_t inviter_id;
+   int max_uses;
+   int uses;
+   int max_age;
+   bool temporary;
+   bool deaf;
+   bool mute;
+   char *nick; //@todo find fixed size limit
+   char *avatar_hash; //@todo find fixed size limit
+   uint64_t id;
+   bool enable_emoticons;
+   int expire_behavior;
+   int expire_grace_period;
+   int user_limit;
+};
+
+//@todo missing initialization functions
+
+} // namespace key
+
+} // namespace change
+
+} // namespace audit_log
+
 /* CHANNEL STRUCTURE
 https://discord.com/developers/docs/resources/channel#channel-object-channel-structure */
 namespace channel {

@@ -13,6 +13,16 @@ namespace discord {
 /* FORWARD DECLARATION OF EVERY DATATYPE */
 
 struct client;
+namespace audit_log {
+  struct dati;
+  namespace entry { 
+    struct dati; 
+    namespace events { typedef int code; }
+    namespace optional_info { struct dati; }
+  }
+  namespace change { struct dati; }
+  namespace key { struct dati; }
+} // namespace audit_log
 namespace channel {
   struct dati; 
   namespace types { typedef int code; }
