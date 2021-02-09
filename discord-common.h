@@ -92,6 +92,10 @@ namespace user {
     namespace visibility_types { typedef int code; }
   } // namespace connection
 } // namespace user
+namespace voice {
+  struct dati;
+  namespace region { struct dati; }
+} // namespace voice
 
 /* * * * END OF FORWARD DECLARATION * * * */
 /* * * * * * * * * * * * * * * * * * * * */

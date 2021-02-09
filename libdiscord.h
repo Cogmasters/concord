@@ -926,6 +926,41 @@ enum {
 
 } // namespace user
 
+/* VOICE STRUCTURE
+https://discord.com/developers/docs/resources/voice#voice-state-object-voice-state-structure */
+namespace voice {
+struct dati {
+  uint64_t guild_id;
+  uint64_t channel_id;
+  uint64_t user_id;
+  guild::member::dati *member;
+  char *session_id; //@todo find fixed size limit
+  bool deaf;
+  bool mute;
+  bool self_deaf;
+  bool self_mute;
+  bool self_stream;
+  bool self_video;
+  bool suppress;
+};
+
+//@todo missing initialization functions
+
+/* VOICE REGION STRUCTURE
+https://discord.com/developers/docs/resources/voice#voice-region-object-voice-region-structure */
+namespace region {
+struct dati {
+  char *id; //@todo find fixed size limit
+  char *name; //@todo find fixed size limit
+  bool vip;
+  bool optimal;
+  bool deprecated;
+  bool custom;
+};
+} // namespace region
+
+} // namespace voice
+
 } // namespace discord
 
 
