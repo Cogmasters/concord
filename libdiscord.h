@@ -766,6 +766,8 @@ struct dati {
   bool required;
 };
 
+//@todo missing initialization functions
+
 /* MEMBERSHIP SCREENING FIELD TYPES
 https://discord.com/developers/docs/resources/guild#membership-screening-object-membership-screening-field-types */
 namespace field_type {
@@ -778,6 +780,44 @@ enum { TERMS }; //currently the only type
 
 
 } // namespace guild
+
+/* INVITE STRUCTURE
+https://discord.com/developers/docs/resources/invite#invite-object-invite-structure */
+namespace invite {
+struct dati {
+  char *code; //@todo find fixed size limit
+  guild::dati *guild;
+  channel::dati *channel;
+  user::dati *target_user;
+  target_user_types::code target_user_type;
+  int approximate_presence_count;
+  int approximate_member_count;
+};
+
+//@todo missing initialization functions
+
+/* TARGET USER TYPES
+https://discord.com/developers/docs/resources/invite#invite-object-target-user-types */
+namespace target_user_types {
+enum { STREAM = 1 };
+} // namespace target_user_types
+
+/* INVITE METADATA STRUCTURE
+https://discord.com/developers/docs/resources/invite#invite-metadata-object-invite-metadata-structure */
+namespace metadata {
+struct dati {
+  int user;
+  int max_uses;
+  int max_age;
+  bool temporary;
+  uint64_t created_at;
+};
+
+//@todo missing initialization functions
+
+} // namespace metadata
+
+} // namespace invite
 
 /* USER STRUCTURE
 https://discord.com/developers/docs/resources/user#user-object-user-structure */

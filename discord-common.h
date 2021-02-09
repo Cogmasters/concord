@@ -77,6 +77,11 @@ namespace guild {
     } // namespace field
   } // namespace membsership_screening
 } // namespace guild
+namespace invite {
+  struct dati;
+  namespace target_user_types { typedef int code; }
+  namespace metadata { struct dati; }
+} // namespace invite
 namespace user { struct dati; }
 
 /* * * * END OF FORWARD DECLARATION * * * */
