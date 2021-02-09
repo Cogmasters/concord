@@ -96,6 +96,10 @@ namespace voice {
   struct dati;
   namespace region { struct dati; }
 } // namespace voice
+namespace webhook {
+  struct dati;
+  namespace types { typedef int code; }
+} // namespace webhook
 
 /* * * * END OF FORWARD DECLARATION * * * */
 /* * * * * * * * * * * * * * * * * * * * */

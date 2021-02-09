@@ -46,6 +46,9 @@ https://discord.com/developers/docs/reference#snowflakes */
 #define SNOWFLAKE_INTERNAL_WORKER_ID  22
 #define SNOWFLAKE_TIMESTAMP           64
 
+/* * * * * * * * * * * * * * * * * * * */
+/* * * * STRUCTURES DECLARATIONS * * * */
+
 namespace discord {
 /* CHANNEL STRUCTURE
 https://discord.com/developers/docs/resources/channel#channel-object-channel-structure */
@@ -957,13 +960,41 @@ struct dati {
   bool deprecated;
   bool custom;
 };
+
+//@todo missing initialization functions
+
 } // namespace region
 
 } // namespace voice
 
+namespace webhook {
+struct dati {
+  uint64_t id;
+  types::code type;
+  uint64_t guild_id;
+  uint64_t channel_id;
+  user::dati *user;
+  char *name; //@todo find fixed size limit
+  char *avatar; //@todo find fixed size limit
+  char *token; //@todo find fixed size limit
+  uint64_t application_id;
+};
+
+//@todo missing initialization functions
+
+
+namespace types {
+enum {
+  INCOMING         = 1,
+  CHANNEL_FOLLOWER = 2
+};
+} // namespace types
+} // namespace webhook
+
 } // namespace discord
 
 
+/* * * * * * * * * * * * * * * * * * */
 /* * * * FUNCTION DECLARATIONS * * * */
 
 namespace discord { /* discord-public.c */
