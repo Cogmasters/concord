@@ -228,10 +228,15 @@ match_path (char *buffer, jsmntok_t *t,
     }
   }
   else if (STREQ(es->type_specifier, "funptr")) {
-    extractor *e = es->funptr;
-    int ret = (*e)(buffer + t[i].start, t[i].end - t[i].start, es->recipient);
-    if (0 == ret)
+    if (t[i].type == JSMN_PRIMITIVE || (STRNEQ(buffer + t[i].start, "null", 4))) {
       es->is_applied = false;
+    }
+    else {
+      extractor *e = es->funptr;
+      int ret = (*e)(buffer + t[i].start, t[i].end - t[i].start, es->recipient);
+      if (0 == ret)
+        es->is_applied = false;
+    }
   }
   else if (STREQ(es->type_specifier, "token")) {
     struct sized_buffer * tk = es->recipient;
