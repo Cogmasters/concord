@@ -50,9 +50,10 @@ struct extractor_specifier {
   struct path_specifier path_specifiers[N_PATH_MAX];
   char type_specifier[10];
   size_t size;
-  void *recipient; //must be a pointer
+  void *recipient; //must be a pointer, and it cannot be NULL
   bool is_applied;
   bool has_dynamic_size;
+  bool is_nullable;
   bool allocate_memory;
   bool is_funptr;
   extractor *funptr;
@@ -521,12 +522,18 @@ static void
 format_analyze(char *format, size_t *num_keys)
 {
   bool is_open = false;
+
+next_iter:
   while (*format) /* run until end of string found */
   {
     // search for open bracket
     while (*format)
     {
-      if ('[' == *format) {
+      if ('%' == *format && 'E' == *(format+1)) {
+        format += 2;
+        (*num_keys) ++ ;
+        goto next_iter;
+      } else if ('[' == *format) {
         is_open = true;
         ++format; // eat up '['
         break;
@@ -557,12 +564,12 @@ format_analyze(char *format, size_t *num_keys)
       if ('%' == *format){
         do { // skip type specifier
           ++format;
-        } while (*format && *format != '[');
+        } while (*format && *format != '[' && *format != ' ');
         break;
       }
       ++format;
     }
-    ++*num_keys;
+    (*num_keys) ++;
   }
 }
 
@@ -577,7 +584,11 @@ parse_extractor_specifiers(char * format, size_t n)
   while (*format) 
   {
     SKIP_SPACES(format);
-    if ('[' == *format) {
+    if ('%' == *format && 'E' == *(format + 1)) {
+      ++format; // eat up '%';
+      format = parse_type_specifier(format, es+i);
+    }
+    else if ('[' == *format) {
       ++format; //eat up '['
       format = parse_path_specifier(format, es+i, es[i].path_specifiers+0, 1);
     }
@@ -595,6 +606,10 @@ static struct extractor_specifier*
 format_parse(char *format, size_t *n)
 {
   format_analyze(format, n);
+
+  if (*n == 0) {
+    ERR("fatal error: cannot find any format strings %s", format);
+  }
 
   return parse_extractor_specifiers(format, *n);
 }
@@ -695,6 +710,9 @@ json_scanf(char *buffer, size_t buf_size, char *format, ...)
   }
 
   for (size_t i = 0; i < num_keys; ++i) {
+    if (es+i == capture_existance) // it should be applied after all others
+      continue;
+
     switch (tok[0].type) {
       case JSMN_OBJECT:
         apply_object(buffer, tok, num_tok, es + i);
@@ -718,12 +736,15 @@ json_scanf(char *buffer, size_t buf_size, char *format, ...)
       has_values = (void **) capture_existance->recipient;
 
     for (size_t i = 0, j = 0; i < num_keys; i++) {
+      if (es+i == capture_existance) continue;
+
       if (es[i].is_applied) {
         has_values[j] = es[i].recipient;
         j++;
       }
     }
-    *(void **)capture_existance->recipient = (void *) has_values;
+    if (capture_existance->allocate_memory)
+      *(void **)capture_existance->recipient = (void *) has_values;
   }
 
 cleanup:
