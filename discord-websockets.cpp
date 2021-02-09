@@ -516,8 +516,6 @@ init(websockets::dati *ws, char token[])
 
   ws->me = user::init();
   user::me::get(ws->p_client, ws->me);
-
-  memset(&ws->session, 0, sizeof(ws->session));
 }
 
 void
