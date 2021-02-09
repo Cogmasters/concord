@@ -140,6 +140,8 @@ json_load(char *str, size_t len, void *p_message)
     message->nonce = NULL;
   }
 
+  message->referenced_message = init();
+
   json_scanf(str, len,
      "[id]%F"
      "[channel_id]%F"
@@ -156,8 +158,8 @@ json_load(char *str, size_t len, void *p_message)
      "[pinned]%b"
      "[webhook_id]%F"
      "[type]%d"
-     "[flags]%d",
-     //"[referenced_message]%F",
+     "[flags]%d"
+     "[referenced_message]%F",
       &orka_strtoull, &message->id,
       &orka_strtoull, &message->channel_id,
       &orka_strtoull, &message->guild_id,
@@ -172,7 +174,14 @@ json_load(char *str, size_t len, void *p_message)
       &message->pinned,
       &orka_strtoull, &message->webhook_id,
       &message->type,
-      &message->flags);
+      &message->flags,
+      &json_load, message->referenced_message);
+
+  if(!message->referenced_message->id)
+  {
+    cleanup(message->referenced_message);
+    message->referenced_message = NULL;
+  }
 
   D_NOTOP_PUTS("Message object loaded with API response"); 
 }
@@ -195,8 +204,8 @@ json_list_load(char *str, size_t len, void *p_messages)
   *(dati ***)p_messages = new_messages;
 }
 
-static dati*
-message_init()
+dati*
+init()
 {
   dati *new_message = (dati*)calloc(1, sizeof(dati));
   if (NULL == new_message) return NULL;
@@ -215,21 +224,6 @@ cleanupA:
   free(new_message);
 
   return NULL;
-}
-
-dati*
-init()
-{
-  dati *new_message = message_init();
-  if (NULL == new_message) return NULL;
-
-  new_message->referenced_message = message_init();
-  if (NULL == new_message->referenced_message) {
-    cleanup(new_message);
-    return NULL;
-  }
-
-  return new_message;
 }
 
 static void
