@@ -3,7 +3,7 @@
 This section explains how to submit commits and pull requests the easy
    and cleanest way without causing any merge conflicts.
 
-### Setup
+### One time setup
 1. fork this repo to your personal account. Please DO NOT submit any commit to
 this fork from your git command line
 
@@ -32,6 +32,7 @@ Run the following command that will automatically do the following
 3. submit a commit to the branch
 4. create a pull request
 
+Assume your changes are in the orca folder, you can run the following commands:
 ```
 ./test/test-git2.exe -m "you commit comments"  files
 ```
