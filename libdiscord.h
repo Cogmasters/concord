@@ -68,7 +68,7 @@ struct dati {
   uint64_t owner_id;
   uint64_t application_id;
   uint64_t parent_id;
-  int64_t last_pin_timestamp;
+  uint64_t last_pin_timestamp;
   message::dati **messages;
 };
 
@@ -100,8 +100,8 @@ struct dati {
   user::dati *author;
   guild::member::dati *member;
   char content[MAX_MESSAGE_LEN];
-  int64_t timestamp;
-  int64_t edited_timestamp;
+  uint64_t timestamp;
+  uint64_t edited_timestamp;
   bool tts;
   bool mention_everyone;
   user::dati **mentions;
@@ -291,7 +291,7 @@ struct dati {
   char type[32];
   char description[EMBED_DESCRIPTION_LEN];
   char url[MAX_URL_LEN];
-  int64_t timestamp; //@todo convert via orka_iso8601_to_unix_ms
+  uint64_t timestamp; //@todo convert via orka_iso8601_to_unix_ms
   int color;
   footer::dati *footer;
   image::dati *image;
@@ -474,7 +474,7 @@ struct dati {
   uint64_t system_channel_id; //@todo add to json_load
   int system_channel_flags; //@todo add to json_load
   uint64_t rules_channel_id; //@todo add to json_load
-  int64_t joined_at; //@todo add to json_load
+  uint64_t joined_at; //@todo add to json_load
   bool large; //@todo add to json_load
   bool unavailable; //@todo add to json_load
   int member_count; //@todo add to json_load
@@ -633,8 +633,8 @@ struct dati {
   user::dati *user;
   char nick[MAX_NAME_LEN];
   uint64_t **roles; //@todo add to json_load
-  int64_t joined_at;
-  int64_t premium_since;
+  uint64_t joined_at;
+  uint64_t premium_since;
   bool deaf;
   bool mute;
   bool pending;
@@ -664,7 +664,7 @@ struct dati {
   int expire_grace_period;
   user::dati *user;
   account::dati *account;
-  int64_t synced_at;
+  uint64_t synced_at;
   int subscriber_count;
   bool revoked;
   application::dati *application;
@@ -751,7 +751,7 @@ struct dati {
 https://discord.com/developers/docs/resources/guild#membership-screening-object */
 namespace membership_screening {
 struct dati {
-  int64_t version;
+  uint64_t version;
   field::dati **fields;
   char *description; //@todo find fixed size limit
 };

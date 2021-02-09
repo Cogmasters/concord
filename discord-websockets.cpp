@@ -30,6 +30,8 @@ ws_opcode_print(int opcode)
   default:
       ERR("Invalid Gateway opcode (code: %d)", opcode);
   }
+
+  return NULL;
 }
 
 static char*
@@ -74,6 +76,8 @@ ws_close_opcode_print(enum close_opcodes gateway_opcode)
       }
    }
   }
+
+  return NULL;
 }
 
 static void
@@ -457,7 +461,7 @@ custom_multi_init()
 
 //@todo allow for user input
 static char*
-identify_init(int intents, char token[])
+identify_init(intents::code intents, char token[])
 {
   const char fmt_properties[] = \
     "{\"$os\":\"%s\",\"$browser\":\"orca\",\"$device\":\"orca\"}";
@@ -512,6 +516,8 @@ init(websockets::dati *ws, char token[])
 
   ws->me = user::init();
   user::me::get(ws->p_client, ws->me);
+
+  memset(&ws->session, 0, sizeof(ws->session));
 }
 
 void

@@ -86,7 +86,7 @@ list(void **p, size_t n, char *path)
 int
 orka_iso8601_to_unix_ms(char *timestamp, size_t len, void *p_data)
 {
-  int64_t *recipient = (int64_t*)p_data;
+  uint64_t *recipient = (uint64_t*)p_data;
   ASSERT_S(NULL != recipient, "No recipient provided by user");
 
   struct tm tm;
@@ -114,8 +114,8 @@ orka_iso8601_to_unix_ms(char *timestamp, size_t len, void *p_data)
   tm.tm_mon--; // struct tm takes month from 0 to 11
   tm.tm_year -= 1900; // struct tm takes years from 1900
 
-  int64_t res = (((int64_t) mktime(&tm) - timezone) * 1000)
-              + (int64_t) round(seconds * 1000.0);
+  uint64_t res = (((uint64_t) mktime(&tm) - timezone) * 1000)
+              + (uint64_t) round(seconds * 1000.0);
   switch (tz_operator) {
   case '+': // Add hours and minutes
       res += (tz_hour * 60 + tz_min) * 60 * 1000;
@@ -153,7 +153,7 @@ orka_strtoull(char *str, size_t len, void *p_data)
 }
 
 void
-orka_sleep_ms(const long long delay_ms)
+orka_sleep_ms(const int64_t delay_ms)
 {
   const struct timespec t = {
     .tv_sec = delay_ms / 1000,
@@ -164,7 +164,7 @@ orka_sleep_ms(const long long delay_ms)
 }
 
 /* returns current timestamp in milliseconds */
-int64_t
+uint64_t
 orka_timestamp_ms()
 {
   struct timespec t;

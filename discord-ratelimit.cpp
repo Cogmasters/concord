@@ -31,7 +31,7 @@ try_cooldown(bucket::dati *bucket)
 
   const int LEAST_MS = 1000; // wait for at least ms amount
 
-  long long delay_ms = bucket->reset_ms - orka_timestamp_ms();
+  int64_t delay_ms = (int64_t)(bucket->reset_tstamp - orka_timestamp_ms());
   if (delay_ms < 0) //no delay needed
     delay_ms = 0;
   else if (delay_ms > bucket->reset_after_ms) //don't delay longer than necessary
@@ -39,7 +39,7 @@ try_cooldown(bucket::dati *bucket)
 
   D_PRINT("RATELIMITING (reach bucket's connection threshold):\n\t"
           "\tBucket:\t\t%s\n\t"
-          "\tWait for:\t%lld (+%d) ms",
+          "\tWait for:\t %" PRId64 "(+%d) ms",
           bucket->hash, delay_ms, LEAST_MS);
 
   orka_sleep_ms(LEAST_MS + delay_ms); //sleep for delay amount (if any)
@@ -109,7 +109,7 @@ parse_ratelimits(bucket::dati *bucket, struct api_header_s *pairs)
 
   value = get_header_value(pairs, "x-ratelimit-reset");
   if (NULL != value) {
-    bucket->reset_ms = 1000 * strtoll(value, NULL, 10);
+    bucket->reset_tstamp = 1000 * strtoll(value, NULL, 10);
   }
 }
 

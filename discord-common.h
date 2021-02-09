@@ -127,8 +127,8 @@ namespace bucket { /* discord-ratelimit.cpp */
 struct dati { /* BUCKET STRUCTURE */
   char *hash; //the hash associated with this bucket
   int remaining; //connections this bucket can do before cooldown
-  long long reset_after_ms;
-  long long reset_ms;
+  int64_t reset_after_ms;
+  uint64_t reset_tstamp;
 };
 
 void cleanup(user_agent::dati *ua);
@@ -231,8 +231,8 @@ struct dati { /* WEBSOCKETS STRUCTURE */
   } payload;
 
   struct { /* HEARTBEAT STRUCTURE */
-    long interval_ms; //fixed interval between heartbeats
-    long tstamp; //start pulse timestamp in milliseconds
+    uint64_t interval_ms; //fixed interval between heartbeats
+    uint64_t tstamp; //start pulse timestamp in milliseconds
   } hbeat;
 
   struct { /* SESSION START LIMIT STRUCTURE */
@@ -245,9 +245,9 @@ struct dati { /* WEBSOCKETS STRUCTURE */
     int max_concurrency; //max concurrent sessions we can handle
 
     int concurrent; //active concurrent sessions
-    long identify_tstamp; //identify timestamp in ms
+    uint64_t identify_tstamp; //identify timestamp in ms
 
-    long event_tstamp; //event timestamp in ms (resets every 60s)
+    uint64_t event_tstamp; //event timestamp in ms (resets every 60s)
     int event_count; //count elements to avoid reaching 120/60sec limit
   } session;
 
@@ -267,7 +267,7 @@ struct dati { /* WEBSOCKETS STRUCTURE */
     } on_guild_member;
   } cbs;
 
-  long long now_tstamp; //timestamp updated every loop iteration
+  uint64_t now_tstamp; //timestamp updated every loop iteration
 
   int ping_ms; //latency between client and websockets server
 
