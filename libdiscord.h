@@ -187,7 +187,9 @@ struct dati {
   uint64_t guild_id;
 };
 
-//@todo missing initialization functions
+dati *init();
+void cleanup(dati *reference);
+void json_load(char *str, size_t len, void *p_reference);
 
 } // namespace reference
 

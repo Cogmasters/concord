@@ -309,6 +309,37 @@ del(client *client, const uint64_t channel_id, const uint64_t message_id)
     "/channels/%llu/messages/%llu", channel_id, message_id);
 }
 
+namespace reference {
+
+dati*
+init()
+{
+  dati *new_reference = (dati*)calloc(1, sizeof(dati));
+  return new_reference;
+}
+
+void
+cleanup(dati *reference)
+{
+  free(reference);
+}
+
+void
+json_load(char *str, size_t len, void *p_reference)
+{
+  dati *reference = (dati*)p_reference;
+
+  json_scanf(str, len,
+     "[message_id]%F"
+     "[channel_id]%F"
+     "[guild_id]%F",
+      &orka_strtoull, &reference->message_id,
+      &orka_strtoull, &reference->channel_id,
+      &orka_strtoull, &reference->guild_id);
+}
+
+}
+
 } // namespace message
 
 } // namespace channel
