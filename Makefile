@@ -69,12 +69,15 @@ discord: mkdir $(DISCORD_OBJS) $(LIBDISCORD)
 github: mkdir $(GITHUB_OBJS)
 
 bot: $(BOT_EXES) #@todo should we split by categories (bot_discord, bot_github, etc)?
-test: all $(TEST_EXES)
+test: all $(TEST_EXES) #@todo should we split by categories too ?
 
 
 mkdir :
 	mkdir -p $(OBJDIR) $(LIBDIR)
 
+$(OBJDIR)/curl-websocket.c.o : curl-websocket.c
+	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $< \
+		-U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=1
 $(OBJDIR)/%.c.o : %.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 $(OBJDIR)/%.cpp.o: %.cpp
