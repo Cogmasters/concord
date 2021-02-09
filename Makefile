@@ -98,8 +98,7 @@ install : all
 	install -m 644 libdiscord.h $(PREFIX)/include/
 
 clean :
-	rm -rf $(OBJDIR) $(LIBDIR) \
-	*.exe test/*.exe bots/*.exe
+	rm -rf $(OBJDIR) *.exe test/*.exe bots/*.exe
 
 purge : clean
 	rm -rf $(LIBDIR)
