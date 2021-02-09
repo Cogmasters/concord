@@ -18,6 +18,10 @@ extern char * json_escape_string(size_t * new_size, char * str, size_t old_size)
 extern int json_unescape_string(char ** new_str, size_t * new_size,
                                 char * str, size_t old_size);
 
+extern bool is_addr_defined (void ** E, void * addr);
+
+#define IS_DEFINED(p, field)   (is_addr_defined((p)->E, &((p)->field)))
+
 
 #ifdef __cplusplus
 }

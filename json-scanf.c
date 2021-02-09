@@ -814,3 +814,11 @@ __json_strerror(json_errcode code, char codetag[], void *where, char entity[])
 
   return  errdynm;
 }
+
+bool is_addr_defined (void **E , void * addr) {
+  for (int i = 0; E[i]; i++) {
+    if (E[i] == addr)
+      return true;
+  }
+  return false;
+}
