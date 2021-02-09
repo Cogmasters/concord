@@ -819,6 +819,27 @@ struct dati {
 
 } // namespace invite
 
+/* TEMPLATE STRUCTURE
+https://discord.com/developers/docs/resources/template#template-object-template-structure */
+namespace Template { // template is a reserved keyword
+struct dati {
+  char *code; //@todo find fixed size limit
+  char *name; //@todo find fixed size limit
+  char *description; //@todo find fixed size limit
+  int usage_count;
+  uint64_t creator_id;
+  user::dati *creator;
+  uint64_t created_at;
+  uint64_t updated_at;
+  uint64_t source_guild_id;
+  guild::dati *serialized_source_guild;
+  bool is_dirty;
+};
+
+//@todo missing initialization functions
+
+} // namespace Template
+
 /* USER STRUCTURE
 https://discord.com/developers/docs/resources/user#user-object-user-structure */
 namespace user {

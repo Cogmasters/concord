@@ -82,6 +82,7 @@ namespace invite {
   namespace target_user_types { typedef int code; }
   namespace metadata { struct dati; }
 } // namespace invite
+namespace Template { struct dati; }
 namespace user { struct dati; }
 
 /* * * * END OF FORWARD DECLARATION * * * */
