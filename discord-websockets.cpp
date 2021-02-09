@@ -81,7 +81,7 @@ ws_close_opcode_print(enum close_opcodes gateway_opcode)
 }
 
 static void
-ws_send_payload(websockets::dati *ws, char payload[])
+ws_send_payload(dati *ws, char payload[])
 {
   json_dump("SEND PAYLOAD", &ws->p_client->settings, payload);
 
@@ -90,7 +90,7 @@ ws_send_payload(websockets::dati *ws, char payload[])
 }
 
 static void
-ws_send_resume(websockets::dati *ws)
+ws_send_resume(dati *ws)
 {
   char fmt_payload[] = \
     "{\"op\":6,\"d\":{\"token\":\"%s\",\"session_id\":\"%s\",\"seq\":%d}}";
@@ -104,7 +104,7 @@ ws_send_resume(websockets::dati *ws)
 }
 
 static void
-ws_send_identify(websockets::dati *ws)
+ws_send_identify(dati *ws)
 {
   /* Ratelimit check */
   if ( (ws->now_tstamp - ws->session.identify_tstamp) < 5 ) {
@@ -124,7 +124,7 @@ ws_send_identify(websockets::dati *ws)
 }
 
 static void
-on_hello(websockets::dati *ws)
+on_hello(dati *ws)
 {
   ws->hbeat.interval_ms = 0;
   ws->hbeat.tstamp = orka_timestamp_ms();
@@ -140,7 +140,7 @@ on_hello(websockets::dati *ws)
 }
 
 static void
-on_dispatch_message(websockets::dati *ws, int offset)
+on_dispatch_message(dati *ws, int offset)
 {
   if (STREQ("DELETE_BULK", ws->payload.event_name + offset)) {
     if (ws->cbs.on_message.delete_bulk)
@@ -196,7 +196,7 @@ on_dispatch_message(websockets::dati *ws, int offset)
 }
 
 static void
-on_dispatch_guild_member(websockets::dati *ws, int offset)
+on_dispatch_guild_member(dati *ws, int offset)
 {
   guild::member::dati *member = guild::member::init();
   ASSERT_S(NULL != member, "Out of memory");
@@ -227,7 +227,7 @@ on_dispatch_guild_member(websockets::dati *ws, int offset)
 }
 
 static void
-on_dispatch(websockets::dati *ws)
+on_dispatch(dati *ws)
 {
   user::json_load(ws->payload.event_data,
       sizeof(ws->payload.event_data), (void*)ws->me);
@@ -282,7 +282,7 @@ on_dispatch(websockets::dati *ws)
 }
 
 static void
-on_invalid_session(websockets::dati *ws)
+on_invalid_session(dati *ws)
 {
   const char *reason;
 
@@ -300,7 +300,7 @@ on_invalid_session(websockets::dati *ws)
 }
 
 static void
-on_reconnect(websockets::dati *ws)
+on_reconnect(dati *ws)
 {
   ws->status = status::RESUME;
 
@@ -321,7 +321,7 @@ ws_on_connect_cb(void *p_ws, CURL *ehandle, const char *ws_protocols)
 static void
 ws_on_close_cb(void *p_ws, CURL *ehandle, enum cws_close_reason cwscode, const char *reason, size_t len)
 {
-  websockets::dati *ws = (websockets::dati*)p_ws;
+  dati *ws = (dati*)p_ws;
   enum close_opcodes opcode = (enum close_opcodes)cwscode;
  
   switch (opcode) {
@@ -358,7 +358,7 @@ ws_on_close_cb(void *p_ws, CURL *ehandle, enum cws_close_reason cwscode, const c
 static void
 ws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
 {
-  websockets::dati *ws = (websockets::dati*)p_ws;
+  dati *ws = (dati*)p_ws;
   
   D_PRINT("ON_TEXT:\n\t\t%s", text);
 
@@ -415,7 +415,7 @@ ws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
 
 /* init easy handle with some default opt */
 static CURL*
-custom_cws_new(websockets::dati *ws)
+custom_cws_new(dati *ws)
 {
   //missing on_binary, on_ping, on_pong
   struct cws_callbacks cws_cbs = {
@@ -507,7 +507,7 @@ identify_init(intents::code intents, char token[])
 }
 
 void
-init(websockets::dati *ws, char token[])
+init(dati *ws, char token[])
 {
   ws->status = status::DISCONNECTED;
 
@@ -519,7 +519,7 @@ init(websockets::dati *ws, char token[])
 }
 
 void
-cleanup(websockets::dati *ws)
+cleanup(dati *ws)
 {
   if (ws->identify)
     free(ws->identify);
@@ -533,7 +533,7 @@ cleanup(websockets::dati *ws)
 /* send heartbeat pulse to websockets server in order
  *  to maintain connection alive */
 static void
-ws_send_heartbeat(websockets::dati *ws)
+ws_send_heartbeat(dati *ws)
 {
   char payload[64];
   int ret = snprintf(payload, sizeof(payload), "{\"op\":1,\"d\":%d}", ws->payload.seq_number);
@@ -543,10 +543,12 @@ ws_send_heartbeat(websockets::dati *ws)
   ws_send_payload(ws, payload);
 }
 
-static void
-json_load(char *str, size_t len, void *p_ws)
+namespace session {
+
+void
+json_load(char *str, size_t len, void *p_session)
 {
-  dati *ws = (dati*)p_ws;
+  dati *session = (dati*)p_session;
 
   struct sized_buffer buf = {NULL, 0};
 
@@ -554,8 +556,8 @@ json_load(char *str, size_t len, void *p_ws)
      "[url]%s"
      "[shards]%d"
      "[session_start_limit]%T",
-     ws->session.url,
-     &ws->session.shards,
+     session->url,
+     &session->shards,
      &buf);
 
   json_scanf(buf.start, buf.size,
@@ -563,18 +565,31 @@ json_load(char *str, size_t len, void *p_ws)
       "[remaining]%d"
       "[reset_after]%d"
       "[max_concurrency]%d",
-      &ws->session.total,
-      &ws->session.remaining,
-      &ws->session.reset_after,
-      &ws->session.max_concurrency);
+      &session->total,
+      &session->remaining,
+      &session->reset_after,
+      &session->max_concurrency);
 
   D_NOTOP_PUTS("Session Start Limit object loaded with API response"); 
 }
 
-static void
-get_bot(client *client)
+void
+get(client *client, dati *p_session)
 {
-  struct resp_handle resp_handle = {&json_load, (void*)&client->ws};
+  struct resp_handle resp_handle = {&json_load, (void*)p_session};
+
+  user_agent::run( 
+    &client->ua,
+    &resp_handle,
+    NULL,
+    HTTP_GET,
+    "/gateway");
+}
+
+void
+get_bot(client *client, dati *p_session)
+{
+  struct resp_handle resp_handle = {&json_load, (void*)p_session};
 
   user_agent::run( 
     &client->ua,
@@ -584,12 +599,14 @@ get_bot(client *client)
     "/gateway/bot");
 }
 
+} // namespace session
+
 /* main websockets event loop */
 static void
-ws_main_loop(websockets::dati *ws)
+ws_main_loop(dati *ws)
 {
   //get session info before starting it
-  get_bot(ws->p_client);
+  get_bot(ws->p_client, &ws->session);
 
   if (!ws->session.remaining)
     ERR("Reach session starts threshold (%d)\n\t"
@@ -636,7 +653,7 @@ ws_main_loop(websockets::dati *ws)
 
 /* connects to the discord websockets server */
 void
-run(websockets::dati *ws)
+run(dati *ws)
 {
   ASSERT_S(status::CONNECTED != ws->status, "Can't have recursive connections");
   if (NULL != ws->identify) {

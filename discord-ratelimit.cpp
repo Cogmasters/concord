@@ -19,12 +19,12 @@ https://discord.com/developers/docs/topics/rate-limits#rate-limits */
  *  retrieved by search.h tree functions */
 struct _route_s {
   char *str; //bucket route (endpoint, major parameter)
-  bucket::dati *p_bucket; //bucket assigned to this route
+  dati *p_bucket; //bucket assigned to this route
 };
 
 /* sleep cooldown for a connection within this bucket in milliseconds */
 void
-try_cooldown(bucket::dati *bucket)
+try_cooldown(dati *bucket)
 {
   if (NULL == bucket || bucket->remaining)
     return;
@@ -67,17 +67,17 @@ routecmp(const void *p_route1, const void *p_route2)
   {
     return 0;
   }
-//if (strstr(route1->str, "/webhook/%llu"")
-// && strstr(route2->str, "/webhook/%llu"))
-//{
-//  return 0;
-//}
+  if (strstr(route1->str, "/webhook/%llu")
+   && strstr(route2->str, "/webhook/%llu"))
+  {
+    return 0;
+  }
 
   return ret; //couldn't find any match, return strcmp diff value
 }
 
 /* attempt to find a bucket associated with this endpoint */
-bucket::dati*
+dati*
 try_get(user_agent::dati *ua, char endpoint[])
 {
   struct _route_s search_route = {
@@ -93,7 +93,7 @@ try_get(user_agent::dati *ua, char endpoint[])
 /* attempt to parse rate limit's header fields to the bucket
  *  linked with the connection which was performed */
 static void
-parse_ratelimits(bucket::dati *bucket, struct api_header_s *pairs)
+parse_ratelimits(dati *bucket, struct api_header_s *pairs)
 { 
   char *value; //fetch header value as string
 
@@ -138,7 +138,7 @@ create_route(user_agent::dati *ua, char endpoint[])
   }
 
   if (!new_route->p_bucket) { //couldn't find match, create new bucket
-    bucket::dati *new_bucket = (bucket::dati*) calloc(1, sizeof *new_bucket);
+    dati *new_bucket = (dati*) calloc(1, sizeof *new_bucket);
     ASSERT_S(NULL != new_bucket, "Out of memory");
 
     new_bucket->hash = strdup(bucket_hash);
@@ -146,10 +146,10 @@ create_route(user_agent::dati *ua, char endpoint[])
 
     ++ua->ratelimit.num_buckets; //increments client buckets
 
-    void *tmp = realloc(ua->ratelimit.buckets, ua->ratelimit.num_buckets * sizeof(bucket::dati*));
+    void *tmp = realloc(ua->ratelimit.buckets, ua->ratelimit.num_buckets * sizeof(dati*));
     ASSERT_S(NULL != tmp, "Out of memory");
 
-    ua->ratelimit.buckets = (bucket::dati**)tmp;
+    ua->ratelimit.buckets = (dati**)tmp;
     ua->ratelimit.buckets[ua->ratelimit.num_buckets-1] = new_bucket;
 
     new_route->p_bucket = new_bucket; //route points to new bucket
@@ -167,7 +167,7 @@ create_route(user_agent::dati *ua, char endpoint[])
  * In case that the endpoint doesn't have a bucket for routing, no 
  *  clashing will occur */
 void
-build(user_agent::dati *ua, bucket::dati *bucket, char endpoint[])
+build(user_agent::dati *ua, dati *bucket, char endpoint[])
 {
   /* for the first use of an endpoint, we attempt to establish a
       route between it and a bucket (create a new bucket if needed) */

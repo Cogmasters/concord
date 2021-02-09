@@ -104,12 +104,12 @@ namespace webhook {
 /* * * * END OF FORWARD DECLARATION * * * */
 /* * * * * * * * * * * * * * * * * * * * */
 
-typedef void (idle_cb)(discord::client *client, const user::dati *me);
-typedef void (message_cb)(discord::client *client, const user::dati *me, const channel::message::dati *message);
-typedef void (message_delete_cb)(discord::client *client, const user::dati *me, const uint64_t id, const uint64_t channel_id, const uint64_t guild_id);
-typedef void (message_delete_bulk_cb)(discord::client *client, const user::dati *me, const size_t nids, const uint64_t ids[], const uint64_t channel_id, const uint64_t guild_id);
-typedef void (guild_member_cb)(discord::client *client, const user::dati *me, const uint64_t guild_id, const guild::member::dati *member);
-typedef void (guild_member_remove_cb)(discord::client *client, const user::dati *me, const uint64_t guild_id, const user::dati *user);
+typedef void (idle_cb)(client *client, const user::dati *me);
+typedef void (message_cb)(client *client, const user::dati *me, const channel::message::dati *message);
+typedef void (message_delete_cb)(client *client, const user::dati *me, const uint64_t id, const uint64_t channel_id, const uint64_t guild_id);
+typedef void (message_delete_bulk_cb)(client *client, const user::dati *me, const size_t nids, const uint64_t ids[], const uint64_t channel_id, const uint64_t guild_id);
+typedef void (guild_member_cb)(client *client, const user::dati *me, const uint64_t guild_id, const guild::member::dati *member);
+typedef void (guild_member_remove_cb)(client *client, const user::dati *me, const uint64_t guild_id, const user::dati *user);
 
 namespace user_agent { /* discord-user-agent.cpp */
 
@@ -131,13 +131,13 @@ struct dati { /* USER AGENT STRUCTURE */
 
   CURL *ehandle; //the curl's easy handle used to perform requests
 
-  discord::client *p_client; //points to client this struct is a part of
+  client *p_client; //points to client this struct is a part of
 };
 
-void init(user_agent::dati *ua, char token[]);
-void cleanup(user_agent::dati *ua);
+void init(dati *ua, char token[]);
+void cleanup(dati *ua);
 void run(
-  user_agent::dati *ua, 
+  dati *ua, 
   struct resp_handle *resp_handle,
   struct sized_buffer *req_body, // needed for POST/PUT/PATCH methods
   enum http_method http_method,
@@ -154,9 +154,9 @@ struct dati { /* BUCKET STRUCTURE */
 };
 
 void cleanup(user_agent::dati *ua);
-void try_cooldown(bucket::dati *bucket);
-bucket::dati* try_get(user_agent::dati *ua, char endpoint[]);
-void build(user_agent::dati *ua, bucket::dati *bucket, char endpoint[]);
+void try_cooldown(dati *bucket);
+dati* try_get(user_agent::dati *ua, char endpoint[]);
+void build(user_agent::dati *ua, dati *bucket, char endpoint[]);
 
 } // namespace bucket
 } // namespace user_agent
@@ -166,20 +166,20 @@ namespace websockets { /* discord-websockets.cpp */
 /* GATEWAY CLOSE EVENT CODES
 https://discord.com/developers/docs/topics/opcodes-and-status-codes#gateway-gateway-close-event-codes */
 enum close_opcodes {
-  CLOSE_REASON_UNKNOWN_ERROR          = 4000,
-  CLOSE_REASON_UNKNOWN_OPCODE         = 4001,
-  CLOSE_REASON_DECODE_ERROR           = 4002,
-  CLOSE_REASON_NOT_AUTHENTICATED      = 4003,
-  CLOSE_REASON_AUTHENTICATION_FAILED  = 4004,
-  CLOSE_REASON_ALREADY_AUTHENTICATED  = 4005,
-  CLOSE_REASON_INVALID_SEQUENCE       = 4007,
-  CLOSE_REASON_RATE_LIMITED           = 4008,
-  CLOSE_REASON_SESSION_TIMED_OUT      = 4009,
-  CLOSE_REASON_INVALID_SHARD          = 4010,
-  CLOSE_REASON_SHARDING_REQUIRED      = 4011,
-  CLOSE_REASON_INVALID_API_VERSION    = 4012,
-  CLOSE_REASON_INVALID_INTENTS        = 4013,
-  CLOSE_REASON_DISALLOWED_INTENTS     = 4014
+  CLOSE_REASON_UNKNOWN_ERROR         = 4000,
+  CLOSE_REASON_UNKNOWN_OPCODE        = 4001,
+  CLOSE_REASON_DECODE_ERROR          = 4002,
+  CLOSE_REASON_NOT_AUTHENTICATED     = 4003,
+  CLOSE_REASON_AUTHENTICATION_FAILED = 4004,
+  CLOSE_REASON_ALREADY_AUTHENTICATED = 4005,
+  CLOSE_REASON_INVALID_SEQUENCE      = 4007,
+  CLOSE_REASON_RATE_LIMITED          = 4008,
+  CLOSE_REASON_SESSION_TIMED_OUT     = 4009,
+  CLOSE_REASON_INVALID_SHARD         = 4010,
+  CLOSE_REASON_SHARDING_REQUIRED     = 4011,
+  CLOSE_REASON_INVALID_API_VERSION   = 4012,
+  CLOSE_REASON_INVALID_INTENTS       = 4013,
+  CLOSE_REASON_DISALLOWED_INTENTS    = 4014
 };
 
 /* GATEWAY INTENTS
@@ -187,21 +187,21 @@ https://discord.com/developers/docs/topics/gateway#identify-identify-structure *
 namespace intents {
 typedef int code;
 enum {
-  GUILDS                        = 1 << 0,
-  GUILD_MEMBERS                 = 1 << 1,
-  GUILD_BANS                    = 1 << 2,
-  GUILD_EMOJIS                  = 1 << 3,
-  GUILD_INTEGRATIONS            = 1 << 4,
-  GUILD_WEBHOOKS                = 1 << 5,
-  GUILD_INVITES                 = 1 << 6,
-  GUILD_VOICE_STATES            = 1 << 7,
-  GUILD_PRESENCES               = 1 << 8,
-  GUILD_MESSAGES                = 1 << 9,
-  GUILD_MESSAGE_REACTIONS       = 1 << 10,
-  GUILD_MESSAGE_TYPING          = 1 << 11,
-  DIRECT_MESSAGES               = 1 << 12,
-  DIRECT_MESSAGE_REACTIONS      = 1 << 13,
-  DIRECT_MESSAGE_TYPING         = 1 << 14
+  GUILDS                   = 1 << 0,
+  GUILD_MEMBERS            = 1 << 1,
+  GUILD_BANS               = 1 << 2,
+  GUILD_EMOJIS             = 1 << 3,
+  GUILD_INTEGRATIONS       = 1 << 4,
+  GUILD_WEBHOOKS           = 1 << 5,
+  GUILD_INVITES            = 1 << 6,
+  GUILD_VOICE_STATES       = 1 << 7,
+  GUILD_PRESENCES          = 1 << 8,
+  GUILD_MESSAGES           = 1 << 9,
+  GUILD_MESSAGE_REACTIONS  = 1 << 10,
+  GUILD_MESSAGE_TYPING     = 1 << 11,
+  DIRECT_MESSAGES          = 1 << 12,
+  DIRECT_MESSAGE_REACTIONS = 1 << 13,
+  DIRECT_MESSAGE_TYPING    = 1 << 14
 };
 } // namespace intents
 
@@ -230,9 +230,32 @@ enum {
   DISCONNECTED,  //disconnected from ws
   RESUME,        //attempt to resume ws session
   FRESH,         //attempt a fresh ws session (session timed out)
-  CONNECTED     //connected to ws
+  CONNECTED      //connected to ws
 };
 } // namespace status
+
+namespace session { /* SESSION START LIMIT STRUCTURE */
+struct dati {
+  char url[MAX_URL_LEN];
+  int shards;
+
+  int total;
+  int remaining;
+  int reset_after;
+  int max_concurrency; //max concurrent sessions we can handle
+
+  int concurrent; //active concurrent sessions
+  uint64_t identify_tstamp; //identify timestamp in ms
+
+  uint64_t event_tstamp; //event timestamp in ms (resets every 60s)
+  int event_count; //count elements to avoid reaching 120/60sec limit
+};
+
+void json_load(char *str, size_t len, void *p_session);
+void get(client *client, dati *p_session);
+void get_bot(client *client, dati *p_session);
+
+} // namespace session
 
 struct dati { /* WEBSOCKETS STRUCTURE */
   status::code status; //connection to discord status
@@ -257,21 +280,7 @@ struct dati { /* WEBSOCKETS STRUCTURE */
     uint64_t tstamp; //start pulse timestamp in milliseconds
   } hbeat;
 
-  struct { /* SESSION START LIMIT STRUCTURE */
-    char url[MAX_URL_LEN];
-    int shards;
-
-    int total;
-    int remaining;
-    int reset_after;
-    int max_concurrency; //max concurrent sessions we can handle
-
-    int concurrent; //active concurrent sessions
-    uint64_t identify_tstamp; //identify timestamp in ms
-
-    uint64_t event_tstamp; //event timestamp in ms (resets every 60s)
-    int event_count; //count elements to avoid reaching 120/60sec limit
-  } session;
+  session::dati session;
 
   struct { /* CALLBACKS STRUCTURE */
     idle_cb *on_idle;   //triggers in every event loop iteration
@@ -295,12 +304,12 @@ struct dati { /* WEBSOCKETS STRUCTURE */
 
   user::dati *me; //the user associated with this client
 
-  discord::client *p_client; //points to client this struct is a part of
+  client *p_client; //points to client this struct is a part of
 };
 
-void init(websockets::dati *ws, char token[]);
-void cleanup(websockets::dati *ws);
-void run(websockets::dati *ws);
+void init(dati *ws, char token[]);
+void cleanup(dati *ws);
+void run(dati *ws);
 
 } // namespace websockets
 
