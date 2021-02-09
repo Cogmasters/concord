@@ -2,6 +2,7 @@
 #define JSON_SCANF_H
 
 #include <stddef.h> // for size_t
+#include "ntl.h"
 
 
 #ifdef __cplusplus
@@ -18,9 +19,7 @@ extern char * json_escape_string(size_t * new_size, char * str, size_t old_size)
 extern int json_unescape_string(char ** new_str, size_t * new_size,
                                 char * str, size_t old_size);
 
-extern bool is_addr_defined (void ** E, void * addr);
-
-#define IS_DEFINED(p, field)   (is_addr_defined((p)->E, &((p)->field)))
+#define IS_DEFINED(p, field)   (ntl_is_a_member((p)->E, &((p)->field)))
 
 
 #ifdef __cplusplus

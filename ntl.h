@@ -167,6 +167,9 @@ struct ntl_deserializer {
 int
 ntl_from_buf (char *buf, size_t len, struct ntl_deserializer * ntl_deserializer);
 
+int
+ntl_is_a_member (void ** p , void * addr);
+
 #ifdef __cplusplus
 }
 #endif // __cplusplus

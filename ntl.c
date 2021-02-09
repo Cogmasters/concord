@@ -208,3 +208,14 @@ ntl_from_buf(char *buf, size_t len, struct ntl_deserializer * deserializer)
   *deserializer->ntl_recipient_p = new_ntl;
   return nelems;
 }
+
+
+int
+ntl_is_a_member (void ** p , void * addr)
+{
+  for (int i = 0; p[i]; i++) {
+    if (p[i] == addr)
+      return 1;
+  }
+  return 0;
+}
