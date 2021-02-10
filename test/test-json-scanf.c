@@ -56,10 +56,10 @@ int main(void)
   struct sized_buffer tok;
 
   json_scanf(str, strlen(str),
-       "[a1][0]%d [t]%s [s]%d [op]%d [nstr]%s [k1][v1]%d [b]%b"
-       "[bigs]%.*s"
-       "[bigs]%.*S"
-       "[k1]%T"
+             "[a1][0]:d [t]:s [s]:d [op]:d [nstr]:s [k1][v1]:d [b]:b"
+               "[bigs]:.*s"
+               "[bigs]:.*S"
+               "[k1]:T"
        ,&i4, str1, &integer1, &integer2, str2, &i3, &i5
           ,128 /* size of bigs */, bigs
           ,128 /* size of bigS */, bigS
@@ -70,7 +70,7 @@ int main(void)
          str1, integer1, integer2, str2, i3, i4, bigs, bigS);
 
   char * p = NULL, *q = NULL;
-  json_scanf(str, strlen(str), "[bigs]%?s [bigs]%?S", &p, &q);
+  json_scanf(str, strlen(str), "[bigs]:.+s [bigs]:.+S", &p, &q);
   if (p) {
     printf("unknown string size: bigs %s\n", p);
     free(p);
@@ -89,13 +89,13 @@ int main(void)
   snprintf(t_str, 128, "{ \"key\":\"%s\", \"a\":10 }", raw_str);
   char * px = NULL;
   printf("%s\n", t_str);
-  json_scanf(t_str, strlen(t_str), "[key]%?s", &px);
+  json_scanf(t_str, strlen(t_str), "[key]:.+s", &px);
   printf("%s\n", px);
 
 
   snprintf(t_str, 128, "{ \"key\":\"%s\", \"a\":10 }", "XXXXXXXXX");
   printf("%s\n", t_str);
-  json_scanf(t_str, strlen(t_str), "[key]%?s", &px);
+  json_scanf(t_str, strlen(t_str), "[key]:.+s", &px);
   printf("%s\n", px);
 
   return EXIT_SUCCESS;

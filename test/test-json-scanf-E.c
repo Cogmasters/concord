@@ -22,8 +22,10 @@ int main () {
   char * json_str = NULL;
   json_asprintf(&json_str, (char *)test_str);
 
+  fprintf (stderr, "%s\n", json_str);
+
   int ret = json_scanf(json_str, strlen(json_str),
-                       "[i]%d [f]%f  [b]%b [s]%20s %E",
+                       "[i]:d [f]:f  [b]:b [s]:20s :E",
                        &x.i, &x.f, &x.b, x.s, &x.E);
 
   free(json_str);

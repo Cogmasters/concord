@@ -383,7 +383,15 @@ parse_type_specifier(char *specifier, struct extractor_specifier *es)
     has_dsize = true;
     specifier += 2; // eat up '.' and '*'
   }
-  else if ('?' == *specifier) {
+  else if ('.' == *specifier && '+' == *(specifier+1)) {
+    allocate_memory = true;
+    specifier += 2; // eat up '.' and '+'
+  }
+  else if ('.' == *specifier) {
+    allocate_memory = true;
+    specifier ++; // eat up '.'
+  }
+  else if ('?' == *specifier) { // this is deprecated and should be removed
     allocate_memory = true;
     specifier ++;
   }
@@ -510,7 +518,8 @@ parse_path_specifier(char * format, struct extractor_specifier *es,
       return parse_path_specifier(format, es, next_path, next_path_idx+1);
    }
   case '%':
-      ++format; // eat up '%'
+  case ':':
+      ++format; // eat up '%' or ':'
       return parse_type_specifier(format, es);
   default:
       return NULL;
@@ -529,7 +538,7 @@ next_iter:
     // search for open bracket
     while (*format)
     {
-      if ('%' == *format && 'E' == *(format+1)) {
+      if (('%' == *format || ':' == *format) && 'E' == *(format+1)) {
         format += 2;
         (*num_keys) ++ ;
         goto next_iter;
@@ -561,7 +570,7 @@ next_iter:
     /* find % occurrence */
     while (*format)
     {
-      if ('%' == *format){
+      if ('%' == *format || ':' == *format) {
         do { // skip type specifier
           ++format;
         } while (*format && *format != '[' && *format != ' ');
@@ -584,8 +593,8 @@ parse_extractor_specifiers(char * format, size_t n)
   while (*format) 
   {
     SKIP_SPACES(format);
-    if ('%' == *format && 'E' == *(format + 1)) {
-      ++format; // eat up '%';
+    if (('%' == *format || ':' == *format) && 'E' == *(format + 1)) {
+      ++format; // eat up '%' or ':';
       format = parse_type_specifier(format, es+i);
     }
     else if ('[' == *format) {
@@ -617,30 +626,30 @@ format_parse(char *format, size_t *n)
 /*
  *
  *  format grammar:
- *      ([key1]|[<n>])+%(d|ld|lld|f|lf|b|<n>s|<n>S|.*s|.*S|?s|?S|T) <space>
+ *      ([key1]|[<n>])+:(d|ld|lld|f|lf|b|<n>s|<n>S|.*s|.*S|?s|?S|T) <space>
  *
  *      n is an integer
  *
  *  usage:
  *
- *      json_scanf(buf_start, buf_size, "[k1][k2]%d  [k2][1]%s", &i, str);
- *      %d, %f, %lf, %s, %.*s have the same effects as if they are used in scanf
+ *      json_scanf(buf_start, buf_size, "[k1][k2]:d  [k2][1]:s", &i, str);
+ *      :d, :f, :lf, :s, :.*s have the same effects as if they are used in scanf
  *
- *      %T captures the start position and length of any JSON value within
+ *      :T captures the start position and length of any JSON value within
  *      the buf range (buf_start, buf_start + buf_size]
  *
- *      %S clones any JSON value as a string
+ *      :S clones any JSON value as a string
  *
- *      %<n>s %<n>S: length modifier can be applied to %s to limit how many bytes
+ *      :<n>s :<n>S -- length modifier can be applied to :s to limit how many bytes
  *      can be copied to the receiving parameter.
  *
- *      %.*s %.*S:
+ *      :.*s :.*S:
  *
- *      %?s %?S:
+ *      :?s :?S:
  *
  *      sized_buffer * toks = NULL;
- *      json_scanf(buf, buf_size, "[]%A", &toks);
- *      json_scanf(buf, buf_size, "[key]%A", &toks);
+ *      json_scanf(buf, buf_size, "[]:A", &toks);
+ *      json_scanf(buf, buf_size, "[key]:A", &toks);
  *
  *      if the call succeeds, toks points to a null terminated array.
  *      for (int i = 0; toks[i]; i++) {
@@ -813,12 +822,4 @@ __json_strerror(json_errcode code, char codetag[], void *where, char entity[])
     ERR("%s", errbuf);
 
   return  errdynm;
-}
-
-bool is_addr_defined (void **E , void * addr) {
-  for (int i = 0; E[i]; i++) {
-    if (E[i] == addr)
-      return true;
-  }
-  return false;
 }

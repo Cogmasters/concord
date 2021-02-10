@@ -63,12 +63,12 @@ struct tree_node {
 void load_tree_node(char * str, size_t len, void * p) {
   struct tree_node * n = (struct tree_node *)p;
   json_scanf(str, len,
-             "[path]%?s"
-             "[mode]%?s"
-             "[type]%?s"
-             "[size]%d"
-             "[sha]%?s"
-             "[url]%?s",
+             "[path]:.+s"
+             "[mode]:.+s"
+             "[type]:.+s"
+             "[size]:d"
+             "[sha]:.+s"
+             "[url]:.+s",
              &n->path,
              &n->mode,
              &n->type,
@@ -129,9 +129,9 @@ int main()
 
   char * json_str = NULL;
   int s = json_asprintf(&json_str, test_string);
-  //printf("%s\n", json_str);
+  printf("%s\n", json_str);
   struct sized_buffer array_tok = { .start = NULL, .size = 0 };
-  json_scanf(json_str, s, "[tree]%T", &array_tok);
+  json_scanf(json_str, s, "[tree]:T", &array_tok);
   printf("json_array_string:\n%.*s\n", (int)array_tok.size, array_tok.start);
 
   jsmn_parser parser;
@@ -147,18 +147,18 @@ int main()
 
   int i;
 
-  printf("test []%%L\n");
+  printf("test []:L\n");
   struct sized_buffer ** tokens = NULL;
-  json_scanf(array_tok.start, array_tok.size, "[]%L", &tokens);
+  json_scanf(array_tok.start, array_tok.size, "[]:L", &tokens);
   for (i = 0; tokens[i]; i++) {
     printf("token [%p, %zu]\n", tokens[i]->start, tokens[i]->size);
     printf("token %.*s\n", (int)tokens[i]->size, tokens[i]->start);
   }
   free(tokens);
 
-  printf("test [tree]%%L\n");
+  printf("test [tree]:L\n");
   tokens = NULL;
-  json_scanf(json_str, s, "[tree]%L", &tokens);
+  json_scanf(json_str, s, "[tree]:L", &tokens);
   struct tree_node ** nodes =
     (struct tree_node **) ntl_fmap((void **)tokens, sizeof(struct tree_node), NULL);
   for (i = 0; tokens[i]; i++) {
@@ -232,7 +232,7 @@ int main()
   ntl_free(nodes, free_tree_node);
 
   fprintf(stdout, "test json_array_str_to_ntl with %%F\n");
-  json_scanf(json_str, s, "[tree]%F", orka_str_to_ntl, &deserializer);
+  json_scanf(json_str, s, "[tree]:F", orka_str_to_ntl, &deserializer);
   wsize = json_asprintf(&b, "{|a|:|%s|, |b|:%d, |x|:%F }", "abc",
                         10, print_all, nodes);
   fprintf(stdout, "%d %s\n", wsize, b);
