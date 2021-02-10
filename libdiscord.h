@@ -39,6 +39,10 @@ https://discord.com/developers/docs/resources/channel#embed-limits*/
 #define EMBED_FOOTER_TEXT_LEN 2048 + 1
 #define EMBED_AUTHOR_NAME_LEN 256 + 1
 
+/* WEBHOOK LIMITS
+https://discord.com/developers/docs/resources/webhook#create-webhook*/
+#define WEBHOOK_NAME_LEN 80 + 1
+
 /* SNOWFLAKES
 https://discord.com/developers/docs/reference#snowflakes */
 #define SNOWFLAKE_INCREMENT           12
@@ -1140,7 +1144,7 @@ struct dati {
   uint64_t guild_id;
   uint64_t channel_id;
   user::dati *user;
-  char *name; //@todo find fixed size limit
+  char name[WEBHOOK_NAME_LEN];
   char *avatar; //@todo find fixed size limit
   char *token; //@todo find fixed size limit
   uint64_t application_id;
