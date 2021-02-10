@@ -54,15 +54,23 @@ json_load(char *str, size_t len, void *p_channel)
   D_NOTOP_PUTS("Channel object loaded with API response");
 }
 
+void
+init_dati(dati *channel) {
+  memset(channel, 0, sizeof(dati));
+}
+
 dati*
-init()
+alloc_dati()
 {
-  dati *new_channel = (dati*)calloc(1, sizeof(dati));
+  dati *new_channel = (dati*)malloc(sizeof(dati));
+  init_dati(new_channel);
   return new_channel;
 }
 
 void
-cleanup(dati *channel) {
+free_dati(dati *channel)
+{
+  //@todo cleanup_dati(channel);
   free(channel);
 }
 
@@ -140,7 +148,7 @@ json_load(char *str, size_t len, void *p_message)
     message->nonce = NULL;
   }
 
-  message->referenced_message = init();
+  message->referenced_message = alloc_dati();
 
   json_scanf(str, len,
      "[id]%F"
@@ -177,9 +185,8 @@ json_load(char *str, size_t len, void *p_message)
       &message->flags,
       &json_load, message->referenced_message);
 
-  if(!message->referenced_message->id)
-  {
-    cleanup(message->referenced_message);
+  if(!message->referenced_message->id) {
+    free_dati(message->referenced_message);
     message->referenced_message = NULL;
   }
 
@@ -195,7 +202,7 @@ json_list_load(char *str, size_t len, void *p_messages)
   size_t n = ntl_length((void**)buf);
   dati **new_messages = (dati **)ntl_calloc(n, sizeof(dati*));
   for (size_t i = 0; buf[i]; i++) {
-    new_messages[i] = init();
+    new_messages[i] = alloc_dati();
     json_load(buf[i]->start, buf[i]->size, new_messages[i]);
   }
 
@@ -204,48 +211,42 @@ json_list_load(char *str, size_t len, void *p_messages)
   *(dati ***)p_messages = new_messages;
 }
 
-dati*
-init()
+void
+init_dati(dati *message)
 {
-  dati *new_message = (dati*)calloc(1, sizeof(dati));
-  if (NULL == new_message) return NULL;
-
-  new_message->author = user::init();
-  if (NULL == new_message->author) goto cleanupA;
-
-  new_message->member = guild::member::init();
-  if (NULL == new_message->member) goto cleanupB;
-
-  return new_message;
-
-cleanupB:
-  user::cleanup(new_message->author);
-cleanupA:
-  free(new_message);
-
-  return NULL;
+  memset(message, 0, sizeof(dati));
+  message->author = user::alloc_dati();
+  message->member = guild::member::alloc_dati();
 }
 
-static void
-message_cleanup(dati *message)
+dati*
+alloc_dati()
+{
+  dati *new_message = (dati*)malloc(sizeof(dati));
+  init_dati(new_message);
+  return new_message;
+}
+
+void
+cleanup_dati(dati *message)
 {
   if (message->nonce)
     free(message->nonce);
   if (message->author)
-    user::cleanup(message->author);
+    user::free_dati(message->author);
   if (message->member)
-    guild::member::cleanup(message->member);
-
-  free(message);
+    guild::member::free_dati(message->member);
+  if (message->referenced_message) {
+    cleanup_dati(message->referenced_message);
+    free(message->referenced_message);
+  }
 }
 
 void
-cleanup(dati *message)
+free_dati(dati *message)
 {
-  if (message->referenced_message) {
-    message_cleanup(message->referenced_message);
-  }
-  message_cleanup(message);
+  cleanup_dati(message);
+  free(message);
 }
 
 namespace create {
@@ -311,16 +312,21 @@ del(client *client, const uint64_t channel_id, const uint64_t message_id)
 
 namespace reference {
 
+void
+init_dati(dati *reference) {
+  memset(reference, 0, sizeof(dati));
+}
+
 dati*
-init()
+alloc_dati()
 {
-  dati *new_reference = (dati*)calloc(1, sizeof(dati));
+  dati *new_reference = (dati*)malloc(sizeof(dati));
+  init_dati(new_reference);
   return new_reference;
 }
 
 void
-cleanup(dati *reference)
-{
+free_dati(dati *reference) {
   free(reference);
 }
 

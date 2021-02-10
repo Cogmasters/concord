@@ -245,8 +245,9 @@ struct dati {
   message::dati **messages;
 };
 
-dati* init();
-void cleanup(dati *channel);
+void init_dati(dati *channel);
+dati* alloc_dati();
+void free_dati(dati *channel);
 void json_load(char *str, size_t len, void *p_channel);
 
 /* CHANNEL TYPES
@@ -295,8 +296,10 @@ struct dati {
   dati *referenced_message;
 };
 
-dati* init();
-void cleanup(dati *message);
+void init_dati(dati *message);
+dati* alloc_dati();
+void cleanup_dati(dati *message);
+void free_dati(dati *message);
 void json_load(char *str, size_t len, void *p_message);
 void json_list_load(char *str, size_t len, void *p_messages);
 
@@ -360,8 +363,9 @@ struct dati {
   uint64_t guild_id;
 };
 
-dati *init();
-void cleanup(dati *reference);
+void init_dati(dati *reference);
+dati* alloc_dati();
+void free_dati(dati *reference);
 void json_load(char *str, size_t len, void *p_reference);
 
 } // namespace reference
@@ -670,9 +674,10 @@ struct dati {
   welcome_screen::dati *welcome_screen;
 };
 
-dati* init();
-void cleanup(dati *guild);
-void list_cleanup(dati **guild);
+void init_dati(dati *guild);
+dati* alloc_dati();
+void free_dati(dati *guild);
+void free_list(dati **guild);
 void json_load(char *str, size_t len, void *p_guild);
 void json_list_load(char *str, size_t len, void *p_guilds);
 
@@ -814,9 +819,11 @@ struct dati {
   char *permissions; //@todo find fixed size limit
 };
 
-dati* init();
-void cleanup(dati *member);
-void list_cleanup(dati **members);
+void init_dati(dati *member);
+dati* alloc_dati();
+void cleanup_dati(dati *member);
+void free_dati(dati *member);
+void free_list(dati **members);
 void json_load(char *str, size_t len, void *p_member);
 void json_list_load(char *str, size_t len, void *p_members);
 
@@ -892,9 +899,11 @@ struct dati {
   user::dati *user;
 };
 
-dati* init();
-void cleanup(dati *ban);
-void list_cleanup(dati **bans);
+void init_dati(dati *ban);
+dati* alloc_dati();
+void cleanup_dati(dati *ban);
+void free_dati(dati *ban);
+void free_list(dati **bans);
 void json_load(char *str, size_t len, void *p_ban);
 void json_list_load(char *str, size_t len, void *p_ban);
 
@@ -1032,9 +1041,10 @@ struct dati {
   flags::code public_flags;
 };
 
-dati* init();
-void cleanup(dati *user);
-void list_cleanup(dati **users);
+void init_dati(dati *user);
+dati* alloc_dati();
+void free_dati(dati *user);
+void free_list(dati **users);
 void json_load(char *str, size_t len, void *p_user);
 void json_list_load(char *str, size_t len, void *p_users);
 

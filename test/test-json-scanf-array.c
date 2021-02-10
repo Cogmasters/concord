@@ -229,7 +229,7 @@ int main()
                         10, print_all, nodes);
   fprintf(stdout, "%d %s\n", wsize, b);
   free(b);
-  ntl_free(nodes, free_tree_node);
+  ntl_free((void**)nodes, free_tree_node);
 
   fprintf(stdout, "test json_array_str_to_ntl with %%F\n");
   json_scanf(json_str, s, "[tree]:F", orka_str_to_ntl, &deserializer);
@@ -238,6 +238,6 @@ int main()
   fprintf(stdout, "%d %s\n", wsize, b);
   free(b);
   free(json_str);
-  ntl_free((void **)nodes, free_tree_node);
+  ntl_free((void**)nodes, free_tree_node);
   return 0;
 }

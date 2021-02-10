@@ -31,7 +31,7 @@ int main () {
   free(json_str);
 
   printf ("json_scan extract %d values\n", ret);
-  printf ("i = %d, &i = %p\n", x.i, &x.i);
+  printf ("i = %d, &i = %p\n", x.i, (void*)&x.i);
 
 
   if (IS_DEFINED(&x, i))

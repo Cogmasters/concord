@@ -142,7 +142,8 @@ on_hello(dati *ws)
 static void
 on_dispatch_message(dati *ws, int offset)
 {
-  if (STREQ("DELETE_BULK", ws->payload.event_name + offset)) {
+  if (STREQ("DELETE_BULK", ws->payload.event_name + offset)) 
+  {
     if (ws->cbs.on_message.delete_bulk)
     {
       struct sized_buffer **buf = NULL;
@@ -156,12 +157,10 @@ on_dispatch_message(dati *ws, int offset)
           &orka_strtoull, &guild_id);
 
       size_t nids = ntl_length((void**) buf);
-      uint64_t *ids = (uint64_t*) malloc(nids * sizeof(uint64_t));
+      uint64_t *ids = (uint64_t*)malloc(nids * sizeof(uint64_t));
       ASSERT_S(NULL != ids, "Out of memory");
 
-      size_t i;
-      for(i = 0; i < nids; i++)
-      {
+      for(size_t i = 0; i < nids; i++) {
         orka_strtoull(buf[i]->start, buf[i]->size, ids + i);
       }
 
@@ -170,10 +169,11 @@ on_dispatch_message(dati *ws, int offset)
       (*ws->cbs.on_message.delete_bulk)(ws->p_client, ws->me, nids, ids, channel_id, guild_id);
       free(ids);
     }
+
     return;
   }
 
-  channel::message::dati *message = channel::message::init();
+  channel::message::dati *message = channel::message::alloc_dati();
   ASSERT_S(NULL != message, "Out of memory");
 
   channel::message::json_load(ws->payload.event_data,
@@ -192,13 +192,13 @@ on_dispatch_message(dati *ws, int offset)
       (*ws->cbs.on_message.del)(ws->p_client, ws->me, message->id, message->channel_id, message->guild_id);
   }
 
-  channel::message::cleanup(message);
+  channel::message::free_dati(message);
 }
 
 static void
 on_dispatch_guild_member(dati *ws, int offset)
 {
-  guild::member::dati *member = guild::member::init();
+  guild::member::dati *member = guild::member::alloc_dati();
   ASSERT_S(NULL != member, "Out of memory");
 
   guild::member::json_load(ws->payload.event_data,
@@ -223,7 +223,7 @@ on_dispatch_guild_member(dati *ws, int offset)
       (*ws->cbs.on_guild_member.remove)(ws->p_client, ws->me, guild_id, member->user);
   }
 
-  guild::member::cleanup(member);
+  guild::member::free_dati(member);
 }
 
 static void
@@ -514,7 +514,7 @@ init(dati *ws, char token[])
   ws->ehandle = custom_cws_new(ws);
   ws->mhandle = custom_multi_init();
 
-  ws->me = user::init();
+  ws->me = user::alloc_dati();
   user::me::get(ws->p_client, ws->me);
 }
 
@@ -524,7 +524,7 @@ cleanup(dati *ws)
   if (ws->identify)
     free(ws->identify);
 
-  user::cleanup(ws->me);
+  user::free_dati(ws->me);
 
   curl_multi_cleanup(ws->mhandle);
   cws_free(ws->ehandle);

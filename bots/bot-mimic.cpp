@@ -37,7 +37,7 @@ select_guild(client *client)
     num = strtol(strnum, NULL, 10);
     if (num >= 0 && num < i) {
       uint64_t guild_id = guilds[num]->id;
-      guild::list_cleanup(guilds);
+      guild::free_list(guilds);
 
       return guild_id;
     }
@@ -69,7 +69,7 @@ select_member(client *client, uint64_t guild_id)
     fgets(strnum, sizeof(strnum), stdin);
     num = strtol(strnum, NULL, 10);
     if (num >= 0 && num < i) {
-      guild::member::list_cleanup(members);
+      guild::member::free_list(members);
       ERR("THIS IS A WORK IN PROGRESS.");
     }
   } while (1);

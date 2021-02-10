@@ -183,8 +183,8 @@ orka_timestamp_str(char *p_str, int len)
   ASSERT_S(ret != 0, "Could not retrieve string timestamp");
 }
 
-static
-int json_load_array (char *  str, size_t len, struct sized_buffer ***p) {
+static int
+json_load_array (char *  str, size_t len, struct sized_buffer ***p) {
   return json_scanf(str, len, "[]%A", p);
 }
 

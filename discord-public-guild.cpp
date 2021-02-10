@@ -37,7 +37,7 @@ json_list_load(char *str, size_t len, void *p_guilds)
   size_t n = ntl_length((void**)buf);
   dati **new_guilds = (dati**)ntl_calloc(n, sizeof(dati*));
   for (size_t i=0; buf[i]; ++i) {
-    new_guilds[i] = init();
+    new_guilds[i] = alloc_dati();
     json_load(buf[i]->start, buf[i]->size, new_guilds[i]);
   }
   
@@ -46,22 +46,30 @@ json_list_load(char *str, size_t len, void *p_guilds)
   *(dati ***)p_guilds = new_guilds;
 }
 
+void
+init_dati(dati *guild) {
+  memset(guild, 0, sizeof(dati));
+}
+
 dati*
-init()
+alloc_dati()
 {
-  dati *new_guild = (dati*)calloc(1, sizeof(dati));
+  dati *new_guild = (dati*)malloc(sizeof(dati));
+  init_dati(new_guild);
   return new_guild;
 }
 
 void
-cleanup(dati *guild) {
+free_dati(dati *guild) 
+{
+  //@todo cleanup_dati(guild);
   free(guild);
 }
 
 void
-list_cleanup(dati **guilds) {
+free_list(dati **guilds) {
   for(int i=0; guilds[i]; ++i) {
-    cleanup(guilds[i]);
+    free_dati(guilds[i]);
   }
   free(guilds);
 }
@@ -119,7 +127,7 @@ json_list_load(char *str, size_t len, void *p_members)
   size_t n = ntl_length((void**)buf);
   dati **new_members = (dati**)ntl_calloc(n, sizeof(dati*));
   for (size_t i=0; buf[i]; ++i) {
-    new_members[i] = init();
+    new_members[i] = alloc_dati();
     json_load(buf[i]->start, buf[i]->size, new_members[i]);
   }
   
@@ -128,24 +136,37 @@ json_list_load(char *str, size_t len, void *p_members)
   *(dati ***)p_members = new_members;
 }
 
-dati*
-init()
+void
+init_dati(dati *member)
 {
-  dati *new_member = (dati*)calloc(1, sizeof(dati));
-  new_member->user = user::init();
+  memset(member, 0, sizeof(dati));
+  member->user = user::alloc_dati();
+}
+
+dati*
+alloc_dati()
+{
+  dati *new_member = (dati*)malloc(sizeof(dati));
+  init_dati(new_member);
   return new_member;
 }
 
 void
-cleanup(dati *member) {
-  user::cleanup(member->user);
+cleanup_dati(dati *member) {
+  user::free_dati(member->user);
+}
+
+void
+free_dati(dati *member) 
+{
+  cleanup_dati(member);
   free(member);
 }
 
 void
-list_cleanup(dati **members) {
+free_list(dati **members) {
   for (int i=0; members[i]; ++i) {
-    cleanup(members[i]);
+    free_dati(members[i]);
   }
   free(members);
 }
@@ -220,7 +241,7 @@ json_list_load(char *str, size_t len, void *p_bans)
   size_t n = ntl_length((void**)buf);
   dati **new_bans = (dati**)ntl_calloc(n, sizeof(dati*));
   for (size_t i=0; buf[i]; ++i) {
-    new_bans[i] = init();
+    new_bans[i] = alloc_dati();
     json_load(buf[i]->start, buf[i]->size, new_bans[i]);
   }
 
@@ -229,24 +250,37 @@ json_list_load(char *str, size_t len, void *p_bans)
   *(dati ***)p_bans = new_bans;
 }
 
-dati*
-init()
+void
+init_dati(dati *ban)
 {
-  dati *new_ban = (dati*)calloc(1, sizeof(dati));
-  new_ban->user = user::init();
+  memset(ban, 0, sizeof(dati));
+  ban->user = user::alloc_dati();
+}
+
+dati*
+alloc_dati()
+{
+  dati *new_ban = (dati*)malloc(sizeof(dati));
+  init_dati(new_ban);
   return new_ban;
 }
 
 void
-cleanup(dati *ban) {
-  user::cleanup(ban->user);
+cleanup_dati(dati *ban) {
+  user::free_dati(ban->user);
+}
+
+void
+free_dati(dati *ban) 
+{
+  free_dati(ban);
   free(ban);
 }
 
 void
-list_cleanup(dati **bans) {
+free_list(dati **bans) {
   for (int i=0; bans[i]; ++i) {
-    cleanup(bans[i]);
+    free_dati(bans[i]);
   }
   free(bans);
 }
