@@ -49,7 +49,7 @@ Instructions on how to make a ping-pong bot is found [here](/docs/BUILDING_A_BOT
 Join our discord server: https://discord.gg/2jfycwXVM3
 
 ## Contributions are welcome!
-Check our development [Roadmap](docs/ROADMAP.md) and [Coding Guidelines](docs/CODING_GUIDELINES.md) to get started
+Check our Discord API's development [Roadmap](docs/DISCORD_ROADMAP.md) and [Coding Guidelines](docs/CODING_GUIDELINES.md) to get started
 
 If you are not familiar with git and are not comformtable with creating pull requests without introducing merge 
 commits, please check our [Commit Guidelines](docs/COMMIT_GUIDELINES.md).
