@@ -70,7 +70,7 @@ int main(void)
          str1, integer1, integer2, str2, i3, i4, bigs, bigS);
 
   char * p = NULL, *q = NULL;
-  json_scanf(str, strlen(str), "[bigs]:.+s [bigs]:.+S", &p, &q);
+  json_scanf(str, strlen(str), "[bigs]:.s [bigs]:.S", &p, &q);
   if (p) {
     printf("unknown string size: bigs %s\n", p);
     free(p);
@@ -95,7 +95,7 @@ int main(void)
 
   snprintf(t_str, 128, "{ \"key\":\"%s\", \"a\":10 }", "XXXXXXXXX");
   printf("%s\n", t_str);
-  json_scanf(t_str, strlen(t_str), "[key]:.+s", &px);
+  json_scanf(t_str, strlen(t_str), "[key]:.s", &px);
   printf("%s\n", px);
 
   return EXIT_SUCCESS;

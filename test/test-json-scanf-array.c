@@ -63,12 +63,12 @@ struct tree_node {
 void load_tree_node(char * str, size_t len, void * p) {
   struct tree_node * n = (struct tree_node *)p;
   json_scanf(str, len,
-             "[path]:.+s"
-             "[mode]:.+s"
-             "[type]:.+s"
+             "[path]:.s"
+             "[mode]:.s"
+             "[type]:.s"
              "[size]:d"
-             "[sha]:.+s"
-             "[url]:.+s",
+             "[sha]:.s"
+             "[url]:.s",
              &n->path,
              &n->mode,
              &n->type,
