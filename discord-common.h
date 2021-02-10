@@ -112,6 +112,17 @@ namespace webhook {
   namespace types { typedef int code; }
 } // namespace webhook
 
+namespace user_agent {
+  namespace bucket { struct dati; }
+} // namespace user_agent
+
+namespace websockets {
+  struct dati;
+  namespace intents { typedef int code; }
+  namespace opcodes { typedef int code; }
+  namespace status { typedef int code; }
+} // namespace websockets
+
 /* * * * END OF FORWARD DECLARATION * * * */
 /* * * * * * * * * * * * * * * * * * * * */
 
@@ -122,10 +133,8 @@ typedef void (message_delete_bulk_cb)(client *client, const user::dati *me, cons
 typedef void (guild_member_cb)(client *client, const user::dati *me, const uint64_t guild_id, const guild::member::dati *member);
 typedef void (guild_member_remove_cb)(client *client, const user::dati *me, const uint64_t guild_id, const user::dati *user);
 
+
 namespace user_agent { /* discord-user-agent.cpp */
-
-namespace bucket { struct dati; } //forward declaration
-
 struct dati { /* USER AGENT STRUCTURE */
   struct curl_slist *req_header; //the request header sent to the api
 
@@ -156,7 +165,6 @@ void run(
   ...);
 
 namespace bucket { /* discord-ratelimit.cpp */
-
 struct dati { /* BUCKET STRUCTURE */
   char *hash; //the hash associated with this bucket
   int remaining; //connections this bucket can do before cooldown
@@ -196,7 +204,6 @@ enum close_opcodes {
 /* GATEWAY INTENTS
 https://discord.com/developers/docs/topics/gateway#identify-identify-structure */
 namespace intents {
-typedef int code;
 enum {
   GUILDS                   = 1 << 0,
   GUILD_MEMBERS            = 1 << 1,
@@ -219,7 +226,6 @@ enum {
 /* GATEWAY OPCODES
 https://discord.com/developers/docs/topics/opcodes-and-status-codes#gateway-gateway-opcodes */
 namespace opcodes {
-typedef int code;
 enum {
   DISPATCH              = 0,
   HEARTBEAT             = 1,
@@ -236,7 +242,6 @@ enum {
 } // namespace opcodes
 
 namespace status {
-typedef int code;
 enum {
   DISCONNECTED,  //disconnected from ws
   RESUME,        //attempt to resume ws session
