@@ -15,22 +15,22 @@
 #define LIBDISCORD_VERSION_PATCH 0
 
 /* Size limits encountered in the Docs and searching the web */
-#define MAX_NAME_LEN           100 + 1
-#define MAX_TOPIC_LEN          1024 + 1
-#define MAX_DESCRIPTION_LEN    2048 + 1
-#define MAX_USERNAME_LEN       32 + 1
-#define MAX_DISCRIMINATOR_LEN  4 + 1
-#define MAX_HASH_LEN           1024 + 1
-#define MAX_LOCALE_LEN         16 + 1
-#define MAX_EMAIL_LEN          254 + 1
-#define MAX_REGION_LEN         16 + 1
-#define MAX_HEADER_LEN         512 + 1
-#define MAX_REASON_LEN         512 + 1
-#define MAX_MESSAGE_LEN        2000 + 1
-#define MAX_PAYLOAD_LEN        4096 + 1
+#define MAX_NAME_LEN          100 + 1
+#define MAX_TOPIC_LEN         1024 + 1
+#define MAX_DESCRIPTION_LEN   2048 + 1
+#define MAX_USERNAME_LEN      32 + 1
+#define MAX_DISCRIMINATOR_LEN 4 + 1
+#define MAX_SHA256_LEN        1024 + 1
+#define MAX_LOCALE_LEN        16 + 1
+#define MAX_EMAIL_LEN         254 + 1
+#define MAX_REGION_LEN        16 + 1
+#define MAX_HEADER_LEN        512 + 1
+#define MAX_REASON_LEN        512 + 1
+#define MAX_MESSAGE_LEN       2000 + 1
+#define MAX_PAYLOAD_LEN       4096 + 1
 
 /* EMBED LIMITS
-https://discord.com/developers/docs/resources/channel#embed-limits*/
+https://discord.com/developers/docs/resources/channel#embed-limits */
 #define EMBED_TITLE_LEN       256 + 1
 #define EMBED_DESCRIPTION_LEN 2048 + 1
 #define EMBED_MAX_FIELDS      25 + 1
@@ -40,7 +40,7 @@ https://discord.com/developers/docs/resources/channel#embed-limits*/
 #define EMBED_AUTHOR_NAME_LEN 256 + 1
 
 /* WEBHOOK LIMITS
-https://discord.com/developers/docs/resources/webhook#create-webhook*/
+https://discord.com/developers/docs/resources/webhook#create-webhook */
 #define WEBHOOK_NAME_LEN 80 + 1
 
 /* SNOWFLAKES
@@ -160,9 +160,9 @@ namespace key {
 struct dati {
    char name[MAX_NAME_LEN];
    char description[MAX_DESCRIPTION_LEN];
-   char hash[MAX_HASH_LEN];
-   char splash_hash[MAX_HASH_LEN];
-   char discovery_splash_hash[MAX_HASH_LEN];
+   char hash[MAX_SHA256_LEN];
+   char splash_hash[MAX_SHA256_LEN];
+   char discovery_splash_hash[MAX_SHA256_LEN];
    uint64_t banner_hash;
    char region[MAX_REGION_LEN];
    char preferred_locale[MAX_LOCALE_LEN];
@@ -237,7 +237,7 @@ struct dati {
   int user_limit;
   int rate_limit_per_user;
   user::dati **recipients;
-  char icon[MAX_HASH_LEN];
+  char icon[MAX_SHA256_LEN];
   uint64_t owner_id;
   uint64_t application_id;
   uint64_t parent_id;
@@ -264,7 +264,7 @@ enum {
 } // namespace types
 
 /* MESSAGE STRUCTURE
-https://discord.com/developers/docs/resources/channel#message-object*/
+https://discord.com/developers/docs/resources/channel#message-object */
 namespace message {
 struct dati {
   uint64_t id;
@@ -398,8 +398,8 @@ struct dati {
   char *name; //@todo find fixed size limit
   char *description; //@todo find fixed size limit
   char *tags; //@todo find fixed size limit
-  char asset[MAX_HASH_LEN];
-  char preview_asset[MAX_HASH_LEN];
+  char asset[MAX_SHA256_LEN];
+  char preview_asset[MAX_SHA256_LEN];
   format_types::code type;
 };
 
@@ -588,7 +588,7 @@ struct dati {
 https://discord.com/developers/docs/resources/channel#allowed-mentions-object-allowed-mentions-structure */
 namespace allowed_mentions {
 struct dati {
-  //@todo missing parse;
+  char **parse;
   uint64_t roles[100];
   uint64_t users[100];
   bool replied_user;
@@ -624,10 +624,10 @@ namespace guild {
 struct dati {
   uint64_t id;
   char name[MAX_NAME_LEN];
-  char icon[MAX_HASH_LEN];
-  char icon_hash[MAX_HASH_LEN]; //@todo add to json_load
-  char splash[MAX_HASH_LEN]; //@todo add to json_load
-  char discovery_splash[MAX_HASH_LEN]; //@todo add to json_load
+  char icon[MAX_SHA256_LEN];
+  char icon_hash[MAX_SHA256_LEN]; //@todo add to json_load
+  char splash[MAX_SHA256_LEN]; //@todo add to json_load
+  char discovery_splash[MAX_SHA256_LEN]; //@todo add to json_load
   bool owner;
   uint64_t owner_id; //@todo add to json_load
   int permissions;
@@ -654,12 +654,12 @@ struct dati {
   //@todo missing voice_states;
   member::dati **members; //@todo add to json_load
   channel::dati **channels; //@todo add to json_load
-  //@todo missing_presences;
+  //@todo missing presences;
   int max_presences; //@todo add to json_load
   int max_members; //@todo add to json_load
   char vanity_url_code[MAX_URL_LEN]; //@todo add to json_load
   char description[MAX_DESCRIPTION_LEN]; //@todo add to json_load
-  char banner[MAX_HASH_LEN]; //@todo add to json_load
+  char banner[MAX_SHA256_LEN]; //@todo add to json_load
   int premium_tier; //@todo add to json_load
   int premium_subscription_count; //@todo add to json_load
   char preferred_locale[MAX_LOCALE_LEN]; //@todo add to json_load
@@ -667,7 +667,7 @@ struct dati {
   int max_video_channel_users; //@todo add to json_load
   int approximate_member_count; //@todo add to json_load
   int approximate_presence_count; //@todo add to json_load
-  //@todo missing welcome_screen;
+  welcome_screen::dati *welcome_screen;
 };
 
 dati* init();
@@ -773,11 +773,11 @@ namespace preview {
 struct dati {
   uint64_t id;
   char name[MAX_NAME_LEN];
-  char icon[MAX_HASH_LEN];
-  char splash[MAX_HASH_LEN];
-  char discovery_splash[MAX_HASH_LEN];
+  char icon[MAX_SHA256_LEN];
+  char splash[MAX_SHA256_LEN];
+  char discovery_splash[MAX_SHA256_LEN];
   emoji::dati **emojis;
-  //@todo missing features
+  char **features;
   int approximate_member_count;
   int approximate_presence_count;
   char description[MAX_DESCRIPTION_LEN];
@@ -800,7 +800,7 @@ struct dati {
 } // namespace widget
 
 /* GUILD MEMBER STRUCTURE
-https://discord.com/developers/docs/resources/guild#guild-member-object*/
+https://discord.com/developers/docs/resources/guild#guild-member-object */
 namespace member {
 struct dati {
   user::dati *user;
@@ -854,7 +854,7 @@ enum {
 };
 } // namespace expire_behaviors
 
-/* INTEGRATION ACCOUNT OBJECT
+/* INTEGRATION ACCOUNT STRUCTURE
 https://discord.com/developers/docs/resources/guild#integration-account-object-integration-account-structure */
 namespace account {
 struct dati {
@@ -866,13 +866,13 @@ struct dati {
 
 } // namespace account
 
-/* INTEGRATION APPLICATION OBJECT
+/* INTEGRATION APPLICATION STRUCTURE
 https://discord.com/developers/docs/resources/guild#integration-application-object-integration-application-structure */
 namespace application {
 struct dati {
   uint64_t id;
   char *name; //@todo find fixed size limit
-  char icon[MAX_HASH_LEN];
+  char icon[MAX_SHA256_LEN];
   char *description; //@todo find fixed size limit
   char *summary; //@todo find fixed size limit
   user::dati *bot;
@@ -885,7 +885,7 @@ struct dati {
 } // namespace integration
 
 /* GUILD BAN STRUCTURE
-https://discord.com/developers/docs/resources/guild#ban-object*/
+https://discord.com/developers/docs/resources/guild#ban-object */
 namespace ban {
 struct dati {
   char reason[MAX_REASON_LEN];
@@ -1020,7 +1020,7 @@ struct dati {
   uint64_t id;
   char username[MAX_USERNAME_LEN];
   char discriminator[MAX_DISCRIMINATOR_LEN];
-  char avatar[MAX_HASH_LEN];
+  char avatar[MAX_SHA256_LEN];
   bool bot;
   bool System; //system is a reserved keyword
   bool mfa_enabled;
@@ -1208,9 +1208,9 @@ struct params {
   char *nonce;
   bool tts;
   char *file;
-  //@todo missing embed object
+  embed::dati *embed;
   char *payload_json;
-  //@todo missing allowed mentions
+  allowed_mentions::dati *allowed_mentions;
   struct message_reference { //@todo change to message::reference
     uint64_t message_id;
     uint64_t channel_id;

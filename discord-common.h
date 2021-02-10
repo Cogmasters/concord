@@ -54,6 +54,7 @@ namespace channel {
   } // namespace embed
   namespace attachment { struct dati; }
   namespace mention { struct dati; }
+  namespace allowed_mentions { struct dati; }
 } // namespace channel
 namespace emoji { struct dati; }
 namespace guild {
