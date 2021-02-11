@@ -171,7 +171,7 @@ default_success_cb(
   struct sized_buffer *resp_body,
   struct api_header_s *pairs)
 { 
-  return ACTION_DONE;
+  return ACTION_SUCCESS;
   (void)p_data; 
   (void)httpcode; 
   (void)resp_body;
@@ -290,9 +290,14 @@ perform_request(
     pairs->size = 0;
 
     switch (action) {
-    case ACTION_DONE: return;
-    case ACTION_RETRY: break;
-    case ACTION_ABORT: default: abort();
+    case ACTION_SUCCESS:
+    case ACTION_FAILURE:
+        return;
+    case ACTION_RETRY:
+        break;
+    case ACTION_ABORT:
+    default:
+        abort();
     }
 
   } while (ACTION_RETRY == action);

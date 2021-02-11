@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
 
   guild::dati **guilds = user::me::get_guilds(client);
   for (size_t i=0; guilds[i]; ++i) {
-    D_PRINT("%" PRIu64 "\n", guilds[i]->id);
+    fprintf(stderr, "Guild[%s] id:\n\t%" PRIu64 "\n", guilds[i]->name, guilds[i]->id);
   }
 
   guild::free_list(guilds);

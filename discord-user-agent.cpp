@@ -93,7 +93,7 @@ on_success_cb(
   struct _ratelimit *data = (struct _ratelimit*)p_data;
   bucket::build(data->ua, data->bucket, data->endpoint);
 
-  return ACTION_DONE;
+  return ACTION_SUCCESS;
 }
 
 static perform_action
@@ -116,6 +116,12 @@ on_failure_cb(
 
   switch (httpcode) {
   case HTTP_BAD_REQUEST:
+      NOTOP_PRINT("(%d)%s - %s",  //print error and continue
+          httpcode,
+          http_code_print(httpcode),
+          http_reason_print(httpcode));
+
+      return ACTION_FAILURE;
   case HTTP_UNAUTHORIZED:
   case HTTP_FORBIDDEN:
   case HTTP_NOT_FOUND:
@@ -160,15 +166,13 @@ on_failure_cb(
 static void
 default_error_cb(char *str, size_t len, void *p_err)
 {
-  char message[256] = {0};
-  int code = 0;
+  struct error *err = (struct error*)p_err;
 
-  json_scanf(str, len, "[message]%s [code]%d", message, &code);
+  json_scanf(str, len, "[message]%s [code]%d", 
+      err->message, &err->code);
 
   NOTOP_PRINT("Error Description:\n\t\t%s (code %d)"
-      "- See Discord's JSON Error Codes", message, code);
-
-  (void)p_err;
+      "- See Discord's JSON Error Codes", err->message, err->code);
 }
 
 /* template function for performing requests */
@@ -206,8 +210,10 @@ run(
     .on_5xx = &on_failure_cb,
   };
 
-  if (resp_handle && !resp_handle->err_cb) { //set default callback for err_cb
+  /* IF UNSET, SET TO DEFAULT ERROR HANDLING CALLBACKS */
+  if (resp_handle && !resp_handle->err_cb) {
     resp_handle->err_cb = &default_error_cb;
+    resp_handle->err_obj = (void*)&ua->json_err; //overrides existing obj
   }
 
   perform_request(

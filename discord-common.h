@@ -135,6 +135,14 @@ typedef void (guild_member_remove_cb)(client *client, const user::dati *me, cons
 
 
 namespace user_agent { /* discord-user-agent.cpp */
+
+/* JSON ERROR CODE STRUCTURE
+https://discord.com/developers/docs/topics/opcodes-and-status-codes#json-json-error-codes */
+struct error {
+  int code; //last error code received
+  char message[256]; //meaning of the error received
+};
+
 struct dati { /* USER AGENT STRUCTURE */
   struct curl_slist *req_header; //the request header sent to the api
 
@@ -150,6 +158,10 @@ struct dati { /* USER AGENT STRUCTURE */
   } ratelimit;
 
   CURL *ehandle; //the curl's easy handle used to perform requests
+  
+  /* stores last json error detected, fields are reseted after
+   *  get_json_error() is called */
+  struct error json_err;
 
   client *p_client; //points to client this struct is a part of
 };

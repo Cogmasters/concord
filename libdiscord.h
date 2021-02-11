@@ -1208,6 +1208,8 @@ void dump_curl(client *client, char file[]);
 void* set_data(client *client, void *data);
 void* get_data(client *client);
 
+user_agent::error get_json_error(client *client);
+
 namespace channel { /* discord-public-channel.c */
 
 void get(client *client, const uint64_t channel_id, dati *p_channel);

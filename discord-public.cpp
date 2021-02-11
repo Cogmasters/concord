@@ -40,7 +40,8 @@ init(char token[])
 client*
 fast_init(const char config_file[])
 {
-  struct orka_settings settings = {0};
+  struct orka_settings settings;
+  memset(&settings, 0, sizeof(orka_settings));
 
   orka_settings_init(&settings, config_file);
 
@@ -50,9 +51,9 @@ fast_init(const char config_file[])
     if (NULL == client) return NULL;
   }
 
-  if (settings.logging.dump_json.enable)
+  if (true == settings.logging.dump_json.enable)
     dump_json(client, settings.logging.dump_json.filename);
-  if (settings.logging.dump_curl.enable)
+  if (true == settings.logging.dump_curl.enable)
     dump_curl(client, settings.logging.dump_curl.filename);
 
   return client;
@@ -61,14 +62,12 @@ fast_init(const char config_file[])
 void
 cleanup(client *client)
 {
-  /* @todo this is a temporary solution */
-  if (client->settings.token)
-    free(client->settings.token);
+  free(client->settings.token);
+
   if (client->settings.f_json_dump)
     fclose(client->settings.f_json_dump);
   if (client->settings.f_curl_dump)
     fclose(client->settings.f_curl_dump);
-  /* * * * * * * * * * */
 
   user_agent::cleanup(&client->ua);
   websockets::cleanup(&client->ws);
@@ -78,8 +77,9 @@ cleanup(client *client)
 
 void
 global_init() {
-  ASSERT_S(0 == curl_global_init(CURL_GLOBAL_DEFAULT),
-      "Couldn't start libcurl's globals configurations");
+  if (0 != curl_global_init(CURL_GLOBAL_DEFAULT)) {
+    PUTS("Couldn't start libcurl's globals");
+  }
 }
 
 void
@@ -90,6 +90,11 @@ global_cleanup() {
 void
 add_intents(client *client, websockets::intents::code code)
 {
+  using namespace websockets;
+  if (status::CONNECTED == client->ws.status) {
+    PUTS("Can't set intents to a running client.");
+  }
+
   client->ws.intents |= code;
 }
 
@@ -160,7 +165,6 @@ run(client *client){
   websockets::run(&client->ws);
 }
 
-//@todo find a better solution using settings.h logger
 void
 dump_json(client *client, char file[])
 {
@@ -170,7 +174,6 @@ dump_json(client *client, char file[])
   client->settings.f_json_dump = f_dump;  
 }
 
-//@todo find a better solution using settings.h logger
 void
 dump_curl(client *client, char file[])
 {
@@ -188,6 +191,17 @@ set_data(client *client, void *data) {
 void*
 get_data(client *client) {
   return client->data;
+}
+
+user_agent::error
+get_json_error(client *client)
+{
+  user_agent::error get_err = client->ua.json_err;
+  
+  // resets json_err fields to avoid misleading repetition
+  memset(&client->ua.json_err, 0, sizeof(user_agent::error));
+
+  return get_err;
 }
 
 } // namespace discord

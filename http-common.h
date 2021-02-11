@@ -80,7 +80,12 @@ void set_url(CURL *ehandle, char base_api_url[], char endpoint[], va_list args);
 /* set specific http method used for the request */
 void set_method(CURL *ehandle, enum http_method method, struct sized_buffer *req_body);
 
-typedef enum { ACTION_DONE, ACTION_RETRY, ACTION_ABORT } perform_action;
+typedef enum { 
+  ACTION_SUCCESS, // continue after succesfull request
+  ACTION_FAILURE, // continue after failed request
+  ACTION_RETRY,   // retry connection
+  ACTION_ABORT    // abort after failed request
+} perform_action;
 
 typedef perform_action (http_response_cb)(
     void *data,
