@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h> //@todo remove when settings is updated
+#include <string.h>
 #include <ctype.h> //for isgraph()
 
 #include <libdiscord.h>
@@ -93,6 +93,7 @@ add_intents(client *client, websockets::intents::code code)
   using namespace websockets;
   if (status::CONNECTED == client->ws.status) {
     PUTS("Can't set intents to a running client.");
+    return;
   }
 
   client->ws.intents |= code;

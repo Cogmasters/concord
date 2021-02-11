@@ -204,7 +204,7 @@ struct dati {
    bool deaf;
    bool mute;
    char *nick; //@todo find fixed size limit
-   char *avatar_hash; //@todo find fixed size limit
+   char *avatar_hash[MAX_SHA256_LEN];
    uint64_t id;
    bool enable_emoticons;
    int expire_behavior;
@@ -1228,11 +1228,7 @@ struct params {
   embed::dati *embed;
   char *payload_json;
   allowed_mentions::dati *allowed_mentions;
-  struct message_reference { //@todo change to message::reference
-    uint64_t message_id;
-    uint64_t channel_id;
-    uint64_t guild_id;
-  };
+  message::reference::dati message_reference;
 };
 
 void run(client *client, const uint64_t channel_id, params *params, dati *p_message);
