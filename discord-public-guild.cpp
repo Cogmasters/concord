@@ -17,13 +17,83 @@ json_load(char *str, size_t len, void *p_guild)
      "[id]%F"
      "[name]%s"
      "[icon]%s"
+     "[icon_hash]%s"
+     "[splash]%s"
+     "[discovery_splash]%s"
      "[owner]%b"
-     "[permissions]%d",
+     "[owner_id]%F"
+     "[permissions]%d"
+     "[region]%s"
+     "[afk_channel_id]%F"
+     "[afk_timeout]%d"
+     "[widget_enabled]%b"
+     "[widget_channel_id]%F"
+     "[verification_level]%d"
+     "[default_message_notifications]%d"
+     "[explicit_content_filter]%d"
+     "[mfa_level]%d"
+     "[application_id]%F"
+     "[system_channel_id]%F"
+     "[system_channel_flags]%d"
+     "[rules_channel_id]%F"
+     "[joined_at]%F"
+     "[large]%b"
+     "[unavailable]%b"
+     "[member_count]%d"
+     "[members]%F"
+     //"[channels]%F" // @todo add channel::json_load and channel::json_list_load
+     "[max_presences]%d"
+     "[max_members]%d"
+     "[vanity_url_code]%s"
+     "[description]%s"
+     "[banner]%s"
+     "[premium_tier]%d"
+     "[premium_subscription_count]%d"
+     "[preferred_locale]%s"
+     "[public_updates_channel_id]%F"
+     "[max_video_channel_users]%d"
+     "[approximate_member_count]%d"
+     "[approximate_presence_count]%d",
       &orka_strtoull, &guild->id,
       guild->name,
       guild->icon,
+      guild->icon_hash,
+      guild->splash,
+      guild->discovery_splash,
       &guild->owner,
-      &guild->permissions);
+      &orka_strtoull, &guild->owner_id,
+      &guild->permissions,
+      guild->region,
+      &orka_strtoull, &guild->afk_channel_id,
+      &guild->afk_timeout,
+      &guild->widget_enabled,
+      &orka_strtoull, &guild->widget_channel_id,
+      &guild->verification_level,
+      &guild->default_message_notifications,
+      &guild->explicit_content_filter,
+      &guild->mfa_level,
+      &orka_strtoull, &guild->application_id,
+      &orka_strtoull, &guild->system_channel_id,
+      &guild->system_channel_flags,
+      &orka_strtoull, &guild->rules_channel_id,
+      &orka_iso8601_to_unix_ms, &guild->joined_at,
+      &guild->large,
+      &guild->unavailable,
+      &guild->member_count,
+      &guild::json_list_load, &guild->members,
+      //&channel::json_list_load, &guild->channels, // @todo add channel::json_load and channel::json_list_load
+      &guild->max_presences,
+      &guild->max_members,
+      guild->vanity_url_code,
+      guild->description,
+      guild->banner,
+      &guild->premium_tier,
+      &guild->premium_subscription_count,
+      guild->preferred_locale,
+      &orka_strtoull, &guild->public_updates_channel_id,
+      &guild->max_video_channel_users,
+      &guild->approximate_member_count,
+      &guild->approximate_presence_count);
 
   D_NOTOP_PUTS("Guild object loaded with API response"); 
 }

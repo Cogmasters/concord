@@ -629,48 +629,48 @@ struct dati {
   uint64_t id;
   char name[MAX_NAME_LEN];
   char icon[MAX_SHA256_LEN];
-  char icon_hash[MAX_SHA256_LEN]; //@todo add to json_load
-  char splash[MAX_SHA256_LEN]; //@todo add to json_load
-  char discovery_splash[MAX_SHA256_LEN]; //@todo add to json_load
+  char icon_hash[MAX_SHA256_LEN];
+  char splash[MAX_SHA256_LEN];
+  char discovery_splash[MAX_SHA256_LEN];
   bool owner;
-  uint64_t owner_id; //@todo add to json_load
+  uint64_t owner_id;
   int permissions;
-  char region[MAX_REGION_LEN]; //@todo add to json_load
-  uint64_t afk_channel_id; //@todo add to json_load
-  int afk_timeout; //@todo add to json_load
-  bool widget_enabled; //@todo add to json_load
-  uint64_t widget_channel_id; //@todo add to json_load
-  int verification_level; //@todo add to json_load
-  int default_message_notifications; //@todo add to json_load
-  int explicit_content_filter; //@todo add to json_load
+  char region[MAX_REGION_LEN];
+  uint64_t afk_channel_id;
+  int afk_timeout;
+  bool widget_enabled;
+  uint64_t widget_channel_id;
+  int verification_level;
+  int default_message_notifications;
+  int explicit_content_filter;
   //@todo missing roles;
   emoji::dati **emojis; //@todo add to json_load
   char **features; //@todo add to json_load
-  int mfa_level; //@todo add to json_load
-  uint64_t application_id; //@todo add to json_load
-  uint64_t system_channel_id; //@todo add to json_load
-  int system_channel_flags; //@todo add to json_load
-  uint64_t rules_channel_id; //@todo add to json_load
-  uint64_t joined_at; //@todo add to json_load
-  bool large; //@todo add to json_load
-  bool unavailable; //@todo add to json_load
-  int member_count; //@todo add to json_load
+  int mfa_level;
+  uint64_t application_id;
+  uint64_t system_channel_id;
+  int system_channel_flags; 
+  uint64_t rules_channel_id;
+  int64_t joined_at;
+  bool large;
+  bool unavailable;
+  int member_count;
   //@todo missing voice_states;
-  member::dati **members; //@todo add to json_load
+  member::dati **members;
   channel::dati **channels; //@todo add to json_load
   //@todo missing presences;
-  int max_presences; //@todo add to json_load
-  int max_members; //@todo add to json_load
-  char vanity_url_code[MAX_URL_LEN]; //@todo add to json_load
-  char description[MAX_DESCRIPTION_LEN]; //@todo add to json_load
-  char banner[MAX_SHA256_LEN]; //@todo add to json_load
-  int premium_tier; //@todo add to json_load
-  int premium_subscription_count; //@todo add to json_load
-  char preferred_locale[MAX_LOCALE_LEN]; //@todo add to json_load
-  uint64_t public_updates_channel_id; //@todo add to json_load
-  int max_video_channel_users; //@todo add to json_load
-  int approximate_member_count; //@todo add to json_load
-  int approximate_presence_count; //@todo add to json_load
+  int max_presences;
+  int max_members;
+  char vanity_url_code[MAX_URL_LEN];
+  char description[MAX_DESCRIPTION_LEN];
+  char banner[MAX_SHA256_LEN];
+  int premium_tier;
+  int premium_subscription_count;
+  char preferred_locale[MAX_LOCALE_LEN];
+  uint64_t public_updates_channel_id;
+  int max_video_channel_users;
+  int approximate_member_count;
+  int approximate_presence_count;
   welcome_screen::dati *welcome_screen;
 };
 
