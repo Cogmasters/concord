@@ -111,8 +111,10 @@ json_list_load(char *str, size_t len, void *p_guilds)
 }
 
 void
-init_dati(void *p_guild) {
-  memset(p_guild, 0, sizeof(dati));
+init_dati(void *p_guild) 
+{
+  dati *guild = (dati*)p_guild;
+  memset(guild, 0, sizeof(dati));
 }
 
 dati*
@@ -124,7 +126,11 @@ alloc_dati()
 }
 
 void
-cleanup_dati(void *p_guild) {
+cleanup_dati(void *p_guild) 
+{
+  dati *guild = (dati*)p_guild;
+  if (guild->members)
+    member::free_list(guild->members);
 }
 
 void
@@ -230,13 +236,29 @@ free_list(dati **members) {
   ntl_free((void**)members, &cleanup_dati);
 }
 
-//@todo modifiable query string parameters
+namespace get_list {
+
 dati**
-get_list(client *client, const uint64_t guild_id)
+run(client *client, const uint64_t guild_id, struct params *params)
 {
   if (!guild_id) {
     D_PUTS("Missing 'guild_id'");
     return NULL;
+  }
+
+  if (params->limit <= 0 || params->limit > 1000) {
+    D_PUTS("'limit' value should be in an interval of (1-1000)");
+    return NULL;
+  }
+
+  char limit_query[64];
+  snprintf(limit_query, sizeof(limit_query),
+      "?limit=%d", params->limit);
+
+  char after_query[64] = "";
+  if (params->after) {
+    snprintf(after_query, sizeof(after_query),
+        "?after=%" PRIu64 , params->after);
   }
 
   dati **new_members = NULL;
@@ -249,10 +271,12 @@ get_list(client *client, const uint64_t guild_id)
     &resp_handle,
     NULL,
     HTTP_GET,
-    "/guilds/%llu/members?limit=100", guild_id);
+    "/guilds/%llu/members%s%s", guild_id, limit_query, after_query);
 
   return new_members;
 }
+
+} // namespace get_list
 
 void remove(client *client, const uint64_t guild_id, const uint64_t user_id)
 {

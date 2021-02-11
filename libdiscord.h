@@ -1247,7 +1247,16 @@ void get(client *client, const uint64_t guild_id, dati *p_guild);
 
 namespace member {
 
-dati **get_list(client *client, const uint64_t guild_id);
+namespace get_list {
+
+struct params {
+  int limit; // the number of members to return (1-1000)
+  uint64_t after; // the highest user id in the previous page
+};
+
+dati **run(client *client, const uint64_t guild_id, struct params *params);
+
+} // namespace get_list
 void remove(client *client, const uint64_t guild_id, const uint64_t user_id);
 
 } // namespace member
