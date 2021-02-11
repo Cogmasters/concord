@@ -40,7 +40,7 @@ ntl_calloc_init (size_t nelems,  size_t elem_size, void (*init)(void * elem_p))
   char * start_to_zero = (char *)p + ((nelems + 1) * sizeof(void *));
   memset(start_to_zero, 0, nelems * elem_size);
   if (init)
-    for (int i = 0; i < nelems; i++)
+    for (size_t i = 0; i < nelems; i++)
       init(p[i]);
   return p;
 }
@@ -54,7 +54,7 @@ ntl_calloc (size_t nelems,  size_t elem_size)
 void
 ntl_free(void **p, void (*free_elem)(void *p))
 {
-  int i;
+  size_t i;
   for (i = 0; p[i]; i++)
     (*free_elem)(p[i]);
   free(p);
@@ -63,7 +63,7 @@ ntl_free(void **p, void (*free_elem)(void *p))
 size_t
 ntl_length (void **p)
 {
-  int i;
+  size_t i;
   for (i = 0; p[i]; i++) /* empty body */;
 
   return i;
@@ -72,7 +72,7 @@ ntl_length (void **p)
 size_t
 ntl_elem_size (void **p)
 {
-  int i;
+  size_t i;
   for (i = 0; p[i]; i++) /* empby body */;
   size_t * size_p = (size_t *)(p+i+1);
   return *size_p;
@@ -83,7 +83,7 @@ ntl_dup (void ** p)
 {
   size_t elem_size = ntl_elem_size(p);
   void ** o =  ntl_calloc(ntl_length(p), elem_size);
-  for (int i = 0; p[i]; i++)
+  for (size_t i = 0; p[i]; i++)
     memcpy(o[i], p[i], elem_size);
   return o;
 }
@@ -92,7 +92,7 @@ ntl_dup (void ** p)
 void
 ntl_apply(void **p, void (*f)(void *p))
 {
-  int i;
+  size_t i;
   for (i = 0; p[i]; i++)
     (*f)(p[i]);
 }
@@ -100,7 +100,7 @@ ntl_apply(void **p, void (*f)(void *p))
 /*
  *
  */
-int
+size_t
 ntl_to_buf(char *buf, size_t size, void **p, struct ntl_str_delimiter * d,
            ntl_elem_serializer * x)
 {
@@ -108,7 +108,7 @@ ntl_to_buf(char *buf, size_t size, void **p, struct ntl_str_delimiter * d,
   if (!d) d = &dx;
 
   const char * start = buf;
-  int i, tsize = 0, psize;
+  size_t i, tsize = 0, psize;
 
   if (start) {
     buf[0] = d->start_delimiter;
@@ -148,11 +148,11 @@ ntl_to_buf(char *buf, size_t size, void **p, struct ntl_str_delimiter * d,
   return tsize;
 }
 
-int
+size_t
 ntl_to_abuf(char ** buf_p, void **p, struct ntl_str_delimiter * d,
            ntl_elem_serializer * x)
 {
-  int s = ntl_to_buf(NULL, 0, p, d, x);
+  size_t s = ntl_to_buf(NULL, 0, p, d, x);
   *buf_p = (char *)malloc(s);
   return ntl_to_buf(*buf_p, s, p, d, x);
 }
@@ -162,7 +162,7 @@ ntl_fmap(void ** from_list, size_t to_elem_size, ntl_converter * f)
 {
   void ** to_list = ntl_calloc(ntl_length(from_list), to_elem_size);
   if (f) {
-    int i;
+    size_t i;
     for (i = 0; from_list[i]; i++)
       (*f)(from_list[i], to_list[i]);
   }
@@ -177,7 +177,7 @@ ntl_append(void ** p, void * added_elem)
   size_t elem_size = ntl_elem_size(p);
 
   void ** o = ntl_malloc(len + 1, elem_size);
-  int i;
+  size_t i;
   for (i = 0; p[i]; i++)
     memcpy(o[i], p[i], elem_size);
 
@@ -214,7 +214,7 @@ ntl_from_buf(char *buf, size_t len, struct ntl_deserializer * deserializer)
 int
 ntl_is_a_member (void ** p , void * addr)
 {
-  for (int i = 0; p[i]; i++) {
+  for (size_t i = 0; p[i]; i++) {
     if (p[i] == addr)
       return 1;
   }
