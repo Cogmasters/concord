@@ -5,7 +5,7 @@
  * <value> := true | false | null | <int> | <float> | <string-literal>
  *            | <complex-value> | <actor>
  *
- * <actor> := d | ld | lld | f | lf | b | <size-specifier>? s | F(?)? | T
+ * <actor> := d | ld | lld | f | lf | b | <size-specifier>? s | F(?)? | T(*)?
  *
  * <apath-value> := <apath> : <value>
  *
@@ -211,11 +211,11 @@ static void
 print_complex_value (struct complex_value * cv)
 {
   if (cv->tag == ARRAY) {
-    for (int i = 0; i < cv->_.elements.size; i++)
+    for (size_t i = 0; i < cv->_.elements.size; i++)
       print_value(cv->_.elements.pos+i);
   }
   else {
-    for (int i = 0; i < cv->_.pairs.size; i++)
+    for (size_t i = 0; i < cv->_.pairs.size; i++)
       print_apath_value(cv->_.pairs.pos+i);
   }
   if (cv->E.has_this) {
@@ -226,7 +226,7 @@ print_complex_value (struct complex_value * cv)
 static int
 is_primitive (char * pos, size_t size, char ** next_pos_p)
 {
-  char * const start_pos = pos, * const end_pos = pos + size;
+  char * const end_pos = pos + size;
   unsigned char c;
 
   c = * pos;
@@ -326,7 +326,7 @@ static int
 parse_value(struct stack * stack, char *pos, size_t size, struct value * p,
             char ** next_pos_p)
 {
-  char *const start_pos = pos, * const end_pos = pos + size;
+  char * const end_pos = pos + size;
 
   char *next_pos = NULL;
   if (is_primitive(pos, size, &next_pos)) {
@@ -428,7 +428,7 @@ parse_existence(char *pos, size_t size,
   if (size == 0)
     return 0;
 
-  char *const start_pos = pos, * next_pos = NULL;
+  char * next_pos = NULL;
   if (parse_size_specifier(pos, size, &p->memory_size, &next_pos)) {
     pos = next_pos;
   }
@@ -511,7 +511,6 @@ parse_apath_value_list(struct stack * stack, char * pos, size_t size,
                        struct sized_apath_value * pairs)
 {
   char * const start_pos = pos, * const end_pos = pos + size;
-  char c;
   pairs->pos = calloc(20, sizeof(struct apath_value));
 
   size_t i = 0;
@@ -538,7 +537,7 @@ static char *
 parse_value_list (struct stack * stack, char * pos, size_t size,
                   struct sized_value * elements)
 {
-  char * const start_pos = pos, * const end_pos = pos + size;
+  char * const end_pos = pos + size;
   elements->pos = calloc(20, sizeof(struct value));
   char * next_pos = NULL;
 
@@ -566,7 +565,7 @@ struct stack stack = { .array = {0}, .top = 0, .actor = EXTRACTOR };
 char * parse_expr (struct stack * stack, char * pos,
                    size_t size, struct complex_value * expr)
 {
-  char * const start_pos = pos, * const end_pos = pos + size;
+  char * const end_pos = pos + size;
   char * next_pos = NULL;
 
   SKIP_SPACES(pos, end_pos);
@@ -576,7 +575,8 @@ char * parse_expr (struct stack * stack, char * pos,
     PUSH(stack, '}');
     pos = parse_apath_value_list(stack, pos, end_pos - pos, &expr->_.pairs);
     char c = POP(stack);
-    ASSERT_S(c == *pos, "Mismatched stack");
+    if (c != *pos)
+      ERR("Mismatched stack: expecting %c, but getting %c\n", c, *pos);
     pos++;
     SKIP_SPACES(pos, end_pos);
     if (parse_existence(pos, end_pos - pos, &expr->E, &next_pos)) {
@@ -589,7 +589,8 @@ char * parse_expr (struct stack * stack, char * pos,
     PUSH(stack, ']');
     pos = parse_value_list(stack, pos, end_pos - pos, &expr->_.elements);
     char c = POP(stack);
-    ASSERT_S(c == *pos, "Mismatched stack");
+    if (c != *pos)
+      ERR("Mismatched stack: expecting %c, but getting %c\n", c, *pos);
     pos++;
     SKIP_SPACES(pos, end_pos);
     if (parse_existence(pos, end_pos - pos, &expr->E, &next_pos)) {
