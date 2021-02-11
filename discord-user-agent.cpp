@@ -115,16 +115,16 @@ on_failure_cb(
   }
 
   switch (httpcode) {
-  case HTTP_BAD_REQUEST:
+  case HTTP_FORBIDDEN:
+  case HTTP_NOT_FOUND:
       NOTOP_PRINT("(%d)%s - %s",  //print error and continue
           httpcode,
           http_code_print(httpcode),
           http_reason_print(httpcode));
 
       return ACTION_FAILURE;
+  case HTTP_BAD_REQUEST:
   case HTTP_UNAUTHORIZED:
-  case HTTP_FORBIDDEN:
-  case HTTP_NOT_FOUND:
   case HTTP_METHOD_NOT_ALLOWED:
   default:
       NOTOP_PRINT("(%d)%s - %s",  //print error and abort
