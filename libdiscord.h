@@ -1186,6 +1186,7 @@ client* init(char token[]);
 client* fast_init(const char config_file[]);
 void cleanup(discord::client *client);
 
+void add_intents(client *client, websockets::intents::code code);
 void setcb_idle(client *client, idle_cb *user_cb);
 void setcb_ready(client *client, idle_cb *user_cb);
 void setcb_message_create(client *client, message_cb *user_cb);
