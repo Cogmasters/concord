@@ -241,7 +241,7 @@ is_primitive (char * pos, size_t size, char ** next_pos_p)
       break;
     }
     case 'f': { // false
-      if (pos + 5 < end_pos
+      if (pos + 4 < end_pos
           && 'a' == pos[1] && 'l' == pos[2] && 's' == pos[3] && 'e' == pos[4]) {
         pos += 5;
         goto return_true;
@@ -249,7 +249,7 @@ is_primitive (char * pos, size_t size, char ** next_pos_p)
       break;
     }
     case 'n': { // null
-      if (pos + 4 < end_pos
+      if (pos + 3 < end_pos
           && 'u' == pos[1] && 'l' == pos[2] && 'l' == pos[3]) {
         pos += 4;
         goto return_true;
