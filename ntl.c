@@ -1,9 +1,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
-
 #include "ntl.h"
-
 
 void **
 ntl_malloc_init (size_t nelems,  size_t elem_size, void (*init)(void * elem_p))
@@ -38,9 +36,12 @@ ntl_malloc (size_t nelems,  size_t elem_size)
 void **
 ntl_calloc_init (size_t nelems,  size_t elem_size, void (*init)(void * elem_p))
 {
-  void ** p = ntl_malloc_init(nelems, elem_size, init);
+  void ** p = ntl_malloc_init(nelems, elem_size, NULL);
   char * start_to_zero = (char *)p + ((nelems + 1) * sizeof(void *));
   memset(start_to_zero, 0, nelems * elem_size);
+  if (init)
+    for (int i = 0; i < nelems; i++)
+      init(p[i]);
   return p;
 }
 
