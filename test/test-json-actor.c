@@ -26,68 +26,80 @@ int main ()
   struct complex_value cv;
   memset(&cv, 0, sizeof(struct complex_value));
   t = "{ [k] : d  [n]: 102  [f]: 102.30 }";
-  parse_expr(&stack, t, strlen(t), &cv);
+  parse_complex_value(&stack, t, strlen(t), &cv);
   fprintf (stderr, "\n");
   print_complex_value(&cv);
 
   memset(&cv, 0, sizeof(struct complex_value));
   t = "{ [k][j]:d  [k][j][1]:s }";
-  parse_expr(&stack, t, strlen(t), &cv);
+  parse_complex_value(&stack, t, strlen(t), &cv);
   fprintf (stderr, "\n");
   print_complex_value(&cv);
 
   memset(&cv, 0, sizeof(struct complex_value));
   t = "{ [k][j]: { [a] : d } }";
-  parse_expr(&stack, t, strlen(t), &cv);
+  parse_complex_value(&stack, t, strlen(t), &cv);
   fprintf (stderr, "\n");
   print_complex_value(&cv);
 
   memset(&cv, 0, sizeof(struct complex_value));
   t = "[ d f lf  lld ]";
-  parse_expr(&stack, t, strlen(t), &cv);
+  parse_complex_value(&stack, t, strlen(t), &cv);
   fprintf (stderr, "\n");
   print_complex_value(&cv);
 
 
   memset(&cv, 0, sizeof(struct complex_value));
   t = "[ F ]";
-  parse_expr(&stack, t, strlen(t), &cv);
+  parse_complex_value(&stack, t, strlen(t), &cv);
   fprintf (stderr, "\n");
   print_complex_value(&cv);
 
   memset(&cv, 0, sizeof(struct complex_value));
   t = "[ L ]";
-  parse_expr(&stack, t, strlen(t), &cv);
+  parse_complex_value(&stack, t, strlen(t), &cv);
   fprintf (stderr, "\n");
   print_complex_value(&cv);
 
   memset(&cv, 0, sizeof(struct complex_value));
   t = "[ true false true ]";
-  parse_expr(&stack, t, strlen(t), &cv);
+  parse_complex_value(&stack, t, strlen(t), &cv);
   fprintf (stderr, "\n");
   print_complex_value(&cv);
 
 
   memset(&cv, 0, sizeof(struct complex_value));
   t = "[true false true null] .E";
-  parse_expr(&stack, t, strlen(t), &cv);
+  parse_complex_value(&stack, t, strlen(t), &cv);
   fprintf (stderr, "\n");
   print_complex_value(&cv);
 
 
   memset(&cv, 0, sizeof(struct complex_value));
   t = "{ [k1]:d [k2]:true [k3]:f  [k4]:F [k5]:L } .E";
-  parse_expr(&stack, t, strlen(t), &cv);
+  parse_complex_value(&stack, t, strlen(t), &cv);
   fprintf (stderr, "\n");
   print_complex_value(&cv);
 
 
   memset(&cv, 0, sizeof(struct complex_value));
   t = "{ [k1]:d  [k2]:true [k3]:f [k4]:F [k5]:[L] [k6]:T [k7]:{ [k8]:T } [k9]:null } .E";
-  parse_expr(&stack, t, strlen(t), &cv);
+  parse_complex_value(&stack, t, strlen(t), &cv);
   fprintf (stderr, "\n");
   print_complex_value(&cv);
 
+
+  memset(&cv, 0, sizeof(struct complex_value));
+  t = "{ }";
+  parse_complex_value(&stack, t, strlen(t), &cv);
+  fprintf (stderr, "\n");
+  print_complex_value(&cv);
+
+  memset(&cv, 0, sizeof(struct complex_value));
+  t = "[ ]";
+  parse_complex_value(&stack, t, strlen(t), &cv);
+  fprintf (stderr, "\n");
+  print_complex_value(&cv);
   return 0;
 }
 

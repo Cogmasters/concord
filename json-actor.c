@@ -224,7 +224,10 @@ print_complex_value (struct complex_value * cv)
 }
 
 static int
-is_primitive (char * pos, size_t size, char ** next_pos_p)
+is_primitive (
+  char * pos,
+  size_t size,
+  char ** next_pos_p)
 {
   char * const end_pos = pos + size;
   unsigned char c;
@@ -296,9 +299,11 @@ return_true:
 }
 
 static int
-parse_size_specifier (char * pos, size_t size,
-                      struct size_specifier * p,
-                      char **next_pos_p)
+parse_size_specifier (
+  char * pos,
+  size_t size,
+  struct size_specifier * p,
+  char **next_pos_p)
 {
   char * const start_pos = pos, * end;
   long value_size = strtol(start_pos, &end, 10);
@@ -323,8 +328,11 @@ parse_size_specifier (char * pos, size_t size,
 }
 
 static int
-parse_value(struct stack * stack, char *pos, size_t size, struct value * p,
-            char ** next_pos_p)
+parse_value(
+  struct stack * stack,
+  char *pos, size_t size,
+  struct value * p,
+  char ** next_pos_p)
 {
   char * const end_pos = pos + size;
 
@@ -441,14 +449,16 @@ parse_existence(char *pos, size_t size,
   return 0;
 }
 
-char * parse_expr (struct stack * stack, char * pos,
-                   size_t size, struct complex_value * expr);
+static char * parse_complex_value(struct stack *stack, char *pos,
+                                  size_t size, struct complex_value *expr);
 
 #define SKIP_SPACES(s, end)   { while (s < end && isspace(*s)) ++s; }
 
-char * parse_apath_value(struct stack *stack,
-                         char *pos, size_t size, struct apath_value *av,
-                         struct apath *curr_path)
+static char *
+parse_apath_value(
+  struct stack *stack,
+  char *pos, size_t size, struct apath_value *av,
+  struct apath *curr_path)
 {
   // until find a ']' or '\0'
   char * const start_pos = pos, * const end_pos = pos + size,
@@ -487,7 +497,7 @@ char * parse_apath_value(struct stack *stack,
         struct complex_value * expr = calloc(1, sizeof(struct complex_value));
         av->value._.expr = expr;
         av->value.tag = JSON_COMPLEX_VALUE;
-        pos = parse_expr(stack, pos, end_pos - pos, expr);
+        pos = parse_complex_value(stack, pos, end_pos - pos, expr);
       }
       else if (parse_value(stack, pos, end_pos - pos, &av->value, &next_pos)) {
         pos = next_pos;
@@ -506,14 +516,17 @@ char * parse_apath_value(struct stack *stack,
 }
 
 static char *
-parse_apath_value_list(struct stack * stack, char * pos, size_t size,
-                       struct sized_apath_value * pairs)
+parse_apath_value_list(
+  struct stack * stack,
+  char * pos,
+  size_t size,
+  struct sized_apath_value * pairs)
 {
   char * const start_pos = pos, * const end_pos = pos + size;
   pairs->pos = calloc(20, sizeof(struct apath_value));
 
   size_t i = 0;
-  while (*pos && pos < end_pos) {
+  while (pos < end_pos) {
     SKIP_SPACES(pos, end_pos);
     if ('[' == *pos) {
       pos = parse_apath_value(stack, pos, end_pos - pos,
@@ -528,19 +541,22 @@ parse_apath_value_list(struct stack * stack, char * pos, size_t size,
     }
     ++i;
   }
-  ERR("Expecting %c to close the list\n", TOP(stack));
+  return pos;
 }
 
 static char *
-parse_value_list (struct stack * stack, char * pos, size_t size,
-                  struct sized_value * elements)
+parse_value_list (
+  struct stack * stack,
+  char * pos,
+  size_t size,
+  struct sized_value * elements)
 {
   char * const end_pos = pos + size;
   elements->pos = calloc(20, sizeof(struct value));
   char * next_pos = NULL;
 
   size_t i = 0;
-  while (*pos && pos < end_pos) {
+  while (pos < end_pos) {
     SKIP_SPACES(pos, end_pos);
     next_pos = NULL;
     if (parse_value(stack, pos, size, elements->pos+i, &next_pos)) {
@@ -555,13 +571,17 @@ parse_value_list (struct stack * stack, char * pos, size_t size,
     }
     ++i;
   }
-  ERR("Expecting %c to terminate the array list\n", TOP(stack));
+  return pos;
 }
 
 struct stack stack = { .array = {0}, .top = 0, .actor = EXTRACTOR };
 
-char * parse_expr (struct stack * stack, char * pos,
-                   size_t size, struct complex_value * expr)
+static char *
+parse_complex_value(
+  struct stack *stack,
+  char *pos,
+  size_t size,
+  struct complex_value *expr)
 {
   char * const end_pos = pos + size;
   char * next_pos = NULL;
