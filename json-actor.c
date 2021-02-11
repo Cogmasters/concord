@@ -346,74 +346,73 @@ parse_value(struct stack * stack, char *pos, size_t size, struct value * p,
   }
 
   ts->action_tag = BUILT_IN;
-  if (STRNEQ(pos, "s", 1)){
-    strcpy(ts->action.built_in, "char*");
-    pos ++;
-    goto return_true;
+  switch(*pos)
+  {
+    case 's':
+      strcpy(ts->action.built_in, "char*");
+      pos ++;
+      goto return_true;
+    case 'L':
+      strcpy(ts->action.built_in, "array");
+      pos ++;
+      goto return_true;
+    case 'A':
+      strcpy(ts->action.built_in, "array");
+      pos ++;
+      goto return_true;
+    case 'F':
+      ts->action_tag = USER_DEF_ACCEPT_NON_NULL;
+      pos ++;
+      goto return_true;
+    case 'T':
+      strcpy(ts->action.built_in, "token");
+      pos ++;
+      goto return_true;
+    case 'd':
+      ts->memory_size._.static_size = sizeof(int);
+      ts->memory_size.tag = STATIC_SIZE;
+      strcpy(ts->action.built_in, "int*");
+      pos ++;
+      goto return_true;
+    case 'l': {
+      if (STRNEQ(pos, "ld", 2)) {
+        ts->memory_size._.static_size = sizeof(long);
+        ts->memory_size.tag = STATIC_SIZE;
+        strcpy(ts->action.built_in, "long*");
+        pos += 2;
+        goto return_true;
+      } else if (STRNEQ(pos, "lld", 3)) {
+        ts->memory_size._.static_size = sizeof(long long);
+        ts->memory_size.tag = STATIC_SIZE;
+        strcpy(ts->action.built_in, "long long *");
+        pos += 3;
+        goto return_true;
+      } else if (STRNEQ(pos, "lf", 2)) {
+        ts->memory_size._.static_size = sizeof(double);
+        ts->memory_size.tag = STATIC_SIZE;
+        strcpy(ts->action.built_in, "double *");
+        pos += 2;
+        goto return_true;
+      }
+    }
+    case 'f':
+      ts->memory_size._.static_size = sizeof(float);
+      ts->memory_size.tag = STATIC_SIZE;
+      strcpy(ts->action.built_in, "float *");
+      pos ++;
+      goto return_true;
+    case 'b':
+      ts->memory_size._.static_size = sizeof(bool);
+      ts->memory_size.tag = STATIC_SIZE;
+      strcpy(ts->action.built_in, "bool*");
+      pos ++;
+      goto return_true;
+    default:
+      if (TOP(stack) == *pos)
+        return 0;
+      else
+        ERR("unexpected %c\n", *pos);
   }
-  else if (STRNEQ(pos, "L", 1)) {
-    strcpy(ts->action.built_in, "array");
-    pos ++;
-    goto return_true;
-  }
-  else if (STRNEQ(pos, "A", 1)) {
-    strcpy(ts->action.built_in, "array");
-    pos ++;
-    goto return_true;
-  }
-  else if (STRNEQ(pos, "F", 1)) {
-    ts->action_tag = USER_DEF_ACCEPT_NON_NULL;
-    pos ++;
-    goto return_true;
-  }
-  else if (STRNEQ(pos, "T", 1)) {
-    strcpy(ts->action.built_in, "token");
-    pos ++;
-    goto return_true;
-  }
-  else if (STRNEQ(pos, "d", 1)) {
-    ts->memory_size._.static_size = sizeof(int);
-    ts->memory_size.tag = STATIC_SIZE;
-    strcpy(ts->action.built_in, "int*");
-    pos ++;
-    goto return_true;
-  }
-  else if (STRNEQ(pos, "ld", 2)) {
-    ts->memory_size._.static_size = sizeof(long);
-    ts->memory_size.tag = STATIC_SIZE;
-    strcpy(ts->action.built_in, "long*");
-    pos += 2;
-    goto return_true;
-  }
-  else if (STRNEQ(pos, "lld", 3)) {
-    ts->memory_size._.static_size = sizeof(long long);
-    ts->memory_size.tag = STATIC_SIZE;
-    strcpy(ts->action.built_in, "long long *");
-    pos += 3;
-    goto return_true;
-  }
-  else if (STRNEQ(pos, "f", 1)) {
-    ts->memory_size._.static_size = sizeof(float);
-    ts->memory_size.tag = STATIC_SIZE;
-    strcpy(ts->action.built_in, "float *");
-    pos ++;
-    goto return_true;
-  }
-  else if (STRNEQ(pos, "lf", 2)) {
-    ts->memory_size._.static_size = sizeof(double);
-    ts->memory_size.tag = STATIC_SIZE;
-    strcpy(ts->action.built_in, "double *");
-    pos += 2;
-    goto return_true;
-  }
-  else if (STRNEQ(pos, "b", 1)){
-    ts->memory_size._.static_size = sizeof(bool);
-    ts->memory_size.tag = STATIC_SIZE;
-    strcpy(ts->action.built_in, "bool*");
-    pos ++;
-    goto return_true;
-  }
-  return 0;
 
 return_true:
   *next_pos_p = pos;
@@ -452,7 +451,8 @@ char * parse_apath_value(struct stack *stack,
                          struct apath *curr_path)
 {
   // until find a ']' or '\0'
-  char * const start_pos = pos, * const end_pos = pos + size;
+  char * const start_pos = pos, * const end_pos = pos + size,
+    * next_pos = NULL;
 
   ASSERT_S('[' == *pos, "expecting '['");
   pos ++;
@@ -489,11 +489,11 @@ char * parse_apath_value(struct stack *stack,
         av->value.tag = JSON_COMPLEX_VALUE;
         pos = parse_expr(stack, pos, end_pos - pos, expr);
       }
+      else if (parse_value(stack, pos, end_pos - pos, &av->value, &next_pos)) {
+        pos = next_pos;
+      }
       else {
-        char * next_pos = NULL;
-        if (parse_value(stack, pos, end_pos - pos, &av->value, &next_pos)) {
-          pos = next_pos;
-        }
+        ERR("expecting value after ':', %s does not have a legit value", pos);
       }
       break;
     }
