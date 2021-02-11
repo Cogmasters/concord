@@ -204,7 +204,7 @@ struct dati {
    bool deaf;
    bool mute;
    char *nick; //@todo find fixed size limit
-   char *avatar_hash[MAX_SHA256_LEN];
+   char avatar_hash[MAX_SHA256_LEN];
    uint64_t id;
    bool enable_emoticons;
    int expire_behavior;
