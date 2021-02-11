@@ -453,6 +453,9 @@ char * parse_apath_value(struct stack *stack,
 {
   // until find a ']' or '\0'
   char * const start_pos = pos, * const end_pos = pos + size;
+
+  ASSERT_S('[' == *pos, "expecting '['");
+  pos ++;
   while (*pos && pos < end_pos) {
     if (']' == *pos) break;
     ++pos;
@@ -475,7 +478,6 @@ char * parse_apath_value(struct stack *stack,
   switch (*pos) {
     case '[':
     {
-      ++pos; // eat up '['
       struct apath *next_path = calloc(1, sizeof(struct apath));
       curr_path->next = next_path;
       return parse_apath_value(stack, pos, end_pos - pos, av, next_path);
@@ -517,7 +519,6 @@ parse_apath_value_list(struct stack * stack, char * pos, size_t size,
   while (*pos && pos < end_pos) {
     SKIP_SPACES(pos, end_pos);
     if ('[' == *pos) {
-      ++pos; //eat up '['
       pos = parse_apath_value(stack, pos, end_pos - pos,
                               pairs->pos + i, &pairs->pos[i].path);
     }
