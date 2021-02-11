@@ -73,7 +73,9 @@ size_t
 ntl_elem_size (void **p)
 {
   size_t i;
-  for (i = 0; p[i]; i++) /* empby body */;
+  for (i = 0; p[i]; i++)
+    /* empty body to count element */;
+
   size_t * size_p = (size_t *)(p+i+1);
   return *size_p;
 }
@@ -100,7 +102,7 @@ ntl_apply(void **p, void (*f)(void *p))
 /*
  *
  */
-size_t
+int
 ntl_to_buf(char *buf, size_t size, void **p, struct ntl_str_delimiter * d,
            ntl_elem_serializer * x)
 {
@@ -108,7 +110,8 @@ ntl_to_buf(char *buf, size_t size, void **p, struct ntl_str_delimiter * d,
   if (!d) d = &dx;
 
   const char * start = buf;
-  size_t i, tsize = 0, psize;
+  size_t i, tsize = 0;
+  int psize;
 
   if (start) {
     buf[0] = d->start_delimiter;
@@ -119,6 +122,9 @@ ntl_to_buf(char *buf, size_t size, void **p, struct ntl_str_delimiter * d,
   for(i = 0; p[i]; i++) {
     bool is_last = (NULL == p[i+1]);
     psize = (*x)(buf, size, p[i]);
+    if (psize < 0) // error happens
+      return -1;
+
     if(start) {
       buf += psize; // move to next available byte
     }
@@ -148,11 +154,14 @@ ntl_to_buf(char *buf, size_t size, void **p, struct ntl_str_delimiter * d,
   return tsize;
 }
 
-size_t
+int
 ntl_to_abuf(char ** buf_p, void **p, struct ntl_str_delimiter * d,
            ntl_elem_serializer * x)
 {
-  size_t s = ntl_to_buf(NULL, 0, p, d, x);
+  int s = ntl_to_buf(NULL, 0, p, d, x);
+  if (s < 0)
+    return -1;
+
   *buf_p = (char *)malloc(s);
   return ntl_to_buf(*buf_p, s, p, d, x);
 }

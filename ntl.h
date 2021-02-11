@@ -43,7 +43,7 @@ extern "C" {
 
 /*
  * this is a very important data structure that is used
- * pervasive in the conversion between JSON string and C structs,
+ * pervasively in the conversion between JSON strings and C structs,
  * http request/response body
  */
 struct sized_buffer {
@@ -115,6 +115,7 @@ void ** ntl_append(void ** p, void * added_elem);
 /*
  * ntl_elem_serializer(NULL, 0, p) calculates the size needed to serializer p
  * ntl_elem_serializer(buf, n, p) serialize p to a buffer
+ * ntl_elem_serializer should return a negative value for any errors
  */
 typedef int (ntl_elem_serializer)(char * buf, size_t size, void *p);
 
@@ -134,12 +135,15 @@ struct ntl_str_delimiter {
  * ntl_to_buf(buf, n, ..) serialize p to buf and return the number of
  *       bytes written excluding \0
  */
-size_t ntl_to_buf(char *buf, size_t buf_size, void **p,
+int ntl_to_buf(char *buf, size_t buf_size, void **p,
                struct ntl_str_delimiter  * d,
                ntl_elem_serializer * x);
 
+/*
+ * ntl_to_abuf behaviors like asprintf
+ */
 
-size_t ntl_to_abuf(char **buf_ptr, void **p, struct ntl_str_delimiter  * d,
+int ntl_to_abuf(char **buf_ptr, void **p, struct ntl_str_delimiter  * d,
                 ntl_elem_serializer * x);
 
 
