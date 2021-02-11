@@ -5,7 +5,7 @@ int main ()
 {
   struct value value;
   char * next_pos;
-  parse_value("d", strlen("d"), &value, &next_pos);
+  parse_value(&stack, "d", strlen("d"), &value, &next_pos);
 
   char * t = "k]:d";
   struct apath_value kv;

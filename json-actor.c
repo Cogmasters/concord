@@ -2,17 +2,22 @@
  *
  * <apath> := [key] | [key] <apath>
  *
- * <value> := true | false | null | <int> | <float> | <complex-value> | <actor>
+ * <value> := true | false | null | <int> | <float> | <string-literal>
+ *            | <complex-value> | <actor>
  *
- * <actor> := d | ld | lld | f | lf | b | (.|.*|<n>)?s | F | T
+ * <actor> := d | ld | lld | f | lf | b | <size-specifier>? s | F(?)? | T
  *
  * <apath-value> := <apath> : <value>
  *
- * <complex-value> :=  { <apath-value>* }
- *                   | [ <value> ]
+ * <complex-value> :=  { <apath-value>* } <existence-omission>?
+ *                   | [ <value> ]  <existence-omission>?
  *
- * <spec> := <complex-value> (.|.*|<n>)?(E|O)?
+ * <existence-omission> := <size-specifier>? (E|O)
  *
+ * <size-specifier> := . | .* | <integer>
+ *
+ *
+ * examples:
  *
  * json_extractor(pos, size, "{ [key] : d"
  *                           "[key] : .*s }", &i)
@@ -44,9 +49,15 @@
 
 typedef int (extractor)(char *, size_t, void *p);
 
+
+enum actor {
+  EXTRACTOR = 1,
+  INJECTOR
+};
+
 #define MAX_STACK_SIZE  1024
 
-struct stack { ;
+struct stack {
   unsigned char array[MAX_STACK_SIZE];
   int top;
 
@@ -55,6 +66,7 @@ struct stack { ;
 
   struct value ** values;
   struct value * cur_value;
+  enum actor actor;
 };
 
 #define PUSH(stack, c)  { stack->array[stack->top++] = c; }
@@ -78,35 +90,51 @@ struct apath_value;
 
 struct size_specifier {
   enum {
-    NO_SIZE,
+    UNKNOWN_SIZE = 0,
     STATIC_SIZE,
     DYNAMIC_SIZE,
-    NEED_MEMORY
+    ZERO_SIZE
   } tag;
   union {
     size_t static_size;
-    void * dynamic_size;
+    void * parameterized_size;
   } _;
 };
 
 struct jv_actor {
-  char type_specifier[10];
-  struct size_specifier size_specifier;
-  void *recipient; //must be a pointer, and it cannot be NULL
-  bool is_nullable;
-  bool is_funptr;
-  extractor *funptr;
+  enum actor tag;
+  union {
+    void *recipient; //must be a pointer, and it cannot be NULL
+    void *provider; // this can be NULL or its value can be UNDEFINED
+  } _;
+  struct size_specifier memory_size; // this designate the size of _;
+  enum {
+    BUILT_IN = 0,
+    USER_DEF_ACCEPT_NON_NULL,
+    USER_DEF_ACCEPT_NULL
+  } action_tag;
+  union {
+    char built_in[10];
+    int (*user_def)(char *, size_t, void *p);
+  } action;
 };
 
 struct jv_existence {
-  struct size_specifier size_specifier;
+  struct size_specifier memory_size;
   bool has_this;
 };
 
 static void
 print_jv_actor (struct jv_actor * v)
 {
-  fprintf(stderr, "%s\n", v->type_specifier);
+  if (EXTRACTOR == v->tag)
+    fprintf (stderr, "[extractor]");
+  else
+    fprintf (stderr, "[injector]");
+  if (BUILT_IN == v->action_tag)
+    fprintf(stderr, "builtin(%s)\n", v->action.built_in);
+  else
+    fprintf(stderr, "funptr(%p)\n", v->action.user_def);
 }
 
 struct value {
@@ -153,11 +181,9 @@ static void
 print_apath_value (struct apath_value *p)
 {
   print_apath(&p->path);
+  fprintf(stderr, " : ");
   print_value(&p->value);
 }
-
-struct E {
-};
 
 struct sized_apath_value {
   struct apath_value * pos;
@@ -207,25 +233,24 @@ is_primitive (char * pos, size_t size, char ** next_pos_p)
 
   switch (c) {
     case 't': { // true
-      if (pos + 3 < end_pos &&
-          ('r' == *(pos + 1) && 'u' == *(pos + 2) && 'e' == *(pos + 3))) {
+      if (pos + 3 < end_pos
+          && 'r' == pos[1] && 'u' == pos[2] && 'e' == pos[3]) {
         pos += 4;
         goto return_true;
       }
       break;
     }
     case 'f': { // false
-      if (pos + 5 < end_pos &&
-          'a' == *(pos + 1) && 'l' == *(pos + 2) && 's' == *(pos + 3)
-          && 'e' == *(pos + 4)) {
+      if (pos + 5 < end_pos
+          && 'a' == pos[1] && 'l' == pos[2] && 's' == pos[3] && 'e' == pos[4]) {
         pos += 5;
         goto return_true;
       }
       break;
     }
     case 'n': { // null
-      if (pos + 4 < end_pos &&
-          'u' == *(pos + 1) && 'l' == *(pos + 2) && 'l' == *(pos + 3)) {
+      if (pos + 4 < end_pos
+          && 'u' == pos[1] && 'l' == pos[2] && 'l' == pos[3]) {
         pos += 4;
         goto return_true;
       }
@@ -234,8 +259,7 @@ is_primitive (char * pos, size_t size, char ** next_pos_p)
     case '"': { // a string literal
       pos ++;
       while (pos < end_pos) {
-        c = *pos;
-        pos ++;
+        c = *pos; pos ++;
         if ('"' == c)
           goto return_true;
       }
@@ -244,8 +268,7 @@ is_primitive (char * pos, size_t size, char ** next_pos_p)
     case '|': { // a propertiary string literal
       pos ++;
       while (pos < end_pos) {
-        c = *pos;
-        pos ++;
+        c = *pos; pos ++;
         if ('|' == c)
           goto return_true;
       }
@@ -280,7 +303,6 @@ parse_size_specifier (char * pos, size_t size,
   char * const start_pos = pos, * end;
   long value_size = strtol(start_pos, &end, 10);
 
-  int is_valid_size = 0, has_dsize = 0, allocate_memory = 0;
   if (end != start_pos) {
     p->tag = STATIC_SIZE;
     p->_.static_size = value_size;
@@ -293,7 +315,7 @@ parse_size_specifier (char * pos, size_t size,
     return 1;
   }
   else if ('.' == *pos) {
-    p->tag = NEED_MEMORY;
+    p->tag = ZERO_SIZE;
     *next_pos_p = pos + 1;
     return 1;
   }
@@ -301,9 +323,10 @@ parse_size_specifier (char * pos, size_t size,
 }
 
 static int
-parse_value(char *pos, size_t size, struct value * p, char ** next_pos_p)
+parse_value(struct stack * stack, char *pos, size_t size, struct value * p,
+            char ** next_pos_p)
 {
-  char *const start_pos = pos, *end;
+  char *const start_pos = pos, * const end_pos = pos + size;
 
   char *next_pos = NULL;
   if (is_primitive(pos, size, &next_pos)) {
@@ -315,77 +338,78 @@ parse_value(char *pos, size_t size, struct value * p, char ** next_pos_p)
   }
   struct jv_actor * ts = &p->_.ts;
   p->tag = JSON_ACTOR;
+  ts->tag = stack->actor;
 
-  if (parse_size_specifier(pos, size - (pos- start_pos),
-                           &ts->size_specifier, &next_pos)) {
-    pos = *next_pos;
+  if (parse_size_specifier(pos, end_pos - pos,
+                           &ts->memory_size, &next_pos)) {
+    pos = next_pos;
   }
 
+  ts->action_tag = BUILT_IN;
   if (STRNEQ(pos, "s", 1)){
-    strcpy(ts->type_specifier, "char*");
+    strcpy(ts->action.built_in, "char*");
     pos ++;
     goto return_true;
   }
   else if (STRNEQ(pos, "L", 1)) {
-    strcpy(ts->type_specifier, "array");
+    strcpy(ts->action.built_in, "array");
     pos ++;
     goto return_true;
   }
   else if (STRNEQ(pos, "A", 1)) {
-    strcpy(ts->type_specifier, "array");
+    strcpy(ts->action.built_in, "array");
     pos ++;
     goto return_true;
   }
   else if (STRNEQ(pos, "F", 1)) {
-    strcpy(ts->type_specifier, "funptr");
-    ts->is_funptr = true;
+    ts->action_tag = USER_DEF_ACCEPT_NON_NULL;
     pos ++;
     goto return_true;
   }
   else if (STRNEQ(pos, "T", 1)) {
-    strcpy(ts->type_specifier, "token");
+    strcpy(ts->action.built_in, "token");
     pos ++;
     goto return_true;
   }
   else if (STRNEQ(pos, "d", 1)) {
-    ts->size_specifier._.static_size = sizeof(int);
-    ts->size_specifier.tag = STATIC_SIZE;
-    strcpy(ts->type_specifier, "int*");
+    ts->memory_size._.static_size = sizeof(int);
+    ts->memory_size.tag = STATIC_SIZE;
+    strcpy(ts->action.built_in, "int*");
     pos ++;
     goto return_true;
   }
   else if (STRNEQ(pos, "ld", 2)) {
-    ts->size_specifier._.static_size = sizeof(long);
-    ts->size_specifier.tag = STATIC_SIZE;
-    strcpy(ts->type_specifier, "long*");
+    ts->memory_size._.static_size = sizeof(long);
+    ts->memory_size.tag = STATIC_SIZE;
+    strcpy(ts->action.built_in, "long*");
     pos += 2;
     goto return_true;
   }
   else if (STRNEQ(pos, "lld", 3)) {
-    ts->size_specifier._.static_size = sizeof(long long);
-    ts->size_specifier.tag = STATIC_SIZE;
-    strcpy(ts->type_specifier, "long long *");
+    ts->memory_size._.static_size = sizeof(long long);
+    ts->memory_size.tag = STATIC_SIZE;
+    strcpy(ts->action.built_in, "long long *");
     pos += 3;
     goto return_true;
   }
   else if (STRNEQ(pos, "f", 1)) {
-    ts->size_specifier._.static_size = sizeof(float);
-    ts->size_specifier.tag = STATIC_SIZE;
-    strcpy(ts->type_specifier, "float *");
+    ts->memory_size._.static_size = sizeof(float);
+    ts->memory_size.tag = STATIC_SIZE;
+    strcpy(ts->action.built_in, "float *");
     pos ++;
     goto return_true;
   }
   else if (STRNEQ(pos, "lf", 2)) {
-    ts->size_specifier._.static_size = sizeof(double);
-    ts->size_specifier.tag = STATIC_SIZE;
-    strcpy(ts->type_specifier, "double *");
+    ts->memory_size._.static_size = sizeof(double);
+    ts->memory_size.tag = STATIC_SIZE;
+    strcpy(ts->action.built_in, "double *");
     pos += 2;
     goto return_true;
   }
   else if (STRNEQ(pos, "b", 1)){
-    ts->size_specifier._.static_size = sizeof(bool);
-    ts->size_specifier.tag = STATIC_SIZE;
-    strcpy(ts->type_specifier, "bool*");
+    ts->memory_size._.static_size = sizeof(bool);
+    ts->memory_size.tag = STATIC_SIZE;
+    strcpy(ts->action.built_in, "bool*");
     pos ++;
     goto return_true;
   }
@@ -405,7 +429,7 @@ parse_existence(char *pos, size_t size,
     return 0;
 
   char *const start_pos = pos, * next_pos = NULL;
-  if (parse_size_specifier(pos, size, &p->size_specifier, &next_pos)) {
+  if (parse_size_specifier(pos, size, &p->memory_size, &next_pos)) {
     pos = next_pos;
   }
 
@@ -468,7 +492,7 @@ char * parse_apath_value(struct stack *stack,
       }
       else {
         char * next_pos = NULL;
-        if (parse_value(pos, end_pos - pos, &av->value, &next_pos)) {
+        if (parse_value(stack, pos, end_pos - pos, &av->value, &next_pos)) {
           pos = next_pos;
         }
       }
@@ -522,7 +546,7 @@ parse_value_list (struct stack * stack, char * pos, size_t size,
   while (*pos && pos < end_pos) {
     SKIP_SPACES(pos, end_pos);
     next_pos = NULL;
-    if (parse_value(pos, size, elements->pos+i, &next_pos)) {
+    if (parse_value(stack, pos, size, elements->pos+i, &next_pos)) {
       pos = next_pos;
     }
     else if (TOP(stack) == *pos) {
@@ -537,9 +561,7 @@ parse_value_list (struct stack * stack, char * pos, size_t size,
   ERR("Expecting %c to terminate the array list\n", TOP(stack));
 }
 
-struct stack stack = { .array = {0}, .top = 0 };
-
-
+struct stack stack = { .array = {0}, .top = 0, .actor = EXTRACTOR };
 
 char * parse_expr (struct stack * stack, char * pos,
                    size_t size, struct complex_value * expr)
@@ -553,28 +575,26 @@ char * parse_expr (struct stack * stack, char * pos,
     pos++;
     PUSH(stack, '}');
     pos = parse_apath_value_list(stack, pos, end_pos - pos, &expr->_.pairs);
-    POP(stack);
-    SKIP_SPACES(pos, end_pos);
+    char c = POP(stack);
+    ASSERT_S(c == *pos, "Mismatched stack");
     pos++;
     SKIP_SPACES(pos, end_pos);
     if (parse_existence(pos, end_pos - pos, &expr->E, &next_pos)) {
-      pos = *next_pos;
+      pos = next_pos;
     }
-
   }
   else if ('[' == *pos) {
     expr->tag = ARRAY;
     pos++;
     PUSH(stack, ']');
     pos = parse_value_list(stack, pos, end_pos - pos, &expr->_.elements);
-    POP(stack);
-    SKIP_SPACES(pos, end_pos);
+    char c = POP(stack);
+    ASSERT_S(c == *pos, "Mismatched stack");
     pos++;
     SKIP_SPACES(pos, end_pos);
     if (parse_existence(pos, end_pos - pos, &expr->E, &next_pos)) {
-      pos = *next_pos;
+      pos = next_pos;
     }
   }
   return pos;
 }
-
