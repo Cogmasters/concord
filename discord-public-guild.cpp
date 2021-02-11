@@ -31,47 +31,42 @@ json_load(char *str, size_t len, void *p_guild)
 void
 json_list_load(char *str, size_t len, void *p_guilds)
 {
-  struct sized_buffer **buf = NULL;
-  json_scanf(str, len, "[]%A", &buf);
-
-  size_t n = ntl_length((void**)buf);
-  dati **new_guilds = (dati**)ntl_calloc(n, sizeof(dati*));
-  for (size_t i=0; buf[i]; ++i) {
-    new_guilds[i] = alloc_dati();
-    json_load(buf[i]->start, buf[i]->size, new_guilds[i]);
-  }
-  
-  free(buf);
-
-  *(dati ***)p_guilds = new_guilds;
+  struct ntl_deserializer deserializer = {
+    .elem_size = sizeof(dati),
+    .init_elem = &init_dati,
+    .elem_from_buf = &json_load,
+    .ntl_recipient_p = (void***)p_guilds
+  };
+  orka_str_to_ntl(str, len, &deserializer);
 }
 
 void
-init_dati(dati *guild) {
-  memset(guild, 0, sizeof(dati));
+init_dati(void *p_guild) {
+  memset(p_guild, 0, sizeof(dati));
 }
 
 dati*
 alloc_dati()
 {
   dati *new_guild = (dati*)malloc(sizeof(dati));
-  init_dati(new_guild);
+  init_dati((void*)new_guild);
   return new_guild;
+}
+
+void
+cleanup_dati(void *p_guild) {
 }
 
 void
 free_dati(dati *guild) 
 {
-  //@todo cleanup_dati(guild);
+  cleanup_dati((void*)guild);
   free(guild);
 }
 
 void
 free_list(dati **guilds) {
-  for(int i=0; guilds[i]; ++i) {
-    free_dati(guilds[i]);
-  }
-  free(guilds);
+  ntl_free((void**)guilds, &cleanup_dati);
 }
 
 void
@@ -121,54 +116,45 @@ json_load(char *str, size_t len, void *p_member)
 void
 json_list_load(char *str, size_t len, void *p_members)
 {
-  struct sized_buffer **buf = NULL;
-  json_scanf(str, len, "[]%A", &buf);
-
-  size_t n = ntl_length((void**)buf);
-  dati **new_members = (dati**)ntl_calloc(n, sizeof(dati*));
-  for (size_t i=0; buf[i]; ++i) {
-    new_members[i] = alloc_dati();
-    json_load(buf[i]->start, buf[i]->size, new_members[i]);
-  }
-  
-  free(buf);
-
-  *(dati ***)p_members = new_members;
+  struct ntl_deserializer deserializer = {
+    .elem_size = sizeof(dati),
+    .init_elem = &init_dati,
+    .elem_from_buf = &json_load,
+    .ntl_recipient_p = (void***)p_members
+  };
+  orka_str_to_ntl(str, len, &deserializer);
 }
 
 void
-init_dati(dati *member)
+init_dati(void *p_member)
 {
-  memset(member, 0, sizeof(dati));
-  member->user = user::alloc_dati();
+  memset(p_member, 0, sizeof(dati));
+  ((dati*)p_member)->user = user::alloc_dati();
 }
 
 dati*
 alloc_dati()
 {
   dati *new_member = (dati*)malloc(sizeof(dati));
-  init_dati(new_member);
+  init_dati((void*)new_member);
   return new_member;
 }
 
 void
-cleanup_dati(dati *member) {
-  user::free_dati(member->user);
+cleanup_dati(void *p_member) {
+  user::free_dati(((dati*)p_member)->user);
 }
 
 void
 free_dati(dati *member) 
 {
-  cleanup_dati(member);
+  cleanup_dati((void*)member);
   free(member);
 }
 
 void
 free_list(dati **members) {
-  for (int i=0; members[i]; ++i) {
-    free_dati(members[i]);
-  }
-  free(members);
+  ntl_free((void**)members, &cleanup_dati);
 }
 
 //@todo modifiable query string parameters
@@ -235,26 +221,20 @@ json_load(char *str, size_t len, void *p_ban)
 void
 json_list_load(char *str, size_t len, void *p_bans)
 {
-  struct sized_buffer **buf = NULL;
-  json_scanf(str, len, "[]%A", &buf);
-
-  size_t n = ntl_length((void**)buf);
-  dati **new_bans = (dati**)ntl_calloc(n, sizeof(dati*));
-  for (size_t i=0; buf[i]; ++i) {
-    new_bans[i] = alloc_dati();
-    json_load(buf[i]->start, buf[i]->size, new_bans[i]);
-  }
-
-  free(buf);
-
-  *(dati ***)p_bans = new_bans;
+  struct ntl_deserializer deserializer = {
+    .elem_size = sizeof(dati),
+    .init_elem = &init_dati,
+    .elem_from_buf = &json_load,
+    .ntl_recipient_p = (void***)p_bans
+  };
+  orka_str_to_ntl(str, len, &deserializer);
 }
 
 void
-init_dati(dati *ban)
+init_dati(void *p_ban)
 {
-  memset(ban, 0, sizeof(dati));
-  ban->user = user::alloc_dati();
+  memset(p_ban, 0, sizeof(dati));
+  ((dati*)p_ban)->user = user::alloc_dati();
 }
 
 dati*
@@ -266,8 +246,8 @@ alloc_dati()
 }
 
 void
-cleanup_dati(dati *ban) {
-  user::free_dati(ban->user);
+cleanup_dati(void *p_ban) {
+  user::free_dati(((dati*)p_ban)->user);
 }
 
 void
@@ -279,10 +259,7 @@ free_dati(dati *ban)
 
 void
 free_list(dati **bans) {
-  for (int i=0; bans[i]; ++i) {
-    free_dati(bans[i]);
-  }
-  free(bans);
+  ntl_free((void**)bans, &cleanup_dati);
 }
 
 void

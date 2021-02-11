@@ -296,10 +296,11 @@ struct dati {
   dati *referenced_message;
 };
 
-void init_dati(dati *message);
+void init_dati(void *p_message);
 dati* alloc_dati();
-void cleanup_dati(dati *message);
+void cleanup_dati(void *p_message);
 void free_dati(dati *message);
+void free_list(dati **message);
 void json_load(char *str, size_t len, void *p_message);
 void json_list_load(char *str, size_t len, void *p_messages);
 
@@ -363,7 +364,7 @@ struct dati {
   uint64_t guild_id;
 };
 
-void init_dati(dati *reference);
+void init_dati(void *p_reference);
 dati* alloc_dati();
 void free_dati(dati *reference);
 void json_load(char *str, size_t len, void *p_reference);
@@ -674,8 +675,9 @@ struct dati {
   welcome_screen::dati *welcome_screen;
 };
 
-void init_dati(dati *guild);
+void init_dati(void *p_guild);
 dati* alloc_dati();
+void cleanup_dati(void *p_guild);
 void free_dati(dati *guild);
 void free_list(dati **guild);
 void json_load(char *str, size_t len, void *p_guild);
@@ -819,9 +821,9 @@ struct dati {
   char *permissions; //@todo find fixed size limit
 };
 
-void init_dati(dati *member);
+void init_dati(void *p_member);
 dati* alloc_dati();
-void cleanup_dati(dati *member);
+void cleanup_dati(void *p_member);
 void free_dati(dati *member);
 void free_list(dati **members);
 void json_load(char *str, size_t len, void *p_member);
@@ -899,9 +901,9 @@ struct dati {
   user::dati *user;
 };
 
-void init_dati(dati *ban);
+void init_dati(void *p_ban);
 dati* alloc_dati();
-void cleanup_dati(dati *ban);
+void cleanup_dati(void *p_ban);
 void free_dati(dati *ban);
 void free_list(dati **bans);
 void json_load(char *str, size_t len, void *p_ban);
@@ -1041,8 +1043,9 @@ struct dati {
   flags::code public_flags;
 };
 
-void init_dati(dati *user);
+void init_dati(void *p_user);
 dati* alloc_dati();
+void cleanup_dati(void *p_user);
 void free_dati(dati *user);
 void free_list(dati **users);
 void json_load(char *str, size_t len, void *p_user);

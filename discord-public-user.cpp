@@ -47,47 +47,42 @@ json_load(char *str, size_t len, void *p_user)
 void
 json_list_load(char *str, size_t len, void *p_users)
 {
-  struct sized_buffer **buf = NULL;
-  json_scanf(str, len, "[]%A", &buf);
-
-  size_t n = ntl_length((void**)buf);
-  dati **new_users = (dati**)ntl_calloc(n, sizeof(dati*));
-  for (size_t i=0; buf[i]; ++i) {
-    new_users[i] = alloc_dati();
-    json_load(buf[i]->start, buf[i]->size, new_users[i]);
-  }
-  
-  free(buf);
-
-  *(dati ***)p_users = new_users;
+  struct ntl_deserializer deserializer = {
+    .elem_size = sizeof(dati),
+    .init_elem = &init_dati,
+    .elem_from_buf = &json_load,
+    .ntl_recipient_p = (void***)p_users
+  };
+  orka_str_to_ntl(str, len, &deserializer);
 }
 
 void
-init_dati(dati *user) {
-  memset(user, 0, sizeof(dati));
+init_dati(void *p_user) {
+  memset(p_user, 0, sizeof(dati));
 }
 
 dati*
 alloc_dati()
 {
   dati *new_user = (dati*)malloc(sizeof(dati));
-  init_dati(new_user);
+  init_dati((void*)new_user);
   return new_user;
+}
+
+void
+cleanup_dati(void *p_user) {
 }
 
 void
 free_dati(dati *user) 
 {
-  //@todo cleanup_dati(user);
+  cleanup_dati((void*)user);
   free(user);
 }
 
 void
 free_list(dati **users) {
-  for(int i = 0; users[i]; i++) {
-    free_dati(users[i]);
-  }
-  free(users);
+  ntl_free((void**)users, &cleanup_dati);
 }
 
 void

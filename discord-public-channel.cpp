@@ -55,15 +55,15 @@ json_load(char *str, size_t len, void *p_channel)
 }
 
 void
-init_dati(dati *channel) {
-  memset(channel, 0, sizeof(dati));
+init_dati(void *p_channel) {
+  memset(p_channel, 0, sizeof(dati));
 }
 
 dati*
 alloc_dati()
 {
   dati *new_channel = (dati*)malloc(sizeof(dati));
-  init_dati(new_channel);
+  init_dati((void*)new_channel);
   return new_channel;
 }
 
@@ -196,40 +196,36 @@ json_load(char *str, size_t len, void *p_message)
 void
 json_list_load(char *str, size_t len, void *p_messages)
 {
-  struct sized_buffer **buf = NULL;
-  json_scanf(str, len, "[]%A", &buf);
-
-  size_t n = ntl_length((void**)buf);
-  dati **new_messages = (dati **)ntl_calloc(n, sizeof(dati*));
-  for (size_t i = 0; buf[i]; i++) {
-    new_messages[i] = alloc_dati();
-    json_load(buf[i]->start, buf[i]->size, new_messages[i]);
-  }
-
-  free(buf);
-
-  *(dati ***)p_messages = new_messages;
+  struct ntl_deserializer deserializer = {
+    .elem_size = sizeof(dati),
+    .init_elem = &init_dati,
+    .elem_from_buf = &json_load,
+    .ntl_recipient_p = (void***)p_messages
+  };
+  orka_str_to_ntl(str, len, &deserializer);
 }
 
 void
-init_dati(dati *message)
+init_dati(void *p_message)
 {
-  memset(message, 0, sizeof(dati));
-  message->author = user::alloc_dati();
-  message->member = guild::member::alloc_dati();
+  memset(p_message, 0, sizeof(dati));
+  ((dati*)p_message)->author = user::alloc_dati();
+  ((dati*)p_message)->member = guild::member::alloc_dati();
 }
 
 dati*
 alloc_dati()
 {
   dati *new_message = (dati*)malloc(sizeof(dati));
-  init_dati(new_message);
+  init_dati((void*)new_message);
   return new_message;
 }
 
 void
-cleanup_dati(dati *message)
+cleanup_dati(void *p_message)
 {
+  dati *message = (dati*)p_message;
+
   if (message->nonce)
     free(message->nonce);
   if (message->author)
@@ -245,8 +241,13 @@ cleanup_dati(dati *message)
 void
 free_dati(dati *message)
 {
-  cleanup_dati(message);
+  cleanup_dati((void*)message);
   free(message);
+}
+
+void
+free_list(dati **messages) {
+  ntl_free((void**)messages, &cleanup_dati);
 }
 
 namespace create {
@@ -313,15 +314,15 @@ del(client *client, const uint64_t channel_id, const uint64_t message_id)
 namespace reference {
 
 void
-init_dati(dati *reference) {
-  memset(reference, 0, sizeof(dati));
+init_dati(void *p_reference) {
+  memset(p_reference, 0, sizeof(dati));
 }
 
 dati*
 alloc_dati()
 {
   dati *new_reference = (dati*)malloc(sizeof(dati));
-  init_dati(new_reference);
+  init_dati((void*)new_reference);
   return new_reference;
 }
 
