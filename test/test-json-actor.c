@@ -19,7 +19,7 @@ int main ()
   if (is_primitive(t, strlen(t), &p)) {
     fprintf (stderr, "is primitive\n");
   }
-  t = "[k]:\" aaaaaa \"";
+  t = "[k]:| aaaaaa |";
   parse_apath_value(&stack, t, strlen(t), &kv, &kv.path);
   print_apath_value(&kv);
 
@@ -30,9 +30,8 @@ int main ()
   fprintf (stderr, "\n");
   print_complex_value(&cv);
 
-
   memset(&cv, 0, sizeof(struct complex_value));
-  t = "{ [k][j] : d }";
+  t = "{ [k][j]:d  [k][j][1]:s }";
   parse_expr(&stack, t, strlen(t), &cv);
   fprintf (stderr, "\n");
   print_complex_value(&cv);

@@ -463,15 +463,12 @@ char * parse_apath_value(struct stack *stack,
 
   ASSERT_S(*pos == ']', "A close bracket ']' is missing");
 
-  int len = pos - start_pos;
-
-  curr_path->key.start = calloc(1, len);
-  curr_path->key.size = len;
-
-  // we don't allow empty [] at other places like this: [key][]
+  int len = pos - start_pos - 1;
   ASSERT_S(len > 0, "Key is missing");
 
-  memcpy(curr_path->key.start, start_pos, len);
+  curr_path->key.start = calloc(1, len); // @todo get memory from stack's pool
+  curr_path->key.size = len;
+  memcpy(curr_path->key.start, start_pos+1, len);
 
   ++pos; // eat up ']'
   SKIP_SPACES(pos, end_pos);
