@@ -2,14 +2,16 @@
  *
  * <apath> := [key] | [key] <apath>
  *
- * <value> := true | false | null | <int> | <float> | <complex-value>
+ * <value> := true | false | null | <int> | <float> | <complex-value> | <actor>
+ *
+ * <actor> := d | ld | lld | f | lf | b | (.|.*|<n>)?s | F | T
  *
  * <apath-value> := <apath> : <value>
  *
  * <complex-value> :=  { <apath-value>* }
  *                   | [ <value> ]
  *
- * <spec> := <complex-value> .*E?
+ * <spec> := <complex-value> (.|.*|<n>)?(E|O)?
  *
  *
  * json_extractor(pos, size, "{ [key] : d"
@@ -129,7 +131,7 @@ print_value (struct value * v) {
 
   switch (v->tag) {
     case JSON_PRIMITIVE:
-      fprintf(stderr, "%.*s ", v->_.primitve.size, v->_.primitve.start);
+      fprintf(stderr, "%.*s\n", v->_.primitve.size, v->_.primitve.start);
       break;
     case JSON_COMPLEX_VALUE:
       print_complex_value(v->_.expr);
@@ -428,9 +430,7 @@ char * parse_apath_value(struct stack *stack,
   // until find a ']' or '\0'
   char * const start_pos = pos, * const end_pos = pos + size;
   while (*pos && pos < end_pos) {
-    if (']' == *pos) {
-      break;
-    }
+    if (']' == *pos) break;
     ++pos;
   }
 
@@ -454,7 +454,7 @@ char * parse_apath_value(struct stack *stack,
       ++pos; // eat up '['
       struct apath *next_path = calloc(1, sizeof(struct apath));
       curr_path->next = next_path;
-      return parse_apath_value(stack, pos, size - (pos - start_pos), av, next_path);
+      return parse_apath_value(stack, pos, end_pos - pos, av, next_path);
     }
     case ':':
     {
@@ -464,11 +464,11 @@ char * parse_apath_value(struct stack *stack,
         struct complex_value * expr = calloc(1, sizeof(struct complex_value));
         av->value._.expr = expr;
         av->value.tag = JSON_COMPLEX_VALUE;
-        pos = parse_expr(stack, pos, size - (pos - start_pos), expr);
+        pos = parse_expr(stack, pos, end_pos - pos, expr);
       }
       else {
         char * next_pos = NULL;
-        if (parse_value(pos, size - (pos - start_pos), &av->value, &next_pos)) {
+        if (parse_value(pos, end_pos - pos, &av->value, &next_pos)) {
           pos = next_pos;
         }
       }
@@ -491,23 +491,23 @@ parse_apath_value_list(struct stack * stack, char * pos, size_t size,
   pairs->pos = calloc(20, sizeof(struct apath_value));
 
   size_t i = 0;
-  while (*pos && pos < end_pos)
-  {
+  while (*pos && pos < end_pos) {
     SKIP_SPACES(pos, end_pos);
     if ('[' == *pos) {
       ++pos; //eat up '['
-      pos = parse_apath_value(stack, pos, size - (pos - start_pos),
+      pos = parse_apath_value(stack, pos, end_pos - pos,
                               pairs->pos + i, &pairs->pos[i].path);
     }
     else if (TOP(stack) == *pos) {
-      POP(stack);
-      break;
+      pairs->size = i;
+      return pos;
+    }
+    else {
+      ERR("Expecting %c, but found %c in %s", TOP(stack), *pos, start_pos);
     }
     ++i;
   }
-  pairs->size = i;
-
-  return pos;
+  ERR("Expecting %c to close the list\n", TOP(stack));
 }
 
 static char *
@@ -519,23 +519,22 @@ parse_value_list (struct stack * stack, char * pos, size_t size,
   char * next_pos = NULL;
 
   size_t i = 0;
-  while (*pos && pos < end_pos)
-  {
+  while (*pos && pos < end_pos) {
     SKIP_SPACES(pos, end_pos);
     next_pos = NULL;
-    if (parse_value(pos, size, elements->pos+i, &next_pos))
+    if (parse_value(pos, size, elements->pos+i, &next_pos)) {
       pos = next_pos;
+    }
     else if (TOP(stack) == *pos) {
-      POP(stack);
-      break;
+      elements->size = i;
+      return pos;
     }
     else {
       ERR("Unexpected %c in %s", *pos, pos);
     }
     ++i;
   }
-  elements->size = i;
-  return pos;
+  ERR("Expecting %c to terminate the array list\n", TOP(stack));
 }
 
 struct stack stack = { .array = {0}, .top = 0 };
@@ -553,35 +552,27 @@ char * parse_expr (struct stack * stack, char * pos,
     expr->tag = OBJECT;
     pos++;
     PUSH(stack, '}');
-    pos = parse_apath_value_list(stack, pos, size - 1, &expr->_.pairs);
+    pos = parse_apath_value_list(stack, pos, end_pos - pos, &expr->_.pairs);
+    POP(stack);
     SKIP_SPACES(pos, end_pos);
-    if ('}' == *pos) {
-      pos++;
-      SKIP_SPACES(pos, end_pos);
-      if (parse_existence(pos, size - (pos - start_pos), &expr->E, &next_pos)) {
-        pos = *next_pos;
-      }
-    } else {
-      ERR("expecting '%c' to close the object in %s",
-          stack->array[stack->top], pos);
+    pos++;
+    SKIP_SPACES(pos, end_pos);
+    if (parse_existence(pos, end_pos - pos, &expr->E, &next_pos)) {
+      pos = *next_pos;
     }
+
   }
   else if ('[' == *pos) {
     expr->tag = ARRAY;
     pos++;
     PUSH(stack, ']');
-    pos = parse_value_list(stack, pos, size - 1, &expr->_.elements);
+    pos = parse_value_list(stack, pos, end_pos - pos, &expr->_.elements);
+    POP(stack);
     SKIP_SPACES(pos, end_pos);
-    if (']' == *pos) {
-      pos++;
-      SKIP_SPACES(pos, end_pos);
-      if (parse_existence(pos, size - (pos - start_pos), &expr->E, &next_pos)) {
-        pos = *next_pos;
-      }
-    }
-    else {
-      ERR("expecting '%c' to close the object in %s",
-          stack->array[stack->top], pos);
+    pos++;
+    SKIP_SPACES(pos, end_pos);
+    if (parse_existence(pos, end_pos - pos, &expr->E, &next_pos)) {
+      pos = *next_pos;
     }
   }
   return pos;

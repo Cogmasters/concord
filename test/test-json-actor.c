@@ -75,6 +75,20 @@ int main ()
   fprintf (stderr, "\n");
   print_complex_value(&cv);
 
+
+  memset(&cv, 0, sizeof(struct complex_value));
+  t = "{ [k1]:d [k2]:true [k3]:f  [k4]:F [k5]:L } .E";
+  parse_expr(&stack, t, strlen(t), &cv);
+  fprintf (stderr, "\n");
+  print_complex_value(&cv);
+
+
+  memset(&cv, 0, sizeof(struct complex_value));
+  t = "{ [k1]:d  [k2]:true [k3]:f [k4]:F [k5]:[L] [k6]:T [k7]:{ [k8]:T } } .E";
+  parse_expr(&stack, t, strlen(t), &cv);
+  fprintf (stderr, "\n");
+  print_complex_value(&cv);
+
   return 0;
 }
 
