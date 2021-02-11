@@ -68,13 +68,13 @@ alloc_dati()
 }
 
 void
-cleanup_dati(dati *channel) {
+cleanup_dati(void *p_channel) {
 }
 
 void
 free_dati(dati *channel)
 {
-  cleanup_dati(channel);
+  cleanup_dati((void*)channel);
   free(channel);
 }
 
