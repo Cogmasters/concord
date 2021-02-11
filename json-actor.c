@@ -356,30 +356,22 @@ parse_value(
   ts->action_tag = BUILT_IN;
   switch(*pos)
   {
-    case 's':
-      strcpy(ts->action.built_in, "char*");
-      pos ++;
-      goto return_true;
-    case 'L':
-      strcpy(ts->action.built_in, "array");
-      pos ++;
-      goto return_true;
-    case 'A':
-      strcpy(ts->action.built_in, "array");
-      pos ++;
-      goto return_true;
-    case 'F':
-      ts->action_tag = USER_DEF_ACCEPT_NON_NULL;
-      pos ++;
-      goto return_true;
-    case 'T':
-      strcpy(ts->action.built_in, "token");
+    case 'b':
+      ts->memory_size._.static_size = sizeof(bool);
+      ts->memory_size.tag = STATIC_SIZE;
+      strcpy(ts->action.built_in, "bool*");
       pos ++;
       goto return_true;
     case 'd':
       ts->memory_size._.static_size = sizeof(int);
       ts->memory_size.tag = STATIC_SIZE;
       strcpy(ts->action.built_in, "int*");
+      pos ++;
+      goto return_true;
+    case 'f':
+      ts->memory_size._.static_size = sizeof(float);
+      ts->memory_size.tag = STATIC_SIZE;
+      strcpy(ts->action.built_in, "float *");
       pos ++;
       goto return_true;
     case 'l': {
@@ -403,16 +395,24 @@ parse_value(
         goto return_true;
       }
     }
-    case 'f':
-      ts->memory_size._.static_size = sizeof(float);
-      ts->memory_size.tag = STATIC_SIZE;
-      strcpy(ts->action.built_in, "float *");
+    case 's':
+      strcpy(ts->action.built_in, "char*");
       pos ++;
       goto return_true;
-    case 'b':
-      ts->memory_size._.static_size = sizeof(bool);
-      ts->memory_size.tag = STATIC_SIZE;
-      strcpy(ts->action.built_in, "bool*");
+    case 'L':
+      strcpy(ts->action.built_in, "array");
+      pos ++;
+      goto return_true;
+    case 'A':
+      strcpy(ts->action.built_in, "array");
+      pos ++;
+      goto return_true;
+    case 'F':
+      ts->action_tag = USER_DEF_ACCEPT_NON_NULL;
+      pos ++;
+      goto return_true;
+    case 'T':
+      strcpy(ts->action.built_in, "token");
       pos ++;
       goto return_true;
     default:
@@ -482,7 +482,8 @@ parse_apath_value(
 
   ++pos; // eat up ']'
   SKIP_SPACES(pos, end_pos);
-  switch (*pos) {
+  switch (*pos)
+  {
     case '[':
     {
       struct apath *next_path = calloc(1, sizeof(struct apath));
@@ -499,18 +500,15 @@ parse_apath_value(
         av->value.tag = JSON_COMPLEX_VALUE;
         pos = parse_complex_value(stack, pos, end_pos - pos, expr);
       }
-      else if (parse_value(stack, pos, end_pos - pos, &av->value, &next_pos)) {
+      else if (parse_value(stack, pos, end_pos - pos, &av->value, &next_pos))
         pos = next_pos;
-      }
-      else {
-        ERR("expecting value after ':', %s does not have a legit value", pos);
-      }
+      else
+        ERR("expecting a value after ':', %s does not have a legit value", pos);
+
       break;
     }
-    default: {
+    default:
       ERR("expecting '[' or ':', but getting %c\n", *pos);
-      return NULL;
-    }
   }
   return pos;
 }
@@ -531,16 +529,16 @@ parse_apath_value_list(
     if ('[' == *pos) {
       pos = parse_apath_value(stack, pos, end_pos - pos,
                               pairs->pos + i, &pairs->pos[i].path);
+      i++;
     }
     else if (TOP(stack) == *pos) {
       pairs->size = i;
       return pos;
     }
-    else {
+    else
       ERR("Expecting %c, but found %c in %s", TOP(stack), *pos, start_pos);
-    }
-    ++i;
   }
+  pairs->size = i;
   return pos;
 }
 
@@ -560,6 +558,7 @@ parse_value_list (
     SKIP_SPACES(pos, end_pos);
     next_pos = NULL;
     if (parse_value(stack, pos, size, elements->pos+i, &next_pos)) {
+      i++;
       pos = next_pos;
     }
     else if (TOP(stack) == *pos) {
@@ -569,8 +568,8 @@ parse_value_list (
     else {
       ERR("Unexpected %c in %s", *pos, pos);
     }
-    ++i;
   }
+  elements->size = i;
   return pos;
 }
 
@@ -583,37 +582,44 @@ parse_complex_value(
   size_t size,
   struct complex_value *expr)
 {
-  char * const end_pos = pos + size;
+  char * const start_pos = pos, * const end_pos = pos + size;
   char * next_pos = NULL;
 
   SKIP_SPACES(pos, end_pos);
-  if ('{' == *pos) {
-    expr->tag = OBJECT;
-    pos++;
-    PUSH(stack, '}');
-    pos = parse_apath_value_list(stack, pos, end_pos - pos, &expr->_.pairs);
-    char c = POP(stack);
-    if (c != *pos)
-      ERR("Mismatched stack: expecting %c, but getting %c\n", c, *pos);
-    pos++;
-    SKIP_SPACES(pos, end_pos);
-    if (parse_existence(pos, end_pos - pos, &expr->E, &next_pos)) {
-      pos = next_pos;
+  switch(*pos)
+  {
+    case '{':
+    {
+      expr->tag = OBJECT;
+      pos++;
+      PUSH(stack, '}');
+      pos = parse_apath_value_list(stack, pos, end_pos - pos, &expr->_.pairs);
+      char c = POP(stack);
+      if (c != *pos)
+        ERR("Mismatched stack: expecting %c, but getting %c\n", c, *pos);
+      pos++;
+      SKIP_SPACES(pos, end_pos);
+      if (parse_existence(pos, end_pos - pos, &expr->E, &next_pos))
+        pos = next_pos;
+      break;
     }
-  }
-  else if ('[' == *pos) {
-    expr->tag = ARRAY;
-    pos++;
-    PUSH(stack, ']');
-    pos = parse_value_list(stack, pos, end_pos - pos, &expr->_.elements);
-    char c = POP(stack);
-    if (c != *pos)
-      ERR("Mismatched stack: expecting %c, but getting %c\n", c, *pos);
-    pos++;
-    SKIP_SPACES(pos, end_pos);
-    if (parse_existence(pos, end_pos - pos, &expr->E, &next_pos)) {
-      pos = next_pos;
+    case '[':
+    {
+      expr->tag = ARRAY;
+      pos++;
+      PUSH(stack, ']');
+      pos = parse_value_list(stack, pos, end_pos - pos, &expr->_.elements);
+      char c = POP(stack);
+      if (c != *pos)
+        ERR("Mismatched stack: expecting %c, but getting %c\n", c, *pos);
+      pos++;
+      SKIP_SPACES(pos, end_pos);
+      if (parse_existence(pos, end_pos - pos, &expr->E, &next_pos))
+        pos = next_pos;
+      break;
     }
+    default:
+      ERR("unexpected %c in %s\n", *pos, start_pos);
   }
   return pos;
 }
