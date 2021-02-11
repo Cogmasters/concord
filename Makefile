@@ -78,11 +78,14 @@ mkdir :
 $(OBJDIR)/curl-websocket.c.o : curl-websocket.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $< \
 		-U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=1
+
+#generic compilation
 $(OBJDIR)/%.c.o : %.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 $(OBJDIR)/%.cpp.o: %.cpp
 	$(CXX) $(CXXFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 
+#generic compilation
 %.exe : %.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBS_LDFLAGS)
 %.exe: %.cpp

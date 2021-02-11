@@ -247,6 +247,7 @@ struct dati {
 
 void init_dati(dati *channel);
 dati* alloc_dati();
+void cleanup_dati(void *p_channel);
 void free_dati(dati *channel);
 void json_load(char *str, size_t len, void *p_channel);
 

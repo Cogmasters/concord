@@ -68,9 +68,13 @@ alloc_dati()
 }
 
 void
+cleanup_dati(dati *channel) {
+}
+
+void
 free_dati(dati *channel)
 {
-  //@todo cleanup_dati(channel);
+  cleanup_dati(channel);
   free(channel);
 }
 
@@ -208,9 +212,11 @@ json_list_load(char *str, size_t len, void *p_messages)
 void
 init_dati(void *p_message)
 {
-  memset(p_message, 0, sizeof(dati));
-  ((dati*)p_message)->author = user::alloc_dati();
-  ((dati*)p_message)->member = guild::member::alloc_dati();
+  dati *message = (dati*)p_message;
+
+  memset(message, 0, sizeof(dati));
+  message->author = user::alloc_dati();
+  message->member = guild::member::alloc_dati();
 }
 
 dati*

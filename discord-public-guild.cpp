@@ -198,8 +198,9 @@ json_list_load(char *str, size_t len, void *p_members)
 void
 init_dati(void *p_member)
 {
-  memset(p_member, 0, sizeof(dati));
-  ((dati*)p_member)->user = user::alloc_dati();
+  dati *member = (dati*)p_member;
+  memset(member, 0, sizeof(dati));
+  member->user = user::alloc_dati();
 }
 
 dati*
@@ -211,8 +212,10 @@ alloc_dati()
 }
 
 void
-cleanup_dati(void *p_member) {
-  user::free_dati(((dati*)p_member)->user);
+cleanup_dati(void *p_member) 
+{
+  dati *member = (dati*)p_member;
+  user::free_dati(member->user);
 }
 
 void
@@ -303,21 +306,24 @@ json_list_load(char *str, size_t len, void *p_bans)
 void
 init_dati(void *p_ban)
 {
-  memset(p_ban, 0, sizeof(dati));
-  ((dati*)p_ban)->user = user::alloc_dati();
+  dati *ban = (dati*)p_ban;
+  memset(ban, 0, sizeof(dati));
+  ban->user = user::alloc_dati();
 }
 
 dati*
 alloc_dati()
 {
   dati *new_ban = (dati*)malloc(sizeof(dati));
-  init_dati(new_ban);
+  init_dati((void*)new_ban);
   return new_ban;
 }
 
 void
-cleanup_dati(void *p_ban) {
-  user::free_dati(((dati*)p_ban)->user);
+cleanup_dati(void *p_ban)
+{
+  dati *ban = (dati*)p_ban;
+  user::free_dati(ban->user);
 }
 
 void
