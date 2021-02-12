@@ -37,6 +37,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <ctype.h>
+#include <stdarg.h>
 #include "json-common.h"
 #define N_PATH_MAX 8
 #define KEY_MAX 128
@@ -47,18 +48,19 @@
 #include "jsmn.h"
 #include "ntl.h"
 
-typedef int (extractor)(char *, size_t, void *p);
-
-
 enum actor_tag {
   EXTRACTOR = 1,
   INJECTOR
 };
 
-#define MAX_STACK_SIZE  1024
+/* 
+ * the maximum levels of nested json object/array
+ */
+#define MAX_NESTED_LEVEL  16
+#define MAX_ACTOR_NUMBERS   512
 
 struct stack {
-  unsigned char array[MAX_STACK_SIZE];
+  unsigned char array[MAX_NESTED_LEVEL];
   int top;
 
   struct apath ** paths;
@@ -79,11 +81,11 @@ struct apath {
 };
 
 static void
-print_apath (struct apath * apath)
+print_apath (FILE * fp, struct apath * apath)
 {
-  fprintf(stderr, "[%.*s]", apath->key.size, apath->key.start);
+  fprintf(fp, "[%.*s]", apath->key.size, apath->key.start);
   if (apath->next)
-    print_apath(apath->next);
+    print_apath(fp, apath->next);
 }
 
 struct apath_value;
@@ -92,7 +94,7 @@ struct size_specifier {
   enum {
     UNKNOWN_SIZE = 0,
     FIXED_SIZE,
-    DYNAMIC_SIZE,
+    PARAMETERIZED_SIZE,
     ZERO_SIZE
   } tag;
   union {
@@ -125,22 +127,22 @@ struct existence {
 };
 
 static void
-print_actor (struct actor * v)
+print_actor (FILE * fp, struct actor * v)
 {
   if (EXTRACTOR == v->tag)
-    fprintf (stderr, "[extractor]");
+    fprintf (fp, "[extractor]");
   else
-    fprintf (stderr, "[injector]");
+    fprintf (fp, "[injector]");
   if (BUILT_IN == v->action_tag)
-    fprintf(stderr, "builtin(%s)\n", v->action.built_in);
+    fprintf(fp, "builtin(%s)\n", v->action.built_in);
   else
-    fprintf(stderr, "funptr(%p)\n", v->action.user_def);
+    fprintf(fp, "funptr(%p)\n", v->action.user_def);
 }
 
 struct value {
   enum {
     JSON_PRIMITIVE = 1,
-    JSON_COMPLEX_VALUE,
+    JSON_COMPOSITE_VALUE,
     JSON_ACTOR,
   } tag;
   union {
@@ -151,21 +153,21 @@ struct value {
 };
 
 static void
-print_composite_value (struct composite_value * cv);
+print_composite_value (FILE * fp, struct composite_value * cv);
 
 static void
-print_value (struct value * v) {
-  fprintf(stderr, "tag_%d ", v->tag);
+print_value (FILE * fp, struct value * v) {
+  fprintf(fp, "tag_%d ", v->tag);
 
   switch (v->tag) {
     case JSON_PRIMITIVE:
-      fprintf(stderr, "%.*s\n", v->_.primitve.size, v->_.primitve.start);
+      fprintf(fp, "%.*s\n", v->_.primitve.size, v->_.primitve.start);
       break;
-    case JSON_COMPLEX_VALUE:
-      print_composite_value(v->_.cv);
+    case JSON_COMPOSITE_VALUE:
+      print_composite_value(fp, v->_.cv);
       break;
     case JSON_ACTOR:
-      print_actor(&v->_.actor);
+      print_actor(fp, &v->_.actor);
       break;
     default:
       break;
@@ -178,11 +180,11 @@ struct apath_value {
 };
 
 static void
-print_apath_value (struct apath_value *p)
+print_apath_value (FILE * fp, struct apath_value *p)
 {
-  print_apath(&p->path);
-  fprintf(stderr, " : ");
-  print_value(&p->value);
+  print_apath(fp, &p->path);
+  fprintf(fp, " : ");
+  print_value(fp, &p->value);
 }
 
 struct sized_apath_value {
@@ -208,18 +210,18 @@ struct composite_value {
 };
 
 static void
-print_composite_value (struct composite_value * cv)
+print_composite_value (FILE * fp, struct composite_value * cv)
 {
   if (cv->tag == ARRAY) {
     for (size_t i = 0; i < cv->_.elements.size; i++)
-      print_value(cv->_.elements.pos+i);
+      print_value(fp, cv->_.elements.pos+i);
   }
   else {
     for (size_t i = 0; i < cv->_.pairs.size; i++)
-      print_apath_value(cv->_.pairs.pos+i);
+      print_apath_value(fp, cv->_.pairs.pos+i);
   }
   if (cv->E.has_this) {
-    fprintf(stderr, "E ");
+    fprintf(fp, "E ");
   }
 }
 
@@ -306,16 +308,19 @@ parse_size_specifier (
   char **next_pos_p)
 {
   char * const start_pos = pos, * const end_pos = pos + size, * x;
-  long value_size = strtol(start_pos, &x, 10);
+  long fixed_size = strtol(start_pos, &x, 10);
 
   if (x != start_pos) {
+    if (fixed_size <= 0)
+      ERR("size has to be a non-zero postive value %ld\n", fixed_size);
+
     p->tag = FIXED_SIZE;
-    p->_.fixed_size = value_size;
+    p->_.fixed_size = fixed_size;
     *next_pos_p = x; // jump to the end of number
     return 1;
   }
   else if (pos + 1 < end_pos && '.' == *pos && '*' == *(pos+1)) {
-    p->tag = DYNAMIC_SIZE;
+    p->tag = PARAMETERIZED_SIZE;
     *next_pos_p = pos + 2;
     return 1;
   }
@@ -502,7 +507,7 @@ parse_apath_value(
       if ('[' == *pos || '{' == *pos) {
         struct composite_value * cv = calloc(1, sizeof(struct composite_value));
         av->value._.cv = cv;
-        av->value.tag = JSON_COMPLEX_VALUE;
+        av->value.tag = JSON_COMPOSITE_VALUE;
         pos = parse_composite_value(stack, pos, end_pos - pos, cv);
       }
       else if (parse_value(stack, pos, end_pos - pos, &av->value, &next_pos))
@@ -578,7 +583,7 @@ parse_value_list (
   return pos;
 }
 
-struct stack stack = { .array = {0}, .top = 0, .actor_tag = INJECTOR };
+static struct stack stack = { .array = {0}, .top = 0, .actor_tag = INJECTOR };
 
 static char *
 parse_composite_value(
@@ -627,4 +632,99 @@ parse_composite_value(
       ERR("unexpected %c in %s\n", *pos, start_pos);
   }
   return pos;
+}
+
+struct recipients {
+  void * addrs[MAX_ACTOR_NUMBERS];
+  size_t pos;
+};
+
+static void
+collect_composite_value_recipients (struct composite_value *cv,
+                                    struct recipients * rec);
+
+static void
+collect_value_recipients (struct value *v, struct recipients *rec)
+{
+  switch (v->tag) {
+    case JSON_ACTOR: {
+      struct actor *actor = &v->_.actor;
+      switch (actor->action_tag) {
+        case BUILT_IN:
+          if (PARAMETERIZED_SIZE == actor->mem_size.tag) {
+            rec->addrs[rec->pos] = (void *)&actor->mem_size._.parameterized_size;
+            rec->pos ++;
+          }
+          rec->addrs[rec->pos] = (void *)&actor->operand.recipient;
+          rec->pos ++;
+          break;
+        case USER_DEF_ACCEPT_NON_NULL:
+          rec->addrs[rec->pos] = (void *)&actor->action.user_def;
+          rec->pos ++;
+          rec->addrs[rec->pos] = (void *)&actor->operand;
+          rec->pos ++;
+          break;
+        case USER_DEF_ACCEPT_NULL:
+          rec->addrs[rec->pos] = (void *)&actor->action.user_def;
+          rec->pos ++;
+          rec->addrs[rec->pos] = (void *)&actor->operand;
+          rec->pos ++;
+          break;
+      }
+      break;
+    }
+    case JSON_COMPOSITE_VALUE:
+      collect_composite_value_recipients(v->_.cv, rec);
+      break;
+    case JSON_PRIMITIVE:
+      break;
+  }
+}
+
+static void
+collect_composite_value_recipients (struct composite_value *cv, struct recipients * rec)
+{
+  switch(cv->tag)
+  {
+    case OBJECT: {
+      struct apath_value *p;
+      for (size_t i = 0; i < cv->_.pairs.size; i++) {
+        p = cv->_.pairs.pos + i;
+        collect_value_recipients(&p->value, rec);
+      }
+      break;
+    }
+    case ARRAY: {
+      struct value * p;
+      for (size_t i = 0; i < cv->_.elements.size; i++) {
+        p = cv->_.elements.pos + i;
+        collect_value_recipients(p, rec);
+      }
+      break;
+    }
+  }
+}
+
+int
+json_injector(char * pos, size_t size, char * js_actor_spec, ...)
+{
+  struct stack stack = { .array = {0}, .top = 0, .actor_tag = INJECTOR };
+  struct composite_value cv;
+  memset(&cv, 0, sizeof(struct composite_value));
+  char * next_pos =
+    parse_composite_value(&stack, js_actor_spec, strlen(js_actor_spec), &cv);
+
+  if (next_pos == pos)
+    ERR("failed to parse %s\n", js_actor_spec);
+
+
+  struct recipients  rec = { 0 };
+  collect_composite_value_recipients(&cv, &rec);
+
+  va_list ap;
+  va_start(ap, js_actor_spec);
+  for (size_t i = 0; i < rec.pos; i++)
+    rec.addrs[i] = va_arg(ap, void *);
+  va_end(ap);
+  
 }

@@ -12,7 +12,7 @@ int main ()
   memset(&kv, 0, sizeof (struct apath_value));
   parse_apath_value(&stack, t, strlen(t), &kv, &kv.path);
 
-  print_apath_value(&kv);
+  print_apath_value(stderr, &kv);
 
   t = "\" aaaaaa \"";
   char * p = NULL;
@@ -21,85 +21,90 @@ int main ()
   }
   t = "[k]:| aaaaaa |";
   parse_apath_value(&stack, t, strlen(t), &kv, &kv.path);
-  print_apath_value(&kv);
+  print_apath_value(stderr, &kv);
 
   struct composite_value cv;
   memset(&cv, 0, sizeof(struct composite_value));
   t = "{ [k] : d  [n]: 102  [f]: 102.30 }";
   parse_composite_value(&stack, t, strlen(t), &cv);
   fprintf (stderr, "\n");
-  print_composite_value(&cv);
+  print_composite_value(stderr, &cv);
 
   memset(&cv, 0, sizeof(struct composite_value));
   t = "{ [k][j]:d  [k][j][1]:s }";
   parse_composite_value(&stack, t, strlen(t), &cv);
   fprintf (stderr, "\n");
-  print_composite_value(&cv);
+  print_composite_value(stderr, &cv);
 
   memset(&cv, 0, sizeof(struct composite_value));
   t = "{ [k][j]: { [a] : d } }";
   parse_composite_value(&stack, t, strlen(t), &cv);
   fprintf (stderr, "\n");
-  print_composite_value(&cv);
+  print_composite_value(stderr, &cv);
 
   memset(&cv, 0, sizeof(struct composite_value));
   t = "[ d f lf  lld ]";
   parse_composite_value(&stack, t, strlen(t), &cv);
   fprintf (stderr, "\n");
-  print_composite_value(&cv);
+  print_composite_value(stderr, &cv);
 
 
   memset(&cv, 0, sizeof(struct composite_value));
   t = "[ F ]";
   parse_composite_value(&stack, t, strlen(t), &cv);
   fprintf (stderr, "\n");
-  print_composite_value(&cv);
+  print_composite_value(stderr, &cv);
 
   memset(&cv, 0, sizeof(struct composite_value));
   t = "[ L ]";
   parse_composite_value(&stack, t, strlen(t), &cv);
   fprintf (stderr, "\n");
-  print_composite_value(&cv);
+  print_composite_value(stderr, &cv);
 
   memset(&cv, 0, sizeof(struct composite_value));
   t = "[ true false true ]";
   parse_composite_value(&stack, t, strlen(t), &cv);
   fprintf (stderr, "\n");
-  print_composite_value(&cv);
+  print_composite_value(stderr, &cv);
 
 
   memset(&cv, 0, sizeof(struct composite_value));
   t = "[true false true null] .E";
   parse_composite_value(&stack, t, strlen(t), &cv);
   fprintf (stderr, "\n");
-  print_composite_value(&cv);
+  print_composite_value(stderr, &cv);
 
 
   memset(&cv, 0, sizeof(struct composite_value));
   t = "{ [k1]:d [k2]:true [k3]:f  [k4]:F [k5]:L } .E";
   parse_composite_value(&stack, t, strlen(t), &cv);
   fprintf (stderr, "\n");
-  print_composite_value(&cv);
+  print_composite_value(stderr, &cv);
 
 
+  struct recipients rec = { 0 };
   memset(&cv, 0, sizeof(struct composite_value));
+  memset(&rec, 0, sizeof(struct recipients));
+
   t = "{ [k1]:d  [k2]:true [k3]:f [k4]:F [k5]:[L] [k6]:T [k7]:{ [k8]:T } [k9]:null } .E";
   parse_composite_value(&stack, t, strlen(t), &cv);
   fprintf (stderr, "\n");
-  print_composite_value(&cv);
-
+  print_composite_value(stderr, &cv);
+  collect_composite_value_recipients(&cv, &rec);
+  for (size_t i = 0; i < rec.pos; i++)
+    fprintf (stderr, "%p ", rec.addrs[i]);
 
   memset(&cv, 0, sizeof(struct composite_value));
   t = "{ }";
   parse_composite_value(&stack, t, strlen(t), &cv);
   fprintf (stderr, "\n");
-  print_composite_value(&cv);
+  print_composite_value(stderr, &cv);
 
   memset(&cv, 0, sizeof(struct composite_value));
   t = "[ ]";
   parse_composite_value(&stack, t, strlen(t), &cv);
   fprintf (stderr, "\n");
-  print_composite_value(&cv);
+  print_composite_value(stderr, &cv);
   return 0;
 }
 
