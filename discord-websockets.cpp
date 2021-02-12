@@ -570,7 +570,7 @@ json_load(char *str, size_t len, void *p_session)
       &session->reset_after,
       &session->max_concurrency);
 
-  D_NOTOP_PUTS("Session Start Limit object loaded with API response"); 
+  DS_NOTOP_PUTS("Session Start Limit object loaded with API response"); 
 }
 
 void
