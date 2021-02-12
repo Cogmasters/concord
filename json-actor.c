@@ -48,6 +48,7 @@
 #include "jsmn.h"
 #include "ntl.h"
 
+
 enum actor_tag {
   EXTRACTOR = 1,
   INJECTOR
@@ -671,11 +672,6 @@ collect_value_recipients (struct value *v, struct recipients *rec)
           rec->pos ++;
           break;
         case USER_DEF_ACCEPT_NON_NULL:
-          rec->addrs[rec->pos] = &actor->action.user_def;
-          rec->pos ++;
-          rec->addrs[rec->pos] = &actor->operand;
-          rec->pos ++;
-          break;
         case USER_DEF_ACCEPT_NULL:
           rec->addrs[rec->pos] = &actor->action.user_def;
           rec->pos ++;
@@ -724,6 +720,7 @@ struct injection_info {
   FILE * fp;
   void * data;
   struct stack sp;
+  int use_snprintf;
 };
 
 
@@ -732,7 +729,10 @@ inject_builtin (char * pos, size_t size, struct injection_info * info)
 {
   struct actor * v = (struct actor *) info->data;
   if (NULL == v->operand.provider) {
-    fprintf(info->fp, "null");
+    if (info->use_snprintf)
+      return snprintf(pos, size, "null");
+    else
+      fprintf(info->fp, "null");
     return 1;
   }
 
@@ -740,24 +740,40 @@ inject_builtin (char * pos, size_t size, struct injection_info * info)
   {
     case B_BOOL: {
       int *b = (int *) v->operand.provider;
+      if (info->use_snprintf) {
+        if (*b)
+          return snprintf(pos, size, "true");
+        else
+          return snprintf(pos, size, "false");
+      }
       if (*b)
         fprintf(info->fp, "true");
       else
         fprintf(info->fp, "false");
+
       break;
     }
     case B_INT: {
       int *b = (int *) v->operand.provider;
+      if (info->use_snprintf)
+        return snprintf(pos,size, "%d", *b);
+
       fprintf(info->fp, "%d", *b);
       break;
     }
     case B_FLOAT: {
       float *f = (float *) v->operand.provider;
+      if (info->use_snprintf)
+        return snprintf(pos,size, "%f", *f);
+
       fprintf(info->fp, "%f", *f);
       break;
     }
     case B_DOUBLE: {
       double *d = (double *) v->operand.provider;
+      if (info->use_snprintf)
+        return snprintf(pos,size, "%lf", *d);
+
       fprintf(info->fp, "%lf", *d);
       break;
     }
@@ -765,17 +781,29 @@ inject_builtin (char * pos, size_t size, struct injection_info * info)
       char *s = (char *) v->operand.provider;
       switch (v->mem_size.tag) {
         case UNKNOWN_SIZE:
+          if (info->use_snprintf)
+            return snprintf(pos, size, "\"%s\"", s);
+
           fprintf(info->fp, "\"%s\"", s);
           break;
         case FIXED_SIZE:
+          if (info->use_snprintf)
+            return snprintf(pos, size, "\"%.*s\"", v->mem_size._.fixed_size, s);
+
           fprintf(info->fp, "\"%.*s\"", v->mem_size._.fixed_size, s);
           break;
         case PARAMETERIZED_SIZE: {
           int ms = (int) v->mem_size._.parameterized_size;
+          if (info->use_snprintf)
+            return snprintf(pos, size, "\"%.*s\"", ms, s);
+
           fprintf(info->fp, "\"%.*s\"", ms, s);
           break;
         }
         case ZERO_SIZE:
+          if (info->use_snprintf)
+            return snprintf(pos, size, "\"%s\"", s);
+
           fprintf(info->fp, "\"%s\"", s);
           break;
       }
@@ -799,17 +827,19 @@ inject_value (char * pos, size_t size, struct injection_info * info)
       switch (actor->action_tag) {
         case BUILT_IN:
           info->data = actor;
-          inject_builtin(pos, size, info);
-          break;
-        case USER_DEF_ACCEPT_NON_NULL: {
+          return inject_builtin(pos, size, info);
+        case USER_DEF_ACCEPT_NON_NULL:
+        case USER_DEF_ACCEPT_NULL:
+        {
+          int (*f)(char *, size_t, void *) = NULL;
+          f = actor->action.user_def;
+          fprintf (stderr, "user_def %p %p\n", &actor->action.user_def,
+                   actor->action.user_def);
+          if (info->use_snprintf)
+            return (*(actor->action.user_def))(pos, size, actor->operand.provider);
+
           char *buf = malloc(1024); //@todo find the correct size
-          actor->action.user_def(buf, 1024, actor->operand.provider);
-          fprintf(info->fp, buf);
-          break;
-        }
-        case USER_DEF_ACCEPT_NULL: {
-          char *buf = malloc(1024); //@todo find the correct size
-          actor->action.user_def(buf, 1024, actor->operand.provider);
+          (*f)(buf, 1024, actor->operand.provider);
           fprintf(info->fp, buf);
           break;
         }
@@ -818,9 +848,12 @@ inject_value (char * pos, size_t size, struct injection_info * info)
     }
     case JSON_COMPOSITE_VALUE:
       info->data =  v->_.cv;
-      inject_composite_value(pos, size, info);
+      return inject_composite_value(pos, size, info);
       break;
     case JSON_PRIMITIVE:
+      if (info->use_snprintf)
+        return snprintf(pos, size, "%.*s", v->_.primitve.size, v->_.primitve.start);
+
       fprintf(info->fp, "%.*s", v->_.primitve.size, v->_.primitve.start);
       break;
   }
@@ -890,8 +923,12 @@ json_injector(char * injection_spec, ...)
 
   va_list ap;
   va_start(ap, injection_spec);
-  for (size_t i = 0; i < rec.pos; i++)
-    *((void **)rec.addrs[i]) = va_arg(ap, void *);
+  for (size_t i = 0; i < rec.pos; i++) {
+    void * p = va_arg(ap, void *);
+    fprintf (stderr, "assigning va_arg: %d %p ", i, p);
+    *((void **) rec.addrs[i]) = p;
+    fprintf (stderr, "to %p\n", rec.addrs[i]);
+  }
   va_end(ap);
 
   struct injection_info info;
@@ -899,6 +936,7 @@ json_injector(char * injection_spec, ...)
   size_t size;
   info.fp = open_memstream(&pos, &size);
   info.data = &cv;
+  info.use_snprintf = 0;
   inject_composite_value(pos, size, &info);
   fclose(info.fp);
   return pos;

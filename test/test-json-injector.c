@@ -4,10 +4,10 @@
 int f (char * pos, size_t size, void *p)
 {
   if (NULL == p) {
-
+    snprintf(pos, size, "{}");
   }
   else {
-
+    snprintf(pos, size, "%s", p);
   }
 }
 
@@ -56,6 +56,12 @@ int main () {
 
   int b = 0;
   pos = json_injector("[ b b ]", &i, &b);
+  fprintf(stderr, "%s\n", pos);
+  free(pos);
+
+
+  fprintf (stderr, "funptr %p\n", &f);
+  pos = json_injector("[ F ]", &f, NULL);
   fprintf(stderr, "%s\n", pos);
   free(pos);
 }
