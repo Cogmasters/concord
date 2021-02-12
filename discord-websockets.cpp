@@ -170,7 +170,7 @@ on_dispatch_message(dati *ws, int offset)
       free(ids);
     }
 
-    return;
+    return; /* EARLY RETURN */
   }
 
   channel::message::dati *message = channel::message::alloc_dati();
@@ -180,7 +180,17 @@ on_dispatch_message(dati *ws, int offset)
       sizeof(ws->payload.event_data), (void*)message);
 
   if (STREQ("CREATE", ws->payload.event_name + offset)) {
-    if (ws->cbs.on_message.create)
+    if (ws->cbs.on_message.command 
+        && STRNEQ(ws->prefix, message->content, strlen(ws->prefix)))
+    {
+      char *tmp = message->content; //offsets from prefix
+      message->content = message->content + strlen(ws->prefix);
+
+      (*ws->cbs.on_message.command)(ws->p_client, ws->me, message);
+
+      message->content = tmp;
+    }
+    else if (ws->cbs.on_message.create)
       (*ws->cbs.on_message.create)(ws->p_client, ws->me, message);
   }
   else if (STREQ("UPDATE", ws->payload.event_name + offset)) {

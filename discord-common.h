@@ -310,12 +310,15 @@ struct dati { /* WEBSOCKETS STRUCTURE */
 
   session::dati session;
 
+  char prefix[5]; //if set will execute message.command callback
+
   struct { /* CALLBACKS STRUCTURE */
     idle_cb *on_idle;   //triggers in every event loop iteration
     idle_cb *on_ready; //triggers when connection first establishes
     struct { /* MESSAGE CALLBACKS STRUCTURE */
       message_cb *create; //triggers when a message is created
       message_cb *update; //triggers when a message is updated (edited)
+      message_cb *command; //triggers when prefixed message is created 
       message_delete_cb *del; //triggers when a message is deleted
       message_delete_bulk_cb *delete_bulk; //triggers when multiple messages are deleted at once
     } on_message;
