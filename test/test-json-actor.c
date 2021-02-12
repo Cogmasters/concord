@@ -16,7 +16,7 @@ int main ()
 
   t = "\" aaaaaa \"";
   char * p = NULL;
-  if (is_primitive(t, strlen(t), &p)) {
+  if (is_primitive(&stack, t, strlen(t), &p)) {
     fprintf (stderr, "is primitive\n");
   }
   t = "[k]:| aaaaaa |";
@@ -50,7 +50,7 @@ int main ()
 
 
   memset(&cv, 0, sizeof(struct composite_value));
-  t = "[ F ]";
+  t = "[ F 1 ]";
   parse_composite_value(&stack, t, strlen(t), &cv);
   fprintf (stderr, "\n");
   print_composite_value(stderr, &cv);
@@ -107,4 +107,3 @@ int main ()
   print_composite_value(stderr, &cv);
   return 0;
 }
-

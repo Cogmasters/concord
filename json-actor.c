@@ -57,7 +57,7 @@ enum actor_tag {
  * the maximum levels of nested json object/array
  */
 #define MAX_NESTED_LEVEL  16
-#define MAX_ACTOR_NUMBERS   512
+#define MAX_ACTOR_NUMBERS 64
 
 struct stack {
   unsigned char array[MAX_NESTED_LEVEL];
@@ -99,8 +99,20 @@ struct size_specifier {
   } tag;
   union {
     size_t fixed_size;
-    void * parameterized_size;
+    size_t parameterized_size;
   } _;
+};
+
+enum builtin_type {
+  B_BOOL = 1,
+  B_INT,
+  B_LONG,
+  B_LONG_LONG,
+  B_FLOAT,
+  B_DOUBLE,
+  B_STRING,
+  B_TOKEN,
+  B_LIST
 };
 
 struct actor {
@@ -116,7 +128,7 @@ struct actor {
     USER_DEF_ACCEPT_NULL
   } action_tag;
   union {
-    char built_in[10];
+    enum builtin_type builtin;
     int (*user_def)(char *, size_t, void *p);
   } action;
 };
@@ -134,7 +146,7 @@ print_actor (FILE * fp, struct actor * v)
   else
     fprintf (fp, "[injector]");
   if (BUILT_IN == v->action_tag)
-    fprintf(fp, "builtin(%s)\n", v->action.built_in);
+    fprintf(fp, "builtin(%d)\n", v->action.builtin);
   else
     fprintf(fp, "funptr(%p)\n", v->action.user_def);
 }
@@ -225,13 +237,13 @@ print_composite_value (FILE * fp, struct composite_value * cv)
   }
 }
 
-static int
-is_primitive (
+static int is_primitive (
+  struct stack * stack,
   char * pos,
   size_t size,
   char ** next_pos_p)
 {
-  char * const end_pos = pos + size;
+  char * const start_pos = pos, * const end_pos = pos + size;
   unsigned char c;
 
   c = * pos;
@@ -284,9 +296,11 @@ is_primitive (
         pos++;
         while (pos < end_pos) {
           c = *pos;
-          if (' ' == c || ',' == c) goto return_true;
-          if ('.' == c || '0' <= c || c <= '9') pos++;
-          else return 0;
+          if (' ' == c || ',' == c || c == TOP(stack)) goto return_true;
+          else if ('.' == c || '0' <= c || c <= '9') pos++;
+          else {
+            ERR("unexpected %c in %s\n", c, start_pos);
+          }
         }
         goto return_true;
       }
@@ -335,14 +349,15 @@ parse_size_specifier (
 static int
 parse_value(
   struct stack * stack,
-  char *pos, size_t size,
+  char *pos,
+  size_t size,
   struct value * p,
   char ** next_pos_p)
 {
   char * const end_pos = pos + size;
 
   char *next_pos = NULL;
-  if (is_primitive(pos, size, &next_pos)) {
+  if (is_primitive(stack, pos, size, &next_pos)) {
     p->tag = JSON_PRIMITIVE;
     p->_.primitve.start = pos;
     p->_.primitve.size = next_pos - pos;
@@ -366,52 +381,48 @@ parse_value(
     case 'b':
       act->mem_size._.fixed_size = sizeof(bool);
       act->mem_size.tag = FIXED_SIZE;
-      strcpy(act->action.built_in, "bool*");
+      act->action.builtin = B_BOOL;
       pos ++;
       goto return_true;
     case 'd':
       act->mem_size._.fixed_size = sizeof(int);
       act->mem_size.tag = FIXED_SIZE;
-      strcpy(act->action.built_in, "int*");
+      act->action.builtin = B_INT;
       pos ++;
       goto return_true;
     case 'f':
       act->mem_size._.fixed_size = sizeof(float);
       act->mem_size.tag = FIXED_SIZE;
-      strcpy(act->action.built_in, "float *");
+      act->action.builtin = B_FLOAT;
       pos ++;
       goto return_true;
     case 'l': {
       if (STRNEQ(pos, "ld", 2)) {
         act->mem_size._.fixed_size = sizeof(long);
         act->mem_size.tag = FIXED_SIZE;
-        strcpy(act->action.built_in, "long*");
+        act->action.builtin = B_LONG;
         pos += 2;
         goto return_true;
       } else if (STRNEQ(pos, "lld", 3)) {
         act->mem_size._.fixed_size = sizeof(long long);
         act->mem_size.tag = FIXED_SIZE;
-        strcpy(act->action.built_in, "long long *");
+        act->action.builtin = B_LONG_LONG;
         pos += 3;
         goto return_true;
       } else if (STRNEQ(pos, "lf", 2)) {
         act->mem_size._.fixed_size = sizeof(double);
         act->mem_size.tag = FIXED_SIZE;
-        strcpy(act->action.built_in, "double *");
+        act->action.builtin = B_DOUBLE;
         pos += 2;
         goto return_true;
       }
     }
     case 's':
-      strcpy(act->action.built_in, "char*");
+      act->action.builtin = B_STRING;
       pos ++;
       goto return_true;
     case 'L':
-      strcpy(act->action.built_in, "array");
-      pos ++;
-      goto return_true;
-    case 'A':
-      strcpy(act->action.built_in, "array");
+      act->action.builtin = B_LIST;
       pos ++;
       goto return_true;
     case 'F':
@@ -419,7 +430,7 @@ parse_value(
       pos ++;
       goto return_true;
     case 'T':
-      strcpy(act->action.built_in, "token");
+      act->action.builtin = B_TOKEN;
       pos ++;
       goto return_true;
     default:
@@ -438,9 +449,7 @@ return_true:
 }
 
 static int
-parse_existence(char *pos, size_t size,
-                struct existence * p,
-                char ** next_pos_p)
+parse_existence(char *pos, size_t size, struct existence * p, char ** next_pos_p)
 {
   if (size == 0)
     return 0;
@@ -467,7 +476,9 @@ parse_composite_value(struct stack *, char *, size_t, struct composite_value *);
 static char *
 parse_apath_value(
   struct stack *stack,
-  char *pos, size_t size, struct apath_value *av,
+  char *pos,
+  size_t size,
+  struct apath_value *av,
   struct apath *curr_path)
 {
   // until find a ']' or '\0'
@@ -567,7 +578,7 @@ parse_value_list (
   while (pos < end_pos) {
     SKIP_SPACES(pos, end_pos);
     next_pos = NULL;
-    if (parse_value(stack, pos, size, elements->pos+i, &next_pos)) {
+    if (parse_value(stack, pos, end_pos - pos, elements->pos+i, &next_pos)) {
       i++;
       pos = next_pos;
     }
@@ -590,7 +601,7 @@ parse_composite_value(
   struct stack *stack,
   char *pos,
   size_t size,
-  struct composite_value *expr)
+  struct composite_value *cv)
 {
   char * const start_pos = pos, * const end_pos = pos + size;
   char * next_pos = NULL;
@@ -600,31 +611,31 @@ parse_composite_value(
   {
     case '{':
     {
-      expr->tag = OBJECT;
+      cv->tag = OBJECT;
       pos++;
       PUSH(stack, '}');
-      pos = parse_apath_value_list(stack, pos, end_pos - pos, &expr->_.pairs);
+      pos = parse_apath_value_list(stack, pos, end_pos - pos, &cv->_.pairs);
       char c = POP(stack);
       if (c != *pos)
         ERR("Mismatched stack: expecting %c, but getting %c\n", c, *pos);
       pos++;
       SKIP_SPACES(pos, end_pos);
-      if (parse_existence(pos, end_pos - pos, &expr->E, &next_pos))
+      if (parse_existence(pos, end_pos - pos, &cv->E, &next_pos))
         pos = next_pos;
       break;
     }
     case '[':
     {
-      expr->tag = ARRAY;
+      cv->tag = ARRAY;
       pos++;
       PUSH(stack, ']');
-      pos = parse_value_list(stack, pos, end_pos - pos, &expr->_.elements);
+      pos = parse_value_list(stack, pos, end_pos - pos, &cv->_.elements);
       char c = POP(stack);
       if (c != *pos)
         ERR("Mismatched stack: expecting %c, but getting %c\n", c, *pos);
       pos++;
       SKIP_SPACES(pos, end_pos);
-      if (parse_existence(pos, end_pos - pos, &expr->E, &next_pos))
+      if (parse_existence(pos, end_pos - pos, &cv->E, &next_pos))
         pos = next_pos;
       break;
     }
@@ -640,8 +651,9 @@ struct recipients {
 };
 
 static void
-collect_composite_value_recipients (struct composite_value *cv,
-                                    struct recipients * rec);
+collect_composite_value_recipients (
+  struct composite_value *cv,
+  struct recipients * rec);
 
 static void
 collect_value_recipients (struct value *v, struct recipients *rec)
@@ -652,22 +664,22 @@ collect_value_recipients (struct value *v, struct recipients *rec)
       switch (actor->action_tag) {
         case BUILT_IN:
           if (PARAMETERIZED_SIZE == actor->mem_size.tag) {
-            rec->addrs[rec->pos] = (void *)&actor->mem_size._.parameterized_size;
+            rec->addrs[rec->pos] = &actor->mem_size._.parameterized_size;
             rec->pos ++;
           }
-          rec->addrs[rec->pos] = (void *)&actor->operand.recipient;
+          rec->addrs[rec->pos] = &actor->operand.recipient;
           rec->pos ++;
           break;
         case USER_DEF_ACCEPT_NON_NULL:
-          rec->addrs[rec->pos] = (void *)&actor->action.user_def;
+          rec->addrs[rec->pos] = &actor->action.user_def;
           rec->pos ++;
-          rec->addrs[rec->pos] = (void *)&actor->operand;
+          rec->addrs[rec->pos] = &actor->operand;
           rec->pos ++;
           break;
         case USER_DEF_ACCEPT_NULL:
-          rec->addrs[rec->pos] = (void *)&actor->action.user_def;
+          rec->addrs[rec->pos] = &actor->action.user_def;
           rec->pos ++;
-          rec->addrs[rec->pos] = (void *)&actor->operand;
+          rec->addrs[rec->pos] = &actor->operand;
           rec->pos ++;
           break;
       }
@@ -682,7 +694,9 @@ collect_value_recipients (struct value *v, struct recipients *rec)
 }
 
 static void
-collect_composite_value_recipients (struct composite_value *cv, struct recipients * rec)
+collect_composite_value_recipients (
+  struct composite_value *cv,
+  struct recipients * rec)
 {
   switch(cv->tag)
   {
@@ -705,8 +719,158 @@ collect_composite_value_recipients (struct composite_value *cv, struct recipient
   }
 }
 
-int
-json_injector(char * pos, size_t size, char * js_actor_spec, ...)
+
+struct injection_info {
+  FILE * fp;
+  void * data;
+  struct stack sp;
+};
+
+
+static int
+inject_builtin (char * pos, size_t size, struct injection_info * info)
+{
+  struct actor * v = (struct actor *) info->data;
+  switch(v->action.builtin)
+  {
+    case B_BOOL: {
+      int *b = (int *) v->operand.provider;
+      if (*b)
+        fprintf(info->fp, "true");
+      else
+        fprintf(info->fp, "false");
+      break;
+    }
+    case B_INT: {
+      int *b = (int *) v->operand.provider;
+      fprintf(info->fp, "%d", *b);
+      break;
+    }
+    case B_FLOAT: {
+      float *f = (float *) v->operand.provider;
+      fprintf(info->fp, "%f", *f);
+      break;
+    }
+    case B_DOUBLE: {
+      double *d = (double *) v->operand.provider;
+      fprintf(info->fp, "%lf", *d);
+      break;
+    }
+    case B_STRING: {
+      char *s = (char *) v->operand.provider;
+      switch (v->mem_size.tag) {
+        case UNKNOWN_SIZE:
+          fprintf(info->fp, "\"%s\"", s);
+          break;
+        case FIXED_SIZE:
+          fprintf(info->fp, "\"%.*s\"", v->mem_size._.fixed_size, s);
+          break;
+        case PARAMETERIZED_SIZE: {
+          int ms = (int) v->mem_size._.parameterized_size;
+          fprintf(info->fp, "\"%.*s\"", ms, s);
+          break;
+        }
+        case ZERO_SIZE:
+          fprintf(info->fp, "\"%s\"", s);
+          break;
+      }
+      break;
+    }
+    default:
+      ERR("unexpected cases\n");
+      break;
+  }
+}
+
+static int inject_composite_value (char *, size_t, struct injection_info * );
+
+static int
+inject_value (char * pos, size_t size, struct injection_info * info)
+{
+  struct value * v = (struct value *)info->data;
+  switch (v->tag) {
+    case JSON_ACTOR: {
+      struct actor *actor = &v->_.actor;
+      switch (actor->action_tag) {
+        case BUILT_IN:
+          info->data = actor;
+          inject_builtin(pos, size, info);
+          break;
+        case USER_DEF_ACCEPT_NON_NULL: {
+          char *buf = malloc(1024); //@todo find the correct size
+          actor->action.user_def(buf, 1024, actor->operand.provider);
+          fprintf(info->fp, buf);
+          break;
+        }
+        case USER_DEF_ACCEPT_NULL: {
+          char *buf = malloc(1024); //@todo find the correct size
+          actor->action.user_def(buf, 1024, actor->operand.provider);
+          fprintf(info->fp, buf);
+          break;
+        }
+      }
+      break;
+    }
+    case JSON_COMPOSITE_VALUE:
+      info->data =  v->_.cv;
+      inject_composite_value(pos, size, info);
+      break;
+    case JSON_PRIMITIVE:
+      fprintf(info->fp, "%.*s", v->_.primitve.size, v->_.primitve.start);
+      break;
+  }
+}
+
+static int
+inject_apath_value (char * pos, size_t size, struct injection_info * info)
+{
+  struct apath_value * ap = (struct apath_value *) info->data;
+  fprintf(info->fp, "\"%.*s\"", ap->path.key.size, ap->path.key.start);
+  if (ap->path.next) {
+    // @todo
+  } else {
+    fprintf(info->fp, ":");
+    info->data = &ap->value;
+    inject_value(pos, size, info);
+  }
+}
+
+static int
+inject_composite_value (char * pos, size_t size, struct injection_info * info)
+{
+  struct composite_value * cv = (struct composite_value *) info->data;
+  switch(cv->tag) {
+    case OBJECT: {
+      struct apath_value *p;
+      fprintf(info->fp, "{");
+      for (size_t i = 0; i < cv->_.pairs.size; i++) {
+        p = cv->_.pairs.pos + i;
+        info->data = p;
+        inject_apath_value(pos, size, info);
+        if (i+1 != cv->_.pairs.size)
+          fprintf(info->fp, ",");
+      }
+      fprintf(info->fp, "}");
+      break;
+    }
+    case ARRAY: {
+      struct value * p;
+      char c;
+      fprintf (info->fp, "[");
+      for (size_t i = 0; i < cv->_.elements.size; i++) {
+        p = cv->_.elements.pos + i;
+        info->data = p;
+        inject_value(pos, size, info);
+        if (i+1 != cv->_.elements.size)
+          fprintf(info->fp, ",");
+      }
+      fprintf(info->fp, "]");
+      break;
+    }
+  }
+}
+
+char * json_injector(char * js_actor_spec, ...)
 {
   struct stack stack = { .array = {0}, .top = 0, .actor_tag = INJECTOR };
   struct composite_value cv;
@@ -714,17 +878,21 @@ json_injector(char * pos, size_t size, char * js_actor_spec, ...)
   char * next_pos =
     parse_composite_value(&stack, js_actor_spec, strlen(js_actor_spec), &cv);
 
-  if (next_pos == pos)
-    ERR("failed to parse %s\n", js_actor_spec);
-
-
   struct recipients  rec = { 0 };
   collect_composite_value_recipients(&cv, &rec);
 
   va_list ap;
   va_start(ap, js_actor_spec);
   for (size_t i = 0; i < rec.pos; i++)
-    rec.addrs[i] = va_arg(ap, void *);
+    *((void **)rec.addrs[i]) = va_arg(ap, void *);
   va_end(ap);
-  
+
+  struct injection_info info;
+  char * pos;
+  size_t size;
+  info.fp = open_memstream(&pos, &size);
+  info.data = &cv;
+  inject_composite_value(pos, size, &info);
+  fclose(info.fp);
+  return pos;
 }
