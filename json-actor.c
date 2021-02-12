@@ -3,13 +3,13 @@
  * <apath> := [key] | [key] <apath>
  *
  * <value> := true | false | null | <int> | <float> | <string-literal>
- *            | <complex-value> | <actor>
+ *            | <composite-value> | <actor>
  *
  * <actor> := d | ld | lld | f | lf | b | <size-specifier>? s | F(?)? | T(*)?
  *
  * <apath-value> := <apath> : <value>
  *
- * <complex-value> :=  { <apath-value>* } <existence-omission>?
+ * <composite-value> :=  { <apath-value>* } <existence-omission>?
  *                   | [ <value> ]  <existence-omission>?
  *
  * <existence-omission> := <size-specifier>? (E|O)
@@ -50,7 +50,7 @@
 typedef int (extractor)(char *, size_t, void *p);
 
 
-enum actor {
+enum actor_tag {
   EXTRACTOR = 1,
   INJECTOR
 };
@@ -66,7 +66,7 @@ struct stack {
 
   struct value ** values;
   struct value * cur_value;
-  enum actor actor;
+  enum actor_tag actor_tag;
 };
 
 #define PUSH(stack, c)  { stack->array[stack->top++] = c; }
@@ -91,23 +91,23 @@ struct apath_value;
 struct size_specifier {
   enum {
     UNKNOWN_SIZE = 0,
-    STATIC_SIZE,
+    FIXED_SIZE,
     DYNAMIC_SIZE,
     ZERO_SIZE
   } tag;
   union {
-    size_t static_size;
+    size_t fixed_size;
     void * parameterized_size;
   } _;
 };
 
-struct jv_actor {
-  enum actor tag;
+struct actor {
+  enum actor_tag tag;
   union {
     void *recipient; //must be a pointer, and it cannot be NULL
     void *provider; // this can be NULL or its value can be UNDEFINED
-  } _;
-  struct size_specifier memory_size; // this designate the size of _;
+  } operand;
+  struct size_specifier mem_size; // this designates the memory size of _;
   enum {
     BUILT_IN = 0,
     USER_DEF_ACCEPT_NON_NULL,
@@ -119,13 +119,13 @@ struct jv_actor {
   } action;
 };
 
-struct jv_existence {
-  struct size_specifier memory_size;
+struct existence {
+  struct size_specifier mem_size;
   bool has_this;
 };
 
 static void
-print_jv_actor (struct jv_actor * v)
+print_actor (struct actor * v)
 {
   if (EXTRACTOR == v->tag)
     fprintf (stderr, "[extractor]");
@@ -145,13 +145,13 @@ struct value {
   } tag;
   union {
     struct sized_buffer primitve;
-    struct complex_value * expr;
-    struct jv_actor ts;
+    struct composite_value * cv;
+    struct actor actor;
   } _;
 };
 
 static void
-print_complex_value (struct complex_value * cv);
+print_composite_value (struct composite_value * cv);
 
 static void
 print_value (struct value * v) {
@@ -162,10 +162,10 @@ print_value (struct value * v) {
       fprintf(stderr, "%.*s\n", v->_.primitve.size, v->_.primitve.start);
       break;
     case JSON_COMPLEX_VALUE:
-      print_complex_value(v->_.expr);
+      print_composite_value(v->_.cv);
       break;
     case JSON_ACTOR:
-      print_jv_actor(&v->_.ts);
+      print_actor(&v->_.actor);
       break;
     default:
       break;
@@ -195,7 +195,7 @@ struct sized_value {
   size_t size;
 };
 
-struct complex_value {
+struct composite_value {
   enum {
     ARRAY = 1,
     OBJECT
@@ -204,11 +204,11 @@ struct complex_value {
     struct sized_value elements;
     struct sized_apath_value pairs;
   } _;
-  struct jv_existence E;
+  struct existence E;
 };
 
 static void
-print_complex_value (struct complex_value * cv)
+print_composite_value (struct composite_value * cv)
 {
   if (cv->tag == ARRAY) {
     for (size_t i = 0; i < cv->_.elements.size; i++)
@@ -305,16 +305,16 @@ parse_size_specifier (
   struct size_specifier * p,
   char **next_pos_p)
 {
-  char * const start_pos = pos, * end;
-  long value_size = strtol(start_pos, &end, 10);
+  char * const start_pos = pos, * const end_pos = pos + size, * x;
+  long value_size = strtol(start_pos, &x, 10);
 
-  if (end != start_pos) {
-    p->tag = STATIC_SIZE;
-    p->_.static_size = value_size;
-    *next_pos_p = end; // jump to the end of number
+  if (x != start_pos) {
+    p->tag = FIXED_SIZE;
+    p->_.fixed_size = value_size;
+    *next_pos_p = x; // jump to the end of number
     return 1;
   }
-  else if ('.' == *pos && '*' == *(pos+1)) {
+  else if (pos + 1 < end_pos && '.' == *pos && '*' == *(pos+1)) {
     p->tag = DYNAMIC_SIZE;
     *next_pos_p = pos + 2;
     return 1;
@@ -344,80 +344,85 @@ parse_value(
     *next_pos_p = next_pos;
     return 1;
   }
-  struct jv_actor * ts = &p->_.ts;
+  struct actor * act = &p->_.actor;
   p->tag = JSON_ACTOR;
-  ts->tag = stack->actor;
+  act->tag = stack->actor_tag;
+  int has_size_specifier = 0;
 
   if (parse_size_specifier(pos, end_pos - pos,
-                           &ts->memory_size, &next_pos)) {
+                           &act->mem_size, &next_pos)) {
     pos = next_pos;
+    has_size_specifier = 1;
   }
 
-  ts->action_tag = BUILT_IN;
+  act->action_tag = BUILT_IN;
   switch(*pos)
   {
     case 'b':
-      ts->memory_size._.static_size = sizeof(bool);
-      ts->memory_size.tag = STATIC_SIZE;
-      strcpy(ts->action.built_in, "bool*");
+      act->mem_size._.fixed_size = sizeof(bool);
+      act->mem_size.tag = FIXED_SIZE;
+      strcpy(act->action.built_in, "bool*");
       pos ++;
       goto return_true;
     case 'd':
-      ts->memory_size._.static_size = sizeof(int);
-      ts->memory_size.tag = STATIC_SIZE;
-      strcpy(ts->action.built_in, "int*");
+      act->mem_size._.fixed_size = sizeof(int);
+      act->mem_size.tag = FIXED_SIZE;
+      strcpy(act->action.built_in, "int*");
       pos ++;
       goto return_true;
     case 'f':
-      ts->memory_size._.static_size = sizeof(float);
-      ts->memory_size.tag = STATIC_SIZE;
-      strcpy(ts->action.built_in, "float *");
+      act->mem_size._.fixed_size = sizeof(float);
+      act->mem_size.tag = FIXED_SIZE;
+      strcpy(act->action.built_in, "float *");
       pos ++;
       goto return_true;
     case 'l': {
       if (STRNEQ(pos, "ld", 2)) {
-        ts->memory_size._.static_size = sizeof(long);
-        ts->memory_size.tag = STATIC_SIZE;
-        strcpy(ts->action.built_in, "long*");
+        act->mem_size._.fixed_size = sizeof(long);
+        act->mem_size.tag = FIXED_SIZE;
+        strcpy(act->action.built_in, "long*");
         pos += 2;
         goto return_true;
       } else if (STRNEQ(pos, "lld", 3)) {
-        ts->memory_size._.static_size = sizeof(long long);
-        ts->memory_size.tag = STATIC_SIZE;
-        strcpy(ts->action.built_in, "long long *");
+        act->mem_size._.fixed_size = sizeof(long long);
+        act->mem_size.tag = FIXED_SIZE;
+        strcpy(act->action.built_in, "long long *");
         pos += 3;
         goto return_true;
       } else if (STRNEQ(pos, "lf", 2)) {
-        ts->memory_size._.static_size = sizeof(double);
-        ts->memory_size.tag = STATIC_SIZE;
-        strcpy(ts->action.built_in, "double *");
+        act->mem_size._.fixed_size = sizeof(double);
+        act->mem_size.tag = FIXED_SIZE;
+        strcpy(act->action.built_in, "double *");
         pos += 2;
         goto return_true;
       }
     }
     case 's':
-      strcpy(ts->action.built_in, "char*");
+      strcpy(act->action.built_in, "char*");
       pos ++;
       goto return_true;
     case 'L':
-      strcpy(ts->action.built_in, "array");
+      strcpy(act->action.built_in, "array");
       pos ++;
       goto return_true;
     case 'A':
-      strcpy(ts->action.built_in, "array");
+      strcpy(act->action.built_in, "array");
       pos ++;
       goto return_true;
     case 'F':
-      ts->action_tag = USER_DEF_ACCEPT_NON_NULL;
+      act->action_tag = USER_DEF_ACCEPT_NON_NULL;
       pos ++;
       goto return_true;
     case 'T':
-      strcpy(ts->action.built_in, "token");
+      strcpy(act->action.built_in, "token");
       pos ++;
       goto return_true;
     default:
-      if (TOP(stack) == *pos)
+      if (TOP(stack) == *pos) {
+        if (has_size_specifier)
+          ERR("size specifier '.' or '.*' should be followed by 's' \n");
         return 0;
+      }
       else
         ERR("unexpected %c\n", *pos);
   }
@@ -429,14 +434,14 @@ return_true:
 
 static int
 parse_existence(char *pos, size_t size,
-                struct jv_existence * p,
+                struct existence * p,
                 char ** next_pos_p)
 {
   if (size == 0)
     return 0;
 
   char * next_pos = NULL;
-  if (parse_size_specifier(pos, size, &p->memory_size, &next_pos)) {
+  if (parse_size_specifier(pos, size, &p->mem_size, &next_pos)) {
     pos = next_pos;
   }
 
@@ -449,8 +454,8 @@ parse_existence(char *pos, size_t size,
   return 0;
 }
 
-static char * parse_complex_value(struct stack *stack, char *pos,
-                                  size_t size, struct complex_value *expr);
+static char * 
+parse_composite_value(struct stack *, char *, size_t, struct composite_value *);
 
 #define SKIP_SPACES(s, end)   { while (s < end && isspace(*s)) ++s; }
 
@@ -495,10 +500,10 @@ parse_apath_value(
       ++pos; // eat up ':'
       SKIP_SPACES(pos, end_pos);
       if ('[' == *pos || '{' == *pos) {
-        struct complex_value * expr = calloc(1, sizeof(struct complex_value));
-        av->value._.expr = expr;
+        struct composite_value * cv = calloc(1, sizeof(struct composite_value));
+        av->value._.cv = cv;
         av->value.tag = JSON_COMPLEX_VALUE;
-        pos = parse_complex_value(stack, pos, end_pos - pos, expr);
+        pos = parse_composite_value(stack, pos, end_pos - pos, cv);
       }
       else if (parse_value(stack, pos, end_pos - pos, &av->value, &next_pos))
         pos = next_pos;
@@ -573,14 +578,14 @@ parse_value_list (
   return pos;
 }
 
-struct stack stack = { .array = {0}, .top = 0, .actor = EXTRACTOR };
+struct stack stack = { .array = {0}, .top = 0, .actor_tag = INJECTOR };
 
 static char *
-parse_complex_value(
+parse_composite_value(
   struct stack *stack,
   char *pos,
   size_t size,
-  struct complex_value *expr)
+  struct composite_value *expr)
 {
   char * const start_pos = pos, * const end_pos = pos + size;
   char * next_pos = NULL;
