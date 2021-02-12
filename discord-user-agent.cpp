@@ -85,7 +85,7 @@ on_success_cb(
   struct sized_buffer *resp_body,
   struct api_header_s *pairs)
 {
-  D_NOTOP_PRINT("(%d)%s - %s", 
+  DS_NOTOP_PRINT("(%d)%s - %s", 
       httpcode,
       http_code_print(httpcode),
       http_reason_print(httpcode));
@@ -104,7 +104,7 @@ on_failure_cb(
   struct api_header_s *pairs)
 {
   if (httpcode >= 500) { // server related error, retry
-    D_NOTOP_PRINT("(%d)%s - %s", 
+    NOTOP_PRINT("(%d)%s - %s", 
         httpcode,
         http_code_print(httpcode),
         http_reason_print(httpcode));

@@ -244,7 +244,7 @@ perform_request(
     ecode = curl_easy_getinfo(ehandle, CURLINFO_EFFECTIVE_URL, &url);
     ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
-    D_PRINT("Request URL: %s", url);
+    DS_PRINT("Request URL: %s", url);
 
     /* triggers response related callbacks */
     if (httpcode >= 500) { // SERVER ERROR

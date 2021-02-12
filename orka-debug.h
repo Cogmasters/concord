@@ -57,4 +57,29 @@
 
 #endif
 
+#if _ORCA_DEBUG_STRICT /* DEBUG STRICT MODE ACTIVE */
+
+/* @param msg string to be printed in debug mode */
+#  define DS_PUTS(msg) PUTS(msg)
+#  define DS_NOTOP_PUTS(msg) NOTOP_PUTS(msg)
+/* @param fmt like printf
+   @param ... arguments to be parsed into fmt */
+#  define DS_PRINT(...) PRINT(__VA_ARGS__)
+#  define DS_NOTOP_PRINT(...) NOTOP_PRINT(__VA_ARGS__)
+#  define DS_ERR(...) ERR(__VA_ARGS__)
+#  define DS_ASSERT_S(expr, msg) ASSERT_S(expr, msg)
+#  define DS_ONLY(arg) (arg)
+
+#else
+
+#  define DS_PUTS(msg)
+#  define DS_NOTOP_PUTS(msg)
+#  define DS_PRINT(...)
+#  define DS_NOTOP_PRINT(...)
+#  define DS_ERR(...)
+#  define DS_ASSERT_S(expr, msg)
+#  define DS_ONLY(arg)
+
+#endif
+
 #endif // ORKA_DEBUG_H

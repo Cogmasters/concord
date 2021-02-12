@@ -245,11 +245,13 @@ struct dati {
   message::dati **messages;
 };
 
-void init_dati(dati *channel);
+void init_dati(void *p_channel);
 dati* alloc_dati();
 void cleanup_dati(void *p_channel);
 void free_dati(dati *channel);
+void free_list(dati **channels);
 void json_load(char *str, size_t len, void *p_channel);
+void json_list_load(char *str, size_t len, void *p_channels);
 
 /* CHANNEL TYPES
 https://discord.com/developers/docs/resources/channel#channel-object-channel-types */
@@ -274,7 +276,7 @@ struct dati {
   uint64_t guild_id;
   user::dati *author;
   guild::member::dati *member;
-  char content[MAX_MESSAGE_LEN];
+  char *content;
   uint64_t timestamp;
   uint64_t edited_timestamp;
   bool tts;
@@ -1217,6 +1219,21 @@ void pin_message(client *client, const uint64_t channel_id, const uint64_t messa
 void unpin_message(client *client, const uint64_t channel_id, const uint64_t message_id);
 
 namespace message {
+
+/* https://discord.com/developers/docs/resources/channel#get-channel-messages */
+namespace get_list { // function wrapper
+
+struct params {
+  uint64_t around;
+  uint64_t before;
+  uint64_t after;
+  int limit; // max number of messages (1-100)
+};
+
+message::dati** run(client *client, const uint64_t channel_id, params *params);
+
+} // namespace get_list
+
 /* https://discord.com/developers/docs/resources/channel#create-message */
 namespace create { // function wrapper
 
@@ -1244,6 +1261,7 @@ void del(client *client, const uint64_t channel_id, const uint64_t message_id);
 namespace guild { /* discord-public-guild.cpp */
 
 void get(client *client, const uint64_t guild_id, dati *p_guild);
+channel::dati** get_channels(client *client, const uint64_t guild_id);
 
 namespace member {
 

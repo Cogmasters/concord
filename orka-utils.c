@@ -97,7 +97,6 @@ orka_iso8601_to_unix_ms(char *timestamp, size_t len, void *p_data)
   sscanf receives a null-terminated string, and there's not
   "snscanf" or something like that */
   char *buf = malloc(len + 1);
-  if(NULL == buf) return 0; // ERROR @todo provide default value to recipient ?
 
   memcpy(buf, timestamp, len);
   buf[len] = '\0';
@@ -130,14 +129,13 @@ orka_iso8601_to_unix_ms(char *timestamp, size_t len, void *p_data)
 
   *recipient = res;
 
-  return 1; // SUCSESS
+  return 1; // SUCCESS
 }
 
 int
 orka_strtoull(char *str, size_t len, void *p_data) 
 {
   char *buf = malloc(len + 1);
-  if(NULL == buf) return 0; // ERROR @todo provide default value to recipient ?
 
   memcpy(buf, str, len);
   buf[len] = '\0';

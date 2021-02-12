@@ -18,68 +18,112 @@ void on_ready(client *client, const user::dati *me)
 uint64_t
 select_guild(client *client)
 {
-  // get guilds bot is a part of
-  guild::dati **guilds = user::me::get_guilds(client);
-  if (NULL == guilds[0]) ERR("This bot is not part of any guild");
+  using namespace guild;
 
-  fprintf(stderr, "\n\nThe user you wish to mimic is part of which guild?");
+  // get guilds bot is a part of
+  dati **guilds = NULL;
+  guilds = user::me::get_guilds(client);
+  ASSERT_S(NULL != guilds, "This bot is not part of any guilds");
+
+  fprintf(stderr, "\n\nSelect the guild that the user to be mimicked is part of");
   int i=0;
   do {
-    fprintf(stderr, "\n%d. %s", i, guilds[i]->name);
+    fprintf(stderr, "\n%d. %s", i+1, guilds[i]->name);
     ++i;
   } while (guilds[i]);
 
-  char strnum[10]; // 10 digits should be more than enough..
-  long num;
   do {
     fputs("\n\nNUMBER >>\n", stderr);
+    char strnum[10]; // 10 digits should be more than enough..
     fgets(strnum, sizeof(strnum), stdin);
-    num = strtol(strnum, NULL, 10);
-    if (num >= 0 && num < i) {
-      uint64_t guild_id = guilds[num]->id;
-      guild::free_list(guilds);
+    int num = strtol(strnum, NULL, 10);
+    if (num > 0 && num <= i) {
+      uint64_t guild_id = guilds[num-1]->id;
+      free_list(guilds);
       return guild_id;
     }
-    fprintf(stderr, "\nPlease, insert a value between 0 and %d", i);
+    fprintf(stderr, "\nPlease, insert a value between 1 and %d", i);
   } while (1);
 }
 
 uint64_t
 select_member(client *client, uint64_t guild_id)
 {
+  using namespace guild;
+
   // get guilds bot is a part of
-  guild::member::dati **members = NULL;
-  guild::member::get_list::params params = {
-    .limit = 5,
+  member::dati **members = NULL;
+  member::get_list::params params = {
+    .limit = 1000,
     .after = 0
   };
 
-  members = guild::member::get_list::run(client, guild_id, &params);
-  if (NULL == members[0]) ERR("There are no members in this guild");
+  members = member::get_list::run(client, guild_id, &params);
+  ASSERT_S(NULL != members, "There are no members in this guild");
 
-  fprintf(stderr, "\n\nWho is the member you wish to mimic?");
+  fprintf(stderr, "\n\nSelect the member to be mimicked");
   int i=0;
   do {
-    fprintf(stderr, "\n%d. %s", i, members[i]->user->username);
+    fprintf(stderr, "\n%d. %s", i+1, members[i]->user->username);
     if (*members[i]->nick) { // prints nick if available
       fprintf(stderr, " (%s)", members[i]->nick);
     }
     ++i;
   } while (members[i]);
 
-  char strnum[10]; // 10 digits should be more than enough..
-  long num;
   do {
     fputs("\n\nNUMBER >>\n", stderr);
+    char strnum[10]; // 10 digits should be more than enough..
     fgets(strnum, sizeof(strnum), stdin);
-    num = strtol(strnum, NULL, 10);
-    if (num >= 0 && num < i) {
-      uint64_t user_id = members[num]->user->id;
-      guild::member::free_list(members);
+    int num = strtol(strnum, NULL, 10);
+    if (num > 0 && num <= i) {
+      uint64_t user_id = members[num-1]->user->id;
+      member::free_list(members);
       return user_id;
     }
-    fprintf(stderr, "\nPlease, insert a value between 0 and %d", i);
+    fprintf(stderr, "\nPlease, insert a value between 1 and %d", i);
   } while (1);
+}
+
+void
+fetch_member_msgs(client *client, uint64_t guild_id, uint64_t user_id)
+{
+  using namespace channel;
+
+  dati **channels = guild::get_channels(client, guild_id);
+  ASSERT_S(NULL != channels, "Couldn't fetch channels from guild");
+  
+  message::get_list::params params = {
+    .limit = 100
+  };
+
+  message::dati **messages;
+  for (int i=0; channels[i]; ++i)
+  {
+    params.before = 0;
+
+    int n_msg;
+    do {
+      messages = message::get_list::run(client, channels[i]->id, &params);
+      ASSERT_S(NULL != messages, "Couldn't fetch messages from channel");
+
+      for (n_msg = 0; messages[n_msg]; ++n_msg) {
+        if (user_id == messages[n_msg]->author->id 
+            && *messages[n_msg]->content) {
+          fprintf(stdout, "%s\n", messages[n_msg]->content);
+        }
+      }
+
+      if (n_msg) {
+        params.before = messages[n_msg-1]->id;
+      }
+
+      message::free_list(messages);
+
+    } while (n_msg == params.limit);
+  }
+
+  free_list(channels);
 }
 
 int main(int argc, char *argv[])
@@ -97,6 +141,8 @@ int main(int argc, char *argv[])
 
   uint64_t guild_id = select_guild(client);
   uint64_t user_id = select_member(client, guild_id);
+
+  fetch_member_msgs(client, guild_id, user_id);
 
   cleanup(client);
 

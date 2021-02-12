@@ -51,7 +51,19 @@ json_load(char *str, size_t len, void *p_channel)
      &orka_iso8601_to_unix_ms, &channel->last_pin_timestamp,
      &message::json_list_load, &channel->messages);
 
-  D_NOTOP_PUTS("Channel object loaded with API response");
+  DS_NOTOP_PUTS("Channel object loaded with API response");
+}
+
+void
+json_list_load(char *str, size_t len, void *p_channels)
+{
+  struct ntl_deserializer deserializer = {
+    .elem_size = sizeof(dati),
+    .init_elem = &init_dati,
+    .elem_from_buf = &json_load,
+    .ntl_recipient_p = (void***)p_channels
+  };
+  orka_str_to_ntl(str, len, &deserializer);
 }
 
 void
@@ -68,7 +80,9 @@ alloc_dati()
 }
 
 void
-cleanup_dati(void *p_channel) {
+cleanup_dati(void *p_channel) 
+{
+  DS_NOTOP_PUTS("Channel object free'd"); 
 }
 
 void
@@ -76,6 +90,11 @@ free_dati(dati *channel)
 {
   cleanup_dati((void*)channel);
   free(channel);
+}
+
+void
+free_list(dati **channels) {
+  ntl_free((void**)channels, &cleanup_dati);
 }
 
 void
@@ -151,6 +170,10 @@ json_load(char *str, size_t len, void *p_message)
     free(message->nonce);
     message->nonce = NULL;
   }
+  if (message->content) {
+    free(message->content);
+    message->content = NULL;
+  }
 
   message->referenced_message = alloc_dati();
 
@@ -160,7 +183,7 @@ json_load(char *str, size_t len, void *p_message)
      "[guild_id]%F"
      "[author]%F"
      "[member]%F"
-     "[content]%s"
+     "[content]%?s"
      "[timestamp]%F"
      "[edited_timestamp]%F"
      "[tts]%b"
@@ -177,7 +200,7 @@ json_load(char *str, size_t len, void *p_message)
       &orka_strtoull, &message->guild_id,
       &user::json_load, message->author,
       &guild::member::json_load, message->member,
-      message->content,
+      &message->content,
       &orka_iso8601_to_unix_ms, &message->timestamp,
       &orka_iso8601_to_unix_ms, &message->edited_timestamp,
       &message->tts,
@@ -194,7 +217,7 @@ json_load(char *str, size_t len, void *p_message)
     message->referenced_message = NULL;
   }
 
-  D_NOTOP_PUTS("Message object loaded with API response"); 
+  DS_NOTOP_PUTS("Message object loaded with API response"); 
 }
 
 void
@@ -234,14 +257,16 @@ cleanup_dati(void *p_message)
 
   if (message->nonce)
     free(message->nonce);
+  if (message->content)
+    free(message->content);
   if (message->author)
     user::free_dati(message->author);
   if (message->member)
     guild::member::free_dati(message->member);
-  if (message->referenced_message) {
-    cleanup_dati(message->referenced_message);
-    free(message->referenced_message);
-  }
+  if (message->referenced_message)
+    free_dati(message->referenced_message);
+
+  DS_NOTOP_PUTS("Message object free'd"); 
 }
 
 void
@@ -256,17 +281,71 @@ free_list(dati **messages) {
   ntl_free((void**)messages, &cleanup_dati);
 }
 
+namespace get_list {
+
+message::dati**
+run(client *client, const uint64_t channel_id, params *params)
+{
+  if (!channel_id) {
+    D_PUTS("Missing 'channel_id'");
+    return NULL;
+  }
+  if (params->limit < 1 || params->limit > 100) {
+    D_PUTS("'limit' value should be in an interval of (1-100)");
+    return NULL;
+  }
+
+  char limit_query[64];
+  snprintf(limit_query, sizeof(limit_query),
+      "?limit=%d", params->limit);
+
+  char around_query[64] = "";
+  if (params->around) {
+    snprintf(around_query, sizeof(around_query),
+        "&around=%" PRIu64 , params->around);
+  }
+
+  char before_query[64] = "";
+  if (params->before) {
+    snprintf(before_query, sizeof(before_query),
+        "&before=%" PRIu64 , params->before);
+  }
+
+  char after_query[64] = "";
+  if (params->after) {
+    snprintf(after_query, sizeof(after_query),
+        "&after=%" PRIu64 , params->after);
+  }
+
+  dati **new_messages = NULL;
+
+  struct resp_handle resp_handle = 
+    {&json_list_load, (void*)&new_messages};
+
+  user_agent::run( 
+    &client->ua,
+    &resp_handle,
+    NULL,
+    HTTP_GET, 
+    "/channels/%llu/messages%s%s%s", 
+    channel_id, limit_query, around_query, before_query, after_query);
+
+  return new_messages;
+}
+
+} // namespace get_list
+
 namespace create {
 
 void
 run(client *client, const uint64_t channel_id, params *params, dati *p_message)
 {
   if (!channel_id) {
-    D_PUTS("Can't send message to Discord: missing 'channel_id'");
+    D_PUTS("Missing 'channel_id'");
     return;
   }
   if (IS_EMPTY_STRING(params->content)) {
-    D_PUTS("Can't send an empty message to Discord: missing 'content'");
+    D_PUTS("Missing 'content'");
     return;
   }
   if (strlen(params->content) >= MAX_MESSAGE_LEN) {
@@ -283,8 +362,7 @@ run(client *client, const uint64_t channel_id, params *params, dati *p_message)
   struct resp_handle resp_handle = {
     .ok_cb = p_message ? json_load : NULL,
     .ok_obj = p_message,
-    .err_cb = NULL, 
-    .err_obj = NULL};
+  };
 
   struct sized_buffer req_body = {payload, strlen(payload)};
 
@@ -302,11 +380,11 @@ void
 del(client *client, const uint64_t channel_id, const uint64_t message_id)
 {
   if (!channel_id) {
-    D_PUTS("Can't delete message: missing 'channel_id'");
+    D_PUTS("Missing 'channel_id'");
     return;
   }
   if (!message_id) {
-    D_PUTS("Can't delete message: missing 'message_id'");
+    D_PUTS("Missing 'message_id'");
     return;
   }
 

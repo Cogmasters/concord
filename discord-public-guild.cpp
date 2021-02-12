@@ -41,7 +41,7 @@ json_load(char *str, size_t len, void *p_guild)
      "[unavailable]%b"
      "[member_count]%d"
      "[members]%F"
-     //"[channels]%F" // @todo add channel::json_load and channel::json_list_load
+     "[channels]%F"
      "[max_presences]%d"
      "[max_members]%d"
      "[vanity_url_code]%s"
@@ -81,7 +81,7 @@ json_load(char *str, size_t len, void *p_guild)
       &guild->unavailable,
       &guild->member_count,
       &guild::json_list_load, &guild->members,
-      //&channel::json_list_load, &guild->channels, // @todo add channel::json_load and channel::json_list_load
+      &channel::json_list_load, &guild->channels,
       &guild->max_presences,
       &guild->max_members,
       guild->vanity_url_code,
@@ -95,7 +95,7 @@ json_load(char *str, size_t len, void *p_guild)
       &guild->approximate_member_count,
       &guild->approximate_presence_count);
 
-  D_NOTOP_PUTS("Guild object loaded with API response"); 
+  DS_NOTOP_PUTS("Guild object loaded with API response"); 
 }
 
 void
@@ -131,6 +131,10 @@ cleanup_dati(void *p_guild)
   dati *guild = (dati*)p_guild;
   if (guild->members)
     member::free_list(guild->members);
+  if (guild->channels)
+    channel::free_list(guild->channels);
+
+  DS_NOTOP_PUTS("Guild object free'd"); 
 }
 
 void
@@ -163,6 +167,29 @@ get(client *client, const uint64_t guild_id, dati *p_guild)
     "/guilds/%llu", guild_id);
 }
 
+channel::dati**
+get_channels(client *client, const uint64_t guild_id)
+{
+  if (!guild_id) {
+    D_PUTS("Missing 'guild_id'");
+    return NULL;
+  }
+
+  channel::dati **new_channels = NULL;
+
+  struct resp_handle resp_handle = 
+    {&channel::json_list_load, (void*)&new_channels};
+
+  user_agent::run( 
+    &client->ua,
+    &resp_handle,
+    NULL,
+    HTTP_GET, 
+    "/guilds/%llu/channels", guild_id);
+
+  return new_channels;
+}
+
 namespace member {
 
 void
@@ -186,7 +213,7 @@ json_load(char *str, size_t len, void *p_member)
       &member->mute,
       &member->pending);
 
-  D_NOTOP_PUTS("Member object loaded with API response"); 
+  DS_NOTOP_PUTS("Member object loaded with API response"); 
 }
 
 void
@@ -222,6 +249,8 @@ cleanup_dati(void *p_member)
 {
   dati *member = (dati*)p_member;
   user::free_dati(member->user);
+
+  DS_NOTOP_PUTS("Member object free'd"); 
 }
 
 void
@@ -246,7 +275,7 @@ run(client *client, const uint64_t guild_id, struct params *params)
     return NULL;
   }
 
-  if (params->limit <= 0 || params->limit > 1000) {
+  if (params->limit < 1 || params->limit > 1000) {
     D_PUTS("'limit' value should be in an interval of (1-1000)");
     return NULL;
   }
@@ -258,7 +287,7 @@ run(client *client, const uint64_t guild_id, struct params *params)
   char after_query[64] = "";
   if (params->after) {
     snprintf(after_query, sizeof(after_query),
-        "?after=%" PRIu64 , params->after);
+        "&after=%" PRIu64 , params->after);
   }
 
   dati **new_members = NULL;
@@ -281,11 +310,11 @@ run(client *client, const uint64_t guild_id, struct params *params)
 void remove(client *client, const uint64_t guild_id, const uint64_t user_id)
 {
   if (!guild_id) {
-    D_PUTS("Can't delete message: missing 'guild_id'");
+    D_PUTS("Missing 'guild_id'");
     return;
   }
   if (!user_id) {
-    D_PUTS("Can't delete message: missing 'user_id'");
+    D_PUTS("Missing 'user_id'");
     return;
   }
 
@@ -312,7 +341,7 @@ json_load(char *str, size_t len, void *p_ban)
       ban->reason,
       &user::json_load, ban->user);
 
-  D_NOTOP_PUTS("Ban object loaded with API response"); 
+  DS_NOTOP_PUTS("Ban object loaded with API response"); 
 }
 
 void
@@ -348,6 +377,8 @@ cleanup_dati(void *p_ban)
 {
   dati *ban = (dati*)p_ban;
   user::free_dati(ban->user);
+
+  DS_NOTOP_PUTS("Ban object free'd"); 
 }
 
 void

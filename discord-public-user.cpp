@@ -41,7 +41,7 @@ json_load(char *str, size_t len, void *p_user)
       &user->premium_type,
       &user->public_flags);
 
-  D_NOTOP_PUTS("User object loaded with API response"); 
+  DS_NOTOP_PUTS("User object loaded with API response"); 
 }
 
 void
@@ -70,7 +70,9 @@ alloc_dati()
 }
 
 void
-cleanup_dati(void *p_user) {
+cleanup_dati(void *p_user)
+{
+  DS_NOTOP_PUTS("User object free'd"); 
 }
 
 void
