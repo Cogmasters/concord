@@ -731,6 +731,11 @@ static int
 inject_builtin (char * pos, size_t size, struct injection_info * info)
 {
   struct actor * v = (struct actor *) info->data;
+  if (NULL == v->operand.provider) {
+    fprintf(info->fp, "null");
+    return 1;
+  }
+
   switch(v->action.builtin)
   {
     case B_BOOL: {
@@ -870,19 +875,21 @@ inject_composite_value (char * pos, size_t size, struct injection_info * info)
   }
 }
 
-char * json_injector(char * js_actor_spec, ...)
+char *
+json_injector(char * injection_spec, ...)
 {
   struct stack stack = { .array = {0}, .top = 0, .actor_tag = INJECTOR };
   struct composite_value cv;
   memset(&cv, 0, sizeof(struct composite_value));
+  size_t len = strlen(injection_spec);
   char * next_pos =
-    parse_composite_value(&stack, js_actor_spec, strlen(js_actor_spec), &cv);
+    parse_composite_value(&stack, injection_spec, len, &cv);
 
   struct recipients  rec = { 0 };
   collect_composite_value_recipients(&cv, &rec);
 
   va_list ap;
-  va_start(ap, js_actor_spec);
+  va_start(ap, injection_spec);
   for (size_t i = 0; i < rec.pos; i++)
     *((void **)rec.addrs[i]) = va_arg(ap, void *);
   va_end(ap);
