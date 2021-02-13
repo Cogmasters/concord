@@ -399,8 +399,11 @@ del(client *client, const uint64_t channel_id, const uint64_t message_id)
 namespace reference {
 
 void
-init_dati(void *p_reference) {
-  memset(p_reference, 0, sizeof(dati));
+init_dati(void *p_reference) 
+{
+  dati *reference = (dati*)p_reference;
+  memset(reference, 0, sizeof(dati));
+  reference->fail_if_not_exists = true; //doc defaults to true
 }
 
 dati*

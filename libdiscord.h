@@ -365,6 +365,7 @@ struct dati {
   uint64_t message_id;
   uint64_t channel_id;
   uint64_t guild_id;
+  bool fail_if_not_exists;
 };
 
 void init_dati(void *p_reference);
