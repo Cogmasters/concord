@@ -494,18 +494,17 @@ parse_access_path_value(
   struct access_path_value *av,
   struct access_path *curr_path)
 {
-  // until find a ']' or '\0'
   char * const start_pos = pos, * const end_pos = pos + size,
     * next_pos = NULL;
 
-  ASSERT_S('(' == *pos, "expecting '('");
+  ASSERT_S('(' == *pos || '|' == *pos, "expecting '(' or '|'");
   pos ++;
   while (*pos && pos < end_pos) {
-    if (')' == *pos) break;
+    if (')' == *pos || '|' == *pos) break;
     ++pos;
   }
 
-  ASSERT_S(')' == *pos, "A close bracket ')' is missing");
+  ASSERT_S(')' == *pos || '|' == *pos, "A close bracket ')' or '|' is missing");
 
   int len = pos - start_pos - 1;
   ASSERT_S(len > 0, "Key is missing");
@@ -520,6 +519,7 @@ parse_access_path_value(
   switch (*pos)
   {
     case '(':
+    case '|':
       next_path = calloc(1, sizeof(struct access_path));
       curr_path->next = next_path;
       return parse_access_path_value(stack, pos, end_pos - pos, av, next_path);
@@ -538,7 +538,7 @@ parse_access_path_value(
         ERR("expecting a value after ':', %s does not have a legit value", pos);
       break;
     default:
-      ERR("expecting '(', or ':', but getting %c\n", *pos);
+      ERR("expecting '(', '|', or ':', but getting %c\n", *pos);
   }
   return pos;
 }
@@ -560,7 +560,7 @@ parse_access_path_value_list(
       pos ++;
       continue;
     }
-    else if ('(' == *pos) {
+    else if ('(' == *pos || '|' == *pos) {
       pos = parse_access_path_value(stack, pos, end_pos - pos,
                               pairs->pos + i, &pairs->pos[i].path);
       i++;
@@ -670,7 +670,7 @@ parse_toplevel(
     if ('{' == *pos || '[' == *pos) {
       pos = parse_composite_value(stack, pos, end_pos - pos, cv);
     }
-    else if ('(' == *pos) {
+    else if ('(' == *pos || '|' == *pos) {
       cv->tag = OBJECT;
       pos = parse_access_path_value_list(stack, pos, end_pos - pos, &cv->_.pairs);
       SKIP_SPACES(pos, end_pos);
