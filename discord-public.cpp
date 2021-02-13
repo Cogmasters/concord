@@ -102,7 +102,7 @@ add_intents(client *client, websockets::intents::code code)
 void
 command_prefix(client *client, char prefix[])
 {
-  const int PREFIX_LEN = (int)sizeof(client->ws.prefix);
+  const int PREFIX_LEN = sizeof(client->ws.prefix);
 
   int ret = snprintf(client->ws.prefix, PREFIX_LEN, "%s", prefix);
 
