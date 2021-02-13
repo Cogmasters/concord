@@ -83,8 +83,7 @@ int main(int argc, char *argv[])
   client *client = fast_init(config_file);
   assert(NULL != client);
 
-  command_prefix(client, "$");
-  setcb_message_command(client, &on_command);
+  setcb_message_command(client, "$", &on_command);
 
   run(client);
 

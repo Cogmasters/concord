@@ -100,18 +100,6 @@ add_intents(client *client, websockets::intents::code code)
 }
 
 void
-command_prefix(client *client, char prefix[])
-{
-  const int PREFIX_LEN = sizeof(client->ws.prefix);
-
-  int ret = snprintf(client->ws.prefix, PREFIX_LEN, "%s", prefix);
-
-  if (ret >= PREFIX_LEN) {
-    ERR("Prefix '%s' exceeds length of %d", prefix, PREFIX_LEN);
-  }
-}
-
-void
 setcb_idle(client *client, idle_cb *user_cb){
   client->ws.cbs.on_idle = user_cb;
 }
@@ -138,11 +126,19 @@ setcb_message_update(client *client, message_cb *user_cb)
 }
 
 void
-setcb_message_command(client *client, message_cb *user_cb)
+setcb_message_command(client *client, char prefix[], message_cb *user_cb)
 {
   using namespace websockets;
   add_intents(client, intents::GUILD_MESSAGES | intents::DIRECT_MESSAGES);
   client->ws.cbs.on_message.command = user_cb;
+
+  const int PREFIX_LEN = sizeof(client->ws.prefix);
+
+  int ret = snprintf(client->ws.prefix, PREFIX_LEN, "%s", prefix);
+
+  if (ret >= PREFIX_LEN) {
+    ERR("Prefix '%s' exceeds length of %d", prefix, PREFIX_LEN);
+  }
 }
 
 void
