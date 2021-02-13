@@ -20,13 +20,13 @@ int main () {
   json_injector(bigbuf, sizeof(bigbuf), "[ null, 1]");
   fprintf(stderr, "%s\n", bigbuf);
 
-  json_injector(bigbuf, sizeof(bigbuf), "[ null, /abc/]");
+  json_injector(bigbuf, sizeof(bigbuf), "[ null, |abc|]");
   fprintf(stderr, "%s\n", bigbuf);
 
-  json_injector(bigbuf, sizeof(bigbuf), "{ (k):null, (b):/abc/}");
+  json_injector(bigbuf, sizeof(bigbuf), "{ (k):null, (b):|abc|}");
   fprintf(stderr, "%s\n", bigbuf);
 
-  json_injector(bigbuf, sizeof(bigbuf), "{ (k):null, (x):/abc/}");
+  json_injector(bigbuf, sizeof(bigbuf), "{ (k):null, (x):|abc|}");
   fprintf(stderr, "%s\n", bigbuf);
 
   char * t = "abc";

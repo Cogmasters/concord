@@ -285,11 +285,11 @@ static int is_primitive (
       }
       break;
     }
-    case '/': { // a proprietary string literal
+    case '|': { // a proprietary string literal
       pos ++;
       while (pos < end_pos) {
         c = *pos; pos ++;
-        if ('/' == c)
+        if ('|' == c)
           goto return_true;
       }
       break;
@@ -493,14 +493,14 @@ parse_apath_value(
   char * const start_pos = pos, * const end_pos = pos + size,
     * next_pos = NULL;
 
-  ASSERT_S('(' == *pos || '/' == *pos, "expecting '(' or '/'");
+  ASSERT_S('(' == *pos, "expecting '('");
   pos ++;
   while (*pos && pos < end_pos) {
-    if (')' == *pos || '/' == *pos) break;
+    if (')' == *pos) break;
     ++pos;
   }
 
-  ASSERT_S(')' == *pos || '/' == *pos, "A close bracket ']' is missing");
+  ASSERT_S(')' == *pos, "A close bracket ')' is missing");
 
   int len = pos - start_pos - 1;
   ASSERT_S(len > 0, "Key is missing");
@@ -509,12 +509,11 @@ parse_apath_value(
   curr_path->key.size = len;
   memcpy(curr_path->key.start, start_pos+1, len);
 
-  ++pos; // eat up ')' or '/'
+  ++pos; // eat up ')'
   SKIP_SPACES(pos, end_pos);
   switch (*pos)
   {
     case '(':
-    case '/':
     {
       struct apath *next_path = calloc(1, sizeof(struct apath));
       curr_path->next = next_path;
@@ -538,7 +537,7 @@ parse_apath_value(
       break;
     }
     default:
-      ERR("expecting '(', '/', or ':', but getting %c\n", *pos);
+      ERR("expecting '(', or ':', but getting %c\n", *pos);
   }
   return pos;
 }
@@ -556,11 +555,11 @@ parse_apath_value_list(
   size_t i = 0;
   while (pos < end_pos) {
     SKIP_SPACES(pos, end_pos);
-    if (',' == *pos) {
+    if (0 != i && ',' == *pos) {
       pos ++;
       continue;
     }
-    else if ('(' == *pos || '/' == *pos) {
+    else if ('(' == *pos) {
       pos = parse_apath_value(stack, pos, end_pos - pos,
                               pairs->pos + i, &pairs->pos[i].path);
       i++;
@@ -590,7 +589,7 @@ parse_value_list (
   size_t i = 0;
   while (pos < end_pos) {
     SKIP_SPACES(pos, end_pos);
-    if (',' == * pos) {
+    if (0 != i && ',' == * pos) {
       pos ++;
       continue;
     }
@@ -685,7 +684,8 @@ parse_toplevel(
     SKIP_SPACES(pos, end_pos);
     if (pos == end_pos) {
       return pos;
-    } else if (pos != end_pos) {
+    }
+    else if (pos != end_pos) {
       ERR("unexpected %s\n", pos);
     }
   }
@@ -911,7 +911,8 @@ inject_apath_value (char * pos, size_t size, struct injection_info * info)
   pos = info->next_pos;
   if (ap->path.next) {
     // @todo
-  } else {
+  }
+  else {
     used_bytes += xprintf(pos, end_pos - pos, info, ":");
     pos = info->next_pos;
 
@@ -1006,7 +1007,8 @@ json_injector_va_list(
   if (NULL == pos) {
     output_buf = NULL;//write_only;
     output_size = 0; //sizeof(write_only);
-  } else {
+  }
+  else {
     output_buf = pos;
     output_size = size;
   }

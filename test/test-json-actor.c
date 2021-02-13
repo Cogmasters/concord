@@ -19,7 +19,7 @@ int main ()
   if (is_primitive(&stack, t, strlen(t), &p)) {
     fprintf (stderr, "is primitive\n");
   }
-  t = "(k):/ aaaa\"aa /";
+  t = "(k):| aaaa\"aa |";
   parse_apath_value(&stack, t, strlen(t), &kv, &kv.path);
   print_apath_value(stderr, &kv);
 
