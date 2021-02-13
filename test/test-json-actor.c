@@ -8,11 +8,11 @@ int main ()
   parse_value(&stack, "d", strlen("d"), &value, &next_pos);
 
   char * t = "(k):d";
-  struct apath_value kv;
-  memset(&kv, 0, sizeof (struct apath_value));
-  parse_apath_value(&stack, t, strlen(t), &kv, &kv.path);
+  struct access_path_value kv;
+  memset(&kv, 0, sizeof (struct access_path_value));
+  parse_access_path_value(&stack, t, strlen(t), &kv, &kv.path);
 
-  print_apath_value(stderr, &kv);
+  print_access_path_value(stderr, &kv);
 
   t = "\" aaaaaa \"";
   char * p = NULL;
@@ -20,8 +20,8 @@ int main ()
     fprintf (stderr, "is primitive\n");
   }
   t = "(k):| aaaa\"aa |";
-  parse_apath_value(&stack, t, strlen(t), &kv, &kv.path);
-  print_apath_value(stderr, &kv);
+  parse_access_path_value(&stack, t, strlen(t), &kv, &kv.path);
+  print_access_path_value(stderr, &kv);
 
   struct composite_value cv;
   memset(&cv, 0, sizeof(struct composite_value));

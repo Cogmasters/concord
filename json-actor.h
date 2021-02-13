@@ -4,55 +4,65 @@
 
 /*
  *
- * json actor (injector or extractor) specification grammar
+ * json actor (injector or extractor) grammar
  *
- * <apath> := (key) | (key) <apath>
+ * <injector> := <composite-value>
+ *               | <access-path-value-list> <existence>?
+ *
+ * <extractor> := <composite-value>
+ *                | <access-path-value-list> <existence>?
+ *
+ * <access-path> := (<key>) | (<key>) <access-path>
  *
  * <value> := true | false | null | <int> | <float> | <string-literal>
- *            | <composite-value> | <actor>
+ *            | <composite-value> | <action>
  *
- * <actor> := d | ld | lld | f | lf | b | <size-specifier>s
+ * <action> := d | ld | lld | f | lf | b | <size-specifier>s
  *            | F | F_nullable | T | L
  *
- * <apath-value> := <apath> : <value>
+ * <access-path-value> := <access-path> : <value>
  *
- * <composite-value> :=  { <apath-value>* } <existence>?
+ * <access-path-value-list> := <access-path-value>
+ *                            | <access-path-value> <access-path-value-list>
+ *
+ * <composite-value> :=  { <access-path-value-list> } <existence>?
  *                   | [ <value> ]  <existence>?
  *
  * <existence> := <size-specifier>@
  *
  * <size-specifier> := <integer> | .* | ? | epsilon
  *
+ *
  * examples:
  *
  * json_extractor(pos, size, "{ (key) : d, (key) : .*s }", &i)
  *
- * int ** list;
- * json_extractor(pos, size, "[ d ]", &list)*
+ * sized_buffer ** list;
+ * json_extractor(pos, size, "[ L ]", &list);
  *
  *
- * json_injector(pos, size, "{  (key) : d, (key) : /abc/ }", i);
+ * json_injector(pos, size, "{  (key) : d, (key) : |abc| }", i);
  *
  *
  */
 
 extern int
-json_injector_alloc (
+json_inject_alloc (
   char ** buf_p,
   size_t * size_p,
-  char * injection_spec, ...);
+  char * injector, ...);
 
-extern int json_injector (
+extern int json_inject (
   char * pos,
   size_t size,
-  char * injection_spec,
+  char * injector,
   ...);
 
 extern int
-json_injector_va_list(
+json_inject_va_list(
   char * pos,
   size_t size,
-  char * injection_spec,
+  char * injector,
   va_list ap);
 
 #endif //JSON_ACTOR_H
