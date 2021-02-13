@@ -82,15 +82,15 @@ int main ()
   print_composite_value(stderr, &cv);
 
 
-  struct recipients rec = { 0 };
+  struct operand_addrs rec = { 0 };
   memset(&cv, 0, sizeof(struct composite_value));
-  memset(&rec, 0, sizeof(struct recipients));
+  memset(&rec, 0, sizeof(struct operand_addrs));
 
   t = "{ (k1):d,  (k2):true, (k3):f, (k4):F, (k5):[L], (k6):T, (k7):{ (k8):T }, (k9):null, } .@";
   parse_composite_value(&stack, t, strlen(t), &cv);
   fprintf (stderr, "\n");
   print_composite_value(stderr, &cv);
-  collect_composite_value_recipients(&cv, &rec);
+  get_composite_value_operand_addrs(&cv, &rec);
   for (size_t i = 0; i < rec.pos; i++)
     fprintf (stderr, "%p ", rec.addrs[i]);
 

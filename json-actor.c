@@ -2,10 +2,10 @@
  *
  * json actor (injector or extractor) specification grammar
  *
- * <injector> := <composite-value>
+ * <injector> := <composite-value> <existence>?
  *               | <access-path-value-list> <existence>?
  *
- * <extractor> := <composite-value>
+ * <extractor> := <composite-value> <existence>?
  *                | <access-path-value-list> <existence>?
  *
  * <access-path> := (<key>) | (<key>) <access-path>
@@ -21,8 +21,7 @@
  * <access-path-value-list> := <access-path-value>
  *                            | <access-path-value> <access-path-value-list>
  *
- * <composite-value> :=  { <access-path-value-list> } <existence>?
- *                   | [ <value> ]  <existence>?
+ * <composite-value> :=  { <access-path-value-list> } | [ <value> ]
  *
  * <existence> := <size-specifier>@
  *
@@ -67,8 +66,8 @@ enum actor {
 /* 
  * the maximum levels of nested json object/array
  */
-#define MAX_NESTED_LEVEL  16
-#define MAX_ACTOR_NUMBERS 64
+#define MAX_NESTED_LEVEL   16
+#define MAX_ACTION_NUMBERS 64
 
 struct stack {
   unsigned char array[MAX_NESTED_LEVEL];
@@ -634,9 +633,6 @@ parse_composite_value(
       if (c != *pos)
         ERR("Mismatched stack: expecting %c, but getting %c\n", c, *pos);
       pos++;
-      SKIP_SPACES(pos, end_pos);
-      if (parse_existence(pos, end_pos - pos, &cv->E, &next_pos))
-        pos = next_pos;
       break;
     case '[':
       cv->tag = ARRAY;
@@ -647,9 +643,6 @@ parse_composite_value(
       if (c != *pos)
         ERR("Mismatched stack: expecting %c, but getting %c\n", c, *pos);
       pos++;
-      SKIP_SPACES(pos, end_pos);
-      if (parse_existence(pos, end_pos - pos, &cv->E, &next_pos))
-        pos = next_pos;
       break;
     default:
       ERR("unexpected %c in %s\n", *pos, start_pos);
@@ -673,11 +666,11 @@ parse_toplevel(
     else if ('(' == *pos || '|' == *pos) {
       cv->tag = OBJECT;
       pos = parse_access_path_value_list(stack, pos, end_pos - pos, &cv->_.pairs);
-      SKIP_SPACES(pos, end_pos);
-      char * next_pos = NULL;
-      if (parse_existence(pos, end_pos - pos, &cv->E, &next_pos))
-        pos = next_pos;
     }
+    SKIP_SPACES(pos, end_pos);
+    char * next_pos = NULL;
+    if (parse_existence(pos, end_pos - pos, &cv->E, &next_pos))
+      pos = next_pos;
     SKIP_SPACES(pos, end_pos);
     if (pos == end_pos) {
       return pos;
@@ -688,18 +681,18 @@ parse_toplevel(
   }
 }
 
-struct recipients {
-  void * addrs[MAX_ACTOR_NUMBERS];
+struct operand_addrs {
+  void * addrs[MAX_ACTION_NUMBERS];
   size_t pos;
 };
 
 static void
-collect_composite_value_recipients (
+get_composite_value_operand_addrs (
   struct composite_value *cv,
-  struct recipients * rec);
+  struct operand_addrs * rec);
 
 static void
-collect_value_recipients (struct value *v, struct recipients *rec)
+get_value_operand_addrs (struct value *v, struct operand_addrs *rec)
 {
   struct action * act;
   switch (v->tag)
@@ -726,7 +719,7 @@ collect_value_recipients (struct value *v, struct recipients *rec)
       }
       break;
     case JSON_COMPOSITE_VALUE:
-      collect_composite_value_recipients(v->_.cv, rec);
+      get_composite_value_operand_addrs(v->_.cv, rec);
       break;
     case JSON_PRIMITIVE:
       break;
@@ -734,9 +727,9 @@ collect_value_recipients (struct value *v, struct recipients *rec)
 }
 
 static void
-collect_composite_value_recipients (
+get_composite_value_operand_addrs (
   struct composite_value *cv,
-  struct recipients * rec)
+  struct operand_addrs * rec)
 {
   struct access_path_value *apv;
   struct value *v;
@@ -745,15 +738,19 @@ collect_composite_value_recipients (
     case OBJECT:
       for (size_t i = 0; i < cv->_.pairs.size; i++) {
         apv = cv->_.pairs.pos + i;
-        collect_value_recipients(&apv->value, rec);
+        get_value_operand_addrs(&apv->value, rec);
       }
       break;
     case ARRAY:
       for (size_t i = 0; i < cv->_.elements.size; i++) {
         v = cv->_.elements.pos + i;
-        collect_value_recipients(v, rec);
+        get_value_operand_addrs(v, rec);
       }
       break;
+  }
+  if (cv->E.has_this) {
+    rec->addrs[rec->pos] = &cv->E.arg;
+    rec->pos ++;
   }
 }
 
@@ -770,6 +767,7 @@ struct injection_info {
   void * data;
   struct stack sp;
   FILE * fp;
+  struct existence * E;
 };
 
 static int
@@ -819,11 +817,11 @@ inject_builtin (char * pos, size_t size, struct injection_info * info)
       else
         return xprintf(pos, size, info, "false");
     case B_INT:
-      return xprintf(pos, size, info, "%d", v->operand);
+      return xprintf(pos, size, info, "%d", *(int *)v->operand);
     case B_FLOAT:
-      return xprintf(pos, size, info, "%f", v->operand);
+      return xprintf(pos, size, info, "%f", *(float *)v->operand);
     case B_DOUBLE:
-      return xprintf(pos, size, info, "%lf", v->operand);
+      return xprintf(pos, size, info, "%lf",*(double *)v->operand);
     case B_STRING:
       s = (char *) v->operand;
       switch (v->mem_size.tag)
@@ -852,8 +850,10 @@ static int
 inject_value (char * pos, size_t size, struct injection_info * info)
 {
   struct value * v = (struct value *)info->data;
-  switch (v->tag) {
-    case JSON_ACTION: {
+  switch (v->tag)
+  {
+    case JSON_ACTION:
+    {
       struct action *a = &v->_.action;
       switch (a->tag)
       {
@@ -915,27 +915,79 @@ inject_access_path_value (char * pos, size_t size, struct injection_info * info)
 }
 
 static int
+has_value (struct injection_info * info, struct value * v)
+{
+  if (NULL == info->E) return 1;
+
+  void ** assigned_addrs = (void **)info->E->arg;
+  switch (v->tag) {
+    case JSON_PRIMITIVE:
+      return 1;
+    case JSON_ACTION:
+      return ntl_is_a_member(assigned_addrs, v->_.action.operand);
+    case JSON_COMPOSITE_VALUE:
+    {
+      struct composite_value * cv = v->_.cv;
+      int has_one = 0;
+      switch (cv->tag)
+      {
+        case OBJECT:
+          for (int i = 0; i < cv->_.pairs.size; i++) {
+            struct access_path_value * p = cv->_.pairs.pos + i;
+            if (has_value(info, &p->value)) {
+              has_one = 1;
+              break;
+            }
+          }
+          break;
+        case ARRAY:
+          for (int i = 0; i < cv->_.elements.size; i++) {
+            struct value * p = cv->_.elements.pos + i;
+            if (has_value(info, p)) {
+              has_one = 1;
+              break;
+            }
+          }
+          break;
+      }
+      return has_one;
+    }
+  }
+}
+
+static int
 inject_composite_value (char * pos, size_t size, struct injection_info * info)
 {
   char * const start_pos = pos, * const end_pos = pos + size;
-  size_t used_bytes = 0;
-
+  size_t used_bytes = 0, count;
   struct composite_value * cv = (struct composite_value *) info->data;
+
   switch(cv->tag)
   {
     case OBJECT:
       used_bytes += xprintf(pos, end_pos - pos, info, "{");
       pos = info->next_pos;
 
+      count = cv->_.pairs.size;
       for (size_t i = 0; i < cv->_.pairs.size; i++) {
-        info->data = cv->_.pairs.pos + i;
+        struct access_path_value *p = cv->_.pairs.pos + i;
+        if (!has_value(info, &p->value))
+          count--;
+      }
+
+      for (size_t i = 0, j = 0; i < cv->_.pairs.size; i++) {
+        struct access_path_value * p = cv->_.pairs.pos + i;
+        if (!has_value(info, &p->value)) continue;
+
+        info->data = p;
         used_bytes += inject_access_path_value(pos, end_pos - pos, info);
         pos = info->next_pos;
 
-        if (i+1 != cv->_.pairs.size) {
+        if (j+1 != count) {
           used_bytes += xprintf(pos, end_pos - pos, info, ",");
           pos = info->next_pos;
         }
+        j ++;
       }
       used_bytes += xprintf(pos, end_pos - pos, info, "}");
       pos = info->next_pos;
@@ -943,15 +995,26 @@ inject_composite_value (char * pos, size_t size, struct injection_info * info)
     case ARRAY:
       used_bytes += xprintf(pos, end_pos - pos, info, "[");
       pos = info->next_pos;
+
+      count = cv->_.elements.size;
       for (size_t i = 0; i < cv->_.elements.size; i++) {
+        struct value *v = cv->_.elements.pos + i;
+        if (!has_value(info, v)) count--;
+      }
+
+      for (size_t i = 0, j = 0; i < cv->_.elements.size; i++) {
+        struct value * v = cv->_.elements.pos + i;
+        if (!has_value(info, v)) continue;
+
         info->data = cv->_.elements.pos + i;
         used_bytes += inject_value(pos, end_pos - pos, info);
         pos = info->next_pos;
 
-        if (i+1 != cv->_.elements.size) {
+        if (j+1 != count) {
           used_bytes += xprintf(pos, end_pos - pos, info, ",");
           pos = info->next_pos;
         }
+        j ++;
       }
       used_bytes += xprintf(pos, end_pos - pos, info, "]");
       pos = info->next_pos;
@@ -976,8 +1039,8 @@ json_injector_va_list(
     ERR("unexpected %s\n", next_pos);
   }
 
-  struct recipients  rec = { 0 };
-  collect_composite_value_recipients(&cv, &rec);
+  struct operand_addrs  rec = { 0 };
+  get_composite_value_operand_addrs(&cv, &rec);
 
   for (size_t i = 0; i < rec.pos; i++)
     *((void **) rec.addrs[i]) = va_arg(ap, void *);
@@ -991,6 +1054,12 @@ json_injector_va_list(
     info.fp = open_memstream(&mem, &mem_size);
 
   info.data = &cv;
+  if (cv.E.has_this) {
+    if (cv.E.arg == NULL)
+      ERR("The argument of @ (used for checking the existence of a value) is NULL");
+    info.E = &cv.E;
+  }
+
   char * output_buf;
   size_t output_size;
   if (NULL == pos) {
@@ -1001,6 +1070,9 @@ json_injector_va_list(
     output_buf = pos;
     output_size = size;
   }
+
+
+
   size_t used_bytes = inject_composite_value(output_buf, output_size, &info);
   if (info.fp)
     fclose(info.fp);

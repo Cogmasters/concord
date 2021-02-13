@@ -49,7 +49,7 @@ int main () {
   int b = 0;
   void *A[2] = {&b, 0};
   json_inject(bigbuf, sizeof(bigbuf), "[ b, b ] @", &i, &b, &A);
-  fprintf(stderr, "%s\n", bigbuf);
+  fprintf(stderr, "used @ %s\n", bigbuf);
 
   fprintf (stderr, "funptr %p\n", &foobar);
   json_inject(bigbuf, sizeof(bigbuf), "[ F ]", &foobar, NULL);
@@ -61,7 +61,40 @@ int main () {
   json_inject(bigbuf, sizeof(bigbuf),
               "(k1) : s"
               "(k2) : {  (1): b }"
-              "(k3):f",
-              NULL, &b, NULL);
+              "(k3):f"
+              "@",
+              NULL, &b, NULL, A);
+
   fprintf(stderr, "%s\n", bigbuf);
+
+
+  void *B[4] = {NULL};
+  memset(B, 0, sizeof(B));
+
+  char * injector1 = "(k1) : s, (k2) : { (1): b }, (k3) : f @";
+
+  // print out k1
+  B[0] = t;
+  json_inject(bigbuf, sizeof(bigbuf),
+              injector1,
+              t, &b, &f, B);
+  fprintf(stderr, "%s\n", bigbuf);
+
+  // print out k1 and k3
+  B[1] = &f;
+  json_inject(bigbuf, sizeof(bigbuf),
+              injector1,
+              t, &b, &f, B);
+
+  fprintf(stderr, "%s\n", bigbuf);
+
+  // print out k1, k2, and k3
+  B[1] = &f;
+  B[2] = &b;
+  json_inject(bigbuf, sizeof(bigbuf),
+              injector1,
+              t, &b, &f, B);
+
+  fprintf(stderr, "%s\n", bigbuf);
+  return 0;
 }
