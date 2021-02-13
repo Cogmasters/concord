@@ -69,14 +69,14 @@ int main ()
 
 
   memset(&cv, 0, sizeof(struct composite_value));
-  t = "[ true false true null ] .E";
+  t = "[ true false true null ] .@";
   parse_composite_value(&stack, t, strlen(t), &cv);
   fprintf (stderr, "\n");
   print_composite_value(stderr, &cv);
 
 
   memset(&cv, 0, sizeof(struct composite_value));
-  t = "{ (k1):d (k2):true (k3):f  (k4):F (k5):L } .E";
+  t = "{ (k1):d (k2):true (k3):f  (k4):F (k5):L } .@";
   parse_composite_value(&stack, t, strlen(t), &cv);
   fprintf (stderr, "\n");
   print_composite_value(stderr, &cv);
@@ -86,7 +86,7 @@ int main ()
   memset(&cv, 0, sizeof(struct composite_value));
   memset(&rec, 0, sizeof(struct recipients));
 
-  t = "{ (k1):d,  (k2):true, (k3):f, (k4):F, (k5):[L], (k6):T, (k7):{ (k8):T }, (k9):null, } .E";
+  t = "{ (k1):d,  (k2):true, (k3):f, (k4):F, (k5):[L], (k6):T, (k7):{ (k8):T }, (k9):null, } .@";
   parse_composite_value(&stack, t, strlen(t), &cv);
   fprintf (stderr, "\n");
   print_composite_value(stderr, &cv);
@@ -108,8 +108,15 @@ int main ()
 
 
   memset(&cv, 0, sizeof(struct composite_value));
-  t = "[ F_nullable ]";
+  t = "[ F_nullable ] @";
   parse_composite_value(&stack, t, strlen(t), &cv);
+  fprintf (stderr, "\n");
+  print_composite_value(stderr, &cv);
+
+
+  memset(&cv, 0, sizeof(struct composite_value));
+  t = " (k): F_nullable, (v): d, (h): f, @";
+  parse_toplevel(&stack, t, strlen(t), &cv);
   fprintf (stderr, "\n");
   print_composite_value(stderr, &cv);
   return 0;

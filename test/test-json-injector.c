@@ -7,25 +7,26 @@ int foobar (char * pos, size_t size, void *p)
     return snprintf(pos, size, "{}");
   }
   else {
-    return snprintf(pos, size, "%s", p);
+    int * i = (int *)p;
+    return snprintf(pos, size, "%d, %d", *i, *i+1);
   }
 }
 
 static char bigbuf[1024];
 int main () {
-  json_injector(bigbuf, sizeof(bigbuf), "[ true false true]");
+  json_injector(bigbuf, sizeof(bigbuf), "[ true, false, true]");
   fprintf(stderr, "%s\n", bigbuf);
 
-  json_injector(bigbuf, sizeof(bigbuf), "[ null 1]");
+  json_injector(bigbuf, sizeof(bigbuf), "[ null, 1]");
   fprintf(stderr, "%s\n", bigbuf);
 
-  json_injector(bigbuf, sizeof(bigbuf), "[ null /abc/]");
+  json_injector(bigbuf, sizeof(bigbuf), "[ null, /abc/]");
   fprintf(stderr, "%s\n", bigbuf);
 
-  json_injector(bigbuf, sizeof(bigbuf), "{ (k):null (b):/abc/}");
+  json_injector(bigbuf, sizeof(bigbuf), "{ (k):null, (b):/abc/}");
   fprintf(stderr, "%s\n", bigbuf);
 
-  json_injector(bigbuf, sizeof(bigbuf), "{ (k):null (x):/abc/}");
+  json_injector(bigbuf, sizeof(bigbuf), "{ (k):null, (x):/abc/}");
   fprintf(stderr, "%s\n", bigbuf);
 
   char * t = "abc";
@@ -46,10 +47,22 @@ int main () {
   fprintf(stderr, "%s\n", bigbuf);
 
   int b = 0;
-  json_injector(bigbuf, sizeof(bigbuf), "[ b, b ]", &i, &b);
+  void *A[2] = {&b, 0};
+  json_injector(bigbuf, sizeof(bigbuf), "[ b, b ] @", &i, &b, &A);
   fprintf(stderr, "%s\n", bigbuf);
 
   fprintf (stderr, "funptr %p\n", &foobar);
   json_injector(bigbuf, sizeof(bigbuf), "[ F ]", &foobar, NULL);
+  fprintf(stderr, "%s\n", bigbuf);
+
+  json_injector(bigbuf, sizeof(bigbuf), "[ F ]", &foobar, &i);
+  fprintf(stderr, "%s\n", bigbuf);
+
+
+  json_injector(bigbuf, sizeof(bigbuf),
+                "(a string) : s"
+                "(a int) : {  (1): b }"
+                "( a float ):f",
+                NULL, &b, NULL);
   fprintf(stderr, "%s\n", bigbuf);
 }

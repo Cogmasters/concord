@@ -1,31 +1,33 @@
 /*
  *
+ * json actor (injector or extractor) specification grammar
+ *
  * <apath> := (key) | (key) <apath>
  *
  * <value> := true | false | null | <int> | <float> | <string-literal>
  *            | <composite-value> | <actor>
  *
- * <actor> := d | ld | lld | f | lf | b | <size-specifier>? s | F(?)? | T(*)?
+ * <actor> := d | ld | lld | f | lf | b | <size-specifier>s
+ *            | F | F_nullable | T | L
  *
  * <apath-value> := <apath> : <value>
  *
- * <composite-value> :=  { <apath-value>* } <existence-omission>?
- *                   | [ <value> ]  <existence-omission>?
+ * <composite-value> :=  { <apath-value>* } <existence>?
+ *                   | [ <value> ]  <existence>?
  *
- * <existence-omission> := <size-specifier>? (E|O)
+ * <existance> := <size-specifier>@
  *
- * <size-specifier> := . | .* | <integer>
- *
+ * <size-specifier> := <integer> | .* | ? | epsilon
  *
  * examples:
  *
- * json_extractor(pos, size, "{ (key) : d (key) : .*s }", &i)
+ * json_extractor(pos, size, "{ (key) : d, (key) : .*s }", &i)
  *
  * int ** list;
  * json_extractor(pos, size, "[ d ]", &list)*
  *
  *
- * json_injector(pos, size, "{  (key) : d (key) : /abc/ }", i);
+ * json_injector(pos, size, "{  (key) : d, (key) : /abc/ }", i);
  *
  *
  */
@@ -45,7 +47,7 @@
 #define JSMN_STRICT  // parse json in strict mode
 #include "jsmn.h"
 #include "ntl.h"
-
+#include "json-actor.h"
 
 enum actor_tag {
   EXTRACTOR = 1,
@@ -134,6 +136,7 @@ struct actor {
 
 struct existence {
   struct size_specifier mem_size;
+  void * arg;
   bool has_this;
 };
 
@@ -233,7 +236,7 @@ print_composite_value (FILE * fp, struct composite_value * cv)
       print_apath_value(fp, cv->_.pairs.pos+i);
   }
   if (cv->E.has_this) {
-    fprintf(fp, "E ");
+    fprintf(fp, "@");
   }
 }
 
@@ -464,8 +467,7 @@ parse_existence(char *pos, size_t size, struct existence * p, char ** next_pos_p
   if (parse_size_specifier(pos, size, &p->mem_size, &next_pos)) {
     pos = next_pos;
   }
-
-  if (STRNEQ(pos, "E", 1)){
+  if ('@' == *pos) {
     p->has_this = true;
     pos ++;
     *next_pos_p = pos;
@@ -563,7 +565,7 @@ parse_apath_value_list(
                               pairs->pos + i, &pairs->pos[i].path);
       i++;
     }
-    else if (TOP(stack) == *pos) {
+    else if (TOP(stack) == *pos || 0 == stack->top) {
       pairs->size = i;
       return pos;
     }
@@ -657,6 +659,36 @@ parse_composite_value(
       ERR("unexpected %c in %s\n", *pos, start_pos);
   }
   return pos;
+}
+
+static char *
+parse_toplevel(
+  struct stack *stack,
+  char *pos,
+  size_t size,
+  struct composite_value *cv)
+{
+  char * const start_pos = pos, * const end_pos = pos + size;
+  SKIP_SPACES(pos, end_pos);
+  while (pos < end_pos) {
+    if ('{' == *pos || '[' == *pos) {
+      pos = parse_composite_value(stack, pos, end_pos - pos, cv);
+    }
+    else if ('(' == *pos) {
+      cv->tag = OBJECT;
+      pos = parse_apath_value_list(stack, pos, end_pos - pos, &cv->_.pairs);
+      SKIP_SPACES(pos, end_pos);
+      char * next_pos = NULL;
+      if (parse_existence(pos, end_pos - pos, &cv->E, &next_pos))
+        pos = next_pos;
+    }
+    SKIP_SPACES(pos, end_pos);
+    if (pos == end_pos) {
+      return pos;
+    } else if (pos != end_pos) {
+      ERR("unexpected %s\n", pos);
+    }
+  }
 }
 
 struct recipients {
@@ -949,8 +981,10 @@ json_injector_va_list(
   struct composite_value cv;
   memset(&cv, 0, sizeof(struct composite_value));
   size_t len = strlen(injection_spec);
-  char * next_pos =
-    parse_composite_value(&stack, injection_spec, len, &cv);
+  char * next_pos = parse_toplevel(&stack, injection_spec, len, &cv);
+  if (next_pos != injection_spec + len) {
+    ERR("unexpected %s\n", next_pos);
+  }
 
   struct recipients  rec = { 0 };
   collect_composite_value_recipients(&cv, &rec);
@@ -959,9 +993,13 @@ json_injector_va_list(
     *((void **) rec.addrs[i]) = va_arg(ap, void *);
 
   struct injection_info info = { 0 };
-  char * mem_pos = NULL;
+  char * mem = NULL;
   size_t mem_size;
-  info.fp = NULL; // open_memstream(&mem_pos, &mem_size);
+  if (1)
+    info.fp = NULL;
+  else
+    info.fp = open_memstream(&mem, &mem_size);
+
   info.data = &cv;
   char * output_buf;
   size_t output_size;
@@ -976,14 +1014,12 @@ json_injector_va_list(
   if (info.fp)
     fclose(info.fp);
 
-  if (mem_pos) {
-    fprintf(stderr, "snprintf.size %d, open_memstream.size %d\n",
-            used_bytes, mem_size);
-
-    fprintf(stderr, "%s\n", write_only);
-    if (mem_pos) {
-      fprintf(stderr, "%s\n", mem_pos);
-      free(mem_pos);
+  if (mem) {
+    ASSERT_S(used_bytes == mem_size, "snprint.size != open_memstream.size");
+    //fprintf(stderr, "%s\n", write_only);
+    if (mem) {
+      //fprintf(stderr, "%s\n", mem);
+      free(mem);
     }
   }
   return used_bytes;
