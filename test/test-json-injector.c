@@ -22,10 +22,10 @@ int main () {
   json_injector(bigbuf, sizeof(bigbuf), "[ null \"abc\"]");
   fprintf(stderr, "%s\n", bigbuf);
 
-  json_injector(bigbuf, sizeof(bigbuf), "{ [k]:null [b]:\"abc\"}");
+  json_injector(bigbuf, sizeof(bigbuf), "{ /k/:null /b/:\"abc\"}");
   fprintf(stderr, "%s\n", bigbuf);
 
-  json_injector(bigbuf, sizeof(bigbuf), "{ [k]:null [x]:\"abc\"}");
+  json_injector(bigbuf, sizeof(bigbuf), "{ /k/:null /x/:\"abc\"}");
   fprintf(stderr, "%s\n", bigbuf);
 
   char * t = "abc";
@@ -36,12 +36,12 @@ int main () {
   fprintf(stderr, "%s\n", bigbuf);
 
   json_injector(bigbuf, sizeof(bigbuf),
-                "{ [a string] : s  [a int] : d  [ a float ]:f }",
+                "{ /a string/ : s  /a int/ : d  / a float /:f }",
                 t, &i, &f);
   fprintf(stderr, "%s\n", bigbuf);
 
   json_injector(bigbuf, sizeof(bigbuf),
-                "{ [a string] : s  [a int] : d  [ a float ]:f }",
+                "{ /a string/ : s  /a int/ : d  / a float /:f }",
                 NULL, NULL, NULL);
   fprintf(stderr, "%s\n", bigbuf);
 

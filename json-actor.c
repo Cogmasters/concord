@@ -84,7 +84,7 @@ struct apath {
 static void
 print_apath (FILE * fp, struct apath * apath)
 {
-  fprintf(fp, "[%.*s]", apath->key.size, apath->key.start);
+  fprintf(fp, "|%.*s|", apath->key.size, apath->key.start);
   if (apath->next)
     print_apath(fp, apath->next);
 }
@@ -143,9 +143,10 @@ static void
 print_actor (FILE * fp, struct actor * v)
 {
   if (EXTRACTOR == v->tag)
-    fprintf (fp, "[extractor]");
+    fprintf (fp, "<extractor>");
   else
-    fprintf (fp, "[injector]");
+    fprintf (fp, "<injector>");
+
   if (BUILT_IN == v->action_tag)
     fprintf(fp, "builtin(%d)\n", v->action.builtin);
   else
@@ -339,7 +340,7 @@ parse_size_specifier (
     *next_pos_p = pos + 2;
     return 1;
   }
-  else if ('.' == *pos) {
+  else if ('?' == *pos) {
     p->tag = ZERO_SIZE;
     *next_pos_p = pos + 1;
     return 1;
@@ -427,8 +428,14 @@ parse_value(
       pos ++;
       goto return_true;
     case 'F':
-      act->action_tag = USER_DEF_ACCEPT_NON_NULL;
-      pos ++;
+      if (STRNEQ(pos, "F_nullable", 10)) {
+        act->action_tag = USER_DEF_ACCEPT_NULL;
+        pos += 10;
+      }
+      else {
+        act->action_tag = USER_DEF_ACCEPT_NON_NULL;
+        pos++;
+      }
       goto return_true;
     case 'T':
       act->action.builtin = B_TOKEN;
@@ -486,14 +493,14 @@ parse_apath_value(
   char * const start_pos = pos, * const end_pos = pos + size,
     * next_pos = NULL;
 
-  ASSERT_S('[' == *pos, "expecting '['");
+  ASSERT_S('(' == *pos || '/' == *pos, "expecting '(' or '/'");
   pos ++;
   while (*pos && pos < end_pos) {
-    if (']' == *pos) break;
+    if (')' == *pos || '/' == *pos) break;
     ++pos;
   }
 
-  ASSERT_S(*pos == ']', "A close bracket ']' is missing");
+  ASSERT_S(')' == *pos || '/' == *pos, "A close bracket ']' is missing");
 
   int len = pos - start_pos - 1;
   ASSERT_S(len > 0, "Key is missing");
@@ -502,11 +509,12 @@ parse_apath_value(
   curr_path->key.size = len;
   memcpy(curr_path->key.start, start_pos+1, len);
 
-  ++pos; // eat up ']'
+  ++pos; // eat up ')' or '/'
   SKIP_SPACES(pos, end_pos);
   switch (*pos)
   {
-    case '[':
+    case '(':
+    case '/':
     {
       struct apath *next_path = calloc(1, sizeof(struct apath));
       curr_path->next = next_path;
@@ -530,7 +538,7 @@ parse_apath_value(
       break;
     }
     default:
-      ERR("expecting '[' or ':', but getting %c\n", *pos);
+      ERR("expecting '(', '/', or ':', but getting %c\n", *pos);
   }
   return pos;
 }
@@ -548,7 +556,7 @@ parse_apath_value_list(
   size_t i = 0;
   while (pos < end_pos) {
     SKIP_SPACES(pos, end_pos);
-    if ('[' == *pos) {
+    if ('(' == *pos || '/' == *pos) {
       pos = parse_apath_value(stack, pos, end_pos - pos,
                               pairs->pos + i, &pairs->pos[i].path);
       i++;
