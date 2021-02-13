@@ -310,7 +310,7 @@ struct dati { /* WEBSOCKETS STRUCTURE */
 
   session::dati session;
 
-  char prefix[5]; //if set will execute message.command callback
+  char prefix[32]; //if set will execute message.command callback
 
   struct { /* CALLBACKS STRUCTURE */
     idle_cb *on_idle;   //triggers in every event loop iteration
