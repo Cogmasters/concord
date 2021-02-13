@@ -1,67 +1,55 @@
 #include "json-actor.c"
 #include <string.h>
 
-int f (char * pos, size_t size, void *p)
+int foobar (char * pos, size_t size, void *p)
 {
   if (NULL == p) {
-    snprintf(pos, size, "{}");
+    return snprintf(pos, size, "{}");
   }
   else {
-    snprintf(pos, size, "%s", p);
+    return snprintf(pos, size, "%s", p);
   }
 }
 
+static char bigbuf[1024];
 int main () {
-  char * pos;
-  pos = json_injector("[ true false true]");
-  fprintf(stderr, "%s\n", pos);
-  free(pos);
+  json_injector(bigbuf, sizeof(bigbuf), "[ true false true]");
+  fprintf(stderr, "%s\n", bigbuf);
 
-  pos = json_injector("[ null 1]");
-  fprintf(stderr, "%s\n", pos);
-  free(pos);
+  json_injector(bigbuf, sizeof(bigbuf), "[ null 1]");
+  fprintf(stderr, "%s\n", bigbuf);
 
-  pos = json_injector("[ null \"abc\"]");
-  fprintf(stderr, "%s\n", pos);
-  free(pos);
+  json_injector(bigbuf, sizeof(bigbuf), "[ null \"abc\"]");
+  fprintf(stderr, "%s\n", bigbuf);
 
-  pos = json_injector("{ [k]:null [b]:\"abc\"}");
-  fprintf(stderr, "%s\n", pos);
-  free(pos);
+  json_injector(bigbuf, sizeof(bigbuf), "{ [k]:null [b]:\"abc\"}");
+  fprintf(stderr, "%s\n", bigbuf);
 
-
-  pos = json_injector("{ [k]:null [x]:\"abc\"}");
-  fprintf(stderr, "%s\n", pos);
-  free(pos);
-
+  json_injector(bigbuf, sizeof(bigbuf), "{ [k]:null [x]:\"abc\"}");
+  fprintf(stderr, "%s\n", bigbuf);
 
   char * t = "abc";
   int i = 10;
   float f = 10.4;
 
-  pos = json_injector("[ s d f ]", t, &i, &f);
-  fprintf(stderr, "%s\n", pos);
-  free(pos);
+  json_injector(bigbuf, sizeof(bigbuf), "[ s d f ]", t, &i, &f);
+  fprintf(stderr, "%s\n", bigbuf);
 
-  pos = json_injector("{ [a string] : s  [a int] : d  [ a float ]:f }",
-                      t, &i, &f);
-  fprintf(stderr, "%s\n", pos);
-  free(pos);
+  json_injector(bigbuf, sizeof(bigbuf),
+                "{ [a string] : s  [a int] : d  [ a float ]:f }",
+                t, &i, &f);
+  fprintf(stderr, "%s\n", bigbuf);
 
-
-  pos = json_injector("{ [a string] : s  [a int] : d  [ a float ]:f }",
-                      NULL, NULL, NULL);
-  fprintf(stderr, "%s\n", pos);
-  free(pos);
+  json_injector(bigbuf, sizeof(bigbuf),
+                "{ [a string] : s  [a int] : d  [ a float ]:f }",
+                NULL, NULL, NULL);
+  fprintf(stderr, "%s\n", bigbuf);
 
   int b = 0;
-  pos = json_injector("[ b b ]", &i, &b);
-  fprintf(stderr, "%s\n", pos);
-  free(pos);
+  json_injector(bigbuf, sizeof(bigbuf), "[ b b ]", &i, &b);
+  fprintf(stderr, "%s\n", bigbuf);
 
-
-  fprintf (stderr, "funptr %p\n", &f);
-  pos = json_injector("[ F ]", &f, NULL);
-  fprintf(stderr, "%s\n", pos);
-  free(pos);
+  fprintf (stderr, "funptr %p\n", &foobar);
+  json_injector(bigbuf, sizeof(bigbuf), "[ F ]", &foobar, NULL);
+  fprintf(stderr, "%s\n", bigbuf);
 }

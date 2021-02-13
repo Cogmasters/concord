@@ -716,96 +716,92 @@ collect_composite_value_recipients (
 }
 
 
+/*
+ * write only buffer, it's data should never be trusted
+ * it is used to simplify the calculation of bytes needed
+ * for json_injector.
+ */
+static char write_only [1024*10];
+
 struct injection_info {
-  FILE * fp;
+  char * next_pos;
   void * data;
   struct stack sp;
-  int use_snprintf;
+  FILE * fp;
 };
+
+static int
+xprintf(
+  char * pos,
+  size_t size,
+  struct injection_info * info,
+  char * format, ...)
+{
+  int ret1 = 0, ret2 = 0;
+  va_list ap;
+  va_start(ap, format);
+  ret1 = vsnprintf(pos, size, format, ap);
+  va_end(ap);
+  ASSERT_S(ret1 >= 0, "vsnprintf");
+
+  if (info->fp) {
+    va_list ap;
+    va_start(ap, format);
+    ret1 = vfprintf(info->fp, format, ap);
+    va_end(ap);
+    ASSERT_S(ret2 >= 0, "vfprintf");
+    ASSERT_S(ret1 == ret1, "errror");
+  }
+
+  if (NULL == pos)
+    info->next_pos = NULL;
+  else
+    info->next_pos = pos + ret1;
+  return ret1;
+}
 
 
 static int
 inject_builtin (char * pos, size_t size, struct injection_info * info)
 {
   struct actor * v = (struct actor *) info->data;
-  if (NULL == v->operand.provider) {
-    if (info->use_snprintf)
-      return snprintf(pos, size, "null");
-    else
-      fprintf(info->fp, "null");
-    return 1;
-  }
+  if (NULL == v->operand.provider)
+    return xprintf(pos, size, info, "null");
 
   switch(v->action.builtin)
   {
     case B_BOOL: {
       int *b = (int *) v->operand.provider;
-      if (info->use_snprintf) {
-        if (*b)
-          return snprintf(pos, size, "true");
-        else
-          return snprintf(pos, size, "false");
-      }
       if (*b)
-        fprintf(info->fp, "true");
+        return xprintf(pos, size, info, "true");
       else
-        fprintf(info->fp, "false");
-
-      break;
+        return xprintf(pos, size, info, "false");
     }
     case B_INT: {
       int *b = (int *) v->operand.provider;
-      if (info->use_snprintf)
-        return snprintf(pos,size, "%d", *b);
-
-      fprintf(info->fp, "%d", *b);
-      break;
+      return xprintf(pos, size, info, "%d", *b);
     }
     case B_FLOAT: {
       float *f = (float *) v->operand.provider;
-      if (info->use_snprintf)
-        return snprintf(pos,size, "%f", *f);
-
-      fprintf(info->fp, "%f", *f);
-      break;
+      return xprintf(pos, size, info, "%f", *f);
     }
     case B_DOUBLE: {
       double *d = (double *) v->operand.provider;
-      if (info->use_snprintf)
-        return snprintf(pos,size, "%lf", *d);
-
-      fprintf(info->fp, "%lf", *d);
-      break;
+      return xprintf(pos, size, info, "%lf", *d);
     }
     case B_STRING: {
       char *s = (char *) v->operand.provider;
       switch (v->mem_size.tag) {
         case UNKNOWN_SIZE:
-          if (info->use_snprintf)
-            return snprintf(pos, size, "\"%s\"", s);
-
-          fprintf(info->fp, "\"%s\"", s);
-          break;
+          return xprintf(pos, size, info, "\"%s\"", s);
         case FIXED_SIZE:
-          if (info->use_snprintf)
-            return snprintf(pos, size, "\"%.*s\"", v->mem_size._.fixed_size, s);
-
-          fprintf(info->fp, "\"%.*s\"", v->mem_size._.fixed_size, s);
-          break;
+          return xprintf(pos, size, info, "\"%.*s\"", v->mem_size._.fixed_size, s);
         case PARAMETERIZED_SIZE: {
           int ms = (int) v->mem_size._.parameterized_size;
-          if (info->use_snprintf)
-            return snprintf(pos, size, "\"%.*s\"", ms, s);
-
-          fprintf(info->fp, "\"%.*s\"", ms, s);
-          break;
+          return xprintf(pos, size, info, "\"%.*s\"", ms, s);
         }
         case ZERO_SIZE:
-          if (info->use_snprintf)
-            return snprintf(pos, size, "\"%s\"", s);
-
-          fprintf(info->fp, "\"%s\"", s);
-          break;
+          return xprintf(pos, size, info, "\"%s\"", s);
       }
       break;
     }
@@ -833,83 +829,112 @@ inject_value (char * pos, size_t size, struct injection_info * info)
         {
           int (*f)(char *, size_t, void *) = NULL;
           f = actor->action.user_def;
-          fprintf (stderr, "user_def %p %p\n", &actor->action.user_def,
-                   actor->action.user_def);
-          if (info->use_snprintf)
-            return (*(actor->action.user_def))(pos, size, actor->operand.provider);
-
-          char *buf = malloc(1024); //@todo find the correct size
-          (*f)(buf, 1024, actor->operand.provider);
-          fprintf(info->fp, buf);
-          break;
+          if (info->fp) {
+            char * b = malloc(1024);
+            (*f)(b, sizeof(b), actor->operand.provider);
+            fprintf(info->fp, "%s", b);
+            free(b);
+          }
+          size_t used_size = (*f)(pos, size, actor->operand.provider);
+          if (NULL == pos)
+            info->next_pos = NULL;
+          else
+            info->next_pos = pos + used_size;
+          return used_size;
         }
       }
-      break;
+      ERR("should not be here");
     }
     case JSON_COMPOSITE_VALUE:
-      info->data =  v->_.cv;
+      info->data = v->_.cv;
       return inject_composite_value(pos, size, info);
-      break;
     case JSON_PRIMITIVE:
-      if (info->use_snprintf)
-        return snprintf(pos, size, "%.*s", v->_.primitve.size, v->_.primitve.start);
-
-      fprintf(info->fp, "%.*s", v->_.primitve.size, v->_.primitve.start);
-      break;
+      return xprintf(pos, size, info, "%.*s",
+                     v->_.primitve.size,
+                     v->_.primitve.start);
   }
 }
 
 static int
 inject_apath_value (char * pos, size_t size, struct injection_info * info)
 {
+  char * const start_pos = pos, * const end_pos = pos + size;
   struct apath_value * ap = (struct apath_value *) info->data;
-  fprintf(info->fp, "\"%.*s\"", ap->path.key.size, ap->path.key.start);
+  size_t used_size = 0;
+  used_size += xprintf(pos, size, info, "\"%.*s\"", ap->path.key.size,
+                        ap->path.key.start);
+  pos = info->next_pos;
   if (ap->path.next) {
     // @todo
   } else {
-    fprintf(info->fp, ":");
+    used_size += xprintf(pos, end_pos - pos, info, ":");
+    pos = info->next_pos;
+
     info->data = &ap->value;
-    inject_value(pos, size, info);
+    used_size += inject_value(pos, end_pos - pos, info);
+    pos = info->next_pos;
+    return used_size;
   }
 }
 
 static int
 inject_composite_value (char * pos, size_t size, struct injection_info * info)
 {
+  char * const start_pos = pos, * const end_pos = pos + size;
+  size_t used_size = 0;
+
   struct composite_value * cv = (struct composite_value *) info->data;
   switch(cv->tag) {
     case OBJECT: {
       struct apath_value *p;
-      fprintf(info->fp, "{");
+      used_size += xprintf(pos, end_pos - pos, info, "{");
+      pos = info->next_pos;
+
       for (size_t i = 0; i < cv->_.pairs.size; i++) {
         p = cv->_.pairs.pos + i;
         info->data = p;
-        inject_apath_value(pos, size, info);
-        if (i+1 != cv->_.pairs.size)
-          fprintf(info->fp, ",");
+        used_size += inject_apath_value(pos, end_pos - pos, info);
+        pos = info->next_pos;
+
+        if (i+1 != cv->_.pairs.size) {
+          used_size += xprintf(pos, end_pos - pos, info, ",");
+          pos = info->next_pos;
+        }
       }
-      fprintf(info->fp, "}");
+      used_size += xprintf(pos, end_pos - pos, info, "}");
+      pos = info->next_pos;
       break;
     }
     case ARRAY: {
       struct value * p;
       char c;
-      fprintf (info->fp, "[");
+      used_size += xprintf(pos, end_pos - pos, info, "[");
+      pos = info->next_pos;
       for (size_t i = 0; i < cv->_.elements.size; i++) {
         p = cv->_.elements.pos + i;
         info->data = p;
-        inject_value(pos, size, info);
-        if (i+1 != cv->_.elements.size)
-          fprintf(info->fp, ",");
+        used_size += inject_value(pos, end_pos - pos, info);
+        pos = info->next_pos;
+
+        if (i+1 != cv->_.elements.size) {
+          used_size += xprintf(pos, end_pos - pos, info, ",");
+          pos = info->next_pos;
+        }
       }
-      fprintf(info->fp, "]");
+      used_size += xprintf(pos, end_pos - pos, info, "]");
+      pos = info->next_pos;
       break;
     }
   }
+  return used_size;
 }
 
-char *
-json_injector(char * injection_spec, ...)
+int
+json_injector_va_list(
+  char * pos,
+  size_t size,
+  char * injection_spec,
+  va_list ap)
 {
   struct stack stack = { .array = {0}, .top = 0, .actor_tag = INJECTOR };
   struct composite_value cv;
@@ -921,23 +946,63 @@ json_injector(char * injection_spec, ...)
   struct recipients  rec = { 0 };
   collect_composite_value_recipients(&cv, &rec);
 
+  for (size_t i = 0; i < rec.pos; i++)
+    *((void **) rec.addrs[i]) = va_arg(ap, void *);
+
+  struct injection_info info = { 0 };
+  char * mem_pos = NULL;
+  size_t mem_size;
+  info.fp = NULL; // open_memstream(&mem_pos, &mem_size);
+  info.data = &cv;
+  char * output_buf;
+  size_t output_size;
+  if (NULL == pos) {
+    output_buf = NULL;//write_only;
+    output_size = 0; //sizeof(write_only);
+  } else {
+    output_buf = pos;
+    output_size = size;
+  }
+  size_t used_size = inject_composite_value(output_buf, output_size, &info);
+  if (info.fp)
+    fclose(info.fp);
+
+  if (mem_pos) {
+    fprintf(stderr, "snprintf.size %d, open_memstream.size %d\n",
+            used_size, mem_size);
+
+    fprintf(stderr, "%s\n", write_only);
+    if (mem_pos) {
+      fprintf(stderr, "%s\n", mem_pos);
+      free(mem_pos);
+    }
+  }
+  return used_size;
+}
+
+int
+json_injector_alloc(char ** buf_p, size_t * size_p, char * injection_spec, ...)
+{
   va_list ap;
   va_start(ap, injection_spec);
-  for (size_t i = 0; i < rec.pos; i++) {
-    void * p = va_arg(ap, void *);
-    fprintf (stderr, "assigning va_arg: %d %p ", i, p);
-    *((void **) rec.addrs[i]) = p;
-    fprintf (stderr, "to %p\n", rec.addrs[i]);
-  }
+  size_t used_size = json_injector_va_list(NULL, 0, injection_spec, ap);
   va_end(ap);
 
-  struct injection_info info;
-  char * pos;
-  size_t size;
-  info.fp = open_memstream(&pos, &size);
-  info.data = &cv;
-  info.use_snprintf = 0;
-  inject_composite_value(pos, size, &info);
-  fclose(info.fp);
-  return pos;
+  char * buf = malloc(used_size+1);
+  *size_p = used_size+1;
+  *buf_p = buf;
+
+  va_start(ap, injection_spec);
+  json_injector_va_list(buf, used_size+1, injection_spec, ap);
+  va_end(ap);
+  return used_size;
+}
+
+int json_injector(char * pos, size_t size, char * injection_spec, ...)
+{
+  va_list ap;
+  va_start(ap, injection_spec);
+  size_t used_size = json_injector_va_list(pos, size, injection_spec, ap);
+  va_end(ap);
+  return used_size;
 }
