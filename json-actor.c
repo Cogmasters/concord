@@ -422,7 +422,7 @@ parse_value(
         goto return_true;
       }
       else
-        ERR("unexpected %s\n", *pos);
+        ERR("unexpected %s\n", pos);
       break;
     case 's':
       act->_.builtin = B_STRING;
