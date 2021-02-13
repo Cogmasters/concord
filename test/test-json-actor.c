@@ -19,13 +19,13 @@ int main ()
   if (is_primitive(&stack, t, strlen(t), &p)) {
     fprintf (stderr, "is primitive\n");
   }
-  t = "(k):| aaaaaa |";
+  t = "(k):/ aaaa\"aa /";
   parse_apath_value(&stack, t, strlen(t), &kv, &kv.path);
   print_apath_value(stderr, &kv);
 
   struct composite_value cv;
   memset(&cv, 0, sizeof(struct composite_value));
-  t = "{ (k) : d  (n): 102  (f): 102.30 }";
+  t = "{ (k) : d, (n): 102,  (f): 102.30, }";
   parse_composite_value(&stack, t, strlen(t), &cv);
   fprintf (stderr, "\n");
   print_composite_value(stderr, &cv);
@@ -43,7 +43,7 @@ int main ()
   print_composite_value(stderr, &cv);
 
   memset(&cv, 0, sizeof(struct composite_value));
-  t = "[ d f lf  lld .*s ?s ]";
+  t = "[ d, f, lf,  lld, .*s, ?s, ]";
   parse_composite_value(&stack, t, strlen(t), &cv);
   fprintf (stderr, "\n");
   print_composite_value(stderr, &cv);
@@ -62,7 +62,7 @@ int main ()
   print_composite_value(stderr, &cv);
 
   memset(&cv, 0, sizeof(struct composite_value));
-  t = "[ true false true ]";
+  t = "[ true, false, true ]";
   parse_composite_value(&stack, t, strlen(t), &cv);
   fprintf (stderr, "\n");
   print_composite_value(stderr, &cv);
@@ -86,7 +86,7 @@ int main ()
   memset(&cv, 0, sizeof(struct composite_value));
   memset(&rec, 0, sizeof(struct recipients));
 
-  t = "{ (k1):d  (k2):true (k3):f (k4):F (k5):[L] (k6):T (k7):{ (k8):T } (k9):null } .E";
+  t = "{ (k1):d,  (k2):true, (k3):f, (k4):F, (k5):[L], (k6):T, (k7):{ (k8):T }, (k9):null, } .E";
   parse_composite_value(&stack, t, strlen(t), &cv);
   fprintf (stderr, "\n");
   print_composite_value(stderr, &cv);

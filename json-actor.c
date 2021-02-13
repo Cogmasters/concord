@@ -1,6 +1,6 @@
 /*
  *
- * <apath> := [key] | [key] <apath>
+ * <apath> := (key) | (key) <apath>
  *
  * <value> := true | false | null | <int> | <float> | <string-literal>
  *            | <composite-value> | <actor>
@@ -19,15 +19,13 @@
  *
  * examples:
  *
- * json_extractor(pos, size, "{ [key] : d"
- *                           "[key] : .*s }", &i)
+ * json_extractor(pos, size, "{ (key) : d (key) : .*s }", &i)
  *
  * int ** list;
  * json_extractor(pos, size, "[ d ]", &list)*
  *
  *
- * json_injector(pos, size, "{  [key] : d"
- *                          "[key] : |abc| }", i);
+ * json_injector(pos, size, "{  (key) : d (key) : /abc/ }", i);
  *
  *
  */
@@ -284,11 +282,11 @@ static int is_primitive (
       }
       break;
     }
-    case '|': { // a propertiary string literal
+    case '/': { // a proprietary string literal
       pos ++;
       while (pos < end_pos) {
         c = *pos; pos ++;
-        if ('|' == c)
+        if ('/' == c)
           goto return_true;
       }
       break;
@@ -556,7 +554,11 @@ parse_apath_value_list(
   size_t i = 0;
   while (pos < end_pos) {
     SKIP_SPACES(pos, end_pos);
-    if ('(' == *pos || '/' == *pos) {
+    if (',' == *pos) {
+      pos ++;
+      continue;
+    }
+    else if ('(' == *pos || '/' == *pos) {
       pos = parse_apath_value(stack, pos, end_pos - pos,
                               pairs->pos + i, &pairs->pos[i].path);
       i++;
@@ -586,8 +588,11 @@ parse_value_list (
   size_t i = 0;
   while (pos < end_pos) {
     SKIP_SPACES(pos, end_pos);
-    next_pos = NULL;
-    if (parse_value(stack, pos, end_pos - pos, elements->pos+i, &next_pos)) {
+    if (',' == * pos) {
+      pos ++;
+      continue;
+    }
+    else if (parse_value(stack, pos, end_pos - pos, elements->pos+i, &next_pos)) {
       i++;
       pos = next_pos;
     }
