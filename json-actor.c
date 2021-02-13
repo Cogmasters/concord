@@ -136,10 +136,11 @@ struct action {
     enum builtin_type builtin;
     int (*user_def)(char *, size_t, void *p);
   } _;
-  union {
-    void *recipient; // must be a pointer, and it cannot be NULL
-    void *provider;  // this can be NULL or its value can be UNDEFINED
-  } operand;
+  /*
+   * must be a pointer, and it cannot be NULL
+   * this can be NULL or its value can be UNDEFINED
+   */
+  void * operand;
   struct size_specifier mem_size; // this designates the memory size of _;
 };
 
@@ -178,7 +179,8 @@ static void
 print_value (FILE * fp, struct value * v) {
   fprintf(fp, "tag_%d ", v->tag);
 
-  switch (v->tag) {
+  switch (v->tag)
+  {
     case JSON_PRIMITIVE:
       fprintf(fp, "%.*s\n", v->_.primitve.size, v->_.primitve.start);
       break;
@@ -255,32 +257,30 @@ static int is_primitive (
 
   c = * pos;
 
-  switch (c) {
-    case 't': { // true
+  switch (c)
+  {
+    case 't': // true
       if (pos + 3 < end_pos
           && 'r' == pos[1] && 'u' == pos[2] && 'e' == pos[3]) {
         pos += 4;
         goto return_true;
       }
       break;
-    }
-    case 'f': { // false
+    case 'f': // false
       if (pos + 4 < end_pos
           && 'a' == pos[1] && 'l' == pos[2] && 's' == pos[3] && 'e' == pos[4]) {
         pos += 5;
         goto return_true;
       }
       break;
-    }
-    case 'n': { // null
+    case 'n': // null
       if (pos + 3 < end_pos
           && 'u' == pos[1] && 'l' == pos[2] && 'l' == pos[3]) {
         pos += 4;
         goto return_true;
       }
       break;
-    }
-    case '"': { // a string literal
+    case '"': // a string literal
       pos ++;
       while (pos < end_pos) {
         c = *pos; pos ++;
@@ -288,8 +288,7 @@ static int is_primitive (
           goto return_true;
       }
       break;
-    }
-    case '|': { // a proprietary string literal
+    case '|': // a proprietary string literal
       pos ++;
       while (pos < end_pos) {
         c = *pos; pos ++;
@@ -297,7 +296,6 @@ static int is_primitive (
           goto return_true;
       }
       break;
-    }
     default:
       if ('0' <= c && c <= '9') {
         pos++;
@@ -402,27 +400,31 @@ parse_value(
       act->_.builtin = B_FLOAT;
       pos ++;
       goto return_true;
-    case 'l': {
+    case 'l':
       if (STRNEQ(pos, "ld", 2)) {
         act->mem_size._.fixed_size = sizeof(long);
         act->mem_size.tag = FIXED_SIZE;
         act->_.builtin = B_LONG;
         pos += 2;
         goto return_true;
-      } else if (STRNEQ(pos, "lld", 3)) {
+      }
+      else if (STRNEQ(pos, "lld", 3)) {
         act->mem_size._.fixed_size = sizeof(long long);
         act->mem_size.tag = FIXED_SIZE;
         act->_.builtin = B_LONG_LONG;
         pos += 3;
         goto return_true;
-      } else if (STRNEQ(pos, "lf", 2)) {
+      }
+      else if (STRNEQ(pos, "lf", 2)) {
         act->mem_size._.fixed_size = sizeof(double);
         act->mem_size.tag = FIXED_SIZE;
         act->_.builtin = B_DOUBLE;
         pos += 2;
         goto return_true;
       }
-    }
+      else
+        ERR("unexpected %s\n", *pos);
+      break;
     case 's':
       act->_.builtin = B_STRING;
       pos ++;
@@ -467,9 +469,9 @@ parse_existence(char *pos, size_t size, struct existence * p, char ** next_pos_p
     return 0;
 
   char * next_pos = NULL;
-  if (parse_size_specifier(pos, size, &p->mem_size, &next_pos)) {
+  if (parse_size_specifier(pos, size, &p->mem_size, &next_pos))
     pos = next_pos;
-  }
+
   if ('@' == *pos) {
     p->has_this = true;
     pos ++;
@@ -514,16 +516,14 @@ parse_access_path_value(
 
   ++pos; // eat up ')'
   SKIP_SPACES(pos, end_pos);
+  struct access_path * next_path;
   switch (*pos)
   {
     case '(':
-    {
-      struct access_path *next_path = calloc(1, sizeof(struct access_path));
+      next_path = calloc(1, sizeof(struct access_path));
       curr_path->next = next_path;
       return parse_access_path_value(stack, pos, end_pos - pos, av, next_path);
-    }
     case ':':
-    {
       ++pos; // eat up ':'
       SKIP_SPACES(pos, end_pos);
       if ('[' == *pos || '{' == *pos) {
@@ -536,9 +536,7 @@ parse_access_path_value(
         pos = next_pos;
       else
         ERR("expecting a value after ':', %s does not have a legit value", pos);
-
       break;
-    }
     default:
       ERR("expecting '(', or ':', but getting %c\n", *pos);
   }
@@ -622,18 +620,17 @@ parse_composite_value(
   struct composite_value *cv)
 {
   char * const start_pos = pos, * const end_pos = pos + size;
-  char * next_pos = NULL;
+  char * next_pos, c;
 
   SKIP_SPACES(pos, end_pos);
   switch(*pos)
   {
     case '{':
-    {
       cv->tag = OBJECT;
       pos++;
       PUSH(stack, '}');
       pos = parse_access_path_value_list(stack, pos, end_pos - pos, &cv->_.pairs);
-      char c = POP(stack);
+      c = POP(stack);
       if (c != *pos)
         ERR("Mismatched stack: expecting %c, but getting %c\n", c, *pos);
       pos++;
@@ -641,14 +638,12 @@ parse_composite_value(
       if (parse_existence(pos, end_pos - pos, &cv->E, &next_pos))
         pos = next_pos;
       break;
-    }
     case '[':
-    {
       cv->tag = ARRAY;
       pos++;
       PUSH(stack, ']');
       pos = parse_value_list(stack, pos, end_pos - pos, &cv->_.elements);
-      char c = POP(stack);
+      c = POP(stack);
       if (c != *pos)
         ERR("Mismatched stack: expecting %c, but getting %c\n", c, *pos);
       pos++;
@@ -656,7 +651,6 @@ parse_composite_value(
       if (parse_existence(pos, end_pos - pos, &cv->E, &next_pos))
         pos = next_pos;
       break;
-    }
     default:
       ERR("unexpected %c in %s\n", *pos, start_pos);
   }
@@ -707,28 +701,30 @@ collect_composite_value_recipients (
 static void
 collect_value_recipients (struct value *v, struct recipients *rec)
 {
-  switch (v->tag) {
-    case JSON_ACTION: {
-      struct action *actor = &v->_.action;
-      switch (actor->tag) {
+  struct action * act;
+  switch (v->tag)
+  {
+    case JSON_ACTION:
+      act = &v->_.action;
+      switch (act->tag)
+      {
         case BUILT_IN:
-          if (PARAMETERIZED_SIZE == actor->mem_size.tag) {
-            rec->addrs[rec->pos] = &actor->mem_size._.parameterized_size;
+          if (PARAMETERIZED_SIZE == act->mem_size.tag) {
+            rec->addrs[rec->pos] = &act->mem_size._.parameterized_size;
             rec->pos ++;
           }
-          rec->addrs[rec->pos] = &actor->operand.recipient;
+          rec->addrs[rec->pos] = &act->operand;
           rec->pos ++;
           break;
         case USER_DEF_ACCEPT_NON_NULL:
         case USER_DEF_ACCEPT_NULL:
-          rec->addrs[rec->pos] = &actor->_.user_def;
+          rec->addrs[rec->pos] = &act->_.user_def;
           rec->pos ++;
-          rec->addrs[rec->pos] = &actor->operand;
+          rec->addrs[rec->pos] = &act->operand;
           rec->pos ++;
           break;
       }
       break;
-    }
     case JSON_COMPOSITE_VALUE:
       collect_composite_value_recipients(v->_.cv, rec);
       break;
@@ -742,24 +738,22 @@ collect_composite_value_recipients (
   struct composite_value *cv,
   struct recipients * rec)
 {
+  struct access_path_value *apv;
+  struct value *v;
   switch(cv->tag)
   {
-    case OBJECT: {
-      struct access_path_value *p;
+    case OBJECT:
       for (size_t i = 0; i < cv->_.pairs.size; i++) {
-        p = cv->_.pairs.pos + i;
-        collect_value_recipients(&p->value, rec);
+        apv = cv->_.pairs.pos + i;
+        collect_value_recipients(&apv->value, rec);
       }
       break;
-    }
-    case ARRAY: {
-      struct value * p;
+    case ARRAY:
       for (size_t i = 0; i < cv->_.elements.size; i++) {
-        p = cv->_.elements.pos + i;
-        collect_value_recipients(p, rec);
+        v = cv->_.elements.pos + i;
+        collect_value_recipients(v, rec);
       }
       break;
-    }
   }
 }
 
@@ -813,33 +807,27 @@ static int
 inject_builtin (char * pos, size_t size, struct injection_info * info)
 {
   struct action * v = (struct action *) info->data;
-  if (NULL == v->operand.provider)
+  if (NULL == v->operand)
     return xprintf(pos, size, info, "null");
 
+  char *s;
   switch(v->_.builtin)
   {
-    case B_BOOL: {
-      int *b = (int *) v->operand.provider;
-      if (*b)
+    case B_BOOL:
+      if (*(int *)v->operand)
         return xprintf(pos, size, info, "true");
       else
         return xprintf(pos, size, info, "false");
-    }
-    case B_INT: {
-      int *b = (int *) v->operand.provider;
-      return xprintf(pos, size, info, "%d", *b);
-    }
-    case B_FLOAT: {
-      float *f = (float *) v->operand.provider;
-      return xprintf(pos, size, info, "%f", *f);
-    }
-    case B_DOUBLE: {
-      double *d = (double *) v->operand.provider;
-      return xprintf(pos, size, info, "%lf", *d);
-    }
-    case B_STRING: {
-      char *s = (char *) v->operand.provider;
-      switch (v->mem_size.tag) {
+    case B_INT:
+      return xprintf(pos, size, info, "%d", v->operand);
+    case B_FLOAT:
+      return xprintf(pos, size, info, "%f", v->operand);
+    case B_DOUBLE:
+      return xprintf(pos, size, info, "%lf", v->operand);
+    case B_STRING:
+      s = (char *) v->operand;
+      switch (v->mem_size.tag)
+      {
         case UNKNOWN_SIZE:
           return xprintf(pos, size, info, "\"%s\"", s);
         case FIXED_SIZE:
@@ -852,7 +840,6 @@ inject_builtin (char * pos, size_t size, struct injection_info * info)
           return xprintf(pos, size, info, "\"%s\"", s);
       }
       break;
-    }
     default:
       ERR("unexpected cases\n");
       break;
@@ -868,22 +855,23 @@ inject_value (char * pos, size_t size, struct injection_info * info)
   switch (v->tag) {
     case JSON_ACTION: {
       struct action *a = &v->_.action;
-      switch (a->tag) {
+      switch (a->tag)
+      {
         case BUILT_IN:
           info->data = a;
           return inject_builtin(pos, size, info);
         case USER_DEF_ACCEPT_NON_NULL:
         case USER_DEF_ACCEPT_NULL:
         {
-          int (*f)(char *, size_t, void *) = NULL;
+          int (*f)(char *, size_t, void *);
           f = a->_.user_def;
           if (info->fp) {
-            char * b = malloc(1024);
-            (*f)(b, sizeof(b), a->operand.provider);
+            char *b = malloc(1024);
+            (*f)(b, sizeof(b), a->operand);
             fprintf(info->fp, "%s", b);
             free(b);
           }
-          size_t used_bytes = (*f)(pos, size, a->operand.provider);
+          size_t used_bytes = (*f)(pos, size, a->operand);
           if (NULL == pos)
             info->next_pos = NULL;
           else
@@ -933,8 +921,9 @@ inject_composite_value (char * pos, size_t size, struct injection_info * info)
   size_t used_bytes = 0;
 
   struct composite_value * cv = (struct composite_value *) info->data;
-  switch(cv->tag) {
-    case OBJECT: {
+  switch(cv->tag)
+  {
+    case OBJECT:
       used_bytes += xprintf(pos, end_pos - pos, info, "{");
       pos = info->next_pos;
 
@@ -951,9 +940,7 @@ inject_composite_value (char * pos, size_t size, struct injection_info * info)
       used_bytes += xprintf(pos, end_pos - pos, info, "}");
       pos = info->next_pos;
       break;
-    }
-    case ARRAY: {
-      //char c;
+    case ARRAY:
       used_bytes += xprintf(pos, end_pos - pos, info, "[");
       pos = info->next_pos;
       for (size_t i = 0; i < cv->_.elements.size; i++) {
@@ -969,7 +956,6 @@ inject_composite_value (char * pos, size_t size, struct injection_info * info)
       used_bytes += xprintf(pos, end_pos - pos, info, "]");
       pos = info->next_pos;
       break;
-    }
   }
   return used_bytes;
 }
