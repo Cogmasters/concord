@@ -110,6 +110,22 @@ setcb_ready(client *client, idle_cb *user_cb){
 }
 
 void
+setcb_message_command(client *client, char prefix[], message_cb *user_cb)
+{
+  using namespace websockets;
+  add_intents(client, intents::GUILD_MESSAGES | intents::DIRECT_MESSAGES);
+  client->ws.cbs.on_message.command = user_cb;
+
+  const int PREFIX_LEN = sizeof(client->ws.prefix);
+
+  int ret = snprintf(client->ws.prefix, PREFIX_LEN, "%s", prefix);
+  if (ret >= PREFIX_LEN) {
+    ERR("Prefix '%s' exceeds length of %d (%d characters)",
+        prefix, PREFIX_LEN, strlen(prefix));
+  }
+}
+
+void
 setcb_message_create(client *client, message_cb *user_cb)
 {
   using namespace websockets;
@@ -123,21 +139,6 @@ setcb_message_update(client *client, message_cb *user_cb)
   using namespace websockets;
   add_intents(client, intents::GUILD_MESSAGES | intents::DIRECT_MESSAGES);
   client->ws.cbs.on_message.update = user_cb;
-}
-
-void
-setcb_message_command(client *client, char prefix[], message_cb *user_cb)
-{
-  using namespace websockets;
-  add_intents(client, intents::GUILD_MESSAGES | intents::DIRECT_MESSAGES);
-  client->ws.cbs.on_message.command = user_cb;
-
-  const int PREFIX_LEN = sizeof(client->ws.prefix);
-
-  int ret = snprintf(client->ws.prefix, PREFIX_LEN, "%s", prefix);
-  if (ret >= PREFIX_LEN) {
-    ERR("Prefix '%s' exceeds length of %d", prefix, PREFIX_LEN);
-  }
 }
 
 void
