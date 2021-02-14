@@ -1011,7 +1011,10 @@ inject_value (char * pos, size_t size, struct injection_info * info)
                                                      &a->_.fmt,
                                                      a->tag - ACT_FORMAT_STRING,
                                                      a->fmt_args);
-            info->next_pos = pos + used_bytes;
+            if (NULL == pos)
+              info->next_pos = NULL;
+            else
+              info->next_pos = pos + used_bytes;
             return used_bytes;
           }
           break;
@@ -1243,12 +1246,16 @@ json_inject_alloc(char ** buf_p, size_t * size_p, char * injector, ...)
   va_end(ap);
 
   char * buf = malloc(used_bytes+1);
-  *size_p = used_bytes+1;
+  buf[used_bytes] = 0;
+  if (size_p)
+    *size_p = used_bytes+1;
   *buf_p = buf;
 
   va_start(ap, injector);
   json_injector_va_list(buf, used_bytes+1, injector, ap);
   va_end(ap);
+
+  ASSERT_S(used_bytes == strlen(buf), "used_bytes != strlen(buf)");
   return used_bytes;
 }
 
