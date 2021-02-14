@@ -179,14 +179,13 @@ set_method(CURL *ehandle, enum http_method method, struct sized_buffer *req_body
   case HTTP_GET:
       ecode = curl_easy_setopt(ehandle, CURLOPT_HTTPGET, 1L);
       ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
-      break;
+      return; /* EARLY RETURN */
   case HTTP_POST:
       curl_easy_setopt(ehandle, CURLOPT_POST, 1L);
       break;
   case HTTP_MIMEPOST:
       curl_easy_setopt(ehandle, CURLOPT_MIMEPOST, req_body->start);
-      req_body->start = NULL;
-      break;
+      return; /* EARLY RETURN */
   case HTTP_PATCH:
       curl_easy_setopt(ehandle, CURLOPT_CUSTOMREQUEST, "PATCH");
       break;
