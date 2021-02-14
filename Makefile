@@ -4,7 +4,7 @@ LIBDIR	:= lib
 
 
 COMMON_SRC  := curl-websocket.c http-common.c \
-								ntl.c orka-utils.c $(wildcard json-*.c)
+		ntl.c orka-utils.c $(wildcard json-*.c)
 ORKA_SRC    := $(wildcard orka-*.cpp)
 DISCORD_SRC := $(wildcard discord-*.cpp)
 GITHUB_SRC  := $(wildcard github-*.cpp)
@@ -17,16 +17,14 @@ GITHUB_OBJS := $(GITHUB_SRC:%=$(OBJDIR)/%.o)
 
 OBJS := $(COMMON_OBJS) $(DISCORD_OBJS) $(GITHUB_OBJS) $(ORKA_OBJS)
 
-
 BOT_SRC := $(wildcard bots/bot-*.cpp)
 BOT_EXES := $(patsubst %.cpp, %.exe, $(BOT_SRC))
 
 TEST_SRC := $(wildcard test/test-*.cpp test/test-*.c)
 TEST_EXES := $(filter %.exe, $(TEST_SRC:.cpp=.exe) $(TEST_SRC:.c=.exe))
 
-
 LIBDISCORD_CFLAGS	:= -I./
-LIBDISCORD_LDFLAGS	:=  -L./$(LIBDIR) -ldiscord -lcurl
+LIBDISCORD_LDFLAGS	:= -L./$(LIBDIR) -ldiscord -lcurl
 
 ifeq ($(CC),stensal-c)
 	LIBDISCORD_LDFLAGS += -lbearssl -static 

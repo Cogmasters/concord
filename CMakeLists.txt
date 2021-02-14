@@ -86,5 +86,7 @@ add_executable(test-cee.exe ${CEE_FILES} ${ORKA_FILES} test/test-cee.cpp)
 target_link_libraries(test-cee.exe curl ssl crypto)
 
 
-add_executable(test-json-injector.exe ntl.c test/test-json-injector.c)
+add_executable(test-json-injector.exe ntl.c
+        json-actor.c
+        test/test-json-injector.c)
 add_executable(test-json-actor.exe ntl.c test/test-json-actor.c)

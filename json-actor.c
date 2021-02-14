@@ -14,7 +14,7 @@
  *            | <composite-value> | <action>
  *
  * <action> := d | ld | lld | f | lf | b | <size-specifier>s
- *            | F | F_nullable | T | L | U(+) | U(?)
+ *            | F | F_nullable | T | L
  *
  * <access-path-value> := <access-path> : <value>
  *
@@ -1114,3 +1114,5 @@ int json_inject (char * pos, size_t size, char * injector, ...)
   va_end(ap);
   return used_bytes;
 }
+
+extern int json_extract(char * pos, size_t size, void *);
