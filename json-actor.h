@@ -45,6 +45,10 @@
  *
  */
 
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
+
 extern int
 json_inject_alloc (
   char ** buf_p,
@@ -63,5 +67,9 @@ json_inject_va_list(
   size_t size,
   char * injector,
   va_list ap);
+
+#ifdef __cplusplus
+}
+#endif // __cplusplus
 
 #endif //JSON_ACTOR_H
