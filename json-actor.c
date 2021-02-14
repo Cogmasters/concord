@@ -578,9 +578,8 @@ parse_access_path_value(
   int len = pos - start_pos - 1;
   ASSERT_S(len > 0, "Key is missing");
 
-  curr_path->key.start = calloc(1, len); // @todo get memory from stack's pool
+  curr_path->key.start = start_pos + 1;
   curr_path->key.size = len;
-  memcpy(curr_path->key.start, start_pos+1, len);
 
   ++pos; // eat up ')'
   SKIP_SPACES(pos, end_pos);
@@ -620,7 +619,7 @@ parse_access_path_value_list(
   struct sized_access_path_value * pairs)
 {
   char * const start_pos = pos, * const end_pos = pos + size;
-  pairs->pos = calloc(20, sizeof(struct access_path_value));
+  pairs->pos = calloc(MAX_ACTION_NUMBERS, sizeof(struct access_path_value));
 
   size_t i = 0;
   while (pos < end_pos) {
@@ -635,6 +634,7 @@ parse_access_path_value_list(
       i++;
     }
     else if (0 == stack->top || TOP(stack) == *pos ) {
+      ASSERT_S(i < MAX_ACTION_NUMBERS, "exceed max allowed actions\n");
       pairs->size = i;
       return pos;
     }
@@ -653,7 +653,7 @@ parse_value_list (
   struct sized_value * elements)
 {
   char * const end_pos = pos + size;
-  elements->pos = calloc(20, sizeof(struct value));
+  elements->pos = calloc(MAX_ACTION_NUMBERS, sizeof(struct value));
   char * next_pos = NULL;
 
   size_t i = 0;
@@ -668,6 +668,7 @@ parse_value_list (
       pos = next_pos;
     }
     else if (TOP(stack) == *pos) {
+      ASSERT_S(i < MAX_ACTION_NUMBERS, "exceed max allowed actions\n");
       elements->size = i;
       return pos;
     }
@@ -833,6 +834,59 @@ get_composite_value_operand_addrs (
   }
 }
 
+static void free_composite_value (struct composite_value *cv);
+
+static void
+free_value (struct value * v)
+{
+  switch(v->tag)
+  {
+    case JV_COMPOSITE_VALUE:
+      free_composite_value(v->_.cv);
+      free(v->_.cv);
+      break;
+  }
+}
+
+static void free_access_path (struct access_path * p)
+{
+  if (p->next)
+    free_access_path(p->next);
+  else
+    free(p);
+}
+static void
+free_access_path_value (struct access_path_value * ap)
+{
+  if (ap->path.next)
+    free_access_path(ap->path.next);
+  free_value(&ap->value);
+}
+
+static void
+free_composite_value (struct composite_value *cv)
+{
+  struct access_path_value *apv;
+  struct value *v;
+  switch(cv->tag)
+  {
+    case CV_OBJECT:
+      for (size_t i = 0; i < cv->_.pairs.size; i++) {
+        apv = cv->_.pairs.pos + i;
+        free_access_path_value(apv);
+      }
+      free(cv->_.pairs.pos);
+      break;
+    case CV_ARRAY:
+      for (size_t i = 0; i < cv->_.elements.size; i++) {
+        v = cv->_.elements.pos + i;
+        free_value(v);
+      }
+      free(cv->_.pairs.pos);
+      break;
+  }
+}
+
 
 /*
  * write only buffer, it's data should never be trusted
@@ -905,19 +959,30 @@ inject_builtin (char * pos, size_t size, struct injection_info * info)
     {
       s = (char *) v->operand;
       size_t len;
+      int ret;
       char * escaped;
-      switch (v->mem_size.tag) {
+      switch (v->mem_size.tag)
+      {
         case UNKNOWN_SIZE:
         case ZERO_SIZE:
           escaped = json_escape_string(&len, s, strlen(s));
-          return xprintf(pos, size, info, "\"%s\"", escaped);
+          ret = xprintf(pos, size, info, "\"%s\"", escaped);
+          if (escaped != s)
+            free(escaped);
+          return ret;
         case FIXED_SIZE:
           escaped = json_escape_string(&len, s, v->mem_size._.fixed_size);
-          return xprintf(pos, size, info, "\"%.*s\"", len, escaped);
+          ret = xprintf(pos, size, info, "\"%.*s\"", len, escaped);
+          if (escaped != s)
+            free(escaped);
+          return ret;
         case PARAMETERIZED_SIZE:
           escaped = json_escape_string(&len, s,
                                        v->mem_size._.parameterized_size);
-          return xprintf(pos, size, info, "\"%.*s\"", len, escaped);
+          ret = xprintf(pos, size, info, "\"%.*s\"", len, escaped);
+          if (escaped != s)
+            free(escaped);
+          return ret;
       }
       break;
     }
@@ -1234,6 +1299,7 @@ json_injector_va_list(
       free(mem);
     }
   }
+  free_composite_value(&cv);
   return used_bytes;
 }
 

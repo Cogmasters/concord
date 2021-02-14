@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "json-actor.h"
 #include <string.h>
+#include <stdlib.h>
 
 int foobar (char * pos, size_t size, void *p)
 {
@@ -107,5 +108,6 @@ int main () {
   json_inject_alloc(&p, NULL, injector1, "master", "sssssshhhhhaa");
 
   fprintf(stderr, "%s\n", p);
+  free(p);
   return 0;
 }
