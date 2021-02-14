@@ -4,6 +4,7 @@
 
 #include <libdiscord.h>
 #include "orka-utils.h"
+#include "json-actor.h"
 
 namespace discord {
 namespace guild {
@@ -463,6 +464,7 @@ create(client *client, const uint64_t guild_id, const uint64_t user_id, int dele
   }
 
   char buf[MAX_PAYLOAD_LEN];
+#if 0
   buf[0] = '\0';
   char *str = buf;
   str += sprintf(str, "{");
@@ -479,8 +481,22 @@ create(client *client, const uint64_t guild_id, const uint64_t user_id, int dele
   }
 
   str += sprintf(str, "}");
+#endif
+  void *A[3]= {0}; // a null terminated array for the availability of addresses
+  if (delete_message_days > 0)
+    A[0] = (void *) &delete_message_days;
+  if (!IS_EMPTY_STRING(reason))
+    A[1] = (void *) reason;
 
-  struct sized_buffer req_body = {buf, (size_t)(str - buf)};
+  int ret = json_inject(buf, sizeof(buf),
+                        "(delete_message_days):d"
+                        "(reason):s"
+                        "@",
+                        &delete_message_days,
+                        reason,
+                        A, sizeof(A));
+
+  struct sized_buffer req_body = {buf, (size_t)ret};
 
   user_agent::run( 
     &client->ua,
