@@ -146,7 +146,7 @@ struct fmt_arg {
   union {
     void * ptr;
     int  integer;
-    double real;
+    //double real;
   }_;
 };
 struct action {
@@ -810,7 +810,7 @@ get_value_operand_addrs (struct value *v, struct operand_addrs *rec)
             for (int i = 0; i < n; i++) {
               //@todo analyze native format string
               // to find out the argument types
-              rec->addrs[rec->pos] = &act->fmt_args[i];
+              rec->addrs[rec->pos] = &act->fmt_args[i]._;
               rec->pos ++;
             }
           }
@@ -1023,33 +1023,35 @@ inject_format_string (
   size_t size,
   struct sized_buffer * sbuf,
   int n,
-  void ** args)
+  struct fmt_arg * args)
 {
   char *p = NULL;
   char * format;
   asprintf(&format, "%.*s", sbuf->size, sbuf->start);
   switch(n) {
     case 1:
-      asprintf(&p, format, args[0]);
+      asprintf(&p, format, args[0]._);
       break;
     case 2:
-      asprintf(&p, format, args[0], args[1]);
+      asprintf(&p, format, args[0]._, args[1]._);
       break;
     case 3:
-      asprintf(&p, format, args[0], args[1], args[2]);
+      asprintf(&p, format, args[0]._, args[1]._, args[2]._);
       break;
     case 4:
-      asprintf(&p, format, args[0], args[1], args[2], args[3]);
+      asprintf(&p, format, args[0]._, args[1]._, args[2]._, args[3]._);
       break;
     case 5:
-      asprintf(&p, format, args[0], args[1], args[2], args[3], args[4]);
+      asprintf(&p, format, args[0]._, args[1]._, args[2]._, args[3]._,
+               args[4]._);
       break;
     case 6:
-      asprintf(&p, format, args[0], args[1], args[2], args[3], args[4], args[5]);
+      asprintf(&p, format, args[0]._, args[1]._, args[2]._, args[3]._,
+               args[4]._, args[5]._);
       break;
     case 7:
-      asprintf(&p, format, args[0], args[1], args[2], args[3], args[4],
-               args[5], args[6]);
+      asprintf(&p, format, args[0]._, args[1]._, args[2]._, args[3]._,
+               args[4]._, args[5]._, args[6]._);
       break;
     default:
       ERR("format string '%s' has more than 8 arguments\n", format, n);
