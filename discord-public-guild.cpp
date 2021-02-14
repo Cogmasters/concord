@@ -463,38 +463,20 @@ create(client *client, const uint64_t guild_id, const uint64_t user_id, int dele
     return;
   }
 
-  char buf[MAX_PAYLOAD_LEN];
-#if 0
-  buf[0] = '\0';
-  char *str = buf;
-  str += sprintf(str, "{");
-
-  if(delete_message_days > 0) {
-    str += sprintf(str, "\"delete_message_days\":%d", delete_message_days);
-  }
-
-  if(!IS_EMPTY_STRING(reason)) {
-    if(delete_message_days > 0) {
-      str += sprintf(str, ",");
-    }
-    str += sprintf(str, "\"reason\":\"%s\"", reason);
-  }
-
-  str += sprintf(str, "}");
-#endif
-  void *A[3]= {0}; // a null terminated array for the availability of addresses
+  void *ntl_array[3]= {0}; // a null terminated array for the availability of addresses
   if (delete_message_days > 0)
-    A[0] = (void *) &delete_message_days;
+    ntl_array[0] = (void *) &delete_message_days;
   if (!IS_EMPTY_STRING(reason))
-    A[1] = (void *) reason;
+    ntl_array[1] = (void *) reason;
 
+  char buf[MAX_PAYLOAD_LEN];
   int ret = json_inject(buf, sizeof(buf),
                         "(delete_message_days):d"
                         "(reason):s"
                         "@",
                         &delete_message_days,
                         reason,
-                        A, sizeof(A));
+                        ntl_array, sizeof(ntl_array));
 
   struct sized_buffer req_body = {buf, (size_t)ret};
 
