@@ -33,35 +33,67 @@ on_command(client *client, const user::dati *me, const channel::message::dati *m
 
   message::create::params params = {0};
 
-  if (STRNEQ(msg->content, "cd", 2)) {
+  char *cmd = strchr(msg->content, ' '); //get first occurence of space
+  size_t len;
+  if (cmd) {
+    len = cmd - msg->content;
+    ++cmd; //skip space
+  }
+  else {
+    len = strlen(msg->content);
+  }
+
+  if (STRNEQ(msg->content, "cd", len)) {
     char path[100];
 
-    chdir(msg->content + 3);
+    chdir(cmd);
     getcwd(path, sizeof(path));
 
     params.content = path;
   }
   else { /* DEFAULT CASE */
     FILE *fp = popen(msg->content, "r");
-    ASSERT_S(NULL != fp, "Failed to run command");
-
-    char path[1024] = "";
-    char pathtmp[1024] = "";
-    if (STRNEQ(msg->content, "less", 4) || STRNEQ(msg->content, "cat", 3)) {
-      strncat(pathtmp, "```\n", sizeof(pathtmp)-1);
-      while (NULL != fgets(path, sizeof(path), fp)) {
-        strncat(pathtmp, path, sizeof(pathtmp)-1);
-      }
-      strncat(pathtmp, "\n```", sizeof(pathtmp)-1);
-    }
-    else {
-      while (NULL != fgets(path, sizeof(path), fp)) {
-        path[strlen(path)-1] = ' '; //replace \n with space
-        strncat(pathtmp, path, sizeof(pathtmp)-1);
-      }
+    if (NULL == fp) {
+      printf("Failed to run command");
+      return;
     }
 
-    params.content = pathtmp;
+    const size_t MAX_FSIZE = 5e6; // 5 mb
+    char *path = (char*)malloc(MAX_FSIZE);
+    char *pathtmp = (char*)malloc(MAX_FSIZE);
+
+    if (STRNEQ(msg->content, "less", 4) 
+        || STRNEQ(msg->content, "cat", len)
+        || STRNEQ(msg->content, "hexdump", len)) 
+    {
+      strncat(pathtmp, "```\n", MAX_FSIZE-1);
+      while (NULL != fgets(path, MAX_FSIZE, fp)) {
+        strncat(pathtmp, path, MAX_FSIZE-1);
+      }
+      strncat(pathtmp, "\n```", MAX_FSIZE-1);
+
+      if (strlen(pathtmp) > 2000) { // MAX MESSAGE LEN is 2000 bytes
+        //@todo need some checks to make sure its a valid filename
+        params.file.name = 1 + msg->content + len;
+      }
+      else {
+        params.content = pathtmp;
+      }
+    }
+    else { /* DEFAULT CASE */
+      while (NULL != fgets(path, MAX_FSIZE, fp)) {
+        strncat(pathtmp, path, MAX_FSIZE-1);
+      }
+
+      size_t fsize = strlen(pathtmp);
+      if (fsize > 2000) { // MAX MESSAGE LEN is 2000 bytes
+        params.file.content = pathtmp;
+        params.file.size = fsize;
+      }
+      else {
+        params.content = pathtmp;
+      }
+    }
 
     pclose(fp);
   }
