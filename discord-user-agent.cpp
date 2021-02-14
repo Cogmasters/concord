@@ -16,27 +16,19 @@ namespace user_agent {
 static struct curl_slist*
 reqheader_init(char token[])
 {
-  char auth[MAX_HEADER_LEN];
-  int ret = snprintf(auth, MAX_HEADER_LEN, "Authorization: Bot %s", token);
+  char auth[128];
+  int ret = snprintf(auth, sizeof(auth), "Bot %s", token);
   ASSERT_S(ret < (int)sizeof(auth), "Out of bounds write attempt");
 
+  char user_agent[] =
+    "orca (http://github.com/cee-studio/orca, v" LIBDISCORD_VERSION ")";
+
   struct curl_slist *new_header = NULL;
-  void *tmp; //for checking potential allocation error
-
-  new_header = curl_slist_append(new_header,"X-RateLimit-Precision: millisecond");
-  ASSERT_S(NULL != new_header, "Out of memory");
-
-  tmp = curl_slist_append(new_header,"Accept: application/json");
-  ASSERT_S(NULL != tmp, "Out of memory");
-
-  tmp = curl_slist_append(new_header, auth);
-  ASSERT_S(NULL != tmp, "Out of memory");
-
-  tmp = curl_slist_append(new_header,"User-Agent: orca (http://github.com/cee-studio/orca, v" LIBDISCORD_VERSION ")");
-  ASSERT_S(NULL != tmp, "Out of memory");
-
-  tmp = curl_slist_append(new_header,"Content-Type: application/json");
-  ASSERT_S(NULL != tmp, "Out of memory");
+  add_reqheader_pair(&new_header, "Content-Type", "application/json");
+  add_reqheader_pair(&new_header, "X-RateLimit-Precision", "millisecond");
+  add_reqheader_pair(&new_header, "Accept", "application/json");
+  add_reqheader_pair(&new_header, "Authorization", auth);
+  add_reqheader_pair(&new_header, "User-Agent", user_agent);
 
   return new_header;
 }
@@ -44,10 +36,10 @@ reqheader_init(char token[])
 void
 init(dati *ua, char token[])
 {
-  ua->req_header = reqheader_init(token);
+  ua->reqheader = reqheader_init(token);
   ua->ehandle = custom_easy_init(
                   &ua->p_client->settings,
-                  ua->req_header,
+                  ua->reqheader,
                   &ua->pairs,
                   &ua->resp_body);
 }
@@ -57,7 +49,7 @@ cleanup(dati *ua)
 {
   bucket::cleanup(ua);
 
-  curl_slist_free_all(ua->req_header);
+  curl_slist_free_all(ua->reqheader);
   curl_easy_cleanup(ua->ehandle); 
 
   if (ua->resp_body.start) {

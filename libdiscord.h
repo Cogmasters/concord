@@ -1197,9 +1197,9 @@ void add_intents(client *client, websockets::intents::code code);
 
 void setcb_idle(client *client, idle_cb *user_cb);
 void setcb_ready(client *client, idle_cb *user_cb);
+void setcb_message_command(client *client, char prefix[], message_cb *user_cb);
 void setcb_message_create(client *client, message_cb *user_cb);
 void setcb_message_update(client *client, message_cb *user_cb);
-void setcb_message_command(client *client, char prefix[], message_cb *user_cb);
 void setcb_message_delete(client *client, message_delete_cb *user_cb);
 void setcb_message_delete_bulk(client *client, message_delete_bulk_cb *user_cb);
 void setcb_guild_member_add(client *client, guild_member_cb *user_cb);
@@ -1240,15 +1240,20 @@ message::dati** run(client *client, const uint64_t channel_id, params *params);
 /* https://discord.com/developers/docs/resources/channel#create-message */
 namespace create { // function wrapper
 
+/* default is application/json unless any 
+ *  multipart/form-data parameter is set */
 struct params {
+  // common parameters
   char *content;
   char *nonce;
   bool tts;
-  char *file;
+  // parameters for application/json
   embed::dati *embed;
-  char *payload_json;
   allowed_mentions::dati *allowed_mentions;
   message::reference::dati message_reference;
+  // parameters for multipart/form-data
+  char *filename;
+  char *payload_json;
 };
 
 void run(client *client, const uint64_t channel_id, params *params, dati *p_message);
@@ -1275,7 +1280,7 @@ struct params {
   uint64_t after; // the highest user id in the previous page
 };
 
-dati **run(client *client, const uint64_t guild_id, struct params *params);
+dati** run(client *client, const uint64_t guild_id, struct params *params);
 
 } // namespace get_list
 void remove(client *client, const uint64_t guild_id, const uint64_t user_id);
@@ -1285,7 +1290,7 @@ void remove(client *client, const uint64_t guild_id, const uint64_t user_id);
 namespace ban {
 
 void get(client *client, const uint64_t guild_id, const uint64_t user_id, dati *p_ban);
-dati **get_list(client *client, const uint64_t guild_id);
+dati** get_list(client *client, const uint64_t guild_id);
 void create(client *client, const uint64_t guild_id, const uint64_t user_id, int delete_message_days, const char reason[]);
 void remove(client *client, const uint64_t guild_id, const uint64_t user_id, const char reason[]);
 

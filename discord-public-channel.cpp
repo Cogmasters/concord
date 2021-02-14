@@ -344,34 +344,64 @@ run(client *client, const uint64_t channel_id, params *params, dati *p_message)
     D_PUTS("Missing 'channel_id'");
     return;
   }
-  if (IS_EMPTY_STRING(params->content)) {
-    D_PUTS("Missing 'content'");
-    return;
-  }
-  if (strlen(params->content) >= MAX_MESSAGE_LEN) {
-    D_PRINT("Content length exceeds %d characters threshold (%zu)",
-        MAX_MESSAGE_LEN, strlen(params->content));
-    return;
-  }
-
-  char payload[MAX_PAYLOAD_LEN];
-  int ret = json_snprintf(payload, MAX_PAYLOAD_LEN,
-      "{|content|:|%s|}", params->content);
-  ASSERT_S(ret < MAX_PAYLOAD_LEN, "Out of bounds write attempt");
 
   struct resp_handle resp_handle = {
     .ok_cb = p_message ? json_load : NULL,
     .ok_obj = p_message,
   };
 
-  struct sized_buffer req_body = {payload, strlen(payload)};
+  if (!params->filename)  // content-type is application/json
+  {
+    if (IS_EMPTY_STRING(params->content)) {
+      D_PUTS("Missing 'content'");
+      return;
+    }
+    if (strlen(params->content) >= MAX_MESSAGE_LEN) {
+      D_PRINT("Content length exceeds %d characters threshold (%zu)",
+          MAX_MESSAGE_LEN, strlen(params->content));
+      return;
+    }
 
-  user_agent::run( 
-    &client->ua,
-    &resp_handle,
-    &req_body,
-    HTTP_POST, 
-    "/channels/%llu/messages", channel_id);
+    char payload[MAX_PAYLOAD_LEN];
+    json_snprintf(payload, MAX_PAYLOAD_LEN,
+        "{|content|:|%s|}", params->content);
+
+    struct sized_buffer req_body = {payload, strlen(payload)};
+
+    user_agent::run( 
+      &client->ua,
+      &resp_handle,
+      &req_body,
+      HTTP_POST, 
+      "/channels/%llu/messages", channel_id);
+  }
+  else { // content-type is multipart/form-data
+    edit_reqheader_pair(&client->ua.reqheader, // change content-type
+        "Content-Type", "multipart/form-data");
+
+    /* @todo mime functions should be integrated to http-common.c 
+     *  to facilitate usage */
+    curl_mime *mime = curl_mime_init(client->ua.ehandle);
+    curl_mimepart *part = curl_mime_addpart(mime);
+
+    curl_mime_filedata(part, params->filename);
+    curl_mime_name(part, "file");
+
+    //@todo find better solution than passing mime as req_body field
+    struct sized_buffer req_body = {(char*)mime};
+
+    user_agent::run( 
+      &client->ua,
+      &resp_handle,
+      &req_body,
+      HTTP_MIMEPOST, 
+      "/channels/%llu/messages", channel_id);
+
+    curl_mime_free(mime);
+
+    edit_reqheader_pair(&client->ua.reqheader, // set back to default
+        "Content-Type", "application/json");
+  }
 }
 
 } // namespace create

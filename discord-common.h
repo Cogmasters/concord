@@ -144,7 +144,7 @@ struct error {
 };
 
 struct dati { /* USER AGENT STRUCTURE */
-  struct curl_slist *req_header; //the request header sent to the api
+  struct curl_slist *reqheader; //the request header sent to the api
 
   struct sized_buffer resp_body; //the api response string
   struct api_header_s pairs; //the key/field pairs response header

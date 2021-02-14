@@ -71,8 +71,8 @@ struct resp_handle {
 };
 
 char* get_respheader_value(struct api_header_s *pairs, char field[]);
-void add_reqheader_pair(struct curl_slist **reqheader, char field[],  char value[]);
-void edit_reqheader_pair(struct curl_slist **reqheader, char field[],  char new_value[]);
+void add_reqheader_pair(struct curl_slist **reqheader, char field[], char value[]);
+void edit_reqheader_pair(struct curl_slist **reqheader, char field[], char new_value[]);
 void del_reqheader_pair(struct curl_slist **reqheader, char field[]);
 char* http_code_print(int httpcode);
 char* http_reason_print(int httpcode);
