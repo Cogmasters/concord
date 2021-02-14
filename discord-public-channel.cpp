@@ -350,8 +350,8 @@ run(client *client, const uint64_t channel_id, params *params, dati *p_message)
     .ok_obj = p_message,
   };
 
-  if (!params->filename)  // content-type is application/json
-  {
+  if (!params->file.name && !params->file.content)
+  {  // content-type is application/json
     if (IS_EMPTY_STRING(params->content)) {
       D_PUTS("Missing 'content'");
       return;
@@ -375,7 +375,8 @@ run(client *client, const uint64_t channel_id, params *params, dati *p_message)
       HTTP_POST, 
       "/channels/%llu/messages", channel_id);
   }
-  else { // content-type is multipart/form-data
+  else 
+  { // content-type is multipart/form-data
     edit_reqheader_pair(&client->ua.reqheader, // change content-type
         "Content-Type", "multipart/form-data");
 
@@ -384,7 +385,18 @@ run(client *client, const uint64_t channel_id, params *params, dati *p_message)
     curl_mime *mime = curl_mime_init(client->ua.ehandle);
     curl_mimepart *part = curl_mime_addpart(mime);
 
-    curl_mime_filedata(part, params->filename);
+    if (params->file.content) {
+      if (!params->file.name) { // set a default name
+        params->file.name = "a.out";
+      }
+      curl_mime_data(part, params->file.content, params->file.size);
+      curl_mime_filename(part, params->file.name);
+      curl_mime_type(part, "application/octet-stream");
+    }
+    else { //params->filename exists 
+      curl_mime_filedata(part, params->file.name);
+    }
+
     curl_mime_name(part, "file");
 
     //@todo find better solution than passing mime as req_body field

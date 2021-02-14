@@ -1252,7 +1252,11 @@ struct params {
   allowed_mentions::dati *allowed_mentions;
   message::reference::dati message_reference;
   // parameters for multipart/form-data
-  char *filename;
+  struct { // FILE STRUCT @todo better explanation
+    char *name; //if only name is set, will search in working directory
+    char *content; //the file contents
+    size_t size; //the size must accompany the content
+  } file;
   char *payload_json;
 };
 

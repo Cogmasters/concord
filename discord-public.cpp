@@ -120,7 +120,7 @@ setcb_message_command(client *client, char prefix[], message_cb *user_cb)
 
   int ret = snprintf(client->ws.prefix, PREFIX_LEN, "%s", prefix);
   if (ret >= PREFIX_LEN) {
-    ERR("Prefix '%s' exceeds length of %d (%d characters)",
+    ERR("Prefix '%s' exceeds length of %d (%zu characters)",
         prefix, PREFIX_LEN, strlen(prefix));
   }
 }
