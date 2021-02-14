@@ -832,21 +832,17 @@ get_composite_value_operand_addrs (
 {
   struct access_path_value *apv;
   struct value *v;
-  switch(cv->tag)
-  {
-    case CV_OBJECT:
-      for (size_t i = 0; i < cv->_.pairs.size; i++) {
-        apv = cv->_.pairs.pos + i;
-        get_value_operand_addrs(&apv->value, rec);
-      }
-      break;
-    case CV_ARRAY:
-      for (size_t i = 0; i < cv->_.elements.size; i++) {
-        v = cv->_.elements.pos + i;
-        get_value_operand_addrs(v, rec);
-      }
-      break;
-  }
+  if(CV_OBJECT == cv->tag)
+    for (size_t i = 0; i < cv->_.pairs.size; i++) {
+      apv = cv->_.pairs.pos + i;
+      get_value_operand_addrs(&apv->value, rec);
+    }
+  else
+    for (size_t i = 0; i < cv->_.elements.size; i++) {
+      v = cv->_.elements.pos + i;
+      get_value_operand_addrs(v, rec);
+    }
+
   if (cv->E.has_this) {
     rec->addrs[rec->pos] = &cv->E.arg;
     rec->types[rec->pos] = ARG_PTR;
@@ -859,15 +855,11 @@ get_composite_value_operand_addrs (
 
 static void free_composite_value (struct composite_value *cv);
 
-static void
-free_value (struct value * v)
+static void free_value (struct value * v)
 {
-  switch(v->tag)
-  {
-    case JV_COMPOSITE_VALUE:
-      free_composite_value(v->_.cv);
-      free(v->_.cv);
-      break;
+  if(JV_COMPOSITE_VALUE == v->tag) {
+    free_composite_value(v->_.cv);
+    free(v->_.cv);
   }
 }
 
@@ -878,35 +870,31 @@ static void free_access_path (struct access_path * p)
   else
     free(p);
 }
-static void
-free_access_path_value (struct access_path_value * ap)
+
+static void free_access_path_value (struct access_path_value * ap)
 {
   if (ap->path.next)
     free_access_path(ap->path.next);
   free_value(&ap->value);
 }
 
-static void
-free_composite_value (struct composite_value *cv)
+static void  free_composite_value (struct composite_value *cv)
 {
   struct access_path_value *apv;
   struct value *v;
-  switch(cv->tag)
-  {
-    case CV_OBJECT:
-      for (size_t i = 0; i < cv->_.pairs.size; i++) {
-        apv = cv->_.pairs.pos + i;
-        free_access_path_value(apv);
-      }
-      free(cv->_.pairs.pos);
-      break;
-    case CV_ARRAY:
-      for (size_t i = 0; i < cv->_.elements.size; i++) {
-        v = cv->_.elements.pos + i;
-        free_value(v);
-      }
-      free(cv->_.pairs.pos);
-      break;
+  if(CV_OBJECT == cv->tag) {
+    for (size_t i = 0; i < cv->_.pairs.size; i++) {
+      apv = cv->_.pairs.pos + i;
+      free_access_path_value(apv);
+    }
+    free(cv->_.pairs.pos);
+  }
+  else {
+    for (size_t i = 0; i < cv->_.elements.size; i++) {
+      v = cv->_.elements.pos + i;
+      free_value(v);
+    }
+    free(cv->_.pairs.pos);
   }
 }
 
@@ -1173,26 +1161,23 @@ has_value (struct injection_info * info, struct value * v)
     {
       struct composite_value * cv = v->_.cv;
       int has_one = 0;
-      switch (cv->tag)
-      {
-        case CV_OBJECT:
-          for (size_t i = 0; i < cv->_.pairs.size; i++) {
-            struct access_path_value * p = cv->_.pairs.pos + i;
-            if (has_value(info, &p->value)) {
-              has_one = 1;
-              break;
-            }
+      if (CV_OBJECT == cv->tag) {
+        for (size_t i = 0; i < cv->_.pairs.size; i++) {
+          struct access_path_value *p = cv->_.pairs.pos + i;
+          if (has_value(info, &p->value)) {
+            has_one = 1;
+            break;
           }
-          break;
-        case CV_ARRAY:
-          for (size_t i = 0; i < cv->_.elements.size; i++) {
-            struct value * p = cv->_.elements.pos + i;
-            if (has_value(info, p)) {
-              has_one = 1;
-              break;
-            }
+        }
+      }
+      else {
+        for (size_t i = 0; i < cv->_.elements.size; i++) {
+          struct value * p = cv->_.elements.pos + i;
+          if (has_value(info, p)) {
+            has_one = 1;
+            break;
           }
-          break;
+        }
       }
       return has_one;
     }
@@ -1208,63 +1193,60 @@ inject_composite_value (char * pos, size_t size, struct injection_info * info)
   size_t used_bytes = 0, count;
   struct composite_value * cv = (struct composite_value *) info->data;
 
-  switch(cv->tag)
-  {
-    case CV_OBJECT:
-      used_bytes += xprintf(pos, end_pos - pos, info, "{");
+  if (CV_OBJECT == cv->tag) {
+    used_bytes += xprintf(pos, end_pos - pos, info, "{");
+    pos = info->next_pos;
+
+    count = cv->_.pairs.size;
+    for (size_t i = 0; i < cv->_.pairs.size; i++) {
+      struct access_path_value *p = cv->_.pairs.pos + i;
+      if (!has_value(info, &p->value))
+        count--;
+    }
+
+    for (size_t i = 0, j = 0; i < cv->_.pairs.size; i++) {
+      struct access_path_value *p = cv->_.pairs.pos + i;
+      if (!has_value(info, &p->value)) continue;
+
+      info->data = p;
+      used_bytes += inject_access_path_value(pos, end_pos - pos, info);
       pos = info->next_pos;
 
-      count = cv->_.pairs.size;
-      for (size_t i = 0; i < cv->_.pairs.size; i++) {
-        struct access_path_value *p = cv->_.pairs.pos + i;
-        if (!has_value(info, &p->value))
-          count--;
-      }
-
-      for (size_t i = 0, j = 0; i < cv->_.pairs.size; i++) {
-        struct access_path_value * p = cv->_.pairs.pos + i;
-        if (!has_value(info, &p->value)) continue;
-
-        info->data = p;
-        used_bytes += inject_access_path_value(pos, end_pos - pos, info);
+      if (j + 1 != count) {
+        used_bytes += xprintf(pos, end_pos - pos, info, ",");
         pos = info->next_pos;
-
-        if (j+1 != count) {
-          used_bytes += xprintf(pos, end_pos - pos, info, ",");
-          pos = info->next_pos;
-        }
-        j ++;
       }
-      used_bytes += xprintf(pos, end_pos - pos, info, "}");
+      j++;
+    }
+    used_bytes += xprintf(pos, end_pos - pos, info, "}");
+    pos = info->next_pos;
+  }
+  else {
+    used_bytes += xprintf(pos, end_pos - pos, info, "[");
+    pos = info->next_pos;
+
+    count = cv->_.elements.size;
+    for (size_t i = 0; i < cv->_.elements.size; i++) {
+      struct value *v = cv->_.elements.pos + i;
+      if (!has_value(info, v)) count--;
+    }
+
+    for (size_t i = 0, j = 0; i < cv->_.elements.size; i++) {
+      struct value * v = cv->_.elements.pos + i;
+      if (!has_value(info, v)) continue;
+
+      info->data = cv->_.elements.pos + i;
+      used_bytes += inject_value(pos, end_pos - pos, info);
       pos = info->next_pos;
-      break;
-    case CV_ARRAY:
-      used_bytes += xprintf(pos, end_pos - pos, info, "[");
-      pos = info->next_pos;
 
-      count = cv->_.elements.size;
-      for (size_t i = 0; i < cv->_.elements.size; i++) {
-        struct value *v = cv->_.elements.pos + i;
-        if (!has_value(info, v)) count--;
-      }
-
-      for (size_t i = 0, j = 0; i < cv->_.elements.size; i++) {
-        struct value * v = cv->_.elements.pos + i;
-        if (!has_value(info, v)) continue;
-
-        info->data = cv->_.elements.pos + i;
-        used_bytes += inject_value(pos, end_pos - pos, info);
+      if (j+1 != count) {
+        used_bytes += xprintf(pos, end_pos - pos, info, ",");
         pos = info->next_pos;
-
-        if (j+1 != count) {
-          used_bytes += xprintf(pos, end_pos - pos, info, ",");
-          pos = info->next_pos;
-        }
-        j ++;
       }
-      used_bytes += xprintf(pos, end_pos - pos, info, "]");
-      pos = info->next_pos;
-      break;
+      j ++;
+    }
+    used_bytes += xprintf(pos, end_pos - pos, info, "]");
+    pos = info->next_pos;
   }
   return used_bytes;
 }
@@ -1349,8 +1331,7 @@ json_injector_va_list(
   return used_bytes;
 }
 
-int
-json_inject_alloc(char ** buf_p, size_t * size_p, char * injector, ...)
+int json_inject_alloc(char ** buf_p, size_t * size_p, char * injector, ...)
 {
   va_list ap;
   va_start(ap, injector);
