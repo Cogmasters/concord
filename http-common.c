@@ -6,17 +6,75 @@
 #include "http-common.h"
 #include "orka-utils.h"
 
-/* attempt to get value from matching header field */
+/* attempt to get value from matching response header field */
 char*
-get_header_value(struct api_header_s *pairs, char header_field[])
+get_respheader_value(struct api_header_s *pairs, char field[])
 {
   for (int i=0; i < pairs->size; ++i) {
-    if (STREQ(header_field, pairs->field[i])) {
+    if (strcasecmp(field, pairs->field[i])) {
       return pairs->value[i]; //found header field, return its value
     }
   }
 
   return NULL; //couldn't find header field
+}
+
+void
+add_reqheader_pair(struct curl_slist **reqheader, char field[],  char value[])
+{
+  char buf[MAX_HEADER_LEN];
+  int ret = snprintf(buf, sizeof(buf), "%s: %s", field, value);
+  ASSERT_S(ret < MAX_HEADER_LEN, "Out of bounds write attempt");
+
+  if (NULL == *reqheader) 
+    *reqheader = curl_slist_append(NULL, buf);
+  else
+    curl_slist_append(*reqheader, buf);
+}
+
+void
+edit_reqheader_pair(struct curl_slist **reqheader, char field[],  char new_value[])
+{
+  size_t len = strlen(field);
+  struct curl_slist *node = *reqheader;
+  while (strncasecmp(node->data, field, len)) {
+    node = node->next;
+    if (NULL == node) {
+      D_PRINT("Couldn't find field '%s' in existing request header", field);
+      return; /* EARLY EXIT */
+    }
+  }
+
+  free(node->data);
+  asprintf(&node->data, "%s: %s", field, new_value);
+}
+
+// @todo this needs some testing
+void
+del_reqheader_pair(struct curl_slist **reqheader, char field[])
+{
+  struct curl_slist *node = *reqheader;
+  size_t len = strlen(field);
+  if (strncasecmp(node->data, field, len)) {
+    free(node->data);
+    free(node);
+    *reqheader = NULL;
+
+    return; /* EARLY EXIT */
+  }
+
+  do { // iterate linked list to try and find field match
+    if (node->next && strncasecmp(node->next->data, field, len)) {
+      free(node->next->data);
+      free(node->next);
+      node->next = NULL;
+
+      return; /* EARLY EXIT */
+    }
+    node = node->next;
+  } while (node != NULL);
+
+  D_PRINT("Couldn't find field '%s' in existing request header", field);
 }
 
 char*
@@ -97,6 +155,7 @@ http_method_print(enum http_method method)
       CASE_RETURN_STR(HTTP_DELETE);
       CASE_RETURN_STR(HTTP_GET);
       CASE_RETURN_STR(HTTP_POST);
+      CASE_RETURN_STR(HTTP_MIMEPOST);
       CASE_RETURN_STR(HTTP_PATCH);
       CASE_RETURN_STR(HTTP_PUT);
   default:
@@ -123,6 +182,10 @@ set_method(CURL *ehandle, enum http_method method, struct sized_buffer *req_body
       break;
   case HTTP_POST:
       curl_easy_setopt(ehandle, CURLOPT_POST, 1L);
+      break;
+  case HTTP_MIMEPOST:
+      curl_easy_setopt(ehandle, CURLOPT_MIMEPOST, req_body->start);
+      req_body->start = NULL;
       break;
   case HTTP_PATCH:
       curl_easy_setopt(ehandle, CURLOPT_CUSTOMREQUEST, "PATCH");

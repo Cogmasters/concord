@@ -19,7 +19,7 @@ extern "C" {
 
 //possible http methods
 enum http_method {
-  HTTP_DELETE, HTTP_GET, HTTP_POST, HTTP_PATCH, HTTP_PUT
+  HTTP_DELETE, HTTP_GET, HTTP_POST, HTTP_MIMEPOST, HTTP_PATCH, HTTP_PUT
 };
 
 
@@ -70,7 +70,10 @@ struct resp_handle {
   void *err_obj; // the pointer to be passed to err_cb
 };
 
-char* get_header_value(struct api_header_s *pairs, char header_field[]);
+char* get_respheader_value(struct api_header_s *pairs, char field[]);
+void add_reqheader_pair(struct curl_slist **reqheader, char field[],  char value[]);
+void edit_reqheader_pair(struct curl_slist **reqheader, char field[],  char new_value[]);
+void del_reqheader_pair(struct curl_slist **reqheader, char field[]);
 char* http_code_print(int httpcode);
 char* http_reason_print(int httpcode);
 char* http_method_print(enum http_method method);
