@@ -67,7 +67,7 @@ discord: mkdir $(DISCORD_OBJS) $(LIBDISCORD)
 github: mkdir $(GITHUB_OBJS)
 
 bot: $(BOT_EXES) #@todo should we split by categories (bot_discord, bot_github, etc)?
-test: all $(TEST_EXES) #@todo should we split by categories too ?
+test: common orka discord github $(TEST_EXES) #@todo should we split by categories too ?
 
 
 mkdir :
