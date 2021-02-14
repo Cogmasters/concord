@@ -101,13 +101,11 @@ int main () {
 
   fprintf(stderr, "%s\n", bigbuf);
 
-  injector1 = "(ref): |refs/heads/%s|"
-    "(sha): s";
+  injector1 = "(ref): |refs/heads/%s| (sha): s";
 
-  json_inject(bigbuf, sizeof(bigbuf),
-              injector1,
-              "master", "sssssshhhhhaa");
+  char * p = NULL;
+  json_inject_alloc(&p, NULL, injector1, "master", "sssssshhhhhaa");
 
-  fprintf(stderr, "%s\n", bigbuf);
+  fprintf(stderr, "%s\n", p);
   return 0;
 }
