@@ -79,7 +79,12 @@ target_link_libraries(test-json-string.exe m)
 add_executable(test-git.exe ${GITHUB_FILES}  test/test-git.cpp)
 target_link_libraries(test-git.exe curl ssl crypto)
 
-add_executable(test-git2.exe ${GITHUB_FILES} ${ORKA_FILES} test/test-git2.cpp)
+add_executable(test-git2.exe
+        ${JSON_SCANF}
+        json-actor.c
+        ${GITHUB_FILES} ${ORKA_FILES}
+        test/test-git2.cpp)
+
 target_link_libraries(test-git2.exe curl ssl crypto)
 
 add_executable(test-cee.exe ${CEE_FILES} ${ORKA_FILES} test/test-cee.cpp)
@@ -87,6 +92,10 @@ target_link_libraries(test-cee.exe curl ssl crypto)
 
 
 add_executable(test-json-injector.exe ntl.c
+        json-string.c
         json-actor.c
         test/test-json-injector.c)
-add_executable(test-json-actor.exe ntl.c test/test-json-actor.c)
+
+add_executable(test-json-actor.exe ntl.c
+        json-string.c
+        test/test-json-actor.c)
