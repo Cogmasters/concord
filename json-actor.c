@@ -134,6 +134,21 @@ enum action_type {
   ACT_FORMAT_STRING = 10,
 };
 
+enum arg_type {
+  ARG_PTR = 0,
+  ARG_INT,
+  ARG_DOUBLE
+};
+
+
+struct fmt_arg {
+  enum arg_type tag;
+  union {
+    void * ptr;
+    int  integer;
+    double real;
+  }_;
+};
 struct action {
   enum action_type tag;
   union {
@@ -145,7 +160,7 @@ struct action {
    * must be a pointer, and it cannot be NULL
    * this can be NULL or its value can be UNDEFINED
    */
-  void * fmt_args[8]; // no more than 4 arguments
+  struct fmt_arg fmt_args[8]; // no more than 8 arguments
   void * operand;
   struct size_specifier mem_size; // this designates the memory size of _;
 };
@@ -153,6 +168,7 @@ struct action {
 struct existence {
   struct size_specifier mem_size;
   void * arg;
+  int    sizeof_arg;
   bool has_this;
 };
 
@@ -754,6 +770,7 @@ parse_toplevel(
 
 struct operand_addrs {
   void * addrs[MAX_ACTION_NUMBERS];
+  enum arg_type types[MAX_ACTION_NUMBERS];
   size_t pos;
 };
 
@@ -791,7 +808,9 @@ get_value_operand_addrs (struct value *v, struct operand_addrs *rec)
           if (act->tag > ACT_FORMAT_STRING) {
             int n = act->tag - ACT_FORMAT_STRING;
             for (int i = 0; i < n; i++) {
-              rec->addrs[rec->pos] = act->fmt_args + i;
+              //@todo analyze native format string
+              // to find out the argument types
+              rec->addrs[rec->pos] = &act->fmt_args[i];
               rec->pos ++;
             }
           }
@@ -830,6 +849,10 @@ get_composite_value_operand_addrs (
   }
   if (cv->E.has_this) {
     rec->addrs[rec->pos] = &cv->E.arg;
+    rec->types[rec->pos] = ARG_PTR;
+    rec->pos ++;
+    rec->addrs[rec->pos] = &cv->E.sizeof_arg;
+    rec->types[rec->pos] = ARG_INT;
     rec->pos ++;
   }
 }
@@ -1134,9 +1157,16 @@ has_value (struct injection_info * info, struct value * v)
   if (NULL == info->E) return 1;
 
   void ** assigned_addrs = (void **)info->E->arg;
+  size_t sizeof_assigned_addres = (size_t) info->E->sizeof_arg;
   switch (v->tag) {
     case JV_ACTION:
-      return ntl_is_a_member(assigned_addrs, v->_.action.operand);
+    {
+      for (size_t i = 0; i < sizeof_assigned_addres/sizeof(void*); i++) {
+        if (assigned_addrs[i] == v->_.action.operand)
+          return 1;
+      }
+      return 0;
+    }
     case JV_COMPOSITE_VALUE:
     {
       struct composite_value * cv = v->_.cv;
@@ -1256,8 +1286,20 @@ json_injector_va_list(
   struct operand_addrs  rec = { 0 };
   get_composite_value_operand_addrs(&cv, &rec);
 
-  for (size_t i = 0; i < rec.pos; i++)
-    *((void **) rec.addrs[i]) = va_arg(ap, void *);
+  for (size_t i = 0; i < rec.pos; i++) {
+    switch(rec.types[i])
+    {
+      case ARG_PTR:
+        *((void **) rec.addrs[i]) = va_arg(ap, void *);
+        break;
+      case ARG_INT:
+        *((int *) rec.addrs[i]) = va_arg(ap, int);
+        break;
+      case ARG_DOUBLE:
+        *((double *) rec.addrs[i]) = va_arg(ap, double);
+        break;
+    }
+  }
 
   struct injection_info info = { 0 };
   char * mem = NULL;
@@ -1272,6 +1314,8 @@ json_injector_va_list(
     if (cv.E.arg == NULL)
       ERR("The argument of @ (used for checking the existence of a value) is NULL");
     info.E = &cv.E;
+    if(cv.E.sizeof_arg % sizeof(void *))
+      ERR("The sizeof @'s argument has to be a multiplication of sizeof(void *)\n");
   }
 
   char * output_buf;

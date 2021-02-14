@@ -52,8 +52,8 @@ int main () {
   fprintf(stderr, "%s\n", bigbuf);
 
   int b = 0;
-  void *A[2] = {&b, 0};
-  json_inject(bigbuf, sizeof(bigbuf), "[ b, b ] @", &i, &b, &A);
+  void *A[4] = {&b, 0, 0};
+  json_inject(bigbuf, sizeof(bigbuf), "[ b, b ] @", &i, &b, &A, sizeof(A));
   fprintf(stderr, "used @ %s\n", bigbuf);
 
   fprintf (stderr, "funptr %p\n", &foobar);
@@ -68,7 +68,8 @@ int main () {
               "(k2) : {  (1): b }"
               "(k3):f"
               "@",
-              NULL, &b, NULL, A);
+              NULL, &b, NULL,
+              A, sizeof(A));
 
   fprintf(stderr, "%s\n", bigbuf);
 
@@ -82,14 +83,14 @@ int main () {
   B[0] = t;
   json_inject(bigbuf, sizeof(bigbuf),
               injector1,
-              t, &b, &f, B);
+              t, &b, &f, B, sizeof(B));
   fprintf(stderr, "%s\n", bigbuf);
 
   // print out k1 and k3
   B[1] = &f;
   json_inject(bigbuf, sizeof(bigbuf),
               injector1,
-              t, &b, &f, B);
+              t, &b, &f, B, sizeof(B));
 
   fprintf(stderr, "%s\n", bigbuf);
 
@@ -98,7 +99,7 @@ int main () {
   B[2] = &b;
   json_inject(bigbuf, sizeof(bigbuf),
               injector1,
-              t, &b, &f, B);
+              t, &b, &f, B, sizeof(B));
 
   fprintf(stderr, "%s\n", bigbuf);
 
@@ -109,5 +110,63 @@ int main () {
 
   fprintf(stderr, "%s\n", p);
   free(p);
+
+  int delete_message_days = 100;
+  char * reason = "a bad reason";
+
+  void *A1[4] = {0};
+
+  if (delete_message_days > 0)
+    A1[0] = &delete_message_days;
+  if (strlen(reason))
+    A1[1] = reason;
+
+  int ret = json_inject(bigbuf, sizeof(bigbuf),
+                        "(delete_message_days):d"
+                        "(reason):s"
+                        "@",
+                        &delete_message_days,
+                        reason,
+                        A1, sizeof(A1));
+
+  fprintf(stderr, "%s\n", bigbuf);
+
+  memset(A1, 0, sizeof(A1));
+  delete_message_days = 0;
+  if (delete_message_days > 0)
+    A1[1] = &delete_message_days;
+
+  if (strlen(reason))
+    A1[0] = reason;
+
+  ret = json_inject(bigbuf, sizeof(bigbuf),
+                    "(delete_message_days):d"
+                    "(reason):s"
+                    "@",
+                    &delete_message_days,
+                    reason,
+                    A1, sizeof(A1));
+
+  fprintf(stderr, "%s\n", bigbuf);
+
+
+  memset(A1, 0, sizeof(A1));
+  delete_message_days = 1000;
+  if (delete_message_days > 0)
+    A1[0] = &delete_message_days;
+
+  reason = "";
+  if (strlen(reason))
+    A1[1] = reason;
+
+  ret = json_inject(bigbuf, sizeof(bigbuf),
+                    "(delete_message_days):d"
+                      "(reason):s"
+                      "@",
+                    &delete_message_days,
+                    reason,
+                    A1, sizeof(A1));
+
+  fprintf(stderr, "%s\n", bigbuf);
   return 0;
 }
