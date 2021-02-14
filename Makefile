@@ -84,9 +84,9 @@ $(OBJDIR)/%.cpp.o: %.cpp
 	$(CXX) $(CXXFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 
 #generic compilation
-%.exe : %.c
+%.exe : %.c $(LIBDISCORD)
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBS_LDFLAGS)
-%.exe: %.cpp
+%.exe: %.cpp $(LIBDISCORD)
 	$(CXX) $(CXXFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBS_LDFLAGS)
 
 $(LIBDISCORD) : $(OBJS)
