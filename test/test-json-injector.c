@@ -24,6 +24,9 @@ int main () {
   json_inject(bigbuf, sizeof(bigbuf), "[ null, |abc|]");
   fprintf(stderr, "%s\n", bigbuf);
 
+  json_inject(bigbuf, sizeof(bigbuf), "[ null, |abc%d|]", 10);
+  fprintf(stderr, "%s\n", bigbuf);
+
   json_inject(bigbuf, sizeof(bigbuf), "{ (k):null, (b):|abc|}");
   fprintf(stderr, "%s\n", bigbuf);
 
@@ -95,6 +98,15 @@ int main () {
   json_inject(bigbuf, sizeof(bigbuf),
               injector1,
               t, &b, &f, B);
+
+  fprintf(stderr, "%s\n", bigbuf);
+
+  injector1 = "(ref): |refs/heads/%s|"
+    "(sha): s";
+
+  json_inject(bigbuf, sizeof(bigbuf),
+              injector1,
+              "master", "sssssshhhhhaa");
 
   fprintf(stderr, "%s\n", bigbuf);
   return 0;

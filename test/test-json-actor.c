@@ -14,12 +14,13 @@ int main ()
 
   print_access_path_value(stderr, &kv);
 
-  t = "\" aaaaaa \"";
+  t = "\" aaaaaa\t \"";
   char * p = NULL;
-  if (is_primitive(&stack, t, strlen(t), &p)) {
+  enum jv_type type;
+  if (is_primitive(&stack, t, strlen(t), &p, &type)) {
     fprintf (stderr, "is primitive\n");
   }
-  t = "(k):| aaaa\"aa |";
+  t = "(k):| aaaa\r\naa\t |";
   parse_access_path_value(&stack, t, strlen(t), &kv, &kv.path);
   print_access_path_value(stderr, &kv);
 
