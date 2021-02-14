@@ -294,6 +294,7 @@ perform_request(
   
     CURLcode ecode;
     //perform the connection
+    //@todo shouldn't abort on error
     ecode = curl_easy_perform(ehandle);
     ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
