@@ -1,0 +1,14 @@
+{
+  "title": "TITLE OF EMBED",
+  "type": "rich",
+  "description": "DESCRIPTION OF EMBED",
+  "url": "https://discord.com/developers/docs/resources/channel#embed-object-embed-structure",
+  "timestamp": 1234,
+  "color": 3426654,
+  "footer": {},
+  "image": {},
+  "video": {},
+  "provider": {},
+  "author": {},
+  "fields": []
+}

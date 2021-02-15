@@ -232,6 +232,9 @@ match_path (char *buffer, jsmntok_t *t,
     if (t[i].type == JSMN_PRIMITIVE || (STRNEQ(buffer + t[i].start, "null", 4))) {
       es->is_applied = false;
     }
+    else if (t[i].type == JSMN_OBJECT || 0 == t[i].size) { // empty object
+      es->is_applied = false;
+    }
     else {
       extractor *e = es->funptr;
       int ret = (*e)(buffer + t[i].start, t[i].end - t[i].start, es->recipient);
