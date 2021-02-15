@@ -463,11 +463,11 @@ create(client *client, const uint64_t guild_id, const uint64_t user_id, int dele
     return;
   }
 
-  void *A[2]= {0}; // It's actually sized array.
+  void *A[2]= {0}; // pointer availability array.
   if (delete_message_days > 0)
-    A[0] = (void *) &delete_message_days;
+    A[0] = (void *)&delete_message_days;
   if (!IS_EMPTY_STRING(reason))
-    A[1] = (void *) reason;
+    A[1] = (void *)reason;
 
   char buf[MAX_PAYLOAD_LEN];
   int ret = json_inject(buf, sizeof(buf),
@@ -505,23 +505,11 @@ remove(client *client, const uint64_t guild_id, const uint64_t user_id, const ch
     return;
   }
 
-  char buf[MAX_PAYLOAD_LEN];
-#if 0
-  buf[0] = '\0';
-  char *str = buf;
-  str += sprintf(str, "{");
-
-  if(!IS_EMPTY_STRING(reason)) {
-    str += sprintf(str, "\"reason\":\"%s\"", reason);
-  }
-
-  str += sprintf(str, "}");
-#endif
-  void * A[1] = {0}; // pointer availability array.
-
+  void *A[1] = {0}; // pointer availability array.
   if(!IS_EMPTY_STRING(reason))
     A[0] = (void *)reason;
 
+  char buf[MAX_PAYLOAD_LEN];
   int ret = json_inject(buf, sizeof (buf),
                         "(reason):s"
                         "@",
