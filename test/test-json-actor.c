@@ -57,7 +57,7 @@ int main ()
   print_composite_value(stderr, &cv);
 
   memset(&cv, 0, sizeof(struct composite_value));
-  t = "[ L ]";
+  t = "[ # ]";
   parse_composite_value(&stack, t, strlen(t), &cv);
   fprintf (stderr, "\n");
   print_composite_value(stderr, &cv);

@@ -11,7 +11,7 @@ int main (int argc, char ** argv) {
   char * json = orka_load_whole_file(argv[1], &len);
 
   discord::guild::member::dati ** p;
-  discord::guild::member::json_list_load(json, len, &p);
+  discord::guild::member::from_json_list(json, len, &p);
   return 0;
 }
 
