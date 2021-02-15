@@ -484,8 +484,10 @@ struct dati {
   field::dati *fields[EMBED_MAX_FIELDS];
 };
 
-//@todo missing initialization functions
-
+void init_dati(void *p_embed);
+dati* alloc_dati();
+void cleanup_dati(void *p_embed);
+void free_dati(dati *embed);
 void from_json(char *str, size_t len, void *p_embed);
 int to_json(char *str, size_t len, void *p_embed);
 
@@ -501,6 +503,11 @@ struct dati {
 
 //@todo missing initialization functions
 
+void init_dati(void *p_thumbnail);
+dati* alloc_dati();
+void cleanup_dati(void *p_thumbnail);
+void free_dati(dati *thumbnail);
+void from_json(char *str, size_t len, void *p_thumbnail);
 int to_json(char *str, size_t len, void *p_thumbnail);
 
 } // namespace thumbnail
@@ -521,8 +528,11 @@ struct dati {
   char url[MAX_URL_LEN];
 };
 
-//@todo missing initialization functions
-
+void init_dati(void *p_provider);
+dati* alloc_dati();
+void cleanup_dati(void *p_provider);
+void free_dati(dati *provider);
+void from_json(char *str, size_t len, void *p_provider);
 int to_json(char *str, size_t len, void *p_provider);
 
 } // namespace provider
@@ -537,8 +547,11 @@ struct dati {
   char proxy_icon_url[MAX_URL_LEN];
 };
 
-//@todo missing initialization functions
-
+void init_dati(void *p_author);
+dati* alloc_dati();
+void cleanup_dati(void *p_author);
+void free_dati(dati *author);
+void from_json(char *str, size_t len, void *p_author);
 int to_json(char *str, size_t len, void *p_author);
 
 } // namespace author
@@ -552,8 +565,11 @@ struct dati {
   char proxy_icon_url[MAX_URL_LEN];
 };
 
-//@todo missing initialization functions
-
+void init_dati(void *p_footer);
+dati* alloc_dati();
+void cleanup_dati(void *p_footer);
+void free_dati(dati *footer);
+void from_json(char *str, size_t len, void *p_footer);
 int to_json(char *str, size_t len, void *p_footer);
 
 } // namespace footer
@@ -567,8 +583,12 @@ struct dati {
   bool Inline; //inline is a reserved keyword
 };
 
-//@todo missing initialization functions
-
+void init_dati(void *p_field);
+dati* alloc_dati();
+void cleanup_dati(void *p_field);
+void free_dati(dati *field);
+void from_json(char *str, size_t len, void *p_field);
+void from_json_list(char *str, size_t len, void *p_fields);
 int to_json(char *str, size_t len, void *p_field);
 int to_json_list(char *str, size_t len, void *p_fields);
 

@@ -514,6 +514,87 @@ from_json(char *str, size_t len, void *p_reference)
 
 namespace embed {
 
+void
+init_dati(void *p_embed) 
+{
+  dati *embed = (dati*)p_embed;
+  memset(embed, 0, sizeof(dati));
+  embed->footer = footer::alloc_dati();
+  embed->image = image::alloc_dati();
+  embed->thumbnail = thumbnail::alloc_dati();
+  embed->video = video::alloc_dati();
+  embed->provider = provider::alloc_dati();
+  embed->author = author::alloc_dati();
+}
+
+dati*
+alloc_dati()
+{
+  dati *embed = (dati*)malloc(sizeof(dati));
+  init_dati((void*)embed);
+  return embed;
+}
+
+void
+cleanup_dati(void *p_embed) 
+{
+  dati *embed = (dati*)p_embed;
+  footer::free_dati(embed->footer);
+  image::free_dati(embed->image);
+  thumbnail::free_dati(embed->thumbnail);
+  video::free_dati(embed->video);
+  provider::free_dati(embed->provider);
+  author::free_dati(embed->author);
+  if (embed->fields) {
+    ntl_free((void**)embed->fields, &field::cleanup_dati);
+  }
+
+  DS_NOTOP_PUTS("Embed object free'd"); 
+}
+
+void
+free_dati(dati *embed) 
+{
+  cleanup_dati((void*)embed);
+  free(embed);
+}
+
+void
+from_json(char *str, size_t len, void *p_embed)
+{
+  dati *embed = (dati*)p_embed;
+
+  json_scanf(str, len,
+     "[title]%s"
+     "[type]%s"
+     "[description]%s"
+     "[url]%s"
+     "[timestamp]%F"
+     "[color]%d"
+     "[footer]%F"
+     "[image]%F"
+     "[thumbnail]%F"
+     "[video]%F"
+     "[provider]%F"
+     "[author]%F"
+     "[fields]%F",
+     embed->title,
+     embed->type,
+     embed->description,
+     embed->url,
+     &orka_iso8601_to_unix_ms, &embed->timestamp,
+     &embed->color,
+     &footer::from_json, embed->footer,
+     &image::from_json, embed->image,
+     &thumbnail::from_json, embed->thumbnail,
+     &video::from_json, embed->video,
+     &provider::from_json, embed->provider,
+     &author::from_json, embed->author,
+     &field::from_json_list, &embed->fields);
+
+  DS_NOTOP_PUTS("Embed object loaded with API response");
+}
+
 int
 to_json(char *str, size_t len, void *p_embed)
 {
@@ -582,6 +663,51 @@ to_json(char *str, size_t len, void *p_embed)
 
 namespace thumbnail {
 
+void
+init_dati(void *p_thumbnail) 
+{
+  dati *thumbnail = (dati*)p_thumbnail;
+  memset(thumbnail, 0, sizeof(dati));
+}
+
+dati*
+alloc_dati()
+{
+  dati *thumbnail = (dati*)malloc(sizeof(dati));
+  init_dati((void*)thumbnail);
+  return thumbnail;
+}
+
+void
+cleanup_dati(void *p_thumbnail) {
+  DS_NOTOP_PUTS("Thumbnail/Video/Image object free'd"); 
+}
+
+void
+free_dati(dati *thumbnail) 
+{
+  cleanup_dati((void*)thumbnail);
+  free(thumbnail);
+}
+
+void
+from_json(char *str, size_t len, void *p_thumbnail)
+{
+  dati *thumbnail = (dati*)p_thumbnail;
+
+  json_scanf(str, len,
+     "[url]%s"
+     "[proxy_url]%s"
+     "[height]%d"
+     "[width]%d",
+     thumbnail->url,
+     thumbnail->proxy_url,
+     &thumbnail->height,
+     &thumbnail->width);
+
+  DS_NOTOP_PUTS("Thumbnail/Video/Image object loaded with API response");
+}
+
 int
 to_json(char *str, size_t len, void *p_thumbnail)
 {
@@ -616,6 +742,48 @@ to_json(char *str, size_t len, void *p_thumbnail)
 
 namespace provider {
 
+void
+init_dati(void *p_provider) 
+{
+  dati *provider = (dati*)p_provider;
+  memset(provider, 0, sizeof(dati));
+}
+
+dati*
+alloc_dati()
+{
+  dati *provider = (dati*)malloc(sizeof(dati));
+  init_dati((void*)provider);
+  return provider;
+}
+
+void
+cleanup_dati(void *p_provider) {
+  DS_NOTOP_PUTS("Provider object free'd"); 
+}
+
+void
+free_dati(dati *provider) 
+{
+  cleanup_dati((void*)provider);
+  free(provider);
+}
+
+void
+from_json(char *str, size_t len, void *p_provider)
+{
+  dati *provider = (dati*)p_provider;
+
+  json_scanf(str, len,
+     "[name]%s"
+     "[url]%s",
+     provider->name,
+     provider->url);
+
+  DS_NOTOP_PUTS("Provider object loaded with API response");
+}
+
+
 int
 to_json(char *str, size_t len, void *p_provider)
 {
@@ -641,6 +809,53 @@ to_json(char *str, size_t len, void *p_provider)
 } // namespace provider
 
 namespace author {
+
+void
+init_dati(void *p_author) 
+{
+  dati *author = (dati*)p_author;
+  memset(author, 0, sizeof(dati));
+}
+
+dati*
+alloc_dati()
+{
+  dati *author = (dati*)malloc(sizeof(dati));
+  init_dati((void*)author);
+  return author;
+}
+
+void
+cleanup_dati(void *p_author) 
+{
+  dati *author = (dati*)p_author;
+  DS_NOTOP_PUTS("Author object free'd"); 
+}
+
+void
+free_dati(dati *author) 
+{
+  cleanup_dati((void*)author);
+  free(author);
+}
+
+void
+from_json(char *str, size_t len, void *p_author)
+{
+  dati *author = (dati*)p_author;
+
+  json_scanf(str, len,
+     "[name]%s"
+     "[url]%s"
+     "[icon_url]%s"
+     "[proxy_icon_url]%s",
+     author->name,
+     author->url,
+     author->icon_url,
+     author->proxy_icon_url);
+
+  DS_NOTOP_PUTS("Author object loaded with API response");
+}
 
 int
 to_json(char *str, size_t len, void *p_author)
@@ -676,6 +891,51 @@ to_json(char *str, size_t len, void *p_author)
 
 namespace footer {
 
+void
+init_dati(void *p_footer) 
+{
+  dati *footer = (dati*)p_footer;
+  memset(footer, 0, sizeof(dati));
+}
+
+dati*
+alloc_dati()
+{
+  dati *footer = (dati*)malloc(sizeof(dati));
+  init_dati((void*)footer);
+  return footer;
+}
+
+void
+cleanup_dati(void *p_footer) 
+{
+  dati *footer = (dati*)p_footer;
+  DS_NOTOP_PUTS("Footer object free'd"); 
+}
+
+void
+free_dati(dati *footer) 
+{
+  cleanup_dati((void*)footer);
+  free(footer);
+}
+
+void
+from_json(char *str, size_t len, void *p_footer)
+{
+  dati *footer = (dati*)p_footer;
+
+  json_scanf(str, len,
+     "[text]%s"
+     "[icon_url]%s"
+     "[proxy_icon_url]%s",
+     footer->text,
+     footer->icon_url,
+     footer->proxy_icon_url);
+
+  DS_NOTOP_PUTS("Footer object loaded with API response");
+}
+
 int
 to_json(char *str, size_t len, void *p_footer)
 {
@@ -705,6 +965,63 @@ to_json(char *str, size_t len, void *p_footer)
 } // namespace footer
 
 namespace field {
+
+void
+init_dati(void *p_field) 
+{
+  dati *field = (dati*)p_field;
+  memset(field, 0, sizeof(dati));
+}
+
+dati*
+alloc_dati()
+{
+  dati *field = (dati*)malloc(sizeof(dati));
+  init_dati((void*)field);
+  return field;
+}
+
+void
+cleanup_dati(void *p_field) 
+{
+  dati *field = (dati*)p_field;
+  DS_NOTOP_PUTS("Field object free'd"); 
+}
+
+void
+free_dati(dati *field) 
+{
+  cleanup_dati((void*)field);
+  free(field);
+}
+
+void
+from_json(char *str, size_t len, void *p_field)
+{
+  dati *field = (dati*)p_field;
+
+  json_scanf(str, len,
+     "[name]%s"
+     "[value]%s"
+     "[inline]%b",
+     field->name,
+     field->value,
+     &field->Inline);
+
+  DS_NOTOP_PUTS("Field object loaded with API response");
+}
+
+void
+from_json_list(char *str, size_t len, void *p_fields)
+{
+  struct ntl_deserializer deserializer = {
+    .elem_size = sizeof(dati),
+    .init_elem = &init_dati,
+    .elem_from_buf = &from_json,
+    .ntl_recipient_p = (void***)p_fields
+  };
+  orka_str_to_ntl(str, len, &deserializer);
+}
 
 int
 to_json(char *str, size_t len, void *p_field)
