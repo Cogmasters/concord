@@ -16,7 +16,7 @@ int main ()
 
   t = "\" aaaaaa\t \"";
   char * p = NULL;
-  enum jv_type type;
+  enum value_type type;
   if (is_primitive(&stack, t, strlen(t), &p, &type)) {
     fprintf (stderr, "is primitive\n");
   }

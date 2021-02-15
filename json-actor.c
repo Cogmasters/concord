@@ -181,15 +181,15 @@ print_action (FILE * fp, struct action * v)
     fprintf(fp, "funptr(%p)\n", v->_.user_def);
 }
 
-enum jv_type {
-  JV_COMPOSITE_VALUE = 1,
-  JV_ACTION,
-  JV_PRIMITIVE = 10,
-  JV_STRING_LITERAL,
+enum value_type {
+  V_COMPOSITE_VALUE = 1,
+  V_ACTION,
+  V_PRIMITIVE = 10,
+  V_STRING_LITERAL,
 };
 
 struct value {
-  enum jv_type tag;
+  enum value_type tag;
   union {
     struct sized_buffer primitve;
     struct composite_value * cv;
@@ -206,13 +206,13 @@ print_value (FILE * fp, struct value * v) {
 
   switch (v->tag)
   {
-    case JV_COMPOSITE_VALUE:
+    case V_COMPOSITE_VALUE:
       print_composite_value(fp, v->_.cv);
       break;
-    case JV_ACTION:
+    case V_ACTION:
       print_action (fp, &v->_.action);
       break;
-    case JV_STRING_LITERAL:
+    case V_STRING_LITERAL:
     {
       size_t len;
       char * p = json_escape_string (&len, v->_.primitve.start,
@@ -249,13 +249,8 @@ struct sized_value {
   size_t size;
 };
 
-enum cv_type {
-  CV_ARRAY = 1,
-  CV_OBJECT
-};
-
 struct composite_value {
-  enum cv_type tag;
+  int is_object; // otherwise, it is an array
   union {
     struct sized_value elements;
     struct sized_access_path_value pairs;
@@ -266,27 +261,31 @@ struct composite_value {
 static void
 print_composite_value (FILE * fp, struct composite_value * cv)
 {
-  if (cv->tag == CV_ARRAY) {
-    for (size_t i = 0; i < cv->_.elements.size; i++)
-      print_value(fp, cv->_.elements.pos+i);
+  if (cv->is_object) {
+    for (size_t i = 0; i < cv->_.pairs.size; i++)
+      print_access_path_value(fp, cv->_.pairs.pos + i);
   }
   else {
-    for (size_t i = 0; i < cv->_.pairs.size; i++)
-      print_access_path_value(fp, cv->_.pairs.pos+i);
+    for (size_t i = 0; i < cv->_.elements.size; i++)
+      print_value(fp, cv->_.elements.pos + i);
   }
+
   if (cv->E.has_this) {
     fprintf(fp, "@");
   }
 }
 
+/*
+ * we only count how many format specifiers are used
+ * @todo analyze what format specifiers are used.
+ */
 static int has_format_string (char * pos, char * end_pos)
 {
   int count = 0;
   while (pos < end_pos) {
     if ('%' == *pos) {
-      if (pos+1 == end_pos) {
-        ERR("dangling format % string is not allowed\n", pos);
-      }
+      if (pos+1 == end_pos)
+        ERR("dangling format %s string is not allowed\n", pos);
       pos ++;
       switch (*pos)
       {
@@ -316,7 +315,7 @@ static int is_primitive (
   char * pos,
   size_t size,
   char ** next_pos_p,
-  enum jv_type * type)
+  enum value_type * type)
 {
   char * const start_pos = pos, * const end_pos = pos + size;
   unsigned char c;
@@ -324,7 +323,7 @@ static int is_primitive (
 
   c = * pos;
 
-  *type = JV_PRIMITIVE;
+  *type = V_PRIMITIVE;
   switch (c)
   {
     case 't': // true
@@ -349,7 +348,7 @@ static int is_primitive (
       }
       break;
     case '"': // a string literal
-      *type = JV_STRING_LITERAL;
+      *type = V_STRING_LITERAL;
       pos ++;
       while (pos < end_pos) {
         c = *pos; pos ++;
@@ -358,7 +357,7 @@ static int is_primitive (
       }
       break;
     case '|': // a proprietary string literal
-      *type = JV_STRING_LITERAL;
+      *type = V_STRING_LITERAL;
       pos ++;
       while (pos < end_pos) {
         c = *pos; pos ++;
@@ -430,13 +429,13 @@ parse_value(
   char ** next_pos_p)
 {
   char * const end_pos = pos + size, * next_pos;
-  enum jv_type jv_type;
+  enum value_type v_type;
 
-  if (is_primitive(stack, pos, size, &next_pos, &jv_type)) {
-    p->tag = jv_type;
+  if (is_primitive(stack, pos, size, &next_pos, &v_type)) {
+    p->tag = v_type;
     p->_.primitve.start = pos;
     p->_.primitve.size = next_pos - pos;
-    if (jv_type == JV_STRING_LITERAL) {
+    if (v_type == V_STRING_LITERAL) {
       // skip the two delimiter
       p->_.primitve.start ++;
       p->_.primitve.size -= 2;
@@ -447,7 +446,7 @@ parse_value(
         size_t s = p->_.primitve.size;
         p->_.action._.fmt.start = x;
         p->_.action._.fmt.size = s;
-        p->tag = JV_ACTION;
+        p->tag = V_ACTION;
         p->_.action.tag = ACT_FORMAT_STRING + n;
       }
     }
@@ -455,7 +454,7 @@ parse_value(
     return 1;
   }
   struct action * act = &p->_.action;
-  p->tag = JV_ACTION;
+  p->tag = V_ACTION;
   int has_size_specifier = 0;
 
   if (parse_size_specifier(pos, end_pos - pos,
@@ -613,7 +612,7 @@ parse_access_path_value(
       if ('[' == *pos || '{' == *pos) {
         struct composite_value * cv = calloc(1, sizeof(struct composite_value));
         av->value._.cv = cv;
-        av->value.tag = JV_COMPOSITE_VALUE;
+        av->value.tag = V_COMPOSITE_VALUE;
         pos = parse_composite_value(stack, pos, end_pos - pos, cv);
       }
       else if (parse_value(stack, pos, end_pos - pos, &av->value, &next_pos))
@@ -712,7 +711,7 @@ parse_composite_value(
   switch(*pos)
   {
     case '{':
-      cv->tag = CV_OBJECT;
+      cv->is_object = 1;
       pos++;
       PUSH(stack, '}');
       pos = parse_access_path_value_list(stack, pos, end_pos - pos, &cv->_.pairs);
@@ -722,7 +721,7 @@ parse_composite_value(
       pos++;
       break;
     case '[':
-      cv->tag = CV_ARRAY;
+      cv->is_object = 0;
       pos++;
       PUSH(stack, ']');
       pos = parse_value_list(stack, pos, end_pos - pos, &cv->_.elements);
@@ -751,7 +750,7 @@ parse_toplevel(
       pos = parse_composite_value(stack, pos, end_pos - pos, cv);
     }
     else if ('(' == *pos || '|' == *pos) {
-      cv->tag = CV_OBJECT;
+      cv->is_object = 1;
       pos = parse_access_path_value_list(stack, pos, end_pos - pos, &cv->_.pairs);
     }
     SKIP_SPACES(pos, end_pos);
@@ -785,7 +784,7 @@ get_value_operand_addrs (struct value *v, struct operand_addrs *rec)
   struct action * act;
   switch (v->tag)
   {
-    case JV_ACTION:
+    case V_ACTION:
       act = &v->_.action;
       switch (act->tag)
       {
@@ -817,7 +816,7 @@ get_value_operand_addrs (struct value *v, struct operand_addrs *rec)
           break;
       }
       break;
-    case JV_COMPOSITE_VALUE:
+    case V_COMPOSITE_VALUE:
       get_composite_value_operand_addrs(v->_.cv, rec);
       break;
     default:
@@ -832,7 +831,7 @@ get_composite_value_operand_addrs (
 {
   struct access_path_value *apv;
   struct value *v;
-  if(CV_OBJECT == cv->tag)
+  if(cv->is_object)
     for (size_t i = 0; i < cv->_.pairs.size; i++) {
       apv = cv->_.pairs.pos + i;
       get_value_operand_addrs(&apv->value, rec);
@@ -857,7 +856,7 @@ static void free_composite_value (struct composite_value *cv);
 
 static void free_value (struct value * v)
 {
-  if(JV_COMPOSITE_VALUE == v->tag) {
+  if(V_COMPOSITE_VALUE == v->tag) {
     free_composite_value(v->_.cv);
     free(v->_.cv);
   }
@@ -882,7 +881,7 @@ static void  free_composite_value (struct composite_value *cv)
 {
   struct access_path_value *apv;
   struct value *v;
-  if(CV_OBJECT == cv->tag) {
+  if(cv->is_object) {
     for (size_t i = 0; i < cv->_.pairs.size; i++) {
       apv = cv->_.pairs.pos + i;
       free_access_path_value(apv);
@@ -894,7 +893,7 @@ static void  free_composite_value (struct composite_value *cv)
       v = cv->_.elements.pos + i;
       free_value(v);
     }
-    free(cv->_.pairs.pos);
+    free(cv->_.elements.pos);
   }
 }
 
@@ -1005,6 +1004,10 @@ inject_builtin (char * pos, size_t size, struct injection_info * info)
 
 static int inject_composite_value (char *, size_t, struct injection_info * );
 
+/*
+ * @todo the injection need to detect argument size
+ * the current implementation won't work for double
+ */
 static int
 inject_format_string (
   char * pos,
@@ -1042,7 +1045,8 @@ inject_format_string (
                args[4]._, args[5]._, args[6]._);
       break;
     default:
-      ERR("format string '%s' has more than 8 arguments\n", format, n);
+      ERR("format string '%s' has %d, which is more than 8 arguments\n",
+          format, n);
   }
   //@todo we should escape p
   int ret = snprintf(pos, size, "\"%s\"", p);
@@ -1056,7 +1060,7 @@ inject_value (char * pos, size_t size, struct injection_info * info)
   struct value * v = (struct value *)info->data;
   switch (v->tag)
   {
-    case JV_ACTION:
+    case V_ACTION:
     {
       struct action *a = &v->_.action;
       switch (a->tag)
@@ -1099,14 +1103,14 @@ inject_value (char * pos, size_t size, struct injection_info * info)
       }
       ERR("should not be here");
     }
-    case JV_COMPOSITE_VALUE:
+    case V_COMPOSITE_VALUE:
       info->data = v->_.cv;
       return inject_composite_value(pos, size, info);
-    case JV_PRIMITIVE:
+    case V_PRIMITIVE:
       return xprintf(pos, size, info, "%.*s",
                      v->_.primitve.size,
                      v->_.primitve.start);
-    case JV_STRING_LITERAL:
+    case V_STRING_LITERAL:
     {
       size_t len;
       char * p = json_escape_string (&len, v->_.primitve.start,
@@ -1149,19 +1153,17 @@ has_value (struct injection_info * info, struct value * v)
   void ** assigned_addrs = (void **)info->E->arg;
   size_t sizeof_assigned_addres = (size_t) info->E->sizeof_arg;
   switch (v->tag) {
-    case JV_ACTION:
-    {
+    case V_ACTION:
       for (size_t i = 0; i < sizeof_assigned_addres/sizeof(void*); i++) {
         if (assigned_addrs[i] == v->_.action.operand)
           return 1;
       }
       return 0;
-    }
-    case JV_COMPOSITE_VALUE:
+    case V_COMPOSITE_VALUE:
     {
       struct composite_value * cv = v->_.cv;
       int has_one = 0;
-      if (CV_OBJECT == cv->tag) {
+      if (cv->is_object) {
         for (size_t i = 0; i < cv->_.pairs.size; i++) {
           struct access_path_value *p = cv->_.pairs.pos + i;
           if (has_value(info, &p->value)) {
@@ -1193,7 +1195,7 @@ inject_composite_value (char * pos, size_t size, struct injection_info * info)
   size_t used_bytes = 0, count;
   struct composite_value * cv = (struct composite_value *) info->data;
 
-  if (CV_OBJECT == cv->tag) {
+  if (cv->is_object) {
     used_bytes += xprintf(pos, end_pos - pos, info, "{");
     pos = info->next_pos;
 
