@@ -60,6 +60,7 @@ namespace channel {
 namespace emoji { struct dati; }
 namespace guild {
   struct dati; 
+  namespace default_message_notification_level { typedef int code; }
   namespace explicit_content_filter_level { typedef int code; }
   namespace mfa_level { typedef int code; }
   namespace verification_level { typedef int code; }

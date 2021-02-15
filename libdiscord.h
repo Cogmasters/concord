@@ -173,7 +173,7 @@ struct dati {
    int mfa_level;
    int verification_level;
    int explicit_content_filter;
-   int default_message_notifications;
+   guild::default_message_notification_level::code default_message_notifications;
    char vanity_url_code[MAX_URL_LEN];
   //@todo missing add
   //@todo missing remove
@@ -680,7 +680,7 @@ struct dati {
   bool widget_enabled;
   uint64_t widget_channel_id;
   verification_level::code verification_level;
-  int default_message_notifications;
+  guild::default_message_notification_level::code default_message_notifications;
   explicit_content_filter_level::code explicit_content_filter;
   //@todo missing roles;
   emoji::dati **emojis; //@todo add to from_json
