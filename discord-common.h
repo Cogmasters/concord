@@ -3,6 +3,7 @@
 
 #include <curl/curl.h>
 #include "json-scanf.h"
+#include "json-actor.h"
 
 #include "http-common.h"
 
@@ -279,7 +280,7 @@ struct dati {
   int event_count; //count elements to avoid reaching 120/60sec limit
 };
 
-void json_load(char *str, size_t len, void *p_session);
+void from_json(char *str, size_t len, void *p_session);
 void get(client *client, dati *p_session);
 void get_bot(client *client, dati *p_session);
 

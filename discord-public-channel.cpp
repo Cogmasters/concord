@@ -9,7 +9,7 @@ namespace discord {
 namespace channel {
 
 void
-json_load(char *str, size_t len, void *p_channel)
+from_json(char *str, size_t len, void *p_channel)
 {
   dati *channel = (dati*)p_channel;
 
@@ -43,24 +43,24 @@ json_load(char *str, size_t len, void *p_channel)
      &channel->bitrate,
      &channel->user_limit,
      &channel->rate_limit_per_user,
-     &user::json_list_load, &channel->recipients,
+     &user::from_json_list, &channel->recipients,
      channel->icon,
      &orka_strtoull, &channel->owner_id,
      &orka_strtoull, &channel->application_id,
      &orka_strtoull, &channel->parent_id,
      &orka_iso8601_to_unix_ms, &channel->last_pin_timestamp,
-     &message::json_list_load, &channel->messages);
+     &message::from_json_list, &channel->messages);
 
   DS_NOTOP_PUTS("Channel object loaded with API response");
 }
 
 void
-json_list_load(char *str, size_t len, void *p_channels)
+from_json_list(char *str, size_t len, void *p_channels)
 {
   struct ntl_deserializer deserializer = {
     .elem_size = sizeof(dati),
     .init_elem = &init_dati,
-    .elem_from_buf = &json_load,
+    .elem_from_buf = &from_json,
     .ntl_recipient_p = (void***)p_channels
   };
   orka_str_to_ntl(str, len, &deserializer);
@@ -105,7 +105,7 @@ get(client *client, const uint64_t channel_id, dati *p_channel)
     return;
   }
 
-  struct resp_handle resp_handle = {&json_load, (void*)p_channel};
+  struct resp_handle resp_handle = {&from_json, (void*)p_channel};
 
   user_agent::run(
     &client->ua,
@@ -162,7 +162,7 @@ unpin_message(client *client, const uint64_t channel_id, const uint64_t message_
 namespace message {
 
 void
-json_load(char *str, size_t len, void *p_message)
+from_json(char *str, size_t len, void *p_message)
 {
   dati *message = (dati*)p_message;
 
@@ -198,8 +198,8 @@ json_load(char *str, size_t len, void *p_message)
       &orka_strtoull, &message->id,
       &orka_strtoull, &message->channel_id,
       &orka_strtoull, &message->guild_id,
-      &user::json_load, message->author,
-      &guild::member::json_load, message->member,
+      &user::from_json, message->author,
+      &guild::member::from_json, message->member,
       &message->content,
       &orka_iso8601_to_unix_ms, &message->timestamp,
       &orka_iso8601_to_unix_ms, &message->edited_timestamp,
@@ -210,7 +210,7 @@ json_load(char *str, size_t len, void *p_message)
       &orka_strtoull, &message->webhook_id,
       &message->type,
       &message->flags,
-      &json_load, message->referenced_message);
+      &from_json, message->referenced_message);
 
   if(!message->referenced_message->id) {
     free_dati(message->referenced_message);
@@ -221,12 +221,12 @@ json_load(char *str, size_t len, void *p_message)
 }
 
 void
-json_list_load(char *str, size_t len, void *p_messages)
+from_json_list(char *str, size_t len, void *p_messages)
 {
   struct ntl_deserializer deserializer = {
     .elem_size = sizeof(dati),
     .init_elem = &init_dati,
-    .elem_from_buf = &json_load,
+    .elem_from_buf = &from_json,
     .ntl_recipient_p = (void***)p_messages
   };
   orka_str_to_ntl(str, len, &deserializer);
@@ -320,7 +320,7 @@ run(client *client, const uint64_t channel_id, params *params)
   dati **new_messages = NULL;
 
   struct resp_handle resp_handle = 
-    {&json_list_load, (void*)&new_messages};
+    {&from_json_list, (void*)&new_messages};
 
   user_agent::run( 
     &client->ua,
@@ -346,7 +346,7 @@ run(client *client, const uint64_t channel_id, params *params, dati *p_message)
   }
 
   struct resp_handle resp_handle = {
-    .ok_cb = p_message ? json_load : NULL,
+    .ok_cb = p_message ? from_json : NULL,
     .ok_obj = p_message,
   };
 
@@ -362,9 +362,42 @@ run(client *client, const uint64_t channel_id, params *params, dati *p_message)
       return;
     }
 
+    void *A[6] = {0}; // pointer availability array
+    if (params->content)
+      A[0] = (void *)params->content;
+    if (params->nonce)
+      A[1] = (void *)params->nonce;
+    if (true == params->tts)
+      A[2] = (void *)&params->tts;
+    if (params->embed)
+      A[3] = (void *)params->embed;
+    /*
+    if (params->allowed_mentions)
+      A[4] = (void *)params->allowed_mentions;
+    if (params->message_reference)
+      A[5] = (void *)params->message_reference;
+      */
+
     char payload[MAX_PAYLOAD_LEN];
-    json_snprintf(payload, MAX_PAYLOAD_LEN,
-        "{|content|:|%s|}", params->content);
+    json_inject(payload, sizeof(payload),
+        "(content):s"
+        "(nonce):s"
+        "(tts):b"
+        "(embed):F"
+        /*
+        "(allowed_mentions):F" //@todo
+        "(message_reference):F" //@todo
+        */
+        "@",
+        params->content,
+        params->nonce,
+        &params->tts,
+        &embed::to_json, params->embed,
+        /*
+        params->allowed_mentions,
+        params->message_reference,
+        */
+        A, sizeof(A));
 
     struct sized_buffer req_body = {payload, strlen(payload)};
 
@@ -462,7 +495,7 @@ free_dati(dati *reference) {
 }
 
 void
-json_load(char *str, size_t len, void *p_reference)
+from_json(char *str, size_t len, void *p_reference)
 {
   dati *reference = (dati*)p_reference;
 
@@ -478,6 +511,246 @@ json_load(char *str, size_t len, void *p_reference)
 }
 
 } // namespace message
+
+namespace embed {
+
+int
+to_json(char *str, size_t len, void *p_embed)
+{
+  if (NULL == p_embed) return snprintf(str, len, "{}");
+
+  dati *embed = (dati*)p_embed;
+  void *A[13] = {0}; // pointer availability array
+  if (*embed->title)
+    A[0] = (void *)embed->title;
+  if (*embed->type)
+    A[1] = (void *)embed->type;
+  if (*embed->description)
+    A[2] = (void *)embed->description;
+  if (*embed->url)
+    A[3] = (void *)embed->url;
+  if (embed->timestamp)
+    A[5] = (void *)&embed->timestamp;
+  if (embed->color)
+    A[5] = (void *)&embed->color;
+  if (embed->footer)
+    A[6] = (void *)embed->footer;
+  if (embed->image)
+    A[7] = (void *)embed->image;
+  if (embed->thumbnail)
+    A[8] = (void *)embed->thumbnail;
+  if (embed->video)
+    A[9] = (void *)embed->video;
+  if (embed->provider)
+    A[10] = (void *)embed->provider;
+  if (embed->author)
+    A[11] = (void *)embed->author;
+  if (*embed->fields)
+    A[12] = (void *)embed->fields;
+
+  int ret = json_inject(str, len, 
+                        "(title):s"
+                        "(type):s"
+                        "(description):s"
+                        "(url):s"
+                        //"(timestamp):s" @todo
+                        "(color):d"
+                        "(footer):F"
+                        "(image):F"
+                        "(thumbnail):F"
+                        "(video):F"
+                        "(provider):F"
+                        "(author):F"
+                        "(fields):F"
+                        "@",
+                        embed->title,
+                        embed->type,
+                        embed->description,
+                        embed->url,
+                        //embed->timestamp, @todo
+                        embed->color,
+                        &footer::to_json, embed->footer,
+                        &image::to_json, embed->image,
+                        &thumbnail::to_json, embed->thumbnail,
+                        &video::to_json, embed->video,
+                        &provider::to_json, embed->provider,
+                        &author::to_json, embed->author,
+                        &field::to_json_list, &embed->fields,
+                        A, sizeof(A));
+  return ret;
+}
+
+namespace thumbnail {
+
+int
+to_json(char *str, size_t len, void *p_thumbnail)
+{
+  if (NULL == p_thumbnail) return snprintf(str, len, "{}");
+
+  dati *thumbnail = (dati*)p_thumbnail;
+  void *A[4] = {0}; // pointer availability array
+  if (*thumbnail->url)
+    A[0] = (void *)thumbnail->url;
+  if (*thumbnail->proxy_url)
+    A[1] = (void *)thumbnail->proxy_url;
+  if (thumbnail->height)
+    A[2] = (void *)&thumbnail->height;
+  if (thumbnail->width)
+    A[3] = (void *)&thumbnail->width;
+
+  int ret = json_inject(str, len, 
+                        "(url):s"
+                        "(proxy_url):s"
+                        "(height):d"
+                        "(width):d"
+                        "@",
+                        thumbnail->url,
+                        thumbnail->proxy_url,
+                        &thumbnail->height,
+                        &thumbnail->width,
+                        A, sizeof(A));
+  return ret;
+}
+
+} // namespace thumbnail
+
+namespace provider {
+
+int
+to_json(char *str, size_t len, void *p_provider)
+{
+  if (NULL == p_provider) return snprintf(str, len, "{}");
+
+  dati *provider = (dati*)p_provider;
+  void *A[2] = {0}; // pointer availability array
+  if (*provider->name)
+    A[0] = (void *)provider->name;
+  if (*provider->url)
+    A[1] = (void *)provider->url;
+
+  int ret = json_inject(str, len, 
+                        "(name):s"
+                        "(url):s"
+                        "@",
+                        provider->name,
+                        provider->url,
+                        A, sizeof(A));
+  return ret;
+}
+
+} // namespace provider
+
+namespace author {
+
+int
+to_json(char *str, size_t len, void *p_author)
+{
+  if (NULL == p_author) return snprintf(str, len, "{}");
+
+  dati *author = (dati*)p_author;
+  void *A[4] = {0}; // pointer availability array
+  if (*author->name)
+    A[0] = (void *)author->name;
+  if (*author->url)
+    A[1] = (void *)author->url;
+  if (*author->icon_url)
+    A[2] = (void *)author->icon_url;
+  if (*author->proxy_icon_url)
+    A[3] = (void *)author->proxy_icon_url;
+
+  int ret = json_inject(str, len, 
+                        "(name):s"
+                        "(url):s"
+                        "(icon_url):s"
+                        "(proxy_icon_url):s"
+                        "@",
+                        author->name,
+                        author->url,
+                        author->icon_url,
+                        author->proxy_icon_url,
+                        A, sizeof(A));
+  return ret;
+}
+
+} // namespace author
+
+namespace footer {
+
+int
+to_json(char *str, size_t len, void *p_footer)
+{
+  if (NULL == p_footer) return snprintf(str, len, "{}");
+
+  dati *footer = (dati*)p_footer;
+  void *A[3] = {0}; // pointer availability array
+  if (*footer->text)
+    A[0] = (void *)footer->text;
+  if (*footer->icon_url)
+    A[1] = (void *)footer->icon_url;
+  if (*footer->proxy_icon_url)
+    A[2] = (void *)footer->proxy_icon_url;
+
+  int ret = json_inject(str, len, 
+                        "(text):s"
+                        "(icon_url):s"
+                        "(proxy_icon_url):s"
+                        "@",
+                        footer->text,
+                        footer->icon_url,
+                        footer->proxy_icon_url,
+                        A, sizeof(A));
+  return ret;
+}
+
+} // namespace footer
+
+namespace field {
+
+int
+to_json(char *str, size_t len, void *p_field)
+{
+  if (NULL == p_field) return snprintf(str, len, "{}");
+
+  dati *field = (dati*)p_field;
+  void *A[3] = {0}; // pointer availability array
+  if (*field->name)
+    A[0] = (void *)field->name;
+  if (*field->value)
+    A[1] = (void *)field->value;
+
+  A[2] = (void *)&field->Inline;
+
+  int ret = json_inject(str, len, 
+                        "(name):s"
+                        "(value):s"
+                        "(inline):b"
+                        "@",
+                        field->name,
+                        field->value,
+                        &field->Inline,
+                        A, sizeof(A));
+  return ret;
+}
+
+/* @todo this needs to be tested */
+int
+to_json_list(char *str, size_t len, void *p_field)
+{
+  dati **fields = *(dati ***)p_field;
+  size_t size = ntl_length((void**)fields);
+  if (0 == size) return snprintf(str, len, "[]");
+
+  char fmt[256] = "["; 
+  for (size_t i=0; i < size; ++i) {
+    strncat(fmt, "F ", sizeof(fmt)-1);
+  }
+  strncat(fmt, "]", sizeof(fmt)-1);
+  ERR("%s", fmt);
+}
+
+} // namespace field
+
+} // namespace embed
 
 } // namespace channel
 } // namespace discord

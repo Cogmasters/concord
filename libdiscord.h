@@ -228,7 +228,7 @@ struct dati {
   types::code type;
   uint64_t guild_id;
   int position;
-  overwrite::dati **permission_overwrites; //@todo add to json_load
+  overwrite::dati **permission_overwrites; //@todo add to from_json
   char name[MAX_NAME_LEN];
   char topic[MAX_TOPIC_LEN];
   bool nsfw;
@@ -250,8 +250,8 @@ dati* alloc_dati();
 void cleanup_dati(void *p_channel);
 void free_dati(dati *channel);
 void free_list(dati **channels);
-void json_load(char *str, size_t len, void *p_channel);
-void json_list_load(char *str, size_t len, void *p_channels);
+void from_json(char *str, size_t len, void *p_channel);
+void from_json_list(char *str, size_t len, void *p_channels);
 
 /* CHANNEL TYPES
 https://discord.com/developers/docs/resources/channel#channel-object-channel-types */
@@ -283,19 +283,19 @@ struct dati {
   bool mention_everyone;
   user::dati **mentions;
   //@todo missing mention roles;
-  mention::dati **mention_channels; //@todo add to json_load
-  attachment::dati **attachments; //@todo add to json_load
-  embed::dati **embeds; //@todo add to json_load
-  reaction::dati **reactions; //@todo add to json_load
+  mention::dati **mention_channels; //@todo add to from_json
+  attachment::dati **attachments; //@todo add to from_json
+  embed::dati **embeds; //@todo add to from_json
+  reaction::dati **reactions; //@todo add to from_json
   char *nonce;
   bool pinned;
   uint64_t webhook_id;
   types::code type;
-  activity::dati *activity; //@todo add to json_load
-  application::dati **application; //@todo add to json_load
-  reference::dati *message_reference; //@todo add to json_load
+  activity::dati *activity; //@todo add to from_json
+  application::dati **application; //@todo add to from_json
+  reference::dati *message_reference; //@todo add to from_json
   flags::code flags;
-  sticker::dati **stickers; //@todo add to json_load
+  sticker::dati **stickers; //@todo add to from_json
   dati *referenced_message;
 };
 
@@ -304,8 +304,8 @@ dati* alloc_dati();
 void cleanup_dati(void *p_message);
 void free_dati(dati *message);
 void free_list(dati **message);
-void json_load(char *str, size_t len, void *p_message);
-void json_list_load(char *str, size_t len, void *p_messages);
+void from_json(char *str, size_t len, void *p_message);
+void from_json_list(char *str, size_t len, void *p_messages);
 
 /* MESSAGE TYPES
 https://discord.com/developers/docs/resources/channel#message-object-message-types */
@@ -371,7 +371,7 @@ struct dati {
 void init_dati(void *p_reference);
 dati* alloc_dati();
 void free_dati(dati *reference);
-void json_load(char *str, size_t len, void *p_reference);
+void from_json(char *str, size_t len, void *p_reference);
 
 } // namespace reference
 
@@ -486,6 +486,9 @@ struct dati {
 
 //@todo missing initialization functions
 
+void from_json(char *str, size_t len, void *p_embed);
+int to_json(char *str, size_t len, void *p_embed);
+
 /* EMBED THUMBNAIL STRUCTURE
 https://discord.com/developers/docs/resources/channel#embed-object-embed-thumbnail-structure */
 namespace thumbnail {
@@ -497,6 +500,8 @@ struct dati {
 };
 
 //@todo missing initialization functions
+
+int to_json(char *str, size_t len, void *p_thumbnail);
 
 } // namespace thumbnail
 
@@ -518,6 +523,8 @@ struct dati {
 
 //@todo missing initialization functions
 
+int to_json(char *str, size_t len, void *p_provider);
+
 } // namespace provider
 
 /* EMBED AUTHOR STRUCTURE
@@ -532,6 +539,8 @@ struct dati {
 
 //@todo missing initialization functions
 
+int to_json(char *str, size_t len, void *p_author);
+
 } // namespace author
 
 /* EMBED FOOTER STRUCTURE
@@ -545,6 +554,8 @@ struct dati {
 
 //@todo missing initialization functions
 
+int to_json(char *str, size_t len, void *p_footer);
+
 } // namespace footer
 
 /* EMBED FIELD STRUCTURE
@@ -557,6 +568,9 @@ struct dati {
 };
 
 //@todo missing initialization functions
+
+int to_json(char *str, size_t len, void *p_field);
+int to_json_list(char *str, size_t len, void *p_fields);
 
 } // namespace field
 
@@ -649,8 +663,8 @@ struct dati {
   int default_message_notifications;
   int explicit_content_filter;
   //@todo missing roles;
-  emoji::dati **emojis; //@todo add to json_load
-  char **features; //@todo add to json_load
+  emoji::dati **emojis; //@todo add to from_json
+  char **features; //@todo add to from_json
   int mfa_level;
   uint64_t application_id;
   uint64_t system_channel_id;
@@ -662,7 +676,7 @@ struct dati {
   int member_count;
   //@todo missing voice_states;
   member::dati **members;
-  channel::dati **channels; //@todo add to json_load
+  channel::dati **channels; //@todo add to from_json
   //@todo missing presences;
   int max_presences;
   int max_members;
@@ -684,8 +698,8 @@ dati* alloc_dati();
 void cleanup_dati(void *p_guild);
 void free_dati(dati *guild);
 void free_list(dati **guild);
-void json_load(char *str, size_t len, void *p_guild);
-void json_list_load(char *str, size_t len, void *p_guilds);
+void from_json(char *str, size_t len, void *p_guild);
+void from_json_list(char *str, size_t len, void *p_guilds);
 
 /* DEFAULT MESSAGE NOTIFICATION LEVEL
 https://discord.com/developers/docs/resources/guild#guild-object-default-message-notification-level */
@@ -816,7 +830,7 @@ namespace member {
 struct dati {
   user::dati *user;
   char nick[MAX_NAME_LEN];
-  uint64_t **roles; //@todo add to json_load
+  uint64_t **roles; //@todo add to from_json
   uint64_t joined_at;
   uint64_t premium_since;
   bool deaf;
@@ -830,8 +844,8 @@ dati* alloc_dati();
 void cleanup_dati(void *p_member);
 void free_dati(dati *member);
 void free_list(dati **members);
-void json_load(char *str, size_t len, void *p_member);
-void json_list_load(char *str, size_t len, void *p_members);
+void from_json(char *str, size_t len, void *p_member);
+void from_json_list(char *str, size_t len, void *p_members);
 
 } // namespace member
 
@@ -910,8 +924,8 @@ dati* alloc_dati();
 void cleanup_dati(void *p_ban);
 void free_dati(dati *ban);
 void free_list(dati **bans);
-void json_load(char *str, size_t len, void *p_ban);
-void json_list_load(char *str, size_t len, void *p_ban);
+void from_json(char *str, size_t len, void *p_ban);
+void from_json_list(char *str, size_t len, void *p_ban);
 
 } // namespace ban
 
@@ -1052,8 +1066,8 @@ dati* alloc_dati();
 void cleanup_dati(void *p_user);
 void free_dati(dati *user);
 void free_list(dati **users);
-void json_load(char *str, size_t len, void *p_user);
-void json_list_load(char *str, size_t len, void *p_users);
+void from_json(char *str, size_t len, void *p_user);
+void from_json_list(char *str, size_t len, void *p_users);
 
 /* USER FLAGS
 https://discord.com/developers/docs/resources/user#user-object-user-flags */

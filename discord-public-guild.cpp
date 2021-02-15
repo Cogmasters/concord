@@ -4,13 +4,12 @@
 
 #include <libdiscord.h>
 #include "orka-utils.h"
-#include "json-actor.h"
 
 namespace discord {
 namespace guild {
 
 void
-json_load(char *str, size_t len, void *p_guild)
+from_json(char *str, size_t len, void *p_guild)
 {
   dati *guild = (dati*)p_guild;
 
@@ -81,8 +80,8 @@ json_load(char *str, size_t len, void *p_guild)
       &guild->large,
       &guild->unavailable,
       &guild->member_count,
-      &guild::json_list_load, &guild->members,
-      &channel::json_list_load, &guild->channels,
+      &guild::from_json_list, &guild->members,
+      &channel::from_json_list, &guild->channels,
       &guild->max_presences,
       &guild->max_members,
       guild->vanity_url_code,
@@ -100,12 +99,12 @@ json_load(char *str, size_t len, void *p_guild)
 }
 
 void
-json_list_load(char *str, size_t len, void *p_guilds)
+from_json_list(char *str, size_t len, void *p_guilds)
 {
   struct ntl_deserializer deserializer = {
     .elem_size = sizeof(dati),
     .init_elem = &init_dati,
-    .elem_from_buf = &json_load,
+    .elem_from_buf = &from_json,
     .ntl_recipient_p = (void***)p_guilds
   };
   orka_str_to_ntl(str, len, &deserializer);
@@ -158,7 +157,7 @@ get(client *client, const uint64_t guild_id, dati *p_guild)
     return;
   }
 
-  struct resp_handle resp_handle = {&json_load, (void*)p_guild};
+  struct resp_handle resp_handle = {&from_json, (void*)p_guild};
 
   user_agent::run( 
     &client->ua,
@@ -179,7 +178,7 @@ get_channels(client *client, const uint64_t guild_id)
   channel::dati **new_channels = NULL;
 
   struct resp_handle resp_handle = 
-    {&channel::json_list_load, (void*)&new_channels};
+    {&channel::from_json_list, (void*)&new_channels};
 
   user_agent::run( 
     &client->ua,
@@ -194,7 +193,7 @@ get_channels(client *client, const uint64_t guild_id)
 namespace member {
 
 void
-json_load(char *str, size_t len, void *p_member)
+from_json(char *str, size_t len, void *p_member)
 {
   dati *member = (dati*)p_member;
 
@@ -206,7 +205,7 @@ json_load(char *str, size_t len, void *p_member)
      "[deaf]%b"
      "[mute]%b"
      "[pending]%b",
-      &user::json_load, member->user,
+      &user::from_json, member->user,
       member->nick,
       &orka_iso8601_to_unix_ms, &member->joined_at,
       &orka_iso8601_to_unix_ms, &member->premium_since,
@@ -218,12 +217,12 @@ json_load(char *str, size_t len, void *p_member)
 }
 
 void
-json_list_load(char *str, size_t len, void *p_members)
+from_json_list(char *str, size_t len, void *p_members)
 {
   struct ntl_deserializer deserializer = {
     .elem_size = sizeof(dati),
     .init_elem = &init_dati,
-    .elem_from_buf = &json_load,
+    .elem_from_buf = &from_json,
     .ntl_recipient_p = (void***)p_members
   };
   orka_str_to_ntl(str, len, &deserializer);
@@ -294,7 +293,7 @@ run(client *client, const uint64_t guild_id, struct params *params)
   dati **new_members = NULL;
 
   struct resp_handle resp_handle =
-    {&json_list_load, (void*)&new_members};
+    {&from_json_list, (void*)&new_members};
   
   user_agent::run( 
     &client->ua,
@@ -332,7 +331,7 @@ void remove(client *client, const uint64_t guild_id, const uint64_t user_id)
 namespace ban {
 
 void
-json_load(char *str, size_t len, void *p_ban)
+from_json(char *str, size_t len, void *p_ban)
 {
   dati *ban = (dati*)p_ban;
 
@@ -340,18 +339,18 @@ json_load(char *str, size_t len, void *p_ban)
      "[reason]%s"
      "[user]%F",
       ban->reason,
-      &user::json_load, ban->user);
+      &user::from_json, ban->user);
 
   DS_NOTOP_PUTS("Ban object loaded with API response"); 
 }
 
 void
-json_list_load(char *str, size_t len, void *p_bans)
+from_json_list(char *str, size_t len, void *p_bans)
 {
   struct ntl_deserializer deserializer = {
     .elem_size = sizeof(dati),
     .init_elem = &init_dati,
-    .elem_from_buf = &json_load,
+    .elem_from_buf = &from_json,
     .ntl_recipient_p = (void***)p_bans
   };
   orka_str_to_ntl(str, len, &deserializer);
@@ -406,7 +405,7 @@ get(client *client, const uint64_t guild_id, const uint64_t user_id, dati *p_ban
     return;
   }
 
-  struct resp_handle resp_handle = {&json_load, (void*)p_ban};
+  struct resp_handle resp_handle = {&from_json, (void*)p_ban};
 
   user_agent::run( 
     &client->ua,
@@ -428,7 +427,7 @@ get_list(client *client, const uint64_t guild_id)
   dati **new_bans = NULL;
 
   struct resp_handle resp_handle =
-    {&json_list_load, (void*)&new_bans};
+    {&from_json_list, (void*)&new_bans};
 
   user_agent::run( 
     &client->ua,
@@ -463,7 +462,7 @@ create(client *client, const uint64_t guild_id, const uint64_t user_id, int dele
     return;
   }
 
-  void *A[2]= {0}; // pointer availability array.
+  void *A[2] = {0}; // pointer availability array.
   if (delete_message_days > 0)
     A[0] = (void *)&delete_message_days;
   if (!IS_EMPTY_STRING(reason))

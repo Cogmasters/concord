@@ -62,7 +62,7 @@ on_command(client *client, const user::dati *me, const channel::message::dati *m
     char *path = (char*)malloc(MAX_FSIZE);
     char *pathtmp = (char*)malloc(MAX_FSIZE);
 
-    if (STRNEQ(msg->content, "less", 4) 
+    if (STRNEQ(msg->content, "less", len) 
         || STRNEQ(msg->content, "cat", len)
         || STRNEQ(msg->content, "hexdump", len)) 
     {

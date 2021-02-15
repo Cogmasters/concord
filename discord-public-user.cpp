@@ -9,7 +9,7 @@ namespace discord {
 namespace user {
 
 void
-json_load(char *str, size_t len, void *p_user)
+from_json(char *str, size_t len, void *p_user)
 {
   dati *user = (dati*)p_user;
 
@@ -45,12 +45,12 @@ json_load(char *str, size_t len, void *p_user)
 }
 
 void
-json_list_load(char *str, size_t len, void *p_users)
+from_json_list(char *str, size_t len, void *p_users)
 {
   struct ntl_deserializer deserializer = {
     .elem_size = sizeof(dati),
     .init_elem = &init_dati,
-    .elem_from_buf = &json_load,
+    .elem_from_buf = &from_json,
     .ntl_recipient_p = (void***)p_users
   };
   orka_str_to_ntl(str, len, &deserializer);
@@ -95,7 +95,7 @@ get(client *client, const uint64_t user_id, dati *p_user)
     return;
   }
 
-  struct resp_handle resp_handle = {&json_load, (void*)p_user};
+  struct resp_handle resp_handle = {&from_json, (void*)p_user};
 
   user_agent::run( 
     &client->ua,
@@ -110,7 +110,7 @@ namespace me {
 void 
 get(client *client, dati *p_user)
 {
-  struct resp_handle resp_handle = {&json_load, (void*)p_user};
+  struct resp_handle resp_handle = {&from_json, (void*)p_user};
 
   user_agent::run( 
     &client->ua,
@@ -126,7 +126,7 @@ get_guilds(client *client)
   guild::dati **new_guilds = NULL;
 
   struct resp_handle resp_handle =
-    {&guild::json_list_load, (void*)&new_guilds};
+    {&guild::from_json_list, (void*)&new_guilds};
 
   user_agent::run( 
     &client->ua,

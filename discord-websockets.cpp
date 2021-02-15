@@ -176,7 +176,7 @@ on_dispatch_message(dati *ws, int offset)
   channel::message::dati *message = channel::message::alloc_dati();
   ASSERT_S(NULL != message, "Out of memory");
 
-  channel::message::json_load(ws->payload.event_data,
+  channel::message::from_json(ws->payload.event_data,
       sizeof(ws->payload.event_data), (void*)message);
 
   if (STREQ("CREATE", ws->payload.event_name + offset)) {
@@ -211,7 +211,7 @@ on_dispatch_guild_member(dati *ws, int offset)
   guild::member::dati *member = guild::member::alloc_dati();
   ASSERT_S(NULL != member, "Out of memory");
 
-  guild::member::json_load(ws->payload.event_data,
+  guild::member::from_json(ws->payload.event_data,
       sizeof(ws->payload.event_data), (void*)member);
   uint64_t guild_id = 0;
   json_scanf(
@@ -239,7 +239,7 @@ on_dispatch_guild_member(dati *ws, int offset)
 static void
 on_dispatch(dati *ws)
 {
-  user::json_load(ws->payload.event_data,
+  user::from_json(ws->payload.event_data,
       sizeof(ws->payload.event_data), (void*)ws->me);
 
   /* Ratelimit check */
@@ -556,7 +556,7 @@ ws_send_heartbeat(dati *ws)
 namespace session {
 
 void
-json_load(char *str, size_t len, void *p_session)
+from_json(char *str, size_t len, void *p_session)
 {
   dati *session = (dati*)p_session;
 
@@ -586,7 +586,7 @@ json_load(char *str, size_t len, void *p_session)
 void
 get(client *client, dati *p_session)
 {
-  struct resp_handle resp_handle = {&json_load, (void*)p_session};
+  struct resp_handle resp_handle = {&from_json, (void*)p_session};
 
   user_agent::run( 
     &client->ua,
@@ -599,7 +599,7 @@ get(client *client, dati *p_session)
 void
 get_bot(client *client, dati *p_session)
 {
-  struct resp_handle resp_handle = {&json_load, (void*)p_session};
+  struct resp_handle resp_handle = {&from_json, (void*)p_session};
 
   user_agent::run( 
     &client->ua,
