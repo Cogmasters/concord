@@ -1,0 +1,23 @@
+{
+  "title": "TITLE OF EMBED",
+  "type": "rich",
+  "description": "DESCRIPTION OF EMBED",
+  "url": "https://discord.com/developers/docs/resources/channel#embed-object-embed-structure",
+  "timestamp": 1234,
+  "color": 3426654,
+  "footer": {
+    "text": "HERE WE HAVE A FOOTER TEXT",
+    "icon_url": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/489b579d-e5e4-4f99-9d62-ac459d1c1448/dccibj5-aa15e7b3-3eed-469c-b93a-5c572c72f842.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOiIsImlzcyI6InVybjphcHA6Iiwib2JqIjpbW3sicGF0aCI6IlwvZlwvNDg5YjU3OWQtZTVlNC00Zjk5LTlkNjItYWM0NTlkMWMxNDQ4XC9kY2NpYmo1LWFhMTVlN2IzLTNlZWQtNDY5Yy1iOTNhLTVjNTcyYzcyZjg0Mi5wbmcifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6ZmlsZS5kb3dubG9hZCJdfQ.GAj7N063VoDfaGou-OSQh01E1m9Uep8l37oe7SIJ-U8"
+  },
+  "image": {
+    "url": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/489b579d-e5e4-4f99-9d62-ac459d1c1448/dccibj5-aa15e7b3-3eed-469c-b93a-5c572c72f842.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOiIsImlzcyI6InVybjphcHA6Iiwib2JqIjpbW3sicGF0aCI6IlwvZlwvNDg5YjU3OWQtZTVlNC00Zjk5LTlkNjItYWM0NTlkMWMxNDQ4XC9kY2NpYmo1LWFhMTVlN2IzLTNlZWQtNDY5Yy1iOTNhLTVjNTcyYzcyZjg0Mi5wbmcifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6ZmlsZS5kb3dubG9hZCJdfQ.GAj7N063VoDfaGou-OSQh01E1m9Uep8l37oe7SIJ-U8"
+  },
+  "provider": {
+    "name": "THE PROVIDER NAME",
+    "url": "https://discord.com/developers/docs/resources/channel#embed-object-embed-provider-structure"
+  },
+  "author": {
+    "name": "THE AUTHOR NAME",
+    "value": "THE VALUE OF THE FIELD"
+  }
+}
