@@ -251,7 +251,7 @@ void cleanup_dati(void *p_channel);
 void free_dati(dati *channel);
 void free_list(dati **channels);
 void from_json(char *str, size_t len, void *p_channel);
-void from_json_list(char *str, size_t len, void *p_channels);
+void list_from_json(char *str, size_t len, void *p_channels);
 
 /* CHANNEL TYPES
 https://discord.com/developers/docs/resources/channel#channel-object-channel-types */
@@ -305,7 +305,7 @@ void cleanup_dati(void *p_message);
 void free_dati(dati *message);
 void free_list(dati **message);
 void from_json(char *str, size_t len, void *p_message);
-void from_json_list(char *str, size_t len, void *p_messages);
+void list_from_json(char *str, size_t len, void *p_messages);
 
 /* MESSAGE TYPES
 https://discord.com/developers/docs/resources/channel#message-object-message-types */
@@ -588,9 +588,9 @@ dati* alloc_dati();
 void cleanup_dati(void *p_field);
 void free_dati(dati *field);
 void from_json(char *str, size_t len, void *p_field);
-void from_json_list(char *str, size_t len, void *p_fields);
+void list_from_json(char *str, size_t len, void *p_fields);
 int to_json(char *str, size_t len, void *p_field);
-int to_json_list(char *str, size_t len, void *p_fields);
+int list_to_json(char *str, size_t len, void *p_fields);
 
 } // namespace field
 
@@ -719,7 +719,7 @@ void cleanup_dati(void *p_guild);
 void free_dati(dati *guild);
 void free_list(dati **guild);
 void from_json(char *str, size_t len, void *p_guild);
-void from_json_list(char *str, size_t len, void *p_guilds);
+void list_from_json(char *str, size_t len, void *p_guilds);
 
 /* DEFAULT MESSAGE NOTIFICATION LEVEL
 https://discord.com/developers/docs/resources/guild#guild-object-default-message-notification-level */
@@ -865,7 +865,7 @@ void cleanup_dati(void *p_member);
 void free_dati(dati *member);
 void free_list(dati **members);
 void from_json(char *str, size_t len, void *p_member);
-void from_json_list(char *str, size_t len, void *p_members);
+void list_from_json(char *str, size_t len, void *p_members);
 
 } // namespace member
 
@@ -945,7 +945,7 @@ void cleanup_dati(void *p_ban);
 void free_dati(dati *ban);
 void free_list(dati **bans);
 void from_json(char *str, size_t len, void *p_ban);
-void from_json_list(char *str, size_t len, void *p_ban);
+void list_from_json(char *str, size_t len, void *p_ban);
 
 } // namespace ban
 
@@ -1087,7 +1087,7 @@ void cleanup_dati(void *p_user);
 void free_dati(dati *user);
 void free_list(dati **users);
 void from_json(char *str, size_t len, void *p_user);
-void from_json_list(char *str, size_t len, void *p_users);
+void list_from_json(char *str, size_t len, void *p_users);
 
 /* USER FLAGS
 https://discord.com/developers/docs/resources/user#user-object-user-flags */

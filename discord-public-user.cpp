@@ -45,7 +45,7 @@ from_json(char *str, size_t len, void *p_user)
 }
 
 void
-from_json_list(char *str, size_t len, void *p_users)
+list_from_json(char *str, size_t len, void *p_users)
 {
   struct ntl_deserializer deserializer = {
     .elem_size = sizeof(dati),
@@ -126,7 +126,7 @@ get_guilds(client *client)
   guild::dati **new_guilds = NULL;
 
   struct resp_handle resp_handle =
-    {&guild::from_json_list, (void*)&new_guilds};
+    {&guild::list_from_json, (void*)&new_guilds};
 
   user_agent::run( 
     &client->ua,

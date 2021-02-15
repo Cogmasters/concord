@@ -80,8 +80,8 @@ from_json(char *str, size_t len, void *p_guild)
       &guild->large,
       &guild->unavailable,
       &guild->member_count,
-      &guild::from_json_list, &guild->members,
-      &channel::from_json_list, &guild->channels,
+      &guild::list_from_json, &guild->members,
+      &channel::list_from_json, &guild->channels,
       &guild->max_presences,
       &guild->max_members,
       guild->vanity_url_code,
@@ -99,7 +99,7 @@ from_json(char *str, size_t len, void *p_guild)
 }
 
 void
-from_json_list(char *str, size_t len, void *p_guilds)
+list_from_json(char *str, size_t len, void *p_guilds)
 {
   struct ntl_deserializer deserializer = {
     .elem_size = sizeof(dati),
@@ -178,7 +178,7 @@ get_channels(client *client, const uint64_t guild_id)
   channel::dati **new_channels = NULL;
 
   struct resp_handle resp_handle = 
-    {&channel::from_json_list, (void*)&new_channels};
+    {&channel::list_from_json, (void*)&new_channels};
 
   user_agent::run( 
     &client->ua,
@@ -217,7 +217,7 @@ from_json(char *str, size_t len, void *p_member)
 }
 
 void
-from_json_list(char *str, size_t len, void *p_members)
+list_from_json(char *str, size_t len, void *p_members)
 {
   struct ntl_deserializer deserializer = {
     .elem_size = sizeof(dati),
@@ -293,7 +293,7 @@ run(client *client, const uint64_t guild_id, struct params *params)
   dati **new_members = NULL;
 
   struct resp_handle resp_handle =
-    {&from_json_list, (void*)&new_members};
+    {&list_from_json, (void*)&new_members};
   
   user_agent::run( 
     &client->ua,
@@ -345,7 +345,7 @@ from_json(char *str, size_t len, void *p_ban)
 }
 
 void
-from_json_list(char *str, size_t len, void *p_bans)
+list_from_json(char *str, size_t len, void *p_bans)
 {
   struct ntl_deserializer deserializer = {
     .elem_size = sizeof(dati),
@@ -427,7 +427,7 @@ get_list(client *client, const uint64_t guild_id)
   dati **new_bans = NULL;
 
   struct resp_handle resp_handle =
-    {&from_json_list, (void*)&new_bans};
+    {&list_from_json, (void*)&new_bans};
 
   user_agent::run( 
     &client->ua,

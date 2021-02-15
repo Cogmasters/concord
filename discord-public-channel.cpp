@@ -43,19 +43,19 @@ from_json(char *str, size_t len, void *p_channel)
      &channel->bitrate,
      &channel->user_limit,
      &channel->rate_limit_per_user,
-     &user::from_json_list, &channel->recipients,
+     &user::list_from_json, &channel->recipients,
      channel->icon,
      &orka_strtoull, &channel->owner_id,
      &orka_strtoull, &channel->application_id,
      &orka_strtoull, &channel->parent_id,
      &orka_iso8601_to_unix_ms, &channel->last_pin_timestamp,
-     &message::from_json_list, &channel->messages);
+     &message::list_from_json, &channel->messages);
 
   DS_NOTOP_PUTS("Channel object loaded with API response");
 }
 
 void
-from_json_list(char *str, size_t len, void *p_channels)
+list_from_json(char *str, size_t len, void *p_channels)
 {
   struct ntl_deserializer deserializer = {
     .elem_size = sizeof(dati),
@@ -221,7 +221,7 @@ from_json(char *str, size_t len, void *p_message)
 }
 
 void
-from_json_list(char *str, size_t len, void *p_messages)
+list_from_json(char *str, size_t len, void *p_messages)
 {
   struct ntl_deserializer deserializer = {
     .elem_size = sizeof(dati),
@@ -320,7 +320,7 @@ run(client *client, const uint64_t channel_id, params *params)
   dati **new_messages = NULL;
 
   struct resp_handle resp_handle = 
-    {&from_json_list, (void*)&new_messages};
+    {&list_from_json, (void*)&new_messages};
 
   user_agent::run( 
     &client->ua,
@@ -590,7 +590,7 @@ from_json(char *str, size_t len, void *p_embed)
      &video::from_json, embed->video,
      &provider::from_json, embed->provider,
      &author::from_json, embed->author,
-     &field::from_json_list, &embed->fields);
+     &field::list_from_json, &embed->fields);
 
   DS_NOTOP_PUTS("Embed object loaded with API response");
 }
@@ -656,7 +656,7 @@ to_json(char *str, size_t len, void *p_embed)
                         &video::to_json, embed->video,
                         &provider::to_json, embed->provider,
                         &author::to_json, embed->author,
-                        &field::to_json_list, &embed->fields,
+                        &field::list_to_json, &embed->fields,
                         A, sizeof(A));
   return ret;
 }
@@ -826,9 +826,7 @@ alloc_dati()
 }
 
 void
-cleanup_dati(void *p_author) 
-{
-  dati *author = (dati*)p_author;
+cleanup_dati(void *p_author) {
   DS_NOTOP_PUTS("Author object free'd"); 
 }
 
@@ -907,9 +905,7 @@ alloc_dati()
 }
 
 void
-cleanup_dati(void *p_footer) 
-{
-  dati *footer = (dati*)p_footer;
+cleanup_dati(void *p_footer) {
   DS_NOTOP_PUTS("Footer object free'd"); 
 }
 
@@ -982,9 +978,7 @@ alloc_dati()
 }
 
 void
-cleanup_dati(void *p_field) 
-{
-  dati *field = (dati*)p_field;
+cleanup_dati(void *p_field) {
   DS_NOTOP_PUTS("Field object free'd"); 
 }
 
@@ -1012,7 +1006,7 @@ from_json(char *str, size_t len, void *p_field)
 }
 
 void
-from_json_list(char *str, size_t len, void *p_fields)
+list_from_json(char *str, size_t len, void *p_fields)
 {
   struct ntl_deserializer deserializer = {
     .elem_size = sizeof(dati),
@@ -1051,7 +1045,7 @@ to_json(char *str, size_t len, void *p_field)
 
 /* @todo this needs to be tested */
 int
-to_json_list(char *str, size_t len, void *p_field)
+list_to_json(char *str, size_t len, void *p_field)
 {
   dati **fields = *(dati ***)p_field;
   size_t size = ntl_length((void**)fields);
