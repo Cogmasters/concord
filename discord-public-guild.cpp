@@ -463,11 +463,11 @@ create(client *client, const uint64_t guild_id, const uint64_t user_id, int dele
     return;
   }
 
-  void *ntl_array[3]= {0}; // a null terminated array for the availability of addresses
+  void *A[2]= {0}; // It's actually sized array.
   if (delete_message_days > 0)
-    ntl_array[0] = (void *) &delete_message_days;
+    A[0] = (void *) &delete_message_days;
   if (!IS_EMPTY_STRING(reason))
-    ntl_array[1] = (void *) reason;
+    A[1] = (void *) reason;
 
   char buf[MAX_PAYLOAD_LEN];
   int ret = json_inject(buf, sizeof(buf),
@@ -476,7 +476,7 @@ create(client *client, const uint64_t guild_id, const uint64_t user_id, int dele
                         "@",
                         &delete_message_days,
                         reason,
-                        ntl_array, sizeof(ntl_array));
+                        A, sizeof(A));
 
   struct sized_buffer req_body = {buf, (size_t)ret};
 
@@ -506,6 +506,7 @@ remove(client *client, const uint64_t guild_id, const uint64_t user_id, const ch
   }
 
   char buf[MAX_PAYLOAD_LEN];
+#if 0
   buf[0] = '\0';
   char *str = buf;
   str += sprintf(str, "{");
@@ -515,8 +516,19 @@ remove(client *client, const uint64_t guild_id, const uint64_t user_id, const ch
   }
 
   str += sprintf(str, "}");
+#endif
+  void * A[1] = {0}; // pointer availability array.
 
-  struct sized_buffer req_body = {buf, (size_t)(str - buf)};
+  if(!IS_EMPTY_STRING(reason))
+    A[0] = (void *)reason;
+
+  int ret = json_inject(buf, sizeof (buf),
+                        "(reason):s"
+                        "@",
+                        reason,
+                        A, sizeof(A));
+
+  struct sized_buffer req_body = {buf, (size_t)ret};
 
   user_agent::run( 
     &client->ua,
