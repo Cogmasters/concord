@@ -7,6 +7,7 @@
  *
  * <extractor> := <composite-value> <existence>?
  *                | <access-path-value-list> <existence>?
+ *                | [ # ]
  *
  * <access-path> := (<key>) | (<key>) <access-path>
  *
@@ -14,7 +15,7 @@
  *            | <composite-value> | <action>
  *
  * <action> := d | ld | lld | f | lf | b | <size-specifier>s
- *            | F | F_nullable | T | L
+ *            | F | F_nullable
  *
  * <access-path-value> := <access-path> : <value>
  *
@@ -125,10 +126,7 @@ struct size_specifier {
     SIZE_PARAMETERIZED,
     SIZE_ZERO
   } tag;
-  union {
-    size_t size_fixed;
-    size_t size_parameterized;
-  } _;
+  size_t size;
 };
 
 enum builtin_type {
@@ -418,7 +416,7 @@ parse_size_specifier (
       ERR("size has to be a non-zero postive value %ld\n", fixed_size);
 
     p->tag = SIZE_FIXED;
-    p->_.size_fixed = fixed_size;
+    p->size = fixed_size;
     *next_pos_p = x; // jump to the end of number
     return 1;
   }
@@ -482,40 +480,40 @@ parse_value(
   switch(*pos)
   {
     case 'b':
-      act->mem_size._.size_fixed = sizeof(bool);
+      act->mem_size.size = sizeof(bool);
       act->mem_size.tag = SIZE_FIXED;
       act->_.builtin = B_BOOL;
       pos ++;
       goto return_true;
     case 'd':
-      act->mem_size._.size_fixed = sizeof(int);
+      act->mem_size.size = sizeof(int);
       act->mem_size.tag = SIZE_FIXED;
       act->_.builtin = B_INT;
       pos ++;
       goto return_true;
     case 'f':
-      act->mem_size._.size_fixed = sizeof(float);
+      act->mem_size.size = sizeof(float);
       act->mem_size.tag = SIZE_FIXED;
       act->_.builtin = B_FLOAT;
       pos ++;
       goto return_true;
     case 'l':
       if (STRNEQ(pos, "ld", 2)) {
-        act->mem_size._.size_fixed = sizeof(long);
+        act->mem_size.size = sizeof(long);
         act->mem_size.tag = SIZE_FIXED;
         act->_.builtin = B_LONG;
         pos += 2;
         goto return_true;
       }
       else if (STRNEQ(pos, "lld", 3)) {
-        act->mem_size._.size_fixed = sizeof(long long);
+        act->mem_size.size = sizeof(long long);
         act->mem_size.tag = SIZE_FIXED;
         act->_.builtin = B_LONG_LONG;
         pos += 3;
         goto return_true;
       }
       else if (STRNEQ(pos, "lf", 2)) {
-        act->mem_size._.size_fixed = sizeof(double);
+        act->mem_size.size = sizeof(double);
         act->mem_size.tag = SIZE_FIXED;
         act->_.builtin = B_DOUBLE;
         pos += 2;
@@ -689,7 +687,24 @@ parse_value_list (
   size_t i = 0;
   while (pos < end_pos) {
     SKIP_SPACES(pos, end_pos);
-    if (0 != i && ',' == * pos) {
+    if ('#' == * pos) {
+      pos ++;
+      if (0 != i)
+        ERR ("# has to be the only symbol between []\n");
+
+      SKIP_SPACES(pos, end_pos);
+      if (TOP(stack) == *pos) {
+        struct value * v = elements->pos;
+        v->tag = V_ACTION;
+        v->_.action.tag = ACT_BUILT_IN;
+        v->_.action._.builtin = B_LIST;
+        elements->size = 1;
+        return pos;
+      }
+      else
+        ERR ("# has to be the only symbol between []\n");
+    }
+    else if (0 != i && ',' == * pos) {
       pos ++;
       continue;
     }
@@ -806,7 +821,7 @@ get_value_operand_addrs (struct value *v, struct operand_addrs *rec)
       {
         case ACT_BUILT_IN:
           if (SIZE_PARAMETERIZED == act->mem_size.tag) {
-            rec->addrs[rec->pos] = &act->mem_size._.size_parameterized;
+            rec->addrs[rec->pos] = &act->mem_size.size;
             rec->pos ++;
           }
           rec->addrs[rec->pos] = &act->operand;
@@ -923,7 +938,6 @@ static char write_only [1024*10];
 
 struct injection_info {
   char * next_pos;
-  void * data;
   struct stack sp;
   FILE * fp;
   struct existence * E;
@@ -961,9 +975,12 @@ xprintf(
 
 
 static int
-inject_builtin (char * pos, size_t size, struct injection_info * info)
+inject_builtin (
+  char * pos,
+  size_t size,
+  struct action * v,
+  struct injection_info * info)
 {
-  struct action * v = (struct action *) info->data;
   if (NULL == v->operand)
     return xprintf(pos, size, info, "null");
 
@@ -997,14 +1014,13 @@ inject_builtin (char * pos, size_t size, struct injection_info * info)
             free(escaped);
           return ret;
         case SIZE_FIXED:
-          escaped = json_escape_string(&len, s, v->mem_size._.size_fixed);
+          escaped = json_escape_string(&len, s, v->mem_size.size);
           ret = xprintf(pos, size, info, "\"%.*s\"", len, escaped);
           if (escaped != s)
             free(escaped);
           return ret;
         case SIZE_PARAMETERIZED:
-          escaped = json_escape_string(&len, s,
-                                       v->mem_size._.size_parameterized);
+          escaped = json_escape_string(&len, s, v->mem_size.size);
           ret = xprintf(pos, size, info, "\"%.*s\"", len, escaped);
           if (escaped != s)
             free(escaped);
@@ -1018,7 +1034,12 @@ inject_builtin (char * pos, size_t size, struct injection_info * info)
   }
 }
 
-static int inject_composite_value (char *, size_t, struct injection_info * );
+static int
+inject_composite_value(
+  char *,
+  size_t,
+  struct composite_value * ,
+  struct injection_info *);
 
 /*
  * @todo the injection need to detect argument size
@@ -1071,9 +1092,12 @@ inject_format_string (
   return ret;
 }
 static int
-inject_value (char * pos, size_t size, struct injection_info * info)
+inject_value (
+  char * pos,
+  size_t size,
+  struct value * v,
+  struct injection_info * info)
 {
-  struct value * v = (struct value *)info->data;
   switch (v->tag)
   {
     case V_ACTION:
@@ -1082,8 +1106,7 @@ inject_value (char * pos, size_t size, struct injection_info * info)
       switch (a->tag)
       {
         case ACT_BUILT_IN:
-          info->data = a;
-          return inject_builtin(pos, size, info);
+          return inject_builtin(pos, size, a, info);
         case ACT_USER_DEF_ACCEPT_NON_NULL:
         case ACT_USER_DEF_ACCEPT_NULL:
         {
@@ -1120,8 +1143,7 @@ inject_value (char * pos, size_t size, struct injection_info * info)
       ERR("should not be here");
     }
     case V_COMPOSITE_VALUE:
-      info->data = v->_.cv;
-      return inject_composite_value(pos, size, info);
+      return inject_composite_value(pos, size, v->_.cv, info);
     case V_PRIMITIVE:
       return xprintf(pos, size, info, "%.*s",
                      v->_.primitve.size,
@@ -1139,10 +1161,13 @@ inject_value (char * pos, size_t size, struct injection_info * info)
 }
 
 static int
-inject_access_path_value (char * pos, size_t size, struct injection_info * info)
+inject_access_path_value (
+  char * pos,
+  size_t size,
+  struct access_path_value * ap,
+  struct injection_info * info)
 {
   char * const start_pos = pos, * const end_pos = pos + size;
-  struct access_path_value * ap = (struct access_path_value *) info->data;
   size_t used_bytes = 0;
   used_bytes += xprintf(pos, size, info, "\"%.*s\"", ap->path.key.size,
                         ap->path.key.start);
@@ -1154,8 +1179,7 @@ inject_access_path_value (char * pos, size_t size, struct injection_info * info)
     used_bytes += xprintf(pos, end_pos - pos, info, ":");
     pos = info->next_pos;
 
-    info->data = &ap->value;
-    used_bytes += inject_value(pos, end_pos - pos, info);
+    used_bytes += inject_value(pos, end_pos - pos, &ap->value, info);
     pos = info->next_pos;
     return used_bytes;
   }
@@ -1205,11 +1229,14 @@ has_value (struct injection_info * info, struct value * v)
 }
 
 static int
-inject_composite_value (char * pos, size_t size, struct injection_info * info)
+inject_composite_value (
+  char * pos,
+  size_t size,
+  struct composite_value * cv,
+  struct injection_info * info)
 {
-  char * const start_pos = pos, * const end_pos = pos + size;
+  char * const end_pos = pos + size;
   size_t used_bytes = 0, count;
-  struct composite_value * cv = (struct composite_value *) info->data;
 
   if (cv->is_object) {
     used_bytes += xprintf(pos, end_pos - pos, info, "{");
@@ -1226,8 +1253,7 @@ inject_composite_value (char * pos, size_t size, struct injection_info * info)
       struct access_path_value *p = cv->_.pairs.pos + i;
       if (!has_value(info, &p->value)) continue;
 
-      info->data = p;
-      used_bytes += inject_access_path_value(pos, end_pos - pos, info);
+      used_bytes += inject_access_path_value(pos, end_pos - pos, p, info);
       pos = info->next_pos;
 
       if (j + 1 != count) {
@@ -1252,8 +1278,7 @@ inject_composite_value (char * pos, size_t size, struct injection_info * info)
       struct value * v = cv->_.elements.pos + i;
       if (!has_value(info, v)) continue;
 
-      info->data = cv->_.elements.pos + i;
-      used_bytes += inject_value(pos, end_pos - pos, info);
+      used_bytes += inject_value(pos, end_pos - pos, v, info);
       pos = info->next_pos;
 
       if (j+1 != count) {
@@ -1323,7 +1348,6 @@ json_injector_va_list(
   else
     info.fp = open_memstream(&mem, &mem_size);
 
-  info.data = &cv;
   if (cv.E.has_this) {
     if (cv.E.arg == NULL)
       ERR("The argument of @ (used for checking the existence of a value) is NULL");
@@ -1343,7 +1367,8 @@ json_injector_va_list(
     output_size = size;
   }
 
-  size_t used_bytes = inject_composite_value(output_buf, output_size, &info);
+  size_t used_bytes =
+    inject_composite_value(output_buf, output_size, &cv, &info);
   if (info.fp)
     fclose(info.fp);
 
@@ -1387,15 +1412,4 @@ int json_inject (char * pos, size_t size, char * injector, ...)
   size_t used_bytes = json_injector_va_list(pos, size, injector, ap);
   va_end(ap);
   return used_bytes;
-}
-
-int
-json_extract_va_list (char * pos, size_t size, char * extractor, va_list ap)
-{
-  struct stack stack = { .array = {0}, .top = 0, .actor = EXTRACTOR };
-  struct operand_addrs  rec = { 0 };
-  struct composite_value cv;
-
-  prepare_actor(&stack, &rec, &cv, pos, size, extractor, ap);
-  return 0;
 }
