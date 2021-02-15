@@ -679,16 +679,16 @@ struct dati {
   int afk_timeout;
   bool widget_enabled;
   uint64_t widget_channel_id;
-  int verification_level;
+  verification_level::code verification_level;
   int default_message_notifications;
-  int explicit_content_filter;
+  explicit_content_filter_level::code explicit_content_filter;
   //@todo missing roles;
   emoji::dati **emojis; //@todo add to from_json
   char **features; //@todo add to from_json
-  int mfa_level;
+  mfa_level::code mfa_level;
   uint64_t application_id;
   uint64_t system_channel_id;
-  int system_channel_flags; 
+  system_channel_flags::code system_channel_flags; 
   uint64_t rules_channel_id;
   int64_t joined_at;
   bool large;
@@ -703,7 +703,7 @@ struct dati {
   char vanity_url_code[MAX_URL_LEN];
   char description[MAX_DESCRIPTION_LEN];
   char banner[MAX_SHA256_LEN];
-  int premium_tier;
+  premium_tier::code premium_tier;
   int premium_subscription_count;
   char preferred_locale[MAX_LOCALE_LEN];
   uint64_t public_updates_channel_id;
@@ -753,11 +753,11 @@ enum {
 https://discord.com/developers/docs/resources/guild#guild-object-verification-level */
 namespace verification_level {
 enum {
-  NONE      = 0,
-  LOW       = 1,
-  MEDIUM    = 2,
-  HIGH      = 3,
-  VERY_HIGH = 4
+  NONE      = 0, // unrestricted
+  LOW       = 1, // must have verified email on account
+  MEDIUM    = 2, // must be registered on Discord for longer than 5 minutes
+  HIGH      = 3, // must be a member of the server for longer than 10 minutes
+  VERY_HIGH = 4  // must have a verified phone number
 };
 } // namespace verification_level
 
@@ -776,8 +776,8 @@ enum {
 https://discord.com/developers/docs/resources/guild#guild-object-system-channel-flags */
 namespace system_channel_flags {
 enum {
-  SUPRESS_JOIN_NOTIFICATIONS     = 1 << 0,
-  SUPPRESS_PREMIUM_SUBSCRIPTIONS = 1 << 1
+  SUPRESS_JOIN_NOTIFICATIONS     = 1 << 0, // Suppress member join notifications
+  SUPPRESS_PREMIUM_SUBSCRIPTIONS = 1 << 1  // Suppress server boost notifications
 };
 } // namespace system_channel_flags
 
@@ -785,21 +785,21 @@ enum {
 https://discord.com/developers/docs/resources/guild#guild-object-guild-features */
 namespace guild_features {
 enum {
-  INVITE_SPLASH,
-  VIP_REGIONS,
-  VANITY_URL,
-  VERIFIED,
-  PARTNERED,
-  COMMUNITY,
-  COMMERCE,
-  NEWS,
-  DISCOVERABLE,
-  FEATURABLE,
-  ANIMATED_ICON,
-  BANNER,
-  WELCOME_SCREEN_ENABLED,
-  MEMBER_VERIFICATION_GATE_ENABLED,
-  PREVIEW_ENABLED
+  INVITE_SPLASH,                    // guild has access to set an invite splash background
+  VIP_REGIONS,                      // guild has access to set 384kbps bitrate in voice (previously VIP voice servers)
+  VANITY_URL,                       // guild has access to set a vanity URL
+  VERIFIED,                         // guild is verified
+  PARTNERED,                        // guild is partnered
+  COMMUNITY,                        // guild can enable welcome screen, Membership Screening, and discovery, and receives community updates
+  COMMERCE,                         // guild has access to use commerce features (i.e. create store channels)
+  NEWS,                             // guild has access to create news channels
+  DISCOVERABLE,                     // guild is able to be discovered in the directory
+  FEATURABLE,                       // guild is able to be featured in the directory
+  ANIMATED_ICON,                    // guild has access to set an animated guild icon
+  BANNER,                           // guild has access to set a guild banner image
+  WELCOME_SCREEN_ENABLED,           // guild has enabled the welcome screen
+  MEMBER_VERIFICATION_GATE_ENABLED, // guild has enabled Membership Screening
+  PREVIEW_ENABLED                   // guild can be previewed before joining via Membership Screening or the directory
 };
 } // namespace guild_features
 
