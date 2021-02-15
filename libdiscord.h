@@ -501,8 +501,6 @@ struct dati {
   int width;
 };
 
-//@todo missing initialization functions
-
 void init_dati(void *p_thumbnail);
 dati* alloc_dati();
 void cleanup_dati(void *p_thumbnail);
