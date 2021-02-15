@@ -469,8 +469,8 @@ create(client *client, const uint64_t guild_id, const uint64_t user_id, int dele
   if (!IS_EMPTY_STRING(reason))
     A[1] = (void *)reason;
 
-  char buf[MAX_PAYLOAD_LEN];
-  int ret = json_inject(buf, sizeof(buf),
+  char payload[MAX_PAYLOAD_LEN];
+  int ret = json_inject(payload, sizeof(payload),
                         "(delete_message_days):d"
                         "(reason):s"
                         "@",
@@ -478,7 +478,7 @@ create(client *client, const uint64_t guild_id, const uint64_t user_id, int dele
                         reason,
                         A, sizeof(A));
 
-  struct sized_buffer req_body = {buf, (size_t)ret};
+  struct sized_buffer req_body = {payload, (size_t)ret};
 
   user_agent::run( 
     &client->ua,
@@ -509,14 +509,14 @@ remove(client *client, const uint64_t guild_id, const uint64_t user_id, const ch
   if(!IS_EMPTY_STRING(reason))
     A[0] = (void *)reason;
 
-  char buf[MAX_PAYLOAD_LEN];
-  int ret = json_inject(buf, sizeof (buf),
+  char payload[MAX_PAYLOAD_LEN];
+  int ret = json_inject(payload, sizeof (payload),
                         "(reason):s"
                         "@",
                         reason,
                         A, sizeof(A));
 
-  struct sized_buffer req_body = {buf, (size_t)ret};
+  struct sized_buffer req_body = {payload, (size_t)ret};
 
   user_agent::run( 
     &client->ua,
