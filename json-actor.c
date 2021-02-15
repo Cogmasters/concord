@@ -48,8 +48,6 @@
 #include <ctype.h>
 #include <stdarg.h>
 #include "json-common.h"
-#define N_PATH_MAX 8
-#define KEY_MAX 128
 
 #define JSMN_STATIC  // dont expose jsmn symbols
 #define JSMN_PARENT_LINKS // add parent links to jsmn_tok, which are needed
@@ -69,11 +67,11 @@ enum actor {
 /* 
  * the maximum levels of nested json object/array
  */
-#define MAX_NESTED_LEVEL   16
+#define MAX_NESTED_LEVELS  16
 #define MAX_ACTION_NUMBERS 64
 
 struct stack {
-  unsigned char array[MAX_NESTED_LEVEL];
+  unsigned char array[MAX_NESTED_LEVELS];
   int top;
 
   struct access_path ** paths;
@@ -84,9 +82,26 @@ struct stack {
   enum actor actor;
 };
 
-#define PUSH(stack, c)  { stack->array[stack->top++] = c; }
-#define TOP(stack)      (stack->array[stack->top-1])
-#define POP(stack)      (stack->array[--stack->top])
+
+static void PUSH(struct stack * s, char c)
+{
+  ASSERT_S(s->top < MAX_NESTED_LEVELS,
+           "too many nested objects exceeding"
+           " the max nested levels: 16");
+  s->array[s->top] = c;
+  s->top ++;
+}
+
+static char TOP(struct stack * s)
+{
+  return s->array[s->top-1];
+}
+
+static char POP(struct stack * s)
+{
+  --s->top;
+  return s->array[s->top];
+}
 
 struct access_path {
   struct sized_buffer key;
@@ -105,14 +120,14 @@ struct access_path_value;
 
 struct size_specifier {
   enum {
-    UNKNOWN_SIZE = 0,
-    FIXED_SIZE,
-    PARAMETERIZED_SIZE,
-    ZERO_SIZE
+    SIZE_UNKNOWN = 0,
+    SIZE_FIXED,
+    SIZE_PARAMETERIZED,
+    SIZE_ZERO
   } tag;
   union {
-    size_t fixed_size;
-    size_t parameterized_size;
+    size_t size_fixed;
+    size_t size_parameterized;
   } _;
 };
 
@@ -402,18 +417,18 @@ parse_size_specifier (
     if (fixed_size <= 0)
       ERR("size has to be a non-zero postive value %ld\n", fixed_size);
 
-    p->tag = FIXED_SIZE;
-    p->_.fixed_size = fixed_size;
+    p->tag = SIZE_FIXED;
+    p->_.size_fixed = fixed_size;
     *next_pos_p = x; // jump to the end of number
     return 1;
   }
   else if (pos + 1 < end_pos && '.' == *pos && '*' == *(pos+1)) {
-    p->tag = PARAMETERIZED_SIZE;
+    p->tag = SIZE_PARAMETERIZED;
     *next_pos_p = pos + 2;
     return 1;
   }
   else if ('?' == *pos) {
-    p->tag = ZERO_SIZE;
+    p->tag = SIZE_ZERO;
     *next_pos_p = pos + 1;
     return 1;
   }
@@ -467,41 +482,41 @@ parse_value(
   switch(*pos)
   {
     case 'b':
-      act->mem_size._.fixed_size = sizeof(bool);
-      act->mem_size.tag = FIXED_SIZE;
+      act->mem_size._.size_fixed = sizeof(bool);
+      act->mem_size.tag = SIZE_FIXED;
       act->_.builtin = B_BOOL;
       pos ++;
       goto return_true;
     case 'd':
-      act->mem_size._.fixed_size = sizeof(int);
-      act->mem_size.tag = FIXED_SIZE;
+      act->mem_size._.size_fixed = sizeof(int);
+      act->mem_size.tag = SIZE_FIXED;
       act->_.builtin = B_INT;
       pos ++;
       goto return_true;
     case 'f':
-      act->mem_size._.fixed_size = sizeof(float);
-      act->mem_size.tag = FIXED_SIZE;
+      act->mem_size._.size_fixed = sizeof(float);
+      act->mem_size.tag = SIZE_FIXED;
       act->_.builtin = B_FLOAT;
       pos ++;
       goto return_true;
     case 'l':
       if (STRNEQ(pos, "ld", 2)) {
-        act->mem_size._.fixed_size = sizeof(long);
-        act->mem_size.tag = FIXED_SIZE;
+        act->mem_size._.size_fixed = sizeof(long);
+        act->mem_size.tag = SIZE_FIXED;
         act->_.builtin = B_LONG;
         pos += 2;
         goto return_true;
       }
       else if (STRNEQ(pos, "lld", 3)) {
-        act->mem_size._.fixed_size = sizeof(long long);
-        act->mem_size.tag = FIXED_SIZE;
+        act->mem_size._.size_fixed = sizeof(long long);
+        act->mem_size.tag = SIZE_FIXED;
         act->_.builtin = B_LONG_LONG;
         pos += 3;
         goto return_true;
       }
       else if (STRNEQ(pos, "lf", 2)) {
-        act->mem_size._.fixed_size = sizeof(double);
-        act->mem_size.tag = FIXED_SIZE;
+        act->mem_size._.size_fixed = sizeof(double);
+        act->mem_size.tag = SIZE_FIXED;
         act->_.builtin = B_DOUBLE;
         pos += 2;
         goto return_true;
@@ -765,6 +780,7 @@ parse_toplevel(
       ERR("unexpected %s\n", pos);
     }
   }
+  return 0;
 }
 
 struct operand_addrs {
@@ -789,8 +805,8 @@ get_value_operand_addrs (struct value *v, struct operand_addrs *rec)
       switch (act->tag)
       {
         case ACT_BUILT_IN:
-          if (PARAMETERIZED_SIZE == act->mem_size.tag) {
-            rec->addrs[rec->pos] = &act->mem_size._.parameterized_size;
+          if (SIZE_PARAMETERIZED == act->mem_size.tag) {
+            rec->addrs[rec->pos] = &act->mem_size._.size_parameterized;
             rec->pos ++;
           }
           rec->addrs[rec->pos] = &act->operand;
@@ -973,22 +989,22 @@ inject_builtin (char * pos, size_t size, struct injection_info * info)
       char * escaped;
       switch (v->mem_size.tag)
       {
-        case UNKNOWN_SIZE:
-        case ZERO_SIZE:
+        case SIZE_UNKNOWN:
+        case SIZE_ZERO:
           escaped = json_escape_string(&len, s, strlen(s));
           ret = xprintf(pos, size, info, "\"%s\"", escaped);
           if (escaped != s)
             free(escaped);
           return ret;
-        case FIXED_SIZE:
-          escaped = json_escape_string(&len, s, v->mem_size._.fixed_size);
+        case SIZE_FIXED:
+          escaped = json_escape_string(&len, s, v->mem_size._.size_fixed);
           ret = xprintf(pos, size, info, "\"%.*s\"", len, escaped);
           if (escaped != s)
             free(escaped);
           return ret;
-        case PARAMETERIZED_SIZE:
+        case SIZE_PARAMETERIZED:
           escaped = json_escape_string(&len, s,
-                                       v->mem_size._.parameterized_size);
+                                       v->mem_size._.size_parameterized);
           ret = xprintf(pos, size, info, "\"%.*s\"", len, escaped);
           if (escaped != s)
             free(escaped);
@@ -1221,7 +1237,6 @@ inject_composite_value (char * pos, size_t size, struct injection_info * info)
       j++;
     }
     used_bytes += xprintf(pos, end_pos - pos, info, "}");
-    pos = info->next_pos;
   }
   else {
     used_bytes += xprintf(pos, end_pos - pos, info, "[");
@@ -1248,9 +1263,43 @@ inject_composite_value (char * pos, size_t size, struct injection_info * info)
       j ++;
     }
     used_bytes += xprintf(pos, end_pos - pos, info, "]");
-    pos = info->next_pos;
   }
   return used_bytes;
+}
+
+static int
+prepare_actor(
+  struct stack * stack,
+  struct operand_addrs * operand_addrs,
+  struct composite_value * cv,
+  char * pos,
+  size_t size,
+  char * actor,
+  va_list ap)
+{
+  memset(cv, 0, sizeof(struct composite_value));
+
+  size_t len = strlen(actor);
+  char *next_pos = parse_toplevel(stack, actor, len, cv);
+  if (next_pos != actor + len) {
+    ERR("unexpected %s\n", next_pos);
+  }
+  get_composite_value_operand_addrs(cv, operand_addrs);
+
+  for (size_t i = 0; i < operand_addrs->pos; i++) {
+    switch (operand_addrs->types[i]) {
+      case ARG_PTR:
+        *((void **) operand_addrs->addrs[i]) = va_arg(ap, void *);
+        break;
+      case ARG_INT:
+        *((int *) operand_addrs->addrs[i]) = va_arg(ap, int);
+        break;
+      case ARG_DOUBLE:
+        *((double *) operand_addrs->addrs[i]) = va_arg(ap, double);
+        break;
+    }
+  }
+  return 1;
 }
 
 int
@@ -1261,31 +1310,10 @@ json_injector_va_list(
   va_list ap)
 {
   struct stack stack = { .array = {0}, .top = 0, .actor = INJECTOR };
-  struct composite_value cv;
-  memset(&cv, 0, sizeof(struct composite_value));
-  size_t len = strlen(injector);
-  char * next_pos = parse_toplevel(&stack, injector, len, &cv);
-  if (next_pos != injector + len) {
-    ERR("unexpected %s\n", next_pos);
-  }
-
   struct operand_addrs  rec = { 0 };
-  get_composite_value_operand_addrs(&cv, &rec);
+  struct composite_value cv;
 
-  for (size_t i = 0; i < rec.pos; i++) {
-    switch(rec.types[i])
-    {
-      case ARG_PTR:
-        *((void **) rec.addrs[i]) = va_arg(ap, void *);
-        break;
-      case ARG_INT:
-        *((int *) rec.addrs[i]) = va_arg(ap, int);
-        break;
-      case ARG_DOUBLE:
-        *((double *) rec.addrs[i]) = va_arg(ap, double);
-        break;
-    }
-  }
+  prepare_actor(&stack, &rec, &cv, pos, size, injector, ap);
 
   struct injection_info info = { 0 };
   char * mem = NULL;
@@ -1314,8 +1342,6 @@ json_injector_va_list(
     output_buf = pos;
     output_size = size;
   }
-
-
 
   size_t used_bytes = inject_composite_value(output_buf, output_size, &info);
   if (info.fp)
@@ -1363,4 +1389,13 @@ int json_inject (char * pos, size_t size, char * injector, ...)
   return used_bytes;
 }
 
-extern int json_extract(char * pos, size_t size, void *);
+int
+json_extract_va_list (char * pos, size_t size, char * extractor, va_list ap)
+{
+  struct stack stack = { .array = {0}, .top = 0, .actor = EXTRACTOR };
+  struct operand_addrs  rec = { 0 };
+  struct composite_value cv;
+
+  prepare_actor(&stack, &rec, &cv, pos, size, extractor, ap);
+  return 0;
+}
