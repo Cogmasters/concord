@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
-#include <math.h> //for lround()
+#include <math.h> //for round()
 #include <time.h>
 #include <sys/stat.h>
 #include <dirent.h>
@@ -168,7 +168,7 @@ orka_timestamp_ms()
   struct timespec t;
   clock_gettime(CLOCK_REALTIME, &t);
 
-  return t.tv_sec*1000 + lround(t.tv_nsec/1.0e6);
+  return t.tv_sec*1000 + t.tv_nsec/1e6;
 }
 
 void

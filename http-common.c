@@ -11,7 +11,7 @@ char*
 get_respheader_value(struct api_header_s *pairs, char field[])
 {
   for (int i=0; i < pairs->size; ++i) {
-    if (strcasecmp(field, pairs->field[i])) {
+    if (0 == strcasecmp(field, pairs->field[i])) {
       return pairs->value[i]; //found header field, return its value
     }
   }

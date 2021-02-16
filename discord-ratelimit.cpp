@@ -27,22 +27,21 @@ void
 try_cooldown(dati *bucket)
 {
   if (NULL == bucket || bucket->remaining)
-    return;
-
-  const int LEAST_MS = 1000; // wait for at least ms amount
+    return; /* EARLY RETURN */
 
   int64_t delay_ms = (int64_t)(bucket->reset_tstamp - orka_timestamp_ms());
-  if (delay_ms < 0) //no delay needed
-    delay_ms = 0;
-  else if (delay_ms > bucket->reset_after_ms) //don't delay longer than necessary
+  if (delay_ms <= 0) //no delay needed
+    return; /* EARLY RETURN */
+
+  if (delay_ms > bucket->reset_after_ms) //don't delay in excess
     delay_ms = bucket->reset_after_ms;
 
   D_PRINT("RATELIMITING (reach bucket's connection threshold):\n\t"
           "\tBucket:\t\t%s\n\t"
-          "\tWait for:\t %" PRId64 "(+%d) ms",
-          bucket->hash, delay_ms, LEAST_MS);
+          "\tWait for:\t %" PRId64 " ms",
+          bucket->hash, delay_ms);
 
-  orka_sleep_ms(LEAST_MS + delay_ms); //sleep for delay amount (if any)
+  orka_sleep_ms(delay_ms); //sleep for delay amount (if any)
 }
 
 /* works like strcmp, but will check if endpoing matches a major 
@@ -104,12 +103,12 @@ parse_ratelimits(dati *bucket, struct api_header_s *pairs)
 
   value = get_respheader_value(pairs, "x-ratelimit-reset-after");
   if (NULL != value) {
-    bucket->reset_after_ms = 1000 * strtoll(value, NULL, 10);
+    bucket->reset_after_ms = 1000 * strtod(value, NULL);
   }
 
   value = get_respheader_value(pairs, "x-ratelimit-reset");
   if (NULL != value) {
-    bucket->reset_tstamp = 1000 * strtoll(value, NULL, 10);
+    bucket->reset_tstamp = 1000 * strtod(value, NULL);
   }
 }
 
