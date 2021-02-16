@@ -687,7 +687,7 @@ struct dati {
   uint64_t system_channel_id;
   system_channel_flags::code system_channel_flags; 
   uint64_t rules_channel_id;
-  int64_t joined_at;
+  uint64_t joined_at;
   bool large;
   bool unavailable;
   int member_count;
