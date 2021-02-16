@@ -481,7 +481,7 @@ struct dati {
   video::dati *video;
   provider::dati *provider;
   author::dati *author;
-  field::dati *fields[EMBED_MAX_FIELDS];
+  field::dati **fields;
 };
 
 void init_dati(void *p_embed);
