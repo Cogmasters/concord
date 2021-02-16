@@ -1045,18 +1045,10 @@ to_json(char *str, size_t len, void *p_field)
 
 /* @todo this needs to be tested */
 int
-list_to_json(char *str, size_t len, void *p_field)
+list_to_json(char *str, size_t len, void *p_fields)
 {
-  dati **fields = *(dati ***)p_field;
-  size_t size = ntl_length((void**)fields);
-  if (0 == size) return snprintf(str, len, "[]");
-
-  char fmt[256] = "["; 
-  for (size_t i=0; i < size; ++i) {
-    strncat(fmt, "F ", sizeof(fmt)-1);
-  }
-  strncat(fmt, "]", sizeof(fmt)-1);
-  ERR("%s", fmt);
+  dati **fields = *(dati ***)p_fields;
+  return ntl_to_buf(buf, size, (void**)fields, NULL, &to_json);
 }
 
 } // namespace field
