@@ -67,7 +67,7 @@ static void assert_is_pointer(void * p)
    * p is a legit pointer.
    */
   char * x = (char *)p;
-  static char c; // has to be a static variable
+  static char c; //has to be a static variable such that compilers won't remove them
   c = *x;
 }
 
@@ -741,7 +741,6 @@ parse_value_list (
   return pos;
 }
 
-static struct stack stack = { .array = {0}, .top = 0, .actor = INJECTOR };
 
 static char *
 parse_composite_value(

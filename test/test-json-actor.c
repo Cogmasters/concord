@@ -1,6 +1,8 @@
 #include "json-actor.c"
 #include <string.h>
 
+static struct stack stack = { .array = {0}, .top = 0, .actor = INJECTOR };
+
 int main ()
 {
   struct value value;
