@@ -131,6 +131,24 @@ orka_iso8601_to_unix_ms(char *timestamp, size_t len, void *p_data)
 }
 
 int
+orka_unix_ms_to_iso8601(char *str, size_t len, void *p_data)
+{
+  uint64_t *p_timestamp = (uint64_t*)p_data;
+  ASSERT_S(NULL != p_timestamp, "No timestamp provided by user");
+  uint64_t timestamp = *p_timestamp;
+
+  time_t seconds = timestamp / 1000;
+  int millis = timestamp % 1000;
+
+  struct tm *tm = localtime(&seconds);
+
+  return snprintf(str, len,
+    "%d-%.2d-%dT%.2d:%.2d:%.2d.%.3dZ", // ISO-8601 complete format
+    tm->tm_year + 1900, tm->tm_mon + 1, tm->tm_mday, // Date
+    tm->tm_hour, tm->tm_min, tm->tm_sec, millis); // Time
+}
+
+int
 orka_strtoull(char *str, size_t len, void *p_data) 
 {
   char *buf = malloc(len + 1);

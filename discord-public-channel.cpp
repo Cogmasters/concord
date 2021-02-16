@@ -612,7 +612,7 @@ to_json(char *str, size_t len, void *p_embed)
   if (*embed->url)
     A[3] = (void *)embed->url;
   if (embed->timestamp)
-    A[5] = (void *)&embed->timestamp;
+    A[4] = (void *)&embed->timestamp;
   if (embed->color)
     A[5] = (void*)&embed->color;
   if (embed->footer)
@@ -635,7 +635,7 @@ to_json(char *str, size_t len, void *p_embed)
                         "(type):s"
                         "(description):s"
                         "(url):s"
-                        //"(timestamp):s" @todo
+                        "(timestamp):F"
                         "(color):d"
                         "(footer):F"
                         "(image):F"
@@ -649,7 +649,7 @@ to_json(char *str, size_t len, void *p_embed)
                         embed->type,
                         embed->description,
                         embed->url,
-                        //embed->timestamp, @todo
+                        &orka_unix_ms_to_iso8601, &embed->timestamp,
                         &embed->color,
                         &footer::to_json, embed->footer,
                         &image::to_json, embed->image,
