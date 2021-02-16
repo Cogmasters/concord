@@ -28,7 +28,15 @@
 #define ASSERT_S(expr, msg) \
   do { \
     if (!(expr)){ \
-      ERR("Assert Failed:\t%s\n\tExpected:\t%s", msg, #expr); \
+      ERR("Assert Failed:\t%s\n\tExpected:\t" #expr, msg); \
+    } \
+  } while(0)
+
+// THIS WILL ONLY WORK IF __VA_ARGS__ IS SET
+#define VASSERT_S(expr, fmt, ...) \
+  do { \
+    if (!(expr)){ \
+      ERR("Assert Failed:\t" fmt "\n\tExpected:\t" #expr, __VA_ARGS__); \
     } \
   } while(0)
 

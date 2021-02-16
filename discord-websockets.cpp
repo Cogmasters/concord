@@ -108,9 +108,9 @@ ws_send_identify(dati *ws)
 {
   /* Ratelimit check */
   if ( (ws->now_tstamp - ws->session.identify_tstamp) < 5 ) {
-    if (++ws->session.concurrent >= ws->session.max_concurrency)
-      ERR("Reach identify requests threshold (%d every 5 seconds)",
-                ws->session.max_concurrency);
+    ++ws->session.concurrent;
+    VASSERT_S(ws->session.concurrent < ws->session.max_concurrency,
+        "Reach identify request threshold (%d every 5 seconds)", ws->session.max_concurrency);
   }
   else {
     ws->session.concurrent = 0;
@@ -244,8 +244,9 @@ on_dispatch(dati *ws)
 
   /* Ratelimit check */
   if ( (ws->now_tstamp - ws->session.event_tstamp) < 60 ) {
-    if (++ws->session.event_count >= 120)
-      ERR("Reach event dispatch threshold (120 every 60 seconds)");
+    ++ws->session.event_count;
+    ASSERT_S(ws->session.event_count < 120,
+        "Reach event dispatch threshold (120 every 60 seconds)");
   }
   else {
     ws->session.event_tstamp = ws->now_tstamp;
@@ -618,10 +619,10 @@ ws_main_loop(dati *ws)
   //get session info before starting it
   get_bot(ws->p_client, &ws->session);
 
-  if (!ws->session.remaining)
-    ERR("Reach session starts threshold (%d)\n\t"
-              "Please wait %d seconds and try again", 
-        ws->session.total, ws->session.reset_after/1000);
+  VASSERT_S(ws->session.remaining != 0, 
+      "Reach session starts threshold (%d)\n\t"
+      "Please wait %d seconds and try again", 
+      ws->session.total, ws->session.reset_after/1000);
 
   int is_running = 0;
 

@@ -18,9 +18,7 @@ orka_load_whole_file(const char filename[], size_t *len)
 {
   size_t f_size = 0;
   FILE *f = fopen(filename,"rb");
-  if (!f) {
-    ERR("%s '%s'\n", strerror(errno), filename);
-  }
+  VASSERT_S(NULL != f, "%s '%s'\n", strerror(errno), filename);
 
   fseek(f, 0, SEEK_END);
   f_size = ftell(f);

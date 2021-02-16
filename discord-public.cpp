@@ -119,10 +119,7 @@ setcb_message_command(client *client, char prefix[], message_cb *user_cb)
   const int PREFIX_LEN = sizeof(client->ws.prefix);
 
   int ret = snprintf(client->ws.prefix, PREFIX_LEN, "%s", prefix);
-  if (ret >= PREFIX_LEN) {
-    ERR("Prefix '%s' exceeds length of %d (%zu characters)",
-        prefix, PREFIX_LEN, strlen(prefix));
-  }
+  VASSERT_S(ret < PREFIX_LEN, "Prefix '%s' exceeds length of %d (%zu characters)", prefix, PREFIX_LEN, strlen(prefix));
 }
 
 void
