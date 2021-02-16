@@ -248,7 +248,7 @@ extract_access_path (
       {
         char *end;
         int index = strtol(curr_path->key.start, &end, 10);
-        ASSERT_S(*end == 0, "Index is not a number");
+        ASSERT_S(*end == ')', "Index is not a number");
         ASSERT_S(index >= 0, "Index is not zero or positive");
         ASSERT_S(index < t[i].size, "Index is out-of-bound");
 
@@ -403,7 +403,7 @@ json_extract_va_list (char * json, size_t size, char * extractor, va_list ap)
   /* Assume the top-level element is an object */
   if (num_tok < 1 || !(tok[0].type == JSMN_OBJECT || tok[0].type == JSMN_ARRAY))
   {
-    D_PRINT("Object or array expected");
+    ERR("Object or array expected");
     goto cleanup;
   }
 
@@ -429,6 +429,8 @@ json_extract_va_list (char * json, size_t size, char * extractor, va_list ap)
   }
 
   cleanup:
+  free(tok);
+  free_composite_value(&cv);
   return 0;
 }
 

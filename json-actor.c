@@ -897,8 +897,7 @@ static void free_access_path (struct access_path * p)
 {
   if (p->next)
     free_access_path(p->next);
-  else
-    free(p);
+  free(p);
 }
 
 static void free_access_path_value (struct access_path_value * ap)
