@@ -40,7 +40,9 @@ json_escape_string (size_t * output_len_p, char * input, size_t input_len)
     if (escaped) {
       int i;
       for (i = 0; escaped[i]; i++) {
-        if (NULL == output_start) continue;
+        if (NULL == output_start)
+          // count how many extra bytes are needed
+          continue;
 
         *output = escaped[i];
         output ++;
