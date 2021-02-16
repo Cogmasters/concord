@@ -1004,7 +1004,7 @@ inject_builtin (
   switch(v->_.builtin)
   {
     case B_BOOL:
-      if (*(int *)v->operand)
+      if (*(bool *)v->operand)
         return xprintf(pos, size, info, "true");
       else
         return xprintf(pos, size, info, "false");
