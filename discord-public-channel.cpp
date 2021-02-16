@@ -626,7 +626,7 @@ to_json(char *str, size_t len, void *p_embed)
     A[10] = (void *)embed->provider;
   if (embed->author)
     A[11] = (void *)embed->author;
-  if (*embed->fields)
+  if (embed->fields)
     A[12] = (void *)embed->fields;
 
   int ret = json_inject(str, len, 
@@ -1048,7 +1048,7 @@ int
 list_to_json(char *str, size_t len, void *p_fields)
 {
   dati **fields = *(dati ***)p_fields;
-  return ntl_to_buf(buf, size, (void**)fields, NULL, &to_json);
+  return ntl_to_buf(str, len, (void**)fields, NULL, &to_json);
 }
 
 } // namespace field
