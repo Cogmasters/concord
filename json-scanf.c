@@ -229,10 +229,11 @@ match_path (char *buffer, jsmntok_t *t,
     }
   }
   else if (STREQ(es->type_specifier, "funptr")) {
-    if (t[i].type == JSMN_PRIMITIVE || (STRNEQ(buffer + t[i].start, "null", 4))) {
+    if (t[i].type == JSMN_PRIMITIVE && (STRNEQ(buffer + t[i].start, "null", 4))) {
       es->is_applied = false;
     }
-    else if (t[i].type == JSMN_OBJECT || 0 == t[i].size) { // empty object
+    else if (0 == t[i].size 
+            && (t[i].type == JSMN_OBJECT || t[i].type == JSMN_ARRAY)) {
       es->is_applied = false;
     }
     else {
