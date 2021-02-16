@@ -31,5 +31,17 @@ int main(int argc, char *argv[])
   if (0 != memcmp(str, unstr, size)) {
     fprintf(stderr, "escaping/unescaping failed\n");
   }
+
+  char s [100] = {'\\', 'u', 'd', '8', '3', 'd',
+                  '\\', 'u', 'd', 'c', 'a', 'c',
+                  0};
+
+  fprintf (stderr, "%s\n", s);
+  json_unescape_string(&unstr, &unstr_size, s, strlen(s));
+  estr = json_escape_string(&new_size, unstr, unstr_size);
+
+  fprintf(stderr, "%s\n", unstr);
+  fprintf(stderr, "%s\n", estr);
+  fprintf(stderr, "%c\n", 0x1F);
   return 0;
 }

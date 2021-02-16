@@ -264,6 +264,30 @@ read_4_digits(char ** str_p, char * const buf_end, uint16_t *x)
   return true;
 }
 
+static int utf16_is_first_surrogate(uint16_t x)
+{
+  return 0xD800 <=x && x<= 0xDBFF;
+}
+
+static int utf16_is_second_surrogate(uint16_t x)
+{
+  return 0xDC00 <=x && x<= 0xDFFF;
+}
+
+static uint32_t utf16_combine_surrogate(uint16_t w1,uint16_t w2)
+{
+  return ((((uint32_t)w1 & 0x3FF) << 10) | (w2 & 0x3FF)) + 0x10000;
+}
+
+static void * append (uint32_t x, char *d)
+{
+  struct utf8_seq seq = { {0}, 0 };
+  utf8_encode(x, &seq);
+  for (unsigned i = 0; i < seq.len; ++i, d++)
+    *d = seq.c[i];
+  return d;
+}
+
 int
 json_unescape_string (char ** output_p, size_t * output_len_p,
                       char * input, size_t input_len)
@@ -271,6 +295,9 @@ json_unescape_string (char ** output_p, size_t * output_len_p,
   unsigned char c;
   char * const input_start = input, * const input_end = input + input_len;
   char * out_start = NULL, * d = NULL, * s = NULL;
+  uint16_t first_surragate;
+  int second_surragate_expected;
+
 
   enum state {
     TESTING = 1,
@@ -279,9 +306,17 @@ json_unescape_string (char ** output_p, size_t * output_len_p,
   } state = TESTING;
 
 second_iter:
+  first_surragate = 0;
+  second_surragate_expected = 0;
   for (s = input_start; s < input_end;) {
     c = * s;
     s ++;
+
+    if (second_surragate_expected && c != '\\')
+      goto return_err;
+
+    if (0<= c && c <= 0x1F)
+      goto return_err;
 
     if('\\' == c) {
       if (TESTING == state) {
@@ -297,34 +332,37 @@ second_iter:
       c = * s;
       s ++;
 
+      if (second_surragate_expected && c != 'u')
+        goto return_err;
+
       switch(c) {
         case	'"':
         case	'\\':
         case	'/':
-          if (UNESCAPING == state) {
-            *d = c;
-            d++;
-          }
-          break;
-        case	'b': if (UNESCAPING == state) { d[0] = '\b'; d ++; } break;
-        case	'f': if (UNESCAPING == state) { d[0] = '\f'; d ++; } break;
-        case	'n': if (UNESCAPING == state) { d[0] = '\n'; d ++; } break;
-        case	'r': if (UNESCAPING == state) { d[0] = '\r'; d ++; } break;
-        case	't': if (UNESCAPING == state) { d[0] = '\t'; d ++; } break;
+          *d = c; d++; break;
+        case	'b': *d = '\b'; d ++;  break;
+        case	'f': *d = '\f'; d ++;  break;
+        case	'n': *d = '\n'; d ++;  break;
+        case	'r': *d = '\r'; d ++;  break;
+        case	't': *d = '\t'; d ++;  break;
         case	'u':
         {
-          // don't support utf16
           uint16_t x;
           if (!read_4_digits(&s, input_end, &x))
             goto return_err;
-          struct utf8_seq seq = { {0}, 0 };
-          utf8_encode(x, &seq);
-          if (UNESCAPING == state) {
-            for (unsigned i = 0; i < seq.len; ++i, d++)
-              * d = seq.c[i];
+          if (second_surragate_expected) {
+            if (!utf16_is_second_surrogate(x))
+              goto return_err;
+            d = append(utf16_combine_surrogate(first_surragate, x), d);
+            second_surragate_expected = 0;
+          } else if (utf16_is_first_surrogate(x)) {
+            second_surragate_expected = 1;
+            first_surragate = x;
+          } else {
+            d = append(x, d);
           }
-        }
           break;
+        }
         default:
           if(0<= c && c <= 0x1F) /* report errors */
             goto return_err;
@@ -336,9 +374,9 @@ second_iter:
     }
   }
 
-  switch (state) {
+  switch (state)
+  {
     case UNESCAPING:
-    {
       if (!utf8_validate(out_start, d))
         goto return_err;
       else
@@ -347,25 +385,22 @@ second_iter:
         *output_len_p = d - out_start;
         goto return_ok;
       }
-    }
     case ALLOCATING:
-    {
       out_start = calloc(1, input_len);
       d = out_start;
       state = UNESCAPING;
       goto second_iter;
-    }
     case TESTING:
-    {
       *output_p = input_start;
       *output_len_p = input_len;
       return 1;
-    }
     default:
       break;
   }
 
 return_err:
+  if (UNESCAPING == state)
+    free(out_start);
   return 0;
 
 return_ok:
