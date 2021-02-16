@@ -2,7 +2,6 @@
   "title": "TITLE OF EMBED",
   "description": "DESCRIPTION OF EMBED",
   "url": "https://discord.com/developers/docs/resources/channel#embed-object-embed-structure",
-  "timestamp": 1234,
   "color": 3447003,
   "footer": {
     "text": "HERE WE HAVE A FOOTER TEXT",
