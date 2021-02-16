@@ -82,9 +82,5 @@ int main ()
 
   fprintf(stderr, "%s\n", out);
 
-  get_utf8("\\n", strlen(s), out, 1024);
-
-  fprintf(stderr, "%s\n", out);
-
   return 0;
 }

@@ -15,8 +15,7 @@ print_token(jsmntype_t type)
   return NULL; // avoid warning
 }
 
-static int
-keycmp(char *json, jsmntok_t *tok, struct sized_buffer *key)
+static int keycmp(char *json, jsmntok_t *tok, struct sized_buffer *key)
 {
   if (tok->type == JSMN_STRING
       && key->size == tok->end - tok->start
@@ -42,26 +41,24 @@ static char * copy_over_string (size_t * new_size, char * str, size_t len)
   }
 }
 
-struct extraction_info {
+struct e_info {
   char * pos;
   jsmntok_t *tok;
   int n_toks;
-  struct stack sp;
   struct existence * E;
 };
 
 
 
-static int
-extract_str (struct action * v, int i, struct extraction_info * info)
+static int extract_str (struct action * v, int i, struct e_info * info)
 {
   jsmntok_t * t = info->tok;
   ASSERT_S (JSMN_STRING == t[i].type, "expecect string");
 
   size_t new_size = 0;
   int len = t[i].end - t[i].start;
-  char * buffer = info->pos;
-  char * escaped = copy_over_string(&new_size, buffer + t[i].start, len);
+  char * json = info->pos;
+  char * escaped = copy_over_string(&new_size, json + t[i].start, len);
 
   switch(v->mem_size.tag)
   {
@@ -89,31 +86,28 @@ extract_str (struct action * v, int i, struct extraction_info * info)
       break;
     }
   }
-  if (escaped != buffer + t[i].start)
+  if (escaped != json + t[i].start)
     free(escaped);
   return 0;
 }
 
-static int
-extract_scalar (struct action * a, int i, struct extraction_info * info)
+static int extract_scalar (struct action * a, int i, struct e_info * info)
 {
   jsmntok_t * t = info->tok;
   char * json = info->pos, * end;
+  ASSERT_S(t[i].type == JSMN_PRIMITIVE, "Not a primitive");
 
   switch(a->_.builtin)
   {
     case B_INT:
-      ASSERT_S(t[i].type == JSMN_PRIMITIVE, "Not a primitive");
-      switch(json[t[i].start]) {
-        case 'n': *(int *) a->operand = 0; break;
-        default:
-          *(int *) a->operand = (int) strtol(json + t[i].start, &end, 10);
-          if (end != json + t[i].end) goto type_error;
-          break;
+      if ('n' == json[t[i].start])
+        *(int *) a->operand = 0;
+      else {
+        *(int *) a->operand = (int) strtol(json + t[i].start, &end, 10);
+        if (end != json + t[i].end) goto type_error;
+        break;
       }
-      break;
     case B_BOOL:
-      ASSERT_S(t[i].type == JSMN_PRIMITIVE, "Not a primitive");
       switch (json[t[i].start]) {
         case 't': *(bool *)a->operand = true; break;
         case 'f': *(bool *)a->operand = false; break;
@@ -121,33 +115,27 @@ extract_scalar (struct action * a, int i, struct extraction_info * info)
       }
       break;
     case B_LONG_LONG:
-      ASSERT_S(t[i].type == JSMN_PRIMITIVE, "Not a primitive");
-      switch(json[t[i].start]) {
-        case 'n': *(long long *) a->operand = 0; break;
-        default:
-          *(long long *) a->operand = strtoll(json + t[i].start, &end, 10);
-          if (end != json + t[i].end) goto type_error;
-          break;
+      if ('n' == json[t[i].start])
+        *(long long *) a->operand = 0;
+      else {
+        *(long long *) a->operand = strtoll(json + t[i].start, &end, 10);
+        if (end != json + t[i].end) goto type_error;
       }
       break;
     case B_FLOAT:
-      ASSERT_S(t[i].type == JSMN_PRIMITIVE, "Not a primitive");
-      switch(json[t[i].start]) {
-        case 'n': *(float *) a->operand = 0; break;
-        default:
-          *(float *) a->operand = strtof(json + t[i].start, &end);
-          if (end != json + t[i].end) goto type_error;
-          break;
+      if ('n' == json[t[i].start])
+        *(float *) a->operand = 0;
+      else {
+        *(float *) a->operand = strtof(json + t[i].start, &end);
+        if (end != json + t[i].end) goto type_error;
       }
       break;
     case B_DOUBLE:
-      ASSERT_S(t[i].type == JSMN_PRIMITIVE, "Not a primitive");
-      switch(json[t[i].start]) {
-        case 'n': *(double *) a->operand = 0; break;
-        default:
-          *(double *) a->operand = strtod(json + t[i].start, &end);
-          if (end != json + t[i].end) goto type_error;
-          break;
+      if ('n' == json[t[i].start])
+        *(double *) a->operand = 0;
+      else {
+        *(double *) a->operand = strtod(json + t[i].start, &end);
+        if (end != json + t[i].end) goto type_error;
       }
       break;
     default:
@@ -157,8 +145,7 @@ type_error:
   return 0;
 }
 
-static int
-apply_action (struct value * v, int idx, struct extraction_info * info)
+static int apply_action (struct value * v, int idx, struct e_info * info)
 {
   jsmntok_t * t = info->tok;
   char * json = info->pos;
@@ -189,8 +176,11 @@ apply_action (struct value * v, int idx, struct extraction_info * info)
   }
   else {
     if (t[idx].type == JSMN_PRIMITIVE
-        || (STRNEQ(json + t[idx].start, "null", 4))) {
+        && (STRNEQ(json + t[idx].start, "null", 4))) {
       //es->is_applied = false;
+    }
+    else if (0 == t[idx].size
+             && (t[idx].type == JSMN_OBJECT || t[idx].type == JSMN_ARRAY)) {
     }
     else {
       int (*f)(char *, size_t, void *);
@@ -203,16 +193,13 @@ apply_action (struct value * v, int idx, struct extraction_info * info)
   return 0;
 }
 
-static int extract_object_value (struct composite_value * cv, int parent,
-                                 struct extraction_info * info);
-static int extract_array_value (struct composite_value * cv, int parent,
-                                struct extraction_info * info);
+static int
+extract_object_value (struct composite_value * cv, int parent, struct e_info *);
+static int
+extract_array_value (struct composite_value * cv, int parent, struct e_info *);
 
 static int
-extract_value (
-  struct value * v,
-  int val_idx,
-  struct extraction_info * info)
+extract_value (struct value * v, int val_idx, struct e_info * info)
 {
   switch (v->tag) {
     case V_ACTION:
@@ -237,11 +224,10 @@ extract_access_path (
   int val_idx,
   struct access_path_value *apv,
   struct access_path *curr_path,
-  struct extraction_info * info)
+  struct e_info * info)
 {
-  char * buffer = info->pos;
+  char * json = info->pos;
   jsmntok_t * t = info->tok;
-  int n_toks = info->n_toks;
 
   char *end = 0;
   int i = val_idx, ic;
@@ -249,16 +235,13 @@ extract_access_path (
   {
     switch (t[val_idx].type) {
       case JSMN_OBJECT:
-        for (ic = i + 1; t[ic].start < t[i].end; ic++)
-        {
+        for (ic = i + 1; t[ic].start < t[i].end; ic++) {
           if (i != t[ic].parent)
             continue;
 
           // top level key within t[i]
-
-          if (0 == keycmp(buffer, &t[ic], &curr_path->key)) {
+          if (0 == keycmp(json, &t[ic], &curr_path->key))
             return extract_access_path(ic+1, apv, curr_path->next, info);
-          }
         }
         return 0;
       case JSMN_ARRAY:
@@ -292,7 +275,7 @@ static int
 extract_object_value (
   struct composite_value * cv,
   int parent,
-  struct extraction_info * info)
+  struct e_info * info)
 {
   char * json = info->pos;
   jsmntok_t * t = info->tok;
@@ -327,52 +310,56 @@ extract_object_value (
   }
 }
 
-static struct value *
-is_list_extraction (struct composite_value * cv)
+static struct value * is_list_extraction (struct composite_value * cv)
 {
-  for (size_t i = 0; i < cv->_.elements.size; i++) {
-    struct value * v = cv->_.elements.pos + i;
-    if (V_ACTION == v->tag
-        && ACT_BUILT_IN == v->_.action.tag
-        && B_LIST == v->_.action._.builtin
-        && 1 == cv->_.elements.size)
-    {
-      return v;
-    }
-    else
-    {
-      return NULL;
-    }
+  struct value * v = cv->_.elements.pos;
+  if (1 == cv->_.elements.size
+      && V_ACTION == v->tag
+      && ACT_BUILT_IN == v->_.action.tag
+      && B_LIST == v->_.action._.builtin) {
+    return v;
   }
+
+  return NULL;
 }
 
 static int
 extract_array_value (
   struct composite_value * cv,
   int parent,
-  struct extraction_info * info)
+  struct e_info * info)
 {
   jsmntok_t * t = info->tok;
   int n_toks = info->n_toks;
 
-  struct sized_buffer **token_array;
-  int n = t[parent].size;
-  token_array = (struct sized_buffer **)
-    ntl_malloc(n, sizeof(struct sized_buffer));
+  struct sized_buffer **token_array = NULL;
+  int * children;
 
-  int * children = malloc(n * sizeof(int));
+  int n = t[parent].size;
+
+  struct value * v = is_list_extraction(cv);
+
+  if (v)
+    token_array = (struct sized_buffer **)
+      ntl_malloc(n, sizeof(struct sized_buffer));
+  else
+    children = malloc(n * sizeof(int));
 
   int idx, ic;
   for (idx = 0, ic = parent + 1; ic < n_toks && idx < n; ic++) {
     if (t[ic].parent != parent)
       continue;
-    token_array[idx]->start = info->pos + t[ic].start;
-    token_array[idx]->size = t[ic].end - t[ic].start;
-    children[idx] = ic;
+
+    if (v) {
+      token_array[idx]->start = info->pos + t[ic].start;
+      token_array[idx]->size = t[ic].end - t[ic].start;
+    }
+    else {
+      children[idx] = ic;
+    }
     ++idx;
   }
 
-  struct value * v = is_list_extraction(cv);
   if (v) {
     *(struct sized_buffer ***)v->_.action.operand = token_array;
     return 1;
@@ -388,30 +375,30 @@ extract_array_value (
 }
 
 int
-json_extract_va_list (char * pos, size_t size, char * extractor, va_list ap)
+json_extract_va_list (char * json, size_t size, char * extractor, va_list ap)
 {
   struct stack stack = { .array = {0}, .top = 0, .actor = EXTRACTOR };
   struct operand_addrs rec = { 0 };
   struct composite_value cv;
 
-  prepare_actor(&stack, &rec, &cv, pos, size, extractor, ap);
-  struct extraction_info info = { .pos = pos, .E = NULL };
+  prepare_actor(&stack, &rec, &cv, json, size, extractor, ap);
+  struct e_info info = { .pos = json, .E = NULL };
 
   //calculate how many tokens are needed
   jsmn_parser parser;
   jsmn_init(&parser);
   jsmntok_t * tok = NULL;
-  int num_tok = jsmn_parse(&parser, pos, size, NULL, 0);
+  int num_tok = jsmn_parse(&parser, json, size, NULL, 0);
   D_PRINT("# of tokens = %d", num_tok);
   if (num_tok < 0) {
-    D_PRINT("Failed to parse JSON: %.*s", (int)size, pos);
+    D_PRINT("Failed to parse JSON: %.*s", (int)size, json);
     D_PRINT("Returned token number: %d", num_tok);
     goto cleanup;
   }
 
   tok = malloc(sizeof(jsmntok_t) * num_tok);
   jsmn_init(&parser);
-  num_tok = jsmn_parse(&parser, pos, size, tok, num_tok);
+  num_tok = jsmn_parse(&parser, json, size, tok, num_tok);
 
   /* Assume the top-level element is an object */
   if (num_tok < 1 || !(tok[0].type == JSMN_OBJECT || tok[0].type == JSMN_ARRAY))
@@ -421,7 +408,7 @@ json_extract_va_list (char * pos, size_t size, char * extractor, va_list ap)
   }
 
   for (int i = 0; i < num_tok; i++) {
-    print_tok(pos, tok, i);
+    print_tok(json, tok, i);
   }
 
   info.n_toks = num_tok;
@@ -445,11 +432,11 @@ json_extract_va_list (char * pos, size_t size, char * extractor, va_list ap)
   return 0;
 }
 
-int json_extract (char * pos, size_t size, char * extractor, ...)
+int json_extract (char * json, size_t size, char * extractor, ...)
 {
   va_list ap;
   va_start(ap, extractor);
-  size_t used_bytes = json_extract_va_list(pos, size, extractor, ap);
+  size_t used_bytes = json_extract_va_list(json, size, extractor, ap);
   va_end(ap);
   return used_bytes;
 }
