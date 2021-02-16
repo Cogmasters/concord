@@ -1,3 +1,9 @@
+# Semantic Commit Messages
+For organization purposes we standardize how our commits are staged.
+The basics are covered in this guide: https://gist.github.com/joshbuchea/6f47e86d2510bce28f8e7f42ae84c716
+And we also use the following type:
+`wip`: (work in progress)
+
 # Easy Commit
 
 This section explains how to submit changes and pull requests the easy
