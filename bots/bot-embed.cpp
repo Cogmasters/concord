@@ -58,7 +58,11 @@ load_embed_from_json(char filename[])
   dati *new_embed = alloc_dati();
   from_json(json_payload, fsize, (void*)new_embed);
 
+<<<<<<< HEAD
   new_embed->timestamp = orka_timestamp_ms(); // get current timestamp
+=======
+  new_embed->timestamp = orka_timestamp_ms(); // add timestamp from current time
+>>>>>>> wip: update bot-embed.cpp
 
   free(json_payload);
   fclose(fp);
