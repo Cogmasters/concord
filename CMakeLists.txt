@@ -9,7 +9,7 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_C_STANDARD 11)
 
 set(CMAKE_BUILD_TYPE DEBUG)
-set(CMAKE_C_FLAGS "-DLIBDISCORD_DEBUG -D_XOPEN_SOURCE=700")
+set(CMAKE_C_FLAGS "-DLIBDISCORD_DEBUG -DJSON_SCANF_DEBUG -D_XOPEN_SOURCE=700")
 set(CMAKE_CXX_FLAGS "-DLIBDISCORD_DEBUG -D_XOPEN_SOURCE=700 -Wno-write-strings -Wno-c++11-compat-deprecated-writable-strings")
 
 set(CMAKE_EXE_LINKER_FLAGS "")
@@ -91,11 +91,22 @@ add_executable(test-cee.exe ${CEE_FILES} ${ORKA_FILES} test/test-cee.cpp)
 target_link_libraries(test-cee.exe curl ssl crypto)
 
 
-add_executable(test-json-injector.exe ntl.c
+add_executable(test-json-injector.exe
+        ntl.c
         json-string.c
         json-actor.c
         test/test-json-injector.c)
 
-add_executable(test-json-actor.exe ntl.c
+add_executable(test-json-actor.exe
+        ntl.c
         json-string.c
         test/test-json-actor.c)
+
+add_executable(test-json-extractor.exe
+        ntl.c
+        json-string.c
+        test/test-json-extractor.c)
+
+
+add_executable(test-utf-8.exe
+        test/test-utf8.c)
