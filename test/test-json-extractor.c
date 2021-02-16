@@ -1,4 +1,4 @@
-#include "json-extractor.c"
+#include "json-actor.c"
 #include <string.h>
 #include <assert.h>
 

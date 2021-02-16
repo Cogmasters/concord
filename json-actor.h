@@ -18,7 +18,7 @@
  *            | <composite-value> | <action>
  *
  * <action> := d | ld | lld | f | lf | b | <size-specifier>s
- *            | F | F_nullable | T | L | U(+) | U(?)
+ *            | F | F_nullable | T | L
  *
  * <access-path-value> := <access-path> : <value>
  *
@@ -32,9 +32,37 @@
  * <size-specifier> := <integer> | .* | ? | epsilon
  *
  *
+ * <builtin-action> := d | ld | lld | f | lf | b | <size-specifier>s
+ *
+ *  d:  corresponds to %d, it will inject to json as an int or extract data
+ *  from a json value as an int
+ *
+ *  ld: corresponds to %ld
+ *  lld: corresponds to %lld
+ *
+ *  f: corresponds to %f
+ *  lf: corresponds to %lf
+ *
+ *  b: corresponds to %b
+ *
+ *  s: corresponds to %s, and it can be decorated with .*  and ?
+ *  .*s: corresponds to %.*s
+ *
+ *  ?s: has not its counter part in printf format string, it tells the
+ *     extract function to allocate sufficient memory for
+ *     the extraction
+ *
+ *  T: only works for extractor, it will return the memory section that stores
+ *  a json value
+ *
+ *  L: only works for extractor, it will return the memory sections that store
+ *  each value of a json array
+ *
+ *
  * examples:
  *
- * json_extract(pos, size, "{ (key) : d, (key) : .*s }", &i)
+ *
+ * json_extract(pos, size, "{ (key) : d, (key) : .*s }", &i, &s)
  *
  * sized_buffer ** list;
  * json_extract(pos, size, "[ L ]", &list);
@@ -49,24 +77,45 @@
 extern "C" {
 #endif // __cplusplus
 
-extern int
-json_inject_alloc (
-  char ** buf_p,
-  size_t * size_p,
-  char * injector, ...);
+/*
+ * This function will inject variadic parameters into an json
+ * according to the specification `injector`
+ *
+ *
+ * `pos` pointers to the memory address to stop the injected json
+ * `size` is the size of the memory block that can be used to store the json
+ *
+ * `injector` specifies how the variadic parameters should be placed in
+ * the injected json.
+ *
+ * `injector` is defined by the above BNF grammar
+ *
+ *
+ * example:
+ * json_inject(pos, size, "(key1) : d, (key2) : |abc|", &i);
+ *
+ *
+ * the result is a json stored at pos
+ *
+ * { "key1": 10, "key2": "abc" }
+ *
+ * all variadic parameters of actions should be address
+ *
+ */
+extern int json_inject (char * pos, size_t size, char * injector, ...);
 
-extern int json_inject (
-  char * pos,
-  size_t size,
-  char * injector,
-  ...);
+extern int
+json_inject_alloc (char ** buf_p, size_t * size_p, char * injector, ...);
 
 extern int
-json_inject_va_list(
-  char * pos,
-  size_t size,
-  char * injector,
-  va_list ap);
+json_inject_va_list(char * pos, size_t size, char * injector, va_list ap);
+
+
+extern int
+json_extract (char * json, size_t size, char * extractor, ...);
+
+extern int
+json_extract_va_list(char * json, size_t size, char * extractor, va_list ap);
 
 #ifdef __cplusplus
 }
