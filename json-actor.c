@@ -1009,7 +1009,7 @@ inject_builtin (
         case SIZE_UNKNOWN:
         case SIZE_ZERO:
           escaped = json_escape_string(&len, s, strlen(s));
-          ret = xprintf(pos, size, info, "\"%s\"", escaped);
+          ret = xprintf(pos, size, info, "\"%.*s\"", len, escaped);
           if (escaped != s)
             free(escaped);
           return ret;
