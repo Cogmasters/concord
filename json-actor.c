@@ -57,8 +57,24 @@
 #include "ntl.h"
 #include "json-actor.h"
 
+static void assert_is_pointer(void * p)
+{
+  if (NULL == p)
+    return;
+
+  /*
+   * This is a poor man's method to check if
+   * p is a legit pointer.
+   */
+  char * x = (char *)p;
+  static char c; // has to be a static variable
+  c = *x;
+}
+
+
 extern char *
 json_escape_string (size_t * output_len_p, char * input, size_t input_len);
+
 
 enum actor {
   EXTRACTOR = 1,
@@ -801,6 +817,7 @@ parse_toplevel(
 struct operand_addrs {
   void * addrs[MAX_ACTION_NUMBERS];
   enum arg_type types[MAX_ACTION_NUMBERS];
+  char may_not_be_ptr[MAX_ACTION_NUMBERS];
   size_t pos;
 };
 
@@ -841,6 +858,7 @@ get_value_operand_addrs (struct value *v, struct operand_addrs *rec)
               //@todo analyze native format string
               // to find out the argument types
               rec->addrs[rec->pos] = &act->fmt_args[i]._;
+              rec->may_not_be_ptr[rec->pos] = 1;
               rec->pos ++;
             }
           }
@@ -1194,6 +1212,7 @@ has_value (struct injection_info * info, struct value * v)
   switch (v->tag) {
     case V_ACTION:
       for (size_t i = 0; i < sizeof_assigned_addres/sizeof(void*); i++) {
+        assert_is_pointer(v->_.action.operand);
         if (assigned_addrs[i] == v->_.action.operand)
           return 1;
       }
@@ -1341,7 +1360,7 @@ json_inject_va_list(
 
   struct injection_info info = { 0 };
   char * mem = NULL;
-  size_t mem_size;
+  size_t mem_size = 0;
   if (1)
     info.fp = NULL;
   else
@@ -1431,7 +1450,7 @@ print_token(jsmntype_t type)
 static int keycmp(char *json, jsmntok_t *tok, struct sized_buffer *key)
 {
   if (tok->type == JSMN_STRING
-      && key->size == tok->end - tok->start
+      && key->size == (size_t)(tok->end - tok->start)
       && STRNEQ(json + tok->start, key->start, key->size))
   {
     return 0;
@@ -1599,7 +1618,7 @@ static int apply_action (struct value * v, int idx, struct e_info * info)
       int (*f)(char *, size_t, void *);
       f = a->_.user_def;
       int ret = (*f)(json + t[idx].start, t[idx].end - t[idx].start, a->operand);
-      if (0 == ret);
+      //if (0 == ret);
       //es->is_applied = false;
     }
   }
