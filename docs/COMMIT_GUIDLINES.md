@@ -39,6 +39,9 @@ References:
 
 # Easy Commit
 
+If you have problems to submit clean pull requests without introducing merge commits, 
+you can use this method, otherwise please use your git commands. 
+
 This section explains how to submit changes and pull requests the easy
    and cleanest way without causing any merge conflicts.
 
