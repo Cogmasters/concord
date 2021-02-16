@@ -21,6 +21,8 @@
   },
   "fields": [
     {"name":"field1", "value":"VALUE OF FIELD1"},
-    {"name":"field2", "value":"VALUE OF FIELD2"}
+    {"name":"field2", "value":"VALUE OF FIELD2"},
+    {"name":"field3", "value":"VALUE OF FIELD3"},
+    {"name":"field4", "value":"VALUE OF FIELD4"}
   ]
 }

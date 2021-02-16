@@ -601,6 +601,7 @@ to_json(char *str, size_t len, void *p_embed)
   if (NULL == p_embed) return snprintf(str, len, "{}");
 
   dati *embed = (dati*)p_embed;
+
   void *A[13] = {0}; // pointer availability array
   if (*embed->title)
     A[0] = (void *)embed->title;
@@ -613,7 +614,7 @@ to_json(char *str, size_t len, void *p_embed)
   if (embed->timestamp)
     A[5] = (void *)&embed->timestamp;
   if (embed->color)
-    A[5] = (void *)&embed->color;
+    A[5] = (void*)&embed->color;
   if (embed->footer)
     A[6] = (void *)embed->footer;
   if (embed->image)
@@ -627,7 +628,7 @@ to_json(char *str, size_t len, void *p_embed)
   if (embed->author)
     A[11] = (void *)embed->author;
   if (embed->fields)
-    A[12] = (void *)embed->fields;
+    A[12] = (void *)&embed->fields;
 
   int ret = json_inject(str, len, 
                         "(title):s"
@@ -649,7 +650,7 @@ to_json(char *str, size_t len, void *p_embed)
                         embed->description,
                         embed->url,
                         //embed->timestamp, @todo
-                        embed->color,
+                        &embed->color,
                         &footer::to_json, embed->footer,
                         &image::to_json, embed->image,
                         &thumbnail::to_json, embed->thumbnail,
@@ -715,9 +716,9 @@ to_json(char *str, size_t len, void *p_thumbnail)
 
   dati *thumbnail = (dati*)p_thumbnail;
   void *A[4] = {0}; // pointer availability array
-  if (*thumbnail->url)
+  if (!IS_EMPTY_STRING(thumbnail->url))
     A[0] = (void *)thumbnail->url;
-  if (*thumbnail->proxy_url)
+  if (!IS_EMPTY_STRING(thumbnail->proxy_url))
     A[1] = (void *)thumbnail->proxy_url;
   if (thumbnail->height)
     A[2] = (void *)&thumbnail->height;
@@ -791,9 +792,9 @@ to_json(char *str, size_t len, void *p_provider)
 
   dati *provider = (dati*)p_provider;
   void *A[2] = {0}; // pointer availability array
-  if (*provider->name)
+  if (!IS_EMPTY_STRING(provider->name))
     A[0] = (void *)provider->name;
-  if (*provider->url)
+  if (!IS_EMPTY_STRING(provider->url))
     A[1] = (void *)provider->url;
 
   int ret = json_inject(str, len, 
@@ -862,13 +863,13 @@ to_json(char *str, size_t len, void *p_author)
 
   dati *author = (dati*)p_author;
   void *A[4] = {0}; // pointer availability array
-  if (*author->name)
+  if (!IS_EMPTY_STRING(author->name))
     A[0] = (void *)author->name;
-  if (*author->url)
+  if (!IS_EMPTY_STRING(author->url))
     A[1] = (void *)author->url;
-  if (*author->icon_url)
+  if (!IS_EMPTY_STRING(author->icon_url))
     A[2] = (void *)author->icon_url;
-  if (*author->proxy_icon_url)
+  if (!IS_EMPTY_STRING(author->proxy_icon_url))
     A[3] = (void *)author->proxy_icon_url;
 
   int ret = json_inject(str, len, 
@@ -939,11 +940,11 @@ to_json(char *str, size_t len, void *p_footer)
 
   dati *footer = (dati*)p_footer;
   void *A[3] = {0}; // pointer availability array
-  if (*footer->text)
+  if (!IS_EMPTY_STRING(footer->text))
     A[0] = (void *)footer->text;
-  if (*footer->icon_url)
+  if (!IS_EMPTY_STRING(footer->icon_url))
     A[1] = (void *)footer->icon_url;
-  if (*footer->proxy_icon_url)
+  if (!IS_EMPTY_STRING(footer->proxy_icon_url))
     A[2] = (void *)footer->proxy_icon_url;
 
   int ret = json_inject(str, len, 
@@ -1024,9 +1025,9 @@ to_json(char *str, size_t len, void *p_field)
 
   dati *field = (dati*)p_field;
   void *A[3] = {0}; // pointer availability array
-  if (*field->name)
+  if (!IS_EMPTY_STRING(field->name))
     A[0] = (void *)field->name;
-  if (*field->value)
+  if (!IS_EMPTY_STRING(field->value))
     A[1] = (void *)field->value;
 
   A[2] = (void *)&field->Inline;
