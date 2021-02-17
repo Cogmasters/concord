@@ -226,6 +226,7 @@ struct value {
     struct composite_value * cv;
     struct action action;
   } _;
+  bool is_applied;
 };
 
 static void
@@ -1466,8 +1467,7 @@ int json_inject (char * pos, size_t size, char * injector, ...)
 }
 
 
-static char*
-print_token(jsmntype_t type)
+static char* type_to_string(jsmntype_t type)
 {
   switch (type) {
     case JSMN_UNDEFINED:  return "undefined";
@@ -1478,6 +1478,14 @@ print_token(jsmntype_t type)
     default:              ERR("Unknown JSMN_XXXX type encountered (code: %d)", type);
   }
   return NULL; // avoid warning
+}
+
+static void
+print_tok (FILE * fp, char * json, jsmntok_t * tok, int i) {
+  fprintf(fp, "[%u][p:%d][size:%d]%s (%.*s)\n",
+          i, tok[i].parent,
+          tok[i].size, type_to_string(tok[i].type),
+          (int)(tok[i].end - tok[i].start), json + tok[i].start);
 }
 
 static int keycmp(char *json, jsmntok_t *tok, struct sized_buffer *key)
@@ -1553,13 +1561,13 @@ static int extract_str (struct action * v, int i, struct e_info * info)
   }
   if (escaped != json + t[i].start)
     free(escaped);
-  return 0;
+  return 1;
 }
 
 static int extract_scalar (struct action * a, int i, struct e_info * info)
 {
   jsmntok_t * t = info->tok;
-  char * json = info->pos, * end;
+  char * json = info->pos, * xend; // exclusive end
   ASSERT_S(t[i].type == JSMN_PRIMITIVE, "Not a primitive");
 
   switch(a->_.builtin)
@@ -1568,46 +1576,55 @@ static int extract_scalar (struct action * a, int i, struct e_info * info)
       if ('n' == json[t[i].start])
         *(int *) a->operand = 0;
       else {
-        *(int *) a->operand = (int) strtol(json + t[i].start, &end, 10);
-        if (end != json + t[i].end) goto type_error;
+        *(int *) a->operand = (int) strtol(json + t[i].start, &xend, 10);
+        if (xend != json + t[i].end)
+          ERR("failed to extract int from %.*s\n",
+              t[i].end - t[i].start, json + t[i].start);
         break;
       }
     case B_BOOL:
       switch (json[t[i].start]) {
         case 't': *(bool *)a->operand = true; break;
         case 'f': *(bool *)a->operand = false; break;
-        default: goto type_error;
+        default:
+          ERR("failed to extract bool from %.*s\n",
+              t[i].end - t[i].start, json + t[i].start);
       }
       break;
     case B_LONG_LONG:
       if ('n' == json[t[i].start])
         *(long long *) a->operand = 0;
       else {
-        *(long long *) a->operand = strtoll(json + t[i].start, &end, 10);
-        if (end != json + t[i].end) goto type_error;
+        *(long long *) a->operand = strtoll(json + t[i].start, &xend, 10);
+        if (xend != json + t[i].end)
+          ERR("failed to extract long long from %.*s\n",
+              t[i].end - t[i].start, json + t[i].start);
       }
       break;
     case B_FLOAT:
       if ('n' == json[t[i].start])
         *(float *) a->operand = 0;
       else {
-        *(float *) a->operand = strtof(json + t[i].start, &end);
-        if (end != json + t[i].end) goto type_error;
+        *(float *) a->operand = strtof(json + t[i].start, &xend);
+        if (xend != json + t[i].end)
+          ERR("failed to extract float from %.*s\n",
+              t[i].end - t[i].start, json + t[i].start);
       }
       break;
     case B_DOUBLE:
       if ('n' == json[t[i].start])
         *(double *) a->operand = 0;
       else {
-        *(double *) a->operand = strtod(json + t[i].start, &end);
-        if (end != json + t[i].end) goto type_error;
+        *(double *) a->operand = strtod(json + t[i].start, &xend);
+        if (xend != json + t[i].end)
+          ERR("failed to extract double from %.*s\n",
+              t[i].end - t[i].start, json + t[i].start);
       }
       break;
     default:
       ERR("unexpected");
   }
-  type_error:
-  return 0;
+  return 1;
 }
 
 static int apply_action (struct value * v, int idx, struct e_info * info)
@@ -1651,11 +1668,11 @@ static int apply_action (struct value * v, int idx, struct e_info * info)
       int (*f)(char *, size_t, void *);
       f = a->_.user_def;
       int ret = (*f)(json + t[idx].start, t[idx].end - t[idx].start, a->operand);
-      //if (0 == ret);
-      //es->is_applied = false;
+      if (0 == ret)
+        return 0;
     }
   }
-  return 0;
+  return 1;
 }
 
 static int
@@ -1666,22 +1683,26 @@ extract_array_value (struct composite_value * cv, int parent, struct e_info *);
 static int
 extract_value (struct value * v, int val_idx, struct e_info * info)
 {
+  int ret = 0;
   switch (v->tag) {
     case V_ACTION:
-      apply_action(v, val_idx, info);
+      ret = apply_action(v, val_idx, info);
       break;
     case V_COMPOSITE_VALUE:
       if (v->_.cv->is_object)
-        extract_object_value(v->_.cv, val_idx, info);
+        ret = extract_object_value(v->_.cv, val_idx, info);
       else
-        extract_array_value(v->_.cv, val_idx, info);
+        ret = extract_array_value(v->_.cv, val_idx, info);
       break;
     case V_PRIMITIVE:
+      ERR("extract does not support json primitive\n");
       break;
     case V_STRING_LITERAL:
+      ERR("extract does not support string literal\n");
       break;
   }
-  return 0;
+  v->is_applied = true;
+  return ret;
 }
 
 static int
@@ -1694,7 +1715,6 @@ extract_access_path (
   char * json = info->pos;
   jsmntok_t * t = info->tok;
 
-  char *end = 0;
   int i = val_idx, ic;
   if (curr_path)
   {
@@ -1705,15 +1725,18 @@ extract_access_path (
             continue;
 
           // top level key within t[i]
-          if (0 == keycmp(json, &t[ic], &curr_path->key))
-            return extract_access_path(ic+1, apv, curr_path->next, info);
+          if (0 == keycmp(json, &t[ic], &curr_path->key)) {
+            // fpri ntf(stderr, "> %.*s == ", curr_path->key.size, curr_path->key.start);
+            // print_tok(stderr, json, t, ic);
+            return extract_access_path(ic + 1, apv, curr_path->next, info);
+          }
         }
         return 0;
       case JSMN_ARRAY:
       {
-        char *end;
-        int index = strtol(curr_path->key.start, &end, 10);
-        ASSERT_S(*end == ')', "Index is not a number");
+        char *xend;
+        int index = strtol(curr_path->key.start, &xend, 10);
+        ASSERT_S(*xend == ')', "Index is not a number");
         ASSERT_S(index >= 0, "Index is not zero or positive");
         ASSERT_S(index < t[i].size, "Index is out-of-bound");
 
@@ -1726,16 +1749,16 @@ extract_access_path (
     return 0;
   }
   struct value * v = &apv->value;
-  return extract_value(v, val_idx, info);
+  int ret = extract_value(v, val_idx, info);
+  if (ret) {
+    apv->value.is_applied = true;
+    //print_access_path_value(stderr, apv);
+    //fprintf(stderr, "< matched: ");
+    //print_tok(stderr, json, t, val_idx);
+  }
+  return ret;
 }
 
-static void
-print_tok (char * json, jsmntok_t * tok, int i) {
-  D_PRINT("[%u][p:%d][size:%d]%s (%.*s)\n",
-          i, tok[i].parent,
-          tok[i].size, print_token(tok[i].type),
-          (int)(tok[i].end - tok[i].start), json + tok[i].start);
-}
 static int
 extract_object_value (
   struct composite_value * cv,
@@ -1747,32 +1770,41 @@ extract_object_value (
 
   int key_idx = parent + 1, val_idx = parent + 2;
   struct access_path_value *p;
-  int nkeys = 0;
+  int nkeys = 0, ret = 0, n = t[parent].size;
+
   while (1) {
     if (t[key_idx].type != JSMN_STRING) {
-      print_tok(json, t, key_idx);
+      print_tok(stderr, json, t, key_idx);
     }
     ASSERT_S(t[key_idx].type == JSMN_STRING, "Not a key"); // make sure it's a key
     ASSERT_S(t[key_idx].parent == parent, "Token is not at top level"); // make sure it's at the toplevel
 
     for (size_t i = 0; i < cv->_.pairs.size; i++) {
       p = cv->_.pairs.pos + i;
-      if (0 == keycmp(json, &t[key_idx], &p->path.key))
-        extract_access_path(val_idx, p, p->path.next, info);
+      if (p->value.is_applied)
+        continue;
+
+      if (0 == keycmp(json, &t[key_idx], &p->path.key)) {
+        //fprintf(stderr, "> %.*s == ", p->path.key.size, p->path.key.start);
+        //print_tok(stderr, json, t, key_idx);
+        val_idx = key_idx + 1;
+        ret += extract_access_path(val_idx, p, p->path.next, info);
+      }
     }
 
     nkeys ++;
-    if (nkeys < t[parent].size) {
+    if (nkeys < n) {
       // find the next toplevel key
       key_idx = val_idx + 1;
       while (t[key_idx].end < t[val_idx].end && t[key_idx].end < t[parent].end) {
-        print_tok(json, t, key_idx);
+        //print_tok(stderr, json, t, key_idx);
         key_idx ++;
       }
     }
     else
       break;
   }
+  return ret;
 }
 
 static struct value * is_list_extraction (struct composite_value * cv)
@@ -1799,8 +1831,7 @@ extract_array_value (
 
   struct sized_buffer **token_array = NULL;
   int * children;
-
-  int n = t[parent].size;
+  int n = t[parent].size, ret = 0;
 
   struct value * v = is_list_extraction(cv);
 
@@ -1830,13 +1861,15 @@ extract_array_value (
     return 1;
   }
 
-  for (size_t i = 0; i < cv->_.elements.size && i < n; i++) {
+  for (size_t i = 0; i < cv->_.elements.size && i < (size_t)n; i++) {
     v = cv->_.elements.pos + i;
-    extract_value(v, children[i], info);
+    if (v->is_applied)
+      continue;
+    ret += extract_value(v, children[i], info);
   }
 
   free(children);
-  return 0;
+  return ret;
 }
 
 int
@@ -1873,30 +1906,31 @@ json_extract_va_list (char * json, size_t size, char * extractor, va_list ap)
   }
 
   for (int i = 0; i < num_tok; i++) {
-    print_tok(json, tok, i);
+    //print_tok(stderr, json, tok, i);
   }
 
   info.n_toks = num_tok;
   info.tok = tok;
+  int ret = 0;
   switch (tok[0].type)
   {
     case JSMN_OBJECT:
       ASSERT_S(cv.is_object, "Cannot extract array from json object\n");
-      extract_object_value(&cv, 0, &info);
+      ret = extract_object_value(&cv, 0, &info);
       break;
     case JSMN_ARRAY:
       ASSERT_S(!cv.is_object, "Cannot extract object from json array\n");
-      extract_array_value(&cv, 0, &info);
+      ret = extract_array_value(&cv, 0, &info);
       break;
     default:
-      ERR("Unexpected toplevel token %s\n", print_token(tok[0].type));
+      ERR("Unexpected toplevel token %s\n", type_to_string(tok[0].type));
       goto cleanup;
   }
 
   cleanup:
   free(tok);
   free_composite_value(&cv);
-  return 0;
+  return ret;
 }
 
 int json_extract (char * json, size_t size, char * extractor, ...)
