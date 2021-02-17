@@ -55,7 +55,6 @@
 #define JSMN_STRICT  // parse json in strict mode
 #include "jsmn.h"
 #include "ntl.h"
-#include "json-scanf.h"
 #include "json-actor.h"
 
 
@@ -77,6 +76,8 @@ static void assert_is_pointer(void * p)
 extern char *
 json_escape_string (size_t * output_len_p, char * input, size_t input_len);
 
+extern int json_unescape_string(char ** new_str, size_t * new_size,
+                                char * str, size_t old_size);
 
 enum actor {
   EXTRACTOR = 1,
@@ -999,10 +1000,10 @@ xprintf(
   if (info->fp) {
     va_list ap;
     va_start(ap, format);
-    ret1 = vfprintf(info->fp, format, ap);
+    ret2 = vfprintf(info->fp, format, ap);
     va_end(ap);
     ASSERT_S(ret2 >= 0, "vfprintf");
-    ASSERT_S(ret1 == ret1, "errror");
+    ASSERT_S(ret2 == ret1, "errror");
   }
 
   if (NULL == pos)
@@ -1366,7 +1367,8 @@ prepare_actor(
   get_composite_value_operand_addrs(cv, operand_addrs);
 
   for (size_t i = 0; i < operand_addrs->pos; i++) {
-    switch (operand_addrs->types[i]) {
+    switch (operand_addrs->types[i])
+    {
       case ARG_PTR:
         *((void **) operand_addrs->addrs[i]) = va_arg(ap, void *);
         break;
@@ -1524,7 +1526,7 @@ struct e_info {
 
 
 
-static int extract_str (struct action * v, int i, struct e_info * info)
+static size_t extract_str (struct action * v, int i, struct e_info * info)
 {
   jsmntok_t * t = info->tok;
   ASSERT_S (JSMN_STRING == t[i].type, "expecect string");
@@ -1565,7 +1567,7 @@ static int extract_str (struct action * v, int i, struct e_info * info)
   return 1;
 }
 
-static int extract_scalar (struct action * a, int i, struct e_info * info)
+static size_t extract_scalar (struct action * a, int i, struct e_info * info)
 {
   jsmntok_t * t = info->tok;
   char * json = info->pos, * xend; // exclusive end
@@ -1581,10 +1583,11 @@ static int extract_scalar (struct action * a, int i, struct e_info * info)
         if (xend != json + t[i].end)
           ERR("failed to extract int from %.*s\n",
               t[i].end - t[i].start, json + t[i].start);
-        break;
       }
+      break;
     case B_BOOL:
-      switch (json[t[i].start]) {
+      switch (json[t[i].start])
+      {
         case 't': *(bool *)a->operand = true; break;
         case 'f': *(bool *)a->operand = false; break;
         default:
@@ -1628,30 +1631,30 @@ static int extract_scalar (struct action * a, int i, struct e_info * info)
   return 1;
 }
 
-static int apply_action (struct value * v, int idx, struct e_info * info)
+static size_t apply_action (struct value * v, int idx, struct e_info * info)
 {
   jsmntok_t * t = info->tok;
   char * json = info->pos;
   ASSERT_S(V_ACTION == v->tag, "expect an action");
 
   struct action * a = &v->_.action;
-  if (ACT_BUILT_IN == v->_.action.tag) {
-    switch (a->_.builtin) {
+  if (ACT_BUILT_IN == a->tag) {
+    switch (a->_.builtin)
+    {
       case B_STRING:
-        extract_str(a, idx, info);
-        break;
-      case B_TOKEN: {
+        return extract_str(a, idx, info);
+      case B_TOKEN:
+      {
         struct sized_buffer *tk = a->operand;
         tk->start = json + t[idx].start;
         tk->size = t[idx].end - t[idx].start;
-        break;
+        return 1;
       }
       default:
         if (a->_.builtin < B_STRING)
-          extract_scalar(a, idx, info);
+          return extract_scalar(a, idx, info);
         else
           ERR("unexpected case %d\n", a->_.builtin);
-        break;
     }
   }
   else if (ACT_FORMAT_STRING == a->tag) {
@@ -1661,9 +1664,11 @@ static int apply_action (struct value * v, int idx, struct e_info * info)
     if (t[idx].type == JSMN_PRIMITIVE
         && (STRNEQ(json + t[idx].start, "null", 4))) {
       //es->is_applied = false;
+      return 0;
     }
     else if (0 == t[idx].size
              && (t[idx].type == JSMN_OBJECT || t[idx].type == JSMN_ARRAY)) {
+      return 0;
     }
     else {
       int (*f)(char *, size_t, void *);
@@ -1671,20 +1676,22 @@ static int apply_action (struct value * v, int idx, struct e_info * info)
       int ret = (*f)(json + t[idx].start, t[idx].end - t[idx].start, a->operand);
       if (0 == ret)
         return 0;
+      else
+        return 1;
     }
   }
   return 1;
 }
 
-static int
+static size_t
 extract_object_value (struct composite_value * cv, int parent, struct e_info *);
-static int
+static size_t
 extract_array_value (struct composite_value * cv, int parent, struct e_info *);
 
-static int
+static size_t
 extract_value (struct value * v, int val_idx, struct e_info * info)
 {
-  int ret = 0;
+  size_t ret = 0;
   switch (v->tag) {
     case V_ACTION:
       ret = apply_action(v, val_idx, info);
@@ -1706,7 +1713,7 @@ extract_value (struct value * v, int val_idx, struct e_info * info)
   return ret;
 }
 
-static int
+static size_t
 extract_access_path (
   int val_idx,
   struct access_path_value *apv,
@@ -1719,7 +1726,8 @@ extract_access_path (
   int i = val_idx, ic;
   if (curr_path)
   {
-    switch (t[val_idx].type) {
+    switch (t[val_idx].type)
+    {
       case JSMN_OBJECT:
         for (ic = i + 1; t[ic].start < t[i].end; ic++) {
           if (i != t[ic].parent)
@@ -1751,8 +1759,8 @@ extract_access_path (
   }
   struct value * v = &apv->value;
   int ret = extract_value(v, val_idx, info);
+  apv->value.is_applied = true;
   if (ret) {
-    apv->value.is_applied = true;
     //print_access_path_value(stderr, apv);
     //fprintf(stderr, "< matched: ");
     //print_tok(stderr, json, t, val_idx);
@@ -1760,7 +1768,7 @@ extract_access_path (
   return ret;
 }
 
-static int
+static size_t
 extract_object_value (
   struct composite_value * cv,
   int parent,
@@ -1818,7 +1826,7 @@ static struct value * is_list_extraction (struct composite_value * cv)
   return NULL;
 }
 
-static int
+static size_t
 extract_array_value (
   struct composite_value * cv,
   int parent,
@@ -1829,7 +1837,8 @@ extract_array_value (
 
   struct sized_buffer **token_array = NULL;
   int * children;
-  int n = t[parent].size, ret = 0;
+  int n = t[parent].size;
+  size_t ret = 0;
 
   struct value * v = is_list_extraction(cv);
 
@@ -1870,7 +1879,7 @@ extract_array_value (
   return ret;
 }
 
-int
+size_t
 json_vextract (char * json, size_t size, char * extractor, va_list ap)
 {
   struct stack stack = { .array = {0}, .top = 0, .actor = EXTRACTOR };
@@ -1880,7 +1889,7 @@ json_vextract (char * json, size_t size, char * extractor, va_list ap)
 
   prepare_actor(&stack, &rec, &cv, json, size, extractor, ap);
   struct e_info info = { .pos = json, .E = NULL };
-  int ret = 0;
+  size_t ret = 0;
 
   //calculate how many tokens are needed
   jsmn_parser parser;
@@ -1925,7 +1934,7 @@ json_vextract (char * json, size_t size, char * extractor, va_list ap)
   return ret;
 }
 
-int json_extract (char * json, size_t size, char * extractor, ...)
+size_t json_extract (char * json, size_t size, char * extractor, ...)
 {
   va_list ap;
   va_start(ap, extractor);

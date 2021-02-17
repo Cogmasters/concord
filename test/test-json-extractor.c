@@ -60,7 +60,7 @@ int main ()
 
 
   struct orka_settings settings;
-  int ret = json_extract(json, strlen(json),
+  size_t ret = json_extract(json, strlen(json),
                "(discord)(token):s"
                  "(github):"
                  "{"
@@ -92,7 +92,7 @@ int main ()
                settings.logging.dump_curl.filename,
                &settings.logging.dump_curl.enable);
 
-  fprintf(stderr, "\n\nextracted %d values\n", ret);
+  fprintf(stderr, "\n\nextracted %u values\n", ret);
   fprintf(stderr, "discord.token: %s\n", settings.discord.token);
   fprintf(stderr, "github.username: %s\n", settings.github.username);
   fprintf(stderr, "github.token: %s\n", settings.github.token);
@@ -124,7 +124,7 @@ int main ()
                          settings.logging.dump_curl.filename,
                          &settings.logging.dump_curl.enable);
 
-  fprintf(stderr, "\n\nextracted %d values\n", ret);
+  fprintf(stderr, "\n\nextracted %u values\n", ret);
   fprintf(stderr, "discord.token: %s\n", settings.discord.token);
   fprintf(stderr, "github.username: %s\n", settings.github.username);
   fprintf(stderr, "github.token: %s\n", settings.github.token);
@@ -149,7 +149,7 @@ int main ()
   ret = json_extract(json, strlen(json),
                      "(object.sha):?s", &p);
 
-  fprintf (stderr, "extracted value %d\n", ret);
+  fprintf (stderr, "extracted value %u\n", ret);
   fprintf (stderr, "%s\n", p);
   return 0;
 }

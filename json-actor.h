@@ -118,10 +118,10 @@ extern int
 json_vinject (char * pos, size_t size, char * injector, va_list ap);
 
 
-extern int
+extern size_t
 json_extract (char * json, size_t size, char * extractor, ...);
 
-extern int
+extern size_t
 json_vextract (char * json, size_t size, char * extractor, va_list ap);
 
 #ifdef __cplusplus

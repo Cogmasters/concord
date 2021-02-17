@@ -85,7 +85,7 @@ int main ()
   print_composite_value(stderr, &cv);
 
 
-  struct operand_addrs rec = { 0 };
+  struct operand_addrs rec;
   memset(&cv, 0, sizeof(struct composite_value));
   memset(&rec, 0, sizeof(struct operand_addrs));
 
