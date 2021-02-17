@@ -55,7 +55,9 @@
 #define JSMN_STRICT  // parse json in strict mode
 #include "jsmn.h"
 #include "ntl.h"
+#include "json-scanf.h"
 #include "json-actor.h"
+
 
 static void assert_is_pointer(void * p)
 {
@@ -351,10 +353,8 @@ static int is_primitive (
 {
   char * const start_pos = pos, * const end_pos = pos + size;
   unsigned char c;
-  int has_format_string;
 
   c = * pos;
-
   *type = V_PRIMITIVE;
   switch (c)
   {
@@ -771,7 +771,7 @@ parse_composite_value(
   struct composite_value *cv)
 {
   char * const start_pos = pos, * const end_pos = pos + size;
-  char * next_pos, c;
+  char c;
 
   SKIP_SPACES(pos, end_pos);
   switch(*pos)
@@ -809,7 +809,7 @@ parse_actor(
   size_t size,
   struct composite_value *cv)
 {
-  char * const start_pos = pos, * const end_pos = pos + size;
+  char * const end_pos = pos + size;
   SKIP_SPACES(pos, end_pos);
   while (pos < end_pos) {
     if ('{' == *pos || '[' == *pos) {
@@ -1071,6 +1071,7 @@ inject_builtin (
       ERR("unexpected cases\n");
       break;
   }
+  return 0;
 }
 
 static int
@@ -1219,7 +1220,7 @@ inject_access_path_value (
   struct access_path_value * ap,
   struct injection_info * info)
 {
-  char * const start_pos = pos, * const end_pos = pos + size;
+  char * const end_pos = pos + size;
   size_t used_bytes = 0;
   used_bytes += xprintf(pos, size, info, "\"%.*s\"", ap->path.key.size,
                         ap->path.key.start);
@@ -1388,7 +1389,8 @@ json_inject_va_list(
   va_list ap)
 {
   struct stack stack = { .array = {0}, .top = 0, .actor = INJECTOR };
-  struct operand_addrs  rec = { 0 };
+  struct operand_addrs  rec;
+  memset(&rec, 0, sizeof(rec));
   struct composite_value cv;
 
   prepare_actor(&stack, &rec, &cv, pos, size, injector, ap);
@@ -1780,6 +1782,7 @@ extract_object_value (
     ASSERT_S(t[key_idx].type == JSMN_STRING, "Not a key"); // make sure it's a key
     ASSERT_S(t[key_idx].parent == parent, "Token is not at top level"); // make sure it's at the toplevel
 
+    val_idx = key_idx + 1;
     for (size_t i = 0; i < cv->_.pairs.size; i++) {
       p = cv->_.pairs.pos + i;
       if (p->value.is_applied)
@@ -1788,19 +1791,15 @@ extract_object_value (
       if (0 == keycmp(json, &t[key_idx], &p->path.key)) {
         //fprintf(stderr, "> %.*s == ", p->path.key.size, p->path.key.start);
         //print_tok(stderr, json, t, key_idx);
-        val_idx = key_idx + 1;
         ret += extract_access_path(val_idx, p, p->path.next, info);
       }
     }
 
     nkeys ++;
     if (nkeys < n) {
-      // find the next toplevel key
-      key_idx = val_idx + 1;
-      while (t[key_idx].end < t[val_idx].end && t[key_idx].end < t[parent].end) {
-        //print_tok(stderr, json, t, key_idx);
-        key_idx ++;
-      }
+      // find the next key
+      key_idx = val_idx + 1;  // this might not be a key
+      while (t[key_idx].parent != parent) key_idx ++;
     }
     else
       break;
@@ -1877,11 +1876,13 @@ int
 json_extract_va_list (char * json, size_t size, char * extractor, va_list ap)
 {
   struct stack stack = { .array = {0}, .top = 0, .actor = EXTRACTOR };
-  struct operand_addrs rec = { 0 };
+  struct operand_addrs rec;
+  memset(&rec, 0, sizeof(rec));
   struct composite_value cv;
 
   prepare_actor(&stack, &rec, &cv, json, size, extractor, ap);
   struct e_info info = { .pos = json, .E = NULL };
+  int ret = 0;
 
   //calculate how many tokens are needed
   jsmn_parser parser;
@@ -1889,11 +1890,9 @@ json_extract_va_list (char * json, size_t size, char * extractor, va_list ap)
   jsmntok_t * tok = NULL;
   int num_tok = jsmn_parse(&parser, json, size, NULL, 0);
   D_PRINT("# of tokens = %d", num_tok);
-  if (num_tok < 0) {
-    D_PRINT("Failed to parse JSON: %.*s", (int)size, json);
-    D_PRINT("Returned token number: %d", num_tok);
-    goto cleanup;
-  }
+  if (num_tok < 0)
+    ERR("Failed to parse JSON: %.*s, returned token number: %d",
+        (int)size, json, num_tok);
 
   tok = malloc(sizeof(jsmntok_t) * num_tok);
   jsmn_init(&parser);
@@ -1901,10 +1900,7 @@ json_extract_va_list (char * json, size_t size, char * extractor, va_list ap)
 
   /* Assume the top-level element is an object */
   if (num_tok < 1 || !(tok[0].type == JSMN_OBJECT || tok[0].type == JSMN_ARRAY))
-  {
     ERR("Object or array expected");
-    goto cleanup;
-  }
 
   for (int i = 0; i < num_tok; i++) {
     //print_tok(stderr, json, tok, i);
@@ -1912,7 +1908,6 @@ json_extract_va_list (char * json, size_t size, char * extractor, va_list ap)
 
   info.n_toks = num_tok;
   info.tok = tok;
-  int ret = 0;
   switch (tok[0].type)
   {
     case JSMN_OBJECT:
@@ -1925,10 +1920,8 @@ json_extract_va_list (char * json, size_t size, char * extractor, va_list ap)
       break;
     default:
       ERR("Unexpected toplevel token %s\n", type_to_string(tok[0].type));
-      goto cleanup;
   }
 
-  cleanup:
   free(tok);
   free_composite_value(&cv);
   return ret;
