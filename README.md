@@ -94,3 +94,6 @@ mapped to REST APIs are wrapped in C++'s namespace to establish the
 
 Orca's implemnetation has minimum external dependencies to make bot
 deployment deadly simple.
+
+Keywords:
+libdiscord, discord library in C.
