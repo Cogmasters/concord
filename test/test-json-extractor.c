@@ -1,6 +1,8 @@
 #include "json-actor.c"
 #include <string.h>
 #include <assert.h>
+#include <orka-utils.h>
+#include "orka-utils.h"
 
 int main ()
 {
@@ -32,5 +34,106 @@ int main ()
 
   json_extract(json, strlen(json), "[d, d, d]", &i, &j, &k);
   fprintf (stderr, "%d, %d, %d\n", i, j, k);
+
+
+  json = "{\n"
+    "\t\"discord\": {\n"
+    "\t\t   \"token\":\"YOUR-BOT-TOKEN\"\n"
+    "\t},\n"
+    "\t\"github\": {\n"
+    "\t       \"username\": \"gituser\",\n"
+    "\t       \"token\": \"xxxxxx\"\n"
+    "\t},\n"
+    "\t\"logging\": {\n"
+    "\t\t   \"filename\": \"bot.log\",\n"
+    "\t\t   \"level\": \"info\",\n"
+    "\t\t   \"dump_json\": {\n"
+    "\t\t      \"filename\": \"dump.json\",\n"
+    "\t\t      \"enable\": true,\n"
+    "\t\t   },\n"
+    "\t\t   \"dump_curl\": {\n"
+    "\t\t      \"filename\": \"dump.curl\",\n"
+    "\t\t      \"enable\": true,\n"
+    "\t\t   }\n"
+    "\t}\n"
+    "}";
+
+
+  struct orka_settings settings;
+  int ret = json_extract(json, strlen(json),
+               "(discord)(token):s"
+                 "(github):"
+                 "{"
+                 "(username):s"
+                 "(token):s"
+                 "}"
+                 "(logging):"
+                 "{"
+                 "(filename):s"
+                 "(level):s"
+                 "(dump_json): "
+                 "{"
+                 "(filename):s"
+                 "(enable):b"
+                 "}"
+                 "(dump_curl): "
+                 "{"
+                 "(filename):s"
+                 "(enable):b"
+                 "}"
+               "}",
+               settings.discord.token,
+               settings.github.username,
+               settings.github.token,
+               settings.logging.filename,
+               settings.logging.level,
+               settings.logging.dump_json.filename,
+               &settings.logging.dump_json.enable,
+               settings.logging.dump_curl.filename,
+               &settings.logging.dump_curl.enable);
+
+  fprintf(stderr, "\n\nextracted %d values\n", ret);
+  fprintf(stderr, "discord.token: %s\n", settings.discord.token);
+  fprintf(stderr, "github.username: %s\n", settings.github.username);
+  fprintf(stderr, "github.token: %s\n", settings.github.token);
+  fprintf(stderr, "logging.filename: %s\n", settings.logging.filename);
+  fprintf(stderr, "logging.level: %s\n", settings.logging.level);
+  fprintf(stderr, "logging.dump_json.filename: %s\n", settings.logging.dump_json.filename);
+  fprintf(stderr, "logging.dump_json.filename: %d\n", settings.logging.dump_json.enable);
+  fprintf(stderr, "logging.dump_curl.filename: %s\n", settings.logging.dump_curl.filename);
+  fprintf(stderr, "logging.dump_curl.filename: %d\n", settings.logging.dump_curl.enable);
+
+
+  ret = json_extract(json, strlen(json),
+                     "(discord)(token):s"
+                       "(github)(username):s"
+                       "(github)(token):s"
+                       "(logging)(filename):s"
+                       "(logging)(level):s"
+                       "(logging)(dump_json)(filename):s"
+                       "(logging)(dump_json)(enable):b"
+                       "(logging)(dump_curl)(filename):s"
+                       "(logging)(dump_curl)(enable):b",
+                         settings.discord.token,
+                         settings.github.username,
+                         settings.github.token,
+                         settings.logging.filename,
+                         settings.logging.level,
+                         settings.logging.dump_json.filename,
+                         &settings.logging.dump_json.enable,
+                         settings.logging.dump_curl.filename,
+                         &settings.logging.dump_curl.enable);
+
+  fprintf(stderr, "\n\nextracted %d values\n", ret);
+  fprintf(stderr, "discord.token: %s\n", settings.discord.token);
+  fprintf(stderr, "github.username: %s\n", settings.github.username);
+  fprintf(stderr, "github.token: %s\n", settings.github.token);
+  fprintf(stderr, "logging.filename: %s\n", settings.logging.filename);
+  fprintf(stderr, "logging.level: %s\n", settings.logging.level);
+  fprintf(stderr, "logging.dump_json.filename: %s\n", settings.logging.dump_json.filename);
+  fprintf(stderr, "logging.dump_json.filename: %d\n", settings.logging.dump_json.enable);
+  fprintf(stderr, "logging.dump_curl.filename: %s\n", settings.logging.dump_curl.filename);
+  fprintf(stderr, "logging.dump_curl.filename: %d\n", settings.logging.dump_curl.enable);
+
   return 0;
 }
