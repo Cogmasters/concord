@@ -104,18 +104,25 @@ extern "C" {
  */
 extern int json_inject (char * pos, size_t size, char * injector, ...);
 
+/*
+ * this function will allocate a sufficient memory block and then call
+ * json_inject to inject json to the memory block
+ */
 extern int
-json_inject_alloc (char ** buf_p, size_t * size_p, char * injector, ...);
+json_ainject (char ** buf_p, char * injector, ...);
 
+/*
+ *
+ */
 extern int
-json_inject_va_list(char * pos, size_t size, char * injector, va_list ap);
+json_vinject (char * pos, size_t size, char * injector, va_list ap);
 
 
 extern int
 json_extract (char * json, size_t size, char * extractor, ...);
 
 extern int
-json_extract_va_list(char * json, size_t size, char * extractor, va_list ap);
+json_vextract (char * json, size_t size, char * extractor, va_list ap);
 
 #ifdef __cplusplus
 }

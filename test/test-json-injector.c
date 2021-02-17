@@ -109,7 +109,7 @@ int main () {
   injector1 = "(ref): |refs/heads/%s| (sha): s";
 
   char * p = NULL;
-  json_inject_alloc(&p, NULL, injector1, "master", "sssssshhhhhaa");
+  json_ainject(&p, injector1, "master", "sssssshhhhhaa");
 
   fprintf(stderr, "%s\n", p);
   free(p);

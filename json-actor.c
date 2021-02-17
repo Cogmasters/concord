@@ -1382,7 +1382,7 @@ prepare_actor(
 }
 
 int
-json_inject_va_list(
+json_vinject(
   char *pos,
   size_t size,
   char *injector,
@@ -1439,21 +1439,19 @@ json_inject_va_list(
   return used_bytes;
 }
 
-int json_inject_alloc(char ** buf_p, size_t * size_p, char * injector, ...)
+int json_ainject (char ** buf_p, char * injector, ...)
 {
   va_list ap;
   va_start(ap, injector);
-  size_t used_bytes = json_inject_va_list(NULL, 0, injector, ap);
+  size_t used_bytes = json_vinject(NULL, 0, injector, ap);
   va_end(ap);
 
   char * buf = malloc(used_bytes+1);
   buf[used_bytes] = 0;
-  if (size_p)
-    *size_p = used_bytes+1;
   *buf_p = buf;
 
   va_start(ap, injector);
-  json_inject_va_list(buf, used_bytes + 1, injector, ap);
+  json_vinject(buf, used_bytes + 1, injector, ap);
   va_end(ap);
 
   ASSERT_S(used_bytes == strlen(buf), "used_bytes != strlen(buf)");
@@ -1464,7 +1462,7 @@ int json_inject (char * pos, size_t size, char * injector, ...)
 {
   va_list ap;
   va_start(ap, injector);
-  size_t used_bytes = json_inject_va_list(pos, size, injector, ap);
+  size_t used_bytes = json_vinject(pos, size, injector, ap);
   va_end(ap);
   return used_bytes;
 }
@@ -1873,7 +1871,7 @@ extract_array_value (
 }
 
 int
-json_extract_va_list (char * json, size_t size, char * extractor, va_list ap)
+json_vextract (char * json, size_t size, char * extractor, va_list ap)
 {
   struct stack stack = { .array = {0}, .top = 0, .actor = EXTRACTOR };
   struct operand_addrs rec;
@@ -1931,7 +1929,7 @@ int json_extract (char * json, size_t size, char * extractor, ...)
 {
   va_list ap;
   va_start(ap, extractor);
-  size_t used_bytes = json_extract_va_list(json, size, extractor, ap);
+  size_t used_bytes = json_vextract(json, size, extractor, ap);
   va_end(ap);
   return used_bytes;
 }
