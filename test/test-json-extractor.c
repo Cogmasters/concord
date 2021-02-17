@@ -135,5 +135,21 @@ int main ()
   fprintf(stderr, "logging.dump_curl.filename: %s\n", settings.logging.dump_curl.filename);
   fprintf(stderr, "logging.dump_curl.filename: %d\n", settings.logging.dump_curl.enable);
 
+  json = "{\n"
+    "\t\"ref\":\"refs/heads/master\",\n"
+    "\t\"node_id\":\"MDM6UmVmMjgxNTM2NjcwOnJlZnMvaGVhZHMvbWFzdGVy\",\n"
+    "\t\"url\":\"https://api.github.com/repos/cee-studio/orca/git/refs/heads/master\",\n"
+    "\t\"object\":{\n"
+    "\t\t\"sha\":\"37391fb67135651f83e586c49ec7a96e773ba733\",\n"
+    "\t\t\"type\":\"commit\",\n"
+    "\t\t\"url\":\"https://api.github.com/repos/cee-studio/orca/git/commits/37391fb67135651f83e586c49ec7a96e773ba733\"\n"
+    "\t}\n"
+    "}";
+  char * p;
+  ret = json_extract(json, strlen(json),
+                     "(object.sha):?s", &p);
+
+  fprintf (stderr, "extracted value %d\n", ret);
+  fprintf (stderr, "%s\n", p);
   return 0;
 }
