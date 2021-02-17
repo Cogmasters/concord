@@ -98,7 +98,7 @@ char * update_my_fork(dati *d)
 
   d->handle.ok_cb = log;
 
-  d->body.size = json_ainject(&d->body.start, NULL, "(sha):s", sha);
+  d->body.size = json_ainject(&d->body.start, "(sha):s", sha);
 
   fprintf(stderr, "PATCH: %.*s %d\n", d->body.size, d->body.start, d->body.size);
   user_agent::run(&d->ua_data, &d->handle, &d->body,
@@ -149,7 +149,7 @@ create_blobs(dati *d, struct file **files)
     size_t len;
     char *content = orka_load_whole_file(files[i]->path, &len);
 
-    d->body.size = json_ainject(&d->body.start, NULL,
+    d->body.size = json_ainject(&d->body.start,
                                      "(content) : .*s, (encoding) : |utf-8|",
                                      len, content);
 
@@ -187,11 +187,11 @@ create_tree(dati *d, char *base_tree_sha, struct file **files)
 {
   fprintf(stderr, "==create-tree==\n");
 
-  d->body.size = json_ainject(&d->body.start, NULL,
-                                   "(tree):F"
-                                   "(base_tree):s",
-                                   node_list2json, files,
-                                   base_tree_sha);
+  d->body.size = json_ainject(&d->body.start,
+                              "(tree):F"
+                              "(base_tree):s",
+                              node_list2json, files,
+                              base_tree_sha);
 
   char *new_tree_sha = NULL;
   d->handle.ok_cb = load_sha;
@@ -217,13 +217,13 @@ create_a_commit(dati *d, char *tree_sha,
   d->handle.ok_cb = load_sha;
   d->handle.ok_obj = &new_commit_sha;
 
-  d->body.size = json_ainject(&d->body.start, NULL,
-                   " (message) : s"
-                   " (tree) : s"
-                   " (parents) : [ s ]",
-                    commit_msg,
-                    tree_sha,
-                    parent_commit_sha);
+  d->body.size = json_ainject(&d->body.start,
+                              " (message) : s"
+                              " (tree) : s"
+                              " (parents) : [ s ]",
+                              commit_msg,
+                              tree_sha,
+                              parent_commit_sha);
 
   user_agent::run(&d->ua_data, &d->handle, &d->body,
           HTTP_POST, "/repos/%s/%s/git/commits",
@@ -238,10 +238,10 @@ void
 create_a_branch(dati *d, char *head_commit_sha, char *branch)
 {
   fprintf(stderr, "===create-a-branch===\n");
-  d->body.size = json_ainject(&d->body.start, NULL,
-                    "(ref): |refs/heads/%s|"
-                    "(sha): s",
-                    branch, head_commit_sha);
+  d->body.size = json_ainject(&d->body.start,
+                              "(ref): |refs/heads/%s|"
+                              "(sha): s",
+                              branch, head_commit_sha);
 
   fprintf(stderr, "%.*s\n", (int)d->body.size, d->body.start);
   d->handle.ok_cb = log;
@@ -257,7 +257,7 @@ update_a_commit(dati *d, char *branch, char *commit_sha)
 {
   fprintf(stderr, "===update-a-commit===\n");
   d->handle.ok_cb = log;
-  d->body.size = json_ainject(&d->body.start, NULL, "(sha):s", commit_sha);
+  d->body.size = json_ainject(&d->body.start, "(sha):s", commit_sha);
   fprintf(stderr, "PATCH: %s\n", d->body.start);
   user_agent::run(&d->ua_data, &d->handle, &d->body,
           HTTP_PATCH, "/repos/%s/%s/git/refs/heads/%s",
@@ -270,13 +270,13 @@ create_a_pull_request(dati *d, char *branch, char *pull_msg) {
   // 5. create a pull request
   fprintf(stderr, "===create-a-pull-request===\n");
 
-  d->body.size = json_ainject(&d->body.start, NULL,
-                    "(title): s"
-                    "(body): s"
-                    "(head): |%s:%s|"
-                    "(base): s",
-                    branch, pull_msg, d->config.username,
-                    branch, d->config.default_branch);
+  d->body.size = json_ainject(&d->body.start,
+                              "(title): s"
+                              "(body): s"
+                              "(head): |%s:%s|"
+                              "(base): s",
+                              branch, pull_msg, d->config.username,
+                              branch, d->config.default_branch);
 
   d->handle.ok_cb = log;
   user_agent::run(&d->ua_data, &d->handle, &d->body,
