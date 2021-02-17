@@ -635,7 +635,7 @@ to_json(char *str, size_t len, void *p_embed)
                         "(type):s"
                         "(description):s"
                         "(url):s"
-                        "(timestamp):F"
+                        "(timestamp):|F|"
                         "(color):d"
                         "(footer):F"
                         "(image):F"
