@@ -1519,8 +1519,8 @@ static char * copy_over_string (size_t * new_size, char * str, size_t len)
 
 struct e_info {
   char * pos;
-  jsmntok_t *tok;
-  int n_toks;
+  jsmntok_t *tokens;
+  int n_tokens;
   struct existence * E;
 };
 
@@ -1528,19 +1528,19 @@ struct e_info {
 
 static size_t extract_str (struct action * v, int i, struct e_info * info)
 {
-  jsmntok_t * t = info->tok;
-  ASSERT_S (JSMN_STRING == t[i].type, "expecect string");
+  jsmntok_t * tokens = info->tokens;
+  ASSERT_S (JSMN_STRING == tokens[i].type, "expecect string");
 
   size_t new_size = 0;
-  int len = t[i].end - t[i].start;
+  int len = tokens[i].end - tokens[i].start;
   char * json = info->pos;
-  char * escaped = copy_over_string(&new_size, json + t[i].start, len);
+  char * escaped = copy_over_string(&new_size, json + tokens[i].start, len);
 
   switch(v->mem_size.tag)
   {
     case SIZE_ZERO: {
       char **p = (char **) v->operand;
-      int len = t[i].end - t[i].start + 1;
+      int len = tokens[i].end - tokens[i].start + 1;
       *p = malloc(len);
       int ret = snprintf(*p, len, "%.*s", len - 1, escaped);
       ASSERT_S(ret < len, "out-of-bounds write");
@@ -1550,7 +1550,7 @@ static size_t extract_str (struct action * v, int i, struct e_info * info)
     case SIZE_PARAMETERIZED:
     {
       int ret = snprintf((char *) v->operand, v->mem_size.size,
-                         "%.*s", t[i].end - t[i].start, escaped);
+                         "%.*s", tokens[i].end - tokens[i].start, escaped);
       ASSERT_S((size_t) ret < v->mem_size.size, "out-of-bounds write");
       break;
     }
@@ -1562,67 +1562,67 @@ static size_t extract_str (struct action * v, int i, struct e_info * info)
       break;
     }
   }
-  if (escaped != json + t[i].start)
+  if (escaped != json + tokens[i].start)
     free(escaped);
   return 1;
 }
 
 static size_t extract_scalar (struct action * a, int i, struct e_info * info)
 {
-  jsmntok_t * t = info->tok;
+  jsmntok_t * tokens = info->tokens;
   char * json = info->pos, * xend; // exclusive end
-  ASSERT_S(t[i].type == JSMN_PRIMITIVE, "Not a primitive");
+  ASSERT_S(tokens[i].type == JSMN_PRIMITIVE, "Not a primitive");
 
   switch(a->_.builtin)
   {
     case B_INT:
-      if ('n' == json[t[i].start])
+      if ('n' == json[tokens[i].start])
         *(int *) a->operand = 0;
       else {
-        *(int *) a->operand = (int) strtol(json + t[i].start, &xend, 10);
-        if (xend != json + t[i].end)
+        *(int *) a->operand = (int) strtol(json + tokens[i].start, &xend, 10);
+        if (xend != json + tokens[i].end)
           ERR("failed to extract int from %.*s\n",
-              t[i].end - t[i].start, json + t[i].start);
+              tokens[i].end - tokens[i].start, json + tokens[i].start);
       }
       break;
     case B_BOOL:
-      switch (json[t[i].start])
+      switch (json[tokens[i].start])
       {
         case 't': *(bool *)a->operand = true; break;
         case 'f': *(bool *)a->operand = false; break;
         default:
           ERR("failed to extract bool from %.*s\n",
-              t[i].end - t[i].start, json + t[i].start);
+              tokens[i].end - tokens[i].start, json + tokens[i].start);
       }
       break;
     case B_LONG_LONG:
-      if ('n' == json[t[i].start])
+      if ('n' == json[tokens[i].start])
         *(long long *) a->operand = 0;
       else {
-        *(long long *) a->operand = strtoll(json + t[i].start, &xend, 10);
-        if (xend != json + t[i].end)
+        *(long long *) a->operand = strtoll(json + tokens[i].start, &xend, 10);
+        if (xend != json + tokens[i].end)
           ERR("failed to extract long long from %.*s\n",
-              t[i].end - t[i].start, json + t[i].start);
+              tokens[i].end - tokens[i].start, json + tokens[i].start);
       }
       break;
     case B_FLOAT:
-      if ('n' == json[t[i].start])
+      if ('n' == json[tokens[i].start])
         *(float *) a->operand = 0;
       else {
-        *(float *) a->operand = strtof(json + t[i].start, &xend);
-        if (xend != json + t[i].end)
+        *(float *) a->operand = strtof(json + tokens[i].start, &xend);
+        if (xend != json + tokens[i].end)
           ERR("failed to extract float from %.*s\n",
-              t[i].end - t[i].start, json + t[i].start);
+              tokens[i].end - tokens[i].start, json + tokens[i].start);
       }
       break;
     case B_DOUBLE:
-      if ('n' == json[t[i].start])
+      if ('n' == json[tokens[i].start])
         *(double *) a->operand = 0;
       else {
-        *(double *) a->operand = strtod(json + t[i].start, &xend);
-        if (xend != json + t[i].end)
+        *(double *) a->operand = strtod(json + tokens[i].start, &xend);
+        if (xend != json + tokens[i].end)
           ERR("failed to extract double from %.*s\n",
-              t[i].end - t[i].start, json + t[i].start);
+              tokens[i].end - tokens[i].start, json + tokens[i].start);
       }
       break;
     default:
@@ -1633,7 +1633,7 @@ static size_t extract_scalar (struct action * a, int i, struct e_info * info)
 
 static size_t apply_action (struct value * v, int idx, struct e_info * info)
 {
-  jsmntok_t * t = info->tok;
+  jsmntok_t * tokens = info->tokens;
   char * json = info->pos;
   ASSERT_S(V_ACTION == v->tag, "expect an action");
 
@@ -1646,8 +1646,8 @@ static size_t apply_action (struct value * v, int idx, struct e_info * info)
       case B_TOKEN:
       {
         struct sized_buffer *tk = a->operand;
-        tk->start = json + t[idx].start;
-        tk->size = t[idx].end - t[idx].start;
+        tk->start = json + tokens[idx].start;
+        tk->size = tokens[idx].end - tokens[idx].start;
         return 1;
       }
       default:
@@ -1661,19 +1661,22 @@ static size_t apply_action (struct value * v, int idx, struct e_info * info)
     ERR("not supported yet");
   }
   else {
-    if (t[idx].type == JSMN_PRIMITIVE
-        && (STRNEQ(json + t[idx].start, "null", 4))) {
+    if (tokens[idx].type == JSMN_PRIMITIVE
+        && (STRNEQ(json + tokens[idx].start, "null", 4))) {
       //es->is_applied = false;
       return 0;
     }
-    else if (0 == t[idx].size
-             && (t[idx].type == JSMN_OBJECT || t[idx].type == JSMN_ARRAY)) {
+    else if (0 == tokens[idx].size
+             && (tokens[idx].type == JSMN_OBJECT
+                 || tokens[idx].type == JSMN_ARRAY)) {
       return 0;
     }
     else {
       int (*f)(char *, size_t, void *);
       f = a->_.user_def;
-      int ret = (*f)(json + t[idx].start, t[idx].end - t[idx].start, a->operand);
+      int ret = (*f)(json + tokens[idx].start,
+                     tokens[idx].end - tokens[idx].start,
+                     a->operand);
       if (0 == ret)
         return 0;
       else
@@ -1721,20 +1724,20 @@ extract_access_path (
   struct e_info * info)
 {
   char * json = info->pos;
-  jsmntok_t * t = info->tok;
+  jsmntok_t * tokens = info->tokens;
 
   int i = val_idx, ic;
   if (curr_path)
   {
-    switch (t[val_idx].type)
+    switch (tokens[val_idx].type)
     {
       case JSMN_OBJECT:
-        for (ic = i + 1; t[ic].start < t[i].end; ic++) {
-          if (i != t[ic].parent)
+        for (ic = i + 1; tokens[ic].start < tokens[i].end; ic++) {
+          if (i != tokens[ic].parent)
             continue;
 
-          // top level key within t[i]
-          if (0 == keycmp(json, &t[ic], &curr_path->key)) {
+          // top level key within tokens[i]
+          if (0 == keycmp(json, &tokens[ic], &curr_path->key)) {
             // fpri ntf(stderr, "> %.*s == ", curr_path->key.size, curr_path->key.start);
             // print_tok(stderr, json, t, ic);
             return extract_access_path(ic + 1, apv, curr_path->next, info);
@@ -1747,7 +1750,7 @@ extract_access_path (
         int index = strtol(curr_path->key.start, &xend, 10);
         ASSERT_S(*xend == ')', "Index is not a number");
         ASSERT_S(index >= 0, "Index is not zero or positive");
-        ASSERT_S(index < t[i].size, "Index is out-of-bound");
+        ASSERT_S(index < tokens[i].size, "Index is out-of-bound");
 
         ic = i + 1; // the first child of i;
         return extract_access_path(ic + index, apv, curr_path->next, info);
@@ -1775,18 +1778,18 @@ extract_object_value (
   struct e_info * info)
 {
   char * json = info->pos;
-  jsmntok_t * t = info->tok;
+  jsmntok_t * tokens = info->tokens;
 
   int key_idx = parent + 1, val_idx = parent + 2;
   struct access_path_value *p;
-  int nkeys = 0, ret = 0, n = t[parent].size;
+  int nkeys = 0, ret = 0, n = tokens[parent].size;
 
   while (1) {
-    if (t[key_idx].type != JSMN_STRING) {
-      print_tok(stderr, json, t, key_idx);
+    if (tokens[key_idx].type != JSMN_STRING) {
+      print_tok(stderr, json, tokens, key_idx);
     }
-    ASSERT_S(t[key_idx].type == JSMN_STRING, "Not a key"); // make sure it's a key
-    ASSERT_S(t[key_idx].parent == parent, "Token is not at top level"); // make sure it's at the toplevel
+    ASSERT_S(tokens[key_idx].type == JSMN_STRING, "Not a key"); // make sure it's a key
+    ASSERT_S(tokens[key_idx].parent == parent, "Token is not at top level"); // make sure it's at the toplevel
 
     val_idx = key_idx + 1;
     for (size_t i = 0; i < cv->_.pairs.size; i++) {
@@ -1794,7 +1797,7 @@ extract_object_value (
       if (p->value.is_applied)
         continue;
 
-      if (0 == keycmp(json, &t[key_idx], &p->path.key)) {
+      if (0 == keycmp(json, &tokens[key_idx], &p->path.key)) {
         //fprintf(stderr, "> %.*s == ", p->path.key.size, p->path.key.start);
         //print_tok(stderr, json, t, key_idx);
         ret += extract_access_path(val_idx, p, p->path.next, info);
@@ -1805,7 +1808,7 @@ extract_object_value (
     if (nkeys < n) {
       // find the next key
       key_idx = val_idx + 1;  // this might not be a key
-      while (t[key_idx].parent != parent) key_idx ++;
+      while (tokens[key_idx].parent != parent) key_idx ++;
     }
     else
       break;
@@ -1832,12 +1835,10 @@ extract_array_value (
   int parent,
   struct e_info * info)
 {
-  jsmntok_t * t = info->tok;
-  int n_toks = info->n_toks;
-
+  jsmntok_t * tokens = info->tokens;
   struct sized_buffer **token_array = NULL;
   int * children;
-  int n = t[parent].size;
+  int n = tokens[parent].size;
   size_t ret = 0;
 
   struct value * v = is_list_extraction(cv);
@@ -1848,19 +1849,19 @@ extract_array_value (
   else
     children = malloc(n * sizeof(int));
 
-  int idx, ic;
-  for (idx = 0, ic = parent + 1; ic < n_toks && idx < n; ic++) {
-    if (t[ic].parent != parent)
+  int child_no, ic;
+  for (child_no = 0, ic = parent + 1; child_no < n; ic++) {
+    if (tokens[ic].parent != parent)  // not a child
       continue;
 
     if (v) {
-      token_array[idx]->start = info->pos + t[ic].start;
-      token_array[idx]->size = t[ic].end - t[ic].start;
+      token_array[child_no]->start = info->pos + tokens[ic].start;
+      token_array[child_no]->size = tokens[ic].end - tokens[ic].start;
     }
     else {
-      children[idx] = ic;
+      children[child_no] = ic;
     }
-    ++idx;
+    ++child_no;
   }
 
   if (v) {
@@ -1894,28 +1895,28 @@ json_vextract (char * json, size_t size, char * extractor, va_list ap)
   //calculate how many tokens are needed
   jsmn_parser parser;
   jsmn_init(&parser);
-  jsmntok_t * tok = NULL;
+  jsmntok_t * tokens = NULL;
   int num_tok = jsmn_parse(&parser, json, size, NULL, 0);
   D_PRINT("# of tokens = %d", num_tok);
   if (num_tok < 0)
     ERR("Failed to parse JSON: %.*s, returned token number: %d",
         (int)size, json, num_tok);
 
-  tok = malloc(sizeof(jsmntok_t) * num_tok);
+  tokens = malloc(sizeof(jsmntok_t) * num_tok);
   jsmn_init(&parser);
-  num_tok = jsmn_parse(&parser, json, size, tok, num_tok);
+  num_tok = jsmn_parse(&parser, json, size, tokens, num_tok);
 
   /* Assume the top-level element is an object */
-  if (num_tok < 1 || !(tok[0].type == JSMN_OBJECT || tok[0].type == JSMN_ARRAY))
+  if (!(tokens[0].type == JSMN_OBJECT || tokens[0].type == JSMN_ARRAY))
     ERR("Object or array expected");
 
   for (int i = 0; i < num_tok; i++) {
     //print_tok(stderr, json, tok, i);
   }
 
-  info.n_toks = num_tok;
-  info.tok = tok;
-  switch (tok[0].type)
+  info.n_tokens = num_tok;
+  info.tokens = tokens;
+  switch (tokens[0].type)
   {
     case JSMN_OBJECT:
       ASSERT_S(cv.is_object, "Cannot extract array from json object\n");
@@ -1926,10 +1927,10 @@ json_vextract (char * json, size_t size, char * extractor, va_list ap)
       ret = extract_array_value(&cv, 0, &info);
       break;
     default:
-      ERR("Unexpected toplevel token %s\n", type_to_string(tok[0].type));
+      ERR("Unexpected toplevel token %s\n", type_to_string(tokens[0].type));
   }
 
-  free(tok);
+  free(tokens);
   free_composite_value(&cv);
   return ret;
 }
