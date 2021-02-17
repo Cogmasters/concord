@@ -144,7 +144,7 @@ orka_unix_ms_to_iso8601(char *str, size_t len, void *p_data)
 
   // @todo find a better solution, like fix json_inject and use (timestamp):|F|
   return snprintf(str, len,
-    "\"%d-%.2d-%dT%.2d:%.2d:%.2d.%.3dZ\"", // ISO-8601 complete format
+    "%d-%.2d-%dT%.2d:%.2d:%.2d.%.3dZ", // ISO-8601 complete format
     tm->tm_year + 1900, tm->tm_mon + 1, tm->tm_mday, // Date
     tm->tm_hour, tm->tm_min, tm->tm_sec, millis); // Time
 }
