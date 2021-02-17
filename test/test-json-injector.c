@@ -61,7 +61,10 @@ int main () {
   fprintf(stderr, "%s\n", bigbuf);
 
   json_inject(bigbuf, sizeof(bigbuf), "[ F ]", &foobar, &i);
-  fprintf(stderr, "%s\n", bigbuf);
+  fprintf(stderr, "[ F ] > %s\n", bigbuf);
+
+  json_inject(bigbuf, sizeof(bigbuf), "[ |F| ]", &foobar, &i);
+  fprintf(stderr, "[ |F| ] > %s\n", bigbuf);
 
   json_inject(bigbuf, sizeof(bigbuf),
               "(k1) : s"

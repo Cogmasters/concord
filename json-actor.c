@@ -160,6 +160,8 @@ enum action_type {
   ACT_BUILT_IN = 0,
   ACT_USER_DEF_ACCEPT_NON_NULL,
   ACT_USER_DEF_ACCEPT_NULL,
+  ACT_USER_DEF_ACCEPT_NON_NULL_ENCLOSED,
+  ACT_USER_DEF_ACCEPT_NULL_ENCLOSED,
   ACT_FORMAT_STRING = 10,
 };
 
@@ -386,6 +388,10 @@ static int is_primitive (
       }
       break;
     case '|': // a proprietary string literal
+      if (STRNEQ("|F|", pos, 3)) {
+        *type = V_ACTION;
+        return 0;
+      }
       *type = V_STRING_LITERAL;
       pos ++;
       while (pos < end_pos) {
@@ -556,6 +562,19 @@ parse_value(
         pos++;
       }
       goto return_true;
+    case '|':
+      if (STRNEQ(pos, "|F|", 3)) {
+        act->tag = ACT_USER_DEF_ACCEPT_NON_NULL_ENCLOSED;
+        pos += 3;
+        goto return_true;
+      }
+      else if (STRNEQ(pos, "|F_nullable|", 3)) {
+        act->tag = ACT_USER_DEF_ACCEPT_NULL_ENCLOSED;
+        pos += 3;
+        goto return_true;
+      }
+      else
+        ERR("Unexpected case %s\n", pos);
     case 'T':
       act->_.builtin = B_TOKEN;
       pos ++;
@@ -845,6 +864,8 @@ get_value_operand_addrs (struct value *v, struct operand_addrs *rec)
           break;
         case ACT_USER_DEF_ACCEPT_NON_NULL:
         case ACT_USER_DEF_ACCEPT_NULL:
+        case ACT_USER_DEF_ACCEPT_NON_NULL_ENCLOSED:
+        case ACT_USER_DEF_ACCEPT_NULL_ENCLOSED:
           rec->addrs[rec->pos] = &act->_.user_def;
           rec->pos ++;
           rec->addrs[rec->pos] = &act->operand;
@@ -1125,7 +1146,13 @@ inject_value (
           return inject_builtin(pos, size, a, info);
         case ACT_USER_DEF_ACCEPT_NON_NULL:
         case ACT_USER_DEF_ACCEPT_NULL:
+        case ACT_USER_DEF_ACCEPT_NON_NULL_ENCLOSED:
+        case ACT_USER_DEF_ACCEPT_NULL_ENCLOSED:
         {
+          int enclosed = ACT_USER_DEF_ACCEPT_NULL_ENCLOSED == a->tag
+                         || ACT_USER_DEF_ACCEPT_NON_NULL_ENCLOSED == a->tag;
+          int extra_bytes = enclosed ? 2: 0;
+
           int (*f)(char *, size_t, void *);
           f = a->_.user_def;
           if (info->fp) {
@@ -1134,12 +1161,19 @@ inject_value (
             fprintf(info->fp, "%s", b);
             free(b);
           }
+          if (NULL != pos && enclosed) {
+            *pos = '"'; pos++;
+          }
           size_t used_bytes = (*f)(pos, size, a->operand);
           if (NULL == pos)
             info->next_pos = NULL;
           else
             info->next_pos = pos + used_bytes;
-          return used_bytes;
+          if (NULL != pos && enclosed) {
+            *(pos + used_bytes) = '"';
+            info->next_pos ++;
+          }
+          return used_bytes + extra_bytes;
         }
         default:
           if (a->tag > ACT_FORMAT_STRING) {
