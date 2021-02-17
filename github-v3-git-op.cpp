@@ -7,8 +7,6 @@
 #include "json-scanf.h"
 #include "json-actor.h"
 
-#define Q
-
 namespace github {
 namespace config {
 
@@ -23,12 +21,17 @@ void
 init(struct dati *data, char * username, char *file)
 {
   size_t len = 0;
-  char *content = orka_load_whole_file(file, &len);
-
-  json_scanf(content, len, "[owner]%?s [repo]%?s [default_branch]%?s",
+  char *json = orka_load_whole_file(file, &len);
+#ifdef P
+  json_scanf(json, len, "[owner]%?s [repo]%?s [default_branch]%?s",
              &data->owner, &data->repo, &data->default_branch);
+#else
+  json_extract(json, len, "(owner):?s (repo):?s (default_branch):?s",
+               &data->owner, &data->repo, &data->default_branch);
+#endif
+
   data->username = username;
-  free(content);
+  free(json);
 }
 
 } // namespace config
@@ -58,10 +61,14 @@ load_object_sha(char *str, size_t len, void *ptr)
 }
 
 static void
-load_sha(char *str, size_t len, void *ptr)
+load_sha(char *json, size_t len, void *ptr)
 {
-  fprintf(stderr, "%.*s\n", (int)len, str);
+  fprintf(stderr, "%.*s\n", (int)len, json);
+#ifdef P
   json_scanf(str, len, "[sha]%?s", ptr);
+#else
+  json_extract(json, len, "(sha):?s", ptr);
+#endif
 }
 
 static void
