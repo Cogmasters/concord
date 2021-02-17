@@ -630,17 +630,26 @@ parse_access_path_value(
 {
   char * const start_pos = pos, * const end_pos = pos + size,
     * next_pos = NULL;
-
+  int len = 0;
   ASSERT_S('(' == *pos || '.' == *pos, "expecting '(' or '.'");
+  char begin_c = *pos;
   pos ++;
-  while (*pos && pos < end_pos) {
-    if (')' == *pos || '.' == *pos) break;
+  while (pos < end_pos) {
+    switch(begin_c)
+    {
+      case '(':
+        if (')' == *pos) goto out_of_loop;
+      case '.':
+        if ('.' == *pos || ')' == *pos) goto out_of_loop;
+    }
     ++pos;
   }
 
-  ASSERT_S(')' == *pos || '.' == *pos, "A close bracket ')' or '.' is missing");
+  if (pos == end_pos)
+    ERR("A close bracket ')' or '.' is missing");
 
-  int len = pos - start_pos - 1;
+out_of_loop:
+  len = pos - start_pos - 1;
   ASSERT_S(len > 0, "Key is missing");
 
   curr_path->key.start = start_pos + 1;
