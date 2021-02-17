@@ -119,7 +119,7 @@ int main ()
 
   memset(&cv, 0, sizeof(struct composite_value));
   t = " (k): F_nullable, (v): d, (h): f, @";
-  parse_toplevel(&stack, t, strlen(t), &cv);
+  parse_actor(&stack, t, strlen(t), &cv);
   fprintf (stderr, "\n");
   print_composite_value(stderr, &cv);
   return 0;

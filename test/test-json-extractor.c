@@ -105,15 +105,15 @@ int main ()
 
 
   ret = json_extract(json, strlen(json),
-                     "(discord)(token):s"
-                       "(github)(username):s"
-                       "(github)(token):s"
-                       "(logging)(filename):s"
-                       "(logging)(level):s"
-                       "(logging)(dump_json)(filename):s"
-                       "(logging)(dump_json)(enable):b"
-                       "(logging)(dump_curl)(filename):s"
-                       "(logging)(dump_curl)(enable):b",
+                     "(discord.token):s"
+                       "(github.username):s"
+                       "(github.token):s"
+                       "(logging.filename):s"
+                       "(logging.level):s"
+                       "(logging.dump_json.filename):s"
+                       "(logging.dump_json.enable):b"
+                       "(logging.dump_curl.filename):s"
+                       "(logging.dump_curl.enable):b",
                          settings.discord.token,
                          settings.github.username,
                          settings.github.token,
