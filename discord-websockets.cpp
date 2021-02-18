@@ -116,7 +116,8 @@ ws_send_identify(dati *ws)
     ws->session.concurrent = 0;
   }
 
-  D_PRINT("IDENTIFY PAYLOAD:\n\t%s", ws->identify);
+  // contain token (sensitive data), enable _ORKA_DEBUG_STRICT
+  DS_PRINT("IDENTIFY PAYLOAD:\n\t%s", ws->identify);
   ws_send_payload(ws, ws->identify);
 
   //get timestamp for this identify
@@ -371,7 +372,7 @@ ws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
 {
   dati *ws = (dati*)p_ws;
   
-  D_PRINT("ON_TEXT:\n\t\t%s", text);
+  D_PRINT("ON_TEXT:\t%s\n", text);
 
   json_dump("RECEIVE PAYLOAD", &ws->p_client->settings, text);
 
@@ -388,9 +389,9 @@ ws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
   }
 
   D_NOTOP_PRINT("OP:\t\t%s\n\t"
-                "EVENT_NAME:\t%s\n\t"
-                "SEQ_NUMBER:\t%d\n\t"
-                "EVENT_DATA:\t%s", 
+                "EVENT NAME:\t%s\n\t"
+                "SEQ NUMBER:\t%d\n\t"
+                "EVENT DATA:\t%s\n", 
                 ws_opcode_print(ws->payload.opcode), 
                 *ws->payload.event_name //if event name exists
                    ? ws->payload.event_name //prints event name
@@ -474,47 +475,38 @@ custom_multi_init()
 static char*
 identify_init(intents::code intents, char token[])
 {
-  const char fmt_properties[] = \
-    "{\"$os\":\"%s\",\"$browser\":\"orca\",\"$device\":\"orca\"}";
-  const char fmt_presence[] = \
-    "{\"since\":%s,\"activities\":%s,\"status\":\"%s\",\"afk\":%s}";
-  const char fmt_event_data[] = \
-    "{\"token\":\"%s\",\"intents\":%d,\"properties\":%s,\"presence\":%s}";
-  const char fmt_identify[] = \
-    "{\"op\":2,\"d\":%s}"; //op:2 means IDENTIFY
+  void *A[6] = {0};
+  A[0] = (void*)token;
+  A[1] = (void*)&intents;
 
-  int ret; //check snprintf return value
+  bool bebe = false;
+  char *payload = NULL;
+  json_ainject(&payload,
+      "(op) : 2" // IDENTIFY OP
+      "(d) : {"
+        "(token) : s"
+        "(intents) : d"
+        "(properties) : {"
+          "($os): |POSIX|"
+          "($browser) : |orca|"
+          "($device) : |orca|"
+        "}"
+        "(presence) : {"
+       //   "(since) : s"
+       //   "(activities) : F"
+          "(status) : s"
+          "(afk) : b"
+        "}"
+      "} @",
+      token, 
+      &intents,
+      //NULL,
+      //NULL, NULL,
+      "online",
+      &bebe,
+      A, sizeof(A));
 
-  //https://discord.com/developers/docs/topics/gateway#identify-identify-connection-properties
-  char properties[512];
-  ret = snprintf(properties, sizeof(properties), fmt_properties, "Linux");
-  ASSERT_S(ret < (int)sizeof(properties), "Out of bounds write attempt");
-
-  //https://discord.com/developers/docs/topics/gateway#sharding
-  /* @todo */
-
-  //https://discord.com/developers/docs/topics/gateway#update-status-gateway-status-update-structure
-  char presence[512];
-  ret = snprintf(presence, sizeof(presence), fmt_presence, 
-           "null", "null", "online", "false");
-  ASSERT_S(ret < (int)sizeof(presence), "Out of bounds write attempt");
-
-  //https://discord.com/developers/docs/topics/gateway#identify-identify-structure
-  char event_data[512];
-  ret = snprintf(event_data, sizeof(event_data), fmt_event_data,
-                  token, intents, properties, presence);
-  ASSERT_S(ret < (int)sizeof(presence), "Out of bounds write attempt");
-
-  int len = sizeof(fmt_identify);
-  len += ret;
-
-  char *identify = (char*)malloc(len);
-  ASSERT_S(NULL != identify, "Out of memory");
-
-  ret = snprintf(identify, len-1, fmt_identify, event_data);
-  ASSERT_S(ret < len, "Out of bounds write attempt");
-
-  return identify;
+  return payload;
 }
 
 void
