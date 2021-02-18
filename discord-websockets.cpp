@@ -92,11 +92,18 @@ ws_send_payload(dati *ws, char payload[])
 static void
 ws_send_resume(dati *ws)
 {
-  char fmt_payload[] = \
-    "{\"op\":6,\"d\":{\"token\":\"%s\",\"session_id\":\"%s\",\"seq\":%d}}";
   char payload[MAX_PAYLOAD_LEN];
-  int ret = snprintf(payload, MAX_PAYLOAD_LEN, fmt_payload,
-      ws->p_client->settings.token, ws->session_id, ws->payload.seq_number);
+  int ret = json_inject(payload, sizeof(payload), 
+      "(op):6" // RESUME OPCODE
+      "(d):{"
+        "(token):s"
+        "(session_id):s"
+        "(seq):d"
+      "}",
+      ws->p_client->settings.token, 
+      ws->session_id, 
+      &ws->payload.seq_number);
+
   ASSERT_S(ret < (int)sizeof(payload), "Out of bounds write attempt");
 
   D_NOTOP_PRINT("RESUME PAYLOAD:\n\t%s", payload);
@@ -116,7 +123,7 @@ ws_send_identify(dati *ws)
     ws->session.concurrent = 0;
   }
 
-  // contain token (sensitive data), enable _ORKA_DEBUG_STRICT
+  // contain token (sensitive data), enable _ORKA_DEBUG_STRICT to print it
   DS_PRINT("IDENTIFY PAYLOAD:\n\t%s", ws->identify);
   ws_send_payload(ws, ws->identify);
 
@@ -539,7 +546,8 @@ static void
 ws_send_heartbeat(dati *ws)
 {
   char payload[64];
-  int ret = snprintf(payload, sizeof(payload), "{\"op\":1,\"d\":%d}", ws->payload.seq_number);
+  int ret = json_inject(payload, sizeof(payload), 
+      "(op):1, (d):d", &ws->payload.seq_number);
   ASSERT_S(ret < (int)sizeof(payload), "Out of bounds write attempt");
 
   D_PRINT("HEARTBEAT_PAYLOAD:\n\t\t%s", payload);
