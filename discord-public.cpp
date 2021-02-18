@@ -219,26 +219,35 @@ get_json_error(client *client)
 }
 
 void
+replace_presence(client *client, presence::dati *presence)
+{
+  if (NULL == presence) return;
+
+  presence::free_dati(client->ws.identify->presence);
+  client->ws.identify->presence = presence;
+}
+
+void
 change_presence(
   client *client, 
-  websockets::identify::status_update::activity::dati *activity, 
+  presence::activity::dati *activity, 
   char status[], 
   bool afk)
 {
-  websockets::identify::dati *identify = client->ws.identify;
+  presence::dati *presence = client->ws.identify->presence;
 
   if (activity) { //@todo
   }
 
   if (status) {
-    int ret = snprintf(identify->presence->status, 
-                sizeof(identify->presence->status), "%s", status);
+    int ret = snprintf(presence->status, 
+                sizeof(presence->status), "%s", status);
 
-    ASSERT_S(ret < (int)sizeof(identify->presence->status),
+    ASSERT_S(ret < (int)sizeof(presence->status),
         "Out of bounds write attempt");
   }
 
-  identify->presence->afk = afk;
+  presence->afk = afk;
 }
 
 } // namespace discord

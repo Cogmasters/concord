@@ -141,7 +141,7 @@ from_json(char *str, size_t len, void *p_status_update)
      "[status]%s"
      "[afk]%b",
      &orka_iso8601_to_unix_ms, &status_update->since,
-     &from_json, &status_update->activities,
+     &activity::list_from_json, &status_update->activities,
      status_update->status,
      &status_update->afk);
 
@@ -264,8 +264,7 @@ to_json(char *str, size_t len, void *p_activity)
   void *A[14] = {0};
   if (*activity->name)
     A[0] = (void*)activity->name;
-  if (activity->type)
-    A[1] = (void*)&activity->type;
+  A[1] = (void*)&activity->type;
   if (activity->type == types::STREAMING && *activity->url)
     A[2] = (void*)activity->url;
   if (activity->created_at)

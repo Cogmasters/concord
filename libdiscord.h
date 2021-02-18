@@ -54,6 +54,12 @@ https://discord.com/developers/docs/reference#snowflakes */
 
 namespace discord {
 
+/* START OF SHORTCUT ALIASES */
+
+namespace presence = websockets::identify::status_update;
+
+/* END OF SHORTCUT ALIASES */
+
 /* AUDIT LOG STRUCTURE
 https://discord.com/developers/docs/resources/audit-log#audit-log-object-audit-log-structure */
 namespace audit_log {
@@ -1246,9 +1252,10 @@ void* set_data(client *client, void *data);
 void* get_data(client *client);
 
 user_agent::error get_json_error(client *client);
+void replace_presence(client *client, presence::dati *presence);
 void change_presence(
   client *client, 
-  websockets::identify::status_update::activity::dati *activity, 
+  presence::activity::dati *activity, 
   char status[], 
   bool afk);
 
