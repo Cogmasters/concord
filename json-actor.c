@@ -42,6 +42,8 @@
  * json_inject(pos, size, "{  (key) : d, (key) : |abc| }", i);
  *
  *
+ * query_inject(pos, size, "(key)=d&(key1)=s", &i, str);
+ *
  */
 #include <stddef.h>
 #include <stdio.h>
@@ -1384,8 +1386,11 @@ inject_composite_value (
   return used_bytes;
 }
 
+
+
 static int
 prepare_actor(
+  char * (*parser)(struct stack *, char *, size_t, struct composite_value *),
   struct stack * stack,
   struct operand_addrs * operand_addrs,
   struct composite_value * cv,
@@ -1397,7 +1402,7 @@ prepare_actor(
   memset(cv, 0, sizeof(struct composite_value));
 
   size_t len = strlen(actor);
-  char *next_pos = parse_actor(stack, actor, len, cv);
+  char *next_pos = parser(stack, actor, len, cv);
   if (next_pos != actor + len) {
     ERR("unexpected %s\n", next_pos);
   }
@@ -1432,7 +1437,7 @@ json_vinject(
   memset(&rec, 0, sizeof(rec));
   struct composite_value cv;
 
-  prepare_actor(&stack, &rec, &cv, pos, size, injector, ap);
+  prepare_actor(parse_actor, &stack, &rec, &cv, pos, size, injector, ap);
 
   struct injection_info info = { 0 };
   char * mem = NULL;
@@ -1560,8 +1565,6 @@ struct e_info {
   int n_tokens;
   struct availability * E;
 };
-
-
 
 static size_t extract_str (struct action * v, int i, struct e_info * info)
 {
@@ -1925,7 +1928,7 @@ json_vextract (char * json, size_t size, char * extractor, va_list ap)
   memset(&rec, 0, sizeof(rec));
   struct composite_value cv;
 
-  prepare_actor(&stack, &rec, &cv, json, size, extractor, ap);
+  prepare_actor(parse_actor, &stack, &rec, &cv, json, size, extractor, ap);
   struct e_info info = { .pos = json, .E = NULL };
   size_t ret = 0;
 
@@ -1978,5 +1981,144 @@ size_t json_extract (char * json, size_t size, char * extractor, ...)
   va_start(ap, extractor);
   size_t used_bytes = json_vextract(json, size, extractor, ap);
   va_end(ap);
+  return used_bytes;
+}
+
+
+
+static char *
+parse_key_value(
+  struct stack *stack,
+  char *pos,
+  size_t size,
+  struct access_path_value *av)
+{
+  char * const start_pos = pos, * const end_pos = pos + size,
+    * next_pos = NULL;
+  int len = 0;
+  ASSERT_S('(' == *pos, "expecting '('");
+  pos ++;
+  while (pos < end_pos) {
+    if (')' == *pos) goto out_of_loop;
+    ++pos;
+  }
+
+  if (pos == end_pos)
+    ERR("A close bracket ')' is missing");
+
+  out_of_loop:
+  len = pos - start_pos - 1;
+  ASSERT_S(len > 0, "Key is missing");
+
+  av->path.key.start = start_pos + 1;
+  av->path.key.size = len;
+
+  if (')' == *pos)
+    ++pos; // eat up ')'
+  SKIP_SPACES(pos, end_pos);
+  struct access_path * next_path;
+  switch (*pos)
+  {
+    case ':':
+      ++pos; // eat up ':'
+      if (parse_value(stack, pos, end_pos - pos, &av->value, &next_pos))
+        pos = next_pos;
+      else
+        ERR("expecting a value after '=', %s does not have a legit value", pos);
+      break;
+    default:
+      ERR("expecting '=' %c\n", *pos);
+  }
+  return pos;
+}
+
+static char *
+parse_query_string(
+  struct stack * stack,
+  char * pos,
+  size_t size,
+  struct sized_access_path_value * pairs)
+{
+  char * const start_pos = pos, * const end_pos = pos + size;
+  pairs->pos = calloc(MAX_ACTION_NUMBERS, sizeof(struct access_path_value));
+
+  size_t i = 0;
+  while (pos < end_pos)
+  {
+    SKIP_SPACES(pos, end_pos);
+    if ('(' == *pos) {
+      pos = parse_key_value(stack, pos, end_pos - pos, pairs->pos + i);
+      i++;
+    }
+    else if (0 == stack->top || TOP(stack) == *pos) {
+      ASSERT_S(i < MAX_ACTION_NUMBERS, "exceed max allowed actions\n");
+      pairs->size = i;
+      return pos;
+    }
+    else
+      ERR("Expecting %c, but found %c in %s", TOP(stack), *pos, start_pos);
+  }
+  pairs->size = i;
+  return pos;
+}
+
+
+
+
+int
+query_vinject(
+  char *pos,
+  size_t size,
+  char *injector,
+  va_list ap)
+{
+  struct stack stack = { .array = {0}, .top = 0, .actor = INJECTOR };
+  struct operand_addrs  rec;
+  memset(&rec, 0, sizeof(rec));
+  struct composite_value cv;
+
+  prepare_actor(parse_query_string, &stack, &rec, &cv, pos, size, injector, ap);
+
+  struct injection_info info = { 0 };
+  char * mem = NULL;
+  size_t mem_size = 0;
+  if (1)
+    info.fp = NULL;
+  else
+    info.fp = open_memstream(&mem, &mem_size);
+
+  if (cv.A.has_this) {
+    if (cv.A.arg == NULL)
+      ERR("The argument of @ (used for checking the availability of a value) is NULL");
+    info.A = &cv.A;
+    if(cv.A.sizeof_arg % sizeof(void *))
+      ERR("The sizeof @'s argument has to be a multiplication of sizeof(void *)\n");
+  }
+
+  char * output_buf;
+  size_t output_size;
+  if (NULL == pos) {
+    output_buf = NULL;//write_only;
+    output_size = 0; //sizeof(write_only);
+  }
+  else {
+    output_buf = pos;
+    output_size = size;
+  }
+
+  size_t used_bytes =
+    inject_composite_value(output_buf, output_size, &cv, &info);
+  if (info.fp)
+    fclose(info.fp);
+
+  if (mem) {
+    ASSERT_S(used_bytes == mem_size, "snprint.size != open_memstream.size");
+    //fprintf(stderr, "%s\n", write_only);
+    if (mem) {
+      //fprintf(stderr, "%s\n", mem);
+      free(mem);
+    }
+  }
+  free_composite_value(&cv);
   return used_bytes;
 }
