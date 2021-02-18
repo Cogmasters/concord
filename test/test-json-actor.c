@@ -122,5 +122,9 @@ int main ()
   parse_actor(&stack, t, strlen(t), &cv);
   fprintf (stderr, "\n");
   print_composite_value(stderr, &cv);
+
+
+  t = " (k):d (v):d ";
+  parse_query_string(&stack, t, strlen(t), &cv._.pairs);
   return 0;
 }

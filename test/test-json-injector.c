@@ -171,5 +171,36 @@ int main () {
                     A1, sizeof(A1));
 
   fprintf(stderr, "%s\n", bigbuf);
+
+  char * token = "token";
+  int intents = 10;
+  char * payload = NULL;
+  ret = json_ainject(&payload,
+                     "(op) : 2" // IDENTIFY OP
+                       "(d) : {"
+                       "(token) : s"
+                       "(intents) : d"
+                       "(properties) : {"
+                       "($os): |POSIX|"
+                       "($browser) : |orca|"
+                       "($device) : |orca|"
+                       "}"
+                       "(presence) : {"
+                       "(since) : null"
+                       "(activities) : null"
+                       "(status) : |online|"
+                       "(afk) : false"
+                       "}"
+                       "}",
+                     token,
+                     &intents,
+                     NULL,
+                     NULL, NULL,
+                     "online",
+                     NULL,
+                     A, sizeof(A));
+
+  fprintf(stderr, "%s\n", payload);
+
   return 0;
 }
