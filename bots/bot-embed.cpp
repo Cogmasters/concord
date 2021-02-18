@@ -66,21 +66,6 @@ load_embed_from_json(char filename[])
   return new_embed;
 }
 
-void
-set_presence(client *client)
-{
-  using namespace websockets::identify::status_update;
-
-  activity::dati *activity = activity::alloc_dati();
-
-  strcpy(activity->name, "Orka");
-  activity->type = activity::types::GAME;
-
-  change_presence(client, activity, "dnd", false);
-
-  activity::free_dati(activity);
-}
-
 int main(int argc, char *argv[])
 {
   const char *config_file;
@@ -107,8 +92,6 @@ int main(int argc, char *argv[])
 
   channel::embed::dati *embed = load_embed_from_json(JSON_FILE);
   set_data(client, embed);
-
-  set_presence(client);
 
   run(client);
 
