@@ -411,8 +411,9 @@ static int is_primitive (
         pos++;
         while (pos < end_pos) {
           c = *pos;
-          if (' ' == c || ',' == c || c == TOP(stack)) goto return_true;
-          else if ('.' == c || '0' <= c || c <= '9') pos++;
+          if (' ' == c || ',' == c || '(' == c || c == TOP(stack))
+            goto return_true;
+          else if ('.' == c || ('0' <= c && c <= '9')) pos++;
           else {
             ERR("unexpected %c in %s\n", c, start_pos);
           }
