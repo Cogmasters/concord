@@ -6,11 +6,11 @@
  *
  * json actor (injector or extractor) specification grammar
  *
- * <injector> := <composite-value> <existence>?
- *               | <access-path-value-list> <existence>?
+ * <injector> := <composite-value> <availability>?
+ *               | <access-path-value-list> <availability>?
  *
- * <extractor> := <composite-value> <existence>?
- *                | <access-path-value-list> <existence>?
+ * <extractor> := <composite-value> <availability>?
+ *                | <access-path-value-list> <availability>?
  *
  * <access-path> := (<key>) | (<key>) <access-path>
  *
@@ -27,7 +27,7 @@
  *
  * <composite-value> :=  { <access-path-value-list> } | [ <value> ]
  *
- * <existence> := <size-specifier>@
+ * <availability> := <size-specifier>@
  *
  * <size-specifier> := <integer> | .* | ? | epsilon
  *

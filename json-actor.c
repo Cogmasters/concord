@@ -2,11 +2,11 @@
  *
  * json actor (injector or extractor) specification grammar
  *
- * <injector> := <composite-value> <existence>?
- *               | <access-path-value-list> <existence>?
+ * <injector> := <composite-value> <pointer-availability>?
+ *               | <access-path-value-list> <pointer-availability>?
  *
- * <extractor> := <composite-value> <existence>?
- *                | <access-path-value-list> <existence>?
+ * <extractor> := <composite-value> <pointer-availability>? <defined>
+ *                | <access-path-value-list> <pointer-availability>? <defined>
  *                | [ # ]
  *
  * <access-path> := (<key>) | (<key>) <access-path>
@@ -24,7 +24,9 @@
  *
  * <composite-value> :=  { <access-path-value-list> } | [ <value> ]
  *
- * <existence> := <size-specifier>@
+ * <pointer-availability> := <size-specifier>@:b | <size-specifier>@
+ *
+ * <defined> := <size-specifier>$
  *
  * <size-specifier> := <integer> | .* | ? | epsilon
  *
@@ -34,7 +36,7 @@
  * json_extract(pos, size, "{ (key) : d, (key) : .*s }", &i)
  *
  * sized_buffer ** list;
- * json_extract(pos, size, "[ L ]", &list);
+ * json_extract(pos, size, "[ # ]", &list);
  *
  *
  * json_inject(pos, size, "{  (key) : d, (key) : |abc| }", i);
@@ -199,11 +201,13 @@ struct action {
   struct size_specifier mem_size; // this designates the memory size of _;
 };
 
-struct existence {
+struct availability {
   struct size_specifier mem_size;
   void * arg;
-  int    sizeof_arg;
+  int  sizeof_arg;
+  int  enabled;
   bool has_this;
+  bool has_enabler;
 };
 
 static void
@@ -290,7 +294,7 @@ struct composite_value {
     struct sized_value elements;
     struct sized_access_path_value pairs;
   } _;
-  struct existence E;
+  struct availability A;
 };
 
 static void
@@ -305,7 +309,7 @@ print_composite_value (FILE * fp, struct composite_value * cv)
       print_value(fp, cv->_.elements.pos + i);
   }
 
-  if (cv->E.has_this) {
+  if (cv->A.has_this) {
     fprintf(fp, "@");
   }
 }
@@ -596,9 +600,16 @@ return_true:
   return 1;
 }
 
+#define SKIP_SPACES(s, end)   { while (s < end && isspace(*s)) ++s; }
+
 static int
-parse_existence(char *pos, size_t size, struct existence * p, char ** next_pos_p)
+parse_availability(
+  char *pos,
+  size_t size,
+  struct availability *p,
+  char **next_pos_p)
 {
+  char * const xend_pos = pos + size;
   if (size == 0)
     return 0;
 
@@ -606,19 +617,28 @@ parse_existence(char *pos, size_t size, struct existence * p, char ** next_pos_p
   if (parse_size_specifier(pos, size, &p->mem_size, &next_pos))
     pos = next_pos;
 
-  if ('@' == *pos) {
-    p->has_this = true;
-    pos ++;
-    *next_pos_p = pos;
-    return 1;
+  if (pos < xend_pos) {
+    if ('@' == *pos) {
+      p->has_this = true;
+      pos++;
+      if (pos + 1 < xend_pos
+          && ':' == *pos && 'b' == *(pos+1)) {
+        p->has_enabler;
+        pos ++;
+      }
+      *next_pos_p = pos;
+      return 1;
+    }
   }
+  else
+    ERR ("dangling size specifier\n");
   return 0;
 }
 
 static char * 
 parse_composite_value(struct stack *, char *, size_t, struct composite_value *);
 
-#define SKIP_SPACES(s, end)   { while (s < end && isspace(*s)) ++s; }
+
 
 static char *
 parse_access_path_value(
@@ -831,7 +851,7 @@ parse_actor(
     }
     SKIP_SPACES(pos, end_pos);
     char * next_pos = NULL;
-    if (parse_existence(pos, end_pos - pos, &cv->E, &next_pos))
+    if (parse_availability(pos, end_pos - pos, &cv->A, &next_pos))
       pos = next_pos;
     SKIP_SPACES(pos, end_pos);
     if (pos == end_pos) {
@@ -923,13 +943,19 @@ get_composite_value_operand_addrs (
       get_value_operand_addrs(v, rec);
     }
 
-  if (cv->E.has_this) {
-    rec->addrs[rec->pos] = &cv->E.arg;
+  if (cv->A.has_this) {
+    rec->addrs[rec->pos] = &cv->A.arg;
     rec->types[rec->pos] = ARG_PTR;
     rec->pos ++;
-    rec->addrs[rec->pos] = &cv->E.sizeof_arg;
+    rec->addrs[rec->pos] = &cv->A.sizeof_arg;
     rec->types[rec->pos] = ARG_INT;
     rec->pos ++;
+
+    if (cv->A.has_enabler) {
+      rec->addrs[rec->pos] = &cv->A.enabled;
+      rec->types[rec->pos] = ARG_INT;
+      rec->pos ++;
+    }
   }
 }
 
@@ -989,7 +1015,7 @@ struct injection_info {
   char * next_pos;
   struct stack sp;
   FILE * fp;
-  struct existence * E;
+  struct availability * A;
 };
 
 static int
@@ -1251,10 +1277,11 @@ inject_access_path_value (
 static int
 has_value (struct injection_info * info, struct value * v)
 {
-  if (NULL == info->E) return 1;
+  if (NULL == info->A || (info->A->has_enabler && !info->A->enabled))
+    return 1;
 
-  void ** assigned_addrs = (void **)info->E->arg;
-  size_t sizeof_assigned_addres = (size_t) info->E->sizeof_arg;
+  void ** assigned_addrs = (void **)info->A->arg;
+  size_t sizeof_assigned_addres = (size_t) info->A->sizeof_arg;
   switch (v->tag) {
     case V_ACTION:
       for (size_t i = 0; i < sizeof_assigned_addres/sizeof(void*); i++) {
@@ -1414,11 +1441,11 @@ json_vinject(
   else
     info.fp = open_memstream(&mem, &mem_size);
 
-  if (cv.E.has_this) {
-    if (cv.E.arg == NULL)
-      ERR("The argument of @ (used for checking the existence of a value) is NULL");
-    info.E = &cv.E;
-    if(cv.E.sizeof_arg % sizeof(void *))
+  if (cv.A.has_this) {
+    if (cv.A.arg == NULL)
+      ERR("The argument of @ (used for checking the availability of a value) is NULL");
+    info.A = &cv.A;
+    if(cv.A.sizeof_arg % sizeof(void *))
       ERR("The sizeof @'s argument has to be a multiplication of sizeof(void *)\n");
   }
 
@@ -1530,7 +1557,7 @@ struct e_info {
   char * pos;
   jsmntok_t *tokens;
   int n_tokens;
-  struct existence * E;
+  struct availability * E;
 };
 
 
