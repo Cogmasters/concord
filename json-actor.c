@@ -626,7 +626,7 @@ parse_availability(
       pos++;
       if (pos + 1 < xend_pos
           && ':' == *pos && 'b' == *(pos+1)) {
-        p->has_enabler;
+        p->has_enabler = true;
         pos ++;
       }
       *next_pos_p = pos;
@@ -2016,7 +2016,6 @@ parse_key_value(
   if (')' == *pos)
     ++pos; // eat up ')'
   SKIP_SPACES(pos, end_pos);
-  struct access_path * next_path;
   switch (*pos)
   {
     case ':':
@@ -2063,6 +2062,58 @@ parse_query_string(
 }
 
 
+static int
+inject_query_key_value (
+  char * pos,
+  size_t size,
+  struct access_path_value * ap,
+  struct injection_info * info)
+{
+  char * const end_pos = pos + size;
+  size_t used_bytes = 0;
+  used_bytes += xprintf(pos, size, info, "%.*s=", ap->path.key.size,
+                        ap->path.key.start);
+  pos = info->next_pos;
+
+  used_bytes += xprintf(pos, end_pos - pos, info, "=");
+  pos = info->next_pos;
+
+  used_bytes += inject_value(pos, end_pos - pos, &ap->value, info);
+  return used_bytes;
+}
+
+static int
+inject_query_key_value_list (
+  char * pos,
+  size_t size,
+  struct composite_value * cv,
+  struct injection_info * info)
+{
+  char * const end_pos = pos + size;
+  size_t used_bytes = 0, count;
+
+  count = cv->_.pairs.size;
+  for (size_t i = 0; i < cv->_.pairs.size; i++) {
+    struct access_path_value *p = cv->_.pairs.pos + i;
+    if (!has_value(info, &p->value))
+      count--;
+  }
+
+  for (size_t i = 0, j = 0; i < cv->_.pairs.size; i++) {
+    struct access_path_value *p = cv->_.pairs.pos + i;
+    if (!has_value(info, &p->value)) continue;
+
+    used_bytes += inject_query_key_value_list(pos, end_pos - pos, p, info);
+    pos = info->next_pos;
+
+    if (j + 1 != count) {
+      used_bytes += xprintf(pos, end_pos - pos, info, "&");
+      pos = info->next_pos;
+    }
+    j++;
+  }
+  return used_bytes;
+}
 
 
 int
@@ -2107,7 +2158,7 @@ query_vinject(
   }
 
   size_t used_bytes =
-    inject_composite_value(output_buf, output_size, &cv, &info);
+    inject_query_key_value_list(output_buf, output_size, &cv, &info);
   if (info.fp)
     fclose(info.fp);
 
