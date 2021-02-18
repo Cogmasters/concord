@@ -474,39 +474,47 @@ custom_multi_init()
 static char*
 identify_init(intents::code intents, char token[])
 {
-  void *A[6] = {0};
-  A[0] = (void*)token;
-  A[1] = (void*)&intents;
+  const char fmt_properties[] = \
+    "{\"$os\":\"%s\",\"$browser\":\"orca\",\"$device\":\"orca\"}";
+  const char fmt_presence[] = \
+    "{\"since\":%s,\"activities\":%s,\"status\":\"%s\",\"afk\":%s}";
+  const char fmt_event_data[] = \
+    "{\"token\":\"%s\",\"intents\":%d,\"properties\":%s,\"presence\":%s}";
+  const char fmt_identify[] = \
+    "{\"op\":2,\"d\":%s}"; //op:2 means IDENTIFY
 
-  char *payload = NULL;
-  json_ainject(&payload,
-      "(op) : 2" // IDENTIFY OP
-      "(d) : {"
-        "(token) : s"
-        "(intents) : d"
-        "(properties) : {"
-          "($os): |POSIX|"
-          "($browser) : |orca|"
-          "($device) : |orca|"
-        "}"
-        "(presence) : {"
-          "(since) : s"
-          "(activities) : F"
-          "(status) : s"
-          "(afk) : b"
-        "}"
-      "} @",
-      token, 
-      &intents,
-      NULL,
-      NULL, NULL,
-      "online",
-      NULL,
-      A, sizeof(A));
+  int ret; //check snprintf return value
 
-  ERR("%s", payload);
+  //https://discord.com/developers/docs/topics/gateway#identify-identify-connection-properties
+  char properties[512];
+  ret = snprintf(properties, sizeof(properties), fmt_properties, "Linux");
+  ASSERT_S(ret < (int)sizeof(properties), "Out of bounds write attempt");
 
-  return payload;
+  //https://discord.com/developers/docs/topics/gateway#sharding
+  /* @todo */
+
+  //https://discord.com/developers/docs/topics/gateway#update-status-gateway-status-update-structure
+  char presence[512];
+  ret = snprintf(presence, sizeof(presence), fmt_presence, 
+           "null", "null", "online", "false");
+  ASSERT_S(ret < (int)sizeof(presence), "Out of bounds write attempt");
+
+  //https://discord.com/developers/docs/topics/gateway#identify-identify-structure
+  char event_data[512];
+  ret = snprintf(event_data, sizeof(event_data), fmt_event_data,
+                  token, intents, properties, presence);
+  ASSERT_S(ret < (int)sizeof(presence), "Out of bounds write attempt");
+
+  int len = sizeof(fmt_identify);
+  len += ret;
+
+  char *identify = (char*)malloc(len);
+  ASSERT_S(NULL != identify, "Out of memory");
+
+  ret = snprintf(identify, len-1, fmt_identify, event_data);
+  ASSERT_S(ret < len, "Out of bounds write attempt");
+
+  return identify;
 }
 
 void
