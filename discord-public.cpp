@@ -96,7 +96,7 @@ add_intents(client *client, websockets::intents::code code)
     return;
   }
 
-  client->ws.intents |= code;
+  client->ws.identify->intents |= code;
 }
 
 void
@@ -216,6 +216,29 @@ get_json_error(client *client)
   memset(&client->ua.json_err, 0, sizeof(user_agent::error));
 
   return get_err;
+}
+
+void
+change_presence(
+  client *client, 
+  websockets::identify::status_update::activity::dati *activity, 
+  char status[], 
+  bool afk)
+{
+  websockets::identify::dati *identify = client->ws.identify;
+
+  if (activity) { //@todo
+  }
+
+  if (status) {
+    int ret = snprintf(identify->presence->status, 
+                sizeof(identify->presence->status), "%s", status);
+
+    ASSERT_S(ret < (int)sizeof(identify->presence->status),
+        "Out of bounds write attempt");
+  }
+
+  identify->presence->afk = afk;
 }
 
 } // namespace discord

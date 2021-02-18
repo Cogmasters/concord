@@ -119,6 +119,15 @@ namespace user_agent {
 } // namespace user_agent
 
 namespace websockets {
+  namespace identify {
+    namespace status_update {
+      struct dati;
+      namespace activity { 
+        struct dati;
+        namespace types { typedef int code; }
+      } // namespace activity
+    } // namespace status_update
+  } // namespace identify
   struct dati;
   namespace intents { typedef int code; }
   namespace opcodes { typedef int code; }
@@ -287,12 +296,98 @@ void get_bot(client *client, dati *p_session);
 
 } // namespace session
 
+/* IDENTIFY STRUCTURE
+https://discord.com/developers/docs/topics/gateway#identify-identify-structure */
+namespace identify {
+
+struct dati {
+  char *token;
+  bool compress;
+  int large_threshold;
+  int shard[2];
+  status_update::dati *presence;
+  bool guild_subscriptions;
+  intents::code intents;
+};
+
+void init_dati(void *p_identify);
+dati* alloc_dati();
+void cleanup_dati(void *p_identify);
+void free_dati(dati *identify);
+void from_json(char *str, size_t len, void *p_identify);
+int to_json(char *str, size_t len, void *p_identify);
+
+/* GATEWAY STATUS UPDATE STRUCTURE ( aka PRESENCE )
+https://discord.com/developers/docs/topics/gateway#update-status-gateway-status-update-structure */
+namespace status_update {
+
+struct dati {
+  uint64_t since;
+  activity::dati **activities;
+  char status[16];
+  bool afk;
+};
+
+void init_dati(void *p_status_update);
+dati* alloc_dati();
+void cleanup_dati(void *p_status_update);
+void free_dati(dati *status_update);
+void from_json(char *str, size_t len, void *p_status_update);
+int to_json(char *str, size_t len, void *p_status_update);
+
+/* ACTIVITY STRUCTURE
+https://discord.com/developers/docs/topics/gateway#activity-object-activity-structure */
+namespace activity {
+
+struct dati {
+  char name[512];
+  types::code type;
+  char url[MAX_URL_LEN];
+  uint64_t created_at;
+  //@todo missing timestamps;
+  uint64_t application_id;
+  char *details; //@todo find fixed size limit
+  char *state; // @todo find fixed size limit
+  //@todo missing activity emoji;
+  //@todo missing party;
+  //@todo missing assets;
+  //@todo missing secrets;
+  bool instance;
+  //@todo missing flags;
+};
+
+void init_dati(void *p_activity);
+dati* alloc_dati();
+void cleanup_dati(void *p_activity);
+void free_dati(dati *activity);
+void from_json(char *str, size_t len, void *p_activity);
+void list_from_json(char *str, size_t len, void *p_activities);
+int to_json(char *str, size_t len, void *p_activity);
+int list_to_json(char *str, size_t len, void *p_activities);
+
+/* ACTIVITY TYPES
+https://discord.com/developers/docs/topics/gateway#activity-object-activity-types */
+namespace types {
+enum {
+  GAME      = 0,
+  STREAMING = 1,
+  LISTENING = 2,
+  CUSTOM    = 4,
+  COMPETING = 5
+};
+} // namespace types
+
+} // namespace activity
+
+} // namespace status_update
+
+} // namespace identify
+
 struct dati { /* WEBSOCKETS STRUCTURE */
   status::code status; //connection to discord status
   int reconnect_attempts; //hard limit 5 reconnection attempts @todo make configurable
 
-  char *identify; //the identify payload (for establishing a new connection)
-  intents::code intents; //the gateway events to be listened to
+  identify::dati *identify;
   char session_id[512]; //the session id (for resuming lost connections)
 
   CURLM *mhandle;

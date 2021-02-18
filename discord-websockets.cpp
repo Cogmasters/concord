@@ -12,6 +12,309 @@
 namespace discord {
 namespace websockets {
 
+namespace identify {
+
+void
+init_dati(void *p_identify) 
+{
+  dati *identify = (dati*)p_identify;
+  memset(identify, 0, sizeof(dati));
+  identify->presence = status_update::alloc_dati();
+}
+
+dati*
+alloc_dati()
+{
+  dati *identify = (dati*)malloc(sizeof(dati));
+  init_dati((void*)identify);
+  return identify;
+}
+
+void
+cleanup_dati(void *p_identify) 
+{
+  dati *identify = (dati*)p_identify;
+  status_update::free_dati(identify->presence);
+
+  DS_NOTOP_PUTS("Identify object free'd"); 
+}
+
+void
+free_dati(dati *identify) 
+{
+  cleanup_dati((void*)identify);
+  free(identify);
+}
+
+void
+from_json(char *str, size_t len, void *p_identify)
+{
+  dati *identify = (dati*)p_identify;
+
+  json_scanf(str, len,
+     "[token]%s"
+     "[compress]%b"
+     "[large_threshold]%d"
+     //"[shard]%F" @todo
+     //"[presence]%F" @todo
+     "[guild_subscriptions]%b"
+     "[intents]%d",
+     identify->token,
+     &identify->compress,
+     &identify->large_threshold,
+     &identify->guild_subscriptions,
+     &identify->intents);
+
+  DS_NOTOP_PUTS("Identify object loaded with API response");
+}
+
+int
+to_json(char *str, size_t len, void *p_identify)
+{
+  dati *identify = (dati*)p_identify;
+
+  void *A[7] = {0};
+  A[0] = (void*)identify->token;
+  A[1] = (void*)&identify->intents;
+  A[2] = (void*)identify->presence;
+
+  int ret = json_inject(str, len,
+              "(token):s"
+              "(intents):d"
+              "(properties):{"
+                "($os):|POSIX|"
+                "($browser):|orca|"
+                "($device):|orca|"
+              "}"
+              "(presence):F"
+              "@",
+              identify->token, 
+              &identify->intents,
+              &status_update::to_json, identify->presence,
+              A, sizeof(A));
+
+  return ret;
+}
+
+namespace status_update {
+
+void
+init_dati(void *p_status_update) 
+{
+  dati *status_update = (dati*)p_status_update;
+  memset(status_update, 0, sizeof(dati));
+}
+
+dati*
+alloc_dati()
+{
+  dati *status_update = (dati*)malloc(sizeof(dati));
+  init_dati((void*)status_update);
+  return status_update;
+}
+
+void
+cleanup_dati(void *p_status_update) 
+{
+  dati *status_update = (dati*)p_status_update;
+  if (status_update->activities)
+    ntl_free((void**)status_update->activities, &activity::cleanup_dati);
+
+  DS_NOTOP_PUTS("Status Update object free'd"); 
+}
+
+void
+free_dati(dati *status_update) 
+{
+  cleanup_dati((void*)status_update);
+  free(status_update);
+}
+
+void
+from_json(char *str, size_t len, void *p_status_update)
+{
+  dati *status_update = (dati*)p_status_update;
+
+  json_scanf(str, len,
+     "[since]%F"
+     "[activities]%F"
+     "[status]%s"
+     "[afk]%b",
+     &orka_iso8601_to_unix_ms, &status_update->since,
+     &from_json, &status_update->activities,
+     status_update->status,
+     &status_update->afk);
+
+  DS_NOTOP_PUTS("Status Update object loaded with API response");
+}
+
+int
+to_json(char *str, size_t len, void *p_status_update)
+{
+  dati *status_update = (dati*)p_status_update;
+
+  void *A[4] = {0};
+  if (status_update->since)
+    A[0] = (void*)status_update->since;
+  if (status_update->activities)
+    A[1] = (void*)&status_update->activities;
+  if (*status_update->status)
+    A[2] = (void*)status_update->status;
+  A[3] = (void*)&status_update->afk;
+
+  int ret = json_inject(str, len,
+              "(since):F"
+              "(activities):F"
+              "(status):s"
+              "(afk):b"
+              "@",
+              &orka_unix_ms_to_iso8601, &status_update->since,
+              &activity::list_to_json, &status_update->activities,
+              status_update->status,
+              &status_update->afk,
+              A, sizeof(A));
+
+  return ret;
+}
+
+namespace activity {
+
+void
+init_dati(void *p_activity) 
+{
+  dati *activity = (dati*)p_activity;
+  memset(activity, 0, sizeof(dati));
+}
+
+dati*
+alloc_dati()
+{
+  dati *activity = (dati*)malloc(sizeof(dati));
+  init_dati((void*)activity);
+  return activity;
+}
+
+void
+cleanup_dati(void *p_activity) 
+{
+  dati *activity = (dati*)p_activity;
+  if (activity->details)
+    free(activity->details);
+  if (activity->state)
+    free(activity->state);
+
+  DS_NOTOP_PUTS("Activity object free'd"); 
+}
+
+void
+free_dati(dati *activity) 
+{
+  cleanup_dati((void*)activity);
+  free(activity);
+}
+
+void
+from_json(char *str, size_t len, void *p_activity)
+{
+  dati *activity = (dati*)p_activity;
+
+  if (activity->details)
+    free(activity->details);
+  if (activity->state)
+    free(activity->state);
+
+  json_scanf(str, len,
+     "[name]%s"
+     "[type]%d"
+     "[url]%s"
+     "[created_at]%F"
+     "[application_id]%F"
+     "[details]%?s"
+     "[state]%?s"
+     "[instance]%b",
+     activity->name,
+     &activity->type,
+     activity->url,
+     &orka_iso8601_to_unix_ms, &activity->created_at,
+     &orka_strtoull, &activity->application_id,
+     &activity->details,
+     &activity->state,
+     &activity->instance);
+
+  DS_NOTOP_PUTS("Activity object loaded with API response");
+}
+
+void
+list_from_json(char *str, size_t len, void *p_activities)
+{
+  struct ntl_deserializer deserializer = {
+    .elem_size = sizeof(dati),
+    .init_elem = &init_dati,
+    .elem_from_buf = &from_json,
+    .ntl_recipient_p = (void***)p_activities
+  };
+  orka_str_to_ntl(str, len, &deserializer);
+}
+
+int
+to_json(char *str, size_t len, void *p_activity)
+{
+  dati *activity = (dati*)p_activity;
+
+  void *A[14] = {0};
+  if (*activity->name)
+    A[0] = (void*)activity->name;
+  if (activity->type)
+    A[1] = (void*)&activity->type;
+  if (activity->type == types::STREAMING && *activity->url)
+    A[2] = (void*)activity->url;
+  if (activity->created_at)
+    A[3] = (void*)&activity->created_at;
+  if (activity->application_id)
+    A[4] = (void*)&activity->application_id;
+  if (activity->details)
+    A[5] = (void*)activity->details;
+  if (activity->state)
+    A[6] = (void*)activity->state;
+  A[7] = (void*)activity->instance;
+
+  int ret = json_inject(str, len,
+              "(name):s"
+              "(type):d"
+              "(url):s"
+              "(created_at):F"
+              "(application_id):F"
+              "(details):s"
+              "(state):s"
+              "(instance):b"
+              "@",
+              activity->name,
+              &activity->type,
+              activity->url,
+              &orka_unix_ms_to_iso8601, &activity->created_at,
+              &orka_strtoull, &activity->application_id,
+              activity->details,
+              activity->state,
+              &activity->instance,
+              A, sizeof(A));
+
+  return ret;
+}
+
+int
+list_to_json(char *str, size_t len, void *p_activities)
+{
+  dati **activities = *(dati ***)p_activities;
+  return ntl_to_buf(str, len, (void**)activities, NULL, &to_json);
+}
+
+} // namespace activity
+
+} // namespace status_update
+
+} // namespace identify
+
+
 static char*
 ws_opcode_print(int opcode)
 {
@@ -94,15 +397,15 @@ ws_send_resume(dati *ws)
 {
   char payload[MAX_PAYLOAD_LEN];
   int ret = json_inject(payload, sizeof(payload), 
-      "(op):6" // RESUME OPCODE
-      "(d):{"
-        "(token):s"
-        "(session_id):s"
-        "(seq):d"
-      "}",
-      ws->p_client->settings.token, 
-      ws->session_id, 
-      &ws->payload.seq_number);
+              "(op):6" // RESUME OPCODE
+              "(d):{"
+                "(token):s"
+                "(session_id):s"
+                "(seq):d"
+              "}",
+              ws->p_client->settings.token, 
+              ws->session_id, 
+              &ws->payload.seq_number);
 
   ASSERT_S(ret < (int)sizeof(payload), "Out of bounds write attempt");
 
@@ -123,9 +426,17 @@ ws_send_identify(dati *ws)
     ws->session.concurrent = 0;
   }
 
+  char payload[MAX_PAYLOAD_LEN];
+  int ret = json_inject(payload, sizeof(payload), 
+              "(op):2" // IDENTIFY OPCODE
+              "(d):F",
+              &identify::to_json, ws->identify);
+
+  ASSERT_S(ret < (int)sizeof(payload), "Out of bounds write attempt");
+
   // contain token (sensitive data), enable _ORKA_DEBUG_STRICT to print it
-  DS_PRINT("IDENTIFY PAYLOAD:\n\t%s", ws->identify);
-  ws_send_payload(ws, ws->identify);
+  DS_PRINT("IDENTIFY PAYLOAD:\n\t%s", payload);
+  ws_send_payload(ws, payload);
 
   //get timestamp for this identify
   ws->session.identify_tstamp = ws->now_tstamp;
@@ -478,48 +789,13 @@ custom_multi_init()
   return new_mhandle;
 }
 
-//@todo allow for user input
-static char*
-identify_init(intents::code intents, char token[])
-{
-  void *A[6] = {0};
-  A[0] = (void*)token;
-  A[1] = (void*)&intents;
-
-  bool bebe = false;
-  char *payload = NULL;
-  json_ainject(&payload,
-      "(op) : 2" // IDENTIFY OP
-      "(d) : {"
-        "(token) : s"
-        "(intents) : d"
-        "(properties) : {"
-          "($os): |POSIX|"
-          "($browser) : |orca|"
-          "($device) : |orca|"
-        "}"
-        "(presence) : {"
-       //   "(since) : s"
-       //   "(activities) : F"
-          "(status) : s"
-          "(afk) : b"
-        "}"
-      "} @",
-      token, 
-      &intents,
-      //NULL,
-      //NULL, NULL,
-      "online",
-      &bebe,
-      A, sizeof(A));
-
-  return payload;
-}
-
 void
 init(dati *ws, char token[])
 {
   ws->status = status::DISCONNECTED;
+
+  ws->identify = identify::alloc_dati();
+  ws->identify->token = token;
 
   ws->ehandle = custom_cws_new(ws);
   ws->mhandle = custom_multi_init();
@@ -531,10 +807,8 @@ init(dati *ws, char token[])
 void
 cleanup(dati *ws)
 {
-  if (ws->identify)
-    free(ws->identify);
-
   user::free_dati(ws->me);
+  identify::free_dati(ws->identify);
 
   curl_multi_cleanup(ws->mhandle);
   cws_free(ws->ehandle);
@@ -547,7 +821,7 @@ ws_send_heartbeat(dati *ws)
 {
   char payload[64];
   int ret = json_inject(payload, sizeof(payload), 
-      "(op):1, (d):d", &ws->payload.seq_number);
+              "(op):1, (d):d", &ws->payload.seq_number);
   ASSERT_S(ret < (int)sizeof(payload), "Out of bounds write attempt");
 
   D_PRINT("HEARTBEAT_PAYLOAD:\n\t\t%s", payload);
@@ -667,12 +941,6 @@ void
 run(dati *ws)
 {
   ASSERT_S(status::CONNECTED != ws->status, "Can't have recursive connections");
-  if (NULL != ws->identify) {
-    free(ws->identify);
-  }
-
-  char *token = ws->p_client->settings.token;
-  ws->identify = identify_init(ws->intents, token);
 
   do {
     curl_multi_add_handle(ws->mhandle, ws->ehandle);

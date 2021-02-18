@@ -374,6 +374,7 @@ void from_json(char *str, size_t len, void *p_reference);
 
 } // namespace reference
 
+//@todo move to namespace activity
 /* MESSAGE ACTIVITY TYPES
 https://discord.com/developers/docs/resources/channel#message-object-message-activity-types */
 namespace activity_types {
@@ -1245,6 +1246,11 @@ void* set_data(client *client, void *data);
 void* get_data(client *client);
 
 user_agent::error get_json_error(client *client);
+void change_presence(
+  client *client, 
+  websockets::identify::status_update::activity::dati *activity, 
+  char status[], 
+  bool afk);
 
 namespace channel { /* discord-public-channel.c */
 

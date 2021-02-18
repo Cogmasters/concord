@@ -1044,7 +1044,6 @@ to_json(char *str, size_t len, void *p_field)
   return ret;
 }
 
-/* @todo this needs to be tested */
 int
 list_to_json(char *str, size_t len, void *p_fields)
 {
