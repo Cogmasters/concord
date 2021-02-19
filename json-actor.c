@@ -612,6 +612,7 @@ parse_availability(
   struct availability *p,
   char **next_pos_p)
 {
+  memset(p, 0, sizeof (*p));
   char * const xend_pos = pos + size;
   if (size == 0)
     return 0;
@@ -1331,6 +1332,8 @@ inject_composite_value (
 {
   char * const end_pos = pos + size;
   size_t used_bytes = 0, count;
+  struct access_path_value * apv;
+  struct value * v;
 
   if (cv->is_object) {
     used_bytes += xprintf(pos, end_pos - pos, info, "{");
@@ -1338,16 +1341,16 @@ inject_composite_value (
 
     count = cv->_.pairs.size;
     for (size_t i = 0; i < cv->_.pairs.size; i++) {
-      struct access_path_value *p = cv->_.pairs.pos + i;
-      if (!has_value(info, &p->value))
+      apv = cv->_.pairs.pos + i;
+      if (!has_value(info, &apv->value))
         count--;
     }
 
     for (size_t i = 0, j = 0; i < cv->_.pairs.size; i++) {
-      struct access_path_value *p = cv->_.pairs.pos + i;
-      if (!has_value(info, &p->value)) continue;
+      apv = cv->_.pairs.pos + i;
+      if (!has_value(info, &apv->value)) continue;
 
-      used_bytes += inject_access_path_value(pos, end_pos - pos, p, info);
+      used_bytes += inject_access_path_value(pos, end_pos - pos, apv, info);
       pos = info->next_pos;
 
       if (j + 1 != count) {
@@ -1364,12 +1367,12 @@ inject_composite_value (
 
     count = cv->_.elements.size;
     for (size_t i = 0; i < cv->_.elements.size; i++) {
-      struct value *v = cv->_.elements.pos + i;
+      v = cv->_.elements.pos + i;
       if (!has_value(info, v)) count--;
     }
 
     for (size_t i = 0, j = 0; i < cv->_.elements.size; i++) {
-      struct value * v = cv->_.elements.pos + i;
+      v = cv->_.elements.pos + i;
       if (!has_value(info, v)) continue;
 
       used_bytes += inject_value(pos, end_pos - pos, v, info);
@@ -1390,7 +1393,7 @@ inject_composite_value (
 
 static int
 prepare_actor(
-  char * (*parser)(struct stack *, char *, size_t, struct composite_value *),
+  char * (*parser)(struct stack *, char *, size_t, void *),
   struct stack * stack,
   struct operand_addrs * operand_addrs,
   struct composite_value * cv,
@@ -1399,8 +1402,10 @@ prepare_actor(
   char * actor,
   va_list ap)
 {
-  memset(cv, 0, sizeof(struct composite_value));
+  memset(operand_addrs, 0, sizeof(*operand_addrs));
+  memset(cv, 0, sizeof(*cv));
 
+  void *p;
   size_t len = strlen(actor);
   char *next_pos = parser(stack, actor, len, cv);
   if (next_pos != actor + len) {
@@ -1412,7 +1417,9 @@ prepare_actor(
     switch (operand_addrs->types[i])
     {
       case ARG_PTR:
-        *((void **) operand_addrs->addrs[i]) = va_arg(ap, void *);
+        p = va_arg(ap, void *);
+        //fprintf(stderr, "load pointer %p as %d operand\n", p, i);
+        *((void **) operand_addrs->addrs[i]) = p;
         break;
       case ARG_INT:
         *((int *) operand_addrs->addrs[i]) = va_arg(ap, int);
@@ -1434,14 +1441,14 @@ json_vinject(
 {
   struct stack stack = { .array = {0}, .top = 0, .actor = INJECTOR };
   struct operand_addrs  rec;
-  memset(&rec, 0, sizeof(rec));
   struct composite_value cv;
-
   prepare_actor(parse_actor, &stack, &rec, &cv, pos, size, injector, ap);
 
   struct injection_info info = { 0 };
   char * mem = NULL;
   size_t mem_size = 0;
+  memset(&info, 0, sizeof(info));
+
   if (1)
     info.fp = NULL;
   else
@@ -1458,8 +1465,8 @@ json_vinject(
   char * output_buf;
   size_t output_size;
   if (NULL == pos) {
-    output_buf = NULL;//write_only;
-    output_size = 0; //sizeof(write_only);
+    output_buf = NULL; //write_only;
+    output_size = 0;   //sizeof(write_only);
   }
   else {
     output_buf = pos;
@@ -1925,9 +1932,7 @@ json_vextract (char * json, size_t size, char * extractor, va_list ap)
 {
   struct stack stack = { .array = {0}, .top = 0, .actor = EXTRACTOR };
   struct operand_addrs rec;
-  memset(&rec, 0, sizeof(rec));
   struct composite_value cv;
-
   prepare_actor(parse_actor, &stack, &rec, &cv, json, size, extractor, ap);
   struct e_info info = { .pos = json, .E = NULL };
   size_t ret = 0;
