@@ -841,8 +841,10 @@ parse_actor(
   struct stack *stack,
   char *pos,
   size_t size,
-  struct composite_value *cv)
+  void * x)
 {
+  // work around the incompatible pointer warning
+  struct composite_value * cv = (struct composite_value *)x;
   char * const end_pos = pos + size;
   SKIP_SPACES(pos, end_pos);
   while (pos < end_pos) {
@@ -2041,8 +2043,9 @@ parse_query_string(
   struct stack * stack,
   char * pos,
   size_t size,
-  struct sized_access_path_value * pairs)
+  void * x)
 {
+  struct sized_access_path_value * pairs = (struct sized_access_path_value *)x;
   char * const start_pos = pos, * const end_pos = pos + size;
   pairs->pos = calloc(MAX_ACTION_NUMBERS, sizeof(struct access_path_value));
 
