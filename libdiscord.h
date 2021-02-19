@@ -388,6 +388,7 @@ void init_dati(void *p_reference);
 dati* alloc_dati();
 void free_dati(dati *reference);
 void from_json(char *str, size_t len, void *p_reference);
+int to_json(char *str, size_t len, void *p_reference);
 
 } // namespace reference
 
@@ -1291,9 +1292,9 @@ struct params {
   char *nonce;
   bool tts;
   // parameters for application/json
-  embed::dati *embed;
-  allowed_mentions::dati *allowed_mentions;
-  message::reference::dati message_reference;
+  embed::dati *embed; //must be initialized
+  allowed_mentions::dati *allowed_mentions; //must be initialized
+  message::reference::dati *message_reference; //must be initialized
   // parameters for multipart/form-data
   struct { // FILE STRUCT @todo better explanation
     char *name; //if only name is set, will search in working directory

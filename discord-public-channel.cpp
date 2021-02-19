@@ -82,7 +82,7 @@ alloc_dati()
 void
 cleanup_dati(void *p_channel) 
 {
-  DS_NOTOP_PUTS("Channel object free'd"); 
+  DS_NOTOP_PUTS("Channel object fields cleaned"); 
 }
 
 void
@@ -266,7 +266,7 @@ cleanup_dati(void *p_message)
   if (message->referenced_message)
     free_dati(message->referenced_message);
 
-  DS_NOTOP_PUTS("Message object free'd"); 
+  DS_NOTOP_PUTS("Message object fields cleaned"); 
 }
 
 void
@@ -288,6 +288,10 @@ run(client *client, const uint64_t channel_id, params *params)
 {
   if (!channel_id) {
     D_PUTS("Missing 'channel_id'");
+    return NULL;
+  }
+  if (!params) {
+    D_PUTS("Missing 'params'");
     return NULL;
   }
   if (params->limit < 1 || params->limit > 100) {
@@ -340,8 +344,17 @@ namespace create {
 void
 run(client *client, const uint64_t channel_id, params *params, dati *p_message)
 {
+  if (client->ws.status != websockets::status::CONNECTED) {
+    D_PUTS("Can't perform action unless client has an active"
+           " websockets connection");
+    return;
+  }
   if (!channel_id) {
     D_PUTS("Missing 'channel_id'");
+    return;
+  }
+  if (!params) {
+    D_PUTS("Missing 'params'");
     return;
   }
 
@@ -371,12 +384,12 @@ run(client *client, const uint64_t channel_id, params *params, dati *p_message)
       A[2] = (void *)&params->tts;
     if (params->embed)
       A[3] = (void *)params->embed;
-    /*
+    /* @todo change current A[4] to A[5]
     if (params->allowed_mentions)
       A[4] = (void *)params->allowed_mentions;
+    */
     if (params->message_reference)
-      A[5] = (void *)params->message_reference;
-      */
+      A[4] = (void *)params->message_reference;
 
     char payload[MAX_PAYLOAD_LEN];
     json_inject(payload, sizeof(payload),
@@ -384,19 +397,19 @@ run(client *client, const uint64_t channel_id, params *params, dati *p_message)
         "(nonce):s"
         "(tts):b"
         "(embed):F"
-        /*
-        "(allowed_mentions):F" //@todo
-        "(message_reference):F" //@todo
+        /* @todo
+        "(allowed_mentions):F"
         */
+        "(message_reference):F"
         "@",
         params->content,
         params->nonce,
         &params->tts,
         &embed::to_json, params->embed,
-        /*
+        /* @todo
         params->allowed_mentions,
-        params->message_reference,
         */
+        &message::reference::to_json, params->message_reference,
         A, sizeof(A));
 
     struct sized_buffer req_body = {payload, strlen(payload)};
@@ -508,6 +521,43 @@ from_json(char *str, size_t len, void *p_reference)
       &orka_strtoull, &reference->guild_id);
 }
 
+int
+to_json(char *str, size_t len, void *p_reference)
+{
+  if (NULL == p_reference) return snprintf(str, len, "{}");
+
+  dati *reference = (dati*)p_reference;
+
+  // every field must be set in order to reference a message
+  if (!reference->message_id 
+      || !reference->channel_id 
+      || !reference->guild_id) 
+  {
+    return snprintf(str, len, "{}");
+  }
+
+  void *A[4] = {0}; // pointer availability array
+  A[0] = (void *)&reference->message_id;
+  A[1] = (void *)&reference->channel_id;
+  A[2] = (void *)&reference->guild_id;
+  if (false == reference->fail_if_not_exists) //default is true
+    A[3] = (void *)&reference->fail_if_not_exists;
+
+  int ret = json_inject(str, len, 
+                        "(message_id):F"
+                        "(channel_id):F"
+                        "(guild_id):F"
+                        "(fail_if_not_exists):b"
+                        "@",
+                        &orka_ulltostr, &reference->message_id,
+                        &orka_ulltostr, &reference->channel_id,
+                        &orka_ulltostr, &reference->guild_id,
+                        &reference->fail_if_not_exists,
+                        A, sizeof(A));
+
+  return ret;
+}
+
 }
 
 } // namespace message
@@ -549,7 +599,7 @@ cleanup_dati(void *p_embed)
     ntl_free((void**)embed->fields, &field::cleanup_dati);
   }
 
-  DS_NOTOP_PUTS("Embed object free'd"); 
+  DS_NOTOP_PUTS("Embed object fields cleaned"); 
 }
 
 void
@@ -681,7 +731,7 @@ alloc_dati()
 
 void
 cleanup_dati(void *p_thumbnail) {
-  DS_NOTOP_PUTS("Thumbnail/Video/Image object free'd"); 
+  DS_NOTOP_PUTS("Thumbnail/Video/Image object fields cleaned"); 
 }
 
 void
@@ -760,7 +810,7 @@ alloc_dati()
 
 void
 cleanup_dati(void *p_provider) {
-  DS_NOTOP_PUTS("Provider object free'd"); 
+  DS_NOTOP_PUTS("Provider object fields cleaned"); 
 }
 
 void
@@ -828,7 +878,7 @@ alloc_dati()
 
 void
 cleanup_dati(void *p_author) {
-  DS_NOTOP_PUTS("Author object free'd"); 
+  DS_NOTOP_PUTS("Author object fields cleaned"); 
 }
 
 void
@@ -907,7 +957,7 @@ alloc_dati()
 
 void
 cleanup_dati(void *p_footer) {
-  DS_NOTOP_PUTS("Footer object free'd"); 
+  DS_NOTOP_PUTS("Footer object fields cleaned"); 
 }
 
 void
@@ -980,7 +1030,7 @@ alloc_dati()
 
 void
 cleanup_dati(void *p_field) {
-  DS_NOTOP_PUTS("Field object free'd"); 
+  DS_NOTOP_PUTS("Field object fields cleaned"); 
 }
 
 void
