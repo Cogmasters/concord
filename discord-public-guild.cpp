@@ -134,7 +134,7 @@ cleanup_dati(void *p_guild)
   if (guild->channels)
     channel::free_list(guild->channels);
 
-  DS_NOTOP_PUTS("Guild object free'd"); 
+  DS_NOTOP_PUTS("Guild object fields cleared"); 
 }
 
 void
@@ -250,7 +250,7 @@ cleanup_dati(void *p_member)
   dati *member = (dati*)p_member;
   user::free_dati(member->user);
 
-  DS_NOTOP_PUTS("Member object free'd"); 
+  DS_NOTOP_PUTS("Member object fields cleared"); 
 }
 
 void
@@ -378,7 +378,7 @@ cleanup_dati(void *p_ban)
   dati *ban = (dati*)p_ban;
   user::free_dati(ban->user);
 
-  DS_NOTOP_PUTS("Ban object free'd"); 
+  DS_NOTOP_PUTS("Ban object fields cleared"); 
 }
 
 void

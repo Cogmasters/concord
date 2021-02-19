@@ -36,7 +36,7 @@ cleanup_dati(void *p_identify)
   dati *identify = (dati*)p_identify;
   status_update::free_dati(identify->presence);
 
-  DS_NOTOP_PUTS("Identify object free'd"); 
+  DS_NOTOP_PUTS("Identify object fields cleared"); 
 }
 
 void
@@ -120,7 +120,7 @@ cleanup_dati(void *p_status_update)
   if (status_update->activities)
     ntl_free((void**)status_update->activities, &activity::cleanup_dati);
 
-  DS_NOTOP_PUTS("Status Update object free'd"); 
+  DS_NOTOP_PUTS("Status Update (Presence) object fields cleared"); 
 }
 
 void
@@ -145,7 +145,7 @@ from_json(char *str, size_t len, void *p_status_update)
      status_update->status,
      &status_update->afk);
 
-  DS_NOTOP_PUTS("Status Update object loaded with API response");
+  DS_NOTOP_PUTS("Status Update (Presence) object loaded with API response");
 }
 
 int
@@ -203,7 +203,7 @@ cleanup_dati(void *p_activity)
   if (activity->state)
     free(activity->state);
 
-  DS_NOTOP_PUTS("Activity object free'd"); 
+  DS_NOTOP_PUTS("Activity object fields cleared"); 
 }
 
 void

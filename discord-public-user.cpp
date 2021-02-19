@@ -72,7 +72,7 @@ alloc_dati()
 void
 cleanup_dati(void *p_user)
 {
-  DS_NOTOP_PUTS("User object free'd"); 
+  DS_NOTOP_PUTS("User object fields cleared"); 
 }
 
 void

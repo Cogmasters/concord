@@ -82,7 +82,7 @@ alloc_dati()
 void
 cleanup_dati(void *p_channel) 
 {
-  DS_NOTOP_PUTS("Channel object fields cleaned"); 
+  DS_NOTOP_PUTS("Channel object fields cleared"); 
 }
 
 void
@@ -266,7 +266,7 @@ cleanup_dati(void *p_message)
   if (message->referenced_message)
     free_dati(message->referenced_message);
 
-  DS_NOTOP_PUTS("Message object fields cleaned"); 
+  DS_NOTOP_PUTS("Message object fields cleared"); 
 }
 
 void
@@ -599,7 +599,7 @@ cleanup_dati(void *p_embed)
     ntl_free((void**)embed->fields, &field::cleanup_dati);
   }
 
-  DS_NOTOP_PUTS("Embed object fields cleaned"); 
+  DS_NOTOP_PUTS("Embed object fields cleared"); 
 }
 
 void
@@ -731,7 +731,7 @@ alloc_dati()
 
 void
 cleanup_dati(void *p_thumbnail) {
-  DS_NOTOP_PUTS("Thumbnail/Video/Image object fields cleaned"); 
+  DS_NOTOP_PUTS("Thumbnail/Video/Image object fields cleared"); 
 }
 
 void
@@ -810,7 +810,7 @@ alloc_dati()
 
 void
 cleanup_dati(void *p_provider) {
-  DS_NOTOP_PUTS("Provider object fields cleaned"); 
+  DS_NOTOP_PUTS("Provider object fields cleared"); 
 }
 
 void
@@ -878,7 +878,7 @@ alloc_dati()
 
 void
 cleanup_dati(void *p_author) {
-  DS_NOTOP_PUTS("Author object fields cleaned"); 
+  DS_NOTOP_PUTS("Author object fields cleared"); 
 }
 
 void
@@ -957,7 +957,7 @@ alloc_dati()
 
 void
 cleanup_dati(void *p_footer) {
-  DS_NOTOP_PUTS("Footer object fields cleaned"); 
+  DS_NOTOP_PUTS("Footer object fields cleared"); 
 }
 
 void
@@ -1030,7 +1030,7 @@ alloc_dati()
 
 void
 cleanup_dati(void *p_field) {
-  DS_NOTOP_PUTS("Field object fields cleaned"); 
+  DS_NOTOP_PUTS("Field object fields cleared"); 
 }
 
 void
