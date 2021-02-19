@@ -124,6 +124,10 @@ json_extract (char * json, size_t size, char * extractor, ...);
 extern size_t
 json_vextract (char * json, size_t size, char * extractor, va_list ap);
 
+
+extern size_t
+query_inject(char *query, size_t size, char *injector, ...);
+
 #ifdef __cplusplus
 }
 #endif // __cplusplus

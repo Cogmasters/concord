@@ -202,5 +202,29 @@ int main () {
 
   fprintf(stderr, "%s\n", payload);
 
+  extern char * url_decode(char *);
+  fprintf(stderr, "%s\n", url_decode("%20hello%20world%20"));
+
+  char query[512];
+  char * ss = " hello world ";
+  ret = query_inject(query, sizeof(query),
+                     "(a):d"
+                     "(b):s",
+                     &i,
+                     ss);
+
+  fprintf(stderr, "%s\n", query);
+
+
+  memset(A, 0, sizeof(A));
+  A[0] = ss;
+
+  ret = query_inject(query, sizeof(query),
+                     "(a):d"
+                     "(b):s"
+                     "@",
+                     &i, ss, A, sizeof(A));
+
+  fprintf(stderr, "%s\n", query);
   return 0;
 }

@@ -428,8 +428,10 @@ char *url_encode(char *str) {
   while (*pstr) {
     if (isalnum(*pstr) || *pstr == '-' || *pstr == '_' || *pstr == '.' || *pstr == '~')
       *pbuf++ = *pstr;
-    else if (*pstr == ' ')
-      *pbuf++ = '+';
+    else if (*pstr == ' ') {
+      //*pbuf++ = '+';
+      *pbuf++ = '%', *pbuf++ = '2', *pbuf++ = '0';
+    }
     else
       *pbuf++ = '%', *pbuf++ = to_hex(*pstr >> 4), *pbuf++ = to_hex(*pstr & 15);
     pstr++;
@@ -457,4 +459,24 @@ char *url_decode(char *str) {
   }
   *pbuf = '\0';
   return buf;
+}
+
+char * url_encode_ext(char * pos, size_t size)
+{
+  char * str = malloc(size+1);
+  memcpy(str, pos, size);
+  str[size] = '\0';
+  char * encoded = url_encode(str);
+  free(str);
+  return encoded;
+}
+
+char * url_decode_ext(char * pos, size_t size)
+{
+  char * str = malloc(size+1);
+  memcpy(str, pos, size);
+  str[size] = '\0';
+  char * decoded = url_decode(str);
+  free(str);
+  return decoded;
 }

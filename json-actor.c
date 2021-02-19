@@ -83,6 +83,9 @@ json_string_escape(size_t *output_len_p, char *input, size_t input_len);
 extern int json_string_unescape(char **new_str, size_t *new_size,
                                 char *str, size_t old_size);
 
+extern char *url_encode_ext(char *, size_t);
+extern char *url_decode_ext(char *, size_t);
+
 enum actor {
   EXTRACTOR = 1,
   INJECTOR
@@ -841,10 +844,9 @@ parse_actor(
   struct stack *stack,
   char *pos,
   size_t size,
-  void * x)
+  struct composite_value * cv)
 {
   // work around the incompatible pointer warning
-  struct composite_value * cv = (struct composite_value *)x;
   char * const end_pos = pos + size;
   SKIP_SPACES(pos, end_pos);
   while (pos < end_pos) {
@@ -994,6 +996,8 @@ static void  free_composite_value (struct composite_value *cv)
   struct access_path_value *apv;
   struct value *v;
   if(cv->is_object) {
+    if (NULL == cv->_.pairs.pos)
+      return;
     for (size_t i = 0; i < cv->_.pairs.size; i++) {
       apv = cv->_.pairs.pos + i;
       free_access_path_value(apv);
@@ -1001,6 +1005,8 @@ static void  free_composite_value (struct composite_value *cv)
     free(cv->_.pairs.pos);
   }
   else {
+    if (NULL == cv->_.elements.pos)
+      return;
     for (size_t i = 0; i < cv->_.elements.size; i++) {
       v = cv->_.elements.pos + i;
       free_value(v);
@@ -1017,13 +1023,19 @@ static void  free_composite_value (struct composite_value *cv)
  */
 static char write_only [1024*10];
 
+enum encoding_type
+{
+  ENCODING_JSON = 0,
+  ENCODING_URL = 1,
+  ENCODING_BASE64
+};
 
 struct injection_info {
   char * next_pos;
   struct stack sp;
   FILE * fp;
   struct availability * A;
-  bool url_encoding;
+  enum encoding_type encoding;
 };
 
 static int
@@ -1091,22 +1103,40 @@ inject_builtin (
       {
         case SIZE_UNKNOWN:
         case SIZE_ZERO:
-          escaped = json_string_escape(&len, s, strlen(s));
-          ret = xprintf(pos, size, info, "\"%.*s\"", len, escaped);
-          if (escaped != s)
-            free(escaped);
+          if (ENCODING_JSON == info->encoding) {
+            escaped = json_string_escape(&len, s, strlen(s));
+            ret = xprintf(pos, size, info, "\"%.*s\"", len, escaped);
+            if (escaped != s)
+              free(escaped);
+          }
+          else if (ENCODING_URL == info->encoding) {
+            escaped = url_encode_ext(s, strlen(s));
+            ret = xprintf(pos, size, info, "%s", escaped);
+          }
           return ret;
         case SIZE_FIXED:
-          escaped = json_string_escape(&len, s, v->mem_size.size);
-          ret = xprintf(pos, size, info, "\"%.*s\"", len, escaped);
-          if (escaped != s)
-            free(escaped);
+          if (ENCODING_JSON == info->encoding) {
+            escaped = json_string_escape(&len, s, v->mem_size.size);
+            ret = xprintf(pos, size, info, "\"%.*s\"", v->mem_size.size, escaped);
+            if (escaped != s)
+              free(escaped);
+          }
+          else if (ENCODING_URL == info->encoding) {
+            escaped = url_encode_ext(s, v->mem_size.size);
+            ret = xprintf(pos, size, info, "%.*s", v->mem_size.size, escaped);
+          }
           return ret;
         case SIZE_PARAMETERIZED:
-          escaped = json_string_escape(&len, s, v->mem_size.size);
-          ret = xprintf(pos, size, info, "\"%.*s\"", len, escaped);
-          if (escaped != s)
-            free(escaped);
+          if (ENCODING_JSON == info->encoding) {
+            escaped = json_string_escape(&len, s, v->mem_size.size);
+            ret = xprintf(pos, size, info, "\"%.*s\"", len, escaped);
+            if (escaped != s)
+              free(escaped);
+          }
+          else if (ENCODING_URL == info->encoding) {
+            escaped = url_encode_ext(s, v->mem_size.size);
+            ret = xprintf(pos, size, info, "%.*s", v->mem_size.size, escaped);
+          }
           return ret;
       }
       break;
@@ -1397,7 +1427,7 @@ inject_composite_value (
 
 static int
 prepare_actor(
-  char * (*parser)(struct stack *, char *, size_t, void *),
+  char * (*parser)(struct stack *, char *, size_t, struct composite_value *),
   struct stack * stack,
   struct operand_addrs * operand_addrs,
   struct composite_value * cv,
@@ -1453,6 +1483,7 @@ json_vinject(
   size_t mem_size = 0;
   memset(&info, 0, sizeof(info));
 
+  info.encoding = ENCODING_JSON;
   if (1)
     info.fp = NULL;
   else
@@ -2043,11 +2074,12 @@ parse_query_string (
   struct stack * stack,
   char * pos,
   size_t size,
-  void * x)
+  struct composite_value  * cv)
 {
-  struct sized_access_path_value * pairs = (struct sized_access_path_value *)x;
   char * const start_pos = pos, * const end_pos = pos + size;
+  struct sized_access_path_value * pairs = &cv->_.pairs;
   pairs->pos = calloc(MAX_ACTION_NUMBERS, sizeof(struct access_path_value));
+  cv->is_object = true;
 
   size_t i = 0;
   while (pos < end_pos)
@@ -2056,6 +2088,12 @@ parse_query_string (
     if ('(' == *pos) {
       pos = parse_key_value(stack, pos, end_pos - pos, pairs->pos + i);
       i++;
+    }
+    else if ('@' == *pos) {
+      char *next_pos = NULL;
+      if (parse_availability(pos, end_pos - pos, &cv->A, &next_pos))
+        pos = next_pos;
+      SKIP_SPACES(pos, end_pos);
     }
     else if (0 == stack->top || TOP(stack) == *pos) {
       ASSERT_S(i < MAX_ACTION_NUMBERS, "exceed max allowed actions\n");
@@ -2083,9 +2121,6 @@ inject_query_key_value (
                         ap->path.key.start);
   pos = info->next_pos;
 
-  used_bytes += xprintf(pos, end_pos - pos, info, "=");
-  pos = info->next_pos;
-
   used_bytes += inject_value(pos, end_pos - pos, &ap->value, info);
   return used_bytes;
 }
@@ -2111,7 +2146,7 @@ inject_query_key_value_list (
     struct access_path_value *p = cv->_.pairs.pos + i;
     if (!has_value(info, &p->value)) continue;
 
-    used_bytes += inject_query_key_value_list(pos, end_pos - pos, p, info);
+    used_bytes += inject_query_key_value(pos, end_pos - pos, p, info);
     pos = info->next_pos;
 
     if (j + 1 != count) {
@@ -2124,12 +2159,8 @@ inject_query_key_value_list (
 }
 
 
-int
-query_vinject(
-  char *pos,
-  size_t size,
-  char *injector,
-  va_list ap)
+size_t
+query_vinject(char *pos, size_t size, char *injector, va_list ap)
 {
   struct stack stack = { .array = {0}, .top = 0, .actor = INJECTOR };
   struct operand_addrs  rec;
@@ -2146,6 +2177,7 @@ query_vinject(
   else
     info.fp = open_memstream(&mem, &mem_size);
 
+  info.encoding = ENCODING_URL;
   if (cv.A.has_this) {
     if (cv.A.arg == NULL)
       ERR("The argument of @ (used for checking the availability of a value) is NULL");
@@ -2181,3 +2213,14 @@ query_vinject(
   free_composite_value(&cv);
   return used_bytes;
 }
+
+size_t
+query_inject(char *query, size_t size, char *injector, ...)
+{
+  va_list ap;
+  va_start(ap, injector);
+  size_t used_bytes = query_vinject(query, size, injector, ap);
+  va_end(ap);
+  return used_bytes;
+}
+
