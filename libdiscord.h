@@ -340,11 +340,22 @@ enum {
 https://discord.com/developers/docs/resources/channel#message-object-message-activity-structure */
 namespace activity {
 struct dati {
-  activity_types::code type;
+  types::code type;
   //@todo missing party_id;
 };
 
 //@todo missing initialization functions
+
+/* MESSAGE ACTIVITY TYPES
+https://discord.com/developers/docs/resources/channel#message-object-message-activity-types */
+namespace types {
+enum {
+  JOIN          = 1,
+  SPECTATE      = 2,
+  LISTEN        = 3,
+  JOIN_REQUEST  = 5
+};
+} // namespace types
 
 } // namespace activity
 
@@ -379,18 +390,6 @@ void free_dati(dati *reference);
 void from_json(char *str, size_t len, void *p_reference);
 
 } // namespace reference
-
-//@todo move to namespace activity
-/* MESSAGE ACTIVITY TYPES
-https://discord.com/developers/docs/resources/channel#message-object-message-activity-types */
-namespace activity_types {
-enum {
-  JOIN          = 1,
-  SPECTATE      = 2,
-  LISTEN        = 3,
-  JOIN_REQUEST  = 5
-};
-} // namespace activity_types
 
 /* MESSAGE FLAGS
 https://discord.com/developers/docs/resources/channel#message-object-message-flags */

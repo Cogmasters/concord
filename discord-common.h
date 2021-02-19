@@ -30,10 +30,12 @@ namespace channel {
   namespace message { 
     struct dati; 
     namespace types { typedef int code; }
-    namespace activity { struct dati; }
+    namespace activity { 
+      struct dati; 
+      namespace types { typedef int code; }
+    } // namespace activity
     namespace application { struct dati; }
     namespace reference { struct dati; }
-    namespace activity_types { typedef int code; }
     namespace flags { typedef int code; }
     namespace sticker {
       struct dati;
