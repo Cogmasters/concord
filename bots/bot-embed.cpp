@@ -41,19 +41,10 @@ static channel::embed::dati*
 load_embed_from_json(char filename[])
 {
   using namespace channel::embed;
-  
-  FILE *fp = fopen(filename, "r");
-  ASSERT_S(NULL != fp,
-      "Couldn't find " JSON_FILE " at working directory");
-
-  /* get file size */
-  fseek(fp, 0L, SEEK_END);
-  size_t fsize = ftell(fp);
-  fseek(fp, 0L, SEEK_SET);
 
   /* get contents of file to string */
-  char *json_payload = (char*)malloc(fsize+1);
-  fread(json_payload, sizeof(char), fsize, fp);
+  size_t fsize;
+  char *json_payload = orka_load_whole_file(filename, &fsize);
 
   dati *new_embed = alloc_dati();
   from_json(json_payload, fsize, (void*)new_embed);
@@ -61,7 +52,6 @@ load_embed_from_json(char filename[])
   new_embed->timestamp = orka_timestamp_ms(); // get current timestamp
 
   free(json_payload);
-  fclose(fp);
 
   return new_embed;
 }

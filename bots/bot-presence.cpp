@@ -23,18 +23,9 @@ load_presence_from_json(client *client, char filename[])
 {
   using namespace presence;
   
-  FILE *fp = fopen(filename, "r");
-  ASSERT_S(NULL != fp,
-      "Couldn't find " JSON_FILE " at working directory");
-
-  /* get file size */
-  fseek(fp, 0L, SEEK_END);
-  size_t fsize = ftell(fp);
-  fseek(fp, 0L, SEEK_SET);
-
   /* get contents of file to string */
-  char *json_payload = (char*)malloc(fsize+1);
-  fread(json_payload, sizeof(char), fsize, fp);
+  size_t fsize;
+  char *json_payload = orka_load_whole_file(filename, &fsize);
 
   dati *new_presence = alloc_dati();
   from_json(json_payload, fsize, (void*)new_presence);
@@ -42,7 +33,6 @@ load_presence_from_json(client *client, char filename[])
   replace_presence(client, new_presence);
 
   free(json_payload);
-  fclose(fp);
 }
 
 int main(int argc, char *argv[])
