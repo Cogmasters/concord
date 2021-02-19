@@ -40,7 +40,10 @@ init(char token[])
 client*
 fast_init(const char config_file[])
 {
-  struct orka_settings settings;
+  // This will be returned from this function
+  // it has to be static. It also means we can
+  // only have one setting per main.
+  static struct orka_settings settings;
   memset(&settings, 0, sizeof(orka_settings));
 
   orka_settings_init(&settings, config_file);
