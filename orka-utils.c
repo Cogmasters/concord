@@ -167,6 +167,11 @@ orka_strtoull(char *str, size_t len, void *p_data)
   return 1;
 }
 
+int
+orka_ulltostr(char *str, size_t len, void *p_data) {
+  return snprintf(str, len, "%llu", *(uint64_t*)p_data);
+}
+
 void
 orka_sleep_ms(const int64_t delay_ms)
 {
