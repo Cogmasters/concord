@@ -12,23 +12,14 @@ namespace user_agent {
 static struct curl_slist*
 reqheader_init()
 {
+  char user_agent[] = "orca (http://github.com/cee-studio/orca)";
+
   struct curl_slist *new_header = NULL;
-  new_header = curl_slist_append(new_header, "Accept: application/json");
-  curl_slist_append(new_header, "Content-Type: application/json");
-  curl_slist_append(new_header, "User-Agent: orka");
+  add_reqheader_pair(&new_header, "Accept", "application/json");
+  add_reqheader_pair(&new_header, "Content-Type", "application/json");
+  add_reqheader_pair(&new_header, "User-Agent", user_agent);
 
   return new_header;
-}
-
-void
-cleanup(struct dati *ua)
-{
-  curl_slist_free_all(ua->req_header);
-  curl_easy_cleanup(ua->ehandle);
-
-  if (ua->resp_body.start) {
-    free(ua->resp_body.start);
-  }
 }
 
 void
@@ -40,6 +31,17 @@ init(struct dati *ua, char *base_url)
                                   &ua->pairs,
                                   &ua->resp_body);
   ua->base_url = base_url;
+}
+
+void
+cleanup(struct dati *ua)
+{
+  curl_slist_free_all(ua->req_header);
+  curl_easy_cleanup(ua->ehandle);
+
+  if (ua->resp_body.start) {
+    free(ua->resp_body.start);
+  }
 }
 
 /* template function for performing requests */

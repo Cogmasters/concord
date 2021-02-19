@@ -16,6 +16,7 @@ struct dati {
 };
 
 void init(struct dati *ua, char *base_url);
+void cleanup(struct dati *ua);
 
 void vrun(struct dati *ua,
      struct resp_handle *handle,
