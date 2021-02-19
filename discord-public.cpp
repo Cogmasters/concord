@@ -40,11 +40,23 @@ init(char token[])
 client*
 fast_init(const char config_file[])
 {
-  // This will be returned from this function
-  // it has to be static. It also means we can
-  // only have one setting per main.
+  /* 
+   * settings will be returned from this function,
+   * it has to be static. It also means we can
+   * only have one settings per bot.
+   */
   static struct orka_settings settings;
   memset(&settings, 0, sizeof(orka_settings));
+
+  /*
+   * set a flag to make sure this function is called only once.
+   */
+  static int called = 0;
+  if (0 == called)
+    called = 1;
+  else
+    ERR("fast_init has been called, it can only be called once in each bot\n");
+
 
   orka_settings_init(&settings, config_file);
 
