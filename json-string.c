@@ -3,9 +3,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 char *
-json_escape_string (size_t * output_len_p, char * input, size_t input_len)
+json_string_escape(size_t *output_len_p, char *input, size_t input_len)
 {
   int extra_bytes = 0;
   char * const input_start = input, * const input_end = input + input_len;
@@ -289,8 +290,8 @@ static void * append (uint32_t x, char *d)
 }
 
 int
-json_unescape_string (char ** output_p, size_t * output_len_p,
-                      char * input, size_t input_len)
+json_string_unescape(char **output_p, size_t *output_len_p,
+                     char *input, size_t input_len)
 {
   unsigned char c;
   char * const input_start = input, * const input_end = input + input_len;
@@ -406,4 +407,54 @@ return_err:
 return_ok:
   return 1;
 
+}
+
+
+/* Converts a hex character to its integer value */
+static char from_hex(char ch) {
+  return isdigit(ch) ? ch - '0' : tolower(ch) - 'a' + 10;
+}
+
+/* Converts an integer value to its hex character*/
+static char to_hex(char code) {
+  static char hex[] = "0123456789abcdef";
+  return hex[code & 15];
+}
+
+/* Returns a url-encoded version of str */
+/* IMPORTANT: be sure to free() the returned string after use */
+char *url_encode(char *str) {
+  char *pstr = str, *buf = malloc(strlen(str) * 3 + 1), *pbuf = buf;
+  while (*pstr) {
+    if (isalnum(*pstr) || *pstr == '-' || *pstr == '_' || *pstr == '.' || *pstr == '~')
+      *pbuf++ = *pstr;
+    else if (*pstr == ' ')
+      *pbuf++ = '+';
+    else
+      *pbuf++ = '%', *pbuf++ = to_hex(*pstr >> 4), *pbuf++ = to_hex(*pstr & 15);
+    pstr++;
+  }
+  *pbuf = '\0';
+  return buf;
+}
+
+/* Returns a url-decoded version of str */
+/* IMPORTANT: be sure to free() the returned string after use */
+char *url_decode(char *str) {
+  char *pstr = str, *buf = malloc(strlen(str) + 1), *pbuf = buf;
+  while (*pstr) {
+    if (*pstr == '%') {
+      if (pstr[1] && pstr[2]) {
+        *pbuf++ = from_hex(pstr[1]) << 4 | from_hex(pstr[2]);
+        pstr += 2;
+      }
+    } else if (*pstr == '+') {
+      *pbuf++ = ' ';
+    } else {
+      *pbuf++ = *pstr;
+    }
+    pstr++;
+  }
+  *pbuf = '\0';
+  return buf;
 }

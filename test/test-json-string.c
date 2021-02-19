@@ -17,14 +17,14 @@ int main(int argc, char *argv[])
 
   fprintf(stderr, "raw string size\t%zu\n", size);
   size_t new_size = 0;
-  char * estr = json_escape_string(&new_size, str, size);
+  char * estr = json_string_escape(&new_size, str, size);
 
   fprintf(stderr, "escaped size\t%zu\n", new_size);
   //fprintf(stderr, "escaped string %.*s\n", new_size, estr);
 
   size_t unstr_size = 0;
   char * unstr = NULL;
-  json_unescape_string(&unstr, &unstr_size, estr, new_size);
+  json_string_unescape(&unstr, &unstr_size, estr, new_size);
 
   fprintf(stderr, "unescaped size\t%zu\n", unstr_size);
 
@@ -37,8 +37,8 @@ int main(int argc, char *argv[])
                   0};
 
   fprintf (stderr, "%s\n", s);
-  json_unescape_string(&unstr, &unstr_size, s, strlen(s));
-  estr = json_escape_string(&new_size, unstr, unstr_size);
+  json_string_unescape(&unstr, &unstr_size, s, strlen(s));
+  estr = json_string_escape(&new_size, unstr, unstr_size);
 
   fprintf(stderr, "%s\n", unstr);
   fprintf(stderr, "%s\n", estr);

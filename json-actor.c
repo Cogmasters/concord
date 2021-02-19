@@ -78,10 +78,10 @@ static void assert_is_pointer(void * p)
 
 
 extern char *
-json_escape_string (size_t * output_len_p, char * input, size_t input_len);
+json_string_escape(size_t *output_len_p, char *input, size_t input_len);
 
-extern int json_unescape_string(char ** new_str, size_t * new_size,
-                                char * str, size_t old_size);
+extern int json_string_unescape(char **new_str, size_t *new_size,
+                                char *str, size_t old_size);
 
 enum actor {
   EXTRACTOR = 1,
@@ -256,8 +256,8 @@ print_value (FILE * fp, struct value * v) {
     case V_STRING_LITERAL:
     {
       size_t len;
-      char * p = json_escape_string (&len, v->_.primitve.start,
-                                     v->_.primitve.size);
+      char * p = json_string_escape(&len, v->_.primitve.start,
+                                    v->_.primitve.size);
       fprintf(fp, "\"%.*s\"\n", len, p);
       break;
     }
@@ -1017,11 +1017,13 @@ static void  free_composite_value (struct composite_value *cv)
  */
 static char write_only [1024*10];
 
+
 struct injection_info {
   char * next_pos;
   struct stack sp;
   FILE * fp;
   struct availability * A;
+  bool url_encoding;
 };
 
 static int
@@ -1089,19 +1091,19 @@ inject_builtin (
       {
         case SIZE_UNKNOWN:
         case SIZE_ZERO:
-          escaped = json_escape_string(&len, s, strlen(s));
+          escaped = json_string_escape(&len, s, strlen(s));
           ret = xprintf(pos, size, info, "\"%.*s\"", len, escaped);
           if (escaped != s)
             free(escaped);
           return ret;
         case SIZE_FIXED:
-          escaped = json_escape_string(&len, s, v->mem_size.size);
+          escaped = json_string_escape(&len, s, v->mem_size.size);
           ret = xprintf(pos, size, info, "\"%.*s\"", len, escaped);
           if (escaped != s)
             free(escaped);
           return ret;
         case SIZE_PARAMETERIZED:
-          escaped = json_escape_string(&len, s, v->mem_size.size);
+          escaped = json_string_escape(&len, s, v->mem_size.size);
           ret = xprintf(pos, size, info, "\"%.*s\"", len, escaped);
           if (escaped != s)
             free(escaped);
@@ -1246,8 +1248,8 @@ inject_value (
     case V_STRING_LITERAL:
     {
       size_t len;
-      char * p = json_escape_string (&len, v->_.primitve.start,
-                                     v->_.primitve.size);
+      char * p = json_string_escape(&len, v->_.primitve.start,
+                                    v->_.primitve.size);
       return xprintf(pos, size, info, "\"%.*s\"", len, p);
     }
     default:
@@ -1556,7 +1558,7 @@ static int keycmp(char *json, jsmntok_t *tok, struct sized_buffer *key)
 static char * copy_over_string (size_t * new_size, char * str, size_t len)
 {
   char * new_str = NULL;
-  if (json_unescape_string(&new_str, new_size, str, len)) {
+  if (json_string_unescape(&new_str, new_size, str, len)) {
     return new_str;
   }
   else {
@@ -1991,8 +1993,6 @@ size_t json_extract (char * json, size_t size, char * extractor, ...)
   return used_bytes;
 }
 
-
-
 static char *
 parse_key_value(
   struct stack *stack,
@@ -2039,7 +2039,7 @@ parse_key_value(
 }
 
 static char *
-parse_query_string(
+parse_query_string (
   struct stack * stack,
   char * pos,
   size_t size,
@@ -2157,8 +2157,8 @@ query_vinject(
   char * output_buf;
   size_t output_size;
   if (NULL == pos) {
-    output_buf = NULL;//write_only;
-    output_size = 0; //sizeof(write_only);
+    output_buf = NULL; //write_only;
+    output_size = 0;   //sizeof(write_only);
   }
   else {
     output_buf = pos;

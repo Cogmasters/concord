@@ -89,7 +89,7 @@ jsoneq(const char *json, jsmntok_t *tok, const char *str)
 static char * copy_over_string (size_t * new_size, char * str, size_t len)
 {
   char * new_str = NULL;
-  if (json_unescape_string(&new_str, new_size, str, len)) {
+  if (json_string_unescape(&new_str, new_size, str, len)) {
     return new_str;
   }
   else {

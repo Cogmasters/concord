@@ -260,7 +260,7 @@ json_vsnprintf(char * str, size_t len, char * fmt, va_list ap)
           size_t new_len = 0, old_len;
           old_len = sp[i].has_print_size ? sp[i].print_size :
                     strlen((char *)sp[i].provider.p);
-          ep = json_escape_string(&new_len, sp[i].provider.p, old_len);
+          ep = json_string_escape(&new_len, sp[i].provider.p, old_len);
           slen = snprintf(cur_ptr, len, sp[i].specifier, new_len, ep);
           if (new_len != old_len) free(ep);
         }

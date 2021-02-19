@@ -123,7 +123,7 @@ int main()
 {
   char tx [] = {'1', '2', '3', '\n', '\0'};
   size_t x = 0;
-  char * yx = json_escape_string(&x, tx, 4);
+  char * yx = json_string_escape(&x, tx, 4);
   fprintf(stdout, "%.*s\n", (int)x, yx);
   free(yx);
 

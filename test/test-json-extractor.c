@@ -151,5 +151,11 @@ int main ()
 
   fprintf (stderr, "extracted value %u\n", ret);
   fprintf (stderr, "%s\n", p);
+
+  struct sized_buffer tok = { .start = NULL, .size = 0 };
+
+  ret = json_extract(json, strlen(json), "(object):T", &tok);
+
+  fprintf (stderr, "extracted value %.*s\n", tok.size, tok.start);
   return 0;
 }
