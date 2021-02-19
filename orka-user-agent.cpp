@@ -12,7 +12,7 @@ namespace user_agent {
 static struct curl_slist*
 reqheader_init()
 {
-  char user_agent[] = "orca (http://github.com/cee-studio/orca)";
+  char user_agent[] = "orka (http://github.com/cee-studio/orca)";
 
   struct curl_slist *new_header = NULL;
   add_reqheader_pair(&new_header, "Accept", "application/json");
@@ -25,6 +25,7 @@ reqheader_init()
 void
 init(struct dati *ua, char *base_url)
 {
+  memset(ua, 0, sizeof(struct dati));
   ua->req_header = reqheader_init();
   ua->ehandle = custom_easy_init(&(ua->settings),
                                   ua->req_header,
