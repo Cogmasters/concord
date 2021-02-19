@@ -365,14 +365,16 @@ run(client *client, const uint64_t channel_id, params *params, dati *p_message)
 
   if (!params->file.name && !params->file.content)
   {  // content-type is application/json
-    if (IS_EMPTY_STRING(params->content)) {
-      D_PUTS("Missing 'content'");
-      return;
-    }
-    if (strlen(params->content) >= MAX_MESSAGE_LEN) {
-      D_PRINT("Content length exceeds %d characters threshold (%zu)",
-          MAX_MESSAGE_LEN, strlen(params->content));
-      return;
+    if (!params->embed) {
+      if (IS_EMPTY_STRING(params->content)) {
+        D_PUTS("Missing 'content'");
+        return;
+      }
+      if (strlen(params->content) >= MAX_MESSAGE_LEN) {
+        D_PRINT("Content length exceeds %d characters threshold (%zu)",
+            MAX_MESSAGE_LEN, strlen(params->content));
+        return;
+      }
     }
 
     void *A[6] = {0}; // pointer availability array
