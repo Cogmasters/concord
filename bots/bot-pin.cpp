@@ -19,7 +19,7 @@ void on_message_create(
     const user::dati *me,
     const channel::message::dati *msg)
 {
-  using namespace discord::channel;
+  using namespace channel;
 
   // make sure bot ignores msgs from other bots
   if (msg->author->bot)

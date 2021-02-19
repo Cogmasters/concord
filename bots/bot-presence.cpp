@@ -21,14 +21,12 @@ void on_ready(client *client, const user::dati *me)
 void
 load_presence_from_json(client *client, char filename[])
 {
-  using namespace presence;
-  
   /* get contents of file to string */
-  size_t fsize;
-  char *json_payload = orka_load_whole_file(filename, &fsize);
+  size_t len;
+  char *json_payload = orka_load_whole_file(filename, &len);
 
-  dati *new_presence = alloc_dati();
-  from_json(json_payload, fsize, (void*)new_presence);
+  presence::dati *new_presence = presence::alloc_dati();
+  presence::from_json(json_payload, len, (void*)new_presence);
 
   replace_presence(client, new_presence);
 

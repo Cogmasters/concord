@@ -104,10 +104,8 @@ on_command(client *client, const user::dati *me, const channel::message::dati *m
 uint64_t
 select_guild(client *client)
 {
-  using namespace guild;
-
   // get guilds bot is a part of
-  dati **guilds = NULL;
+  guild::dati **guilds = NULL;
   guilds = user::me::get_guilds(client);
   ASSERT_S(NULL != guilds, "This bot is not part of any guilds");
 
@@ -125,7 +123,7 @@ select_guild(client *client)
     int num = strtol(strnum, NULL, 10);
     if (num > 0 && num <= i) {
       uint64_t guild_id = guilds[num-1]->id;
-      free_list(guilds);
+      guild::free_list(guilds);
       return guild_id;
     }
     fprintf(stderr, "\nPlease, insert a value between 1 and %d", i);

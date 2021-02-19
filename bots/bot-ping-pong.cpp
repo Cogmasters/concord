@@ -19,7 +19,7 @@ void on_message_create(
     const user::dati *me,
     const channel::message::dati *msg)
 {
-  using namespace::channel;
+  using namespace channel;
 
   // make sure bot doesn't echoes other bots
   if (msg->author->bot)

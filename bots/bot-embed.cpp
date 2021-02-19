@@ -23,7 +23,7 @@ void on_command(
     const user::dati *me,
     const channel::message::dati *msg)
 {
-  using namespace discord::channel;
+  using namespace channel;
 
   // make sure bot doesn't echoes other bots
   if (msg->author->bot)
@@ -40,14 +40,14 @@ void on_command(
 static channel::embed::dati*
 load_embed_from_json(char filename[])
 {
-  using namespace channel::embed;
+  using namespace channel;
 
   /* get contents of file to string */
-  size_t fsize;
-  char *json_payload = orka_load_whole_file(filename, &fsize);
+  size_t len;
+  char *json_payload = orka_load_whole_file(filename, &len);
 
-  dati *new_embed = alloc_dati();
-  from_json(json_payload, fsize, (void*)new_embed);
+  embed::dati *new_embed = embed::alloc_dati();
+  embed::from_json(json_payload, len, (void*)new_embed);
 
   new_embed->timestamp = orka_timestamp_ms(); // get current timestamp
 

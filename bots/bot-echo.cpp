@@ -20,7 +20,7 @@ void on_message_create(
     const user::dati *me,
     const channel::message::dati *msg)
 {
-  using namespace discord::channel;
+  using namespace channel;
 
   // make sure bot doesn't echoes other bots
   if (msg->author->bot)
@@ -38,7 +38,7 @@ void on_message_update(
     const user::dati *me,
     const channel::message::dati *msg)
 {
-  using namespace discord::channel;
+  using namespace channel;
 
   message::create::params params = {
     .content = "I see what you did there."
@@ -56,7 +56,7 @@ void on_message_delete(
     const uint64_t channel_id,
     const uint64_t guild_id)
 {
-  using namespace discord::channel;
+  using namespace channel;
 
   message::create::params params = {
     .content = "Did that message just disappear?"
@@ -75,7 +75,7 @@ void on_message_delete_bulk(
     const uint64_t channel_id,
     const uint64_t guild_id)
 {
-  using namespace discord::channel;
+  using namespace channel;
 
   char buf[128];
   snprintf(buf, sizeof(buf), "Did that %zu messages just disappear?", nids);
