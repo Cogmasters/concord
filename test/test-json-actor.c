@@ -125,6 +125,6 @@ int main ()
 
 
   t = " (k):d (v):d ";
-  parse_query_string(&stack, t, strlen(t), &cv._.pairs);
+  parse_query_string(&stack, t, strlen(t), &cv);
   return 0;
 }

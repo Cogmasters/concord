@@ -206,7 +206,7 @@ int main () {
   fprintf(stderr, "%s\n", url_decode("%20hello%20world%20"));
 
   char query[512];
-  char * ss = " hello world ";
+  char * ss = "Qa'wakana";
   ret = query_inject(query, sizeof(query),
                      "(a):d"
                      "(b):s",
