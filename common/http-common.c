@@ -355,8 +355,10 @@ perform_request(
     switch (action) {
     case ACTION_SUCCESS:
     case ACTION_FAILURE:
+        D_PRINT("FINISHED REQUEST AT %s", url);
         return;
     case ACTION_RETRY:
+        D_PRINT("RETRYING TO PERFORM REQUEST AT %s", url);
         break;
     case ACTION_ABORT:
     default:
