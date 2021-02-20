@@ -25,10 +25,10 @@ TEST_EXES := $(filter %.exe, $(TEST_SRC:.cpp=.exe) $(TEST_SRC:.c=.exe))
 LIBDISCORD_CFLAGS	:= -I./
 LIBDISCORD_LDFLAGS	:= -L./$(LIBDIR) -ldiscord -lcurl
 
-ifeq ($(CC),stensal-c)
+ifeq ($(BEARSSL),1)
 	LIBDISCORD_LDFLAGS += -lbearssl -static
-	CFLAGS += -DBEARSSL
-else ifdef $(BEARSSL)
+	CFLAGS += -DBEARSSL -DBEAR_SSL
+else ifeq ($(CC),stensal-c)
 	LIBDISCORD_LDFLAGS += -lbearssl -static
 	CFLAGS += -DBEARSSL
 else
