@@ -247,13 +247,12 @@ from_json(char *str, size_t len, void *p_activity)
 void
 list_from_json(char *str, size_t len, void *p_activities)
 {
-  struct ntl_deserializer deserializer = {
-    .elem_size = sizeof(dati),
-    .init_elem = &init_dati,
-    .elem_from_buf = &from_json,
-    .ntl_recipient_p = (void***)p_activities
-  };
-  orka_str_to_ntl(str, len, &deserializer);
+  struct ntl_deserializer d;
+  d.elem_size = sizeof(dati);
+  d.init_elem = &init_dati;
+  d.elem_from_buf = &from_json;
+  d.ntl_recipient_p = (void***)p_activities;
+  orka_str_to_ntl(str, len, &d);
 }
 
 int
@@ -747,12 +746,11 @@ static CURL*
 custom_cws_new(dati *ws)
 {
   //missing on_binary, on_ping, on_pong
-  struct cws_callbacks cws_cbs = {
-    .on_connect = &ws_on_connect_cb,
-    .on_text = &ws_on_text_cb,
-    .on_close = &ws_on_close_cb,
-    .data = ws,
-  };
+  struct cws_callbacks cws_cbs;
+  cws_cbs.on_connect = &ws_on_connect_cb;
+  cws_cbs.on_text = &ws_on_text_cb;
+  cws_cbs.on_close = &ws_on_close_cb;
+  cws_cbs.data = ws;
 
   CURL *new_ehandle = cws_new(BASE_WEBSOCKETS_URL, NULL, &cws_cbs);
   ASSERT_S(NULL != new_ehandle, "Out of memory");

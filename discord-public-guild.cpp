@@ -101,13 +101,12 @@ from_json(char *str, size_t len, void *p_guild)
 void
 list_from_json(char *str, size_t len, void *p_guilds)
 {
-  struct ntl_deserializer deserializer = {
-    .elem_size = sizeof(dati),
-    .init_elem = &init_dati,
-    .elem_from_buf = &from_json,
-    .ntl_recipient_p = (void***)p_guilds
-  };
-  orka_str_to_ntl(str, len, &deserializer);
+  struct ntl_deserializer d;
+  d.elem_size = sizeof(dati);
+  d.init_elem = &init_dati;
+  d.elem_from_buf = &from_json;
+  d.ntl_recipient_p = (void***)p_guilds;
+  orka_str_to_ntl(str, len, &d);
 }
 
 void
@@ -219,13 +218,12 @@ from_json(char *str, size_t len, void *p_member)
 void
 list_from_json(char *str, size_t len, void *p_members)
 {
-  struct ntl_deserializer deserializer = {
-    .elem_size = sizeof(dati),
-    .init_elem = &init_dati,
-    .elem_from_buf = &from_json,
-    .ntl_recipient_p = (void***)p_members
-  };
-  orka_str_to_ntl(str, len, &deserializer);
+  struct ntl_deserializer d; 
+  d.elem_size = sizeof(dati);
+  d.init_elem = &init_dati;
+  d.elem_from_buf = &from_json;
+  d.ntl_recipient_p = (void***)p_members;
+  orka_str_to_ntl(str, len, &d);
 }
 
 void
@@ -347,13 +345,12 @@ from_json(char *str, size_t len, void *p_ban)
 void
 list_from_json(char *str, size_t len, void *p_bans)
 {
-  struct ntl_deserializer deserializer = {
-    .elem_size = sizeof(dati),
-    .init_elem = &init_dati,
-    .elem_from_buf = &from_json,
-    .ntl_recipient_p = (void***)p_bans
-  };
-  orka_str_to_ntl(str, len, &deserializer);
+  struct ntl_deserializer d;
+  d.elem_size = sizeof(dati);
+  d.init_elem = &init_dati;
+  d.elem_from_buf = &from_json;
+  d.ntl_recipient_p = (void***)p_bans;
+  orka_str_to_ntl(str, len, &d);
 }
 
 void
