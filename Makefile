@@ -3,8 +3,7 @@ OBJDIR	:= obj
 LIBDIR	:= lib
 
 
-COMMON_SRC  := curl-websocket.c http-common.c \
-		ntl.c orka-utils.c $(wildcard json-*.c)
+COMMON_SRC  := $(wildcard common/*.c)
 ORKA_SRC    := $(wildcard orka-*.cpp)
 DISCORD_SRC := $(wildcard discord-*.cpp)
 GITHUB_SRC  := $(wildcard github-*.cpp)
@@ -40,10 +39,10 @@ LIBDISCORD	:= $(LIBDIR)/libdiscord.a
 
 
 CFLAGS   := -Wall -Wextra -pedantic -std=c11 -O0 -g -D_ORCA_DEBUG -D_GNU_SOURCE \
-		-Wno-unused-parameter -Wno-missing-field-initializers
+		-Wno-unused-parameter -Wno-missing-field-initializers -I. -I./common
 
 CXXFLAGS := -Wall -std=c++03 -O0 -g -D_ORCA_DEBUG -D_GNU_SOURCE \
-		-Wno-write-strings
+		-Wno-write-strings  -I. -I./common
 
 ifeq ($(CC),stensal-c)
 	CFLAGS += -D_DEFAULT_SOURCE
@@ -71,7 +70,7 @@ test: common orka discord github $(TEST_EXES) #@todo should we split by categori
 
 
 mkdir :
-	mkdir -p $(OBJDIR) $(LIBDIR)
+	mkdir -p $(OBJDIR) $(OBJDIR)/common $(LIBDIR)
 
 $(OBJDIR)/curl-websocket.c.o : curl-websocket.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $< \
