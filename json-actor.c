@@ -2142,6 +2142,15 @@ inject_query_key_value_list (
       count--;
   }
 
+  if (0 == count) {
+    xprintf(pos, size, info, "");
+    return 0;
+  }
+  else {
+    xprintf(pos, size, info, "?");
+    pos = info->next_pos;
+  }
+
   for (size_t i = 0, j = 0; i < cv->_.pairs.size; i++) {
     struct access_path_value *p = cv->_.pairs.pos + i;
     if (!has_value(info, &p->value)) continue;

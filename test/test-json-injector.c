@@ -213,7 +213,7 @@ int main () {
                      &i,
                      ss);
 
-  fprintf(stderr, "%s\n", query);
+  fprintf(stderr, "'%s'\n", query);
 
 
   memset(A, 0, sizeof(A));
@@ -225,6 +225,17 @@ int main () {
                      "@",
                      &i, ss, A, sizeof(A));
 
-  fprintf(stderr, "%s\n", query);
+  fprintf(stderr, "'%s'\n", query);
+
+
+  memset(A, 0, sizeof(A));
+  ret = query_inject(query, sizeof(query),
+                     "(a):d"
+                       "(b):s"
+                       "@",
+                     &i, ss, A, sizeof(A));
+
+  fprintf(stderr, "empty query_string: '%s'\n", query);
+
   return 0;
 }
