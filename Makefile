@@ -62,7 +62,7 @@ all : mkdir common orka discord github bot
 
 common: mkdir $(COMMON_OBJS)
 orka: mkdir $(ORKA_OBJS)
-discord: mkdir $(DISCORD_OBJS) $(LIBDISCORD)
+discord: mkdir $(DISCORD_OBJS) libdiscord
 github: mkdir $(GITHUB_OBJS)
 
 bot: $(BOT_EXES) #@todo should we split by categories (bot_discord, bot_github, etc)?
@@ -83,13 +83,14 @@ $(OBJDIR)/%.cpp.o: %.cpp
 	$(CXX) $(CXXFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 
 #generic compilation
-%.exe : %.c $(LIBDISCORD)
+%.exe : %.c libdiscord
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBS_LDFLAGS)
-%.exe: %.cpp $(LIBDISCORD)
+%.exe: %.cpp libdiscord
 	$(CXX) $(CXXFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBS_LDFLAGS)
 
-$(LIBDISCORD) : $(OBJS)
-	$(AR) -cvq $@ $(OBJS)
+libdiscord: mkdir $(OBJS)
+	$(AR) -cvq $(LIBDISCORD) $(OBJS)
+
 
 install : all
 	install -d $(PREFIX)/lib/
