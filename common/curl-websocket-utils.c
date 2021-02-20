@@ -21,16 +21,18 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
+#include <ctype.h>
+#include <unistd.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+
 #ifdef __stensal__
 
 #include <bearssl_hash.h>
-#include <stdio.h>
-#include <ctype.h>
-#include <unistd.h>
-#include <stdbool.h>
-#include <stdlib.h>
-#include <sys/stat.h>
-#include <fcntl.h>
 
 static void
 _cws_sha1(const void *input, const size_t input_len, void *output)
