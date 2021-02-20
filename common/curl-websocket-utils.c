@@ -30,7 +30,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-#ifdef __stensal__
+#ifdef BEARSSL
 
 #include <bearssl_hash.h>
 
