@@ -10,11 +10,6 @@
 #define EDDBAPI_API_URL "https://eddbapi.kodeblox.com/api/v4"
 
 
-struct context {
-  discord::channel::embed::dati *p_embed;
-  orka::user_agent::dati *p_eddbapi_ua;
-};
-
 struct doc {
   char _id[512];
   int id;
@@ -117,10 +112,14 @@ void on_command(
   if (msg->author->bot)
     return;
 
-  struct context *p_ctx = (struct context*)discord::get_data(client);
+  orka::user_agent::dati *p_eddbapi_ua = (orka::user_agent::dati*)discord::get_data(client);
+
+  /* Initialize embed struct that will be loaded to  */
+  discord::channel::embed::dati new_embed;
+  discord::channel::embed::init_dati(&new_embed);
 
   struct resp_handle resp_handle =
-    {&embed_from_json, (void*)p_ctx->p_embed};
+    {&embed_from_json, (void*)&new_embed};
 
   char query[512];
   int ret = query_inject(query, sizeof(query),
@@ -128,17 +127,19 @@ void on_command(
   ASSERT_S(ret < (int)sizeof(query), "Out of bounds write attempt");
 
   orka::user_agent::run(
-      p_ctx->p_eddbapi_ua, 
+      p_eddbapi_ua, 
       &resp_handle,
       NULL,
       HTTP_GET,
-      "/factions?%s", query);
+      "/factions%s", query);
 
   message::create::params params = {
-    .embed = p_ctx->p_embed
+    .embed = &new_embed
   };
 
   message::create::run(client, msg->channel_id, &params, NULL);
+
+  discord::channel::embed::cleanup_dati(&new_embed);
 }
 
 int main(int argc, char *argv[])
@@ -162,23 +163,14 @@ int main(int argc, char *argv[])
   orka::user_agent::dati eddbapi_ua;
   orka::user_agent::init(&eddbapi_ua, EDDBAPI_API_URL);
 
-  /* Initialize embed struct that will be loaded to  */
-  discord::channel::embed::dati new_embed;
-  discord::channel::embed::init_dati(&new_embed);
-
-  /* Initialize context with data to be accessed 
-   *  from within callbacks */
-  struct context ctx = {
-    .p_embed = &new_embed,
-    .p_eddbapi_ua = &eddbapi_ua
-  };
-  discord::set_data(client, (void*)&ctx); // store ctx for later retrieval
+  /* Store eddbapi_ua for retrieval within callbacks */
+  // @todo make set_data and get_data thread safe
+  discord::set_data(client, (void*)&eddbapi_ua);
 
   /* Start a connection to Discord */
   discord::run(client);
 
   /* Cleanup allocated resources */
-  discord::channel::embed::cleanup_dati(&new_embed);
   orka::user_agent::cleanup(&eddbapi_ua);
   discord::cleanup(client);
   discord::global_cleanup();
