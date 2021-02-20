@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdint.h>
+#include <inttypes.h>
 #include <string.h>
 #include <math.h> //for round()
 #include <time.h>
@@ -169,7 +169,7 @@ orka_strtoull(char *str, size_t len, void *p_data)
 
 int
 orka_ulltostr(char *str, size_t len, void *p_data) {
-  return snprintf(str, len, "%llu", *(uint64_t*)p_data);
+  return snprintf(str, len, "%" PRIu64 , *(uint64_t*)p_data);
 }
 
 void
