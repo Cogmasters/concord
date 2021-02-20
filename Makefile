@@ -95,7 +95,7 @@ install : all
 	install -d $(PREFIX)/lib/
 	install -m 644 $(LIBDISCORD) $(PREFIX)/lib/
 	install -d $(PREFIX)/include/
-	install -m 644 *.h *.hpp $(PREFIX)/include/
+	install -m 644 *.h *.hpp common/*.h common/*.hpp $(PREFIX)/include/
 
 clean :
 	rm -rf $(OBJDIR) *.exe test/*.exe bots/*.exe
