@@ -72,9 +72,9 @@ test: common orka discord github $(TEST_EXES) #@todo should we split by categori
 mkdir :
 	mkdir -p $(OBJDIR) $(OBJDIR)/common $(LIBDIR)
 
-$(OBJDIR)/curl-websocket.c.o : curl-websocket.c
+$(OBJDIR)/common/curl-%.c.o : common/curl-%.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $< \
-		-U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=1
+		-U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=1 -Wno-unused-function
 
 #generic compilation
 $(OBJDIR)/%.c.o : %.c
