@@ -360,7 +360,7 @@ perform_request(
         break;
     case ACTION_ABORT:
     default:
-        abort();
+        ERR("COULDN'T PERFORM REQUEST AT %s", url);
     }
 
   } while (ACTION_RETRY == action);
