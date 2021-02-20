@@ -110,3 +110,12 @@ add_executable(test-json-extractor.exe
 
 add_executable(test-utf-8.exe
         test/test-utf8.c)
+
+
+add_executable(test-json-load.exe
+        json-string.c
+        json-scanf.c
+        orka-utils.c
+        ntl.c
+        json-actor.c
+        test/test-json-load.cpp)
