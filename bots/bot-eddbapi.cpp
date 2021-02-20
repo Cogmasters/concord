@@ -7,90 +7,158 @@
 #include <orka-utils.h>
 #include <orka-user-agent.hpp>
 
-#define EDDBAPI_API_URL "https://eddbapi.kodeblox.com/api/v4"
+#define ELITEBGS_API_URL "https://elitebgs.app/api/ebgs/v5"
 
-
-struct doc {
-  char _id[512];
-  int id;
-  char name_lower[1024];
-  bool is_name_faction;
-  int home_system_id;
-  char allegiance[512];
-  int allegiance_id;
-  char government[512];
-  int government_id;
-  uint64_t updated_at;
-  char name[1024];
-  int __v;
-};
-
-void doc_from_json(char *str, size_t len, void *p_doc)
-{
-  struct doc *doc = (struct doc*)p_doc;
-  json_scanf(str, len,
-      "[_id]%s"
-      "[id]%d"
-      "[name_lower]%s"
-      "[is_name_faction]%b"
-      "[home_system_id]%d"
-      "[allegiance]%s"
-      "[allegiance_id]%d"
-      "[government]%s"
-      "[government_id]%d"
-      "[updated_at]%F"
-      "[name]%s"
-      "[__v]%d",
-      doc->_id,
-      &doc->id,
-      doc->name_lower,
-      &doc->is_name_faction,
-      &doc->home_system_id,
-      doc->allegiance,
-      &doc->allegiance_id,
-      doc->government,
-      &doc->government_id,
-      &orka_iso8601_to_unix_ms, &doc->updated_at,
-      doc->name,
-      &doc->__v);
-
-  D_PRINT("Doc object loaded with API response");
-}
-
-void init_doc(void *p_doc) {
-  memset(p_doc, 0, sizeof(struct doc));
-}
-
-void
-cleanup_doc(void *p_channel) {
-  DS_NOTOP_PUTS("Doc object fields cleared"); 
-}
-
-void docs_list_from_json(char *str, size_t len, void *p_docs)
-{
-  struct ntl_deserializer deserializer = {
-    .elem_size = sizeof(struct doc),
-    .init_elem = &init_doc,
-    .elem_from_buf = &doc_from_json,
-    .ntl_recipient_p = (void***)p_docs
-  };
-  orka_str_to_ntl(str, len, &deserializer);
-}
+/* ELITEBGS User Agent for performing connections to the API */
+orka::user_agent::dati elitebgs_ua;
 
 void embed_from_json(char *str, size_t len, void *p_embed)
 {
   using namespace discord::channel::embed;
   dati *embed = (dati*)p_embed;
 
-  struct doc **docs = NULL;
-  int total;
+  struct sized_buffer **docs = NULL;
+  int total, page, pages, pagingCounter;
+  bool hasPrevPage, hasNextPage;
+  char *prevPage, *nextPage;
   json_scanf(str, len,
-     "[docs]%F"
-     "[total]%d",
-     &docs_list_from_json, &docs,
-     &total);
+     "[docs]%L"
+     "[total]%d"
+     "[page]%d"
+     "[pages]%d"
+     "[pagingCounter]%d"
+     "[hasPrevPage]%b"
+     "[hasNextPage]%b"
+     "[prevPage]%?s"
+     "[nextPage]%?s",
+     &docs,
+     &total,
+     &page,
+     &pages,
+     &pagingCounter,
+     &hasPrevPage,
+     &hasNextPage,
+     &prevPage,
+     &nextPage);
 
-  ntl_free((void**)docs, &cleanup_doc);
+  if(!docs) return; /* early return if no docs found */
+
+  struct sized_buffer **faction_presence = NULL;
+  struct sized_buffer government = {0}, 
+                      name       = {0}, 
+                      name_lower = {0}, 
+                      updated_at = {0};
+
+  for (size_t i=0; docs[i]; ++i) 
+  {
+    json_scanf(docs[i]->start, docs[i]->size,
+        "[faction_presence]%L"
+        "[government]%T"
+        "[name]%T"
+        "[name_lower]%T"
+        "[updated_at]%T",
+        &faction_presence,
+        &government,
+        &name,
+        &name_lower,
+        &updated_at);
+
+    if (faction_presence) {
+      struct sized_buffer system_name = {0},
+                          state       = {0},
+                          influence   = {0},
+                          happiness   = {0},
+                          updated_at  = {0};
+
+      struct sized_buffer **active_states     = NULL, 
+                          **pending_states    = NULL,
+                          **recovering_states = NULL,
+                          **conflicts         = NULL;
+
+      for (size_t j=0; faction_presence[j]; ++j)
+      {
+        json_scanf(faction_presence[j]->start, faction_presence[j]->size,
+            "[system_name]%T"
+            "[state]%T"
+            "[influence]%T"
+            "[happiness]%T"
+            "[active_states]%L"
+            "[pending_states]%L"
+            "[recovering_states]%L"
+            "[conflicts]%L"
+            "[updated_at]%T",
+            &system_name,
+            &state,
+            &influence,
+            &happiness,
+            &active_states,
+            &pending_states,
+            &recovering_states,
+            &conflicts,
+            &updated_at);
+
+        if (active_states) {
+          struct sized_buffer state = {0};
+          for (size_t k=0; active_states[k]; ++k) 
+          {
+            json_scanf(active_states[k]->start, active_states[k]->size,
+                "[state]%T", &state);
+          }
+          free(active_states);
+        }
+        if (pending_states) {
+          struct sized_buffer state = {0};
+          for (size_t k=0; pending_states[k]; ++k) 
+          {
+            json_scanf(pending_states[k]->start, pending_states[k]->size,
+                "[state]%T", &state);
+          }
+          free(pending_states);
+        }
+        if (recovering_states) {
+          struct sized_buffer state = {0},
+                              trend = {0};
+          for (size_t k=0; recovering_states[k]; ++k) 
+          {
+            json_scanf(pending_states[k]->start, pending_states[k]->size,
+                "[state]%T [trend]%T", &state, &trend);
+          }
+          free(recovering_states);
+        }
+        if (conflicts) {
+          struct sized_buffer type          = {0},
+                              status        = {0},
+                              opponent_name = {0},
+                              stake         = {0},
+                              days_won      = {0};
+
+          for (size_t k=0; conflicts[k]; ++k) 
+          {
+            json_scanf(pending_states[k]->start, pending_states[k]->size,
+                "[type]%T"
+                "[status]%T"
+                "[opponent_name]%T"
+                "[stake]%T"
+                "[days_won]%T",
+                &type, 
+                &status,
+                &opponent_name,
+                &stake,
+                &days_won);
+          }
+          free(conflicts);
+        }
+      }
+
+      free(faction_presence);
+    }
+  }
+
+  if (prevPage)
+    free(prevPage);
+  if (nextPage)
+    free(nextPage);
+  free(docs);
 }
 
 void on_ready(discord::client *client, const discord::user::dati *me)
@@ -112,8 +180,6 @@ void on_command(
   if (msg->author->bot)
     return;
 
-  orka::user_agent::dati *p_eddbapi_ua = (orka::user_agent::dati*)discord::get_data(client);
-
   /* Initialize embed struct that will be loaded to  */
   discord::channel::embed::dati new_embed;
   discord::channel::embed::init_dati(&new_embed);
@@ -123,11 +189,12 @@ void on_command(
 
   char query[512];
   int ret = query_inject(query, sizeof(query),
-              "(homesystemname):s", msg->content);
+              "(system):s", msg->content);
   ASSERT_S(ret < (int)sizeof(query), "Out of bounds write attempt");
 
+  /* Fetch from ELITEBGS API */
   orka::user_agent::run(
-      p_eddbapi_ua, 
+      &elitebgs_ua, 
       &resp_handle,
       NULL,
       HTTP_GET,
@@ -139,6 +206,7 @@ void on_command(
 
   message::create::run(client, msg->channel_id, &params, NULL);
 
+  /* Cleanup resources */
   discord::channel::embed::cleanup_dati(&new_embed);
 }
 
@@ -150,7 +218,10 @@ int main(int argc, char *argv[])
   else
     config_file = "bot.config";
 
-  /* Initialize Discord user agent */
+  /* Initialized ELITEBGS User Agent */
+  orka::user_agent::init(&elitebgs_ua, ELITEBGS_API_URL);
+
+  /* Initialize Discord User Agent */
   discord::global_init();
   discord::client *client = discord::fast_init(config_file);
   assert(NULL != client);
@@ -159,19 +230,11 @@ int main(int argc, char *argv[])
   setcb_ready(client, &on_ready);
   setcb_message_command(client, "!system ", &on_command);
 
-  /* Initialize EDDBAPI user agent */
-  orka::user_agent::dati eddbapi_ua;
-  orka::user_agent::init(&eddbapi_ua, EDDBAPI_API_URL);
-
-  /* Store eddbapi_ua for retrieval within callbacks */
-  // @todo make set_data and get_data thread safe
-  discord::set_data(client, (void*)&eddbapi_ua);
-
   /* Start a connection to Discord */
   discord::run(client);
 
-  /* Cleanup allocated resources */
-  orka::user_agent::cleanup(&eddbapi_ua);
+  /* Cleanup resources */
+  orka::user_agent::cleanup(&elitebgs_ua);
   discord::cleanup(client);
   discord::global_cleanup();
 
