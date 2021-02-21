@@ -17,10 +17,6 @@ void embed_from_json(char *str, size_t len, void *p_embed)
   using namespace discord::channel::embed;
   dati *embed = (dati*)p_embed;
 
-  add_field(embed, "bla", "blu", false);
-  add_field(embed, "bli", "blo", false);
-  add_field(embed, "blia", "blyat", false);
-
   struct sized_buffer **docs = NULL;
   int total, page, pages, pagingCounter;
   bool hasPrevPage, hasNextPage;
@@ -50,24 +46,25 @@ void embed_from_json(char *str, size_t len, void *p_embed)
   if(!docs) return; /* early return if no docs found */
 
   struct sized_buffer **faction_presence = NULL;
-  struct sized_buffer government = {0}, 
-                      name       = {0}, 
-                      name_lower = {0}, 
-                      updated_at = {0};
+  char  government[512],
+        name[512],
+        updated_at[512];
 
   for (size_t i=0; docs[i]; ++i) 
   {
     json_scanf(docs[i]->start, docs[i]->size,
         "[faction_presence]%L"
-        "[government]%T"
-        "[name]%T"
-        "[name_lower]%T"
-        "[updated_at]%T",
+        "[government]%s"
+        "[name]%s"
+        "[updated_at]%s",
         &faction_presence,
-        &government,
-        &name,
-        &name_lower,
-        &updated_at);
+        government,
+        name,
+        updated_at);
+
+    add_field(embed, "Government", government, true);
+    add_field(embed, "Name", name, true);
+    add_field(embed, "Updated at", updated_at, true);
 
     if (faction_presence) {
       struct sized_buffer system_name = {0},
@@ -208,10 +205,11 @@ void on_command(
 
   strncpy(new_embed.title, msg->content, sizeof(new_embed.title));
   new_embed.timestamp = orka_timestamp_ms();
+  new_embed.color = 15844367; //gold
+  change_footer(&new_embed, "Made with Orka", NULL, NULL);
 
-  message::create::params params = {
-    .embed = &new_embed
-  };
+  message::create::params params = {0};
+  params.embed = &new_embed;
 
   message::create::run(client, msg->channel_id, &params, NULL);
 
