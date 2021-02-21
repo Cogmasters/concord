@@ -1312,6 +1312,12 @@ void del(client *client, const uint64_t channel_id, const uint64_t message_id);
 
 } // namespace message
 
+namespace embed {
+
+void add_field(dati *embed, char name[], char value[], bool Inline);
+
+} // namespace embed
+
 } // namespace channel
 
 namespace guild { /* discord-public-guild.cpp */
