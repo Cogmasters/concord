@@ -36,6 +36,7 @@
 #define JSMN_PARENT_LINKS // add parent links to jsmn_tok, which are needed
 #define JSMN_STRICT  // parse json in strict mode
 #include "jsmn.h"
+#include "orka-debug.h"
 
 #define N_PATH_MAX 8
 #define KEY_MAX 128
@@ -128,9 +129,10 @@ match_path (char *buffer, jsmntok_t *t,
      {
         char *end;
         int index = strtol(ps->key, &end, 10);
-        ASSERT_S(*end == 0, "Index is not a number");
-        ASSERT_S(index >= 0, "Index is not zero or positive");
-        ASSERT_S(index < t[i].size, "Index is out-of-bound");
+        VASSERT_S(*end == 0, "Index '%s' is not a number", ps->key);
+        VASSERT_S(index >= 0, "Index '%d' is not zero or positive", index);
+        VASSERT_S(index < t[i].size, "Index %d > %d is out-of-bound ",
+                  index, t[i].size);
 
         ic = i + 1; // the first child of i;
         match_path(buffer, t, n_toks, ic + index, es, ps->next);
@@ -249,7 +251,8 @@ match_path (char *buffer, jsmntok_t *t,
     tk->size = t[i].end - t[i].start;
   }
   else if (STREQ(es->type_specifier, "bool*")) {
-    ASSERT_S(t[i].type == JSMN_PRIMITIVE, "Not a primitive");
+    VASSERT_S(t[i].type == JSMN_PRIMITIVE, "'%.*s' is not a primitive",
+              t[i].size, buffer + t[i].start);
     switch (buffer[t[i].start]) {
       case 't': *(bool *)es->recipient = true; break;
       case 'f': *(bool *)es->recipient = false; break;
@@ -257,7 +260,8 @@ match_path (char *buffer, jsmntok_t *t,
     }
   }
   else if (STREQ(es->type_specifier, "int*")) {
-    ASSERT_S(t[i].type == JSMN_PRIMITIVE, "Not a primitive");
+    VASSERT_S(t[i].type == JSMN_PRIMITIVE, "'%.*s' is not a primitive",
+              t[i].size, buffer + t[i].start);
     switch(buffer[t[i].start]) {
       case 'n': *(int *) es->recipient = 0; break;
       default:
@@ -267,7 +271,8 @@ match_path (char *buffer, jsmntok_t *t,
     }
   }
   else if (STREQ(es->type_specifier, "long*")) {
-    ASSERT_S(t[i].type == JSMN_PRIMITIVE, "Not a primitive");
+    VASSERT_S(t[i].type == JSMN_PRIMITIVE, "'%.*s' is not a primitive",
+              t[i].size, buffer + t[i].start);
     switch(buffer[t[i].start]) {
       case 'n': *(long *) es->recipient = 0; break;
       default:
@@ -277,7 +282,8 @@ match_path (char *buffer, jsmntok_t *t,
     }
   }
   else if (STREQ(es->type_specifier, "long long*")) {
-    ASSERT_S(t[i].type == JSMN_PRIMITIVE, "Not a primitive");
+    VASSERT_S(t[i].type == JSMN_PRIMITIVE, "'%.*s' is not a primitive",
+              t[i].size, buffer + t[i].start);
     switch(buffer[t[i].start]) {
       case 'n': *(long long *) es->recipient = 0; break;
       default:
@@ -287,7 +293,8 @@ match_path (char *buffer, jsmntok_t *t,
     }
   }
   else if (STREQ(es->type_specifier, "float*")) {
-    ASSERT_S(t[i].type == JSMN_PRIMITIVE, "Not a primitive");
+    VASSERT_S(t[i].type == JSMN_PRIMITIVE, "'%.*s' is not a primitive",
+              t[i].size, buffer + t[i].start);
     switch(buffer[t[i].start]) {
       case 'n': *(float *) es->recipient = 0; break;
       default:
@@ -297,7 +304,8 @@ match_path (char *buffer, jsmntok_t *t,
     }
   }
   else if (STREQ(es->type_specifier, "double*")) {
-    ASSERT_S(t[i].type == JSMN_PRIMITIVE, "Not a primitive");
+    VASSERT_S(t[i].type == JSMN_PRIMITIVE, "'%.*s' is not a primitive",
+              t[i].size, buffer + t[i].start);
     switch(buffer[t[i].start]) {
       case 'n': *(double *) es->recipient = 0; break;
       default:
