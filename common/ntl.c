@@ -199,13 +199,13 @@ ntl_append(void ** p, size_t elem_size, void * added_elem)
 
   size_t i=0;
   if (p) { // will append to existing array
-    o = ntl_malloc(1 + ntl_length(p), elem_size);
+    o = ntl_calloc(1 + ntl_length(p), elem_size);
     for ( ; p[i]; i++) { // copy prev array contents to new array
       memcpy(o[i], p[i], elem_size);
     }
   } 
   else { // will create one from scratch
-    o = ntl_malloc(1, elem_size);
+    o = ntl_calloc(1, elem_size);
   }
   memcpy(o[i], added_elem, elem_size);
 
