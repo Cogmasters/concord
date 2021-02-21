@@ -1103,6 +1103,124 @@ list_to_json(char *str, size_t len, void *p_fields)
 } // namespace field
 
 void
+change_footer(dati *embed, char text[], char icon_url[], char proxy_icon_url[])
+{
+  if (IS_EMPTY_STRING(text)) {
+    D_PUTS("Missing 'text'");
+    return;
+  }
+
+  if (embed->footer) {
+    free(embed->footer);
+  }
+
+  embed::footer::dati *new_footer = embed::footer::alloc_dati();
+  strncpy(new_footer->text, text, EMBED_FOOTER_TEXT_LEN);
+  if (!IS_EMPTY_STRING(icon_url))
+    strncpy(new_footer->icon_url, icon_url, MAX_URL_LEN);
+  if (!IS_EMPTY_STRING(proxy_icon_url))
+    strncpy(new_footer->proxy_icon_url, proxy_icon_url, MAX_URL_LEN);
+
+  embed->footer = new_footer;
+}
+
+void
+change_thumbnail(dati *embed, char url[], char proxy_url[], int height, int width)
+{
+  if (embed->thumbnail) {
+    free(embed->thumbnail);
+  }
+
+  embed::thumbnail::dati *new_thumbnail = embed::thumbnail::alloc_dati();
+  if (!IS_EMPTY_STRING(url))
+    strncpy(new_thumbnail->url, url, MAX_URL_LEN);
+  if (!IS_EMPTY_STRING(proxy_url))
+    strncpy(new_thumbnail->proxy_url, proxy_url, MAX_URL_LEN);
+  if (height)
+    new_thumbnail->height = height;
+  if (width)
+    new_thumbnail->width = width;
+
+  embed->thumbnail = new_thumbnail;
+}
+
+void
+change_image(dati *embed, char url[], char proxy_url[], int height, int width)
+{
+  if (embed->image) {
+    free(embed->image);
+  }
+
+  embed::image::dati *new_image = embed::image::alloc_dati();
+  if (!IS_EMPTY_STRING(url))
+    strncpy(new_image->url, url, MAX_URL_LEN);
+  if (!IS_EMPTY_STRING(proxy_url))
+    strncpy(new_image->proxy_url, proxy_url, MAX_URL_LEN);
+  if (height)
+    new_image->height = height;
+  if (width)
+    new_image->width = width;
+
+  embed->image = new_image;
+}
+
+void
+change_video(dati *embed, char url[], char proxy_url[], int height, int width)
+{
+  if (embed->video) {
+    free(embed->video);
+  }
+
+  embed::video::dati *new_video = embed::video::alloc_dati();
+  if (!IS_EMPTY_STRING(url))
+    strncpy(new_video->url, url, MAX_URL_LEN);
+  if (!IS_EMPTY_STRING(proxy_url))
+    strncpy(new_video->proxy_url, proxy_url, MAX_URL_LEN);
+  if (height)
+    new_video->height = height;
+  if (width)
+    new_video->width = width;
+
+  embed->video = new_video;
+}
+
+void
+change_provider(dati *embed, char name[], char url[])
+{
+  if (embed->provider) {
+    free(embed->provider);
+  }
+
+  embed::provider::dati *new_provider = embed::provider::alloc_dati();
+  if (!IS_EMPTY_STRING(url))
+    strncpy(new_provider->url, url, MAX_URL_LEN);
+  if (!IS_EMPTY_STRING(name))
+    strncpy(new_provider->name, name, EMBED_AUTHOR_NAME_LEN);
+
+  embed->provider = new_provider;
+}
+
+void
+change_author(dati *embed, char name[], char url[], char icon_url[], char proxy_icon_url[])
+{
+  if (embed->author) {
+    free(embed->author);
+  }
+
+  embed::author::dati *new_author = embed::author::alloc_dati();
+  if (!IS_EMPTY_STRING(name))
+    strncpy(new_author->name, name, EMBED_AUTHOR_NAME_LEN);
+  if (!IS_EMPTY_STRING(url))
+    strncpy(new_author->url, url, MAX_URL_LEN);
+  if (!IS_EMPTY_STRING(icon_url))
+    strncpy(new_author->icon_url, icon_url, MAX_URL_LEN);
+  if (!IS_EMPTY_STRING(proxy_icon_url))
+    strncpy(new_author->proxy_icon_url, proxy_icon_url, MAX_URL_LEN);
+
+  embed->author = new_author;
+}
+
+void
 add_field(dati *embed, char name[], char value[], bool Inline)
 {
   if (IS_EMPTY_STRING(name)) {

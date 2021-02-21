@@ -479,7 +479,7 @@ struct dati {
   char type[32];
   char description[EMBED_DESCRIPTION_LEN];
   char url[MAX_URL_LEN];
-  uint64_t timestamp; //@todo convert via orka_iso8601_to_unix_ms
+  uint64_t timestamp;
   int color;
   footer::dati *footer;
   image::dati *image;
@@ -1314,6 +1314,12 @@ void del(client *client, const uint64_t channel_id, const uint64_t message_id);
 
 namespace embed {
 
+void change_thumbnail(dati *embed, char url[], char proxy_url[], int height, int width);
+void change_image(dati *embed, char url[], char proxy_url[], int height, int width);
+void change_video(dati *embed, char url[], char proxy_url[], int height, int width);
+void change_footer(dati *embed, char text[], char icon_url[], char proxy_icon_url[]);
+void change_provider(dati *embed, char name[], char url[]);
+void change_author(dati *embed, char name[], char url[], char icon_url[], char proxy_icon_url[]);
 void add_field(dati *embed, char name[], char value[], bool Inline);
 
 } // namespace embed
