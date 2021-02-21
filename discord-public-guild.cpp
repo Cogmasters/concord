@@ -102,6 +102,7 @@ void
 list_from_json(char *str, size_t len, void *p_guilds)
 {
   struct ntl_deserializer d;
+  memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(dati);
   d.init_elem = &init_dati;
   d.elem_from_buf = &from_json;
@@ -218,7 +219,8 @@ from_json(char *str, size_t len, void *p_member)
 void
 list_from_json(char *str, size_t len, void *p_members)
 {
-  struct ntl_deserializer d; 
+  struct ntl_deserializer d;
+  memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(dati);
   d.init_elem = &init_dati;
   d.elem_from_buf = &from_json;
@@ -346,6 +348,7 @@ void
 list_from_json(char *str, size_t len, void *p_bans)
 {
   struct ntl_deserializer d;
+  memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(dati);
   d.init_elem = &init_dati;
   d.elem_from_buf = &from_json;

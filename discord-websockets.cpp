@@ -248,6 +248,7 @@ void
 list_from_json(char *str, size_t len, void *p_activities)
 {
   struct ntl_deserializer d;
+  memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(dati);
   d.init_elem = &init_dati;
   d.elem_from_buf = &from_json;
@@ -747,6 +748,7 @@ custom_cws_new(dati *ws)
 {
   //missing on_binary, on_ping, on_pong
   struct cws_callbacks cws_cbs;
+  memset(&cws_cbs, 0, sizeof(cws_cbs));
   cws_cbs.on_connect = &ws_on_connect_cb;
   cws_cbs.on_text = &ws_on_text_cb;
   cws_cbs.on_close = &ws_on_close_cb;

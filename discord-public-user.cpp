@@ -48,6 +48,7 @@ void
 list_from_json(char *str, size_t len, void *p_users)
 {
   struct ntl_deserializer d;
+  memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(dati);
   d.init_elem = &init_dati;
   d.elem_from_buf = &from_json;
