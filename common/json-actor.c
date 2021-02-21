@@ -164,6 +164,7 @@ enum builtin_type {
   B_DOUBLE,
   B_STRING,
   B_TOKEN,
+  B_TOKEN_CLONE,
   B_LIST
 };
 enum action_type {
