@@ -16,11 +16,11 @@ void embed_from_json(char *str, size_t len, void *p_embed)
 {
   using namespace discord::channel::embed;
   dati *embed = (dati*)p_embed;
-/* @todo remove this test
+
   add_field(embed, "bla", "blu", false);
   add_field(embed, "bli", "blo", false);
   add_field(embed, "blia", "blyat", false);
-*/
+
   struct sized_buffer **docs = NULL;
   int total, page, pages, pagingCounter;
   bool hasPrevPage, hasNextPage;
