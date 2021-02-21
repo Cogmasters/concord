@@ -6,21 +6,20 @@
 void **
 ntl_malloc_init (size_t nelems,  size_t elem_size, void (*init)(void * elem_p))
 {
-  char * p = (char *)malloc((nelems + 1) * sizeof(void *) // indices
-                            +  nelems * elem_size); // elements
+  void ** p = malloc((nelems + 1) * sizeof(void *) // indices
+                     +  nelems * elem_size); // elements
 
-  char * elem_start = p + (nelems + 1) * sizeof(void *);
-  void ** array = (void **)p;
+  char * elem_start = (char *)(p + nelems + 1);
   size_t i;
   for (i = 0; i < nelems; i++) {
+    p[i] = (void *)elem_start;
     if (init)
-      init(elem_start);
+      init(p[i]);
 
-    array[i] = (void *)elem_start;
     elem_start += elem_size;
   }
-  array[i] = 0;
-  return array;
+  p[nelems] = 0;
+  return p;
 }
 
 void **
@@ -33,7 +32,7 @@ void **
 ntl_calloc_init (size_t nelems,  size_t elem_size, void (*init)(void * elem_p))
 {
   void ** p = ntl_malloc_init(nelems, elem_size, NULL);
-  char * elem_start = (char *)p + ((nelems + 1) * sizeof(void *));
+  char * elem_start = (char *)(p + nelems + 1);
   memset(elem_start, 0, nelems * elem_size);
   if (init) {
     for (int i = 0; p[i]; i++)
