@@ -6,8 +6,8 @@ if [ $# != 2 ]; then
     exit 1;
 fi
 
-container=cattleshed_catthesed_1
-folder=/sjacket/usr
+container=$1
+folder=$2
 
 pushd ${mypath}
 for i in *.h; do
