@@ -32,7 +32,7 @@
 https://discord.com/developers/docs/resources/channel#embed-limits */
 #define EMBED_TITLE_LEN       256 + 1
 #define EMBED_DESCRIPTION_LEN 2048 + 1
-#define EMBED_MAX_FIELDS      25 + 1
+#define EMBED_MAX_FIELDS      25
 #define EMBED_FIELD_NAME_LEN  256 + 1
 #define EMBED_FIELD_VALUE_LEN 1024 + 1
 #define EMBED_FOOTER_TEXT_LEN 2048 + 1

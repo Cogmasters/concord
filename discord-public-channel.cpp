@@ -1231,6 +1231,12 @@ add_field(dati *embed, char name[], char value[], bool Inline)
     D_PUTS("Missing 'value'");
     return;
   }
+  if (embed->fields 
+      && ntl_length((void**)embed->fields) >= EMBED_MAX_FIELDS)
+  {
+    D_PRINT("Reach embed fields threshold (max %d)", EMBED_MAX_FIELDS);
+    return;
+  }
 
   embed::field::dati new_field;
   strncpy(new_field.name, name, EMBED_FIELD_NAME_LEN);
