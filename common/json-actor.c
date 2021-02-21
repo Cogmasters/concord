@@ -52,7 +52,6 @@
 #include <stdbool.h>
 #include <ctype.h>
 #include <stdarg.h>
-#include "json-common.h"
 
 #define JSMN_STATIC  // dont expose jsmn symbols
 #define JSMN_PARENT_LINKS // add parent links to jsmn_tok, which are needed
@@ -60,7 +59,7 @@
 #include "jsmn.h"
 #include "ntl.h"
 #include "json-actor.h"
-
+#include "orka-debug.h"
 
 static void assert_is_pointer(void * p)
 {
@@ -400,7 +399,7 @@ static int is_primitive (
       }
       break;
     case '|': // a proprietary string literal
-      if (STRNEQ("|F|", pos, 3)) {
+      if (0 == strncmp("|F|", pos, 3)) {
         *type = V_ACTION;
         return 0;
       }
@@ -533,21 +532,21 @@ parse_value(
       pos ++;
       goto return_true;
     case 'l':
-      if (STRNEQ(pos, "ld", 2)) {
+      if (0 == strncmp(pos, "ld", 2)) {
         act->mem_size.size = sizeof(long);
         act->mem_size.tag = SIZE_FIXED;
         act->_.builtin = B_LONG;
         pos += 2;
         goto return_true;
       }
-      else if (STRNEQ(pos, "lld", 3)) {
+      else if (0 == strncmp(pos, "lld", 3)) {
         act->mem_size.size = sizeof(long long);
         act->mem_size.tag = SIZE_FIXED;
         act->_.builtin = B_LONG_LONG;
         pos += 3;
         goto return_true;
       }
-      else if (STRNEQ(pos, "lf", 2)) {
+      else if (0 == strncmp(pos, "lf", 2)) {
         act->mem_size.size = sizeof(double);
         act->mem_size.tag = SIZE_FIXED;
         act->_.builtin = B_DOUBLE;
@@ -566,7 +565,7 @@ parse_value(
       pos ++;
       goto return_true;
     case 'F':
-      if (STRNEQ(pos, "F_nullable", 10)) {
+      if (0 == strncmp(pos, "F_nullable", 10)) {
         act->tag = ACT_USER_DEF_ACCEPT_NULL;
         pos += 10;
       }
@@ -576,12 +575,12 @@ parse_value(
       }
       goto return_true;
     case '|':
-      if (STRNEQ(pos, "|F|", 3)) {
+      if (0 == strncmp(pos, "|F|", 3)) {
         act->tag = ACT_USER_DEF_ACCEPT_NON_NULL_ENCLOSED;
         pos += 3;
         goto return_true;
       }
-      else if (STRNEQ(pos, "|F_nullable|", 3)) {
+      else if (0 == strncmp(pos, "|F_nullable|", 3)) {
         act->tag = ACT_USER_DEF_ACCEPT_NULL_ENCLOSED;
         pos += 3;
         goto return_true;
@@ -1580,7 +1579,7 @@ static int keycmp(char *json, jsmntok_t *tok, struct sized_buffer *key)
 {
   if (tok->type == JSMN_STRING
       && key->size == (size_t)(tok->end - tok->start)
-      && STRNEQ(json + tok->start, key->start, key->size))
+      && 0 == strncmp(json + tok->start, key->start, key->size))
   {
     return 0;
   }
@@ -1745,7 +1744,7 @@ static size_t apply_action (struct value * v, int idx, struct e_info * info)
   }
   else {
     if (tokens[idx].type == JSMN_PRIMITIVE
-        && (STRNEQ(json + tokens[idx].start, "null", 4))) {
+        && (0 == strncmp(json + tokens[idx].start, "null", 4))) {
       //es->is_applied = false;
       return 0;
     }

@@ -16,7 +16,7 @@
  * the list can be allocated as
  * p = ntl_calloc(n, size);
  *
- *       /-indices[n+1]\        /--------- e[n]-----------\
+ *       /-indices[n+1]\   /--------- e[n]-----------\
  * p -> [ | | | | | | |0][e_0]...............[e_(n-1)]
  *       |                 ^
  *       |                 |
