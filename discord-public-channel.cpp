@@ -1114,19 +1114,15 @@ add_field(dati *embed, char name[], char value[], bool Inline)
     return;
   }
 
-  size_t new_size = (embed->fields) 
-          ? 1 + ntl_length((void**)embed->fields)
-          : 1;
+  embed::field::dati new_field;
+  strncpy(new_field.name, name, EMBED_FIELD_NAME_LEN);
+  strncpy(new_field.value, value, EMBED_FIELD_VALUE_LEN);
+  new_field.Inline = Inline;
 
-  embed->fields = (field::dati**)ntl_realloc_init(
+  embed->fields = (field::dati**)ntl_append(
                         (void**)embed->fields, 
-                        new_size, 
                         sizeof(field::dati),
-                        &field::init_dati);
-
-  strncpy(embed->fields[new_size-1]->name, name, EMBED_FIELD_NAME_LEN);
-  strncpy(embed->fields[new_size-1]->value, value, EMBED_FIELD_VALUE_LEN);
-  embed->fields[new_size-1]->Inline = Inline;
+                        &new_field);
 }
 
 } // namespace embed
