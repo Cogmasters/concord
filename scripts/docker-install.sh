@@ -6,12 +6,17 @@ if [ $# != 2 ]; then
     exit 1;
 fi
 
-container=$1
-folder=$2
+container=cattleshed_catthesed_1
+folder=/sjacket/usr
 
-pushd ${mypath}/..
-for i in discord-common.h libdiscord.h common/*.h; do
+pushd ${mypath}
+for i in *.h; do
     echo $i;
-    docker cp $i $container:$folder
+    docker cp $i $container:$folder/include
+done
+
+for i in *.a; do
+    echo $i;
+    docker cp $i $container:$folder/lib
 done
 popd
