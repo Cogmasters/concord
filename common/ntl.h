@@ -10,18 +10,17 @@
  *
  * struct ntl {
  *    void * indices[n+1];  // indices[n] = NULL
- *    size_t size;
- *    struct E e[n];  // sizeof (struct E) == size
+ *    struct E e[n];  // sizeof (struct E)
  * };
  *
  * the list can be allocated as
  * p = ntl_calloc(n, size);
  *
  *       /-indices[n+1]\        /--------- e[n]-----------\
- * p -> [ | | | | | | |0][size][e_0]...............[e_(n-1)]
- *       |                     ^
- *       |                     |
- *       +----------->---------+
+ * p -> [ | | | | | | |0][e_0]...............[e_(n-1)]
+ *       |                 ^
+ *       |                 |
+ *       +-------->--------+
  *
  * p points to the begin of the memory block which overlaps with indices.
  *
@@ -80,11 +79,13 @@ ntl_malloc_init (size_t nelems,  size_t elem_size, void (*init)(void * elem_p));
 void ** ntl_malloc (size_t nelems,  size_t elem_size);
 
 
-
+void **
+ntl_realloc_init(void **p, size_t new_nelems, size_t elem_size,
+                 void (*init)(void * elem_p));
 /*
  * duplicate a ntl
  */
-void ** ntl_dup (void ** p);
+void ** ntl_dup (void ** p, size_t size);
 
 /*
  * for each element e, calls free_elem(e)
@@ -110,7 +111,7 @@ void ** ntl_fmap(void ** from_list, size_t to_elem_size, ntl_converter * f);
  * It caller's responsibility to make sure the added_elem has the
  * same type and size as the element's type and size of the ntl
  */
-void ** ntl_append(void ** p, void * added_elem);
+void ** ntl_append(void ** p, size_t elem_size, void * added_elem);
 
 /*
  * ntl_elem_serializer(NULL, 0, p) calculates the size needed to serializer p

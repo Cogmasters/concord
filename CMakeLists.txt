@@ -15,19 +15,19 @@ set(CMAKE_CXX_FLAGS "-DLIBDISCORD_DEBUG -D_XOPEN_SOURCE=700 -Wno-write-strings -
 set(CMAKE_EXE_LINKER_FLAGS "")
 
 set(JSON_SCANF
-        json-common.h
-        jsmn.h
-        ntl.c
-        ntl.h
-        json-scanf.c
-        json-printf.c
-        json-string.c
-        json-scanf.h)
+        common/json-common.h
+        common/jsmn.h
+        common/ntl.c
+        common/ntl.h
+        common/json-scanf.c
+        common/json-printf.c
+        common/json-string.c
+        common/json-scanf.h)
 
 set(SOURCE_FILES
-        curl-websocket-utils.c
-        curl-websocket.c
-        curl-websocket.h
+        common/curl-websocket-utils.c
+        common/curl-websocket.c
+        common/curl-websocket.h
         discord-common.h
         discord-public.cpp
         discord-public-guild.cpp
@@ -37,12 +37,12 @@ set(SOURCE_FILES
         ${JSON_SCANF})
 
 set(ORKA_FILES
-        orka-utils.c
-        orka-utils.h)
+        common/orka-utils.c
+        common/orka-utils.h)
 
 set(GITHUB_FILES
-        http-common.h
-        http-common.c
+        common/http-common.h
+        common/http-common.c
         github-v3.hpp
         github-v3-user-agent.cpp
         github-v3-git-op.cpp
@@ -50,8 +50,8 @@ set(GITHUB_FILES
         ${ORKA_FILES})
 
 set(CEE_FILES
-        http-common.h
-        http-common.c
+        common/http-common.h
+        common/http-common.c
         orka-user-agent.hpp
         orka-user-agent.cpp
         ${JSON_SCANF})
@@ -60,6 +60,7 @@ set(CEE_FILES
 set(ORCA_INCLUDE_PATH  ${CMAKE_SOURCE_DIR})
 
 include_directories(${CMAKE_SOURCE_DIR})
+include_directories(${CMAKE_SOURCE_DIR}/common)
 
 
 add_executable(test-api.exe ${SOURCE_FILES} test/test-api.cpp)
@@ -81,7 +82,7 @@ target_link_libraries(test-git.exe curl ssl crypto)
 
 add_executable(test-git2.exe
         ${JSON_SCANF}
-        json-actor.c
+        common/json-actor.c
         ${GITHUB_FILES} ${ORKA_FILES}
         test/test-git2.cpp)
 
@@ -92,19 +93,19 @@ target_link_libraries(test-cee.exe curl ssl crypto)
 
 
 add_executable(test-json-injector.exe
-        ntl.c
-        json-string.c
-        json-actor.c
+        common/ntl.c
+        common/json-string.c
+        common/json-actor.c
         test/test-json-injector.c)
 
 add_executable(test-json-actor.exe
-        ntl.c
-        json-string.c
+        common/ntl.c
+        common/json-string.c
         test/test-json-actor.c)
 
 add_executable(test-json-extractor.exe
-        ntl.c
-        json-string.c
+        common/ntl.c
+        common/json-string.c
         test/test-json-extractor.c)
 
 
@@ -113,9 +114,14 @@ add_executable(test-utf-8.exe
 
 
 add_executable(test-json-load.exe
-        json-string.c
-        json-scanf.c
-        orka-utils.c
-        ntl.c
-        json-actor.c
+        common/json-string.c
+        common/json-scanf.c
+        common/orka-utils.c
+        common/ntl.c
+        common/json-actor.c
         test/test-json-load.cpp)
+
+add_executable(test-ntl.exe
+        common/ntl.c
+        common/ntl.h
+        test/test-ntl.c)

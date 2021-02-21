@@ -7,13 +7,9 @@ void **
 ntl_malloc_init (size_t nelems,  size_t elem_size, void (*init)(void * elem_p))
 {
   char * p = (char *)malloc((nelems + 1) * sizeof(void *) // indices
-                            + sizeof(size_t) // elem_size;
                             +  nelems * elem_size); // elements
 
-  char * size_p = p + (nelems + 1) * sizeof(void *);
-  *((size_t *)size_p) = elem_size;
-
-  char * elem_start = size_p + sizeof(size_t);
+  char * elem_start = p + (nelems + 1) * sizeof(void *);
   void ** array = (void **)p;
   size_t i;
   for (i = 0; i < nelems; i++) {
@@ -37,11 +33,12 @@ void **
 ntl_calloc_init (size_t nelems,  size_t elem_size, void (*init)(void * elem_p))
 {
   void ** p = ntl_malloc_init(nelems, elem_size, NULL);
-  char * start_to_zero = (char *)p + ((nelems + 1) * sizeof(void *));
-  memset(start_to_zero, 0, nelems * elem_size);
-  if (init)
-    for (size_t i = 0; i < nelems; i++)
+  char * elem_start = (char *)p + ((nelems + 1) * sizeof(void *));
+  memset(elem_start, 0, nelems * elem_size);
+  if (init) {
+    for (int i = 0; p[i]; i++)
       init(p[i]);
+  }
   return p;
 }
 
@@ -50,6 +47,27 @@ ntl_calloc (size_t nelems,  size_t elem_size)
 {
   return ntl_calloc_init(nelems, elem_size, NULL);
 }
+
+void **
+ntl_realloc_init(void **p, size_t new_nelems, size_t elem_size,
+                 void (*init)(void * elem_p))
+{
+  void ** new_p = ntl_calloc_init(new_nelems, elem_size, NULL);
+  int i = 0;
+  for (i = 0; p[i]; i++)
+    memcpy(new_p[i], p[i], elem_size);
+
+  if (init) {
+    while (new_p[i]) {
+      init(new_p[i]);
+      i++;
+    }
+  }
+
+  free(p);
+  return new_p;
+}
+
 
 void
 ntl_free(void **p, void (*free_elem)(void *p))
@@ -69,21 +87,10 @@ ntl_length (void **p)
   return i;
 }
 
-size_t
-ntl_elem_size (void **p)
-{
-  size_t i;
-  for (i = 0; p[i]; i++)
-    /* empty body to count element */;
-
-  size_t * size_p = (size_t *)(p+i+1);
-  return *size_p;
-}
 
 void **
-ntl_dup (void ** p)
+ntl_dup (void ** p, size_t elem_size)
 {
-  size_t elem_size = ntl_elem_size(p);
   void ** o =  ntl_calloc(ntl_length(p), elem_size);
   for (size_t i = 0; p[i]; i++)
     memcpy(o[i], p[i], elem_size);
@@ -180,11 +187,9 @@ ntl_fmap(void ** from_list, size_t to_elem_size, ntl_converter * f)
 
 
 void **
-ntl_append(void ** p, void * added_elem)
+ntl_append(void ** p, size_t elem_size, void * added_elem)
 {
   size_t len = ntl_length(p);
-  size_t elem_size = ntl_elem_size(p);
-
   void ** o = ntl_malloc(len + 1, elem_size);
   size_t i;
   for (i = 0; p[i]; i++)
