@@ -47,23 +47,30 @@ ntl_calloc (size_t nelems,  size_t elem_size)
   return ntl_calloc_init(nelems, elem_size, NULL);
 }
 
-void **
-ntl_realloc_init(void **p, size_t new_nelems, size_t elem_size,
-                 void (*init)(void * elem_p))
+void**
+ntl_realloc_init(
+    void **p, 
+    size_t new_nelems, 
+    size_t elem_size,
+    void (*init)(void * elem_p))
 {
   void ** new_p = ntl_calloc_init(new_nelems, elem_size, NULL);
-  int i = 0;
-  for (i = 0; p[i]; i++)
-    memcpy(new_p[i], p[i], elem_size);
+
+  size_t i=0;
+
+  if (NULL != p) {
+    for ( ; p[i]; ++i) {
+      memcpy(new_p[i], p[i], elem_size);
+    }
+    free(p);
+  }
 
   if (init) {
-    while (new_p[i]) {
+    for ( ; new_p[i]; ++i) {
       init(new_p[i]);
-      i++;
     }
   }
 
-  free(p);
   return new_p;
 }
 
@@ -188,13 +195,20 @@ ntl_fmap(void ** from_list, size_t to_elem_size, ntl_converter * f)
 void **
 ntl_append(void ** p, size_t elem_size, void * added_elem)
 {
-  size_t len = ntl_length(p);
-  void ** o = ntl_malloc(len + 1, elem_size);
-  size_t i;
-  for (i = 0; p[i]; i++)
-    memcpy(o[i], p[i], elem_size);
+  void **o;
 
+  size_t i=0;
+  if (p) { // will append to existing array
+    o = ntl_malloc(1 + ntl_length(p), elem_size);
+    for ( ; p[i]; i++) { // copy prev array contents to new array
+      memcpy(o[i], p[i], elem_size);
+    }
+  } 
+  else { // will create one from scratch
+    o = ntl_malloc(1, elem_size);
+  }
   memcpy(o[i], added_elem, elem_size);
+
   return o;
 }
 
