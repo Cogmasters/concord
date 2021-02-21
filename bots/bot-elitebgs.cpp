@@ -16,7 +16,11 @@ void embed_from_json(char *str, size_t len, void *p_embed)
 {
   using namespace discord::channel::embed;
   dati *embed = (dati*)p_embed;
-
+/* @todo remove this test
+  add_field(embed, "bla", "blu", false);
+  add_field(embed, "bli", "blo", false);
+  add_field(embed, "blia", "blyat", false);
+*/
   struct sized_buffer **docs = NULL;
   int total, page, pages, pagingCounter;
   bool hasPrevPage, hasNextPage;
@@ -40,6 +44,8 @@ void embed_from_json(char *str, size_t len, void *p_embed)
      &hasNextPage,
      &prevPage,
      &nextPage);
+
+  /* @todo add some checks here */
 
   if(!docs) return; /* early return if no docs found */
 
@@ -199,6 +205,9 @@ void on_command(
       NULL,
       HTTP_GET,
       "/factions%s", query);
+
+  strncpy(new_embed.title, msg->content, sizeof(new_embed.title));
+  new_embed.timestamp = orka_timestamp_ms();
 
   message::create::params params = {
     .embed = &new_embed
