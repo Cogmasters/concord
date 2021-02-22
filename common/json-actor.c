@@ -626,15 +626,34 @@ parse_availability(
 
   if (pos < xend_pos) {
     if ('@' == *pos) {
-      p->has_this = true;
-      pos++;
-      if (pos + 1 < xend_pos
-          && ':' == *pos && 'b' == *(pos+1)) {
-        p->has_enabler = true;
+      if (pos + 1 == xend_pos) { // keep the backward compatibility for now.
+        p->has_this = true;
+        pos++;
+        if (pos + 1 < xend_pos
+            && ':' == *pos && 'b' == *(pos + 1)) {
+          p->has_enabler = true;
+          pos++;
+        }
+        *next_pos_p = pos;
+        return 1;
+      } else
         pos ++;
+
+      switch (*pos)
+      {
+        case 'A':
+          p->has_this = true;
+          pos++;
+          if (pos + 1 < xend_pos
+              && ':' == *pos && 'b' == *(pos + 1)) {
+            p->has_enabler = true;
+            pos++;
+          }
+          *next_pos_p = pos;
+          return 1;
+        case 'N':
+          ERR("N is not implemented yet");
       }
-      *next_pos_p = pos;
-      return 1;
     }
   }
   else
@@ -1328,7 +1347,8 @@ has_value (struct injection_info * info, struct value * v)
     case V_ACTION:
       for (size_t i = 0; i < sizeof_assigned_addres/sizeof(void*); i++) {
         assert_is_pointer(v->_.action.operand);
-        if (assigned_addrs[i] == v->_.action.operand)
+        if (NULL != v->_.action.operand
+            && assigned_addrs[i] == v->_.action.operand)
           return 1;
       }
       return 0;
