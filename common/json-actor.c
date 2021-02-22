@@ -1097,7 +1097,7 @@ inject_builtin (
     {
       s = (char *) v->operand;
       size_t len;
-      int ret;
+      int ret = 0;
       char * escaped;
       switch (v->mem_size.tag)
       {
@@ -1301,6 +1301,10 @@ inject_access_path_value (
   pos = info->next_pos;
   if (ap->path.next) {
     // @todo
+    ERR("does not support %.*s.%.*s yet\n",
+        ap->path.key.size, ap->path.key.start,
+        ap->path.next->key.size, ap->path.next->key.start);
+    return 0;
   }
   else {
     used_bytes += xprintf(pos, end_pos - pos, info, ":");

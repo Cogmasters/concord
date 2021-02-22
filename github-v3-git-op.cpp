@@ -4,7 +4,6 @@
 #include "github-v3-user-agent.hpp"
 
 #include "orka-utils.h"
-//#include "json-scanf.h"
 #include "json-actor.h"
 
 namespace github {
@@ -51,11 +50,7 @@ static void
 load_object_sha(char *str, size_t len, void *ptr) 
 {
   fprintf(stderr, "%.*s\n", (int)len, str);
-#ifdef P
-  json_scanf(str, len, "[object][sha]%?s", ptr);
-#else
   json_extract(str, len, "(object.sha):?s", ptr);
-#endif
 }
 
 static void
