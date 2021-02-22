@@ -59,9 +59,6 @@ vrun(
   set_url(ua->ehandle, ua->base_url, endpoint, args);
 
   set_method(ua->ehandle, http_method, req_body); //set the request method
-
-  if (NULL == cbs) {
-  }
   
   //perform the request
   perform_request(
