@@ -4,7 +4,7 @@
 #include "github-v3-user-agent.hpp"
 
 #include "orka-utils.h"
-#include "json-scanf.h"
+//#include "json-scanf.h"
 #include "json-actor.h"
 
 namespace github {
@@ -22,14 +22,8 @@ init(struct dati *data, char * username, char *file)
 {
   size_t len = 0;
   char *json = orka_load_whole_file(file, &len);
-#ifdef P
-  json_scanf(json, len, "[owner]%?s [repo]%?s [default_branch]%?s",
-             &data->owner, &data->repo, &data->default_branch);
-#else
   json_extract(json, len, "(owner):?s (repo):?s (default_branch):?s",
                &data->owner, &data->repo, &data->default_branch);
-#endif
-
   data->username = username;
   free(json);
 }
@@ -57,18 +51,18 @@ static void
 load_object_sha(char *str, size_t len, void *ptr) 
 {
   fprintf(stderr, "%.*s\n", (int)len, str);
+#ifdef P
   json_scanf(str, len, "[object][sha]%?s", ptr);
+#else
+  json_extract(str, len, "(object.sha):?s", ptr);
+#endif
 }
 
 static void
 load_sha(char *json, size_t len, void *ptr)
 {
   fprintf(stderr, "%.*s\n", (int)len, json);
-#ifdef P
-  json_scanf(str, len, "[sha]%?s", ptr);
-#else
   json_extract(json, len, "(sha):?s", ptr);
-#endif
 }
 
 static void
