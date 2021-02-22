@@ -20,8 +20,7 @@ reqheader_init(char token[])
   int ret = snprintf(auth, sizeof(auth), "Bot %s", token);
   ASSERT_S(ret < (int)sizeof(auth), "Out of bounds write attempt");
 
-  char user_agent[] =
-    "orca (http://github.com/cee-studio/orca, v" LIBDISCORD_VERSION ")";
+  char user_agent[] = "orca (http://github.com/cee-studio/orca)";
 
   struct curl_slist *new_header = NULL;
   add_reqheader_pair(&new_header, "Content-Type", "application/json");
@@ -36,12 +35,13 @@ reqheader_init(char token[])
 void
 init(dati *ua, char token[])
 {
-  ua->reqheader = reqheader_init(token);
-  ua->ehandle = custom_easy_init(
+  orka::user_agent::init(&ua->common, BASE_API_URL);
+  ua->common.reqheader = reqheader_init(token);
+  ua->common.ehandle = custom_easy_init(
                   &ua->p_client->settings,
-                  ua->reqheader,
-                  &ua->pairs,
-                  &ua->resp_body);
+                  ua->common.reqheader,
+                  &ua->common.pairs,
+                  &ua->common.resp_body);
 }
 
 void
@@ -49,11 +49,11 @@ cleanup(dati *ua)
 {
   bucket::cleanup(ua);
 
-  curl_slist_free_all(ua->reqheader);
-  curl_easy_cleanup(ua->ehandle); 
+  curl_slist_free_all(ua->common.reqheader);
+  curl_easy_cleanup(ua->common.ehandle); 
 
-  if (ua->resp_body.start) {
-    free(ua->resp_body.start);
+  if (ua->common.resp_body.start) {
+    free(ua->common.resp_body.start);
   }
 }
 
@@ -178,13 +178,7 @@ run(
   ...)
 {
   va_list args;
-  va_start (args, endpoint);
-
-  set_url(ua->ehandle, BASE_API_URL, endpoint, args); //set the request URL
-
-  va_end(args);
-
-  set_method(ua->ehandle, http_method, req_body); //set the request method
+  va_start(args, endpoint);
 
   struct _ratelimit ratelimit = {
     .ua = ua, 
@@ -208,12 +202,14 @@ run(
     resp_handle->err_obj = (void*)&ua->json_err; //overrides existing obj
   }
 
-  perform_request(
+  orka::user_agent::vrun(
+    &ua->common,
     resp_handle,
-    &ua->resp_body,
-    &ua->pairs,
-    ua->ehandle,
-    &cbs);
+    req_body,
+    &cbs,
+    http_method, endpoint, args);
+
+  va_end(args);
 }
 
 } // namespace user_agent

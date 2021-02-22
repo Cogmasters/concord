@@ -6,7 +6,7 @@
 #include "json-scanf.h"
 #include "json-actor.h"
 
-#include "http-common.h"
+#include "orka-user-agent.hpp"
 
 
 namespace discord {
@@ -152,16 +152,13 @@ namespace user_agent { /* discord-user-agent.cpp */
 
 /* JSON ERROR CODE STRUCTURE
 https://discord.com/developers/docs/topics/opcodes-and-status-codes#json-json-error-codes */
-struct error {
+struct error { /* @todo this won't be thread safe. */
   int code; //last error code received
   char message[256]; //meaning of the error received
 };
 
 struct dati { /* USER AGENT STRUCTURE */
-  struct curl_slist *reqheader; //the request header sent to the api
-
-  struct sized_buffer resp_body; //the api response string
-  struct api_header_s pairs; //the key/field pairs response header
+  orka::user_agent::dati common;
 
   struct { /* RATELIMITING STRUCTURE */
     bucket::dati **buckets; //active client buckets
@@ -171,8 +168,6 @@ struct dati { /* USER AGENT STRUCTURE */
     void *routes_root; //the encountered routes tree's root
   } ratelimit;
 
-  CURL *ehandle; //the curl's easy handle used to perform requests
-  
   /* stores last json error detected, fields are reseted after
    *  get_json_error() is called */
   struct error json_err;

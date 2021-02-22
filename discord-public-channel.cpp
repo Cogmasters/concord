@@ -423,12 +423,12 @@ run(client *client, const uint64_t channel_id, params *params, dati *p_message)
   }
   else 
   { // content-type is multipart/form-data
-    edit_reqheader_pair(&client->ua.reqheader, // change content-type
+    edit_reqheader_pair(&client->ua.common.reqheader, // change content-type
         "Content-Type", "multipart/form-data");
 
     /* @todo mime functions should be integrated to http-common.c 
      *  to facilitate usage */
-    curl_mime *mime = curl_mime_init(client->ua.ehandle);
+    curl_mime *mime = curl_mime_init(client->ua.common.ehandle);
     curl_mimepart *part = curl_mime_addpart(mime);
 
     if (params->file.content) {
@@ -457,7 +457,7 @@ run(client *client, const uint64_t channel_id, params *params, dati *p_message)
 
     curl_mime_free(mime);
 
-    edit_reqheader_pair(&client->ua.reqheader, // set back to default
+    edit_reqheader_pair(&client->ua.common.reqheader, // set back to default
         "Content-Type", "application/json");
   }
 }

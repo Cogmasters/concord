@@ -26,9 +26,9 @@ void
 init(struct dati *ua, char *base_url)
 {
   memset(ua, 0, sizeof(struct dati));
-  ua->req_header = reqheader_init();
+  ua->reqheader = reqheader_init();
   ua->ehandle = custom_easy_init(&(ua->settings),
-                                  ua->req_header,
+                                  ua->reqheader,
                                   &ua->pairs,
                                   &ua->resp_body);
   ua->base_url = base_url;
@@ -37,7 +37,7 @@ init(struct dati *ua, char *base_url)
 void
 cleanup(struct dati *ua)
 {
-  curl_slist_free_all(ua->req_header);
+  curl_slist_free_all(ua->reqheader);
   curl_easy_cleanup(ua->ehandle);
 
   if (ua->resp_body.start) {
@@ -80,7 +80,6 @@ run(
   char endpoint[],
   ...)
 {
-  //create the url route
   va_list args;
   va_start(args, endpoint);
 

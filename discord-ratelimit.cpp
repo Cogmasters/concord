@@ -119,7 +119,7 @@ parse_ratelimits(dati *bucket, struct api_header_s *pairs)
 static void
 create_route(user_agent::dati *ua, char endpoint[])
 {
-  char *bucket_hash = get_respheader_value(&ua->pairs, "x-ratelimit-bucket");
+  char *bucket_hash = get_respheader_value(&ua->common.pairs, "x-ratelimit-bucket");
   if (NULL == bucket_hash) return; //no hash information in header
 
   // create new route that will link the endpoint with a bucket
@@ -159,7 +159,7 @@ create_route(user_agent::dati *ua, char endpoint[])
   route_check = *(struct _route_s **)tsearch(new_route, &ua->ratelimit.routes_root, &routecmp);
   ASSERT_S(route_check == new_route, "Couldn't create new bucket route");
 
-  parse_ratelimits(new_route->p_bucket, &ua->pairs);
+  parse_ratelimits(new_route->p_bucket, &ua->common.pairs);
 }
 
 /* Attempt to build and/or updates bucket's rate limiting information.
@@ -177,7 +177,7 @@ build(user_agent::dati *ua, dati *bucket, char endpoint[])
 
   // otherwise we just update the bucket rate limit values
 
-  parse_ratelimits(bucket, &ua->pairs);
+  parse_ratelimits(bucket, &ua->common.pairs);
 }
 
 /* This comparison routines can be used with tdelete()
