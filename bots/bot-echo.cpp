@@ -29,8 +29,16 @@ void on_message_create(
   message::create::params params = {
     .content = (char*)msg->content //this won't be modified
   };
+  if(msg->referenced_message)
+  {
+    params.message_reference = message::reference::alloc_dati();
+    params.message_reference->message_id = msg->referenced_message->id;
+    params.message_reference->channel_id = msg->referenced_message->channel_id;
+    params.message_reference->guild_id = msg->referenced_message->guild_id;
+  }
 
   message::create::run(client, msg->channel_id, &params, NULL);
+  message::reference::free_dati(params.message_reference);
 }
 
 void on_message_update(
