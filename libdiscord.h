@@ -4,15 +4,6 @@
 #include <inttypes.h>
 #include "discord-common.h"
 
-/* This is the version number of the package from which this header
- *  file originates */
-#define LIBDISCORD_VERSION "0.0.0-DEV"
-
-/* The numeric version number is also available "in parts" by using
- *  these defines: */
-#define LIBDISCORD_VERSION_MAJOR 0
-#define LIBDISCORD_VERSION_MINOR 0
-#define LIBDISCORD_VERSION_PATCH 0
 
 /* Size limits encountered in the Docs and searching the web */
 #define MAX_NAME_LEN          100 + 1
