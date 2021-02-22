@@ -464,6 +464,71 @@ run(client *client, const uint64_t channel_id, params *params, dati *p_message)
 
 } // namespace create
 
+namespace edit {
+
+void
+run(client *client, const uint64_t channel_id, const uint64_t message_id, params *params, dati *p_message)
+{
+  if (!channel_id) {
+    D_PUTS("Missing 'channel_id'");
+    return;
+  }
+  if (!message_id) {
+    D_PUTS("Missing 'message_id'");
+    return;
+  }
+  if (!params) {
+    D_PUTS("Missing 'params'");
+    return;
+  }
+
+  struct resp_handle resp_handle = {
+    .ok_cb = p_message ? from_json : NULL,
+    .ok_obj = p_message,
+  };
+
+  char payload[MAX_PAYLOAD_LEN];
+
+  void *A[4] = {0}; // pointer availability array
+
+  if(params->content)
+    A[0] = params->content;
+  else A[0] = (void*) 0xFFFFFFFFFFFFFFFF;
+
+  if(params->embed)
+    A[1] = params->embed;
+  else A[1] = (void*) 0xFFFFFFFFFFFFFFFF;
+
+  if(params->flags)
+    A[2] = params->flags;
+  else A[2] = (void*) 0xFFFFFFFFFFFFFFFF;
+
+  /*if(params->allowed_mentions)
+    A[3] = params->allowed_mentions;
+  else A[3] = (void*) 0xFFFFFFFFFFFFFFFF;*/
+
+  json_inject(payload, sizeof(payload),
+    "(content):s"
+    "(embed):F"
+    "(flags):d",
+    //"(allowed_mentions):F",
+    params->content,
+    &embed::to_json, params->embed,
+    params->flags,
+    A, sizeof(A));
+    //&allowed_mentions::to_json, params->allowed_mentions);
+
+  struct sized_buffer req_body = { payload, strlen(payload) };
+
+  user_agent::run(&client->ua,
+    &resp_handle,
+    &req_body,
+    HTTP_PATCH,
+    "/channels/%llu/messages/%llu", channel_id, message_id);
+}
+
+} // namespace edit
+
 void
 del(client *client, const uint64_t channel_id, const uint64_t message_id)
 {

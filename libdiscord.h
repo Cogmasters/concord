@@ -1308,6 +1308,20 @@ void run(client *client, const uint64_t channel_id, params *params, dati *p_mess
 
 } // namespace create
 
+/* https://discord.com/developers/docs/resources/channel#edit-message */
+namespace edit { // function wrapper
+
+struct params {
+  char *content;
+  embed::dati *embed; //must be initialized
+  message::flags::code *flags;
+  allowed_mentions::dati *allowed_mentions; //must be initialized
+};
+
+void run(client *client, const uint64_t channel_id, const uint64_t message_id, params *params, dati *p_message);
+
+} // namespace edit
+
 void del(client *client, const uint64_t channel_id, const uint64_t message_id);
 
 } // namespace message
