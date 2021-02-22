@@ -706,11 +706,9 @@ json_scanf(char *buffer, size_t buf_size, char *format, ...)
   jsmn_init(&parser);
   jsmntok_t * tok = NULL;
   int num_tok = jsmn_parse(&parser, buffer, buf_size, NULL, 0);
-  D_PRINT("# of tokens = %d", num_tok);
+  DS_PRINT("# of tokens = %d", num_tok);
   if (num_tok < 0) {
-    D_PRINT("Failed to parse JSON: %.*s", (int)buf_size, buffer);
-    D_PRINT("Returned token number: %d", num_tok);
-    goto cleanup;
+    ERR("Failed to parse JSON: %.*s", (int)buf_size, buffer);
   }
 
   tok = malloc(sizeof(jsmntok_t) * num_tok);
@@ -720,14 +718,13 @@ json_scanf(char *buffer, size_t buf_size, char *format, ...)
 
   /* Assume the top-level element is an object */
   if (num_tok < 1 || !(tok[0].type == JSMN_OBJECT || tok[0].type == JSMN_ARRAY)) {
-    D_PRINT("Object or array expected");
-    goto cleanup;
+    ERR("Object or array expected");
   }
 
   for (int i = 0; i < num_tok; i++) {
-    D_PRINT("[%d][p:%d][size:%d]%s (%.*s)\n", i, tok[i].parent,
-           tok[i].size, print_token(tok[i].type),
-           (int)(tok[i].end - tok[i].start), buffer + tok[i].start);
+    DS_PRINT("[%d][p:%d][size:%d]%s (%.*s)\n", i, tok[i].parent,
+             tok[i].size, print_token(tok[i].type),
+             (int)(tok[i].end - tok[i].start), buffer + tok[i].start);
   }
 
   for (size_t i = 0; i < num_keys; ++i) {

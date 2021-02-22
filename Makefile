@@ -48,6 +48,12 @@ CFLAGS   += -Wall -Wextra -pedantic -std=c11 -O0 -g -D_ORCA_DEBUG -D_GNU_SOURCE 
 CXXFLAGS += -Wall -std=c++03 -O0 -g -D_ORCA_DEBUG -D_GNU_SOURCE \
 		-Wno-write-strings  -I. -I./common
 
+
+ifeq ($(DEBUG_JSON),1)
+	CFLAGS += -D_ORCA_DEBUG_STRICT
+	CXXFLAGS += -D_ORCA_DEBUG_STRICT
+endif
+
 ifeq ($(CC),stensal-c)
 	CFLAGS += -D_DEFAULT_SOURCE
 	CXXFLAGS += -D_DEFAULT_SOURCE
