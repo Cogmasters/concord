@@ -261,6 +261,7 @@ void on_command(
       &elitebgs_ua, 
       &resp_handle,
       NULL,
+      NULL,
       HTTP_GET,
       "/factions%s", query);
 

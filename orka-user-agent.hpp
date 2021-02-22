@@ -18,17 +18,19 @@ struct dati {
 void init(struct dati *ua, char *base_url);
 void cleanup(struct dati *ua);
 
-void vrun(struct dati *ua,
-     struct resp_handle *handle,
-     struct sized_buffer *req_body,
-     enum http_method http_method,
-     char endpoint[], va_list ap);
+void vrun(
+  struct dati *ua,
+  struct resp_handle *handle,
+  struct sized_buffer *req_body,
+  struct perform_cbs *cbs,
+  enum http_method http_method, char endpoint[], va_list ap);
 
-void run(struct dati *ua,
-    struct resp_handle *handle,
-    struct sized_buffer *req_body,
-    enum http_method http_method,
-    char endpoint[], ...);
+void run(
+  struct dati *ua,
+  struct resp_handle *handle,
+  struct sized_buffer *req_body,
+  struct perform_cbs *cbs,
+  enum http_method http_method, char endpoint[], ...);
 
 } // namespace user_agent
 } // namespace orka

@@ -51,6 +51,7 @@ vrun(
   struct dati *ua,
   struct resp_handle *resp_handle,
   struct sized_buffer *req_body,
+  struct perform_cbs *cbs,
   enum http_method http_method,
   char endpoint[],
   va_list args)
@@ -58,9 +59,9 @@ vrun(
   set_url(ua->ehandle, ua->base_url, endpoint, args);
 
   set_method(ua->ehandle, http_method, req_body); //set the request method
-  
-  //@todo this is a temporary solution
-  struct perform_cbs cbs = {NULL};
+
+  if (NULL == cbs) {
+  }
   
   //perform the request
   perform_request(
@@ -68,7 +69,7 @@ vrun(
     &ua->resp_body, 
     &ua->pairs, 
     ua->ehandle,
-    &cbs);
+    cbs);
 }
 
 /* template function for performing requests */
@@ -77,6 +78,7 @@ run(
   struct dati *ua,
   struct resp_handle *resp_handle,
   struct sized_buffer *req_body,
+  struct perform_cbs *cbs,
   enum http_method http_method,
   char endpoint[],
   ...)
@@ -85,7 +87,12 @@ run(
   va_list args;
   va_start(args, endpoint);
 
-  vrun(ua, resp_handle, req_body, http_method, endpoint, args);
+  vrun(
+    ua, 
+    resp_handle, 
+    req_body, 
+    cbs, 
+    http_method, endpoint, args);
 
   va_end(args);
 }

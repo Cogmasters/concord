@@ -274,22 +274,26 @@ perform_request(
   struct sized_buffer *resp_body,
   struct api_header_s *pairs,
   CURL *ehandle,
-  struct perform_cbs *cbs)
+  struct perform_cbs *p_cbs)
 {
-  ASSERT_S(NULL != cbs, "Missing pointer to callback struct");
+  struct perform_cbs cbs;
+  if (p_cbs)
+    memcpy(&cbs, p_cbs, sizeof(struct perform_cbs));
+  else
+    memset(&cbs, 0, sizeof(struct perform_cbs));
 
   /* SET DEFAULT CALLBACKS */
-  if (!cbs->before_perform) cbs->before_perform = &default_cb;
-  if (!cbs->on_1xx) cbs->on_1xx = &default_success_cb;
-  if (!cbs->on_2xx) cbs->on_2xx = &default_success_cb;
-  if (!cbs->on_3xx) cbs->on_3xx = &default_success_cb;
-  if (!cbs->on_4xx) cbs->on_4xx = &default_abort_cb;
-  if (!cbs->on_5xx) cbs->on_5xx = &default_retry_cb;
+  if (!cbs.before_perform) cbs.before_perform = &default_cb;
+  if (!cbs.on_1xx) cbs.on_1xx = &default_success_cb;
+  if (!cbs.on_2xx) cbs.on_2xx = &default_success_cb;
+  if (!cbs.on_3xx) cbs.on_3xx = &default_success_cb;
+  if (!cbs.on_4xx) cbs.on_4xx = &default_abort_cb;
+  if (!cbs.on_5xx) cbs.on_5xx = &default_retry_cb;
 
   perform_action action;
   do {
     /* triggers on every start of loop iteration */
-    (*cbs->before_perform)(cbs->p_data);
+    (*cbs.before_perform)(cbs.p_data);
   
     CURLcode ecode;
     //perform the connection
@@ -311,7 +315,7 @@ perform_request(
 
     /* triggers response related callbacks */
     if (httpcode >= 500) { // SERVER ERROR
-      action = (*cbs->on_5xx)(cbs->p_data, httpcode, resp_body, pairs);
+      action = (*cbs.on_5xx)(cbs.p_data, httpcode, resp_body, pairs);
 
       if (resp_handle && resp_handle->err_cb) {
         (*resp_handle->err_cb)(
@@ -321,7 +325,7 @@ perform_request(
       }
     }
     else if (httpcode >= 400) { // CLIENT ERROR
-      action = (*cbs->on_4xx)(cbs->p_data, httpcode, resp_body, pairs);
+      action = (*cbs.on_4xx)(cbs.p_data, httpcode, resp_body, pairs);
 
       if (resp_handle && resp_handle->err_cb) {
         (*resp_handle->err_cb)(
@@ -331,10 +335,10 @@ perform_request(
       }
     }
     else if (httpcode >= 300) { // REDIRECTING
-      action = (*cbs->on_3xx)(cbs->p_data, httpcode, resp_body, pairs);
+      action = (*cbs.on_3xx)(cbs.p_data, httpcode, resp_body, pairs);
     }
     else if (httpcode >= 200) { // SUCCESS RESPONSES
-      action = (*cbs->on_2xx)(cbs->p_data, httpcode, resp_body, pairs);
+      action = (*cbs.on_2xx)(cbs.p_data, httpcode, resp_body, pairs);
 
       if (resp_handle && resp_handle->ok_cb) {
         (*resp_handle->ok_cb)(
@@ -344,7 +348,7 @@ perform_request(
       }
     }
     else if (httpcode >= 100) { // INFO RESPONSE
-      action = (*cbs->on_1xx)(cbs->p_data, httpcode, resp_body, pairs);
+      action = (*cbs.on_1xx)(cbs.p_data, httpcode, resp_body, pairs);
     }
 
     // reset body and header for next possible iteration
