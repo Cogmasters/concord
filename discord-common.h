@@ -1,6 +1,7 @@
 #ifndef LIBDISCORD_COMMON_H
 #define LIBDISCORD_COMMON_H
 
+#include <stdint.h>
 #include <curl/curl.h>
 #include "json-scanf.h"
 #include "json-actor.h"
