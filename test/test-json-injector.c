@@ -53,7 +53,7 @@ int main () {
 
   int b = 0;
   void *A[4] = {&b, 0, 0};
-  json_inject(bigbuf, sizeof(bigbuf), "[ b, b ] @", &i, &b, &A, sizeof(A));
+  json_inject(bigbuf, sizeof(bigbuf), "[ b, b ] @A", &i, &b, &A, sizeof(A));
   fprintf(stderr, "used @ %s\n", bigbuf);
 
   fprintf (stderr, "funptr %p\n", &foobar);
@@ -70,7 +70,7 @@ int main () {
               "(k1) : s"
               "(k2) : {  (1): b }"
               "(k3):f"
-              "@",
+              "@A",
               NULL, &b, NULL,
               A, sizeof(A));
 
@@ -80,7 +80,7 @@ int main () {
   void *B[4] = {NULL};
   memset(B, 0, sizeof(B));
 
-  char * injector1 = "(k1) : s, (k2) : { (1): b }, (k3) : f @";
+  char * injector1 = "(k1) : s, (k2) : { (1): b }, (k3) : f @A";
 
   // print out k1
   B[0] = t;
@@ -127,7 +127,7 @@ int main () {
   int ret = json_inject(bigbuf, sizeof(bigbuf),
                         "(delete_message_days):d"
                         "(reason):s"
-                        "@",
+                        "@A",
                         &delete_message_days,
                         reason,
                         A1, sizeof(A1));
@@ -145,7 +145,7 @@ int main () {
   ret = json_inject(bigbuf, sizeof(bigbuf),
                     "(delete_message_days):d"
                     "(reason):s"
-                    "@",
+                    "@A",
                     &delete_message_days,
                     reason,
                     A1, sizeof(A1));
@@ -165,9 +165,9 @@ int main () {
   ret = json_inject(bigbuf, sizeof(bigbuf),
                     "(delete_message_days):d"
                       "(reason):s"
-                      "@",
+                      "@A",
                     &delete_message_days,
-                    reason,
+                    &reason,
                     A1, sizeof(A1));
 
   fprintf(stderr, "%s\n", bigbuf);
@@ -222,7 +222,7 @@ int main () {
   ret = query_inject(query, sizeof(query),
                      "(a):d"
                      "(b):s"
-                     "@",
+                     "@A",
                      &i, ss, A, sizeof(A));
 
   fprintf(stderr, "'%s'\n", query);
@@ -232,7 +232,7 @@ int main () {
   ret = query_inject(query, sizeof(query),
                      "(a):d"
                        "(b):s"
-                       "@",
+                       "@A",
                      &i, ss, A, sizeof(A));
 
   fprintf(stderr, "empty query_string: '%s'\n", query);
