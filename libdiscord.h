@@ -643,7 +643,7 @@ https://discord.com/developers/docs/resources/emoji#emoji-object-emoji-structure
 namespace emoji {
 struct dati {
   uint64_t id;
-  char *name; //@todo find fixed size limit
+  char name[MAX_NAME_LEN];
   //@todo missing roles;
   user::dati *user;
   bool require_colons;
@@ -652,7 +652,13 @@ struct dati {
   bool available;
 };
 
-//@todo missing initialization functions
+void init_dati(void *p_emoji);
+dati* alloc_dati();
+void cleanup_dati(void *p_emoji);
+void free_dati(dati *emoji);
+void free_list(dati **emojis);
+void from_json(char *str, size_t len, void *p_emoji);
+void list_from_json(char *str, size_t len, void *p_emojis);
 
 } // namespace emoji
 
@@ -1231,6 +1237,10 @@ void setcb_message_create(client *client, message_cb *user_cb);
 void setcb_message_update(client *client, message_cb *user_cb);
 void setcb_message_delete(client *client, message_delete_cb *user_cb);
 void setcb_message_delete_bulk(client *client, message_delete_bulk_cb *user_cb);
+void setcb_reaction_add(client *client, reaction_add_cb *user_cb);
+void setcb_reaction_remove(client *client, reaction_remove_cb *user_cb);
+void setcb_reaction_remove_all(client *client, reaction_remove_all_cb *user_cb);
+void setcb_reaction_remove_emoji(client *client, reaction_remove_emoji_cb *user_cb);
 void setcb_guild_member_add(client *client, guild_member_cb *user_cb);
 void setcb_guild_member_update(client *client, guild_member_cb *user_cb);
 void setcb_guild_member_remove(client *client, guild_member_remove_cb *user_cb);

@@ -458,6 +458,64 @@ on_hello(dati *ws)
 }
 
 static void
+on_dispatch_reaction(dati *ws, int offset)
+{
+  uint64_t user_id=0, message_id=0, channel_id=0, guild_id=0;
+  guild::member::dati *member = guild::member::alloc_dati();
+  emoji::dati *emoji = emoji::alloc_dati();
+  json_scanf(ws->payload.event_data, sizeof(ws->payload.event_data),
+      "[user_id]%F"
+      "[message_id]%F"
+      "[member]%F"
+      "[emoji]%F"
+      "[channel_id]%F"
+      "[guild_id]%F",
+      &orka_strtoull, &user_id,
+      &orka_strtoull, &message_id,
+      &guild::member::from_json, member,
+      &emoji::from_json, emoji,
+      &orka_strtoull, &channel_id,
+      &orka_strtoull, &guild_id);
+
+
+  if (STREQ("ADD", ws->payload.event_name + offset)) {
+    if (ws->cbs.on_reaction.add)
+      (*ws->cbs.on_reaction.add)(ws->p_client, ws->me, 
+          channel_id, 
+          message_id, 
+          guild_id, 
+          member, 
+          emoji);
+  }
+  else if (STREQ("REMOVE", ws->payload.event_name + offset)) {
+    if (ws->cbs.on_reaction.remove)
+      (*ws->cbs.on_reaction.remove)(ws->p_client, ws->me, 
+          channel_id, 
+          message_id, 
+          guild_id, 
+          emoji);
+  }
+  else if (STREQ("REMOVE_ALL", ws->payload.event_name + offset)) {
+    if (ws->cbs.on_reaction.remove_all)
+      (*ws->cbs.on_reaction.remove_all)(ws->p_client, ws->me, 
+          channel_id, 
+          message_id, 
+          guild_id);
+  }
+  else if (STREQ("REMOVE_EMOJI", ws->payload.event_name + offset)) {
+    if (ws->cbs.on_reaction.remove_emoji)
+      (*ws->cbs.on_reaction.remove_emoji)(ws->p_client, ws->me, 
+          channel_id, 
+          message_id, 
+          guild_id,
+          emoji);
+  }
+
+  guild::member::free_dati(member);
+  emoji::free_dati(emoji);
+}
+
+static void
 on_dispatch_message(dati *ws, int offset)
 {
   if (STREQ("DELETE_BULK", ws->payload.event_name + offset)) 
@@ -517,7 +575,10 @@ on_dispatch_message(dati *ws, int offset)
   }
   else if (STREQ("DELETE", ws->payload.event_name + offset)) {
     if (ws->cbs.on_message.del)
-      (*ws->cbs.on_message.del)(ws->p_client, ws->me, message->id, message->channel_id, message->guild_id);
+      (*ws->cbs.on_message.del)(ws->p_client, ws->me, 
+          message->id, 
+          message->channel_id, 
+          message->guild_id);
   }
 
   channel::message::free_dati(message);
@@ -586,7 +647,6 @@ on_dispatch(dati *ws)
 
     return;
   }
-
   if (STREQ("RESUMED", ws->payload.event_name))
   {
     ws->status = status::CONNECTED;
@@ -595,12 +655,14 @@ on_dispatch(dati *ws)
 
     return;
   }
-
+  if (STRNEQ("MESSAGE_REACTION_", ws->payload.event_name, 17)) {
+    on_dispatch_reaction(ws, 17);
+    return;
+  }
   if (STRNEQ("MESSAGE_", ws->payload.event_name, 8)) {
     on_dispatch_message(ws, 8);
     return;
   }
-
   if (STRNEQ("GUILD_MEMBER_", ws->payload.event_name, 13)) {
     on_dispatch_guild_member(ws, 13);
     return;

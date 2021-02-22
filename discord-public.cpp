@@ -161,28 +161,68 @@ setcb_message_delete(client *client, message_delete_cb *user_cb)
   client->ws.cbs.on_message.del = user_cb;
 }
 
-void setcb_message_delete_bulk(client *client, message_delete_bulk_cb *user_cb)
+void 
+setcb_message_delete_bulk(client *client, message_delete_bulk_cb *user_cb)
 {
   using namespace websockets;
   add_intents(client, intents::GUILD_MESSAGES);
   client->ws.cbs.on_message.delete_bulk = user_cb;
 }
 
-void setcb_guild_member_add(client *client, guild_member_cb *user_cb)
+void 
+setcb_reaction_add(client *client, reaction_add_cb *user_cb)
+{
+  using namespace websockets;
+  add_intents(client, intents::GUILD_MESSAGE_REACTIONS 
+      | intents::DIRECT_MESSAGE_REACTIONS);
+  client->ws.cbs.on_reaction.add = user_cb;
+}
+
+void 
+setcb_reaction_remove(client *client, reaction_remove_cb *user_cb)
+{
+  using namespace websockets;
+  add_intents(client, intents::GUILD_MESSAGE_REACTIONS 
+      | intents::DIRECT_MESSAGE_REACTIONS);
+  client->ws.cbs.on_reaction.remove = user_cb;
+}
+
+void 
+setcb_reaction_remove_all(client *client, reaction_remove_all_cb *user_cb)
+{
+  using namespace websockets;
+  add_intents(client, intents::GUILD_MESSAGE_REACTIONS 
+      | intents::DIRECT_MESSAGE_REACTIONS);
+  client->ws.cbs.on_reaction.remove_all = user_cb;
+}
+
+void 
+setcb_reaction_remove_emoji(client *client, reaction_remove_emoji_cb *user_cb)
+{
+  using namespace websockets;
+  add_intents(client, intents::GUILD_MESSAGE_REACTIONS 
+      | intents::DIRECT_MESSAGE_REACTIONS);
+  client->ws.cbs.on_reaction.remove_emoji = user_cb;
+}
+
+void 
+setcb_guild_member_add(client *client, guild_member_cb *user_cb)
 {
   using namespace websockets;
   add_intents(client, intents::GUILD_MEMBERS);
   client->ws.cbs.on_guild_member.add = user_cb;
 }
 
-void setcb_guild_member_update(client *client, guild_member_cb *user_cb)
+void 
+setcb_guild_member_update(client *client, guild_member_cb *user_cb)
 {
   using namespace websockets;
   add_intents(client, intents::GUILD_MEMBERS);
   client->ws.cbs.on_guild_member.update = user_cb;
 }
 
-void setcb_guild_member_remove(client *client, guild_member_remove_cb *user_cb)
+void 
+setcb_guild_member_remove(client *client, guild_member_remove_cb *user_cb)
 {
   using namespace websockets;
   add_intents(client, intents::GUILD_MEMBERS);
