@@ -491,27 +491,17 @@ run(client *client, const uint64_t channel_id, const uint64_t message_id, params
 
   void *A[4] = {0}; // pointer availability array
 
-  if(params->content)
-    A[0] = params->content;
-  else A[0] = (void*) 0xFFFFFFFFFFFFFFFF;
-
-  if(params->embed)
-    A[1] = params->embed;
-  else A[1] = (void*) 0xFFFFFFFFFFFFFFFF;
-
-  if(params->flags)
-    A[2] = params->flags;
-  else A[2] = (void*) 0xFFFFFFFFFFFFFFFF;
-
-  /*if(params->allowed_mentions)
-    A[3] = params->allowed_mentions;
-  else A[3] = (void*) 0xFFFFFFFFFFFFFFFF;*/
+  A[0] = params->content;
+  A[1] = params->embed;
+  A[2] = params->flags;
+  // A[3] = params->allowed_mentions;
 
   json_inject(payload, sizeof(payload),
     "(content):s"
     "(embed):F"
-    "(flags):d",
-    //"(allowed_mentions):F",
+    "(flags):d"
+    //"(allowed_mentions):F"
+    "@A",
     params->content,
     &embed::to_json, params->embed,
     params->flags,
