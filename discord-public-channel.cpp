@@ -528,18 +528,18 @@ to_json(char *str, size_t len, void *p_reference)
 
   dati *reference = (dati*)p_reference;
 
-  // every field must be set in order to reference a message
-  if (!reference->message_id 
-      || !reference->channel_id 
-      || !reference->guild_id) 
+  // message_id field must be set in order to reference a message
+  if (!reference->message_id) 
   {
     return snprintf(str, len, "{}");
   }
 
   void *A[4] = {0}; // pointer availability array
   A[0] = (void *)&reference->message_id;
-  A[1] = (void *)&reference->channel_id;
-  A[2] = (void *)&reference->guild_id;
+  if(reference->channel_id)
+    A[1] = (void *)&reference->channel_id;
+  if(reference->guild_id)
+    A[2] = (void *)&reference->guild_id;
   if (false == reference->fail_if_not_exists) //default is true
     A[3] = (void *)&reference->fail_if_not_exists;
 
