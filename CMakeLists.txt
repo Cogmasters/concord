@@ -70,6 +70,7 @@ add_executable(test-ws.exe ${SOURCE_FILES} test/test-ws.cpp)
 add_executable(test-json-scanf.exe ${JSON_SCANF} test/test-json-scanf.c)
 
 add_executable(test-json-scanf-array.exe ${JSON_SCANF} ${ORKA_FILES}
+        common/json-actor.c
         test/test-json-scanf-array.c)
 target_link_libraries(test-json-scanf-array.exe m)
 
