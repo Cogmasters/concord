@@ -14,7 +14,7 @@
  * <value> := true | false | null | <int> | <float> | <string-literal>
  *            | <composite-value> | <action>
  *
- * <action> := d | ld | lld | f | lf | b | <size-specifier>s
+ * <action> := d | ld | lld | f | lf | b | u64 <size-specifier>s
  *            | F | F_nullable
  *
  * <access-path-value> := <access-path> : <value>
@@ -52,6 +52,8 @@
 #include <stdbool.h>
 #include <ctype.h>
 #include <stdarg.h>
+#include <stdint.h>
+#include <inttypes.h>
 
 #define JSMN_STATIC  // dont expose jsmn symbols
 #define JSMN_PARENT_LINKS // add parent links to jsmn_tok, which are needed
@@ -159,6 +161,10 @@ enum builtin_type {
   B_INT,
   B_LONG,
   B_LONG_LONG,
+  B_U32,
+  B_U64,
+  B_I32,
+  B_I64,
   B_FLOAT,
   B_DOUBLE,
   B_STRING,
@@ -525,6 +531,16 @@ parse_value(
       act->_.builtin = B_INT;
       pos ++;
       goto return_true;
+    case 'u':
+      if (0 == strncmp(pos, "u64", 3)) {
+        act->mem_size.size = sizeof(uint64_t);
+        act->mem_size.tag = SIZE_FIXED;
+        act->_.builtin = B_U64;
+        pos += 3;
+        goto return_true;
+      }
+      else
+        ERR("unexpected %s\n", pos);
     case 'f':
       act->mem_size.size = sizeof(float);
       act->mem_size.tag = SIZE_FIXED;
@@ -1108,6 +1124,8 @@ inject_builtin (
         return xprintf(pos, size, info, "false");
     case B_INT:
       return xprintf(pos, size, info, "%d", *(int *)v->operand);
+    case B_U64:
+      return xprintf(pos, size, info, "%" PRIu64, *(uint64_t *)v->operand);
     case B_FLOAT:
       return xprintf(pos, size, info, "%f", *(float *)v->operand);
     case B_DOUBLE:
@@ -1691,6 +1709,16 @@ static size_t extract_scalar (struct action * a, int i, struct e_info * info)
               tokens[i].end - tokens[i].start, json + tokens[i].start);
       }
       break;
+    case B_U64:
+      if ('n' == json[tokens[i].start])
+        *(uint64_t *) a->operand = 0;
+      else {
+        *(uint64_t *) a->operand = (uint64_t) strtoull(json + tokens[i].start, &xend, 10);
+        if (xend != json + tokens[i].end)
+          ERR("failed to extract int from %.*s\n",
+              tokens[i].end - tokens[i].start, json + tokens[i].start);
+      }
+      break;
     case B_BOOL:
       switch (json[tokens[i].start])
       {
@@ -1831,14 +1859,17 @@ extract_access_path (
 {
   char * json = info->pos;
   jsmntok_t * tokens = info->tokens;
+  int n_toks = info->n_tokens;
 
   int i = val_idx, ic;
-  if (curr_path)
-  {
+  if (curr_path) {
     switch (tokens[val_idx].type)
     {
       case JSMN_OBJECT:
-        for (ic = i + 1; tokens[ic].start < tokens[i].end; ic++) {
+        if (0 == tokens[val_idx].size)
+          return 0;
+
+        for (ic = i + 1; ic < n_toks && tokens[ic].start < tokens[i].end; ic++) {
           if (i != tokens[ic].parent)
             continue;
 
@@ -1852,6 +1883,9 @@ extract_access_path (
         return 0;
       case JSMN_ARRAY:
       {
+        if (0 == tokens[val_idx].size)
+          return 0;
+
         char *xend;
         int index = strtol(curr_path->key.start, &xend, 10);
         ASSERT_S(*xend == ')', "Index is not a number");
@@ -1859,7 +1893,10 @@ extract_access_path (
         ASSERT_S(index < tokens[i].size, "Index is out-of-bound");
 
         ic = i + 1; // the first child of i;
-        return extract_access_path(ic + index, apv, curr_path->next, info);
+        if (ic < n_toks)
+          return extract_access_path(ic + index, apv, curr_path->next, info);
+        else
+          return 0;
       }
       default:
         ERR("Patch match error (not an Object or Array)");
