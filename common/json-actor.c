@@ -2018,7 +2018,7 @@ json_vextract (char * json, size_t size, char * extractor, va_list ap)
     ERR("Found %d, Object or array expected", tokens[0].type);
 
   for (int i = 0; i < num_tok; i++) {
-    print_tok(stderr, json, tokens, i);
+    //print_tok(stderr, json, tokens, i);
   }
 
   info.n_tokens = num_tok;
