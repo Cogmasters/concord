@@ -296,8 +296,8 @@ int main(int argc, char *argv[])
   assert(NULL != client);
 
   /* Set discord callbacks */
-  setcb_ready(client, &on_ready);
-  setcb_message_command(client, "!system ", &on_command);
+  discord::setcb(client, discord::READY, &on_ready);
+  discord::setcb(client, discord::COMMAND, &on_command, "!system ");
 
   /* Start a connection to Discord */
   discord::run(client);

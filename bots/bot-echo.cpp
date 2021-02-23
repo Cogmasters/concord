@@ -110,11 +110,11 @@ int main(int argc, char *argv[])
   client *client = fast_init(config_file);
   assert(NULL != client);
 
-  setcb_ready(client, &on_ready);
-  setcb_message_create(client, &on_message_create);
-  setcb_message_update(client, &on_message_update);
-  setcb_message_delete(client, &on_message_delete);
-  setcb_message_delete_bulk(client, &on_message_delete_bulk);
+  setcb(client, READY, &on_ready);
+  setcb(client, MESSAGE_CREATE, &on_message_create);
+  setcb(client, MESSAGE_UPDATE, &on_message_update);
+  setcb(client, MESSAGE_DELETE, &on_message_delete);
+  setcb(client, MESSAGE_DELETE_BULK, &on_message_delete_bulk);
 
   run(client);
 

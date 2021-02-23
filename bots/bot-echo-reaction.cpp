@@ -52,8 +52,8 @@ int main(int argc, char *argv[])
   client *client = fast_init(config_file);
   assert(NULL != client);
 
-  setcb_ready(client, &on_ready);
-  setcb_reaction_add(client, &on_reaction_add);
+  setcb(client, READY, &on_ready);
+  setcb(client, REACTION_ADD, &on_reaction_add);
 
   run(client);
 

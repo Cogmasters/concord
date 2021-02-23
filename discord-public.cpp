@@ -115,118 +115,83 @@ add_intents(client *client, websockets::intents::code code)
 }
 
 void
-setcb_idle(client *client, idle_cb *user_cb){
-  client->ws.cbs.on_idle = user_cb;
-}
-
-void
-setcb_ready(client *client, idle_cb *user_cb){
-  client->ws.cbs.on_ready = user_cb;
-}
-
-void
-setcb_message_command(client *client, char prefix[], message_cb *user_cb)
+setcb(client *client, enum callback_opt opt, ...)
 {
+  va_list args;
+  va_start(args, opt);
+
   using namespace websockets;
-  add_intents(client, intents::GUILD_MESSAGES | intents::DIRECT_MESSAGES);
-  client->ws.cbs.on_message.command = user_cb;
 
-  const int PREFIX_LEN = sizeof(client->ws.prefix);
+  intents::code code = 0;
+  switch (opt) {
+  case IDLE:
+      client->ws.cbs.on_idle = va_arg(args, idle_cb*);
+      break;
+  case READY:
+      client->ws.cbs.on_ready = va_arg(args, idle_cb*);
+      break;
+  case COMMAND: {
+      client->ws.cbs.on_message.command = va_arg(args, message_cb*);
+      code |= intents::GUILD_MESSAGES | intents::DIRECT_MESSAGES;
 
-  int ret = snprintf(client->ws.prefix, PREFIX_LEN, "%s", prefix);
-  VASSERT_S(ret < PREFIX_LEN, "Prefix '%s' exceeds length of %d (%zu characters)", prefix, PREFIX_LEN, strlen(prefix));
-}
+      const int PREFIX_LEN = sizeof(client->ws.prefix);
 
-void
-setcb_message_create(client *client, message_cb *user_cb)
-{
-  using namespace websockets;
-  add_intents(client, intents::GUILD_MESSAGES | intents::DIRECT_MESSAGES);
-  client->ws.cbs.on_message.create = user_cb;
-}
+      const char *prefix = va_arg(args, char*);
+      int ret = snprintf(client->ws.prefix, PREFIX_LEN, "%s", prefix);
+      VASSERT_S(ret < PREFIX_LEN, "Prefix '%s' exceeds length of %d (%zu characters)", prefix, PREFIX_LEN, strlen(prefix));
+      break;
+   }
+  case MESSAGE_CREATE:
+      client->ws.cbs.on_message.create = va_arg(args, message_cb*);
+      code |= intents::GUILD_MESSAGES | intents::DIRECT_MESSAGES;
+      break;
+  case MESSAGE_UPDATE:
+      client->ws.cbs.on_message.update = va_arg(args, message_cb*);
+      code |= intents::GUILD_MESSAGES | intents::DIRECT_MESSAGES;
+      break;
+  case MESSAGE_DELETE:
+      client->ws.cbs.on_message.del = va_arg(args, message_delete_cb*);
+      code |= intents::GUILD_MESSAGES | intents::DIRECT_MESSAGES;
+      break;
+  case MESSAGE_DELETE_BULK:
+      client->ws.cbs.on_message.delete_bulk = va_arg(args, message_delete_bulk_cb*);
+      code |= intents::GUILD_MESSAGES | intents::DIRECT_MESSAGES;
+      break;
+  case REACTION_ADD:
+      client->ws.cbs.on_reaction.add = va_arg(args, reaction_add_cb*);
+      code |= intents::GUILD_MESSAGE_REACTIONS | intents::DIRECT_MESSAGE_REACTIONS;
+      break;
+  case REACTION_REMOVE:
+      client->ws.cbs.on_reaction.remove = va_arg(args, reaction_remove_cb*);
+      code |= intents::GUILD_MESSAGE_REACTIONS | intents::DIRECT_MESSAGE_REACTIONS;
+      break;
+  case REACTION_REMOVE_ALL:
+      client->ws.cbs.on_reaction.remove_all = va_arg(args, reaction_remove_all_cb*);
+      code |= intents::GUILD_MESSAGE_REACTIONS | intents::DIRECT_MESSAGE_REACTIONS;
+      break;
+  case REACTION_REMOVE_EMOJI:
+      client->ws.cbs.on_reaction.remove_emoji = va_arg(args, reaction_remove_emoji_cb*);
+      code |= intents::GUILD_MESSAGE_REACTIONS | intents::DIRECT_MESSAGE_REACTIONS;
+      break;
+  case GUILD_MEMBER_ADD:
+      client->ws.cbs.on_guild_member.add = va_arg(args, guild_member_cb*);
+      code |= intents::GUILD_MEMBERS;
+      break;
+  case GUILD_MEMBER_UPDATE:
+      client->ws.cbs.on_guild_member.update = va_arg(args, guild_member_cb*);
+      code |= intents::GUILD_MEMBERS;
+      break;
+  case GUILD_MEMBER_REMOVE:
+      client->ws.cbs.on_guild_member.remove = va_arg(args, guild_member_remove_cb*);
+      code |= intents::GUILD_MEMBERS;
+      break;
+  default:
+      ERR("Invalid callback_opt (code: %d)", opt);
+  }
 
-void
-setcb_message_update(client *client, message_cb *user_cb)
-{
-  using namespace websockets;
-  add_intents(client, intents::GUILD_MESSAGES | intents::DIRECT_MESSAGES);
-  client->ws.cbs.on_message.update = user_cb;
-}
+  add_intents(client, code);
 
-void
-setcb_message_delete(client *client, message_delete_cb *user_cb)
-{
-  using namespace websockets;
-  add_intents(client, intents::GUILD_MESSAGES | intents::DIRECT_MESSAGES);
-  client->ws.cbs.on_message.del = user_cb;
-}
-
-void 
-setcb_message_delete_bulk(client *client, message_delete_bulk_cb *user_cb)
-{
-  using namespace websockets;
-  add_intents(client, intents::GUILD_MESSAGES);
-  client->ws.cbs.on_message.delete_bulk = user_cb;
-}
-
-void 
-setcb_reaction_add(client *client, reaction_add_cb *user_cb)
-{
-  using namespace websockets;
-  add_intents(client, intents::GUILD_MESSAGE_REACTIONS 
-      | intents::DIRECT_MESSAGE_REACTIONS);
-  client->ws.cbs.on_reaction.add = user_cb;
-}
-
-void 
-setcb_reaction_remove(client *client, reaction_remove_cb *user_cb)
-{
-  using namespace websockets;
-  add_intents(client, intents::GUILD_MESSAGE_REACTIONS 
-      | intents::DIRECT_MESSAGE_REACTIONS);
-  client->ws.cbs.on_reaction.remove = user_cb;
-}
-
-void 
-setcb_reaction_remove_all(client *client, reaction_remove_all_cb *user_cb)
-{
-  using namespace websockets;
-  add_intents(client, intents::GUILD_MESSAGE_REACTIONS 
-      | intents::DIRECT_MESSAGE_REACTIONS);
-  client->ws.cbs.on_reaction.remove_all = user_cb;
-}
-
-void 
-setcb_reaction_remove_emoji(client *client, reaction_remove_emoji_cb *user_cb)
-{
-  using namespace websockets;
-  add_intents(client, intents::GUILD_MESSAGE_REACTIONS 
-      | intents::DIRECT_MESSAGE_REACTIONS);
-  client->ws.cbs.on_reaction.remove_emoji = user_cb;
-}
-
-void 
-setcb_guild_member_add(client *client, guild_member_cb *user_cb)
-{
-  using namespace websockets;
-  add_intents(client, intents::GUILD_MEMBERS);
-  client->ws.cbs.on_guild_member.add = user_cb;
-}
-
-void 
-setcb_guild_member_update(client *client, guild_member_cb *user_cb)
-{
-  using namespace websockets;
-  add_intents(client, intents::GUILD_MEMBERS);
-  client->ws.cbs.on_guild_member.update = user_cb;
-}
-
-void 
-setcb_guild_member_remove(client *client, guild_member_remove_cb *user_cb)
-{
-  using namespace websockets;
-  add_intents(client, intents::GUILD_MEMBERS);
-  client->ws.cbs.on_guild_member.remove = user_cb;
+  va_end(args);
 }
 
 void

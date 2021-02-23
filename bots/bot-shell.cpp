@@ -182,7 +182,7 @@ int main(int argc, char *argv[])
   client *client = fast_init(config_file);
   assert(NULL != client);
 
-  setcb_message_command(client, "$", &on_command);
+  setcb(client, COMMAND, &on_command, "$");
 
   printf("\n\nThis bot allows navigating its host machine like"
          " a shell terminal.\n\n"

@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
   client *client = fast_init(config_file);
   assert(NULL != client);
 
-  setcb_message_command(client, "show embed", &on_command);
+  setcb(client, COMMAND, &on_command, "show embed");
 
   printf("\n\nThis bot demonstrates how easy it is to load embed"
          " from a json file.\n"

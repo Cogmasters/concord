@@ -1230,21 +1230,24 @@ void cleanup(discord::client *client);
 
 void add_intents(client *client, websockets::intents::code code);
 
-void setcb_idle(client *client, idle_cb *user_cb);
-void setcb_ready(client *client, idle_cb *user_cb);
-void setcb_message_command(client *client, char prefix[], message_cb *user_cb);
-void setcb_message_create(client *client, message_cb *user_cb);
-void setcb_message_update(client *client, message_cb *user_cb);
-void setcb_message_delete(client *client, message_delete_cb *user_cb);
-void setcb_message_delete_bulk(client *client, message_delete_bulk_cb *user_cb);
-void setcb_reaction_add(client *client, reaction_add_cb *user_cb);
-void setcb_reaction_remove(client *client, reaction_remove_cb *user_cb);
-void setcb_reaction_remove_all(client *client, reaction_remove_all_cb *user_cb);
-void setcb_reaction_remove_emoji(client *client, reaction_remove_emoji_cb *user_cb);
-void setcb_guild_member_add(client *client, guild_member_cb *user_cb);
-void setcb_guild_member_update(client *client, guild_member_cb *user_cb);
-void setcb_guild_member_remove(client *client, guild_member_remove_cb *user_cb);
+enum callback_opt {
+  IDLE,
+  READY,
+  COMMAND,
+  MESSAGE_CREATE,
+  MESSAGE_UPDATE,
+  MESSAGE_DELETE,
+  MESSAGE_DELETE_BULK,
+  REACTION_ADD,
+  REACTION_REMOVE,
+  REACTION_REMOVE_ALL,
+  REACTION_REMOVE_EMOJI,
+  GUILD_MEMBER_ADD,
+  GUILD_MEMBER_UPDATE,
+  GUILD_MEMBER_REMOVE
+};
 
+void setcb(client *client, enum callback_opt opt, ...);
 void run(client *client);
 
 void dump_json(client *client, char file[]);

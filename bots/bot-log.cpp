@@ -48,10 +48,10 @@ int main(int argc, char *argv[])
   client *client = fast_init(config_file);
   assert(NULL != client);
 
-  setcb_ready(client, &on_ready);
-  setcb_guild_member_add(client, &on_guild_member_add);
-  setcb_guild_member_update(client, &on_guild_member_update);
-  setcb_guild_member_remove(client, &on_guild_member_remove);
+  setcb(client, READY, &on_ready);
+  setcb(client, GUILD_MEMBER_ADD, &on_guild_member_add);
+  setcb(client, GUILD_MEMBER_UPDATE, &on_guild_member_update);
+  setcb(client, GUILD_MEMBER_REMOVE, &on_guild_member_remove);
 
   run(client);
 
