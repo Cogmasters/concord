@@ -1765,7 +1765,7 @@ static size_t extract_scalar (struct action * a, int i, struct e_info * info)
   return 1;
 }
 
-static size_t apply_action (struct value * v, int idx, struct e_info * info)
+static size_t apply_extraction(struct value *v, int idx, struct e_info *info)
 {
   jsmntok_t * tokens = info->tokens;
   char * json = info->pos;
@@ -1831,7 +1831,7 @@ extract_value (struct value * v, int val_idx, struct e_info * info)
   size_t ret = 0;
   switch (v->tag) {
     case V_ACTION:
-      ret = apply_action(v, val_idx, info);
+      ret = apply_extraction(v, val_idx, info);
       break;
     case V_COMPOSITE_VALUE:
       if (v->_.cv->is_object)
