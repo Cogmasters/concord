@@ -112,6 +112,26 @@ ntl_apply(void * cxt, void **p, void (*f)(void * cxt, void *p))
     (*f)(cxt, p[i]);
 }
 
+int
+ntl_to_buf2(char * buf, size_t size, struct ntl_serializer * serializer)
+{
+  return ntl_to_buf(buf, size,
+                    serializer->ntl_provider,
+                    serializer->delimiter,
+                    serializer->elem_to_buf);
+}
+
+int
+ntl_to_abuf2(char ** buf_p, struct ntl_serializer * serializer)
+{
+  int s = ntl_to_buf2(NULL, 0, serializer);
+  if (s < 0)
+    return -1;
+
+  *buf_p = (char *)malloc(s);
+  return ntl_to_buf2(*buf_p, s, serializer);
+}
+
 /*
  *
  */

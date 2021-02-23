@@ -114,12 +114,19 @@ void ** ntl_fmap(void * cxt, void ** from_list,
  */
 void ** ntl_append(void ** p, size_t elem_size, void * added_elem);
 
-/*
- * ntl_elem_serializer(NULL, 0, p) calculates the size needed to serializer p
- * ntl_elem_serializer(buf, n, p) serialize p to a buffer
- * ntl_elem_serializer should return a negative value for any errors
- */
+
 typedef int (ntl_elem_serializer)(char * buf, size_t size, void *p);
+
+struct ntl_serializer {
+  struct ntl_str_delimiter * delimiter;
+  /*
+ * elem_to_buf(NULL, 0, p) calculates the size needed to serializer p
+ * elem_to_buf(buf, n, p) serialize p to a buffer
+ * elem_to_buf should return a negative value for any errors
+ */
+  void (*elem_to_buf)(char * buf, size_t size, void * elem);
+  void ** ntl_provider;
+};
 
 struct ntl_str_delimiter {
   char start_delimiter;
@@ -148,6 +155,9 @@ int ntl_to_buf(char *buf, size_t buf_size, void **p,
 int ntl_to_abuf(char **buf_ptr, void **p, struct ntl_str_delimiter  * d,
                 ntl_elem_serializer * x);
 
+
+int ntl_to_buf2(char * buf, size_t size, struct ntl_serializer * serializer);
+int ntl_to_abuf2(char ** buf_p, struct ntl_serializer * serializer);
 
 struct ntl_deserializer {
   /* Required: this function partition a sized buffer to n sized buffers,
