@@ -10,7 +10,8 @@
 #define ELITEBGS_API_URL "https://elitebgs.app/api/ebgs/v5"
 
 /* ELITEBGS User Agent for performing connections to the API */
-orka::user_agent::dati elitebgs_ua;
+orka::user_agent::dati g_elitebgs_ua;
+uint64_t g_tick_ms;
 
 struct doc_s {
   char name[512];
@@ -20,6 +21,7 @@ struct doc_s {
 
 struct faction_presence_s {
   char system_id[512];
+  char system_name[512];
   char state[512];
   float influence;
   char happiness[512];
@@ -31,6 +33,30 @@ struct state_s {
   char trend[512];
 };
 
+
+void ticks_from_json(char *str, size_t len, void *data)
+{
+  struct sized_buffer **t_ticks = NULL;
+  json_scanf(str, len, "[]%L", &t_ticks);
+
+  json_scanf(t_ticks[0]->start, t_ticks[0]->size, "[time]%F", &orka_iso8601_to_unix_ms, &g_tick_ms);
+
+  free(t_ticks);
+}
+
+void update_last_tick_ms()
+{
+  struct resp_handle resp_handle =
+    {&ticks_from_json, NULL};
+
+  /* Fetch ticks from ELITEBGS API */
+  orka::user_agent::run(
+      &g_elitebgs_ua, 
+      &resp_handle,
+      NULL,
+      NULL,
+      HTTP_GET, "/ticks");
+}
 
 void embed_from_json(char *str, size_t len, void *p_embed)
 {
@@ -98,6 +124,7 @@ void embed_from_json(char *str, size_t len, void *p_embed)
       for (size_t j=0; l_fpresence[j]; ++j)
       {
         json_scanf(l_fpresence[j]->start, l_fpresence[j]->size,
+            "[system_name]%S"
             "[system_id]%S"
             "[state]%S"
             "[influence]%f"
@@ -106,6 +133,7 @@ void embed_from_json(char *str, size_t len, void *p_embed)
             "[pending_states]%L"
             "[recovering_states]%L"
             "[updated_at]%S",
+            fpresence->system_name,
             fpresence->system_id,
             fpresence->state,
             &fpresence->influence,
@@ -114,6 +142,9 @@ void embed_from_json(char *str, size_t len, void *p_embed)
             &l_pending_states,
             &l_recovering_states,
             fpresence->updated_at);
+
+        if (0 != strcasecmp(embed->title, fpresence->system_name))
+          continue;
 
         for (size_t j2=0; l_history[j2]; ++j2)
         {
@@ -125,8 +156,9 @@ void embed_from_json(char *str, size_t len, void *p_embed)
               &history->influence,
               history->updated_at);
 
-          if (0 == strcmp(history->system_id, fpresence->system_id))
+          if (0 == strcmp(history->system_id, fpresence->system_id)){
             break;
+          }
         }
 
         float influence_diff = 100*(fpresence->influence - history->influence);
@@ -245,33 +277,39 @@ void on_command(
   discord::channel::embed::dati new_embed;
   discord::channel::embed::init_dati(&new_embed);
 
-  struct resp_handle resp_handle =
-    {&embed_from_json, (void*)&new_embed};
+  update_last_tick_ms();
 
   char query[512];
   int ret = query_inject(query, sizeof(query),
               "(system):s"
-              "(count):1", 
-              msg->content);
+              "(timeMax):F", 
+              msg->content,
+              &orka_ulltostr, &g_tick_ms);
 
   ASSERT_S(ret < (int)sizeof(query), "Out of bounds write attempt");
 
-  /* Fetch from ELITEBGS API */
+  /* Set embed fields */
+  strncpy(new_embed.title, msg->content, sizeof(new_embed.title));
+  new_embed.timestamp = orka_timestamp_ms();
+  new_embed.color = 15844367; //gold
+  change_footer(&new_embed, "https://cee.dev/", NULL, NULL);
+
+  /* Fetch factions from ELITEBGS API */
+  struct resp_handle resp_handle = {&embed_from_json, (void*)&new_embed};
   orka::user_agent::run(
-      &elitebgs_ua, 
+      &g_elitebgs_ua, 
       &resp_handle,
       NULL,
       NULL,
       HTTP_GET,
       "/factions%s", query);
 
-  strncpy(new_embed.title, msg->content, sizeof(new_embed.title));
-  new_embed.timestamp = orka_timestamp_ms();
-  new_embed.color = 15844367; //gold
-  change_footer(&new_embed, "Made with Orka", NULL, NULL);
-
+  /* Send embed to channel if embed was loaded */
   message::create::params params = {0};
-  params.embed = &new_embed;
+  if (new_embed.fields)
+    params.embed = &new_embed;
+  else 
+    params.content = "System does not exist or could not be found.";
 
   message::create::run(client, msg->channel_id, &params, NULL);
 
@@ -288,7 +326,7 @@ int main(int argc, char *argv[])
     config_file = "bot.config";
 
   /* Initialized ELITEBGS User Agent */
-  orka::user_agent::init(&elitebgs_ua, ELITEBGS_API_URL);
+  orka::user_agent::init(&g_elitebgs_ua, ELITEBGS_API_URL);
 
   /* Initialize Discord User Agent */
   discord::global_init();
@@ -303,7 +341,7 @@ int main(int argc, char *argv[])
   discord::run(client);
 
   /* Cleanup resources */
-  orka::user_agent::cleanup(&elitebgs_ua);
+  orka::user_agent::cleanup(&g_elitebgs_ua);
   discord::cleanup(client);
   discord::global_cleanup();
 
