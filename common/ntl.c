@@ -105,11 +105,11 @@ ntl_dup (void ** p, size_t elem_size)
 
 
 void
-ntl_apply(void **p, void (*f)(void *p))
+ntl_apply(void * cxt, void **p, void (*f)(void * cxt, void *p))
 {
   size_t i;
   for (i = 0; p[i]; i++)
-    (*f)(p[i]);
+    (*f)(cxt, p[i]);
 }
 
 /*
@@ -180,13 +180,13 @@ ntl_to_abuf(char ** buf_p, void **p, struct ntl_str_delimiter * d,
 }
 
 void **
-ntl_fmap(void ** from_list, size_t to_elem_size, ntl_converter * f)
+ntl_fmap(void * cxt, void ** from_list, size_t to_elem_size, ntl_converter * f)
 {
   void ** to_list = ntl_calloc(ntl_length(from_list), to_elem_size);
   if (f) {
     size_t i;
     for (i = 0; from_list[i]; i++)
-      (*f)(from_list[i], to_list[i]);
+      (*f)(cxt, from_list[i], to_list[i]);
   }
   return to_list;
 }

@@ -99,10 +99,11 @@ size_t ntl_elem_size (void **p);
 /*
  * for each element e, calls f(e)
  */
-void ntl_apply(void **p, void (*f)(void *p));
+void ntl_apply(void *cxt, void **p, void (*f)(void *cxt, void *p));
 
-typedef void (ntl_converter)(void * from, void * to);
-void ** ntl_fmap(void ** from_list, size_t to_elem_size, ntl_converter * f);
+typedef void (ntl_converter)(void *cxt, void * from, void * to);
+void ** ntl_fmap(void * cxt, void ** from_list,
+                 size_t to_elem_size, ntl_converter * f);
 
 /*
  * Add one element to the end of ntl, this is not super efficient

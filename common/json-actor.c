@@ -2010,12 +2010,15 @@ json_vextract (char * json, size_t size, char * extractor, va_list ap)
   jsmn_init(&parser);
   num_tok = jsmn_parse(&parser, json, size, tokens, num_tok);
 
+  if (num_tok < 0)
+    ERR("Invalid JSON %.*s", size, json);
+
   /* Assume the top-level element is an object */
   if (!(tokens[0].type == JSMN_OBJECT || tokens[0].type == JSMN_ARRAY))
-    ERR("Object or array expected");
+    ERR("Found %d, Object or array expected", tokens[0].type);
 
   for (int i = 0; i < num_tok; i++) {
-    //print_tok(stderr, json, tok, i);
+    print_tok(stderr, json, tokens, i);
   }
 
   info.n_tokens = num_tok;
