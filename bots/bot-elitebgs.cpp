@@ -38,7 +38,6 @@ void ticks_from_json(char *str, size_t len, void *data)
 {
   struct sized_buffer **t_ticks = NULL;
   json_scanf(str, len, "[]%L", &t_ticks);
-
   json_scanf(t_ticks[0]->start, t_ticks[0]->size, "[time]%F", &orka_iso8601_to_unix_ms, &g_tick_ms);
 
   free(t_ticks);
@@ -56,6 +55,21 @@ void update_last_tick_ms()
       NULL,
       NULL,
       HTTP_GET, "/ticks");
+}
+
+char* happiness_localised(char *happiness_band)
+{
+  if (0 == strcasecmp(happiness_band, "$faction_happinessband1;"))
+    return "elated";
+  if (0 == strcasecmp(happiness_band, "$faction_happinessband2;"))
+    return "happy";
+  if (0 == strcasecmp(happiness_band, "$faction_happinessband3;"))
+    return "discontented";
+  if (0 == strcasecmp(happiness_band, "$faction_happinessband4;"))
+    return "unhappy";
+  if (0 == strcasecmp(happiness_band, "$faction_happinessband5;"))
+    return "despondent";
+  return "unknown";
 }
 
 void embed_from_json(char *str, size_t len, void *p_embed)
@@ -176,7 +190,7 @@ void embed_from_json(char *str, size_t len, void *p_embed)
                     "Happiness: %s\n",
                     fpresence->state,
                     fpresence->influence * 100, influence_emoji, influence_diff,
-                    fpresence->happiness);
+                    happiness_localised(fpresence->happiness));
 
         ret += snprintf(&field_value[ret], sizeof(field_value) - ret, "Active States:");
         if (l_active_states[0]) 
@@ -292,7 +306,11 @@ void on_command(
   strncpy(new_embed.title, msg->content, sizeof(new_embed.title));
   new_embed.timestamp = orka_timestamp_ms();
   new_embed.color = 15844367; //gold
-  change_footer(&new_embed, "https://cee.dev/", NULL, NULL);
+  change_footer(
+      &new_embed, 
+      "design & build by https://cee.dev", 
+      "https://cee.dev/static/images/cee.png", 
+      NULL);
 
   /* Fetch factions from ELITEBGS API */
   struct resp_handle resp_handle = {&embed_from_json, (void*)&new_embed};
