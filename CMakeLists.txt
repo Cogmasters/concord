@@ -98,6 +98,12 @@ add_executable(test-json-injector.exe
         common/json-actor.c
         test/test-json-injector.c)
 
+add_executable(test-json-injector-1.exe
+        common/ntl.c
+        common/json-string.c
+        common/json-actor.c
+        test/test-json-injector-1.c)
+
 add_executable(test-json-actor.exe
         common/ntl.c
         common/json-string.c
@@ -125,3 +131,14 @@ add_executable(test-ntl.exe
         common/ntl.c
         common/ntl.h
         test/test-ntl.c)
+
+
+add_executable(test-jqbs.exe
+        common/orka-utils.c
+        common/json-actor.c
+        common/ntl.c
+        common/json-string.c
+        common/json-scanf.c
+        common/json-printf.c
+        test/test-jqbs.c)
+target_link_libraries(test-jqbs.exe m)
