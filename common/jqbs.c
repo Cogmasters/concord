@@ -234,7 +234,7 @@ gen_default(FILE * fp, char * type)
   fprintf(fp, "}\n\n");
 
   fprintf(fp, "void free_list(struct %s **p) {\n", type);
-  fprintf(fp, "  ntl_free((void**)p, &_cleanup_);\n");
+  fprintf(fp, "  ntl_free((void**)p, cleanup);\n");
   fprintf(fp, "}\n\n");
 
   fprintf(fp, "void list_from_json(char *str, size_t len, void ***p)\n");
@@ -245,7 +245,7 @@ gen_default(FILE * fp, char * type)
   fprintf(fp, "  d.init_elem = _init_;\n");
   fprintf(fp, "  d.elem_from_buf = from_json;\n");
   fprintf(fp, "  d.ntl_recipient_p= (void***)p;\n");
-  fprintf(fp, "  orka_str_to_ntl(str, len, &deserializer);\n");
+  fprintf(fp, "  orka_str_to_ntl(str, len, &d);\n");
   fprintf(fp, "}\n\n");
 
   fprintf(fp, "void list_to_json(char *str, size_t len, void **p)\n");
