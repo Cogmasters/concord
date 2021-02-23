@@ -394,14 +394,14 @@ static void gen_struct (FILE * fp, struct jc_struct *s)
 
 static void gen_open_namespace (FILE * fp, char ** p)
 {
-  for (int i; p[i]; i++) {
+  for (int i = 0; p[i]; i++) {
     fprintf(fp, "namespace %s {\n", p[i]);
   }
 }
 
 static void gen_close_namespace (FILE * fp, char ** p)
 {
-  for (int i; p[i]; i++) {
+  for (int i = 0; p[i]; i++) {
     fprintf(fp, "} // %s\n", p[i]);
   }
 }
