@@ -460,7 +460,6 @@ on_hello(dati *ws)
 static void
 on_dispatch_reaction(dati *ws, int offset)
 {
-#if 0
   uint64_t user_id=0, message_id=0, channel_id=0, guild_id=0;
   guild::member::dati *member = guild::member::alloc_dati();
   emoji::dati *emoji = emoji::alloc_dati();
@@ -514,7 +513,6 @@ on_dispatch_reaction(dati *ws, int offset)
 
   guild::member::free_dati(member);
   emoji::free_dati(emoji);
-#endif  
 }
 
 static void
