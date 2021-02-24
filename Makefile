@@ -46,11 +46,12 @@ LIBS_LDFLAGS	:= $(LIBDISCORD_LDFLAGS)
 LIBDISCORD	:= $(LIBDIR)/libdiscord.a
 
 
-CFLAGS   += -Wall -Wextra -pedantic -std=c11 -O0 -g -D_ORCA_DEBUG -D_GNU_SOURCE \
-		-Wno-unused-parameter -Wno-missing-field-initializers -I. -I./common
+CFLAGS += -Wall -std=c11 -O0 -g -D_ORCA_DEBUG -D_GNU_SOURCE \
+					-Wno-incompatible-pointer-types -Wno-unused-function \
+					-I. -I./common 
 
 CXXFLAGS += -Wall -std=c++03 -O0 -g -D_ORCA_DEBUG -D_GNU_SOURCE \
-		-Wno-write-strings  -I. -I./common
+						-Wno-write-strings  -I. -I./common
 
 GENFLAGS += 
 
@@ -94,7 +95,7 @@ mkdir :
 
 $(OBJDIR)/common/curl-%.c.o : common/curl-%.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $< \
-		-U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=1 -Wno-unused-function
+		-U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=1
 
 #generic compilation
 
