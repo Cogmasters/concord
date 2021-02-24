@@ -51,6 +51,7 @@ load_object_sha(char *str, size_t len, void *ptr)
 {
   fprintf(stderr, "%.*s\n", (int)len, str);
   json_extract(str, len, "(object.sha):?s", ptr);
+  fprintf(stderr, "extracted sha %s\n", *(char **)ptr);
 }
 
 static void
@@ -58,6 +59,7 @@ load_sha(char *json, size_t len, void *ptr)
 {
   fprintf(stderr, "%.*s\n", (int)len, json);
   json_extract(json, len, "(sha):?s", ptr);
+  fprintf(stderr, "extracted sha %s\n", *(char **)ptr);
 }
 
 static void
