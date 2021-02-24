@@ -1,6 +1,8 @@
 #ifndef ORKA_DEBUG_H
 #define ORKA_DEBUG_H
 
+#include <stdlib.h>
+
 #ifdef __stensal__ // for error tracing purposes
 #  define ABORT()    { char * p = 0; * p = 0; }
 #else

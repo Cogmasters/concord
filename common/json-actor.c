@@ -75,6 +75,7 @@ static void assert_is_pointer(void * p)
   char * x = (char *)p;
   static char c; //has to be a static variable such that compilers won't remove them
   c = *x;
+  (void)c;
 }
 
 
@@ -139,7 +140,7 @@ struct access_path {
 static void
 print_access_path (FILE * fp, struct access_path * access_path)
 {
-  fprintf(fp, "|%.*s|", access_path->key.size, access_path->key.start);
+  fprintf(fp, "|%.*s|", (int)access_path->key.size, access_path->key.start);
   if (access_path->next)
     print_access_path(fp, access_path->next);
 }
@@ -227,7 +228,7 @@ print_action (FILE * fp, struct action * v)
   if (ACT_BUILT_IN == v->tag)
     fprintf(fp, "builtin(%d)\n", v->_.builtin);
   else
-    fprintf(fp, "funptr(%p)\n", v->_.user_def);
+    fprintf(fp, "funptr(%p)\n", (void*)v->_.user_def);
 }
 
 enum value_type {
@@ -267,11 +268,11 @@ print_value (FILE * fp, struct value * v) {
       size_t len;
       char * p = json_string_escape(&len, v->_.primitve.start,
                                     v->_.primitve.size);
-      fprintf(fp, "\"%.*s\"\n", len, p);
+      fprintf(fp, "\"%.*s\"\n", (int)len, p);
       break;
     }
     default:
-      fprintf(fp, "%.*s\n", v->_.primitve.size, v->_.primitve.start);
+      fprintf(fp, "%.*s\n", (int)v->_.primitve.size, v->_.primitve.start);
       break;
   }
 }
@@ -701,8 +702,10 @@ parse_access_path_value(
     {
       case '(':
         if (')' == *pos) goto out_of_loop;
+        break;
       case '.':
         if ('.' == *pos || ')' == *pos) goto out_of_loop;
+        break;
     }
     ++pos;
   }
@@ -1056,7 +1059,7 @@ static void  free_composite_value (struct composite_value *cv)
  * it is used to simplify the calculation of bytes needed
  * for json_injector.
  */
-static char write_only [1024*10];
+static char write_only[1024*10];
 
 enum encoding_type
 {
@@ -1206,7 +1209,7 @@ inject_format_string (
 {
   char *p = NULL;
   char * format;
-  asprintf(&format, "%.*s", sbuf->size, sbuf->start);
+  asprintf(&format, "%.*s", (int)sbuf->size, sbuf->start);
   switch(n) {
     case 1:
       asprintf(&p, format, args[0]._);
@@ -1339,8 +1342,8 @@ inject_access_path_value (
   if (ap->path.next) {
     // @todo
     ERR("does not support %.*s.%.*s yet\n",
-        ap->path.key.size, ap->path.key.start,
-        ap->path.next->key.size, ap->path.next->key.start);
+        (int)ap->path.key.size, ap->path.key.start,
+        (int)ap->path.next->key.size, ap->path.next->key.start);
     return 0;
   }
   else {
@@ -1564,7 +1567,10 @@ json_vinject(
     }
   }
   free_composite_value(&cv);
+
   return used_bytes;
+
+  (void)write_only;
 }
 
 size_t json_ainject (char ** buf_p, char * injector, ...)
@@ -2048,7 +2054,7 @@ json_vextract (char * json, size_t size, char * extractor, va_list ap)
   num_tok = jsmn_parse(&parser, json, size, tokens, num_tok);
 
   if (num_tok < 0)
-    ERR("Invalid JSON %.*s", size, json);
+    ERR("Invalid JSON %.*s", (int)size, json);
 
   /* Assume the top-level element is an object */
   if (!(tokens[0].type == JSMN_OBJECT || tokens[0].type == JSMN_ARRAY))

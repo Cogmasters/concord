@@ -56,7 +56,7 @@ int main () {
   json_inject(bigbuf, sizeof(bigbuf), "[ b, b ] @A", &i, &b, &A, sizeof(A));
   fprintf(stderr, "used @ %s\n", bigbuf);
 
-  fprintf (stderr, "funptr %p\n", &foobar);
+  fprintf (stderr, "funptr %p\n", (void*)&foobar);
   json_inject(bigbuf, sizeof(bigbuf), "[ F ]", &foobar, NULL);
   fprintf(stderr, "%s\n", bigbuf);
 
@@ -124,13 +124,13 @@ int main () {
   if (strlen(reason))
     A1[1] = reason;
 
-  int ret = json_inject(bigbuf, sizeof(bigbuf),
-                        "(delete_message_days):d"
-                        "(reason):s"
-                        "@A",
-                        &delete_message_days,
-                        reason,
-                        A1, sizeof(A1));
+  json_inject(bigbuf, sizeof(bigbuf),
+              "(delete_message_days):d"
+              "(reason):s"
+              "@A",
+              &delete_message_days,
+              reason,
+              A1, sizeof(A1));
 
   fprintf(stderr, "%s\n", bigbuf);
 
@@ -142,13 +142,13 @@ int main () {
   if (strlen(reason))
     A1[0] = reason;
 
-  ret = json_inject(bigbuf, sizeof(bigbuf),
-                    "(delete_message_days):d"
-                    "(reason):s"
-                    "@A",
-                    &delete_message_days,
-                    reason,
-                    A1, sizeof(A1));
+  json_inject(bigbuf, sizeof(bigbuf),
+              "(delete_message_days):d"
+              "(reason):s"
+              "@A",
+              &delete_message_days,
+              reason,
+              A1, sizeof(A1));
 
   fprintf(stderr, "%s\n", bigbuf);
 
@@ -162,43 +162,43 @@ int main () {
   if (strlen(reason))
     A1[1] = reason;
 
-  ret = json_inject(bigbuf, sizeof(bigbuf),
-                    "(delete_message_days):d"
-                      "(reason):s"
-                      "@A",
-                    &delete_message_days,
-                    &reason,
-                    A1, sizeof(A1));
+  json_inject(bigbuf, sizeof(bigbuf),
+              "(delete_message_days):d"
+              "(reason):s"
+              "@A",
+              &delete_message_days,
+              &reason,
+              A1, sizeof(A1));
 
   fprintf(stderr, "%s\n", bigbuf);
 
   char * token = "token";
   int intents = 10;
   char * payload = NULL;
-  ret = json_ainject(&payload,
-                     "(op) : 2" // IDENTIFY OP
-                       "(d) : {"
-                       "(token) : s"
-                       "(intents) : d"
-                       "(properties) : {"
-                       "($os): |POSIX|"
-                       "($browser) : |orca|"
-                       "($device) : |orca|"
-                       "}"
-                       "(presence) : {"
-                       "(since) : null"
-                       "(activities) : null"
-                       "(status) : |online|"
-                       "(afk) : false"
-                       "}"
-                       "}",
-                     token,
-                     &intents,
-                     NULL,
-                     NULL, NULL,
-                     "online",
-                     NULL,
-                     A, sizeof(A));
+  json_ainject(&payload,
+               "(op) : 2" // IDENTIFY OP
+               "(d) : {"
+                 "(token) : s"
+                 "(intents) : d"
+                 "(properties) : {"
+                 "($os): |POSIX|"
+                 "($browser) : |orca|"
+                 "($device) : |orca|"
+                 "}"
+                 "(presence) : {"
+                 "(since) : null"
+                 "(activities) : null"
+                 "(status) : |online|"
+                 "(afk) : false"
+                 "}"
+               "}",
+               token,
+               &intents,
+               NULL,
+               NULL, NULL,
+               "online",
+               NULL,
+               A, sizeof(A));
 
   fprintf(stderr, "%s\n", payload);
 
@@ -207,11 +207,11 @@ int main () {
 
   char query[512];
   char * ss = "Qa'wakana";
-  ret = query_inject(query, sizeof(query),
-                     "(a):d"
-                     "(b):s",
-                     &i,
-                     ss);
+  query_inject(query, sizeof(query),
+               "(a):d"
+               "(b):s",
+               &i,
+               ss);
 
   fprintf(stderr, "'%s'\n", query);
 
@@ -219,21 +219,21 @@ int main () {
   memset(A, 0, sizeof(A));
   A[0] = ss;
 
-  ret = query_inject(query, sizeof(query),
-                     "(a):d"
-                     "(b):s"
-                     "@A",
-                     &i, ss, A, sizeof(A));
+  query_inject(query, sizeof(query),
+               "(a):d"
+               "(b):s"
+               "@A",
+               &i, ss, A, sizeof(A));
 
   fprintf(stderr, "'%s'\n", query);
 
 
   memset(A, 0, sizeof(A));
-  ret = query_inject(query, sizeof(query),
-                     "(a):d"
-                       "(b):s"
-                       "@A",
-                     &i, ss, A, sizeof(A));
+  query_inject(query, sizeof(query),
+               "(a):d"
+               "(b):s"
+               "@A",
+               &i, ss, A, sizeof(A));
 
   fprintf(stderr, "empty query_string: '%s'\n", query);
 

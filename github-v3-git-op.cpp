@@ -96,7 +96,7 @@ char * update_my_fork(dati *d)
 
   d->body.size = json_ainject(&d->body.start, "(sha):s", sha);
 
-  fprintf(stderr, "PATCH: %.*s %d\n", d->body.size, d->body.start, d->body.size);
+  fprintf(stderr, "PATCH: %.*s %zu\n", (int)d->body.size, d->body.start, d->body.size);
   user_agent::run(&d->ua_data, &d->handle, &d->body,
                   HTTP_PATCH, "/repos/%s/%s/git/refs/heads/%s",
                   d->config.username, d->config.repo, d->config.default_branch);

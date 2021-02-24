@@ -92,7 +92,7 @@ int main ()
                settings.logging.dump_curl.filename,
                &settings.logging.dump_curl.enable);
 
-  fprintf(stderr, "\n\nextracted %u values\n", ret);
+  fprintf(stderr, "\n\nextracted %zu values\n", ret);
   fprintf(stderr, "discord.token: %s\n", settings.discord.token);
   fprintf(stderr, "github.username: %s\n", settings.github.username);
   fprintf(stderr, "github.token: %s\n", settings.github.token);
@@ -124,7 +124,7 @@ int main ()
                          settings.logging.dump_curl.filename,
                          &settings.logging.dump_curl.enable);
 
-  fprintf(stderr, "\n\nextracted %u values\n", ret);
+  fprintf(stderr, "\n\nextracted %zu values\n", ret);
   fprintf(stderr, "discord.token: %s\n", settings.discord.token);
   fprintf(stderr, "github.username: %s\n", settings.github.username);
   fprintf(stderr, "github.token: %s\n", settings.github.token);
@@ -149,13 +149,13 @@ int main ()
   ret = json_extract(json, strlen(json),
                      "(object.sha):?s", &p);
 
-  fprintf (stderr, "extracted value %u\n", ret);
+  fprintf (stderr, "extracted value %zu\n", ret);
   fprintf (stderr, "%s\n", p);
 
   struct sized_buffer tok = { .start = NULL, .size = 0 };
 
   ret = json_extract(json, strlen(json), "(object):T", &tok);
 
-  fprintf (stderr, "extracted value %.*s\n", tok.size, tok.start);
+  fprintf (stderr, "extracted value %.*s\n", (int)tok.size, tok.start);
   return 0;
 }
