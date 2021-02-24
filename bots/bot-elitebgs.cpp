@@ -341,6 +341,7 @@ int main(int argc, char *argv[])
   discord::run(client);
 
   /* Cleanup resources */
+  free(json);
   orka::user_agent::cleanup(&g_elitebgs_ua);
   discord::cleanup(client);
   discord::global_cleanup();
