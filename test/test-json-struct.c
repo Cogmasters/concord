@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-#include "jqbs.c"
+#include "json-struct.c"
 #include "json-scanf.h"
 
 int main (int argc, char ** argv)

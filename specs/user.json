@@ -1,0 +1,26 @@
+{
+    "namespace": ["discord", "user"],
+    "comment": "\nhttps://discord.com/developers/docs/resources/user#user-object-user-structure",
+    "structs":
+    [
+	{
+	    "name":"dati",
+	    "fields":
+	    [
+		{ "name": "id", "type":{ "base":"u64"}},
+		{ "name": "username", "type":{ "base":"char", "dec":"[MAX_USERNAME_LEN]"}},
+		{ "name": "discriminator", "type":{ "base":"char", "dec":"[MAX_DISCRIMINATOR_LEN]" }},
+		{ "name": "avatar", "type":{ "base":"char", "dec":"[MAX_SHA256_LEN]" }},
+		{ "name": "bot", "type":{ "base":"bool" }},
+		{ "name": "system", "c_name": "System", "type":{ "base":"bool" }},
+		{ "name": "mfa_enabled", "type":{ "base":"bool" }},
+		{ "name": "locale", "type":{ "base":"char", "dec":"[MAX_LOCALE_LEN]" }},
+		{ "name": "verified", "type":{ "base":"bool" }},
+		{ "name": "email", "type":{ "base":"char", "dec":"[MAX_EMAIL_LEN]" }},
+		{ "name": "flags", "type":{ "base":"int", "c_base": "flags::code" }},
+		{ "name": "premium_type", "type":{ "base":"int", "c_base": "premium_types" }},
+		{ "name": "public_flags", "type":{ "base":"int", "c_base": "flags::code" }},
+	    ]
+	}
+    ]
+}

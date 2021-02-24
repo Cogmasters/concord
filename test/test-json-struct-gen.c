@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include "jqbs.c"
+#include "json-struct.c"
 #include "json-scanf.h"
 
 static
