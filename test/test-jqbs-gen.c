@@ -37,7 +37,9 @@ int main (int argc, char ** argv)
         print_usage(argv[0]);
     }
   }
-
+  if (!config_file)
+    print_usage(argv[0]);
+  
   char * file =  argv[optind];
   s = orka_load_whole_file(file, &len);
 

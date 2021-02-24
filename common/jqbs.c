@@ -30,10 +30,11 @@
  *
  * <field-type>  :=  "type" : { "base":<string>,
  *                              "c_base"? : <string>,
- *                              "decorator"?:("ntl"|"pointer"|"[<string>]"),
- *                              "converter"?:<string>
+ *                              "dec"?:("ntl"|"pointer"|"[<string>]"),
+ *                              <user-defined-conversion>?
  *                            }
  *
+ * <user-defined-conversion> := "U":<string>
  * <field-loc>   :=  "loc"  : ("json" | "query" | "body")
  *
  */
@@ -45,29 +46,29 @@ enum file_type {
 };
 static enum file_type file_type = FILE_SINGLE_FILE;
 
-enum decorator_tag {
+enum dec_tag {
   DEC_NONE = 0, // this has to be zero as the absence means DEC_NONE
   DEC_POINTER = 1,
   DEC_ARRAY = 2,
   DEC_NTL
 };
 
-struct decorator {
-  enum decorator_tag tag;
+struct dec {
+  enum dec_tag tag;
   char * value;
 };
 
 struct jc_type {
   char *base;
   char *c_base;  // use for enum type names that are represented as int
-  struct decorator dec;
-  char *converter; // NULL means using builtin converter.
+  struct dec dec;
+  char *U; // NULL means using builtin converter.
 };
 
 static void
 print_type(FILE *fp, struct jc_type *p)
 {
-  fprintf(fp, "base:%s, dec:%d", p->base, p->dec);
+  fprintf(fp, "base:%s, dec:%d", p->base, p->dec.tag);
 }
 
 
@@ -109,7 +110,7 @@ print_struct(FILE *fp, struct jc_struct *p)
 }
 
 struct jc_definition {
-  char *description;
+  char *comment;
   char **namespace; // ntl
   struct jc_struct **structs; //ntl
 };
@@ -117,7 +118,7 @@ struct jc_definition {
 static void
 print_definition(FILE *fp, struct jc_definition *p)
 {
-  fprintf(fp, "// %s\n", p->description);
+  fprintf(fp, "/*\n %s  */\n", p->comment);
   fprintf(fp, "namespace: ");
   ntl_apply(fp, (void**)p->namespace, fprintf);
   fprintf(fp, "\n");
@@ -140,7 +141,7 @@ loc_from_json(char *json, size_t size, enum loc *p)
 }
 
 static size_t
-dec_from_json(char *json, size_t size, struct decorator *p)
+dec_from_json(char *json, size_t size, struct dec *p)
 {
   if (1 == size && '*' == *json) {
     p->tag = DEC_POINTER;
@@ -173,8 +174,8 @@ field_from_json(char *json, size_t size, void *x)
                           "(c_name):?s"
                           "(type.base):?s"
                           "(type.c_base):?s"
-                          "(type.decorator):F"
-                          "(type.converter):?s"
+                          "(type.dec):F"
+                          "(type.U):?s"
                           "(loc):F"
                           "(comment):?s",
                           &p->name,
@@ -182,7 +183,7 @@ field_from_json(char *json, size_t size, void *x)
                           &p->type.base,
                           &p->type.c_base,
                           dec_from_json, &p->type.dec,
-                          &p->type.converter,
+                          &p->type.U,
                           loc_from_json, &p->loc,
                           &p->comment);
   return s;
@@ -232,10 +233,10 @@ definition_from_json(char *json, size_t size, struct jc_definition *s)
   };
 
   size_t ret = json_extract(json, size,
-                            "(description):?s"
+                            "(comment):?s"
                             "(namespace):F"
                             "(structs):F",
-                            &s->description,
+                            &s->comment,
                             orka_str_to_ntl, &d1,
                             orka_str_to_ntl, &d2);
   return ret;
@@ -343,7 +344,7 @@ to_action(struct jc_field *f, struct action *act)
   {
     case DEC_POINTER:
       if (strcmp(f->type.base, "char") == 0) {
-        act->inject_spec = "?s";
+        act->inject_spec = "s";
         act->extract_spec = "?s";
         act->extract_addrof = "&";
         act->inject_addrof = "&";
@@ -410,11 +411,13 @@ static void gen_cleanup(FILE *fp, struct jc_struct *s)
   for (int i = 0; s->fields[i]; i++)
   {
     struct jc_field *f = s->fields[i];
-    struct action act;
+    struct action act = {0};
     to_action(f, &act);
 
     if (act.free) {
-      fprintf(fp, "  if (d->%s) %s(d->%s);\n",
+      fprintf(fp,
+              "  if (d->%s)\n"
+              "    %s(d->%s);\n",
               act.c_name, act.free, act.c_name);
     }
   }
@@ -447,9 +450,9 @@ static void gen_from_json(FILE *fp, struct jc_struct *s)
     to_action(f, &act);
 
     if (act.is_user_def)
-      fprintf(fp, "                \"(%s):F\"\n", act.c_name);
+      fprintf(fp, "                \"(%s):F,\"\n", act.c_name);
     else
-      fprintf(fp, "                \"(%s):%s\"\n", act.c_name, act.extract_spec);
+      fprintf(fp, "                \"(%s):%s,\"\n", act.c_name, act.extract_spec);
 
     if (i == n-1)
       fprintf(fp, "                \"@A:b\",\n");
@@ -487,9 +490,9 @@ static void gen_to_json(FILE *fp, struct jc_struct *s)
     struct action act = {0};
     to_action(f, &act);
     if (act.is_user_def)
-      fprintf(fp, "                \"(%s):F\"\n", act.c_name);
+      fprintf(fp, "                \"(%s):F,\"\n", act.c_name);
     else
-      fprintf(fp, "                \"(%s):%s\"\n", act.c_name, act.inject_spec);
+      fprintf(fp, "                \"(%s):%s,\"\n", act.c_name, act.inject_spec);
     if (i == n-1) {
       fprintf(fp, "                \"@A:b\",\n");
     }
@@ -654,7 +657,7 @@ static void gen_definition(FILE *fp, enum file_type type, struct jc_definition *
 {
   file_type = type;
   fprintf(fp, "#include \"specs.h\"\n");
-  fprintf(fp, "// %s\n", d->description);
+  fprintf(fp, "/*\n%s\n*/\n", d->comment);
   gen_open_namespace(fp, d->namespace);
   ntl_apply(fp, (void**)d->structs, gen_struct);
   gen_close_namespace(fp, d->namespace);
