@@ -12,3 +12,4 @@ obj
 lib
 dump.*
 .cee-contributor
+specs/*.cc
