@@ -8,7 +8,7 @@
 static
 void print_usage (char * prog)
 {
-  fprintf(stderr, "Usage: %s [-h|-s|-c] -o output-file input-file\n",
+  fprintf(stderr, "Usage: %s [-h|-c] -o output-file input-file\n",
           prog);
   exit(EXIT_FAILURE);
 }
@@ -20,18 +20,15 @@ int main (int argc, char ** argv)
 
   int opt;
   char * config_file = NULL;
-  enum file_type type = 0;
+  enum file_type type = FILE_SINGLE_FILE;
 
-  while ((opt = getopt(argc, argv, "shco:")) != -1) {
+  while ((opt = getopt(argc, argv, "hco:")) != -1) {
     switch (opt) {
       case 'o':
         config_file = strdup(optarg);
         break;
       case 'h':
         type = FILE_HEAD;
-        break;
-      case 's':
-        type = FILE_SINGLE_FILE;
         break;
       case 'c':
         type = FILE_CODE;

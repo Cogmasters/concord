@@ -22,16 +22,20 @@
  *
  * <field-list> := <field> <field-list> | <field>
  *
- * <field-info> := { <field-name> <c-name>? <field-type> <field-loc>? }
+ * <field-info> := { <field-name> <c-name>? <field-type> <field-loc>? <comment>? }
  *
  * <field-name>  :=  "name" : <string>
- * <c-name>  := "c-name" : <string>
+ * <c-name>  := "c_name" : <string>
+ * <comment> := "comment" : <string>
  *
  * <field-type>  :=  "type" : { "base":<string>,
- *                              "decorator"?:("ntl"|"pointer"|"array[<string>]"),
+ *                              "c_base"? : <string>,
+ *                              "decorator"?:("ntl"|"pointer"|"[<string>]"),
  *                              "converter"?:<string>
  *                            }
+ *
  * <field-loc>   :=  "loc"  : ("json" | "query" | "body")
+ *
  */
 
 enum file_type {
@@ -41,15 +45,22 @@ enum file_type {
 };
 static enum file_type file_type = FILE_SINGLE_FILE;
 
-enum decorator {
+enum decorator_tag {
   DEC_NONE = 0, // this has to be zero as the absence means DEC_NONE
   DEC_POINTER = 1,
-  DEC_NTL = 2
+  DEC_ARRAY = 2,
+  DEC_NTL
+};
+
+struct decorator {
+  enum decorator_tag tag;
+  char * value;
 };
 
 struct jc_type {
   char *base;
-  enum decorator dec;
+  char *c_base;  // use for enum type names that are represented as int
+  struct decorator dec;
   char *converter; // NULL means using builtin converter.
 };
 
@@ -71,6 +82,7 @@ struct jc_field {
   char *c_name;
   struct jc_type type;
   enum loc loc;
+  char * comment;
 };
 
 static void
@@ -128,19 +140,25 @@ loc_from_json(char *json, size_t size, enum loc *p)
 }
 
 static size_t
-dec_from_json(char *json, size_t size, enum decorator *p)
+dec_from_json(char *json, size_t size, struct decorator *p)
 {
   if (1 == size && '*' == *json) {
-    *p = DEC_POINTER;
+    p->tag = DEC_POINTER;
   }
   else if (3 == size && 0 == strncmp(json, "ntl", 3)) {
-    *p = DEC_NTL;
+    p->tag = DEC_NTL;
   }
   else if (4 == size && 0 == strncmp(json, "none", 4)) {
-    *p = DEC_NONE;
+    p->tag = DEC_NONE;
   }
   else if (7 == size && 0 == strncmp(json, "pointer", 7)) {
-    *p = DEC_POINTER;
+    p->tag = DEC_POINTER;
+  }
+  else if ('[' == *json) {
+    p->tag = DEC_ARRAY;
+    p->value = malloc(size+1);
+    strncpy(p->value, json, size);
+    p->value[size] = 0;
   }
 
   return 1;
@@ -152,17 +170,21 @@ field_from_json(char *json, size_t size, void *x)
   struct jc_field *p = (struct jc_field *)x;
   size_t s = json_extract(json, size,
                           "(name):?s"
-                          "(c-name):?s"
+                          "(c_name):?s"
                           "(type.base):?s"
+                          "(type.c_base):?s"
                           "(type.decorator):F"
                           "(type.converter):?s"
-                          "(loc):F",
+                          "(loc):F"
+                          "(comment):?s",
                           &p->name,
                           &p->c_name,
                           &p->type.base,
+                          &p->type.c_base,
                           dec_from_json, &p->type.dec,
                           &p->type.converter,
-                          loc_from_json, &p->loc);
+                          loc_from_json, &p->loc,
+                          &p->comment);
   return s;
 }
 
@@ -260,10 +282,12 @@ gen_default(FILE *fp, char *type)
 }
 
 struct action {
+  char *c_name;
   char *c_type;
   char *pre_dec;
   char *post_dec;
-  char *addrof;
+  char *extract_addrof;
+  char *inject_addrof;
   char *extract_spec;
   char *inject_spec;
   char *free;
@@ -275,7 +299,7 @@ static int to_builtin_action(struct jc_field *f, struct action *act)
   if (strcmp(f->type.base, "int") == 0) {
     act->extract_spec = "d";
     act->inject_spec = "d";
-    act->c_type = "int";
+    act->c_type = f->type.c_base ? f->type.c_base : "int";
   }
   else if (strcmp(f->type.base, "u64") == 0) {
     act->extract_spec = "u64";
@@ -308,13 +332,21 @@ to_action(struct jc_field *f, struct action *act)
 {
   act->post_dec = "";
   act->pre_dec = "";
-  switch(f->type.dec)
+  if (f->type.c_base)
+    act->c_type = f->type.c_base;
+  else
+    act->c_type = f->type.base;
+
+  act->c_name = f->c_name ? f->c_name : f->name;
+
+  switch(f->type.dec.tag)
   {
     case DEC_POINTER:
       if (strcmp(f->type.base, "char") == 0) {
-        act->inject_spec = "s";
-        act->extract_spec = "s";
-        act->addrof = "";
+        act->inject_spec = "?s";
+        act->extract_spec = "?s";
+        act->extract_addrof = "&";
+        act->inject_addrof = "&";
         act->post_dec = "";
         act->pre_dec = "*";
         act->free = "free";
@@ -326,7 +358,8 @@ to_action(struct jc_field *f, struct action *act)
           asprintf(&act->inject_spec, "%s_to_json", f->type.base);
           asprintf(&act->extract_spec, "%s_from_json", f->type.base);
           asprintf(&act->free, "%s_free", f->type.base);
-          act->addrof = "";
+          act->extract_addrof = "";
+          act->inject_addrof = "";
           act->post_dec = "";
           act->pre_dec = "*";
           act->is_user_def = true;
@@ -334,13 +367,15 @@ to_action(struct jc_field *f, struct action *act)
       }
       break;
     case DEC_NONE:
-      act->addrof = "&";
+      act->extract_addrof = "&";
+      act->inject_addrof = "&";
       if (!to_builtin_action(f, act)) {
         ERR("unknown %s\n", f->type.base);
       }
       break;
     case DEC_NTL:
-      act->addrof = "";
+      act->extract_addrof = "&";
+      act->inject_addrof = "";
       if (to_builtin_action(f, act)) {
         act->free = "free";
       } else {
@@ -350,6 +385,20 @@ to_action(struct jc_field *f, struct action *act)
         asprintf(&act->free, "%s_list_free", f->type.base);
       }
       break;
+    case DEC_ARRAY:
+      if (strcmp(f->type.base, "char") == 0) {
+        act->inject_spec = "s";
+        act->extract_spec = "s";
+        act->extract_addrof = "";
+        act->inject_addrof = "";
+        act->post_dec = f->type.dec.value;
+        act->pre_dec = "";
+        act->free = NULL;
+        act->c_type = "char";
+        return;
+      } else {
+        ERR("array only support char\n");
+      }
   }
 }
 
@@ -364,12 +413,9 @@ static void gen_cleanup(FILE *fp, struct jc_struct *s)
     struct action act;
     to_action(f, &act);
 
-
-    if (DEC_POINTER == f->type.dec) {
-      fprintf(fp, "  if (d->%s) %s(d->%s);\n", f->name, act.free, f->name);
-    }
-    else if (DEC_NTL == f->type.dec) {
-      fprintf(fp, "  if (d->%s) %s(d->%s);\n", f->name, act.free, f->name);
+    if (act.free) {
+      fprintf(fp, "  if (d->%s) %s(d->%s);\n",
+              act.c_name, act.free, act.c_name);
     }
   }
   fprintf(fp, "}\n");
@@ -379,8 +425,12 @@ static void gen_field(FILE *fp, struct jc_field *f)
 {
   struct action act = {0};
   to_action(f, &act);
-  char *name = f->c_name ? f->c_name : f->name;
-  fprintf(fp, "  %s %s %s %s;\n", f->type.base, act.pre_dec, name, act.post_dec);
+  if (f->comment)
+    fprintf(fp, "  %s %s%s%s; // %s\n",
+            act.c_type, act.pre_dec, act.c_name, act.post_dec, f->comment);
+  else
+    fprintf(fp, "  %s %s%s%s;\n",
+            act.c_type, act.pre_dec, act.c_name, act.post_dec);
 }
 
 static void gen_from_json(FILE *fp, struct jc_struct *s)
@@ -397,9 +447,9 @@ static void gen_from_json(FILE *fp, struct jc_struct *s)
     to_action(f, &act);
 
     if (act.is_user_def)
-      fprintf(fp, "                \"(%s):F\"\n", f->name);
+      fprintf(fp, "                \"(%s):F\"\n", act.c_name);
     else
-      fprintf(fp, "                \"(%s):%s\"\n", f->name, act.extract_spec);
+      fprintf(fp, "                \"(%s):%s\"\n", act.c_name, act.extract_spec);
 
     if (i == n-1)
       fprintf(fp, "                \"@A:b\",\n");
@@ -410,11 +460,12 @@ static void gen_from_json(FILE *fp, struct jc_struct *s)
     struct action act = {0};
     to_action(f, &act);
     if (act.is_user_def)
-      fprintf(fp, "                %s, &p->%s,\n", act.extract_spec, f->name);
+      fprintf(fp, "                %s, &p->%s,\n", act.extract_spec, act.c_name);
     else
-      fprintf(fp, "                %sp->%s,\n", act.addrof, f->name);
+      fprintf(fp, "                %sp->%s,\n", act.extract_addrof, act.c_name);
     if (i == n-1) {
-      fprintf(fp, "                p->__metadata.A, sizeof(p->__metadata.A), &p->__metadata.enable_A,\n");
+      fprintf(fp, "                p->__metadata.A, sizeof(p->__metadata.A),"
+        " &p->__metadata.enable_A,\n");
       fprintf(fp, "                p->__metadata.D, sizeof(p->__metadata.D));\n");
     }
   }
@@ -427,7 +478,8 @@ static void gen_to_json(FILE *fp, struct jc_struct *s)
   fprintf(fp, "size_t %s_to_json(char *json, size_t len, void *x)\n", t);
   fprintf(fp, "{\n");
   fprintf(fp, "  struct %s *p = (struct %s *)x;\n", t, t);
-  fprintf(fp, "  size_t ret = (size_t)json_inject(json, len, \n");
+  fprintf(fp, "  size_t r;\n");
+  fprintf(fp, "  r=json_inject(json, len, \n");
 
   int n = ntl_length((void**)s->fields);
   for (int i = 0; s->fields[i]; i++) {
@@ -435,9 +487,9 @@ static void gen_to_json(FILE *fp, struct jc_struct *s)
     struct action act = {0};
     to_action(f, &act);
     if (act.is_user_def)
-      fprintf(fp, "                \"(%s):F\"\n", f->name);
+      fprintf(fp, "                \"(%s):F\"\n", act.c_name);
     else
-      fprintf(fp, "                \"(%s):%s\"\n", f->name, act.inject_spec);
+      fprintf(fp, "                \"(%s):%s\"\n", act.c_name, act.inject_spec);
     if (i == n-1) {
       fprintf(fp, "                \"@A:b\",\n");
     }
@@ -448,20 +500,33 @@ static void gen_to_json(FILE *fp, struct jc_struct *s)
     struct action act = {0};
     to_action(f, &act);
     if (act.is_user_def)
-      fprintf(fp, "                %s, p->%s,\n", act.inject_spec, f->name);
+      fprintf(fp, "                %s, p->%s,\n", act.inject_spec, act.c_name);
     else
-      fprintf(fp, "                %sp->%s,\n", act.addrof, f->name);
+      fprintf(fp, "                %sp->%s,\n", act.inject_addrof, act.c_name);
+
     if (i == n-1) {
-      fprintf(fp, "                p->__metadata.A, sizeof(p->__metadata.A), &p->__metadata.enable_A);\n");
+      fprintf(fp, "                p->__metadata.A, sizeof(p->__metadata.A),"
+        " &p->__metadata.enable_A);\n");
     }
   }
-  fprintf(fp, "  return ret;\n");
+  fprintf(fp, "  return r;\n");
   fprintf(fp, "}\n");
 }
 
 static void gen_to_query(FILE *fp, struct jc_struct *s)
 {
   char *t = s->name;
+  bool has_query = false;
+  for (int i = 0; s->fields[i]; i++) {
+    struct jc_field *f = s->fields[i];
+    if (f->loc != LOC_IN_QUERY)
+      continue;
+    has_query = true;
+  }
+
+  if (!has_query)
+    return;
+
   fprintf(fp, "size_t %s_to_query(char *json, size_t len, void *x)\n", t);
   fprintf(fp, "{\n");
   fprintf(fp, "  struct %s *p = (struct %s *)x;\n", t, t);
@@ -484,11 +549,15 @@ static void gen_to_query(FILE *fp, struct jc_struct *s)
 
   for (int i = 0; i < n; i++) {
     struct jc_field *f = s->fields[i];
+    if (f->loc != LOC_IN_QUERY)
+      continue;
+
     struct action act = {0};
     to_action(f, &act);
-    fprintf(fp, "                %sp->%s,\n", act.addrof, f->name);
+    fprintf(fp, "                %sp->%s,\n", act.inject_addrof, f->name);
     if (i == n-1) {
-      fprintf(fp, "                p->__metadata.A, sizeof(p->__metadata.A), &p->__metadata.enable_A);\n");
+      fprintf(fp, "                p->__metadata.A, sizeof(p->__metadata.A),"
+        " &p->__metadata.enable_A);\n");
     }
   }
   fprintf(fp,  "  return r;\n");

@@ -19,23 +19,33 @@ int main (int argc, char ** argv)
       "      { |name|:|f1|, |type|:{ |base|:|char|, |decorator|:|*| } },"
       "      { |name|:|f2|, |type|:{ |base|:|char|, |decorator|:|*| } }"
       "      { |name|:|f3|, |type|:{ |base|:|uint64_t| } }"
-      "      { |name|:|f4|, |c-name|:|c_f4|, |type|:{ |base|:|uint64_t| } }"
-      "      { |name|:|f5 asdfasdf |, |c-name|:|c_f5|, |type|:{ |base|:|u64|, |converter|:|convert| } }"
-      "    ]"
-      "  },"
-      "  { |name|:|params|,"
-      "    |fields|:"
-      "    ["
-      "      { |name|:|f1|, |type|:{ |base|:|char|, |decorator|:|*| } },"
-      "      { |name|:|f2|, |type|:{ |base|:|char|, |decorator|:|*| }, |loc|:|form| }"
-      "      { |name|:|f3|, |type|:{ |base|:|bool|}, |loc|:|query| }"
-      "      { |name|:|f4|, |type|:{ |base|:|build::dati|, |decorator|:|*|} }"
+      "      { |name|:|f4|, |c_name|:|c_f4|, |type|:{ |base|:|uint64_t| } }"
+      "      { |name|:|f5 asdfasdf |, |c_name|:|c_f5|, |type|:{ |base|:|u64|, |converter|:|convert| } }"
+      "      { |name|:|f6|, |type|:{ |base|:|char|, |decorator|:|*| }, |loc|:|form| }"
+      "      { |name|:|f7|, |type|:{ |base|:|bool|}, |loc|:|query| }"
       "    ]"
       "  }"
       "]"
     "}";
 
-
+  spec =
+    "{ |namespace|: [ |A|, |B| ],"
+      "|description|: |url|,"
+      "|structs|:"
+      "["
+      "  { |name|:|dati|,"
+      "    |fields|:"
+      "    ["
+      "      { |name|:|f1_str|, |type|:{ |base|:|char|, |decorator|:|*| }, |comment|:| this is field f1 | },"
+      "      { |name|:|f2_str|, |type|:{ |base|:|char|, |decorator|:|*| } }"
+      "      { |name|:|f3_int|, |type|:{ |base|:|int|, |c_base|:|code| } }"
+      "      { |name|:|f4_uint64|, |c_name|:|c_f4|, |type|:{ |base|:|uint64_t| } }"
+      "      { |name|:|f5 asdfasdf |, |c_name|:|c_f5|, |type|:{ |base|:|u64|, |converter|:|convert| } }"
+      "      { |name|:|f6_carray|, |type|:{ |base|:|char|, |decorator|:|[10]| } }"
+      "    ]"
+      "  }"
+      "]"
+      "}";
 
   if (argc == 2) {
     s = orka_load_whole_file(argv[1], &len);
