@@ -15,7 +15,6 @@ set(CMAKE_CXX_FLAGS "-DLIBDISCORD_DEBUG -D_XOPEN_SOURCE=700 -Wno-write-strings -
 set(CMAKE_EXE_LINKER_FLAGS "")
 
 set(JSON_SCANF
-        common/json-common.h
         common/jsmn.h
         common/ntl.c
         common/ntl.h
@@ -134,22 +133,22 @@ add_executable(test-ntl.exe
         test/test-ntl.c)
 
 
-add_executable(test-jqbs.exe
+add_executable(test-json-struct.exe
         common/orka-utils.c
         common/json-actor.c
         common/ntl.c
         common/json-string.c
         common/json-scanf.c
         common/json-printf.c
-        test/test-jqbs.c)
-target_link_libraries(test-jqbs.exe m)
+        test/test-json-struct.c)
+target_link_libraries(test-json-struct.exe m)
 
-add_executable(test-jqbs-gen.exe
+add_executable(test-json-struct-gen.exe
         common/orka-utils.c
         common/json-actor.c
         common/ntl.c
         common/json-string.c
         common/json-scanf.c
         common/json-printf.c
-        test/test-jqbs-gen.c)
-target_link_libraries(test-jqbs-gen.exe m)
+        test/test-json-struct-gen.c)
+target_link_libraries(test-json-struct-gen.exe m)
