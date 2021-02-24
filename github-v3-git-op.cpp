@@ -160,7 +160,7 @@ create_blobs(dati *d, struct file **files)
   }
 }
 
-static int
+static size_t
 node2json(char *str, size_t size, void *p)
 {
   struct file *f = (struct file *)p;

@@ -1122,7 +1122,7 @@ list_from_json(char *str, size_t len, void *p_fields)
   orka_str_to_ntl(str, len, &d);
 }
 
-int
+size_t
 to_json(char *str, size_t len, void *p_field)
 {
   if (NULL == p_field) return snprintf(str, len, "{}");
@@ -1136,7 +1136,7 @@ to_json(char *str, size_t len, void *p_field)
 
   A[2] = (void *)&field->Inline;
 
-  int ret = json_inject(str, len, 
+  size_t ret = json_inject(str, len,
                         "(name):s"
                         "(value):s"
                         "(inline):b"

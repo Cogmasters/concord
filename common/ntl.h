@@ -115,7 +115,7 @@ void ** ntl_fmap(void * cxt, void ** from_list,
 void ** ntl_append(void ** p, size_t elem_size, void * added_elem);
 
 
-typedef int (ntl_elem_serializer)(char * buf, size_t size, void *p);
+typedef size_t (ntl_elem_serializer)(char * buf, size_t size, void *p);
 
 struct ntl_serializer {
   struct ntl_str_delimiter * delimiter;
@@ -124,7 +124,7 @@ struct ntl_serializer {
  * elem_to_buf(buf, n, p) serialize p to a buffer
  * elem_to_buf should return a negative value for any errors
  */
-  void (*elem_to_buf)(char * buf, size_t size, void * elem);
+  size_t (*elem_to_buf)(char * buf, size_t size, void * elem);
   void ** ntl_provider;
 };
 
@@ -144,20 +144,20 @@ struct ntl_str_delimiter {
  * ntl_to_buf(buf, n, ..) serialize p to buf and return the number of
  *       bytes written excluding \0
  */
-int ntl_to_buf(char *buf, size_t buf_size, void **p,
-               struct ntl_str_delimiter  * d,
-               ntl_elem_serializer * x);
+size_t ntl_to_buf(char *buf, size_t buf_size, void **p,
+                  struct ntl_str_delimiter  * d,
+                  ntl_elem_serializer * x);
 
 /*
  * ntl_to_abuf behaviors like asprintf
  */
 
-int ntl_to_abuf(char **buf_ptr, void **p, struct ntl_str_delimiter  * d,
-                ntl_elem_serializer * x);
+size_t ntl_to_abuf(char **buf_ptr, void **p, struct ntl_str_delimiter  * d,
+                   ntl_elem_serializer * x);
 
 
-int ntl_to_buf2(char * buf, size_t size, struct ntl_serializer * serializer);
-int ntl_to_abuf2(char ** buf_p, struct ntl_serializer * serializer);
+size_t ntl_to_buf2(char * buf, size_t size, struct ntl_serializer * serializer);
+size_t ntl_to_abuf2(char ** buf_p, struct ntl_serializer * serializer);
 
 struct ntl_deserializer {
   /* Required: this function partition a sized buffer to n sized buffers,
@@ -180,7 +180,7 @@ struct ntl_deserializer {
  * ntl_deserializer: have all the information to reconstruct an element
  *    from a sized buffer
  */
-int
+size_t
 ntl_from_buf (char *buf, size_t len, struct ntl_deserializer * ntl_deserializer);
 
 int

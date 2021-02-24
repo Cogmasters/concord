@@ -399,7 +399,7 @@ void cleanup_dati(void *p_activity);
 void free_dati(dati *activity);
 void from_json(char *str, size_t len, void *p_activity);
 void list_from_json(char *str, size_t len, void *p_activities);
-int to_json(char *str, size_t len, void *p_activity);
+size_t to_json(char *str, size_t len, void *p_activity);
 int list_to_json(char *str, size_t len, void *p_activities);
 
 /* ACTIVITY TYPES

@@ -112,7 +112,7 @@ ntl_apply(void * cxt, void **p, void (*f)(void * cxt, void *p))
     (*f)(cxt, p[i]);
 }
 
-int
+size_t
 ntl_to_buf2(char * buf, size_t size, struct ntl_serializer * serializer)
 {
   return ntl_to_buf(buf, size,
@@ -121,7 +121,7 @@ ntl_to_buf2(char * buf, size_t size, struct ntl_serializer * serializer)
                     serializer->elem_to_buf);
 }
 
-int
+size_t
 ntl_to_abuf2(char ** buf_p, struct ntl_serializer * serializer)
 {
   int s = ntl_to_buf2(NULL, 0, serializer);
@@ -135,7 +135,7 @@ ntl_to_abuf2(char ** buf_p, struct ntl_serializer * serializer)
 /*
  *
  */
-int
+size_t
 ntl_to_buf(char *buf, size_t size, void **p, struct ntl_str_delimiter * d,
            ntl_elem_serializer * x)
 {
@@ -144,7 +144,7 @@ ntl_to_buf(char *buf, size_t size, void **p, struct ntl_str_delimiter * d,
 
   const char * start = buf;
   size_t i, tsize = 0;
-  int psize;
+  size_t psize;
 
   if (start) {
     buf[0] = d->start_delimiter;
@@ -187,7 +187,7 @@ ntl_to_buf(char *buf, size_t size, void **p, struct ntl_str_delimiter * d,
   return tsize;
 }
 
-int
+size_t
 ntl_to_abuf(char ** buf_p, void **p, struct ntl_str_delimiter * d,
            ntl_elem_serializer * x)
 {
@@ -232,7 +232,7 @@ ntl_append(void ** p, size_t elem_size, void * added_elem)
   return o;
 }
 
-int
+size_t
 ntl_from_buf(char *buf, size_t len, struct ntl_deserializer * deserializer)
 {
   struct sized_buffer **elem_bufs = NULL;

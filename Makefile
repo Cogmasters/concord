@@ -7,14 +7,18 @@ COMMON_SRC  := $(wildcard common/*.c)
 ORKA_SRC    := $(wildcard orka-*.cpp)
 DISCORD_SRC := $(wildcard discord-*.cpp)
 GITHUB_SRC  := $(wildcard github-*.cpp)
+SPECS       := $(wildcard specs/*.json)
+
+SPECS_SRC   := $(SPECS:%.json=%.cc)
 
 
-COMMON_OBJS := $(COMMON_SRC:%=$(OBJDIR)/%.o)
-ORKA_OBJS  := $(ORKA_SRC:%=$(OBJDIR)/%.o)
+COMMON_OBJS  := $(COMMON_SRC:%=$(OBJDIR)/%.o)
+ORKA_OBJS    := $(ORKA_SRC:%=$(OBJDIR)/%.o)
 DISCORD_OBJS := $(DISCORD_SRC:%=$(OBJDIR)/%.o)
-GITHUB_OBJS := $(GITHUB_SRC:%=$(OBJDIR)/%.o)
+GITHUB_OBJS  := $(GITHUB_SRC:%=$(OBJDIR)/%.o)
+SPECS_OBJS   := $(SPECS_SRC:%=$(OBJDIR)/%.o)
 
-OBJS := $(COMMON_OBJS) $(DISCORD_OBJS) $(GITHUB_OBJS) $(ORKA_OBJS)
+OBJS := $(COMMON_OBJS) $(DISCORD_OBJS) $(GITHUB_OBJS) $(ORKA_OBJS) $(SPECS_OBJS)
 
 BOT_SRC := $(wildcard bots/bot-*.cpp)
 BOT_EXES := $(patsubst %.cpp, %.exe, $(BOT_SRC))
@@ -48,6 +52,7 @@ CFLAGS   += -Wall -Wextra -pedantic -std=c11 -O0 -g -D_ORCA_DEBUG -D_GNU_SOURCE 
 CXXFLAGS += -Wall -std=c++03 -O0 -g -D_ORCA_DEBUG -D_GNU_SOURCE \
 		-Wno-write-strings  -I. -I./common
 
+GENFLAGS += 
 
 ifeq ($(DEBUG_JSON),1)
 	CFLAGS += -D_ORCA_DEBUG_STRICT
@@ -68,29 +73,44 @@ PREFIX ?= /usr/local
 .PHONY : all mkdir install clean purge
 
 
-all : mkdir common orka discord github bot
+all : mkdir common orka specs discord github bot
 
 common: mkdir $(COMMON_OBJS)
 orka: mkdir $(ORKA_OBJS)
 discord: mkdir $(DISCORD_OBJS) libdiscord
 github: mkdir $(GITHUB_OBJS)
+specs: mkdir $(SPECS_SRC) $(SPECS_OBJS)
+
+echo:
+	@echo SPECS: $(SPECS)
+	@echo SPECS_SRC:  $(SPECS_SRC)
+	@echo SPECS_OBJS: $(SPECS_OBJS)
 
 bot: $(BOT_EXES) #@todo should we split by categories (bot_discord, bot_github, etc)?
 test: common orka discord github $(TEST_EXES) #@todo should we split by categories too ?
 
-
 mkdir :
-	mkdir -p $(OBJDIR) $(OBJDIR)/common $(LIBDIR)
+	mkdir -p bin $(OBJDIR) $(OBJDIR)/common $(OBJDIR)/specs $(LIBDIR)
 
 $(OBJDIR)/common/curl-%.c.o : common/curl-%.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $< \
 		-U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=1 -Wno-unused-function
 
 #generic compilation
+
+
 $(OBJDIR)/%.c.o : %.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
+
 $(OBJDIR)/%.cpp.o: %.cpp
 	$(CXX) $(CXXFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
+
+specs/%.cc: specs/%.json
+	./bin/test-jqbs.exe $< 2> $@
+
+$(OBJDIR)/%.cc.o: %.cc
+	$(CXX) $(CXXFLAGS) $(LIBS_CFLAGS) $(GENFLAGS) -c -o $@ $<
+
 
 #generic compilation
 %.exe : %.c libdiscord
@@ -109,7 +129,7 @@ install : all
 	install -m 644 *.h *.hpp common/*.h common/*.hpp $(PREFIX)/include/
 
 clean :
-	rm -rf $(OBJDIR) *.exe test/*.exe bots/*.exe
+	rm -rf $(OBJDIR) *.exe test/*.exe bots/*.exe specs/*.cc specs/*.cc
 
 purge : clean
 	rm -rf $(LIBDIR)

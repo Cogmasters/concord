@@ -584,7 +584,7 @@ void cleanup_dati(void *p_field);
 void free_dati(dati *field);
 void from_json(char *str, size_t len, void *p_field);
 void list_from_json(char *str, size_t len, void *p_fields);
-int to_json(char *str, size_t len, void *p_field);
+size_t to_json(char *str, size_t len, void *p_field);
 int list_to_json(char *str, size_t len, void *p_fields);
 
 } // namespace field
@@ -715,12 +715,27 @@ struct dati {
 };
 
 void init_dati(void *p_guild);
+void dati_init(void *);
+
 dati* alloc_dati();
+dati* dati_alloc();
+
 void cleanup_dati(void *p_guild);
+void dati_cleanup(void *);
+
 void free_dati(dati *guild);
+void dati_free(dati *);
+
 void free_list(dati **guild);
+void dati_list_free(dati **);
+
 void from_json(char *str, size_t len, void *p_guild);
+
+void dati_from_json(char *, size_t, void *);
+
 void list_from_json(char *str, size_t len, void *p_guilds);
+
+void dati_list_from_json(char *str, size_t len, void *p_guilds);
 
 /* DEFAULT MESSAGE NOTIFICATION LEVEL
 https://discord.com/developers/docs/resources/guild#guild-object-default-message-notification-level */
@@ -1045,6 +1060,7 @@ struct dati {
 /* TEMPLATE STRUCTURE
 https://discord.com/developers/docs/resources/template#template-object-template-structure */
 namespace Template { // template is a reserved keyword
+/*
 struct dati {
   char *code; //@todo find fixed size limit
   char *name; //@todo find fixed size limit
@@ -1058,6 +1074,7 @@ struct dati {
   guild::dati *serialized_source_guild;
   bool is_dirty;
 };
+*/
 
 //@todo missing initialization functions
 
@@ -1083,12 +1100,27 @@ struct dati {
 };
 
 void init_dati(void *p_user);
+void dati_init(void *);
+
 dati* alloc_dati();
+dati* dati_alloc();
+
 void cleanup_dati(void *p_user);
+void dati_cleanup (void *p_user);
+
 void free_dati(dati *user);
+void dati_free(dati * user);
+
 void free_list(dati **users);
+void dati_free_list(dati **);
+
 void from_json(char *str, size_t len, void *p_user);
+void dati_from_json(char * str, size_t len, void *p_user);
+
 void list_from_json(char *str, size_t len, void *p_users);
+void dati_list_from_json(char *str, size_t len, void *p_users);
+
+void dati_to_json(char *str, size_t len, void *);
 
 /* USER FLAGS
 https://discord.com/developers/docs/resources/user#user-object-user-flags */
@@ -1345,6 +1377,8 @@ void add_field(dati *embed, char name[], char value[], bool Inline);
 } // namespace channel
 
 namespace guild { /* discord-public-guild.cpp */
+
+size_t dati_to_json(char *, size_t, void *p);
 
 void get(client *client, const uint64_t guild_id, dati *p_guild);
 channel::dati** get_channels(client *client, const uint64_t guild_id);

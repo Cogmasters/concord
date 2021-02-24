@@ -256,7 +256,7 @@ list_from_json(char *str, size_t len, void *p_activities)
   orka_str_to_ntl(str, len, &d);
 }
 
-int
+size_t
 to_json(char *str, size_t len, void *p_activity)
 {
   dati *activity = (dati*)p_activity;
@@ -277,7 +277,7 @@ to_json(char *str, size_t len, void *p_activity)
     A[6] = (void*)activity->state;
   A[7] = (void*)activity->instance;
 
-  int ret = json_inject(str, len,
+  size_t ret = json_inject(str, len,
               "(name):s"
               "(type):d"
               "(url):s"

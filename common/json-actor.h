@@ -102,19 +102,19 @@ extern "C" {
  * all variadic parameters of actions should be address
  *
  */
-extern int json_inject (char * pos, size_t size, char * injector, ...);
+extern size_t json_inject (char * pos, size_t size, char * injector, ...);
 
 /*
  * this function will allocate a sufficient memory block and then call
  * json_inject to inject json to the memory block
  */
-extern int
+extern size_t
 json_ainject (char ** buf_p, char * injector, ...);
 
 /*
  *
  */
-extern int
+extern size_t
 json_vinject (char * pos, size_t size, char * injector, va_list ap);
 
 

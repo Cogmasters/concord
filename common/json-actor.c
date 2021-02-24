@@ -1508,7 +1508,7 @@ prepare_actor(
   return 1;
 }
 
-int
+size_t
 json_vinject(
   char *pos,
   size_t size,
@@ -1567,7 +1567,7 @@ json_vinject(
   return used_bytes;
 }
 
-int json_ainject (char ** buf_p, char * injector, ...)
+size_t json_ainject (char ** buf_p, char * injector, ...)
 {
   va_list ap;
   va_start(ap, injector);
@@ -1586,7 +1586,7 @@ int json_ainject (char ** buf_p, char * injector, ...)
   return used_bytes;
 }
 
-int json_inject (char * pos, size_t size, char * injector, ...)
+size_t json_inject (char * pos, size_t size, char * injector, ...)
 {
   va_list ap;
   va_start(ap, injector);

@@ -45,12 +45,14 @@ int main (int argc, char ** argv)
     len = strlen(s);
   }
 
+  /*
   fprintf(stderr, "%.*s\n", len, s);
+   */
 
   struct jc_definition d;
   memset(&d, 0, sizeof(d));
   definition_from_json(s, len, &d);
-  print_definition(stderr, &d);
+  //print_definition(stderr, &d);
   gen_definition(stderr, &d);
   return 0;
 }
