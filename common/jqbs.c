@@ -42,15 +42,15 @@ enum decorator {
 };
 
 struct jc_type {
-  char * base;
+  char *base;
   enum decorator dec;
-  char * converter; // NULL means using builtin converter.
+  char *converter; // NULL means using builtin converter.
 };
 
 static void
-print_type (FILE *fp, struct jc_type *p)
+print_type(FILE *fp, struct jc_type *p)
 {
-  fprintf (fp, "base:%s, dec:%d", p->base, p->dec);
+  fprintf(fp, "base:%s, dec:%d", p->base, p->dec);
 }
 
 
@@ -61,69 +61,69 @@ enum loc {
 };
 
 struct jc_field {
-  char * name;
-  char * c_name;
+  char *name;
+  char *c_name;
   struct jc_type type;
   enum loc loc;
 };
 
 static void
-print_field (FILE * fp, struct jc_field *p)
+print_field(FILE *fp, struct jc_field *p)
 {
-  fprintf (fp, "name:%s, ", p->name);
+  fprintf(fp, "name:%s, ", p->name);
   if (p->c_name)
-    fprintf (fp, "c-name:%s, ", p->c_name);
+    fprintf(fp, "c-name:%s, ", p->c_name);
 
-  print_type (fp, &p->type);
-  fprintf (fp, ", loc:%d\n", p->loc);
+  print_type(fp, &p->type);
+  fprintf(fp, ", loc:%d\n", p->loc);
 }
 
 struct jc_struct {
-  char * name;
-  struct jc_field ** fields;
+  char *name;
+  struct jc_field **fields;
 };
 
 static void
-print_struct (FILE * fp, struct jc_struct * p)
+print_struct(FILE *fp, struct jc_struct *p)
 {
   fprintf(fp, "name %s\n", p->name);
-  ntl_apply(fp, p->fields, print_field);
+  ntl_apply(fp, (void**)p->fields, print_field);
 }
 
 struct jc_definition {
-  char * description;
+  char *description;
   char **namespace; // ntl
-  struct jc_struct ** structs; //ntl
+  struct jc_struct **structs; //ntl
 };
 
 static void
-print_definition (FILE * fp, struct jc_definition * p)
+print_definition(FILE *fp, struct jc_definition *p)
 {
   fprintf(fp, "// %s\n", p->description);
   fprintf(fp, "namespace: ");
-  ntl_apply(fp, p->namespace, fprintf);
+  ntl_apply(fp, (void**)p->namespace, fprintf);
   fprintf(fp, "\n");
-  ntl_apply(fp, p->structs, print_struct);
+  ntl_apply(fp, (void**)p->structs, print_struct);
 }
 
 
 static size_t
-loc_from_json (char * json, size_t size, enum loc *p)
+loc_from_json(char *json, size_t size, enum loc *p)
 {
   if (4 == size && 0 == strncmp(json, "json", 4)) {
-    * p = LOC_IN_JSON;
+    *p = LOC_IN_JSON;
   }
   else if (5 == size && 0 == strncmp(json, "query", 5)) {
-    * p = LOC_IN_QUERY;
+    *p = LOC_IN_QUERY;
   }
   else if (4 == size && 0 == strncmp(json, "body", 4)) {
-    * p = LOC_IN_BODY;
+    *p = LOC_IN_BODY;
   }
   return 1;
 }
 
 static size_t
-dec_from_json (char * json, size_t size, enum decorator *p)
+dec_from_json(char *json, size_t size, enum decorator *p)
 {
   if (1 == size && '*' == *json) {
     *p = DEC_POINTER;
@@ -142,7 +142,7 @@ dec_from_json (char * json, size_t size, enum decorator *p)
 }
 
 static size_t
-field_from_json (char * json, size_t size, void * x)
+field_from_json(char *json, size_t size, void *x)
 {
   struct jc_field *p = (struct jc_field *)x;
   size_t s = json_extract(json, size,
@@ -163,7 +163,7 @@ field_from_json (char * json, size_t size, void * x)
 
 
 static size_t
-struct_from_json (char * json, size_t size, struct jc_struct * s)
+struct_from_json(char *json, size_t size, struct jc_struct *s)
 {
   struct ntl_deserializer d = {
     .elem_size = sizeof(struct jc_field),
@@ -181,7 +181,7 @@ struct_from_json (char * json, size_t size, struct jc_struct * s)
 }
 
 static size_t
-name_from_json (char * json, size_t size, char * p)
+name_from_json(char *json, size_t size, char *p)
 {
   memcpy(p, json, size);
   p[size] = 0;
@@ -189,7 +189,7 @@ name_from_json (char * json, size_t size, char * p)
 
 
 static size_t
-definition_from_json (char * json, size_t size, struct jc_definition * s)
+definition_from_json(char *json, size_t size, struct jc_definition *s)
 {
   struct ntl_deserializer d1 = {
     .elem_size = 256,
@@ -216,14 +216,14 @@ definition_from_json (char * json, size_t size, struct jc_definition * s)
 }
 
 static void
-gen_default(FILE * fp, char * type)
+gen_default(FILE *fp, char *type)
 {
   fprintf(fp, "void %s_init(void *p) {\n", type);
   fprintf(fp, "  memset(p, 0, sizeof(struct %s));\n", type);
   fprintf(fp, "}\n");
 
   fprintf(fp, "struct %s* %s_alloc() {\n", type, type);
-  fprintf(fp, "  struct %s * p= (struct %s*)malloc(sizeof(struct %s));\n",
+  fprintf(fp, "  struct %s *p= (struct %s*)malloc(sizeof(struct %s));\n",
           type, type, type);
   fprintf(fp, "  %s_init((void*)p);\n", type);
   fprintf(fp, "  return p;\n");
@@ -256,17 +256,17 @@ gen_default(FILE * fp, char * type)
 }
 
 struct action {
-  char * c_type;
-  char * pre_dec;
-  char * post_dec;
-  char * addrof;
-  char * extract_spec;
-  char * inject_spec;
-  char * free;
+  char *c_type;
+  char *pre_dec;
+  char *post_dec;
+  char *addrof;
+  char *extract_spec;
+  char *inject_spec;
+  char *free;
   bool is_user_def;
 };
 
-static int to_builtin_action (struct jc_field * f, struct action * act)
+static int to_builtin_action(struct jc_field *f, struct action *act)
 {
   if (strcmp(f->type.base, "int") == 0) {
     act->extract_spec = "d";
@@ -300,7 +300,7 @@ static int to_builtin_action (struct jc_field * f, struct action * act)
 }
 
 static void
-to_action(struct jc_field * f, struct action * act)
+to_action(struct jc_field *f, struct action *act)
 {
   act->post_dec = "";
   act->pre_dec = "";
@@ -317,7 +317,7 @@ to_action(struct jc_field * f, struct action * act)
         act->c_type = "char";
         return;
       } else {
-        char * tok = strrchr(f->type.base, ':');
+        char *tok = strrchr(f->type.base, ':');
         if (tok != NULL) {
           asprintf(&act->inject_spec, "%s_to_json", f->type.base);
           asprintf(&act->extract_spec, "%s_from_json", f->type.base);
@@ -349,14 +349,14 @@ to_action(struct jc_field * f, struct action * act)
   }
 }
 
-static void gen_cleanup(FILE * fp, struct jc_struct * s)
+static void gen_cleanup(FILE *fp, struct jc_struct *s)
 {
-  char * t = s->name;
+  char *t = s->name;
   fprintf(fp, "void %s_cleanup(void *p) {\n", t);
-  fprintf(fp, "  struct %s * d = (struct %s *)p;\n", t, t);
+  fprintf(fp, "  struct %s *d = (struct %s *)p;\n", t, t);
   for (int i = 0; s->fields[i]; i++)
   {
-    struct jc_field * f = s->fields[i];
+    struct jc_field *f = s->fields[i];
     struct action act;
     to_action(f, &act);
 
@@ -371,26 +371,26 @@ static void gen_cleanup(FILE * fp, struct jc_struct * s)
   fprintf(fp, "}\n");
 }
 
-static void gen_field (FILE * fp, struct jc_field * f)
+static void gen_field(FILE *fp, struct jc_field *f)
 {
   struct action act = {0};
   to_action(f, &act);
-  char * name = f->c_name ? f->c_name : f->name;
+  char *name = f->c_name ? f->c_name : f->name;
   fprintf(fp, "  %s %s %s %s;\n", f->type.base, act.pre_dec, name, act.post_dec);
 }
 
 static void gen_from_json(FILE *fp, struct jc_struct *s)
 {
-  char * t = s->name;
-  char * addrof = "";
-  fprintf (fp, "void %s_from_json(char * json, size_t len, void * x)\n",
+  char *t = s->name;
+  char *addrof = "";
+  fprintf(fp, "void %s_from_json(char *json, size_t len, void *x)\n",
            t, t);
-  fprintf (fp, "{\n");
-  fprintf (fp, "  struct %s * p = (struct %s *)x;\n", t, t);
-  fprintf (fp, "  json_extract(json, len, \n");
+  fprintf(fp, "{\n");
+  fprintf(fp, "  struct %s *p = (struct %s *)x;\n", t, t);
+  fprintf(fp, "  json_extract(json, len, \n");
   int n = ntl_length(s->fields);
   for (int i = 0; s->fields[i]; i++) {
-    struct jc_field * f= s->fields[i];
+    struct jc_field *f= s->fields[i];
     struct action act = {0};
     to_action(f, &act);
 
@@ -404,7 +404,7 @@ static void gen_from_json(FILE *fp, struct jc_struct *s)
   }
 
   for (int i = 0; s->fields[i]; i++) {
-    struct jc_field * f= s->fields[i];
+    struct jc_field *f= s->fields[i];
     struct action act = {0};
     to_action(f, &act);
     if (act.is_user_def)
@@ -416,81 +416,81 @@ static void gen_from_json(FILE *fp, struct jc_struct *s)
       fprintf(fp, "                p->__metadata.D, sizeof(p->__metadata.D));\n");
     }
   }
-  fprintf (fp, "}\n");
+  fprintf(fp, "}\n");
 }
 
-static void gen_to_json(FILE * fp, struct jc_struct *s)
+static void gen_to_json(FILE *fp, struct jc_struct *s)
 {
-  char * t = s->name;
-  char * addrof = "";
-  fprintf (fp, "size_t %s_to_json(char * json, size_t len, void * x)\n",
+  char *t = s->name;
+  char *addrof = "";
+  fprintf(fp, "size_t %s_to_json(char *json, size_t len, void *x)\n",
            t, t);
-  fprintf (fp, "{\n");
-  fprintf (fp, "  struct %s * p = (struct %s *)x;\n", t, t);
-  fprintf (fp, "  size_t ret = (size_t)json_inject(json, len, \n");
+  fprintf(fp, "{\n");
+  fprintf(fp, "  struct %s *p = (struct %s *)x;\n", t, t);
+  fprintf(fp, "  size_t ret = (size_t)json_inject(json, len, \n");
 
   int n = ntl_length(s->fields);
   for (int i = 0; s->fields[i]; i++) {
-    struct jc_field * f = s->fields[i];
+    struct jc_field *f = s->fields[i];
     struct action act = {0};
     to_action(f, &act);
     if (act.is_user_def)
-      fprintf (fp, "                \"(%s):F\"\n", f->name);
+      fprintf(fp, "                \"(%s):F\"\n", f->name);
     else
-      fprintf (fp, "                \"(%s):%s\"\n", f->name, act.inject_spec);
+      fprintf(fp, "                \"(%s):%s\"\n", f->name, act.inject_spec);
     if (i == n-1) {
-      fprintf (fp, "                \"@A:b\",\n");
+      fprintf(fp, "                \"@A:b\",\n");
     }
   }
 
   for (int i = 0; i < n; i++) {
-    struct jc_field * f = s->fields[i];
+    struct jc_field *f = s->fields[i];
     struct action act = {0};
     to_action(f, &act);
     if (act.is_user_def)
-      fprintf (fp, "                %s, p->%s,\n", act.inject_spec, f->name);
+      fprintf(fp, "                %s, p->%s,\n", act.inject_spec, f->name);
     else
-      fprintf (fp, "                %sp->%s,\n", act.addrof, f->name);
+      fprintf(fp, "                %sp->%s,\n", act.addrof, f->name);
     if (i == n-1) {
-      fprintf (fp, "                p->__metadata.A, sizeof(p->__metadata.A), &p->__metadata.enable_A);\n");
+      fprintf(fp, "                p->__metadata.A, sizeof(p->__metadata.A), &p->__metadata.enable_A);\n");
     }
   }
   fprintf(fp, "  return ret;\n");
-  fprintf (fp, "}\n");
+  fprintf(fp, "}\n");
 }
 
-static void gen_to_query(FILE * fp, struct jc_struct *s)
+static void gen_to_query(FILE *fp, struct jc_struct *s)
 {
-  char * t = s->name;
-  char * addrof = "";
-  fprintf(fp, "size_t %s_to_query(char * json, size_t len, void * x)\n",
+  char *t = s->name;
+  char *addrof = "";
+  fprintf(fp, "size_t %s_to_query(char *json, size_t len, void *x)\n",
            t, t);
   fprintf(fp, "{\n");
-  fprintf(fp, "  struct %s * p = (struct %s *)x;\n", t, t);
+  fprintf(fp, "  struct %s *p = (struct %s *)x;\n", t, t);
   fprintf(fp, "  size_t r;\n");
   fprintf(fp, "  r = query_inject(json, len, \n");
 
   int n = ntl_length(s->fields);
   for (int i = 0; s->fields[i]; i++) {
-    struct jc_field * f = s->fields[i];
+    struct jc_field *f = s->fields[i];
     if (f->loc != LOC_IN_QUERY)
       continue;
 
     struct action act = {0};
     to_action(f, &act);
-    fprintf (fp, "                \"(%s):%s\"\n", f->name, act.inject_spec);
+    fprintf(fp, "                \"(%s):%s\"\n", f->name, act.inject_spec);
     if (i == n-1) {
-      fprintf (fp, "                \"@A:b\",\n");
+      fprintf(fp, "                \"@A:b\",\n");
     }
   }
 
   for (int i = 0; i < n; i++) {
-    struct jc_field * f = s->fields[i];
+    struct jc_field *f = s->fields[i];
     struct action act = {0};
     to_action(f, &act);
-    fprintf (fp, "                %sp->%s,\n", act.addrof, f->name);
+    fprintf(fp, "                %sp->%s,\n", act.addrof, f->name);
     if (i == n-1) {
-      fprintf (fp, "                p->__metadata.A, sizeof(p->__metadata.A), &p->__metadata.enable_A);\n");
+      fprintf(fp, "                p->__metadata.A, sizeof(p->__metadata.A), &p->__metadata.enable_A);\n");
     }
   }
   fprintf(fp,  "  return r;\n");
@@ -498,9 +498,9 @@ static void gen_to_query(FILE * fp, struct jc_struct *s)
 }
 
 
-static void gen_def (FILE * fp, struct jc_struct *s)
+static void gen_def(FILE *fp, struct jc_struct *s)
 {
-  char * t = s->name;
+  char *t = s->name;
   fprintf(fp, "\n\n");
   fprintf(fp, "struct %s {\n", t);
   int i = 0;
@@ -509,59 +509,59 @@ static void gen_def (FILE * fp, struct jc_struct *s)
   fprintf(fp, "  struct {\n");
   fprintf(fp, "    bool enable_A;\n");
   fprintf(fp, "    bool enable_N;\n");
-  fprintf(fp, "    void * A[%d];\n", i);
-  fprintf(fp, "    void * N[%d];\n", i);
-  fprintf(fp, "    void * D[%d];\n", i);
+  fprintf(fp, "    void *A[%d];\n", i);
+  fprintf(fp, "    void *N[%d];\n", i);
+  fprintf(fp, "    void *D[%d];\n", i);
   fprintf(fp, "  } __metadata;\n");
   fprintf(fp, "};\n");
 
 
 }
 
-static void gen_forward_declare (FILE * fp, struct jc_struct * s)
+static void gen_forward_declare(FILE *fp, struct jc_struct *s)
 {
-  char * t = s->name;
+  char *t = s->name;
   fprintf(fp, "void %s_cleanup(void *p);\n", t);
   fprintf(fp, "void %s_init(void *p);\n", t);
   fprintf(fp, "void %s_alloc(void *p);\n", t);
   fprintf(fp, "void %s_free(void *p);\n", t);
-  fprintf (fp, "void %s_from_json(char * json, size_t len, void * p);\n",
+  fprintf(fp, "void %s_from_json(char *json, size_t len, void *p);\n",
            t, t);
-  fprintf (fp, "size_t %s_to_json(char * json, size_t len, void * p);\n",
+  fprintf(fp, "size_t %s_to_json(char *json, size_t len, void *p);\n",
            t, t);
-  fprintf (fp, "size_t to_query(char * json, size_t len, void * p);\n", t);
+  fprintf(fp, "size_t to_query(char *json, size_t len, void *p);\n", t);
 }
 
-static void gen_struct (FILE * fp, struct jc_struct * s)
+static void gen_struct(FILE *fp, struct jc_struct *s)
 {
-  char * t = s->name;
-  //fprintf (fp, "/* comment out to avoid redefinition warning\n");
+  char *t = s->name;
+  //fprintf(fp, "/* comment out to avoid redefinition warning\n");
   gen_def(fp, s);
-  //fprintf (fp, "\n*/\n");
+  //fprintf(fp, "\n*/\n");
 
   gen_forward_declare(fp, s);
 
   gen_cleanup(fp, s);
-  fprintf (fp, "\n");
+  fprintf(fp, "\n");
   gen_default(fp, t);
-  fprintf (fp, "\n");
+  fprintf(fp, "\n");
   gen_from_json(fp, s);
-  fprintf (fp, "\n");
+  fprintf(fp, "\n");
   gen_to_json(fp, s);
-  fprintf (fp, "\n");
+  fprintf(fp, "\n");
   gen_to_query(fp, s);
-  fprintf (fp, "\n");
+  fprintf(fp, "\n");
 }
 
 
-static void gen_open_namespace (FILE * fp, char ** p)
+static void gen_open_namespace(FILE *fp, char **p)
 {
   for (int i = 0; p[i]; i++) {
     fprintf(fp, "namespace %s {\n", p[i]);
   }
 }
 
-static void gen_close_namespace (FILE * fp, char ** p)
+static void gen_close_namespace(FILE *fp, char **p)
 {
   int n = ntl_length(p);
   for (int i = n-1; i >= 0; i--) {
@@ -569,12 +569,12 @@ static void gen_close_namespace (FILE * fp, char ** p)
   }
 }
 
-static void gen_definition (FILE * fp, struct jc_definition * d)
+static void gen_definition(FILE *fp, struct jc_definition *d)
 {
   fprintf(fp, "#include \"specs.h\"\n");
   fprintf(fp, "// %s\n", d->description);
   gen_open_namespace(fp, d->namespace);
-  ntl_apply(fp, d->structs, gen_struct);
+  ntl_apply(fp, (void**)d->structs, gen_struct);
   gen_close_namespace(fp, d->namespace);
   return;
 }
