@@ -155,8 +155,6 @@ ntl_to_buf(char *buf, size_t size, void **p, struct ntl_str_delimiter * d,
   for(i = 0; p[i]; i++) {
     bool is_last = (NULL == p[i+1]);
     psize = (*x)(buf, size, p[i]);
-    if ((long long)psize < 0) // error happens
-      return -1;
 
     if(start) {
       buf += psize; // move to next available byte
