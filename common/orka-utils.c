@@ -36,6 +36,22 @@ orka_load_whole_file(const char filename[], size_t *len)
   return string;
 }
 
+int
+orka_dati_from_fjson(
+  char filename[], 
+  void *p_data, 
+  void (from_json_cb)(char *str, size_t len, void *p_data))
+{
+  size_t len;
+  char *json = orka_load_whole_file(filename, &len);
+  if (NULL == json) return 0;
+
+  from_json_cb(json, len, p_data);
+
+  free(json);
+
+  return 1;
+}
 
 static char *
 stat_to_type(const struct stat *st)

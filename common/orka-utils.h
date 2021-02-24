@@ -12,6 +12,10 @@ extern "C" {
 #endif // __cplusplus
 
 char* orka_load_whole_file(const char filename[], size_t *len);
+int orka_dati_from_fjson(
+  char filename[], 
+  void *p_data, 
+  void (from_json_cb)(char *str, size_t len, void *p_data));
 
 struct _dump_s {
   char filename[PATH_MAX];

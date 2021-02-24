@@ -262,12 +262,12 @@ void on_command(
 
   update_last_tick_ms();
 
-  size_t len;
-  char *json = orka_load_whole_file("cee/embed.json", &len);
-
   /* Initialize embed struct that will be loaded to  */
-  discord::channel::embed::dati *new_embed = discord::channel::embed::dati_alloc();
-  embed::dati_from_json(json, len, (void*)new_embed);
+  embed::dati *new_embed = embed::dati_alloc();
+  orka_dati_from_fjson(
+      "cee/embed.json", 
+      (void*)new_embed, 
+      &embed::dati_from_json);
 
   /* Set embed fields */
   strncpy(new_embed->title, msg->content, sizeof(new_embed->title));
@@ -283,7 +283,7 @@ void on_command(
 
   ASSERT_S(ret < (int)sizeof(query), "Out of bounds write attempt");
 
-  discord::channel::trigger_typing(client, msg->channel_id);
+  trigger_typing(client, msg->channel_id);
 
   /* Fetch factions from ELITEBGS API */
   struct resp_handle resp_handle = {&embed_from_json, (void*)new_embed};
@@ -305,9 +305,7 @@ void on_command(
   message::create::run(client, msg->channel_id, &params, NULL);
 
   /* Cleanup resources */
-  discord::channel::embed::dati_free(new_embed);
-
-  free(json);
+  embed::dati_free(new_embed);
 }
 
 int main(int argc, char *argv[])
@@ -331,17 +329,18 @@ int main(int argc, char *argv[])
   discord::setcb(client, discord::COMMAND, &on_command, "!system ");
 
   /* Set bot presence */
-  size_t len;
-  char *json = orka_load_whole_file("cee/presence.json", &len);
   discord::presence::dati *new_presence = discord::presence::dati_alloc();
-  discord::presence::dati_from_json(json, len, (void*)new_presence);
+  orka_dati_from_fjson(
+    "cee/presence.json", 
+    (void*)new_presence, 
+    &discord::presence::dati_from_json);
+
   discord::replace_presence(client, new_presence); //client takes ptr ownership
 
   /* Start a connection to Discord */
   discord::run(client);
 
   /* Cleanup resources */
-  free(json);
   orka::user_agent::cleanup(&g_elitebgs_ua);
   discord::cleanup(client);
   discord::global_cleanup();
