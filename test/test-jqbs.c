@@ -53,6 +53,6 @@ int main (int argc, char ** argv)
   memset(&d, 0, sizeof(d));
   definition_from_json(s, len, &d);
   //print_definition(stderr, &d);
-  gen_definition(stderr, &d);
+  gen_definition(stderr, 0, &d);
   return 0;
 }

@@ -34,6 +34,12 @@
  * <field-loc>   :=  "loc"  : ("json" | "query" | "body")
  */
 
+enum file_type {
+  FILE_SINGLE_FILE = 0,
+  FILE_HEAD ,
+  FILE_CODE
+};
+static enum file_type file_type = FILE_SINGLE_FILE;
 
 enum decorator {
   DEC_NONE = 0, // this has to be zero as the absence means DEC_NONE
@@ -521,25 +527,42 @@ static void gen_forward_declare(FILE *fp, struct jc_struct *s)
   fprintf(fp, "size_t to_query(char *json, size_t len, void *p);\n");
 }
 
-static void gen_struct(FILE *fp, struct jc_struct *s)
+static void gen_struct (FILE * fp, struct jc_struct * s)
 {
-  char *t = s->name;
-  //fprintf(fp, "/* comment out to avoid redefinition warning\n");
-  gen_def(fp, s);
-  //fprintf(fp, "\n*/\n");
+  char * t = s->name;
+  //fprintf (fp, "/* comment out to avoid redefinition warning\n");
 
-  gen_forward_declare(fp, s);
-
-  gen_cleanup(fp, s);
-  fprintf(fp, "\n");
-  gen_default(fp, t);
-  fprintf(fp, "\n");
-  gen_from_json(fp, s);
-  fprintf(fp, "\n");
-  gen_to_json(fp, s);
-  fprintf(fp, "\n");
-  gen_to_query(fp, s);
-  fprintf(fp, "\n");
+  if (file_type == FILE_HEAD) {
+    gen_def(fp, s);
+    //fprintf (fp, "\n*/\n");
+    gen_forward_declare(fp, s);
+  }
+  else if (file_type == FILE_SINGLE_FILE) {
+    gen_def(fp, s);
+    //fprintf (fp, "\n*/\n");
+    gen_forward_declare(fp, s);
+    gen_cleanup(fp, s);
+    fprintf(fp, "\n");
+    gen_default(fp, t);
+    fprintf(fp, "\n");
+    gen_from_json(fp, s);
+    fprintf(fp, "\n");
+    gen_to_json(fp, s);
+    fprintf(fp, "\n");
+    gen_to_query(fp, s);
+    fprintf(fp, "\n");
+  } else {
+    gen_cleanup(fp, s);
+    fprintf(fp, "\n");
+    gen_default(fp, t);
+    fprintf(fp, "\n");
+    gen_from_json(fp, s);
+    fprintf(fp, "\n");
+    gen_to_json(fp, s);
+    fprintf(fp, "\n");
+    gen_to_query(fp, s);
+    fprintf(fp, "\n");
+  }
 }
 
 
@@ -558,8 +581,9 @@ static void gen_close_namespace(FILE *fp, char **p)
   }
 }
 
-static void gen_definition(FILE *fp, struct jc_definition *d)
+static void gen_definition(FILE *fp, enum file_type type, struct jc_definition *d)
 {
+  file_type = type;
   fprintf(fp, "#include \"specs.h\"\n");
   fprintf(fp, "// %s\n", d->description);
   gen_open_namespace(fp, d->namespace);
