@@ -92,30 +92,7 @@ void embed_from_json(char *str, size_t len, void *p_embed)
   struct sized_buffer **l_recovering_states = NULL; // get recovering_states token from JSON
 
 
-  int total, page, pages, pagingCounter;
-  bool hasPrevPage, hasNextPage;
-  char *prevPage, *nextPage;
-  json_scanf(str, len,
-     "[docs]%L"
-     "[total]%d"
-     "[page]%d"
-     "[pages]%d"
-     "[pagingCounter]%d"
-     "[hasPrevPage]%b"
-     "[hasNextPage]%b"
-     "[prevPage]%?s"
-     "[nextPage]%?s",
-     &l_docs,
-     &total,
-     &page,
-     &pages,
-     &pagingCounter,
-     &hasPrevPage,
-     &hasNextPage,
-     &prevPage,
-     &nextPage);
-
-  /* @todo add some checks here */
+  json_scanf(str, len, "[docs]%L", &l_docs);
 
   char field_value[EMBED_FIELD_VALUE_LEN];
 
@@ -261,10 +238,6 @@ void embed_from_json(char *str, size_t len, void *p_embed)
   free(fpresence);
   free(state);
 
-  if (prevPage)
-    free(prevPage);
-  if (nextPage)
-    free(nextPage);
   free(l_docs);
 }
 
@@ -311,6 +284,8 @@ void on_command(
       "https://cee.dev/static/images/cee.png", 
       NULL);
 
+  discord::channel::trigger_typing(client, msg->channel_id);
+
   /* Fetch factions from ELITEBGS API */
   struct resp_handle resp_handle = {&embed_from_json, (void*)new_embed};
   orka::user_agent::run(
@@ -353,6 +328,14 @@ int main(int argc, char *argv[])
   /* Set discord callbacks */
   discord::setcb(client, discord::READY, &on_ready);
   discord::setcb(client, discord::COMMAND, &on_command, "!system ");
+
+  /* Set bot presence */
+  discord::presence::activity::dati *activity;
+  activity = discord::presence::activity::dati_alloc();
+  activity->type = discord::presence::activity::types::GAME;
+  strncpy(activity->name, "!help cee.dev", sizeof(activity->name));
+
+  discord::set_presence(client, activity, "online", false);
 
   /* Start a connection to Discord */
   discord::run(client);
