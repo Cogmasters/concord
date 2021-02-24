@@ -123,7 +123,7 @@ select_guild(client *client)
     int num = strtol(strnum, NULL, 10);
     if (num > 0 && num <= i) {
       uint64_t guild_id = guilds[num-1]->id;
-      guild::free_list(guilds);
+      guild::dati_list_free(guilds);
       return guild_id;
     }
     fprintf(stderr, "\nPlease, insert a value between 1 and %d", i);
@@ -162,7 +162,7 @@ select_member(client *client, uint64_t guild_id)
     int num = strtol(strnum, NULL, 10);
     if (num > 0 && num <= i) {
       uint64_t user_id = members[num-1]->user->id;
-      member::free_list(members);
+      member::dati_list_free(members);
       return user_id;
     }
     fprintf(stderr, "\nPlease, insert a value between 1 and %d", i);

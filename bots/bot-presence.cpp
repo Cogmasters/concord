@@ -25,8 +25,8 @@ load_presence_from_json(client *client, char filename[])
   size_t len;
   char *json_payload = orka_load_whole_file(filename, &len);
 
-  presence::dati *new_presence = presence::alloc_dati();
-  presence::from_json(json_payload, len, (void*)new_presence);
+  presence::dati *new_presence = presence::dati_alloc();
+  presence::dati_from_json(json_payload, len, (void*)new_presence);
 
   replace_presence(client, new_presence);
 

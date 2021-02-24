@@ -46,8 +46,8 @@ load_embed_from_json(char filename[])
   size_t len;
   char *json_payload = orka_load_whole_file(filename, &len);
 
-  embed::dati *new_embed = embed::alloc_dati();
-  embed::from_json(json_payload, len, (void*)new_embed);
+  embed::dati *new_embed = embed::dati_alloc();
+  embed::dati_from_json(json_payload, len, (void*)new_embed);
 
   new_embed->timestamp = orka_timestamp_ms(); // get current timestamp
 
@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
 
   run(client);
 
-  channel::embed::free_dati(embed);
+  channel::embed::dati_free(embed);
   cleanup(client);
 
   global_cleanup();

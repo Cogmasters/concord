@@ -11,8 +11,8 @@ int main (int argc, char ** argv) {
   char * json = orka_load_whole_file(argv[1], &len);
 
   discord::channel::embed::dati p;
-  discord::channel::embed::init_dati(&p);
-  discord::channel::embed::from_json(json, len, &p);
+  discord::channel::embed::dati_init(&p);
+  discord::channel::embed::dati_from_json(json, len, &p);
   return 0;
 }
 

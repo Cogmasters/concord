@@ -327,7 +327,7 @@ struct dati {
   int event_count; //count elements to avoid reaching 120/60sec limit
 };
 
-void from_json(char *str, size_t len, void *p_session);
+void dati_from_json(char *str, size_t len, void *p_session);
 void get(client *client, dati *p_session);
 void get_bot(client *client, dati *p_session);
 
@@ -347,12 +347,12 @@ struct dati {
   intents::code intents;
 };
 
-void init_dati(void *p_identify);
-dati* alloc_dati();
-void cleanup_dati(void *p_identify);
-void free_dati(dati *identify);
-void from_json(char *str, size_t len, void *p_identify);
-int to_json(char *str, size_t len, void *p_identify);
+void dati_init(void *p_identify);
+dati* dati_alloc();
+void dati_cleanup(void *p_identify);
+void dati_free(dati *identify);
+void dati_from_json(char *str, size_t len, void *p_identify);
+int dati_to_json(char *str, size_t len, void *p_identify);
 
 /* GATEWAY STATUS UPDATE STRUCTURE ( aka PRESENCE )
 https://discord.com/developers/docs/topics/gateway#update-status-gateway-status-update-structure */
@@ -365,12 +365,12 @@ struct dati {
   bool afk;
 };
 
-void init_dati(void *p_status_update);
-dati* alloc_dati();
-void cleanup_dati(void *p_status_update);
-void free_dati(dati *status_update);
-void from_json(char *str, size_t len, void *p_status_update);
-int to_json(char *str, size_t len, void *p_status_update);
+void dati_init(void *p_status_update);
+dati* dati_alloc();
+void dati_cleanup(void *p_status_update);
+void dati_free(dati *status_update);
+void dati_from_json(char *str, size_t len, void *p_status_update);
+int dati_to_json(char *str, size_t len, void *p_status_update);
 
 /* ACTIVITY STRUCTURE
 https://discord.com/developers/docs/topics/gateway#activity-object-activity-structure */
@@ -393,14 +393,14 @@ struct dati {
   //@todo missing flags;
 };
 
-void init_dati(void *p_activity);
-dati* alloc_dati();
-void cleanup_dati(void *p_activity);
-void free_dati(dati *activity);
-void from_json(char *str, size_t len, void *p_activity);
-void list_from_json(char *str, size_t len, void *p_activities);
-size_t to_json(char *str, size_t len, void *p_activity);
-int list_to_json(char *str, size_t len, void *p_activities);
+void dati_init(void *p_activity);
+dati* dati_alloc();
+void dati_cleanup(void *p_activity);
+void dati_free(dati *activity);
+void dati_from_json(char *str, size_t len, void *p_activity);
+void dati_list_from_json(char *str, size_t len, void *p_activities);
+size_t dati_to_json(char *str, size_t len, void *p_activity);
+int dati_list_to_json(char *str, size_t len, void *p_activities);
 
 /* ACTIVITY TYPES
 https://discord.com/developers/docs/topics/gateway#activity-object-activity-types */

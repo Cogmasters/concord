@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
   client *client = fast_init(config_file);
   assert(NULL != client);
 
-  user::dati *me = user::alloc_dati(); 
+  user::dati *me = user::dati_alloc(); 
   assert(NULL != me);
 
   user::me::get(client, me);
@@ -29,8 +29,8 @@ int main(int argc, char *argv[])
     fprintf(stderr, "Guild[%s] id:\n\t%" PRIu64 "\n", guilds[i]->name, guilds[i]->id);
   }
 
-  guild::free_list(guilds);
-  user::free_dati(me);
+  guild::dati_list_free(guilds);
+  user::dati_free(me);
 
   cleanup(client);
 

@@ -9,7 +9,7 @@ namespace discord {
 namespace channel {
 
 void
-from_json(char *str, size_t len, void *p_channel)
+dati_from_json(char *str, size_t len, void *p_channel)
 {
   dati *channel = (dati*)p_channel;
 
@@ -43,57 +43,57 @@ from_json(char *str, size_t len, void *p_channel)
      &channel->bitrate,
      &channel->user_limit,
      &channel->rate_limit_per_user,
-     &user::list_from_json, &channel->recipients,
+     &user::dati_list_from_json, &channel->recipients,
      channel->icon,
      &orka_strtoull, &channel->owner_id,
      &orka_strtoull, &channel->application_id,
      &orka_strtoull, &channel->parent_id,
      &orka_iso8601_to_unix_ms, &channel->last_pin_timestamp,
-     &message::list_from_json, &channel->messages);
+     &message::dati_list_from_json, &channel->messages);
 
   DS_NOTOP_PUTS("Channel object loaded with API response");
 }
 
 void
-list_from_json(char *str, size_t len, void *p_channels)
+dati_list_from_json(char *str, size_t len, void *p_channels)
 {
   struct ntl_deserializer d;
   d.elem_size = sizeof(dati);
-  d.init_elem = &init_dati;
-  d.elem_from_buf = &from_json;
+  d.init_elem = &dati_init;
+  d.elem_from_buf = &dati_from_json;
   d.ntl_recipient_p = (void***)p_channels;
   orka_str_to_ntl(str, len, &d);
 }
 
 void
-init_dati(void *p_channel) {
+dati_init(void *p_channel) {
   memset(p_channel, 0, sizeof(dati));
 }
 
 dati*
-alloc_dati()
+dati_alloc()
 {
   dati *new_channel = (dati*)malloc(sizeof(dati));
-  init_dati((void*)new_channel);
+  dati_init((void*)new_channel);
   return new_channel;
 }
 
 void
-cleanup_dati(void *p_channel) 
+dati_cleanup(void *p_channel) 
 {
   DS_NOTOP_PUTS("Channel object fields cleared"); 
 }
 
 void
-free_dati(dati *channel)
+dati_free(dati *channel)
 {
-  cleanup_dati((void*)channel);
+  dati_cleanup((void*)channel);
   free(channel);
 }
 
 void
-free_list(dati **channels) {
-  ntl_free((void**)channels, &cleanup_dati);
+dati_list_free(dati **channels) {
+  ntl_free((void**)channels, &dati_cleanup);
 }
 
 void
@@ -104,7 +104,7 @@ get(client *client, const uint64_t channel_id, dati *p_channel)
     return;
   }
 
-  struct resp_handle resp_handle = {&from_json, (void*)p_channel};
+  struct resp_handle resp_handle = {&dati_from_json, (void*)p_channel};
 
   user_agent::run(
     &client->ua,
@@ -161,7 +161,7 @@ unpin_message(client *client, const uint64_t channel_id, const uint64_t message_
 namespace message {
 
 void
-from_json(char *str, size_t len, void *p_message)
+dati_from_json(char *str, size_t len, void *p_message)
 {
   dati *message = (dati*)p_message;
 
@@ -174,7 +174,7 @@ from_json(char *str, size_t len, void *p_message)
     message->content = NULL;
   }
 
-  message->referenced_message = alloc_dati();
+  message->referenced_message = dati_alloc();
 
   json_scanf(str, len,
      "[id]%F"
@@ -197,8 +197,8 @@ from_json(char *str, size_t len, void *p_message)
       &orka_strtoull, &message->id,
       &orka_strtoull, &message->channel_id,
       &orka_strtoull, &message->guild_id,
-      &user::from_json, message->author,
-      &guild::member::from_json, message->member,
+      &user::dati_from_json, message->author,
+      &guild::member::dati_from_json, message->member,
       &message->content,
       &orka_iso8601_to_unix_ms, &message->timestamp,
       &orka_iso8601_to_unix_ms, &message->edited_timestamp,
@@ -209,10 +209,10 @@ from_json(char *str, size_t len, void *p_message)
       &orka_strtoull, &message->webhook_id,
       &message->type,
       &message->flags,
-      &from_json, message->referenced_message);
+      &dati_from_json, message->referenced_message);
 
   if(!message->referenced_message->id) {
-    free_dati(message->referenced_message);
+    dati_free(message->referenced_message);
     message->referenced_message = NULL;
   }
 
@@ -220,36 +220,36 @@ from_json(char *str, size_t len, void *p_message)
 }
 
 void
-list_from_json(char *str, size_t len, void *p_messages)
+dati_list_from_json(char *str, size_t len, void *p_messages)
 {
   struct ntl_deserializer d;
   d.elem_size = sizeof(dati);
-  d.init_elem = &init_dati;
-  d.elem_from_buf = &from_json;
+  d.init_elem = &dati_init;
+  d.elem_from_buf = &dati_from_json;
   d.ntl_recipient_p = (void***)p_messages;
   orka_str_to_ntl(str, len, &d);
 }
 
 void
-init_dati(void *p_message)
+dati_init(void *p_message)
 {
   dati *message = (dati*)p_message;
 
   memset(message, 0, sizeof(dati));
-  message->author = user::alloc_dati();
-  message->member = guild::member::alloc_dati();
+  message->author = user::dati_alloc();
+  message->member = guild::member::dati_alloc();
 }
 
 dati*
-alloc_dati()
+dati_alloc()
 {
   dati *new_message = (dati*)malloc(sizeof(dati));
-  init_dati((void*)new_message);
+  dati_init((void*)new_message);
   return new_message;
 }
 
 void
-cleanup_dati(void *p_message)
+dati_cleanup(void *p_message)
 {
   dati *message = (dati*)p_message;
 
@@ -258,25 +258,25 @@ cleanup_dati(void *p_message)
   if (message->content)
     free(message->content);
   if (message->author)
-    user::free_dati(message->author);
+    user::dati_free(message->author);
   if (message->member)
-    guild::member::free_dati(message->member);
+    guild::member::dati_free(message->member);
   if (message->referenced_message)
-    free_dati(message->referenced_message);
+    dati_free(message->referenced_message);
 
   DS_NOTOP_PUTS("Message object fields cleared"); 
 }
 
 void
-free_dati(dati *message)
+dati_free(dati *message)
 {
-  cleanup_dati((void*)message);
+  dati_cleanup((void*)message);
   free(message);
 }
 
 void
-free_list(dati **messages) {
-  ntl_free((void**)messages, &cleanup_dati);
+dati_list_free(dati **messages) {
+  ntl_free((void**)messages, &dati_cleanup);
 }
 
 namespace get_list {
@@ -322,7 +322,7 @@ run(client *client, const uint64_t channel_id, params *params)
   dati **new_messages = NULL;
 
   struct resp_handle resp_handle = 
-    {&list_from_json, (void*)&new_messages};
+    {&dati_list_from_json, (void*)&new_messages};
 
   user_agent::run( 
     &client->ua,
@@ -357,7 +357,7 @@ run(client *client, const uint64_t channel_id, params *params, dati *p_message)
   }
 
   struct resp_handle resp_handle = {
-    .ok_cb = p_message ? from_json : NULL,
+    .ok_cb = p_message ? dati_from_json : NULL,
     .ok_obj = p_message,
   };
 
@@ -405,11 +405,11 @@ run(client *client, const uint64_t channel_id, params *params, dati *p_message)
         params->content,
         params->nonce,
         &params->tts,
-        &embed::to_json, params->embed,
+        &embed::dati_to_json, params->embed,
         /* @todo
         params->allowed_mentions,
         */
-        &message::reference::to_json, params->message_reference,
+        &message::reference::dati_to_json, params->message_reference,
         A, sizeof(A));
 
     struct sized_buffer req_body = {payload, strlen(payload)};
@@ -483,7 +483,7 @@ run(client *client, const uint64_t channel_id, const uint64_t message_id, params
   }
 
   struct resp_handle resp_handle = {
-    .ok_cb = p_message ? from_json : NULL,
+    .ok_cb = p_message ? dati_from_json : NULL,
     .ok_obj = p_message,
   };
 
@@ -503,10 +503,10 @@ run(client *client, const uint64_t channel_id, const uint64_t message_id, params
     //"(allowed_mentions):F"
     "@A",
     params->content,
-    &embed::to_json, params->embed,
+    &embed::dati_to_json, params->embed,
     params->flags,
     A, sizeof(A));
-    //&allowed_mentions::to_json, params->allowed_mentions);
+    //&allowed_mentions::dati_to_json, params->allowed_mentions);
 
   struct sized_buffer req_body = { payload, strlen(payload) };
 
@@ -542,7 +542,7 @@ del(client *client, const uint64_t channel_id, const uint64_t message_id)
 namespace reference {
 
 void
-init_dati(void *p_reference) 
+dati_init(void *p_reference) 
 {
   dati *reference = (dati*)p_reference;
   memset(reference, 0, sizeof(dati));
@@ -550,20 +550,20 @@ init_dati(void *p_reference)
 }
 
 dati*
-alloc_dati()
+dati_alloc()
 {
   dati *new_reference = (dati*)malloc(sizeof(dati));
-  init_dati((void*)new_reference);
+  dati_init((void*)new_reference);
   return new_reference;
 }
 
 void
-free_dati(dati *reference) {
+dati_free(dati *reference) {
   free(reference);
 }
 
 void
-from_json(char *str, size_t len, void *p_reference)
+dati_from_json(char *str, size_t len, void *p_reference)
 {
   dati *reference = (dati*)p_reference;
 
@@ -577,7 +577,7 @@ from_json(char *str, size_t len, void *p_reference)
 }
 
 int
-to_json(char *str, size_t len, void *p_reference)
+dati_to_json(char *str, size_t len, void *p_reference)
 {
   if (NULL == p_reference) return snprintf(str, len, "{}");
 
@@ -620,52 +620,52 @@ to_json(char *str, size_t len, void *p_reference)
 namespace embed {
 
 void
-init_dati(void *p_embed) 
+dati_init(void *p_embed) 
 {
   dati *embed = (dati*)p_embed;
   memset(embed, 0, sizeof(dati));
-  embed->footer = footer::alloc_dati();
-  embed->image = image::alloc_dati();
-  embed->thumbnail = thumbnail::alloc_dati();
-  embed->video = video::alloc_dati();
-  embed->provider = provider::alloc_dati();
-  embed->author = author::alloc_dati();
+  embed->footer = footer::dati_alloc();
+  embed->image = image::dati_alloc();
+  embed->thumbnail = thumbnail::dati_alloc();
+  embed->video = video::dati_alloc();
+  embed->provider = provider::dati_alloc();
+  embed->author = author::dati_alloc();
 }
 
 dati*
-alloc_dati()
+dati_alloc()
 {
   dati *embed = (dati*)malloc(sizeof(dati));
-  init_dati((void*)embed);
+  dati_init((void*)embed);
   return embed;
 }
 
 void
-cleanup_dati(void *p_embed) 
+dati_cleanup(void *p_embed) 
 {
   dati *embed = (dati*)p_embed;
-  footer::free_dati(embed->footer);
-  image::free_dati(embed->image);
-  thumbnail::free_dati(embed->thumbnail);
-  video::free_dati(embed->video);
-  provider::free_dati(embed->provider);
-  author::free_dati(embed->author);
+  footer::dati_free(embed->footer);
+  image::dati_free(embed->image);
+  thumbnail::dati_free(embed->thumbnail);
+  video::dati_free(embed->video);
+  provider::dati_free(embed->provider);
+  author::dati_free(embed->author);
   if (embed->fields) {
-    ntl_free((void**)embed->fields, &field::cleanup_dati);
+    ntl_free((void**)embed->fields, &field::dati_cleanup);
   }
 
   DS_NOTOP_PUTS("Embed object fields cleared"); 
 }
 
 void
-free_dati(dati *embed) 
+dati_free(dati *embed) 
 {
-  cleanup_dati((void*)embed);
+  dati_cleanup((void*)embed);
   free(embed);
 }
 
 void
-from_json(char *str, size_t len, void *p_embed)
+dati_from_json(char *str, size_t len, void *p_embed)
 {
   dati *embed = (dati*)p_embed;
 
@@ -689,19 +689,19 @@ from_json(char *str, size_t len, void *p_embed)
      embed->url,
      &orka_iso8601_to_unix_ms, &embed->timestamp,
      &embed->color,
-     &footer::from_json, embed->footer,
-     &image::from_json, embed->image,
-     &thumbnail::from_json, embed->thumbnail,
-     &video::from_json, embed->video,
-     &provider::from_json, embed->provider,
-     &author::from_json, embed->author,
-     &field::list_from_json, &embed->fields);
+     &footer::dati_from_json, embed->footer,
+     &image::dati_from_json, embed->image,
+     &thumbnail::dati_from_json, embed->thumbnail,
+     &video::dati_from_json, embed->video,
+     &provider::dati_from_json, embed->provider,
+     &author::dati_from_json, embed->author,
+     &field::dati_list_from_json, &embed->fields);
 
   DS_NOTOP_PUTS("Embed object loaded with API response");
 }
 
 int
-to_json(char *str, size_t len, void *p_embed)
+dati_to_json(char *str, size_t len, void *p_embed)
 {
   if (NULL == p_embed) return snprintf(str, len, "{}");
 
@@ -756,13 +756,13 @@ to_json(char *str, size_t len, void *p_embed)
                         embed->url,
                         &orka_unix_ms_to_iso8601, &embed->timestamp,
                         &embed->color,
-                        &footer::to_json, embed->footer,
-                        &image::to_json, embed->image,
-                        &thumbnail::to_json, embed->thumbnail,
-                        &video::to_json, embed->video,
-                        &provider::to_json, embed->provider,
-                        &author::to_json, embed->author,
-                        &field::list_to_json, &embed->fields,
+                        &footer::dati_to_json, embed->footer,
+                        &image::dati_to_json, embed->image,
+                        &thumbnail::dati_to_json, embed->thumbnail,
+                        &video::dati_to_json, embed->video,
+                        &provider::dati_to_json, embed->provider,
+                        &author::dati_to_json, embed->author,
+                        &field::dati_list_to_json, &embed->fields,
                         A, sizeof(A));
   return ret;
 }
@@ -770,34 +770,34 @@ to_json(char *str, size_t len, void *p_embed)
 namespace thumbnail {
 
 void
-init_dati(void *p_thumbnail) 
+dati_init(void *p_thumbnail) 
 {
   dati *thumbnail = (dati*)p_thumbnail;
   memset(thumbnail, 0, sizeof(dati));
 }
 
 dati*
-alloc_dati()
+dati_alloc()
 {
   dati *thumbnail = (dati*)malloc(sizeof(dati));
-  init_dati((void*)thumbnail);
+  dati_init((void*)thumbnail);
   return thumbnail;
 }
 
 void
-cleanup_dati(void *p_thumbnail) {
+dati_cleanup(void *p_thumbnail) {
   DS_NOTOP_PUTS("Thumbnail/Video/Image object fields cleared"); 
 }
 
 void
-free_dati(dati *thumbnail) 
+dati_free(dati *thumbnail) 
 {
-  cleanup_dati((void*)thumbnail);
+  dati_cleanup((void*)thumbnail);
   free(thumbnail);
 }
 
 void
-from_json(char *str, size_t len, void *p_thumbnail)
+dati_from_json(char *str, size_t len, void *p_thumbnail)
 {
   dati *thumbnail = (dati*)p_thumbnail;
 
@@ -815,7 +815,7 @@ from_json(char *str, size_t len, void *p_thumbnail)
 }
 
 int
-to_json(char *str, size_t len, void *p_thumbnail)
+dati_to_json(char *str, size_t len, void *p_thumbnail)
 {
   if (NULL == p_thumbnail) return snprintf(str, len, "{}");
 
@@ -849,34 +849,34 @@ to_json(char *str, size_t len, void *p_thumbnail)
 namespace provider {
 
 void
-init_dati(void *p_provider) 
+dati_init(void *p_provider) 
 {
   dati *provider = (dati*)p_provider;
   memset(provider, 0, sizeof(dati));
 }
 
 dati*
-alloc_dati()
+dati_alloc()
 {
   dati *provider = (dati*)malloc(sizeof(dati));
-  init_dati((void*)provider);
+  dati_init((void*)provider);
   return provider;
 }
 
 void
-cleanup_dati(void *p_provider) {
+dati_cleanup(void *p_provider) {
   DS_NOTOP_PUTS("Provider object fields cleared"); 
 }
 
 void
-free_dati(dati *provider) 
+dati_free(dati *provider) 
 {
-  cleanup_dati((void*)provider);
+  dati_cleanup((void*)provider);
   free(provider);
 }
 
 void
-from_json(char *str, size_t len, void *p_provider)
+dati_from_json(char *str, size_t len, void *p_provider)
 {
   dati *provider = (dati*)p_provider;
 
@@ -891,7 +891,7 @@ from_json(char *str, size_t len, void *p_provider)
 
 
 int
-to_json(char *str, size_t len, void *p_provider)
+dati_to_json(char *str, size_t len, void *p_provider)
 {
   if (NULL == p_provider) return snprintf(str, len, "{}");
 
@@ -917,34 +917,34 @@ to_json(char *str, size_t len, void *p_provider)
 namespace author {
 
 void
-init_dati(void *p_author) 
+dati_init(void *p_author) 
 {
   dati *author = (dati*)p_author;
   memset(author, 0, sizeof(dati));
 }
 
 dati*
-alloc_dati()
+dati_alloc()
 {
   dati *author = (dati*)malloc(sizeof(dati));
-  init_dati((void*)author);
+  dati_init((void*)author);
   return author;
 }
 
 void
-cleanup_dati(void *p_author) {
+dati_cleanup(void *p_author) {
   DS_NOTOP_PUTS("Author object fields cleared"); 
 }
 
 void
-free_dati(dati *author) 
+dati_free(dati *author) 
 {
-  cleanup_dati((void*)author);
+  dati_cleanup((void*)author);
   free(author);
 }
 
 void
-from_json(char *str, size_t len, void *p_author)
+dati_from_json(char *str, size_t len, void *p_author)
 {
   dati *author = (dati*)p_author;
 
@@ -962,7 +962,7 @@ from_json(char *str, size_t len, void *p_author)
 }
 
 int
-to_json(char *str, size_t len, void *p_author)
+dati_to_json(char *str, size_t len, void *p_author)
 {
   if (NULL == p_author) return snprintf(str, len, "{}");
 
@@ -996,34 +996,34 @@ to_json(char *str, size_t len, void *p_author)
 namespace footer {
 
 void
-init_dati(void *p_footer) 
+dati_init(void *p_footer) 
 {
   dati *footer = (dati*)p_footer;
   memset(footer, 0, sizeof(dati));
 }
 
 dati*
-alloc_dati()
+dati_alloc()
 {
   dati *footer = (dati*)malloc(sizeof(dati));
-  init_dati((void*)footer);
+  dati_init((void*)footer);
   return footer;
 }
 
 void
-cleanup_dati(void *p_footer) {
+dati_cleanup(void *p_footer) {
   DS_NOTOP_PUTS("Footer object fields cleared"); 
 }
 
 void
-free_dati(dati *footer) 
+dati_free(dati *footer) 
 {
-  cleanup_dati((void*)footer);
+  dati_cleanup((void*)footer);
   free(footer);
 }
 
 void
-from_json(char *str, size_t len, void *p_footer)
+dati_from_json(char *str, size_t len, void *p_footer)
 {
   dati *footer = (dati*)p_footer;
 
@@ -1039,7 +1039,7 @@ from_json(char *str, size_t len, void *p_footer)
 }
 
 int
-to_json(char *str, size_t len, void *p_footer)
+dati_to_json(char *str, size_t len, void *p_footer)
 {
   if (NULL == p_footer) return snprintf(str, len, "{}");
 
@@ -1069,34 +1069,34 @@ to_json(char *str, size_t len, void *p_footer)
 namespace field {
 
 void
-init_dati(void *p_field) 
+dati_init(void *p_field) 
 {
   dati *field = (dati*)p_field;
   memset(field, 0, sizeof(dati));
 }
 
 dati*
-alloc_dati()
+dati_alloc()
 {
   dati *field = (dati*)malloc(sizeof(dati));
-  init_dati((void*)field);
+  dati_init((void*)field);
   return field;
 }
 
 void
-cleanup_dati(void *p_field) {
+dati_cleanup(void *p_field) {
   DS_NOTOP_PUTS("Field object fields cleared"); 
 }
 
 void
-free_dati(dati *field) 
+dati_free(dati *field) 
 {
-  cleanup_dati((void*)field);
+  dati_cleanup((void*)field);
   free(field);
 }
 
 void
-from_json(char *str, size_t len, void *p_field)
+dati_from_json(char *str, size_t len, void *p_field)
 {
   dati *field = (dati*)p_field;
 
@@ -1112,18 +1112,18 @@ from_json(char *str, size_t len, void *p_field)
 }
 
 void
-list_from_json(char *str, size_t len, void *p_fields)
+dati_list_from_json(char *str, size_t len, void *p_fields)
 {
   struct ntl_deserializer d;
   d.elem_size = sizeof(dati);
-  d.init_elem = &init_dati;
-  d.elem_from_buf = &from_json;
+  d.init_elem = &dati_init;
+  d.elem_from_buf = &dati_from_json;
   d.ntl_recipient_p = (void***)p_fields;
   orka_str_to_ntl(str, len, &d);
 }
 
 size_t
-to_json(char *str, size_t len, void *p_field)
+dati_to_json(char *str, size_t len, void *p_field)
 {
   if (NULL == p_field) return snprintf(str, len, "{}");
 
@@ -1149,10 +1149,10 @@ to_json(char *str, size_t len, void *p_field)
 }
 
 int
-list_to_json(char *str, size_t len, void *p_fields)
+dati_list_to_json(char *str, size_t len, void *p_fields)
 {
   dati **fields = *(dati ***)p_fields;
-  return ntl_to_buf(str, len, (void**)fields, NULL, &to_json);
+  return ntl_to_buf(str, len, (void**)fields, NULL, &dati_to_json);
 }
 
 } // namespace field
@@ -1169,7 +1169,7 @@ change_footer(dati *embed, char text[], char icon_url[], char proxy_icon_url[])
     free(embed->footer);
   }
 
-  embed::footer::dati *new_footer = embed::footer::alloc_dati();
+  embed::footer::dati *new_footer = embed::footer::dati_alloc();
   strncpy(new_footer->text, text, EMBED_FOOTER_TEXT_LEN);
   if (!IS_EMPTY_STRING(icon_url))
     strncpy(new_footer->icon_url, icon_url, MAX_URL_LEN);
@@ -1186,7 +1186,7 @@ change_thumbnail(dati *embed, char url[], char proxy_url[], int height, int widt
     free(embed->thumbnail);
   }
 
-  embed::thumbnail::dati *new_thumbnail = embed::thumbnail::alloc_dati();
+  embed::thumbnail::dati *new_thumbnail = embed::thumbnail::dati_alloc();
   if (!IS_EMPTY_STRING(url))
     strncpy(new_thumbnail->url, url, MAX_URL_LEN);
   if (!IS_EMPTY_STRING(proxy_url))
@@ -1206,7 +1206,7 @@ change_image(dati *embed, char url[], char proxy_url[], int height, int width)
     free(embed->image);
   }
 
-  embed::image::dati *new_image = embed::image::alloc_dati();
+  embed::image::dati *new_image = embed::image::dati_alloc();
   if (!IS_EMPTY_STRING(url))
     strncpy(new_image->url, url, MAX_URL_LEN);
   if (!IS_EMPTY_STRING(proxy_url))
@@ -1226,7 +1226,7 @@ change_video(dati *embed, char url[], char proxy_url[], int height, int width)
     free(embed->video);
   }
 
-  embed::video::dati *new_video = embed::video::alloc_dati();
+  embed::video::dati *new_video = embed::video::dati_alloc();
   if (!IS_EMPTY_STRING(url))
     strncpy(new_video->url, url, MAX_URL_LEN);
   if (!IS_EMPTY_STRING(proxy_url))
@@ -1246,7 +1246,7 @@ change_provider(dati *embed, char name[], char url[])
     free(embed->provider);
   }
 
-  embed::provider::dati *new_provider = embed::provider::alloc_dati();
+  embed::provider::dati *new_provider = embed::provider::dati_alloc();
   if (!IS_EMPTY_STRING(url))
     strncpy(new_provider->url, url, MAX_URL_LEN);
   if (!IS_EMPTY_STRING(name))
@@ -1262,7 +1262,7 @@ change_author(dati *embed, char name[], char url[], char icon_url[], char proxy_
     free(embed->author);
   }
 
-  embed::author::dati *new_author = embed::author::alloc_dati();
+  embed::author::dati *new_author = embed::author::dati_alloc();
   if (!IS_EMPTY_STRING(name))
     strncpy(new_author->name, name, EMBED_AUTHOR_NAME_LEN);
   if (!IS_EMPTY_STRING(url))

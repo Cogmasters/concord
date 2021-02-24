@@ -224,7 +224,7 @@ struct dati {
   types::code type;
   uint64_t guild_id;
   int position;
-  overwrite::dati **permission_overwrites; //@todo add to from_json
+  overwrite::dati **permission_overwrites; //@todo add to dati_from_json
   char name[MAX_NAME_LEN];
   char topic[MAX_TOPIC_LEN];
   bool nsfw;
@@ -241,13 +241,13 @@ struct dati {
   message::dati **messages;
 };
 
-void init_dati(void *p_channel);
-dati* alloc_dati();
-void cleanup_dati(void *p_channel);
-void free_dati(dati *channel);
-void free_list(dati **channels);
-void from_json(char *str, size_t len, void *p_channel);
-void list_from_json(char *str, size_t len, void *p_channels);
+void dati_init(void *p_channel);
+dati* dati_alloc();
+void dati_cleanup(void *p_channel);
+void dati_free(dati *channel);
+void dati_list_free(dati **channels);
+void dati_from_json(char *str, size_t len, void *p_channel);
+void dati_list_from_json(char *str, size_t len, void *p_channels);
 
 /* CHANNEL TYPES
 https://discord.com/developers/docs/resources/channel#channel-object-channel-types */
@@ -279,29 +279,29 @@ struct dati {
   bool mention_everyone;
   user::dati **mentions;
   //@todo missing mention roles;
-  mention::dati **mention_channels; //@todo add to from_json
-  attachment::dati **attachments; //@todo add to from_json
-  embed::dati **embeds; //@todo add to from_json
-  reaction::dati **reactions; //@todo add to from_json
+  mention::dati **mention_channels; //@todo add to dati_from_json
+  attachment::dati **attachments; //@todo add to dati_from_json
+  embed::dati **embeds; //@todo add to dati_from_json
+  reaction::dati **reactions; //@todo add to dati_from_json
   char *nonce;
   bool pinned;
   uint64_t webhook_id;
   types::code type;
-  activity::dati *activity; //@todo add to from_json
-  application::dati **application; //@todo add to from_json
-  reference::dati *message_reference; //@todo add to from_json
+  activity::dati *activity; //@todo add to dati_from_json
+  application::dati **application; //@todo add to dati_from_json
+  reference::dati *message_reference; //@todo add to dati_from_json
   flags::code flags;
-  sticker::dati **stickers; //@todo add to from_json
+  sticker::dati **stickers; //@todo add to dati_from_json
   dati *referenced_message;
 };
 
-void init_dati(void *p_message);
-dati* alloc_dati();
-void cleanup_dati(void *p_message);
-void free_dati(dati *message);
-void free_list(dati **message);
-void from_json(char *str, size_t len, void *p_message);
-void list_from_json(char *str, size_t len, void *p_messages);
+void dati_init(void *p_message);
+dati* dati_alloc();
+void dati_cleanup(void *p_message);
+void dati_free(dati *message);
+void dati_list_free(dati **message);
+void dati_from_json(char *str, size_t len, void *p_message);
+void dati_list_from_json(char *str, size_t len, void *p_messages);
 
 /* MESSAGE TYPES
 https://discord.com/developers/docs/resources/channel#message-object-message-types */
@@ -375,11 +375,11 @@ struct dati {
   bool fail_if_not_exists;
 };
 
-void init_dati(void *p_reference);
-dati* alloc_dati();
-void free_dati(dati *reference);
-void from_json(char *str, size_t len, void *p_reference);
-int to_json(char *str, size_t len, void *p_reference);
+void dati_init(void *p_reference);
+dati* dati_alloc();
+void dati_free(dati *reference);
+void dati_from_json(char *str, size_t len, void *p_reference);
+int dati_to_json(char *str, size_t len, void *p_reference);
 
 } // namespace reference
 
@@ -481,12 +481,12 @@ struct dati {
   field::dati **fields;
 };
 
-void init_dati(void *p_embed);
-dati* alloc_dati();
-void cleanup_dati(void *p_embed);
-void free_dati(dati *embed);
-void from_json(char *str, size_t len, void *p_embed);
-int to_json(char *str, size_t len, void *p_embed);
+void dati_init(void *p_embed);
+dati* dati_alloc();
+void dati_cleanup(void *p_embed);
+void dati_free(dati *embed);
+void dati_from_json(char *str, size_t len, void *p_embed);
+int dati_to_json(char *str, size_t len, void *p_embed);
 
 /* EMBED THUMBNAIL STRUCTURE
 https://discord.com/developers/docs/resources/channel#embed-object-embed-thumbnail-structure */
@@ -498,12 +498,12 @@ struct dati {
   int width;
 };
 
-void init_dati(void *p_thumbnail);
-dati* alloc_dati();
-void cleanup_dati(void *p_thumbnail);
-void free_dati(dati *thumbnail);
-void from_json(char *str, size_t len, void *p_thumbnail);
-int to_json(char *str, size_t len, void *p_thumbnail);
+void dati_init(void *p_thumbnail);
+dati* dati_alloc();
+void dati_cleanup(void *p_thumbnail);
+void dati_free(dati *thumbnail);
+void dati_from_json(char *str, size_t len, void *p_thumbnail);
+int dati_to_json(char *str, size_t len, void *p_thumbnail);
 
 } // namespace thumbnail
 
@@ -523,12 +523,12 @@ struct dati {
   char url[MAX_URL_LEN];
 };
 
-void init_dati(void *p_provider);
-dati* alloc_dati();
-void cleanup_dati(void *p_provider);
-void free_dati(dati *provider);
-void from_json(char *str, size_t len, void *p_provider);
-int to_json(char *str, size_t len, void *p_provider);
+void dati_init(void *p_provider);
+dati* dati_alloc();
+void dati_cleanup(void *p_provider);
+void dati_free(dati *provider);
+void dati_from_json(char *str, size_t len, void *p_provider);
+int dati_to_json(char *str, size_t len, void *p_provider);
 
 } // namespace provider
 
@@ -542,12 +542,12 @@ struct dati {
   char proxy_icon_url[MAX_URL_LEN];
 };
 
-void init_dati(void *p_author);
-dati* alloc_dati();
-void cleanup_dati(void *p_author);
-void free_dati(dati *author);
-void from_json(char *str, size_t len, void *p_author);
-int to_json(char *str, size_t len, void *p_author);
+void dati_init(void *p_author);
+dati* dati_alloc();
+void dati_cleanup(void *p_author);
+void dati_free(dati *author);
+void dati_from_json(char *str, size_t len, void *p_author);
+int dati_to_json(char *str, size_t len, void *p_author);
 
 } // namespace author
 
@@ -560,12 +560,12 @@ struct dati {
   char proxy_icon_url[MAX_URL_LEN];
 };
 
-void init_dati(void *p_footer);
-dati* alloc_dati();
-void cleanup_dati(void *p_footer);
-void free_dati(dati *footer);
-void from_json(char *str, size_t len, void *p_footer);
-int to_json(char *str, size_t len, void *p_footer);
+void dati_init(void *p_footer);
+dati* dati_alloc();
+void dati_cleanup(void *p_footer);
+void dati_free(dati *footer);
+void dati_from_json(char *str, size_t len, void *p_footer);
+int dati_to_json(char *str, size_t len, void *p_footer);
 
 } // namespace footer
 
@@ -578,14 +578,14 @@ struct dati {
   bool Inline; //inline is a reserved keyword
 };
 
-void init_dati(void *p_field);
-dati* alloc_dati();
-void cleanup_dati(void *p_field);
-void free_dati(dati *field);
-void from_json(char *str, size_t len, void *p_field);
-void list_from_json(char *str, size_t len, void *p_fields);
-size_t to_json(char *str, size_t len, void *p_field);
-int list_to_json(char *str, size_t len, void *p_fields);
+void dati_init(void *p_field);
+dati* dati_alloc();
+void dati_cleanup(void *p_field);
+void dati_free(dati *field);
+void dati_from_json(char *str, size_t len, void *p_field);
+void dati_list_from_json(char *str, size_t len, void *p_fields);
+size_t dati_to_json(char *str, size_t len, void *p_field);
+int dati_list_to_json(char *str, size_t len, void *p_fields);
 
 } // namespace field
 
@@ -652,13 +652,13 @@ struct dati {
   bool available;
 };
 
-void init_dati(void *p_emoji);
-dati* alloc_dati();
-void cleanup_dati(void *p_emoji);
-void free_dati(dati *emoji);
-void free_list(dati **emojis);
-void from_json(char *str, size_t len, void *p_emoji);
-void list_from_json(char *str, size_t len, void *p_emojis);
+void dati_init(void *p_emoji);
+dati* dati_alloc();
+void dati_cleanup(void *p_emoji);
+void dati_free(dati *emoji);
+void dati_list_free(dati **emojis);
+void dati_from_json(char *str, size_t len, void *p_emoji);
+void dati_list_from_json(char *str, size_t len, void *p_emojis);
 
 } // namespace emoji
 
@@ -684,8 +684,8 @@ struct dati {
   guild::default_message_notification_level::code default_message_notifications;
   explicit_content_filter_level::code explicit_content_filter;
   //@todo missing roles;
-  emoji::dati **emojis; //@todo add to from_json
-  char **features; //@todo add to from_json
+  emoji::dati **emojis; //@todo add to dati_from_json
+  char **features; //@todo add to dati_from_json
   mfa_level::code mfa_level;
   uint64_t application_id;
   uint64_t system_channel_id;
@@ -697,7 +697,7 @@ struct dati {
   int member_count;
   //@todo missing voice_states;
   member::dati **members;
-  channel::dati **channels; //@todo add to from_json
+  channel::dati **channels; //@todo add to dati_from_json
   //@todo missing presences;
   int max_presences;
   int max_members;
@@ -714,27 +714,12 @@ struct dati {
   welcome_screen::dati *welcome_screen;
 };
 
-void init_dati(void *p_guild);
-void dati_init(void *);
-
-dati* alloc_dati();
+void dati_init(void *p_guild);
 dati* dati_alloc();
-
-void cleanup_dati(void *p_guild);
-void dati_cleanup(void *);
-
-void free_dati(dati *guild);
-void dati_free(dati *);
-
-void free_list(dati **guild);
-void dati_list_free(dati **);
-
-void from_json(char *str, size_t len, void *p_guild);
-
-void dati_from_json(char *, size_t, void *);
-
-void list_from_json(char *str, size_t len, void *p_guilds);
-
+void dati_cleanup(void *p_guild);
+void dati_free(dati *guild);
+void dati_list_free(dati **guilds);
+void dati_from_json(char *str, size_t len, void *p_guild);
 void dati_list_from_json(char *str, size_t len, void *p_guilds);
 
 /* DEFAULT MESSAGE NOTIFICATION LEVEL
@@ -866,7 +851,7 @@ namespace member {
 struct dati {
   user::dati *user;
   char nick[MAX_NAME_LEN];
-  uint64_t **roles; //@todo add to from_json
+  uint64_t **roles; //@todo add to dati_from_json
   uint64_t joined_at;
   uint64_t premium_since;
   bool deaf;
@@ -875,13 +860,13 @@ struct dati {
   char *permissions; //@todo find fixed size limit
 };
 
-void init_dati(void *p_member);
-dati* alloc_dati();
-void cleanup_dati(void *p_member);
-void free_dati(dati *member);
-void free_list(dati **members);
-void from_json(char *str, size_t len, void *p_member);
-void list_from_json(char *str, size_t len, void *p_members);
+void dati_init(void *p_member);
+dati* dati_alloc();
+void dati_cleanup(void *p_member);
+void dati_free(dati *member);
+void dati_list_free(dati **members);
+void dati_from_json(char *str, size_t len, void *p_member);
+void dati_list_from_json(char *str, size_t len, void *p_members);
 
 } // namespace member
 
@@ -955,13 +940,13 @@ struct dati {
   user::dati *user;
 };
 
-void init_dati(void *p_ban);
-dati* alloc_dati();
-void cleanup_dati(void *p_ban);
-void free_dati(dati *ban);
-void free_list(dati **bans);
-void from_json(char *str, size_t len, void *p_ban);
-void list_from_json(char *str, size_t len, void *p_ban);
+void dati_init(void *p_ban);
+dati* dati_alloc();
+void dati_cleanup(void *p_ban);
+void dati_free(dati *ban);
+void dati_list_free(dati **bans);
+void dati_from_json(char *str, size_t len, void *p_ban);
+void dati_list_from_json(char *str, size_t len, void *p_ban);
 
 } // namespace ban
 
@@ -1099,27 +1084,13 @@ struct dati {
   flags::code public_flags;
 };
 
-void init_dati(void *p_user);
-void dati_init(void *);
-
-dati* alloc_dati();
+void dati_init(void *p_user);
 dati* dati_alloc();
-
-void cleanup_dati(void *p_user);
 void dati_cleanup (void *p_user);
-
-void free_dati(dati *user);
-void dati_free(dati * user);
-
-void free_list(dati **users);
-void dati_free_list(dati **);
-
-void from_json(char *str, size_t len, void *p_user);
+void dati_free(dati *user);
+void dati_list_free(dati **users);
 void dati_from_json(char * str, size_t len, void *p_user);
-
-void list_from_json(char *str, size_t len, void *p_users);
 void dati_list_from_json(char *str, size_t len, void *p_users);
-
 void dati_to_json(char *str, size_t len, void *);
 
 /* USER FLAGS

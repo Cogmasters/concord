@@ -15,39 +15,39 @@ namespace websockets {
 namespace identify {
 
 void
-init_dati(void *p_identify) 
+dati_init(void *p_identify) 
 {
   dati *identify = (dati*)p_identify;
   memset(identify, 0, sizeof(dati));
-  identify->presence = status_update::alloc_dati();
+  identify->presence = status_update::dati_alloc();
 }
 
 dati*
-alloc_dati()
+dati_alloc()
 {
   dati *identify = (dati*)malloc(sizeof(dati));
-  init_dati((void*)identify);
+  dati_init((void*)identify);
   return identify;
 }
 
 void
-cleanup_dati(void *p_identify) 
+dati_cleanup(void *p_identify) 
 {
   dati *identify = (dati*)p_identify;
-  status_update::free_dati(identify->presence);
+  status_update::dati_free(identify->presence);
 
   DS_NOTOP_PUTS("Identify object fields cleared"); 
 }
 
 void
-free_dati(dati *identify) 
+dati_free(dati *identify) 
 {
-  cleanup_dati((void*)identify);
+  dati_cleanup((void*)identify);
   free(identify);
 }
 
 void
-from_json(char *str, size_t len, void *p_identify)
+dati_from_json(char *str, size_t len, void *p_identify)
 {
   dati *identify = (dati*)p_identify;
 
@@ -69,7 +69,7 @@ from_json(char *str, size_t len, void *p_identify)
 }
 
 int
-to_json(char *str, size_t len, void *p_identify)
+dati_to_json(char *str, size_t len, void *p_identify)
 {
   dati *identify = (dati*)p_identify;
 
@@ -90,7 +90,7 @@ to_json(char *str, size_t len, void *p_identify)
               "@",
               identify->token, 
               &identify->intents,
-              &status_update::to_json, identify->presence,
+              &status_update::dati_to_json, identify->presence,
               A, sizeof(A));
 
   return ret;
@@ -99,39 +99,39 @@ to_json(char *str, size_t len, void *p_identify)
 namespace status_update {
 
 void
-init_dati(void *p_status_update) 
+dati_init(void *p_status_update) 
 {
   dati *status_update = (dati*)p_status_update;
   memset(status_update, 0, sizeof(dati));
 }
 
 dati*
-alloc_dati()
+dati_alloc()
 {
   dati *status_update = (dati*)malloc(sizeof(dati));
-  init_dati((void*)status_update);
+  dati_init((void*)status_update);
   return status_update;
 }
 
 void
-cleanup_dati(void *p_status_update) 
+dati_cleanup(void *p_status_update) 
 {
   dati *status_update = (dati*)p_status_update;
   if (status_update->activities)
-    ntl_free((void**)status_update->activities, &activity::cleanup_dati);
+    ntl_free((void**)status_update->activities, &activity::dati_cleanup);
 
   DS_NOTOP_PUTS("Status Update (Presence) object fields cleared"); 
 }
 
 void
-free_dati(dati *status_update) 
+dati_free(dati *status_update) 
 {
-  cleanup_dati((void*)status_update);
+  dati_cleanup((void*)status_update);
   free(status_update);
 }
 
 void
-from_json(char *str, size_t len, void *p_status_update)
+dati_from_json(char *str, size_t len, void *p_status_update)
 {
   dati *status_update = (dati*)p_status_update;
 
@@ -141,7 +141,7 @@ from_json(char *str, size_t len, void *p_status_update)
      "[status]%s"
      "[afk]%b",
      &orka_iso8601_to_unix_ms, &status_update->since,
-     &activity::list_from_json, &status_update->activities,
+     &activity::dati_list_from_json, &status_update->activities,
      status_update->status,
      &status_update->afk);
 
@@ -149,7 +149,7 @@ from_json(char *str, size_t len, void *p_status_update)
 }
 
 int
-to_json(char *str, size_t len, void *p_status_update)
+dati_to_json(char *str, size_t len, void *p_status_update)
 {
   dati *status_update = (dati*)p_status_update;
 
@@ -169,7 +169,7 @@ to_json(char *str, size_t len, void *p_status_update)
               "(afk):b"
               "@",
               &orka_unix_ms_to_iso8601, &status_update->since,
-              &activity::list_to_json, &status_update->activities,
+              &activity::dati_list_to_json, &status_update->activities,
               status_update->status,
               &status_update->afk,
               A, sizeof(A));
@@ -180,22 +180,22 @@ to_json(char *str, size_t len, void *p_status_update)
 namespace activity {
 
 void
-init_dati(void *p_activity) 
+dati_init(void *p_activity) 
 {
   dati *activity = (dati*)p_activity;
   memset(activity, 0, sizeof(dati));
 }
 
 dati*
-alloc_dati()
+dati_alloc()
 {
   dati *activity = (dati*)malloc(sizeof(dati));
-  init_dati((void*)activity);
+  dati_init((void*)activity);
   return activity;
 }
 
 void
-cleanup_dati(void *p_activity) 
+dati_cleanup(void *p_activity) 
 {
   dati *activity = (dati*)p_activity;
   if (activity->details)
@@ -207,14 +207,14 @@ cleanup_dati(void *p_activity)
 }
 
 void
-free_dati(dati *activity) 
+dati_free(dati *activity) 
 {
-  cleanup_dati((void*)activity);
+  dati_cleanup((void*)activity);
   free(activity);
 }
 
 void
-from_json(char *str, size_t len, void *p_activity)
+dati_from_json(char *str, size_t len, void *p_activity)
 {
   dati *activity = (dati*)p_activity;
 
@@ -245,19 +245,19 @@ from_json(char *str, size_t len, void *p_activity)
 }
 
 void
-list_from_json(char *str, size_t len, void *p_activities)
+dati_list_from_json(char *str, size_t len, void *p_activities)
 {
   struct ntl_deserializer d;
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(dati);
-  d.init_elem = &init_dati;
-  d.elem_from_buf = &from_json;
+  d.init_elem = &dati_init;
+  d.elem_from_buf = &dati_from_json;
   d.ntl_recipient_p = (void***)p_activities;
   orka_str_to_ntl(str, len, &d);
 }
 
 size_t
-to_json(char *str, size_t len, void *p_activity)
+dati_to_json(char *str, size_t len, void *p_activity)
 {
   dati *activity = (dati*)p_activity;
 
@@ -301,10 +301,10 @@ to_json(char *str, size_t len, void *p_activity)
 }
 
 int
-list_to_json(char *str, size_t len, void *p_activities)
+dati_list_to_json(char *str, size_t len, void *p_activities)
 {
   dati **activities = *(dati ***)p_activities;
-  return ntl_to_buf(str, len, (void**)activities, NULL, &to_json);
+  return ntl_to_buf(str, len, (void**)activities, NULL, &dati_to_json);
 }
 
 } // namespace activity
@@ -429,7 +429,7 @@ ws_send_identify(dati *ws)
   int ret = json_inject(payload, sizeof(payload), 
               "(op):2" // IDENTIFY OPCODE
               "(d):F",
-              &identify::to_json, ws->identify);
+              &identify::dati_to_json, ws->identify);
 
   ASSERT_S(ret < (int)sizeof(payload), "Out of bounds write attempt");
 
@@ -461,8 +461,8 @@ static void
 on_dispatch_reaction(dati *ws, int offset)
 {
   uint64_t user_id=0, message_id=0, channel_id=0, guild_id=0;
-  guild::member::dati *member = guild::member::alloc_dati();
-  emoji::dati *emoji = emoji::alloc_dati();
+  guild::member::dati *member = guild::member::dati_alloc();
+  emoji::dati *emoji = emoji::dati_alloc();
   json_scanf(ws->payload.event_data, sizeof(ws->payload.event_data),
       "[user_id]%F"
       "[message_id]%F"
@@ -472,8 +472,8 @@ on_dispatch_reaction(dati *ws, int offset)
       "[guild_id]%F",
       &orka_strtoull, &user_id,
       &orka_strtoull, &message_id,
-      &guild::member::from_json, member,
-      &emoji::from_json, emoji,
+      &guild::member::dati_from_json, member,
+      &emoji::dati_from_json, emoji,
       &orka_strtoull, &channel_id,
       &orka_strtoull, &guild_id);
 
@@ -511,8 +511,8 @@ on_dispatch_reaction(dati *ws, int offset)
           emoji);
   }
 
-  guild::member::free_dati(member);
-  emoji::free_dati(emoji);
+  guild::member::dati_free(member);
+  emoji::dati_free(emoji);
 }
 
 static void
@@ -549,10 +549,10 @@ on_dispatch_message(dati *ws, int offset)
     return; /* EARLY RETURN */
   }
 
-  channel::message::dati *message = channel::message::alloc_dati();
+  channel::message::dati *message = channel::message::dati_alloc();
   ASSERT_S(NULL != message, "Out of memory");
 
-  channel::message::from_json(ws->payload.event_data,
+  channel::message::dati_from_json(ws->payload.event_data,
       sizeof(ws->payload.event_data), (void*)message);
 
   if (STREQ("CREATE", ws->payload.event_name + offset)) {
@@ -581,16 +581,16 @@ on_dispatch_message(dati *ws, int offset)
           message->guild_id);
   }
 
-  channel::message::free_dati(message);
+  channel::message::dati_free(message);
 }
 
 static void
 on_dispatch_guild_member(dati *ws, int offset)
 {
-  guild::member::dati *member = guild::member::alloc_dati();
+  guild::member::dati *member = guild::member::dati_alloc();
   ASSERT_S(NULL != member, "Out of memory");
 
-  guild::member::from_json(ws->payload.event_data,
+  guild::member::dati_from_json(ws->payload.event_data,
       sizeof(ws->payload.event_data), (void*)member);
   uint64_t guild_id = 0;
   json_scanf(
@@ -612,13 +612,13 @@ on_dispatch_guild_member(dati *ws, int offset)
       (*ws->cbs.on_guild_member.remove)(ws->p_client, ws->me, guild_id, member->user);
   }
 
-  guild::member::free_dati(member);
+  guild::member::dati_free(member);
 }
 
 static void
 on_dispatch(dati *ws)
 {
-  user::from_json(ws->payload.event_data,
+  user::dati_from_json(ws->payload.event_data,
       sizeof(ws->payload.event_data), (void*)ws->me);
 
   /* Ratelimit check */
@@ -855,21 +855,21 @@ init(dati *ws, char token[])
 {
   ws->status = status::DISCONNECTED;
 
-  ws->identify = identify::alloc_dati();
+  ws->identify = identify::dati_alloc();
   ws->identify->token = token;
 
   ws->ehandle = custom_cws_new(ws);
   ws->mhandle = custom_multi_init();
 
-  ws->me = user::alloc_dati();
+  ws->me = user::dati_alloc();
   user::me::get(ws->p_client, ws->me);
 }
 
 void
 cleanup(dati *ws)
 {
-  user::free_dati(ws->me);
-  identify::free_dati(ws->identify);
+  user::dati_free(ws->me);
+  identify::dati_free(ws->identify);
 
   curl_multi_cleanup(ws->mhandle);
   cws_free(ws->ehandle);
@@ -892,7 +892,7 @@ ws_send_heartbeat(dati *ws)
 namespace session {
 
 void
-from_json(char *str, size_t len, void *p_session)
+dati_from_json(char *str, size_t len, void *p_session)
 {
   dati *session = (dati*)p_session;
 
@@ -922,7 +922,7 @@ from_json(char *str, size_t len, void *p_session)
 void
 get(client *client, dati *p_session)
 {
-  struct resp_handle resp_handle = {&from_json, (void*)p_session};
+  struct resp_handle resp_handle = {&dati_from_json, (void*)p_session};
 
   user_agent::run( 
     &client->ua,
@@ -935,7 +935,7 @@ get(client *client, dati *p_session)
 void
 get_bot(client *client, dati *p_session)
 {
-  struct resp_handle resp_handle = {&from_json, (void*)p_session};
+  struct resp_handle resp_handle = {&dati_from_json, (void*)p_session};
 
   user_agent::run( 
     &client->ua,

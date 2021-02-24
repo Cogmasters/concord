@@ -9,7 +9,7 @@ namespace discord {
 namespace guild {
 
 void
-from_json(char *str, size_t len, void *p_guild)
+dati_from_json(char *str, size_t len, void *p_guild)
 {
   dati *guild = (dati*)p_guild;
 
@@ -80,8 +80,8 @@ from_json(char *str, size_t len, void *p_guild)
       &guild->large,
       &guild->unavailable,
       &guild->member_count,
-      &guild::list_from_json, &guild->members,
-      &channel::list_from_json, &guild->channels,
+      &guild::dati_list_from_json, &guild->members,
+      &channel::dati_list_from_json, &guild->channels,
       &guild->max_presences,
       &guild->max_members,
       guild->vanity_url_code,
@@ -99,54 +99,54 @@ from_json(char *str, size_t len, void *p_guild)
 }
 
 void
-list_from_json(char *str, size_t len, void *p_guilds)
+dati_list_from_json(char *str, size_t len, void *p_guilds)
 {
   struct ntl_deserializer d;
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(dati);
-  d.init_elem = &init_dati;
-  d.elem_from_buf = &from_json;
+  d.init_elem = &dati_init;
+  d.elem_from_buf = &dati_from_json;
   d.ntl_recipient_p = (void***)p_guilds;
   orka_str_to_ntl(str, len, &d);
 }
 
 void
-init_dati(void *p_guild) 
+dati_init(void *p_guild) 
 {
   dati *guild = (dati*)p_guild;
   memset(guild, 0, sizeof(dati));
 }
 
 dati*
-alloc_dati()
+dati_alloc()
 {
   dati *new_guild = (dati*)malloc(sizeof(dati));
-  init_dati((void*)new_guild);
+  dati_init((void*)new_guild);
   return new_guild;
 }
 
 void
-cleanup_dati(void *p_guild) 
+dati_cleanup(void *p_guild) 
 {
   dati *guild = (dati*)p_guild;
   if (guild->members)
-    member::free_list(guild->members);
+    member::dati_list_free(guild->members);
   if (guild->channels)
-    channel::free_list(guild->channels);
+    channel::dati_list_free(guild->channels);
 
   DS_NOTOP_PUTS("Guild object fields cleared"); 
 }
 
 void
-free_dati(dati *guild) 
+dati_free(dati *guild) 
 {
-  cleanup_dati((void*)guild);
+  dati_cleanup((void*)guild);
   free(guild);
 }
 
 void
-free_list(dati **guilds) {
-  ntl_free((void**)guilds, &cleanup_dati);
+dati_list_free(dati **guilds) {
+  ntl_free((void**)guilds, &dati_cleanup);
 }
 
 void
@@ -157,7 +157,7 @@ get(client *client, const uint64_t guild_id, dati *p_guild)
     return;
   }
 
-  struct resp_handle resp_handle = {&from_json, (void*)p_guild};
+  struct resp_handle resp_handle = {&dati_from_json, (void*)p_guild};
 
   user_agent::run( 
     &client->ua,
@@ -178,7 +178,7 @@ get_channels(client *client, const uint64_t guild_id)
   channel::dati **new_channels = NULL;
 
   struct resp_handle resp_handle = 
-    {&channel::list_from_json, (void*)&new_channels};
+    {&channel::dati_list_from_json, (void*)&new_channels};
 
   user_agent::run( 
     &client->ua,
@@ -193,7 +193,7 @@ get_channels(client *client, const uint64_t guild_id)
 namespace member {
 
 void
-from_json(char *str, size_t len, void *p_member)
+dati_from_json(char *str, size_t len, void *p_member)
 {
   dati *member = (dati*)p_member;
 
@@ -205,7 +205,7 @@ from_json(char *str, size_t len, void *p_member)
      "[deaf]%b"
      "[mute]%b"
      "[pending]%b",
-      &user::from_json, member->user,
+      &user::dati_from_json, member->user,
       member->nick,
       &orka_iso8601_to_unix_ms, &member->joined_at,
       &orka_iso8601_to_unix_ms, &member->premium_since,
@@ -217,52 +217,52 @@ from_json(char *str, size_t len, void *p_member)
 }
 
 void
-list_from_json(char *str, size_t len, void *p_members)
+dati_list_from_json(char *str, size_t len, void *p_members)
 {
   struct ntl_deserializer d;
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(dati);
-  d.init_elem = &init_dati;
-  d.elem_from_buf = &from_json;
+  d.init_elem = &dati_init;
+  d.elem_from_buf = &dati_from_json;
   d.ntl_recipient_p = (void***)p_members;
   orka_str_to_ntl(str, len, &d);
 }
 
 void
-init_dati(void *p_member)
+dati_init(void *p_member)
 {
   dati *member = (dati*)p_member;
   memset(member, 0, sizeof(dati));
-  member->user = user::alloc_dati();
+  member->user = user::dati_alloc();
 }
 
 dati*
-alloc_dati()
+dati_alloc()
 {
   dati *new_member = (dati*)malloc(sizeof(dati));
-  init_dati((void*)new_member);
+  dati_init((void*)new_member);
   return new_member;
 }
 
 void
-cleanup_dati(void *p_member) 
+dati_cleanup(void *p_member) 
 {
   dati *member = (dati*)p_member;
-  user::free_dati(member->user);
+  user::dati_free(member->user);
 
   DS_NOTOP_PUTS("Member object fields cleared"); 
 }
 
 void
-free_dati(dati *member) 
+dati_free(dati *member) 
 {
-  cleanup_dati((void*)member);
+  dati_cleanup((void*)member);
   free(member);
 }
 
 void
-free_list(dati **members) {
-  ntl_free((void**)members, &cleanup_dati);
+dati_list_free(dati **members) {
+  ntl_free((void**)members, &dati_cleanup);
 }
 
 namespace get_list {
@@ -293,7 +293,7 @@ run(client *client, const uint64_t guild_id, struct params *params)
   dati **new_members = NULL;
 
   struct resp_handle resp_handle =
-    {&list_from_json, (void*)&new_members};
+    {&dati_list_from_json, (void*)&new_members};
   
   user_agent::run( 
     &client->ua,
@@ -331,7 +331,7 @@ void remove(client *client, const uint64_t guild_id, const uint64_t user_id)
 namespace ban {
 
 void
-from_json(char *str, size_t len, void *p_ban)
+dati_from_json(char *str, size_t len, void *p_ban)
 {
   dati *ban = (dati*)p_ban;
 
@@ -339,58 +339,58 @@ from_json(char *str, size_t len, void *p_ban)
      "[reason]%s"
      "[user]%F",
       ban->reason,
-      &user::from_json, ban->user);
+      &user::dati_from_json, ban->user);
 
   DS_NOTOP_PUTS("Ban object loaded with API response"); 
 }
 
 void
-list_from_json(char *str, size_t len, void *p_bans)
+dati_list_from_json(char *str, size_t len, void *p_bans)
 {
   struct ntl_deserializer d;
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(dati);
-  d.init_elem = &init_dati;
-  d.elem_from_buf = &from_json;
+  d.init_elem = &dati_init;
+  d.elem_from_buf = &dati_from_json;
   d.ntl_recipient_p = (void***)p_bans;
   orka_str_to_ntl(str, len, &d);
 }
 
 void
-init_dati(void *p_ban)
+dati_init(void *p_ban)
 {
   dati *ban = (dati*)p_ban;
   memset(ban, 0, sizeof(dati));
-  ban->user = user::alloc_dati();
+  ban->user = user::dati_alloc();
 }
 
 dati*
-alloc_dati()
+dati_alloc()
 {
   dati *new_ban = (dati*)malloc(sizeof(dati));
-  init_dati((void*)new_ban);
+  dati_init((void*)new_ban);
   return new_ban;
 }
 
 void
-cleanup_dati(void *p_ban)
+dati_cleanup(void *p_ban)
 {
   dati *ban = (dati*)p_ban;
-  user::free_dati(ban->user);
+  user::dati_free(ban->user);
 
   DS_NOTOP_PUTS("Ban object fields cleared"); 
 }
 
 void
-free_dati(dati *ban) 
+dati_free(dati *ban) 
 {
-  free_dati(ban);
+  dati_free(ban);
   free(ban);
 }
 
 void
-free_list(dati **bans) {
-  ntl_free((void**)bans, &cleanup_dati);
+dati_list_free(dati **bans) {
+  ntl_free((void**)bans, &dati_cleanup);
 }
 
 void
@@ -405,7 +405,7 @@ get(client *client, const uint64_t guild_id, const uint64_t user_id, dati *p_ban
     return;
   }
 
-  struct resp_handle resp_handle = {&from_json, (void*)p_ban};
+  struct resp_handle resp_handle = {&dati_from_json, (void*)p_ban};
 
   user_agent::run( 
     &client->ua,
@@ -427,7 +427,7 @@ get_list(client *client, const uint64_t guild_id)
   dati **new_bans = NULL;
 
   struct resp_handle resp_handle =
-    {&list_from_json, (void*)&new_bans};
+    {&dati_list_from_json, (void*)&new_bans};
 
   user_agent::run( 
     &client->ua,

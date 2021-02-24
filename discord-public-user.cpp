@@ -9,7 +9,7 @@ namespace discord {
 namespace user {
 
 void
-from_json(char *str, size_t len, void *p_user)
+dati_from_json(char *str, size_t len, void *p_user)
 {
   dati *user = (dati*)p_user;
 
@@ -45,46 +45,46 @@ from_json(char *str, size_t len, void *p_user)
 }
 
 void
-list_from_json(char *str, size_t len, void *p_users)
+dati_list_from_json(char *str, size_t len, void *p_users)
 {
   struct ntl_deserializer d;
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(dati);
-  d.init_elem = &init_dati;
-  d.elem_from_buf = &from_json;
+  d.init_elem = &dati_init;
+  d.elem_from_buf = &dati_from_json;
   d.ntl_recipient_p = (void***)p_users;
   orka_str_to_ntl(str, len, &d);
 }
 
 void
-init_dati(void *p_user) {
+dati_init(void *p_user) {
   memset(p_user, 0, sizeof(dati));
 }
 
 dati*
-alloc_dati()
+dati_alloc()
 {
   dati *new_user = (dati*)malloc(sizeof(dati));
-  init_dati((void*)new_user);
+  dati_init((void*)new_user);
   return new_user;
 }
 
 void
-cleanup_dati(void *p_user)
+dati_cleanup(void *p_user)
 {
   DS_NOTOP_PUTS("User object fields cleared"); 
 }
 
 void
-free_dati(dati *user) 
+dati_free(dati *user) 
 {
-  cleanup_dati((void*)user);
+  dati_cleanup((void*)user);
   free(user);
 }
 
 void
-free_list(dati **users) {
-  ntl_free((void**)users, &cleanup_dati);
+dati_list_free(dati **users) {
+  ntl_free((void**)users, &dati_cleanup);
 }
 
 void
@@ -95,7 +95,7 @@ get(client *client, const uint64_t user_id, dati *p_user)
     return;
   }
 
-  struct resp_handle resp_handle = {&from_json, (void*)p_user};
+  struct resp_handle resp_handle = {&dati_from_json, (void*)p_user};
 
   user_agent::run( 
     &client->ua,
@@ -110,7 +110,7 @@ namespace me {
 void 
 get(client *client, dati *p_user)
 {
-  struct resp_handle resp_handle = {&from_json, (void*)p_user};
+  struct resp_handle resp_handle = {&dati_from_json, (void*)p_user};
 
   user_agent::run( 
     &client->ua,
@@ -126,7 +126,7 @@ get_guilds(client *client)
   guild::dati **new_guilds = NULL;
 
   struct resp_handle resp_handle =
-    {&guild::list_from_json, (void*)&new_guilds};
+    {&guild::dati_list_from_json, (void*)&new_guilds};
 
   user_agent::run( 
     &client->ua,

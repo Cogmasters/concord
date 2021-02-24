@@ -243,7 +243,7 @@ replace_presence(client *client, presence::dati *presence)
 {
   if (NULL == presence) return;
 
-  presence::free_dati(client->ws.identify->presence);
+  presence::dati_free(client->ws.identify->presence);
   client->ws.identify->presence = presence;
 }
 

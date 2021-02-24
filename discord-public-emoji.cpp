@@ -9,7 +9,7 @@ namespace discord {
 namespace emoji {
 
 void
-from_json(char *str, size_t len, void *p_emoji)
+dati_from_json(char *str, size_t len, void *p_emoji)
 {
   dati *emoji = (dati*)p_emoji;
 
@@ -25,7 +25,7 @@ from_json(char *str, size_t len, void *p_emoji)
       &orka_strtoull, &emoji->id,
       emoji->name,
       //emoji->roles @todo,
-      &user::from_json, emoji->user,
+      &user::dati_from_json, emoji->user,
       &emoji->require_colons,
       &emoji->managed,
       &emoji->animated,
@@ -35,50 +35,50 @@ from_json(char *str, size_t len, void *p_emoji)
 }
 
 void
-list_from_json(char *str, size_t len, void *p_emojis)
+dati_list_from_json(char *str, size_t len, void *p_emojis)
 {
   struct ntl_deserializer d;
   d.elem_size = sizeof(dati);
-  d.init_elem = &init_dati;
-  d.elem_from_buf = &from_json;
+  d.init_elem = &dati_init;
+  d.elem_from_buf = &dati_from_json;
   d.ntl_recipient_p = (void***)p_emojis;
   orka_str_to_ntl(str, len, &d);
 }
 
 void
-init_dati(void *p_emoji) 
+dati_init(void *p_emoji) 
 {
   dati *emoji = (dati*)p_emoji;  
   memset(emoji, 0, sizeof(dati));
-  emoji->user = user::alloc_dati();
+  emoji->user = user::dati_alloc();
 }
 
 dati*
-alloc_dati()
+dati_alloc()
 {
   dati *new_emoji = (dati*)malloc(sizeof(dati));
-  init_dati((void*)new_emoji);
+  dati_init((void*)new_emoji);
   return new_emoji;
 }
 
 void
-cleanup_dati(void *p_emoji) 
+dati_cleanup(void *p_emoji) 
 {
   dati *emoji = (dati*)p_emoji;  
-  user::free_dati(emoji->user);
+  user::dati_free(emoji->user);
   DS_NOTOP_PUTS("Emoji object fields cleared"); 
 }
 
 void
-free_dati(dati *emoji)
+dati_free(dati *emoji)
 {
-  cleanup_dati((void*)emoji);
+  dati_cleanup((void*)emoji);
   free(emoji);
 }
 
 void
-free_list(dati **emojis) {
-  ntl_free((void**)emojis, &cleanup_dati);
+dati_list_free(dati **emojis) {
+  ntl_free((void**)emojis, &dati_cleanup);
 }
 
 } // namespace emoji
