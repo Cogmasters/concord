@@ -28,7 +28,7 @@
 #include <ctype.h>
 
 #include "json-scanf.h"
-#include "json-common.h"
+#include "orka-debug.h"
 
 #include "ntl.h"
 
@@ -36,7 +36,10 @@
 #define JSMN_PARENT_LINKS // add parent links to jsmn_tok, which are needed
 #define JSMN_STRICT  // parse json in strict mode
 #include "jsmn.h"
-#include "orka-debug.h"
+
+
+#define STREQ(s,t)    (0 == strcmp(s,t))
+#define STRNEQ(s,t,n) (0 == strncmp(s,t,n))
 
 #define N_PATH_MAX 8
 #define KEY_MAX 128
@@ -770,65 +773,4 @@ cleanup:
   free(es);
 
   return extracted_values;
-}
-
-char*
-__json_strerror(json_errcode code, char codetag[], void *where, char entity[])
-{
-  char err_is[128];
-  switch (code){
-  case JSON_EXT__OUT_MEM:
-      snprintf(err_is, sizeof(err_is), "Out of Memory");
-      break;
-  case JSON_EXT__INVALID_TOKEN:
-      snprintf(err_is, sizeof(err_is), "Invalid Token: '%c'", *((char*)where));
-      break;
-  case JSON_EXT__INVALID_STRING:
-      snprintf(err_is, sizeof(err_is), "Missing string token: ' \" '");
-      break;
-  case JSON_EXT__INVALID_BOOLEAN:
-      snprintf(err_is, sizeof(err_is), "Missing boolean token: 't' or 'f'");
-      break;
-  case JSON_EXT__INVALID_NUMBER:
-      snprintf(err_is, sizeof(err_is), "Missing number tokens: '+-.0-9e'");
-      break;
-  case JSON_EXT__INVALID_COMPOSITE:
-      snprintf(err_is, sizeof(err_is), "Missing Object or Array tokens: '{}[]'");
-      break;
-  case JSON_EXT__NOT_STRING:
-      snprintf(err_is, sizeof(err_is), "Item is not a string");
-      break;
-  case JSON_EXT__NOT_BOOLEAN:
-      snprintf(err_is, sizeof(err_is), "Item is not a boolean");
-      break;
-  case JSON_EXT__NOT_NUMBER:
-      snprintf(err_is, sizeof(err_is), "Item is not a number");
-      break;
-  case JSON_EXT__NOT_COMPOSITE:
-      snprintf(err_is, sizeof(err_is), "Item is not a Object or Array");
-      break;
-  case JSON_EXT__EMPTY_FIELD:
-      snprintf(err_is, sizeof(err_is), "Field is missing");
-      break;
-  case JSON_INT__NOT_FREED:
-      snprintf(err_is, sizeof(err_is), "JSON couldn't free memory");
-      break;
-  case JSON_INT__OVERFLOW:
-      snprintf(err_is, sizeof(err_is), "JSON tried to access forbidden memory (Overflow)");
-      break;
-  default:
-      snprintf(err_is, sizeof(err_is), "Unknown Error");
-      break;
-  }
-
-  char errbuf[512];
-  errbuf[511] = 0; // pre-terminate the string
-  snprintf(errbuf, sizeof(errbuf), "%s (Code: %d)\n\t%s\n\tAt '%s' (addr: %p)",
-           codetag, code, err_is, entity, where);
-
-  char *errdynm = strdup(errbuf);
-  if (NULL == errdynm)
-    ERR("%s", errbuf);
-
-  return  errdynm;
 }
