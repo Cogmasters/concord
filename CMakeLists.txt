@@ -143,3 +143,13 @@ add_executable(test-jqbs.exe
         common/json-printf.c
         test/test-jqbs.c)
 target_link_libraries(test-jqbs.exe m)
+
+add_executable(test-jqbs-gen.exe
+        common/orka-utils.c
+        common/json-actor.c
+        common/ntl.c
+        common/json-string.c
+        common/json-scanf.c
+        common/json-printf.c
+        test/test-jqbs-gen.c)
+target_link_libraries(test-jqbs-gen.exe m)
