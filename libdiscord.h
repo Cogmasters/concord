@@ -1259,8 +1259,9 @@ void* set_data(client *client, void *data);
 void* get_data(client *client);
 
 user_agent::error get_json_error(client *client);
+
 void replace_presence(client *client, presence::dati *presence);
-void change_presence(
+void set_presence(
   client *client, 
   presence::activity::dati *activity, 
   char status[], 
@@ -1271,6 +1272,7 @@ namespace channel { /* discord-public-channel.c */
 void get(client *client, const uint64_t channel_id, dati *p_channel);
 void pin_message(client *client, const uint64_t channel_id, const uint64_t message_id);
 void unpin_message(client *client, const uint64_t channel_id, const uint64_t message_id);
+void trigger_typing(client *client, const uint64_t channel_id);
 
 namespace message {
 

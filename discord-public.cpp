@@ -248,17 +248,21 @@ replace_presence(client *client, presence::dati *presence)
 }
 
 void
-change_presence(
+set_presence(
   client *client, 
-  presence::activity::dati *activity, 
+  presence::activity::dati *activity, //will take ownership
   char status[], 
   bool afk)
 {
-  presence::dati *presence = client->ws.identify->presence;
+  using namespace presence;
 
-  if (activity) { //@todo
+  dati *presence = client->ws.identify->presence;
+
+  if (activity) {
+    presence->activities = (activity::dati**)ntl_append(
+                              (void**)presence->activities, 
+                              sizeof(activity::dati), activity);
   }
-
   if (status) {
     int ret = snprintf(presence->status, 
                 sizeof(presence->status), "%s", status);

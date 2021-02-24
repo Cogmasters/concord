@@ -1300,11 +1300,28 @@ add_field(dati *embed, char name[], char value[], bool Inline)
 
   embed->fields = (field::dati**)ntl_append(
                         (void**)embed->fields, 
-                        sizeof(field::dati),
-                        &new_field);
+                        sizeof(field::dati), &new_field);
 }
 
 } // namespace embed
+
+void
+trigger_typing(client* client, uint64_t channel_id)
+{
+  if (!channel_id) {
+    D_PUTS("Missing 'channel_id");
+    return;
+  }
+
+  struct sized_buffer req_body = {"", 0};
+
+  user_agent::run( 
+    &client->ua,
+    NULL,
+    &req_body, //empty POSTFIELDS
+    HTTP_POST, 
+    "/channels/%llu/typing", channel_id);
+}
 
 } // namespace channel
 } // namespace discord
