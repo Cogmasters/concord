@@ -695,27 +695,21 @@ parse_access_path_value(
     * next_pos = NULL;
   int len = 0;
   ASSERT_S('(' == *pos || '.' == *pos, "expecting '(' or '.'");
-  char begin_c = *pos;
   pos ++;
   while (pos < end_pos) {
-    switch(begin_c)
-    {
-      case '(':
-        if (')' == *pos) goto out_of_loop;
-        break;
-      case '.':
-        if ('.' == *pos || ')' == *pos) goto out_of_loop;
-        break;
-    }
+    if (')' == *pos)
+      break;
+    else if ('.' == *pos)
+      break;
     ++pos;
   }
 
   if (pos == end_pos)
     ERR("A close bracket ')' or '.' is missing");
 
-out_of_loop:
   len = pos - start_pos - 1;
-  ASSERT_S(len > 0, "Key is missing");
+  if (len == 0)
+    ERR("Key is missing");
 
   curr_path->key.start = start_pos + 1;
   curr_path->key.size = len;
