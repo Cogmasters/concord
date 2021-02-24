@@ -18,7 +18,7 @@ DISCORD_OBJS := $(DISCORD_SRC:%=$(OBJDIR)/%.o)
 GITHUB_OBJS  := $(GITHUB_SRC:%=$(OBJDIR)/%.o)
 SPECS_OBJS   := $(SPECS_SRC:%=$(OBJDIR)/%.o)
 
-OBJS := $(COMMON_OBJS) $(DISCORD_OBJS) $(GITHUB_OBJS) $(ORKA_OBJS) $(SPECS_OBJS)
+OBJS := $(COMMON_OBJS) $(DISCORD_OBJS) $(GITHUB_OBJS) $(ORKA_OBJS)
 
 BOT_SRC := $(wildcard bots/bot-*.cpp)
 BOT_EXES := $(patsubst %.cpp, %.exe, $(BOT_SRC))
