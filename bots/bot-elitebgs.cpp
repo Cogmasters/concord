@@ -260,10 +260,19 @@ void on_command(
   if (msg->author->bot)
     return;
 
+  update_last_tick_ms();
+
+  size_t len;
+  char *json = orka_load_whole_file("cee/embed.json", &len);
+
   /* Initialize embed struct that will be loaded to  */
   discord::channel::embed::dati *new_embed = discord::channel::embed::dati_alloc();
+  embed::dati_from_json(json, len, (void*)new_embed);
 
-  update_last_tick_ms();
+  /* Set embed fields */
+  strncpy(new_embed->title, msg->content, sizeof(new_embed->title));
+  new_embed->timestamp = orka_timestamp_ms();
+  new_embed->color = 15844367; //gold
 
   char query[512];
   int ret = query_inject(query, sizeof(query),
@@ -273,16 +282,6 @@ void on_command(
               &orka_ulltostr, &g_tick_ms);
 
   ASSERT_S(ret < (int)sizeof(query), "Out of bounds write attempt");
-
-  /* Set embed fields */
-  strncpy(new_embed->title, msg->content, sizeof(new_embed->title));
-  new_embed->timestamp = orka_timestamp_ms();
-  new_embed->color = 15844367; //gold
-  change_footer(
-      new_embed, 
-      "design & build by https://cee.dev", 
-      "https://cee.dev/static/images/cee.png", 
-      NULL);
 
   discord::channel::trigger_typing(client, msg->channel_id);
 
@@ -307,6 +306,8 @@ void on_command(
 
   /* Cleanup resources */
   discord::channel::embed::dati_free(new_embed);
+
+  free(json);
 }
 
 int main(int argc, char *argv[])
@@ -330,12 +331,11 @@ int main(int argc, char *argv[])
   discord::setcb(client, discord::COMMAND, &on_command, "!system ");
 
   /* Set bot presence */
-  discord::presence::activity::dati *activity;
-  activity = discord::presence::activity::dati_alloc();
-  activity->type = discord::presence::activity::types::GAME;
-  strncpy(activity->name, "!help cee.dev", sizeof(activity->name));
-
-  discord::set_presence(client, activity, "online", false);
+  size_t len;
+  char *json = orka_load_whole_file("cee/presence.json", &len);
+  discord::presence::dati *new_presence = discord::presence::dati_alloc();
+  discord::presence::dati_from_json(json, len, (void*)new_presence);
+  discord::replace_presence(client, new_presence); //client takes ptr ownership
 
   /* Start a connection to Discord */
   discord::run(client);
