@@ -336,7 +336,7 @@ static int to_builtin_action(struct jc_field *f, struct action *act)
     act->c_type = "bool";
   }
   else {
-    fprintf(stderr, "unknown %s\n", f->type.base);
+    //fprintf(stderr, "unknown %s\n", f->type.base);
     return 0;
   }
   return 1;
@@ -396,10 +396,14 @@ to_action(struct jc_field *f, struct action *act)
     case DEC_NTL:
       act->extract_addrof = "&";
       act->inject_addrof = "";
+      act->pre_dec = "**";
+      act->is_user_def = true;
       if (to_builtin_action(f, act)) {
         act->free = "free";
+        asprintf(&act->extract_spec, "%s_list_from_json", f->type.base);
+        asprintf(&act->inject_spec, "%s_list_to_json", f->type.base);
       } else {
-        act->is_user_def = true;
+        //act->is_user_def = true;
         asprintf(&act->extract_spec, "%s_list_from_json", f->type.base);
         asprintf(&act->inject_spec, "%s_list_to_json", f->type.base);
         asprintf(&act->free, "%s_list_free", f->type.base);
