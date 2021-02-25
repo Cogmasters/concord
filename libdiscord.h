@@ -1223,6 +1223,15 @@ enum {
 } // namespace types
 } // namespace webhook
 
+/* ROLE STRUCTURE
+https://discord.com/developers/docs/topics/permissions#role-object-role-structure */
+namespace role {
+#include "./specs/role.h"
+namespace tags {
+#include "./specs/role_tags.h"
+} // namespace tags
+} // namespace role
+
 } // namespace discord
 
 
@@ -1362,6 +1371,20 @@ size_t dati_to_json(char *, size_t, void *p);
 
 void get(client *client, const uint64_t guild_id, dati *p_guild);
 channel::dati** get_channels(client *client, const uint64_t guild_id);
+
+namespace create_role {
+
+struct params {
+  char *name;
+  uint64_t permissions;
+  int color;
+  bool hoist;
+  bool mentionable;
+};
+
+void run(client *client, const uint64_t guild_id, params *params, role::dati *p_role);
+
+} // namespace create_role
 
 namespace member {
 

@@ -190,6 +190,59 @@ get_channels(client *client, const uint64_t guild_id)
   return new_channels;
 }
 
+namespace create_role {
+
+void run(client *client, const uint64_t guild_id, params *params, role::dati *p_role)
+{
+  if (!guild_id) {
+    D_PUTS("Missing 'guild_id'");
+    return;
+  }
+
+  void *A[5] = {0}; // pointer availability array.
+  if (!IS_EMPTY_STRING(params->name))
+    A[0] = (void *)params->name;
+  if (params->permissions)
+    A[1] = (void *)&params->permissions;
+  if (params->color)
+    A[2] = (void *)&params->color;
+  if (params->hoist)
+    A[3] = (void *)&params->hoist;
+  if (params->mentionable)
+    A[4] = (void *)&params->mentionable;
+
+  struct resp_handle resp_handle = {
+    .ok_cb = p_role ? role::dati_from_json_v : NULL,
+    .ok_obj = p_role,
+  };
+
+  char payload[MAX_PAYLOAD_LEN];
+  json_inject(payload, sizeof(payload),
+      "(name):s"
+      "(permissions):F"
+      "(color):d"
+      "(hoist):b"
+      "(mentionable):b"
+      "@A",
+      params->name,
+      &orka_ulltostr, &params->permissions,
+      &params->color,
+      &params->hoist,
+      &params->mentionable,
+      A, sizeof(A));
+
+  struct sized_buffer req_body = {payload, strlen(payload)};
+
+  user_agent::run( 
+    &client->ua,
+    &resp_handle,
+    &req_body, //empty POSTFIELDS
+    HTTP_POST, 
+    "/guilds/%llu/roles", guild_id);
+}
+
+} // namespace create_role
+
 namespace member {
 
 void
