@@ -128,7 +128,7 @@ $(OBJDIR)/%.cc.o: %.cc
 	$(CXX) $(CXXFLAGS) $(LIBS_CFLAGS) $(GENFLAGS) -c -o $@ $<
 
 actor-gen.exe: mkdir $(ACTOR_GEN_OBJS)
-	$(CC) -o $@ $(ACTOR_GEN_OBJS)
+	$(CC) -o $@ $(ACTOR_GEN_OBJS) -lm
 	mv $@ ./bin
 
 #generic compilation
@@ -151,7 +151,7 @@ clean_specs :
 	rm -f specs/*.cc specs/*.h
 
 clean : clean_specs
-	rm -rf $(OBJDIR) *.exe test/*.exe bots/*.exe
+	rm -rf $(OBJDIR) *.exe test/*.exe bots/*.exe bin/*
 
 
 
