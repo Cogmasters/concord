@@ -129,6 +129,7 @@ $(OBJDIR)/%.cc.o: %.cc
 
 actor-gen.exe: mkdir $(ACTOR_GEN_OBJS)
 	$(CC) -o $@ $(ACTOR_GEN_OBJS) -lm
+	mv $@ ./bin
 
 #generic compilation
 %.exe : %.c libdiscord
