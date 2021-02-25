@@ -107,9 +107,15 @@ For example, a file called `test.h` should have:
 
 Don't use `pragam once` which is not supported by all C/C++ compilers
 
+## C vs C++
+We use both C and C++'s namespace to achive the best code clarity. Even thought we only use C++'s namespace, some files have to be named with
+.cpp, which have to observe the rules of C++.  This [link](https://stackoverflow.com/questions/31505402/does-c-contain-the-entire-c-language/31505447#31505447) has very good information about the difference between C and C++.
+
 ## MISC
 For subjects that are not coverred here, we follow [Linux kernel coding style](https://www.kernel.org/doc/html/v4.10/process/coding-style.html#linux-kernel-coding-style)
 
 ## Commit and Merge
 To avoid creating redundant merge commits the following methods are recommanded:
 https://stackoverflow.com/questions/30052104/how-to-avoid-merge-commits-from-git-pull-when-pushing-to-remote
+
+
