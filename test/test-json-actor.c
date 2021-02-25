@@ -126,5 +126,13 @@ int main ()
 
   t = " (k):d (v):d ";
   parse_query_string(&stack, t, strlen(t), &cv);
+
+  fprintf(stderr, "\n");
+  t = "(id):u64,(username):s,(discriminator):s,(avatar):s,(bot):b,(System):b,(mfa_enabled):b,(locale):s,(verified):b,(email):s,(flags):d,(premium_type):d,(public_flags):d,@A:b";
+  fprintf (stderr, "input: %s\n", t);
+
+  memset(&cv, 0, sizeof(struct composite_value));
+  parse_query_string(&stack, t, strlen(t), &cv);
+  print_composite_value(stderr, &cv);
   return 0;
 }

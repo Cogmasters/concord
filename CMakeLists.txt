@@ -91,7 +91,6 @@ target_link_libraries(test-git2.exe curl ssl crypto)
 add_executable(test-cee.exe ${CEE_FILES} ${ORKA_FILES} test/test-cee.cpp)
 target_link_libraries(test-cee.exe curl ssl crypto)
 
-
 add_executable(test-json-injector.exe
         common/ntl.c
         common/json-string.c

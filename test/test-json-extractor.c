@@ -157,5 +157,12 @@ int main ()
   ret = json_extract(json, strlen(json), "(object):T", &tok);
 
   fprintf (stderr, "extracted value %.*s\n", (int)tok.size, tok.start);
+
+
+  fprintf(stderr, "\n");
+  char * t = "(id):u64,(username):s,(discriminator):s,(avatar):s,(bot):b,(System):b,(mfa_enabled):b,(locale):s,(verified):b,(email):s,(flags):d,(premium_type):d,(public_flags):d,@A:b";
+  fprintf (stderr, "input: %s\n", t);
+
+  ret = json_extract(json, strlen(json), t);
   return 0;
 }
