@@ -470,7 +470,6 @@ static void gen_from_json(FILE *fp, struct jc_struct *s)
           t, t);
   fprintf(fp, "{\n");
   fprintf(fp, "  json_extract(json, len, \n");
-  int n = ntl_length((void**)s->fields);
   for (int i = 0; s->fields[i]; i++) {
     struct jc_field *f= s->fields[i];
     struct action act = {0};
@@ -481,10 +480,8 @@ static void gen_from_json(FILE *fp, struct jc_struct *s)
       fprintf(fp, "                \"(%s):F,\"\n", act.c_name);
     else
       fprintf(fp, "                \"(%s):%s,\"\n", act.c_name, act.extract_spec);
-
-    if (i == n-1)
-      fprintf(fp, "                \"@A:b\",\n");
   }
+  fprintf(fp, "                \"@A:b\",\n");
 
   for (int i = 0; s->fields[i]; i++) {
     struct jc_field *f= s->fields[i];
@@ -496,12 +493,10 @@ static void gen_from_json(FILE *fp, struct jc_struct *s)
       fprintf(fp, "                %s, &p->%s,\n", act.extract_spec, act.c_name);
     else
       fprintf(fp, "                %sp->%s,\n", act.extract_addrof, act.c_name);
-    if (i == n-1) {
-      fprintf(fp, "                p->__metadata.A, sizeof(p->__metadata.A),"
-        " &p->__metadata.enable_A,\n");
-      fprintf(fp, "                p->__metadata.D, sizeof(p->__metadata.D));\n");
-    }
   }
+  fprintf(fp, "                p->__metadata.A, sizeof(p->__metadata.A),"
+    " &p->__metadata.enable_A,\n");
+  fprintf(fp, "                p->__metadata.D, sizeof(p->__metadata.D));\n");
   fprintf(fp, "}\n");
 }
 
@@ -514,7 +509,6 @@ static void gen_to_json(FILE *fp, struct jc_struct *s)
   fprintf(fp, "  size_t r;\n");
   fprintf(fp, "  r=json_inject(json, len, \n");
 
-  int n = ntl_length((void**)s->fields);
   for (int i = 0; s->fields[i]; i++) {
     struct jc_field *f = s->fields[i];
     struct action act = {0};
@@ -525,12 +519,10 @@ static void gen_to_json(FILE *fp, struct jc_struct *s)
       fprintf(fp, "                \"(%s):F,\"\n", act.c_name);
     else
       fprintf(fp, "                \"(%s):%s,\"\n", act.c_name, act.inject_spec);
-    if (i == n-1) {
-      fprintf(fp, "                \"@A:b\",\n");
-    }
   }
+  fprintf(fp, "                \"@A:b\",\n");
 
-  for (int i = 0; i < n; i++) {
+  for (int i = 0; s->fields[i]; i++) {
     struct jc_field *f = s->fields[i];
     struct action act = {0};
     to_action(f, &act);
@@ -540,12 +532,9 @@ static void gen_to_json(FILE *fp, struct jc_struct *s)
       fprintf(fp, "                %s, p->%s,\n", act.inject_spec, act.c_name);
     else
       fprintf(fp, "                %sp->%s,\n", act.inject_addrof, act.c_name);
-
-    if (i == n-1) {
-      fprintf(fp, "                p->__metadata.A, sizeof(p->__metadata.A),"
-        " &p->__metadata.enable_A);\n");
-    }
   }
+  fprintf(fp, "                p->__metadata.A, sizeof(p->__metadata.A),"
+    " &p->__metadata.enable_A);\n");
   fprintf(fp, "  return r;\n");
   fprintf(fp, "}\n");
 }
@@ -574,7 +563,19 @@ static void gen_to_query(FILE *fp, struct jc_struct *s)
 
   fprintf(fp, "  r = query_inject(json, len, \n");
 
-  int n = ntl_length((void**)s->fields);
+  
+  for (int i = 0; s->fields[i]; i++) {
+    struct jc_field *f = s->fields[i];
+    if (f->loc != LOC_IN_QUERY)
+      continue;
+
+    struct action act = {0};
+    to_action(f, &act);
+    if (act.todo) continue;
+    fprintf(fp, "                \"(%s):%s\"\n", f->name, act.inject_spec);
+  }
+  fprintf(fp, "                \"@A:b\",\n");
+
   for (int i = 0; s->fields[i]; i++) {
     struct jc_field *f = s->fields[i];
     if (f->loc != LOC_IN_QUERY)
@@ -584,27 +585,10 @@ static void gen_to_query(FILE *fp, struct jc_struct *s)
     to_action(f, &act);
     if (act.todo) continue;
 
-    fprintf(fp, "                \"(%s):%s\"\n", f->name, act.inject_spec);
-    if (i == n-1) {
-      fprintf(fp, "                \"@A:b\",\n");
-    }
-  }
-
-  for (int i = 0; i < n; i++) {
-    struct jc_field *f = s->fields[i];
-    if (f->loc != LOC_IN_QUERY)
-      continue;
-
-    struct action act = {0};
-    to_action(f, &act);
-    if (act.todo) continue;
-
     fprintf(fp, "                %sp->%s,\n", act.inject_addrof, f->name);
-    if (i == n-1) {
-      fprintf(fp, "                p->__metadata.A, sizeof(p->__metadata.A),"
-        " &p->__metadata.enable_A);\n");
-    }
   }
+  fprintf(fp, "                p->__metadata.A, sizeof(p->__metadata.A),"
+    " &p->__metadata.enable_A);\n");
   fprintf(fp,  "  return r;\n");
   fprintf(fp, "}\n");
 }
