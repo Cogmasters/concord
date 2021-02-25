@@ -14,7 +14,7 @@
  * <value> := true | false | null | <int> | <float> | <string-literal>
  *            | <composite-value> | <action>
  *
- * <action> := d | ld | lld | f | lf | b | u64 <size-specifier>s
+ * <action> := d | ld | lld | f | lf | b | s_as_u64 <size-specifier>s
  *            | F | F_nullable
  *
  * <access-path-value> := <access-path> : <value>
@@ -24,7 +24,9 @@
  *
  * <composite-value> :=  { <access-path-value-list> } | [ <value> ]
  *
- * <pointer-availability> := <size-specifier>@:b | <size-specifier>@
+ * <pointer-availability> := @<kind>:b | @<kind>
+ *
+ * <kind> := switch_args | record_defined | record_null
  *
  * <defined> := <size-specifier>$
  *
@@ -163,12 +165,12 @@ enum builtin_type {
   B_LONG,
   B_LONG_LONG,
   B_U32,
-  B_U64,
   B_I32,
   B_I64,
   B_FLOAT,
   B_DOUBLE,
   B_STRING,
+  B_STRING_AS_U64,
   B_TOKEN,
   B_TOKEN_CLONE,
   B_LIST
@@ -533,15 +535,7 @@ parse_value(
       pos ++;
       goto return_true;
     case 'u':
-      if (0 == strncmp(pos, "u64", 3)) {
-        act->mem_size.size = sizeof(uint64_t);
-        act->mem_size.tag = SIZE_FIXED;
-        act->_.builtin = B_U64;
-        pos += 3;
-        goto return_true;
-      }
-      else
-        ERR("unexpected %s\n", pos);
+      ERR("unexpected %s\n", pos);
     case 'f':
       act->mem_size.size = sizeof(float);
       act->mem_size.tag = SIZE_FIXED;
@@ -574,9 +568,21 @@ parse_value(
         ERR("unexpected %s\n", pos);
       break;
     case 's':
-      act->_.builtin = B_STRING;
-      pos ++;
-      goto return_true;
+    {
+      size_t sz = 8;
+      if (pos + sz < end_pos && 0 == strncmp(pos, "s_as_u64", sz)) {
+        act->mem_size.size = sizeof(uint64_t);
+        act->mem_size.tag = SIZE_FIXED;
+        act->_.builtin = B_STRING_AS_U64;
+        pos += sz;
+        goto return_true;
+      }
+      else {
+        act->_.builtin = B_STRING;
+        pos++;
+        goto return_true;
+      }
+    }  
     case 'L':
       act->_.builtin = B_LIST;
       pos ++;
@@ -1122,8 +1128,8 @@ inject_builtin (
         return xprintf(pos, size, info, "false");
     case B_INT:
       return xprintf(pos, size, info, "%d", *(int *)v->operand);
-    case B_U64:
-      return xprintf(pos, size, info, "%" PRIu64, *(uint64_t *)v->operand);
+    case B_STRING_AS_U64:
+      return xprintf(pos, size, info, "\"%" PRIu64 "\"", *(uint64_t *)v->operand);
     case B_FLOAT:
       return xprintf(pos, size, info, "%f", *(float *)v->operand);
     case B_DOUBLE:
@@ -1740,14 +1746,18 @@ static size_t extract_scalar (struct action * a, int i, struct e_info * info)
               tokens[i].end - tokens[i].start, json + tokens[i].start);
       }
       break;
-    case B_U64:
+    case B_STRING_AS_U64:
       if (is_null)
         *(uint64_t *) a->operand = 0;
-      else {
+      else if (JSMN_STRING == tokens[i].type) {
         *(uint64_t *) a->operand = (uint64_t) strtoull(json + tokens[i].start, &xend, 10);
         if (xend != json + tokens[i].end)
-          ERR("failed to extract int from %.*s\n",
+          ERR("failed to extract s_as_u64 from %.*s\n",
               tokens[i].end - tokens[i].start, json + tokens[i].start);
+      }
+      else {
+        ERR("failed to extract s_as_u64 from %.*s\n",
+            tokens[i].end - tokens[i].start, json + tokens[i].start);
       }
       break;
     case B_BOOL:

@@ -316,14 +316,14 @@ static int to_builtin_action(struct jc_field *f, struct action *act)
     act->inject_spec = "d";
     act->c_type = f->type.c_base ? f->type.c_base : "int";
   }
-  else if (strcmp(f->type.base, "u64") == 0) {
-    act->extract_spec = "u64";
-    act->inject_spec = "u64";
+  else if (strcmp(f->type.base, "s_as_u64") == 0) {
+    act->extract_spec = "s_as_u64";
+    act->inject_spec = "s_as_u64";
     act->c_type = "uint64_t";
   }
-  else if (strcmp(f->type.base, "uint64_t") == 0) {
-    act->extract_spec = "u64";
-    act->inject_spec = "u64";
+  else if (strcmp(f->type.base, "s_as_i64") == 0) {
+    act->extract_spec = "s_as_i64";
+    act->inject_spec = "s_as_i64";
     act->c_type = "uint64_t";
   }
   else if (strcmp(f->type.base, "int64_t") == 0) {
