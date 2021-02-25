@@ -12,6 +12,11 @@ SPECS       := $(wildcard specs/*.json)
 SPECS_SRC   := $(SPECS:%.json=%.cc)
 SPECS_H     := $(SPECS:%.json=%.h)
 
+ACTOR_GEN_SRC = common/orka-utils.c common/json-actor.c \
+	common/ntl.c common/json-string.c common/json-scanf.c \
+	common/json-printf.c test/test-json-struct-gen.c
+
+ACTOR_GEN_OBJS := $(ACTOR_GEN_SRC:%=$(OBJDIR)/%.o)
 
 COMMON_OBJS  := $(COMMON_SRC:%=$(OBJDIR)/%.o)
 ORKA_OBJS    := $(ORKA_SRC:%=$(OBJDIR)/%.o)
@@ -98,6 +103,7 @@ test: common orka discord github $(TEST_EXES) #@todo should we split by categori
 
 mkdir :
 	mkdir -p bin $(OBJDIR) $(OBJDIR)/common $(OBJDIR)/specs $(LIBDIR)
+	mkdir -p $(OBJDIR)/test
 
 $(OBJDIR)/common/curl-%.c.o : common/curl-%.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $< \
@@ -113,14 +119,17 @@ $(OBJDIR)/%.cpp.o: %.cpp
 	$(CXX) $(CXXFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 
 specs/%.cc: specs/%.json
-	./bin/test-json-struct-gen.exe -c -o $@ $<
+	./bin/actor-gen.exe -c -o $@ $<
 
 specs/%.h: specs/%.json
-	./bin/test-json-struct-gen.exe -d -o $@ $<
+	./bin/actor-gen.exe -d -o $@ $<
 
 $(OBJDIR)/%.cc.o: %.cc
 	$(CXX) $(CXXFLAGS) $(LIBS_CFLAGS) $(GENFLAGS) -c -o $@ $<
 
+actor-gen.exe: mkdir $(ACTOR_GEN_OBJS)
+	$(CC) -o $@ $(ACTOR_GEN_OBJS)
+	mv $@ ./bin
 
 #generic compilation
 %.exe : %.c libdiscord
