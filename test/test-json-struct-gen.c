@@ -54,6 +54,7 @@ int main (int argc, char ** argv)
   definition_from_json(s, len, &d);
   //print_definition(stderr, &d);
   FILE * fp = fopen(config_file, "w");
+  d.spec_name = config_file;
   gen_definition(fp, type, &d);
   fclose(fp);
   return 0;

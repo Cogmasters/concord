@@ -80,6 +80,7 @@ enum loc {
 };
 
 struct jc_field {
+  bool todo;
   char *name;
   char *c_name;
   struct jc_type type;
@@ -90,12 +91,16 @@ struct jc_field {
 static void
 print_field(FILE *fp, struct jc_field *p)
 {
-  fprintf(fp, "name:%s, ", p->name);
-  if (p->c_name)
-    fprintf(fp, "c-name:%s, ", p->c_name);
+  if (p->todo)
+    fprintf(fp, "//@todo name:%s\n", p->name);
+  else {
+    fprintf(fp, "name:%s, ", p->name);
+    if (p->c_name)
+      fprintf(fp, "c-name:%s, ", p->c_name);
 
-  print_type(fp, &p->type);
-  fprintf(fp, ", loc:%d\n", p->loc);
+    print_type(fp, &p->type);
+    fprintf(fp, ", loc:%d\n", p->loc);
+  }
 }
 
 struct jc_struct {
@@ -111,6 +116,7 @@ print_struct(FILE *fp, struct jc_struct *p)
 }
 
 struct jc_definition {
+  char * spec_name;
   char *comment;
   char **namespace; // ntl
   struct jc_struct **structs; //ntl
@@ -171,15 +177,17 @@ field_from_json(char *json, size_t size, void *x)
 {
   struct jc_field *p = (struct jc_field *)x;
   size_t s = json_extract(json, size,
-                          "(name):?s"
-                          "(c_name):?s"
-                          "(type.base):?s"
-                          "(type.c_base):?s"
-                          "(type.dec):F"
-                          "(type.U):?s"
-                          "(loc):F"
+                          "(name):?s,"
+                          "(todo):b,"
+                          "(c_name):?s,"
+                          "(type.base):?s,"
+                          "(type.c_base):?s,"
+                          "(type.dec):F,"
+                          "(type.U):?s,"
+                          "(loc):F,"
                           "(comment):?s",
                           &p->name,
+                          &p->todo,
                           &p->c_name,
                           &p->type.base,
                           &p->type.c_base,
@@ -287,6 +295,7 @@ gen_default(FILE *fp, char *type)
 }
 
 struct action {
+  bool todo;
   char *c_name;
   char *c_type;
   char *pre_dec;
@@ -335,6 +344,11 @@ static int to_builtin_action(struct jc_field *f, struct action *act)
 static void
 to_action(struct jc_field *f, struct action *act)
 {
+  if (f->todo) {
+    act->todo = true;
+    return;
+  }
+
   act->post_dec = "";
   act->pre_dec = "";
   if (f->type.c_base)
@@ -417,6 +431,8 @@ static void gen_cleanup(FILE *fp, struct jc_struct *s)
     struct action act = {0};
     to_action(f, &act);
 
+    if (act.todo) continue;
+
     if (act.free) {
       fprintf(fp,
               "  if (d->%s)\n"
@@ -431,7 +447,10 @@ static void gen_field(FILE *fp, struct jc_field *f)
 {
   struct action act = {0};
   to_action(f, &act);
-  if (f->comment)
+  if (act.todo) {
+    fprintf(fp, "  //@todo %s %s;\n", f->name, f->comment);
+  }
+  else if (f->comment)
     fprintf(fp, "  %s %s%s%s; // %s\n",
             act.c_type, act.pre_dec, act.c_name, act.post_dec, f->comment);
   else
@@ -451,6 +470,7 @@ static void gen_from_json(FILE *fp, struct jc_struct *s)
     struct jc_field *f= s->fields[i];
     struct action act = {0};
     to_action(f, &act);
+    if (act.todo) continue;
 
     if (act.is_user_def)
       fprintf(fp, "                \"(%s):F,\"\n", act.c_name);
@@ -465,6 +485,8 @@ static void gen_from_json(FILE *fp, struct jc_struct *s)
     struct jc_field *f= s->fields[i];
     struct action act = {0};
     to_action(f, &act);
+    if (act.todo) continue;
+
     if (act.is_user_def)
       fprintf(fp, "                %s, &p->%s,\n", act.extract_spec, act.c_name);
     else
@@ -492,6 +514,8 @@ static void gen_to_json(FILE *fp, struct jc_struct *s)
     struct jc_field *f = s->fields[i];
     struct action act = {0};
     to_action(f, &act);
+    if (act.todo) continue;
+
     if (act.is_user_def)
       fprintf(fp, "                \"(%s):F,\"\n", act.c_name);
     else
@@ -505,6 +529,8 @@ static void gen_to_json(FILE *fp, struct jc_struct *s)
     struct jc_field *f = s->fields[i];
     struct action act = {0};
     to_action(f, &act);
+    if (act.todo) continue;
+
     if (act.is_user_def)
       fprintf(fp, "                %s, p->%s,\n", act.inject_spec, act.c_name);
     else
@@ -551,6 +577,8 @@ static void gen_to_query(FILE *fp, struct jc_struct *s)
 
     struct action act = {0};
     to_action(f, &act);
+    if (act.todo) continue;
+
     fprintf(fp, "                \"(%s):%s\"\n", f->name, act.inject_spec);
     if (i == n-1) {
       fprintf(fp, "                \"@A:b\",\n");
@@ -564,6 +592,8 @@ static void gen_to_query(FILE *fp, struct jc_struct *s)
 
     struct action act = {0};
     to_action(f, &act);
+    if (act.todo) continue;
+
     fprintf(fp, "                %sp->%s,\n", act.inject_addrof, f->name);
     if (i == n-1) {
       fprintf(fp, "                p->__metadata.A, sizeof(p->__metadata.A),"
@@ -741,6 +771,10 @@ static void gen_definition(FILE *fp, enum file_type type,
                            struct jc_definition *d)
 {
   file_type = type;
+  if (d->spec_name)
+    fprintf(fp, "/* This file is generated from %s, Please don't edit it. */\n",
+            d->spec_name);
+
   if (type == FILE_SINGLE_FILE || type == FILE_CODE)
     fprintf(fp, "#include \"specs.h\"\n");
 
