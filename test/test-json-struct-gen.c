@@ -8,10 +8,12 @@
 static
 void print_usage (char * prog)
 {
-  fprintf(stderr, "Usage: %s [-h|-c|-d] -o output-file input-file\n"
-          "-h generate header only\n"
-          "-c generate code only\n"
-          "-d generate declaration only\n",
+  fprintf(stderr,
+          "Usage: %s [-h|-c|-d|-f] -o output-file input-file\n"
+          "      -h generate header with namespace\n"
+          "      -c generate data and function definitions with namespace\n"
+          "      -d generate data and function declarations without namespace\n"
+          "      -f generate function definitions without namespace\n",
           prog);
   exit(EXIT_FAILURE);
 }
@@ -25,7 +27,7 @@ int main (int argc, char ** argv)
   char * config_file = NULL;
   enum file_type type = FILE_SINGLE_FILE;
 
-  while ((opt = getopt(argc, argv, "hcdo:")) != -1) {
+  while ((opt = getopt(argc, argv, "hcdfo:")) != -1) {
     switch (opt) {
       case 'o':
         config_file = strdup(optarg);
@@ -38,6 +40,9 @@ int main (int argc, char ** argv)
         break;
       case 'd':
         type = FILE_DECLARATION;
+        break;
+      case 'f':
+        type = FILE_DEFINITION;
         break;
       default: /* '?' */
         print_usage(argv[0]);

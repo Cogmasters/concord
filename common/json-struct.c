@@ -41,7 +41,8 @@
 
 enum file_type {
   FILE_SINGLE_FILE = 0,
-  FILE_DECLARATION = 1,
+  FILE_DECLARATION,
+  FILE_DEFINITION,
   FILE_HEADER,
   FILE_CODE
 };
@@ -779,12 +780,12 @@ static void gen_definition(FILE *fp, enum file_type type,
     fprintf(fp, "#include \"specs.h\"\n");
 
   fprintf(fp, "/*\n%s\n*/\n", d->comment);
-  if (type != FILE_DECLARATION)
+  if (type != FILE_DECLARATION && type != FILE_DEFINITION)
     gen_open_namespace(fp, d->namespace);
 
   ntl_apply(fp, (void**)d->structs, gen_struct);
 
-  if (type != FILE_DECLARATION)
+  if (type != FILE_DECLARATION && type != FILE_DEFINITION)
     gen_close_namespace(fp, d->namespace);
   return;
 }
