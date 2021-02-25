@@ -641,6 +641,7 @@ struct dati {
 /* EMOJI STRUCTURE
 https://discord.com/developers/docs/resources/emoji#emoji-object-emoji-structure */
 namespace emoji {
+#ifdef M_SPEC
 struct dati {
   uint64_t id;
   char name[MAX_NAME_LEN];
@@ -659,8 +660,11 @@ void dati_free(dati *emoji);
 void dati_list_free(dati **emojis);
 void dati_from_json(char *str, size_t len, void *p_emoji);
 void dati_list_from_json(char *str, size_t len, void *p_emojis);
-
+#else
+#include "./specs/emoji.h"
+#endif
 } // namespace emoji
+
 
 /* GUILD STRUCTURE
 https://discord.com/developers/docs/resources/guild#guild-object-guild-structure */

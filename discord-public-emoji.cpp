@@ -5,9 +5,9 @@
 #include <libdiscord.h>
 #include <orka-utils.h>
 
+#ifdef M_SPEC
 namespace discord {
 namespace emoji {
-
 void
 dati_from_json(char *str, size_t len, void *p_emoji)
 {
@@ -83,4 +83,6 @@ dati_list_free(dati **emojis) {
 
 } // namespace emoji
 } // namespace discord
+
+#endif
 

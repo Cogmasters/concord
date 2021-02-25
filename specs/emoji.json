@@ -1,0 +1,21 @@
+{
+  "namespace": ["discord", "emoji"],
+  "comment": "\nhttps://discord.com/developers/docs/resources/emoji#emoji-object-emoji-structure",
+  "structs":
+  [
+    {
+      "name":"dati",
+      "fields":
+      [
+        { "name": "id", "type":{ "base":"u64"}},
+        { "name": "name", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]"}},
+        { "name": "roles", "todo":true },
+        { "name": "user", "type":{ "base":"user::dati", "dec":"*" }},
+        { "name": "require_colons", "type":{ "base":"bool" }},
+        { "name": "managed", "type":{ "base":"bool" }},
+        { "name": "animated", "type":{ "base":"bool" }},
+        { "name": "available", "type":{ "base":"bool" }},
+      ]
+    }
+  ]
+}
