@@ -7,7 +7,7 @@
 
 namespace discord {
 namespace user {
-
+#ifdef M
 void
 dati_from_json(char *str, size_t len, void *p_user)
 {
@@ -86,6 +86,7 @@ void
 dati_list_free(dati **users) {
   ntl_free((void**)users, &dati_cleanup);
 }
+#endif
 
 void
 get(client *client, const uint64_t user_id, dati *p_user)
@@ -95,7 +96,7 @@ get(client *client, const uint64_t user_id, dati *p_user)
     return;
   }
 
-  struct resp_handle resp_handle = {&dati_from_json, (void*)p_user};
+  struct resp_handle resp_handle = {&dati_from_json_v, (void*)p_user};
 
   user_agent::run( 
     &client->ua,
@@ -110,7 +111,7 @@ namespace me {
 void 
 get(client *client, dati *p_user)
 {
-  struct resp_handle resp_handle = {&dati_from_json, (void*)p_user};
+  struct resp_handle resp_handle = {&dati_from_json_v, (void*)p_user};
 
   user_agent::run( 
     &client->ua,

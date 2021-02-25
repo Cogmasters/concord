@@ -1068,6 +1068,8 @@ struct dati {
 /* USER STRUCTURE
 https://discord.com/developers/docs/resources/user#user-object-user-structure */
 namespace user {
+#include "./specs/user.h"
+/*
 struct dati {
   uint64_t id;
   char username[MAX_USERNAME_LEN];
@@ -1092,6 +1094,7 @@ void dati_list_free(dati **users);
 void dati_from_json(char * str, size_t len, void *p_user);
 void dati_list_from_json(char *str, size_t len, void *p_users);
 void dati_to_json(char *str, size_t len, void *);
+*/
 
 /* USER FLAGS
 https://discord.com/developers/docs/resources/user#user-object-user-flags */

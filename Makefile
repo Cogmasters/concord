@@ -10,6 +10,7 @@ GITHUB_SRC  := $(wildcard github-*.cpp)
 SPECS       := $(wildcard specs/*.json)
 
 SPECS_SRC   := $(SPECS:%.json=%.cc)
+SPECS_H     := $(SPECS:%.json=%.h)
 
 
 COMMON_OBJS  := $(COMMON_SRC:%=$(OBJDIR)/%.o)
@@ -47,13 +48,13 @@ LIBDISCORD	:= $(LIBDIR)/libdiscord.a
 
 
 CFLAGS += -Wall -std=c11 -O0 -g -D_ORCA_DEBUG -D_GNU_SOURCE \
-					-Wno-incompatible-pointer-types -Wno-unused-function \
-					-I. -I./common 
+	-Wno-incompatible-pointer-types -Wno-unused-function \
+	-I. -I./common 
 
 CXXFLAGS += -Wall -std=c++03 -O0 -g -D_ORCA_DEBUG -D_GNU_SOURCE \
-						-Wno-write-strings  -I. -I./common
+	-Wno-write-strings  -I. -I./common
 
-GENFLAGS += 
+GENFLAGS += -fpermissive
 
 ifeq ($(DEBUG_JSON),1)
 	CFLAGS += -D_ORCA_DEBUG_STRICT
@@ -74,16 +75,21 @@ PREFIX ?= /usr/local
 .PHONY : all mkdir install clean purge
 
 
-all : mkdir common orka discord github bot
+all : mkdir common orka specs_h discord specs github bot
 
 common: mkdir $(COMMON_OBJS)
 orka: mkdir $(ORKA_OBJS)
 discord: mkdir $(DISCORD_OBJS) libdiscord
 github: mkdir $(GITHUB_OBJS)
-specs: mkdir $(SPECS_SRC) $(SPECS_OBJS)
+
+specs_h: $(SPECS_H)
+specs_src: $(SPECS_SRC)
+
+specs: mkdir specs_h specs_src $(SPECS_OBJS)
 
 echo:
-	@echo SPECS: $(SPECS)
+	@echo SPECS:      $(SPECS)
+	@echo SPECS_H:    $(SPECS_H)
 	@echo SPECS_SRC:  $(SPECS_SRC)
 	@echo SPECS_OBJS: $(SPECS_OBJS)
 
@@ -107,7 +113,10 @@ $(OBJDIR)/%.cpp.o: %.cpp
 	$(CXX) $(CXXFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 
 specs/%.cc: specs/%.json
-	./bin/test-jqbs.exe $< 2> $@
+	./bin/test-json-struct-gen.exe -c -o $@ $<
+
+specs/%.h: specs/%.json
+	./bin/test-json-struct-gen.exe -d -o $@ $<
 
 $(OBJDIR)/%.cc.o: %.cc
 	$(CXX) $(CXXFLAGS) $(LIBS_CFLAGS) $(GENFLAGS) -c -o $@ $<
@@ -119,8 +128,8 @@ $(OBJDIR)/%.cc.o: %.cc
 %.exe: %.cpp libdiscord
 	$(CXX) $(CXXFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBS_LDFLAGS)
 
-libdiscord: mkdir $(OBJS)
-	$(AR) -cvq $(LIBDISCORD) $(OBJS)
+libdiscord: mkdir $(OBJS) $(SPECS_OBJS)
+	$(AR) -cvq $(LIBDISCORD) $(OBJS) $(SPECS_OBJS)
 
 
 install : all
@@ -129,8 +138,13 @@ install : all
 	install -d $(PREFIX)/include/
 	install -m 644 *.h *.hpp common/*.h common/*.hpp $(PREFIX)/include/
 
-clean :
-	rm -rf $(OBJDIR) *.exe test/*.exe bots/*.exe specs/*.cc specs/*.cc
+clean_specs :
+	rm -f specs/*.cc specs/*.h
+
+clean : clean_specs
+	rm -rf $(OBJDIR) *.exe test/*.exe bots/*.exe
+
+
 
 purge : clean
 	rm -rf $(LIBDIR)

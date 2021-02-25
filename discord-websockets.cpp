@@ -619,7 +619,7 @@ static void
 on_dispatch(dati *ws)
 {
   user::dati_from_json(ws->payload.event_data,
-      sizeof(ws->payload.event_data), (void*)ws->me);
+      sizeof(ws->payload.event_data), ws->me);
 
   /* Ratelimit check */
   if ( (ws->now_tstamp - ws->session.event_tstamp) < 60 ) {
