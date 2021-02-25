@@ -664,7 +664,7 @@ parse_availability(
           if (pos + 1 < xend_pos
               && ':' == *pos && 'b' == *(pos + 1)) {
             p->has_enabler = true;
-            pos++;
+            pos += 2;
           }
           *next_pos_p = pos;
           return 1;
@@ -879,7 +879,7 @@ parse_actor(
   struct composite_value * cv)
 {
   // work around the incompatible pointer warning
-  char * const end_pos = pos + size;
+  char * const start_pos = pos, * const end_pos = pos + size;
   SKIP_SPACES(pos, end_pos);
   while (pos < end_pos) {
     if ('{' == *pos || '[' == *pos) {
@@ -894,12 +894,13 @@ parse_actor(
     if (parse_availability(pos, end_pos - pos, &cv->A, &next_pos))
       pos = next_pos;
     SKIP_SPACES(pos, end_pos);
-    if (pos == end_pos) {
+    if (pos == end_pos)
       return pos;
-    }
-    else if (pos != end_pos) {
-      ERR("unexpected %s\n", pos);
-    }
+    else if (pos != end_pos)
+      ERR("unexpected %s@[%d] before end, "
+          "in %s[%d]\n",
+          pos, end_pos - pos,
+          start_pos, pos - start_pos);
   }
   return 0;
 }
@@ -1611,7 +1612,7 @@ static char* type_to_string(jsmntype_t type)
 
 static void
 print_tok (FILE * fp, char * json, jsmntok_t * tok, int i) {
-  fprintf(fp, "[%u][p:%d][size:%d]%s (%.*s)\n",
+  fprintf(fp, "[%u][p:%d][size:%d]%s `%.*s`\n",
           i, tok[i].parent,
           tok[i].size, type_to_string(tok[i].type),
           (int)(tok[i].end - tok[i].start), json + tok[i].start);
@@ -1653,36 +1654,60 @@ struct e_info {
 static size_t extract_str (struct action * v, int i, struct e_info * info)
 {
   jsmntok_t * tokens = info->tokens;
-  ASSERT_S (JSMN_STRING == tokens[i].type, "expecect string");
+  char * json = info->pos;
+  if (JSMN_STRING != tokens[i].type && JSMN_PRIMITIVE != tokens[i].type) {
+    print_tok(stderr, json, tokens, i);
+    ERR("expecect string");
+  }
+
+  bool is_null = false;
+  if (JSMN_PRIMITIVE == tokens[i].type && 'n' == json[tokens[i].start]) {
+    is_null = true;
+  }
 
   size_t new_size = 0;
   int len = tokens[i].end - tokens[i].start;
-  char * json = info->pos;
   char * escaped = copy_over_string(&new_size, json + tokens[i].start, len);
 
   switch(v->mem_size.tag)
   {
-    case SIZE_ZERO: {
+    case SIZE_ZERO:
+    {
       char **p = (char **) v->operand;
-      int len = tokens[i].end - tokens[i].start + 1;
-      *p = malloc(len);
-      int ret = snprintf(*p, len, "%.*s", len - 1, escaped);
-      ASSERT_S(ret < len, "out-of-bounds write");
+      if (is_null) {
+        *p = NULL;
+      }
+      else {
+        int len = tokens[i].end - tokens[i].start + 1;
+        *p = malloc(len);
+        int ret = snprintf(*p, len, "%.*s", len - 1, escaped);
+        ASSERT_S(ret < len, "out-of-bounds write");
+      }
       break;
     }
     case SIZE_FIXED:
     case SIZE_PARAMETERIZED:
     {
-      int ret = snprintf((char *) v->operand, v->mem_size.size,
-                         "%.*s", tokens[i].end - tokens[i].start, escaped);
-      ASSERT_S((size_t) ret < v->mem_size.size, "out-of-bounds write");
+      if (is_null) {
+        ((char *)v->operand)[0] = 0;
+      }
+      else {
+        int ret = snprintf((char *) v->operand, v->mem_size.size,
+                           "%.*s", tokens[i].end - tokens[i].start, escaped);
+        ASSERT_S((size_t) ret < v->mem_size.size, "out-of-bounds write");
+      }
       break;
     }
     case SIZE_UNKNOWN:
     {
       // we have to allow this potential oob write as
       // we don't know the buffer size of recipient.
-      sprintf((char *) v->operand, "%.*s", (int)new_size, escaped);
+      if (is_null) {
+        ((char *)v->operand)[0] = 0;
+      }
+      else {
+        sprintf((char *) v->operand, "%.*s", (int) new_size, escaped);
+      }
       break;
     }
   }
@@ -1695,12 +1720,18 @@ static size_t extract_scalar (struct action * a, int i, struct e_info * info)
 {
   jsmntok_t * tokens = info->tokens;
   char * json = info->pos, * xend; // exclusive end
-  ASSERT_S(tokens[i].type == JSMN_PRIMITIVE, "Not a primitive");
+  if (tokens[i].type != JSMN_PRIMITIVE && tokens[i].type != JSMN_STRING) {
+    print_tok(stderr, json, tokens, i);
+    ERR("Token is not a primitive or string");
+  }
 
+  bool is_null = false;
+  if (JSMN_PRIMITIVE == tokens[i].type && 'n' == json[tokens[i].start])
+    is_null = true;
   switch(a->_.builtin)
   {
     case B_INT:
-      if ('n' == json[tokens[i].start])
+      if (is_null)
         *(int *) a->operand = 0;
       else {
         *(int *) a->operand = (int) strtol(json + tokens[i].start, &xend, 10);
@@ -1710,7 +1741,7 @@ static size_t extract_scalar (struct action * a, int i, struct e_info * info)
       }
       break;
     case B_U64:
-      if ('n' == json[tokens[i].start])
+      if (is_null)
         *(uint64_t *) a->operand = 0;
       else {
         *(uint64_t *) a->operand = (uint64_t) strtoull(json + tokens[i].start, &xend, 10);
@@ -1720,17 +1751,21 @@ static size_t extract_scalar (struct action * a, int i, struct e_info * info)
       }
       break;
     case B_BOOL:
-      switch (json[tokens[i].start])
-      {
-        case 't': *(bool *)a->operand = true; break;
-        case 'f': *(bool *)a->operand = false; break;
-        default:
-          ERR("failed to extract bool from %.*s\n",
-              tokens[i].end - tokens[i].start, json + tokens[i].start);
-      }
+      if (JSMN_PRIMITIVE == tokens[i].type)
+        switch (json[tokens[i].start])
+        {
+          case 't': *(bool *)a->operand = true; break;
+          case 'f': *(bool *)a->operand = false; break;
+          default:
+            ERR("failed to extract bool from %.*s\n",
+                tokens[i].end - tokens[i].start, json + tokens[i].start);
+        }
+      else
+        ERR("failed to extract bool from %.*s\n",
+            tokens[i].end - tokens[i].start, json + tokens[i].start);
       break;
     case B_LONG_LONG:
-      if ('n' == json[tokens[i].start])
+      if (is_null)
         *(long long *) a->operand = 0;
       else {
         *(long long *) a->operand = strtoll(json + tokens[i].start, &xend, 10);
@@ -1740,7 +1775,7 @@ static size_t extract_scalar (struct action * a, int i, struct e_info * info)
       }
       break;
     case B_FLOAT:
-      if ('n' == json[tokens[i].start])
+      if (is_null)
         *(float *) a->operand = 0;
       else {
         *(float *) a->operand = strtof(json + tokens[i].start, &xend);
@@ -1750,7 +1785,7 @@ static size_t extract_scalar (struct action * a, int i, struct e_info * info)
       }
       break;
     case B_DOUBLE:
-      if ('n' == json[tokens[i].start])
+      if (is_null)
         *(double *) a->operand = 0;
       else {
         *(double *) a->operand = strtod(json + tokens[i].start, &xend);
@@ -2149,7 +2184,10 @@ parse_query_string (
   while (pos < end_pos)
   {
     SKIP_SPACES(pos, end_pos);
-    if ('(' == *pos) {
+    if (',' == *pos) {
+      pos ++;
+    }
+    else if ('(' == *pos) {
       pos = parse_key_value(stack, pos, end_pos - pos, pairs->pos + i);
       i++;
     }
