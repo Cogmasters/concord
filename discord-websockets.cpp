@@ -5,6 +5,7 @@
 #include "curl-websocket.h"
 
 #include "orka-utils.h"
+#include "discord-common.h"
 
 
 #define BASE_WEBSOCKETS_URL "wss://gateway.discord.gg/?v=6&encoding=json"
@@ -591,7 +592,7 @@ on_dispatch_guild_member(dati *ws, int offset)
   ASSERT_S(NULL != member, "Out of memory");
 
   guild::member::dati_from_json(ws->payload.event_data,
-      sizeof(ws->payload.event_data), (void*)member);
+      sizeof(ws->payload.event_data), member);
   uint64_t guild_id = 0;
   json_scanf(
       ws->payload.event_data,

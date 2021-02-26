@@ -3,7 +3,8 @@
 
 #include <inttypes.h>
 #include "discord-common.h"
-
+typedef uint64_t u64_unix_ms_t;
+typedef uint64_t u64_snowflake_t;
 
 /* Size limits encountered in the Docs and searching the web */
 #define MAX_NAME_LEN          100 + 1
@@ -248,6 +249,8 @@ void dati_free(dati *channel);
 void dati_list_free(dati **channels);
 void dati_from_json(char *str, size_t len, void *p_channel);
 void dati_list_from_json(char *str, size_t len, void *p_channels);
+// just a declaration to fix the compilation error, it's not actually used yet.
+void dati_to_json(char *str, size_t len, void * p); 
 
 /* CHANNEL TYPES
 https://discord.com/developers/docs/resources/channel#channel-object-channel-types */
@@ -852,12 +855,13 @@ struct dati {
 /* GUILD MEMBER STRUCTURE
 https://discord.com/developers/docs/resources/guild#guild-member-object */
 namespace member {
+#if 0
 struct dati {
   user::dati *user;
   char nick[MAX_NAME_LEN];
-  uint64_t **roles; //@todo add to dati_from_json
-  uint64_t joined_at;
-  uint64_t premium_since;
+  u64_snowflake_t **roles; //@todo add to dati_from_json
+  u64_unix_ms_t joined_at;
+  u64_unix_ms_t premium_since;
   bool deaf;
   bool mute;
   bool pending;
@@ -871,6 +875,9 @@ void dati_free(dati *member);
 void dati_list_free(dati **members);
 void dati_from_json(char *str, size_t len, void *p_member);
 void dati_list_from_json(char *str, size_t len, void *p_members);
+#else
+#include "./specs/guild.member.h"
+#endif
 
 } // namespace member
 
@@ -957,35 +964,48 @@ void dati_list_from_json(char *str, size_t len, void *p_ban);
 /* WELCOME SCREEN STRUCTURE
 https://discord.com/developers/docs/resources/guild#welcome-screen-object-welcome-screen-structure */
 namespace welcome_screen {
+#ifdef M
 struct dati {
   char *description; //@todo find fixed size limit
   screen_channel::dati **welcome_channels;
 };
+#else
+#include "./specs/guild.welcome_screen.h"
+#endif
 
 /* WELCOME SCREEN CHANNEL STRUCTURE
 https://discord.com/developers/docs/resources/guild#welcome-screen-object-welcome-screen-channel-structure */
 namespace screen_channel {
+#ifdef M
 struct dati {
-  uint64_t channel_id;
+  u64_snowflake_t channel_id;
   char *description; //@todo find fixed size limit
-  uint64_t emoji_id;
+  u64_snowflake_t emoji_id;
   char *emoji_name; //@todo find fixed size limit
 };
+#else
+#include "./specs/guild.welcome_screen.screen_channel.h"
+#endif
 } // namespace screen_channel
 } // namespace welcome_screen
 
 /* MEMBERSHIP SCREENING STRUCTURE
 https://discord.com/developers/docs/resources/guild#membership-screening-object */
 namespace membership_screening {
+#ifdef M
 struct dati {
   uint64_t version;
   field::dati **fields;
   char *description; //@todo find fixed size limit
 };
+#else
+#include "./specs/guild.membership_screening.h"
+#endif
 
 /* MEMBERSHIP SCREENING FIELD STRUCTURE
 https://discord.com/developers/docs/resources/guild#membership-screening-object-membership-screening-field-structure */
 namespace field {
+#ifdef M
 struct dati {
   field_type::code field_type;   
   char *label; //@todo find fixed size limit
@@ -994,6 +1014,9 @@ struct dati {
 };
 
 //@todo missing initialization functions
+#else
+#include "./specs/guild.membership_screening.field.h"
+#endif
 
 /* MEMBERSHIP SCREENING FIELD TYPES
 https://discord.com/developers/docs/resources/guild#membership-screening-object-membership-screening-field-types */
@@ -1011,6 +1034,7 @@ enum { TERMS }; //currently the only type
 /* INVITE STRUCTURE
 https://discord.com/developers/docs/resources/invite#invite-object-invite-structure */
 namespace invite {
+#ifdef M
 struct dati {
   char *code; //@todo find fixed size limit
   guild::dati *guild;
@@ -1022,6 +1046,9 @@ struct dati {
 };
 
 //@todo missing initialization functions
+#else
+#include "./specs/invite.h"
+#endif
 
 /* TARGET USER TYPES
 https://discord.com/developers/docs/resources/invite#invite-object-target-user-types */
@@ -1032,15 +1059,19 @@ enum { STREAM = 1 };
 /* INVITE METADATA STRUCTURE
 https://discord.com/developers/docs/resources/invite#invite-metadata-object-invite-metadata-structure */
 namespace metadata {
+#ifdef M
 struct dati {
   int user;
   int max_uses;
   int max_age;
   bool temporary;
-  uint64_t created_at;
+  u64_unix_ms_t created_at;
 };
 
 //@todo missing initialization functions
+#else
+#include "./specs/invite.metadata.h"
+#endif
 
 } // namespace metadata
 
@@ -1133,6 +1164,7 @@ enum {
 /* CONNECTION STRUCTURE
 https://discord.com/developers/docs/resources/user#connection-object-connection-structure */
 namespace connection {
+#ifdef M
 struct dati {
   char *id; //@todo find fixed size limit
   char *name; //@todo find fixed size limit
@@ -1146,6 +1178,9 @@ struct dati {
 };
 
 //@todo missing initialization functions
+#else
+#include "./specs/user.connection.h"
+#endif
 
 /* VISIBILITY TYPES
 https://discord.com/developers/docs/resources/user#connection-object-visibility-types */
@@ -1163,10 +1198,11 @@ enum {
 /* VOICE STRUCTURE
 https://discord.com/developers/docs/resources/voice#voice-state-object-voice-state-structure */
 namespace voice {
+#ifdef M
 struct dati {
-  uint64_t guild_id;
-  uint64_t channel_id;
-  uint64_t user_id;
+  u64_snowflake_t guild_id;
+  u64_snowflake_t channel_id;
+  u64_snowflake_t user_id;
   guild::member::dati *member;
   char *session_id; //@todo find fixed size limit
   bool deaf;
@@ -1177,12 +1213,14 @@ struct dati {
   bool self_video;
   bool suppress;
 };
-
-//@todo missing initialization functions
+#else
+#include "./specs/voice.h"
+#endif
 
 /* VOICE REGION STRUCTURE
 https://discord.com/developers/docs/resources/voice#voice-region-object-voice-region-structure */
 namespace region {
+#ifdef M
 struct dati {
   char *id; //@todo find fixed size limit
   char *name; //@todo find fixed size limit
@@ -1191,9 +1229,10 @@ struct dati {
   bool deprecated;
   bool custom;
 };
-
 //@todo missing initialization functions
-
+#else
+#include "./specs/voice.region.h"
+#endif
 } // namespace region
 
 } // namespace voice

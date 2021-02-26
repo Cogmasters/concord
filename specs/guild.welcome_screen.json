@@ -1,0 +1,15 @@
+{
+  "namespace": ["discord", "guild", "welcome_screen" ],
+  "comment": "VOICE STRUCTURE\nhttps://discord.com/developers/docs/resources/voice#voice-state-object-voice-state-structure",
+  "structs":
+  [
+    {
+      "name":"dati",
+      "fields":
+      [
+        { "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"},
+        { "name": "welcome_channels", "type":{ "base":"screen_channel::dati", "dec":"ntl" }, "todo":false },
+      ]
+    }
+  ]
+}

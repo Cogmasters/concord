@@ -1,0 +1,25 @@
+{
+    "namespace": ["discord", "voice"],
+  "comment": "VOICE STRUCTURE\nhttps://discord.com/developers/docs/resources/voice#voice-state-object-voice-state-structure",
+  "structs":
+  [
+    {
+      "name":"dati",
+      "fields":
+      [
+        { "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
+        { "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}},
+        { "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
+        { "name": "member", "type":{ "base":"guild::member::dati", "dec":"*" }},
+        { "name": "session_id", "type":{ "base":"char", "dec":"*" }},
+        { "name": "deaf", "type":{ "base":"bool" }},
+        { "name": "mute", "type":{ "base":"bool" }},
+        { "name": "self_deaf", "type":{ "base":"bool" }},
+        { "name": "self_mute", "type":{ "base":"bool" }},
+        { "name": "self_stream", "type":{ "base":"bool" }},
+        { "name": "self_video", "type":{ "base":"bool" }},
+        { "name": "supress", "type":{ "base":"bool" }},
+      ]
+    }
+  ]
+}

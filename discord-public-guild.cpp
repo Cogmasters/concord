@@ -244,7 +244,7 @@ void run(client *client, const uint64_t guild_id, params *params, role::dati *p_
 } // namespace create_role
 
 namespace member {
-
+#if 0
 void
 dati_from_json(char *str, size_t len, void *p_member)
 {
@@ -317,6 +317,7 @@ void
 dati_list_free(dati **members) {
   ntl_free((void**)members, &dati_cleanup);
 }
+#endif
 
 namespace get_list {
 
@@ -346,7 +347,7 @@ run(client *client, const uint64_t guild_id, struct params *params)
   dati **new_members = NULL;
 
   struct resp_handle resp_handle =
-    {&dati_list_from_json, (void*)&new_members};
+    {dati_list_from_json_v, (void*)&new_members};
   
   user_agent::run( 
     &client->ua,

@@ -1,0 +1,23 @@
+{
+  "disabled": false,
+  "namespace": ["discord", "guild", "member"],
+  "comment": "VOICE STRUCTURE\nhttps://discord.com/developers/docs/resources/voice#voice-state-object-voice-state-structure",
+  "structs":
+  [
+    {
+      "name":"dati",
+      "fields":
+      [
+        { "name": "user", "type":{ "base":"user::dati", "dec":"*" }},
+        { "name": "nick", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]"}},
+        { "name": "roles", "todo":true, "type":{ "base":"s_as_u64", "dec":"ntl" }},
+        { "name": "joined_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }},
+        { "name": "premium_since", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }},
+        { "name": "deaf", "type":{ "base":"bool" }},
+        { "name": "mute", "type":{ "base":"bool" }},
+        { "name": "pending", "type":{ "base":"bool" }},
+        { "name": "permissions", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size"},
+      ]
+    }
+  ]
+}

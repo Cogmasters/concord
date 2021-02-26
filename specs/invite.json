@@ -1,0 +1,20 @@
+{
+  "namespace": ["discord", "invite"],
+  "comment": "VOICE STRUCTURE\nhttps://discord.com/developers/docs/resources/voice#voice-state-object-voice-state-structure",
+  "structs":
+  [
+    {
+      "name":"dati",
+      "fields":
+      [
+        { "name": "code", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"},
+        { "name": "guild", "type":{ "base":"guild::dati", "dec":"*"}},
+        { "name": "channel", "type":{ "base":"channel::dati", "dec":"*"}},
+        { "name": "target_user", "type":{ "base":"user::dati", "dec":"*"}},
+        { "name": "target_user_type", "type":{ "base":"int", "c_base":"target_user_types::code" }},
+        { "name": "approximate_presence_count", "type":{ "base":"int" }},
+        { "name": "approximate_member_count", "type":{ "base":"int" }},
+      ]
+    }
+  ]
+}

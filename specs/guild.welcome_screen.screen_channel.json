@@ -1,0 +1,16 @@
+{
+  "namespace": ["discord", "guild", "welcome_screen", "screen_channel" ],
+  "comment": "VOICE STRUCTURE\nhttps://discord.com/developers/docs/resources/voice#voice-state-object-voice-state-structure",
+  "structs":
+  [
+    {
+      "name":"dati",
+      "fields":
+      [
+        { "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
+        { "name": "emoji_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
+        { "name": "emoji_name", "type":{ "base":"char", "dec":"*" }},
+      ]
+    }
+  ]
+}
