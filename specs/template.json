@@ -1,0 +1,24 @@
+{
+  "namespace": ["discord", "Template"],
+  "comment": "TEMPLATE STRUCTURE\nhttps://discord.com/developers/docs/resources/template#template-object-template-structure",
+  "structs":
+  [
+    {
+      "name":"dati",
+      "fields":
+      [
+        { "name": "code", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"},
+        { "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"},
+        { "name": "description", "type":{ "base":"char", "dec":"*" }, "comment": "@todo find fixed size limit"},
+        { "name": "usage_count", "type":{ "base":"int"}},
+        { "name": "creator_id", "type":{ "base":"s_as_u64" }},
+        { "name": "creator", "type":{ "base":"user::dati", "dec":"*" }},
+        { "name": "created_at", "type":{ "base":"s_as_u64" }},
+        { "name": "updated_at", "type":{ "base":"s_as_u64" }},
+        { "name": "source_guild_id", "type":{ "base":"s_as_u64" }},
+        { "name": "serialized_source_guild", "type":{ "base":"guild::dati", "dec":"*" }},
+        { "name": "is_dirty", "type":{ "base":"bool" }},
+      ]
+    }
+  ]
+}

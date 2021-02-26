@@ -80,7 +80,7 @@ PREFIX ?= /usr/local
 .PHONY : all mkdir install clean purge
 
 
-all : mkdir common orka specs_h discord specs github bot
+all : mkdir actor-gen.exe common orka specs_h discord specs github bot
 
 common: mkdir $(COMMON_OBJS)
 orka: mkdir $(ORKA_OBJS)

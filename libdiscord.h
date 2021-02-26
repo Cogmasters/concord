@@ -122,6 +122,8 @@ enum {
 /* OPTIONAL AUDIT ENTRY INFO STRUCTURE
 https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-optional-audit-entry-info */
 namespace optional_info {
+#include "./specs/entry.optional_info.h"
+#if 0  
 struct dati {
   char *delete_member_days; //@todo find fixed size limit
   char *members_removed; //@todo find fixed size limit
@@ -132,9 +134,7 @@ struct dati {
   char *type; //@todo find fixed size limit
   char *role; //@todo find fixed size limit
 };
-
-//@todo missing initialization functions
-
+#endif
 } // namespace optional_entry
 
 } // namespace entry
@@ -1049,6 +1049,7 @@ struct dati {
 /* TEMPLATE STRUCTURE
 https://discord.com/developers/docs/resources/template#template-object-template-structure */
 namespace Template { // template is a reserved keyword
+#include "./specs/template.h"  
 /*
 struct dati {
   char *code; //@todo find fixed size limit
@@ -1064,8 +1065,6 @@ struct dati {
   bool is_dirty;
 };
 */
-
-//@todo missing initialization functions
 
 } // namespace Template
 
