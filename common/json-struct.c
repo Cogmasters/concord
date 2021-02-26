@@ -31,13 +31,96 @@
  * <field-type>  :=  "type" : { "base":<string>,
  *                              "c_base"? : <string>,
  *                              "dec"?:("ntl"|"pointer"|"[<string>]"),
- *                              <user-defined-conversion>?
+ *                              "converter"?:<string>
  *                            }
  *
- * <user-defined-conversion> := "U":<string>
  * <field-loc>   :=  "loc"  : ("json" | "query" | "body")
  *
  */
+
+struct converter {
+  char *name;
+  char *input_type;
+  char *output_type;
+  char *extractor;
+  char *injector;
+  char *free;
+};
+
+static struct converter **converters = NULL;
+
+static void
+load_converter(char *pos, size_t size, void *p)
+{
+  struct converter *c = (struct converter *)p;
+  json_extract(pos, size,
+               "(name):?s,"
+               "(input_type):?s,"
+               "(output_type):?s,"
+               "(extractor):?s,"
+               "(injector):?s,"
+               "(free):?s",
+               &c->name,
+               &c->input_type,
+               &c->output_type,
+               &c->extractor,
+               &c->injector,
+               &c->free);
+}
+
+static char * converter_file = NULL;
+
+
+static void init_converters () {
+  converters = ntl_calloc(2, sizeof(struct converter));
+  converters[0]->name = "iso8601";
+  converters[0]->input_type = "char*";
+  converters[0]->output_type = "u64_unix_ms_t";
+  converters[0]->free = NULL;
+  converters[0]->extractor = "orka_iso8601_to_unix_ms";
+  converters[0]->injector = "orka_unix_ms_to_iso8601";
+
+  converters[1]->name = "snowflake";
+  converters[1]->input_type = "char*";
+  converters[1]->output_type = "u64_snowflake_t";
+  converters[1]->free = NULL;
+  converters[1]->extractor = "orka_strtoull";
+  converters[1]->injector = "orka_ulltostr";
+
+  for (int i = 0; converters[i]; i++)
+    fprintf(stderr, "loading converters %s ...\n", converters[i]->name);
+
+}
+static void
+load_converters(char *filename)
+{
+  size_t len = 0;
+  char * data = orka_load_whole_file(filename, &len);
+  converter_file = strdup(filename);
+
+  struct ntl_deserializer d = {
+    .ntl_recipient_p = (void ***)&converters,
+    .init_elem = NULL,
+    .elem_size = sizeof(struct converter),
+    .elem_from_buf = load_converter
+  };
+  orka_str_to_ntl(data, len, &d);
+}
+
+static struct converter*
+get_converter(char *name) {
+  int i;
+  for (i = 0; converters[i]; i++) {
+    if (0 == strcmp(name, converters[i]->name)) {
+      //fprintf(stderr, "%p\n", converters + i);
+      return converters[i];
+    }
+  }
+
+  ERR("converter '%s' is not defined in '%s'\n", name, converter_file);
+  return NULL;
+}
+
 
 enum file_type {
   FILE_SINGLE_FILE = 0,
@@ -64,7 +147,7 @@ struct jc_type {
   char *base;
   char *c_base;  // use for enum type names that are represented as int
   struct dec dec;
-  char *U; // NULL means using builtin converter.
+  char * converter;
 };
 
 static void
@@ -118,6 +201,7 @@ print_struct(FILE *fp, struct jc_struct *p)
 
 struct jc_definition {
   char * spec_name;
+  bool is_disabled;
   char *comment;
   char **namespace; // ntl
   struct jc_struct **structs; //ntl
@@ -184,7 +268,7 @@ field_from_json(char *json, size_t size, void *x)
                           "(type.base):?s,"
                           "(type.c_base):?s,"
                           "(type.dec):F,"
-                          "(type.U):?s,"
+                          "(type.converter):?s,"
                           "(loc):F,"
                           "(comment):?s",
                           &p->name,
@@ -193,7 +277,7 @@ field_from_json(char *json, size_t size, void *x)
                           &p->type.base,
                           &p->type.c_base,
                           dec_from_json, &p->type.dec,
-                          &p->type.U,
+                          &p->type.converter,
                           loc_from_json, &p->loc,
                           &p->comment);
   return s;
@@ -243,9 +327,11 @@ definition_from_json(char *json, size_t size, struct jc_definition *s)
   };
 
   size_t ret = json_extract(json, size,
+                            "(disabled):b"
                             "(comment):?s"
                             "(namespace):F"
                             "(structs):F",
+                            &s->is_disabled,
                             &s->comment,
                             orka_str_to_ntl, &d1,
                             orka_str_to_ntl, &d2);
@@ -371,6 +457,21 @@ to_action(struct jc_field *f, struct action *act)
         act->pre_dec = "*";
         act->free = "free";
         act->c_type = "char";
+        if (f->type.converter) {
+          struct converter *c = get_converter(f->type.converter);
+          act->is_user_def = true;
+          act->extract_spec = c->extractor;
+          act->inject_spec = c->injector;
+          act->free = c->free;
+          if (0 == strcmp(c->input_type, "char*")) {
+            act->c_type = c->output_type;
+            act->post_dec = "";
+            act->pre_dec = "";
+          }
+          else {
+            ERR("type mismatch %s\n", c->input_type);
+          }
+        }
         return;
       } else {
         char *tok = strrchr(f->type.base, ':');
@@ -764,6 +865,9 @@ static void gen_close_namespace(FILE *fp, char **p)
 static void gen_definition(FILE *fp, enum file_type type,
                            struct jc_definition *d)
 {
+  if (d->is_disabled)
+    return;
+  init_converters(); // @todo move it out of this function.
   file_type = type;
   if (d->spec_name)
     fprintf(fp, "/* This file is generated from %s, Please don't edit it. */\n",
