@@ -223,7 +223,7 @@ void run(client *client, const uint64_t guild_id, params *params, role::dati *p_
       "(color):d"
       "(hoist):b"
       "(mentionable):b"
-      "@A",
+      "@arg_switches",
       params->name,
       &orka_ulltostr, &params->permissions,
       &params->color,
@@ -525,7 +525,7 @@ create(client *client, const uint64_t guild_id, const uint64_t user_id, int dele
   int ret = json_inject(payload, sizeof(payload),
                         "(delete_message_days):d"
                         "(reason):s"
-                        "@",
+                        "@arg_switches",
                         &delete_message_days,
                         reason,
                         A, sizeof(A));
@@ -564,7 +564,7 @@ remove(client *client, const uint64_t guild_id, const uint64_t user_id, const ch
   char payload[MAX_PAYLOAD_LEN];
   int ret = json_inject(payload, sizeof (payload),
                         "(reason):s"
-                        "@",
+                        "@arg_switches",
                         reason,
                         A, sizeof(A));
 

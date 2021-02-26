@@ -53,7 +53,7 @@ int main () {
 
   int b = 0;
   void *A[4] = {&b, 0, 0};
-  json_inject(bigbuf, sizeof(bigbuf), "[ b, b ] @A", &i, &b, &A, sizeof(A));
+  json_inject(bigbuf, sizeof(bigbuf), "[ b, b ] @arg_switches", &i, &b, &A, sizeof(A));
   fprintf(stderr, "used @ %s\n", bigbuf);
 
   fprintf (stderr, "funptr %p\n", (void*)&foobar);
@@ -70,7 +70,7 @@ int main () {
               "(k1) : s"
               "(k2) : {  (1): b }"
               "(k3):f"
-              "@A",
+              "@arg_switches",
               NULL, &b, NULL,
               A, sizeof(A));
 
@@ -80,7 +80,7 @@ int main () {
   void *B[4] = {NULL};
   memset(B, 0, sizeof(B));
 
-  char * injector1 = "(k1) : s, (k2) : { (1): b }, (k3) : f @A";
+  char * injector1 = "(k1) : s, (k2) : { (1): b }, (k3) : f @arg_switches";
 
   // print out k1
   B[0] = t;
@@ -127,7 +127,7 @@ int main () {
   json_inject(bigbuf, sizeof(bigbuf),
               "(delete_message_days):d"
               "(reason):s"
-              "@A",
+              "@arg_switches",
               &delete_message_days,
               reason,
               A1, sizeof(A1));
@@ -145,7 +145,7 @@ int main () {
   json_inject(bigbuf, sizeof(bigbuf),
               "(delete_message_days):d"
               "(reason):s"
-              "@A",
+              "@arg_switches",
               &delete_message_days,
               reason,
               A1, sizeof(A1));
@@ -165,7 +165,7 @@ int main () {
   json_inject(bigbuf, sizeof(bigbuf),
               "(delete_message_days):d"
               "(reason):s"
-              "@A",
+              "@arg_switches",
               &delete_message_days,
               &reason,
               A1, sizeof(A1));
@@ -222,7 +222,7 @@ int main () {
   query_inject(query, sizeof(query),
                "(a):d"
                "(b):s"
-               "@A",
+               "@arg_switches",
                &i, ss, A, sizeof(A));
 
   fprintf(stderr, "'%s'\n", query);
@@ -232,7 +232,7 @@ int main () {
   query_inject(query, sizeof(query),
                "(a):d"
                "(b):s"
-               "@A",
+               "@arg_switches",
                &i, ss, A, sizeof(A));
 
   fprintf(stderr, "empty query_string: '%s'\n", query);

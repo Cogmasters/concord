@@ -20,16 +20,19 @@ int main ()
   void * A[2] = {0};
   char * content = "This is the content.";
 
-  json_inject(bigbuf, sizeof(bigbuf), "(content):s @", content, A, sizeof(A));
+  json_inject(bigbuf, sizeof(bigbuf), "(content):s @arg_switches",
+              content, A, sizeof(A));
   fprintf(stderr, "%s\n", bigbuf);
 
   A[0] = content;
-  json_inject(bigbuf, sizeof(bigbuf), "(content):s @A", content, A, sizeof(A));
+  json_inject(bigbuf, sizeof(bigbuf), "(content):s @arg_switches",
+              content, A, sizeof(A));
   fprintf(stderr, "%s\n", bigbuf);
 
   //content = NULL;
   A[0] = NULL;
-  json_inject(bigbuf, sizeof(bigbuf), "(content):s @A", content, A, sizeof(A));
+  json_inject(bigbuf, sizeof(bigbuf), "(content):s @arg_switches",
+              content, A, sizeof(A));
   fprintf(stderr, "%s\n", bigbuf);
 
   return 0;

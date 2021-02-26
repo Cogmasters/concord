@@ -160,7 +160,9 @@ int main ()
 
 
   fprintf(stderr, "\n");
-  char * t = "(id):u64,(username):s,(discriminator):s,(avatar):s,(bot):b,(System):b,(mfa_enabled):b,(locale):s,(verified):b,(email):s,(flags):d,(premium_type):d,(public_flags):d,@A:b";
+  char * t = "(id):s_as_u64,(username):s,(discriminator):s,(avatar):s,"
+    "(bot):b,(System):b,(mfa_enabled):b,(locale):s,(verified):b,"
+    "(email):s,(flags):d,(premium_type):d,(public_flags):d,@arg_switches:b";
   fprintf (stderr, "input: %s\n", t);
 
   ret = json_extract(json, strlen(json), t);

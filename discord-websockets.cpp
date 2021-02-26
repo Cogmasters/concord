@@ -87,7 +87,7 @@ dati_to_json(char *str, size_t len, void *p_identify)
                 "($device):|orca|"
               "}"
               "(presence):F"
-              "@",
+              "@arg_switches",
               identify->token, 
               &identify->intents,
               &status_update::dati_to_json, identify->presence,
@@ -167,7 +167,7 @@ dati_to_json(char *str, size_t len, void *p_status_update)
               "(activities):F"
               "(status):s"
               "(afk):b"
-              "@",
+              "@arg_switches",
               &orka_unix_ms_to_iso8601, &status_update->since,
               &activity::dati_list_to_json, &status_update->activities,
               status_update->status,
@@ -286,7 +286,7 @@ dati_to_json(char *str, size_t len, void *p_activity)
               "(details):s"
               "(state):s"
               "(instance):b"
-              "@",
+              "@arg_switches",
               activity->name,
               &activity->type,
               activity->url,

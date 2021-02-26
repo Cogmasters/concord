@@ -72,14 +72,14 @@ int main ()
 
 
   memset(&cv, 0, sizeof(struct composite_value));
-  t = "[ true false true null ] .@";
+  t = "[ true false true null ] @arg_switches";
   parse_composite_value(&stack, t, strlen(t), &cv);
   fprintf (stderr, "\n");
   print_composite_value(stderr, &cv);
 
 
   memset(&cv, 0, sizeof(struct composite_value));
-  t = "{ (k1):d (k2):true (k3):f  (k4):F (k5):L } .@";
+  t = "{ (k1):d (k2):true (k3):f  (k4):F (k5):L } @arg_switches";
   parse_composite_value(&stack, t, strlen(t), &cv);
   fprintf (stderr, "\n");
   print_composite_value(stderr, &cv);
@@ -89,7 +89,7 @@ int main ()
   memset(&cv, 0, sizeof(struct composite_value));
   memset(&rec, 0, sizeof(struct operand_addrs));
 
-  t = "{ (k1):d,  (k2):true, (k3):f, (k4):F, (k5):[L], (k6):T, (k7):{ (k8):T }, (k9):null, } .@";
+  t = "{ (k1):d,  (k2):true, (k3):f, (k4):F, (k5):[L], (k6):T, (k7):{ (k8):T }, (k9):null, } @arg_switches";
   parse_composite_value(&stack, t, strlen(t), &cv);
   fprintf (stderr, "\n");
   print_composite_value(stderr, &cv);
@@ -111,14 +111,14 @@ int main ()
 
 
   memset(&cv, 0, sizeof(struct composite_value));
-  t = "[ F_nullable ] @";
+  t = "[ F_nullable ] @arg_switches";
   parse_composite_value(&stack, t, strlen(t), &cv);
   fprintf (stderr, "\n");
   print_composite_value(stderr, &cv);
 
 
   memset(&cv, 0, sizeof(struct composite_value));
-  t = " (k): F_nullable, (v): d, (h): f, @";
+  t = " (k): F_nullable, (v): d, (h): f, @arg_switches";
   parse_actor(&stack, t, strlen(t), &cv);
   fprintf (stderr, "\n");
   print_composite_value(stderr, &cv);
@@ -128,7 +128,9 @@ int main ()
   parse_query_string(&stack, t, strlen(t), &cv);
 
   fprintf(stderr, "\n");
-  t = "(id):u64,(username):s,(discriminator):s,(avatar):s,(bot):b,(System):b,(mfa_enabled):b,(locale):s,(verified):b,(email):s,(flags):d,(premium_type):d,(public_flags):d,@A:b";
+  t = "(id):s_as_u64,(username):s,(discriminator):s,(avatar):s,(bot):b,(System):b,"
+    "(mfa_enabled):b,(locale):s,(verified):b,(email):s,(flags):d,"
+    "(premium_type):d,(public_flags):d,@arg_switches:b";
   fprintf (stderr, "input: %s\n", t);
 
   memset(&cv, 0, sizeof(struct composite_value));

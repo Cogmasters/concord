@@ -481,7 +481,7 @@ static void gen_from_json(FILE *fp, struct jc_struct *s)
     else
       fprintf(fp, "                \"(%s):%s,\"\n", act.c_name, act.extract_spec);
   }
-  fprintf(fp, "                \"@A:b\",\n");
+  fprintf(fp, "                \"@arg_switches:b\",\n");
 
   for (int i = 0; s->fields[i]; i++) {
     struct jc_field *f= s->fields[i];
@@ -494,9 +494,11 @@ static void gen_from_json(FILE *fp, struct jc_struct *s)
     else
       fprintf(fp, "                %sp->%s,\n", act.extract_addrof, act.c_name);
   }
-  fprintf(fp, "                p->__metadata.A, sizeof(p->__metadata.A),"
-    " &p->__metadata.enable_A,\n");
-  fprintf(fp, "                p->__metadata.D, sizeof(p->__metadata.D));\n");
+  fprintf(fp, "                p->__metadata.arg_switches,"
+    " sizeof(p->__metadata.arg_switches),"
+    " &p->__metadata.enable_arg_switches,\n");
+  fprintf(fp, "                p->__metadata.record_defined,"
+    " sizeof(p->__metadata.record_defined));\n");
   fprintf(fp, "}\n");
 }
 
@@ -520,7 +522,7 @@ static void gen_to_json(FILE *fp, struct jc_struct *s)
     else
       fprintf(fp, "                \"(%s):%s,\"\n", act.c_name, act.inject_spec);
   }
-  fprintf(fp, "                \"@A:b\",\n");
+  fprintf(fp, "                \"@arg_switches:b\",\n");
 
   for (int i = 0; s->fields[i]; i++) {
     struct jc_field *f = s->fields[i];
@@ -533,8 +535,9 @@ static void gen_to_json(FILE *fp, struct jc_struct *s)
     else
       fprintf(fp, "                %sp->%s,\n", act.inject_addrof, act.c_name);
   }
-  fprintf(fp, "                p->__metadata.A, sizeof(p->__metadata.A),"
-    " &p->__metadata.enable_A);\n");
+  fprintf(fp, "                p->__metadata.arg_switches, "
+    "sizeof(p->__metadata.arg_switches),"
+    " &p->__metadata.enable_arg_switches);\n");
   fprintf(fp, "  return r;\n");
   fprintf(fp, "}\n");
 }
@@ -574,7 +577,7 @@ static void gen_to_query(FILE *fp, struct jc_struct *s)
     if (act.todo) continue;
     fprintf(fp, "                \"(%s):%s\"\n", f->name, act.inject_spec);
   }
-  fprintf(fp, "                \"@A:b\",\n");
+  fprintf(fp, "                \"@arg_switches:b\",\n");
 
   for (int i = 0; s->fields[i]; i++) {
     struct jc_field *f = s->fields[i];
@@ -587,8 +590,9 @@ static void gen_to_query(FILE *fp, struct jc_struct *s)
 
     fprintf(fp, "                %sp->%s,\n", act.inject_addrof, f->name);
   }
-  fprintf(fp, "                p->__metadata.A, sizeof(p->__metadata.A),"
-    " &p->__metadata.enable_A);\n");
+  fprintf(fp, "                p->__metadata.arg_switches,"
+    " sizeof(p->__metadata.arg_switches),"
+    " &p->__metadata.enable_arg_switches);\n");
   fprintf(fp,  "  return r;\n");
   fprintf(fp, "}\n");
 }
@@ -602,11 +606,12 @@ static void gen_def(FILE *fp, struct jc_struct *s)
   for (i = 0; s->fields[i]; i++)
     gen_field(fp, s->fields[i]);
   fprintf(fp, "  struct {\n");
-  fprintf(fp, "    bool enable_A;\n");
-  fprintf(fp, "    bool enable_N;\n");
-  fprintf(fp, "    void *A[%d];\n", i);
-  fprintf(fp, "    void *N[%d];\n", i);
-  fprintf(fp, "    void *D[%d];\n", i);
+  fprintf(fp, "    bool enable_arg_switches;\n");
+  fprintf(fp, "    bool enable_record_defined;\n");
+  fprintf(fp, "    bool enable_record_null;\n");
+  fprintf(fp, "    void *arg_switches[%d];\n", i);
+  fprintf(fp, "    void *record_defined[%d];\n", i);
+  fprintf(fp, "    void *record_null[%d];\n", i);
   fprintf(fp, "  } __metadata;\n");
   fprintf(fp, "};\n");
 

@@ -401,7 +401,7 @@ run(client *client, const uint64_t channel_id, params *params, dati *p_message)
         "(allowed_mentions):F"
         */
         "(message_reference):F"
-        "@",
+        "@arg_switches",
         params->content,
         params->nonce,
         &params->tts,
@@ -501,7 +501,7 @@ run(client *client, const uint64_t channel_id, const uint64_t message_id, params
     "(embed):F"
     "(flags):d"
     //"(allowed_mentions):F"
-    "@A",
+    "@arg_switches",
     params->content,
     &embed::dati_to_json, params->embed,
     params->flags,
@@ -603,7 +603,7 @@ dati_to_json(char *str, size_t len, void *p_reference)
                         "(channel_id):F"
                         "(guild_id):F"
                         "(fail_if_not_exists):b"
-                        "@",
+                        "@arg_switches",
                         &orka_ulltostr, &reference->message_id,
                         &orka_ulltostr, &reference->channel_id,
                         &orka_ulltostr, &reference->guild_id,
@@ -749,7 +749,7 @@ dati_to_json(char *str, size_t len, void *p_embed)
                         "(provider):F"
                         "(author):F"
                         "(fields):F"
-                        "@",
+                        "@arg_switches",
                         embed->title,
                         embed->type,
                         embed->description,
@@ -835,7 +835,7 @@ dati_to_json(char *str, size_t len, void *p_thumbnail)
                         "(proxy_url):s"
                         "(height):d"
                         "(width):d"
-                        "@",
+                        "@arg_switches",
                         thumbnail->url,
                         thumbnail->proxy_url,
                         &thumbnail->height,
@@ -905,7 +905,7 @@ dati_to_json(char *str, size_t len, void *p_provider)
   int ret = json_inject(str, len, 
                         "(name):s"
                         "(url):s"
-                        "@",
+                        "@arg_switches",
                         provider->name,
                         provider->url,
                         A, sizeof(A));
@@ -982,7 +982,7 @@ dati_to_json(char *str, size_t len, void *p_author)
                         "(url):s"
                         "(icon_url):s"
                         "(proxy_icon_url):s"
-                        "@",
+                        "@arg_switches",
                         author->name,
                         author->url,
                         author->icon_url,
@@ -1056,7 +1056,7 @@ dati_to_json(char *str, size_t len, void *p_footer)
                         "(text):s"
                         "(icon_url):s"
                         "(proxy_icon_url):s"
-                        "@",
+                        "@arg_switches",
                         footer->text,
                         footer->icon_url,
                         footer->proxy_icon_url,
@@ -1140,7 +1140,7 @@ dati_to_json(char *str, size_t len, void *p_field)
                         "(name):s"
                         "(value):s"
                         "(inline):b"
-                        "@",
+                        "@arg_switches",
                         field->name,
                         field->value,
                         &field->Inline,

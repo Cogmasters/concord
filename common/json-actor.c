@@ -216,7 +216,6 @@ struct action {
 };
 
 struct availability {
-  struct size_specifier mem_size;
   void * arg;
   int  sizeof_arg;
   int  enabled;
@@ -643,39 +642,33 @@ parse_availability(
   if (size == 0)
     return 0;
 
-  char * next_pos = NULL;
-  if (parse_size_specifier(pos, size, &p->mem_size, &next_pos))
-    pos = next_pos;
-
   if (pos < xend_pos) {
     if ('@' == *pos) {
-      if (pos + 1 == xend_pos) { // keep the backward compatibility for now.
+      pos ++;
+
+      size_t sz1 = strlen("arg_switches"),
+      sz2 = strlen("record_defined"),
+      sz3 = strlen("record_null");
+
+      if (pos + sz1 <= xend_pos
+          && (0 == strncmp(pos, "arg_switches", sz1))) {
         p->has_this = true;
-        pos++;
-        if (pos + 1 < xend_pos
+        pos += sz1;
+        if (pos + 2 <= xend_pos
             && ':' == *pos && 'b' == *(pos + 1)) {
           p->has_enabler = true;
-          pos++;
+          pos += 2;
         }
         *next_pos_p = pos;
         return 1;
-      } else
-        pos ++;
-
-      switch (*pos)
-      {
-        case 'A':
-          p->has_this = true;
-          pos++;
-          if (pos + 1 < xend_pos
-              && ':' == *pos && 'b' == *(pos + 1)) {
-            p->has_enabler = true;
-            pos += 2;
-          }
-          *next_pos_p = pos;
-          return 1;
-        case 'N':
-          ERR("N is not implemented yet");
+      }
+      else if (pos + sz2 < xend_pos
+               && (0 == strncmp(pos, "record_defined", sz2))) {
+        //@todo
+      }
+      else if (pos + sz3 < xend_pos
+               && (0 == strncmp(pos, "record_null", sz3))) {
+        //@todo
       }
     }
   }
