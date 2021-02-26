@@ -243,7 +243,7 @@ void embed_from_json(char *str, size_t len, void *p_embed)
 
 void on_ready(discord::client *client, const discord::user::dati *me)
 {
-  fprintf(stderr, "\n\nEddbapi-Bot succesfully connected to Discord as %s#%s!\n\n",
+  fprintf(stderr, "\n\nEliteBGS-Bot succesfully connected to Discord as %s#%s!\n\n",
       me->username, me->discriminator);
 
   (void)client;
@@ -264,15 +264,14 @@ void on_command(
 
   /* Initialize embed struct that will be loaded to  */
   embed::dati *new_embed = embed::dati_alloc();
-  orka_dati_from_fjson(
-      "cee/embed.json", 
-      (void*)new_embed, 
-      &embed::dati_from_json);
 
   /* Set embed fields */
   strncpy(new_embed->title, msg->content, sizeof(new_embed->title));
   new_embed->timestamp = orka_timestamp_ms();
   new_embed->color = 15844367; //gold
+  embed::change_footer(new_embed, 
+      "designed & built by https://cee.dev",
+      "https://cee.dev/static/images/cee.png", NULL);
 
   char query[512];
   int ret = query_inject(query, sizeof(query),
@@ -316,7 +315,7 @@ int main(int argc, char *argv[])
   else
     config_file = "bot.config";
 
-  /* Initialized ELITEBGS User Agent */
+  /* Initialize ELITEBGS User Agent */
   orka::user_agent::init(&g_elitebgs_ua, ELITEBGS_API_URL);
 
   /* Initialize Discord User Agent */
@@ -328,14 +327,12 @@ int main(int argc, char *argv[])
   discord::setcb(client, discord::READY, &on_ready);
   discord::setcb(client, discord::COMMAND, &on_command, "!system ");
 
-  /* Set bot presence */
-  discord::presence::dati *new_presence = discord::presence::dati_alloc();
-  orka_dati_from_fjson(
-    "cee/presence.json", 
-    (void*)new_presence, 
-    &discord::presence::dati_from_json);
-
-  discord::replace_presence(client, new_presence); //client takes ptr ownership
+  /* Set bot presence activity */
+  discord::presence::activity::dati *new_activity;
+  new_activity = discord::presence::activity::dati_alloc();
+  strcpy(new_activity->name, "!h | cee.dev");
+  new_activity->type = 0; // Playing
+  discord::set_presence(client, new_activity, "online", false);
 
   /* Start a connection to Discord */
   discord::run(client);
