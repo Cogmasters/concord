@@ -1199,6 +1199,8 @@ struct dati {
 } // namespace voice
 
 namespace webhook {
+#include "./specs/webhook.h"
+#if 0
 struct dati {
   uint64_t id;
   types::code type;
@@ -1210,9 +1212,8 @@ struct dati {
   char *token; //@todo find fixed size limit
   uint64_t application_id;
 };
-
 //@todo missing initialization functions
-
+#endif
 
 namespace types {
 enum {
