@@ -11,11 +11,11 @@
         { "name": "name", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]" }},
         { "name": "color", "type":{ "base":"int" }},
         { "name": "hoist", "type":{ "base":"bool" }},
-        { "name": "position", "type":{ "base":"bool" }},
+        { "name": "position", "type":{ "base":"int" }},
         { "name": "permissions", "type":{ "base":"char", "dec":"*" }},
         { "name": "managed", "type":{ "base":"bool" }},
+        { "name": "mentionable", "type":{ "base":"bool" }},
         { "name": "tags", "todo":true },
-        { "name": "mentionable", "type":{ "base":"bool" }}
       ]
     }
   ]
