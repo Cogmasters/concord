@@ -207,7 +207,7 @@ orka_timestamp_ms()
   struct timespec t;
   clock_gettime(CLOCK_REALTIME, &t);
 
-  return t.tv_sec*1000 + t.tv_nsec/1000000;
+  return (uint64_t)t.tv_sec*1000 + (uint64_t)t.tv_nsec/1000000;
 }
 
 void
