@@ -650,11 +650,11 @@ static void gen_wrapper(FILE *fp, struct jc_struct *s)
               "  %s_list_free((struct %s**)p);\n"
               "}\n", t, t, t);
 
-  fprintf(fp, "void %s_list_from_json_v(char *str, size_t len, void ***p) {\n"
+  fprintf(fp, "void %s_list_from_json_v(char *str, size_t len, void *p) {\n"
               "  %s_list_from_json(str, len, (struct %s ***)p);\n"
               "}\n", t, t, t);
 
-  fprintf(fp, "size_t %s_list_to_json_v(char *str, size_t len, void **p){\n"
+  fprintf(fp, "size_t %s_list_to_json_v(char *str, size_t len, void *p){\n"
               "  return %s_list_to_json(str, len, (struct %s **)p);\n"
               "}\n", t, t, t);
 }
@@ -688,11 +688,11 @@ static void gen_forward_declare(FILE *fp, struct jc_struct *s)
   fprintf(fp, "void %s_list_free_v(void **p);\n", t);
   fprintf(fp, "void %s_list_free(struct %s **p);\n", t, t);
 
-  fprintf(fp, "void %s_list_from_json_v(char *str, size_t len, void ***p);\n", t);
+  fprintf(fp, "void %s_list_from_json_v(char *str, size_t len, void *p);\n", t);
   fprintf(fp, "void %s_list_from_json(char *str, size_t len, struct %s ***p);\n",
           t, t);
 
-  fprintf(fp, "size_t %s_list_to_json_v(char *str, size_t len, void **p);\n", t);
+  fprintf(fp, "size_t %s_list_to_json_v(char *str, size_t len, void *p);\n", t);
   fprintf(fp, "size_t %s_list_to_json(char *str, size_t len, struct %s **p);\n",
           t,t);
 }
