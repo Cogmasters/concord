@@ -30,8 +30,8 @@ void on_command(
   guild::create_role::params params1 = {
     .name = msg->content
   };
-  //guild::create_role::run(client, msg->guild_id, &params1, role); @todo should work with role parameter
-  guild::create_role::run(client, msg->guild_id, &params1, NULL);
+  guild::create_role::run(client, msg->guild_id, &params1, role); //@todo should work with role parameter
+  //guild::create_role::run(client, msg->guild_id, &params1, NULL);
 
   if (role->id) {
     char text[150];
