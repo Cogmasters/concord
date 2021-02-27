@@ -578,29 +578,34 @@ conn_init(struct user_agent_s *ua, struct ua_conn_s *conn)
 }
 
 static void
-conn_cleanup(struct ua_conn_s *conn)
+conns_cleanup(struct ua_conn_s *conns, size_t num_conn)
 {
-  curl_easy_cleanup(conn->ehandle);
-  if (conn->resp_body.start) {
-    free(conn->resp_body.start);
+  if (!conns) return;
+
+  for (size_t i=0; i < num_conn; ++i) {
+    curl_easy_cleanup(conns[i].ehandle);
+    if (conns[i].resp_body.start) {
+      free(conns[i].resp_body.start);
+    }
   }
+  free(conns); 
 }
 
 static struct ua_conn_s*
 get_conn(struct user_agent_s *ua)
 {
   if (!ua->num_available) { // no available conn, create new
-    struct ua_conn_s *new_conn = realloc(ua->conns, (1 + ua->size) * sizeof(struct ua_conn_s));
+    struct ua_conn_s *new_conn = realloc(ua->conns, (1 + ua->num_conn) * sizeof(struct ua_conn_s));
 
-    conn_init(ua, &new_conn[ua->size]);
+    conn_init(ua, &new_conn[ua->num_conn]);
     ua->conns = new_conn;
 
-    ++ua->size;
+    ++ua->num_conn;
 
-    return &ua->conns[ua->size-1];
+    return &ua->conns[ua->num_conn-1];
   }
   else {
-    for (size_t i=0; i < ua->size; ++i) {
+    for (size_t i=0; i < ua->num_conn; ++i) {
       if (ua->conns[i].is_available) {
         ua->conns[i].is_available = 0;
         --ua->num_available;
@@ -629,12 +634,7 @@ void
 ua_cleanup(struct user_agent_s *ua)
 {
   curl_slist_free_all(ua->reqheader);
-  if (ua->conns) {
-    for (size_t i=0; ua->size; ++i) {
-      conn_cleanup(&ua->conns[i]);
-    }
-    free(ua->conns); 
-  }
+  conns_cleanup(ua->conns, ua->num_conn);
 }
 
 /* template function for performing requests */

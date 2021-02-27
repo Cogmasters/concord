@@ -83,7 +83,7 @@ struct user_agent_s {
   struct curl_slist *reqheader; //the request header sent to the api
 
   struct ua_conn_s *conns;
-  size_t size; // num of conns
+  size_t num_conn;
 
   int num_available; // num of available conns
 
