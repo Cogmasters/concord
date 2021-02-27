@@ -5,12 +5,11 @@
 
 #include <libdiscord.h>
 #include <orka-utils.h>
-#include <orka-user-agent.hpp>
 
 #define ELITEBGS_API_URL "https://elitebgs.app/api/ebgs/v5"
 
 /* ELITEBGS User Agent for performing connections to the API */
-orka::user_agent::dati g_elitebgs_ua;
+struct user_agent_s g_elitebgs_ua;
 uint64_t g_tick_ms;
 
 struct doc_s {
@@ -49,7 +48,7 @@ void update_last_tick_ms()
     {&ticks_from_json, NULL};
 
   /* Fetch ticks from ELITEBGS API */
-  orka::user_agent::run(
+  ua_run(
       &g_elitebgs_ua, 
       &resp_handle,
       NULL,
@@ -286,7 +285,7 @@ void on_command(
 
   /* Fetch factions from ELITEBGS API */
   struct resp_handle resp_handle = {&embed_from_json, (void*)new_embed};
-  orka::user_agent::run(
+  ua_run(
       &g_elitebgs_ua, 
       &resp_handle,
       NULL,
@@ -316,7 +315,7 @@ int main(int argc, char *argv[])
     config_file = "bot.config";
 
   /* Initialize ELITEBGS User Agent */
-  orka::user_agent::init(&g_elitebgs_ua, ELITEBGS_API_URL);
+  ua_init(&g_elitebgs_ua, ELITEBGS_API_URL);
 
   /* Initialize Discord User Agent */
   discord::global_init();
@@ -338,7 +337,7 @@ int main(int argc, char *argv[])
   discord::run(client);
 
   /* Cleanup resources */
-  orka::user_agent::cleanup(&g_elitebgs_ua);
+  ua_cleanup(&g_elitebgs_ua);
   discord::cleanup(client);
   discord::global_cleanup();
 

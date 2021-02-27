@@ -1,7 +1,7 @@
 #ifndef GITHUB_V3_UA_H
 #define GITHUB_V3_UA_H
 
-#include "orka-user-agent.hpp"
+#include "http-common.h"
 
 
 namespace github {
@@ -9,7 +9,7 @@ namespace v3 {
 namespace user_agent {
 
 struct dati {
-  orka::user_agent::dati common;
+  struct user_agent_s common;
   char *username;
   char *token;
 };

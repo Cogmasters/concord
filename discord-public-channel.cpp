@@ -339,6 +339,32 @@ run(client *client, const uint64_t channel_id, params *params)
 
 namespace create {
 
+//@todo this is a temporary solution
+static curl_mime*
+curl_mime_cb(CURL *ehandle, void *data) 
+{
+  struct params *params = (struct params*)data;
+
+  curl_mime *mime = curl_mime_init(ehandle);
+  curl_mimepart *part = curl_mime_addpart(mime);
+
+  if (params->file.content) {
+    if (!params->file.name) { // set a default name
+      params->file.name = "a.out";
+    }
+    curl_mime_data(part, params->file.content, params->file.size);
+    curl_mime_filename(part, params->file.name);
+    curl_mime_type(part, "application/octet-stream");
+  }
+  else { //params->filename exists 
+    curl_mime_filedata(part, params->file.name);
+  }
+
+  curl_mime_name(part, "file");
+
+  return mime;
+}
+
 void
 run(client *client, const uint64_t channel_id, params *params, dati *p_message)
 {
@@ -421,47 +447,21 @@ run(client *client, const uint64_t channel_id, params *params, dati *p_message)
       HTTP_POST, 
       "/channels/%llu/messages", channel_id);
   }
-#if 0
   else 
   { // content-type is multipart/form-data
-    edit_reqheader_pair(&client->ua.common.reqheader, // change content-type
-        "Content-Type", "multipart/form-data");
+    ua_reqheader_edit(&client->ua.common, "Content-Type", "multipart/form-data");
 
-    /* @todo mime functions should be integrated to http-common.c 
-     *  to facilitate usage */
-    curl_mime *mime = curl_mime_init(client->ua.common.ehandle);
-    curl_mimepart *part = curl_mime_addpart(mime);
-
-    if (params->file.content) {
-      if (!params->file.name) { // set a default name
-        params->file.name = "a.out";
-      }
-      curl_mime_data(part, params->file.content, params->file.size);
-      curl_mime_filename(part, params->file.name);
-      curl_mime_type(part, "application/octet-stream");
-    }
-    else { //params->filename exists 
-      curl_mime_filedata(part, params->file.name);
-    }
-
-    curl_mime_name(part, "file");
-
-    //@todo find better solution than passing mime as req_body field
-    struct sized_buffer req_body = {(char*)mime};
+    ua_mime_setopt(&client->ua.common, params, &curl_mime_cb);
 
     user_agent::run( 
       &client->ua,
       &resp_handle,
-      &req_body,
-      HTTP_MIMEPOST, 
-      "/channels/%llu/messages", channel_id);
+      NULL,
+      HTTP_MIMEPOST, "/channels/%llu/messages", channel_id);
 
-    curl_mime_free(mime);
-
-    edit_reqheader_pair(&client->ua.common.reqheader, // set back to default
-        "Content-Type", "application/json");
+    //set back to default
+    ua_reqheader_edit(&client->ua.common, "Content-Type", "application/json");
   }
-#endif
 }
 
 } // namespace create

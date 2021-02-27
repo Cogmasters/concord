@@ -1,12 +1,12 @@
 #ifndef LIBDISCORD_COMMON_H
 #define LIBDISCORD_COMMON_H
 
-#include <stdint.h>
+#include <inttypes.h>
 #include <curl/curl.h>
 #include "json-scanf.h"
 #include "json-actor.h"
 
-#include "orka-user-agent.hpp"
+#include "http-common.h"
 
 
 namespace discord {
@@ -197,7 +197,7 @@ struct error { /* @todo this won't be thread safe. */
 };
 
 struct dati { /* USER AGENT STRUCTURE */
-  orka::user_agent::dati common;
+  struct user_agent_s common;
 
   struct { /* RATELIMITING STRUCTURE */
     bucket::dati **buckets; //active client buckets

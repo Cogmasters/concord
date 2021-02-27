@@ -14,26 +14,21 @@ namespace user_agent {
 void
 init(dati *ua, char token[])
 {
-  orka::user_agent::init(&ua->common, BASE_API_URL);
+  ua_init(&ua->common, BASE_API_URL);
 
   char auth[128];
   int ret = snprintf(auth, sizeof(auth), "Bot %s", token);
   ASSERT_S(ret < (int)sizeof(auth), "Out of bounds write attempt");
 
-  char user_agent[] = "orca (http://github.com/cee-studio/orca)";
-
-  add_reqheader_pair(&ua->common, "Content-Type", "application/json");
-  add_reqheader_pair(&ua->common, "X-RateLimit-Precision", "millisecond");
-  add_reqheader_pair(&ua->common, "Accept", "application/json");
-  add_reqheader_pair(&ua->common, "Authorization", auth);
-  add_reqheader_pair(&ua->common, "User-Agent", user_agent);
+  ua_reqheader_add(&ua->common, "Authorization", auth);
+  ua_reqheader_add(&ua->common, "X-RateLimit-Precision", "millisecond");
 }
 
 void
 cleanup(dati *ua)
 {
   bucket::cleanup(ua);
-  orka::user_agent::cleanup(&ua->common);
+  ua_cleanup(&ua->common);
 }
 
 struct _ratelimit {
@@ -179,7 +174,7 @@ run(
     resp_handle->err_obj = (void*)&ua->json_err; //overrides existing obj
   }
 
-  orka::user_agent::vrun(
+  ua_vrun(
     &ua->common,
     resp_handle,
     req_body,

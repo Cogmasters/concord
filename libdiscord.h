@@ -1,7 +1,6 @@
 #ifndef LIBDISCORD_H_
 #define LIBDISCORD_H_
 
-#include <inttypes.h>
 #include "discord-common.h"
 typedef uint64_t u64_unix_ms_t;
 typedef uint64_t u64_snowflake_t;

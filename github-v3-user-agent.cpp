@@ -16,7 +16,7 @@ namespace user_agent {
 
 void
 cleanup(struct dati *ua) {
-  orka::user_agent::cleanup(&ua->common);
+  ua_cleanup(&ua->common);
 }
 
 static void
@@ -30,16 +30,12 @@ curl_easy_setopt_cb(CURL *ehandle, void *data)
 void
 init(struct dati *ua, char username[], char token[])
 {
-  ua_easy_setopt(&ua->common, ua, &curl_easy_setopt_cb);
+  ua_init(&ua->common, BASE_API_URL);
+  ua_reqheader_edit(&ua->common, "Accept", "application/vnd.github.v3+json");
 
-  char user_agent[] = "orca (http://github.com/cee-studio/orca)";
+  ua_easy_setopt(&ua->common, ua, &curl_easy_setopt_cb);
   ua->username = username;
   ua->token = token;
-
-  add_reqheader_pair(&ua->common, "Content-Type", "application/json");
-  add_reqheader_pair(&ua->common, "Accept", "application/vnd.github.v3+json");
-  add_reqheader_pair(&ua->common, "User-Agent", user_agent);
-
 }
 
 /* template function for performing requests */
@@ -54,7 +50,7 @@ void run(
   va_list args;
   va_start(args, endpoint);
 
-  orka::user_agent::vrun(
+  ua_vrun(
     &ua->common,
     resp_handle,
     req_body,

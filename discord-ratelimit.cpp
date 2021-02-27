@@ -96,17 +96,17 @@ parse_ratelimits(dati *bucket, struct ua_conn_s *conn)
 { 
   char *value; //fetch header value as string
 
-  value = get_respheader_value(conn, "x-ratelimit-remaining");
+  value = ua_respheader_value(conn, "x-ratelimit-remaining");
   if (NULL != value) {
     bucket->remaining =  strtol(value, NULL, 10);
   }
 
-  value = get_respheader_value(conn, "x-ratelimit-reset-after");
+  value = ua_respheader_value(conn, "x-ratelimit-reset-after");
   if (NULL != value) {
     bucket->reset_after_ms = 1000 * strtod(value, NULL);
   }
 
-  value = get_respheader_value(conn, "x-ratelimit-reset");
+  value = ua_respheader_value(conn, "x-ratelimit-reset");
   if (NULL != value) {
     bucket->reset_tstamp = 1000 * strtod(value, NULL);
   }
@@ -119,7 +119,7 @@ parse_ratelimits(dati *bucket, struct ua_conn_s *conn)
 static void
 create_route(user_agent::dati *ua, char endpoint[], struct ua_conn_s *conn)
 {
-  char *bucket_hash = get_respheader_value(conn, "x-ratelimit-bucket");
+  char *bucket_hash = ua_respheader_value(conn, "x-ratelimit-bucket");
   if (NULL == bucket_hash) return; //no hash information in header
 
   // create new route that will link the endpoint with a bucket
