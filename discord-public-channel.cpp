@@ -449,7 +449,7 @@ run(client *client, const uint64_t channel_id, params *params, dati *p_message)
   }
   else 
   { // content-type is multipart/form-data
-    ua_reqheader_edit(&client->ua.common, "Content-Type", "multipart/form-data");
+    ua_reqheader_add(&client->ua.common, "Content-Type", "multipart/form-data");
 
     ua_mime_setopt(&client->ua.common, params, &curl_mime_cb);
 
@@ -460,7 +460,7 @@ run(client *client, const uint64_t channel_id, params *params, dati *p_message)
       HTTP_MIMEPOST, "/channels/%llu/messages", channel_id);
 
     //set back to default
-    ua_reqheader_edit(&client->ua.common, "Content-Type", "application/json");
+    ua_reqheader_add(&client->ua.common, "Content-Type", "application/json");
   }
 }
 

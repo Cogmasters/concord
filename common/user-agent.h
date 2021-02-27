@@ -129,7 +129,6 @@ char* http_method_print(enum http_method method);
 char* ua_respheader_value(struct ua_conn_s *conn, char field[]);
 
 void ua_reqheader_add(struct user_agent_s *ua, char field[], char value[]);
-void ua_reqheader_edit(struct user_agent_s *ua, char field[], char new_value[]);
 void ua_reqheader_del(struct user_agent_s *ua, char field[]);
 
 void ua_easy_setopt(struct user_agent_s *ua, void *data, void (setopt_cb)(CURL *ehandle, void *data));

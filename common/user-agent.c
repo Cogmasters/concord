@@ -3,6 +3,7 @@
 #include <stdarg.h>
 #include <ctype.h> //for isspace()
 #include <string.h>
+#include <pthread.h>
 
 #include "user-agent.h"
 #include "orka-utils.h"
@@ -27,27 +28,23 @@ ua_reqheader_add(struct user_agent_s *ua, char field[],  char value[])
   int ret = snprintf(buf, sizeof(buf), "%s: %s", field, value);
   ASSERT_S(ret < MAX_HEADER_LEN, "Out of bounds write attempt");
 
+  /* check for match in existing fields */
+  size_t len = strlen(field);
+  struct curl_slist *node = ua->reqheader;
+  while (NULL != node) {
+    if (0 == strncasecmp(node->data, field, len)) {
+      free(node->data);
+      node->data = strndup(buf, sizeof(buf));
+      return; /* EARLY RETURN */
+    }
+    node = node->next;
+  }
+
+  /* couldn't find match, we will create a new field */
   if (NULL == ua->reqheader) 
     ua->reqheader = curl_slist_append(NULL, buf);
   else
     curl_slist_append(ua->reqheader, buf);
-}
-
-void
-ua_reqheader_edit(struct user_agent_s *ua, char field[],  char new_value[])
-{
-  size_t len = strlen(field);
-  struct curl_slist *node = ua->reqheader;
-  while (strncasecmp(node->data, field, len)) {
-    node = node->next;
-    if (NULL == node) {
-      D_PRINT("Couldn't find field '%s' in existing request header", field);
-      return; /* EARLY EXIT */
-    }
-  }
-
-  free(node->data);
-  asprintf(&node->data, "%s: %s", field, new_value);
 }
 
 // @todo this needs some testing
@@ -56,7 +53,7 @@ ua_reqheader_del(struct user_agent_s *ua, char field[])
 {
   struct curl_slist *node = ua->reqheader;
   size_t len = strlen(field);
-  if (strncasecmp(node->data, field, len)) {
+  if (0 == strncasecmp(node->data, field, len)) {
     free(node->data);
     free(node);
     ua->reqheader = NULL;
@@ -65,7 +62,7 @@ ua_reqheader_del(struct user_agent_s *ua, char field[])
   }
 
   do { // iterate linked list to try and find field match
-    if (node->next && strncasecmp(node->next->data, field, len)) {
+    if (node->next && 0 == strncasecmp(node->next->data, field, len)) {
       free(node->next->data);
       free(node->next);
       node->next = NULL;
@@ -229,38 +226,25 @@ set_url(struct ua_conn_s *conn, char base_api_url[], char endpoint[], va_list ar
 }
 
 static void
-noop_cb(void *data)
-{ 
+noop_cb(void *data) { 
   (void)data; 
   return; 
 }
 
 static perform_action
-noop_success_cb(
-  void *p_data,
-  int httpcode,
-  struct ua_conn_s *conn)
-{ 
+noop_success_cb(void *p_data, int httpcode, struct ua_conn_s *conn) { 
   (void)p_data; (void)httpcode; (void)conn;
   return ACTION_SUCCESS;
 }
 
 static perform_action
-noop_retry_cb(
-  void *p_data,
-  int httpcode,
-  struct ua_conn_s *conn)
-{
+noop_retry_cb(void *p_data, int httpcode, struct ua_conn_s *conn) {
   (void)p_data; (void)httpcode; (void)conn;
   return ACTION_RETRY;
 }
 
 static perform_action 
-noop_abort_cb(
-  void *p_data,
-  int httpcode,
-  struct ua_conn_s *conn)
-{ 
+noop_abort_cb(void *p_data, int httpcode, struct ua_conn_s *conn) { 
   (void)p_data; (void)httpcode; (void)conn;
   return ACTION_ABORT; 
 }
@@ -386,7 +370,7 @@ curl_resheader_cb(char *str, size_t size, size_t nmemb, void *p_userdata)
   *ptr = '\0'; //replace ':' with '\0' to separate field from value
 
   int ret = snprintf(resp_header->field[resp_header->size], MAX_HEADER_LEN, "%s", str);
-  ASSERT_S(ret < MAX_HEADER_LEN, "oob of paris->field");
+  ASSERT_S(ret < MAX_HEADER_LEN, "oob of resp_header->field");
 
   if (!(ptr = strstr(ptr + 1, "\r\n"))) {//returns if can't find CRLF match
     return realsize;
@@ -640,7 +624,7 @@ ua_init(struct user_agent_s *ua, char base_url[])
   memset(ua, 0, sizeof(struct user_agent_s));
   ua->base_url = base_url; //@todo should be duplicated?
 
-  // default user agent header
+  // default headers
   char user_agent[] = "orca (http://github.com/cee-studio/orca)";
   ua_reqheader_add(ua, "User-Agent", user_agent);
   ua_reqheader_add(ua, "Content-Type", "application/json");
@@ -664,8 +648,7 @@ ua_vrun(
   struct sized_buffer *req_body,
   struct perform_cbs *cbs,
   enum http_method http_method,
-  char endpoint[],
-  va_list args)
+  char endpoint[], va_list args)
 {
   struct ua_conn_s *conn = get_conn(ua);
 
@@ -689,8 +672,7 @@ ua_run(
   struct sized_buffer *req_body,
   struct perform_cbs *cbs,
   enum http_method http_method,
-  char endpoint[],
-  ...)
+  char endpoint[], ...)
 {
   va_list args;
   va_start(args, endpoint);

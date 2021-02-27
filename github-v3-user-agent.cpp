@@ -31,7 +31,7 @@ void
 init(struct dati *ua, char username[], char token[])
 {
   ua_init(&ua->common, BASE_API_URL);
-  ua_reqheader_edit(&ua->common, "Accept", "application/vnd.github.v3+json");
+  ua_reqheader_add(&ua->common, "Accept", "application/vnd.github.v3+json");
 
   ua_easy_setopt(&ua->common, ua, &curl_easy_setopt_cb);
   ua->username = username;
