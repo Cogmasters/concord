@@ -6,7 +6,7 @@
 #include "json-scanf.h"
 #include "json-actor.h"
 
-#include "http-common.h"
+#include "user-agent.h"
 
 
 namespace discord {

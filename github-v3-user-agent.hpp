@@ -1,7 +1,7 @@
 #ifndef GITHUB_V3_UA_H
 #define GITHUB_V3_UA_H
 
-#include "http-common.h"
+#include "user-agent.h"
 
 
 namespace github {

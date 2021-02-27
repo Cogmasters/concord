@@ -4,7 +4,7 @@
 #include <ctype.h> //for isspace()
 #include <string.h>
 
-#include "http-common.h"
+#include "user-agent.h"
 #include "orka-utils.h"
 
 /* attempt to get value from matching response header field */
@@ -630,6 +630,7 @@ get_conn(struct user_agent_s *ua)
       }
     }
     ERR("Couldn't get a connection (internal error)");
+    return NULL; // avoid -Wreturn-type
   }
 }
 
