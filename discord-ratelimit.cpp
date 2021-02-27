@@ -92,21 +92,21 @@ try_get(user_agent::dati *ua, char endpoint[])
 /* attempt to parse rate limit's header fields to the bucket
  *  linked with the connection which was performed */
 static void
-parse_ratelimits(dati *bucket, struct api_header_s *pairs)
+parse_ratelimits(dati *bucket, struct ua_conn_s *conn)
 { 
   char *value; //fetch header value as string
 
-  value = get_respheader_value(pairs, "x-ratelimit-remaining");
+  value = get_respheader_value(conn, "x-ratelimit-remaining");
   if (NULL != value) {
     bucket->remaining =  strtol(value, NULL, 10);
   }
 
-  value = get_respheader_value(pairs, "x-ratelimit-reset-after");
+  value = get_respheader_value(conn, "x-ratelimit-reset-after");
   if (NULL != value) {
     bucket->reset_after_ms = 1000 * strtod(value, NULL);
   }
 
-  value = get_respheader_value(pairs, "x-ratelimit-reset");
+  value = get_respheader_value(conn, "x-ratelimit-reset");
   if (NULL != value) {
     bucket->reset_tstamp = 1000 * strtod(value, NULL);
   }
@@ -117,9 +117,9 @@ parse_ratelimits(dati *bucket, struct api_header_s *pairs)
  *  client buckets.
  * If no match is found then we create a new client bucket */
 static void
-create_route(user_agent::dati *ua, char endpoint[])
+create_route(user_agent::dati *ua, char endpoint[], struct ua_conn_s *conn)
 {
-  char *bucket_hash = get_respheader_value(&ua->common.pairs, "x-ratelimit-bucket");
+  char *bucket_hash = get_respheader_value(conn, "x-ratelimit-bucket");
   if (NULL == bucket_hash) return; //no hash information in header
 
   // create new route that will link the endpoint with a bucket
@@ -159,25 +159,25 @@ create_route(user_agent::dati *ua, char endpoint[])
   route_check = *(struct _route_s **)tsearch(new_route, &ua->ratelimit.routes_root, &routecmp);
   ASSERT_S(route_check == new_route, "Couldn't create new bucket route");
 
-  parse_ratelimits(new_route->p_bucket, &ua->common.pairs);
+  parse_ratelimits(new_route->p_bucket, conn);
 }
 
 /* Attempt to build and/or updates bucket's rate limiting information.
  * In case that the endpoint doesn't have a bucket for routing, no 
  *  clashing will occur */
 void
-build(user_agent::dati *ua, dati *bucket, char endpoint[])
+build(user_agent::dati *ua, dati *bucket, char endpoint[], struct ua_conn_s *conn)
 {
   /* for the first use of an endpoint, we attempt to establish a
       route between it and a bucket (create a new bucket if needed) */
   if (!bucket) {
-    create_route(ua, endpoint);
+    create_route(ua, endpoint, conn);
     return;
   }
 
   // otherwise we just update the bucket rate limit values
 
-  parse_ratelimits(bucket, &ua->common.pairs);
+  parse_ratelimits(bucket, conn);
 }
 
 /* This comparison routines can be used with tdelete()

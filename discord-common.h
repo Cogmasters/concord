@@ -235,7 +235,7 @@ struct dati { /* BUCKET STRUCTURE */
 void cleanup(user_agent::dati *ua);
 void try_cooldown(dati *bucket);
 dati* try_get(user_agent::dati *ua, char endpoint[]);
-void build(user_agent::dati *ua, dati *bucket, char endpoint[]);
+void build(user_agent::dati *ua, dati *bucket, char endpoint[], struct ua_conn_s *conn);
 
 } // namespace bucket
 } // namespace user_agent

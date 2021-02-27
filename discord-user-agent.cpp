@@ -11,50 +11,29 @@
 namespace discord {
 namespace user_agent {
 
-/* initialize curl_slist's request header utility
- * @todo create distinction between bot and bearer token */
-static struct curl_slist*
-reqheader_init(char token[])
+void
+init(dati *ua, char token[])
 {
+  orka::user_agent::init(&ua->common, BASE_API_URL);
+
   char auth[128];
   int ret = snprintf(auth, sizeof(auth), "Bot %s", token);
   ASSERT_S(ret < (int)sizeof(auth), "Out of bounds write attempt");
 
   char user_agent[] = "orca (http://github.com/cee-studio/orca)";
 
-  struct curl_slist *new_header = NULL;
-  add_reqheader_pair(&new_header, "Content-Type", "application/json");
-  add_reqheader_pair(&new_header, "X-RateLimit-Precision", "millisecond");
-  add_reqheader_pair(&new_header, "Accept", "application/json");
-  add_reqheader_pair(&new_header, "Authorization", auth);
-  add_reqheader_pair(&new_header, "User-Agent", user_agent);
-
-  return new_header;
-}
-
-void
-init(dati *ua, char token[])
-{
-  orka::user_agent::init(&ua->common, BASE_API_URL);
-  ua->common.reqheader = reqheader_init(token);
-  ua->common.ehandle = custom_easy_init(
-                  &ua->p_client->settings,
-                  ua->common.reqheader,
-                  &ua->common.pairs,
-                  &ua->common.resp_body);
+  add_reqheader_pair(&ua->common, "Content-Type", "application/json");
+  add_reqheader_pair(&ua->common, "X-RateLimit-Precision", "millisecond");
+  add_reqheader_pair(&ua->common, "Accept", "application/json");
+  add_reqheader_pair(&ua->common, "Authorization", auth);
+  add_reqheader_pair(&ua->common, "User-Agent", user_agent);
 }
 
 void
 cleanup(dati *ua)
 {
   bucket::cleanup(ua);
-
-  curl_slist_free_all(ua->common.reqheader);
-  curl_easy_cleanup(ua->common.ehandle); 
-
-  if (ua->common.resp_body.start) {
-    free(ua->common.resp_body.start);
-  }
+  orka::user_agent::cleanup(&ua->common);
 }
 
 struct _ratelimit {
@@ -74,8 +53,7 @@ static perform_action
 on_success_cb(
   void *p_data,
   int httpcode,
-  struct sized_buffer *resp_body,
-  struct api_header_s *pairs)
+  struct ua_conn_s *conn)
 {
   DS_NOTOP_PRINT("(%d)%s - %s", 
       httpcode,
@@ -83,7 +61,7 @@ on_success_cb(
       http_reason_print(httpcode));
 
   struct _ratelimit *data = (struct _ratelimit*)p_data;
-  bucket::build(data->ua, data->bucket, data->endpoint);
+  bucket::build(data->ua, data->bucket, data->endpoint, conn);
 
   return ACTION_SUCCESS;
 }
@@ -92,8 +70,7 @@ static perform_action
 on_failure_cb(
   void *p_data,
   int httpcode,
-  struct sized_buffer *resp_body,
-  struct api_header_s *pairs)
+  struct ua_conn_s *conn)
 {
   if (httpcode >= 500) { // server related error, retry
     NOTOP_PRINT("(%d)%s - %s", 
@@ -135,7 +112,7 @@ on_failure_cb(
       char message[256];
       long long retry_after_ms = 0;
 
-      json_scanf(resp_body->start, resp_body->size,
+      json_scanf(conn->resp_body.start, conn->resp_body.size,
                   "[message]%s [retry_after]%lld",
                   message, &retry_after_ms);
 

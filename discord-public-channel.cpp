@@ -421,6 +421,7 @@ run(client *client, const uint64_t channel_id, params *params, dati *p_message)
       HTTP_POST, 
       "/channels/%llu/messages", channel_id);
   }
+#if 0
   else 
   { // content-type is multipart/form-data
     edit_reqheader_pair(&client->ua.common.reqheader, // change content-type
@@ -460,6 +461,7 @@ run(client *client, const uint64_t channel_id, params *params, dati *p_message)
     edit_reqheader_pair(&client->ua.common.reqheader, // set back to default
         "Content-Type", "application/json");
   }
+#endif
 }
 
 } // namespace create

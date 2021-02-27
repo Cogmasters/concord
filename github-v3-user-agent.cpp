@@ -14,40 +14,32 @@ namespace github {
 namespace v3 { 
 namespace user_agent {
 
-static struct curl_slist*
-reqheader_init()
-{
-  struct curl_slist *new_header = NULL;
-
-  new_header = curl_slist_append(new_header, "Accept: application/vnd.github.v3+json");
-  curl_slist_append(new_header, "Content-Type: application/json");
-  curl_slist_append(new_header, "User-Agent: orka");
-
-  return new_header;
+void
+cleanup(struct dati *ua) {
+  orka::user_agent::cleanup(&ua->common);
 }
 
-void
-cleanup(struct dati *ua)
+static void
+curl_easy_setopt_cb(CURL *ehandle, void *data)
 {
-  curl_slist_free_all(ua->req_header);
-  curl_easy_cleanup(ua->ehandle);
-
-  if (ua->resp_body.start) {
-    free(ua->resp_body.start);
-  }
+  dati *ua = (dati*)data;
+  curl_easy_setopt(ehandle, CURLOPT_USERNAME, ua->username);
+  curl_easy_setopt(ehandle, CURLOPT_USERPWD, ua->token);
 }
 
 void
 init(struct dati *ua, char username[], char token[])
 {
-  ua->req_header = reqheader_init();
-  ua->ehandle = custom_easy_init(&ua->settings,
-                                  ua->req_header,
-                                  &ua->pairs,
-                                  &ua->resp_body);
+  ua_easy_setopt(&ua->common, ua, &curl_easy_setopt_cb);
 
-  curl_easy_setopt(ua->ehandle, CURLOPT_USERNAME, username);
-  curl_easy_setopt(ua->ehandle, CURLOPT_USERPWD, token);
+  char user_agent[] = "orca (http://github.com/cee-studio/orca)";
+  ua->username = username;
+  ua->token = token;
+
+  add_reqheader_pair(&ua->common, "Content-Type", "application/json");
+  add_reqheader_pair(&ua->common, "Accept", "application/vnd.github.v3+json");
+  add_reqheader_pair(&ua->common, "User-Agent", user_agent);
+
 }
 
 /* template function for performing requests */
@@ -62,22 +54,14 @@ void run(
   va_list args;
   va_start(args, endpoint);
 
-  set_url(ua->ehandle, BASE_API_URL, endpoint, args); //set the request URL
+  orka::user_agent::vrun(
+    &ua->common,
+    resp_handle,
+    req_body,
+    NULL,
+    http_method, endpoint, args);
 
   va_end(args);
-
-  set_method(ua->ehandle, http_method, req_body); //set the request method
-  
-  //@todo this is a temporary solution
-  struct perform_cbs cbs = {NULL};
-  
-  //perform the request
-  perform_request(
-    resp_handle, 
-    &ua->resp_body,
-    &ua->pairs, 
-    ua->ehandle, 
-    &cbs);
 }
 
 } // namespace user_agent

@@ -6,27 +6,20 @@
 namespace orka {
 namespace user_agent {
 
-struct dati {
-  struct curl_slist *reqheader; //the request header sent to the api
-  struct sized_buffer resp_body; //the api response string
-  struct api_header_s pairs; //the key/field pairs response header
-  CURL *ehandle; //the curl's easy handle used to perform requests
-  char *base_url;
-  struct _settings_s settings;
-};
+typedef ua_handle_s dati;
 
-void init(struct dati *ua, char *base_url);
-void cleanup(struct dati *ua);
+void init(dati *ua, char *base_url);
+void cleanup(dati *ua);
 
 void vrun(
-  struct dati *ua,
+  dati *ua,
   struct resp_handle *handle,
   struct sized_buffer *req_body,
   struct perform_cbs *cbs,
   enum http_method http_method, char endpoint[], va_list ap);
 
 void run(
-  struct dati *ua,
+  dati *ua,
   struct resp_handle *handle,
   struct sized_buffer *req_body,
   struct perform_cbs *cbs,

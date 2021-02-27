@@ -1,7 +1,7 @@
 #ifndef GITHUB_V3_UA_H
 #define GITHUB_V3_UA_H
 
-#include "http-common.h"
+#include "orka-user-agent.hpp"
 
 
 namespace github {
@@ -9,18 +9,16 @@ namespace v3 {
 namespace user_agent {
 
 struct dati {
-  struct curl_slist *req_header; //the request header sent to the api
-  struct sized_buffer resp_body; //the api response string
-  struct api_header_s pairs; //the key/field pairs response header
-  CURL *ehandle; //the curl's easy handle used to perform requests
-  struct _settings_s settings;
+  orka::user_agent::dati common;
+  char *username;
+  char *token;
 };
 
 extern void init(struct dati *data,
                  char username[],
                  char token[]);
 
-extern void run(struct dati *data,
+extern void run(struct dati *ua,
                 struct resp_handle *resp_handle,
                 struct sized_buffer *req_body,
                 enum http_method http_method,

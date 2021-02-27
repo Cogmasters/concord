@@ -46,12 +46,14 @@ https://en.wikipedia.org/wiki/List_of_HTTP_status_codes */
 #define MAX_URL_LEN     512 + 1
 
 
+// @todo rename to ua_header_s ?
 struct api_header_s {
   char field[MAX_HEADER_SIZE][MAX_HEADER_LEN];
   char value[MAX_HEADER_SIZE][MAX_HEADER_LEN];
   int size;
 };
 
+// @todo rename to ua_settings_s ?
 struct _settings_s { //@todo this whole struct is temporary
   char *token;
   FILE *f_json_dump;
@@ -61,7 +63,7 @@ struct _settings_s { //@todo this whole struct is temporary
 //callback for object to be loaded by api response
 typedef void (load_obj_cb)(char *str, size_t len, void *p_obj);
 
-// response handle
+// @todo rename to ua_resp_handle_s ?
 struct resp_handle {
   load_obj_cb *ok_cb;
   void *ok_obj; // the pointer to be passed to ok_cb
@@ -70,18 +72,30 @@ struct resp_handle {
   void *err_obj; // the pointer to be passed to err_cb
 };
 
-char* get_respheader_value(struct api_header_s *pairs, char field[]);
-void add_reqheader_pair(struct curl_slist **reqheader, char field[], char value[]);
-void edit_reqheader_pair(struct curl_slist **reqheader, char field[], char new_value[]);
-void del_reqheader_pair(struct curl_slist **reqheader, char field[]);
-char* http_code_print(int httpcode);
-char* http_reason_print(int httpcode);
-char* http_method_print(enum http_method method);
+struct ua_conn_s {
+  int is_available; // boolean
 
-/* set url to be used for the request */
-void set_url(CURL *ehandle, char base_api_url[], char endpoint[], va_list args);
-/* set specific http method used for the request */
-void set_method(CURL *ehandle, enum http_method method, struct sized_buffer *req_body);
+  CURL *ehandle; //the curl's easy handle used to perform requests
+  struct sized_buffer resp_body; //the api response string
+  struct api_header_s pairs; //the key/field pairs response header
+  char *req_url;
+  char *resp_url;
+};
+
+struct ua_handle_s {
+  struct curl_slist *reqheader; //the request header sent to the api
+
+  struct ua_conn_s *conns;
+  size_t size;
+
+  int num_available; // num of available conns
+
+  struct _settings_s settings;
+  char *base_url;
+
+  void *data; // user arbitrary data for setopt_cb
+  void (*setopt_cb)(CURL *ehandle, void *data); // set custom easy_setopts
+};
 
 typedef enum { 
   ACTION_SUCCESS, // continue after succesfull request
@@ -93,9 +107,9 @@ typedef enum {
 typedef perform_action (http_response_cb)(
     void *data,
     int httpcode, 
-    struct sized_buffer *resp_body,
-    struct api_header_s *pairs);
+    struct ua_conn_s *conn);
 
+// @todo rename to ua_perform_cbs ?
 struct perform_cbs {
   void *p_data; // data to be received by callbacks
 
@@ -108,17 +122,29 @@ struct perform_cbs {
   http_response_cb *on_5xx; // triggers on 5xx code
 };
 
-void perform_request(
-  struct resp_handle *resp_handle,
-  struct sized_buffer *resp_body,
-  struct api_header_s *pairs,
-  CURL *ehandle,
-  struct perform_cbs *cbs);
 
-CURL* custom_easy_init(struct _settings_s *settings,
-                 struct curl_slist *req_header,
-                 struct api_header_s *pairs,
-                 struct sized_buffer *resp_body);
+char* http_code_print(int httpcode);
+char* http_reason_print(int httpcode);
+char* http_method_print(enum http_method method);
+
+char* get_respheader_value(struct ua_conn_s *conn, char field[]);
+
+void add_reqheader_pair(struct ua_handle_s *handle, char field[], char value[]);
+void edit_reqheader_pair(struct ua_handle_s *handle, char field[], char new_value[]);
+void del_reqheader_pair(struct ua_handle_s *handle, char field[]);
+
+void ua_easy_setopt(struct ua_handle_s *handle, void *data, void (setopt_cb)(CURL *ehandle, void *data));
+int ua_send_request(struct ua_conn_s *conn);
+void ua_perform_request(
+  struct ua_conn_s *conn, 
+  struct resp_handle *resp_handle,
+  struct perform_cbs *p_cbs);
+struct ua_conn_s* ua_get_conn(struct ua_handle_s *handle);
+void ua_set_method(struct ua_conn_s *conn, enum http_method method, struct sized_buffer *req_body);
+void ua_set_url(struct ua_conn_s *conn, char base_api_url[], char endpoint[], va_list args);
+void ua_conn_load(struct ua_handle_s *handle, struct ua_conn_s *conn);
+void ua_handle_init(struct ua_handle_s *handle, char base_url[]);
+void ua_handle_cleanup(struct ua_handle_s *handle);
 
 void json_dump(const char *text, struct _settings_s *settings, const char *data);
 int curl_debug_cb(CURL *ehandle, curl_infotype type, char *data, size_t size, void *p_userdata);
