@@ -226,27 +226,21 @@ set_url(struct ua_conn_s *conn, char base_api_url[], char endpoint[], va_list ar
 }
 
 static void
-noop_cb(void *data) { 
-  (void)data; 
-  return; 
-}
+noop_cb(void *data) { return; (void)data; }
 
 static perform_action
 noop_success_cb(void *p_data, int httpcode, struct ua_conn_s *conn) { 
-  (void)p_data; (void)httpcode; (void)conn;
-  return ACTION_SUCCESS;
+  return ACTION_SUCCESS; (void)p_data; (void)httpcode; (void)conn;
 }
 
 static perform_action
 noop_retry_cb(void *p_data, int httpcode, struct ua_conn_s *conn) {
-  (void)p_data; (void)httpcode; (void)conn;
-  return ACTION_RETRY;
+  return ACTION_RETRY; (void)p_data; (void)httpcode; (void)conn;
 }
 
 static perform_action 
 noop_abort_cb(void *p_data, int httpcode, struct ua_conn_s *conn) { 
-  (void)p_data; (void)httpcode; (void)conn;
-  return ACTION_ABORT; 
+  return ACTION_ABORT; (void)p_data; (void)httpcode; (void)conn;
 }
 
 static int
@@ -575,7 +569,7 @@ conn_init(struct user_agent_s *ua, struct ua_conn_s *conn)
 
   /* DEBUG MODE SETOPTS END */
   
-  // user defined curl_easy_setopts cb
+  // execute user-defined curl_easy_setopts
   if (ua->setopt_cb) {
     (*ua->setopt_cb)(new_ehandle, ua->data);
   }
@@ -635,8 +629,11 @@ void
 ua_cleanup(struct user_agent_s *ua)
 {
   curl_slist_free_all(ua->reqheader);
-  for (size_t i=0; ua->size; ++i) {
-    conn_cleanup(&ua->conns[i]);
+  if (ua->conns) {
+    for (size_t i=0; ua->size; ++i) {
+      conn_cleanup(&ua->conns[i]);
+    }
+    free(ua->conns); 
   }
 }
 
