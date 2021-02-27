@@ -2076,7 +2076,7 @@ json_vextract (char * json, size_t size, char * extractor, va_list ap)
   jsmn_init(&parser);
   jsmntok_t * tokens = NULL;
   int num_tok = jsmn_parse(&parser, json, size, NULL, 0);
-  D_PRINT("# of tokens = %d", num_tok);
+  DS_PRINT("# of tokens = %d", num_tok);
   if (num_tok < 0)
     ERR("Failed to parse JSON: %.*s, returned token number: %d",
         (int)size, json, num_tok);
