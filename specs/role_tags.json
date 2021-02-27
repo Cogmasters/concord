@@ -7,8 +7,8 @@
       "name":"dati",
       "fields":
       [
-        { "name": "bot_id", "type":{ "base":"s_as_u64" }},
-        { "name": "integration_id", "type":{ "base":"s_as_u64" }},
+        { "name": "bot_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
+        { "name": "integration_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
         { "name": "premium_subscriber", "type":{ "base":"int" }}
       ]
     }

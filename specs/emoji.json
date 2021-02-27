@@ -7,10 +7,10 @@
       "name":"dati",
       "fields":
       [
-        { "name": "id", "type":{ "base":"s_as_u64"}},
+        { "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}},
         { "name": "name", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]"}},
         { "name": "roles", "todo":true },
-        { "name": "user", "type":{ "base":"user::dati", "dec":"*" }},
+        { "name": "user", "type":{ "base":"discord::user::dati", "dec":"*" }},
         { "name": "require_colons", "type":{ "base":"bool" }},
         { "name": "managed", "type":{ "base":"bool" }},
         { "name": "animated", "type":{ "base":"bool" }},

@@ -11,12 +11,12 @@
         { "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"},
         { "name": "description", "type":{ "base":"char", "dec":"*" }, "comment": "@todo find fixed size limit"},
         { "name": "usage_count", "type":{ "base":"int"}},
-        { "name": "creator_id", "type":{ "base":"s_as_u64" }},
-        { "name": "creator", "type":{ "base":"user::dati", "dec":"*" }},
-        { "name": "created_at", "type":{ "base":"s_as_u64" }},
-        { "name": "updated_at", "type":{ "base":"s_as_u64" }},
-        { "name": "source_guild_id", "type":{ "base":"s_as_u64" }},
-        { "name": "serialized_source_guild", "type":{ "base":"guild::dati", "dec":"*" }},
+        { "name": "creator_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
+        { "name": "creator", "type":{ "base":"discord::user::dati", "dec":"*" }},
+        { "name": "created_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }},
+        { "name": "updated_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }},
+        { "name": "source_guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
+        { "name": "serialized_source_guild", "type":{ "base":"discord::guild::dati", "dec":"*" }},
         { "name": "is_dirty", "type":{ "base":"bool" }},
       ]
     }

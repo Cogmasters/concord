@@ -8,7 +8,7 @@
       "name":"dati",
       "fields":
       [
-        { "name": "user", "type":{ "base":"user::dati", "dec":"*" }},
+        { "name": "user", "type":{ "base":"discord::user::dati", "dec":"*" }},
         { "name": "nick", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]"}},
         { "name": "roles", "todo":true, "type":{ "base":"s_as_u64", "dec":"ntl" }},
         { "name": "joined_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }},

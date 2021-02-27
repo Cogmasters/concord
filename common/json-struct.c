@@ -44,6 +44,8 @@ struct converter {
   char *output_type;
   char *extractor;
   char *injector;
+  char *extractor_addrof;
+  char *injector_addrof;
   char *free;
 };
 
@@ -79,6 +81,8 @@ static void init_converters () {
   converters[0]->free = NULL;
   converters[0]->extractor = "orka_iso8601_to_unix_ms";
   converters[0]->injector = "orka_unix_ms_to_iso8601";
+  converters[0]->extractor_addrof = "&";
+  converters[0]->injector_addrof = "&";
 
   converters[1]->name = "snowflake";
   converters[1]->input_type = "char*";
@@ -86,6 +90,8 @@ static void init_converters () {
   converters[1]->free = NULL;
   converters[1]->extractor = "orka_strtoull";
   converters[1]->injector = "orka_ulltostr";
+  converters[1]->extractor_addrof = "&";
+  converters[1]->injector_addrof = "&";
 
   for (int i = 0; converters[i]; i++)
     fprintf(stderr, "loading converters %s ...\n", converters[i]->name);
@@ -338,13 +344,184 @@ definition_from_json(char *json, size_t size, struct jc_definition *s)
   return ret;
 }
 
-static void
-gen_default(FILE *fp, char *type)
-{
-  fprintf(fp, "void %s_init(struct %s *p) {\n", type, type);
-  fprintf(fp, "  memset(p, 0, sizeof(struct %s));\n", type);
-  fprintf(fp, "}\n");
+struct action {
+  bool todo;
+  char *c_name;
+  char *c_type;
+  char *pre_dec;
+  char *post_dec;
+  char *extract_arg_decor;
+  char *inject_arg_decor;
+  char *extractor;
+  char *injector;
+  char *free;
+  char *alloc;
+  bool is_user_def;
+  bool is_caller_alloc;
+};
 
+static int to_builtin_action(struct jc_field *f, struct action *act)
+{
+  if (strcmp(f->type.base, "int") == 0) {
+    act->extractor = "d";
+    act->injector = "d";
+    act->c_type = f->type.c_base ? f->type.c_base : "int";
+  }
+  else if (strcmp(f->type.base, "s_as_u64") == 0) {
+    act->extractor = "s_as_u64";
+    act->injector = "s_as_u64";
+    act->c_type = "uint64_t";
+  }
+  else if (strcmp(f->type.base, "s_as_i64") == 0) {
+    act->extractor = "s_as_i64";
+    act->injector = "s_as_i64";
+    act->c_type = "uint64_t";
+  }
+  else if (strcmp(f->type.base, "int64_t") == 0) {
+    act->extractor = "i64";
+    act->injector = "i64";
+  }
+  else if (strcmp(f->type.base, "bool") == 0) {
+    act->extractor = "b";
+    act->injector = "b";
+    act->c_type = "bool";
+  }
+  else {
+    //fprintf(stderr, "unknown %s\n", f->type.base);
+    return 0;
+  }
+  return 1;
+}
+
+static void
+to_action(struct jc_field *f, struct action *act)
+{
+  if (f->todo) {
+    act->todo = true;
+    return;
+  }
+
+  act->post_dec = "";
+  act->pre_dec = "";
+  if (f->type.c_base)
+    act->c_type = f->type.c_base;
+  else
+    act->c_type = f->type.base;
+
+  act->c_name = f->c_name ? f->c_name : f->name;
+
+  switch(f->type.dec.tag)
+  {
+    case DEC_POINTER:
+      if (strcmp(f->type.base, "char") == 0) {
+        act->injector = "s";
+        act->extractor = "?s";
+        act->extract_arg_decor = "&";
+        act->inject_arg_decor = "&";
+        act->post_dec = "";
+        act->pre_dec = "*";
+        act->free = "free";
+        act->c_type = "char";
+        if (f->type.converter) {
+          struct converter *c = get_converter(f->type.converter);
+          act->is_user_def = true;
+          act->extractor = c->extractor;
+          act->injector = c->injector;
+          act->free = c->free;
+          act->extract_arg_decor = c->extractor_addrof;
+          act->inject_arg_decor = c->injector_addrof;
+          if (0 == strcmp(c->input_type, "char*")) {
+            act->c_type = c->output_type;
+            act->post_dec = "";
+            act->pre_dec = "";
+          }
+          else {
+            ERR("type mismatch %s\n", c->input_type);
+          }
+        }
+        return;
+      } else {
+        char *tok = strrchr(f->type.base, ':');
+        if (tok != NULL) {
+          asprintf(&act->injector, "%s_to_json", f->type.base);
+          asprintf(&act->extractor, "%s_from_json", f->type.base);
+          asprintf(&act->alloc, "%s_alloc", f->type.base);
+          asprintf(&act->free, "%s_free", f->type.base);
+          act->extract_arg_decor = "";
+          act->inject_arg_decor = "";
+          act->post_dec = "";
+          act->pre_dec = "*";
+          act->is_user_def = true;
+          act->is_caller_alloc = false;
+        }
+      }
+      break;
+    case DEC_NONE:
+      act->extract_arg_decor = "&";
+      act->inject_arg_decor = "&";
+      if (!to_builtin_action(f, act)) {
+        ERR("unknown %s\n", f->type.base);
+      }
+      break;
+    case DEC_NTL:
+      act->extract_arg_decor = "&";
+      act->inject_arg_decor = "";
+      act->pre_dec = "**";
+      act->is_user_def = true;
+      act->is_caller_alloc = true;
+      if (to_builtin_action(f, act)) {
+        act->free = "free";
+        asprintf(&act->extractor, "%s_list_from_json", f->type.base);
+        asprintf(&act->injector, "%s_list_to_json", f->type.base);
+      } else {
+        asprintf(&act->extractor, "%s_list_from_json", f->type.base);
+        asprintf(&act->injector, "%s_list_to_json", f->type.base);
+        asprintf(&act->free, "%s_list_free", f->type.base);
+      }
+      break;
+    case DEC_ARRAY:
+      if (strcmp(f->type.base, "char") == 0) {
+        act->injector = "s";
+        act->extractor = "s";
+        act->extract_arg_decor = "";
+        act->inject_arg_decor = "";
+        act->post_dec = f->type.dec.value;
+        act->pre_dec = "";
+        act->free = NULL;
+        act->c_type = "char";
+        return;
+      } else {
+        ERR("array only support char\n");
+      }
+  }
+}
+
+static void
+gen_init (FILE *fp, struct jc_struct *s)
+{
+  char *t = s->name;
+
+  fprintf(fp, "void %s_init(struct %s *p) {\n", t, t);
+  fprintf(fp, "  memset(p, 0, sizeof(struct %s));\n", t);
+  for (int i = 0; s->fields[i]; i++) {
+    struct jc_field *f = s->fields[i];
+    struct action act = { 0 };
+    to_action(f, &act);
+
+    if (act.todo) continue;
+
+    if (act.alloc)
+      fprintf (fp, "  p->%s = %s();\n", act.c_name, act.alloc);
+  }
+  fprintf(fp, "}\n");
+}
+
+static void
+gen_default(FILE *fp, struct jc_struct * s)
+{
+  char * type = s->name;
+
+  gen_init(fp, s);
   fprintf(fp, "struct %s* %s_alloc() {\n", type, type);
   fprintf(fp, "  struct %s *p= (struct %s*)malloc(sizeof(struct %s));\n",
           type, type, type);
@@ -379,152 +556,6 @@ gen_default(FILE *fp, char *type)
   fprintf(fp, "  return ntl_to_buf(str, len, (void **)p, NULL, %s_to_json_v);\n",
           type);
   fprintf(fp, "}\n");
-}
-
-struct action {
-  bool todo;
-  char *c_name;
-  char *c_type;
-  char *pre_dec;
-  char *post_dec;
-  char *extract_addrof;
-  char *inject_addrof;
-  char *extract_spec;
-  char *inject_spec;
-  char *free;
-  bool is_user_def;
-};
-
-static int to_builtin_action(struct jc_field *f, struct action *act)
-{
-  if (strcmp(f->type.base, "int") == 0) {
-    act->extract_spec = "d";
-    act->inject_spec = "d";
-    act->c_type = f->type.c_base ? f->type.c_base : "int";
-  }
-  else if (strcmp(f->type.base, "s_as_u64") == 0) {
-    act->extract_spec = "s_as_u64";
-    act->inject_spec = "s_as_u64";
-    act->c_type = "uint64_t";
-  }
-  else if (strcmp(f->type.base, "s_as_i64") == 0) {
-    act->extract_spec = "s_as_i64";
-    act->inject_spec = "s_as_i64";
-    act->c_type = "uint64_t";
-  }
-  else if (strcmp(f->type.base, "int64_t") == 0) {
-    act->extract_spec = "i64";
-    act->inject_spec = "i64";
-  }
-  else if (strcmp(f->type.base, "bool") == 0) {
-    act->extract_spec = "b";
-    act->inject_spec = "b";
-    act->c_type = "bool";
-  }
-  else {
-    //fprintf(stderr, "unknown %s\n", f->type.base);
-    return 0;
-  }
-  return 1;
-}
-
-static void
-to_action(struct jc_field *f, struct action *act)
-{
-  if (f->todo) {
-    act->todo = true;
-    return;
-  }
-
-  act->post_dec = "";
-  act->pre_dec = "";
-  if (f->type.c_base)
-    act->c_type = f->type.c_base;
-  else
-    act->c_type = f->type.base;
-
-  act->c_name = f->c_name ? f->c_name : f->name;
-
-  switch(f->type.dec.tag)
-  {
-    case DEC_POINTER:
-      if (strcmp(f->type.base, "char") == 0) {
-        act->inject_spec = "s";
-        act->extract_spec = "?s";
-        act->extract_addrof = "&";
-        act->inject_addrof = "&";
-        act->post_dec = "";
-        act->pre_dec = "*";
-        act->free = "free";
-        act->c_type = "char";
-        if (f->type.converter) {
-          struct converter *c = get_converter(f->type.converter);
-          act->is_user_def = true;
-          act->extract_spec = c->extractor;
-          act->inject_spec = c->injector;
-          act->free = c->free;
-          if (0 == strcmp(c->input_type, "char*")) {
-            act->c_type = c->output_type;
-            act->post_dec = "";
-            act->pre_dec = "";
-          }
-          else {
-            ERR("type mismatch %s\n", c->input_type);
-          }
-        }
-        return;
-      } else {
-        char *tok = strrchr(f->type.base, ':');
-        if (tok != NULL) {
-          asprintf(&act->inject_spec, "%s_to_json", f->type.base);
-          asprintf(&act->extract_spec, "%s_from_json", f->type.base);
-          asprintf(&act->free, "%s_free", f->type.base);
-          act->extract_addrof = "";
-          act->inject_addrof = "";
-          act->post_dec = "";
-          act->pre_dec = "*";
-          act->is_user_def = true;
-        }
-      }
-      break;
-    case DEC_NONE:
-      act->extract_addrof = "&";
-      act->inject_addrof = "&";
-      if (!to_builtin_action(f, act)) {
-        ERR("unknown %s\n", f->type.base);
-      }
-      break;
-    case DEC_NTL:
-      act->extract_addrof = "&";
-      act->inject_addrof = "";
-      act->pre_dec = "**";
-      act->is_user_def = true;
-      if (to_builtin_action(f, act)) {
-        act->free = "free";
-        asprintf(&act->extract_spec, "%s_list_from_json", f->type.base);
-        asprintf(&act->inject_spec, "%s_list_to_json", f->type.base);
-      } else {
-        //act->is_user_def = true;
-        asprintf(&act->extract_spec, "%s_list_from_json", f->type.base);
-        asprintf(&act->inject_spec, "%s_list_to_json", f->type.base);
-        asprintf(&act->free, "%s_list_free", f->type.base);
-      }
-      break;
-    case DEC_ARRAY:
-      if (strcmp(f->type.base, "char") == 0) {
-        act->inject_spec = "s";
-        act->extract_spec = "s";
-        act->extract_addrof = "";
-        act->inject_addrof = "";
-        act->post_dec = f->type.dec.value;
-        act->pre_dec = "";
-        act->free = NULL;
-        act->c_type = "char";
-        return;
-      } else {
-        ERR("array only support char\n");
-      }
-  }
 }
 
 static void gen_cleanup(FILE *fp, struct jc_struct *s)
@@ -570,7 +601,9 @@ static void gen_from_json(FILE *fp, struct jc_struct *s)
   fprintf(fp, "void %s_from_json(char *json, size_t len, struct %s *p)\n",
           t, t);
   fprintf(fp, "{\n");
-  fprintf(fp, "  json_extract(json, len, \n");
+  fprintf(fp, "  static size_t ret=0; // used for debugging\n");
+  fprintf(fp, "  size_t r=0;\n");
+  fprintf(fp, "  r=json_extract(json, len, \n");
   for (int i = 0; s->fields[i]; i++) {
     struct jc_field *f= s->fields[i];
     struct action act = {0};
@@ -580,7 +613,7 @@ static void gen_from_json(FILE *fp, struct jc_struct *s)
     if (act.is_user_def)
       fprintf(fp, "                \"(%s):F,\"\n", act.c_name);
     else
-      fprintf(fp, "                \"(%s):%s,\"\n", act.c_name, act.extract_spec);
+      fprintf(fp, "                \"(%s):%s,\"\n", act.c_name, act.extractor);
   }
   fprintf(fp, "                \"@arg_switches:b\",\n");
 
@@ -590,16 +623,24 @@ static void gen_from_json(FILE *fp, struct jc_struct *s)
     to_action(f, &act);
     if (act.todo) continue;
 
-    if (act.is_user_def)
-      fprintf(fp, "                %s, &p->%s,\n", act.extract_spec, act.c_name);
+    if (act.is_user_def) {
+      if (act.is_caller_alloc)
+        fprintf(fp, "                %s, &p->%s,\n",
+                act.extractor, act.c_name);
+      else
+        fprintf(fp, "                %s, %sp->%s,\n",
+                act.extractor, act.extract_arg_decor, act.c_name);
+    }
     else
-      fprintf(fp, "                %sp->%s,\n", act.extract_addrof, act.c_name);
+      fprintf(fp, "                %sp->%s,\n",
+              act.extract_arg_decor, act.c_name);
   }
   fprintf(fp, "                p->__metadata.arg_switches,"
     " sizeof(p->__metadata.arg_switches),"
     " &p->__metadata.enable_arg_switches,\n");
   fprintf(fp, "                p->__metadata.record_defined,"
     " sizeof(p->__metadata.record_defined));\n");
+  fprintf(fp, "  ret = r;\n");
   fprintf(fp, "}\n");
 }
 
@@ -621,7 +662,7 @@ static void gen_to_json(FILE *fp, struct jc_struct *s)
     if (act.is_user_def)
       fprintf(fp, "                \"(%s):F,\"\n", act.c_name);
     else
-      fprintf(fp, "                \"(%s):%s,\"\n", act.c_name, act.inject_spec);
+      fprintf(fp, "                \"(%s):%s,\"\n", act.c_name, act.injector);
   }
   fprintf(fp, "                \"@arg_switches:b\",\n");
 
@@ -632,9 +673,11 @@ static void gen_to_json(FILE *fp, struct jc_struct *s)
     if (act.todo) continue;
 
     if (act.is_user_def)
-      fprintf(fp, "                %s, p->%s,\n", act.inject_spec, act.c_name);
+      fprintf(fp, "                %s, %sp->%s,\n",
+              act.injector, act.inject_arg_decor, act.c_name);
     else
-      fprintf(fp, "                %sp->%s,\n", act.inject_addrof, act.c_name);
+      fprintf(fp, "                %sp->%s,\n",
+              act.inject_arg_decor, act.c_name);
   }
   fprintf(fp, "                p->__metadata.arg_switches, "
     "sizeof(p->__metadata.arg_switches),"
@@ -645,6 +688,8 @@ static void gen_to_json(FILE *fp, struct jc_struct *s)
 
 static void gen_to_query(FILE *fp, struct jc_struct *s)
 {
+  return;
+
   char *t = s->name;
   bool has_query = false;
   for (int i = 0; s->fields[i]; i++) {
@@ -676,7 +721,7 @@ static void gen_to_query(FILE *fp, struct jc_struct *s)
     struct action act = {0};
     to_action(f, &act);
     if (act.todo) continue;
-    fprintf(fp, "                \"(%s):%s\"\n", f->name, act.inject_spec);
+    fprintf(fp, "                \"(%s):%s\"\n", f->name, act.injector);
   }
   fprintf(fp, "                \"@arg_switches:b\",\n");
 
@@ -689,7 +734,7 @@ static void gen_to_query(FILE *fp, struct jc_struct *s)
     to_action(f, &act);
     if (act.todo) continue;
 
-    fprintf(fp, "                %sp->%s,\n", act.inject_addrof, f->name);
+    fprintf(fp, "                %sp->%s,\n", act.inject_arg_decor, f->name);
   }
   fprintf(fp, "                p->__metadata.arg_switches,"
     " sizeof(p->__metadata.arg_switches),"
@@ -724,40 +769,42 @@ static void gen_wrapper(FILE *fp, struct jc_struct *s)
   char *t = s->name;
   fprintf(fp, "void %s_cleanup_v(void *p) {\n"
               "  %s_cleanup((struct %s *)p);\n"
-              "}\n", t, t, t);
+              "}\n\n", t, t, t);
 
   fprintf(fp, "void %s_init_v(void *p) {\n"
               "  %s_init((struct %s *)p);\n"
-              "}\n", t, t, t);
+              "}\n\n", t, t, t);
 
 
   fprintf(fp, "void %s_free_v(void *p) {\n"
               " %s_free((struct %s *)p);\n"
-              "};\n", t, t, t);
+              "};\n\n", t, t, t);
 
   fprintf(fp, "void %s_from_json_v(char *json, size_t len, void *p) {\n"
               " %s_from_json(json, len, (struct %s*)p);\n"
-              "}\n", t, t, t);
+              "}\n\n", t, t, t);
 
   fprintf(fp, "size_t %s_to_json_v(char *json, size_t len, void *p) {\n"
               "  return %s_to_json(json, len, (struct %s*)p);\n"
-              "}\n", t, t, t);
+              "}\n\n", t, t, t);
 
+#if 0
   fprintf(fp, "size_t %s_to_query_v(char *json, size_t len, void *p) {\n"
               "  return %s_to_query(json, len, (struct %s*)p);\n"
-              "}\n", t, t, t);
+              "}\n\n", t, t, t);
+#endif
 
   fprintf(fp, "void %s_list_free_v(void **p) {\n"
               "  %s_list_free((struct %s**)p);\n"
-              "}\n", t, t, t);
+              "}\n\n", t, t, t);
 
   fprintf(fp, "void %s_list_from_json_v(char *str, size_t len, void *p) {\n"
               "  %s_list_from_json(str, len, (struct %s ***)p);\n"
-              "}\n", t, t, t);
+              "}\n\n", t, t, t);
 
   fprintf(fp, "size_t %s_list_to_json_v(char *str, size_t len, void *p){\n"
               "  return %s_list_to_json(str, len, (struct %s **)p);\n"
-              "}\n", t, t, t);
+              "}\n\n", t, t, t);
 }
 
 static void gen_forward_declare(FILE *fp, struct jc_struct *s)
@@ -798,15 +845,17 @@ static void gen_forward_declare(FILE *fp, struct jc_struct *s)
           t,t);
 }
 
-static void gen_typedef (FILE * fp, struct jc_struct *s) {
+static void gen_typedef (FILE * fp, struct jc_struct *s)
+{
+#if 1
   fprintf(fp, "typedef void (*vfvp)(void *);\n");
-  fprintf(fp, "typedef void (*vfcsvp)(char *, size_t, void *);\n");
-  fprintf(fp, "typedef size_t (*sfcsvp)(char *, size_t, void *);\n");
+  fprintf(fp, "typedef void (*vfcpsvp)(char *, size_t, void *);\n");
+  fprintf(fp, "typedef size_t (*sfcpsvp)(char *, size_t, void *);\n");
+#endif
 }
 
 static void gen_struct (FILE * fp, struct jc_struct * s)
 {
-  char * t = s->name;
   //fprintf (fp, "/* comment out to avoid redefinition warning\n");
 
   if (file_type == FILE_HEADER || file_type == FILE_DECLARATION) {
@@ -818,30 +867,36 @@ static void gen_struct (FILE * fp, struct jc_struct * s)
     gen_def(fp, s);
     //fprintf (fp, "\n*/\n");
     gen_forward_declare(fp, s);
-    gen_typedef(fp, s);
-    gen_wrapper(fp, s);
-    gen_cleanup(fp, s);
-    fprintf(fp, "\n");
-    gen_default(fp, t);
-    fprintf(fp, "\n");
+
     gen_from_json(fp, s);
     fprintf(fp, "\n");
     gen_to_json(fp, s);
     fprintf(fp, "\n");
     gen_to_query(fp, s);
+    fprintf(fp, "\n");
+
+    // boilerplate
+    gen_typedef(fp, s);
+    gen_wrapper(fp, s);
+    gen_cleanup(fp, s);
+    fprintf(fp, "\n");
+    gen_default(fp, s);
     fprintf(fp, "\n");
   } else {
-    gen_typedef(fp, s);
-    gen_wrapper(fp, s);
-    gen_cleanup(fp, s);
-    fprintf(fp, "\n");
-    gen_default(fp, t);
-    fprintf(fp, "\n");
     gen_from_json(fp, s);
     fprintf(fp, "\n");
     gen_to_json(fp, s);
     fprintf(fp, "\n");
     gen_to_query(fp, s);
+    fprintf(fp, "\n");
+
+    // boilerplate
+    gen_typedef(fp, s);
+    gen_wrapper(fp, s);
+    fprintf(fp, "\n");
+    gen_cleanup(fp, s);
+    fprintf(fp, "\n");
+    gen_default(fp, s);
     fprintf(fp, "\n");
   }
 }

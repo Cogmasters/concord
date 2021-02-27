@@ -125,7 +125,7 @@ specs/%.h: specs/%.json
 	./bin/actor-gen.exe -d -o $@ $<
 
 $(OBJDIR)/%.cc.o: %.cc
-	$(CXX) $(CXXFLAGS) $(LIBS_CFLAGS) $(GENFLAGS) -c -o $@ $<
+	$(CXX) $(CXXFLAGS) $(LIBS_CFLAGS) $(GENFLAGS) -c -o $@ $< -Wno-unused-but-set-variable
 
 actor-gen.exe: mkdir $(ACTOR_GEN_OBJS)
 	$(CC) -o $@ $(ACTOR_GEN_OBJS) -lm
@@ -147,10 +147,10 @@ install : all
 	install -d $(PREFIX)/include/
 	install -m 644 *.h *.hpp common/*.h common/*.hpp $(PREFIX)/include/
 
-clean_specs :
+specs_clean :
 	rm -f specs/*.cc specs/*.h
 
-clean : clean_specs
+clean : specs_clean
 	rm -rf $(OBJDIR) *.exe test/*.exe bots/*.exe bin/*
 
 

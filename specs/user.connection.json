@@ -1,5 +1,5 @@
 {
-    "namespace": ["discord", "user", "connection"],
+  "namespace": ["discord", "user", "connection"],
   "comment": "VOICE STRUCTURE\nhttps://discord.com/developers/docs/resources/voice#voice-state-object-voice-state-structure",
   "structs":
   [

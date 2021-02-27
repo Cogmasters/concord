@@ -9,10 +9,10 @@
       [
         { "name": "delete_member_days", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"},
         { "name": "members_removed", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"},
-        { "name": "channel_id", "type":{ "base":"s_as_u64" } },
-        { "name": "message_id", "type":{ "base":"s_as_u64" } },
+        { "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" } },
+        { "name": "message_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" } },
         { "name": "count", "type":{ "base":"char", "dec":"*" }, "comment":"@todo find fixed size limit"},
-        { "name": "id", "type":{ "base":"s_as_u64" }},
+        { "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
         { "name": "type", "type":{ "base":"char", "dec":"*" }, "comment":"@todo find fixed size limit"},
         { "name": "role", "type":{ "base":"char", "dec":"*" }, "comment":"@todo find fixed size limit"},
       ]
