@@ -11,16 +11,16 @@ namespace user_agent {
 
 
 void
-init(struct dati *d, char *username, char *password)
+init(struct dati *ua, char *username, char *password)
 {
-  orka::user_agent::init(d->ua, BASE_API_URL);
-  d->username =  username;
+  ua_init(&ua->common, BASE_API_URL);
+  ua->username =  username;
 }
 
 /* template function for performing requests */
 void 
 run(
-  struct dati *api,
+  struct dati *ua,
   struct resp_handle *resp_handle,
   struct sized_buffer *req_body,
   enum http_method http_method,
@@ -32,12 +32,10 @@ run(
   va_start (args, endpoint);
 
   orka::user_agent::vrun(
-    api->ua, 
+    &ua->common, 
     resp_handle, 
     req_body, 
-    http_method, 
-    endpoint, 
-    args);
+    http_method, endpoint, args);
 
   va_end(args);
 }
