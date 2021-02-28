@@ -78,6 +78,9 @@ ntl_realloc_init(
 void
 ntl_free(void **p, void (*free_elem)(void *p))
 {
+  if (p == NULL)
+    return;
+
   size_t i;
   for (i = 0; p[i]; i++)
     (*free_elem)(p[i]);
@@ -107,6 +110,7 @@ ntl_dup (void ** p, size_t elem_size)
 void
 ntl_apply(void * cxt, void **p, void (*f)(void * cxt, void *p))
 {
+  if (NULL == p) return;
   size_t i;
   for (i = 0; p[i]; i++)
     (*f)(cxt, p[i]);
@@ -115,6 +119,8 @@ ntl_apply(void * cxt, void **p, void (*f)(void * cxt, void *p))
 size_t
 ntl_to_buf2(char * buf, size_t size, struct ntl_serializer * serializer)
 {
+  if (serializer->ntl_provider == NULL)
+    return 0;
   return ntl_to_buf(buf, size,
                     serializer->ntl_provider,
                     serializer->delimiter,
@@ -141,6 +147,9 @@ ntl_to_buf(char *buf, size_t size, void **p, struct ntl_str_delimiter * d,
 {
   static struct ntl_str_delimiter dx = { '[', ",", "", ']' };
   if (!d) d = &dx;
+
+  if (p == NULL)
+    return 0;
 
   const char * start = buf;
   size_t i, tsize = 0;
@@ -189,6 +198,9 @@ size_t
 ntl_to_abuf(char ** buf_p, void **p, struct ntl_str_delimiter * d,
            ntl_elem_serializer * x)
 {
+  if (p == NULL)
+    return 0;
+
   int s = ntl_to_buf(NULL, 0, p, d, x);
   if (s < 0)
     return -1;
@@ -200,6 +212,9 @@ ntl_to_abuf(char ** buf_p, void **p, struct ntl_str_delimiter * d,
 void **
 ntl_fmap(void * cxt, void ** from_list, size_t to_elem_size, ntl_converter * f)
 {
+  if (from_list == NULL)
+    return NULL;
+
   void ** to_list = ntl_calloc(ntl_length(from_list), to_elem_size);
   if (f) {
     size_t i;
@@ -259,6 +274,9 @@ ntl_from_buf(char *buf, size_t len, struct ntl_deserializer * deserializer)
 int
 ntl_is_a_member (void ** p , void * addr)
 {
+  if (p == NULL)
+    return 0;
+
   for (size_t i = 0; p[i]; i++) {
     if (p[i] == addr)
       return 1;

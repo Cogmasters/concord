@@ -4,9 +4,9 @@
 #include <stddef.h> // for size_t
 
 /*
- * a null terminated list implementation
+ * A null terminated list implementation
  *
- * a null terminated list of n elements of type struct E is defined as
+ * A null terminated list of n elements of type struct E is defined as
  *
  * struct ntl {
  *    void * indices[n+1];  // indices[n] = NULL
@@ -33,6 +33,8 @@
  *
  *  for (size_t i = 0; p[i]; i++)
  *    // do something here for each element
+ *
+ * A ntl pointed by p is empty if p is NULL or p[0] == NULL
  *
  */
 #ifdef __cplusplus
