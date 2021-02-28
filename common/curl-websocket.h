@@ -25,7 +25,6 @@
 
 #ifndef _CURL_WEBSOCKET_H_
 #define _CURL_WEBSOCKET_H_ 1
-#endif
 
 #include <curl/curl.h>
 #include <string.h>
@@ -200,4 +199,6 @@ bool cws_close(CURL *easy, enum cws_close_reason reason, const char *reason_text
 
 #ifdef __cplusplus
 }
+#endif
+
 #endif
