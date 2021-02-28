@@ -1,5 +1,5 @@
-#ifndef HTTP_COMMON_H
-#define HTTP_COMMON_H
+#ifndef USER_AGENT_H
+#define USER_AGENT_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -159,4 +159,4 @@ int curl_debug_cb(CURL *ehandle, curl_infotype type, char *data, size_t size, vo
 }
 #endif // __cplusplus
 
-#endif // HTTP_COMMON_H
+#endif // USER_AGENT_H
