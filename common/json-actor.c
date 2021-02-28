@@ -15,7 +15,7 @@
  *            | <composite-value> | <action>
  *
  * <action> := d | ld | lld | f | lf | b | s_as_u64 <size-specifier>s
- *            | F | F_nullable
+ *            | F | F_nullable | key | s_as_u64 | s_as_hex64
  *
  * <access-path-value> := <access-path> : <value>
  *
@@ -163,11 +163,13 @@ struct size_specifier {
 
 enum builtin_type {
   B_BOOL = 1,
+  B_KEY_EXISTENCE,
   B_INT,
   B_LONG,
   B_LONG_LONG,
   B_STRING_AS_U32,
   B_STRING_AS_U64,
+  B_STRING_AS_HEX64,
   B_STRING_AS_I32,
   B_STRING_AS_I64,
   B_FLOAT,
@@ -1253,6 +1255,8 @@ inject_builtin (
       return xprintf(pos, size, info, "%d", *(int*)v->operand);
     case B_STRING_AS_U64:
       return xprintf(pos, size, info, "\"%" PRIu64 "\"", *(uint64_t*)v->operand);
+    case B_STRING_AS_HEX64:
+      return xprintf(pos, size, info, "\"%" PRIx64 "\"", *(uint64_t*)v->operand);
     case B_FLOAT:
       return xprintf(pos, size, info, "%f", *(float*)v->operand);
     case B_DOUBLE:
@@ -1879,20 +1883,27 @@ static size_t extract_scalar (struct action * a, int i, struct e_info * info)
       add_defined(info->E, a->operand);
       break;
     case B_STRING_AS_U64:
+    case B_STRING_AS_HEX64:
+    {
+      int base = 10;
+      if (a->_.builtin == B_STRING_AS_HEX64)
+        base = 16;
+
       if (is_null)
         *(uint64_t *) a->operand = 0;
       else if (JSMN_STRING == tokens[i].type) {
-        *(uint64_t *) a->operand = (uint64_t) strtoull(json + tokens[i].start, &xend, 10);
+        *(uint64_t *) a->operand = (uint64_t) strtoull(json + tokens[i].start,
+                                                       &xend, 10);
         if (xend != json + tokens[i].end)
-          ERR("failed to extract s_as_u64 from %.*s\n",
+          ERR("failed to extract s_as_u64 or s_as_hex64 from %.*s\n",
               tokens[i].end - tokens[i].start, json + tokens[i].start);
-      }
-      else {
-        ERR("failed to extract s_as_u64 from %.*s\n",
+      } else {
+        ERR("failed to extract s_as_u64 or s_as_hex64 from %.*s\n",
             tokens[i].end - tokens[i].start, json + tokens[i].start);
       }
       add_defined(info->E, a->operand);
       break;
+    }
     case B_BOOL:
       if (JSMN_PRIMITIVE == tokens[i].type)
         switch (json[tokens[i].start])
