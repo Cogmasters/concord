@@ -160,7 +160,7 @@
 - [x] [Get User](https://discord.com/developers/docs/resources/user#get-user)
 - [ ] [Modify Current User](https://discord.com/developers/docs/resources/user#modify-current-user)
 - [ ] [Get Current User Guilds](https://discord.com/developers/docs/resources/user#get-current-user-guilds)
-- [ ] [Leave Guild](https://discord.com/developers/docs/resources/user#leave-guild)
+- [X] [Leave Guild](https://discord.com/developers/docs/resources/user#leave-guild)
 - [ ] [Get User DMs](https://discord.com/developers/docs/resources/user#get-user-dms)
 - [ ] [Create DM](https://discord.com/developers/docs/resources/user#create-dm)
 - [ ] [Create Group DM](https://discord.com/developers/docs/resources/user#create-group-dm)

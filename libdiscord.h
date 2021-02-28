@@ -1470,6 +1470,7 @@ namespace me { // current user centered functions
 
 void get(client *client, dati *p_user);
 guild::dati** get_guilds(client *client);
+void leave_guild(client *client, const u64_snowflake_t guild_id);
 
 } // namespace me
 
