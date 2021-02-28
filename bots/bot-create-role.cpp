@@ -30,8 +30,7 @@ void on_command(
   guild::create_role::params params1 = {
     .name = msg->content
   };
-  guild::create_role::run(client, msg->guild_id, &params1, role); //@todo should work with role parameter
-  //guild::create_role::run(client, msg->guild_id, &params1, NULL);
+  guild::create_role::run(client, msg->guild_id, &params1, role);
 
   if (role->id) {
     char text[150];
@@ -59,11 +58,11 @@ int main(int argc, char *argv[])
   client *client = fast_init(config_file);
   assert(NULL != client);
 
-  setcb(client, COMMAND, &on_command, "!create ");
+  setcb(client, COMMAND, &on_command, "!createRole ");
 
   printf("\n\nThis bot demonstrates how easy it is to create a"
          " new role.\n"
-         "1. Type !create <name of role>"
+         "1. Type !createRole <name of role>"
          "\nTYPE ANY KEY TO START BOT\n");
   fgetc(stdin); // wait for input
 
