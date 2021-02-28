@@ -993,8 +993,6 @@ ws_main_loop(dati *ws)
       (*ws->cbs.on_idle)(ws->p_client, ws->me);
     }
 
-    cws_ping(ws->ehandle, NULL, 0);
-
   } while(is_running);
 }
 
