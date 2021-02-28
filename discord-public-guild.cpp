@@ -215,12 +215,11 @@ void run(client *client, const uint64_t guild_id, params *params, channel::dati 
   if (params->rate_limit_per_user)
     A[5] = (void *)&params->rate_limit_per_user;
   A[6] = (void *)&params->position;
-  /* @todo 
   if (params->permission_overwrites)
-    A[7] = (void *)params->permission_overwrites; */
+    A[7] = (void *)params->permission_overwrites;
   if (params->parent_id)
-    A[7] = (void *)&params->parent_id;
-  A[8] = (void *)&params->nsfw;
+    A[8] = (void *)&params->parent_id;
+  A[9] = (void *)&params->nsfw;
 
   char payload[MAX_PAYLOAD_LEN];
   json_inject(payload, sizeof(payload),
@@ -231,7 +230,7 @@ void run(client *client, const uint64_t guild_id, params *params, channel::dati 
       "(user_limit):d"
       "(rate_limit_per_user):d"
       "(position):d"
-      //"(permission_overwrites):F" @todo
+      "(permission_overwrites):F"
       "(parent_id):s_as_u64"
       "(nsfw):b"
       "@arg_switches",
@@ -242,7 +241,7 @@ void run(client *client, const uint64_t guild_id, params *params, channel::dati 
       &params->bitrate,
       &params->rate_limit_per_user,
       &params->position,
-      //&overwrite::dati_list_to_json, &params->permission_overwrites,
+      &channel::overwrite::dati_list_to_json, params->permission_overwrites,
       &params->parent_id,
       &params->nsfw,
       A, sizeof(A));
