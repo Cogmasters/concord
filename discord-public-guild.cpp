@@ -190,6 +190,79 @@ get_channels(client *client, const uint64_t guild_id)
   return new_channels;
 }
 
+namespace create_channel {
+
+void run(client *client, const uint64_t guild_id, params *params, channel::dati *p_channel)
+{
+  if (!guild_id) {
+    D_PUTS("Missing 'guild_id");
+    return;
+  }
+  if (IS_EMPTY_STRING(params->name)) {
+    D_PUTS("Missing channel name (params.name)");
+    return;
+  }
+
+  void *A[10] = {0}; // pointer availability array.
+  A[0] = (void *)params->name;
+  A[1] = (void *)&params->type;
+  if (!IS_EMPTY_STRING(params->topic))
+    A[2] = (void *)&params->topic;
+  if (params->bitrate)
+    A[3] = (void *)&params->bitrate;
+  if (params->user_limit)
+    A[4] = (void *)&params->user_limit;
+  if (params->rate_limit_per_user)
+    A[5] = (void *)&params->rate_limit_per_user;
+  A[6] = (void *)&params->position;
+  /* @todo 
+  if (params->permission_overwrites)
+    A[7] = (void *)params->permission_overwrites; */
+  if (params->parent_id)
+    A[7] = (void *)&params->parent_id;
+  A[8] = (void *)&params->nsfw;
+
+  char payload[MAX_PAYLOAD_LEN];
+  json_inject(payload, sizeof(payload),
+      "(name):s"
+      "(type):d"
+      "(topic):s"
+      "(bitrate):d"
+      "(user_limit):d"
+      "(rate_limit_per_user):d"
+      "(position):d"
+      //"(permission_overwrites):F" @todo
+      "(parent_id):s_as_u64"
+      "(nsfw):b"
+      "@arg_switches",
+      params->name,
+      &params->type,
+      params->topic,
+      &params->user_limit,
+      &params->bitrate,
+      &params->rate_limit_per_user,
+      &params->position,
+      //&overwrite::dati_list_to_json, &params->permission_overwrites,
+      &params->parent_id,
+      &params->nsfw,
+      A, sizeof(A));
+
+  struct resp_handle resp_handle = {
+    .ok_cb = p_channel ? channel::dati_from_json : NULL,
+    .ok_obj = p_channel,
+  };
+
+  struct sized_buffer req_body = {payload, strlen(payload)};
+
+  user_agent::run( 
+    &client->ua,
+    &resp_handle,
+    &req_body,
+    HTTP_POST, "/guilds/%llu/channels", guild_id);
+}
+
+} // namespace create_channel
+
 namespace create_role {
 
 void run(client *client, const uint64_t guild_id, params *params, role::dati *p_role)
@@ -211,11 +284,6 @@ void run(client *client, const uint64_t guild_id, params *params, role::dati *p_
   if (params->mentionable)
     A[4] = (void *)&params->mentionable;
 
-  struct resp_handle resp_handle = {
-    .ok_cb = p_role ? role::dati_from_json_v : NULL,
-    .ok_obj = p_role,
-  };
-
   char payload[MAX_PAYLOAD_LEN];
   json_inject(payload, sizeof(payload),
       "(name):s"
@@ -231,14 +299,18 @@ void run(client *client, const uint64_t guild_id, params *params, role::dati *p_
       &params->mentionable,
       A, sizeof(A));
 
+  struct resp_handle resp_handle = {
+    .ok_cb = p_role ? role::dati_from_json_v : NULL,
+    .ok_obj = p_role,
+  };
+
   struct sized_buffer req_body = {payload, strlen(payload)};
 
   user_agent::run( 
     &client->ua,
     &resp_handle,
-    &req_body, //empty POSTFIELDS
-    HTTP_POST, 
-    "/guilds/%llu/roles", guild_id);
+    &req_body,
+    HTTP_POST, "/guilds/%llu/roles", guild_id);
 }
 
 } // namespace create_role

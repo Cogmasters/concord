@@ -1390,6 +1390,25 @@ size_t dati_to_json(char *, size_t, void *p);
 void get(client *client, const uint64_t guild_id, dati *p_guild);
 channel::dati** get_channels(client *client, const uint64_t guild_id);
 
+namespace create_channel {
+
+struct params {
+  char *name;
+  channel::types::code type;
+  char *topic;
+  int user_limit;
+  int bitrate;
+  int rate_limit_per_user;
+  int position;
+  //@todo permission_overwrites
+  u64_snowflake_t parent_id;
+  bool nsfw;
+};
+
+void run(client *client, const uint64_t guild_id, params *params, channel::dati *p_channel);
+
+} // namespace create_channel
+
 namespace create_role {
 
 struct params {
