@@ -2,6 +2,7 @@
 #include "json-actor.h"
 #include <string.h>
 #include <stdlib.h>
+#include <assert.h>
 
 int foobar (char * pos, size_t size, void *p)
 {
@@ -18,21 +19,23 @@ static char bigbuf[1024];
 int main () {
   json_inject(bigbuf, sizeof(bigbuf), "[ true, false, true]");
   fprintf(stderr, "%s\n", bigbuf);
+  assert(strcmp(bigbuf, "[true,false,true]") == 0);
 
   json_inject(bigbuf, sizeof(bigbuf), "[ null, 1]");
   fprintf(stderr, "%s\n", bigbuf);
+  assert(strcmp(bigbuf, "[null,1]") == 0);
 
   json_inject(bigbuf, sizeof(bigbuf), "[ null, |abc|]");
   fprintf(stderr, "%s\n", bigbuf);
+  assert(strcmp(bigbuf, "[null,\"abc\"]") == 0);
 
   json_inject(bigbuf, sizeof(bigbuf), "[ null, |abc%d|]", 10);
   fprintf(stderr, "%s\n", bigbuf);
+  assert(strcmp(bigbuf, "[null,\"abc10\"]") == 0);
 
   json_inject(bigbuf, sizeof(bigbuf), "{ (k):null, (b):|abc|}");
   fprintf(stderr, "%s\n", bigbuf);
-
-  json_inject(bigbuf, sizeof(bigbuf), "{ (k):null, (x):|abc|}");
-  fprintf(stderr, "%s\n", bigbuf);
+  assert(strcmp(bigbuf, "{\"k\":null,\"b\":\"abc\"}") == 0);
 
   char * t = "abc";
   int i = 10;
@@ -40,31 +43,38 @@ int main () {
 
   json_inject(bigbuf, sizeof(bigbuf), "[ s d f ]", t, &i, &f);
   fprintf(stderr, "%s\n", bigbuf);
+  assert(strcmp(bigbuf, "[\"abc\",10,10.400000]") == 0);
 
   json_inject(bigbuf, sizeof(bigbuf),
               "{ (a string) : s  (a int) : d  ( a float ):f }",
               t, &i, &f);
   fprintf(stderr, "%s\n", bigbuf);
+  assert(strcmp(bigbuf, "{\"a string\":\"abc\",\"a int\":10,\" a float \":10.400000}") == 0);
 
   json_inject(bigbuf, sizeof(bigbuf),
                 "{ (a string) : s,  (a int) : d,  ( a float ):f }",
                 NULL, NULL, NULL);
   fprintf(stderr, "%s\n", bigbuf);
+  assert(strcmp(bigbuf, "{\"a string\":null,\"a int\":null,\" a float \":null}") == 0);
 
   int b = 0;
   void *A[4] = {&b, 0, 0};
-  json_inject(bigbuf, sizeof(bigbuf), "[ b, b ] @arg_switches", &i, &b, &A, sizeof(A));
+  json_inject(bigbuf, sizeof(bigbuf), "[b,b] @arg_switches", &i, &b, &A, sizeof(A));
   fprintf(stderr, "used @ %s\n", bigbuf);
+  assert(strcmp(bigbuf, "[false]") == 0);
 
   fprintf (stderr, "funptr %p\n", (void*)&foobar);
   json_inject(bigbuf, sizeof(bigbuf), "[ F ]", &foobar, NULL);
   fprintf(stderr, "%s\n", bigbuf);
+  assert(strcmp(bigbuf, "[{}]") == 0);
 
   json_inject(bigbuf, sizeof(bigbuf), "[ F ]", &foobar, &i);
   fprintf(stderr, "[ F ] > %s\n", bigbuf);
+  assert(strcmp(bigbuf, "[10, 11]") == 0);
 
   json_inject(bigbuf, sizeof(bigbuf), "[ |F| ]", &foobar, &i);
   fprintf(stderr, "[ |F| ] > %s\n", bigbuf);
+  assert(strcmp(bigbuf, "[\"10, 11\"]") == 0);
 
   json_inject(bigbuf, sizeof(bigbuf),
               "(k1) : s"
@@ -75,6 +85,7 @@ int main () {
               A, sizeof(A));
 
   fprintf(stderr, "%s\n", bigbuf);
+  assert(strcmp(bigbuf, "{\"k2\":{\"1\":false}}") == 0);
 
 
   void *B[4] = {NULL};

@@ -10,7 +10,7 @@
  *
  * Simple JSON/Query/Body <-> Struct Conversion Spec
  *
- * <definition> := { <namespace> <struct-list> }
+ * <definition> := { <namespace> <struct-list> <enum-list> }
  *
  * <namespace> : = "namespace" : [ <string>+ ]
  *
@@ -35,6 +35,12 @@
  *                            }
  *
  * <field-loc>   :=  "loc"  : ("json" | "query" | "body")
+ *
+ * <enum> := "enum" { "name": <string>, <enum-items> }
+ *
+ * <enum-items> = "items": [ <item>+ ]
+ *
+ * <item> := { "name" : <string>, "value": <integer>? }
  *
  */
 
@@ -137,6 +143,19 @@ enum file_type {
 };
 static enum file_type file_type = FILE_SINGLE_FILE;
 
+static char*
+get_file_suffix(enum file_type t)
+{
+  switch(t)
+  {
+    case FILE_SINGLE_FILE: return "cc";
+    case FILE_DECLARATION: return "hh";
+    case FILE_DEFINITION: return "cc";
+    case FILE_HEADER: return "hh";
+    case FILE_CODE: return "cc";
+  }
+}
+
 enum dec_tag {
   DEC_NONE = 0, // this has to be zero as the absence means DEC_NONE
   DEC_POINTER = 1,
@@ -205,13 +224,56 @@ print_struct(FILE *fp, struct jc_struct *p)
   ntl_apply(fp, (void**)p->fields, print_field);
 }
 
+struct jc_item {
+  char *name;
+  int value;
+  char *comment;
+  bool todo;
+  bool has_value;
+};
+
+static void
+print_item(FILE *fp, struct jc_item *p, int i)
+{
+  fprintf(fp, "name %s: ", p->name);
+
+  if (p->has_value)
+    fprintf(fp, "%d", p->value);
+  else
+    fprintf(fp, "%d", i);
+}
+
+struct jc_enum {
+  char *name;
+  struct jc_item **items;
+};
+
+static void
+print_enum(FILE *fp, struct jc_enum *p)
+{
+  fprintf(fp, "name %s\n", p->name);
+  ntl_apply(fp, (void**)p->items, print_item);
+}
+
 struct jc_definition {
-  char * spec_name;
+  char *spec_name;
   bool is_disabled;
   char *comment;
   char **namespace; // ntl
   struct jc_struct **structs; //ntl
+  struct jc_enum **enums; //ntl
 };
+
+static char*
+namespace_to_str(char **ns)
+{
+  char *buf; size_t len;
+  FILE * fp = open_memstream(&buf, &len);
+  for(int i = 0; ns && ns[i]; i++)
+    fprintf(fp,"%s.", ns[i]);
+  fclose(fp);
+  return buf;
+}
 
 static void
 print_definition(FILE *fp, struct jc_definition *p)
@@ -219,20 +281,24 @@ print_definition(FILE *fp, struct jc_definition *p)
   fprintf(fp, "/*\n %s  */\n", p->comment);
   fprintf(fp, "namespace: ");
   ntl_apply(fp, (void**)p->namespace, fprintf);
+
   fprintf(fp, "\n");
   ntl_apply(fp, (void**)p->structs, print_struct);
+
+  fprintf(fp, "\n");
+  ntl_apply(fp, (void**)p->enums, print_enum);
 }
 
 static size_t
 loc_from_json(char *json, size_t size, enum loc *p)
 {
-  if (4 == size && 0 == strncmp(json, "json", 4)) {
+  if (4 == size && 0 == strncmp(json, "json", size)) {
     *p = LOC_IN_JSON;
   }
-  else if (5 == size && 0 == strncmp(json, "query", 5)) {
+  else if (5 == size && 0 == strncmp(json, "query", size)) {
     *p = LOC_IN_QUERY;
   }
-  else if (4 == size && 0 == strncmp(json, "body", 4)) {
+  else if (4 == size && 0 == strncmp(json, "body", size)) {
     *p = LOC_IN_BODY;
   }
   return 1;
@@ -244,13 +310,13 @@ dec_from_json(char *json, size_t size, struct dec *p)
   if (1 == size && '*' == *json) {
     p->tag = DEC_POINTER;
   }
-  else if (3 == size && 0 == strncmp(json, "ntl", 3)) {
+  else if (3 == size && 0 == strncmp(json, "ntl", size)) {
     p->tag = DEC_NTL;
   }
-  else if (4 == size && 0 == strncmp(json, "none", 4)) {
+  else if (4 == size && 0 == strncmp(json, "none", size)) {
     p->tag = DEC_NONE;
   }
-  else if (7 == size && 0 == strncmp(json, "pointer", 7)) {
+  else if (7 == size && 0 == strncmp(json, "pointer", size)) {
     p->tag = DEC_POINTER;
   }
   else if ('[' == *json) {
@@ -308,6 +374,76 @@ struct_from_json(char *json, size_t size, struct jc_struct *s)
 }
 
 static size_t
+item_from_json(char *json, size_t size, void *x)
+{
+  struct jc_item *p = (struct jc_item *)x;
+  void * defined[4] = {0};
+
+  size_t s = json_extract(json, size,
+                          "(name):?s,"
+                          "(todo):b,"
+                          "(value):d,"
+                          "(comment):?s"
+                          "@record_defined",
+                          &p->name,
+                          &p->todo,
+                          &p->value,
+                          &p->comment,
+                          defined, sizeof(defined));
+
+  for (int i = 0; i < 4; i++) {
+    if (defined[i] == &p->value)
+      p->has_value = true;
+  }
+  return s;
+}
+
+static size_t
+enum_from_json(char * json, size_t size, struct jc_enum *e)
+{
+  struct ntl_deserializer d = {
+    .elem_size = sizeof(struct jc_item),
+    .elem_from_buf = item_from_json,
+    .init_elem = NULL,
+    .ntl_recipient_p = (void ***)&(e->items)
+  };
+
+  size_t ret = json_extract(json, size,
+                            "(name):?s"
+                            "(items):F",
+                            &e->name,
+                            orka_str_to_ntl, &d);
+  return ret;
+}
+
+static void gen_enum(FILE *fp, struct jc_enum *e)
+{
+  char *t = e->name;
+  fprintf(fp, "\n\n");
+  fprintf(fp, "enum %s {\n", t);
+  int i = 0, prev_value;
+
+  for (i = 0; e->items[i]; i++) {
+    struct jc_item * item = e->items[i];
+    if (item->todo) {
+      fprintf(fp, "//@todo %s %s\n", item->name, item->comment);
+    }
+    else {
+      fprintf(fp, "  %s", item->name);
+      if (item->has_value) {
+        fprintf(fp, " = %d,\n", item->value);
+        prev_value = item->value;
+      }
+      else {
+        fprintf(fp, " = %d,\n", prev_value + 1);
+        prev_value ++;
+      }
+    }
+  }
+  fprintf(fp, "};\n");
+}
+
+static size_t
 name_from_json(char *json, size_t size, char *p)
 {
   memcpy(p, json, size);
@@ -326,23 +462,61 @@ definition_from_json(char *json, size_t size, struct jc_definition *s)
   };
 
   struct ntl_deserializer d2 = {
-    .elem_size = sizeof(struct jc_field),
+    .elem_size = sizeof(struct jc_struct),
     .elem_from_buf = struct_from_json,
     .init_elem = NULL,
     .ntl_recipient_p = (void ***)&(s->structs)
+  };
+
+  struct ntl_deserializer d3 = {
+    .elem_size = sizeof(struct jc_enum),
+    .elem_from_buf = enum_from_json,
+    .init_elem = NULL,
+    .ntl_recipient_p = (void ***)&(s->enums)
   };
 
   size_t ret = json_extract(json, size,
                             "(disabled):b"
                             "(comment):?s"
                             "(namespace):F"
-                            "(structs):F",
+                            "(structs):F"
+                            "(enums):F",
                             &s->is_disabled,
                             &s->comment,
                             orka_str_to_ntl, &d1,
-                            orka_str_to_ntl, &d2);
+                            orka_str_to_ntl, &d2,
+                            orka_str_to_ntl, &d3);
   return ret;
 }
+
+static size_t
+definition_list_from_json(char *json, size_t size, struct jc_definition ***s)
+{
+  struct ntl_deserializer d = {
+    .elem_size = sizeof(struct jc_definition),
+    .elem_from_buf = definition_from_json,
+    .init_elem = NULL,
+    .ntl_recipient_p = (void ***)s
+  };
+  return orka_str_to_ntl(json, size, &d);
+}
+
+static size_t
+spec_from_json(char *json, size_t size, struct jc_definition ***s)
+{
+  char *const xend_pos = json + size;
+
+  while (isspace(*json)) {
+    json ++;
+  }
+  if ('[' == *json)
+    definition_list_from_json(json, xend_pos - json, s);
+  else {
+    *s = ntl_calloc(1, sizeof(struct jc_definition));
+    definition_from_json(json, xend_pos - json, (*s)[0]);
+  }
+}
+
 
 struct action {
   bool todo;
@@ -760,8 +934,6 @@ static void gen_def(FILE *fp, struct jc_struct *s)
   fprintf(fp, "    void *record_null[%d];\n", i);
   fprintf(fp, "  } __metadata;\n");
   fprintf(fp, "};\n");
-
-
 }
 
 static void gen_wrapper(FILE *fp, struct jc_struct *s)
@@ -935,9 +1107,27 @@ static void gen_definition(FILE *fp, enum file_type type,
   if (type != FILE_DECLARATION && type != FILE_DEFINITION)
     gen_open_namespace(fp, d->namespace);
 
+  ntl_apply(fp, (void**)d->enums, gen_enum);
   ntl_apply(fp, (void**)d->structs, gen_struct);
 
   if (type != FILE_DECLARATION && type != FILE_DEFINITION)
     gen_close_namespace(fp, d->namespace);
   return;
+}
+
+static void
+gen_definition_list(
+  char *folder,
+  enum file_type type,
+  struct jc_definition **ntl)
+{
+  char * fname = NULL;
+  for (int i = 0; ntl && ntl[i]; i++) {
+    struct jc_definition *d = ntl[i];
+    char * f = namespace_to_str(d->namespace);
+    asprintf(&fname, "%s/%s%s", folder, f, get_file_suffix(type));
+    FILE *fp = fopen(fname, "w");
+    gen_definition(fp, type, d);
+    fclose(fp);
+  }
 }

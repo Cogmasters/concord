@@ -165,6 +165,24 @@ int main ()
     "(email):s,(flags):d,(premium_type):d,(public_flags):d,@arg_switches:b";
   fprintf (stderr, "input: %s\n", t);
 
-  ret = json_extract(json, strlen(json), t);
+  //ret = json_extract(json, strlen(json), t);
+
+  int xx = 0;
+  char *s = NULL;
+  void * A[2] = {0};
+
+  fprintf(stderr, "\n\nTesting @record_defined ...\n\n");
+
+  fprintf(stderr, "&s = %p\n", &s);
+  fprintf(stderr, "A = %p\n", A);
+  ret = json_extract(json, strlen(json),
+                     "(ref):?s"
+                     "@record_defined",
+                     &s,
+                     A, sizeof(A));
+
+  fprintf(stderr, "%s\n", s);
+  fprintf(stderr, "%p\n", A);
+  fprintf(stderr, "%p\n", A[0]);
   return 0;
 }

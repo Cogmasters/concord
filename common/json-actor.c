@@ -149,13 +149,15 @@ print_access_path (FILE * fp, struct access_path * access_path)
 
 struct access_path_value;
 
+enum size_tag {
+  SIZE_UNKNOWN = 0,
+  SIZE_FIXED,
+  SIZE_PARAMETERIZED,
+  SIZE_ZERO
+};
+
 struct size_specifier {
-  enum {
-    SIZE_UNKNOWN = 0,
-    SIZE_FIXED,
-    SIZE_PARAMETERIZED,
-    SIZE_ZERO
-  } tag;
+  enum size_tag tag;
   size_t size;
 };
 
@@ -215,13 +217,93 @@ struct action {
   struct size_specifier mem_size; // this designates the memory size of _;
 };
 
-struct availability {
-  void * arg;
+enum ptr_map_tag {
+  PTR_MAP_ARG_SWITCHES = 1,
+  PTR_MAP_RECORD_DEFINED,
+  PTR_MAP_RECORD_NULL,
+};
+
+struct ptr_map {
+  enum ptr_map_tag tag;
+  void ** arg;
   int  sizeof_arg;
   int  enabled;
   bool has_this;
   bool has_enabler;
+  int next_idx; // only used for recorder
+  int xend_idx; // exclusive end index
 };
+
+
+static void
+print_ptr_map (FILE *fp, struct ptr_map *m)
+{
+  if (!m->has_this) return;
+  switch(m->tag)
+  {
+    case PTR_MAP_ARG_SWITCHES:
+      fprintf(fp, "@arg_switches %p %d\n", m->arg, m->sizeof_arg);
+      break;
+    case PTR_MAP_RECORD_DEFINED:
+      fprintf(fp, "@record_defined %p %d\n", m->arg, m->sizeof_arg);
+      break;
+    case PTR_MAP_RECORD_NULL:
+      fprintf(fp, "@record_null %p %d\n", m->arg, m->sizeof_arg);
+      break;
+  }
+}
+
+static void
+check_ptr_maps(struct ptr_map **m) {
+  for (int i = 0; m[i]; i++) {
+    if (m[i]->has_this) {
+      if (m[i]->arg == NULL)
+        ERR(
+          "The argument of @ (used for checking the pointer_maps of a value) is NULL");
+      if (m[i]->sizeof_arg % sizeof(void *))
+        ERR(
+          "The sizeof @arg_switches's argument has to be a multiplication of sizeof(void *)\n");
+
+      m[i]->xend_idx = m[i]->sizeof_arg / sizeof(void *);
+    }
+  }
+}
+
+static struct ptr_map*
+get_arg_switches(struct ptr_map **l)
+{
+  for (int i = 0; l[i]; i++)
+    if (l[i]->has_this && l[i]->tag == PTR_MAP_ARG_SWITCHES)
+      return l[i];
+  return NULL;
+}
+
+static struct ptr_map*
+get_record_defined(struct ptr_map **l)
+{
+  for (int i = 0; l[i]; i++)
+    if (l[i]->has_this && l[i]->tag == PTR_MAP_RECORD_DEFINED)
+      return l[i];
+  return NULL;
+}
+
+static void
+add_defined (struct ptr_map **s, void *p)
+{
+  struct ptr_map *m = get_record_defined(s);
+  if (m == NULL)
+    return;
+
+  void ***v = m->arg;
+  if (m->next_idx < m->xend_idx) {
+    //fprintf(stderr, "&arg %p, arg %p\n", &m->arg, m->arg);
+    v[m->next_idx] = p;
+    m->next_idx ++;
+  }
+  else {
+    ERR("array is too small\n");
+  }
+}
 
 static void
 print_action (FILE * fp, struct action * v)
@@ -307,8 +389,27 @@ struct composite_value {
     struct sized_value elements;
     struct sized_access_path_value pairs;
   } _;
-  struct availability A;
+  struct ptr_map *maps[4];
+  struct ptr_map data[3];
 };
+
+static void
+composite_value_init(struct composite_value *c)
+{
+  c->maps[0] = c->data+0;
+  c->maps[1] = c->data+1;
+  c->maps[2] = c->data+2;
+  c->maps[3] = NULL;
+  memset(c->data, 0, sizeof(c->data));
+}
+
+static struct composite_value*
+composite_value_alloc()
+{
+  struct composite_value * cv = calloc(1, sizeof(*cv));
+  composite_value_init(cv);
+  return cv;
+}
 
 static void
 print_composite_value (FILE * fp, struct composite_value * cv)
@@ -322,8 +423,12 @@ print_composite_value (FILE * fp, struct composite_value * cv)
       print_value(fp, cv->_.elements.pos + i);
   }
 
-  if (cv->A.has_this) {
-    fprintf(fp, "@");
+  for (int i = 0; cv->maps[i]; i++)
+  {
+    struct ptr_map *m = cv->maps[i];
+
+    if (m->has_this)
+      fprintf(fp, "@");
   }
 }
 
@@ -631,18 +736,21 @@ return_true:
 #define SKIP_SPACES(s, end)   { while (s < end && isspace(*s)) ++s; }
 
 static int
-parse_availability(
+parse_pointer_maps(
   char *pos,
   size_t size,
-  struct availability *p,
+  struct ptr_map **p,
   char **next_pos_p)
 {
-  memset(p, 0, sizeof (*p));
   char * const xend_pos = pos + size;
   if (size == 0)
     return 0;
 
-  if (pos < xend_pos) {
+  int next_map = 0;
+
+  while (pos < xend_pos)
+  {
+    SKIP_SPACES(pos, xend_pos);
     if ('@' == *pos) {
       pos ++;
 
@@ -652,29 +760,46 @@ parse_availability(
 
       if (pos + sz1 <= xend_pos
           && (0 == strncmp(pos, "arg_switches", sz1))) {
-        p->has_this = true;
+        p[next_map]->tag = PTR_MAP_ARG_SWITCHES;
+        p[next_map]->has_this = true;
         pos += sz1;
         if (pos + 2 <= xend_pos
             && ':' == *pos && 'b' == *(pos + 1)) {
-          p->has_enabler = true;
+          p[next_map]->has_enabler = true;
           pos += 2;
         }
         *next_pos_p = pos;
-        return 1;
+        next_map ++;
       }
-      else if (pos + sz2 < xend_pos
+      else if (pos + sz2 <= xend_pos
                && (0 == strncmp(pos, "record_defined", sz2))) {
-        //@todo
+        p[next_map]->tag = PTR_MAP_RECORD_DEFINED;
+        p[next_map]->has_this = true;
+        pos += sz2;
+        if (pos + 2 <= xend_pos
+            && ':' == *pos && 'b' == *(pos + 1)) {
+          p[next_map]->has_enabler = true;
+          pos += 2;
+        }
+        *next_pos_p = pos;
+        next_map ++;
       }
-      else if (pos + sz3 < xend_pos
+      else if (pos + sz3 <= xend_pos
                && (0 == strncmp(pos, "record_null", sz3))) {
-        //@todo
+        p[next_map]->tag = PTR_MAP_RECORD_NULL;
+        p[next_map]->has_this = true;
+        pos += sz3;
+        if (pos + 2 <= xend_pos
+            && ':' == *pos && 'b' == *(pos + 1)) {
+          p[next_map]->has_enabler = true;
+          pos += 2;
+        }
+        *next_pos_p = pos;
+        next_map ++;
       }
     }
   }
-  else
-    ERR ("dangling size specifier\n");
-  return 0;
+  return next_map;
 }
 
 static char * 
@@ -728,7 +853,7 @@ parse_access_path_value(
       ++pos; // eat up ':'
       SKIP_SPACES(pos, end_pos);
       if ('[' == *pos || '{' == *pos) {
-        struct composite_value * cv = calloc(1, sizeof(struct composite_value));
+        struct composite_value * cv = composite_value_alloc();
         av->value._.cv = cv;
         av->value.tag = V_COMPOSITE_VALUE;
         pos = parse_composite_value(stack, pos, end_pos - pos, cv);
@@ -890,7 +1015,7 @@ parse_actor(
     }
     SKIP_SPACES(pos, end_pos);
     char * next_pos = NULL;
-    if (parse_availability(pos, end_pos - pos, &cv->A, &next_pos))
+    if ('@' == *pos && parse_pointer_maps(pos, end_pos - pos, cv->maps, &next_pos))
       pos = next_pos;
     SKIP_SPACES(pos, end_pos);
     if (pos == end_pos)
@@ -983,18 +1108,23 @@ get_composite_value_operand_addrs (
       get_value_operand_addrs(v, rec);
     }
 
-  if (cv->A.has_this) {
-    rec->addrs[rec->pos] = &cv->A.arg;
-    rec->types[rec->pos] = ARG_PTR;
-    rec->pos ++;
-    rec->addrs[rec->pos] = &cv->A.sizeof_arg;
-    rec->types[rec->pos] = ARG_INT;
-    rec->pos ++;
+  for (int i = 0; cv->maps[i]; i++) {
+    struct ptr_map *m = cv->maps[i];
 
-    if (cv->A.has_enabler) {
-      rec->addrs[rec->pos] = &cv->A.enabled;
+    if (!m->has_this)
+      continue;
+
+    rec->addrs[rec->pos] = &m->arg;
+    rec->types[rec->pos] = ARG_PTR;
+    rec->pos++;
+    rec->addrs[rec->pos] = &m->sizeof_arg;
+    rec->types[rec->pos] = ARG_INT;
+    rec->pos++;
+
+    if (m->has_enabler) {
+      rec->addrs[rec->pos] = &m->enabled;
       rec->types[rec->pos] = ARG_INT;
-      rec->pos ++;
+      rec->pos++;
     }
   }
 }
@@ -1066,7 +1196,7 @@ struct injection_info {
   char * next_pos;
   struct stack sp;
   FILE * fp;
-  struct availability * A;
+  struct ptr_map **A;
   enum encoding_type encoding;
 };
 
@@ -1120,19 +1250,19 @@ inject_builtin (
       else
         return xprintf(pos, size, info, "false");
     case B_INT:
-      return xprintf(pos, size, info, "%d", *(int *)v->operand);
+      return xprintf(pos, size, info, "%d", *(int*)v->operand);
     case B_STRING_AS_U64:
-      return xprintf(pos, size, info, "\"%" PRIu64 "\"", *(uint64_t *)v->operand);
+      return xprintf(pos, size, info, "\"%" PRIu64 "\"", *(uint64_t*)v->operand);
     case B_FLOAT:
-      return xprintf(pos, size, info, "%f", *(float *)v->operand);
+      return xprintf(pos, size, info, "%f", *(float*)v->operand);
     case B_DOUBLE:
-      return xprintf(pos, size, info, "%lf",*(double *)v->operand);
+      return xprintf(pos, size, info, "%lf",*(double*)v->operand);
     case B_STRING:
     {
       s = (char *) v->operand;
       size_t len;
       int ret = 0;
-      char * escaped;
+      char *escaped;
       switch (v->mem_size.tag)
       {
         case SIZE_UNKNOWN:
@@ -1353,14 +1483,14 @@ inject_access_path_value (
 static int
 has_value (struct injection_info * info, struct value * v)
 {
-  if (NULL == info->A || (info->A->has_enabler && !info->A->enabled))
+  struct ptr_map *arg_switches = get_arg_switches(info->A);
+  if (arg_switches == NULL)
     return 1;
 
-  void ** assigned_addrs = (void **)info->A->arg;
-  size_t sizeof_assigned_addres = (size_t) info->A->sizeof_arg;
+  void ** assigned_addrs = arg_switches->arg;
   switch (v->tag) {
     case V_ACTION:
-      for (size_t i = 0; i < sizeof_assigned_addres/sizeof(void*); i++) {
+      for (size_t i = 0; i < arg_switches->xend_idx; i++) {
         assert_is_pointer(v->_.action.operand);
         if (NULL != v->_.action.operand
             && assigned_addrs[i] == v->_.action.operand)
@@ -1475,15 +1605,14 @@ prepare_actor(
   char * actor,
   va_list ap)
 {
-  memset(operand_addrs, 0, sizeof(*operand_addrs));
-  memset(cv, 0, sizeof(*cv));
-
   void *p;
   size_t len = strlen(actor);
+  composite_value_init(cv);
   char *next_pos = parser(stack, actor, len, cv);
   if (next_pos != actor + len) {
     ERR("unexpected %s\n", next_pos);
   }
+  memset(operand_addrs, 0, sizeof(*operand_addrs));
   get_composite_value_operand_addrs(cv, operand_addrs);
 
   for (size_t i = 0; i < operand_addrs->pos; i++) {
@@ -1491,15 +1620,26 @@ prepare_actor(
     {
       case ARG_PTR:
         p = va_arg(ap, void *);
-        //fprintf(stderr, "load pointer %p as %d operand\n", p, i);
         *((void **) operand_addrs->addrs[i]) = p;
+        DS_PRINT("load pointer %p as %dth operand to store in %p\n",
+                 p, i, operand_addrs->addrs[i]);
         break;
       case ARG_INT:
-        *((int *) operand_addrs->addrs[i]) = va_arg(ap, int);
+      {
+        int iv = va_arg(ap, int);
+        *((int *) operand_addrs->addrs[i]) = iv;
+        DS_PRINT("load int %d as %dth operand to store in %p\n",
+                 iv, i, operand_addrs->addrs[i]);
         break;
+      }
       case ARG_DOUBLE:
-        *((double *) operand_addrs->addrs[i]) = va_arg(ap, double);
+      {
+        double dv = va_arg(ap, double);
+        *((double *) operand_addrs->addrs[i]) = dv;
+        DS_PRINT("load double %lf as %dth operand to store in %p\n",
+                 dv, i, operand_addrs->addrs[i]);
         break;
+      }
     }
   }
   return 1;
@@ -1513,7 +1653,7 @@ json_vinject(
   va_list ap)
 {
   struct stack stack = { .array = {0}, .top = 0, .actor = INJECTOR };
-  struct operand_addrs  rec;
+  struct operand_addrs rec;
   struct composite_value cv;
   prepare_actor(parse_actor, &stack, &rec, &cv, pos, size, injector, ap);
 
@@ -1528,13 +1668,8 @@ json_vinject(
   else
     info.fp = open_memstream(&mem, &mem_size);
 
-  if (cv.A.has_this) {
-    if (cv.A.arg == NULL)
-      ERR("The argument of @ (used for checking the availability of a value) is NULL");
-    info.A = &cv.A;
-    if(cv.A.sizeof_arg % sizeof(void *))
-      ERR("The sizeof @'s argument has to be a multiplication of sizeof(void *)\n");
-  }
+  check_ptr_maps(cv.maps);
+  info.A = cv.maps;
 
   char * output_buf;
   size_t output_size;
@@ -1647,7 +1782,7 @@ struct e_info {
   char * pos;
   jsmntok_t *tokens;
   int n_tokens;
-  struct availability * E;
+  struct pointer_maps * E;
 };
 
 static size_t extract_str (struct action * v, int i, struct e_info * info)
@@ -1682,6 +1817,7 @@ static size_t extract_str (struct action * v, int i, struct e_info * info)
         int ret = snprintf(*p, len, "%.*s", len - 1, escaped);
         ASSERT_S(ret < len, "out-of-bounds write");
       }
+      add_defined(info->E, p);
       break;
     }
     case SIZE_FIXED:
@@ -1695,6 +1831,7 @@ static size_t extract_str (struct action * v, int i, struct e_info * info)
                            "%.*s", tokens[i].end - tokens[i].start, escaped);
         ASSERT_S((size_t) ret < v->mem_size.size, "out-of-bounds write");
       }
+      add_defined(info->E, v->operand);
       break;
     }
     case SIZE_UNKNOWN:
@@ -1707,6 +1844,7 @@ static size_t extract_str (struct action * v, int i, struct e_info * info)
       else {
         sprintf((char *) v->operand, "%.*s", (int) new_size, escaped);
       }
+      add_defined(info->E, v->operand);
       break;
     }
   }
@@ -1738,6 +1876,7 @@ static size_t extract_scalar (struct action * a, int i, struct e_info * info)
           ERR("failed to extract int from %.*s\n",
               tokens[i].end - tokens[i].start, json + tokens[i].start);
       }
+      add_defined(info->E, a->operand);
       break;
     case B_STRING_AS_U64:
       if (is_null)
@@ -1752,6 +1891,7 @@ static size_t extract_scalar (struct action * a, int i, struct e_info * info)
         ERR("failed to extract s_as_u64 from %.*s\n",
             tokens[i].end - tokens[i].start, json + tokens[i].start);
       }
+      add_defined(info->E, a->operand);
       break;
     case B_BOOL:
       if (JSMN_PRIMITIVE == tokens[i].type)
@@ -1766,6 +1906,7 @@ static size_t extract_scalar (struct action * a, int i, struct e_info * info)
       else
         ERR("failed to extract bool from %.*s\n",
             tokens[i].end - tokens[i].start, json + tokens[i].start);
+      add_defined(info->E, a->operand);
       break;
     case B_LONG_LONG:
       if (is_null)
@@ -1776,6 +1917,7 @@ static size_t extract_scalar (struct action * a, int i, struct e_info * info)
           ERR("failed to extract long long from %.*s\n",
               tokens[i].end - tokens[i].start, json + tokens[i].start);
       }
+      add_defined(info->E, a->operand);
       break;
     case B_FLOAT:
       if (is_null)
@@ -1786,6 +1928,7 @@ static size_t extract_scalar (struct action * a, int i, struct e_info * info)
           ERR("failed to extract float from %.*s\n",
               tokens[i].end - tokens[i].start, json + tokens[i].start);
       }
+      add_defined(info->E, a->operand);
       break;
     case B_DOUBLE:
       if (is_null)
@@ -1796,6 +1939,7 @@ static size_t extract_scalar (struct action * a, int i, struct e_info * info)
           ERR("failed to extract double from %.*s\n",
               tokens[i].end - tokens[i].start, json + tokens[i].start);
       }
+      add_defined(info->E, a->operand);
       break;
     default:
       ERR("unexpected");
@@ -1820,6 +1964,7 @@ static size_t apply_extraction(struct value *v, int idx, struct e_info *info)
         struct sized_buffer *tk = a->operand;
         tk->start = json + tokens[idx].start;
         tk->size = tokens[idx].end - tokens[idx].start;
+        add_defined(info->E, a->operand);
         return 1;
       }
       default:
@@ -1851,8 +1996,10 @@ static size_t apply_extraction(struct value *v, int idx, struct e_info *info)
                      a->operand);
       if (0 == ret)
         return 0;
-      else
+      else {
+        add_defined(info->E, a->operand);
         return 1;
+      }
     }
   }
   return 1;
@@ -2098,6 +2245,8 @@ json_vextract (char * json, size_t size, char * extractor, va_list ap)
 
   info.n_tokens = num_tok;
   info.tokens = tokens;
+  check_ptr_maps(cv.maps);
+  info.E = cv.maps;
   switch (tokens[0].type)
   {
     case JSMN_OBJECT:
@@ -2196,7 +2345,7 @@ parse_query_string (
     }
     else if ('@' == *pos) {
       char *next_pos = NULL;
-      if (parse_availability(pos, end_pos - pos, &cv->A, &next_pos))
+      if (parse_pointer_maps(pos, end_pos - pos, cv->maps, &next_pos))
         pos = next_pos;
       SKIP_SPACES(pos, end_pos);
     }
@@ -2278,13 +2427,11 @@ query_vinject(char *pos, size_t size, char *injector, va_list ap)
 {
   struct stack stack = { .array = {0}, .top = 0, .actor = INJECTOR };
   struct operand_addrs  rec;
-  memset(&rec, 0, sizeof(rec));
   struct composite_value cv;
-
   prepare_actor(parse_query_string, &stack, &rec, &cv, pos, size, injector, ap);
 
   struct injection_info info = { 0 };
-  char * mem = NULL;
+  char *mem = NULL;
   size_t mem_size = 0;
   if (1)
     info.fp = NULL;
@@ -2292,13 +2439,8 @@ query_vinject(char *pos, size_t size, char *injector, va_list ap)
     info.fp = open_memstream(&mem, &mem_size);
 
   info.encoding = ENCODING_URL;
-  if (cv.A.has_this) {
-    if (cv.A.arg == NULL)
-      ERR("The argument of @ (used for checking the availability of a value) is NULL");
-    info.A = &cv.A;
-    if(cv.A.sizeof_arg % sizeof(void *))
-      ERR("The sizeof @'s argument has to be a multiplication of sizeof(void *)\n");
-  }
+  check_ptr_maps(cv.maps);
+  info.A = cv.maps;
 
   char * output_buf;
   size_t output_size;

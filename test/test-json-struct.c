@@ -51,6 +51,19 @@ int main (int argc, char ** argv)
       "      { |name|:|f11|, |type|:{ |base|:|char|, |dec|:|*|, |converter|:|iso8601| } },"
       "    ]"
       "  }"
+      "],"
+      "|enums|:"
+      "["
+      "  { |name|:|enum1|,"
+      "    |items|:"
+      "    ["
+      "      { |name|:|e1|, |value|:1 },"
+      "      { |name|:|e2| },"
+      "      { |name|:|e4|, |value|:100 },"
+      "      { |name|:|e5| },"
+      "      { |name|:|e6| },"
+      "    ]"
+      "  }"
       "]"
       "}";
 
@@ -69,7 +82,7 @@ int main (int argc, char ** argv)
   struct jc_definition d;
   memset(&d, 0, sizeof(d));
   definition_from_json(s, len, &d);
-  //print_definition(stderr, &d);
+  print_definition(stderr, &d);
   gen_definition(stderr, 0, &d);
   return 0;
 }
