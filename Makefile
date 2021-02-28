@@ -14,7 +14,8 @@ SPECS_H     := $(SPECS:%.json=%.h)
 
 ACTOR_GEN_SRC = common/orka-utils.c common/json-actor.c \
 	common/ntl.c common/json-string.c common/json-scanf.c \
-	common/json-printf.c test/test-json-struct-gen.c
+	common/json-struct.c common/json-printf.c \
+	test/test-json-struct-gen.c
 
 ACTOR_GEN_OBJS := $(ACTOR_GEN_SRC:%=$(OBJDIR)/%.o)
 
