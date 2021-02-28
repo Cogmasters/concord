@@ -95,17 +95,17 @@ namespace guild {
 } // namespace guild
 namespace invite {
   struct dati;
-  namespace target_user_types { typedef int code; }
+  //namespace target_user_types { typedef int code; }
   namespace metadata { struct dati; }
 } // namespace invite
 namespace Template { struct dati; }
 namespace user { 
   struct dati; 
-  namespace flags { typedef int code; }
-  namespace premium_types { typedef int code; }
+  //namespace flags { typedef int code; }
+  //namespace premium_types { typedef int code; }
   namespace connection {
     struct dati;
-    namespace visibility_types { typedef int code; }
+    //namespace visibility_types { typedef int code; }
   } // namespace connection
 } // namespace user
 namespace voice {
@@ -114,7 +114,7 @@ namespace voice {
 } // namespace voice
 namespace webhook {
   struct dati;
-  namespace types { typedef int code; }
+  //namespace types { enum code; }
 } // namespace webhook
 
 namespace user_agent {

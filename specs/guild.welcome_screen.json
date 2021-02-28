@@ -1,10 +1,20 @@
 {
   "namespace": ["discord", "guild", "welcome_screen" ],
   "comment": "VOICE STRUCTURE\nhttps://discord.com/developers/docs/resources/voice#voice-state-object-voice-state-structure",
-  "structs":
+  "defs":
   [
     {
-      "name":"dati",
+      "namespace":["screen_channel"],
+      "struct":"dati",
+      "fields":
+      [
+        { "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
+        { "name": "emoji_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
+        { "name": "emoji_name", "type":{ "base":"char", "dec":"*" }},
+      ]
+    },
+    {
+      "struct":"dati",
       "fields":
       [
         { "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"},

@@ -1,10 +1,41 @@
 {
     "namespace": ["discord", "user"],
     "comment": "\nhttps://discord.com/developers/docs/resources/user#user-object-user-structure",
-    "structs":
+    "defs":
     [
 	{
-	    "name":"dati",
+	    "namespace": ["flags"],
+	    "enum":"code",
+	    "items":
+	    [
+		{"name":"NONE",  "value":0 },
+		{"name":"DISCORD_EMPLOYEE", "value":1 },
+		{"name":"PARTNERED_SERVER_OWNER", "value":2 },
+		{"name":"HYPESQUAD_EVENTS", "value":4 },
+		{"name":"BUG_HUNTER_LEVEL_1", "value":8},
+		{"name":"HOUSE_BRAVERY", "value":16},
+		{"name":"HOUSE_BRILLIANCE", "value":32},
+		{"name":"HOUSE_BALANCE", "value":64},
+		{"name":"EARLY_SUPPORTER", "value":128},
+		{"name":"TEAM_USER", "value":256},
+		{"name":"SYSTEM", "value":512},
+		{"name":"BUG_HUNTER_LEVEL_2", "value":1024},
+		{"name":"VERIFIED_BOT", "value":2048},
+		{"name":"EARLY_VERIFIED_BOT_DEVELOPER", "value":4096},
+	    ]
+	},
+	{
+	    "namespace":["premium_types"],
+	    "enum":"code",
+	    "item":
+	    [
+		{"name":"NONE", "value":0},
+		{"name":"NITRO_CLASSIC"},
+		{"name":"NITRO"},
+	    ]
+	},
+	{
+	    "struct":"dati",
 	    "fields":
 	    [
 		{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"} },
@@ -20,6 +51,29 @@
 		{ "name": "flags", "type":{ "base":"int", "c_base": "flags::code" }},
 		{ "name": "premium_type", "type":{ "base":"int", "c_base": "premium_types::code" }},
 		{ "name": "public_flags", "type":{ "base":"int", "c_base": "flags::code" }},
+	    ]
+	},
+	{
+	    "namespace": ["connection", "visibility_types"],
+	    "enum":"code",
+	    "items":
+	    [
+		{"name":"NONE", "value":0},
+		{"name":"EVERYONE"}
+	    ]
+	},
+	{
+	    "namespace": ["connection"],
+	    "struct":"dati",
+	    "fields":
+	    [
+		{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"},
+		{ "name": "name", "type":{ "base":"char", "dec":"*"}},
+		{ "name": "type", "type":{ "base":"char", "dec":"*"}},
+		{ "name": "revoked", "type":{ "base":"bool"}},
+		{ "name": "friend_sync", "type":{ "base":"bool" }},
+		{ "name": "show_activity", "type":{ "base":"bool" }},
+		{ "name": "visibility", "type":{ "base":"int", "c_base":"visibility_types::code" }},
 	    ]
 	}
     ]

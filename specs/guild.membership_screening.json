@@ -1,10 +1,29 @@
 {
   "namespace": ["discord", "guild", "membership_screening" ],
   "comment": "VOICE STRUCTURE\nhttps://discord.com/developers/docs/resources/voice#voice-state-object-voice-state-structure",
-  "structs":
+  "defs":
   [
     {
-      "name":"dati",
+      "namespace": ["field_type"],
+      "enum":"code",
+      "items":
+      [
+        {"name":"TERMS" }
+      ]
+    },
+    {
+      "namespace":["field"],
+      "struct":"dati",
+      "fields":
+      [
+        { "name": "field_type", "type":{ "base":"int", "c_base":"field_type::code" }},
+        { "name": "label", "type":{ "base":"char", "dec":"*" }},
+        { "name": "values", "todo":true, "type":{ "base":"char", "dec":"ntl" }},
+        { "name": "required", "type":{ "base":"bool" }},
+      ]
+    },
+    {
+      "struct":"dati",
       "fields":
       [
         { "name": "version", "type":{ "base":"s_as_u64" }},

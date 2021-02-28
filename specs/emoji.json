@@ -1,10 +1,10 @@
 {
   "namespace": ["discord", "emoji"],
   "comment": "\nhttps://discord.com/developers/docs/resources/emoji#emoji-object-emoji-structure",
-  "structs":
+  "defs":
   [
     {
-      "name":"dati",
+      "struct":"dati",
       "fields":
       [
         { "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}},

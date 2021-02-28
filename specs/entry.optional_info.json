@@ -1,10 +1,10 @@
 {
   "namespace": ["discord", "audit_log", "entry", "optional_info"],
   "comment": "OPTIONAL AUDIT ENTRY INFO STRUCTURE\nhttps://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-optional-audit-entry-info",
-  "structs":
+  "defs":
   [
     {
-      "name":"dati",
+      "struct":"dati",
       "fields":
       [
         { "name": "delete_member_days", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"},

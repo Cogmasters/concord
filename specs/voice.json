@@ -1,10 +1,10 @@
 {
-    "namespace": ["discord", "voice"],
+  "namespace": ["discord", "voice"],
   "comment": "VOICE STRUCTURE\nhttps://discord.com/developers/docs/resources/voice#voice-state-object-voice-state-structure",
-  "structs":
+  "defs":
   [
     {
-      "name":"dati",
+      "struct":"dati",
       "fields":
       [
         { "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
@@ -19,6 +19,19 @@
         { "name": "self_stream", "type":{ "base":"bool" }},
         { "name": "self_video", "type":{ "base":"bool" }},
         { "name": "supress", "type":{ "base":"bool" }},
+      ]
+    },
+    {
+      "namespace": ["region"],
+      "struct":"dati",
+      "fields":
+      [
+        { "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" },
+        { "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" },
+        { "name": "vip", "type":{ "base":"bool" }},
+        { "name": "optimal", "type":{ "base":"bool" }},
+        { "name": "deprecated", "type":{ "base":"bool" }},
+        { "name": "custom", "type":{ "base":"bool" }},
       ]
     }
   ]

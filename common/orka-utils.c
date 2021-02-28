@@ -231,18 +231,14 @@ json_load_array (char *  str, size_t len, struct sized_buffer ***p) {
  *
  * see test/test-json-scanf-array.c for usage examples
  */
-int
+size_t
 orka_str_to_ntl(
   char *buf,
   size_t len,
   struct ntl_deserializer * ntl_deserializer)
 {
   ntl_deserializer->partition_as_sized_bufs = json_load_array;
-  int ret = ntl_from_buf(buf, len, ntl_deserializer);
-  if (0 == ret)
-    return 0;
-  else
-    return 1;
+  return ntl_from_buf(buf, len, ntl_deserializer);
 }
 
 void

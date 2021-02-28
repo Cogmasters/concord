@@ -1,10 +1,18 @@
 {
   "namespace": ["discord", "invite"],
   "comment": "VOICE STRUCTURE\nhttps://discord.com/developers/docs/resources/voice#voice-state-object-voice-state-structure",
-  "structs":
+  "defs":
   [
     {
-      "name":"dati",
+      "namespace":["target_user_types"],
+      "enum":"code",
+      "items":
+      [
+        {"name":"STREAM", "value":1}
+      ]
+    },
+    {
+      "struct":"dati",
       "fields":
       [
         { "name": "code", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"},
@@ -14,6 +22,18 @@
         { "name": "target_user_type", "type":{ "base":"int", "c_base":"target_user_types::code" }},
         { "name": "approximate_presence_count", "type":{ "base":"int" }},
         { "name": "approximate_member_count", "type":{ "base":"int" }},
+      ]
+    },
+    {
+      "namespace":["metadata"],
+      "struct":"dati",
+      "fields":
+      [
+        { "name": "user", "type":{ "base":"int" }},
+        { "name": "max_uses", "type":{ "base":"int" }},
+        { "name": "max_age", "type":{ "base":"int" }},
+        { "name": "temporary", "type":{ "base":"int" }},
+        { "name": "created_at", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}},
       ]
     }
   ]

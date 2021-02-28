@@ -968,24 +968,20 @@ struct dati {
   char *description; //@todo find fixed size limit
   screen_channel::dati **welcome_channels;
 };
-#else
-#include "./specs/guild.welcome_screen.h"
-#endif
 
 /* WELCOME SCREEN CHANNEL STRUCTURE
 https://discord.com/developers/docs/resources/guild#welcome-screen-object-welcome-screen-channel-structure */
 namespace screen_channel {
-#ifdef M
 struct dati {
   u64_snowflake_t channel_id;
   char *description; //@todo find fixed size limit
   u64_snowflake_t emoji_id;
   char *emoji_name; //@todo find fixed size limit
 };
-#else
-#include "./specs/guild.welcome_screen.screen_channel.h"
-#endif
 } // namespace screen_channel
+#else
+#include "./specs/guild.welcome_screen.h"
+#endif
 } // namespace welcome_screen
 
 /* MEMBERSHIP SCREENING STRUCTURE
@@ -997,14 +993,10 @@ struct dati {
   field::dati **fields;
   char *description; //@todo find fixed size limit
 };
-#else
-#include "./specs/guild.membership_screening.h"
-#endif
 
 /* MEMBERSHIP SCREENING FIELD STRUCTURE
 https://discord.com/developers/docs/resources/guild#membership-screening-object-membership-screening-field-structure */
 namespace field {
-#ifdef M
 struct dati {
   field_type::code field_type;   
   char *label; //@todo find fixed size limit
@@ -1012,19 +1004,15 @@ struct dati {
   bool required;
 };
 
-//@todo missing initialization functions
-#else
-#include "./specs/guild.membership_screening.field.h"
-#endif
-
 /* MEMBERSHIP SCREENING FIELD TYPES
 https://discord.com/developers/docs/resources/guild#membership-screening-object-membership-screening-field-types */
 namespace field_type {
 enum { TERMS }; //currently the only type
 } // namespace field_type
-
 } // namespace field
-
+#else
+#include "./specs/guild.membership_screening.h"
+#endif
 } // namespace membership_screening
 
 
@@ -1045,9 +1033,6 @@ struct dati {
 };
 
 //@todo missing initialization functions
-#else
-#include "./specs/invite.h"
-#endif
 
 /* TARGET USER TYPES
 https://discord.com/developers/docs/resources/invite#invite-object-target-user-types */
@@ -1058,7 +1043,6 @@ enum { STREAM = 1 };
 /* INVITE METADATA STRUCTURE
 https://discord.com/developers/docs/resources/invite#invite-metadata-object-invite-metadata-structure */
 namespace metadata {
-#ifdef M
 struct dati {
   int user;
   int max_uses;
@@ -1068,12 +1052,10 @@ struct dati {
 };
 
 //@todo missing initialization functions
-#else
-#include "./specs/invite.metadata.h"
-#endif
-
 } // namespace metadata
-
+#else
+#include "./specs/invite.h"
+#endif
 } // namespace invite
 
 /* TEMPLATE STRUCTURE
@@ -1101,8 +1083,7 @@ struct dati {
 /* USER STRUCTURE
 https://discord.com/developers/docs/resources/user#user-object-user-structure */
 namespace user {
-#include "./specs/user.h"
-/*
+#if 0
 struct dati {
   uint64_t id;
   char username[MAX_USERNAME_LEN];
@@ -1127,7 +1108,6 @@ void dati_list_free(dati **users);
 void dati_from_json(char * str, size_t len, void *p_user);
 void dati_list_from_json(char *str, size_t len, void *p_users);
 void dati_to_json(char *str, size_t len, void *);
-*/
 
 /* USER FLAGS
 https://discord.com/developers/docs/resources/user#user-object-user-flags */
@@ -1163,7 +1143,6 @@ enum {
 /* CONNECTION STRUCTURE
 https://discord.com/developers/docs/resources/user#connection-object-connection-structure */
 namespace connection {
-#ifdef M
 struct dati {
   char *id; //@todo find fixed size limit
   char *name; //@todo find fixed size limit
@@ -1177,9 +1156,7 @@ struct dati {
 };
 
 //@todo missing initialization functions
-#else
-#include "./specs/user.connection.h"
-#endif
+
 
 /* VISIBILITY TYPES
 https://discord.com/developers/docs/resources/user#connection-object-visibility-types */
@@ -1191,7 +1168,9 @@ enum {
 } // namespace visibility_types
 
 } // namespace connection
-
+#else
+#include "./specs/user.h"
+#endif
 } // namespace user
 
 /* VOICE STRUCTURE
@@ -1212,14 +1191,10 @@ struct dati {
   bool self_video;
   bool suppress;
 };
-#else
-#include "./specs/voice.h"
-#endif
 
 /* VOICE REGION STRUCTURE
 https://discord.com/developers/docs/resources/voice#voice-region-object-voice-region-structure */
 namespace region {
-#ifdef M
 struct dati {
   char *id; //@todo find fixed size limit
   char *name; //@todo find fixed size limit
@@ -1229,10 +1204,11 @@ struct dati {
   bool custom;
 };
 //@todo missing initialization functions
-#else
-#include "./specs/voice.region.h"
-#endif
 } // namespace region
+
+#else
+#include "./specs/voice.h"
+#endif
 
 } // namespace voice
 
@@ -1251,7 +1227,6 @@ struct dati {
   uint64_t application_id;
 };
 //@todo missing initialization functions
-#endif
 
 namespace types {
 enum {
@@ -1259,15 +1234,16 @@ enum {
   CHANNEL_FOLLOWER = 2
 };
 } // namespace types
+#endif
 } // namespace webhook
 
 /* ROLE STRUCTURE
 https://discord.com/developers/docs/topics/permissions#role-object-role-structure */
 namespace role {
 #include "./specs/role.h"
-namespace tags {
-#include "./specs/role_tags.h"
-} // namespace tags
+//namespace tags {
+//#include "./specs/role_tags.h"
+//} // namespace tags
 } // namespace role
 
 } // namespace discord
