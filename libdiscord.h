@@ -454,6 +454,7 @@ struct dati {
 #endif
 } // namespace reaction
 
+#if 0
 /* OVERWRITE STRUCTURE
 https://discord.com/developers/docs/resources/channel#overwrite-object-overwrite-structure */
 namespace overwrite {
@@ -463,10 +464,11 @@ struct dati {
   uint64_t allow; //@todo convert via orka_strtoull
   uint64_t deny; //@todo convert via orka_strtoull
 };
-
 //@todo missing initialization functions
-
 } // namespace overwrite
+#else
+#include "./specs/channel.overwrite.h"
+#endif
 
 /* EMBED STRUCTURE
 https://discord.com/developers/docs/resources/channel#embed-object-embed-structure */
