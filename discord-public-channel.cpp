@@ -1307,6 +1307,37 @@ add_field(dati *embed, char name[], char value[], bool Inline)
 
 } // namespace embed
 
+namespace overwrite {
+
+void
+append(
+  dati ***permission_overwrites, 
+  uint64_t id, 
+  int type, 
+  uint64_t allow, uint64_t deny)
+{
+  if (!id) {
+    D_PUTS("Missing 'id'");
+    return;
+  }
+  if ( !(0 == type || 1 == type) ) {
+    D_PUTS("'type' should be 0 (role) or 1 (member)");
+    return;
+  }
+
+  overwrite::dati new_overwrite;
+  new_overwrite.id = id;
+  new_overwrite.type = type;
+  new_overwrite.allow = allow;
+  new_overwrite.deny = deny;
+
+  *permission_overwrites = (overwrite::dati**)ntl_append(
+                            (void**)*permission_overwrites, 
+                            sizeof(overwrite::dati), &new_overwrite);
+}
+
+} // namespace overwrite
+
 void
 trigger_typing(client* client, uint64_t channel_id)
 {

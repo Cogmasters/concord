@@ -1383,6 +1383,16 @@ void add_field(dati *embed, char name[], char value[], bool Inline);
 
 } // namespace embed
 
+namespace overwrite {
+
+void append(
+  dati ***permission_overwrites, 
+  uint64_t id, 
+  int type, 
+  uint64_t allow, uint64_t deny);
+
+} // namespace overwrite
+
 } // namespace channel
 
 namespace guild { /* discord-public-guild.cpp */
@@ -1402,7 +1412,7 @@ struct params {
   int bitrate;
   int rate_limit_per_user;
   int position;
-  //@todo permission_overwrites
+  channel::overwrite::dati **permission_overwrites;
   u64_snowflake_t parent_id;
   bool nsfw;
 };
