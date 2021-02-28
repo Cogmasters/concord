@@ -14,3 +14,4 @@ dump.*
 .cee-contributor
 specs/*.cc
 specs/*.h
+common/wip
