@@ -675,12 +675,19 @@ parse_value(
       break;
     case 's':
     {
-      size_t sz = 8;
-      if (pos + sz < end_pos && 0 == strncmp(pos, "s_as_u64", sz)) {
+      size_t sz1 = strlen("s_as_u64"), sz2 = strlen("s_as_hex64");
+      if (pos + sz1 <= end_pos && 0 == strncmp(pos, "s_as_u64", sz1)) {
         act->mem_size.size = sizeof(uint64_t);
         act->mem_size.tag = SIZE_FIXED;
         act->_.builtin = B_STRING_AS_U64;
-        pos += sz;
+        pos += sz1;
+        goto return_true;
+      }
+      else if (pos + sz2 <= end_pos && 0 == strncmp(pos, "s_as_hex64", sz2)) {
+        act->mem_size.size = sizeof(uint64_t);
+        act->mem_size.tag = SIZE_FIXED;
+        act->_.builtin = B_STRING_AS_HEX64;
+        pos += sz2;
         goto return_true;
       }
       else {
@@ -1887,13 +1894,13 @@ static size_t extract_scalar (struct action * a, int i, struct e_info * info)
     {
       int base = 10;
       if (a->_.builtin == B_STRING_AS_HEX64)
-        base = 16;
+        base = 0;
 
       if (is_null)
         *(uint64_t *) a->operand = 0;
       else if (JSMN_STRING == tokens[i].type) {
         *(uint64_t *) a->operand = (uint64_t) strtoull(json + tokens[i].start,
-                                                       &xend, 10);
+                                                       &xend, base);
         if (xend != json + tokens[i].end)
           ERR("failed to extract s_as_u64 or s_as_hex64 from %.*s\n",
               tokens[i].end - tokens[i].start, json + tokens[i].start);
