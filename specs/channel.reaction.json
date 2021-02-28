@@ -1,0 +1,17 @@
+{
+  "namespace": ["discord", "channel", "reaction"],
+  "comment": "https://discord.com/developers/docs/resources/channel#reaction-object-reaction-structure"
+  "defs":
+  [
+    {
+      "struct":"dati",
+      "fields":
+      [
+        { "name": "count", "type":{ "base":"int" }},
+        { "name": "me", "type":{ "base":"bool" }},
+        { "name": "emoji", "type":{ "base":"emoji::dati", "dec":"*" }},
+      ]
+    }
+  ]
+}
+

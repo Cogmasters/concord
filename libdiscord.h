@@ -122,8 +122,7 @@ enum {
 /* OPTIONAL AUDIT ENTRY INFO STRUCTURE
 https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-optional-audit-entry-info */
 namespace optional_info {
-#include "./specs/entry.optional_info.h"
-#if 0  
+#if 1
 struct dati {
   char *delete_member_days; //@todo find fixed size limit
   char *members_removed; //@todo find fixed size limit
@@ -134,6 +133,8 @@ struct dati {
   char *type; //@todo find fixed size limit
   char *role; //@todo find fixed size limit
 };
+#else
+#include "./specs/entry.optional_info.h"
 #endif
 } // namespace optional_entry
 
@@ -440,6 +441,7 @@ struct dati {
 /* REACTION STRUCTURE
 https://discord.com/developers/docs/resources/channel#reaction-object-reaction-structure */
 namespace reaction {
+#if 0
 struct dati {
   int count;
   bool me;
@@ -447,7 +449,9 @@ struct dati {
 };
 
 //@todo missing initialization functions
-
+#else
+#include "./specs/channel.reaction.h"
+#endif
 } // namespace reaction
 
 /* OVERWRITE STRUCTURE
