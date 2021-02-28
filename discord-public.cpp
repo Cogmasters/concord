@@ -133,12 +133,7 @@ setcb(client *client, enum callback_opt opt, ...)
   case COMMAND: {
       client->ws.cbs.on_message.command = va_arg(args, message_cb*);
       code |= intents::GUILD_MESSAGES | intents::DIRECT_MESSAGES;
-
-      const int PREFIX_LEN = sizeof(client->ws.prefix);
-
-      const char *prefix = va_arg(args, char*);
-      int ret = snprintf(client->ws.prefix, PREFIX_LEN, "%s", prefix);
-      VASSERT_S(ret < PREFIX_LEN, "Prefix '%s' exceeds length of %d (%zu characters)", prefix, PREFIX_LEN, strlen(prefix));
+      client->ws.prefix = va_arg(args, char*);
       break;
    }
   case MESSAGE_CREATE:
