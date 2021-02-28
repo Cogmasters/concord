@@ -1,0 +1,26 @@
+{
+  "namespace": ["discord", "guild"],
+  "comment": "",
+  "defs":
+  [
+    {
+      "namespace":["create_guild_channel"],
+      "comment":"https://discord.com/developers/docs/resources/guild#create-guild-channel",
+      "struct":"params",
+      "fields":
+      [
+        { "name": "name", "type":{ "base":"char", "dec":"[100+1]" }},
+        { "name": "type", "type":{ "base":"int" }},
+        { "name": "topic", "type":{ "base":"char", "dec":"[1024+1]" }},
+        { "name": "bitrate", "type":{ "base":"int" }},
+        { "name": "user_limit", "type":{ "base":"int" }},
+        { "name": "rate_limit_per_user", "type":{ "base":"int" }},
+        { "name": "position", "type":{ "base":"int" }},
+        { "name": "permission_overwrites", "todo":true, "type":{ "base":"channel::overwrite", "dec":"ntl" }},
+        { "name": "parent_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
+        { "name": "nsfw", "type":{ "base":"bool" }}
+      ]
+    },
+  ]
+}
+
