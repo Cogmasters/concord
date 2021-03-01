@@ -324,7 +324,7 @@ int main(int argc, char *argv[])
 
   /* Set discord callbacks */
   discord::setcb(client, discord::READY, &on_ready);
-  discord::setcb_command(client, "!system ", &on_command);
+  discord::setcb_command(client, "!system", &on_command);
 
   /* Set bot presence activity */
   discord::presence::activity::dati *new_activity;

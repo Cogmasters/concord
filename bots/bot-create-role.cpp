@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
   client *client = fast_init(config_file);
   assert(NULL != client);
 
-  setcb_command(client, "!createRole ", &on_command);
+  setcb_command(client, "!createRole", &on_command);
 
   printf("\n\nThis bot demonstrates how easy it is to create a"
          " new role.\n"

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h> // for isspace()
 
 #include <libdiscord.h>
 #include "curl-websocket.h"
@@ -558,17 +559,17 @@ on_dispatch_message(dati *ws, int offset)
 
   if (STREQ("CREATE", ws->payload.event_name + offset)) {
     if (ws->on_cmd) {
-      size_t offset = IS_EMPTY_STRING(ws->prefix) ? 0 : strlen(ws->prefix);
+      size_t prefix_offset = IS_EMPTY_STRING(ws->prefix) ? 0 : strlen(ws->prefix);
 
       message_cb *cmd_cb = NULL;
       char *cmd_str = NULL;
       for (size_t i=0; i < ws->num_cmd; ++i) 
       {
-        if (ws->prefix && !STRNEQ(ws->prefix, message->content, offset))
+        if (ws->prefix && !STRNEQ(ws->prefix, message->content, prefix_offset))
             continue; //prefix doesn't match message->content
 
         if ( STRNEQ(ws->on_cmd[i].str, 
-                message->content + offset, 
+                message->content + prefix_offset, 
                 strlen(ws->on_cmd[i].str)) )
         {
           cmd_cb = ws->on_cmd[i].cb;
@@ -578,12 +579,16 @@ on_dispatch_message(dati *ws, int offset)
       }
 
       if (cmd_cb && cmd_str) {
-        char *tmp = message->content; //offsets from prefix
-        message->content = message->content + offset + strlen(cmd_str);
+        char *tmp = message->content; // hold original ptr
+
+        message->content = message->content + prefix_offset + strlen(cmd_str); //offsets from prefix+command
+        while (isspace(*message->content)) { // offsets from blank characters
+          ++message->content;
+        }
 
         (*cmd_cb)(ws->p_client, ws->me, message);
 
-        message->content = tmp;
+        message->content = tmp; // retrieve original ptr
       }
     }
     else if (ws->cbs.on_message.create)
