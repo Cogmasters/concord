@@ -1477,6 +1477,7 @@ void leave_guild(client *client, const u64_snowflake_t guild_id);
 
 } // namespace user
 
+#include "./specs/guild.channel.h"
 } // namespace discord
 
 #endif
