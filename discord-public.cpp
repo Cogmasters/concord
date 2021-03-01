@@ -6,6 +6,8 @@
 #include <libdiscord.h>
 #include "orka-utils.h"
 
+#define parameter ...
+
 
 namespace discord {
 
@@ -114,14 +116,43 @@ add_intents(client *client, websockets::intents::code code)
   client->ws.identify->intents |= code;
 }
 
-/* @todo add length checks */
 void
-set_prefix(client *client, char *prefix) {
+set_prefix(client *client, char *prefix) 
+{
+  const size_t PREFIX_LEN = 32;
+  if ( !orka_str_below_threshold(prefix, PREFIX_LEN) ) {
+    PRINT("Prefix length greater than threshold (%zu chars)", PREFIX_LEN);
+    return;
+  }
+
   client->ws.prefix = prefix;
 };
 
 void
-setcb(client *client, enum callback_opt opt, ...)
+setcb_command(client *client, char *command, message_cb *user_cb)
+{
+  using namespace websockets;
+  dati *ws = &client->ws;
+
+  const size_t CMD_LEN = 64;
+  if ( !orka_str_below_threshold(command, CMD_LEN) ) {
+    PRINT("Command length greater than threshold (%zu chars)", CMD_LEN);
+    return;
+  }
+
+  ++ws->num_cmd;
+  ws->on_cmd = (struct cmd_cbs*)realloc(ws->on_cmd, 
+                      ws->num_cmd * sizeof(struct cmd_cbs));
+
+  ws->on_cmd[ws->num_cmd-1].str = command;
+  ws->on_cmd[ws->num_cmd-1].cb = user_cb;
+
+  add_intents(client, 
+      intents::GUILD_MESSAGES | intents::DIRECT_MESSAGES);
+}
+
+void
+setcb(client *client, enum callback_opt opt, parameter)
 {
   using namespace websockets;
   dati *ws = &client->ws;
@@ -136,17 +167,6 @@ setcb(client *client, enum callback_opt opt, ...)
       break;
   case READY:
       ws->cbs.on_ready = va_arg(args, idle_cb*);
-      break;
-  case COMMAND:
-      code |= intents::GUILD_MESSAGES | intents::DIRECT_MESSAGES;
-
-      ++ws->num_cmd;
-      ws->on_cmd = (struct cmd_cbs*)realloc(ws->on_cmd, 
-                          ws->num_cmd * sizeof(struct cmd_cbs));
-
-      ws->on_cmd[ws->num_cmd-1].cb = va_arg(args, message_cb*);
-      /* @todo add length checks */
-      ws->on_cmd[ws->num_cmd-1].str = va_arg(args, char*);
       break;
   case MESSAGE_CREATE:
       ws->cbs.on_message.create = va_arg(args, message_cb*);
