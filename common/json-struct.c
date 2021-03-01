@@ -60,8 +60,7 @@ struct converter {
 
 static struct converter **converters = NULL;
 
-static void
-load_converter(char *pos, size_t size, void *p)
+static void load_converter(char *pos, size_t size, void *p)
 {
   struct converter *c = (struct converter *)p;
   json_extract(pos, size,
@@ -106,8 +105,7 @@ static void init_converters () {
     fprintf(stderr, "adding converters %s ...\n", converters[i]->name);
 
 }
-static void
-load_converters(char *filename)
+static void load_converters(char *filename)
 {
   size_t len = 0;
   char * data = orka_load_whole_file(filename, &len);
@@ -122,8 +120,7 @@ load_converters(char *filename)
   orka_str_to_ntl(data, len, &d);
 }
 
-static struct converter*
-get_converter(char *name) {
+static struct converter* get_converter(char *name) {
   int i;
   for (i = 0; converters[i]; i++) {
     if (0 == strcmp(name, converters[i]->name)) {
@@ -146,8 +143,7 @@ enum file_type {
 };
 static enum file_type file_type = FILE_SINGLE_FILE;
 
-static char*
-get_file_suffix(enum file_type t)
+static char* get_file_suffix(enum file_type t)
 {
   switch(t)
   {
@@ -159,29 +155,29 @@ get_file_suffix(enum file_type t)
   }
 }
 
-enum dec_tag {
+enum decor_tag {
   DEC_NONE = 0, // this has to be zero as the absence means DEC_NONE
   DEC_POINTER = 1,
   DEC_ARRAY = 2,
   DEC_NTL
 };
 
-struct dec {
-  enum dec_tag tag;
+struct decor {
+  enum decor_tag tag;
   char * value;
 };
 
 struct jc_type {
   char *base;
   char *c_base;  // use for enum type names that are represented as int
-  struct dec dec;
+  struct decor decor;
   char * converter;
 };
 
 static void
 print_type(FILE *fp, struct jc_type *p)
 {
-  fprintf(fp, "base:%s, dec:%d", p->base, p->dec.tag);
+  fprintf(fp, "base:%s, dec:%d", p->base, p->decor.tag);
 }
 
 
@@ -346,7 +342,7 @@ loc_from_json(char *json, size_t size, enum loc *p)
 }
 
 static size_t
-dec_from_json(char *json, size_t size, struct dec *p)
+decor_from_json(char *json, size_t size, struct decor *p)
 {
   if (1 == size && '*' == *json) {
     p->tag = DEC_POINTER;
@@ -393,7 +389,7 @@ field_from_json(char *json, size_t size, void *x)
                           &p->c_name,
                           &p->type.base,
                           &p->type.c_base,
-                          dec_from_json, &p->type.dec,
+                          decor_from_json, &p->type.decor,
                           &p->type.converter,
                           &has_inject_if_not,
                           &t,
@@ -739,7 +735,7 @@ static void to_action(struct jc_field *f, struct action *act)
 
   act->c_name = f->c_name ? f->c_name : f->name;
 
-  switch(f->type.dec.tag)
+  switch(f->type.decor.tag)
   {
     case DEC_POINTER:
       if (strcmp(f->type.base, "char") == 0) {
@@ -814,7 +810,7 @@ static void to_action(struct jc_field *f, struct action *act)
         act->extractor = "s";
         act->extract_arg_decor = "";
         act->inject_arg_decor = "";
-        act->post_dec = f->type.dec.value;
+        act->post_dec = f->type.decor.value;
         act->pre_dec = "";
         act->free = NULL;
         act->c_type = "char";
