@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <stdarg.h>
 #include <ctype.h> //for isspace()
 #include <string.h>
@@ -7,6 +8,7 @@
 
 #include "user-agent.h"
 #include "orka-utils.h"
+#include "json-actor.h"
 
 /* attempt to get value from matching response header field */
 char*
@@ -203,6 +205,7 @@ set_method(
   }
   
   if (req_body && req_body->start) {
+    (*ua->debug.json_cb)(false, 0, &ua->debug, conn->resp_body.start);
     //set ptr to payload that will be sent via POST/PUT
     curl_easy_setopt(conn->ehandle, CURLOPT_POSTFIELDS, req_body->start);
     curl_easy_setopt(conn->ehandle, CURLOPT_POSTFIELDSIZE, req_body->size);
@@ -268,7 +271,8 @@ static void
 perform_request(
   struct ua_conn_s *conn, 
   struct resp_handle *resp_handle,
-  struct perform_cbs *p_cbs)
+  struct perform_cbs *p_cbs,
+  struct orka_debug *debug)
 {
   struct perform_cbs cbs;
   if (p_cbs)
@@ -290,6 +294,7 @@ perform_request(
     (*cbs.before_perform)(cbs.p_data);
   
     int httpcode = send_request(conn);
+    (*debug->json_cb)(true, httpcode, debug, conn->resp_body.start);
 
     /* triggers response related callbacks */
     if (httpcode >= 500) { // SERVER ERROR
@@ -406,107 +411,6 @@ curl_resbody_cb(char *str, size_t size, size_t nmemb, void *p_userdata)
 }
 
 void
-json_dump(const char *text, struct _settings_s *settings, const char *data)
-{
-  if (NULL == settings->f_json_dump) return;
-  FILE *f_dump = settings->f_json_dump;
-
-  char timestr[64] = {0};
-  orka_timestamp_str(timestr, sizeof(timestr));
-
-  fprintf(f_dump, "\r\r\r\r%s - %s\n%s\n", text, timestr, data);
-  fflush(f_dump);
-}
-
-static void
-curl_dump(const char *text, FILE *f_dump, unsigned char *ptr, size_t size)
-{
-  const unsigned int WIDTH = 0x10;
-
-  char timestr[64] = {0};
-  orka_timestamp_str(timestr, sizeof(timestr));
-
-  fprintf(f_dump, "\r\r\r\r%s %10.10ld bytes (0x%8.8lx) - %s\n%s\n",
-          text, (long)size, (long)size, timestr, ptr);
-
-  for(size_t i=0; i < size; i += WIDTH)
-  {
-    fprintf(f_dump, "%4.4lx: ", (long)i);
-
-    //show hex to the left
-    for(size_t c = 0; c < WIDTH; c++) {
-      if(i+c < size)
-        fprintf(f_dump, "%02x ", ptr[i+c]);
-      else
-        fputs("   ", f_dump);
-    }
-
-    //show data on the right
-    for(size_t c = 0; (c < WIDTH) && (i+c < size); c++) {
-      char x = (ptr[i+c] >= 0x20 && ptr[i+c] < 0x80) ? ptr[i+c] : '.';
-      fputc(x, f_dump);
-    }
-
-    fputc('\n', f_dump); //newline
-  }
-
-  fflush(f_dump);
-}
-
-int
-curl_debug_cb(
-  CURL *ehandle,
-  curl_infotype type,
-  char *data,
-  size_t size,
-  void *p_userdata)
-{
-  struct _settings_s *settings = (struct _settings_s *)p_userdata;
-  if (NULL == settings->f_curl_dump) return 0;
-
-  FILE *f_dump = settings->f_curl_dump;
-
-  const char *text = NULL;
-  switch (type) {
-  case CURLINFO_TEXT:
-    {
-      char timestr[64] = {0};
-      orka_timestamp_str(timestr, sizeof(timestr));
-
-      fprintf(f_dump, "\r\r\r\rCURL INFO - %s\n%s\n", timestr, data);
-      fflush(f_dump);
-    }
-  /* fallthrough */
-  default:
-      return 0;
-  case CURLINFO_HEADER_OUT:
-      text = "SEND HEADER";
-      break;
-  case CURLINFO_DATA_OUT:
-      text = "SEND DATA";
-      break;
-  case CURLINFO_SSL_DATA_OUT:
-      text = "SEND SSL DATA";
-      break;
-  case CURLINFO_HEADER_IN:
-      text = "RECEIVE HEADER";
-      break;
-  case CURLINFO_DATA_IN:
-      text = "RECEIVE DATA";
-      break;
-  case CURLINFO_SSL_DATA_IN:
-      text = "RECEIVE SSL DATA";
-      break;
-  }
-
-  curl_dump(text, f_dump, (unsigned char*)data, size);
-
-  return 0;
-
-  (void)ehandle;
-}
-
-void
 ua_easy_setopt(struct user_agent_s *ua, void *data, void (setopt_cb)(CURL *ehandle, void *data)) 
 {
   ua->setopt_cb = setopt_cb;
@@ -553,21 +457,21 @@ conn_init(struct user_agent_s *ua, struct ua_conn_s *conn)
   ecode = curl_easy_setopt(new_ehandle, CURLOPT_HEADERDATA, &conn->resp_header);
   ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
-  /* DEBUG MODE SETOPTS START */
+  /* DEBUG MODE SETOPTS START
 
   //set debug callback
-  D_ONLY(ecode = curl_easy_setopt(new_ehandle, CURLOPT_DEBUGFUNCTION, &curl_debug_cb));
+  D_ONLY(ecode = curl_easy_setopt(new_ehandle, CURLOPT_DEBUGFUNCTION, ua->global->curl_cb));
   D_ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
-  //set ptr to settings containing dump files
-  D_ONLY(ecode = curl_easy_setopt(new_ehandle, CURLOPT_DEBUGDATA, &ua->settings));
+  //set ptr to global containing dump files
+  D_ONLY(ecode = curl_easy_setopt(new_ehandle, CURLOPT_DEBUGDATA, ua->global));
   D_ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
   //enable verbose
   D_ONLY(ecode = curl_easy_setopt(new_ehandle, CURLOPT_VERBOSE, 1L));
   D_ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
-  /* DEBUG MODE SETOPTS END */
+  DEBUG MODE SETOPTS END */
   
   // execute user-defined curl_easy_setopts
   if (ua->setopt_cb) {
@@ -618,10 +522,10 @@ get_conn(struct user_agent_s *ua)
 }
 
 void
-ua_init(struct user_agent_s *ua, char base_url[]) 
+ua_init(struct user_agent_s *ua, const char base_url[]) 
 {
   memset(ua, 0, sizeof(struct user_agent_s));
-  ua->base_url = base_url; //@todo should be duplicated?
+  ua->base_url = strdup(base_url);
 
   // default headers
   char user_agent[] = "orca (http://github.com/cee-studio/orca)";
@@ -631,8 +535,20 @@ ua_init(struct user_agent_s *ua, char base_url[])
 }
 
 void
+ua_init_config(
+  struct user_agent_s *ua, 
+  const char base_url[], 
+  const char tag[], 
+  const char config_file[]) 
+{
+  ua_init(ua, base_url);
+  orka_debug_init(&ua->debug, tag, config_file);
+}
+
+void
 ua_cleanup(struct user_agent_s *ua)
 {
+  free(ua->base_url);
   curl_slist_free_all(ua->reqheader);
   conns_cleanup(ua->conns, ua->num_conn);
 }
@@ -652,7 +568,7 @@ ua_vrun(
   set_url(conn, ua->base_url, endpoint, args);
   set_method(ua, conn, http_method, req_body); //set the request method
 
-  perform_request(conn, resp_handle, cbs);
+  perform_request(conn, resp_handle, cbs, &ua->debug);
   ++ua->num_available;
 
   if (ua->mime) { // @todo this is temporary
@@ -682,4 +598,233 @@ ua_run(
     http_method, endpoint, args);
 
   va_end(args);
+}
+
+static void
+noop_json_dump(bool is_response, int httpcode, struct orka_debug *debug, char *json_text) {
+  return; (void)json_text; (void)debug; (void)json_text;
+}
+
+static void
+json_dump(bool is_response, int httpcode, struct orka_debug *debug, char *json_text)
+{
+  char timestr[64] = {0};
+  orka_timestamp_str(timestr, sizeof(timestr));
+
+  char type[128];
+  if (is_response) {
+    snprintf(type, sizeof(type), "%d", httpcode);
+  }
+  else {
+    snprintf(type, sizeof(type), "REQUEST");
+  }
+
+  fprintf(debug->f_json_dump, 
+    "\r\r\r\r[%s (%s)] - %s\n%s\n", 
+    debug->tag, type, timestr, json_text);
+
+  fflush(debug->f_json_dump);
+}
+
+static int
+curl_dump(
+  CURL *ehandle,
+  curl_infotype type,
+  char *data,
+  size_t size,
+  void *p_userdata)
+{
+  struct orka_debug *debug = (struct orka_debug *)p_userdata;
+
+  FILE *f_dump = debug->f_curl_dump;
+
+  const char *text = NULL;
+  switch (type) {
+  case CURLINFO_TEXT:
+    {
+      char timestr[64] = {0};
+      orka_timestamp_str(timestr, sizeof(timestr));
+
+      fprintf(f_dump, "\r\r\r\rCURL INFO - %s\n%s\n", timestr, data);
+      fflush(f_dump);
+    }
+  /* fallthrough */
+  default:
+      return 0;
+  case CURLINFO_HEADER_OUT:
+      text = "SEND HEADER";
+      break;
+  case CURLINFO_DATA_OUT:
+      text = "SEND DATA";
+      break;
+  case CURLINFO_SSL_DATA_OUT:
+      text = "SEND SSL DATA";
+      break;
+  case CURLINFO_HEADER_IN:
+      text = "RECEIVE HEADER";
+      break;
+  case CURLINFO_DATA_IN:
+      text = "RECEIVE DATA";
+      break;
+  case CURLINFO_SSL_DATA_IN:
+      text = "RECEIVE SSL DATA";
+      break;
+  }
+
+  const unsigned int WIDTH = 0x10;
+
+  char timestr[64] = {0};
+  orka_timestamp_str(timestr, sizeof(timestr));
+
+  fprintf(f_dump, "\r\r\r\r%s %10.10ld bytes (0x%8.8lx) - %s\n%s\n",
+          text, (long)size, (long)size, timestr, data);
+
+  for(size_t i=0; i < size; i += WIDTH)
+  {
+    fprintf(f_dump, "%4.4lx: ", (long)i);
+
+    //show hex to the left
+    for(size_t c = 0; c < WIDTH; c++) {
+      if(i+c < size)
+        fprintf(f_dump, "%02x ", data[i+c]);
+      else
+        fputs("   ", f_dump);
+    }
+
+    //show data on the right
+    for(size_t c = 0; (c < WIDTH) && (i+c < size); c++) {
+      char x = (data[i+c] >= 0x20 && data[i+c] < 0x80) ? data[i+c] : '.';
+      fputc(x, f_dump);
+    }
+
+    fputc('\n', f_dump); //newline
+  }
+
+  fflush(f_dump);
+
+  return 0;
+
+  (void)ehandle;
+}
+
+void
+orka_debug_init(
+  struct orka_debug *debug, 
+  const char tag[], 
+  const char filename[])
+{
+  struct _dump_s {
+    char filename[PATH_MAX];
+    bool enable;
+  };
+
+  struct _settings_s {
+    struct {
+      char token[512]; // set it to long enough
+    } discord;
+    struct {
+      char username[512];
+      char token[512];
+    } github;
+    struct {
+      char filename[PATH_MAX];
+      char level[128];
+      struct _dump_s dump_json;
+      struct _dump_s dump_curl;
+    } logging;
+  } settings = {0};
+
+  size_t len;
+  char *str = orka_load_whole_file(filename, &len);
+  json_extract(str, len,
+             "(discord.token):s"
+             "(github.username):s"
+             "(github.token):s"
+             "(logging.filename):s"
+             "(logging.level):s"
+             "(logging.dump_curl.filename):s"
+             "(logging.dump_curl.enable):b"
+             "(logging.dump_json.filename):s"
+             "(logging.dump_json.enable):b",
+             settings.discord.token,
+             settings.github.username,
+             settings.github.token,
+             settings.logging.filename,
+             settings.logging.level,
+             settings.logging.dump_curl.filename,
+             &settings.logging.dump_curl.enable,
+             settings.logging.dump_json.filename,
+             &settings.logging.dump_json.enable);
+
+  DS_PRINT(
+    "discord.token %s\n"
+    "github.username %s\n"
+    "github.token %s\n"
+    "logging.filename %s\n"
+    "logging.level %s\n"
+    "logging.dump_curl.filename %s\n"
+    "logging.dump_curl.enable %d\n"
+    "logging.dump_json.filename %s\n"
+    "logging.dump_json.enable %d\n",
+    settings.discord.token,
+    settings.github.username,
+    settings.github.token,
+    settings.logging.filename,
+    settings.logging.level,
+    settings.logging.dump_curl.filename,
+    settings.logging.dump_curl.enable,
+    settings.logging.dump_json.filename,
+    settings.logging.dump_json.enable);
+
+
+  if (true == settings.logging.dump_json.enable) {
+    if (*settings.logging.dump_json.filename) {
+      debug->f_json_dump = fopen(settings.logging.dump_json.filename, "a+");
+      ASSERT_S(NULL != debug->f_json_dump, "Could not create dump file");
+    }
+    else {
+      debug->f_json_dump = stderr;
+    }
+    debug->json_cb = &json_dump;
+  } else {
+    debug->json_cb = &noop_json_dump;
+  }
+#if 0
+  if (true == settings.logging.dump_curl.enable) {
+    if (*settings.logging.dump_curl.filename) {
+      debug->f_curl_dump = fopen(settings.logging.dump_curl.filename, "a+");
+      ASSERT_S(NULL != debug->f_curl_dump, "Could not create dump file");
+    }
+    else {
+      debug->f_curl_dump = stderr;
+    }
+    debug->curl_cb = &curl_dump;
+  } else {
+    debug->curl_cb = NULL;
+  }
+#endif
+  if (debug->token) {
+    free(debug->token);
+  }
+  debug->token = strdup(settings.discord.token);
+
+  if (debug->tag) {
+    free(debug->tag);
+  }
+  debug->tag = strdup(tag);
+
+  free(str);
+}
+
+void
+orka_debug_cleanup(struct orka_debug *debug)
+{
+  if (debug->token)
+    free(debug->token);
+  if (debug->tag)
+    free(debug->tag);
+  if (debug->f_json_dump)
+    fclose(debug->f_json_dump);
+  if (debug->f_curl_dump)
+    fclose(debug->f_curl_dump);
 }

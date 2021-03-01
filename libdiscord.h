@@ -1285,7 +1285,6 @@ namespace discord { /* discord-public.c */
 void global_init();
 void global_cleanup();
 
-client* init(char token[]);
 client* fast_init(const char config_file[]);
 void cleanup(discord::client *client);
 

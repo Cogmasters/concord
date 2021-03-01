@@ -387,8 +387,7 @@ ws_close_opcode_print(enum close_opcodes gateway_opcode)
 static void
 ws_send_payload(dati *ws, char payload[])
 {
-  json_dump("SEND PAYLOAD", &ws->p_client->settings, payload);
-
+  (*ws->debug.json_cb)(false, 0, &ws->debug, payload);
   bool ret = cws_send_text(ws->ehandle, payload);
   ASSERT_S(true == ret, "Couldn't send payload");
 }
@@ -404,7 +403,7 @@ ws_send_resume(dati *ws)
                 "(session_id):s"
                 "(seq):d"
               "}",
-              ws->p_client->settings.token, 
+              ws->p_client->ua.common.debug.token,
               ws->session_id, 
               &ws->payload.seq_number);
 
@@ -776,9 +775,8 @@ ws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
 {
   dati *ws = (dati*)p_ws;
   
+  (*ws->debug.json_cb)(true, ws->payload.opcode, &ws->debug, (char*)text);
   D_PRINT("ON_TEXT:\t%s\n", text);
-
-  json_dump("RECEIVE PAYLOAD", &ws->p_client->settings, text);
 
   int tmp_seq_number; //check value first, then assign
   json_scanf((char*)text, len,
@@ -845,21 +843,6 @@ custom_cws_new(dati *ws)
   ASSERT_S(NULL != new_ehandle, "Out of memory");
 
   CURLcode ecode;
-  /* DEBUG ONLY FUNCTIONS */
-  //set debug callback
-  D_ONLY(ecode = curl_easy_setopt(new_ehandle, CURLOPT_DEBUGFUNCTION, &curl_debug_cb));
-  D_ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
-
-  //set ptr to settings containing dump files
-  D_ONLY(ecode = curl_easy_setopt(new_ehandle, CURLOPT_DEBUGDATA, &ws->p_client->settings));
-  D_ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
-
-  //enable verbose
-  D_ONLY(ecode = curl_easy_setopt(new_ehandle, CURLOPT_VERBOSE, 1L));
-  D_ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
-  /* * * * * * * * * * * */
-
-  //enable follow redirections
   ecode = curl_easy_setopt(new_ehandle, CURLOPT_FOLLOWLOCATION, 2L);
   ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
@@ -876,12 +859,17 @@ custom_multi_init()
 }
 
 void
-init(dati *ws, char token[])
+init(dati *ws, const char token[], const char config_file[])
 {
+  if (config_file) {
+    orka_debug_init(&ws->debug, "DISCORD WEBSOCKETS", config_file);
+    token = ws->debug.token;
+  }
+
   ws->status = status::DISCONNECTED;
 
   ws->identify = identify::dati_alloc();
-  ws->identify->token = token;
+  ws->identify->token = (char*)token;
 
   ws->ehandle = custom_cws_new(ws);
   ws->mhandle = custom_multi_init();

@@ -7,7 +7,7 @@
 #include "json-actor.h"
 
 #include "user-agent.h"
-
+#include "orka-utils.h"
 
 namespace discord {
 
@@ -214,7 +214,7 @@ struct dati { /* USER AGENT STRUCTURE */
   client *p_client; //points to client this struct is a part of
 };
 
-void init(dati *ua, char token[]);
+void init(dati *ua, const char token[], const char config_file[]);
 void cleanup(dati *ua);
 void run(
   dati *ua, 
@@ -426,6 +426,7 @@ struct cmd_cbs {
 };
 
 struct dati { /* WEBSOCKETS STRUCTURE */
+  struct orka_debug debug;
   status::code status; //connection to discord status
   int reconnect_attempts; //hard limit 5 reconnection attempts @todo make configurable
 
@@ -484,7 +485,7 @@ struct dati { /* WEBSOCKETS STRUCTURE */
   client *p_client; //points to client this struct is a part of
 };
 
-void init(dati *ws, char token[]);
+void init(dati *ws, const char token[], const char config_file[]);
 void cleanup(dati *ws);
 void run(dati *ws);
 
@@ -495,8 +496,6 @@ struct client {
   user_agent::dati ua;
   
   void *data; //space for user arbitrary data
-
-  struct _settings_s settings;
 };
 
 } // namespace discord

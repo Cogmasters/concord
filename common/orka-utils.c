@@ -9,7 +9,6 @@
 #include <errno.h>
 
 #include "orka-utils.h"
-#include "orka-debug.h"
 #include "json-scanf.h"
 #include "json-actor.h"
 
@@ -235,47 +234,10 @@ size_t
 orka_str_to_ntl(
   char *buf,
   size_t len,
-  struct ntl_deserializer * ntl_deserializer)
+  struct ntl_deserializer *ntl_deserializer)
 {
   ntl_deserializer->partition_as_sized_bufs = json_load_array;
   return ntl_from_buf(buf, len, ntl_deserializer);
-}
-
-void
-orka_settings_init(struct orka_settings *settings, const char filename[])
-{
-  size_t len;
-  char *str = orka_load_whole_file(filename, &len);
-  json_extract(str, len,
-             "(discord.token):s"
-             "(github.username):s"
-             "(github.token):s"
-             "(logging.filename):s"
-             "(logging.level):s"
-             "(logging.dump_json.filename):s"
-             "(logging.dump_json.enable):b"
-             "(logging.dump_curl.filename):s"
-             "(logging.dump_curl.enable):b",
-             settings->discord.token,
-             settings->github.username,
-             settings->github.token,
-             settings->logging.filename,
-             settings->logging.level,
-             settings->logging.dump_json.filename,
-             &settings->logging.dump_json.enable,
-             settings->logging.dump_curl.filename,
-             &settings->logging.dump_curl.enable);
-
-  DS_PRINT("discord.token %s", settings->discord.token);
-  DS_PRINT("github.username %s", settings->github.username);
-  DS_PRINT("github.token %s", settings->github.token);
-  DS_PRINT("logging.filename %s", settings->logging.filename);
-  DS_PRINT("logging.level %s", settings->logging.level);
-  DS_PRINT("logging.dump_json.filename %s", settings->logging.dump_json.filename);
-  DS_PRINT("logging.dump_json.enable %d", settings->logging.dump_json.enable);
-  DS_PRINT("logging.dump_curl.filename %s", settings->logging.dump_curl.filename);
-  DS_PRINT("logging.dump_curl.enable %d", settings->logging.dump_curl.enable);
-  free(str);
 }
 
 /* this can be used for checking if a user-given string does not

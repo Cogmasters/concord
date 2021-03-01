@@ -39,8 +39,8 @@ int main(int argc, char *argv[])
   else
     config_file = "bot.config";
 
-  struct orka_settings settings;
-  orka_settings_init(&settings, config_file);
+  struct orka_debug debug;
+  orka_debug_init(&debug, "CEE HTTP", config_file);
 
   commit("https://cee.studio");
 

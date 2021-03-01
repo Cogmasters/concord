@@ -12,12 +12,15 @@ namespace discord {
 namespace user_agent {
 
 void
-init(dati *ua, char token[])
+init(dati *ua, const char token[], const char config_file[])
 {
-  ua_init(&ua->common, BASE_API_URL);
+  if (config_file) {
+    ua_init_config(&ua->common, BASE_API_URL, "DISCORD HTTP", config_file);
+    token = ua->common.debug.token;
+  }
 
   char auth[128];
-  int ret = snprintf(auth, sizeof(auth), "Bot %s", token);
+  int ret = snprintf(auth, sizeof(auth), "Bot %s", ua->common.debug.token);
   ASSERT_S(ret < (int)sizeof(auth), "Out of bounds write attempt");
 
   ua_reqheader_add(&ua->common, "Authorization", auth);

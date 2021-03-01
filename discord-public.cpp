@@ -11,81 +11,32 @@
 
 namespace discord {
 
-client*
-init(char token[])
-{
-  client *new_client = (client*)calloc(1, sizeof(client));
-  if (NULL == new_client) return NULL;
-
-  new_client->settings.token = strdup(token);
-  if (NULL == new_client->settings.token) {
-    free(new_client);
-    return NULL;
-  }
-
-  for (int i=0; token[i] != '\0'; ++i) {
-    if (!isgraph(token[i])) {
-      token[i] = '\0';
-      break;
-    }
-  }
-
-  new_client->ua.p_client = new_client;
-  new_client->ws.p_client = new_client;
-
-  user_agent::init(&new_client->ua, token);
-  websockets::init(&new_client->ws, token);
-
-  return new_client;
-}
-
+//@todo rename to init
 client*
 fast_init(const char config_file[])
 {
-  /* 
-   * settings will be returned from this function,
-   * it has to be static. It also means we can
-   * only have one settings per bot.
-   */
-  static struct orka_settings settings;
-  memset(&settings, 0, sizeof(orka_settings));
-
-  /*
-   * set a flag to make sure this function is called only once.
-   */
-  static int called = 0;
+  // set a flag to make sure this function is called only once.
+  static int called;
   if (0 == called)
     called = 1;
   else
-    ERR("fast_init has been called, it can only be called once in each bot\n");
+    ERR("fast_init() should be called once per bot");
 
+  client *new_client = (client*)calloc(1, sizeof(client));
+  if (NULL == new_client) return NULL;
 
-  orka_settings_init(&settings, config_file);
+  new_client->ua.p_client = new_client;
+  new_client->ws.p_client = new_client;
+  
+  user_agent::init(&new_client->ua, NULL, config_file);
+  websockets::init(&new_client->ws, NULL, config_file);
 
-  client *client;
-  if (settings.discord.token) {
-    client = init(settings.discord.token);
-    if (NULL == client) return NULL;
-  }
-
-  if (true == settings.logging.dump_json.enable)
-    dump_json(client, settings.logging.dump_json.filename);
-  if (true == settings.logging.dump_curl.enable)
-    dump_curl(client, settings.logging.dump_curl.filename);
-
-  return client;
+  return new_client;
 }
 
 void
 cleanup(client *client)
 {
-  free(client->settings.token);
-
-  if (client->settings.f_json_dump)
-    fclose(client->settings.f_json_dump);
-  if (client->settings.f_curl_dump)
-    fclose(client->settings.f_curl_dump);
-
   user_agent::cleanup(&client->ua);
   websockets::cleanup(&client->ws);
 
@@ -226,24 +177,6 @@ run(client *client){
   websockets::run(&client->ws);
 }
 
-void
-dump_json(client *client, char file[])
-{
-  FILE *f_dump = fopen(file, "a+");
-  ASSERT_S(NULL != f_dump, "Could not create dump file");
-
-  client->settings.f_json_dump = f_dump;  
-}
-
-void
-dump_curl(client *client, char file[])
-{
-  FILE *f_dump = fopen(file, "a+");
-  ASSERT_S(NULL != f_dump, "Could not create dump file");
-
-  client->settings.f_curl_dump = f_dump;  
-}
-
 void*
 set_data(client *client, void *data) {
   return client->data = data;
@@ -254,6 +187,7 @@ get_data(client *client) {
   return client->data;
 }
 
+//@todo this is not thread safe
 user_agent::error
 get_json_error(client *client)
 {

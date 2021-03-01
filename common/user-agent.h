@@ -6,7 +6,6 @@ extern "C" {
 #endif // __cplusplus
 
 #include <curl/curl.h>
-#include "orka-debug.h"
 #include "ntl.h"
 
 /* UTILITY MACROS */
@@ -21,6 +20,22 @@ extern "C" {
 enum http_method {
   HTTP_DELETE, HTTP_GET, HTTP_POST, HTTP_MIMEPOST, HTTP_PATCH, HTTP_PUT
 };
+
+//@todo move this somewhere else
+struct orka_debug {
+  char *tag;
+
+  char *token;
+
+  FILE *f_json_dump; //default stderr
+  void (*json_cb)(bool, int, struct orka_debug*, char*);
+  
+  FILE *f_curl_dump; //default stderr
+  int (*curl_cb)(CURL*, curl_infotype, char*, size_t, void*);
+};
+
+void orka_debug_init(struct orka_debug*, const char tag[], const char filename[]);
+void orka_debug_cleanup(struct orka_debug*);
 
 
 /* COMMON HTTP RESPONSE CODES
@@ -61,13 +76,6 @@ struct ua_conn_s {
   char *resp_url;
 };
 
-// @todo rename to ua_settings_s ?
-struct _settings_s { //@todo this whole struct is temporary
-  char *token;
-  FILE *f_json_dump;
-  FILE *f_curl_dump;
-};
-
 //callback for object to be loaded by api response
 typedef void (load_obj_cb)(char *str, size_t len, void *p_obj);
 
@@ -80,6 +88,7 @@ struct resp_handle {
 };
 
 struct user_agent_s {
+  struct orka_debug debug;
   struct curl_slist *reqheader; //the request header sent to the api
 
   struct ua_conn_s *conns;
@@ -87,7 +96,6 @@ struct user_agent_s {
 
   int num_available; // num of available conns
 
-  struct _settings_s settings;
   char *base_url;
 
   void *data; // user arbitrary data for setopt_cb
@@ -134,7 +142,12 @@ void ua_reqheader_del(struct user_agent_s *ua, char field[]);
 void ua_easy_setopt(struct user_agent_s *ua, void *data, void (setopt_cb)(CURL *ehandle, void *data));
 void ua_mime_setopt(struct user_agent_s *ua, void *data, curl_mime* (mime_cb)(CURL *ehandle, void *data)); // @todo this is temporary
 
-void ua_init(struct user_agent_s *ua, char base_url[]);
+void ua_init(struct user_agent_s *ua, const char base_url[]);
+void ua_init_config(
+  struct user_agent_s *ua, 
+  const char tag[], 
+  const char base_url[], 
+  const char config_file[]);
 void ua_cleanup(struct user_agent_s *ua);
 void ua_vrun(
   struct user_agent_s *ua,
@@ -150,10 +163,6 @@ void ua_run(
   struct perform_cbs *cbs,
   enum http_method http_method,
   char endpoint[], ...);
-
-/* @todo these should be somewhere else */
-void json_dump(const char *text, struct _settings_s *settings, const char *data);
-int curl_debug_cb(CURL *ehandle, curl_infotype type, char *data, size_t size, void *p_userdata);
 
 #ifdef __cplusplus
 }
