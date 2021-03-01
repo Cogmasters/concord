@@ -48,8 +48,8 @@ int main (int argc, char ** argv)
     exit(EXIT_FAILURE);
   }
 
-  struct orka_settings settings;
-  orka_settings_init (&settings, config_file);
+  struct orka_debug debug;
+  orka_debug_init(&debug, "GIT HTTP", config_file);
 
   git::file ** files = NULL;
   files = (git::file **) ntl_calloc(argc - optind, sizeof(git::file));
@@ -57,8 +57,8 @@ int main (int argc, char ** argv)
     files[i]->path = argv[optind + i];
 
   curl_global_init(CURL_GLOBAL_ALL);
-  git::dati * data = git::init (settings.github.username,
-                                settings.github.token, ".cee-repo");
+  git::dati * data = git::init (debug.username,
+                                debug.token, ".cee-repo");
 
   git::update_my_fork(data);
   git::create_blobs(data, files);
