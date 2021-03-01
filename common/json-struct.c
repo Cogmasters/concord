@@ -56,6 +56,7 @@ struct converter {
   char *extractor_addrof;
   char *injector_addrof;
   char *free;
+  char *converted_builtin_type;
 };
 
 static struct converter **converters = NULL;
@@ -91,6 +92,7 @@ static void init_converters () {
   converters[0]->injector = "orka_unix_ms_to_iso8601";
   converters[0]->extractor_addrof = "&";
   converters[0]->injector_addrof = "&";
+  converters[0]->converted_builtin_type = "uint64_t";
 
   converters[1]->name = "snowflake";
   converters[1]->input_type = "char*";
@@ -100,6 +102,7 @@ static void init_converters () {
   converters[1]->injector = "orka_ulltostr";
   converters[1]->extractor_addrof = "&";
   converters[1]->injector_addrof = "&";
+  converters[1]->converted_builtin_type = "uint64_t";
 
   for (int i = 0; converters[i]; i++)
     fprintf(stderr, "adding converters %s ...\n", converters[i]->name);
@@ -190,6 +193,7 @@ enum loc {
 enum inject_opcode {
   INJECT_ALWAYS = 0,
   INJECT_IF_NOT_NULL,
+  INJECT_IF_NOT_EMPTY_STR,
   INJECT_IF_NOT_STR,
   INJECT_IF_NOT_BOOL,
   INJECT_IF_NOT_INT,
@@ -397,7 +401,11 @@ field_from_json(char *json, size_t size, void *x)
                           &p->comment);
 
   if (has_inject_if_not) {
-    if (strlen("null") == t.size && strncmp("null", t.start, t.size) == 0) {
+    if (t.size == 0) {
+      p->inject_condition.opcode = INJECT_IF_NOT_EMPTY_STR;
+    }
+    else if (strlen("null") == t.size
+             && strncmp("null", t.start, t.size) == 0) {
       p->inject_condition.opcode = INJECT_IF_NOT_NULL;
     }
     else {
@@ -712,8 +720,43 @@ static int to_builtin_action(struct jc_field *f, struct action *act)
       //@todo check xend
     }
   }
+  else if (strcmp(f->type.base, "char") == 0
+           && DEC_POINTER == f->type.decor.tag) {
+    if(!f->type.converter) {
+      act->injector = "s";
+      act->extractor = "?s";
+      act->extract_arg_decor = "&";
+      act->inject_arg_decor = "&";
+      act->post_dec = "";
+      act->pre_dec = "*";
+      act->free = "free";
+      act->c_type = "char";
+    }
+    else {
+      struct converter *c = get_converter(f->type.converter);
+      act->is_user_def = true;
+      act->extractor = c->extractor;
+      act->injector = c->injector;
+      act->free = c->free;
+      act->extract_arg_decor = c->extractor_addrof;
+      act->inject_arg_decor = c->injector_addrof;
+      act->c_type = c->output_type;
+      act->post_dec = "";
+      act->pre_dec = "";
+
+      if (f->inject_condition.opcode == INJECT_IF_NOT_STR) {
+        if (strcmp(c->converted_builtin_type, "uint64_t") == 0) {
+          f->inject_condition.opcode = INJECT_IF_NOT_INT;
+          f->inject_condition._.ival = (uint64_t) strtoll(
+            f->inject_condition.string,
+            &xend, 10);
+          //@todo check xend
+        }
+      }
+    }
+    return 1;
+  }
   else {
-    //fprintf(stderr, "unknown %s\n", f->type.base);
     return 0;
   }
   return 1;
@@ -738,46 +781,31 @@ static void to_action(struct jc_field *f, struct action *act)
   switch(f->type.decor.tag)
   {
     case DEC_POINTER:
-      if (strcmp(f->type.base, "char") == 0) {
-        act->injector = "s";
-        act->extractor = "?s";
-        act->extract_arg_decor = "&";
-        act->inject_arg_decor = "&";
-        act->post_dec = "";
-        act->pre_dec = "*";
-        act->free = "free";
-        act->c_type = "char";
-        if (f->type.converter) {
-          struct converter *c = get_converter(f->type.converter);
-          act->is_user_def = true;
-          act->extractor = c->extractor;
-          act->injector = c->injector;
-          act->free = c->free;
-          act->extract_arg_decor = c->extractor_addrof;
-          act->inject_arg_decor = c->injector_addrof;
-          if (0 == strcmp(c->input_type, "char*")) {
-            act->c_type = c->output_type;
-            act->post_dec = "";
-            act->pre_dec = "";
-          }
-          else {
-            ERR("type mismatch %s\n", c->input_type);
-          }
-        }
-        return;
-      } else {
-        char *tok = strrchr(f->type.base, ':');
-        if (tok != NULL) {
-          asprintf(&act->injector, "%s_to_json", f->type.base);
-          asprintf(&act->extractor, "%s_from_json", f->type.base);
-          asprintf(&act->alloc, "%s_alloc", f->type.base);
-          asprintf(&act->free, "%s_free", f->type.base);
-          act->extract_arg_decor = "";
-          act->inject_arg_decor = "";
+      if (!to_builtin_action(f, act)) {
+        if (strcmp(f->type.base, "char") == 0) {
+	  ERR("this should never happen\n");
+          act->injector = "s";
+          act->extractor = "?s";
+          act->extract_arg_decor = "&";
+          act->inject_arg_decor = "&";
           act->post_dec = "";
           act->pre_dec = "*";
-          act->is_user_def = true;
-          act->is_caller_alloc = false;
+          act->free = "free";
+          act->c_type = "char";
+        } else {
+          char *tok = strrchr(f->type.base, ':');
+          if (tok != NULL) {
+            asprintf(&act->injector, "%s_to_json", f->type.base);
+            asprintf(&act->extractor, "%s_from_json", f->type.base);
+            asprintf(&act->alloc, "%s_alloc", f->type.base);
+            asprintf(&act->free, "%s_free", f->type.base);
+            act->extract_arg_decor = "";
+            act->inject_arg_decor = "";
+            act->post_dec = "";
+            act->pre_dec = "*";
+            act->is_user_def = true;
+            act->is_caller_alloc = false;
+          }
         }
       }
       break;
@@ -1016,7 +1044,14 @@ static void gen_use_default_inject_settings(FILE *fp, struct jc_struct *s)
         fprintf(fp, "    p->__metadata.arg_switches[%d] = %sp->%s;\n",
                 i, act.inject_arg_decor, act.c_name);
         break;
+      case INJECT_IF_NOT_EMPTY_STR:
+        fprintf(fp, "  if (p->%s != NULL && strlen(p->%s) != 0)\n",
+                act.c_name, act.c_name);
+        fprintf(fp, "    p->__metadata.arg_switches[%d] = %sp->%s;\n",
+                i, act.inject_arg_decor, act.c_name);
+        break;
     }
+    fprintf(fp, "\n");
   }
   fprintf(fp, "}\n");
 }
