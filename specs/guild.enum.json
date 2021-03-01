@@ -1,0 +1,90 @@
+{
+  "disabled": false,
+  "namespace": ["discord", "guild"],
+  "comment": "https://discord.com/developers/docs/resources/guild#integration-object-integration-structure",
+  "defs":
+  [
+    {
+      "comment": "https://discord.com/developers/docs/resources/guild#guild-object-default-message-notification-level",
+      "namespace": ["default_message_notification_level"],
+      "enum": "code",
+      "items": [
+        {"name":"ALL_MESSAGES", "value":0},
+        {"name":"ONLY_MENTIONS"}
+      ]
+    },
+    {
+      "comment": "https://discord.com/developers/docs/resources/guild#guild-object-default-message-notification-level",
+      "namespace": ["explicit_content_filter_level"],
+      "enum": "code",
+      "items": [
+        {"name":"DISABLED", "value":0},
+        {"name":"MEMBERS_WITHOUT_ROLES"},
+        {"name":"ALL_MEMBERS"}
+      ]
+    },
+    {
+      "comment": "https://discord.com/developers/docs/resources/guild#guild-object-default-message-notification-level",
+      "namespace": ["mfa_level"],
+      "enum": "code",
+      "items": [
+        {"name":"NONE", "value":0},
+        {"name":"ELEVATED"}
+      ]
+    },
+    {
+      "comment": "https://discord.com/developers/docs/resources/guild#guild-object-default-message-notification-level",
+      "namespace": ["verification_level"],
+      "enum": "code",
+      "items": [
+        {"name":"NONE", "value":0},
+        {"name":"LOW"},
+        {"name":"MEDIUM"},
+        {"name":"HIGH"},
+        {"name":"VERY_HIGH"}
+      ]
+    },
+    {
+      "comment": "https://discord.com/developers/docs/resources/guild#guild-object-default-message-notification-level",
+      "namespace": ["premium_tier"],
+      "enum": "code",
+      "items": [
+        {"name":"NONE", "value":0},
+        {"name":"TIER_1"},
+        {"name":"TIER_2"},
+        {"name":"TIER_3"}
+      ]
+    },
+    {
+      "comment": "https://discord.com/developers/docs/resources/guild#guild-object-default-message-notification-level",
+      "namespace": ["system_channel_flags"],
+      "enum": "code",
+      "items": [
+        {"name":"SUPRESS_JOIN_NOTIFICATIONS", "value":1},
+        {"name":"SUPRESS_PREMIUM_SUBSCRIPTIONS", "value":2}
+      ]
+    },
+    {
+      "comment": "https://discord.com/developers/docs/resources/guild#guild-object-default-message-notification-level",
+      "namespace": ["guild_features"],
+      "enum": "code",
+      "items": [
+        {"name":"INVITE_SPLASH"},
+        {"name":"VIP_REGIONS"},
+        {"name":"VANITY_URL"},
+        {"name":"VERIFIED"},
+        {"name":"PARTNERED"},
+        {"name":"COMMUNITY"},
+        {"name":"COMMERCE"},
+        {"name":"NEWS"},
+        {"name":"DISCOVERABLE"},
+        {"name":"FEATURABLE"},
+        {"name":"ANIMATED_ICON"},
+        {"name":"BANNER"},
+        {"name":"WELCOME_SCREEN_ENABLED"},
+        {"name":"MEMBER_VERIFICATION_GATE_ENABLED"},
+        {"name":"PREVIEW_ENABLED"}
+      ]
+    }
+  ]
+}
