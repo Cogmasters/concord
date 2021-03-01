@@ -202,7 +202,7 @@ void run(client *client, const uint64_t guild_id, params *params, channel::dati 
     D_PUTS("Missing channel name (params.name)");
     return;
   }
-
+#if 0
   void *A[10] = {0}; // pointer availability array.
   A[0] = (void *)params->name;
   A[1] = (void *)&params->type;
@@ -221,7 +221,6 @@ void run(client *client, const uint64_t guild_id, params *params, channel::dati 
     A[8] = (void *)&params->parent_id;
   A[9] = (void *)&params->nsfw;
 
-  char payload[MAX_PAYLOAD_LEN];
   json_inject(payload, sizeof(payload),
       "(name):s"
       "(type):d"
@@ -245,6 +244,10 @@ void run(client *client, const uint64_t guild_id, params *params, channel::dati 
       &params->parent_id,
       &params->nsfw,
       A, sizeof(A));
+#endif
+  char payload[MAX_PAYLOAD_LEN];
+  create_channel::params_use_default_inject_settings(params);
+  create_channel::params_to_json(payload, sizeof(payload), params);
 
   struct resp_handle resp_handle = {
     .ok_cb = p_channel ? channel::dati_from_json : NULL,

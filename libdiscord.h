@@ -1409,7 +1409,7 @@ void get(client *client, const uint64_t guild_id, dati *p_guild);
 channel::dati** get_channels(client *client, const uint64_t guild_id);
 
 namespace create_channel {
-
+#if 0
 struct params {
   char *name;
   channel::types::code type;
@@ -1422,6 +1422,9 @@ struct params {
   u64_snowflake_t parent_id;
   bool nsfw;
 };
+#else
+#include "./specs/guild.create-channel.h"
+#endif
 
 void run(client *client, const uint64_t guild_id, params *params, channel::dati *p_channel);
 
@@ -1482,7 +1485,6 @@ void leave_guild(client *client, const u64_snowflake_t guild_id);
 
 } // namespace user
 
-//#include "./specs/guild.create-channel.h"
 } // namespace discord
 
 #endif
