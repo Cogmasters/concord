@@ -1223,7 +1223,7 @@ static void gen_forward_declare(FILE *fp, struct jc_struct *s)
   fprintf(fp, "size_t %s_list_to_json(char *str, size_t len, struct %s **p);\n",
           t,t);
 
-  fprintf(fp, "void %s_use_default_inject_settings(struct %s *p)\n", t, t);
+  fprintf(fp, "void %s_use_default_inject_settings(struct %s *p);\n", t, t);
 }
 
 static void gen_typedef (FILE *fp, struct jc_struct *s)
