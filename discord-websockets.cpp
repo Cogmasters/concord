@@ -557,15 +557,34 @@ on_dispatch_message(dati *ws, int offset)
       sizeof(ws->payload.event_data), (void*)message);
 
   if (STREQ("CREATE", ws->payload.event_name + offset)) {
-    if (ws->cbs.on_message.command 
-        && STRNEQ(ws->prefix, message->content, strlen(ws->prefix)))
-    {
-      char *tmp = message->content; //offsets from prefix
-      message->content = message->content + strlen(ws->prefix);
+    if (ws->on_cmd) {
+      size_t offset = IS_EMPTY_STRING(ws->prefix) ? 0 : strlen(ws->prefix);
 
-      (*ws->cbs.on_message.command)(ws->p_client, ws->me, message);
+      message_cb *cmd_cb = NULL;
+      char *cmd_str = NULL;
+      for (size_t i=0; i < ws->num_cmd; ++i) 
+      {
+        if (ws->prefix && !STRNEQ(ws->prefix, message->content, offset))
+            continue; //prefix doesn't match message->content
 
-      message->content = tmp;
+        if ( STRNEQ(ws->on_cmd[i].str, 
+                message->content + offset, 
+                strlen(ws->on_cmd[i].str)) )
+        {
+          cmd_cb = ws->on_cmd[i].cb;
+          cmd_str = ws->on_cmd[i].str;
+          break;
+        }
+      }
+
+      if (cmd_cb && cmd_str) {
+        char *tmp = message->content; //offsets from prefix
+        message->content = message->content + offset + strlen(cmd_str);
+
+        (*cmd_cb)(ws->p_client, ws->me, message);
+
+        message->content = tmp;
+      }
     }
     else if (ws->cbs.on_message.create)
       (*ws->cbs.on_message.create)(ws->p_client, ws->me, message);

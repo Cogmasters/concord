@@ -1286,6 +1286,7 @@ enum callback_opt {
   GUILD_MEMBER_REMOVE
 };
 
+void set_prefix(client *client, char *prefix);
 void setcb(client *client, enum callback_opt opt, ...);
 void run(client *client);
 

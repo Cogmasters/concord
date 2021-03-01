@@ -420,6 +420,11 @@ enum {
 
 } // namespace identify
 
+struct cmd_cbs {
+  char *str;
+  message_cb *cb;
+};
+
 struct dati { /* WEBSOCKETS STRUCTURE */
   status::code status; //connection to discord status
   int reconnect_attempts; //hard limit 5 reconnection attempts @todo make configurable
@@ -445,6 +450,8 @@ struct dati { /* WEBSOCKETS STRUCTURE */
   session::dati session;
 
   char *prefix; //the command prefix
+  struct cmd_cbs *on_cmd; //triggers on a user set command
+  size_t num_cmd; //amt of set commands
 
   struct { /* CALLBACKS STRUCTURE */
     idle_cb *on_idle;   //triggers in every event loop iteration

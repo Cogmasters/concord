@@ -114,70 +114,82 @@ add_intents(client *client, websockets::intents::code code)
   client->ws.identify->intents |= code;
 }
 
+/* @todo add length checks */
+void
+set_prefix(client *client, char *prefix) {
+  client->ws.prefix = prefix;
+};
+
 void
 setcb(client *client, enum callback_opt opt, ...)
 {
+  using namespace websockets;
+  dati *ws = &client->ws;
+
   va_list args;
   va_start(args, opt);
-
-  using namespace websockets;
 
   intents::code code = 0;
   switch (opt) {
   case IDLE:
-      client->ws.cbs.on_idle = va_arg(args, idle_cb*);
+      ws->cbs.on_idle = va_arg(args, idle_cb*);
       break;
   case READY:
-      client->ws.cbs.on_ready = va_arg(args, idle_cb*);
+      ws->cbs.on_ready = va_arg(args, idle_cb*);
       break;
-  case COMMAND: {
-      client->ws.cbs.on_message.command = va_arg(args, message_cb*);
+  case COMMAND:
       code |= intents::GUILD_MESSAGES | intents::DIRECT_MESSAGES;
-      client->ws.prefix = va_arg(args, char*);
+
+      ++ws->num_cmd;
+      ws->on_cmd = (struct cmd_cbs*)realloc(ws->on_cmd, 
+                          ws->num_cmd * sizeof(struct cmd_cbs));
+
+      ws->on_cmd[ws->num_cmd-1].cb = va_arg(args, message_cb*);
+      /* @todo add length checks */
+      ws->on_cmd[ws->num_cmd-1].str = va_arg(args, char*);
       break;
-   }
   case MESSAGE_CREATE:
-      client->ws.cbs.on_message.create = va_arg(args, message_cb*);
+      ws->cbs.on_message.create = va_arg(args, message_cb*);
       code |= intents::GUILD_MESSAGES | intents::DIRECT_MESSAGES;
       break;
   case MESSAGE_UPDATE:
-      client->ws.cbs.on_message.update = va_arg(args, message_cb*);
+      ws->cbs.on_message.update = va_arg(args, message_cb*);
       code |= intents::GUILD_MESSAGES | intents::DIRECT_MESSAGES;
       break;
   case MESSAGE_DELETE:
-      client->ws.cbs.on_message.del = va_arg(args, message_delete_cb*);
+      ws->cbs.on_message.del = va_arg(args, message_delete_cb*);
       code |= intents::GUILD_MESSAGES | intents::DIRECT_MESSAGES;
       break;
   case MESSAGE_DELETE_BULK:
-      client->ws.cbs.on_message.delete_bulk = va_arg(args, message_delete_bulk_cb*);
+      ws->cbs.on_message.delete_bulk = va_arg(args, message_delete_bulk_cb*);
       code |= intents::GUILD_MESSAGES | intents::DIRECT_MESSAGES;
       break;
   case REACTION_ADD:
-      client->ws.cbs.on_reaction.add = va_arg(args, reaction_add_cb*);
+      ws->cbs.on_reaction.add = va_arg(args, reaction_add_cb*);
       code |= intents::GUILD_MESSAGE_REACTIONS | intents::DIRECT_MESSAGE_REACTIONS;
       break;
   case REACTION_REMOVE:
-      client->ws.cbs.on_reaction.remove = va_arg(args, reaction_remove_cb*);
+      ws->cbs.on_reaction.remove = va_arg(args, reaction_remove_cb*);
       code |= intents::GUILD_MESSAGE_REACTIONS | intents::DIRECT_MESSAGE_REACTIONS;
       break;
   case REACTION_REMOVE_ALL:
-      client->ws.cbs.on_reaction.remove_all = va_arg(args, reaction_remove_all_cb*);
+      ws->cbs.on_reaction.remove_all = va_arg(args, reaction_remove_all_cb*);
       code |= intents::GUILD_MESSAGE_REACTIONS | intents::DIRECT_MESSAGE_REACTIONS;
       break;
   case REACTION_REMOVE_EMOJI:
-      client->ws.cbs.on_reaction.remove_emoji = va_arg(args, reaction_remove_emoji_cb*);
+      ws->cbs.on_reaction.remove_emoji = va_arg(args, reaction_remove_emoji_cb*);
       code |= intents::GUILD_MESSAGE_REACTIONS | intents::DIRECT_MESSAGE_REACTIONS;
       break;
   case GUILD_MEMBER_ADD:
-      client->ws.cbs.on_guild_member.add = va_arg(args, guild_member_cb*);
+      ws->cbs.on_guild_member.add = va_arg(args, guild_member_cb*);
       code |= intents::GUILD_MEMBERS;
       break;
   case GUILD_MEMBER_UPDATE:
-      client->ws.cbs.on_guild_member.update = va_arg(args, guild_member_cb*);
+      ws->cbs.on_guild_member.update = va_arg(args, guild_member_cb*);
       code |= intents::GUILD_MEMBERS;
       break;
   case GUILD_MEMBER_REMOVE:
-      client->ws.cbs.on_guild_member.remove = va_arg(args, guild_member_remove_cb*);
+      ws->cbs.on_guild_member.remove = va_arg(args, guild_member_remove_cb*);
       code |= intents::GUILD_MEMBERS;
       break;
   default:
