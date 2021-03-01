@@ -1045,8 +1045,11 @@ static void gen_use_default_inject_settings(FILE *fp, struct jc_struct *s)
                 i, act.inject_arg_decor, act.c_name);
         break;
       case INJECT_IF_NOT_EMPTY_STR:
-        fprintf(fp, "  if (p->%s != NULL && strlen(p->%s) != 0)\n",
-                act.c_name, act.c_name);
+        if (f->type.decor.tag == DEC_POINTER)
+          fprintf(fp, "  if (p->%s != NULL && strlen(p->%s) != 0)\n",
+                  act.c_name, act.c_name);
+        else
+          fprintf(fp, "  if (strlen(p->%s) != 0)\n", act.c_name);
         fprintf(fp, "    p->__metadata.arg_switches[%d] = %sp->%s;\n",
                 i, act.inject_arg_decor, act.c_name);
         break;
