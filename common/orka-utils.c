@@ -246,37 +246,16 @@ orka_settings_init(struct orka_settings *settings, const char filename[])
 {
   size_t len;
   char *str = orka_load_whole_file(filename, &len);
-#ifdef P
-  json_scanf(str, len,
-     "[discord][token]%s"
-     "[github][username]%s"
-     "[github][token]%s"
-     "[logging][filename]%s"
-     "[logging][level]%s"
-     "[logging][dump_json][filename]%s"
-     "[logging][dump_json][enable]%b"
-     "[logging][dump_curl][filename]%s"
-     "[logging][dump_curl][enable]%b",
-     settings->discord.token,
-     settings->github.username,
-     settings->github.token,
-     settings->logging.filename, 
-     settings->logging.level,
-     settings->logging.dump_json.filename,
-     &settings->logging.dump_json.enable,
-     settings->logging.dump_curl.filename,
-     &settings->logging.dump_curl.enable);
-#else
   json_extract(str, len,
              "(discord.token):s"
-               "(github.username):s"
-               "(github.token):s"
-               "(logging.filename):s"
-               "(logging.level):s"
-               "(logging.dump_json.filename):s"
-               "(logging.dump_json.enable):b"
-               "(logging.dump_curl.filename):s"
-               "(logging.dump_curl.enable):b",
+             "(github.username):s"
+             "(github.token):s"
+             "(logging.filename):s"
+             "(logging.level):s"
+             "(logging.dump_json.filename):s"
+             "(logging.dump_json.enable):b"
+             "(logging.dump_curl.filename):s"
+             "(logging.dump_curl.enable):b",
              settings->discord.token,
              settings->github.username,
              settings->github.token,
@@ -286,7 +265,7 @@ orka_settings_init(struct orka_settings *settings, const char filename[])
              &settings->logging.dump_json.enable,
              settings->logging.dump_curl.filename,
              &settings->logging.dump_curl.enable);
-#endif
+
   DS_PRINT("discord.token %s", settings->discord.token);
   DS_PRINT("github.username %s", settings->github.username);
   DS_PRINT("github.token %s", settings->github.token);
@@ -297,4 +276,16 @@ orka_settings_init(struct orka_settings *settings, const char filename[])
   DS_PRINT("logging.dump_curl.filename %s", settings->logging.dump_curl.filename);
   DS_PRINT("logging.dump_curl.enable %d", settings->logging.dump_curl.enable);
   free(str);
+}
+
+/* this can be used for checking if a user-given string does not
+ *  exceeds a arbitrary threshold length */
+int
+orka_str_below_threshold(const char *str, const size_t threshold)
+{
+  size_t i=0;
+  for ( ; i < threshold; ++i) {
+    if ('\0' == str[i]) return 1;
+  }
+  return 0; 
 }
