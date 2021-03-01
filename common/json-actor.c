@@ -648,6 +648,16 @@ parse_value(
       act->_.builtin = B_FLOAT;
       pos ++;
       goto return_true;
+    case 'k': {
+      size_t sz = strlen("key");
+      if (pos + sz <= end_pos && 0 == strncmp(pos, "key", sz)) {
+        act->mem_size.size = sizeof(bool);
+        act->mem_size.tag = SIZE_FIXED;
+        act->_.builtin = B_KEY_EXISTENCE;
+        pos += sz;
+      }
+      goto return_true;
+    }
     case 'l':
       if (0 == strncmp(pos, "ld", 2)) {
         act->mem_size.size = sizeof(long);
@@ -1925,6 +1935,9 @@ static size_t extract_scalar (struct action * a, int i, struct e_info * info)
         ERR("failed to extract bool from %.*s\n",
             tokens[i].end - tokens[i].start, json + tokens[i].start);
       add_defined(info->E, a->operand);
+      break;
+    case B_KEY_EXISTENCE:
+      *(bool *)a->operand = true;
       break;
     case B_LONG_LONG:
       if (is_null)
