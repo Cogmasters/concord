@@ -171,6 +171,12 @@ set_method(
   enum http_method method, 
   struct sized_buffer *req_body)
 {
+  (*ua->debug.json_cb)(
+    false, 
+    0, 
+    &ua->debug, 
+    (req_body) ? req_body->start : NULL);
+
   // resets any preexisting CUSTOMREQUEST
   curl_easy_setopt(conn->ehandle, CURLOPT_CUSTOMREQUEST, NULL);
 
@@ -205,7 +211,6 @@ set_method(
   }
   
   if (req_body && req_body->start) {
-    (*ua->debug.json_cb)(false, 0, &ua->debug, conn->resp_body.start);
     //set ptr to payload that will be sent via POST/PUT
     curl_easy_setopt(conn->ehandle, CURLOPT_POSTFIELDS, req_body->start);
     curl_easy_setopt(conn->ehandle, CURLOPT_POSTFIELDSIZE, req_body->size);
