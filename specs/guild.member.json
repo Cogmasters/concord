@@ -1,10 +1,11 @@
 {
   "disabled": false,
-  "namespace": ["discord", "guild", "member"],
-  "comment": "VOICE STRUCTURE\nhttps://discord.com/developers/docs/resources/voice#voice-state-object-voice-state-structure",
+  "namespace": ["discord", "guild"],
+  "comment": "https://discord.com/developers/docs/resources/guild#guild-member-object",
   "defs":
   [
     {
+      "namespace": ["member"],
       "struct":"dati",
       "fields":
       [
@@ -16,7 +17,7 @@
         { "name": "deaf", "type":{ "base":"bool" }},
         { "name": "mute", "type":{ "base":"bool" }},
         { "name": "pending", "type":{ "base":"bool" }},
-        { "name": "permissions", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size"},
+        { "name": "permissions", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size"}
       ]
     }
   ]

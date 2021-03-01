@@ -1,9 +1,10 @@
 {
-  "namespace": ["discord", "channel", "reaction"],
+  "namespace": ["discord", "channel"],
   "comment": "https://discord.com/developers/docs/resources/channel#reaction-object-reaction-structure"
   "defs":
   [
     {
+      "namespace":["reaction"], 
       "struct":"dati",
       "fields":
       [

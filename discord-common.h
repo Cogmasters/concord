@@ -76,9 +76,9 @@ namespace guild {
   namespace member { struct dati; }
   namespace integration { 
     struct dati; 
-    namespace expire_behaviors { typedef int code; }
-    namespace account { struct dati; }
-    namespace application { struct dati; }
+    //namespace expire_behaviors { typedef int code; }
+    //namespace account { struct dati; }
+    //namespace application { struct dati; }
   } // namespace integration
   namespace ban { struct dati; }
   namespace welcome_screen { 

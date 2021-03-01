@@ -438,21 +438,20 @@ struct dati {
 
 } // namespace followed_channel
 
+#if 0
 /* REACTION STRUCTURE
 https://discord.com/developers/docs/resources/channel#reaction-object-reaction-structure */
 namespace reaction {
-#if 0
 struct dati {
   int count;
   bool me;
   emoji::dati *emoji;
 };
-
 //@todo missing initialization functions
+} // namespace reaction
 #else
 #include "./specs/channel.reaction.h"
 #endif
-} // namespace reaction
 
 #if 0
 /* OVERWRITE STRUCTURE
@@ -857,10 +856,10 @@ struct dati {
 
 } // namespace widget
 
+#if 0
 /* GUILD MEMBER STRUCTURE
 https://discord.com/developers/docs/resources/guild#guild-member-object */
 namespace member {
-#if 0
 struct dati {
   user::dati *user;
   char nick[MAX_NAME_LEN];
@@ -880,14 +879,14 @@ void dati_free(dati *member);
 void dati_list_free(dati **members);
 void dati_from_json(char *str, size_t len, void *p_member);
 void dati_list_from_json(char *str, size_t len, void *p_members);
+} // namespace member
 #else
 #include "./specs/guild.member.h"
 #endif
 
-} // namespace member
-
 /* INTEGRATION STRUCTURE
 https://discord.com/developers/docs/resources/guild#integration-object-integration-structure */
+#if 0
 namespace integration {
 struct dati {
   uint64_t id;
@@ -947,9 +946,14 @@ struct dati {
 } // namespace application
 
 } // namespace integration
+#else
+#include "./specs/guild.integration.h"
+#endif
+
 
 /* GUILD BAN STRUCTURE
 https://discord.com/developers/docs/resources/guild#ban-object */
+#if 0
 namespace ban {
 struct dati {
   char reason[MAX_REASON_LEN];
@@ -963,8 +967,10 @@ void dati_free(dati *ban);
 void dati_list_free(dati **bans);
 void dati_from_json(char *str, size_t len, void *p_ban);
 void dati_list_from_json(char *str, size_t len, void *p_ban);
-
 } // namespace ban
+#else
+#include "./specs/guild.ban.h"
+#endif
 
 /* WELCOME SCREEN STRUCTURE
 https://discord.com/developers/docs/resources/guild#welcome-screen-object-welcome-screen-structure */

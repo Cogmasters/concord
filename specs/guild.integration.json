@@ -1,0 +1,59 @@
+{
+  "disabled": false,
+  "namespace": ["discord", "guild"],
+  "comment": "https://discord.com/developers/docs/resources/guild#integration-object-integration-structure",
+  "defs":
+  [
+    
+    {
+      "namespace": ["integration", "expire_behaviors"],
+      "enum": "code",
+      "items": [
+        {"name":"REMOVE_ROLE", "value":0},
+        {"name":"KICK"}
+      ]
+    },
+    {
+      "namespace": ["integration", "account"],
+      "struct":"dati",
+      "fields": [
+        { "name":"id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
+        { "name":"name", "type":{ "base":"char", "dec":"*" }}
+      ]
+    },
+    {
+      "namespace": ["integration", "application"],
+      "struct":"dati",
+      "fields": [
+        { "name":"id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
+        { "name":"icon", "type":{ "base":"char", "dec":"[MAX_SHA256_LEN]" }},
+        { "name":"description", "type":{ "base":"char", "dec":"*" }},
+        { "name":"summary", "type":{ "base":"char", "dec":"*" }},
+        { "name":"bot", "type":{ "base":"user::dati", "dec":"*" }}
+      ]
+    },
+    {
+      "comment": "https://discord.com/developers/docs/resources/guild#integration-object-integration-structure",
+      "namespace": ["integration"],
+      "struct":"dati",
+      "fields":
+      [
+        { "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
+        { "name": "name", "type":{ "base":"char", "dec":"*"}},
+        { "name": "type", "type":{ "base":"char", "dec":"*"}},
+        { "name": "enabled", "type":{ "base":"bool"}},
+        { "name": "syncing", "type":{ "base":"bool"}},
+        { "name": "role_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}},
+        { "name": "enable_emotions", "type":{ "base":"bool"}},
+        { "name": "expire_behavior", "type":{ "base":"int", "c_base":"expire_behaviors::code"}},
+        { "name": "expire_grace_period", "type":{ "base":"int"}},
+        { "name": "user", "type":{ "base":"user::dati", "dec":"*"}},
+        { "name": "account", "type":{ "base":"account::dati", "dec":"*"}},
+        { "name": "synced_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601"}},
+        { "name": "subscriber_count", "type":{ "base":"int"}},
+        { "name": "revoked", "type":{ "base":"bool"}},
+        { "name": "application", "type":{ "base":"application::dati", "dec":"*" }}
+      ]
+    }
+  ]
+}
