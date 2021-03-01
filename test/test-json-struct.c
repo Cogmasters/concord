@@ -34,6 +34,7 @@ int main (int argc, char ** argv)
       "|comment|: |url|,"
       "|defs|:"
       "["
+#if 1
       "  {"
       "    |namespace|:[|C|],"
       "    |struct|:|dati|,"
@@ -51,9 +52,11 @@ int main (int argc, char ** argv)
       "      { |name|:|f9_todo|, |todo|:true, |type|:{ |base|:|emoji::dati|, |dec|:|ntl| } },"
       "      { |name|:|f10|, |todo|:false, |type|:{ |base|:|emoji::dati|, |dec|:|*| } },"
       "      { |name|:|f11|, |type|:{ |base|:|char|, |dec|:|*|, |converter|:|iso8601| } },"
+      "      { |name|:|f12|, |type|:{ |base|:|char|, |dec|:|*|}, |inject_if_not|:null },"
       "    ]"
-      "  },"
-      "  {"
+      "  }"
+#endif
+      " ,{"
       "    |namespace|:[|C|],"
       "    |enum|:|enum1|,"
       "    |items|:"

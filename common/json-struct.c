@@ -1,6 +1,8 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
+#include <stdlib.h>
 #include "json-actor.h"
 #include "ntl.h"
 #include "orka-utils.h"
@@ -31,7 +33,8 @@
  * <field-type>  :=  "type" : { "base":<string>,
  *                              "c_base"? : <string>,
  *                              "dec"?:("ntl"|"pointer"|"[<string>]"),
- *                              "converter"?:<string>
+ *                              "converter"?:<string>,
+ *                              "inject_if_not"?:<string>|null,
  *                            }
  *
  * <field-loc>   :=  "loc"  : ("json" | "query" | "body")
@@ -100,7 +103,7 @@ static void init_converters () {
   converters[1]->injector_addrof = "&";
 
   for (int i = 0; converters[i]; i++)
-    fprintf(stderr, "loading converters %s ...\n", converters[i]->name);
+    fprintf(stderr, "adding converters %s ...\n", converters[i]->name);
 
 }
 static void
@@ -188,12 +191,33 @@ enum loc {
   LOC_IN_BODY
 };
 
+enum inject_opcode {
+  INJECT_ALWAYS = 0,
+  INJECT_IF_NOT_NULL,
+  INJECT_IF_NOT_STR,
+  INJECT_IF_NOT_BOOL,
+  INJECT_IF_NOT_INT,
+  INJECT_IF_NOT_DOUBLE
+};
+
+struct inject_condition {
+  enum inject_opcode opcode;
+  union {
+    uint64_t ival;
+    double dval;
+    char * sval;
+  } _;
+  char * string;
+};
+
+
 struct jc_field {
   bool todo;
   char *name;
   char *c_name;
   struct jc_type type;
   enum loc loc;
+  struct inject_condition inject_condition;
   char * comment;
 };
 
@@ -271,9 +295,9 @@ static void
 print_def(FILE *fp, struct jc_def *d)
 {
   if (d->is_struct)
-    print_struct(fp, (struct jc_struct *)&d);
+    print_struct(fp, (struct jc_struct *)d);
   else
-    print_enum(fp, (struct jc_enum *)&d);
+    print_enum(fp, (struct jc_enum *)d);
 };
 
 struct jc_definition {
@@ -350,6 +374,8 @@ static size_t
 field_from_json(char *json, size_t size, void *x)
 {
   struct jc_field *p = (struct jc_field *)x;
+  bool has_inject_if_not = false;
+  struct sized_buffer t = {0};
   size_t s = json_extract(json, size,
                           "(name):?s,"
                           "(todo):b,"
@@ -358,6 +384,8 @@ field_from_json(char *json, size_t size, void *x)
                           "(type.c_base):?s,"
                           "(type.dec):F,"
                           "(type.converter):?s,"
+                          "(inject_if_not):key,"
+                          "(inject_if_not):T,"
                           "(loc):F,"
                           "(comment):?s",
                           &p->name,
@@ -367,8 +395,24 @@ field_from_json(char *json, size_t size, void *x)
                           &p->type.c_base,
                           dec_from_json, &p->type.dec,
                           &p->type.converter,
+                          &has_inject_if_not,
+                          &t,
                           loc_from_json, &p->loc,
                           &p->comment);
+
+  if (has_inject_if_not) {
+    if (strlen("null") == t.size && strncmp("null", t.start, t.size) == 0) {
+      p->inject_condition.opcode = INJECT_IF_NOT_NULL;
+    }
+    else {
+      // we will convert this to actual type later
+      p->inject_condition.opcode = INJECT_IF_NOT_STR;
+      char * str = malloc(t.size + 1);
+      strncpy(str, t.start, t.size);
+      str[t.size] = 0;
+      p->inject_condition.string = str;
+    }
+  }
   return s;
 }
 
@@ -462,22 +506,30 @@ enum_from_json(char * json, size_t size, struct jc_enum *e)
 static size_t
 def_from_json(char *json, size_t size, struct jc_def *def)
 {
+  bool is_struct = false, is_enum = false;
   char *s_name = NULL, *e_name = NULL;
-  size_t ret = json_extract(json, size,
-                            "(struct):?s"
-                            "(enum):?s",
-                            &s_name,
-                            &e_name);
+  json_extract(json, size,
+               "(struct):key,"
+               "(enum):key,"
+               "(struct):?s,"
+               "(enum):?s",
+               &is_struct,
+               &is_enum,
+               &s_name, &e_name);
 
-  if (s_name) {
+  if (is_struct) {
     def->is_struct = true;
     def->name = s_name;
-    struct_from_json(json, size, (struct jc_struct *)def);
+    return struct_from_json(json, size, (struct jc_struct *)def);
   }
-  else {
+  else if (is_enum) {
     def->is_struct = false;
     def->name = e_name;
-    enum_from_json(json, size, (struct jc_enum *)def);
+    return enum_from_json(json, size, (struct jc_enum *)def);
+  }
+  else {
+    ERR("missing 'struct' or 'enum' in '%.*s'", size, json);
+    return 0;
   }
 }
 
@@ -579,10 +631,10 @@ spec_from_json(char *json, size_t size, struct jc_definition ***s)
     json ++;
   }
   if ('[' == *json)
-    definition_list_from_json(json, xend_pos - json, s);
+    return definition_list_from_json(json, xend_pos - json, s);
   else {
     *s = ntl_calloc(1, sizeof(struct jc_definition));
-    definition_from_json(json, xend_pos - json, (*s)[0]);
+    return definition_from_json(json, xend_pos - json, (*s)[0]);
   }
 }
 
@@ -605,15 +657,28 @@ struct action {
 
 static int to_builtin_action(struct jc_field *f, struct action *act)
 {
+  char * xend = NULL;
   if (strcmp(f->type.base, "int") == 0) {
     act->extractor = "d";
     act->injector = "d";
     act->c_type = f->type.c_base ? f->type.c_base : "int";
+    if (f->inject_condition.opcode == INJECT_IF_NOT_STR) {
+      f->inject_condition.opcode = INJECT_IF_NOT_INT;
+      f->inject_condition._.ival = (uint64_t)strtol(f->inject_condition.string,
+                                                    &xend, 10);
+      //@todo check xend
+    }
   }
   else if (strcmp(f->type.base, "s_as_u64") == 0) {
     act->extractor = "s_as_u64";
     act->injector = "s_as_u64";
     act->c_type = "uint64_t";
+    if (f->inject_condition.opcode == INJECT_IF_NOT_STR) {
+      f->inject_condition.opcode = INJECT_IF_NOT_INT;
+      f->inject_condition._.ival = (uint64_t)strtoll(f->inject_condition.string,
+                                                     &xend, 10);
+      //@todo check xend
+    }
   }
   else if (strcmp(f->type.base, "s_as_i64") == 0) {
     act->extractor = "s_as_i64";
@@ -628,6 +693,28 @@ static int to_builtin_action(struct jc_field *f, struct action *act)
     act->extractor = "b";
     act->injector = "b";
     act->c_type = "bool";
+    if (f->inject_condition.opcode == INJECT_IF_NOT_STR) {
+      f->inject_condition.opcode = INJECT_IF_NOT_BOOL;
+      if (strcmp("true", f->inject_condition.string) == 0) {
+        f->inject_condition._.sval = "true";
+      }
+      else if (strcmp("false", f->inject_condition.string) == 0) {
+        f->inject_condition._.sval = "false";
+      }
+      else {
+        ERR("%s is not a bool value\n", f->inject_condition.string);
+      }
+    }
+  }
+  else if (strcmp(f->type.base, "float") == 0) {
+    act->extractor = "f";
+    act->injector = "f";
+    act->c_type = "float";
+    if (f->inject_condition.opcode == INJECT_IF_NOT_STR) {
+      f->inject_condition.opcode = INJECT_IF_NOT_DOUBLE;
+      f->inject_condition._.dval = strtod(f->inject_condition.string, &xend);
+      //@todo check xend
+    }
   }
   else {
     //fprintf(stderr, "unknown %s\n", f->type.base);
@@ -636,8 +723,7 @@ static int to_builtin_action(struct jc_field *f, struct action *act)
   return 1;
 }
 
-static void
-to_action(struct jc_field *f, struct action *act)
+static void to_action(struct jc_field *f, struct action *act)
 {
   if (f->todo) {
     act->todo = true;
@@ -759,8 +845,7 @@ gen_init (FILE *fp, struct jc_struct *s)
   fprintf(fp, "}\n");
 }
 
-static void
-gen_default(FILE *fp, struct jc_struct * s)
+static void gen_default(FILE *fp, struct jc_struct * s)
 {
   char * type = s->name;
 
@@ -884,6 +969,59 @@ static void gen_from_json(FILE *fp, struct jc_struct *s)
   fprintf(fp, "                p->__metadata.record_defined,"
     " sizeof(p->__metadata.record_defined));\n");
   fprintf(fp, "  ret = r;\n");
+  fprintf(fp, "}\n");
+}
+
+static void gen_use_default_inject_settings(FILE *fp, struct jc_struct *s)
+{
+  char *t = s->name;
+  fprintf(fp, "void %s_use_default_inject_settings(struct %s *p)\n",
+          t, t);
+  fprintf(fp, "{\n");
+  fprintf(fp, "  p->__metadata.enable_arg_switches = true;\n");
+  for (int i = 0; s->fields[i]; i++) {
+    struct jc_field *f = s->fields[i];
+    struct action act = {0};
+    to_action(f, &act);
+    if (act.todo) continue;
+
+    switch(f->inject_condition.opcode)
+    {
+      case INJECT_ALWAYS:
+        fprintf(fp, "  p->__metadata.arg_switches[%d] = %sp->%s;\n",
+                i, act.inject_arg_decor, act.c_name);
+        break;
+      case INJECT_IF_NOT_NULL:
+        fprintf(fp, "  if (p->%s != NULL)\n", act.c_name);
+        fprintf(fp, "    p->__metadata.arg_switches[%d] = %sp->%s;\n",
+                i, act.inject_arg_decor, act.c_name);
+        break;
+      case INJECT_IF_NOT_BOOL:
+        fprintf(fp, "  if (p->%s != %s)\n", act.c_name,
+                f->inject_condition._.sval);
+        fprintf(fp, "    p->__metadata.arg_switches[%d] = %sp->%s;\n",
+                i, act.inject_arg_decor, act.c_name);
+        break;
+      case INJECT_IF_NOT_INT:
+        fprintf(fp, "  if (p->%s != %s)\n", act.c_name,
+                f->inject_condition.string);
+        fprintf(fp, "    p->__metadata.arg_switches[%d] = %sp->%s;\n",
+                i, act.inject_arg_decor, act.c_name);
+        break;
+      case INJECT_IF_NOT_DOUBLE:
+        fprintf(fp, "  if (p->%s != %s)\n", act.c_name,
+                f->inject_condition.string);
+        fprintf(fp, "    p->__metadata.arg_switches[%d] = %sp->%s;\n",
+                i, act.inject_arg_decor, act.c_name);
+        break;
+      case INJECT_IF_NOT_STR:
+        fprintf(fp, "  if (strcmp(p->%s, %s) != 0)\n", act.c_name,
+                f->inject_condition.string);
+        fprintf(fp, "    p->__metadata.arg_switches[%d] = %sp->%s;\n",
+                i, act.inject_arg_decor, act.c_name);
+        break;
+    }
+  }
   fprintf(fp, "}\n");
 }
 
@@ -1084,9 +1222,11 @@ static void gen_forward_declare(FILE *fp, struct jc_struct *s)
   fprintf(fp, "size_t %s_list_to_json_v(char *str, size_t len, void *p);\n", t);
   fprintf(fp, "size_t %s_list_to_json(char *str, size_t len, struct %s **p);\n",
           t,t);
+
+  fprintf(fp, "void %s_use_default_inject_settings(struct %s *p)\n", t, t);
 }
 
-static void gen_typedef (FILE * fp, struct jc_struct *s)
+static void gen_typedef (FILE *fp, struct jc_struct *s)
 {
 #if 1
   fprintf(fp, "typedef void (*vfvp)(void *);\n");
@@ -1095,7 +1235,7 @@ static void gen_typedef (FILE * fp, struct jc_struct *s)
 #endif
 }
 
-static void gen_struct_all (FILE * fp, struct jc_struct * s)
+static void gen_struct_all (FILE *fp, struct jc_struct *s)
 {
   //fprintf (fp, "/* comment out to avoid redefinition warning\n");
   gen_open_namespace(fp, s->namespace);
@@ -1114,6 +1254,10 @@ static void gen_struct_all (FILE * fp, struct jc_struct * s)
     fprintf(fp, "\n");
     gen_to_json(fp, s);
     fprintf(fp, "\n");
+
+    gen_use_default_inject_settings(fp, s);
+    fprintf(fp, "\n");
+
     gen_to_query(fp, s);
     fprintf(fp, "\n");
 
@@ -1127,8 +1271,13 @@ static void gen_struct_all (FILE * fp, struct jc_struct * s)
   } else {
     gen_from_json(fp, s);
     fprintf(fp, "\n");
+
     gen_to_json(fp, s);
     fprintf(fp, "\n");
+
+    gen_use_default_inject_settings(fp, s);
+    fprintf(fp, "\n");
+
     gen_to_query(fp, s);
     fprintf(fp, "\n");
 
@@ -1158,8 +1307,8 @@ static void gen_def (FILE *fp, struct jc_def *def)
 }
 
 
-static void gen_definition(FILE *fp, enum file_type type,
-                           struct jc_definition *d)
+static void
+gen_definition(FILE *fp, enum file_type type, struct jc_definition *d)
 {
   if (d->is_disabled)
     return;
@@ -1184,10 +1333,7 @@ static void gen_definition(FILE *fp, enum file_type type,
 }
 
 static void
-gen_definition_list(
-  char *folder,
-  enum file_type type,
-  struct jc_definition **ntl)
+gen_definition_list(char *folder, enum file_type type, struct jc_definition **ntl)
 {
   char * fname = NULL;
   for (int i = 0; ntl && ntl[i]; i++) {

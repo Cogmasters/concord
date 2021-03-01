@@ -184,5 +184,16 @@ int main ()
   fprintf(stderr, "%s\n", s);
   fprintf(stderr, "%p\n", A);
   fprintf(stderr, "%p\n", A[0]);
+
+  uint64_t  x = 0;
+  json = "{ \"a\":\"0x00000001\" } ";
+
+  ret = json_extract(json, strlen(json),
+                     "(a):s_as_hex64",
+                     &x);
+
+  char * bb = NULL;
+  json_ainject(&bb, "(a):s_as_hex64", &x);
+  fprintf(stderr, "%s\n", bb);
   return 0;
 }
