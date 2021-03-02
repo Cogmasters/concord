@@ -148,7 +148,7 @@ install : all
 	install -d $(PREFIX)/lib/
 	install -m 644 $(LIBDISCORD) $(PREFIX)/lib/
 	install -d $(PREFIX)/include/
-	install -m 644 *.h *.hpp common/*.h common/*.hpp $(PREFIX)/include/
+	install -m 644 *.h *.hpp common/*.h $(PREFIX)/include/
 
 specs_clean :
 	rm -f specs/*.cc specs/*.h
