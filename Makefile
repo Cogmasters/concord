@@ -10,7 +10,7 @@ GITHUB_SRC  := $(wildcard github-*.cpp)
 SPECS       := $(wildcard specs/*.json)
 
 SPECS_SRC   := $(SPECS:%.json=%.cc)
-SPECS_H     := $(SPECS:%.json=%.h)
+SPECS_H     := $(SPECS:%.json=%.hh)
 
 ACTOR_GEN_SRC = common/orka-utils.c common/json-actor.c \
 	common/ntl.c common/json-string.c common/json-scanf.c \
@@ -122,7 +122,7 @@ $(OBJDIR)/%.cpp.o: %.cpp
 specs/%.cc: specs/%.json
 	./bin/actor-gen.exe -c -o $@ $<
 
-specs/%.h: specs/%.json
+specs/%.hh: specs/%.json
 	./bin/actor-gen.exe -d -o $@ $<
 
 $(OBJDIR)/%.cc.o: %.cc

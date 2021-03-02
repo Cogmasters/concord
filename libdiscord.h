@@ -150,7 +150,7 @@ struct dati {
   char *role; //@todo find fixed size limit
 };
 #else
-#include "./specs/entry.optional_info.h"
+#include "./specs/entry.optional_info.hh"
 #endif
 } // namespace optional_entry
 
@@ -466,7 +466,7 @@ struct dati {
 //@todo missing initialization functions
 } // namespace reaction
 #else
-#include "./specs/channel.reaction.h"
+#include "./specs/channel.reaction.hh"
 #endif
 
 #if 0
@@ -482,7 +482,7 @@ struct dati {
 //@todo missing initialization functions
 } // namespace overwrite
 #else
-#include "./specs/channel.overwrite.h"
+#include "./specs/channel.overwrite.hh"
 #endif
 
 /* EMBED STRUCTURE
@@ -614,7 +614,7 @@ int dati_list_to_json(char *str, size_t len, void *p_fields);
 } // namespace field
 
 #else
-#include "./specs/channel.embed.h"
+#include "./specs/channel.embed.hh"
 #endif
 } // namespace embed
 
@@ -688,7 +688,7 @@ void dati_list_free(dati **emojis);
 void dati_from_json(char *str, size_t len, void *p_emoji);
 void dati_list_from_json(char *str, size_t len, void *p_emojis);
 #else
-#include "./specs/emoji.h"
+#include "./specs/emoji.hh"
 #endif
 } // namespace emoji
 
@@ -901,7 +901,7 @@ void dati_from_json(char *str, size_t len, void *p_member);
 void dati_list_from_json(char *str, size_t len, void *p_members);
 } // namespace member
 #else
-#include "./specs/guild.member.h"
+#include "./specs/guild.member.hh"
 #endif
 
 /* INTEGRATION STRUCTURE
@@ -967,7 +967,7 @@ struct dati {
 
 } // namespace integration
 #else
-#include "./specs/guild.integration.h"
+#include "./specs/guild.integration.hh"
 #endif
 
 
@@ -989,7 +989,7 @@ void dati_from_json(char *str, size_t len, void *p_ban);
 void dati_list_from_json(char *str, size_t len, void *p_ban);
 } // namespace ban
 #else
-#include "./specs/guild.ban.h"
+#include "./specs/guild.ban.hh"
 #endif
 
 /* WELCOME SCREEN STRUCTURE
@@ -1012,7 +1012,7 @@ struct dati {
 };
 } // namespace screen_channel
 #else
-#include "./specs/guild.welcome_screen.h"
+#include "./specs/guild.welcome_screen.hh"
 #endif
 } // namespace welcome_screen
 
@@ -1043,7 +1043,7 @@ enum { TERMS }; //currently the only type
 } // namespace field_type
 } // namespace field
 #else
-#include "./specs/guild.membership_screening.h"
+#include "./specs/guild.membership_screening.hh"
 #endif
 } // namespace membership_screening
 
@@ -1086,14 +1086,14 @@ struct dati {
 //@todo missing initialization functions
 } // namespace metadata
 #else
-#include "./specs/invite.h"
+#include "./specs/invite.hh"
 #endif
 } // namespace invite
 
 /* TEMPLATE STRUCTURE
 https://discord.com/developers/docs/resources/template#template-object-template-structure */
 namespace Template { // template is a reserved keyword
-#include "./specs/template.h"  
+#include "./specs/template.hh"
 /*
 struct dati {
   char *code; //@todo find fixed size limit
@@ -1201,7 +1201,7 @@ enum {
 
 } // namespace connection
 #else
-#include "./specs/user.h"
+#include "./specs/user.hh"
 #endif
 } // namespace user
 
@@ -1239,13 +1239,13 @@ struct dati {
 } // namespace region
 
 #else
-#include "./specs/voice.h"
+#include "./specs/voice.hh"
 #endif
 
 } // namespace voice
 
 namespace webhook {
-#include "./specs/webhook.h"
+#include "./specs/webhook.hh"
 #if 0
 struct dati {
   uint64_t id;
@@ -1272,7 +1272,7 @@ enum {
 /* ROLE STRUCTURE
 https://discord.com/developers/docs/topics/permissions#role-object-role-structure */
 namespace role {
-#include "./specs/role.h"
+#include "./specs/role.hh"
 //namespace tags {
 //#include "./specs/role_tags.h"
 //} // namespace tags
@@ -1426,7 +1426,7 @@ struct params {
   bool nsfw;
 };
 #else
-#include "./specs/guild.create-channel.h"
+#include "./specs/guild.create-channel.hh"
 #endif
 
 void run(client *client, const uint64_t guild_id, params *params, channel::dati *p_channel);
