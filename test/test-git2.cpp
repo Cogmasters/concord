@@ -57,6 +57,7 @@ int main (int argc, char ** argv)
   curl_global_init(CURL_GLOBAL_ALL);
 
   struct orka_config config;
+  memset(&config, 0, sizeof(config));
   orka_config_init(&config, "GIT HTTP", config_file);
   char *username = orka_config_get_field(&config, "github.username");
   char *token = orka_config_get_field(&config, "github.token");
