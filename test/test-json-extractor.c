@@ -58,8 +58,28 @@ int main ()
     "\t}\n"
     "}";
 
+  struct {
+    struct {
+      char token[512]; // set it to long enough
+    } discord;
+    struct {
+      char username[512];
+      char token[512];
+    } github;
+    struct {
+      char filename[PATH_MAX];
+      char level[128];
+      struct {
+        char filename[PATH_MAX];
+        bool enable;
+      } dump_json;
+      struct {
+        char filename[PATH_MAX];
+        bool enable;
+      } dump_curl;
+    } logging;
+  } settings;
 
-  struct orka_settings settings;
   size_t ret = json_extract(json, strlen(json),
                "(discord)(token):s"
                  "(github):"

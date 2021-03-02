@@ -8,10 +8,10 @@ void load(char * str, size_t len, void * ptr) {
   fprintf(stderr, "%.*s", (int)len, str);
 }
 
-int commit (char *base_url)
+int commit(char *base_url, char config_file[])
 {
   struct user_agent_s data;
-  ua_init(&data, base_url);
+  ua_config_init(&data, base_url, "CEE HTTP", config_file);
 
   curl_global_init(CURL_GLOBAL_ALL);
   struct sized_buffer body = {NULL, 0};
@@ -33,16 +33,13 @@ int commit (char *base_url)
 
 int main(int argc, char *argv[])
 {
-  const char *config_file;
+  char *config_file;
   if (argc > 1)
     config_file = argv[1];
   else
     config_file = "bot.config";
 
-  struct orka_debug debug;
-  orka_debug_init(&debug, "CEE HTTP", config_file);
-
-  commit("https://cee.studio");
+  commit("https://cee.studio", config_file);
 
   return 0;
 }

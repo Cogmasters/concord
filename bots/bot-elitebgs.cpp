@@ -315,7 +315,7 @@ int main(int argc, char *argv[])
     config_file = "bot.config";
 
   /* Initialize ELITEBGS User Agent */
-  ua_init(&g_elitebgs_ua, ELITEBGS_API_URL);
+  ua_config_init(&g_elitebgs_ua, ELITEBGS_API_URL, "ELITEBGS HTTP", config_file);
 
   /* Initialize Discord User Agent */
   discord::global_init();

@@ -102,9 +102,6 @@ int main (int argc, char ** argv)
   else
     config_file = "bot.config";
 
-  struct orka_settings settings;
-  orka_settings_init (&settings, config_file);
-
   struct file ** files = NULL;
   if (argc >= 3) {
     files = (struct file **) ntl_calloc(argc - 2, sizeof(struct file));
@@ -116,11 +113,15 @@ int main (int argc, char ** argv)
     return 0;
   }
 
+  struct orka_config config;
+  orka_config_init (&config, "GIT HTTP", config_file);
+  char *username = orka_config_get_field(&config, "github.username");
+  char *token = orka_config_get_field(&config, "github.token");
+
   git::dati data = {0};
   curl_global_init(CURL_GLOBAL_ALL);
-  git::init (&data, settings.github.username, settings.github.token);
+  git::init(&data, username, token);
   char * repo = "test_repo";
-  char * owner = settings.github.username;
-  commit(&data, owner, repo, "test_2", "x/test.c", "LypuZXcgY29kZSovCg==");
+  commit(&data, username, repo, "test_2", "x/test.c", "LypuZXcgY29kZSovCg==");
   return 0;
 }
