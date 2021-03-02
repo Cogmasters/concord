@@ -1070,11 +1070,11 @@ static void gen_to_json(FILE *fp, struct jc_struct *s)
 
     if (act.is_user_def)
       if (act.need_double_quotes)
-        fprintf(fp, "                \"(%s):|F|,\"\n", act.c_name);
+        fprintf(fp, "                \"(%s):|F|,\"\n", f->name);
       else
-        fprintf(fp, "                \"(%s):F,\"\n", act.c_name);
+        fprintf(fp, "                \"(%s):F,\"\n", f->name);
     else
-      fprintf(fp, "                \"(%s):%s,\"\n", act.c_name, act.injector);
+      fprintf(fp, "                \"(%s):%s,\"\n", f->name, act.injector);
   }
   fprintf(fp, "                \"@arg_switches:b\",\n");
 
@@ -1146,7 +1146,7 @@ static void gen_to_query(FILE *fp, struct jc_struct *s)
     to_action(f, &act);
     if (act.todo) continue;
 
-    fprintf(fp, "                %sp->%s,\n", act.inject_arg_decor, f->name);
+    fprintf(fp, "                %sp->%s,\n", act.inject_arg_decor, act.c_name);
   }
   fprintf(fp, "                p->__metadata.arg_switches,"
     " sizeof(p->__metadata.arg_switches),"
