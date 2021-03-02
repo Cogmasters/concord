@@ -1,0 +1,78 @@
+{
+  "namespace": ["discord", "channel", "embed"],
+  "comment":"https://discord.com/developers/docs/resources/channel#embed-object-embed-structure",
+  "defs":
+  [
+    {
+      "struct":"dati",
+      "fields":
+      [
+        { "name": "title", "type":{ "base":"char", "dec":"[EMBED_TITLE_LEN]" }, "inject_if_not":""},
+        { "name": "type", "type":{ "base":"char", "dec":"[32]" }, "inject_if_not":""},
+        { "name": "description", "type":{ "base":"char", "dec":"[EMBED_DESCRIPTION_LEN]"}, "inject_if_not":""},
+        { "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]"}, "inject_if_not":""},
+        { "name": "timestamp", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }, "inject_if_not":0},
+        { "name": "color", "type":{ "base":"int" }, "inject_if_not":0},
+        { "name": "footer", "type":{ "base":"footer::dati", "dec":"*"}, "inject_if_not":null},
+        { "name": "image", "type":{ "base":"image::dati", "dec":"*"}, "inject_if_not":null},
+        { "name": "thumbnail", "type":{ "base":"thumbnail::dati", "dec":"*"}, "inject_if_not":null},
+        { "name": "video", "type":{ "base":"video::dati", "dec":"*"}, "inject_if_not":null},
+        { "name": "provider", "type":{ "base":"provider::dati", "dec":"*"}, "inject_if_not":null},
+        { "name": "author", "type":{ "base":"author::dati", "dec":"*"}, "inject_if_not":null},
+        { "name": "fields", "type":{ "base":"field::dati", "dec":"ntl"}, "inject_if_not":null}
+      ]
+    },
+    {
+      "comment": "https://discord.com/developers/docs/resources/channel#embed-object-embed-thumbnail-structure",
+      "namespace":["thumbnail"],
+      "struct":"dati",
+      "fields": [
+        { "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""},
+        { "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""},
+        { "name": "height", "type":{ "base":"int" }, "inject_if_not":0},
+        { "name": "width", "type":{ "base":"int" }, "inject_if_not":0}
+      ]
+    },
+    {
+      "comment": "https://discord.com/developers/docs/resources/channel#embed-object-embed-provider-structure",
+      "namespace":["provider"],
+      "struct":"dati",
+      "fields": [
+        { "name": "name", "type":{"base":"char", "dec":"[EMBED_AUTHOR_NAME_LEN]"}, "inject_if_not":""},
+        { "name": "url", "type":{"base":"char", "dec":"[MAX_URL_LEN]"}, "inject_if_not":""}
+      ]
+    },
+    {
+      "comment": "https://discord.com/developers/docs/resources/channel#embed-object-embed-author-structure",
+      "namespace":["author"],
+      "struct":"dati",
+      "fields": [
+        { "name": "name", "type":{ "base":"char", "dec":"[EMBED_AUTHOR_NAME_LEN]" }, "inject_if_not":""},
+        { "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""},
+        { "name": "icon_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""},
+        { "name": "proxy_icon_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}
+      ]
+    },
+    {
+      "comment": "https://discord.com/developers/docs/resources/channel#embed-object-embed-footer-structure",
+      "namespace":["footer"],
+      "struct":"dati",
+      "fields": [
+        { "name": "text", "type": {"base":"char", "dec":"[EMBED_FOOTER_TEXT_LEN]"}, "inject_if_not":""},
+        { "name": "icon_url", "type": {"base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""},
+        { "name": "proxy_icon_url", "type": {"base":"char", "dec":"[MAX_URL_LEN]"}, "inject_if_not":""}
+      ]
+    },
+    {
+      "comment": "https://discord.com/developers/docs/resources/channel#embed-object-embed-field-structure",
+      "namespace":["field"],
+      "struct":"dati",
+      "fields": [
+        { "name": "name", "type": { "base":"char", "dec":"[EMBED_FIELD_NAME_LEN]" }, "inject_if_not":""},
+        { "name": "value", "type": { "base":"char", "dec":"[EMBED_FIELD_NAME_LEN]" }, "inject_if_not":""},
+        { "name": "inline", "c_name":"Inline", "type": { "base":"bool" }}
+      ]
+    }
+  ]
+}
+

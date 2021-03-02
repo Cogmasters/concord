@@ -275,8 +275,15 @@ static struct ptr_map*
 get_arg_switches(struct ptr_map **l)
 {
   for (int i = 0; l[i]; i++)
-    if (l[i]->has_this && l[i]->tag == PTR_MAP_ARG_SWITCHES)
-      return l[i];
+    if (l[i]->has_this && l[i]->tag == PTR_MAP_ARG_SWITCHES) {
+      if (l[i]->has_enabler)
+        if (l[i]->enabled)
+          return l[i];
+        else
+          return NULL;
+      else
+        return l[i];
+    }
   return NULL;
 }
 

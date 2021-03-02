@@ -656,7 +656,8 @@ struct action {
   char *free;
   char *alloc;
   bool is_user_def;
-  bool is_caller_alloc;
+  bool is_actor_alloc;
+  bool need_double_quotes;
 };
 
 static int to_builtin_action(struct jc_field *f, struct action *act)
@@ -726,7 +727,7 @@ static int to_builtin_action(struct jc_field *f, struct action *act)
       act->injector = "s";
       act->extractor = "?s";
       act->extract_arg_decor = "&";
-      act->inject_arg_decor = "&";
+      act->inject_arg_decor = "";
       act->post_dec = "";
       act->pre_dec = "*";
       act->free = "free";
@@ -743,6 +744,7 @@ static int to_builtin_action(struct jc_field *f, struct action *act)
       act->c_type = c->output_type;
       act->post_dec = "";
       act->pre_dec = "";
+      act->need_double_quotes = true;
 
       if (f->inject_condition.opcode == INJECT_IF_NOT_STR) {
         if (strcmp(c->converted_builtin_type, "uint64_t") == 0) {
@@ -783,15 +785,7 @@ static void to_action(struct jc_field *f, struct action *act)
     case DEC_POINTER:
       if (!to_builtin_action(f, act)) {
         if (strcmp(f->type.base, "char") == 0) {
-	  ERR("this should never happen\n");
-          act->injector = "s";
-          act->extractor = "?s";
-          act->extract_arg_decor = "&";
-          act->inject_arg_decor = "&";
-          act->post_dec = "";
-          act->pre_dec = "*";
-          act->free = "free";
-          act->c_type = "char";
+          ERR("this should never happen\n");
         } else {
           char *tok = strrchr(f->type.base, ':');
           if (tok != NULL) {
@@ -804,7 +798,7 @@ static void to_action(struct jc_field *f, struct action *act)
             act->post_dec = "";
             act->pre_dec = "*";
             act->is_user_def = true;
-            act->is_caller_alloc = false;
+            act->is_actor_alloc = false;
           }
         }
       }
@@ -821,7 +815,7 @@ static void to_action(struct jc_field *f, struct action *act)
       act->inject_arg_decor = "";
       act->pre_dec = "**";
       act->is_user_def = true;
-      act->is_caller_alloc = true;
+      act->is_actor_alloc = true;
       if (to_builtin_action(f, act)) {
         act->free = "free";
         asprintf(&act->extractor, "%s_list_from_json", f->type.base);
@@ -976,7 +970,7 @@ static void gen_from_json(FILE *fp, struct jc_struct *s)
     if (act.todo) continue;
 
     if (act.is_user_def) {
-      if (act.is_caller_alloc)
+      if (act.is_actor_alloc)
         fprintf(fp, "                %s, &p->%s,\n",
                 act.extractor, act.c_name);
       else
@@ -1075,7 +1069,10 @@ static void gen_to_json(FILE *fp, struct jc_struct *s)
     if (act.todo) continue;
 
     if (act.is_user_def)
-      fprintf(fp, "                \"(%s):F,\"\n", act.c_name);
+      if (act.need_double_quotes)
+        fprintf(fp, "                \"(%s):|F|,\"\n", act.c_name);
+      else
+        fprintf(fp, "                \"(%s):F,\"\n", act.c_name);
     else
       fprintf(fp, "                \"(%s):%s,\"\n", act.c_name, act.injector);
   }
@@ -1096,7 +1093,7 @@ static void gen_to_json(FILE *fp, struct jc_struct *s)
   }
   fprintf(fp, "                p->__metadata.arg_switches, "
     "sizeof(p->__metadata.arg_switches),"
-    " &p->__metadata.enable_arg_switches);\n");
+    " p->__metadata.enable_arg_switches);\n");
   fprintf(fp, "  return r;\n");
   fprintf(fp, "}\n");
 }

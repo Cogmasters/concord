@@ -53,6 +53,8 @@ int main (int argc, char ** argv)
       "      { |name|:|f10|, |todo|:false, |type|:{ |base|:|emoji::dati|, |dec|:|*| } },"
       "      { |name|:|f11|, |type|:{ |base|:|char|, |dec|:|*|, |converter|:|iso8601| } },"
       "      { |name|:|f12|, |type|:{ |base|:|char|, |dec|:|*|}, |inject_if_not|:null },"
+      "      { |name|:|f13|, |type|:{ |base|:|char|, |dec|:|[12]|}, |inject_if_not|:|| },"
+      "      { |name|:|f14|, |type|:{ |base|:|char|, |dec|:|*|, |converter|:|iso8601|}, |inject_if_not|:10 },"
       "    ]"
       "  }"
 #endif

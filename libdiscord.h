@@ -488,6 +488,7 @@ struct dati {
 /* EMBED STRUCTURE
 https://discord.com/developers/docs/resources/channel#embed-object-embed-structure */
 namespace embed {
+#if 0
 struct dati {
   char title[EMBED_TITLE_LEN];
   char type[32];
@@ -612,6 +613,9 @@ int dati_list_to_json(char *str, size_t len, void *p_fields);
 
 } // namespace field
 
+#else
+#include "./specs/channel.embed.h"
+#endif
 } // namespace embed
 
 /* ATTACHMENT STRUCTURE

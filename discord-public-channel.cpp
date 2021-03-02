@@ -620,7 +620,7 @@ dati_to_json(char *str, size_t len, void *p_reference)
 } // namespace message
 
 namespace embed {
-
+#if 0
 void
 dati_init(void *p_embed) 
 {
@@ -768,9 +768,10 @@ dati_to_json(char *str, size_t len, void *p_embed)
                         A, sizeof(A));
   return ret;
 }
+#endif
 
 namespace thumbnail {
-
+#if 0
 void
 dati_init(void *p_thumbnail) 
 {
@@ -845,11 +846,12 @@ dati_to_json(char *str, size_t len, void *p_thumbnail)
                         A, sizeof(A));
   return ret;
 }
+#endif
 
 } // namespace thumbnail
 
 namespace provider {
-
+#if 0
 void
 dati_init(void *p_provider) 
 {
@@ -913,11 +915,12 @@ dati_to_json(char *str, size_t len, void *p_provider)
                         A, sizeof(A));
   return ret;
 }
+#endif
 
 } // namespace provider
 
 namespace author {
-
+#if 0
 void
 dati_init(void *p_author) 
 {
@@ -992,11 +995,11 @@ dati_to_json(char *str, size_t len, void *p_author)
                         A, sizeof(A));
   return ret;
 }
-
+#endif
 } // namespace author
 
+#if 0
 namespace footer {
-
 void
 dati_init(void *p_footer) 
 {
@@ -1065,11 +1068,12 @@ dati_to_json(char *str, size_t len, void *p_footer)
                         A, sizeof(A));
   return ret;
 }
-
 } // namespace footer
+#endif
 
+
+#if 0
 namespace field {
-
 void
 dati_init(void *p_field) 
 {
@@ -1158,6 +1162,7 @@ dati_list_to_json(char *str, size_t len, void *p_fields)
 }
 
 } // namespace field
+#endif
 
 void
 change_footer(dati *embed, char text[], char icon_url[], char proxy_icon_url[])
