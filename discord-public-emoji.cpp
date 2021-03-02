@@ -5,7 +5,7 @@
 #include <libdiscord.h>
 #include <orka-utils.h>
 
-#ifdef M_SPEC
+#if 0
 namespace discord {
 namespace emoji {
 void
