@@ -9,8 +9,9 @@ DISCORD_SRC := $(wildcard discord-*.cpp)
 GITHUB_SRC  := $(wildcard github-*.cpp)
 SPECS       := $(wildcard specs/*.json)
 
-SPECS_SRC   := $(SPECS:%.json=%.cc)
-SPECS_H     := $(SPECS:%.json=%.hh)
+SPECS_XX   := $(addprefix specs-code/, $(notdir $(SPECS)))
+SPECS_CC   := $(SPECS_XX:%.json=%.cc)
+SPECS_HH   := $(SPECS_XX:%.json=%.hh)
 
 ACTOR_GEN_SRC = common/orka-utils.c common/json-actor.c \
 	common/ntl.c common/json-string.c common/json-scanf.c \
@@ -23,7 +24,7 @@ COMMON_OBJS  := $(COMMON_SRC:%=$(OBJDIR)/%.o)
 ORKA_OBJS    := $(ORKA_SRC:%=$(OBJDIR)/%.o)
 DISCORD_OBJS := $(DISCORD_SRC:%=$(OBJDIR)/%.o)
 GITHUB_OBJS  := $(GITHUB_SRC:%=$(OBJDIR)/%.o)
-SPECS_OBJS   := $(SPECS_SRC:%=$(OBJDIR)/%.o)
+SPECS_OBJS   := $(SPECS_CC:%=$(OBJDIR)/%.o)
 
 OBJS := $(COMMON_OBJS) $(DISCORD_OBJS) $(GITHUB_OBJS) $(ORKA_OBJS)
 
@@ -81,22 +82,22 @@ PREFIX ?= /usr/local
 .PHONY : all mkdir install clean purge
 
 
-all : mkdir actor-gen.exe common orka specs_h discord specs github bot
+all : mkdir actor-gen.exe specs_hh common orka discord specs github bot
 
 common: mkdir $(COMMON_OBJS)
 orka: mkdir $(ORKA_OBJS)
 discord: mkdir $(DISCORD_OBJS) libdiscord
 github: mkdir $(GITHUB_OBJS)
 
-specs_h: $(SPECS_H)
-specs_src: $(SPECS_SRC)
+specs_hh: $(SPECS_HH)
+specs_cc: $(SPECS_CC)
 
-specs: mkdir specs_h specs_src $(SPECS_OBJS)
+specs: mkdir specs_hh specs_cc $(SPECS_OBJS)
 
 echo:
 	@echo SPECS:      $(SPECS)
-	@echo SPECS_H:    $(SPECS_H)
-	@echo SPECS_SRC:  $(SPECS_SRC)
+	@echo SPECS_HH:   $(SPECS_HH)
+	@echo SPECS_CC:   $(SPECS_CC)
 	@echo SPECS_OBJS: $(SPECS_OBJS)
 
 bot: $(BOT_EXES) #@todo should we split by categories (bot_discord, bot_github, etc)?
@@ -105,6 +106,7 @@ test: common orka discord github $(TEST_EXES) #@todo should we split by categori
 mkdir :
 	mkdir -p bin $(OBJDIR) $(OBJDIR)/common $(OBJDIR)/specs $(LIBDIR)
 	mkdir -p $(OBJDIR)/test
+	mkdir -p specs-code  $(OBJDIR)/specs-code
 
 $(OBJDIR)/common/curl-%.c.o : common/curl-%.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $< \
@@ -119,10 +121,10 @@ $(OBJDIR)/%.c.o : %.c
 $(OBJDIR)/%.cpp.o: %.cpp
 	$(CXX) $(CXXFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 
-specs/%.cc: specs/%.json
+specs-code/%.cc: specs/%.json
 	./bin/actor-gen.exe -c -o $@ $<
 
-specs/%.hh: specs/%.json
+specs-code/%.hh: specs/%.json
 	./bin/actor-gen.exe -d -o $@ $<
 
 $(OBJDIR)/%.cc.o: %.cc
@@ -153,8 +155,6 @@ specs_clean :
 
 clean : specs_clean
 	rm -rf $(OBJDIR) *.exe test/*.exe bots/*.exe bin/*
-
-
 
 purge : clean
 	rm -rf $(LIBDIR)
