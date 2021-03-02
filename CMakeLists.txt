@@ -151,3 +151,14 @@ add_executable(test-json-struct-gen.exe
         common/json-printf.c
         test/test-json-struct-gen.c)
 target_link_libraries(test-json-struct-gen.exe m)
+
+
+add_executable(test-spec.exe
+        common/orka-utils.c
+        common/json-actor.c
+        common/ntl.c
+        common/json-string.c
+        common/json-scanf.c
+        common/json-printf.c
+        test/test-spec.c)
+target_link_libraries(test-spec.exe m)

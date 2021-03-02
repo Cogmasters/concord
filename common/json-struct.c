@@ -916,14 +916,15 @@ emit_field_cleanup(void *cxt, FILE *fp, struct jc_field *f)
   struct action act = {0};
   to_action(f, &act);
 
-  if (act.todo) return;
-
-  if (act.free) {
+  if (act.todo)
+    fprintf(fp, "  //@todo p->%s\n", act.c_name);
+  else if (act.free)
     fprintf(fp,
             "  if (d->%s)\n"
               "    %s(d->%s);\n",
             act.c_name, act.free, act.c_name);
-  }
+  else
+    fprintf(fp, "  //p->%s is a scalar\n", act.c_name);
 }
 
 static void gen_cleanup(FILE *fp, struct jc_struct *s)
@@ -936,7 +937,7 @@ static void gen_cleanup(FILE *fp, struct jc_struct *s)
   fprintf(fp, "}\n");
 }
 
-static void gen_field(FILE *fp, struct jc_field *f)
+static void emit_field(void *cxt, FILE *fp, struct jc_field *f)
 {
   struct action act = {0};
   to_action(f, &act);
@@ -959,9 +960,9 @@ emit_json_extractor(void *cxt, FILE *fp, struct jc_field *f)
   if (act.todo) return;
 
   if (act.is_user_def)
-    fprintf(fp, "                \"(%s):F,\"\n", act.c_name);
+    fprintf(fp, "                \"(%s):F,\"\n", act.json_key);
   else
-    fprintf(fp, "                \"(%s):%s,\"\n", act.c_name, act.extractor);
+    fprintf(fp, "                \"(%s):%s,\"\n", act.json_key, act.extractor);
 }
 
 static void
@@ -996,7 +997,9 @@ static void gen_from_json(FILE *fp, struct jc_struct *s)
   for (int i = 0; s->fields[i]; i++)
     emit_json_extractor(NULL, fp, s->fields[i]);
 
-  fprintf(fp, "                \"@arg_switches:b\",\n");
+  fprintf(fp, "                \"@arg_switches:b\"\n");
+  fprintf(fp, "                \"@record_defined\"\n");
+  fprintf(fp, "                \"@record_null\",\n");
 
   for (int i = 0; s->fields[i]; i++)
     emit_json_extractor_arg(NULL, fp, s->fields[i]);
@@ -1005,7 +1008,9 @@ static void gen_from_json(FILE *fp, struct jc_struct *s)
     " sizeof(p->__M.arg_switches),"
     " p->__M.enable_arg_switches,\n");
   fprintf(fp, "                p->__M.record_defined,"
-    " sizeof(p->__M.record_defined));\n");
+    " sizeof(p->__M.record_defined),\n");
+  fprintf(fp, "                p->__M.record_null,"
+    " sizeof(p->__M.record_null));\n");
   fprintf(fp, "  ret = r;\n");
   fprintf(fp, "}\n");
 }
@@ -1197,7 +1202,7 @@ gen_struct(FILE *fp, struct jc_struct *s)
   fprintf(fp, "struct %s {\n", t);
   int i = 0;
   for (i = 0; s->fields && s->fields[i]; i++)
-    gen_field(fp, s->fields[i]);
+    emit_field(NULL, fp, s->fields[i]);
   fprintf(fp, "  struct {\n");
   fprintf(fp, "    bool enable_arg_switches;\n");
   fprintf(fp, "    bool enable_record_defined;\n");
@@ -1205,7 +1210,7 @@ gen_struct(FILE *fp, struct jc_struct *s)
   fprintf(fp, "    void *arg_switches[%d];\n", i);
   fprintf(fp, "    void *record_defined[%d];\n", i);
   fprintf(fp, "    void *record_null[%d];\n", i);
-  fprintf(fp, "  } __M;\n");
+  fprintf(fp, "  } __M; // metadata\n");
   fprintf(fp, "};\n");
 }
 
@@ -1418,7 +1423,7 @@ gen_definition_list(char *folder, enum file_type type, struct jc_definition **nt
 }
 
 static char*
-emit_field_string(
+field_to_string(
   void *cxt,
   void (*emitter)(void *cxt, FILE *fp, struct jc_field *),
   struct jc_field *f)
