@@ -151,7 +151,7 @@ install : all
 	install -m 644 *.h *.hpp common/*.h $(PREFIX)/include/
 
 specs_clean :
-	rm -f specs/*.cc specs/*.h
+	rm -f specs-code/*
 
 clean : specs_clean
 	rm -rf $(OBJDIR) *.exe test/*.exe bots/*.exe bin/*
