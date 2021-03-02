@@ -17,29 +17,36 @@ void load_field(struct jc_field *f, char *str)
   field_from_json(json, strlen(json), f);
 }
 
-struct expected_results {
-  char * spec;
-  char * file;
+static char * filename = __FILE__;
+
+struct expect_at {
   int loc;
-  char * field_struct;
-  char * field_cleanup;
-  char * field_extractor;
-  char * field_extractor_arg;
-  char * field_injector;
-  char * field_injector_arg;
-  char * field_inject_settings;
+  char * expected;
+};
+
+struct expected_results {
+  struct expect_at spec;
+  struct expect_at field_struct;
+  struct expect_at field_cleanup;
+  struct expect_at field_extractor;
+  struct expect_at field_extractor_arg;
+  struct expect_at field_injector;
+  struct expect_at field_injector_arg;
+  struct expect_at field_inject_settings;
 };
 
 struct expected_results results;
 
-void check_s(char *s, const char *correct, char * file, int loc)
+#define SET(field, str)     { results.field.expected = str; results.field.loc = __LINE__; }
+
+void check_s(char *s, struct expect_at *correct, char * file, int loc)
 {
   while(*s == ' ') s++;
-  int ret = strcmp(s, correct);
+  int ret = strcmp(s, correct->expected);
 
   if (ret != 0) {
     fprintf(stderr, "%s:%d expecting '%s', got '%s'\n",
-            results.file, results.loc, correct, s);
+            filename, correct->loc, correct->expected, s);
     abort();
   }
 }
@@ -50,67 +57,67 @@ void check_s(char *s, const char *correct, char * file, int loc)
 
 static struct jc_field f;
 static int i;
-void test_one(struct expected_results *results)
+void test_one()
 {
-  char *str, * spec = results->spec;
+  char *str;
 
-  fprintf (stderr, "Testing %s\n", spec);
+  fprintf (stderr, "Testing %s@%d\n", results.spec.expected, results.spec.loc);
 
-  load_field(&f, spec);
+  load_field(&f, results.spec.expected);
   str = field_to_string(&i, emit_field, &f);
-  check(str, results->field_struct);
+  check(str, &results.field_struct);
 
   str = field_to_string(&i, emit_field_cleanup, &f);
-  check(str, results->field_cleanup);
+  check(str, &results.field_cleanup);
 
   str = field_to_string(&i, emit_json_extractor, &f);
-  check(str, results->field_extractor);
+  check(str, &results.field_extractor);
 
   str = field_to_string(&i, emit_json_extractor_arg, &f);
-  check(str, results->field_extractor_arg);
+  check(str, &results.field_extractor_arg);
 
   str = field_to_string(&i, emit_json_injector, &f);
-  check(str, results->field_injector);
+  check(str, &results.field_injector);
 
   str = field_to_string(&i, emit_json_injector_arg, &f);
-  check(str, results->field_injector_arg);
+  check(str, &results.field_injector_arg);
 
   str = field_to_string(&i, emit_inject_setting, &f);
-  check(str, results->field_inject_settings);
+  check(str, &results.field_inject_settings);
 }
 
 int main (int argc, char ** argv)
 {
-  results.spec = "{(name):|abc|, (type):{ (base):|int| }}";;
-  results.field_struct = "int abc;\n";
-  results.field_cleanup = "//p->abc is a scalar\n";
-  results.field_extractor = "\"(abc):d,\"\n";
-  results.field_extractor_arg = "&p->abc,\n";
-  results.field_injector = "\"(abc):d,\"\n";
-  results.field_injector_arg = "&p->abc,\n";
-  results.field_inject_settings = "p->__M.arg_switches[0] = &p->abc;\n";
-  test_one(&results);
+  SET(spec, "{(name):|abc|, (type):{ (base):|int| }}");
+  SET(field_struct, "int abc;\n");
+  SET(field_cleanup, "//p->abc is a scalar\n");
+  SET(field_extractor, "\"(abc):d,\"\n");
+  SET(field_extractor_arg, "&p->abc,\n");
+  SET(field_injector, "\"(abc):d,\"\n");
+  SET(field_injector_arg, "&p->abc,\n");
+  SET(field_inject_settings, "p->__M.arg_switches[0] = &p->abc;\n");
+  test_one();
 
-  results.spec = "{(name):|abc|, (type):{ (base):|int|, (int_alias):|enum code| }}";;
-  results.field_struct = "enum code abc;\n";
-  results.field_cleanup = "//p->abc is a scalar\n";
-  results.field_extractor = "\"(abc):d,\"\n";
-  results.field_extractor_arg = "&p->abc,\n";
-  results.field_injector = "\"(abc):d,\"\n";
-  results.field_injector_arg = "&p->abc,\n";
-  results.field_inject_settings = "p->__M.arg_switches[0] = &p->abc;\n";
-  test_one(&results);
+  SET(spec, "{(name):|abc|, (type):{ (base):|int|, (int_alias):|enum code| }}");
+  SET(field_struct, "enum code abc;\n");
+  SET(field_cleanup, "//p->abc is a scalar\n");
+  SET(field_extractor, "\"(abc):d,\"\n");
+  SET(field_extractor_arg, "&p->abc,\n");
+  SET(field_injector, "\"(abc):d,\"\n");
+  SET(field_injector_arg, "&p->abc,\n");
+  SET(field_inject_settings, "p->__M.arg_switches[0] = &p->abc;\n");
+  test_one();
 
 
-  results.spec = "{(name):|abc|, (json_key):|abc-1 23|, (type):{ (base):|int| }}";;
-  results.field_struct = "int abc;\n";
-  results.field_cleanup = "//p->abc is a scalar\n";
-  results.field_extractor = "\"(abc-1 23):d,\"\n";
-  results.field_extractor_arg = "&p->abc,\n";
-  results.field_injector = "\"(abc-1 23):d,\"\n";
-  results.field_injector_arg = "&p->abc,\n";
-  results.field_inject_settings = "p->__M.arg_switches[0] = &p->abc;\n";
-  test_one(&results);
+  SET(spec, "{(name):|abc|, (json_key):|abc-1 23|, (type):{ (base):|int| }}");
+  SET(field_struct, "int abc;\n");
+  SET(field_cleanup, "//p->abc is a scalar\n");
+  SET(field_extractor, "\"(abc-1 23):d,\"\n");
+  SET(field_extractor_arg, "&p->abc,\n");
+  SET(field_injector, "\"(abc-1 23):d,\"\n");
+  SET(field_injector_arg, "&p->abc,\n");
+  SET(field_inject_settings, "p->__M.arg_switches[0] = &p->abc;\n");
+  test_one();
 
   return 0;
 }
