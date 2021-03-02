@@ -12,6 +12,6 @@ obj
 lib
 dump.*
 .cee-contributor
-specs/*.cc
-specs/*.hh
+specs-code/*.cc
+specs-code/*.hh
 .vscode
