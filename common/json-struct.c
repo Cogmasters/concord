@@ -983,7 +983,7 @@ static void gen_from_json(FILE *fp, struct jc_struct *s)
   }
   fprintf(fp, "                p->__metadata.arg_switches,"
     " sizeof(p->__metadata.arg_switches),"
-    " &p->__metadata.enable_arg_switches,\n");
+    " p->__metadata.enable_arg_switches,\n");
   fprintf(fp, "                p->__metadata.record_defined,"
     " sizeof(p->__metadata.record_defined));\n");
   fprintf(fp, "  ret = r;\n");
