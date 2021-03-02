@@ -1300,7 +1300,8 @@ add_field(dati *embed, char name[], char value[], bool Inline)
     return;
   }
 
-  embed::field::dati new_field;
+  field::dati new_field;
+  field::dati_init(&new_field);
   strncpy(new_field.name, name, EMBED_FIELD_NAME_LEN);
   strncpy(new_field.value, value, EMBED_FIELD_VALUE_LEN);
   new_field.Inline = Inline;
