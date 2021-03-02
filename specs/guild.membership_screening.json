@@ -16,7 +16,7 @@
       "struct":"dati",
       "fields":
       [
-        { "name": "field_type", "type":{ "base":"int", "c_base":"field_type::code" }},
+        { "name": "field_type", "type":{ "base":"int", "int_alias":"field_type::code" }},
         { "name": "label", "type":{ "base":"char", "dec":"*" }},
         { "name": "values", "todo":true, "type":{ "base":"char", "dec":"ntl" }},
         { "name": "required", "type":{ "base":"bool" }},

@@ -24,17 +24,17 @@
  *
  * <field-list> := <field> <field-list> | <field>
  *
- * <field-info> := { <field-name> <c-name>? <field-type> <field-loc>? <comment>? }
+ * <field-info> := { <field-name> <json-key>? <field-type> <field-loc>? <comment>? }
  *
  * <field-name>  :=  "name" : <string>
- * <c-name>  := "c_name" : <string>
+ * <json-key>  := "json_key" : <string>
  * <comment> := "comment" : <string>
  *
  * <field-type>  :=  "type" : { "base":<string>,
- *                              "c_base"? : <string>,
- *                              "dec"?:("ntl"|"pointer"|"[<string>]"),
+ *                              "int_alias"? : <string>,
+ *                              "dec"?:("ntl"|"*"|"[<string>]"),
  *                              "converter"?:<string>,
- *                              "inject_if_not"?:<string>|null,
+ *                              "inject_if_not"?:<string>|<bool>|<number>|null,
  *                            }
  *
  * <field-loc>   :=  "loc"  : ("json" | "query" | "body")
@@ -172,7 +172,8 @@ struct decor {
 
 struct jc_type {
   char *base;
-  char *c_base;  // use for enum type names that are represented as int
+  char *int_alias; // use for enum type names that are represented as int
+  char *jtype;
   struct decor decor;
   char * converter;
 };
@@ -214,7 +215,8 @@ struct inject_condition {
 struct jc_field {
   bool todo;
   char *name;
-  char *c_name;
+  //char *c_name;
+  char *json_key;
   struct jc_type type;
   enum loc loc;
   struct inject_condition inject_condition;
@@ -228,8 +230,8 @@ print_field(FILE *fp, struct jc_field *p)
     fprintf(fp, "//@todo name:%s\n", p->name);
   else {
     fprintf(fp, "name:%s, ", p->name);
-    if (p->c_name)
-      fprintf(fp, "c-name:%s, ", p->c_name);
+    if (p->json_key)
+      fprintf(fp, "json_key:%s, ", p->json_key);
 
     print_type(fp, &p->type);
     fprintf(fp, ", loc:%d\n", p->loc);
@@ -379,9 +381,10 @@ field_from_json(char *json, size_t size, void *x)
   size_t s = json_extract(json, size,
                           "(name):?s,"
                           "(todo):b,"
-                          "(c_name):?s,"
+                          "(json_key):?s,"
                           "(type.base):?s,"
-                          "(type.c_base):?s,"
+                          "(type.int_alias):?s,"
+                          "(type.jtype):?s,"
                           "(type.dec):F,"
                           "(type.converter):?s,"
                           "(inject_if_not):key,"
@@ -390,9 +393,10 @@ field_from_json(char *json, size_t size, void *x)
                           "(comment):?s",
                           &p->name,
                           &p->todo,
-                          &p->c_name,
+                          &p->json_key,
                           &p->type.base,
-                          &p->type.c_base,
+                          &p->type.int_alias,
+                          &p->type.jtype,
                           decor_from_json, &p->type.decor,
                           &p->type.converter,
                           &has_inject_if_not,
@@ -646,6 +650,7 @@ spec_from_json(char *json, size_t size, struct jc_definition ***s)
 struct action {
   bool todo;
   char *c_name;
+  char *json_key;
   char *c_type;
   char *pre_dec;
   char *post_dec;
@@ -666,7 +671,7 @@ static int to_builtin_action(struct jc_field *f, struct action *act)
   if (strcmp(f->type.base, "int") == 0) {
     act->extractor = "d";
     act->injector = "d";
-    act->c_type = f->type.c_base ? f->type.c_base : "int";
+    act->c_type = f->type.int_alias ? f->type.int_alias : "int";
     if (f->inject_condition.opcode == INJECT_IF_NOT_STR) {
       f->inject_condition.opcode = INJECT_IF_NOT_INT;
       f->inject_condition._.ival = (uint64_t)strtol(f->inject_condition.string,
@@ -773,12 +778,13 @@ static void to_action(struct jc_field *f, struct action *act)
 
   act->post_dec = "";
   act->pre_dec = "";
-  if (f->type.c_base)
-    act->c_type = f->type.c_base;
+  if (f->type.int_alias)
+    act->c_type = f->type.int_alias;
   else
     act->c_type = f->type.base;
 
-  act->c_name = f->c_name ? f->c_name : f->name;
+  act->c_name = f->name;
+  act->json_key = f->json_key ? f->json_key : f->name;
 
   switch(f->type.decor.tag)
   {
@@ -904,25 +910,29 @@ static void gen_default(FILE *fp, struct jc_struct * s)
   fprintf(fp, "}\n");
 }
 
+static void
+emit_field_cleanup(void *cxt, FILE *fp, struct jc_field *f)
+{
+  struct action act = {0};
+  to_action(f, &act);
+
+  if (act.todo) return;
+
+  if (act.free) {
+    fprintf(fp,
+            "  if (d->%s)\n"
+              "    %s(d->%s);\n",
+            act.c_name, act.free, act.c_name);
+  }
+}
+
 static void gen_cleanup(FILE *fp, struct jc_struct *s)
 {
   char *t = s->name;
   fprintf(fp, "void %s_cleanup(struct %s *d) {\n", t, t);
   for (int i = 0; s->fields[i]; i++)
-  {
-    struct jc_field *f = s->fields[i];
-    struct action act = {0};
-    to_action(f, &act);
+    emit_field_cleanup(NULL, fp, s->fields[i]);
 
-    if (act.todo) continue;
-
-    if (act.free) {
-      fprintf(fp,
-              "  if (d->%s)\n"
-              "    %s(d->%s);\n",
-              act.c_name, act.free, act.c_name);
-    }
-  }
   fprintf(fp, "}\n");
 }
 
@@ -941,6 +951,39 @@ static void gen_field(FILE *fp, struct jc_field *f)
             act.c_type, act.pre_dec, act.c_name, act.post_dec);
 }
 
+static void
+emit_json_extractor(void *cxt, FILE *fp, struct jc_field *f)
+{
+  struct action act = {0};
+  to_action(f, &act);
+  if (act.todo) return;
+
+  if (act.is_user_def)
+    fprintf(fp, "                \"(%s):F,\"\n", act.c_name);
+  else
+    fprintf(fp, "                \"(%s):%s,\"\n", act.c_name, act.extractor);
+}
+
+static void
+emit_json_extractor_arg(void *cxt, FILE *fp, struct jc_field *f)
+{
+  struct action act = {0};
+  to_action(f, &act);
+  if (act.todo) return;
+
+  if (act.is_user_def) {
+    if (act.is_actor_alloc)
+      fprintf(fp, "                %s, &p->%s,\n",
+              act.extractor, act.c_name);
+    else
+      fprintf(fp, "                %s, %sp->%s,\n",
+              act.extractor, act.extract_arg_decor, act.c_name);
+  }
+  else
+    fprintf(fp, "                %sp->%s,\n",
+            act.extract_arg_decor, act.c_name);
+}
+
 static void gen_from_json(FILE *fp, struct jc_struct *s)
 {
   char *t = s->name;
@@ -950,44 +993,76 @@ static void gen_from_json(FILE *fp, struct jc_struct *s)
   fprintf(fp, "  static size_t ret=0; // used for debugging\n");
   fprintf(fp, "  size_t r=0;\n");
   fprintf(fp, "  r=json_extract(json, len, \n");
-  for (int i = 0; s->fields[i]; i++) {
-    struct jc_field *f= s->fields[i];
-    struct action act = {0};
-    to_action(f, &act);
-    if (act.todo) continue;
+  for (int i = 0; s->fields[i]; i++)
+    emit_json_extractor(NULL, fp, s->fields[i]);
 
-    if (act.is_user_def)
-      fprintf(fp, "                \"(%s):F,\"\n", act.c_name);
-    else
-      fprintf(fp, "                \"(%s):%s,\"\n", act.c_name, act.extractor);
-  }
   fprintf(fp, "                \"@arg_switches:b\",\n");
 
-  for (int i = 0; s->fields[i]; i++) {
-    struct jc_field *f= s->fields[i];
-    struct action act = {0};
-    to_action(f, &act);
-    if (act.todo) continue;
+  for (int i = 0; s->fields[i]; i++)
+    emit_json_extractor_arg(NULL, fp, s->fields[i]);
 
-    if (act.is_user_def) {
-      if (act.is_actor_alloc)
-        fprintf(fp, "                %s, &p->%s,\n",
-                act.extractor, act.c_name);
-      else
-        fprintf(fp, "                %s, %sp->%s,\n",
-                act.extractor, act.extract_arg_decor, act.c_name);
-    }
-    else
-      fprintf(fp, "                %sp->%s,\n",
-              act.extract_arg_decor, act.c_name);
-  }
-  fprintf(fp, "                p->__metadata.arg_switches,"
-    " sizeof(p->__metadata.arg_switches),"
-    " p->__metadata.enable_arg_switches,\n");
-  fprintf(fp, "                p->__metadata.record_defined,"
-    " sizeof(p->__metadata.record_defined));\n");
+  fprintf(fp, "                p->__M.arg_switches,"
+    " sizeof(p->__M.arg_switches),"
+    " p->__M.enable_arg_switches,\n");
+  fprintf(fp, "                p->__M.record_defined,"
+    " sizeof(p->__M.record_defined));\n");
   fprintf(fp, "  ret = r;\n");
   fprintf(fp, "}\n");
+}
+
+static void emit_inject_setting(void *cxt, FILE *fp, struct jc_field *f)
+{
+  struct action act = {0};
+  to_action(f, &act);
+  if (act.todo) return;
+
+  int i = *(int *)cxt;
+
+  switch(f->inject_condition.opcode)
+  {
+    case INJECT_ALWAYS:
+      fprintf(fp, "  p->__M.arg_switches[%d] = %sp->%s;\n",
+              i, act.inject_arg_decor, act.c_name);
+      break;
+    case INJECT_IF_NOT_NULL:
+      fprintf(fp, "  if (p->%s != NULL)\n", act.c_name);
+      fprintf(fp, "    p->__M.arg_switches[%d] = %sp->%s;\n",
+              i, act.inject_arg_decor, act.c_name);
+      break;
+    case INJECT_IF_NOT_BOOL:
+      fprintf(fp, "  if (p->%s != %s)\n", act.c_name,
+              f->inject_condition._.sval);
+      fprintf(fp, "    p->__M.arg_switches[%d] = %sp->%s;\n",
+              i, act.inject_arg_decor, act.c_name);
+      break;
+    case INJECT_IF_NOT_INT:
+      fprintf(fp, "  if (p->%s != %s)\n", act.c_name,
+              f->inject_condition.string);
+      fprintf(fp, "    p->__M.arg_switches[%d] = %sp->%s;\n",
+              i, act.inject_arg_decor, act.c_name);
+      break;
+    case INJECT_IF_NOT_DOUBLE:
+      fprintf(fp, "  if (p->%s != %s)\n", act.c_name,
+              f->inject_condition.string);
+      fprintf(fp, "    p->__M.arg_switches[%d] = %sp->%s;\n",
+              i, act.inject_arg_decor, act.c_name);
+      break;
+    case INJECT_IF_NOT_STR:
+      fprintf(fp, "  if (strcmp(p->%s, %s) != 0)\n", act.c_name,
+              f->inject_condition.string);
+      fprintf(fp, "    p->__M.arg_switches[%d] = %sp->%s;\n",
+              i, act.inject_arg_decor, act.c_name);
+      break;
+    case INJECT_IF_NOT_EMPTY_STR:
+      if (f->type.decor.tag == DEC_POINTER)
+        fprintf(fp, "  if (p->%s != NULL && strlen(p->%s) != 0)\n",
+                act.c_name, act.c_name);
+      else
+        fprintf(fp, "  if (strlen(p->%s) != 0)\n", act.c_name);
+      fprintf(fp, "    p->__M.arg_switches[%d] = %sp->%s;\n",
+              i, act.inject_arg_decor, act.c_name);
+      break;
+  }
 }
 
 static void gen_use_default_inject_settings(FILE *fp, struct jc_struct *s)
@@ -996,61 +1071,41 @@ static void gen_use_default_inject_settings(FILE *fp, struct jc_struct *s)
   fprintf(fp, "void %s_use_default_inject_settings(struct %s *p)\n",
           t, t);
   fprintf(fp, "{\n");
-  fprintf(fp, "  p->__metadata.enable_arg_switches = true;\n");
+  fprintf(fp, "  p->__M.enable_arg_switches = true;\n");
   for (int i = 0; s->fields[i]; i++) {
-    struct jc_field *f = s->fields[i];
-    struct action act = {0};
-    to_action(f, &act);
-    if (act.todo) continue;
-
-    switch(f->inject_condition.opcode)
-    {
-      case INJECT_ALWAYS:
-        fprintf(fp, "  p->__metadata.arg_switches[%d] = %sp->%s;\n",
-                i, act.inject_arg_decor, act.c_name);
-        break;
-      case INJECT_IF_NOT_NULL:
-        fprintf(fp, "  if (p->%s != NULL)\n", act.c_name);
-        fprintf(fp, "    p->__metadata.arg_switches[%d] = %sp->%s;\n",
-                i, act.inject_arg_decor, act.c_name);
-        break;
-      case INJECT_IF_NOT_BOOL:
-        fprintf(fp, "  if (p->%s != %s)\n", act.c_name,
-                f->inject_condition._.sval);
-        fprintf(fp, "    p->__metadata.arg_switches[%d] = %sp->%s;\n",
-                i, act.inject_arg_decor, act.c_name);
-        break;
-      case INJECT_IF_NOT_INT:
-        fprintf(fp, "  if (p->%s != %s)\n", act.c_name,
-                f->inject_condition.string);
-        fprintf(fp, "    p->__metadata.arg_switches[%d] = %sp->%s;\n",
-                i, act.inject_arg_decor, act.c_name);
-        break;
-      case INJECT_IF_NOT_DOUBLE:
-        fprintf(fp, "  if (p->%s != %s)\n", act.c_name,
-                f->inject_condition.string);
-        fprintf(fp, "    p->__metadata.arg_switches[%d] = %sp->%s;\n",
-                i, act.inject_arg_decor, act.c_name);
-        break;
-      case INJECT_IF_NOT_STR:
-        fprintf(fp, "  if (strcmp(p->%s, %s) != 0)\n", act.c_name,
-                f->inject_condition.string);
-        fprintf(fp, "    p->__metadata.arg_switches[%d] = %sp->%s;\n",
-                i, act.inject_arg_decor, act.c_name);
-        break;
-      case INJECT_IF_NOT_EMPTY_STR:
-        if (f->type.decor.tag == DEC_POINTER)
-          fprintf(fp, "  if (p->%s != NULL && strlen(p->%s) != 0)\n",
-                  act.c_name, act.c_name);
-        else
-          fprintf(fp, "  if (strlen(p->%s) != 0)\n", act.c_name);
-        fprintf(fp, "    p->__metadata.arg_switches[%d] = %sp->%s;\n",
-                i, act.inject_arg_decor, act.c_name);
-        break;
-    }
+    emit_inject_setting(&i, fp, s->fields[i]);
     fprintf(fp, "\n");
   }
   fprintf(fp, "}\n");
+}
+
+static void emit_json_injector(void *cxt, FILE *fp, struct jc_field *f)
+{
+  struct action act = {0};
+  to_action(f, &act);
+  if (act.todo) return;
+
+  if (act.is_user_def)
+    if (act.need_double_quotes)
+      fprintf(fp, "                \"(%s):|F|,\"\n", act.json_key);
+    else
+      fprintf(fp, "                \"(%s):F,\"\n", act.json_key);
+  else
+    fprintf(fp, "                \"(%s):%s,\"\n", act.json_key, act.injector);
+}
+
+static void emit_json_injector_arg(void * cxt, FILE *fp, struct jc_field *f)
+{
+  struct action act = {0};
+  to_action(f, &act);
+  if (act.todo) return;
+
+  if (act.is_user_def)
+    fprintf(fp, "                %s, %sp->%s,\n",
+            act.injector, act.inject_arg_decor, act.c_name);
+  else
+    fprintf(fp, "                %sp->%s,\n",
+            act.inject_arg_decor, act.c_name);
 }
 
 static void gen_to_json(FILE *fp, struct jc_struct *s)
@@ -1062,38 +1117,17 @@ static void gen_to_json(FILE *fp, struct jc_struct *s)
   fprintf(fp, "  size_t r;\n");
   fprintf(fp, "  r=json_inject(json, len, \n");
 
-  for (int i = 0; s->fields[i]; i++) {
-    struct jc_field *f = s->fields[i];
-    struct action act = {0};
-    to_action(f, &act);
-    if (act.todo) continue;
+  for (int i = 0; s->fields[i]; i++)
+    emit_json_injector(NULL, fp, s->fields[i]);
 
-    if (act.is_user_def)
-      if (act.need_double_quotes)
-        fprintf(fp, "                \"(%s):|F|,\"\n", f->name);
-      else
-        fprintf(fp, "                \"(%s):F,\"\n", f->name);
-    else
-      fprintf(fp, "                \"(%s):%s,\"\n", f->name, act.injector);
-  }
   fprintf(fp, "                \"@arg_switches:b\",\n");
 
-  for (int i = 0; s->fields[i]; i++) {
-    struct jc_field *f = s->fields[i];
-    struct action act = {0};
-    to_action(f, &act);
-    if (act.todo) continue;
+  for (int i = 0; s->fields[i]; i++)
+    emit_json_injector_arg(NULL, fp, s->fields[i]);
 
-    if (act.is_user_def)
-      fprintf(fp, "                %s, %sp->%s,\n",
-              act.injector, act.inject_arg_decor, act.c_name);
-    else
-      fprintf(fp, "                %sp->%s,\n",
-              act.inject_arg_decor, act.c_name);
-  }
-  fprintf(fp, "                p->__metadata.arg_switches, "
-    "sizeof(p->__metadata.arg_switches),"
-    " p->__metadata.enable_arg_switches);\n");
+  fprintf(fp, "                p->__M.arg_switches, "
+    "sizeof(p->__M.arg_switches),"
+    " p->__M.enable_arg_switches);\n");
   fprintf(fp, "  return r;\n");
   fprintf(fp, "}\n");
 }
@@ -1148,14 +1182,15 @@ static void gen_to_query(FILE *fp, struct jc_struct *s)
 
     fprintf(fp, "                %sp->%s,\n", act.inject_arg_decor, act.c_name);
   }
-  fprintf(fp, "                p->__metadata.arg_switches,"
-    " sizeof(p->__metadata.arg_switches),"
-    " &p->__metadata.enable_arg_switches);\n");
+  fprintf(fp, "                p->__M.arg_switches,"
+    " sizeof(p->__M.arg_switches),"
+    " &p->__M.enable_arg_switches);\n");
   fprintf(fp,  "  return r;\n");
   fprintf(fp, "}\n");
 }
 
-static void gen_struct(FILE *fp, struct jc_struct *s)
+static void
+gen_struct(FILE *fp, struct jc_struct *s)
 {
   char *t = s->name;
   fprintf(fp, "\n\n");
@@ -1170,11 +1205,12 @@ static void gen_struct(FILE *fp, struct jc_struct *s)
   fprintf(fp, "    void *arg_switches[%d];\n", i);
   fprintf(fp, "    void *record_defined[%d];\n", i);
   fprintf(fp, "    void *record_null[%d];\n", i);
-  fprintf(fp, "  } __metadata;\n");
+  fprintf(fp, "  } __M;\n");
   fprintf(fp, "};\n");
 }
 
-static void gen_wrapper(FILE *fp, struct jc_struct *s)
+static void
+gen_wrapper(FILE *fp, struct jc_struct *s)
 {
   char *t = s->name;
   fprintf(fp, "void %s_cleanup_v(void *p) {\n"
@@ -1217,7 +1253,8 @@ static void gen_wrapper(FILE *fp, struct jc_struct *s)
               "}\n\n", t, t, t);
 }
 
-static void gen_forward_declare(FILE *fp, struct jc_struct *s)
+static void
+gen_forward_declare(FILE *fp, struct jc_struct *s)
 {
   char *t = s->name;
   fprintf(fp, "void %s_cleanup_v(void *p);\n", t);
@@ -1257,7 +1294,8 @@ static void gen_forward_declare(FILE *fp, struct jc_struct *s)
   fprintf(fp, "void %s_use_default_inject_settings(struct %s *p);\n", t, t);
 }
 
-static void gen_typedef (FILE *fp, struct jc_struct *s)
+static void
+gen_typedef (FILE *fp, struct jc_struct *s)
 {
 #if 1
   fprintf(fp, "typedef void (*vfvp)(void *);\n");
@@ -1266,7 +1304,8 @@ static void gen_typedef (FILE *fp, struct jc_struct *s)
 #endif
 }
 
-static void gen_struct_all (FILE *fp, struct jc_struct *s)
+static void
+gen_struct_all (FILE *fp, struct jc_struct *s)
 {
   //fprintf (fp, "/* comment out to avoid redefinition warning\n");
   gen_open_namespace(fp, s->namespace);
@@ -1324,7 +1363,8 @@ static void gen_struct_all (FILE *fp, struct jc_struct *s)
   gen_close_namespace(fp, s->namespace);
 }
 
-static void gen_def (FILE *fp, struct jc_def *def)
+static void
+gen_def (FILE *fp, struct jc_def *def)
 {
   if (def->is_struct)
     gen_struct_all(fp, (struct jc_struct *)def);
@@ -1375,4 +1415,17 @@ gen_definition_list(char *folder, enum file_type type, struct jc_definition **nt
     gen_definition(fp, type, d);
     fclose(fp);
   }
+}
+
+static char*
+emit_field_string(
+  void *cxt,
+  void (*emitter)(void *cxt, FILE *fp, struct jc_field *),
+  struct jc_field *f)
+{
+  char * buf; size_t len;
+  FILE *fp = open_memstream(&buf, &len);
+  emitter(cxt, fp, f);
+  fclose(fp);
+  return buf;
 }

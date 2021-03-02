@@ -70,7 +70,7 @@
       "fields": [
         { "name": "name", "type": { "base":"char", "dec":"[EMBED_FIELD_NAME_LEN]" }, "inject_if_not":""},
         { "name": "value", "type": { "base":"char", "dec":"[EMBED_FIELD_VALUE_LEN]" }, "inject_if_not":""},
-        { "name": "inline", "c_name":"Inline", "type": { "base":"bool" }}
+        { "name": "Inline", "json_key":"inline", "type": { "base":"bool" }}
       ]
     }
   ]

@@ -21,7 +21,7 @@
 		{"name":"SYSTEM", "value":512},
 		{"name":"BUG_HUNTER_LEVEL_2", "value":1024},
 		{"name":"VERIFIED_BOT", "value":2048},
-		{"name":"EARLY_VERIFIED_BOT_DEVELOPER", "value":4096},
+		{"name":"EARLY_VERIFIED_BOT_DEVELOPER", "value":4096}
 	    ]
 	},
 	{
@@ -31,7 +31,7 @@
 	    [
 		{"name":"NONE", "value":0},
 		{"name":"NITRO_CLASSIC"},
-		{"name":"NITRO"},
+		{"name":"NITRO"}
 	    ]
 	},
 	{
@@ -43,14 +43,14 @@
 		{ "name": "discriminator", "type":{ "base":"char", "dec":"[MAX_DISCRIMINATOR_LEN]" }},
 		{ "name": "avatar", "type":{ "base":"char", "dec":"[MAX_SHA256_LEN]" }},
 		{ "name": "bot", "type":{ "base":"bool" }},
-		{ "name": "system", "c_name": "System", "type":{ "base":"bool" }},
+		{ "name": "System", "json_key": "system", "type":{ "base":"bool" }},
 		{ "name": "mfa_enabled", "type":{ "base":"bool" }},
 		{ "name": "locale", "type":{ "base":"char", "dec":"[MAX_LOCALE_LEN]" }},
 		{ "name": "verified", "type":{ "base":"bool" }},
 		{ "name": "email", "type":{ "base":"char", "dec":"[MAX_EMAIL_LEN]" }},
-		{ "name": "flags", "type":{ "base":"int", "c_base": "flags::code" }},
-		{ "name": "premium_type", "type":{ "base":"int", "c_base": "premium_types::code" }},
-		{ "name": "public_flags", "type":{ "base":"int", "c_base": "flags::code" }},
+		{ "name": "flags", "type":{ "base":"int", "int_alias": "flags::code" }},
+		{ "name": "premium_type", "type":{ "base":"int", "int_alias": "premium_types::code" }},
+		{ "name": "public_flags", "type":{ "base":"int", "int_alias": "flags::code" }}
 	    ]
 	},
 	{
@@ -73,7 +73,7 @@
 		{ "name": "revoked", "type":{ "base":"bool"}},
 		{ "name": "friend_sync", "type":{ "base":"bool" }},
 		{ "name": "show_activity", "type":{ "base":"bool" }},
-		{ "name": "visibility", "type":{ "base":"int", "c_base":"visibility_types::code" }},
+		{ "name": "visibility", "type":{ "base":"int", "int_alias":"visibility_types::code" }}
 	    ]
 	}
     ]

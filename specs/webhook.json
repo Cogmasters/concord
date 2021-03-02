@@ -17,7 +17,7 @@
       "fields":
       [
         { "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
-        { "name": "type", "type":{ "base":"int", "c_base":"types::code" }},
+        { "name": "type", "type":{ "base":"int", "int_alias":"types::code" }},
         { "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
         { "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
         { "name": "user", "type":{ "base":"discord::user::dati", "dec":"*" }},
