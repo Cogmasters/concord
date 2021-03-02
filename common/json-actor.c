@@ -2288,11 +2288,15 @@ json_vextract (char * json, size_t size, char * extractor, va_list ap)
   switch (tokens[0].type)
   {
     case JSMN_OBJECT:
-      ASSERT_S(cv.is_object, "Cannot extract array from json object\n");
+      if (!cv.is_object)
+        ERR("Cannot apply '%s' to json array:'%.*s'\n",
+            extractor, tokens[0].size, tokens[0].start);
       ret = extract_object_value(&cv, 0, &info);
       break;
     case JSMN_ARRAY:
-      ASSERT_S(!cv.is_object, "Cannot extract object from json array\n");
+      if (cv.is_object)
+        ERR("Cannot apply '%s' to json array:'%.*s'\n",
+            extractor, tokens[0].size, tokens[0].start);
       ret = extract_array_value(&cv, 0, &info);
       break;
     default:
