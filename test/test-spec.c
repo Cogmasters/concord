@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <ctype.h>
 #include "json-struct.c"
 #include "orka-utils.h"
 
@@ -24,6 +25,15 @@ struct expect_at {
   char * expected;
 };
 
+#define SKIP_SPACES(s)  while(isspace(*s)) s++;
+static int
+cmp(char *s1, char *s2) {
+  SKIP_SPACES(s1);
+  SKIP_SPACES(s2);
+  while (*s1 == *s2) {
+  }
+}
+
 struct expected_results {
   struct expect_at spec;
   struct expect_at field_struct;
@@ -45,7 +55,7 @@ void check_s(char *s, struct expect_at *correct, char * file, int loc)
   int ret = strcmp(s, correct->expected);
 
   if (ret != 0) {
-    fprintf(stderr, "%s:%d expecting '%s', got '%s'\n",
+    fprintf(stderr, "%s:%d expecting |%s|, got |%s|\n",
             filename, correct->loc, correct->expected, s);
     abort();
   }
@@ -61,7 +71,8 @@ void test_one()
 {
   char *str;
 
-  fprintf (stderr, "Testing %s@%d\n", results.spec.expected, results.spec.loc);
+  fprintf (stderr, "%s:%d  testing `%s`\n",
+           filename, results.spec.loc, results.spec.expected);
 
   load_field(&f, results.spec.expected);
   str = field_to_string(&i, emit_field, &f);
@@ -88,6 +99,7 @@ void test_one()
 
 int main (int argc, char ** argv)
 {
+  init_converters ();
   SET(spec, "{(name):|abc|, (type):{ (base):|int| }}");
   SET(field_struct, "int abc;\n");
   SET(field_cleanup, "//p->abc is a scalar\n");
@@ -119,6 +131,36 @@ int main (int argc, char ** argv)
   SET(field_inject_settings, "p->__M.arg_switches[0] = &p->abc;\n");
   test_one();
 
+  SET(spec, "{(name):|f1|, (type):{ (base):|char|, (dec):|*| }}");
+  SET(field_struct, "char *f1;\n");
+  SET(field_cleanup, "if(d->f1)\n    free(d->f1);\n");
+  SET(field_extractor, "\"(f1):?s,\"\n");
+  SET(field_extractor_arg, "&p->f1,\n");
+  SET(field_injector, "\"(f1):s,\"\n");
+  SET(field_injector_arg, "p->f1,\n");
+  SET(field_inject_settings, "p->__M.arg_switches[0] = p->f1;\n");
+  test_one();
+
+
+  SET(spec, "{(name):|f1|, (type):{ (base):|char|, (dec):|*|, (converter):|snowflake|}}");
+  SET(field_struct, "u64_snowflake_t f1;\n");
+  SET(field_cleanup, "//p->f1 is a scalar\n");
+  SET(field_extractor, "\"(f1):F,\"\n");
+  SET(field_extractor_arg, "orka_strtoull, &p->f1,\n");
+  SET(field_injector, "\"(f1):|F|,\"\n");
+  SET(field_injector_arg, "orka_ulltostr, &p->f1,\n");
+  SET(field_inject_settings, "p->__M.arg_switches[0] = &p->f1;\n");
+  test_one();
+
+  SET(spec, "{(name):|f1|, (type):{ (base):|char|, (dec):|*|, (converter):|iso8601|}}");
+  SET(field_struct, "u64_unix_ms_t f1;\n");
+  SET(field_cleanup, "//p->f1 is a scalar\n");
+  SET(field_extractor, "\"(f1):F,\"\n");
+  SET(field_extractor_arg, "orka_iso8601_to_unix_ms, &p->f1,\n");
+  SET(field_injector, "\"(f1):|F|,\"\n");
+  SET(field_injector_arg, "orka_unix_ms_to_iso8601, &p->f1,\n");
+  SET(field_inject_settings, "p->__M.arg_switches[0] = &p->f1;\n");
+  test_one();
   return 0;
 }
 
