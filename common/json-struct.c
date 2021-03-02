@@ -920,7 +920,7 @@ emit_field_cleanup(void *cxt, FILE *fp, struct jc_field *f)
     fprintf(fp, "  //@todo p->%s\n", act.c_name);
   else if (act.free)
     fprintf(fp,
-            "  if(d->%s)\n"
+            "  if (d->%s)\n"
             "    %s(d->%s);\n",
             act.c_name, act.free, act.c_name);
   else

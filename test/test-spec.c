@@ -133,7 +133,7 @@ int main (int argc, char ** argv)
 
   SET(spec, "{(name):|f1|, (type):{ (base):|char|, (dec):|*| }}");
   SET(field_struct, "char *f1;\n");
-  SET(field_cleanup, "if(d->f1)\n    free(d->f1);\n");
+  SET(field_cleanup, "if (d->f1)\n    free(d->f1);\n");
   SET(field_extractor, "\"(f1):?s,\"\n");
   SET(field_extractor_arg, "&p->f1,\n");
   SET(field_injector, "\"(f1):s,\"\n");
@@ -160,6 +160,16 @@ int main (int argc, char ** argv)
   SET(field_injector, "\"(f1):|F|,\"\n");
   SET(field_injector_arg, "orka_unix_ms_to_iso8601, &p->f1,\n");
   SET(field_inject_settings, "p->__M.arg_switches[0] = &p->f1;\n");
+  test_one();
+
+  SET(spec, "{(name):|f1|, (type):{ (base):|char|, (dec):|*| }, (inject_if_not):|null|}");
+  SET(field_struct, "char *f1;\n");
+  SET(field_cleanup, "if (d->f1)\n    free(d->f1);\n");
+  SET(field_extractor, "\"(f1):?s,\"\n");
+  SET(field_extractor_arg, "&p->f1,\n");
+  SET(field_injector, "\"(f1):s,\"\n");
+  SET(field_injector_arg, "p->f1,\n");
+  SET(field_inject_settings, "if (p->f1 != NULL)\n    p->__M.arg_switches[0] = p->f1;\n");
   test_one();
   return 0;
 }
