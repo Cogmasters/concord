@@ -426,7 +426,7 @@ struct cmd_cbs {
 };
 
 struct dati { /* WEBSOCKETS STRUCTURE */
-  struct orka_debug debug;
+  struct orka_config config;
   status::code status; //connection to discord status
   int reconnect_attempts; //hard limit 5 reconnection attempts @todo make configurable
 

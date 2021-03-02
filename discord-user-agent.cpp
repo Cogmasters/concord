@@ -15,12 +15,13 @@ void
 init(dati *ua, const char token[], const char config_file[])
 {
   if (config_file) {
-    ua_init_config(&ua->common, BASE_API_URL, "DISCORD HTTP", config_file);
-    token = ua->common.debug.token;
+    ua_config_init(&ua->common, BASE_API_URL, "DISCORD HTTP", config_file);
+    token = orka_config_get_field(&ua->common.config, "discord.token");
   }
+  if (!token) ERR("Missing bot token");
 
   char auth[128];
-  int ret = snprintf(auth, sizeof(auth), "Bot %s", ua->common.debug.token);
+  int ret = snprintf(auth, sizeof(auth), "Bot %s", token);
   ASSERT_S(ret < (int)sizeof(auth), "Out of bounds write attempt");
 
   ua_reqheader_add(&ua->common, "Authorization", auth);

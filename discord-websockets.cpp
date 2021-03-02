@@ -387,7 +387,7 @@ ws_close_opcode_print(enum close_opcodes gateway_opcode)
 static void
 ws_send_payload(dati *ws, char payload[])
 {
-  (*ws->debug.json_cb)(false, 0, &ws->debug, payload);
+  (*ws->config.json_cb)(false, 0, &ws->config, payload);
   bool ret = cws_send_text(ws->ehandle, payload);
   ASSERT_S(true == ret, "Couldn't send payload");
 }
@@ -403,7 +403,7 @@ ws_send_resume(dati *ws)
                 "(session_id):s"
                 "(seq):d"
               "}",
-              ws->p_client->ua.common.debug.token,
+              ws->identify->token,
               ws->session_id, 
               &ws->payload.seq_number);
 
@@ -775,7 +775,7 @@ ws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
 {
   dati *ws = (dati*)p_ws;
   
-  (*ws->debug.json_cb)(true, ws->payload.opcode, &ws->debug, (char*)text);
+  (*ws->config.json_cb)(true, ws->payload.opcode, &ws->config, (char*)text);
   D_PRINT("ON_TEXT:\t%s\n", text);
 
   int tmp_seq_number; //check value first, then assign
@@ -861,10 +861,11 @@ custom_multi_init()
 void
 init(dati *ws, const char token[], const char config_file[])
 {
-  if (config_file) {
-    orka_debug_init(&ws->debug, "DISCORD WEBSOCKETS", config_file);
-    token = ws->debug.token;
+  if (config_file) { 
+    orka_config_init(&ws->config, "DISCORD WEBSOCKETS", config_file);
+    token = orka_config_get_field(&ws->config, "discord.token");
   }
+  if (!token) ERR("Missing bot token");
 
   ws->status = status::DISCONNECTED;
 
@@ -883,6 +884,7 @@ cleanup(dati *ws)
 {
   user::dati_free(ws->me);
   identify::dati_free(ws->identify);
+  orka_config_cleanup(&ws->config);
 
   curl_multi_cleanup(ws->mhandle);
   cws_free(ws->ehandle);

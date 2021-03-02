@@ -5,8 +5,8 @@
 extern "C" {
 #endif // __cplusplus
 
-#include <curl/curl.h>
 #include "ntl.h"
+#include "orka-config.h"
 
 /* UTILITY MACROS */
 #define STREQ(str1, str2) (0 == strcmp(str1, str2))
@@ -20,23 +20,6 @@ extern "C" {
 enum http_method {
   HTTP_DELETE, HTTP_GET, HTTP_POST, HTTP_MIMEPOST, HTTP_PATCH, HTTP_PUT
 };
-
-//@todo move this somewhere else
-struct orka_debug {
-  char *tag;
-
-  char *token;
-
-  FILE *f_json_dump; //default stderr
-  void (*json_cb)(bool, int, struct orka_debug*, char*);
-  
-  FILE *f_curl_dump; //default stderr
-  int (*curl_cb)(CURL*, curl_infotype, char*, size_t, void*);
-};
-
-void orka_debug_init(struct orka_debug*, const char tag[], const char filename[]);
-void orka_debug_cleanup(struct orka_debug*);
-
 
 /* COMMON HTTP RESPONSE CODES
 https://en.wikipedia.org/wiki/List_of_HTTP_status_codes */
@@ -88,7 +71,7 @@ struct resp_handle {
 };
 
 struct user_agent_s {
-  struct orka_debug debug;
+  struct orka_config config;
   struct curl_slist *reqheader; //the request header sent to the api
 
   struct ua_conn_s *conns;
@@ -143,10 +126,10 @@ void ua_easy_setopt(struct user_agent_s *ua, void *data, void (setopt_cb)(CURL *
 void ua_mime_setopt(struct user_agent_s *ua, void *data, curl_mime* (mime_cb)(CURL *ehandle, void *data)); // @todo this is temporary
 
 void ua_init(struct user_agent_s *ua, const char base_url[]);
-void ua_init_config(
+void ua_config_init(
   struct user_agent_s *ua, 
-  const char tag[], 
   const char base_url[], 
+  const char tag[], 
   const char config_file[]);
 void ua_cleanup(struct user_agent_s *ua);
 void ua_vrun(
