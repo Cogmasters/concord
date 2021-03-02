@@ -171,6 +171,16 @@ int main (int argc, char ** argv)
   SET(field_injector_arg, "p->f1,\n");
   SET(field_inject_settings, "if (p->f1 != NULL)\n    p->__M.arg_switches[0] = p->f1;\n");
   test_one();
+
+  SET(spec, "{(name):|f1|, (type):{ (base):|int| }, (inject_if_not):10}");
+  SET(field_struct, "int f1;\n");
+  SET(field_cleanup, "//p->f1 is a scalar\n");
+  SET(field_extractor, "\"(f1):d,\"\n");
+  SET(field_extractor_arg, "&p->f1,\n");
+  SET(field_injector, "\"(f1):d,\"\n");
+  SET(field_injector_arg, "&p->f1,\n");
+  SET(field_inject_settings, "if (p->f1 != 10)\n    p->__M.arg_switches[0] = &p->f1;\n");
+  test_one();
   return 0;
 }
 
