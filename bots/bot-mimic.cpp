@@ -21,7 +21,7 @@ select_guild(client *client)
   // get guilds bot is a part of
   guild::dati **guilds = NULL;
   guilds = user::me::get_guilds(client);
-  ASSERT_S(NULL != guilds, "This bot is not part of any guilds");
+  ASSERT_S(NULL != guilds, "Couldn't fetch guilds");
 
   fprintf(stderr, "\n\nSelect the guild that the user to be mimicked is part of");
   int i=0;
@@ -57,7 +57,8 @@ select_member(client *client, uint64_t guild_id)
   };
 
   members = member::get_list::run(client, guild_id, &params);
-  ASSERT_S(NULL != members, "There are no members in this guild");
+  ASSERT_S(NULL != members, "Guild is empty or bot needs to activate its privileged intents.\n\t"
+                            "See this guide to activate it: https://discordpy.readthedocs.io/en/latest/intents.html#privileged-intents");
 
   fprintf(stderr, "\n\nSelect the member to be mimicked");
   int i=0;
