@@ -1,0 +1,104 @@
+{
+  "namespace": ["discord", "channel", "message"],
+  "comment":"",
+  "defs":
+  [
+    {
+      "namespace":["sticker", "format_type"], 
+      "enum":"code",
+      "items":
+      [
+        { "name": "PNG", "value":1},
+        { "name": "APNG", "value":2},
+        { "name": "LOTTIE", "value":3}
+      ]
+    },
+    {
+      "namespace":["sticker"],
+      "struct":"dati",
+      "fields": [
+        {"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}},
+        {"name":"pack_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}},
+        {"name":"name", "type":{"base":"char", "dec":"*"}},
+        {"name":"description", "type":{"base":"char", "dec":"*"}},
+        {"name":"tags", "type":{"base":"char", "dec":"*"}},
+        {"name":"asset","type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}},
+        {"name":"preview_asset", "type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}},
+        {"name":"type", "type":{"base":"int", "int_alias":"format_type::code"}}
+      ]
+    },
+    {
+      "namespace":["flags"],
+      "enum":"code",
+      "items":[
+        {"name":"CROSSPOSTED", "value":1},
+        {"name":"IS_CROSSPOST", "value":2},
+        {"name":"SUPRESS_EMBEDS", "value":4},
+        {"name":"SOURCE_MESSAGE_DELETED", "value":8},
+        {"name":"URGENT", "value":16}
+      ]
+    },
+    {
+      "namespace":["reference"],
+      "struct":"dati",
+      "fields": [
+        {"name":"message_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "inject_if_not":0},
+        {"name":"channel_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "inject_if_not":0},
+        {"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "inject_if_not":0},
+        {"name":"fail_if_not_exists", "type":{"base":"bool"}, "inject_if_not":false}
+      ]
+    },
+    {
+      "namespace":["application"],
+      "struct":"dati",
+      "fields": [
+        {"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}},
+        {"name":"cover_image", "type":{"base":"char", "dec":"*"}},
+        {"name":"description", "type":{"base":"char", "dec":"*"}},
+        {"name":"icon", "type":{"base":"char", "dec":"*"}},
+        {"name":"name", "type":{"base":"char", "dec":"*"}}
+      ]
+    },
+    {
+      "namespace":["activity", "types"],
+      "enum":"code",
+      "items": [
+        {"name":"JOIN", "value":1},
+        {"name":"SPECTATE", "value":2},
+        {"name":"LISTEN", "value":3},
+        {"name":"JOIN_REQUEST", "value":5}
+      ]
+    },
+    {
+      "namespace":["activity"],
+      "struct":"dati",
+      "fields": [
+        {"name":"type", "type":{"base":"int", "int_alias":"types::code"}}
+      ]
+    },
+    {
+      "namespace":["types"],
+      "enum":"code",
+      "items": [
+        {"name":"DEFAULT", "value":0},
+        {"name":"RECIPIENT_ADD", "value":1},
+        {"name":"RECIPIENT_REMOVE", "value":3},
+        {"name":"CALL", "value":5},
+        {"name":"CHANNEL_NAME_CHANGE", "value":5},
+        {"name":"CHANNEL_ICON_CHANGE", "value":5},
+        {"name":"CHANNEL_PINNED_MESSAGE","value":5},
+        {"name":"GUILD_MEMBER_JOIN","value":5},
+        {"name":"USER_PREMIUM_GUILD_SUBSCRIPTION","value":5},
+        {"name":"USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_1","value":9},
+        {"name":"USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_2","value":10},
+        {"name":"USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_3","value":11},
+        {"name":"CHANNEL_FOLLOW_ADD","value":12},
+        {"name":"GUILD_DISCOVERY_DISQUALIFIED","value":14},
+        {"name":"GUILD_DISCOVERY_REQUALIFIED","value":15},
+        {"name":"REPLY"   ,"value":19}, 
+        {"name":"APPLICATION_COMMAND","value":20}
+      ]
+    }
+  ]
+}
+

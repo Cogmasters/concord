@@ -1,0 +1,22 @@
+{
+  "namespace": ["discord", "channel"],
+  "comment":"https://discord.com/developers/docs/resources/channel#channel-object-channel-types",
+  "defs":
+  [
+    {
+      "namespace":["types"], 
+      "enum":"code",
+      "items":
+      [
+        { "name": "GUILD_TEXT", "value":0}, 
+        { "name": "DM"},
+        { "name": "GUILD_VOICE"},
+        { "name": "GROUP_DM"},
+        { "name": "GUILD_CATEGORY"},
+        { "name": "GUILD_NEWS"},
+        { "name": "GUILD_STORE"}
+      ]
+    }
+  ]
+}
+

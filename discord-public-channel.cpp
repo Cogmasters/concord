@@ -548,7 +548,7 @@ del(client *client, const uint64_t channel_id, const uint64_t message_id)
 }
 
 namespace reference {
-
+#if 0
 void
 dati_init(void *p_reference) 
 {
@@ -620,6 +620,7 @@ dati_to_json(char *str, size_t len, void *p_reference)
 
   return ret;
 }
+#endif
 
 }
 

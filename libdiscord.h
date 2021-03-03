@@ -240,6 +240,8 @@ struct dati {
 /* CHANNEL STRUCTURE
 https://discord.com/developers/docs/resources/channel#channel-object-channel-structure */
 namespace channel {
+#include "./specs-code/channel.types.hh"
+
 struct dati {
   uint64_t id;
   types::code type;
@@ -275,6 +277,7 @@ void dati_list_to_json(char *str, size_t len, void *);
 
 /* CHANNEL TYPES
 https://discord.com/developers/docs/resources/channel#channel-object-channel-types */
+#if 0
 namespace types {
 enum {
   GUILD_TEXT      = 0,
@@ -286,10 +289,13 @@ enum {
   GUILD_STORE     = 6
 };
 } // namespace types
+#else
+#endif
 
 /* MESSAGE STRUCTURE
 https://discord.com/developers/docs/resources/channel#message-object */
 namespace message {
+#include "./specs-code/channel.message.hh"
 struct dati {
   uint64_t id;
   uint64_t channel_id;
@@ -329,6 +335,7 @@ void dati_list_from_json(char *str, size_t len, void *p_messages);
 
 /* MESSAGE TYPES
 https://discord.com/developers/docs/resources/channel#message-object-message-types */
+#if 0
 namespace types {
 enum {
   DEFAULT                                 = 0,
@@ -444,6 +451,8 @@ enum {
 } // namespace format_types
 
 } // namespace sticker
+#else
+#endif
 
 } // namespace message
 

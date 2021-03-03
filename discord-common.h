@@ -27,20 +27,20 @@ namespace audit_log {
 } // namespace audit_log
 namespace channel {
   struct dati; 
-  namespace types { typedef int code; }
+  //namespace types { typedef int code; }
   namespace message { 
     struct dati; 
-    namespace types { typedef int code; }
+    //namespace types { typedef int code; }
     namespace activity { 
       struct dati; 
-      namespace types { typedef int code; }
+      //namespace types { typedef int code; }
     } // namespace activity
     namespace application { struct dati; }
     namespace reference { struct dati; }
-    namespace flags { typedef int code; }
+    //namespace flags { typedef int code; }
     namespace sticker {
       struct dati;
-      namespace format_types { typedef int code; }
+      //namespace format_types { typedef int code; }
     } // namespace sticker
   } // namespace message
   namespace followed_channel { struct dati; }
