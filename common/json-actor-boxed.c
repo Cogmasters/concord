@@ -174,6 +174,10 @@ void ja_u64_list_from_json(char *str, size_t len, ja_u64 ***p) {
   orka_str_to_ntl(str, len, &d);
 }
 
+void ja_u64_list_append(ja_u64 ***p, ja_u64 *new_p) {
+  *p = (ja_u64**)ntl_append((void**)*p, sizeof(ja_u64), new_p);
+}
+
 void ja_u64_list_from_json_v(char *str, size_t len, void *p) {
   ja_u64_list_from_json(str, len, (ja_u64 ***)p);
 }

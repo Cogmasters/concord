@@ -53,6 +53,7 @@ size_t ja_u64_to_query_v(char *json, size_t len, void *p);
 size_t ja_u64_to_query(char *json, size_t len, struct ja_u64 *p);
 void ja_u64_list_free_v(void **p);
 void ja_u64_list_free(struct ja_u64 **p);
+void ja_u64_list_append(struct ja_u64 ***p, struct ja_u64 *new_p);
 void ja_u64_list_from_json_v(char *str, size_t len, void *p);
 void ja_u64_list_from_json(char *str, size_t len, struct ja_u64 ***p);
 size_t ja_u64_list_to_json_v(char *str, size_t len, void *p);
