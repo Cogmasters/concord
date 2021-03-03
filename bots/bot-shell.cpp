@@ -1,3 +1,4 @@
+#include <locale.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -7,6 +8,11 @@
 
 
 using namespace discord;
+
+struct sudo_s {
+  char username[64];
+  char *discriminator;
+} sudo;
 
 void 
 on_ready(client *client, const user::dati *me)
@@ -26,10 +32,10 @@ on_command(client *client, const user::dati *me, const channel::message::dati *m
   if (msg->author->bot)
     return;
 
-  // make sure user has machine control privileges
-  uint64_t *user_id = (uint64_t*)get_data(client);
-  if (*user_id != msg->author->id)
-    return;
+  if (strcmp(sudo.discriminator, msg->author->discriminator)
+      || strcmp(sudo.username, msg->author->username)) {
+    return; // EARLY RETURN IF NOT SUDO USER
+  }
 
   message::create::params params = {0};
 
@@ -101,74 +107,6 @@ on_command(client *client, const user::dati *me, const channel::message::dati *m
   message::create::run(client, msg->channel_id, &params, NULL); 
 }
 
-uint64_t
-select_guild(client *client)
-{
-  // get guilds bot is a part of
-  guild::dati **guilds = NULL;
-  guilds = user::me::get_guilds(client);
-  ASSERT_S(NULL != guilds, "This bot is not part of any guilds");
-
-  fprintf(stderr, "\n\nSelect the guild where the admin member is at.");
-  int i=0;
-  do {
-    fprintf(stderr, "\n%d. %s", i+1, guilds[i]->name);
-    ++i;
-  } while (guilds[i]);
-
-  do {
-    fputs("\n\nNUMBER >>\n", stderr);
-    char strnum[10]; // 10 digits should be more than enough..
-    fgets(strnum, sizeof(strnum), stdin);
-    int num = strtol(strnum, NULL, 10);
-    if (num > 0 && num <= i) {
-      uint64_t guild_id = guilds[num-1]->id;
-      guild::dati_list_free(guilds);
-      return guild_id;
-    }
-    fprintf(stderr, "\nPlease, insert a value between 1 and %d", i);
-  } while (1);
-}
-
-uint64_t
-select_member(client *client, uint64_t guild_id)
-{
-  using namespace guild;
-
-  // get guilds bot is a part of
-  member::dati **members = NULL;
-  member::get_list::params params = {
-    .limit = 1000,
-    .after = 0
-  };
-
-  members = member::get_list::run(client, guild_id, &params);
-  ASSERT_S(NULL != members, "There are no members in this guild");
-
-  fprintf(stderr, "\n\nSelect the admin member that may control your machine");
-  int i=0;
-  do {
-    fprintf(stderr, "\n%d. %s", i+1, members[i]->user->username);
-    if (*members[i]->nick) { // prints nick if available
-      fprintf(stderr, " (%s)", members[i]->nick);
-    }
-    ++i;
-  } while (members[i]);
-
-  do {
-    fputs("\n\nNUMBER >>\n", stderr);
-    char strnum[10]; // 10 digits should be more than enough..
-    fgets(strnum, sizeof(strnum), stdin);
-    int num = strtol(strnum, NULL, 10);
-    if (num > 0 && num <= i) {
-      uint64_t user_id = members[num-1]->user->id;
-      member::dati_list_free(members);
-      return user_id;
-    }
-    fprintf(stderr, "\nPlease, insert a value between 1 and %d", i);
-  } while (1);
-}
-
 int main(int argc, char *argv[])
 {
   const char *config_file;
@@ -176,6 +114,8 @@ int main(int argc, char *argv[])
     config_file = argv[1];
   else
     config_file = "bot.config";
+
+  setlocale(LC_ALL, "");
 
   global_init();
 
@@ -190,10 +130,16 @@ int main(int argc, char *argv[])
          " used with care.\nOnly give admin privileges to yourself"
          " or someone trustworthy.\n\n\n");
 
-  uint64_t guild_id = select_guild(client);
-  uint64_t user_id = select_member(client, guild_id);
+  fputs("\n\nType name of user with admin privileges (eg. user#1234)\n", stderr);
+  fgets(sudo.username, sizeof(sudo.username), stdin);
 
-  set_data(client, &user_id);
+  sudo.discriminator = strchr(sudo.username, '#');
+  VASSERT_S(NULL != sudo.discriminator, "Wrong formatted username (%s)", sudo.username);
+
+  sudo.discriminator[strlen(sudo.discriminator)-1] = '\0'; //remove \n
+  *sudo.discriminator = '\0'; //split at #
+  ++sudo.discriminator;
+
 
   run(client);
 
