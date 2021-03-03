@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
 
   global_init();
 
-  client *client = fast_init(config_file);
+  client *client = config_init(config_file);
   assert(NULL != client);
 
   printf("\n\nThis bot demonstrates how easy it is to change presence"

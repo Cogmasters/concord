@@ -135,7 +135,7 @@ int main(int argc, char *argv[])
 
   global_init();
 
-  client *client = fast_init(config_file);
+  client *client = config_init(config_file);
   assert(NULL != client);
 
   uint64_t guild_id = select_guild(client);

@@ -319,7 +319,7 @@ int main(int argc, char *argv[])
 
   /* Initialize Discord User Agent */
   discord::global_init();
-  discord::client *client = discord::fast_init(config_file);
+  discord::client *client = discord::config_init(config_file);
   assert(NULL != client);
 
   /* Set discord callbacks */

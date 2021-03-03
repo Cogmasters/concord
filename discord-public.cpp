@@ -11,17 +11,24 @@
 
 namespace discord {
 
-//@todo rename to init
 client*
-fast_init(const char config_file[])
+init(const char token[])
 {
-  // set a flag to make sure this function is called only once.
-  static int called;
-  if (0 == called)
-    called = 1;
-  else
-    ERR("fast_init() should be called once per bot");
+  client *new_client = (client*)calloc(1, sizeof(client));
+  if (NULL == new_client) return NULL;
 
+  new_client->ua.p_client = new_client;
+  new_client->ws.p_client = new_client;
+  
+  user_agent::init(&new_client->ua, token, NULL);
+  websockets::init(&new_client->ws, token, NULL);
+
+  return new_client;
+}
+
+client*
+config_init(const char config_file[])
+{
   client *new_client = (client*)calloc(1, sizeof(client));
   if (NULL == new_client) return NULL;
 

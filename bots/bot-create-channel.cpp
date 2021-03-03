@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
 
   global_init();
 
-  client *client = fast_init(config_file);
+  client *client = config_init(config_file);
   assert(NULL != client);
 
   setcb_command(client, "!createChannel", &on_command);
