@@ -856,7 +856,7 @@ gen_init (FILE *fp, struct jc_struct *s)
 
   fprintf(fp, "void %s_init(struct %s *p) {\n", t, t);
   fprintf(fp, "  memset(p, 0, sizeof(struct %s));\n", t);
-  for (int i = 0; s->fields[i]; i++) {
+  for (int i = 0; s->fields && s->fields[i]; i++) {
     struct jc_field *f = s->fields[i];
     struct action act = { 0 };
     to_action(f, &act);
@@ -931,7 +931,7 @@ static void gen_cleanup(FILE *fp, struct jc_struct *s)
 {
   char *t = s->name;
   fprintf(fp, "void %s_cleanup(struct %s *d) {\n", t, t);
-  for (int i = 0; s->fields[i]; i++)
+  for (int i = 0; s->fields && s->fields[i]; i++)
     emit_field_cleanup(NULL, fp, s->fields[i]);
 
   fprintf(fp, "}\n");
@@ -994,14 +994,14 @@ static void gen_from_json(FILE *fp, struct jc_struct *s)
   fprintf(fp, "  static size_t ret=0; // used for debugging\n");
   fprintf(fp, "  size_t r=0;\n");
   fprintf(fp, "  r=json_extract(json, len, \n");
-  for (int i = 0; s->fields[i]; i++)
+  for (int i = 0; s->fields && s->fields[i]; i++)
     emit_json_extractor(NULL, fp, s->fields[i]);
 
   fprintf(fp, "                \"@arg_switches:b\"\n");
   fprintf(fp, "                \"@record_defined\"\n");
   fprintf(fp, "                \"@record_null\",\n");
 
-  for (int i = 0; s->fields[i]; i++)
+  for (int i = 0; s->fields && s->fields[i]; i++)
     emit_json_extractor_arg(NULL, fp, s->fields[i]);
 
   fprintf(fp, "                p->__M.arg_switches,"
@@ -1077,7 +1077,7 @@ static void gen_use_default_inject_settings(FILE *fp, struct jc_struct *s)
           t, t);
   fprintf(fp, "{\n");
   fprintf(fp, "  p->__M.enable_arg_switches = true;\n");
-  for (int i = 0; s->fields[i]; i++) {
+  for (int i = 0; s->fields && s->fields[i]; i++) {
     emit_inject_setting(&i, fp, s->fields[i]);
     fprintf(fp, "\n");
   }
@@ -1122,12 +1122,12 @@ static void gen_to_json(FILE *fp, struct jc_struct *s)
   fprintf(fp, "  size_t r;\n");
   fprintf(fp, "  r=json_inject(json, len, \n");
 
-  for (int i = 0; s->fields[i]; i++)
+  for (int i = 0; s->fields && s->fields[i]; i++)
     emit_json_injector(NULL, fp, s->fields[i]);
 
   fprintf(fp, "                \"@arg_switches:b\",\n");
 
-  for (int i = 0; s->fields[i]; i++)
+  for (int i = 0; s->fields && s->fields[i]; i++)
     emit_json_injector_arg(NULL, fp, s->fields[i]);
 
   fprintf(fp, "                p->__M.arg_switches, "
@@ -1143,7 +1143,7 @@ static void gen_to_query(FILE *fp, struct jc_struct *s)
 
   char *t = s->name;
   bool has_query = false;
-  for (int i = 0; s->fields[i]; i++) {
+  for (int i = 0; s->fields && s->fields[i]; i++) {
     struct jc_field *f = s->fields[i];
     if (f->loc != LOC_IN_QUERY)
       continue;
@@ -1164,7 +1164,7 @@ static void gen_to_query(FILE *fp, struct jc_struct *s)
   fprintf(fp, "  r = query_inject(json, len, \n");
 
   
-  for (int i = 0; s->fields[i]; i++) {
+  for (int i = 0; s->fields && s->fields[i]; i++) {
     struct jc_field *f = s->fields[i];
     if (f->loc != LOC_IN_QUERY)
       continue;
@@ -1176,7 +1176,7 @@ static void gen_to_query(FILE *fp, struct jc_struct *s)
   }
   fprintf(fp, "                \"@arg_switches:b\",\n");
 
-  for (int i = 0; s->fields[i]; i++) {
+  for (int i = 0; s->fields && s->fields[i]; i++) {
     struct jc_field *f = s->fields[i];
     if (f->loc != LOC_IN_QUERY)
       continue;
