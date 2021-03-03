@@ -1,0 +1,20 @@
+{
+  "namespace": ["discord", "guild", "create_role"],
+  "comment": "",
+  "defs":
+  [
+    {
+      "comment":"https://discord.com/developers/docs/resources/guild#create-guild-role",
+      "struct":"params",
+      "fields":
+      [
+        { "name": "name", "type":{ "base":"char", "dec":"*" }},
+        { "name": "permissions", "type":{ "base":"s_as_u64" }, "inject_if_not":0},
+        { "name": "color", "type":{ "base":"int" }, "inject_if_not":0},
+        { "name": "hoist", "type":{ "base":"bool" }, "inject_if_not":false},
+        { "name": "memtionable", "type":{ "base":"bool" }, "inject_if_not":false}
+      ]
+    }
+  ]
+}
+

@@ -274,7 +274,7 @@ void run(client *client, const uint64_t guild_id, params *params, role::dati *p_
     D_PUTS("Missing 'guild_id'");
     return;
   }
-
+#if 0
   void *A[5] = {0}; // pointer availability array.
   if (!IS_EMPTY_STRING(params->name))
     A[0] = (void *)params->name;
@@ -301,6 +301,11 @@ void run(client *client, const uint64_t guild_id, params *params, role::dati *p_
       &params->hoist,
       &params->mentionable,
       A, sizeof(A));
+#else
+  char payload[MAX_PAYLOAD_LEN];
+  create_role::params_use_default_inject_settings(params);
+  create_role::params_to_json(payload, sizeof(payload), params);
+#endif
 
   struct resp_handle resp_handle = {
     .ok_cb = p_role ? role::dati_from_json_v : NULL,

@@ -1446,7 +1446,7 @@ void run(client *client, const uint64_t guild_id, params *params, channel::dati 
 } // namespace create_channel
 
 namespace create_role {
-
+#if 0
 struct params {
   char *name;
   uint64_t permissions;
@@ -1454,6 +1454,9 @@ struct params {
   bool hoist;
   bool mentionable;
 };
+#else
+#include "./specs-code/guild.create_role.hh"
+#endif
 
 void run(client *client, const uint64_t guild_id, params *params, role::dati *p_role);
 
