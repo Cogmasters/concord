@@ -1328,7 +1328,8 @@ namespace discord { /* discord-public.c */
 void global_init();
 void global_cleanup();
 
-client* fast_init(const char config_file[]);
+client* init(const char token[]);
+client* config_init(const char config_file[]);
 void cleanup(discord::client *client);
 
 void add_intents(client *client, websockets::intents::code code);
