@@ -53,6 +53,9 @@ int main (int argc, char ** argv)
   
   char * file =  argv[optind];
   s = orka_load_whole_file(file, &len);
+  spec_name = file;
+  spec_buffer.start = s;
+  spec_buffer.size = len;
 
   struct jc_definition d;
   memset(&d, 0, sizeof(d));
