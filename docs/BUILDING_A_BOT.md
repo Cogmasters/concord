@@ -84,9 +84,13 @@ int main(int argc, char *argv[])
 
 # Setting up the bot settings
 
-You can set it automatically by initializing it with the bot.config file located at orca/bots folder. Simply give pass the file path as a parameter of config_init(), as following:
+You can set it automatically by initializing it with the bot.config file located at orca/bots folder. Simply give the file path as a parameter of discord::config_init(), as following:
 ```c++
   discord::client *client = discord::config_init("bot.config");
+```
+Or you can initialize directly with discord::init() by giving it the bot token, like so:
+```c++
+  discord::client *client = discord::init("BOT_TOKEN_HERE");
 ```
 
 ## discord::global_init
