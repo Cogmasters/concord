@@ -12,13 +12,9 @@ The entire code of ping-pong bot is below. We will go over it in further down:
 ```c++
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <assert.h>
 #include <libdiscord.h>
 
-using namespace discord;
-
-void on_ready(client *client, const user::data *self)
+void on_ready(discord::client *client, const discord::user::data *self)
 {
   fprintf(stderr, "\n\nPingPong-Bot succesfully connected to Discord as %s#%s!\n\n",
       self->username, self->discriminator);
@@ -26,27 +22,40 @@ void on_ready(client *client, const user::data *self)
   (void)client;
 }
 
-void on_message_create(
-    client *client,
-    const user::data *self,
-    const message::data *msg)
+void on_ping(
+    discord::client *client,
+    const discord::user::dati *me,
+    const discord::channel::message::dati *msg)
 {
   // make sure bot doesn't echoes other bots
   if (msg->author->bot)
     return;
-  // make sure it doesn't echoes itself
-  if (0 == strcmp(self->username, msg->author->username))
+
+  discord::channel::message::create::params params = {
+    .content = "pong"
+  };
+
+  discord::channel::message::create::run(client, msg->channel_id, &params, NULL);
+
+  (void)me;
+}
+
+void on_pong(
+    discord::client *client,
+    const discord::user::dati *me,
+    const discord::channel::message::dati *msg)
+{
+  // make sure bot doesn't echoes other bots
+  if (msg->author->bot)
     return;
 
-  message::create::params params = {0};
-  if (0 == strcmp(msg->content, "ping"))
-    params.content = "pong";
-  else if (0 == strcmp(msg->content, "pong"))
-    params.content = "ping";
+  discord::channel::message::create::params params = {
+    .content = "ping"
+  };
 
-  message::create::run(client, msg->channel_id, &params);
+  discord::channel::message::create::run(client, msg->channel_id, &params, NULL);
 
-  (void)self;
+  (void)me;
 }
 
 int main(int argc, char *argv[])
@@ -57,80 +66,40 @@ int main(int argc, char *argv[])
   else
     config_file = "bot.config";
 
-  global_init();
+  discord::global_init();
 
-  client *client = fast_init(config_file);
-  assert(NULL != client);
+  discord::client *client = discord::config_init(config_file);
 
-  setcb_ready(client, &on_ready);
-  setcb_message_create(client, &on_message_create);
+  discord::setcb(client, READY, &on_ready);
+  discord::setcb_command(client, "ping", &on_ping);
+  discord::setcb_command(client, "pong", &on_pong);
 
-  run(client);
+  discord::run(client); // run the discord websockets
 
-  cleanup(client);
+  discord::cleanup(client);
 
-  global_cleanup();
+  discord::global_cleanup();
 }
 ```
 
 # Setting up the bot settings
 
-You can set it automatically, by using the `fast_init()` function when
-initializing your client by passing the bot settings file name as a parameter:
+You can set it automatically by initializing it with the bot.config file located at orca/bots folder. Simply give pass the file path as a parameter of config_init(), as following:
 ```c++
-  // using namespace discord;
-
-  const char *config_file;
-  if (argc > 1)
-    config_file = argv[1];
-  else
-    config_file = "bot.config";
-
-  client *client = fast_init(config_file);
-  assert(NULL != client);
+  discord::client *client = discord::config_init("bot.config");
 ```
-
-Or you can do it manually, like so:
-```c++
-  // using namespace discord;
-
-  static struct bot_settings settings;
-
-  if (argc > 1)
-    bot_settings_init(&settings, argv[1]);
-  else
-    bot_settings_init(&settings, "bot.config");
-
-  client *client = init(settings.discord.token);
-  assert(NULL != client);
-
-  if (settings.logging.dump_json.enable)
-    dump_json(client, settings.logging.dump_json.filename);
-  if (settings.logging.dump_curl.enable)
-    dump_curl(client, settings.logging.dump_curl.filename);
-```
-
-## struct bot_settings
-`struct bot_settings` : the structure of the settings json once given by `bot_settings_init()`. Check [bot.config](/bot.config) for an example.
-
-## bot_settings_init
-`bot_settings_init(struct *bot_settings, char[])` : initializes the struct bot_settings to the contents of the file char[] given.
-|Member Parameters|Description                |
-|:----------------|:--------------------------|
-|struct* bot_settings| the setting struct to use to hold the bot settings|
-|char []| the file path to the json given to bot_settings|
 
 ## discord::global_init
 `discord::global_init()` : the function to run before using any other functions, it will set some important global configurations from curl
 
-## discord::fast_init
-`discord::fast_init(char[])` : function for initializing the bot using some presets
+## discord::config_init
+`discord::config_init(char[])` : function for initializing the bot using some presets
 
 Returns `discord::client`: the client structure
 
 |Member Parameters|Description                |
 |:----------------|:--------------------------|
-|char[]| the name of the bot settings file|
+|char[]| the name of the bot config file|
 
 ## discord::init
 `discord::init(char[])` : function for initializing the bot with a token
@@ -141,45 +110,32 @@ Returns `discord::client`: the client structure
 |:----------------|:--------------------------|
 |char[]| the bot token string|
 
-## discord::dump_json
-`discord::dump_json(discord::client*, char[])`: function for dumping the json
-
-|Member Parameters|Description                |
-|:----------------|:--------------------------|
-|discord::client| the client stucture |
-|char[]| the file name of where to dump the json|
-
-## discord::dump_curl
-`discord::dump_curl(discord::client*, char[])`: function for dumping the curl info
-
-|Member Parameters|Description                |
-|:----------------|:--------------------------|
-|discord::client| the client stucture |
-|char[]| the file name of where to dump the curl info|
-
 # Starting up the bot
 ```c++
-discord::setcb_ready(discord::client*, &on_ready);
-discord::setcb_message_create(discord::client*, &on_message_create);
+discord::setcb(client, READY, &on_ready);
+discord::setcb_command(discord::client*, "ping", &on_ping);
+discord::setcb_command(discord::client*, "pong", &on_pong);
 
 discord::run(discord::client*);
 ```
 
-## discord::setcb_ready
-`discord::setcb_ready(discord::client*, callback*)`: calls the function when bot has started up and is ready
+## discord::setcb
+`discord::setcb(discord::client*, enum callback_opt, callback*)`: calls callback function when `enum callback_opt` event is triggered
 
 |Member Parameters|Description                |
 |:----------------|:--------------------------|
 |discord::client| the client stucture |
-|callback*| the function to run when bot is ready. Must be of structure <br>```void function(discord::client *client, const discord::user::data *self)```|
+|enum callback_opt| The event expected to trigger a callback response |
+|callback*| the function callback to run when its corresponding event is triggered (see discord-common.h for callback definitions) |
 
-## discord::setcb_message_create
-`discord::setcb_message_create(discord::client*, callback*)`: calls the function when bot has detected that a user has sent a message
+## discord::setcb_command
+`discord::setcb_command(discord::client*, char[], message_cb*)`: executes callback function when `char[]` command is triggered on chat
 
 |Member Parameters|Description                |
 |:----------------|:--------------------------|
 |discord::client| the client stucture |
-|callback*| the function to run when a message is created. Must be of structure <br>```void function(discord_t *client, const discord_user_t *self, const discord_message_t *message)```|
+|char[]| The chat command expected to trigger a callback response |
+|message_cb*| the message type function callback to run when its corresponding event is triggered (see discord-common.h for message_cb definitions) |
 
 ## discord::run
 `discord::run(discord::client*)`: the functions that establishes starts the bot by establishing a connection to Discord, runs until error
@@ -209,9 +165,9 @@ discord::run(discord::client*);
 
 # Running the bot
 
-Use `make -f discord.mk` for compiling the source code.
+Use `make bot` for compiling the source code.
 
-Then run the bot by typing `./bot-ping-pong.exe` on your terminal.
+Then run the bot going to the `bots` folder and typing `./bot-ping-pong.exe` on your terminal.
 
 #### Testing the bot
 Type "ping" or "pong" in any public channel that the bot is part of.
