@@ -6,8 +6,6 @@
 #include <libdiscord.h>
 #include "orka-utils.h"
 
-#define parameter ...
-
 
 namespace discord {
 
@@ -78,7 +76,7 @@ void
 set_prefix(client *client, char *prefix) 
 {
   const size_t PREFIX_LEN = 32;
-  if ( !orka_str_below_threshold(prefix, PREFIX_LEN) ) {
+  if (!orka_str_bounds_check(prefix, PREFIX_LEN)) {
     PRINT("Prefix length greater than threshold (%zu chars)", PREFIX_LEN);
     return;
   }
@@ -93,7 +91,7 @@ setcb_command(client *client, char *command, message_cb *user_cb)
   dati *ws = &client->ws;
 
   const size_t CMD_LEN = 64;
-  if ( !orka_str_below_threshold(command, CMD_LEN) ) {
+  if (!orka_str_bounds_check(command, CMD_LEN)) {
     PRINT("Command length greater than threshold (%zu chars)", CMD_LEN);
     return;
   }
@@ -109,8 +107,10 @@ setcb_command(client *client, char *command, message_cb *user_cb)
       intents::GUILD_MESSAGES | intents::DIRECT_MESSAGES);
 }
 
+#define callback ... // varargs to avoid non-conforming function pointer error
+
 void
-setcb(client *client, enum callback_opt opt, parameter)
+setcb(client *client, enum callback_opt opt, callback)
 {
   using namespace websockets;
   dati *ws = &client->ws;

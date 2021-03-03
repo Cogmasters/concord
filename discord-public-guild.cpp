@@ -203,7 +203,7 @@ void run(client *client, const uint64_t guild_id, params *params, channel::dati 
     D_PUTS("Missing channel name (params.name)");
     return;
   }
-  if (!orka_str_below_threshold(params->topic, 1024)) {
+  if (!orka_str_bounds_check(params->topic, 1024)) {
     D_PUTS("'params.topic' exceeds threshold of 1024");
     return;
   }

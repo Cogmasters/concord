@@ -29,7 +29,7 @@ uint64_t orka_timestamp_ms();
 void orka_timestamp_str(char *p_str, int len);
 
 size_t orka_str_to_ntl(char *str, size_t size, struct ntl_deserializer*);
-int orka_str_below_threshold(const char *str, const size_t threshold);
+bool orka_str_bounds_check(const char *str, const size_t threshold_len);
 
 
 #ifdef __cplusplus

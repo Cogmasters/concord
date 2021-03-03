@@ -242,14 +242,13 @@ orka_str_to_ntl(
 
 /* this can be used for checking if a user-given string does not
  *  exceeds a arbitrary threshold length */
-int
-orka_str_below_threshold(const char *str, const size_t threshold)
+bool
+orka_str_bounds_check(const char *str, const size_t threshold_len)
 {
-  if (NULL == str) return 1;
+  if (NULL == str) return true;
 
-  size_t i=0;
-  for ( ; i < threshold; ++i) {
-    if ('\0' == str[i]) return 1;
+  for (size_t i=0; i < threshold_len; ++i) {
+    if ('\0' == str[i]) return true;
   }
-  return 0; 
+  return false; 
 }
