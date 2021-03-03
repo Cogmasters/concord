@@ -29,34 +29,34 @@ int main (int argc, char ** argv)
     "}";
 
   spec =
-    "{ |disabled|:false,"
-      "|namespace|: [ |A|, |B| ],"
-      "|comment|: |url|,"
-      "|defs|:"
-      "["
+    "{ |disabled|:false,\n"
+      "|namespace|: [ |A|, |B| ],\n"
+      "|comment|: |url|,\n"
+      "|defs|:\n"
+      "[\n"
 #if 1
-      "  {"
-      "    |namespace|:[|C|],"
-      "    |struct|:|dati|,"
-      "    |fields|:"
-      "    ["
-      "      { |name|:|f1_str|, |type|:{ |base|:|char|, |dec|:|*| }, |comment|:| this is field f1 | },"
-      "      { |name|:|f2_str|, |type|:{ |base|:|char|, |dec|:|*| } },"
-      "      { |name|:|f3_int|, |type|:{ |base|:|int|, |c_base|:|code| } },"
-      "      { |name|:|fx_todo|, |todo|:true, |type|:{ |base|:|int|, |c_base|:|code| } },"
-      "      { |name|:|f4_uint64|, |c_name|:|c_f4|, |type|:{ |base|:|s_as_u64| } },"
-      "      { |name|:|f5 asdfasdf |, |c_name|:|c_f5|, |type|:{ |base|:|char|, |dec|:|*| } },"
-      "      { |name|:|f6_carray|, |type|:{ |base|:|char|, |dec|:|[10]| } },"
-      "      { |name|:|f7_ntl|, |type|:{ |base|:|int|, |dec|:|ntl| } },"
-      "      { |name|:|f8_ntl|, |type|:{ |base|:|emoji::dati|, |dec|:|ntl| } },"
-      "      { |name|:|f9_todo|, |todo|:true, |type|:{ |base|:|emoji::dati|, |dec|:|ntl| } },"
-      "      { |name|:|f10|, |todo|:false, |type|:{ |base|:|emoji::dati|, |dec|:|*| } },"
-      "      { |name|:|f11|, |type|:{ |base|:|char|, |dec|:|*|, |converter|:|iso8601| } },"
-      "      { |name|:|f12|, |type|:{ |base|:|char|, |dec|:|*|}, |inject_if_not|:null },"
-      "      { |name|:|f13|, |type|:{ |base|:|char|, |dec|:|[12]|}, |inject_if_not|:|| },"
-      "      { |name|:|f14|, |type|:{ |base|:|char|, |dec|:|*|, |converter|:|iso8601|}, |inject_if_not|:10 },"
-      "    ]"
-      "  }"
+      "  {\n"
+      "    |namespace|:[|C|],\n"
+      "    |struct|:|dati|,\n"
+      "    |fields|:\n"
+      "    [\n"
+      "      { |name|:|f1_str|, |type|:{ |base|:|char|, |dec|:|*| }, |comment|:| this is field f1 | },\n"
+      "      { |name|:|f2_str|, |type|:{ |base|:|char|, |dec|:|*| } },\n"
+      "      { |name|:|f3_int|, |type|:{ |base|:|int|, |c_base|:|code| } },\n"
+      "      { |name|:|fx_todo|, |todo|:true, |type|:{ |base|:|int|, |c_base|:|code| } },\n"
+      "      { |name|:|f4_uint64|, |c_name|:|c_f4|, |type|:{ |base|:|s_as_u64| } },\n"
+      "      { |name|:|f5 asdfasdf |, |c_name|:|c_f5|, |type|:{ |base|:|char|, |dec|:|*| } },\n"
+      "      { |name|:|f6_carray|, |type|:{ |base|:|char|, |dec|:|[10]| } },\n"
+      "      { |name|:|f7_ntl|, |type|:{ |base|:|int|, |dec|:|ntl| } },\n"
+      "      { |name|:|f8_ntl|, |type|:{ |base|:|emoji::dati|, |dec|:|ntl| } },\n"
+      "      { |name|:|f9_todo|, |todo|:true, |type|:{ |base|:|emoji::dati|, |dec|:|ntl| } },\n"
+      "      { |name|:|f10|, |todo|:false, |type|:{ |base|:|emoji::dati|, |dec|:|*| } },\n"
+      "      { |name|:|f11|, |type|:{ |base|:|char|, |dec|:|*|, |converter|:|iso8601| } },\n"
+      "      { |name|:|f12|, |type|:{ |base|:|char|, |dec|:|*|}, |inject_if_not|:null },\n"
+      "      { |name|:|f13|, |type|:{ |base|:|char|, |dec|:|[12]|}, |inject_if_not|:|| },\n"
+      "      { |name|:|f14|, |type|:{ |base|:|char|, |dec|:|*|, |converter|:|iso8601|}, |inject_if_not|:10 },\n"
+      "    ]\n"
+      "  }\n"
 #endif
       " ,{"
       "    |namespace|:[|C|],"
@@ -87,6 +87,8 @@ int main (int argc, char ** argv)
 
   struct jc_definition d;
   memset(&d, 0, sizeof(d));
+  spec_buffer.start = s;
+  spec_buffer.size = len;
   definition_from_json(s, len, &d);
   print_definition(stderr, &d);
   gen_definition(stderr, 0, &d);
