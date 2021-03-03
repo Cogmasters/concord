@@ -7,7 +7,7 @@
 
 namespace discord {
 namespace user {
-#ifdef M
+#if 0
 void
 dati_from_json(char *str, size_t len, void *p_user)
 {
@@ -127,7 +127,7 @@ get_guilds(client *client)
   guild::dati **new_guilds = NULL;
 
   struct resp_handle resp_handle =
-    {&guild::dati_list_from_json, (void*)&new_guilds};
+    {&guild::dati_list_from_json_v, (void*)&new_guilds};
 
   user_agent::run( 
     &client->ua,

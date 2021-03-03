@@ -1,0 +1,62 @@
+{
+  "disabled": false,
+  "namespace": ["discord", "guild"],
+  "comment": "https://discord.com/developers/docs/resources/guild#guild-object-guild-structure",
+  "defs":
+  [
+    {
+      "struct":"dati",
+      "fields":
+      [
+        {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"id"},
+        {"type":{"base":"char", "dec":"[MAX_NAME_LEN]"}, "name":"name"},
+        {"type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}, "name":"icon"},
+        {"type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}, "name":"icon_hash"},
+        {"type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}, "name":"splash"},
+        {"type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}, "name":"discovery_splash"},
+        {"type":{"base":"bool"}, "name":"owner"},
+        {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"owner_id"},
+        {"type":{"base":"int"}, "name":"permissions"},
+        {"type":{"base":"char", "dec":"[MAX_REGION_LEN]"}, "name":"region"},
+        {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"afk_channel_id"},
+        {"type":{"base":"int"}, "name":"afk_timeout"},
+        {"type":{"base":"bool"}, "name":"widget_enabled"},
+        {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"widget_channel_id"},
+        {"type":{"base":"int", "int_alias":"verification_level::code"}, "name":"verification_level"},
+        {"type":{"base":"int", "int_alias":"guild::default_message_notification_level::code"}, 
+              "name":"default_message_notifications"},
+        {"type":{"base":"int", "int_alias":"explicit_content_filter_level::code"},
+              "name":"explicit_content_filter"},
+        {"type":{"base":"int"}, "name":"roles", "todo":true, "comment":"//@todo missing roles"},
+        {"type":{"base":"emoji::dati", "dec":"ntl"}, "name":"emojis"},
+        {"type":{"base":"char", "dec":"ntl"}, "name":"features", "todo":true", "comment":"//@todo add to dati_from_json"},
+        {"type":{"base":"int", "int_alias":"mfa_level::code"}, "name":"mfa_level"},
+        {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"application_id"},
+        {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"system_channel_id"},
+        {"type":{"base":"int", "int_alias":"system_channel_flags::code"}, "name":"system_channel_flags"}, 
+        {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"rules_channel_id"},
+        {"type":{"base":"char", "dec":"*", "converter":"iso8601"}, "name":"joined_at"},
+        {"type":{"base":"bool"}, "name":"large"},
+        {"type":{"base":"bool"}, "name":"unavailable"},
+        {"type":{"base":"int"}, "name":"member_count"},
+        {"type":{"base":"int"}, "name":"voice_states", "todo":true", "comment":"//@todo missing voice_states;"},
+        {"type":{"base":"member::dati", "dec":"ntl"}, "name":"members"},
+        {"type":{"base":"channel::dati", "dec":"ntl"}, "name":"channels", "comment":"//@todo add to dati_from_json"},
+        {"type":{"base":"int"}, "name":"presences", "todo":true, "comment":"//@todo missing presences;"},
+        {"type":{"base":"int"}, "name":"max_presences"},
+        {"type":{"base":"int"}, "name":"max_members"},
+        {"type":{"base":"char", "dec":"[MAX_URL_LEN]"}, "name":"vanity_url_code"},
+        {"type":{"base":"char", "dec":"[MAX_DESCRIPTION_LEN]"}, "name":"description"}, 
+        {"type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}, "name":"banner"},
+        {"type":{"base":"int", "int_alias":"premium_tier::code"}, "name":"premium_tier"},
+        {"type":{"base":"int"}, "name":"premium_subscription_count"},
+        {"type":{"base":"char", "dec":"[MAX_LOCALE_LEN]"}, "name":"preferred_locale"},
+        {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"public_updates_channel_id"},
+        {"type":{"base":"int"}, "name":"max_video_channel_users"},
+        {"type":{"base":"int"}, "name":"approximate_member_count"},
+        {"type":{"base":"int"}, "name":"approximate_presence_count"},
+        {"type":{"base":"welcome_screen::dati", "dec":"*"}, "name":"welcome_screen"}
+      ]
+    }
+  ]
+}

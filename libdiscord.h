@@ -65,6 +65,10 @@ enum callback_opt {
 
 namespace presence = websockets::identify::status_update;
 
+namespace guild {
+#include "./specs-code/guild.enum.hh"
+}
+
 /* END OF SHORTCUT ALIASES */
 
 /* AUDIT LOG STRUCTURE
@@ -166,7 +170,6 @@ struct dati {
 };
 
 //@todo missing initialization functions
-
 /* AUDIT LOG CHANGE KEY
 https://discord.com/developers/docs/resources/audit-log#audit-log-change-object-audit-log-change-key */
 namespace key {
@@ -266,7 +269,8 @@ void dati_list_free(dati **channels);
 void dati_from_json(char *str, size_t len, void *p_channel);
 void dati_list_from_json(char *str, size_t len, void *p_channels);
 // just a declaration to fix the compilation error, it's not actually used yet.
-void dati_to_json(char *str, size_t len, void * p); 
+void dati_to_json(char *str, size_t len, void * p);
+void dati_list_to_json(char *str, size_t len, void *);
 
 /* CHANNEL TYPES
 https://discord.com/developers/docs/resources/channel#channel-object-channel-types */
@@ -696,6 +700,7 @@ void dati_list_from_json(char *str, size_t len, void *p_emojis);
 /* GUILD STRUCTURE
 https://discord.com/developers/docs/resources/guild#guild-object-guild-structure */
 namespace guild {
+#if 0
 struct dati {
   uint64_t id;
   char name[MAX_NAME_LEN];
@@ -752,7 +757,11 @@ void dati_free(dati *guild);
 void dati_list_free(dati **guilds);
 void dati_from_json(char *str, size_t len, void *p_guild);
 void dati_list_from_json(char *str, size_t len, void *p_guilds);
+#else
+#include "./specs-code/guild.hh"
+#endif
 
+#if 0
 /* DEFAULT MESSAGE NOTIFICATION LEVEL
 https://discord.com/developers/docs/resources/guild#guild-object-default-message-notification-level */
 namespace default_message_notification_level {
@@ -875,6 +884,9 @@ struct dati {
 //@todo missing initialization functions
 
 } // namespace widget
+#else
+//#include "./specs-code/guild.enum.hh"
+#endif
 
 #if 0
 /* GUILD MEMBER STRUCTURE
@@ -1406,7 +1418,7 @@ void append(
 
 namespace guild { /* discord-public-guild.cpp */
 
-size_t dati_to_json(char *, size_t, void *p);
+//size_t dati_to_json(char *, size_t, void *p);
 
 void get(client *client, const uint64_t guild_id, dati *p_guild);
 channel::dati** get_channels(client *client, const uint64_t guild_id);

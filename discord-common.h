@@ -63,13 +63,13 @@ namespace channel {
 namespace emoji { struct dati; }
 namespace guild {
   struct dati; 
-  namespace default_message_notification_level { typedef int code; }
-  namespace explicit_content_filter_level { typedef int code; }
-  namespace mfa_level { typedef int code; }
-  namespace verification_level { typedef int code; }
-  namespace premium_tier { typedef int code; }
-  namespace system_channel_flags { typedef int code; }
-  namespace guild_features { typedef int code; }
+  //namespace default_message_notification_level { enum code; }
+  //namespace explicit_content_filter_level { typedef int code; }
+  //namespace mfa_level { typedef int code; }
+  //namespace verification_level { typedef int code; }
+  //namespace premium_tier { typedef int code; }
+  //namespace system_channel_flags { typedef int code; }
+  //namespace guild_features { typedef int code; }
   namespace unavailable_guild { struct dati; }
   namespace preview { struct dati; }
   namespace widget { struct dati; }

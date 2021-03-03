@@ -7,7 +7,7 @@
 
 namespace discord {
 namespace guild {
-
+#if 0
 void
 dati_from_json(char *str, size_t len, void *p_guild)
 {
@@ -148,6 +148,7 @@ void
 dati_list_free(dati **guilds) {
   ntl_free((void**)guilds, &dati_cleanup);
 }
+#endif
 
 void
 get(client *client, const uint64_t guild_id, dati *p_guild)
@@ -157,7 +158,7 @@ get(client *client, const uint64_t guild_id, dati *p_guild)
     return;
   }
 
-  struct resp_handle resp_handle = {&dati_from_json, (void*)p_guild};
+  struct resp_handle resp_handle = {&dati_from_json_v, (void*)p_guild};
 
   user_agent::run( 
     &client->ua,

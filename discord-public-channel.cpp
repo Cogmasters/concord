@@ -97,6 +97,12 @@ dati_list_free(dati **channels) {
 }
 
 void
+dati_list_to_json(char * str, size_t len, void *p)
+{
+   //@todo to be replaced by generated code
+}
+
+void
 get(client *client, const uint64_t channel_id, dati *p_channel)
 {
   if (!channel_id) {
