@@ -40,7 +40,7 @@ https://en.wikipedia.org/wiki/List_of_HTTP_status_codes */
 
 
 #define MAX_HEADER_SIZE 100 + 1
-#define MAX_HEADER_LEN  512 + 1
+#define MAX_HEADER_LEN  1024 + 1
 #define MAX_URL_LEN     512 + 1
 
 
