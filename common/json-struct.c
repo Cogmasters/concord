@@ -52,6 +52,8 @@
  *
  */
 
+static char * spec_name = "";
+static struct sized_buffer spec_buffer = {0};
 struct converter {
   char *name;
   char *input_type;
@@ -218,6 +220,7 @@ struct inject_condition {
 
 
 struct jc_field {
+  struct line_and_column lnc;
   bool todo;
   char *name;
   //char *c_name;
@@ -387,8 +390,11 @@ field_from_json(char *json, size_t size, void *x)
   struct jc_field *p = (struct jc_field *)x;
   bool has_inject_if_not = false;
   struct sized_buffer t = {0};
+
+  struct line_and_column lnc = {0};
   size_t s = json_extract(json, size,
                           "(name):?s,"
+                          "(name):lnc,"
                           "(todo):b,"
                           "(json_key):?s,"
                           "(type.base):?s,"
@@ -402,6 +408,7 @@ field_from_json(char *json, size_t size, void *x)
                           "(loc):F,"
                           "(comment):?s",
                           &p->name,
+                          &p->lnc,
                           &p->todo,
                           &p->json_key,
                           &p->type.base,
@@ -414,6 +421,12 @@ field_from_json(char *json, size_t size, void *x)
                           &p->lazy_init,
                           loc_from_json, &p->loc,
                           &p->comment);
+
+  if (spec_buffer.start) {
+    addr_to_lnc (spec_buffer.start, spec_buffer.size, json, &lnc);
+    p->lnc.line += lnc.line;
+    p->lnc.column += lnc.column;
+  }
 
   if (has_inject_if_not) {
     if (t.size == 0) {
@@ -1241,8 +1254,12 @@ gen_struct(FILE *fp, struct jc_struct *s)
   fprintf(fp, "\n\n");
   fprintf(fp, "struct %s {\n", t);
   int i = 0;
-  for (i = 0; s->fields && s->fields[i]; i++)
-    emit_field(NULL, fp, s->fields[i]);
+  for (i = 0; s->fields && s->fields[i]; i++) {
+    struct jc_field *f = s->fields[i];
+    fprintf(fp, "  // edit '%s:%d:%d' to change this field\n",
+            spec_name, f->lnc.line + 1, f->lnc.column);
+    emit_field(NULL, fp, f);
+  }
   fprintf(fp, "  struct {\n");
   fprintf(fp, "    bool enable_arg_switches;\n");
   fprintf(fp, "    bool enable_record_defined;\n");

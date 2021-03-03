@@ -1088,6 +1088,10 @@ enum { TERMS }; //currently the only type
 } // namespace membership_screening
 
 
+namespace modify_member {
+#include "./specs-code/guild.modify_member.hh"
+}
+
 } // namespace guild
 
 /* INVITE STRUCTURE

@@ -128,6 +128,20 @@ json_vextract (char * json, size_t size, char * extractor, va_list ap);
 extern size_t
 query_inject(char *query, size_t size, char *injector, ...);
 
+/*
+ * the line and column in a text file
+ * it will be used to generate more human
+ * readable locations.
+ */
+struct line_and_column {
+  size_t line;
+  size_t column;
+};
+
+
+extern void
+addr_to_lnc (char *json, size_t size, char *addr, struct line_and_column *ln);
+
 #ifdef __cplusplus
 }
 #endif // __cplusplus

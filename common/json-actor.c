@@ -15,7 +15,7 @@
  *            | <composite-value> | <action>
  *
  * <action> := d | ld | lld | f | lf | b | s_as_u64 <size-specifier>s
- *            | F | F_nullable | key | s_as_u64 | s_as_hex64
+ *            | F | F_nullable | key | s_as_u64 | s_as_hex64 | lnc
  *
  * <access-path-value> := <access-path> : <value>
  *
@@ -64,6 +64,33 @@
 #include "ntl.h"
 #include "json-actor.h"
 #include "orka-debug.h"
+
+/*
+ * convert address to line and column
+ */
+void addr_to_lnc (char *json, size_t size,
+                  char *addr, struct line_and_column * ln)
+{
+  char *const istart_pos = json, *const xend_pos = json + size;
+  char *pos = json;
+
+  if (!(istart_pos <= addr && addr < xend_pos)) {
+    ERR("address is not in the range of %p\n", json);
+  }
+
+  size_t l = 0, c = 0;
+  while (pos < addr) {
+    if (*pos == '\n') {
+      l++;
+      c = 0; // reset column
+    }
+    pos++;
+    c++;
+  }
+
+  ln->line = l;
+  ln->column = c;
+}
 
 static void assert_is_pointer(void * p)
 {
@@ -162,8 +189,9 @@ struct size_specifier {
 };
 
 enum builtin_type {
-  B_BOOL = 1,
-  B_KEY_EXISTENCE,
+  B_KEY_EXISTENCE = 1,
+  B_LINE_AND_COLUMN,
+  B_BOOL,
   B_INT,
   B_LONG,
   B_LONG_LONG,
@@ -666,25 +694,32 @@ parse_value(
       goto return_true;
     }
     case 'l':
-      if (0 == strncmp(pos, "ld", 2)) {
+      if (pos + 1 < end_pos && 0 == strncmp(pos, "ld", 2)) {
         act->mem_size.size = sizeof(long);
         act->mem_size.tag = SIZE_FIXED;
         act->_.builtin = B_LONG;
         pos += 2;
         goto return_true;
       }
-      else if (0 == strncmp(pos, "lld", 3)) {
+      else if (pos + 2 < end_pos && 0 == strncmp(pos, "lld", 3)) {
         act->mem_size.size = sizeof(long long);
         act->mem_size.tag = SIZE_FIXED;
         act->_.builtin = B_LONG_LONG;
         pos += 3;
         goto return_true;
       }
-      else if (0 == strncmp(pos, "lf", 2)) {
+      else if (pos + 1 < end_pos && 0 == strncmp(pos, "lf", 2)) {
         act->mem_size.size = sizeof(double);
         act->mem_size.tag = SIZE_FIXED;
         act->_.builtin = B_DOUBLE;
         pos += 2;
+        goto return_true;
+      }
+      else if (pos + 2 < end_pos && 0 == strncmp(pos, "lnc", 3)) {
+        act->mem_size.size = sizeof(struct line_and_column);
+        act->mem_size.tag = SIZE_FIXED;
+        act->_.builtin = B_LINE_AND_COLUMN;
+        pos += 3;
         goto return_true;
       }
       else
@@ -1807,6 +1842,7 @@ static char * copy_over_string (size_t * new_size, char * str, size_t len)
 }
 
 struct e_info {
+  struct sized_buffer input;
   char * pos;
   jsmntok_t *tokens;
   int n_tokens;
@@ -1946,6 +1982,16 @@ static size_t extract_scalar (struct action * a, int i, struct e_info * info)
     case B_KEY_EXISTENCE:
       *(bool *)a->operand = true;
       break;
+    case B_LINE_AND_COLUMN:
+    {
+      struct line_and_column *lnc = (struct line_and_column *) a->operand;
+      struct line_and_column x;
+      addr_to_lnc(info->input.start, info->input.size,
+                  json + tokens[i].start, &x);
+      lnc->line = x.line;
+      lnc->column = x.column;
+      break;
+    }
     case B_LONG_LONG:
       if (is_null)
         *(long long *) a->operand = 0;
@@ -2253,7 +2299,10 @@ json_vextract (char * json, size_t size, char * extractor, va_list ap)
   struct operand_addrs rec;
   struct composite_value cv;
   prepare_actor(parse_actor, &stack, &rec, &cv, json, size, extractor, ap);
-  struct e_info info = { .pos = json, .E = NULL };
+  struct e_info info = {
+    .pos = json, .E = NULL,
+    .input = {.start = json, .size = size}
+  };
   size_t ret = 0;
 
   //calculate how many tokens are needed
