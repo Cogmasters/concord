@@ -22,7 +22,7 @@ struct orka_config {
   int (*curl_cb)(CURL*, curl_infotype, char*, size_t, void*);
 };
 
-void orka_config_init(struct orka_config*, const char tag[], const char filename[]);
+void orka_config_init(struct orka_config*, const char tag[], const char config_file[]);
 void orka_config_cleanup(struct orka_config*);
 
 char* orka_config_get_field(struct orka_config *config, char *json_field);

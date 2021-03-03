@@ -122,14 +122,14 @@ void
 orka_config_init(
   struct orka_config *config, 
   const char tag[], 
-  const char filename[])
+  const char config_file[])
 {
   if (config->tag) {
     free(config->tag);
   }
   config->tag = (tag) ? strdup(tag) : strdup("USER AGENT");
 
-  if (!filename || !*filename) {
+  if (!config_file || !*config_file) {
     config->json_cb = &noop_json_dump;
     config->f_json_dump = stderr;
     config->curl_cb = NULL;
@@ -154,7 +154,7 @@ orka_config_init(
     config->flen = 0;
   }
 
-  config->fcontents = orka_load_whole_file(filename, &config->flen);
+  config->fcontents = orka_load_whole_file(config_file, &config->flen);
   json_extract(config->fcontents, config->flen,
              "(logging.filename):s"
              "(logging.level):s"
