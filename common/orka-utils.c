@@ -245,6 +245,8 @@ orka_str_to_ntl(
 int
 orka_str_below_threshold(const char *str, const size_t threshold)
 {
+  if (NULL == str) return 0;
+
   size_t i=0;
   for ( ; i < threshold; ++i) {
     if ('\0' == str[i]) return 1;
