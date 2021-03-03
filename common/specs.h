@@ -4,5 +4,6 @@
 #include <string.h>
 #include "ntl.h"
 #include "json-actor.h"
+#include "json-actor-boxed.h"
 #include "libdiscord.h"
 #include "orka-utils.h"

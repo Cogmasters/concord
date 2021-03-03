@@ -1,0 +1,19 @@
+{
+  "namespace": ["discord", "channel"],
+  "comment": "https://discord.com/developers/docs/resources/channel#reaction-object-reaction-structure",
+  "defs":
+  [
+    {
+      "namespace":["allowed_mentions"], 
+      "struct":"dati",
+      "fields":
+      [
+        { "name": "parse", "type":{ "base":"ja_str", "dec":"ntl" }},
+        { "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }},
+        { "name": "users", "type":{ "base":"ja_u64", "dec":"ntl" }},
+        { "name": "replied_user", "type":{ "base":"bool" }}
+      ]
+    }
+  ]
+}
+

@@ -1,6 +1,7 @@
 #ifndef LIBDISCORD_H_
 #define LIBDISCORD_H_
 
+#include "json-actor-boxed.h"
 #include "discord-common.h"
 typedef uint64_t u64_unix_ms_t;
 typedef uint64_t u64_snowflake_t;
@@ -448,6 +449,7 @@ enum {
 
 /* FOLLOWED CHANNEL STRUCTURE
 https://discord.com/developers/docs/resources/channel#followed-channel-object-followed-channel-structure */
+#if 0
 namespace followed_channel {
 struct dati {
   uint64_t channel_id;
@@ -457,6 +459,9 @@ struct dati {
 //@todo missing initialization functions
 
 } // namespace followed_channel
+#else
+#include "./specs-code/channel.followed_channel.hh"
+#endif
 
 #if 0
 /* REACTION STRUCTURE
@@ -624,6 +629,7 @@ int dati_list_to_json(char *str, size_t len, void *p_fields);
 
 /* ATTACHMENT STRUCTURE
 https://discord.com/developers/docs/resources/channel#attachment-object */
+#if 0
 namespace attachment {
 struct dati {
   uint64_t id;
@@ -638,9 +644,13 @@ struct dati {
 //@todo missing initialization functions
 
 } // namespace attachment
+#else
+#include "./specs-code/channel.attachment.hh"
+#endif
 
 /* CHANNEL MENTION STRUCTURE
 https://discord.com/developers/docs/resources/channel#channel-mention-object-channel-mention-structure */
+#if 0
 namespace mention {
 struct dati {
   uint64_t id;
@@ -652,9 +662,13 @@ struct dati {
 //@todo missing initialization functions
 
 } // namespace mention
+#else
+#include "./specs-code/channel.mention.hh"
+#endif
 
 /* ALLOWED MENTIONS STRUCTURE
 https://discord.com/developers/docs/resources/channel#allowed-mentions-object-allowed-mentions-structure */
+#if 0
 namespace allowed_mentions {
 struct dati {
   char **parse;
@@ -666,6 +680,9 @@ struct dati {
 //@todo missing initialization functions
 
 } // namespace allowed_mentions
+#else
+#include "./specs-code/channel.allowed_mentions.hh"
+#endif
 
 } // namespace channel
 
