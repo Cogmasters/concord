@@ -1246,8 +1246,8 @@ enum {
 
 /* VOICE STRUCTURE
 https://discord.com/developers/docs/resources/voice#voice-state-object-voice-state-structure */
+#if  0
 namespace voice {
-#ifdef M
 struct dati {
   u64_snowflake_t guild_id;
   u64_snowflake_t channel_id;
@@ -1276,16 +1276,13 @@ struct dati {
 };
 //@todo missing initialization functions
 } // namespace region
-
+} // namespace voice
 #else
 #include "./specs-code/voice.hh"
 #endif
 
-} // namespace voice
-
-namespace webhook {
-#include "./specs-code/webhook.hh"
 #if 0
+namespace webhook {
 struct dati {
   uint64_t id;
   types::code type;
@@ -1305,17 +1302,22 @@ enum {
   CHANNEL_FOLLOWER = 2
 };
 } // namespace types
-#endif
 } // namespace webhook
+#else
+#include "./specs-code/webhook.hh"
+#endif
 
 /* ROLE STRUCTURE
 https://discord.com/developers/docs/topics/permissions#role-object-role-structure */
+#if 0
 namespace role {
-#include "./specs-code/role.hh"
 //namespace tags {
 //#include "./specs-code/role_tags.h"
 //} // namespace tags
 } // namespace role
+#else
+#include "./specs-code/role.hh"
+#endif
 
 } // namespace discord
 

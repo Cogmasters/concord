@@ -1,9 +1,10 @@
 {
-  "namespace": ["discord", "role"],
-  "comment": "\nhttps://discord.com/developers/docs/topics/permissions#role-object-role-structure",
+  "namespace": ["discord"],
+  "comment": "https://discord.com/developers/docs/topics/permissions#role-object-role-structure",
   "defs":
   [
     {
+      "namespace":["role"],
       "struct":"dati",
       "fields":
       [
@@ -19,7 +20,7 @@
       ]
     },
     {
-      "namespace":["tags"],
+      "namespace":["role", "tags"],
       "struct":"dati",
       "fields":
       [
@@ -30,4 +31,3 @@
     }
   ]
 }
-
