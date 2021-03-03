@@ -1302,41 +1302,41 @@ static void
 gen_forward_declare(FILE *fp, struct jc_struct *s)
 {
   char *t = s->name;
-  fprintf(fp, "void %s_cleanup_v(void *p);\n", t);
-  fprintf(fp, "void %s_cleanup(struct %s *p);\n", t, t);
+  fprintf(fp, "extern void %s_cleanup_v(void *p);\n", t);
+  fprintf(fp, "extern void %s_cleanup(struct %s *p);\n", t, t);
 
-  fprintf(fp, "void %s_init_v(void *p);\n", t);
-  fprintf(fp, "void %s_init(struct %s *p);\n", t, t);
+  fprintf(fp, "extern void %s_init_v(void *p);\n", t);
+  fprintf(fp, "extern void %s_init(struct %s *p);\n", t, t);
 
-  fprintf(fp, "struct %s * %s_alloc();\n", t, t);
+  fprintf(fp, "extern struct %s * %s_alloc();\n", t, t);
 
-  fprintf(fp, "void %s_free_v(void *p);\n", t);
-  fprintf(fp, "void %s_free(struct %s *p);\n", t, t);
+  fprintf(fp, "extern void %s_free_v(void *p);\n", t);
+  fprintf(fp, "extern void %s_free(struct %s *p);\n", t, t);
 
-  fprintf(fp, "void %s_from_json_v(char *json, size_t len, void *p);\n", t);
-  fprintf(fp, "void %s_from_json(char *json, size_t len, struct %s *p);\n",
+  fprintf(fp, "extern void %s_from_json_v(char *json, size_t len, void *p);\n", t);
+  fprintf(fp, "extern void %s_from_json(char *json, size_t len, struct %s *p);\n",
           t, t);
 
-  fprintf(fp, "size_t %s_to_json_v(char *json, size_t len, void *p);\n", t);
-  fprintf(fp, "size_t %s_to_json(char *json, size_t len, struct %s *p);\n",
+  fprintf(fp, "extern size_t %s_to_json_v(char *json, size_t len, void *p);\n", t);
+  fprintf(fp, "extern size_t %s_to_json(char *json, size_t len, struct %s *p);\n",
           t, t);
 
-  fprintf(fp, "size_t %s_to_query_v(char *json, size_t len, void *p);\n", t);
-  fprintf(fp, "size_t %s_to_query(char *json, size_t len, struct %s *p);\n",
+  fprintf(fp, "extern size_t %s_to_query_v(char *json, size_t len, void *p);\n", t);
+  fprintf(fp, "extern size_t %s_to_query(char *json, size_t len, struct %s *p);\n",
           t, t);
 
-  fprintf(fp, "void %s_list_free_v(void **p);\n", t);
-  fprintf(fp, "void %s_list_free(struct %s **p);\n", t, t);
+  fprintf(fp, "extern void %s_list_free_v(void **p);\n", t);
+  fprintf(fp, "extern void %s_list_free(struct %s **p);\n", t, t);
 
-  fprintf(fp, "void %s_list_from_json_v(char *str, size_t len, void *p);\n", t);
-  fprintf(fp, "void %s_list_from_json(char *str, size_t len, struct %s ***p);\n",
+  fprintf(fp, "extern void %s_list_from_json_v(char *str, size_t len, void *p);\n", t);
+  fprintf(fp, "extern void %s_list_from_json(char *str, size_t len, struct %s ***p);\n",
           t, t);
 
-  fprintf(fp, "size_t %s_list_to_json_v(char *str, size_t len, void *p);\n", t);
-  fprintf(fp, "size_t %s_list_to_json(char *str, size_t len, struct %s **p);\n",
+  fprintf(fp, "extern size_t %s_list_to_json_v(char *str, size_t len, void *p);\n", t);
+  fprintf(fp, "extern size_t %s_list_to_json(char *str, size_t len, struct %s **p);\n",
           t,t);
 
-  fprintf(fp, "void %s_use_default_inject_settings(struct %s *p);\n", t, t);
+  fprintf(fp, "extern void %s_use_default_inject_settings(struct %s *p);\n", t, t);
 }
 
 static void
