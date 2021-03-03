@@ -14,7 +14,7 @@ void on_ready(client *client, const user::dati *me)
   (void)client;
 }
 
-void on_message_create(
+void on_ping(
     client *client,
     const user::dati *me,
     const channel::message::dati *msg)
@@ -25,14 +25,24 @@ void on_message_create(
   if (msg->author->bot)
     return;
 
-  message::create::params params = {0};
-  if (0 == strcmp(msg->content, "ping"))
-    params.content = "pong";
-  else if (0 == strcmp(msg->content, "pong"))
-    params.content = "ping";
-  else
-    return; //nothing to do here
+  message::create::params params = {.content = "pong"};
+  message::create::run(client, msg->channel_id, &params, NULL);
 
+  (void)me;
+}
+
+void on_pong(
+    client *client,
+    const user::dati *me,
+    const channel::message::dati *msg)
+{
+  using namespace channel;
+
+  // make sure bot doesn't echoes other bots
+  if (msg->author->bot)
+    return;
+
+  message::create::params params = {.content = "ping"};
   message::create::run(client, msg->channel_id, &params, NULL);
 
   (void)me;
@@ -51,8 +61,8 @@ int main(int argc, char *argv[])
   client *client = fast_init(config_file);
   assert(NULL != client);
 
-  setcb(client, READY, &on_ready);
-  setcb(client, MESSAGE_CREATE, &on_message_create);
+  setcb_command(client, "ping", &on_ping);
+  setcb_command(client, "pong", &on_pong);
 
   run(client);
 
