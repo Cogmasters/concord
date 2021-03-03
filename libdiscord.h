@@ -3,6 +3,7 @@
 
 #include "json-actor-boxed.h"
 #include "discord-common.h"
+
 typedef uint64_t u64_unix_ms_t;
 typedef uint64_t u64_snowflake_t;
 
@@ -1357,6 +1358,7 @@ void set_presence(
 namespace channel { /* discord-public-channel.c */
 
 void get(client *client, const uint64_t channel_id, dati *p_channel);
+void del(client *client, const uint64_t channel_id, dati *p_channel);
 void pin_message(client *client, const uint64_t channel_id, const uint64_t message_id);
 void unpin_message(client *client, const uint64_t channel_id, const uint64_t message_id);
 void trigger_typing(client *client, const uint64_t channel_id);

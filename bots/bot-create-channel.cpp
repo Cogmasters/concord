@@ -15,7 +15,7 @@ void on_ready(client *client, const user::dati *me)
   (void)client;
 }
 
-void on_command(
+void on_create(
     client *client,
     const user::dati *me,
     const channel::message::dati *msg)
@@ -41,6 +41,18 @@ void on_command(
   channel::dati_free(channel);
 }
 
+void on_delete(
+    client *client,
+    const user::dati *me,
+    const channel::message::dati *msg)
+{
+  // make sure bot doesn't echoes other bots
+  if (msg->author->bot)
+    return;
+
+  channel::del(client, msg->channel_id, NULL);
+}
+
 int main(int argc, char *argv[])
 {
   const char *config_file;
@@ -54,10 +66,13 @@ int main(int argc, char *argv[])
   client *client = config_init(config_file);
   assert(NULL != client);
 
-  setcb_command(client, "!createChannel", &on_command);
+  set_prefix(client, "!channel");
+  setcb_command(client, "Create", &on_create);
+  setcb_command(client, "DeleteHere", &on_delete);
 
   printf("\n\nThis bot demonstrates how easy it is to create/delete channels\n"
-         "1. Type '!createChannel <channel_name>' anywhere to create a new channel\n"
+         "1. Type '!channelCreate <channel_name>' anywhere to create a new channel\n"
+         "2. (USE WITH CAUTION) Type '!channelDeleteHere' to delete the current channel\n"
          "\nTYPE ANY KEY TO START BOT\n");
   fgetc(stdin); // wait for input
 

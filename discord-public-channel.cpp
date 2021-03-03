@@ -121,6 +121,27 @@ get(client *client, const uint64_t channel_id, dati *p_channel)
 }
 
 void
+del(client *client, const uint64_t channel_id, dati *p_channel)
+{
+  if (!channel_id) {
+    D_PUTS("Missing 'channel_id");
+    return;
+  }
+
+  struct resp_handle resp_handle = {
+    .ok_cb = p_channel ? dati_from_json : NULL,
+    .ok_obj = p_channel,
+  };
+
+  user_agent::run( 
+    &client->ua,
+    &resp_handle,
+    NULL,
+    HTTP_DELETE,
+    "/channels/%llu", channel_id);
+}
+
+void
 pin_message(client *client, const uint64_t channel_id, const uint64_t message_id)
 {
   if (!channel_id) {
