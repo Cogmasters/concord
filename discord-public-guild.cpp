@@ -270,6 +270,40 @@ void run(client *client, const uint64_t guild_id, params *params, channel::dati 
 
 } // namespace create_channel
 
+namespace modify_member {
+
+void 
+run(client *client, const uint64_t guild_id, const uint64_t user_id, params *params, member::dati *p_member)
+{
+  if (!guild_id) {
+    D_PUTS("Missing 'guild_id'");
+    return;
+  }
+  if (!user_id) {
+    D_PUTS("Missing 'user_id'");
+    return;
+  }
+
+  char payload[MAX_PAYLOAD_LEN];
+  modify_member::params_use_default_inject_settings(params);
+  modify_member::params_to_json(payload, sizeof(payload), params);
+
+  struct resp_handle resp_handle = {
+    .ok_cb = p_member ? member::dati_from_json_v : NULL,
+    .ok_obj = p_member,
+  };
+
+  struct sized_buffer req_body = {payload, strlen(payload)};
+
+  user_agent::run( 
+    &client->ua,
+    &resp_handle,
+    &req_body,
+    HTTP_PATCH, "/guilds/%llu/members/%llu", guild_id, user_id);
+}
+
+} // namespace modify_member
+
 namespace create_role {
 
 void run(client *client, const uint64_t guild_id, params *params, role::dati *p_role)
@@ -278,38 +312,10 @@ void run(client *client, const uint64_t guild_id, params *params, role::dati *p_
     D_PUTS("Missing 'guild_id'");
     return;
   }
-#if 0
-  void *A[5] = {0}; // pointer availability array.
-  if (!IS_EMPTY_STRING(params->name))
-    A[0] = (void *)params->name;
-  if (params->permissions)
-    A[1] = (void *)&params->permissions;
-  if (params->color)
-    A[2] = (void *)&params->color;
-  if (params->hoist)
-    A[3] = (void *)&params->hoist;
-  if (params->mentionable)
-    A[4] = (void *)&params->mentionable;
 
-  char payload[MAX_PAYLOAD_LEN];
-  json_inject(payload, sizeof(payload),
-      "(name):s"
-      "(permissions):F"
-      "(color):d"
-      "(hoist):b"
-      "(mentionable):b"
-      "@arg_switches",
-      params->name,
-      &orka_ulltostr, &params->permissions,
-      &params->color,
-      &params->hoist,
-      &params->mentionable,
-      A, sizeof(A));
-#else
   char payload[MAX_PAYLOAD_LEN];
   create_role::params_use_default_inject_settings(params);
   create_role::params_to_json(payload, sizeof(payload), params);
-#endif
 
   struct resp_handle resp_handle = {
     .ok_cb = p_role ? role::dati_from_json_v : NULL,

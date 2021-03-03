@@ -1087,11 +1087,6 @@ enum { TERMS }; //currently the only type
 #endif
 } // namespace membership_screening
 
-
-namespace modify_member {
-#include "./specs-code/guild.modify_member.hh"
-}
-
 } // namespace guild
 
 /* INVITE STRUCTURE
@@ -1460,39 +1455,21 @@ void get(client *client, const uint64_t guild_id, dati *p_guild);
 channel::dati** get_channels(client *client, const uint64_t guild_id);
 
 namespace create_channel {
-#if 0
-struct params {
-  char *name;
-  channel::types::code type;
-  char *topic;
-  int user_limit;
-  int bitrate;
-  int rate_limit_per_user;
-  int position;
-  channel::overwrite::dati **permission_overwrites;
-  u64_snowflake_t parent_id;
-  bool nsfw;
-};
-#else
 #include "./specs-code/guild.create-channel.hh"
-#endif
 
 void run(client *client, const uint64_t guild_id, params *params, channel::dati *p_channel);
 
 } // namespace create_channel
 
+namespace modify_member {
+#include "./specs-code/guild.modify_member.hh"
+
+void run(client *client, const uint64_t guild_id, const uint64_t user_id, params *params, member::dati *p_member);
+
+} // namespace modify_member
+
 namespace create_role {
-#if 0
-struct params {
-  char *name;
-  uint64_t permissions;
-  int color;
-  bool hoist;
-  bool mentionable;
-};
-#else
 #include "./specs-code/guild.create_role.hh"
-#endif
 
 void run(client *client, const uint64_t guild_id, params *params, role::dati *p_role);
 
