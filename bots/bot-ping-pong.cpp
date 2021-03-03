@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <assert.h>
 #include <libdiscord.h>
 
@@ -61,6 +60,7 @@ int main(int argc, char *argv[])
   client *client = config_init(config_file);
   assert(NULL != client);
 
+  setcb(client, READY, &on_ready);
   setcb_command(client, "ping", &on_ping);
   setcb_command(client, "pong", &on_pong);
 
