@@ -15,7 +15,7 @@
         { "name": "permissions", "type":{ "base":"char", "dec":"*" }},
         { "name": "managed", "type":{ "base":"bool" }},
         { "name": "mentionable", "type":{ "base":"bool" }},
-        { "name": "tags", "todo":true },
+        { "name": "tags", "todo":true }
       ]
     },
     {

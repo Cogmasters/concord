@@ -19,7 +19,7 @@
         { "name": "field_type", "type":{ "base":"int", "int_alias":"field_type::code" }},
         { "name": "label", "type":{ "base":"char", "dec":"*" }},
         { "name": "values", "todo":true, "type":{ "base":"char", "dec":"ntl" }},
-        { "name": "required", "type":{ "base":"bool" }},
+        { "name": "required", "type":{ "base":"bool" }}
       ]
     },
     {
@@ -28,7 +28,7 @@
       [
         { "name": "version", "type":{ "base":"s_as_u64" }},
         { "name": "fields", "type":{ "base":"field::dati", "dec":"ntl" }},
-        { "name": "description", "type":{ "base":"char", "dec":"*" }},
+        { "name": "description", "type":{ "base":"char", "dec":"*" }}
       ]
     }
   ]

@@ -1,6 +1,6 @@
 {
   "namespace": ["discord", "channel"],
-  "comment": "https://discord.com/developers/docs/resources/channel#reaction-object-reaction-structure"
+  "comment": "https://discord.com/developers/docs/resources/channel#reaction-object-reaction-structure",
   "defs":
   [
     {
@@ -10,9 +10,8 @@
       [
         { "name": "count", "type":{ "base":"int" }},
         { "name": "me", "type":{ "base":"bool" }},
-        { "name": "emoji", "type":{ "base":"emoji::dati", "dec":"*" }},
+        { "name": "emoji", "type":{ "base":"emoji::dati", "dec":"*" }}
       ]
     }
   ]
 }
-

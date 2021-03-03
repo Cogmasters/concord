@@ -10,7 +10,7 @@
       [
         { "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
         { "name": "emoji_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
-        { "name": "emoji_name", "type":{ "base":"char", "dec":"*" }},
+        { "name": "emoji_name", "type":{ "base":"char", "dec":"*" }}
       ]
     },
     {
@@ -18,7 +18,7 @@
       "fields":
       [
         { "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"},
-        { "name": "welcome_channels", "type":{ "base":"screen_channel::dati", "dec":"ntl" }, "todo":false },
+        { "name": "welcome_channels", "type":{ "base":"screen_channel::dati", "dec":"ntl" }, "todo":false }
       ]
     }
   ]

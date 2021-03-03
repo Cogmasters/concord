@@ -18,7 +18,7 @@
         { "name": "self_mute", "type":{ "base":"bool" }},
         { "name": "self_stream", "type":{ "base":"bool" }},
         { "name": "self_video", "type":{ "base":"bool" }},
-        { "name": "supress", "type":{ "base":"bool" }},
+        { "name": "supress", "type":{ "base":"bool" }}
       ]
     },
     {
@@ -31,7 +31,7 @@
         { "name": "vip", "type":{ "base":"bool" }},
         { "name": "optimal", "type":{ "base":"bool" }},
         { "name": "deprecated", "type":{ "base":"bool" }},
-        { "name": "custom", "type":{ "base":"bool" }},
+        { "name": "custom", "type":{ "base":"bool" }}
       ]
     }
   ]

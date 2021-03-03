@@ -19,7 +19,7 @@
         { "name": "parent_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0},
         { "name": "nsfw", "type":{ "base":"bool" }}
       ]
-    },
+    }
   ]
 }
 

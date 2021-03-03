@@ -296,6 +296,7 @@ enum {
 https://discord.com/developers/docs/resources/channel#message-object */
 namespace message {
 #include "./specs-code/channel.message.hh"
+#if 0
 struct dati {
   uint64_t id;
   uint64_t channel_id;
@@ -335,7 +336,7 @@ void dati_list_from_json(char *str, size_t len, void *p_messages);
 
 /* MESSAGE TYPES
 https://discord.com/developers/docs/resources/channel#message-object-message-types */
-#if 0
+
 namespace types {
 enum {
   DEFAULT                                 = 0,
@@ -1327,8 +1328,7 @@ namespace discord { /* discord-public.c */
 void global_init();
 void global_cleanup();
 
-client* init(const char token[]);
-client* config_init(const char config_file[]);
+client* fast_init(const char config_file[]);
 void cleanup(discord::client *client);
 
 void add_intents(client *client, websockets::intents::code code);

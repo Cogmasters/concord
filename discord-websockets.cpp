@@ -554,7 +554,7 @@ on_dispatch_message(dati *ws, int offset)
   ASSERT_S(NULL != message, "Out of memory");
 
   channel::message::dati_from_json(ws->payload.event_data,
-      sizeof(ws->payload.event_data), (void*)message);
+      sizeof(ws->payload.event_data), message);
 
   if (STREQ("CREATE", ws->payload.event_name + offset)) {
     if (ws->on_cmd) {

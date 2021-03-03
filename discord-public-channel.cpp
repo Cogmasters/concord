@@ -165,12 +165,9 @@ unpin_message(client *client, const uint64_t channel_id, const uint64_t message_
 }
 
 namespace message {
-
 void
-dati_from_json(char *str, size_t len, void *p_message)
+dati_from_json(char *str, size_t len, dati *message)
 {
-  dati *message = (dati*)p_message;
-
   if (message->nonce) {
     free(message->nonce);
     message->nonce = NULL;
@@ -225,13 +222,14 @@ dati_from_json(char *str, size_t len, void *p_message)
   DS_NOTOP_PUTS("Message object loaded with API response"); 
 }
 
+#if 0
 void
 dati_list_from_json(char *str, size_t len, void *p_messages)
 {
   struct ntl_deserializer d;
   d.elem_size = sizeof(dati);
-  d.init_elem = &dati_init;
-  d.elem_from_buf = &dati_from_json;
+  d.init_elem = &dati_init_v;
+  d.elem_from_buf = &dati_from_json_v;
   d.ntl_recipient_p = (void***)p_messages;
   orka_str_to_ntl(str, len, &d);
 }
@@ -284,6 +282,7 @@ void
 dati_list_free(dati **messages) {
   ntl_free((void**)messages, &dati_cleanup);
 }
+#endif
 
 namespace get_list {
 
@@ -328,7 +327,7 @@ run(client *client, const uint64_t channel_id, params *params)
   dati **new_messages = NULL;
 
   struct resp_handle resp_handle = 
-    {&dati_list_from_json, (void*)&new_messages};
+    {&dati_list_from_json_v, (void*)&new_messages};
 
   user_agent::run( 
     &client->ua,
@@ -389,7 +388,7 @@ run(client *client, const uint64_t channel_id, params *params, dati *p_message)
   }
 
   struct resp_handle resp_handle = {
-    .ok_cb = p_message ? dati_from_json : NULL,
+    .ok_cb = p_message ? dati_from_json_v : NULL,
     .ok_obj = p_message,
   };
 
@@ -491,7 +490,7 @@ run(client *client, const uint64_t channel_id, const uint64_t message_id, params
   }
 
   struct resp_handle resp_handle = {
-    .ok_cb = p_message ? dati_from_json : NULL,
+    .ok_cb = p_message ? dati_from_json_v : NULL,
     .ok_obj = p_message,
   };
 

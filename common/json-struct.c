@@ -24,11 +24,16 @@
  *
  * <field-list> := <field> <field-list> | <field>
  *
- * <field-info> := { <field-name> <json-key>? <field-type> <field-loc>? <comment>? }
+ * <field-info> := { <field-name> <json-key>? <field-type>
+ *                   <field-loc>? <comment>?
+ *                   <lazy-init>? <lazy-load>?
+ *                 }
  *
  * <field-name>  :=  "name" : <string>
  * <json-key>  := "json_key" : <string>
  * <comment> := "comment" : <string>
+ * <lazy-init> := "lazy_init": true|false
+ * <lazy-load> := "lazy_load": true|false
  *
  * <field-type>  :=  "type" : { "base":<string>,
  *                              "int_alias"? : <string>,
@@ -221,6 +226,7 @@ struct jc_field {
   enum loc loc;
   struct inject_condition inject_condition;
   char * comment;
+  bool lazy_init;
 };
 
 static void
@@ -239,6 +245,7 @@ print_field(FILE *fp, struct jc_field *p)
 }
 
 struct jc_struct {
+  char **disable_methods;
   char **namespace;
   char *name;
   struct jc_field **fields;
@@ -271,12 +278,14 @@ print_item(FILE *fp, struct jc_item *p, int i)
 }
 
 struct jc_enum {
+  char **disable_methods;
   char **namespace;
   char *name;
   struct jc_item **items;
 };
 
 struct jc_def {
+  char **disable_methods;
   char **namespace;
   char *name;
   union {
@@ -384,11 +393,12 @@ field_from_json(char *json, size_t size, void *x)
                           "(json_key):?s,"
                           "(type.base):?s,"
                           "(type.int_alias):?s,"
-                          "(type.jtype):?s,"
+                          "(type.json_type):?s,"
                           "(type.dec):F,"
                           "(type.converter):?s,"
                           "(inject_if_not):key,"
                           "(inject_if_not):T,"
+                          "(lazy_init):b,"
                           "(loc):F,"
                           "(comment):?s",
                           &p->name,
@@ -401,6 +411,7 @@ field_from_json(char *json, size_t size, void *x)
                           &p->type.converter,
                           &has_inject_if_not,
                           &t,
+                          &p->lazy_init,
                           loc_from_json, &p->loc,
                           &p->comment);
 
@@ -442,6 +453,13 @@ struct_from_json(char *json, size_t size, struct jc_struct *s)
     .ntl_recipient_p = (void ***)&(s->namespace)
   };
 
+  struct ntl_deserializer dx = {
+    .elem_size = 256,
+    .elem_from_buf = name_from_json,
+    .init_elem = NULL,
+    .ntl_recipient_p = (void ***)&(s->disable_methods)
+  };
+
   struct ntl_deserializer d1 = {
     .elem_size = sizeof(struct jc_field),
     .elem_from_buf = field_from_json,
@@ -452,9 +470,11 @@ struct_from_json(char *json, size_t size, struct jc_struct *s)
   size_t ret = json_extract(json, size,
                             "(namespace):F"
                             "(struct):?s"
+                            "(disable_methods):F"
                             "(fields):F",
                             orka_str_to_ntl, &d0,
                             &s->name,
+                            orka_str_to_ntl, &dx,
                             orka_str_to_ntl, &d1);
   return ret;
 }
@@ -850,22 +870,27 @@ static void to_action(struct jc_field *f, struct action *act)
 }
 
 static void
+emit_field_init(void *cxt, FILE *fp, struct jc_field *f)
+{
+  struct action act = { 0 };
+  to_action(f, &act);
+
+  if (act.todo) return;
+
+  if (act.alloc && !f->lazy_init)
+    fprintf (fp, "  p->%s = %s();\n", act.c_name, act.alloc);
+}
+
+static void
 gen_init (FILE *fp, struct jc_struct *s)
 {
   char *t = s->name;
 
   fprintf(fp, "void %s_init(struct %s *p) {\n", t, t);
   fprintf(fp, "  memset(p, 0, sizeof(struct %s));\n", t);
-  for (int i = 0; s->fields && s->fields[i]; i++) {
-    struct jc_field *f = s->fields[i];
-    struct action act = { 0 };
-    to_action(f, &act);
+  for (int i = 0; s->fields && s->fields[i]; i++)
+    emit_field_init(NULL, fp, s->fields[i]);
 
-    if (act.todo) continue;
-
-    if (act.alloc)
-      fprintf (fp, "  p->%s = %s();\n", act.c_name, act.alloc);
-  }
   fprintf(fp, "}\n");
 }
 
@@ -985,11 +1010,26 @@ emit_json_extractor_arg(void *cxt, FILE *fp, struct jc_field *f)
             act.extract_arg_decor, act.c_name);
 }
 
+static bool
+is_disabled_method(struct jc_struct *s, char *name)
+{
+  for (int i = 0; s->disable_methods && s->disable_methods[i]; i++)
+    if (strcmp(name, s->disable_methods[i]) == 0)
+      return true;
+  return false;
+}
+
 static void gen_from_json(FILE *fp, struct jc_struct *s)
 {
   char *t = s->name;
-  fprintf(fp, "void %s_from_json(char *json, size_t len, struct %s *p)\n",
-          t, t);
+  if (is_disabled_method(s, "from_json"))
+    fprintf(fp,
+            "void %s_from_json_disabled(char *json, size_t len, struct %s *p)\n",
+            t, t);
+  else
+    fprintf(fp, "void %s_from_json(char *json, size_t len, struct %s *p)\n",
+            t, t);
+
   fprintf(fp, "{\n");
   fprintf(fp, "  static size_t ret=0; // used for debugging\n");
   fprintf(fp, "  size_t r=0;\n");

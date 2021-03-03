@@ -9,7 +9,7 @@
       "items":
       [
         {"name": "INCOMING", "value":1 },
-	    {"name": "CHANNEL_FOLLOWER" },
+	    {"name": "CHANNEL_FOLLOWER" }
       ]
     },	
     {
@@ -24,7 +24,7 @@
         { "name": "name", "type":{ "base":"char", "dec":"[WEBHOOK_NAME_LEN]" }},
         { "name": "avatar", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"},
         { "name": "token", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"},
-        { "name": "application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" } },
+        { "name": "application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}
       ]
     }
   ]

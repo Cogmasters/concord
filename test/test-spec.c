@@ -43,6 +43,7 @@ struct expected_results {
   struct expect_at field_injector;
   struct expect_at field_injector_arg;
   struct expect_at field_inject_settings;
+  struct expect_at field_init;
 };
 
 struct expected_results results;
@@ -95,6 +96,9 @@ void test_one()
 
   str = field_to_string(&i, emit_inject_setting, &f);
   check(str, &results.field_inject_settings);
+
+  str = field_to_string(&i, emit_field_init, &f);
+  check(str, &results.field_init);
 }
 
 int main (int argc, char ** argv)
@@ -108,6 +112,7 @@ int main (int argc, char ** argv)
   SET(field_injector, "\"(abc):d,\"\n");
   SET(field_injector_arg, "&p->abc,\n");
   SET(field_inject_settings, "p->__M.arg_switches[0] = &p->abc;\n");
+  SET(field_init, "");
   test_one();
 
   SET(spec, "{(name):|abc|, (type):{ (base):|int|, (int_alias):|enum code| }}");
@@ -118,6 +123,7 @@ int main (int argc, char ** argv)
   SET(field_injector, "\"(abc):d,\"\n");
   SET(field_injector_arg, "&p->abc,\n");
   SET(field_inject_settings, "p->__M.arg_switches[0] = &p->abc;\n");
+  SET(field_init, "");
   test_one();
 
 
@@ -129,6 +135,7 @@ int main (int argc, char ** argv)
   SET(field_injector, "\"(abc-1 23):d,\"\n");
   SET(field_injector_arg, "&p->abc,\n");
   SET(field_inject_settings, "p->__M.arg_switches[0] = &p->abc;\n");
+  SET(field_init, "");
   test_one();
 
   SET(spec, "{(name):|f1|, (type):{ (base):|char|, (dec):|*| }}");
@@ -139,6 +146,7 @@ int main (int argc, char ** argv)
   SET(field_injector, "\"(f1):s,\"\n");
   SET(field_injector_arg, "p->f1,\n");
   SET(field_inject_settings, "p->__M.arg_switches[0] = p->f1;\n");
+  SET(field_init, "");
   test_one();
 
 
@@ -150,6 +158,7 @@ int main (int argc, char ** argv)
   SET(field_injector, "\"(f1):|F|,\"\n");
   SET(field_injector_arg, "orka_ulltostr, &p->f1,\n");
   SET(field_inject_settings, "p->__M.arg_switches[0] = &p->f1;\n");
+  SET(field_init, "");
   test_one();
 
   SET(spec, "{(name):|f1|, (type):{ (base):|char|, (dec):|*|, (converter):|iso8601|}}");
@@ -160,6 +169,7 @@ int main (int argc, char ** argv)
   SET(field_injector, "\"(f1):|F|,\"\n");
   SET(field_injector_arg, "orka_unix_ms_to_iso8601, &p->f1,\n");
   SET(field_inject_settings, "p->__M.arg_switches[0] = &p->f1;\n");
+  SET(field_init, "");
   test_one();
 
   SET(spec, "{(name):|f1|, (type):{ (base):|char|, (dec):|*| }, (inject_if_not):|null|}");
@@ -170,6 +180,7 @@ int main (int argc, char ** argv)
   SET(field_injector, "\"(f1):s,\"\n");
   SET(field_injector_arg, "p->f1,\n");
   SET(field_inject_settings, "if (p->f1 != NULL)\n    p->__M.arg_switches[0] = p->f1;\n");
+  SET(field_init, "");
   test_one();
 
   SET(spec, "{(name):|f1|, (type):{ (base):|int| }, (inject_if_not):10}");
@@ -180,6 +191,41 @@ int main (int argc, char ** argv)
   SET(field_injector, "\"(f1):d,\"\n");
   SET(field_injector_arg, "&p->f1,\n");
   SET(field_inject_settings, "if (p->f1 != 10)\n    p->__M.arg_switches[0] = &p->f1;\n");
+  SET(field_init, "");
+  test_one();
+
+
+  SET(spec, "{(name):|f1|, (type):{ (base):|ja_str|, (dec):|ntl| }, (inject_if_not):null}");
+  SET(field_struct, "ja_str **f1;\n");
+  SET(field_cleanup, "if (d->f1)\n    ja_str_list_free(d->f1);\n");
+  SET(field_extractor, "\"(f1):F,\"\n");
+  SET(field_extractor_arg, "ja_str_list_from_json, &p->f1,\n");
+  SET(field_injector, "\"(f1):F,\"\n");
+  SET(field_injector_arg, "ja_str_list_to_json, p->f1,\n");
+  SET(field_inject_settings, "if (p->f1 != NULL)\n    p->__M.arg_switches[0] = p->f1;\n");
+  SET(field_init, "");
+  test_one();
+
+  SET(spec, "{(name):|f1|, (type):{ (base):|a::dati|, (dec):|*| }, (inject_if_not):null}");
+  SET(field_struct, "a::dati *f1;\n");
+  SET(field_cleanup, "if (d->f1)\n    a::dati_free(d->f1);\n");
+  SET(field_extractor, "\"(f1):F,\"\n");
+  SET(field_extractor_arg, "a::dati_from_json, p->f1,\n");
+  SET(field_injector, "\"(f1):F,\"\n");
+  SET(field_injector_arg, "a::dati_to_json, p->f1,\n");
+  SET(field_inject_settings, "if (p->f1 != NULL)\n    p->__M.arg_switches[0] = p->f1;\n");
+  SET(field_init, "p->f1 = a::dati_alloc();\n");
+  test_one();
+
+  SET(spec, "{(name):|f1|, (type):{ (base):|a::dati|, (dec):|*| }, (lazy_init):true }");
+  SET(field_struct, "a::dati *f1;\n");
+  SET(field_cleanup, "if (d->f1)\n    a::dati_free(d->f1);\n");
+  SET(field_extractor, "\"(f1):F,\"\n");
+  SET(field_extractor_arg, "a::dati_from_json, p->f1,\n");
+  SET(field_injector, "\"(f1):F,\"\n");
+  SET(field_injector_arg, "a::dati_to_json, p->f1,\n");
+  SET(field_inject_settings, "p->__M.arg_switches[0] = p->f1;\n");
+  SET(field_init, "");
   test_one();
   return 0;
 }

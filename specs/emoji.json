@@ -14,7 +14,7 @@
         { "name": "require_colons", "type":{ "base":"bool" }},
         { "name": "managed", "type":{ "base":"bool" }},
         { "name": "animated", "type":{ "base":"bool" }},
-        { "name": "available", "type":{ "base":"bool" }},
+        { "name": "available", "type":{ "base":"bool" }}
       ]
     }
   ]

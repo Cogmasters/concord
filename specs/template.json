@@ -17,7 +17,7 @@
         { "name": "updated_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }},
         { "name": "source_guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
         { "name": "serialized_source_guild", "type":{ "base":"discord::guild::dati", "dec":"*" }},
-        { "name": "is_dirty", "type":{ "base":"bool" }},
+        { "name": "is_dirty", "type":{ "base":"bool" }}
       ]
     }
   ]

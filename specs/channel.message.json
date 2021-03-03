@@ -98,7 +98,40 @@
         {"name":"REPLY"   ,"value":19}, 
         {"name":"APPLICATION_COMMAND","value":20}
       ]
+    },
+    {
+      "comment":"https://discord.com/developers/docs/resources/channel#message-object",
+      "disable_methods": ["from_json"],
+      "struct":"dati",
+      "fields": [
+         {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"id"},
+         {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"channel_id"},
+         {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"guild_id"},
+         {"type":{"base":"user::dati", "dec":"*"}, "name":"author"},
+         {"type":{"base":"guild::member::dati", "dec":"*"}, "name":"member"},
+         {"type":{"base":"char", "dec":"*"}, "name":"content"},
+         {"type":{"base":"char", "dec":"*", "converter":"iso8601"},"name":"timestamp"},
+         {"type":{"base":"char", "dec":"*", "converter":"iso8601"}, "name":"edited_timestamp"},
+         {"type":{"base":"bool"}, "name":"tts"},
+         {"type":{"base":"bool"}, "name":"mention_everyone"},
+         {"type":{"base":"user::dati", "dec":"ntl"}, "name":"mentions"},
+         {"type":{"base":"int"}, "name":"roles", "todo":true, "comment":"//@todo missing mention roles;"},
+         {"type":{"base":"mention::dati", "dec":"ntl"}, "name":"mention_channels"},
+         {"type":{"base":"attachment::dati", "dec":"ntl"}, "name":"attachments"},
+         {"type":{"base":"embed::dati", "dec":"ntl"}, "name":"embeds"},
+         {"type":{"base":"reaction::dati","dec":"ntl"}, "name":"reactions"},
+         {"type":{"base":"char", "dec":"*"}, "name":"nonce"},
+         {"type":{"base":"bool"}, "name":"pinned"},
+         {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"webhook_id"},
+         {"type":{"base":"int", "int_alias":"types::code"}, "name":"type"},
+         {"type":{"base":"activity::dati", "dec":"*"}, "name":"activity"},
+         {"type":{"base":"application::dati", "dec":"ntl"}, "name":"application"},
+         {"type":{"base":"reference::dati", "dec":"*"}, "name":"message_reference"},
+         {"type":{"base":"int", "int_alias":"flags::code"}, "name":"flags"},
+         {"type":{"base":"sticker::dati", "dec":"ntl"}, "name":"stickers"},
+         {"type":{"base":"message::dati", "dec":"*"}, "name":"referenced_message", "lazy_init":true, 
+                  "comment":"this will cause recursive allocation"}
+      ]
     }
   ]
 }
-

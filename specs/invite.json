@@ -21,7 +21,7 @@
         { "name": "target_user", "type":{ "base":"discord::user::dati", "dec":"*"}},
         { "name": "target_user_type", "type":{ "base":"int", "int_alias":"target_user_types::code" }},
         { "name": "approximate_presence_count", "type":{ "base":"int" }},
-        { "name": "approximate_member_count", "type":{ "base":"int" }},
+        { "name": "approximate_member_count", "type":{ "base":"int" }}
       ]
     },
     {
@@ -33,7 +33,7 @@
         { "name": "max_uses", "type":{ "base":"int" }},
         { "name": "max_age", "type":{ "base":"int" }},
         { "name": "temporary", "type":{ "base":"int" }},
-        { "name": "created_at", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}},
+        { "name": "created_at", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}}
       ]
     }
   ]
