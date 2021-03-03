@@ -9,6 +9,8 @@
 #include "json-actor.h"
 
 
+static bool g_first_run = true; // used to delete existent dump files
+
 static void
 noop_json_dump(bool is_response, int httpcode, struct orka_config *config, char *json_text) {
   return; (void)json_text; (void)config; (void)json_text;
@@ -181,9 +183,11 @@ orka_config_init(
     logging.dump_json.filename,
     logging.dump_json.enable);
 
-
   if (true == logging.dump_json.enable) {
     if (*logging.dump_json.filename) {
+      if (g_first_run == true) {
+        remove(logging.dump_json.filename);
+      }
       config->f_json_dump = fopen(logging.dump_json.filename, "a+");
       ASSERT_S(NULL != config->f_json_dump, "Could not create dump file");
     }
@@ -192,6 +196,9 @@ orka_config_init(
 #if 0
   if (true == logging.dump_curl.enable) {
     if (*logging.dump_curl.filename) {
+      if (g_first_run == true) {
+        remove(logging.dump_curl.filename);
+      }
       config->f_curl_dump = fopen(logging.dump_curl.filename, "a+");
       ASSERT_S(NULL != config->f_curl_dump, "Could not create dump file");
     }
@@ -203,6 +210,10 @@ orka_config_init(
     config->curl_cb = NULL;
   }
 #endif
+
+  if (g_first_run == true) {
+    g_first_run = false;
+  }
 }
 
 void
