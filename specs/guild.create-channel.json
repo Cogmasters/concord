@@ -10,7 +10,7 @@
       [
         { "name": "name", "type":{ "base":"char", "dec":"*" }},
         { "name": "type", "type":{ "base":"int" }},
-        { "name": "topic", "type":{ "base":"char", "dec":"[1024+1]" }, "inject_if_not":""},
+        { "name": "topic", "type":{ "base":"char", "dec":"*" }},
         { "name": "bitrate", "type":{ "base":"int" }, "inject_if_not":0},
         { "name": "user_limit", "type":{ "base":"int" }, "inject_if_not":0},
         { "name": "rate_limit_per_user", "type":{ "base":"int" }, "inject_if_not":0},
