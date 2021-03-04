@@ -134,10 +134,12 @@ del(client *client, const uint64_t channel_id, dati *p_channel)
     .ok_obj = p_channel,
   };
 
+  struct sized_buffer req_body = {"", 0};
+
   user_agent::run( 
     &client->ua,
     &resp_handle,
-    NULL,
+    &req_body, //empty POSTFIELDS
     HTTP_DELETE,
     "/channels/%llu", channel_id);
 }
