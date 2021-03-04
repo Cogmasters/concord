@@ -63,7 +63,7 @@ pin_message(client *client, const uint64_t channel_id, const uint64_t message_id
     NULL,
     NULL,
     HTTP_PUT, 
-    "channels/%llu/pins/%llu", channel_id, message_id);
+    "/channels/%llu/pins/%llu", channel_id, message_id);
 }
 
 void
@@ -83,7 +83,7 @@ unpin_message(client *client, const uint64_t channel_id, const uint64_t message_
     NULL,
     NULL,
     HTTP_DELETE,
-    "channels/%llu/pins/%llu", channel_id, message_id);
+    "/channels/%llu/pins/%llu", channel_id, message_id);
 }
 
 namespace message {
