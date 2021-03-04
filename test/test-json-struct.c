@@ -44,8 +44,8 @@ int main (int argc, char ** argv)
       "      { |name|:|f2_str|, |type|:{ |base|:|char|, |dec|:|*| } },\n"
       "      { |name|:|f3_int|, |type|:{ |base|:|int|, |c_base|:|code| } },\n"
       "      { |name|:|fx_todo|, |todo|:true, |type|:{ |base|:|int|, |c_base|:|code| } },\n"
-      "      { |name|:|f4_uint64|, |c_name|:|c_f4|, |type|:{ |base|:|s_as_u64| } },\n"
-      "      { |name|:|f5 asdfasdf |, |c_name|:|c_f5|, |type|:{ |base|:|char|, |dec|:|*| } },\n"
+      "      { |name|:|f4|, |type|:{ |base|:|s_as_u64| } },\n"
+      "      { |name|:|c_f5|, |json_key|:|f5 asdfasdf |, |type|:{ |base|:|char|, |dec|:|*| } },\n"
       "      { |name|:|f6_carray|, |type|:{ |base|:|char|, |dec|:|[10]| } },\n"
       "      { |name|:|f7_ntl|, |type|:{ |base|:|int|, |dec|:|ntl| } },\n"
       "      { |name|:|f8_ntl|, |type|:{ |base|:|emoji::dati|, |dec|:|ntl| } },\n"
@@ -87,6 +87,7 @@ int main (int argc, char ** argv)
 
   struct jc_definition d;
   memset(&d, 0, sizeof(d));
+  spec_name = "<string>";
   spec_buffer.start = s;
   spec_buffer.size = len;
   definition_from_json(s, len, &d);
