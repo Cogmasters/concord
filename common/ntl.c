@@ -3,37 +3,60 @@
 #include <string.h>
 #include "ntl.h"
 
-void **
-ntl_malloc_init (size_t nelems,  size_t elem_size, void (*init)(void * elem_p))
+/* 
+ * @n_elems  the number of new elements
+ * @elem_size  the size of element
+ * @init   the function to initialize each element, it can be NULL
+ */
+ntl_t ntl_malloc_init(size_t n_elems,  size_t elem_size, void (*init)(void *))
 {
-  void ** p = malloc((nelems + 1) * sizeof(void *) // indices
-                     +  nelems * elem_size); // elements
+  /*
+   * allocate one consecutive memory block for storing
+   *
+   * 1. a NULL terminated array of (n_elems + 1) pointers
+   * 2. n_elems elements of size `elem_size`
+   */
+  void **p = malloc(
+    (n_elems + 1) * sizeof(void *) // for a NULL terminated array of n_elems pointers
+    + n_elems * elem_size // for n_elems elements
+  );
 
-  char * elem_start = (char *)(p + nelems + 1);
-  size_t i;
-  for (i = 0; i < nelems; i++) {
+  /*
+   * p[0] .. p[n_elems - 1] will store the addresses of `n_elems` elements
+   * p[n_elems] will store a NULL pointer to terminate the array
+   * p[n_elems + 1] points to the start of the first element
+   */
+  char * elem_start = (char *)&p[n_elems + 1];
+  for (size_t i = 0; i < n_elems; i++) {
+    // p[i] points to the start of ith element.
     p[i] = (void *)elem_start;
     if (init)
       init(p[i]);
 
+    // move elem_start to point to the start of the next element
     elem_start += elem_size;
   }
-  p[nelems] = 0;
+
+  // terminate this ntl with a NULL;
+  p[n_elems] = NULL;
   return p;
 }
 
-void **
-ntl_malloc (size_t nelems,  size_t elem_size)
+ntl_t ntl_malloc(size_t n_elems, size_t elem_size)
 {
-  return ntl_malloc_init(nelems, elem_size, NULL);
+  return ntl_malloc_init(n_elems, elem_size, NULL);
 }
 
-void **
-ntl_calloc_init (size_t nelems,  size_t elem_size, void (*init)(void * elem_p))
+/*
+ * @n_elems  the number of elements
+ * @e_size   the size of each element
+ * @init     the function to initialize an element
+ */
+ntl_t ntl_calloc_init(size_t n_elems, size_t e_size, void (*init)(void *))
 {
-  void ** p = ntl_malloc_init(nelems, elem_size, NULL);
-  char * elem_start = (char *)(p + nelems + 1);
-  memset(elem_start, 0, nelems * elem_size);
+  ntl_t p = ntl_malloc_init(n_elems, e_size, NULL);
+  char * elem_start = (char *)(p + n_elems + 1);
+  memset(elem_start, 0, n_elems * e_size);
   if (init) {
     for (int i = 0; p[i]; i++)
       init(p[i]);
@@ -41,74 +64,85 @@ ntl_calloc_init (size_t nelems,  size_t elem_size, void (*init)(void * elem_p))
   return p;
 }
 
-void **
-ntl_calloc (size_t nelems,  size_t elem_size)
+ntl_t ntl_calloc(size_t n_elems,  size_t elem_size)
 {
-  return ntl_calloc_init(nelems, elem_size, NULL);
+  return ntl_calloc_init(n_elems, elem_size, NULL);
 }
 
-void**
-ntl_realloc_init(
-    void **p, 
-    size_t new_nelems, 
-    size_t elem_size,
-    void (*init)(void * elem_p))
+/*
+ * @p a NTL
+ * @new_n_elems  the new number of elements
+ * @elem_size   the size of an element
+ * @init        the function to initialize an element, it can be NULL
+ *
+ */
+ntl_t ntl_realloc_init(ntl_t p, size_t new_n_elems, size_t elem_size, void (*init)(void *))
 {
-  void ** new_p = ntl_calloc_init(new_nelems, elem_size, NULL);
+  ntl_t new_p = ntl_calloc_init(new_n_elems, elem_size, NULL);
 
   size_t i=0;
 
   if (NULL != p) {
-    for ( ; p[i]; ++i) {
+    for ( ; p[i]; ++i)
       memcpy(new_p[i], p[i], elem_size);
-    }
     free(p);
   }
 
   if (init) {
-    for ( ; new_p[i]; ++i) {
+    for ( ; new_p[i]; ++i)
       init(new_p[i]);
-    }
   }
 
   return new_p;
 }
 
 
-void
-ntl_free(void **p, void (*free_elem)(void *p))
+/*
+ * @p a NTL to be freed, it can be NULL
+ * @cleanup  clean up each element, it can be NULL
+ */
+void ntl_free(ntl_t p, void (*cleanup)(void *))
 {
   if (p == NULL)
     return;
 
-  size_t i;
-  for (i = 0; p[i]; i++)
-    (*free_elem)(p[i]);
+  if (cleanup)
+    for (size_t i = 0; p[i]; i++)
+      (*cleanup)(p[i]);
   free(p);
 }
 
-size_t
-ntl_length (void **p)
+/*
+ * @p a NTL
+ */
+size_t ntl_length(ntl_t p)
 {
-  size_t i;
-  for (i = 0; p[i]; i++) /* empty body */;
+  if (NULL == p) // NULL is treated as empty
+    return 0;
+
+  static size_t dummy;
+  size_t i = 0;
+  while (p[i]) {
+    // dummy will never be used, but it can prevent compilers
+    // from optimizing this loop away.
+    dummy ++;
+    i ++;
+  }
 
   return i;
 }
 
 
-void **
-ntl_dup (void ** p, size_t elem_size)
+ntl_t ntl_dup(ntl_t p, size_t elem_size)
 {
-  void ** o =  ntl_calloc(ntl_length(p), elem_size);
+  ntl_t o =  ntl_calloc(ntl_length(p), elem_size);
   for (size_t i = 0; p[i]; i++)
     memcpy(o[i], p[i], elem_size);
   return o;
 }
 
 
-void
-ntl_apply(void * cxt, void **p, void (*f)(void * cxt, void *p))
+void ntl_apply(void *cxt, ntl_t p, void (*f)(void *cxt, void *p))
 {
   if (NULL == p) return;
   size_t i;
@@ -116,8 +150,7 @@ ntl_apply(void * cxt, void **p, void (*f)(void * cxt, void *p))
     (*f)(cxt, p[i]);
 }
 
-size_t
-ntl_to_buf2(char * buf, size_t size, struct ntl_serializer * serializer)
+size_t ntl_to_buf2(char *buf, size_t size, struct ntl_serializer *serializer)
 {
   if (serializer->ntl_provider == NULL)
     return 0;
@@ -127,8 +160,7 @@ ntl_to_buf2(char * buf, size_t size, struct ntl_serializer * serializer)
                     serializer->elem_to_buf);
 }
 
-size_t
-ntl_to_abuf2(char ** buf_p, struct ntl_serializer * serializer)
+size_t ntl_to_abuf2(char **buf_p, struct ntl_serializer *serializer)
 {
   int s = ntl_to_buf2(NULL, 0, serializer);
   if (s < 0)
@@ -141,9 +173,8 @@ ntl_to_abuf2(char ** buf_p, struct ntl_serializer * serializer)
 /*
  *
  */
-size_t
-ntl_to_buf(char *buf, size_t size, void **p, struct ntl_str_delimiter * d,
-           ntl_elem_serializer * x)
+size_t ntl_to_buf(char *buf, size_t size, ntl_t p, struct ntl_str_delimiter *d,
+                  ntl_elem_serializer *x)
 {
   static struct ntl_str_delimiter dx = { '[', ",", "", ']' };
   if (!d) d = &dx;
@@ -151,7 +182,7 @@ ntl_to_buf(char *buf, size_t size, void **p, struct ntl_str_delimiter * d,
   if (p == NULL)
     return 0;
 
-  const char * start = buf;
+  const char *start = buf;
   size_t i, tsize = 0;
   size_t psize;
 
@@ -194,9 +225,7 @@ ntl_to_buf(char *buf, size_t size, void **p, struct ntl_str_delimiter * d,
   return tsize;
 }
 
-size_t
-ntl_to_abuf(char ** buf_p, void **p, struct ntl_str_delimiter * d,
-           ntl_elem_serializer * x)
+size_t ntl_to_abuf(char **buf_p, ntl_t p, struct ntl_str_delimiter *d, ntl_elem_serializer *x)
 {
   if (p == NULL)
     return 0;
@@ -209,44 +238,57 @@ ntl_to_abuf(char ** buf_p, void **p, struct ntl_str_delimiter * d,
   return ntl_to_buf(*buf_p, s, p, d, x);
 }
 
-void **
-ntl_fmap(void * cxt, void ** from_list, size_t to_elem_size, ntl_converter * f)
+ntl_t ntl_fmap(void *cxt, ntl_t from_list, size_t to_elem_size, elem_converter *f)
 {
   if (from_list == NULL)
     return NULL;
 
-  void ** to_list = ntl_calloc(ntl_length(from_list), to_elem_size);
+  void **to_list = ntl_calloc(ntl_length(from_list), to_elem_size);
   if (f) {
-    size_t i;
-    for (i = 0; from_list[i]; i++)
+    for (size_t i = 0; from_list[i]; i++)
       (*f)(cxt, from_list[i], to_list[i]);
   }
   return to_list;
 }
 
 
-void **
-ntl_append(void ** p, size_t elem_size, void * added_elem)
+/*
+ * In most cases, you don't need this.
+ */
+ntl_t ntl_append(ntl_t p, size_t elem_size, void *added_elem)
 {
-  void **o;
-
   size_t i=0;
-  if (p) { // will append to existing array
-    o = ntl_calloc(1 + ntl_length(p), elem_size);
-    for ( ; p[i]; i++) { // copy prev array contents to new array
-      memcpy(o[i], p[i], elem_size);
-    }
-  } 
-  else { // will create one from scratch
-    o = ntl_calloc(1, elem_size);
+  void ** o = ntl_calloc(1 + ntl_length(p), elem_size);
+  while (p && p[i]) {
+    // copy prev array contents to new array
+    memcpy(o[i], p[i], elem_size);
+    i++;
   }
   memcpy(o[i], added_elem, elem_size);
-
   return o;
 }
 
-size_t
-ntl_from_buf(char *buf, size_t len, struct ntl_deserializer * deserializer)
+
+/*
+ * @p the address that stores a NTL
+ * @esize the element size of the new element
+ * @added_elem  the memory of element to be appended
+ * @free_elem  free the memory of each element
+ *
+ * this function will allocate memory for a new list
+ * and free the old list.
+ *
+ */
+void ntl_append2(ntl_t *p, size_t esize, void * added_elem)
+{
+  ntl_t ntl1 = *p;
+  ntl_t ntl2 = ntl_append(ntl1, esize, added_elem);
+  if (ntl1)
+    free(ntl1);
+  *p = ntl2;
+}
+
+size_t ntl_from_buf(char *buf, size_t len, struct ntl_deserializer *deserializer)
 {
   struct sized_buffer **elem_bufs = NULL;
   int ret = (*deserializer->partition_as_sized_bufs)(buf, len, &elem_bufs);
@@ -255,9 +297,9 @@ ntl_from_buf(char *buf, size_t len, struct ntl_deserializer * deserializer)
     return 0;
   }
 
-  size_t nelems = ntl_length((void **)elem_bufs);
-  void ** new_ntl =
-    ntl_calloc_init(nelems, deserializer->elem_size, deserializer->init_elem);
+  size_t n_elems = ntl_length((void **)elem_bufs);
+  ntl_t new_ntl =
+    ntl_calloc_init(n_elems, deserializer->elem_size, deserializer->init_elem);
 
   for (size_t i=0; elem_bufs[i]; ++i)
     (*deserializer->elem_from_buf)(
@@ -266,13 +308,12 @@ ntl_from_buf(char *buf, size_t len, struct ntl_deserializer * deserializer)
       new_ntl[i]);
 
   free(elem_bufs);
-  *deserializer->ntl_recipient_p = new_ntl;
-  return nelems;
+  *(deserializer->ntl_recipient_p) = new_ntl;
+  return n_elems;
 }
 
 
-int
-ntl_is_a_member (void ** p , void * addr)
+int ntl_is_a_member(ntl_t p, void *addr)
 {
   if (p == NULL)
     return 0;

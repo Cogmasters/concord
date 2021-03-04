@@ -23,7 +23,7 @@ void print_abc(struct abc * p, int i)
 
 int main ()
 {
-  void **p = ntl_malloc_init(10, sizeof(struct abc), init);
+  ntl_t p = ntl_malloc_init(10, sizeof(struct abc), init);
 
   for(int i = 0; p[i]; i++)
     print_abc(p[i], i);

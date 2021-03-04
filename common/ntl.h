@@ -1,10 +1,24 @@
 #ifndef NTL_H
 #define NTL_H
-
 #include <stddef.h> // for size_t
 
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
+
 /*
- * A null terminated list implementation
+ * this is a very important data structure that is used
+ * pervasively in the conversion between JSON strings and C structs,
+ * http request/response body
+ */
+struct sized_buffer {
+  char *start;
+  size_t size;
+};
+
+
+/*
+ * A Null Terminated List (ntl) implementation
  *
  * A null terminated list of n elements of type struct E is defined as
  *
@@ -37,75 +51,60 @@
  * A ntl pointed by p is empty if p is NULL or p[0] == NULL
  *
  */
-#ifdef __cplusplus
-extern "C" {
-#endif // __cplusplus
+typedef void** ntl_t;
+#define NTL(t)  t **
 
-
-/*
- * this is a very important data structure that is used
- * pervasively in the conversion between JSON strings and C structs,
- * http request/response body
- */
-struct sized_buffer {
-  char *start;
-  size_t size;
-};
 
 /*
  * this is the preferred method to allocate a ntl
  * if init is NULL, it is the same as ntl_calloc
  */
-void **
-ntl_calloc_init (size_t nelems,  size_t elem_size, void (*init)(void * elem_p));
+ntl_t ntl_calloc_init(size_t nelems, size_t elem_size, void (*init)(void *));
 
 
 /*
  * this is the preferred method to allocate a ntl
  */
-void **
-ntl_calloc (size_t nelems,  size_t elem_size);
+ntl_t ntl_calloc(size_t nelems,  size_t elem_size);
 
 
 /*
  * please use ntl_calloc_init unless you have a very good reason to use this
  * if init is NULL, it is the same as ntl_malloc
  */
-void **
-ntl_malloc_init (size_t nelems,  size_t elem_size, void (*init)(void * elem_p));
+ntl_t ntl_malloc_init(size_t nelems, size_t elem_size, void (*init)(void *));
 
 
 /*
  * please use ntl_calloc unless you have a very good reason to use this
  */
-void ** ntl_malloc (size_t nelems,  size_t elem_size);
+ntl_t ntl_malloc(size_t nelems,  size_t elem_size);
 
 
-void **
-ntl_realloc_init(void **p, size_t new_nelems, size_t elem_size,
-                 void (*init)(void * elem_p));
+ntl_t ntl_realloc_init(void **p, size_t new_nelems, size_t elem_size, void (*init)(void *));
+
 /*
  * duplicate a ntl
  */
-void ** ntl_dup (void ** p, size_t size);
+ntl_t ntl_dup(ntl_t p, size_t size);
 
 /*
- * for each element e, calls free_elem(e)
+ * for each element e, calls cleanup(e)
  * free(p);
  */
-void ntl_free(void **p, void (*free_elem)(void *));
+void ntl_free(ntl_t p, void (*cleanup)(void *));
 
-size_t ntl_length (void **p);
-size_t ntl_elem_size (void **p);
+size_t ntl_length(ntl_t p);
+size_t ntl_elem_size(ntl_t p);
 
 /*
  * for each element e, calls f(e)
  */
-void ntl_apply(void *cxt, void **p, void (*f)(void *cxt, void *p));
+void ntl_apply(void *cxt, ntl_t p, void (*f)(void *cxt, void *elem_p));
 
-typedef void (ntl_converter)(void *cxt, void * from, void * to);
-void ** ntl_fmap(void * cxt, void ** from_list,
-                 size_t to_elem_size, ntl_converter * f);
+typedef void (elem_converter)(void *cxt, void *from_elem, void *to_elem);
+
+ntl_t ntl_fmap(void *cxt, ntl_t from_list, size_t to_elem_size, elem_converter *f);
 
 /*
  * Add one element to the end of ntl, this is not super efficient
@@ -114,7 +113,10 @@ void ** ntl_fmap(void * cxt, void ** from_list,
  * It caller's responsibility to make sure the added_elem has the
  * same type and size as the element's type and size of the ntl
  */
-void ** ntl_append(void ** p, size_t elem_size, void * added_elem);
+ntl_t ntl_append(ntl_t p, size_t elem_size, void *added_elem);
+
+
+void ntl_append2(ntl_t *p, size_t elem_size, void *added_elem);
 
 
 typedef size_t (ntl_elem_serializer)(char * buf, size_t size, void *p);
@@ -126,14 +128,14 @@ struct ntl_serializer {
  * elem_to_buf(buf, n, p) serialize p to a buffer
  * elem_to_buf should return a negative value for any errors
  */
-  size_t (*elem_to_buf)(char * buf, size_t size, void * elem);
-  void ** ntl_provider;
+  size_t (*elem_to_buf)(char *buf, size_t size, void *elem);
+  ntl_t ntl_provider;
 };
 
 struct ntl_str_delimiter {
   char start_delimiter;
-  char * element_delimiter;
-  char * last_element_delimiter;
+  char *element_delimiter;
+  char *last_element_delimiter;
   char end_delimiter;
 };
 
@@ -146,34 +148,31 @@ struct ntl_str_delimiter {
  * ntl_to_buf(buf, n, ..) serialize p to buf and return the number of
  *       bytes written excluding \0
  */
-size_t ntl_to_buf(char *buf, size_t buf_size, void **p,
-                  struct ntl_str_delimiter  * d,
-                  ntl_elem_serializer * x);
+size_t ntl_to_buf(char *buf, size_t buf_size, ntl_t p, struct ntl_str_delimiter  *d, ntl_elem_serializer *x);
 
 /*
  * ntl_to_abuf behaviors like asprintf
  */
 
-size_t ntl_to_abuf(char **buf_ptr, void **p, struct ntl_str_delimiter  * d,
-                   ntl_elem_serializer * x);
+size_t ntl_to_abuf(char **buf_ptr, ntl_t p, struct ntl_str_delimiter *d, ntl_elem_serializer *x);
 
 
-size_t ntl_to_buf2(char * buf, size_t size, struct ntl_serializer * serializer);
-size_t ntl_to_abuf2(char ** buf_p, struct ntl_serializer * serializer);
+size_t ntl_to_buf2(char *buf, size_t size, struct ntl_serializer *serializer);
+size_t ntl_to_abuf2(char **buf_p, struct ntl_serializer *serializer);
 
 struct ntl_deserializer {
   /* Required: this function partition a sized buffer to n sized buffers,
    * each one represents one element */
-  int (*partition_as_sized_bufs)(char *, size_t, struct sized_buffer ***p);
+  int (*partition_as_sized_bufs)(char *, size_t, NTL(struct sized_buffer) *p);
   /* Required: the size of each element, it will be used to allocate memory */
   size_t elem_size;
   /* Optional: the function to initialize an element, it can be NULL */
   void (*init_elem)(void *);
   /* Required: the function to load element data from buf to recipient */
-  void (*elem_from_buf)(char * buf, size_t size, void * recipient);
+  void (*elem_from_buf)(char *buf, size_t size, void *recipient);
 
   /* Required: a pointer of ntl that is to receive the reconstructed ntl */
-  void *** ntl_recipient_p;
+  ntl_t *ntl_recipient_p;
 };
 
 /*
@@ -182,11 +181,9 @@ struct ntl_deserializer {
  * ntl_deserializer: have all the information to reconstruct an element
  *    from a sized buffer
  */
-size_t
-ntl_from_buf (char *buf, size_t len, struct ntl_deserializer * ntl_deserializer);
+size_t ntl_from_buf(char *buf, size_t len, struct ntl_deserializer *ntl_deserializer);
 
-int
-ntl_is_a_member (void ** p , void * addr);
+int ntl_is_a_member(ntl_t p , void *addr);
 
 #ifdef __cplusplus
 }
