@@ -431,7 +431,7 @@ field_from_json(char *json, size_t size, void *x)
                           loc_from_json, &p->loc,
                           &p->comment);
 
-  snprintf(p->spec, sizeof(p->spec), "%.*s", size, json);
+  snprintf(p->spec, sizeof(p->spec), "%.*s", (int)size, json);
 
   if (spec_buffer.start) {
     addr_to_lnc (spec_buffer.start, spec_buffer.size, json, &lnc);
