@@ -318,10 +318,8 @@ print_def(FILE *fp, struct jc_def *d)
 static void
 emit_field_spec(void *cxt, FILE *fp, struct jc_field *f)
 {
-  fprintf(fp, "  // edit '%s:%d:%d' to change the following spec to change field\n",
-          spec_name, f->lnc.line + 1, f->lnc.column);
-  fprintf(fp, "  /*\n");
-  fprintf(fp, "    '%s'\n", f->spec);
+  fprintf(fp, "  /* %s:%d:%d\n", spec_name, f->lnc.line + 1, f->lnc.column);
+  fprintf(fp, "     '%s'\n", f->spec);
   fprintf(fp, "  */\n");
 }
 
