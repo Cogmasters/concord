@@ -315,6 +315,16 @@ print_def(FILE *fp, struct jc_def *d)
     print_enum(fp, (struct jc_enum *)d);
 };
 
+static void
+emit_field_spec(void *cxt, FILE *fp, struct jc_field *f)
+{
+  fprintf(fp, "  // edit '%s:%d:%d' to change the following spec to change field\n",
+          spec_name, f->lnc.line + 1, f->lnc.column);
+  fprintf(fp, "  /*\n");
+  fprintf(fp, "    '%s'\n", f->spec);
+  fprintf(fp, "  */\n");
+}
+
 struct jc_definition {
   char *spec_name;
   bool is_disabled;
@@ -904,8 +914,11 @@ gen_init (FILE *fp, struct jc_struct *s)
 
   fprintf(fp, "void %s_init(struct %s *p) {\n", t, t);
   fprintf(fp, "  memset(p, 0, sizeof(struct %s));\n", t);
-  for (int i = 0; s->fields && s->fields[i]; i++)
+  for (int i = 0; s->fields && s->fields[i]; i++) {
+    emit_field_spec(NULL, fp, s->fields[i]);
     emit_field_init(NULL, fp, s->fields[i]);
+    fprintf(fp, "\n");
+  }
 
   fprintf(fp, "}\n");
 }
@@ -1259,12 +1272,14 @@ gen_struct(FILE *fp, struct jc_struct *s)
   int i = 0;
   for (i = 0; s->fields && s->fields[i]; i++) {
     struct jc_field *f = s->fields[i];
-    fprintf(fp, "  // edit '%s:%d:%d' to change the following spec to change field\n",
-            spec_name, f->lnc.line + 1, f->lnc.column);
-    fprintf(fp, "  // '%s'\n", f->spec);
+    emit_field_spec(NULL, fp, f);
     emit_field(NULL, fp, f);
     fprintf(fp, "\n");
   }
+  fprintf(fp, "  // The following is metadata used to \n");
+  fprintf(fp, "  // 1. control which field should be extracted/injected\n");
+  fprintf(fp, "  // 2. record which field is presented(defined) in JSON\n");
+  fprintf(fp, "  // 3. record which field is null in JSON\n");
   fprintf(fp, "  struct {\n");
   fprintf(fp, "    bool enable_arg_switches;\n");
   fprintf(fp, "    bool enable_record_defined;\n");
