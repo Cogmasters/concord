@@ -45,14 +45,22 @@ struct sized_buffer {
  * p[n] points to NULL
  *
  *
- *  for (size_t i = 0; p[i]; i++)
+ * if p is NULL, it is treated as an empty NTL by all ntl functions.
+ *
+ * The use of ntl is very simple
+ *
+ *  for (size_t i = 0; p && p[i]; i++)
  *    // do something here for each element
  *
  * A ntl pointed by p is empty if p is NULL or p[0] == NULL
  *
  */
 typedef void** ntl_t;
-#define NTL(t)  t **
+
+/*
+ * used to define ntl with an actual type
+ */
+#define NTL_T(t)  t**
 
 
 /*
@@ -163,7 +171,7 @@ size_t ntl_to_abuf2(char **buf_p, struct ntl_serializer *serializer);
 struct ntl_deserializer {
   /* Required: this function partition a sized buffer to n sized buffers,
    * each one represents one element */
-  int (*partition_as_sized_bufs)(char *, size_t, NTL(struct sized_buffer) *p);
+  int (*partition_as_sized_bufs)(char *, size_t, NTL_T(struct sized_buffer) *p);
   /* Required: the size of each element, it will be used to allocate memory */
   size_t elem_size;
   /* Optional: the function to initialize an element, it can be NULL */
