@@ -44,7 +44,7 @@ json_dump(
     type, 
     timestr, 
     url,
-    (*json_text) ? json_text : "empty request body");
+    (*json_text) ? json_text : "empty body");
 
   fflush(config->f_json_dump);
 }
