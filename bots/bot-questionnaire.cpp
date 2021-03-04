@@ -9,7 +9,8 @@
 
 using namespace discord;
 
-void on_ready(client *client, const user::dati *me)
+void 
+on_ready(client *client, const user::dati *me)
 {
   fprintf(stderr, "\n\nQuestionnaire-Bot succesfully connected to Discord as %s#%s!\n\n",
       me->username, me->discriminator);
@@ -17,38 +18,42 @@ void on_ready(client *client, const user::dati *me)
   (void)client;
 }
 
-void set_role(client *client, const uint64_t guild_id, const uint64_t channel_id, const guild::member::dati *member)
+void
+set_beginner_role(
+  client *client, 
+  const guild::member::dati *member,
+  const u64_snowflake_t guild_id, 
+  const u64_snowflake_t channel_id)
 {
-  role::dati *role = role::dati_alloc();
+  role::dati role;
+  role::dati_init(&role);
 
+  // craete new unique role for newbie user
   char role_name[128];
   snprintf(role_name, sizeof(role_name), "beginner_%s", member->user->username);
   guild::create_role::params params1 = {
     .name = role_name
   };
-  guild::create_role::run(client, guild_id, &params1, role);
+  guild::create_role::run(client, guild_id, &params1, &role);
 
-  if (role->id) {
-    char text[150];
-    snprintf(text, sizeof(text), "Succesfully created <@&%" PRIu64 "> role", role->id);
-
-    channel::message::create::params params2 = {
-      .content = text
-    };
-    channel::message::create::run(client, channel_id, &params2, NULL);
+  if (!role.id) { // couldn't create new role
+    fprintf(stderr, "Couldn't create %s role", role_name);
+    return; /* EARLY RETURN */
   }
 
-  guild::modify_member::params params3 = {
-    .nick = "Newbie"
-  };
-  //ja_u64_list_append(&params3.roles, (struct ja_u64*)&role->id); @todo
-
+  // role was created, assign beginner role to new user
+  fprintf(stderr, "Succesfully created %s role", role_name);
+  guild::modify_member::params params3 = {0};
+  ja_u64_list_append(&params3.roles, (struct ja_u64*)&role.id);
   guild::modify_member::run(client, guild_id, member->user->id, &params3, NULL);
-
-  role::dati_free(role);
 }
 
-void on_member_join(client *client, const user::dati *me, const uint64_t guild_id, const guild::member::dati *member)
+void 
+on_member_join(
+  client *client, 
+  const user::dati *me, 
+  const u64_snowflake_t guild_id, 
+  const guild::member::dati *member)
 {
   if (member->user->bot) // ignore bots
     return;
@@ -63,15 +68,14 @@ void on_member_join(client *client, const user::dati *me, const uint64_t guild_i
   };
   guild::create_channel::run(client, guild_id, &params1, ch);
 
-  if (ch->id) { // post message to channel if succesfully created
-    set_role(client, guild_id, ch->id, member);
+  if (ch->id) {
+    set_beginner_role(client, member, guild_id, ch->id);
 
-    char text[1024];
+    char text[512];
     snprintf(text, sizeof(text), "Welcome, <@!%" PRIu64 ">!", member->user->id);
     channel::message::create::params params2 = {
       .content = text
     };
-    //channel::overwrite::append
     channel::message::create::run(client, ch->id, &params2, NULL);
   }
 
