@@ -83,24 +83,24 @@ http_code_print(int httpcode)
   switch (httpcode) {
       case HTTP_OK:                   return "OK";
       case HTTP_CREATED:              return "CREATED";
-      case HTTP_NO_CONTENT:           return "NO CONTENT";
-      case HTTP_NOT_MODIFIED:         return "NOT MODIFIED";
-      case HTTP_BAD_REQUEST:          return "BAD REQUEST";
+      case HTTP_NO_CONTENT:           return "NO_CONTENT";
+      case HTTP_NOT_MODIFIED:         return "NOT_MODIFIED";
+      case HTTP_BAD_REQUEST:          return "BAD_REQUEST";
       case HTTP_UNAUTHORIZED:         return "UNAUTHORIZED";
       case HTTP_FORBIDDEN:            return "FORBIDDEN";
-      case HTTP_NOT_FOUND:            return "NOT FOUND";
-      case HTTP_METHOD_NOT_ALLOWED:   return "METHOD NOT ALLOWED";
-      case HTTP_UNPROCESSABLE_ENTITY: return "UNPROCESSABLE ENTITY";
-      case HTTP_TOO_MANY_REQUESTS:    return "TOO MANY REQUESTS";
-      case HTTP_GATEWAY_UNAVAILABLE:  return "GATEWAY UNAVAILABLE";
+      case HTTP_NOT_FOUND:            return "NOT_FOUND";
+      case HTTP_METHOD_NOT_ALLOWED:   return "METHOD_NOT_ALLOWED";
+      case HTTP_UNPROCESSABLE_ENTITY: return "UNPROCESSABLE_ENTITY";
+      case HTTP_TOO_MANY_REQUESTS:    return "TOO_MANY_REQUESTS";
+      case HTTP_GATEWAY_UNAVAILABLE:  return "GATEWAY_UNAVAILABLE";
   default:
-      if (httpcode >= 500) return "5xx SERVER ERROR";
-      if (httpcode >= 400) return "4xx CLIENT ERROR";
-      if (httpcode >= 300) return "3xx REDIRECTING";
-      if (httpcode >= 200) return "2xx SUCCESS";
-      if (httpcode >= 100) return "1xx INFO";
+      if (httpcode >= 500) return "5xx_SERVER_ERROR";
+      if (httpcode >= 400) return "4xx_CLIENT_ERROR";
+      if (httpcode >= 300) return "3xx_REDIRECTING";
+      if (httpcode >= 200) return "2xx_SUCCESS";
+      if (httpcode >= 100) return "1xx_INFO";
 
-      return "UNUSUAL HTTP CODE";
+      return "UNUSUAL_HTTP_CODE";
   }
 }
 
@@ -160,7 +160,7 @@ http_method_print(enum http_method method)
       case HTTP_PUT:      return "PUT";
   default:
       PRINT("Invalid HTTP method (code: %d)", method);
-      return "Invalid HTTP method";
+      return "INVALID_HTTP_METHOD";
   }
 }
 
@@ -263,11 +263,6 @@ send_request(struct ua_conn_s *conn)
   ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
   DS_PRINT("Response URL: %s", conn->resp_url);
 
-  if (httpcode == HTTP_NO_CONTENT) {
-    *conn->resp_body.start = '\0';
-    conn->resp_body.size = 0;
-  }
-
   return httpcode;
 }
 
@@ -343,7 +338,8 @@ perform_request(
       action = (*cbs.on_1xx)(cbs.p_data, httpcode, conn);
     }
 
-    // reset body and header for next possible iteration
+    // soft reset conn fields for next possible iteration
+    *conn->resp_body.start = '\0';
     conn->resp_body.size = 0;
     conn->resp_header.size = 0;
 
