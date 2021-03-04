@@ -319,18 +319,19 @@ dati_list_to_json(char *str, size_t len, void *p_activities)
 static char*
 ws_opcode_print(int opcode)
 {
+  using namespace opcodes;
   switch (opcode) {
-      CASE_RETURN_STR(opcodes::DISPATCH);
-      CASE_RETURN_STR(opcodes::HEARTBEAT);
-      CASE_RETURN_STR(opcodes::IDENTIFY);
-      CASE_RETURN_STR(opcodes::PRESENCE_UPDATE);
-      CASE_RETURN_STR(opcodes::VOICE_STATE_UPDATE);
-      CASE_RETURN_STR(opcodes::RESUME);
-      CASE_RETURN_STR(opcodes::RECONNECT);
-      CASE_RETURN_STR(opcodes::REQUEST_GUILD_MEMBERS);
-      CASE_RETURN_STR(opcodes::INVALID_SESSION);
-      CASE_RETURN_STR(opcodes::HELLO);
-      CASE_RETURN_STR(opcodes::HEARTBEAT_ACK);
+      CASE_RETURN_STR(DISPATCH);
+      CASE_RETURN_STR(HEARTBEAT);
+      CASE_RETURN_STR(IDENTIFY);
+      CASE_RETURN_STR(PRESENCE_UPDATE);
+      CASE_RETURN_STR(VOICE_STATE_UPDATE);
+      CASE_RETURN_STR(RESUME);
+      CASE_RETURN_STR(RECONNECT);
+      CASE_RETURN_STR(REQUEST_GUILD_MEMBERS);
+      CASE_RETURN_STR(INVALID_SESSION);
+      CASE_RETURN_STR(HELLO);
+      CASE_RETURN_STR(HEARTBEAT_ACK);
   default:
       ERR("Invalid Gateway opcode (code: %d)", opcode);
   }
@@ -387,7 +388,13 @@ ws_close_opcode_print(enum close_opcodes gateway_opcode)
 static void
 ws_send_payload(dati *ws, char payload[])
 {
-  (*ws->config.json_cb)(false, 0, &ws->config, BASE_WEBSOCKETS_URL, payload);
+  (*ws->config.json_cb)(
+    false, 
+    0, "SEND", 
+    &ws->config, 
+    BASE_WEBSOCKETS_URL, 
+    payload);
+
   bool ret = cws_send_text(ws->ehandle, payload);
   ASSERT_S(true == ret, "Couldn't send payload");
 }
@@ -775,7 +782,13 @@ ws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
 {
   dati *ws = (dati*)p_ws;
   
-  (*ws->config.json_cb)(true, ws->payload.opcode, &ws->config, BASE_WEBSOCKETS_URL, (char*)text);
+  (*ws->config.json_cb)(
+    true, 
+    ws->payload.opcode, ws_opcode_print(ws->payload.opcode),
+    &ws->config, 
+    BASE_WEBSOCKETS_URL, 
+    (char*)text);
+
   D_PRINT("ON_TEXT:\t%s\n", text);
 
   int tmp_seq_number; //check value first, then assign

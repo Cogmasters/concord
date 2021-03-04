@@ -81,27 +81,27 @@ char*
 http_code_print(int httpcode)
 {
   switch (httpcode) {
-      CASE_RETURN_STR(HTTP_OK);
-      CASE_RETURN_STR(HTTP_CREATED);
-      CASE_RETURN_STR(HTTP_NO_CONTENT);
-      CASE_RETURN_STR(HTTP_NOT_MODIFIED);
-      CASE_RETURN_STR(HTTP_BAD_REQUEST);
-      CASE_RETURN_STR(HTTP_UNAUTHORIZED);
-      CASE_RETURN_STR(HTTP_FORBIDDEN);
-      CASE_RETURN_STR(HTTP_NOT_FOUND);
-      CASE_RETURN_STR(HTTP_METHOD_NOT_ALLOWED);
-      CASE_RETURN_STR(HTTP_UNPROCESSABLE_ENTITY);
-      CASE_RETURN_STR(HTTP_TOO_MANY_REQUESTS);
-      CASE_RETURN_STR(HTTP_GATEWAY_UNAVAILABLE);
+      case HTTP_OK:                   return "OK";
+      case HTTP_CREATED:              return "CREATED";
+      case HTTP_NO_CONTENT:           return "NO CONTENT";
+      case HTTP_NOT_MODIFIED:         return "NOT MODIFIED";
+      case HTTP_BAD_REQUEST:          return "BAD REQUEST";
+      case HTTP_UNAUTHORIZED:         return "UNAUTHORIZED";
+      case HTTP_FORBIDDEN:            return "FORBIDDEN";
+      case HTTP_NOT_FOUND:            return "NOT FOUND";
+      case HTTP_METHOD_NOT_ALLOWED:   return "METHOD NOT ALLOWED";
+      case HTTP_UNPROCESSABLE_ENTITY: return "UNPROCESSABLE ENTITY";
+      case HTTP_TOO_MANY_REQUESTS:    return "TOO MANY REQUESTS";
+      case HTTP_GATEWAY_UNAVAILABLE:  return "GATEWAY UNAVAILABLE";
   default:
       if (httpcode >= 500) return "5xx SERVER ERROR";
       if (httpcode >= 400) return "4xx CLIENT ERROR";
       if (httpcode >= 300) return "3xx REDIRECTING";
       if (httpcode >= 200) return "2xx SUCCESS";
       if (httpcode >= 100) return "1xx INFO";
-  }
 
-  return "UNUSUAL HTTP CODE";
+      return "UNUSUAL HTTP CODE";
+  }
 }
 
 char*
@@ -152,14 +152,15 @@ char*
 http_method_print(enum http_method method)
 {
   switch(method) {
-      CASE_RETURN_STR(HTTP_DELETE);
-      CASE_RETURN_STR(HTTP_GET);
-      CASE_RETURN_STR(HTTP_POST);
-      CASE_RETURN_STR(HTTP_MIMEPOST);
-      CASE_RETURN_STR(HTTP_PATCH);
-      CASE_RETURN_STR(HTTP_PUT);
+      case HTTP_DELETE:   return "DELETE";
+      case HTTP_GET:      return "GET";
+      case HTTP_POST:     return "POST";
+      case HTTP_MIMEPOST: return "MIMEPOST";
+      case HTTP_PATCH:    return "PATCH";
+      case HTTP_PUT:      return "PUT";
   default:
-      ERR("Invalid HTTP method (code: %d)", method);
+      PRINT("Invalid HTTP method (code: %d)", method);
+      return "Invalid HTTP method";
   }
 }
 
@@ -297,7 +298,12 @@ perform_request(
     (*cbs.before_perform)(cbs.p_data);
   
     int httpcode = send_request(conn);
-    (*config->json_cb)(true, httpcode, config, conn->resp_url, conn->resp_body.start);
+    (*config->json_cb)(
+      true, 
+      httpcode, http_code_print(httpcode), 
+      config, 
+      conn->resp_url, 
+      conn->resp_body.start);
 
     /* triggers response related callbacks */
     if (httpcode >= 500) { // SERVER ERROR
@@ -570,15 +576,23 @@ ua_vrun(
   enum http_method http_method,
   char endpoint[], va_list args)
 {
-  static const struct sized_buffer blank_req_body = {"", 0};
+  static struct sized_buffer blank_req_body = {"", 0};
   if (NULL == req_body) {
     req_body = &blank_req_body;
   }
-
   struct ua_conn_s *conn = get_conn(ua);
-  set_url(ua, conn, endpoint, args);
-  (*ua->config.json_cb)(false, 0, &ua->config, conn->req_url, req_body->start);
+
+  set_url(ua, conn, endpoint, args); //set the request url
+
+  (*ua->config.json_cb)(
+    false, 
+    0, http_method_print(http_method), 
+    &ua->config, 
+    conn->req_url, 
+    req_body->start);
+
   set_method(ua, conn, http_method, req_body); //set the request method
+
   perform_request(conn, resp_handle, cbs, &ua->config);
   ++ua->num_available;
 

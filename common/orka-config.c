@@ -12,19 +12,9 @@
 static bool g_first_run = true; // used to delete existent dump files
 
 static void
-noop_json_dump(
-  bool is_response, 
-  int httpcode, 
-  struct orka_config *config, 
-  char *url,
-  char *json_text) {
-  return; (void)json_text; (void)config; (void)json_text;
-}
-
-static void
 json_dump(
-  bool is_response, 
-  int httpcode, 
+  bool is_response, // if not response then code is ignored
+  int code, char *meaning, // related code and its meaning
   struct orka_config *config, 
   char *url,
   char *json_text)
@@ -32,22 +22,27 @@ json_dump(
   char timestr[64] = {0};
   orka_timestamp_str(timestr, sizeof(timestr));
 
-  char type[128];
-  if (is_response)
-    snprintf(type, sizeof(type), "%d", httpcode);
+  char reason[256];
+  if (true == is_response)
+    snprintf(reason, sizeof(reason), "RESPONSE %s(%d)", meaning, code);
   else
-    snprintf(type, sizeof(type), "REQUEST");
+    snprintf(reason, sizeof(reason), "REQUEST %s", meaning);
 
   fprintf(config->f_json_dump, 
-    "\r\r\r\r[%s (%s)] - %s - %s\n%s\n", 
+    "\r\r\r\r%s [%s] - %s - %s\n%s\n", 
+    reason,
     config->tag, 
-    type, 
     timestr, 
     url,
     (*json_text) ? json_text : "empty body");
 
   fflush(config->f_json_dump);
 }
+
+static void // see json_dump for parameter definitions
+noop_json_dump(bool a, int b, char *c, struct orka_config *d, char *e, char *f) { return; (void)a; (void)b; (void)c; (void)d; (void)e; (void)f;
+}
+
 
 static int
 curl_dump(

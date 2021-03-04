@@ -18,7 +18,7 @@ struct orka_config {
   FILE *f_json_dump; //default stderr
   void (*json_cb)(
       bool is_response, 
-      int httpcode, 
+      int code, char *meaning, // related code and its meaning
       struct orka_config*, 
       char *url, 
       char *body);
