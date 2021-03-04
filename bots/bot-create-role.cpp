@@ -34,7 +34,7 @@ void on_command(
 
   if (role->id) {
     char text[150];
-    snprintf(text, sizeof(text), "Succesfully created %s role", msg->content);
+    snprintf(text, sizeof(text), "Succesfully created <@&%" PRIu64 "> role", role->id);
 
     channel::message::create::params params2 = {
       .content = text
