@@ -12,7 +12,7 @@
         { "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "inject_if_not":null},
         { "name": "mute", "type":{ "base":"bool" }, "inject_if_not":false},
         { "name": "deaf", "type":{ "base":"bool" }, "inject_if_not":false},
-        { "name": "channel_id", "type":{ "base":"char", "dec":"*", "snowflake" }, "inject_if_not":0}
+        { "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0}
       ]
     }
   ]
