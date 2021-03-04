@@ -171,11 +171,12 @@ set_method(
   enum http_method method, 
   struct sized_buffer *req_body)
 {
-  (*ua->config.json_cb)(
-    false, 
-    0, 
-    &ua->config, 
-    (req_body) ? req_body->start : NULL);
+  struct sized_buffer blank_req_body = {"", 0};
+  if (NULL == req_body) {
+    req_body = &blank_req_body;
+  }
+
+  (*ua->config.json_cb)(false, 0, &ua->config, req_body);
 
   // resets any preexisting CUSTOMREQUEST
   curl_easy_setopt(conn->ehandle, CURLOPT_CUSTOMREQUEST, NULL);
@@ -210,11 +211,9 @@ set_method(
       ERR("Unknown http method (code: %d)", method);
   }
   
-  if (req_body && req_body->start) {
-    //set ptr to payload that will be sent via POST/PUT
-    curl_easy_setopt(conn->ehandle, CURLOPT_POSTFIELDS, req_body->start);
-    curl_easy_setopt(conn->ehandle, CURLOPT_POSTFIELDSIZE, req_body->size);
-  }
+  //set ptr to payload that will be sent via POST/PUT/PATCH
+  curl_easy_setopt(conn->ehandle, CURLOPT_POSTFIELDS, req_body->start);
+  curl_easy_setopt(conn->ehandle, CURLOPT_POSTFIELDSIZE, req_body->size);
 }
 
 static void
