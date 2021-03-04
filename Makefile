@@ -1,6 +1,9 @@
-CC	?= gcc
-OBJDIR	:= obj
-LIBDIR	:= lib
+CC	     ?= gcc
+OBJDIR	     := obj
+LIBDIR	     := lib
+ACTOR_OBJDIR := actor_obj
+
+GCC          := gcc
 
 
 COMMON_SRC  := $(wildcard common/*.c)
@@ -18,7 +21,7 @@ ACTOR_GEN_SRC = common/orka-utils.c common/json-actor.c \
 	common/json-struct.c common/json-printf.c \
 	test/test-json-struct-gen.c
 
-ACTOR_GEN_OBJS := $(ACTOR_GEN_SRC:%=$(OBJDIR)/%.o)
+ACTOR_GEN_OBJS := $(ACTOR_GEN_SRC:%=$(ACTOR_OBJDIR)/%.o)
 
 COMMON_OBJS  := $(COMMON_SRC:%=$(OBJDIR)/%.o)
 ORKA_OBJS    := $(ORKA_SRC:%=$(OBJDIR)/%.o)
@@ -104,7 +107,8 @@ bot: $(BOT_EXES) #@todo should we split by categories (bot_discord, bot_github, 
 test: common orka discord github $(TEST_EXES) #@todo should we split by categories too ?
 
 mkdir :
-	mkdir -p bin $(OBJDIR) $(OBJDIR)/common $(OBJDIR)/specs $(LIBDIR)
+	mkdir -p $(ACTOR_OBJDIR)/common  $(ACTOR_OBJDIR)/test bin
+	mkdir -p $(OBJDIR) $(OBJDIR)/common $(OBJDIR)/specs $(LIBDIR)
 	mkdir -p $(OBJDIR)/test
 	mkdir -p specs-code  $(OBJDIR)/specs-code
 
@@ -114,6 +118,9 @@ $(OBJDIR)/common/curl-%.c.o : common/curl-%.c
 
 #generic compilation
 
+
+$(ACTOR_OBJDIR)/%.c.o : %.c
+	$(GCC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 
 $(OBJDIR)/%.c.o : %.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
@@ -131,7 +138,7 @@ $(OBJDIR)/%.cc.o: %.cc
 	$(CXX) $(CXXFLAGS) $(LIBS_CFLAGS) $(GENFLAGS) -c -o $@ $< -Wno-unused-but-set-variable
 
 actor-gen.exe: mkdir $(ACTOR_GEN_OBJS)
-	$(CC) -o $@ $(ACTOR_GEN_OBJS) -lm
+	$(GCC) -o $@ $(ACTOR_GEN_OBJS) -lm
 	mv $@ ./bin
 
 #generic compilation
@@ -154,7 +161,11 @@ specs_clean :
 	rm -f specs-code/*
 
 clean : specs_clean
-	rm -rf $(OBJDIR) *.exe test/*.exe bots/*.exe bin/*
+	rm -rf $(OBJDIR) *.exe test/*.exe bots/*.exe
+
+
+clean_actor_gen:
+	rm -rf $(ACTOR_OBJDIR) bin/*
 
 purge : clean
 	rm -rf $(LIBDIR)
