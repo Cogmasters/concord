@@ -44,7 +44,7 @@ set_beginner_role(
   // role was created, assign beginner role to new user
   fprintf(stderr, "Succesfully created %s role", role_name);
   guild::modify_member::params params3 = {0};
-  ja_u64_list_append(&params3.roles, (struct ja_u64*)&role.id);
+  ja_u64_list_append(&params3.roles, &role.id);
   guild::modify_member::run(client, guild_id, member->user->id, &params3, NULL);
 }
 
