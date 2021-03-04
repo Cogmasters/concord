@@ -56,7 +56,9 @@ struct ua_conn_s {
   CURL *ehandle; //the curl's easy handle used to perform requests
   struct sized_buffer resp_body; //the api response string
   struct ua_respheader_s resp_header; //the key/field response header
-  char *resp_url;
+
+  char req_url[MAX_URL_LEN]; //request's url
+  char *resp_url; //response's url
 };
 
 //callback for object to be loaded by api response

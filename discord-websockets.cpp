@@ -387,7 +387,7 @@ ws_close_opcode_print(enum close_opcodes gateway_opcode)
 static void
 ws_send_payload(dati *ws, char payload[])
 {
-  (*ws->config.json_cb)(false, 0, &ws->config, payload);
+  (*ws->config.json_cb)(false, 0, &ws->config, BASE_WEBSOCKETS_URL, payload);
   bool ret = cws_send_text(ws->ehandle, payload);
   ASSERT_S(true == ret, "Couldn't send payload");
 }
@@ -775,7 +775,7 @@ ws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
 {
   dati *ws = (dati*)p_ws;
   
-  (*ws->config.json_cb)(true, ws->payload.opcode, &ws->config, (char*)text);
+  (*ws->config.json_cb)(true, ws->payload.opcode, &ws->config, BASE_WEBSOCKETS_URL, (char*)text);
   D_PRINT("ON_TEXT:\t%s\n", text);
 
   int tmp_seq_number; //check value first, then assign

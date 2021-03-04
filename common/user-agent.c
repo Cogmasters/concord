@@ -166,18 +166,11 @@ http_method_print(enum http_method method)
 /* set specific http method used for the request */
 static void
 set_method(
-  struct user_agent_s *ua, //@todo this is temporary
+  struct user_agent_s *ua, //@todo unnecessary after multipart_inject()
   struct ua_conn_s *conn, 
   enum http_method method, 
   struct sized_buffer *req_body)
 {
-  struct sized_buffer blank_req_body = {"", 0};
-  if (NULL == req_body) {
-    req_body = &blank_req_body;
-  }
-
-  (*ua->config.json_cb)(false, 0, &ua->config, req_body);
-
   // resets any preexisting CUSTOMREQUEST
   curl_easy_setopt(conn->ehandle, CURLOPT_CUSTOMREQUEST, NULL);
 
@@ -217,19 +210,20 @@ set_method(
 }
 
 static void
-set_url(struct ua_conn_s *conn, char base_api_url[], char endpoint[], va_list args)
+set_url(struct user_agent_s *ua, struct ua_conn_s *conn, char endpoint[], va_list args)
 {
   //create the url route
   char url_route[MAX_URL_LEN];
   int ret = vsnprintf(url_route, sizeof(url_route), endpoint, args);
   ASSERT_S(ret < (int)sizeof(url_route), "oob write of url_route");
 
-  char base_url[MAX_URL_LEN];
-  ret = snprintf(base_url, sizeof(base_url), "%s%s", base_api_url, url_route);
-  ASSERT_S(ret < (int)sizeof(base_url), "Out of bounds write attempt");
+  ret = snprintf(conn->req_url, sizeof(conn->req_url), "%s%s", ua->base_url, url_route);
+  ASSERT_S(ret < (int)sizeof(conn->req_url), "Out of bounds write attempt");
 
-  CURLcode ecode = curl_easy_setopt(conn->ehandle, CURLOPT_URL, base_url);
+  CURLcode ecode = curl_easy_setopt(conn->ehandle, CURLOPT_URL, conn->req_url);
   ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
+
+  DS_PRINT("Request URL: %s", conn->req_url);
 }
 
 static void
@@ -266,7 +260,7 @@ send_request(struct ua_conn_s *conn)
 
   ecode = curl_easy_getinfo(conn->ehandle, CURLINFO_EFFECTIVE_URL, &conn->resp_url);
   ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
-  DS_PRINT("Request URL: %s", &conn->resp_url);
+  DS_PRINT("Response URL: %s", conn->resp_url);
 
   return httpcode;
 }
@@ -298,7 +292,7 @@ perform_request(
     (*cbs.before_perform)(cbs.p_data);
   
     int httpcode = send_request(conn);
-    (*config->json_cb)(true, httpcode, config, conn->resp_body.start);
+    (*config->json_cb)(true, httpcode, config, conn->resp_url, conn->resp_body.start);
 
     /* triggers response related callbacks */
     if (httpcode >= 500) { // SERVER ERROR
@@ -571,11 +565,15 @@ ua_vrun(
   enum http_method http_method,
   char endpoint[], va_list args)
 {
+  static const struct sized_buffer blank_req_body = {"", 0};
+  if (NULL == req_body) {
+    req_body = &blank_req_body;
+  }
+
   struct ua_conn_s *conn = get_conn(ua);
-
-  set_url(conn, ua->base_url, endpoint, args);
+  set_url(ua, conn, endpoint, args);
+  (*ua->config.json_cb)(false, 0, &ua->config, conn->req_url, req_body->start);
   set_method(ua, conn, http_method, req_body); //set the request method
-
   perform_request(conn, resp_handle, cbs, &ua->config);
   ++ua->num_available;
 

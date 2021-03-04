@@ -16,7 +16,12 @@ struct orka_config {
   size_t flen; // config file len
 
   FILE *f_json_dump; //default stderr
-  void (*json_cb)(bool, int, struct orka_config*, char*);
+  void (*json_cb)(
+      bool is_response, 
+      int httpcode, 
+      struct orka_config*, 
+      char *url, 
+      char *body);
   
   FILE *f_curl_dump; //default stderr
   int (*curl_cb)(CURL*, curl_infotype, char*, size_t, void*);
