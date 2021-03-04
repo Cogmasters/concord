@@ -7,7 +7,7 @@
 
 namespace discord {
 namespace channel {
-
+#if 0
 void
 dati_from_json(char *str, size_t len, void *p_channel)
 {
@@ -101,6 +101,7 @@ dati_list_to_json(char * str, size_t len, void *p)
 {
    //@todo to be replaced by generated code
 }
+#endif
 
 void
 get(client *client, const uint64_t channel_id, dati *p_channel)
@@ -110,7 +111,7 @@ get(client *client, const uint64_t channel_id, dati *p_channel)
     return;
   }
 
-  struct resp_handle resp_handle = {&dati_from_json, (void*)p_channel};
+  struct resp_handle resp_handle = {&dati_from_json_v, (void*)p_channel};
 
   user_agent::run(
     &client->ua,
@@ -129,7 +130,7 @@ del(client *client, const uint64_t channel_id, dati *p_channel)
   }
 
   struct resp_handle resp_handle = {
-    .ok_cb = p_channel ? dati_from_json : NULL,
+    .ok_cb = p_channel ? dati_from_json_v : NULL,
     .ok_obj = p_channel,
   };
 

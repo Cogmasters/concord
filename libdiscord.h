@@ -241,8 +241,8 @@ struct dati {
 /* CHANNEL STRUCTURE
 https://discord.com/developers/docs/resources/channel#channel-object-channel-structure */
 namespace channel {
-#include "./specs-code/channel.types.hh"
-
+#include "./specs-code/channel.hh"
+#if 0
 struct dati {
   uint64_t id;
   types::code type;
@@ -275,6 +275,7 @@ void dati_list_from_json(char *str, size_t len, void *p_channels);
 // just a declaration to fix the compilation error, it's not actually used yet.
 void dati_to_json(char *str, size_t len, void * p);
 void dati_list_to_json(char *str, size_t len, void *);
+#endif
 
 /* CHANNEL TYPES
 https://discord.com/developers/docs/resources/channel#channel-object-channel-types */

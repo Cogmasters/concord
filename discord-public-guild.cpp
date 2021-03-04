@@ -179,7 +179,7 @@ get_channels(client *client, const uint64_t guild_id)
   channel::dati **new_channels = NULL;
 
   struct resp_handle resp_handle = 
-    {&channel::dati_list_from_json, (void*)&new_channels};
+    {&channel::dati_list_from_json_v, (void*)&new_channels};
 
   user_agent::run( 
     &client->ua,
@@ -255,7 +255,7 @@ void run(client *client, const uint64_t guild_id, params *params, channel::dati 
   create_channel::params_to_json(payload, sizeof(payload), params);
 
   struct resp_handle resp_handle = {
-    .ok_cb = p_channel ? channel::dati_from_json : NULL,
+    .ok_cb = p_channel ? channel::dati_from_json_v : NULL,
     .ok_obj = p_channel,
   };
 

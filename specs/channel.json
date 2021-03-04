@@ -1,0 +1,47 @@
+{
+  "namespace": ["discord", "channel"],
+  "comment":"https://discord.com/developers/docs/resources/channel#channel-object-channel-types",
+  "defs":
+  [
+    {
+      "namespace":["types"], 
+      "enum":"code",
+      "items":
+      [
+        { "name": "GUILD_TEXT", "value":0}, 
+        { "name": "DM"},
+        { "name": "GUILD_VOICE"},
+        { "name": "GROUP_DM"},
+        { "name": "GUILD_CATEGORY"},
+        { "name": "GUILD_NEWS"},
+        { "name": "GUILD_STORE"}
+      ]
+    },
+    {
+      "struct":"dati",
+      "fields":
+      [
+        {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"id"},
+        {"type":{"base":"int", "int_alias":"types::code"}, "name":"type"},
+        {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"guild_id"},
+        {"type":{"base":"int"}, "name":"position"},
+        {"type":{"base":"overwrite::dati", "dec":"ntl"}, "name":"permission_overwrites"}, 
+        {"type":{"base":"char", "dec":"[MAX_NAME_LEN]"}, "name":"name"},
+        {"type":{"base":"char", "dec":"[MAX_TOPIC_LEN]"}, "name":"topic"},
+        {"type":{"base":"bool"}, "name":"nsfw"},
+        {"type":{"base":"char", "dec":"*"}, "name":"last_message_id"},
+        {"type":{"base":"int"}, "name":"bitrate"},
+        {"type":{"base":"int"}, "name":"user_limit"},
+        {"type":{"base":"int"}, "name":"rate_limit_per_user"},
+        {"type":{"base":"user::dati", "dec":"ntl"}, "name":"recipients"},
+        {"type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}, "name":"icon"},
+        {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"owner_id"},
+        {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"application_id"},
+        {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"parent_id"},
+        {"type":{"base":"char", "dec":"*", "converter":"iso8601"}, "name":"last_pin_timestamp"},
+        {"type":{"base":"message::dati", "dec":"ntl"}, "name":"messages"}
+      ]
+    }
+  ]
+}
+
