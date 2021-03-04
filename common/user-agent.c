@@ -262,6 +262,11 @@ send_request(struct ua_conn_s *conn)
   ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
   DS_PRINT("Response URL: %s", conn->resp_url);
 
+  if (httpcode == HTTP_NO_CONTENT) {
+    *conn->resp_body.start = '\0';
+    conn->resp_body.size = 0;
+  }
+
   return httpcode;
 }
 
