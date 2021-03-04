@@ -230,6 +230,7 @@ struct jc_field {
   struct inject_condition inject_condition;
   char * comment;
   bool lazy_init;
+  char spec[512];
 };
 
 static void
@@ -421,6 +422,8 @@ field_from_json(char *json, size_t size, void *x)
                           &p->lazy_init,
                           loc_from_json, &p->loc,
                           &p->comment);
+
+  snprintf(p->spec, sizeof(p->spec), "%.*s", size, json);
 
   if (spec_buffer.start) {
     addr_to_lnc (spec_buffer.start, spec_buffer.size, json, &lnc);
@@ -1256,9 +1259,11 @@ gen_struct(FILE *fp, struct jc_struct *s)
   int i = 0;
   for (i = 0; s->fields && s->fields[i]; i++) {
     struct jc_field *f = s->fields[i];
-    fprintf(fp, "  // edit '%s:%d:%d' to change this field\n",
+    fprintf(fp, "  // edit '%s:%d:%d' to change the following spec to change field\n",
             spec_name, f->lnc.line + 1, f->lnc.column);
+    fprintf(fp, "  // '%s'\n", f->spec);
     emit_field(NULL, fp, f);
+    fprintf(fp, "\n");
   }
   fprintf(fp, "  struct {\n");
   fprintf(fp, "    bool enable_arg_switches;\n");
