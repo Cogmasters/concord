@@ -282,7 +282,7 @@ STATIC ntl_t ntl_fmap(void *cxt, ntl_t in_list, size_t out_elem_size, elem_conve
 STATIC ntl_t ntl_append(ntl_t p, size_t elem_size, void *added_elem)
 {
   size_t i=0;
-  ntl_t o = calloc(1 + ntl_length(p), elem_size);
+  ntl_t o = ntl_calloc(1 + ntl_length(p), elem_size);
   while (p && p[i]) {
     // copy prev array contents to new array
     memcpy(o[i], p[i], elem_size);
