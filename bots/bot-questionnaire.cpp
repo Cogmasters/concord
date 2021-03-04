@@ -30,7 +30,7 @@ void set_role(client *client, const uint64_t guild_id, const uint64_t channel_id
 
   if (role->id) {
     char text[150];
-    snprintf(text, sizeof(text), "Succesfully created <@!%lu> role", role->id);
+    snprintf(text, sizeof(text), "Succesfully created <@!%" PRIu64 "> role", role->id);
 
     channel::message::create::params params2 = {
       .content = text
@@ -67,7 +67,7 @@ void on_member_join(client *client, const user::dati *me, const uint64_t guild_i
     set_role(client, guild_id, ch->id, member);
 
     char text[1024];
-    snprintf(text, sizeof(text), "Welcome, <@!%lu>!", member->user->id);
+    snprintf(text, sizeof(text), "Welcome, <@!%" PRIu64 ">!", member->user->id);
     channel::message::create::params params2 = {
       .content = text
     };
@@ -95,11 +95,7 @@ int main(int argc, char *argv[])
 
   setcb(client, GUILD_MEMBER_ADD, &on_member_join);
 
-  printf("\n\nThis bot demonstrates how easy it is to load embed"
-         " from a json file.\n"
-         "1. Edit 'bot-embed.json' to change how the embed contents"
-         " are displayed.\n"
-         "2. Type 'show embed' in any channel to trigger the bot\n"
+  printf("\n\nTHIS IS A WORK IN PROGRESS"
          "\nTYPE ANY KEY TO START BOT\n");
   fgetc(stdin); // wait for input
 
