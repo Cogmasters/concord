@@ -30,7 +30,7 @@ void set_role(client *client, const uint64_t guild_id, const uint64_t channel_id
 
   if (role->id) {
     char text[150];
-    snprintf(text, sizeof(text), "Succesfully created <@!%" PRIu64 "> role", role->id);
+    snprintf(text, sizeof(text), "Succesfully created <@&%" PRIu64 "> role", role->id);
 
     channel::message::create::params params2 = {
       .content = text
