@@ -12,28 +12,31 @@
  *
  * Simple JSON/Query/Body <-> Struct Conversion Spec
  *
- * <definition> := { <namespace> <struct-list> <enum-list> }
+ * <definition> := {
+ *      "disable"?:<bool>,
+ *      "title"?:<string>,
+ *      "comment"?:<string>,
+ *      "namespace"?: [<string>+],
+ *      "defs": [ <def-list> ]
+ *      }
  *
- * <namespace> : = "namespace" : [ <string>+ ]
+ * <def> := "title"?:<string>,
+ *          "comment"?:<string>,
+ *          "namespace"?:[<string>+],
+ *          (<struct> | <enum>)
  *
- * <struct> :=  "struct" : { "name": <string>, <fields> }
+ * <struct> :=  "struct" : <string>, "fields": [ <field>+ ]
  *
- * <struct-list> := <struct> <struct-list> | <struct>
  *
- * <fields>  := "fields": [ <field-list> ]
+ * <field> := { "name"?:<string>,
+ *              "json_key"?:<string>,
+ *              (<field-type>| "copy_json_value":true)
+ *              <field-loc>?
+ *              "comment"?:<string>
+ *              "lazy_load"?:<bool>
+ *              "lazy_init"?:<bool>
+ *            }
  *
- * <field-list> := <field> <field-list> | <field>
- *
- * <field-info> := { <field-name> <json-key>? <field-type>
- *                   <field-loc>? <comment>?
- *                   <lazy-init>? <lazy-load>?
- *                 }
- *
- * <field-name>  :=  "name" : <string>
- * <json-key>  := "json_key" : <string>
- * <comment> := "comment" : <string>
- * <lazy-init> := "lazy_init": true|false
- * <lazy-load> := "lazy_load": true|false
  *
  * <field-type>  :=  "type" : { "base":<string>,
  *                              "int_alias"? : <string>,
@@ -42,15 +45,23 @@
  *                              "inject_if_not"?:<string>|<bool>|<number>|null,
  *                            }
  *
- * <field-loc>   :=  "loc"  : ("json" | "query" | "body")
  *
- * <enum> := "enum" { "name": <string>, <enum-items> }
+ * <field-loc>   :=  "loc"  : ("json" | "query" | "body" | "url)
  *
- * <enum-items> = "items": [ <item>+ ]
  *
+ * <enum> := "enum" :<string>, "items": [ <items>+ ]
  * <item> := { "name" : <string>, "value": <integer>? }
  *
  */
+
+static void
+emit_alias_disabled(FILE *fp, char *f)
+{
+  /*
+  fprintf(fp, "__typeof(%s_disabled) %s __attribute__((weak, alias(\"%s_disabled\")));\n",
+          f, f, f);
+          */
+}
 
 static char * spec_name = "";
 static struct sized_buffer spec_buffer = {0};
@@ -131,8 +142,7 @@ static void load_converters(char *filename)
 }
 
 static struct converter* get_converter(char *name) {
-  int i;
-  for (i = 0; converters[i]; i++) {
+  for (int i = 0; converters[i]; i++) {
     if (0 == strcmp(name, converters[i]->name)) {
       //fprintf(stderr, "%p\n", converters + i);
       return converters[i];
@@ -180,7 +190,7 @@ struct decor {
 struct jc_type {
   char *base;
   char *int_alias; // use for enum type names that are represented as int
-  char *jtype;
+  char *json_type; // string, number, bool, object, array
   struct decor decor;
   char * converter;
   bool nullable;
@@ -233,6 +243,7 @@ struct jc_field {
   bool lazy_init;
   char spec[512];
   bool option;
+  bool copy_json_value;
 };
 
 static void
@@ -403,12 +414,15 @@ field_from_json(char *json, size_t size, void *x)
   bool has_inject_if_not = false;
   struct sized_buffer t = {0};
 
+  bool copy_json_value = false;
+
   struct line_and_column lnc = {0};
   size_t s = json_extract(json, size,
                           "(name):?s,"
                           "(name):lnc,"
                           "(todo):b,"
                           "(json_key):?s,"
+                          // "(type):?s,"
                           "(type.base):?s,"
                           "(type.int_alias):?s,"
                           "(type.json_type):?s,"
@@ -425,9 +439,10 @@ field_from_json(char *json, size_t size, void *x)
                           &p->lnc,
                           &p->todo,
                           &p->json_key,
+                          //&copy_json_value,
                           &p->type.base,
                           &p->type.int_alias,
-                          &p->type.jtype,
+                          &p->type.json_type,
                           decor_from_json, &p->type.decor,
                           &p->type.converter,
                           &p->type.nullable,
@@ -1062,20 +1077,25 @@ is_disabled_method(struct jc_struct *s, char *name)
 static void gen_from_json(FILE *fp, struct jc_struct *s)
 {
   char *t = s->name;
-  if (is_disabled_method(s, "from_json"))
-    fprintf(fp,
-            "void %s_from_json_disabled(char *json, size_t len, struct %s *p)\n",
-            t, t);
-  else
-    fprintf(fp, "void %s_from_json(char *json, size_t len, struct %s *p)\n",
-            t, t);
+  bool emit_spec = true, is_disabled = false;
+  char * suffix = "";
+
+  if (is_disabled_method(s, "from_json")) {
+    emit_spec = false;
+    suffix = "_disabled";
+    is_disabled = true;
+  }
+
+  fprintf(fp, "void %s_from_json%s(char *json, size_t len, struct %s *p)\n",
+          t, suffix, t);
 
   fprintf(fp, "{\n");
   fprintf(fp, "  static size_t ret=0; // used for debugging\n");
   fprintf(fp, "  size_t r=0;\n");
   fprintf(fp, "  r=json_extract(json, len, \n");
   for (int i = 0; s->fields && s->fields[i]; i++) {
-    emit_field_spec(NULL, fp, s->fields[i]);
+    if (emit_spec)
+      emit_field_spec(NULL, fp, s->fields[i]);
     emit_json_extractor(NULL, fp, s->fields[i]);
   }
 
@@ -1084,7 +1104,8 @@ static void gen_from_json(FILE *fp, struct jc_struct *s)
   fprintf(fp, "                \"@record_null\",\n");
 
   for (int i = 0; s->fields && s->fields[i]; i++) {
-    emit_field_spec(NULL, fp, s->fields[i]);
+    if (emit_spec)
+      emit_field_spec(NULL, fp, s->fields[i]);
     emit_json_extractor_arg(NULL, fp, s->fields[i]);
   }
 
@@ -1097,6 +1118,13 @@ static void gen_from_json(FILE *fp, struct jc_struct *s)
     " sizeof(p->__M.record_null));\n");
   fprintf(fp, "  ret = r;\n");
   fprintf(fp, "}\n");
+
+  if (is_disabled) {
+    char *f = NULL;
+    asprintf(&f, "%s_from_json", t);
+    emit_alias_disabled(fp, f);
+    free(f);
+  }
 }
 
 static void emit_inject_setting(void *cxt, FILE *fp, struct jc_field *f)
@@ -1201,21 +1229,32 @@ static void emit_json_injector_arg(void * cxt, FILE *fp, struct jc_field *f)
 static void gen_to_json(FILE *fp, struct jc_struct *s)
 {
   char *t = s->name;
-  fprintf(fp, "size_t %s_to_json(char *json, size_t len, struct %s *p)\n",
-          t, t);
+  bool emit_spec = true, is_disabled = false;
+  char * suffix = "";
+
+  if (is_disabled_method(s, "to_json")) {
+    emit_spec = false;
+    is_disabled = true;
+    suffix = "_disabled";
+  }
+
+  fprintf(fp, "size_t %s_to_json%s(char *json, size_t len, struct %s *p)\n",
+          t, suffix, t);
   fprintf(fp, "{\n");
   fprintf(fp, "  size_t r;\n");
   fprintf(fp, "  r=json_inject(json, len, \n");
 
   for (int i = 0; s->fields && s->fields[i]; i++) {
-    emit_field_spec(NULL, fp, s->fields[i]);
+    if (emit_spec)
+      emit_field_spec(NULL, fp, s->fields[i]);
     emit_json_injector(NULL, fp, s->fields[i]);
   }
 
   fprintf(fp, "                \"@arg_switches:b\",\n");
 
   for (int i = 0; s->fields && s->fields[i]; i++) {
-    emit_field_spec(NULL, fp, s->fields[i]);
+    if (emit_spec)
+      emit_field_spec(NULL, fp, s->fields[i]);
     emit_json_injector_arg(NULL, fp, s->fields[i]);
   }
 
@@ -1224,6 +1263,13 @@ static void gen_to_json(FILE *fp, struct jc_struct *s)
     " p->__M.enable_arg_switches);\n");
   fprintf(fp, "  return r;\n");
   fprintf(fp, "}\n");
+
+  if (is_disabled) {
+    char *f = NULL;
+    asprintf(&f, "%s_to_json", t);
+    emit_alias_disabled(fp, f);
+    free(f);
+  }
 }
 
 static void gen_to_query(FILE *fp, struct jc_struct *s)

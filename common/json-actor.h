@@ -77,6 +77,10 @@
 extern "C" {
 #endif // __cplusplus
 
+struct json_raw_value {
+  //struct sized_buffer buffer;
+  int type;
+};
 /*
  * This function will inject variadic parameters into an json
  * according to the specification `injector`
@@ -141,6 +145,8 @@ struct line_and_column {
 
 extern void
 addr_to_lnc (char *json, size_t size, char *addr, struct line_and_column *ln);
+
+void json_actor_strong_type(int b);
 
 #ifdef __cplusplus
 }

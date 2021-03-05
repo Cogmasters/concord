@@ -6,6 +6,7 @@
     {
       "title":"Overwrite Structure",
       "namespace":["overwrite"],
+      "disable_methods":["from_json", "to_json"],
       "struct":"dati",
       "fields":
       [

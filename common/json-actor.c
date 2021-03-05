@@ -65,6 +65,13 @@
 #include "json-actor.h"
 #include "orka-debug.h"
 
+
+static int strong_type = 1;
+void json_actor_strong_type(int b)
+{
+  strong_type = b;
+}
+
 /*
  * convert address to line and column
  */
@@ -1854,8 +1861,13 @@ static size_t extract_str (struct action * v, int i, struct e_info * info)
   jsmntok_t * tokens = info->tokens;
   char * json = info->pos;
   if (JSMN_STRING != tokens[i].type && JSMN_PRIMITIVE != tokens[i].type) {
-    print_tok(stderr, json, tokens, i);
-    ERR("expecect string");
+    if (strong_type) {
+      print_tok(stderr, json, tokens, i);
+      ERR("expecect string");
+    }
+    else {
+      return 0;
+    }
   }
 
   bool is_null = false;
@@ -1922,8 +1934,13 @@ static size_t extract_scalar (struct action * a, int i, struct e_info * info)
   jsmntok_t * tokens = info->tokens;
   char * json = info->pos, * xend; // exclusive end
   if (tokens[i].type != JSMN_PRIMITIVE && tokens[i].type != JSMN_STRING) {
-    print_tok(stderr, json, tokens, i);
-    ERR("Token is not a primitive or string");
+    if (strong_type) {
+      print_tok(stderr, json, tokens, i);
+      ERR("Token is not a primitive or string");
+    }
+    else {
+      return 0;
+    }
   }
 
   bool is_null = false;

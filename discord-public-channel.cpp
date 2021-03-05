@@ -561,6 +561,45 @@ add_field(dati *embed, char name[], char value[], bool Inline)
 
 namespace overwrite {
 
+void dati_from_json(char *json, size_t len, struct dati *p)
+{
+  static size_t ret=0; // used for debugging
+  size_t r=0;
+  r=json_extract(json, len,
+                 "(id):F,"
+                   "(type):d,"
+                   "(allow):s_as_u64,"
+                   "(deny):s_as_u64,"
+                   "@arg_switches:b"
+                   "@record_defined"
+                   "@record_null",
+                 orka_strtoull, &p->id,
+                 &p->type,
+                 &p->allow,
+                 &p->deny,
+                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
+                 p->__M.record_defined, sizeof(p->__M.record_defined),
+                 p->__M.record_null, sizeof(p->__M.record_null));
+  ret = r;
+}
+
+size_t dati_to_json(char *json, size_t len, struct dati *p)
+{
+  size_t r;
+  r=json_inject(json, len,
+                "(id):|F|,"
+                  "(type):d,"
+                  "(allow):s_as_u64,"
+                  "(deny):s_as_u64,"
+                  "@arg_switches:b",
+                orka_ulltostr, &p->id,
+                &p->type,
+                &p->allow,
+                &p->deny,
+                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
+  return r;
+}
+
 void
 append(
   dati ***permission_overwrites, 
