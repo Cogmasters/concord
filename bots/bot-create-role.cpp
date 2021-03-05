@@ -25,7 +25,7 @@ void on_command(
   if (msg->author->bot)
     return;
 
-  role::dati *role = role::dati_alloc();
+  guild::role::dati *role = guild::role::dati_alloc();
 
   guild::create_role::params params1 = {
     .name = msg->content
@@ -42,7 +42,7 @@ void on_command(
     channel::message::create::run(client, msg->channel_id, &params2, NULL);
   }
 
-  role::dati_free(role);
+  guild::role::dati_free(role);
 }
 
 int main(int argc, char *argv[])

@@ -277,6 +277,10 @@ https://discord.com/developers/docs/resources/guild#integration-object-integrati
 https://discord.com/developers/docs/resources/guild#ban-object */
 #include "./specs-code/guild.ban.hh"
 
+/* ROLE STRUCTURE
+https://discord.com/developers/docs/topics/permissions#role-object-role-structure */
+#include "./specs-code/guild.role.hh"
+
 /* WELCOME SCREEN STRUCTURE
 https://discord.com/developers/docs/resources/guild#welcome-screen-object-welcome-screen-structure */
 namespace welcome_screen {
@@ -315,9 +319,6 @@ https://discord.com/developers/docs/resources/voice#voice-state-object-voice-sta
 https://discord.com/developers/docs/resources/webhook#webhook-object */
 #include "./specs-code/webhook.hh"
 
-/* ROLE STRUCTURE
-https://discord.com/developers/docs/topics/permissions#role-object-role-structure */
-#include "./specs-code/role.hh"
 } // namespace discord
 
 
@@ -498,6 +499,12 @@ void create(client *client, const uint64_t guild_id, const uint64_t user_id, int
 void remove(client *client, const uint64_t guild_id, const uint64_t user_id, const char reason[]);
 
 } // namespace ban
+
+namespace role {
+
+dati** get_list(client *client, const uint64_t guild_id);
+
+} // namespace role
 
 } // namespace guild
 

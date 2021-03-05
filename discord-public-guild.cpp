@@ -238,7 +238,6 @@ get(client *client, const uint64_t guild_id, const uint64_t user_id, dati *p_ban
     "/guilds/%llu/bans/%llu", guild_id, user_id);
 }
 
-//@todo modifiable query string parameters
 dati**
 get_list(client *client, const uint64_t guild_id)
 {
@@ -349,6 +348,33 @@ remove(client *client, const uint64_t guild_id, const uint64_t user_id, const ch
 }
 
 } // namespace ban
+
+namespace role {
+
+dati**
+get_list(client *client, const uint64_t guild_id)
+{
+  if (!guild_id) {
+    D_PUTS("Missing 'guild_id'");
+    return NULL;
+  }
+
+  dati **new_roles = NULL;
+
+  struct resp_handle resp_handle =
+    {&dati_list_from_json_v, (void*)&new_roles};
+
+  user_agent::run( 
+    &client->ua,
+    &resp_handle,
+    NULL,
+    HTTP_GET,
+    "/guilds/%llu/roles", guild_id);
+
+  return new_roles;
+}
+
+} // namespace role
 
 } // namespace guild
 } // namespace discord
