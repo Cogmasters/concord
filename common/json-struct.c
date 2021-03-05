@@ -183,6 +183,7 @@ struct jc_type {
   char *jtype;
   struct decor decor;
   char * converter;
+  bool nullable;
 };
 
 static void
@@ -231,6 +232,7 @@ struct jc_field {
   char * comment;
   bool lazy_init;
   char spec[512];
+  bool option;
 };
 
 static void
@@ -248,10 +250,15 @@ print_field(FILE *fp, struct jc_field *p)
   }
 }
 
-struct jc_struct {
-  char **disable_methods;
-  char **namespace;
+#define DEF_HEADER \
+  char **disable_methods; \
+  char *title; \
+  char *comment; \
+  char **namespace; \
   char *name;
+
+struct jc_struct {
+  DEF_HEADER
   struct jc_field **fields;
 };
 
@@ -282,20 +289,16 @@ print_item(FILE *fp, struct jc_item *p, int i)
 }
 
 struct jc_enum {
-  char **disable_methods;
-  char **namespace;
-  char *name;
+  DEF_HEADER
   struct jc_item **items;
 };
 
 struct jc_def {
-  char **disable_methods;
-  char **namespace;
-  char *name;
+  DEF_HEADER
   union {
     struct jc_field **fields;
     struct jc_item **items;
-  } _;
+  } list;
   bool is_struct;
 };
 
@@ -411,6 +414,8 @@ field_from_json(char *json, size_t size, void *x)
                           "(type.json_type):?s,"
                           "(type.dec):F,"
                           "(type.converter):?s,"
+                          "(type.nullable):b,"
+                          "(option):b,"
                           "(inject_if_not):key,"
                           "(inject_if_not):T,"
                           "(lazy_init):b,"
@@ -425,6 +430,8 @@ field_from_json(char *json, size_t size, void *x)
                           &p->type.jtype,
                           decor_from_json, &p->type.decor,
                           &p->type.converter,
+                          &p->type.nullable,
+                          &p->option,
                           &has_inject_if_not,
                           &t,
                           &p->lazy_init,
@@ -492,10 +499,14 @@ struct_from_json(char *json, size_t size, struct jc_struct *s)
   };
 
   size_t ret = json_extract(json, size,
+                            "(comment):?s"
+                            "(title):?s"
                             "(namespace):F"
                             "(struct):?s"
                             "(disable_methods):F"
                             "(fields):F",
+                            &s->comment,
+                            &s->title,
                             orka_str_to_ntl, &d0,
                             &s->name,
                             orka_str_to_ntl, &dx,
@@ -983,8 +994,10 @@ static void gen_cleanup(FILE *fp, struct jc_struct *s)
 {
   char *t = s->name;
   fprintf(fp, "void %s_cleanup(struct %s *d) {\n", t, t);
-  for (int i = 0; s->fields && s->fields[i]; i++)
+  for (int i = 0; s->fields && s->fields[i]; i++) {
+    emit_field_spec(NULL, fp, s->fields[i]);
     emit_field_cleanup(NULL, fp, s->fields[i]);
+  }
 
   fprintf(fp, "}\n");
 }
@@ -1061,15 +1074,19 @@ static void gen_from_json(FILE *fp, struct jc_struct *s)
   fprintf(fp, "  static size_t ret=0; // used for debugging\n");
   fprintf(fp, "  size_t r=0;\n");
   fprintf(fp, "  r=json_extract(json, len, \n");
-  for (int i = 0; s->fields && s->fields[i]; i++)
+  for (int i = 0; s->fields && s->fields[i]; i++) {
+    emit_field_spec(NULL, fp, s->fields[i]);
     emit_json_extractor(NULL, fp, s->fields[i]);
+  }
 
   fprintf(fp, "                \"@arg_switches:b\"\n");
   fprintf(fp, "                \"@record_defined\"\n");
   fprintf(fp, "                \"@record_null\",\n");
 
-  for (int i = 0; s->fields && s->fields[i]; i++)
+  for (int i = 0; s->fields && s->fields[i]; i++) {
+    emit_field_spec(NULL, fp, s->fields[i]);
     emit_json_extractor_arg(NULL, fp, s->fields[i]);
+  }
 
   fprintf(fp, "                p->__M.arg_switches,"
     " sizeof(p->__M.arg_switches),"
@@ -1145,6 +1162,7 @@ static void gen_use_default_inject_settings(FILE *fp, struct jc_struct *s)
   fprintf(fp, "{\n");
   fprintf(fp, "  p->__M.enable_arg_switches = true;\n");
   for (int i = 0; s->fields && s->fields[i]; i++) {
+    emit_field_spec(NULL, fp, s->fields[i]);
     emit_inject_setting(&i, fp, s->fields[i]);
     fprintf(fp, "\n");
   }
@@ -1189,13 +1207,17 @@ static void gen_to_json(FILE *fp, struct jc_struct *s)
   fprintf(fp, "  size_t r;\n");
   fprintf(fp, "  r=json_inject(json, len, \n");
 
-  for (int i = 0; s->fields && s->fields[i]; i++)
+  for (int i = 0; s->fields && s->fields[i]; i++) {
+    emit_field_spec(NULL, fp, s->fields[i]);
     emit_json_injector(NULL, fp, s->fields[i]);
+  }
 
   fprintf(fp, "                \"@arg_switches:b\",\n");
 
-  for (int i = 0; s->fields && s->fields[i]; i++)
+  for (int i = 0; s->fields && s->fields[i]; i++) {
+    emit_field_spec(NULL, fp, s->fields[i]);
     emit_json_injector_arg(NULL, fp, s->fields[i]);
+  }
 
   fprintf(fp, "                p->__M.arg_switches, "
     "sizeof(p->__M.arg_switches),"
@@ -1265,7 +1287,11 @@ static void
 gen_struct(FILE *fp, struct jc_struct *s)
 {
   char *t = s->name;
-  fprintf(fp, "\n\n");
+  if (s->title)
+    fprintf(fp, "/* Title: %s */\n", s->title);
+  if (s->comment)
+    fprintf(fp, "/* %s */\n", s->comment);
+
   fprintf(fp, "struct %s {\n", t);
   int i = 0;
   for (i = 0; s->fields && s->fields[i]; i++) {
@@ -1387,7 +1413,7 @@ gen_typedef (FILE *fp, struct jc_struct *s)
 static void
 gen_struct_all (FILE *fp, struct jc_struct *s)
 {
-  //fprintf (fp, "/* comment out to avoid redefinition warning\n");
+  fprintf(fp, "\n");
   gen_open_namespace(fp, s->namespace);
 
   if (file_type == FILE_HEADER || file_type == FILE_DECLARATION) {
