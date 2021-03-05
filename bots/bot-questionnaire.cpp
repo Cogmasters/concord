@@ -18,34 +18,47 @@ on_ready(client *client, const user::dati *me)
   (void)client;
 }
 
-void
-set_beginner_role(
+u64_snowflake_t
+create_beginner_role(
   client *client, 
   const guild::member::dati *member,
-  const u64_snowflake_t guild_id, 
-  const u64_snowflake_t channel_id)
+  const u64_snowflake_t guild_id)
 {
-  role::dati role;
-  role::dati_init(&role);
+  role::dati rl;
+  role::dati_init(&rl);
 
-  // craete new unique role for newbie user
-  char role_name[128];
-  snprintf(role_name, sizeof(role_name), "beginner_%s", member->user->username);
-  guild::create_role::params params1 = {
-    .name = role_name
+  guild::create_role::params params = {
+    .name = "beginner"
   };
-  guild::create_role::run(client, guild_id, &params1, &role);
+  guild::create_role::run(client, guild_id, &params, &rl);
 
-  if (!role.id) { // couldn't create new role
-    fprintf(stderr, "Couldn't create %s role", role_name);
-    return; /* EARLY RETURN */
-  }
+  return rl.id;
+}
 
-  // role was created, assign beginner role to new user
-  fprintf(stderr, "Succesfully created %s role", role_name);
-  guild::modify_member::params params3 = {0};
-  ja_u64_list_append(&params3.roles, &role.id);
-  guild::modify_member::run(client, guild_id, member->user->id, &params3, NULL);
+u64_snowflake_t
+create_beginner_channel(
+  client *client, 
+  const guild::member::dati *member,
+  const u64_snowflake_t guild_id,
+  const u64_snowflake_t role_id)
+{
+  channel::dati ch;
+  channel::dati_init(&ch);
+
+  guild::create_channel::params params = {
+    .name = "welcome",
+    .topic = "Questionnaire."
+  };
+  channel::overwrite::append(
+    &params.permission_overwrites,
+    role_id,
+    0, // role type
+    0x40 | 0x400 | 0x800,  // Read and Send Messages, Add Reactions
+    0);
+
+  guild::create_channel::run(client, guild_id, &params, &ch);
+
+  return ch.id;
 }
 
 void 
@@ -55,31 +68,26 @@ on_member_join(
   const u64_snowflake_t guild_id, 
   const guild::member::dati *member)
 {
-  if (member->user->bot) // ignore bots
-    return;
+  if (member->user->bot) return; // ignore bots
 
-  channel::dati *ch = channel::dati_alloc();
+  u64_snowflake_t role_id = create_beginner_role(client, member, guild_id);
+  if (!role_id) return; /* @todo this is not how to properly handle this */
 
-  char channel_name[32];
-  snprintf(channel_name, sizeof(channel_name), "welcome_%s", member->user->username);
-  guild::create_channel::params params1 = {
-    .name = channel_name,
-    .topic = "Questionnaire."
+  u64_snowflake_t channel_id = create_beginner_channel(client, member, guild_id, role_id);
+  if (!channel_id) return; /* @todo this is not how to properly handle this */
+
+  // Assign newly created role to new user
+  guild::modify_member::params params1 = {0};
+  ja_u64_list_append(&params1.roles, &role_id);
+  guild::modify_member::run(client, guild_id, member->user->id, &params1, NULL);
+
+  // Send some messages to be read by the newcomer
+  char text[512];
+  snprintf(text, sizeof(text), "Welcome, <@!%" PRIu64 ">!", member->user->id);
+  channel::message::create::params params2 = {
+    .content = text
   };
-  guild::create_channel::run(client, guild_id, &params1, ch);
-
-  if (ch->id) {
-    set_beginner_role(client, member, guild_id, ch->id);
-
-    char text[512];
-    snprintf(text, sizeof(text), "Welcome, <@!%" PRIu64 ">!", member->user->id);
-    channel::message::create::params params2 = {
-      .content = text
-    };
-    channel::message::create::run(client, ch->id, &params2, NULL);
-  }
-
-  channel::dati_free(ch);
+  channel::message::create::run(client, channel_id, &params2, NULL);
 }
 
 int main(int argc, char *argv[])
