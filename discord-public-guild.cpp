@@ -120,35 +120,6 @@ run(client *client, const uint64_t guild_id, const uint64_t user_id, params *par
 
 } // namespace modify_member
 
-namespace create_role {
-
-void run(client *client, const uint64_t guild_id, params *params, role::dati *p_role)
-{
-  if (!guild_id) {
-    D_PUTS("Missing 'guild_id'");
-    return;
-  }
-
-  char payload[MAX_PAYLOAD_LEN];
-  create_role::params_use_default_inject_settings(params);
-  create_role::params_to_json(payload, sizeof(payload), params);
-
-  struct resp_handle resp_handle = {
-    .ok_cb = p_role ? role::dati_from_json_v : NULL,
-    .ok_obj = p_role,
-  };
-
-  struct sized_buffer req_body = {payload, strlen(payload)};
-
-  user_agent::run( 
-    &client->ua,
-    &resp_handle,
-    &req_body,
-    HTTP_POST, "/guilds/%llu/roles", guild_id);
-}
-
-} // namespace create_role
-
 namespace member {
 
 namespace get_list {
@@ -373,6 +344,35 @@ get_list(client *client, const uint64_t guild_id)
 
   return new_roles;
 }
+
+namespace create {
+
+void run(client *client, const uint64_t guild_id, params *params, dati *p_role)
+{
+  if (!guild_id) {
+    D_PUTS("Missing 'guild_id'");
+    return;
+  }
+
+  char payload[MAX_PAYLOAD_LEN];
+  params_use_default_inject_settings(params);
+  params_to_json(payload, sizeof(payload), params);
+
+  struct resp_handle resp_handle = {
+    .ok_cb = p_role ? dati_from_json_v : NULL,
+    .ok_obj = p_role,
+  };
+
+  struct sized_buffer req_body = {payload, strlen(payload)};
+
+  user_agent::run( 
+    &client->ua,
+    &resp_handle,
+    &req_body,
+    HTTP_POST, "/guilds/%llu/roles", guild_id);
+}
+
+} // namespace create
 
 } // namespace role
 

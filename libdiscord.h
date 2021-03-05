@@ -468,13 +468,6 @@ void run(client *client, const uint64_t guild_id, const uint64_t user_id, params
 
 } // namespace modify_member
 
-namespace create_role {
-#include "./specs-code/guild.create_role.hh"
-
-void run(client *client, const uint64_t guild_id, params *params, role::dati *p_role);
-
-} // namespace create_role
-
 namespace member {
 
 namespace get_list {
@@ -503,6 +496,13 @@ void remove(client *client, const uint64_t guild_id, const uint64_t user_id, con
 namespace role {
 
 dati** get_list(client *client, const uint64_t guild_id);
+
+namespace create {
+#include "./specs-code/guild.role.create.hh"
+
+void run(client *client, const uint64_t guild_id, params *params, role::dati *p_role);
+
+} // namespace create
 
 } // namespace role
 
