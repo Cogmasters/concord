@@ -1,19 +1,25 @@
 {
   "namespace": ["discord", "guild", "welcome_screen" ],
-  "comment": "VOICE STRUCTURE\nhttps://discord.com/developers/docs/resources/voice#voice-state-object-voice-state-structure",
+  "title": "Welcome Screen Object",
+  "comment": "https://discord.com/developers/docs/resources/guild#welcome-screen-object", 
   "defs":
   [
     {
+      "comment":"https://discord.com/developers/docs/resources/guild#welcome-screen-object-welcome-screen-channel-structure",
+      "title":"Welcome Screen Channel Structure",
       "namespace":["screen_channel"],
       "struct":"dati",
       "fields":
       [
         { "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
+        { "name": "description", "type":{ "base":"char", "dec":"*" }},
         { "name": "emoji_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
         { "name": "emoji_name", "type":{ "base":"char", "dec":"*" }}
       ]
     },
     {
+      "comment":"https://discord.com/developers/docs/resources/guild#welcome-screen-object-welcome-screen-structure",
+      "title":"Welcome Screen Structure",
       "struct":"dati",
       "fields":
       [

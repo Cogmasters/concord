@@ -9,15 +9,15 @@
       "struct":"dati",
       "fields":
       [
-        { "name": "user", "type":{ "base":"discord::user::dati", "dec":"*" }},
-        { "name": "nick", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]"}},
-        { "name": "roles", "todo":true, "type":{ "base":"s_as_u64", "dec":"ntl" }},
+        { "name": "user", "type":{ "base":"discord::user::dati", "dec":"*" }, "option":true},
+        { "name": "nick", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]"}, "option":true},
+        { "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl"}, "comment":"array of role object ids"},
         { "name": "joined_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }},
         { "name": "premium_since", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }},
         { "name": "deaf", "type":{ "base":"bool" }},
         { "name": "mute", "type":{ "base":"bool" }},
-        { "name": "pending", "type":{ "base":"bool" }},
-        { "name": "permissions", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size"}
+        { "name": "pending", "type":{ "base":"bool" }, "option":true},
+        { "name": "permissions", "type":{ "base":"char", "dec":"*"}, "option":true}
       ]
     }
   ]

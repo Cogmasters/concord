@@ -111,17 +111,14 @@ size_t ja_u64_to_query(char *json, size_t len, ja_u64 *p) {
 }
 
 void ja_u64_init(ja_u64 *p) {
-  memset(p, 0, sizeof(*p));
+  p->value = 0;
 }
 
 void ja_u64_cleanup(ja_u64 *p) {
   return;
 }
 
-
-
 void ja_u64_cleanup_v(void *p) {
-  ja_u64_cleanup((ja_u64 *)p);
 }
 
 void ja_u64_init_v(void *p) {
@@ -135,8 +132,8 @@ ja_u64* ja_u64_alloc() {
 }
 
 void ja_u64_free(ja_u64 *p) {
-  ja_u64_cleanup(p);
-  free(p);
+  //ja_u64_cleanup(p);
+  //free(p);
 }
 
 void ja_u64_free_v(void *p) {

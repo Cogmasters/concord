@@ -4,6 +4,7 @@
   "defs":
   [
     {
+      "title":"Channel Mention Structure",
       "namespace":["mention"], 
       "struct":"dati",
       "fields":

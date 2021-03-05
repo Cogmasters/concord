@@ -5,6 +5,7 @@
   "defs":
   [
     {
+      "title":"Default Message Notification Level",
       "comment": "https://discord.com/developers/docs/resources/guild#guild-object-default-message-notification-level",
       "namespace": ["default_message_notification_level"],
       "enum": "code",
@@ -14,6 +15,7 @@
       ]
     },
     {
+      "title":"Explicit Content Filter Level",
       "comment": "https://discord.com/developers/docs/resources/guild#guild-object-explicit-content-filter-level",
       "namespace": ["explicit_content_filter_level"],
       "enum": "code",
@@ -24,6 +26,7 @@
       ]
     },
     {
+      "title": "MFA Level",
       "comment": "https://discord.com/developers/docs/resources/guild#guild-object-mfa-level",
       "namespace": ["mfa_level"],
       "enum": "code",
@@ -33,6 +36,7 @@
       ]
     },
     {
+      "title": "Verification Level",
       "comment": "https://discord.com/developers/docs/resources/guild#guild-object-verification-level",
       "namespace": ["verification_level"],
       "enum": "code",
@@ -45,6 +49,7 @@
       ]
     },
     {
+      "title": "Premium Tier",
       "comment": "https://discord.com/developers/docs/resources/guild#guild-object-premium-tier",
       "namespace": ["premium_tier"],
       "enum": "code",
@@ -56,15 +61,17 @@
       ]
     },
     {
+      "title":"System Channel Flags",
       "comment": "https://discord.com/developers/docs/resources/guild#guild-object-system-channel-flags",
       "namespace": ["system_channel_flags"],
       "enum": "code",
       "items": [
-        {"name":"SUPRESS_JOIN_NOTIFICATIONS", "value":1},
-        {"name":"SUPRESS_PREMIUM_SUBSCRIPTIONS", "value":2}
+        {"name":"SUPRESS_JOIN_NOTIFICATIONS", "value":1, "comment":"1<<0"},
+        {"name":"SUPRESS_PREMIUM_SUBSCRIPTIONS", "value":2, "comment":"1<<1"}
       ]
     },
     {
+      "title":"Guild Features",
       "comment": "https://discord.com/developers/docs/resources/guild#guild-object-guild-features",
       "namespace": ["guild_features"],
       "enum": "code",
@@ -87,7 +94,8 @@
       ]
     },
     {
-      "comment": "",
+      "title":"Unavailable Guild Object",
+      "comment": "https://discord.com/developers/docs/resources/guild#unavailable-guild-object",
       "namespace": ["unavailable_guild"],
       "struct": "dati",
       "fields": [
@@ -96,15 +104,16 @@
       ]
     },
     {
-      "comment": "",
+      "title":"Guild Preview Object",
+      "comment": "https://discord.com/developers/docs/resources/guild#guild-preview-object",
       "namespace": ["preview"],
       "struct": "dati",
       "fields": [
         {"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}},
         {"name":"name", "type":{"base":"char", "dec":"[MAX_NAME_LEN]"}},
-        {"name":"icon", "type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}},
-        {"name":"splash", "type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}},
-        {"name":"discovery", "type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}},
+        {"name":"icon", "type":{"base":"char", "dec":"*", "nullable":true}},
+        {"name":"splash", "type":{"base":"char", "dec":"*", "nullable":true}},
+        {"name":"discovery", "type":{"base":"char", "dec":"*", "nullable":true}},
         {"name":"emojis", "type":{"base":"emoji::dati", "dec":"*"}},
         {"name":"features", "todo":true, "type":{"base":"char", "dec":"ntl"}},
         {"name":"approximate_member_count", "type":{"base":"int"}},
@@ -113,12 +122,14 @@
       ]
     },
     {
-      "comment": "",
+      "title":"Guild Widget Object",
+      "comment": "https://discord.com/developers/docs/resources/guild#guild-widget-object",
       "namespace": ["widget"],
       "struct": "dati",
       "fields": [
         {"name":"enabled", "type":{"base":"bool"}},
-        {"name":"channel_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}}
+        {"name":"channel_id", "type":{"base":"char", "dec":"*", "converter":"snowflake", 
+         "nullable":true}}
       ]
     }
   ]

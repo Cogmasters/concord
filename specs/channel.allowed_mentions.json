@@ -4,13 +4,14 @@
   "defs":
   [
     {
+      "title":"Allowed Mentions Structure",
       "namespace":["allowed_mentions"], 
       "struct":"dati",
       "fields":
       [
         { "name": "parse", "type":{ "base":"ja_str", "dec":"ntl" }},
-        { "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }},
-        { "name": "users", "type":{ "base":"ja_u64", "dec":"ntl" }},
+        { "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"list of snowflakes"},
+        { "name": "users", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"list of snowflakes"},
         { "name": "replied_user", "type":{ "base":"bool" }}
       ]
     }

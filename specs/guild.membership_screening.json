@@ -1,6 +1,6 @@
 {
   "namespace": ["discord", "guild", "membership_screening" ],
-  "comment": "VOICE STRUCTURE\nhttps://discord.com/developers/docs/resources/voice#voice-state-object-voice-state-structure",
+  "comment": "https://discord.com/developers/docs/resources/guild#membership-screening-object", 
   "defs":
   [
     {
@@ -12,6 +12,7 @@
       ]
     },
     {
+      "comment":"https://discord.com/developers/docs/resources/guild#membership-screening-object-membership-screening-field-structure",
       "namespace":["field"],
       "struct":"dati",
       "fields":

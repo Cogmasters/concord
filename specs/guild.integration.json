@@ -4,8 +4,9 @@
   "comment": "https://discord.com/developers/docs/resources/guild#integration-object-integration-structure",
   "defs":
   [
-    
     {
+      "title": "Integration Expire Behaviors",
+      "comment": "https://discord.com/developers/docs/resources/guild#integration-object-integration-expire-behaviors",
       "namespace": ["integration", "expire_behaviors"],
       "enum": "code",
       "items": [
@@ -14,6 +15,8 @@
       ]
     },
     {
+      "title":"Integration Account Structure",
+      "comment":"https://discord.com/developers/docs/resources/guild#integration-account-object-integration-account-structure",
       "namespace": ["integration", "account"],
       "struct":"dati",
       "fields": [
@@ -22,18 +25,22 @@
       ]
     },
     {
+      "title":"Integration Application Object",
+      "comment":"https://discord.com/developers/docs/resources/guild#integration-application-object-integration-application-structure",
       "namespace": ["integration", "application"],
       "struct":"dati",
       "fields": [
         { "name":"id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
+        { "name":"name", "type":{ "base":"char", "dec":"*" }},
         { "name":"icon", "type":{ "base":"char", "dec":"[MAX_SHA256_LEN]" }},
         { "name":"description", "type":{ "base":"char", "dec":"*" }},
         { "name":"summary", "type":{ "base":"char", "dec":"*" }},
-        { "name":"bot", "type":{ "base":"user::dati", "dec":"*" }}
+        { "name":"bot", "type":{ "base":"user::dati", "dec":"*" }, "option":true}
       ]
     },
     {
       "comment": "https://discord.com/developers/docs/resources/guild#integration-object-integration-structure",
+      "title":"Integration Structure",
       "namespace": ["integration"],
       "struct":"dati",
       "fields":
@@ -47,7 +54,7 @@
         { "name": "enable_emotions", "type":{ "base":"bool"}},
         { "name": "expire_behavior", "type":{ "base":"int", "int_alias":"expire_behaviors::code"}},
         { "name": "expire_grace_period", "type":{ "base":"int"}},
-        { "name": "user", "type":{ "base":"user::dati", "dec":"*"}},
+        { "name": "user", "type":{ "base":"user::dati", "dec":"*"}, "opt":true},
         { "name": "account", "type":{ "base":"account::dati", "dec":"*"}},
         { "name": "synced_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601"}},
         { "name": "subscriber_count", "type":{ "base":"int"}},

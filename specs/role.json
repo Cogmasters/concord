@@ -4,6 +4,18 @@
   "defs":
   [
     {
+      "title":"Role Tags Structure",
+      "namespace":["role", "tags"],
+      "struct":"dati",
+      "fields":
+      [
+        { "name": "bot_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
+        { "name": "integration_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
+        { "name": "premium_subscriber", "type":{ "base":"int" }}
+      ]
+    },
+    {
+      "title":"Role Object",
       "namespace":["role"],
       "struct":"dati",
       "fields":
@@ -16,17 +28,7 @@
         { "name": "permissions", "type":{ "base":"char", "dec":"*" }},
         { "name": "managed", "type":{ "base":"bool" }},
         { "name": "mentionable", "type":{ "base":"bool" }},
-        { "name": "tags", "todo":true }
-      ]
-    },
-    {
-      "namespace":["role", "tags"],
-      "struct":"dati",
-      "fields":
-      [
-        { "name": "bot_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
-        { "name": "integration_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
-        { "name": "premium_subscriber", "type":{ "base":"int" }}
+        { "name": "tags", "type":{"base":"role::tags::dati", "dec":"*"}}
       ]
     }
   ]

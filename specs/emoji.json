@@ -1,20 +1,22 @@
 {
   "namespace": ["discord", "emoji"],
-  "comment": "\nhttps://discord.com/developers/docs/resources/emoji#emoji-object-emoji-structure",
+  "comment": "https://discord.com/developers/docs/resources/emoji#emoji-object-emoji-structure",
   "defs":
   [
     {
+      "title":"Emoji Structure",
       "struct":"dati",
       "fields":
       [
         { "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}},
         { "name": "name", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]"}},
-        { "name": "roles", "todo":true },
-        { "name": "user", "type":{ "base":"discord::user::dati", "dec":"*" }},
-        { "name": "require_colons", "type":{ "base":"bool" }},
-        { "name": "managed", "type":{ "base":"bool" }},
-        { "name": "animated", "type":{ "base":"bool" }},
-        { "name": "available", "type":{ "base":"bool" }}
+        { "name": "roles", "type":{ "base":"role::dati", "dec":"ntl"}, "option":true,
+          "todo":true },
+        { "name": "user", "type":{ "base":"user::dati", "dec":"*" }, "option":true },
+        { "name": "require_colons", "type":{ "base":"bool" }, "option":true},
+        { "name": "managed", "type":{ "base":"bool" }, "option":true},
+        { "name": "animated", "type":{ "base":"bool" }, "option":true},
+        { "name": "available", "type":{ "base":"bool" }, "option":true}
       ]
     }
   ]

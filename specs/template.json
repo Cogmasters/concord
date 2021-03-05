@@ -1,9 +1,11 @@
 {
-  "namespace": ["discord", "Template"],
-  "comment": "TEMPLATE STRUCTURE\nhttps://discord.com/developers/docs/resources/template#template-object-template-structure",
+  "namespace": ["discord"],
+  "comment": "https://discord.com/developers/docs/resources/template#template-object-template-structure",
   "defs":
   [
     {
+      "title":"Template Structure",
+      "namespace":["Template"],
       "struct":"dati",
       "fields":
       [

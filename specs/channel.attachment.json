@@ -13,8 +13,8 @@
         { "name": "size", "type":{ "base":"int" }},
         { "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }},
         { "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }},
-        { "name": "height", "type":{ "base":"int" }},
-        { "name": "width", "type":{ "base":"int" }}
+        { "name": "height", "type":{ "base":"int", "nullable":true }},
+        { "name": "width", "type":{ "base":"int", "nullable":true }}
       ]
     }
   ]

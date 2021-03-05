@@ -1,9 +1,11 @@
 {
   "namespace": ["discord", "invite"],
-  "comment": "VOICE STRUCTURE\nhttps://discord.com/developers/docs/resources/voice#voice-state-object-voice-state-structure",
+  "comment": "https://discord.com/developers/docs/resources/invite#invite-object",
   "defs":
   [
     {
+      "title":"Target User Types",
+      "comment":"https://discord.com/developers/docs/resources/invite#invite-object-target-user-types",
       "namespace":["target_user_types"],
       "enum":"code",
       "items":
@@ -12,19 +14,24 @@
       ]
     },
     {
+      "title":"Invite Structure",
+      "comment":"https://discord.com/developers/docs/resources/invite#invite-object-invite-structure",
       "struct":"dati",
       "fields":
       [
         { "name": "code", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"},
-        { "name": "guild", "type":{ "base":"discord::guild::dati", "dec":"*"}},
-        { "name": "channel", "type":{ "base":"discord::channel::dati", "dec":"*"}},
-        { "name": "target_user", "type":{ "base":"discord::user::dati", "dec":"*"}},
+        { "name": "guild", "type":{ "base":"guild::dati", "dec":"*"}, "comment":"partial guild object"},
+        { "name": "channel", "type":{ "base":"channel::dati", "dec":"*"}, "comment":"partial channel object"},
+        { "name": "inviter", "type":{ "base":"user::dati", "dec":"*"}},
+        { "name": "target_user", "type":{ "base":"user::dati", "dec":"*"}, "comment":"partial user object"},
         { "name": "target_user_type", "type":{ "base":"int", "int_alias":"target_user_types::code" }},
         { "name": "approximate_presence_count", "type":{ "base":"int" }},
         { "name": "approximate_member_count", "type":{ "base":"int" }}
       ]
     },
     {
+      "comment":"https://discord.com/developers/docs/resources/invite#invite-metadata-object",
+      "title":"Invite Metadata Structure",
       "namespace":["metadata"],
       "struct":"dati",
       "fields":
@@ -33,7 +40,7 @@
         { "name": "max_uses", "type":{ "base":"int" }},
         { "name": "max_age", "type":{ "base":"int" }},
         { "name": "temporary", "type":{ "base":"int" }},
-        { "name": "created_at", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}}
+        { "name": "created_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601"}}
       ]
     }
   ]
