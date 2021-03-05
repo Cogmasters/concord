@@ -567,12 +567,12 @@ void dati_from_json(char *json, size_t len, struct dati *p)
   size_t r=0;
   r=json_extract(json, len,
                  "(id):F,"
-                   "(type):d,"
-                   "(allow):s_as_u64,"
-                   "(deny):s_as_u64,"
-                   "@arg_switches:b"
-                   "@record_defined"
-                   "@record_null",
+                 "(type):d,"
+                 "(allow):s_as_u64,"
+                 "(deny):s_as_u64,"
+                 "@arg_switches:b"
+                 "@record_defined"
+                 "@record_null",
                  orka_strtoull, &p->id,
                  &p->type,
                  &p->allow,
@@ -588,10 +588,10 @@ size_t dati_to_json(char *json, size_t len, struct dati *p)
   size_t r;
   r=json_inject(json, len,
                 "(id):|F|,"
-                  "(type):d,"
-                  "(allow):s_as_u64,"
-                  "(deny):s_as_u64,"
-                  "@arg_switches:b",
+                "(type):d,"
+                "(allow):s_as_u64,"
+                "(deny):s_as_u64,"
+                "@arg_switches:b",
                 orka_ulltostr, &p->id,
                 &p->type,
                 &p->allow,
@@ -617,6 +617,7 @@ append(
   }
 
   overwrite::dati new_overwrite;
+  overwrite::dati_init(&new_overwrite);
   new_overwrite.id = id;
   new_overwrite.type = type;
   new_overwrite.allow = allow;
