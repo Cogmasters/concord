@@ -4,6 +4,8 @@
   "defs":
   [
     {
+      "title":"Channel Types",
+      "comment":"https://discord.com/developers/docs/resources/channel#channel-object-channel-types",
       "namespace":["types"], 
       "enum":"code",
       "items":
@@ -18,27 +20,42 @@
       ]
     },
     {
+      "comment":"https://discord.com/developers/docs/resources/channel#channel-object-channel-structure",
+      "title":"Channel Structure",
       "struct":"dati",
       "fields":
       [
         {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"id"},
         {"type":{"base":"int", "int_alias":"types::code"}, "name":"type"},
-        {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"guild_id"},
-        {"type":{"base":"int"}, "name":"position"},
-        {"type":{"base":"overwrite::dati", "dec":"ntl"}, "name":"permission_overwrites"}, 
-        {"type":{"base":"char", "dec":"[MAX_NAME_LEN]"}, "name":"name"},
-        {"type":{"base":"char", "dec":"[MAX_TOPIC_LEN]"}, "name":"topic"},
-        {"type":{"base":"bool"}, "name":"nsfw"},
-        {"type":{"base":"char", "dec":"*"}, "name":"last_message_id"},
-        {"type":{"base":"int"}, "name":"bitrate"},
-        {"type":{"base":"int"}, "name":"user_limit"},
-        {"type":{"base":"int"}, "name":"rate_limit_per_user"},
-        {"type":{"base":"user::dati", "dec":"ntl"}, "name":"recipients"},
-        {"type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}, "name":"icon"},
-        {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"owner_id"},
-        {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"application_id"},
-        {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"parent_id"},
-        {"type":{"base":"char", "dec":"*", "converter":"iso8601"}, "name":"last_pin_timestamp"},
+        {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"guild_id",
+         "option":true, "inject_if_not":0 },
+        {"type":{"base":"int"}, "name":"position",
+         "option":true, "inject_if_not":0 },
+        {"type":{"base":"overwrite::dati", "dec":"ntl"}, "name":"permission_overwrites",
+         "option":true, "inject_if_not":null }, 
+        {"type":{"base":"char", "dec":"[MAX_NAME_LEN]"}, "name":"name", 
+         "option":true, "inject_if_not":""},
+        {"type":{"base":"char", "dec":"[MAX_TOPIC_LEN]"}, "name":"topic",
+         "option":true, "inject_if_not":"" },
+        {"type":{"base":"bool"}, "name":"nsfw", "option":true, "inject_if_not":false},
+        {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"last_message_id",
+         "option":true, "inject_if_not":0},
+        {"type":{"base":"int"}, "name":"bitrate", "option":true, "inject_if_not":0},
+        {"type":{"base":"int"}, "name":"user_limit", "option":true, "inject_if_not":0},
+        {"type":{"base":"int"}, "name":"rate_limit_per_user", 
+         "option":true, "inject_if_not":0},
+        {"type":{"base":"user::dati", "dec":"ntl"}, "name":"recipients",
+         "option":true, "inject_if_not":null},
+        {"type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}, "name":"icon",
+         "option":true, "inject_if_not":""},
+        {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"owner_id",
+         "option":true, "inject_if_not":0},
+        {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"application_id",
+         "option":true, "inject_if_not":0},
+        {"type":{"base":"char", "dec":"*", "converter":"snowflake", "nullable":true}, "name":"parent_id",
+         "option":true, "inject_if_not":0},
+        {"type":{"base":"char", "dec":"*", "converter":"iso8601", "nullable":true}, "name":"last_pin_timestamp",
+         "option":true, "inject_if_not":0},
         {"type":{"base":"message::dati", "dec":"ntl"}, "name":"messages"}
       ]
     }

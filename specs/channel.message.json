@@ -4,6 +4,7 @@
   "defs":
   [
     {
+      "comment":"https://discord.com/developers/docs/resources/channel#message-object-message-sticker-format-types",
       "namespace":["sticker", "format_type"], 
       "enum":"code",
       "items":
@@ -14,6 +15,7 @@
       ]
     },
     {
+      "comment":"https://discord.com/developers/docs/resources/channel#message-object-message-sticker-structure",
       "namespace":["sticker"],
       "struct":"dati",
       "fields": [
@@ -21,45 +23,59 @@
         {"name":"pack_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}},
         {"name":"name", "type":{"base":"char", "dec":"*"}},
         {"name":"description", "type":{"base":"char", "dec":"*"}},
-        {"name":"tags", "type":{"base":"char", "dec":"*"}},
+        {"name":"tags", "type":{"base":"char", "dec":"*"}, "option":true, "inject_of_not":null},
         {"name":"asset","type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}},
-        {"name":"preview_asset", "type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}},
+        {"name":"preview_asset", "type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}, 
+         "option":true, "inject_if_not":""},
         {"name":"type", "type":{"base":"int", "int_alias":"format_type::code"}}
       ]
     },
     {
+      "title":"Message Flags",
+      "comment":"https://discord.com/developers/docs/resources/channel#message-object-message-flags",
       "namespace":["flags"],
       "enum":"code",
       "items":[
-        {"name":"CROSSPOSTED", "value":1},
-        {"name":"IS_CROSSPOST", "value":2},
-        {"name":"SUPRESS_EMBEDS", "value":4},
-        {"name":"SOURCE_MESSAGE_DELETED", "value":8},
-        {"name":"URGENT", "value":16}
+        {"name":"CROSSPOSTED", "value":1, "comment":"1<<0"},
+        {"name":"IS_CROSSPOST", "value":2, "comment":"1<<1"},
+        {"name":"SUPRESS_EMBEDS", "value":4, "comment":"1<<2"},
+        {"name":"SOURCE_MESSAGE_DELETED", "value":8, "comment":"1<<3"},
+        {"name":"URGENT", "value":16, "comment":"1<<4"}
       ]
     },
     {
+      "title":"Message Reference Structure",
+      "comment":"https://discord.com/developers/docs/resources/channel#message-object-message-reference-structure",
       "namespace":["reference"],
       "struct":"dati",
       "fields": [
-        {"name":"message_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "inject_if_not":0},
-        {"name":"channel_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "inject_if_not":0},
-        {"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "inject_if_not":0},
-        {"name":"fail_if_not_exists", "type":{"base":"bool"}, "inject_if_not":false}
+        {"name":"message_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, 
+         "option":true, "inject_if_not":0},
+        {"name":"channel_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, 
+         "option":true, "inject_if_not":0},
+        {"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, 
+         "option":true, "inject_if_not":0},
+        {"name":"fail_if_not_exists", "type":{"base":"bool"}, 
+         "option":true, "inject_if_not":false}
       ]
     },
     {
+      "title":"Message Application Structure",
+      "comment":"https://discord.com/developers/docs/resources/channel#message-object-message-application-structure",
       "namespace":["application"],
       "struct":"dati",
       "fields": [
         {"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}},
-        {"name":"cover_image", "type":{"base":"char", "dec":"*"}},
+        {"name":"cover_image", "type":{"base":"char", "dec":"*"},
+         "option":true, "inject_if_not":null},
         {"name":"description", "type":{"base":"char", "dec":"*"}},
-        {"name":"icon", "type":{"base":"char", "dec":"*"}},
+        {"name":"icon", "type":{"base":"char", "dec":"*"}, "inject_if_not":null},
         {"name":"name", "type":{"base":"char", "dec":"*"}}
       ]
     },
     {
+      "title":"Message Activity Types",
+      "comment":"https://discord.com/developers/docs/resources/channel#message-object-message-activity-types",
       "namespace":["activity", "types"],
       "enum":"code",
       "items": [
@@ -70,13 +86,19 @@
       ]
     },
     {
+      "title":"Message Activity Structure",
+      "comment":"https://discord.com/developers/docs/resources/channel#message-object-message-activity-structure",
       "namespace":["activity"],
       "struct":"dati",
       "fields": [
-        {"name":"type", "type":{"base":"int", "int_alias":"types::code"}}
+        {"name":"type", "type":{"base":"int", "int_alias":"types::code"}},
+        {"name":"party_id", "type":{"base":"char", "dec":"*"},
+         "option":true, "inject_if_not":null}
       ]
     },
     {
+      "title":"Message Types",
+      "comment":"https://discord.com/developers/docs/resources/channel#message-object-message-types",
       "namespace":["types"],
       "enum":"code",
       "items": [
@@ -100,37 +122,51 @@
       ]
     },
     {
+      "title":"Message Structure",
       "comment":"https://discord.com/developers/docs/resources/channel#message-object",
       "disable_methods": ["from_json"],
       "struct":"dati",
       "fields": [
          {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"id"},
          {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"channel_id"},
-         {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"guild_id"},
+         {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"guild_id",
+          "option":true, "inject_if_not":0},
          {"type":{"base":"user::dati", "dec":"*"}, "name":"author"},
-         {"type":{"base":"guild::member::dati", "dec":"*"}, "name":"member"},
+         {"type":{"base":"guild::member::dati", "dec":"*"}, "name":"member", 
+          "option":true, "comment":"partial guild member object"},
          {"type":{"base":"char", "dec":"*"}, "name":"content"},
          {"type":{"base":"char", "dec":"*", "converter":"iso8601"},"name":"timestamp"},
          {"type":{"base":"char", "dec":"*", "converter":"iso8601"}, "name":"edited_timestamp"},
          {"type":{"base":"bool"}, "name":"tts"},
          {"type":{"base":"bool"}, "name":"mention_everyone"},
-         {"type":{"base":"user::dati", "dec":"ntl"}, "name":"mentions"},
-         {"type":{"base":"int"}, "name":"roles", "todo":true, "comment":"//@todo missing mention roles;"},
-         {"type":{"base":"mention::dati", "dec":"ntl"}, "name":"mention_channels"},
+         {"type":{"base":"user::dati", "dec":"ntl"}, "name":"mentions", 
+          "comment":"array of user objects, with an additional partial member field"},
+         {"type":{"base":"ja_u64", "dec":"ntl"}, "name":"mention_roles", "comment":"array of role object ids"},
+         {"type":{"base":"mention::dati", "dec":"ntl"}, "name":"mention_channels",
+          "option":true },
          {"type":{"base":"attachment::dati", "dec":"ntl"}, "name":"attachments"},
          {"type":{"base":"embed::dati", "dec":"ntl"}, "name":"embeds"},
-         {"type":{"base":"reaction::dati","dec":"ntl"}, "name":"reactions"},
-         {"type":{"base":"char", "dec":"*"}, "name":"nonce"},
+         {"type":{"base":"reaction::dati","dec":"ntl"}, "name":"reactions", 
+          "option":true },
+         {"type":{"base":"char", "dec":"*"}, "name":"nonce", "comment":"integer or string",
+          "option":true },
          {"type":{"base":"bool"}, "name":"pinned"},
-         {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"webhook_id"},
+         {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"webhook_id",
+          "option":true },
          {"type":{"base":"int", "int_alias":"types::code"}, "name":"type"},
-         {"type":{"base":"activity::dati", "dec":"*"}, "name":"activity"},
-         {"type":{"base":"application::dati", "dec":"ntl"}, "name":"application"},
-         {"type":{"base":"reference::dati", "dec":"*"}, "name":"message_reference"},
-         {"type":{"base":"int", "int_alias":"flags::code"}, "name":"flags"},
-         {"type":{"base":"sticker::dati", "dec":"ntl"}, "name":"stickers"},
-         {"type":{"base":"message::dati", "dec":"*"}, "name":"referenced_message", "lazy_init":true, 
-                  "comment":"this will cause recursive allocation"}
+         {"type":{"base":"activity::dati", "dec":"*"}, "name":"activity", 
+          "option":true, "inject_if_not":null },
+         {"type":{"base":"application::dati", "dec":"ntl"}, "name":"application",
+          "option":true, "inject_if_not":null },
+         {"type":{"base":"reference::dati", "dec":"*"}, "name":"message_reference",
+          "option":true, "inject_if_not":null },
+         {"type":{"base":"int", "int_alias":"flags::code"}, "name":"flags",
+          "option":true, "inject_if_not":0 },
+         {"type":{"base":"sticker::dati", "dec":"ntl"}, "name":"stickers",
+          "option":true, "inject_if_not":null, "comment":"array of sticker objects"},
+         {"type":{"base":"message::dati", "dec":"*"}, "name":"referenced_message", 
+          "lazy_init":true, "option":true", "inject_if_not":null,
+          "comment":"this will cause recursive allocation if allocating as the parent"}
       ]
     }
   ]
