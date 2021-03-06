@@ -565,16 +565,19 @@ void dati_from_json(char *json, size_t len, struct dati *p)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
+
   r=json_extract(json, len,
                  "(id):F,"
-                 "(type):d,"
-                 "(allow):s_as_u64,"
-                 "(deny):s_as_u64,"
+                 //"(type):s," @todo
+                 //"(allow_new):s," @todo
+                 "(allow):lld,"
+                 //"(deny_new):s," @todo
+                 "(deny):lld,"
                  "@arg_switches:b"
                  "@record_defined"
                  "@record_null",
                  orka_strtoull, &p->id,
-                 &p->type,
+                 //&p->type,
                  &p->allow,
                  &p->deny,
                  p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
