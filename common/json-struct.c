@@ -65,6 +65,18 @@ emit_alias_disabled(FILE *fp, char *f)
 
 static char * spec_name = "";
 static struct sized_buffer spec_buffer = {0};
+
+static void
+adjust_lnc(char * json, struct line_and_column *out_lnc)
+{
+  if (spec_buffer.start) {
+    struct line_and_column lnc = {0};
+    addr_to_lnc (spec_buffer.start, spec_buffer.size, json, &lnc);
+    out_lnc->line += (lnc.line + 1);
+    out_lnc->column += lnc.column;
+  }
+}
+
 struct converter {
   char *name;
   char *input_type;
@@ -263,10 +275,13 @@ print_field(FILE *fp, struct jc_field *p)
 
 #define DEF_HEADER \
   char **disable_methods; \
+  struct line_and_column disable_methods_lnc; \
   char *title; \
   char *comment; \
   char **namespace; \
-  char *name;
+  char *name; \
+  struct line_and_column name_lnc;
+
 
 struct jc_struct {
   DEF_HEADER
@@ -332,7 +347,7 @@ print_def(FILE *fp, struct jc_def *d)
 static void
 emit_field_spec(void *cxt, FILE *fp, struct jc_field *f)
 {
-  fprintf(fp, "  /* %s:%d:%d\n", spec_name, f->lnc.line + 1, f->lnc.column);
+  fprintf(fp, "  /* %s:%d:%d\n", spec_name, f->lnc.line, f->lnc.column);
   fprintf(fp, "     '%s'\n", f->spec);
   fprintf(fp, "  */\n");
 }
@@ -416,7 +431,6 @@ field_from_json(char *json, size_t size, void *x)
 
   bool copy_json_value = false;
 
-  struct line_and_column lnc = {0};
   size_t s = json_extract(json, size,
                           "(name):?s,"
                           "(name):lnc,"
@@ -454,12 +468,7 @@ field_from_json(char *json, size_t size, void *x)
                           &p->comment);
 
   snprintf(p->spec, sizeof(p->spec), "%.*s", (int)size, json);
-
-  if (spec_buffer.start) {
-    addr_to_lnc (spec_buffer.start, spec_buffer.size, json, &lnc);
-    p->lnc.line += lnc.line;
-    p->lnc.column += lnc.column;
-  }
+  adjust_lnc(json, &p->lnc);
 
   if (has_inject_if_not) {
     if (t.size == 0) {
@@ -514,18 +523,25 @@ struct_from_json(char *json, size_t size, struct jc_struct *s)
   };
 
   size_t ret = json_extract(json, size,
-                            "(comment):?s"
-                            "(title):?s"
-                            "(namespace):F"
-                            "(struct):?s"
-                            "(disable_methods):F"
+                            "(comment):?s,"
+                            "(title):?s,"
+                            "(namespace):F,"
+                            "(struct):?s,"
+                            "(struct):lnc,"
+                            "(disable_methods):F,"
+                            "(disable_methods):lnc,"
                             "(fields):F",
                             &s->comment,
                             &s->title,
                             orka_str_to_ntl, &d0,
                             &s->name,
+                            &s->name_lnc,
                             orka_str_to_ntl, &dx,
+                            &s->disable_methods_lnc,
                             orka_str_to_ntl, &d1);
+
+  adjust_lnc(json, &s->disable_methods_lnc);
+  adjust_lnc(json, &s->name_lnc);
   return ret;
 }
 
@@ -1086,6 +1102,12 @@ static void gen_from_json(FILE *fp, struct jc_struct *s)
     is_disabled = true;
   }
 
+  if (is_disabled) {
+    fprintf(fp, "\n/* This method is disabled at %s:%d:%d */\n",
+            spec_name,
+            s->disable_methods_lnc.line,
+            s->disable_methods_lnc.column);
+  }
   fprintf(fp, "void %s_from_json%s(char *json, size_t len, struct %s *p)\n",
           t, suffix, t);
 
@@ -1238,6 +1260,12 @@ static void gen_to_json(FILE *fp, struct jc_struct *s)
     suffix = "_disabled";
   }
 
+  if (is_disabled) {
+    fprintf(fp, "\n/* This method is disabled at %s:%d:%d */\n",
+            spec_name,
+            s->disable_methods_lnc.line,
+            s->disable_methods_lnc.column);
+  }
   fprintf(fp, "size_t %s_to_json%s(char *json, size_t len, struct %s *p)\n",
           t, suffix, t);
   fprintf(fp, "{\n");
@@ -1338,6 +1366,8 @@ gen_struct(FILE *fp, struct jc_struct *s)
   if (s->comment)
     fprintf(fp, "/* %s */\n", s->comment);
 
+  fprintf(fp, "/* This is defined at %s:%d:%d */\n",
+          spec_name, s->name_lnc.line, s->name_lnc.column);
   fprintf(fp, "struct %s {\n", t);
   int i = 0;
   for (i = 0; s->fields && s->fields[i]; i++) {

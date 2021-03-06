@@ -1999,16 +1999,6 @@ static size_t extract_scalar (struct action * a, int i, struct e_info * info)
     case B_KEY_EXISTENCE:
       *(bool *)a->operand = true;
       break;
-    case B_LINE_AND_COLUMN:
-    {
-      struct line_and_column *lnc = (struct line_and_column *) a->operand;
-      struct line_and_column x;
-      addr_to_lnc(info->input.start, info->input.size,
-                  json + tokens[i].start, &x);
-      lnc->line = x.line;
-      lnc->column = x.column;
-      break;
-    }
     case B_LONG_LONG:
       if (is_null)
         *(long long *) a->operand = 0;
@@ -2058,6 +2048,16 @@ static size_t apply_extraction(struct value *v, int idx, struct e_info *info)
   if (ACT_BUILT_IN == a->tag) {
     switch (a->_.builtin)
     {
+      case B_LINE_AND_COLUMN:
+      {
+        struct line_and_column *lnc = (struct line_and_column *) a->operand;
+        struct line_and_column x;
+        addr_to_lnc(info->input.start, info->input.size,
+                    json + tokens[idx].start, &x);
+        lnc->line = x.line;
+        lnc->column = x.column;
+        break;
+      }
       case B_STRING:
         return extract_str(a, idx, info);
       case B_TOKEN:
