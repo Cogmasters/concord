@@ -86,40 +86,6 @@ void run(client *client, const uint64_t guild_id, params *params, channel::dati 
 
 } // namespace create_channel
 
-namespace modify_member {
-
-void 
-run(client *client, const uint64_t guild_id, const uint64_t user_id, params *params, member::dati *p_member)
-{
-  if (!guild_id) {
-    D_PUTS("Missing 'guild_id'");
-    return;
-  }
-  if (!user_id) {
-    D_PUTS("Missing 'user_id'");
-    return;
-  }
-
-  char payload[MAX_PAYLOAD_LEN];
-  modify_member::params_use_default_inject_settings(params);
-  modify_member::params_to_json(payload, sizeof(payload), params);
-
-  struct resp_handle resp_handle = {
-    .ok_cb = p_member ? member::dati_from_json_v : NULL,
-    .ok_obj = p_member,
-  };
-
-  struct sized_buffer req_body = {payload, strlen(payload)};
-
-  user_agent::run( 
-    &client->ua,
-    &resp_handle,
-    &req_body,
-    HTTP_PATCH, "/guilds/%llu/members/%llu", guild_id, user_id);
-}
-
-} // namespace modify_member
-
 namespace member {
 
 namespace get_list {
@@ -163,6 +129,40 @@ run(client *client, const uint64_t guild_id, struct params *params)
 }
 
 } // namespace get_list
+
+namespace modify {
+
+void 
+run(client *client, const uint64_t guild_id, const uint64_t user_id, params *params, member::dati *p_member)
+{
+  if (!guild_id) {
+    D_PUTS("Missing 'guild_id'");
+    return;
+  }
+  if (!user_id) {
+    D_PUTS("Missing 'user_id'");
+    return;
+  }
+
+  char payload[MAX_PAYLOAD_LEN];
+  params_use_default_inject_settings(params);
+  params_to_json(payload, sizeof(payload), params);
+
+  struct resp_handle resp_handle = {
+    .ok_cb = p_member ? member::dati_from_json_v : NULL,
+    .ok_obj = p_member,
+  };
+
+  struct sized_buffer req_body = {payload, strlen(payload)};
+
+  user_agent::run( 
+    &client->ua,
+    &resp_handle,
+    &req_body,
+    HTTP_PATCH, "/guilds/%llu/members/%llu", guild_id, user_id);
+}
+
+} // namespace modify
 
 void remove(client *client, const uint64_t guild_id, const uint64_t user_id)
 {

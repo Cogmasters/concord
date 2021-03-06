@@ -447,6 +447,12 @@ void append(
 
 } // namespace channel
 
+namespace emoji { /* discord-public-emoji.cpp */
+
+dati** get_list(client *client, const uint64_t guild_id);
+
+} // namespace emoji
+
 namespace guild { /* discord-public-guild.cpp */
 
 //size_t dati_to_json(char *, size_t, void *p);
@@ -461,13 +467,6 @@ void run(client *client, const uint64_t guild_id, params *params, channel::dati 
 
 } // namespace create_channel
 
-namespace modify_member {
-#include "./specs-code/guild.modify_member.hh"
-
-void run(client *client, const uint64_t guild_id, const uint64_t user_id, params *params, member::dati *p_member);
-
-} // namespace modify_member
-
 namespace member {
 
 namespace get_list {
@@ -481,6 +480,13 @@ dati** run(client *client, const uint64_t guild_id, struct params *params);
 
 } // namespace get_list
 void remove(client *client, const uint64_t guild_id, const uint64_t user_id);
+
+namespace modify {
+#include "./specs-code/guild.member.modify.hh"
+
+void run(client *client, const uint64_t guild_id, const uint64_t user_id, params *params, member::dati *p_member);
+
+} // namespace modify
 
 } // namespace member
 

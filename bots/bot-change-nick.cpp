@@ -54,10 +54,10 @@ on_command(client *client, const user::dati *me, const channel::message::dati *m
     if (0 == strcmp(members[i]->user->username, sudo.username)
         && 0 == strcmp(members[i]->user->discriminator, sudo.discriminator))
     {
-      guild::modify_member::params params2 = {
+      guild::member::modify::params params2 = {
         .nick = sudo.nick
       };
-      guild::modify_member::run(client, msg->guild_id, members[i]->user->id, &params2, NULL);
+      guild::member::modify::run(client, msg->guild_id, members[i]->user->id, &params2, NULL);
     }
   }
 
