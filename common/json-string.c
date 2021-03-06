@@ -5,6 +5,8 @@
 #include <string.h>
 #include <ctype.h>
 
+#include "json-actor.h"
+
 char *
 json_string_escape(size_t *output_len_p, char *input, size_t input_len)
 {

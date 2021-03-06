@@ -132,6 +132,9 @@ json_vextract (char * json, size_t size, char * extractor, va_list ap);
 extern size_t
 query_inject(char *query, size_t size, char *injector, ...);
 
+extern char* url_encode(char *str);
+extern char*url_decode(char *str);
+
 /*
  * the line and column in a text file
  * it will be used to generate more human
