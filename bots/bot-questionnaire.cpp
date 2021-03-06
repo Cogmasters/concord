@@ -32,19 +32,12 @@ create_beginner_channel(
     .topic = "Questionnaire."
   };
 
-  guild::role::dati **rls = guild::role::get_list(client, guild_id);
-  for (size_t i=0; rls[i]; ++i) {
-    if (0x8 & strtoull(rls[i]->permissions, NULL, 10)) { // if role is admin ignore it
-      continue;
-    }
-
-    channel::overwrite::append(
-      &params.permission_overwrites,
-      rls[i]->id,
-      0, // role type
-      0, // Don't set allow permissions
-      0x40 | 0x400 | 0x800); // Deny Read and Send Messages, Add Reactions permissions
-  }
+  channel::overwrite::append(
+    &params.permission_overwrites,
+    guild_id, // @everyone role id is the same as guild id
+    0, // role type
+    0, // Don't set allow permissions
+    0x40 | 0x400 | 0x800); // Deny Read and Send Messages, Add Reactions permissions
 
   channel::overwrite::append(
     &params.permission_overwrites,
@@ -54,8 +47,6 @@ create_beginner_channel(
     0); // Don't set deny permissions
 
   guild::create_channel::run(client, guild_id, &params, &ch);
-
-  guild::role::dati_list_free(rls);
 
   return ch.id;
 }
