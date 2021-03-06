@@ -423,6 +423,17 @@ void del(client *client, const uint64_t channel_id, const uint64_t message_id);
 
 } // namespace message
 
+namespace reaction {
+
+void create(
+  client *client, 
+  const uint64_t channel_id, 
+  const uint64_t message_id, 
+  const uint64_t emoji_id, 
+  const char emoji_name[]);
+
+} // namespace reaction
+
 namespace embed {
 
 void change_thumbnail(dati *embed, char url[], char proxy_url[], int height, int width);

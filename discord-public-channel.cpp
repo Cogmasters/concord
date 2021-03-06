@@ -87,6 +87,7 @@ unpin_message(client *client, const uint64_t channel_id, const uint64_t message_
 }
 
 namespace message {
+
 void
 dati_from_json(char *str, size_t len, dati *message)
 {
@@ -408,6 +409,48 @@ del(client *client, const uint64_t channel_id, const uint64_t message_id)
 
 } // namespace message
 
+namespace reaction {
+
+void 
+create(
+  client *client, 
+  const uint64_t channel_id, 
+  const uint64_t message_id, 
+  const uint64_t emoji_id, 
+  const char emoji_name[])
+{
+  if (!channel_id) {
+    D_PUTS("Missing 'channel_id'");
+    return;
+  }
+  if (!message_id) {
+    D_PUTS("Missing 'message_id'");
+    return;
+  }
+
+  char *pct_emoji_name = (emoji_name) 
+                  ? url_encode((char*)emoji_name)
+                  : NULL;
+
+  char emoji_endpoint[256];
+  if (emoji_id)
+    snprintf(emoji_endpoint, sizeof(emoji_endpoint), "%s:%" PRIu64, pct_emoji_name, emoji_id);
+  else
+    snprintf(emoji_endpoint, sizeof(emoji_endpoint), "%s", pct_emoji_name);
+
+  user_agent::run(
+    &client->ua,
+    NULL,
+    NULL,
+    HTTP_PUT,
+    "/channels/%llu/messages/%llu/reactions/%s/@me", 
+    channel_id, message_id, emoji_endpoint);
+
+  free(pct_emoji_name);
+}
+
+} // namespace reaction
+
 namespace embed {
 
 void
@@ -563,7 +606,7 @@ namespace overwrite {
 
 void dati_from_json(char *json, size_t len, struct dati *p)
 {
-  static size_t ret=0; // used for debugging
+  static size_t ret=0; //used for debugging
   size_t r=0;
 
   r=json_extract(json, len,

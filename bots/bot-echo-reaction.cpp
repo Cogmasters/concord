@@ -25,17 +25,9 @@ void on_reaction_add(
     const guild::member::dati *member, 
     const emoji::dati *emoji)
 {
-  using namespace channel;
+  if (member->user->bot) return;
 
-  // make sure bot doesn't echoes other bots
-  if (member->user->bot)
-    return;
-
-  message::create::params params = {
-    .content = (char*)emoji->name
-  };
-
-  message::create::run(client, channel_id, &params, NULL);
+  channel::reaction::create(client, channel_id, message_id, emoji->id, emoji->name);
 }
 
 
