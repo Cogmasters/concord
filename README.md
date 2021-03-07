@@ -1,5 +1,7 @@
 # Orca: a bot framework for Discord etc.
 
+**Please give a star if you like this project.**
+
 Join our Discord server: [![Discord](https://discordapp.com/api/guilds/562694099887587338/widget.png)](https://discord.gg/2jfycwXVM3)
 
 It provides an easy to use, easy to deploy, easy to debug way to build
