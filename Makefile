@@ -15,6 +15,8 @@ SPECS       := $(wildcard specs/*.json)
 SPECS_XX   := $(addprefix specs-code/, $(notdir $(SPECS)))
 SPECS_CC   := $(SPECS_XX:%.json=%.cc)
 SPECS_HH   := $(SPECS_XX:%.json=%.hh)
+SPECS_C    := $(SPECS_XX:%.json=%.c)
+SPECS_H    := $(SPECS_XX:%.json=%.h)
 
 ACTOR_GEN_SRC = common/orka-utils.c common/json-actor.c \
 	common/ntl.c common/json-string.c common/json-scanf.c \
@@ -92,8 +94,8 @@ orka: mkdir $(ORKA_OBJS)
 discord: mkdir $(DISCORD_OBJS) libdiscord
 github: mkdir $(GITHUB_OBJS)
 
-specs_hh: $(SPECS_HH)
-specs_cc: $(SPECS_CC)
+specs_hh: $(SPECS_HH) $(SPECS_H)
+specs_cc: $(SPECS_CC) $(SPECS_C)
 
 specs: mkdir specs_hh specs_cc $(SPECS_OBJS)
 
@@ -134,6 +136,12 @@ specs-code/%.cc: specs/%.json
 specs-code/%.hh: specs/%.json
 	./bin/actor-gen.exe -d -o $@ $<
 
+specs-code/%.c: specs/%.json
+	./bin/actor-gen.exe -C -c -o $@ $<
+
+specs-code/%.h: specs/%.json
+	./bin/actor-gen.exe -C -d -o $@ $<
+
 $(OBJDIR)/%.cc.o: %.cc
 	$(CXX) $(CXXFLAGS) $(LIBS_CFLAGS) $(GENFLAGS) -c -o $@ $< -Wno-unused-but-set-variable
 
@@ -169,3 +177,4 @@ clean_actor_gen:
 
 purge : clean
 	rm -rf $(LIBDIR)
+	rm -rf $(ACTOR_OBJDIR)

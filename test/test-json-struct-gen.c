@@ -27,9 +27,12 @@ int main (int argc, char ** argv)
   int opt;
   char * config_file = NULL;
   /*enum file_type type = FILE_SINGLE_FILE;*/
-  struct emit_option eo = { .lang_C = false, .type = FILE_SINGLE_FILE };
+  struct emit_option eo = {
+    .lang_C = false,
+    .type = FILE_SINGLE_FILE
+  };
 
-  while ((opt = getopt(argc, argv, "hcdfCo:")) != -1) {
+  while ((opt = getopt(argc, argv, "hcdfWCo:")) != -1) {
     switch (opt) {
       case 'o':
         config_file = strdup(optarg);
@@ -48,6 +51,9 @@ int main (int argc, char ** argv)
         break;
       case 'C':
         eo.lang_C = true;
+        break;
+      case 'W':
+        eo.wrapper_only = true;
         break;
       default: /* '?' */
         print_usage(argv[0]);
