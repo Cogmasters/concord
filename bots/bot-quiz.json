@@ -1,7 +1,11 @@
 {
-  "quiz_chat_name": "quiz",
-  "quiz_chat_topic": "Quiz chat.",
-  "start_quiz_channel_id": "CHANNEL_ID_HERE",
-  "start_quiz_message_id": "MESSAGE_ID_HERE",
-  "start_quiz_reaction_emoji": "✔️"
+  "new_channel": {
+    "name": "quiz",
+    "topic": "Quiz chat."
+  },
+  "listener": {
+    "channel_id": "CHANNEL_ID_HERE",
+    "message_id": "MESSAGE_ID_HERE",
+    "reaction_emoji": "✔️"
+  }
 }

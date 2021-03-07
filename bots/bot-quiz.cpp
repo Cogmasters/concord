@@ -32,11 +32,11 @@ parse_session_config()
   size_t len;
   char *json_payload = orka_load_whole_file("bot-quiz.json", &len);
   json_extract(json_payload, len,
-    "(quiz_chat_name):?s"
-    "(quiz_chat_topic):?s"
-    "(start_quiz_channel_id):s_as_u64"
-    "(start_quiz_message_id):s_as_u64"
-    "(start_quiz_reaction_emoji):?s",
+    "(new_channel.name):?s"
+    "(new_channel.topic):?s"
+    "(listener.channel_id):s_as_u64"
+    "(listener.message_id):s_as_u64"
+    "(listener.reaction_emoji):?s",
     &g_session.chat_name,
     &g_session.chat_topic,
     &g_session.channel_id,
