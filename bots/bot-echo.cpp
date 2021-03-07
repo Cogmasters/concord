@@ -15,6 +15,20 @@ void on_ready(client *client, const user::dati *me)
   (void)client;
 }
 
+void on_reaction_add(
+    client *client, 
+    const user::dati *me,
+    const uint64_t channel_id, 
+    const uint64_t message_id, 
+    const uint64_t guild_id, 
+    const guild::member::dati *member, 
+    const emoji::dati *emoji)
+{
+  if (member->user->bot) return;
+
+  channel::reaction::create(client, channel_id, message_id, emoji->id, emoji->name);
+}
+
 void on_message_create(
     client *client,
     const user::dati *me,
@@ -88,7 +102,7 @@ void on_message_delete_bulk(
   using namespace channel;
 
   char buf[128];
-  snprintf(buf, sizeof(buf), "Did that %zu messages just disappear?", nids);
+  snprintf(buf, sizeof(buf), "Ouch! Where did those %zu messages go?", nids);
 
   message::create::params params = {
     .content = buf
@@ -117,6 +131,7 @@ int main(int argc, char *argv[])
   setcb(client, MESSAGE_UPDATE, &on_message_update);
   setcb(client, MESSAGE_DELETE, &on_message_delete);
   setcb(client, MESSAGE_DELETE_BULK, &on_message_delete_bulk);
+  setcb(client, REACTION_ADD, &on_reaction_add);
 
   run(client);
 

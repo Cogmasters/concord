@@ -19,16 +19,13 @@ on_ready(client *client, const user::dati *me)
 }
 
 u64_snowflake_t
-create_beginner_channel(
-  client *client, 
-  const guild::member::dati *member,
-  const u64_snowflake_t guild_id)
+create_readonly_channel(client *client, const u64_snowflake_t guild_id)
 {
   channel::dati ch;
   channel::dati_init(&ch);
 
   guild::create_channel::params params = {
-    .name = "welcome",
+    .name = "introduction",
     .topic = "Questionnaire."
   };
 
@@ -39,37 +36,33 @@ create_beginner_channel(
     0, // Don't set allow permissions
     0x40 | 0x400 | 0x800); // Deny Read and Send Messages, Add Reactions permissions
 
-  channel::overwrite::append(
-    &params.permission_overwrites,
-    member->user->id,
-    1, // user type
-    0x40 | 0x400 | 0x800,  // Allow Read and Send Messages, Add Reactions permissions
-    0); // Don't set deny permissions
-
   guild::create_channel::run(client, guild_id, &params, &ch);
 
   return ch.id;
 }
 
 void 
-on_member_join(
+on_create(
   client *client, 
   const user::dati *me, 
-  const u64_snowflake_t guild_id, 
-  const guild::member::dati *member)
+  const channel::message::dati *msg)
 {
-  if (member->user->bot) return; // ignore bots
+  using namespace channel;
 
-  u64_snowflake_t channel_id = create_beginner_channel(client, member, guild_id);
+  if (msg->author->bot) return; // ignore bots
+
+  u64_snowflake_t channel_id = create_readonly_channel(client, msg->guild_id);
   if (!channel_id) return; /* @todo this is not how to properly handle this */
 
-  // Send some messages to be read by the newcomer
-  char text[512];
-  snprintf(text, sizeof(text), "Welcome, <@!%" PRIu64 ">!", member->user->id);
-  channel::message::create::params params2 = {
-    .content = text
+  message::create::params params = {
+    .content = "React to me."
   };
-  channel::message::create::run(client, channel_id, &params2, NULL);
+  message::dati *ret_msg = message::dati_alloc();
+
+  message::create::run(client, channel_id, &params, ret_msg);
+  reaction::create(client, channel_id, ret_msg->id, 0, "😊");
+
+  message::dati_free(ret_msg);
 }
 
 int main(int argc, char *argv[])
@@ -87,7 +80,8 @@ int main(int argc, char *argv[])
   client *client = config_init(config_file);
   assert(NULL != client);
 
-  setcb(client, GUILD_MEMBER_ADD, &on_member_join);
+  set_prefix(client, "!channel");
+  setcb_command(client, "Create", &on_create);
 
   printf("\n\nTHIS IS A WORK IN PROGRESS"
          "\nTYPE ANY KEY TO START BOT\n");
