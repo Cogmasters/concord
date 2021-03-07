@@ -54,9 +54,9 @@
 		{ "name": "locale", "type":{ "base":"char", "dec":"[MAX_LOCALE_LEN]" }},
 		{ "name": "verified", "type":{ "base":"bool" }},
 		{ "name": "email", "type":{ "base":"char", "dec":"[MAX_EMAIL_LEN]" }},
-		{ "name": "flags", "type":{ "base":"int", "int_alias": "flags::code" }},
-		{ "name": "premium_type", "type":{ "base":"int", "int_alias": "premium_types::code" }},
-		{ "name": "public_flags", "type":{ "base":"int", "int_alias": "flags::code" }}
+		{ "name": "flags", "type":{ "base":"int", "int_alias": "discord::user::flags::code" }},
+		{ "name": "premium_type", "type":{ "base":"int", "int_alias": "discord::user::premium_types::code" }},
+		{ "name": "public_flags", "type":{ "base":"int", "int_alias": "discord::user::flags::code" }}
 	    ]
 	},
 	{

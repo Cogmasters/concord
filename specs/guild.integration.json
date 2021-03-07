@@ -52,7 +52,7 @@
         { "name": "syncing", "type":{ "base":"bool"}},
         { "name": "role_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}},
         { "name": "enable_emotions", "type":{ "base":"bool"}},
-        { "name": "expire_behavior", "type":{ "base":"int", "int_alias":"expire_behaviors::code"}},
+        { "name": "expire_behavior", "type":{ "base":"int", "int_alias":"discord::guild::integration::expire_behaviors::code"}},
         { "name": "expire_grace_period", "type":{ "base":"int"}},
         { "name": "user", "type":{ "base":"discord::user::dati", "dec":"*"}, "opt":true},
         { "name": "account", "type":{ "base":"discord::guild::integration::account::dati", "dec":"*"}},

@@ -26,7 +26,7 @@
       "fields":
       [
         {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"id"},
-        {"type":{"base":"int", "int_alias":"types::code"}, "name":"type"},
+        {"type":{"base":"int", "int_alias":"discord::channel::types::code"}, "name":"type"},
         {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"guild_id",
          "option":true, "inject_if_not":0 },
         {"type":{"base":"int"}, "name":"position",

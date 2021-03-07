@@ -62,7 +62,7 @@
       [
         { "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
         { "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
-        { "name": "type", "type":{ "base":"int", "int_alias":"types::code" }},
+        { "name": "type", "type":{ "base":"int", "int_alias":"discord::channel::types::code" }},
         { "name": "name", "type":{ "base":"char", "dec":"*" }}
       ]
     },

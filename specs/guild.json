@@ -23,20 +23,20 @@
         {"type":{"base":"int"}, "name":"afk_timeout"},
         {"type":{"base":"bool"}, "name":"widget_enabled", "option":true},
         {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"widget_channel_id", "option":true},
-        {"type":{"base":"int", "int_alias":"verification_level::code"}, "name":"verification_level"},
-        {"type":{"base":"int", "int_alias":"default_message_notification_level::code"}, 
+        {"type":{"base":"int", "int_alias":"discord::guild::verification_level::code"}, "name":"verification_level"},
+        {"type":{"base":"int", "int_alias":"discord::guild::default_message_notification_level::code"}, 
               "name":"default_message_notifications"},
-        {"type":{"base":"int", "int_alias":"explicit_content_filter_level::code"},
+        {"type":{"base":"int", "int_alias":"discord::guild::explicit_content_filter_level::code"},
               "name":"explicit_content_filter"},
         {"type":{"base":"discord::guild::role::dati", "dec":"ntl"}, "name":"roles", "todo":true, 
               "comment":"array of role objects"},
         {"type":{"base":"discord::emoji::dati", "dec":"ntl"}, "name":"emojis"},
         {"type":{"base":"ja_str", "dec":"ntl"}, "name":"features", "todo":true", 
               "comment":"array of guild feature strings"},
-        {"type":{"base":"int", "int_alias":"mfa_level::code"}, "name":"mfa_level"},
+        {"type":{"base":"int", "int_alias":"discord::guild::mfa_level::code"}, "name":"mfa_level"},
         {"type":{"base":"char", "dec":"*", "converter":"snowflake", "nullable":true}, "name":"application_id"},
         {"type":{"base":"char", "dec":"*", "converter":"snowflake", "nullable":true}, "name":"system_channel_id"},
-        {"type":{"base":"int", "int_alias":"system_channel_flags::code"}, "name":"system_channel_flags"}, 
+        {"type":{"base":"int", "int_alias":"discord::guild::system_channel_flags::code"}, "name":"system_channel_flags"}, 
         {"type":{"base":"char", "dec":"*", "converter":"snowflake", "nullable":true}, "name":"rules_channel_id"},
         {"type":{"base":"char", "dec":"*", "converter":"iso8601"}, "name":"joined_at", "option":true},
         {"type":{"base":"bool"}, "name":"large", "option":true},
@@ -54,7 +54,7 @@
         {"type":{"base":"char", "dec":"*", "nullable":true}, "name":"vanity_url_code"},
         {"type":{"base":"char", "dec":"*", "nullable":true}, "name":"description"}, 
         {"type":{"base":"char", "dec":"*", "nullable":true}, "name":"banner"},
-        {"type":{"base":"int", "int_alias":"premium_tier::code"}, "name":"premium_tier"},
+        {"type":{"base":"int", "int_alias":"discord::guild::premium_tier::code"}, "name":"premium_tier"},
         {"type":{"base":"int"}, "name":"premium_subscription_count", "option":true},
         {"type":{"base":"char", "dec":"[MAX_LOCALE_LEN]"}, "name":"preferred_locale"},
         {"type":{"base":"char", "dec":"*", "converter":"snowflake", "nullable":true}, 
@@ -62,7 +62,7 @@
         {"type":{"base":"int"}, "name":"max_video_channel_users", "option":true},
         {"type":{"base":"int"}, "name":"approximate_member_count", "option":true},
         {"type":{"base":"int"}, "name":"approximate_presence_count", "option":true},
-        {"type":{"base":"welcome_screen::dati", "dec":"*"}, "name":"welcome_screen", "option":true}
+        {"type":{"base":"discord::guild::welcome_screen::dati", "dec":"*"}, "name":"welcome_screen", "option":true}
       ]
     }
   ]

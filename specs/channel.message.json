@@ -27,7 +27,7 @@
         {"name":"asset","type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}},
         {"name":"preview_asset", "type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}, 
          "option":true, "inject_if_not":""},
-        {"name":"type", "type":{"base":"int", "int_alias":"format_type::code"}}
+        {"name":"type", "type":{"base":"int", "int_alias":"discord::channel::message::sticker::format_type::code"}}
       ]
     },
     {
@@ -91,7 +91,7 @@
       "namespace":["activity"],
       "struct":"dati",
       "fields": [
-        {"name":"type", "type":{"base":"int", "int_alias":"types::code"}},
+        {"name":"type", "type":{"base":"int", "int_alias":"discord::channel::message::activity::types::code"}},
         {"name":"party_id", "type":{"base":"char", "dec":"*"},
          "option":true, "inject_if_not":null}
       ]
@@ -153,18 +153,18 @@
          {"type":{"base":"bool"}, "name":"pinned"},
          {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"webhook_id",
           "option":true },
-         {"type":{"base":"int", "int_alias":"types::code"}, "name":"type"},
-         {"type":{"base":"activity::dati", "dec":"*"}, "name":"activity", 
+         {"type":{"base":"int", "int_alias":"discord::channel::message::types::code"}, "name":"type"},
+         {"type":{"base":"discord::channel::message::activity::dati", "dec":"*"}, "name":"activity", 
           "option":true, "inject_if_not":null },
-         {"type":{"base":"application::dati", "dec":"ntl"}, "name":"application",
+         {"type":{"base":"discord::channel::message::application::dati", "dec":"ntl"}, "name":"application",
           "option":true, "inject_if_not":null },
-         {"type":{"base":"reference::dati", "dec":"*"}, "name":"message_reference",
+         {"type":{"base":"discord::channel::message::reference::dati", "dec":"*"}, "name":"message_reference",
           "option":true, "inject_if_not":null },
-         {"type":{"base":"int", "int_alias":"flags::code"}, "name":"flags",
+         {"type":{"base":"int", "int_alias":"discord::channel::message::flags::code"}, "name":"flags",
           "option":true, "inject_if_not":0 },
-         {"type":{"base":"sticker::dati", "dec":"ntl"}, "name":"stickers",
+         {"type":{"base":"discord::channel::message::sticker::dati", "dec":"ntl"}, "name":"stickers",
           "option":true, "inject_if_not":null, "comment":"array of sticker objects"},
-         {"type":{"base":"message::dati", "dec":"*"}, "name":"referenced_message", 
+         {"type":{"base":"discord::channel::message::dati", "dec":"*"}, "name":"referenced_message", 
           "lazy_init":true, "option":true", "inject_if_not":null,
           "comment":"this will cause recursive allocation if allocating as the parent"}
       ]
