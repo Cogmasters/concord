@@ -521,6 +521,8 @@ void run(client *client, const uint64_t guild_id, params *params, role::dati *p_
 
 } // namespace create
 
+void del(client *client, const uint64_t guild_id, const uint64_t role_id);
+
 } // namespace role
 
 } // namespace guild

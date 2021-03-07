@@ -374,6 +374,26 @@ void run(client *client, const uint64_t guild_id, params *params, dati *p_role)
 
 } // namespace create
 
+void 
+del(client *client, const uint64_t guild_id, const uint64_t role_id)
+{
+  if (!guild_id) {
+    D_PUTS("Missing 'guild_id'");
+    return;
+  }
+  if (!role_id) {
+    D_PUTS("Missing 'role_id'");
+    return;
+  }
+
+  user_agent::run(
+    &client->ua,
+    NULL,
+    NULL,
+    HTTP_DELETE,
+    "/guilds/%llu/roles/%llu", guild_id, role_id);
+}
+
 } // namespace role
 
 } // namespace guild
