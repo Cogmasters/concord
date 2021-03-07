@@ -1001,7 +1001,7 @@ ws_main_loop(dati *ws)
     ASSERT_S(CURLM_OK == mcode, curl_multi_strerror(mcode));
 
     //wait for activity or timeout
-    mcode = curl_multi_wait(ws->mhandle, NULL, 0, 1000, &numfds);
+    mcode = curl_multi_wait(ws->mhandle, NULL, 0, 5, &numfds);
     ASSERT_S(CURLM_OK == mcode, curl_multi_strerror(mcode));
 
     if (ws->status != status::CONNECTED) continue; // wait until connection is established
