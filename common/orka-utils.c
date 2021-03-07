@@ -193,7 +193,7 @@ orka_sleep_ms(const int64_t delay_ms)
 {
   const struct timespec t = {
     .tv_sec = delay_ms / 1000,
-    .tv_nsec = (delay_ms % 1000) * 1000000
+    .tv_nsec = (uint64_t)((delay_ms % 1000) * 1000000)
   };
 
   nanosleep(&t, NULL);
