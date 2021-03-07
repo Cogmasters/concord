@@ -113,7 +113,7 @@ static char * converter_file = NULL;
 
 
 static void init_converters () {
-  converters = ntl_calloc(2, sizeof(struct converter));
+  converters = (struct converters **)ntl_calloc(2, sizeof(struct converter));
   converters[0]->name = "iso8601";
   converters[0]->input_type = "char*";
   converters[0]->output_type = "u64_unix_ms_t";
@@ -173,7 +173,43 @@ enum file_type {
   FILE_HEADER,
   FILE_CODE
 };
-static enum file_type file_type = FILE_SINGLE_FILE;
+//static enum file_type file_type = FILE_SINGLE_FILE;
+
+
+struct emit_option {
+  bool lang_C; // emit C code instead of C++ which is the default
+  enum file_type type;
+  char **namespace_stack[8];
+  int stack_top;
+};
+
+struct emit_option global_option;
+static void init_emit_option(struct emit_option *opt)
+{
+  memset(&global_option, 0, sizeof(global_option));
+  global_option.lang_C = opt->lang_C;
+  global_option.type = opt->type;
+}
+
+static char*
+ns_to_symbol_name(char *name)
+{
+  if (global_option.lang_C) {
+    char *buf;
+    size_t len;
+    FILE *fp = open_memstream(&buf, &len);
+    for (int s = 0; s < global_option.stack_top; s++) {
+      char **ns = global_option.namespace_stack[s];
+      for (int i = 0; ns[i]; i++)
+        fprintf(fp, "%s_", ns[i]);
+    }
+    fprintf(fp, "%s", name);
+    fclose(fp);
+    return buf;
+  }
+  else
+    return name;
+}
 
 static char* get_file_suffix(enum file_type t)
 {
@@ -627,30 +663,41 @@ def_from_json(char *json, size_t size, struct jc_def *def)
   }
 }
 
+
 static void gen_open_namespace(FILE *fp, char **p)
 {
   if (NULL == p) return;
-  for (int i = 0; p[i]; i++) {
-    fprintf(fp, "namespace %s {\n", p[i]);
+  if (global_option.lang_C) {
+    global_option.namespace_stack[global_option.stack_top] = p;
+    global_option.stack_top ++;
   }
+  else
+    for (int i = 0; p[i]; i++)
+      fprintf(fp, "namespace %s {\n", p[i]);
 }
 
 static void gen_close_namespace(FILE *fp, char **p)
 {
   if (NULL == p) return;
-  int n = ntl_length((void**)p);
-  for (int i = n-1; i >= 0; i--) {
-    fprintf(fp, "} // namespace %s\n", p[i]);
+  if (global_option.lang_C) {
+    global_option.stack_top --;
+    global_option.namespace_stack[global_option.stack_top] = NULL;
+  }
+  else {
+    int n = ntl_length((void **)p);
+    for (int i = n - 1; i >= 0; i--)
+      fprintf(fp, "} // namespace %s\n", p[i]);
   }
 }
 
 
 static void gen_enum(FILE *fp, struct jc_enum *e)
 {
-  fprintf(stderr, "%d\n", file_type);
-  char *t = e->name;
+  fprintf(stderr, "%d\n", global_option.type);
   fprintf(fp, "\n\n");
   gen_open_namespace(fp, e->namespace);
+  char *t = ns_to_symbol_name(e->name);
+
   fprintf(fp, "enum %s {\n", t);
   int i = 0, prev_value;
 
@@ -757,7 +804,7 @@ static int to_builtin_action(struct jc_field *f, struct action *act)
   if (strcmp(f->type.base, "int") == 0) {
     act->extractor = "d";
     act->injector = "d";
-    act->c_type = f->type.int_alias ? f->type.int_alias : "int";
+    //act->c_type = f->type.int_alias ? f->type.int_alias : "int";
     if (f->inject_condition.opcode == INJECT_IF_NOT_STR) {
       f->inject_condition.opcode = INJECT_IF_NOT_INT;
       f->inject_condition._.ival = (uint64_t)strtol(f->inject_condition.string,
@@ -855,6 +902,29 @@ static int to_builtin_action(struct jc_field *f, struct action *act)
   return 1;
 }
 
+
+static char *
+to_C_name (char *s)
+{
+  char *ns = malloc(strlen(s) + 1);
+  char *p = ns;
+  while (*s) {
+    if (*s == ':' && *(s+1) == ':') {
+      *p = '_';
+      p ++;
+      s += 2;
+    }
+    else {
+      *p = *s;
+      p ++;
+      s ++;
+    }
+  }
+  *p = 0;
+  return ns;
+}
+
+
 static void to_action(struct jc_field *f, struct action *act)
 {
   if (f->todo) {
@@ -862,12 +932,20 @@ static void to_action(struct jc_field *f, struct action *act)
     return;
   }
 
+  bool is_user_defined_type = true;
   act->post_dec = "";
   act->pre_dec = "";
   if (f->type.int_alias)
     act->c_type = f->type.int_alias;
   else
     act->c_type = f->type.base;
+
+  char *tok = strrchr(act->c_type, ':');
+  if (tok != NULL) {
+    is_user_defined_type = true;
+    if (global_option.lang_C)
+      act->c_type = to_C_name(act->c_type);
+  }
 
   act->c_name = f->name;
   act->json_key = f->json_key ? f->json_key : f->name;
@@ -879,12 +957,11 @@ static void to_action(struct jc_field *f, struct action *act)
         if (strcmp(f->type.base, "char") == 0) {
           ERR("this should never happen\n");
         } else {
-          char *tok = strrchr(f->type.base, ':');
-          if (tok != NULL) {
-            asprintf(&act->injector, "%s_to_json", f->type.base);
-            asprintf(&act->extractor, "%s_from_json", f->type.base);
-            asprintf(&act->alloc, "%s_alloc", f->type.base);
-            asprintf(&act->free, "%s_free", f->type.base);
+          if (is_user_defined_type) {
+            asprintf(&act->injector, "%s_to_json", act->c_type);
+            asprintf(&act->extractor, "%s_from_json", act->c_type);
+            asprintf(&act->alloc, "%s_alloc", act->c_type);
+            asprintf(&act->free, "%s_free", act->c_type);
             act->extract_arg_decor = "";
             act->inject_arg_decor = "";
             act->post_dec = "";
@@ -910,12 +987,12 @@ static void to_action(struct jc_field *f, struct action *act)
       act->is_actor_alloc = true;
       if (to_builtin_action(f, act)) {
         act->free = "free";
-        asprintf(&act->extractor, "%s_list_from_json", f->type.base);
-        asprintf(&act->injector, "%s_list_to_json", f->type.base);
+        asprintf(&act->extractor, "%s_list_from_json", act->c_type);
+        asprintf(&act->injector, "%s_list_to_json", act->c_type);
       } else {
-        asprintf(&act->extractor, "%s_list_from_json", f->type.base);
-        asprintf(&act->injector, "%s_list_to_json", f->type.base);
-        asprintf(&act->free, "%s_list_free", f->type.base);
+        asprintf(&act->extractor, "%s_list_from_json", act->c_type);
+        asprintf(&act->injector, "%s_list_to_json", act->c_type);
+        asprintf(&act->free, "%s_list_free", act->c_type);
       }
       break;
     case DEC_ARRAY:
@@ -950,7 +1027,7 @@ emit_field_init(void *cxt, FILE *fp, struct jc_field *f)
 static void
 gen_init (FILE *fp, struct jc_struct *s)
 {
-  char *t = s->name;
+  char *t = ns_to_symbol_name(s->name);
 
   fprintf(fp, "void %s_init(struct %s *p) {\n", t, t);
   fprintf(fp, "  memset(p, 0, sizeof(struct %s));\n", t);
@@ -965,7 +1042,7 @@ gen_init (FILE *fp, struct jc_struct *s)
 
 static void gen_default(FILE *fp, struct jc_struct * s)
 {
-  char * type = s->name;
+  char * type = ns_to_symbol_name(s->name);
 
   gen_init(fp, s);
   fprintf(fp, "struct %s* %s_alloc() {\n", type, type);
@@ -1023,7 +1100,7 @@ emit_field_cleanup(void *cxt, FILE *fp, struct jc_field *f)
 
 static void gen_cleanup(FILE *fp, struct jc_struct *s)
 {
-  char *t = s->name;
+  char *t = ns_to_symbol_name(s->name);
   fprintf(fp, "void %s_cleanup(struct %s *d) {\n", t, t);
   for (int i = 0; s->fields && s->fields[i]; i++) {
     emit_field_spec(NULL, fp, s->fields[i]);
@@ -1092,7 +1169,8 @@ is_disabled_method(struct jc_struct *s, char *name)
 
 static void gen_from_json(FILE *fp, struct jc_struct *s)
 {
-  char *t = s->name;
+  char *t = ns_to_symbol_name(s->name);
+
   bool emit_spec = true, is_disabled = false;
   char * suffix = "";
 
@@ -1206,7 +1284,8 @@ static void emit_inject_setting(void *cxt, FILE *fp, struct jc_field *f)
 
 static void gen_use_default_inject_settings(FILE *fp, struct jc_struct *s)
 {
-  char *t = s->name;
+  char *t = ns_to_symbol_name(s->name);
+
   fprintf(fp, "void %s_use_default_inject_settings(struct %s *p)\n",
           t, t);
   fprintf(fp, "{\n");
@@ -1250,7 +1329,7 @@ static void emit_json_injector_arg(void * cxt, FILE *fp, struct jc_field *f)
 
 static void gen_to_json(FILE *fp, struct jc_struct *s)
 {
-  char *t = s->name;
+  char *t = ns_to_symbol_name(s->name);
   bool emit_spec = true, is_disabled = false;
   char * suffix = "";
 
@@ -1304,7 +1383,8 @@ static void gen_to_query(FILE *fp, struct jc_struct *s)
 {
   return;
 
-  char *t = s->name;
+  char *t = ns_to_symbol_name(s->name);
+
   bool has_query = false;
   for (int i = 0; s->fields && s->fields[i]; i++) {
     struct jc_field *f = s->fields[i];
@@ -1360,7 +1440,8 @@ static void gen_to_query(FILE *fp, struct jc_struct *s)
 static void
 gen_struct(FILE *fp, struct jc_struct *s)
 {
-  char *t = s->name;
+  char *t = ns_to_symbol_name(s->name);
+
   if (s->title)
     fprintf(fp, "/* Title: %s */\n", s->title);
   if (s->comment)
@@ -1368,6 +1449,7 @@ gen_struct(FILE *fp, struct jc_struct *s)
 
   fprintf(fp, "/* This is defined at %s:%d:%d */\n",
           spec_name, s->name_lnc.line, s->name_lnc.column);
+
   fprintf(fp, "struct %s {\n", t);
   int i = 0;
   for (i = 0; s->fields && s->fields[i]; i++) {
@@ -1394,7 +1476,8 @@ gen_struct(FILE *fp, struct jc_struct *s)
 static void
 gen_wrapper(FILE *fp, struct jc_struct *s)
 {
-  char *t = s->name;
+  char *t = ns_to_symbol_name(s->name);
+
   fprintf(fp, "void %s_cleanup_v(void *p) {\n"
               "  %s_cleanup((struct %s *)p);\n"
               "}\n\n", t, t, t);
@@ -1438,7 +1521,8 @@ gen_wrapper(FILE *fp, struct jc_struct *s)
 static void
 gen_forward_declare(FILE *fp, struct jc_struct *s)
 {
-  char *t = s->name;
+  char *t = ns_to_symbol_name(s->name);
+
   fprintf(fp, "extern void %s_cleanup_v(void *p);\n", t);
   fprintf(fp, "extern void %s_cleanup(struct %s *p);\n", t, t);
 
@@ -1492,12 +1576,12 @@ gen_struct_all (FILE *fp, struct jc_struct *s)
   fprintf(fp, "\n");
   gen_open_namespace(fp, s->namespace);
 
-  if (file_type == FILE_HEADER || file_type == FILE_DECLARATION) {
+  if (global_option.type == FILE_HEADER || global_option.type == FILE_DECLARATION) {
     gen_struct (fp, s);
     //fprintf (fp, "\n*/\n");
     gen_forward_declare(fp, s);
   }
-  else if (file_type == FILE_SINGLE_FILE) {
+  else if (global_option.type == FILE_SINGLE_FILE) {
     gen_struct (fp, s);
     //fprintf (fp, "\n*/\n");
     gen_forward_declare(fp, s);
@@ -1551,50 +1635,58 @@ gen_def (FILE *fp, struct jc_def *def)
   if (def->is_struct)
     gen_struct_all(fp, (struct jc_struct *)def);
   else {
-    if (file_type == FILE_HEADER
-        || file_type == FILE_DECLARATION
-        || file_type == FILE_SINGLE_FILE) {
+    if (global_option.type == FILE_HEADER
+        || global_option.type == FILE_DECLARATION
+        || global_option.type == FILE_SINGLE_FILE) {
       gen_enum(fp, (struct jc_enum *)def);
     }
   }
 }
 
-
 static void
-gen_definition(FILE *fp, enum file_type type, struct jc_definition *d)
+gen_definition(FILE *fp,
+               struct emit_option * option,
+               struct jc_definition *d)
 {
+  init_emit_option(option);
+
   if (d->is_disabled)
     return;
   init_converters(); // @todo move it out of this function.
-  file_type = type;
   if (d->spec_name)
     fprintf(fp, "/* This file is generated from %s, Please don't edit it. */\n",
             d->spec_name);
 
-  if (type == FILE_SINGLE_FILE || type == FILE_CODE)
+  if (global_option.type == FILE_SINGLE_FILE || global_option.type == FILE_CODE)
     fprintf(fp, "#include \"specs.h\"\n");
 
   fprintf(fp, "/*\n%s\n*/\n", d->comment);
-  if (type != FILE_DECLARATION && type != FILE_DEFINITION)
+  if (global_option.lang_C ||
+      (global_option.type != FILE_DECLARATION
+       && global_option.type != FILE_DEFINITION))
     gen_open_namespace(fp, d->namespace);
 
   ntl_apply(fp, (void**)d->defs, gen_def);
 
-  if (type != FILE_DECLARATION && type != FILE_DEFINITION)
+  if (global_option.lang_C ||
+      (global_option.type != FILE_DECLARATION
+       && global_option.type != FILE_DEFINITION))
     gen_close_namespace(fp, d->namespace);
   return;
 }
 
 static void
-gen_definition_list(char *folder, enum file_type type, struct jc_definition **ntl)
+gen_definition_list(char *folder,
+                    struct emit_option * opt,
+                    struct jc_definition **ntl)
 {
   char * fname = NULL;
   for (int i = 0; ntl && ntl[i]; i++) {
     struct jc_definition *d = ntl[i];
     char * f = namespace_to_str(d->namespace);
-    asprintf(&fname, "%s/%s%s", folder, f, get_file_suffix(type));
+    asprintf(&fname, "%s/%s%s", folder, f, get_file_suffix(global_option.type));
     FILE *fp = fopen(fname, "w");
-    gen_definition(fp, type, d);
+    gen_definition(fp, opt, d);
     fclose(fp);
   }
 }

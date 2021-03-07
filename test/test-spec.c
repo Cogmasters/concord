@@ -227,6 +227,43 @@ int main (int argc, char ** argv)
   SET(field_inject_settings, "p->__M.arg_switches[0] = p->f1;\n");
   SET(field_init, "");
   test_one();
+
+
+  global_option.lang_C = true;
+  SET(spec, "{(name):|f1|, (type):{ (base):|a::dati|, (dec):|*| }, (lazy_init):true }");
+  SET(field_struct, "a_dati *f1;\n");
+  SET(field_cleanup, "if (d->f1)\n    a_dati_free(d->f1);\n");
+  SET(field_extractor, "\"(f1):F,\"\n");
+  SET(field_extractor_arg, "a_dati_from_json, p->f1,\n");
+  SET(field_injector, "\"(f1):F,\"\n");
+  SET(field_injector_arg, "a_dati_to_json, p->f1,\n");
+  SET(field_inject_settings, "p->__M.arg_switches[0] = p->f1;\n");
+  SET(field_init, "");
+  test_one();
+
+  SET(spec, "{(name):|f1|, (type):{ (base):|a::dati|, (dec):|ntl| }, (lazy_init):true }");
+  SET(field_struct, "a_dati **f1;\n");
+  SET(field_cleanup, "if (d->f1)\n    a_dati_list_free(d->f1);\n");
+  SET(field_extractor, "\"(f1):F,\"\n");
+  SET(field_extractor_arg, "a_dati_list_from_json, &p->f1,\n");
+  SET(field_injector, "\"(f1):F,\"\n");
+  SET(field_injector_arg, "a_dati_list_to_json, p->f1,\n");
+  SET(field_inject_settings, "p->__M.arg_switches[0] = p->f1;\n");
+  SET(field_init, "");
+  test_one();
+
+
+  SET(spec, "{(name):|abc|, (type):{ (base):|int|, (int_alias):|abc::code| }}");
+  SET(field_struct, "abc_code abc;\n");
+  SET(field_cleanup, "//p->abc is a scalar\n");
+  SET(field_extractor, "\"(abc):d,\"\n");
+  SET(field_extractor_arg, "&p->abc,\n");
+  SET(field_injector, "\"(abc):d,\"\n");
+  SET(field_injector_arg, "&p->abc,\n");
+  SET(field_inject_settings, "p->__M.arg_switches[0] = &p->abc;\n");
+  SET(field_init, "");
+  test_one();
+
   return 0;
 }
 

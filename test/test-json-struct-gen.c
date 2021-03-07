@@ -9,7 +9,8 @@ static
 void print_usage (char * prog)
 {
   fprintf(stderr,
-          "Usage: %s [-h|-c|-d|-f] -o output-file input-file\n"
+          "Usage: %s [-h|-c|-d|-f|-C] -o output-file input-file\n"
+          "      -C generate C code instead of C++ code which is the default\n"
           "      -h generate header with namespace\n"
           "      -c generate data and function definitions with namespace\n"
           "      -d generate data and function declarations without namespace\n"
@@ -25,24 +26,28 @@ int main (int argc, char ** argv)
 
   int opt;
   char * config_file = NULL;
-  enum file_type type = FILE_SINGLE_FILE;
+  /*enum file_type type = FILE_SINGLE_FILE;*/
+  struct emit_option eo = { .lang_C = false, .type = FILE_SINGLE_FILE };
 
-  while ((opt = getopt(argc, argv, "hcdfo:")) != -1) {
+  while ((opt = getopt(argc, argv, "hcdfCo:")) != -1) {
     switch (opt) {
       case 'o':
         config_file = strdup(optarg);
         break;
       case 'h':
-        type = FILE_HEADER;
+        eo.type = FILE_HEADER;
         break;
       case 'c':
-        type = FILE_CODE;
+        eo.type = FILE_CODE;
         break;
       case 'd':
-        type = FILE_DECLARATION;
+        eo.type = FILE_DECLARATION;
         break;
       case 'f':
-        type = FILE_DEFINITION;
+        eo.type = FILE_DEFINITION;
+        break;
+      case 'C':
+        eo.lang_C = true;
         break;
       default: /* '?' */
         print_usage(argv[0]);
@@ -63,7 +68,7 @@ int main (int argc, char ** argv)
   //print_definition(stderr, &d);
   FILE * fp = fopen(config_file, "w");
   d.spec_name = file;
-  gen_definition(fp, type, &d);
+  gen_definition(fp, &eo, &d);
   fclose(fp);
   return 0;
 }
