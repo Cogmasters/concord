@@ -389,9 +389,9 @@ struct params {
   char *nonce;
   bool tts;
   // parameters for application/json
-  embed::dati *embed; //must be initialized
-  allowed_mentions::dati *allowed_mentions; //must be initialized
-  message::reference::dati *message_reference; //must be initialized
+  embed::dati *embed;
+  allowed_mentions::dati *allowed_mentions;
+  message::reference::dati *message_reference;
   // parameters for multipart/form-data
   struct { // FILE STRUCT @todo better explanation
     char *name; //if only name is set, will search in working directory
