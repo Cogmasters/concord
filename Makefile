@@ -164,6 +164,8 @@ install : all
 	install -m 644 $(LIBDISCORD) $(PREFIX)/lib/
 	install -d $(PREFIX)/include/
 	install -m 644 *.h *.hpp common/*.h $(PREFIX)/include/
+	install -d $(PREFIX)/include/specs-code
+	install -m 644 specs-code/*.hh  $(PREFIX)/include/specs-code
 
 specs_clean :
 	rm -f specs-code/*
