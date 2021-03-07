@@ -35,7 +35,7 @@
         { "name":"icon", "type":{ "base":"char", "dec":"[MAX_SHA256_LEN]" }},
         { "name":"description", "type":{ "base":"char", "dec":"*" }},
         { "name":"summary", "type":{ "base":"char", "dec":"*" }},
-        { "name":"bot", "type":{ "base":"user::dati", "dec":"*" }, "option":true}
+        { "name":"bot", "type":{ "base":"discord::user::dati", "dec":"*" }, "option":true}
       ]
     },
     {
@@ -54,12 +54,12 @@
         { "name": "enable_emotions", "type":{ "base":"bool"}},
         { "name": "expire_behavior", "type":{ "base":"int", "int_alias":"expire_behaviors::code"}},
         { "name": "expire_grace_period", "type":{ "base":"int"}},
-        { "name": "user", "type":{ "base":"user::dati", "dec":"*"}, "opt":true},
-        { "name": "account", "type":{ "base":"account::dati", "dec":"*"}},
+        { "name": "user", "type":{ "base":"discord::user::dati", "dec":"*"}, "opt":true},
+        { "name": "account", "type":{ "base":"discord::guild::integration::account::dati", "dec":"*"}},
         { "name": "synced_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601"}},
         { "name": "subscriber_count", "type":{ "base":"int"}},
         { "name": "revoked", "type":{ "base":"bool"}},
-        { "name": "application", "type":{ "base":"application::dati", "dec":"*" }}
+        { "name": "application", "type":{ "base":"discord::guild::integration::application::dati", "dec":"*" }}
       ]
     }
   ]

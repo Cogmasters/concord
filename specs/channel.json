@@ -31,7 +31,7 @@
          "option":true, "inject_if_not":0 },
         {"type":{"base":"int"}, "name":"position",
          "option":true, "inject_if_not":0 },
-        {"type":{"base":"overwrite::dati", "dec":"ntl"}, "name":"permission_overwrites",
+        {"type":{"base":"discord::channel::overwrite::dati", "dec":"ntl"}, "name":"permission_overwrites",
          "option":true, "inject_if_not":null }, 
         {"type":{"base":"char", "dec":"[MAX_NAME_LEN]"}, "name":"name", 
          "option":true, "inject_if_not":""},
@@ -44,7 +44,7 @@
         {"type":{"base":"int"}, "name":"user_limit", "option":true, "inject_if_not":0},
         {"type":{"base":"int"}, "name":"rate_limit_per_user", 
          "option":true, "inject_if_not":0},
-        {"type":{"base":"user::dati", "dec":"ntl"}, "name":"recipients",
+        {"type":{"base":"discord::user::dati", "dec":"ntl"}, "name":"recipients",
          "option":true, "inject_if_not":null},
         {"type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}, "name":"icon",
          "option":true, "inject_if_not":""},
@@ -56,7 +56,7 @@
          "option":true, "inject_if_not":0},
         {"type":{"base":"char", "dec":"*", "converter":"iso8601", "nullable":true}, "name":"last_pin_timestamp",
          "option":true, "inject_if_not":0},
-        {"type":{"base":"message::dati", "dec":"ntl"}, "name":"messages"}
+        {"type":{"base":"discord::channel::message::dati", "dec":"ntl"}, "name":"messages"}
       ]
     }
   ]

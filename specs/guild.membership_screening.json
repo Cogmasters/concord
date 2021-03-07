@@ -28,7 +28,7 @@
       "fields":
       [
         { "name": "version", "type":{ "base":"s_as_u64" }},
-        { "name": "fields", "type":{ "base":"field::dati", "dec":"ntl" }},
+        { "name": "fields", "type":{ "base":"discord::guild::membership_screening::field::dati", "dec":"ntl" }},
         { "name": "description", "type":{ "base":"char", "dec":"*" }}
       ]
     }

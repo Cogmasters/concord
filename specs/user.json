@@ -81,11 +81,11 @@
 		{ "name": "name", "type":{ "base":"char", "dec":"*"}},
 		{ "name": "type", "type":{ "base":"char", "dec":"*"}},
 		{ "name": "revoked", "type":{ "base":"bool"}},
-        { "name": "integrations", "type": {"base":"integration::dati", "dec":"ntl"}, "todo":true},
+        { "name": "integrations", "type": {"base":"discord::guild::integration::dati", "dec":"ntl"}, "todo":true},
 		{ "name": "verified", "type":{ "base":"bool" }},
 		{ "name": "friend_sync", "type":{ "base":"bool" }},
 		{ "name": "show_activity", "type":{ "base":"bool" }},
-		{ "name": "visibility", "type":{ "base":"int", "int_alias":"visibility_types::code" }}
+		{ "name": "visibility", "type":{ "base":"int", "int_alias":"discord::user::connection::visibility_types::code" }}
 	    ]
 	}
     ]

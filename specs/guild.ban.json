@@ -10,7 +10,7 @@
       "fields":
       [
         { "name": "reason", "type":{ "base":"char", "dec":"[MAX_REASON_LEN]" }},
-        { "name": "user", "type":{ "base":"user::dati", "dec":"*"}, "comment":"partial user object"}
+        { "name": "user", "type":{ "base":"discord::user::dati", "dec":"*"}, "comment":"partial user object"}
       ]
     }
   ]

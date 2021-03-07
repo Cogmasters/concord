@@ -20,10 +20,10 @@
       "fields":
       [
         { "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
-        { "name": "type", "type":{ "base":"int", "int_alias":"types::code" }},
+        { "name": "type", "type":{ "base":"int", "int_alias":"discord::webhook::types::code" }},
         { "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
         { "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
-        { "name": "user", "type":{ "base":"user::dati", "dec":"*" }},
+        { "name": "user", "type":{ "base":"discord::user::dati", "dec":"*" }},
         { "name": "name", "type":{ "base":"char", "dec":"[WEBHOOK_NAME_LEN]" }},
         { "name": "avatar", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"},
         { "name": "token", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"},

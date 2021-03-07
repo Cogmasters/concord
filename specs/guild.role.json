@@ -28,7 +28,7 @@
         { "name": "permissions", "type":{ "base":"char", "dec":"*" }},
         { "name": "managed", "type":{ "base":"bool" }},
         { "name": "mentionable", "type":{ "base":"bool" }},
-        { "name": "tags", "type":{"base":"role::tags::dati", "dec":"*"}}
+        { "name": "tags", "type":{"base":"discord::guild::role::tags::dati", "dec":"*"}}
       ]
     }
   ]
