@@ -46,7 +46,7 @@
 - [x] [Embed Limits](https://discord.com/developers/docs/resources/channel#embed-limits)
 - [x] [Get Channel](https://discord.com/developers/docs/resources/channel#get-channel)
 - [ ] [Modify Channel](https://discord.com/developers/docs/resources/channel#modify-channel)
-- [ ] [Delete/Close Channel](https://discord.com/developers/docs/resources/channel#deleteclose-channel)
+- [x] [Delete/Close Channel](https://discord.com/developers/docs/resources/channel#deleteclose-channel)
 - [x] [Get Channel Messages](https://discord.com/developers/docs/resources/channel#get-channel-messages)
 - [ ] [Get Channel Message](https://discord.com/developers/docs/resources/channel#get-channel-message)
 - [x] [Create Message](https://discord.com/developers/docs/resources/channel#create-message)
