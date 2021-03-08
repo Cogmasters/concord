@@ -323,6 +323,14 @@ namespace modify_guild_template {
 https://discord.com/developers/docs/resources/user#user-object-user-structure */
 namespace user {
 #include "./specs-code/user.hh"
+
+namespace modify_current_user {
+#include "./specs-code/user.modify-curent-user.hh"
+}
+
+namespace create_group_dm {
+#include "./specs-code/user.create-group-dm.hh"
+}
 } // namespace user
 
 /* VOICE STRUCTURE
@@ -333,6 +341,24 @@ https://discord.com/developers/docs/resources/voice#voice-state-object-voice-sta
 https://discord.com/developers/docs/resources/webhook#webhook-object */
 #include "./specs-code/webhook.hh"
 
+namespace webhook {
+namespace create_webhook {
+#include "./specs-code/webhook.create-webhook.hh"
+}
+
+namespace modify_webhook {
+#include "./specs-code/webhook.modify-webhook.hh"
+}
+
+namespace execute_webhook {
+#include "./specs-code/webhook.execute-webhook.hh"
+}
+
+namespace edit_webhook_message {
+#include "./specs-code/webhook.edit-webhook-message.hh"
+}
+
+}
 } // namespace discord
 
 

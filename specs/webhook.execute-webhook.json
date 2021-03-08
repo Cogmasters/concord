@@ -1,0 +1,51 @@
+{
+  "namespace": ["discord", "webhook", "execute_webhook"],
+  "comment": "",
+  "defs":
+  [
+    {
+      "comment":"https://discord.com/developers/docs/resources/webhook#execute-webhook",
+      "struct":"params",
+      "fields":
+      [
+        
+        { "name": "wait", "type":{ "base":"bool"}, "loc":"query",
+          "comment":"name of the webhook(1-80) chars",
+          "required":"one of content, file, embeds"
+        },
+        { "name": "content", "type":{ "base":"char", "dec":"[2000+1]" }, 
+          "comment":"the message contents (up to 2000 characters",
+          "required":false
+        },
+        { "name": "username", "type":{ "base":"char", "dec":"*" }, 
+          "comment":"override the default username of the webhook",
+          "required":false
+        },
+        { "name": "avatar_url", "type":{ "base":"char", "dec":"*" }, 
+          "comment":"override the default avatar of the webhook" },
+        { "name": "tts", "type":{ "base":"bool" }, 
+          "comment":"true if this is a TTS message",
+          "required":false
+        },
+        { "name": "file", "type":{ "base":"char", "dec":"*" }, 
+          "comment":"the contents of the file being sent",
+          "required":"one of content, file, embeds"
+        },
+        { "name": "embeds", "type":{ "base":"discord::channel::embed::dati", "dec":"*" }, 
+          "comment":"embedded rich content",
+          "required":"one of content, file, embeds"
+        },
+        { "name": "payload_json", "type":{ "base":"char", "dec":"*" }, 
+          "comment":"See message create",
+          "required":"multipart/form-data only"
+        },
+        { "name": "allowed_mentions", 
+          "type":{ "base":"discord::channel::allowed_mentions::dati", "dec":"*" },
+          "comment":"allowed mentions for the message",
+          "required":"false"
+        }
+      ]
+    }
+  ]
+}
+

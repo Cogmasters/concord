@@ -1,0 +1,17 @@
+{
+  "namespace": ["discord", "user", "modify_current_user"],
+  "comment": "",
+  "defs":
+  [
+    {
+      "comment":"https://discord.com/developers/docs/resources/user#modify-current-user",
+      "struct":"params",
+      "fields":
+      [
+        { "name": "username", "type":{ "base":"char", "dec":"*" }},
+        { "name": "avatar", "type":{ "base":"char", "dec":"*"}, "comment":"base64 encoded image data"}
+      ]
+    }
+  ]
+}
+

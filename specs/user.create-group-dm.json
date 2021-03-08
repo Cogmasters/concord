@@ -1,0 +1,20 @@
+{
+  "namespace": ["discord", "user", "create_group_dm"],
+  "comment": "",
+  "defs":
+  [
+    {
+      "comment":"https://discord.com/developers/docs/resources/user#create-group-dm",
+      "struct":"params",
+      "fields":
+      [
+        { "name": "access_tokens", "type":{ "base":"ja_str", "dec":"ntl" }, 
+          "comment":"access tokens of users that have granted your app the gdm.join scope"},
+        { "name":"nick", "type":{ "base":"char", "dec":"*"}, 
+          "todo":true,
+          "comment":"ia dictionary of user ids to their respective nicknames"}
+      ]
+    }
+  ]
+}
+

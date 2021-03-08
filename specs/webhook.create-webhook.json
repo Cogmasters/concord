@@ -1,0 +1,20 @@
+{
+  "namespace": ["discord", "webhook", "create_webhook"],
+  "comment": "",
+  "defs":
+  [
+    {
+      "comment":"https://discord.com/developers/docs/resources/webhook#create-webhook",
+      "struct":"params",
+      "fields":
+      [
+        { "name": "name", "type":{ "base":"char", "dec":"[80+1]" }, 
+          "comment":"name of the webhook(1-80) chars" },
+        { "name": "avatar", "type":{ "base":"char", "dec":"*" }, 
+          "inject_if_not":null, 
+          "comment":"base64 image for the default webhook avatar" }
+      ]
+    }
+  ]
+}
+
