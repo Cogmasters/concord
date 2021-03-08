@@ -305,6 +305,20 @@ namespace invite {
 https://discord.com/developers/docs/resources/template#template-object-template-structure */
 #include "./specs-code/template.hh"
 
+namespace Template {
+namespace create_guild_from_template {
+#include "./specs-code/template.create-guild-from-template.hh"
+}
+
+namespace create_guild_template {
+#include "./specs-code/template.create-guild-template.hh"
+}
+
+namespace modify_guild_template {
+#include "./specs-code/template.modify-guild-template.hh"
+}
+}
+
 /* USER STRUCTURE
 https://discord.com/developers/docs/resources/user#user-object-user-structure */
 namespace user {
