@@ -69,6 +69,10 @@ namespace presence = websockets::identify::status_update;
 
 namespace guild {
 #include "./specs-code/guild.enum.hh"
+
+namespace create_guild {
+#include "./specs-code/guild.create-guild.hh"
+}
 }
 
 /* END OF SHORTCUT ALIASES */
