@@ -257,7 +257,8 @@ print_type(FILE *fp, struct jc_type *p)
 enum loc {
   LOC_IN_JSON = 0,  // this has to be zero as the absence means LOC_IN_JSON
   LOC_IN_QUERY,
-  LOC_IN_BODY
+  LOC_IN_BODY,
+  LOC_IN_URL
 };
 
 enum inject_opcode {
@@ -431,6 +432,9 @@ loc_from_json(char *json, size_t size, enum loc *p)
   }
   else if (4 == size && 0 == strncmp(json, "body", size)) {
     *p = LOC_IN_BODY;
+  }
+  else if (3 == size && 0 == strncmp(json, "url", size)) {
+    *p = LOC_IN_URL;
   }
   return 1;
 }

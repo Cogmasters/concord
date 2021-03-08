@@ -1,0 +1,16 @@
+{
+  "namespace": ["discord", "channel", "bulk_delete_messages"],
+  "comment": "",
+  "defs":
+  [
+    {
+      "comment":"https://discord.com/developers/docs/resources/channel#bulk-delete-messages",
+      "struct":"params",
+      "fields":
+      [
+        { "name": "messages", "type":{ "base":"ja_u64", "dec":"ntl" }}
+      ]
+    }
+  ]
+}
+

@@ -1,0 +1,18 @@
+{
+  "namespace": ["discord", "channel", "get_reactions"],
+  "comment": "",
+  "defs":
+  [
+    {
+      "comment":"https://discord.com/developers/docs/resources/channel#get-reactions",
+      "struct":"params",
+      "fields":
+      [
+        { "name": "before", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "loc":"query"},
+        { "name": "after", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "loc":"query"},
+        { "name": "limit", "type":{ "base":"int" }, "loc":"query"}
+      ]
+    }
+  ]
+}
+

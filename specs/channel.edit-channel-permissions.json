@@ -1,0 +1,18 @@
+{
+  "namespace": ["discord", "channel", "edit_channel_permissions"],
+  "comment": "",
+  "defs":
+  [
+    {
+      "comment":"https://discord.com/developers/docs/resources/channel#edit-channel-permissions",
+      "struct":"params",
+      "fields":
+      [
+        { "name": "allow", "type":{ "base":"char", "dec":"*"}},
+        { "name": "deny", "type":{ "base":"char", "dec":"*"}},
+        { "name": "type", "type":{ "base":"int" }}
+      ]
+    }
+  ]
+}
+

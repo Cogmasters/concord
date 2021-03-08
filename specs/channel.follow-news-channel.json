@@ -1,0 +1,16 @@
+{
+  "namespace": ["discord", "channel", "follow_news_channel"],
+  "comment": "",
+  "defs":
+  [
+    {
+      "comment":"https://discord.com/developers/docs/resources/channel#follow-news-channel",
+      "struct":"params",
+      "fields":
+      [
+        { "name": "webhook_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}
+      ]
+    }
+  ]
+}
+

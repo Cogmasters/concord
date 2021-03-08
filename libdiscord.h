@@ -362,6 +362,34 @@ void pin_message(client *client, const uint64_t channel_id, const uint64_t messa
 void unpin_message(client *client, const uint64_t channel_id, const uint64_t message_id);
 void trigger_typing(client *client, const uint64_t channel_id);
 
+namespace modify {
+#include "./specs-code/channel.modify-channel.hh"
+}
+
+namespace get_reactions {
+#include "./specs-code/channel.get-reactions.hh"
+}
+
+namespace bulk_delete_messages {
+#include "./specs-code/channel.bulk-delete-messages.hh"
+}
+
+namespace edit_channel_permissions {
+#include "./specs-code/channel.edit-channel-permissions.hh"
+}
+
+namespace create_channel_invite {
+#include "./specs-code/channel.create-channel-invite.hh"
+}
+
+namespace follow_news_channel {
+#include "./specs-code/channel.follow-news-channel.hh"
+}
+
+namespace group_dm_add_recipient {
+#include "./specs-code/channel.group-dm-add-recipient.hh"
+}
+
 namespace message {
 
 /* https://discord.com/developers/docs/resources/channel#get-channel-messages */
@@ -461,6 +489,14 @@ void append(
 namespace emoji { /* discord-public-emoji.cpp */
 
 dati** get_list(client *client, const uint64_t guild_id);
+
+namespace create_guild_emoji {
+#include "./specs-code/emoji.create-guild-emoji.hh"
+}
+
+namespace modify_guild_emoji {
+#include "./specs-code/emoji.modify-guild-emoji.hh"
+}
 
 } // namespace emoji
 

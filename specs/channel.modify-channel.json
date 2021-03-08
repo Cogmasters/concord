@@ -1,0 +1,25 @@
+{
+  "namespace": ["discord", "channel", "modify"],
+  "comment": "",
+  "defs":
+  [
+    {
+      "comment":"https://discord.com/developers/docs/resources/channel#modify-channel",
+      "struct":"params",
+      "fields":
+      [
+        { "name": "name", "type":{ "base":"char", "dec":"*" }},
+        { "name": "type", "type":{ "base":"int" }},
+        { "name": "position", "type":{ "base":"int" }},
+        { "name": "topic", "type":{ "base":"char", "dec":"*" }},
+        { "name": "nsfw", "type":{ "base":"bool" }},
+        { "name": "rate_limit_per_user", "type":{ "base":"int" }, "inject_if_not":0},
+        { "name": "bitrate", "type":{ "base":"int" }, "inject_if_not":0},
+        { "name": "user_limit", "type":{ "base":"int" }, "inject_if_not":0},
+        { "name": "permission_overwrites", "type":{ "base":"discord::channel::overwrite::dati", "dec":"ntl" }, "inject_if_not":null},
+        { "name": "parent_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0},
+      ]
+    }
+  ]
+}
+
