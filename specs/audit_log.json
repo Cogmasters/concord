@@ -1,0 +1,175 @@
+{
+  "namespace": ["discord", "audit_log"],
+  "defs":
+  [
+    {
+      "title":"Audit Log Structure",
+      "comment":"https://discord.com/developers/docs/resources/audit-log#audit-log-object-audit-log-structure",
+      "struct":"dati",
+      "fields":
+      [
+        {"name":"webhooks", "type": { "base":"discord::webhook::dati", "dec":"*" } },
+        {"name":"users", "type": { "base":"user::dati", "dec":"*"}},
+        {"name":"audit_log_entries", "type": { "base":"entry::dati", "dec":"*"}},
+        {"name":"integrations", "type": { "base":"guild::integration::dati", "dec":"ntl"}}
+      ]
+    },
+    {
+      "title":"Audit Log Events",
+      "comment":"https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-events",
+      "namespace":["entry","events"],
+      "enum":"code",
+      "items":
+      [
+        {"name":"GUILD_UPDATE", "value":1},
+        {"name":"CHANNEL_CREATE","value":10},
+        {"name":"CHANNEL_UPDATE","value":11},
+        {"name":"CHANNEL_DELETE","value":12},
+        {"name":"CHANNEL_OVERWRITE_CREATE","value":13},
+        {"name":"CHANNEL_OVERWRITE_UPDATE"},
+        {"name":"CHANNEL_OVERWRITE_DELETE"},
+        {"name":"MEMBER_KICK","value":20},
+        {"name":"MEMBER_PRUNE"},
+        {"name":"MEMBER_BAN_ADD"},
+        {"name":"MEMBER_BAN_REMOVE"},
+        {"name":"MEMBER_UPDATE"},
+        {"name":"MEMBER_ROLE_UPDATE"},
+        {"name":"MEMBER_MOVE"},
+        {"name":"MEMBER_DISCONNECT"},
+        {"name":"BOT_ADD"},
+        {"name":"ROLE_CREATE", "value":30},
+        {"name":"ROLE_UPDATE"},
+        {"name":"ROLE_DELETE"},
+        {"name":"INVITE_CREATE", "value":40},
+        {"name":"INVITE_DELETE", "value":42},
+        {"name":"WEBHOOK_CREATE", "value":50},
+        {"name":"WEBHOOK_UPDATE"},
+        {"name":"WEBHOOK_DELETE"},
+        {"name":"EMOJI_CREATE", "value":60},
+        {"name":"EMOJI_UPDATE"},
+        {"name":"EMOJI_DELETE"},
+        {"name":"MESSAGE_DELETE", "value":72},
+        {"name":"MESSAGE_BULK_DELETE"},
+        {"name":"MESSAGE_PIN"},
+        {"name":"MESSAGE_UNPIN"},
+        {"name":"INTEGRATION_CREATE", "value":80},
+        {"name":"INTEGRATION_UPDATE"},
+        {"name":"INTEGRATION_DELETE"}
+      ]
+    },
+    {
+      "title":"Audit Log Entry Structure",
+      "comment":"https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-entry-structure",
+      "namespace":["entry"],
+      "struct":"dati",
+      "fields":
+      [
+        {"name":"target_id", "type": {"base":"char", "dec":"*"}},
+        {"name":"changes", "type": {"base":"change::dati", "dec":"*"}},
+        {"name":"user_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}},
+        {"name":"id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}},
+        {"name":"action_type", "type": {"base":"int", "c_base":"events::code"}},
+        {"name":"options", "type": {"base":"optional_info::dati", "dec":"*"}},
+        {"name":"reason", "type": {"base":"char", "dec":"[MAX_REASON_LEN]"}}
+      ]
+    },
+    {
+      "title":"Optional Audit Entry Info Structure",
+      "comment": "https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-optional-audit-entry-info",
+      "namespace": ["entry", "optional_info"],
+      "struct":"dati",
+      "fields":
+      [
+        { "name": "delete_member_days", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"},
+        { "name": "members_removed", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"},
+        { "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" } },
+        { "name": "message_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" } },
+        { "name": "count", "type":{ "base":"char", "dec":"*" }, "comment":"@todo find fixed size limit"},
+        { "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
+        { "name": "type", "type":{ "base":"char", "dec":"*" }, "comment":"@todo find fixed size limit"},
+        { "name": "role", "type":{ "base":"char", "dec":"*" }, "comment":"@todo find fixed size limit"}
+      ]
+    },
+    {
+      "title":"Audit Log Change Structure",
+      "comment": "https://discord.com/developers/docs/resources/audit-log#audit-log-change-object-audit-log-change-structure",
+      "namespace": ["change"],
+      "struct":"dati",
+      "fields":
+      [
+        {"name":"new_value", "type": {"base":"char", "dec":"*"}},
+        {"name":"old_value", "type": {"base":"char", "dec":"*"}},
+        {"name":"key", "type":{"base":"char", "dec":"[64]"}}
+      ]
+    },
+    {
+      "title":"Audit Log Change Key",
+      "comment": "https://discord.com/developers/docs/resources/audit-log#audit-log-change-object-audit-log-change-key",
+      "namespace": ["change", "key"],
+      "struct":"dati",
+      "fields":
+      [
+        {"name":"name", "type": {"base":"char", "dec":"[MAX_NAME_LEN]"}},
+        {"name":"description", "type": {"base":"char", "dec":"[MAX_DESCRIPTION_LEN]"}},
+        {"name":"icon_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"}, 
+         "comment":"icon changed" },
+        {"name":"splash_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"},
+         "comment":"invite splash page artwork changed"},
+        {"name":"discovery_splash_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"}},
+        {"name":"banner_hash", "type": {"base":"char", "dec":"*", "converter":"snowflake"}},
+        {"name":"owner_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}},
+        {"name":"region", "type": {"base":"char", "dec":"[MAX_REGION_LEN]"}},
+        {"name":"preferred_locale", "type": {"base":"char", "dec":"[MAX_LOCALE_LEN]"}},
+        {"name":"afk_channel_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}},
+        {"name":"afk_timeout", "type": {"base":"int"}},
+        {"name":"rules_channel_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}},
+        {"name":"public_updates_channel_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}},
+        {"name":"mfa_level", "type": {"base":"int"}},
+        {"name":"verification_level", "type": {"base":"int"}},
+        {"name":"explicit_content_filter", "type": {"base":"int"}},
+        {"name":"default_message_notifications", "type": {"base":"int"}},
+        {"name":"vanity_url_code", "type": {"base":"char", "dec":"*"}},
+        {"name":"add", "json_key":"$add", "type": {"base":"char", "dec":"*"},
+         "todo":true },
+        {"name":"remove", "json_key":"$remove", "type": {"base":"char", "dec":"*"},
+         "todo":true },
+        {"name":"prune_delete_days", "type": {"base":"int"}},
+        {"name":"widget_enabled", "type": {"base":"bool"}},
+        {"name":"widget_channel_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}},
+        {"name":"system_channel_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}},
+        {"name":"position", "type": {"base":"int"}},
+        {"name":"topic", "type": {"base":"char", "dec":"*"}},
+        {"name":"bitrate", "type": {"base":"int"}},
+        {"name":"permission_overwrites", "type": {"base":"char", "dec":"*"},
+         "todo":true },
+        {"name":"nsfw", "type": {"base":"bool"}},
+        {"name":"application_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}},
+        {"name":"rate_limit_per_user", "type": {"base":"int"}},
+        {"name":"permissions", "type": {"base":"char", "dec":"*"}},
+        {"name":"color", "type": {"base":"int"}},
+        {"name":"hoist", "type": {"base":"bool"}},
+        {"name":"mentionable", "type": {"base":"bool"}},
+        {"name":"allow", "type": {"base":"char", "dec":"*"}},
+        {"name":"deny", "type": {"base":"char", "dec":"*"}},
+        {"name":"code", "type": {"base":"char", "dec":"*"}},
+        {"name":"channel_id", "type": {"base":"char", "dec":"*"}},
+        {"name":"inviter_id", "type": {"base":"char", "dec":"*"}},
+        {"name":"max_uses", "type": {"base":"char", "dec":"*"}},
+        {"name":"uses", "type": {"base":"char", "dec":"*"}},
+        {"name":"max_age", "type": {"base":"char", "dec":"*"}},
+        {"name":"temporary", "type": {"base":"char", "dec":"*"}},
+        {"name":"deaf", "type": {"base":"char", "dec":"*"}},
+        {"name":"mute", "type": {"base":"char", "dec":"*"}},
+        {"name":"nick", "type": {"base":"char", "dec":"*"}},
+        {"name":"avatar_hash", "type": {"base":"char", "dec":"*"}},
+        {"name":"id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}},
+        {"name":"type", "type": {"base":"char", "dec":"*"}, 
+         "todo":true, "comment":"integer or string"},
+        {"name":"enable_emotions", "type": {"base":"bool"}},
+        {"name":"expire_behavior", "type": {"base":"int"}},
+        {"name":"expire_grace_period", "type": {"base":"int"}},
+        {"name":"user_limit", "type": {"base":"int" }}
+      ]
+    }
+  ]
+}

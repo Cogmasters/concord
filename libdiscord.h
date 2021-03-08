@@ -79,6 +79,7 @@ namespace create_guild {
 
 /* AUDIT LOG STRUCTURE
 https://discord.com/developers/docs/resources/audit-log#audit-log-object-audit-log-structure */
+#if 0
 namespace audit_log {
 struct dati {
   webhook::dati **webhooks;
@@ -241,6 +242,11 @@ struct dati {
 } // namespace change
 
 } // namespace audit_log
+#else
+namespace audit_log {
+#include "./specs-code/audit_log.hh"
+}
+#endif
 
 /* CHANNEL STRUCTURE
 https://discord.com/developers/docs/resources/channel#channel-object-channel-structure */

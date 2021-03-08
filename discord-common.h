@@ -19,7 +19,7 @@ namespace audit_log {
   struct dati;
   namespace entry { 
     struct dati; 
-    namespace events { typedef int code; }
+    //namespace events { typedef int code; }
     namespace optional_info { struct dati; }
   }
   namespace change { struct dati; }
