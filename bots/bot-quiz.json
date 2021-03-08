@@ -1,11 +1,52 @@
 {
+  "listener": {
+    "channel_id": "798190594660761641",
+    "message_id": "818501778021679104",
+    "reaction_emoji": "✔️"
+  },
   "new_channel": {
     "name": "quiz",
     "topic": "Quiz chat."
   },
-  "listener": {
-    "channel_id": "CHANNEL_ID_HERE",
-    "message_id": "MESSAGE_ID_HERE",
-    "reaction_emoji": "✔️"
-  }
+  "questions_per_session": 2,
+  "questions": [
+    {
+      "description": "The correct answer is: Elon Musk",
+      "answers": [
+        {
+          "description": "Elon Musk", 
+          "value": true
+        },
+        {
+          "description":"Bill Gates", 
+          "value": false
+        },
+        {
+          "description":"Jeff Bezos",
+          "value": false
+        }
+      ]
+    },
+    {
+      "description": "The correct answer is: Apple",
+      "answers": [
+        {
+          "description": "Amazon", 
+          "value": false
+        },
+        {
+          "description":"Apple", 
+          "value": true
+        },
+        {
+          "description":"Microsoft",
+          "value": false
+        },
+        {
+          "description":"Tesla",
+          "value": false
+        }
+      ]
+    }
+  ]
 }

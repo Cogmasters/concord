@@ -5,9 +5,33 @@
 #include <assert.h>
 
 #include <libdiscord.h>
-#include "orka-utils.h" // for orka_timestamp_ms()
 
 using namespace discord;
+
+
+const char *ALPHA_EMOJI[] = {
+  "🇦", "🇧", "🇨", "🇩", "🇪", "🇫"
+};
+
+struct session {
+  u64_snowflake_t user_id;
+  u64_snowflake_t channel_id;
+  int curr_question;
+  int hits; // correct answers
+};
+
+struct answer {
+  char *desc;
+  bool value;
+};
+
+struct question {
+  char *desc;
+  struct answer *answers;
+  int num_answers;
+};
+
+#define MAX_SESSIONS 100
 
 struct session_config {
   char *chat_name;
@@ -15,7 +39,64 @@ struct session_config {
   u64_snowflake_t channel_id;
   u64_snowflake_t message_id;
   char *reaction_emoji;
-} g_session;
+
+  struct question *questions;
+  int num_questions;
+  int questions_per_session;
+
+  struct session active_sessions[MAX_SESSIONS];
+} g_session; /* GLOBAL VARIABLE */
+
+void
+parse_session_config()
+{
+  size_t len;
+  char *json_payload = orka_load_whole_file("bot-quiz.json", &len);
+  struct sized_buffer **t_questions = NULL;
+
+  json_extract(json_payload, len,
+    "(listener.channel_id):s_as_u64"
+    "(listener.message_id):s_as_u64"
+    "(listener.reaction_emoji):?s"
+    "(new_channel.name):?s"
+    "(new_channel.topic):?s"
+    "(questions_per_session):lld",
+    &g_session.channel_id,
+    &g_session.message_id,
+    &g_session.reaction_emoji,
+    &g_session.chat_name,
+    &g_session.chat_topic,
+    &g_session.questions_per_session);
+
+  json_scanf(json_payload, len, "[questions]%L", &t_questions);
+
+  g_session.num_questions = ntl_length((void**)t_questions);
+  if (g_session.num_questions < g_session.questions_per_session)
+    g_session.questions_per_session = g_session.num_questions;
+
+  g_session.questions = (struct question*)calloc(1, g_session.num_questions * sizeof(struct question)); 
+
+  for (size_t i=0; t_questions[i]; ++i) {
+    struct sized_buffer **t_answers = NULL;
+    json_extract(t_questions[i]->start, t_questions[i]->size,
+      "(description):?s", &g_session.questions[i].desc);
+    json_scanf(t_questions[i]->start, t_questions[i]->size,
+      "[answers]%L", &t_answers);
+
+    g_session.questions[i].num_answers = ntl_length((void**)t_answers);
+    g_session.questions[i].answers = (struct answer*)calloc(1, g_session.questions[i].num_answers * sizeof(struct answer));
+    for (size_t j=0; t_answers[j]; ++j) {
+      json_extract(t_answers[j]->start, t_answers[j]->size,
+        "(description):?s"
+        "(value):b", 
+        &g_session.questions[i].answers[j].desc,
+        &g_session.questions[i].answers[j].value);
+    }
+    free(t_answers);
+  }
+
+  free(t_questions);
+}
 
 void 
 on_ready(client *client, const user::dati *me)
@@ -24,24 +105,6 @@ on_ready(client *client, const user::dati *me)
       me->username, me->discriminator);
 
   (void)client;
-}
-
-void
-parse_session_config()
-{
-  size_t len;
-  char *json_payload = orka_load_whole_file("bot-quiz.json", &len);
-  json_extract(json_payload, len,
-    "(new_channel.name):?s"
-    "(new_channel.topic):?s"
-    "(listener.channel_id):s_as_u64"
-    "(listener.message_id):s_as_u64"
-    "(listener.reaction_emoji):?s",
-    &g_session.chat_name,
-    &g_session.chat_topic,
-    &g_session.channel_id,
-    &g_session.message_id,
-    &g_session.reaction_emoji);
 }
 
 void
@@ -63,6 +126,14 @@ close_existing_sessions(
     if (member->user->id == user_id) {
       channel::del(client, channel_id, NULL);
       guild::role::del(client, guild_id, rls[i]->id);
+
+      // reset active_session if exists
+      for (size_t i=0; i < MAX_SESSIONS; ++i) {
+        if (user_id == g_session.active_sessions[i].user_id) {
+          memset(g_session.active_sessions + i, 0, sizeof(struct session));
+          break;
+        }
+      }
     }
   }
 
@@ -98,6 +169,29 @@ create_session_channel(
     0); // Don't set deny permissions
 
   guild::create_channel::run(client, guild_id, &params1, &ch);
+  
+  // create new active_session if doesn't exist
+  for (size_t i=0; i < MAX_SESSIONS; ++i) {
+    if (0 == g_session.active_sessions[i].user_id) {
+      g_session.active_sessions[i].user_id = member->user->id;
+      g_session.active_sessions[i].channel_id = ch.id;
+#if 0
+      int *indexes = malloc(g_session.num_questions * sizeof(int));
+      for (size_t i=0; i < g_session.num_questions; ++i)
+        indexes[i] = i;
+
+      size_t rand_index;
+      int tmp;
+      for (size_t i=0; i < g_session.num_questions; ++i) {
+        rand_index = rand() % g_session.num_questions; 
+        tmp = indexes[i];
+        indexes[i] = rand_index;
+        indexes[rand_index] = tmp;
+      }
+      free(indexes);
+#endif
+    }
+  }
 
   return ch.id;
 }
@@ -137,23 +231,12 @@ add_session_role(
   return ret_role.id;
 }
 
-void on_reaction_add(
-    client *client, 
-    const user::dati *me,
-    const u64_snowflake_t channel_id, 
-    const u64_snowflake_t message_id, 
-    const u64_snowflake_t guild_id, 
-    const guild::member::dati *member, 
-    const emoji::dati *emoji)
+void start_new_session(
+  client *client,
+  const u64_snowflake_t guild_id,
+  const guild::member::dati *member)
 {
   using namespace channel;
-
-  if (member->user->bot) 
-    return; // ignore bots
-  if (message_id != g_session.message_id)
-    return; // not message we're interested on listening to
-  if (strcmp(emoji->name, g_session.reaction_emoji)) 
-    return; // not reaction emoji we're interested on
 
   close_existing_sessions(client, guild_id, member);
 
@@ -170,9 +253,99 @@ void on_reaction_add(
 
   message::dati *ret_msg = message::dati_alloc();
   message::create::params params = {
-    .content = "Welcome"
+    .content = "Would you like to start?"
   };
   message::create::run(client, session_channel_id, &params, ret_msg);
+  reaction::create(
+    client, 
+    session_channel_id, 
+    ret_msg->id, 
+    0, 
+    g_session.reaction_emoji);
+  message::dati_free(ret_msg);
+}
+
+void on_reaction_add(
+    client *client, 
+    const user::dati *me,
+    const u64_snowflake_t channel_id, 
+    const u64_snowflake_t message_id, 
+    const u64_snowflake_t guild_id, 
+    const guild::member::dati *member, 
+    const emoji::dati *emoji)
+{
+  using namespace channel;
+
+  if (member->user->bot) 
+    return; // ignore bots
+  if ( (message_id == g_session.message_id) 
+      && (0 == strcmp(emoji->name, g_session.reaction_emoji)) )
+  { // close existing quiz session / start new quiz session
+    start_new_session(client, guild_id, member);
+  }
+
+  /* POST NEXT QUESTION */
+
+  struct session *session=NULL;
+  struct question *question=NULL;
+  for (size_t i=0; i < MAX_SESSIONS; ++i) {
+    if (channel_id != g_session.active_sessions[i].channel_id)
+      continue;
+
+    session = &g_session.active_sessions[i];
+    question = &g_session.questions[session->curr_question];
+  }
+  if (!question || !session) 
+    return; /* EARLY RETURN */
+
+  message::del(client, channel_id, message_id);
+
+  char text[MAX_PAYLOAD_LEN];
+  if (session->curr_question == g_session.questions_per_session) {
+    sprintf(text, "You got %d out of %d! (%.1f%%)", \
+                  session->hits, g_session.questions_per_session,
+                  100*((float)session->hits / (float)g_session.questions_per_session));
+  }
+  else { //@todo turn into a function
+    // check if current answer is correct
+    for (int i=0; i < question->num_answers; ++i) 
+    {
+      fprintf(stdout, "%c: %d\n", 'A'+i, question->answers[i].value);
+      if (strcmp(emoji->name, ALPHA_EMOJI[i]))
+        continue;
+      if (true == question->answers[i].value)
+        ++session->hits;
+
+      break;
+    }
+    ++session->curr_question;
+
+    int offset = sprintf(text, "QUESTION %d\n%s\n", \
+                  session->curr_question,
+                  question->desc);
+
+    for (int i=0; i < question->num_answers; ++i) {
+      offset += sprintf(text+offset, "(%c)%s ", \
+        'A'+ i, question->answers[i].desc);
+    }
+  }
+
+  message::create::params params = {
+    .content = text
+  };
+
+  message::dati *ret_msg = message::dati_alloc();
+  message::create::run(client, channel_id, &params, ret_msg);
+
+  for (int i=0; i < question->num_answers; ++i) {
+    reaction::create(
+      client, 
+      channel_id, 
+      ret_msg->id, 
+      0, 
+      ALPHA_EMOJI[i]);
+  }
+
   message::dati_free(ret_msg);
 }
 
