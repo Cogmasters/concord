@@ -66,311 +66,10 @@ enum callback_opt {
 /* START OF SHORTCUT ALIASES */
 
 namespace presence = websockets::identify::status_update;
-
-namespace guild {
-#include "./specs-code/guild.enum.hh"
-
-namespace create_guild {
-#include "./specs-code/guild.create-guild.hh"
-}
 }
 
-/* END OF SHORTCUT ALIASES */
-
-/* AUDIT LOG STRUCTURE
-https://discord.com/developers/docs/resources/audit-log#audit-log-object-audit-log-structure */
-#if 0
-namespace audit_log {
-struct dati {
-  webhook::dati **webhooks;
-  user::dati **users;
-  entry::dati **audit_log_entries;
-  guild::integration::dati **integrations;
-};
-
-//@todo missing initialization functions
-
-/* AUDIT LOG ENTRY STRUCTURE
-https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-entry-structure */
-namespace entry {
-struct dati {
-  char *target_id; //@todo find fixed size limit
-  change::dati **changes;
-  uint64_t user_id;
-  uint64_t id;
-  events::code action_type;
-  optional_info::dati *options;
-  char reason[MAX_REASON_LEN];
-};
-
-//@todo missing initialization functions
-
-/* AUDIT LOG EVENTS
-https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-events */
-namespace events {
-enum {
-  GUILD_UPDATE             = 1,
-  CHANNEL_CREATE           = 10,
-  CHANNEL_UPDATE           = 11,
-  CHANNEL_DELETE           = 12,
-  CHANNEL_OVERWRITE_CREATE = 13,
-  CHANNEL_OVERWRITE_UPDATE = 14,
-  CHANNEL_OVERWRITE_DELETE = 15,
-  MEMBER_KICK              = 20,
-  MEMBER_PRUNE             = 21,
-  MEMBER_BAN_ADD           = 22,
-  MEMBER_BAN_REMOVE        = 23,
-  MEMBER_UPDATE            = 24,
-  MEMBER_ROLE_UPDATE       = 25,
-  MEMBER_MOVE              = 26,
-  MEMBER_DISCONNECT        = 27,
-  BOT_ADD                  = 28,
-  ROLE_CREATE              = 30,
-  ROLE_UPDATE              = 31,
-  ROLE_DELETE              = 32,
-  INVITE_CREATE            = 40,
-  INVITE_DELETE            = 42,
-  WEBHOOK_CREATE           = 50,
-  WEBHOOK_UPDATE           = 51,
-  WEBHOOK_DELETE           = 52,
-  EMOJI_CREATE             = 60,
-  EMOJI_UPDATE             = 61,
-  EMOJI_DELETE             = 62,
-  MESSAGE_DELETE           = 72,
-  MESSAGE_BULK_DELETE      = 73,
-  MESSAGE_PIN              = 74,
-  MESSAGE_UNPIN            = 75,
-  INTEGRATION_CREATE       = 80,
-  INTEGRATION_UPDATE       = 81,
-  INTEGRATION_DELETE       = 82
-};
-} // namespace events
-
-/* OPTIONAL AUDIT ENTRY INFO STRUCTURE
-https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-optional-audit-entry-info */
-namespace optional_info {
-#if 1
-struct dati {
-  char *delete_member_days; //@todo find fixed size limit
-  char *members_removed; //@todo find fixed size limit
-  uint64_t channel_id;
-  uint64_t message_id;
-  char *count; //@todo find fixed size limit
-  uint64_t id;
-  char *type; //@todo find fixed size limit
-  char *role; //@todo find fixed size limit
-};
-#else
-#include "./specs-code/entry.optional_info.hh"
-#endif
-} // namespace optional_entry
-
-} // namespace entry
-
-/* AUDIT LOG CHANGE STRUCTURE
-https://discord.com/developers/docs/resources/audit-log#audit-log-change-object-audit-log-change-structure */
-namespace change {
-struct dati {
-  void *new_value;
-  void *old_value;
-  char key[64];
-};
-
-//@todo missing initialization functions
-/* AUDIT LOG CHANGE KEY
-https://discord.com/developers/docs/resources/audit-log#audit-log-change-object-audit-log-change-key */
-namespace key {
-struct dati {
-   char name[MAX_NAME_LEN];
-   char description[MAX_DESCRIPTION_LEN];
-   char hash[MAX_SHA256_LEN];
-   char splash_hash[MAX_SHA256_LEN];
-   char discovery_splash_hash[MAX_SHA256_LEN];
-   uint64_t banner_hash;
-   char region[MAX_REGION_LEN];
-   char preferred_locale[MAX_LOCALE_LEN];
-   uint64_t afk_channel_id;
-   int afk_timeout;
-   uint64_t rules_channel_id;
-   uint64_t public_updates_channel_id;
-   int mfa_level;
-   int verification_level;
-   int explicit_content_filter;
-   guild::default_message_notification_level::code default_message_notifications;
-   char vanity_url_code[MAX_URL_LEN];
-  //@todo missing add
-  //@todo missing remove
-   int prune_delete_days;
-   bool widget_enabled;
-   uint64_t widget_channel_id;
-   uint64_t system_channel_id;
-   int position;
-   char topic[MAX_TOPIC_LEN];
-   int bitrate;
-   channel::overwrite::dati **permission_overwrites;
-   bool nsfw;
-   uint64_t application_id;
-   int ratelimit_per_user;
-   char *permission; //@todo find fixed size limit
-   int color;
-   bool hoist;
-   bool mentionable;
-   char *allow; //@todo find fixed size limit
-   char *deny; //@todo find fixed size limit
-   char *code; //@todo find fixed size limit
-   uint64_t channel_id;
-   uint64_t inviter_id;
-   int max_uses;
-   int uses;
-   int max_age;
-   bool temporary;
-   bool deaf;
-   bool mute;
-   char *nick; //@todo find fixed size limit
-   char avatar_hash[MAX_SHA256_LEN];
-   uint64_t id;
-   bool enable_emoticons;
-   int expire_behavior;
-   int expire_grace_period;
-   int user_limit;
-};
-
-//@todo missing initialization functions
-
-} // namespace key
-
-} // namespace change
-
-} // namespace audit_log
-#else
-namespace audit_log {
-#include "./specs-code/audit_log.hh"
-}
-#endif
-
-/* CHANNEL STRUCTURE
-https://discord.com/developers/docs/resources/channel#channel-object-channel-structure */
-namespace channel {
-#include "./specs-code/channel.hh"
-
-/* MESSAGE STRUCTURE
-https://discord.com/developers/docs/resources/channel#message-object */
-namespace message {
-#include "./specs-code/channel.message.hh"
-} // namespace message
-
-#include "./specs-code/channel.objects.hh"
-} // namespace channel
-
-/* EMOJI STRUCTURE
-https://discord.com/developers/docs/resources/emoji#emoji-object-emoji-structure */
-namespace emoji {
-#include "./specs-code/emoji.hh"
-} // namespace emoji
-
-
-/* GUILD STRUCTURE
-https://discord.com/developers/docs/resources/guild#guild-object-guild-structure */
-namespace guild {
-#include "./specs-code/guild.hh"
-
-/* GUILD MEMBER STRUCTURE
-https://discord.com/developers/docs/resources/guild#guild-member-object */
-#include "./specs-code/guild.member.hh"
-
-/* INTEGRATION STRUCTURE
-https://discord.com/developers/docs/resources/guild#integration-object-integration-structure */
-#include "./specs-code/guild.integration.hh"
-
-
-/* GUILD BAN STRUCTURE
-https://discord.com/developers/docs/resources/guild#ban-object */
-#include "./specs-code/guild.ban.hh"
-
-/* ROLE STRUCTURE
-https://discord.com/developers/docs/topics/permissions#role-object-role-structure */
-#include "./specs-code/guild.role.hh"
-
-/* WELCOME SCREEN STRUCTURE
-https://discord.com/developers/docs/resources/guild#welcome-screen-object-welcome-screen-structure */
-namespace welcome_screen {
-#include "./specs-code/guild.welcome_screen.hh"
-} // namespace welcome_screen
-
-/* MEMBERSHIP SCREENING STRUCTURE
-https://discord.com/developers/docs/resources/guild#membership-screening-object */
-namespace membership_screening {
-#include "./specs-code/guild.membership_screening.hh"
-} // namespace membership_screening
-
-} // namespace guild
-
-/* INVITE STRUCTURE
-https://discord.com/developers/docs/resources/invite#invite-object-invite-structure */
-namespace invite {
-#include "./specs-code/invite.hh"
-} // namespace invite
-
-/* TEMPLATE STRUCTURE
-https://discord.com/developers/docs/resources/template#template-object-template-structure */
-#include "./specs-code/template.hh"
-
-namespace Template {
-namespace create_guild_from_template {
-#include "./specs-code/template.create-guild-from-template.hh"
-}
-
-namespace create_guild_template {
-#include "./specs-code/template.create-guild-template.hh"
-}
-
-namespace modify_guild_template {
-#include "./specs-code/template.modify-guild-template.hh"
-}
-}
-
-/* USER STRUCTURE
-https://discord.com/developers/docs/resources/user#user-object-user-structure */
-namespace user {
-#include "./specs-code/user.hh"
-
-namespace modify_current_user {
-#include "./specs-code/user.modify-curent-user.hh"
-}
-
-namespace create_group_dm {
-#include "./specs-code/user.create-group-dm.hh"
-}
-} // namespace user
-
-/* VOICE STRUCTURE
-https://discord.com/developers/docs/resources/voice#voice-state-object-voice-state-structure */
-#include "./specs-code/voice.hh"
-
-/* Webhook Structure
-https://discord.com/developers/docs/resources/webhook#webhook-object */
-#include "./specs-code/webhook.hh"
-
-namespace webhook {
-namespace create_webhook {
-#include "./specs-code/webhook.create-webhook.hh"
-}
-
-namespace modify_webhook {
-#include "./specs-code/webhook.modify-webhook.hh"
-}
-
-namespace execute_webhook {
-#include "./specs-code/webhook.execute-webhook.hh"
-}
-
-namespace edit_webhook_message {
-#include "./specs-code/webhook.edit-webhook-message.hh"
-}
-
-}
-} // namespace discord
-
+#include "./specs-code/all_enums.hh"
+#include "./specs-code/all_structs.hh"
 
 /* * * * * * * * * * * * * * * * * * */
 /* * * * FUNCTION DECLARATIONS * * * */
@@ -413,31 +112,24 @@ void unpin_message(client *client, const uint64_t channel_id, const uint64_t mes
 void trigger_typing(client *client, const uint64_t channel_id);
 
 namespace modify {
-#include "./specs-code/channel.modify-channel.hh"
 }
 
 namespace get_reactions {
-#include "./specs-code/channel.get-reactions.hh"
 }
 
 namespace bulk_delete_messages {
-#include "./specs-code/channel.bulk-delete-messages.hh"
 }
 
 namespace edit_channel_permissions {
-#include "./specs-code/channel.edit-channel-permissions.hh"
 }
 
 namespace create_channel_invite {
-#include "./specs-code/channel.create-channel-invite.hh"
 }
 
 namespace follow_news_channel {
-#include "./specs-code/channel.follow-news-channel.hh"
 }
 
 namespace group_dm_add_recipient {
-#include "./specs-code/channel.group-dm-add-recipient.hh"
 }
 
 namespace message {
@@ -541,13 +233,10 @@ namespace emoji { /* discord-public-emoji.cpp */
 dati** get_list(client *client, const uint64_t guild_id);
 
 namespace create_guild_emoji {
-#include "./specs-code/emoji.create-guild-emoji.hh"
 }
 
 namespace modify_guild_emoji {
-#include "./specs-code/emoji.modify-guild-emoji.hh"
 }
-
 } // namespace emoji
 
 namespace guild { /* discord-public-guild.cpp */
@@ -558,7 +247,6 @@ void get(client *client, const uint64_t guild_id, dati *p_guild);
 channel::dati** get_channels(client *client, const uint64_t guild_id);
 
 namespace create_channel {
-#include "./specs-code/guild.create-channel.hh"
 
 void run(client *client, const uint64_t guild_id, params *params, channel::dati *p_channel);
 
@@ -579,10 +267,7 @@ dati** run(client *client, const uint64_t guild_id, struct params *params);
 void remove(client *client, const uint64_t guild_id, const uint64_t user_id);
 
 namespace modify {
-#include "./specs-code/guild.member.modify.hh"
-
 void run(client *client, const uint64_t guild_id, const uint64_t user_id, params *params, member::dati *p_member);
-
 } // namespace modify
 
 } // namespace member
@@ -601,7 +286,6 @@ namespace role {
 dati** get_list(client *client, const uint64_t guild_id);
 
 namespace create {
-#include "./specs-code/guild.role.create.hh"
 
 void run(client *client, const uint64_t guild_id, params *params, role::dati *p_role);
 
@@ -629,4 +313,5 @@ void leave_guild(client *client, const u64_snowflake_t guild_id);
 
 } // namespace discord
 
+#include "./specs-code/all_fun.hh"
 #endif

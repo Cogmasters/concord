@@ -9,113 +9,21 @@
 #include "user-agent.h"
 #include "orka-utils.h"
 
+#include "./specs-code/all_opaque_struct.hh"
+
 namespace discord {
 
 /* * * * * * * * * * * * * * * * * * * * */
 /* FORWARD DECLARATION OF EVERY DATATYPE */
 
 struct client;
-namespace audit_log {
-  struct dati;
-  namespace entry { 
-    struct dati; 
-    //namespace events { typedef int code; }
-    namespace optional_info { struct dati; }
-  }
-  namespace change { struct dati; }
-  namespace key { struct dati; }
-} // namespace audit_log
 namespace channel {
-  struct dati; 
-  //namespace types { typedef int code; }
-  namespace message { 
-    struct dati; 
-    //namespace types { typedef int code; }
-    namespace activity { 
-      struct dati; 
-      //namespace types { typedef int code; }
-    } // namespace activity
-    namespace application { struct dati; }
-    namespace reference { struct dati; }
-    //namespace flags { typedef int code; }
-    namespace sticker {
-      struct dati;
-      //namespace format_types { typedef int code; }
-    } // namespace sticker
-  } // namespace message
-  namespace followed_channel { struct dati; }
-  namespace reaction { struct dati; }
-  namespace overwrite { struct dati; }
-  namespace embed { 
-    struct dati; 
-    namespace thumbnail { struct dati; }
-    namespace video = thumbnail;
-    namespace image = thumbnail;
-    namespace provider { struct dati; }
-    namespace author { struct dati; }
-    namespace footer { struct dati; }
-    namespace field { struct dati; }
-  } // namespace embed
-  namespace attachment { struct dati; }
-  namespace mention { struct dati; }
-  namespace allowed_mentions { struct dati; }
-} // namespace channel
-namespace emoji { struct dati; }
-namespace guild {
-  struct dati; 
-  //namespace default_message_notification_level { enum code; }
-  //namespace explicit_content_filter_level { typedef int code; }
-  //namespace mfa_level { typedef int code; }
-  //namespace verification_level { typedef int code; }
-  //namespace premium_tier { typedef int code; }
-  //namespace system_channel_flags { typedef int code; }
-  //namespace guild_features { typedef int code; }
-  namespace unavailable_guild { struct dati; }
-  namespace preview { struct dati; }
-  namespace widget { struct dati; }
-  namespace member { struct dati; }
-  namespace integration { 
-    struct dati; 
-    //namespace expire_behaviors { typedef int code; }
-    //namespace account { struct dati; }
-    //namespace application { struct dati; }
-  } // namespace integration
-  namespace ban { struct dati; }
-  namespace welcome_screen { 
-    struct dati; 
-    namespace screen_channel { struct dati; }
-  } // namespace welcome_screen
-  namespace membership_screening {
-    struct dati;
-    namespace field {
-      struct dati;
-      namespace field_type { typedef int code; }
-    } // namespace field
-  } // namespace membsership_screening
-} // namespace guild
-namespace invite {
-  struct dati;
-  //namespace target_user_types { typedef int code; }
-  namespace metadata { struct dati; }
-} // namespace invite
-namespace Template { struct dati; }
-namespace user { 
-  struct dati; 
-  //namespace flags { typedef int code; }
-  //namespace premium_types { typedef int code; }
-  namespace connection {
-    struct dati;
-    //namespace visibility_types { typedef int code; }
-  } // namespace connection
-} // namespace user
-namespace voice {
-  struct dati;
-  namespace region { struct dati; }
-} // namespace voice
-namespace webhook {
-  struct dati;
-  //namespace types { enum code; }
-} // namespace webhook
+namespace embed {
+namespace thumbnail { struct dati; }
+namespace video = thumbnail;
+namespace image = thumbnail;
+}
+}
 
 namespace user_agent {
   namespace bucket { struct dati; }

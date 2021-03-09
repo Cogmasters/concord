@@ -87,7 +87,9 @@ PREFIX ?= /usr/local
 .PHONY : all mkdir install clean purge
 
 
-all : mkdir actor-gen.exe specs_hh common orka discord specs github bot
+all : mkdir actor-gen.exe common orka
+	${MAKE} all_headers
+	${MAKE} discord specs github bot $(MFLAGS)
 
 common: mkdir $(COMMON_OBJS)
 orka: mkdir $(ORKA_OBJS)
@@ -130,6 +132,14 @@ $(OBJDIR)/%.c.o : %.c
 $(OBJDIR)/%.cpp.o: %.cpp
 	$(CXX) $(CXXFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 
+
+all_headers:
+	rm -rf specs-code/all_*
+	$(foreach var, $(SPECS),./bin/actor-gen.exe -S -a -o specs-code/all_structs.hh $(var);)
+	$(foreach var, $(SPECS),./bin/actor-gen.exe -E -a -o specs-code/all_enums.hh $(var);)
+	$(foreach var, $(SPECS),./bin/actor-gen.exe -F -a -o specs-code/all_fun.hh $(var);)
+	$(foreach var, $(SPECS),./bin/actor-gen.exe -O -a -o specs-code/all_opaque_struct.hh $(var);)
+
 specs-code/%.cc: specs/%.json
 	./bin/actor-gen.exe -c -o $@ $<
 
@@ -142,7 +152,7 @@ specs-code/%.c: specs/%.json
 specs-code/%.h: specs/%.json
 	./bin/actor-gen.exe -C -d -o $@ $<
 
-$(OBJDIR)/%.cc.o: %.cc
+$(OBJDIR)/%.cc.o: %.cc 
 	$(CXX) $(CXXFLAGS) $(LIBS_CFLAGS) $(GENFLAGS) -c -o $@ $< -Wno-unused-but-set-variable
 
 actor-gen.exe: mkdir $(ACTOR_GEN_OBJS)
