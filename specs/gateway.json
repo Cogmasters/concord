@@ -1,0 +1,135 @@
+{
+  "namespace": ["discord", "gateway"],
+  "defs":
+  [
+    {
+      "title":"Gateway Close Event Codes",
+      "comment": "https://discord.com/developers/docs/topics/opcodes-and-status-codes#gateway-gateway-close-event-codes",
+      "enum":"close_opcodes",
+      "items":
+      [
+        { "name":"CLOSE_REASON_UNKNOWN_ERROR", "value":4000 },
+        { "name":"CLOSE_REASON_UNKNOWN_OPCODE", "value":4001 },
+        { "name":"CLOSE_REASON_DECODE_ERROR", "value":4002 },
+        { "name":"CLOSE_REASON_NOT_AUTHENTICATED", "value":4003 },
+        { "name":"CLOSE_REASON_AUTHENTICATION_FAILED", "value":4004 },
+        { "name":"CLOSE_REASON_ALREADY_AUTHENTICATED", "value":4005 },
+        { "name":"CLOSE_REASON_INVALID_SEQUENCE", "value":4007 },
+        { "name":"CLOSE_REASON_RATE_LIMITED", "value":4008 },
+        { "name":"CLOSE_REASON_SESSION_TIMED_OUT", "value":4009 },
+        { "name":"CLOSE_REASON_INVALID_SHARD", "value":4010 },
+        { "name":"CLOSE_REASON_SHARDING_REQUIRED", "value":4011 },
+        { "name":"CLOSE_REASON_INVALID_API_VERSION", "value":4012 },
+        { "name":"CLOSE_REASON_INVALID_INTENTS", "value":4013 },
+        { "name":"CLOSE_REASON_DISALLOWED_INTENTS", "value":4014 }
+      ]
+    },
+    {
+      "namespace": ["intents"],
+      "title":"Identify Identify Structure",
+      "comment": "https://discord.com/developers/docs/topics/gateway#identify-identify-structure",
+      "enum":"code",
+      "items":
+      [
+        { "name":"GUILDS","value":1, "comment":"1 << 0"},
+        { "name":"GUILD_MEMBERS","value":2, "comment":"1 << 1"},
+        { "name":"GUILD_BANS","value":4, "comment":"1 << 2"},
+        { "name":"GUILD_EMOJIS","value":8, "comment":"1 << 3"},
+        { "name":"GUILD_INTEGRATIONS","value":16, "comment":"1 << 4"},
+        { "name":"GUILD_WEBHOOKS","value":32, "comment":"1 << 5"},
+        { "name":"GUILD_INVITES","value":64, "comment":"1 << 6"},
+        { "name":"GUILD_VOICE_STATES","value":128, "comment":"1 << 7"},
+        { "name":"GUILD_PRESENCES","value":256, "comment":"1 << 8"},
+        { "name":"GUILD_MESSAGES","value":512, "comment":"1 << 9"},
+        { "name":"GUILD_MESSAGE_REACTIONS","value":1024, "comment":"1 << 10"},
+        { "name":"GUILD_MESSAGE_TYPING","value":2048, "comment":"1 << 11"},
+        { "name":"DIRECT_MESSAGES","value":4096, "comment":"1 << 12"},
+        { "name":"DIRECT_MESSAGE_REACTIONS","value":8192, "comment":"1 << 13"},
+        { "name":"DIRECT_MESSAGE_TYPING","value":16384, "comment":"1 << 14" }
+      ]
+    },
+    {
+      "namespace": ["opcodes"],
+      "title":"Gateway Opcodes",
+      "comment": "https://discord.com/developers/docs/topics/opcodes-and-status-codes#gateway-gateway-opcodes",
+      "enum":"code",
+      "items":
+      [
+        { "name":"DISPATCH","value":0},
+        { "name":"HEARTBEAT","value":1},
+        { "name":"IDENTIFY","value":2},
+        { "name":"PRESENCE_UPDATE","value":3},
+        { "name":"VOICE_STATE_UPDATE","value":4},
+        { "name":"RESUME","value":6},
+        { "name":"RECONNECT","value":7},
+        { "name":"REQUEST_GUILD_MEMBERS","value":8},
+        { "name":"INVALID_SESSION","value":9},
+        { "name":"HELLO","value":10},
+        { "name":"HEARTBEAT_ACK","value":11}
+      ]
+    },
+    {
+      "namespace": ["identify"],
+      "title":"Identify Structure",
+      "comment": "https://discord.com/developers/docs/topics/opcodes-and-status-codes#gateway-gateway-opcodes",
+      "disable_methods": ["to_json", "from_json"],
+      "struct":"dait",
+      "fields":
+      [
+        { "name":"token","type":{"base":"char", "dec":"*"}},
+        { "name":"compress","type":{"base":"bool"}},
+        { "name":"large_threshod","type":{"base":"int"}},
+        { "name":"shard","type":{"base":"char", "dec":"*", "todo":true}},
+        { "name":"presense","type":{"base":"discord::gateway::status_update::dati", "dec":"*"}},
+        { "name":"guild_subscriptions","type":{"base":"bool"}},
+        { "name":"intents","type":{"base":"int", "int_alias":"discord::gateway::intents::code"}}
+      ]
+    },
+    {
+      "namespace": ["activity", "types"],
+      "title":"Activity Types",
+      "comment": "https://discord.com/developers/docs/topics/gateway#update-status-gateway-status-update-structure",
+      "enum":"code",
+      "fields":
+      [
+        { "name":"GAME","value":0},
+        { "name":"STREAMING","value":1}, 
+        { "name":"LISTENING","value":2}, 
+        { "name":"CUSTOM","value":4}, 
+        { "name":"COMPETING","value":5} 
+      ]
+    },
+    {
+      "namespace": ["activity"],
+      "title":"Activity Structure",
+      "comment": "https://discord.com/developers/docs/topics/gateway#update-status-gateway-status-update-structure",
+      "disable_methods": ["to_json", "from_json"],
+      "struct":"dati",
+      "fields":
+      [
+        { "name":"name","type":{"base":"char", "dec":"[512]"}},
+        { "name":"code","type":{"base":"int", "int_alias":"discord::gateway::activity::types::code"}},
+        { "name":"url","type":{"base":"char", "dec":"[MAX_URL_LEN]"}},
+        { "name":"created_at","type":{"base":"char", "dec":"*", "converter":"iso8601"}},
+        { "name":"application_id","type":{"base":"char", "dec":"*", "converter":"snowflake" }},
+        { "name":"details","type":{"base":"char", "dec":"*"}},
+        { "name":"state","type":{"base":"char", "dec":"*"}},
+        { "name":"instance","type":{"base":"bool"}}
+      ]
+    },
+    {
+      "namespace": ["status_update"],
+      "title":"Gateway Status Update Structure",
+      "comment": "https://discord.com/developers/docs/topics/gateway#update-status-gateway-status-update-structure",
+      "disable_methods": ["to_json", "from_json"],
+      "struct":"dati",
+      "fields":
+      [
+        { "name":"since","type":{"base":"char", "dec":"*"}},
+        { "name":"activities","type":{"base":"discord::gateway::activity::dati", "dec":"ntl"}},
+        { "name":"status","type":{"base":"char", "dec":"[16]"}},
+        { "name":"afk","type":{"base":"bool"}} 
+      ]
+    }
+  ]
+}
