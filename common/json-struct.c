@@ -409,6 +409,22 @@ struct jc_definition {
   NTL_T(struct jc_def) defs; //ntl
 };
 
+static int has_struct(NTL_T(struct jc_def) defs)
+{
+  for (int i = 0; defs[i]; i++)
+    if (defs[i]->is_struct)
+      return 1;
+  return 0;
+}
+
+static int has_enum(NTL_T(struct jc_def) defs)
+{
+  for (int i = 0; defs[i]; i++)
+    if (!defs[i]->is_struct)
+      return 1;
+  return 0;
+}
+
 static char* namespace_to_str(NTL_T(name_t) ns)
 {
   char *buf; size_t len;
@@ -1660,8 +1676,7 @@ static void gen_struct_all(FILE *fp, struct jc_struct *s)
 static void gen_def (FILE *fp, struct jc_def *def)
 {
   if (def->is_struct) {
-    if (global_option.type == FILE_OPAQUE_STRUCT_DECLARATION)
-    {
+    if (global_option.type == FILE_OPAQUE_STRUCT_DECLARATION) {
       gen_opaque_struct(fp, (struct jc_struct *)def);
     }
     else if (global_option.type != FILE_ENUM_DECLARATION)

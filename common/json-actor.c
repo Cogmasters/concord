@@ -262,7 +262,7 @@ enum ptr_map_tag {
 
 struct ptr_map {
   enum ptr_map_tag tag;
-  void ** arg;
+  void **arg;
   int  sizeof_arg;
   int  enabled;
   bool has_this;
@@ -338,7 +338,7 @@ add_defined (struct ptr_map **s, void *p)
   if (m == NULL)
     return;
 
-  void ***v = m->arg;
+  void **v = m->arg;
   if (m->next_idx < m->xend_idx) {
     //fprintf(stderr, "&arg %p, arg %p\n", &m->arg, m->arg);
     v[m->next_idx] = p;
@@ -1089,10 +1089,10 @@ parse_actor(
     if (pos == end_pos)
       return pos;
     else if (pos != end_pos)
-      ERR("unexpected %s@[%ld] before end, "
-          "in %s[%ld]\n",
-          pos, end_pos - pos,
-          start_pos, pos - start_pos);
+      ERR("unexpected %s@[%zu] before end, "
+          "in %s[%zu]\n",
+          pos, (size_t)(end_pos - pos),
+          start_pos, (size_t)(pos - start_pos));
   }
   return 0;
 }
