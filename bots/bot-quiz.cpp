@@ -344,23 +344,24 @@ void on_reaction_add(
 
   /* get session associated with the user */
   struct session *session=NULL;
-  struct question *question=NULL;
   for (size_t i=0; i < MAX_SESSIONS; ++i) {
-    if (channel_id != g_session.active_sessions[i].channel_id)
-      continue;
-
-    session = &g_session.active_sessions[i];
-    question = &g_session.questions[session->curr_question];
+    if (channel_id == g_session.active_sessions[i].channel_id) {
+      session = &g_session.active_sessions[i];
+      break; /* EARLY BREAK */
+    }
   }
 
-  if (!question || !session) return; /* EARLY RETURN */
+  if (!session) return; /* EARLY RETURN */
   if (FINISHED == session->status) return; /* EARLY RETURN */
 
-
+  struct question *question=NULL;
   switch (session->status) {
   case RUNNING:
-      // delete previous question
+      // delete previous question from channel
       message::del(client, channel_id, message_id);
+
+      // get current question associated to session
+      question = &g_session.questions[session->curr_question];
 
       // check if current answer is correct
       for (int i=0; i < question->num_answers; ++i) {
@@ -369,12 +370,18 @@ void on_reaction_add(
         if (true == question->answers[i].value)
           ++session->hits;
       }
+
       ++session->curr_question;
-      question = &g_session.questions[session->curr_question];
   /* fall through */
   case PAUSED:
+      // get next question from session (or first)
+      question = &g_session.questions[session->curr_question];
+
       send_next_question(client, channel_id, session, question);
       break;
+  case FINISHED: default:
+      close_existing_sessions(client, guild_id, member);
+      return; /* it should never happen */
   }
 }
 
