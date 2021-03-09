@@ -141,8 +141,8 @@ extern char*url_decode(char *str);
  * readable locations.
  */
 struct line_and_column {
-  size_t line;
-  size_t column;
+  int line;
+  int column;
 };
 
 

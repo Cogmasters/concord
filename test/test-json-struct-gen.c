@@ -14,7 +14,13 @@ void print_usage (char * prog)
           "      -h generate header with namespace\n"
           "      -c generate data and function definitions with namespace\n"
           "      -d generate data and function declarations without namespace\n"
-          "      -f generate function definitions without namespace\n",
+          "      -S generate struct declarations without namespace\n"
+          "      -E generate enum declarations without namespace\n"
+          "      -F generate function declarations without namespace\n"
+          "      -f generate function definitions without namespace\n"
+          "      -B generate all boilerplate code without namespace\n"
+          "      -O generate all opaque struct declarations without namespace\n"
+          "      -a append to output\n",
           prog);
   exit(EXIT_FAILURE);
 }
@@ -32,8 +38,12 @@ int main (int argc, char ** argv)
     .type = FILE_SINGLE_FILE
   };
 
-  while ((opt = getopt(argc, argv, "hcdfWCo:")) != -1) {
+  char * open_mode = "w";;
+  while ((opt = getopt(argc, argv, "ahcdfSEFWOCo:")) != -1) {
     switch (opt) {
+      case 'a':
+        open_mode = "a";
+        break;
       case 'o':
         config_file = strdup(optarg);
         break;
@@ -48,6 +58,18 @@ int main (int argc, char ** argv)
         break;
       case 'f':
         eo.type = FILE_DEFINITION;
+        break;
+      case 'S':
+        eo.type = FILE_STRUCT_DECLARATION;
+        break;
+      case 'E':
+        eo.type = FILE_ENUM_DECLARATION;
+        break;
+      case 'F':
+        eo.type = FILE_FUN_DECLARATION;
+        break;
+      case 'O':
+        eo.type = FILE_OPAQUE_STRUCT_DECLARATION;
         break;
       case 'C':
         eo.lang_C = true;
@@ -72,7 +94,7 @@ int main (int argc, char ** argv)
   memset(&d, 0, sizeof(d));
   definition_from_json(s, len, &d);
   //print_definition(stderr, &d);
-  FILE * fp = fopen(config_file, "w");
+  FILE * fp = fopen(config_file, open_mode);
   d.spec_name = file;
   gen_definition(fp, &eo, &d);
   fclose(fp);

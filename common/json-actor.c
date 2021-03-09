@@ -1089,8 +1089,8 @@ parse_actor(
     if (pos == end_pos)
       return pos;
     else if (pos != end_pos)
-      ERR("unexpected %s@[%d] before end, "
-          "in %s[%d]\n",
+      ERR("unexpected %s@[%ld] before end, "
+          "in %s[%ld]\n",
           pos, end_pos - pos,
           start_pos, pos - start_pos);
   }
@@ -1853,7 +1853,7 @@ struct e_info {
   char * pos;
   jsmntok_t *tokens;
   int n_tokens;
-  struct pointer_maps * E;
+  struct ptr_map **E;
 };
 
 static size_t extract_str (struct action * v, int i, struct e_info * info)

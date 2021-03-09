@@ -56,6 +56,9 @@
 
 typedef char name_t[256];
 
+typedef void (*vvpvp)(void *, void *);
+typedef void (*vcpsvp)(char *, size_t, void *);
+
 static void
 emit_alias_disabled(FILE *fp, char *f)
 {
@@ -136,8 +139,10 @@ static void init_converters () {
   converters[1]->injector_addrof = "&";
   converters[1]->converted_builtin_type = "uint64_t";
 
+  /*
   for (int i = 0; converters[i]; i++)
     fprintf(stderr, "adding converters %s ...\n", converters[i]->name);
+    */
 
 }
 static void load_converters(char *filename)
@@ -150,7 +155,7 @@ static void load_converters(char *filename)
     .ntl_recipient_p = (ntl_t *)&converters,
     .init_elem = NULL,
     .elem_size = sizeof(struct converter),
-    .elem_from_buf = load_converter
+    .elem_from_buf = (vcpsvp)load_converter
   };
   orka_str_to_ntl(data, len, &d);
 }
@@ -170,6 +175,10 @@ static struct converter* get_converter(char *name) {
 
 enum file_type {
   FILE_SINGLE_FILE = 0,
+  FILE_ENUM_DECLARATION,
+  FILE_STRUCT_DECLARATION,
+  FILE_OPAQUE_STRUCT_DECLARATION,
+  FILE_FUN_DECLARATION,
   FILE_DECLARATION,
   FILE_DEFINITION,
   FILE_HEADER,
@@ -332,7 +341,7 @@ static void
 print_struct(FILE *fp, struct jc_struct *p)
 {
   fprintf(fp, "name %s\n", p->name);
-  ntl_apply(fp, (ntl_t)p->fields, print_field);
+  ntl_apply(fp, (ntl_t)p->fields, (vvpvp)print_field);
 }
 
 struct jc_item {
@@ -372,7 +381,7 @@ static void
 print_enum(FILE *fp, struct jc_enum *p)
 {
   fprintf(fp, "name %s\n", p->name);
-  ntl_apply(fp, (ntl_t)p->items, print_item);
+  ntl_apply(fp, (ntl_t)p->items, (vvpvp)print_item);
 }
 
 static void
@@ -415,10 +424,10 @@ print_definition(FILE *fp, struct jc_definition *p)
 {
   fprintf(fp, "/*\n %s  */\n", p->comment);
   fprintf(fp, "namespace: ");
-  ntl_apply(fp, (ntl_t)p->namespace, fprintf);
+  ntl_apply(fp, (ntl_t)p->namespace, (vvpvp)fprintf);
 
   fprintf(fp, "\n");
-  ntl_apply(fp, (ntl_t)p->defs, print_def);
+  ntl_apply(fp, (ntl_t)p->defs, (vvpvp)print_def);
 }
 
 static size_t
@@ -544,21 +553,21 @@ static size_t struct_from_json(char *json, size_t size, struct jc_struct *s)
 {
   struct ntl_deserializer d0 = {
     .elem_size = 256,
-    .elem_from_buf = name_from_json,
+    .elem_from_buf = (vcpsvp)name_from_json,
     .init_elem = NULL,
     .ntl_recipient_p = (ntl_t *)&(s->namespace)
   };
 
   struct ntl_deserializer dx = {
     .elem_size = 256,
-    .elem_from_buf = name_from_json,
+    .elem_from_buf = (vcpsvp)name_from_json,
     .init_elem = NULL,
     .ntl_recipient_p = (ntl_t *)&(s->disable_methods)
   };
 
   struct ntl_deserializer d1 = {
     .elem_size = sizeof(struct jc_field),
-    .elem_from_buf = field_from_json,
+    .elem_from_buf = (vcpsvp)field_from_json,
     .init_elem = NULL,
     .ntl_recipient_p = (ntl_t *)&(s->fields)
   };
@@ -614,14 +623,14 @@ static size_t enum_from_json(char * json, size_t size, struct jc_enum *e)
 {
   struct ntl_deserializer d0 = {
     .elem_size = 256,
-    .elem_from_buf = name_from_json,
+    .elem_from_buf = (vcpsvp)name_from_json,
     .init_elem = NULL,
     .ntl_recipient_p = (ntl_t *)&(e->namespace)
   };
 
   struct ntl_deserializer d1 = {
     .elem_size = sizeof(struct jc_item),
-    .elem_from_buf = item_from_json,
+    .elem_from_buf = (vcpsvp)item_from_json,
     .init_elem = NULL,
     .ntl_recipient_p = (ntl_t *)&(e->items)
   };
@@ -660,7 +669,7 @@ static size_t def_from_json(char *json, size_t size, struct jc_def *def)
     return enum_from_json(json, size, (struct jc_enum *)def);
   }
   else {
-    ERR("missing 'struct' or 'enum' in '%.*s'", size, json);
+    ERR("missing 'struct' or 'enum' in '%.*s'", (int)size, json);
     return 0;
   }
 }
@@ -731,14 +740,14 @@ definition_from_json(char *json, size_t size, struct jc_definition *s)
 {
   struct ntl_deserializer d1 = {
     .elem_size = sizeof(name_t),
-    .elem_from_buf = name_from_json,
+    .elem_from_buf = (vcpsvp)name_from_json,
     .init_elem = NULL,
     .ntl_recipient_p = (ntl_t *)&(s->namespace)
   };
 
   struct ntl_deserializer d2 = {
     .elem_size = sizeof(struct jc_def),
-    .elem_from_buf = def_from_json,
+    .elem_from_buf = (vcpsvp)def_from_json,
     .init_elem = NULL,
     .ntl_recipient_p = (ntl_t *)&(s->defs)
   };
@@ -760,7 +769,7 @@ definition_list_from_json(char *json, size_t size,
 {
   struct ntl_deserializer d = {
     .elem_size = sizeof(struct jc_definition),
-    .elem_from_buf = definition_from_json,
+    .elem_from_buf = (vcpsvp)definition_from_json,
     .init_elem = NULL,
     .ntl_recipient_p = (ntl_t *)s
   };
@@ -778,7 +787,7 @@ static size_t spec_from_json(char *json, size_t size,
   if ('[' == *json)
     return definition_list_from_json(json, xend_pos - json, s);
   else {
-    *s = ntl_calloc(1, sizeof(struct jc_definition));
+    *s = (NTL_T(struct jc_definition))ntl_calloc(1, sizeof(struct jc_definition));
     return definition_from_json(json, xend_pos - json, (*s)[0]);
   }
 }
@@ -1159,7 +1168,7 @@ static void emit_json_extractor_arg(void *cxt, FILE *fp, struct jc_field *f)
 static bool is_disabled_method(struct jc_struct *s, char *name)
 {
   for (int i = 0; s->disable_methods && s->disable_methods[i]; i++)
-    if (strcmp(name, s->disable_methods[i]) == 0)
+    if (strcmp(name, (char *)s->disable_methods[i]) == 0)
       return true;
   return false;
 }
@@ -1513,7 +1522,7 @@ static void gen_wrapper(FILE *fp, struct jc_struct *s)
               "}\n\n", t, t, t);
 }
 
-static void gen_forward_declare(FILE *fp, struct jc_struct *s)
+static void gen_forward_fun_declare(FILE *fp, struct jc_struct *s)
 {
   char *t = ns_to_symbol_name(s->name);
 
@@ -1563,21 +1572,47 @@ static void gen_typedef (FILE *fp, struct jc_struct *s)
 #endif
 }
 
-static void gen_struct_all (FILE *fp, struct jc_struct *s)
+static void gen_opaque_struct(FILE *fp, struct jc_struct *s)
 {
   fprintf(fp, "\n");
   gen_open_namespace(fp, s->namespace);
 
-  if (global_option.type == FILE_HEADER
+  char *t = ns_to_symbol_name(s->name);
+
+  if (s->title)
+    fprintf(fp, "/* Title: %s */\n", s->title);
+  if (s->comment)
+    fprintf(fp, "/* %s */\n", s->comment);
+
+  fprintf(fp, "/* This is defined at %s:%d:%d */\n",
+          spec_name, s->name_lnc.line, s->name_lnc.column);
+
+  fprintf(fp, "struct %s;\n", t);
+
+  gen_close_namespace(fp, s->namespace);
+}
+
+static void gen_struct_all(FILE *fp, struct jc_struct *s)
+{
+  fprintf(fp, "\n");
+  gen_open_namespace(fp, s->namespace);
+
+  if (global_option.type == FILE_STRUCT_DECLARATION) {
+    gen_struct (fp, s);
+  }
+  else if (global_option.type == FILE_FUN_DECLARATION) {
+    gen_forward_fun_declare(fp, s);
+  }
+  else if (global_option.type == FILE_HEADER
       || global_option.type == FILE_DECLARATION) {
     gen_struct (fp, s);
     //fprintf (fp, "\n*/\n");
-    gen_forward_declare(fp, s);
+    gen_forward_fun_declare(fp, s);
   }
   else if (global_option.type == FILE_SINGLE_FILE) {
     gen_struct (fp, s);
     //fprintf (fp, "\n*/\n");
-    gen_forward_declare(fp, s);
+    gen_forward_fun_declare(fp, s);
 
     gen_from_json(fp, s);
     fprintf(fp, "\n");
@@ -1624,11 +1659,18 @@ static void gen_struct_all (FILE *fp, struct jc_struct *s)
 
 static void gen_def (FILE *fp, struct jc_def *def)
 {
-  if (def->is_struct)
-    gen_struct_all(fp, (struct jc_struct *)def);
+  if (def->is_struct) {
+    if (global_option.type == FILE_OPAQUE_STRUCT_DECLARATION)
+    {
+      gen_opaque_struct(fp, (struct jc_struct *)def);
+    }
+    else if (global_option.type != FILE_ENUM_DECLARATION)
+      gen_struct_all(fp, (struct jc_struct *)def);
+  }
   else {
     if (global_option.type == FILE_HEADER
         || global_option.type == FILE_DECLARATION
+        || global_option.type == FILE_ENUM_DECLARATION
         || global_option.type == FILE_SINGLE_FILE) {
       gen_enum(fp, (struct jc_enum *)def);
     }
@@ -1656,7 +1698,7 @@ gen_definition(FILE *fp, struct emit_option * option, struct jc_definition *d)
        && global_option.type != FILE_DEFINITION))
     gen_open_namespace(fp, d->namespace);
 
-  ntl_apply(fp, (ntl_t)d->defs, gen_def);
+  ntl_apply(fp, (ntl_t)d->defs, (vvpvp)gen_def);
 
   if (global_option.lang_C ||
       (global_option.type != FILE_DECLARATION
