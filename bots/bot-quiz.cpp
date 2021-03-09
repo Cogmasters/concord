@@ -10,10 +10,15 @@ using namespace discord;
 
 
 const char *ALPHA_EMOJI[] = {
-  "🇦", "🇧", "🇨", "🇩", "🇪", "🇫"
+  "🇦","🇧","🇨","🇩","🇪","🇫","🇬","🇭","🇮","🇯","🇰","🇱","🇲","🇳","🇴","🇵","🇶","🇷","🇸","🇹","🇺""🇻","🇼", "🇽","🇾","🇿" ,NULL
+};
+
+enum session_status {
+  PAUSED, RUNNING, FINISHED
 };
 
 struct session {
+  enum session_status status;
   u64_snowflake_t user_id;
   u64_snowflake_t channel_id;
   int curr_question;
@@ -85,7 +90,7 @@ parse_session_config()
 
     g_session.questions[i].num_answers = ntl_length((void**)t_answers);
     g_session.questions[i].answers = (struct answer*)calloc(1, g_session.questions[i].num_answers * sizeof(struct answer));
-    for (size_t j=0; t_answers[j]; ++j) {
+    for (int j=0; t_answers[j]; ++j) {
       json_extract(t_answers[j]->start, t_answers[j]->size,
         "(description):?s"
         "(value):b", 
@@ -175,6 +180,7 @@ create_session_channel(
     if (0 == g_session.active_sessions[i].user_id) {
       g_session.active_sessions[i].user_id = member->user->id;
       g_session.active_sessions[i].channel_id = ch.id;
+      g_session.active_sessions[i].status = PAUSED;
 #if 0
       int *indexes = malloc(g_session.num_questions * sizeof(int));
       for (size_t i=0; i < g_session.num_questions; ++i)
@@ -247,7 +253,7 @@ void start_new_session(
 
   session_role_id = add_session_role(client, guild_id, session_channel_id, member);
   if (!session_role_id) {
-    channel::del(client, session_channel_id, NULL);
+    close_existing_sessions(client, guild_id, member);
     return; // couldn't create role, delete channel and return
   }
 
@@ -256,13 +262,65 @@ void start_new_session(
     .content = "Would you like to start?"
   };
   message::create::run(client, session_channel_id, &params, ret_msg);
+
   reaction::create(
     client, 
     session_channel_id, 
     ret_msg->id, 
     0, 
     g_session.reaction_emoji);
+
   message::dati_free(ret_msg);
+}
+
+void send_next_question(
+  client *client,
+  u64_snowflake_t channel_id,
+  struct session *session, 
+  struct question *question)
+{
+  using namespace channel;
+
+  char text[MAX_PAYLOAD_LEN];
+  if (session->curr_question == g_session.questions_per_session) {
+    sprintf(text, "You got %d out of %d! (%.1f%%)", \
+      session->hits, g_session.questions_per_session,
+      100*((float)session->hits / (float)g_session.questions_per_session));
+    message::create::params params = {
+      .content = text
+    };
+    message::create::run(client, channel_id, &params, NULL);
+
+    session->status = FINISHED;
+    return; /* EARLY RETURN */
+  }
+
+  int offset = sprintf(text, "QUESTION %d\n%s\n", \
+                1+session->curr_question,
+                question->desc);
+
+  for (int i=0; i < question->num_answers; ++i) {
+    offset += sprintf(text+offset, "(%c)%s ", \
+      'A'+ i, question->answers[i].desc);
+  }
+
+  message::dati *ret_msg = message::dati_alloc();
+  message::create::params params = {
+    .content = text
+  };
+  message::create::run(client, channel_id, &params, ret_msg);
+
+  for (int i=0; i < question->num_answers; ++i) {
+    reaction::create(
+      client, 
+      channel_id, 
+      ret_msg->id, 
+      0, 
+      ALPHA_EMOJI[i]);
+  }
+  message::dati_free(ret_msg);
+
+  session->status = RUNNING;
 }
 
 void on_reaction_add(
@@ -284,8 +342,7 @@ void on_reaction_add(
     start_new_session(client, guild_id, member);
   }
 
-  /* POST NEXT QUESTION */
-
+  /* get session associated with the user */
   struct session *session=NULL;
   struct question *question=NULL;
   for (size_t i=0; i < MAX_SESSIONS; ++i) {
@@ -295,58 +352,30 @@ void on_reaction_add(
     session = &g_session.active_sessions[i];
     question = &g_session.questions[session->curr_question];
   }
-  if (!question || !session) 
-    return; /* EARLY RETURN */
 
-  message::del(client, channel_id, message_id);
+  if (!question || !session) return; /* EARLY RETURN */
+  if (FINISHED == session->status) return; /* EARLY RETURN */
 
-  char text[MAX_PAYLOAD_LEN];
-  if (session->curr_question == g_session.questions_per_session) {
-    sprintf(text, "You got %d out of %d! (%.1f%%)", \
-                  session->hits, g_session.questions_per_session,
-                  100*((float)session->hits / (float)g_session.questions_per_session));
-  }
-  else { //@todo turn into a function
-    // check if current answer is correct
-    for (int i=0; i < question->num_answers; ++i) 
-    {
-      fprintf(stdout, "%c: %d\n", 'A'+i, question->answers[i].value);
-      if (strcmp(emoji->name, ALPHA_EMOJI[i]))
-        continue;
-      if (true == question->answers[i].value)
-        ++session->hits;
 
+  switch (session->status) {
+  case RUNNING:
+      // delete previous question
+      message::del(client, channel_id, message_id);
+
+      // check if current answer is correct
+      for (int i=0; i < question->num_answers; ++i) {
+        if (strcmp(emoji->name, ALPHA_EMOJI[i]))
+          continue; // skip non-alphabet emojis
+        if (true == question->answers[i].value)
+          ++session->hits;
+      }
+      ++session->curr_question;
+      question = &g_session.questions[session->curr_question];
+  /* fall through */
+  case PAUSED:
+      send_next_question(client, channel_id, session, question);
       break;
-    }
-    ++session->curr_question;
-
-    int offset = sprintf(text, "QUESTION %d\n%s\n", \
-                  session->curr_question,
-                  question->desc);
-
-    for (int i=0; i < question->num_answers; ++i) {
-      offset += sprintf(text+offset, "(%c)%s ", \
-        'A'+ i, question->answers[i].desc);
-    }
   }
-
-  message::create::params params = {
-    .content = text
-  };
-
-  message::dati *ret_msg = message::dati_alloc();
-  message::create::run(client, channel_id, &params, ret_msg);
-
-  for (int i=0; i < question->num_answers; ++i) {
-    reaction::create(
-      client, 
-      channel_id, 
-      ret_msg->id, 
-      0, 
-      ALPHA_EMOJI[i]);
-  }
-
-  message::dati_free(ret_msg);
 }
 
 int main(int argc, char *argv[])
