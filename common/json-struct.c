@@ -711,7 +711,7 @@ static void gen_enum(FILE *fp, struct jc_enum *e)
   char *t = ns_to_symbol_name(e->name);
 
   fprintf(fp, "enum %s {\n", t);
-  int i = 0, prev_value;
+  int i = 0, prev_value = -1;
 
   for (i = 0; e->items && e->items[i]; i++) {
     struct jc_item * item = e->items[i];
