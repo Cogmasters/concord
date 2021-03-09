@@ -133,7 +133,7 @@ $(OBJDIR)/%.cpp.o: %.cpp
 	$(CXX) $(CXXFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 
 
-all_headers:
+all_headers: $(SPECS)
 	rm -rf specs-code/all_*
 	$(foreach var, $(SPECS),./bin/actor-gen.exe -S -a -o specs-code/all_structs.hh $(var);)
 	$(foreach var, $(SPECS),./bin/actor-gen.exe -E -a -o specs-code/all_enums.hh $(var);)
