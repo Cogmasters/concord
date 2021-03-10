@@ -1,12 +1,14 @@
 #ifndef USER_AGENT_H
 #define USER_AGENT_H
 
-#ifdef __cplusplus
-extern "C" {
-#endif // __cplusplus
+#include <curl/curl.h>
 
 #include "ntl.h"
 #include "orka-config.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
 
 /* UTILITY MACROS */
 #define STREQ(str1, str2) (0 == strcmp(str1, str2))
