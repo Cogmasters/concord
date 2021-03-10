@@ -64,7 +64,7 @@ void
 add_intents(client *client, websockets::intents::code code)
 {
   using namespace websockets;
-  if (status::CONNECTED == client->ws.status) {
+  if (WS_CONNECTED == client->ws.common.status) {
     PUTS("Can't set intents to a running client.");
     return;
   }

@@ -234,7 +234,7 @@ curl_mime_cb(CURL *ehandle, void *data)
 void
 run(client *client, const uint64_t channel_id, params *params, dati *p_message)
 {
-  if (client->ws.status != websockets::status::CONNECTED) {
+  if (client->ws.common.status != WS_CONNECTED) {
     D_PUTS("Can't perform action unless client has an active"
            " websockets connection");
     return;
