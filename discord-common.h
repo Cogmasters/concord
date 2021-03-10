@@ -7,6 +7,7 @@
 #include "json-actor.h"
 
 #include "user-agent.h"
+#include "websockets.h"
 #include "orka-utils.h"
 
 #include "./specs-code/all_opaque_struct.hh"
@@ -209,15 +210,6 @@ enum {
 };
 } // namespace opcodes
 
-namespace status {
-enum {
-  DISCONNECTED,  //disconnected from ws
-  RESUME,        //attempt to resume ws session
-  FRESH,         //attempt a fresh ws session (session timed out)
-  CONNECTED      //connected to ws
-};
-} // namespace status
-
 namespace session { /* SESSION START LIMIT STRUCTURE */
 struct dati {
   char url[MAX_URL_LEN];
@@ -334,15 +326,11 @@ struct cmd_cbs {
 };
 
 struct dati { /* WEBSOCKETS STRUCTURE */
-  struct orka_config config;
-  status::code status; //connection to discord status
+  struct websockets_s common;
   int reconnect_attempts; //hard limit 5 reconnection attempts @todo make configurable
 
   identify::dati *identify;
   char session_id[512]; //the session id (for resuming lost connections)
-
-  CURLM *mhandle;
-  CURL *ehandle;
 
   struct { /* PAYLOAD STRUCTURE */
     opcodes::code opcode; //field 'op'
@@ -383,8 +371,6 @@ struct dati { /* WEBSOCKETS STRUCTURE */
       reaction_remove_emoji_cb *remove_emoji; //triggers when given emoji is removed
     } on_reaction;
   } cbs;
-
-  uint64_t now_tstamp; //timestamp updated every loop iteration
 
   int ping_ms; //latency between client and websockets server
 

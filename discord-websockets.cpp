@@ -3,7 +3,6 @@
 #include <ctype.h> // for isspace()
 
 #include <libdiscord.h>
-#include "curl-websocket.h"
 
 #include "orka-utils.h"
 #include "discord-common.h"
@@ -388,15 +387,14 @@ ws_close_opcode_print(enum close_opcodes gateway_opcode)
 static void
 ws_send_payload(dati *ws, char payload[])
 {
-  (*ws->config.json_cb)(
+  (*ws->common.config.json_cb)(
     false, 
     0, "SEND", 
-    &ws->config, 
+    &ws->common.config, 
     BASE_WEBSOCKETS_URL, 
     payload);
 
-  bool ret = cws_send_text(ws->ehandle, payload);
-  ASSERT_S(true == ret, "Couldn't send payload");
+  ws_send_text(&ws->common, payload);
 }
 
 static void
@@ -424,7 +422,7 @@ static void
 ws_send_identify(dati *ws)
 {
   /* Ratelimit check */
-  if ( (ws->now_tstamp - ws->session.identify_tstamp) < 5 ) {
+  if ( (ws->common.now_tstamp - ws->session.identify_tstamp) < 5 ) {
     ++ws->session.concurrent;
     VASSERT_S(ws->session.concurrent < ws->session.max_concurrency,
         "Reach identify request threshold (%d every 5 seconds)", ws->session.max_concurrency);
@@ -446,7 +444,7 @@ ws_send_identify(dati *ws)
   ws_send_payload(ws, payload);
 
   //get timestamp for this identify
-  ws->session.identify_tstamp = ws->now_tstamp;
+  ws->session.identify_tstamp = ws->common.now_tstamp;
 }
 
 static void
@@ -459,9 +457,9 @@ on_hello(dati *ws)
              "[heartbeat_interval]%ld", &ws->hbeat.interval_ms);
   ASSERT_S(ws->hbeat.interval_ms > 0, "Invalid heartbeat_ms");
 
-  if (status::RESUME == ws->status)
+  if (WS_RESUME == ws->common.status)
     ws_send_resume(ws);
-  else // status::FRESH || status::DISCONNECTED
+  else // WS_FRESH || WS_DISCONNECTED
     ws_send_identify(ws);
 }
 
@@ -653,19 +651,19 @@ on_dispatch(dati *ws)
       sizeof(ws->payload.event_data), ws->me);
 
   /* Ratelimit check */
-  if ( (ws->now_tstamp - ws->session.event_tstamp) < 60 ) {
+  if ( (ws->common.now_tstamp - ws->session.event_tstamp) < 60 ) {
     ++ws->session.event_count;
     ASSERT_S(ws->session.event_count < 120,
         "Reach event dispatch threshold (120 every 60 seconds)");
   }
   else {
-    ws->session.event_tstamp = ws->now_tstamp;
+    ws->session.event_tstamp = ws->common.now_tstamp;
     ws->session.event_count = 0;
   }
 
   if (STREQ("READY", ws->payload.event_name))
   {
-    ws->status = status::CONNECTED;
+    ws->common.status = WS_CONNECTED;
     ws->reconnect_attempts = 0; // resets
     D_PUTS("Succesfully started a Discord session!");
 
@@ -680,7 +678,7 @@ on_dispatch(dati *ws)
   }
   if (STREQ("RESUMED", ws->payload.event_name))
   {
-    ws->status = status::CONNECTED;
+    ws->common.status = WS_CONNECTED;
     ws->reconnect_attempts = 0; // resets
     PUTS("Succesfully resumed a Discord session!");
 
@@ -710,38 +708,37 @@ on_invalid_session(dati *ws)
 
   bool is_resumable = strcmp(ws->payload.event_data, "false");
   if (is_resumable) {
-    ws->status = status::RESUME;
+    ws->common.status = WS_RESUME;
     reason = "Attempting to session resume";
   }
   else {
-    ws->status = status::FRESH;
+    ws->common.status = WS_FRESH;
     reason = "Attempting to start a fresh new session";
   }
   PUTS(reason);
-  cws_close(ws->ehandle, CWS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
+  ws_close(&ws->common, CWS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
 }
 
 static void
 on_reconnect(dati *ws)
 {
-  ws->status = status::RESUME;
+  ws->common.status = WS_RESUME;
 
   const char reason[] = "Attempting to session resume";
   PUTS(reason);
-  cws_close(ws->ehandle, CWS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
+  ws_close(&ws->common, CWS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
 }
 
 static void
-ws_on_connect_cb(void *p_ws, CURL *ehandle, const char *ws_protocols)
+ws_on_connect_cb(void *p_ws, const char *ws_protocols)
 {
   D_PRINT("Connected, WS-Protocols: '%s'", ws_protocols);
 
   (void)p_ws;
-  (void)ehandle;
 }
 
 static void
-ws_on_close_cb(void *p_ws, CURL *ehandle, enum cws_close_reason cwscode, const char *reason, size_t len)
+ws_on_close_cb(void *p_ws, enum cws_close_reason cwscode, const char *reason, size_t len)
 {
   dati *ws = (dati*)p_ws;
   enum close_opcodes opcode = (enum close_opcodes)cwscode;
@@ -757,15 +754,15 @@ ws_on_close_cb(void *p_ws, CURL *ehandle, enum cws_close_reason cwscode, const c
   case CLOSE_REASON_INVALID_API_VERSION:
   case CLOSE_REASON_INVALID_INTENTS:
   case CLOSE_REASON_DISALLOWED_INTENTS:
-      ws->status = status::DISCONNECTED;
+      ws->common.status = WS_DISCONNECTED;
       break;
   case CLOSE_REASON_UNKNOWN_ERROR:
   case CLOSE_REASON_INVALID_SEQUENCE:
-      ws->status = status::RESUME;
+      ws->common.status = WS_RESUME;
       break;
   case CLOSE_REASON_SESSION_TIMED_OUT:
   default: //websocket/clouflare opcodes
-      ws->status = status::FRESH;
+      ws->common.status = WS_FRESH;
       break;
   }
 
@@ -773,19 +770,17 @@ ws_on_close_cb(void *p_ws, CURL *ehandle, enum cws_close_reason cwscode, const c
           "REASON: '%s'", 
           ws_close_opcode_print(opcode), opcode, len,
           reason);
-
-  (void)ehandle;
 }
 
 static void
-ws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
+ws_on_text_cb(void *p_ws, const char *text, size_t len)
 {
   dati *ws = (dati*)p_ws;
   
-  (*ws->config.json_cb)(
+  (*ws->common.config.json_cb)(
     true, 
     ws->payload.opcode, ws_opcode_print(ws->payload.opcode),
-    &ws->config, 
+    &ws->common.config, 
     BASE_WEBSOCKETS_URL, 
     (char*)text);
 
@@ -837,70 +832,23 @@ ws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
   }
 
   (void)len;
-  (void)ehandle;
 }
 
-/* init easy handle with some default opt */
-static CURL*
-custom_cws_new(dati *ws)
+static int
+ws_on_start_cb(void *p_ws)
 {
-  //missing on_binary, on_ping, on_pong
-  struct cws_callbacks cws_cbs;
-  memset(&cws_cbs, 0, sizeof(cws_cbs));
-  cws_cbs.on_connect = &ws_on_connect_cb;
-  cws_cbs.on_text = &ws_on_text_cb;
-  cws_cbs.on_close = &ws_on_close_cb;
-  cws_cbs.data = ws;
+  dati *ws = (dati*)p_ws;
 
-  CURL *new_ehandle = cws_new(BASE_WEBSOCKETS_URL, NULL, &cws_cbs);
-  ASSERT_S(NULL != new_ehandle, "Out of memory");
+  //get session info before starting it
+  get_bot(ws->p_client, &ws->session);
 
-  CURLcode ecode;
-  ecode = curl_easy_setopt(new_ehandle, CURLOPT_FOLLOWLOCATION, 2L);
-  ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
-
-  return new_ehandle;
-}
-
-static CURLM*
-custom_multi_init()
-{
-  CURLM *new_mhandle = curl_multi_init();
-  ASSERT_S(NULL != new_mhandle, "Out of memory");
-
-  return new_mhandle;
-}
-
-void
-init(dati *ws, const char token[], const char config_file[])
-{
-  if (config_file) { 
-    orka_config_init(&ws->config, "DISCORD WEBSOCKETS", config_file);
-    token = orka_config_get_field(&ws->config, "discord.token");
+  if (!ws->session.remaining) {
+    PRINT("Reach session starts threshold (%d)\n\t"
+          "Please wait %d seconds and try again", 
+          ws->session.total, ws->session.reset_after/1000);
+    return 0;
   }
-  if (!token) ERR("Missing bot token");
-
-  ws->status = status::DISCONNECTED;
-
-  ws->identify = identify::dati_alloc();
-  ws->identify->token = (char*)token;
-
-  ws->ehandle = custom_cws_new(ws);
-  ws->mhandle = custom_multi_init();
-
-  ws->me = user::dati_alloc();
-  user::me::get(ws->p_client, ws->me);
-}
-
-void
-cleanup(dati *ws)
-{
-  user::dati_free(ws->me);
-  identify::dati_free(ws->identify);
-  orka_config_cleanup(&ws->config);
-
-  curl_multi_cleanup(ws->mhandle);
-  cws_free(ws->ehandle);
+  return 1;
 }
 
 /* send heartbeat pulse to websockets server in order
@@ -915,6 +863,67 @@ ws_send_heartbeat(dati *ws)
 
   D_PRINT("HEARTBEAT_PAYLOAD:\n\t\t%s", payload);
   ws_send_payload(ws, payload);
+}
+
+
+static void
+ws_on_idle_cb(void *p_ws)
+{
+  dati *ws = (dati*)p_ws;
+
+  /*check if timespan since first pulse is greater than
+   * minimum heartbeat interval required*/
+  if (ws->hbeat.interval_ms < (ws->common.now_tstamp - ws->hbeat.tstamp)) {
+    ws_send_heartbeat(ws);
+
+    ws->hbeat.tstamp = ws->common.now_tstamp; //update heartbeat timestamp
+  }
+
+  if (ws->cbs.on_idle) {
+    (*ws->cbs.on_idle)(ws->p_client, ws->me);
+  }
+}
+
+void
+init(dati *ws, const char token[], const char config_file[])
+{
+  struct ws_callbacks cbs = {
+    .data = (void*)ws,
+    .on_connect = &ws_on_connect_cb,
+    .on_text = &ws_on_text_cb,
+    .on_close = &ws_on_close_cb,
+    .on_idle = &ws_on_idle_cb,
+    .on_start = &ws_on_start_cb
+  };
+
+  if (config_file) { 
+    ws_config_init(
+      &ws->common, 
+      BASE_WEBSOCKETS_URL, 
+      &cbs,
+      "DISCORD WEBSOCKETS", 
+      config_file);
+    token = orka_config_get_field(&ws->common.config, "discord.token");
+  }
+  else {
+    ws_init(&ws->common, BASE_WEBSOCKETS_URL, &cbs);
+    orka_config_init(&ws->common.config, "DISCORD WEBSOCKETS", NULL);
+  }
+  if (!token) ERR("Missing bot token");
+
+  ws->identify = identify::dati_alloc();
+  ws->identify->token = strdup(token);
+
+  ws->me = user::dati_alloc();
+  user::me::get(ws->p_client, ws->me);
+}
+
+void
+cleanup(dati *ws)
+{
+  user::dati_free(ws->me);
+  identify::dati_free(ws->identify);
+  ws_cleanup(&ws->common);
 }
 
 namespace session {
@@ -975,78 +984,15 @@ get_bot(client *client, dati *p_session)
 
 } // namespace session
 
-/* main websockets event loop */
-static void
-ws_main_loop(dati *ws)
-{
-  //get session info before starting it
-  get_bot(ws->p_client, &ws->session);
-
-  VASSERT_S(ws->session.remaining != 0, 
-      "Reach session starts threshold (%d)\n\t"
-      "Please wait %d seconds and try again", 
-      ws->session.total, ws->session.reset_after/1000);
-
-  int is_running = 0;
-
-  curl_multi_perform(ws->mhandle, &is_running);
-
-  CURLMcode mcode;
-  do {
-    int numfds;
-
-    ws->now_tstamp = orka_timestamp_ms(); // updates our concept of 'now'
-
-    mcode = curl_multi_perform(ws->mhandle, &is_running);
-    ASSERT_S(CURLM_OK == mcode, curl_multi_strerror(mcode));
-
-    //wait for activity or timeout
-    mcode = curl_multi_wait(ws->mhandle, NULL, 0, 5, &numfds);
-    ASSERT_S(CURLM_OK == mcode, curl_multi_strerror(mcode));
-
-    if (ws->status != status::CONNECTED) continue; // wait until connection is established
-
-    /* CONNECTION IS ESTABLISHED */
-
-    /*check if timespan since first pulse is greater than
-     * minimum heartbeat interval required*/
-    if (ws->hbeat.interval_ms < (ws->now_tstamp - ws->hbeat.tstamp)) {
-      ws_send_heartbeat(ws);
-
-      ws->hbeat.tstamp = ws->now_tstamp; //update heartbeat timestamp
-    }
-
-    if (ws->cbs.on_idle) {
-      (*ws->cbs.on_idle)(ws->p_client, ws->me);
-    }
-
-  } while(is_running);
-}
-
 /* connects to the discord websockets server */
 void
 run(dati *ws)
 {
-  ASSERT_S(status::CONNECTED != ws->status, "Can't have recursive connections");
+  ws_run(&ws->common);
 
-  do {
-    curl_multi_add_handle(ws->mhandle, ws->ehandle);
-    ws_main_loop(ws);
-    curl_multi_remove_handle(ws->mhandle, ws->ehandle);
-
-    if (status::DISCONNECTED == ws->status) break;
-    if (ws->reconnect_attempts >= 5) break;
-
-    // full shutdown of old connection before reconnecting
-    cws_free(ws->ehandle);
-    ws->ehandle = custom_cws_new(ws);
-
-    ++ws->reconnect_attempts;
-  } while (1);
-
-  if (status::DISCONNECTED != ws->status) {
+  if (WS_DISCONNECTED != ws->common.status) {
     PRINT("Failed all reconnect attempts (%d)", ws->reconnect_attempts);
-    ws->status = status::DISCONNECTED;
+    ws->common.status = WS_DISCONNECTED;
   }
 }
 
