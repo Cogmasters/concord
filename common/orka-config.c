@@ -43,7 +43,7 @@ static void // see json_dump for parameter definitions
 noop_json_dump(bool a, int b, char *c, struct orka_config *d, char *e, char *f) { return; (void)a; (void)b; (void)c; (void)d; (void)e; (void)f;
 }
 
-
+#if 0
 static int
 curl_dump(
   CURL *ehandle,
@@ -124,6 +124,7 @@ curl_dump(
 
   (void)ehandle;
 }
+#endif
 
 void
 orka_config_init(
@@ -139,8 +140,10 @@ orka_config_init(
   if (!config_file || !*config_file) {
     config->json_cb = &noop_json_dump;
     config->f_json_dump = stderr;
+#if 0
     config->curl_cb = NULL;
     config->f_curl_dump = stderr;
+#endif
     return; /* EARLY RETURN */
   }
 
@@ -153,7 +156,9 @@ orka_config_init(
     char filename[PATH_MAX];
     char level[128];
     struct _dump_s dump_json;
+#if 0
     struct _dump_s dump_curl;
+#endif
   } logging = {0};
 
   if (config->fcontents) {
@@ -165,28 +170,36 @@ orka_config_init(
   json_extract(config->fcontents, config->flen,
              "(logging.filename):s"
              "(logging.level):s"
+#if 0
              "(logging.dump_curl.filename):s"
              "(logging.dump_curl.enable):b"
+#endif
              "(logging.dump_json.filename):s"
              "(logging.dump_json.enable):b",
              logging.filename,
              logging.level,
+#if 0
              logging.dump_curl.filename,
              &logging.dump_curl.enable,
+#endif
              logging.dump_json.filename,
              &logging.dump_json.enable);
 
   DS_PRINT(
     "logging.filename %s\n"
     "logging.level %s\n"
+#if 0
     "logging.dump_curl.filename %s\n"
     "logging.dump_curl.enable %d\n"
+#endif
     "logging.dump_json.filename %s\n"
     "logging.dump_json.enable %d\n",
     logging.filename,
     logging.level,
+#if 0
     logging.dump_curl.filename,
     logging.dump_curl.enable,
+#endif
     logging.dump_json.filename,
     logging.dump_json.enable);
 
@@ -230,8 +243,10 @@ orka_config_cleanup(struct orka_config *config)
     free(config->tag);
   if (config->f_json_dump)
     fclose(config->f_json_dump);
+#if 0
   if (config->f_curl_dump)
     fclose(config->f_curl_dump);
+#endif
 }
 
 char*

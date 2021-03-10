@@ -7,8 +7,6 @@ extern "C" {
 
 #include "ntl.h"
 
-#include <curl/curl.h> //@todo this shouldn't be mandatory
-
 struct orka_config {
   char *tag;
 
@@ -22,9 +20,10 @@ struct orka_config {
       struct orka_config*, 
       char *url, 
       char *body);
-  
+#if 0  
   FILE *f_curl_dump; //default stderr
   int (*curl_cb)(CURL*, curl_infotype, char*, size_t, void*);
+#endif
 };
 
 void orka_config_init(struct orka_config*, const char tag[], const char config_file[]);
