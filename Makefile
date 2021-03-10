@@ -3,7 +3,7 @@ OBJDIR	     := obj
 LIBDIR	     := lib
 ACTOR_OBJDIR := actor_obj
 
-GCC          := gcc
+ACC          ?= gcc
 
 
 COMMON_SRC  := $(wildcard common/*.c)
@@ -84,10 +84,10 @@ endif
 
 PREFIX ?= /usr/local
 
-.PHONY : all mkdir install clean purge
+.PHONY : install clean purge mujs
 
 
-all : mkdir actor-gen.exe common orka
+all : mkdir actor-gen.exe common orka mujs
 	${MAKE} all_headers
 	${MAKE} discord specs github bot $(MFLAGS)
 
@@ -124,7 +124,7 @@ $(OBJDIR)/common/curl-%.c.o : common/curl-%.c
 
 
 $(ACTOR_OBJDIR)/%.c.o : %.c
-	$(GCC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
+	$(ACC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 
 $(OBJDIR)/%.c.o : %.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
@@ -156,7 +156,8 @@ $(OBJDIR)/%.cc.o: %.cc
 	$(CXX) $(CXXFLAGS) $(LIBS_CFLAGS) $(GENFLAGS) -c -o $@ $< -Wno-unused-but-set-variable
 
 actor-gen.exe: mkdir $(ACTOR_GEN_OBJS)
-	$(GCC) -o $@ $(ACTOR_GEN_OBJS) -lm
+	$(ACC) -o $@ $(ACTOR_GEN_OBJS) -lm
+	@ mkdir -p bin
 	mv $@ ./bin
 
 #generic compilation
@@ -168,6 +169,11 @@ actor-gen.exe: mkdir $(ACTOR_GEN_OBJS)
 libdiscord: mkdir $(OBJS) $(SPECS_OBJS)
 	$(AR) -cvq $(LIBDISCORD) $(OBJS) $(SPECS_OBJS)
 
+
+mujs:
+	$(MAKE) -C mujs
+	mkdir -p $(LIBDIR)
+	cp mujs/build/release/libmujs.a $(LIBDIR)
 
 install : all
 	install -d $(PREFIX)/lib/
@@ -182,6 +188,7 @@ specs_clean :
 
 clean : specs_clean
 	rm -rf $(OBJDIR) *.exe test/*.exe bots/*.exe
+	$(MAKE) -C mujs clean
 
 
 clean_actor_gen:
