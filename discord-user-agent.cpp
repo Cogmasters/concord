@@ -18,6 +18,10 @@ init(dati *ua, const char token[], const char config_file[])
     ua_config_init(&ua->common, BASE_API_URL, "DISCORD HTTP", config_file);
     token = orka_config_get_field(&ua->common.config, "discord.token");
   }
+  else {
+    ua_init(&ua->common, BASE_API_URL);
+    orka_config_init(&ua->common.config, "DISCORD HTTP", NULL);
+  }
   if (!token) ERR("Missing bot token");
 
   char auth[128];
