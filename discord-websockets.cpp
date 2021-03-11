@@ -657,7 +657,6 @@ on_dispatch(dati *ws)
   if (STREQ("READY", ws->payload.event_name))
   {
     ws_set_status(&ws->common, WS_CONNECTED);
-    ws->reconnect_attempts = 0; // resets
     D_PUTS("Succesfully started a Discord session!");
 
     json_scanf(ws->payload.event_data, sizeof(ws->payload.event_data),
@@ -672,7 +671,6 @@ on_dispatch(dati *ws)
   if (STREQ("RESUMED", ws->payload.event_name))
   {
     ws_set_status(&ws->common, WS_CONNECTED);
-    ws->reconnect_attempts = 0; // resets
     PUTS("Succesfully resumed a Discord session!");
 
     return;
@@ -980,11 +978,6 @@ void
 run(dati *ws)
 {
   ws_run(&ws->common);
-
-  if (WS_DISCONNECTED != ws_get_status(&ws->common)) {
-    PRINT("Failed all reconnect attempts (%d)", ws->reconnect_attempts);
-    ws_set_status(&ws->common, WS_DISCONNECTED);
-  }
 }
 
 } // namespace websockets

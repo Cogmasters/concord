@@ -225,7 +225,11 @@ ws_get_status(struct websockets_s *ws) {
 }
 
 enum ws_status
-ws_set_status(struct websockets_s *ws, enum ws_status status) {
+ws_set_status(struct websockets_s *ws, enum ws_status status) 
+{
+  if (status == WS_CONNECTED) {
+    ws->reconnect.count = 0;
+  }
   return ws->status = status;
 }
 

@@ -327,7 +327,6 @@ struct cmd_cbs {
 
 struct dati { /* WEBSOCKETS STRUCTURE */
   struct websockets_s common;
-  int reconnect_attempts; //hard limit 5 reconnection attempts @todo make configurable
 
   identify::dati *identify;
   char session_id[512]; //the session id (for resuming lost connections)
