@@ -959,7 +959,8 @@ dati_from_json(char *str, size_t len, void *p_session)
 void
 get(client *client, dati *p_session)
 {
-  struct resp_handle resp_handle = {&dati_from_json, (void*)p_session};
+  struct resp_handle resp_handle =
+    { .ok_cb = &dati_from_json, .ok_obj = (void*)p_session };
 
   user_agent::run( 
     &client->ua,
@@ -972,7 +973,8 @@ get(client *client, dati *p_session)
 void
 get_bot(client *client, dati *p_session)
 {
-  struct resp_handle resp_handle = {&dati_from_json, (void*)p_session};
+  struct resp_handle resp_handle =
+    { .ok_cb = &dati_from_json, .ok_obj = (void*)p_session};
 
   user_agent::run( 
     &client->ua,

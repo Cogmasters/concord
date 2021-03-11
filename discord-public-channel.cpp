@@ -15,7 +15,8 @@ get(client *client, const uint64_t channel_id, dati *p_channel)
     return;
   }
 
-  struct resp_handle resp_handle = {&dati_from_json_v, (void*)p_channel};
+  struct resp_handle resp_handle =
+    { .ok_cb = &dati_from_json_v, .ok_obj = (void*)p_channel};
 
   user_agent::run(
     &client->ua,
@@ -188,7 +189,7 @@ run(client *client, const uint64_t channel_id, params *params)
   dati **new_messages = NULL;
 
   struct resp_handle resp_handle = 
-    {&dati_list_from_json_v, (void*)&new_messages};
+    { .ok_cb = &dati_list_from_json_v, .ok_obj = (void*)&new_messages};
 
   user_agent::run( 
     &client->ua,

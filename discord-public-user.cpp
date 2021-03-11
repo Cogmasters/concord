@@ -16,7 +16,8 @@ get(client *client, const uint64_t user_id, dati *p_user)
     return;
   }
 
-  struct resp_handle resp_handle = {&dati_from_json_v, (void*)p_user};
+  struct resp_handle resp_handle =
+    { .ok_cb = &dati_from_json_v, .ok_obj = (void*)p_user};
 
   user_agent::run( 
     &client->ua,
@@ -31,7 +32,8 @@ namespace me {
 void 
 get(client *client, dati *p_user)
 {
-  struct resp_handle resp_handle = {&dati_from_json_v, (void*)p_user};
+  struct resp_handle resp_handle =
+    { .ok_cb = &dati_from_json_v, .ok_obj = (void*)p_user};
 
   user_agent::run( 
     &client->ua,
@@ -47,7 +49,7 @@ get_guilds(client *client)
   guild::dati **new_guilds = NULL;
 
   struct resp_handle resp_handle =
-    {&guild::dati_list_from_json_v, (void*)&new_guilds};
+    { .ok_cb = &guild::dati_list_from_json_v, .ok_obj = (void*)&new_guilds};
 
   user_agent::run( 
     &client->ua,

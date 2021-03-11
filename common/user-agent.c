@@ -304,21 +304,39 @@ perform_request(
     if (httpcode >= 500) { // SERVER ERROR
       action = (*cbs.on_5xx)(cbs.p_data, httpcode, conn);
 
-      if (resp_handle && resp_handle->err_cb) {
-        (*resp_handle->err_cb)(
+      if (resp_handle) {
+        if (resp_handle->err_cb) {
+          (*resp_handle->err_cb)(
             conn->resp_body.start,
-            conn->resp_body.size, 
+            conn->resp_body.size,
             resp_handle->err_obj);
+        }
+        else if (resp_handle->cxt_err_cb) {
+          (*resp_handle->cxt_err_cb)(
+            resp_handle->cxt,
+            conn->resp_body.start,
+            conn->resp_body.size,
+            resp_handle->err_obj);
+        }
       }
     }
     else if (httpcode >= 400) { // CLIENT ERROR
       action = (*cbs.on_4xx)(cbs.p_data, httpcode, conn);
 
-      if (resp_handle && resp_handle->err_cb) {
-        (*resp_handle->err_cb)(
+      if (resp_handle) {
+        if(resp_handle->err_cb) {
+          (*resp_handle->err_cb)(
             conn->resp_body.start,
-            conn->resp_body.size, 
+            conn->resp_body.size,
             resp_handle->err_obj);
+        }
+        else if (resp_handle->cxt_err_cb) {
+          (*resp_handle->cxt_err_cb)(
+            resp_handle->cxt,
+            conn->resp_body.start,
+            conn->resp_body.size,
+            resp_handle->err_obj);
+        }
       }
     }
     else if (httpcode >= 300) { // REDIRECTING
@@ -327,11 +345,20 @@ perform_request(
     else if (httpcode >= 200) { // SUCCESS RESPONSES
       action = (*cbs.on_2xx)(cbs.p_data, httpcode, conn);
 
-      if (resp_handle && resp_handle->ok_cb) {
-        (*resp_handle->ok_cb)(
+      if (resp_handle) {
+        if (resp_handle->ok_cb) {
+          (*resp_handle->ok_cb)(
             conn->resp_body.start,
-            conn->resp_body.size, 
+            conn->resp_body.size,
             resp_handle->ok_obj);
+        }
+        else if (resp_handle->cxt_ok_cb) {
+          (*resp_handle->cxt_ok_cb)(
+            resp_handle->cxt,
+            conn->resp_body.start,
+            conn->resp_body.size,
+            resp_handle->ok_obj);
+        }
       }
     }
     else if (httpcode >= 100) { // INFO RESPONSE

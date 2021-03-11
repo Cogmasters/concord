@@ -66,12 +66,22 @@ struct ua_conn_s {
 //callback for object to be loaded by api response
 typedef void (load_obj_cb)(char *str, size_t len, void *p_obj);
 
+typedef void (cxt_load_obj_cb)(void * cxt, char *str, size_t len, void *p_obj);
+
 struct resp_handle {
+  void *cxt; // the context for cxt_ok_cb;
+
   load_obj_cb *ok_cb;
   void *ok_obj; // the pointer to be passed to ok_cb
 
   load_obj_cb *err_cb;
   void *err_obj; // the pointer to be passed to err_cb
+
+  // ok call back with an execution context
+  cxt_load_obj_cb *cxt_ok_cb;
+
+  // err call back with an execution context
+  cxt_load_obj_cb *cxt_err_cb;
 };
 
 struct user_agent_s {

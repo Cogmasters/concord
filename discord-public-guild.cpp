@@ -16,7 +16,8 @@ get(client *client, const uint64_t guild_id, dati *p_guild)
     return;
   }
 
-  struct resp_handle resp_handle = {&dati_from_json_v, (void*)p_guild};
+  struct resp_handle resp_handle =
+    { .ok_cb = &dati_from_json_v, .ok_obj = (void*)p_guild};
 
   user_agent::run( 
     &client->ua,
@@ -37,7 +38,7 @@ get_channels(client *client, const uint64_t guild_id)
   channel::dati **new_channels = NULL;
 
   struct resp_handle resp_handle = 
-    {&channel::dati_list_from_json_v, (void*)&new_channels};
+    { .ok_cb = &channel::dati_list_from_json_v, .ok_obj = (void*)&new_channels};
 
   user_agent::run( 
     &client->ua,
@@ -116,7 +117,7 @@ run(client *client, const uint64_t guild_id, struct params *params)
   dati **new_members = NULL;
 
   struct resp_handle resp_handle =
-    {dati_list_from_json_v, (void*)&new_members};
+    { .ok_cb = dati_list_from_json_v, .ok_obj = (void*)&new_members};
   
   user_agent::run( 
     &client->ua,
@@ -199,7 +200,8 @@ get(client *client, const uint64_t guild_id, const uint64_t user_id, dati *p_ban
     return;
   }
 
-  struct resp_handle resp_handle = {&dati_from_json_v, (void*)p_ban};
+  struct resp_handle resp_handle =
+    { .ok_cb = &dati_from_json_v, .ok_obj = (void*)p_ban};
 
   user_agent::run( 
     &client->ua,
@@ -220,7 +222,7 @@ get_list(client *client, const uint64_t guild_id)
   dati **new_bans = NULL;
 
   struct resp_handle resp_handle =
-    {&dati_list_from_json_v, (void*)&new_bans};
+    { .ok_cb = &dati_list_from_json_v, .ok_obj = (void*)&new_bans};
 
   user_agent::run( 
     &client->ua,
@@ -333,7 +335,7 @@ get_list(client *client, const uint64_t guild_id)
   dati **new_roles = NULL;
 
   struct resp_handle resp_handle =
-    {&dati_list_from_json_v, (void*)&new_roles};
+    { .ok_cb = &dati_list_from_json_v, .ok_obj = (void*)&new_roles};
 
   user_agent::run( 
     &client->ua,

@@ -19,7 +19,7 @@ get_list(client *client, const uint64_t guild_id)
   dati **new_emojis = NULL;
 
   struct resp_handle resp_handle =
-    {&dati_list_from_json_v, (void*)&new_emojis};
+    { .ok_cb = &dati_list_from_json_v, .ok_obj = (void*)&new_emojis};
 
   user_agent::run( 
     &client->ua,

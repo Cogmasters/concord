@@ -45,7 +45,7 @@ void ticks_from_json(char *str, size_t len, void *data)
 void update_last_tick_ms()
 {
   struct resp_handle resp_handle =
-    {&ticks_from_json, NULL};
+    { .ok_cb = &ticks_from_json, .ok_obj = NULL};
 
   /* Fetch ticks from ELITEBGS API */
   ua_run(
@@ -284,7 +284,8 @@ void on_command(
   trigger_typing(client, msg->channel_id);
 
   /* Fetch factions from ELITEBGS API */
-  struct resp_handle resp_handle = {&embed_from_json, (void*)new_embed};
+  struct resp_handle resp_handle =
+    { .ok_cb = &embed_from_json, .ok_obj = (void*)new_embed};
   ua_run(
       &g_elitebgs_ua, 
       &resp_handle,

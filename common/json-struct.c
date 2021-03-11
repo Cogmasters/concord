@@ -231,6 +231,8 @@ static char* get_file_suffix(enum file_type t)
     case FILE_DEFINITION: return "cc";
     case FILE_HEADER: return "hh";
     case FILE_CODE: return "cc";
+    default:
+      abort();
   }
   return "";
 }
@@ -496,7 +498,7 @@ field_from_json(char *json, size_t size, void *x)
   bool has_inject_if_not = false;
   struct sized_buffer t = {0};
 
-  bool copy_json_value = false;
+  //bool copy_json_value = false;
 
   size_t s = json_extract(json, size,
                           "(name):?s,"
