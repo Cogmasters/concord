@@ -26,6 +26,15 @@ static void
 cws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
 {
   struct websockets_s *ws = p_ws;
+
+  (*ws->config.json_cb)(
+    false,  //@todo should be true
+    //ws->payload.opcode, ws_opcode_print(ws->payload.opcode),
+    0, "RECEIVE",
+    &ws->config, 
+    ws->base_url, 
+    (char*)text);
+
   (*ws->cbs.on_text)(ws->cbs.data, text, len);
   (void)ehandle;
 }
@@ -97,15 +106,15 @@ static int noop_on_start(void *a){return 1;}
 void
 ws_init(
   struct websockets_s *ws, 
-  char base_url[], 
+  const char base_url[], 
   struct ws_callbacks *cbs)
 {
   memset(ws, 0, sizeof(struct websockets_s));
   ws->base_url = strdup(base_url);
 
   ws->status = WS_DISCONNECTED;
-  ws->reconnect.threshold = 5; //hard coded @todo make configurable
-  ws->wait_ms = 100; //hard coded @todo make configurable
+  ws->reconnect.threshold = 5;
+  ws->wait_ms = 100;
 
   ws->ehandle = custom_cws_new(ws);
   ws->mhandle = curl_multi_init();
@@ -188,14 +197,46 @@ ws_close(
   const char reason[], 
   size_t len)
 {
-  cws_close(ws->ehandle, cwscode, reason, sizeof(reason));
+  cws_close(ws->ehandle, cwscode, reason, len);
 }
 
 void
 ws_send_text(struct websockets_s *ws, char text[])
 {
+  (*ws->config.json_cb)(
+    false, 
+    0, "SEND", 
+    &ws->config, 
+    ws->base_url, 
+    text);
+
   bool ret = cws_send_text(ws->ehandle, text);
   if (false == ret) PRINT("Couldn't send websockets payload");
+}
+
+uint64_t
+ws_now_ms(struct websockets_s *ws) {
+  return ws->now_tstamp;
+}
+
+enum ws_status
+ws_get_status(struct websockets_s *ws) {
+  return ws->status;
+}
+
+enum ws_status
+ws_set_status(struct websockets_s *ws, enum ws_status status) {
+  return ws->status = status;
+}
+
+void
+ws_set_refresh_rate(struct websockets_s *ws, uint64_t wait_ms) {
+  ws->wait_ms = wait_ms;
+}
+
+void
+ws_set_max_reconnect(struct websockets_s *ws, int max_attempts) {
+  ws->reconnect.threshold = max_attempts;
 }
 
 static enum ws_status

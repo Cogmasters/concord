@@ -48,7 +48,7 @@ struct websockets_s {
   struct ws_callbacks cbs;
 };
 
-void ws_init(struct websockets_s *ws, char base_url[], struct ws_callbacks *cbs);
+void ws_init(struct websockets_s *ws, const char base_url[], struct ws_callbacks *cbs);
 void ws_config_init(
   struct websockets_s *ws, 
   const char base_url[], 
@@ -63,6 +63,11 @@ void ws_close(
   size_t len);
 void ws_send_text(struct websockets_s *ws, char text[]);
 void ws_run(struct websockets_s *ws);
+uint64_t ws_now_ms(struct websockets_s *ws);
+enum ws_status ws_get_status(struct websockets_s *ws);
+enum ws_status ws_set_status(struct websockets_s *ws, enum ws_status status);
+void ws_set_refresh_rate(struct websockets_s *ws, uint64_t wait_ms);
+void ws_set_max_reconnect(struct websockets_s *ws, int max_attempts);
 
 #ifdef __cplusplus
 }
