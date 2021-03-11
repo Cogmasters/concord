@@ -63,7 +63,7 @@ global_cleanup() {
 void
 add_intents(client *client, websockets::intents::code code)
 {
-  if (WS_CONNECTED == ws_get_status(&client->ws.common) {
+  if (WS_CONNECTED == ws_get_status(&client->ws.common)) {
     PUTS("Can't set intents to a running client.");
     return;
   }
