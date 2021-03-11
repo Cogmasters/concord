@@ -1239,7 +1239,7 @@ void *js_savetrypc(js_State *J, js_Instruction *pc)
 	return J->trybuf[J->trytop++].buf;
 }
 
-void *js_savetry(js_State *J)
+JMP_BUF js_savetry(js_State *J)
 {
 	if (J->trytop == JS_TRYLIMIT)
 		js_error(J, "try: exception stack overflow");

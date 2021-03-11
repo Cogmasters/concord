@@ -40,26 +40,25 @@ set(ORKA_FILES
         common/orka-utils.h)
 
 set(GITHUB_FILES
-        common/http-common.h
-        common/http-common.c
         github-v3.hpp
         github-v3-user-agent.cpp
         github-v3-git-op.cpp
         ${JSON_SCANF}
         ${ORKA_FILES})
 
-set(CEE_FILES
-        common/http-common.h
-        common/http-common.c
-        orka-user-agent.hpp
-        orka-user-agent.cpp
-        ${JSON_SCANF})
+set(CEE_FILES ${JSON_SCANF})
+
+set(MUJS_FILES
+        mujs/one.c
+        mujs/mujs.h
+        )
 
 
 set(ORCA_INCLUDE_PATH  ${CMAKE_SOURCE_DIR})
 
 include_directories(${CMAKE_SOURCE_DIR})
 include_directories(${CMAKE_SOURCE_DIR}/common)
+include_directories(${CMAKE_SOURCE_DIR}/mujs)
 
 
 add_executable(test-api.exe ${SOURCE_FILES} test/test-api.cpp)
@@ -88,7 +87,7 @@ add_executable(test-git2.exe
 
 target_link_libraries(test-git2.exe curl ssl crypto)
 
-add_executable(test-cee.exe ${CEE_FILES} ${ORKA_FILES} test/test-cee.cpp)
+add_executable(test-cee.exe ${CEE_FILES} test/test-cee.cpp)
 target_link_libraries(test-cee.exe curl ssl crypto)
 
 add_executable(test-json-injector.exe
@@ -162,3 +161,6 @@ add_executable(test-spec.exe
         common/json-printf.c
         test/test-spec.c)
 target_link_libraries(test-spec.exe m)
+
+add_executable(js.exe ${MUJS_FILES} jsB/jsB-discord-client.cpp)
+target_link_libraries(js.exe m)

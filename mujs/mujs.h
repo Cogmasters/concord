@@ -58,8 +58,11 @@ int js_pcall(js_State *J, int n);
 int js_pconstruct(js_State *J, int n);
 
 /* Exception handling */
+#ifndef JMP_BUF
+#define JMP_BUF void *
+#endif
 
-void *js_savetry(js_State *J); /* returns a jmp_buf */
+JMP_BUF js_savetry(js_State *J); /* returns a jmp_buf */
 
 #define js_try(J) \
 	setjmp(js_savetry(J))

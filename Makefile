@@ -10,6 +10,7 @@ COMMON_SRC  := $(wildcard common/*.c)
 ORKA_SRC    := $(wildcard orka-*.cpp)
 DISCORD_SRC := $(wildcard discord-*.cpp)
 GITHUB_SRC  := $(wildcard github-*.cpp)
+JB_SRC      := $(wildcard jsB/*.cpp)
 SPECS       := $(wildcard specs/*.json)
 
 SPECS_XX   := $(addprefix specs-code/, $(notdir $(SPECS)))
@@ -30,6 +31,7 @@ ORKA_OBJS    := $(ORKA_SRC:%=$(OBJDIR)/%.o)
 DISCORD_OBJS := $(DISCORD_SRC:%=$(OBJDIR)/%.o)
 GITHUB_OBJS  := $(GITHUB_SRC:%=$(OBJDIR)/%.o)
 SPECS_OBJS   := $(SPECS_CC:%=$(OBJDIR)/%.o)
+JB_OBJS      := $(JB_SRC:%=$(OBJDIR)/%.o)
 
 OBJS := $(COMMON_OBJS) $(DISCORD_OBJS) $(GITHUB_OBJS) $(ORKA_OBJS)
 
@@ -39,8 +41,8 @@ BOT_EXES := $(patsubst %.cpp, %.exe, $(BOT_SRC))
 TEST_SRC := $(wildcard test/test-*.cpp test/test-*.c)
 TEST_EXES := $(filter %.exe, $(TEST_SRC:.cpp=.exe) $(TEST_SRC:.c=.exe))
 
-LIBDISCORD_CFLAGS	:= -I./
-LIBDISCORD_LDFLAGS	:= -L./$(LIBDIR) -ldiscord -lcurl
+LIBDISCORD_CFLAGS	:= -I./ -I./mujs
+LIBDISCORD_LDFLAGS	:= -L./$(LIBDIR) -ldiscord -lmujs -lcurl
 
 ifeq ($(BEARSSL),1)
 	LIBDISCORD_LDFLAGS += -lbearssl -static
@@ -54,7 +56,7 @@ endif
 
 
 LIBS_CFLAGS	:= $(LIBDISCORD_CFLAGS)
-LIBS_LDFLAGS	:= $(LIBDISCORD_LDFLAGS)
+LIBS_LDFLAGS := $(LIBDISCORD_LDFLAGS)
 
 LIBDISCORD	:= $(LIBDIR)/libdiscord.a
 
@@ -95,6 +97,7 @@ common: mkdir $(COMMON_OBJS)
 orka: mkdir $(ORKA_OBJS)
 discord: mkdir $(DISCORD_OBJS) libdiscord
 github: mkdir $(GITHUB_OBJS)
+jb: mkdir $(JB_OBJS)
 
 specs_hh: $(SPECS_HH) $(SPECS_H)
 specs_cc: $(SPECS_CC) $(SPECS_C)
@@ -115,6 +118,7 @@ mkdir :
 	mkdir -p $(OBJDIR) $(OBJDIR)/common $(OBJDIR)/specs $(LIBDIR)
 	mkdir -p $(OBJDIR)/test
 	mkdir -p specs-code  $(OBJDIR)/specs-code
+	mkdir -p $(OBJDIR)/jsB
 
 $(OBJDIR)/common/curl-%.c.o : common/curl-%.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $< \
@@ -161,9 +165,9 @@ actor-gen.exe: mkdir $(ACTOR_GEN_OBJS)
 	mv $@ ./bin
 
 #generic compilation
-%.exe : %.c libdiscord
+%.exe : %.c libdiscord mujs
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBS_LDFLAGS)
-%.exe: %.cpp libdiscord
+%.exe: %.cpp libdiscord mujs
 	$(CXX) $(CXXFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBS_LDFLAGS)
 
 libdiscord: mkdir $(OBJS) $(SPECS_OBJS)
