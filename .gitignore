@@ -17,3 +17,4 @@ specs-code/*.hh
 specs-code/*.c
 specs-code/*.h
 .vscode
+mujs/build
