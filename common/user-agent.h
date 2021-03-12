@@ -17,6 +17,8 @@ extern "C" {
 #define IS_EMPTY_STRING(str) (!(str) || !*(str))
 //if case matches return token as string
 #define CASE_RETURN_STR(opcode) case opcode: return #opcode
+//if str matches enum token, return enum value
+#define STREQ_RETURN_ENUM(enum, str) if(STREQ(#enum, str))return enum
 
 //possible http methods
 enum http_method {
