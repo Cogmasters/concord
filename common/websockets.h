@@ -40,7 +40,7 @@ struct websockets_s {
 
   struct { /* RECONNECT STRUCT */
     int threshold; // max reconnections attempts before quitting
-    int count; // current count of reconnection attempt
+    int attempt; // current count of reconnection attempt
   } reconnect;
 
   char *base_url;

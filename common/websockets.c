@@ -228,7 +228,7 @@ enum ws_status
 ws_set_status(struct websockets_s *ws, enum ws_status status) 
 {
   if (status == WS_CONNECTED) {
-    ws->reconnect.count = 0;
+    ws->reconnect.attempt = 0;
   }
   return ws->status = status;
 }
@@ -248,10 +248,10 @@ attempt_reconnect(struct websockets_s *ws)
 {
   switch (ws->status) {
   default:
-      if (ws->reconnect.count < ws->reconnect.threshold)
+      if (ws->reconnect.attempt < ws->reconnect.threshold)
         break;
 
-      PRINT("Failed all reconnect attempts (%d)", ws->reconnect.count);
+      PRINT("Failed all reconnect attempts (%d)", ws->reconnect.attempt);
       ws->status = WS_DISCONNECTED;
   /* fall through */
   case WS_DISCONNECTED:
@@ -262,7 +262,7 @@ attempt_reconnect(struct websockets_s *ws)
   cws_free(ws->ehandle);
   ws->ehandle = custom_cws_new(ws);
 
-  ++ws->reconnect.count;
+  ++ws->reconnect.attempt;
 
   return ws->status; /* is different than WS_DISCONNECTED */
 }
