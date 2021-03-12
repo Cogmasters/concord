@@ -441,8 +441,10 @@ ws_send_identify(dati *ws)
 }
 
 static void
-on_hello(dati *ws)
+on_hello(void *p_ws)
 {
+  dati *ws = (dati*)p_ws;
+
   ws->hbeat.interval_ms = 0;
   ws->hbeat.tstamp = orka_timestamp_ms();
 
@@ -664,38 +666,26 @@ on_dispatch_guild_member(dati *ws, enum dispatch_code code)
 static enum dispatch_code
 get_dispatch_code(char event_name[])
 {
-  if (STREQ("READY", event_name))
-    return READY;
-  if (STREQ("RESUMED", event_name))
-    return RESUMED;
-  if (STREQ("MESSAGE_REACTION_ADD", event_name))
-    return MESSAGE_REACTION_ADD;
-  if (STREQ("MESSAGE_REACTION_REMOVE", event_name))
-    return MESSAGE_REACTION_REMOVE;
-  if (STREQ("MESSAGE_REACTION_REMOVE_ALL", event_name))
-    return MESSAGE_REACTION_REMOVE_ALL;
-  if (STREQ("MESSAGE_REACTION_REMOVE_EMOJI", event_name))
-    return MESSAGE_REACTION_REMOVE_EMOJI;
-  if (STREQ("MESSAGE_DELETE_BULK", event_name))
-    return MESSAGE_DELETE_BULK;
-  if (STREQ("MESSAGE_CREATE", event_name))
-    return MESSAGE_CREATE;
-  if (STREQ("MESSAGE_UPDATE", event_name))
-    return MESSAGE_UPDATE;
-  if (STREQ("MESSAGE_DELETE", event_name))
-    return MESSAGE_DELETE;
-  if (STREQ("GUILD_MEMBER_ADD", event_name))
-    return GUILD_MEMBER_ADD;
-  if (STREQ("GUILD_MEMBER_UPDATE", event_name))
-    return GUILD_MEMBER_UPDATE;
-  if (STREQ("GUILD_MEMBER_REMOVE", event_name))
-    return GUILD_MEMBER_REMOVE;
+  STREQ_RETURN_ENUM(READY, event_name);
+  STREQ_RETURN_ENUM(RESUMED, event_name);
+  STREQ_RETURN_ENUM(MESSAGE_REACTION_ADD, event_name);
+  STREQ_RETURN_ENUM(MESSAGE_REACTION_REMOVE_ALL, event_name);
+  STREQ_RETURN_ENUM(MESSAGE_REACTION_REMOVE_EMOJI, event_name);
+  STREQ_RETURN_ENUM(MESSAGE_CREATE, event_name);
+  STREQ_RETURN_ENUM(MESSAGE_UPDATE, event_name);
+  STREQ_RETURN_ENUM(MESSAGE_DELETE, event_name);
+  STREQ_RETURN_ENUM(MESSAGE_DELETE_BULK, event_name);
+  STREQ_RETURN_ENUM(GUILD_MEMBER_ADD, event_name);
+  STREQ_RETURN_ENUM(GUILD_MEMBER_UPDATE, event_name);
+  STREQ_RETURN_ENUM(GUILD_MEMBER_REMOVE, event_name);
   return UNKNOWN;
 }
 
 static void
-on_dispatch(dati *ws)
+on_dispatch(void *p_ws)
 {
+  dati *ws = (dati*)p_ws;
+
   user::dati_from_json(ws->payload.event_data,
       sizeof(ws->payload.event_data), ws->me);
 
@@ -753,11 +743,12 @@ on_dispatch(dati *ws)
 }
 
 static void
-on_invalid_session(dati *ws)
+on_invalid_session(void *p_ws)
 {
-  const char *reason;
+  dati *ws = (dati*)p_ws;
 
   bool is_resumable = strcmp(ws->payload.event_data, "false");
+  const char *reason;
   if (is_resumable) {
     ws_set_status(&ws->common, WS_RESUME);
     reason = "Attempting to session resume";
@@ -771,13 +762,25 @@ on_invalid_session(dati *ws)
 }
 
 static void
-on_reconnect(dati *ws)
+on_reconnect(void *p_ws)
 {
+  dati *ws = (dati*)p_ws;
+
   ws_set_status(&ws->common, WS_RESUME);
 
   const char reason[] = "Attempting to session resume";
   PUTS(reason);
   ws_close(&ws->common, CWS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
+}
+
+static void
+on_heartbeat_ack(void *p_ws)
+{
+  dati *ws = (dati*)p_ws;
+
+  // get request / response interval in milliseconds
+  ws->ping_ms = orka_timestamp_ms() - ws->hbeat.tstamp;
+  D_PRINT("PING: %d ms", ws->ping_ms);
 }
 
 static void
@@ -826,56 +829,8 @@ on_close_cb(void *p_ws, enum cws_close_reason cwscode, const char *reason, size_
 static void
 on_text_cb(void *p_ws, const char *text, size_t len)
 {
-  dati *ws = (dati*)p_ws;
-
-  D_PRINT("ON_TEXT:\t%s\n", text);
-
-  int tmp_seq_number; //check value first, then assign
-  json_scanf((char*)text, len,
-              "[t]%s [s]%d [op]%d [d]%S",
-               ws->payload.event_name,
-               &tmp_seq_number,
-               &ws->payload.opcode,
-               ws->payload.event_data);
-
-  if (tmp_seq_number) {
-    ws->payload.seq_number = tmp_seq_number;
-  }
-
-  D_NOTOP_PRINT("OP:\t\t%s\n\t"
-                "EVENT NAME:\t%s\n\t"
-                "SEQ NUMBER:\t%d\n\t"
-                "EVENT DATA:\t%s\n", 
-                opcode_print(ws->payload.opcode), 
-                *ws->payload.event_name //if event name exists
-                   ? ws->payload.event_name //prints event name
-                   : "NULL", //otherwise prints NULL
-                ws->payload.seq_number,
-                ws->payload.event_data);
-
-  switch (ws->payload.opcode){
-  case opcodes::HELLO:
-      on_hello(ws);
-      break;
-  case opcodes::DISPATCH:
-      on_dispatch(ws);
-      break;
-  case opcodes::INVALID_SESSION:
-      on_invalid_session(ws);
-      break;
-  case opcodes::RECONNECT:
-      on_reconnect(ws);
-      break;
-  case opcodes::HEARTBEAT_ACK:
-      // get request / response interval in milliseconds
-      ws->ping_ms = orka_timestamp_ms() - ws->hbeat.tstamp;
-      D_PRINT("PING: %d ms", ws->ping_ms);
-      break;
-  default:
-      ERR("Not yet implemented WebSockets opcode (code: %d)", ws->payload.opcode);
-  }
-
-  (void)len;
+  D_NOTOP_PUTS("FALLBACK TO ON_TEXT");
+  (void)p_ws;(void)text;(void)len;
 }
 
 static int
@@ -909,9 +864,8 @@ send_heartbeat(dati *ws)
   send_payload(ws, payload);
 }
 
-
 static void
-on_idle_cb(void *p_ws)
+on_iter_cb(void *p_ws)
 {
   dati *ws = (dati*)p_ws;
 
@@ -928,16 +882,50 @@ on_idle_cb(void *p_ws)
   }
 }
 
+static int
+on_dispatch_cb(void *p_ws, const char *text, size_t len)
+{
+  dati *ws = (dati*)p_ws;
+
+  D_PRINT("ON_DISPATCH:\t%s\n", text);
+
+  int tmp_seq_number; //check value first, then assign
+  json_scanf((char*)text, len,
+              "[t]%s [s]%d [op]%d [d]%S",
+               ws->payload.event_name,
+               &tmp_seq_number,
+               &ws->payload.opcode,
+               ws->payload.event_data);
+
+  if (tmp_seq_number) {
+    ws->payload.seq_number = tmp_seq_number;
+  }
+
+  D_NOTOP_PRINT("OP:\t\t%s\n\t"
+                "EVENT NAME:\t%s\n\t"
+                "SEQ NUMBER:\t%d\n\t"
+                "EVENT DATA:\t%s\n", 
+                opcode_print(ws->payload.opcode), 
+                *ws->payload.event_name //if event name exists
+                   ? ws->payload.event_name //prints event name
+                   : "NULL", //otherwise prints NULL
+                ws->payload.seq_number,
+                ws->payload.event_data);
+
+  return ws->payload.opcode;
+}
+
 void
 init(dati *ws, const char token[], const char config_file[])
 {
   struct ws_callbacks cbs = {
     .data = (void*)ws,
+    .on_start = &on_start_cb,
+    .on_iter = &on_iter_cb,
+    .on_dispatch = &on_dispatch_cb,
     .on_connect = &on_connect_cb,
     .on_text = &on_text_cb,
-    .on_close = &on_close_cb,
-    .on_idle = &on_idle_cb,
-    .on_start = &on_start_cb
+    .on_close = &on_close_cb
   };
 
   if (config_file) { 
@@ -957,6 +945,11 @@ init(dati *ws, const char token[], const char config_file[])
 
   ws_set_refresh_rate(&ws->common, 1);
   ws_set_max_reconnect(&ws->common, 15);
+  ws_set_event(&ws->common, opcodes::HELLO, &on_hello);
+  ws_set_event(&ws->common, opcodes::DISPATCH, &on_dispatch);
+  ws_set_event(&ws->common, opcodes::INVALID_SESSION, &on_invalid_session);
+  ws_set_event(&ws->common, opcodes::RECONNECT, &on_reconnect);
+  ws_set_event(&ws->common, opcodes::HEARTBEAT_ACK, &on_heartbeat_ack);
 
   ws->identify = identify::dati_alloc();
   ws->identify->token = strdup(token);
