@@ -33,7 +33,7 @@ cws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
     {
       (*ws->config.json_cb)(
         true,
-        event_code, "ON DISPATCH",
+        event_code, "ON_DISPATCH",
         &ws->config, 
         ws->base_url, 
         (char*)text);
@@ -46,7 +46,7 @@ cws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
 
   (*ws->config.json_cb)(
     false,
-    0, "ON TEXT",
+    0, "ON_TEXT",
     &ws->config, 
     ws->base_url, 
     (char*)text);
