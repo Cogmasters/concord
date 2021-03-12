@@ -131,7 +131,7 @@ int main(int argc, char *argv[])
   setcb(client, MESSAGE_UPDATE, &on_message_update);
   setcb(client, MESSAGE_DELETE, &on_message_delete);
   setcb(client, MESSAGE_DELETE_BULK, &on_message_delete_bulk);
-  setcb(client, REACTION_ADD, &on_reaction_add);
+  setcb(client, MESSAGE_REACTION_ADD, &on_reaction_add);
 
   run(client);
 

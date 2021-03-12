@@ -457,7 +457,7 @@ on_hello(dati *ws)
 }
 
 static void
-on_dispatch_reaction(dati *ws, int offset)
+on_dispatch_message_reaction(dati *ws, enum dispatch_code code)
 {
   uint64_t user_id=0, message_id=0, channel_id=0, guild_id=0;
   guild::member::dati *member = guild::member::dati_alloc();
@@ -477,37 +477,40 @@ on_dispatch_reaction(dati *ws, int offset)
       &orka_strtoull, &guild_id);
 
 
-  if (STREQ("ADD", ws->payload.event_name + offset)) {
-    if (ws->cbs.on_reaction.add)
-      (*ws->cbs.on_reaction.add)(ws->p_client, ws->me, 
-          channel_id, 
-          message_id, 
-          guild_id, 
-          member, 
-          emoji);
-  }
-  else if (STREQ("REMOVE", ws->payload.event_name + offset)) {
-    if (ws->cbs.on_reaction.remove)
-      (*ws->cbs.on_reaction.remove)(ws->p_client, ws->me, 
-          channel_id, 
-          message_id, 
-          guild_id, 
-          emoji);
-  }
-  else if (STREQ("REMOVE_ALL", ws->payload.event_name + offset)) {
-    if (ws->cbs.on_reaction.remove_all)
-      (*ws->cbs.on_reaction.remove_all)(ws->p_client, ws->me, 
-          channel_id, 
-          message_id, 
-          guild_id);
-  }
-  else if (STREQ("REMOVE_EMOJI", ws->payload.event_name + offset)) {
-    if (ws->cbs.on_reaction.remove_emoji)
-      (*ws->cbs.on_reaction.remove_emoji)(ws->p_client, ws->me, 
-          channel_id, 
-          message_id, 
-          guild_id,
-          emoji);
+  switch (code) {
+  case MESSAGE_REACTION_ADD:
+      if (ws->cbs.on_reaction.add)
+        (*ws->cbs.on_reaction.add)(ws->p_client, ws->me, 
+            channel_id, 
+            message_id, 
+            guild_id, 
+            member, 
+            emoji);
+      break;
+  case MESSAGE_REACTION_REMOVE:
+      if (ws->cbs.on_reaction.remove)
+        (*ws->cbs.on_reaction.remove)(ws->p_client, ws->me, 
+            channel_id, 
+            message_id, 
+            guild_id, 
+            emoji);
+      break;
+  case MESSAGE_REACTION_REMOVE_ALL:
+      if (ws->cbs.on_reaction.remove_all)
+        (*ws->cbs.on_reaction.remove_all)(ws->p_client, ws->me, 
+            channel_id, 
+            message_id, 
+            guild_id);
+      break;
+  case MESSAGE_REACTION_REMOVE_EMOJI:
+      if (ws->cbs.on_reaction.remove_emoji)
+        (*ws->cbs.on_reaction.remove_emoji)(ws->p_client, ws->me, 
+            channel_id, 
+            message_id, 
+            guild_id,
+            emoji);
+      break;
+  default: break; // will never trigger
   }
 
   guild::member::dati_free(member);
@@ -515,126 +518,179 @@ on_dispatch_reaction(dati *ws, int offset)
 }
 
 static void
-on_dispatch_message(dati *ws, int offset)
+on_dispatch_message(dati *ws, enum dispatch_code code)
 {
-  if (STREQ("DELETE_BULK", ws->payload.event_name + offset)) 
+  if (MESSAGE_DELETE_BULK == code && ws->cbs.on_message.delete_bulk)
   {
-    if (ws->cbs.on_message.delete_bulk)
-    {
-      struct sized_buffer **buf = NULL;
-      uint64_t channel_id = 0, guild_id = 0;
-      json_scanf(ws->payload.event_data, sizeof(ws->payload.event_data),
-          "[ids]%A"
-          "[channel_id]%F"
-          "[guild_id]%F",
-          &buf,
-          &orka_strtoull, &channel_id,
-          &orka_strtoull, &guild_id);
+    struct sized_buffer **buf = NULL;
+    uint64_t channel_id = 0, guild_id = 0;
+    json_scanf(ws->payload.event_data, sizeof(ws->payload.event_data),
+        "[ids]%A"
+        "[channel_id]%F"
+        "[guild_id]%F",
+        &buf,
+        &orka_strtoull, &channel_id,
+        &orka_strtoull, &guild_id);
 
-      size_t nids = ntl_length((void**) buf);
-      uint64_t *ids = (uint64_t*)malloc(nids * sizeof(uint64_t));
-      ASSERT_S(NULL != ids, "Out of memory");
+    size_t nids = ntl_length((void**) buf);
+    uint64_t *ids = (uint64_t*)malloc(nids * sizeof(uint64_t));
+    ASSERT_S(NULL != ids, "Out of memory");
 
-      for(size_t i = 0; i < nids; i++) {
-        orka_strtoull(buf[i]->start, buf[i]->size, ids + i);
-      }
-
-      free(buf);
-
-      (*ws->cbs.on_message.delete_bulk)(ws->p_client, ws->me, nids, ids, channel_id, guild_id);
-      free(ids);
+    for(size_t i = 0; i < nids; i++) {
+      orka_strtoull(buf[i]->start, buf[i]->size, ids + i);
     }
+
+    free(buf);
+
+    (*ws->cbs.on_message.delete_bulk)(ws->p_client, ws->me, nids, ids, channel_id, guild_id);
+    free(ids);
 
     return; /* EARLY RETURN */
   }
 
-  channel::message::dati *message = channel::message::dati_alloc();
-  ASSERT_S(NULL != message, "Out of memory");
+  channel::message::dati *msg = channel::message::dati_alloc();
+  ASSERT_S(NULL != msg, "Out of memory");
 
   channel::message::dati_from_json(ws->payload.event_data,
-      sizeof(ws->payload.event_data), message);
+      sizeof(ws->payload.event_data), msg);
 
-  if (STREQ("CREATE", ws->payload.event_name + offset)) {
-    if (ws->on_cmd) {
-      size_t prefix_offset = IS_EMPTY_STRING(ws->prefix) ? 0 : strlen(ws->prefix);
+  switch (code) {
+  case MESSAGE_CREATE:
+      if (ws->on_cmd) {
+        // prefix offset if available
+        size_t offset = IS_EMPTY_STRING(ws->prefix) 
+                                ? 0 
+                                : strlen(ws->prefix);
 
-      message_cb *cmd_cb = NULL;
-      char *cmd_str = NULL;
-      for (size_t i=0; i < ws->num_cmd; ++i) 
-      {
-        if (ws->prefix && !STRNEQ(ws->prefix, message->content, prefix_offset))
-            continue; //prefix doesn't match message->content
-
-        if ( STRNEQ(ws->on_cmd[i].str, 
-                message->content + prefix_offset, 
-                strlen(ws->on_cmd[i].str)) )
+        message_cb *cmd_cb = NULL;
+        char *cmd_str = NULL;
+        for (size_t i=0; i < ws->num_cmd; ++i) 
         {
-          cmd_cb = ws->on_cmd[i].cb;
-          cmd_str = ws->on_cmd[i].str;
-          break;
+          if (ws->prefix && !STRNEQ(ws->prefix, msg->content, offset))
+              continue; //prefix doesn't match msg->content
+
+          // check if command from channel matches set command
+          if (STRNEQ(ws->on_cmd[i].str, 
+                msg->content + offset, 
+                strlen(ws->on_cmd[i].str)))
+          {
+            cmd_cb = ws->on_cmd[i].cb;
+            cmd_str = ws->on_cmd[i].str;
+            break;
+          }
+        }
+
+        if (cmd_cb && cmd_str) {
+          char *tmp = msg->content; // hold original ptr
+
+          msg->content = msg->content + offset + strlen(cmd_str);
+          while (isspace(*msg->content)) { // offset blank chars
+            ++msg->content;
+          }
+
+          (*cmd_cb)(ws->p_client, ws->me, msg);
+
+          msg->content = tmp; // retrieve original ptr
         }
       }
+      else if (ws->cbs.on_message.create)
+        (*ws->cbs.on_message.create)(ws->p_client, ws->me, msg);
 
-      if (cmd_cb && cmd_str) {
-        char *tmp = message->content; // hold original ptr
-
-        message->content = message->content + prefix_offset + strlen(cmd_str); //offsets from prefix+command
-        while (isspace(*message->content)) { // offsets from blank characters
-          ++message->content;
-        }
-
-        (*cmd_cb)(ws->p_client, ws->me, message);
-
-        message->content = tmp; // retrieve original ptr
-      }
-    }
-    else if (ws->cbs.on_message.create)
-      (*ws->cbs.on_message.create)(ws->p_client, ws->me, message);
-  }
-  else if (STREQ("UPDATE", ws->payload.event_name + offset)) {
-    if (ws->cbs.on_message.update)
-      (*ws->cbs.on_message.update)(ws->p_client, ws->me, message);
-  }
-  else if (STREQ("DELETE", ws->payload.event_name + offset)) {
-    if (ws->cbs.on_message.del)
-      (*ws->cbs.on_message.del)(ws->p_client, ws->me, 
-          message->id, 
-          message->channel_id, 
-          message->guild_id);
+      break;
+  case MESSAGE_UPDATE:
+      if (ws->cbs.on_message.update)
+        (*ws->cbs.on_message.update)(ws->p_client, ws->me, msg);
+      break;
+  case MESSAGE_DELETE:
+      if (ws->cbs.on_message.del)
+        (*ws->cbs.on_message.del)(ws->p_client, ws->me, 
+            msg->id, 
+            msg->channel_id, 
+            msg->guild_id);
+      break;
+  default: break; // will never trigger
   }
 
-  channel::message::dati_free(message);
+  channel::message::dati_free(msg);
 }
 
 static void
-on_dispatch_guild_member(dati *ws, int offset)
+on_dispatch_guild_member(dati *ws, enum dispatch_code code)
 {
   guild::member::dati *member = guild::member::dati_alloc();
   ASSERT_S(NULL != member, "Out of memory");
 
   guild::member::dati_from_json(ws->payload.event_data,
       sizeof(ws->payload.event_data), member);
+
   uint64_t guild_id = 0;
   json_scanf(
-      ws->payload.event_data,
-      sizeof(ws->payload.event_data),
-      "[guild_id]%F",
-      &orka_strtoull, &guild_id);
+    ws->payload.event_data,
+    sizeof(ws->payload.event_data),
+    "[guild_id]%F",
+    &orka_strtoull, &guild_id);
 
-  if (STREQ("ADD", ws->payload.event_name + offset)) {
-    if (ws->cbs.on_guild_member.add)
-      (*ws->cbs.on_guild_member.add)(ws->p_client, ws->me, guild_id, member);
-  }
-  else if (STREQ("UPDATE", ws->payload.event_name + offset)) {
-    if (ws->cbs.on_guild_member.update)
-      (*ws->cbs.on_guild_member.update)(ws->p_client, ws->me, guild_id, member);
-  }
-  else if (STREQ("REMOVE", ws->payload.event_name + offset)) {
+  switch (code) {
+  case GUILD_MEMBER_ADD:
+      if (ws->cbs.on_guild_member.add)
+        (*ws->cbs.on_guild_member.add)(
+            ws->p_client, 
+            ws->me, 
+            guild_id, 
+            member);
+      break;
+  case GUILD_MEMBER_UPDATE:
+      if (ws->cbs.on_guild_member.update)
+        (*ws->cbs.on_guild_member.update)(
+            ws->p_client, 
+            ws->me, 
+            guild_id, 
+            member);
+      break;
+  case GUILD_MEMBER_REMOVE:
     if (ws->cbs.on_guild_member.remove)
-      (*ws->cbs.on_guild_member.remove)(ws->p_client, ws->me, guild_id, member->user);
+      (*ws->cbs.on_guild_member.remove)(
+            ws->p_client, 
+            ws->me, 
+            guild_id, 
+            member->user);
+    break;
+  default: break; // will never trigger
   }
 
   guild::member::dati_free(member);
+}
+
+static enum dispatch_code
+get_dispatch_code(char event_name[])
+{
+  if (STREQ("READY", event_name))
+    return READY;
+  if (STREQ("RESUMED", event_name))
+    return RESUMED;
+  if (STREQ("MESSAGE_REACTION_ADD", event_name))
+    return MESSAGE_REACTION_ADD;
+  if (STREQ("MESSAGE_REACTION_REMOVE", event_name))
+    return MESSAGE_REACTION_REMOVE;
+  if (STREQ("MESSAGE_REACTION_REMOVE_ALL", event_name))
+    return MESSAGE_REACTION_REMOVE_ALL;
+  if (STREQ("MESSAGE_REACTION_REMOVE_EMOJI", event_name))
+    return MESSAGE_REACTION_REMOVE_EMOJI;
+  if (STREQ("MESSAGE_DELETE_BULK", event_name))
+    return MESSAGE_DELETE_BULK;
+  if (STREQ("MESSAGE_CREATE", event_name))
+    return MESSAGE_CREATE;
+  if (STREQ("MESSAGE_UPDATE", event_name))
+    return MESSAGE_UPDATE;
+  if (STREQ("MESSAGE_DELETE", event_name))
+    return MESSAGE_DELETE;
+  if (STREQ("GUILD_MEMBER_ADD", event_name))
+    return GUILD_MEMBER_ADD;
+  if (STREQ("GUILD_MEMBER_UPDATE", event_name))
+    return GUILD_MEMBER_UPDATE;
+  if (STREQ("GUILD_MEMBER_REMOVE", event_name))
+    return GUILD_MEMBER_REMOVE;
+  return UNKNOWN;
 }
 
 static void
@@ -654,42 +710,46 @@ on_dispatch(dati *ws)
     ws->session.event_count = 0;
   }
 
-  if (STREQ("READY", ws->payload.event_name))
-  {
-    ws_set_status(&ws->common, WS_CONNECTED);
-    D_PUTS("Succesfully started a Discord session!");
+  enum dispatch_code code = get_dispatch_code(ws->payload.event_name);
+  switch (code) {
+  case READY:
+      ws_set_status(&ws->common, WS_CONNECTED);
+      D_PUTS("Succesfully started a Discord session!");
 
-    json_scanf(ws->payload.event_data, sizeof(ws->payload.event_data),
-               "[session_id]%s", ws->session_id);
-    ASSERT_S(ws->session_id, "Couldn't fetch session_id from READY event");
+      json_scanf(ws->payload.event_data, sizeof(ws->payload.event_data),
+                 "[session_id]%s", ws->session_id);
+      ASSERT_S(ws->session_id, "Missing session_id from READY event");
 
-    if (ws->cbs.on_ready)
-      (*ws->cbs.on_ready)(ws->p_client, ws->me);
+      if (ws->cbs.on_ready)
+        (*ws->cbs.on_ready)(ws->p_client, ws->me);
 
-    return;
+      break;
+  case RESUMED:
+      ws_set_status(&ws->common, WS_CONNECTED);
+      PUTS("Succesfully resumed a Discord session!");
+      break;
+  case MESSAGE_REACTION_ADD: 
+  case MESSAGE_REACTION_REMOVE:
+  case MESSAGE_REACTION_REMOVE_ALL: 
+  case MESSAGE_REACTION_REMOVE_EMOJI:
+      on_dispatch_message_reaction(ws, code);
+      break;
+  case MESSAGE_CREATE: 
+  case MESSAGE_UPDATE:
+  case MESSAGE_DELETE: 
+  case MESSAGE_DELETE_BULK:
+      on_dispatch_message(ws, code);
+      break;
+  case GUILD_MEMBER_ADD: 
+  case GUILD_MEMBER_UPDATE:
+  case GUILD_MEMBER_REMOVE:
+      on_dispatch_guild_member(ws, code);
+      break;
+  default:
+      PRINT("Expected not yet implemented GATEWAY DISPATCH event: %s",
+          ws->payload.event_name);
+      break;
   }
-  if (STREQ("RESUMED", ws->payload.event_name))
-  {
-    ws_set_status(&ws->common, WS_CONNECTED);
-    PUTS("Succesfully resumed a Discord session!");
-
-    return;
-  }
-  if (STRNEQ("MESSAGE_REACTION_", ws->payload.event_name, 17)) {
-    on_dispatch_reaction(ws, 17);
-    return;
-  }
-  if (STRNEQ("MESSAGE_", ws->payload.event_name, 8)) {
-    on_dispatch_message(ws, 8);
-    return;
-  }
-  if (STRNEQ("GUILD_MEMBER_", ws->payload.event_name, 13)) {
-    on_dispatch_guild_member(ws, 13);
-    return;
-  }
-
-  PRINT("Expected not yet implemented GATEWAY DISPATCH event: %s",
-      ws->payload.event_name);
 }
 
 static void

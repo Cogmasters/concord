@@ -400,7 +400,7 @@ int main(int argc, char *argv[])
   client *client = config_init(config_file);
   assert(NULL != client);
 
-  setcb(client, REACTION_ADD, &on_reaction_add);
+  setcb(client, MESSAGE_REACTION_ADD, &on_reaction_add);
 
   printf("\n\nTHIS IS A WORK IN PROGRESS"
          "\nTYPE ANY KEY TO START BOT\n");

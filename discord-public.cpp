@@ -109,7 +109,7 @@ setcb_command(client *client, char *command, message_cb *user_cb)
 #define callback ... // varargs to avoid non-conforming function pointer error
 
 void
-setcb(client *client, enum callback_opt opt, callback)
+setcb(client *client, enum dispatch_code opt, callback)
 {
   using namespace websockets;
   dati *ws = &client->ws;
@@ -141,19 +141,19 @@ setcb(client *client, enum callback_opt opt, callback)
       ws->cbs.on_message.delete_bulk = va_arg(args, message_delete_bulk_cb*);
       code |= intents::GUILD_MESSAGES | intents::DIRECT_MESSAGES;
       break;
-  case REACTION_ADD:
+  case MESSAGE_REACTION_ADD:
       ws->cbs.on_reaction.add = va_arg(args, reaction_add_cb*);
       code |= intents::GUILD_MESSAGE_REACTIONS | intents::DIRECT_MESSAGE_REACTIONS;
       break;
-  case REACTION_REMOVE:
+  case MESSAGE_REACTION_REMOVE:
       ws->cbs.on_reaction.remove = va_arg(args, reaction_remove_cb*);
       code |= intents::GUILD_MESSAGE_REACTIONS | intents::DIRECT_MESSAGE_REACTIONS;
       break;
-  case REACTION_REMOVE_ALL:
+  case MESSAGE_REACTION_REMOVE_ALL:
       ws->cbs.on_reaction.remove_all = va_arg(args, reaction_remove_all_cb*);
       code |= intents::GUILD_MESSAGE_REACTIONS | intents::DIRECT_MESSAGE_REACTIONS;
       break;
-  case REACTION_REMOVE_EMOJI:
+  case MESSAGE_REACTION_REMOVE_EMOJI:
       ws->cbs.on_reaction.remove_emoji = va_arg(args, reaction_remove_emoji_cb*);
       code |= intents::GUILD_MESSAGE_REACTIONS | intents::DIRECT_MESSAGE_REACTIONS;
       break;

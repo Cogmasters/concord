@@ -47,17 +47,19 @@ https://discord.com/developers/docs/reference#snowflakes */
 
 namespace discord {
 
-enum callback_opt {
+enum dispatch_code {
+  UNKNOWN = 0,
   IDLE,
   READY,
+  RESUMED,
   MESSAGE_CREATE,
   MESSAGE_UPDATE,
   MESSAGE_DELETE,
   MESSAGE_DELETE_BULK,
-  REACTION_ADD,
-  REACTION_REMOVE,
-  REACTION_REMOVE_ALL,
-  REACTION_REMOVE_EMOJI,
+  MESSAGE_REACTION_ADD,
+  MESSAGE_REACTION_REMOVE,
+  MESSAGE_REACTION_REMOVE_ALL,
+  MESSAGE_REACTION_REMOVE_EMOJI,
   GUILD_MEMBER_ADD,
   GUILD_MEMBER_UPDATE,
   GUILD_MEMBER_REMOVE
@@ -86,7 +88,7 @@ void cleanup(discord::client *client);
 void add_intents(client *client, websockets::intents::code code);
 void set_prefix(client *client, char *prefix);
 void setcb_command(client *client, char *command, message_cb *user_cb);
-void setcb(client *client, enum callback_opt opt, ...);
+void setcb(client *client, enum dispatch_code opt, ...);
 void run(client *client);
 
 void dump_json(client *client, char file[]);
