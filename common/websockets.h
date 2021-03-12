@@ -75,7 +75,7 @@ void ws_close(
   size_t len);
 void ws_send_text(struct websockets_s *ws, char text[]);
 void ws_run(struct websockets_s *ws);
-uint64_t ws_now_ms(struct websockets_s *ws);
+uint64_t ws_timestamp(struct websockets_s *ws);
 enum ws_status ws_get_status(struct websockets_s *ws);
 enum ws_status ws_set_status(struct websockets_s *ws, enum ws_status status);
 void ws_set_refresh_rate(struct websockets_s *ws, uint64_t wait_ms);

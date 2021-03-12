@@ -415,7 +415,7 @@ static void
 ws_send_identify(dati *ws)
 {
   /* Ratelimit check */
-  if (( ws_now_ms(&ws->common) - ws->session.identify_tstamp ) < 5 ) {
+  if (( ws_timestamp(&ws->common) - ws->session.identify_tstamp ) < 5 ) {
     ++ws->session.concurrent;
     VASSERT_S(ws->session.concurrent < ws->session.max_concurrency,
         "Reach identify request threshold (%d every 5 seconds)", ws->session.max_concurrency);
@@ -437,7 +437,7 @@ ws_send_identify(dati *ws)
   send_payload(ws, payload);
 
   //get timestamp for this identify
-  ws->session.identify_tstamp = ws_now_ms(&ws->common);
+  ws->session.identify_tstamp = ws_timestamp(&ws->common);
 }
 
 static void
@@ -690,13 +690,13 @@ on_dispatch(void *p_ws)
       sizeof(ws->payload.event_data), ws->me);
 
   /* Ratelimit check */
-  if ( (ws_now_ms(&ws->common) - ws->session.event_tstamp) < 60 ) {
+  if ( (ws_timestamp(&ws->common) - ws->session.event_tstamp) < 60 ) {
     ++ws->session.event_count;
     ASSERT_S(ws->session.event_count < 120,
         "Reach event dispatch threshold (120 every 60 seconds)");
   }
   else {
-    ws->session.event_tstamp = ws_now_ms(&ws->common);
+    ws->session.event_tstamp = ws_timestamp(&ws->common);
     ws->session.event_count = 0;
   }
 
@@ -871,10 +871,10 @@ on_iter_cb(void *p_ws)
 
   /*check if timespan since first pulse is greater than
    * minimum heartbeat interval required*/
-  if (ws->hbeat.interval_ms < (ws_now_ms(&ws->common) - ws->hbeat.tstamp)) {
+  if (ws->hbeat.interval_ms < (ws_timestamp(&ws->common) - ws->hbeat.tstamp)) {
     send_heartbeat(ws);
 
-    ws->hbeat.tstamp = ws_now_ms(&ws->common); //update heartbeat timestamp
+    ws->hbeat.tstamp = ws_timestamp(&ws->common); //update heartbeat timestamp
   }
 
   if (ws->cbs.on_idle) {

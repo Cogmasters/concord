@@ -237,7 +237,7 @@ ws_send_text(struct websockets_s *ws, char text[])
 }
 
 uint64_t
-ws_now_ms(struct websockets_s *ws) {
+ws_timestamp(struct websockets_s *ws) {
   return ws->now_tstamp;
 }
 
