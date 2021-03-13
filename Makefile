@@ -10,8 +10,8 @@ COMMON_SRC  := $(wildcard common/*.c)
 ORKA_SRC    := $(wildcard orka-*.cpp)
 DISCORD_SRC := $(wildcard discord-*.cpp)
 GITHUB_SRC  := $(wildcard github-*.cpp)
-JB_SRC      := $(wildcard jsB/*.cpp)
 SPECS       := $(wildcard specs/*.json)
+DB_SRC      := $(wildcard sqlite3/*.c)
 
 SPECS_XX   := $(addprefix specs-code/, $(notdir $(SPECS)))
 SPECS_CC   := $(SPECS_XX:%.json=%.cc)
@@ -31,11 +31,11 @@ ORKA_OBJS    := $(ORKA_SRC:%=$(OBJDIR)/%.o)
 DISCORD_OBJS := $(DISCORD_SRC:%=$(OBJDIR)/%.o)
 GITHUB_OBJS  := $(GITHUB_SRC:%=$(OBJDIR)/%.o)
 SPECS_OBJS   := $(SPECS_CC:%=$(OBJDIR)/%.o)
-JB_OBJS      := $(JB_SRC:%=$(OBJDIR)/%.o)
+DB_OBJS      := $(DB_SRC:%=$(OBJDIR)/%.o)
 
 OBJS := $(COMMON_OBJS) $(DISCORD_OBJS) $(GITHUB_OBJS) $(ORKA_OBJS)
 
-BOT_SRC := $(wildcard bots/bot-*.cpp)
+BOT_SRC  := $(wildcard bots/bot-*.cpp)
 BOT_EXES := $(patsubst %.cpp, %.exe, $(BOT_SRC))
 
 TEST_SRC := $(wildcard test/test-*.cpp test/test-*.c)
@@ -97,7 +97,7 @@ common: mkdir $(COMMON_OBJS)
 orka: mkdir $(ORKA_OBJS)
 discord: mkdir $(DISCORD_OBJS) libdiscord
 github: mkdir $(GITHUB_OBJS)
-jb: mkdir $(JB_OBJS)
+db: mkdir $(DB_OBJS)
 
 specs_hh: $(SPECS_HH) $(SPECS_H)
 specs_cc: $(SPECS_CC) $(SPECS_C)
@@ -118,7 +118,7 @@ mkdir :
 	mkdir -p $(OBJDIR) $(OBJDIR)/common $(OBJDIR)/specs $(LIBDIR)
 	mkdir -p $(OBJDIR)/test
 	mkdir -p specs-code  $(OBJDIR)/specs-code
-	mkdir -p $(OBJDIR)/jsB
+	mkdir -p $(OBJDIR)/sqlite3
 
 $(OBJDIR)/common/curl-%.c.o : common/curl-%.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $< \
