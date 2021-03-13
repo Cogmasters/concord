@@ -38,11 +38,17 @@ OBJS := $(COMMON_OBJS) $(DISCORD_OBJS) $(GITHUB_OBJS) $(ORKA_OBJS)
 BOT_SRC  := $(wildcard bots/bot-*.cpp)
 BOT_EXES := $(patsubst %.cpp, %.exe, $(BOT_SRC))
 
+BOT1_SRC := $(wildcard bots-1/bot-*.cpp)
+BOT1_EXES := $(patsubst %.cpp, %.b1, $(BOT1_SRC))
+
+BOT2_SRC := $(wildcard bots-2/bot-*.cpp)
+BOT2_EXES := $(patsubst %.cpp, %.b2, $(BOT2_SRC))
+
 TEST_SRC := $(wildcard test/test-*.cpp test/test-*.c)
 TEST_EXES := $(filter %.exe, $(TEST_SRC:.cpp=.exe) $(TEST_SRC:.c=.exe))
 
-LIBDISCORD_CFLAGS	:= -I./ -I./mujs
-LIBDISCORD_LDFLAGS	:= -L./$(LIBDIR) -ldiscord -lmujs -lcurl
+LIBDISCORD_CFLAGS	:= -I./ -I./mujs  -I./sqlite3
+LIBDISCORD_LDFLAGS	:= -L./$(LIBDIR) -ldiscord -lcurl -lpthread
 
 ifeq ($(BEARSSL),1)
 	LIBDISCORD_LDFLAGS += -lbearssl -static
@@ -111,6 +117,9 @@ echo:
 	@echo SPECS_OBJS: $(SPECS_OBJS)
 
 bot: $(BOT_EXES) #@todo should we split by categories (bot_discord, bot_github, etc)?
+bot1: $(BOT1_EXES)
+bot2: $(BOT2_EXES)
+
 test: common orka discord github $(TEST_EXES) #@todo should we split by categories too ?
 
 mkdir :
@@ -165,9 +174,16 @@ actor-gen.exe: mkdir $(ACTOR_GEN_OBJS)
 	mv $@ ./bin
 
 #generic compilation
-%.exe : %.c libdiscord mujs
+%.b1: %.cpp libdiscord db
+	$(CXX) $(CXXFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBS_LDFLAGS) $(OBJDIR)/sqlite3/sqlite3.o
+
+%.b2: %.cpp libdiscord mujs
+	$(CXX) $(CXXFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBS_LDFLAGS) -lmujs
+
+%.exe : %.c libdiscord
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBS_LDFLAGS)
-%.exe: %.cpp libdiscord mujs
+
+%.exe: %.cpp libdiscord
 	$(CXX) $(CXXFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBS_LDFLAGS)
 
 libdiscord: mkdir $(OBJS) $(SPECS_OBJS)
@@ -192,6 +208,7 @@ specs_clean :
 
 clean : specs_clean
 	rm -rf $(OBJDIR) *.exe test/*.exe bots/*.exe
+	rm -rf bots-1/*.b1 bots-2/*.b2
 	$(MAKE) -C mujs clean
 
 
