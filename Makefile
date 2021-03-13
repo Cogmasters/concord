@@ -95,7 +95,7 @@ PREFIX ?= /usr/local
 .PHONY : install clean purge mujs
 
 
-all : mkdir common orka discord bot
+all : mkdir common orka discord | bot
 
 common: mkdir $(COMMON_OBJS)
 orka: mkdir $(ORKA_OBJS)
