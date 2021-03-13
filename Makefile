@@ -95,9 +95,7 @@ PREFIX ?= /usr/local
 .PHONY : install clean purge mujs
 
 
-all : mkdir actor-gen.exe common orka mujs
-	${MAKE} all_headers
-	${MAKE} discord specs github bot $(MFLAGS)
+all : mkdir common orka discord bots
 
 common: mkdir $(COMMON_OBJS)
 orka: mkdir $(ORKA_OBJS)
@@ -206,7 +204,7 @@ install : all
 specs_clean :
 	rm -f specs-code/*
 
-clean : specs_clean
+clean : 
 	rm -rf $(OBJDIR) *.exe test/*.exe bots/*.exe
 	rm -rf bots-1/*.b1 bots-2/*.b2
 	$(MAKE) -C mujs clean

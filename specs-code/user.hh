@@ -1,0 +1,227 @@
+/* This file is generated from specs/user.json, Please don't edit it. */
+/*
+https://discord.com/developers/docs/resources/user#user-object
+*/
+
+
+namespace flags {
+enum code {
+  NONE = 0,
+  DISCORD_EMPLOYEE = 1,
+  PARTNERED_SERVER_OWNER = 2,
+  HYPESQUAD_EVENTS = 4,
+  BUG_HUNTER_LEVEL_1 = 8,
+  HOUSE_BRAVERY = 32,
+  HOUSE_BRILLIANCE = 64,
+  HOUSE_BALANCE = 128,
+  EARLY_SUPPORTER = 256,
+  TEAM_USER = 512,
+  SYSTEM = 4096,
+  BUG_HUNTER_LEVEL_2 = 16384,
+  VERIFIED_BOT = 65536,
+  EARLY_VERIFIED_BOT_DEVELOPER = 131072,
+};
+} // namespace flags
+
+
+namespace premium_types {
+enum code {
+};
+} // namespace premium_types
+
+/* Title: User Structure */
+/* This is defined at specs/user.json:44:18 */
+struct dati {
+  /* specs/user.json:47:14
+     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"} }'
+  */
+  u64_snowflake_t id;
+
+  /* specs/user.json:48:14
+     '{ "name": "username", "type":{ "base":"char", "dec":"[MAX_USERNAME_LEN]"}}'
+  */
+  char username[MAX_USERNAME_LEN];
+
+  /* specs/user.json:49:14
+     '{ "name": "discriminator", "type":{ "base":"char", "dec":"[MAX_DISCRIMINATOR_LEN]" }}'
+  */
+  char discriminator[MAX_DISCRIMINATOR_LEN];
+
+  /* specs/user.json:50:14
+     '{ "name": "avatar", "type":{ "base":"char", "dec":"[MAX_SHA256_LEN]" }}'
+  */
+  char avatar[MAX_SHA256_LEN];
+
+  /* specs/user.json:51:14
+     '{ "name": "bot", "type":{ "base":"bool" }}'
+  */
+  bool bot;
+
+  /* specs/user.json:52:14
+     '{ "name": "System", "json_key": "system", "type":{ "base":"bool" }}'
+  */
+  bool System;
+
+  /* specs/user.json:53:14
+     '{ "name": "mfa_enabled", "type":{ "base":"bool" }}'
+  */
+  bool mfa_enabled;
+
+  /* specs/user.json:54:14
+     '{ "name": "locale", "type":{ "base":"char", "dec":"[MAX_LOCALE_LEN]" }}'
+  */
+  char locale[MAX_LOCALE_LEN];
+
+  /* specs/user.json:55:14
+     '{ "name": "verified", "type":{ "base":"bool" }}'
+  */
+  bool verified;
+
+  /* specs/user.json:56:14
+     '{ "name": "email", "type":{ "base":"char", "dec":"[MAX_EMAIL_LEN]" }}'
+  */
+  char email[MAX_EMAIL_LEN];
+
+  /* specs/user.json:57:14
+     '{ "name": "flags", "type":{ "base":"int", "int_alias": "discord::user::flags::code" }}'
+  */
+  discord::user::flags::code flags;
+
+  /* specs/user.json:58:14
+     '{ "name": "premium_type", "type":{ "base":"int", "int_alias": "discord::user::premium_types::code" }}'
+  */
+  discord::user::premium_types::code premium_type;
+
+  /* specs/user.json:59:14
+     '{ "name": "public_flags", "type":{ "base":"int", "int_alias": "discord::user::flags::code" }}'
+  */
+  discord::user::flags::code public_flags;
+
+  // The following is metadata used to 
+  // 1. control which field should be extracted/injected
+  // 2. record which field is presented(defined) in JSON
+  // 3. record which field is null in JSON
+  struct {
+    bool enable_arg_switches;
+    bool enable_record_defined;
+    bool enable_record_null;
+    void *arg_switches[13];
+    void *record_defined[13];
+    void *record_null[13];
+  } __M; // metadata
+};
+extern void dati_cleanup_v(void *p);
+extern void dati_cleanup(struct dati *p);
+extern void dati_init_v(void *p);
+extern void dati_init(struct dati *p);
+extern struct dati * dati_alloc();
+extern void dati_free_v(void *p);
+extern void dati_free(struct dati *p);
+extern void dati_from_json_v(char *json, size_t len, void *p);
+extern void dati_from_json(char *json, size_t len, struct dati *p);
+extern size_t dati_to_json_v(char *json, size_t len, void *p);
+extern size_t dati_to_json(char *json, size_t len, struct dati *p);
+extern size_t dati_to_query_v(char *json, size_t len, void *p);
+extern size_t dati_to_query(char *json, size_t len, struct dati *p);
+extern void dati_list_free_v(void **p);
+extern void dati_list_free(struct dati **p);
+extern void dati_list_from_json_v(char *str, size_t len, void *p);
+extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
+extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
+extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
+extern void dati_use_default_inject_settings(struct dati *p);
+
+
+namespace connection {
+namespace visibility_types {
+enum code {
+  NONE = 0,
+  EVERYONE = 1,
+};
+} // namespace visibility_types
+} // namespace connection
+
+namespace connection {
+/* Title: Connection Structure */
+/* https://discord.com/developers/docs/resources/user#connection-object-connection-structure */
+/* This is defined at specs/user.json:77:18 */
+struct dati {
+  /* specs/user.json:80:14
+     '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
+  */
+  char *id; // @todo fixed size limit
+
+  /* specs/user.json:81:14
+     '{ "name": "name", "type":{ "base":"char", "dec":"*"}}'
+  */
+  char *name;
+
+  /* specs/user.json:82:14
+     '{ "name": "type", "type":{ "base":"char", "dec":"*"}}'
+  */
+  char *type;
+
+  /* specs/user.json:83:14
+     '{ "name": "revoked", "type":{ "base":"bool"}}'
+  */
+  bool revoked;
+
+  /* specs/user.json:84:20
+     '{ "name": "integrations", "type": {"base":"discord::guild::integration::dati", "dec":"ntl"}, "todo":true}'
+  */
+  //@todo integrations (null);
+
+  /* specs/user.json:85:14
+     '{ "name": "verified", "type":{ "base":"bool" }}'
+  */
+  bool verified;
+
+  /* specs/user.json:86:14
+     '{ "name": "friend_sync", "type":{ "base":"bool" }}'
+  */
+  bool friend_sync;
+
+  /* specs/user.json:87:14
+     '{ "name": "show_activity", "type":{ "base":"bool" }}'
+  */
+  bool show_activity;
+
+  /* specs/user.json:88:14
+     '{ "name": "visibility", "type":{ "base":"int", "int_alias":"discord::user::connection::visibility_types::code" }}'
+  */
+  discord::user::connection::visibility_types::code visibility;
+
+  // The following is metadata used to 
+  // 1. control which field should be extracted/injected
+  // 2. record which field is presented(defined) in JSON
+  // 3. record which field is null in JSON
+  struct {
+    bool enable_arg_switches;
+    bool enable_record_defined;
+    bool enable_record_null;
+    void *arg_switches[9];
+    void *record_defined[9];
+    void *record_null[9];
+  } __M; // metadata
+};
+extern void dati_cleanup_v(void *p);
+extern void dati_cleanup(struct dati *p);
+extern void dati_init_v(void *p);
+extern void dati_init(struct dati *p);
+extern struct dati * dati_alloc();
+extern void dati_free_v(void *p);
+extern void dati_free(struct dati *p);
+extern void dati_from_json_v(char *json, size_t len, void *p);
+extern void dati_from_json(char *json, size_t len, struct dati *p);
+extern size_t dati_to_json_v(char *json, size_t len, void *p);
+extern size_t dati_to_json(char *json, size_t len, struct dati *p);
+extern size_t dati_to_query_v(char *json, size_t len, void *p);
+extern size_t dati_to_query(char *json, size_t len, struct dati *p);
+extern void dati_list_free_v(void **p);
+extern void dati_list_free(struct dati **p);
+extern void dati_list_from_json_v(char *str, size_t len, void *p);
+extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
+extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
+extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
+extern void dati_use_default_inject_settings(struct dati *p);
+} // namespace connection

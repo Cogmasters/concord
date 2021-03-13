@@ -12,8 +12,6 @@ obj
 lib
 dump.*
 .cee-contributor
-specs-code/*.cc
-specs-code/*.hh
 specs-code/*.c
 specs-code/*.h
 .vscode
