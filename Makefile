@@ -67,14 +67,20 @@ LIBS_LDFLAGS := $(LIBDISCORD_LDFLAGS)
 LIBDISCORD	:= $(LIBDIR)/libdiscord.a
 
 
-CFLAGS += -Wall -std=c11 -O0 -g -D_ORCA_DEBUG -D_GNU_SOURCE \
+CFLAGS += -Wall -std=c11 -O0 -g -D_GNU_SOURCE \
 	-Wno-incompatible-pointer-types -Wno-unused-function \
 	-I. -I./common 
 
-CXXFLAGS += -Wall -std=c++03 -O0 -g -D_ORCA_DEBUG -D_GNU_SOURCE \
+CXXFLAGS += -Wall -std=c++03 -O0 -g -D_GNU_SOURCE \
 	-Wno-write-strings  -I. -I./common
 
 GENFLAGS += -fpermissive
+
+ifeq ($(release),1)
+else
+	CFLAGS +=  -D_ORCA_DEBUG
+	CXXFLAGS +=  -D_ORCA_DEBUG
+endif
 
 ifeq ($(DEBUG_JSON),1)
 	CFLAGS += -D_ORCA_DEBUG_STRICT
