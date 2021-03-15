@@ -1,4 +1,4 @@
-CC	     ?= gcc
+CC     ?= gcc
 OBJDIR	     := obj
 LIBDIR	     := lib
 ACTOR_OBJDIR := actor_obj
@@ -133,9 +133,6 @@ mkdir :
 	mkdir -p specs-code  $(OBJDIR)/specs-code
 	mkdir -p $(OBJDIR)/sqlite3
 
-$(OBJDIR)/common/curl-%.c.o : common/curl-%.c
-	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $< \
-		-U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=1
 
 #generic compilation
 
@@ -214,6 +211,7 @@ clean :
 	rm -rf $(OBJDIR) *.exe test/*.exe bots/*.exe
 	rm -rf bots-1/*.b1 bots-2/*.b2
 	$(MAKE) -C mujs clean
+	rm -rf $(LIBDIR)
 
 
 clean_actor_gen:
