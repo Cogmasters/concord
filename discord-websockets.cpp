@@ -550,8 +550,6 @@ on_dispatch_message(
 
     size_t nids = ntl_length((void**) buf);
     uint64_t *ids = (uint64_t*)malloc(nids * sizeof(uint64_t));
-    ASSERT_S(NULL != ids, "Out of memory");
-
     for(size_t i = 0; i < nids; i++) {
       orka_strtoull(buf[i]->start, buf[i]->size, ids + i);
     }
@@ -565,8 +563,6 @@ on_dispatch_message(
   }
 
   channel::message::dati *msg = channel::message::dati_alloc();
-  ASSERT_S(NULL != msg, "Out of memory");
-
   channel::message::dati_from_json(payload->event_data,
       sizeof(payload->event_data), msg);
 
@@ -637,8 +633,6 @@ on_dispatch_guild_member(
   struct payload_s *payload)
 {
   guild::member::dati *member = guild::member::dati_alloc();
-  ASSERT_S(NULL != member, "Out of memory");
-
   guild::member::dati_from_json(payload->event_data,
       sizeof(payload->event_data), member);
 
@@ -703,9 +697,6 @@ on_dispatch(void *p_ws, void *curr_iter_data)
 {
   dati *ws = (dati*)p_ws;
   struct payload_s *payload = (struct payload_s*)curr_iter_data;
-
-  user::dati_from_json(payload->event_data,
-      sizeof(payload->event_data), ws->me);
 
   /* Ratelimit check */
   pthread_mutex_lock(&ws->lock);
