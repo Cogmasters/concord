@@ -91,8 +91,6 @@ void setcb_command(client *client, char *command, message_cb *user_cb);
 void setcb(client *client, enum dispatch_code opt, ...);
 void run(client *client);
 
-void dump_json(client *client, char file[]);
-void dump_curl(client *client, char file[]);
 void* set_data(client *client, void *data);
 void* get_data(client *client);
 
@@ -110,27 +108,6 @@ void del(client *client, const uint64_t channel_id, dati *p_channel);
 void pin_message(client *client, const uint64_t channel_id, const uint64_t message_id);
 void unpin_message(client *client, const uint64_t channel_id, const uint64_t message_id);
 void trigger_typing(client *client, const uint64_t channel_id);
-
-namespace modify {
-}
-
-namespace get_reactions {
-}
-
-namespace bulk_delete_messages {
-}
-
-namespace edit_channel_permissions {
-}
-
-namespace create_channel_invite {
-}
-
-namespace follow_news_channel {
-}
-
-namespace group_dm_add_recipient {
-}
 
 namespace message {
 
@@ -232,11 +209,6 @@ namespace emoji { /* discord-public-emoji.cpp */
 
 dati** get_list(client *client, const uint64_t guild_id);
 
-namespace create_guild_emoji {
-}
-
-namespace modify_guild_emoji {
-}
 } // namespace emoji
 
 namespace guild { /* discord-public-guild.cpp */
