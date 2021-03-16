@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <search.h> // for POSIX tree (tfind, tsearch, tdestroy)
+#include <pthread.h> // for bucket synchronization
 
 #include <libdiscord.h>
 #include "orka-utils.h"
@@ -26,12 +27,20 @@ struct _route_s {
 void
 try_cooldown(dati *bucket)
 {
-  if (NULL == bucket || bucket->remaining)
+  if (NULL == bucket) return; /* EARLY RETURN */
+
+  pthread_mutex_lock(&bucket->lock);
+
+  if (bucket->remaining) { // no cooldown needed
+    pthread_mutex_unlock(&bucket->lock);
     return; /* EARLY RETURN */
+  }
 
   int64_t delay_ms = (int64_t)(bucket->reset_tstamp - orka_timestamp_ms());
-  if (delay_ms <= 0) //no delay needed
+  if (delay_ms <= 0) { //no delay needed
+    pthread_mutex_unlock(&bucket->lock);
     return; /* EARLY RETURN */
+  }
 
   if (delay_ms > bucket->reset_after_ms) //don't delay in excess
     delay_ms = bucket->reset_after_ms;
@@ -42,6 +51,8 @@ try_cooldown(dati *bucket)
           bucket->hash, delay_ms);
 
   orka_sleep_ms(delay_ms); //sleep for delay amount (if any)
+
+  pthread_mutex_unlock(&bucket->lock);
 }
 
 /* works like strcmp, but will check if endpoing matches a major 
@@ -82,9 +93,9 @@ try_get(user_agent::dati *ua, char endpoint[])
   struct _route_s search_route = {
     .str = endpoint
   };
-
   struct _route_s **p_route;
   p_route = (struct _route_s**)tfind(&search_route, &ua->ratelimit.routes_root, &routecmp);
+
   //if found matching route, return its bucket, otherwise NULL
   return (p_route) ? (*p_route)->p_bucket : NULL;
 }
@@ -94,22 +105,35 @@ try_get(user_agent::dati *ua, char endpoint[])
 static void
 parse_ratelimits(dati *bucket, struct ua_conn_s *conn)
 { 
-  char *value; //fetch header value as string
+  if (bucket->update_tstamp > conn->perform_tstamp)
+    return; /* EARLY RETURN */
+  bucket->update_tstamp = conn->perform_tstamp;
 
-  value = ua_respheader_value(conn, "x-ratelimit-remaining");
-  if (NULL != value) {
-    bucket->remaining =  strtol(value, NULL, 10);
-  }
+  char *str; // fetch header value as string
+  if ( (str = ua_respheader_value(conn, "x-ratelimit-reset")) )
+    bucket->reset_tstamp = 1000 * strtod(str, NULL);
+  if ( (str = ua_respheader_value(conn, "x-ratelimit-remaining")) )
+    bucket->remaining =  strtol(str, NULL, 10);
+  if ( (str = ua_respheader_value(conn, "x-ratelimit-reset-after")) )
+    bucket->reset_after_ms = 1000 * strtod(str, NULL);
+}
 
-  value = ua_respheader_value(conn, "x-ratelimit-reset-after");
-  if (NULL != value) {
-    bucket->reset_after_ms = 1000 * strtod(value, NULL);
-  }
+static dati*
+bucket_init(char bucket_hash[])
+{
+  dati *new_bucket = (dati*) calloc(1, sizeof *new_bucket);
+  new_bucket->hash = strdup(bucket_hash);
+  if (pthread_mutex_init(&new_bucket->lock, NULL))
+    ERR("Couldn't initialize pthread mutex");
+  return new_bucket;
+}
 
-  value = ua_respheader_value(conn, "x-ratelimit-reset");
-  if (NULL != value) {
-    bucket->reset_tstamp = 1000 * strtod(value, NULL);
-  }
+static void
+bucket_cleanup(dati *bucket) 
+{
+  free(bucket->hash);
+  pthread_mutex_destroy(&bucket->lock);
+  free(bucket);
 }
 
 /* Attempt to create a route between endpoint and a client bucket by
@@ -117,49 +141,40 @@ parse_ratelimits(dati *bucket, struct ua_conn_s *conn)
  *  client buckets.
  * If no match is found then we create a new client bucket */
 static void
-create_route(user_agent::dati *ua, char endpoint[], struct ua_conn_s *conn)
+match_route(user_agent::dati *ua, char endpoint[], struct ua_conn_s *conn)
 {
   char *bucket_hash = ua_respheader_value(conn, "x-ratelimit-bucket");
-  if (NULL == bucket_hash) return; //no hash information in header
+  if (!bucket_hash) return; //no hash information in header
 
   // create new route that will link the endpoint with a bucket
   struct _route_s *new_route = (struct _route_s*) calloc(1, sizeof *new_route);
-  ASSERT_S(NULL != new_route, "Out of memory");
 
   new_route->str = strdup(endpoint);
-  ASSERT_S(NULL != new_route->str, "Out of memory");
 
   //attempt to match hash to client bucket hashes
   for (size_t i=0; i < ua->ratelimit.num_buckets; ++i) {
     if (STREQ(bucket_hash, ua->ratelimit.buckets[i]->hash)) {
       new_route->p_bucket = ua->ratelimit.buckets[i];
+      break; /* EARLY BREAK */
     }
   }
 
   if (!new_route->p_bucket) { //couldn't find match, create new bucket
-    dati *new_bucket = (dati*) calloc(1, sizeof *new_bucket);
-    ASSERT_S(NULL != new_bucket, "Out of memory");
-
-    new_bucket->hash = strdup(bucket_hash);
-    ASSERT_S(NULL != new_bucket->hash, "Our of memory");
-
     ++ua->ratelimit.num_buckets; //increments client buckets
 
-    void *tmp = realloc(ua->ratelimit.buckets, ua->ratelimit.num_buckets * sizeof(dati*));
-    ASSERT_S(NULL != tmp, "Out of memory");
+    ua->ratelimit.buckets = (dati**)realloc(ua->ratelimit.buckets, \
+                              ua->ratelimit.num_buckets * sizeof(dati*));
 
-    ua->ratelimit.buckets = (dati**)tmp;
+    dati *new_bucket = bucket_init(bucket_hash);
     ua->ratelimit.buckets[ua->ratelimit.num_buckets-1] = new_bucket;
-
     new_route->p_bucket = new_bucket; //route points to new bucket
   }
 
-  //add new route to tree
-  struct _route_s *route_check;
-  route_check = *(struct _route_s **)tsearch(new_route, &ua->ratelimit.routes_root, &routecmp);
-  ASSERT_S(route_check == new_route, "Couldn't create new bucket route");
+  //add new route to tree and update its bucket ratelimit fields
+  struct _route_s *ret_route;
+  ret_route = *(struct _route_s **)tsearch(new_route, &ua->ratelimit.routes_root, &routecmp);
 
-  parse_ratelimits(new_route->p_bucket, conn);
+  parse_ratelimits(ret_route->p_bucket, conn);
 }
 
 /* Attempt to build and/or updates bucket's rate limiting information.
@@ -168,25 +183,22 @@ create_route(user_agent::dati *ua, char endpoint[], struct ua_conn_s *conn)
 void
 build(user_agent::dati *ua, dati *bucket, char endpoint[], struct ua_conn_s *conn)
 {
-  /* for the first use of an endpoint, we attempt to establish a
-      route between it and a bucket (create a new bucket if needed) */
-  if (!bucket) {
-    create_route(ua, endpoint, conn);
-    return;
-  }
-
-  // otherwise we just update the bucket rate limit values
-
-  parse_ratelimits(bucket, conn);
+  /* no bucket means first time using this endpoint.  attempt to 
+   *  establish a route between it and a bucket via its unique hash 
+   *  (will create a new bucket if it can't establish a route) */
+  if (!bucket)
+    match_route(ua, endpoint, conn);
+  else // update the bucket rate limit values
+    parse_ratelimits(bucket, conn);
 }
 
-/* This comparison routines can be used with tdelete()
+/* This comparison routines can be used with tdestroy()
  * when explicity deleting a root node, as no comparison
  * is necessary. */
 static void
-route_cleanup(void *p_route) {
+route_cleanup(void *p_route) 
+{
   struct _route_s *route = (struct _route_s*)p_route;
-
   free(route->str);
   free(route);
 }
@@ -200,8 +212,7 @@ cleanup(user_agent::dati *ua)
 
   //destroy every client bucket found
   for (size_t i=0; i < ua->ratelimit.num_buckets; ++i) {
-    free(ua->ratelimit.buckets[i]->hash);
-    free(ua->ratelimit.buckets[i]);
+    bucket_cleanup(ua->ratelimit.buckets[i]);
   }
   free(ua->ratelimit.buckets);
 }

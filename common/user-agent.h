@@ -1,6 +1,7 @@
 #ifndef USER_AGENT_H
 #define USER_AGENT_H
 
+#include <inttypes.h>
 #include <curl/curl.h>
 
 #include "ntl.h"
@@ -55,7 +56,8 @@ struct ua_respheader_s {
 };
 
 struct ua_conn_s {
-  int is_available; // boolean
+  bool is_busy;
+  uint64_t perform_tstamp; // timestamp of when the request completed
 
   CURL *ehandle; //the curl's easy handle used to perform requests
   struct sized_buffer resp_body; //the api response string
@@ -63,7 +65,12 @@ struct ua_conn_s {
 
   char req_url[MAX_URL_LEN]; //request's url
   char *resp_url; //response's url
+
+  void *data; //user arbitrary data
 };
+
+void* ua_conn_set_data(struct ua_conn_s *conn, void *data);
+void* ua_conn_get_data(struct ua_conn_s *conn);
 
 //callback for object to be loaded by api response
 typedef void (load_obj_cb)(char *str, size_t len, void *p_obj);
@@ -88,21 +95,23 @@ struct resp_handle {
 
 struct user_agent_s {
   struct orka_config config;
-  struct curl_slist *reqheader; //the request header sent to the api
+  struct curl_slist *req_header; // the request header sent to the api
 
-  struct ua_conn_s *conns;
-  size_t num_conn;
-
-  int num_available; // num of available conns
+  struct ua_conn_s **conns; // connection pool for reuse
+  int num_notbusy; // num of available conns
+  size_t num_conn; // amount of conns created
 
   char *base_url;
+
+  pthread_mutex_t cbs_lock;
+  pthread_mutex_t lock;
 
   void *data; // user arbitrary data for setopt_cb
   void (*setopt_cb)(CURL *ehandle, void *data); // set custom easy_setopts
 
-  curl_mime* (*mime_cb)(CURL *ehandle, void *data); // @todo this is temporary
-  curl_mime *mime; // @todo this is temporary
   void *data2; // @todo this is temporary
+  curl_mime *mime; // @todo this is temporary
+  curl_mime* (*mime_cb)(CURL *ehandle, void *data); // @todo this is temporary
 };
 
 typedef enum { 
@@ -110,23 +119,23 @@ typedef enum {
   ACTION_FAILURE, // continue after failed request
   ACTION_RETRY,   // retry connection
   ACTION_ABORT    // abort after failed request
-} perform_action;
+} ua_action_t;
 
-typedef perform_action (http_response_cb)(
-    void *data,
-    int httpcode, 
-    struct ua_conn_s *conn);
+typedef ua_action_t 
+(http_response_cb)(void *data, int httpcode, struct ua_conn_s *conn);
 
-struct perform_cbs {
-  void *p_data; // data to be received by callbacks
+struct ua_callbacks {
+  void *data; // user arbitrary data to be passed to callbacks
 
-  void (*before_perform)(void*); // trigger before perform attempt
+  int (*on_startup)(void *data); // exec before loop starts (return 1 for proceed, 0 for abort)
+  void (*on_iter_start)(void *data); // execs at end of every loop iteration
+  void (*on_iter_end)(void *data); // execs at end of every loop iteration
 
-  http_response_cb *on_1xx; // triggers on 1xx code
-  http_response_cb *on_2xx; // triggers on 2xx code
-  http_response_cb *on_3xx; // triggers on 3xx code
-  http_response_cb *on_4xx; // triggers on 4xx code
-  http_response_cb *on_5xx; // triggers on 5xx code
+  http_response_cb *on_1xx; // execs on 1xx code
+  http_response_cb *on_2xx; // execs on 2xx code
+  http_response_cb *on_3xx; // execs on 3xx code
+  http_response_cb *on_4xx; // execs on 4xx code
+  http_response_cb *on_5xx; // execs on 5xx code
 };
 
 char* http_code_print(int httpcode);
@@ -152,14 +161,14 @@ void ua_vrun(
   struct user_agent_s *ua,
   struct resp_handle *resp_handle,
   struct sized_buffer *req_body,
-  struct perform_cbs *cbs,
+  struct ua_callbacks *cbs,
   enum http_method http_method,
   char endpoint[], va_list args);
 void ua_run(
   struct user_agent_s *ua,
   struct resp_handle *resp_handle,
   struct sized_buffer *req_body,
-  struct perform_cbs *cbs,
+  struct ua_callbacks *cbs,
   enum http_method http_method,
   char endpoint[], ...);
 

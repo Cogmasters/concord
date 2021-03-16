@@ -118,7 +118,7 @@ struct dati { /* USER AGENT STRUCTURE */
 
   /* stores last json error detected, fields are reseted after
    *  get_json_error() is called */
-  struct error json_err;
+  struct error json_err; //@todo provide a callback instead
 
   client *p_client; //points to client this struct is a part of
 };
@@ -139,6 +139,9 @@ struct dati { /* BUCKET STRUCTURE */
   int remaining; //connections this bucket can do before cooldown
   int64_t reset_after_ms;
   uint64_t reset_tstamp;
+
+  uint64_t update_tstamp; // last update timestamp
+  pthread_mutex_t lock; // used to synchronize buckets
 };
 
 void cleanup(user_agent::dati *ua);
@@ -325,18 +328,20 @@ struct cmd_cbs {
   message_cb *cb;
 };
 
+struct payload_s { /* PAYLOAD STRUCTURE */
+  opcodes::code opcode; //field 'op'
+  int seq_number; //field 's'
+  char event_name[64]; //field 't'
+  char event_data[8192]; //field 'd'
+};
+
 struct dati { /* WEBSOCKETS STRUCTURE */
   struct websockets_s common;
 
   identify::dati *identify;
   char session_id[512]; //the session id (for resuming lost connections)
 
-  struct { /* PAYLOAD STRUCTURE */
-    opcodes::code opcode; //field 'op'
-    int seq_number; //field 's'
-    char event_name[64]; //field 't'
-    char event_data[8192]; //field 'd'
-  } payload;
+  struct payload_s payload;
 
   struct { /* HEARTBEAT STRUCTURE */
     uint64_t interval_ms; //fixed interval between heartbeats
@@ -376,6 +381,8 @@ struct dati { /* WEBSOCKETS STRUCTURE */
   user::dati *me; //the user associated with this client
 
   client *p_client; //points to client this struct is a part of
+
+  pthread_mutex_t lock; //for accessing ws fields within events
 };
 
 void init(dati *ws, const char token[], const char config_file[]);

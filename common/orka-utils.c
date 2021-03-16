@@ -158,7 +158,8 @@ orka_unix_ms_to_iso8601(char *str, size_t len, void *p_data)
   int millis = timestamp % 1000;
 
   seconds += timezone;
-  struct tm *tm = localtime(&seconds);
+  struct tm buf;
+  struct tm *tm = localtime_r(&seconds, &buf);
 
   return snprintf(str, len,
     "%d-%.2d-%dT%.2d:%.2d:%.2d.%.3dZ", // ISO-8601 complete format
@@ -214,7 +215,8 @@ void
 orka_timestamp_str(char *p_str, int len)
 {
   time_t t = time(NULL);
-  struct tm *tm = localtime(&t);
+  struct tm buf;
+  struct tm *tm = localtime_r(&t, &buf);
 
   int ret = strftime(p_str, len, "%c", tm);
   ASSERT_S(ret != 0, "Could not retrieve string timestamp");

@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <stdarg.h>
+#include <pthread.h>
 #include <string.h>
 
 #include "orka-config.h"
@@ -29,9 +30,10 @@ json_dump(
     snprintf(reason, sizeof(reason), "REQUEST %s", meaning);
 
   fprintf(config->f_json_dump, 
-    "\r\r\r\r%s [%s] - %s - %s\n%s\n", 
+    "\r\r\r\r%s [%s #TID%ld] - %s - %s\n%s\n", 
     reason,
     config->tag, 
+    pthread_self(),
     timestr, 
     url,
     (*json_text) ? json_text : "empty body");
