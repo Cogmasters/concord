@@ -144,15 +144,17 @@ on_failure_cb(
 }
 
 static void
-default_error_cb(char *str, size_t len, void *p_err)
+json_error_cb(char *str, size_t len, void *p_err)
 {
-  struct error *err = (struct error*)p_err;
+  /* JSON ERROR CODES
+  https://discord.com/developers/docs/topics/opcodes-and-status-codes#json-json-error-codes */
+  int code = 0; //last error code received
+  char message[256] = {0}; //meaning of the error received
 
-  json_scanf(str, len, "[message]%s [code]%d", 
-      err->message, &err->code);
+  json_scanf(str, len, "[message]%s [code]%d", message, &code);
 
   NOTOP_PRINT("Error Description:\n\t\t%s (code %d)"
-      "- See Discord's JSON Error Codes", err->message, err->code);
+      "- See Discord's JSON Error Codes", message, code);
 }
 
 /* template function for performing requests */
@@ -186,8 +188,8 @@ run(
 
   /* IF UNSET, SET TO DEFAULT ERROR HANDLING CALLBACKS */
   if (resp_handle && !resp_handle->err_cb) {
-    resp_handle->err_cb = &default_error_cb;
-    resp_handle->err_obj = (void*)&ua->json_err; //overrides existing obj
+    resp_handle->err_cb = &json_error_cb;
+    resp_handle->err_obj = NULL;
   }
 
   ua_vrun(

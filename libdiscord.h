@@ -96,8 +96,6 @@ void dump_curl(client *client, char file[]);
 void* set_data(client *client, void *data);
 void* get_data(client *client);
 
-user_agent::error get_json_error(client *client);
-
 void replace_presence(client *client, presence::dati *presence);
 void set_presence(
   client *client, 

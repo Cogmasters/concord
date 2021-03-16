@@ -53,57 +53,59 @@ namespace websockets {
 typedef void (idle_cb)(client *client, const user::dati *me);
 
 /* MESSAGE EVENTS CALLBACKS */
-typedef void (message_cb)(client *client, const user::dati *me, 
+typedef void (message_cb)(
+    client *client, const user::dati *me, 
     const channel::message::dati *message);
-typedef void (message_delete_cb)(client *client, const user::dati *me, 
+typedef void (message_delete_cb)(
+    client *client, const user::dati *me, 
     const uint64_t id, 
     const uint64_t channel_id, 
     const uint64_t guild_id);
-typedef void (message_delete_bulk_cb)(client *client, const user::dati *me, 
+typedef void (message_delete_bulk_cb)(
+    client *client, const user::dati *me, 
     const size_t nids, 
     const uint64_t ids[], 
     const uint64_t channel_id, 
     const uint64_t guild_id);
 
 /* MESSAGE REACTION EVENTS CALLBACKS */
-typedef void (reaction_add_cb)(client *client, const user::dati *me, 
+typedef void (reaction_add_cb)(
+    client *client, const user::dati *me, 
     const uint64_t channel_id, 
     const uint64_t message_id, 
     const uint64_t guild_id, 
     const guild::member::dati *member, 
     const emoji::dati *emoji);
-typedef void (reaction_remove_cb)(client *client, const user::dati *me, 
+typedef void (reaction_remove_cb)(
+    client *client, const user::dati *me, 
     const uint64_t channel_id, 
     const uint64_t message_id, 
     const uint64_t guild_id, 
     const emoji::dati *emoji);
-typedef void (reaction_remove_all_cb)(client *client, const user::dati *me, 
+typedef void (reaction_remove_all_cb)(
+    client *client, const user::dati *me, 
     const uint64_t channel_id, 
     const uint64_t message_id, 
     const uint64_t guild_id);
-typedef void (reaction_remove_emoji_cb)(client *client, const user::dati *me, 
+typedef void (reaction_remove_emoji_cb)(
+    client *client, const user::dati *me, 
     const uint64_t channel_id, 
     const uint64_t message_id, 
     const uint64_t guild_id,
     const emoji::dati *emoji);
 
 /* GUILD MEMBER EVENTS CALLBACKS */
-typedef void (guild_member_cb)(client *client, const user::dati *me, 
+typedef void (guild_member_cb)(
+    client *client, const user::dati *me, 
     const uint64_t guild_id, 
     const guild::member::dati *member);
-typedef void (guild_member_remove_cb)(client *client, const user::dati *me, 
+typedef void (guild_member_remove_cb)(
+    client *client, const user::dati *me, 
     const uint64_t guild_id, 
     const user::dati *user);
 
 
 namespace user_agent { /* discord-user-agent.cpp */
-
-/* JSON ERROR CODE STRUCTURE
-https://discord.com/developers/docs/topics/opcodes-and-status-codes#json-json-error-codes */
-struct error { /* @todo this won't be thread safe. */
-  int code; //last error code received
-  char message[256]; //meaning of the error received
-};
 
 struct dati { /* USER AGENT STRUCTURE */
   struct user_agent_s common;
@@ -115,10 +117,6 @@ struct dati { /* USER AGENT STRUCTURE */
     //check GNU tree functions from search.h
     void *routes_root; //the encountered routes tree's root
   } ratelimit;
-
-  /* stores last json error detected, fields are reseted after
-   *  get_json_error() is called */
-  struct error json_err; //@todo provide a callback instead
 
   client *p_client; //points to client this struct is a part of
 };

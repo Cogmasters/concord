@@ -193,18 +193,6 @@ get_data(client *client) {
   return client->data;
 }
 
-//@todo this is not thread safe
-user_agent::error
-get_json_error(client *client)
-{
-  user_agent::error get_err = client->ua.json_err;
-  
-  // resets json_err fields to avoid misleading repetition
-  memset(&client->ua.json_err, 0, sizeof(user_agent::error));
-
-  return get_err;
-}
-
 void
 replace_presence(client *client, presence::dati *presence)
 {
