@@ -220,8 +220,6 @@ conn_reset_fields(struct ua_conn_s *conn)
   *conn->resp_body.start = '\0';
   conn->resp_body.size = 0;
   conn->resp_header.size = 0;
-  conn->data = NULL;
-  conn->is_busy = false;
 }
 
 static struct ua_conn_s*
@@ -621,20 +619,24 @@ perform_request(
     default:
         ERR("COULDN'T PERFORM REQUEST AT %s", conn->resp_url);
     }
+
     pthread_mutex_lock(&ua->cbs_lock);
     (*cbs.on_iter_end)(cbs.data);
+    conn_reset_fields(conn); // reset conn fields for its next iteration
     pthread_mutex_unlock(&ua->cbs_lock);
+
   } while (ACTION_RETRY == action);
 
   pthread_mutex_lock(&ua->lock);
 
-  conn_reset_fields(conn); // reset conn fields for its next iteration
-
+  conn->data = NULL;
+  conn->is_busy = false;
   ++ua->num_notbusy;
   if (ua->mime) { // @todo this is temporary
     curl_mime_free(ua->mime); 
     ua->mime = NULL;
   }
+
   pthread_mutex_unlock(&ua->lock);
 }
 
