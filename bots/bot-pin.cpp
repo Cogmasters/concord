@@ -6,12 +6,9 @@
 
 using namespace discord;
 
-void on_ready(client *client, const user::dati *me)
-{
+void on_ready(client *client, const user::dati *me) {
   fprintf(stderr, "\n\nPin-Bot succesfully connected to Discord as %s#%s!\n\n",
       me->username, me->discriminator);
-
-  (void)client;
 }
 
 void on_message_create(

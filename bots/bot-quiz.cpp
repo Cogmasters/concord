@@ -104,12 +104,9 @@ parse_session_config()
 }
 
 void 
-on_ready(client *client, const user::dati *me)
-{
+on_ready(client *client, const user::dati *me) {
   fprintf(stderr, "\n\nQuiz-Bot succesfully connected to Discord as %s#%s!\n\n",
       me->username, me->discriminator);
-
-  (void)client;
 }
 
 void

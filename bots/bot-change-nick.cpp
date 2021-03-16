@@ -8,37 +8,34 @@
 
 using namespace discord;
 
-struct sudo_s {
+struct context_s {
   char username[64];
   char nick[64];
   char *discriminator;
-} sudo;
+} cxt;
 
 void 
-on_ready(client *client, const user::dati *me)
-{
+on_ready(client *client, const user::dati *me) {
   fprintf(stderr, "\n\nChange-Nick-Bot succesfully connected to Discord as %s#%s!\n\n",
       me->username, me->discriminator);
-
-  (void)client;
 }
 
 void
 on_command(client *client, const user::dati *me, const channel::message::dati *msg)
 {
-  sscanf(msg->content, "%s %s", sudo.username, sudo.nick);
-  sudo.discriminator = strchr(sudo.username, '#');
-  if (!*sudo.nick) {
+  sscanf(msg->content, "%s %s", cxt.username, cxt.nick);
+  cxt.discriminator = strchr(cxt.username, '#');
+  if (!*cxt.nick) {
     printf("Missing nickname or bad format string\n");
     return;
   }
-  if (NULL == sudo.discriminator) {
-    printf("Wrong formatted username (%s)\n", sudo.username);
+  if (NULL == cxt.discriminator) {
+    printf("Wrong formatted username (%s)\n", cxt.username);
     return;
   }
 
-  *sudo.discriminator = '\0'; //split at #
-  ++sudo.discriminator;
+  *cxt.discriminator = '\0'; //split at #
+  ++cxt.discriminator;
 
   guild::member::dati **members = NULL;
   guild::member::get_list::params params1 = {
@@ -51,11 +48,11 @@ on_command(client *client, const user::dati *me, const channel::message::dati *m
   }
 
   for (size_t i=0; members[i]; ++i) {
-    if (0 == strcmp(members[i]->user->username, sudo.username)
-        && 0 == strcmp(members[i]->user->discriminator, sudo.discriminator))
+    if (0 == strcmp(members[i]->user->username, cxt.username)
+        && 0 == strcmp(members[i]->user->discriminator, cxt.discriminator))
     {
       guild::member::modify::params params2 = {
-        .nick = sudo.nick
+        .nick = cxt.nick
       };
       guild::member::modify::run(client, msg->guild_id, members[i]->user->id, &params2, NULL);
     }

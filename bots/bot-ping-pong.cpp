@@ -5,18 +5,15 @@
 
 using namespace discord;
 
-void on_ready(client *client, const user::dati *me)
-{
+void on_ready(client *client, const user::dati *me) {
   fprintf(stderr, "\n\nPingPong-Bot succesfully connected to Discord as %s#%s!\n\n",
       me->username, me->discriminator);
-
-  (void)client;
 }
 
 void on_ping(
-    client *client,
-    const user::dati *me,
-    const channel::message::dati *msg)
+  client *client,
+  const user::dati *me,
+  const channel::message::dati *msg)
 {
   using namespace channel;
 
@@ -26,8 +23,6 @@ void on_ping(
 
   message::create::params params = {.content = "pong"};
   message::create::run(client, msg->channel_id, &params, NULL);
-
-  (void)me;
 }
 
 void on_pong(
@@ -43,8 +38,6 @@ void on_pong(
 
   message::create::params params = {.content = "ping"};
   message::create::run(client, msg->channel_id, &params, NULL);
-
-  (void)me;
 }
 
 int main(int argc, char *argv[])

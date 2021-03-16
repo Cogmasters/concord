@@ -10,12 +10,9 @@ using namespace discord;
 
 #define JSON_FILE "bot-presence.json"
 
-void on_ready(client *client, const user::dati *me)
-{
+void on_ready(client *client, const user::dati *me) {
   fprintf(stderr, "\n\nPresence-Bot succesfully connected to Discord as %s#%s!\n\n",
       me->username, me->discriminator);
-
-  (void)client;
 }
 
 void

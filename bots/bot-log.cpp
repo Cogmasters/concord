@@ -7,30 +7,38 @@
 
 using namespace discord;
 
-void on_ready(client *client, const user::dati *me)
-{
+void on_ready(client *client, const user::dati *me) {
   fprintf(stderr, "\n\nLog-Bot succesfully connected to Discord as %s#%s!\n\n",
       me->username, me->discriminator);
-
-  (void)client;
 }
 
-void on_guild_member_add(client *client, const user::dati *me, const uint64_t guild_id, const guild::member::dati *member)
+void on_guild_member_add(
+  client *client, 
+  const user::dati *me, 
+  const uint64_t guild_id, 
+  const guild::member::dati *member) 
 {
   printf("%s#%s joined guild %" PRIu64".\n", member->user->username, member->user->discriminator, guild_id);
 }
 
-void on_guild_member_update(client *client, const user::dati *me, const uint64_t guild_id, const guild::member::dati *member)
+void on_guild_member_update(
+  client *client, 
+  const user::dati *me, 
+  const uint64_t guild_id, 
+  const guild::member::dati *member)
 {
   printf("%s#%s ", member->user->username, member->user->discriminator);
-  if(!IS_EMPTY_STRING(member->nick))
-  {
+  if(!IS_EMPTY_STRING(member->nick)) {
     printf("(%s) ", member->nick);
   }
   printf("updated (guild %" PRIu64")\n", guild_id);
 }
 
-void on_guild_member_remove(client *client, const user::dati *me, const uint64_t guild_id, const user::dati *user)
+void on_guild_member_remove(
+  client *client, 
+  const user::dati *me, 
+  const uint64_t guild_id, 
+  const user::dati *user)
 {
   printf("%s#%s left guild %" PRIu64".\n", user->username, user->discriminator, guild_id);
 }

@@ -7,12 +7,9 @@
 
 using namespace discord;
 
-void on_ready(client *client, const user::dati *me)
-{
+void on_ready(client *client, const user::dati *me) {
   fprintf(stderr, "\n\nEcho-Bot succesfully connected to Discord as %s#%s!\n\n",
       me->username, me->discriminator);
-
-  (void)client;
 }
 
 void on_reaction_add(
@@ -23,8 +20,10 @@ void on_reaction_add(
     const uint64_t guild_id, 
     const guild::member::dati *member, 
     const emoji::dati *emoji)
-{
-  if (member->user->bot) return;
+{ 
+  // make sure bot doesn't echoes other bots
+  if (member->user->bot) 
+    return;
 
   channel::reaction::create(client, channel_id, message_id, emoji->id, emoji->name);
 }
@@ -67,10 +66,7 @@ void on_message_update(
   message::create::params params = {
     .content = "I see what you did there."
   };
-
   message::create::run(client, msg->channel_id, &params, NULL);
-  
-  (void)me;
 }
 
 void on_message_delete(
@@ -85,10 +81,7 @@ void on_message_delete(
   message::create::params params = {
     .content = "Did that message just disappear?"
   };
-
   message::create::run(client, channel_id, &params, NULL);
-
-  (void)me;
 }
 
 void on_message_delete_bulk(
@@ -107,10 +100,7 @@ void on_message_delete_bulk(
   message::create::params params = {
     .content = buf
   };
-
   message::create::run(client, channel_id, &params, NULL);
-
-  (void)me;
 }
 
 int main(int argc, char *argv[])

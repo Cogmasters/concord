@@ -10,12 +10,9 @@ using namespace discord;
 
 #define JSON_FILE "bot-embed.json"
 
-void on_ready(client *client, const user::dati *me)
-{
+void on_ready(client *client, const user::dati *me) {
   fprintf(stderr, "\n\nEmbed-Bot succesfully connected to Discord as %s#%s!\n\n",
       me->username, me->discriminator);
-
-  (void)client;
 }
 
 void on_command(
@@ -33,7 +30,6 @@ void on_command(
     .content = "This is an embed",
     .embed = (embed::dati*)get_data(client)
   };
-
   message::create::run(client, msg->channel_id, &params, NULL);
 }
 

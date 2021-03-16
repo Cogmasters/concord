@@ -7,12 +7,9 @@
 
 using namespace discord;
 
-void on_ready(client *client, const user::dati *me)
-{
+void on_ready(client *client, const user::dati *me) {
   fprintf(stderr, "\n\nCreate-Channel-Bot succesfully connected to Discord as %s#%s!\n\n",
       me->username, me->discriminator);
-
-  (void)client;
 }
 
 void on_create(
@@ -83,5 +80,3 @@ int main(int argc, char *argv[])
 
   global_cleanup();
 }
-
-

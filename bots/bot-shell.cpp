@@ -15,12 +15,9 @@ struct sudo_s {
 } sudo;
 
 void 
-on_ready(client *client, const user::dati *me)
-{
+on_ready(client *client, const user::dati *me) {
   fprintf(stderr, "\n\nShell-Bot succesfully connected to Discord as %s#%s!\n\n",
       me->username, me->discriminator);
-
-  (void)client;
 }
 
 void
