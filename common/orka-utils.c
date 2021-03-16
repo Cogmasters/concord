@@ -268,7 +268,11 @@ void gen_readlink(char *linkbuf, ssize_t linkbuf_size)
     exit(EXIT_FAILURE);
   }
   linkbuf[r]='\0';
-  fprintf (stderr, "readlink = %s\n", linkbuf);
+  //fprintf (stderr, "readlink = %s\n", linkbuf);
   return;
+}
 
+void gen_dirname(char *linkbuf)
+{
+  *strrchr(linkbuf, '/')='\0';
 }

@@ -33,6 +33,8 @@ bool orka_str_bounds_check(const char *str, const size_t threshold_len);
 
 void gen_readlink(char *linkbuf, ssize_t linkbuf_size);
 
+void gen_dirname (char *linkbuf);
+
 #ifdef __cplusplus
 }
 #endif // __cplusplus
