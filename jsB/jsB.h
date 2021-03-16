@@ -1,10 +1,13 @@
 #ifndef JSB_H
 #define JSB_H
 #ifdef __cplusplus
-extern "C"
+extern "C" {
 #endif
 
-void jsB_init_UA(js_State *J);
+FILE* jsB_log_file();
+void jsB_log(char *fmt, ...);
+void jsB_init_D(js_State *J);
+void jsB_init_SB(js_State *J);
 
 #ifdef __cplusplus
 }
