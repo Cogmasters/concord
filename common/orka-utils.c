@@ -7,6 +7,7 @@
 #include <sys/stat.h>
 #include <dirent.h>
 #include <errno.h>
+#include <unistd.h>
 
 #include "orka-utils.h"
 #include "json-scanf.h"
@@ -251,4 +252,23 @@ orka_str_bounds_check(const char *str, const size_t threshold_len)
     if ('\0' == str[i]) return true;
   }
   return false; 
+}
+
+void gen_readlink(char *linkbuf, ssize_t linkbuf_size)
+{
+  ssize_t r;
+  r = readlink("/proc/self/exe", linkbuf, linkbuf_size);
+  if (r < 0) {
+    perror("readlink");
+    exit(EXIT_FAILURE);
+  }
+
+  if (r > linkbuf_size) {
+    fprintf(stderr, "symlink size is great than %d\n", linkbuf_size);
+    exit(EXIT_FAILURE);
+  }
+  linkbuf[r]='\0';
+  fprintf (stderr, "readlink = %s\n", linkbuf);
+  return;
+
 }

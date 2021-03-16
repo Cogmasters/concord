@@ -159,7 +159,7 @@ orka_config_init(
 #if 0
     struct _dump_s dump_curl;
 #endif
-  } logging = {0};
+  } logging = {{0}};
 
   if (config->fcontents) {
     free(config->fcontents);
