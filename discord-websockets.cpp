@@ -566,7 +566,13 @@ on_dispatch_message(
   channel::message::dati_from_json(payload->event_data,
       sizeof(payload->event_data), msg);
 
+  struct sized_buffer sb_msg = {
+    .start = payload->event_data,
+    .size = strlen(payload->event_data)
+  };
+
   switch (code) {
+  case SB_MESSAGE_CREATE: /* @todo this is temporary for wrapping JS */
   case MESSAGE_CREATE:
       if (ws->on_cmd) {
         // prefix offset if available
@@ -605,6 +611,11 @@ on_dispatch_message(
           msg->content = tmp; // retrieve original ptr
         }
       }
+      else if (ws->cbs.on_message.sb_create) /* @todo temporary */
+        (*ws->cbs.on_message.sb_create)(
+          ws->p_client, 
+          ws->me, ws->sb_me,
+          msg, sb_msg);
       else if (ws->cbs.on_message.create)
         (*ws->cbs.on_message.create)(ws->p_client, ws->me, msg);
 
@@ -973,6 +984,7 @@ init(dati *ws, const char token[], const char config_file[])
 
   ws->me = user::dati_alloc();
   user::me::get(ws->p_client, ws->me);
+  user::me::sb_get(ws->p_client, &ws->sb_me);
 
   if (pthread_mutex_init(&ws->lock, NULL))
     ERR("Couldn't initialize pthread mutex");

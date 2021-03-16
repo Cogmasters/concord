@@ -43,6 +43,27 @@ get(client *client, dati *p_user)
     "/users/@me");
 }
 
+static void /* @todo this is a temporary solution for wrapping with JS */
+json_to_sb(char *json, size_t len, void *p_sb_user)
+{
+  struct sized_buffer *sb_user = (struct sized_buffer*)p_sb_user;
+  sb_user->start = strndup(json, len);
+}
+
+void /* @todo this is a temporary solution for easily wrapping JS */
+sb_get(client *client, struct sized_buffer *p_sb_user)
+{
+  struct resp_handle resp_handle =
+    {.ok_cb = &json_to_sb, .ok_obj = (void*)p_sb_user};
+
+  user_agent::run( 
+    &client->ua,
+    &resp_handle,
+    NULL,
+    HTTP_GET, 
+    "/users/@me");
+}
+
 guild::dati**
 get_guilds(client *client)
 {

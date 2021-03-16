@@ -56,6 +56,11 @@ typedef void (idle_cb)(client *client, const user::dati *me);
 typedef void (message_cb)(
     client *client, const user::dati *me, 
     const channel::message::dati *message);
+typedef void (sb_message_cb)(
+    client *client, const user::dati *me,
+    struct sized_buffer sb_me,
+    const channel::message::dati *message,
+    struct sized_buffer sb_message);
 typedef void (message_delete_cb)(
     client *client, const user::dati *me, 
     const uint64_t id, 
@@ -357,6 +362,7 @@ struct dati { /* WEBSOCKETS STRUCTURE */
     idle_cb *on_ready; //triggers when connection first establishes
     struct { /* MESSAGE CALLBACKS STRUCTURE */
       message_cb *create; //triggers when a message is created
+      sb_message_cb *sb_create; //@todo this is temporary for wrapping JS
       message_cb *update; //triggers when a message is updated (edited)
       message_delete_cb *del; //triggers when a message is deleted
       message_delete_bulk_cb *delete_bulk; //triggers when multiple messages are deleted at once
@@ -377,6 +383,7 @@ struct dati { /* WEBSOCKETS STRUCTURE */
   int ping_ms; //latency between client and websockets server
 
   user::dati *me; //the user associated with this client
+  struct sized_buffer sb_me; //@todo this is temporary for wrapping JS
 
   client *p_client; //points to client this struct is a part of
 

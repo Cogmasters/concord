@@ -129,6 +129,10 @@ setcb(client *client, enum dispatch_code opt, callback)
       ws->cbs.on_message.create = va_arg(args, message_cb*);
       code |= intents::GUILD_MESSAGES | intents::DIRECT_MESSAGES;
       break;
+  case SB_MESSAGE_CREATE: /* @todo this is temporary for wrapping JS */
+      ws->cbs.on_message.sb_create = va_arg(args, sb_message_cb*);
+      code |= intents::GUILD_MESSAGES | intents::DIRECT_MESSAGES;
+      break;
   case MESSAGE_UPDATE:
       ws->cbs.on_message.update = va_arg(args, message_cb*);
       code |= intents::GUILD_MESSAGES | intents::DIRECT_MESSAGES;

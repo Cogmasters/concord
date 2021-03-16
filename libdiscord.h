@@ -53,6 +53,7 @@ enum dispatch_code {
   READY,
   RESUMED,
   MESSAGE_CREATE,
+  SB_MESSAGE_CREATE, //@todo this is temporary for wrapping JS
   MESSAGE_UPDATE,
   MESSAGE_DELETE,
   MESSAGE_DELETE_BULK,
@@ -276,6 +277,7 @@ void get(client *client, const uint64_t user_id, dati *p_user);
 namespace me { // current user centered functions
 
 void get(client *client, dati *p_user);
+void sb_get(client *client, struct sized_buffer *p_sb_user);
 guild::dati** get_guilds(client *client);
 void leave_guild(client *client, const u64_snowflake_t guild_id);
 
