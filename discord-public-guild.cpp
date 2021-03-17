@@ -92,6 +92,36 @@ void run(
 }
 } // namespace create_channel
 
+namespace get_guild_member {
+void 
+run(client *client, u64_snowflake_t guild_id, u64_snowflake_t user_id, member::dati **p_member) 
+{
+  if (!guild_id) {
+    D_PUTS("Missing 'guild_id'");
+    return;
+  }
+  if (!user_id) {
+    D_PUTS("Missing 'user_id'");
+    return;
+  }
+  if (p_member == NULL || *p_member == NULL) {
+    D_PUTS("'p_member' cannot be NULL");
+    return;
+  }
+
+  struct resp_handle resp_handle = {
+    .ok_cb = member::dati_from_json_v, .ok_obj = *p_member
+  };
+
+  user_agent::run(
+    &client->ua,
+    &resp_handle,
+    NULL,
+    HTTP_GET, "/guilds/%llu/members/%llu", guild_id, user_id);
+  D_PRINT("permssion %s\n", (*p_member)->permissions);
+}
+} // namespace get_guild_member
+
 namespace list_guild_members {
 void
 run(
