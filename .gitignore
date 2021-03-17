@@ -14,5 +14,4 @@ dump.*
 .cee-contributor
 specs-code/*.c
 specs-code/*.h
-.vscode
 mujs/build
