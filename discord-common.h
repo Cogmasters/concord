@@ -14,6 +14,9 @@
 
 namespace discord {
 
+typedef uint64_t u64_unix_ms_t;
+typedef uint64_t u64_snowflake_t;
+
 /* * * * * * * * * * * * * * * * * * * * */
 /* FORWARD DECLARATION OF EVERY DATATYPE */
 
@@ -63,50 +66,50 @@ typedef void (sb_message_cb)(
     struct sized_buffer sb_message);
 typedef void (message_delete_cb)(
     client *client, const user::dati *me, 
-    const uint64_t id, 
-    const uint64_t channel_id, 
-    const uint64_t guild_id);
+    const u64_snowflake_t id, 
+    const u64_snowflake_t channel_id, 
+    const u64_snowflake_t guild_id);
 typedef void (message_delete_bulk_cb)(
     client *client, const user::dati *me, 
     const size_t nids, 
-    const uint64_t ids[], 
-    const uint64_t channel_id, 
-    const uint64_t guild_id);
+    const u64_snowflake_t ids[], 
+    const u64_snowflake_t channel_id, 
+    const u64_snowflake_t guild_id);
 
 /* MESSAGE REACTION EVENTS CALLBACKS */
 typedef void (reaction_add_cb)(
     client *client, const user::dati *me, 
-    const uint64_t channel_id, 
-    const uint64_t message_id, 
-    const uint64_t guild_id, 
+    const u64_snowflake_t channel_id, 
+    const u64_snowflake_t message_id, 
+    const u64_snowflake_t guild_id, 
     const guild::member::dati *member, 
     const emoji::dati *emoji);
 typedef void (reaction_remove_cb)(
     client *client, const user::dati *me, 
-    const uint64_t channel_id, 
-    const uint64_t message_id, 
-    const uint64_t guild_id, 
+    const u64_snowflake_t channel_id, 
+    const u64_snowflake_t message_id, 
+    const u64_snowflake_t guild_id, 
     const emoji::dati *emoji);
 typedef void (reaction_remove_all_cb)(
     client *client, const user::dati *me, 
-    const uint64_t channel_id, 
-    const uint64_t message_id, 
-    const uint64_t guild_id);
+    const u64_snowflake_t channel_id, 
+    const u64_snowflake_t message_id, 
+    const u64_snowflake_t guild_id);
 typedef void (reaction_remove_emoji_cb)(
     client *client, const user::dati *me, 
-    const uint64_t channel_id, 
-    const uint64_t message_id, 
-    const uint64_t guild_id,
+    const u64_snowflake_t channel_id, 
+    const u64_snowflake_t message_id, 
+    const u64_snowflake_t guild_id,
     const emoji::dati *emoji);
 
 /* GUILD MEMBER EVENTS CALLBACKS */
 typedef void (guild_member_cb)(
     client *client, const user::dati *me, 
-    const uint64_t guild_id, 
+    const u64_snowflake_t guild_id, 
     const guild::member::dati *member);
 typedef void (guild_member_remove_cb)(
     client *client, const user::dati *me, 
-    const uint64_t guild_id, 
+    const u64_snowflake_t guild_id, 
     const user::dati *user);
 
 
@@ -141,9 +144,9 @@ struct dati { /* BUCKET STRUCTURE */
   char *hash; //the hash associated with this bucket
   int remaining; //connections this bucket can do before cooldown
   int64_t reset_after_ms;
-  uint64_t reset_tstamp;
+  u64_unix_ms_t reset_tstamp;
 
-  uint64_t update_tstamp; // last update timestamp
+  u64_unix_ms_t update_tstamp; // last update timestamp
   pthread_mutex_t lock; // used to synchronize buckets
 };
 
@@ -227,9 +230,9 @@ struct dati {
   int max_concurrency; //max concurrent sessions we can handle
 
   int concurrent; //active concurrent sessions
-  uint64_t identify_tstamp; //identify timestamp in ms
+  u64_unix_ms_t identify_tstamp; //identify timestamp in ms
 
-  uint64_t event_tstamp; //event timestamp in ms (resets every 60s)
+  u64_unix_ms_t event_tstamp; //event timestamp in ms (resets every 60s)
   int event_count; //count elements to avoid reaching 120/60sec limit
 };
 
@@ -265,7 +268,7 @@ https://discord.com/developers/docs/topics/gateway#update-status-gateway-status-
 namespace status_update {
 
 struct dati {
-  uint64_t since;
+  u64_unix_ms_t since;
   activity::dati **activities;
   char status[16];
   bool afk;
@@ -286,9 +289,9 @@ struct dati {
   char name[512];
   types::code type;
   char url[MAX_URL_LEN];
-  uint64_t created_at;
+  u64_unix_ms_t created_at;
   //@todo missing timestamps;
-  uint64_t application_id;
+  u64_snowflake_t application_id;
   char *details; //@todo find fixed size limit
   char *state; // @todo find fixed size limit
   //@todo missing activity emoji;
@@ -347,8 +350,8 @@ struct dati { /* WEBSOCKETS STRUCTURE */
   struct payload_s payload;
 
   struct { /* HEARTBEAT STRUCTURE */
-    uint64_t interval_ms; //fixed interval between heartbeats
-    uint64_t tstamp; //start pulse timestamp in milliseconds
+    u64_unix_ms_t interval_ms; //fixed interval between heartbeats
+    u64_unix_ms_t tstamp; //start pulse timestamp in milliseconds
   } hbeat;
 
   session::dati session;

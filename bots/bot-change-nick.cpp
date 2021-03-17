@@ -37,7 +37,7 @@ on_command(client *client, const user::dati *me, const channel::message::dati *m
   *cxt.discriminator = '\0'; //split at #
   ++cxt.discriminator;
 
-  guild::member::dati **members = NULL;
+  NTL_T(guild::member::dati) members = NULL;
   guild::list_guild_members::params params1 = {
     .limit = 1000
   };

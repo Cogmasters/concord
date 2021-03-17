@@ -69,7 +69,7 @@ dati_from_json(char *str, size_t len, dati *message)
 
 namespace get_channel {
 void
-run(client *client, const uint64_t channel_id, dati *p_channel)
+run(client *client, const u64_snowflake_t channel_id, dati *p_channel)
 {
   if (!channel_id) {
     D_PUTS("Missing 'channel_id");
@@ -90,7 +90,7 @@ run(client *client, const uint64_t channel_id, dati *p_channel)
 
 namespace delete_channel {
 void
-run(client *client, const uint64_t channel_id, dati *p_channel)
+run(client *client, const u64_snowflake_t channel_id, dati *p_channel)
 {
   if (!channel_id) {
     D_PUTS("Missing 'channel_id");
@@ -113,7 +113,7 @@ run(client *client, const uint64_t channel_id, dati *p_channel)
 
 namespace add_pinned_channel_message {
 void
-run(client *client, const uint64_t channel_id, const uint64_t message_id)
+run(client *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id)
 {
   if (!channel_id) {
     D_PUTS("Missing 'channel_id'");
@@ -135,7 +135,7 @@ run(client *client, const uint64_t channel_id, const uint64_t message_id)
 
 namespace delete_pinned_channel_message {
 void
-delete_pinned_channel_message(client *client, const uint64_t channel_id, const uint64_t message_id)
+delete_pinned_channel_message(client *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id)
 {
   if (!channel_id) {
     D_PUTS("Missing 'channel_id'");
@@ -157,7 +157,7 @@ delete_pinned_channel_message(client *client, const uint64_t channel_id, const u
 
 namespace get_channel_messages {
 message::dati**
-run(client *client, const uint64_t channel_id, params *params)
+run(client *client, const u64_snowflake_t channel_id, params *params)
 {
   if (!channel_id) {
     D_PUTS("Missing 'channel_id'");
@@ -260,7 +260,7 @@ curl_mime_cb(CURL *ehandle, void *data)
 }
 
 void
-run(client *client, const uint64_t channel_id, params *params, message::dati *p_message)
+run(client *client, const u64_snowflake_t channel_id, params *params, message::dati *p_message)
 {
   if (client->ws.common.status != WS_CONNECTED) {
     D_PUTS("Can't perform action unless client has an active"
@@ -361,7 +361,7 @@ run(client *client, const uint64_t channel_id, params *params, message::dati *p_
 
 namespace edit_message {
 void
-run(client *client, const uint64_t channel_id, const uint64_t message_id, params *params, message::dati *p_message)
+run(client *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id, params *params, message::dati *p_message)
 {
   if (!channel_id) {
     D_PUTS("Missing 'channel_id'");
@@ -416,9 +416,9 @@ namespace create_reaction {
 void 
 run(
   client *client, 
-  const uint64_t channel_id, 
-  const uint64_t message_id, 
-  const uint64_t emoji_id, 
+  const u64_snowflake_t channel_id, 
+  const u64_snowflake_t message_id, 
+  const u64_snowflake_t emoji_id, 
   const char emoji_name[])
 {
   if (!channel_id) {
@@ -454,7 +454,7 @@ run(
 
 namespace trigger_typing_indicator {
 void
-run(client* client, uint64_t channel_id)
+run(client* client, u64_snowflake_t channel_id)
 {
   if (!channel_id) {
     D_PUTS("Missing 'channel_id");
@@ -666,10 +666,10 @@ size_t dati_to_json(char *json, size_t len, struct dati *p)
 
 void
 append(
-  dati ***permission_overwrites, 
-  uint64_t id, 
+  NTL_T(dati*) permission_overwrites, 
+  u64_snowflake_t id, 
   int type, 
-  uint64_t allow, uint64_t deny)
+  u64_snowflake_t allow, u64_snowflake_t deny)
 {
   if (!id) {
     D_PUTS("Missing 'id'");

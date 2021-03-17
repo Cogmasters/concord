@@ -8,8 +8,9 @@
 namespace discord {
 namespace user {
 
+namespace get_user {
 void
-get(client *client, const uint64_t user_id, dati *p_user)
+run(client *client, const u64_snowflake_t user_id, dati *p_user)
 {
   if (!user_id) {
     D_PUTS("Missing 'user_id'");
@@ -26,11 +27,11 @@ get(client *client, const uint64_t user_id, dati *p_user)
     HTTP_GET, 
     "/users/%llu", user_id);
 }
+} // namespace get_user
 
-namespace me {
-
+namespace get_current_user {
 void 
-get(client *client, dati *p_user)
+run(client *client, dati *p_user)
 {
   struct resp_handle resp_handle =
     { .ok_cb = &dati_from_json_v, .ok_obj = (void*)p_user};
@@ -43,7 +44,8 @@ get(client *client, dati *p_user)
     "/users/@me");
 }
 
-static void /* @todo this is a temporary solution for wrapping with JS */
+/* @todo this is a temporary solution for wrapping with JS */
+static void 
 json_to_sb(char *json, size_t len, void *p_sb_user)
 {
   struct sized_buffer *sb_user = (struct sized_buffer*)p_sb_user;
@@ -51,7 +53,7 @@ json_to_sb(char *json, size_t len, void *p_sb_user)
 }
 
 void /* @todo this is a temporary solution for easily wrapping JS */
-sb_get(client *client, struct sized_buffer *p_sb_user)
+sb_run(client *client, struct sized_buffer *p_sb_user)
 {
   struct resp_handle resp_handle =
     {.ok_cb = &json_to_sb, .ok_obj = (void*)p_sb_user};
@@ -64,8 +66,11 @@ sb_get(client *client, struct sized_buffer *p_sb_user)
     "/users/@me");
 }
 
+} // namespace get_current_user
+
+namespace get_current_user_guilds {
 guild::dati**
-get_guilds(client *client)
+run(client *client)
 {
   guild::dati **new_guilds = NULL;
 
@@ -81,8 +86,10 @@ get_guilds(client *client)
 
   return new_guilds;
 }
+} // namespace get_current_user_guilds
 
-void leave_guild(client *client, const u64_snowflake_t guild_id)
+namespace leave_guild {
+void run(client *client, const u64_snowflake_t guild_id)
 {
   struct sized_buffer req_body = {"{}", 2};
 
@@ -93,8 +100,7 @@ void leave_guild(client *client, const u64_snowflake_t guild_id)
     HTTP_DELETE,
     "/users/@me/guilds/%llu", guild_id);
 }
-
-} // namespace me
+} // namespace leave_guild
 
 } // namespace user
 } // namespace discord

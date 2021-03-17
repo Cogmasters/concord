@@ -10,7 +10,7 @@ namespace guild {
 
 namespace get_guild {
 void
-run(client *client, const uint64_t guild_id, dati *p_guild)
+run(client *client, const u64_snowflake_t guild_id, dati *p_guild)
 {
   if (!guild_id) {
     D_PUTS("Missing 'guild_id'");
@@ -31,7 +31,7 @@ run(client *client, const uint64_t guild_id, dati *p_guild)
 
 namespace get_channels {
 channel::dati**
-run(client *client, const uint64_t guild_id)
+run(client *client, const u64_snowflake_t guild_id)
 {
   if (!guild_id) {
     D_PUTS("Missing 'guild_id'");
@@ -55,7 +55,7 @@ run(client *client, const uint64_t guild_id)
 } // namespace get_channels
 
 namespace create_channel {
-void run(client *client, const uint64_t guild_id, params *params, channel::dati *p_channel)
+void run(client *client, const u64_snowflake_t guild_id, params *params, channel::dati *p_channel)
 {
   if (!guild_id) {
     D_PUTS("Missing 'guild_id");
@@ -91,7 +91,7 @@ void run(client *client, const uint64_t guild_id, params *params, channel::dati 
 
 namespace list_guild_members {
 member::dati**
-run(client *client, const uint64_t guild_id, struct params *params)
+run(client *client, const u64_snowflake_t guild_id, struct params *params)
 {
   if (!guild_id) {
     D_PUTS("Missing 'guild_id'");
@@ -131,7 +131,7 @@ run(client *client, const uint64_t guild_id, struct params *params)
 
 namespace modify_guild_member {
 void 
-run(client *client, const uint64_t guild_id, const uint64_t user_id, params *params, member::dati *p_member)
+run(client *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id, params *params, member::dati *p_member)
 {
   if (!guild_id) {
     D_PUTS("Missing 'guild_id'");
@@ -162,7 +162,7 @@ run(client *client, const uint64_t guild_id, const uint64_t user_id, params *par
 } // namespace modify_guild_member
 
 namespace remove_guild_member {
-void run(client *client, const uint64_t guild_id, const uint64_t user_id)
+void run(client *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id)
 {
   if (!guild_id) {
     D_PUTS("Missing 'guild_id'");
@@ -184,7 +184,7 @@ void run(client *client, const uint64_t guild_id, const uint64_t user_id)
 
 namespace get_guild_bans {
 ban::dati**
-run(client *client, const uint64_t guild_id)
+run(client *client, const u64_snowflake_t guild_id)
 {
   if (!guild_id) {
     D_PUTS("Missing 'guild_id'");
@@ -208,7 +208,7 @@ run(client *client, const uint64_t guild_id)
 
 namespace get_guild_ban {
 void
-run(client *client, const uint64_t guild_id, const uint64_t user_id, ban::dati *p_ban)
+run(client *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id, ban::dati *p_ban)
 {
   if (!guild_id) {
     D_PUTS("Missing 'guild_id'");
@@ -232,7 +232,7 @@ run(client *client, const uint64_t guild_id, const uint64_t user_id, ban::dati *
 
 namespace create_guild_ban {
 void
-run(client *client, const uint64_t guild_id, const uint64_t user_id, int delete_message_days, const char reason[])
+run(client *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id, int delete_message_days, const char reason[])
 {
   const int MAX_DELETE_MESSAGE_DAYS = 7;
   if (!guild_id) {
@@ -281,7 +281,7 @@ run(client *client, const uint64_t guild_id, const uint64_t user_id, int delete_
 
 namespace remove_guild_ban {
 void
-run(client *client, const uint64_t guild_id, const uint64_t user_id, const char reason[])
+run(client *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id, const char reason[])
 {
   if (!guild_id) {
     D_PUTS("Missing 'guild_id'");
@@ -320,7 +320,7 @@ run(client *client, const uint64_t guild_id, const uint64_t user_id, const char 
 
 namespace get_guild_roles {
 role::dati**
-run(client *client, const uint64_t guild_id)
+run(client *client, const u64_snowflake_t guild_id)
 {
   if (!guild_id) {
     D_PUTS("Missing 'guild_id'");
@@ -344,7 +344,7 @@ run(client *client, const uint64_t guild_id)
 
 namespace create_guild_role {
 void 
-run(client *client, const uint64_t guild_id, params *params, role::dati *p_role)
+run(client *client, const u64_snowflake_t guild_id, params *params, role::dati *p_role)
 {
   if (!guild_id) {
     D_PUTS("Missing 'guild_id'");
@@ -372,7 +372,7 @@ run(client *client, const uint64_t guild_id, params *params, role::dati *p_role)
 
 namespace delete_guild_role {
 void 
-run(client *client, const uint64_t guild_id, const uint64_t role_id)
+run(client *client, const u64_snowflake_t guild_id, const u64_snowflake_t role_id)
 {
   if (!guild_id) {
     D_PUTS("Missing 'guild_id'");

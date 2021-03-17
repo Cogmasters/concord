@@ -472,7 +472,7 @@ on_dispatch_message_reaction(
   enum dispatch_code code,
   struct payload_s *payload)
 {
-  uint64_t user_id=0, message_id=0, channel_id=0, guild_id=0;
+  u64_snowflake_t user_id=0, message_id=0, channel_id=0, guild_id=0;
   guild::member::dati *member = guild::member::dati_alloc();
   emoji::dati *emoji = emoji::dati_alloc();
   json_scanf(payload->event_data, sizeof(payload->event_data),
@@ -539,7 +539,7 @@ on_dispatch_message(
   if (MESSAGE_DELETE_BULK == code && ws->cbs.on_message.delete_bulk)
   {
     struct sized_buffer **buf = NULL;
-    uint64_t channel_id = 0, guild_id = 0;
+    u64_snowflake_t channel_id = 0, guild_id = 0;
     json_scanf(payload->event_data, sizeof(payload->event_data),
         "[ids]%A"
         "[channel_id]%F"
@@ -549,7 +549,7 @@ on_dispatch_message(
         &orka_strtoull, &guild_id);
 
     size_t nids = ntl_length((void**) buf);
-    uint64_t *ids = (uint64_t*)malloc(nids * sizeof(uint64_t));
+    u64_snowflake_t *ids = (u64_snowflake_t*)malloc(nids * sizeof(u64_snowflake_t));
     for(size_t i = 0; i < nids; i++) {
       orka_strtoull(buf[i]->start, buf[i]->size, ids + i);
     }
@@ -647,7 +647,7 @@ on_dispatch_guild_member(
   guild::member::dati_from_json(payload->event_data,
       sizeof(payload->event_data), member);
 
-  uint64_t guild_id = 0;
+  u64_snowflake_t guild_id = 0;
   json_scanf(
     payload->event_data,
     sizeof(payload->event_data),
@@ -983,8 +983,8 @@ init(dati *ws, const char token[], const char config_file[])
   ws->identify->token = strdup(token);
 
   ws->me = user::dati_alloc();
-  user::me::get(ws->p_client, ws->me);
-  user::me::sb_get(ws->p_client, &ws->sb_me);
+  user::get_current_user::run(ws->p_client, ws->me);
+  user::get_current_user::sb_run(ws->p_client, &ws->sb_me);
 
   if (pthread_mutex_init(&ws->lock, NULL))
     ERR("Couldn't initialize pthread mutex");

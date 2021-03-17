@@ -4,9 +4,6 @@
 #include "json-actor-boxed.h"
 #include "discord-common.h"
 
-typedef uint64_t u64_unix_ms_t;
-typedef uint64_t u64_snowflake_t;
-
 /* Size limits encountered in the Docs and searching the web */
 #define MAX_NAME_LEN          100 + 1
 #define MAX_TOPIC_LEN         1024 + 1
@@ -105,29 +102,29 @@ void set_presence(
 namespace channel { /* discord-public-channel.c */
 
 namespace get_channel {
-void run(client *client, const uint64_t channel_id, dati *p_channel);
+void run(client *client, const u64_snowflake_t channel_id, dati *p_channel);
 } // namespace get_channel
 
 namespace delete_channel {
-void run(client *client, const uint64_t channel_id, dati *p_channel);
+void run(client *client, const u64_snowflake_t channel_id, dati *p_channel);
 } // namespace delete_channel
 
 namespace add_pinned_channel_message {
-void run(client *client, const uint64_t channel_id, const uint64_t message_id);
+void run(client *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id);
 } // namespace add_pinned_channel_message
 
 namespace delete_pinned_channel_message {
-void run(client *client, const uint64_t channel_id, const uint64_t message_id);
+void run(client *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id);
 } // namespace delete_pineed_channel_message
 
 namespace get_channel_messages {
 struct params {
-  uint64_t around;
-  uint64_t before;
-  uint64_t after;
+  u64_snowflake_t around;
+  u64_snowflake_t before;
+  u64_snowflake_t after;
   int limit; // max number of messages (1-100)
 };
-message::dati** run(client *client, const uint64_t channel_id, params *params);
+message::dati** run(client *client, const u64_snowflake_t channel_id, params *params);
 } // namespace get_channel_messages
 
 namespace delete_message {
@@ -153,7 +150,7 @@ struct params {
   } file;
   char *payload_json;
 };
-void run(client *client, const uint64_t channel_id, params *params, message::dati *p_message);
+void run(client *client, const u64_snowflake_t channel_id, params *params, message::dati *p_message);
 } // namespace create_message
 
 namespace edit_message {
@@ -163,20 +160,20 @@ struct params {
   message::flags::code *flags;
   allowed_mentions::dati *allowed_mentions; //must be initialized
 };
-void run(client *client, const uint64_t channel_id, const uint64_t message_id, params *params, message::dati *p_message);
+void run(client *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id, params *params, message::dati *p_message);
 } // namespace edit_message
 
 namespace create_reaction {
 void run(
   client *client, 
-  const uint64_t channel_id, 
-  const uint64_t message_id, 
-  const uint64_t emoji_id, 
+  const u64_snowflake_t channel_id, 
+  const u64_snowflake_t message_id, 
+  const u64_snowflake_t emoji_id, 
   const char emoji_name[]);
 } // namespace create_reaction
 
 namespace trigger_typing_indicator {
-void run(client *client, const uint64_t channel_id);
+void run(client *client, const u64_snowflake_t channel_id);
 } // namespace trigger_typing_indicator
 
 namespace embed {
@@ -191,8 +188,8 @@ void add_field(dati *embed, char name[], char value[], bool Inline);
 
 namespace overwrite {
 void append(
-  dati ***permission_overwrites, 
-  uint64_t id, 
+  NTL_T(dati*) permission_overwrites, 
+  u64_snowflake_t id, 
   int type, 
   uint64_t allow, uint64_t deny);
 } // namespace overwrite
@@ -200,81 +197,91 @@ void append(
 } // namespace channel
 
 namespace emoji { /* discord-public-emoji.cpp */
-dati** get_list(client *client, const uint64_t guild_id);
+
+namespace list_guild_emojis {
+dati** run(client *client, const u64_snowflake_t guild_id);
+} // namespace list_guild_emojis
+
 } // namespace emoji
 
 namespace guild { /* discord-public-guild.cpp */
 
 namespace get_guild {
-void run(client *client, const uint64_t guild_id, dati *p_guild);
+void run(client *client, const u64_snowflake_t guild_id, dati *p_guild);
 } // namespace get_guild
 
 namespace get_channels {
-channel::dati** run(client *client, const uint64_t guild_id);
+channel::dati** run(client *client, const u64_snowflake_t guild_id);
 } // namespace get_channels
 
 namespace create_channel {
-void run(client *client, const uint64_t guild_id, params *params, channel::dati *p_channel);
+void run(client *client, const u64_snowflake_t guild_id, params *params, channel::dati *p_channel);
 } // namespace create_channel
 
 namespace list_guild_members {
 struct params {
   int limit; // the number of members to return (1-1000)
-  uint64_t after; // the highest user id in the previous page
+  u64_snowflake_t after; // the highest user id in the previous page
 };
-member::dati** run(client *client, const uint64_t guild_id, struct params *params);
+member::dati** run(client *client, const u64_snowflake_t guild_id, struct params *params);
 } // namespace list_guild_members
 
 namespace modify_guild_member {
-void run(client *client, const uint64_t guild_id, const uint64_t user_id, params *params, member::dati *p_member);
+void run(client *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id, params *params, member::dati *p_member);
 } // namespace modify_guild_member
 
 namespace remove_guild_member {
-void run(client *client, const uint64_t guild_id, const uint64_t user_id);
+void run(client *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id);
 } // namespace remove_guild_member
 
 namespace get_guild_bans {
-ban::dati** run(client *client, const uint64_t guild_id);
+ban::dati** run(client *client, const u64_snowflake_t guild_id);
 } // namespace get_guild_bans
 
 namespace get_guild_ban {
-void run(client *client, const uint64_t guild_id, const uint64_t user_id, ban::dati *p_ban);
+void run(client *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id, ban::dati *p_ban);
 } // namespace get_guild_ban
 
 namespace create_guild_ban {
-void run(client *client, const uint64_t guild_id, const uint64_t user_id, int delete_message_days, const char reason[]);
+void run(client *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id, int delete_message_days, const char reason[]);
 } // namespace create_guild_ban
 
 namespace remove_guild_ban {
-void run(client *client, const uint64_t guild_id, const uint64_t user_id, const char reason[]);
+void run(client *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id, const char reason[]);
 } // namespace remove_guild_ban
 
 namespace get_guild_roles {
-role::dati** run(client *client, const uint64_t guild_id);
+role::dati** run(client *client, const u64_snowflake_t guild_id);
 } // namespace get_guild_roles
 
 namespace create_guild_role {
-void run(client *client, const uint64_t guild_id, params *params, role::dati *p_role);
+void run(client *client, const u64_snowflake_t guild_id, params *params, role::dati *p_role);
 } // namespace create_guild_role
 
 namespace delete_guild_role {
-void run(client *client, const uint64_t guild_id, const uint64_t role_id);
+void run(client *client, const u64_snowflake_t guild_id, const u64_snowflake_t role_id);
 } // namespace delete_guild_role
 
 } // namespace guild
 
 namespace user { /* discord-public-user.cpp */
 
-void get(client *client, const uint64_t user_id, dati *p_user);
+namespace get_user {
+void run(client *client, const u64_snowflake_t user_id, dati *p_user);
+} // namespace get_user
 
-namespace me { // current user centered functions
+namespace get_current_user {
+void run(client *client, dati *p_user);
+void sb_run(client *client, struct sized_buffer *p_sb_user);
+} // namespace get_current_user
 
-void get(client *client, dati *p_user);
-void sb_get(client *client, struct sized_buffer *p_sb_user);
-guild::dati** get_guilds(client *client);
-void leave_guild(client *client, const u64_snowflake_t guild_id);
+namespace get_current_user_guilds {
+guild::dati** run(client *client);
+} // namespace get_current_user_guilds
 
-} // namespace me
+namespace leave_guild {
+void run(client *client, const u64_snowflake_t guild_id);
+} // namespace leave_guild
 
 } // namespace user
 

@@ -57,7 +57,7 @@ parse_session_config()
 {
   size_t len;
   char *json_payload = orka_load_whole_file("bot-quiz.json", &len);
-  struct sized_buffer **t_questions = NULL;
+  NTL_T(struct sized_buffer) t_questions = NULL;
 
   json_extract(json_payload, len,
     "(listener.channel_id):s_as_u64"
@@ -82,7 +82,7 @@ parse_session_config()
   g_session.questions = (struct question*)calloc(1, g_session.num_questions * sizeof(struct question)); 
 
   for (size_t i=0; t_questions[i]; ++i) {
-    struct sized_buffer **t_answers = NULL;
+    NTL_T(struct sized_buffer) t_answers = NULL;
     json_extract(t_questions[i]->start, t_questions[i]->size,
       "(description):?s", &g_session.questions[i].desc);
     json_scanf(t_questions[i]->start, t_questions[i]->size,
@@ -116,7 +116,7 @@ close_existing_sessions(
   const guild::member::dati *member)
 {
   /* Check if user already has a session role assigned to */
-  guild::role::dati **rls = guild::get_guild_roles::run(client, guild_id);
+  NTL_T(guild::role::dati) rls = guild::get_guild_roles::run(client, guild_id);
 
   for (size_t i=0; rls[i]; ++i) {
     if ( strncmp("TMP", rls[i]->name, 3) )

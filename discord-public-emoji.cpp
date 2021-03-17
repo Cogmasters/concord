@@ -8,8 +8,9 @@
 namespace discord {
 namespace emoji {
 
+namespace list_guild_emojis {
 dati**
-get_list(client *client, const uint64_t guild_id)
+run(client *client, const uint64_t guild_id)
 {
   if (!guild_id) {
     D_PUTS("Missing 'guild_id'");
@@ -30,6 +31,7 @@ get_list(client *client, const uint64_t guild_id)
 
   return new_emojis;
 }
+} // namespace list_guild_emojis
 
 } // namespace emoji
 } // namespace discord

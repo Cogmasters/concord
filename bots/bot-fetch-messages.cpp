@@ -11,8 +11,8 @@ uint64_t
 select_guild(client *client)
 {
   // get guilds bot is a part of
-  guild::dati **guilds = NULL;
-  guilds = user::me::get_guilds(client);
+  NTL_T(guild::dati) guilds = NULL;
+  guilds = user::get_current_user_guilds::run(client);
   ASSERT_S(NULL != guilds, "Couldn't fetch guilds");
 
   fprintf(stderr, "\n\nSelect the guild that the user to be mimicked is part of");
@@ -40,7 +40,7 @@ uint64_t
 select_member(client *client, uint64_t guild_id)
 {
   // get guilds bot is a part of
-  guild::member::dati **members = NULL;
+  NTL_T(guild::member::dati) members = NULL;
   guild::list_guild_members::params params = {
     .limit = 1000,
     .after = 0
@@ -76,14 +76,14 @@ select_member(client *client, uint64_t guild_id)
 void
 fetch_member_msgs(client *client, uint64_t guild_id, uint64_t user_id)
 {
-  channel::dati **channels = guild::get_channels::run(client, guild_id);
+  NTL_T(channel::dati) channels = guild::get_channels::run(client, guild_id);
   ASSERT_S(NULL != channels, "Couldn't fetch channels from guild");
   
   channel::get_channel_messages::params params = {
     .limit = 100
   };
 
-  channel::message::dati **messages;
+  NTL_T(channel::message::dati) messages;
   for (int i=0; channels[i]; ++i)
   {
     params.before = 0;

@@ -14,12 +14,9 @@ The entire code of ping-pong bot is below. We will go over it in further down:
 #include <stdlib.h>
 #include <libdiscord.h>
 
-void on_ready(discord::client *client, const discord::user::data *self)
-{
+void on_ready(discord::client *client, const discord::user::data *me) {
   fprintf(stderr, "\n\nPingPong-Bot succesfully connected to Discord as %s#%s!\n\n",
-      self->username, self->discriminator);
-
-  (void)client;
+      me->username, me->discriminator);
 }
 
 void on_ping(
@@ -31,13 +28,10 @@ void on_ping(
   if (msg->author->bot)
     return;
 
-  discord::channel::message::create::params params = {
+  discord::channel::create_message::params params = {
     .content = "pong"
   };
-
-  discord::channel::message::create::run(client, msg->channel_id, &params, NULL);
-
-  (void)me;
+  discord::channel::create_message::run(client, msg->channel_id, &params, NULL);
 }
 
 void on_pong(
@@ -49,13 +43,10 @@ void on_pong(
   if (msg->author->bot)
     return;
 
-  discord::channel::message::create::params params = {
+  discord::channel::create_message::params params = {
     .content = "ping"
   };
-
-  discord::channel::message::create::run(client, msg->channel_id, &params, NULL);
-
-  (void)me;
+  discord::channel::create_message::run(client, msg->channel_id, &params, NULL);
 }
 
 int main(int argc, char *argv[])

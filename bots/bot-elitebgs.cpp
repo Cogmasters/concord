@@ -35,7 +35,7 @@ struct state_s {
 
 void ticks_from_json(char *str, size_t len, void *data)
 {
-  struct sized_buffer **t_ticks = NULL;
+  NTL_T(struct sized_buffer) t_ticks = NULL;
   json_scanf(str, len, "[]%L", &t_ticks);
   json_scanf(t_ticks[0]->start, t_ticks[0]->size, "[time]%F", &orka_iso8601_to_unix_ms, &g_tick_ms);
 
@@ -78,17 +78,17 @@ void embed_from_json(char *str, size_t len, void *p_embed)
   dati *embed = (dati*)p_embed;
 
   struct doc_s *doc = (struct doc_s*)malloc(sizeof *doc);
-  struct sized_buffer **l_docs = NULL; // get docs token from JSON
+  NTL_T(struct sized_buffer) l_docs = NULL; // get docs token from JSON
 
   struct faction_presence_s *fpresence = (struct faction_presence_s*)malloc(sizeof *fpresence);
   struct faction_presence_s *history = (struct faction_presence_s*)malloc(sizeof *history);
-  struct sized_buffer **l_fpresence = NULL; // get faction_presence token from JSON
-  struct sized_buffer **l_history = NULL; // get recovering_states token from JSON
+  NTL_T(struct sized_buffer) l_fpresence = NULL; // get faction_presence token from JSON
+  NTL_T(struct sized_buffer) l_history = NULL; // get recovering_states token from JSON
 
   struct state_s *state = (struct state_s*)malloc(sizeof *state);
-  struct sized_buffer **l_active_states = NULL; // get active_states token from JSON
-  struct sized_buffer **l_pending_states = NULL; // get pending_states token from JSON
-  struct sized_buffer **l_recovering_states = NULL; // get recovering_states token from JSON
+  NTL_T(struct sized_buffer) l_active_states = NULL; // get active_states token from JSON
+  NTL_T(struct sized_buffer) l_pending_states = NULL; // get pending_states token from JSON
+  NTL_T(struct sized_buffer) l_recovering_states = NULL; // get recovering_states token from JSON
 
 
   json_scanf(str, len, "[docs]%L", &l_docs);
