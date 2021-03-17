@@ -527,13 +527,13 @@ extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace connection
 } // namespace user
 } // namespace discord
-/* This file is generated from specs/webhook.modify-webhook.json, Please don't edit it. */
+/* This file is generated from specs/guild.modify-guild-member.json, Please don't edit it. */
 /*
 
 */
 namespace discord {
-namespace webhook {
-namespace modify_webhook {
+namespace guild {
+namespace modify_guild_member {
 
 extern void params_cleanup_v(void *p);
 extern void params_cleanup(struct params *p);
@@ -555,8 +555,8 @@ extern void params_list_from_json(char *str, size_t len, struct params ***p);
 extern size_t params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t params_list_to_json(char *str, size_t len, struct params **p);
 extern void params_use_default_inject_settings(struct params *p);
-} // namespace modify_webhook
-} // namespace webhook
+} // namespace modify_guild_member
+} // namespace guild
 } // namespace discord
 /* This file is generated from specs/guild.integration.json, Please don't edit it. */
 /*
@@ -768,13 +768,13 @@ extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace metadata
 } // namespace invite
 } // namespace discord
-/* This file is generated from specs/webhook.edit-webhook-message.json, Please don't edit it. */
+/* This file is generated from specs/webhook.modify-webhook.json, Please don't edit it. */
 /*
 
 */
 namespace discord {
 namespace webhook {
-namespace edit_webhook_message {
+namespace modify_webhook {
 
 extern void params_cleanup_v(void *p);
 extern void params_cleanup(struct params *p);
@@ -796,7 +796,7 @@ extern void params_list_from_json(char *str, size_t len, struct params ***p);
 extern size_t params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t params_list_to_json(char *str, size_t len, struct params **p);
 extern void params_use_default_inject_settings(struct params *p);
-} // namespace edit_webhook_message
+} // namespace modify_webhook
 } // namespace webhook
 } // namespace discord
 /* This file is generated from specs/template.create-guild-from-template.json, Please don't edit it. */
@@ -1269,39 +1269,6 @@ extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace welcome_screen
 } // namespace guild
 } // namespace discord
-/* This file is generated from specs/guild.member.modify.json, Please don't edit it. */
-/*
-
-*/
-namespace discord {
-namespace guild {
-namespace member {
-namespace modify {
-
-extern void params_cleanup_v(void *p);
-extern void params_cleanup(struct params *p);
-extern void params_init_v(void *p);
-extern void params_init(struct params *p);
-extern struct params * params_alloc();
-extern void params_free_v(void *p);
-extern void params_free(struct params *p);
-extern void params_from_json_v(char *json, size_t len, void *p);
-extern void params_from_json(char *json, size_t len, struct params *p);
-extern size_t params_to_json_v(char *json, size_t len, void *p);
-extern size_t params_to_json(char *json, size_t len, struct params *p);
-extern size_t params_to_query_v(char *json, size_t len, void *p);
-extern size_t params_to_query(char *json, size_t len, struct params *p);
-extern void params_list_free_v(void **p);
-extern void params_list_free(struct params **p);
-extern void params_list_from_json_v(char *str, size_t len, void *p);
-extern void params_list_from_json(char *str, size_t len, struct params ***p);
-extern size_t params_list_to_json_v(char *str, size_t len, void *p);
-extern size_t params_list_to_json(char *str, size_t len, struct params **p);
-extern void params_use_default_inject_settings(struct params *p);
-} // namespace modify
-} // namespace member
-} // namespace guild
-} // namespace discord
 /* This file is generated from specs/guild.create-guild.json, Please don't edit it. */
 /*
 
@@ -1492,8 +1459,7 @@ extern void params_use_default_inject_settings(struct params *p);
 */
 namespace discord {
 namespace guild {
-namespace role {
-namespace create {
+namespace create_guild_role {
 
 extern void params_cleanup_v(void *p);
 extern void params_cleanup(struct params *p);
@@ -1515,8 +1481,7 @@ extern void params_list_from_json(char *str, size_t len, struct params ***p);
 extern size_t params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t params_list_to_json(char *str, size_t len, struct params **p);
 extern void params_use_default_inject_settings(struct params *p);
-} // namespace create
-} // namespace role
+} // namespace create_guild_role
 } // namespace guild
 } // namespace discord
 /* This file is generated from specs/audit_log.json, Please don't edit it. */
@@ -1759,6 +1724,37 @@ extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
 extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace Template
+} // namespace discord
+/* This file is generated from specs/webhook.edit-webhook-message.json, Please don't edit it. */
+/*
+
+*/
+namespace discord {
+namespace webhook {
+namespace edit_webhook_message {
+
+extern void params_cleanup_v(void *p);
+extern void params_cleanup(struct params *p);
+extern void params_init_v(void *p);
+extern void params_init(struct params *p);
+extern struct params * params_alloc();
+extern void params_free_v(void *p);
+extern void params_free(struct params *p);
+extern void params_from_json_v(char *json, size_t len, void *p);
+extern void params_from_json(char *json, size_t len, struct params *p);
+extern size_t params_to_json_v(char *json, size_t len, void *p);
+extern size_t params_to_json(char *json, size_t len, struct params *p);
+extern size_t params_to_query_v(char *json, size_t len, void *p);
+extern size_t params_to_query(char *json, size_t len, struct params *p);
+extern void params_list_free_v(void **p);
+extern void params_list_free(struct params **p);
+extern void params_list_from_json_v(char *str, size_t len, void *p);
+extern void params_list_from_json(char *str, size_t len, struct params ***p);
+extern size_t params_list_to_json_v(char *str, size_t len, void *p);
+extern size_t params_list_to_json(char *str, size_t len, struct params **p);
+extern void params_use_default_inject_settings(struct params *p);
+} // namespace edit_webhook_message
+} // namespace webhook
 } // namespace discord
 /* This file is generated from specs/channel.follow-news-channel.json, Please don't edit it. */
 /*

@@ -1,58 +1,57 @@
-/* This file is generated from specs/guild.member.modify.json, Please don't edit it. */
+/* This file is generated from specs/guild.modify-guild-member.json, Please don't edit it. */
 #include "specs.h"
 /*
 
 */
 namespace discord {
 namespace guild {
-namespace member {
-namespace modify {
+namespace modify_guild_member {
 
 void params_from_json(char *json, size_t len, struct params *p)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
   r=json_extract(json, len, 
-  /* specs/guild.member.modify.json:11:20
+  /* specs/guild.modify-guild-member.json:11:20
      '{ "name": "nick", "type":{ "base":"char", "dec":"*" }}'
   */
                 "(nick):?s,"
-  /* specs/guild.member.modify.json:12:20
+  /* specs/guild.modify-guild-member.json:12:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "inject_if_not":null}'
   */
                 "(roles):F,"
-  /* specs/guild.member.modify.json:13:20
+  /* specs/guild.modify-guild-member.json:13:20
      '{ "name": "mute", "type":{ "base":"bool" }, "inject_if_not":false}'
   */
                 "(mute):b,"
-  /* specs/guild.member.modify.json:14:20
+  /* specs/guild.modify-guild-member.json:14:20
      '{ "name": "deaf", "type":{ "base":"bool" }, "inject_if_not":false}'
   */
                 "(deaf):b,"
-  /* specs/guild.member.modify.json:15:20
+  /* specs/guild.modify-guild-member.json:15:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0}'
   */
                 "(channel_id):F,"
                 "@arg_switches:b"
                 "@record_defined"
                 "@record_null",
-  /* specs/guild.member.modify.json:11:20
+  /* specs/guild.modify-guild-member.json:11:20
      '{ "name": "nick", "type":{ "base":"char", "dec":"*" }}'
   */
                 &p->nick,
-  /* specs/guild.member.modify.json:12:20
+  /* specs/guild.modify-guild-member.json:12:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "inject_if_not":null}'
   */
                 ja_u64_list_from_json, &p->roles,
-  /* specs/guild.member.modify.json:13:20
+  /* specs/guild.modify-guild-member.json:13:20
      '{ "name": "mute", "type":{ "base":"bool" }, "inject_if_not":false}'
   */
                 &p->mute,
-  /* specs/guild.member.modify.json:14:20
+  /* specs/guild.modify-guild-member.json:14:20
      '{ "name": "deaf", "type":{ "base":"bool" }, "inject_if_not":false}'
   */
                 &p->deaf,
-  /* specs/guild.member.modify.json:15:20
+  /* specs/guild.modify-guild-member.json:15:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0}'
   */
                 orka_strtoull, &p->channel_id,
@@ -66,44 +65,44 @@ size_t params_to_json(char *json, size_t len, struct params *p)
 {
   size_t r;
   r=json_inject(json, len, 
-  /* specs/guild.member.modify.json:11:20
+  /* specs/guild.modify-guild-member.json:11:20
      '{ "name": "nick", "type":{ "base":"char", "dec":"*" }}'
   */
                 "(nick):s,"
-  /* specs/guild.member.modify.json:12:20
+  /* specs/guild.modify-guild-member.json:12:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "inject_if_not":null}'
   */
                 "(roles):F,"
-  /* specs/guild.member.modify.json:13:20
+  /* specs/guild.modify-guild-member.json:13:20
      '{ "name": "mute", "type":{ "base":"bool" }, "inject_if_not":false}'
   */
                 "(mute):b,"
-  /* specs/guild.member.modify.json:14:20
+  /* specs/guild.modify-guild-member.json:14:20
      '{ "name": "deaf", "type":{ "base":"bool" }, "inject_if_not":false}'
   */
                 "(deaf):b,"
-  /* specs/guild.member.modify.json:15:20
+  /* specs/guild.modify-guild-member.json:15:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0}'
   */
                 "(channel_id):|F|,"
                 "@arg_switches:b",
-  /* specs/guild.member.modify.json:11:20
+  /* specs/guild.modify-guild-member.json:11:20
      '{ "name": "nick", "type":{ "base":"char", "dec":"*" }}'
   */
                 p->nick,
-  /* specs/guild.member.modify.json:12:20
+  /* specs/guild.modify-guild-member.json:12:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "inject_if_not":null}'
   */
                 ja_u64_list_to_json, p->roles,
-  /* specs/guild.member.modify.json:13:20
+  /* specs/guild.modify-guild-member.json:13:20
      '{ "name": "mute", "type":{ "base":"bool" }, "inject_if_not":false}'
   */
                 &p->mute,
-  /* specs/guild.member.modify.json:14:20
+  /* specs/guild.modify-guild-member.json:14:20
      '{ "name": "deaf", "type":{ "base":"bool" }, "inject_if_not":false}'
   */
                 &p->deaf,
-  /* specs/guild.member.modify.json:15:20
+  /* specs/guild.modify-guild-member.json:15:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0}'
   */
                 orka_ulltostr, &p->channel_id,
@@ -114,30 +113,30 @@ size_t params_to_json(char *json, size_t len, struct params *p)
 void params_use_default_inject_settings(struct params *p)
 {
   p->__M.enable_arg_switches = true;
-  /* specs/guild.member.modify.json:11:20
+  /* specs/guild.modify-guild-member.json:11:20
      '{ "name": "nick", "type":{ "base":"char", "dec":"*" }}'
   */
   p->__M.arg_switches[0] = p->nick;
 
-  /* specs/guild.member.modify.json:12:20
+  /* specs/guild.modify-guild-member.json:12:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "inject_if_not":null}'
   */
   if (p->roles != NULL)
     p->__M.arg_switches[1] = p->roles;
 
-  /* specs/guild.member.modify.json:13:20
+  /* specs/guild.modify-guild-member.json:13:20
      '{ "name": "mute", "type":{ "base":"bool" }, "inject_if_not":false}'
   */
   if (p->mute != false)
     p->__M.arg_switches[2] = &p->mute;
 
-  /* specs/guild.member.modify.json:14:20
+  /* specs/guild.modify-guild-member.json:14:20
      '{ "name": "deaf", "type":{ "base":"bool" }, "inject_if_not":false}'
   */
   if (p->deaf != false)
     p->__M.arg_switches[3] = &p->deaf;
 
-  /* specs/guild.member.modify.json:15:20
+  /* specs/guild.modify-guild-member.json:15:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0}'
   */
   if (p->channel_id != 0)
@@ -183,25 +182,25 @@ size_t params_list_to_json_v(char *str, size_t len, void *p){
 
 
 void params_cleanup(struct params *d) {
-  /* specs/guild.member.modify.json:11:20
+  /* specs/guild.modify-guild-member.json:11:20
      '{ "name": "nick", "type":{ "base":"char", "dec":"*" }}'
   */
   if (d->nick)
     free(d->nick);
-  /* specs/guild.member.modify.json:12:20
+  /* specs/guild.modify-guild-member.json:12:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "inject_if_not":null}'
   */
   if (d->roles)
     ja_u64_list_free(d->roles);
-  /* specs/guild.member.modify.json:13:20
+  /* specs/guild.modify-guild-member.json:13:20
      '{ "name": "mute", "type":{ "base":"bool" }, "inject_if_not":false}'
   */
   //p->mute is a scalar
-  /* specs/guild.member.modify.json:14:20
+  /* specs/guild.modify-guild-member.json:14:20
      '{ "name": "deaf", "type":{ "base":"bool" }, "inject_if_not":false}'
   */
   //p->deaf is a scalar
-  /* specs/guild.member.modify.json:15:20
+  /* specs/guild.modify-guild-member.json:15:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0}'
   */
   //p->channel_id is a scalar
@@ -209,23 +208,23 @@ void params_cleanup(struct params *d) {
 
 void params_init(struct params *p) {
   memset(p, 0, sizeof(struct params));
-  /* specs/guild.member.modify.json:11:20
+  /* specs/guild.modify-guild-member.json:11:20
      '{ "name": "nick", "type":{ "base":"char", "dec":"*" }}'
   */
 
-  /* specs/guild.member.modify.json:12:20
+  /* specs/guild.modify-guild-member.json:12:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "inject_if_not":null}'
   */
 
-  /* specs/guild.member.modify.json:13:20
+  /* specs/guild.modify-guild-member.json:13:20
      '{ "name": "mute", "type":{ "base":"bool" }, "inject_if_not":false}'
   */
 
-  /* specs/guild.member.modify.json:14:20
+  /* specs/guild.modify-guild-member.json:14:20
      '{ "name": "deaf", "type":{ "base":"bool" }, "inject_if_not":false}'
   */
 
-  /* specs/guild.member.modify.json:15:20
+  /* specs/guild.modify-guild-member.json:15:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0}'
   */
 
@@ -261,7 +260,6 @@ size_t params_list_to_json(char *str, size_t len, struct params **p)
   return ntl_to_buf(str, len, (void **)p, NULL, params_to_json_v);
 }
 
-} // namespace modify
-} // namespace member
+} // namespace modify_guild_member
 } // namespace guild
 } // namespace discord

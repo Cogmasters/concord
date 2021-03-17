@@ -1323,35 +1323,41 @@ struct dati {
 } // namespace connection
 } // namespace user
 } // namespace discord
-/* This file is generated from specs/webhook.modify-webhook.json, Please don't edit it. */
+/* This file is generated from specs/guild.modify-guild-member.json, Please don't edit it. */
 /*
 
 */
 namespace discord {
-namespace webhook {
-namespace modify_webhook {
+namespace guild {
+namespace modify_guild_member {
 
-/* https://discord.com/developers/docs/resources/webhook#modify-webhook */
-/* This is defined at specs/webhook.modify-webhook.json:8:22 */
+/* https://discord.com/developers/docs/resources/guild#modify-guild-member */
+/* This is defined at specs/guild.modify-guild-member.json:8:22 */
 struct params {
-  /* specs/webhook.modify-webhook.json:11:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[80+1]" }, 
-          "comment":"name of the webhook(1-80) chars" }'
+  /* specs/guild.modify-guild-member.json:11:20
+     '{ "name": "nick", "type":{ "base":"char", "dec":"*" }}'
   */
-  char name[80+1]; // name of the webhook(1-80) chars
+  char *nick;
 
-  /* specs/webhook.modify-webhook.json:13:20
-     '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, 
-          "inject_if_not":null, 
-          "comment":"base64 image for the default webhook avatar" }'
+  /* specs/guild.modify-guild-member.json:12:20
+     '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "inject_if_not":null}'
   */
-  char *avatar; // base64 image for the default webhook avatar
+  ja_u64 **roles;
 
-  /* specs/webhook.modify-webhook.json:16:20
-     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, 
-          "comment":"the new channel id this webhook should be moved to" }'
+  /* specs/guild.modify-guild-member.json:13:20
+     '{ "name": "mute", "type":{ "base":"bool" }, "inject_if_not":false}'
   */
-  u64_snowflake_t channel_id; // the new channel id this webhook should be moved to
+  bool mute;
+
+  /* specs/guild.modify-guild-member.json:14:20
+     '{ "name": "deaf", "type":{ "base":"bool" }, "inject_if_not":false}'
+  */
+  bool deaf;
+
+  /* specs/guild.modify-guild-member.json:15:20
+     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0}'
+  */
+  u64_snowflake_t channel_id;
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -1361,13 +1367,13 @@ struct params {
     bool enable_arg_switches;
     bool enable_record_defined;
     bool enable_record_null;
-    void *arg_switches[3];
-    void *record_defined[3];
-    void *record_null[3];
+    void *arg_switches[5];
+    void *record_defined[5];
+    void *record_null[5];
   } __M; // metadata
 };
-} // namespace modify_webhook
-} // namespace webhook
+} // namespace modify_guild_member
+} // namespace guild
 } // namespace discord
 /* This file is generated from specs/guild.integration.json, Please don't edit it. */
 /*
@@ -1806,35 +1812,35 @@ struct dati {
 } // namespace metadata
 } // namespace invite
 } // namespace discord
-/* This file is generated from specs/webhook.edit-webhook-message.json, Please don't edit it. */
+/* This file is generated from specs/webhook.modify-webhook.json, Please don't edit it. */
 /*
 
 */
 namespace discord {
 namespace webhook {
-namespace edit_webhook_message {
+namespace modify_webhook {
 
-/* https://discord.com/developers/docs/resources/webhook#edit-webhook-message */
-/* This is defined at specs/webhook.edit-webhook-message.json:8:22 */
+/* https://discord.com/developers/docs/resources/webhook#modify-webhook */
+/* This is defined at specs/webhook.modify-webhook.json:8:22 */
 struct params {
-  /* specs/webhook.edit-webhook-message.json:11:20
-     '{ "name": "content", "type":{ "base":"char", "dec":"[2000+1]" }, 
-          "comment":"name of the webhook(1-2000) chars" }'
+  /* specs/webhook.modify-webhook.json:11:20
+     '{ "name": "name", "type":{ "base":"char", "dec":"[80+1]" }, 
+          "comment":"name of the webhook(1-80) chars" }'
   */
-  char content[2000+1]; // name of the webhook(1-2000) chars
+  char name[80+1]; // name of the webhook(1-80) chars
 
-  /* specs/webhook.edit-webhook-message.json:13:20
-     '{ "name": "embeds", "type":{ "base":"discord::channel::embed::dati", "dec":"ntl" }, 
-          "comment":"array of up to 10 embeds objects" }'
+  /* specs/webhook.modify-webhook.json:13:20
+     '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, 
+          "inject_if_not":null, 
+          "comment":"base64 image for the default webhook avatar" }'
   */
-  discord::channel::embed::dati **embeds; // array of up to 10 embeds objects
+  char *avatar; // base64 image for the default webhook avatar
 
-  /* specs/webhook.edit-webhook-message.json:15:20
-     '{ "name": "allowed_mentions", 
-          "type":{ "base":"discord::channel::allowed_mentions::dati", "dec":"*" }, 
-          "comment":"allowed mentions for the message" }'
+  /* specs/webhook.modify-webhook.json:16:20
+     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, 
+          "comment":"the new channel id this webhook should be moved to" }'
   */
-  discord::channel::allowed_mentions::dati *allowed_mentions; // allowed mentions for the message
+  u64_snowflake_t channel_id; // the new channel id this webhook should be moved to
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -1849,7 +1855,7 @@ struct params {
     void *record_null[3];
   } __M; // metadata
 };
-} // namespace edit_webhook_message
+} // namespace modify_webhook
 } // namespace webhook
 } // namespace discord
 /* This file is generated from specs/template.create-guild-from-template.json, Please don't edit it. */
@@ -2679,60 +2685,6 @@ struct dati {
 } // namespace welcome_screen
 } // namespace guild
 } // namespace discord
-/* This file is generated from specs/guild.member.modify.json, Please don't edit it. */
-/*
-
-*/
-namespace discord {
-namespace guild {
-namespace member {
-namespace modify {
-
-/* https://discord.com/developers/docs/resources/guild#modify-guild-member */
-/* This is defined at specs/guild.member.modify.json:8:22 */
-struct params {
-  /* specs/guild.member.modify.json:11:20
-     '{ "name": "nick", "type":{ "base":"char", "dec":"*" }}'
-  */
-  char *nick;
-
-  /* specs/guild.member.modify.json:12:20
-     '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "inject_if_not":null}'
-  */
-  ja_u64 **roles;
-
-  /* specs/guild.member.modify.json:13:20
-     '{ "name": "mute", "type":{ "base":"bool" }, "inject_if_not":false}'
-  */
-  bool mute;
-
-  /* specs/guild.member.modify.json:14:20
-     '{ "name": "deaf", "type":{ "base":"bool" }, "inject_if_not":false}'
-  */
-  bool deaf;
-
-  /* specs/guild.member.modify.json:15:20
-     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0}'
-  */
-  u64_snowflake_t channel_id;
-
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[5];
-    void *record_defined[5];
-    void *record_null[5];
-  } __M; // metadata
-};
-} // namespace modify
-} // namespace member
-} // namespace guild
-} // namespace discord
 /* This file is generated from specs/guild.create-guild.json, Please don't edit it. */
 /*
 
@@ -3110,8 +3062,7 @@ struct params {
 */
 namespace discord {
 namespace guild {
-namespace role {
-namespace create {
+namespace create_guild_role {
 
 /* https://discord.com/developers/docs/resources/guild#create-guild-role */
 /* This is defined at specs/guild.role.create.json:8:22 */
@@ -3154,8 +3105,7 @@ struct params {
     void *record_null[5];
   } __M; // metadata
 };
-} // namespace create
-} // namespace role
+} // namespace create_guild_role
 } // namespace guild
 } // namespace discord
 /* This file is generated from specs/audit_log.json, Please don't edit it. */
@@ -3883,6 +3833,52 @@ struct dati {
   } __M; // metadata
 };
 } // namespace Template
+} // namespace discord
+/* This file is generated from specs/webhook.edit-webhook-message.json, Please don't edit it. */
+/*
+
+*/
+namespace discord {
+namespace webhook {
+namespace edit_webhook_message {
+
+/* https://discord.com/developers/docs/resources/webhook#edit-webhook-message */
+/* This is defined at specs/webhook.edit-webhook-message.json:8:22 */
+struct params {
+  /* specs/webhook.edit-webhook-message.json:11:20
+     '{ "name": "content", "type":{ "base":"char", "dec":"[2000+1]" }, 
+          "comment":"name of the webhook(1-2000) chars" }'
+  */
+  char content[2000+1]; // name of the webhook(1-2000) chars
+
+  /* specs/webhook.edit-webhook-message.json:13:20
+     '{ "name": "embeds", "type":{ "base":"discord::channel::embed::dati", "dec":"ntl" }, 
+          "comment":"array of up to 10 embeds objects" }'
+  */
+  discord::channel::embed::dati **embeds; // array of up to 10 embeds objects
+
+  /* specs/webhook.edit-webhook-message.json:15:20
+     '{ "name": "allowed_mentions", 
+          "type":{ "base":"discord::channel::allowed_mentions::dati", "dec":"*" }, 
+          "comment":"allowed mentions for the message" }'
+  */
+  discord::channel::allowed_mentions::dati *allowed_mentions; // allowed mentions for the message
+
+  // The following is metadata used to 
+  // 1. control which field should be extracted/injected
+  // 2. record which field is presented(defined) in JSON
+  // 3. record which field is null in JSON
+  struct {
+    bool enable_arg_switches;
+    bool enable_record_defined;
+    bool enable_record_null;
+    void *arg_switches[3];
+    void *record_defined[3];
+    void *record_null[3];
+  } __M; // metadata
+};
+} // namespace edit_webhook_message
+} // namespace webhook
 } // namespace discord
 /* This file is generated from specs/channel.follow-news-channel.json, Please don't edit it. */
 /*

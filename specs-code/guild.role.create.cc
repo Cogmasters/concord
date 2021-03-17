@@ -5,8 +5,7 @@
 */
 namespace discord {
 namespace guild {
-namespace role {
-namespace create {
+namespace create_guild_role {
 
 void params_from_json(char *json, size_t len, struct params *p)
 {
@@ -260,7 +259,6 @@ size_t params_list_to_json(char *str, size_t len, struct params **p)
   return ntl_to_buf(str, len, (void **)p, NULL, params_to_json_v);
 }
 
-} // namespace create
-} // namespace role
+} // namespace create_guild_role
 } // namespace guild
 } // namespace discord

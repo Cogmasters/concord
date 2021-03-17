@@ -1,32 +1,32 @@
-/* This file is generated from specs/guild.member.modify.json, Please don't edit it. */
+/* This file is generated from specs/guild.modify-guild-member.json, Please don't edit it. */
 /*
 
 */
 
 /* https://discord.com/developers/docs/resources/guild#modify-guild-member */
-/* This is defined at specs/guild.member.modify.json:8:22 */
+/* This is defined at specs/guild.modify-guild-member.json:8:22 */
 struct params {
-  /* specs/guild.member.modify.json:11:20
+  /* specs/guild.modify-guild-member.json:11:20
      '{ "name": "nick", "type":{ "base":"char", "dec":"*" }}'
   */
   char *nick;
 
-  /* specs/guild.member.modify.json:12:20
+  /* specs/guild.modify-guild-member.json:12:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "inject_if_not":null}'
   */
   ja_u64 **roles;
 
-  /* specs/guild.member.modify.json:13:20
+  /* specs/guild.modify-guild-member.json:13:20
      '{ "name": "mute", "type":{ "base":"bool" }, "inject_if_not":false}'
   */
   bool mute;
 
-  /* specs/guild.member.modify.json:14:20
+  /* specs/guild.modify-guild-member.json:14:20
      '{ "name": "deaf", "type":{ "base":"bool" }, "inject_if_not":false}'
   */
   bool deaf;
 
-  /* specs/guild.member.modify.json:15:20
+  /* specs/guild.modify-guild-member.json:15:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0}'
   */
   u64_snowflake_t channel_id;

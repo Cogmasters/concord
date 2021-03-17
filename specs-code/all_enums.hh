@@ -208,15 +208,15 @@ enum code {
 } // namespace connection
 } // namespace user
 } // namespace discord
-/* This file is generated from specs/webhook.modify-webhook.json, Please don't edit it. */
+/* This file is generated from specs/guild.modify-guild-member.json, Please don't edit it. */
 /*
 
 */
 namespace discord {
-namespace webhook {
-namespace modify_webhook {
-} // namespace modify_webhook
-} // namespace webhook
+namespace guild {
+namespace modify_guild_member {
+} // namespace modify_guild_member
+} // namespace guild
 } // namespace discord
 /* This file is generated from specs/guild.integration.json, Please don't edit it. */
 /*
@@ -334,14 +334,14 @@ enum code {
 } // namespace target_user_types
 } // namespace invite
 } // namespace discord
-/* This file is generated from specs/webhook.edit-webhook-message.json, Please don't edit it. */
+/* This file is generated from specs/webhook.modify-webhook.json, Please don't edit it. */
 /*
 
 */
 namespace discord {
 namespace webhook {
-namespace edit_webhook_message {
-} // namespace edit_webhook_message
+namespace modify_webhook {
+} // namespace modify_webhook
 } // namespace webhook
 } // namespace discord
 /* This file is generated from specs/template.create-guild-from-template.json, Please don't edit it. */
@@ -398,18 +398,6 @@ namespace discord {
 namespace guild {
 namespace welcome_screen {
 } // namespace welcome_screen
-} // namespace guild
-} // namespace discord
-/* This file is generated from specs/guild.member.modify.json, Please don't edit it. */
-/*
-
-*/
-namespace discord {
-namespace guild {
-namespace member {
-namespace modify {
-} // namespace modify
-} // namespace member
 } // namespace guild
 } // namespace discord
 /* This file is generated from specs/guild.create-guild.json, Please don't edit it. */
@@ -484,10 +472,8 @@ namespace execute_webhook {
 */
 namespace discord {
 namespace guild {
-namespace role {
-namespace create {
-} // namespace create
-} // namespace role
+namespace create_guild_role {
+} // namespace create_guild_role
 } // namespace guild
 } // namespace discord
 /* This file is generated from specs/audit_log.json, Please don't edit it. */
@@ -563,6 +549,16 @@ namespace create_guild_emoji {
 https://discord.com/developers/docs/resources/template#template-object-template-structure
 */
 namespace discord {
+} // namespace discord
+/* This file is generated from specs/webhook.edit-webhook-message.json, Please don't edit it. */
+/*
+
+*/
+namespace discord {
+namespace webhook {
+namespace edit_webhook_message {
+} // namespace edit_webhook_message
+} // namespace webhook
 } // namespace discord
 /* This file is generated from specs/channel.follow-news-channel.json, Please don't edit it. */
 /*

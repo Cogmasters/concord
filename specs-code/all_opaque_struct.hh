@@ -209,19 +209,19 @@ struct dati;
 } // namespace connection
 } // namespace user
 } // namespace discord
-/* This file is generated from specs/webhook.modify-webhook.json, Please don't edit it. */
+/* This file is generated from specs/guild.modify-guild-member.json, Please don't edit it. */
 /*
 
 */
 namespace discord {
-namespace webhook {
-namespace modify_webhook {
+namespace guild {
+namespace modify_guild_member {
 
-/* https://discord.com/developers/docs/resources/webhook#modify-webhook */
-/* This is defined at specs/webhook.modify-webhook.json:8:22 */
+/* https://discord.com/developers/docs/resources/guild#modify-guild-member */
+/* This is defined at specs/guild.modify-guild-member.json:8:22 */
 struct params;
-} // namespace modify_webhook
-} // namespace webhook
+} // namespace modify_guild_member
+} // namespace guild
 } // namespace discord
 /* This file is generated from specs/guild.integration.json, Please don't edit it. */
 /*
@@ -305,18 +305,18 @@ struct dati;
 } // namespace metadata
 } // namespace invite
 } // namespace discord
-/* This file is generated from specs/webhook.edit-webhook-message.json, Please don't edit it. */
+/* This file is generated from specs/webhook.modify-webhook.json, Please don't edit it. */
 /*
 
 */
 namespace discord {
 namespace webhook {
-namespace edit_webhook_message {
+namespace modify_webhook {
 
-/* https://discord.com/developers/docs/resources/webhook#edit-webhook-message */
-/* This is defined at specs/webhook.edit-webhook-message.json:8:22 */
+/* https://discord.com/developers/docs/resources/webhook#modify-webhook */
+/* This is defined at specs/webhook.modify-webhook.json:8:22 */
 struct params;
-} // namespace edit_webhook_message
+} // namespace modify_webhook
 } // namespace webhook
 } // namespace discord
 /* This file is generated from specs/template.create-guild-from-template.json, Please don't edit it. */
@@ -494,22 +494,6 @@ struct dati;
 } // namespace welcome_screen
 } // namespace guild
 } // namespace discord
-/* This file is generated from specs/guild.member.modify.json, Please don't edit it. */
-/*
-
-*/
-namespace discord {
-namespace guild {
-namespace member {
-namespace modify {
-
-/* https://discord.com/developers/docs/resources/guild#modify-guild-member */
-/* This is defined at specs/guild.member.modify.json:8:22 */
-struct params;
-} // namespace modify
-} // namespace member
-} // namespace guild
-} // namespace discord
 /* This file is generated from specs/guild.create-guild.json, Please don't edit it. */
 /*
 
@@ -598,14 +582,12 @@ struct params;
 */
 namespace discord {
 namespace guild {
-namespace role {
-namespace create {
+namespace create_guild_role {
 
 /* https://discord.com/developers/docs/resources/guild#create-guild-role */
 /* This is defined at specs/guild.role.create.json:8:22 */
 struct params;
-} // namespace create
-} // namespace role
+} // namespace create_guild_role
 } // namespace guild
 } // namespace discord
 /* This file is generated from specs/audit_log.json, Please don't edit it. */
@@ -700,6 +682,20 @@ namespace Template {
 /* This is defined at specs/template.json:9:22 */
 struct dati;
 } // namespace Template
+} // namespace discord
+/* This file is generated from specs/webhook.edit-webhook-message.json, Please don't edit it. */
+/*
+
+*/
+namespace discord {
+namespace webhook {
+namespace edit_webhook_message {
+
+/* https://discord.com/developers/docs/resources/webhook#edit-webhook-message */
+/* This is defined at specs/webhook.edit-webhook-message.json:8:22 */
+struct params;
+} // namespace edit_webhook_message
+} // namespace webhook
 } // namespace discord
 /* This file is generated from specs/channel.follow-news-channel.json, Please don't edit it. */
 /*
