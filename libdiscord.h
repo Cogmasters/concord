@@ -53,7 +53,6 @@ enum dispatch_code {
   READY,
   RESUMED,
   MESSAGE_CREATE,
-  SB_MESSAGE_CREATE, //@todo this is temporary for wrapping JS
   MESSAGE_UPDATE,
   MESSAGE_DELETE,
   MESSAGE_DELETE_BULK,
@@ -110,22 +109,19 @@ void pin_message(client *client, const uint64_t channel_id, const uint64_t messa
 void unpin_message(client *client, const uint64_t channel_id, const uint64_t message_id);
 void trigger_typing(client *client, const uint64_t channel_id);
 
-namespace message {
 
 /* https://discord.com/developers/docs/resources/channel#get-channel-messages */
-namespace get_list { // function wrapper
-
+namespace get_channel_messages { // function wrapper
 struct params {
   uint64_t around;
   uint64_t before;
   uint64_t after;
   int limit; // max number of messages (1-100)
 };
-
 message::dati** run(client *client, const uint64_t channel_id, params *params);
+} // namespace get_channel_messages
 
-} // namespace get_list
-
+namespace message {
 /* https://discord.com/developers/docs/resources/channel#create-message */
 namespace create { // function wrapper
 
@@ -277,7 +273,6 @@ void get(client *client, const uint64_t user_id, dati *p_user);
 namespace me { // current user centered functions
 
 void get(client *client, dati *p_user);
-void sb_get(client *client, struct sized_buffer *p_sb_user);
 guild::dati** get_guilds(client *client);
 void leave_guild(client *client, const u64_snowflake_t guild_id);
 

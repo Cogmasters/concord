@@ -145,8 +145,9 @@ dati_from_json(char *str, size_t len, dati *message)
 
   DS_NOTOP_PUTS("Message object loaded with API response"); 
 }
+} // message
 
-namespace get_list {
+namespace get_channel_messages {
 
 message::dati**
 run(client *client, const uint64_t channel_id, params *params)
@@ -186,7 +187,7 @@ run(client *client, const uint64_t channel_id, params *params)
         "&after=%" PRIu64 , params->after);
   }
 
-  dati **new_messages = NULL;
+  message::dati **new_messages = NULL;
 
   struct resp_handle resp_handle = 
     { .ok_cb = &dati_list_from_json_v, .ok_obj = (void*)&new_messages};
@@ -201,9 +202,10 @@ run(client *client, const uint64_t channel_id, params *params)
 
   return new_messages;
 }
+} // namespace get_channel_messages
 
-} // namespace get_list
 
+namespace message {
 namespace create {
 
 //@todo this is a temporary solution

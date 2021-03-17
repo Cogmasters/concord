@@ -84,7 +84,7 @@ fetch_member_msgs(client *client, uint64_t guild_id, uint64_t user_id)
   dati **channels = guild::get_channels(client, guild_id);
   ASSERT_S(NULL != channels, "Couldn't fetch channels from guild");
   
-  message::get_list::params params = {
+  channel::get_channel_messages::params params = {
     .limit = 100
   };
 
@@ -95,7 +95,7 @@ fetch_member_msgs(client *client, uint64_t guild_id, uint64_t user_id)
 
     int n_msg;
     do {
-      messages = message::get_list::run(client, channels[i]->id, &params);
+      messages = channel::get_channel_messages::run(client, channels[i]->id, &params);
       ASSERT_S(NULL != messages, "Couldn't fetch messages from channel");
 
       for (n_msg = 0; messages[n_msg]; ++n_msg) {
