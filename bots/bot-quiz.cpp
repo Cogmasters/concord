@@ -116,7 +116,7 @@ close_existing_sessions(
   const guild::member::dati *member)
 {
   /* Check if user already has a session role assigned to */
-  guild::role::dati **rls = guild::role::get_list(client, guild_id);
+  guild::role::dati **rls = guild::get_guild_roles::run(client, guild_id);
 
   for (size_t i=0; rls[i]; ++i) {
     if ( strncmp("TMP", rls[i]->name, 3) )
@@ -127,7 +127,7 @@ close_existing_sessions(
 
     if (member->user->id == user_id) {
       channel::delete_channel::run(client, channel_id, NULL);
-      guild::role::del(client, guild_id, rls[i]->id);
+      guild::delete_guild_role::run(client, guild_id, rls[i]->id);
 
       // reset active_session if exists
       for (size_t i=0; i < MAX_SESSIONS; ++i) {
@@ -212,19 +212,18 @@ add_session_role(
 
   guild::role::dati ret_role;
   guild::role::dati_init(&ret_role);
-  guild::role::create::params params2 = {
+  guild::create_guild_role::params params2 = {
     .name = text
   };
-  guild::role::create::run(client, guild_id, &params2, &ret_role);
+  guild::create_guild_role::run(client, guild_id, &params2, &ret_role);
   if (!ret_role.id) return 0;
 
   //@todo turn this into a public function
   ja_u64_list_append((ja_u64***)&member->roles, &ret_role.id);
-  guild::member::modify::params params3 = {
+  guild::modify_guild_member::params params3 = {
     .roles = member->roles
   };
-
-  guild::member::modify::run(
+  guild::modify_guild_member::run(
     client, 
     guild_id, 
     member->user->id, 

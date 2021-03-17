@@ -38,10 +38,10 @@ on_command(client *client, const user::dati *me, const channel::message::dati *m
   ++cxt.discriminator;
 
   guild::member::dati **members = NULL;
-  guild::member::get_list::params params1 = {
+  guild::list_guild_members::params params1 = {
     .limit = 1000
   };
-  members = guild::member::get_list::run(client, msg->guild_id, &params1);
+  members = guild::list_guild_members::run(client, msg->guild_id, &params1);
   if (NULL == members) {
     printf("Missing members list\n");
     return;
@@ -51,10 +51,10 @@ on_command(client *client, const user::dati *me, const channel::message::dati *m
     if (0 == strcmp(members[i]->user->username, cxt.username)
         && 0 == strcmp(members[i]->user->discriminator, cxt.discriminator))
     {
-      guild::member::modify::params params2 = {
+      guild::modify_guild_member::params params2 = {
         .nick = cxt.nick
       };
-      guild::member::modify::run(client, msg->guild_id, members[i]->user->id, &params2, NULL);
+      guild::modify_guild_member::run(client, msg->guild_id, members[i]->user->id, &params2, NULL);
     }
   }
 

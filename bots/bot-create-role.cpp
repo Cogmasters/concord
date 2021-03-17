@@ -24,10 +24,10 @@ void on_command(
 
   guild::role::dati *role = guild::role::dati_alloc();
 
-  guild::role::create::params params1 = {
+  guild::create_guild_role::params params1 = {
     .name = msg->content
   };
-  guild::role::create::run(client, msg->guild_id, &params1, role);
+  guild::create_guild_role::run(client, msg->guild_id, &params1, role);
 
   if (role->id) {
     char text[150];

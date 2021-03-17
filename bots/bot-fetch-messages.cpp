@@ -39,16 +39,13 @@ select_guild(client *client)
 uint64_t
 select_member(client *client, uint64_t guild_id)
 {
-  using namespace guild;
-
   // get guilds bot is a part of
-  member::dati **members = NULL;
-  member::get_list::params params = {
+  guild::member::dati **members = NULL;
+  guild::list_guild_members::params params = {
     .limit = 1000,
     .after = 0
   };
-
-  members = member::get_list::run(client, guild_id, &params);
+  members = guild::list_guild_members::run(client, guild_id, &params);
   ASSERT_S(NULL != members, "Guild is empty or bot needs to activate its privileged intents.\n\t"
                             "See this guide to activate it: https://discordpy.readthedocs.io/en/latest/intents.html#privileged-intents");
 
@@ -69,7 +66,7 @@ select_member(client *client, uint64_t guild_id)
     int num = strtol(strnum, NULL, 10);
     if (num > 0 && num <= i) {
       uint64_t user_id = members[num-1]->user->id;
-      member::dati_list_free(members);
+      guild::member::dati_list_free(members);
       return user_id;
     }
     fprintf(stderr, "\nPlease, insert a value between 1 and %d", i);
@@ -79,7 +76,7 @@ select_member(client *client, uint64_t guild_id)
 void
 fetch_member_msgs(client *client, uint64_t guild_id, uint64_t user_id)
 {
-  channel::dati **channels = guild::get_channels(client, guild_id);
+  channel::dati **channels = guild::get_channels::run(client, guild_id);
   ASSERT_S(NULL != channels, "Couldn't fetch channels from guild");
   
   channel::get_channel_messages::params params = {
