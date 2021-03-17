@@ -38,11 +38,8 @@ run(client *client, u64_snowflake_t channel_id, u64_snowflake_t author_id)
   ja_u64 **list = NULL;
   int count = 0;
   for (int i = 0; messages[i]; i++) {
-    if (messages[i]->author->id == author_id) {
+    if (messages[i]->author->id == author_id)
       count ++;
-    }
-    else
-      messages[i]->id = 0;
   }
   list = (NTL_T(ja_u64))ntl_calloc(count, sizeof(ja_u64));
 
@@ -51,26 +48,29 @@ run(client *client, u64_snowflake_t channel_id, u64_snowflake_t author_id)
       list[j]->value = messages[i]->id;
       j++;
     }
-    else
-      messages[i]->id = 0;
   }
   ntl_free((ntl_t)messages, channel::message::dati_cleanup_v);
 
-  size_t s = ja_u64_list_to_json(NULL, 0, list);
-  char *json = (char *)malloc(s);
-  ja_u64_list_to_json(json, s, list);
+  if (count == 1)
+    channel::delete_message::run(client, channel_id, list[0]->value);
+  else {
+    char *json = NULL;
+    json_ainject(&json,
+                 "(messages):F",
+                 ja_u64_list_to_json, list);
 
-  struct sized_buffer req_body = {
-    .size = s,
-    .start = json
-  };
+    struct sized_buffer req_body = {
+      .size = strlen(json),
+      .start = json
+    };
 
-  user_agent::run(
-    &client->ua,
-    NULL,
-    &req_body,
-    HTTP_POST,
-    "/channels/%llu/messages", channel_id);
+    user_agent::run(
+      &client->ua,
+      NULL,
+      &req_body,
+      HTTP_POST,
+      "/channels/%llu/messages/bulk-delete", channel_id);
+  }
 }
 
 
