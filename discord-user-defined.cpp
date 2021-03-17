@@ -60,8 +60,8 @@ run(client *client, u64_snowflake_t channel_id, u64_snowflake_t author_id)
                  ja_u64_list_to_json, list);
 
     struct sized_buffer req_body = {
-      .size = strlen(json),
-      .start = json
+      .start = json,
+      .size = strlen(json)
     };
 
     user_agent::run(

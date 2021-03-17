@@ -23,8 +23,6 @@ on_ready(client *client, const user::dati *me) {
 void
 on_command(client *client, const user::dati *me, const channel::message::dati *msg)
 {
-  using namespace channel;
-  
   // make sure bot doesn't consider other bots
   if (msg->author->bot)
     return;
@@ -34,7 +32,7 @@ on_command(client *client, const user::dati *me, const channel::message::dati *m
     return; // EARLY RETURN IF NOT SUDO USER
   }
 
-  message::create::params params = {0};
+  channel::create_message::params params = {0};
 
   char *cmd = strchr(msg->content, ' '); //get first occurence of space
   size_t len;
@@ -101,7 +99,7 @@ on_command(client *client, const user::dati *me, const channel::message::dati *m
     pclose(fp);
   }
 
-  message::create::run(client, msg->channel_id, &params, NULL); 
+  channel::create_message::run(client, msg->channel_id, &params, NULL); 
 }
 
 int main(int argc, char *argv[])

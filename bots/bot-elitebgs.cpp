@@ -253,7 +253,7 @@ void on_command(
     const discord::user::dati *me,
     const discord::channel::message::dati *msg)
 {
-  using namespace discord::channel;
+  using namespace discord;
 
   // make sure bot doesn't echoes other bots
   if (msg->author->bot)
@@ -262,13 +262,13 @@ void on_command(
   update_last_tick_ms();
 
   /* Initialize embed struct that will be loaded to  */
-  embed::dati *new_embed = embed::dati_alloc();
+  channel::embed::dati *new_embed = channel::embed::dati_alloc();
 
   /* Set embed fields */
   strncpy(new_embed->title, msg->content, sizeof(new_embed->title));
   new_embed->timestamp = orka_timestamp_ms();
   new_embed->color = 15844367; //gold
-  embed::change_footer(new_embed, 
+  channel::embed::change_footer(new_embed, 
       "designed & built by https://cee.dev",
       "https://cee.dev/static/images/cee.png", NULL);
 
@@ -281,7 +281,7 @@ void on_command(
 
   ASSERT_S(ret < (int)sizeof(query), "Out of bounds write attempt");
 
-  trigger_typing(client, msg->channel_id);
+  channel::trigger_typing_indicator::run(client, msg->channel_id);
 
   /* Fetch factions from ELITEBGS API */
   struct resp_handle resp_handle =
@@ -295,16 +295,15 @@ void on_command(
       "/factions%s", query);
 
   /* Send embed to channel if embed was loaded */
-  message::create::params params = {0};
+  channel::create_message::params params = {0};
   if (new_embed->fields)
     params.embed = new_embed;
   else 
     params.content = "System does not exist or could not be found.";
-
-  message::create::run(client, msg->channel_id, &params, NULL);
+  channel::create_message::run(client, msg->channel_id, &params, NULL);
 
   /* Cleanup resources */
-  embed::dati_free(new_embed);
+  channel::embed::dati_free(new_embed);
 }
 
 int main(int argc, char *argv[])

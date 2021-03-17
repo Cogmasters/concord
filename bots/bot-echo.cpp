@@ -25,7 +25,7 @@ void on_reaction_add(
   if (member->user->bot) 
     return;
 
-  channel::reaction::create(client, channel_id, message_id, emoji->id, emoji->name);
+  channel::create_reaction::run(client, channel_id, message_id, emoji->id, emoji->name);
 }
 
 void on_message_create(
@@ -33,18 +33,15 @@ void on_message_create(
     const user::dati *me,
     const channel::message::dati *msg)
 {
-  using namespace channel;
-
   // make sure bot doesn't echoes other bots
   if (msg->author->bot)
     return;
 
-  message::create::params params = {
+  channel::create_message::params params = {
     .content = msg->content
   };
-
-  message::reference::dati msg_ref;
-  message::reference::dati_init(&msg_ref);
+  channel::message::reference::dati msg_ref;
+  channel::message::reference::dati_init(&msg_ref);
   if(msg->referenced_message) {
     msg_ref.message_id = msg->referenced_message->id;
     msg_ref.channel_id = msg->channel_id;
@@ -53,7 +50,7 @@ void on_message_create(
     params.message_reference = &msg_ref;
   }
 
-  message::create::run(client, msg->channel_id, &params, NULL);
+  channel::create_message::run(client, msg->channel_id, &params, NULL);
 }
 
 void on_message_update(
@@ -61,12 +58,10 @@ void on_message_update(
     const user::dati *me,
     const channel::message::dati *msg)
 {
-  using namespace channel;
-
-  message::create::params params = {
+  channel::create_message::params params = {
     .content = "I see what you did there."
   };
-  message::create::run(client, msg->channel_id, &params, NULL);
+  channel::create_message::run(client, msg->channel_id, &params, NULL);
 }
 
 void on_message_delete(
@@ -76,12 +71,10 @@ void on_message_delete(
     const uint64_t channel_id,
     const uint64_t guild_id)
 {
-  using namespace channel;
-
-  message::create::params params = {
+  channel::create_message::params params = {
     .content = "Did that message just disappear?"
   };
-  message::create::run(client, channel_id, &params, NULL);
+  channel::create_message::run(client, channel_id, &params, NULL);
 }
 
 void on_message_delete_bulk(
@@ -92,15 +85,13 @@ void on_message_delete_bulk(
     const uint64_t channel_id,
     const uint64_t guild_id)
 {
-  using namespace channel;
-
   char buf[128];
   snprintf(buf, sizeof(buf), "Ouch! Where did those %zu messages go?", nids);
 
-  message::create::params params = {
+  channel::create_message::params params = {
     .content = buf
   };
-  message::create::run(client, channel_id, &params, NULL);
+  channel::create_message::run(client, channel_id, &params, NULL);
 }
 
 int main(int argc, char *argv[])

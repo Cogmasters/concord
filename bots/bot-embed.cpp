@@ -20,30 +20,26 @@ void on_command(
     const user::dati *me,
     const channel::message::dati *msg)
 {
-  using namespace channel;
-
   // make sure bot doesn't echoes other bots
   if (msg->author->bot)
     return;
 
-  message::create::params params = {
+  channel::create_message::params params = {
     .content = "This is an embed",
-    .embed = (embed::dati*)get_data(client)
+    .embed = (channel::embed::dati*)get_data(client)
   };
-  message::create::run(client, msg->channel_id, &params, NULL);
+  channel::create_message::run(client, msg->channel_id, &params, NULL);
 }
 
 static channel::embed::dati*
 load_embed_from_json(char filename[])
 {
-  using namespace channel;
-
   /* get contents of file to string */
   size_t len;
   char *json_payload = orka_load_whole_file(filename, &len);
 
-  embed::dati *new_embed = embed::dati_alloc();
-  embed::dati_from_json(json_payload, len, new_embed);
+  channel::embed::dati *new_embed = channel::embed::dati_alloc();
+  channel::embed::dati_from_json(json_payload, len, new_embed);
 
   new_embed->timestamp = orka_timestamp_ms(); // get current timestamp
 

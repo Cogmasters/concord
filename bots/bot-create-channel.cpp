@@ -29,10 +29,10 @@ void on_create(
   guild::create_channel::run(client, msg->guild_id, &params1, channel);
 
   if (channel->id) {
-    channel::message::create::params params2 = {
+    channel::create_message::params params2 = {
       .content = "Hello world!"
     };
-    channel::message::create::run(client, channel->id, &params2, NULL);
+    channel::create_message::run(client, channel->id, &params2, NULL);
   }
 
   channel::dati_free(channel);
@@ -47,7 +47,7 @@ void on_delete(
   if (msg->author->bot)
     return;
 
-  channel::del(client, msg->channel_id, NULL);
+  channel::delete_channel::run(client, msg->channel_id, NULL);
 }
 
 int main(int argc, char *argv[])

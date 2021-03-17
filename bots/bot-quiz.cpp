@@ -126,7 +126,7 @@ close_existing_sessions(
     sscanf(rls[i]->name, "TMP%" PRIu64 "_%" PRIu64 , &user_id, &channel_id);
 
     if (member->user->id == user_id) {
-      channel::del(client, channel_id, NULL);
+      channel::delete_channel::run(client, channel_id, NULL);
       guild::role::del(client, guild_id, rls[i]->id);
 
       // reset active_session if exists
@@ -239,8 +239,6 @@ void start_new_session(
   const u64_snowflake_t guild_id,
   const guild::member::dati *member)
 {
-  using namespace channel;
-
   close_existing_sessions(client, guild_id, member);
 
   u64_snowflake_t session_channel_id, session_role_id;
@@ -254,20 +252,20 @@ void start_new_session(
     return; // couldn't create role, delete channel and return
   }
 
-  message::dati *ret_msg = message::dati_alloc();
-  message::create::params params = {
+  channel::message::dati *ret_msg = channel::message::dati_alloc();
+  channel::create_message::params params = {
     .content = "Would you like to start?"
   };
-  message::create::run(client, session_channel_id, &params, ret_msg);
+  channel::create_message::run(client, session_channel_id, &params, ret_msg);
 
-  reaction::create(
+  channel::create_reaction::run(
     client, 
     session_channel_id, 
     ret_msg->id, 
     0, 
     g_session.reaction_emoji);
 
-  message::dati_free(ret_msg);
+  channel::message::dati_free(ret_msg);
 }
 
 void send_next_question(
@@ -276,17 +274,15 @@ void send_next_question(
   struct session *session, 
   struct question *question)
 {
-  using namespace channel;
-
   char text[MAX_PAYLOAD_LEN];
   if (session->curr_question == g_session.questions_per_session) {
     sprintf(text, "You got %d out of %d! (%.1f%%)", \
       session->hits, g_session.questions_per_session,
       100*((float)session->hits / (float)g_session.questions_per_session));
-    message::create::params params = {
+    channel::create_message::params params = {
       .content = text
     };
-    message::create::run(client, channel_id, &params, NULL);
+    channel::create_message::run(client, channel_id, &params, NULL);
 
     session->status = FINISHED;
     return; /* EARLY RETURN */
@@ -301,21 +297,21 @@ void send_next_question(
       'A'+ i, question->answers[i].desc);
   }
 
-  message::dati *ret_msg = message::dati_alloc();
-  message::create::params params = {
+  channel::message::dati *ret_msg = channel::message::dati_alloc();
+  channel::create_message::params params = {
     .content = text
   };
-  message::create::run(client, channel_id, &params, ret_msg);
+  channel::create_message::run(client, channel_id, &params, ret_msg);
 
   for (int i=0; i < question->num_answers; ++i) {
-    reaction::create(
+    channel::create_reaction::run(
       client, 
       channel_id, 
       ret_msg->id, 
       0, 
       ALPHA_EMOJI[i]);
   }
-  message::dati_free(ret_msg);
+  channel::message::dati_free(ret_msg);
 
   session->status = RUNNING;
 }
@@ -329,8 +325,6 @@ void on_reaction_add(
     const guild::member::dati *member, 
     const emoji::dati *emoji)
 {
-  using namespace channel;
-
   if (member->user->bot) 
     return; // ignore bots
   if ( (message_id == g_session.message_id) 
@@ -355,7 +349,7 @@ void on_reaction_add(
   switch (session->status) {
   case RUNNING:
       // delete previous question from channel
-      message::del(client, channel_id, message_id);
+      channel::delete_message::run(client, channel_id, message_id);
 
       // get current question associated to session
       question = &g_session.questions[session->curr_question];
@@ -405,7 +399,7 @@ int main(int argc, char *argv[])
 
   parse_session_config();
 
-  channel::reaction::create(
+  channel::create_reaction::run(
     client, 
     g_session.channel_id, 
     g_session.message_id, 

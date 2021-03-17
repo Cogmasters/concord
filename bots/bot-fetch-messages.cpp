@@ -79,16 +79,14 @@ select_member(client *client, uint64_t guild_id)
 void
 fetch_member_msgs(client *client, uint64_t guild_id, uint64_t user_id)
 {
-  using namespace channel;
-
-  dati **channels = guild::get_channels(client, guild_id);
+  channel::dati **channels = guild::get_channels(client, guild_id);
   ASSERT_S(NULL != channels, "Couldn't fetch channels from guild");
   
   channel::get_channel_messages::params params = {
     .limit = 100
   };
 
-  message::dati **messages;
+  channel::message::dati **messages;
   for (int i=0; channels[i]; ++i)
   {
     params.before = 0;
@@ -109,12 +107,12 @@ fetch_member_msgs(client *client, uint64_t guild_id, uint64_t user_id)
         params.before = messages[n_msg-1]->id;
       }
 
-      message::dati_list_free(messages);
+      channel::message::dati_list_free(messages);
 
     } while (n_msg == params.limit);
   }
 
-  dati_list_free(channels);
+  channel::dati_list_free(channels);
 }
 
 int main(int argc, char *argv[])

@@ -33,10 +33,10 @@ void on_command(
     char text[150];
     snprintf(text, sizeof(text), "Succesfully created <@&%" PRIu64 "> role", role->id);
 
-    channel::message::create::params params2 = {
+    channel::create_message::params params2 = {
       .content = text
     };
-    channel::message::create::run(client, msg->channel_id, &params2, NULL);
+    channel::create_message::run(client, msg->channel_id, &params2, NULL);
   }
 
   guild::role::dati_free(role);

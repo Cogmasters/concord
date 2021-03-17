@@ -15,14 +15,12 @@ void on_ping(
   const user::dati *me,
   const channel::message::dati *msg)
 {
-  using namespace channel;
-
   // make sure bot doesn't echoes other bots
   if (msg->author->bot)
     return;
 
-  message::create::params params = {.content = "pong"};
-  message::create::run(client, msg->channel_id, &params, NULL);
+  channel::create_message::params params = {.content = "pong"};
+  channel::create_message::run(client, msg->channel_id, &params, NULL);
 }
 
 void on_pong(
@@ -30,14 +28,12 @@ void on_pong(
     const user::dati *me,
     const channel::message::dati *msg)
 {
-  using namespace channel;
-
   // make sure bot doesn't echoes other bots
   if (msg->author->bot)
     return;
 
-  message::create::params params = {.content = "ping"};
-  message::create::run(client, msg->channel_id, &params, NULL);
+  channel::create_message::params params = {.content = "ping"};
+  channel::create_message::run(client, msg->channel_id, &params, NULL);
 }
 
 int main(int argc, char *argv[])

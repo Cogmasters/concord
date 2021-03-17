@@ -7,88 +7,8 @@
 
 namespace discord {
 namespace channel {
-void
-get(client *client, const uint64_t channel_id, dati *p_channel)
-{
-  if (!channel_id) {
-    D_PUTS("Missing 'channel_id");
-    return;
-  }
-
-  struct resp_handle resp_handle =
-    { .ok_cb = &dati_from_json_v, .ok_obj = (void*)p_channel};
-
-  user_agent::run(
-    &client->ua,
-    &resp_handle,
-    NULL,
-    HTTP_GET,
-    "/channels/%llu", channel_id);
-}
-
-void
-del(client *client, const uint64_t channel_id, dati *p_channel)
-{
-  if (!channel_id) {
-    D_PUTS("Missing 'channel_id");
-    return;
-  }
-
-  struct resp_handle resp_handle = {
-    .ok_cb = p_channel ? dati_from_json_v : NULL,
-    .ok_obj = p_channel,
-  };
-
-  user_agent::run( 
-    &client->ua,
-    &resp_handle,
-    NULL,
-    HTTP_DELETE,
-    "/channels/%llu", channel_id);
-}
-
-void
-pin_message(client *client, const uint64_t channel_id, const uint64_t message_id)
-{
-  if (!channel_id) {
-    D_PUTS("Missing 'channel_id'");
-    return;
-  }
-  if (!message_id) {
-    D_PUTS("Missing 'message_id'");
-    return;
-  }
-
-  user_agent::run( 
-    &client->ua,
-    NULL,
-    NULL,
-    HTTP_PUT, 
-    "/channels/%llu/pins/%llu", channel_id, message_id);
-}
-
-void
-unpin_message(client *client, const uint64_t channel_id, const uint64_t message_id)
-{
-  if (!channel_id) {
-    D_PUTS("Missing 'channel_id'");
-    return;
-  }
-  if (!message_id) {
-    D_PUTS("Missing 'message_id'");
-    return;
-  }
-
-  user_agent::run( 
-    &client->ua,
-    NULL,
-    NULL,
-    HTTP_DELETE,
-    "/channels/%llu/pins/%llu", channel_id, message_id);
-}
 
 namespace message {
-
 void
 dati_from_json(char *str, size_t len, dati *message)
 {
@@ -145,10 +65,97 @@ dati_from_json(char *str, size_t len, dati *message)
 
   DS_NOTOP_PUTS("Message object loaded with API response"); 
 }
-} // message
+} // namespace message
+
+namespace get_channel {
+void
+run(client *client, const uint64_t channel_id, dati *p_channel)
+{
+  if (!channel_id) {
+    D_PUTS("Missing 'channel_id");
+    return;
+  }
+
+  struct resp_handle resp_handle =
+    { .ok_cb = &dati_from_json_v, .ok_obj = (void*)p_channel};
+
+  user_agent::run(
+    &client->ua,
+    &resp_handle,
+    NULL,
+    HTTP_GET,
+    "/channels/%llu", channel_id);
+}
+} // namespace get_channel
+
+namespace delete_channel {
+void
+run(client *client, const uint64_t channel_id, dati *p_channel)
+{
+  if (!channel_id) {
+    D_PUTS("Missing 'channel_id");
+    return;
+  }
+
+  struct resp_handle resp_handle = {
+    .ok_cb = p_channel ? dati_from_json_v : NULL,
+    .ok_obj = p_channel,
+  };
+
+  user_agent::run( 
+    &client->ua,
+    &resp_handle,
+    NULL,
+    HTTP_DELETE,
+    "/channels/%llu", channel_id);
+}
+} // namespace delete_channel
+
+namespace add_pinned_channel_message {
+void
+run(client *client, const uint64_t channel_id, const uint64_t message_id)
+{
+  if (!channel_id) {
+    D_PUTS("Missing 'channel_id'");
+    return;
+  }
+  if (!message_id) {
+    D_PUTS("Missing 'message_id'");
+    return;
+  }
+
+  user_agent::run( 
+    &client->ua,
+    NULL,
+    NULL,
+    HTTP_PUT, 
+    "/channels/%llu/pins/%llu", channel_id, message_id);
+}
+} // namespace add_pinned_channel_message
+
+namespace delete_pinned_channel_message {
+void
+delete_pinned_channel_message(client *client, const uint64_t channel_id, const uint64_t message_id)
+{
+  if (!channel_id) {
+    D_PUTS("Missing 'channel_id'");
+    return;
+  }
+  if (!message_id) {
+    D_PUTS("Missing 'message_id'");
+    return;
+  }
+
+  user_agent::run( 
+    &client->ua,
+    NULL,
+    NULL,
+    HTTP_DELETE,
+    "/channels/%llu/pins/%llu", channel_id, message_id);
+}
+} // namespace delete_pinned_channel_message
 
 namespace get_channel_messages {
-
 message::dati**
 run(client *client, const uint64_t channel_id, params *params)
 {
@@ -190,7 +197,7 @@ run(client *client, const uint64_t channel_id, params *params)
   message::dati **new_messages = NULL;
 
   struct resp_handle resp_handle = 
-    { .ok_cb = message::dati_list_from_json_v, .ok_obj = (void*)&new_messages};
+    { .ok_cb = &message::dati_list_from_json_v, .ok_obj = (void*)&new_messages};
 
   user_agent::run( 
     &client->ua,
@@ -223,11 +230,9 @@ run(client *client, u64_snowflake_t channel_id, u64_snowflake_t message_id)
     HTTP_DELETE,
     "/channels/%llu/messages/%llu", channel_id, message_id);
 }
-}
+} // namespace delete_message
 
-namespace message {
-namespace create {
-
+namespace create_message {
 //@todo this is a temporary solution
 static curl_mime*
 curl_mime_cb(CURL *ehandle, void *data) 
@@ -255,7 +260,7 @@ curl_mime_cb(CURL *ehandle, void *data)
 }
 
 void
-run(client *client, const uint64_t channel_id, params *params, dati *p_message)
+run(client *client, const uint64_t channel_id, params *params, message::dati *p_message)
 {
   if (client->ws.common.status != WS_CONNECTED) {
     D_PUTS("Can't perform action unless client has an active"
@@ -272,7 +277,7 @@ run(client *client, const uint64_t channel_id, params *params, dati *p_message)
   }
 
   struct resp_handle resp_handle = {
-    .ok_cb = p_message ? dati_from_json_v : NULL,
+    .ok_cb = p_message ? &message::dati_from_json_v : NULL,
     .ok_obj = p_message,
   };
 
@@ -352,13 +357,11 @@ run(client *client, const uint64_t channel_id, params *params, dati *p_message)
     ua_reqheader_add(&client->ua.common, "Content-Type", "application/json");
   }
 }
+} // namespace create_message
 
-} // namespace create
-
-namespace edit {
-
+namespace edit_message {
 void
-run(client *client, const uint64_t channel_id, const uint64_t message_id, params *params, dati *p_message)
+run(client *client, const uint64_t channel_id, const uint64_t message_id, params *params, message::dati *p_message)
 {
   if (!channel_id) {
     D_PUTS("Missing 'channel_id'");
@@ -374,7 +377,7 @@ run(client *client, const uint64_t channel_id, const uint64_t message_id, params
   }
 
   struct resp_handle resp_handle = {
-    .ok_cb = p_message ? dati_from_json_v : NULL,
+    .ok_cb = p_message ? &message::dati_from_json_v : NULL,
     .ok_obj = p_message,
   };
 
@@ -407,35 +410,11 @@ run(client *client, const uint64_t channel_id, const uint64_t message_id, params
     HTTP_PATCH,
     "/channels/%llu/messages/%llu", channel_id, message_id);
 }
+} // namespace edit_message
 
-} // namespace edit
-
-void
-del(client *client, const uint64_t channel_id, const uint64_t message_id)
-{
-  if (!channel_id) {
-    D_PUTS("Missing 'channel_id'");
-    return;
-  }
-  if (!message_id) {
-    D_PUTS("Missing 'message_id'");
-    return;
-  }
-
-  user_agent::run(
-    &client->ua,
-    NULL,
-    NULL,
-    HTTP_DELETE,
-    "/channels/%llu/messages/%llu", channel_id, message_id);
-}
-
-} // namespace message
-
-namespace reaction {
-
+namespace create_reaction {
 void 
-create(
+run(
   client *client, 
   const uint64_t channel_id, 
   const uint64_t message_id, 
@@ -471,11 +450,27 @@ create(
 
   free(pct_emoji_name);
 }
+} // namespace create_reaction
 
-} // namespace reaction
+namespace trigger_typing_indicator {
+void
+run(client* client, uint64_t channel_id)
+{
+  if (!channel_id) {
+    D_PUTS("Missing 'channel_id");
+    return;
+  }
+
+  user_agent::run( 
+    &client->ua,
+    NULL,
+    NULL,
+    HTTP_POST, 
+    "/channels/%llu/typing", channel_id);
+}
+} // namespace trigger_typing_indicator
 
 namespace embed {
-
 void
 change_footer(dati *embed, char text[], char icon_url[], char proxy_icon_url[])
 {
@@ -698,22 +693,6 @@ append(
 }
 
 } // namespace overwrite
-
-void
-trigger_typing(client* client, uint64_t channel_id)
-{
-  if (!channel_id) {
-    D_PUTS("Missing 'channel_id");
-    return;
-  }
-
-  user_agent::run( 
-    &client->ua,
-    NULL,
-    NULL,
-    HTTP_POST, 
-    "/channels/%llu/typing", channel_id);
-}
 
 } // namespace channel
 } // namespace discord

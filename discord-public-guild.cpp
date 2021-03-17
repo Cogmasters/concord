@@ -8,8 +8,9 @@
 namespace discord {
 namespace guild {
 
+namespace get_guild {
 void
-get(client *client, const uint64_t guild_id, dati *p_guild)
+run(client *client, const uint64_t guild_id, dati *p_guild)
 {
   if (!guild_id) {
     D_PUTS("Missing 'guild_id'");
@@ -26,9 +27,11 @@ get(client *client, const uint64_t guild_id, dati *p_guild)
     HTTP_GET, 
     "/guilds/%llu", guild_id);
 }
+} // namespace get_guild
 
+namespace get_channels {
 channel::dati**
-get_channels(client *client, const uint64_t guild_id)
+run(client *client, const uint64_t guild_id)
 {
   if (!guild_id) {
     D_PUTS("Missing 'guild_id'");
@@ -49,9 +52,9 @@ get_channels(client *client, const uint64_t guild_id)
 
   return new_channels;
 }
+} // namespace get_channels
 
 namespace create_channel {
-
 void run(client *client, const uint64_t guild_id, params *params, channel::dati *p_channel)
 {
   if (!guild_id) {
@@ -72,7 +75,7 @@ void run(client *client, const uint64_t guild_id, params *params, channel::dati 
   create_channel::params_to_json(payload, sizeof(payload), params);
 
   struct resp_handle resp_handle = {
-    .ok_cb = p_channel ? channel::dati_from_json_v : NULL,
+    .ok_cb = p_channel ? &channel::dati_from_json_v : NULL,
     .ok_obj = p_channel,
   };
 
@@ -84,14 +87,10 @@ void run(client *client, const uint64_t guild_id, params *params, channel::dati 
     &req_body,
     HTTP_POST, "/guilds/%llu/channels", guild_id);
 }
-
 } // namespace create_channel
 
-namespace member {
-
-namespace get_list {
-
-dati**
+namespace list_guild_members {
+member::dati**
 run(client *client, const uint64_t guild_id, struct params *params)
 {
   if (!guild_id) {
@@ -114,10 +113,10 @@ run(client *client, const uint64_t guild_id, struct params *params)
         "&after=%" PRIu64 , params->after);
   }
 
-  dati **new_members = NULL;
+  member::dati **new_members = NULL;
 
   struct resp_handle resp_handle =
-    { .ok_cb = dati_list_from_json_v, .ok_obj = (void*)&new_members};
+    { .ok_cb = &member::dati_list_from_json_v, .ok_obj = (void*)&new_members};
   
   user_agent::run( 
     &client->ua,
@@ -128,11 +127,9 @@ run(client *client, const uint64_t guild_id, struct params *params)
 
   return new_members;
 }
+} // namespace list_guild_members
 
-} // namespace get_list
-
-namespace modify {
-
+namespace modify_guild_member {
 void 
 run(client *client, const uint64_t guild_id, const uint64_t user_id, params *params, member::dati *p_member)
 {
@@ -150,7 +147,7 @@ run(client *client, const uint64_t guild_id, const uint64_t user_id, params *par
   params_to_json(payload, sizeof(payload), params);
 
   struct resp_handle resp_handle = {
-    .ok_cb = p_member ? member::dati_from_json_v : NULL,
+    .ok_cb = p_member ? &member::dati_from_json_v : NULL,
     .ok_obj = p_member,
   };
 
@@ -162,10 +159,10 @@ run(client *client, const uint64_t guild_id, const uint64_t user_id, params *par
     &req_body,
     HTTP_PATCH, "/guilds/%llu/members/%llu", guild_id, user_id);
 }
+} // namespace modify_guild_member
 
-} // namespace modify
-
-void remove(client *client, const uint64_t guild_id, const uint64_t user_id)
+namespace remove_guild_member {
+void run(client *client, const uint64_t guild_id, const uint64_t user_id)
 {
   if (!guild_id) {
     D_PUTS("Missing 'guild_id'");
@@ -183,13 +180,35 @@ void remove(client *client, const uint64_t guild_id, const uint64_t user_id)
     HTTP_DELETE,
     "/guilds/%llu/members/%llu", guild_id, user_id);
 }
+} // namespace remove_guild_member
 
-} // namespace member
+namespace get_guild_bans {
+ban::dati**
+run(client *client, const uint64_t guild_id)
+{
+  if (!guild_id) {
+    D_PUTS("Missing 'guild_id'");
+    return NULL;
+  }
 
-namespace ban {
+  ban::dati **new_bans = NULL;
 
+  struct resp_handle resp_handle =
+    { .ok_cb = &ban::dati_list_from_json_v, .ok_obj = (void*)&new_bans};
+
+  user_agent::run( 
+    &client->ua,
+    &resp_handle,
+    NULL,
+    HTTP_GET, "/guilds/%llu/bans", guild_id);
+
+  return new_bans;
+}
+} // namespace get_guild_bans
+
+namespace get_guild_ban {
 void
-get(client *client, const uint64_t guild_id, const uint64_t user_id, dati *p_ban)
+run(client *client, const uint64_t guild_id, const uint64_t user_id, ban::dati *p_ban)
 {
   if (!guild_id) {
     D_PUTS("Missing 'guild_id'");
@@ -201,41 +220,19 @@ get(client *client, const uint64_t guild_id, const uint64_t user_id, dati *p_ban
   }
 
   struct resp_handle resp_handle =
-    { .ok_cb = &dati_from_json_v, .ok_obj = (void*)p_ban};
+    { .ok_cb = &ban::dati_from_json_v, .ok_obj = (void*)p_ban};
 
   user_agent::run( 
     &client->ua,
     &resp_handle,
     NULL,
-    HTTP_GET,
-    "/guilds/%llu/bans/%llu", guild_id, user_id);
+    HTTP_GET, "/guilds/%llu/bans/%llu", guild_id, user_id);
 }
+} // namespace get_guild_ban
 
-dati**
-get_list(client *client, const uint64_t guild_id)
-{
-  if (!guild_id) {
-    D_PUTS("Missing 'guild_id'");
-    return NULL;
-  }
-
-  dati **new_bans = NULL;
-
-  struct resp_handle resp_handle =
-    { .ok_cb = &dati_list_from_json_v, .ok_obj = (void*)&new_bans};
-
-  user_agent::run( 
-    &client->ua,
-    &resp_handle,
-    NULL,
-    HTTP_GET,
-    "/guilds/%llu/bans", guild_id);
-
-  return new_bans;
-}
-
+namespace create_guild_ban {
 void
-create(client *client, const uint64_t guild_id, const uint64_t user_id, int delete_message_days, const char reason[])
+run(client *client, const uint64_t guild_id, const uint64_t user_id, int delete_message_days, const char reason[])
 {
   const int MAX_DELETE_MESSAGE_DAYS = 7;
   if (!guild_id) {
@@ -278,12 +275,13 @@ create(client *client, const uint64_t guild_id, const uint64_t user_id, int dele
     &client->ua,
     NULL,
     &req_body,
-    HTTP_PUT,
-    "/guilds/%llu/bans/%llu", guild_id, user_id);
+    HTTP_PUT, "/guilds/%llu/bans/%llu", guild_id, user_id);
 }
+} // namespace create_guild_ban
 
+namespace remove_guild_ban {
 void
-remove(client *client, const uint64_t guild_id, const uint64_t user_id, const char reason[])
+run(client *client, const uint64_t guild_id, const uint64_t user_id, const char reason[])
 {
   if (!guild_id) {
     D_PUTS("Missing 'guild_id'");
@@ -316,40 +314,37 @@ remove(client *client, const uint64_t guild_id, const uint64_t user_id, const ch
     &client->ua,
     NULL,
     &req_body,
-    HTTP_DELETE, 
-    "/guilds/%llu/bans/%llu", guild_id, user_id);
+    HTTP_DELETE, "/guilds/%llu/bans/%llu", guild_id, user_id);
 }
+} // namespace remove_guild_ban
 
-} // namespace ban
-
-namespace role {
-
-dati**
-get_list(client *client, const uint64_t guild_id)
+namespace get_guild_roles {
+role::dati**
+run(client *client, const uint64_t guild_id)
 {
   if (!guild_id) {
     D_PUTS("Missing 'guild_id'");
     return NULL;
   }
 
-  dati **new_roles = NULL;
+  role::dati **new_roles = NULL;
 
   struct resp_handle resp_handle =
-    { .ok_cb = &dati_list_from_json_v, .ok_obj = (void*)&new_roles};
+    { .ok_cb = &role::dati_list_from_json_v, .ok_obj = (void*)&new_roles};
 
   user_agent::run( 
     &client->ua,
     &resp_handle,
     NULL,
-    HTTP_GET,
-    "/guilds/%llu/roles", guild_id);
+    HTTP_GET, "/guilds/%llu/roles", guild_id);
 
   return new_roles;
 }
+} // namespace get_guild_roles
 
-namespace create {
-
-void run(client *client, const uint64_t guild_id, params *params, dati *p_role)
+namespace create_guild_role {
+void 
+run(client *client, const uint64_t guild_id, params *params, role::dati *p_role)
 {
   if (!guild_id) {
     D_PUTS("Missing 'guild_id'");
@@ -361,7 +356,7 @@ void run(client *client, const uint64_t guild_id, params *params, dati *p_role)
   params_to_json(payload, sizeof(payload), params);
 
   struct resp_handle resp_handle = {
-    .ok_cb = p_role ? dati_from_json_v : NULL,
+    .ok_cb = p_role ? &role::dati_from_json_v : NULL,
     .ok_obj = p_role,
   };
 
@@ -373,11 +368,11 @@ void run(client *client, const uint64_t guild_id, params *params, dati *p_role)
     &req_body,
     HTTP_POST, "/guilds/%llu/roles", guild_id);
 }
+} // namespace create_guild_role
 
-} // namespace create
-
+namespace delete_guild_role {
 void 
-del(client *client, const uint64_t guild_id, const uint64_t role_id)
+run(client *client, const uint64_t guild_id, const uint64_t role_id)
 {
   if (!guild_id) {
     D_PUTS("Missing 'guild_id'");
@@ -392,11 +387,9 @@ del(client *client, const uint64_t guild_id, const uint64_t role_id)
     &client->ua,
     NULL,
     NULL,
-    HTTP_DELETE,
-    "/guilds/%llu/roles/%llu", guild_id, role_id);
+    HTTP_DELETE, "/guilds/%llu/roles/%llu", guild_id, role_id);
 }
-
-} // namespace role
+} // namespace delete_guild_role
 
 } // namespace guild
 } // namespace discord

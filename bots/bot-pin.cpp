@@ -16,14 +16,13 @@ void on_message_create(
     const user::dati *me,
     const channel::message::dati *msg)
 {
-  using namespace channel;
-
   // make sure bot ignores msgs from other bots
   if (msg->author->bot)
     return;
 
-  if (strstr(msg->content, "pin me")) 
-    channel::pin_message(client, msg->channel_id, msg->id);
+  if (strstr(msg->content, "pin me")) {
+    channel::add_pinned_channel_message::run(client, msg->channel_id, msg->id);
+  }
 }
 
 int main(int argc, char *argv[])
