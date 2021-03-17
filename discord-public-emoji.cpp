@@ -9,18 +9,16 @@ namespace discord {
 namespace emoji {
 
 namespace list_guild_emojis {
-dati**
-run(client *client, const uint64_t guild_id)
+void
+run(client *client, const uint64_t guild_id, NTL_T(dati) *p_emojis)
 {
   if (!guild_id) {
     D_PUTS("Missing 'guild_id'");
-    return NULL;
+    return;
   }
 
-  dati **new_emojis = NULL;
-
   struct resp_handle resp_handle =
-    { .ok_cb = &dati_list_from_json_v, .ok_obj = (void*)&new_emojis};
+    { .ok_cb = &dati_list_from_json_v, .ok_obj = (void*)p_emojis};
 
   user_agent::run( 
     &client->ua,
@@ -28,8 +26,6 @@ run(client *client, const uint64_t guild_id)
     NULL,
     HTTP_GET,
     "/guilds/%llu/emojis", guild_id);
-
-  return new_emojis;
 }
 } // namespace list_guild_emojis
 

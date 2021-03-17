@@ -30,18 +30,19 @@ run(client *client, const u64_snowflake_t guild_id, dati *p_guild)
 } // namespace get_guild
 
 namespace get_channels {
-channel::dati**
-run(client *client, const u64_snowflake_t guild_id)
+void
+run(
+  client *client, 
+  const u64_snowflake_t guild_id, 
+  NTL_T(channel::dati) *p_channels)
 {
   if (!guild_id) {
     D_PUTS("Missing 'guild_id'");
-    return NULL;
+    return;
   }
 
-  channel::dati **new_channels = NULL;
-
   struct resp_handle resp_handle = 
-    { .ok_cb = &channel::dati_list_from_json_v, .ok_obj = (void*)&new_channels};
+    { .ok_cb = &channel::dati_list_from_json_v, .ok_obj = (void*)p_channels};
 
   user_agent::run( 
     &client->ua,
@@ -49,13 +50,15 @@ run(client *client, const u64_snowflake_t guild_id)
     NULL,
     HTTP_GET, 
     "/guilds/%llu/channels", guild_id);
-
-  return new_channels;
 }
 } // namespace get_channels
 
 namespace create_channel {
-void run(client *client, const u64_snowflake_t guild_id, params *params, channel::dati *p_channel)
+void run(
+  client *client, 
+  const u64_snowflake_t guild_id, 
+  params *params, 
+  channel::dati *p_channel)
 {
   if (!guild_id) {
     D_PUTS("Missing 'guild_id");
@@ -90,17 +93,20 @@ void run(client *client, const u64_snowflake_t guild_id, params *params, channel
 } // namespace create_channel
 
 namespace list_guild_members {
-member::dati**
-run(client *client, const u64_snowflake_t guild_id, struct params *params)
+void
+run(
+  client *client, 
+  const u64_snowflake_t guild_id, 
+  struct params *params, 
+  NTL_T(member::dati) *p_members)
 {
   if (!guild_id) {
     D_PUTS("Missing 'guild_id'");
-    return NULL;
+    return;
   }
-
   if (params->limit < 1 || params->limit > 1000) {
     D_PUTS("'limit' value should be in an interval of (1-1000)");
-    return NULL;
+    return;
   }
 
   char limit_query[64];
@@ -113,10 +119,8 @@ run(client *client, const u64_snowflake_t guild_id, struct params *params)
         "&after=%" PRIu64 , params->after);
   }
 
-  member::dati **new_members = NULL;
-
   struct resp_handle resp_handle =
-    { .ok_cb = &member::dati_list_from_json_v, .ok_obj = (void*)&new_members};
+    { .ok_cb = &member::dati_list_from_json_v, .ok_obj = (void*)p_members};
   
   user_agent::run( 
     &client->ua,
@@ -124,14 +128,17 @@ run(client *client, const u64_snowflake_t guild_id, struct params *params)
     NULL,
     HTTP_GET,
     "/guilds/%llu/members%s%s", guild_id, limit_query, after_query);
-
-  return new_members;
 }
 } // namespace list_guild_members
 
 namespace modify_guild_member {
 void 
-run(client *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id, params *params, member::dati *p_member)
+run(
+  client *client, 
+  const u64_snowflake_t guild_id, 
+  const u64_snowflake_t user_id, 
+  params *params, 
+  member::dati *p_member)
 {
   if (!guild_id) {
     D_PUTS("Missing 'guild_id'");
@@ -162,7 +169,10 @@ run(client *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_i
 } // namespace modify_guild_member
 
 namespace remove_guild_member {
-void run(client *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id)
+void run(
+  client *client, 
+  const u64_snowflake_t guild_id, 
+  const u64_snowflake_t user_id)
 {
   if (!guild_id) {
     D_PUTS("Missing 'guild_id'");
@@ -183,32 +193,35 @@ void run(client *client, const u64_snowflake_t guild_id, const u64_snowflake_t u
 } // namespace remove_guild_member
 
 namespace get_guild_bans {
-ban::dati**
-run(client *client, const u64_snowflake_t guild_id)
+void
+run(
+  client *client, 
+  const u64_snowflake_t guild_id, 
+  NTL_T(ban::dati) *p_bans)
 {
   if (!guild_id) {
     D_PUTS("Missing 'guild_id'");
-    return NULL;
+    return;
   }
 
-  ban::dati **new_bans = NULL;
-
   struct resp_handle resp_handle =
-    { .ok_cb = &ban::dati_list_from_json_v, .ok_obj = (void*)&new_bans};
+    { .ok_cb = &ban::dati_list_from_json_v, .ok_obj = (void*)p_bans};
 
   user_agent::run( 
     &client->ua,
     &resp_handle,
     NULL,
     HTTP_GET, "/guilds/%llu/bans", guild_id);
-
-  return new_bans;
 }
 } // namespace get_guild_bans
 
 namespace get_guild_ban {
 void
-run(client *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id, ban::dati *p_ban)
+run(
+  client *client, 
+  const u64_snowflake_t guild_id, 
+  const u64_snowflake_t user_id, 
+  ban::dati *p_ban)
 {
   if (!guild_id) {
     D_PUTS("Missing 'guild_id'");
@@ -232,7 +245,12 @@ run(client *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_i
 
 namespace create_guild_ban {
 void
-run(client *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id, int delete_message_days, const char reason[])
+run(
+  client *client, 
+  const u64_snowflake_t guild_id, 
+  const u64_snowflake_t user_id, 
+  int delete_message_days, 
+  const char reason[])
 {
   const int MAX_DELETE_MESSAGE_DAYS = 7;
   if (!guild_id) {
@@ -281,7 +299,11 @@ run(client *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_i
 
 namespace remove_guild_ban {
 void
-run(client *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id, const char reason[])
+run(
+  client *client, 
+  const u64_snowflake_t guild_id, 
+  const u64_snowflake_t user_id, 
+  const char reason[])
 {
   if (!guild_id) {
     D_PUTS("Missing 'guild_id'");
@@ -291,7 +313,7 @@ run(client *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_i
     D_PUTS("Missing 'user_id'");
     return;
   }
-  if(reason && strlen(reason) > MAX_REASON_LEN) {
+  if (!orka_str_bounds_check(reason, MAX_REASON_LEN)) {
     D_PRINT("Reason length exceeds %u characters threshold (%zu)",
         MAX_REASON_LEN, strlen(reason));
     return;
@@ -319,32 +341,35 @@ run(client *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_i
 } // namespace remove_guild_ban
 
 namespace get_guild_roles {
-role::dati**
-run(client *client, const u64_snowflake_t guild_id)
+void
+run(
+  client *client, 
+  const u64_snowflake_t guild_id, 
+  NTL_T(role::dati) *p_roles)
 {
   if (!guild_id) {
     D_PUTS("Missing 'guild_id'");
-    return NULL;
+    return;
   }
 
-  role::dati **new_roles = NULL;
-
   struct resp_handle resp_handle =
-    { .ok_cb = &role::dati_list_from_json_v, .ok_obj = (void*)&new_roles};
+    { .ok_cb = &role::dati_list_from_json_v, .ok_obj = (void*)p_roles};
 
   user_agent::run( 
     &client->ua,
     &resp_handle,
     NULL,
     HTTP_GET, "/guilds/%llu/roles", guild_id);
-
-  return new_roles;
 }
 } // namespace get_guild_roles
 
 namespace create_guild_role {
 void 
-run(client *client, const u64_snowflake_t guild_id, params *params, role::dati *p_role)
+run(
+  client *client, 
+  const u64_snowflake_t guild_id, 
+  params *params, 
+  role::dati *p_role)
 {
   if (!guild_id) {
     D_PUTS("Missing 'guild_id'");
@@ -372,7 +397,10 @@ run(client *client, const u64_snowflake_t guild_id, params *params, role::dati *
 
 namespace delete_guild_role {
 void 
-run(client *client, const u64_snowflake_t guild_id, const u64_snowflake_t role_id)
+run(
+  client *client, 
+  const u64_snowflake_t guild_id, 
+  const u64_snowflake_t role_id)
 {
   if (!guild_id) {
     D_PUTS("Missing 'guild_id'");

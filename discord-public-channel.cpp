@@ -113,7 +113,10 @@ run(client *client, const u64_snowflake_t channel_id, dati *p_channel)
 
 namespace add_pinned_channel_message {
 void
-run(client *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id)
+run(
+  client *client, 
+  const u64_snowflake_t channel_id, 
+  const u64_snowflake_t message_id)
 {
   if (!channel_id) {
     D_PUTS("Missing 'channel_id'");
@@ -135,7 +138,10 @@ run(client *client, const u64_snowflake_t channel_id, const u64_snowflake_t mess
 
 namespace delete_pinned_channel_message {
 void
-delete_pinned_channel_message(client *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id)
+delete_pinned_channel_message(
+  client *client, 
+  const u64_snowflake_t channel_id, 
+  const u64_snowflake_t message_id)
 {
   if (!channel_id) {
     D_PUTS("Missing 'channel_id'");
@@ -156,20 +162,24 @@ delete_pinned_channel_message(client *client, const u64_snowflake_t channel_id, 
 } // namespace delete_pinned_channel_message
 
 namespace get_channel_messages {
-message::dati**
-run(client *client, const u64_snowflake_t channel_id, params *params)
+void
+run(
+  client *client, 
+  const u64_snowflake_t channel_id, 
+  params *params, 
+  NTL_T(message::dati) *p_messages)
 {
   if (!channel_id) {
     D_PUTS("Missing 'channel_id'");
-    return NULL;
+    return;
   }
   if (!params) {
     D_PUTS("Missing 'params'");
-    return NULL;
+    return;
   }
   if (params->limit < 1 || params->limit > 100) {
     D_PUTS("'limit' value should be in an interval of (1-100)");
-    return NULL;
+    return;
   }
 
   char limit_query[64];
@@ -194,10 +204,8 @@ run(client *client, const u64_snowflake_t channel_id, params *params)
         "&after=%" PRIu64 , params->after);
   }
 
-  message::dati **new_messages = NULL;
-
   struct resp_handle resp_handle = 
-    { .ok_cb = &message::dati_list_from_json_v, .ok_obj = (void*)&new_messages};
+    { .ok_cb = &message::dati_list_from_json_v, .ok_obj = (void*)p_messages};
 
   user_agent::run( 
     &client->ua,
@@ -206,14 +214,15 @@ run(client *client, const u64_snowflake_t channel_id, params *params)
     HTTP_GET, 
     "/channels/%llu/messages%s%s%s", 
     channel_id, limit_query, around_query, before_query, after_query);
-
-  return new_messages;
 }
 } // namespace get_channel_messages
 
 namespace delete_message {
 void
-run(client *client, u64_snowflake_t channel_id, u64_snowflake_t message_id)
+run(
+  client *client, 
+  u64_snowflake_t channel_id, 
+  u64_snowflake_t message_id)
 {
   if (!channel_id) {
     D_PUTS("Missing 'channel_id'");
@@ -260,7 +269,11 @@ curl_mime_cb(CURL *ehandle, void *data)
 }
 
 void
-run(client *client, const u64_snowflake_t channel_id, params *params, message::dati *p_message)
+run(
+  client *client, 
+  const u64_snowflake_t channel_id, 
+  params *params, 
+  message::dati *p_message)
 {
   if (client->ws.common.status != WS_CONNECTED) {
     D_PUTS("Can't perform action unless client has an active"
@@ -361,7 +374,12 @@ run(client *client, const u64_snowflake_t channel_id, params *params, message::d
 
 namespace edit_message {
 void
-run(client *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id, params *params, message::dati *p_message)
+run(
+  client *client, 
+  const u64_snowflake_t channel_id, 
+  const u64_snowflake_t message_id, 
+  params *params, 
+  message::dati *p_message)
 {
   if (!channel_id) {
     D_PUTS("Missing 'channel_id'");
@@ -472,7 +490,11 @@ run(client* client, u64_snowflake_t channel_id)
 
 namespace embed {
 void
-change_footer(dati *embed, char text[], char icon_url[], char proxy_icon_url[])
+change_footer(
+  dati *embed, 
+  char text[], 
+  char icon_url[], 
+  char proxy_icon_url[])
 {
   if (IS_EMPTY_STRING(text)) {
     D_PUTS("Missing 'text'");
@@ -494,7 +516,12 @@ change_footer(dati *embed, char text[], char icon_url[], char proxy_icon_url[])
 }
 
 void
-change_thumbnail(dati *embed, char url[], char proxy_url[], int height, int width)
+change_thumbnail(
+  dati *embed, 
+  char url[], 
+  char proxy_url[], 
+  int height, 
+  int width)
 {
   if (embed->thumbnail) {
     free(embed->thumbnail);
@@ -514,7 +541,12 @@ change_thumbnail(dati *embed, char url[], char proxy_url[], int height, int widt
 }
 
 void
-change_image(dati *embed, char url[], char proxy_url[], int height, int width)
+change_image(
+  dati *embed, 
+  char url[], 
+  char proxy_url[], 
+  int height, 
+  int width)
 {
   if (embed->image) {
     free(embed->image);
@@ -534,7 +566,12 @@ change_image(dati *embed, char url[], char proxy_url[], int height, int width)
 }
 
 void
-change_video(dati *embed, char url[], char proxy_url[], int height, int width)
+change_video(
+  dati *embed, 
+  char url[], 
+  char proxy_url[], 
+  int height, 
+  int width)
 {
   if (embed->video) {
     free(embed->video);
@@ -570,7 +607,12 @@ change_provider(dati *embed, char name[], char url[])
 }
 
 void
-change_author(dati *embed, char name[], char url[], char icon_url[], char proxy_icon_url[])
+change_author(
+  dati *embed, 
+  char name[], 
+  char url[], 
+  char icon_url[], 
+  char proxy_icon_url[])
 {
   if (embed->author) {
     free(embed->author);
@@ -601,7 +643,7 @@ add_field(dati *embed, char name[], char value[], bool Inline)
     return;
   }
   if (embed->fields 
-      && ntl_length((void**)embed->fields) >= EMBED_MAX_FIELDS)
+      && ntl_length((NTL_T(void))embed->fields) >= EMBED_MAX_FIELDS)
   {
     D_PRINT("Reach embed fields threshold (max %d)", EMBED_MAX_FIELDS);
     return;
@@ -613,8 +655,8 @@ add_field(dati *embed, char name[], char value[], bool Inline)
   strncpy(new_field.value, value, EMBED_FIELD_VALUE_LEN);
   new_field.Inline = Inline;
 
-  embed->fields = (field::dati**)ntl_append(
-                        (void**)embed->fields, 
+  embed->fields = (NTL_T(field::dati))ntl_append(
+                        (NTL_T(void))embed->fields, 
                         sizeof(field::dati), &new_field);
 }
 
@@ -666,7 +708,7 @@ size_t dati_to_json(char *json, size_t len, struct dati *p)
 
 void
 append(
-  NTL_T(dati*) permission_overwrites, 
+  NTL_T(dati) *permission_overwrites, 
   u64_snowflake_t id, 
   int type, 
   u64_snowflake_t allow, u64_snowflake_t deny)
@@ -687,8 +729,8 @@ append(
   new_overwrite.allow = allow;
   new_overwrite.deny = deny;
 
-  *permission_overwrites = (overwrite::dati**)ntl_append(
-                            (void**)*permission_overwrites, 
+  *permission_overwrites = (NTL_T(overwrite::dati))ntl_append(
+                            (NTL_T(void))*permission_overwrites, 
                             sizeof(overwrite::dati), &new_overwrite);
 }
 

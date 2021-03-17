@@ -120,7 +120,7 @@ dati_cleanup(void *p_status_update)
 {
   dati *status_update = (dati*)p_status_update;
   if (status_update->activities)
-    ntl_free((void**)status_update->activities, &activity::dati_cleanup);
+    ntl_free((NTL_T(void))status_update->activities, &activity::dati_cleanup);
 
   DS_NOTOP_PUTS("Status Update (Presence) object fields cleared"); 
 }
@@ -538,7 +538,7 @@ on_dispatch_message(
 {
   if (MESSAGE_DELETE_BULK == code && ws->cbs.on_message.delete_bulk)
   {
-    struct sized_buffer **buf = NULL;
+    NTL_T(struct sized_buffer) buf = NULL;
     u64_snowflake_t channel_id = 0, guild_id = 0;
     json_scanf(payload->event_data, sizeof(payload->event_data),
         "[ids]%A"
@@ -548,7 +548,7 @@ on_dispatch_message(
         &orka_strtoull, &channel_id,
         &orka_strtoull, &guild_id);
 
-    size_t nids = ntl_length((void**) buf);
+    size_t nids = ntl_length((NTL_T(void)) buf);
     u64_snowflake_t *ids = (u64_snowflake_t*)malloc(nids * sizeof(u64_snowflake_t));
     for(size_t i = 0; i < nids; i++) {
       orka_strtoull(buf[i]->start, buf[i]->size, ids + i);

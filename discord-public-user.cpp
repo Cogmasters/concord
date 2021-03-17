@@ -69,13 +69,11 @@ sb_run(client *client, struct sized_buffer *p_sb_user)
 } // namespace get_current_user
 
 namespace get_current_user_guilds {
-guild::dati**
-run(client *client)
+void
+run(client *client, NTL_T(guild::dati) *p_guilds)
 {
-  guild::dati **new_guilds = NULL;
-
   struct resp_handle resp_handle =
-    { .ok_cb = &guild::dati_list_from_json_v, .ok_obj = (void*)&new_guilds};
+    { .ok_cb = &guild::dati_list_from_json_v, .ok_obj = (void*)p_guilds};
 
   user_agent::run( 
     &client->ua,
@@ -83,8 +81,6 @@ run(client *client)
     NULL,
     HTTP_GET,
     "/users/@me/guilds");
-
-  return new_guilds;
 }
 } // namespace get_current_user_guilds
 

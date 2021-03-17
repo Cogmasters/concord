@@ -32,10 +32,10 @@ run(client *client, u64_snowflake_t channel_id, u64_snowflake_t author_id)
     .limit = 100
   };
 
-  channel::message::dati ** messages =
-    channel::get_channel_messages::run(client, channel_id, &params);
+  NTL_T(channel::message::dati) messages = NULL;
+  channel::get_channel_messages::run(client, channel_id, &params, &messages);
 
-  ja_u64 **list = NULL;
+  NTL_T(ja_u64) list = NULL;
   int count = 0;
   for (int i = 0; messages[i]; i++) {
     if (messages[i]->author->id == author_id)

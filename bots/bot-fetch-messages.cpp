@@ -7,12 +7,12 @@
 
 using namespace discord;
 
-uint64_t
+u64_snowflake_t
 select_guild(client *client)
 {
   // get guilds bot is a part of
   NTL_T(guild::dati) guilds = NULL;
-  guilds = user::get_current_user_guilds::run(client);
+  user::get_current_user_guilds::run(client, &guilds);
   ASSERT_S(NULL != guilds, "Couldn't fetch guilds");
 
   fprintf(stderr, "\n\nSelect the guild that the user to be mimicked is part of");
@@ -28,7 +28,7 @@ select_guild(client *client)
     fgets(strnum, sizeof(strnum), stdin);
     int num = strtol(strnum, NULL, 10);
     if (num > 0 && num <= i) {
-      uint64_t guild_id = guilds[num-1]->id;
+      u64_snowflake_t guild_id = guilds[num-1]->id;
       guild::dati_list_free(guilds);
       return guild_id;
     }
@@ -36,8 +36,8 @@ select_guild(client *client)
   } while (1);
 }
 
-uint64_t
-select_member(client *client, uint64_t guild_id)
+u64_snowflake_t
+select_member(client *client, u64_snowflake_t guild_id)
 {
   // get guilds bot is a part of
   NTL_T(guild::member::dati) members = NULL;
@@ -45,7 +45,7 @@ select_member(client *client, uint64_t guild_id)
     .limit = 1000,
     .after = 0
   };
-  members = guild::list_guild_members::run(client, guild_id, &params);
+  guild::list_guild_members::run(client, guild_id, &params, &members);
   ASSERT_S(NULL != members, "Guild is empty or bot needs to activate its privileged intents.\n\t"
                             "See this guide to activate it: https://discordpy.readthedocs.io/en/latest/intents.html#privileged-intents");
 
@@ -65,7 +65,7 @@ select_member(client *client, uint64_t guild_id)
     fgets(strnum, sizeof(strnum), stdin);
     int num = strtol(strnum, NULL, 10);
     if (num > 0 && num <= i) {
-      uint64_t user_id = members[num-1]->user->id;
+      u64_snowflake_t user_id = members[num-1]->user->id;
       guild::member::dati_list_free(members);
       return user_id;
     }
@@ -74,23 +74,24 @@ select_member(client *client, uint64_t guild_id)
 }
 
 void
-fetch_member_msgs(client *client, uint64_t guild_id, uint64_t user_id)
+fetch_member_msgs(client *client, u64_snowflake_t guild_id, u64_snowflake_t user_id)
 {
-  NTL_T(channel::dati) channels = guild::get_channels::run(client, guild_id);
+  NTL_T(channel::dati) channels = NULL;
+  guild::get_channels::run(client, guild_id, &channels);
   ASSERT_S(NULL != channels, "Couldn't fetch channels from guild");
   
   channel::get_channel_messages::params params = {
     .limit = 100
   };
 
-  NTL_T(channel::message::dati) messages;
+  NTL_T(channel::message::dati) messages = NULL;
   for (int i=0; channels[i]; ++i)
   {
     params.before = 0;
 
     int n_msg;
     do {
-      messages = channel::get_channel_messages::run(client, channels[i]->id, &params);
+      channel::get_channel_messages::run(client, channels[i]->id, &params, &messages);
       ASSERT_S(NULL != messages, "Couldn't fetch messages from channel");
 
       for (n_msg = 0; messages[n_msg]; ++n_msg) {
@@ -125,8 +126,8 @@ int main(int argc, char *argv[])
   client *client = config_init(config_file);
   assert(NULL != client);
 
-  uint64_t guild_id = select_guild(client);
-  uint64_t user_id = select_member(client, guild_id);
+  u64_snowflake_t guild_id = select_guild(client);
+  u64_snowflake_t user_id = select_member(client, guild_id);
 
   fetch_member_msgs(client, guild_id, user_id);
 

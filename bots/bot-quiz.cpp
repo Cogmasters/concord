@@ -116,7 +116,8 @@ close_existing_sessions(
   const guild::member::dati *member)
 {
   /* Check if user already has a session role assigned to */
-  NTL_T(guild::role::dati) rls = guild::get_guild_roles::run(client, guild_id);
+  NTL_T(guild::role::dati) rls = NULL;
+  guild::get_guild_roles::run(client, guild_id, &rls);
 
   for (size_t i=0; rls[i]; ++i) {
     if ( strncmp("TMP", rls[i]->name, 3) )

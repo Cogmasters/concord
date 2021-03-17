@@ -41,7 +41,7 @@ on_command(client *client, const user::dati *me, const channel::message::dati *m
   guild::list_guild_members::params params1 = {
     .limit = 1000
   };
-  members = guild::list_guild_members::run(client, msg->guild_id, &params1);
+  guild::list_guild_members::run(client, msg->guild_id, &params1, &members);
   if (NULL == members) {
     printf("Missing members list\n");
     return;

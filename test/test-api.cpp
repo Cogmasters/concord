@@ -21,10 +21,11 @@ int main(int argc, char *argv[])
   user::dati *me = user::dati_alloc(); 
   assert(NULL != me);
 
-  user::me::get(client, me);
+  user::get_current_user::run(client, me);
   printf("Greetings, %s#%s!\n", me->username, me->discriminator);
 
-  guild::dati **guilds = user::me::get_guilds(client);
+  NTL_T(guild::dati) guilds = NULL;
+  user::get_current_user_guilds::run(client, &guilds);
   for (size_t i=0; guilds[i]; ++i) {
     fprintf(stderr, "Guild[%s] id:\n\t%" PRIu64 "\n", guilds[i]->name, guilds[i]->id);
   }
