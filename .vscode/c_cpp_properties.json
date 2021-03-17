@@ -3,6 +3,9 @@
         {
             "name": "Linux",
             "includePath": [
+                ".",
+                "common",
+                "mujs",
                 "${workspaceFolder}/**",
                 "/usr/include",
                 "/usr/local/include"
