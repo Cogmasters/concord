@@ -122,6 +122,10 @@ struct params {
 message::dati** run(client *client, const uint64_t channel_id, params *params);
 } // namespace get_channel_messages
 
+namespace delete_message {
+void run(client *client, u64_snowflake_t channel_id, u64_snowflake_t message_id);
+} // namespace delete_message
+
 namespace message {
 /* https://discord.com/developers/docs/resources/channel#create-message */
 namespace create { // function wrapper

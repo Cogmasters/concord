@@ -204,6 +204,26 @@ run(client *client, const uint64_t channel_id, params *params)
 }
 } // namespace get_channel_messages
 
+namespace delete_message {
+void
+run(client *client, u64_snowflake_t channel_id, u64_snowflake_t message_id)
+{
+  if (!channel_id) {
+    D_PUTS("Missing 'channel_id'");
+    return;
+  }
+  if (!message_id) {
+    D_PUTS("Missing 'message_id'");
+    return;
+  }
+  user_agent::run(
+    &client->ua,
+    NULL,
+    NULL,
+    HTTP_DELETE,
+    "/channels/%llu/messages/%llu", channel_id, message_id);
+}
+}
 
 namespace message {
 namespace create {
