@@ -190,7 +190,7 @@ run(client *client, const uint64_t channel_id, params *params)
   message::dati **new_messages = NULL;
 
   struct resp_handle resp_handle = 
-    { .ok_cb = &dati_list_from_json_v, .ok_obj = (void*)&new_messages};
+    { .ok_cb = message::dati_list_from_json_v, .ok_obj = (void*)&new_messages};
 
   user_agent::run( 
     &client->ua,
