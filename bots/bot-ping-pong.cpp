@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
-#include <libdiscord.h>
+#include "libdiscord.h"
 
 using namespace discord;
 

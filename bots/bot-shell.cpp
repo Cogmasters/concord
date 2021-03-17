@@ -4,7 +4,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <assert.h>
-#include <libdiscord.h>
+#include "libdiscord.h"
 
 
 using namespace discord;

@@ -3,8 +3,8 @@
 #include <string.h>
 #include <assert.h>
 
-#include <libdiscord.h>
-#include <orka-utils.h>
+#include "libdiscord.h"
+#include "orka-utils.h"
 
 #define ELITEBGS_API_URL "https://elitebgs.app/api/ebgs/v5"
 

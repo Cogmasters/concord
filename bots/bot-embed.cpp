@@ -3,7 +3,7 @@
 #include <string.h>
 #include <assert.h>
 
-#include <libdiscord.h>
+#include "libdiscord.h"
 #include "orka-utils.h" // for orka_timestamp_ms()
 
 using namespace discord;
