@@ -17,9 +17,9 @@ void params_from_json(char *json, size_t len, struct params *p)
   */
                 "(name):?s,"
   /* specs/guild.role.create.json:12:20
-     '{ "name": "permissions", "type":{ "base":"s_as_u64" }, "inject_if_not":0}'
+     '{ "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"permissions::bitwise_flags" }, "inject_if_not":0}'
   */
-                "(permissions):s_as_u64,"
+                "(permissions):s_as_hex_uint,"
   /* specs/guild.role.create.json:13:20
      '{ "name": "color", "type":{ "base":"int" }, "inject_if_not":0}'
   */
@@ -40,7 +40,7 @@ void params_from_json(char *json, size_t len, struct params *p)
   */
                 &p->name,
   /* specs/guild.role.create.json:12:20
-     '{ "name": "permissions", "type":{ "base":"s_as_u64" }, "inject_if_not":0}'
+     '{ "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"permissions::bitwise_flags" }, "inject_if_not":0}'
   */
                 &p->permissions,
   /* specs/guild.role.create.json:13:20
@@ -70,9 +70,9 @@ size_t params_to_json(char *json, size_t len, struct params *p)
   */
                 "(name):s,"
   /* specs/guild.role.create.json:12:20
-     '{ "name": "permissions", "type":{ "base":"s_as_u64" }, "inject_if_not":0}'
+     '{ "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"permissions::bitwise_flags" }, "inject_if_not":0}'
   */
-                "(permissions):s_as_u64,"
+                "(permissions):s_as_hex_uint,"
   /* specs/guild.role.create.json:13:20
      '{ "name": "color", "type":{ "base":"int" }, "inject_if_not":0}'
   */
@@ -91,7 +91,7 @@ size_t params_to_json(char *json, size_t len, struct params *p)
   */
                 p->name,
   /* specs/guild.role.create.json:12:20
-     '{ "name": "permissions", "type":{ "base":"s_as_u64" }, "inject_if_not":0}'
+     '{ "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"permissions::bitwise_flags" }, "inject_if_not":0}'
   */
                 &p->permissions,
   /* specs/guild.role.create.json:13:20
@@ -119,7 +119,7 @@ void params_use_default_inject_settings(struct params *p)
   p->__M.arg_switches[0] = p->name;
 
   /* specs/guild.role.create.json:12:20
-     '{ "name": "permissions", "type":{ "base":"s_as_u64" }, "inject_if_not":0}'
+     '{ "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"permissions::bitwise_flags" }, "inject_if_not":0}'
   */
   if (p->permissions != 0)
     p->__M.arg_switches[1] = &p->permissions;
@@ -188,7 +188,7 @@ void params_cleanup(struct params *d) {
   if (d->name)
     free(d->name);
   /* specs/guild.role.create.json:12:20
-     '{ "name": "permissions", "type":{ "base":"s_as_u64" }, "inject_if_not":0}'
+     '{ "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"permissions::bitwise_flags" }, "inject_if_not":0}'
   */
   //p->permissions is a scalar
   /* specs/guild.role.create.json:13:20
@@ -212,7 +212,7 @@ void params_init(struct params *p) {
   */
 
   /* specs/guild.role.create.json:12:20
-     '{ "name": "permissions", "type":{ "base":"s_as_u64" }, "inject_if_not":0}'
+     '{ "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"permissions::bitwise_flags" }, "inject_if_not":0}'
   */
 
   /* specs/guild.role.create.json:13:20

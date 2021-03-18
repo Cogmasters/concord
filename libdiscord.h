@@ -191,7 +191,7 @@ void append(
   NTL_T(dati) *permission_overwrites, 
   u64_snowflake_t id, 
   int type, 
-  uint64_t allow, uint64_t deny);
+  permissions::bitwise_flags allow, permissions::bitwise_flags deny);
 } // namespace overwrite
 
 } // namespace channel
@@ -217,6 +217,10 @@ void run(client *client, const u64_snowflake_t guild_id, NTL_T(channel::dati) *p
 namespace create_channel {
 void run(client *client, const u64_snowflake_t guild_id, params *params, channel::dati *p_channel);
 } // namespace create_channel
+
+namespace get_guild_member {
+void  run(client *client, u64_snowflake_t guild_id, u64_snowflake_t user_id, member::dati **p_member);
+} // get_guild_member
 
 namespace list_guild_members {
 struct params {

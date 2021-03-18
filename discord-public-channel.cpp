@@ -711,7 +711,7 @@ append(
   NTL_T(dati) *permission_overwrites, 
   u64_snowflake_t id, 
   int type, 
-  u64_snowflake_t allow, u64_snowflake_t deny)
+  permissions::bitwise_flags allow, permissions::bitwise_flags deny)
 {
   if (!id) {
     D_PUTS("Missing 'id'");

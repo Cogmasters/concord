@@ -12,9 +12,9 @@ struct params {
   char *name;
 
   /* specs/guild.role.create.json:12:20
-     '{ "name": "permissions", "type":{ "base":"s_as_u64" }, "inject_if_not":0}'
+     '{ "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"permissions::bitwise_flags" }, "inject_if_not":0}'
   */
-  uint64_t permissions;
+  permissions::bitwise_flags permissions;
 
   /* specs/guild.role.create.json:13:20
      '{ "name": "color", "type":{ "base":"int" }, "inject_if_not":0}'

@@ -264,6 +264,42 @@ int main (int argc, char ** argv)
   SET(field_init, "");
   test_one();
 
+
+  SET(spec, "{(name):|abc|, (type):{ (base):|s_as_hex_uint|}}");
+  SET(field_struct, "unsigned int abc;\n");
+  SET(field_cleanup, "//p->abc is a scalar\n");
+  SET(field_extractor, "\"(abc):s_as_hex_uint,\"\n");
+  SET(field_extractor_arg, "&p->abc,\n");
+  SET(field_injector, "\"(abc):s_as_hex_uint,\"\n");
+  SET(field_injector_arg, "&p->abc,\n");
+  SET(field_inject_settings, "p->__M.arg_switches[0] = &p->abc;\n");
+  SET(field_init, "");
+  test_one();
+
+
+  SET(spec, "{(name):|abc|, (type):{ (base):|s_as_hex_uint|, (int_alias):|enum flags|}}");
+  SET(field_struct, "enum flags abc;\n");
+  SET(field_cleanup, "//p->abc is a scalar\n");
+  SET(field_extractor, "\"(abc):s_as_hex_uint,\"\n");
+  SET(field_extractor_arg, "&p->abc,\n");
+  SET(field_injector, "\"(abc):s_as_hex_uint,\"\n");
+  SET(field_injector_arg, "&p->abc,\n");
+  SET(field_inject_settings, "p->__M.arg_switches[0] = &p->abc;\n");
+  SET(field_init, "");
+  test_one();
+
+
+  SET(spec, "{(name):|permissions|, (type):{ (base):|s_as_hex_uint|, (int_alias):|permissions::code|}, (inject_if_not):0}");
+  SET(field_struct, "permissions::code permissions;\n");
+  SET(field_cleanup, "//p->permissions is a scalar\n");
+  SET(field_extractor, "\"(permissions):s_as_hex_uint,\"\n");
+  SET(field_extractor_arg, "&p->permissions,\n");
+  SET(field_injector, "\"(permissions):s_as_hex_uint,\"\n");
+  SET(field_injector_arg, "&p->permissions,\n");
+  SET(field_inject_settings, "if (p->permissions != 0)\n    p->__M.arg_switches[0] = &p->permissions;\n");
+  SET(field_init, "");
+  test_one();
+
   return 0;
 }
 

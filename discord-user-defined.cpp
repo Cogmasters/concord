@@ -76,6 +76,18 @@ run(client *client, u64_snowflake_t channel_id, u64_snowflake_t author_id)
 
 } // bulk_delete_messages
 
+namespace get_n_message {
+void run(client *client, u64_snowflake_t message_id, int n) {
+}
+}
+
+namespace get_author_permission {
+void run(client *client, u64_snowflake_t user_id)
+{
+
+}
+} // get_author_permission
+
 } // user_defined
 }
 #endif

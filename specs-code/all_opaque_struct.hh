@@ -522,18 +522,6 @@ struct params;
 } // namespace bulk_delete_messages
 } // namespace channel
 } // namespace discord
-/* This file is generated from specs/webhook.json, Please don't edit it. */
-/*
-https://discord.com/developers/docs/resources/webhook#webhook-object-webhook-structure
-*/
-namespace discord {
-
-namespace webhook {
-/* Title: Webhook Structure */
-/* This is defined at specs/webhook.json:19:22 */
-struct dati;
-} // namespace webhook
-} // namespace discord
 /* This file is generated from specs/user.create-group-dm.json, Please don't edit it. */
 /*
 
@@ -589,6 +577,14 @@ namespace create_guild_role {
 struct params;
 } // namespace create_guild_role
 } // namespace guild
+} // namespace discord
+/* This file is generated from specs/permissions.json, Please don't edit it. */
+/*
+https://discord.com/developers/docs/topics/permissions
+*/
+namespace discord {
+namespace permissions {
+} // namespace permissions
 } // namespace discord
 /* This file is generated from specs/audit_log.json, Please don't edit it. */
 /*
@@ -793,4 +789,16 @@ namespace modify_current_user {
 struct params;
 } // namespace modify_current_user
 } // namespace user
+} // namespace discord
+/* This file is generated from specs/webhook.json, Please don't edit it. */
+/*
+https://discord.com/developers/docs/resources/webhook#webhook-object-webhook-structure
+*/
+namespace discord {
+
+namespace webhook {
+/* Title: Webhook Structure */
+/* This is defined at specs/webhook.json:19:22 */
+struct dati;
+} // namespace webhook
 } // namespace discord

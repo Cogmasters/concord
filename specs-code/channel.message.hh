@@ -97,11 +97,11 @@ extern void dati_use_default_inject_settings(struct dati *p);
 
 namespace flags {
 enum code {
-  CROSSPOSTED = 1,
-  IS_CROSSPOST = 2,
-  SUPRESS_EMBEDS = 4,
-  SOURCE_MESSAGE_DELETED = 8,
-  URGENT = 16,
+  CROSSPOSTED = 1, // 1<<0
+  IS_CROSSPOST = 2, // 1<<1
+  SUPRESS_EMBEDS = 4, // 1<<2
+  SOURCE_MESSAGE_DELETED = 8, // 1<<3
+  URGENT = 16, // 1<<4
 };
 } // namespace flags
 

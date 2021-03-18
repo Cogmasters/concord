@@ -202,11 +202,9 @@ enum builtin_type {
   B_INT,
   B_LONG,
   B_LONG_LONG,
-  B_STRING_AS_U32,
+  B_STRING_AS_HEX_UINT,
   B_STRING_AS_U64,
   B_STRING_AS_HEX64,
-  B_STRING_AS_I32,
-  B_STRING_AS_I64,
   B_FLOAT,
   B_DOUBLE,
   B_STRING,
@@ -735,7 +733,16 @@ parse_value(
     case 's':
     {
       size_t sz1 = strlen("s_as_u64"), sz2 = strlen("s_as_hex64");
-      if (pos + sz1 <= end_pos && 0 == strncmp(pos, "s_as_u64", sz1)) {
+      size_t sz0 = strlen("s_as_hex_uint");
+
+      if (pos + sz0 <= end_pos && 0 == strncmp(pos, "s_as_hex_uint", sz0)) {
+        act->mem_size.size = sizeof(unsigned int);
+        act->mem_size.tag = SIZE_FIXED;
+        act->_.builtin = B_STRING_AS_HEX_UINT;
+        pos += sz0;
+        goto return_true;
+      }
+      else if (pos + sz1 <= end_pos && 0 == strncmp(pos, "s_as_u64", sz1)) {
         act->mem_size.size = sizeof(uint64_t);
         act->mem_size.tag = SIZE_FIXED;
         act->_.builtin = B_STRING_AS_U64;
@@ -1319,6 +1326,8 @@ inject_builtin (
         return xprintf(pos, size, info, "false");
     case B_INT:
       return xprintf(pos, size, info, "%d", *(int*)v->operand);
+    case B_STRING_AS_HEX_UINT:
+      return xprintf(pos, size, info, "\"%u\"", *(unsigned int*)v->operand);
     case B_STRING_AS_U64:
       return xprintf(pos, size, info, "\"%" PRIu64 "\"", *(uint64_t*)v->operand);
     case B_STRING_AS_HEX64:
@@ -1949,16 +1958,40 @@ static size_t extract_scalar (struct action * a, int i, struct e_info * info)
   switch(a->_.builtin)
   {
     case B_INT:
+    {
       if (is_null)
         *(int *) a->operand = 0;
       else {
-        *(int *) a->operand = (int) strtol(json + tokens[i].start, &xend, 10);
-        if (xend != json + tokens[i].end)
-          ERR("failed to extract int from %.*s\n",
-              tokens[i].end - tokens[i].start, json + tokens[i].start);
+        int ival = (int) strtol(json + tokens[i].start, &xend, 10);
+        if (xend != json + tokens[i].end) {
+          ival = (int) strtol(json + tokens[i].start, &xend, 16);
+          if (xend != json + tokens[i].end) {
+            ERR("failed to extract int from %.*s\n",
+                tokens[i].end - tokens[i].start, json + tokens[i].start);
+          }
+        }
+        *(int *) a->operand = ival;
       }
       add_defined(info->E, a->operand);
       break;
+    }
+    case B_STRING_AS_HEX_UINT:
+    {
+      if (is_null)
+        *(int *) a->operand = 0;
+      else if (JSMN_STRING == tokens[i].type) {
+        *(int *) a->operand = (int) strtoul(json + tokens[i].start, &xend, 16);
+        if (xend != json + tokens[i].end)
+          ERR("failed to extract s_as_hex_int from %.*s\n",
+              tokens[i].end - tokens[i].start, json + tokens[i].start);
+      }
+      else {
+        ERR("failed to extract s_as_hex_int from %.*s\n",
+            tokens[i].end - tokens[i].start, json + tokens[i].start);
+      }
+      add_defined(info->E, a->operand);
+      break;
+    }
     case B_STRING_AS_U64:
     case B_STRING_AS_HEX64:
     {
@@ -1974,7 +2007,8 @@ static size_t extract_scalar (struct action * a, int i, struct e_info * info)
         if (xend != json + tokens[i].end)
           ERR("failed to extract s_as_u64 or s_as_hex64 from %.*s\n",
               tokens[i].end - tokens[i].start, json + tokens[i].start);
-      } else {
+      }
+      else {
         ERR("failed to extract s_as_u64 or s_as_hex64 from %.*s\n",
             tokens[i].end - tokens[i].start, json + tokens[i].start);
       }

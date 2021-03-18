@@ -161,15 +161,21 @@ create_session_channel(
     &params1.permission_overwrites,
     guild_id, // @everyone role id is the same as guild id
     0, // role type
-    0, // Don't set allow permissions
-    0x40 | 0x400 | 0x800); // Deny Read and Send Messages, Add Reactions permissions
+    permissions::ZERO, // Don't set allow permissions
+    (permissions::bitwise_flags)(
+      permissions::ADD_REACTIONS
+    | permissions::VIEW_CHANNEL
+    | permissions::SEND_MESSAGES)); // Deny Read and Send Messages, Add Reactions permissions
 
   channel::overwrite::append(
     &params1.permission_overwrites,
     member->user->id,
     1, // user type
-    0x40 | 0x400 | 0x800, // Allow Read and Send Messages, Add Reactions permissions
-    0); // Don't set deny permissions
+    (permissions::bitwise_flags)(
+      permissions::ADD_REACTIONS
+    | permissions::VIEW_CHANNEL
+    | permissions::SEND_MESSAGES), // Allow Read and Send Messages, Add Reactions permissions
+    permissions::ZERO); // Don't set deny permissions
 
   guild::create_channel::run(client, guild_id, &params1, &ch);
   

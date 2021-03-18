@@ -52,8 +52,8 @@ enum code {
 
 namespace system_channel_flags {
 enum code {
-  SUPRESS_JOIN_NOTIFICATIONS = 1,
-  SUPRESS_PREMIUM_SUBSCRIPTIONS = 2,
+  SUPRESS_JOIN_NOTIFICATIONS = 1, // 1<<0
+  SUPRESS_PREMIUM_SUBSCRIPTIONS = 2, // 1<<1
 };
 } // namespace system_channel_flags
 

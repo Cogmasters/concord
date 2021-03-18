@@ -19,7 +19,7 @@ int main (int argc, char ** argv)
       "      { |name|:|f1|, |type|:{ |base|:|char|, |dec|:|*| } },"
       "      { |name|:|f2|, |type|:{ |base|:|char|, |dec|:|*| } },"
       "      { |name|:|f3|, |type|:{ |base|:|s_as_u64| } },"
-      "      { |name|:|f4|, |c_name|:|c_f4|, |type|:{ |base|:|s_as_i64| } },"
+      "      { |name|:|f4|, |c_name|:|c_f4|, |type|:{ |base|:|s_as_hex_uint| } },"
       "      { |name|:|f5 asdfasdf |, |c_name|:|c_f5|, |type|:{ |base|:|char|,  |U|:|convert| } },"
       "      { |name|:|f6|, |type|:{ |base|:|char|, |dec|:|*| }, |loc|:|form| },"
       "      { |name|:|f7|, |type|:{ |base|:|bool|}, |loc|:|query| },"

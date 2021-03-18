@@ -6,20 +6,20 @@ https://discord.com/developers/docs/resources/user#user-object
 
 namespace flags {
 enum code {
-  NONE = 0,
-  DISCORD_EMPLOYEE = 1,
-  PARTNERED_SERVER_OWNER = 2,
-  HYPESQUAD_EVENTS = 4,
-  BUG_HUNTER_LEVEL_1 = 8,
-  HOUSE_BRAVERY = 32,
-  HOUSE_BRILLIANCE = 64,
-  HOUSE_BALANCE = 128,
-  EARLY_SUPPORTER = 256,
-  TEAM_USER = 512,
-  SYSTEM = 4096,
-  BUG_HUNTER_LEVEL_2 = 16384,
-  VERIFIED_BOT = 65536,
-  EARLY_VERIFIED_BOT_DEVELOPER = 131072,
+  NONE = 0, // 0
+  DISCORD_EMPLOYEE = 1, // 1 << 0
+  PARTNERED_SERVER_OWNER = 2, // 1 << 2
+  HYPESQUAD_EVENTS = 4, // 1 << 3
+  BUG_HUNTER_LEVEL_1 = 8, // 1 << 4
+  HOUSE_BRAVERY = 32, // 1 << 6
+  HOUSE_BRILLIANCE = 64, // 1 << 7
+  HOUSE_BALANCE = 128, // 1 << 8
+  EARLY_SUPPORTER = 256, // 1 << 9
+  TEAM_USER = 512, // 1 << 10
+  SYSTEM = 4096, // 1 << 12
+  BUG_HUNTER_LEVEL_2 = 16384, // 1 << 14
+  VERIFIED_BOT = 65536, // 1 << 16
+  EARLY_VERIFIED_BOT_DEVELOPER = 131072, // 1 << 17
 };
 } // namespace flags
 

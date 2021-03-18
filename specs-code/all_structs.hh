@@ -1917,14 +1917,14 @@ struct dati {
   int type;
 
   /* specs/channel.objects.json:15:20
-     '{ "name": "allow", "type":{ "base":"s_as_u64"}, "comment":"permission bit set"}'
+     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"permissions::bitwise_flags"}, "comment":"permission bit set"}'
   */
-  uint64_t allow; // permission bit set
+  permissions::bitwise_flags allow; // permission bit set
 
   /* specs/channel.objects.json:16:20
-     '{ "name": "deny", "type":{ "base":"s_as_u64"}, "comment":"permission bit set"}'
+     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"permissions::bitwise_flags"}, "comment":"permission bit set"}'
   */
-  uint64_t deny; // permission bit set
+  permissions::bitwise_flags deny; // permission bit set
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -2811,76 +2811,6 @@ struct params {
 } // namespace bulk_delete_messages
 } // namespace channel
 } // namespace discord
-/* This file is generated from specs/webhook.json, Please don't edit it. */
-/*
-https://discord.com/developers/docs/resources/webhook#webhook-object-webhook-structure
-*/
-namespace discord {
-
-namespace webhook {
-/* Title: Webhook Structure */
-/* This is defined at specs/webhook.json:19:22 */
-struct dati {
-  /* specs/webhook.json:22:20
-     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
-  u64_snowflake_t id;
-
-  /* specs/webhook.json:23:20
-     '{ "name": "type", "type":{ "base":"int", "int_alias":"discord::webhook::types::code" }}'
-  */
-  discord::webhook::types::code type;
-
-  /* specs/webhook.json:24:20
-     '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
-  u64_snowflake_t guild_id;
-
-  /* specs/webhook.json:25:20
-     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
-  u64_snowflake_t channel_id;
-
-  /* specs/webhook.json:26:20
-     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*" }}'
-  */
-  discord::user::dati *user;
-
-  /* specs/webhook.json:27:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[WEBHOOK_NAME_LEN]" }}'
-  */
-  char name[WEBHOOK_NAME_LEN];
-
-  /* specs/webhook.json:28:20
-     '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
-  */
-  char *avatar; // @todo fixed size limit
-
-  /* specs/webhook.json:29:20
-     '{ "name": "token", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
-  */
-  char *token; // @todo fixed size limit
-
-  /* specs/webhook.json:30:20
-     '{ "name": "application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
-  u64_snowflake_t application_id;
-
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[9];
-    void *record_defined[9];
-    void *record_null[9];
-  } __M; // metadata
-};
-} // namespace webhook
-} // namespace discord
 /* This file is generated from specs/user.create-group-dm.json, Please don't edit it. */
 /*
 
@@ -3073,9 +3003,9 @@ struct params {
   char *name;
 
   /* specs/guild.role.create.json:12:20
-     '{ "name": "permissions", "type":{ "base":"s_as_u64" }, "inject_if_not":0}'
+     '{ "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"permissions::bitwise_flags" }, "inject_if_not":0}'
   */
-  uint64_t permissions;
+  permissions::bitwise_flags permissions;
 
   /* specs/guild.role.create.json:13:20
      '{ "name": "color", "type":{ "base":"int" }, "inject_if_not":0}'
@@ -3107,6 +3037,14 @@ struct params {
 };
 } // namespace create_guild_role
 } // namespace guild
+} // namespace discord
+/* This file is generated from specs/permissions.json, Please don't edit it. */
+/*
+https://discord.com/developers/docs/topics/permissions
+*/
+namespace discord {
+namespace permissions {
+} // namespace permissions
 } // namespace discord
 /* This file is generated from specs/audit_log.json, Please don't edit it. */
 /*
@@ -4354,4 +4292,74 @@ struct params {
 };
 } // namespace modify_current_user
 } // namespace user
+} // namespace discord
+/* This file is generated from specs/webhook.json, Please don't edit it. */
+/*
+https://discord.com/developers/docs/resources/webhook#webhook-object-webhook-structure
+*/
+namespace discord {
+
+namespace webhook {
+/* Title: Webhook Structure */
+/* This is defined at specs/webhook.json:19:22 */
+struct dati {
+  /* specs/webhook.json:22:20
+     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
+  */
+  u64_snowflake_t id;
+
+  /* specs/webhook.json:23:20
+     '{ "name": "type", "type":{ "base":"int", "int_alias":"discord::webhook::types::code" }}'
+  */
+  discord::webhook::types::code type;
+
+  /* specs/webhook.json:24:20
+     '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
+  */
+  u64_snowflake_t guild_id;
+
+  /* specs/webhook.json:25:20
+     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
+  */
+  u64_snowflake_t channel_id;
+
+  /* specs/webhook.json:26:20
+     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*" }}'
+  */
+  discord::user::dati *user;
+
+  /* specs/webhook.json:27:20
+     '{ "name": "name", "type":{ "base":"char", "dec":"[WEBHOOK_NAME_LEN]" }}'
+  */
+  char name[WEBHOOK_NAME_LEN];
+
+  /* specs/webhook.json:28:20
+     '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
+  */
+  char *avatar; // @todo fixed size limit
+
+  /* specs/webhook.json:29:20
+     '{ "name": "token", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
+  */
+  char *token; // @todo fixed size limit
+
+  /* specs/webhook.json:30:20
+     '{ "name": "application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
+  */
+  u64_snowflake_t application_id;
+
+  // The following is metadata used to 
+  // 1. control which field should be extracted/injected
+  // 2. record which field is presented(defined) in JSON
+  // 3. record which field is null in JSON
+  struct {
+    bool enable_arg_switches;
+    bool enable_record_defined;
+    bool enable_record_null;
+    void *arg_switches[9];
+    void *record_defined[9];
+    void *record_null[9];
+  } __M; // metadata
+};
+} // namespace webhook
 } // namespace discord

@@ -16,8 +16,8 @@ void dati_from_json_disabled(char *json, size_t len, struct dati *p)
   r=json_extract(json, len, 
                 "(id):F,"
                 "(type):d,"
-                "(allow):s_as_u64,"
-                "(deny):s_as_u64,"
+                "(allow):s_as_hex_uint,"
+                "(deny):s_as_hex_uint,"
                 "@arg_switches:b"
                 "@record_defined"
                 "@record_null",
@@ -39,8 +39,8 @@ size_t dati_to_json_disabled(char *json, size_t len, struct dati *p)
   r=json_inject(json, len, 
                 "(id):|F|,"
                 "(type):d,"
-                "(allow):s_as_u64,"
-                "(deny):s_as_u64,"
+                "(allow):s_as_hex_uint,"
+                "(deny):s_as_hex_uint,"
                 "@arg_switches:b",
                 orka_ulltostr, &p->id,
                 &p->type,
@@ -64,12 +64,12 @@ void dati_use_default_inject_settings(struct dati *p)
   p->__M.arg_switches[1] = &p->type;
 
   /* specs/channel.objects.json:15:20
-     '{ "name": "allow", "type":{ "base":"s_as_u64"}, "comment":"permission bit set"}'
+     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"permissions::bitwise_flags"}, "comment":"permission bit set"}'
   */
   p->__M.arg_switches[2] = &p->allow;
 
   /* specs/channel.objects.json:16:20
-     '{ "name": "deny", "type":{ "base":"s_as_u64"}, "comment":"permission bit set"}'
+     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"permissions::bitwise_flags"}, "comment":"permission bit set"}'
   */
   p->__M.arg_switches[3] = &p->deny;
 
@@ -122,11 +122,11 @@ void dati_cleanup(struct dati *d) {
   */
   //p->type is a scalar
   /* specs/channel.objects.json:15:20
-     '{ "name": "allow", "type":{ "base":"s_as_u64"}, "comment":"permission bit set"}'
+     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"permissions::bitwise_flags"}, "comment":"permission bit set"}'
   */
   //p->allow is a scalar
   /* specs/channel.objects.json:16:20
-     '{ "name": "deny", "type":{ "base":"s_as_u64"}, "comment":"permission bit set"}'
+     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"permissions::bitwise_flags"}, "comment":"permission bit set"}'
   */
   //p->deny is a scalar
 }
@@ -142,11 +142,11 @@ void dati_init(struct dati *p) {
   */
 
   /* specs/channel.objects.json:15:20
-     '{ "name": "allow", "type":{ "base":"s_as_u64"}, "comment":"permission bit set"}'
+     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"permissions::bitwise_flags"}, "comment":"permission bit set"}'
   */
 
   /* specs/channel.objects.json:16:20
-     '{ "name": "deny", "type":{ "base":"s_as_u64"}, "comment":"permission bit set"}'
+     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"permissions::bitwise_flags"}, "comment":"permission bit set"}'
   */
 
 }

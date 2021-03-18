@@ -57,11 +57,11 @@ enum code {
 
 namespace flags {
 enum code {
-  CROSSPOSTED = 1,
-  IS_CROSSPOST = 2,
-  SUPRESS_EMBEDS = 4,
-  SOURCE_MESSAGE_DELETED = 8,
-  URGENT = 16,
+  CROSSPOSTED = 1, // 1<<0
+  IS_CROSSPOST = 2, // 1<<1
+  SUPRESS_EMBEDS = 4, // 1<<2
+  SOURCE_MESSAGE_DELETED = 8, // 1<<3
+  URGENT = 16, // 1<<4
 };
 } // namespace flags
 
@@ -174,20 +174,20 @@ namespace user {
 
 namespace flags {
 enum code {
-  NONE = 0,
-  DISCORD_EMPLOYEE = 1,
-  PARTNERED_SERVER_OWNER = 2,
-  HYPESQUAD_EVENTS = 4,
-  BUG_HUNTER_LEVEL_1 = 8,
-  HOUSE_BRAVERY = 32,
-  HOUSE_BRILLIANCE = 64,
-  HOUSE_BALANCE = 128,
-  EARLY_SUPPORTER = 256,
-  TEAM_USER = 512,
-  SYSTEM = 4096,
-  BUG_HUNTER_LEVEL_2 = 16384,
-  VERIFIED_BOT = 65536,
-  EARLY_VERIFIED_BOT_DEVELOPER = 131072,
+  NONE = 0, // 0
+  DISCORD_EMPLOYEE = 1, // 1 << 0
+  PARTNERED_SERVER_OWNER = 2, // 1 << 2
+  HYPESQUAD_EVENTS = 4, // 1 << 3
+  BUG_HUNTER_LEVEL_1 = 8, // 1 << 4
+  HOUSE_BRAVERY = 32, // 1 << 6
+  HOUSE_BRILLIANCE = 64, // 1 << 7
+  HOUSE_BALANCE = 128, // 1 << 8
+  EARLY_SUPPORTER = 256, // 1 << 9
+  TEAM_USER = 512, // 1 << 10
+  SYSTEM = 4096, // 1 << 12
+  BUG_HUNTER_LEVEL_2 = 16384, // 1 << 14
+  VERIFIED_BOT = 65536, // 1 << 16
+  EARLY_VERIFIED_BOT_DEVELOPER = 131072, // 1 << 17
 };
 } // namespace flags
 
@@ -292,8 +292,8 @@ enum code {
 
 namespace system_channel_flags {
 enum code {
-  SUPRESS_JOIN_NOTIFICATIONS = 1,
-  SUPRESS_PREMIUM_SUBSCRIPTIONS = 2,
+  SUPRESS_JOIN_NOTIFICATIONS = 1, // 1<<0
+  SUPRESS_PREMIUM_SUBSCRIPTIONS = 2, // 1<<1
 };
 } // namespace system_channel_flags
 
@@ -420,22 +420,6 @@ namespace bulk_delete_messages {
 } // namespace bulk_delete_messages
 } // namespace channel
 } // namespace discord
-/* This file is generated from specs/webhook.json, Please don't edit it. */
-/*
-https://discord.com/developers/docs/resources/webhook#webhook-object-webhook-structure
-*/
-namespace discord {
-
-
-namespace webhook {
-namespace types {
-enum code {
-  INCOMING = 1,
-  CHANNEL_FOLLOWER = 2,
-};
-} // namespace types
-} // namespace webhook
-} // namespace discord
 /* This file is generated from specs/user.create-group-dm.json, Please don't edit it. */
 /*
 
@@ -475,6 +459,50 @@ namespace guild {
 namespace create_guild_role {
 } // namespace create_guild_role
 } // namespace guild
+} // namespace discord
+/* This file is generated from specs/permissions.json, Please don't edit it. */
+/*
+https://discord.com/developers/docs/topics/permissions
+*/
+namespace discord {
+namespace permissions {
+
+
+enum bitwise_flags {
+  ZERO = 0, // No permission bits
+  CREATE_INSTANT_INVITE = 1, // Allows creation of instant invites  T, V
+  KICK_MEMBERS = 2, // Allows kicking members
+  BAN_MEMBERS = 4, // Allows banning members
+  ADMINISTRATOR = 8, // Allows all permissions and bypasses channel permission overwrites   
+  MANAGE_CHANNELS = 16, // Allows management and editing of channels   T, V
+  MANAGE_GUILD = 32, // Allows management and editing of the guild  
+  ADD_REACTIONS = 64, // Allows for the addition of reactions to messages    T
+  VIEW_AUDIT_LOG = 128, // Allows for viewing of audit logs    
+  PRIORITY_SPEAKER = 256, // Allows for using priority speaker in a voice channel    V
+  STREAM = 512, // Allows the user to go live  V
+  VIEW_CHANNEL = 1024, // Allows guild members to view a channel, which includes reading messages in text channels    T, V
+  SEND_MESSAGES = 2048, // Allows for sending messages in a channel    T
+  SEND_TTS_MESSAGES = 4096, // Allows for sending of /tts messages T
+  MANAGE_MESSAGES = 8192, // Allows for deletion of other users messages T
+  EMBED_LINKS = 16384, // Links sent by users with this permission will be auto-embedded  T
+  ATTACH_FILES = 32768, // Allows for uploading images and files   T
+  READ_MESSAGE_HISTORY = 65536, // Allows for reading of message history   T
+  MENTION_EVERYONE = 131072, // Allows for using the @everyone tag to notify all users in a channel, and the @here tag to notify all online users in a channel  T
+  USE_EXTERNAL_EMOJIS = 262144, // Allows the usage of custom emojis from other servers    T
+  VIEW_GUILD_INSIGHTS = 524288, // Allows for viewing guild insights   
+  CONNECT = 1048576, // Allows for joining of a voice channel   V
+  SPEAK = 2097152, // Allows for speaking in a voice channel  V
+  MUTE_MEMBERS = 4194304, // Allows for muting members in a voice channel    V
+  DEAFEN_MEMBERS = 8388608, // Allows for deafening of members in a voice channel  V
+  MOVE_MEMBERS = 16777216, // Allows for moving of members between voice channels V
+  USE_VAD = 33554432, // Allows for using voice-activity-detection in a voice channel    V
+  CHANGE_NICKNAME = 67108864, // Allows for modification of own nickname 
+  MANAGE_NICKNAMES = 134217728, // Allows for modification of other users nicknames    
+  MANAGE_ROLES = 268435456, // Allows management and editing of roles  T, V
+  MANAGE_WEBHOOKS = 536870912, // Allows management and editing of webhooks   T, V
+  MANAGE_EMOJIS = 1073741824, // Allows management and editing of emojis
+};
+} // namespace permissions
 } // namespace discord
 /* This file is generated from specs/audit_log.json, Please don't edit it. */
 /*
@@ -598,21 +626,21 @@ enum close_opcodes {
 
 namespace intents {
 enum code {
-  GUILDS = 1,
-  GUILD_MEMBERS = 2,
-  GUILD_BANS = 4,
-  GUILD_EMOJIS = 8,
-  GUILD_INTEGRATIONS = 16,
-  GUILD_WEBHOOKS = 32,
-  GUILD_INVITES = 64,
-  GUILD_VOICE_STATES = 128,
-  GUILD_PRESENCES = 256,
-  GUILD_MESSAGES = 512,
-  GUILD_MESSAGE_REACTIONS = 1024,
-  GUILD_MESSAGE_TYPING = 2048,
-  DIRECT_MESSAGES = 4096,
-  DIRECT_MESSAGE_REACTIONS = 8192,
-  DIRECT_MESSAGE_TYPING = 16384,
+  GUILDS = 1, // 1 << 0
+  GUILD_MEMBERS = 2, // 1 << 1
+  GUILD_BANS = 4, // 1 << 2
+  GUILD_EMOJIS = 8, // 1 << 3
+  GUILD_INTEGRATIONS = 16, // 1 << 4
+  GUILD_WEBHOOKS = 32, // 1 << 5
+  GUILD_INVITES = 64, // 1 << 6
+  GUILD_VOICE_STATES = 128, // 1 << 7
+  GUILD_PRESENCES = 256, // 1 << 8
+  GUILD_MESSAGES = 512, // 1 << 9
+  GUILD_MESSAGE_REACTIONS = 1024, // 1 << 10
+  GUILD_MESSAGE_TYPING = 2048, // 1 << 11
+  DIRECT_MESSAGES = 4096, // 1 << 12
+  DIRECT_MESSAGE_REACTIONS = 8192, // 1 << 13
+  DIRECT_MESSAGE_TYPING = 16384, // 1 << 14
 };
 } // namespace intents
 
@@ -690,4 +718,20 @@ namespace user {
 namespace modify_current_user {
 } // namespace modify_current_user
 } // namespace user
+} // namespace discord
+/* This file is generated from specs/webhook.json, Please don't edit it. */
+/*
+https://discord.com/developers/docs/resources/webhook#webhook-object-webhook-structure
+*/
+namespace discord {
+
+
+namespace webhook {
+namespace types {
+enum code {
+  INCOMING = 1,
+  CHANNEL_FOLLOWER = 2,
+};
+} // namespace types
+} // namespace webhook
 } // namespace discord

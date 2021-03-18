@@ -739,13 +739,17 @@ static void gen_enum(FILE *fp, struct jc_enum *e)
     else {
       fprintf(fp, "  %s", item->name);
       if (item->has_value) {
-        fprintf(fp, " = %d,\n", item->value);
+        fprintf(fp, " = %d", item->value);
         prev_value = item->value;
       }
       else {
-        fprintf(fp, " = %d,\n", prev_value + 1);
+        fprintf(fp, " = %d", prev_value + 1);
         prev_value ++;
       }
+      if (item->comment)
+        fprintf(fp, ", // %s\n", item->comment);
+      else
+        fprintf(fp, ",\n");
     }
   }
   fprintf(fp, "};\n");
@@ -854,10 +858,19 @@ static int to_builtin_action(struct jc_field *f, struct action *act)
       //@todo check xend
     }
   }
-  else if (strcmp(f->type.base, "s_as_i64") == 0) {
-    act->extractor = "s_as_i64";
-    act->injector = "s_as_i64";
-    act->c_type = "uint64_t";
+  else if (strcmp(f->type.base, "s_as_hex_uint") == 0) {
+    act->extractor = "s_as_hex_uint";
+    act->injector = "s_as_hex_uint";
+    act->c_type = "unsigned int";
+    if (f->type.int_alias) {
+      act->c_type = f->type.int_alias;
+    }
+    if (f->inject_condition.opcode == INJECT_IF_NOT_STR) {
+      f->inject_condition.opcode = INJECT_IF_NOT_INT;
+      f->inject_condition._.ival = (uint64_t)strtoll(f->inject_condition.string,
+                                                     &xend, 10);
+      //@todo check xend
+    }
   }
   else if (strcmp(f->type.base, "int64_t") == 0) {
     act->extractor = "i64";

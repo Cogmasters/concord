@@ -18,14 +18,14 @@ struct dati {
   int type;
 
   /* specs/channel.objects.json:15:20
-     '{ "name": "allow", "type":{ "base":"s_as_u64"}, "comment":"permission bit set"}'
+     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"permissions::bitwise_flags"}, "comment":"permission bit set"}'
   */
-  uint64_t allow; // permission bit set
+  permissions::bitwise_flags allow; // permission bit set
 
   /* specs/channel.objects.json:16:20
-     '{ "name": "deny", "type":{ "base":"s_as_u64"}, "comment":"permission bit set"}'
+     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"permissions::bitwise_flags"}, "comment":"permission bit set"}'
   */
-  uint64_t deny; // permission bit set
+  permissions::bitwise_flags deny; // permission bit set
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
