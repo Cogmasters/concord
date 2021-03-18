@@ -113,6 +113,11 @@ static char* do_url(js_State *J, int *nparam_p)
   user_agent::dati *req = (user_agent::dati *)js_touserdata(J, 0, TAG);
   char *url, *m, *b = "";
 
+  int n = js_gettop(J);
+  *nparam_p = n;
+
+  jsB_log("number of parameters: %d\n", n);
+
   enum http_method method;
   if (js_isstring(J, 1)) {
     m = (char *)js_tostring(J, 1);
@@ -133,11 +138,14 @@ static char* do_url(js_State *J, int *nparam_p)
     //js_error(J, "HttpGet.do expect a url parameter");
     exit(1);
   }
-  int n = js_gettop(J);
-  *nparam_p = n;
 
-  if (n == 3) { // has body
+
+  if (n == 4) { // has body
     if (js_isobject(J, 3)) {
+      b = (char *)js_tostring(J, 3);
+      jsB_log("body: %s\n", b);
+    }
+    else if (js_isstring(J, 3)) {
       b = (char *)js_tostring(J, 3);
       jsB_log("body: %s\n", b);
     }
@@ -199,7 +207,7 @@ void jsB_init_D(js_State *J)
 {
   js_getglobal(J, "Object");
   js_getproperty(J, -1, "prototype");
-  js_newuserdata(J, TAG, ator("bot.config"), dtor);
+  js_newuserdata(J, TAG, NULL, dtor);
   {
     js_newcfunction(J, prototype_json, TAG ".prototype.json", 1);
     js_defproperty(J, -2, "json", JS_DONTENUM);
@@ -208,4 +216,42 @@ void jsB_init_D(js_State *J)
   }
   js_newcconstructor(J, new_TAG, new_TAG, TAG, 1);
   js_defglobal(J, TAG, JS_DONTENUM);
+}
+
+void jsB_me_channel(js_State *J,
+                    uint64_t guild_id,
+                    char *me_name,
+                    uint64_t me_id,
+                    uint64_t author_id,
+                    uint64_t channel_id,
+                    uint64_t message_id)
+{
+  js_newobject(J);
+  {
+    char p[256];
+
+    snprintf(p, sizeof(p), "%llu", guild_id);
+    js_pushstring(J, p);
+    js_setproperty(J, -2, "guild_id");
+
+    js_pushstring(J, me_name);
+    js_setproperty(J, -2, "me_name");
+
+    snprintf(p, sizeof(p), "%llu", me_id);
+    js_pushstring(J, p);
+    js_setproperty(J, -2, "me_id");
+
+    snprintf(p, sizeof(p), "%llu", author_id);
+    js_pushstring(J, p);
+    js_setproperty(J, -2, "author_id");
+
+    snprintf(p, sizeof(p), "%llu", channel_id);
+    js_pushstring(J, p);
+    js_setproperty(J, -2, "channel_id");
+
+    snprintf(p, sizeof(p), "%llu", message_id);
+    js_pushstring(J, p);
+    js_setproperty(J, -2, "message_id");
+  }
+  js_setglobal(J, "discord_my_info");
 }

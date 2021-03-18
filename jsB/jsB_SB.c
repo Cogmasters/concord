@@ -79,7 +79,7 @@ void jsB_init_SB(js_State *J)
 {
   js_getglobal(J, "Object");
   js_getproperty(J, -1, "prototype");
-  js_newuserdata(J, TAG, SB_ator("", 0), SB_dtor);
+  js_newuserdata(J, TAG, NULL, NULL);
   {
     js_newcfunction(J, prototype_json, TAG ".prototype.json", 1);
     js_defproperty(J, -2, "json", JS_DONTENUM);
