@@ -1065,5 +1065,12 @@ run(dati *ws) {
   ws_run(&ws->common);
 }
 
+void
+shutdown(dati *ws) {
+  ws_set_status(&ws->common, WS_DISCONNECTED);
+  char reason[] = "Shutdown gracefully";
+  ws_close(&ws->common, CWS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
+}
+
 } // namespace websockets
 } // namespace discord

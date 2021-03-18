@@ -396,6 +396,10 @@ struct dati { /* WEBSOCKETS STRUCTURE */
 void init(dati *ws, const char token[], const char config_file[]);
 void cleanup(dati *ws);
 void run(dati *ws);
+/*
+ * gracefully exit the infinite loop
+ */
+void shutdown(dati *ws);
 
 } // namespace websockets
 
