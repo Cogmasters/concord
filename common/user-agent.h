@@ -3,6 +3,7 @@
 
 #include <inttypes.h>
 #include <curl/curl.h>
+#include <pthread.h>
 
 #include "ntl.h"
 #include "orka-config.h"
