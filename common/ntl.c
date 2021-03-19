@@ -192,15 +192,30 @@ STATIC size_t ntl_to_abuf2(char **buf_p, struct ntl_serializer *serializer)
  */
 STATIC size_t ntl_to_buf(char *buf, size_t size, ntl_t p, struct ntl_str_delimiter *d, ntl_elem_serializer *x)
 {
-  static struct ntl_str_delimiter dx = { '[', ",", "", ']' };
-  if (!d) d = &dx;
+  static struct ntl_str_delimiter dx = 
+  { .start_delimiter = '[', 
+    .element_delimiter = ",", 
+    .last_element_delimiter = "", 
+    .end_delimiter = ']',
+    .null_ntl = "null"
+  };
 
-  if (p == NULL)
-    return 0;
+  if (!d) d = &dx;
 
   const char *start = buf;
   size_t i, tsize = 0;
   size_t psize;
+
+  if (p == NULL) {
+    if (dx.null_ntl == NULL)
+      return 0;
+    else {
+      tsize = snprintf(buf, size, "%s", dx.null_ntl);
+      return tsize;
+    }
+  }
+
+  
 
   if (start) {
     buf[0] = d->start_delimiter;

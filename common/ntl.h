@@ -145,6 +145,7 @@ struct ntl_str_delimiter {
   char *element_delimiter;
   char *last_element_delimiter;
   char end_delimiter;
+  char *null_ntl;
 };
 
 /*
