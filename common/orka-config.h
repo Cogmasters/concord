@@ -7,6 +7,18 @@ extern "C" {
 
 #include "ntl.h"
 
+
+/* UTILITY MACROS */
+#define STREQ(str1, str2) (0 == strcmp(str1, str2))
+#define STRNEQ(str1, str2, n) (0 == strncmp(str1, str2, n))
+//check if string is empty
+#define IS_EMPTY_STRING(str) (!(str) || !*(str))
+//if case matches return token as string
+#define CASE_RETURN_STR(opcode) case opcode: return #opcode
+//if str matches enum token, return enum value
+#define STREQ_RETURN_ENUM(enum, str) if(STREQ(#enum, str))return enum
+
+
 struct orka_config {
   char *tag;
 
