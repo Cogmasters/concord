@@ -10,18 +10,14 @@ static void
 cws_on_connect_cb(void *p_ws, CURL *ehandle, const char *ws_protocols)
 {
   struct websockets_s *ws = p_ws;
-  pthread_mutex_lock(&ws->lock);
   (*ws->cbs.on_connect)(ws->cbs.data, ws_protocols);
-  pthread_mutex_unlock(&ws->lock);
 }
 
 static void
 cws_on_close_cb(void *p_ws, CURL *ehandle, enum cws_close_reason cwscode, const char *reason, size_t len)
 {
   struct websockets_s *ws = p_ws;
-  pthread_mutex_lock(&ws->lock);
   (*ws->cbs.on_close)(ws->cbs.data, cwscode, reason, len);
-  pthread_mutex_unlock(&ws->lock);
 }
 
 struct _event_cxt {
@@ -58,7 +54,6 @@ static void
 cws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
 {
   struct websockets_s *ws = p_ws;
-
 
   int event_code = (*ws->cbs.on_text_event)(ws->cbs.data, text, len);
   for (size_t i=0; i < ws->cbs.num_events; ++i) {
@@ -124,36 +119,30 @@ cws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
     ws->base_url, 
     (char*)text);
 
-  (*ws->cbs.on_text)(ws->cbs.data, text, len);
-
   pthread_mutex_unlock(&ws->lock);
+
+  (*ws->cbs.on_text)(ws->cbs.data, text, len);
 }
 
 static void
 cws_on_binary_cb(void *p_ws, CURL *ehandle, const void *mem, size_t len)
 {
   struct websockets_s *ws = p_ws;
-  pthread_mutex_lock(&ws->lock);
   (*ws->cbs.on_binary)(ws->cbs.data, mem, len);
-  pthread_mutex_unlock(&ws->lock);
 }
 
 static void
 cws_on_ping_cb(void *p_ws, CURL *ehandle, const char *reason, size_t len)
 {
   struct websockets_s *ws = p_ws;
-  pthread_mutex_lock(&ws->lock);
   (*ws->cbs.on_ping)(ws->cbs.data, reason, len);
-  pthread_mutex_unlock(&ws->lock);
 }
 
 static void
 cws_on_pong_cb(void *p_ws, CURL *ehandle, const char *reason, size_t len)
 {
   struct websockets_s *ws = p_ws;
-  pthread_mutex_lock(&ws->lock);
   (*ws->cbs.on_pong)(ws->cbs.data, reason, len);
-  pthread_mutex_unlock(&ws->lock);
 }
 
 /* init easy handle with some default opt */
@@ -233,8 +222,6 @@ ws_init(
 
   if (pthread_mutex_init(&ws->lock, NULL))
     ERR("Couldn't initialize pthread mutex");
-  if (pthread_mutex_init(&ws->threads_lock, NULL))
-    ERR("Couldn't initialize pthread mutex");
   if (pthread_cond_init(&ws->cond, NULL))
     ERR("Couldn't initialize pthread cond");
 }
@@ -261,7 +248,6 @@ ws_cleanup(struct websockets_s *ws)
   cws_free(ws->ehandle);
   orka_config_cleanup(&ws->config);
   pthread_mutex_destroy(&ws->lock);
-  pthread_mutex_destroy(&ws->threads_lock);
   pthread_cond_destroy(&ws->cond);
 }
 
@@ -284,15 +270,13 @@ event_loop(struct websockets_s *ws)
   do {
     int numfds;
 
-    pthread_mutex_lock(&ws->threads_lock);
+    pthread_mutex_lock(&ws->lock);
     ws->now_tstamp = orka_timestamp_ms(); //update our concept of now
-    pthread_mutex_unlock(&ws->threads_lock);
+    pthread_mutex_unlock(&ws->lock);
 
     // @todo branchless alternative ?
     if (ws_get_status(ws) == WS_CONNECTED) { // run if connection established
-      pthread_mutex_lock(&ws->lock);
       (*ws->cbs.on_iter_start)(ws->cbs.data);
-      pthread_mutex_unlock(&ws->lock);
     }
 
     mcode = curl_multi_perform(ws->mhandle, &is_running);
@@ -304,11 +288,10 @@ event_loop(struct websockets_s *ws)
 
     // @todo branchless alternative ?
     if (ws_get_status(ws) == WS_CONNECTED) { // run if connection established
-      pthread_mutex_lock(&ws->lock);
       (*ws->cbs.on_iter_end)(ws->cbs.data);
-      pthread_mutex_unlock(&ws->lock);
     }
   } while(is_running);
+
   curl_multi_remove_handle(ws->mhandle, ws->ehandle);
 }
 
@@ -319,14 +302,16 @@ ws_close(
   const char reason[], 
   size_t len)
 {
+  pthread_mutex_lock(&ws->lock);
   //@todo add pthread_join() here
   cws_close(ws->ehandle, cwscode, reason, len);
+  pthread_mutex_unlock(&ws->lock);
 }
 
 void
 ws_send_text(struct websockets_s *ws, char text[])
 {
-  pthread_mutex_lock(&ws->threads_lock);
+  pthread_mutex_lock(&ws->lock);
   (*ws->config.json_cb)(
     false, 
     0, "SEND", 
@@ -336,52 +321,52 @@ ws_send_text(struct websockets_s *ws, char text[])
 
   bool ret = cws_send_text(ws->ehandle, text);
   if (false == ret) PRINT("Couldn't send websockets payload");
-  pthread_mutex_unlock(&ws->threads_lock);
+  pthread_mutex_unlock(&ws->lock);
 }
 
 uint64_t
 ws_timestamp(struct websockets_s *ws) 
 {
-  pthread_mutex_lock(&ws->threads_lock);
+  pthread_mutex_lock(&ws->lock);
   uint64_t now_tstamp = ws->now_tstamp;
-  pthread_mutex_unlock(&ws->threads_lock);
+  pthread_mutex_unlock(&ws->lock);
   return now_tstamp;
 }
 
 enum ws_status
 ws_get_status(struct websockets_s *ws) 
 {
-  pthread_mutex_lock(&ws->threads_lock);
+  pthread_mutex_lock(&ws->lock);
   enum ws_status status = ws->status;
-  pthread_mutex_unlock(&ws->threads_lock);
+  pthread_mutex_unlock(&ws->lock);
   return status;
 }
 
 void
 ws_set_status(struct websockets_s *ws, enum ws_status status) 
 {
-  pthread_mutex_lock(&ws->threads_lock);
+  pthread_mutex_lock(&ws->lock);
   if (status == WS_CONNECTED) {
     ws->reconnect.attempt = 0;
   }
   ws->status = status;
-  pthread_mutex_unlock(&ws->threads_lock);
+  pthread_mutex_unlock(&ws->lock);
 }
 
 void
 ws_set_refresh_rate(struct websockets_s *ws, uint64_t wait_ms) 
 {
-  pthread_mutex_lock(&ws->threads_lock);
+  pthread_mutex_lock(&ws->lock);
   ws->wait_ms = wait_ms;
-  pthread_mutex_unlock(&ws->threads_lock);
+  pthread_mutex_unlock(&ws->lock);
 }
 
 void
 ws_set_max_reconnect(struct websockets_s *ws, int max_attempts) 
 {
-  pthread_mutex_lock(&ws->threads_lock);
+  pthread_mutex_lock(&ws->lock);
   ws->reconnect.threshold = max_attempts;
-  pthread_mutex_unlock(&ws->threads_lock);
+  pthread_mutex_unlock(&ws->lock);
 }
 
 void

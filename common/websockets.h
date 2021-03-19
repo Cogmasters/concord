@@ -71,9 +71,6 @@ struct websockets_s {
 
   struct ws_callbacks cbs;
 
-  pthread_mutex_t lock; //for the websockets struct itself
-  pthread_cond_t cond;
-
   /* will last only for this current loop iteration, the data is 
    *   passed as a on_event callback parameter, and free'd from 
    *   memory with the given cleanup function (if any is given) */
@@ -82,7 +79,9 @@ struct websockets_s {
 
   struct thread_pool threads[MAX_THREADS];
   int num_notbusy; // num of available threads
-  pthread_mutex_t threads_lock; // lock for fns used across callbacks
+
+  pthread_mutex_t lock;
+  pthread_cond_t cond;
 };
 
 void ws_init(struct websockets_s *ws, const char base_url[], struct ws_callbacks *cbs);

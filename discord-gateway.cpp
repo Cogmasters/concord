@@ -151,11 +151,11 @@ on_hello(void *p_gw, void *curr_iter_data)
   pthread_mutex_lock(&gw->lock);
   gw->hbeat.interval_ms = 0;
   gw->hbeat.tstamp = orka_timestamp_ms();
-  pthread_mutex_unlock(&gw->lock);
 
   json_scanf(payload->event_data, sizeof(payload->event_data),
              "[heartbeat_interval]%ld", &gw->hbeat.interval_ms);
   ASSERT_S(gw->hbeat.interval_ms > 0, "Invalid heartbeat_ms");
+  pthread_mutex_unlock(&gw->lock);
 
   if (WS_RESUME == ws_get_status(&gw->ws))
     send_resume(gw);
