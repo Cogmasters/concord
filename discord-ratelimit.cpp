@@ -8,7 +8,7 @@
 #include "orka-utils.h"
 
 namespace discord {
-namespace user_agent {
+namespace adapter {
 namespace bucket {
 
 /* See:
@@ -88,13 +88,13 @@ routecmp(const void *p_route1, const void *p_route2)
 
 /* attempt to find a bucket associated with this endpoint */
 dati*
-try_get(user_agent::dati *ua, char endpoint[])
+try_get(adapter::dati *adapter, char endpoint[])
 {
   struct _route_s search_route = {
     .str = endpoint
   };
   struct _route_s **p_route;
-  p_route = (struct _route_s**)tfind(&search_route, &ua->ratelimit.routes_root, &routecmp);
+  p_route = (struct _route_s**)tfind(&search_route, &adapter->ratelimit.routes_root, &routecmp);
 
   //if found matching route, return its bucket, otherwise NULL
   return (p_route) ? (*p_route)->p_bucket : NULL;
@@ -141,7 +141,7 @@ bucket_cleanup(dati *bucket)
  *  client buckets.
  * If no match is found then we create a new client bucket */
 static void
-match_route(user_agent::dati *ua, char endpoint[], struct ua_conn_s *conn)
+match_route(adapter::dati *adapter, char endpoint[], struct ua_conn_s *conn)
 {
   char *bucket_hash = ua_respheader_value(conn, "x-ratelimit-bucket");
   if (!bucket_hash) return; //no hash information in header
@@ -152,27 +152,27 @@ match_route(user_agent::dati *ua, char endpoint[], struct ua_conn_s *conn)
   new_route->str = strdup(endpoint);
 
   //attempt to match hash to client bucket hashes
-  for (size_t i=0; i < ua->ratelimit.num_buckets; ++i) {
-    if (STREQ(bucket_hash, ua->ratelimit.buckets[i]->hash)) {
-      new_route->p_bucket = ua->ratelimit.buckets[i];
+  for (size_t i=0; i < adapter->ratelimit.num_buckets; ++i) {
+    if (STREQ(bucket_hash, adapter->ratelimit.buckets[i]->hash)) {
+      new_route->p_bucket = adapter->ratelimit.buckets[i];
       break; /* EARLY BREAK */
     }
   }
 
   if (!new_route->p_bucket) { //couldn't find match, create new bucket
-    ++ua->ratelimit.num_buckets; //increments client buckets
+    ++adapter->ratelimit.num_buckets; //increments client buckets
 
-    ua->ratelimit.buckets = (dati**)realloc(ua->ratelimit.buckets, \
-                              ua->ratelimit.num_buckets * sizeof(dati*));
+    adapter->ratelimit.buckets = (dati**)realloc(adapter->ratelimit.buckets, \
+                              adapter->ratelimit.num_buckets * sizeof(dati*));
 
     dati *new_bucket = bucket_init(bucket_hash);
-    ua->ratelimit.buckets[ua->ratelimit.num_buckets-1] = new_bucket;
+    adapter->ratelimit.buckets[adapter->ratelimit.num_buckets-1] = new_bucket;
     new_route->p_bucket = new_bucket; //route points to new bucket
   }
 
   //add new route to tree and update its bucket ratelimit fields
   struct _route_s *ret_route;
-  ret_route = *(struct _route_s **)tsearch(new_route, &ua->ratelimit.routes_root, &routecmp);
+  ret_route = *(struct _route_s **)tsearch(new_route, &adapter->ratelimit.routes_root, &routecmp);
 
   parse_ratelimits(ret_route->p_bucket, conn);
 }
@@ -181,13 +181,13 @@ match_route(user_agent::dati *ua, char endpoint[], struct ua_conn_s *conn)
  * In case that the endpoint doesn't have a bucket for routing, no 
  *  clashing will occur */
 void
-build(user_agent::dati *ua, dati *bucket, char endpoint[], struct ua_conn_s *conn)
+build(adapter::dati *adapter, dati *bucket, char endpoint[], struct ua_conn_s *conn)
 {
   /* no bucket means first time using this endpoint.  attempt to 
    *  establish a route between it and a bucket via its unique hash 
    *  (will create a new bucket if it can't establish a route) */
   if (!bucket)
-    match_route(ua, endpoint, conn);
+    match_route(adapter, endpoint, conn);
   else // update the bucket rate limit values
     parse_ratelimits(bucket, conn);
 }
@@ -205,18 +205,18 @@ route_cleanup(void *p_route)
 
 /* clean routes and buckets */
 void
-cleanup(user_agent::dati *ua)
+cleanup(adapter::dati *adapter)
 {
   //destroy every route encountered
-  tdestroy(ua->ratelimit.routes_root, &route_cleanup);
+  tdestroy(adapter->ratelimit.routes_root, &route_cleanup);
 
   //destroy every client bucket found
-  for (size_t i=0; i < ua->ratelimit.num_buckets; ++i) {
-    bucket_cleanup(ua->ratelimit.buckets[i]);
+  for (size_t i=0; i < adapter->ratelimit.num_buckets; ++i) {
+    bucket_cleanup(adapter->ratelimit.buckets[i]);
   }
-  free(ua->ratelimit.buckets);
+  free(adapter->ratelimit.buckets);
 }
 
 } // namespace bucket
-} // namespace user_agent
+} // namespace adapter
 } // namespace discord

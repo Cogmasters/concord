@@ -79,8 +79,8 @@ run(client *client, const u64_snowflake_t channel_id, dati *p_channel)
   struct resp_handle resp_handle =
     { .ok_cb = &dati_from_json_v, .ok_obj = (void*)p_channel};
 
-  user_agent::run(
-    &client->ua,
+  adapter::run(
+    &client->adapter,
     &resp_handle,
     NULL,
     HTTP_GET,
@@ -102,8 +102,8 @@ run(client *client, const u64_snowflake_t channel_id, dati *p_channel)
     .ok_obj = p_channel,
   };
 
-  user_agent::run( 
-    &client->ua,
+  adapter::run( 
+    &client->adapter,
     &resp_handle,
     NULL,
     HTTP_DELETE,
@@ -127,8 +127,8 @@ run(
     return;
   }
 
-  user_agent::run( 
-    &client->ua,
+  adapter::run( 
+    &client->adapter,
     NULL,
     NULL,
     HTTP_PUT, 
@@ -152,8 +152,8 @@ delete_pinned_channel_message(
     return;
   }
 
-  user_agent::run( 
-    &client->ua,
+  adapter::run( 
+    &client->adapter,
     NULL,
     NULL,
     HTTP_DELETE,
@@ -207,8 +207,8 @@ run(
   struct resp_handle resp_handle = 
     { .ok_cb = &message::dati_list_from_json_v, .ok_obj = (void*)p_messages};
 
-  user_agent::run( 
-    &client->ua,
+  adapter::run( 
+    &client->adapter,
     &resp_handle,
     NULL,
     HTTP_GET, 
@@ -232,8 +232,8 @@ run(
     D_PUTS("Missing 'message_id'");
     return;
   }
-  user_agent::run(
-    &client->ua,
+  adapter::run(
+    &client->adapter,
     NULL,
     NULL,
     HTTP_DELETE,
@@ -347,8 +347,8 @@ run(
 
     struct sized_buffer req_body = {payload, strlen(payload)};
 
-    user_agent::run( 
-      &client->ua,
+    adapter::run( 
+      &client->adapter,
       &resp_handle,
       &req_body,
       HTTP_POST, 
@@ -356,18 +356,18 @@ run(
   }
   else 
   { // content-type is multipart/form-data
-    ua_reqheader_add(&client->ua.common, "Content-Type", "multipart/form-data");
+    ua_reqheader_add(&client->adapter.ua, "Content-Type", "multipart/form-data");
 
-    ua_mime_setopt(&client->ua.common, params, &curl_mime_cb);
+    ua_mime_setopt(&client->adapter.ua, params, &curl_mime_cb);
 
-    user_agent::run( 
-      &client->ua,
+    adapter::run( 
+      &client->adapter,
       &resp_handle,
       NULL,
       HTTP_MIMEPOST, "/channels/%llu/messages", channel_id);
 
     //set back to default
-    ua_reqheader_add(&client->ua.common, "Content-Type", "application/json");
+    ua_reqheader_add(&client->adapter.ua, "Content-Type", "application/json");
   }
 }
 } // namespace create_message
@@ -422,7 +422,7 @@ run(
 
   struct sized_buffer req_body = { payload, strlen(payload) };
 
-  user_agent::run(&client->ua,
+  adapter::run(&client->adapter,
     &resp_handle,
     &req_body,
     HTTP_PATCH,
@@ -458,8 +458,8 @@ run(
   else
     snprintf(emoji_endpoint, sizeof(emoji_endpoint), "%s", pct_emoji_name);
 
-  user_agent::run(
-    &client->ua,
+  adapter::run(
+    &client->adapter,
     NULL,
     NULL,
     HTTP_PUT,
@@ -479,8 +479,8 @@ run(client* client, u64_snowflake_t channel_id)
     return;
   }
 
-  user_agent::run( 
-    &client->ua,
+  adapter::run( 
+    &client->adapter,
     NULL,
     NULL,
     HTTP_POST, 

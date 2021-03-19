@@ -15,10 +15,10 @@ init(const char token[])
   client *new_client = (client*)calloc(1, sizeof(client));
   if (NULL == new_client) return NULL;
 
-  new_client->ua.p_client = new_client;
+  new_client->adapter.p_client = new_client;
   new_client->gw.p_client = new_client;
   
-  user_agent::init(&new_client->ua, token, NULL);
+  adapter::init(&new_client->adapter, token, NULL);
   gateway::init(&new_client->gw, token, NULL);
 
   return new_client;
@@ -30,10 +30,10 @@ config_init(const char config_file[])
   client *new_client = (client*)calloc(1, sizeof(client));
   if (NULL == new_client) return NULL;
 
-  new_client->ua.p_client = new_client;
+  new_client->adapter.p_client = new_client;
   new_client->gw.p_client = new_client;
   
-  user_agent::init(&new_client->ua, NULL, config_file);
+  adapter::init(&new_client->adapter, NULL, config_file);
   gateway::init(&new_client->gw, NULL, config_file);
 
   return new_client;
@@ -42,7 +42,7 @@ config_init(const char config_file[])
 void
 cleanup(client *client)
 {
-  user_agent::cleanup(&client->ua);
+  adapter::cleanup(&client->adapter);
   gateway::cleanup(&client->gw);
 
   free(client);

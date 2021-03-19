@@ -20,8 +20,8 @@ run(client *client, const u64_snowflake_t user_id, dati *p_user)
   struct resp_handle resp_handle =
     { .ok_cb = &dati_from_json_v, .ok_obj = (void*)p_user};
 
-  user_agent::run( 
-    &client->ua,
+  adapter::run( 
+    &client->adapter,
     &resp_handle,
     NULL,
     HTTP_GET, 
@@ -36,8 +36,8 @@ run(client *client, dati *p_user)
   struct resp_handle resp_handle =
     { .ok_cb = &dati_from_json_v, .ok_obj = (void*)p_user};
 
-  user_agent::run( 
-    &client->ua,
+  adapter::run( 
+    &client->adapter,
     &resp_handle,
     NULL,
     HTTP_GET, 
@@ -58,8 +58,8 @@ sb_run(client *client, struct sized_buffer *p_sb_user)
   struct resp_handle resp_handle =
     {.ok_cb = &json_to_sb, .ok_obj = (void*)p_sb_user};
 
-  user_agent::run( 
-    &client->ua,
+  adapter::run( 
+    &client->adapter,
     &resp_handle,
     NULL,
     HTTP_GET, 
@@ -75,8 +75,8 @@ run(client *client, NTL_T(guild::dati) *p_guilds)
   struct resp_handle resp_handle =
     { .ok_cb = &guild::dati_list_from_json_v, .ok_obj = (void*)p_guilds};
 
-  user_agent::run( 
-    &client->ua,
+  adapter::run( 
+    &client->adapter,
     &resp_handle,
     NULL,
     HTTP_GET,
@@ -89,8 +89,8 @@ void run(client *client, const u64_snowflake_t guild_id)
 {
   struct sized_buffer req_body = {"{}", 2};
 
-  user_agent::run(
-    &client->ua,
+  adapter::run(
+    &client->adapter,
     NULL,
     &req_body,
     HTTP_DELETE,

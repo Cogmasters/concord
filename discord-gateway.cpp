@@ -9,7 +9,7 @@
 #include "discord-common.h"
 
 
-#define BASE_WEBSOCKETS_URL "wss://gateway.discord.gg/?v=6&encoding=json"
+#define BASE_GATEWAY_URL "wss://gateway.discord.gg/?v=6&encoding=json"
 
 namespace discord {
 namespace gateway {
@@ -131,14 +131,6 @@ send_identify(dati *gw)
               "(d):F",
               &identify::dati_to_json_v, gw->identify);
   ASSERT_S(ret < (int)sizeof(payload), "Out of bounds write attempt");
-
-  /* @todo this is a temporary solution for a JSON formatting bug */
-#if 0  
-  char *bug_start = strstr(payload, "\"activities\":");
-  char bug_skip[500];
-  sprintf(bug_skip, "%s", bug_start+13);
-  sprintf(bug_start+13, "null%s", bug_skip);
-#endif  
 
   // contain token (sensitive data), enable _ORKA_DEBUG_STRICT to print it
   DS_PRINT("IDENTIFY PAYLOAD:\n\t%s", payload);
@@ -664,15 +656,15 @@ init(dati *gw, const char token[], const char config_file[])
   if (config_file) { 
     ws_config_init(
       &gw->ws, 
-      BASE_WEBSOCKETS_URL, 
+      BASE_GATEWAY_URL, 
       &cbs,
-      "DISCORD WEBSOCKETS", 
+      "DISCORD GATEWAY", 
       config_file);
     token = orka_config_get_field(&gw->ws.config, "discord.token");
   }
   else {
-    ws_init(&gw->ws, BASE_WEBSOCKETS_URL, &cbs);
-    orka_config_init(&gw->ws.config, "DISCORD WEBSOCKETS", NULL);
+    ws_init(&gw->ws, BASE_GATEWAY_URL, &cbs);
+    orka_config_init(&gw->ws.config, "DISCORD GATEWAY", NULL);
   }
   if (!token) ERR("Missing bot token");
 
@@ -747,8 +739,8 @@ get(client *client, dati *p_session)
   struct resp_handle resp_handle = \
     { .ok_cb = &dati_from_json, .ok_obj = (void*)p_session };
 
-  user_agent::run( 
-    &client->ua,
+  adapter::run( 
+    &client->adapter,
     &resp_handle,
     NULL,
     HTTP_GET,
@@ -761,8 +753,8 @@ get_bot(client *client, dati *p_session)
   struct resp_handle resp_handle = \
     { .ok_cb = &dati_from_json, .ok_obj = (void*)p_session};
 
-  user_agent::run( 
-    &client->ua,
+  adapter::run( 
+    &client->adapter,
     &resp_handle,
     NULL,
     HTTP_GET,

@@ -20,8 +20,8 @@ run(client *client, const uint64_t guild_id, NTL_T(dati) *p_emojis)
   struct resp_handle resp_handle =
     { .ok_cb = &dati_list_from_json_v, .ok_obj = (void*)p_emojis};
 
-  user_agent::run( 
-    &client->ua,
+  adapter::run( 
+    &client->adapter,
     &resp_handle,
     NULL,
     HTTP_GET,

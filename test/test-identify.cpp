@@ -1,7 +1,6 @@
-#include "discord-common.h"
-#include "json-actor.h"
+#include "libdiscord.h"
 
-namespace  iden = discord::websockets::identify;
+namespace  iden = discord::gateway::identify;
 
 int main (int argc, char ** argv)
 {

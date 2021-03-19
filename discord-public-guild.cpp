@@ -20,8 +20,8 @@ run(client *client, const u64_snowflake_t guild_id, dati *p_guild)
   struct resp_handle resp_handle =
     { .ok_cb = &dati_from_json_v, .ok_obj = (void*)p_guild};
 
-  user_agent::run( 
-    &client->ua,
+  adapter::run( 
+    &client->adapter,
     &resp_handle,
     NULL,
     HTTP_GET, 
@@ -44,8 +44,8 @@ run(
   struct resp_handle resp_handle = 
     { .ok_cb = &channel::dati_list_from_json_v, .ok_obj = (void*)p_channels};
 
-  user_agent::run( 
-    &client->ua,
+  adapter::run( 
+    &client->adapter,
     &resp_handle,
     NULL,
     HTTP_GET, 
@@ -84,8 +84,8 @@ void run(
 
   struct sized_buffer req_body = {payload, strlen(payload)};
 
-  user_agent::run( 
-    &client->ua,
+  adapter::run( 
+    &client->adapter,
     &resp_handle,
     &req_body,
     HTTP_POST, "/guilds/%llu/channels", guild_id);
@@ -113,8 +113,8 @@ run(client *client, u64_snowflake_t guild_id, u64_snowflake_t user_id, member::d
     .ok_cb = member::dati_from_json_v, .ok_obj = *p_member
   };
 
-  user_agent::run(
-    &client->ua,
+  adapter::run(
+    &client->adapter,
     &resp_handle,
     NULL,
     HTTP_GET, "/guilds/%llu/members/%llu", guild_id, user_id);
@@ -152,8 +152,8 @@ run(
   struct resp_handle resp_handle =
     { .ok_cb = &member::dati_list_from_json_v, .ok_obj = (void*)p_members};
   
-  user_agent::run( 
-    &client->ua,
+  adapter::run( 
+    &client->adapter,
     &resp_handle,
     NULL,
     HTTP_GET,
@@ -190,8 +190,8 @@ run(
 
   struct sized_buffer req_body = {payload, strlen(payload)};
 
-  user_agent::run( 
-    &client->ua,
+  adapter::run( 
+    &client->adapter,
     &resp_handle,
     &req_body,
     HTTP_PATCH, "/guilds/%llu/members/%llu", guild_id, user_id);
@@ -213,8 +213,8 @@ void run(
     return;
   }
 
-  user_agent::run(
-    &client->ua,
+  adapter::run(
+    &client->adapter,
     NULL,
     NULL,
     HTTP_DELETE,
@@ -237,8 +237,8 @@ run(
   struct resp_handle resp_handle =
     { .ok_cb = &ban::dati_list_from_json_v, .ok_obj = (void*)p_bans};
 
-  user_agent::run( 
-    &client->ua,
+  adapter::run( 
+    &client->adapter,
     &resp_handle,
     NULL,
     HTTP_GET, "/guilds/%llu/bans", guild_id);
@@ -265,8 +265,8 @@ run(
   struct resp_handle resp_handle =
     { .ok_cb = &ban::dati_from_json_v, .ok_obj = (void*)p_ban};
 
-  user_agent::run( 
-    &client->ua,
+  adapter::run( 
+    &client->adapter,
     &resp_handle,
     NULL,
     HTTP_GET, "/guilds/%llu/bans/%llu", guild_id, user_id);
@@ -319,8 +319,8 @@ run(
 
   struct sized_buffer req_body = {payload, (size_t)ret};
 
-  user_agent::run( 
-    &client->ua,
+  adapter::run( 
+    &client->adapter,
     NULL,
     &req_body,
     HTTP_PUT, "/guilds/%llu/bans/%llu", guild_id, user_id);
@@ -362,8 +362,8 @@ run(
 
   struct sized_buffer req_body = {payload, (size_t)ret};
 
-  user_agent::run( 
-    &client->ua,
+  adapter::run( 
+    &client->adapter,
     NULL,
     &req_body,
     HTTP_DELETE, "/guilds/%llu/bans/%llu", guild_id, user_id);
@@ -385,8 +385,8 @@ run(
   struct resp_handle resp_handle =
     { .ok_cb = &role::dati_list_from_json_v, .ok_obj = (void*)p_roles};
 
-  user_agent::run( 
-    &client->ua,
+  adapter::run( 
+    &client->adapter,
     &resp_handle,
     NULL,
     HTTP_GET, "/guilds/%llu/roles", guild_id);
@@ -417,8 +417,8 @@ run(
 
   struct sized_buffer req_body = {payload, strlen(payload)};
 
-  user_agent::run( 
-    &client->ua,
+  adapter::run( 
+    &client->adapter,
     &resp_handle,
     &req_body,
     HTTP_POST, "/guilds/%llu/roles", guild_id);
@@ -441,8 +441,8 @@ run(
     return;
   }
 
-  user_agent::run(
-    &client->ua,
+  adapter::run(
+    &client->adapter,
     NULL,
     NULL,
     HTTP_DELETE, "/guilds/%llu/roles/%llu", guild_id, role_id);

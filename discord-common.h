@@ -69,9 +69,9 @@ namespace discord {
 
 struct client;
 
-namespace user_agent {
+namespace adapter {
   namespace bucket { struct dati; }
-} // namespace user_agent
+} // namespace adapter
 
 /* IDLE CALLBACK (runs on every iteration, no trigger required) */
 typedef void (idle_cb)(client *client, const user::dati *me);
@@ -134,10 +134,10 @@ typedef void (guild_member_remove_cb)(
     const user::dati *user);
 
 
-namespace user_agent { /* discord-user-agent.cpp */
+namespace adapter { /* discord-adapter.cpp */
 
-struct dati { /* USER AGENT STRUCTURE */
-  struct user_agent_s common;
+struct dati { /* ADAPTER STRUCTURE */
+  struct user_agent_s ua;
 
   struct { /* RATELIMITING STRUCTURE */
     bucket::dati **buckets; //active client buckets
@@ -150,10 +150,10 @@ struct dati { /* USER AGENT STRUCTURE */
   client *p_client; //points to client this struct is a part of
 };
 
-void init(dati *ua, const char token[], const char config_file[]);
-void cleanup(dati *ua);
+void init(dati *adapter, const char token[], const char config_file[]);
+void cleanup(dati *adapter);
 void run(
-  dati *ua, 
+  dati *adapter, 
   struct resp_handle *resp_handle,
   struct sized_buffer *req_body, // needed for POST/PUT/PATCH methods
   enum http_method http_method,
@@ -171,13 +171,13 @@ struct dati { /* BUCKET STRUCTURE */
   pthread_mutex_t lock; // used to synchronize buckets
 };
 
-void cleanup(user_agent::dati *ua);
+void cleanup(adapter::dati *adapter);
 void try_cooldown(dati *bucket);
-dati* try_get(user_agent::dati *ua, char endpoint[]);
-void build(user_agent::dati *ua, dati *bucket, char endpoint[], struct ua_conn_s *conn);
+dati* try_get(adapter::dati *adapter, char endpoint[]);
+void build(adapter::dati *adapter, dati *bucket, char endpoint[], struct ua_conn_s *conn);
 
 } // namespace bucket
-} // namespace user_agent
+} // namespace adapter
 
 namespace gateway { /* discord-gateway.cpp */
 
@@ -216,7 +216,7 @@ struct payload_s { /* PAYLOAD STRUCTURE */
   char event_data[8192]; //field 'd'
 };
 
-struct dati { /* WEBSOCKETS STRUCTURE */
+struct dati { /* GATEWAY STRUCTURE */
   struct websockets_s ws;
 
   identify::dati *identify;
@@ -279,8 +279,8 @@ void shutdown(dati *gw);
 } // namespace gateway
 
 struct client {
+  adapter::dati adapter;
   gateway::dati gw;
-  user_agent::dati ua;
   
   void *data; //space for user arbitrary data
 };

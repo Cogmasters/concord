@@ -64,8 +64,8 @@ run(client *client, u64_snowflake_t channel_id, u64_snowflake_t author_id)
       .size = strlen(json)
     };
 
-    user_agent::run(
-      &client->ua,
+    adapter::run(
+      &client->adapter,
       NULL,
       &req_body,
       HTTP_POST,
