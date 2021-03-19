@@ -61,13 +61,18 @@ enum code {
 
 namespace identify {
 /* Title: Identify Structure */
-/* https://discord.com/developers/docs/topics/opcodes-and-status-codes#gateway-gateway-opcodes */
-/* This is defined at specs/gateway.json:76:22 */
-struct dait {
-  /* specs/gateway.json:79:19
+/* https://discord.com/developers/docs/topics/gateway#identify-identify-structure */
+/* This is defined at specs/gateway.json:75:22 */
+struct dati {
+  /* specs/gateway.json:78:19
      '{ "name":"token","type":{"base":"char", "dec":"*"}}'
   */
   char *token;
+
+  /* specs/gateway.json:79:19
+     '{ "name":"properties","type":{"base":"discord::gateway::identify::connection::dati", "dec":"*"}}'
+  */
+  discord::gateway::identify::connection::dati *properties;
 
   /* specs/gateway.json:80:19
      '{ "name":"compress","type":{"base":"bool"}}'
@@ -75,117 +80,29 @@ struct dait {
   bool compress;
 
   /* specs/gateway.json:81:19
-     '{ "name":"large_threshod","type":{"base":"int"}}'
+     '{ "name":"large_threshold","type":{"base":"int"}}'
   */
-  int large_threshod;
+  int large_threshold;
 
   /* specs/gateway.json:82:19
-     '{ "name":"shard","type":{"base":"char", "dec":"*", "todo":true}}'
-  */
-  char *shard;
-
-  /* specs/gateway.json:83:19
-     '{ "name":"presense","type":{"base":"discord::gateway::status_update::dati", "dec":"*"}}'
-  */
-  discord::gateway::status_update::dati *presense;
-
-  /* specs/gateway.json:84:19
      '{ "name":"guild_subscriptions","type":{"base":"bool"}}'
   */
   bool guild_subscriptions;
 
+  /* specs/gateway.json:83:19
+     '{ "name":"shard","type":{"base":"int", "dec":"*"}, "todo":true}'
+  */
+  //@todo shard (null);
+
+  /* specs/gateway.json:84:19
+     '{ "name":"presence","type":{"base":"discord::gateway::identify::status_update::dati", "dec":"*"}}'
+  */
+  discord::gateway::identify::status_update::dati *presence;
+
   /* specs/gateway.json:85:19
-     '{ "name":"intents","type":{"base":"int", "int_alias":"discord::gateway::intents::code"}}'
+     '{ "name":"intents","type":{"base":"int"}}'
   */
-  discord::gateway::intents::code intents;
-
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[7];
-    void *record_defined[7];
-    void *record_null[7];
-  } __M; // metadata
-};
-extern void dait_cleanup_v(void *p);
-extern void dait_cleanup(struct dait *p);
-extern void dait_init_v(void *p);
-extern void dait_init(struct dait *p);
-extern struct dait * dait_alloc();
-extern void dait_free_v(void *p);
-extern void dait_free(struct dait *p);
-extern void dait_from_json_v(char *json, size_t len, void *p);
-extern void dait_from_json(char *json, size_t len, struct dait *p);
-extern size_t dait_to_json_v(char *json, size_t len, void *p);
-extern size_t dait_to_json(char *json, size_t len, struct dait *p);
-extern size_t dait_to_query_v(char *json, size_t len, void *p);
-extern size_t dait_to_query(char *json, size_t len, struct dait *p);
-extern void dait_list_free_v(void **p);
-extern void dait_list_free(struct dait **p);
-extern void dait_list_from_json_v(char *str, size_t len, void *p);
-extern void dait_list_from_json(char *str, size_t len, struct dait ***p);
-extern size_t dait_list_to_json_v(char *str, size_t len, void *p);
-extern size_t dait_list_to_json(char *str, size_t len, struct dait **p);
-extern void dait_use_default_inject_settings(struct dait *p);
-} // namespace identify
-
-
-namespace activity {
-namespace types {
-enum code {
-};
-} // namespace types
-} // namespace activity
-
-namespace activity {
-/* Title: Activity Structure */
-/* https://discord.com/developers/docs/topics/gateway#update-status-gateway-status-update-structure */
-/* This is defined at specs/gateway.json:107:22 */
-struct dati {
-  /* specs/gateway.json:110:19
-     '{ "name":"name","type":{"base":"char", "dec":"[512]"}}'
-  */
-  char name[512];
-
-  /* specs/gateway.json:111:19
-     '{ "name":"code","type":{"base":"int", "int_alias":"discord::gateway::activity::types::code"}}'
-  */
-  discord::gateway::activity::types::code code;
-
-  /* specs/gateway.json:112:19
-     '{ "name":"url","type":{"base":"char", "dec":"[MAX_URL_LEN]"}}'
-  */
-  char url[MAX_URL_LEN];
-
-  /* specs/gateway.json:113:19
-     '{ "name":"created_at","type":{"base":"char", "dec":"*", "converter":"iso8601"}}'
-  */
-  u64_unix_ms_t created_at;
-
-  /* specs/gateway.json:114:19
-     '{ "name":"application_id","type":{"base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
-  u64_snowflake_t application_id;
-
-  /* specs/gateway.json:115:19
-     '{ "name":"details","type":{"base":"char", "dec":"*"}}'
-  */
-  char *details;
-
-  /* specs/gateway.json:116:19
-     '{ "name":"state","type":{"base":"char", "dec":"*"}}'
-  */
-  char *state;
-
-  /* specs/gateway.json:117:19
-     '{ "name":"instance","type":{"base":"bool"}}'
-  */
-  bool instance;
+  int intents;
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -220,29 +137,30 @@ extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
 extern void dati_use_default_inject_settings(struct dati *p);
-} // namespace activity
+} // namespace identify
 
+namespace identify {
 namespace status_update {
 /* Title: Gateway Status Update Structure */
 /* https://discord.com/developers/docs/topics/gateway#update-status-gateway-status-update-structure */
-/* This is defined at specs/gateway.json:125:22 */
+/* This is defined at specs/gateway.json:92:22 */
 struct dati {
-  /* specs/gateway.json:128:19
-     '{ "name":"since","type":{"base":"char", "dec":"*"}}'
+  /* specs/gateway.json:95:19
+     '{ "name":"since","type":{"base":"char", "dec":"*", "converter":"iso8601"}}'
   */
-  char *since;
+  u64_unix_ms_t since;
 
-  /* specs/gateway.json:129:19
-     '{ "name":"activities","type":{"base":"discord::gateway::activity::dati", "dec":"ntl"}}'
+  /* specs/gateway.json:96:19
+     '{ "name":"activities","type":{"base":"discord::gateway::identify::status_update::activity::dati", "dec":"ntl"}}'
   */
-  discord::gateway::activity::dati **activities;
+  discord::gateway::identify::status_update::activity::dati **activities;
 
-  /* specs/gateway.json:130:19
+  /* specs/gateway.json:97:19
      '{ "name":"status","type":{"base":"char", "dec":"[16]"}}'
   */
   char status[16];
 
-  /* specs/gateway.json:131:19
+  /* specs/gateway.json:98:19
      '{ "name":"afk","type":{"base":"bool"}}'
   */
   bool afk;
@@ -281,3 +199,157 @@ extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
 extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace status_update
+} // namespace identify
+
+namespace identify {
+namespace connection {
+/* Title: Identify Connection Properties */
+/* https://discord.com/developers/docs/topics/gateway#identify-identify-connection-properties */
+/* This is defined at specs/gateway.json:105:22 */
+struct dati {
+  /* specs/gateway.json:108:19
+     '{ "name":"$os", "type":{"base":"char", "dec":"*"}}'
+  */
+  char *$os;
+
+  /* specs/gateway.json:109:19
+     '{ "name":"$browser", "type":{"base":"char", "dec":"*"}}'
+  */
+  char *$browser;
+
+  /* specs/gateway.json:110:19
+     '{ "name":"$device", "type":{"base":"char", "dec":"*"}}'
+  */
+  char *$device;
+
+  // The following is metadata used to 
+  // 1. control which field should be extracted/injected
+  // 2. record which field is presented(defined) in JSON
+  // 3. record which field is null in JSON
+  struct {
+    bool enable_arg_switches;
+    bool enable_record_defined;
+    bool enable_record_null;
+    void *arg_switches[3];
+    void *record_defined[3];
+    void *record_null[3];
+  } __M; // metadata
+};
+extern void dati_cleanup_v(void *p);
+extern void dati_cleanup(struct dati *p);
+extern void dati_init_v(void *p);
+extern void dati_init(struct dati *p);
+extern struct dati * dati_alloc();
+extern void dati_free_v(void *p);
+extern void dati_free(struct dati *p);
+extern void dati_from_json_v(char *json, size_t len, void *p);
+extern void dati_from_json(char *json, size_t len, struct dati *p);
+extern size_t dati_to_json_v(char *json, size_t len, void *p);
+extern size_t dati_to_json(char *json, size_t len, struct dati *p);
+extern size_t dati_to_query_v(char *json, size_t len, void *p);
+extern size_t dati_to_query(char *json, size_t len, struct dati *p);
+extern void dati_list_free_v(void **p);
+extern void dati_list_free(struct dati **p);
+extern void dati_list_from_json_v(char *str, size_t len, void *p);
+extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
+extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
+extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
+extern void dati_use_default_inject_settings(struct dati *p);
+} // namespace connection
+} // namespace identify
+
+namespace identify {
+namespace status_update {
+namespace activity {
+/* Title: Activity Structure */
+/* https://discord.com/developers/docs/topics/gateway#activity-object-activity-structure */
+/* This is defined at specs/gateway.json:117:22 */
+struct dati {
+  /* specs/gateway.json:120:19
+     '{ "name":"name","type":{"base":"char", "dec":"[512]"}}'
+  */
+  char name[512];
+
+  /* specs/gateway.json:121:19
+     '{ "name":"type","type":{"base":"int"}}'
+  */
+  int type;
+
+  /* specs/gateway.json:122:19
+     '{ "name":"url","type":{"base":"char", "dec":"[MAX_URL_LEN]"}}'
+  */
+  char url[MAX_URL_LEN];
+
+  /* specs/gateway.json:123:19
+     '{ "name":"created_at","type":{"base":"char", "dec":"*", "converter":"iso8601"}}'
+  */
+  u64_unix_ms_t created_at;
+
+  /* specs/gateway.json:124:19
+     '{ "name":"application_id","type":{"base":"char", "dec":"*", "converter":"snowflake" }}'
+  */
+  u64_snowflake_t application_id;
+
+  /* specs/gateway.json:125:19
+     '{ "name":"details","type":{"base":"char", "dec":"*"}}'
+  */
+  char *details;
+
+  /* specs/gateway.json:126:19
+     '{ "name":"state","type":{"base":"char", "dec":"*"}}'
+  */
+  char *state;
+
+  /* specs/gateway.json:127:19
+     '{ "name":"instance","type":{"base":"bool"}}'
+  */
+  bool instance;
+
+  // The following is metadata used to 
+  // 1. control which field should be extracted/injected
+  // 2. record which field is presented(defined) in JSON
+  // 3. record which field is null in JSON
+  struct {
+    bool enable_arg_switches;
+    bool enable_record_defined;
+    bool enable_record_null;
+    void *arg_switches[8];
+    void *record_defined[8];
+    void *record_null[8];
+  } __M; // metadata
+};
+extern void dati_cleanup_v(void *p);
+extern void dati_cleanup(struct dati *p);
+extern void dati_init_v(void *p);
+extern void dati_init(struct dati *p);
+extern struct dati * dati_alloc();
+extern void dati_free_v(void *p);
+extern void dati_free(struct dati *p);
+extern void dati_from_json_v(char *json, size_t len, void *p);
+extern void dati_from_json(char *json, size_t len, struct dati *p);
+extern size_t dati_to_json_v(char *json, size_t len, void *p);
+extern size_t dati_to_json(char *json, size_t len, struct dati *p);
+extern size_t dati_to_query_v(char *json, size_t len, void *p);
+extern size_t dati_to_query(char *json, size_t len, struct dati *p);
+extern void dati_list_free_v(void **p);
+extern void dati_list_free(struct dati **p);
+extern void dati_list_from_json_v(char *str, size_t len, void *p);
+extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
+extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
+extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
+extern void dati_use_default_inject_settings(struct dati *p);
+} // namespace activity
+} // namespace status_update
+} // namespace identify
+
+
+namespace identify {
+namespace status_update {
+namespace activity {
+namespace types {
+enum code {
+};
+} // namespace types
+} // namespace activity
+} // namespace status_update
+} // namespace identify

@@ -132,14 +132,6 @@ namespace create_channel_invite {
 } // namespace create_channel_invite
 } // namespace channel
 } // namespace discord
-/* This file is generated from specs/guild.ban.json, Please don't edit it. */
-/*
-https://discord.com/developers/docs/resources/guild#ban-object
-*/
-namespace discord {
-namespace guild {
-} // namespace guild
-} // namespace discord
 /* This file is generated from specs/voice.json, Please don't edit it. */
 /*
 (null)
@@ -164,49 +156,13 @@ namespace discord {
 namespace guild {
 } // namespace guild
 } // namespace discord
-/* This file is generated from specs/user.json, Please don't edit it. */
+/* This file is generated from specs/guild.ban.json, Please don't edit it. */
 /*
-https://discord.com/developers/docs/resources/user#user-object
+https://discord.com/developers/docs/resources/guild#ban-object
 */
 namespace discord {
-namespace user {
-
-
-namespace flags {
-enum code {
-  NONE = 0, // 0
-  DISCORD_EMPLOYEE = 1, // 1 << 0
-  PARTNERED_SERVER_OWNER = 2, // 1 << 2
-  HYPESQUAD_EVENTS = 4, // 1 << 3
-  BUG_HUNTER_LEVEL_1 = 8, // 1 << 4
-  HOUSE_BRAVERY = 32, // 1 << 6
-  HOUSE_BRILLIANCE = 64, // 1 << 7
-  HOUSE_BALANCE = 128, // 1 << 8
-  EARLY_SUPPORTER = 256, // 1 << 9
-  TEAM_USER = 512, // 1 << 10
-  SYSTEM = 4096, // 1 << 12
-  BUG_HUNTER_LEVEL_2 = 16384, // 1 << 14
-  VERIFIED_BOT = 65536, // 1 << 16
-  EARLY_VERIFIED_BOT_DEVELOPER = 131072, // 1 << 17
-};
-} // namespace flags
-
-
-namespace premium_types {
-enum code {
-};
-} // namespace premium_types
-
-
-namespace connection {
-namespace visibility_types {
-enum code {
-  NONE = 0,
-  EVERYONE = 1,
-};
-} // namespace visibility_types
-} // namespace connection
-} // namespace user
+namespace guild {
+} // namespace guild
 } // namespace discord
 /* This file is generated from specs/guild.modify-guild-member.json, Please don't edit it. */
 /*
@@ -319,30 +275,86 @@ enum code {
 } // namespace guild_features
 } // namespace guild
 } // namespace discord
-/* This file is generated from specs/invite.json, Please don't edit it. */
+/* This file is generated from specs/channel.json, Please don't edit it. */
 /*
-https://discord.com/developers/docs/resources/invite#invite-object
+https://discord.com/developers/docs/resources/channel#channel-object-channel-types
 */
 namespace discord {
-namespace invite {
+namespace channel {
 
 
-namespace target_user_types {
+namespace types {
 enum code {
-  STREAM = 1,
+  GUILD_TEXT = 0,
+  DM = 1,
+  GUILD_VOICE = 2,
+  GROUP_DM = 3,
+  GUILD_CATEGORY = 4,
+  GUILD_NEWS = 5,
+  GUILD_STORE = 6,
 };
-} // namespace target_user_types
-} // namespace invite
+} // namespace types
+} // namespace channel
 } // namespace discord
-/* This file is generated from specs/webhook.modify-webhook.json, Please don't edit it. */
+/* This file is generated from specs/webhook.edit-webhook-message.json, Please don't edit it. */
 /*
 
 */
 namespace discord {
 namespace webhook {
-namespace modify_webhook {
-} // namespace modify_webhook
+namespace edit_webhook_message {
+} // namespace edit_webhook_message
 } // namespace webhook
+} // namespace discord
+/* This file is generated from specs/audit_log.json, Please don't edit it. */
+/*
+(null)
+*/
+namespace discord {
+namespace audit_log {
+
+
+namespace entry {
+namespace events {
+enum code {
+  GUILD_UPDATE = 1,
+  CHANNEL_CREATE = 10,
+  CHANNEL_UPDATE = 11,
+  CHANNEL_DELETE = 12,
+  CHANNEL_OVERWRITE_CREATE = 13,
+  CHANNEL_OVERWRITE_UPDATE = 14,
+  CHANNEL_OVERWRITE_DELETE = 15,
+  MEMBER_KICK = 20,
+  MEMBER_PRUNE = 21,
+  MEMBER_BAN_ADD = 22,
+  MEMBER_BAN_REMOVE = 23,
+  MEMBER_UPDATE = 24,
+  MEMBER_ROLE_UPDATE = 25,
+  MEMBER_MOVE = 26,
+  MEMBER_DISCONNECT = 27,
+  BOT_ADD = 28,
+  ROLE_CREATE = 30,
+  ROLE_UPDATE = 31,
+  ROLE_DELETE = 32,
+  INVITE_CREATE = 40,
+  INVITE_DELETE = 42,
+  WEBHOOK_CREATE = 50,
+  WEBHOOK_UPDATE = 51,
+  WEBHOOK_DELETE = 52,
+  EMOJI_CREATE = 60,
+  EMOJI_UPDATE = 61,
+  EMOJI_DELETE = 62,
+  MESSAGE_DELETE = 72,
+  MESSAGE_BULK_DELETE = 73,
+  MESSAGE_PIN = 74,
+  MESSAGE_UNPIN = 75,
+  INTEGRATION_CREATE = 80,
+  INTEGRATION_UPDATE = 81,
+  INTEGRATION_DELETE = 82,
+};
+} // namespace events
+} // namespace entry
+} // namespace audit_log
 } // namespace discord
 /* This file is generated from specs/template.create-guild-from-template.json, Please don't edit it. */
 /*
@@ -353,6 +365,16 @@ namespace Template {
 namespace create_guild_from_template {
 } // namespace create_guild_from_template
 } // namespace Template
+} // namespace discord
+/* This file is generated from specs/webhook.modify-webhook.json, Please don't edit it. */
+/*
+
+*/
+namespace discord {
+namespace webhook {
+namespace modify_webhook {
+} // namespace modify_webhook
+} // namespace webhook
 } // namespace discord
 /* This file is generated from specs/channel.objects.json, Please don't edit it. */
 /*
@@ -420,6 +442,22 @@ namespace bulk_delete_messages {
 } // namespace bulk_delete_messages
 } // namespace channel
 } // namespace discord
+/* This file is generated from specs/webhook.json, Please don't edit it. */
+/*
+https://discord.com/developers/docs/resources/webhook#webhook-object-webhook-structure
+*/
+namespace discord {
+
+
+namespace webhook {
+namespace types {
+enum code {
+  INCOMING = 1,
+  CHANNEL_FOLLOWER = 2,
+};
+} // namespace types
+} // namespace webhook
+} // namespace discord
 /* This file is generated from specs/user.create-group-dm.json, Please don't edit it. */
 /*
 
@@ -440,15 +478,49 @@ namespace modify_guild_emoji {
 } // namespace modify_guild_emoji
 } // namespace emoji
 } // namespace discord
-/* This file is generated from specs/webhook.execute-webhook.json, Please don't edit it. */
+/* This file is generated from specs/user.json, Please don't edit it. */
 /*
-
+https://discord.com/developers/docs/resources/user#user-object
 */
 namespace discord {
-namespace webhook {
-namespace execute_webhook {
-} // namespace execute_webhook
-} // namespace webhook
+namespace user {
+
+
+namespace flags {
+enum code {
+  NONE = 0, // 0
+  DISCORD_EMPLOYEE = 1, // 1 << 0
+  PARTNERED_SERVER_OWNER = 2, // 1 << 2
+  HYPESQUAD_EVENTS = 4, // 1 << 3
+  BUG_HUNTER_LEVEL_1 = 8, // 1 << 4
+  HOUSE_BRAVERY = 32, // 1 << 6
+  HOUSE_BRILLIANCE = 64, // 1 << 7
+  HOUSE_BALANCE = 128, // 1 << 8
+  EARLY_SUPPORTER = 256, // 1 << 9
+  TEAM_USER = 512, // 1 << 10
+  SYSTEM = 4096, // 1 << 12
+  BUG_HUNTER_LEVEL_2 = 16384, // 1 << 14
+  VERIFIED_BOT = 65536, // 1 << 16
+  EARLY_VERIFIED_BOT_DEVELOPER = 131072, // 1 << 17
+};
+} // namespace flags
+
+
+namespace premium_types {
+enum code {
+};
+} // namespace premium_types
+
+
+namespace connection {
+namespace visibility_types {
+enum code {
+  NONE = 0,
+  EVERYONE = 1,
+};
+} // namespace visibility_types
+} // namespace connection
+} // namespace user
 } // namespace discord
 /* This file is generated from specs/guild.role.create.json, Please don't edit it. */
 /*
@@ -504,55 +576,15 @@ enum bitwise_flags {
 };
 } // namespace permissions
 } // namespace discord
-/* This file is generated from specs/audit_log.json, Please don't edit it. */
+/* This file is generated from specs/webhook.execute-webhook.json, Please don't edit it. */
 /*
-(null)
+
 */
 namespace discord {
-namespace audit_log {
-
-
-namespace entry {
-namespace events {
-enum code {
-  GUILD_UPDATE = 1,
-  CHANNEL_CREATE = 10,
-  CHANNEL_UPDATE = 11,
-  CHANNEL_DELETE = 12,
-  CHANNEL_OVERWRITE_CREATE = 13,
-  CHANNEL_OVERWRITE_UPDATE = 14,
-  CHANNEL_OVERWRITE_DELETE = 15,
-  MEMBER_KICK = 20,
-  MEMBER_PRUNE = 21,
-  MEMBER_BAN_ADD = 22,
-  MEMBER_BAN_REMOVE = 23,
-  MEMBER_UPDATE = 24,
-  MEMBER_ROLE_UPDATE = 25,
-  MEMBER_MOVE = 26,
-  MEMBER_DISCONNECT = 27,
-  BOT_ADD = 28,
-  ROLE_CREATE = 30,
-  ROLE_UPDATE = 31,
-  ROLE_DELETE = 32,
-  INVITE_CREATE = 40,
-  INVITE_DELETE = 42,
-  WEBHOOK_CREATE = 50,
-  WEBHOOK_UPDATE = 51,
-  WEBHOOK_DELETE = 52,
-  EMOJI_CREATE = 60,
-  EMOJI_UPDATE = 61,
-  EMOJI_DELETE = 62,
-  MESSAGE_DELETE = 72,
-  MESSAGE_BULK_DELETE = 73,
-  MESSAGE_PIN = 74,
-  MESSAGE_UNPIN = 75,
-  INTEGRATION_CREATE = 80,
-  INTEGRATION_UPDATE = 81,
-  INTEGRATION_DELETE = 82,
-};
-} // namespace events
-} // namespace entry
-} // namespace audit_log
+namespace webhook {
+namespace execute_webhook {
+} // namespace execute_webhook
+} // namespace webhook
 } // namespace discord
 /* This file is generated from specs/guild.role.json, Please don't edit it. */
 /*
@@ -577,16 +609,6 @@ namespace create_guild_emoji {
 https://discord.com/developers/docs/resources/template#template-object-template-structure
 */
 namespace discord {
-} // namespace discord
-/* This file is generated from specs/webhook.edit-webhook-message.json, Please don't edit it. */
-/*
-
-*/
-namespace discord {
-namespace webhook {
-namespace edit_webhook_message {
-} // namespace edit_webhook_message
-} // namespace webhook
 } // namespace discord
 /* This file is generated from specs/channel.follow-news-channel.json, Please don't edit it. */
 /*
@@ -662,12 +684,16 @@ enum code {
 } // namespace opcodes
 
 
+namespace identify {
+namespace status_update {
 namespace activity {
 namespace types {
 enum code {
 };
 } // namespace types
 } // namespace activity
+} // namespace status_update
+} // namespace identify
 } // namespace gateway
 } // namespace discord
 /* This file is generated from specs/template.modify-guild-template.json, Please don't edit it. */
@@ -679,27 +705,6 @@ namespace Template {
 namespace modify_guild_template {
 } // namespace modify_guild_template
 } // namespace Template
-} // namespace discord
-/* This file is generated from specs/channel.json, Please don't edit it. */
-/*
-https://discord.com/developers/docs/resources/channel#channel-object-channel-types
-*/
-namespace discord {
-namespace channel {
-
-
-namespace types {
-enum code {
-  GUILD_TEXT = 0,
-  DM = 1,
-  GUILD_VOICE = 2,
-  GROUP_DM = 3,
-  GUILD_CATEGORY = 4,
-  GUILD_NEWS = 5,
-  GUILD_STORE = 6,
-};
-} // namespace types
-} // namespace channel
 } // namespace discord
 /* This file is generated from specs/guild.member.json, Please don't edit it. */
 /*
@@ -719,19 +724,18 @@ namespace modify_current_user {
 } // namespace modify_current_user
 } // namespace user
 } // namespace discord
-/* This file is generated from specs/webhook.json, Please don't edit it. */
+/* This file is generated from specs/invite.json, Please don't edit it. */
 /*
-https://discord.com/developers/docs/resources/webhook#webhook-object-webhook-structure
+https://discord.com/developers/docs/resources/invite#invite-object
 */
 namespace discord {
+namespace invite {
 
 
-namespace webhook {
-namespace types {
+namespace target_user_types {
 enum code {
-  INCOMING = 1,
-  CHANNEL_FOLLOWER = 2,
+  STREAM = 1,
 };
-} // namespace types
-} // namespace webhook
+} // namespace target_user_types
+} // namespace invite
 } // namespace discord
