@@ -246,6 +246,18 @@ void run(client *client, const u64_snowflake_t guild_id);
 
 } // namespace user
 
+namespace gateway {
+
+namespace get_gateway {
+void run(client *client, session::dati *p_session);
+} // namespace get_gateway
+
+namespace get_gateway_bot {
+void run(client *client, session::dati *p_session);
+} // namespace get_gateway_bot
+
+} // namespace gateway
+
 } // namespace discord
 
 #include "user-defined.h"

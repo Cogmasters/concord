@@ -197,11 +197,6 @@ struct dati {
   u64_unix_ms_t event_tstamp; //event timestamp in ms (resets every 60s)
   int event_count; //count elements to avoid reaching 120/60sec limit
 };
-
-void dati_from_json(char *str, size_t len, void *p_session);
-void get(client *client, dati *p_session);
-void get_bot(client *client, dati *p_session);
-
 } // namespace session
 
 struct cmd_cbs {

@@ -556,7 +556,7 @@ on_startup_cb(void *p_gw)
   dati *gw = (dati*)p_gw;
 
   //get session info before starting it
-  get_bot(gw->p_client, &gw->session);
+  get_gateway_bot::run(gw->p_client, &gw->session);
 
   if (!gw->session.remaining) {
     PRINT("Reach session starts threshold (%d)\n\t"
@@ -702,66 +702,6 @@ cleanup(dati *gw)
   ws_cleanup(&gw->ws);
   pthread_mutex_destroy(&gw->lock);
 }
-
-namespace session {
-
-void
-dati_from_json(char *str, size_t len, void *p_session)
-{
-  dati *session = (dati*)p_session;
-
-  struct sized_buffer buf = {NULL, 0};
-
-  json_scanf(str, len,
-     "[url]%s"
-     "[shards]%d"
-     "[session_start_limit]%T",
-     session->url,
-     &session->shards,
-     &buf);
-
-  json_scanf(buf.start, buf.size,
-      "[total]%d"
-      "[remaining]%d"
-      "[reset_after]%d"
-      "[max_concurrency]%d",
-      &session->total,
-      &session->remaining,
-      &session->reset_after,
-      &session->max_concurrency);
-
-  DS_NOTOP_PUTS("Session Start Limit object loaded with API response"); 
-}
-
-void
-get(client *client, dati *p_session)
-{
-  struct resp_handle resp_handle = \
-    { .ok_cb = &dati_from_json, .ok_obj = (void*)p_session };
-
-  adapter::run( 
-    &client->adapter,
-    &resp_handle,
-    NULL,
-    HTTP_GET,
-    "/gateway");
-}
-
-void
-get_bot(client *client, dati *p_session)
-{
-  struct resp_handle resp_handle = \
-    { .ok_cb = &dati_from_json, .ok_obj = (void*)p_session};
-
-  adapter::run( 
-    &client->adapter,
-    &resp_handle,
-    NULL,
-    HTTP_GET,
-    "/gateway/bot");
-}
-
-} // namespace session
 
 /* connects to the discord websockets server */
 void
