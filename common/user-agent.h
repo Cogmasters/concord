@@ -5,26 +5,20 @@
 #include <curl/curl.h>
 #include <pthread.h>
 
-#include "ntl.h"
 #include "orka-config.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif // __cplusplus
 
-/* UTILITY MACROS */
-#define STREQ(str1, str2) (0 == strcmp(str1, str2))
-#define STRNEQ(str1, str2, n) (0 == strncmp(str1, str2, n))
-//check if string is empty
-#define IS_EMPTY_STRING(str) (!(str) || !*(str))
-//if case matches return token as string
-#define CASE_RETURN_STR(opcode) case opcode: return #opcode
-//if str matches enum token, return enum value
-#define STREQ_RETURN_ENUM(enum, str) if(STREQ(#enum, str))return enum
-
 //possible http methods
 enum http_method {
-  HTTP_DELETE, HTTP_GET, HTTP_POST, HTTP_MIMEPOST, HTTP_PATCH, HTTP_PUT
+  HTTP_DELETE, 
+  HTTP_GET, 
+  HTTP_POST, 
+  HTTP_MIMEPOST, 
+  HTTP_PATCH, 
+  HTTP_PUT
 };
 
 /* COMMON HTTP RESPONSE CODES
@@ -104,7 +98,6 @@ struct user_agent_s {
 
   char *base_url;
 
-  pthread_mutex_t cbs_lock;
   pthread_mutex_t lock;
 
   void *data; // user arbitrary data for setopt_cb
@@ -116,15 +109,17 @@ struct user_agent_s {
 };
 
 typedef enum { 
-  ACTION_SUCCESS, // continue after succesfull request
-  ACTION_FAILURE, // continue after failed request
-  ACTION_RETRY,   // retry connection
-  ACTION_ABORT    // abort after failed request
+  UA_SUCCESS, // continue after succesfull request
+  UA_FAILURE, // continue after failed request
+  UA_RETRY,   // retry connection
+  UA_ABORT    // abort after failed request
 } ua_action_t;
 
 typedef ua_action_t 
 (http_response_cb)(void *data, int httpcode, struct ua_conn_s *conn);
 
+/* these can be used on any MT contexts, but the user still
+    have to synchronize his data accessed between callbacks */
 struct ua_callbacks {
   void *data; // user arbitrary data to be passed to callbacks
 

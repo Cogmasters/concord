@@ -148,6 +148,8 @@ struct dati { /* ADAPTER STRUCTURE */
   } ratelimit;
 
   client *p_client; //points to client this struct is a part of
+
+  pthread_mutex_t lock; // used when increasing/fetching buckets
 };
 
 void init(dati *adapter, const char token[], const char config_file[]);

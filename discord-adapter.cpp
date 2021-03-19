@@ -30,6 +30,9 @@ init(dati *adapter, const char token[], const char config_file[])
 
   ua_reqheader_add(&adapter->ua, "Authorization", auth);
   ua_reqheader_add(&adapter->ua, "X-RateLimit-Precision", "millisecond");
+
+  if (pthread_mutex_init(&adapter->lock, NULL))
+    ERR("Couldn't initialize pthread mutex");
 }
 
 void
@@ -37,6 +40,7 @@ cleanup(dati *adapter)
 {
   bucket::cleanup(adapter);
   ua_cleanup(&adapter->ua);
+  pthread_mutex_destroy(&adapter->lock);
 }
 
 struct _ratelimit {
@@ -49,7 +53,9 @@ static int
 bucket_tryget_cb(void *p_ratelimit)
 {
   struct _ratelimit *rl = (struct _ratelimit*)p_ratelimit;
+  pthread_mutex_lock(&rl->adapter->lock);
   rl->bucket = bucket::try_get(rl->adapter, rl->endpoint);
+  pthread_mutex_unlock(&rl->adapter->lock);
   return 1;
 }
 
@@ -57,7 +63,9 @@ static void
 bucket_cooldown_cb(void *p_ratelimit)
 {
   struct _ratelimit *rl = (struct _ratelimit*)p_ratelimit;
+  pthread_mutex_lock(&rl->adapter->lock);
   bucket::try_cooldown(rl->bucket);
+  pthread_mutex_unlock(&rl->adapter->lock);
 }
 
 static ua_action_t
@@ -72,9 +80,11 @@ on_success_cb(
       http_reason_print(httpcode));
 
   struct _ratelimit *rl = (struct _ratelimit*)p_ratelimit;
+  pthread_mutex_lock(&rl->adapter->lock);
   bucket::build(rl->adapter, rl->bucket, rl->endpoint, conn);
+  pthread_mutex_unlock(&rl->adapter->lock);
 
-  return ACTION_SUCCESS;
+  return UA_SUCCESS;
 }
 
 static ua_action_t
@@ -83,15 +93,19 @@ on_failure_cb(
   int httpcode,
   struct ua_conn_s *conn)
 {
+  struct _ratelimit *rl = (struct _ratelimit*)p_ratelimit;
+
   if (httpcode >= 500) { // server related error, retry
     NOTOP_PRINT("(%d)%s - %s", 
         httpcode,
         http_code_print(httpcode),
         http_reason_print(httpcode));
 
+    pthread_mutex_lock(&rl->adapter->ua.lock);
     orka_sleep_ms(5000); // wait arbitrarily 5 seconds before retry
+    pthread_mutex_unlock(&rl->adapter->ua.lock);
 
-    return ACTION_RETRY; // RETRY
+    return UA_RETRY;
   }
 
   switch (httpcode) {
@@ -103,7 +117,7 @@ on_failure_cb(
           http_code_print(httpcode),
           http_reason_print(httpcode));
 
-      return ACTION_FAILURE;
+      return UA_FAILURE;
   case HTTP_UNAUTHORIZED:
   case HTTP_METHOD_NOT_ALLOWED:
   default:
@@ -112,7 +126,7 @@ on_failure_cb(
           http_code_print(httpcode),
           http_reason_print(httpcode));
 
-      return ACTION_ABORT;
+      return UA_ABORT;
   case HTTP_TOO_MANY_REQUESTS:
    {
       NOTOP_PRINT("(%d)%s - %s", 
@@ -130,15 +144,17 @@ on_failure_cb(
       if (retry_after_ms) { // retry after attribute received
         NOTOP_PRINT("RATELIMIT MESSAGE:\n\t%s (wait: %lld ms)", message, retry_after_ms);
 
+        pthread_mutex_lock(&rl->adapter->ua.lock);
         orka_sleep_ms(retry_after_ms); // wait a bit before retrying
+        pthread_mutex_unlock(&rl->adapter->ua.lock);
 
-        return ACTION_RETRY;
+        return UA_RETRY;
       }
       
       // no retry after included, we should abort
 
       NOTOP_PRINT("RATELIMIT MESSAGE:\n\t%s", message);
-      return ACTION_ABORT;
+      return UA_ABORT;
    }
   }
 }

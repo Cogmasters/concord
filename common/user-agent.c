@@ -150,6 +150,7 @@ static struct ua_conn_s*
 conn_init(struct user_agent_s *ua)
 {
   struct ua_conn_s *new_conn = calloc(1, sizeof(struct ua_conn_s));
+
   CURL *new_ehandle = curl_easy_init(); // will be given to new_conn
 
   CURLcode ecode;
@@ -214,12 +215,29 @@ conn_cleanup(struct ua_conn_s *conn)
 }
 
 static void
-conn_reset_fields(struct ua_conn_s *conn)
+conn_soft_reset(struct ua_conn_s *conn)
 {
   conn->perform_tstamp = 0;
   *conn->resp_body.start = '\0';
   conn->resp_body.size = 0;
   conn->resp_header.size = 0;
+}
+
+static void
+conn_full_reset(struct user_agent_s *ua, struct ua_conn_s *conn)
+{
+  pthread_mutex_lock(&ua->lock);
+
+  conn_soft_reset(conn); // just to be sure
+  conn->data = NULL;
+  conn->is_busy = false;
+
+  ++ua->num_notbusy;
+  if (ua->mime) { // @todo this is temporary
+    curl_mime_free(ua->mime); 
+    ua->mime = NULL;
+  }
+  pthread_mutex_unlock(&ua->lock);
 }
 
 static struct ua_conn_s*
@@ -280,8 +298,6 @@ ua_init(struct user_agent_s *ua, const char base_url[])
 
   if (pthread_mutex_init(&ua->lock, NULL))
     ERR("Couldn't initialize mutex");
-  if (pthread_mutex_init(&ua->cbs_lock, NULL))
-    ERR("Couldn't initialize mutex");
 }
 
 void
@@ -305,7 +321,6 @@ ua_cleanup(struct user_agent_s *ua)
     conn_cleanup(ua->conns[i]);
   }
   pthread_mutex_destroy(&ua->lock);
-  pthread_mutex_destroy(&ua->cbs_lock);
 }
 
 char*
@@ -460,17 +475,17 @@ set_url(struct user_agent_s *ua, struct ua_conn_s *conn, char endpoint[], va_lis
 
 static void noop_iter_cb(void *data){return;}
 static ua_action_t noop_success_cb(void *a, int b, struct ua_conn_s *c)
-{return ACTION_SUCCESS;}
+{return UA_SUCCESS;}
 static ua_action_t noop_retry_cb(void *a, int b, struct ua_conn_s *c) 
-{return ACTION_RETRY;}
+{return UA_RETRY;}
 static ua_action_t noop_abort_cb(void *a, int b, struct ua_conn_s *c) 
-{return ACTION_ABORT;}
+{return UA_ABORT;}
 
 static int
 send_request(struct ua_conn_s *conn)
 {
   CURLcode ecode;
-
+  
   //@todo shouldn't abort on error
   ecode = curl_easy_perform(conn->ehandle);
   ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
@@ -511,19 +526,18 @@ perform_request(
   if (!cbs.on_5xx) cbs.on_5xx = &noop_retry_cb;
 
   if (cbs.on_startup) {
-    pthread_mutex_lock(&ua->cbs_lock);
     int ret = (*cbs.on_startup)(cbs.data);
-    pthread_mutex_unlock(&ua->cbs_lock);
     if (!ret) return; /* EARLY RETURN */
   }
 
   ua_action_t action;
   do {
     /* triggers on every start of loop iteration */
-    pthread_mutex_lock(&ua->cbs_lock);
     (*cbs.on_iter_start)(cbs.data);
+
+    pthread_mutex_lock(&ua->lock); // used to enforce global ratelimits
     int httpcode = send_request(conn);
-    pthread_mutex_unlock(&ua->cbs_lock);
+    pthread_mutex_unlock(&ua->lock);
 
     (*ua->config.json_cb)(
       true, 
@@ -534,9 +548,7 @@ perform_request(
 
     /* triggers response related callbacks */
     if (httpcode >= 500) { // SERVER ERROR
-      pthread_mutex_lock(&ua->cbs_lock);
       action = (*cbs.on_5xx)(cbs.data, httpcode, conn);
-      pthread_mutex_unlock(&ua->cbs_lock);
 
       if (resp_handle) {
         if (resp_handle->err_cb) {
@@ -555,9 +567,7 @@ perform_request(
       }
     }
     else if (httpcode >= 400) { // CLIENT ERROR
-      pthread_mutex_lock(&ua->cbs_lock);
       action = (*cbs.on_4xx)(cbs.data, httpcode, conn);
-      pthread_mutex_unlock(&ua->cbs_lock);
 
       if (resp_handle) {
         if(resp_handle->err_cb) {
@@ -576,14 +586,10 @@ perform_request(
       }
     }
     else if (httpcode >= 300) { // REDIRECTING
-      pthread_mutex_lock(&ua->cbs_lock);
       action = (*cbs.on_3xx)(cbs.data, httpcode, conn);
-      pthread_mutex_unlock(&ua->cbs_lock);
     }
     else if (httpcode >= 200) { // SUCCESS RESPONSES
-      pthread_mutex_lock(&ua->cbs_lock);
       action = (*cbs.on_2xx)(cbs.data, httpcode, conn);
-      pthread_mutex_unlock(&ua->cbs_lock);
 
       if (resp_handle) {
         if (resp_handle->ok_cb) {
@@ -602,42 +608,28 @@ perform_request(
       }
     }
     else if (httpcode >= 100) { // INFO RESPONSE
-      pthread_mutex_lock(&ua->cbs_lock);
       action = (*cbs.on_1xx)(cbs.data, httpcode, conn);
-      pthread_mutex_unlock(&ua->cbs_lock);
     }
 
     switch (action) {
-    case ACTION_SUCCESS:
-    case ACTION_FAILURE:
+    case UA_SUCCESS:
+    case UA_FAILURE:
         D_PRINT("FINISHED REQUEST AT %s", conn->resp_url);
         break;
-    case ACTION_RETRY:
+    case UA_RETRY:
         D_PRINT("RETRYING REQUEST AT %s", conn->resp_url);
         break;
-    case ACTION_ABORT:
+    case UA_ABORT:
     default:
         ERR("COULDN'T PERFORM REQUEST AT %s", conn->resp_url);
     }
 
-    pthread_mutex_lock(&ua->cbs_lock);
     (*cbs.on_iter_end)(cbs.data);
-    conn_reset_fields(conn); // reset conn fields for its next iteration
-    pthread_mutex_unlock(&ua->cbs_lock);
+    
+    conn_soft_reset(conn); // reset conn fields for its next iteration
+  } while (UA_RETRY == action);
 
-  } while (ACTION_RETRY == action);
-
-  pthread_mutex_lock(&ua->lock);
-
-  conn->data = NULL;
-  conn->is_busy = false;
-  ++ua->num_notbusy;
-  if (ua->mime) { // @todo this is temporary
-    curl_mime_free(ua->mime); 
-    ua->mime = NULL;
-  }
-
-  pthread_mutex_unlock(&ua->lock);
+  conn_full_reset(ua, conn);
 }
 
 /* template function for performing requests */
