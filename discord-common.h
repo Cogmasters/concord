@@ -5,6 +5,7 @@
 #include <curl/curl.h>
 #include "json-scanf.h"
 #include "json-actor.h"
+#include "json-actor-boxed.h"
 
 #include "user-agent.h"
 #include "websockets.h"

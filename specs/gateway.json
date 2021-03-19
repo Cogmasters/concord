@@ -93,7 +93,8 @@
       "fields":
       [
         { "name":"since","type":{"base":"char", "dec":"*", "converter":"iso8601"}},
-        { "name":"activities","type":{"base":"discord::gateway::identify::status_update::activity::dati", "dec":"ntl"}},
+        { "name":"activities","type":{"base":"discord::gateway::identify::status_update::activity::dati", 
+          "dec":"ntl"}, "inject_if_not":null},
         { "name":"status","type":{"base":"char", "dec":"[16]"}},
         { "name":"afk","type":{"base":"bool"}} 
       ]

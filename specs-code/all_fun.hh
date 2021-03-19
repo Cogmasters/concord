@@ -330,6 +330,37 @@ extern void params_use_default_inject_settings(struct params *p);
 } // namespace create_channel_invite
 } // namespace channel
 } // namespace discord
+/* This file is generated from specs/guild.ban.json, Please don't edit it. */
+/*
+https://discord.com/developers/docs/resources/guild#ban-object
+*/
+namespace discord {
+namespace guild {
+
+namespace ban {
+extern void dati_cleanup_v(void *p);
+extern void dati_cleanup(struct dati *p);
+extern void dati_init_v(void *p);
+extern void dati_init(struct dati *p);
+extern struct dati * dati_alloc();
+extern void dati_free_v(void *p);
+extern void dati_free(struct dati *p);
+extern void dati_from_json_v(char *json, size_t len, void *p);
+extern void dati_from_json(char *json, size_t len, struct dati *p);
+extern size_t dati_to_json_v(char *json, size_t len, void *p);
+extern size_t dati_to_json(char *json, size_t len, struct dati *p);
+extern size_t dati_to_query_v(char *json, size_t len, void *p);
+extern size_t dati_to_query(char *json, size_t len, struct dati *p);
+extern void dati_list_free_v(void **p);
+extern void dati_list_free(struct dati **p);
+extern void dati_list_from_json_v(char *str, size_t len, void *p);
+extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
+extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
+extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
+extern void dati_use_default_inject_settings(struct dati *p);
+} // namespace ban
+} // namespace guild
+} // namespace discord
 /* This file is generated from specs/voice.json, Please don't edit it. */
 /*
 (null)
@@ -444,14 +475,13 @@ extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
 extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace guild
 } // namespace discord
-/* This file is generated from specs/guild.ban.json, Please don't edit it. */
+/* This file is generated from specs/user.json, Please don't edit it. */
 /*
-https://discord.com/developers/docs/resources/guild#ban-object
+https://discord.com/developers/docs/resources/user#user-object
 */
 namespace discord {
-namespace guild {
+namespace user {
 
-namespace ban {
 extern void dati_cleanup_v(void *p);
 extern void dati_cleanup(struct dati *p);
 extern void dati_init_v(void *p);
@@ -472,8 +502,30 @@ extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
 extern void dati_use_default_inject_settings(struct dati *p);
-} // namespace ban
-} // namespace guild
+
+namespace connection {
+extern void dati_cleanup_v(void *p);
+extern void dati_cleanup(struct dati *p);
+extern void dati_init_v(void *p);
+extern void dati_init(struct dati *p);
+extern struct dati * dati_alloc();
+extern void dati_free_v(void *p);
+extern void dati_free(struct dati *p);
+extern void dati_from_json_v(char *json, size_t len, void *p);
+extern void dati_from_json(char *json, size_t len, struct dati *p);
+extern size_t dati_to_json_v(char *json, size_t len, void *p);
+extern size_t dati_to_json(char *json, size_t len, struct dati *p);
+extern size_t dati_to_query_v(char *json, size_t len, void *p);
+extern size_t dati_to_query(char *json, size_t len, struct dati *p);
+extern void dati_list_free_v(void **p);
+extern void dati_list_free(struct dati **p);
+extern void dati_list_from_json_v(char *str, size_t len, void *p);
+extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
+extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
+extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
+extern void dati_use_default_inject_settings(struct dati *p);
+} // namespace connection
+} // namespace user
 } // namespace discord
 /* This file is generated from specs/guild.modify-guild-member.json, Please don't edit it. */
 /*
@@ -664,72 +716,12 @@ extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace widget
 } // namespace guild
 } // namespace discord
-/* This file is generated from specs/channel.json, Please don't edit it. */
+/* This file is generated from specs/invite.json, Please don't edit it. */
 /*
-https://discord.com/developers/docs/resources/channel#channel-object-channel-types
+https://discord.com/developers/docs/resources/invite#invite-object
 */
 namespace discord {
-namespace channel {
-
-extern void dati_cleanup_v(void *p);
-extern void dati_cleanup(struct dati *p);
-extern void dati_init_v(void *p);
-extern void dati_init(struct dati *p);
-extern struct dati * dati_alloc();
-extern void dati_free_v(void *p);
-extern void dati_free(struct dati *p);
-extern void dati_from_json_v(char *json, size_t len, void *p);
-extern void dati_from_json(char *json, size_t len, struct dati *p);
-extern size_t dati_to_json_v(char *json, size_t len, void *p);
-extern size_t dati_to_json(char *json, size_t len, struct dati *p);
-extern size_t dati_to_query_v(char *json, size_t len, void *p);
-extern size_t dati_to_query(char *json, size_t len, struct dati *p);
-extern void dati_list_free_v(void **p);
-extern void dati_list_free(struct dati **p);
-extern void dati_list_from_json_v(char *str, size_t len, void *p);
-extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
-extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
-extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
-} // namespace channel
-} // namespace discord
-/* This file is generated from specs/webhook.edit-webhook-message.json, Please don't edit it. */
-/*
-
-*/
-namespace discord {
-namespace webhook {
-namespace edit_webhook_message {
-
-extern void params_cleanup_v(void *p);
-extern void params_cleanup(struct params *p);
-extern void params_init_v(void *p);
-extern void params_init(struct params *p);
-extern struct params * params_alloc();
-extern void params_free_v(void *p);
-extern void params_free(struct params *p);
-extern void params_from_json_v(char *json, size_t len, void *p);
-extern void params_from_json(char *json, size_t len, struct params *p);
-extern size_t params_to_json_v(char *json, size_t len, void *p);
-extern size_t params_to_json(char *json, size_t len, struct params *p);
-extern size_t params_to_query_v(char *json, size_t len, void *p);
-extern size_t params_to_query(char *json, size_t len, struct params *p);
-extern void params_list_free_v(void **p);
-extern void params_list_free(struct params **p);
-extern void params_list_from_json_v(char *str, size_t len, void *p);
-extern void params_list_from_json(char *str, size_t len, struct params ***p);
-extern size_t params_list_to_json_v(char *str, size_t len, void *p);
-extern size_t params_list_to_json(char *str, size_t len, struct params **p);
-extern void params_use_default_inject_settings(struct params *p);
-} // namespace edit_webhook_message
-} // namespace webhook
-} // namespace discord
-/* This file is generated from specs/audit_log.json, Please don't edit it. */
-/*
-(null)
-*/
-namespace discord {
-namespace audit_log {
+namespace invite {
 
 extern void dati_cleanup_v(void *p);
 extern void dati_cleanup(struct dati *p);
@@ -752,7 +744,7 @@ extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
 extern void dati_use_default_inject_settings(struct dati *p);
 
-namespace entry {
+namespace metadata {
 extern void dati_cleanup_v(void *p);
 extern void dati_cleanup(struct dati *p);
 extern void dati_init_v(void *p);
@@ -773,112 +765,8 @@ extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
 extern void dati_use_default_inject_settings(struct dati *p);
-} // namespace entry
-
-namespace entry {
-namespace optional_info {
-extern void dati_cleanup_v(void *p);
-extern void dati_cleanup(struct dati *p);
-extern void dati_init_v(void *p);
-extern void dati_init(struct dati *p);
-extern struct dati * dati_alloc();
-extern void dati_free_v(void *p);
-extern void dati_free(struct dati *p);
-extern void dati_from_json_v(char *json, size_t len, void *p);
-extern void dati_from_json(char *json, size_t len, struct dati *p);
-extern size_t dati_to_json_v(char *json, size_t len, void *p);
-extern size_t dati_to_json(char *json, size_t len, struct dati *p);
-extern size_t dati_to_query_v(char *json, size_t len, void *p);
-extern size_t dati_to_query(char *json, size_t len, struct dati *p);
-extern void dati_list_free_v(void **p);
-extern void dati_list_free(struct dati **p);
-extern void dati_list_from_json_v(char *str, size_t len, void *p);
-extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
-extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
-extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
-} // namespace optional_info
-} // namespace entry
-
-namespace change {
-extern void dati_cleanup_v(void *p);
-extern void dati_cleanup(struct dati *p);
-extern void dati_init_v(void *p);
-extern void dati_init(struct dati *p);
-extern struct dati * dati_alloc();
-extern void dati_free_v(void *p);
-extern void dati_free(struct dati *p);
-extern void dati_from_json_v(char *json, size_t len, void *p);
-extern void dati_from_json(char *json, size_t len, struct dati *p);
-extern size_t dati_to_json_v(char *json, size_t len, void *p);
-extern size_t dati_to_json(char *json, size_t len, struct dati *p);
-extern size_t dati_to_query_v(char *json, size_t len, void *p);
-extern size_t dati_to_query(char *json, size_t len, struct dati *p);
-extern void dati_list_free_v(void **p);
-extern void dati_list_free(struct dati **p);
-extern void dati_list_from_json_v(char *str, size_t len, void *p);
-extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
-extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
-extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
-} // namespace change
-
-namespace change {
-namespace key {
-extern void dati_cleanup_v(void *p);
-extern void dati_cleanup(struct dati *p);
-extern void dati_init_v(void *p);
-extern void dati_init(struct dati *p);
-extern struct dati * dati_alloc();
-extern void dati_free_v(void *p);
-extern void dati_free(struct dati *p);
-extern void dati_from_json_v(char *json, size_t len, void *p);
-extern void dati_from_json(char *json, size_t len, struct dati *p);
-extern size_t dati_to_json_v(char *json, size_t len, void *p);
-extern size_t dati_to_json(char *json, size_t len, struct dati *p);
-extern size_t dati_to_query_v(char *json, size_t len, void *p);
-extern size_t dati_to_query(char *json, size_t len, struct dati *p);
-extern void dati_list_free_v(void **p);
-extern void dati_list_free(struct dati **p);
-extern void dati_list_from_json_v(char *str, size_t len, void *p);
-extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
-extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
-extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
-} // namespace key
-} // namespace change
-} // namespace audit_log
-} // namespace discord
-/* This file is generated from specs/template.create-guild-from-template.json, Please don't edit it. */
-/*
-
-*/
-namespace discord {
-namespace Template {
-namespace create_guild_from_template {
-
-extern void params_cleanup_v(void *p);
-extern void params_cleanup(struct params *p);
-extern void params_init_v(void *p);
-extern void params_init(struct params *p);
-extern struct params * params_alloc();
-extern void params_free_v(void *p);
-extern void params_free(struct params *p);
-extern void params_from_json_v(char *json, size_t len, void *p);
-extern void params_from_json(char *json, size_t len, struct params *p);
-extern size_t params_to_json_v(char *json, size_t len, void *p);
-extern size_t params_to_json(char *json, size_t len, struct params *p);
-extern size_t params_to_query_v(char *json, size_t len, void *p);
-extern size_t params_to_query(char *json, size_t len, struct params *p);
-extern void params_list_free_v(void **p);
-extern void params_list_free(struct params **p);
-extern void params_list_from_json_v(char *str, size_t len, void *p);
-extern void params_list_from_json(char *str, size_t len, struct params ***p);
-extern size_t params_list_to_json_v(char *str, size_t len, void *p);
-extern size_t params_list_to_json(char *str, size_t len, struct params **p);
-extern void params_use_default_inject_settings(struct params *p);
-} // namespace create_guild_from_template
-} // namespace Template
+} // namespace metadata
+} // namespace invite
 } // namespace discord
 /* This file is generated from specs/webhook.modify-webhook.json, Please don't edit it. */
 /*
@@ -910,6 +798,37 @@ extern size_t params_list_to_json(char *str, size_t len, struct params **p);
 extern void params_use_default_inject_settings(struct params *p);
 } // namespace modify_webhook
 } // namespace webhook
+} // namespace discord
+/* This file is generated from specs/template.create-guild-from-template.json, Please don't edit it. */
+/*
+
+*/
+namespace discord {
+namespace Template {
+namespace create_guild_from_template {
+
+extern void params_cleanup_v(void *p);
+extern void params_cleanup(struct params *p);
+extern void params_init_v(void *p);
+extern void params_init(struct params *p);
+extern struct params * params_alloc();
+extern void params_free_v(void *p);
+extern void params_free(struct params *p);
+extern void params_from_json_v(char *json, size_t len, void *p);
+extern void params_from_json(char *json, size_t len, struct params *p);
+extern size_t params_to_json_v(char *json, size_t len, void *p);
+extern size_t params_to_json(char *json, size_t len, struct params *p);
+extern size_t params_to_query_v(char *json, size_t len, void *p);
+extern size_t params_to_query(char *json, size_t len, struct params *p);
+extern void params_list_free_v(void **p);
+extern void params_list_free(struct params **p);
+extern void params_list_from_json_v(char *str, size_t len, void *p);
+extern void params_list_from_json(char *str, size_t len, struct params ***p);
+extern size_t params_list_to_json_v(char *str, size_t len, void *p);
+extern size_t params_list_to_json(char *str, size_t len, struct params **p);
+extern void params_use_default_inject_settings(struct params *p);
+} // namespace create_guild_from_template
+} // namespace Template
 } // namespace discord
 /* This file is generated from specs/channel.objects.json, Please don't edit it. */
 /*
@@ -1503,57 +1422,36 @@ extern void params_use_default_inject_settings(struct params *p);
 } // namespace modify_guild_emoji
 } // namespace emoji
 } // namespace discord
-/* This file is generated from specs/user.json, Please don't edit it. */
+/* This file is generated from specs/webhook.execute-webhook.json, Please don't edit it. */
 /*
-https://discord.com/developers/docs/resources/user#user-object
+
 */
 namespace discord {
-namespace user {
+namespace webhook {
+namespace execute_webhook {
 
-extern void dati_cleanup_v(void *p);
-extern void dati_cleanup(struct dati *p);
-extern void dati_init_v(void *p);
-extern void dati_init(struct dati *p);
-extern struct dati * dati_alloc();
-extern void dati_free_v(void *p);
-extern void dati_free(struct dati *p);
-extern void dati_from_json_v(char *json, size_t len, void *p);
-extern void dati_from_json(char *json, size_t len, struct dati *p);
-extern size_t dati_to_json_v(char *json, size_t len, void *p);
-extern size_t dati_to_json(char *json, size_t len, struct dati *p);
-extern size_t dati_to_query_v(char *json, size_t len, void *p);
-extern size_t dati_to_query(char *json, size_t len, struct dati *p);
-extern void dati_list_free_v(void **p);
-extern void dati_list_free(struct dati **p);
-extern void dati_list_from_json_v(char *str, size_t len, void *p);
-extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
-extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
-extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
-
-namespace connection {
-extern void dati_cleanup_v(void *p);
-extern void dati_cleanup(struct dati *p);
-extern void dati_init_v(void *p);
-extern void dati_init(struct dati *p);
-extern struct dati * dati_alloc();
-extern void dati_free_v(void *p);
-extern void dati_free(struct dati *p);
-extern void dati_from_json_v(char *json, size_t len, void *p);
-extern void dati_from_json(char *json, size_t len, struct dati *p);
-extern size_t dati_to_json_v(char *json, size_t len, void *p);
-extern size_t dati_to_json(char *json, size_t len, struct dati *p);
-extern size_t dati_to_query_v(char *json, size_t len, void *p);
-extern size_t dati_to_query(char *json, size_t len, struct dati *p);
-extern void dati_list_free_v(void **p);
-extern void dati_list_free(struct dati **p);
-extern void dati_list_from_json_v(char *str, size_t len, void *p);
-extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
-extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
-extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
-} // namespace connection
-} // namespace user
+extern void params_cleanup_v(void *p);
+extern void params_cleanup(struct params *p);
+extern void params_init_v(void *p);
+extern void params_init(struct params *p);
+extern struct params * params_alloc();
+extern void params_free_v(void *p);
+extern void params_free(struct params *p);
+extern void params_from_json_v(char *json, size_t len, void *p);
+extern void params_from_json(char *json, size_t len, struct params *p);
+extern size_t params_to_json_v(char *json, size_t len, void *p);
+extern size_t params_to_json(char *json, size_t len, struct params *p);
+extern size_t params_to_query_v(char *json, size_t len, void *p);
+extern size_t params_to_query(char *json, size_t len, struct params *p);
+extern void params_list_free_v(void **p);
+extern void params_list_free(struct params **p);
+extern void params_list_from_json_v(char *str, size_t len, void *p);
+extern void params_list_from_json(char *str, size_t len, struct params ***p);
+extern size_t params_list_to_json_v(char *str, size_t len, void *p);
+extern size_t params_list_to_json(char *str, size_t len, struct params **p);
+extern void params_use_default_inject_settings(struct params *p);
+} // namespace execute_webhook
+} // namespace webhook
 } // namespace discord
 /* This file is generated from specs/guild.role.create.json, Please don't edit it. */
 /*
@@ -1594,36 +1492,130 @@ namespace discord {
 namespace permissions {
 } // namespace permissions
 } // namespace discord
-/* This file is generated from specs/webhook.execute-webhook.json, Please don't edit it. */
+/* This file is generated from specs/audit_log.json, Please don't edit it. */
 /*
-
+(null)
 */
 namespace discord {
-namespace webhook {
-namespace execute_webhook {
+namespace audit_log {
 
-extern void params_cleanup_v(void *p);
-extern void params_cleanup(struct params *p);
-extern void params_init_v(void *p);
-extern void params_init(struct params *p);
-extern struct params * params_alloc();
-extern void params_free_v(void *p);
-extern void params_free(struct params *p);
-extern void params_from_json_v(char *json, size_t len, void *p);
-extern void params_from_json(char *json, size_t len, struct params *p);
-extern size_t params_to_json_v(char *json, size_t len, void *p);
-extern size_t params_to_json(char *json, size_t len, struct params *p);
-extern size_t params_to_query_v(char *json, size_t len, void *p);
-extern size_t params_to_query(char *json, size_t len, struct params *p);
-extern void params_list_free_v(void **p);
-extern void params_list_free(struct params **p);
-extern void params_list_from_json_v(char *str, size_t len, void *p);
-extern void params_list_from_json(char *str, size_t len, struct params ***p);
-extern size_t params_list_to_json_v(char *str, size_t len, void *p);
-extern size_t params_list_to_json(char *str, size_t len, struct params **p);
-extern void params_use_default_inject_settings(struct params *p);
-} // namespace execute_webhook
-} // namespace webhook
+extern void dati_cleanup_v(void *p);
+extern void dati_cleanup(struct dati *p);
+extern void dati_init_v(void *p);
+extern void dati_init(struct dati *p);
+extern struct dati * dati_alloc();
+extern void dati_free_v(void *p);
+extern void dati_free(struct dati *p);
+extern void dati_from_json_v(char *json, size_t len, void *p);
+extern void dati_from_json(char *json, size_t len, struct dati *p);
+extern size_t dati_to_json_v(char *json, size_t len, void *p);
+extern size_t dati_to_json(char *json, size_t len, struct dati *p);
+extern size_t dati_to_query_v(char *json, size_t len, void *p);
+extern size_t dati_to_query(char *json, size_t len, struct dati *p);
+extern void dati_list_free_v(void **p);
+extern void dati_list_free(struct dati **p);
+extern void dati_list_from_json_v(char *str, size_t len, void *p);
+extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
+extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
+extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
+extern void dati_use_default_inject_settings(struct dati *p);
+
+namespace entry {
+extern void dati_cleanup_v(void *p);
+extern void dati_cleanup(struct dati *p);
+extern void dati_init_v(void *p);
+extern void dati_init(struct dati *p);
+extern struct dati * dati_alloc();
+extern void dati_free_v(void *p);
+extern void dati_free(struct dati *p);
+extern void dati_from_json_v(char *json, size_t len, void *p);
+extern void dati_from_json(char *json, size_t len, struct dati *p);
+extern size_t dati_to_json_v(char *json, size_t len, void *p);
+extern size_t dati_to_json(char *json, size_t len, struct dati *p);
+extern size_t dati_to_query_v(char *json, size_t len, void *p);
+extern size_t dati_to_query(char *json, size_t len, struct dati *p);
+extern void dati_list_free_v(void **p);
+extern void dati_list_free(struct dati **p);
+extern void dati_list_from_json_v(char *str, size_t len, void *p);
+extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
+extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
+extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
+extern void dati_use_default_inject_settings(struct dati *p);
+} // namespace entry
+
+namespace entry {
+namespace optional_info {
+extern void dati_cleanup_v(void *p);
+extern void dati_cleanup(struct dati *p);
+extern void dati_init_v(void *p);
+extern void dati_init(struct dati *p);
+extern struct dati * dati_alloc();
+extern void dati_free_v(void *p);
+extern void dati_free(struct dati *p);
+extern void dati_from_json_v(char *json, size_t len, void *p);
+extern void dati_from_json(char *json, size_t len, struct dati *p);
+extern size_t dati_to_json_v(char *json, size_t len, void *p);
+extern size_t dati_to_json(char *json, size_t len, struct dati *p);
+extern size_t dati_to_query_v(char *json, size_t len, void *p);
+extern size_t dati_to_query(char *json, size_t len, struct dati *p);
+extern void dati_list_free_v(void **p);
+extern void dati_list_free(struct dati **p);
+extern void dati_list_from_json_v(char *str, size_t len, void *p);
+extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
+extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
+extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
+extern void dati_use_default_inject_settings(struct dati *p);
+} // namespace optional_info
+} // namespace entry
+
+namespace change {
+extern void dati_cleanup_v(void *p);
+extern void dati_cleanup(struct dati *p);
+extern void dati_init_v(void *p);
+extern void dati_init(struct dati *p);
+extern struct dati * dati_alloc();
+extern void dati_free_v(void *p);
+extern void dati_free(struct dati *p);
+extern void dati_from_json_v(char *json, size_t len, void *p);
+extern void dati_from_json(char *json, size_t len, struct dati *p);
+extern size_t dati_to_json_v(char *json, size_t len, void *p);
+extern size_t dati_to_json(char *json, size_t len, struct dati *p);
+extern size_t dati_to_query_v(char *json, size_t len, void *p);
+extern size_t dati_to_query(char *json, size_t len, struct dati *p);
+extern void dati_list_free_v(void **p);
+extern void dati_list_free(struct dati **p);
+extern void dati_list_from_json_v(char *str, size_t len, void *p);
+extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
+extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
+extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
+extern void dati_use_default_inject_settings(struct dati *p);
+} // namespace change
+
+namespace change {
+namespace key {
+extern void dati_cleanup_v(void *p);
+extern void dati_cleanup(struct dati *p);
+extern void dati_init_v(void *p);
+extern void dati_init(struct dati *p);
+extern struct dati * dati_alloc();
+extern void dati_free_v(void *p);
+extern void dati_free(struct dati *p);
+extern void dati_from_json_v(char *json, size_t len, void *p);
+extern void dati_from_json(char *json, size_t len, struct dati *p);
+extern size_t dati_to_json_v(char *json, size_t len, void *p);
+extern size_t dati_to_json(char *json, size_t len, struct dati *p);
+extern size_t dati_to_query_v(char *json, size_t len, void *p);
+extern size_t dati_to_query(char *json, size_t len, struct dati *p);
+extern void dati_list_free_v(void **p);
+extern void dati_list_free(struct dati **p);
+extern void dati_list_from_json_v(char *str, size_t len, void *p);
+extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
+extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
+extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
+extern void dati_use_default_inject_settings(struct dati *p);
+} // namespace key
+} // namespace change
+} // namespace audit_log
 } // namespace discord
 /* This file is generated from specs/guild.role.json, Please don't edit it. */
 /*
@@ -1740,6 +1732,37 @@ extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
 extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace Template
+} // namespace discord
+/* This file is generated from specs/webhook.edit-webhook-message.json, Please don't edit it. */
+/*
+
+*/
+namespace discord {
+namespace webhook {
+namespace edit_webhook_message {
+
+extern void params_cleanup_v(void *p);
+extern void params_cleanup(struct params *p);
+extern void params_init_v(void *p);
+extern void params_init(struct params *p);
+extern struct params * params_alloc();
+extern void params_free_v(void *p);
+extern void params_free(struct params *p);
+extern void params_from_json_v(char *json, size_t len, void *p);
+extern void params_from_json(char *json, size_t len, struct params *p);
+extern size_t params_to_json_v(char *json, size_t len, void *p);
+extern size_t params_to_json(char *json, size_t len, struct params *p);
+extern size_t params_to_query_v(char *json, size_t len, void *p);
+extern size_t params_to_query(char *json, size_t len, struct params *p);
+extern void params_list_free_v(void **p);
+extern void params_list_free(struct params **p);
+extern void params_list_from_json_v(char *str, size_t len, void *p);
+extern void params_list_from_json(char *str, size_t len, struct params ***p);
+extern size_t params_list_to_json_v(char *str, size_t len, void *p);
+extern size_t params_list_to_json(char *str, size_t len, struct params **p);
+extern void params_use_default_inject_settings(struct params *p);
+} // namespace edit_webhook_message
+} // namespace webhook
 } // namespace discord
 /* This file is generated from specs/channel.follow-news-channel.json, Please don't edit it. */
 /*
@@ -1911,6 +1934,35 @@ extern void params_use_default_inject_settings(struct params *p);
 } // namespace modify_guild_template
 } // namespace Template
 } // namespace discord
+/* This file is generated from specs/channel.json, Please don't edit it. */
+/*
+https://discord.com/developers/docs/resources/channel#channel-object-channel-types
+*/
+namespace discord {
+namespace channel {
+
+extern void dati_cleanup_v(void *p);
+extern void dati_cleanup(struct dati *p);
+extern void dati_init_v(void *p);
+extern void dati_init(struct dati *p);
+extern struct dati * dati_alloc();
+extern void dati_free_v(void *p);
+extern void dati_free(struct dati *p);
+extern void dati_from_json_v(char *json, size_t len, void *p);
+extern void dati_from_json(char *json, size_t len, struct dati *p);
+extern size_t dati_to_json_v(char *json, size_t len, void *p);
+extern size_t dati_to_json(char *json, size_t len, struct dati *p);
+extern size_t dati_to_query_v(char *json, size_t len, void *p);
+extern size_t dati_to_query(char *json, size_t len, struct dati *p);
+extern void dati_list_free_v(void **p);
+extern void dati_list_free(struct dati **p);
+extern void dati_list_from_json_v(char *str, size_t len, void *p);
+extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
+extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
+extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
+extern void dati_use_default_inject_settings(struct dati *p);
+} // namespace channel
+} // namespace discord
 /* This file is generated from specs/guild.member.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/resources/guild#guild-member-object
@@ -1972,56 +2024,4 @@ extern size_t params_list_to_json(char *str, size_t len, struct params **p);
 extern void params_use_default_inject_settings(struct params *p);
 } // namespace modify_current_user
 } // namespace user
-} // namespace discord
-/* This file is generated from specs/invite.json, Please don't edit it. */
-/*
-https://discord.com/developers/docs/resources/invite#invite-object
-*/
-namespace discord {
-namespace invite {
-
-extern void dati_cleanup_v(void *p);
-extern void dati_cleanup(struct dati *p);
-extern void dati_init_v(void *p);
-extern void dati_init(struct dati *p);
-extern struct dati * dati_alloc();
-extern void dati_free_v(void *p);
-extern void dati_free(struct dati *p);
-extern void dati_from_json_v(char *json, size_t len, void *p);
-extern void dati_from_json(char *json, size_t len, struct dati *p);
-extern size_t dati_to_json_v(char *json, size_t len, void *p);
-extern size_t dati_to_json(char *json, size_t len, struct dati *p);
-extern size_t dati_to_query_v(char *json, size_t len, void *p);
-extern size_t dati_to_query(char *json, size_t len, struct dati *p);
-extern void dati_list_free_v(void **p);
-extern void dati_list_free(struct dati **p);
-extern void dati_list_from_json_v(char *str, size_t len, void *p);
-extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
-extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
-extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
-
-namespace metadata {
-extern void dati_cleanup_v(void *p);
-extern void dati_cleanup(struct dati *p);
-extern void dati_init_v(void *p);
-extern void dati_init(struct dati *p);
-extern struct dati * dati_alloc();
-extern void dati_free_v(void *p);
-extern void dati_free(struct dati *p);
-extern void dati_from_json_v(char *json, size_t len, void *p);
-extern void dati_from_json(char *json, size_t len, struct dati *p);
-extern size_t dati_to_json_v(char *json, size_t len, void *p);
-extern size_t dati_to_json(char *json, size_t len, struct dati *p);
-extern size_t dati_to_query_v(char *json, size_t len, void *p);
-extern size_t dati_to_query(char *json, size_t len, struct dati *p);
-extern void dati_list_free_v(void **p);
-extern void dati_list_free(struct dati **p);
-extern void dati_list_from_json_v(char *str, size_t len, void *p);
-extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
-extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
-extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
-} // namespace metadata
-} // namespace invite
 } // namespace discord

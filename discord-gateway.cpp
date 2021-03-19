@@ -125,6 +125,7 @@ send_identify(dati *gw)
   pthread_mutex_unlock(&gw->lock);
 
   char payload[MAX_PAYLOAD_LEN];
+  identify::dati_use_default_inject_settings(gw->identify);
   int ret = json_inject(payload, sizeof(payload), 
               "(op):2" // IDENTIFY OPCODE
               "(d):F",
@@ -132,10 +133,12 @@ send_identify(dati *gw)
   ASSERT_S(ret < (int)sizeof(payload), "Out of bounds write attempt");
 
   /* @todo this is a temporary solution for a JSON formatting bug */
+#if 0  
   char *bug_start = strstr(payload, "\"activities\":");
   char bug_skip[500];
   sprintf(bug_skip, "%s", bug_start+13);
   sprintf(bug_start+13, "null%s", bug_skip);
+#endif  
 
   // contain token (sensitive data), enable _ORKA_DEBUG_STRICT to print it
   DS_PRINT("IDENTIFY PAYLOAD:\n\t%s", payload);

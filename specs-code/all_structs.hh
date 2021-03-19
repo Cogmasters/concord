@@ -689,6 +689,42 @@ struct params {
 } // namespace create_channel_invite
 } // namespace channel
 } // namespace discord
+/* This file is generated from specs/guild.ban.json, Please don't edit it. */
+/*
+https://discord.com/developers/docs/resources/guild#ban-object
+*/
+namespace discord {
+namespace guild {
+
+namespace ban {
+/* This is defined at specs/guild.ban.json:9:22 */
+struct dati {
+  /* specs/guild.ban.json:12:20
+     '{ "name": "reason", "type":{ "base":"char", "dec":"[MAX_REASON_LEN]" }}'
+  */
+  char reason[MAX_REASON_LEN];
+
+  /* specs/guild.ban.json:13:20
+     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*"}, "comment":"partial user object"}'
+  */
+  discord::user::dati *user; // partial user object
+
+  // The following is metadata used to 
+  // 1. control which field should be extracted/injected
+  // 2. record which field is presented(defined) in JSON
+  // 3. record which field is null in JSON
+  struct {
+    bool enable_arg_switches;
+    bool enable_record_defined;
+    bool enable_record_null;
+    void *arg_switches[2];
+    void *record_defined[2];
+    void *record_null[2];
+  } __M; // metadata
+};
+} // namespace ban
+} // namespace guild
+} // namespace discord
 /* This file is generated from specs/voice.json, Please don't edit it. */
 /*
 (null)
@@ -1132,25 +1168,80 @@ struct dati {
 };
 } // namespace guild
 } // namespace discord
-/* This file is generated from specs/guild.ban.json, Please don't edit it. */
+/* This file is generated from specs/user.json, Please don't edit it. */
 /*
-https://discord.com/developers/docs/resources/guild#ban-object
+https://discord.com/developers/docs/resources/user#user-object
 */
 namespace discord {
-namespace guild {
+namespace user {
 
-namespace ban {
-/* This is defined at specs/guild.ban.json:9:22 */
+/* Title: User Structure */
+/* This is defined at specs/user.json:44:18 */
 struct dati {
-  /* specs/guild.ban.json:12:20
-     '{ "name": "reason", "type":{ "base":"char", "dec":"[MAX_REASON_LEN]" }}'
+  /* specs/user.json:47:14
+     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"} }'
   */
-  char reason[MAX_REASON_LEN];
+  u64_snowflake_t id;
 
-  /* specs/guild.ban.json:13:20
-     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*"}, "comment":"partial user object"}'
+  /* specs/user.json:48:14
+     '{ "name": "username", "type":{ "base":"char", "dec":"[MAX_USERNAME_LEN]"}}'
   */
-  discord::user::dati *user; // partial user object
+  char username[MAX_USERNAME_LEN];
+
+  /* specs/user.json:49:14
+     '{ "name": "discriminator", "type":{ "base":"char", "dec":"[MAX_DISCRIMINATOR_LEN]" }}'
+  */
+  char discriminator[MAX_DISCRIMINATOR_LEN];
+
+  /* specs/user.json:50:14
+     '{ "name": "avatar", "type":{ "base":"char", "dec":"[MAX_SHA256_LEN]" }}'
+  */
+  char avatar[MAX_SHA256_LEN];
+
+  /* specs/user.json:51:14
+     '{ "name": "bot", "type":{ "base":"bool" }}'
+  */
+  bool bot;
+
+  /* specs/user.json:52:14
+     '{ "name": "System", "json_key": "system", "type":{ "base":"bool" }}'
+  */
+  bool System;
+
+  /* specs/user.json:53:14
+     '{ "name": "mfa_enabled", "type":{ "base":"bool" }}'
+  */
+  bool mfa_enabled;
+
+  /* specs/user.json:54:14
+     '{ "name": "locale", "type":{ "base":"char", "dec":"[MAX_LOCALE_LEN]" }}'
+  */
+  char locale[MAX_LOCALE_LEN];
+
+  /* specs/user.json:55:14
+     '{ "name": "verified", "type":{ "base":"bool" }}'
+  */
+  bool verified;
+
+  /* specs/user.json:56:14
+     '{ "name": "email", "type":{ "base":"char", "dec":"[MAX_EMAIL_LEN]" }}'
+  */
+  char email[MAX_EMAIL_LEN];
+
+  /* specs/user.json:57:14
+     '{ "name": "flags", "type":{ "base":"int", "int_alias": "discord::user::flags::code" }}'
+  */
+  discord::user::flags::code flags;
+
+  /* specs/user.json:58:14
+     '{ "name": "premium_type", "type":{ "base":"int", "int_alias": "discord::user::premium_types::code" }}'
+  */
+  discord::user::premium_types::code premium_type;
+
+  /* specs/user.json:59:14
+     '{ "name": "public_flags", "type":{ "base":"int", "int_alias": "discord::user::flags::code" }}'
+  */
+  discord::user::flags::code public_flags;
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -1160,13 +1251,77 @@ struct dati {
     bool enable_arg_switches;
     bool enable_record_defined;
     bool enable_record_null;
-    void *arg_switches[2];
-    void *record_defined[2];
-    void *record_null[2];
+    void *arg_switches[13];
+    void *record_defined[13];
+    void *record_null[13];
   } __M; // metadata
 };
-} // namespace ban
-} // namespace guild
+
+namespace connection {
+/* Title: Connection Structure */
+/* https://discord.com/developers/docs/resources/user#connection-object-connection-structure */
+/* This is defined at specs/user.json:77:18 */
+struct dati {
+  /* specs/user.json:80:14
+     '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
+  */
+  char *id; // @todo fixed size limit
+
+  /* specs/user.json:81:14
+     '{ "name": "name", "type":{ "base":"char", "dec":"*"}}'
+  */
+  char *name;
+
+  /* specs/user.json:82:14
+     '{ "name": "type", "type":{ "base":"char", "dec":"*"}}'
+  */
+  char *type;
+
+  /* specs/user.json:83:14
+     '{ "name": "revoked", "type":{ "base":"bool"}}'
+  */
+  bool revoked;
+
+  /* specs/user.json:84:20
+     '{ "name": "integrations", "type": {"base":"discord::guild::integration::dati", "dec":"ntl"}, "todo":true}'
+  */
+  //@todo integrations (null);
+
+  /* specs/user.json:85:14
+     '{ "name": "verified", "type":{ "base":"bool" }}'
+  */
+  bool verified;
+
+  /* specs/user.json:86:14
+     '{ "name": "friend_sync", "type":{ "base":"bool" }}'
+  */
+  bool friend_sync;
+
+  /* specs/user.json:87:14
+     '{ "name": "show_activity", "type":{ "base":"bool" }}'
+  */
+  bool show_activity;
+
+  /* specs/user.json:88:14
+     '{ "name": "visibility", "type":{ "base":"int", "int_alias":"discord::user::connection::visibility_types::code" }}'
+  */
+  discord::user::connection::visibility_types::code visibility;
+
+  // The following is metadata used to 
+  // 1. control which field should be extracted/injected
+  // 2. record which field is presented(defined) in JSON
+  // 3. record which field is null in JSON
+  struct {
+    bool enable_arg_switches;
+    bool enable_record_defined;
+    bool enable_record_null;
+    void *arg_switches[9];
+    void *record_defined[9];
+    void *record_null[9];
+  } __M; // metadata
+};
+} // namespace connection
+} // namespace user
 } // namespace discord
 /* This file is generated from specs/guild.modify-guild-member.json, Please don't edit it. */
 /*
@@ -1546,331 +1701,56 @@ struct dati {
 } // namespace widget
 } // namespace guild
 } // namespace discord
-/* This file is generated from specs/channel.json, Please don't edit it. */
+/* This file is generated from specs/invite.json, Please don't edit it. */
 /*
-https://discord.com/developers/docs/resources/channel#channel-object-channel-types
+https://discord.com/developers/docs/resources/invite#invite-object
 */
 namespace discord {
-namespace channel {
+namespace invite {
 
-/* Title: Channel Structure */
-/* https://discord.com/developers/docs/resources/channel#channel-object-channel-structure */
-/* This is defined at specs/channel.json:25:22 */
+/* Title: Invite Structure */
+/* https://discord.com/developers/docs/resources/invite#invite-object-invite-structure */
+/* This is defined at specs/invite.json:19:22 */
 struct dati {
-  /* specs/channel.json:28:78
-     '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"id"}'
+  /* specs/invite.json:22:20
+     '{ "name": "code", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
   */
-  u64_snowflake_t id;
+  char *code; // @todo fixed size limit
 
-  /* specs/channel.json:29:86
-     '{"type":{"base":"int", "int_alias":"discord::channel::types::code"}, "name":"type"}'
+  /* specs/invite.json:23:20
+     '{ "name": "guild", "type":{ "base":"discord::guild::dati", "dec":"*"}, "comment":"partial guild object"}'
   */
-  discord::channel::types::code type;
+  discord::guild::dati *guild; // partial guild object
 
-  /* specs/channel.json:30:78
-     '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"guild_id",
-         "option":true, "inject_if_not":0 }'
+  /* specs/invite.json:24:20
+     '{ "name": "channel", "type":{ "base":"discord::channel::dati", "dec":"*"}, "comment":"partial channel object"}'
   */
-  u64_snowflake_t guild_id;
+  discord::channel::dati *channel; // partial channel object
 
-  /* specs/channel.json:32:41
-     '{"type":{"base":"int"}, "name":"position",
-         "option":true, "inject_if_not":0 }'
+  /* specs/invite.json:25:20
+     '{ "name": "inviter", "type":{ "base":"discord::user::dati", "dec":"*"}}'
   */
-  int position;
+  discord::user::dati *inviter;
 
-  /* specs/channel.json:34:84
-     '{"type":{"base":"discord::channel::overwrite::dati", "dec":"ntl"}, "name":"permission_overwrites",
-         "option":true, "inject_if_not":null }'
+  /* specs/invite.json:26:20
+     '{ "name": "target_user", "type":{ "base":"discord::user::dati", "dec":"*"}, "comment":"partial user object"}'
   */
-  discord::channel::overwrite::dati **permission_overwrites;
+  discord::user::dati *target_user; // partial user object
 
-  /* specs/channel.json:36:66
-     '{"type":{"base":"char", "dec":"[MAX_NAME_LEN]"}, "name":"name", 
-         "option":true, "inject_if_not":""}'
+  /* specs/invite.json:27:20
+     '{ "name": "target_user_type", "type":{ "base":"int", "int_alias":"discord::invite::target_user_types::code" }}'
   */
-  char name[MAX_NAME_LEN];
+  discord::invite::target_user_types::code target_user_type;
 
-  /* specs/channel.json:38:67
-     '{"type":{"base":"char", "dec":"[MAX_TOPIC_LEN]"}, "name":"topic",
-         "option":true, "inject_if_not":"" }'
+  /* specs/invite.json:28:20
+     '{ "name": "approximate_presence_count", "type":{ "base":"int" }}'
   */
-  char topic[MAX_TOPIC_LEN];
+  int approximate_presence_count;
 
-  /* specs/channel.json:40:42
-     '{"type":{"base":"bool"}, "name":"nsfw", "option":true, "inject_if_not":false}'
+  /* specs/invite.json:29:20
+     '{ "name": "approximate_member_count", "type":{ "base":"int" }}'
   */
-  bool nsfw;
-
-  /* specs/channel.json:41:78
-     '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"last_message_id",
-         "option":true, "inject_if_not":0}'
-  */
-  u64_snowflake_t last_message_id;
-
-  /* specs/channel.json:43:41
-     '{"type":{"base":"int"}, "name":"bitrate", "option":true, "inject_if_not":0}'
-  */
-  int bitrate;
-
-  /* specs/channel.json:44:41
-     '{"type":{"base":"int"}, "name":"user_limit", "option":true, "inject_if_not":0}'
-  */
-  int user_limit;
-
-  /* specs/channel.json:45:41
-     '{"type":{"base":"int"}, "name":"rate_limit_per_user", 
-         "option":true, "inject_if_not":0}'
-  */
-  int rate_limit_per_user;
-
-  /* specs/channel.json:47:70
-     '{"type":{"base":"discord::user::dati", "dec":"ntl"}, "name":"recipients",
-         "option":true, "inject_if_not":null}'
-  */
-  discord::user::dati **recipients;
-
-  /* specs/channel.json:49:68
-     '{"type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}, "name":"icon",
-         "option":true, "inject_if_not":""}'
-  */
-  char icon[MAX_SHA256_LEN];
-
-  /* specs/channel.json:51:78
-     '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"owner_id",
-         "option":true, "inject_if_not":0}'
-  */
-  u64_snowflake_t owner_id;
-
-  /* specs/channel.json:53:78
-     '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"application_id",
-         "option":true, "inject_if_not":0}'
-  */
-  u64_snowflake_t application_id;
-
-  /* specs/channel.json:55:95
-     '{"type":{"base":"char", "dec":"*", "converter":"snowflake", "nullable":true}, "name":"parent_id",
-         "option":true, "inject_if_not":0}'
-  */
-  u64_snowflake_t parent_id;
-
-  /* specs/channel.json:57:93
-     '{"type":{"base":"char", "dec":"*", "converter":"iso8601", "nullable":true}, "name":"last_pin_timestamp",
-         "option":true, "inject_if_not":0}'
-  */
-  u64_unix_ms_t last_pin_timestamp;
-
-  /* specs/channel.json:59:82
-     '{"type":{"base":"discord::channel::message::dati", "dec":"ntl"}, "name":"messages"}'
-  */
-  discord::channel::message::dati **messages;
-
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[19];
-    void *record_defined[19];
-    void *record_null[19];
-  } __M; // metadata
-};
-} // namespace channel
-} // namespace discord
-/* This file is generated from specs/webhook.edit-webhook-message.json, Please don't edit it. */
-/*
-
-*/
-namespace discord {
-namespace webhook {
-namespace edit_webhook_message {
-
-/* https://discord.com/developers/docs/resources/webhook#edit-webhook-message */
-/* This is defined at specs/webhook.edit-webhook-message.json:8:22 */
-struct params {
-  /* specs/webhook.edit-webhook-message.json:11:20
-     '{ "name": "content", "type":{ "base":"char", "dec":"[2000+1]" }, 
-          "comment":"name of the webhook(1-2000) chars" }'
-  */
-  char content[2000+1]; // name of the webhook(1-2000) chars
-
-  /* specs/webhook.edit-webhook-message.json:13:20
-     '{ "name": "embeds", "type":{ "base":"discord::channel::embed::dati", "dec":"ntl" }, 
-          "comment":"array of up to 10 embeds objects" }'
-  */
-  discord::channel::embed::dati **embeds; // array of up to 10 embeds objects
-
-  /* specs/webhook.edit-webhook-message.json:15:20
-     '{ "name": "allowed_mentions", 
-          "type":{ "base":"discord::channel::allowed_mentions::dati", "dec":"*" }, 
-          "comment":"allowed mentions for the message" }'
-  */
-  discord::channel::allowed_mentions::dati *allowed_mentions; // allowed mentions for the message
-
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[3];
-    void *record_defined[3];
-    void *record_null[3];
-  } __M; // metadata
-};
-} // namespace edit_webhook_message
-} // namespace webhook
-} // namespace discord
-/* This file is generated from specs/audit_log.json, Please don't edit it. */
-/*
-(null)
-*/
-namespace discord {
-namespace audit_log {
-
-/* Title: Audit Log Structure */
-/* https://discord.com/developers/docs/resources/audit-log#audit-log-object-audit-log-structure */
-/* This is defined at specs/audit_log.json:8:22 */
-struct dati {
-  /* specs/audit_log.json:11:18
-     '{"name":"webhooks", "type": { "base":"discord::webhook::dati", "dec":"*" } }'
-  */
-  discord::webhook::dati *webhooks;
-
-  /* specs/audit_log.json:12:18
-     '{"name":"users", "type": { "base":"user::dati", "dec":"*"}}'
-  */
-  user::dati *users;
-
-  /* specs/audit_log.json:13:18
-     '{"name":"audit_log_entries", "type": { "base":"entry::dati", "dec":"*"}}'
-  */
-  entry::dati *audit_log_entries;
-
-  /* specs/audit_log.json:14:18
-     '{"name":"integrations", "type": { "base":"guild::integration::dati", "dec":"ntl"}}'
-  */
-  guild::integration::dati **integrations;
-
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[4];
-    void *record_defined[4];
-    void *record_null[4];
-  } __M; // metadata
-};
-
-namespace entry {
-/* Title: Audit Log Entry Structure */
-/* https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-entry-structure */
-/* This is defined at specs/audit_log.json:64:22 */
-struct dati {
-  /* specs/audit_log.json:67:18
-     '{"name":"target_id", "type": {"base":"char", "dec":"*"}}'
-  */
-  char *target_id;
-
-  /* specs/audit_log.json:68:18
-     '{"name":"changes", "type": {"base":"change::dati", "dec":"*"}}'
-  */
-  change::dati *changes;
-
-  /* specs/audit_log.json:69:18
-     '{"name":"user_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
-  */
-  u64_snowflake_t user_id;
-
-  /* specs/audit_log.json:70:18
-     '{"name":"id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
-  */
-  u64_snowflake_t id;
-
-  /* specs/audit_log.json:71:18
-     '{"name":"action_type", "type": {"base":"int", "c_base":"events::code"}}'
-  */
-  int action_type;
-
-  /* specs/audit_log.json:72:18
-     '{"name":"options", "type": {"base":"optional_info::dati", "dec":"*"}}'
-  */
-  optional_info::dati *options;
-
-  /* specs/audit_log.json:73:18
-     '{"name":"reason", "type": {"base":"char", "dec":"[MAX_REASON_LEN]"}}'
-  */
-  char reason[MAX_REASON_LEN];
-
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[7];
-    void *record_defined[7];
-    void *record_null[7];
-  } __M; // metadata
-};
-} // namespace entry
-
-namespace entry {
-namespace optional_info {
-/* Title: Optional Audit Entry Info Structure */
-/* https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-optional-audit-entry-info */
-/* This is defined at specs/audit_log.json:80:22 */
-struct dati {
-  /* specs/audit_log.json:83:20
-     '{ "name": "delete_member_days", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"}'
-  */
-  char *delete_member_days; // @todo find fixed size limit
-
-  /* specs/audit_log.json:84:20
-     '{ "name": "members_removed", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"}'
-  */
-  char *members_removed; // @todo find fixed size limit
-
-  /* specs/audit_log.json:85:20
-     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" } }'
-  */
-  u64_snowflake_t channel_id;
-
-  /* specs/audit_log.json:86:20
-     '{ "name": "message_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" } }'
-  */
-  u64_snowflake_t message_id;
-
-  /* specs/audit_log.json:87:20
-     '{ "name": "count", "type":{ "base":"char", "dec":"*" }, "comment":"@todo find fixed size limit"}'
-  */
-  char *count; // @todo find fixed size limit
-
-  /* specs/audit_log.json:88:20
-     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
-  u64_snowflake_t id;
-
-  /* specs/audit_log.json:89:20
-     '{ "name": "type", "type":{ "base":"char", "dec":"*" }, "comment":"@todo find fixed size limit"}'
-  */
-  char *type; // @todo find fixed size limit
-
-  /* specs/audit_log.json:90:20
-     '{ "name": "role", "type":{ "base":"char", "dec":"*" }, "comment":"@todo find fixed size limit"}'
-  */
-  char *role; // @todo find fixed size limit
+  int approximate_member_count;
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -1885,28 +1765,36 @@ struct dati {
     void *record_null[8];
   } __M; // metadata
 };
-} // namespace optional_info
-} // namespace entry
 
-namespace change {
-/* Title: Audit Log Change Structure */
-/* https://discord.com/developers/docs/resources/audit-log#audit-log-change-object-audit-log-change-structure */
-/* This is defined at specs/audit_log.json:97:22 */
+namespace metadata {
+/* Title: Invite Metadata Structure */
+/* https://discord.com/developers/docs/resources/invite#invite-metadata-object */
+/* This is defined at specs/invite.json:36:22 */
 struct dati {
-  /* specs/audit_log.json:100:18
-     '{"name":"new_value", "type": {"base":"char", "dec":"*"}}'
+  /* specs/invite.json:39:20
+     '{ "name": "user", "type":{ "base":"int" }}'
   */
-  char *new_value;
+  int user;
 
-  /* specs/audit_log.json:101:18
-     '{"name":"old_value", "type": {"base":"char", "dec":"*"}}'
+  /* specs/invite.json:40:20
+     '{ "name": "max_uses", "type":{ "base":"int" }}'
   */
-  char *old_value;
+  int max_uses;
 
-  /* specs/audit_log.json:102:18
-     '{"name":"key", "type":{"base":"char", "dec":"[64]"}}'
+  /* specs/invite.json:41:20
+     '{ "name": "max_age", "type":{ "base":"int" }}'
   */
-  char key[64];
+  int max_age;
+
+  /* specs/invite.json:42:20
+     '{ "name": "temporary", "type":{ "base":"int" }}'
+  */
+  int temporary;
+
+  /* specs/invite.json:43:20
+     '{ "name": "created_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601"}}'
+  */
+  u64_unix_ms_t created_at;
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -1916,348 +1804,13 @@ struct dati {
     bool enable_arg_switches;
     bool enable_record_defined;
     bool enable_record_null;
-    void *arg_switches[3];
-    void *record_defined[3];
-    void *record_null[3];
+    void *arg_switches[5];
+    void *record_defined[5];
+    void *record_null[5];
   } __M; // metadata
 };
-} // namespace change
-
-namespace change {
-namespace key {
-/* Title: Audit Log Change Key */
-/* https://discord.com/developers/docs/resources/audit-log#audit-log-change-object-audit-log-change-key */
-/* This is defined at specs/audit_log.json:109:22 */
-struct dati {
-  /* specs/audit_log.json:112:18
-     '{"name":"name", "type": {"base":"char", "dec":"[MAX_NAME_LEN]"}}'
-  */
-  char name[MAX_NAME_LEN];
-
-  /* specs/audit_log.json:113:18
-     '{"name":"description", "type": {"base":"char", "dec":"[MAX_DESCRIPTION_LEN]"}}'
-  */
-  char description[MAX_DESCRIPTION_LEN];
-
-  /* specs/audit_log.json:114:18
-     '{"name":"icon_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"}, 
-         "comment":"icon changed" }'
-  */
-  char icon_hash[MAX_SHA256_LEN]; // icon changed
-
-  /* specs/audit_log.json:116:18
-     '{"name":"splash_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"},
-         "comment":"invite splash page artwork changed"}'
-  */
-  char splash_hash[MAX_SHA256_LEN]; // invite splash page artwork changed
-
-  /* specs/audit_log.json:118:18
-     '{"name":"discovery_splash_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"}}'
-  */
-  char discovery_splash_hash[MAX_SHA256_LEN];
-
-  /* specs/audit_log.json:119:18
-     '{"name":"banner_hash", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
-  */
-  u64_snowflake_t banner_hash;
-
-  /* specs/audit_log.json:120:18
-     '{"name":"owner_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
-  */
-  u64_snowflake_t owner_id;
-
-  /* specs/audit_log.json:121:18
-     '{"name":"region", "type": {"base":"char", "dec":"[MAX_REGION_LEN]"}}'
-  */
-  char region[MAX_REGION_LEN];
-
-  /* specs/audit_log.json:122:18
-     '{"name":"preferred_locale", "type": {"base":"char", "dec":"[MAX_LOCALE_LEN]"}}'
-  */
-  char preferred_locale[MAX_LOCALE_LEN];
-
-  /* specs/audit_log.json:123:18
-     '{"name":"afk_channel_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
-  */
-  u64_snowflake_t afk_channel_id;
-
-  /* specs/audit_log.json:124:18
-     '{"name":"afk_timeout", "type": {"base":"int"}}'
-  */
-  int afk_timeout;
-
-  /* specs/audit_log.json:125:18
-     '{"name":"rules_channel_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
-  */
-  u64_snowflake_t rules_channel_id;
-
-  /* specs/audit_log.json:126:18
-     '{"name":"public_updates_channel_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
-  */
-  u64_snowflake_t public_updates_channel_id;
-
-  /* specs/audit_log.json:127:18
-     '{"name":"mfa_level", "type": {"base":"int"}}'
-  */
-  int mfa_level;
-
-  /* specs/audit_log.json:128:18
-     '{"name":"verification_level", "type": {"base":"int"}}'
-  */
-  int verification_level;
-
-  /* specs/audit_log.json:129:18
-     '{"name":"explicit_content_filter", "type": {"base":"int"}}'
-  */
-  int explicit_content_filter;
-
-  /* specs/audit_log.json:130:18
-     '{"name":"default_message_notifications", "type": {"base":"int"}}'
-  */
-  int default_message_notifications;
-
-  /* specs/audit_log.json:131:18
-     '{"name":"vanity_url_code", "type": {"base":"char", "dec":"*"}}'
-  */
-  char *vanity_url_code;
-
-  /* specs/audit_log.json:132:18
-     '{"name":"add", "json_key":"$add", "type": {"base":"char", "dec":"*"},
-         "todo":true }'
-  */
-  //@todo add (null);
-
-  /* specs/audit_log.json:134:18
-     '{"name":"remove", "json_key":"$remove", "type": {"base":"char", "dec":"*"},
-         "todo":true }'
-  */
-  //@todo remove (null);
-
-  /* specs/audit_log.json:136:18
-     '{"name":"prune_delete_days", "type": {"base":"int"}}'
-  */
-  int prune_delete_days;
-
-  /* specs/audit_log.json:137:18
-     '{"name":"widget_enabled", "type": {"base":"bool"}}'
-  */
-  bool widget_enabled;
-
-  /* specs/audit_log.json:138:18
-     '{"name":"widget_channel_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
-  */
-  u64_snowflake_t widget_channel_id;
-
-  /* specs/audit_log.json:139:18
-     '{"name":"system_channel_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
-  */
-  u64_snowflake_t system_channel_id;
-
-  /* specs/audit_log.json:140:18
-     '{"name":"position", "type": {"base":"int"}}'
-  */
-  int position;
-
-  /* specs/audit_log.json:141:18
-     '{"name":"topic", "type": {"base":"char", "dec":"*"}}'
-  */
-  char *topic;
-
-  /* specs/audit_log.json:142:18
-     '{"name":"bitrate", "type": {"base":"int"}}'
-  */
-  int bitrate;
-
-  /* specs/audit_log.json:143:18
-     '{"name":"permission_overwrites", "type": {"base":"char", "dec":"*"},
-         "todo":true }'
-  */
-  //@todo permission_overwrites (null);
-
-  /* specs/audit_log.json:145:18
-     '{"name":"nsfw", "type": {"base":"bool"}}'
-  */
-  bool nsfw;
-
-  /* specs/audit_log.json:146:18
-     '{"name":"application_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
-  */
-  u64_snowflake_t application_id;
-
-  /* specs/audit_log.json:147:18
-     '{"name":"rate_limit_per_user", "type": {"base":"int"}}'
-  */
-  int rate_limit_per_user;
-
-  /* specs/audit_log.json:148:18
-     '{"name":"permissions", "type": {"base":"char", "dec":"*"}}'
-  */
-  char *permissions;
-
-  /* specs/audit_log.json:149:18
-     '{"name":"color", "type": {"base":"int"}}'
-  */
-  int color;
-
-  /* specs/audit_log.json:150:18
-     '{"name":"hoist", "type": {"base":"bool"}}'
-  */
-  bool hoist;
-
-  /* specs/audit_log.json:151:18
-     '{"name":"mentionable", "type": {"base":"bool"}}'
-  */
-  bool mentionable;
-
-  /* specs/audit_log.json:152:18
-     '{"name":"allow", "type": {"base":"char", "dec":"*"}}'
-  */
-  char *allow;
-
-  /* specs/audit_log.json:153:18
-     '{"name":"deny", "type": {"base":"char", "dec":"*"}}'
-  */
-  char *deny;
-
-  /* specs/audit_log.json:154:18
-     '{"name":"code", "type": {"base":"char", "dec":"*"}}'
-  */
-  char *code;
-
-  /* specs/audit_log.json:155:18
-     '{"name":"channel_id", "type": {"base":"char", "dec":"*"}}'
-  */
-  char *channel_id;
-
-  /* specs/audit_log.json:156:18
-     '{"name":"inviter_id", "type": {"base":"char", "dec":"*"}}'
-  */
-  char *inviter_id;
-
-  /* specs/audit_log.json:157:18
-     '{"name":"max_uses", "type": {"base":"char", "dec":"*"}}'
-  */
-  char *max_uses;
-
-  /* specs/audit_log.json:158:18
-     '{"name":"uses", "type": {"base":"char", "dec":"*"}}'
-  */
-  char *uses;
-
-  /* specs/audit_log.json:159:18
-     '{"name":"max_age", "type": {"base":"char", "dec":"*"}}'
-  */
-  char *max_age;
-
-  /* specs/audit_log.json:160:18
-     '{"name":"temporary", "type": {"base":"char", "dec":"*"}}'
-  */
-  char *temporary;
-
-  /* specs/audit_log.json:161:18
-     '{"name":"deaf", "type": {"base":"char", "dec":"*"}}'
-  */
-  char *deaf;
-
-  /* specs/audit_log.json:162:18
-     '{"name":"mute", "type": {"base":"char", "dec":"*"}}'
-  */
-  char *mute;
-
-  /* specs/audit_log.json:163:18
-     '{"name":"nick", "type": {"base":"char", "dec":"*"}}'
-  */
-  char *nick;
-
-  /* specs/audit_log.json:164:18
-     '{"name":"avatar_hash", "type": {"base":"char", "dec":"*"}}'
-  */
-  char *avatar_hash;
-
-  /* specs/audit_log.json:165:18
-     '{"name":"id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
-  */
-  u64_snowflake_t id;
-
-  /* specs/audit_log.json:166:18
-     '{"name":"type", "type": {"base":"char", "dec":"*"}, 
-         "todo":true, "comment":"integer or string"}'
-  */
-  //@todo type integer or string;
-
-  /* specs/audit_log.json:168:18
-     '{"name":"enable_emotions", "type": {"base":"bool"}}'
-  */
-  bool enable_emotions;
-
-  /* specs/audit_log.json:169:18
-     '{"name":"expire_behavior", "type": {"base":"int"}}'
-  */
-  int expire_behavior;
-
-  /* specs/audit_log.json:170:18
-     '{"name":"expire_grace_period", "type": {"base":"int"}}'
-  */
-  int expire_grace_period;
-
-  /* specs/audit_log.json:171:18
-     '{"name":"user_limit", "type": {"base":"int" }}'
-  */
-  int user_limit;
-
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[54];
-    void *record_defined[54];
-    void *record_null[54];
-  } __M; // metadata
-};
-} // namespace key
-} // namespace change
-} // namespace audit_log
-} // namespace discord
-/* This file is generated from specs/template.create-guild-from-template.json, Please don't edit it. */
-/*
-
-*/
-namespace discord {
-namespace Template {
-namespace create_guild_from_template {
-
-/* https://discord.com/developers/docs/resources/template#create-guild-from-template */
-/* This is defined at specs/template.create-guild-from-template.json:8:22 */
-struct params {
-  /* specs/template.create-guild-from-template.json:11:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}'
-  */
-  char *name; // name of the guild
-
-  /* specs/template.create-guild-from-template.json:12:20
-     '{ "name": "icon", "type":{ "base":"char", "dec":"*" }, "comment":"base64 128x128 image for the guild icon"}'
-  */
-  char *icon; // base64 128x128 image for the guild icon
-
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[2];
-    void *record_defined[2];
-    void *record_null[2];
-  } __M; // metadata
-};
-} // namespace create_guild_from_template
-} // namespace Template
+} // namespace metadata
+} // namespace invite
 } // namespace discord
 /* This file is generated from specs/webhook.modify-webhook.json, Please don't edit it. */
 /*
@@ -2304,6 +1857,43 @@ struct params {
 };
 } // namespace modify_webhook
 } // namespace webhook
+} // namespace discord
+/* This file is generated from specs/template.create-guild-from-template.json, Please don't edit it. */
+/*
+
+*/
+namespace discord {
+namespace Template {
+namespace create_guild_from_template {
+
+/* https://discord.com/developers/docs/resources/template#create-guild-from-template */
+/* This is defined at specs/template.create-guild-from-template.json:8:22 */
+struct params {
+  /* specs/template.create-guild-from-template.json:11:20
+     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}'
+  */
+  char *name; // name of the guild
+
+  /* specs/template.create-guild-from-template.json:12:20
+     '{ "name": "icon", "type":{ "base":"char", "dec":"*" }, "comment":"base64 128x128 image for the guild icon"}'
+  */
+  char *icon; // base64 128x128 image for the guild icon
+
+  // The following is metadata used to 
+  // 1. control which field should be extracted/injected
+  // 2. record which field is presented(defined) in JSON
+  // 3. record which field is null in JSON
+  struct {
+    bool enable_arg_switches;
+    bool enable_record_defined;
+    bool enable_record_null;
+    void *arg_switches[2];
+    void *record_defined[2];
+    void *record_null[2];
+  } __M; // metadata
+};
+} // namespace create_guild_from_template
+} // namespace Template
 } // namespace discord
 /* This file is generated from specs/channel.objects.json, Please don't edit it. */
 /*
@@ -3368,221 +2958,6 @@ struct params {
 } // namespace modify_guild_emoji
 } // namespace emoji
 } // namespace discord
-/* This file is generated from specs/user.json, Please don't edit it. */
-/*
-https://discord.com/developers/docs/resources/user#user-object
-*/
-namespace discord {
-namespace user {
-
-/* Title: User Structure */
-/* This is defined at specs/user.json:44:18 */
-struct dati {
-  /* specs/user.json:47:14
-     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"} }'
-  */
-  u64_snowflake_t id;
-
-  /* specs/user.json:48:14
-     '{ "name": "username", "type":{ "base":"char", "dec":"[MAX_USERNAME_LEN]"}}'
-  */
-  char username[MAX_USERNAME_LEN];
-
-  /* specs/user.json:49:14
-     '{ "name": "discriminator", "type":{ "base":"char", "dec":"[MAX_DISCRIMINATOR_LEN]" }}'
-  */
-  char discriminator[MAX_DISCRIMINATOR_LEN];
-
-  /* specs/user.json:50:14
-     '{ "name": "avatar", "type":{ "base":"char", "dec":"[MAX_SHA256_LEN]" }}'
-  */
-  char avatar[MAX_SHA256_LEN];
-
-  /* specs/user.json:51:14
-     '{ "name": "bot", "type":{ "base":"bool" }}'
-  */
-  bool bot;
-
-  /* specs/user.json:52:14
-     '{ "name": "System", "json_key": "system", "type":{ "base":"bool" }}'
-  */
-  bool System;
-
-  /* specs/user.json:53:14
-     '{ "name": "mfa_enabled", "type":{ "base":"bool" }}'
-  */
-  bool mfa_enabled;
-
-  /* specs/user.json:54:14
-     '{ "name": "locale", "type":{ "base":"char", "dec":"[MAX_LOCALE_LEN]" }}'
-  */
-  char locale[MAX_LOCALE_LEN];
-
-  /* specs/user.json:55:14
-     '{ "name": "verified", "type":{ "base":"bool" }}'
-  */
-  bool verified;
-
-  /* specs/user.json:56:14
-     '{ "name": "email", "type":{ "base":"char", "dec":"[MAX_EMAIL_LEN]" }}'
-  */
-  char email[MAX_EMAIL_LEN];
-
-  /* specs/user.json:57:14
-     '{ "name": "flags", "type":{ "base":"int", "int_alias": "discord::user::flags::code" }}'
-  */
-  discord::user::flags::code flags;
-
-  /* specs/user.json:58:14
-     '{ "name": "premium_type", "type":{ "base":"int", "int_alias": "discord::user::premium_types::code" }}'
-  */
-  discord::user::premium_types::code premium_type;
-
-  /* specs/user.json:59:14
-     '{ "name": "public_flags", "type":{ "base":"int", "int_alias": "discord::user::flags::code" }}'
-  */
-  discord::user::flags::code public_flags;
-
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[13];
-    void *record_defined[13];
-    void *record_null[13];
-  } __M; // metadata
-};
-
-namespace connection {
-/* Title: Connection Structure */
-/* https://discord.com/developers/docs/resources/user#connection-object-connection-structure */
-/* This is defined at specs/user.json:77:18 */
-struct dati {
-  /* specs/user.json:80:14
-     '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
-  */
-  char *id; // @todo fixed size limit
-
-  /* specs/user.json:81:14
-     '{ "name": "name", "type":{ "base":"char", "dec":"*"}}'
-  */
-  char *name;
-
-  /* specs/user.json:82:14
-     '{ "name": "type", "type":{ "base":"char", "dec":"*"}}'
-  */
-  char *type;
-
-  /* specs/user.json:83:14
-     '{ "name": "revoked", "type":{ "base":"bool"}}'
-  */
-  bool revoked;
-
-  /* specs/user.json:84:20
-     '{ "name": "integrations", "type": {"base":"discord::guild::integration::dati", "dec":"ntl"}, "todo":true}'
-  */
-  //@todo integrations (null);
-
-  /* specs/user.json:85:14
-     '{ "name": "verified", "type":{ "base":"bool" }}'
-  */
-  bool verified;
-
-  /* specs/user.json:86:14
-     '{ "name": "friend_sync", "type":{ "base":"bool" }}'
-  */
-  bool friend_sync;
-
-  /* specs/user.json:87:14
-     '{ "name": "show_activity", "type":{ "base":"bool" }}'
-  */
-  bool show_activity;
-
-  /* specs/user.json:88:14
-     '{ "name": "visibility", "type":{ "base":"int", "int_alias":"discord::user::connection::visibility_types::code" }}'
-  */
-  discord::user::connection::visibility_types::code visibility;
-
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[9];
-    void *record_defined[9];
-    void *record_null[9];
-  } __M; // metadata
-};
-} // namespace connection
-} // namespace user
-} // namespace discord
-/* This file is generated from specs/guild.role.create.json, Please don't edit it. */
-/*
-
-*/
-namespace discord {
-namespace guild {
-namespace create_guild_role {
-
-/* https://discord.com/developers/docs/resources/guild#create-guild-role */
-/* This is defined at specs/guild.role.create.json:8:22 */
-struct params {
-  /* specs/guild.role.create.json:11:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*" }}'
-  */
-  char *name;
-
-  /* specs/guild.role.create.json:12:20
-     '{ "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"permissions::bitwise_flags" }, "inject_if_not":0}'
-  */
-  permissions::bitwise_flags permissions;
-
-  /* specs/guild.role.create.json:13:20
-     '{ "name": "color", "type":{ "base":"int" }, "inject_if_not":0}'
-  */
-  int color;
-
-  /* specs/guild.role.create.json:14:20
-     '{ "name": "hoist", "type":{ "base":"bool" }, "inject_if_not":false}'
-  */
-  bool hoist;
-
-  /* specs/guild.role.create.json:15:20
-     '{ "name": "memtionable", "type":{ "base":"bool" }, "inject_if_not":false}'
-  */
-  bool memtionable;
-
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[5];
-    void *record_defined[5];
-    void *record_null[5];
-  } __M; // metadata
-};
-} // namespace create_guild_role
-} // namespace guild
-} // namespace discord
-/* This file is generated from specs/permissions.json, Please don't edit it. */
-/*
-https://discord.com/developers/docs/topics/permissions
-*/
-namespace discord {
-namespace permissions {
-} // namespace permissions
-} // namespace discord
 /* This file is generated from specs/webhook.execute-webhook.json, Please don't edit it. */
 /*
 
@@ -3680,6 +3055,562 @@ struct params {
 };
 } // namespace execute_webhook
 } // namespace webhook
+} // namespace discord
+/* This file is generated from specs/guild.role.create.json, Please don't edit it. */
+/*
+
+*/
+namespace discord {
+namespace guild {
+namespace create_guild_role {
+
+/* https://discord.com/developers/docs/resources/guild#create-guild-role */
+/* This is defined at specs/guild.role.create.json:8:22 */
+struct params {
+  /* specs/guild.role.create.json:11:20
+     '{ "name": "name", "type":{ "base":"char", "dec":"*" }}'
+  */
+  char *name;
+
+  /* specs/guild.role.create.json:12:20
+     '{ "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"permissions::bitwise_flags" }, "inject_if_not":0}'
+  */
+  permissions::bitwise_flags permissions;
+
+  /* specs/guild.role.create.json:13:20
+     '{ "name": "color", "type":{ "base":"int" }, "inject_if_not":0}'
+  */
+  int color;
+
+  /* specs/guild.role.create.json:14:20
+     '{ "name": "hoist", "type":{ "base":"bool" }, "inject_if_not":false}'
+  */
+  bool hoist;
+
+  /* specs/guild.role.create.json:15:20
+     '{ "name": "memtionable", "type":{ "base":"bool" }, "inject_if_not":false}'
+  */
+  bool memtionable;
+
+  // The following is metadata used to 
+  // 1. control which field should be extracted/injected
+  // 2. record which field is presented(defined) in JSON
+  // 3. record which field is null in JSON
+  struct {
+    bool enable_arg_switches;
+    bool enable_record_defined;
+    bool enable_record_null;
+    void *arg_switches[5];
+    void *record_defined[5];
+    void *record_null[5];
+  } __M; // metadata
+};
+} // namespace create_guild_role
+} // namespace guild
+} // namespace discord
+/* This file is generated from specs/permissions.json, Please don't edit it. */
+/*
+https://discord.com/developers/docs/topics/permissions
+*/
+namespace discord {
+namespace permissions {
+} // namespace permissions
+} // namespace discord
+/* This file is generated from specs/audit_log.json, Please don't edit it. */
+/*
+(null)
+*/
+namespace discord {
+namespace audit_log {
+
+/* Title: Audit Log Structure */
+/* https://discord.com/developers/docs/resources/audit-log#audit-log-object-audit-log-structure */
+/* This is defined at specs/audit_log.json:8:22 */
+struct dati {
+  /* specs/audit_log.json:11:18
+     '{"name":"webhooks", "type": { "base":"discord::webhook::dati", "dec":"*" } }'
+  */
+  discord::webhook::dati *webhooks;
+
+  /* specs/audit_log.json:12:18
+     '{"name":"users", "type": { "base":"user::dati", "dec":"*"}}'
+  */
+  user::dati *users;
+
+  /* specs/audit_log.json:13:18
+     '{"name":"audit_log_entries", "type": { "base":"entry::dati", "dec":"*"}}'
+  */
+  entry::dati *audit_log_entries;
+
+  /* specs/audit_log.json:14:18
+     '{"name":"integrations", "type": { "base":"guild::integration::dati", "dec":"ntl"}}'
+  */
+  guild::integration::dati **integrations;
+
+  // The following is metadata used to 
+  // 1. control which field should be extracted/injected
+  // 2. record which field is presented(defined) in JSON
+  // 3. record which field is null in JSON
+  struct {
+    bool enable_arg_switches;
+    bool enable_record_defined;
+    bool enable_record_null;
+    void *arg_switches[4];
+    void *record_defined[4];
+    void *record_null[4];
+  } __M; // metadata
+};
+
+namespace entry {
+/* Title: Audit Log Entry Structure */
+/* https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-entry-structure */
+/* This is defined at specs/audit_log.json:64:22 */
+struct dati {
+  /* specs/audit_log.json:67:18
+     '{"name":"target_id", "type": {"base":"char", "dec":"*"}}'
+  */
+  char *target_id;
+
+  /* specs/audit_log.json:68:18
+     '{"name":"changes", "type": {"base":"change::dati", "dec":"*"}}'
+  */
+  change::dati *changes;
+
+  /* specs/audit_log.json:69:18
+     '{"name":"user_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
+  */
+  u64_snowflake_t user_id;
+
+  /* specs/audit_log.json:70:18
+     '{"name":"id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
+  */
+  u64_snowflake_t id;
+
+  /* specs/audit_log.json:71:18
+     '{"name":"action_type", "type": {"base":"int", "c_base":"events::code"}}'
+  */
+  int action_type;
+
+  /* specs/audit_log.json:72:18
+     '{"name":"options", "type": {"base":"optional_info::dati", "dec":"*"}}'
+  */
+  optional_info::dati *options;
+
+  /* specs/audit_log.json:73:18
+     '{"name":"reason", "type": {"base":"char", "dec":"[MAX_REASON_LEN]"}}'
+  */
+  char reason[MAX_REASON_LEN];
+
+  // The following is metadata used to 
+  // 1. control which field should be extracted/injected
+  // 2. record which field is presented(defined) in JSON
+  // 3. record which field is null in JSON
+  struct {
+    bool enable_arg_switches;
+    bool enable_record_defined;
+    bool enable_record_null;
+    void *arg_switches[7];
+    void *record_defined[7];
+    void *record_null[7];
+  } __M; // metadata
+};
+} // namespace entry
+
+namespace entry {
+namespace optional_info {
+/* Title: Optional Audit Entry Info Structure */
+/* https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-optional-audit-entry-info */
+/* This is defined at specs/audit_log.json:80:22 */
+struct dati {
+  /* specs/audit_log.json:83:20
+     '{ "name": "delete_member_days", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"}'
+  */
+  char *delete_member_days; // @todo find fixed size limit
+
+  /* specs/audit_log.json:84:20
+     '{ "name": "members_removed", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"}'
+  */
+  char *members_removed; // @todo find fixed size limit
+
+  /* specs/audit_log.json:85:20
+     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" } }'
+  */
+  u64_snowflake_t channel_id;
+
+  /* specs/audit_log.json:86:20
+     '{ "name": "message_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" } }'
+  */
+  u64_snowflake_t message_id;
+
+  /* specs/audit_log.json:87:20
+     '{ "name": "count", "type":{ "base":"char", "dec":"*" }, "comment":"@todo find fixed size limit"}'
+  */
+  char *count; // @todo find fixed size limit
+
+  /* specs/audit_log.json:88:20
+     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
+  */
+  u64_snowflake_t id;
+
+  /* specs/audit_log.json:89:20
+     '{ "name": "type", "type":{ "base":"char", "dec":"*" }, "comment":"@todo find fixed size limit"}'
+  */
+  char *type; // @todo find fixed size limit
+
+  /* specs/audit_log.json:90:20
+     '{ "name": "role", "type":{ "base":"char", "dec":"*" }, "comment":"@todo find fixed size limit"}'
+  */
+  char *role; // @todo find fixed size limit
+
+  // The following is metadata used to 
+  // 1. control which field should be extracted/injected
+  // 2. record which field is presented(defined) in JSON
+  // 3. record which field is null in JSON
+  struct {
+    bool enable_arg_switches;
+    bool enable_record_defined;
+    bool enable_record_null;
+    void *arg_switches[8];
+    void *record_defined[8];
+    void *record_null[8];
+  } __M; // metadata
+};
+} // namespace optional_info
+} // namespace entry
+
+namespace change {
+/* Title: Audit Log Change Structure */
+/* https://discord.com/developers/docs/resources/audit-log#audit-log-change-object-audit-log-change-structure */
+/* This is defined at specs/audit_log.json:97:22 */
+struct dati {
+  /* specs/audit_log.json:100:18
+     '{"name":"new_value", "type": {"base":"char", "dec":"*"}}'
+  */
+  char *new_value;
+
+  /* specs/audit_log.json:101:18
+     '{"name":"old_value", "type": {"base":"char", "dec":"*"}}'
+  */
+  char *old_value;
+
+  /* specs/audit_log.json:102:18
+     '{"name":"key", "type":{"base":"char", "dec":"[64]"}}'
+  */
+  char key[64];
+
+  // The following is metadata used to 
+  // 1. control which field should be extracted/injected
+  // 2. record which field is presented(defined) in JSON
+  // 3. record which field is null in JSON
+  struct {
+    bool enable_arg_switches;
+    bool enable_record_defined;
+    bool enable_record_null;
+    void *arg_switches[3];
+    void *record_defined[3];
+    void *record_null[3];
+  } __M; // metadata
+};
+} // namespace change
+
+namespace change {
+namespace key {
+/* Title: Audit Log Change Key */
+/* https://discord.com/developers/docs/resources/audit-log#audit-log-change-object-audit-log-change-key */
+/* This is defined at specs/audit_log.json:109:22 */
+struct dati {
+  /* specs/audit_log.json:112:18
+     '{"name":"name", "type": {"base":"char", "dec":"[MAX_NAME_LEN]"}}'
+  */
+  char name[MAX_NAME_LEN];
+
+  /* specs/audit_log.json:113:18
+     '{"name":"description", "type": {"base":"char", "dec":"[MAX_DESCRIPTION_LEN]"}}'
+  */
+  char description[MAX_DESCRIPTION_LEN];
+
+  /* specs/audit_log.json:114:18
+     '{"name":"icon_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"}, 
+         "comment":"icon changed" }'
+  */
+  char icon_hash[MAX_SHA256_LEN]; // icon changed
+
+  /* specs/audit_log.json:116:18
+     '{"name":"splash_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"},
+         "comment":"invite splash page artwork changed"}'
+  */
+  char splash_hash[MAX_SHA256_LEN]; // invite splash page artwork changed
+
+  /* specs/audit_log.json:118:18
+     '{"name":"discovery_splash_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"}}'
+  */
+  char discovery_splash_hash[MAX_SHA256_LEN];
+
+  /* specs/audit_log.json:119:18
+     '{"name":"banner_hash", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
+  */
+  u64_snowflake_t banner_hash;
+
+  /* specs/audit_log.json:120:18
+     '{"name":"owner_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
+  */
+  u64_snowflake_t owner_id;
+
+  /* specs/audit_log.json:121:18
+     '{"name":"region", "type": {"base":"char", "dec":"[MAX_REGION_LEN]"}}'
+  */
+  char region[MAX_REGION_LEN];
+
+  /* specs/audit_log.json:122:18
+     '{"name":"preferred_locale", "type": {"base":"char", "dec":"[MAX_LOCALE_LEN]"}}'
+  */
+  char preferred_locale[MAX_LOCALE_LEN];
+
+  /* specs/audit_log.json:123:18
+     '{"name":"afk_channel_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
+  */
+  u64_snowflake_t afk_channel_id;
+
+  /* specs/audit_log.json:124:18
+     '{"name":"afk_timeout", "type": {"base":"int"}}'
+  */
+  int afk_timeout;
+
+  /* specs/audit_log.json:125:18
+     '{"name":"rules_channel_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
+  */
+  u64_snowflake_t rules_channel_id;
+
+  /* specs/audit_log.json:126:18
+     '{"name":"public_updates_channel_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
+  */
+  u64_snowflake_t public_updates_channel_id;
+
+  /* specs/audit_log.json:127:18
+     '{"name":"mfa_level", "type": {"base":"int"}}'
+  */
+  int mfa_level;
+
+  /* specs/audit_log.json:128:18
+     '{"name":"verification_level", "type": {"base":"int"}}'
+  */
+  int verification_level;
+
+  /* specs/audit_log.json:129:18
+     '{"name":"explicit_content_filter", "type": {"base":"int"}}'
+  */
+  int explicit_content_filter;
+
+  /* specs/audit_log.json:130:18
+     '{"name":"default_message_notifications", "type": {"base":"int"}}'
+  */
+  int default_message_notifications;
+
+  /* specs/audit_log.json:131:18
+     '{"name":"vanity_url_code", "type": {"base":"char", "dec":"*"}}'
+  */
+  char *vanity_url_code;
+
+  /* specs/audit_log.json:132:18
+     '{"name":"add", "json_key":"$add", "type": {"base":"char", "dec":"*"},
+         "todo":true }'
+  */
+  //@todo add (null);
+
+  /* specs/audit_log.json:134:18
+     '{"name":"remove", "json_key":"$remove", "type": {"base":"char", "dec":"*"},
+         "todo":true }'
+  */
+  //@todo remove (null);
+
+  /* specs/audit_log.json:136:18
+     '{"name":"prune_delete_days", "type": {"base":"int"}}'
+  */
+  int prune_delete_days;
+
+  /* specs/audit_log.json:137:18
+     '{"name":"widget_enabled", "type": {"base":"bool"}}'
+  */
+  bool widget_enabled;
+
+  /* specs/audit_log.json:138:18
+     '{"name":"widget_channel_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
+  */
+  u64_snowflake_t widget_channel_id;
+
+  /* specs/audit_log.json:139:18
+     '{"name":"system_channel_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
+  */
+  u64_snowflake_t system_channel_id;
+
+  /* specs/audit_log.json:140:18
+     '{"name":"position", "type": {"base":"int"}}'
+  */
+  int position;
+
+  /* specs/audit_log.json:141:18
+     '{"name":"topic", "type": {"base":"char", "dec":"*"}}'
+  */
+  char *topic;
+
+  /* specs/audit_log.json:142:18
+     '{"name":"bitrate", "type": {"base":"int"}}'
+  */
+  int bitrate;
+
+  /* specs/audit_log.json:143:18
+     '{"name":"permission_overwrites", "type": {"base":"char", "dec":"*"},
+         "todo":true }'
+  */
+  //@todo permission_overwrites (null);
+
+  /* specs/audit_log.json:145:18
+     '{"name":"nsfw", "type": {"base":"bool"}}'
+  */
+  bool nsfw;
+
+  /* specs/audit_log.json:146:18
+     '{"name":"application_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
+  */
+  u64_snowflake_t application_id;
+
+  /* specs/audit_log.json:147:18
+     '{"name":"rate_limit_per_user", "type": {"base":"int"}}'
+  */
+  int rate_limit_per_user;
+
+  /* specs/audit_log.json:148:18
+     '{"name":"permissions", "type": {"base":"char", "dec":"*"}}'
+  */
+  char *permissions;
+
+  /* specs/audit_log.json:149:18
+     '{"name":"color", "type": {"base":"int"}}'
+  */
+  int color;
+
+  /* specs/audit_log.json:150:18
+     '{"name":"hoist", "type": {"base":"bool"}}'
+  */
+  bool hoist;
+
+  /* specs/audit_log.json:151:18
+     '{"name":"mentionable", "type": {"base":"bool"}}'
+  */
+  bool mentionable;
+
+  /* specs/audit_log.json:152:18
+     '{"name":"allow", "type": {"base":"char", "dec":"*"}}'
+  */
+  char *allow;
+
+  /* specs/audit_log.json:153:18
+     '{"name":"deny", "type": {"base":"char", "dec":"*"}}'
+  */
+  char *deny;
+
+  /* specs/audit_log.json:154:18
+     '{"name":"code", "type": {"base":"char", "dec":"*"}}'
+  */
+  char *code;
+
+  /* specs/audit_log.json:155:18
+     '{"name":"channel_id", "type": {"base":"char", "dec":"*"}}'
+  */
+  char *channel_id;
+
+  /* specs/audit_log.json:156:18
+     '{"name":"inviter_id", "type": {"base":"char", "dec":"*"}}'
+  */
+  char *inviter_id;
+
+  /* specs/audit_log.json:157:18
+     '{"name":"max_uses", "type": {"base":"char", "dec":"*"}}'
+  */
+  char *max_uses;
+
+  /* specs/audit_log.json:158:18
+     '{"name":"uses", "type": {"base":"char", "dec":"*"}}'
+  */
+  char *uses;
+
+  /* specs/audit_log.json:159:18
+     '{"name":"max_age", "type": {"base":"char", "dec":"*"}}'
+  */
+  char *max_age;
+
+  /* specs/audit_log.json:160:18
+     '{"name":"temporary", "type": {"base":"char", "dec":"*"}}'
+  */
+  char *temporary;
+
+  /* specs/audit_log.json:161:18
+     '{"name":"deaf", "type": {"base":"char", "dec":"*"}}'
+  */
+  char *deaf;
+
+  /* specs/audit_log.json:162:18
+     '{"name":"mute", "type": {"base":"char", "dec":"*"}}'
+  */
+  char *mute;
+
+  /* specs/audit_log.json:163:18
+     '{"name":"nick", "type": {"base":"char", "dec":"*"}}'
+  */
+  char *nick;
+
+  /* specs/audit_log.json:164:18
+     '{"name":"avatar_hash", "type": {"base":"char", "dec":"*"}}'
+  */
+  char *avatar_hash;
+
+  /* specs/audit_log.json:165:18
+     '{"name":"id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
+  */
+  u64_snowflake_t id;
+
+  /* specs/audit_log.json:166:18
+     '{"name":"type", "type": {"base":"char", "dec":"*"}, 
+         "todo":true, "comment":"integer or string"}'
+  */
+  //@todo type integer or string;
+
+  /* specs/audit_log.json:168:18
+     '{"name":"enable_emotions", "type": {"base":"bool"}}'
+  */
+  bool enable_emotions;
+
+  /* specs/audit_log.json:169:18
+     '{"name":"expire_behavior", "type": {"base":"int"}}'
+  */
+  int expire_behavior;
+
+  /* specs/audit_log.json:170:18
+     '{"name":"expire_grace_period", "type": {"base":"int"}}'
+  */
+  int expire_grace_period;
+
+  /* specs/audit_log.json:171:18
+     '{"name":"user_limit", "type": {"base":"int" }}'
+  */
+  int user_limit;
+
+  // The following is metadata used to 
+  // 1. control which field should be extracted/injected
+  // 2. record which field is presented(defined) in JSON
+  // 3. record which field is null in JSON
+  struct {
+    bool enable_arg_switches;
+    bool enable_record_defined;
+    bool enable_record_null;
+    void *arg_switches[54];
+    void *record_defined[54];
+    void *record_null[54];
+  } __M; // metadata
+};
+} // namespace key
+} // namespace change
+} // namespace audit_log
 } // namespace discord
 /* This file is generated from specs/guild.role.json, Please don't edit it. */
 /*
@@ -3911,6 +3842,52 @@ struct dati {
 };
 } // namespace Template
 } // namespace discord
+/* This file is generated from specs/webhook.edit-webhook-message.json, Please don't edit it. */
+/*
+
+*/
+namespace discord {
+namespace webhook {
+namespace edit_webhook_message {
+
+/* https://discord.com/developers/docs/resources/webhook#edit-webhook-message */
+/* This is defined at specs/webhook.edit-webhook-message.json:8:22 */
+struct params {
+  /* specs/webhook.edit-webhook-message.json:11:20
+     '{ "name": "content", "type":{ "base":"char", "dec":"[2000+1]" }, 
+          "comment":"name of the webhook(1-2000) chars" }'
+  */
+  char content[2000+1]; // name of the webhook(1-2000) chars
+
+  /* specs/webhook.edit-webhook-message.json:13:20
+     '{ "name": "embeds", "type":{ "base":"discord::channel::embed::dati", "dec":"ntl" }, 
+          "comment":"array of up to 10 embeds objects" }'
+  */
+  discord::channel::embed::dati **embeds; // array of up to 10 embeds objects
+
+  /* specs/webhook.edit-webhook-message.json:15:20
+     '{ "name": "allowed_mentions", 
+          "type":{ "base":"discord::channel::allowed_mentions::dati", "dec":"*" }, 
+          "comment":"allowed mentions for the message" }'
+  */
+  discord::channel::allowed_mentions::dati *allowed_mentions; // allowed mentions for the message
+
+  // The following is metadata used to 
+  // 1. control which field should be extracted/injected
+  // 2. record which field is presented(defined) in JSON
+  // 3. record which field is null in JSON
+  struct {
+    bool enable_arg_switches;
+    bool enable_record_defined;
+    bool enable_record_null;
+    void *arg_switches[3];
+    void *record_defined[3];
+    void *record_null[3];
+  } __M; // metadata
+};
+} // namespace edit_webhook_message
+} // namespace webhook
+} // namespace discord
 /* This file is generated from specs/channel.follow-news-channel.json, Please don't edit it. */
 /*
 
@@ -4022,16 +3999,17 @@ struct dati {
   u64_unix_ms_t since;
 
   /* specs/gateway.json:96:19
-     '{ "name":"activities","type":{"base":"discord::gateway::identify::status_update::activity::dati", "dec":"ntl"}}'
+     '{ "name":"activities","type":{"base":"discord::gateway::identify::status_update::activity::dati", 
+          "dec":"ntl"}, "inject_if_not":null}'
   */
   discord::gateway::identify::status_update::activity::dati **activities;
 
-  /* specs/gateway.json:97:19
+  /* specs/gateway.json:98:19
      '{ "name":"status","type":{"base":"char", "dec":"[16]"}}'
   */
   char status[16];
 
-  /* specs/gateway.json:98:19
+  /* specs/gateway.json:99:19
      '{ "name":"afk","type":{"base":"bool"}}'
   */
   bool afk;
@@ -4056,19 +4034,19 @@ namespace identify {
 namespace connection {
 /* Title: Identify Connection Properties */
 /* https://discord.com/developers/docs/topics/gateway#identify-identify-connection-properties */
-/* This is defined at specs/gateway.json:105:22 */
+/* This is defined at specs/gateway.json:106:22 */
 struct dati {
-  /* specs/gateway.json:108:19
+  /* specs/gateway.json:109:19
      '{ "name":"$os", "type":{"base":"char", "dec":"*"}}'
   */
   char *$os;
 
-  /* specs/gateway.json:109:19
+  /* specs/gateway.json:110:19
      '{ "name":"$browser", "type":{"base":"char", "dec":"*"}}'
   */
   char *$browser;
 
-  /* specs/gateway.json:110:19
+  /* specs/gateway.json:111:19
      '{ "name":"$device", "type":{"base":"char", "dec":"*"}}'
   */
   char *$device;
@@ -4094,44 +4072,44 @@ namespace status_update {
 namespace activity {
 /* Title: Activity Structure */
 /* https://discord.com/developers/docs/topics/gateway#activity-object-activity-structure */
-/* This is defined at specs/gateway.json:117:22 */
+/* This is defined at specs/gateway.json:118:22 */
 struct dati {
-  /* specs/gateway.json:120:19
+  /* specs/gateway.json:121:19
      '{ "name":"name","type":{"base":"char", "dec":"[512]"}}'
   */
   char name[512];
 
-  /* specs/gateway.json:121:19
+  /* specs/gateway.json:122:19
      '{ "name":"type","type":{"base":"int"}}'
   */
   int type;
 
-  /* specs/gateway.json:122:19
+  /* specs/gateway.json:123:19
      '{ "name":"url","type":{"base":"char", "dec":"[MAX_URL_LEN]"}}'
   */
   char url[MAX_URL_LEN];
 
-  /* specs/gateway.json:123:19
+  /* specs/gateway.json:124:19
      '{ "name":"created_at","type":{"base":"char", "dec":"*", "converter":"iso8601"}}'
   */
   u64_unix_ms_t created_at;
 
-  /* specs/gateway.json:124:19
+  /* specs/gateway.json:125:19
      '{ "name":"application_id","type":{"base":"char", "dec":"*", "converter":"snowflake" }}'
   */
   u64_snowflake_t application_id;
 
-  /* specs/gateway.json:125:19
+  /* specs/gateway.json:126:19
      '{ "name":"details","type":{"base":"char", "dec":"*"}}'
   */
   char *details;
 
-  /* specs/gateway.json:126:19
+  /* specs/gateway.json:127:19
      '{ "name":"state","type":{"base":"char", "dec":"*"}}'
   */
   char *state;
 
-  /* specs/gateway.json:127:19
+  /* specs/gateway.json:128:19
      '{ "name":"instance","type":{"base":"bool"}}'
   */
   bool instance;
@@ -4191,6 +4169,140 @@ struct params {
 };
 } // namespace modify_guild_template
 } // namespace Template
+} // namespace discord
+/* This file is generated from specs/channel.json, Please don't edit it. */
+/*
+https://discord.com/developers/docs/resources/channel#channel-object-channel-types
+*/
+namespace discord {
+namespace channel {
+
+/* Title: Channel Structure */
+/* https://discord.com/developers/docs/resources/channel#channel-object-channel-structure */
+/* This is defined at specs/channel.json:25:22 */
+struct dati {
+  /* specs/channel.json:28:78
+     '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"id"}'
+  */
+  u64_snowflake_t id;
+
+  /* specs/channel.json:29:86
+     '{"type":{"base":"int", "int_alias":"discord::channel::types::code"}, "name":"type"}'
+  */
+  discord::channel::types::code type;
+
+  /* specs/channel.json:30:78
+     '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"guild_id",
+         "option":true, "inject_if_not":0 }'
+  */
+  u64_snowflake_t guild_id;
+
+  /* specs/channel.json:32:41
+     '{"type":{"base":"int"}, "name":"position",
+         "option":true, "inject_if_not":0 }'
+  */
+  int position;
+
+  /* specs/channel.json:34:84
+     '{"type":{"base":"discord::channel::overwrite::dati", "dec":"ntl"}, "name":"permission_overwrites",
+         "option":true, "inject_if_not":null }'
+  */
+  discord::channel::overwrite::dati **permission_overwrites;
+
+  /* specs/channel.json:36:66
+     '{"type":{"base":"char", "dec":"[MAX_NAME_LEN]"}, "name":"name", 
+         "option":true, "inject_if_not":""}'
+  */
+  char name[MAX_NAME_LEN];
+
+  /* specs/channel.json:38:67
+     '{"type":{"base":"char", "dec":"[MAX_TOPIC_LEN]"}, "name":"topic",
+         "option":true, "inject_if_not":"" }'
+  */
+  char topic[MAX_TOPIC_LEN];
+
+  /* specs/channel.json:40:42
+     '{"type":{"base":"bool"}, "name":"nsfw", "option":true, "inject_if_not":false}'
+  */
+  bool nsfw;
+
+  /* specs/channel.json:41:78
+     '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"last_message_id",
+         "option":true, "inject_if_not":0}'
+  */
+  u64_snowflake_t last_message_id;
+
+  /* specs/channel.json:43:41
+     '{"type":{"base":"int"}, "name":"bitrate", "option":true, "inject_if_not":0}'
+  */
+  int bitrate;
+
+  /* specs/channel.json:44:41
+     '{"type":{"base":"int"}, "name":"user_limit", "option":true, "inject_if_not":0}'
+  */
+  int user_limit;
+
+  /* specs/channel.json:45:41
+     '{"type":{"base":"int"}, "name":"rate_limit_per_user", 
+         "option":true, "inject_if_not":0}'
+  */
+  int rate_limit_per_user;
+
+  /* specs/channel.json:47:70
+     '{"type":{"base":"discord::user::dati", "dec":"ntl"}, "name":"recipients",
+         "option":true, "inject_if_not":null}'
+  */
+  discord::user::dati **recipients;
+
+  /* specs/channel.json:49:68
+     '{"type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}, "name":"icon",
+         "option":true, "inject_if_not":""}'
+  */
+  char icon[MAX_SHA256_LEN];
+
+  /* specs/channel.json:51:78
+     '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"owner_id",
+         "option":true, "inject_if_not":0}'
+  */
+  u64_snowflake_t owner_id;
+
+  /* specs/channel.json:53:78
+     '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"application_id",
+         "option":true, "inject_if_not":0}'
+  */
+  u64_snowflake_t application_id;
+
+  /* specs/channel.json:55:95
+     '{"type":{"base":"char", "dec":"*", "converter":"snowflake", "nullable":true}, "name":"parent_id",
+         "option":true, "inject_if_not":0}'
+  */
+  u64_snowflake_t parent_id;
+
+  /* specs/channel.json:57:93
+     '{"type":{"base":"char", "dec":"*", "converter":"iso8601", "nullable":true}, "name":"last_pin_timestamp",
+         "option":true, "inject_if_not":0}'
+  */
+  u64_unix_ms_t last_pin_timestamp;
+
+  /* specs/channel.json:59:82
+     '{"type":{"base":"discord::channel::message::dati", "dec":"ntl"}, "name":"messages"}'
+  */
+  discord::channel::message::dati **messages;
+
+  // The following is metadata used to 
+  // 1. control which field should be extracted/injected
+  // 2. record which field is presented(defined) in JSON
+  // 3. record which field is null in JSON
+  struct {
+    bool enable_arg_switches;
+    bool enable_record_defined;
+    bool enable_record_null;
+    void *arg_switches[19];
+    void *record_defined[19];
+    void *record_null[19];
+  } __M; // metadata
+};
+} // namespace channel
 } // namespace discord
 /* This file is generated from specs/guild.member.json, Please don't edit it. */
 /*
@@ -4299,115 +4411,4 @@ struct params {
 };
 } // namespace modify_current_user
 } // namespace user
-} // namespace discord
-/* This file is generated from specs/invite.json, Please don't edit it. */
-/*
-https://discord.com/developers/docs/resources/invite#invite-object
-*/
-namespace discord {
-namespace invite {
-
-/* Title: Invite Structure */
-/* https://discord.com/developers/docs/resources/invite#invite-object-invite-structure */
-/* This is defined at specs/invite.json:19:22 */
-struct dati {
-  /* specs/invite.json:22:20
-     '{ "name": "code", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
-  */
-  char *code; // @todo fixed size limit
-
-  /* specs/invite.json:23:20
-     '{ "name": "guild", "type":{ "base":"discord::guild::dati", "dec":"*"}, "comment":"partial guild object"}'
-  */
-  discord::guild::dati *guild; // partial guild object
-
-  /* specs/invite.json:24:20
-     '{ "name": "channel", "type":{ "base":"discord::channel::dati", "dec":"*"}, "comment":"partial channel object"}'
-  */
-  discord::channel::dati *channel; // partial channel object
-
-  /* specs/invite.json:25:20
-     '{ "name": "inviter", "type":{ "base":"discord::user::dati", "dec":"*"}}'
-  */
-  discord::user::dati *inviter;
-
-  /* specs/invite.json:26:20
-     '{ "name": "target_user", "type":{ "base":"discord::user::dati", "dec":"*"}, "comment":"partial user object"}'
-  */
-  discord::user::dati *target_user; // partial user object
-
-  /* specs/invite.json:27:20
-     '{ "name": "target_user_type", "type":{ "base":"int", "int_alias":"discord::invite::target_user_types::code" }}'
-  */
-  discord::invite::target_user_types::code target_user_type;
-
-  /* specs/invite.json:28:20
-     '{ "name": "approximate_presence_count", "type":{ "base":"int" }}'
-  */
-  int approximate_presence_count;
-
-  /* specs/invite.json:29:20
-     '{ "name": "approximate_member_count", "type":{ "base":"int" }}'
-  */
-  int approximate_member_count;
-
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[8];
-    void *record_defined[8];
-    void *record_null[8];
-  } __M; // metadata
-};
-
-namespace metadata {
-/* Title: Invite Metadata Structure */
-/* https://discord.com/developers/docs/resources/invite#invite-metadata-object */
-/* This is defined at specs/invite.json:36:22 */
-struct dati {
-  /* specs/invite.json:39:20
-     '{ "name": "user", "type":{ "base":"int" }}'
-  */
-  int user;
-
-  /* specs/invite.json:40:20
-     '{ "name": "max_uses", "type":{ "base":"int" }}'
-  */
-  int max_uses;
-
-  /* specs/invite.json:41:20
-     '{ "name": "max_age", "type":{ "base":"int" }}'
-  */
-  int max_age;
-
-  /* specs/invite.json:42:20
-     '{ "name": "temporary", "type":{ "base":"int" }}'
-  */
-  int temporary;
-
-  /* specs/invite.json:43:20
-     '{ "name": "created_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601"}}'
-  */
-  u64_unix_ms_t created_at;
-
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[5];
-    void *record_defined[5];
-    void *record_null[5];
-  } __M; // metadata
-};
-} // namespace metadata
-} // namespace invite
 } // namespace discord

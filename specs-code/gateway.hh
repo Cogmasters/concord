@@ -151,16 +151,17 @@ struct dati {
   u64_unix_ms_t since;
 
   /* specs/gateway.json:96:19
-     '{ "name":"activities","type":{"base":"discord::gateway::identify::status_update::activity::dati", "dec":"ntl"}}'
+     '{ "name":"activities","type":{"base":"discord::gateway::identify::status_update::activity::dati", 
+          "dec":"ntl"}, "inject_if_not":null}'
   */
   discord::gateway::identify::status_update::activity::dati **activities;
 
-  /* specs/gateway.json:97:19
+  /* specs/gateway.json:98:19
      '{ "name":"status","type":{"base":"char", "dec":"[16]"}}'
   */
   char status[16];
 
-  /* specs/gateway.json:98:19
+  /* specs/gateway.json:99:19
      '{ "name":"afk","type":{"base":"bool"}}'
   */
   bool afk;
@@ -205,19 +206,19 @@ namespace identify {
 namespace connection {
 /* Title: Identify Connection Properties */
 /* https://discord.com/developers/docs/topics/gateway#identify-identify-connection-properties */
-/* This is defined at specs/gateway.json:105:22 */
+/* This is defined at specs/gateway.json:106:22 */
 struct dati {
-  /* specs/gateway.json:108:19
+  /* specs/gateway.json:109:19
      '{ "name":"$os", "type":{"base":"char", "dec":"*"}}'
   */
   char *$os;
 
-  /* specs/gateway.json:109:19
+  /* specs/gateway.json:110:19
      '{ "name":"$browser", "type":{"base":"char", "dec":"*"}}'
   */
   char *$browser;
 
-  /* specs/gateway.json:110:19
+  /* specs/gateway.json:111:19
      '{ "name":"$device", "type":{"base":"char", "dec":"*"}}'
   */
   char *$device;
@@ -263,44 +264,44 @@ namespace status_update {
 namespace activity {
 /* Title: Activity Structure */
 /* https://discord.com/developers/docs/topics/gateway#activity-object-activity-structure */
-/* This is defined at specs/gateway.json:117:22 */
+/* This is defined at specs/gateway.json:118:22 */
 struct dati {
-  /* specs/gateway.json:120:19
+  /* specs/gateway.json:121:19
      '{ "name":"name","type":{"base":"char", "dec":"[512]"}}'
   */
   char name[512];
 
-  /* specs/gateway.json:121:19
+  /* specs/gateway.json:122:19
      '{ "name":"type","type":{"base":"int"}}'
   */
   int type;
 
-  /* specs/gateway.json:122:19
+  /* specs/gateway.json:123:19
      '{ "name":"url","type":{"base":"char", "dec":"[MAX_URL_LEN]"}}'
   */
   char url[MAX_URL_LEN];
 
-  /* specs/gateway.json:123:19
+  /* specs/gateway.json:124:19
      '{ "name":"created_at","type":{"base":"char", "dec":"*", "converter":"iso8601"}}'
   */
   u64_unix_ms_t created_at;
 
-  /* specs/gateway.json:124:19
+  /* specs/gateway.json:125:19
      '{ "name":"application_id","type":{"base":"char", "dec":"*", "converter":"snowflake" }}'
   */
   u64_snowflake_t application_id;
 
-  /* specs/gateway.json:125:19
+  /* specs/gateway.json:126:19
      '{ "name":"details","type":{"base":"char", "dec":"*"}}'
   */
   char *details;
 
-  /* specs/gateway.json:126:19
+  /* specs/gateway.json:127:19
      '{ "name":"state","type":{"base":"char", "dec":"*"}}'
   */
   char *state;
 
-  /* specs/gateway.json:127:19
+  /* specs/gateway.json:128:19
      '{ "name":"instance","type":{"base":"bool"}}'
   */
   bool instance;
