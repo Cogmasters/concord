@@ -10,47 +10,67 @@
 #include "websockets.h"
 #include "orka-utils.h"
 
-#include "./specs-code/all_opaque_struct.hh"
+/* Size limits encountered in the Docs and searching the web */
+#define MAX_NAME_LEN          100 + 1
+#define MAX_TOPIC_LEN         1024 + 1
+#define MAX_DESCRIPTION_LEN   2048 + 1
+#define MAX_USERNAME_LEN      32 + 1
+#define MAX_DISCRIMINATOR_LEN 4 + 1
+#define MAX_SHA256_LEN        1024 + 1
+#define MAX_LOCALE_LEN        16 + 1
+#define MAX_EMAIL_LEN         254 + 1
+#define MAX_REGION_LEN        16 + 1
+#define MAX_REASON_LEN        512 + 1
+#define MAX_MESSAGE_LEN       2000 + 1
+#define MAX_PAYLOAD_LEN       4096 + 1
 
-namespace discord {
+/* EMBED LIMITS
+https://discord.com/developers/docs/resources/channel#embed-limits */
+#define EMBED_TITLE_LEN       256 + 1
+#define EMBED_DESCRIPTION_LEN 2048 + 1
+#define EMBED_MAX_FIELDS      25
+#define EMBED_FIELD_NAME_LEN  256 + 1
+#define EMBED_FIELD_VALUE_LEN 1024 + 1
+#define EMBED_FOOTER_TEXT_LEN 2048 + 1
+#define EMBED_AUTHOR_NAME_LEN 256 + 1
+
+/* WEBHOOK LIMITS
+https://discord.com/developers/docs/resources/webhook#create-webhook */
+#define WEBHOOK_NAME_LEN 80 + 1
+
+/* SNOWFLAKES
+https://discord.com/developers/docs/reference#snowflakes */
+#define SNOWFLAKE_INCREMENT           12
+#define SNOWFLAKE_PROCESS_ID          17
+#define SNOWFLAKE_INTERNAL_WORKER_ID  22
+#define SNOWFLAKE_TIMESTAMP           64
+
 
 typedef uint64_t u64_unix_ms_t;
 typedef uint64_t u64_snowflake_t;
 
-/* * * * * * * * * * * * * * * * * * * * */
-/* FORWARD DECLARATION OF EVERY DATATYPE */
+namespace discord {
+  namespace channel {
+    namespace embed {
+      namespace thumbnail { struct dati; }
+      namespace video = thumbnail;
+      namespace image = thumbnail;
+    }
+  }
+}
+
+
+#include "./specs-code/all_opaque_struct.hh"
+#include "./specs-code/all_enums.hh"
+#include "./specs-code/all_structs.hh"
+
+namespace discord {
 
 struct client;
-namespace channel {
-namespace embed {
-namespace thumbnail { struct dati; }
-namespace video = thumbnail;
-namespace image = thumbnail;
-}
-}
 
 namespace user_agent {
   namespace bucket { struct dati; }
 } // namespace user_agent
-
-namespace websockets {
-  namespace identify {
-    namespace status_update {
-      struct dati;
-      namespace activity { 
-        struct dati;
-        namespace types { typedef int code; }
-      } // namespace activity
-    } // namespace status_update
-  } // namespace identify
-  struct dati;
-  namespace intents { typedef int code; }
-  namespace opcodes { typedef int code; }
-  namespace status { typedef int code; }
-} // namespace websockets
-
-/* * * * END OF FORWARD DECLARATION * * * */
-/* * * * * * * * * * * * * * * * * * * * */
 
 /* IDLE CALLBACK (runs on every iteration, no trigger required) */
 typedef void (idle_cb)(client *client, const user::dati *me);
@@ -158,66 +178,7 @@ void build(user_agent::dati *ua, dati *bucket, char endpoint[], struct ua_conn_s
 } // namespace bucket
 } // namespace user_agent
 
-namespace websockets { /* discord-websockets.cpp */
-
-/* GATEWAY CLOSE EVENT CODES
-https://discord.com/developers/docs/topics/opcodes-and-status-codes#gateway-gateway-close-event-codes */
-enum close_opcodes {
-  CLOSE_REASON_UNKNOWN_ERROR         = 4000,
-  CLOSE_REASON_UNKNOWN_OPCODE        = 4001,
-  CLOSE_REASON_DECODE_ERROR          = 4002,
-  CLOSE_REASON_NOT_AUTHENTICATED     = 4003,
-  CLOSE_REASON_AUTHENTICATION_FAILED = 4004,
-  CLOSE_REASON_ALREADY_AUTHENTICATED = 4005,
-  CLOSE_REASON_INVALID_SEQUENCE      = 4007,
-  CLOSE_REASON_RATE_LIMITED          = 4008,
-  CLOSE_REASON_SESSION_TIMED_OUT     = 4009,
-  CLOSE_REASON_INVALID_SHARD         = 4010,
-  CLOSE_REASON_SHARDING_REQUIRED     = 4011,
-  CLOSE_REASON_INVALID_API_VERSION   = 4012,
-  CLOSE_REASON_INVALID_INTENTS       = 4013,
-  CLOSE_REASON_DISALLOWED_INTENTS    = 4014
-};
-
-/* GATEWAY INTENTS
-https://discord.com/developers/docs/topics/gateway#identify-identify-structure */
-namespace intents {
-enum {
-  GUILDS                   = 1 << 0,
-  GUILD_MEMBERS            = 1 << 1,
-  GUILD_BANS               = 1 << 2,
-  GUILD_EMOJIS             = 1 << 3,
-  GUILD_INTEGRATIONS       = 1 << 4,
-  GUILD_WEBHOOKS           = 1 << 5,
-  GUILD_INVITES            = 1 << 6,
-  GUILD_VOICE_STATES       = 1 << 7,
-  GUILD_PRESENCES          = 1 << 8,
-  GUILD_MESSAGES           = 1 << 9,
-  GUILD_MESSAGE_REACTIONS  = 1 << 10,
-  GUILD_MESSAGE_TYPING     = 1 << 11,
-  DIRECT_MESSAGES          = 1 << 12,
-  DIRECT_MESSAGE_REACTIONS = 1 << 13,
-  DIRECT_MESSAGE_TYPING    = 1 << 14
-};
-} // namespace intents
-
-/* GATEWAY OPCODES
-https://discord.com/developers/docs/topics/opcodes-and-status-codes#gateway-gateway-opcodes */
-namespace opcodes {
-enum {
-  DISPATCH              = 0,
-  HEARTBEAT             = 1,
-  IDENTIFY              = 2,
-  PRESENCE_UPDATE       = 3,
-  VOICE_STATE_UPDATE    = 4,
-  RESUME                = 6,
-  RECONNECT             = 7,
-  REQUEST_GUILD_MEMBERS = 8,
-  INVALID_SESSION       = 9,
-  HELLO                 = 10,
-  HEARTBEAT_ACK         = 11
-};
-} // namespace opcodes
+namespace gateway { /* discord-gateway.cpp */
 
 namespace session { /* SESSION START LIMIT STRUCTURE */
 struct dati {
@@ -242,93 +203,6 @@ void get_bot(client *client, dati *p_session);
 
 } // namespace session
 
-/* IDENTIFY STRUCTURE
-https://discord.com/developers/docs/topics/gateway#identify-identify-structure */
-namespace identify {
-
-struct dati {
-  char *token;
-  bool compress;
-  int large_threshold;
-  int shard[2];
-  status_update::dati *presence;
-  bool guild_subscriptions;
-  intents::code intents;
-};
-
-void dati_init(void *p_identify);
-dati* dati_alloc();
-void dati_cleanup(void *p_identify);
-void dati_free(dati *identify);
-void dati_from_json(char *str, size_t len, void *p_identify);
-int dati_to_json(char *str, size_t len, void *p_identify);
-
-/* GATEWAY STATUS UPDATE STRUCTURE ( aka PRESENCE )
-https://discord.com/developers/docs/topics/gateway#update-status-gateway-status-update-structure */
-namespace status_update {
-
-struct dati {
-  u64_unix_ms_t since;
-  activity::dati **activities;
-  char status[16];
-  bool afk;
-};
-
-void dati_init(void *p_status_update);
-dati* dati_alloc();
-void dati_cleanup(void *p_status_update);
-void dati_free(dati *status_update);
-void dati_from_json(char *str, size_t len, void *p_status_update);
-int dati_to_json(char *str, size_t len, void *p_status_update);
-
-/* ACTIVITY STRUCTURE
-https://discord.com/developers/docs/topics/gateway#activity-object-activity-structure */
-namespace activity {
-
-struct dati {
-  char name[512];
-  types::code type;
-  char url[MAX_URL_LEN];
-  u64_unix_ms_t created_at;
-  //@todo missing timestamps;
-  u64_snowflake_t application_id;
-  char *details; //@todo find fixed size limit
-  char *state; // @todo find fixed size limit
-  //@todo missing activity emoji;
-  //@todo missing party;
-  //@todo missing assets;
-  //@todo missing secrets;
-  bool instance;
-  //@todo missing flags;
-};
-
-void dati_init(void *p_activity);
-dati* dati_alloc();
-void dati_cleanup(void *p_activity);
-void dati_free(dati *activity);
-void dati_from_json(char *str, size_t len, void *p_activity);
-void dati_list_from_json(char *str, size_t len, void *p_activities);
-size_t dati_to_json(char *str, size_t len, void *p_activity);
-int dati_list_to_json(char *str, size_t len, void *p_activities);
-
-/* ACTIVITY TYPES
-https://discord.com/developers/docs/topics/gateway#activity-object-activity-types */
-namespace types {
-enum {
-  GAME      = 0,
-  STREAMING = 1,
-  LISTENING = 2,
-  CUSTOM    = 4,
-  COMPETING = 5
-};
-} // namespace types
-
-} // namespace activity
-
-} // namespace status_update
-
-} // namespace identify
-
 struct cmd_cbs {
   char *str;
   message_cb *cb;
@@ -342,7 +216,7 @@ struct payload_s { /* PAYLOAD STRUCTURE */
 };
 
 struct dati { /* WEBSOCKETS STRUCTURE */
-  struct websockets_s common;
+  struct websockets_s ws;
 
   identify::dati *identify;
   char session_id[512]; //the session id (for resuming lost connections)
@@ -390,26 +264,25 @@ struct dati { /* WEBSOCKETS STRUCTURE */
 
   client *p_client; //points to client this struct is a part of
 
-  pthread_mutex_t lock; //for accessing ws fields within events
+  pthread_mutex_t lock; //for accessing gw fields within events
 };
 
-void init(dati *ws, const char token[], const char config_file[]);
-void cleanup(dati *ws);
-void run(dati *ws);
+void init(dati *gw, const char token[], const char config_file[]);
+void cleanup(dati *gw);
+void run(dati *gw);
 /*
  * gracefully exit the infinite loop
  */
-void shutdown(dati *ws);
+void shutdown(dati *gw);
 
-} // namespace websockets
+} // namespace gateway
 
 struct client {
-  websockets::dati ws;
+  gateway::dati gw;
   user_agent::dati ua;
   
   void *data; //space for user arbitrary data
 };
-
 } // namespace discord
 
 #endif // LIBDISCORD_COMMON_H

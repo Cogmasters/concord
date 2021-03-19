@@ -4,45 +4,9 @@
 #include "json-actor-boxed.h"
 #include "discord-common.h"
 
-/* Size limits encountered in the Docs and searching the web */
-#define MAX_NAME_LEN          100 + 1
-#define MAX_TOPIC_LEN         1024 + 1
-#define MAX_DESCRIPTION_LEN   2048 + 1
-#define MAX_USERNAME_LEN      32 + 1
-#define MAX_DISCRIMINATOR_LEN 4 + 1
-#define MAX_SHA256_LEN        1024 + 1
-#define MAX_LOCALE_LEN        16 + 1
-#define MAX_EMAIL_LEN         254 + 1
-#define MAX_REGION_LEN        16 + 1
-#define MAX_REASON_LEN        512 + 1
-#define MAX_MESSAGE_LEN       2000 + 1
-#define MAX_PAYLOAD_LEN       4096 + 1
-
-/* EMBED LIMITS
-https://discord.com/developers/docs/resources/channel#embed-limits */
-#define EMBED_TITLE_LEN       256 + 1
-#define EMBED_DESCRIPTION_LEN 2048 + 1
-#define EMBED_MAX_FIELDS      25
-#define EMBED_FIELD_NAME_LEN  256 + 1
-#define EMBED_FIELD_VALUE_LEN 1024 + 1
-#define EMBED_FOOTER_TEXT_LEN 2048 + 1
-#define EMBED_AUTHOR_NAME_LEN 256 + 1
-
-/* WEBHOOK LIMITS
-https://discord.com/developers/docs/resources/webhook#create-webhook */
-#define WEBHOOK_NAME_LEN 80 + 1
-
-/* SNOWFLAKES
-https://discord.com/developers/docs/reference#snowflakes */
-#define SNOWFLAKE_INCREMENT           12
-#define SNOWFLAKE_PROCESS_ID          17
-#define SNOWFLAKE_INTERNAL_WORKER_ID  22
-#define SNOWFLAKE_TIMESTAMP           64
-
-/* * * * * * * * * * * * * * * * * * * */
-/* * * * STRUCTURES DECLARATIONS * * * */
-
 namespace discord {
+
+namespace presence = gateway::identify::status_update;
 
 enum dispatch_code {
   UNKNOWN = 0,
@@ -62,14 +26,7 @@ enum dispatch_code {
   GUILD_MEMBER_UPDATE,
   GUILD_MEMBER_REMOVE
 };
-
-/* START OF SHORTCUT ALIASES */
-
-namespace presence = websockets::identify::status_update;
 }
-
-#include "./specs-code/all_enums.hh"
-#include "./specs-code/all_structs.hh"
 
 /* * * * * * * * * * * * * * * * * * */
 /* * * * FUNCTION DECLARATIONS * * * */
@@ -83,7 +40,7 @@ client* init(const char token[]);
 client* config_init(const char config_file[]);
 void cleanup(discord::client *client);
 
-void add_intents(client *client, websockets::intents::code code);
+void add_intents(client *client, int intent_code);
 void set_prefix(client *client, char *prefix);
 void setcb_command(client *client, char *command, message_cb *user_cb);
 void setcb(client *client, enum dispatch_code opt, ...);

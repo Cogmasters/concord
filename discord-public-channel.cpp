@@ -275,7 +275,7 @@ run(
   params *params, 
   message::dati *p_message)
 {
-  if (client->ws.common.status != WS_CONNECTED) {
+  if (ws_get_status(&client->gw.ws) != WS_CONNECTED) {
     D_PUTS("Can't perform action unless client has an active"
            " websockets connection");
     return;

@@ -16,10 +16,10 @@ init(const char token[])
   if (NULL == new_client) return NULL;
 
   new_client->ua.p_client = new_client;
-  new_client->ws.p_client = new_client;
+  new_client->gw.p_client = new_client;
   
   user_agent::init(&new_client->ua, token, NULL);
-  websockets::init(&new_client->ws, token, NULL);
+  gateway::init(&new_client->gw, token, NULL);
 
   return new_client;
 }
@@ -31,10 +31,10 @@ config_init(const char config_file[])
   if (NULL == new_client) return NULL;
 
   new_client->ua.p_client = new_client;
-  new_client->ws.p_client = new_client;
+  new_client->gw.p_client = new_client;
   
   user_agent::init(&new_client->ua, NULL, config_file);
-  websockets::init(&new_client->ws, NULL, config_file);
+  gateway::init(&new_client->gw, NULL, config_file);
 
   return new_client;
 }
@@ -43,7 +43,7 @@ void
 cleanup(client *client)
 {
   user_agent::cleanup(&client->ua);
-  websockets::cleanup(&client->ws);
+  gateway::cleanup(&client->gw);
 
   free(client);
 }
@@ -61,14 +61,14 @@ global_cleanup() {
 }
 
 void
-add_intents(client *client, websockets::intents::code code)
+add_intents(client *client, int intent_code)
 {
-  if (WS_CONNECTED == ws_get_status(&client->ws.common)) {
+  if (WS_CONNECTED == ws_get_status(&client->gw.ws)) {
     PUTS("Can't set intents to a running client.");
     return;
   }
 
-  client->ws.identify->intents |= code;
+  client->gw.identify->intents |= intent_code;
 }
 
 void
@@ -80,14 +80,14 @@ set_prefix(client *client, char *prefix)
     return;
   }
 
-  client->ws.prefix = prefix;
+  client->gw.prefix = prefix;
 };
 
 void
 setcb_command(client *client, char *command, message_cb *user_cb)
 {
-  using namespace websockets;
-  dati *ws = &client->ws;
+  using namespace gateway;
+  dati *gw = &client->gw;
 
   const size_t CMD_LEN = 64;
   if (!orka_str_bounds_check(command, CMD_LEN)) {
@@ -95,12 +95,12 @@ setcb_command(client *client, char *command, message_cb *user_cb)
     return;
   }
 
-  ++ws->num_cmd;
-  ws->on_cmd = (struct cmd_cbs*)realloc(ws->on_cmd, 
-                      ws->num_cmd * sizeof(struct cmd_cbs));
+  ++gw->num_cmd;
+  gw->on_cmd = (struct cmd_cbs*)realloc(gw->on_cmd, 
+                      gw->num_cmd * sizeof(struct cmd_cbs));
 
-  ws->on_cmd[ws->num_cmd-1].str = command;
-  ws->on_cmd[ws->num_cmd-1].cb = user_cb;
+  gw->on_cmd[gw->num_cmd-1].str = command;
+  gw->on_cmd[gw->num_cmd-1].cb = user_cb;
 
   add_intents(client, 
       intents::GUILD_MESSAGES | intents::DIRECT_MESSAGES);
@@ -111,66 +111,66 @@ setcb_command(client *client, char *command, message_cb *user_cb)
 void
 setcb(client *client, enum dispatch_code opt, callback)
 {
-  using namespace websockets;
-  dati *ws = &client->ws;
+  using namespace gateway;
+  dati *gw = &client->gw;
 
   va_list args;
   va_start(args, opt);
 
-  intents::code code = 0;
+  int code = 0;
   switch (opt) {
   case IDLE:
-      ws->cbs.on_idle = va_arg(args, idle_cb*);
+      gw->cbs.on_idle = va_arg(args, idle_cb*);
       break;
   case READY:
-      ws->cbs.on_ready = va_arg(args, idle_cb*);
+      gw->cbs.on_ready = va_arg(args, idle_cb*);
       break;
   case MESSAGE_CREATE:
-      ws->cbs.on_message.create = va_arg(args, message_cb*);
+      gw->cbs.on_message.create = va_arg(args, message_cb*);
       code |= intents::GUILD_MESSAGES | intents::DIRECT_MESSAGES;
       break;
   case SB_MESSAGE_CREATE: /* @todo this is temporary for wrapping JS */
-      ws->cbs.on_message.sb_create = va_arg(args, sb_message_cb*);
+      gw->cbs.on_message.sb_create = va_arg(args, sb_message_cb*);
       code |= intents::GUILD_MESSAGES | intents::DIRECT_MESSAGES;
       break;
   case MESSAGE_UPDATE:
-      ws->cbs.on_message.update = va_arg(args, message_cb*);
+      gw->cbs.on_message.update = va_arg(args, message_cb*);
       code |= intents::GUILD_MESSAGES | intents::DIRECT_MESSAGES;
       break;
   case MESSAGE_DELETE:
-      ws->cbs.on_message.del = va_arg(args, message_delete_cb*);
+      gw->cbs.on_message.del = va_arg(args, message_delete_cb*);
       code |= intents::GUILD_MESSAGES | intents::DIRECT_MESSAGES;
       break;
   case MESSAGE_DELETE_BULK:
-      ws->cbs.on_message.delete_bulk = va_arg(args, message_delete_bulk_cb*);
+      gw->cbs.on_message.delete_bulk = va_arg(args, message_delete_bulk_cb*);
       code |= intents::GUILD_MESSAGES | intents::DIRECT_MESSAGES;
       break;
   case MESSAGE_REACTION_ADD:
-      ws->cbs.on_reaction.add = va_arg(args, reaction_add_cb*);
+      gw->cbs.on_reaction.add = va_arg(args, reaction_add_cb*);
       code |= intents::GUILD_MESSAGE_REACTIONS | intents::DIRECT_MESSAGE_REACTIONS;
       break;
   case MESSAGE_REACTION_REMOVE:
-      ws->cbs.on_reaction.remove = va_arg(args, reaction_remove_cb*);
+      gw->cbs.on_reaction.remove = va_arg(args, reaction_remove_cb*);
       code |= intents::GUILD_MESSAGE_REACTIONS | intents::DIRECT_MESSAGE_REACTIONS;
       break;
   case MESSAGE_REACTION_REMOVE_ALL:
-      ws->cbs.on_reaction.remove_all = va_arg(args, reaction_remove_all_cb*);
+      gw->cbs.on_reaction.remove_all = va_arg(args, reaction_remove_all_cb*);
       code |= intents::GUILD_MESSAGE_REACTIONS | intents::DIRECT_MESSAGE_REACTIONS;
       break;
   case MESSAGE_REACTION_REMOVE_EMOJI:
-      ws->cbs.on_reaction.remove_emoji = va_arg(args, reaction_remove_emoji_cb*);
+      gw->cbs.on_reaction.remove_emoji = va_arg(args, reaction_remove_emoji_cb*);
       code |= intents::GUILD_MESSAGE_REACTIONS | intents::DIRECT_MESSAGE_REACTIONS;
       break;
   case GUILD_MEMBER_ADD:
-      ws->cbs.on_guild_member.add = va_arg(args, guild_member_cb*);
+      gw->cbs.on_guild_member.add = va_arg(args, guild_member_cb*);
       code |= intents::GUILD_MEMBERS;
       break;
   case GUILD_MEMBER_UPDATE:
-      ws->cbs.on_guild_member.update = va_arg(args, guild_member_cb*);
+      gw->cbs.on_guild_member.update = va_arg(args, guild_member_cb*);
       code |= intents::GUILD_MEMBERS;
       break;
   case GUILD_MEMBER_REMOVE:
-      ws->cbs.on_guild_member.remove = va_arg(args, guild_member_remove_cb*);
+      gw->cbs.on_guild_member.remove = va_arg(args, guild_member_remove_cb*);
       code |= intents::GUILD_MEMBERS;
       break;
   default:
@@ -184,7 +184,7 @@ setcb(client *client, enum dispatch_code opt, callback)
 
 void
 run(client *client){
-  websockets::run(&client->ws);
+  gateway::run(&client->gw);
 }
 
 void*
@@ -202,8 +202,8 @@ replace_presence(client *client, presence::dati *presence)
 {
   if (NULL == presence) return;
 
-  presence::dati_free(client->ws.identify->presence);
-  client->ws.identify->presence = presence;
+  presence::dati_free(client->gw.identify->presence);
+  client->gw.identify->presence = presence;
 }
 
 void
@@ -215,7 +215,7 @@ set_presence(
 {
   using namespace presence;
 
-  dati *presence = client->ws.identify->presence;
+  dati *presence = client->gw.identify->presence;
 
   if (activity) {
     presence->activities = (activity::dati**)ntl_append(
