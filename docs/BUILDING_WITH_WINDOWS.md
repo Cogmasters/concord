@@ -225,16 +225,7 @@ Then, go to `discord-public-user.cpp` and include `strndup.h`:
 ```
 
 Now, go to `Makefile`.
-First, go to the line that defines the variable `OBJS` and add `$(OBJDIR)/tdestroy.c.o` and `$(OBJDIR)/strndup.c.o` after `mkdir`.
-Then, go to the part that defines the object files dependencies and add the following code:
-```mk
-$(OBJDIR)/tdestroy.o : tdestroy.c
-    $(CC) $(CFLAGS) $(LIBS_CFLAGS) \
-        -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=1 -c -o $@ $<
-$(OBJDIR)/strndup.o : strndup.c
-    $(CC) $(CFLAGS) $(LIBS_CFLAGS) \
-        -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=1 -c -o $@ $<
-```
+Then, go to the line that defines the variable `OBJS` and add `$(OBJDIR)/tdestroy.c.o` and `$(OBJDIR)/strndup.c.o` after `mkdir`.
 
 ### Add native CA to curl options
 If we don't wanna get SSL certificate error, we need to add native CA to curl options.
