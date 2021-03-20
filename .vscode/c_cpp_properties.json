@@ -6,15 +6,16 @@
                 ".",
                 "common",
                 "mujs",
+                "sqlite3",
                 "${workspaceFolder}/**",
                 "/usr/include",
                 "/usr/local/include"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",
-            "cStandard": "c11",
-            "cppStandard": "c++17",
-            "intelliSenseMode": "clang-x64"
+            "cStandard": "c99",
+            "cppStandard": "c++03",
+            "intelliSenseMode": "gcc-x86"
         }
     ],
     "version": 4
