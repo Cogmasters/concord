@@ -3,6 +3,7 @@
 #include <inttypes.h>
 #include <string.h>
 #include <math.h> //for round()
+#define _POSIX_THREAD_SAFE_FUNCTIONS
 #include <time.h>
 #include <sys/stat.h>
 #include <dirent.h>
