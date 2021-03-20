@@ -108,7 +108,7 @@ struct user_agent_s {
 
   char *base_url;
 
-  struct timespec t_block; // for global ratelimiting purposes
+  uint64_t blockuntil_tstamp; // for global ratelimiting purposes
   pthread_mutex_t lock;
   pthread_cond_t cond;
 

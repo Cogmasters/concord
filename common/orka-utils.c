@@ -194,6 +194,8 @@ orka_ulltostr(char *str, size_t len, void *p_data) {
 void
 orka_sleep_ms(const int64_t delay_ms)
 {
+  if (delay_ms < 0) return; /* EARLY RETURN */
+
   const struct timespec t = {
     .tv_sec = delay_ms / 1000,
     .tv_nsec = (delay_ms % 1000) * 1000000

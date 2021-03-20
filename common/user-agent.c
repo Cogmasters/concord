@@ -489,8 +489,12 @@ static ua_status_t noop_abort_cb(void *a, int b, struct ua_conn_s *c)
 {return UA_ABORT;}
 
 static int
-send_request(struct ua_conn_s *conn)
+send_request(struct user_agent_s *ua, struct ua_conn_s *conn)
 {
+  pthread_mutex_lock(&ua->lock);
+  
+  // enforces global ratelimiting with ua_block_ms();
+  orka_sleep_ms(ua->blockuntil_tstamp - orka_timestamp_ms());
   CURLcode ecode;
   
   //@todo shouldn't abort on error
@@ -506,6 +510,8 @@ send_request(struct ua_conn_s *conn)
   ecode = curl_easy_getinfo(conn->ehandle, CURLINFO_EFFECTIVE_URL, &conn->resp_url);
   ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
   DS_PRINT("Response URL: %s", conn->resp_url);
+
+  pthread_mutex_unlock(&ua->lock);
 
   return httpcode;
 }
@@ -541,11 +547,7 @@ perform_request(
     /* triggers on every start of loop iteration */
     (*cbs.on_iter_start)(cbs.data);
 
-    pthread_mutex_lock(&ua->lock);
-    // enforces global ratelimiting with ua_block_ms();
-    pthread_cond_timedwait(&ua->cond, &ua->lock, &ua->t_block);
-    int httpcode = send_request(conn);
-    pthread_mutex_unlock(&ua->lock);
+    int httpcode = send_request(ua, conn);
 
     (*ua->config.json_cb)(
       true, 
@@ -645,9 +647,7 @@ void
 ua_block_ms(struct user_agent_s *ua, const uint64_t wait_ms) 
 {
   pthread_mutex_lock(&ua->lock);
-  clock_gettime(CLOCK_REALTIME, &ua->t_block);
-  ua->t_block.tv_sec += wait_ms / 1000;
-  ua->t_block.tv_nsec += (wait_ms % 1000) * 1000000;
+  ua->blockuntil_tstamp = orka_timestamp_ms() + wait_ms;
   pthread_mutex_unlock(&ua->lock);
 }
 
