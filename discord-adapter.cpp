@@ -103,9 +103,7 @@ on_failure_cb(
         http_code_print(httpcode),
         http_reason_print(httpcode));
 
-    pthread_mutex_lock(&rl->adapter->ua.lock);
-    orka_sleep_ms(5000); // wait arbitrarily 5 seconds before retry
-    pthread_mutex_unlock(&rl->adapter->ua.lock);
+    ua_block_ms(&rl->adapter->ua, 5000); // wait for 5 seconds
 
     return UA_RETRY;
   }
@@ -146,9 +144,7 @@ on_failure_cb(
       if (retry_after_ms) { // retry after attribute received
         NOTOP_PRINT("RATELIMIT MESSAGE:\n\t%s (wait: %lld ms)", message, retry_after_ms);
 
-        pthread_mutex_lock(&rl->adapter->ua.lock);
-        orka_sleep_ms(retry_after_ms); // wait a bit before retrying
-        pthread_mutex_unlock(&rl->adapter->ua.lock);
+        ua_block_ms(&rl->adapter->ua, retry_after_ms);
 
         return UA_RETRY;
       }

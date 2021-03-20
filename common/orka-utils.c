@@ -198,7 +198,6 @@ orka_sleep_ms(const int64_t delay_ms)
     .tv_sec = delay_ms / 1000,
     .tv_nsec = (delay_ms % 1000) * 1000000
   };
-
   nanosleep(&t, NULL);
 }
 
@@ -208,7 +207,6 @@ orka_timestamp_ms()
 {
   struct timespec t;
   clock_gettime(CLOCK_REALTIME, &t);
-
   return t.tv_sec*1000 + t.tv_nsec/1000000;
 }
 

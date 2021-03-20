@@ -108,7 +108,9 @@ struct user_agent_s {
 
   char *base_url;
 
+  struct timespec t_block; // for global ratelimiting purposes
   pthread_mutex_t lock;
+  pthread_cond_t cond;
 
   void *data; // user arbitrary data for setopt_cb
   void (*setopt_cb)(CURL *ehandle, void *data); // set custom easy_setopts
@@ -156,6 +158,7 @@ void ua_config_init(
   const char tag[], 
   const char config_file[]);
 void ua_cleanup(struct user_agent_s *ua);
+void ua_block_ms(struct user_agent_s *ua, const uint64_t wait_ms);
 void ua_vrun(
   struct user_agent_s *ua,
   struct resp_handle *resp_handle,

@@ -299,6 +299,8 @@ ua_init(struct user_agent_s *ua, const char base_url[])
 
   if (pthread_mutex_init(&ua->lock, NULL))
     ERR("Couldn't initialize mutex");
+  if (pthread_cond_init(&ua->cond, NULL))
+    ERR("Couldn't initialize pthread cond");
 }
 
 void
@@ -322,6 +324,7 @@ ua_cleanup(struct user_agent_s *ua)
     conn_cleanup(ua->conn_pool[i]);
   }
   pthread_mutex_destroy(&ua->lock);
+  pthread_cond_destroy(&ua->cond);
 }
 
 char*
@@ -538,7 +541,9 @@ perform_request(
     /* triggers on every start of loop iteration */
     (*cbs.on_iter_start)(cbs.data);
 
-    pthread_mutex_lock(&ua->lock); // used to enforce global ratelimits
+    pthread_mutex_lock(&ua->lock);
+    // enforces global ratelimiting with ua_block_ms();
+    pthread_cond_timedwait(&ua->cond, &ua->lock, &ua->t_block);
     int httpcode = send_request(conn);
     pthread_mutex_unlock(&ua->lock);
 
@@ -633,6 +638,17 @@ perform_request(
   } while (UA_RETRY == conn->status);
 
   conn_full_reset(ua, conn);
+}
+
+// make the main thread wait for a specified amount of time
+void
+ua_block_ms(struct user_agent_s *ua, const uint64_t wait_ms) 
+{
+  pthread_mutex_lock(&ua->lock);
+  clock_gettime(CLOCK_REALTIME, &ua->t_block);
+  ua->t_block.tv_sec += wait_ms / 1000;
+  ua->t_block.tv_nsec += (wait_ms % 1000) * 1000000;
+  pthread_mutex_unlock(&ua->lock);
 }
 
 /* template function for performing requests */
