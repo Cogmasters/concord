@@ -55,7 +55,7 @@
  *
  */
 
-typedef char name_t[256];
+typedef char name_t[80];
 
 typedef void (*vvpvp)(void *, void *);
 typedef void (*vcpsvp)(char *, size_t, void *);
@@ -573,7 +573,7 @@ static size_t
 namespace_from_json(char *json, size_t size, NTL_T(name_t) *ns_p)
 {
   struct ntl_deserializer d0 = {
-    .elem_size = 256,
+    .elem_size = sizeof(name_t),
     .elem_from_buf = (vcpsvp)name_from_json,
     .init_elem = NULL,
     .ntl_recipient_p = (ntl_t *)ns_p
@@ -585,7 +585,7 @@ namespace_from_json(char *json, size_t size, NTL_T(name_t) *ns_p)
 static size_t struct_from_json(char *json, size_t size, struct jc_struct *s)
 {
   struct ntl_deserializer d0 = {
-    .elem_size = 256,
+    .elem_size = sizeof(name_t),
     .elem_from_buf = (vcpsvp)name_from_json,
     .init_elem = NULL,
     .ntl_recipient_p = (ntl_t *)&(s->namespace)
@@ -599,7 +599,7 @@ static size_t struct_from_json(char *json, size_t size, struct jc_struct *s)
   };
 
   struct ntl_deserializer dx = {
-    .elem_size = 256,
+    .elem_size = sizeof(name_t),
     .elem_from_buf = (vcpsvp)name_from_json,
     .init_elem = NULL,
     .ntl_recipient_p = (ntl_t *)&(s->disable_methods)
@@ -664,7 +664,7 @@ static size_t item_from_json(char *json, size_t size, void *x)
 static size_t enum_from_json(char * json, size_t size, struct jc_enum *e)
 {
   struct ntl_deserializer d0 = {
-    .elem_size = 256,
+    .elem_size = sizeof(name_t),
     .elem_from_buf = (vcpsvp)name_from_json,
     .init_elem = NULL,
     .ntl_recipient_p = (ntl_t *)&(e->namespace)
