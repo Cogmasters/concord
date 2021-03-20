@@ -113,6 +113,7 @@
       "title":"Embed Thumbnail Structure",
       "aka":["Embed Image Structure", "Embed Video Structure"],
       "namespace":["embed", "thumbnail"],
+      "namespaces":[["embed", "video"], ["embed", "image"]],
       "struct":"dati",
       "fields": [
         { "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""},

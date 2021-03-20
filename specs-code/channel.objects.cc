@@ -1858,38 +1858,38 @@ void dati_from_json(char *json, size_t len, struct dati *p)
   static size_t ret=0; // used for debugging
   size_t r=0;
   r=json_extract(json, len, 
-  /* specs/channel.objects.json:118:20
+  /* specs/channel.objects.json:119:20
      '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
                 "(url):s,"
-  /* specs/channel.objects.json:119:20
+  /* specs/channel.objects.json:120:20
      '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
                 "(proxy_url):s,"
-  /* specs/channel.objects.json:120:20
+  /* specs/channel.objects.json:121:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}'
   */
                 "(height):d,"
-  /* specs/channel.objects.json:121:20
+  /* specs/channel.objects.json:122:20
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}'
   */
                 "(width):d,"
                 "@arg_switches:b"
                 "@record_defined"
                 "@record_null",
-  /* specs/channel.objects.json:118:20
+  /* specs/channel.objects.json:119:20
      '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
                 p->url,
-  /* specs/channel.objects.json:119:20
+  /* specs/channel.objects.json:120:20
      '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
                 p->proxy_url,
-  /* specs/channel.objects.json:120:20
+  /* specs/channel.objects.json:121:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}'
   */
                 &p->height,
-  /* specs/channel.objects.json:121:20
+  /* specs/channel.objects.json:122:20
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}'
   */
                 &p->width,
@@ -1903,36 +1903,36 @@ size_t dati_to_json(char *json, size_t len, struct dati *p)
 {
   size_t r;
   r=json_inject(json, len, 
-  /* specs/channel.objects.json:118:20
+  /* specs/channel.objects.json:119:20
      '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
                 "(url):s,"
-  /* specs/channel.objects.json:119:20
+  /* specs/channel.objects.json:120:20
      '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
                 "(proxy_url):s,"
-  /* specs/channel.objects.json:120:20
+  /* specs/channel.objects.json:121:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}'
   */
                 "(height):d,"
-  /* specs/channel.objects.json:121:20
+  /* specs/channel.objects.json:122:20
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}'
   */
                 "(width):d,"
                 "@arg_switches:b",
-  /* specs/channel.objects.json:118:20
+  /* specs/channel.objects.json:119:20
      '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
                 p->url,
-  /* specs/channel.objects.json:119:20
+  /* specs/channel.objects.json:120:20
      '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
                 p->proxy_url,
-  /* specs/channel.objects.json:120:20
+  /* specs/channel.objects.json:121:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}'
   */
                 &p->height,
-  /* specs/channel.objects.json:121:20
+  /* specs/channel.objects.json:122:20
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}'
   */
                 &p->width,
@@ -1943,25 +1943,25 @@ size_t dati_to_json(char *json, size_t len, struct dati *p)
 void dati_use_default_inject_settings(struct dati *p)
 {
   p->__M.enable_arg_switches = true;
-  /* specs/channel.objects.json:118:20
+  /* specs/channel.objects.json:119:20
      '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
   if (strlen(p->url) != 0)
     p->__M.arg_switches[0] = p->url;
 
-  /* specs/channel.objects.json:119:20
+  /* specs/channel.objects.json:120:20
      '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
   if (strlen(p->proxy_url) != 0)
     p->__M.arg_switches[1] = p->proxy_url;
 
-  /* specs/channel.objects.json:120:20
+  /* specs/channel.objects.json:121:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}'
   */
   if (p->height != 0)
     p->__M.arg_switches[2] = &p->height;
 
-  /* specs/channel.objects.json:121:20
+  /* specs/channel.objects.json:122:20
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}'
   */
   if (p->width != 0)
@@ -2007,19 +2007,19 @@ size_t dati_list_to_json_v(char *str, size_t len, void *p){
 
 
 void dati_cleanup(struct dati *d) {
-  /* specs/channel.objects.json:118:20
+  /* specs/channel.objects.json:119:20
      '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
   //p->url is a scalar
-  /* specs/channel.objects.json:119:20
+  /* specs/channel.objects.json:120:20
      '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
   //p->proxy_url is a scalar
-  /* specs/channel.objects.json:120:20
+  /* specs/channel.objects.json:121:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}'
   */
   //p->height is a scalar
-  /* specs/channel.objects.json:121:20
+  /* specs/channel.objects.json:122:20
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}'
   */
   //p->width is a scalar
@@ -2027,19 +2027,19 @@ void dati_cleanup(struct dati *d) {
 
 void dati_init(struct dati *p) {
   memset(p, 0, sizeof(struct dati));
-  /* specs/channel.objects.json:118:20
+  /* specs/channel.objects.json:119:20
      '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
 
-  /* specs/channel.objects.json:119:20
+  /* specs/channel.objects.json:120:20
      '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
 
-  /* specs/channel.objects.json:120:20
+  /* specs/channel.objects.json:121:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}'
   */
 
-  /* specs/channel.objects.json:121:20
+  /* specs/channel.objects.json:122:20
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}'
   */
 
@@ -2079,28 +2079,482 @@ size_t dati_list_to_json(char *str, size_t len, struct dati **p)
 } // namespace embed
 
 namespace embed {
+namespace video {
+void dati_from_json(char *json, size_t len, struct dati *p)
+{
+  static size_t ret=0; // used for debugging
+  size_t r=0;
+  r=json_extract(json, len, 
+  /* specs/channel.objects.json:119:20
+     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+  */
+                "(url):s,"
+  /* specs/channel.objects.json:120:20
+     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+  */
+                "(proxy_url):s,"
+  /* specs/channel.objects.json:121:20
+     '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}'
+  */
+                "(height):d,"
+  /* specs/channel.objects.json:122:20
+     '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}'
+  */
+                "(width):d,"
+                "@arg_switches:b"
+                "@record_defined"
+                "@record_null",
+  /* specs/channel.objects.json:119:20
+     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+  */
+                p->url,
+  /* specs/channel.objects.json:120:20
+     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+  */
+                p->proxy_url,
+  /* specs/channel.objects.json:121:20
+     '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}'
+  */
+                &p->height,
+  /* specs/channel.objects.json:122:20
+     '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}'
+  */
+                &p->width,
+                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
+                p->__M.record_defined, sizeof(p->__M.record_defined),
+                p->__M.record_null, sizeof(p->__M.record_null));
+  ret = r;
+}
+
+size_t dati_to_json(char *json, size_t len, struct dati *p)
+{
+  size_t r;
+  r=json_inject(json, len, 
+  /* specs/channel.objects.json:119:20
+     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+  */
+                "(url):s,"
+  /* specs/channel.objects.json:120:20
+     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+  */
+                "(proxy_url):s,"
+  /* specs/channel.objects.json:121:20
+     '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}'
+  */
+                "(height):d,"
+  /* specs/channel.objects.json:122:20
+     '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}'
+  */
+                "(width):d,"
+                "@arg_switches:b",
+  /* specs/channel.objects.json:119:20
+     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+  */
+                p->url,
+  /* specs/channel.objects.json:120:20
+     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+  */
+                p->proxy_url,
+  /* specs/channel.objects.json:121:20
+     '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}'
+  */
+                &p->height,
+  /* specs/channel.objects.json:122:20
+     '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}'
+  */
+                &p->width,
+                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
+  return r;
+}
+
+void dati_use_default_inject_settings(struct dati *p)
+{
+  p->__M.enable_arg_switches = true;
+  /* specs/channel.objects.json:119:20
+     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+  */
+  if (strlen(p->url) != 0)
+    p->__M.arg_switches[0] = p->url;
+
+  /* specs/channel.objects.json:120:20
+     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+  */
+  if (strlen(p->proxy_url) != 0)
+    p->__M.arg_switches[1] = p->proxy_url;
+
+  /* specs/channel.objects.json:121:20
+     '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}'
+  */
+  if (p->height != 0)
+    p->__M.arg_switches[2] = &p->height;
+
+  /* specs/channel.objects.json:122:20
+     '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}'
+  */
+  if (p->width != 0)
+    p->__M.arg_switches[3] = &p->width;
+
+}
+
+
+typedef void (*vfvp)(void *);
+typedef void (*vfcpsvp)(char *, size_t, void *);
+typedef size_t (*sfcpsvp)(char *, size_t, void *);
+void dati_cleanup_v(void *p) {
+  dati_cleanup((struct dati *)p);
+}
+
+void dati_init_v(void *p) {
+  dati_init((struct dati *)p);
+}
+
+void dati_free_v(void *p) {
+ dati_free((struct dati *)p);
+};
+
+void dati_from_json_v(char *json, size_t len, void *p) {
+ dati_from_json(json, len, (struct dati*)p);
+}
+
+size_t dati_to_json_v(char *json, size_t len, void *p) {
+  return dati_to_json(json, len, (struct dati*)p);
+}
+
+void dati_list_free_v(void **p) {
+  dati_list_free((struct dati**)p);
+}
+
+void dati_list_from_json_v(char *str, size_t len, void *p) {
+  dati_list_from_json(str, len, (struct dati ***)p);
+}
+
+size_t dati_list_to_json_v(char *str, size_t len, void *p){
+  return dati_list_to_json(str, len, (struct dati **)p);
+}
+
+
+void dati_cleanup(struct dati *d) {
+  /* specs/channel.objects.json:119:20
+     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+  */
+  //p->url is a scalar
+  /* specs/channel.objects.json:120:20
+     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+  */
+  //p->proxy_url is a scalar
+  /* specs/channel.objects.json:121:20
+     '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}'
+  */
+  //p->height is a scalar
+  /* specs/channel.objects.json:122:20
+     '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}'
+  */
+  //p->width is a scalar
+}
+
+void dati_init(struct dati *p) {
+  memset(p, 0, sizeof(struct dati));
+  /* specs/channel.objects.json:119:20
+     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+  */
+
+  /* specs/channel.objects.json:120:20
+     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+  */
+
+  /* specs/channel.objects.json:121:20
+     '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}'
+  */
+
+  /* specs/channel.objects.json:122:20
+     '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}'
+  */
+
+}
+struct dati* dati_alloc() {
+  struct dati *p= (struct dati*)malloc(sizeof(struct dati));
+  dati_init(p);
+  return p;
+}
+
+void dati_free(struct dati *p) {
+  dati_cleanup(p);
+  free(p);
+}
+
+void dati_list_free(struct dati **p) {
+  ntl_free((void**)p, (vfvp)dati_cleanup);
+}
+
+void dati_list_from_json(char *str, size_t len, struct dati ***p)
+{
+  struct ntl_deserializer d;
+  memset(&d, 0, sizeof(d));
+  d.elem_size = sizeof(struct dati);
+  d.init_elem = dati_init_v;
+  d.elem_from_buf = dati_from_json_v;
+  d.ntl_recipient_p= (void***)p;
+  orka_str_to_ntl(str, len, &d);
+}
+
+size_t dati_list_to_json(char *str, size_t len, struct dati **p)
+{
+  return ntl_to_buf(str, len, (void **)p, NULL, dati_to_json_v);
+}
+
+} // namespace video
+} // namespace embed
+
+namespace embed {
+namespace image {
+void dati_from_json(char *json, size_t len, struct dati *p)
+{
+  static size_t ret=0; // used for debugging
+  size_t r=0;
+  r=json_extract(json, len, 
+  /* specs/channel.objects.json:119:20
+     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+  */
+                "(url):s,"
+  /* specs/channel.objects.json:120:20
+     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+  */
+                "(proxy_url):s,"
+  /* specs/channel.objects.json:121:20
+     '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}'
+  */
+                "(height):d,"
+  /* specs/channel.objects.json:122:20
+     '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}'
+  */
+                "(width):d,"
+                "@arg_switches:b"
+                "@record_defined"
+                "@record_null",
+  /* specs/channel.objects.json:119:20
+     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+  */
+                p->url,
+  /* specs/channel.objects.json:120:20
+     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+  */
+                p->proxy_url,
+  /* specs/channel.objects.json:121:20
+     '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}'
+  */
+                &p->height,
+  /* specs/channel.objects.json:122:20
+     '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}'
+  */
+                &p->width,
+                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
+                p->__M.record_defined, sizeof(p->__M.record_defined),
+                p->__M.record_null, sizeof(p->__M.record_null));
+  ret = r;
+}
+
+size_t dati_to_json(char *json, size_t len, struct dati *p)
+{
+  size_t r;
+  r=json_inject(json, len, 
+  /* specs/channel.objects.json:119:20
+     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+  */
+                "(url):s,"
+  /* specs/channel.objects.json:120:20
+     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+  */
+                "(proxy_url):s,"
+  /* specs/channel.objects.json:121:20
+     '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}'
+  */
+                "(height):d,"
+  /* specs/channel.objects.json:122:20
+     '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}'
+  */
+                "(width):d,"
+                "@arg_switches:b",
+  /* specs/channel.objects.json:119:20
+     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+  */
+                p->url,
+  /* specs/channel.objects.json:120:20
+     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+  */
+                p->proxy_url,
+  /* specs/channel.objects.json:121:20
+     '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}'
+  */
+                &p->height,
+  /* specs/channel.objects.json:122:20
+     '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}'
+  */
+                &p->width,
+                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
+  return r;
+}
+
+void dati_use_default_inject_settings(struct dati *p)
+{
+  p->__M.enable_arg_switches = true;
+  /* specs/channel.objects.json:119:20
+     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+  */
+  if (strlen(p->url) != 0)
+    p->__M.arg_switches[0] = p->url;
+
+  /* specs/channel.objects.json:120:20
+     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+  */
+  if (strlen(p->proxy_url) != 0)
+    p->__M.arg_switches[1] = p->proxy_url;
+
+  /* specs/channel.objects.json:121:20
+     '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}'
+  */
+  if (p->height != 0)
+    p->__M.arg_switches[2] = &p->height;
+
+  /* specs/channel.objects.json:122:20
+     '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}'
+  */
+  if (p->width != 0)
+    p->__M.arg_switches[3] = &p->width;
+
+}
+
+
+typedef void (*vfvp)(void *);
+typedef void (*vfcpsvp)(char *, size_t, void *);
+typedef size_t (*sfcpsvp)(char *, size_t, void *);
+void dati_cleanup_v(void *p) {
+  dati_cleanup((struct dati *)p);
+}
+
+void dati_init_v(void *p) {
+  dati_init((struct dati *)p);
+}
+
+void dati_free_v(void *p) {
+ dati_free((struct dati *)p);
+};
+
+void dati_from_json_v(char *json, size_t len, void *p) {
+ dati_from_json(json, len, (struct dati*)p);
+}
+
+size_t dati_to_json_v(char *json, size_t len, void *p) {
+  return dati_to_json(json, len, (struct dati*)p);
+}
+
+void dati_list_free_v(void **p) {
+  dati_list_free((struct dati**)p);
+}
+
+void dati_list_from_json_v(char *str, size_t len, void *p) {
+  dati_list_from_json(str, len, (struct dati ***)p);
+}
+
+size_t dati_list_to_json_v(char *str, size_t len, void *p){
+  return dati_list_to_json(str, len, (struct dati **)p);
+}
+
+
+void dati_cleanup(struct dati *d) {
+  /* specs/channel.objects.json:119:20
+     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+  */
+  //p->url is a scalar
+  /* specs/channel.objects.json:120:20
+     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+  */
+  //p->proxy_url is a scalar
+  /* specs/channel.objects.json:121:20
+     '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}'
+  */
+  //p->height is a scalar
+  /* specs/channel.objects.json:122:20
+     '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}'
+  */
+  //p->width is a scalar
+}
+
+void dati_init(struct dati *p) {
+  memset(p, 0, sizeof(struct dati));
+  /* specs/channel.objects.json:119:20
+     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+  */
+
+  /* specs/channel.objects.json:120:20
+     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+  */
+
+  /* specs/channel.objects.json:121:20
+     '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}'
+  */
+
+  /* specs/channel.objects.json:122:20
+     '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}'
+  */
+
+}
+struct dati* dati_alloc() {
+  struct dati *p= (struct dati*)malloc(sizeof(struct dati));
+  dati_init(p);
+  return p;
+}
+
+void dati_free(struct dati *p) {
+  dati_cleanup(p);
+  free(p);
+}
+
+void dati_list_free(struct dati **p) {
+  ntl_free((void**)p, (vfvp)dati_cleanup);
+}
+
+void dati_list_from_json(char *str, size_t len, struct dati ***p)
+{
+  struct ntl_deserializer d;
+  memset(&d, 0, sizeof(d));
+  d.elem_size = sizeof(struct dati);
+  d.init_elem = dati_init_v;
+  d.elem_from_buf = dati_from_json_v;
+  d.ntl_recipient_p= (void***)p;
+  orka_str_to_ntl(str, len, &d);
+}
+
+size_t dati_list_to_json(char *str, size_t len, struct dati **p)
+{
+  return ntl_to_buf(str, len, (void **)p, NULL, dati_to_json_v);
+}
+
+} // namespace image
+} // namespace embed
+
+namespace embed {
 namespace provider {
 void dati_from_json(char *json, size_t len, struct dati *p)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
   r=json_extract(json, len, 
-  /* specs/channel.objects.json:130:20
+  /* specs/channel.objects.json:131:20
      '{ "name": "name", "type":{"base":"char", "dec":"[EMBED_AUTHOR_NAME_LEN]"}, "inject_if_not":""}'
   */
                 "(name):s,"
-  /* specs/channel.objects.json:131:20
+  /* specs/channel.objects.json:132:20
      '{ "name": "url", "type":{"base":"char", "dec":"[MAX_URL_LEN]"}, "inject_if_not":""}'
   */
                 "(url):s,"
                 "@arg_switches:b"
                 "@record_defined"
                 "@record_null",
-  /* specs/channel.objects.json:130:20
+  /* specs/channel.objects.json:131:20
      '{ "name": "name", "type":{"base":"char", "dec":"[EMBED_AUTHOR_NAME_LEN]"}, "inject_if_not":""}'
   */
                 p->name,
-  /* specs/channel.objects.json:131:20
+  /* specs/channel.objects.json:132:20
      '{ "name": "url", "type":{"base":"char", "dec":"[MAX_URL_LEN]"}, "inject_if_not":""}'
   */
                 p->url,
@@ -2114,20 +2568,20 @@ size_t dati_to_json(char *json, size_t len, struct dati *p)
 {
   size_t r;
   r=json_inject(json, len, 
-  /* specs/channel.objects.json:130:20
+  /* specs/channel.objects.json:131:20
      '{ "name": "name", "type":{"base":"char", "dec":"[EMBED_AUTHOR_NAME_LEN]"}, "inject_if_not":""}'
   */
                 "(name):s,"
-  /* specs/channel.objects.json:131:20
+  /* specs/channel.objects.json:132:20
      '{ "name": "url", "type":{"base":"char", "dec":"[MAX_URL_LEN]"}, "inject_if_not":""}'
   */
                 "(url):s,"
                 "@arg_switches:b",
-  /* specs/channel.objects.json:130:20
+  /* specs/channel.objects.json:131:20
      '{ "name": "name", "type":{"base":"char", "dec":"[EMBED_AUTHOR_NAME_LEN]"}, "inject_if_not":""}'
   */
                 p->name,
-  /* specs/channel.objects.json:131:20
+  /* specs/channel.objects.json:132:20
      '{ "name": "url", "type":{"base":"char", "dec":"[MAX_URL_LEN]"}, "inject_if_not":""}'
   */
                 p->url,
@@ -2138,13 +2592,13 @@ size_t dati_to_json(char *json, size_t len, struct dati *p)
 void dati_use_default_inject_settings(struct dati *p)
 {
   p->__M.enable_arg_switches = true;
-  /* specs/channel.objects.json:130:20
+  /* specs/channel.objects.json:131:20
      '{ "name": "name", "type":{"base":"char", "dec":"[EMBED_AUTHOR_NAME_LEN]"}, "inject_if_not":""}'
   */
   if (strlen(p->name) != 0)
     p->__M.arg_switches[0] = p->name;
 
-  /* specs/channel.objects.json:131:20
+  /* specs/channel.objects.json:132:20
      '{ "name": "url", "type":{"base":"char", "dec":"[MAX_URL_LEN]"}, "inject_if_not":""}'
   */
   if (strlen(p->url) != 0)
@@ -2190,11 +2644,11 @@ size_t dati_list_to_json_v(char *str, size_t len, void *p){
 
 
 void dati_cleanup(struct dati *d) {
-  /* specs/channel.objects.json:130:20
+  /* specs/channel.objects.json:131:20
      '{ "name": "name", "type":{"base":"char", "dec":"[EMBED_AUTHOR_NAME_LEN]"}, "inject_if_not":""}'
   */
   //p->name is a scalar
-  /* specs/channel.objects.json:131:20
+  /* specs/channel.objects.json:132:20
      '{ "name": "url", "type":{"base":"char", "dec":"[MAX_URL_LEN]"}, "inject_if_not":""}'
   */
   //p->url is a scalar
@@ -2202,11 +2656,11 @@ void dati_cleanup(struct dati *d) {
 
 void dati_init(struct dati *p) {
   memset(p, 0, sizeof(struct dati));
-  /* specs/channel.objects.json:130:20
+  /* specs/channel.objects.json:131:20
      '{ "name": "name", "type":{"base":"char", "dec":"[EMBED_AUTHOR_NAME_LEN]"}, "inject_if_not":""}'
   */
 
-  /* specs/channel.objects.json:131:20
+  /* specs/channel.objects.json:132:20
      '{ "name": "url", "type":{"base":"char", "dec":"[MAX_URL_LEN]"}, "inject_if_not":""}'
   */
 
@@ -2252,38 +2706,38 @@ void dati_from_json(char *json, size_t len, struct dati *p)
   static size_t ret=0; // used for debugging
   size_t r=0;
   r=json_extract(json, len, 
-  /* specs/channel.objects.json:140:20
+  /* specs/channel.objects.json:141:20
      '{ "name": "name", "type":{ "base":"char", "dec":"[EMBED_AUTHOR_NAME_LEN]" }, "inject_if_not":""}'
   */
                 "(name):s,"
-  /* specs/channel.objects.json:141:20
+  /* specs/channel.objects.json:142:20
      '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
                 "(url):s,"
-  /* specs/channel.objects.json:142:20
+  /* specs/channel.objects.json:143:20
      '{ "name": "icon_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
                 "(icon_url):s,"
-  /* specs/channel.objects.json:143:20
+  /* specs/channel.objects.json:144:20
      '{ "name": "proxy_icon_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
                 "(proxy_icon_url):s,"
                 "@arg_switches:b"
                 "@record_defined"
                 "@record_null",
-  /* specs/channel.objects.json:140:20
+  /* specs/channel.objects.json:141:20
      '{ "name": "name", "type":{ "base":"char", "dec":"[EMBED_AUTHOR_NAME_LEN]" }, "inject_if_not":""}'
   */
                 p->name,
-  /* specs/channel.objects.json:141:20
+  /* specs/channel.objects.json:142:20
      '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
                 p->url,
-  /* specs/channel.objects.json:142:20
+  /* specs/channel.objects.json:143:20
      '{ "name": "icon_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
                 p->icon_url,
-  /* specs/channel.objects.json:143:20
+  /* specs/channel.objects.json:144:20
      '{ "name": "proxy_icon_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
                 p->proxy_icon_url,
@@ -2297,36 +2751,36 @@ size_t dati_to_json(char *json, size_t len, struct dati *p)
 {
   size_t r;
   r=json_inject(json, len, 
-  /* specs/channel.objects.json:140:20
+  /* specs/channel.objects.json:141:20
      '{ "name": "name", "type":{ "base":"char", "dec":"[EMBED_AUTHOR_NAME_LEN]" }, "inject_if_not":""}'
   */
                 "(name):s,"
-  /* specs/channel.objects.json:141:20
+  /* specs/channel.objects.json:142:20
      '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
                 "(url):s,"
-  /* specs/channel.objects.json:142:20
+  /* specs/channel.objects.json:143:20
      '{ "name": "icon_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
                 "(icon_url):s,"
-  /* specs/channel.objects.json:143:20
+  /* specs/channel.objects.json:144:20
      '{ "name": "proxy_icon_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
                 "(proxy_icon_url):s,"
                 "@arg_switches:b",
-  /* specs/channel.objects.json:140:20
+  /* specs/channel.objects.json:141:20
      '{ "name": "name", "type":{ "base":"char", "dec":"[EMBED_AUTHOR_NAME_LEN]" }, "inject_if_not":""}'
   */
                 p->name,
-  /* specs/channel.objects.json:141:20
+  /* specs/channel.objects.json:142:20
      '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
                 p->url,
-  /* specs/channel.objects.json:142:20
+  /* specs/channel.objects.json:143:20
      '{ "name": "icon_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
                 p->icon_url,
-  /* specs/channel.objects.json:143:20
+  /* specs/channel.objects.json:144:20
      '{ "name": "proxy_icon_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
                 p->proxy_icon_url,
@@ -2337,25 +2791,25 @@ size_t dati_to_json(char *json, size_t len, struct dati *p)
 void dati_use_default_inject_settings(struct dati *p)
 {
   p->__M.enable_arg_switches = true;
-  /* specs/channel.objects.json:140:20
+  /* specs/channel.objects.json:141:20
      '{ "name": "name", "type":{ "base":"char", "dec":"[EMBED_AUTHOR_NAME_LEN]" }, "inject_if_not":""}'
   */
   if (strlen(p->name) != 0)
     p->__M.arg_switches[0] = p->name;
 
-  /* specs/channel.objects.json:141:20
+  /* specs/channel.objects.json:142:20
      '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
   if (strlen(p->url) != 0)
     p->__M.arg_switches[1] = p->url;
 
-  /* specs/channel.objects.json:142:20
+  /* specs/channel.objects.json:143:20
      '{ "name": "icon_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
   if (strlen(p->icon_url) != 0)
     p->__M.arg_switches[2] = p->icon_url;
 
-  /* specs/channel.objects.json:143:20
+  /* specs/channel.objects.json:144:20
      '{ "name": "proxy_icon_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
   if (strlen(p->proxy_icon_url) != 0)
@@ -2401,19 +2855,19 @@ size_t dati_list_to_json_v(char *str, size_t len, void *p){
 
 
 void dati_cleanup(struct dati *d) {
-  /* specs/channel.objects.json:140:20
+  /* specs/channel.objects.json:141:20
      '{ "name": "name", "type":{ "base":"char", "dec":"[EMBED_AUTHOR_NAME_LEN]" }, "inject_if_not":""}'
   */
   //p->name is a scalar
-  /* specs/channel.objects.json:141:20
+  /* specs/channel.objects.json:142:20
      '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
   //p->url is a scalar
-  /* specs/channel.objects.json:142:20
+  /* specs/channel.objects.json:143:20
      '{ "name": "icon_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
   //p->icon_url is a scalar
-  /* specs/channel.objects.json:143:20
+  /* specs/channel.objects.json:144:20
      '{ "name": "proxy_icon_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
   //p->proxy_icon_url is a scalar
@@ -2421,19 +2875,19 @@ void dati_cleanup(struct dati *d) {
 
 void dati_init(struct dati *p) {
   memset(p, 0, sizeof(struct dati));
-  /* specs/channel.objects.json:140:20
+  /* specs/channel.objects.json:141:20
      '{ "name": "name", "type":{ "base":"char", "dec":"[EMBED_AUTHOR_NAME_LEN]" }, "inject_if_not":""}'
   */
 
-  /* specs/channel.objects.json:141:20
+  /* specs/channel.objects.json:142:20
      '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
 
-  /* specs/channel.objects.json:142:20
+  /* specs/channel.objects.json:143:20
      '{ "name": "icon_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
 
-  /* specs/channel.objects.json:143:20
+  /* specs/channel.objects.json:144:20
      '{ "name": "proxy_icon_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
 
@@ -2479,16 +2933,16 @@ void dati_from_json(char *json, size_t len, struct dati *p)
   static size_t ret=0; // used for debugging
   size_t r=0;
   r=json_extract(json, len, 
-  /* specs/channel.objects.json:152:20
+  /* specs/channel.objects.json:153:20
      '{ "name": "text", "type": {"base":"char", "dec":"[EMBED_FOOTER_TEXT_LEN]"}, "inject_if_not":""}'
   */
                 "(text):s,"
-  /* specs/channel.objects.json:153:20
+  /* specs/channel.objects.json:154:20
      '{ "name": "icon_url", "type": {"base":"char", "dec":"[MAX_URL_LEN]" }, 
           "option":true, "inject_if_not":""}'
   */
                 "(icon_url):s,"
-  /* specs/channel.objects.json:155:20
+  /* specs/channel.objects.json:156:20
      '{ "name": "proxy_icon_url", "type": {"base":"char", "dec":"[MAX_URL_LEN]"}, 
           "option":true, "inject_if_not":""}'
   */
@@ -2496,16 +2950,16 @@ void dati_from_json(char *json, size_t len, struct dati *p)
                 "@arg_switches:b"
                 "@record_defined"
                 "@record_null",
-  /* specs/channel.objects.json:152:20
+  /* specs/channel.objects.json:153:20
      '{ "name": "text", "type": {"base":"char", "dec":"[EMBED_FOOTER_TEXT_LEN]"}, "inject_if_not":""}'
   */
                 p->text,
-  /* specs/channel.objects.json:153:20
+  /* specs/channel.objects.json:154:20
      '{ "name": "icon_url", "type": {"base":"char", "dec":"[MAX_URL_LEN]" }, 
           "option":true, "inject_if_not":""}'
   */
                 p->icon_url,
-  /* specs/channel.objects.json:155:20
+  /* specs/channel.objects.json:156:20
      '{ "name": "proxy_icon_url", "type": {"base":"char", "dec":"[MAX_URL_LEN]"}, 
           "option":true, "inject_if_not":""}'
   */
@@ -2520,31 +2974,31 @@ size_t dati_to_json(char *json, size_t len, struct dati *p)
 {
   size_t r;
   r=json_inject(json, len, 
-  /* specs/channel.objects.json:152:20
+  /* specs/channel.objects.json:153:20
      '{ "name": "text", "type": {"base":"char", "dec":"[EMBED_FOOTER_TEXT_LEN]"}, "inject_if_not":""}'
   */
                 "(text):s,"
-  /* specs/channel.objects.json:153:20
+  /* specs/channel.objects.json:154:20
      '{ "name": "icon_url", "type": {"base":"char", "dec":"[MAX_URL_LEN]" }, 
           "option":true, "inject_if_not":""}'
   */
                 "(icon_url):s,"
-  /* specs/channel.objects.json:155:20
+  /* specs/channel.objects.json:156:20
      '{ "name": "proxy_icon_url", "type": {"base":"char", "dec":"[MAX_URL_LEN]"}, 
           "option":true, "inject_if_not":""}'
   */
                 "(proxy_icon_url):s,"
                 "@arg_switches:b",
-  /* specs/channel.objects.json:152:20
+  /* specs/channel.objects.json:153:20
      '{ "name": "text", "type": {"base":"char", "dec":"[EMBED_FOOTER_TEXT_LEN]"}, "inject_if_not":""}'
   */
                 p->text,
-  /* specs/channel.objects.json:153:20
+  /* specs/channel.objects.json:154:20
      '{ "name": "icon_url", "type": {"base":"char", "dec":"[MAX_URL_LEN]" }, 
           "option":true, "inject_if_not":""}'
   */
                 p->icon_url,
-  /* specs/channel.objects.json:155:20
+  /* specs/channel.objects.json:156:20
      '{ "name": "proxy_icon_url", "type": {"base":"char", "dec":"[MAX_URL_LEN]"}, 
           "option":true, "inject_if_not":""}'
   */
@@ -2556,20 +3010,20 @@ size_t dati_to_json(char *json, size_t len, struct dati *p)
 void dati_use_default_inject_settings(struct dati *p)
 {
   p->__M.enable_arg_switches = true;
-  /* specs/channel.objects.json:152:20
+  /* specs/channel.objects.json:153:20
      '{ "name": "text", "type": {"base":"char", "dec":"[EMBED_FOOTER_TEXT_LEN]"}, "inject_if_not":""}'
   */
   if (strlen(p->text) != 0)
     p->__M.arg_switches[0] = p->text;
 
-  /* specs/channel.objects.json:153:20
+  /* specs/channel.objects.json:154:20
      '{ "name": "icon_url", "type": {"base":"char", "dec":"[MAX_URL_LEN]" }, 
           "option":true, "inject_if_not":""}'
   */
   if (strlen(p->icon_url) != 0)
     p->__M.arg_switches[1] = p->icon_url;
 
-  /* specs/channel.objects.json:155:20
+  /* specs/channel.objects.json:156:20
      '{ "name": "proxy_icon_url", "type": {"base":"char", "dec":"[MAX_URL_LEN]"}, 
           "option":true, "inject_if_not":""}'
   */
@@ -2616,16 +3070,16 @@ size_t dati_list_to_json_v(char *str, size_t len, void *p){
 
 
 void dati_cleanup(struct dati *d) {
-  /* specs/channel.objects.json:152:20
+  /* specs/channel.objects.json:153:20
      '{ "name": "text", "type": {"base":"char", "dec":"[EMBED_FOOTER_TEXT_LEN]"}, "inject_if_not":""}'
   */
   //p->text is a scalar
-  /* specs/channel.objects.json:153:20
+  /* specs/channel.objects.json:154:20
      '{ "name": "icon_url", "type": {"base":"char", "dec":"[MAX_URL_LEN]" }, 
           "option":true, "inject_if_not":""}'
   */
   //p->icon_url is a scalar
-  /* specs/channel.objects.json:155:20
+  /* specs/channel.objects.json:156:20
      '{ "name": "proxy_icon_url", "type": {"base":"char", "dec":"[MAX_URL_LEN]"}, 
           "option":true, "inject_if_not":""}'
   */
@@ -2634,16 +3088,16 @@ void dati_cleanup(struct dati *d) {
 
 void dati_init(struct dati *p) {
   memset(p, 0, sizeof(struct dati));
-  /* specs/channel.objects.json:152:20
+  /* specs/channel.objects.json:153:20
      '{ "name": "text", "type": {"base":"char", "dec":"[EMBED_FOOTER_TEXT_LEN]"}, "inject_if_not":""}'
   */
 
-  /* specs/channel.objects.json:153:20
+  /* specs/channel.objects.json:154:20
      '{ "name": "icon_url", "type": {"base":"char", "dec":"[MAX_URL_LEN]" }, 
           "option":true, "inject_if_not":""}'
   */
 
-  /* specs/channel.objects.json:155:20
+  /* specs/channel.objects.json:156:20
      '{ "name": "proxy_icon_url", "type": {"base":"char", "dec":"[MAX_URL_LEN]"}, 
           "option":true, "inject_if_not":""}'
   */
@@ -2690,30 +3144,30 @@ void dati_from_json(char *json, size_t len, struct dati *p)
   static size_t ret=0; // used for debugging
   size_t r=0;
   r=json_extract(json, len, 
-  /* specs/channel.objects.json:165:20
+  /* specs/channel.objects.json:166:20
      '{ "name": "name", "type": { "base":"char", "dec":"[EMBED_FIELD_NAME_LEN]" }, "inject_if_not":""}'
   */
                 "(name):s,"
-  /* specs/channel.objects.json:166:20
+  /* specs/channel.objects.json:167:20
      '{ "name": "value", "type": { "base":"char", "dec":"[EMBED_FIELD_VALUE_LEN]" }, "inject_if_not":""}'
   */
                 "(value):s,"
-  /* specs/channel.objects.json:167:20
+  /* specs/channel.objects.json:168:20
      '{ "name": "Inline", "json_key":"inline", "type": { "base":"bool" }, "option":true}'
   */
                 "(inline):b,"
                 "@arg_switches:b"
                 "@record_defined"
                 "@record_null",
-  /* specs/channel.objects.json:165:20
+  /* specs/channel.objects.json:166:20
      '{ "name": "name", "type": { "base":"char", "dec":"[EMBED_FIELD_NAME_LEN]" }, "inject_if_not":""}'
   */
                 p->name,
-  /* specs/channel.objects.json:166:20
+  /* specs/channel.objects.json:167:20
      '{ "name": "value", "type": { "base":"char", "dec":"[EMBED_FIELD_VALUE_LEN]" }, "inject_if_not":""}'
   */
                 p->value,
-  /* specs/channel.objects.json:167:20
+  /* specs/channel.objects.json:168:20
      '{ "name": "Inline", "json_key":"inline", "type": { "base":"bool" }, "option":true}'
   */
                 &p->Inline,
@@ -2727,28 +3181,28 @@ size_t dati_to_json(char *json, size_t len, struct dati *p)
 {
   size_t r;
   r=json_inject(json, len, 
-  /* specs/channel.objects.json:165:20
+  /* specs/channel.objects.json:166:20
      '{ "name": "name", "type": { "base":"char", "dec":"[EMBED_FIELD_NAME_LEN]" }, "inject_if_not":""}'
   */
                 "(name):s,"
-  /* specs/channel.objects.json:166:20
+  /* specs/channel.objects.json:167:20
      '{ "name": "value", "type": { "base":"char", "dec":"[EMBED_FIELD_VALUE_LEN]" }, "inject_if_not":""}'
   */
                 "(value):s,"
-  /* specs/channel.objects.json:167:20
+  /* specs/channel.objects.json:168:20
      '{ "name": "Inline", "json_key":"inline", "type": { "base":"bool" }, "option":true}'
   */
                 "(inline):b,"
                 "@arg_switches:b",
-  /* specs/channel.objects.json:165:20
+  /* specs/channel.objects.json:166:20
      '{ "name": "name", "type": { "base":"char", "dec":"[EMBED_FIELD_NAME_LEN]" }, "inject_if_not":""}'
   */
                 p->name,
-  /* specs/channel.objects.json:166:20
+  /* specs/channel.objects.json:167:20
      '{ "name": "value", "type": { "base":"char", "dec":"[EMBED_FIELD_VALUE_LEN]" }, "inject_if_not":""}'
   */
                 p->value,
-  /* specs/channel.objects.json:167:20
+  /* specs/channel.objects.json:168:20
      '{ "name": "Inline", "json_key":"inline", "type": { "base":"bool" }, "option":true}'
   */
                 &p->Inline,
@@ -2759,19 +3213,19 @@ size_t dati_to_json(char *json, size_t len, struct dati *p)
 void dati_use_default_inject_settings(struct dati *p)
 {
   p->__M.enable_arg_switches = true;
-  /* specs/channel.objects.json:165:20
+  /* specs/channel.objects.json:166:20
      '{ "name": "name", "type": { "base":"char", "dec":"[EMBED_FIELD_NAME_LEN]" }, "inject_if_not":""}'
   */
   if (strlen(p->name) != 0)
     p->__M.arg_switches[0] = p->name;
 
-  /* specs/channel.objects.json:166:20
+  /* specs/channel.objects.json:167:20
      '{ "name": "value", "type": { "base":"char", "dec":"[EMBED_FIELD_VALUE_LEN]" }, "inject_if_not":""}'
   */
   if (strlen(p->value) != 0)
     p->__M.arg_switches[1] = p->value;
 
-  /* specs/channel.objects.json:167:20
+  /* specs/channel.objects.json:168:20
      '{ "name": "Inline", "json_key":"inline", "type": { "base":"bool" }, "option":true}'
   */
   p->__M.arg_switches[2] = &p->Inline;
@@ -2816,15 +3270,15 @@ size_t dati_list_to_json_v(char *str, size_t len, void *p){
 
 
 void dati_cleanup(struct dati *d) {
-  /* specs/channel.objects.json:165:20
+  /* specs/channel.objects.json:166:20
      '{ "name": "name", "type": { "base":"char", "dec":"[EMBED_FIELD_NAME_LEN]" }, "inject_if_not":""}'
   */
   //p->name is a scalar
-  /* specs/channel.objects.json:166:20
+  /* specs/channel.objects.json:167:20
      '{ "name": "value", "type": { "base":"char", "dec":"[EMBED_FIELD_VALUE_LEN]" }, "inject_if_not":""}'
   */
   //p->value is a scalar
-  /* specs/channel.objects.json:167:20
+  /* specs/channel.objects.json:168:20
      '{ "name": "Inline", "json_key":"inline", "type": { "base":"bool" }, "option":true}'
   */
   //p->Inline is a scalar
@@ -2832,15 +3286,15 @@ void dati_cleanup(struct dati *d) {
 
 void dati_init(struct dati *p) {
   memset(p, 0, sizeof(struct dati));
-  /* specs/channel.objects.json:165:20
+  /* specs/channel.objects.json:166:20
      '{ "name": "name", "type": { "base":"char", "dec":"[EMBED_FIELD_NAME_LEN]" }, "inject_if_not":""}'
   */
 
-  /* specs/channel.objects.json:166:20
+  /* specs/channel.objects.json:167:20
      '{ "name": "value", "type": { "base":"char", "dec":"[EMBED_FIELD_VALUE_LEN]" }, "inject_if_not":""}'
   */
 
-  /* specs/channel.objects.json:167:20
+  /* specs/channel.objects.json:168:20
      '{ "name": "Inline", "json_key":"inline", "type": { "base":"bool" }, "option":true}'
   */
 

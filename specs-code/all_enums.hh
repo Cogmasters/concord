@@ -688,6 +688,12 @@ enum code {
 } // namespace activity
 } // namespace status_update
 } // namespace identify
+
+
+namespace presence {
+enum code {
+};
+} // namespace presence
 } // namespace gateway
 } // namespace discord
 /* This file is generated from specs/template.modify-guild-template.json, Please don't edit it. */

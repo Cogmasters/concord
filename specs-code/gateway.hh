@@ -354,3 +354,9 @@ enum code {
 } // namespace activity
 } // namespace status_update
 } // namespace identify
+
+
+namespace presence {
+enum code {
+};
+} // namespace presence

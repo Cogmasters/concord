@@ -50,16 +50,17 @@ https://discord.com/developers/docs/reference#snowflakes */
 typedef uint64_t u64_unix_ms_t;
 typedef uint64_t u64_snowflake_t;
 
+#if 0
 namespace discord {
   namespace channel {
     namespace embed {
       namespace thumbnail { struct dati; }
-      namespace video = thumbnail;
-      namespace image = thumbnail;
+      //namespace video = thumbnail;
+      //namespace image = thumbnail;
     }
   }
 }
-
+#endif
 
 #include "./specs-code/all_opaque_struct.hh"
 #include "./specs-code/all_enums.hh"

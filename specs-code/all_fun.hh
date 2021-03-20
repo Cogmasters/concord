@@ -1024,6 +1024,56 @@ extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace embed
 
 namespace embed {
+namespace video {
+extern void dati_cleanup_v(void *p);
+extern void dati_cleanup(struct dati *p);
+extern void dati_init_v(void *p);
+extern void dati_init(struct dati *p);
+extern struct dati * dati_alloc();
+extern void dati_free_v(void *p);
+extern void dati_free(struct dati *p);
+extern void dati_from_json_v(char *json, size_t len, void *p);
+extern void dati_from_json(char *json, size_t len, struct dati *p);
+extern size_t dati_to_json_v(char *json, size_t len, void *p);
+extern size_t dati_to_json(char *json, size_t len, struct dati *p);
+extern size_t dati_to_query_v(char *json, size_t len, void *p);
+extern size_t dati_to_query(char *json, size_t len, struct dati *p);
+extern void dati_list_free_v(void **p);
+extern void dati_list_free(struct dati **p);
+extern void dati_list_from_json_v(char *str, size_t len, void *p);
+extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
+extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
+extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
+extern void dati_use_default_inject_settings(struct dati *p);
+} // namespace video
+} // namespace embed
+
+namespace embed {
+namespace image {
+extern void dati_cleanup_v(void *p);
+extern void dati_cleanup(struct dati *p);
+extern void dati_init_v(void *p);
+extern void dati_init(struct dati *p);
+extern struct dati * dati_alloc();
+extern void dati_free_v(void *p);
+extern void dati_free(struct dati *p);
+extern void dati_from_json_v(char *json, size_t len, void *p);
+extern void dati_from_json(char *json, size_t len, struct dati *p);
+extern size_t dati_to_json_v(char *json, size_t len, void *p);
+extern size_t dati_to_json(char *json, size_t len, struct dati *p);
+extern size_t dati_to_query_v(char *json, size_t len, void *p);
+extern size_t dati_to_query(char *json, size_t len, struct dati *p);
+extern void dati_list_free_v(void **p);
+extern void dati_list_free(struct dati **p);
+extern void dati_list_from_json_v(char *str, size_t len, void *p);
+extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
+extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
+extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
+extern void dati_use_default_inject_settings(struct dati *p);
+} // namespace image
+} // namespace embed
+
+namespace embed {
 namespace provider {
 extern void dati_cleanup_v(void *p);
 extern void dati_cleanup(struct dati *p);

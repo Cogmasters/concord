@@ -476,24 +476,24 @@ namespace embed {
 namespace thumbnail {
 /* Title: Embed Thumbnail Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-thumbnail-structure */
-/* This is defined at specs/channel.objects.json:116:22 */
+/* This is defined at specs/channel.objects.json:117:22 */
 struct dati {
-  /* specs/channel.objects.json:118:20
+  /* specs/channel.objects.json:119:20
      '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
   char url[MAX_URL_LEN];
 
-  /* specs/channel.objects.json:119:20
+  /* specs/channel.objects.json:120:20
      '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
   char proxy_url[MAX_URL_LEN];
 
-  /* specs/channel.objects.json:120:20
+  /* specs/channel.objects.json:121:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}'
   */
   int height;
 
-  /* specs/channel.objects.json:121:20
+  /* specs/channel.objects.json:122:20
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}'
   */
   int width;
@@ -535,17 +535,141 @@ extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace embed
 
 namespace embed {
+namespace video {
+/* Title: Embed Thumbnail Structure */
+/* https://discord.com/developers/docs/resources/channel#embed-object-embed-thumbnail-structure */
+/* This is defined at specs/channel.objects.json:117:22 */
+struct dati {
+  /* specs/channel.objects.json:119:20
+     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+  */
+  char url[MAX_URL_LEN];
+
+  /* specs/channel.objects.json:120:20
+     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+  */
+  char proxy_url[MAX_URL_LEN];
+
+  /* specs/channel.objects.json:121:20
+     '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}'
+  */
+  int height;
+
+  /* specs/channel.objects.json:122:20
+     '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}'
+  */
+  int width;
+
+  // The following is metadata used to 
+  // 1. control which field should be extracted/injected
+  // 2. record which field is presented(defined) in JSON
+  // 3. record which field is null in JSON
+  struct {
+    bool enable_arg_switches;
+    bool enable_record_defined;
+    bool enable_record_null;
+    void *arg_switches[4];
+    void *record_defined[4];
+    void *record_null[4];
+  } __M; // metadata
+};
+extern void dati_cleanup_v(void *p);
+extern void dati_cleanup(struct dati *p);
+extern void dati_init_v(void *p);
+extern void dati_init(struct dati *p);
+extern struct dati * dati_alloc();
+extern void dati_free_v(void *p);
+extern void dati_free(struct dati *p);
+extern void dati_from_json_v(char *json, size_t len, void *p);
+extern void dati_from_json(char *json, size_t len, struct dati *p);
+extern size_t dati_to_json_v(char *json, size_t len, void *p);
+extern size_t dati_to_json(char *json, size_t len, struct dati *p);
+extern size_t dati_to_query_v(char *json, size_t len, void *p);
+extern size_t dati_to_query(char *json, size_t len, struct dati *p);
+extern void dati_list_free_v(void **p);
+extern void dati_list_free(struct dati **p);
+extern void dati_list_from_json_v(char *str, size_t len, void *p);
+extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
+extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
+extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
+extern void dati_use_default_inject_settings(struct dati *p);
+} // namespace video
+} // namespace embed
+
+namespace embed {
+namespace image {
+/* Title: Embed Thumbnail Structure */
+/* https://discord.com/developers/docs/resources/channel#embed-object-embed-thumbnail-structure */
+/* This is defined at specs/channel.objects.json:117:22 */
+struct dati {
+  /* specs/channel.objects.json:119:20
+     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+  */
+  char url[MAX_URL_LEN];
+
+  /* specs/channel.objects.json:120:20
+     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+  */
+  char proxy_url[MAX_URL_LEN];
+
+  /* specs/channel.objects.json:121:20
+     '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}'
+  */
+  int height;
+
+  /* specs/channel.objects.json:122:20
+     '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}'
+  */
+  int width;
+
+  // The following is metadata used to 
+  // 1. control which field should be extracted/injected
+  // 2. record which field is presented(defined) in JSON
+  // 3. record which field is null in JSON
+  struct {
+    bool enable_arg_switches;
+    bool enable_record_defined;
+    bool enable_record_null;
+    void *arg_switches[4];
+    void *record_defined[4];
+    void *record_null[4];
+  } __M; // metadata
+};
+extern void dati_cleanup_v(void *p);
+extern void dati_cleanup(struct dati *p);
+extern void dati_init_v(void *p);
+extern void dati_init(struct dati *p);
+extern struct dati * dati_alloc();
+extern void dati_free_v(void *p);
+extern void dati_free(struct dati *p);
+extern void dati_from_json_v(char *json, size_t len, void *p);
+extern void dati_from_json(char *json, size_t len, struct dati *p);
+extern size_t dati_to_json_v(char *json, size_t len, void *p);
+extern size_t dati_to_json(char *json, size_t len, struct dati *p);
+extern size_t dati_to_query_v(char *json, size_t len, void *p);
+extern size_t dati_to_query(char *json, size_t len, struct dati *p);
+extern void dati_list_free_v(void **p);
+extern void dati_list_free(struct dati **p);
+extern void dati_list_from_json_v(char *str, size_t len, void *p);
+extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
+extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
+extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
+extern void dati_use_default_inject_settings(struct dati *p);
+} // namespace image
+} // namespace embed
+
+namespace embed {
 namespace provider {
 /* Title: Embed Provider Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-provider-structure */
-/* This is defined at specs/channel.objects.json:128:22 */
+/* This is defined at specs/channel.objects.json:129:22 */
 struct dati {
-  /* specs/channel.objects.json:130:20
+  /* specs/channel.objects.json:131:20
      '{ "name": "name", "type":{"base":"char", "dec":"[EMBED_AUTHOR_NAME_LEN]"}, "inject_if_not":""}'
   */
   char name[EMBED_AUTHOR_NAME_LEN];
 
-  /* specs/channel.objects.json:131:20
+  /* specs/channel.objects.json:132:20
      '{ "name": "url", "type":{"base":"char", "dec":"[MAX_URL_LEN]"}, "inject_if_not":""}'
   */
   char url[MAX_URL_LEN];
@@ -590,24 +714,24 @@ namespace embed {
 namespace author {
 /* Title: Embed Author Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-author-structure */
-/* This is defined at specs/channel.objects.json:138:22 */
+/* This is defined at specs/channel.objects.json:139:22 */
 struct dati {
-  /* specs/channel.objects.json:140:20
+  /* specs/channel.objects.json:141:20
      '{ "name": "name", "type":{ "base":"char", "dec":"[EMBED_AUTHOR_NAME_LEN]" }, "inject_if_not":""}'
   */
   char name[EMBED_AUTHOR_NAME_LEN];
 
-  /* specs/channel.objects.json:141:20
+  /* specs/channel.objects.json:142:20
      '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
   char url[MAX_URL_LEN];
 
-  /* specs/channel.objects.json:142:20
+  /* specs/channel.objects.json:143:20
      '{ "name": "icon_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
   char icon_url[MAX_URL_LEN];
 
-  /* specs/channel.objects.json:143:20
+  /* specs/channel.objects.json:144:20
      '{ "name": "proxy_icon_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
   char proxy_icon_url[MAX_URL_LEN];
@@ -652,20 +776,20 @@ namespace embed {
 namespace footer {
 /* Title: Embed Footer Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-footer-structure */
-/* This is defined at specs/channel.objects.json:150:22 */
+/* This is defined at specs/channel.objects.json:151:22 */
 struct dati {
-  /* specs/channel.objects.json:152:20
+  /* specs/channel.objects.json:153:20
      '{ "name": "text", "type": {"base":"char", "dec":"[EMBED_FOOTER_TEXT_LEN]"}, "inject_if_not":""}'
   */
   char text[EMBED_FOOTER_TEXT_LEN];
 
-  /* specs/channel.objects.json:153:20
+  /* specs/channel.objects.json:154:20
      '{ "name": "icon_url", "type": {"base":"char", "dec":"[MAX_URL_LEN]" }, 
           "option":true, "inject_if_not":""}'
   */
   char icon_url[MAX_URL_LEN];
 
-  /* specs/channel.objects.json:155:20
+  /* specs/channel.objects.json:156:20
      '{ "name": "proxy_icon_url", "type": {"base":"char", "dec":"[MAX_URL_LEN]"}, 
           "option":true, "inject_if_not":""}'
   */
@@ -711,19 +835,19 @@ namespace embed {
 namespace field {
 /* Title: Embed Field Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-field-structure */
-/* This is defined at specs/channel.objects.json:163:22 */
+/* This is defined at specs/channel.objects.json:164:22 */
 struct dati {
-  /* specs/channel.objects.json:165:20
+  /* specs/channel.objects.json:166:20
      '{ "name": "name", "type": { "base":"char", "dec":"[EMBED_FIELD_NAME_LEN]" }, "inject_if_not":""}'
   */
   char name[EMBED_FIELD_NAME_LEN];
 
-  /* specs/channel.objects.json:166:20
+  /* specs/channel.objects.json:167:20
      '{ "name": "value", "type": { "base":"char", "dec":"[EMBED_FIELD_VALUE_LEN]" }, "inject_if_not":""}'
   */
   char value[EMBED_FIELD_VALUE_LEN];
 
-  /* specs/channel.objects.json:167:20
+  /* specs/channel.objects.json:168:20
      '{ "name": "Inline", "json_key":"inline", "type": { "base":"bool" }, "option":true}'
   */
   bool Inline;

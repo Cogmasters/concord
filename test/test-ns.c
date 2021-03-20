@@ -11,7 +11,7 @@ int main ()
     "[\"1\", \"2\"]"
     "]";
 
-  NTL_T(name_t) * namespaces = NULL;
+  NTL_T(name_t) **namespaces = NULL;
   struct ntl_deserializer d0_alias = {
     .elem_size = sizeof(void*),
     .elem_from_buf = (vcpsvp)namespace_from_json,
@@ -20,6 +20,5 @@ int main ()
   };
   orka_str_to_ntl(ns, strlen(ns), &d0_alias);
   fprintf(stderr, "%d\n", ntl_length(namespaces));
-  fprintf(stderr, "%d\n", ntl_length(namespaces[0]));
+  fprintf(stderr, "%d\n", ntl_length(*(namespaces[0])));
 }
-

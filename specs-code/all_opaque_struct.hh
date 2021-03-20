@@ -390,16 +390,34 @@ namespace embed {
 namespace thumbnail {
 /* Title: Embed Thumbnail Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-thumbnail-structure */
-/* This is defined at specs/channel.objects.json:116:22 */
+/* This is defined at specs/channel.objects.json:117:22 */
 struct dati;
 } // namespace thumbnail
+} // namespace embed
+
+namespace embed {
+namespace video {
+/* Title: Embed Thumbnail Structure */
+/* https://discord.com/developers/docs/resources/channel#embed-object-embed-thumbnail-structure */
+/* This is defined at specs/channel.objects.json:117:22 */
+struct dati;
+} // namespace video
+} // namespace embed
+
+namespace embed {
+namespace image {
+/* Title: Embed Thumbnail Structure */
+/* https://discord.com/developers/docs/resources/channel#embed-object-embed-thumbnail-structure */
+/* This is defined at specs/channel.objects.json:117:22 */
+struct dati;
+} // namespace image
 } // namespace embed
 
 namespace embed {
 namespace provider {
 /* Title: Embed Provider Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-provider-structure */
-/* This is defined at specs/channel.objects.json:128:22 */
+/* This is defined at specs/channel.objects.json:129:22 */
 struct dati;
 } // namespace provider
 } // namespace embed
@@ -408,7 +426,7 @@ namespace embed {
 namespace author {
 /* Title: Embed Author Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-author-structure */
-/* This is defined at specs/channel.objects.json:138:22 */
+/* This is defined at specs/channel.objects.json:139:22 */
 struct dati;
 } // namespace author
 } // namespace embed
@@ -417,7 +435,7 @@ namespace embed {
 namespace footer {
 /* Title: Embed Footer Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-footer-structure */
-/* This is defined at specs/channel.objects.json:150:22 */
+/* This is defined at specs/channel.objects.json:151:22 */
 struct dati;
 } // namespace footer
 } // namespace embed
@@ -426,7 +444,7 @@ namespace embed {
 namespace field {
 /* Title: Embed Field Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-field-structure */
-/* This is defined at specs/channel.objects.json:163:22 */
+/* This is defined at specs/channel.objects.json:164:22 */
 struct dati;
 } // namespace field
 } // namespace embed
