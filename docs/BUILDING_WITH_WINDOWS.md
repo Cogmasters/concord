@@ -9,7 +9,7 @@ Then, open the command shell as administrator, type `choco install mingw`, press
 If you want to build orca for Windows, you'll also need curl.
 In Ubuntu, you could do this just using apt, but in Windows, you can download it manually [here](https://curl.se/windows/)
 Then, copy the file `libcurl-x64.dll` from `CURL_DOWNLOAD_PATH\bin` to your project's binary directory.
-In my case, it's `C:\Users\Papaulo\Downloads\curl-7.74.0_2-win64-mingw\bin`.
+In my case, it's `C:\Users\User\Downloads\curl-7.75.0-win64-mingw\bin`.
 
 You'll also need OpenSSL, which you can download and install the binaries [here](https://slproweb.com/products/Win32OpenSSL.html).
 NOTE: don't install "Light" version, or you won't have the static libraries and include headers.
@@ -19,17 +19,16 @@ It will also ask you if you want to copy DLLs to Windows system directory or Ope
 I always choose the second option, but I don't think it would cause any problem choosing the other.
 NOTE: If you have problems with the MSI installer, try the EXE one.
 
-### Add dependencies to makefiles
+### Add dependencies to makefile
 Now that you successfully installed the dependencies, you have to edit the makefiles to link the include headers and static libraries.
-First, go to each makefile that you want to build.It can be `cee.mk`, `discord.mk`, `github.mk`, `Makefile`, whatever you want, whatever you need.
-Then, go to the line that defines `CFLAGS`. It may be `LIBDISCORD_CFLAGS`, `LIBGITHUB_CFLAGS` etc.
-First, change `-I./` to `-I.`. Then, add `-I"CURL_DOWNLOAD_PATH\include"`. In my case, it's `-I"C:\Users\Papaulo\Downloads\curl-7.74.0_2-win64-mingw\include"`.
+First, go to `Makefile`.
+Then, go to the line that defines `LIBDISCORD_CFLAGS`.
+First, change `-I./` to `-I.`. Then, add `-I"CURL_DOWNLOAD_PATH\include"`. In my case, it's `-I"C:\Users\User\Downloads\curl-7.75.0-win64-mingw\include"`.
 Do the same for OpenSSL, `-I"OPENSSL_DOWNLOAD_PATH\include"`. In my case, it's `-I"C:\Program Files\OpenSSL-Win64\include"`.
 
-Then, go to the line that defines `LDFLAGS`. It may be `LIBDISCORD_LDFLAGS`, `LIBGITHUB_LDFLAGS` etc.
-First, add `-L"CURL_DOWNLOAD_PATH\lib"` after `-L./$(LIBIR)`. In my case, it's `-L"C:\Users\Papaulo\Downloads\curl-7.74.0_2-win64-mingw\lib"`.
-Then, go to the line that defines `-lcrypto` (you can use Ctrl + F to find in the file).
-Now, replace -lcrypto with `"OPENSSL_DOWNLOAD_PATH\lib\libcrypto.lib"`. In my case, it's `-L"C:\Program Files\OpenSSL-Win64\lib\libcrypto.lib"`.
+Then, go to the line that defines `LIBDISCORD_LDFLAGS`.
+First, add `-L"CURL_DOWNLOAD_PATH\lib"` after `-L./$(LIBIR)`. In my case, it's `-L"C:\Users\User\Downloads\curl-7.75.0-win64-mingw\lib"`.
+Now, add `"OPENSSL_DOWNLOAD_PATH\lib"`. In my case, it's `"C:\Program Files\OpenSSL-Win64\lib"`.
 
 ### Create some files to add POSIX functions
 Now, we need to create some files to add some POSIX functions that aren't available on Windows standard.
@@ -219,10 +218,14 @@ Now, go to `discord-ratelimit.cpp` and include `tdestroy.h`:
 ```c
 #include "tdestroy.h"
 ```
-Do the same with `tmp/cee.cpp`.
 
-Now, go to the makefiles you want to build.
-First, go to the line that defines `SRC` variable and add `tdestroy.c` and `strndup.c`.
+Then, go to `discord-public-user.cpp` and include `strndup.h`:
+```c
+#include "strndup.h"
+```
+
+Now, go to `Makefile`.
+First, go to the line that defines the variable `OBJS` and add `$(OBJDIR)/tdestroy.c.o` and `$(OBJDIR)/strndup.c.o` after `mkdir`.
 Then, go to the part that defines the object files dependencies and add the following code:
 ```mk
 $(OBJDIR)/tdestroy.o : tdestroy.c
@@ -235,25 +238,24 @@ $(OBJDIR)/strndup.o : strndup.c
 
 ### Add native CA to curl options
 If we don't wanna get SSL certificate error, we need to add native CA to curl options.
-First, go to `http-common.c`. Then, find the function `custom_easy_init` and insert the following code add the end of the function (before returning):
+First, go to `common/user-agent.c`. Then, find the function `conn_init` and insert the following code add the end of the function (before returning):
 ```c
   ecode = curl_easy_setopt(new_ehandle, CURLOPT_SSL_OPTIONS, CURLSSLOPT_NATIVE_CA);
   ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 ```
-Then, go to `curl-websocket.c`, find the function `cws_new` and insert the following code after setting the other options:
+Then, go to `common/curl-websocket.c`, find the function `cws_new` and insert the following code after setting the other options:
 ```c
     curl_easy_setopt(easy, CURLOPT_SSL_OPTIONS, CURLSSLOPT_NATIVE_CA);
 ```
 
 ### Compile
 ```
-make -f discord.mk CC=YOUR_C_COMPILER
+make CC=YOUR_C_COMPILER
 ```
 YOUR\_C\_COMPILER can be C every compiler, like gcc etc.
 
 ### Important notes
 When compiling, you must have `undefined reference to random` problem.
 If it happens, you can go to the line that the error tells and replace `random()` with `rand()`.
-You may also get `undefined reference to dirfd` and `undefined reference to fstatat`.
-If you just want to use libdiscord, this function won't be missed, so you can just comment the function.
-But if you want to use github, you should search an implementation that counts the number of files in a directory on Windows in C.
+You may also get `undefined reference to dirfd`, `undefined reference to fstatat` and `undefined reference to readlink`.
+This function won't be missed, so you can just comment the function.
