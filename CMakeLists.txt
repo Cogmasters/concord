@@ -59,6 +59,7 @@ set(ORCA_INCLUDE_PATH  ${CMAKE_SOURCE_DIR})
 include_directories(${CMAKE_SOURCE_DIR})
 include_directories(${CMAKE_SOURCE_DIR}/common)
 include_directories(${CMAKE_SOURCE_DIR}/mujs)
+include_directories(${CMAKE_SOURCE_DIR}/sqlite3)
 
 
 add_executable(test-api.exe ${SOURCE_FILES} test/test-api.cpp)
