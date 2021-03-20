@@ -17,7 +17,8 @@
  *      "title"?:<string>,
  *      "comment"?:<string>,
  *      "namespace"?: [<string>+],
- *      "defs": [ <def-list> ]
+ *      "namespace_alias"?: [<string>+],
+ *      "defs": [<def-list>]
  *      }
  *
  * <def> := "title"?:<string>,
@@ -330,6 +331,7 @@ print_field(FILE *fp, struct jc_field *p)
   char *title; \
   char *comment; \
   NTL_T(name_t) namespace; \
+  NTL_T(name_t) namespace_alias; \
   char *name; \
   struct line_and_column name_lnc;
 
@@ -576,6 +578,13 @@ static size_t struct_from_json(char *json, size_t size, struct jc_struct *s)
     .ntl_recipient_p = (ntl_t *)&(s->namespace)
   };
 
+  struct ntl_deserializer d0_alias = {
+    .elem_size = 256,
+    .elem_from_buf = (vcpsvp)name_from_json,
+    .init_elem = NULL,
+    .ntl_recipient_p = (ntl_t *)&(s->namespace_alias)
+  };
+
   struct ntl_deserializer dx = {
     .elem_size = 256,
     .elem_from_buf = (vcpsvp)name_from_json,
@@ -594,6 +603,7 @@ static size_t struct_from_json(char *json, size_t size, struct jc_struct *s)
                             "(comment):?s,"
                             "(title):?s,"
                             "(namespace):F,"
+                            "(namespace_alias):F,"
                             "(struct):?s,"
                             "(struct):lnc,"
                             "(disable_methods):F,"
@@ -602,6 +612,7 @@ static size_t struct_from_json(char *json, size_t size, struct jc_struct *s)
                             &s->comment,
                             &s->title,
                             orka_str_to_ntl, &d0,
+                            orka_str_to_ntl, &d0_alias,
                             &s->name,
                             &s->name_lnc,
                             orka_str_to_ntl, &dx,
@@ -646,6 +657,13 @@ static size_t enum_from_json(char * json, size_t size, struct jc_enum *e)
     .ntl_recipient_p = (ntl_t *)&(e->namespace)
   };
 
+  struct ntl_deserializer d0_alias = {
+    .elem_size = 256,
+    .elem_from_buf = (vcpsvp)name_from_json,
+    .init_elem = NULL,
+    .ntl_recipient_p = (ntl_t *)&(e->namespace_alias)
+  };
+
   struct ntl_deserializer d1 = {
     .elem_size = sizeof(struct jc_item),
     .elem_from_buf = (vcpsvp)item_from_json,
@@ -655,9 +673,11 @@ static size_t enum_from_json(char * json, size_t size, struct jc_enum *e)
 
   size_t ret = json_extract(json, size,
                             "(namespace):F"
+                            "(namespace_alisa):F"
                             "(enum):?s"
                             "(items):F",
                             orka_str_to_ntl, &d0,
+                            orka_str_to_ntl, &d0_alias,
                             &e->name,
                             orka_str_to_ntl, &d1);
   return ret;
