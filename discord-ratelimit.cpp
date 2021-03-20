@@ -30,8 +30,12 @@ try_cooldown(dati *bucket)
   if (NULL == bucket) return; /* EARLY RETURN */
 
   pthread_mutex_lock(&bucket->lock);
+  ++bucket->busy;
 
-  if (bucket->remaining) { // no cooldown needed
+  // wait for a while if busy requests reach threshold
+  if (bucket->busy > bucket->remaining)
+    pthread_cond_wait(&bucket->cond, &bucket->lock);
+  if (bucket->remaining) {
     pthread_mutex_unlock(&bucket->lock);
     return; /* EARLY RETURN */
   }
@@ -105,17 +109,25 @@ try_get(adapter::dati *adapter, char endpoint[])
 static void
 parse_ratelimits(dati *bucket, struct ua_conn_s *conn)
 { 
-  if (bucket->update_tstamp > conn->perform_tstamp)
-    return; /* EARLY RETURN */
-  bucket->update_tstamp = conn->perform_tstamp;
+  pthread_mutex_lock(&bucket->lock);
+  --bucket->busy;
 
-  char *str; // fetch header value as string
-  if ( (str = ua_respheader_value(conn, "x-ratelimit-reset")) )
-    bucket->reset_tstamp = 1000 * strtod(str, NULL);
-  if ( (str = ua_respheader_value(conn, "x-ratelimit-remaining")) )
-    bucket->remaining =  strtol(str, NULL, 10);
-  if ( (str = ua_respheader_value(conn, "x-ratelimit-reset-after")) )
-    bucket->reset_after_ms = 1000 * strtod(str, NULL);
+  if (UA_SUCCESS == conn->status 
+      && bucket->update_tstamp < conn->perform_tstamp) 
+  {
+    bucket->update_tstamp = conn->perform_tstamp;
+
+    char *str; // fetch header value as string
+    if ( (str = ua_respheader_value(conn, "x-ratelimit-reset")) )
+      bucket->reset_tstamp = 1000 * strtod(str, NULL);
+    if ( (str = ua_respheader_value(conn, "x-ratelimit-remaining")) )
+      bucket->remaining =  strtol(str, NULL, 10);
+    if ( (str = ua_respheader_value(conn, "x-ratelimit-reset-after")) )
+      bucket->reset_after_ms = 1000 * strtod(str, NULL);
+  }
+
+  pthread_cond_signal(&bucket->cond);
+  pthread_mutex_unlock(&bucket->lock);
 }
 
 static dati*
@@ -125,6 +137,8 @@ bucket_init(char bucket_hash[])
   new_bucket->hash = strdup(bucket_hash);
   if (pthread_mutex_init(&new_bucket->lock, NULL))
     ERR("Couldn't initialize pthread mutex");
+  if (pthread_cond_init(&new_bucket->cond, NULL))
+    ERR("Couldn't initialize pthread cond");
   return new_bucket;
 }
 
@@ -133,6 +147,7 @@ bucket_cleanup(dati *bucket)
 {
   free(bucket->hash);
   pthread_mutex_destroy(&bucket->lock);
+  pthread_cond_destroy(&bucket->cond);
   free(bucket);
 }
 
@@ -147,14 +162,14 @@ match_route(adapter::dati *adapter, char endpoint[], struct ua_conn_s *conn)
   if (!bucket_hash) return; //no hash information in header
 
   // create new route that will link the endpoint with a bucket
-  struct _route_s *new_route = (struct _route_s*) calloc(1, sizeof *new_route);
+  struct _route_s *new_route = (struct _route_s*)calloc(1, sizeof *new_route);
 
   new_route->str = strdup(endpoint);
 
   //attempt to match hash to client bucket hashes
   for (size_t i=0; i < adapter->ratelimit.num_buckets; ++i) {
-    if (STREQ(bucket_hash, adapter->ratelimit.buckets[i]->hash)) {
-      new_route->p_bucket = adapter->ratelimit.buckets[i];
+    if (STREQ(bucket_hash, adapter->ratelimit.bucket_pool[i]->hash)) {
+      new_route->p_bucket = adapter->ratelimit.bucket_pool[i];
       break; /* EARLY BREAK */
     }
   }
@@ -162,11 +177,12 @@ match_route(adapter::dati *adapter, char endpoint[], struct ua_conn_s *conn)
   if (!new_route->p_bucket) { //couldn't find match, create new bucket
     ++adapter->ratelimit.num_buckets; //increments client buckets
 
-    adapter->ratelimit.buckets = (dati**)realloc(adapter->ratelimit.buckets, \
-                              adapter->ratelimit.num_buckets * sizeof(dati*));
+    adapter->ratelimit.bucket_pool = \
+          (dati**)realloc(adapter->ratelimit.bucket_pool, \
+                      adapter->ratelimit.num_buckets * sizeof(dati*));
 
     dati *new_bucket = bucket_init(bucket_hash);
-    adapter->ratelimit.buckets[adapter->ratelimit.num_buckets-1] = new_bucket;
+    adapter->ratelimit.bucket_pool[adapter->ratelimit.num_buckets-1] = new_bucket;
     new_route->p_bucket = new_bucket; //route points to new bucket
   }
 
@@ -212,9 +228,9 @@ cleanup(adapter::dati *adapter)
 
   //destroy every client bucket found
   for (size_t i=0; i < adapter->ratelimit.num_buckets; ++i) {
-    bucket_cleanup(adapter->ratelimit.buckets[i]);
+    bucket_cleanup(adapter->ratelimit.bucket_pool[i]);
   }
-  free(adapter->ratelimit.buckets);
+  free(adapter->ratelimit.bucket_pool);
 }
 
 } // namespace bucket

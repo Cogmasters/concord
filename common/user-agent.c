@@ -231,6 +231,7 @@ conn_full_reset(struct user_agent_s *ua, struct ua_conn_s *conn)
   conn_soft_reset(conn); // just to be sure
   conn->data = NULL;
   conn->is_busy = false;
+  conn->status = UA_IDLE;
 
   ++ua->num_notbusy;
   if (ua->mime) { // @todo this is temporary
@@ -249,16 +250,16 @@ get_conn(struct user_agent_s *ua)
   if (!ua->num_notbusy) { // no available conn, create new
     ++ua->num_conn;
 
-    ua->conns = realloc(ua->conns, ua->num_conn * sizeof *ua->conns);
-    ua->conns[ua->num_conn-1] = conn_init(ua);
+    ua->conn_pool = realloc(ua->conn_pool, ua->num_conn * sizeof *ua->conn_pool);
+    ua->conn_pool[ua->num_conn-1] = conn_init(ua);
 
-    ret_conn = ua->conns[ua->num_conn-1];
+    ret_conn = ua->conn_pool[ua->num_conn-1];
   }
   else { // available conn, pick one
     for (size_t i=0; i < ua->num_conn; ++i) {
-      if (!ua->conns[i]->is_busy) {
+      if (!ua->conn_pool[i]->is_busy) {
         --ua->num_notbusy;
-        ret_conn = ua->conns[i];
+        ret_conn = ua->conn_pool[i];
         break; /* EARLY BREAK */
       }
     }
@@ -318,7 +319,7 @@ ua_cleanup(struct user_agent_s *ua)
   curl_slist_free_all(ua->req_header);
   orka_config_cleanup(&ua->config);
   for (size_t i=0; i < ua->num_conn; ++i) {
-    conn_cleanup(ua->conns[i]);
+    conn_cleanup(ua->conn_pool[i]);
   }
   pthread_mutex_destroy(&ua->lock);
 }
@@ -473,12 +474,15 @@ set_url(struct user_agent_s *ua, struct ua_conn_s *conn, char endpoint[], va_lis
   DS_PRINT("Request URL: %s", conn->req_url);
 }
 
-static void noop_iter_cb(void *data){return;}
-static ua_action_t noop_success_cb(void *a, int b, struct ua_conn_s *c)
+static void noop_iter_start_cb(void *a)
+{return;}
+static void noop_iter_end_cb(void *a, struct ua_conn_s *b)
+{return;}
+static ua_status_t noop_success_cb(void *a, int b, struct ua_conn_s *c)
 {return UA_SUCCESS;}
-static ua_action_t noop_retry_cb(void *a, int b, struct ua_conn_s *c) 
+static ua_status_t noop_retry_cb(void *a, int b, struct ua_conn_s *c) 
 {return UA_RETRY;}
-static ua_action_t noop_abort_cb(void *a, int b, struct ua_conn_s *c) 
+static ua_status_t noop_abort_cb(void *a, int b, struct ua_conn_s *c) 
 {return UA_ABORT;}
 
 static int
@@ -517,8 +521,8 @@ perform_request(
     memset(&cbs, 0, sizeof(struct ua_callbacks));
 
   /* SET DEFAULT CALLBACKS */
-  if (!cbs.on_iter_start) cbs.on_iter_start = &noop_iter_cb;
-  if (!cbs.on_iter_end) cbs.on_iter_end = &noop_iter_cb;
+  if (!cbs.on_iter_start) cbs.on_iter_start = &noop_iter_start_cb;
+  if (!cbs.on_iter_end) cbs.on_iter_end = &noop_iter_end_cb;
   if (!cbs.on_1xx) cbs.on_1xx = &noop_success_cb;
   if (!cbs.on_2xx) cbs.on_2xx = &noop_success_cb;
   if (!cbs.on_3xx) cbs.on_3xx = &noop_success_cb;
@@ -530,7 +534,6 @@ perform_request(
     if (!ret) return; /* EARLY RETURN */
   }
 
-  ua_action_t action;
   do {
     /* triggers on every start of loop iteration */
     (*cbs.on_iter_start)(cbs.data);
@@ -548,7 +551,7 @@ perform_request(
 
     /* triggers response related callbacks */
     if (httpcode >= 500) { // SERVER ERROR
-      action = (*cbs.on_5xx)(cbs.data, httpcode, conn);
+      conn->status = (*cbs.on_5xx)(cbs.data, httpcode, conn);
 
       if (resp_handle) {
         if (resp_handle->err_cb) {
@@ -567,7 +570,7 @@ perform_request(
       }
     }
     else if (httpcode >= 400) { // CLIENT ERROR
-      action = (*cbs.on_4xx)(cbs.data, httpcode, conn);
+      conn->status = (*cbs.on_4xx)(cbs.data, httpcode, conn);
 
       if (resp_handle) {
         if(resp_handle->err_cb) {
@@ -586,10 +589,10 @@ perform_request(
       }
     }
     else if (httpcode >= 300) { // REDIRECTING
-      action = (*cbs.on_3xx)(cbs.data, httpcode, conn);
+      conn->status = (*cbs.on_3xx)(cbs.data, httpcode, conn);
     }
     else if (httpcode >= 200) { // SUCCESS RESPONSES
-      action = (*cbs.on_2xx)(cbs.data, httpcode, conn);
+      conn->status = (*cbs.on_2xx)(cbs.data, httpcode, conn);
 
       if (resp_handle) {
         if (resp_handle->ok_cb) {
@@ -608,10 +611,10 @@ perform_request(
       }
     }
     else if (httpcode >= 100) { // INFO RESPONSE
-      action = (*cbs.on_1xx)(cbs.data, httpcode, conn);
+      conn->status = (*cbs.on_1xx)(cbs.data, httpcode, conn);
     }
 
-    switch (action) {
+    switch (conn->status) {
     case UA_SUCCESS:
     case UA_FAILURE:
         D_PRINT("FINISHED REQUEST AT %s", conn->resp_url);
@@ -624,10 +627,10 @@ perform_request(
         ERR("COULDN'T PERFORM REQUEST AT %s", conn->resp_url);
     }
 
-    (*cbs.on_iter_end)(cbs.data);
+    (*cbs.on_iter_end)(cbs.data, conn);
     
     conn_soft_reset(conn); // reset conn fields for its next iteration
-  } while (UA_RETRY == action);
+  } while (UA_RETRY == conn->status);
 
   conn_full_reset(ua, conn);
 }

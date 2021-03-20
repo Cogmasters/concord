@@ -50,6 +50,14 @@ struct ua_respheader_s {
   int size;
 };
 
+typedef enum { 
+  UA_IDLE = 0, // haven't performed yet
+  UA_SUCCESS,  // continue after succesfull request
+  UA_FAILURE,  // continue after failed request
+  UA_RETRY,    // retry connection
+  UA_ABORT     // abort after failed request
+} ua_status_t;
+
 struct ua_conn_s {
   bool is_busy;
   uint64_t perform_tstamp; // timestamp of when the request completed
@@ -60,6 +68,8 @@ struct ua_conn_s {
 
   char req_url[MAX_URL_LEN]; //request's url
   char *resp_url; //response's url
+
+  ua_status_t status; //the conn request's status
 
   void *data; //user arbitrary data
 };
@@ -92,7 +102,7 @@ struct user_agent_s {
   struct orka_config config;
   struct curl_slist *req_header; // the request header sent to the api
 
-  struct ua_conn_s **conns; // connection pool for reuse
+  struct ua_conn_s **conn_pool; // connection pool for reuse
   int num_notbusy; // num of available conns
   size_t num_conn; // amount of conns created
 
@@ -108,14 +118,7 @@ struct user_agent_s {
   curl_mime* (*mime_cb)(CURL *ehandle, void *data); // @todo this is temporary
 };
 
-typedef enum { 
-  UA_SUCCESS, // continue after succesfull request
-  UA_FAILURE, // continue after failed request
-  UA_RETRY,   // retry connection
-  UA_ABORT    // abort after failed request
-} ua_action_t;
-
-typedef ua_action_t 
+typedef ua_status_t 
 (http_response_cb)(void *data, int httpcode, struct ua_conn_s *conn);
 
 /* these can be used on any MT contexts, but the user still
@@ -125,7 +128,7 @@ struct ua_callbacks {
 
   int (*on_startup)(void *data); // exec before loop starts (return 1 for proceed, 0 for abort)
   void (*on_iter_start)(void *data); // execs at end of every loop iteration
-  void (*on_iter_end)(void *data); // execs at end of every loop iteration
+  void (*on_iter_end)(void *data, struct ua_conn_s *conn); // execs at end of every loop iteration
 
   http_response_cb *on_1xx; // execs on 1xx code
   http_response_cb *on_2xx; // execs on 2xx code

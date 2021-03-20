@@ -60,15 +60,22 @@ bucket_tryget_cb(void *p_ratelimit)
 }
 
 static void
-bucket_cooldown_cb(void *p_ratelimit)
+bucket_trycooldown_cb(void *p_ratelimit)
+{
+  struct _ratelimit *rl = (struct _ratelimit*)p_ratelimit;
+  bucket::try_cooldown(rl->bucket);
+}
+
+static void
+bucket_trybuild_cb(void *p_ratelimit, struct ua_conn_s *conn)
 {
   struct _ratelimit *rl = (struct _ratelimit*)p_ratelimit;
   pthread_mutex_lock(&rl->adapter->lock);
-  bucket::try_cooldown(rl->bucket);
+  bucket::build(rl->adapter, rl->bucket, rl->endpoint, conn);
   pthread_mutex_unlock(&rl->adapter->lock);
 }
 
-static ua_action_t
+static ua_status_t
 on_success_cb(
   void *p_ratelimit,
   int httpcode,
@@ -79,15 +86,10 @@ on_success_cb(
       http_code_print(httpcode),
       http_reason_print(httpcode));
 
-  struct _ratelimit *rl = (struct _ratelimit*)p_ratelimit;
-  pthread_mutex_lock(&rl->adapter->lock);
-  bucket::build(rl->adapter, rl->bucket, rl->endpoint, conn);
-  pthread_mutex_unlock(&rl->adapter->lock);
-
   return UA_SUCCESS;
 }
 
-static ua_action_t
+static ua_status_t
 on_failure_cb(
   void *p_ratelimit,
   int httpcode,
@@ -194,7 +196,8 @@ run(
   struct ua_callbacks cbs = {
     .data = (void*)&ratelimit,
     .on_startup = &bucket_tryget_cb,
-    .on_iter_start = &bucket_cooldown_cb,
+    .on_iter_start = &bucket_trycooldown_cb,
+    .on_iter_end = &bucket_trybuild_cb,
     .on_1xx = NULL,
     .on_2xx = &on_success_cb,
     .on_3xx = &on_success_cb,

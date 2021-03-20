@@ -50,17 +50,6 @@ https://discord.com/developers/docs/reference#snowflakes */
 typedef uint64_t u64_unix_ms_t;
 typedef uint64_t u64_snowflake_t;
 
-#if 0
-namespace discord {
-  namespace channel {
-    namespace embed {
-      namespace thumbnail { struct dati; }
-      //namespace video = thumbnail;
-      //namespace image = thumbnail;
-    }
-  }
-}
-#endif
 
 #include "./specs-code/all_opaque_struct.hh"
 #include "./specs-code/all_enums.hh"
@@ -69,10 +58,6 @@ namespace discord {
 namespace discord {
 
 struct client;
-
-namespace adapter {
-  namespace bucket { struct dati; }
-} // namespace adapter
 
 /* IDLE CALLBACK (runs on every iteration, no trigger required) */
 typedef void (idle_cb)(client *client, const user::dati *me);
@@ -137,11 +122,13 @@ typedef void (guild_member_remove_cb)(
 
 namespace adapter { /* discord-adapter.cpp */
 
+namespace bucket { struct dati; } // forward declaration
+
 struct dati { /* ADAPTER STRUCTURE */
   struct user_agent_s ua;
 
   struct { /* RATELIMITING STRUCTURE */
-    bucket::dati **buckets; //active client buckets
+    bucket::dati **bucket_pool; //active client buckets
     size_t num_buckets; //amount of active client buckets
     
     //check GNU tree functions from search.h
@@ -152,7 +139,6 @@ struct dati { /* ADAPTER STRUCTURE */
 
   pthread_mutex_t lock; // used when increasing/fetching buckets
 };
-
 void init(dati *adapter, const char token[], const char config_file[]);
 void cleanup(dati *adapter);
 void run(
@@ -166,12 +152,16 @@ void run(
 namespace bucket { /* discord-ratelimit.cpp */
 struct dati { /* BUCKET STRUCTURE */
   char *hash; //the hash associated with this bucket
+  int busy; //busy connections that have not yet finished its requests
   int remaining; //connections this bucket can do before cooldown
   int64_t reset_after_ms;
   u64_unix_ms_t reset_tstamp;
 
   u64_unix_ms_t update_tstamp; // last update timestamp
-  pthread_mutex_t lock; // used to synchronize buckets
+  
+  // used to synchronize buckets
+  pthread_mutex_t lock;
+  pthread_cond_t cond;
 };
 
 void cleanup(adapter::dati *adapter);
