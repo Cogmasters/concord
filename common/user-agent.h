@@ -110,7 +110,6 @@ struct user_agent_s {
 
   uint64_t blockuntil_tstamp; // for global ratelimiting purposes
   pthread_mutex_t lock;
-  pthread_cond_t cond;
 
   void *data; // user arbitrary data for setopt_cb
   void (*setopt_cb)(CURL *ehandle, void *data); // set custom easy_setopts

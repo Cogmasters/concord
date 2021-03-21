@@ -299,8 +299,6 @@ ua_init(struct user_agent_s *ua, const char base_url[])
 
   if (pthread_mutex_init(&ua->lock, NULL))
     ERR("Couldn't initialize mutex");
-  if (pthread_cond_init(&ua->cond, NULL))
-    ERR("Couldn't initialize pthread cond");
 }
 
 void
@@ -324,7 +322,6 @@ ua_cleanup(struct user_agent_s *ua)
     conn_cleanup(ua->conn_pool[i]);
   }
   pthread_mutex_destroy(&ua->lock);
-  pthread_cond_destroy(&ua->cond);
 }
 
 char*
