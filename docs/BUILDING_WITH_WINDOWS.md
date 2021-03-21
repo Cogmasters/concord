@@ -28,7 +28,7 @@ Do the same for OpenSSL, `-I"OPENSSL_DOWNLOAD_PATH\include"`. In my case, it's `
 
 Then, go to the line that defines `LIBDISCORD_LDFLAGS`.
 First, add `-L"CURL_DOWNLOAD_PATH\lib"` after `-L./$(LIBIR)`. In my case, it's `-L"C:\Users\User\Downloads\curl-7.75.0-win64-mingw\lib"`.
-Now, add `"OPENSSL_DOWNLOAD_PATH\lib"`. In my case, it's `"C:\Program Files\OpenSSL-Win64\lib"`.
+Now, add `-L"OPENSSL_DOWNLOAD_PATH\lib"`. In my case, it's `-L"C:\Program Files\OpenSSL-Win64\lib"`.
 
 ### Create some files to add POSIX functions
 Now, we need to create some files to add some POSIX functions that aren't available on Windows standard.
