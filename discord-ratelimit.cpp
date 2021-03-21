@@ -36,6 +36,7 @@ try_cooldown(dati *bucket)
   if (bucket->busy > bucket->remaining)
     pthread_cond_wait(&bucket->cond, &bucket->lock);
   if (bucket->remaining) {
+    --bucket->remaining;
     pthread_mutex_unlock(&bucket->lock);
     return; /* EARLY RETURN */
   }
