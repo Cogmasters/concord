@@ -26,7 +26,7 @@
  *          "namespace"?:[<string>+],
  *          (<struct> | <enum>)
  *
- * <struct> :=  "struct" : <string>, "fields": [ <field>+ ]
+ * <struct> :=  "struct" : <string>, "typedef" : <string>, "fields": [ <field>+ ]
  *
  *
  * <field> := { "name"?:<string>,
@@ -50,7 +50,7 @@
  * <field-loc>   :=  "loc"  : ("json" | "query" | "body" | "url)
  *
  *
- * <enum> := "enum" :<string>, "items": [ <items>+ ]
+ * <enum> := "enum" :<string>, "typedef" : <string>, "items": [ <items>+ ]
  * <item> := { "name" : <string>, "value": <integer>? }
  *
  */
@@ -333,6 +333,7 @@ print_field(FILE *fp, struct jc_field *p)
   NTL_T(name_t) namespace; \
   NTL_T(NTL_T(name_t)) namespaces; \
   char *name; \
+  char *typedef_name; \
   struct line_and_column name_lnc;
 
 
@@ -584,20 +585,6 @@ namespace_from_json(char *json, size_t size, NTL_T(name_t) *ns_p)
 
 static size_t struct_from_json(char *json, size_t size, struct jc_struct *s)
 {
-  struct ntl_deserializer d0 = {
-    .elem_size = sizeof(name_t),
-    .elem_from_buf = (vcpsvp)name_from_json,
-    .init_elem = NULL,
-    .ntl_recipient_p = (ntl_t *)&(s->namespace)
-  };
-
-  struct ntl_deserializer d0_alias = {
-    .elem_size = sizeof(void*),
-    .elem_from_buf = (vcpsvp)namespace_from_json,
-    .init_elem = NULL,
-    .ntl_recipient_p = (ntl_t *)&(s->namespaces)
-  };
-
   struct ntl_deserializer dx = {
     .elem_size = sizeof(name_t),
     .elem_from_buf = (vcpsvp)name_from_json,
@@ -613,27 +600,14 @@ static size_t struct_from_json(char *json, size_t size, struct jc_struct *s)
   };
 
   size_t ret = json_extract(json, size,
-                            "(comment):?s,"
-                            "(title):?s,"
-                            "(namespace):F,"
-                            "(namespaces):F,"
-                            "(struct):?s,"
-                            "(struct):lnc,"
                             "(disable_methods):F,"
                             "(disable_methods):lnc,"
                             "(fields):F",
-                            &s->comment,
-                            &s->title,
-                            orka_str_to_ntl, &d0,
-                            orka_str_to_ntl, &d0_alias,
-                            &s->name,
-                            &s->name_lnc,
                             orka_str_to_ntl, &dx,
                             &s->disable_methods_lnc,
                             orka_str_to_ntl, &d1);
 
   adjust_lnc(json, &s->disable_methods_lnc);
-  adjust_lnc(json, &s->name_lnc);
   return ret;
 }
 
@@ -663,20 +637,6 @@ static size_t item_from_json(char *json, size_t size, void *x)
 
 static size_t enum_from_json(char * json, size_t size, struct jc_enum *e)
 {
-  struct ntl_deserializer d0 = {
-    .elem_size = sizeof(name_t),
-    .elem_from_buf = (vcpsvp)name_from_json,
-    .init_elem = NULL,
-    .ntl_recipient_p = (ntl_t *)&(e->namespace)
-  };
-
-  struct ntl_deserializer d0_alias = {
-    .elem_size = sizeof(void*),
-    .elem_from_buf = (vcpsvp)namespace_from_json,
-    .init_elem = NULL,
-    .ntl_recipient_p = (ntl_t *)&(e->namespaces)
-  };
-
   struct ntl_deserializer d1 = {
     .elem_size = sizeof(struct jc_item),
     .elem_from_buf = (vcpsvp)item_from_json,
@@ -685,13 +645,7 @@ static size_t enum_from_json(char * json, size_t size, struct jc_enum *e)
   };
 
   size_t ret = json_extract(json, size,
-                            "(namespace):F"
-                            "(namespaces):F"
-                            "(enum):?s"
                             "(items):F",
-                            orka_str_to_ntl, &d0,
-                            orka_str_to_ntl, &d0_alias,
-                            &e->name,
                             orka_str_to_ntl, &d1);
   return ret;
 }
@@ -699,24 +653,46 @@ static size_t enum_from_json(char * json, size_t size, struct jc_enum *e)
 static size_t def_from_json(char *json, size_t size, struct jc_def *def)
 {
   bool is_struct = false, is_enum = false;
-  char *s_name = NULL, *e_name = NULL;
-  json_extract(json, size,
-               "(struct):key,"
-               "(enum):key,"
-               "(struct):?s,"
-               "(enum):?s",
-               &is_struct,
-               &is_enum,
-               &s_name, &e_name);
+  struct ntl_deserializer d0 = {
+    .elem_size = sizeof(name_t),
+    .elem_from_buf = (vcpsvp)name_from_json,
+    .init_elem = NULL,
+    .ntl_recipient_p = (ntl_t *)&(def->namespace)
+  };
 
+  struct ntl_deserializer d0_alias = {
+    .elem_size = sizeof(void*),
+    .elem_from_buf = (vcpsvp)namespace_from_json,
+    .init_elem = NULL,
+    .ntl_recipient_p = (ntl_t *)&(def->namespaces)
+  };
+
+  json_extract(json, size,
+               "(comment):?s,"
+               "(title):?s,"
+               "(namespace):F,"
+               "(namespaces):F,"
+               "(typedef):?s,"
+               "(struct):key,(enum):key,"
+               "(struct):?s, (enum):?s,"
+               "(struct):lnc",
+               &def->comment,
+               &def->title,
+               orka_str_to_ntl, &d0,
+               orka_str_to_ntl, &d0_alias,
+               &def->typedef_name,
+               &is_struct, &is_enum,
+               &def->name, &def->name,
+               &def->name_lnc
+               );
+
+  adjust_lnc(json, &def->name_lnc);
   if (is_struct) {
     def->is_struct = true;
-    def->name = s_name;
     return struct_from_json(json, size, (struct jc_struct *)def);
   }
   else if (is_enum) {
     def->is_struct = false;
-    def->name = e_name;
     return enum_from_json(json, size, (struct jc_enum *)def);
   }
   else {
@@ -760,7 +736,14 @@ static void gen_enum(FILE *fp, struct jc_enum *e, name_t **ns)
 
   gen_open_namespace(fp, ns);
   char *t = ns_to_symbol_name(e->name);
+  char *t_alias = NULL;
+  
+  if (e->typedef_name) 
+    t_alias = ns_to_symbol_name(e->typedef_name);
 
+  if (t_alias)
+    fprintf(fp, "typedef ");
+  
   fprintf(fp, "enum %s {\n", t);
   int i = 0, prev_value = -1;
 
@@ -785,7 +768,10 @@ static void gen_enum(FILE *fp, struct jc_enum *e, name_t **ns)
         fprintf(fp, ",\n");
     }
   }
-  fprintf(fp, "};\n");
+  if (t_alias)
+    fprintf(fp, "} %s\n", t_alias);
+  else
+    fprintf(fp, "};\n");
   gen_close_namespace(fp, ns);
 }
 
@@ -1511,6 +1497,10 @@ static void gen_to_query(FILE *fp, struct jc_struct *s)
 static void gen_struct(FILE *fp, struct jc_struct *s)
 {
   char *t = ns_to_symbol_name(s->name);
+  char *t_alias = NULL;
+
+  if (s->typedef_name)
+    t_alias = ns_to_symbol_name(s->typedef_name);
 
   if (s->title)
     fprintf(fp, "/* Title: %s */\n", s->title);
@@ -1519,6 +1509,9 @@ static void gen_struct(FILE *fp, struct jc_struct *s)
 
   fprintf(fp, "/* This is defined at %s:%d:%d */\n",
           spec_name, s->name_lnc.line, s->name_lnc.column);
+
+  if (t_alias)
+    fprintf(fp, "typedef ");
 
   fprintf(fp, "struct %s {\n", t);
   int i = 0;
@@ -1540,7 +1533,10 @@ static void gen_struct(FILE *fp, struct jc_struct *s)
   fprintf(fp, "    void *record_defined[%d];\n", i);
   fprintf(fp, "    void *record_null[%d];\n", i);
   fprintf(fp, "  } __M; // metadata\n");
-  fprintf(fp, "};\n");
+  if (t_alias)
+    fprintf(fp, "} %s;\n", t_alias);
+  else  
+    fprintf(fp, "};\n");
 }
 
 static void gen_wrapper(FILE *fp, struct jc_struct *s)
