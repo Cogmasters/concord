@@ -12,21 +12,22 @@ struct params {
   char *name;
 
   /* specs/guild.role.create.json:12:20
-     '{ "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"permissions::bitwise_flags" }, "inject_if_not":0}'
+     '{ "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"discord::permissions::bitwise_flags" }, 
+          "inject_if_not":0}'
   */
-  permissions::bitwise_flags permissions;
+  discord::permissions::bitwise_flags permissions;
 
-  /* specs/guild.role.create.json:13:20
+  /* specs/guild.role.create.json:14:20
      '{ "name": "color", "type":{ "base":"int" }, "inject_if_not":0}'
   */
   int color;
 
-  /* specs/guild.role.create.json:14:20
+  /* specs/guild.role.create.json:15:20
      '{ "name": "hoist", "type":{ "base":"bool" }, "inject_if_not":false}'
   */
   bool hoist;
 
-  /* specs/guild.role.create.json:15:20
+  /* specs/guild.role.create.json:16:20
      '{ "name": "memtionable", "type":{ "base":"bool" }, "inject_if_not":false}'
   */
   bool memtionable;

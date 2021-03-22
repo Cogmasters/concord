@@ -12,8 +12,10 @@
       [
         { "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
         { "name": "type", "type":{ "base":"int" }},
-        { "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"permissions::bitwise_flags"}, "comment":"permission bit set"},
-        { "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"permissions::bitwise_flags"}, "comment":"permission bit set"}
+        { "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"discord::permissions::bitwise_flags"}, 
+          "comment":"permission bit set"},
+        { "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"discord::permissions::bitwise_flags"}, 
+          "comment":"permission bit set"}
       ]
     },
     {

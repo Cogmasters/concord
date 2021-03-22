@@ -129,6 +129,19 @@ struct params;
 } // namespace create_channel_invite
 } // namespace channel
 } // namespace discord
+/* This file is generated from specs/guild.ban.json, Please don't edit it. */
+/*
+https://discord.com/developers/docs/resources/guild#ban-object
+*/
+namespace discord {
+namespace guild {
+
+namespace ban {
+/* This is defined at specs/guild.ban.json:9:22 */
+struct dati;
+} // namespace ban
+} // namespace guild
+} // namespace discord
 /* This file is generated from specs/voice.json, Please don't edit it. */
 /*
 (null)
@@ -177,18 +190,24 @@ namespace guild {
 struct dati;
 } // namespace guild
 } // namespace discord
-/* This file is generated from specs/guild.ban.json, Please don't edit it. */
+/* This file is generated from specs/user.json, Please don't edit it. */
 /*
-https://discord.com/developers/docs/resources/guild#ban-object
+https://discord.com/developers/docs/resources/user#user-object
 */
 namespace discord {
-namespace guild {
+namespace user {
 
-namespace ban {
-/* This is defined at specs/guild.ban.json:9:22 */
+/* Title: User Structure */
+/* This is defined at specs/user.json:44:18 */
 struct dati;
-} // namespace ban
-} // namespace guild
+
+namespace connection {
+/* Title: Connection Structure */
+/* https://discord.com/developers/docs/resources/user#connection-object-connection-structure */
+/* This is defined at specs/user.json:77:18 */
+struct dati;
+} // namespace connection
+} // namespace user
 } // namespace discord
 /* This file is generated from specs/guild.modify-guild-member.json, Please don't edit it. */
 /*
@@ -266,91 +285,25 @@ struct dati;
 } // namespace widget
 } // namespace guild
 } // namespace discord
-/* This file is generated from specs/channel.json, Please don't edit it. */
+/* This file is generated from specs/invite.json, Please don't edit it. */
 /*
-https://discord.com/developers/docs/resources/channel#channel-object-channel-types
+https://discord.com/developers/docs/resources/invite#invite-object
 */
 namespace discord {
-namespace channel {
+namespace invite {
 
-/* Title: Channel Structure */
-/* https://discord.com/developers/docs/resources/channel#channel-object-channel-structure */
-/* This is defined at specs/channel.json:25:22 */
-struct dati;
-} // namespace channel
-} // namespace discord
-/* This file is generated from specs/webhook.edit-webhook-message.json, Please don't edit it. */
-/*
-
-*/
-namespace discord {
-namespace webhook {
-namespace edit_webhook_message {
-
-/* https://discord.com/developers/docs/resources/webhook#edit-webhook-message */
-/* This is defined at specs/webhook.edit-webhook-message.json:8:22 */
-struct params;
-} // namespace edit_webhook_message
-} // namespace webhook
-} // namespace discord
-/* This file is generated from specs/audit_log.json, Please don't edit it. */
-/*
-(null)
-*/
-namespace discord {
-namespace audit_log {
-
-/* Title: Audit Log Structure */
-/* https://discord.com/developers/docs/resources/audit-log#audit-log-object-audit-log-structure */
-/* This is defined at specs/audit_log.json:8:22 */
+/* Title: Invite Structure */
+/* https://discord.com/developers/docs/resources/invite#invite-object-invite-structure */
+/* This is defined at specs/invite.json:19:22 */
 struct dati;
 
-namespace entry {
-/* Title: Audit Log Entry Structure */
-/* https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-entry-structure */
-/* This is defined at specs/audit_log.json:64:22 */
+namespace metadata {
+/* Title: Invite Metadata Structure */
+/* https://discord.com/developers/docs/resources/invite#invite-metadata-object */
+/* This is defined at specs/invite.json:36:22 */
 struct dati;
-} // namespace entry
-
-namespace entry {
-namespace optional_info {
-/* Title: Optional Audit Entry Info Structure */
-/* https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-optional-audit-entry-info */
-/* This is defined at specs/audit_log.json:80:22 */
-struct dati;
-} // namespace optional_info
-} // namespace entry
-
-namespace change {
-/* Title: Audit Log Change Structure */
-/* https://discord.com/developers/docs/resources/audit-log#audit-log-change-object-audit-log-change-structure */
-/* This is defined at specs/audit_log.json:97:22 */
-struct dati;
-} // namespace change
-
-namespace change {
-namespace key {
-/* Title: Audit Log Change Key */
-/* https://discord.com/developers/docs/resources/audit-log#audit-log-change-object-audit-log-change-key */
-/* This is defined at specs/audit_log.json:109:22 */
-struct dati;
-} // namespace key
-} // namespace change
-} // namespace audit_log
-} // namespace discord
-/* This file is generated from specs/template.create-guild-from-template.json, Please don't edit it. */
-/*
-
-*/
-namespace discord {
-namespace Template {
-namespace create_guild_from_template {
-
-/* https://discord.com/developers/docs/resources/template#create-guild-from-template */
-/* This is defined at specs/template.create-guild-from-template.json:8:22 */
-struct params;
-} // namespace create_guild_from_template
-} // namespace Template
+} // namespace metadata
+} // namespace invite
 } // namespace discord
 /* This file is generated from specs/webhook.modify-webhook.json, Please don't edit it. */
 /*
@@ -365,6 +318,20 @@ namespace modify_webhook {
 struct params;
 } // namespace modify_webhook
 } // namespace webhook
+} // namespace discord
+/* This file is generated from specs/template.create-guild-from-template.json, Please don't edit it. */
+/*
+
+*/
+namespace discord {
+namespace Template {
+namespace create_guild_from_template {
+
+/* https://discord.com/developers/docs/resources/template#create-guild-from-template */
+/* This is defined at specs/template.create-guild-from-template.json:8:22 */
+struct params;
+} // namespace create_guild_from_template
+} // namespace Template
 } // namespace discord
 /* This file is generated from specs/channel.objects.json, Please don't edit it. */
 /*
@@ -381,41 +348,41 @@ struct dati;
 
 namespace reaction {
 /* https://discord.com/developers/docs/resources/channel#reaction-object-reaction-structure */
-/* This is defined at specs/channel.objects.json:22:22 */
+/* This is defined at specs/channel.objects.json:24:22 */
 struct dati;
 } // namespace reaction
 
 namespace followed_channel {
 /* Title: Followed Channel Structure */
 /* https://discord.com/developers/docs/resources/channel#followed-channel-object-followed-channel-structure */
-/* This is defined at specs/channel.objects.json:34:22 */
+/* This is defined at specs/channel.objects.json:36:22 */
 struct dati;
 } // namespace followed_channel
 
 namespace attachment {
 /* https://discord.com/developers/docs/resources/channel#attachment-object */
-/* This is defined at specs/channel.objects.json:44:22 */
+/* This is defined at specs/channel.objects.json:46:22 */
 struct dati;
 } // namespace attachment
 
 namespace mention {
 /* Title: Channel Mention Structure */
 /* https://discord.com/developers/docs/resources/channel#channel-mention-object-channel-mention-structure */
-/* This is defined at specs/channel.objects.json:60:22 */
+/* This is defined at specs/channel.objects.json:62:22 */
 struct dati;
 } // namespace mention
 
 namespace allowed_mentions {
 /* Title: Allowed Mentions Structure */
 /* https://discord.com/developers/docs/resources/channel#allowed-mentions-object-allowed-mentions-structure */
-/* This is defined at specs/channel.objects.json:73:22 */
+/* This is defined at specs/channel.objects.json:75:22 */
 struct dati;
 } // namespace allowed_mentions
 
 namespace embed {
 /* Title: Embed Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-structure */
-/* This is defined at specs/channel.objects.json:86:22 */
+/* This is defined at specs/channel.objects.json:88:22 */
 struct dati;
 } // namespace embed
 
@@ -423,7 +390,7 @@ namespace embed {
 namespace thumbnail {
 /* Title: Embed Thumbnail Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-thumbnail-structure */
-/* This is defined at specs/channel.objects.json:117:22 */
+/* This is defined at specs/channel.objects.json:119:22 */
 struct dati;
 } // namespace thumbnail
 } // namespace embed
@@ -432,7 +399,7 @@ namespace embed {
 namespace video {
 /* Title: Embed Thumbnail Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-thumbnail-structure */
-/* This is defined at specs/channel.objects.json:117:22 */
+/* This is defined at specs/channel.objects.json:119:22 */
 struct dati;
 } // namespace video
 } // namespace embed
@@ -441,7 +408,7 @@ namespace embed {
 namespace image {
 /* Title: Embed Thumbnail Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-thumbnail-structure */
-/* This is defined at specs/channel.objects.json:117:22 */
+/* This is defined at specs/channel.objects.json:119:22 */
 struct dati;
 } // namespace image
 } // namespace embed
@@ -450,7 +417,7 @@ namespace embed {
 namespace provider {
 /* Title: Embed Provider Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-provider-structure */
-/* This is defined at specs/channel.objects.json:129:22 */
+/* This is defined at specs/channel.objects.json:131:22 */
 struct dati;
 } // namespace provider
 } // namespace embed
@@ -459,7 +426,7 @@ namespace embed {
 namespace author {
 /* Title: Embed Author Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-author-structure */
-/* This is defined at specs/channel.objects.json:139:22 */
+/* This is defined at specs/channel.objects.json:141:22 */
 struct dati;
 } // namespace author
 } // namespace embed
@@ -468,7 +435,7 @@ namespace embed {
 namespace footer {
 /* Title: Embed Footer Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-footer-structure */
-/* This is defined at specs/channel.objects.json:151:22 */
+/* This is defined at specs/channel.objects.json:153:22 */
 struct dati;
 } // namespace footer
 } // namespace embed
@@ -477,7 +444,7 @@ namespace embed {
 namespace field {
 /* Title: Embed Field Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-field-structure */
-/* This is defined at specs/channel.objects.json:164:22 */
+/* This is defined at specs/channel.objects.json:166:22 */
 struct dati;
 } // namespace field
 } // namespace embed
@@ -613,24 +580,19 @@ struct params;
 } // namespace modify_guild_emoji
 } // namespace emoji
 } // namespace discord
-/* This file is generated from specs/user.json, Please don't edit it. */
+/* This file is generated from specs/webhook.execute-webhook.json, Please don't edit it. */
 /*
-https://discord.com/developers/docs/resources/user#user-object
+
 */
 namespace discord {
-namespace user {
+namespace webhook {
+namespace execute_webhook {
 
-/* Title: User Structure */
-/* This is defined at specs/user.json:44:18 */
-struct dati;
-
-namespace connection {
-/* Title: Connection Structure */
-/* https://discord.com/developers/docs/resources/user#connection-object-connection-structure */
-/* This is defined at specs/user.json:77:18 */
-struct dati;
-} // namespace connection
-} // namespace user
+/* https://discord.com/developers/docs/resources/webhook#execute-webhook */
+/* This is defined at specs/webhook.execute-webhook.json:8:22 */
+struct params;
+} // namespace execute_webhook
+} // namespace webhook
 } // namespace discord
 /* This file is generated from specs/guild.role.create.json, Please don't edit it. */
 /*
@@ -654,19 +616,50 @@ namespace discord {
 namespace permissions {
 } // namespace permissions
 } // namespace discord
-/* This file is generated from specs/webhook.execute-webhook.json, Please don't edit it. */
+/* This file is generated from specs/audit_log.json, Please don't edit it. */
 /*
-
+(null)
 */
 namespace discord {
-namespace webhook {
-namespace execute_webhook {
+namespace audit_log {
 
-/* https://discord.com/developers/docs/resources/webhook#execute-webhook */
-/* This is defined at specs/webhook.execute-webhook.json:8:22 */
-struct params;
-} // namespace execute_webhook
-} // namespace webhook
+/* Title: Audit Log Structure */
+/* https://discord.com/developers/docs/resources/audit-log#audit-log-object-audit-log-structure */
+/* This is defined at specs/audit_log.json:8:22 */
+struct dati;
+
+namespace entry {
+/* Title: Audit Log Entry Structure */
+/* https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-entry-structure */
+/* This is defined at specs/audit_log.json:64:22 */
+struct dati;
+} // namespace entry
+
+namespace entry {
+namespace optional_info {
+/* Title: Optional Audit Entry Info Structure */
+/* https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-optional-audit-entry-info */
+/* This is defined at specs/audit_log.json:80:22 */
+struct dati;
+} // namespace optional_info
+} // namespace entry
+
+namespace change {
+/* Title: Audit Log Change Structure */
+/* https://discord.com/developers/docs/resources/audit-log#audit-log-change-object-audit-log-change-structure */
+/* This is defined at specs/audit_log.json:97:22 */
+struct dati;
+} // namespace change
+
+namespace change {
+namespace key {
+/* Title: Audit Log Change Key */
+/* https://discord.com/developers/docs/resources/audit-log#audit-log-change-object-audit-log-change-key */
+/* This is defined at specs/audit_log.json:109:22 */
+struct dati;
+} // namespace key
+} // namespace change
+} // namespace audit_log
 } // namespace discord
 /* This file is generated from specs/guild.role.json, Please don't edit it. */
 /*
@@ -715,6 +708,20 @@ namespace Template {
 /* This is defined at specs/template.json:9:22 */
 struct dati;
 } // namespace Template
+} // namespace discord
+/* This file is generated from specs/webhook.edit-webhook-message.json, Please don't edit it. */
+/*
+
+*/
+namespace discord {
+namespace webhook {
+namespace edit_webhook_message {
+
+/* https://discord.com/developers/docs/resources/webhook#edit-webhook-message */
+/* This is defined at specs/webhook.edit-webhook-message.json:8:22 */
+struct params;
+} // namespace edit_webhook_message
+} // namespace webhook
 } // namespace discord
 /* This file is generated from specs/channel.follow-news-channel.json, Please don't edit it. */
 /*
@@ -788,6 +795,19 @@ struct params;
 } // namespace modify_guild_template
 } // namespace Template
 } // namespace discord
+/* This file is generated from specs/channel.json, Please don't edit it. */
+/*
+https://discord.com/developers/docs/resources/channel#channel-object-channel-types
+*/
+namespace discord {
+namespace channel {
+
+/* Title: Channel Structure */
+/* https://discord.com/developers/docs/resources/channel#channel-object-channel-structure */
+/* This is defined at specs/channel.json:25:22 */
+struct dati;
+} // namespace channel
+} // namespace discord
 /* This file is generated from specs/guild.member.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/resources/guild#guild-member-object
@@ -814,24 +834,4 @@ namespace modify_current_user {
 struct params;
 } // namespace modify_current_user
 } // namespace user
-} // namespace discord
-/* This file is generated from specs/invite.json, Please don't edit it. */
-/*
-https://discord.com/developers/docs/resources/invite#invite-object
-*/
-namespace discord {
-namespace invite {
-
-/* Title: Invite Structure */
-/* https://discord.com/developers/docs/resources/invite#invite-object-invite-structure */
-/* This is defined at specs/invite.json:19:22 */
-struct dati;
-
-namespace metadata {
-/* Title: Invite Metadata Structure */
-/* https://discord.com/developers/docs/resources/invite#invite-metadata-object */
-/* This is defined at specs/invite.json:36:22 */
-struct dati;
-} // namespace metadata
-} // namespace invite
 } // namespace discord

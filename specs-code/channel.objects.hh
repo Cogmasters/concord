@@ -18,14 +18,16 @@ struct dati {
   int type;
 
   /* specs/channel.objects.json:15:20
-     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"permissions::bitwise_flags"}, "comment":"permission bit set"}'
+     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"discord::permissions::bitwise_flags"}, 
+          "comment":"permission bit set"}'
   */
-  permissions::bitwise_flags allow; // permission bit set
+  discord::permissions::bitwise_flags allow; // permission bit set
 
-  /* specs/channel.objects.json:16:20
-     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"permissions::bitwise_flags"}, "comment":"permission bit set"}'
+  /* specs/channel.objects.json:17:20
+     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"discord::permissions::bitwise_flags"}, 
+          "comment":"permission bit set"}'
   */
-  permissions::bitwise_flags deny; // permission bit set
+  discord::permissions::bitwise_flags deny; // permission bit set
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -63,19 +65,19 @@ extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
 
 namespace reaction {
 /* https://discord.com/developers/docs/resources/channel#reaction-object-reaction-structure */
-/* This is defined at specs/channel.objects.json:22:22 */
+/* This is defined at specs/channel.objects.json:24:22 */
 struct dati {
-  /* specs/channel.objects.json:25:20
+  /* specs/channel.objects.json:27:20
      '{ "name": "count", "type":{ "base":"int" }}'
   */
   int count;
 
-  /* specs/channel.objects.json:26:20
+  /* specs/channel.objects.json:28:20
      '{ "name": "me", "type":{ "base":"bool" }}'
   */
   bool me;
 
-  /* specs/channel.objects.json:27:20
+  /* specs/channel.objects.json:29:20
      '{ "name": "emoji", "type":{ "base":"discord::emoji::dati", "dec":"*" }, "comment":"partial emoji object"}'
   */
   discord::emoji::dati *emoji; // partial emoji object
@@ -117,14 +119,14 @@ extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
 namespace followed_channel {
 /* Title: Followed Channel Structure */
 /* https://discord.com/developers/docs/resources/channel#followed-channel-object-followed-channel-structure */
-/* This is defined at specs/channel.objects.json:34:22 */
+/* This is defined at specs/channel.objects.json:36:22 */
 struct dati {
-  /* specs/channel.objects.json:37:20
+  /* specs/channel.objects.json:39:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
   u64_snowflake_t channel_id;
 
-  /* specs/channel.objects.json:38:20
+  /* specs/channel.objects.json:40:20
      '{ "name": "webhook_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
   u64_snowflake_t webhook_id;
@@ -165,39 +167,39 @@ extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
 
 namespace attachment {
 /* https://discord.com/developers/docs/resources/channel#attachment-object */
-/* This is defined at specs/channel.objects.json:44:22 */
+/* This is defined at specs/channel.objects.json:46:22 */
 struct dati {
-  /* specs/channel.objects.json:47:20
+  /* specs/channel.objects.json:49:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
   u64_snowflake_t id;
 
-  /* specs/channel.objects.json:48:20
+  /* specs/channel.objects.json:50:20
      '{ "name": "filename", "type":{ "base":"char", "dec":"[256]" }}'
   */
   char filename[256];
 
-  /* specs/channel.objects.json:49:20
+  /* specs/channel.objects.json:51:20
      '{ "name": "size", "type":{ "base":"int" }}'
   */
   int size;
 
-  /* specs/channel.objects.json:50:20
+  /* specs/channel.objects.json:52:20
      '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }}'
   */
   char url[MAX_URL_LEN];
 
-  /* specs/channel.objects.json:51:20
+  /* specs/channel.objects.json:53:20
      '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }}'
   */
   char proxy_url[MAX_URL_LEN];
 
-  /* specs/channel.objects.json:52:20
+  /* specs/channel.objects.json:54:20
      '{ "name": "height", "type":{ "base":"int", "nullable":true }}'
   */
   int height;
 
-  /* specs/channel.objects.json:53:20
+  /* specs/channel.objects.json:55:20
      '{ "name": "width", "type":{ "base":"int", "nullable":true }}'
   */
   int width;
@@ -239,24 +241,24 @@ extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
 namespace mention {
 /* Title: Channel Mention Structure */
 /* https://discord.com/developers/docs/resources/channel#channel-mention-object-channel-mention-structure */
-/* This is defined at specs/channel.objects.json:60:22 */
+/* This is defined at specs/channel.objects.json:62:22 */
 struct dati {
-  /* specs/channel.objects.json:63:20
+  /* specs/channel.objects.json:65:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
   u64_snowflake_t id;
 
-  /* specs/channel.objects.json:64:20
+  /* specs/channel.objects.json:66:20
      '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
   u64_snowflake_t guild_id;
 
-  /* specs/channel.objects.json:65:20
+  /* specs/channel.objects.json:67:20
      '{ "name": "type", "type":{ "base":"int", "int_alias":"discord::channel::types::code" }}'
   */
   discord::channel::types::code type;
 
-  /* specs/channel.objects.json:66:20
+  /* specs/channel.objects.json:68:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }}'
   */
   char *name;
@@ -298,24 +300,24 @@ extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
 namespace allowed_mentions {
 /* Title: Allowed Mentions Structure */
 /* https://discord.com/developers/docs/resources/channel#allowed-mentions-object-allowed-mentions-structure */
-/* This is defined at specs/channel.objects.json:73:22 */
+/* This is defined at specs/channel.objects.json:75:22 */
 struct dati {
-  /* specs/channel.objects.json:76:20
+  /* specs/channel.objects.json:78:20
      '{ "name": "parse", "type":{ "base":"ja_str", "dec":"ntl" }}'
   */
   ja_str **parse;
 
-  /* specs/channel.objects.json:77:20
+  /* specs/channel.objects.json:79:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"list of snowflakes"}'
   */
   ja_u64 **roles; // list of snowflakes
 
-  /* specs/channel.objects.json:78:20
+  /* specs/channel.objects.json:80:20
      '{ "name": "users", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"list of snowflakes"}'
   */
   ja_u64 **users; // list of snowflakes
 
-  /* specs/channel.objects.json:79:20
+  /* specs/channel.objects.json:81:20
      '{ "name": "replied_user", "type":{ "base":"bool" }}'
   */
   bool replied_user;
@@ -357,75 +359,75 @@ extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
 namespace embed {
 /* Title: Embed Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-structure */
-/* This is defined at specs/channel.objects.json:86:22 */
+/* This is defined at specs/channel.objects.json:88:22 */
 struct dati {
-  /* specs/channel.objects.json:89:20
+  /* specs/channel.objects.json:91:20
      '{ "name": "title", "type":{ "base":"char", "dec":"[EMBED_TITLE_LEN]" }, 
           "option":true, "inject_if_not":""}'
   */
   char title[EMBED_TITLE_LEN];
 
-  /* specs/channel.objects.json:91:20
+  /* specs/channel.objects.json:93:20
      '{ "name": "type", "type":{ "base":"char", "dec":"[32]" }, 
           "option":true, "inject_if_not":""}'
   */
   char type[32];
 
-  /* specs/channel.objects.json:93:20
+  /* specs/channel.objects.json:95:20
      '{ "name": "description", "type":{ "base":"char", "dec":"[EMBED_DESCRIPTION_LEN]"}, 
           "option":true, "inject_if_not":""}'
   */
   char description[EMBED_DESCRIPTION_LEN];
 
-  /* specs/channel.objects.json:95:20
+  /* specs/channel.objects.json:97:20
      '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]"},
           "option":true, "inject_if_not":""}'
   */
   char url[MAX_URL_LEN];
 
-  /* specs/channel.objects.json:97:20
+  /* specs/channel.objects.json:99:20
      '{ "name": "timestamp", "type":{ "base":"char", "dec":"*", "converter":"iso8601" },
           "option":true, "inject_if_not":0}'
   */
   u64_unix_ms_t timestamp;
 
-  /* specs/channel.objects.json:99:20
+  /* specs/channel.objects.json:101:20
      '{ "name": "color", "type":{ "base":"int" }, "option":true, "inject_if_not":0}'
   */
   int color;
 
-  /* specs/channel.objects.json:100:20
+  /* specs/channel.objects.json:102:20
      '{ "name": "footer", "type":{ "base":"discord::channel::embed::footer::dati", "dec":"*"},
           "option":true, "inject_if_not":null}'
   */
   discord::channel::embed::footer::dati *footer;
 
-  /* specs/channel.objects.json:102:20
+  /* specs/channel.objects.json:104:20
      '{ "name": "image", "type":{ "base":"discord::channel::embed::image::dati", "dec":"*"}, "inject_if_not":null}'
   */
   discord::channel::embed::image::dati *image;
 
-  /* specs/channel.objects.json:103:20
+  /* specs/channel.objects.json:105:20
      '{ "name": "thumbnail", "type":{ "base":"discord::channel::embed::thumbnail::dati", "dec":"*"}, "inject_if_not":null}'
   */
   discord::channel::embed::thumbnail::dati *thumbnail;
 
-  /* specs/channel.objects.json:104:20
+  /* specs/channel.objects.json:106:20
      '{ "name": "video", "type":{ "base":"discord::channel::embed::video::dati", "dec":"*"}, "inject_if_not":null}'
   */
   discord::channel::embed::video::dati *video;
 
-  /* specs/channel.objects.json:105:20
+  /* specs/channel.objects.json:107:20
      '{ "name": "provider", "type":{ "base":"discord::channel::embed::provider::dati", "dec":"*"}, "inject_if_not":null}'
   */
   discord::channel::embed::provider::dati *provider;
 
-  /* specs/channel.objects.json:106:20
+  /* specs/channel.objects.json:108:20
      '{ "name": "author", "type":{ "base":"discord::channel::embed::author::dati", "dec":"*"}, "inject_if_not":null}'
   */
   discord::channel::embed::author::dati *author;
 
-  /* specs/channel.objects.json:107:20
+  /* specs/channel.objects.json:109:20
      '{ "name": "fields", "type":{ "base":"discord::channel::embed::field::dati", "dec":"ntl"},
           "option":true, "inject_if_not":null}'
   */
@@ -469,24 +471,24 @@ namespace embed {
 namespace thumbnail {
 /* Title: Embed Thumbnail Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-thumbnail-structure */
-/* This is defined at specs/channel.objects.json:117:22 */
+/* This is defined at specs/channel.objects.json:119:22 */
 struct dati {
-  /* specs/channel.objects.json:119:20
+  /* specs/channel.objects.json:121:20
      '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
   char url[MAX_URL_LEN];
 
-  /* specs/channel.objects.json:120:20
+  /* specs/channel.objects.json:122:20
      '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
   char proxy_url[MAX_URL_LEN];
 
-  /* specs/channel.objects.json:121:20
+  /* specs/channel.objects.json:123:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}'
   */
   int height;
 
-  /* specs/channel.objects.json:122:20
+  /* specs/channel.objects.json:124:20
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}'
   */
   int width;
@@ -530,24 +532,24 @@ namespace embed {
 namespace video {
 /* Title: Embed Thumbnail Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-thumbnail-structure */
-/* This is defined at specs/channel.objects.json:117:22 */
+/* This is defined at specs/channel.objects.json:119:22 */
 struct dati {
-  /* specs/channel.objects.json:119:20
+  /* specs/channel.objects.json:121:20
      '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
   char url[MAX_URL_LEN];
 
-  /* specs/channel.objects.json:120:20
+  /* specs/channel.objects.json:122:20
      '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
   char proxy_url[MAX_URL_LEN];
 
-  /* specs/channel.objects.json:121:20
+  /* specs/channel.objects.json:123:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}'
   */
   int height;
 
-  /* specs/channel.objects.json:122:20
+  /* specs/channel.objects.json:124:20
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}'
   */
   int width;
@@ -591,24 +593,24 @@ namespace embed {
 namespace image {
 /* Title: Embed Thumbnail Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-thumbnail-structure */
-/* This is defined at specs/channel.objects.json:117:22 */
+/* This is defined at specs/channel.objects.json:119:22 */
 struct dati {
-  /* specs/channel.objects.json:119:20
+  /* specs/channel.objects.json:121:20
      '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
   char url[MAX_URL_LEN];
 
-  /* specs/channel.objects.json:120:20
+  /* specs/channel.objects.json:122:20
      '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
   char proxy_url[MAX_URL_LEN];
 
-  /* specs/channel.objects.json:121:20
+  /* specs/channel.objects.json:123:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}'
   */
   int height;
 
-  /* specs/channel.objects.json:122:20
+  /* specs/channel.objects.json:124:20
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}'
   */
   int width;
@@ -652,14 +654,14 @@ namespace embed {
 namespace provider {
 /* Title: Embed Provider Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-provider-structure */
-/* This is defined at specs/channel.objects.json:129:22 */
+/* This is defined at specs/channel.objects.json:131:22 */
 struct dati {
-  /* specs/channel.objects.json:131:20
+  /* specs/channel.objects.json:133:20
      '{ "name": "name", "type":{"base":"char", "dec":"[EMBED_AUTHOR_NAME_LEN]"}, "inject_if_not":""}'
   */
   char name[EMBED_AUTHOR_NAME_LEN];
 
-  /* specs/channel.objects.json:132:20
+  /* specs/channel.objects.json:134:20
      '{ "name": "url", "type":{"base":"char", "dec":"[MAX_URL_LEN]"}, "inject_if_not":""}'
   */
   char url[MAX_URL_LEN];
@@ -703,24 +705,24 @@ namespace embed {
 namespace author {
 /* Title: Embed Author Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-author-structure */
-/* This is defined at specs/channel.objects.json:139:22 */
+/* This is defined at specs/channel.objects.json:141:22 */
 struct dati {
-  /* specs/channel.objects.json:141:20
+  /* specs/channel.objects.json:143:20
      '{ "name": "name", "type":{ "base":"char", "dec":"[EMBED_AUTHOR_NAME_LEN]" }, "inject_if_not":""}'
   */
   char name[EMBED_AUTHOR_NAME_LEN];
 
-  /* specs/channel.objects.json:142:20
+  /* specs/channel.objects.json:144:20
      '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
   char url[MAX_URL_LEN];
 
-  /* specs/channel.objects.json:143:20
+  /* specs/channel.objects.json:145:20
      '{ "name": "icon_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
   char icon_url[MAX_URL_LEN];
 
-  /* specs/channel.objects.json:144:20
+  /* specs/channel.objects.json:146:20
      '{ "name": "proxy_icon_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
   char proxy_icon_url[MAX_URL_LEN];
@@ -764,20 +766,20 @@ namespace embed {
 namespace footer {
 /* Title: Embed Footer Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-footer-structure */
-/* This is defined at specs/channel.objects.json:151:22 */
+/* This is defined at specs/channel.objects.json:153:22 */
 struct dati {
-  /* specs/channel.objects.json:153:20
+  /* specs/channel.objects.json:155:20
      '{ "name": "text", "type": {"base":"char", "dec":"[EMBED_FOOTER_TEXT_LEN]"}, "inject_if_not":""}'
   */
   char text[EMBED_FOOTER_TEXT_LEN];
 
-  /* specs/channel.objects.json:154:20
+  /* specs/channel.objects.json:156:20
      '{ "name": "icon_url", "type": {"base":"char", "dec":"[MAX_URL_LEN]" }, 
           "option":true, "inject_if_not":""}'
   */
   char icon_url[MAX_URL_LEN];
 
-  /* specs/channel.objects.json:156:20
+  /* specs/channel.objects.json:158:20
      '{ "name": "proxy_icon_url", "type": {"base":"char", "dec":"[MAX_URL_LEN]"}, 
           "option":true, "inject_if_not":""}'
   */
@@ -822,19 +824,19 @@ namespace embed {
 namespace field {
 /* Title: Embed Field Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-field-structure */
-/* This is defined at specs/channel.objects.json:164:22 */
+/* This is defined at specs/channel.objects.json:166:22 */
 struct dati {
-  /* specs/channel.objects.json:166:20
+  /* specs/channel.objects.json:168:20
      '{ "name": "name", "type": { "base":"char", "dec":"[EMBED_FIELD_NAME_LEN]" }, "inject_if_not":""}'
   */
   char name[EMBED_FIELD_NAME_LEN];
 
-  /* specs/channel.objects.json:167:20
+  /* specs/channel.objects.json:169:20
      '{ "name": "value", "type": { "base":"char", "dec":"[EMBED_FIELD_VALUE_LEN]" }, "inject_if_not":""}'
   */
   char value[EMBED_FIELD_VALUE_LEN];
 
-  /* specs/channel.objects.json:168:20
+  /* specs/channel.objects.json:170:20
      '{ "name": "Inline", "json_key":"inline", "type": { "base":"bool" }, "option":true}'
   */
   bool Inline;

@@ -16,15 +16,15 @@ void dati_from_json(char *json, size_t len, struct dati *p)
   */
                 "(webhooks):F,"
   /* specs/audit_log.json:12:18
-     '{"name":"users", "type": { "base":"user::dati", "dec":"*"}}'
+     '{"name":"users", "type": { "base":"discord::user::dati", "dec":"*"}}'
   */
                 "(users):F,"
   /* specs/audit_log.json:13:18
-     '{"name":"audit_log_entries", "type": { "base":"entry::dati", "dec":"*"}}'
+     '{"name":"audit_log_entries", "type": { "base":"discord::audit_log::entry::dati", "dec":"*"}}'
   */
                 "(audit_log_entries):F,"
   /* specs/audit_log.json:14:18
-     '{"name":"integrations", "type": { "base":"guild::integration::dati", "dec":"ntl"}}'
+     '{"name":"integrations", "type": { "base":"discord::guild::integration::dati", "dec":"ntl"}}'
   */
                 "(integrations):F,"
                 "@arg_switches:b"
@@ -35,17 +35,17 @@ void dati_from_json(char *json, size_t len, struct dati *p)
   */
                 discord::webhook::dati_from_json, p->webhooks,
   /* specs/audit_log.json:12:18
-     '{"name":"users", "type": { "base":"user::dati", "dec":"*"}}'
+     '{"name":"users", "type": { "base":"discord::user::dati", "dec":"*"}}'
   */
-                user::dati_from_json, p->users,
+                discord::user::dati_from_json, p->users,
   /* specs/audit_log.json:13:18
-     '{"name":"audit_log_entries", "type": { "base":"entry::dati", "dec":"*"}}'
+     '{"name":"audit_log_entries", "type": { "base":"discord::audit_log::entry::dati", "dec":"*"}}'
   */
-                entry::dati_from_json, p->audit_log_entries,
+                discord::audit_log::entry::dati_from_json, p->audit_log_entries,
   /* specs/audit_log.json:14:18
-     '{"name":"integrations", "type": { "base":"guild::integration::dati", "dec":"ntl"}}'
+     '{"name":"integrations", "type": { "base":"discord::guild::integration::dati", "dec":"ntl"}}'
   */
-                guild::integration::dati_list_from_json, &p->integrations,
+                discord::guild::integration::dati_list_from_json, &p->integrations,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
                 p->__M.record_null, sizeof(p->__M.record_null));
@@ -61,17 +61,17 @@ static void dati_use_default_inject_settings(struct dati *p)
   p->__M.arg_switches[0] = p->webhooks;
 
   /* specs/audit_log.json:12:18
-     '{"name":"users", "type": { "base":"user::dati", "dec":"*"}}'
+     '{"name":"users", "type": { "base":"discord::user::dati", "dec":"*"}}'
   */
   p->__M.arg_switches[1] = p->users;
 
   /* specs/audit_log.json:13:18
-     '{"name":"audit_log_entries", "type": { "base":"entry::dati", "dec":"*"}}'
+     '{"name":"audit_log_entries", "type": { "base":"discord::audit_log::entry::dati", "dec":"*"}}'
   */
   p->__M.arg_switches[2] = p->audit_log_entries;
 
   /* specs/audit_log.json:14:18
-     '{"name":"integrations", "type": { "base":"guild::integration::dati", "dec":"ntl"}}'
+     '{"name":"integrations", "type": { "base":"discord::guild::integration::dati", "dec":"ntl"}}'
   */
   p->__M.arg_switches[3] = p->integrations;
 
@@ -87,15 +87,15 @@ size_t dati_to_json(char *json, size_t len, struct dati *p)
   */
                 "(webhooks):F,"
   /* specs/audit_log.json:12:18
-     '{"name":"users", "type": { "base":"user::dati", "dec":"*"}}'
+     '{"name":"users", "type": { "base":"discord::user::dati", "dec":"*"}}'
   */
                 "(users):F,"
   /* specs/audit_log.json:13:18
-     '{"name":"audit_log_entries", "type": { "base":"entry::dati", "dec":"*"}}'
+     '{"name":"audit_log_entries", "type": { "base":"discord::audit_log::entry::dati", "dec":"*"}}'
   */
                 "(audit_log_entries):F,"
   /* specs/audit_log.json:14:18
-     '{"name":"integrations", "type": { "base":"guild::integration::dati", "dec":"ntl"}}'
+     '{"name":"integrations", "type": { "base":"discord::guild::integration::dati", "dec":"ntl"}}'
   */
                 "(integrations):F,"
                 "@arg_switches:b",
@@ -104,17 +104,17 @@ size_t dati_to_json(char *json, size_t len, struct dati *p)
   */
                 discord::webhook::dati_to_json, p->webhooks,
   /* specs/audit_log.json:12:18
-     '{"name":"users", "type": { "base":"user::dati", "dec":"*"}}'
+     '{"name":"users", "type": { "base":"discord::user::dati", "dec":"*"}}'
   */
-                user::dati_to_json, p->users,
+                discord::user::dati_to_json, p->users,
   /* specs/audit_log.json:13:18
-     '{"name":"audit_log_entries", "type": { "base":"entry::dati", "dec":"*"}}'
+     '{"name":"audit_log_entries", "type": { "base":"discord::audit_log::entry::dati", "dec":"*"}}'
   */
-                entry::dati_to_json, p->audit_log_entries,
+                discord::audit_log::entry::dati_to_json, p->audit_log_entries,
   /* specs/audit_log.json:14:18
-     '{"name":"integrations", "type": { "base":"guild::integration::dati", "dec":"ntl"}}'
+     '{"name":"integrations", "type": { "base":"discord::guild::integration::dati", "dec":"ntl"}}'
   */
-                guild::integration::dati_list_to_json, p->integrations,
+                discord::guild::integration::dati_list_to_json, p->integrations,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
 }
@@ -163,20 +163,20 @@ void dati_cleanup(struct dati *d) {
   if (d->webhooks)
     discord::webhook::dati_free(d->webhooks);
   /* specs/audit_log.json:12:18
-     '{"name":"users", "type": { "base":"user::dati", "dec":"*"}}'
+     '{"name":"users", "type": { "base":"discord::user::dati", "dec":"*"}}'
   */
   if (d->users)
-    user::dati_free(d->users);
+    discord::user::dati_free(d->users);
   /* specs/audit_log.json:13:18
-     '{"name":"audit_log_entries", "type": { "base":"entry::dati", "dec":"*"}}'
+     '{"name":"audit_log_entries", "type": { "base":"discord::audit_log::entry::dati", "dec":"*"}}'
   */
   if (d->audit_log_entries)
-    entry::dati_free(d->audit_log_entries);
+    discord::audit_log::entry::dati_free(d->audit_log_entries);
   /* specs/audit_log.json:14:18
-     '{"name":"integrations", "type": { "base":"guild::integration::dati", "dec":"ntl"}}'
+     '{"name":"integrations", "type": { "base":"discord::guild::integration::dati", "dec":"ntl"}}'
   */
   if (d->integrations)
-    guild::integration::dati_list_free(d->integrations);
+    discord::guild::integration::dati_list_free(d->integrations);
 }
 
 void dati_init(struct dati *p) {
@@ -187,17 +187,17 @@ void dati_init(struct dati *p) {
   p->webhooks = discord::webhook::dati_alloc();
 
   /* specs/audit_log.json:12:18
-     '{"name":"users", "type": { "base":"user::dati", "dec":"*"}}'
+     '{"name":"users", "type": { "base":"discord::user::dati", "dec":"*"}}'
   */
-  p->users = user::dati_alloc();
+  p->users = discord::user::dati_alloc();
 
   /* specs/audit_log.json:13:18
-     '{"name":"audit_log_entries", "type": { "base":"entry::dati", "dec":"*"}}'
+     '{"name":"audit_log_entries", "type": { "base":"discord::audit_log::entry::dati", "dec":"*"}}'
   */
-  p->audit_log_entries = entry::dati_alloc();
+  p->audit_log_entries = discord::audit_log::entry::dati_alloc();
 
   /* specs/audit_log.json:14:18
-     '{"name":"integrations", "type": { "base":"guild::integration::dati", "dec":"ntl"}}'
+     '{"name":"integrations", "type": { "base":"discord::guild::integration::dati", "dec":"ntl"}}'
   */
 
 }
@@ -244,7 +244,7 @@ void dati_from_json(char *json, size_t len, struct dati *p)
   */
                 "(target_id):?s,"
   /* specs/audit_log.json:68:18
-     '{"name":"changes", "type": {"base":"change::dati", "dec":"*"}}'
+     '{"name":"changes", "type": {"base":"discord::audit_log::change::dati", "dec":"*"}}'
   */
                 "(changes):F,"
   /* specs/audit_log.json:69:18
@@ -256,11 +256,11 @@ void dati_from_json(char *json, size_t len, struct dati *p)
   */
                 "(id):F,"
   /* specs/audit_log.json:71:18
-     '{"name":"action_type", "type": {"base":"int", "c_base":"events::code"}}'
+     '{"name":"action_type", "type": {"base":"int", "c_base":"discord::entry::events::code"}}'
   */
                 "(action_type):d,"
   /* specs/audit_log.json:72:18
-     '{"name":"options", "type": {"base":"optional_info::dati", "dec":"*"}}'
+     '{"name":"options", "type": {"base":"discord::audit_log::entry::optional_info::dati", "dec":"*"}}'
   */
                 "(options):F,"
   /* specs/audit_log.json:73:18
@@ -275,9 +275,9 @@ void dati_from_json(char *json, size_t len, struct dati *p)
   */
                 &p->target_id,
   /* specs/audit_log.json:68:18
-     '{"name":"changes", "type": {"base":"change::dati", "dec":"*"}}'
+     '{"name":"changes", "type": {"base":"discord::audit_log::change::dati", "dec":"*"}}'
   */
-                change::dati_from_json, p->changes,
+                discord::audit_log::change::dati_from_json, p->changes,
   /* specs/audit_log.json:69:18
      '{"name":"user_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
   */
@@ -287,13 +287,13 @@ void dati_from_json(char *json, size_t len, struct dati *p)
   */
                 orka_strtoull, &p->id,
   /* specs/audit_log.json:71:18
-     '{"name":"action_type", "type": {"base":"int", "c_base":"events::code"}}'
+     '{"name":"action_type", "type": {"base":"int", "c_base":"discord::entry::events::code"}}'
   */
                 &p->action_type,
   /* specs/audit_log.json:72:18
-     '{"name":"options", "type": {"base":"optional_info::dati", "dec":"*"}}'
+     '{"name":"options", "type": {"base":"discord::audit_log::entry::optional_info::dati", "dec":"*"}}'
   */
-                optional_info::dati_from_json, p->options,
+                discord::audit_log::entry::optional_info::dati_from_json, p->options,
   /* specs/audit_log.json:73:18
      '{"name":"reason", "type": {"base":"char", "dec":"[MAX_REASON_LEN]"}}'
   */
@@ -313,7 +313,7 @@ static void dati_use_default_inject_settings(struct dati *p)
   p->__M.arg_switches[0] = p->target_id;
 
   /* specs/audit_log.json:68:18
-     '{"name":"changes", "type": {"base":"change::dati", "dec":"*"}}'
+     '{"name":"changes", "type": {"base":"discord::audit_log::change::dati", "dec":"*"}}'
   */
   p->__M.arg_switches[1] = p->changes;
 
@@ -328,12 +328,12 @@ static void dati_use_default_inject_settings(struct dati *p)
   p->__M.arg_switches[3] = &p->id;
 
   /* specs/audit_log.json:71:18
-     '{"name":"action_type", "type": {"base":"int", "c_base":"events::code"}}'
+     '{"name":"action_type", "type": {"base":"int", "c_base":"discord::entry::events::code"}}'
   */
   p->__M.arg_switches[4] = &p->action_type;
 
   /* specs/audit_log.json:72:18
-     '{"name":"options", "type": {"base":"optional_info::dati", "dec":"*"}}'
+     '{"name":"options", "type": {"base":"discord::audit_log::entry::optional_info::dati", "dec":"*"}}'
   */
   p->__M.arg_switches[5] = p->options;
 
@@ -354,7 +354,7 @@ size_t dati_to_json(char *json, size_t len, struct dati *p)
   */
                 "(target_id):s,"
   /* specs/audit_log.json:68:18
-     '{"name":"changes", "type": {"base":"change::dati", "dec":"*"}}'
+     '{"name":"changes", "type": {"base":"discord::audit_log::change::dati", "dec":"*"}}'
   */
                 "(changes):F,"
   /* specs/audit_log.json:69:18
@@ -366,11 +366,11 @@ size_t dati_to_json(char *json, size_t len, struct dati *p)
   */
                 "(id):|F|,"
   /* specs/audit_log.json:71:18
-     '{"name":"action_type", "type": {"base":"int", "c_base":"events::code"}}'
+     '{"name":"action_type", "type": {"base":"int", "c_base":"discord::entry::events::code"}}'
   */
                 "(action_type):d,"
   /* specs/audit_log.json:72:18
-     '{"name":"options", "type": {"base":"optional_info::dati", "dec":"*"}}'
+     '{"name":"options", "type": {"base":"discord::audit_log::entry::optional_info::dati", "dec":"*"}}'
   */
                 "(options):F,"
   /* specs/audit_log.json:73:18
@@ -383,9 +383,9 @@ size_t dati_to_json(char *json, size_t len, struct dati *p)
   */
                 p->target_id,
   /* specs/audit_log.json:68:18
-     '{"name":"changes", "type": {"base":"change::dati", "dec":"*"}}'
+     '{"name":"changes", "type": {"base":"discord::audit_log::change::dati", "dec":"*"}}'
   */
-                change::dati_to_json, p->changes,
+                discord::audit_log::change::dati_to_json, p->changes,
   /* specs/audit_log.json:69:18
      '{"name":"user_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
   */
@@ -395,13 +395,13 @@ size_t dati_to_json(char *json, size_t len, struct dati *p)
   */
                 orka_ulltostr, &p->id,
   /* specs/audit_log.json:71:18
-     '{"name":"action_type", "type": {"base":"int", "c_base":"events::code"}}'
+     '{"name":"action_type", "type": {"base":"int", "c_base":"discord::entry::events::code"}}'
   */
                 &p->action_type,
   /* specs/audit_log.json:72:18
-     '{"name":"options", "type": {"base":"optional_info::dati", "dec":"*"}}'
+     '{"name":"options", "type": {"base":"discord::audit_log::entry::optional_info::dati", "dec":"*"}}'
   */
-                optional_info::dati_to_json, p->options,
+                discord::audit_log::entry::optional_info::dati_to_json, p->options,
   /* specs/audit_log.json:73:18
      '{"name":"reason", "type": {"base":"char", "dec":"[MAX_REASON_LEN]"}}'
   */
@@ -454,10 +454,10 @@ void dati_cleanup(struct dati *d) {
   if (d->target_id)
     free(d->target_id);
   /* specs/audit_log.json:68:18
-     '{"name":"changes", "type": {"base":"change::dati", "dec":"*"}}'
+     '{"name":"changes", "type": {"base":"discord::audit_log::change::dati", "dec":"*"}}'
   */
   if (d->changes)
-    change::dati_free(d->changes);
+    discord::audit_log::change::dati_free(d->changes);
   /* specs/audit_log.json:69:18
      '{"name":"user_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
   */
@@ -467,14 +467,14 @@ void dati_cleanup(struct dati *d) {
   */
   //p->id is a scalar
   /* specs/audit_log.json:71:18
-     '{"name":"action_type", "type": {"base":"int", "c_base":"events::code"}}'
+     '{"name":"action_type", "type": {"base":"int", "c_base":"discord::entry::events::code"}}'
   */
   //p->action_type is a scalar
   /* specs/audit_log.json:72:18
-     '{"name":"options", "type": {"base":"optional_info::dati", "dec":"*"}}'
+     '{"name":"options", "type": {"base":"discord::audit_log::entry::optional_info::dati", "dec":"*"}}'
   */
   if (d->options)
-    optional_info::dati_free(d->options);
+    discord::audit_log::entry::optional_info::dati_free(d->options);
   /* specs/audit_log.json:73:18
      '{"name":"reason", "type": {"base":"char", "dec":"[MAX_REASON_LEN]"}}'
   */
@@ -488,9 +488,9 @@ void dati_init(struct dati *p) {
   */
 
   /* specs/audit_log.json:68:18
-     '{"name":"changes", "type": {"base":"change::dati", "dec":"*"}}'
+     '{"name":"changes", "type": {"base":"discord::audit_log::change::dati", "dec":"*"}}'
   */
-  p->changes = change::dati_alloc();
+  p->changes = discord::audit_log::change::dati_alloc();
 
   /* specs/audit_log.json:69:18
      '{"name":"user_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
@@ -501,13 +501,13 @@ void dati_init(struct dati *p) {
   */
 
   /* specs/audit_log.json:71:18
-     '{"name":"action_type", "type": {"base":"int", "c_base":"events::code"}}'
+     '{"name":"action_type", "type": {"base":"int", "c_base":"discord::entry::events::code"}}'
   */
 
   /* specs/audit_log.json:72:18
-     '{"name":"options", "type": {"base":"optional_info::dati", "dec":"*"}}'
+     '{"name":"options", "type": {"base":"discord::audit_log::entry::optional_info::dati", "dec":"*"}}'
   */
-  p->options = optional_info::dati_alloc();
+  p->options = discord::audit_log::entry::optional_info::dati_alloc();
 
   /* specs/audit_log.json:73:18
      '{"name":"reason", "type": {"base":"char", "dec":"[MAX_REASON_LEN]"}}'

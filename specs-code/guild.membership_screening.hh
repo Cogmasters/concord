@@ -15,9 +15,9 @@ namespace field {
 /* This is defined at specs/guild.membership_screening.json:17:22 */
 struct dati {
   /* specs/guild.membership_screening.json:20:20
-     '{ "name": "field_type", "type":{ "base":"int", "int_alias":"field_type::code" }}'
+     '{ "name": "field_type", "type":{ "base":"int", "int_alias":"discord::guild::membership_screening::field_type::code" }}'
   */
-  field_type::code field_type;
+  discord::guild::membership_screening::field_type::code field_type;
 
   /* specs/guild.membership_screening.json:21:20
      '{ "name": "label", "type":{ "base":"char", "dec":"*" }}'

@@ -13,19 +13,19 @@ struct dati {
   discord::webhook::dati *webhooks;
 
   /* specs/audit_log.json:12:18
-     '{"name":"users", "type": { "base":"user::dati", "dec":"*"}}'
+     '{"name":"users", "type": { "base":"discord::user::dati", "dec":"*"}}'
   */
-  user::dati *users;
+  discord::user::dati *users;
 
   /* specs/audit_log.json:13:18
-     '{"name":"audit_log_entries", "type": { "base":"entry::dati", "dec":"*"}}'
+     '{"name":"audit_log_entries", "type": { "base":"discord::audit_log::entry::dati", "dec":"*"}}'
   */
-  entry::dati *audit_log_entries;
+  discord::audit_log::entry::dati *audit_log_entries;
 
   /* specs/audit_log.json:14:18
-     '{"name":"integrations", "type": { "base":"guild::integration::dati", "dec":"ntl"}}'
+     '{"name":"integrations", "type": { "base":"discord::guild::integration::dati", "dec":"ntl"}}'
   */
-  guild::integration::dati **integrations;
+  discord::guild::integration::dati **integrations;
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -113,9 +113,9 @@ struct dati {
   char *target_id;
 
   /* specs/audit_log.json:68:18
-     '{"name":"changes", "type": {"base":"change::dati", "dec":"*"}}'
+     '{"name":"changes", "type": {"base":"discord::audit_log::change::dati", "dec":"*"}}'
   */
-  change::dati *changes;
+  discord::audit_log::change::dati *changes;
 
   /* specs/audit_log.json:69:18
      '{"name":"user_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
@@ -128,14 +128,14 @@ struct dati {
   u64_snowflake_t id;
 
   /* specs/audit_log.json:71:18
-     '{"name":"action_type", "type": {"base":"int", "c_base":"events::code"}}'
+     '{"name":"action_type", "type": {"base":"int", "c_base":"discord::entry::events::code"}}'
   */
   int action_type;
 
   /* specs/audit_log.json:72:18
-     '{"name":"options", "type": {"base":"optional_info::dati", "dec":"*"}}'
+     '{"name":"options", "type": {"base":"discord::audit_log::entry::optional_info::dati", "dec":"*"}}'
   */
-  optional_info::dati *options;
+  discord::audit_log::entry::optional_info::dati *options;
 
   /* specs/audit_log.json:73:18
      '{"name":"reason", "type": {"base":"char", "dec":"[MAX_REASON_LEN]"}}'

@@ -1086,19 +1086,19 @@ void dati_from_json_disabled(char *json, size_t len, struct dati *p)
                 orka_strtoull, &p->id,
                 orka_strtoull, &p->channel_id,
                 orka_strtoull, &p->guild_id,
-                user::dati_from_json, p->author,
-                guild::member::dati_from_json, p->member,
+                discord::user::dati_from_json, p->author,
+                discord::guild::member::dati_from_json, p->member,
                 &p->content,
                 orka_iso8601_to_unix_ms, &p->timestamp,
                 orka_iso8601_to_unix_ms, &p->edited_timestamp,
                 &p->tts,
                 &p->mention_everyone,
-                user::dati_list_from_json, &p->mentions,
+                discord::user::dati_list_from_json, &p->mentions,
                 ja_u64_list_from_json, &p->mention_roles,
-                mention::dati_list_from_json, &p->mention_channels,
-                attachment::dati_list_from_json, &p->attachments,
-                embed::dati_list_from_json, &p->embeds,
-                reaction::dati_list_from_json, &p->reactions,
+                discord::channel::mention::dati_list_from_json, &p->mention_channels,
+                discord::channel::attachment::dati_list_from_json, &p->attachments,
+                discord::channel::embed::dati_list_from_json, &p->embeds,
+                discord::channel::reaction::dati_list_from_json, &p->reactions,
                 &p->nonce,
                 &p->pinned,
                 orka_strtoull, &p->webhook_id,
@@ -1135,13 +1135,13 @@ static void dati_use_default_inject_settings(struct dati *p)
   if (p->guild_id != 0)
     p->__M.arg_switches[2] = &p->guild_id;
 
-  /* specs/channel.message.json:134:60
-     '{"type":{"base":"user::dati", "dec":"*"}, "name":"author"}'
+  /* specs/channel.message.json:134:69
+     '{"type":{"base":"discord::user::dati", "dec":"*"}, "name":"author"}'
   */
   p->__M.arg_switches[3] = p->author;
 
-  /* specs/channel.message.json:135:69
-     '{"type":{"base":"guild::member::dati", "dec":"*"}, "name":"member", 
+  /* specs/channel.message.json:135:78
+     '{"type":{"base":"discord::guild::member::dati", "dec":"*"}, "name":"member", 
           "option":true, "comment":"partial guild member object"}'
   */
   p->__M.arg_switches[4] = p->member;
@@ -1173,8 +1173,8 @@ static void dati_use_default_inject_settings(struct dati *p)
   */
   p->__M.arg_switches[9] = &p->mention_everyone;
 
-  /* specs/channel.message.json:143:62
-     '{"type":{"base":"user::dati", "dec":"ntl"}, "name":"mentions", 
+  /* specs/channel.message.json:143:71
+     '{"type":{"base":"discord::user::dati", "dec":"ntl"}, "name":"mentions", 
           "comment":"array of user objects, with an additional partial member field"}'
   */
   p->__M.arg_switches[10] = p->mentions;
@@ -1184,24 +1184,24 @@ static void dati_use_default_inject_settings(struct dati *p)
   */
   p->__M.arg_switches[11] = p->mention_roles;
 
-  /* specs/channel.message.json:146:65
-     '{"type":{"base":"mention::dati", "dec":"ntl"}, "name":"mention_channels",
+  /* specs/channel.message.json:146:83
+     '{"type":{"base":"discord::channel::mention::dati", "dec":"ntl"}, "name":"mention_channels",
           "option":true }'
   */
   p->__M.arg_switches[12] = p->mention_channels;
 
-  /* specs/channel.message.json:148:68
-     '{"type":{"base":"attachment::dati", "dec":"ntl"}, "name":"attachments"}'
+  /* specs/channel.message.json:148:86
+     '{"type":{"base":"discord::channel::attachment::dati", "dec":"ntl"}, "name":"attachments"}'
   */
   p->__M.arg_switches[13] = p->attachments;
 
-  /* specs/channel.message.json:149:63
-     '{"type":{"base":"embed::dati", "dec":"ntl"}, "name":"embeds"}'
+  /* specs/channel.message.json:149:81
+     '{"type":{"base":"discord::channel::embed::dati", "dec":"ntl"}, "name":"embeds"}'
   */
   p->__M.arg_switches[14] = p->embeds;
 
-  /* specs/channel.message.json:150:65
-     '{"type":{"base":"reaction::dati","dec":"ntl"}, "name":"reactions", 
+  /* specs/channel.message.json:150:83
+     '{"type":{"base":"discord::channel::reaction::dati","dec":"ntl"}, "name":"reactions", 
           "option":true }'
   */
   p->__M.arg_switches[15] = p->reactions;
@@ -1291,12 +1291,12 @@ size_t dati_to_json(char *json, size_t len, struct dati *p)
           "option":true, "inject_if_not":0}'
   */
                 "(guild_id):|F|,"
-  /* specs/channel.message.json:134:60
-     '{"type":{"base":"user::dati", "dec":"*"}, "name":"author"}'
+  /* specs/channel.message.json:134:69
+     '{"type":{"base":"discord::user::dati", "dec":"*"}, "name":"author"}'
   */
                 "(author):F,"
-  /* specs/channel.message.json:135:69
-     '{"type":{"base":"guild::member::dati", "dec":"*"}, "name":"member", 
+  /* specs/channel.message.json:135:78
+     '{"type":{"base":"discord::guild::member::dati", "dec":"*"}, "name":"member", 
           "option":true, "comment":"partial guild member object"}'
   */
                 "(member):F,"
@@ -1321,8 +1321,8 @@ size_t dati_to_json(char *json, size_t len, struct dati *p)
      '{"type":{"base":"bool"}, "name":"mention_everyone"}'
   */
                 "(mention_everyone):b,"
-  /* specs/channel.message.json:143:62
-     '{"type":{"base":"user::dati", "dec":"ntl"}, "name":"mentions", 
+  /* specs/channel.message.json:143:71
+     '{"type":{"base":"discord::user::dati", "dec":"ntl"}, "name":"mentions", 
           "comment":"array of user objects, with an additional partial member field"}'
   */
                 "(mentions):F,"
@@ -1330,21 +1330,21 @@ size_t dati_to_json(char *json, size_t len, struct dati *p)
      '{"type":{"base":"ja_u64", "dec":"ntl"}, "name":"mention_roles", "comment":"array of role object ids"}'
   */
                 "(mention_roles):F,"
-  /* specs/channel.message.json:146:65
-     '{"type":{"base":"mention::dati", "dec":"ntl"}, "name":"mention_channels",
+  /* specs/channel.message.json:146:83
+     '{"type":{"base":"discord::channel::mention::dati", "dec":"ntl"}, "name":"mention_channels",
           "option":true }'
   */
                 "(mention_channels):F,"
-  /* specs/channel.message.json:148:68
-     '{"type":{"base":"attachment::dati", "dec":"ntl"}, "name":"attachments"}'
+  /* specs/channel.message.json:148:86
+     '{"type":{"base":"discord::channel::attachment::dati", "dec":"ntl"}, "name":"attachments"}'
   */
                 "(attachments):F,"
-  /* specs/channel.message.json:149:63
-     '{"type":{"base":"embed::dati", "dec":"ntl"}, "name":"embeds"}'
+  /* specs/channel.message.json:149:81
+     '{"type":{"base":"discord::channel::embed::dati", "dec":"ntl"}, "name":"embeds"}'
   */
                 "(embeds):F,"
-  /* specs/channel.message.json:150:65
-     '{"type":{"base":"reaction::dati","dec":"ntl"}, "name":"reactions", 
+  /* specs/channel.message.json:150:83
+     '{"type":{"base":"discord::channel::reaction::dati","dec":"ntl"}, "name":"reactions", 
           "option":true }'
   */
                 "(reactions):F,"
@@ -1411,15 +1411,15 @@ size_t dati_to_json(char *json, size_t len, struct dati *p)
           "option":true, "inject_if_not":0}'
   */
                 orka_ulltostr, &p->guild_id,
-  /* specs/channel.message.json:134:60
-     '{"type":{"base":"user::dati", "dec":"*"}, "name":"author"}'
+  /* specs/channel.message.json:134:69
+     '{"type":{"base":"discord::user::dati", "dec":"*"}, "name":"author"}'
   */
-                user::dati_to_json, p->author,
-  /* specs/channel.message.json:135:69
-     '{"type":{"base":"guild::member::dati", "dec":"*"}, "name":"member", 
+                discord::user::dati_to_json, p->author,
+  /* specs/channel.message.json:135:78
+     '{"type":{"base":"discord::guild::member::dati", "dec":"*"}, "name":"member", 
           "option":true, "comment":"partial guild member object"}'
   */
-                guild::member::dati_to_json, p->member,
+                discord::guild::member::dati_to_json, p->member,
   /* specs/channel.message.json:137:54
      '{"type":{"base":"char", "dec":"*"}, "name":"content"}'
   */
@@ -1441,33 +1441,33 @@ size_t dati_to_json(char *json, size_t len, struct dati *p)
      '{"type":{"base":"bool"}, "name":"mention_everyone"}'
   */
                 &p->mention_everyone,
-  /* specs/channel.message.json:143:62
-     '{"type":{"base":"user::dati", "dec":"ntl"}, "name":"mentions", 
+  /* specs/channel.message.json:143:71
+     '{"type":{"base":"discord::user::dati", "dec":"ntl"}, "name":"mentions", 
           "comment":"array of user objects, with an additional partial member field"}'
   */
-                user::dati_list_to_json, p->mentions,
+                discord::user::dati_list_to_json, p->mentions,
   /* specs/channel.message.json:145:58
      '{"type":{"base":"ja_u64", "dec":"ntl"}, "name":"mention_roles", "comment":"array of role object ids"}'
   */
                 ja_u64_list_to_json, p->mention_roles,
-  /* specs/channel.message.json:146:65
-     '{"type":{"base":"mention::dati", "dec":"ntl"}, "name":"mention_channels",
+  /* specs/channel.message.json:146:83
+     '{"type":{"base":"discord::channel::mention::dati", "dec":"ntl"}, "name":"mention_channels",
           "option":true }'
   */
-                mention::dati_list_to_json, p->mention_channels,
-  /* specs/channel.message.json:148:68
-     '{"type":{"base":"attachment::dati", "dec":"ntl"}, "name":"attachments"}'
+                discord::channel::mention::dati_list_to_json, p->mention_channels,
+  /* specs/channel.message.json:148:86
+     '{"type":{"base":"discord::channel::attachment::dati", "dec":"ntl"}, "name":"attachments"}'
   */
-                attachment::dati_list_to_json, p->attachments,
-  /* specs/channel.message.json:149:63
-     '{"type":{"base":"embed::dati", "dec":"ntl"}, "name":"embeds"}'
+                discord::channel::attachment::dati_list_to_json, p->attachments,
+  /* specs/channel.message.json:149:81
+     '{"type":{"base":"discord::channel::embed::dati", "dec":"ntl"}, "name":"embeds"}'
   */
-                embed::dati_list_to_json, p->embeds,
-  /* specs/channel.message.json:150:65
-     '{"type":{"base":"reaction::dati","dec":"ntl"}, "name":"reactions", 
+                discord::channel::embed::dati_list_to_json, p->embeds,
+  /* specs/channel.message.json:150:83
+     '{"type":{"base":"discord::channel::reaction::dati","dec":"ntl"}, "name":"reactions", 
           "option":true }'
   */
-                reaction::dati_list_to_json, p->reactions,
+                discord::channel::reaction::dati_list_to_json, p->reactions,
   /* specs/channel.message.json:152:54
      '{"type":{"base":"char", "dec":"*"}, "name":"nonce", "comment":"integer or string",
           "option":true }'
@@ -1572,17 +1572,17 @@ void dati_cleanup(struct dati *d) {
           "option":true, "inject_if_not":0}'
   */
   //p->guild_id is a scalar
-  /* specs/channel.message.json:134:60
-     '{"type":{"base":"user::dati", "dec":"*"}, "name":"author"}'
+  /* specs/channel.message.json:134:69
+     '{"type":{"base":"discord::user::dati", "dec":"*"}, "name":"author"}'
   */
   if (d->author)
-    user::dati_free(d->author);
-  /* specs/channel.message.json:135:69
-     '{"type":{"base":"guild::member::dati", "dec":"*"}, "name":"member", 
+    discord::user::dati_free(d->author);
+  /* specs/channel.message.json:135:78
+     '{"type":{"base":"discord::guild::member::dati", "dec":"*"}, "name":"member", 
           "option":true, "comment":"partial guild member object"}'
   */
   if (d->member)
-    guild::member::dati_free(d->member);
+    discord::guild::member::dati_free(d->member);
   /* specs/channel.message.json:137:54
      '{"type":{"base":"char", "dec":"*"}, "name":"content"}'
   */
@@ -1605,39 +1605,39 @@ void dati_cleanup(struct dati *d) {
      '{"type":{"base":"bool"}, "name":"mention_everyone"}'
   */
   //p->mention_everyone is a scalar
-  /* specs/channel.message.json:143:62
-     '{"type":{"base":"user::dati", "dec":"ntl"}, "name":"mentions", 
+  /* specs/channel.message.json:143:71
+     '{"type":{"base":"discord::user::dati", "dec":"ntl"}, "name":"mentions", 
           "comment":"array of user objects, with an additional partial member field"}'
   */
   if (d->mentions)
-    user::dati_list_free(d->mentions);
+    discord::user::dati_list_free(d->mentions);
   /* specs/channel.message.json:145:58
      '{"type":{"base":"ja_u64", "dec":"ntl"}, "name":"mention_roles", "comment":"array of role object ids"}'
   */
   if (d->mention_roles)
     ja_u64_list_free(d->mention_roles);
-  /* specs/channel.message.json:146:65
-     '{"type":{"base":"mention::dati", "dec":"ntl"}, "name":"mention_channels",
+  /* specs/channel.message.json:146:83
+     '{"type":{"base":"discord::channel::mention::dati", "dec":"ntl"}, "name":"mention_channels",
           "option":true }'
   */
   if (d->mention_channels)
-    mention::dati_list_free(d->mention_channels);
-  /* specs/channel.message.json:148:68
-     '{"type":{"base":"attachment::dati", "dec":"ntl"}, "name":"attachments"}'
+    discord::channel::mention::dati_list_free(d->mention_channels);
+  /* specs/channel.message.json:148:86
+     '{"type":{"base":"discord::channel::attachment::dati", "dec":"ntl"}, "name":"attachments"}'
   */
   if (d->attachments)
-    attachment::dati_list_free(d->attachments);
-  /* specs/channel.message.json:149:63
-     '{"type":{"base":"embed::dati", "dec":"ntl"}, "name":"embeds"}'
+    discord::channel::attachment::dati_list_free(d->attachments);
+  /* specs/channel.message.json:149:81
+     '{"type":{"base":"discord::channel::embed::dati", "dec":"ntl"}, "name":"embeds"}'
   */
   if (d->embeds)
-    embed::dati_list_free(d->embeds);
-  /* specs/channel.message.json:150:65
-     '{"type":{"base":"reaction::dati","dec":"ntl"}, "name":"reactions", 
+    discord::channel::embed::dati_list_free(d->embeds);
+  /* specs/channel.message.json:150:83
+     '{"type":{"base":"discord::channel::reaction::dati","dec":"ntl"}, "name":"reactions", 
           "option":true }'
   */
   if (d->reactions)
-    reaction::dati_list_free(d->reactions);
+    discord::channel::reaction::dati_list_free(d->reactions);
   /* specs/channel.message.json:152:54
      '{"type":{"base":"char", "dec":"*"}, "name":"nonce", "comment":"integer or string",
           "option":true }'
@@ -1710,16 +1710,16 @@ void dati_init(struct dati *p) {
           "option":true, "inject_if_not":0}'
   */
 
-  /* specs/channel.message.json:134:60
-     '{"type":{"base":"user::dati", "dec":"*"}, "name":"author"}'
+  /* specs/channel.message.json:134:69
+     '{"type":{"base":"discord::user::dati", "dec":"*"}, "name":"author"}'
   */
-  p->author = user::dati_alloc();
+  p->author = discord::user::dati_alloc();
 
-  /* specs/channel.message.json:135:69
-     '{"type":{"base":"guild::member::dati", "dec":"*"}, "name":"member", 
+  /* specs/channel.message.json:135:78
+     '{"type":{"base":"discord::guild::member::dati", "dec":"*"}, "name":"member", 
           "option":true, "comment":"partial guild member object"}'
   */
-  p->member = guild::member::dati_alloc();
+  p->member = discord::guild::member::dati_alloc();
 
   /* specs/channel.message.json:137:54
      '{"type":{"base":"char", "dec":"*"}, "name":"content"}'
@@ -1742,8 +1742,8 @@ void dati_init(struct dati *p) {
      '{"type":{"base":"bool"}, "name":"mention_everyone"}'
   */
 
-  /* specs/channel.message.json:143:62
-     '{"type":{"base":"user::dati", "dec":"ntl"}, "name":"mentions", 
+  /* specs/channel.message.json:143:71
+     '{"type":{"base":"discord::user::dati", "dec":"ntl"}, "name":"mentions", 
           "comment":"array of user objects, with an additional partial member field"}'
   */
 
@@ -1751,21 +1751,21 @@ void dati_init(struct dati *p) {
      '{"type":{"base":"ja_u64", "dec":"ntl"}, "name":"mention_roles", "comment":"array of role object ids"}'
   */
 
-  /* specs/channel.message.json:146:65
-     '{"type":{"base":"mention::dati", "dec":"ntl"}, "name":"mention_channels",
+  /* specs/channel.message.json:146:83
+     '{"type":{"base":"discord::channel::mention::dati", "dec":"ntl"}, "name":"mention_channels",
           "option":true }'
   */
 
-  /* specs/channel.message.json:148:68
-     '{"type":{"base":"attachment::dati", "dec":"ntl"}, "name":"attachments"}'
+  /* specs/channel.message.json:148:86
+     '{"type":{"base":"discord::channel::attachment::dati", "dec":"ntl"}, "name":"attachments"}'
   */
 
-  /* specs/channel.message.json:149:63
-     '{"type":{"base":"embed::dati", "dec":"ntl"}, "name":"embeds"}'
+  /* specs/channel.message.json:149:81
+     '{"type":{"base":"discord::channel::embed::dati", "dec":"ntl"}, "name":"embeds"}'
   */
 
-  /* specs/channel.message.json:150:65
-     '{"type":{"base":"reaction::dati","dec":"ntl"}, "name":"reactions", 
+  /* specs/channel.message.json:150:83
+     '{"type":{"base":"discord::channel::reaction::dati","dec":"ntl"}, "name":"reactions", 
           "option":true }'
   */
 
