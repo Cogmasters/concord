@@ -23,7 +23,7 @@ cws_on_close_cb(void *p_ws, CURL *ehandle, enum cws_close_reason cwscode, const 
 struct _event_cxt {
   struct websockets_s *ws; // the websockets client
   struct event_cbs *event; // callback associated with event
-  struct thread_pool *thread; // thread associated with event
+  struct wthread_s *thread; // thread associated with event
 };
 
 static void*
@@ -81,10 +81,10 @@ cws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
 
     // get a available thread
     for (size_t i=0; i < MAX_THREADS; ++i) {
-      if (!ws->threads[i].is_busy) {
+      if (!ws->thread_pool[i].is_busy) {
         --ws->num_notbusy;
 
-        cxt->thread = &ws->threads[i];
+        cxt->thread = &ws->thread_pool[i];
         cxt->thread->is_busy = true;
         cxt->thread->data = ws->curr_iter_data;
         cxt->thread->cleanup = ws->curr_iter_cleanup;

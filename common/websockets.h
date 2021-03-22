@@ -43,7 +43,7 @@ struct ws_callbacks {
   void (*on_close)(void *data, enum cws_close_reason cwscode, const char *reason, size_t len);
 };
 
-struct thread_pool {
+struct wthread_s { // worker thread
   pthread_t tid;
   bool is_busy;
 
@@ -77,7 +77,7 @@ struct websockets_s {
   void *curr_iter_data;
   void (*curr_iter_cleanup)(void *curr_iter_data);
 
-  struct thread_pool threads[MAX_THREADS];
+  struct wthread_s thread_pool[MAX_THREADS];
   int num_notbusy; // num of available threads
 
   pthread_mutex_t lock;
