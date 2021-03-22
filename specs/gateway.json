@@ -93,9 +93,9 @@
       "fields":
       [
         { "name":"since","type":{"base":"char", "dec":"*", "converter":"iso8601"},
-          "inject_if_not":0 },
-        { "name":"activities","type":{"base":"discord::gateway::identify::status_update::activity::dati", 
-          "dec":"ntl"}, "inject_if_not":null},
+          "option":true, "inject_if_not":0 },
+        { "name":"activities","type":{"base":"discord::gateway::identify::status_update::activity::dati", "dec":"ntl"}, 
+          "option":true, "inject_if_not":null},
         { "name":"status","type":{"base":"char", "dec":"[16]"}},
         { "name":"afk","type":{"base":"bool"}} 
       ]
@@ -121,13 +121,18 @@
       [
         { "name":"name","type":{"base":"char", "dec":"[512]"}},
         { "name":"type","type":{"base":"int"}},
-        { "name":"url","type":{"base":"char", "dec":"[MAX_URL_LEN]"}},
+        { "name":"url","type":{"base":"char", "dec":"[MAX_URL_LEN]"},
+          "option":true, "inject_if_not":""},
         { "name":"created_at","type":{"base":"char", "dec":"*", "converter":"iso8601"},
-          "inject_if_not":0 },
-        { "name":"application_id","type":{"base":"char", "dec":"*", "converter":"snowflake" }},
-        { "name":"details","type":{"base":"char", "dec":"*"}},
-        { "name":"state","type":{"base":"char", "dec":"*"}},
-        { "name":"instance","type":{"base":"bool"}}
+          "option":true, "inject_if_not":0 },
+        { "name":"application_id","type":{"base":"char", "dec":"*", "converter":"snowflake" },
+          "option":true, "inject_if_not":0 },
+        { "name":"details","type":{"base":"char", "dec":"*"},
+          "option":true, "inject_if_not":null},
+        { "name":"state","type":{"base":"char", "dec":"*"},
+          "option":true, "inject_if_not":null},
+        { "name":"instance","type":{"base":"bool"},
+          "option":true, "inject_if_not":false}
       ]
     },
     {

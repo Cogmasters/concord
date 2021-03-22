@@ -353,12 +353,12 @@ void dati_from_json(char *json, size_t len, struct dati *p)
   r=json_extract(json, len, 
   /* specs/gateway.json:95:19
      '{ "name":"since","type":{"base":"char", "dec":"*", "converter":"iso8601"},
-          "inject_if_not":0 }'
+          "option":true, "inject_if_not":0 }'
   */
                 "(since):F,"
   /* specs/gateway.json:97:19
-     '{ "name":"activities","type":{"base":"discord::gateway::identify::status_update::activity::dati", 
-          "dec":"ntl"}, "inject_if_not":null}'
+     '{ "name":"activities","type":{"base":"discord::gateway::identify::status_update::activity::dati", "dec":"ntl"}, 
+          "option":true, "inject_if_not":null}'
   */
                 "(activities):F,"
   /* specs/gateway.json:99:19
@@ -374,12 +374,12 @@ void dati_from_json(char *json, size_t len, struct dati *p)
                 "@record_null",
   /* specs/gateway.json:95:19
      '{ "name":"since","type":{"base":"char", "dec":"*", "converter":"iso8601"},
-          "inject_if_not":0 }'
+          "option":true, "inject_if_not":0 }'
   */
                 orka_iso8601_to_unix_ms, &p->since,
   /* specs/gateway.json:97:19
-     '{ "name":"activities","type":{"base":"discord::gateway::identify::status_update::activity::dati", 
-          "dec":"ntl"}, "inject_if_not":null}'
+     '{ "name":"activities","type":{"base":"discord::gateway::identify::status_update::activity::dati", "dec":"ntl"}, 
+          "option":true, "inject_if_not":null}'
   */
                 discord::gateway::identify::status_update::activity::dati_list_from_json, &p->activities,
   /* specs/gateway.json:99:19
@@ -401,14 +401,14 @@ static void dati_use_default_inject_settings(struct dati *p)
   p->__M.enable_arg_switches = true;
   /* specs/gateway.json:95:19
      '{ "name":"since","type":{"base":"char", "dec":"*", "converter":"iso8601"},
-          "inject_if_not":0 }'
+          "option":true, "inject_if_not":0 }'
   */
   if (p->since != 0)
     p->__M.arg_switches[0] = &p->since;
 
   /* specs/gateway.json:97:19
-     '{ "name":"activities","type":{"base":"discord::gateway::identify::status_update::activity::dati", 
-          "dec":"ntl"}, "inject_if_not":null}'
+     '{ "name":"activities","type":{"base":"discord::gateway::identify::status_update::activity::dati", "dec":"ntl"}, 
+          "option":true, "inject_if_not":null}'
   */
   if (p->activities != NULL)
     p->__M.arg_switches[1] = p->activities;
@@ -432,12 +432,12 @@ size_t dati_to_json(char *json, size_t len, struct dati *p)
   r=json_inject(json, len, 
   /* specs/gateway.json:95:19
      '{ "name":"since","type":{"base":"char", "dec":"*", "converter":"iso8601"},
-          "inject_if_not":0 }'
+          "option":true, "inject_if_not":0 }'
   */
                 "(since):|F|,"
   /* specs/gateway.json:97:19
-     '{ "name":"activities","type":{"base":"discord::gateway::identify::status_update::activity::dati", 
-          "dec":"ntl"}, "inject_if_not":null}'
+     '{ "name":"activities","type":{"base":"discord::gateway::identify::status_update::activity::dati", "dec":"ntl"}, 
+          "option":true, "inject_if_not":null}'
   */
                 "(activities):F,"
   /* specs/gateway.json:99:19
@@ -451,12 +451,12 @@ size_t dati_to_json(char *json, size_t len, struct dati *p)
                 "@arg_switches:b",
   /* specs/gateway.json:95:19
      '{ "name":"since","type":{"base":"char", "dec":"*", "converter":"iso8601"},
-          "inject_if_not":0 }'
+          "option":true, "inject_if_not":0 }'
   */
                 orka_unix_ms_to_iso8601, &p->since,
   /* specs/gateway.json:97:19
-     '{ "name":"activities","type":{"base":"discord::gateway::identify::status_update::activity::dati", 
-          "dec":"ntl"}, "inject_if_not":null}'
+     '{ "name":"activities","type":{"base":"discord::gateway::identify::status_update::activity::dati", "dec":"ntl"}, 
+          "option":true, "inject_if_not":null}'
   */
                 discord::gateway::identify::status_update::activity::dati_list_to_json, p->activities,
   /* specs/gateway.json:99:19
@@ -511,12 +511,12 @@ size_t dati_list_to_json_v(char *str, size_t len, void *p){
 void dati_cleanup(struct dati *d) {
   /* specs/gateway.json:95:19
      '{ "name":"since","type":{"base":"char", "dec":"*", "converter":"iso8601"},
-          "inject_if_not":0 }'
+          "option":true, "inject_if_not":0 }'
   */
   //p->since is a scalar
   /* specs/gateway.json:97:19
-     '{ "name":"activities","type":{"base":"discord::gateway::identify::status_update::activity::dati", 
-          "dec":"ntl"}, "inject_if_not":null}'
+     '{ "name":"activities","type":{"base":"discord::gateway::identify::status_update::activity::dati", "dec":"ntl"}, 
+          "option":true, "inject_if_not":null}'
   */
   if (d->activities)
     discord::gateway::identify::status_update::activity::dati_list_free(d->activities);
@@ -534,12 +534,12 @@ void dati_init(struct dati *p) {
   memset(p, 0, sizeof(struct dati));
   /* specs/gateway.json:95:19
      '{ "name":"since","type":{"base":"char", "dec":"*", "converter":"iso8601"},
-          "inject_if_not":0 }'
+          "option":true, "inject_if_not":0 }'
   */
 
   /* specs/gateway.json:97:19
-     '{ "name":"activities","type":{"base":"discord::gateway::identify::status_update::activity::dati", 
-          "dec":"ntl"}, "inject_if_not":null}'
+     '{ "name":"activities","type":{"base":"discord::gateway::identify::status_update::activity::dati", "dec":"ntl"}, 
+          "option":true, "inject_if_not":null}'
   */
 
   /* specs/gateway.json:99:19
@@ -800,28 +800,33 @@ void dati_from_json(char *json, size_t len, struct dati *p)
   */
                 "(type):d,"
   /* specs/gateway.json:124:19
-     '{ "name":"url","type":{"base":"char", "dec":"[MAX_URL_LEN]"}}'
+     '{ "name":"url","type":{"base":"char", "dec":"[MAX_URL_LEN]"},
+          "option":true, "inject_if_not":""}'
   */
                 "(url):s,"
-  /* specs/gateway.json:125:19
+  /* specs/gateway.json:126:19
      '{ "name":"created_at","type":{"base":"char", "dec":"*", "converter":"iso8601"},
-          "inject_if_not":0 }'
+          "option":true, "inject_if_not":0 }'
   */
                 "(created_at):F,"
-  /* specs/gateway.json:127:19
-     '{ "name":"application_id","type":{"base":"char", "dec":"*", "converter":"snowflake" }}'
+  /* specs/gateway.json:128:19
+     '{ "name":"application_id","type":{"base":"char", "dec":"*", "converter":"snowflake" },
+          "option":true, "inject_if_not":0 }'
   */
                 "(application_id):F,"
-  /* specs/gateway.json:128:19
-     '{ "name":"details","type":{"base":"char", "dec":"*"}}'
+  /* specs/gateway.json:130:19
+     '{ "name":"details","type":{"base":"char", "dec":"*"},
+          "option":true, "inject_if_not":null}'
   */
                 "(details):?s,"
-  /* specs/gateway.json:129:19
-     '{ "name":"state","type":{"base":"char", "dec":"*"}}'
+  /* specs/gateway.json:132:19
+     '{ "name":"state","type":{"base":"char", "dec":"*"},
+          "option":true, "inject_if_not":null}'
   */
                 "(state):?s,"
-  /* specs/gateway.json:130:19
-     '{ "name":"instance","type":{"base":"bool"}}'
+  /* specs/gateway.json:134:19
+     '{ "name":"instance","type":{"base":"bool"},
+          "option":true, "inject_if_not":false}'
   */
                 "(instance):b,"
                 "@arg_switches:b"
@@ -836,28 +841,33 @@ void dati_from_json(char *json, size_t len, struct dati *p)
   */
                 &p->type,
   /* specs/gateway.json:124:19
-     '{ "name":"url","type":{"base":"char", "dec":"[MAX_URL_LEN]"}}'
+     '{ "name":"url","type":{"base":"char", "dec":"[MAX_URL_LEN]"},
+          "option":true, "inject_if_not":""}'
   */
                 p->url,
-  /* specs/gateway.json:125:19
+  /* specs/gateway.json:126:19
      '{ "name":"created_at","type":{"base":"char", "dec":"*", "converter":"iso8601"},
-          "inject_if_not":0 }'
+          "option":true, "inject_if_not":0 }'
   */
                 orka_iso8601_to_unix_ms, &p->created_at,
-  /* specs/gateway.json:127:19
-     '{ "name":"application_id","type":{"base":"char", "dec":"*", "converter":"snowflake" }}'
+  /* specs/gateway.json:128:19
+     '{ "name":"application_id","type":{"base":"char", "dec":"*", "converter":"snowflake" },
+          "option":true, "inject_if_not":0 }'
   */
                 orka_strtoull, &p->application_id,
-  /* specs/gateway.json:128:19
-     '{ "name":"details","type":{"base":"char", "dec":"*"}}'
+  /* specs/gateway.json:130:19
+     '{ "name":"details","type":{"base":"char", "dec":"*"},
+          "option":true, "inject_if_not":null}'
   */
                 &p->details,
-  /* specs/gateway.json:129:19
-     '{ "name":"state","type":{"base":"char", "dec":"*"}}'
+  /* specs/gateway.json:132:19
+     '{ "name":"state","type":{"base":"char", "dec":"*"},
+          "option":true, "inject_if_not":null}'
   */
                 &p->state,
-  /* specs/gateway.json:130:19
-     '{ "name":"instance","type":{"base":"bool"}}'
+  /* specs/gateway.json:134:19
+     '{ "name":"instance","type":{"base":"bool"},
+          "option":true, "inject_if_not":false}'
   */
                 &p->instance,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
@@ -880,36 +890,46 @@ static void dati_use_default_inject_settings(struct dati *p)
   p->__M.arg_switches[1] = &p->type;
 
   /* specs/gateway.json:124:19
-     '{ "name":"url","type":{"base":"char", "dec":"[MAX_URL_LEN]"}}'
+     '{ "name":"url","type":{"base":"char", "dec":"[MAX_URL_LEN]"},
+          "option":true, "inject_if_not":""}'
   */
-  p->__M.arg_switches[2] = p->url;
+  if (strlen(p->url) != 0)
+    p->__M.arg_switches[2] = p->url;
 
-  /* specs/gateway.json:125:19
+  /* specs/gateway.json:126:19
      '{ "name":"created_at","type":{"base":"char", "dec":"*", "converter":"iso8601"},
-          "inject_if_not":0 }'
+          "option":true, "inject_if_not":0 }'
   */
   if (p->created_at != 0)
     p->__M.arg_switches[3] = &p->created_at;
 
-  /* specs/gateway.json:127:19
-     '{ "name":"application_id","type":{"base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
-  p->__M.arg_switches[4] = &p->application_id;
-
   /* specs/gateway.json:128:19
-     '{ "name":"details","type":{"base":"char", "dec":"*"}}'
+     '{ "name":"application_id","type":{"base":"char", "dec":"*", "converter":"snowflake" },
+          "option":true, "inject_if_not":0 }'
   */
-  p->__M.arg_switches[5] = p->details;
-
-  /* specs/gateway.json:129:19
-     '{ "name":"state","type":{"base":"char", "dec":"*"}}'
-  */
-  p->__M.arg_switches[6] = p->state;
+  if (p->application_id != 0)
+    p->__M.arg_switches[4] = &p->application_id;
 
   /* specs/gateway.json:130:19
-     '{ "name":"instance","type":{"base":"bool"}}'
+     '{ "name":"details","type":{"base":"char", "dec":"*"},
+          "option":true, "inject_if_not":null}'
   */
-  p->__M.arg_switches[7] = &p->instance;
+  if (p->details != NULL)
+    p->__M.arg_switches[5] = p->details;
+
+  /* specs/gateway.json:132:19
+     '{ "name":"state","type":{"base":"char", "dec":"*"},
+          "option":true, "inject_if_not":null}'
+  */
+  if (p->state != NULL)
+    p->__M.arg_switches[6] = p->state;
+
+  /* specs/gateway.json:134:19
+     '{ "name":"instance","type":{"base":"bool"},
+          "option":true, "inject_if_not":false}'
+  */
+  if (p->instance != false)
+    p->__M.arg_switches[7] = &p->instance;
 
 }
 
@@ -927,28 +947,33 @@ size_t dati_to_json(char *json, size_t len, struct dati *p)
   */
                 "(type):d,"
   /* specs/gateway.json:124:19
-     '{ "name":"url","type":{"base":"char", "dec":"[MAX_URL_LEN]"}}'
+     '{ "name":"url","type":{"base":"char", "dec":"[MAX_URL_LEN]"},
+          "option":true, "inject_if_not":""}'
   */
                 "(url):s,"
-  /* specs/gateway.json:125:19
+  /* specs/gateway.json:126:19
      '{ "name":"created_at","type":{"base":"char", "dec":"*", "converter":"iso8601"},
-          "inject_if_not":0 }'
+          "option":true, "inject_if_not":0 }'
   */
                 "(created_at):|F|,"
-  /* specs/gateway.json:127:19
-     '{ "name":"application_id","type":{"base":"char", "dec":"*", "converter":"snowflake" }}'
+  /* specs/gateway.json:128:19
+     '{ "name":"application_id","type":{"base":"char", "dec":"*", "converter":"snowflake" },
+          "option":true, "inject_if_not":0 }'
   */
                 "(application_id):|F|,"
-  /* specs/gateway.json:128:19
-     '{ "name":"details","type":{"base":"char", "dec":"*"}}'
+  /* specs/gateway.json:130:19
+     '{ "name":"details","type":{"base":"char", "dec":"*"},
+          "option":true, "inject_if_not":null}'
   */
                 "(details):s,"
-  /* specs/gateway.json:129:19
-     '{ "name":"state","type":{"base":"char", "dec":"*"}}'
+  /* specs/gateway.json:132:19
+     '{ "name":"state","type":{"base":"char", "dec":"*"},
+          "option":true, "inject_if_not":null}'
   */
                 "(state):s,"
-  /* specs/gateway.json:130:19
-     '{ "name":"instance","type":{"base":"bool"}}'
+  /* specs/gateway.json:134:19
+     '{ "name":"instance","type":{"base":"bool"},
+          "option":true, "inject_if_not":false}'
   */
                 "(instance):b,"
                 "@arg_switches:b",
@@ -961,28 +986,33 @@ size_t dati_to_json(char *json, size_t len, struct dati *p)
   */
                 &p->type,
   /* specs/gateway.json:124:19
-     '{ "name":"url","type":{"base":"char", "dec":"[MAX_URL_LEN]"}}'
+     '{ "name":"url","type":{"base":"char", "dec":"[MAX_URL_LEN]"},
+          "option":true, "inject_if_not":""}'
   */
                 p->url,
-  /* specs/gateway.json:125:19
+  /* specs/gateway.json:126:19
      '{ "name":"created_at","type":{"base":"char", "dec":"*", "converter":"iso8601"},
-          "inject_if_not":0 }'
+          "option":true, "inject_if_not":0 }'
   */
                 orka_unix_ms_to_iso8601, &p->created_at,
-  /* specs/gateway.json:127:19
-     '{ "name":"application_id","type":{"base":"char", "dec":"*", "converter":"snowflake" }}'
+  /* specs/gateway.json:128:19
+     '{ "name":"application_id","type":{"base":"char", "dec":"*", "converter":"snowflake" },
+          "option":true, "inject_if_not":0 }'
   */
                 orka_ulltostr, &p->application_id,
-  /* specs/gateway.json:128:19
-     '{ "name":"details","type":{"base":"char", "dec":"*"}}'
+  /* specs/gateway.json:130:19
+     '{ "name":"details","type":{"base":"char", "dec":"*"},
+          "option":true, "inject_if_not":null}'
   */
                 p->details,
-  /* specs/gateway.json:129:19
-     '{ "name":"state","type":{"base":"char", "dec":"*"}}'
+  /* specs/gateway.json:132:19
+     '{ "name":"state","type":{"base":"char", "dec":"*"},
+          "option":true, "inject_if_not":null}'
   */
                 p->state,
-  /* specs/gateway.json:130:19
-     '{ "name":"instance","type":{"base":"bool"}}'
+  /* specs/gateway.json:134:19
+     '{ "name":"instance","type":{"base":"bool"},
+          "option":true, "inject_if_not":false}'
   */
                 &p->instance,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
@@ -1036,30 +1066,35 @@ void dati_cleanup(struct dati *d) {
   */
   //p->type is a scalar
   /* specs/gateway.json:124:19
-     '{ "name":"url","type":{"base":"char", "dec":"[MAX_URL_LEN]"}}'
+     '{ "name":"url","type":{"base":"char", "dec":"[MAX_URL_LEN]"},
+          "option":true, "inject_if_not":""}'
   */
   //p->url is a scalar
-  /* specs/gateway.json:125:19
+  /* specs/gateway.json:126:19
      '{ "name":"created_at","type":{"base":"char", "dec":"*", "converter":"iso8601"},
-          "inject_if_not":0 }'
+          "option":true, "inject_if_not":0 }'
   */
   //p->created_at is a scalar
-  /* specs/gateway.json:127:19
-     '{ "name":"application_id","type":{"base":"char", "dec":"*", "converter":"snowflake" }}'
+  /* specs/gateway.json:128:19
+     '{ "name":"application_id","type":{"base":"char", "dec":"*", "converter":"snowflake" },
+          "option":true, "inject_if_not":0 }'
   */
   //p->application_id is a scalar
-  /* specs/gateway.json:128:19
-     '{ "name":"details","type":{"base":"char", "dec":"*"}}'
+  /* specs/gateway.json:130:19
+     '{ "name":"details","type":{"base":"char", "dec":"*"},
+          "option":true, "inject_if_not":null}'
   */
   if (d->details)
     free(d->details);
-  /* specs/gateway.json:129:19
-     '{ "name":"state","type":{"base":"char", "dec":"*"}}'
+  /* specs/gateway.json:132:19
+     '{ "name":"state","type":{"base":"char", "dec":"*"},
+          "option":true, "inject_if_not":null}'
   */
   if (d->state)
     free(d->state);
-  /* specs/gateway.json:130:19
-     '{ "name":"instance","type":{"base":"bool"}}'
+  /* specs/gateway.json:134:19
+     '{ "name":"instance","type":{"base":"bool"},
+          "option":true, "inject_if_not":false}'
   */
   //p->instance is a scalar
 }
@@ -1075,28 +1110,33 @@ void dati_init(struct dati *p) {
   */
 
   /* specs/gateway.json:124:19
-     '{ "name":"url","type":{"base":"char", "dec":"[MAX_URL_LEN]"}}'
+     '{ "name":"url","type":{"base":"char", "dec":"[MAX_URL_LEN]"},
+          "option":true, "inject_if_not":""}'
   */
 
-  /* specs/gateway.json:125:19
+  /* specs/gateway.json:126:19
      '{ "name":"created_at","type":{"base":"char", "dec":"*", "converter":"iso8601"},
-          "inject_if_not":0 }'
-  */
-
-  /* specs/gateway.json:127:19
-     '{ "name":"application_id","type":{"base":"char", "dec":"*", "converter":"snowflake" }}'
+          "option":true, "inject_if_not":0 }'
   */
 
   /* specs/gateway.json:128:19
-     '{ "name":"details","type":{"base":"char", "dec":"*"}}'
-  */
-
-  /* specs/gateway.json:129:19
-     '{ "name":"state","type":{"base":"char", "dec":"*"}}'
+     '{ "name":"application_id","type":{"base":"char", "dec":"*", "converter":"snowflake" },
+          "option":true, "inject_if_not":0 }'
   */
 
   /* specs/gateway.json:130:19
-     '{ "name":"instance","type":{"base":"bool"}}'
+     '{ "name":"details","type":{"base":"char", "dec":"*"},
+          "option":true, "inject_if_not":null}'
+  */
+
+  /* specs/gateway.json:132:19
+     '{ "name":"state","type":{"base":"char", "dec":"*"},
+          "option":true, "inject_if_not":null}'
+  */
+
+  /* specs/gateway.json:134:19
+     '{ "name":"instance","type":{"base":"bool"},
+          "option":true, "inject_if_not":false}'
   */
 
 }

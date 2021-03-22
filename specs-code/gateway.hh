@@ -146,13 +146,13 @@ namespace status_update {
 struct dati {
   /* specs/gateway.json:95:19
      '{ "name":"since","type":{"base":"char", "dec":"*", "converter":"iso8601"},
-          "inject_if_not":0 }'
+          "option":true, "inject_if_not":0 }'
   */
   u64_unix_ms_t since;
 
   /* specs/gateway.json:97:19
-     '{ "name":"activities","type":{"base":"discord::gateway::identify::status_update::activity::dati", 
-          "dec":"ntl"}, "inject_if_not":null}'
+     '{ "name":"activities","type":{"base":"discord::gateway::identify::status_update::activity::dati", "dec":"ntl"}, 
+          "option":true, "inject_if_not":null}'
   */
   discord::gateway::identify::status_update::activity::dati **activities;
 
@@ -275,33 +275,38 @@ struct dati {
   int type;
 
   /* specs/gateway.json:124:19
-     '{ "name":"url","type":{"base":"char", "dec":"[MAX_URL_LEN]"}}'
+     '{ "name":"url","type":{"base":"char", "dec":"[MAX_URL_LEN]"},
+          "option":true, "inject_if_not":""}'
   */
   char url[MAX_URL_LEN];
 
-  /* specs/gateway.json:125:19
+  /* specs/gateway.json:126:19
      '{ "name":"created_at","type":{"base":"char", "dec":"*", "converter":"iso8601"},
-          "inject_if_not":0 }'
+          "option":true, "inject_if_not":0 }'
   */
   u64_unix_ms_t created_at;
 
-  /* specs/gateway.json:127:19
-     '{ "name":"application_id","type":{"base":"char", "dec":"*", "converter":"snowflake" }}'
+  /* specs/gateway.json:128:19
+     '{ "name":"application_id","type":{"base":"char", "dec":"*", "converter":"snowflake" },
+          "option":true, "inject_if_not":0 }'
   */
   u64_snowflake_t application_id;
 
-  /* specs/gateway.json:128:19
-     '{ "name":"details","type":{"base":"char", "dec":"*"}}'
+  /* specs/gateway.json:130:19
+     '{ "name":"details","type":{"base":"char", "dec":"*"},
+          "option":true, "inject_if_not":null}'
   */
   char *details;
 
-  /* specs/gateway.json:129:19
-     '{ "name":"state","type":{"base":"char", "dec":"*"}}'
+  /* specs/gateway.json:132:19
+     '{ "name":"state","type":{"base":"char", "dec":"*"},
+          "option":true, "inject_if_not":null}'
   */
   char *state;
 
-  /* specs/gateway.json:130:19
-     '{ "name":"instance","type":{"base":"bool"}}'
+  /* specs/gateway.json:134:19
+     '{ "name":"instance","type":{"base":"bool"},
+          "option":true, "inject_if_not":false}'
   */
   bool instance;
 
