@@ -20,12 +20,12 @@ https://discord.com/developers/docs/topics/rate-limits#rate-limits */
  *  retrieved by search.h tree functions */
 struct _route_s {
   char *str; //bucket route (endpoint, major parameter)
-  dati *p_bucket; //bucket assigned to this route
+  discord::adapter::bucket::dati *p_bucket; //bucket assigned to this route
 };
 
 /* sleep cooldown for a connection within this bucket in milliseconds */
 void
-try_cooldown(dati *bucket)
+try_cooldown(discord::adapter::bucket::dati *bucket)
 {
   if (NULL == bucket) return; /* EARLY RETURN */
 
@@ -92,8 +92,8 @@ routecmp(const void *p_route1, const void *p_route2)
 }
 
 /* attempt to find a bucket associated with this endpoint */
-dati*
-try_get(adapter::dati *adapter, char endpoint[])
+discord::adapter::bucket::dati*
+try_get(discord::adapter::dati *adapter, char endpoint[])
 {
   struct _route_s search_route = {
     .str = endpoint
@@ -108,7 +108,7 @@ try_get(adapter::dati *adapter, char endpoint[])
 /* attempt to parse rate limit's header fields to the bucket
  *  linked with the connection which was performed */
 static void
-parse_ratelimits(dati *bucket, struct ua_conn_s *conn)
+parse_ratelimits(discord::adapter::bucket::dati *bucket, struct ua_conn_s *conn)
 { 
   pthread_mutex_lock(&bucket->lock);
   --bucket->busy;
@@ -131,10 +131,10 @@ parse_ratelimits(dati *bucket, struct ua_conn_s *conn)
   pthread_mutex_unlock(&bucket->lock);
 }
 
-static dati*
+static discord::adapter::bucket::dati*
 bucket_init(char bucket_hash[])
 {
-  dati *new_bucket = (dati*) calloc(1, sizeof *new_bucket);
+  discord::adapter::bucket::dati *new_bucket = (discord::adapter::bucket::dati*) calloc(1, sizeof *new_bucket);
   new_bucket->hash = strdup(bucket_hash);
   if (pthread_mutex_init(&new_bucket->lock, NULL))
     ERR("Couldn't initialize pthread mutex");
@@ -144,7 +144,7 @@ bucket_init(char bucket_hash[])
 }
 
 static void
-bucket_cleanup(dati *bucket) 
+bucket_cleanup(discord::adapter::bucket::dati *bucket) 
 {
   free(bucket->hash);
   pthread_mutex_destroy(&bucket->lock);
@@ -157,7 +157,7 @@ bucket_cleanup(dati *bucket)
  *  client buckets.
  * If no match is found then we create a new client bucket */
 static void
-match_route(adapter::dati *adapter, char endpoint[], struct ua_conn_s *conn)
+match_route(discord::adapter::dati *adapter, char endpoint[], struct ua_conn_s *conn)
 {
   char *bucket_hash = ua_respheader_value(conn, "x-ratelimit-bucket");
   if (!bucket_hash) return; //no hash information in header
@@ -179,10 +179,10 @@ match_route(adapter::dati *adapter, char endpoint[], struct ua_conn_s *conn)
     ++adapter->ratelimit.num_buckets; //increments client buckets
 
     adapter->ratelimit.bucket_pool = \
-          (dati**)realloc(adapter->ratelimit.bucket_pool, \
-                      adapter->ratelimit.num_buckets * sizeof(dati*));
+          (discord::adapter::bucket::dati**)realloc(adapter->ratelimit.bucket_pool, \
+                      adapter->ratelimit.num_buckets * sizeof(discord::adapter::bucket::dati*));
 
-    dati *new_bucket = bucket_init(bucket_hash);
+    discord::adapter::bucket::dati *new_bucket = bucket_init(bucket_hash);
     adapter->ratelimit.bucket_pool[adapter->ratelimit.num_buckets-1] = new_bucket;
     new_route->p_bucket = new_bucket; //route points to new bucket
   }
@@ -198,7 +198,7 @@ match_route(adapter::dati *adapter, char endpoint[], struct ua_conn_s *conn)
  * In case that the endpoint doesn't have a bucket for routing, no 
  *  clashing will occur */
 void
-build(adapter::dati *adapter, dati *bucket, char endpoint[], struct ua_conn_s *conn)
+build(discord::adapter::dati *adapter, discord::adapter::bucket::dati *bucket, char endpoint[], struct ua_conn_s *conn)
 {
   /* no bucket means first time using this endpoint.  attempt to 
    *  establish a route between it and a bucket via its unique hash 
@@ -222,7 +222,7 @@ route_cleanup(void *p_route)
 
 /* clean routes and buckets */
 void
-cleanup(adapter::dati *adapter)
+cleanup(discord::adapter::dati *adapter)
 {
   //destroy every route encountered
   tdestroy(adapter->ratelimit.routes_root, &route_cleanup);

@@ -21,19 +21,19 @@ void msg_from_json(char *json, size_t size, void *msg)
 }
 
 void
-run(client *client, u64_snowflake_t channel_id, u64_snowflake_t author_id)
+run(discord::client *client, u64_snowflake_t channel_id, u64_snowflake_t author_id)
 {
   if (!channel_id) {
     D_PUTS("Missing 'channel_id");
     return;
   }
 
-  channel::get_channel_messages::params params = {
+  discord::channel::get_channel_messages::params params = {
     .limit = 100
   };
 
-  NTL_T(channel::message::dati) messages = NULL;
-  channel::get_channel_messages::run(client, channel_id, &params, &messages);
+  NTL_T(discord::channel::message::dati) messages = NULL;
+  discord::channel::get_channel_messages::run(client, channel_id, &params, &messages);
 
   NTL_T(ja_u64) list = NULL;
   int count = 0;
@@ -49,10 +49,10 @@ run(client *client, u64_snowflake_t channel_id, u64_snowflake_t author_id)
       j++;
     }
   }
-  ntl_free((ntl_t)messages, channel::message::dati_cleanup_v);
+  ntl_free((ntl_t)messages, discord::channel::message::dati_cleanup_v);
 
   if (count == 1)
-    channel::delete_message::run(client, channel_id, list[0]->value);
+    discord::channel::delete_message::run(client, channel_id, list[0]->value);
   else {
     char *json = NULL;
     json_ainject(&json,
@@ -77,12 +77,12 @@ run(client *client, u64_snowflake_t channel_id, u64_snowflake_t author_id)
 } // bulk_delete_messages
 
 namespace get_n_message {
-void run(client *client, u64_snowflake_t message_id, int n) {
+void run(discord::client *client, u64_snowflake_t message_id, int n) {
 }
 }
 
 namespace get_author_permission {
-void run(client *client, u64_snowflake_t user_id)
+void run(discord::client *client, u64_snowflake_t user_id)
 {
 
 }
