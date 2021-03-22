@@ -6,7 +6,6 @@
 
 #include "libdiscord.h"
 
-using namespace discord;
 
 
 const char *ALPHA_EMOJI[] = {
@@ -104,20 +103,20 @@ parse_session_config()
 }
 
 void 
-on_ready(client *client, const user::dati *me) {
+on_ready(discord::client *client, const discord::user::dati *me) {
   fprintf(stderr, "\n\nQuiz-Bot succesfully connected to Discord as %s#%s!\n\n",
       me->username, me->discriminator);
 }
 
 void
 close_existing_sessions(
-  client *client, 
+  discord::client *client,
   const u64_snowflake_t guild_id,
-  const guild::member::dati *member)
+  const discord::guild::member::dati *member)
 {
   /* Check if user already has a session role assigned to */
-  NTL_T(guild::role::dati) rls = NULL;
-  guild::get_guild_roles::run(client, guild_id, &rls);
+  NTL_T(discord::guild::role::dati) rls = NULL;
+  discord::guild::get_guild_roles::run(client, guild_id, &rls);
 
   for (size_t i=0; rls[i]; ++i) {
     if ( strncmp("TMP", rls[i]->name, 3) )
@@ -127,8 +126,8 @@ close_existing_sessions(
     sscanf(rls[i]->name, "TMP%" PRIu64 "_%" PRIu64 , &user_id, &channel_id);
 
     if (member->user->id == user_id) {
-      channel::delete_channel::run(client, channel_id, NULL);
-      guild::delete_guild_role::run(client, guild_id, rls[i]->id);
+      discord::channel::delete_channel::run(client, channel_id, NULL);
+      discord::guild::delete_guild_role::run(client, guild_id, rls[i]->id);
 
       // reset active_session if exists
       for (size_t i=0; i < MAX_SESSIONS; ++i) {
@@ -140,44 +139,44 @@ close_existing_sessions(
     }
   }
 
-  guild::role::dati_list_free(rls);
+  discord::guild::role::dati_list_free(rls);
 }
 
 u64_snowflake_t
 create_session_channel(
-  client *client, 
+  discord::client *client,
   const u64_snowflake_t guild_id,
-  const guild::member::dati *member)
+  const discord::guild::member::dati *member)
 {
-  channel::dati ch;
-  channel::dati_init(&ch);
+  discord::channel::dati ch;
+  discord::channel::dati_init(&ch);
 
-  guild::create_channel::params params1 = {
+  discord::guild::create_channel::params params1 = {
     .name = g_session.chat_name,
     .topic = g_session.chat_topic
   };
 
-  channel::overwrite::append(
+  discord::channel::overwrite::append(
     &params1.permission_overwrites,
     guild_id, // @everyone role id is the same as guild id
     0, // role type
-    permissions::ZERO, // Don't set allow permissions
-    (permissions::bitwise_flags)(
-      permissions::ADD_REACTIONS
-    | permissions::VIEW_CHANNEL
-    | permissions::SEND_MESSAGES)); // Deny Read and Send Messages, Add Reactions permissions
+    discord::permissions::ZERO, // Don't set allow permissions
+    (discord::permissions::bitwise_flags)(
+      discord::permissions::ADD_REACTIONS
+    | discord::permissions::VIEW_CHANNEL
+    | discord::permissions::SEND_MESSAGES)); // Deny Read and Send Messages, Add Reactions permissions
 
-  channel::overwrite::append(
+  discord::channel::overwrite::append(
     &params1.permission_overwrites,
     member->user->id,
     1, // user type
-    (permissions::bitwise_flags)(
-      permissions::ADD_REACTIONS
-    | permissions::VIEW_CHANNEL
-    | permissions::SEND_MESSAGES), // Allow Read and Send Messages, Add Reactions permissions
-    permissions::ZERO); // Don't set deny permissions
+    (discord::permissions::bitwise_flags)(
+      discord::permissions::ADD_REACTIONS
+    | discord::permissions::VIEW_CHANNEL
+    | discord::permissions::SEND_MESSAGES), // Allow Read and Send Messages, Add Reactions permissions
+    discord::permissions::ZERO); // Don't set deny permissions
 
-  guild::create_channel::run(client, guild_id, &params1, &ch);
+  discord::guild::create_channel::run(client, guild_id, &params1, &ch);
   
   // create new active_session if doesn't exist
   for (size_t i=0; i < MAX_SESSIONS; ++i) {
@@ -208,29 +207,29 @@ create_session_channel(
 
 u64_snowflake_t
 add_session_role(
-  client *client, 
+  discord::client *client,
   const u64_snowflake_t guild_id, 
   const u64_snowflake_t channel_id,
-  const guild::member::dati *member)
+  const discord::guild::member::dati *member)
 {
   char text[64];
   snprintf(text, sizeof(text), \
     "TMP%" PRIu64 "_%" PRIu64, member->user->id, channel_id);
 
-  guild::role::dati ret_role;
-  guild::role::dati_init(&ret_role);
-  guild::create_guild_role::params params2 = {
+  discord::guild::role::dati ret_role;
+  discord::guild::role::dati_init(&ret_role);
+  discord::guild::create_guild_role::params params2 = {
     .name = text
   };
-  guild::create_guild_role::run(client, guild_id, &params2, &ret_role);
+  discord::guild::create_guild_role::run(client, guild_id, &params2, &ret_role);
   if (!ret_role.id) return 0;
 
   //@todo turn this into a public function
   ja_u64_list_append((ja_u64***)&member->roles, &ret_role.id);
-  guild::modify_guild_member::params params3 = {
+  discord::guild::modify_guild_member::params params3 = {
     .roles = member->roles
   };
-  guild::modify_guild_member::run(
+  discord::guild::modify_guild_member::run(
     client, 
     guild_id, 
     member->user->id, 
@@ -241,9 +240,9 @@ add_session_role(
 }
 
 void start_new_session(
-  client *client,
+  discord::client *client,
   const u64_snowflake_t guild_id,
-  const guild::member::dati *member)
+  const discord::guild::member::dati *member)
 {
   close_existing_sessions(client, guild_id, member);
 
@@ -258,24 +257,24 @@ void start_new_session(
     return; // couldn't create role, delete channel and return
   }
 
-  channel::message::dati *ret_msg = channel::message::dati_alloc();
-  channel::create_message::params params = {
+  discord::channel::message::dati *ret_msg = discord::channel::message::dati_alloc();
+  discord::channel::create_message::params params = {
     .content = "Would you like to start?"
   };
-  channel::create_message::run(client, session_channel_id, &params, ret_msg);
+  discord::channel::create_message::run(client, session_channel_id, &params, ret_msg);
 
-  channel::create_reaction::run(
+  discord::channel::create_reaction::run(
     client, 
     session_channel_id, 
     ret_msg->id, 
     0, 
     g_session.reaction_emoji);
 
-  channel::message::dati_free(ret_msg);
+  discord::channel::message::dati_free(ret_msg);
 }
 
 void send_next_question(
-  client *client,
+  discord::client *client,
   u64_snowflake_t channel_id,
   struct session *session, 
   struct question *question)
@@ -285,10 +284,10 @@ void send_next_question(
     sprintf(text, "You got %d out of %d! (%.1f%%)", \
       session->hits, g_session.questions_per_session,
       100*((float)session->hits / (float)g_session.questions_per_session));
-    channel::create_message::params params = {
+    discord::channel::create_message::params params = {
       .content = text
     };
-    channel::create_message::run(client, channel_id, &params, NULL);
+    discord::channel::create_message::run(client, channel_id, &params, NULL);
 
     session->status = FINISHED;
     return; /* EARLY RETURN */
@@ -303,33 +302,33 @@ void send_next_question(
       'A'+ i, question->answers[i].desc);
   }
 
-  channel::message::dati *ret_msg = channel::message::dati_alloc();
-  channel::create_message::params params = {
+  discord::channel::message::dati *ret_msg = discord::channel::message::dati_alloc();
+  discord::channel::create_message::params params = {
     .content = text
   };
-  channel::create_message::run(client, channel_id, &params, ret_msg);
+  discord::channel::create_message::run(client, channel_id, &params, ret_msg);
 
   for (int i=0; i < question->num_answers; ++i) {
-    channel::create_reaction::run(
+    discord::channel::create_reaction::run(
       client, 
       channel_id, 
       ret_msg->id, 
       0, 
       ALPHA_EMOJI[i]);
   }
-  channel::message::dati_free(ret_msg);
+  discord::channel::message::dati_free(ret_msg);
 
   session->status = RUNNING;
 }
 
 void on_reaction_add(
-    client *client, 
-    const user::dati *me,
+    discord::client *client,
+    const discord::user::dati *me,
     const u64_snowflake_t channel_id, 
     const u64_snowflake_t message_id, 
     const u64_snowflake_t guild_id, 
-    const guild::member::dati *member, 
-    const emoji::dati *emoji)
+    const discord::guild::member::dati *member,
+    const discord::emoji::dati *emoji)
 {
   if (member->user->bot) 
     return; // ignore bots
@@ -355,7 +354,7 @@ void on_reaction_add(
   switch (session->status) {
   case RUNNING:
       // delete previous question from channel
-      channel::delete_message::run(client, channel_id, message_id);
+      discord::channel::delete_message::run(client, channel_id, message_id);
 
       // get current question associated to session
       question = &g_session.questions[session->curr_question];
@@ -392,12 +391,12 @@ int main(int argc, char *argv[])
 
   setlocale(LC_ALL, "");
 
-  global_init();
+  discord::global_init();
 
-  client *client = config_init(config_file);
+  discord::client *client = discord::config_init(config_file);
   assert(NULL != client);
 
-  setcb(client, MESSAGE_REACTION_ADD, &on_reaction_add);
+  discord::setcb(client, discord::MESSAGE_REACTION_ADD, &on_reaction_add);
 
   printf("\n\nTHIS IS A WORK IN PROGRESS"
          "\nTYPE ANY KEY TO START BOT\n");
@@ -405,18 +404,18 @@ int main(int argc, char *argv[])
 
   parse_session_config();
 
-  channel::create_reaction::run(
+  discord::channel::create_reaction::run(
     client, 
     g_session.channel_id, 
     g_session.message_id, 
     0, 
     g_session.reaction_emoji);
 
-  run(client);
+  discord::run(client);
 
-  cleanup(client);
+  discord::cleanup(client);
 
-  global_cleanup();
+  discord::global_cleanup();
 }
 
 

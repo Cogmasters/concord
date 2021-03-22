@@ -6,40 +6,40 @@
 #include "libdiscord.h"
 #include "orka-utils.h" // for orka_timestamp_ms()
 
-using namespace discord;
+//using namespace discord;
 
 #define JSON_FILE "bot-embed.json"
 
-void on_ready(client *client, const user::dati *me) {
+void on_ready(discord::client *client, const discord::user::dati *me) {
   fprintf(stderr, "\n\nEmbed-Bot succesfully connected to Discord as %s#%s!\n\n",
       me->username, me->discriminator);
 }
 
 void on_command(
-    client *client,
-    const user::dati *me,
-    const channel::message::dati *msg)
+    discord::client *client,
+    const discord::user::dati *me,
+    const discord::channel::message::dati *msg)
 {
   // make sure bot doesn't echoes other bots
   if (msg->author->bot)
     return;
 
-  channel::create_message::params params = {
+  discord::channel::create_message::params params = {
     .content = "This is an embed",
-    .embed = (channel::embed::dati*)get_data(client)
+    .embed = (discord::channel::embed::dati*)get_data(client)
   };
-  channel::create_message::run(client, msg->channel_id, &params, NULL);
+  discord::channel::create_message::run(client, msg->channel_id, &params, NULL);
 }
 
-static channel::embed::dati*
+static discord::channel::embed::dati*
 load_embed_from_json(char filename[])
 {
   /* get contents of file to string */
   size_t len;
   char *json_payload = orka_load_whole_file(filename, &len);
 
-  channel::embed::dati *new_embed = channel::embed::dati_alloc();
-  channel::embed::dati_from_json(json_payload, len, new_embed);
+  discord::channel::embed::dati *new_embed = discord::channel::embed::dati_alloc();
+  discord::channel::embed::dati_from_json(json_payload, len, new_embed);
 
   new_embed->timestamp = orka_timestamp_ms(); // get current timestamp
 
@@ -56,12 +56,12 @@ int main(int argc, char *argv[])
   else
     config_file = "bot.config";
 
-  global_init();
+  discord::global_init();
 
-  client *client = config_init(config_file);
+  discord::client *client = discord::config_init(config_file);
   assert(NULL != client);
 
-  setcb_command(client, "show embed", &on_command);
+  discord::setcb_command(client, "show embed", &on_command);
 
   printf("\n\nThis bot demonstrates how easy it is to load embed"
          " from a json file.\n"
@@ -72,14 +72,14 @@ int main(int argc, char *argv[])
   fgetc(stdin); // wait for input
 
 
-  channel::embed::dati *embed = load_embed_from_json(JSON_FILE);
-  set_data(client, embed);
+  discord::channel::embed::dati *embed = load_embed_from_json(JSON_FILE);
+  discord::set_data(client, embed);
 
-  run(client);
+  discord::run(client);
 
-  channel::embed::dati_free(embed);
-  cleanup(client);
+  discord::channel::embed::dati_free(embed);
+  discord::cleanup(client);
 
-  global_cleanup();
+  discord::global_cleanup();
 }
 

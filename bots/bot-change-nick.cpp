@@ -6,7 +6,6 @@
 #include "libdiscord.h"
 
 
-using namespace discord;
 
 struct context_s {
   char username[64];
@@ -15,13 +14,15 @@ struct context_s {
 } cxt;
 
 void 
-on_ready(client *client, const user::dati *me) {
+on_ready(discord::client *client, const discord::user::dati *me) {
   fprintf(stderr, "\n\nChange-Nick-Bot succesfully connected to Discord as %s#%s!\n\n",
       me->username, me->discriminator);
 }
 
 void
-on_command(client *client, const user::dati *me, const channel::message::dati *msg)
+on_command(discord::client *client,
+           const discord::user::dati *me,
+           const discord::channel::message::dati *msg)
 {
   sscanf(msg->content, "%s %s", cxt.username, cxt.nick);
   cxt.discriminator = strchr(cxt.username, '#');
@@ -37,11 +38,11 @@ on_command(client *client, const user::dati *me, const channel::message::dati *m
   *cxt.discriminator = '\0'; //split at #
   ++cxt.discriminator;
 
-  NTL_T(guild::member::dati) members = NULL;
-  guild::list_guild_members::params params1 = {
+  NTL_T(discord::guild::member::dati) members = NULL;
+  discord::guild::list_guild_members::params params1 = {
     .limit = 1000
   };
-  guild::list_guild_members::run(client, msg->guild_id, &params1, &members);
+  discord::guild::list_guild_members::run(client, msg->guild_id, &params1, &members);
   if (NULL == members) {
     printf("Missing members list\n");
     return;
@@ -51,14 +52,14 @@ on_command(client *client, const user::dati *me, const channel::message::dati *m
     if (0 == strcmp(members[i]->user->username, cxt.username)
         && 0 == strcmp(members[i]->user->discriminator, cxt.discriminator))
     {
-      guild::modify_guild_member::params params2 = {
+      discord::guild::modify_guild_member::params params2 = {
         .nick = cxt.nick
       };
-      guild::modify_guild_member::run(client, msg->guild_id, members[i]->user->id, &params2, NULL);
+      discord::guild::modify_guild_member::run(client, msg->guild_id, members[i]->user->id, &params2, NULL);
     }
   }
 
-  guild::member::dati_list_free(members);
+  discord::guild::member::dati_list_free(members);
 }
 
 int main(int argc, char *argv[])
@@ -71,12 +72,12 @@ int main(int argc, char *argv[])
 
   setlocale(LC_ALL, "");
 
-  global_init();
+  discord::global_init();
 
-  client *client = config_init(config_file);
+  discord::client *client = discord::config_init(config_file);
   assert(NULL != client);
 
-  setcb_command(client, "!nickChange", &on_command);
+  discord::setcb_command(client, "!nickChange", &on_command);
 
   printf("\n\nThis demonstrates how easy it is to modify the"
          " nickname of some guild member.\n\n"
@@ -84,9 +85,9 @@ int main(int argc, char *argv[])
          "\nTYPE ANY KEY TO START BOT\n");
   fgetc(stdin); // wait for input
 
-  run(client);
+  discord::run(client);
 
-  cleanup(client);
+  discord::cleanup(client);
 
-  global_cleanup();
+  discord::global_cleanup();
 }

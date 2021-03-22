@@ -7,7 +7,6 @@
 #include "libdiscord.h"
 
 
-using namespace discord;
 
 struct sudo_s {
   char username[64];
@@ -15,13 +14,15 @@ struct sudo_s {
 } sudo;
 
 void 
-on_ready(client *client, const user::dati *me) {
+on_ready(discord::client *client, const discord::user::dati *me) {
   fprintf(stderr, "\n\nShell-Bot succesfully connected to Discord as %s#%s!\n\n",
       me->username, me->discriminator);
 }
 
 void
-on_command(client *client, const user::dati *me, const channel::message::dati *msg)
+on_command(discord::client *client,
+           const discord::user::dati *me,
+           const discord::channel::message::dati *msg)
 {
   // make sure bot doesn't consider other bots
   if (msg->author->bot)
@@ -32,7 +33,7 @@ on_command(client *client, const user::dati *me, const channel::message::dati *m
     return; // EARLY RETURN IF NOT SUDO USER
   }
 
-  channel::create_message::params params = {0};
+  discord::channel::create_message::params params = {0};
 
   char *cmd = strchr(msg->content, ' '); //get first occurence of space
   size_t len;
@@ -99,7 +100,7 @@ on_command(client *client, const user::dati *me, const channel::message::dati *m
     pclose(fp);
   }
 
-  channel::create_message::run(client, msg->channel_id, &params, NULL); 
+  discord::channel::create_message::run(client, msg->channel_id, &params, NULL);
 }
 
 int main(int argc, char *argv[])
@@ -112,12 +113,12 @@ int main(int argc, char *argv[])
 
   setlocale(LC_ALL, "");
 
-  global_init();
+  discord::global_init();
 
-  client *client = config_init(config_file);
+  discord::client *client = discord::config_init(config_file);
   assert(NULL != client);
 
-  setcb_command(client, "$", &on_command);
+  discord::setcb_command(client, "$", &on_command);
 
   printf("\n\nThis bot allows navigating its host machine like"
          " a shell terminal.\n\n"
@@ -136,9 +137,9 @@ int main(int argc, char *argv[])
   ++sudo.discriminator;
 
 
-  run(client);
+  discord::run(client);
 
-  cleanup(client);
+  discord::cleanup(client);
 
-  global_cleanup();
+  discord::global_cleanup();
 }

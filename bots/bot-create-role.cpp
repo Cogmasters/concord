@@ -6,40 +6,38 @@
 #include "libdiscord.h"
 #include "orka-utils.h" // for orka_timestamp_ms()
 
-using namespace discord;
-
-void on_ready(client *client, const user::dati *me) {
+void on_ready(discord::client *client, const discord::user::dati *me) {
   fprintf(stderr, "\n\nCreate-Role-Bot succesfully connected to Discord as %s#%s!\n\n",
       me->username, me->discriminator);
 }
 
 void on_command(
-    client *client,
-    const user::dati *me,
-    const channel::message::dati *msg)
+    discord::client *client,
+    const discord::user::dati *me,
+    const discord::channel::message::dati *msg)
 {
   // make sure bot doesn't echoes other bots
   if (msg->author->bot)
     return;
 
-  guild::role::dati *role = guild::role::dati_alloc();
+  discord::guild::role::dati *role = discord::guild::role::dati_alloc();
 
-  guild::create_guild_role::params params1 = {
+  discord::guild::create_guild_role::params params1 = {
     .name = msg->content
   };
-  guild::create_guild_role::run(client, msg->guild_id, &params1, role);
+  discord::guild::create_guild_role::run(client, msg->guild_id, &params1, role);
 
   if (role->id) {
     char text[150];
     snprintf(text, sizeof(text), "Succesfully created <@&%" PRIu64 "> role", role->id);
 
-    channel::create_message::params params2 = {
+    discord::channel::create_message::params params2 = {
       .content = text
     };
-    channel::create_message::run(client, msg->channel_id, &params2, NULL);
+    discord::channel::create_message::run(client, msg->channel_id, &params2, NULL);
   }
 
-  guild::role::dati_free(role);
+  discord::guild::role::dati_free(role);
 }
 
 int main(int argc, char *argv[])
@@ -50,12 +48,12 @@ int main(int argc, char *argv[])
   else
     config_file = "bot.config";
 
-  global_init();
+  discord::global_init();
 
-  client *client = config_init(config_file);
+  discord::client *client = discord::config_init(config_file);
   assert(NULL != client);
 
-  setcb_command(client, "!createRole", &on_command);
+  discord::setcb_command(client, "!createRole", &on_command);
 
   printf("\n\nThis bot demonstrates how easy it is to create a"
          " new role.\n"
@@ -64,9 +62,9 @@ int main(int argc, char *argv[])
   fgetc(stdin); // wait for input
 
 
-  run(client);
+  discord::run(client);
 
-  cleanup(client);
+  discord::cleanup(client);
 
-  global_cleanup();
+  discord::global_cleanup();
 }

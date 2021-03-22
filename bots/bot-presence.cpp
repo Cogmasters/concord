@@ -6,24 +6,22 @@
 #include "libdiscord.h"
 #include "orka-utils.h" // for orka_timestamp_ms()
 
-using namespace discord;
-
 #define JSON_FILE "bot-presence.json"
 
-void on_ready(client *client, const user::dati *me) {
+void on_ready(discord::client *client, const discord::user::dati *me) {
   fprintf(stderr, "\n\nPresence-Bot succesfully connected to Discord as %s#%s!\n\n",
       me->username, me->discriminator);
 }
 
 void
-load_presence_from_json(client *client, char filename[])
+load_presence_from_json(discord::client *client, char filename[])
 {
   /* get contents of file to string */
   size_t len;
   char *json_payload = orka_load_whole_file(filename, &len);
 
-  presence::dati *new_presence = presence::dati_alloc();
-  presence::dati_from_json(json_payload, len, new_presence);
+  discord::presence::dati *new_presence = discord::presence::dati_alloc();
+  discord::presence::dati_from_json(json_payload, len, new_presence);
 
   replace_presence(client, new_presence);
 
@@ -38,9 +36,9 @@ int main(int argc, char *argv[])
   else
     config_file = "bot.config";
 
-  global_init();
+  discord::global_init();
 
-  client *client = config_init(config_file);
+  discord::client *client = discord::config_init(config_file);
   assert(NULL != client);
 
   printf("\n\nThis bot demonstrates how easy it is to change presence"
@@ -51,10 +49,10 @@ int main(int argc, char *argv[])
   fgetc(stdin); // wait for input
 
   load_presence_from_json(client, JSON_FILE);
-  run(client);
+  discord::run(client);
 
-  cleanup(client);
+  discord::cleanup(client);
 
-  global_cleanup();
+  discord::global_cleanup();
 }
 

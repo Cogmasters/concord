@@ -5,27 +5,26 @@
 #include <assert.h>
 #include "libdiscord.h"
 
-using namespace discord;
 
-void on_ready(client *client, const user::dati *me) {
+void on_ready(discord::client *client, const discord::user::dati *me) {
   fprintf(stderr, "\n\nLog-Bot succesfully connected to Discord as %s#%s!\n\n",
       me->username, me->discriminator);
 }
 
 void on_guild_member_add(
-  client *client, 
-  const user::dati *me, 
+  discord::client *client,
+  const discord::user::dati *me,
   const uint64_t guild_id, 
-  const guild::member::dati *member) 
+  const discord::guild::member::dati *member)
 {
   printf("%s#%s joined guild %" PRIu64".\n", member->user->username, member->user->discriminator, guild_id);
 }
 
 void on_guild_member_update(
-  client *client, 
-  const user::dati *me, 
+  discord::client *client,
+  const discord::user::dati *me,
   const uint64_t guild_id, 
-  const guild::member::dati *member)
+  const discord::guild::member::dati *member)
 {
   printf("%s#%s ", member->user->username, member->user->discriminator);
   if(!IS_EMPTY_STRING(member->nick)) {
@@ -35,10 +34,10 @@ void on_guild_member_update(
 }
 
 void on_guild_member_remove(
-  client *client, 
-  const user::dati *me, 
+  discord::client *client,
+  const discord::user::dati *me,
   const uint64_t guild_id, 
-  const user::dati *user)
+  const discord::user::dati *user)
 {
   printf("%s#%s left guild %" PRIu64".\n", user->username, user->discriminator, guild_id);
 }
@@ -51,19 +50,19 @@ int main(int argc, char *argv[])
   else
     config_file = "bot.config";
 
-  global_init();
+  discord::global_init();
 
-  client *client = config_init(config_file);
+  discord::client *client = discord::config_init(config_file);
   assert(NULL != client);
 
-  setcb(client, READY, &on_ready);
-  setcb(client, GUILD_MEMBER_ADD, &on_guild_member_add);
-  setcb(client, GUILD_MEMBER_UPDATE, &on_guild_member_update);
-  setcb(client, GUILD_MEMBER_REMOVE, &on_guild_member_remove);
+  discord::setcb(client, discord::READY, &on_ready);
+  discord::setcb(client, discord::GUILD_MEMBER_ADD, &on_guild_member_add);
+  discord::setcb(client, discord::GUILD_MEMBER_UPDATE, &on_guild_member_update);
+  discord::setcb(client, discord::GUILD_MEMBER_REMOVE, &on_guild_member_remove);
 
-  run(client);
+  discord::run(client);
 
-  cleanup(client);
+  discord::cleanup(client);
 
-  global_cleanup();
+  discord::global_cleanup();
 }

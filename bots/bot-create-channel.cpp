@@ -5,49 +5,49 @@
 
 #include "libdiscord.h"
 
-using namespace discord;
 
-void on_ready(client *client, const user::dati *me) {
+
+void on_ready(discord::client *client, const discord::user::dati *me) {
   fprintf(stderr, "\n\nCreate-Channel-Bot succesfully connected to Discord as %s#%s!\n\n",
       me->username, me->discriminator);
 }
 
 void on_create(
-    client *client,
-    const user::dati *me,
-    const channel::message::dati *msg)
+    discord::client *client,
+    const discord::user::dati *me,
+    const discord::channel::message::dati *msg)
 {
   // make sure bot doesn't echoes other bots
   if (msg->author->bot)
     return;
 
-  channel::dati *channel = channel::dati_alloc();
+  discord::channel::dati *channel = discord::channel::dati_alloc();
 
-  guild::create_channel::params params1 = {
+  discord::guild::create_channel::params params1 = {
     .name = msg->content
   };
-  guild::create_channel::run(client, msg->guild_id, &params1, channel);
+  discord::guild::create_channel::run(client, msg->guild_id, &params1, channel);
 
   if (channel->id) {
-    channel::create_message::params params2 = {
+    discord::channel::create_message::params params2 = {
       .content = "Hello world!"
     };
-    channel::create_message::run(client, channel->id, &params2, NULL);
+    discord::channel::create_message::run(client, channel->id, &params2, NULL);
   }
 
-  channel::dati_free(channel);
+  discord::channel::dati_free(channel);
 }
 
 void on_delete(
-    client *client,
-    const user::dati *me,
-    const channel::message::dati *msg)
+    discord::client *client,
+    const discord::user::dati *me,
+    const discord::channel::message::dati *msg)
 {
   // make sure bot doesn't echoes other bots
   if (msg->author->bot)
     return;
 
-  channel::delete_channel::run(client, msg->channel_id, NULL);
+  discord::channel::delete_channel::run(client, msg->channel_id, NULL);
 }
 
 int main(int argc, char *argv[])
@@ -58,14 +58,14 @@ int main(int argc, char *argv[])
   else
     config_file = "bot.config";
 
-  global_init();
+  discord::global_init();
 
-  client *client = config_init(config_file);
+  discord::client *client = discord::config_init(config_file);
   assert(NULL != client);
 
-  set_prefix(client, "!channel");
-  setcb_command(client, "Create", &on_create);
-  setcb_command(client, "DeleteHere", &on_delete);
+  discord::set_prefix(client, "!channel");
+  discord::setcb_command(client, "Create", &on_create);
+  discord::setcb_command(client, "DeleteHere", &on_delete);
 
   printf("\n\nThis bot demonstrates how easy it is to create/delete channels\n"
          "1. Type '!channelCreate <channel_name>' anywhere to create a new channel\n"
@@ -74,9 +74,9 @@ int main(int argc, char *argv[])
   fgetc(stdin); // wait for input
 
 
-  run(client);
+  discord::run(client);
 
-  cleanup(client);
+  discord::cleanup(client);
 
-  global_cleanup();
+  discord::global_cleanup();
 }

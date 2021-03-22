@@ -3,37 +3,36 @@
 #include <assert.h>
 #include "libdiscord.h"
 
-using namespace discord;
 
-void on_ready(client *client, const user::dati *me) {
+void on_ready(discord::client *client, const discord::user::dati *me) {
   fprintf(stderr, "\n\nPingPong-Bot succesfully connected to Discord as %s#%s!\n\n",
       me->username, me->discriminator);
 }
 
 void on_ping(
-  client *client,
-  const user::dati *me,
-  const channel::message::dati *msg)
+  discord::client *client,
+  const discord::user::dati *me,
+  const discord::channel::message::dati *msg)
 {
   // make sure bot doesn't echoes other bots
   if (msg->author->bot)
     return;
 
-  channel::create_message::params params = {.content = "pong"};
-  channel::create_message::run(client, msg->channel_id, &params, NULL);
+  discord::channel::create_message::params params = {.content = "pong"};
+  discord::channel::create_message::run(client, msg->channel_id, &params, NULL);
 }
 
 void on_pong(
-    client *client,
-    const user::dati *me,
-    const channel::message::dati *msg)
+    discord::client *client,
+    const discord::user::dati *me,
+    const discord::channel::message::dati *msg)
 {
   // make sure bot doesn't echoes other bots
   if (msg->author->bot)
     return;
 
-  channel::create_message::params params = {.content = "ping"};
-  channel::create_message::run(client, msg->channel_id, &params, NULL);
+  discord::channel::create_message::params params = {.content = "ping"};
+  discord::channel::create_message::run(client, msg->channel_id, &params, NULL);
 }
 
 int main(int argc, char *argv[])
@@ -44,18 +43,18 @@ int main(int argc, char *argv[])
   else
     config_file = "bot.config";
 
-  global_init();
+  discord::global_init();
 
-  client *client = config_init(config_file);
+  discord::client *client = discord::config_init(config_file);
   assert(NULL != client);
 
-  setcb(client, READY, &on_ready);
-  setcb_command(client, "ping", &on_ping);
-  setcb_command(client, "pong", &on_pong);
+  discord::setcb(client, discord::READY, &on_ready);
+  discord::setcb_command(client, "ping", &on_ping);
+  discord::setcb_command(client, "pong", &on_pong);
 
-  run(client);
+  discord::run(client);
 
-  cleanup(client);
+  discord::cleanup(client);
 
-  global_cleanup();
+  discord::global_cleanup();
 }
