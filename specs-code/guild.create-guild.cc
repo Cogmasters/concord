@@ -131,9 +131,90 @@ void params_from_json(char *json, size_t len, struct params *p)
   ret = r;
 }
 
+static void params_use_default_inject_settings(struct params *p)
+{
+  p->__M.enable_arg_switches = true;
+  /* specs/guild.create-guild.json:11:20
+     '{ "name": "name", "type":{ "base":"char", "dec":"[200+1]" }, 
+          "comment":"name of the guild (2-100) characters"}'
+  */
+  p->__M.arg_switches[0] = p->name;
+
+  /* specs/guild.create-guild.json:13:20
+     '{ "name": "region", "type":{ "base":"char", "dec":"*" },
+          "option":true, "inject_if_not":null, "comment":"voice region id" }'
+  */
+  if (p->region != NULL)
+    p->__M.arg_switches[1] = p->region;
+
+  /* specs/guild.create-guild.json:15:20
+     '{ "name": "icon", "type":{ "base":"char", "dec":"*" }, 
+          "option":true, "inject_if_not":null, "comment":"base64 128x1128 image for the guild icon"}'
+  */
+  if (p->icon != NULL)
+    p->__M.arg_switches[2] = p->icon;
+
+  /* specs/guild.create-guild.json:17:20
+     '{ "name": "verification_level", "type":{ "base":"int" }, 
+          "option":true, "inject_if_not":0, "comment":"verification level"}'
+  */
+  if (p->verification_level != 0)
+    p->__M.arg_switches[3] = &p->verification_level;
+
+  /* specs/guild.create-guild.json:19:20
+     '{ "name": "default_message_notifications", "type":{ "base":"int" }, 
+          "option":true, "inject_if_not":0, "comment":"default message notification level"}'
+  */
+  if (p->default_message_notifications != 0)
+    p->__M.arg_switches[4] = &p->default_message_notifications;
+
+  /* specs/guild.create-guild.json:21:20
+     '{ "name": "explicit_content_filter", "type":{ "base":"int" }, 
+          "option":true, "inject_if_not":0, "comment":"explicit content filter level"}'
+  */
+  if (p->explicit_content_filter != 0)
+    p->__M.arg_switches[5] = &p->explicit_content_filter;
+
+  /* specs/guild.create-guild.json:23:20
+     '{ "name": "roles", "type":{ "base":"int" }, 
+          "todo":true, "comment":"new guild roles" }'
+  */
+
+  /* specs/guild.create-guild.json:25:20
+     '{ "name": "channels", "type":{ "base":"discord::channel::dati", "dec":"ntl" }, 
+          "option":true, "inject_if_not":null, "comment":"array of partial channel objects"}'
+  */
+  if (p->channels != NULL)
+    p->__M.arg_switches[7] = p->channels;
+
+  /* specs/guild.create-guild.json:27:20
+     '{ "name": "afk_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, 
+          "option":true, "inject_if_not":0, "comment":"id for afk channel"}'
+  */
+  if (p->afk_channel_id != 0)
+    p->__M.arg_switches[8] = &p->afk_channel_id;
+
+  /* specs/guild.create-guild.json:29:20
+     '{ "name": "afk_timeout", "type":{ "base":"int" }, 
+          "option":true, "inject_if_not":0, "comment":"afk timeout in seconds"}'
+  */
+  if (p->afk_timeout != 0)
+    p->__M.arg_switches[9] = &p->afk_timeout;
+
+  /* specs/guild.create-guild.json:31:20
+     '{ "name": "system_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, 
+          "option":true, "inject_if_not":0, 
+          "comment":"the id of the channel where guild notices such as welcome messages and boost events are posted"}'
+  */
+  if (p->system_channel_id != 0)
+    p->__M.arg_switches[10] = &p->system_channel_id;
+
+}
+
 size_t params_to_json(char *json, size_t len, struct params *p)
 {
   size_t r;
+  params_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/guild.create-guild.json:11:20
      '{ "name": "name", "type":{ "base":"char", "dec":"[200+1]" }, 
@@ -248,86 +329,6 @@ size_t params_to_json(char *json, size_t len, struct params *p)
                 orka_ulltostr, &p->system_channel_id,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
-}
-
-void params_use_default_inject_settings(struct params *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/guild.create-guild.json:11:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[200+1]" }, 
-          "comment":"name of the guild (2-100) characters"}'
-  */
-  p->__M.arg_switches[0] = p->name;
-
-  /* specs/guild.create-guild.json:13:20
-     '{ "name": "region", "type":{ "base":"char", "dec":"*" },
-          "option":true, "inject_if_not":null, "comment":"voice region id" }'
-  */
-  if (p->region != NULL)
-    p->__M.arg_switches[1] = p->region;
-
-  /* specs/guild.create-guild.json:15:20
-     '{ "name": "icon", "type":{ "base":"char", "dec":"*" }, 
-          "option":true, "inject_if_not":null, "comment":"base64 128x1128 image for the guild icon"}'
-  */
-  if (p->icon != NULL)
-    p->__M.arg_switches[2] = p->icon;
-
-  /* specs/guild.create-guild.json:17:20
-     '{ "name": "verification_level", "type":{ "base":"int" }, 
-          "option":true, "inject_if_not":0, "comment":"verification level"}'
-  */
-  if (p->verification_level != 0)
-    p->__M.arg_switches[3] = &p->verification_level;
-
-  /* specs/guild.create-guild.json:19:20
-     '{ "name": "default_message_notifications", "type":{ "base":"int" }, 
-          "option":true, "inject_if_not":0, "comment":"default message notification level"}'
-  */
-  if (p->default_message_notifications != 0)
-    p->__M.arg_switches[4] = &p->default_message_notifications;
-
-  /* specs/guild.create-guild.json:21:20
-     '{ "name": "explicit_content_filter", "type":{ "base":"int" }, 
-          "option":true, "inject_if_not":0, "comment":"explicit content filter level"}'
-  */
-  if (p->explicit_content_filter != 0)
-    p->__M.arg_switches[5] = &p->explicit_content_filter;
-
-  /* specs/guild.create-guild.json:23:20
-     '{ "name": "roles", "type":{ "base":"int" }, 
-          "todo":true, "comment":"new guild roles" }'
-  */
-
-  /* specs/guild.create-guild.json:25:20
-     '{ "name": "channels", "type":{ "base":"discord::channel::dati", "dec":"ntl" }, 
-          "option":true, "inject_if_not":null, "comment":"array of partial channel objects"}'
-  */
-  if (p->channels != NULL)
-    p->__M.arg_switches[7] = p->channels;
-
-  /* specs/guild.create-guild.json:27:20
-     '{ "name": "afk_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, 
-          "option":true, "inject_if_not":0, "comment":"id for afk channel"}'
-  */
-  if (p->afk_channel_id != 0)
-    p->__M.arg_switches[8] = &p->afk_channel_id;
-
-  /* specs/guild.create-guild.json:29:20
-     '{ "name": "afk_timeout", "type":{ "base":"int" }, 
-          "option":true, "inject_if_not":0, "comment":"afk timeout in seconds"}'
-  */
-  if (p->afk_timeout != 0)
-    p->__M.arg_switches[9] = &p->afk_timeout;
-
-  /* specs/guild.create-guild.json:31:20
-     '{ "name": "system_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, 
-          "option":true, "inject_if_not":0, 
-          "comment":"the id of the channel where guild notices such as welcome messages and boost events are posted"}'
-  */
-  if (p->system_channel_id != 0)
-    p->__M.arg_switches[10] = &p->system_channel_id;
-
 }
 
 

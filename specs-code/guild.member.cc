@@ -93,9 +93,60 @@ void dati_from_json(char *json, size_t len, struct dati *p)
   ret = r;
 }
 
+static void dati_use_default_inject_settings(struct dati *p)
+{
+  p->__M.enable_arg_switches = true;
+  /* specs/guild.member.json:12:20
+     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*" }, "option":true}'
+  */
+  p->__M.arg_switches[0] = p->user;
+
+  /* specs/guild.member.json:13:20
+     '{ "name": "nick", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]"}, "option":true}'
+  */
+  p->__M.arg_switches[1] = p->nick;
+
+  /* specs/guild.member.json:14:20
+     '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl"}, "comment":"array of role object ids"}'
+  */
+  p->__M.arg_switches[2] = p->roles;
+
+  /* specs/guild.member.json:15:20
+     '{ "name": "joined_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}'
+  */
+  p->__M.arg_switches[3] = &p->joined_at;
+
+  /* specs/guild.member.json:16:20
+     '{ "name": "premium_since", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}'
+  */
+  p->__M.arg_switches[4] = &p->premium_since;
+
+  /* specs/guild.member.json:17:20
+     '{ "name": "deaf", "type":{ "base":"bool" }}'
+  */
+  p->__M.arg_switches[5] = &p->deaf;
+
+  /* specs/guild.member.json:18:20
+     '{ "name": "mute", "type":{ "base":"bool" }}'
+  */
+  p->__M.arg_switches[6] = &p->mute;
+
+  /* specs/guild.member.json:19:20
+     '{ "name": "pending", "type":{ "base":"bool" }, "option":true}'
+  */
+  p->__M.arg_switches[7] = &p->pending;
+
+  /* specs/guild.member.json:20:20
+     '{ "name": "permissions", "type":{ "base":"char", "dec":"*"}, "option":true}'
+  */
+  p->__M.arg_switches[8] = p->permissions;
+
+}
+
 size_t dati_to_json(char *json, size_t len, struct dati *p)
 {
   size_t r;
+  dati_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/guild.member.json:12:20
      '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*" }, "option":true}'
@@ -172,56 +223,6 @@ size_t dati_to_json(char *json, size_t len, struct dati *p)
                 p->permissions,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
-}
-
-void dati_use_default_inject_settings(struct dati *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/guild.member.json:12:20
-     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*" }, "option":true}'
-  */
-  p->__M.arg_switches[0] = p->user;
-
-  /* specs/guild.member.json:13:20
-     '{ "name": "nick", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]"}, "option":true}'
-  */
-  p->__M.arg_switches[1] = p->nick;
-
-  /* specs/guild.member.json:14:20
-     '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl"}, "comment":"array of role object ids"}'
-  */
-  p->__M.arg_switches[2] = p->roles;
-
-  /* specs/guild.member.json:15:20
-     '{ "name": "joined_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}'
-  */
-  p->__M.arg_switches[3] = &p->joined_at;
-
-  /* specs/guild.member.json:16:20
-     '{ "name": "premium_since", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}'
-  */
-  p->__M.arg_switches[4] = &p->premium_since;
-
-  /* specs/guild.member.json:17:20
-     '{ "name": "deaf", "type":{ "base":"bool" }}'
-  */
-  p->__M.arg_switches[5] = &p->deaf;
-
-  /* specs/guild.member.json:18:20
-     '{ "name": "mute", "type":{ "base":"bool" }}'
-  */
-  p->__M.arg_switches[6] = &p->mute;
-
-  /* specs/guild.member.json:19:20
-     '{ "name": "pending", "type":{ "base":"bool" }, "option":true}'
-  */
-  p->__M.arg_switches[7] = &p->pending;
-
-  /* specs/guild.member.json:20:20
-     '{ "name": "permissions", "type":{ "base":"char", "dec":"*"}, "option":true}'
-  */
-  p->__M.arg_switches[8] = p->permissions;
-
 }
 
 

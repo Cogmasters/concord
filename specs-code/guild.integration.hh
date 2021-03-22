@@ -61,7 +61,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace account
 } // namespace integration
 
@@ -133,7 +132,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace application
 } // namespace integration
 
@@ -249,5 +247,4 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace integration

@@ -29,9 +29,20 @@ void params_from_json(char *json, size_t len, struct params *p)
   ret = r;
 }
 
+static void params_use_default_inject_settings(struct params *p)
+{
+  p->__M.enable_arg_switches = true;
+  /* specs/channel.bulk-delete-messages.json:11:20
+     '{ "name": "messages", "type":{ "base":"ja_u64", "dec":"ntl" }}'
+  */
+  p->__M.arg_switches[0] = p->messages;
+
+}
+
 size_t params_to_json(char *json, size_t len, struct params *p)
 {
   size_t r;
+  params_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/channel.bulk-delete-messages.json:11:20
      '{ "name": "messages", "type":{ "base":"ja_u64", "dec":"ntl" }}'
@@ -44,16 +55,6 @@ size_t params_to_json(char *json, size_t len, struct params *p)
                 ja_u64_list_to_json, p->messages,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
-}
-
-void params_use_default_inject_settings(struct params *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/channel.bulk-delete-messages.json:11:20
-     '{ "name": "messages", "type":{ "base":"ja_u64", "dec":"ntl" }}'
-  */
-  p->__M.arg_switches[0] = p->messages;
-
 }
 
 

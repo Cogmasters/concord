@@ -100,7 +100,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace voice
 
 namespace voice {
@@ -171,6 +170,5 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace region
 } // namespace voice

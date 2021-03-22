@@ -45,9 +45,30 @@ void params_from_json(char *json, size_t len, struct params *p)
   ret = r;
 }
 
+static void params_use_default_inject_settings(struct params *p)
+{
+  p->__M.enable_arg_switches = true;
+  /* specs/emoji.create-guild-emoji.json:11:20
+     '{ "name": "name", "type":{ "base":"char", "dec":"*"}}'
+  */
+  p->__M.arg_switches[0] = p->name;
+
+  /* specs/emoji.create-guild-emoji.json:12:20
+     '{ "name": "image", "type":{ "base":"char", "dec":"*"}, "comment":"Base64 Encoded Image Data"}'
+  */
+  p->__M.arg_switches[1] = p->image;
+
+  /* specs/emoji.create-guild-emoji.json:13:20
+     '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"roles for which this emoji will be whitelisted"}'
+  */
+  p->__M.arg_switches[2] = p->roles;
+
+}
+
 size_t params_to_json(char *json, size_t len, struct params *p)
 {
   size_t r;
+  params_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/emoji.create-guild-emoji.json:11:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}}'
@@ -76,26 +97,6 @@ size_t params_to_json(char *json, size_t len, struct params *p)
                 ja_u64_list_to_json, p->roles,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
-}
-
-void params_use_default_inject_settings(struct params *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/emoji.create-guild-emoji.json:11:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*"}}'
-  */
-  p->__M.arg_switches[0] = p->name;
-
-  /* specs/emoji.create-guild-emoji.json:12:20
-     '{ "name": "image", "type":{ "base":"char", "dec":"*"}, "comment":"Base64 Encoded Image Data"}'
-  */
-  p->__M.arg_switches[1] = p->image;
-
-  /* specs/emoji.create-guild-emoji.json:13:20
-     '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"roles for which this emoji will be whitelisted"}'
-  */
-  p->__M.arg_switches[2] = p->roles;
-
 }
 
 

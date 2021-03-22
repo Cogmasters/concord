@@ -29,9 +29,20 @@ void params_from_json(char *json, size_t len, struct params *p)
   ret = r;
 }
 
+static void params_use_default_inject_settings(struct params *p)
+{
+  p->__M.enable_arg_switches = true;
+  /* specs/channel.follow-news-channel.json:11:20
+     '{ "name": "webhook_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
+  */
+  p->__M.arg_switches[0] = &p->webhook_channel_id;
+
+}
+
 size_t params_to_json(char *json, size_t len, struct params *p)
 {
   size_t r;
+  params_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/channel.follow-news-channel.json:11:20
      '{ "name": "webhook_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
@@ -44,16 +55,6 @@ size_t params_to_json(char *json, size_t len, struct params *p)
                 orka_ulltostr, &p->webhook_channel_id,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
-}
-
-void params_use_default_inject_settings(struct params *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/channel.follow-news-channel.json:11:20
-     '{ "name": "webhook_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
-  p->__M.arg_switches[0] = &p->webhook_channel_id;
-
 }
 
 

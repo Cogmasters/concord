@@ -91,7 +91,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace sticker
 
 
@@ -166,7 +165,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace reference
 
 namespace application {
@@ -232,7 +230,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace application
 
 
@@ -295,7 +292,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace activity
 
 
@@ -363,106 +359,107 @@ struct dati {
   u64_unix_ms_t timestamp;
 
   /* specs/channel.message.json:139:77
-     '{"type":{"base":"char", "dec":"*", "converter":"iso8601"}, "name":"edited_timestamp"}'
+     '{"type":{"base":"char", "dec":"*", "converter":"iso8601"}, "name":"edited_timestamp",
+          "inject_if_not":0}'
   */
   u64_unix_ms_t edited_timestamp;
 
-  /* specs/channel.message.json:140:43
+  /* specs/channel.message.json:141:43
      '{"type":{"base":"bool"}, "name":"tts"}'
   */
   bool tts;
 
-  /* specs/channel.message.json:141:43
+  /* specs/channel.message.json:142:43
      '{"type":{"base":"bool"}, "name":"mention_everyone"}'
   */
   bool mention_everyone;
 
-  /* specs/channel.message.json:142:62
+  /* specs/channel.message.json:143:62
      '{"type":{"base":"user::dati", "dec":"ntl"}, "name":"mentions", 
           "comment":"array of user objects, with an additional partial member field"}'
   */
   user::dati **mentions; // array of user objects, with an additional partial member field
 
-  /* specs/channel.message.json:144:58
+  /* specs/channel.message.json:145:58
      '{"type":{"base":"ja_u64", "dec":"ntl"}, "name":"mention_roles", "comment":"array of role object ids"}'
   */
   ja_u64 **mention_roles; // array of role object ids
 
-  /* specs/channel.message.json:145:65
+  /* specs/channel.message.json:146:65
      '{"type":{"base":"mention::dati", "dec":"ntl"}, "name":"mention_channels",
           "option":true }'
   */
   mention::dati **mention_channels;
 
-  /* specs/channel.message.json:147:68
+  /* specs/channel.message.json:148:68
      '{"type":{"base":"attachment::dati", "dec":"ntl"}, "name":"attachments"}'
   */
   attachment::dati **attachments;
 
-  /* specs/channel.message.json:148:63
+  /* specs/channel.message.json:149:63
      '{"type":{"base":"embed::dati", "dec":"ntl"}, "name":"embeds"}'
   */
   embed::dati **embeds;
 
-  /* specs/channel.message.json:149:65
+  /* specs/channel.message.json:150:65
      '{"type":{"base":"reaction::dati","dec":"ntl"}, "name":"reactions", 
           "option":true }'
   */
   reaction::dati **reactions;
 
-  /* specs/channel.message.json:151:54
+  /* specs/channel.message.json:152:54
      '{"type":{"base":"char", "dec":"*"}, "name":"nonce", "comment":"integer or string",
           "option":true }'
   */
   char *nonce; // integer or string
 
-  /* specs/channel.message.json:153:43
+  /* specs/channel.message.json:154:43
      '{"type":{"base":"bool"}, "name":"pinned"}'
   */
   bool pinned;
 
-  /* specs/channel.message.json:154:79
+  /* specs/channel.message.json:155:79
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"webhook_id",
           "option":true }'
   */
   u64_snowflake_t webhook_id;
 
-  /* specs/channel.message.json:156:96
+  /* specs/channel.message.json:157:96
      '{"type":{"base":"int", "int_alias":"discord::channel::message::types::code"}, "name":"type"}'
   */
   discord::channel::message::types::code type;
 
-  /* specs/channel.message.json:157:91
+  /* specs/channel.message.json:158:91
      '{"type":{"base":"discord::channel::message::activity::dati", "dec":"*"}, "name":"activity", 
           "option":true, "inject_if_not":null }'
   */
   discord::channel::message::activity::dati *activity;
 
-  /* specs/channel.message.json:159:96
+  /* specs/channel.message.json:160:96
      '{"type":{"base":"discord::channel::message::application::dati", "dec":"ntl"}, "name":"application",
           "option":true, "inject_if_not":null }'
   */
   discord::channel::message::application::dati **application;
 
-  /* specs/channel.message.json:161:92
+  /* specs/channel.message.json:162:92
      '{"type":{"base":"discord::channel::message::reference::dati", "dec":"*"}, "name":"message_reference",
           "option":true, "inject_if_not":null }'
   */
   discord::channel::message::reference::dati *message_reference;
 
-  /* specs/channel.message.json:163:96
+  /* specs/channel.message.json:164:96
      '{"type":{"base":"int", "int_alias":"discord::channel::message::flags::code"}, "name":"flags",
           "option":true, "inject_if_not":0 }'
   */
   discord::channel::message::flags::code flags;
 
-  /* specs/channel.message.json:165:92
+  /* specs/channel.message.json:166:92
      '{"type":{"base":"discord::channel::message::sticker::dati", "dec":"ntl"}, "name":"stickers",
           "option":true, "inject_if_not":null, "comment":"array of sticker objects"}'
   */
   discord::channel::message::sticker::dati **stickers; // array of sticker objects
 
-  /* specs/channel.message.json:167:81
+  /* specs/channel.message.json:168:81
      '{"type":{"base":"discord::channel::message::dati", "dec":"*"}, "name":"referenced_message", 
           "lazy_init":true, "option":true", "inject_if_not":null,
           "comment":"this will cause recursive allocation if allocating as the parent"}'
@@ -501,4 +498,3 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);

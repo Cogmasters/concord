@@ -74,7 +74,6 @@ void run(
   }
 
   char payload[MAX_PAYLOAD_LEN];
-  create_channel::params_use_default_inject_settings(params);
   create_channel::params_to_json(payload, sizeof(payload), params);
 
   struct resp_handle resp_handle = {
@@ -180,7 +179,6 @@ run(
   }
 
   char payload[MAX_PAYLOAD_LEN];
-  params_use_default_inject_settings(params);
   params_to_json(payload, sizeof(payload), params);
 
   struct resp_handle resp_handle = {
@@ -407,7 +405,6 @@ run(
   }
 
   char payload[MAX_PAYLOAD_LEN];
-  params_use_default_inject_settings(params);
   params_to_json(payload, sizeof(payload), params);
 
   struct resp_handle resp_handle = {

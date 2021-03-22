@@ -54,9 +54,35 @@ void dati_from_json(char *json, size_t len, struct dati *p)
   ret = r;
 }
 
+static void dati_use_default_inject_settings(struct dati *p)
+{
+  p->__M.enable_arg_switches = true;
+  /* specs/guild.welcome_screen.json:14:20
+     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
+  */
+  p->__M.arg_switches[0] = &p->channel_id;
+
+  /* specs/guild.welcome_screen.json:15:20
+     '{ "name": "description", "type":{ "base":"char", "dec":"*" }}'
+  */
+  p->__M.arg_switches[1] = p->description;
+
+  /* specs/guild.welcome_screen.json:16:20
+     '{ "name": "emoji_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
+  */
+  p->__M.arg_switches[2] = &p->emoji_id;
+
+  /* specs/guild.welcome_screen.json:17:20
+     '{ "name": "emoji_name", "type":{ "base":"char", "dec":"*" }}'
+  */
+  p->__M.arg_switches[3] = p->emoji_name;
+
+}
+
 size_t dati_to_json(char *json, size_t len, struct dati *p)
 {
   size_t r;
+  dati_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/guild.welcome_screen.json:14:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
@@ -93,31 +119,6 @@ size_t dati_to_json(char *json, size_t len, struct dati *p)
                 p->emoji_name,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
-}
-
-void dati_use_default_inject_settings(struct dati *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/guild.welcome_screen.json:14:20
-     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
-  p->__M.arg_switches[0] = &p->channel_id;
-
-  /* specs/guild.welcome_screen.json:15:20
-     '{ "name": "description", "type":{ "base":"char", "dec":"*" }}'
-  */
-  p->__M.arg_switches[1] = p->description;
-
-  /* specs/guild.welcome_screen.json:16:20
-     '{ "name": "emoji_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
-  p->__M.arg_switches[2] = &p->emoji_id;
-
-  /* specs/guild.welcome_screen.json:17:20
-     '{ "name": "emoji_name", "type":{ "base":"char", "dec":"*" }}'
-  */
-  p->__M.arg_switches[3] = p->emoji_name;
-
 }
 
 
@@ -260,9 +261,25 @@ void dati_from_json(char *json, size_t len, struct dati *p)
   ret = r;
 }
 
+static void dati_use_default_inject_settings(struct dati *p)
+{
+  p->__M.enable_arg_switches = true;
+  /* specs/guild.welcome_screen.json:26:20
+     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
+  */
+  p->__M.arg_switches[0] = p->description;
+
+  /* specs/guild.welcome_screen.json:27:20
+     '{ "name": "welcome_channels", "type":{ "base":"discord::guild::welcome_screen::screen_channel::dati", "dec":"ntl" }, "todo":false }'
+  */
+  p->__M.arg_switches[1] = p->welcome_channels;
+
+}
+
 size_t dati_to_json(char *json, size_t len, struct dati *p)
 {
   size_t r;
+  dati_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/guild.welcome_screen.json:26:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
@@ -283,21 +300,6 @@ size_t dati_to_json(char *json, size_t len, struct dati *p)
                 discord::guild::welcome_screen::screen_channel::dati_list_to_json, p->welcome_channels,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
-}
-
-void dati_use_default_inject_settings(struct dati *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/guild.welcome_screen.json:26:20
-     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
-  */
-  p->__M.arg_switches[0] = p->description;
-
-  /* specs/guild.welcome_screen.json:27:20
-     '{ "name": "welcome_channels", "type":{ "base":"discord::guild::welcome_screen::screen_channel::dati", "dec":"ntl" }, "todo":false }'
-  */
-  p->__M.arg_switches[1] = p->welcome_channels;
-
 }
 
 

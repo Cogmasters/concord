@@ -145,9 +145,86 @@ void params_from_json(char *json, size_t len, struct params *p)
   ret = r;
 }
 
+static void params_use_default_inject_settings(struct params *p)
+{
+  p->__M.enable_arg_switches = true;
+  /* specs/webhook.execute-webhook.json:12:20
+     '{ "name": "wait", "type":{ "base":"bool"}, "loc":"query",
+          "comment":"name of the webhook(1-80) chars",
+          "required":"one of content, file, embeds"
+        }'
+  */
+  p->__M.arg_switches[0] = &p->wait;
+
+  /* specs/webhook.execute-webhook.json:16:20
+     '{ "name": "content", "type":{ "base":"char", "dec":"[2000+1]" }, 
+          "comment":"the message contents (up to 2000 characters",
+          "required":false
+        }'
+  */
+  p->__M.arg_switches[1] = p->content;
+
+  /* specs/webhook.execute-webhook.json:20:20
+     '{ "name": "username", "type":{ "base":"char", "dec":"*" }, 
+          "comment":"override the default username of the webhook",
+          "required":false
+        }'
+  */
+  p->__M.arg_switches[2] = p->username;
+
+  /* specs/webhook.execute-webhook.json:24:20
+     '{ "name": "avatar_url", "type":{ "base":"char", "dec":"*" }, 
+          "comment":"override the default avatar of the webhook" }'
+  */
+  p->__M.arg_switches[3] = p->avatar_url;
+
+  /* specs/webhook.execute-webhook.json:26:20
+     '{ "name": "tts", "type":{ "base":"bool" }, 
+          "comment":"true if this is a TTS message",
+          "required":false
+        }'
+  */
+  p->__M.arg_switches[4] = &p->tts;
+
+  /* specs/webhook.execute-webhook.json:30:20
+     '{ "name": "file", "type":{ "base":"char", "dec":"*" }, 
+          "comment":"the contents of the file being sent",
+          "required":"one of content, file, embeds"
+        }'
+  */
+  p->__M.arg_switches[5] = p->file;
+
+  /* specs/webhook.execute-webhook.json:34:20
+     '{ "name": "embeds", "type":{ "base":"discord::channel::embed::dati", "dec":"*" }, 
+          "comment":"embedded rich content",
+          "required":"one of content, file, embeds"
+        }'
+  */
+  p->__M.arg_switches[6] = p->embeds;
+
+  /* specs/webhook.execute-webhook.json:38:20
+     '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, 
+          "comment":"See message create",
+          "required":"multipart/form-data only"
+        }'
+  */
+  p->__M.arg_switches[7] = p->payload_json;
+
+  /* specs/webhook.execute-webhook.json:42:20
+     '{ "name": "allowed_mentions", 
+          "type":{ "base":"discord::channel::allowed_mentions::dati", "dec":"*" },
+          "comment":"allowed mentions for the message",
+          "required":"false"
+        }'
+  */
+  p->__M.arg_switches[8] = p->allowed_mentions;
+
+}
+
 size_t params_to_json(char *json, size_t len, struct params *p)
 {
   size_t r;
+  params_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/webhook.execute-webhook.json:12:20
      '{ "name": "wait", "type":{ "base":"bool"}, "loc":"query",
@@ -276,82 +353,6 @@ size_t params_to_json(char *json, size_t len, struct params *p)
                 discord::channel::allowed_mentions::dati_to_json, p->allowed_mentions,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
-}
-
-void params_use_default_inject_settings(struct params *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/webhook.execute-webhook.json:12:20
-     '{ "name": "wait", "type":{ "base":"bool"}, "loc":"query",
-          "comment":"name of the webhook(1-80) chars",
-          "required":"one of content, file, embeds"
-        }'
-  */
-  p->__M.arg_switches[0] = &p->wait;
-
-  /* specs/webhook.execute-webhook.json:16:20
-     '{ "name": "content", "type":{ "base":"char", "dec":"[2000+1]" }, 
-          "comment":"the message contents (up to 2000 characters",
-          "required":false
-        }'
-  */
-  p->__M.arg_switches[1] = p->content;
-
-  /* specs/webhook.execute-webhook.json:20:20
-     '{ "name": "username", "type":{ "base":"char", "dec":"*" }, 
-          "comment":"override the default username of the webhook",
-          "required":false
-        }'
-  */
-  p->__M.arg_switches[2] = p->username;
-
-  /* specs/webhook.execute-webhook.json:24:20
-     '{ "name": "avatar_url", "type":{ "base":"char", "dec":"*" }, 
-          "comment":"override the default avatar of the webhook" }'
-  */
-  p->__M.arg_switches[3] = p->avatar_url;
-
-  /* specs/webhook.execute-webhook.json:26:20
-     '{ "name": "tts", "type":{ "base":"bool" }, 
-          "comment":"true if this is a TTS message",
-          "required":false
-        }'
-  */
-  p->__M.arg_switches[4] = &p->tts;
-
-  /* specs/webhook.execute-webhook.json:30:20
-     '{ "name": "file", "type":{ "base":"char", "dec":"*" }, 
-          "comment":"the contents of the file being sent",
-          "required":"one of content, file, embeds"
-        }'
-  */
-  p->__M.arg_switches[5] = p->file;
-
-  /* specs/webhook.execute-webhook.json:34:20
-     '{ "name": "embeds", "type":{ "base":"discord::channel::embed::dati", "dec":"*" }, 
-          "comment":"embedded rich content",
-          "required":"one of content, file, embeds"
-        }'
-  */
-  p->__M.arg_switches[6] = p->embeds;
-
-  /* specs/webhook.execute-webhook.json:38:20
-     '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, 
-          "comment":"See message create",
-          "required":"multipart/form-data only"
-        }'
-  */
-  p->__M.arg_switches[7] = p->payload_json;
-
-  /* specs/webhook.execute-webhook.json:42:20
-     '{ "name": "allowed_mentions", 
-          "type":{ "base":"discord::channel::allowed_mentions::dati", "dec":"*" },
-          "comment":"allowed mentions for the message",
-          "required":"false"
-        }'
-  */
-  p->__M.arg_switches[8] = p->allowed_mentions;
-
 }
 
 

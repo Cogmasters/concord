@@ -101,9 +101,70 @@ void params_from_json(char *json, size_t len, struct params *p)
   ret = r;
 }
 
+static void params_use_default_inject_settings(struct params *p)
+{
+  p->__M.enable_arg_switches = true;
+  /* specs/guild.create-channel.json:11:20
+     '{ "name": "name", "type":{ "base":"char", "dec":"*" }}'
+  */
+  p->__M.arg_switches[0] = p->name;
+
+  /* specs/guild.create-channel.json:12:20
+     '{ "name": "type", "type":{ "base":"int" }}'
+  */
+  p->__M.arg_switches[1] = &p->type;
+
+  /* specs/guild.create-channel.json:13:20
+     '{ "name": "topic", "type":{ "base":"char", "dec":"*" }}'
+  */
+  p->__M.arg_switches[2] = p->topic;
+
+  /* specs/guild.create-channel.json:14:20
+     '{ "name": "bitrate", "type":{ "base":"int" }, "inject_if_not":0}'
+  */
+  if (p->bitrate != 0)
+    p->__M.arg_switches[3] = &p->bitrate;
+
+  /* specs/guild.create-channel.json:15:20
+     '{ "name": "user_limit", "type":{ "base":"int" }, "inject_if_not":0}'
+  */
+  if (p->user_limit != 0)
+    p->__M.arg_switches[4] = &p->user_limit;
+
+  /* specs/guild.create-channel.json:16:20
+     '{ "name": "rate_limit_per_user", "type":{ "base":"int" }, "inject_if_not":0}'
+  */
+  if (p->rate_limit_per_user != 0)
+    p->__M.arg_switches[5] = &p->rate_limit_per_user;
+
+  /* specs/guild.create-channel.json:17:20
+     '{ "name": "position", "type":{ "base":"int" } }'
+  */
+  p->__M.arg_switches[6] = &p->position;
+
+  /* specs/guild.create-channel.json:18:20
+     '{ "name": "permission_overwrites", "type":{ "base":"discord::channel::overwrite::dati", "dec":"ntl" }, "inject_if_not":null}'
+  */
+  if (p->permission_overwrites != NULL)
+    p->__M.arg_switches[7] = p->permission_overwrites;
+
+  /* specs/guild.create-channel.json:19:20
+     '{ "name": "parent_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0}'
+  */
+  if (p->parent_id != 0)
+    p->__M.arg_switches[8] = &p->parent_id;
+
+  /* specs/guild.create-channel.json:20:20
+     '{ "name": "nsfw", "type":{ "base":"bool" }}'
+  */
+  p->__M.arg_switches[9] = &p->nsfw;
+
+}
+
 size_t params_to_json(char *json, size_t len, struct params *p)
 {
   size_t r;
+  params_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/guild.create-channel.json:11:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }}'
@@ -188,66 +249,6 @@ size_t params_to_json(char *json, size_t len, struct params *p)
                 &p->nsfw,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
-}
-
-void params_use_default_inject_settings(struct params *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/guild.create-channel.json:11:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*" }}'
-  */
-  p->__M.arg_switches[0] = p->name;
-
-  /* specs/guild.create-channel.json:12:20
-     '{ "name": "type", "type":{ "base":"int" }}'
-  */
-  p->__M.arg_switches[1] = &p->type;
-
-  /* specs/guild.create-channel.json:13:20
-     '{ "name": "topic", "type":{ "base":"char", "dec":"*" }}'
-  */
-  p->__M.arg_switches[2] = p->topic;
-
-  /* specs/guild.create-channel.json:14:20
-     '{ "name": "bitrate", "type":{ "base":"int" }, "inject_if_not":0}'
-  */
-  if (p->bitrate != 0)
-    p->__M.arg_switches[3] = &p->bitrate;
-
-  /* specs/guild.create-channel.json:15:20
-     '{ "name": "user_limit", "type":{ "base":"int" }, "inject_if_not":0}'
-  */
-  if (p->user_limit != 0)
-    p->__M.arg_switches[4] = &p->user_limit;
-
-  /* specs/guild.create-channel.json:16:20
-     '{ "name": "rate_limit_per_user", "type":{ "base":"int" }, "inject_if_not":0}'
-  */
-  if (p->rate_limit_per_user != 0)
-    p->__M.arg_switches[5] = &p->rate_limit_per_user;
-
-  /* specs/guild.create-channel.json:17:20
-     '{ "name": "position", "type":{ "base":"int" } }'
-  */
-  p->__M.arg_switches[6] = &p->position;
-
-  /* specs/guild.create-channel.json:18:20
-     '{ "name": "permission_overwrites", "type":{ "base":"discord::channel::overwrite::dati", "dec":"ntl" }, "inject_if_not":null}'
-  */
-  if (p->permission_overwrites != NULL)
-    p->__M.arg_switches[7] = p->permission_overwrites;
-
-  /* specs/guild.create-channel.json:19:20
-     '{ "name": "parent_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0}'
-  */
-  if (p->parent_id != 0)
-    p->__M.arg_switches[8] = &p->parent_id;
-
-  /* specs/guild.create-channel.json:20:20
-     '{ "name": "nsfw", "type":{ "base":"bool" }}'
-  */
-  p->__M.arg_switches[9] = &p->nsfw;
-
 }
 
 

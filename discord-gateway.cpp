@@ -125,7 +125,6 @@ send_identify(dati *gw)
   pthread_mutex_unlock(&gw->lock);
 
   char payload[MAX_PAYLOAD_LEN];
-  identify::dati_use_default_inject_settings(gw->identify);
   int ret = json_inject(payload, sizeof(payload), 
               "(op):2" // IDENTIFY OPCODE
               "(d):F",

@@ -39,9 +39,26 @@ void params_from_json(char *json, size_t len, struct params *p)
   ret = r;
 }
 
+static void params_use_default_inject_settings(struct params *p)
+{
+  p->__M.enable_arg_switches = true;
+  /* specs/template.modify-guild-template.json:11:20
+     '{ "name": "name", "type":{ "base":"char", "dec":"[100+1]"}, "comment":"name of the guild"}'
+  */
+  p->__M.arg_switches[0] = p->name;
+
+  /* specs/template.modify-guild-template.json:12:20
+     '{ "name": "description", "type":{ "base":"char", "dec":"[120+1]" }, 
+          "comment":"description for the template (0-120) chars"}'
+  */
+  p->__M.arg_switches[1] = p->description;
+
+}
+
 size_t params_to_json(char *json, size_t len, struct params *p)
 {
   size_t r;
+  params_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/template.modify-guild-template.json:11:20
      '{ "name": "name", "type":{ "base":"char", "dec":"[100+1]"}, "comment":"name of the guild"}'
@@ -64,22 +81,6 @@ size_t params_to_json(char *json, size_t len, struct params *p)
                 p->description,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
-}
-
-void params_use_default_inject_settings(struct params *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/template.modify-guild-template.json:11:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[100+1]"}, "comment":"name of the guild"}'
-  */
-  p->__M.arg_switches[0] = p->name;
-
-  /* specs/template.modify-guild-template.json:12:20
-     '{ "name": "description", "type":{ "base":"char", "dec":"[120+1]" }, 
-          "comment":"description for the template (0-120) chars"}'
-  */
-  p->__M.arg_switches[1] = p->description;
-
 }
 
 

@@ -59,7 +59,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace overwrite
 
 namespace reaction {
@@ -113,7 +112,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace reaction
 
 namespace followed_channel {
@@ -163,7 +161,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace followed_channel
 
 namespace attachment {
@@ -237,7 +234,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace attachment
 
 namespace mention {
@@ -297,7 +293,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace mention
 
 namespace allowed_mentions {
@@ -357,7 +352,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace allowed_mentions
 
 namespace embed {
@@ -469,7 +463,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace embed
 
 namespace embed {
@@ -530,7 +523,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace thumbnail
 } // namespace embed
 
@@ -592,7 +584,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace video
 } // namespace embed
 
@@ -654,7 +645,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace image
 } // namespace embed
 
@@ -706,7 +696,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace provider
 } // namespace embed
 
@@ -768,7 +757,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace author
 } // namespace embed
 
@@ -827,7 +815,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace footer
 } // namespace embed
 
@@ -884,6 +871,5 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace field
 } // namespace embed

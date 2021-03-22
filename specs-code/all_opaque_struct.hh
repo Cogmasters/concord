@@ -764,7 +764,7 @@ namespace identify {
 namespace connection {
 /* Title: Identify Connection Properties */
 /* https://discord.com/developers/docs/topics/gateway#identify-identify-connection-properties */
-/* This is defined at specs/gateway.json:106:22 */
+/* This is defined at specs/gateway.json:107:22 */
 struct dati;
 } // namespace connection
 } // namespace identify
@@ -774,7 +774,7 @@ namespace status_update {
 namespace activity {
 /* Title: Activity Structure */
 /* https://discord.com/developers/docs/topics/gateway#activity-object-activity-structure */
-/* This is defined at specs/gateway.json:118:22 */
+/* This is defined at specs/gateway.json:119:22 */
 struct dati;
 } // namespace activity
 } // namespace status_update

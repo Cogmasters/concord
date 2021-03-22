@@ -81,9 +81,54 @@ void params_from_json(char *json, size_t len, struct params *p)
   ret = r;
 }
 
+static void params_use_default_inject_settings(struct params *p)
+{
+  p->__M.enable_arg_switches = true;
+  /* specs/channel.create-channel-invite.json:11:20
+     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "loc":"url"}'
+  */
+  p->__M.arg_switches[0] = &p->channel_id;
+
+  /* specs/channel.create-channel-invite.json:12:20
+     '{ "name": "max_age", "type":{ "base":"int" } }'
+  */
+  p->__M.arg_switches[1] = &p->max_age;
+
+  /* specs/channel.create-channel-invite.json:13:20
+     '{ "name": "max_uses", "type":{ "base":"int" } }'
+  */
+  p->__M.arg_switches[2] = &p->max_uses;
+
+  /* specs/channel.create-channel-invite.json:14:20
+     '{ "name": "temporary", "type":{ "base":"bool"}}'
+  */
+  p->__M.arg_switches[3] = &p->temporary;
+
+  /* specs/channel.create-channel-invite.json:15:20
+     '{ "name": "unique", "type":{ "base":"bool"}}'
+  */
+  p->__M.arg_switches[4] = &p->unique;
+
+  /* specs/channel.create-channel-invite.json:16:20
+     '{ "name": "target_user", "type":{ "base":"char", "dec":"*"}, 
+          "option":true, "inject_if_not":null}'
+  */
+  if (p->target_user != NULL)
+    p->__M.arg_switches[5] = p->target_user;
+
+  /* specs/channel.create-channel-invite.json:18:20
+     '{ "name": "target_user_type", "type":{ "base":"int" },
+          "option":true, "inject_if_not":0}'
+  */
+  if (p->target_user_type != 0)
+    p->__M.arg_switches[6] = &p->target_user_type;
+
+}
+
 size_t params_to_json(char *json, size_t len, struct params *p)
 {
   size_t r;
+  params_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/channel.create-channel-invite.json:11:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "loc":"url"}'
@@ -148,50 +193,6 @@ size_t params_to_json(char *json, size_t len, struct params *p)
                 &p->target_user_type,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
-}
-
-void params_use_default_inject_settings(struct params *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/channel.create-channel-invite.json:11:20
-     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "loc":"url"}'
-  */
-  p->__M.arg_switches[0] = &p->channel_id;
-
-  /* specs/channel.create-channel-invite.json:12:20
-     '{ "name": "max_age", "type":{ "base":"int" } }'
-  */
-  p->__M.arg_switches[1] = &p->max_age;
-
-  /* specs/channel.create-channel-invite.json:13:20
-     '{ "name": "max_uses", "type":{ "base":"int" } }'
-  */
-  p->__M.arg_switches[2] = &p->max_uses;
-
-  /* specs/channel.create-channel-invite.json:14:20
-     '{ "name": "temporary", "type":{ "base":"bool"}}'
-  */
-  p->__M.arg_switches[3] = &p->temporary;
-
-  /* specs/channel.create-channel-invite.json:15:20
-     '{ "name": "unique", "type":{ "base":"bool"}}'
-  */
-  p->__M.arg_switches[4] = &p->unique;
-
-  /* specs/channel.create-channel-invite.json:16:20
-     '{ "name": "target_user", "type":{ "base":"char", "dec":"*"}, 
-          "option":true, "inject_if_not":null}'
-  */
-  if (p->target_user != NULL)
-    p->__M.arg_switches[5] = p->target_user;
-
-  /* specs/channel.create-channel-invite.json:18:20
-     '{ "name": "target_user_type", "type":{ "base":"int" },
-          "option":true, "inject_if_not":0}'
-  */
-  if (p->target_user_type != 0)
-    p->__M.arg_switches[6] = &p->target_user_type;
-
 }
 
 

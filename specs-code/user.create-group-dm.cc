@@ -41,9 +41,27 @@ void params_from_json(char *json, size_t len, struct params *p)
   ret = r;
 }
 
+static void params_use_default_inject_settings(struct params *p)
+{
+  p->__M.enable_arg_switches = true;
+  /* specs/user.create-group-dm.json:11:20
+     '{ "name": "access_tokens", "type":{ "base":"ja_str", "dec":"ntl" }, 
+          "comment":"access tokens of users that have granted your app the gdm.join scope"}'
+  */
+  p->__M.arg_switches[0] = p->access_tokens;
+
+  /* specs/user.create-group-dm.json:13:19
+     '{ "name":"nick", "type":{ "base":"char", "dec":"*"}, 
+          "todo":true,
+          "comment":"ia dictionary of user ids to their respective nicknames"}'
+  */
+
+}
+
 size_t params_to_json(char *json, size_t len, struct params *p)
 {
   size_t r;
+  params_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/user.create-group-dm.json:11:20
      '{ "name": "access_tokens", "type":{ "base":"ja_str", "dec":"ntl" }, 
@@ -68,23 +86,6 @@ size_t params_to_json(char *json, size_t len, struct params *p)
   */
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
-}
-
-void params_use_default_inject_settings(struct params *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/user.create-group-dm.json:11:20
-     '{ "name": "access_tokens", "type":{ "base":"ja_str", "dec":"ntl" }, 
-          "comment":"access tokens of users that have granted your app the gdm.join scope"}'
-  */
-  p->__M.arg_switches[0] = p->access_tokens;
-
-  /* specs/user.create-group-dm.json:13:19
-     '{ "name":"nick", "type":{ "base":"char", "dec":"*"}, 
-          "todo":true,
-          "comment":"ia dictionary of user ids to their respective nicknames"}'
-  */
-
 }
 
 

@@ -53,9 +53,34 @@ void params_from_json(char *json, size_t len, struct params *p)
   ret = r;
 }
 
+static void params_use_default_inject_settings(struct params *p)
+{
+  p->__M.enable_arg_switches = true;
+  /* specs/webhook.edit-webhook-message.json:11:20
+     '{ "name": "content", "type":{ "base":"char", "dec":"[2000+1]" }, 
+          "comment":"name of the webhook(1-2000) chars" }'
+  */
+  p->__M.arg_switches[0] = p->content;
+
+  /* specs/webhook.edit-webhook-message.json:13:20
+     '{ "name": "embeds", "type":{ "base":"discord::channel::embed::dati", "dec":"ntl" }, 
+          "comment":"array of up to 10 embeds objects" }'
+  */
+  p->__M.arg_switches[1] = p->embeds;
+
+  /* specs/webhook.edit-webhook-message.json:15:20
+     '{ "name": "allowed_mentions", 
+          "type":{ "base":"discord::channel::allowed_mentions::dati", "dec":"*" }, 
+          "comment":"allowed mentions for the message" }'
+  */
+  p->__M.arg_switches[2] = p->allowed_mentions;
+
+}
+
 size_t params_to_json(char *json, size_t len, struct params *p)
 {
   size_t r;
+  params_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/webhook.edit-webhook-message.json:11:20
      '{ "name": "content", "type":{ "base":"char", "dec":"[2000+1]" }, 
@@ -92,30 +117,6 @@ size_t params_to_json(char *json, size_t len, struct params *p)
                 discord::channel::allowed_mentions::dati_to_json, p->allowed_mentions,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
-}
-
-void params_use_default_inject_settings(struct params *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/webhook.edit-webhook-message.json:11:20
-     '{ "name": "content", "type":{ "base":"char", "dec":"[2000+1]" }, 
-          "comment":"name of the webhook(1-2000) chars" }'
-  */
-  p->__M.arg_switches[0] = p->content;
-
-  /* specs/webhook.edit-webhook-message.json:13:20
-     '{ "name": "embeds", "type":{ "base":"discord::channel::embed::dati", "dec":"ntl" }, 
-          "comment":"array of up to 10 embeds objects" }'
-  */
-  p->__M.arg_switches[1] = p->embeds;
-
-  /* specs/webhook.edit-webhook-message.json:15:20
-     '{ "name": "allowed_mentions", 
-          "type":{ "base":"discord::channel::allowed_mentions::dati", "dec":"*" }, 
-          "comment":"allowed mentions for the message" }'
-  */
-  p->__M.arg_switches[2] = p->allowed_mentions;
-
 }
 
 

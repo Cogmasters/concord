@@ -116,9 +116,75 @@ void dati_from_json(char *json, size_t len, struct dati *p)
   ret = r;
 }
 
+static void dati_use_default_inject_settings(struct dati *p)
+{
+  p->__M.enable_arg_switches = true;
+  /* specs/voice.json:12:20
+     '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
+  */
+  p->__M.arg_switches[0] = &p->guild_id;
+
+  /* specs/voice.json:13:20
+     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}}'
+  */
+  p->__M.arg_switches[1] = &p->channel_id;
+
+  /* specs/voice.json:14:20
+     '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
+  */
+  p->__M.arg_switches[2] = &p->user_id;
+
+  /* specs/voice.json:15:20
+     '{ "name": "member", "type":{ "base":"discord::guild::member::dati", "dec":"*" }}'
+  */
+  p->__M.arg_switches[3] = p->member;
+
+  /* specs/voice.json:16:20
+     '{ "name": "session_id", "type":{ "base":"char", "dec":"*" }}'
+  */
+  p->__M.arg_switches[4] = p->session_id;
+
+  /* specs/voice.json:17:20
+     '{ "name": "deaf", "type":{ "base":"bool" }}'
+  */
+  p->__M.arg_switches[5] = &p->deaf;
+
+  /* specs/voice.json:18:20
+     '{ "name": "mute", "type":{ "base":"bool" }}'
+  */
+  p->__M.arg_switches[6] = &p->mute;
+
+  /* specs/voice.json:19:20
+     '{ "name": "self_deaf", "type":{ "base":"bool" }}'
+  */
+  p->__M.arg_switches[7] = &p->self_deaf;
+
+  /* specs/voice.json:20:20
+     '{ "name": "self_mute", "type":{ "base":"bool" }}'
+  */
+  p->__M.arg_switches[8] = &p->self_mute;
+
+  /* specs/voice.json:21:20
+     '{ "name": "self_stream", "type":{ "base":"bool" }}'
+  */
+  p->__M.arg_switches[9] = &p->self_stream;
+
+  /* specs/voice.json:22:20
+     '{ "name": "self_video", "type":{ "base":"bool" }}'
+  */
+  p->__M.arg_switches[10] = &p->self_video;
+
+  /* specs/voice.json:23:20
+     '{ "name": "supress", "type":{ "base":"bool" }}'
+  */
+  p->__M.arg_switches[11] = &p->supress;
+
+}
+
 size_t dati_to_json(char *json, size_t len, struct dati *p)
 {
   size_t r;
+  dati_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/voice.json:12:20
      '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
@@ -219,71 +285,6 @@ size_t dati_to_json(char *json, size_t len, struct dati *p)
                 &p->supress,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
-}
-
-void dati_use_default_inject_settings(struct dati *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/voice.json:12:20
-     '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
-  p->__M.arg_switches[0] = &p->guild_id;
-
-  /* specs/voice.json:13:20
-     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}}'
-  */
-  p->__M.arg_switches[1] = &p->channel_id;
-
-  /* specs/voice.json:14:20
-     '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
-  p->__M.arg_switches[2] = &p->user_id;
-
-  /* specs/voice.json:15:20
-     '{ "name": "member", "type":{ "base":"discord::guild::member::dati", "dec":"*" }}'
-  */
-  p->__M.arg_switches[3] = p->member;
-
-  /* specs/voice.json:16:20
-     '{ "name": "session_id", "type":{ "base":"char", "dec":"*" }}'
-  */
-  p->__M.arg_switches[4] = p->session_id;
-
-  /* specs/voice.json:17:20
-     '{ "name": "deaf", "type":{ "base":"bool" }}'
-  */
-  p->__M.arg_switches[5] = &p->deaf;
-
-  /* specs/voice.json:18:20
-     '{ "name": "mute", "type":{ "base":"bool" }}'
-  */
-  p->__M.arg_switches[6] = &p->mute;
-
-  /* specs/voice.json:19:20
-     '{ "name": "self_deaf", "type":{ "base":"bool" }}'
-  */
-  p->__M.arg_switches[7] = &p->self_deaf;
-
-  /* specs/voice.json:20:20
-     '{ "name": "self_mute", "type":{ "base":"bool" }}'
-  */
-  p->__M.arg_switches[8] = &p->self_mute;
-
-  /* specs/voice.json:21:20
-     '{ "name": "self_stream", "type":{ "base":"bool" }}'
-  */
-  p->__M.arg_switches[9] = &p->self_stream;
-
-  /* specs/voice.json:22:20
-     '{ "name": "self_video", "type":{ "base":"bool" }}'
-  */
-  p->__M.arg_switches[10] = &p->self_video;
-
-  /* specs/voice.json:23:20
-     '{ "name": "supress", "type":{ "base":"bool" }}'
-  */
-  p->__M.arg_switches[11] = &p->supress;
-
 }
 
 
@@ -525,9 +526,45 @@ void dati_from_json(char *json, size_t len, struct dati *p)
   ret = r;
 }
 
+static void dati_use_default_inject_settings(struct dati *p)
+{
+  p->__M.enable_arg_switches = true;
+  /* specs/voice.json:33:20
+     '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }'
+  */
+  p->__M.arg_switches[0] = p->id;
+
+  /* specs/voice.json:34:20
+     '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }'
+  */
+  p->__M.arg_switches[1] = p->name;
+
+  /* specs/voice.json:35:20
+     '{ "name": "vip", "type":{ "base":"bool" }}'
+  */
+  p->__M.arg_switches[2] = &p->vip;
+
+  /* specs/voice.json:36:20
+     '{ "name": "optimal", "type":{ "base":"bool" }}'
+  */
+  p->__M.arg_switches[3] = &p->optimal;
+
+  /* specs/voice.json:37:20
+     '{ "name": "deprecated", "type":{ "base":"bool" }}'
+  */
+  p->__M.arg_switches[4] = &p->deprecated;
+
+  /* specs/voice.json:38:20
+     '{ "name": "custom", "type":{ "base":"bool" }}'
+  */
+  p->__M.arg_switches[5] = &p->custom;
+
+}
+
 size_t dati_to_json(char *json, size_t len, struct dati *p)
 {
   size_t r;
+  dati_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/voice.json:33:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }'
@@ -580,41 +617,6 @@ size_t dati_to_json(char *json, size_t len, struct dati *p)
                 &p->custom,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
-}
-
-void dati_use_default_inject_settings(struct dati *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/voice.json:33:20
-     '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }'
-  */
-  p->__M.arg_switches[0] = p->id;
-
-  /* specs/voice.json:34:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }'
-  */
-  p->__M.arg_switches[1] = p->name;
-
-  /* specs/voice.json:35:20
-     '{ "name": "vip", "type":{ "base":"bool" }}'
-  */
-  p->__M.arg_switches[2] = &p->vip;
-
-  /* specs/voice.json:36:20
-     '{ "name": "optimal", "type":{ "base":"bool" }}'
-  */
-  p->__M.arg_switches[3] = &p->optimal;
-
-  /* specs/voice.json:37:20
-     '{ "name": "deprecated", "type":{ "base":"bool" }}'
-  */
-  p->__M.arg_switches[4] = &p->deprecated;
-
-  /* specs/voice.json:38:20
-     '{ "name": "custom", "type":{ "base":"bool" }}'
-  */
-  p->__M.arg_switches[5] = &p->custom;
-
 }
 
 

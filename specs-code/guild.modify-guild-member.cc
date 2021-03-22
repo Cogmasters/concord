@@ -61,9 +61,44 @@ void params_from_json(char *json, size_t len, struct params *p)
   ret = r;
 }
 
+static void params_use_default_inject_settings(struct params *p)
+{
+  p->__M.enable_arg_switches = true;
+  /* specs/guild.modify-guild-member.json:11:20
+     '{ "name": "nick", "type":{ "base":"char", "dec":"*" }}'
+  */
+  p->__M.arg_switches[0] = p->nick;
+
+  /* specs/guild.modify-guild-member.json:12:20
+     '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "inject_if_not":null}'
+  */
+  if (p->roles != NULL)
+    p->__M.arg_switches[1] = p->roles;
+
+  /* specs/guild.modify-guild-member.json:13:20
+     '{ "name": "mute", "type":{ "base":"bool" }, "inject_if_not":false}'
+  */
+  if (p->mute != false)
+    p->__M.arg_switches[2] = &p->mute;
+
+  /* specs/guild.modify-guild-member.json:14:20
+     '{ "name": "deaf", "type":{ "base":"bool" }, "inject_if_not":false}'
+  */
+  if (p->deaf != false)
+    p->__M.arg_switches[3] = &p->deaf;
+
+  /* specs/guild.modify-guild-member.json:15:20
+     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0}'
+  */
+  if (p->channel_id != 0)
+    p->__M.arg_switches[4] = &p->channel_id;
+
+}
+
 size_t params_to_json(char *json, size_t len, struct params *p)
 {
   size_t r;
+  params_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/guild.modify-guild-member.json:11:20
      '{ "name": "nick", "type":{ "base":"char", "dec":"*" }}'
@@ -108,40 +143,6 @@ size_t params_to_json(char *json, size_t len, struct params *p)
                 orka_ulltostr, &p->channel_id,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
-}
-
-void params_use_default_inject_settings(struct params *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/guild.modify-guild-member.json:11:20
-     '{ "name": "nick", "type":{ "base":"char", "dec":"*" }}'
-  */
-  p->__M.arg_switches[0] = p->nick;
-
-  /* specs/guild.modify-guild-member.json:12:20
-     '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "inject_if_not":null}'
-  */
-  if (p->roles != NULL)
-    p->__M.arg_switches[1] = p->roles;
-
-  /* specs/guild.modify-guild-member.json:13:20
-     '{ "name": "mute", "type":{ "base":"bool" }, "inject_if_not":false}'
-  */
-  if (p->mute != false)
-    p->__M.arg_switches[2] = &p->mute;
-
-  /* specs/guild.modify-guild-member.json:14:20
-     '{ "name": "deaf", "type":{ "base":"bool" }, "inject_if_not":false}'
-  */
-  if (p->deaf != false)
-    p->__M.arg_switches[3] = &p->deaf;
-
-  /* specs/guild.modify-guild-member.json:15:20
-     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0}'
-  */
-  if (p->channel_id != 0)
-    p->__M.arg_switches[4] = &p->channel_id;
-
 }
 
 

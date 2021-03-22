@@ -462,12 +462,12 @@ struct discord_gateway_identify_status_update_dati;
 
 /* Title: Identify Connection Properties */
 /* https://discord.com/developers/docs/topics/gateway#identify-identify-connection-properties */
-/* This is defined at specs/gateway.json:106:22 */
+/* This is defined at specs/gateway.json:107:22 */
 struct discord_gateway_identify_connection_dati;
 
 /* Title: Activity Structure */
 /* https://discord.com/developers/docs/topics/gateway#activity-object-activity-structure */
-/* This is defined at specs/gateway.json:118:22 */
+/* This is defined at specs/gateway.json:119:22 */
 struct discord_gateway_identify_status_update_activity_dati;
 /* This file is generated from specs/template.modify-guild-template.json, Please don't edit it. */
 /*

@@ -26,7 +26,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace field
 
 extern void dati_cleanup_v(void *p);
@@ -48,7 +47,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace membership_screening
 } // namespace guild
 } // namespace discord
@@ -79,7 +77,6 @@ extern void params_list_from_json_v(char *str, size_t len, void *p);
 extern void params_list_from_json(char *str, size_t len, struct params ***p);
 extern size_t params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t params_list_to_json(char *str, size_t len, struct params **p);
-extern void params_use_default_inject_settings(struct params *p);
 } // namespace edit_channel_permissions
 } // namespace channel
 } // namespace discord
@@ -110,7 +107,6 @@ extern void params_list_from_json_v(char *str, size_t len, void *p);
 extern void params_list_from_json(char *str, size_t len, struct params ***p);
 extern size_t params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t params_list_to_json(char *str, size_t len, struct params **p);
-extern void params_use_default_inject_settings(struct params *p);
 } // namespace modify
 } // namespace channel
 } // namespace discord
@@ -142,7 +138,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace sticker
 
 namespace reference {
@@ -165,7 +160,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace reference
 
 namespace application {
@@ -188,7 +182,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace application
 
 namespace activity {
@@ -211,7 +204,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace activity
 
 extern void dati_cleanup_v(void *p);
@@ -233,7 +225,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace message
 } // namespace channel
 } // namespace discord
@@ -264,7 +255,6 @@ extern void params_list_from_json_v(char *str, size_t len, void *p);
 extern void params_list_from_json(char *str, size_t len, struct params ***p);
 extern size_t params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t params_list_to_json(char *str, size_t len, struct params **p);
-extern void params_use_default_inject_settings(struct params *p);
 } // namespace create_guild_template
 } // namespace Template
 } // namespace discord
@@ -295,7 +285,6 @@ extern void params_list_from_json_v(char *str, size_t len, void *p);
 extern void params_list_from_json(char *str, size_t len, struct params ***p);
 extern size_t params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t params_list_to_json(char *str, size_t len, struct params **p);
-extern void params_use_default_inject_settings(struct params *p);
 } // namespace group_dm_add_recipient
 } // namespace channel
 } // namespace discord
@@ -326,7 +315,6 @@ extern void params_list_from_json_v(char *str, size_t len, void *p);
 extern void params_list_from_json(char *str, size_t len, struct params ***p);
 extern size_t params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t params_list_to_json(char *str, size_t len, struct params **p);
-extern void params_use_default_inject_settings(struct params *p);
 } // namespace create_channel_invite
 } // namespace channel
 } // namespace discord
@@ -357,7 +345,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace ban
 } // namespace guild
 } // namespace discord
@@ -387,7 +374,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace voice
 
 namespace voice {
@@ -411,7 +397,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace region
 } // namespace voice
 } // namespace discord
@@ -442,7 +427,6 @@ extern void params_list_from_json_v(char *str, size_t len, void *p);
 extern void params_list_from_json(char *str, size_t len, struct params ***p);
 extern size_t params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t params_list_to_json(char *str, size_t len, struct params **p);
-extern void params_use_default_inject_settings(struct params *p);
 } // namespace get_reactions
 } // namespace channel
 } // namespace discord
@@ -472,7 +456,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace guild
 } // namespace discord
 /* This file is generated from specs/user.json, Please don't edit it. */
@@ -501,7 +484,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 
 namespace connection {
 extern void dati_cleanup_v(void *p);
@@ -523,7 +505,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace connection
 } // namespace user
 } // namespace discord
@@ -554,7 +535,6 @@ extern void params_list_from_json_v(char *str, size_t len, void *p);
 extern void params_list_from_json(char *str, size_t len, struct params ***p);
 extern size_t params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t params_list_to_json(char *str, size_t len, struct params **p);
-extern void params_use_default_inject_settings(struct params *p);
 } // namespace modify_guild_member
 } // namespace guild
 } // namespace discord
@@ -586,7 +566,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace account
 } // namespace integration
 
@@ -611,7 +590,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace application
 } // namespace integration
 
@@ -635,7 +613,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace integration
 } // namespace guild
 } // namespace discord
@@ -666,7 +643,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace unavailable_guild
 
 namespace preview {
@@ -689,7 +665,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace preview
 
 namespace widget {
@@ -712,7 +687,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace widget
 } // namespace guild
 } // namespace discord
@@ -742,7 +716,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 
 namespace metadata {
 extern void dati_cleanup_v(void *p);
@@ -764,7 +737,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace metadata
 } // namespace invite
 } // namespace discord
@@ -795,7 +767,6 @@ extern void params_list_from_json_v(char *str, size_t len, void *p);
 extern void params_list_from_json(char *str, size_t len, struct params ***p);
 extern size_t params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t params_list_to_json(char *str, size_t len, struct params **p);
-extern void params_use_default_inject_settings(struct params *p);
 } // namespace modify_webhook
 } // namespace webhook
 } // namespace discord
@@ -826,7 +797,6 @@ extern void params_list_from_json_v(char *str, size_t len, void *p);
 extern void params_list_from_json(char *str, size_t len, struct params ***p);
 extern size_t params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t params_list_to_json(char *str, size_t len, struct params **p);
-extern void params_use_default_inject_settings(struct params *p);
 } // namespace create_guild_from_template
 } // namespace Template
 } // namespace discord
@@ -857,7 +827,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace overwrite
 
 namespace reaction {
@@ -880,7 +849,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace reaction
 
 namespace followed_channel {
@@ -903,7 +871,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace followed_channel
 
 namespace attachment {
@@ -926,7 +893,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace attachment
 
 namespace mention {
@@ -949,7 +915,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace mention
 
 namespace allowed_mentions {
@@ -972,7 +937,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace allowed_mentions
 
 namespace embed {
@@ -995,7 +959,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace embed
 
 namespace embed {
@@ -1019,7 +982,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace thumbnail
 } // namespace embed
 
@@ -1044,7 +1006,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace video
 } // namespace embed
 
@@ -1069,7 +1030,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace image
 } // namespace embed
 
@@ -1094,7 +1054,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace provider
 } // namespace embed
 
@@ -1119,7 +1078,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace author
 } // namespace embed
 
@@ -1144,7 +1102,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace footer
 } // namespace embed
 
@@ -1169,7 +1126,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace field
 } // namespace embed
 } // namespace channel
@@ -1201,7 +1157,6 @@ extern void params_list_from_json_v(char *str, size_t len, void *p);
 extern void params_list_from_json(char *str, size_t len, struct params ***p);
 extern size_t params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t params_list_to_json(char *str, size_t len, struct params **p);
-extern void params_use_default_inject_settings(struct params *p);
 } // namespace create_channel
 } // namespace guild
 } // namespace discord
@@ -1231,7 +1186,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace emoji
 } // namespace discord
 /* This file is generated from specs/webhook.create-webhook.json, Please don't edit it. */
@@ -1261,7 +1215,6 @@ extern void params_list_from_json_v(char *str, size_t len, void *p);
 extern void params_list_from_json(char *str, size_t len, struct params ***p);
 extern size_t params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t params_list_to_json(char *str, size_t len, struct params **p);
-extern void params_use_default_inject_settings(struct params *p);
 } // namespace create_webhook
 } // namespace webhook
 } // namespace discord
@@ -1293,7 +1246,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace screen_channel
 
 extern void dati_cleanup_v(void *p);
@@ -1315,7 +1267,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace welcome_screen
 } // namespace guild
 } // namespace discord
@@ -1346,7 +1297,6 @@ extern void params_list_from_json_v(char *str, size_t len, void *p);
 extern void params_list_from_json(char *str, size_t len, struct params ***p);
 extern size_t params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t params_list_to_json(char *str, size_t len, struct params **p);
-extern void params_use_default_inject_settings(struct params *p);
 } // namespace create_guild
 } // namespace guild
 } // namespace discord
@@ -1377,7 +1327,6 @@ extern void params_list_from_json_v(char *str, size_t len, void *p);
 extern void params_list_from_json(char *str, size_t len, struct params ***p);
 extern size_t params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t params_list_to_json(char *str, size_t len, struct params **p);
-extern void params_use_default_inject_settings(struct params *p);
 } // namespace bulk_delete_messages
 } // namespace channel
 } // namespace discord
@@ -1407,7 +1356,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace webhook
 } // namespace discord
 /* This file is generated from specs/user.create-group-dm.json, Please don't edit it. */
@@ -1437,7 +1385,6 @@ extern void params_list_from_json_v(char *str, size_t len, void *p);
 extern void params_list_from_json(char *str, size_t len, struct params ***p);
 extern size_t params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t params_list_to_json(char *str, size_t len, struct params **p);
-extern void params_use_default_inject_settings(struct params *p);
 } // namespace create_group_dm
 } // namespace user
 } // namespace discord
@@ -1468,7 +1415,6 @@ extern void params_list_from_json_v(char *str, size_t len, void *p);
 extern void params_list_from_json(char *str, size_t len, struct params ***p);
 extern size_t params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t params_list_to_json(char *str, size_t len, struct params **p);
-extern void params_use_default_inject_settings(struct params *p);
 } // namespace modify_guild_emoji
 } // namespace emoji
 } // namespace discord
@@ -1499,7 +1445,6 @@ extern void params_list_from_json_v(char *str, size_t len, void *p);
 extern void params_list_from_json(char *str, size_t len, struct params ***p);
 extern size_t params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t params_list_to_json(char *str, size_t len, struct params **p);
-extern void params_use_default_inject_settings(struct params *p);
 } // namespace execute_webhook
 } // namespace webhook
 } // namespace discord
@@ -1530,7 +1475,6 @@ extern void params_list_from_json_v(char *str, size_t len, void *p);
 extern void params_list_from_json(char *str, size_t len, struct params ***p);
 extern size_t params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t params_list_to_json(char *str, size_t len, struct params **p);
-extern void params_use_default_inject_settings(struct params *p);
 } // namespace create_guild_role
 } // namespace guild
 } // namespace discord
@@ -1568,7 +1512,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 
 namespace entry {
 extern void dati_cleanup_v(void *p);
@@ -1590,7 +1533,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace entry
 
 namespace entry {
@@ -1614,7 +1556,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace optional_info
 } // namespace entry
 
@@ -1638,7 +1579,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace change
 
 namespace change {
@@ -1662,7 +1602,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace key
 } // namespace change
 } // namespace audit_log
@@ -1695,7 +1634,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace tags
 } // namespace role
 
@@ -1719,7 +1657,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace role
 } // namespace guild
 } // namespace discord
@@ -1750,7 +1687,6 @@ extern void params_list_from_json_v(char *str, size_t len, void *p);
 extern void params_list_from_json(char *str, size_t len, struct params ***p);
 extern size_t params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t params_list_to_json(char *str, size_t len, struct params **p);
-extern void params_use_default_inject_settings(struct params *p);
 } // namespace create_guild_emoji
 } // namespace emoji
 } // namespace discord
@@ -1780,7 +1716,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace Template
 } // namespace discord
 /* This file is generated from specs/webhook.edit-webhook-message.json, Please don't edit it. */
@@ -1810,7 +1745,6 @@ extern void params_list_from_json_v(char *str, size_t len, void *p);
 extern void params_list_from_json(char *str, size_t len, struct params ***p);
 extern size_t params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t params_list_to_json(char *str, size_t len, struct params **p);
-extern void params_use_default_inject_settings(struct params *p);
 } // namespace edit_webhook_message
 } // namespace webhook
 } // namespace discord
@@ -1841,7 +1775,6 @@ extern void params_list_from_json_v(char *str, size_t len, void *p);
 extern void params_list_from_json(char *str, size_t len, struct params ***p);
 extern size_t params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t params_list_to_json(char *str, size_t len, struct params **p);
-extern void params_use_default_inject_settings(struct params *p);
 } // namespace follow_news_channel
 } // namespace channel
 } // namespace discord
@@ -1872,7 +1805,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace identify
 
 namespace identify {
@@ -1896,7 +1828,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace status_update
 } // namespace identify
 
@@ -1921,7 +1852,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace connection
 } // namespace identify
 
@@ -1947,7 +1877,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace activity
 } // namespace status_update
 } // namespace identify
@@ -1980,7 +1909,6 @@ extern void params_list_from_json_v(char *str, size_t len, void *p);
 extern void params_list_from_json(char *str, size_t len, struct params ***p);
 extern size_t params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t params_list_to_json(char *str, size_t len, struct params **p);
-extern void params_use_default_inject_settings(struct params *p);
 } // namespace modify_guild_template
 } // namespace Template
 } // namespace discord
@@ -2010,7 +1938,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace channel
 } // namespace discord
 /* This file is generated from specs/guild.member.json, Please don't edit it. */
@@ -2040,7 +1967,6 @@ extern void dati_list_from_json_v(char *str, size_t len, void *p);
 extern void dati_list_from_json(char *str, size_t len, struct dati ***p);
 extern size_t dati_list_to_json_v(char *str, size_t len, void *p);
 extern size_t dati_list_to_json(char *str, size_t len, struct dati **p);
-extern void dati_use_default_inject_settings(struct dati *p);
 } // namespace member
 } // namespace guild
 } // namespace discord
@@ -2071,7 +1997,6 @@ extern void params_list_from_json_v(char *str, size_t len, void *p);
 extern void params_list_from_json(char *str, size_t len, struct params ***p);
 extern size_t params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t params_list_to_json(char *str, size_t len, struct params **p);
-extern void params_use_default_inject_settings(struct params *p);
 } // namespace modify_current_user
 } // namespace user
 } // namespace discord

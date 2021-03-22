@@ -61,9 +61,44 @@ void params_from_json(char *json, size_t len, struct params *p)
   ret = r;
 }
 
+static void params_use_default_inject_settings(struct params *p)
+{
+  p->__M.enable_arg_switches = true;
+  /* specs/guild.role.create.json:11:20
+     '{ "name": "name", "type":{ "base":"char", "dec":"*" }}'
+  */
+  p->__M.arg_switches[0] = p->name;
+
+  /* specs/guild.role.create.json:12:20
+     '{ "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"permissions::bitwise_flags" }, "inject_if_not":0}'
+  */
+  if (p->permissions != 0)
+    p->__M.arg_switches[1] = &p->permissions;
+
+  /* specs/guild.role.create.json:13:20
+     '{ "name": "color", "type":{ "base":"int" }, "inject_if_not":0}'
+  */
+  if (p->color != 0)
+    p->__M.arg_switches[2] = &p->color;
+
+  /* specs/guild.role.create.json:14:20
+     '{ "name": "hoist", "type":{ "base":"bool" }, "inject_if_not":false}'
+  */
+  if (p->hoist != false)
+    p->__M.arg_switches[3] = &p->hoist;
+
+  /* specs/guild.role.create.json:15:20
+     '{ "name": "memtionable", "type":{ "base":"bool" }, "inject_if_not":false}'
+  */
+  if (p->memtionable != false)
+    p->__M.arg_switches[4] = &p->memtionable;
+
+}
+
 size_t params_to_json(char *json, size_t len, struct params *p)
 {
   size_t r;
+  params_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/guild.role.create.json:11:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }}'
@@ -108,40 +143,6 @@ size_t params_to_json(char *json, size_t len, struct params *p)
                 &p->memtionable,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
-}
-
-void params_use_default_inject_settings(struct params *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/guild.role.create.json:11:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*" }}'
-  */
-  p->__M.arg_switches[0] = p->name;
-
-  /* specs/guild.role.create.json:12:20
-     '{ "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"permissions::bitwise_flags" }, "inject_if_not":0}'
-  */
-  if (p->permissions != 0)
-    p->__M.arg_switches[1] = &p->permissions;
-
-  /* specs/guild.role.create.json:13:20
-     '{ "name": "color", "type":{ "base":"int" }, "inject_if_not":0}'
-  */
-  if (p->color != 0)
-    p->__M.arg_switches[2] = &p->color;
-
-  /* specs/guild.role.create.json:14:20
-     '{ "name": "hoist", "type":{ "base":"bool" }, "inject_if_not":false}'
-  */
-  if (p->hoist != false)
-    p->__M.arg_switches[3] = &p->hoist;
-
-  /* specs/guild.role.create.json:15:20
-     '{ "name": "memtionable", "type":{ "base":"bool" }, "inject_if_not":false}'
-  */
-  if (p->memtionable != false)
-    p->__M.arg_switches[4] = &p->memtionable;
-
 }
 
 

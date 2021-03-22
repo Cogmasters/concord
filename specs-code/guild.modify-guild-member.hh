@@ -63,4 +63,3 @@ extern void params_list_from_json_v(char *str, size_t len, void *p);
 extern void params_list_from_json(char *str, size_t len, struct params ***p);
 extern size_t params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t params_list_to_json(char *str, size_t len, struct params **p);
-extern void params_use_default_inject_settings(struct params *p);

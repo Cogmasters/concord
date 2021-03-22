@@ -92,9 +92,60 @@ void dati_from_json(char *json, size_t len, struct dati *p)
   ret = r;
 }
 
+static void dati_use_default_inject_settings(struct dati *p)
+{
+  p->__M.enable_arg_switches = true;
+  /* specs/webhook.json:22:20
+     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
+  */
+  p->__M.arg_switches[0] = &p->id;
+
+  /* specs/webhook.json:23:20
+     '{ "name": "type", "type":{ "base":"int", "int_alias":"discord::webhook::types::code" }}'
+  */
+  p->__M.arg_switches[1] = &p->type;
+
+  /* specs/webhook.json:24:20
+     '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
+  */
+  p->__M.arg_switches[2] = &p->guild_id;
+
+  /* specs/webhook.json:25:20
+     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
+  */
+  p->__M.arg_switches[3] = &p->channel_id;
+
+  /* specs/webhook.json:26:20
+     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*" }}'
+  */
+  p->__M.arg_switches[4] = p->user;
+
+  /* specs/webhook.json:27:20
+     '{ "name": "name", "type":{ "base":"char", "dec":"[WEBHOOK_NAME_LEN]" }}'
+  */
+  p->__M.arg_switches[5] = p->name;
+
+  /* specs/webhook.json:28:20
+     '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
+  */
+  p->__M.arg_switches[6] = p->avatar;
+
+  /* specs/webhook.json:29:20
+     '{ "name": "token", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
+  */
+  p->__M.arg_switches[7] = p->token;
+
+  /* specs/webhook.json:30:20
+     '{ "name": "application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
+  */
+  p->__M.arg_switches[8] = &p->application_id;
+
+}
+
 size_t dati_to_json(char *json, size_t len, struct dati *p)
 {
   size_t r;
+  dati_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/webhook.json:22:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
@@ -171,56 +222,6 @@ size_t dati_to_json(char *json, size_t len, struct dati *p)
                 orka_ulltostr, &p->application_id,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
-}
-
-void dati_use_default_inject_settings(struct dati *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/webhook.json:22:20
-     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
-  p->__M.arg_switches[0] = &p->id;
-
-  /* specs/webhook.json:23:20
-     '{ "name": "type", "type":{ "base":"int", "int_alias":"discord::webhook::types::code" }}'
-  */
-  p->__M.arg_switches[1] = &p->type;
-
-  /* specs/webhook.json:24:20
-     '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
-  p->__M.arg_switches[2] = &p->guild_id;
-
-  /* specs/webhook.json:25:20
-     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
-  p->__M.arg_switches[3] = &p->channel_id;
-
-  /* specs/webhook.json:26:20
-     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*" }}'
-  */
-  p->__M.arg_switches[4] = p->user;
-
-  /* specs/webhook.json:27:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[WEBHOOK_NAME_LEN]" }}'
-  */
-  p->__M.arg_switches[5] = p->name;
-
-  /* specs/webhook.json:28:20
-     '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
-  */
-  p->__M.arg_switches[6] = p->avatar;
-
-  /* specs/webhook.json:29:20
-     '{ "name": "token", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
-  */
-  p->__M.arg_switches[7] = p->token;
-
-  /* specs/webhook.json:30:20
-     '{ "name": "application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
-  p->__M.arg_switches[8] = &p->application_id;
-
 }
 
 

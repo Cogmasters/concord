@@ -124,9 +124,80 @@ void dati_from_json(char *json, size_t len, struct dati *p)
   ret = r;
 }
 
+static void dati_use_default_inject_settings(struct dati *p)
+{
+  p->__M.enable_arg_switches = true;
+  /* specs/user.json:47:14
+     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"} }'
+  */
+  p->__M.arg_switches[0] = &p->id;
+
+  /* specs/user.json:48:14
+     '{ "name": "username", "type":{ "base":"char", "dec":"[MAX_USERNAME_LEN]"}}'
+  */
+  p->__M.arg_switches[1] = p->username;
+
+  /* specs/user.json:49:14
+     '{ "name": "discriminator", "type":{ "base":"char", "dec":"[MAX_DISCRIMINATOR_LEN]" }}'
+  */
+  p->__M.arg_switches[2] = p->discriminator;
+
+  /* specs/user.json:50:14
+     '{ "name": "avatar", "type":{ "base":"char", "dec":"[MAX_SHA256_LEN]" }}'
+  */
+  p->__M.arg_switches[3] = p->avatar;
+
+  /* specs/user.json:51:14
+     '{ "name": "bot", "type":{ "base":"bool" }}'
+  */
+  p->__M.arg_switches[4] = &p->bot;
+
+  /* specs/user.json:52:14
+     '{ "name": "System", "json_key": "system", "type":{ "base":"bool" }}'
+  */
+  p->__M.arg_switches[5] = &p->System;
+
+  /* specs/user.json:53:14
+     '{ "name": "mfa_enabled", "type":{ "base":"bool" }}'
+  */
+  p->__M.arg_switches[6] = &p->mfa_enabled;
+
+  /* specs/user.json:54:14
+     '{ "name": "locale", "type":{ "base":"char", "dec":"[MAX_LOCALE_LEN]" }}'
+  */
+  p->__M.arg_switches[7] = p->locale;
+
+  /* specs/user.json:55:14
+     '{ "name": "verified", "type":{ "base":"bool" }}'
+  */
+  p->__M.arg_switches[8] = &p->verified;
+
+  /* specs/user.json:56:14
+     '{ "name": "email", "type":{ "base":"char", "dec":"[MAX_EMAIL_LEN]" }}'
+  */
+  p->__M.arg_switches[9] = p->email;
+
+  /* specs/user.json:57:14
+     '{ "name": "flags", "type":{ "base":"int", "int_alias": "discord::user::flags::code" }}'
+  */
+  p->__M.arg_switches[10] = &p->flags;
+
+  /* specs/user.json:58:14
+     '{ "name": "premium_type", "type":{ "base":"int", "int_alias": "discord::user::premium_types::code" }}'
+  */
+  p->__M.arg_switches[11] = &p->premium_type;
+
+  /* specs/user.json:59:14
+     '{ "name": "public_flags", "type":{ "base":"int", "int_alias": "discord::user::flags::code" }}'
+  */
+  p->__M.arg_switches[12] = &p->public_flags;
+
+}
+
 size_t dati_to_json(char *json, size_t len, struct dati *p)
 {
   size_t r;
+  dati_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/user.json:47:14
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"} }'
@@ -235,76 +306,6 @@ size_t dati_to_json(char *json, size_t len, struct dati *p)
                 &p->public_flags,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
-}
-
-void dati_use_default_inject_settings(struct dati *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/user.json:47:14
-     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"} }'
-  */
-  p->__M.arg_switches[0] = &p->id;
-
-  /* specs/user.json:48:14
-     '{ "name": "username", "type":{ "base":"char", "dec":"[MAX_USERNAME_LEN]"}}'
-  */
-  p->__M.arg_switches[1] = p->username;
-
-  /* specs/user.json:49:14
-     '{ "name": "discriminator", "type":{ "base":"char", "dec":"[MAX_DISCRIMINATOR_LEN]" }}'
-  */
-  p->__M.arg_switches[2] = p->discriminator;
-
-  /* specs/user.json:50:14
-     '{ "name": "avatar", "type":{ "base":"char", "dec":"[MAX_SHA256_LEN]" }}'
-  */
-  p->__M.arg_switches[3] = p->avatar;
-
-  /* specs/user.json:51:14
-     '{ "name": "bot", "type":{ "base":"bool" }}'
-  */
-  p->__M.arg_switches[4] = &p->bot;
-
-  /* specs/user.json:52:14
-     '{ "name": "System", "json_key": "system", "type":{ "base":"bool" }}'
-  */
-  p->__M.arg_switches[5] = &p->System;
-
-  /* specs/user.json:53:14
-     '{ "name": "mfa_enabled", "type":{ "base":"bool" }}'
-  */
-  p->__M.arg_switches[6] = &p->mfa_enabled;
-
-  /* specs/user.json:54:14
-     '{ "name": "locale", "type":{ "base":"char", "dec":"[MAX_LOCALE_LEN]" }}'
-  */
-  p->__M.arg_switches[7] = p->locale;
-
-  /* specs/user.json:55:14
-     '{ "name": "verified", "type":{ "base":"bool" }}'
-  */
-  p->__M.arg_switches[8] = &p->verified;
-
-  /* specs/user.json:56:14
-     '{ "name": "email", "type":{ "base":"char", "dec":"[MAX_EMAIL_LEN]" }}'
-  */
-  p->__M.arg_switches[9] = p->email;
-
-  /* specs/user.json:57:14
-     '{ "name": "flags", "type":{ "base":"int", "int_alias": "discord::user::flags::code" }}'
-  */
-  p->__M.arg_switches[10] = &p->flags;
-
-  /* specs/user.json:58:14
-     '{ "name": "premium_type", "type":{ "base":"int", "int_alias": "discord::user::premium_types::code" }}'
-  */
-  p->__M.arg_switches[11] = &p->premium_type;
-
-  /* specs/user.json:59:14
-     '{ "name": "public_flags", "type":{ "base":"int", "int_alias": "discord::user::flags::code" }}'
-  */
-  p->__M.arg_switches[12] = &p->public_flags;
-
 }
 
 
@@ -571,9 +572,59 @@ void dati_from_json(char *json, size_t len, struct dati *p)
   ret = r;
 }
 
+static void dati_use_default_inject_settings(struct dati *p)
+{
+  p->__M.enable_arg_switches = true;
+  /* specs/user.json:80:14
+     '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
+  */
+  p->__M.arg_switches[0] = p->id;
+
+  /* specs/user.json:81:14
+     '{ "name": "name", "type":{ "base":"char", "dec":"*"}}'
+  */
+  p->__M.arg_switches[1] = p->name;
+
+  /* specs/user.json:82:14
+     '{ "name": "type", "type":{ "base":"char", "dec":"*"}}'
+  */
+  p->__M.arg_switches[2] = p->type;
+
+  /* specs/user.json:83:14
+     '{ "name": "revoked", "type":{ "base":"bool"}}'
+  */
+  p->__M.arg_switches[3] = &p->revoked;
+
+  /* specs/user.json:84:20
+     '{ "name": "integrations", "type": {"base":"discord::guild::integration::dati", "dec":"ntl"}, "todo":true}'
+  */
+
+  /* specs/user.json:85:14
+     '{ "name": "verified", "type":{ "base":"bool" }}'
+  */
+  p->__M.arg_switches[5] = &p->verified;
+
+  /* specs/user.json:86:14
+     '{ "name": "friend_sync", "type":{ "base":"bool" }}'
+  */
+  p->__M.arg_switches[6] = &p->friend_sync;
+
+  /* specs/user.json:87:14
+     '{ "name": "show_activity", "type":{ "base":"bool" }}'
+  */
+  p->__M.arg_switches[7] = &p->show_activity;
+
+  /* specs/user.json:88:14
+     '{ "name": "visibility", "type":{ "base":"int", "int_alias":"discord::user::connection::visibility_types::code" }}'
+  */
+  p->__M.arg_switches[8] = &p->visibility;
+
+}
+
 size_t dati_to_json(char *json, size_t len, struct dati *p)
 {
   size_t r;
+  dati_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/user.json:80:14
      '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
@@ -648,55 +699,6 @@ size_t dati_to_json(char *json, size_t len, struct dati *p)
                 &p->visibility,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
-}
-
-void dati_use_default_inject_settings(struct dati *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/user.json:80:14
-     '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
-  */
-  p->__M.arg_switches[0] = p->id;
-
-  /* specs/user.json:81:14
-     '{ "name": "name", "type":{ "base":"char", "dec":"*"}}'
-  */
-  p->__M.arg_switches[1] = p->name;
-
-  /* specs/user.json:82:14
-     '{ "name": "type", "type":{ "base":"char", "dec":"*"}}'
-  */
-  p->__M.arg_switches[2] = p->type;
-
-  /* specs/user.json:83:14
-     '{ "name": "revoked", "type":{ "base":"bool"}}'
-  */
-  p->__M.arg_switches[3] = &p->revoked;
-
-  /* specs/user.json:84:20
-     '{ "name": "integrations", "type": {"base":"discord::guild::integration::dati", "dec":"ntl"}, "todo":true}'
-  */
-
-  /* specs/user.json:85:14
-     '{ "name": "verified", "type":{ "base":"bool" }}'
-  */
-  p->__M.arg_switches[5] = &p->verified;
-
-  /* specs/user.json:86:14
-     '{ "name": "friend_sync", "type":{ "base":"bool" }}'
-  */
-  p->__M.arg_switches[6] = &p->friend_sync;
-
-  /* specs/user.json:87:14
-     '{ "name": "show_activity", "type":{ "base":"bool" }}'
-  */
-  p->__M.arg_switches[7] = &p->show_activity;
-
-  /* specs/user.json:88:14
-     '{ "name": "visibility", "type":{ "base":"int", "int_alias":"discord::user::connection::visibility_types::code" }}'
-  */
-  p->__M.arg_switches[8] = &p->visibility;
-
 }
 
 

@@ -396,9 +396,249 @@ void dati_from_json(char *json, size_t len, struct dati *p)
   ret = r;
 }
 
+static void dati_use_default_inject_settings(struct dati *p)
+{
+  p->__M.enable_arg_switches = true;
+  /* specs/guild.json:12:78
+     '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"id"}'
+  */
+  p->__M.arg_switches[0] = &p->id;
+
+  /* specs/guild.json:13:66
+     '{"type":{"base":"char", "dec":"[MAX_NAME_LEN]"}, "name":"name"}'
+  */
+  p->__M.arg_switches[1] = p->name;
+
+  /* specs/guild.json:14:70
+     '{"type":{"base":"char", "dec":"*", "nullable":true}, "name":"icon"}'
+  */
+  p->__M.arg_switches[2] = p->icon;
+
+  /* specs/guild.json:15:70
+     '{"type":{"base":"char", "dec":"*", "nullable":true}, "name":"icon_hash"}'
+  */
+  p->__M.arg_switches[3] = p->icon_hash;
+
+  /* specs/guild.json:16:70
+     '{"type":{"base":"char", "dec":"*", "nullable":true}, "name":"splash"}'
+  */
+  p->__M.arg_switches[4] = p->splash;
+
+  /* specs/guild.json:17:70
+     '{"type":{"base":"char", "dec":"*", "nullable":true}, "name":"discovery_splash"}'
+  */
+  p->__M.arg_switches[5] = p->discovery_splash;
+
+  /* specs/guild.json:18:42
+     '{"type":{"base":"bool"}, "name":"owner", "option":true}'
+  */
+  p->__M.arg_switches[6] = &p->owner;
+
+  /* specs/guild.json:19:78
+     '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"owner_id"}'
+  */
+  p->__M.arg_switches[7] = &p->owner_id;
+
+  /* specs/guild.json:20:41
+     '{"type":{"base":"int"}, "name":"permissions", "option":true}'
+  */
+  p->__M.arg_switches[8] = &p->permissions;
+
+  /* specs/guild.json:21:68
+     '{"type":{"base":"char", "dec":"[MAX_REGION_LEN]"}, "name":"region"}'
+  */
+  p->__M.arg_switches[9] = p->region;
+
+  /* specs/guild.json:22:78
+     '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"afk_channel_id"}'
+  */
+  p->__M.arg_switches[10] = &p->afk_channel_id;
+
+  /* specs/guild.json:23:41
+     '{"type":{"base":"int"}, "name":"afk_timeout"}'
+  */
+  p->__M.arg_switches[11] = &p->afk_timeout;
+
+  /* specs/guild.json:24:42
+     '{"type":{"base":"bool"}, "name":"widget_enabled", "option":true}'
+  */
+  p->__M.arg_switches[12] = &p->widget_enabled;
+
+  /* specs/guild.json:25:78
+     '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"widget_channel_id", "option":true}'
+  */
+  p->__M.arg_switches[13] = &p->widget_channel_id;
+
+  /* specs/guild.json:26:97
+     '{"type":{"base":"int", "int_alias":"discord::guild::verification_level::code"}, "name":"verification_level"}'
+  */
+  p->__M.arg_switches[14] = &p->verification_level;
+
+  /* specs/guild.json:28:32
+     '{"type":{"base":"int", "int_alias":"discord::guild::default_message_notification_level::code"}, 
+              "name":"default_message_notifications"}'
+  */
+  p->__M.arg_switches[15] = &p->default_message_notifications;
+
+  /* specs/guild.json:30:32
+     '{"type":{"base":"int", "int_alias":"discord::guild::explicit_content_filter_level::code"},
+              "name":"explicit_content_filter"}'
+  */
+  p->__M.arg_switches[16] = &p->explicit_content_filter;
+
+  /* specs/guild.json:31:77
+     '{"type":{"base":"discord::guild::role::dati", "dec":"ntl"}, "name":"roles", "todo":true, 
+              "comment":"array of role objects"}'
+  */
+
+  /* specs/guild.json:33:71
+     '{"type":{"base":"discord::emoji::dati", "dec":"ntl"}, "name":"emojis"}'
+  */
+  p->__M.arg_switches[18] = p->emojis;
+
+  /* specs/guild.json:34:57
+     '{"type":{"base":"ja_str", "dec":"ntl"}, "name":"features", "todo":true", 
+              "comment":"array of guild feature strings"}'
+  */
+
+  /* specs/guild.json:36:88
+     '{"type":{"base":"int", "int_alias":"discord::guild::mfa_level::code"}, "name":"mfa_level"}'
+  */
+  p->__M.arg_switches[20] = &p->mfa_level;
+
+  /* specs/guild.json:37:95
+     '{"type":{"base":"char", "dec":"*", "converter":"snowflake", "nullable":true}, "name":"application_id"}'
+  */
+  p->__M.arg_switches[21] = &p->application_id;
+
+  /* specs/guild.json:38:95
+     '{"type":{"base":"char", "dec":"*", "converter":"snowflake", "nullable":true}, "name":"system_channel_id"}'
+  */
+  p->__M.arg_switches[22] = &p->system_channel_id;
+
+  /* specs/guild.json:39:99
+     '{"type":{"base":"int", "int_alias":"discord::guild::system_channel_flags::code"}, "name":"system_channel_flags"}'
+  */
+  p->__M.arg_switches[23] = &p->system_channel_flags;
+
+  /* specs/guild.json:40:95
+     '{"type":{"base":"char", "dec":"*", "converter":"snowflake", "nullable":true}, "name":"rules_channel_id"}'
+  */
+  p->__M.arg_switches[24] = &p->rules_channel_id;
+
+  /* specs/guild.json:41:76
+     '{"type":{"base":"char", "dec":"*", "converter":"iso8601"}, "name":"joined_at", "option":true}'
+  */
+  p->__M.arg_switches[25] = &p->joined_at;
+
+  /* specs/guild.json:42:42
+     '{"type":{"base":"bool"}, "name":"large", "option":true}'
+  */
+  p->__M.arg_switches[26] = &p->large;
+
+  /* specs/guild.json:43:42
+     '{"type":{"base":"bool"}, "name":"unavailable", "option":true}'
+  */
+  p->__M.arg_switches[27] = &p->unavailable;
+
+  /* specs/guild.json:44:41
+     '{"type":{"base":"int"}, "name":"member_count", "option":true}'
+  */
+  p->__M.arg_switches[28] = &p->member_count;
+
+  /* specs/guild.json:45:71
+     '{"type":{"base":"discord::voice::dati", "dec":"ntl"}, "name":"voice_states", "todo":true", 
+         "comment":"array of partial voice state objects"}'
+  */
+
+  /* specs/guild.json:47:79
+     '{"type":{"base":"discord::guild::member::dati", "dec":"ntl"}, "name":"members", "option":true}'
+  */
+  p->__M.arg_switches[30] = p->members;
+
+  /* specs/guild.json:48:73
+     '{"type":{"base":"discord::channel::dati", "dec":"ntl"}, "name":"channels", "option":true,
+         "comment":"array of channel objects"}'
+  */
+  p->__M.arg_switches[31] = p->channels;
+
+  /* specs/guild.json:50:41
+     '{"type":{"base":"int"}, "name":"presences", "todo":true, "option":true,
+         "comment":"array of partial presence update objects"}'
+  */
+
+  /* specs/guild.json:52:41
+     '{"type":{"base":"int"}, "name":"max_presences", "option":true}'
+  */
+  p->__M.arg_switches[33] = &p->max_presences;
+
+  /* specs/guild.json:53:41
+     '{"type":{"base":"int"}, "name":"max_members", "option":true}'
+  */
+  p->__M.arg_switches[34] = &p->max_members;
+
+  /* specs/guild.json:54:70
+     '{"type":{"base":"char", "dec":"*", "nullable":true}, "name":"vanity_url_code"}'
+  */
+  p->__M.arg_switches[35] = p->vanity_url_code;
+
+  /* specs/guild.json:55:70
+     '{"type":{"base":"char", "dec":"*", "nullable":true}, "name":"description"}'
+  */
+  p->__M.arg_switches[36] = p->description;
+
+  /* specs/guild.json:56:70
+     '{"type":{"base":"char", "dec":"*", "nullable":true}, "name":"banner"}'
+  */
+  p->__M.arg_switches[37] = p->banner;
+
+  /* specs/guild.json:57:91
+     '{"type":{"base":"int", "int_alias":"discord::guild::premium_tier::code"}, "name":"premium_tier"}'
+  */
+  p->__M.arg_switches[38] = &p->premium_tier;
+
+  /* specs/guild.json:58:41
+     '{"type":{"base":"int"}, "name":"premium_subscription_count", "option":true}'
+  */
+  p->__M.arg_switches[39] = &p->premium_subscription_count;
+
+  /* specs/guild.json:59:68
+     '{"type":{"base":"char", "dec":"[MAX_LOCALE_LEN]"}, "name":"preferred_locale"}'
+  */
+  p->__M.arg_switches[40] = p->preferred_locale;
+
+  /* specs/guild.json:61:27
+     '{"type":{"base":"char", "dec":"*", "converter":"snowflake", "nullable":true}, 
+         "name":"public_updates_channel_id"}'
+  */
+  p->__M.arg_switches[41] = &p->public_updates_channel_id;
+
+  /* specs/guild.json:62:41
+     '{"type":{"base":"int"}, "name":"max_video_channel_users", "option":true}'
+  */
+  p->__M.arg_switches[42] = &p->max_video_channel_users;
+
+  /* specs/guild.json:63:41
+     '{"type":{"base":"int"}, "name":"approximate_member_count", "option":true}'
+  */
+  p->__M.arg_switches[43] = &p->approximate_member_count;
+
+  /* specs/guild.json:64:41
+     '{"type":{"base":"int"}, "name":"approximate_presence_count", "option":true}'
+  */
+  p->__M.arg_switches[44] = &p->approximate_presence_count;
+
+  /* specs/guild.json:65:85
+     '{"type":{"base":"discord::guild::welcome_screen::dati", "dec":"*"}, "name":"welcome_screen", "option":true}'
+  */
+  p->__M.arg_switches[45] = p->welcome_screen;
+
+}
+
 size_t dati_to_json(char *json, size_t len, struct dati *p)
 {
   size_t r;
+  dati_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/guild.json:12:78
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"id"}'
@@ -779,245 +1019,6 @@ size_t dati_to_json(char *json, size_t len, struct dati *p)
                 discord::guild::welcome_screen::dati_to_json, p->welcome_screen,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
-}
-
-void dati_use_default_inject_settings(struct dati *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/guild.json:12:78
-     '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"id"}'
-  */
-  p->__M.arg_switches[0] = &p->id;
-
-  /* specs/guild.json:13:66
-     '{"type":{"base":"char", "dec":"[MAX_NAME_LEN]"}, "name":"name"}'
-  */
-  p->__M.arg_switches[1] = p->name;
-
-  /* specs/guild.json:14:70
-     '{"type":{"base":"char", "dec":"*", "nullable":true}, "name":"icon"}'
-  */
-  p->__M.arg_switches[2] = p->icon;
-
-  /* specs/guild.json:15:70
-     '{"type":{"base":"char", "dec":"*", "nullable":true}, "name":"icon_hash"}'
-  */
-  p->__M.arg_switches[3] = p->icon_hash;
-
-  /* specs/guild.json:16:70
-     '{"type":{"base":"char", "dec":"*", "nullable":true}, "name":"splash"}'
-  */
-  p->__M.arg_switches[4] = p->splash;
-
-  /* specs/guild.json:17:70
-     '{"type":{"base":"char", "dec":"*", "nullable":true}, "name":"discovery_splash"}'
-  */
-  p->__M.arg_switches[5] = p->discovery_splash;
-
-  /* specs/guild.json:18:42
-     '{"type":{"base":"bool"}, "name":"owner", "option":true}'
-  */
-  p->__M.arg_switches[6] = &p->owner;
-
-  /* specs/guild.json:19:78
-     '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"owner_id"}'
-  */
-  p->__M.arg_switches[7] = &p->owner_id;
-
-  /* specs/guild.json:20:41
-     '{"type":{"base":"int"}, "name":"permissions", "option":true}'
-  */
-  p->__M.arg_switches[8] = &p->permissions;
-
-  /* specs/guild.json:21:68
-     '{"type":{"base":"char", "dec":"[MAX_REGION_LEN]"}, "name":"region"}'
-  */
-  p->__M.arg_switches[9] = p->region;
-
-  /* specs/guild.json:22:78
-     '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"afk_channel_id"}'
-  */
-  p->__M.arg_switches[10] = &p->afk_channel_id;
-
-  /* specs/guild.json:23:41
-     '{"type":{"base":"int"}, "name":"afk_timeout"}'
-  */
-  p->__M.arg_switches[11] = &p->afk_timeout;
-
-  /* specs/guild.json:24:42
-     '{"type":{"base":"bool"}, "name":"widget_enabled", "option":true}'
-  */
-  p->__M.arg_switches[12] = &p->widget_enabled;
-
-  /* specs/guild.json:25:78
-     '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"widget_channel_id", "option":true}'
-  */
-  p->__M.arg_switches[13] = &p->widget_channel_id;
-
-  /* specs/guild.json:26:97
-     '{"type":{"base":"int", "int_alias":"discord::guild::verification_level::code"}, "name":"verification_level"}'
-  */
-  p->__M.arg_switches[14] = &p->verification_level;
-
-  /* specs/guild.json:28:32
-     '{"type":{"base":"int", "int_alias":"discord::guild::default_message_notification_level::code"}, 
-              "name":"default_message_notifications"}'
-  */
-  p->__M.arg_switches[15] = &p->default_message_notifications;
-
-  /* specs/guild.json:30:32
-     '{"type":{"base":"int", "int_alias":"discord::guild::explicit_content_filter_level::code"},
-              "name":"explicit_content_filter"}'
-  */
-  p->__M.arg_switches[16] = &p->explicit_content_filter;
-
-  /* specs/guild.json:31:77
-     '{"type":{"base":"discord::guild::role::dati", "dec":"ntl"}, "name":"roles", "todo":true, 
-              "comment":"array of role objects"}'
-  */
-
-  /* specs/guild.json:33:71
-     '{"type":{"base":"discord::emoji::dati", "dec":"ntl"}, "name":"emojis"}'
-  */
-  p->__M.arg_switches[18] = p->emojis;
-
-  /* specs/guild.json:34:57
-     '{"type":{"base":"ja_str", "dec":"ntl"}, "name":"features", "todo":true", 
-              "comment":"array of guild feature strings"}'
-  */
-
-  /* specs/guild.json:36:88
-     '{"type":{"base":"int", "int_alias":"discord::guild::mfa_level::code"}, "name":"mfa_level"}'
-  */
-  p->__M.arg_switches[20] = &p->mfa_level;
-
-  /* specs/guild.json:37:95
-     '{"type":{"base":"char", "dec":"*", "converter":"snowflake", "nullable":true}, "name":"application_id"}'
-  */
-  p->__M.arg_switches[21] = &p->application_id;
-
-  /* specs/guild.json:38:95
-     '{"type":{"base":"char", "dec":"*", "converter":"snowflake", "nullable":true}, "name":"system_channel_id"}'
-  */
-  p->__M.arg_switches[22] = &p->system_channel_id;
-
-  /* specs/guild.json:39:99
-     '{"type":{"base":"int", "int_alias":"discord::guild::system_channel_flags::code"}, "name":"system_channel_flags"}'
-  */
-  p->__M.arg_switches[23] = &p->system_channel_flags;
-
-  /* specs/guild.json:40:95
-     '{"type":{"base":"char", "dec":"*", "converter":"snowflake", "nullable":true}, "name":"rules_channel_id"}'
-  */
-  p->__M.arg_switches[24] = &p->rules_channel_id;
-
-  /* specs/guild.json:41:76
-     '{"type":{"base":"char", "dec":"*", "converter":"iso8601"}, "name":"joined_at", "option":true}'
-  */
-  p->__M.arg_switches[25] = &p->joined_at;
-
-  /* specs/guild.json:42:42
-     '{"type":{"base":"bool"}, "name":"large", "option":true}'
-  */
-  p->__M.arg_switches[26] = &p->large;
-
-  /* specs/guild.json:43:42
-     '{"type":{"base":"bool"}, "name":"unavailable", "option":true}'
-  */
-  p->__M.arg_switches[27] = &p->unavailable;
-
-  /* specs/guild.json:44:41
-     '{"type":{"base":"int"}, "name":"member_count", "option":true}'
-  */
-  p->__M.arg_switches[28] = &p->member_count;
-
-  /* specs/guild.json:45:71
-     '{"type":{"base":"discord::voice::dati", "dec":"ntl"}, "name":"voice_states", "todo":true", 
-         "comment":"array of partial voice state objects"}'
-  */
-
-  /* specs/guild.json:47:79
-     '{"type":{"base":"discord::guild::member::dati", "dec":"ntl"}, "name":"members", "option":true}'
-  */
-  p->__M.arg_switches[30] = p->members;
-
-  /* specs/guild.json:48:73
-     '{"type":{"base":"discord::channel::dati", "dec":"ntl"}, "name":"channels", "option":true,
-         "comment":"array of channel objects"}'
-  */
-  p->__M.arg_switches[31] = p->channels;
-
-  /* specs/guild.json:50:41
-     '{"type":{"base":"int"}, "name":"presences", "todo":true, "option":true,
-         "comment":"array of partial presence update objects"}'
-  */
-
-  /* specs/guild.json:52:41
-     '{"type":{"base":"int"}, "name":"max_presences", "option":true}'
-  */
-  p->__M.arg_switches[33] = &p->max_presences;
-
-  /* specs/guild.json:53:41
-     '{"type":{"base":"int"}, "name":"max_members", "option":true}'
-  */
-  p->__M.arg_switches[34] = &p->max_members;
-
-  /* specs/guild.json:54:70
-     '{"type":{"base":"char", "dec":"*", "nullable":true}, "name":"vanity_url_code"}'
-  */
-  p->__M.arg_switches[35] = p->vanity_url_code;
-
-  /* specs/guild.json:55:70
-     '{"type":{"base":"char", "dec":"*", "nullable":true}, "name":"description"}'
-  */
-  p->__M.arg_switches[36] = p->description;
-
-  /* specs/guild.json:56:70
-     '{"type":{"base":"char", "dec":"*", "nullable":true}, "name":"banner"}'
-  */
-  p->__M.arg_switches[37] = p->banner;
-
-  /* specs/guild.json:57:91
-     '{"type":{"base":"int", "int_alias":"discord::guild::premium_tier::code"}, "name":"premium_tier"}'
-  */
-  p->__M.arg_switches[38] = &p->premium_tier;
-
-  /* specs/guild.json:58:41
-     '{"type":{"base":"int"}, "name":"premium_subscription_count", "option":true}'
-  */
-  p->__M.arg_switches[39] = &p->premium_subscription_count;
-
-  /* specs/guild.json:59:68
-     '{"type":{"base":"char", "dec":"[MAX_LOCALE_LEN]"}, "name":"preferred_locale"}'
-  */
-  p->__M.arg_switches[40] = p->preferred_locale;
-
-  /* specs/guild.json:61:27
-     '{"type":{"base":"char", "dec":"*", "converter":"snowflake", "nullable":true}, 
-         "name":"public_updates_channel_id"}'
-  */
-  p->__M.arg_switches[41] = &p->public_updates_channel_id;
-
-  /* specs/guild.json:62:41
-     '{"type":{"base":"int"}, "name":"max_video_channel_users", "option":true}'
-  */
-  p->__M.arg_switches[42] = &p->max_video_channel_users;
-
-  /* specs/guild.json:63:41
-     '{"type":{"base":"int"}, "name":"approximate_member_count", "option":true}'
-  */
-  p->__M.arg_switches[43] = &p->approximate_member_count;
-
-  /* specs/guild.json:64:41
-     '{"type":{"base":"int"}, "name":"approximate_presence_count", "option":true}'
-  */
-  p->__M.arg_switches[44] = &p->approximate_presence_count;
-
-  /* specs/guild.json:65:85
-     '{"type":{"base":"discord::guild::welcome_screen::dati", "dec":"*"}, "name":"welcome_screen", "option":true}'
-  */
-  p->__M.arg_switches[45] = p->welcome_screen;
-
 }
 
 

@@ -428,106 +428,107 @@ struct dati {
   u64_unix_ms_t timestamp;
 
   /* specs/channel.message.json:139:77
-     '{"type":{"base":"char", "dec":"*", "converter":"iso8601"}, "name":"edited_timestamp"}'
+     '{"type":{"base":"char", "dec":"*", "converter":"iso8601"}, "name":"edited_timestamp",
+          "inject_if_not":0}'
   */
   u64_unix_ms_t edited_timestamp;
 
-  /* specs/channel.message.json:140:43
+  /* specs/channel.message.json:141:43
      '{"type":{"base":"bool"}, "name":"tts"}'
   */
   bool tts;
 
-  /* specs/channel.message.json:141:43
+  /* specs/channel.message.json:142:43
      '{"type":{"base":"bool"}, "name":"mention_everyone"}'
   */
   bool mention_everyone;
 
-  /* specs/channel.message.json:142:62
+  /* specs/channel.message.json:143:62
      '{"type":{"base":"user::dati", "dec":"ntl"}, "name":"mentions", 
           "comment":"array of user objects, with an additional partial member field"}'
   */
   user::dati **mentions; // array of user objects, with an additional partial member field
 
-  /* specs/channel.message.json:144:58
+  /* specs/channel.message.json:145:58
      '{"type":{"base":"ja_u64", "dec":"ntl"}, "name":"mention_roles", "comment":"array of role object ids"}'
   */
   ja_u64 **mention_roles; // array of role object ids
 
-  /* specs/channel.message.json:145:65
+  /* specs/channel.message.json:146:65
      '{"type":{"base":"mention::dati", "dec":"ntl"}, "name":"mention_channels",
           "option":true }'
   */
   mention::dati **mention_channels;
 
-  /* specs/channel.message.json:147:68
+  /* specs/channel.message.json:148:68
      '{"type":{"base":"attachment::dati", "dec":"ntl"}, "name":"attachments"}'
   */
   attachment::dati **attachments;
 
-  /* specs/channel.message.json:148:63
+  /* specs/channel.message.json:149:63
      '{"type":{"base":"embed::dati", "dec":"ntl"}, "name":"embeds"}'
   */
   embed::dati **embeds;
 
-  /* specs/channel.message.json:149:65
+  /* specs/channel.message.json:150:65
      '{"type":{"base":"reaction::dati","dec":"ntl"}, "name":"reactions", 
           "option":true }'
   */
   reaction::dati **reactions;
 
-  /* specs/channel.message.json:151:54
+  /* specs/channel.message.json:152:54
      '{"type":{"base":"char", "dec":"*"}, "name":"nonce", "comment":"integer or string",
           "option":true }'
   */
   char *nonce; // integer or string
 
-  /* specs/channel.message.json:153:43
+  /* specs/channel.message.json:154:43
      '{"type":{"base":"bool"}, "name":"pinned"}'
   */
   bool pinned;
 
-  /* specs/channel.message.json:154:79
+  /* specs/channel.message.json:155:79
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"webhook_id",
           "option":true }'
   */
   u64_snowflake_t webhook_id;
 
-  /* specs/channel.message.json:156:96
+  /* specs/channel.message.json:157:96
      '{"type":{"base":"int", "int_alias":"discord::channel::message::types::code"}, "name":"type"}'
   */
   discord::channel::message::types::code type;
 
-  /* specs/channel.message.json:157:91
+  /* specs/channel.message.json:158:91
      '{"type":{"base":"discord::channel::message::activity::dati", "dec":"*"}, "name":"activity", 
           "option":true, "inject_if_not":null }'
   */
   discord::channel::message::activity::dati *activity;
 
-  /* specs/channel.message.json:159:96
+  /* specs/channel.message.json:160:96
      '{"type":{"base":"discord::channel::message::application::dati", "dec":"ntl"}, "name":"application",
           "option":true, "inject_if_not":null }'
   */
   discord::channel::message::application::dati **application;
 
-  /* specs/channel.message.json:161:92
+  /* specs/channel.message.json:162:92
      '{"type":{"base":"discord::channel::message::reference::dati", "dec":"*"}, "name":"message_reference",
           "option":true, "inject_if_not":null }'
   */
   discord::channel::message::reference::dati *message_reference;
 
-  /* specs/channel.message.json:163:96
+  /* specs/channel.message.json:164:96
      '{"type":{"base":"int", "int_alias":"discord::channel::message::flags::code"}, "name":"flags",
           "option":true, "inject_if_not":0 }'
   */
   discord::channel::message::flags::code flags;
 
-  /* specs/channel.message.json:165:92
+  /* specs/channel.message.json:166:92
      '{"type":{"base":"discord::channel::message::sticker::dati", "dec":"ntl"}, "name":"stickers",
           "option":true, "inject_if_not":null, "comment":"array of sticker objects"}'
   */
   discord::channel::message::sticker::dati **stickers; // array of sticker objects
 
-  /* specs/channel.message.json:167:81
+  /* specs/channel.message.json:168:81
      '{"type":{"base":"discord::channel::message::dati", "dec":"*"}, "name":"referenced_message", 
           "lazy_init":true, "option":true", "inject_if_not":null,
           "comment":"this will cause recursive allocation if allocating as the parent"}'
@@ -4078,22 +4079,23 @@ namespace status_update {
 /* This is defined at specs/gateway.json:92:22 */
 struct dati {
   /* specs/gateway.json:95:19
-     '{ "name":"since","type":{"base":"char", "dec":"*", "converter":"iso8601"}}'
+     '{ "name":"since","type":{"base":"char", "dec":"*", "converter":"iso8601"},
+          "inject_if_not":0 }'
   */
   u64_unix_ms_t since;
 
-  /* specs/gateway.json:96:19
+  /* specs/gateway.json:97:19
      '{ "name":"activities","type":{"base":"discord::gateway::identify::status_update::activity::dati", 
           "dec":"ntl"}, "inject_if_not":null}'
   */
   discord::gateway::identify::status_update::activity::dati **activities;
 
-  /* specs/gateway.json:98:19
+  /* specs/gateway.json:99:19
      '{ "name":"status","type":{"base":"char", "dec":"[16]"}}'
   */
   char status[16];
 
-  /* specs/gateway.json:99:19
+  /* specs/gateway.json:100:19
      '{ "name":"afk","type":{"base":"bool"}}'
   */
   bool afk;
@@ -4118,19 +4120,19 @@ namespace identify {
 namespace connection {
 /* Title: Identify Connection Properties */
 /* https://discord.com/developers/docs/topics/gateway#identify-identify-connection-properties */
-/* This is defined at specs/gateway.json:106:22 */
+/* This is defined at specs/gateway.json:107:22 */
 struct dati {
-  /* specs/gateway.json:109:19
+  /* specs/gateway.json:110:19
      '{ "name":"$os", "type":{"base":"char", "dec":"*"}}'
   */
   char *$os;
 
-  /* specs/gateway.json:110:19
+  /* specs/gateway.json:111:19
      '{ "name":"$browser", "type":{"base":"char", "dec":"*"}}'
   */
   char *$browser;
 
-  /* specs/gateway.json:111:19
+  /* specs/gateway.json:112:19
      '{ "name":"$device", "type":{"base":"char", "dec":"*"}}'
   */
   char *$device;
@@ -4156,44 +4158,45 @@ namespace status_update {
 namespace activity {
 /* Title: Activity Structure */
 /* https://discord.com/developers/docs/topics/gateway#activity-object-activity-structure */
-/* This is defined at specs/gateway.json:118:22 */
+/* This is defined at specs/gateway.json:119:22 */
 struct dati {
-  /* specs/gateway.json:121:19
+  /* specs/gateway.json:122:19
      '{ "name":"name","type":{"base":"char", "dec":"[512]"}}'
   */
   char name[512];
 
-  /* specs/gateway.json:122:19
+  /* specs/gateway.json:123:19
      '{ "name":"type","type":{"base":"int"}}'
   */
   int type;
 
-  /* specs/gateway.json:123:19
+  /* specs/gateway.json:124:19
      '{ "name":"url","type":{"base":"char", "dec":"[MAX_URL_LEN]"}}'
   */
   char url[MAX_URL_LEN];
 
-  /* specs/gateway.json:124:19
-     '{ "name":"created_at","type":{"base":"char", "dec":"*", "converter":"iso8601"}}'
+  /* specs/gateway.json:125:19
+     '{ "name":"created_at","type":{"base":"char", "dec":"*", "converter":"iso8601"},
+          "inject_if_not":0 }'
   */
   u64_unix_ms_t created_at;
 
-  /* specs/gateway.json:125:19
+  /* specs/gateway.json:127:19
      '{ "name":"application_id","type":{"base":"char", "dec":"*", "converter":"snowflake" }}'
   */
   u64_snowflake_t application_id;
 
-  /* specs/gateway.json:126:19
+  /* specs/gateway.json:128:19
      '{ "name":"details","type":{"base":"char", "dec":"*"}}'
   */
   char *details;
 
-  /* specs/gateway.json:127:19
+  /* specs/gateway.json:129:19
      '{ "name":"state","type":{"base":"char", "dec":"*"}}'
   */
   char *state;
 
-  /* specs/gateway.json:128:19
+  /* specs/gateway.json:130:19
      '{ "name":"instance","type":{"base":"bool"}}'
   */
   bool instance;

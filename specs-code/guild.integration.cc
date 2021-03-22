@@ -38,9 +38,25 @@ void dati_from_json(char *json, size_t len, struct dati *p)
   ret = r;
 }
 
+static void dati_use_default_inject_settings(struct dati *p)
+{
+  p->__M.enable_arg_switches = true;
+  /* specs/guild.integration.json:23:19
+     '{ "name":"id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
+  */
+  p->__M.arg_switches[0] = &p->id;
+
+  /* specs/guild.integration.json:24:19
+     '{ "name":"name", "type":{ "base":"char", "dec":"*" }}'
+  */
+  p->__M.arg_switches[1] = p->name;
+
+}
+
 size_t dati_to_json(char *json, size_t len, struct dati *p)
 {
   size_t r;
+  dati_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/guild.integration.json:23:19
      '{ "name":"id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
@@ -61,21 +77,6 @@ size_t dati_to_json(char *json, size_t len, struct dati *p)
                 p->name,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
-}
-
-void dati_use_default_inject_settings(struct dati *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/guild.integration.json:23:19
-     '{ "name":"id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
-  p->__M.arg_switches[0] = &p->id;
-
-  /* specs/guild.integration.json:24:19
-     '{ "name":"name", "type":{ "base":"char", "dec":"*" }}'
-  */
-  p->__M.arg_switches[1] = p->name;
-
 }
 
 
@@ -236,9 +237,45 @@ void dati_from_json(char *json, size_t len, struct dati *p)
   ret = r;
 }
 
+static void dati_use_default_inject_settings(struct dati *p)
+{
+  p->__M.enable_arg_switches = true;
+  /* specs/guild.integration.json:33:19
+     '{ "name":"id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
+  */
+  p->__M.arg_switches[0] = &p->id;
+
+  /* specs/guild.integration.json:34:19
+     '{ "name":"name", "type":{ "base":"char", "dec":"*" }}'
+  */
+  p->__M.arg_switches[1] = p->name;
+
+  /* specs/guild.integration.json:35:19
+     '{ "name":"icon", "type":{ "base":"char", "dec":"[MAX_SHA256_LEN]" }}'
+  */
+  p->__M.arg_switches[2] = p->icon;
+
+  /* specs/guild.integration.json:36:19
+     '{ "name":"description", "type":{ "base":"char", "dec":"*" }}'
+  */
+  p->__M.arg_switches[3] = p->description;
+
+  /* specs/guild.integration.json:37:19
+     '{ "name":"summary", "type":{ "base":"char", "dec":"*" }}'
+  */
+  p->__M.arg_switches[4] = p->summary;
+
+  /* specs/guild.integration.json:38:19
+     '{ "name":"bot", "type":{ "base":"discord::user::dati", "dec":"*" }, "option":true}'
+  */
+  p->__M.arg_switches[5] = p->bot;
+
+}
+
 size_t dati_to_json(char *json, size_t len, struct dati *p)
 {
   size_t r;
+  dati_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/guild.integration.json:33:19
      '{ "name":"id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
@@ -291,41 +328,6 @@ size_t dati_to_json(char *json, size_t len, struct dati *p)
                 discord::user::dati_to_json, p->bot,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
-}
-
-void dati_use_default_inject_settings(struct dati *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/guild.integration.json:33:19
-     '{ "name":"id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
-  p->__M.arg_switches[0] = &p->id;
-
-  /* specs/guild.integration.json:34:19
-     '{ "name":"name", "type":{ "base":"char", "dec":"*" }}'
-  */
-  p->__M.arg_switches[1] = p->name;
-
-  /* specs/guild.integration.json:35:19
-     '{ "name":"icon", "type":{ "base":"char", "dec":"[MAX_SHA256_LEN]" }}'
-  */
-  p->__M.arg_switches[2] = p->icon;
-
-  /* specs/guild.integration.json:36:19
-     '{ "name":"description", "type":{ "base":"char", "dec":"*" }}'
-  */
-  p->__M.arg_switches[3] = p->description;
-
-  /* specs/guild.integration.json:37:19
-     '{ "name":"summary", "type":{ "base":"char", "dec":"*" }}'
-  */
-  p->__M.arg_switches[4] = p->summary;
-
-  /* specs/guild.integration.json:38:19
-     '{ "name":"bot", "type":{ "base":"discord::user::dati", "dec":"*" }, "option":true}'
-  */
-  p->__M.arg_switches[5] = p->bot;
-
 }
 
 
@@ -593,9 +595,90 @@ void dati_from_json(char *json, size_t len, struct dati *p)
   ret = r;
 }
 
+static void dati_use_default_inject_settings(struct dati *p)
+{
+  p->__M.enable_arg_switches = true;
+  /* specs/guild.integration.json:48:20
+     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
+  */
+  p->__M.arg_switches[0] = &p->id;
+
+  /* specs/guild.integration.json:49:20
+     '{ "name": "name", "type":{ "base":"char", "dec":"*"}}'
+  */
+  p->__M.arg_switches[1] = p->name;
+
+  /* specs/guild.integration.json:50:20
+     '{ "name": "type", "type":{ "base":"char", "dec":"*"}}'
+  */
+  p->__M.arg_switches[2] = p->type;
+
+  /* specs/guild.integration.json:51:20
+     '{ "name": "enabled", "type":{ "base":"bool"}}'
+  */
+  p->__M.arg_switches[3] = &p->enabled;
+
+  /* specs/guild.integration.json:52:20
+     '{ "name": "syncing", "type":{ "base":"bool"}}'
+  */
+  p->__M.arg_switches[4] = &p->syncing;
+
+  /* specs/guild.integration.json:53:20
+     '{ "name": "role_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}}'
+  */
+  p->__M.arg_switches[5] = &p->role_id;
+
+  /* specs/guild.integration.json:54:20
+     '{ "name": "enable_emotions", "type":{ "base":"bool"}}'
+  */
+  p->__M.arg_switches[6] = &p->enable_emotions;
+
+  /* specs/guild.integration.json:55:20
+     '{ "name": "expire_behavior", "type":{ "base":"int", "int_alias":"discord::guild::integration::expire_behaviors::code"}}'
+  */
+  p->__M.arg_switches[7] = &p->expire_behavior;
+
+  /* specs/guild.integration.json:56:20
+     '{ "name": "expire_grace_period", "type":{ "base":"int"}}'
+  */
+  p->__M.arg_switches[8] = &p->expire_grace_period;
+
+  /* specs/guild.integration.json:57:20
+     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*"}, "opt":true}'
+  */
+  p->__M.arg_switches[9] = p->user;
+
+  /* specs/guild.integration.json:58:20
+     '{ "name": "account", "type":{ "base":"discord::guild::integration::account::dati", "dec":"*"}}'
+  */
+  p->__M.arg_switches[10] = p->account;
+
+  /* specs/guild.integration.json:59:20
+     '{ "name": "synced_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601"}}'
+  */
+  p->__M.arg_switches[11] = &p->synced_at;
+
+  /* specs/guild.integration.json:60:20
+     '{ "name": "subscriber_count", "type":{ "base":"int"}}'
+  */
+  p->__M.arg_switches[12] = &p->subscriber_count;
+
+  /* specs/guild.integration.json:61:20
+     '{ "name": "revoked", "type":{ "base":"bool"}}'
+  */
+  p->__M.arg_switches[13] = &p->revoked;
+
+  /* specs/guild.integration.json:62:20
+     '{ "name": "application", "type":{ "base":"discord::guild::integration::application::dati", "dec":"*" }}'
+  */
+  p->__M.arg_switches[14] = p->application;
+
+}
+
 size_t dati_to_json(char *json, size_t len, struct dati *p)
 {
   size_t r;
+  dati_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/guild.integration.json:48:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
@@ -720,86 +803,6 @@ size_t dati_to_json(char *json, size_t len, struct dati *p)
                 discord::guild::integration::application::dati_to_json, p->application,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
-}
-
-void dati_use_default_inject_settings(struct dati *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/guild.integration.json:48:20
-     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
-  p->__M.arg_switches[0] = &p->id;
-
-  /* specs/guild.integration.json:49:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*"}}'
-  */
-  p->__M.arg_switches[1] = p->name;
-
-  /* specs/guild.integration.json:50:20
-     '{ "name": "type", "type":{ "base":"char", "dec":"*"}}'
-  */
-  p->__M.arg_switches[2] = p->type;
-
-  /* specs/guild.integration.json:51:20
-     '{ "name": "enabled", "type":{ "base":"bool"}}'
-  */
-  p->__M.arg_switches[3] = &p->enabled;
-
-  /* specs/guild.integration.json:52:20
-     '{ "name": "syncing", "type":{ "base":"bool"}}'
-  */
-  p->__M.arg_switches[4] = &p->syncing;
-
-  /* specs/guild.integration.json:53:20
-     '{ "name": "role_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}}'
-  */
-  p->__M.arg_switches[5] = &p->role_id;
-
-  /* specs/guild.integration.json:54:20
-     '{ "name": "enable_emotions", "type":{ "base":"bool"}}'
-  */
-  p->__M.arg_switches[6] = &p->enable_emotions;
-
-  /* specs/guild.integration.json:55:20
-     '{ "name": "expire_behavior", "type":{ "base":"int", "int_alias":"discord::guild::integration::expire_behaviors::code"}}'
-  */
-  p->__M.arg_switches[7] = &p->expire_behavior;
-
-  /* specs/guild.integration.json:56:20
-     '{ "name": "expire_grace_period", "type":{ "base":"int"}}'
-  */
-  p->__M.arg_switches[8] = &p->expire_grace_period;
-
-  /* specs/guild.integration.json:57:20
-     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*"}, "opt":true}'
-  */
-  p->__M.arg_switches[9] = p->user;
-
-  /* specs/guild.integration.json:58:20
-     '{ "name": "account", "type":{ "base":"discord::guild::integration::account::dati", "dec":"*"}}'
-  */
-  p->__M.arg_switches[10] = p->account;
-
-  /* specs/guild.integration.json:59:20
-     '{ "name": "synced_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601"}}'
-  */
-  p->__M.arg_switches[11] = &p->synced_at;
-
-  /* specs/guild.integration.json:60:20
-     '{ "name": "subscriber_count", "type":{ "base":"int"}}'
-  */
-  p->__M.arg_switches[12] = &p->subscriber_count;
-
-  /* specs/guild.integration.json:61:20
-     '{ "name": "revoked", "type":{ "base":"bool"}}'
-  */
-  p->__M.arg_switches[13] = &p->revoked;
-
-  /* specs/guild.integration.json:62:20
-     '{ "name": "application", "type":{ "base":"discord::guild::integration::application::dati", "dec":"*" }}'
-  */
-  p->__M.arg_switches[14] = p->application;
-
 }
 
 

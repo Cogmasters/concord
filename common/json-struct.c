@@ -1356,7 +1356,7 @@ static void gen_use_default_inject_settings(FILE *fp, struct jc_struct *s)
 {
   char *t = ns_to_symbol_name(s->name);
 
-  fprintf(fp, "void %s_use_default_inject_settings(struct %s *p)\n",
+  fprintf(fp, "static void %s_use_default_inject_settings(struct %s *p)\n",
           t, t);
   fprintf(fp, "{\n");
   fprintf(fp, "  p->__M.enable_arg_switches = true;\n");
@@ -1419,6 +1419,7 @@ static void gen_to_json(FILE *fp, struct jc_struct *s)
           t, suffix, t);
   fprintf(fp, "{\n");
   fprintf(fp, "  size_t r;\n");
+  fprintf(fp, "  %s_use_default_inject_settings(p);\n", t);
   fprintf(fp, "  r=json_inject(json, len, \n");
 
   for (int i = 0; s->fields && s->fields[i]; i++) {
@@ -1624,7 +1625,7 @@ static void gen_forward_fun_declare(FILE *fp, struct jc_struct *s)
   fprintf(fp, "extern size_t %s_list_to_json(char *str, size_t len, struct %s **p);\n",
           t,t);
 
-  fprintf(fp, "extern void %s_use_default_inject_settings(struct %s *p);\n", t, t);
+  //fprintf(fp, "extern void %s_use_default_inject_settings(struct %s *p);\n", t, t);
 }
 
 static void gen_typedef (FILE *fp, struct jc_struct *s)
@@ -1680,10 +1681,11 @@ static void gen_struct_all(FILE *fp, struct jc_struct *s, name_t **ns)
 
     gen_from_json(fp, s);
     fprintf(fp, "\n");
-    gen_to_json(fp, s);
-    fprintf(fp, "\n");
 
     gen_use_default_inject_settings(fp, s);
+    fprintf(fp, "\n");
+
+    gen_to_json(fp, s);
     fprintf(fp, "\n");
 
     gen_to_query(fp, s);
@@ -1700,10 +1702,10 @@ static void gen_struct_all(FILE *fp, struct jc_struct *s, name_t **ns)
     gen_from_json(fp, s);
     fprintf(fp, "\n");
 
-    gen_to_json(fp, s);
+    gen_use_default_inject_settings(fp, s);
     fprintf(fp, "\n");
 
-    gen_use_default_inject_settings(fp, s);
+    gen_to_json(fp, s);
     fprintf(fp, "\n");
 
     gen_to_query(fp, s);

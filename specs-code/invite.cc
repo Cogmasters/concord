@@ -84,9 +84,55 @@ void dati_from_json(char *json, size_t len, struct dati *p)
   ret = r;
 }
 
+static void dati_use_default_inject_settings(struct dati *p)
+{
+  p->__M.enable_arg_switches = true;
+  /* specs/invite.json:22:20
+     '{ "name": "code", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
+  */
+  p->__M.arg_switches[0] = p->code;
+
+  /* specs/invite.json:23:20
+     '{ "name": "guild", "type":{ "base":"discord::guild::dati", "dec":"*"}, "comment":"partial guild object"}'
+  */
+  p->__M.arg_switches[1] = p->guild;
+
+  /* specs/invite.json:24:20
+     '{ "name": "channel", "type":{ "base":"discord::channel::dati", "dec":"*"}, "comment":"partial channel object"}'
+  */
+  p->__M.arg_switches[2] = p->channel;
+
+  /* specs/invite.json:25:20
+     '{ "name": "inviter", "type":{ "base":"discord::user::dati", "dec":"*"}}'
+  */
+  p->__M.arg_switches[3] = p->inviter;
+
+  /* specs/invite.json:26:20
+     '{ "name": "target_user", "type":{ "base":"discord::user::dati", "dec":"*"}, "comment":"partial user object"}'
+  */
+  p->__M.arg_switches[4] = p->target_user;
+
+  /* specs/invite.json:27:20
+     '{ "name": "target_user_type", "type":{ "base":"int", "int_alias":"discord::invite::target_user_types::code" }}'
+  */
+  p->__M.arg_switches[5] = &p->target_user_type;
+
+  /* specs/invite.json:28:20
+     '{ "name": "approximate_presence_count", "type":{ "base":"int" }}'
+  */
+  p->__M.arg_switches[6] = &p->approximate_presence_count;
+
+  /* specs/invite.json:29:20
+     '{ "name": "approximate_member_count", "type":{ "base":"int" }}'
+  */
+  p->__M.arg_switches[7] = &p->approximate_member_count;
+
+}
+
 size_t dati_to_json(char *json, size_t len, struct dati *p)
 {
   size_t r;
+  dati_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/invite.json:22:20
      '{ "name": "code", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
@@ -155,51 +201,6 @@ size_t dati_to_json(char *json, size_t len, struct dati *p)
                 &p->approximate_member_count,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
-}
-
-void dati_use_default_inject_settings(struct dati *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/invite.json:22:20
-     '{ "name": "code", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
-  */
-  p->__M.arg_switches[0] = p->code;
-
-  /* specs/invite.json:23:20
-     '{ "name": "guild", "type":{ "base":"discord::guild::dati", "dec":"*"}, "comment":"partial guild object"}'
-  */
-  p->__M.arg_switches[1] = p->guild;
-
-  /* specs/invite.json:24:20
-     '{ "name": "channel", "type":{ "base":"discord::channel::dati", "dec":"*"}, "comment":"partial channel object"}'
-  */
-  p->__M.arg_switches[2] = p->channel;
-
-  /* specs/invite.json:25:20
-     '{ "name": "inviter", "type":{ "base":"discord::user::dati", "dec":"*"}}'
-  */
-  p->__M.arg_switches[3] = p->inviter;
-
-  /* specs/invite.json:26:20
-     '{ "name": "target_user", "type":{ "base":"discord::user::dati", "dec":"*"}, "comment":"partial user object"}'
-  */
-  p->__M.arg_switches[4] = p->target_user;
-
-  /* specs/invite.json:27:20
-     '{ "name": "target_user_type", "type":{ "base":"int", "int_alias":"discord::invite::target_user_types::code" }}'
-  */
-  p->__M.arg_switches[5] = &p->target_user_type;
-
-  /* specs/invite.json:28:20
-     '{ "name": "approximate_presence_count", "type":{ "base":"int" }}'
-  */
-  p->__M.arg_switches[6] = &p->approximate_presence_count;
-
-  /* specs/invite.json:29:20
-     '{ "name": "approximate_member_count", "type":{ "base":"int" }}'
-  */
-  p->__M.arg_switches[7] = &p->approximate_member_count;
-
 }
 
 
@@ -405,9 +406,40 @@ void dati_from_json(char *json, size_t len, struct dati *p)
   ret = r;
 }
 
+static void dati_use_default_inject_settings(struct dati *p)
+{
+  p->__M.enable_arg_switches = true;
+  /* specs/invite.json:39:20
+     '{ "name": "user", "type":{ "base":"int" }}'
+  */
+  p->__M.arg_switches[0] = &p->user;
+
+  /* specs/invite.json:40:20
+     '{ "name": "max_uses", "type":{ "base":"int" }}'
+  */
+  p->__M.arg_switches[1] = &p->max_uses;
+
+  /* specs/invite.json:41:20
+     '{ "name": "max_age", "type":{ "base":"int" }}'
+  */
+  p->__M.arg_switches[2] = &p->max_age;
+
+  /* specs/invite.json:42:20
+     '{ "name": "temporary", "type":{ "base":"int" }}'
+  */
+  p->__M.arg_switches[3] = &p->temporary;
+
+  /* specs/invite.json:43:20
+     '{ "name": "created_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601"}}'
+  */
+  p->__M.arg_switches[4] = &p->created_at;
+
+}
+
 size_t dati_to_json(char *json, size_t len, struct dati *p)
 {
   size_t r;
+  dati_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/invite.json:39:20
      '{ "name": "user", "type":{ "base":"int" }}'
@@ -452,36 +484,6 @@ size_t dati_to_json(char *json, size_t len, struct dati *p)
                 orka_unix_ms_to_iso8601, &p->created_at,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
-}
-
-void dati_use_default_inject_settings(struct dati *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/invite.json:39:20
-     '{ "name": "user", "type":{ "base":"int" }}'
-  */
-  p->__M.arg_switches[0] = &p->user;
-
-  /* specs/invite.json:40:20
-     '{ "name": "max_uses", "type":{ "base":"int" }}'
-  */
-  p->__M.arg_switches[1] = &p->max_uses;
-
-  /* specs/invite.json:41:20
-     '{ "name": "max_age", "type":{ "base":"int" }}'
-  */
-  p->__M.arg_switches[2] = &p->max_age;
-
-  /* specs/invite.json:42:20
-     '{ "name": "temporary", "type":{ "base":"int" }}'
-  */
-  p->__M.arg_switches[3] = &p->temporary;
-
-  /* specs/invite.json:43:20
-     '{ "name": "created_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601"}}'
-  */
-  p->__M.arg_switches[4] = &p->created_at;
-
 }
 
 

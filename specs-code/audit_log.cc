@@ -52,9 +52,35 @@ void dati_from_json(char *json, size_t len, struct dati *p)
   ret = r;
 }
 
+static void dati_use_default_inject_settings(struct dati *p)
+{
+  p->__M.enable_arg_switches = true;
+  /* specs/audit_log.json:11:18
+     '{"name":"webhooks", "type": { "base":"discord::webhook::dati", "dec":"*" } }'
+  */
+  p->__M.arg_switches[0] = p->webhooks;
+
+  /* specs/audit_log.json:12:18
+     '{"name":"users", "type": { "base":"user::dati", "dec":"*"}}'
+  */
+  p->__M.arg_switches[1] = p->users;
+
+  /* specs/audit_log.json:13:18
+     '{"name":"audit_log_entries", "type": { "base":"entry::dati", "dec":"*"}}'
+  */
+  p->__M.arg_switches[2] = p->audit_log_entries;
+
+  /* specs/audit_log.json:14:18
+     '{"name":"integrations", "type": { "base":"guild::integration::dati", "dec":"ntl"}}'
+  */
+  p->__M.arg_switches[3] = p->integrations;
+
+}
+
 size_t dati_to_json(char *json, size_t len, struct dati *p)
 {
   size_t r;
+  dati_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/audit_log.json:11:18
      '{"name":"webhooks", "type": { "base":"discord::webhook::dati", "dec":"*" } }'
@@ -91,31 +117,6 @@ size_t dati_to_json(char *json, size_t len, struct dati *p)
                 guild::integration::dati_list_to_json, p->integrations,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
-}
-
-void dati_use_default_inject_settings(struct dati *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/audit_log.json:11:18
-     '{"name":"webhooks", "type": { "base":"discord::webhook::dati", "dec":"*" } }'
-  */
-  p->__M.arg_switches[0] = p->webhooks;
-
-  /* specs/audit_log.json:12:18
-     '{"name":"users", "type": { "base":"user::dati", "dec":"*"}}'
-  */
-  p->__M.arg_switches[1] = p->users;
-
-  /* specs/audit_log.json:13:18
-     '{"name":"audit_log_entries", "type": { "base":"entry::dati", "dec":"*"}}'
-  */
-  p->__M.arg_switches[2] = p->audit_log_entries;
-
-  /* specs/audit_log.json:14:18
-     '{"name":"integrations", "type": { "base":"guild::integration::dati", "dec":"ntl"}}'
-  */
-  p->__M.arg_switches[3] = p->integrations;
-
 }
 
 
@@ -303,9 +304,50 @@ void dati_from_json(char *json, size_t len, struct dati *p)
   ret = r;
 }
 
+static void dati_use_default_inject_settings(struct dati *p)
+{
+  p->__M.enable_arg_switches = true;
+  /* specs/audit_log.json:67:18
+     '{"name":"target_id", "type": {"base":"char", "dec":"*"}}'
+  */
+  p->__M.arg_switches[0] = p->target_id;
+
+  /* specs/audit_log.json:68:18
+     '{"name":"changes", "type": {"base":"change::dati", "dec":"*"}}'
+  */
+  p->__M.arg_switches[1] = p->changes;
+
+  /* specs/audit_log.json:69:18
+     '{"name":"user_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
+  */
+  p->__M.arg_switches[2] = &p->user_id;
+
+  /* specs/audit_log.json:70:18
+     '{"name":"id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
+  */
+  p->__M.arg_switches[3] = &p->id;
+
+  /* specs/audit_log.json:71:18
+     '{"name":"action_type", "type": {"base":"int", "c_base":"events::code"}}'
+  */
+  p->__M.arg_switches[4] = &p->action_type;
+
+  /* specs/audit_log.json:72:18
+     '{"name":"options", "type": {"base":"optional_info::dati", "dec":"*"}}'
+  */
+  p->__M.arg_switches[5] = p->options;
+
+  /* specs/audit_log.json:73:18
+     '{"name":"reason", "type": {"base":"char", "dec":"[MAX_REASON_LEN]"}}'
+  */
+  p->__M.arg_switches[6] = p->reason;
+
+}
+
 size_t dati_to_json(char *json, size_t len, struct dati *p)
 {
   size_t r;
+  dati_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/audit_log.json:67:18
      '{"name":"target_id", "type": {"base":"char", "dec":"*"}}'
@@ -366,46 +408,6 @@ size_t dati_to_json(char *json, size_t len, struct dati *p)
                 p->reason,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
-}
-
-void dati_use_default_inject_settings(struct dati *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/audit_log.json:67:18
-     '{"name":"target_id", "type": {"base":"char", "dec":"*"}}'
-  */
-  p->__M.arg_switches[0] = p->target_id;
-
-  /* specs/audit_log.json:68:18
-     '{"name":"changes", "type": {"base":"change::dati", "dec":"*"}}'
-  */
-  p->__M.arg_switches[1] = p->changes;
-
-  /* specs/audit_log.json:69:18
-     '{"name":"user_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
-  */
-  p->__M.arg_switches[2] = &p->user_id;
-
-  /* specs/audit_log.json:70:18
-     '{"name":"id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
-  */
-  p->__M.arg_switches[3] = &p->id;
-
-  /* specs/audit_log.json:71:18
-     '{"name":"action_type", "type": {"base":"int", "c_base":"events::code"}}'
-  */
-  p->__M.arg_switches[4] = &p->action_type;
-
-  /* specs/audit_log.json:72:18
-     '{"name":"options", "type": {"base":"optional_info::dati", "dec":"*"}}'
-  */
-  p->__M.arg_switches[5] = p->options;
-
-  /* specs/audit_log.json:73:18
-     '{"name":"reason", "type": {"base":"char", "dec":"[MAX_REASON_LEN]"}}'
-  */
-  p->__M.arg_switches[6] = p->reason;
-
 }
 
 
@@ -625,9 +627,55 @@ void dati_from_json(char *json, size_t len, struct dati *p)
   ret = r;
 }
 
+static void dati_use_default_inject_settings(struct dati *p)
+{
+  p->__M.enable_arg_switches = true;
+  /* specs/audit_log.json:83:20
+     '{ "name": "delete_member_days", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"}'
+  */
+  p->__M.arg_switches[0] = p->delete_member_days;
+
+  /* specs/audit_log.json:84:20
+     '{ "name": "members_removed", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"}'
+  */
+  p->__M.arg_switches[1] = p->members_removed;
+
+  /* specs/audit_log.json:85:20
+     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" } }'
+  */
+  p->__M.arg_switches[2] = &p->channel_id;
+
+  /* specs/audit_log.json:86:20
+     '{ "name": "message_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" } }'
+  */
+  p->__M.arg_switches[3] = &p->message_id;
+
+  /* specs/audit_log.json:87:20
+     '{ "name": "count", "type":{ "base":"char", "dec":"*" }, "comment":"@todo find fixed size limit"}'
+  */
+  p->__M.arg_switches[4] = p->count;
+
+  /* specs/audit_log.json:88:20
+     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
+  */
+  p->__M.arg_switches[5] = &p->id;
+
+  /* specs/audit_log.json:89:20
+     '{ "name": "type", "type":{ "base":"char", "dec":"*" }, "comment":"@todo find fixed size limit"}'
+  */
+  p->__M.arg_switches[6] = p->type;
+
+  /* specs/audit_log.json:90:20
+     '{ "name": "role", "type":{ "base":"char", "dec":"*" }, "comment":"@todo find fixed size limit"}'
+  */
+  p->__M.arg_switches[7] = p->role;
+
+}
+
 size_t dati_to_json(char *json, size_t len, struct dati *p)
 {
   size_t r;
+  dati_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/audit_log.json:83:20
      '{ "name": "delete_member_days", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"}'
@@ -696,51 +744,6 @@ size_t dati_to_json(char *json, size_t len, struct dati *p)
                 p->role,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
-}
-
-void dati_use_default_inject_settings(struct dati *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/audit_log.json:83:20
-     '{ "name": "delete_member_days", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"}'
-  */
-  p->__M.arg_switches[0] = p->delete_member_days;
-
-  /* specs/audit_log.json:84:20
-     '{ "name": "members_removed", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"}'
-  */
-  p->__M.arg_switches[1] = p->members_removed;
-
-  /* specs/audit_log.json:85:20
-     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" } }'
-  */
-  p->__M.arg_switches[2] = &p->channel_id;
-
-  /* specs/audit_log.json:86:20
-     '{ "name": "message_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" } }'
-  */
-  p->__M.arg_switches[3] = &p->message_id;
-
-  /* specs/audit_log.json:87:20
-     '{ "name": "count", "type":{ "base":"char", "dec":"*" }, "comment":"@todo find fixed size limit"}'
-  */
-  p->__M.arg_switches[4] = p->count;
-
-  /* specs/audit_log.json:88:20
-     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
-  p->__M.arg_switches[5] = &p->id;
-
-  /* specs/audit_log.json:89:20
-     '{ "name": "type", "type":{ "base":"char", "dec":"*" }, "comment":"@todo find fixed size limit"}'
-  */
-  p->__M.arg_switches[6] = p->type;
-
-  /* specs/audit_log.json:90:20
-     '{ "name": "role", "type":{ "base":"char", "dec":"*" }, "comment":"@todo find fixed size limit"}'
-  */
-  p->__M.arg_switches[7] = p->role;
-
 }
 
 
@@ -928,9 +931,30 @@ void dati_from_json(char *json, size_t len, struct dati *p)
   ret = r;
 }
 
+static void dati_use_default_inject_settings(struct dati *p)
+{
+  p->__M.enable_arg_switches = true;
+  /* specs/audit_log.json:100:18
+     '{"name":"new_value", "type": {"base":"char", "dec":"*"}}'
+  */
+  p->__M.arg_switches[0] = p->new_value;
+
+  /* specs/audit_log.json:101:18
+     '{"name":"old_value", "type": {"base":"char", "dec":"*"}}'
+  */
+  p->__M.arg_switches[1] = p->old_value;
+
+  /* specs/audit_log.json:102:18
+     '{"name":"key", "type":{"base":"char", "dec":"[64]"}}'
+  */
+  p->__M.arg_switches[2] = p->key;
+
+}
+
 size_t dati_to_json(char *json, size_t len, struct dati *p)
 {
   size_t r;
+  dati_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/audit_log.json:100:18
      '{"name":"new_value", "type": {"base":"char", "dec":"*"}}'
@@ -959,26 +983,6 @@ size_t dati_to_json(char *json, size_t len, struct dati *p)
                 p->key,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
-}
-
-void dati_use_default_inject_settings(struct dati *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/audit_log.json:100:18
-     '{"name":"new_value", "type": {"base":"char", "dec":"*"}}'
-  */
-  p->__M.arg_switches[0] = p->new_value;
-
-  /* specs/audit_log.json:101:18
-     '{"name":"old_value", "type": {"base":"char", "dec":"*"}}'
-  */
-  p->__M.arg_switches[1] = p->old_value;
-
-  /* specs/audit_log.json:102:18
-     '{"name":"key", "type":{"base":"char", "dec":"[64]"}}'
-  */
-  p->__M.arg_switches[2] = p->key;
-
 }
 
 
@@ -1535,9 +1539,287 @@ void dati_from_json(char *json, size_t len, struct dati *p)
   ret = r;
 }
 
+static void dati_use_default_inject_settings(struct dati *p)
+{
+  p->__M.enable_arg_switches = true;
+  /* specs/audit_log.json:112:18
+     '{"name":"name", "type": {"base":"char", "dec":"[MAX_NAME_LEN]"}}'
+  */
+  p->__M.arg_switches[0] = p->name;
+
+  /* specs/audit_log.json:113:18
+     '{"name":"description", "type": {"base":"char", "dec":"[MAX_DESCRIPTION_LEN]"}}'
+  */
+  p->__M.arg_switches[1] = p->description;
+
+  /* specs/audit_log.json:114:18
+     '{"name":"icon_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"}, 
+         "comment":"icon changed" }'
+  */
+  p->__M.arg_switches[2] = p->icon_hash;
+
+  /* specs/audit_log.json:116:18
+     '{"name":"splash_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"},
+         "comment":"invite splash page artwork changed"}'
+  */
+  p->__M.arg_switches[3] = p->splash_hash;
+
+  /* specs/audit_log.json:118:18
+     '{"name":"discovery_splash_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"}}'
+  */
+  p->__M.arg_switches[4] = p->discovery_splash_hash;
+
+  /* specs/audit_log.json:119:18
+     '{"name":"banner_hash", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
+  */
+  p->__M.arg_switches[5] = &p->banner_hash;
+
+  /* specs/audit_log.json:120:18
+     '{"name":"owner_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
+  */
+  p->__M.arg_switches[6] = &p->owner_id;
+
+  /* specs/audit_log.json:121:18
+     '{"name":"region", "type": {"base":"char", "dec":"[MAX_REGION_LEN]"}}'
+  */
+  p->__M.arg_switches[7] = p->region;
+
+  /* specs/audit_log.json:122:18
+     '{"name":"preferred_locale", "type": {"base":"char", "dec":"[MAX_LOCALE_LEN]"}}'
+  */
+  p->__M.arg_switches[8] = p->preferred_locale;
+
+  /* specs/audit_log.json:123:18
+     '{"name":"afk_channel_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
+  */
+  p->__M.arg_switches[9] = &p->afk_channel_id;
+
+  /* specs/audit_log.json:124:18
+     '{"name":"afk_timeout", "type": {"base":"int"}}'
+  */
+  p->__M.arg_switches[10] = &p->afk_timeout;
+
+  /* specs/audit_log.json:125:18
+     '{"name":"rules_channel_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
+  */
+  p->__M.arg_switches[11] = &p->rules_channel_id;
+
+  /* specs/audit_log.json:126:18
+     '{"name":"public_updates_channel_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
+  */
+  p->__M.arg_switches[12] = &p->public_updates_channel_id;
+
+  /* specs/audit_log.json:127:18
+     '{"name":"mfa_level", "type": {"base":"int"}}'
+  */
+  p->__M.arg_switches[13] = &p->mfa_level;
+
+  /* specs/audit_log.json:128:18
+     '{"name":"verification_level", "type": {"base":"int"}}'
+  */
+  p->__M.arg_switches[14] = &p->verification_level;
+
+  /* specs/audit_log.json:129:18
+     '{"name":"explicit_content_filter", "type": {"base":"int"}}'
+  */
+  p->__M.arg_switches[15] = &p->explicit_content_filter;
+
+  /* specs/audit_log.json:130:18
+     '{"name":"default_message_notifications", "type": {"base":"int"}}'
+  */
+  p->__M.arg_switches[16] = &p->default_message_notifications;
+
+  /* specs/audit_log.json:131:18
+     '{"name":"vanity_url_code", "type": {"base":"char", "dec":"*"}}'
+  */
+  p->__M.arg_switches[17] = p->vanity_url_code;
+
+  /* specs/audit_log.json:132:18
+     '{"name":"add", "json_key":"$add", "type": {"base":"char", "dec":"*"},
+         "todo":true }'
+  */
+
+  /* specs/audit_log.json:134:18
+     '{"name":"remove", "json_key":"$remove", "type": {"base":"char", "dec":"*"},
+         "todo":true }'
+  */
+
+  /* specs/audit_log.json:136:18
+     '{"name":"prune_delete_days", "type": {"base":"int"}}'
+  */
+  p->__M.arg_switches[20] = &p->prune_delete_days;
+
+  /* specs/audit_log.json:137:18
+     '{"name":"widget_enabled", "type": {"base":"bool"}}'
+  */
+  p->__M.arg_switches[21] = &p->widget_enabled;
+
+  /* specs/audit_log.json:138:18
+     '{"name":"widget_channel_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
+  */
+  p->__M.arg_switches[22] = &p->widget_channel_id;
+
+  /* specs/audit_log.json:139:18
+     '{"name":"system_channel_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
+  */
+  p->__M.arg_switches[23] = &p->system_channel_id;
+
+  /* specs/audit_log.json:140:18
+     '{"name":"position", "type": {"base":"int"}}'
+  */
+  p->__M.arg_switches[24] = &p->position;
+
+  /* specs/audit_log.json:141:18
+     '{"name":"topic", "type": {"base":"char", "dec":"*"}}'
+  */
+  p->__M.arg_switches[25] = p->topic;
+
+  /* specs/audit_log.json:142:18
+     '{"name":"bitrate", "type": {"base":"int"}}'
+  */
+  p->__M.arg_switches[26] = &p->bitrate;
+
+  /* specs/audit_log.json:143:18
+     '{"name":"permission_overwrites", "type": {"base":"char", "dec":"*"},
+         "todo":true }'
+  */
+
+  /* specs/audit_log.json:145:18
+     '{"name":"nsfw", "type": {"base":"bool"}}'
+  */
+  p->__M.arg_switches[28] = &p->nsfw;
+
+  /* specs/audit_log.json:146:18
+     '{"name":"application_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
+  */
+  p->__M.arg_switches[29] = &p->application_id;
+
+  /* specs/audit_log.json:147:18
+     '{"name":"rate_limit_per_user", "type": {"base":"int"}}'
+  */
+  p->__M.arg_switches[30] = &p->rate_limit_per_user;
+
+  /* specs/audit_log.json:148:18
+     '{"name":"permissions", "type": {"base":"char", "dec":"*"}}'
+  */
+  p->__M.arg_switches[31] = p->permissions;
+
+  /* specs/audit_log.json:149:18
+     '{"name":"color", "type": {"base":"int"}}'
+  */
+  p->__M.arg_switches[32] = &p->color;
+
+  /* specs/audit_log.json:150:18
+     '{"name":"hoist", "type": {"base":"bool"}}'
+  */
+  p->__M.arg_switches[33] = &p->hoist;
+
+  /* specs/audit_log.json:151:18
+     '{"name":"mentionable", "type": {"base":"bool"}}'
+  */
+  p->__M.arg_switches[34] = &p->mentionable;
+
+  /* specs/audit_log.json:152:18
+     '{"name":"allow", "type": {"base":"char", "dec":"*"}}'
+  */
+  p->__M.arg_switches[35] = p->allow;
+
+  /* specs/audit_log.json:153:18
+     '{"name":"deny", "type": {"base":"char", "dec":"*"}}'
+  */
+  p->__M.arg_switches[36] = p->deny;
+
+  /* specs/audit_log.json:154:18
+     '{"name":"code", "type": {"base":"char", "dec":"*"}}'
+  */
+  p->__M.arg_switches[37] = p->code;
+
+  /* specs/audit_log.json:155:18
+     '{"name":"channel_id", "type": {"base":"char", "dec":"*"}}'
+  */
+  p->__M.arg_switches[38] = p->channel_id;
+
+  /* specs/audit_log.json:156:18
+     '{"name":"inviter_id", "type": {"base":"char", "dec":"*"}}'
+  */
+  p->__M.arg_switches[39] = p->inviter_id;
+
+  /* specs/audit_log.json:157:18
+     '{"name":"max_uses", "type": {"base":"char", "dec":"*"}}'
+  */
+  p->__M.arg_switches[40] = p->max_uses;
+
+  /* specs/audit_log.json:158:18
+     '{"name":"uses", "type": {"base":"char", "dec":"*"}}'
+  */
+  p->__M.arg_switches[41] = p->uses;
+
+  /* specs/audit_log.json:159:18
+     '{"name":"max_age", "type": {"base":"char", "dec":"*"}}'
+  */
+  p->__M.arg_switches[42] = p->max_age;
+
+  /* specs/audit_log.json:160:18
+     '{"name":"temporary", "type": {"base":"char", "dec":"*"}}'
+  */
+  p->__M.arg_switches[43] = p->temporary;
+
+  /* specs/audit_log.json:161:18
+     '{"name":"deaf", "type": {"base":"char", "dec":"*"}}'
+  */
+  p->__M.arg_switches[44] = p->deaf;
+
+  /* specs/audit_log.json:162:18
+     '{"name":"mute", "type": {"base":"char", "dec":"*"}}'
+  */
+  p->__M.arg_switches[45] = p->mute;
+
+  /* specs/audit_log.json:163:18
+     '{"name":"nick", "type": {"base":"char", "dec":"*"}}'
+  */
+  p->__M.arg_switches[46] = p->nick;
+
+  /* specs/audit_log.json:164:18
+     '{"name":"avatar_hash", "type": {"base":"char", "dec":"*"}}'
+  */
+  p->__M.arg_switches[47] = p->avatar_hash;
+
+  /* specs/audit_log.json:165:18
+     '{"name":"id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
+  */
+  p->__M.arg_switches[48] = &p->id;
+
+  /* specs/audit_log.json:166:18
+     '{"name":"type", "type": {"base":"char", "dec":"*"}, 
+         "todo":true, "comment":"integer or string"}'
+  */
+
+  /* specs/audit_log.json:168:18
+     '{"name":"enable_emotions", "type": {"base":"bool"}}'
+  */
+  p->__M.arg_switches[50] = &p->enable_emotions;
+
+  /* specs/audit_log.json:169:18
+     '{"name":"expire_behavior", "type": {"base":"int"}}'
+  */
+  p->__M.arg_switches[51] = &p->expire_behavior;
+
+  /* specs/audit_log.json:170:18
+     '{"name":"expire_grace_period", "type": {"base":"int"}}'
+  */
+  p->__M.arg_switches[52] = &p->expire_grace_period;
+
+  /* specs/audit_log.json:171:18
+     '{"name":"user_limit", "type": {"base":"int" }}'
+  */
+  p->__M.arg_switches[53] = &p->user_limit;
+
+}
+
 size_t dati_to_json(char *json, size_t len, struct dati *p)
 {
   size_t r;
+  dati_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/audit_log.json:112:18
      '{"name":"name", "type": {"base":"char", "dec":"[MAX_NAME_LEN]"}}'
@@ -1978,283 +2260,6 @@ size_t dati_to_json(char *json, size_t len, struct dati *p)
                 &p->user_limit,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
-}
-
-void dati_use_default_inject_settings(struct dati *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/audit_log.json:112:18
-     '{"name":"name", "type": {"base":"char", "dec":"[MAX_NAME_LEN]"}}'
-  */
-  p->__M.arg_switches[0] = p->name;
-
-  /* specs/audit_log.json:113:18
-     '{"name":"description", "type": {"base":"char", "dec":"[MAX_DESCRIPTION_LEN]"}}'
-  */
-  p->__M.arg_switches[1] = p->description;
-
-  /* specs/audit_log.json:114:18
-     '{"name":"icon_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"}, 
-         "comment":"icon changed" }'
-  */
-  p->__M.arg_switches[2] = p->icon_hash;
-
-  /* specs/audit_log.json:116:18
-     '{"name":"splash_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"},
-         "comment":"invite splash page artwork changed"}'
-  */
-  p->__M.arg_switches[3] = p->splash_hash;
-
-  /* specs/audit_log.json:118:18
-     '{"name":"discovery_splash_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"}}'
-  */
-  p->__M.arg_switches[4] = p->discovery_splash_hash;
-
-  /* specs/audit_log.json:119:18
-     '{"name":"banner_hash", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
-  */
-  p->__M.arg_switches[5] = &p->banner_hash;
-
-  /* specs/audit_log.json:120:18
-     '{"name":"owner_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
-  */
-  p->__M.arg_switches[6] = &p->owner_id;
-
-  /* specs/audit_log.json:121:18
-     '{"name":"region", "type": {"base":"char", "dec":"[MAX_REGION_LEN]"}}'
-  */
-  p->__M.arg_switches[7] = p->region;
-
-  /* specs/audit_log.json:122:18
-     '{"name":"preferred_locale", "type": {"base":"char", "dec":"[MAX_LOCALE_LEN]"}}'
-  */
-  p->__M.arg_switches[8] = p->preferred_locale;
-
-  /* specs/audit_log.json:123:18
-     '{"name":"afk_channel_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
-  */
-  p->__M.arg_switches[9] = &p->afk_channel_id;
-
-  /* specs/audit_log.json:124:18
-     '{"name":"afk_timeout", "type": {"base":"int"}}'
-  */
-  p->__M.arg_switches[10] = &p->afk_timeout;
-
-  /* specs/audit_log.json:125:18
-     '{"name":"rules_channel_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
-  */
-  p->__M.arg_switches[11] = &p->rules_channel_id;
-
-  /* specs/audit_log.json:126:18
-     '{"name":"public_updates_channel_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
-  */
-  p->__M.arg_switches[12] = &p->public_updates_channel_id;
-
-  /* specs/audit_log.json:127:18
-     '{"name":"mfa_level", "type": {"base":"int"}}'
-  */
-  p->__M.arg_switches[13] = &p->mfa_level;
-
-  /* specs/audit_log.json:128:18
-     '{"name":"verification_level", "type": {"base":"int"}}'
-  */
-  p->__M.arg_switches[14] = &p->verification_level;
-
-  /* specs/audit_log.json:129:18
-     '{"name":"explicit_content_filter", "type": {"base":"int"}}'
-  */
-  p->__M.arg_switches[15] = &p->explicit_content_filter;
-
-  /* specs/audit_log.json:130:18
-     '{"name":"default_message_notifications", "type": {"base":"int"}}'
-  */
-  p->__M.arg_switches[16] = &p->default_message_notifications;
-
-  /* specs/audit_log.json:131:18
-     '{"name":"vanity_url_code", "type": {"base":"char", "dec":"*"}}'
-  */
-  p->__M.arg_switches[17] = p->vanity_url_code;
-
-  /* specs/audit_log.json:132:18
-     '{"name":"add", "json_key":"$add", "type": {"base":"char", "dec":"*"},
-         "todo":true }'
-  */
-
-  /* specs/audit_log.json:134:18
-     '{"name":"remove", "json_key":"$remove", "type": {"base":"char", "dec":"*"},
-         "todo":true }'
-  */
-
-  /* specs/audit_log.json:136:18
-     '{"name":"prune_delete_days", "type": {"base":"int"}}'
-  */
-  p->__M.arg_switches[20] = &p->prune_delete_days;
-
-  /* specs/audit_log.json:137:18
-     '{"name":"widget_enabled", "type": {"base":"bool"}}'
-  */
-  p->__M.arg_switches[21] = &p->widget_enabled;
-
-  /* specs/audit_log.json:138:18
-     '{"name":"widget_channel_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
-  */
-  p->__M.arg_switches[22] = &p->widget_channel_id;
-
-  /* specs/audit_log.json:139:18
-     '{"name":"system_channel_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
-  */
-  p->__M.arg_switches[23] = &p->system_channel_id;
-
-  /* specs/audit_log.json:140:18
-     '{"name":"position", "type": {"base":"int"}}'
-  */
-  p->__M.arg_switches[24] = &p->position;
-
-  /* specs/audit_log.json:141:18
-     '{"name":"topic", "type": {"base":"char", "dec":"*"}}'
-  */
-  p->__M.arg_switches[25] = p->topic;
-
-  /* specs/audit_log.json:142:18
-     '{"name":"bitrate", "type": {"base":"int"}}'
-  */
-  p->__M.arg_switches[26] = &p->bitrate;
-
-  /* specs/audit_log.json:143:18
-     '{"name":"permission_overwrites", "type": {"base":"char", "dec":"*"},
-         "todo":true }'
-  */
-
-  /* specs/audit_log.json:145:18
-     '{"name":"nsfw", "type": {"base":"bool"}}'
-  */
-  p->__M.arg_switches[28] = &p->nsfw;
-
-  /* specs/audit_log.json:146:18
-     '{"name":"application_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
-  */
-  p->__M.arg_switches[29] = &p->application_id;
-
-  /* specs/audit_log.json:147:18
-     '{"name":"rate_limit_per_user", "type": {"base":"int"}}'
-  */
-  p->__M.arg_switches[30] = &p->rate_limit_per_user;
-
-  /* specs/audit_log.json:148:18
-     '{"name":"permissions", "type": {"base":"char", "dec":"*"}}'
-  */
-  p->__M.arg_switches[31] = p->permissions;
-
-  /* specs/audit_log.json:149:18
-     '{"name":"color", "type": {"base":"int"}}'
-  */
-  p->__M.arg_switches[32] = &p->color;
-
-  /* specs/audit_log.json:150:18
-     '{"name":"hoist", "type": {"base":"bool"}}'
-  */
-  p->__M.arg_switches[33] = &p->hoist;
-
-  /* specs/audit_log.json:151:18
-     '{"name":"mentionable", "type": {"base":"bool"}}'
-  */
-  p->__M.arg_switches[34] = &p->mentionable;
-
-  /* specs/audit_log.json:152:18
-     '{"name":"allow", "type": {"base":"char", "dec":"*"}}'
-  */
-  p->__M.arg_switches[35] = p->allow;
-
-  /* specs/audit_log.json:153:18
-     '{"name":"deny", "type": {"base":"char", "dec":"*"}}'
-  */
-  p->__M.arg_switches[36] = p->deny;
-
-  /* specs/audit_log.json:154:18
-     '{"name":"code", "type": {"base":"char", "dec":"*"}}'
-  */
-  p->__M.arg_switches[37] = p->code;
-
-  /* specs/audit_log.json:155:18
-     '{"name":"channel_id", "type": {"base":"char", "dec":"*"}}'
-  */
-  p->__M.arg_switches[38] = p->channel_id;
-
-  /* specs/audit_log.json:156:18
-     '{"name":"inviter_id", "type": {"base":"char", "dec":"*"}}'
-  */
-  p->__M.arg_switches[39] = p->inviter_id;
-
-  /* specs/audit_log.json:157:18
-     '{"name":"max_uses", "type": {"base":"char", "dec":"*"}}'
-  */
-  p->__M.arg_switches[40] = p->max_uses;
-
-  /* specs/audit_log.json:158:18
-     '{"name":"uses", "type": {"base":"char", "dec":"*"}}'
-  */
-  p->__M.arg_switches[41] = p->uses;
-
-  /* specs/audit_log.json:159:18
-     '{"name":"max_age", "type": {"base":"char", "dec":"*"}}'
-  */
-  p->__M.arg_switches[42] = p->max_age;
-
-  /* specs/audit_log.json:160:18
-     '{"name":"temporary", "type": {"base":"char", "dec":"*"}}'
-  */
-  p->__M.arg_switches[43] = p->temporary;
-
-  /* specs/audit_log.json:161:18
-     '{"name":"deaf", "type": {"base":"char", "dec":"*"}}'
-  */
-  p->__M.arg_switches[44] = p->deaf;
-
-  /* specs/audit_log.json:162:18
-     '{"name":"mute", "type": {"base":"char", "dec":"*"}}'
-  */
-  p->__M.arg_switches[45] = p->mute;
-
-  /* specs/audit_log.json:163:18
-     '{"name":"nick", "type": {"base":"char", "dec":"*"}}'
-  */
-  p->__M.arg_switches[46] = p->nick;
-
-  /* specs/audit_log.json:164:18
-     '{"name":"avatar_hash", "type": {"base":"char", "dec":"*"}}'
-  */
-  p->__M.arg_switches[47] = p->avatar_hash;
-
-  /* specs/audit_log.json:165:18
-     '{"name":"id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
-  */
-  p->__M.arg_switches[48] = &p->id;
-
-  /* specs/audit_log.json:166:18
-     '{"name":"type", "type": {"base":"char", "dec":"*"}, 
-         "todo":true, "comment":"integer or string"}'
-  */
-
-  /* specs/audit_log.json:168:18
-     '{"name":"enable_emotions", "type": {"base":"bool"}}'
-  */
-  p->__M.arg_switches[50] = &p->enable_emotions;
-
-  /* specs/audit_log.json:169:18
-     '{"name":"expire_behavior", "type": {"base":"int"}}'
-  */
-  p->__M.arg_switches[51] = &p->expire_behavior;
-
-  /* specs/audit_log.json:170:18
-     '{"name":"expire_grace_period", "type": {"base":"int"}}'
-  */
-  p->__M.arg_switches[52] = &p->expire_grace_period;
-
-  /* specs/audit_log.json:171:18
-     '{"name":"user_limit", "type": {"base":"int" }}'
-  */
-  p->__M.arg_switches[53] = &p->user_limit;
-
 }
 
 

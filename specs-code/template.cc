@@ -108,9 +108,70 @@ void dati_from_json(char *json, size_t len, struct dati *p)
   ret = r;
 }
 
+static void dati_use_default_inject_settings(struct dati *p)
+{
+  p->__M.enable_arg_switches = true;
+  /* specs/template.json:12:20
+     '{ "name": "code", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"}'
+  */
+  p->__M.arg_switches[0] = p->code;
+
+  /* specs/template.json:13:20
+     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"}'
+  */
+  p->__M.arg_switches[1] = p->name;
+
+  /* specs/template.json:14:20
+     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment": "@todo find fixed size limit"}'
+  */
+  p->__M.arg_switches[2] = p->description;
+
+  /* specs/template.json:15:20
+     '{ "name": "usage_count", "type":{ "base":"int"}}'
+  */
+  p->__M.arg_switches[3] = &p->usage_count;
+
+  /* specs/template.json:16:20
+     '{ "name": "creator_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
+  */
+  p->__M.arg_switches[4] = &p->creator_id;
+
+  /* specs/template.json:17:20
+     '{ "name": "creator", "type":{ "base":"discord::user::dati", "dec":"*" }}'
+  */
+  p->__M.arg_switches[5] = p->creator;
+
+  /* specs/template.json:18:20
+     '{ "name": "created_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}'
+  */
+  p->__M.arg_switches[6] = &p->created_at;
+
+  /* specs/template.json:19:20
+     '{ "name": "updated_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}'
+  */
+  p->__M.arg_switches[7] = &p->updated_at;
+
+  /* specs/template.json:20:20
+     '{ "name": "source_guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
+  */
+  p->__M.arg_switches[8] = &p->source_guild_id;
+
+  /* specs/template.json:21:20
+     '{ "name": "serialized_source_guild", "type":{ "base":"discord::guild::dati", "dec":"*" }}'
+  */
+  p->__M.arg_switches[9] = p->serialized_source_guild;
+
+  /* specs/template.json:22:20
+     '{ "name": "is_dirty", "type":{ "base":"bool" }}'
+  */
+  p->__M.arg_switches[10] = &p->is_dirty;
+
+}
+
 size_t dati_to_json(char *json, size_t len, struct dati *p)
 {
   size_t r;
+  dati_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/template.json:12:20
      '{ "name": "code", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"}'
@@ -203,66 +264,6 @@ size_t dati_to_json(char *json, size_t len, struct dati *p)
                 &p->is_dirty,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
-}
-
-void dati_use_default_inject_settings(struct dati *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/template.json:12:20
-     '{ "name": "code", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"}'
-  */
-  p->__M.arg_switches[0] = p->code;
-
-  /* specs/template.json:13:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"}'
-  */
-  p->__M.arg_switches[1] = p->name;
-
-  /* specs/template.json:14:20
-     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment": "@todo find fixed size limit"}'
-  */
-  p->__M.arg_switches[2] = p->description;
-
-  /* specs/template.json:15:20
-     '{ "name": "usage_count", "type":{ "base":"int"}}'
-  */
-  p->__M.arg_switches[3] = &p->usage_count;
-
-  /* specs/template.json:16:20
-     '{ "name": "creator_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
-  p->__M.arg_switches[4] = &p->creator_id;
-
-  /* specs/template.json:17:20
-     '{ "name": "creator", "type":{ "base":"discord::user::dati", "dec":"*" }}'
-  */
-  p->__M.arg_switches[5] = p->creator;
-
-  /* specs/template.json:18:20
-     '{ "name": "created_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}'
-  */
-  p->__M.arg_switches[6] = &p->created_at;
-
-  /* specs/template.json:19:20
-     '{ "name": "updated_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}'
-  */
-  p->__M.arg_switches[7] = &p->updated_at;
-
-  /* specs/template.json:20:20
-     '{ "name": "source_guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
-  p->__M.arg_switches[8] = &p->source_guild_id;
-
-  /* specs/template.json:21:20
-     '{ "name": "serialized_source_guild", "type":{ "base":"discord::guild::dati", "dec":"*" }}'
-  */
-  p->__M.arg_switches[9] = p->serialized_source_guild;
-
-  /* specs/template.json:22:20
-     '{ "name": "is_dirty", "type":{ "base":"bool" }}'
-  */
-  p->__M.arg_switches[10] = &p->is_dirty;
-
 }
 
 

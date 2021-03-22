@@ -84,9 +84,55 @@ void dati_from_json(char *json, size_t len, struct dati *p)
   ret = r;
 }
 
+static void dati_use_default_inject_settings(struct dati *p)
+{
+  p->__M.enable_arg_switches = true;
+  /* specs/emoji.json:11:20
+     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}}'
+  */
+  p->__M.arg_switches[0] = &p->id;
+
+  /* specs/emoji.json:12:20
+     '{ "name": "name", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]"}}'
+  */
+  p->__M.arg_switches[1] = p->name;
+
+  /* specs/emoji.json:13:20
+     '{ "name": "roles", "type":{ "base":"discord::guild::role::dati", "dec":"ntl"}, "option":true,
+          "todo":true }'
+  */
+
+  /* specs/emoji.json:15:20
+     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*" }, "option":true }'
+  */
+  p->__M.arg_switches[3] = p->user;
+
+  /* specs/emoji.json:16:20
+     '{ "name": "require_colons", "type":{ "base":"bool" }, "option":true}'
+  */
+  p->__M.arg_switches[4] = &p->require_colons;
+
+  /* specs/emoji.json:17:20
+     '{ "name": "managed", "type":{ "base":"bool" }, "option":true}'
+  */
+  p->__M.arg_switches[5] = &p->managed;
+
+  /* specs/emoji.json:18:20
+     '{ "name": "animated", "type":{ "base":"bool" }, "option":true}'
+  */
+  p->__M.arg_switches[6] = &p->animated;
+
+  /* specs/emoji.json:19:20
+     '{ "name": "available", "type":{ "base":"bool" }, "option":true}'
+  */
+  p->__M.arg_switches[7] = &p->available;
+
+}
+
 size_t dati_to_json(char *json, size_t len, struct dati *p)
 {
   size_t r;
+  dati_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/emoji.json:11:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}}'
@@ -155,51 +201,6 @@ size_t dati_to_json(char *json, size_t len, struct dati *p)
                 &p->available,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
-}
-
-void dati_use_default_inject_settings(struct dati *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/emoji.json:11:20
-     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}}'
-  */
-  p->__M.arg_switches[0] = &p->id;
-
-  /* specs/emoji.json:12:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]"}}'
-  */
-  p->__M.arg_switches[1] = p->name;
-
-  /* specs/emoji.json:13:20
-     '{ "name": "roles", "type":{ "base":"discord::guild::role::dati", "dec":"ntl"}, "option":true,
-          "todo":true }'
-  */
-
-  /* specs/emoji.json:15:20
-     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*" }, "option":true }'
-  */
-  p->__M.arg_switches[3] = p->user;
-
-  /* specs/emoji.json:16:20
-     '{ "name": "require_colons", "type":{ "base":"bool" }, "option":true}'
-  */
-  p->__M.arg_switches[4] = &p->require_colons;
-
-  /* specs/emoji.json:17:20
-     '{ "name": "managed", "type":{ "base":"bool" }, "option":true}'
-  */
-  p->__M.arg_switches[5] = &p->managed;
-
-  /* specs/emoji.json:18:20
-     '{ "name": "animated", "type":{ "base":"bool" }, "option":true}'
-  */
-  p->__M.arg_switches[6] = &p->animated;
-
-  /* specs/emoji.json:19:20
-     '{ "name": "available", "type":{ "base":"bool" }, "option":true}'
-  */
-  p->__M.arg_switches[7] = &p->available;
-
 }
 
 

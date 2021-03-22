@@ -37,9 +37,25 @@ void dati_from_json(char *json, size_t len, struct dati *p)
   ret = r;
 }
 
+static void dati_use_default_inject_settings(struct dati *p)
+{
+  p->__M.enable_arg_switches = true;
+  /* specs/guild.enum.json:102:18
+     '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}}'
+  */
+  p->__M.arg_switches[0] = &p->id;
+
+  /* specs/guild.enum.json:103:18
+     '{"name":"unavailable", "type":{"base":"bool"}}'
+  */
+  p->__M.arg_switches[1] = &p->unavailable;
+
+}
+
 size_t dati_to_json(char *json, size_t len, struct dati *p)
 {
   size_t r;
+  dati_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/guild.enum.json:102:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}}'
@@ -60,21 +76,6 @@ size_t dati_to_json(char *json, size_t len, struct dati *p)
                 &p->unavailable,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
-}
-
-void dati_use_default_inject_settings(struct dati *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/guild.enum.json:102:18
-     '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}}'
-  */
-  p->__M.arg_switches[0] = &p->id;
-
-  /* specs/guild.enum.json:103:18
-     '{"name":"unavailable", "type":{"base":"bool"}}'
-  */
-  p->__M.arg_switches[1] = &p->unavailable;
-
 }
 
 
@@ -262,9 +263,64 @@ void dati_from_json(char *json, size_t len, struct dati *p)
   ret = r;
 }
 
+static void dati_use_default_inject_settings(struct dati *p)
+{
+  p->__M.enable_arg_switches = true;
+  /* specs/guild.enum.json:112:18
+     '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}}'
+  */
+  p->__M.arg_switches[0] = &p->id;
+
+  /* specs/guild.enum.json:113:18
+     '{"name":"name", "type":{"base":"char", "dec":"[MAX_NAME_LEN]"}}'
+  */
+  p->__M.arg_switches[1] = p->name;
+
+  /* specs/guild.enum.json:114:18
+     '{"name":"icon", "type":{"base":"char", "dec":"*", "nullable":true}}'
+  */
+  p->__M.arg_switches[2] = p->icon;
+
+  /* specs/guild.enum.json:115:18
+     '{"name":"splash", "type":{"base":"char", "dec":"*", "nullable":true}}'
+  */
+  p->__M.arg_switches[3] = p->splash;
+
+  /* specs/guild.enum.json:116:18
+     '{"name":"discovery", "type":{"base":"char", "dec":"*", "nullable":true}}'
+  */
+  p->__M.arg_switches[4] = p->discovery;
+
+  /* specs/guild.enum.json:117:18
+     '{"name":"emojis", "type":{"base":"discord::emoji::dati", "dec":"*"}}'
+  */
+  p->__M.arg_switches[5] = p->emojis;
+
+  /* specs/guild.enum.json:118:18
+     '{"name":"features", "todo":true, "type":{"base":"char", "dec":"ntl"}}'
+  */
+
+  /* specs/guild.enum.json:119:18
+     '{"name":"approximate_member_count", "type":{"base":"int"}}'
+  */
+  p->__M.arg_switches[7] = &p->approximate_member_count;
+
+  /* specs/guild.enum.json:120:18
+     '{"name":"approximate_presence_count", "type":{"base":"int"}}'
+  */
+  p->__M.arg_switches[8] = &p->approximate_presence_count;
+
+  /* specs/guild.enum.json:121:18
+     '{"name":"description", "type":{"base":"char", "dec":"[MAX_DESCRIPTION_LEN]"}}'
+  */
+  p->__M.arg_switches[9] = p->description;
+
+}
+
 size_t dati_to_json(char *json, size_t len, struct dati *p)
 {
   size_t r;
+  dati_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/guild.enum.json:112:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}}'
@@ -347,60 +403,6 @@ size_t dati_to_json(char *json, size_t len, struct dati *p)
                 p->description,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
-}
-
-void dati_use_default_inject_settings(struct dati *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/guild.enum.json:112:18
-     '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}}'
-  */
-  p->__M.arg_switches[0] = &p->id;
-
-  /* specs/guild.enum.json:113:18
-     '{"name":"name", "type":{"base":"char", "dec":"[MAX_NAME_LEN]"}}'
-  */
-  p->__M.arg_switches[1] = p->name;
-
-  /* specs/guild.enum.json:114:18
-     '{"name":"icon", "type":{"base":"char", "dec":"*", "nullable":true}}'
-  */
-  p->__M.arg_switches[2] = p->icon;
-
-  /* specs/guild.enum.json:115:18
-     '{"name":"splash", "type":{"base":"char", "dec":"*", "nullable":true}}'
-  */
-  p->__M.arg_switches[3] = p->splash;
-
-  /* specs/guild.enum.json:116:18
-     '{"name":"discovery", "type":{"base":"char", "dec":"*", "nullable":true}}'
-  */
-  p->__M.arg_switches[4] = p->discovery;
-
-  /* specs/guild.enum.json:117:18
-     '{"name":"emojis", "type":{"base":"discord::emoji::dati", "dec":"*"}}'
-  */
-  p->__M.arg_switches[5] = p->emojis;
-
-  /* specs/guild.enum.json:118:18
-     '{"name":"features", "todo":true, "type":{"base":"char", "dec":"ntl"}}'
-  */
-
-  /* specs/guild.enum.json:119:18
-     '{"name":"approximate_member_count", "type":{"base":"int"}}'
-  */
-  p->__M.arg_switches[7] = &p->approximate_member_count;
-
-  /* specs/guild.enum.json:120:18
-     '{"name":"approximate_presence_count", "type":{"base":"int"}}'
-  */
-  p->__M.arg_switches[8] = &p->approximate_presence_count;
-
-  /* specs/guild.enum.json:121:18
-     '{"name":"description", "type":{"base":"char", "dec":"[MAX_DESCRIPTION_LEN]"}}'
-  */
-  p->__M.arg_switches[9] = p->description;
-
 }
 
 
@@ -597,9 +599,26 @@ void dati_from_json(char *json, size_t len, struct dati *p)
   ret = r;
 }
 
+static void dati_use_default_inject_settings(struct dati *p)
+{
+  p->__M.enable_arg_switches = true;
+  /* specs/guild.enum.json:130:18
+     '{"name":"enabled", "type":{"base":"bool"}}'
+  */
+  p->__M.arg_switches[0] = &p->enabled;
+
+  /* specs/guild.enum.json:131:18
+     '{"name":"channel_id", "type":{"base":"char", "dec":"*", "converter":"snowflake", 
+         "nullable":true}}'
+  */
+  p->__M.arg_switches[1] = &p->channel_id;
+
+}
+
 size_t dati_to_json(char *json, size_t len, struct dati *p)
 {
   size_t r;
+  dati_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/guild.enum.json:130:18
      '{"name":"enabled", "type":{"base":"bool"}}'
@@ -622,22 +641,6 @@ size_t dati_to_json(char *json, size_t len, struct dati *p)
                 orka_ulltostr, &p->channel_id,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
-}
-
-void dati_use_default_inject_settings(struct dati *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/guild.enum.json:130:18
-     '{"name":"enabled", "type":{"base":"bool"}}'
-  */
-  p->__M.arg_switches[0] = &p->enabled;
-
-  /* specs/guild.enum.json:131:18
-     '{"name":"channel_id", "type":{"base":"char", "dec":"*", "converter":"snowflake", 
-         "nullable":true}}'
-  */
-  p->__M.arg_switches[1] = &p->channel_id;
-
 }
 
 

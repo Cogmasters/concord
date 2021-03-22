@@ -43,9 +43,29 @@ void params_from_json(char *json, size_t len, struct params *p)
   ret = r;
 }
 
+static void params_use_default_inject_settings(struct params *p)
+{
+  p->__M.enable_arg_switches = true;
+  /* specs/webhook.create-webhook.json:11:20
+     '{ "name": "name", "type":{ "base":"char", "dec":"[80+1]" }, 
+          "comment":"name of the webhook(1-80) chars" }'
+  */
+  p->__M.arg_switches[0] = p->name;
+
+  /* specs/webhook.create-webhook.json:13:20
+     '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, 
+          "inject_if_not":null, 
+          "comment":"base64 image for the default webhook avatar" }'
+  */
+  if (p->avatar != NULL)
+    p->__M.arg_switches[1] = p->avatar;
+
+}
+
 size_t params_to_json(char *json, size_t len, struct params *p)
 {
   size_t r;
+  params_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/webhook.create-webhook.json:11:20
      '{ "name": "name", "type":{ "base":"char", "dec":"[80+1]" }, 
@@ -72,25 +92,6 @@ size_t params_to_json(char *json, size_t len, struct params *p)
                 p->avatar,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
-}
-
-void params_use_default_inject_settings(struct params *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/webhook.create-webhook.json:11:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[80+1]" }, 
-          "comment":"name of the webhook(1-80) chars" }'
-  */
-  p->__M.arg_switches[0] = p->name;
-
-  /* specs/webhook.create-webhook.json:13:20
-     '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, 
-          "inject_if_not":null, 
-          "comment":"base64 image for the default webhook avatar" }'
-  */
-  if (p->avatar != NULL)
-    p->__M.arg_switches[1] = p->avatar;
-
 }
 
 

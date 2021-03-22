@@ -37,9 +37,25 @@ void dati_from_json(char *json, size_t len, struct dati *p)
   ret = r;
 }
 
+static void dati_use_default_inject_settings(struct dati *p)
+{
+  p->__M.enable_arg_switches = true;
+  /* specs/guild.ban.json:12:20
+     '{ "name": "reason", "type":{ "base":"char", "dec":"[MAX_REASON_LEN]" }}'
+  */
+  p->__M.arg_switches[0] = p->reason;
+
+  /* specs/guild.ban.json:13:20
+     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*"}, "comment":"partial user object"}'
+  */
+  p->__M.arg_switches[1] = p->user;
+
+}
+
 size_t dati_to_json(char *json, size_t len, struct dati *p)
 {
   size_t r;
+  dati_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/guild.ban.json:12:20
      '{ "name": "reason", "type":{ "base":"char", "dec":"[MAX_REASON_LEN]" }}'
@@ -60,21 +76,6 @@ size_t dati_to_json(char *json, size_t len, struct dati *p)
                 discord::user::dati_to_json, p->user,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
-}
-
-void dati_use_default_inject_settings(struct dati *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/guild.ban.json:12:20
-     '{ "name": "reason", "type":{ "base":"char", "dec":"[MAX_REASON_LEN]" }}'
-  */
-  p->__M.arg_switches[0] = p->reason;
-
-  /* specs/guild.ban.json:13:20
-     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*"}, "comment":"partial user object"}'
-  */
-  p->__M.arg_switches[1] = p->user;
-
 }
 
 

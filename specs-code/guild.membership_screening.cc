@@ -52,9 +52,34 @@ void dati_from_json(char *json, size_t len, struct dati *p)
   ret = r;
 }
 
+static void dati_use_default_inject_settings(struct dati *p)
+{
+  p->__M.enable_arg_switches = true;
+  /* specs/guild.membership_screening.json:20:20
+     '{ "name": "field_type", "type":{ "base":"int", "int_alias":"field_type::code" }}'
+  */
+  p->__M.arg_switches[0] = &p->field_type;
+
+  /* specs/guild.membership_screening.json:21:20
+     '{ "name": "label", "type":{ "base":"char", "dec":"*" }}'
+  */
+  p->__M.arg_switches[1] = p->label;
+
+  /* specs/guild.membership_screening.json:22:20
+     '{ "name": "values", "todo":true, "type":{ "base":"char", "dec":"ntl" }}'
+  */
+
+  /* specs/guild.membership_screening.json:23:20
+     '{ "name": "required", "type":{ "base":"bool" }}'
+  */
+  p->__M.arg_switches[3] = &p->required;
+
+}
+
 size_t dati_to_json(char *json, size_t len, struct dati *p)
 {
   size_t r;
+  dati_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/guild.membership_screening.json:20:20
      '{ "name": "field_type", "type":{ "base":"int", "int_alias":"field_type::code" }}'
@@ -89,30 +114,6 @@ size_t dati_to_json(char *json, size_t len, struct dati *p)
                 &p->required,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
-}
-
-void dati_use_default_inject_settings(struct dati *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/guild.membership_screening.json:20:20
-     '{ "name": "field_type", "type":{ "base":"int", "int_alias":"field_type::code" }}'
-  */
-  p->__M.arg_switches[0] = &p->field_type;
-
-  /* specs/guild.membership_screening.json:21:20
-     '{ "name": "label", "type":{ "base":"char", "dec":"*" }}'
-  */
-  p->__M.arg_switches[1] = p->label;
-
-  /* specs/guild.membership_screening.json:22:20
-     '{ "name": "values", "todo":true, "type":{ "base":"char", "dec":"ntl" }}'
-  */
-
-  /* specs/guild.membership_screening.json:23:20
-     '{ "name": "required", "type":{ "base":"bool" }}'
-  */
-  p->__M.arg_switches[3] = &p->required;
-
 }
 
 
@@ -262,9 +263,30 @@ void dati_from_json(char *json, size_t len, struct dati *p)
   ret = r;
 }
 
+static void dati_use_default_inject_settings(struct dati *p)
+{
+  p->__M.enable_arg_switches = true;
+  /* specs/guild.membership_screening.json:30:20
+     '{ "name": "version", "type":{ "base":"s_as_u64" }}'
+  */
+  p->__M.arg_switches[0] = &p->version;
+
+  /* specs/guild.membership_screening.json:31:20
+     '{ "name": "fields", "type":{ "base":"discord::guild::membership_screening::field::dati", "dec":"ntl" }}'
+  */
+  p->__M.arg_switches[1] = p->fields;
+
+  /* specs/guild.membership_screening.json:32:20
+     '{ "name": "description", "type":{ "base":"char", "dec":"*" }}'
+  */
+  p->__M.arg_switches[2] = p->description;
+
+}
+
 size_t dati_to_json(char *json, size_t len, struct dati *p)
 {
   size_t r;
+  dati_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/guild.membership_screening.json:30:20
      '{ "name": "version", "type":{ "base":"s_as_u64" }}'
@@ -293,26 +315,6 @@ size_t dati_to_json(char *json, size_t len, struct dati *p)
                 p->description,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
-}
-
-void dati_use_default_inject_settings(struct dati *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/guild.membership_screening.json:30:20
-     '{ "name": "version", "type":{ "base":"s_as_u64" }}'
-  */
-  p->__M.arg_switches[0] = &p->version;
-
-  /* specs/guild.membership_screening.json:31:20
-     '{ "name": "fields", "type":{ "base":"discord::guild::membership_screening::field::dati", "dec":"ntl" }}'
-  */
-  p->__M.arg_switches[1] = p->fields;
-
-  /* specs/guild.membership_screening.json:32:20
-     '{ "name": "description", "type":{ "base":"char", "dec":"*" }}'
-  */
-  p->__M.arg_switches[2] = p->description;
-
 }
 
 
