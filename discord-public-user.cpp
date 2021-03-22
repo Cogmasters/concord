@@ -10,7 +10,7 @@ namespace user {
 
 namespace get_user {
 void
-run(discord::client *client, const u64_snowflake_t user_id, dati *p_user)
+run(discord::client *client, const u64_snowflake_t user_id, discord::user::dati *p_user)
 {
   if (!user_id) {
     D_PUTS("Missing 'user_id'");
@@ -18,7 +18,7 @@ run(discord::client *client, const u64_snowflake_t user_id, dati *p_user)
   }
 
   struct resp_handle resp_handle =
-    { .ok_cb = &dati_from_json_v, .ok_obj = (void*)p_user};
+    { .ok_cb = &discord::user::dati_from_json_v, .ok_obj = (void*)p_user};
 
   discord::adapter::run( 
     &client->adapter,
@@ -31,10 +31,10 @@ run(discord::client *client, const u64_snowflake_t user_id, dati *p_user)
 
 namespace get_current_user {
 void 
-run(discord::client *client, dati *p_user)
+run(discord::client *client, discord::user::dati *p_user)
 {
   struct resp_handle resp_handle =
-    { .ok_cb = &dati_from_json_v, .ok_obj = (void*)p_user};
+    { .ok_cb = &discord::user::dati_from_json_v, .ok_obj = (void*)p_user};
 
   discord::adapter::run( 
     &client->adapter,
@@ -70,10 +70,10 @@ sb_run(discord::client *client, struct sized_buffer *p_sb_user)
 
 namespace get_current_user_guilds {
 void
-run(discord::client *client, NTL_T(guild::dati) *p_guilds)
+run(discord::client *client, NTL_T(discord::guild::dati) *p_guilds)
 {
   struct resp_handle resp_handle =
-    { .ok_cb = &guild::dati_list_from_json_v, .ok_obj = (void*)p_guilds};
+    { .ok_cb = &discord::guild::dati_list_from_json_v, .ok_obj = (void*)p_guilds};
 
   discord::adapter::run( 
     &client->adapter,

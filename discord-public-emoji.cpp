@@ -10,7 +10,7 @@ namespace emoji {
 
 namespace list_guild_emojis {
 void
-run(client *client, const uint64_t guild_id, NTL_T(dati) *p_emojis)
+run(discord::client *client, const uint64_t guild_id, NTL_T(discord::emoji::dati) *p_emojis)
 {
   if (!guild_id) {
     D_PUTS("Missing 'guild_id'");
@@ -18,9 +18,9 @@ run(client *client, const uint64_t guild_id, NTL_T(dati) *p_emojis)
   }
 
   struct resp_handle resp_handle =
-    { .ok_cb = &dati_list_from_json_v, .ok_obj = (void*)p_emojis};
+    { .ok_cb = &discord::emoji::dati_list_from_json_v, .ok_obj = (void*)p_emojis};
 
-  adapter::run( 
+  discord::adapter::run( 
     &client->adapter,
     &resp_handle,
     NULL,

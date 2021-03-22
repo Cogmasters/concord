@@ -42,8 +42,8 @@ config_init(const char config_file[])
 void
 cleanup(discord::client *client)
 {
-  adapter::cleanup(&client->adapter);
-  gateway::cleanup(&client->gw);
+  discord::adapter::cleanup(&client->adapter);
+  discord::gateway::cleanup(&client->gw);
 
   free(client);
 }
@@ -86,8 +86,7 @@ set_prefix(discord::client *client, char *prefix)
 void
 setcb_command(discord::client *client, char *command, message_cb *user_cb)
 {
-  using namespace gateway;
-  dati *gw = &client->gw;
+  discord::gateway::dati *gw = &client->gw;
 
   const size_t CMD_LEN = 64;
   if (!orka_str_bounds_check(command, CMD_LEN)) {
@@ -96,14 +95,14 @@ setcb_command(discord::client *client, char *command, message_cb *user_cb)
   }
 
   ++gw->num_cmd;
-  gw->on_cmd = (struct cmd_cbs*)realloc(gw->on_cmd, 
-                      gw->num_cmd * sizeof(struct cmd_cbs));
+  gw->on_cmd = (discord::gateway::cmd_cbs*)realloc(gw->on_cmd, 
+                      gw->num_cmd * sizeof(discord::gateway::cmd_cbs));
 
   gw->on_cmd[gw->num_cmd-1].str = command;
   gw->on_cmd[gw->num_cmd-1].cb = user_cb;
 
-  add_intents(client, 
-      intents::GUILD_MESSAGES | intents::DIRECT_MESSAGES);
+  discord::add_intents(client, 
+      discord::gateway::intents::GUILD_MESSAGES | discord::gateway::intents::DIRECT_MESSAGES);
 }
 
 #define callback ... // varargs to avoid non-conforming function pointer error
@@ -111,8 +110,7 @@ setcb_command(discord::client *client, char *command, message_cb *user_cb)
 void
 setcb(discord::client *client, enum dispatch_code opt, callback)
 {
-  using namespace gateway;
-  dati *gw = &client->gw;
+  discord::gateway::dati *gw = &client->gw;
 
   va_list args;
   va_start(args, opt);
@@ -127,64 +125,64 @@ setcb(discord::client *client, enum dispatch_code opt, callback)
       break;
   case MESSAGE_CREATE:
       gw->cbs.on_message.create = va_arg(args, message_cb*);
-      code |= intents::GUILD_MESSAGES | intents::DIRECT_MESSAGES;
+      code |= discord::gateway::intents::GUILD_MESSAGES | discord::gateway::intents::DIRECT_MESSAGES;
       break;
   case SB_MESSAGE_CREATE: /* @todo this is temporary for wrapping JS */
       gw->cbs.on_message.sb_create = va_arg(args, sb_message_cb*);
-      code |= intents::GUILD_MESSAGES | intents::DIRECT_MESSAGES;
+      code |= discord::gateway::intents::GUILD_MESSAGES | discord::gateway::intents::DIRECT_MESSAGES;
       break;
   case MESSAGE_UPDATE:
       gw->cbs.on_message.update = va_arg(args, message_cb*);
-      code |= intents::GUILD_MESSAGES | intents::DIRECT_MESSAGES;
+      code |= discord::gateway::intents::GUILD_MESSAGES | discord::gateway::intents::DIRECT_MESSAGES;
       break;
   case MESSAGE_DELETE:
       gw->cbs.on_message.del = va_arg(args, message_delete_cb*);
-      code |= intents::GUILD_MESSAGES | intents::DIRECT_MESSAGES;
+      code |= discord::gateway::intents::GUILD_MESSAGES | discord::gateway::intents::DIRECT_MESSAGES;
       break;
   case MESSAGE_DELETE_BULK:
       gw->cbs.on_message.delete_bulk = va_arg(args, message_delete_bulk_cb*);
-      code |= intents::GUILD_MESSAGES | intents::DIRECT_MESSAGES;
+      code |= discord::gateway::intents::GUILD_MESSAGES | discord::gateway::intents::DIRECT_MESSAGES;
       break;
   case MESSAGE_REACTION_ADD:
       gw->cbs.on_reaction.add = va_arg(args, reaction_add_cb*);
-      code |= intents::GUILD_MESSAGE_REACTIONS | intents::DIRECT_MESSAGE_REACTIONS;
+      code |= discord::gateway::intents::GUILD_MESSAGE_REACTIONS | discord::gateway::intents::DIRECT_MESSAGE_REACTIONS;
       break;
   case MESSAGE_REACTION_REMOVE:
       gw->cbs.on_reaction.remove = va_arg(args, reaction_remove_cb*);
-      code |= intents::GUILD_MESSAGE_REACTIONS | intents::DIRECT_MESSAGE_REACTIONS;
+      code |= discord::gateway::intents::GUILD_MESSAGE_REACTIONS | discord::gateway::intents::DIRECT_MESSAGE_REACTIONS;
       break;
   case MESSAGE_REACTION_REMOVE_ALL:
       gw->cbs.on_reaction.remove_all = va_arg(args, reaction_remove_all_cb*);
-      code |= intents::GUILD_MESSAGE_REACTIONS | intents::DIRECT_MESSAGE_REACTIONS;
+      code |= discord::gateway::intents::GUILD_MESSAGE_REACTIONS | discord::gateway::intents::DIRECT_MESSAGE_REACTIONS;
       break;
   case MESSAGE_REACTION_REMOVE_EMOJI:
       gw->cbs.on_reaction.remove_emoji = va_arg(args, reaction_remove_emoji_cb*);
-      code |= intents::GUILD_MESSAGE_REACTIONS | intents::DIRECT_MESSAGE_REACTIONS;
+      code |= discord::gateway::intents::GUILD_MESSAGE_REACTIONS | discord::gateway::intents::DIRECT_MESSAGE_REACTIONS;
       break;
   case GUILD_MEMBER_ADD:
       gw->cbs.on_guild_member.add = va_arg(args, guild_member_cb*);
-      code |= intents::GUILD_MEMBERS;
+      code |= discord::gateway::intents::GUILD_MEMBERS;
       break;
   case GUILD_MEMBER_UPDATE:
       gw->cbs.on_guild_member.update = va_arg(args, guild_member_cb*);
-      code |= intents::GUILD_MEMBERS;
+      code |= discord::gateway::intents::GUILD_MEMBERS;
       break;
   case GUILD_MEMBER_REMOVE:
       gw->cbs.on_guild_member.remove = va_arg(args, guild_member_remove_cb*);
-      code |= intents::GUILD_MEMBERS;
+      code |= discord::gateway::intents::GUILD_MEMBERS;
       break;
   default:
       ERR("Invalid callback_opt (code: %d)", opt);
   }
 
-  add_intents(client, code);
+  discord::add_intents(client, code);
 
   va_end(args);
 }
 
 void
 run(discord::client *client){
-  gateway::run(&client->gw);
+  discord::gateway::run(&client->gw);
 }
 
 void*
@@ -198,29 +196,27 @@ get_data(discord::client *client) {
 }
 
 void
-replace_presence(discord::client *client, presence::dati *presence)
+replace_presence(discord::client *client, discord::presence::dati *presence)
 {
   if (NULL == presence) return;
 
-  presence::dati_free(client->gw.identify->presence);
+  discord::presence::dati_free(client->gw.identify->presence);
   client->gw.identify->presence = presence;
 }
 
 void
 set_presence(
   discord::client *client, 
-  presence::activity::dati *activity, //will take ownership
+  discord::presence::activity::dati *activity, //will take ownership
   char status[], 
   bool afk)
 {
-  using namespace presence;
-
-  dati *presence = client->gw.identify->presence;
+  discord::presence::dati *presence = client->gw.identify->presence;
 
   if (activity) {
-    presence->activities = (activity::dati**)ntl_append(
+    presence->activities = (discord::presence::activity::dati**)ntl_append(
                               (void**)presence->activities, 
-                              sizeof(activity::dati), activity);
+                              sizeof(discord::presence::activity::dati), activity);
   }
   if (status) {
     int ret = snprintf(presence->status, 

@@ -555,7 +555,7 @@ on_startup_cb(void *p_gw)
   discord::gateway::dati *gw = (discord::gateway::dati*)p_gw;
 
   //get session info before starting it
-  get_gateway_bot::run(gw->p_client, &gw->session);
+  discord::gateway::get_gateway_bot::run(gw->p_client, &gw->session);
 
   if (!gw->session.remaining) {
     PRINT("Reach session starts threshold (%d)\n\t"
