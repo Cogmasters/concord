@@ -38,7 +38,7 @@ init(discord::adapter::dati *adapter, const char token[], const char config_file
 void
 cleanup(discord::adapter::dati *adapter)
 {
-  bucket::cleanup(adapter);
+  discord::adapter::bucket::cleanup(adapter);
   ua_cleanup(&adapter->ua);
   pthread_mutex_destroy(&adapter->lock);
 }
@@ -54,7 +54,7 @@ bucket_tryget_cb(void *p_ratelimit)
 {
   struct _ratelimit *rl = (struct _ratelimit*)p_ratelimit;
   pthread_mutex_lock(&rl->adapter->lock);
-  rl->bucket = bucket::try_get(rl->adapter, rl->endpoint);
+  rl->bucket = discord::adapter::bucket::try_get(rl->adapter, rl->endpoint);
   pthread_mutex_unlock(&rl->adapter->lock);
   return 1;
 }

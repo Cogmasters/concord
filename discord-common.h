@@ -60,24 +60,24 @@ namespace discord {
 struct client;
 
 /* IDLE CALLBACK (runs on every iteration, no trigger required) */
-typedef void (idle_cb)(client *client, const user::dati *me);
+typedef void (idle_cb)(client *client, const discord::user::dati *me);
 
 /* MESSAGE EVENTS CALLBACKS */
 typedef void (message_cb)(
-    client *client, const user::dati *me, 
-    const channel::message::dati *message);
+    client *client, const discord::user::dati *me, 
+    const discord::channel::message::dati *message);
 typedef void (sb_message_cb)(
-    client *client, const user::dati *me,
+    client *client, const discord::user::dati *me,
     struct sized_buffer sb_me,
-    const channel::message::dati *message,
+    const discord::channel::message::dati *message,
     struct sized_buffer sb_message);
 typedef void (message_delete_cb)(
-    client *client, const user::dati *me, 
+    client *client, const discord::user::dati *me, 
     const u64_snowflake_t id, 
     const u64_snowflake_t channel_id, 
     const u64_snowflake_t guild_id);
 typedef void (message_delete_bulk_cb)(
-    client *client, const user::dati *me, 
+    client *client, const discord::user::dati *me, 
     const size_t nids, 
     const u64_snowflake_t ids[], 
     const u64_snowflake_t channel_id, 
@@ -85,39 +85,39 @@ typedef void (message_delete_bulk_cb)(
 
 /* MESSAGE REACTION EVENTS CALLBACKS */
 typedef void (reaction_add_cb)(
-    client *client, const user::dati *me, 
+    client *client, const discord::user::dati *me, 
     const u64_snowflake_t channel_id, 
     const u64_snowflake_t message_id, 
     const u64_snowflake_t guild_id, 
-    const guild::member::dati *member, 
-    const emoji::dati *emoji);
+    const discord::guild::member::dati *member, 
+    const discord::emoji::dati *emoji);
 typedef void (reaction_remove_cb)(
-    client *client, const user::dati *me, 
+    client *client, const discord::user::dati *me, 
     const u64_snowflake_t channel_id, 
     const u64_snowflake_t message_id, 
     const u64_snowflake_t guild_id, 
-    const emoji::dati *emoji);
+    const discord::emoji::dati *emoji);
 typedef void (reaction_remove_all_cb)(
-    client *client, const user::dati *me, 
+    client *client, const discord::user::dati *me, 
     const u64_snowflake_t channel_id, 
     const u64_snowflake_t message_id, 
     const u64_snowflake_t guild_id);
 typedef void (reaction_remove_emoji_cb)(
-    client *client, const user::dati *me, 
+    client *client, const discord::user::dati *me, 
     const u64_snowflake_t channel_id, 
     const u64_snowflake_t message_id, 
     const u64_snowflake_t guild_id,
-    const emoji::dati *emoji);
+    const discord::emoji::dati *emoji);
 
 /* GUILD MEMBER EVENTS CALLBACKS */
 typedef void (guild_member_cb)(
-    client *client, const user::dati *me, 
+    client *client, const discord::user::dati *me, 
     const u64_snowflake_t guild_id, 
-    const guild::member::dati *member);
+    const discord::guild::member::dati *member);
 typedef void (guild_member_remove_cb)(
-    client *client, const user::dati *me, 
+    client *client, const discord::user::dati *me, 
     const u64_snowflake_t guild_id, 
-    const user::dati *user);
+    const discord::user::dati *user);
 
 
 namespace adapter { /* discord-adapter.cpp */
@@ -128,7 +128,7 @@ struct dati { /* ADAPTER STRUCTURE */
   struct user_agent_s ua;
 
   struct { /* RATELIMITING STRUCTURE */
-    bucket::dati **bucket_pool; //active client buckets
+    discord::adapter::bucket::dati **bucket_pool; //active client buckets
     size_t num_buckets; //amount of active client buckets
     
     //check GNU tree functions from search.h
@@ -139,10 +139,10 @@ struct dati { /* ADAPTER STRUCTURE */
 
   pthread_mutex_t lock; // used when increasing/fetching buckets
 };
-void init(dati *adapter, const char token[], const char config_file[]);
-void cleanup(dati *adapter);
+void init(discord::adapter::dati *adapter, const char token[], const char config_file[]);
+void cleanup(discord::adapter::dati *adapter);
 void run(
-  dati *adapter, 
+  discord::adapter::dati *adapter, 
   struct resp_handle *resp_handle,
   struct sized_buffer *req_body, // needed for POST/PUT/PATCH methods
   enum http_method http_method,
@@ -164,10 +164,10 @@ struct dati { /* BUCKET STRUCTURE */
   pthread_cond_t cond;
 };
 
-void cleanup(adapter::dati *adapter);
-void try_cooldown(dati *bucket);
-dati* try_get(adapter::dati *adapter, char endpoint[]);
-void build(adapter::dati *adapter, dati *bucket, char endpoint[], struct ua_conn_s *conn);
+void cleanup(discord::adapter::dati *bucket);
+void try_cooldown(discord::adapter::bucket::dati *bucket);
+dati* try_get(discord::adapter::dati *adapter, char endpoint[]);
+void build(discord::adapter::dati *adapter, discord::adapter::bucket::dati *bucket, char endpoint[], struct ua_conn_s *conn);
 
 } // namespace bucket
 } // namespace adapter
@@ -207,7 +207,7 @@ struct payload_s { /* PAYLOAD STRUCTURE */
 struct dati { /* GATEWAY STRUCTURE */
   struct websockets_s ws;
 
-  identify::dati *identify;
+  discord::gateway::identify::dati *identify;
   char session_id[512]; //the session id (for resuming lost connections)
 
   struct payload_s payload;
@@ -217,7 +217,7 @@ struct dati { /* GATEWAY STRUCTURE */
     u64_unix_ms_t tstamp; //start pulse timestamp in milliseconds
   } hbeat;
 
-  session::dati session;
+  discord::gateway::session::dati session;
 
   char *prefix; //the command prefix
   struct cmd_cbs *on_cmd; //triggers on a user set command
@@ -248,7 +248,7 @@ struct dati { /* GATEWAY STRUCTURE */
 
   int ping_ms; //latency between client and websockets server
 
-  user::dati *me; //the user associated with this client
+  discord::user::dati *me; //the user associated with this client
   struct sized_buffer sb_me; //@todo this is temporary for wrapping JS
 
   client *p_client; //points to client this struct is a part of
@@ -256,19 +256,19 @@ struct dati { /* GATEWAY STRUCTURE */
   pthread_mutex_t lock; //for accessing gw fields within events
 };
 
-void init(dati *gw, const char token[], const char config_file[]);
-void cleanup(dati *gw);
-void run(dati *gw);
+void init(discord::gateway::dati *gw, const char token[], const char config_file[]);
+void cleanup(discord::gateway::dati *gw);
+void run(discord::gateway::dati *gw);
 /*
  * gracefully exit the infinite loop
  */
-void shutdown(dati *gw);
+void shutdown(discord::gateway::dati *gw);
 
 } // namespace gateway
 
 struct client {
-  adapter::dati adapter;
-  gateway::dati gw;
+  discord::adapter::dati adapter;
+  discord::gateway::dati gw;
   
   void *data; //space for user arbitrary data
 };
