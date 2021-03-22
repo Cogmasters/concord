@@ -7,9 +7,7 @@
                 "common",
                 "mujs",
                 "sqlite3",
-                "${workspaceFolder}/**",
-                "/usr/include",
-                "/usr/local/include"
+                "${workspaceFolder}/**"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",
