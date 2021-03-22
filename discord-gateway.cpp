@@ -128,7 +128,7 @@ send_identify(discord::gateway::dati *gw)
   int ret = json_inject(payload, sizeof(payload), 
               "(op):2" // IDENTIFY OPCODE
               "(d):F",
-              &identify::dati_to_json_v, gw->identify);
+              &discord::gateway::identify::dati_to_json_v, gw->identify);
   ASSERT_S(ret < (int)sizeof(payload), "Out of bounds write attempt");
 
   // contain token (sensitive data), enable _ORKA_DEBUG_STRICT to print it
@@ -169,8 +169,8 @@ on_dispatch_message_reaction(
   struct payload_s *payload)
 {
   u64_snowflake_t user_id=0, message_id=0, channel_id=0, guild_id=0;
-  guild::member::dati *member = guild::member::dati_alloc();
-  emoji::dati *emoji = emoji::dati_alloc();
+  discord::guild::member::dati *member = discord::guild::member::dati_alloc();
+  discord::emoji::dati *emoji = discord::emoji::dati_alloc();
   json_scanf(payload->event_data, sizeof(payload->event_data),
       "[user_id]%F"
       "[message_id]%F"
@@ -180,8 +180,8 @@ on_dispatch_message_reaction(
       "[guild_id]%F",
       &orka_strtoull, &user_id,
       &orka_strtoull, &message_id,
-      &guild::member::dati_from_json, member,
-      &emoji::dati_from_json, emoji,
+      &discord::guild::member::dati_from_json, member,
+      &discord::emoji::dati_from_json, emoji,
       &orka_strtoull, &channel_id,
       &orka_strtoull, &guild_id);
 
@@ -221,8 +221,8 @@ on_dispatch_message_reaction(
   default: break; // will never trigger
   }
 
-  guild::member::dati_free(member);
-  emoji::dati_free(emoji);
+  discord::guild::member::dati_free(member);
+  discord::emoji::dati_free(emoji);
 }
 
 static void
@@ -257,8 +257,8 @@ on_dispatch_message(
     return; /* EARLY RETURN */
   }
 
-  channel::message::dati *msg = channel::message::dati_alloc();
-  channel::message::dati_from_json(payload->event_data,
+  discord::channel::message::dati *msg = discord::channel::message::dati_alloc();
+  discord::channel::message::dati_from_json(payload->event_data,
       sizeof(payload->event_data), msg);
 
   struct sized_buffer sb_msg = {
@@ -329,7 +329,7 @@ on_dispatch_message(
   default: break; // will never trigger
   }
 
-  channel::message::dati_free(msg);
+  discord::channel::message::dati_free(msg);
 }
 
 static void
@@ -338,8 +338,8 @@ on_dispatch_guild_member(
   enum dispatch_code code, 
   struct payload_s *payload)
 {
-  guild::member::dati *member = guild::member::dati_alloc();
-  guild::member::dati_from_json(payload->event_data,
+  discord::guild::member::dati *member = discord::guild::member::dati_alloc();
+  discord::guild::member::dati_from_json(payload->event_data,
       sizeof(payload->event_data), member);
 
   u64_snowflake_t guild_id = 0;
@@ -377,7 +377,7 @@ on_dispatch_guild_member(
   default: break; // will never trigger
   }
 
-  guild::member::dati_free(member);
+  discord::guild::member::dati_free(member);
 }
 
 static enum dispatch_code
@@ -675,7 +675,7 @@ init(discord::gateway::dati *gw, const char token[], const char config_file[])
   ws_set_event(&gw->ws, opcodes::RECONNECT, &on_reconnect);
   ws_set_event(&gw->ws, opcodes::HEARTBEAT_ACK, &on_heartbeat_ack);
 
-  gw->identify = identify::dati_alloc();
+  gw->identify = discord::gateway::identify::dati_alloc();
   gw->identify->token = strdup(token);
 
   gw->identify->properties->$os = strdup("POSIX");
@@ -685,7 +685,7 @@ init(discord::gateway::dati *gw, const char token[], const char config_file[])
   set_presence(gw->p_client, NULL, "online", false);
   gw->identify->presence->since = orka_timestamp_ms();
 
-  gw->me = user::dati_alloc();
+  gw->me = discord::user::dati_alloc();
   user::get_current_user::run(gw->p_client, gw->me);
   user::get_current_user::sb_run(gw->p_client, &gw->sb_me);
 
@@ -696,8 +696,8 @@ init(discord::gateway::dati *gw, const char token[], const char config_file[])
 void
 cleanup(discord::gateway::dati *gw)
 {
-  user::dati_free(gw->me);
-  identify::dati_free(gw->identify);
+  discord::user::dati_free(gw->me);
+  discord::gateway::identify::dati_free(gw->identify);
   ws_cleanup(&gw->ws);
   pthread_mutex_destroy(&gw->lock);
 }

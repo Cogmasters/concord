@@ -12,7 +12,7 @@ namespace discord {
 namespace adapter {
 
 void
-init(dati *adapter, const char token[], const char config_file[])
+init(discord::adapter::dati *adapter, const char token[], const char config_file[])
 {
   if (config_file) {
     ua_config_init(&adapter->ua, BASE_API_URL, "DISCORD HTTP", config_file);
@@ -36,7 +36,7 @@ init(dati *adapter, const char token[], const char config_file[])
 }
 
 void
-cleanup(dati *adapter)
+cleanup(discord::adapter::dati *adapter)
 {
   bucket::cleanup(adapter);
   ua_cleanup(&adapter->ua);
@@ -44,8 +44,8 @@ cleanup(dati *adapter)
 }
 
 struct _ratelimit {
-  dati *adapter;
-  bucket::dati *bucket;
+  discord::adapter::dati *adapter;
+  discord::adapter::bucket::dati *bucket;
   char *endpoint;
 };
 
@@ -63,7 +63,7 @@ static void
 bucket_trycooldown_cb(void *p_ratelimit)
 {
   struct _ratelimit *rl = (struct _ratelimit*)p_ratelimit;
-  bucket::try_cooldown(rl->bucket);
+  discord::adapter::bucket::try_cooldown(rl->bucket);
 }
 
 static void
@@ -71,7 +71,7 @@ bucket_trybuild_cb(void *p_ratelimit, struct ua_conn_s *conn)
 {
   struct _ratelimit *rl = (struct _ratelimit*)p_ratelimit;
   pthread_mutex_lock(&rl->adapter->lock);
-  bucket::build(rl->adapter, rl->bucket, rl->endpoint, conn);
+  discord::adapter::bucket::build(rl->adapter, rl->bucket, rl->endpoint, conn);
   pthread_mutex_unlock(&rl->adapter->lock);
 }
 
@@ -174,7 +174,7 @@ json_error_cb(char *str, size_t len, void *p_err)
 /* template function for performing requests */
 void
 run(
-  dati *adapter, 
+  discord::adapter::dati *adapter, 
   struct resp_handle *resp_handle,
   struct sized_buffer *req_body,
   enum http_method http_method,
