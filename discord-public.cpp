@@ -9,25 +9,25 @@
 
 namespace discord {
 
-client*
+discord::client*
 init(const char token[])
 {
-  client *new_client = (client*)calloc(1, sizeof(client));
+  discord::client *new_client = (discord::client*)calloc(1, sizeof(discord::client));
   if (NULL == new_client) return NULL;
 
   new_client->adapter.p_client = new_client;
   new_client->gw.p_client = new_client;
   
-  adapter::init(&new_client->adapter, token, NULL);
-  gateway::init(&new_client->gw, token, NULL);
+  discord::adapter::init(&new_client->adapter, token, NULL);
+  discord::gateway::init(&new_client->gw, token, NULL);
 
   return new_client;
 }
 
-client*
+discord::client*
 config_init(const char config_file[])
 {
-  client *new_client = (client*)calloc(1, sizeof(client));
+  discord::client *new_client = (discord::client*)calloc(1, sizeof(discord::client));
   if (NULL == new_client) return NULL;
 
   new_client->adapter.p_client = new_client;
@@ -40,7 +40,7 @@ config_init(const char config_file[])
 }
 
 void
-cleanup(client *client)
+cleanup(discord::client *client)
 {
   adapter::cleanup(&client->adapter);
   gateway::cleanup(&client->gw);
@@ -61,7 +61,7 @@ global_cleanup() {
 }
 
 void
-add_intents(client *client, int intent_code)
+add_intents(discord::client *client, int intent_code)
 {
   if (WS_CONNECTED == ws_get_status(&client->gw.ws)) {
     PUTS("Can't set intents to a running client.");
@@ -72,7 +72,7 @@ add_intents(client *client, int intent_code)
 }
 
 void
-set_prefix(client *client, char *prefix) 
+set_prefix(discord::client *client, char *prefix) 
 {
   const size_t PREFIX_LEN = 32;
   if (!orka_str_bounds_check(prefix, PREFIX_LEN)) {
@@ -84,7 +84,7 @@ set_prefix(client *client, char *prefix)
 };
 
 void
-setcb_command(client *client, char *command, message_cb *user_cb)
+setcb_command(discord::client *client, char *command, message_cb *user_cb)
 {
   using namespace gateway;
   dati *gw = &client->gw;
@@ -109,7 +109,7 @@ setcb_command(client *client, char *command, message_cb *user_cb)
 #define callback ... // varargs to avoid non-conforming function pointer error
 
 void
-setcb(client *client, enum dispatch_code opt, callback)
+setcb(discord::client *client, enum dispatch_code opt, callback)
 {
   using namespace gateway;
   dati *gw = &client->gw;
@@ -183,22 +183,22 @@ setcb(client *client, enum dispatch_code opt, callback)
 }
 
 void
-run(client *client){
+run(discord::client *client){
   gateway::run(&client->gw);
 }
 
 void*
-set_data(client *client, void *data) {
+set_data(discord::client *client, void *data) {
   return client->data = data;
 }
 
 void*
-get_data(client *client) {
+get_data(discord::client *client) {
   return client->data;
 }
 
 void
-replace_presence(client *client, presence::dati *presence)
+replace_presence(discord::client *client, presence::dati *presence)
 {
   if (NULL == presence) return;
 
@@ -208,7 +208,7 @@ replace_presence(client *client, presence::dati *presence)
 
 void
 set_presence(
-  client *client, 
+  discord::client *client, 
   presence::activity::dati *activity, //will take ownership
   char status[], 
   bool afk)

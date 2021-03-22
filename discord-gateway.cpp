@@ -84,12 +84,12 @@ close_opcode_print(enum close_opcodes gateway_opcode)
 }
 
 static void
-send_payload(dati *gw, char payload[]) {
+send_payload(discord::gateway::dati *gw, char payload[]) {
   ws_send_text(&gw->ws, payload);
 }
 
 static void
-send_resume(dati *gw)
+send_resume(discord::gateway::dati *gw)
 {
   char payload[MAX_PAYLOAD_LEN];
   int ret = json_inject(payload, sizeof(payload), 
@@ -110,7 +110,7 @@ send_resume(dati *gw)
 }
 
 static void
-send_identify(dati *gw)
+send_identify(discord::gateway::dati *gw)
 {
   /* Ratelimit check */
   pthread_mutex_lock(&gw->lock);
@@ -144,7 +144,7 @@ send_identify(dati *gw)
 static void
 on_hello(void *p_gw, void *curr_iter_data)
 {
-  dati *gw = (dati*)p_gw;
+  discord::gateway::dati *gw = (discord::gateway::dati*)p_gw;
   struct payload_s *payload = (struct payload_s*)curr_iter_data;
 
   pthread_mutex_lock(&gw->lock);
@@ -164,7 +164,7 @@ on_hello(void *p_gw, void *curr_iter_data)
 
 static void
 on_dispatch_message_reaction(
-  dati *gw, 
+  discord::gateway::dati *gw, 
   enum dispatch_code code,
   struct payload_s *payload)
 {
@@ -227,7 +227,7 @@ on_dispatch_message_reaction(
 
 static void
 on_dispatch_message(
-  dati *gw, 
+  discord::gateway::dati *gw, 
   enum dispatch_code code,
   struct payload_s *payload)
 {
@@ -334,7 +334,7 @@ on_dispatch_message(
 
 static void
 on_dispatch_guild_member(
-  dati *gw, 
+  discord::gateway::dati *gw, 
   enum dispatch_code code, 
   struct payload_s *payload)
 {
@@ -401,7 +401,7 @@ get_dispatch_code(char event_name[])
 static void
 on_dispatch(void *p_gw, void *curr_iter_data)
 {
-  dati *gw = (dati*)p_gw;
+  discord::gateway::dati *gw = (discord::gateway::dati*)p_gw;
   struct payload_s *payload = (struct payload_s*)curr_iter_data;
 
   /* Ratelimit check */
@@ -462,7 +462,7 @@ on_dispatch(void *p_gw, void *curr_iter_data)
 static void
 on_invalid_session(void *p_gw, void *curr_iter_data)
 {
-  dati *gw = (dati*)p_gw;
+  discord::gateway::dati *gw = (discord::gateway::dati*)p_gw;
   struct payload_s *payload = (struct payload_s*)curr_iter_data;
 
   bool is_resumable = strcmp(payload->event_data, "false");
@@ -482,7 +482,7 @@ on_invalid_session(void *p_gw, void *curr_iter_data)
 static void
 on_reconnect(void *p_gw, void *curr_iter_data)
 {
-  dati *gw = (dati*)p_gw;
+  discord::gateway::dati *gw = (discord::gateway::dati*)p_gw;
 
   ws_set_status(&gw->ws, WS_RESUME);
 
@@ -494,7 +494,7 @@ on_reconnect(void *p_gw, void *curr_iter_data)
 static void
 on_heartbeat_ack(void *p_gw, void *curr_iter_data)
 {
-  dati *gw = (dati*)p_gw;
+  discord::gateway::dati *gw = (discord::gateway::dati*)p_gw;
 
   // get request / response interval in milliseconds
   pthread_mutex_lock(&gw->lock);
@@ -511,7 +511,7 @@ on_connect_cb(void *p_gw, const char *ws_protocols) {
 static void
 on_close_cb(void *p_gw, enum cws_close_reason cwscode, const char *reason, size_t len)
 {
-  dati *gw = (dati*)p_gw;
+  discord::gateway::dati *gw = (discord::gateway::dati*)p_gw;
   enum close_opcodes opcode = (enum close_opcodes)cwscode;
  
   switch (opcode) {
@@ -552,7 +552,7 @@ on_text_cb(void *p_gw, const char *text, size_t len) {
 static int
 on_startup_cb(void *p_gw)
 {
-  dati *gw = (dati*)p_gw;
+  discord::gateway::dati *gw = (discord::gateway::dati*)p_gw;
 
   //get session info before starting it
   get_gateway_bot::run(gw->p_client, &gw->session);
@@ -569,7 +569,7 @@ on_startup_cb(void *p_gw)
 /* send heartbeat pulse to websockets server in order
  *  to maintain connection alive */
 static void
-send_heartbeat(dati *gw)
+send_heartbeat(discord::gateway::dati *gw)
 {
   char payload[64];
   int ret = json_inject(payload, sizeof(payload), 
@@ -583,7 +583,7 @@ send_heartbeat(dati *gw)
 static void
 on_iter_end_cb(void *p_gw)
 {
-  dati *gw = (dati*)p_gw;
+  discord::gateway::dati *gw = (discord::gateway::dati*)p_gw;
 
   /*check if timespan since first pulse is greater than
    * minimum heartbeat interval required*/
@@ -603,7 +603,7 @@ on_iter_end_cb(void *p_gw)
 static int
 on_text_event_cb(void *p_gw, const char *text, size_t len)
 {
-  dati *gw = (dati*)p_gw;
+  discord::gateway::dati *gw = (discord::gateway::dati*)p_gw;
 
   D_PRINT("ON_DISPATCH:\t%s\n", text);
 
@@ -640,7 +640,7 @@ on_text_event_cb(void *p_gw, const char *text, size_t len)
 }
 
 void
-init(dati *gw, const char token[], const char config_file[])
+init(discord::gateway::dati *gw, const char token[], const char config_file[])
 {
   struct ws_callbacks cbs = {
     .data = (void*)gw,
@@ -694,7 +694,7 @@ init(dati *gw, const char token[], const char config_file[])
 }
 
 void
-cleanup(dati *gw)
+cleanup(discord::gateway::dati *gw)
 {
   user::dati_free(gw->me);
   identify::dati_free(gw->identify);
@@ -704,12 +704,12 @@ cleanup(dati *gw)
 
 /* connects to the discord websockets server */
 void
-run(dati *gw) {
+run(discord::gateway::dati *gw) {
   ws_run(&gw->ws);
 }
 
 void
-shutdown(dati *gw) {
+shutdown(discord::gateway::dati *gw) {
   ws_set_status(&gw->ws, WS_DISCONNECTED);
   char reason[] = "Shutdown gracefully";
   ws_close(&gw->ws, CWS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
