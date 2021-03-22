@@ -318,8 +318,11 @@ ua_cleanup(struct user_agent_s *ua)
   free(ua->base_url);
   curl_slist_free_all(ua->req_header);
   orka_config_cleanup(&ua->config);
-  for (size_t i=0; i < ua->num_conn; ++i) {
-    conn_cleanup(ua->conn_pool[i]);
+
+  if (ua->conn_pool) {
+    for (size_t i=0; i < ua->num_conn; ++i)
+      conn_cleanup(ua->conn_pool[i]);
+    free(ua->conn_pool);
   }
   pthread_mutex_destroy(&ua->lock);
 }
