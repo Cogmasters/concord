@@ -12,7 +12,7 @@ namespace session {
 static void
 dati_from_json(char *str, size_t len, void *p_session)
 {
-  dati *session = (dati*)p_session;
+  discord::gateway::session::dati *session = (discord::gateway::session::dati*)p_session;
 
   struct sized_buffer buf = {NULL, 0};
 
@@ -40,12 +40,12 @@ dati_from_json(char *str, size_t len, void *p_session)
 
 namespace get_gateway {
 void
-run(client *client, session::dati *p_session)
+run(discord::client *client, discord::gateway::session::dati *p_session)
 {
   struct resp_handle resp_handle = \
-    { .ok_cb = &session::dati_from_json, .ok_obj = (void*)p_session };
+    { .ok_cb = &discord::gateway::session::dati_from_json, .ok_obj = (void*)p_session };
 
-  adapter::run( 
+  discord::adapter::run( 
     &client->adapter,
     &resp_handle,
     NULL,
@@ -56,12 +56,12 @@ run(client *client, session::dati *p_session)
 
 namespace get_gateway_bot {
 void
-run(client *client, session::dati *p_session)
+run(discord::client *client, discord::gateway::session::dati *p_session)
 {
   struct resp_handle resp_handle = \
-    { .ok_cb = &session::dati_from_json, .ok_obj = (void*)p_session};
+    { .ok_cb = &discord::gateway::session::dati_from_json, .ok_obj = (void*)p_session};
 
-  adapter::run( 
+  discord::adapter::run( 
     &client->adapter,
     &resp_handle,
     NULL,
