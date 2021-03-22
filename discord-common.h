@@ -60,24 +60,24 @@ namespace discord {
 struct client;
 
 /* IDLE CALLBACK (runs on every iteration, no trigger required) */
-typedef void (idle_cb)(client *client, const discord::user::dati *me);
+typedef void (idle_cb)(discord::client *client, const discord::user::dati *me);
 
 /* MESSAGE EVENTS CALLBACKS */
 typedef void (message_cb)(
-    client *client, const discord::user::dati *me, 
+    discord::client *client, const discord::user::dati *me, 
     const discord::channel::message::dati *message);
 typedef void (sb_message_cb)(
-    client *client, const discord::user::dati *me,
+    discord::client *client, const discord::user::dati *me,
     struct sized_buffer sb_me,
     const discord::channel::message::dati *message,
     struct sized_buffer sb_message);
 typedef void (message_delete_cb)(
-    client *client, const discord::user::dati *me, 
+    discord::client *client, const discord::user::dati *me, 
     const u64_snowflake_t id, 
     const u64_snowflake_t channel_id, 
     const u64_snowflake_t guild_id);
 typedef void (message_delete_bulk_cb)(
-    client *client, const discord::user::dati *me, 
+    discord::client *client, const discord::user::dati *me, 
     const size_t nids, 
     const u64_snowflake_t ids[], 
     const u64_snowflake_t channel_id, 
@@ -85,25 +85,25 @@ typedef void (message_delete_bulk_cb)(
 
 /* MESSAGE REACTION EVENTS CALLBACKS */
 typedef void (reaction_add_cb)(
-    client *client, const discord::user::dati *me, 
+    discord::client *client, const discord::user::dati *me, 
     const u64_snowflake_t channel_id, 
     const u64_snowflake_t message_id, 
     const u64_snowflake_t guild_id, 
     const discord::guild::member::dati *member, 
     const discord::emoji::dati *emoji);
 typedef void (reaction_remove_cb)(
-    client *client, const discord::user::dati *me, 
+    discord::client *client, const discord::user::dati *me, 
     const u64_snowflake_t channel_id, 
     const u64_snowflake_t message_id, 
     const u64_snowflake_t guild_id, 
     const discord::emoji::dati *emoji);
 typedef void (reaction_remove_all_cb)(
-    client *client, const discord::user::dati *me, 
+    discord::client *client, const discord::user::dati *me, 
     const u64_snowflake_t channel_id, 
     const u64_snowflake_t message_id, 
     const u64_snowflake_t guild_id);
 typedef void (reaction_remove_emoji_cb)(
-    client *client, const discord::user::dati *me, 
+    discord::client *client, const discord::user::dati *me, 
     const u64_snowflake_t channel_id, 
     const u64_snowflake_t message_id, 
     const u64_snowflake_t guild_id,
@@ -111,11 +111,11 @@ typedef void (reaction_remove_emoji_cb)(
 
 /* GUILD MEMBER EVENTS CALLBACKS */
 typedef void (guild_member_cb)(
-    client *client, const discord::user::dati *me, 
+    discord::client *client, const discord::user::dati *me, 
     const u64_snowflake_t guild_id, 
     const discord::guild::member::dati *member);
 typedef void (guild_member_remove_cb)(
-    client *client, const discord::user::dati *me, 
+    discord::client *client, const discord::user::dati *me, 
     const u64_snowflake_t guild_id, 
     const discord::user::dati *user);
 
@@ -135,7 +135,7 @@ struct dati { /* ADAPTER STRUCTURE */
     void *routes_root; //the encountered routes tree's root
   } ratelimit;
 
-  client *p_client; //points to client this struct is a part of
+  discord::client *p_client; //points to client this struct is a part of
 
   pthread_mutex_t lock; // used when increasing/fetching buckets
 };
@@ -251,7 +251,7 @@ struct dati { /* GATEWAY STRUCTURE */
   discord::user::dati *me; //the user associated with this client
   struct sized_buffer sb_me; //@todo this is temporary for wrapping JS
 
-  client *p_client; //points to client this struct is a part of
+  discord::client *p_client; //points to client this struct is a part of
 
   pthread_mutex_t lock; //for accessing gw fields within events
 };

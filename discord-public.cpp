@@ -33,8 +33,8 @@ config_init(const char config_file[])
   new_client->adapter.p_client = new_client;
   new_client->gw.p_client = new_client;
   
-  adapter::init(&new_client->adapter, NULL, config_file);
-  gateway::init(&new_client->gw, NULL, config_file);
+  discord::adapter::init(&new_client->adapter, NULL, config_file);
+  discord::gateway::init(&new_client->gw, NULL, config_file);
 
   return new_client;
 }
