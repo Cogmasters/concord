@@ -5,20 +5,20 @@ https://discord.com/developers/docs/resources/user#user-object
 
 
 enum discord_user_flags_code {
-  NONE = 0, // 0
-  DISCORD_EMPLOYEE = 1, // 1 << 0
-  PARTNERED_SERVER_OWNER = 2, // 1 << 2
-  HYPESQUAD_EVENTS = 4, // 1 << 3
-  BUG_HUNTER_LEVEL_1 = 8, // 1 << 4
-  HOUSE_BRAVERY = 32, // 1 << 6
-  HOUSE_BRILLIANCE = 64, // 1 << 7
-  HOUSE_BALANCE = 128, // 1 << 8
-  EARLY_SUPPORTER = 256, // 1 << 9
-  TEAM_USER = 512, // 1 << 10
-  SYSTEM = 4096, // 1 << 12
-  BUG_HUNTER_LEVEL_2 = 16384, // 1 << 14
-  VERIFIED_BOT = 65536, // 1 << 16
-  EARLY_VERIFIED_BOT_DEVELOPER = 131072, // 1 << 17
+  DISCORD_USER_FLAGS_NONE = 0, // 0
+  DISCORD_USER_FLAGS_DISCORD_EMPLOYEE = 1, // 1 << 0
+  DISCORD_USER_FLAGS_PARTNERED_SERVER_OWNER = 2, // 1 << 2
+  DISCORD_USER_FLAGS_HYPESQUAD_EVENTS = 4, // 1 << 3
+  DISCORD_USER_FLAGS_BUG_HUNTER_LEVEL_1 = 8, // 1 << 4
+  DISCORD_USER_FLAGS_HOUSE_BRAVERY = 32, // 1 << 6
+  DISCORD_USER_FLAGS_HOUSE_BRILLIANCE = 64, // 1 << 7
+  DISCORD_USER_FLAGS_HOUSE_BALANCE = 128, // 1 << 8
+  DISCORD_USER_FLAGS_EARLY_SUPPORTER = 256, // 1 << 9
+  DISCORD_USER_FLAGS_TEAM_USER = 512, // 1 << 10
+  DISCORD_USER_FLAGS_SYSTEM = 4096, // 1 << 12
+  DISCORD_USER_FLAGS_BUG_HUNTER_LEVEL_2 = 16384, // 1 << 14
+  DISCORD_USER_FLAGS_VERIFIED_BOT = 65536, // 1 << 16
+  DISCORD_USER_FLAGS_EARLY_VERIFIED_BOT_DEVELOPER = 131072, // 1 << 17
 };
 
 
@@ -128,8 +128,8 @@ extern size_t discord_user_dati_list_to_json(char *str, size_t len, struct disco
 
 
 enum discord_user_connection_visibility_types_code {
-  NONE = 0,
-  EVERYONE = 1,
+  DISCORD_USER_CONNECTION_VISIBILITY_TYPES_NONE = 0,
+  DISCORD_USER_CONNECTION_VISIBILITY_TYPES_EVERYONE = 1,
 };
 
 /* Title: Connection Structure */

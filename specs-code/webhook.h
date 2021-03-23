@@ -5,8 +5,8 @@ https://discord.com/developers/docs/resources/webhook#webhook-object-webhook-str
 
 
 enum discord_webhook_types_code {
-  INCOMING = 1,
-  CHANNEL_FOLLOWER = 2,
+  DISCORD_WEBHOOK_TYPES_INCOMING = 1,
+  DISCORD_WEBHOOK_TYPES_CHANNEL_FOLLOWER = 2,
 };
 
 /* Title: Webhook Structure */

@@ -5,13 +5,13 @@ https://discord.com/developers/docs/resources/channel#channel-object-channel-typ
 
 
 enum discord_channel_types_code {
-  GUILD_TEXT = 0,
-  DM = 1,
-  GUILD_VOICE = 2,
-  GROUP_DM = 3,
-  GUILD_CATEGORY = 4,
-  GUILD_NEWS = 5,
-  GUILD_STORE = 6,
+  DISCORD_CHANNEL_TYPES_GUILD_TEXT = 0,
+  DISCORD_CHANNEL_TYPES_DM = 1,
+  DISCORD_CHANNEL_TYPES_GUILD_VOICE = 2,
+  DISCORD_CHANNEL_TYPES_GROUP_DM = 3,
+  DISCORD_CHANNEL_TYPES_GUILD_CATEGORY = 4,
+  DISCORD_CHANNEL_TYPES_GUILD_NEWS = 5,
+  DISCORD_CHANNEL_TYPES_GUILD_STORE = 6,
 };
 
 /* Title: Channel Structure */

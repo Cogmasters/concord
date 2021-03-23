@@ -5,8 +5,8 @@ https://discord.com/developers/docs/resources/guild#integration-object-integrati
 
 
 enum discord_guild_integration_expire_behaviors_code {
-  REMOVE_ROLE = 0,
-  KICK = 1,
+  DISCORD_GUILD_INTEGRATION_EXPIRE_BEHAVIORS_REMOVE_ROLE = 0,
+  DISCORD_GUILD_INTEGRATION_EXPIRE_BEHAVIORS_KICK = 1,
 };
 
 /* Title: Integration Account Structure */

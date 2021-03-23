@@ -5,7 +5,7 @@ https://discord.com/developers/docs/resources/invite#invite-object
 
 
 enum discord_invite_target_user_types_code {
-  STREAM = 1,
+  DISCORD_INVITE_TARGET_USER_TYPES_STREAM = 1,
 };
 
 /* Title: Invite Structure */

@@ -346,7 +346,7 @@ void dati_list_from_json(char *str, size_t len, struct dati ***p)
   d.init_elem = dati_init_v;
   d.elem_from_buf = dati_from_json_v;
   d.ntl_recipient_p= (void***)p;
-  orka_str_to_ntl(str, len, &d);
+  extract_ntl_from_json(str, len, &d);
 }
 
 size_t dati_list_to_json(char *str, size_t len, struct dati **p)
@@ -600,7 +600,7 @@ void dati_list_from_json(char *str, size_t len, struct dati ***p)
   d.init_elem = dati_init_v;
   d.elem_from_buf = dati_from_json_v;
   d.ntl_recipient_p= (void***)p;
-  orka_str_to_ntl(str, len, &d);
+  extract_ntl_from_json(str, len, &d);
 }
 
 size_t dati_list_to_json(char *str, size_t len, struct dati **p)
@@ -864,7 +864,7 @@ void dati_list_from_json(char *str, size_t len, struct dati ***p)
   d.init_elem = dati_init_v;
   d.elem_from_buf = dati_from_json_v;
   d.ntl_recipient_p= (void***)p;
-  orka_str_to_ntl(str, len, &d);
+  extract_ntl_from_json(str, len, &d);
 }
 
 size_t dati_list_to_json(char *str, size_t len, struct dati **p)
@@ -1037,7 +1037,7 @@ void dati_list_from_json(char *str, size_t len, struct dati ***p)
   d.init_elem = dati_init_v;
   d.elem_from_buf = dati_from_json_v;
   d.ntl_recipient_p= (void***)p;
-  orka_str_to_ntl(str, len, &d);
+  extract_ntl_from_json(str, len, &d);
 }
 
 size_t dati_list_to_json(char *str, size_t len, struct dati **p)
@@ -1844,7 +1844,7 @@ void dati_list_from_json(char *str, size_t len, struct dati ***p)
   d.init_elem = dati_init_v;
   d.elem_from_buf = dati_from_json_v;
   d.ntl_recipient_p= (void***)p;
-  orka_str_to_ntl(str, len, &d);
+  extract_ntl_from_json(str, len, &d);
 }
 
 size_t dati_list_to_json(char *str, size_t len, struct dati **p)

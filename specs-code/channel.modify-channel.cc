@@ -400,7 +400,7 @@ void params_list_from_json(char *str, size_t len, struct params ***p)
   d.init_elem = params_init_v;
   d.elem_from_buf = params_from_json_v;
   d.ntl_recipient_p= (void***)p;
-  orka_str_to_ntl(str, len, &d);
+  extract_ntl_from_json(str, len, &d);
 }
 
 size_t params_list_to_json(char *str, size_t len, struct params **p)

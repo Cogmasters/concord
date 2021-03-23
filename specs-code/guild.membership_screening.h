@@ -5,7 +5,7 @@ https://discord.com/developers/docs/resources/guild#membership-screening-object
 
 
 enum discord_guild_membership_screening_field_type_code {
-  TERMS = 0,
+  DISCORD_GUILD_MEMBERSHIP_SCREENING_FIELD_TYPE_TERMS = 0,
 };
 
 /* https://discord.com/developers/docs/resources/guild#membership-screening-object-membership-screening-field-structure */
