@@ -224,6 +224,30 @@ static char* ns_to_symbol_name(char *name)
     return name;
 }
 
+static char* ns_to_item_name(char *name)
+{
+  if (global_option.lang_C) {
+    char *buf;
+    size_t len;
+    FILE *fp = open_memstream(&buf, &len);
+    for (int s = 0; s < global_option.stack_top; s++) {
+      NTL_T(name_t) ns = global_option.namespace_stack[s];
+      for (int i = 0; ns[i]; i++)
+        fprintf(fp, "%s_", (char *)ns[i]);
+    }
+    fprintf(fp, "%s", name);
+    fclose(fp);
+    char *s = buf;
+    while (*s) {
+      *s = toupper((unsigned char) *s);
+      s++;
+    }
+    return buf;
+  }
+  else
+    return name;
+}
+
 static char* get_file_suffix(enum file_type t)
 {
   switch(t)
@@ -751,11 +775,13 @@ static void gen_enum(FILE *fp, struct jc_enum *e, name_t **ns)
 
   for (i = 0; e->items && e->items[i]; i++) {
     struct jc_item * item = e->items[i];
+    char *item_name = ns_to_item_name(item->name);
+
     if (item->todo) {
-      fprintf(fp, "//@todo %s %s\n", item->name, item->comment);
+      fprintf(fp, "//@todo %s %s\n", item_name, item->comment);
     }
     else {
-      fprintf(fp, "  %s", item->name);
+      fprintf(fp, "  %s", item_name);
       if (item->has_value) {
         fprintf(fp, " = %d", item->value);
         prev_value = item->value;
@@ -841,6 +867,7 @@ struct action {
   char *c_name;
   char *json_key;
   char *c_type;
+  char *fun_prefix;
   char *pre_dec;
   char *post_dec;
   char *extract_arg_decor;
@@ -999,16 +1026,25 @@ static void to_action(struct jc_field *f, struct action *act)
   bool is_user_defined_type = true;
   act->post_dec = "";
   act->pre_dec = "";
-  if (f->type.int_alias)
+  if (f->type.int_alias) {
     act->c_type = f->type.int_alias;
-  else
+    act->fun_prefix = f->type.int_alias;
+  }
+  else {
     act->c_type = f->type.base;
-
-  char *tok = strrchr(act->c_type, ':');
-  if (tok != NULL) {
-    is_user_defined_type = true;
-    if (global_option.lang_C)
-      act->c_type = to_C_name(act->c_type);
+    char *tok = strstr(f->type.base, "struct");
+    if (tok != NULL) {
+      tok += strlen("struct");
+      while (*tok && isspace(*tok)) tok++;
+      asprintf(&act->fun_prefix, "%s", tok);
+      is_user_defined_type = true;
+      if (global_option.lang_C) {
+        act->fun_prefix = to_C_name(act->fun_prefix);
+      }
+    }
+    else {
+      act->fun_prefix = f->type.base;
+    }
   }
 
   act->c_name = f->name;
@@ -1022,10 +1058,10 @@ static void to_action(struct jc_field *f, struct action *act)
           ERR("this should never happen\n");
         } else {
           if (is_user_defined_type) {
-            asprintf(&act->injector, "%s_to_json", act->c_type);
-            asprintf(&act->extractor, "%s_from_json", act->c_type);
-            asprintf(&act->alloc, "%s_alloc", act->c_type);
-            asprintf(&act->free, "%s_free", act->c_type);
+            asprintf(&act->injector, "%s_to_json", act->fun_prefix);
+            asprintf(&act->extractor, "%s_from_json", act->fun_prefix);
+            asprintf(&act->alloc, "%s_alloc", act->fun_prefix);
+            asprintf(&act->free, "%s_free", act->fun_prefix);
             act->extract_arg_decor = "";
             act->inject_arg_decor = "";
             act->post_dec = "";
@@ -1051,12 +1087,12 @@ static void to_action(struct jc_field *f, struct action *act)
       act->is_actor_alloc = true;
       if (to_builtin_action(f, act)) {
         act->free = "free";
-        asprintf(&act->extractor, "%s_list_from_json", act->c_type);
-        asprintf(&act->injector, "%s_list_to_json", act->c_type);
+        asprintf(&act->extractor, "%s_list_from_json", act->fun_prefix);
+        asprintf(&act->injector, "%s_list_to_json", act->fun_prefix);
       } else {
-        asprintf(&act->extractor, "%s_list_from_json", act->c_type);
-        asprintf(&act->injector, "%s_list_to_json", act->c_type);
-        asprintf(&act->free, "%s_list_free", act->c_type);
+        asprintf(&act->extractor, "%s_list_from_json", act->fun_prefix);
+        asprintf(&act->injector, "%s_list_to_json", act->fun_prefix);
+        asprintf(&act->free, "%s_list_free", act->fun_prefix);
       }
       break;
     case DEC_ARRAY:

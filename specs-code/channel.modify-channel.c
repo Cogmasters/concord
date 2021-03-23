@@ -87,7 +87,7 @@ void discord_channel_modify_params_from_json(char *json, size_t len, struct disc
   /* specs/channel.modify-channel.json:19:20
      '{ "name": "permission_overwrites", "type":{ "base":"struct discord_channel_overwrite_dati", "dec":"ntl" }, "inject_if_not":null}'
   */
-                struct discord_channel_overwrite_dati_list_from_json, &p->permission_overwrites,
+                discord_channel_overwrite_dati_list_from_json, &p->permission_overwrites,
   /* specs/channel.modify-channel.json:20:20
      '{ "name": "parent_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0}'
   */
@@ -239,7 +239,7 @@ size_t discord_channel_modify_params_to_json(char *json, size_t len, struct disc
   /* specs/channel.modify-channel.json:19:20
      '{ "name": "permission_overwrites", "type":{ "base":"struct discord_channel_overwrite_dati", "dec":"ntl" }, "inject_if_not":null}'
   */
-                struct discord_channel_overwrite_dati_list_to_json, p->permission_overwrites,
+                discord_channel_overwrite_dati_list_to_json, p->permission_overwrites,
   /* specs/channel.modify-channel.json:20:20
      '{ "name": "parent_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0}'
   */
@@ -324,7 +324,7 @@ void discord_channel_modify_params_cleanup(struct discord_channel_modify_params 
      '{ "name": "permission_overwrites", "type":{ "base":"struct discord_channel_overwrite_dati", "dec":"ntl" }, "inject_if_not":null}'
   */
   if (d->permission_overwrites)
-    struct discord_channel_overwrite_dati_list_free(d->permission_overwrites);
+    discord_channel_overwrite_dati_list_free(d->permission_overwrites);
   /* specs/channel.modify-channel.json:20:20
      '{ "name": "parent_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0}'
   */

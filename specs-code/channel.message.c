@@ -1075,29 +1075,29 @@ void discord_channel_message_dati_from_json_disabled(char *json, size_t len, str
                 orka_strtoull, &p->id,
                 orka_strtoull, &p->channel_id,
                 orka_strtoull, &p->guild_id,
-                struct discord_user_dati_from_json, p->author,
-                struct discord_guild_member_dati_from_json, p->member,
+                discord_user_dati_from_json, p->author,
+                discord_guild_member_dati_from_json, p->member,
                 &p->content,
                 orka_iso8601_to_unix_ms, &p->timestamp,
                 orka_iso8601_to_unix_ms, &p->edited_timestamp,
                 &p->tts,
                 &p->mention_everyone,
-                struct discord_user_dati_list_from_json, &p->mentions,
+                discord_user_dati_list_from_json, &p->mentions,
                 ja_u64_list_from_json, &p->mention_roles,
-                struct discord_channel_mention_dati_list_from_json, &p->mention_channels,
-                struct discord_channel_attachment_dati_list_from_json, &p->attachments,
-                struct discord_channel_embed_dati_list_from_json, &p->embeds,
-                struct discord_channel_reaction_dati_list_from_json, &p->reactions,
+                discord_channel_mention_dati_list_from_json, &p->mention_channels,
+                discord_channel_attachment_dati_list_from_json, &p->attachments,
+                discord_channel_embed_dati_list_from_json, &p->embeds,
+                discord_channel_reaction_dati_list_from_json, &p->reactions,
                 &p->nonce,
                 &p->pinned,
                 orka_strtoull, &p->webhook_id,
                 &p->type,
-                struct discord_channel_message_activity_dati_from_json, p->activity,
-                struct discord_channel_message_application_dati_list_from_json, &p->application,
-                struct discord_channel_message_reference_dati_from_json, p->message_reference,
+                discord_channel_message_activity_dati_from_json, p->activity,
+                discord_channel_message_application_dati_list_from_json, &p->application,
+                discord_channel_message_reference_dati_from_json, p->message_reference,
                 &p->flags,
-                struct discord_channel_message_sticker_dati_list_from_json, &p->stickers,
-                struct discord_channel_message_dati_from_json, p->referenced_message,
+                discord_channel_message_sticker_dati_list_from_json, &p->stickers,
+                discord_channel_message_dati_from_json, p->referenced_message,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
                 p->__M.record_null, sizeof(p->__M.record_null));
@@ -1403,12 +1403,12 @@ size_t discord_channel_message_dati_to_json(char *json, size_t len, struct disco
   /* specs/channel.message.json:134:74
      '{"type":{"base":"struct discord_user_dati", "dec":"*"}, "name":"author"}'
   */
-                struct discord_user_dati_to_json, p->author,
+                discord_user_dati_to_json, p->author,
   /* specs/channel.message.json:135:82
      '{"type":{"base":"struct discord_guild_member_dati", "dec":"*"}, "name":"member", 
           "option":true, "comment":"partial guild member object"}'
   */
-                struct discord_guild_member_dati_to_json, p->member,
+                discord_guild_member_dati_to_json, p->member,
   /* specs/channel.message.json:137:54
      '{"type":{"base":"char", "dec":"*"}, "name":"content"}'
   */
@@ -1434,7 +1434,7 @@ size_t discord_channel_message_dati_to_json(char *json, size_t len, struct disco
      '{"type":{"base":"struct discord_user_dati", "dec":"ntl"}, "name":"mentions", 
           "comment":"array of user objects, with an additional partial member field"}'
   */
-                struct discord_user_dati_list_to_json, p->mentions,
+                discord_user_dati_list_to_json, p->mentions,
   /* specs/channel.message.json:145:58
      '{"type":{"base":"ja_u64", "dec":"ntl"}, "name":"mention_roles", "comment":"array of role object ids"}'
   */
@@ -1443,20 +1443,20 @@ size_t discord_channel_message_dati_to_json(char *json, size_t len, struct disco
      '{"type":{"base":"struct discord_channel_mention_dati", "dec":"ntl"}, "name":"mention_channels",
           "option":true }'
   */
-                struct discord_channel_mention_dati_list_to_json, p->mention_channels,
+                discord_channel_mention_dati_list_to_json, p->mention_channels,
   /* specs/channel.message.json:148:90
      '{"type":{"base":"struct discord_channel_attachment_dati", "dec":"ntl"}, "name":"attachments"}'
   */
-                struct discord_channel_attachment_dati_list_to_json, p->attachments,
+                discord_channel_attachment_dati_list_to_json, p->attachments,
   /* specs/channel.message.json:149:85
      '{"type":{"base":"struct discord_channel_embed_dati", "dec":"ntl"}, "name":"embeds"}'
   */
-                struct discord_channel_embed_dati_list_to_json, p->embeds,
+                discord_channel_embed_dati_list_to_json, p->embeds,
   /* specs/channel.message.json:150:87
      '{"type":{"base":"struct discord_channel_reaction_dati","dec":"ntl"}, "name":"reactions", 
           "option":true }'
   */
-                struct discord_channel_reaction_dati_list_to_json, p->reactions,
+                discord_channel_reaction_dati_list_to_json, p->reactions,
   /* specs/channel.message.json:152:54
      '{"type":{"base":"char", "dec":"*"}, "name":"nonce", "comment":"integer or string",
           "option":true }'
@@ -1479,17 +1479,17 @@ size_t discord_channel_message_dati_to_json(char *json, size_t len, struct disco
      '{"type":{"base":"struct discord_channel_message_activity_dati", "dec":"*"}, "name":"activity", 
           "option":true, "inject_if_not":null }'
   */
-                struct discord_channel_message_activity_dati_to_json, p->activity,
+                discord_channel_message_activity_dati_to_json, p->activity,
   /* specs/channel.message.json:160:99
      '{"type":{"base":"struct discord_channel_message_application_dati", "dec":"ntl"}, "name":"application",
           "option":true, "inject_if_not":null }'
   */
-                struct discord_channel_message_application_dati_list_to_json, p->application,
+                discord_channel_message_application_dati_list_to_json, p->application,
   /* specs/channel.message.json:162:95
      '{"type":{"base":"struct discord_channel_message_reference_dati", "dec":"*"}, "name":"message_reference",
           "option":true, "inject_if_not":null }'
   */
-                struct discord_channel_message_reference_dati_to_json, p->message_reference,
+                discord_channel_message_reference_dati_to_json, p->message_reference,
   /* specs/channel.message.json:164:97
      '{"type":{"base":"int", "int_alias":"enum discord_channel_message_flags_code"}, "name":"flags",
           "option":true, "inject_if_not":0 }'
@@ -1499,13 +1499,13 @@ size_t discord_channel_message_dati_to_json(char *json, size_t len, struct disco
      '{"type":{"base":"struct discord_channel_message_sticker_dati", "dec":"ntl"}, "name":"stickers",
           "option":true, "inject_if_not":null, "comment":"array of sticker objects"}'
   */
-                struct discord_channel_message_sticker_dati_list_to_json, p->stickers,
+                discord_channel_message_sticker_dati_list_to_json, p->stickers,
   /* specs/channel.message.json:168:85
      '{"type":{"base":"struct discord_channel_message_dati", "dec":"*"}, "name":"referenced_message", 
           "lazy_init":true, "option":true", "inject_if_not":null,
           "comment":"this will cause recursive allocation if allocating as the parent"}'
   */
-                struct discord_channel_message_dati_to_json, p->referenced_message,
+                discord_channel_message_dati_to_json, p->referenced_message,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
 }
@@ -1565,13 +1565,13 @@ void discord_channel_message_dati_cleanup(struct discord_channel_message_dati *d
      '{"type":{"base":"struct discord_user_dati", "dec":"*"}, "name":"author"}'
   */
   if (d->author)
-    struct discord_user_dati_free(d->author);
+    discord_user_dati_free(d->author);
   /* specs/channel.message.json:135:82
      '{"type":{"base":"struct discord_guild_member_dati", "dec":"*"}, "name":"member", 
           "option":true, "comment":"partial guild member object"}'
   */
   if (d->member)
-    struct discord_guild_member_dati_free(d->member);
+    discord_guild_member_dati_free(d->member);
   /* specs/channel.message.json:137:54
      '{"type":{"base":"char", "dec":"*"}, "name":"content"}'
   */
@@ -1599,7 +1599,7 @@ void discord_channel_message_dati_cleanup(struct discord_channel_message_dati *d
           "comment":"array of user objects, with an additional partial member field"}'
   */
   if (d->mentions)
-    struct discord_user_dati_list_free(d->mentions);
+    discord_user_dati_list_free(d->mentions);
   /* specs/channel.message.json:145:58
      '{"type":{"base":"ja_u64", "dec":"ntl"}, "name":"mention_roles", "comment":"array of role object ids"}'
   */
@@ -1610,23 +1610,23 @@ void discord_channel_message_dati_cleanup(struct discord_channel_message_dati *d
           "option":true }'
   */
   if (d->mention_channels)
-    struct discord_channel_mention_dati_list_free(d->mention_channels);
+    discord_channel_mention_dati_list_free(d->mention_channels);
   /* specs/channel.message.json:148:90
      '{"type":{"base":"struct discord_channel_attachment_dati", "dec":"ntl"}, "name":"attachments"}'
   */
   if (d->attachments)
-    struct discord_channel_attachment_dati_list_free(d->attachments);
+    discord_channel_attachment_dati_list_free(d->attachments);
   /* specs/channel.message.json:149:85
      '{"type":{"base":"struct discord_channel_embed_dati", "dec":"ntl"}, "name":"embeds"}'
   */
   if (d->embeds)
-    struct discord_channel_embed_dati_list_free(d->embeds);
+    discord_channel_embed_dati_list_free(d->embeds);
   /* specs/channel.message.json:150:87
      '{"type":{"base":"struct discord_channel_reaction_dati","dec":"ntl"}, "name":"reactions", 
           "option":true }'
   */
   if (d->reactions)
-    struct discord_channel_reaction_dati_list_free(d->reactions);
+    discord_channel_reaction_dati_list_free(d->reactions);
   /* specs/channel.message.json:152:54
      '{"type":{"base":"char", "dec":"*"}, "name":"nonce", "comment":"integer or string",
           "option":true }'
@@ -1651,19 +1651,19 @@ void discord_channel_message_dati_cleanup(struct discord_channel_message_dati *d
           "option":true, "inject_if_not":null }'
   */
   if (d->activity)
-    struct discord_channel_message_activity_dati_free(d->activity);
+    discord_channel_message_activity_dati_free(d->activity);
   /* specs/channel.message.json:160:99
      '{"type":{"base":"struct discord_channel_message_application_dati", "dec":"ntl"}, "name":"application",
           "option":true, "inject_if_not":null }'
   */
   if (d->application)
-    struct discord_channel_message_application_dati_list_free(d->application);
+    discord_channel_message_application_dati_list_free(d->application);
   /* specs/channel.message.json:162:95
      '{"type":{"base":"struct discord_channel_message_reference_dati", "dec":"*"}, "name":"message_reference",
           "option":true, "inject_if_not":null }'
   */
   if (d->message_reference)
-    struct discord_channel_message_reference_dati_free(d->message_reference);
+    discord_channel_message_reference_dati_free(d->message_reference);
   /* specs/channel.message.json:164:97
      '{"type":{"base":"int", "int_alias":"enum discord_channel_message_flags_code"}, "name":"flags",
           "option":true, "inject_if_not":0 }'
@@ -1674,14 +1674,14 @@ void discord_channel_message_dati_cleanup(struct discord_channel_message_dati *d
           "option":true, "inject_if_not":null, "comment":"array of sticker objects"}'
   */
   if (d->stickers)
-    struct discord_channel_message_sticker_dati_list_free(d->stickers);
+    discord_channel_message_sticker_dati_list_free(d->stickers);
   /* specs/channel.message.json:168:85
      '{"type":{"base":"struct discord_channel_message_dati", "dec":"*"}, "name":"referenced_message", 
           "lazy_init":true, "option":true", "inject_if_not":null,
           "comment":"this will cause recursive allocation if allocating as the parent"}'
   */
   if (d->referenced_message)
-    struct discord_channel_message_dati_free(d->referenced_message);
+    discord_channel_message_dati_free(d->referenced_message);
 }
 
 void discord_channel_message_dati_init(struct discord_channel_message_dati *p) {
@@ -1702,13 +1702,13 @@ void discord_channel_message_dati_init(struct discord_channel_message_dati *p) {
   /* specs/channel.message.json:134:74
      '{"type":{"base":"struct discord_user_dati", "dec":"*"}, "name":"author"}'
   */
-  p->author = struct discord_user_dati_alloc();
+  p->author = discord_user_dati_alloc();
 
   /* specs/channel.message.json:135:82
      '{"type":{"base":"struct discord_guild_member_dati", "dec":"*"}, "name":"member", 
           "option":true, "comment":"partial guild member object"}'
   */
-  p->member = struct discord_guild_member_dati_alloc();
+  p->member = discord_guild_member_dati_alloc();
 
   /* specs/channel.message.json:137:54
      '{"type":{"base":"char", "dec":"*"}, "name":"content"}'
@@ -1780,7 +1780,7 @@ void discord_channel_message_dati_init(struct discord_channel_message_dati *p) {
      '{"type":{"base":"struct discord_channel_message_activity_dati", "dec":"*"}, "name":"activity", 
           "option":true, "inject_if_not":null }'
   */
-  p->activity = struct discord_channel_message_activity_dati_alloc();
+  p->activity = discord_channel_message_activity_dati_alloc();
 
   /* specs/channel.message.json:160:99
      '{"type":{"base":"struct discord_channel_message_application_dati", "dec":"ntl"}, "name":"application",
@@ -1791,7 +1791,7 @@ void discord_channel_message_dati_init(struct discord_channel_message_dati *p) {
      '{"type":{"base":"struct discord_channel_message_reference_dati", "dec":"*"}, "name":"message_reference",
           "option":true, "inject_if_not":null }'
   */
-  p->message_reference = struct discord_channel_message_reference_dati_alloc();
+  p->message_reference = discord_channel_message_reference_dati_alloc();
 
   /* specs/channel.message.json:164:97
      '{"type":{"base":"int", "int_alias":"enum discord_channel_message_flags_code"}, "name":"flags",

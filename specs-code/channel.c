@@ -123,7 +123,7 @@ void discord_channel_dati_from_json(char *json, size_t len, struct discord_chann
      '{"type":{"base":"struct discord_channel_overwrite_dati", "dec":"ntl"}, "name":"permission_overwrites",
          "option":true, "inject_if_not":null }'
   */
-                struct discord_channel_overwrite_dati_list_from_json, &p->permission_overwrites,
+                discord_channel_overwrite_dati_list_from_json, &p->permission_overwrites,
   /* specs/channel.json:36:66
      '{"type":{"base":"char", "dec":"[MAX_NAME_LEN]"}, "name":"name", 
          "option":true, "inject_if_not":""}'
@@ -160,7 +160,7 @@ void discord_channel_dati_from_json(char *json, size_t len, struct discord_chann
      '{"type":{"base":"struct discord_user_dati", "dec":"ntl"}, "name":"recipients",
          "option":true, "inject_if_not":null}'
   */
-                struct discord_user_dati_list_from_json, &p->recipients,
+                discord_user_dati_list_from_json, &p->recipients,
   /* specs/channel.json:49:68
      '{"type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}, "name":"icon",
          "option":true, "inject_if_not":""}'
@@ -189,7 +189,7 @@ void discord_channel_dati_from_json(char *json, size_t len, struct discord_chann
   /* specs/channel.json:59:86
      '{"type":{"base":"struct discord_channel_message_dati", "dec":"ntl"}, "name":"messages"}'
   */
-                struct discord_channel_message_dati_list_from_json, &p->messages,
+                discord_channel_message_dati_list_from_json, &p->messages,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
                 p->__M.record_null, sizeof(p->__M.record_null));
@@ -442,7 +442,7 @@ size_t discord_channel_dati_to_json(char *json, size_t len, struct discord_chann
      '{"type":{"base":"struct discord_channel_overwrite_dati", "dec":"ntl"}, "name":"permission_overwrites",
          "option":true, "inject_if_not":null }'
   */
-                struct discord_channel_overwrite_dati_list_to_json, p->permission_overwrites,
+                discord_channel_overwrite_dati_list_to_json, p->permission_overwrites,
   /* specs/channel.json:36:66
      '{"type":{"base":"char", "dec":"[MAX_NAME_LEN]"}, "name":"name", 
          "option":true, "inject_if_not":""}'
@@ -479,7 +479,7 @@ size_t discord_channel_dati_to_json(char *json, size_t len, struct discord_chann
      '{"type":{"base":"struct discord_user_dati", "dec":"ntl"}, "name":"recipients",
          "option":true, "inject_if_not":null}'
   */
-                struct discord_user_dati_list_to_json, p->recipients,
+                discord_user_dati_list_to_json, p->recipients,
   /* specs/channel.json:49:68
      '{"type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}, "name":"icon",
          "option":true, "inject_if_not":""}'
@@ -508,7 +508,7 @@ size_t discord_channel_dati_to_json(char *json, size_t len, struct discord_chann
   /* specs/channel.json:59:86
      '{"type":{"base":"struct discord_channel_message_dati", "dec":"ntl"}, "name":"messages"}'
   */
-                struct discord_channel_message_dati_list_to_json, p->messages,
+                discord_channel_message_dati_list_to_json, p->messages,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
 }
@@ -574,7 +574,7 @@ void discord_channel_dati_cleanup(struct discord_channel_dati *d) {
          "option":true, "inject_if_not":null }'
   */
   if (d->permission_overwrites)
-    struct discord_channel_overwrite_dati_list_free(d->permission_overwrites);
+    discord_channel_overwrite_dati_list_free(d->permission_overwrites);
   /* specs/channel.json:36:66
      '{"type":{"base":"char", "dec":"[MAX_NAME_LEN]"}, "name":"name", 
          "option":true, "inject_if_not":""}'
@@ -612,7 +612,7 @@ void discord_channel_dati_cleanup(struct discord_channel_dati *d) {
          "option":true, "inject_if_not":null}'
   */
   if (d->recipients)
-    struct discord_user_dati_list_free(d->recipients);
+    discord_user_dati_list_free(d->recipients);
   /* specs/channel.json:49:68
      '{"type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}, "name":"icon",
          "option":true, "inject_if_not":""}'
@@ -642,7 +642,7 @@ void discord_channel_dati_cleanup(struct discord_channel_dati *d) {
      '{"type":{"base":"struct discord_channel_message_dati", "dec":"ntl"}, "name":"messages"}'
   */
   if (d->messages)
-    struct discord_channel_message_dati_list_free(d->messages);
+    discord_channel_message_dati_list_free(d->messages);
 }
 
 void discord_channel_dati_init(struct discord_channel_dati *p) {

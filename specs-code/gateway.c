@@ -50,7 +50,7 @@ void discord_gateway_identify_dati_from_json(char *json, size_t len, struct disc
   /* specs/gateway.json:79:19
      '{ "name":"properties","type":{"base":"struct discord_gateway_identify_connection_dati", "dec":"*"}}'
   */
-                struct discord_gateway_identify_connection_dati_from_json, p->properties,
+                discord_gateway_identify_connection_dati_from_json, p->properties,
   /* specs/gateway.json:80:19
      '{ "name":"compress","type":{"base":"bool"}}'
   */
@@ -69,7 +69,7 @@ void discord_gateway_identify_dati_from_json(char *json, size_t len, struct disc
   /* specs/gateway.json:84:19
      '{ "name":"presence","type":{"base":"struct discord_gateway_identify_status_update_dati", "dec":"*"}}'
   */
-                struct discord_gateway_identify_status_update_dati_from_json, p->presence,
+                discord_gateway_identify_status_update_dati_from_json, p->presence,
   /* specs/gateway.json:85:19
      '{ "name":"intents","type":{"base":"int"}}'
   */
@@ -168,7 +168,7 @@ size_t discord_gateway_identify_dati_to_json(char *json, size_t len, struct disc
   /* specs/gateway.json:79:19
      '{ "name":"properties","type":{"base":"struct discord_gateway_identify_connection_dati", "dec":"*"}}'
   */
-                struct discord_gateway_identify_connection_dati_to_json, p->properties,
+                discord_gateway_identify_connection_dati_to_json, p->properties,
   /* specs/gateway.json:80:19
      '{ "name":"compress","type":{"base":"bool"}}'
   */
@@ -187,7 +187,7 @@ size_t discord_gateway_identify_dati_to_json(char *json, size_t len, struct disc
   /* specs/gateway.json:84:19
      '{ "name":"presence","type":{"base":"struct discord_gateway_identify_status_update_dati", "dec":"*"}}'
   */
-                struct discord_gateway_identify_status_update_dati_to_json, p->presence,
+                discord_gateway_identify_status_update_dati_to_json, p->presence,
   /* specs/gateway.json:85:19
      '{ "name":"intents","type":{"base":"int"}}'
   */
@@ -243,7 +243,7 @@ void discord_gateway_identify_dati_cleanup(struct discord_gateway_identify_dati 
      '{ "name":"properties","type":{"base":"struct discord_gateway_identify_connection_dati", "dec":"*"}}'
   */
   if (d->properties)
-    struct discord_gateway_identify_connection_dati_free(d->properties);
+    discord_gateway_identify_connection_dati_free(d->properties);
   /* specs/gateway.json:80:19
      '{ "name":"compress","type":{"base":"bool"}}'
   */
@@ -264,7 +264,7 @@ void discord_gateway_identify_dati_cleanup(struct discord_gateway_identify_dati 
      '{ "name":"presence","type":{"base":"struct discord_gateway_identify_status_update_dati", "dec":"*"}}'
   */
   if (d->presence)
-    struct discord_gateway_identify_status_update_dati_free(d->presence);
+    discord_gateway_identify_status_update_dati_free(d->presence);
   /* specs/gateway.json:85:19
      '{ "name":"intents","type":{"base":"int"}}'
   */
@@ -280,7 +280,7 @@ void discord_gateway_identify_dati_init(struct discord_gateway_identify_dati *p)
   /* specs/gateway.json:79:19
      '{ "name":"properties","type":{"base":"struct discord_gateway_identify_connection_dati", "dec":"*"}}'
   */
-  p->properties = struct discord_gateway_identify_connection_dati_alloc();
+  p->properties = discord_gateway_identify_connection_dati_alloc();
 
   /* specs/gateway.json:80:19
      '{ "name":"compress","type":{"base":"bool"}}'
@@ -301,7 +301,7 @@ void discord_gateway_identify_dati_init(struct discord_gateway_identify_dati *p)
   /* specs/gateway.json:84:19
      '{ "name":"presence","type":{"base":"struct discord_gateway_identify_status_update_dati", "dec":"*"}}'
   */
-  p->presence = struct discord_gateway_identify_status_update_dati_alloc();
+  p->presence = discord_gateway_identify_status_update_dati_alloc();
 
   /* specs/gateway.json:85:19
      '{ "name":"intents","type":{"base":"int"}}'
@@ -375,7 +375,7 @@ void discord_gateway_identify_status_update_dati_from_json(char *json, size_t le
      '{ "name":"activities","type":{"base":"struct discord_gateway_identify_status_update_activity_dati", "dec":"ntl"}, 
           "option":true, "inject_if_not":null}'
   */
-                struct discord_gateway_identify_status_update_activity_dati_list_from_json, &p->activities,
+                discord_gateway_identify_status_update_activity_dati_list_from_json, &p->activities,
   /* specs/gateway.json:99:19
      '{ "name":"status","type":{"base":"char", "dec":"[16]"}}'
   */
@@ -452,7 +452,7 @@ size_t discord_gateway_identify_status_update_dati_to_json(char *json, size_t le
      '{ "name":"activities","type":{"base":"struct discord_gateway_identify_status_update_activity_dati", "dec":"ntl"}, 
           "option":true, "inject_if_not":null}'
   */
-                struct discord_gateway_identify_status_update_activity_dati_list_to_json, p->activities,
+                discord_gateway_identify_status_update_activity_dati_list_to_json, p->activities,
   /* specs/gateway.json:99:19
      '{ "name":"status","type":{"base":"char", "dec":"[16]"}}'
   */
@@ -513,7 +513,7 @@ void discord_gateway_identify_status_update_dati_cleanup(struct discord_gateway_
           "option":true, "inject_if_not":null}'
   */
   if (d->activities)
-    struct discord_gateway_identify_status_update_activity_dati_list_free(d->activities);
+    discord_gateway_identify_status_update_activity_dati_list_free(d->activities);
   /* specs/gateway.json:99:19
      '{ "name":"status","type":{"base":"char", "dec":"[16]"}}'
   */

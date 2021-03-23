@@ -59,7 +59,7 @@ void discord_emoji_dati_from_json(char *json, size_t len, struct discord_emoji_d
   /* specs/emoji.json:15:20
      '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*" }, "option":true }'
   */
-                struct discord_user_dati_from_json, p->user,
+                discord_user_dati_from_json, p->user,
   /* specs/emoji.json:16:20
      '{ "name": "require_colons", "type":{ "base":"bool" }, "option":true}'
   */
@@ -180,7 +180,7 @@ size_t discord_emoji_dati_to_json(char *json, size_t len, struct discord_emoji_d
   /* specs/emoji.json:15:20
      '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*" }, "option":true }'
   */
-                struct discord_user_dati_to_json, p->user,
+                discord_user_dati_to_json, p->user,
   /* specs/emoji.json:16:20
      '{ "name": "require_colons", "type":{ "base":"bool" }, "option":true}'
   */
@@ -256,7 +256,7 @@ void discord_emoji_dati_cleanup(struct discord_emoji_dati *d) {
      '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*" }, "option":true }'
   */
   if (d->user)
-    struct discord_user_dati_free(d->user);
+    discord_user_dati_free(d->user);
   /* specs/emoji.json:16:20
      '{ "name": "require_colons", "type":{ "base":"bool" }, "option":true}'
   */
@@ -293,7 +293,7 @@ void discord_emoji_dati_init(struct discord_emoji_dati *p) {
   /* specs/emoji.json:15:20
      '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*" }, "option":true }'
   */
-  p->user = struct discord_user_dati_alloc();
+  p->user = discord_user_dati_alloc();
 
   /* specs/emoji.json:16:20
      '{ "name": "require_colons", "type":{ "base":"bool" }, "option":true}'

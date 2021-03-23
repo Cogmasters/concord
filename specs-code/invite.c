@@ -51,19 +51,19 @@ void discord_invite_dati_from_json(char *json, size_t len, struct discord_invite
   /* specs/invite.json:23:20
      '{ "name": "guild", "type":{ "base":"struct discord_guild_dati", "dec":"*"}, "comment":"partial guild object"}'
   */
-                struct discord_guild_dati_from_json, p->guild,
+                discord_guild_dati_from_json, p->guild,
   /* specs/invite.json:24:20
      '{ "name": "channel", "type":{ "base":"struct discord_channel_dati", "dec":"*"}, "comment":"partial channel object"}'
   */
-                struct discord_channel_dati_from_json, p->channel,
+                discord_channel_dati_from_json, p->channel,
   /* specs/invite.json:25:20
      '{ "name": "inviter", "type":{ "base":"struct discord_user_dati", "dec":"*"}}'
   */
-                struct discord_user_dati_from_json, p->inviter,
+                discord_user_dati_from_json, p->inviter,
   /* specs/invite.json:26:20
      '{ "name": "target_user", "type":{ "base":"struct discord_user_dati", "dec":"*"}, "comment":"partial user object"}'
   */
-                struct discord_user_dati_from_json, p->target_user,
+                discord_user_dati_from_json, p->target_user,
   /* specs/invite.json:27:20
      '{ "name": "target_user_type", "type":{ "base":"int", "int_alias":"enum discord_invite_target_user_types_code" }}'
   */
@@ -172,19 +172,19 @@ size_t discord_invite_dati_to_json(char *json, size_t len, struct discord_invite
   /* specs/invite.json:23:20
      '{ "name": "guild", "type":{ "base":"struct discord_guild_dati", "dec":"*"}, "comment":"partial guild object"}'
   */
-                struct discord_guild_dati_to_json, p->guild,
+                discord_guild_dati_to_json, p->guild,
   /* specs/invite.json:24:20
      '{ "name": "channel", "type":{ "base":"struct discord_channel_dati", "dec":"*"}, "comment":"partial channel object"}'
   */
-                struct discord_channel_dati_to_json, p->channel,
+                discord_channel_dati_to_json, p->channel,
   /* specs/invite.json:25:20
      '{ "name": "inviter", "type":{ "base":"struct discord_user_dati", "dec":"*"}}'
   */
-                struct discord_user_dati_to_json, p->inviter,
+                discord_user_dati_to_json, p->inviter,
   /* specs/invite.json:26:20
      '{ "name": "target_user", "type":{ "base":"struct discord_user_dati", "dec":"*"}, "comment":"partial user object"}'
   */
-                struct discord_user_dati_to_json, p->target_user,
+                discord_user_dati_to_json, p->target_user,
   /* specs/invite.json:27:20
      '{ "name": "target_user_type", "type":{ "base":"int", "int_alias":"enum discord_invite_target_user_types_code" }}'
   */
@@ -248,22 +248,22 @@ void discord_invite_dati_cleanup(struct discord_invite_dati *d) {
      '{ "name": "guild", "type":{ "base":"struct discord_guild_dati", "dec":"*"}, "comment":"partial guild object"}'
   */
   if (d->guild)
-    struct discord_guild_dati_free(d->guild);
+    discord_guild_dati_free(d->guild);
   /* specs/invite.json:24:20
      '{ "name": "channel", "type":{ "base":"struct discord_channel_dati", "dec":"*"}, "comment":"partial channel object"}'
   */
   if (d->channel)
-    struct discord_channel_dati_free(d->channel);
+    discord_channel_dati_free(d->channel);
   /* specs/invite.json:25:20
      '{ "name": "inviter", "type":{ "base":"struct discord_user_dati", "dec":"*"}}'
   */
   if (d->inviter)
-    struct discord_user_dati_free(d->inviter);
+    discord_user_dati_free(d->inviter);
   /* specs/invite.json:26:20
      '{ "name": "target_user", "type":{ "base":"struct discord_user_dati", "dec":"*"}, "comment":"partial user object"}'
   */
   if (d->target_user)
-    struct discord_user_dati_free(d->target_user);
+    discord_user_dati_free(d->target_user);
   /* specs/invite.json:27:20
      '{ "name": "target_user_type", "type":{ "base":"int", "int_alias":"enum discord_invite_target_user_types_code" }}'
   */
@@ -287,22 +287,22 @@ void discord_invite_dati_init(struct discord_invite_dati *p) {
   /* specs/invite.json:23:20
      '{ "name": "guild", "type":{ "base":"struct discord_guild_dati", "dec":"*"}, "comment":"partial guild object"}'
   */
-  p->guild = struct discord_guild_dati_alloc();
+  p->guild = discord_guild_dati_alloc();
 
   /* specs/invite.json:24:20
      '{ "name": "channel", "type":{ "base":"struct discord_channel_dati", "dec":"*"}, "comment":"partial channel object"}'
   */
-  p->channel = struct discord_channel_dati_alloc();
+  p->channel = discord_channel_dati_alloc();
 
   /* specs/invite.json:25:20
      '{ "name": "inviter", "type":{ "base":"struct discord_user_dati", "dec":"*"}}'
   */
-  p->inviter = struct discord_user_dati_alloc();
+  p->inviter = discord_user_dati_alloc();
 
   /* specs/invite.json:26:20
      '{ "name": "target_user", "type":{ "base":"struct discord_user_dati", "dec":"*"}, "comment":"partial user object"}'
   */
-  p->target_user = struct discord_user_dati_alloc();
+  p->target_user = discord_user_dati_alloc();
 
   /* specs/invite.json:27:20
      '{ "name": "target_user_type", "type":{ "base":"int", "int_alias":"enum discord_invite_target_user_types_code" }}'

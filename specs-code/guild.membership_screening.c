@@ -247,7 +247,7 @@ void discord_guild_membership_screening_dati_from_json(char *json, size_t len, s
   /* specs/guild.membership_screening.json:31:20
      '{ "name": "fields", "type":{ "base":"struct discord_guild_membership_screening_field_dati", "dec":"ntl" }}'
   */
-                struct discord_guild_membership_screening_field_dati_list_from_json, &p->fields,
+                discord_guild_membership_screening_field_dati_list_from_json, &p->fields,
   /* specs/guild.membership_screening.json:32:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }}'
   */
@@ -303,7 +303,7 @@ size_t discord_guild_membership_screening_dati_to_json(char *json, size_t len, s
   /* specs/guild.membership_screening.json:31:20
      '{ "name": "fields", "type":{ "base":"struct discord_guild_membership_screening_field_dati", "dec":"ntl" }}'
   */
-                struct discord_guild_membership_screening_field_dati_list_to_json, p->fields,
+                discord_guild_membership_screening_field_dati_list_to_json, p->fields,
   /* specs/guild.membership_screening.json:32:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }}'
   */
@@ -358,7 +358,7 @@ void discord_guild_membership_screening_dati_cleanup(struct discord_guild_member
      '{ "name": "fields", "type":{ "base":"struct discord_guild_membership_screening_field_dati", "dec":"ntl" }}'
   */
   if (d->fields)
-    struct discord_guild_membership_screening_field_dati_list_free(d->fields);
+    discord_guild_membership_screening_field_dati_list_free(d->fields);
   /* specs/guild.membership_screening.json:32:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }}'
   */

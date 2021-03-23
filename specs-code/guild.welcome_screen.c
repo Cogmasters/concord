@@ -249,7 +249,7 @@ void discord_guild_welcome_screen_dati_from_json(char *json, size_t len, struct 
   /* specs/guild.welcome_screen.json:27:20
      '{ "name": "welcome_channels", "type":{ "base":"struct discord_guild_welcome_screen_screen_channel_dati", "dec":"ntl" }, "todo":false }'
   */
-                struct discord_guild_welcome_screen_screen_channel_dati_list_from_json, &p->welcome_channels,
+                discord_guild_welcome_screen_screen_channel_dati_list_from_json, &p->welcome_channels,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
                 p->__M.record_null, sizeof(p->__M.record_null));
@@ -292,7 +292,7 @@ size_t discord_guild_welcome_screen_dati_to_json(char *json, size_t len, struct 
   /* specs/guild.welcome_screen.json:27:20
      '{ "name": "welcome_channels", "type":{ "base":"struct discord_guild_welcome_screen_screen_channel_dati", "dec":"ntl" }, "todo":false }'
   */
-                struct discord_guild_welcome_screen_screen_channel_dati_list_to_json, p->welcome_channels,
+                discord_guild_welcome_screen_screen_channel_dati_list_to_json, p->welcome_channels,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
 }
@@ -344,7 +344,7 @@ void discord_guild_welcome_screen_dati_cleanup(struct discord_guild_welcome_scre
      '{ "name": "welcome_channels", "type":{ "base":"struct discord_guild_welcome_screen_screen_channel_dati", "dec":"ntl" }, "todo":false }'
   */
   if (d->welcome_channels)
-    struct discord_guild_welcome_screen_screen_channel_dati_list_free(d->welcome_channels);
+    discord_guild_welcome_screen_screen_channel_dati_list_free(d->welcome_channels);
 }
 
 void discord_guild_welcome_screen_dati_init(struct discord_guild_welcome_screen_dati *p) {

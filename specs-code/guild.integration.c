@@ -222,7 +222,7 @@ void discord_guild_integration_application_dati_from_json(char *json, size_t len
   /* specs/guild.integration.json:38:19
      '{ "name":"bot", "type":{ "base":"struct discord_user_dati", "dec":"*" }, "option":true}'
   */
-                struct discord_user_dati_from_json, p->bot,
+                discord_user_dati_from_json, p->bot,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
                 p->__M.record_null, sizeof(p->__M.record_null));
@@ -317,7 +317,7 @@ size_t discord_guild_integration_application_dati_to_json(char *json, size_t len
   /* specs/guild.integration.json:38:19
      '{ "name":"bot", "type":{ "base":"struct discord_user_dati", "dec":"*" }, "option":true}'
   */
-                struct discord_user_dati_to_json, p->bot,
+                discord_user_dati_to_json, p->bot,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
 }
@@ -387,7 +387,7 @@ void discord_guild_integration_application_dati_cleanup(struct discord_guild_int
      '{ "name":"bot", "type":{ "base":"struct discord_user_dati", "dec":"*" }, "option":true}'
   */
   if (d->bot)
-    struct discord_user_dati_free(d->bot);
+    discord_user_dati_free(d->bot);
 }
 
 void discord_guild_integration_application_dati_init(struct discord_guild_integration_application_dati *p) {
@@ -415,7 +415,7 @@ void discord_guild_integration_application_dati_init(struct discord_guild_integr
   /* specs/guild.integration.json:38:19
      '{ "name":"bot", "type":{ "base":"struct discord_user_dati", "dec":"*" }, "option":true}'
   */
-  p->bot = struct discord_user_dati_alloc();
+  p->bot = discord_user_dati_alloc();
 
 }
 struct discord_guild_integration_application_dati* discord_guild_integration_application_dati_alloc() {
@@ -557,11 +557,11 @@ void discord_guild_integration_dati_from_json(char *json, size_t len, struct dis
   /* specs/guild.integration.json:57:20
      '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*"}, "opt":true}'
   */
-                struct discord_user_dati_from_json, p->user,
+                discord_user_dati_from_json, p->user,
   /* specs/guild.integration.json:58:20
      '{ "name": "account", "type":{ "base":"struct discord_guild_integration_account_dati", "dec":"*"}}'
   */
-                struct discord_guild_integration_account_dati_from_json, p->account,
+                discord_guild_integration_account_dati_from_json, p->account,
   /* specs/guild.integration.json:59:20
      '{ "name": "synced_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601"}}'
   */
@@ -577,7 +577,7 @@ void discord_guild_integration_dati_from_json(char *json, size_t len, struct dis
   /* specs/guild.integration.json:62:20
      '{ "name": "application", "type":{ "base":"struct discord_guild_integration_application_dati", "dec":"*" }}'
   */
-                struct discord_guild_integration_application_dati_from_json, p->application,
+                discord_guild_integration_application_dati_from_json, p->application,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
                 p->__M.record_null, sizeof(p->__M.record_null));
@@ -769,11 +769,11 @@ size_t discord_guild_integration_dati_to_json(char *json, size_t len, struct dis
   /* specs/guild.integration.json:57:20
      '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*"}, "opt":true}'
   */
-                struct discord_user_dati_to_json, p->user,
+                discord_user_dati_to_json, p->user,
   /* specs/guild.integration.json:58:20
      '{ "name": "account", "type":{ "base":"struct discord_guild_integration_account_dati", "dec":"*"}}'
   */
-                struct discord_guild_integration_account_dati_to_json, p->account,
+                discord_guild_integration_account_dati_to_json, p->account,
   /* specs/guild.integration.json:59:20
      '{ "name": "synced_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601"}}'
   */
@@ -789,7 +789,7 @@ size_t discord_guild_integration_dati_to_json(char *json, size_t len, struct dis
   /* specs/guild.integration.json:62:20
      '{ "name": "application", "type":{ "base":"struct discord_guild_integration_application_dati", "dec":"*" }}'
   */
-                struct discord_guild_integration_application_dati_to_json, p->application,
+                discord_guild_integration_application_dati_to_json, p->application,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
 }
@@ -874,12 +874,12 @@ void discord_guild_integration_dati_cleanup(struct discord_guild_integration_dat
      '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*"}, "opt":true}'
   */
   if (d->user)
-    struct discord_user_dati_free(d->user);
+    discord_user_dati_free(d->user);
   /* specs/guild.integration.json:58:20
      '{ "name": "account", "type":{ "base":"struct discord_guild_integration_account_dati", "dec":"*"}}'
   */
   if (d->account)
-    struct discord_guild_integration_account_dati_free(d->account);
+    discord_guild_integration_account_dati_free(d->account);
   /* specs/guild.integration.json:59:20
      '{ "name": "synced_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601"}}'
   */
@@ -896,7 +896,7 @@ void discord_guild_integration_dati_cleanup(struct discord_guild_integration_dat
      '{ "name": "application", "type":{ "base":"struct discord_guild_integration_application_dati", "dec":"*" }}'
   */
   if (d->application)
-    struct discord_guild_integration_application_dati_free(d->application);
+    discord_guild_integration_application_dati_free(d->application);
 }
 
 void discord_guild_integration_dati_init(struct discord_guild_integration_dati *p) {
@@ -940,12 +940,12 @@ void discord_guild_integration_dati_init(struct discord_guild_integration_dati *
   /* specs/guild.integration.json:57:20
      '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*"}, "opt":true}'
   */
-  p->user = struct discord_user_dati_alloc();
+  p->user = discord_user_dati_alloc();
 
   /* specs/guild.integration.json:58:20
      '{ "name": "account", "type":{ "base":"struct discord_guild_integration_account_dati", "dec":"*"}}'
   */
-  p->account = struct discord_guild_integration_account_dati_alloc();
+  p->account = discord_guild_integration_account_dati_alloc();
 
   /* specs/guild.integration.json:59:20
      '{ "name": "synced_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601"}}'
@@ -962,7 +962,7 @@ void discord_guild_integration_dati_init(struct discord_guild_integration_dati *
   /* specs/guild.integration.json:62:20
      '{ "name": "application", "type":{ "base":"struct discord_guild_integration_application_dati", "dec":"*" }}'
   */
-  p->application = struct discord_guild_integration_application_dati_alloc();
+  p->application = discord_guild_integration_application_dati_alloc();
 
 }
 struct discord_guild_integration_dati* discord_guild_integration_dati_alloc() {

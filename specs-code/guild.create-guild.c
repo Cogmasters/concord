@@ -105,7 +105,7 @@ void discord_guild_create_guild_params_from_json(char *json, size_t len, struct 
      '{ "name": "channels", "type":{ "base":"struct discord_channel_dati", "dec":"ntl" }, 
           "option":true, "inject_if_not":null, "comment":"array of partial channel objects"}'
   */
-                struct discord_channel_dati_list_from_json, &p->channels,
+                discord_channel_dati_list_from_json, &p->channels,
   /* specs/guild.create-guild.json:27:20
      '{ "name": "afk_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, 
           "option":true, "inject_if_not":0, "comment":"id for afk channel"}'
@@ -307,7 +307,7 @@ size_t discord_guild_create_guild_params_to_json(char *json, size_t len, struct 
      '{ "name": "channels", "type":{ "base":"struct discord_channel_dati", "dec":"ntl" }, 
           "option":true, "inject_if_not":null, "comment":"array of partial channel objects"}'
   */
-                struct discord_channel_dati_list_to_json, p->channels,
+                discord_channel_dati_list_to_json, p->channels,
   /* specs/guild.create-guild.json:27:20
      '{ "name": "afk_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, 
           "option":true, "inject_if_not":0, "comment":"id for afk channel"}'
@@ -408,7 +408,7 @@ void discord_guild_create_guild_params_cleanup(struct discord_guild_create_guild
           "option":true, "inject_if_not":null, "comment":"array of partial channel objects"}'
   */
   if (d->channels)
-    struct discord_channel_dati_list_free(d->channels);
+    discord_channel_dati_list_free(d->channels);
   /* specs/guild.create-guild.json:27:20
      '{ "name": "afk_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, 
           "option":true, "inject_if_not":0, "comment":"id for afk channel"}'

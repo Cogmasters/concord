@@ -217,7 +217,7 @@ void discord_channel_reaction_dati_from_json(char *json, size_t len, struct disc
   /* specs/channel.objects.json:29:20
      '{ "name": "emoji", "type":{ "base":"struct discord_emoji_dati", "dec":"*" }, "comment":"partial emoji object"}'
   */
-                struct discord_emoji_dati_from_json, p->emoji,
+                discord_emoji_dati_from_json, p->emoji,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
                 p->__M.record_null, sizeof(p->__M.record_null));
@@ -273,7 +273,7 @@ size_t discord_channel_reaction_dati_to_json(char *json, size_t len, struct disc
   /* specs/channel.objects.json:29:20
      '{ "name": "emoji", "type":{ "base":"struct discord_emoji_dati", "dec":"*" }, "comment":"partial emoji object"}'
   */
-                struct discord_emoji_dati_to_json, p->emoji,
+                discord_emoji_dati_to_json, p->emoji,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
 }
@@ -328,7 +328,7 @@ void discord_channel_reaction_dati_cleanup(struct discord_channel_reaction_dati 
      '{ "name": "emoji", "type":{ "base":"struct discord_emoji_dati", "dec":"*" }, "comment":"partial emoji object"}'
   */
   if (d->emoji)
-    struct discord_emoji_dati_free(d->emoji);
+    discord_emoji_dati_free(d->emoji);
 }
 
 void discord_channel_reaction_dati_init(struct discord_channel_reaction_dati *p) {
@@ -344,7 +344,7 @@ void discord_channel_reaction_dati_init(struct discord_channel_reaction_dati *p)
   /* specs/channel.objects.json:29:20
      '{ "name": "emoji", "type":{ "base":"struct discord_emoji_dati", "dec":"*" }, "comment":"partial emoji object"}'
   */
-  p->emoji = struct discord_emoji_dati_alloc();
+  p->emoji = discord_emoji_dati_alloc();
 
 }
 struct discord_channel_reaction_dati* discord_channel_reaction_dati_alloc() {
@@ -1392,32 +1392,32 @@ void discord_channel_embed_dati_from_json(char *json, size_t len, struct discord
      '{ "name": "footer", "type":{ "base":"struct discord_channel_embed_footer_dati", "dec":"*"},
           "option":true, "inject_if_not":null}'
   */
-                struct discord_channel_embed_footer_dati_from_json, p->footer,
+                discord_channel_embed_footer_dati_from_json, p->footer,
   /* specs/channel.objects.json:104:20
      '{ "name": "image", "type":{ "base":"struct discord_channel_embed_image_dati", "dec":"*"}, "inject_if_not":null}'
   */
-                struct discord_channel_embed_image_dati_from_json, p->image,
+                discord_channel_embed_image_dati_from_json, p->image,
   /* specs/channel.objects.json:105:20
      '{ "name": "thumbnail", "type":{ "base":"struct discord_channel_embed_thumbnail_dati", "dec":"*"}, "inject_if_not":null}'
   */
-                struct discord_channel_embed_thumbnail_dati_from_json, p->thumbnail,
+                discord_channel_embed_thumbnail_dati_from_json, p->thumbnail,
   /* specs/channel.objects.json:106:20
      '{ "name": "video", "type":{ "base":"struct discord_channel_embed_video_dati", "dec":"*"}, "inject_if_not":null}'
   */
-                struct discord_channel_embed_video_dati_from_json, p->video,
+                discord_channel_embed_video_dati_from_json, p->video,
   /* specs/channel.objects.json:107:20
      '{ "name": "provider", "type":{ "base":"struct discord_channel_embed_provider_dati", "dec":"*"}, "inject_if_not":null}'
   */
-                struct discord_channel_embed_provider_dati_from_json, p->provider,
+                discord_channel_embed_provider_dati_from_json, p->provider,
   /* specs/channel.objects.json:108:20
      '{ "name": "author", "type":{ "base":"struct discord_channel_embed_author_dati", "dec":"*"}, "inject_if_not":null}'
   */
-                struct discord_channel_embed_author_dati_from_json, p->author,
+                discord_channel_embed_author_dati_from_json, p->author,
   /* specs/channel.objects.json:109:20
      '{ "name": "fields", "type":{ "base":"struct discord_channel_embed_field_dati", "dec":"ntl"},
           "option":true, "inject_if_not":null}'
   */
-                struct discord_channel_embed_field_dati_list_from_json, &p->fields,
+                discord_channel_embed_field_dati_list_from_json, &p->fields,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
                 p->__M.record_null, sizeof(p->__M.record_null));
@@ -1612,32 +1612,32 @@ size_t discord_channel_embed_dati_to_json(char *json, size_t len, struct discord
      '{ "name": "footer", "type":{ "base":"struct discord_channel_embed_footer_dati", "dec":"*"},
           "option":true, "inject_if_not":null}'
   */
-                struct discord_channel_embed_footer_dati_to_json, p->footer,
+                discord_channel_embed_footer_dati_to_json, p->footer,
   /* specs/channel.objects.json:104:20
      '{ "name": "image", "type":{ "base":"struct discord_channel_embed_image_dati", "dec":"*"}, "inject_if_not":null}'
   */
-                struct discord_channel_embed_image_dati_to_json, p->image,
+                discord_channel_embed_image_dati_to_json, p->image,
   /* specs/channel.objects.json:105:20
      '{ "name": "thumbnail", "type":{ "base":"struct discord_channel_embed_thumbnail_dati", "dec":"*"}, "inject_if_not":null}'
   */
-                struct discord_channel_embed_thumbnail_dati_to_json, p->thumbnail,
+                discord_channel_embed_thumbnail_dati_to_json, p->thumbnail,
   /* specs/channel.objects.json:106:20
      '{ "name": "video", "type":{ "base":"struct discord_channel_embed_video_dati", "dec":"*"}, "inject_if_not":null}'
   */
-                struct discord_channel_embed_video_dati_to_json, p->video,
+                discord_channel_embed_video_dati_to_json, p->video,
   /* specs/channel.objects.json:107:20
      '{ "name": "provider", "type":{ "base":"struct discord_channel_embed_provider_dati", "dec":"*"}, "inject_if_not":null}'
   */
-                struct discord_channel_embed_provider_dati_to_json, p->provider,
+                discord_channel_embed_provider_dati_to_json, p->provider,
   /* specs/channel.objects.json:108:20
      '{ "name": "author", "type":{ "base":"struct discord_channel_embed_author_dati", "dec":"*"}, "inject_if_not":null}'
   */
-                struct discord_channel_embed_author_dati_to_json, p->author,
+                discord_channel_embed_author_dati_to_json, p->author,
   /* specs/channel.objects.json:109:20
      '{ "name": "fields", "type":{ "base":"struct discord_channel_embed_field_dati", "dec":"ntl"},
           "option":true, "inject_if_not":null}'
   */
-                struct discord_channel_embed_field_dati_list_to_json, p->fields,
+                discord_channel_embed_field_dati_list_to_json, p->fields,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
 }
@@ -1714,38 +1714,38 @@ void discord_channel_embed_dati_cleanup(struct discord_channel_embed_dati *d) {
           "option":true, "inject_if_not":null}'
   */
   if (d->footer)
-    struct discord_channel_embed_footer_dati_free(d->footer);
+    discord_channel_embed_footer_dati_free(d->footer);
   /* specs/channel.objects.json:104:20
      '{ "name": "image", "type":{ "base":"struct discord_channel_embed_image_dati", "dec":"*"}, "inject_if_not":null}'
   */
   if (d->image)
-    struct discord_channel_embed_image_dati_free(d->image);
+    discord_channel_embed_image_dati_free(d->image);
   /* specs/channel.objects.json:105:20
      '{ "name": "thumbnail", "type":{ "base":"struct discord_channel_embed_thumbnail_dati", "dec":"*"}, "inject_if_not":null}'
   */
   if (d->thumbnail)
-    struct discord_channel_embed_thumbnail_dati_free(d->thumbnail);
+    discord_channel_embed_thumbnail_dati_free(d->thumbnail);
   /* specs/channel.objects.json:106:20
      '{ "name": "video", "type":{ "base":"struct discord_channel_embed_video_dati", "dec":"*"}, "inject_if_not":null}'
   */
   if (d->video)
-    struct discord_channel_embed_video_dati_free(d->video);
+    discord_channel_embed_video_dati_free(d->video);
   /* specs/channel.objects.json:107:20
      '{ "name": "provider", "type":{ "base":"struct discord_channel_embed_provider_dati", "dec":"*"}, "inject_if_not":null}'
   */
   if (d->provider)
-    struct discord_channel_embed_provider_dati_free(d->provider);
+    discord_channel_embed_provider_dati_free(d->provider);
   /* specs/channel.objects.json:108:20
      '{ "name": "author", "type":{ "base":"struct discord_channel_embed_author_dati", "dec":"*"}, "inject_if_not":null}'
   */
   if (d->author)
-    struct discord_channel_embed_author_dati_free(d->author);
+    discord_channel_embed_author_dati_free(d->author);
   /* specs/channel.objects.json:109:20
      '{ "name": "fields", "type":{ "base":"struct discord_channel_embed_field_dati", "dec":"ntl"},
           "option":true, "inject_if_not":null}'
   */
   if (d->fields)
-    struct discord_channel_embed_field_dati_list_free(d->fields);
+    discord_channel_embed_field_dati_list_free(d->fields);
 }
 
 void discord_channel_embed_dati_init(struct discord_channel_embed_dati *p) {
@@ -1783,32 +1783,32 @@ void discord_channel_embed_dati_init(struct discord_channel_embed_dati *p) {
      '{ "name": "footer", "type":{ "base":"struct discord_channel_embed_footer_dati", "dec":"*"},
           "option":true, "inject_if_not":null}'
   */
-  p->footer = struct discord_channel_embed_footer_dati_alloc();
+  p->footer = discord_channel_embed_footer_dati_alloc();
 
   /* specs/channel.objects.json:104:20
      '{ "name": "image", "type":{ "base":"struct discord_channel_embed_image_dati", "dec":"*"}, "inject_if_not":null}'
   */
-  p->image = struct discord_channel_embed_image_dati_alloc();
+  p->image = discord_channel_embed_image_dati_alloc();
 
   /* specs/channel.objects.json:105:20
      '{ "name": "thumbnail", "type":{ "base":"struct discord_channel_embed_thumbnail_dati", "dec":"*"}, "inject_if_not":null}'
   */
-  p->thumbnail = struct discord_channel_embed_thumbnail_dati_alloc();
+  p->thumbnail = discord_channel_embed_thumbnail_dati_alloc();
 
   /* specs/channel.objects.json:106:20
      '{ "name": "video", "type":{ "base":"struct discord_channel_embed_video_dati", "dec":"*"}, "inject_if_not":null}'
   */
-  p->video = struct discord_channel_embed_video_dati_alloc();
+  p->video = discord_channel_embed_video_dati_alloc();
 
   /* specs/channel.objects.json:107:20
      '{ "name": "provider", "type":{ "base":"struct discord_channel_embed_provider_dati", "dec":"*"}, "inject_if_not":null}'
   */
-  p->provider = struct discord_channel_embed_provider_dati_alloc();
+  p->provider = discord_channel_embed_provider_dati_alloc();
 
   /* specs/channel.objects.json:108:20
      '{ "name": "author", "type":{ "base":"struct discord_channel_embed_author_dati", "dec":"*"}, "inject_if_not":null}'
   */
-  p->author = struct discord_channel_embed_author_dati_alloc();
+  p->author = discord_channel_embed_author_dati_alloc();
 
   /* specs/channel.objects.json:109:20
      '{ "name": "fields", "type":{ "base":"struct discord_channel_embed_field_dati", "dec":"ntl"},

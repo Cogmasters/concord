@@ -75,7 +75,7 @@ void discord_voice_dati_from_json(char *json, size_t len, struct discord_voice_d
   /* specs/voice.json:15:20
      '{ "name": "member", "type":{ "base":"struct discord_guild_member_dati", "dec":"*" }}'
   */
-                struct discord_guild_member_dati_from_json, p->member,
+                discord_guild_member_dati_from_json, p->member,
   /* specs/voice.json:16:20
      '{ "name": "session_id", "type":{ "base":"char", "dec":"*" }}'
   */
@@ -248,7 +248,7 @@ size_t discord_voice_dati_to_json(char *json, size_t len, struct discord_voice_d
   /* specs/voice.json:15:20
      '{ "name": "member", "type":{ "base":"struct discord_guild_member_dati", "dec":"*" }}'
   */
-                struct discord_guild_member_dati_to_json, p->member,
+                discord_guild_member_dati_to_json, p->member,
   /* specs/voice.json:16:20
      '{ "name": "session_id", "type":{ "base":"char", "dec":"*" }}'
   */
@@ -339,7 +339,7 @@ void discord_voice_dati_cleanup(struct discord_voice_dati *d) {
      '{ "name": "member", "type":{ "base":"struct discord_guild_member_dati", "dec":"*" }}'
   */
   if (d->member)
-    struct discord_guild_member_dati_free(d->member);
+    discord_guild_member_dati_free(d->member);
   /* specs/voice.json:16:20
      '{ "name": "session_id", "type":{ "base":"char", "dec":"*" }}'
   */
@@ -392,7 +392,7 @@ void discord_voice_dati_init(struct discord_voice_dati *p) {
   /* specs/voice.json:15:20
      '{ "name": "member", "type":{ "base":"struct discord_guild_member_dati", "dec":"*" }}'
   */
-  p->member = struct discord_guild_member_dati_alloc();
+  p->member = discord_guild_member_dati_alloc();
 
   /* specs/voice.json:16:20
      '{ "name": "session_id", "type":{ "base":"char", "dec":"*" }}'

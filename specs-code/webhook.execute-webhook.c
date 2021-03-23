@@ -120,7 +120,7 @@ void discord_webhook_execute_webhook_params_from_json(char *json, size_t len, st
           "required":"one of content, file, embeds"
         }'
   */
-                struct discord_channel_embed_dati_from_json, p->embeds,
+                discord_channel_embed_dati_from_json, p->embeds,
   /* specs/webhook.execute-webhook.json:38:20
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, 
           "comment":"See message create",
@@ -135,7 +135,7 @@ void discord_webhook_execute_webhook_params_from_json(char *json, size_t len, st
           "required":"false"
         }'
   */
-                struct discord_channel_allowed_mentions_dati_from_json, p->allowed_mentions,
+                discord_channel_allowed_mentions_dati_from_json, p->allowed_mentions,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
                 p->__M.record_null, sizeof(p->__M.record_null));
@@ -332,7 +332,7 @@ size_t discord_webhook_execute_webhook_params_to_json(char *json, size_t len, st
           "required":"one of content, file, embeds"
         }'
   */
-                struct discord_channel_embed_dati_to_json, p->embeds,
+                discord_channel_embed_dati_to_json, p->embeds,
   /* specs/webhook.execute-webhook.json:38:20
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, 
           "comment":"See message create",
@@ -347,7 +347,7 @@ size_t discord_webhook_execute_webhook_params_to_json(char *json, size_t len, st
           "required":"false"
         }'
   */
-                struct discord_channel_allowed_mentions_dati_to_json, p->allowed_mentions,
+                discord_channel_allowed_mentions_dati_to_json, p->allowed_mentions,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
 }
@@ -440,7 +440,7 @@ void discord_webhook_execute_webhook_params_cleanup(struct discord_webhook_execu
         }'
   */
   if (d->embeds)
-    struct discord_channel_embed_dati_free(d->embeds);
+    discord_channel_embed_dati_free(d->embeds);
   /* specs/webhook.execute-webhook.json:38:20
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, 
           "comment":"See message create",
@@ -457,7 +457,7 @@ void discord_webhook_execute_webhook_params_cleanup(struct discord_webhook_execu
         }'
   */
   if (d->allowed_mentions)
-    struct discord_channel_allowed_mentions_dati_free(d->allowed_mentions);
+    discord_channel_allowed_mentions_dati_free(d->allowed_mentions);
 }
 
 void discord_webhook_execute_webhook_params_init(struct discord_webhook_execute_webhook_params *p) {
@@ -508,7 +508,7 @@ void discord_webhook_execute_webhook_params_init(struct discord_webhook_execute_
           "required":"one of content, file, embeds"
         }'
   */
-  p->embeds = struct discord_channel_embed_dati_alloc();
+  p->embeds = discord_channel_embed_dati_alloc();
 
   /* specs/webhook.execute-webhook.json:38:20
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, 
@@ -524,7 +524,7 @@ void discord_webhook_execute_webhook_params_init(struct discord_webhook_execute_
           "required":"false"
         }'
   */
-  p->allowed_mentions = struct discord_channel_allowed_mentions_dati_alloc();
+  p->allowed_mentions = discord_channel_allowed_mentions_dati_alloc();
 
 }
 struct discord_webhook_execute_webhook_params* discord_webhook_execute_webhook_params_alloc() {

@@ -31,19 +31,19 @@ void discord_audit_log_dati_from_json(char *json, size_t len, struct discord_aud
   /* specs/audit_log.json:11:18
      '{"name":"webhooks", "type": { "base":"struct discord_webhook_dati", "dec":"*" } }'
   */
-                struct discord_webhook_dati_from_json, p->webhooks,
+                discord_webhook_dati_from_json, p->webhooks,
   /* specs/audit_log.json:12:18
      '{"name":"users", "type": { "base":"struct discord_user_dati", "dec":"*"}}'
   */
-                struct discord_user_dati_from_json, p->users,
+                discord_user_dati_from_json, p->users,
   /* specs/audit_log.json:13:18
      '{"name":"audit_log_entries", "type": { "base":"struct discord_audit_log_entry_dati", "dec":"*"}}'
   */
-                struct discord_audit_log_entry_dati_from_json, p->audit_log_entries,
+                discord_audit_log_entry_dati_from_json, p->audit_log_entries,
   /* specs/audit_log.json:14:18
      '{"name":"integrations", "type": { "base":"struct discord_guild_integration_dati", "dec":"ntl"}}'
   */
-                struct discord_guild_integration_dati_list_from_json, &p->integrations,
+                discord_guild_integration_dati_list_from_json, &p->integrations,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
                 p->__M.record_null, sizeof(p->__M.record_null));
@@ -100,19 +100,19 @@ size_t discord_audit_log_dati_to_json(char *json, size_t len, struct discord_aud
   /* specs/audit_log.json:11:18
      '{"name":"webhooks", "type": { "base":"struct discord_webhook_dati", "dec":"*" } }'
   */
-                struct discord_webhook_dati_to_json, p->webhooks,
+                discord_webhook_dati_to_json, p->webhooks,
   /* specs/audit_log.json:12:18
      '{"name":"users", "type": { "base":"struct discord_user_dati", "dec":"*"}}'
   */
-                struct discord_user_dati_to_json, p->users,
+                discord_user_dati_to_json, p->users,
   /* specs/audit_log.json:13:18
      '{"name":"audit_log_entries", "type": { "base":"struct discord_audit_log_entry_dati", "dec":"*"}}'
   */
-                struct discord_audit_log_entry_dati_to_json, p->audit_log_entries,
+                discord_audit_log_entry_dati_to_json, p->audit_log_entries,
   /* specs/audit_log.json:14:18
      '{"name":"integrations", "type": { "base":"struct discord_guild_integration_dati", "dec":"ntl"}}'
   */
-                struct discord_guild_integration_dati_list_to_json, p->integrations,
+                discord_guild_integration_dati_list_to_json, p->integrations,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
 }
@@ -159,22 +159,22 @@ void discord_audit_log_dati_cleanup(struct discord_audit_log_dati *d) {
      '{"name":"webhooks", "type": { "base":"struct discord_webhook_dati", "dec":"*" } }'
   */
   if (d->webhooks)
-    struct discord_webhook_dati_free(d->webhooks);
+    discord_webhook_dati_free(d->webhooks);
   /* specs/audit_log.json:12:18
      '{"name":"users", "type": { "base":"struct discord_user_dati", "dec":"*"}}'
   */
   if (d->users)
-    struct discord_user_dati_free(d->users);
+    discord_user_dati_free(d->users);
   /* specs/audit_log.json:13:18
      '{"name":"audit_log_entries", "type": { "base":"struct discord_audit_log_entry_dati", "dec":"*"}}'
   */
   if (d->audit_log_entries)
-    struct discord_audit_log_entry_dati_free(d->audit_log_entries);
+    discord_audit_log_entry_dati_free(d->audit_log_entries);
   /* specs/audit_log.json:14:18
      '{"name":"integrations", "type": { "base":"struct discord_guild_integration_dati", "dec":"ntl"}}'
   */
   if (d->integrations)
-    struct discord_guild_integration_dati_list_free(d->integrations);
+    discord_guild_integration_dati_list_free(d->integrations);
 }
 
 void discord_audit_log_dati_init(struct discord_audit_log_dati *p) {
@@ -182,17 +182,17 @@ void discord_audit_log_dati_init(struct discord_audit_log_dati *p) {
   /* specs/audit_log.json:11:18
      '{"name":"webhooks", "type": { "base":"struct discord_webhook_dati", "dec":"*" } }'
   */
-  p->webhooks = struct discord_webhook_dati_alloc();
+  p->webhooks = discord_webhook_dati_alloc();
 
   /* specs/audit_log.json:12:18
      '{"name":"users", "type": { "base":"struct discord_user_dati", "dec":"*"}}'
   */
-  p->users = struct discord_user_dati_alloc();
+  p->users = discord_user_dati_alloc();
 
   /* specs/audit_log.json:13:18
      '{"name":"audit_log_entries", "type": { "base":"struct discord_audit_log_entry_dati", "dec":"*"}}'
   */
-  p->audit_log_entries = struct discord_audit_log_entry_dati_alloc();
+  p->audit_log_entries = discord_audit_log_entry_dati_alloc();
 
   /* specs/audit_log.json:14:18
      '{"name":"integrations", "type": { "base":"struct discord_guild_integration_dati", "dec":"ntl"}}'
@@ -274,7 +274,7 @@ void discord_audit_log_entry_dati_from_json(char *json, size_t len, struct disco
   /* specs/audit_log.json:68:18
      '{"name":"changes", "type": {"base":"struct discord_audit_log_change_dati", "dec":"*"}}'
   */
-                struct discord_audit_log_change_dati_from_json, p->changes,
+                discord_audit_log_change_dati_from_json, p->changes,
   /* specs/audit_log.json:69:18
      '{"name":"user_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
   */
@@ -290,7 +290,7 @@ void discord_audit_log_entry_dati_from_json(char *json, size_t len, struct disco
   /* specs/audit_log.json:72:18
      '{"name":"options", "type": {"base":"struct discord_audit_log_entry_optional_info_dati", "dec":"*"}}'
   */
-                struct discord_audit_log_entry_optional_info_dati_from_json, p->options,
+                discord_audit_log_entry_optional_info_dati_from_json, p->options,
   /* specs/audit_log.json:73:18
      '{"name":"reason", "type": {"base":"char", "dec":"[MAX_REASON_LEN]"}}'
   */
@@ -382,7 +382,7 @@ size_t discord_audit_log_entry_dati_to_json(char *json, size_t len, struct disco
   /* specs/audit_log.json:68:18
      '{"name":"changes", "type": {"base":"struct discord_audit_log_change_dati", "dec":"*"}}'
   */
-                struct discord_audit_log_change_dati_to_json, p->changes,
+                discord_audit_log_change_dati_to_json, p->changes,
   /* specs/audit_log.json:69:18
      '{"name":"user_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
   */
@@ -398,7 +398,7 @@ size_t discord_audit_log_entry_dati_to_json(char *json, size_t len, struct disco
   /* specs/audit_log.json:72:18
      '{"name":"options", "type": {"base":"struct discord_audit_log_entry_optional_info_dati", "dec":"*"}}'
   */
-                struct discord_audit_log_entry_optional_info_dati_to_json, p->options,
+                discord_audit_log_entry_optional_info_dati_to_json, p->options,
   /* specs/audit_log.json:73:18
      '{"name":"reason", "type": {"base":"char", "dec":"[MAX_REASON_LEN]"}}'
   */
@@ -454,7 +454,7 @@ void discord_audit_log_entry_dati_cleanup(struct discord_audit_log_entry_dati *d
      '{"name":"changes", "type": {"base":"struct discord_audit_log_change_dati", "dec":"*"}}'
   */
   if (d->changes)
-    struct discord_audit_log_change_dati_free(d->changes);
+    discord_audit_log_change_dati_free(d->changes);
   /* specs/audit_log.json:69:18
      '{"name":"user_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
   */
@@ -471,7 +471,7 @@ void discord_audit_log_entry_dati_cleanup(struct discord_audit_log_entry_dati *d
      '{"name":"options", "type": {"base":"struct discord_audit_log_entry_optional_info_dati", "dec":"*"}}'
   */
   if (d->options)
-    struct discord_audit_log_entry_optional_info_dati_free(d->options);
+    discord_audit_log_entry_optional_info_dati_free(d->options);
   /* specs/audit_log.json:73:18
      '{"name":"reason", "type": {"base":"char", "dec":"[MAX_REASON_LEN]"}}'
   */
@@ -487,7 +487,7 @@ void discord_audit_log_entry_dati_init(struct discord_audit_log_entry_dati *p) {
   /* specs/audit_log.json:68:18
      '{"name":"changes", "type": {"base":"struct discord_audit_log_change_dati", "dec":"*"}}'
   */
-  p->changes = struct discord_audit_log_change_dati_alloc();
+  p->changes = discord_audit_log_change_dati_alloc();
 
   /* specs/audit_log.json:69:18
      '{"name":"user_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
@@ -504,7 +504,7 @@ void discord_audit_log_entry_dati_init(struct discord_audit_log_entry_dati *p) {
   /* specs/audit_log.json:72:18
      '{"name":"options", "type": {"base":"struct discord_audit_log_entry_optional_info_dati", "dec":"*"}}'
   */
-  p->options = struct discord_audit_log_entry_optional_info_dati_alloc();
+  p->options = discord_audit_log_entry_optional_info_dati_alloc();
 
   /* specs/audit_log.json:73:18
      '{"name":"reason", "type": {"base":"char", "dec":"[MAX_REASON_LEN]"}}'

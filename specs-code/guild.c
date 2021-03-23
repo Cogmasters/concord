@@ -277,7 +277,7 @@ void discord_guild_dati_from_json(char *json, size_t len, struct discord_guild_d
   /* specs/guild.json:33:76
      '{"type":{"base":"struct discord_emoji_dati", "dec":"ntl"}, "name":"emojis"}'
   */
-                struct discord_emoji_dati_list_from_json, &p->emojis,
+                discord_emoji_dati_list_from_json, &p->emojis,
   /* specs/guild.json:34:57
      '{"type":{"base":"ja_str", "dec":"ntl"}, "name":"features", "todo":true", 
               "comment":"array of guild feature strings"}'
@@ -325,12 +325,12 @@ void discord_guild_dati_from_json(char *json, size_t len, struct discord_guild_d
   /* specs/guild.json:47:83
      '{"type":{"base":"struct discord_guild_member_dati", "dec":"ntl"}, "name":"members", "option":true}'
   */
-                struct discord_guild_member_dati_list_from_json, &p->members,
+                discord_guild_member_dati_list_from_json, &p->members,
   /* specs/guild.json:48:78
      '{"type":{"base":"struct discord_channel_dati", "dec":"ntl"}, "name":"channels", "option":true,
          "comment":"array of channel objects"}'
   */
-                struct discord_channel_dati_list_from_json, &p->channels,
+                discord_channel_dati_list_from_json, &p->channels,
   /* specs/guild.json:50:41
      '{"type":{"base":"int"}, "name":"presences", "todo":true, "option":true,
          "comment":"array of partial presence update objects"}'
@@ -387,7 +387,7 @@ void discord_guild_dati_from_json(char *json, size_t len, struct discord_guild_d
   /* specs/guild.json:65:89
      '{"type":{"base":"struct discord_guild_welcome_screen_dati", "dec":"*"}, "name":"welcome_screen", "option":true}'
   */
-                struct discord_guild_welcome_screen_dati_from_json, p->welcome_screen,
+                discord_guild_welcome_screen_dati_from_json, p->welcome_screen,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
                 p->__M.record_null, sizeof(p->__M.record_null));
@@ -904,7 +904,7 @@ size_t discord_guild_dati_to_json(char *json, size_t len, struct discord_guild_d
   /* specs/guild.json:33:76
      '{"type":{"base":"struct discord_emoji_dati", "dec":"ntl"}, "name":"emojis"}'
   */
-                struct discord_emoji_dati_list_to_json, p->emojis,
+                discord_emoji_dati_list_to_json, p->emojis,
   /* specs/guild.json:34:57
      '{"type":{"base":"ja_str", "dec":"ntl"}, "name":"features", "todo":true", 
               "comment":"array of guild feature strings"}'
@@ -952,12 +952,12 @@ size_t discord_guild_dati_to_json(char *json, size_t len, struct discord_guild_d
   /* specs/guild.json:47:83
      '{"type":{"base":"struct discord_guild_member_dati", "dec":"ntl"}, "name":"members", "option":true}'
   */
-                struct discord_guild_member_dati_list_to_json, p->members,
+                discord_guild_member_dati_list_to_json, p->members,
   /* specs/guild.json:48:78
      '{"type":{"base":"struct discord_channel_dati", "dec":"ntl"}, "name":"channels", "option":true,
          "comment":"array of channel objects"}'
   */
-                struct discord_channel_dati_list_to_json, p->channels,
+                discord_channel_dati_list_to_json, p->channels,
   /* specs/guild.json:50:41
      '{"type":{"base":"int"}, "name":"presences", "todo":true, "option":true,
          "comment":"array of partial presence update objects"}'
@@ -1014,7 +1014,7 @@ size_t discord_guild_dati_to_json(char *json, size_t len, struct discord_guild_d
   /* specs/guild.json:65:89
      '{"type":{"base":"struct discord_guild_welcome_screen_dati", "dec":"*"}, "name":"welcome_screen", "option":true}'
   */
-                struct discord_guild_welcome_screen_dati_to_json, p->welcome_screen,
+                discord_guild_welcome_screen_dati_to_json, p->welcome_screen,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
 }
@@ -1140,7 +1140,7 @@ void discord_guild_dati_cleanup(struct discord_guild_dati *d) {
      '{"type":{"base":"struct discord_emoji_dati", "dec":"ntl"}, "name":"emojis"}'
   */
   if (d->emojis)
-    struct discord_emoji_dati_list_free(d->emojis);
+    discord_emoji_dati_list_free(d->emojis);
   /* specs/guild.json:34:57
      '{"type":{"base":"ja_str", "dec":"ntl"}, "name":"features", "todo":true", 
               "comment":"array of guild feature strings"}'
@@ -1191,13 +1191,13 @@ void discord_guild_dati_cleanup(struct discord_guild_dati *d) {
      '{"type":{"base":"struct discord_guild_member_dati", "dec":"ntl"}, "name":"members", "option":true}'
   */
   if (d->members)
-    struct discord_guild_member_dati_list_free(d->members);
+    discord_guild_member_dati_list_free(d->members);
   /* specs/guild.json:48:78
      '{"type":{"base":"struct discord_channel_dati", "dec":"ntl"}, "name":"channels", "option":true,
          "comment":"array of channel objects"}'
   */
   if (d->channels)
-    struct discord_channel_dati_list_free(d->channels);
+    discord_channel_dati_list_free(d->channels);
   /* specs/guild.json:50:41
      '{"type":{"base":"int"}, "name":"presences", "todo":true, "option":true,
          "comment":"array of partial presence update objects"}'
@@ -1259,7 +1259,7 @@ void discord_guild_dati_cleanup(struct discord_guild_dati *d) {
      '{"type":{"base":"struct discord_guild_welcome_screen_dati", "dec":"*"}, "name":"welcome_screen", "option":true}'
   */
   if (d->welcome_screen)
-    struct discord_guild_welcome_screen_dati_free(d->welcome_screen);
+    discord_guild_welcome_screen_dati_free(d->welcome_screen);
 }
 
 void discord_guild_dati_init(struct discord_guild_dati *p) {
@@ -1455,7 +1455,7 @@ void discord_guild_dati_init(struct discord_guild_dati *p) {
   /* specs/guild.json:65:89
      '{"type":{"base":"struct discord_guild_welcome_screen_dati", "dec":"*"}, "name":"welcome_screen", "option":true}'
   */
-  p->welcome_screen = struct discord_guild_welcome_screen_dati_alloc();
+  p->welcome_screen = discord_guild_welcome_screen_dati_alloc();
 
 }
 struct discord_guild_dati* discord_guild_dati_alloc() {

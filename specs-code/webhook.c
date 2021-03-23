@@ -67,7 +67,7 @@ void discord_webhook_dati_from_json(char *json, size_t len, struct discord_webho
   /* specs/webhook.json:26:20
      '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*" }}'
   */
-                struct discord_user_dati_from_json, p->user,
+                discord_user_dati_from_json, p->user,
   /* specs/webhook.json:27:20
      '{ "name": "name", "type":{ "base":"char", "dec":"[WEBHOOK_NAME_LEN]" }}'
   */
@@ -201,7 +201,7 @@ size_t discord_webhook_dati_to_json(char *json, size_t len, struct discord_webho
   /* specs/webhook.json:26:20
      '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*" }}'
   */
-                struct discord_user_dati_to_json, p->user,
+                discord_user_dati_to_json, p->user,
   /* specs/webhook.json:27:20
      '{ "name": "name", "type":{ "base":"char", "dec":"[WEBHOOK_NAME_LEN]" }}'
   */
@@ -280,7 +280,7 @@ void discord_webhook_dati_cleanup(struct discord_webhook_dati *d) {
      '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*" }}'
   */
   if (d->user)
-    struct discord_user_dati_free(d->user);
+    discord_user_dati_free(d->user);
   /* specs/webhook.json:27:20
      '{ "name": "name", "type":{ "base":"char", "dec":"[WEBHOOK_NAME_LEN]" }}'
   */
@@ -322,7 +322,7 @@ void discord_webhook_dati_init(struct discord_webhook_dati *p) {
   /* specs/webhook.json:26:20
      '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*" }}'
   */
-  p->user = struct discord_user_dati_alloc();
+  p->user = discord_user_dati_alloc();
 
   /* specs/webhook.json:27:20
      '{ "name": "name", "type":{ "base":"char", "dec":"[WEBHOOK_NAME_LEN]" }}'
