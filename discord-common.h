@@ -184,7 +184,7 @@ struct cmd_cbs {
 };
 
 struct payload_s { /* PAYLOAD STRUCTURE */
-  struct discord_gateway_opcodes_code opcode; //field 'op'
+  enum discord_gateway_opcodes_code opcode; //field 'op'
   int seq_number; //field 's'
   char event_name[64]; //field 't'
   char event_data[8192]; //field 'd'
