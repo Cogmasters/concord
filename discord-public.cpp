@@ -195,27 +195,27 @@ discord_get_data(struct discord_client *client) {
 }
 
 void
-discord_replace_presence(struct discord_client *client, struct discord_presence_dati *presence)
+discord_replace_presence(struct discord_client *client, struct discord_gateway_identify_status_update_dati *presence)
 {
   if (NULL == presence) return;
 
-  discord_presence_dati_free(client->gw.identify->presence);
+  discord_gateway_identify_status_update_dati_free(client->gw.identify->presence);
   client->gw.identify->presence = presence;
 }
 
 void
 discord_set_presence(
   struct discord_client *client, 
-  struct discord_presence_activity_dati *activity, //will take ownership
+  struct discord_gateway_identify_status_update_activity_dati *activity, //will take ownership
   char status[], 
   bool afk)
 {
-  struct discord_presence_dati *presence = client->gw.identify->presence;
+  struct discord_gateway_identify_status_update_dati *presence = client->gw.identify->presence;
 
   if (activity) {
-    presence->activities = (struct discord_presence_activity_dati**)ntl_append(
+    presence->activities = (struct discord_gateway_identify_status_update_activity_dati**)ntl_append(
                               (void**)presence->activities, 
-                              sizeof(struct discord_presence_activity_dati), activity);
+                              sizeof(struct discord_gateway_identify_status_update_activity_dati), activity);
   }
   if (status) {
     int ret = snprintf(presence->status, 

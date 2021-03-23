@@ -82,8 +82,8 @@ void discord_run(struct discord_client *client);
 void* discord_set_data(struct discord_client *client, void *data);
 void* discord_get_data(struct discord_client *client);
 
-void discord_replace_presence(struct discord_client *client, struct discord_presence_dati *presence);
-void discord_set_presence(struct discord_client *client, struct discord_presence_activity_dati *activity, char status[], bool afk);
+void discord_replace_presence(struct discord_client *client, struct discord_gateway_identify_status_update_dati *presence);
+void discord_set_presence(struct discord_client *client, struct discord_gateway_identify_status_update_activity_dati *activity, char status[], bool afk);
 
 
 // EMBED MISC FUNCTIONS
@@ -124,7 +124,7 @@ void discord_get_guild(struct discord_client *client, const u64_snowflake_t guil
 void discord_get_channels(struct discord_client *client, const u64_snowflake_t guild_id, NTL_T(struct discord_channel_dati) *p_channels);
 void discord_create_channel(struct discord_client *client, const u64_snowflake_t guild_id, struct discord_guild_create_channel_params *params, struct discord_channel_dati *p_channel);
 void  discord_get_guild_member(struct discord_client *client, u64_snowflake_t guild_id, u64_snowflake_t user_id, struct discord_guild_member_dati *p_member);
-void discord_list_guild_members(struct discord_client *client, const u64_snowflake_t guild_id, struct struct discord_guild_list_guild_members_params *params, NTL_T(struct discord_guild_member_dati) *p_members);
+void discord_list_guild_members(struct discord_client *client, const u64_snowflake_t guild_id, struct discord_guild_list_guild_members_params *params, NTL_T(struct discord_guild_member_dati) *p_members);
 void discord_modify_guild_member(struct discord_client *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id, struct discord_guild_modify_guild_member_params *params, struct discord_guild_member_dati *p_member);
 void discord_remove_guild_member(struct discord_client *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id);
 void discord_get_guild_bans(struct discord_client *client, const u64_snowflake_t guild_id, NTL_T(struct discord_guild_ban_dati) *p_bans);

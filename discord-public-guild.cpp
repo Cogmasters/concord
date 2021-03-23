@@ -376,7 +376,7 @@ discord_create_guild_role(
   }
 
   char payload[MAX_PAYLOAD_LEN];
-  params_to_json(payload, sizeof(payload), params);
+  discord_guild_create_guild_role_params_to_json(payload, sizeof(payload), params);
 
   struct resp_handle resp_handle = {
     .ok_cb = p_role ? &discord_guild_role_dati_from_json_v : NULL,
