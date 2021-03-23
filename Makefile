@@ -1,4 +1,4 @@
-CC     ?= gcc
+CC           ?= gcc
 OBJDIR	     := obj
 LIBDIR	     := lib
 ACTOR_OBJDIR := actor_obj
@@ -7,9 +7,9 @@ ACC          ?= gcc
 
 
 COMMON_SRC  := $(wildcard common/*.c)
-ORKA_SRC    := $(wildcard orka-*.cpp)
-DISCORD_SRC := $(wildcard discord-*.cpp)
-GITHUB_SRC  := $(wildcard github-*.cpp)
+ORKA_SRC    := $(wildcard orka-*.c)
+DISCORD_SRC := $(wildcard discord-*.c)
+GITHUB_SRC  := $(wildcard github-*.c)
 SPECS       := $(wildcard specs/*.json)
 DB_SRC      := $(wildcard sqlite3/*.c)
 
@@ -35,13 +35,13 @@ DB_OBJS      := $(DB_SRC:%=$(OBJDIR)/%.o)
 
 OBJS := $(COMMON_OBJS) $(DISCORD_OBJS) $(GITHUB_OBJS) $(ORKA_OBJS)
 
-BOT_SRC  := $(wildcard bots/bot-*.cpp)
+BOT_SRC  := $(wildcard bots/bot-*.c)
 BOT_EXES := $(patsubst %.cpp, %.exe, $(BOT_SRC))
 
-BOT1_SRC := $(wildcard bots-1/bot-*.cpp)
+BOT1_SRC := $(wildcard bots-1/bot-*.c)
 BOT1_EXES := $(patsubst %.cpp, %.b1, $(BOT1_SRC))
 
-BOT2_SRC := $(wildcard bots-2/bot-*.cpp)
+BOT2_SRC := $(wildcard bots-2/bot-*.c)
 BOT2_EXES := $(patsubst %.cpp, %.b2, $(BOT2_SRC))
 
 TEST_SRC := $(wildcard test/test-*.cpp test/test-*.c)
@@ -71,28 +71,19 @@ CFLAGS += -Wall -std=c11 -O0 -g -D_GNU_SOURCE \
 	-Wno-incompatible-pointer-types -Wno-unused-function \
 	-I. -I./common 
 
-CXXFLAGS += -Wall -std=c++03 -O0 -g -D_GNU_SOURCE \
-	-Wno-write-strings  -I. -I./common
-
-GENFLAGS += -fpermissive
-
 ifeq ($(release),1)
 else
 	CFLAGS +=  -D_ORCA_DEBUG
-	CXXFLAGS +=  -D_ORCA_DEBUG
 endif
 
 ifeq ($(DEBUG_JSON),1)
 	CFLAGS += -D_ORCA_DEBUG_STRICT
-	CXXFLAGS += -D_ORCA_DEBUG_STRICT
 endif
 
 ifeq ($(CC),stensal-c)
 	CFLAGS += -D_DEFAULT_SOURCE
-	CXXFLAGS += -D_DEFAULT_SOURCE
 else
 	CFLAGS += -fPIC -D_XOPEN_SOURCE=700
-	CXXFLAGS += -fPIC -D_XOPEN_SOURCE=700
 endif
 
 
@@ -143,9 +134,6 @@ $(ACTOR_OBJDIR)/%.c.o : %.c
 $(OBJDIR)/%.c.o : %.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 
-$(OBJDIR)/%.cpp.o: %.cpp
-	$(CXX) $(CXXFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
-
 
 all_headers: $(SPECS)
 	rm -rf specs-code/all_*
@@ -160,26 +148,20 @@ specs-code/%.c: specs/%.json
 specs-code/%.h: specs/%.json
 	./bin/actor-gen.exe -C -d -o $@ $<
 
-$(OBJDIR)/%.cc.o: %.cc 
-	$(CXX) $(CXXFLAGS) $(LIBS_CFLAGS) $(GENFLAGS) -c -o $@ $< -Wno-unused-but-set-variable
-
 actor-gen.exe: mkdir $(ACTOR_GEN_OBJS)
 	$(ACC) -o $@ $(ACTOR_GEN_OBJS) -lm
 	@ mkdir -p bin
 	mv $@ ./bin
 
 #generic compilation
-%.b1: %.cpp libdiscord db
-	$(CXX) $(CXXFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBS_LDFLAGS) $(OBJDIR)/sqlite3/sqlite3.o
+%.b1: %.c libdiscord db
+	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBS_LDFLAGS) $(OBJDIR)/sqlite3/sqlite3.o
 
-%.b2: %.cpp libdiscord mujs
-	$(CXX) $(CXXFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBS_LDFLAGS) -lmujs
+%.b2: %.c libdiscord mujs
+	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBS_LDFLAGS) -lmujs
 
 %.exe : %.c libdiscord
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBS_LDFLAGS)
-
-%.exe: %.cpp libdiscord
-	$(CXX) $(CXXFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBS_LDFLAGS)
 
 libdiscord: mkdir $(OBJS) $(SPECS_OBJS)
 	$(AR) -cvq $(LIBDISCORD) $(OBJS) $(SPECS_OBJS)
