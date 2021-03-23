@@ -51,9 +51,9 @@ typedef uint64_t u64_unix_ms_t;
 typedef uint64_t u64_snowflake_t;
 
 
-#include "./specs-code/all_opaque_struct.hh"
-#include "./specs-code/all_enums.hh"
-#include "./specs-code/all_structs.hh"
+#include "./specs-code/all_opaque_struct.h"
+#include "./specs-code/all_enums.h"
+#include "./specs-code/all_structs.h"
 
 
 /* IDLE CALLBACK (runs on every iteration, no trigger required) */

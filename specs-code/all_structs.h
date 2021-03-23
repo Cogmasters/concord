@@ -2,18 +2,14 @@
 /*
 https://discord.com/developers/docs/resources/guild#membership-screening-object
 */
-namespace discord {
-namespace guild {
-namespace membership_screening {
 
-namespace field {
 /* https://discord.com/developers/docs/resources/guild#membership-screening-object-membership-screening-field-structure */
 /* This is defined at specs/guild.membership_screening.json:17:22 */
-struct dati {
+struct discord_guild_membership_screening_field_dati {
   /* specs/guild.membership_screening.json:20:20
      '{ "name": "field_type", "type":{ "base":"int", "int_alias":"discord::guild::membership_screening::field_type::code" }}'
   */
-  discord::guild::membership_screening::field_type::code field_type;
+  discord_guild_membership_screening_field_type_code field_type;
 
   /* specs/guild.membership_screening.json:21:20
      '{ "name": "label", "type":{ "base":"char", "dec":"*" }}'
@@ -43,10 +39,9 @@ struct dati {
     void *record_null[4];
   } __M; // metadata
 };
-} // namespace field
 
 /* This is defined at specs/guild.membership_screening.json:27:22 */
-struct dati {
+struct discord_guild_membership_screening_dati {
   /* specs/guild.membership_screening.json:30:20
      '{ "name": "version", "type":{ "base":"s_as_u64" }}'
   */
@@ -55,7 +50,7 @@ struct dati {
   /* specs/guild.membership_screening.json:31:20
      '{ "name": "fields", "type":{ "base":"discord::guild::membership_screening::field::dati", "dec":"ntl" }}'
   */
-  discord::guild::membership_screening::field::dati **fields;
+  discord_guild_membership_screening_field_dati **fields;
 
   /* specs/guild.membership_screening.json:32:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }}'
@@ -75,20 +70,14 @@ struct dati {
     void *record_null[3];
   } __M; // metadata
 };
-} // namespace membership_screening
-} // namespace guild
-} // namespace discord
 /* This file is generated from specs/channel.edit-channel-permissions.json, Please don't edit it. */
 /*
 
 */
-namespace discord {
-namespace channel {
-namespace edit_channel_permissions {
 
 /* https://discord.com/developers/docs/resources/channel#edit-channel-permissions */
 /* This is defined at specs/channel.edit-channel-permissions.json:8:22 */
-struct params {
+struct discord_channel_edit_channel_permissions_params {
   /* specs/channel.edit-channel-permissions.json:11:20
      '{ "name": "allow", "type":{ "base":"char", "dec":"*"}}'
   */
@@ -117,20 +106,14 @@ struct params {
     void *record_null[3];
   } __M; // metadata
 };
-} // namespace edit_channel_permissions
-} // namespace channel
-} // namespace discord
 /* This file is generated from specs/channel.modify-channel.json, Please don't edit it. */
 /*
 
 */
-namespace discord {
-namespace channel {
-namespace modify {
 
 /* https://discord.com/developers/docs/resources/channel#modify-channel */
 /* This is defined at specs/channel.modify-channel.json:8:22 */
-struct params {
+struct discord_channel_modify_params {
   /* specs/channel.modify-channel.json:11:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }}'
   */
@@ -174,7 +157,7 @@ struct params {
   /* specs/channel.modify-channel.json:19:20
      '{ "name": "permission_overwrites", "type":{ "base":"discord::channel::overwrite::dati", "dec":"ntl" }, "inject_if_not":null}'
   */
-  discord::channel::overwrite::dati **permission_overwrites;
+  discord_channel_overwrite_dati **permission_overwrites;
 
   /* specs/channel.modify-channel.json:20:20
      '{ "name": "parent_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0}'
@@ -194,21 +177,14 @@ struct params {
     void *record_null[10];
   } __M; // metadata
 };
-} // namespace modify
-} // namespace channel
-} // namespace discord
 /* This file is generated from specs/channel.message.json, Please don't edit it. */
 /*
 
 */
-namespace discord {
-namespace channel {
-namespace message {
 
-namespace sticker {
 /* https://discord.com/developers/docs/resources/channel#message-object-message-sticker-structure */
 /* This is defined at specs/channel.message.json:20:22 */
-struct dati {
+struct discord_channel_message_sticker_dati {
   /* specs/channel.message.json:22:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}}'
   */
@@ -248,7 +224,7 @@ struct dati {
   /* specs/channel.message.json:30:18
      '{"name":"type", "type":{"base":"int", "int_alias":"discord::channel::message::sticker::format_type::code"}}'
   */
-  discord::channel::message::sticker::format_type::code type;
+  discord_channel_message_sticker_format_type_code type;
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -263,13 +239,11 @@ struct dati {
     void *record_null[8];
   } __M; // metadata
 };
-} // namespace sticker
 
-namespace reference {
 /* Title: Message Reference Structure */
 /* https://discord.com/developers/docs/resources/channel#message-object-message-reference-structure */
 /* This is defined at specs/channel.message.json:50:22 */
-struct dati {
+struct discord_channel_message_reference_dati {
   /* specs/channel.message.json:52:18
      '{"name":"message_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, 
          "option":true, "inject_if_not":0}'
@@ -307,13 +281,11 @@ struct dati {
     void *record_null[4];
   } __M; // metadata
 };
-} // namespace reference
 
-namespace application {
 /* Title: Message Application Structure */
 /* https://discord.com/developers/docs/resources/channel#message-object-message-application-structure */
 /* This is defined at specs/channel.message.json:66:22 */
-struct dati {
+struct discord_channel_message_application_dati {
   /* specs/channel.message.json:68:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}}'
   */
@@ -353,17 +325,15 @@ struct dati {
     void *record_null[5];
   } __M; // metadata
 };
-} // namespace application
 
-namespace activity {
 /* Title: Message Activity Structure */
 /* https://discord.com/developers/docs/resources/channel#message-object-message-activity-structure */
 /* This is defined at specs/channel.message.json:92:22 */
-struct dati {
+struct discord_channel_message_activity_dati {
   /* specs/channel.message.json:94:18
      '{"name":"type", "type":{"base":"int", "int_alias":"discord::channel::message::activity::types::code"}}'
   */
-  discord::channel::message::activity::types::code type;
+  discord_channel_message_activity_types_code type;
 
   /* specs/channel.message.json:95:18
      '{"name":"party_id", "type":{"base":"char", "dec":"*"},
@@ -384,12 +354,11 @@ struct dati {
     void *record_null[2];
   } __M; // metadata
 };
-} // namespace activity
 
 /* Title: Message Structure */
 /* https://discord.com/developers/docs/resources/channel#message-object */
 /* This is defined at specs/channel.message.json:128:22 */
-struct dati {
+struct discord_channel_message_dati {
   /* specs/channel.message.json:130:79
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"id"}'
   */
@@ -409,13 +378,13 @@ struct dati {
   /* specs/channel.message.json:134:69
      '{"type":{"base":"discord::user::dati", "dec":"*"}, "name":"author"}'
   */
-  discord::user::dati *author;
+  discord_user_dati *author;
 
   /* specs/channel.message.json:135:78
      '{"type":{"base":"discord::guild::member::dati", "dec":"*"}, "name":"member", 
           "option":true, "comment":"partial guild member object"}'
   */
-  discord::guild::member::dati *member; // partial guild member object
+  discord_guild_member_dati *member; // partial guild member object
 
   /* specs/channel.message.json:137:54
      '{"type":{"base":"char", "dec":"*"}, "name":"content"}'
@@ -447,7 +416,7 @@ struct dati {
      '{"type":{"base":"discord::user::dati", "dec":"ntl"}, "name":"mentions", 
           "comment":"array of user objects, with an additional partial member field"}'
   */
-  discord::user::dati **mentions; // array of user objects, with an additional partial member field
+  discord_user_dati **mentions; // array of user objects, with an additional partial member field
 
   /* specs/channel.message.json:145:58
      '{"type":{"base":"ja_u64", "dec":"ntl"}, "name":"mention_roles", "comment":"array of role object ids"}'
@@ -458,23 +427,23 @@ struct dati {
      '{"type":{"base":"discord::channel::mention::dati", "dec":"ntl"}, "name":"mention_channels",
           "option":true }'
   */
-  discord::channel::mention::dati **mention_channels;
+  discord_channel_mention_dati **mention_channels;
 
   /* specs/channel.message.json:148:86
      '{"type":{"base":"discord::channel::attachment::dati", "dec":"ntl"}, "name":"attachments"}'
   */
-  discord::channel::attachment::dati **attachments;
+  discord_channel_attachment_dati **attachments;
 
   /* specs/channel.message.json:149:81
      '{"type":{"base":"discord::channel::embed::dati", "dec":"ntl"}, "name":"embeds"}'
   */
-  discord::channel::embed::dati **embeds;
+  discord_channel_embed_dati **embeds;
 
   /* specs/channel.message.json:150:83
      '{"type":{"base":"discord::channel::reaction::dati","dec":"ntl"}, "name":"reactions", 
           "option":true }'
   */
-  discord::channel::reaction::dati **reactions;
+  discord_channel_reaction_dati **reactions;
 
   /* specs/channel.message.json:152:54
      '{"type":{"base":"char", "dec":"*"}, "name":"nonce", "comment":"integer or string",
@@ -496,44 +465,44 @@ struct dati {
   /* specs/channel.message.json:157:96
      '{"type":{"base":"int", "int_alias":"discord::channel::message::types::code"}, "name":"type"}'
   */
-  discord::channel::message::types::code type;
+  discord_channel_message_types_code type;
 
   /* specs/channel.message.json:158:91
      '{"type":{"base":"discord::channel::message::activity::dati", "dec":"*"}, "name":"activity", 
           "option":true, "inject_if_not":null }'
   */
-  discord::channel::message::activity::dati *activity;
+  discord_channel_message_activity_dati *activity;
 
   /* specs/channel.message.json:160:96
      '{"type":{"base":"discord::channel::message::application::dati", "dec":"ntl"}, "name":"application",
           "option":true, "inject_if_not":null }'
   */
-  discord::channel::message::application::dati **application;
+  discord_channel_message_application_dati **application;
 
   /* specs/channel.message.json:162:92
      '{"type":{"base":"discord::channel::message::reference::dati", "dec":"*"}, "name":"message_reference",
           "option":true, "inject_if_not":null }'
   */
-  discord::channel::message::reference::dati *message_reference;
+  discord_channel_message_reference_dati *message_reference;
 
   /* specs/channel.message.json:164:96
      '{"type":{"base":"int", "int_alias":"discord::channel::message::flags::code"}, "name":"flags",
           "option":true, "inject_if_not":0 }'
   */
-  discord::channel::message::flags::code flags;
+  discord_channel_message_flags_code flags;
 
   /* specs/channel.message.json:166:92
      '{"type":{"base":"discord::channel::message::sticker::dati", "dec":"ntl"}, "name":"stickers",
           "option":true, "inject_if_not":null, "comment":"array of sticker objects"}'
   */
-  discord::channel::message::sticker::dati **stickers; // array of sticker objects
+  discord_channel_message_sticker_dati **stickers; // array of sticker objects
 
   /* specs/channel.message.json:168:81
      '{"type":{"base":"discord::channel::message::dati", "dec":"*"}, "name":"referenced_message", 
           "lazy_init":true, "option":true", "inject_if_not":null,
           "comment":"this will cause recursive allocation if allocating as the parent"}'
   */
-  discord::channel::message::dati *referenced_message; // this will cause recursive allocation if allocating as the parent
+  discord_channel_message_dati *referenced_message; // this will cause recursive allocation if allocating as the parent
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -548,20 +517,14 @@ struct dati {
     void *record_null[26];
   } __M; // metadata
 };
-} // namespace message
-} // namespace channel
-} // namespace discord
 /* This file is generated from specs/webhook.edit-webhook-message.json, Please don't edit it. */
 /*
 
 */
-namespace discord {
-namespace webhook {
-namespace edit_webhook_message {
 
 /* https://discord.com/developers/docs/resources/webhook#edit-webhook-message */
 /* This is defined at specs/webhook.edit-webhook-message.json:8:22 */
-struct params {
+struct discord_webhook_edit_webhook_message_params {
   /* specs/webhook.edit-webhook-message.json:11:20
      '{ "name": "content", "type":{ "base":"char", "dec":"[2000+1]" }, 
           "comment":"name of the webhook(1-2000) chars" }'
@@ -572,14 +535,14 @@ struct params {
      '{ "name": "embeds", "type":{ "base":"discord::channel::embed::dati", "dec":"ntl" }, 
           "comment":"array of up to 10 embeds objects" }'
   */
-  discord::channel::embed::dati **embeds; // array of up to 10 embeds objects
+  discord_channel_embed_dati **embeds; // array of up to 10 embeds objects
 
   /* specs/webhook.edit-webhook-message.json:15:20
      '{ "name": "allowed_mentions", 
           "type":{ "base":"discord::channel::allowed_mentions::dati", "dec":"*" }, 
           "comment":"allowed mentions for the message" }'
   */
-  discord::channel::allowed_mentions::dati *allowed_mentions; // allowed mentions for the message
+  discord_channel_allowed_mentions_dati *allowed_mentions; // allowed mentions for the message
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -594,20 +557,14 @@ struct params {
     void *record_null[3];
   } __M; // metadata
 };
-} // namespace edit_webhook_message
-} // namespace webhook
-} // namespace discord
 /* This file is generated from specs/template.create-guild-template.json, Please don't edit it. */
 /*
 
 */
-namespace discord {
-namespace Template {
-namespace create_guild_template {
 
 /* https://discord.com/developers/docs/resources/template#create-guild-template */
 /* This is defined at specs/template.create-guild-template.json:8:22 */
-struct params {
+struct discord_Template_create_guild_template_params {
   /* specs/template.create-guild-template.json:11:20
      '{ "name": "name", "type":{ "base":"char", "dec":"[100+1]"}, "comment":"name of the guild"}'
   */
@@ -632,20 +589,14 @@ struct params {
     void *record_null[2];
   } __M; // metadata
 };
-} // namespace create_guild_template
-} // namespace Template
-} // namespace discord
 /* This file is generated from specs/channel.group-dm-add-recipient.json, Please don't edit it. */
 /*
 
 */
-namespace discord {
-namespace channel {
-namespace group_dm_add_recipient {
 
 /* https://discord.com/developers/docs/resources/channel#group-dm-add-recipient */
 /* This is defined at specs/channel.group-dm-add-recipient.json:8:22 */
-struct params {
+struct discord_channel_group_dm_add_recipient_params {
   /* specs/channel.group-dm-add-recipient.json:11:20
      '{ "name": "access_token", "type":{ "base":"char", "dec":"*"}}'
   */
@@ -669,20 +620,14 @@ struct params {
     void *record_null[2];
   } __M; // metadata
 };
-} // namespace group_dm_add_recipient
-} // namespace channel
-} // namespace discord
 /* This file is generated from specs/channel.create-channel-invite.json, Please don't edit it. */
 /*
 
 */
-namespace discord {
-namespace channel {
-namespace create_channel_invite {
 
 /* https://discord.com/developers/docs/resources/channel#create-channel-invite */
 /* This is defined at specs/channel.create-channel-invite.json:8:22 */
-struct params {
+struct discord_channel_create_channel_invite_params {
   /* specs/channel.create-channel-invite.json:11:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "loc":"url"}'
   */
@@ -733,19 +678,13 @@ struct params {
     void *record_null[7];
   } __M; // metadata
 };
-} // namespace create_channel_invite
-} // namespace channel
-} // namespace discord
 /* This file is generated from specs/guild.ban.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/resources/guild#ban-object
 */
-namespace discord {
-namespace guild {
 
-namespace ban {
 /* This is defined at specs/guild.ban.json:9:22 */
-struct dati {
+struct discord_guild_ban_dati {
   /* specs/guild.ban.json:12:20
      '{ "name": "reason", "type":{ "base":"char", "dec":"[MAX_REASON_LEN]" }}'
   */
@@ -754,7 +693,7 @@ struct dati {
   /* specs/guild.ban.json:13:20
      '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*"}, "comment":"partial user object"}'
   */
-  discord::user::dati *user; // partial user object
+  discord_user_dati *user; // partial user object
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -769,20 +708,15 @@ struct dati {
     void *record_null[2];
   } __M; // metadata
 };
-} // namespace ban
-} // namespace guild
-} // namespace discord
 /* This file is generated from specs/voice.json, Please don't edit it. */
 /*
 (null)
 */
-namespace discord {
 
-namespace voice {
 /* Title: Voice State Object */
 /* https://discord.com/developers/docs/resources/voice#voice-state-object-voice-state-structure */
 /* This is defined at specs/voice.json:9:22 */
-struct dati {
+struct discord_voice_dati {
   /* specs/voice.json:12:20
      '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
@@ -801,7 +735,7 @@ struct dati {
   /* specs/voice.json:15:20
      '{ "name": "member", "type":{ "base":"discord::guild::member::dati", "dec":"*" }}'
   */
-  discord::guild::member::dati *member;
+  discord_guild_member_dati *member;
 
   /* specs/voice.json:16:20
      '{ "name": "session_id", "type":{ "base":"char", "dec":"*" }}'
@@ -856,14 +790,11 @@ struct dati {
     void *record_null[12];
   } __M; // metadata
 };
-} // namespace voice
 
-namespace voice {
-namespace region {
 /* Title: Voice Region Object */
 /* https://discord.com/developers/docs/resources/voice#voice-region-object-voice-region-structure */
 /* This is defined at specs/voice.json:30:22 */
-struct dati {
+struct discord_voice_region_dati {
   /* specs/voice.json:33:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }'
   */
@@ -907,20 +838,14 @@ struct dati {
     void *record_null[6];
   } __M; // metadata
 };
-} // namespace region
-} // namespace voice
-} // namespace discord
 /* This file is generated from specs/channel.get-reactions.json, Please don't edit it. */
 /*
 
 */
-namespace discord {
-namespace channel {
-namespace get_reactions {
 
 /* https://discord.com/developers/docs/resources/channel#get-reactions */
 /* This is defined at specs/channel.get-reactions.json:8:22 */
-struct params {
+struct discord_channel_get_reactions_params {
   /* specs/channel.get-reactions.json:11:20
      '{ "name": "before", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "loc":"query"}'
   */
@@ -949,19 +874,14 @@ struct params {
     void *record_null[3];
   } __M; // metadata
 };
-} // namespace get_reactions
-} // namespace channel
-} // namespace discord
 /* This file is generated from specs/guild.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/resources/guild#guild-object-guild-structure
 */
-namespace discord {
-namespace guild {
 
 /* Title: Guild Structure */
 /* This is defined at specs/guild.json:9:22 */
-struct dati {
+struct discord_guild_dati {
   /* specs/guild.json:12:78
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"id"}'
   */
@@ -1035,19 +955,19 @@ struct dati {
   /* specs/guild.json:26:97
      '{"type":{"base":"int", "int_alias":"discord::guild::verification_level::code"}, "name":"verification_level"}'
   */
-  discord::guild::verification_level::code verification_level;
+  discord_guild_verification_level_code verification_level;
 
   /* specs/guild.json:28:32
      '{"type":{"base":"int", "int_alias":"discord::guild::default_message_notification_level::code"}, 
               "name":"default_message_notifications"}'
   */
-  discord::guild::default_message_notification_level::code default_message_notifications;
+  discord_guild_default_message_notification_level_code default_message_notifications;
 
   /* specs/guild.json:30:32
      '{"type":{"base":"int", "int_alias":"discord::guild::explicit_content_filter_level::code"},
               "name":"explicit_content_filter"}'
   */
-  discord::guild::explicit_content_filter_level::code explicit_content_filter;
+  discord_guild_explicit_content_filter_level_code explicit_content_filter;
 
   /* specs/guild.json:31:77
      '{"type":{"base":"discord::guild::role::dati", "dec":"ntl"}, "name":"roles", "todo":true, 
@@ -1058,7 +978,7 @@ struct dati {
   /* specs/guild.json:33:71
      '{"type":{"base":"discord::emoji::dati", "dec":"ntl"}, "name":"emojis"}'
   */
-  discord::emoji::dati **emojis;
+  discord_emoji_dati **emojis;
 
   /* specs/guild.json:34:57
      '{"type":{"base":"ja_str", "dec":"ntl"}, "name":"features", "todo":true", 
@@ -1069,7 +989,7 @@ struct dati {
   /* specs/guild.json:36:88
      '{"type":{"base":"int", "int_alias":"discord::guild::mfa_level::code"}, "name":"mfa_level"}'
   */
-  discord::guild::mfa_level::code mfa_level;
+  discord_guild_mfa_level_code mfa_level;
 
   /* specs/guild.json:37:95
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake", "nullable":true}, "name":"application_id"}'
@@ -1084,7 +1004,7 @@ struct dati {
   /* specs/guild.json:39:99
      '{"type":{"base":"int", "int_alias":"discord::guild::system_channel_flags::code"}, "name":"system_channel_flags"}'
   */
-  discord::guild::system_channel_flags::code system_channel_flags;
+  discord_guild_system_channel_flags_code system_channel_flags;
 
   /* specs/guild.json:40:95
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake", "nullable":true}, "name":"rules_channel_id"}'
@@ -1120,13 +1040,13 @@ struct dati {
   /* specs/guild.json:47:79
      '{"type":{"base":"discord::guild::member::dati", "dec":"ntl"}, "name":"members", "option":true}'
   */
-  discord::guild::member::dati **members;
+  discord_guild_member_dati **members;
 
   /* specs/guild.json:48:73
      '{"type":{"base":"discord::channel::dati", "dec":"ntl"}, "name":"channels", "option":true,
          "comment":"array of channel objects"}'
   */
-  discord::channel::dati **channels; // array of channel objects
+  discord_channel_dati **channels; // array of channel objects
 
   /* specs/guild.json:50:41
      '{"type":{"base":"int"}, "name":"presences", "todo":true, "option":true,
@@ -1162,7 +1082,7 @@ struct dati {
   /* specs/guild.json:57:91
      '{"type":{"base":"int", "int_alias":"discord::guild::premium_tier::code"}, "name":"premium_tier"}'
   */
-  discord::guild::premium_tier::code premium_tier;
+  discord_guild_premium_tier_code premium_tier;
 
   /* specs/guild.json:58:41
      '{"type":{"base":"int"}, "name":"premium_subscription_count", "option":true}'
@@ -1198,7 +1118,7 @@ struct dati {
   /* specs/guild.json:65:85
      '{"type":{"base":"discord::guild::welcome_screen::dati", "dec":"*"}, "name":"welcome_screen", "option":true}'
   */
-  discord::guild::welcome_screen::dati *welcome_screen;
+  discord_guild_welcome_screen_dati *welcome_screen;
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -1213,18 +1133,14 @@ struct dati {
     void *record_null[46];
   } __M; // metadata
 };
-} // namespace guild
-} // namespace discord
 /* This file is generated from specs/user.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/resources/user#user-object
 */
-namespace discord {
-namespace user {
 
 /* Title: User Structure */
 /* This is defined at specs/user.json:44:18 */
-struct dati {
+struct discord_user_dati {
   /* specs/user.json:47:14
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"} }'
   */
@@ -1278,17 +1194,17 @@ struct dati {
   /* specs/user.json:57:14
      '{ "name": "flags", "type":{ "base":"int", "int_alias": "discord::user::flags::code" }}'
   */
-  discord::user::flags::code flags;
+  discord_user_flags_code flags;
 
   /* specs/user.json:58:14
      '{ "name": "premium_type", "type":{ "base":"int", "int_alias": "discord::user::premium_types::code" }}'
   */
-  discord::user::premium_types::code premium_type;
+  discord_user_premium_types_code premium_type;
 
   /* specs/user.json:59:14
      '{ "name": "public_flags", "type":{ "base":"int", "int_alias": "discord::user::flags::code" }}'
   */
-  discord::user::flags::code public_flags;
+  discord_user_flags_code public_flags;
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -1304,11 +1220,10 @@ struct dati {
   } __M; // metadata
 };
 
-namespace connection {
 /* Title: Connection Structure */
 /* https://discord.com/developers/docs/resources/user#connection-object-connection-structure */
 /* This is defined at specs/user.json:77:18 */
-struct dati {
+struct discord_user_connection_dati {
   /* specs/user.json:80:14
      '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
   */
@@ -1352,7 +1267,7 @@ struct dati {
   /* specs/user.json:88:14
      '{ "name": "visibility", "type":{ "base":"int", "int_alias":"discord::user::connection::visibility_types::code" }}'
   */
-  discord::user::connection::visibility_types::code visibility;
+  discord_user_connection_visibility_types_code visibility;
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -1367,20 +1282,14 @@ struct dati {
     void *record_null[9];
   } __M; // metadata
 };
-} // namespace connection
-} // namespace user
-} // namespace discord
 /* This file is generated from specs/guild.modify-guild-member.json, Please don't edit it. */
 /*
 
 */
-namespace discord {
-namespace guild {
-namespace modify_guild_member {
 
 /* https://discord.com/developers/docs/resources/guild#modify-guild-member */
 /* This is defined at specs/guild.modify-guild-member.json:8:22 */
-struct params {
+struct discord_guild_modify_guild_member_params {
   /* specs/guild.modify-guild-member.json:11:20
      '{ "name": "nick", "type":{ "base":"char", "dec":"*" }}'
   */
@@ -1419,22 +1328,15 @@ struct params {
     void *record_null[5];
   } __M; // metadata
 };
-} // namespace modify_guild_member
-} // namespace guild
-} // namespace discord
 /* This file is generated from specs/guild.integration.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/resources/guild#integration-object-integration-structure
 */
-namespace discord {
-namespace guild {
 
-namespace integration {
-namespace account {
 /* Title: Integration Account Structure */
 /* https://discord.com/developers/docs/resources/guild#integration-account-object-integration-account-structure */
 /* This is defined at specs/guild.integration.json:21:22 */
-struct dati {
+struct discord_guild_integration_account_dati {
   /* specs/guild.integration.json:23:19
      '{ "name":"id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
@@ -1458,15 +1360,11 @@ struct dati {
     void *record_null[2];
   } __M; // metadata
 };
-} // namespace account
-} // namespace integration
 
-namespace integration {
-namespace application {
 /* Title: Integration Application Object */
 /* https://discord.com/developers/docs/resources/guild#integration-application-object-integration-application-structure */
 /* This is defined at specs/guild.integration.json:31:22 */
-struct dati {
+struct discord_guild_integration_application_dati {
   /* specs/guild.integration.json:33:19
      '{ "name":"id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
@@ -1495,7 +1393,7 @@ struct dati {
   /* specs/guild.integration.json:38:19
      '{ "name":"bot", "type":{ "base":"discord::user::dati", "dec":"*" }, "option":true}'
   */
-  discord::user::dati *bot;
+  discord_user_dati *bot;
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -1510,14 +1408,11 @@ struct dati {
     void *record_null[6];
   } __M; // metadata
 };
-} // namespace application
-} // namespace integration
 
-namespace integration {
 /* Title: Integration Structure */
 /* https://discord.com/developers/docs/resources/guild#integration-object-integration-structure */
 /* This is defined at specs/guild.integration.json:45:22 */
-struct dati {
+struct discord_guild_integration_dati {
   /* specs/guild.integration.json:48:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
@@ -1556,7 +1451,7 @@ struct dati {
   /* specs/guild.integration.json:55:20
      '{ "name": "expire_behavior", "type":{ "base":"int", "int_alias":"discord::guild::integration::expire_behaviors::code"}}'
   */
-  discord::guild::integration::expire_behaviors::code expire_behavior;
+  discord_guild_integration_expire_behaviors_code expire_behavior;
 
   /* specs/guild.integration.json:56:20
      '{ "name": "expire_grace_period", "type":{ "base":"int"}}'
@@ -1566,12 +1461,12 @@ struct dati {
   /* specs/guild.integration.json:57:20
      '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*"}, "opt":true}'
   */
-  discord::user::dati *user;
+  discord_user_dati *user;
 
   /* specs/guild.integration.json:58:20
      '{ "name": "account", "type":{ "base":"discord::guild::integration::account::dati", "dec":"*"}}'
   */
-  discord::guild::integration::account::dati *account;
+  discord_guild_integration_account_dati *account;
 
   /* specs/guild.integration.json:59:20
      '{ "name": "synced_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601"}}'
@@ -1591,7 +1486,7 @@ struct dati {
   /* specs/guild.integration.json:62:20
      '{ "name": "application", "type":{ "base":"discord::guild::integration::application::dati", "dec":"*" }}'
   */
-  discord::guild::integration::application::dati *application;
+  discord_guild_integration_application_dati *application;
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -1606,21 +1501,15 @@ struct dati {
     void *record_null[15];
   } __M; // metadata
 };
-} // namespace integration
-} // namespace guild
-} // namespace discord
 /* This file is generated from specs/guild.enum.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/resources/guild#integration-object-integration-structure
 */
-namespace discord {
-namespace guild {
 
-namespace unavailable_guild {
 /* Title: Unavailable Guild Object */
 /* https://discord.com/developers/docs/resources/guild#unavailable-guild-object */
 /* This is defined at specs/guild.enum.json:100:23 */
-struct dati {
+struct discord_guild_unavailable_guild_dati {
   /* specs/guild.enum.json:102:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}}'
   */
@@ -1644,13 +1533,11 @@ struct dati {
     void *record_null[2];
   } __M; // metadata
 };
-} // namespace unavailable_guild
 
-namespace preview {
 /* Title: Guild Preview Object */
 /* https://discord.com/developers/docs/resources/guild#guild-preview-object */
 /* This is defined at specs/guild.enum.json:110:23 */
-struct dati {
+struct discord_guild_preview_dati {
   /* specs/guild.enum.json:112:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}}'
   */
@@ -1679,7 +1566,7 @@ struct dati {
   /* specs/guild.enum.json:117:18
      '{"name":"emojis", "type":{"base":"discord::emoji::dati", "dec":"*"}}'
   */
-  discord::emoji::dati *emojis;
+  discord_emoji_dati *emojis;
 
   /* specs/guild.enum.json:118:18
      '{"name":"features", "todo":true, "type":{"base":"char", "dec":"ntl"}}'
@@ -1714,13 +1601,11 @@ struct dati {
     void *record_null[10];
   } __M; // metadata
 };
-} // namespace preview
 
-namespace widget {
 /* Title: Guild Widget Object */
 /* https://discord.com/developers/docs/resources/guild#guild-widget-object */
 /* This is defined at specs/guild.enum.json:128:23 */
-struct dati {
+struct discord_guild_widget_dati {
   /* specs/guild.enum.json:130:18
      '{"name":"enabled", "type":{"base":"bool"}}'
   */
@@ -1745,20 +1630,15 @@ struct dati {
     void *record_null[2];
   } __M; // metadata
 };
-} // namespace widget
-} // namespace guild
-} // namespace discord
 /* This file is generated from specs/invite.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/resources/invite#invite-object
 */
-namespace discord {
-namespace invite {
 
 /* Title: Invite Structure */
 /* https://discord.com/developers/docs/resources/invite#invite-object-invite-structure */
 /* This is defined at specs/invite.json:19:22 */
-struct dati {
+struct discord_invite_dati {
   /* specs/invite.json:22:20
      '{ "name": "code", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
   */
@@ -1767,27 +1647,27 @@ struct dati {
   /* specs/invite.json:23:20
      '{ "name": "guild", "type":{ "base":"discord::guild::dati", "dec":"*"}, "comment":"partial guild object"}'
   */
-  discord::guild::dati *guild; // partial guild object
+  discord_guild_dati *guild; // partial guild object
 
   /* specs/invite.json:24:20
      '{ "name": "channel", "type":{ "base":"discord::channel::dati", "dec":"*"}, "comment":"partial channel object"}'
   */
-  discord::channel::dati *channel; // partial channel object
+  discord_channel_dati *channel; // partial channel object
 
   /* specs/invite.json:25:20
      '{ "name": "inviter", "type":{ "base":"discord::user::dati", "dec":"*"}}'
   */
-  discord::user::dati *inviter;
+  discord_user_dati *inviter;
 
   /* specs/invite.json:26:20
      '{ "name": "target_user", "type":{ "base":"discord::user::dati", "dec":"*"}, "comment":"partial user object"}'
   */
-  discord::user::dati *target_user; // partial user object
+  discord_user_dati *target_user; // partial user object
 
   /* specs/invite.json:27:20
      '{ "name": "target_user_type", "type":{ "base":"int", "int_alias":"discord::invite::target_user_types::code" }}'
   */
-  discord::invite::target_user_types::code target_user_type;
+  discord_invite_target_user_types_code target_user_type;
 
   /* specs/invite.json:28:20
      '{ "name": "approximate_presence_count", "type":{ "base":"int" }}'
@@ -1813,11 +1693,10 @@ struct dati {
   } __M; // metadata
 };
 
-namespace metadata {
 /* Title: Invite Metadata Structure */
 /* https://discord.com/developers/docs/resources/invite#invite-metadata-object */
 /* This is defined at specs/invite.json:36:22 */
-struct dati {
+struct discord_invite_metadata_dati {
   /* specs/invite.json:39:20
      '{ "name": "user", "type":{ "base":"int" }}'
   */
@@ -1856,20 +1735,14 @@ struct dati {
     void *record_null[5];
   } __M; // metadata
 };
-} // namespace metadata
-} // namespace invite
-} // namespace discord
 /* This file is generated from specs/webhook.modify-webhook.json, Please don't edit it. */
 /*
 
 */
-namespace discord {
-namespace webhook {
-namespace modify_webhook {
 
 /* https://discord.com/developers/docs/resources/webhook#modify-webhook */
 /* This is defined at specs/webhook.modify-webhook.json:8:22 */
-struct params {
+struct discord_webhook_modify_webhook_params {
   /* specs/webhook.modify-webhook.json:11:20
      '{ "name": "name", "type":{ "base":"char", "dec":"[80+1]" }, 
           "comment":"name of the webhook(1-80) chars" }'
@@ -1902,20 +1775,14 @@ struct params {
     void *record_null[3];
   } __M; // metadata
 };
-} // namespace modify_webhook
-} // namespace webhook
-} // namespace discord
 /* This file is generated from specs/template.create-guild-from-template.json, Please don't edit it. */
 /*
 
 */
-namespace discord {
-namespace Template {
-namespace create_guild_from_template {
 
 /* https://discord.com/developers/docs/resources/template#create-guild-from-template */
 /* This is defined at specs/template.create-guild-from-template.json:8:22 */
-struct params {
+struct discord_Template_create_guild_from_template_params {
   /* specs/template.create-guild-from-template.json:11:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}'
   */
@@ -1939,20 +1806,14 @@ struct params {
     void *record_null[2];
   } __M; // metadata
 };
-} // namespace create_guild_from_template
-} // namespace Template
-} // namespace discord
 /* This file is generated from specs/channel.objects.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/resources/channel#overwrite-object-overwrite-structure
 */
-namespace discord {
-namespace channel {
 
-namespace overwrite {
 /* Title: Overwrite Structure */
 /* This is defined at specs/channel.objects.json:10:22 */
-struct dati {
+struct discord_channel_overwrite_dati {
   /* specs/channel.objects.json:13:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
@@ -1988,12 +1849,10 @@ struct dati {
     void *record_null[4];
   } __M; // metadata
 };
-} // namespace overwrite
 
-namespace reaction {
 /* https://discord.com/developers/docs/resources/channel#reaction-object-reaction-structure */
 /* This is defined at specs/channel.objects.json:24:22 */
-struct dati {
+struct discord_channel_reaction_dati {
   /* specs/channel.objects.json:27:20
      '{ "name": "count", "type":{ "base":"int" }}'
   */
@@ -2007,7 +1866,7 @@ struct dati {
   /* specs/channel.objects.json:29:20
      '{ "name": "emoji", "type":{ "base":"discord::emoji::dati", "dec":"*" }, "comment":"partial emoji object"}'
   */
-  discord::emoji::dati *emoji; // partial emoji object
+  discord_emoji_dati *emoji; // partial emoji object
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -2022,13 +1881,11 @@ struct dati {
     void *record_null[3];
   } __M; // metadata
 };
-} // namespace reaction
 
-namespace followed_channel {
 /* Title: Followed Channel Structure */
 /* https://discord.com/developers/docs/resources/channel#followed-channel-object-followed-channel-structure */
 /* This is defined at specs/channel.objects.json:36:22 */
-struct dati {
+struct discord_channel_followed_channel_dati {
   /* specs/channel.objects.json:39:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
@@ -2052,12 +1909,10 @@ struct dati {
     void *record_null[2];
   } __M; // metadata
 };
-} // namespace followed_channel
 
-namespace attachment {
 /* https://discord.com/developers/docs/resources/channel#attachment-object */
 /* This is defined at specs/channel.objects.json:46:22 */
-struct dati {
+struct discord_channel_attachment_dati {
   /* specs/channel.objects.json:49:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
@@ -2106,13 +1961,11 @@ struct dati {
     void *record_null[7];
   } __M; // metadata
 };
-} // namespace attachment
 
-namespace mention {
 /* Title: Channel Mention Structure */
 /* https://discord.com/developers/docs/resources/channel#channel-mention-object-channel-mention-structure */
 /* This is defined at specs/channel.objects.json:62:22 */
-struct dati {
+struct discord_channel_mention_dati {
   /* specs/channel.objects.json:65:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
@@ -2126,7 +1979,7 @@ struct dati {
   /* specs/channel.objects.json:67:20
      '{ "name": "type", "type":{ "base":"int", "int_alias":"discord::channel::types::code" }}'
   */
-  discord::channel::types::code type;
+  discord_channel_types_code type;
 
   /* specs/channel.objects.json:68:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }}'
@@ -2146,13 +1999,11 @@ struct dati {
     void *record_null[4];
   } __M; // metadata
 };
-} // namespace mention
 
-namespace allowed_mentions {
 /* Title: Allowed Mentions Structure */
 /* https://discord.com/developers/docs/resources/channel#allowed-mentions-object-allowed-mentions-structure */
 /* This is defined at specs/channel.objects.json:75:22 */
-struct dati {
+struct discord_channel_allowed_mentions_dati {
   /* specs/channel.objects.json:78:20
      '{ "name": "parse", "type":{ "base":"ja_str", "dec":"ntl" }}'
   */
@@ -2186,13 +2037,11 @@ struct dati {
     void *record_null[4];
   } __M; // metadata
 };
-} // namespace allowed_mentions
 
-namespace embed {
 /* Title: Embed Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-structure */
 /* This is defined at specs/channel.objects.json:88:22 */
-struct dati {
+struct discord_channel_embed_dati {
   /* specs/channel.objects.json:91:20
      '{ "name": "title", "type":{ "base":"char", "dec":"[EMBED_TITLE_LEN]" }, 
           "option":true, "inject_if_not":""}'
@@ -2232,38 +2081,38 @@ struct dati {
      '{ "name": "footer", "type":{ "base":"discord::channel::embed::footer::dati", "dec":"*"},
           "option":true, "inject_if_not":null}'
   */
-  discord::channel::embed::footer::dati *footer;
+  discord_channel_embed_footer_dati *footer;
 
   /* specs/channel.objects.json:104:20
      '{ "name": "image", "type":{ "base":"discord::channel::embed::image::dati", "dec":"*"}, "inject_if_not":null}'
   */
-  discord::channel::embed::image::dati *image;
+  discord_channel_embed_image_dati *image;
 
   /* specs/channel.objects.json:105:20
      '{ "name": "thumbnail", "type":{ "base":"discord::channel::embed::thumbnail::dati", "dec":"*"}, "inject_if_not":null}'
   */
-  discord::channel::embed::thumbnail::dati *thumbnail;
+  discord_channel_embed_thumbnail_dati *thumbnail;
 
   /* specs/channel.objects.json:106:20
      '{ "name": "video", "type":{ "base":"discord::channel::embed::video::dati", "dec":"*"}, "inject_if_not":null}'
   */
-  discord::channel::embed::video::dati *video;
+  discord_channel_embed_video_dati *video;
 
   /* specs/channel.objects.json:107:20
      '{ "name": "provider", "type":{ "base":"discord::channel::embed::provider::dati", "dec":"*"}, "inject_if_not":null}'
   */
-  discord::channel::embed::provider::dati *provider;
+  discord_channel_embed_provider_dati *provider;
 
   /* specs/channel.objects.json:108:20
      '{ "name": "author", "type":{ "base":"discord::channel::embed::author::dati", "dec":"*"}, "inject_if_not":null}'
   */
-  discord::channel::embed::author::dati *author;
+  discord_channel_embed_author_dati *author;
 
   /* specs/channel.objects.json:109:20
      '{ "name": "fields", "type":{ "base":"discord::channel::embed::field::dati", "dec":"ntl"},
           "option":true, "inject_if_not":null}'
   */
-  discord::channel::embed::field::dati **fields;
+  discord_channel_embed_field_dati **fields;
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -2278,14 +2127,11 @@ struct dati {
     void *record_null[13];
   } __M; // metadata
 };
-} // namespace embed
 
-namespace embed {
-namespace thumbnail {
 /* Title: Embed Thumbnail Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-thumbnail-structure */
 /* This is defined at specs/channel.objects.json:119:22 */
-struct dati {
+struct discord_channel_embed_thumbnail_dati {
   /* specs/channel.objects.json:121:20
      '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
@@ -2319,15 +2165,11 @@ struct dati {
     void *record_null[4];
   } __M; // metadata
 };
-} // namespace thumbnail
-} // namespace embed
 
-namespace embed {
-namespace video {
 /* Title: Embed Thumbnail Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-thumbnail-structure */
 /* This is defined at specs/channel.objects.json:119:22 */
-struct dati {
+struct discord_channel_embed_video_dati {
   /* specs/channel.objects.json:121:20
      '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
@@ -2361,15 +2203,11 @@ struct dati {
     void *record_null[4];
   } __M; // metadata
 };
-} // namespace video
-} // namespace embed
 
-namespace embed {
-namespace image {
 /* Title: Embed Thumbnail Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-thumbnail-structure */
 /* This is defined at specs/channel.objects.json:119:22 */
-struct dati {
+struct discord_channel_embed_image_dati {
   /* specs/channel.objects.json:121:20
      '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
@@ -2403,15 +2241,11 @@ struct dati {
     void *record_null[4];
   } __M; // metadata
 };
-} // namespace image
-} // namespace embed
 
-namespace embed {
-namespace provider {
 /* Title: Embed Provider Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-provider-structure */
 /* This is defined at specs/channel.objects.json:131:22 */
-struct dati {
+struct discord_channel_embed_provider_dati {
   /* specs/channel.objects.json:133:20
      '{ "name": "name", "type":{"base":"char", "dec":"[EMBED_AUTHOR_NAME_LEN]"}, "inject_if_not":""}'
   */
@@ -2435,15 +2269,11 @@ struct dati {
     void *record_null[2];
   } __M; // metadata
 };
-} // namespace provider
-} // namespace embed
 
-namespace embed {
-namespace author {
 /* Title: Embed Author Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-author-structure */
 /* This is defined at specs/channel.objects.json:141:22 */
-struct dati {
+struct discord_channel_embed_author_dati {
   /* specs/channel.objects.json:143:20
      '{ "name": "name", "type":{ "base":"char", "dec":"[EMBED_AUTHOR_NAME_LEN]" }, "inject_if_not":""}'
   */
@@ -2477,15 +2307,11 @@ struct dati {
     void *record_null[4];
   } __M; // metadata
 };
-} // namespace author
-} // namespace embed
 
-namespace embed {
-namespace footer {
 /* Title: Embed Footer Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-footer-structure */
 /* This is defined at specs/channel.objects.json:153:22 */
-struct dati {
+struct discord_channel_embed_footer_dati {
   /* specs/channel.objects.json:155:20
      '{ "name": "text", "type": {"base":"char", "dec":"[EMBED_FOOTER_TEXT_LEN]"}, "inject_if_not":""}'
   */
@@ -2516,15 +2342,11 @@ struct dati {
     void *record_null[3];
   } __M; // metadata
 };
-} // namespace footer
-} // namespace embed
 
-namespace embed {
-namespace field {
 /* Title: Embed Field Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-field-structure */
 /* This is defined at specs/channel.objects.json:166:22 */
-struct dati {
+struct discord_channel_embed_field_dati {
   /* specs/channel.objects.json:168:20
      '{ "name": "name", "type": { "base":"char", "dec":"[EMBED_FIELD_NAME_LEN]" }, "inject_if_not":""}'
   */
@@ -2553,21 +2375,14 @@ struct dati {
     void *record_null[3];
   } __M; // metadata
 };
-} // namespace field
-} // namespace embed
-} // namespace channel
-} // namespace discord
 /* This file is generated from specs/guild.create-channel.json, Please don't edit it. */
 /*
 
 */
-namespace discord {
-namespace guild {
-namespace create_channel {
 
 /* https://discord.com/developers/docs/resources/guild#create-guild-channel */
 /* This is defined at specs/guild.create-channel.json:8:22 */
-struct params {
+struct discord_guild_create_channel_params {
   /* specs/guild.create-channel.json:11:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }}'
   */
@@ -2606,7 +2421,7 @@ struct params {
   /* specs/guild.create-channel.json:18:20
      '{ "name": "permission_overwrites", "type":{ "base":"discord::channel::overwrite::dati", "dec":"ntl" }, "inject_if_not":null}'
   */
-  discord::channel::overwrite::dati **permission_overwrites;
+  discord_channel_overwrite_dati **permission_overwrites;
 
   /* specs/guild.create-channel.json:19:20
      '{ "name": "parent_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0}'
@@ -2631,19 +2446,14 @@ struct params {
     void *record_null[10];
   } __M; // metadata
 };
-} // namespace create_channel
-} // namespace guild
-} // namespace discord
 /* This file is generated from specs/emoji.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/resources/emoji#emoji-object-emoji-structure
 */
-namespace discord {
-namespace emoji {
 
 /* Title: Emoji Structure */
 /* This is defined at specs/emoji.json:8:22 */
-struct dati {
+struct discord_emoji_dati {
   /* specs/emoji.json:11:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}}'
   */
@@ -2663,7 +2473,7 @@ struct dati {
   /* specs/emoji.json:15:20
      '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*" }, "option":true }'
   */
-  discord::user::dati *user;
+  discord_user_dati *user;
 
   /* specs/emoji.json:16:20
      '{ "name": "require_colons", "type":{ "base":"bool" }, "option":true}'
@@ -2698,19 +2508,14 @@ struct dati {
     void *record_null[8];
   } __M; // metadata
 };
-} // namespace emoji
-} // namespace discord
 /* This file is generated from specs/webhook.create-webhook.json, Please don't edit it. */
 /*
 
 */
-namespace discord {
-namespace webhook {
-namespace create_webhook {
 
 /* https://discord.com/developers/docs/resources/webhook#create-webhook */
 /* This is defined at specs/webhook.create-webhook.json:8:22 */
-struct params {
+struct discord_webhook_create_webhook_params {
   /* specs/webhook.create-webhook.json:11:20
      '{ "name": "name", "type":{ "base":"char", "dec":"[80+1]" }, 
           "comment":"name of the webhook(1-80) chars" }'
@@ -2737,22 +2542,15 @@ struct params {
     void *record_null[2];
   } __M; // metadata
 };
-} // namespace create_webhook
-} // namespace webhook
-} // namespace discord
 /* This file is generated from specs/guild.welcome_screen.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/resources/guild#welcome-screen-object
 */
-namespace discord {
-namespace guild {
-namespace welcome_screen {
 
-namespace screen_channel {
 /* Title: Welcome Screen Channel Structure */
 /* https://discord.com/developers/docs/resources/guild#welcome-screen-object-welcome-screen-channel-structure */
 /* This is defined at specs/guild.welcome_screen.json:11:22 */
-struct dati {
+struct discord_guild_welcome_screen_screen_channel_dati {
   /* specs/guild.welcome_screen.json:14:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
@@ -2786,12 +2584,11 @@ struct dati {
     void *record_null[4];
   } __M; // metadata
 };
-} // namespace screen_channel
 
 /* Title: Welcome Screen Structure */
 /* https://discord.com/developers/docs/resources/guild#welcome-screen-object-welcome-screen-structure */
 /* This is defined at specs/guild.welcome_screen.json:23:22 */
-struct dati {
+struct discord_guild_welcome_screen_dati {
   /* specs/guild.welcome_screen.json:26:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
   */
@@ -2800,7 +2597,7 @@ struct dati {
   /* specs/guild.welcome_screen.json:27:20
      '{ "name": "welcome_channels", "type":{ "base":"discord::guild::welcome_screen::screen_channel::dati", "dec":"ntl" }, "todo":false }'
   */
-  discord::guild::welcome_screen::screen_channel::dati **welcome_channels;
+  discord_guild_welcome_screen_screen_channel_dati **welcome_channels;
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -2815,20 +2612,14 @@ struct dati {
     void *record_null[2];
   } __M; // metadata
 };
-} // namespace welcome_screen
-} // namespace guild
-} // namespace discord
 /* This file is generated from specs/guild.create-guild.json, Please don't edit it. */
 /*
 
 */
-namespace discord {
-namespace guild {
-namespace create_guild {
 
 /* https://discord.com/developers/docs/resources/guild#create-guild */
 /* This is defined at specs/guild.create-guild.json:8:22 */
-struct params {
+struct discord_guild_create_guild_params {
   /* specs/guild.create-guild.json:11:20
      '{ "name": "name", "type":{ "base":"char", "dec":"[200+1]" }, 
           "comment":"name of the guild (2-100) characters"}'
@@ -2875,7 +2666,7 @@ struct params {
      '{ "name": "channels", "type":{ "base":"discord::channel::dati", "dec":"ntl" }, 
           "option":true, "inject_if_not":null, "comment":"array of partial channel objects"}'
   */
-  discord::channel::dati **channels; // array of partial channel objects
+  discord_channel_dati **channels; // array of partial channel objects
 
   /* specs/guild.create-guild.json:27:20
      '{ "name": "afk_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, 
@@ -2909,20 +2700,14 @@ struct params {
     void *record_null[11];
   } __M; // metadata
 };
-} // namespace create_guild
-} // namespace guild
-} // namespace discord
 /* This file is generated from specs/channel.bulk-delete-messages.json, Please don't edit it. */
 /*
 
 */
-namespace discord {
-namespace channel {
-namespace bulk_delete_messages {
 
 /* https://discord.com/developers/docs/resources/channel#bulk-delete-messages */
 /* This is defined at specs/channel.bulk-delete-messages.json:8:22 */
-struct params {
+struct discord_channel_bulk_delete_messages_params {
   /* specs/channel.bulk-delete-messages.json:11:20
      '{ "name": "messages", "type":{ "base":"ja_u64", "dec":"ntl" }}'
   */
@@ -2941,19 +2726,14 @@ struct params {
     void *record_null[1];
   } __M; // metadata
 };
-} // namespace bulk_delete_messages
-} // namespace channel
-} // namespace discord
 /* This file is generated from specs/webhook.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/resources/webhook#webhook-object-webhook-structure
 */
-namespace discord {
 
-namespace webhook {
 /* Title: Webhook Structure */
 /* This is defined at specs/webhook.json:19:22 */
-struct dati {
+struct discord_webhook_dati {
   /* specs/webhook.json:22:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
@@ -2962,7 +2742,7 @@ struct dati {
   /* specs/webhook.json:23:20
      '{ "name": "type", "type":{ "base":"int", "int_alias":"discord::webhook::types::code" }}'
   */
-  discord::webhook::types::code type;
+  discord_webhook_types_code type;
 
   /* specs/webhook.json:24:20
      '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
@@ -2977,7 +2757,7 @@ struct dati {
   /* specs/webhook.json:26:20
      '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*" }}'
   */
-  discord::user::dati *user;
+  discord_user_dati *user;
 
   /* specs/webhook.json:27:20
      '{ "name": "name", "type":{ "base":"char", "dec":"[WEBHOOK_NAME_LEN]" }}'
@@ -3012,19 +2792,14 @@ struct dati {
     void *record_null[9];
   } __M; // metadata
 };
-} // namespace webhook
-} // namespace discord
 /* This file is generated from specs/user.create-group-dm.json, Please don't edit it. */
 /*
 
 */
-namespace discord {
-namespace user {
-namespace create_group_dm {
 
 /* https://discord.com/developers/docs/resources/user#create-group-dm */
 /* This is defined at specs/user.create-group-dm.json:8:22 */
-struct params {
+struct discord_user_create_group_dm_params {
   /* specs/user.create-group-dm.json:11:20
      '{ "name": "access_tokens", "type":{ "base":"ja_str", "dec":"ntl" }, 
           "comment":"access tokens of users that have granted your app the gdm.join scope"}'
@@ -3051,20 +2826,14 @@ struct params {
     void *record_null[2];
   } __M; // metadata
 };
-} // namespace create_group_dm
-} // namespace user
-} // namespace discord
 /* This file is generated from specs/emoji.modify-guild-emoji.json, Please don't edit it. */
 /*
 
 */
-namespace discord {
-namespace emoji {
-namespace modify_guild_emoji {
 
 /* https://discord.com/developers/docs/resources/emoji#create-guild-emoji */
 /* This is defined at specs/emoji.modify-guild-emoji.json:8:22 */
-struct params {
+struct discord_emoji_modify_guild_emoji_params {
   /* specs/emoji.modify-guild-emoji.json:11:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}}'
   */
@@ -3088,20 +2857,14 @@ struct params {
     void *record_null[2];
   } __M; // metadata
 };
-} // namespace modify_guild_emoji
-} // namespace emoji
-} // namespace discord
 /* This file is generated from specs/webhook.execute-webhook.json, Please don't edit it. */
 /*
 
 */
-namespace discord {
-namespace webhook {
-namespace execute_webhook {
 
 /* https://discord.com/developers/docs/resources/webhook#execute-webhook */
 /* This is defined at specs/webhook.execute-webhook.json:8:22 */
-struct params {
+struct discord_webhook_execute_webhook_params {
   /* specs/webhook.execute-webhook.json:12:20
      '{ "name": "wait", "type":{ "base":"bool"}, "loc":"query",
           "comment":"name of the webhook(1-80) chars",
@@ -3154,7 +2917,7 @@ struct params {
           "required":"one of content, file, embeds"
         }'
   */
-  discord::channel::embed::dati *embeds; // embedded rich content
+  discord_channel_embed_dati *embeds; // embedded rich content
 
   /* specs/webhook.execute-webhook.json:38:20
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, 
@@ -3171,7 +2934,7 @@ struct params {
           "required":"false"
         }'
   */
-  discord::channel::allowed_mentions::dati *allowed_mentions; // allowed mentions for the message
+  discord_channel_allowed_mentions_dati *allowed_mentions; // allowed mentions for the message
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -3186,20 +2949,14 @@ struct params {
     void *record_null[9];
   } __M; // metadata
 };
-} // namespace execute_webhook
-} // namespace webhook
-} // namespace discord
 /* This file is generated from specs/guild.role.create.json, Please don't edit it. */
 /*
 
 */
-namespace discord {
-namespace guild {
-namespace create_guild_role {
 
 /* https://discord.com/developers/docs/resources/guild#create-guild-role */
 /* This is defined at specs/guild.role.create.json:8:22 */
-struct params {
+struct discord_guild_create_guild_role_params {
   /* specs/guild.role.create.json:11:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }}'
   */
@@ -3239,47 +2996,38 @@ struct params {
     void *record_null[5];
   } __M; // metadata
 };
-} // namespace create_guild_role
-} // namespace guild
-} // namespace discord
 /* This file is generated from specs/permissions.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/topics/permissions
 */
-namespace discord {
-namespace permissions {
-} // namespace permissions
-} // namespace discord
 /* This file is generated from specs/audit_log.json, Please don't edit it. */
 /*
 (null)
 */
-namespace discord {
-namespace audit_log {
 
 /* Title: Audit Log Structure */
 /* https://discord.com/developers/docs/resources/audit-log#audit-log-object-audit-log-structure */
 /* This is defined at specs/audit_log.json:8:22 */
-struct dati {
+struct discord_audit_log_dati {
   /* specs/audit_log.json:11:18
      '{"name":"webhooks", "type": { "base":"discord::webhook::dati", "dec":"*" } }'
   */
-  discord::webhook::dati *webhooks;
+  discord_webhook_dati *webhooks;
 
   /* specs/audit_log.json:12:18
      '{"name":"users", "type": { "base":"discord::user::dati", "dec":"*"}}'
   */
-  discord::user::dati *users;
+  discord_user_dati *users;
 
   /* specs/audit_log.json:13:18
      '{"name":"audit_log_entries", "type": { "base":"discord::audit_log::entry::dati", "dec":"*"}}'
   */
-  discord::audit_log::entry::dati *audit_log_entries;
+  discord_audit_log_entry_dati *audit_log_entries;
 
   /* specs/audit_log.json:14:18
      '{"name":"integrations", "type": { "base":"discord::guild::integration::dati", "dec":"ntl"}}'
   */
-  discord::guild::integration::dati **integrations;
+  discord_guild_integration_dati **integrations;
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -3295,11 +3043,10 @@ struct dati {
   } __M; // metadata
 };
 
-namespace entry {
 /* Title: Audit Log Entry Structure */
 /* https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-entry-structure */
 /* This is defined at specs/audit_log.json:64:22 */
-struct dati {
+struct discord_audit_log_entry_dati {
   /* specs/audit_log.json:67:18
      '{"name":"target_id", "type": {"base":"char", "dec":"*"}}'
   */
@@ -3308,7 +3055,7 @@ struct dati {
   /* specs/audit_log.json:68:18
      '{"name":"changes", "type": {"base":"discord::audit_log::change::dati", "dec":"*"}}'
   */
-  discord::audit_log::change::dati *changes;
+  discord_audit_log_change_dati *changes;
 
   /* specs/audit_log.json:69:18
      '{"name":"user_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
@@ -3328,7 +3075,7 @@ struct dati {
   /* specs/audit_log.json:72:18
      '{"name":"options", "type": {"base":"discord::audit_log::entry::optional_info::dati", "dec":"*"}}'
   */
-  discord::audit_log::entry::optional_info::dati *options;
+  discord_audit_log_entry_optional_info_dati *options;
 
   /* specs/audit_log.json:73:18
      '{"name":"reason", "type": {"base":"char", "dec":"[MAX_REASON_LEN]"}}'
@@ -3348,14 +3095,11 @@ struct dati {
     void *record_null[7];
   } __M; // metadata
 };
-} // namespace entry
 
-namespace entry {
-namespace optional_info {
 /* Title: Optional Audit Entry Info Structure */
 /* https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-optional-audit-entry-info */
 /* This is defined at specs/audit_log.json:80:22 */
-struct dati {
+struct discord_audit_log_entry_optional_info_dati {
   /* specs/audit_log.json:83:20
      '{ "name": "delete_member_days", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"}'
   */
@@ -3409,14 +3153,11 @@ struct dati {
     void *record_null[8];
   } __M; // metadata
 };
-} // namespace optional_info
-} // namespace entry
 
-namespace change {
 /* Title: Audit Log Change Structure */
 /* https://discord.com/developers/docs/resources/audit-log#audit-log-change-object-audit-log-change-structure */
 /* This is defined at specs/audit_log.json:97:22 */
-struct dati {
+struct discord_audit_log_change_dati {
   /* specs/audit_log.json:100:18
      '{"name":"new_value", "type": {"base":"char", "dec":"*"}}'
   */
@@ -3445,14 +3186,11 @@ struct dati {
     void *record_null[3];
   } __M; // metadata
 };
-} // namespace change
 
-namespace change {
-namespace key {
 /* Title: Audit Log Change Key */
 /* https://discord.com/developers/docs/resources/audit-log#audit-log-change-object-audit-log-change-key */
 /* This is defined at specs/audit_log.json:109:22 */
-struct dati {
+struct discord_audit_log_change_key_dati {
   /* specs/audit_log.json:112:18
      '{"name":"name", "type": {"base":"char", "dec":"[MAX_NAME_LEN]"}}'
   */
@@ -3742,22 +3480,14 @@ struct dati {
     void *record_null[54];
   } __M; // metadata
 };
-} // namespace key
-} // namespace change
-} // namespace audit_log
-} // namespace discord
 /* This file is generated from specs/guild.role.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/topics/permissions#role-object-role-structure
 */
-namespace discord {
-namespace guild {
 
-namespace role {
-namespace tags {
 /* Title: Role Tags Structure */
 /* This is defined at specs/guild.role.json:9:22 */
-struct dati {
+struct discord_guild_role_tags_dati {
   /* specs/guild.role.json:12:20
      '{ "name": "bot_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
@@ -3786,13 +3516,10 @@ struct dati {
     void *record_null[3];
   } __M; // metadata
 };
-} // namespace tags
-} // namespace role
 
-namespace role {
 /* Title: Role Object */
 /* This is defined at specs/guild.role.json:20:22 */
-struct dati {
+struct discord_guild_role_dati {
   /* specs/guild.role.json:23:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
@@ -3836,7 +3563,7 @@ struct dati {
   /* specs/guild.role.json:31:20
      '{ "name": "tags", "type":{"base":"discord::guild::role::tags::dati", "dec":"*"}}'
   */
-  discord::guild::role::tags::dati *tags;
+  discord_guild_role_tags_dati *tags;
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -3851,20 +3578,14 @@ struct dati {
     void *record_null[9];
   } __M; // metadata
 };
-} // namespace role
-} // namespace guild
-} // namespace discord
 /* This file is generated from specs/emoji.create-guild-emoji.json, Please don't edit it. */
 /*
 
 */
-namespace discord {
-namespace emoji {
-namespace create_guild_emoji {
 
 /* https://discord.com/developers/docs/resources/emoji#create-guild-emoji */
 /* This is defined at specs/emoji.create-guild-emoji.json:8:22 */
-struct params {
+struct discord_emoji_create_guild_emoji_params {
   /* specs/emoji.create-guild-emoji.json:11:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}}'
   */
@@ -3893,19 +3614,14 @@ struct params {
     void *record_null[3];
   } __M; // metadata
 };
-} // namespace create_guild_emoji
-} // namespace emoji
-} // namespace discord
 /* This file is generated from specs/template.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/resources/template#template-object-template-structure
 */
-namespace discord {
 
-namespace Template {
 /* Title: Template Structure */
 /* This is defined at specs/template.json:9:22 */
-struct dati {
+struct discord_Template_dati {
   /* specs/template.json:12:20
      '{ "name": "code", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"}'
   */
@@ -3934,7 +3650,7 @@ struct dati {
   /* specs/template.json:17:20
      '{ "name": "creator", "type":{ "base":"discord::user::dati", "dec":"*" }}'
   */
-  discord::user::dati *creator;
+  discord_user_dati *creator;
 
   /* specs/template.json:18:20
      '{ "name": "created_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}'
@@ -3954,7 +3670,7 @@ struct dati {
   /* specs/template.json:21:20
      '{ "name": "serialized_source_guild", "type":{ "base":"discord::guild::dati", "dec":"*" }}'
   */
-  discord::guild::dati *serialized_source_guild;
+  discord_guild_dati *serialized_source_guild;
 
   /* specs/template.json:22:20
      '{ "name": "is_dirty", "type":{ "base":"bool" }}'
@@ -3974,19 +3690,14 @@ struct dati {
     void *record_null[11];
   } __M; // metadata
 };
-} // namespace Template
-} // namespace discord
 /* This file is generated from specs/channel.follow-news-channel.json, Please don't edit it. */
 /*
 
 */
-namespace discord {
-namespace channel {
-namespace follow_news_channel {
 
 /* https://discord.com/developers/docs/resources/channel#follow-news-channel */
 /* This is defined at specs/channel.follow-news-channel.json:8:22 */
-struct params {
+struct discord_channel_follow_news_channel_params {
   /* specs/channel.follow-news-channel.json:11:20
      '{ "name": "webhook_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
@@ -4005,21 +3716,15 @@ struct params {
     void *record_null[1];
   } __M; // metadata
 };
-} // namespace follow_news_channel
-} // namespace channel
-} // namespace discord
 /* This file is generated from specs/gateway.json, Please don't edit it. */
 /*
 (null)
 */
-namespace discord {
-namespace gateway {
 
-namespace identify {
 /* Title: Identify Structure */
 /* https://discord.com/developers/docs/topics/gateway#identify-identify-structure */
 /* This is defined at specs/gateway.json:75:22 */
-struct dati {
+struct discord_gateway_identify_dati {
   /* specs/gateway.json:78:19
      '{ "name":"token","type":{"base":"char", "dec":"*"}}'
   */
@@ -4028,7 +3733,7 @@ struct dati {
   /* specs/gateway.json:79:19
      '{ "name":"properties","type":{"base":"discord::gateway::identify::connection::dati", "dec":"*"}}'
   */
-  discord::gateway::identify::connection::dati *properties;
+  discord_gateway_identify_connection_dati *properties;
 
   /* specs/gateway.json:80:19
      '{ "name":"compress","type":{"base":"bool"}}'
@@ -4053,7 +3758,7 @@ struct dati {
   /* specs/gateway.json:84:19
      '{ "name":"presence","type":{"base":"discord::gateway::identify::status_update::dati", "dec":"*"}}'
   */
-  discord::gateway::identify::status_update::dati *presence;
+  discord_gateway_identify_status_update_dati *presence;
 
   /* specs/gateway.json:85:19
      '{ "name":"intents","type":{"base":"int"}}'
@@ -4073,14 +3778,11 @@ struct dati {
     void *record_null[8];
   } __M; // metadata
 };
-} // namespace identify
 
-namespace identify {
-namespace status_update {
 /* Title: Gateway Status Update Structure */
 /* https://discord.com/developers/docs/topics/gateway#update-status-gateway-status-update-structure */
 /* This is defined at specs/gateway.json:92:22 */
-struct dati {
+struct discord_gateway_identify_status_update_dati {
   /* specs/gateway.json:95:19
      '{ "name":"since","type":{"base":"char", "dec":"*", "converter":"iso8601"},
           "option":true, "inject_if_not":0 }'
@@ -4091,7 +3793,7 @@ struct dati {
      '{ "name":"activities","type":{"base":"discord::gateway::identify::status_update::activity::dati", "dec":"ntl"}, 
           "option":true, "inject_if_not":null}'
   */
-  discord::gateway::identify::status_update::activity::dati **activities;
+  discord_gateway_identify_status_update_activity_dati **activities;
 
   /* specs/gateway.json:99:19
      '{ "name":"status","type":{"base":"char", "dec":"[16]"}}'
@@ -4116,15 +3818,11 @@ struct dati {
     void *record_null[4];
   } __M; // metadata
 };
-} // namespace status_update
-} // namespace identify
 
-namespace identify {
-namespace connection {
 /* Title: Identify Connection Properties */
 /* https://discord.com/developers/docs/topics/gateway#identify-identify-connection-properties */
 /* This is defined at specs/gateway.json:107:22 */
-struct dati {
+struct discord_gateway_identify_connection_dati {
   /* specs/gateway.json:110:19
      '{ "name":"$os", "type":{"base":"char", "dec":"*"}}'
   */
@@ -4153,16 +3851,11 @@ struct dati {
     void *record_null[3];
   } __M; // metadata
 };
-} // namespace connection
-} // namespace identify
 
-namespace identify {
-namespace status_update {
-namespace activity {
 /* Title: Activity Structure */
 /* https://discord.com/developers/docs/topics/gateway#activity-object-activity-structure */
 /* This is defined at specs/gateway.json:119:22 */
-struct dati {
+struct discord_gateway_identify_status_update_activity_dati {
   /* specs/gateway.json:122:19
      '{ "name":"name","type":{"base":"char", "dec":"[512]"}}'
   */
@@ -4222,22 +3915,14 @@ struct dati {
     void *record_null[8];
   } __M; // metadata
 };
-} // namespace activity
-} // namespace status_update
-} // namespace identify
-} // namespace gateway
-} // namespace discord
 /* This file is generated from specs/template.modify-guild-template.json, Please don't edit it. */
 /*
 
 */
-namespace discord {
-namespace Template {
-namespace modify_guild_template {
 
 /* https://discord.com/developers/docs/resources/template#modify-guild-template */
 /* This is defined at specs/template.modify-guild-template.json:8:22 */
-struct params {
+struct discord_Template_modify_guild_template_params {
   /* specs/template.modify-guild-template.json:11:20
      '{ "name": "name", "type":{ "base":"char", "dec":"[100+1]"}, "comment":"name of the guild"}'
   */
@@ -4262,20 +3947,15 @@ struct params {
     void *record_null[2];
   } __M; // metadata
 };
-} // namespace modify_guild_template
-} // namespace Template
-} // namespace discord
 /* This file is generated from specs/channel.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/resources/channel#channel-object-channel-types
 */
-namespace discord {
-namespace channel {
 
 /* Title: Channel Structure */
 /* https://discord.com/developers/docs/resources/channel#channel-object-channel-structure */
 /* This is defined at specs/channel.json:25:22 */
-struct dati {
+struct discord_channel_dati {
   /* specs/channel.json:28:78
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"id"}'
   */
@@ -4284,7 +3964,7 @@ struct dati {
   /* specs/channel.json:29:86
      '{"type":{"base":"int", "int_alias":"discord::channel::types::code"}, "name":"type"}'
   */
-  discord::channel::types::code type;
+  discord_channel_types_code type;
 
   /* specs/channel.json:30:78
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"guild_id",
@@ -4302,7 +3982,7 @@ struct dati {
      '{"type":{"base":"discord::channel::overwrite::dati", "dec":"ntl"}, "name":"permission_overwrites",
          "option":true, "inject_if_not":null }'
   */
-  discord::channel::overwrite::dati **permission_overwrites;
+  discord_channel_overwrite_dati **permission_overwrites;
 
   /* specs/channel.json:36:66
      '{"type":{"base":"char", "dec":"[MAX_NAME_LEN]"}, "name":"name", 
@@ -4347,7 +4027,7 @@ struct dati {
      '{"type":{"base":"discord::user::dati", "dec":"ntl"}, "name":"recipients",
          "option":true, "inject_if_not":null}'
   */
-  discord::user::dati **recipients;
+  discord_user_dati **recipients;
 
   /* specs/channel.json:49:68
      '{"type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}, "name":"icon",
@@ -4382,7 +4062,7 @@ struct dati {
   /* specs/channel.json:59:82
      '{"type":{"base":"discord::channel::message::dati", "dec":"ntl"}, "name":"messages"}'
   */
-  discord::channel::message::dati **messages;
+  discord_channel_message_dati **messages;
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -4397,22 +4077,17 @@ struct dati {
     void *record_null[19];
   } __M; // metadata
 };
-} // namespace channel
-} // namespace discord
 /* This file is generated from specs/guild.member.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/resources/guild#guild-member-object
 */
-namespace discord {
-namespace guild {
 
-namespace member {
 /* This is defined at specs/guild.member.json:9:22 */
-struct dati {
+struct discord_guild_member_dati {
   /* specs/guild.member.json:12:20
      '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*" }, "option":true}'
   */
-  discord::user::dati *user;
+  discord_user_dati *user;
 
   /* specs/guild.member.json:13:20
      '{ "name": "nick", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]"}, "option":true}'
@@ -4467,20 +4142,14 @@ struct dati {
     void *record_null[9];
   } __M; // metadata
 };
-} // namespace member
-} // namespace guild
-} // namespace discord
 /* This file is generated from specs/user.modify-curent-user.json, Please don't edit it. */
 /*
 
 */
-namespace discord {
-namespace user {
-namespace modify_current_user {
 
 /* https://discord.com/developers/docs/resources/user#modify-current-user */
 /* This is defined at specs/user.modify-curent-user.json:8:22 */
-struct params {
+struct discord_user_modify_current_user_params {
   /* specs/user.modify-curent-user.json:11:20
      '{ "name": "username", "type":{ "base":"char", "dec":"*" }}'
   */
@@ -4504,6 +4173,3 @@ struct params {
     void *record_null[2];
   } __M; // metadata
 };
-} // namespace modify_current_user
-} // namespace user
-} // namespace discord

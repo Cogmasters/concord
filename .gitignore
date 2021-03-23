@@ -12,6 +12,4 @@ obj
 lib
 dump.*
 .cee-contributor
-specs-code/*.c
-specs-code/*.h
 mujs/build

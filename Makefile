@@ -153,12 +153,17 @@ all_headers: $(SPECS)
 	$(foreach var, $(SPECS),./bin/actor-gen.exe -E -a -o specs-code/all_enums.hh $(var);)
 	$(foreach var, $(SPECS),./bin/actor-gen.exe -F -a -o specs-code/all_fun.hh $(var);)
 	$(foreach var, $(SPECS),./bin/actor-gen.exe -O -a -o specs-code/all_opaque_struct.hh $(var);)
+	$(foreach var, $(SPECS),./bin/actor-gen.exe -C -S -a -o specs-code/all_structs.h $(var);)
+	$(foreach var, $(SPECS),./bin/actor-gen.exe -C -E -a -o specs-code/all_enums.h $(var);)
+	$(foreach var, $(SPECS),./bin/actor-gen.exe -C -F -a -o specs-code/all_fun.h $(var);)
+	$(foreach var, $(SPECS),./bin/actor-gen.exe -C -O -a -o specs-code/all_opaque_struct.h $(var);)
 
 specs-code/%.cc: specs/%.json
 	./bin/actor-gen.exe -c -o $@ $<
 
 specs-code/%.hh: specs/%.json
 	./bin/actor-gen.exe -d -o $@ $<
+
 
 specs-code/%.c: specs/%.json
 	./bin/actor-gen.exe -C -c -o $@ $<

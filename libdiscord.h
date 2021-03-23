@@ -162,5 +162,5 @@ void discord_get_gateway(struct discord_client *client, struct discord_session *
 void discord_get_gateway_bot(struct discord_client *client, struct discord_session *p_session);
 
 #include "user-defined.h"
-#include "./specs-code/all_fun.hh"
+#include "./specs-code/all_fun.h"
 #endif

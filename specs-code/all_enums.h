@@ -2,84 +2,50 @@
 /*
 https://discord.com/developers/docs/resources/guild#membership-screening-object
 */
-namespace discord {
-namespace guild {
-namespace membership_screening {
 
 
-namespace field_type {
-enum code {
+enum discord_guild_membership_screening_field_type_code {
   TERMS = 0,
 };
-} // namespace field_type
-} // namespace membership_screening
-} // namespace guild
-} // namespace discord
 /* This file is generated from specs/channel.edit-channel-permissions.json, Please don't edit it. */
 /*
 
 */
-namespace discord {
-namespace channel {
-namespace edit_channel_permissions {
-} // namespace edit_channel_permissions
-} // namespace channel
-} // namespace discord
 /* This file is generated from specs/channel.modify-channel.json, Please don't edit it. */
 /*
 
 */
-namespace discord {
-namespace channel {
-namespace modify {
-} // namespace modify
-} // namespace channel
-} // namespace discord
 /* This file is generated from specs/channel.message.json, Please don't edit it. */
 /*
 
 */
-namespace discord {
-namespace channel {
-namespace message {
 
 
-namespace sticker {
-namespace format_type {
-enum code {
+enum discord_channel_message_sticker_format_type_code {
   PNG = 1,
   APNG = 2,
   LOTTIE = 3,
 };
-} // namespace format_type
-} // namespace sticker
 
 
-namespace flags {
-enum code {
+enum discord_channel_message_flags_code {
   CROSSPOSTED = 1, // 1<<0
   IS_CROSSPOST = 2, // 1<<1
   SUPRESS_EMBEDS = 4, // 1<<2
   SOURCE_MESSAGE_DELETED = 8, // 1<<3
   URGENT = 16, // 1<<4
 };
-} // namespace flags
 
 
-namespace activity {
-namespace types {
-enum code {
+enum discord_channel_message_activity_types_code {
   JOIN = 1,
   SPECTATE = 2,
   LISTEN = 3,
   JOIN_REQUEST = 5,
 };
-} // namespace types
-} // namespace activity
 
 
-namespace types {
-enum code {
+enum discord_channel_message_types_code {
   DEFAULT = 0,
   RECIPIENT_ADD = 1,
   RECIPIENT_REMOVE = 3,
@@ -98,92 +64,45 @@ enum code {
   REPLY = 19,
   APPLICATION_COMMAND = 20,
 };
-} // namespace types
-} // namespace message
-} // namespace channel
-} // namespace discord
 /* This file is generated from specs/webhook.edit-webhook-message.json, Please don't edit it. */
 /*
 
 */
-namespace discord {
-namespace webhook {
-namespace edit_webhook_message {
-} // namespace edit_webhook_message
-} // namespace webhook
-} // namespace discord
 /* This file is generated from specs/template.create-guild-template.json, Please don't edit it. */
 /*
 
 */
-namespace discord {
-namespace Template {
-namespace create_guild_template {
-} // namespace create_guild_template
-} // namespace Template
-} // namespace discord
 /* This file is generated from specs/channel.group-dm-add-recipient.json, Please don't edit it. */
 /*
 
 */
-namespace discord {
-namespace channel {
-namespace group_dm_add_recipient {
-} // namespace group_dm_add_recipient
-} // namespace channel
-} // namespace discord
 /* This file is generated from specs/channel.create-channel-invite.json, Please don't edit it. */
 /*
 
 */
-namespace discord {
-namespace channel {
-namespace create_channel_invite {
-} // namespace create_channel_invite
-} // namespace channel
-} // namespace discord
 /* This file is generated from specs/guild.ban.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/resources/guild#ban-object
 */
-namespace discord {
-namespace guild {
-} // namespace guild
-} // namespace discord
 /* This file is generated from specs/voice.json, Please don't edit it. */
 /*
 (null)
 */
-namespace discord {
-} // namespace discord
 /* This file is generated from specs/channel.get-reactions.json, Please don't edit it. */
 /*
 
 */
-namespace discord {
-namespace channel {
-namespace get_reactions {
-} // namespace get_reactions
-} // namespace channel
-} // namespace discord
 /* This file is generated from specs/guild.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/resources/guild#guild-object-guild-structure
 */
-namespace discord {
-namespace guild {
-} // namespace guild
-} // namespace discord
 /* This file is generated from specs/user.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/resources/user#user-object
 */
-namespace discord {
-namespace user {
 
 
-namespace flags {
-enum code {
+enum discord_user_flags_code {
   NONE = 0, // 0
   DISCORD_EMPLOYEE = 1, // 1 << 0
   PARTNERED_SERVER_OWNER = 2, // 1 << 2
@@ -199,117 +118,79 @@ enum code {
   VERIFIED_BOT = 65536, // 1 << 16
   EARLY_VERIFIED_BOT_DEVELOPER = 131072, // 1 << 17
 };
-} // namespace flags
 
 
-namespace premium_types {
-enum code {
+enum discord_user_premium_types_code {
 };
-} // namespace premium_types
 
 
-namespace connection {
-namespace visibility_types {
-enum code {
+enum discord_user_connection_visibility_types_code {
   NONE = 0,
   EVERYONE = 1,
 };
-} // namespace visibility_types
-} // namespace connection
-} // namespace user
-} // namespace discord
 /* This file is generated from specs/guild.modify-guild-member.json, Please don't edit it. */
 /*
 
 */
-namespace discord {
-namespace guild {
-namespace modify_guild_member {
-} // namespace modify_guild_member
-} // namespace guild
-} // namespace discord
 /* This file is generated from specs/guild.integration.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/resources/guild#integration-object-integration-structure
 */
-namespace discord {
-namespace guild {
 
 
-namespace integration {
-namespace expire_behaviors {
-enum code {
+enum discord_guild_integration_expire_behaviors_code {
   REMOVE_ROLE = 0,
   KICK = 1,
 };
-} // namespace expire_behaviors
-} // namespace integration
-} // namespace guild
-} // namespace discord
 /* This file is generated from specs/guild.enum.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/resources/guild#integration-object-integration-structure
 */
-namespace discord {
-namespace guild {
 
 
-namespace default_message_notification_level {
-enum code {
+enum discord_guild_default_message_notification_level_code {
   ALL_MESSAGES = 0,
   ONLY_MENTIONS = 1,
 };
-} // namespace default_message_notification_level
 
 
-namespace explicit_content_filter_level {
-enum code {
+enum discord_guild_explicit_content_filter_level_code {
   DISABLED = 0,
   MEMBERS_WITHOUT_ROLES = 1,
   ALL_MEMBERS = 2,
 };
-} // namespace explicit_content_filter_level
 
 
-namespace mfa_level {
-enum code {
+enum discord_guild_mfa_level_code {
   NONE = 0,
   ELEVATED = 1,
 };
-} // namespace mfa_level
 
 
-namespace verification_level {
-enum code {
+enum discord_guild_verification_level_code {
   NONE = 0,
   LOW = 1,
   MEDIUM = 2,
   HIGH = 3,
   VERY_HIGH = 4,
 };
-} // namespace verification_level
 
 
-namespace premium_tier {
-enum code {
+enum discord_guild_premium_tier_code {
   NONE = 0,
   TIER_1 = 1,
   TIER_2 = 2,
   TIER_3 = 3,
 };
-} // namespace premium_tier
 
 
-namespace system_channel_flags {
-enum code {
+enum discord_guild_system_channel_flags_code {
   SUPRESS_JOIN_NOTIFICATIONS = 1, // 1<<0
   SUPRESS_PREMIUM_SUBSCRIPTIONS = 2, // 1<<1
 };
-} // namespace system_channel_flags
 
 
-namespace guild_features {
-enum code {
+enum discord_guild_guild_features_code {
   INVITE_SPLASH = 0,
   VIP_REGIONS = 1,
   VANITY_URL = 2,
@@ -326,175 +207,84 @@ enum code {
   MEMBER_VERIFICATION_GATE_ENABLED = 13,
   PREVIEW_ENABLED = 14,
 };
-} // namespace guild_features
-} // namespace guild
-} // namespace discord
 /* This file is generated from specs/invite.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/resources/invite#invite-object
 */
-namespace discord {
-namespace invite {
 
 
-namespace target_user_types {
-enum code {
+enum discord_invite_target_user_types_code {
   STREAM = 1,
 };
-} // namespace target_user_types
-} // namespace invite
-} // namespace discord
 /* This file is generated from specs/webhook.modify-webhook.json, Please don't edit it. */
 /*
 
 */
-namespace discord {
-namespace webhook {
-namespace modify_webhook {
-} // namespace modify_webhook
-} // namespace webhook
-} // namespace discord
 /* This file is generated from specs/template.create-guild-from-template.json, Please don't edit it. */
 /*
 
 */
-namespace discord {
-namespace Template {
-namespace create_guild_from_template {
-} // namespace create_guild_from_template
-} // namespace Template
-} // namespace discord
 /* This file is generated from specs/channel.objects.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/resources/channel#overwrite-object-overwrite-structure
 */
-namespace discord {
-namespace channel {
-} // namespace channel
-} // namespace discord
 /* This file is generated from specs/guild.create-channel.json, Please don't edit it. */
 /*
 
 */
-namespace discord {
-namespace guild {
-namespace create_channel {
-} // namespace create_channel
-} // namespace guild
-} // namespace discord
 /* This file is generated from specs/emoji.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/resources/emoji#emoji-object-emoji-structure
 */
-namespace discord {
-namespace emoji {
-} // namespace emoji
-} // namespace discord
 /* This file is generated from specs/webhook.create-webhook.json, Please don't edit it. */
 /*
 
 */
-namespace discord {
-namespace webhook {
-namespace create_webhook {
-} // namespace create_webhook
-} // namespace webhook
-} // namespace discord
 /* This file is generated from specs/guild.welcome_screen.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/resources/guild#welcome-screen-object
 */
-namespace discord {
-namespace guild {
-namespace welcome_screen {
-} // namespace welcome_screen
-} // namespace guild
-} // namespace discord
 /* This file is generated from specs/guild.create-guild.json, Please don't edit it. */
 /*
 
 */
-namespace discord {
-namespace guild {
-namespace create_guild {
-} // namespace create_guild
-} // namespace guild
-} // namespace discord
 /* This file is generated from specs/channel.bulk-delete-messages.json, Please don't edit it. */
 /*
 
 */
-namespace discord {
-namespace channel {
-namespace bulk_delete_messages {
-} // namespace bulk_delete_messages
-} // namespace channel
-} // namespace discord
 /* This file is generated from specs/webhook.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/resources/webhook#webhook-object-webhook-structure
 */
-namespace discord {
 
 
-namespace webhook {
-namespace types {
-enum code {
+enum discord_webhook_types_code {
   INCOMING = 1,
   CHANNEL_FOLLOWER = 2,
 };
-} // namespace types
-} // namespace webhook
-} // namespace discord
 /* This file is generated from specs/user.create-group-dm.json, Please don't edit it. */
 /*
 
 */
-namespace discord {
-namespace user {
-namespace create_group_dm {
-} // namespace create_group_dm
-} // namespace user
-} // namespace discord
 /* This file is generated from specs/emoji.modify-guild-emoji.json, Please don't edit it. */
 /*
 
 */
-namespace discord {
-namespace emoji {
-namespace modify_guild_emoji {
-} // namespace modify_guild_emoji
-} // namespace emoji
-} // namespace discord
 /* This file is generated from specs/webhook.execute-webhook.json, Please don't edit it. */
 /*
 
 */
-namespace discord {
-namespace webhook {
-namespace execute_webhook {
-} // namespace execute_webhook
-} // namespace webhook
-} // namespace discord
 /* This file is generated from specs/guild.role.create.json, Please don't edit it. */
 /*
 
 */
-namespace discord {
-namespace guild {
-namespace create_guild_role {
-} // namespace create_guild_role
-} // namespace guild
-} // namespace discord
 /* This file is generated from specs/permissions.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/topics/permissions
 */
-namespace discord {
-namespace permissions {
 
 
-enum bitwise_flags {
+enum discord_permissions_bitwise_flags {
   ZERO = 0, // No permission bits
   CREATE_INSTANT_INVITE = 1, // Allows creation of instant invites  T, V
   KICK_MEMBERS = 2, // Allows kicking members
@@ -528,19 +318,13 @@ enum bitwise_flags {
   MANAGE_WEBHOOKS = 536870912, // Allows management and editing of webhooks   T, V
   MANAGE_EMOJIS = 1073741824, // Allows management and editing of emojis
 };
-} // namespace permissions
-} // namespace discord
 /* This file is generated from specs/audit_log.json, Please don't edit it. */
 /*
 (null)
 */
-namespace discord {
-namespace audit_log {
 
 
-namespace entry {
-namespace events {
-enum code {
+enum discord_audit_log_entry_events_code {
   GUILD_UPDATE = 1,
   CHANNEL_CREATE = 10,
   CHANNEL_UPDATE = 11,
@@ -576,53 +360,29 @@ enum code {
   INTEGRATION_UPDATE = 81,
   INTEGRATION_DELETE = 82,
 };
-} // namespace events
-} // namespace entry
-} // namespace audit_log
-} // namespace discord
 /* This file is generated from specs/guild.role.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/topics/permissions#role-object-role-structure
 */
-namespace discord {
-namespace guild {
-} // namespace guild
-} // namespace discord
 /* This file is generated from specs/emoji.create-guild-emoji.json, Please don't edit it. */
 /*
 
 */
-namespace discord {
-namespace emoji {
-namespace create_guild_emoji {
-} // namespace create_guild_emoji
-} // namespace emoji
-} // namespace discord
 /* This file is generated from specs/template.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/resources/template#template-object-template-structure
 */
-namespace discord {
-} // namespace discord
 /* This file is generated from specs/channel.follow-news-channel.json, Please don't edit it. */
 /*
 
 */
-namespace discord {
-namespace channel {
-namespace follow_news_channel {
-} // namespace follow_news_channel
-} // namespace channel
-} // namespace discord
 /* This file is generated from specs/gateway.json, Please don't edit it. */
 /*
 (null)
 */
-namespace discord {
-namespace gateway {
 
 
-enum close_opcodes {
+enum discord_gateway_close_opcodes {
   CLOSE_REASON_UNKNOWN_ERROR = 4000,
   CLOSE_REASON_UNKNOWN_OPCODE = 4001,
   CLOSE_REASON_DECODE_ERROR = 4002,
@@ -640,8 +400,7 @@ enum close_opcodes {
 };
 
 
-namespace intents {
-enum code {
+enum discord_gateway_intents_code {
   GUILDS = 1, // 1 << 0
   GUILD_MEMBERS = 2, // 1 << 1
   GUILD_BANS = 4, // 1 << 2
@@ -658,11 +417,9 @@ enum code {
   DIRECT_MESSAGE_REACTIONS = 8192, // 1 << 13
   DIRECT_MESSAGE_TYPING = 16384, // 1 << 14
 };
-} // namespace intents
 
 
-namespace opcodes {
-enum code {
+enum discord_gateway_opcodes_code {
   DISPATCH = 0,
   HEARTBEAT = 1,
   IDENTIFY = 2,
@@ -675,47 +432,25 @@ enum code {
   HELLO = 10,
   HEARTBEAT_ACK = 11,
 };
-} // namespace opcodes
 
 
-namespace identify {
-namespace status_update {
-namespace activity {
-namespace types {
-enum code {
+enum discord_gateway_identify_status_update_activity_types_code {
 };
-} // namespace types
-} // namespace activity
-} // namespace status_update
-} // namespace identify
 
 
-namespace presence {
-enum code {
+enum discord_gateway_presence_code {
 };
-} // namespace presence
-} // namespace gateway
-} // namespace discord
 /* This file is generated from specs/template.modify-guild-template.json, Please don't edit it. */
 /*
 
 */
-namespace discord {
-namespace Template {
-namespace modify_guild_template {
-} // namespace modify_guild_template
-} // namespace Template
-} // namespace discord
 /* This file is generated from specs/channel.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/resources/channel#channel-object-channel-types
 */
-namespace discord {
-namespace channel {
 
 
-namespace types {
-enum code {
+enum discord_channel_types_code {
   GUILD_TEXT = 0,
   DM = 1,
   GUILD_VOICE = 2,
@@ -724,24 +459,11 @@ enum code {
   GUILD_NEWS = 5,
   GUILD_STORE = 6,
 };
-} // namespace types
-} // namespace channel
-} // namespace discord
 /* This file is generated from specs/guild.member.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/resources/guild#guild-member-object
 */
-namespace discord {
-namespace guild {
-} // namespace guild
-} // namespace discord
 /* This file is generated from specs/user.modify-curent-user.json, Please don't edit it. */
 /*
 
 */
-namespace discord {
-namespace user {
-namespace modify_current_user {
-} // namespace modify_current_user
-} // namespace user
-} // namespace discord
