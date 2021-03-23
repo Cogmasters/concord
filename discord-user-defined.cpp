@@ -2,13 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <libdiscord.h>
-#include <orka-utils.h>
-
-#if 1
-namespace discord {
-namespace user_defined {
-namespace bulk_delete_messages {
+#include "libdiscord.h"
+#include "orka-utils.h"
 
 struct msg {
   u64_snowflake_t id;
@@ -21,7 +16,10 @@ void msg_from_json(char *json, size_t size, void *msg)
 }
 
 void
-run(discord::client *client, u64_snowflake_t channel_id, u64_snowflake_t author_id)
+discord_user_defined_bulk_delete_message(
+  discord::client *client, 
+  u64_snowflake_t channel_id, 
+  u64_snowflake_t author_id)
 {
   if (!channel_id) {
     D_PUTS("Missing 'channel_id");
@@ -64,7 +62,7 @@ run(discord::client *client, u64_snowflake_t channel_id, u64_snowflake_t author_
       .size = strlen(json)
     };
 
-    adapter::run(
+    discord::adapter::run(
       &client->adapter,
       NULL,
       &req_body,
@@ -72,22 +70,3 @@ run(discord::client *client, u64_snowflake_t channel_id, u64_snowflake_t author_
       "/channels/%llu/messages/bulk-delete", channel_id);
   }
 }
-
-
-} // bulk_delete_messages
-
-namespace get_n_message {
-void run(discord::client *client, u64_snowflake_t message_id, int n) {
-}
-}
-
-namespace get_author_permission {
-void run(discord::client *client, u64_snowflake_t user_id)
-{
-
-}
-} // get_author_permission
-
-} // user_defined
-}
-#endif
