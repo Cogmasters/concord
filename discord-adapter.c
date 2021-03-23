@@ -4,6 +4,7 @@
 #include <stdarg.h>
 
 #include "libdiscord.h"
+#include "discord-common.h"
 #include "orka-utils.h"
 
 #define BASE_API_URL "https://discord.com/api"

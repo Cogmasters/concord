@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "libdiscord.h"
+#include "discord-common.h"
 #include "orka-utils.h"
 
 void

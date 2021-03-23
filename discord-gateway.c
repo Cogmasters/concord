@@ -639,7 +639,7 @@ void
 discord_gateway_init(struct discord_gateway *gw, const char token[], const char config_file[])
 {
   struct ws_callbacks cbs = {
-    .data = (void*)gw,
+    .data = gw,
     .on_startup = &on_startup_cb,
     .on_iter_end = &on_iter_end_cb,
     .on_text_event = &on_text_event_cb,
@@ -677,11 +677,9 @@ discord_gateway_init(struct discord_gateway *gw, const char token[], const char 
   gw->identify->properties->$os = strdup("POSIX");
   gw->identify->properties->$browser = strdup("orca");
   gw->identify->properties->$device = strdup("orca");
-
-  discord_set_presence(gw->p_client, NULL, "online", false);
   gw->identify->presence->since = orka_timestamp_ms();
-
   gw->me = discord_user_dati_alloc();
+  discord_set_presence(gw->p_client, NULL, "online", false);
   discord_get_current_user(gw->p_client, gw->me);
   sb_discord_get_current_user(gw->p_client, &gw->sb_me);
 
@@ -700,8 +698,8 @@ discord_gateway_cleanup(struct discord_gateway *gw)
 
 /* connects to the discord websockets server */
 void
-discord_gateway_run(struct discord_gateway *gw) {
-  ws_run(&gw->ws);
+discord_run(struct discord_client *client) {
+  ws_run(&client->gw.ws);
 }
 
 void

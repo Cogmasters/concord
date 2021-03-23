@@ -4,18 +4,17 @@
 #include <ctype.h> //for isgraph()
 
 #include "libdiscord.h"
+#include "discord-common.h"
 #include "orka-utils.h"
 
 
 struct discord_client*
 discord_init(const char token[])
 {
-  struct discord_client *new_client = (struct discord_client*)calloc(1, sizeof(struct discord_client));
-  if (NULL == new_client) return NULL;
+  struct discord_client *new_client = calloc(1, sizeof *new_client);
 
   new_client->adapter.p_client = new_client;
   new_client->gw.p_client = new_client;
-  
   discord_adapter_init(&new_client->adapter, token, NULL);
   discord_gateway_init(&new_client->gw, token, NULL);
 
@@ -25,12 +24,10 @@ discord_init(const char token[])
 struct discord_client*
 discord_config_init(const char config_file[])
 {
-  struct discord_client *new_client = (struct discord_client*)calloc(1, sizeof(struct discord_client));
-  if (NULL == new_client) return NULL;
+  struct discord_client *new_client = calloc(1, sizeof *new_client);
 
   new_client->adapter.p_client = new_client;
   new_client->gw.p_client = new_client;
-  
   discord_adapter_init(&new_client->adapter, NULL, config_file);
   discord_gateway_init(&new_client->gw, NULL, config_file);
 
@@ -42,7 +39,6 @@ discord_cleanup(struct discord_client *client)
 {
   discord_adapter_cleanup(&client->adapter);
   discord_gateway_cleanup(&client->gw);
-
   free(client);
 }
 
@@ -56,6 +52,18 @@ discord_global_init() {
 void
 discord_global_cleanup() {
   curl_global_cleanup();
+}
+
+//@todo make this thread safe
+void*
+discord_set_data(struct discord_client *client, void *data) {
+  return client->data = data;
+}
+
+//@todo make this thread safe
+void*
+discord_get_data(struct discord_client *client) {
+  return client->data;
 }
 
 void
@@ -79,7 +87,7 @@ discord_set_prefix(struct discord_client *client, char *prefix)
   }
 
   client->gw.prefix = prefix;
-};
+}
 
 void
 discord_setcb_command(struct discord_client *client, char *command, message_cb *user_cb)
@@ -175,23 +183,6 @@ discord_setcb(struct discord_client *client, enum dispatch_code opt, callback)
   discord_add_intents(client, code);
 
   va_end(args);
-}
-
-void
-discord_run(struct discord_client *client){
-  discord_gateway_run(&client->gw);
-}
-
-//@todo make this thread safe
-void*
-discord_set_data(struct discord_client *client, void *data) {
-  return client->data = data;
-}
-
-//@todo make this thread safe
-void*
-discord_get_data(struct discord_client *client) {
-  return client->data;
 }
 
 void

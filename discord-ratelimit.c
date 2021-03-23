@@ -5,6 +5,7 @@
 #include <pthread.h> // for bucket synchronization
 
 #include "libdiscord.h"
+#include "discord-common.h"
 #include "orka-utils.h"
 
 

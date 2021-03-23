@@ -1,9 +1,131 @@
 #ifndef LIBDISCORD_H_
 #define LIBDISCORD_H_
 
+#include <stdbool.h>
 #include "json-actor-boxed.h"
-#include "discord-common.h"
+#include "user-agent.h"
 
+
+struct discord_client; // forward declaration
+
+typedef uint64_t u64_unix_ms_t;
+typedef uint64_t u64_snowflake_t;
+
+/* Size limits encountered in the Docs and searching the web */
+#define MAX_NAME_LEN          100 + 1
+#define MAX_TOPIC_LEN         1024 + 1
+#define MAX_DESCRIPTION_LEN   2048 + 1
+#define MAX_USERNAME_LEN      32 + 1
+#define MAX_DISCRIMINATOR_LEN 4 + 1
+#define MAX_SHA256_LEN        1024 + 1
+#define MAX_LOCALE_LEN        16 + 1
+#define MAX_EMAIL_LEN         254 + 1
+#define MAX_REGION_LEN        16 + 1
+#define MAX_REASON_LEN        512 + 1
+#define MAX_MESSAGE_LEN       2000 + 1
+#define MAX_PAYLOAD_LEN       4096 + 1
+
+/* EMBED LIMITS
+https://discord.com/developers/docs/resources/channel#embed-limits */
+#define EMBED_TITLE_LEN       256 + 1
+#define EMBED_DESCRIPTION_LEN 2048 + 1
+#define EMBED_MAX_FIELDS      25
+#define EMBED_FIELD_NAME_LEN  256 + 1
+#define EMBED_FIELD_VALUE_LEN 1024 + 1
+#define EMBED_FOOTER_TEXT_LEN 2048 + 1
+#define EMBED_AUTHOR_NAME_LEN 256 + 1
+
+/* WEBHOOK LIMITS
+https://discord.com/developers/docs/resources/webhook#create-webhook */
+#define WEBHOOK_NAME_LEN 80 + 1
+
+/* SNOWFLAKES
+https://discord.com/developers/docs/reference#snowflakes */
+#define SNOWFLAKE_INCREMENT           12
+#define SNOWFLAKE_PROCESS_ID          17
+#define SNOWFLAKE_INTERNAL_WORKER_ID  22
+#define SNOWFLAKE_TIMESTAMP           64
+
+#include "./specs-code/all_opaque_struct.h"
+#include "./specs-code/all_enums.h"
+#include "./specs-code/all_structs.h"
+
+
+/* IDLE CALLBACK (runs on every iteration, no trigger required) */
+typedef void (idle_cb)(struct discord_client *client, const struct discord_user_dati *me);
+
+/* MESSAGE EVENTS CALLBACKS */
+typedef void (message_cb)(
+    struct discord_client *client, const struct discord_user_dati *me, 
+    const struct discord_channel_message_dati *message);
+typedef void (sb_message_cb)(
+    struct discord_client *client, const struct discord_user_dati *me,
+    struct sized_buffer sb_me,
+    const struct discord_channel_message_dati *message,
+    struct sized_buffer sb_message);
+typedef void (message_delete_cb)(
+    struct discord_client *client, const struct discord_user_dati *me, 
+    const u64_snowflake_t id, 
+    const u64_snowflake_t channel_id, 
+    const u64_snowflake_t guild_id);
+typedef void (message_delete_bulk_cb)(
+    struct discord_client *client, const struct discord_user_dati *me, 
+    const size_t nids, 
+    const u64_snowflake_t ids[], 
+    const u64_snowflake_t channel_id, 
+    const u64_snowflake_t guild_id);
+
+/* MESSAGE REACTION EVENTS CALLBACKS */
+typedef void (reaction_add_cb)(
+    struct discord_client *client, const struct discord_user_dati *me, 
+    const u64_snowflake_t channel_id, 
+    const u64_snowflake_t message_id, 
+    const u64_snowflake_t guild_id, 
+    const struct discord_guild_member_dati *member, 
+    const struct discord_emoji_dati *emoji);
+typedef void (reaction_remove_cb)(
+    struct discord_client *client, const struct discord_user_dati *me, 
+    const u64_snowflake_t channel_id, 
+    const u64_snowflake_t message_id, 
+    const u64_snowflake_t guild_id, 
+    const struct discord_emoji_dati *emoji);
+typedef void (reaction_remove_all_cb)(
+    struct discord_client *client, const struct discord_user_dati *me, 
+    const u64_snowflake_t channel_id, 
+    const u64_snowflake_t message_id, 
+    const u64_snowflake_t guild_id);
+typedef void (reaction_remove_emoji_cb)(
+    struct discord_client *client, const struct discord_user_dati *me, 
+    const u64_snowflake_t channel_id, 
+    const u64_snowflake_t message_id, 
+    const u64_snowflake_t guild_id,
+    const struct discord_emoji_dati *emoji);
+
+/* GUILD MEMBER EVENTS CALLBACKS */
+typedef void (guild_member_cb)(
+    struct discord_client *client, const struct discord_user_dati *me, 
+    const u64_snowflake_t guild_id, 
+    const struct discord_guild_member_dati *member);
+typedef void (guild_member_remove_cb)(
+    struct discord_client *client, const struct discord_user_dati *me, 
+    const u64_snowflake_t guild_id, 
+    const struct discord_user_dati *user);
+
+struct discord_session {
+  char url[MAX_URL_LEN];
+  int shards;
+
+  int total;
+  int remaining;
+  int reset_after;
+  int max_concurrency; //max concurrent sessions we can handle
+
+  int concurrent; //active concurrent sessions
+  u64_unix_ms_t identify_tstamp; //identify timestamp in ms
+
+  u64_unix_ms_t event_tstamp; //event timestamp in ms (resets every 60s)
+  int event_count; //count elements to avoid reaching 120/60sec limit
+};
 
 struct discord_channel_get_channel_messages_params {
   u64_snowflake_t around;
@@ -84,6 +206,7 @@ void* discord_get_data(struct discord_client *client);
 
 void discord_replace_presence(struct discord_client *client, struct discord_gateway_identify_status_update_dati *presence);
 void discord_set_presence(struct discord_client *client, struct discord_gateway_identify_status_update_activity_dati *activity, char status[], bool afk);
+enum ws_status discord_gateway_status(struct discord_client *client);
 
 
 // EMBED MISC FUNCTIONS

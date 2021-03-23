@@ -2,7 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
+
 #include "libdiscord.h"
+#include "orka-debug.h"
 
 
 //using namespace discord;

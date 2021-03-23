@@ -4,8 +4,9 @@
 #include <string.h>
 #include <unistd.h>
 #include <assert.h>
-#include "libdiscord.h"
 
+#include "libdiscord.h"
+#include "orka-debug.h"
 
 
 struct sudo_s {
