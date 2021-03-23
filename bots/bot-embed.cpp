@@ -10,13 +10,13 @@
 
 #define JSON_FILE "bot-embed.json"
 
-void on_ready(discord::client *client, const discord::user::dati *me) {
+void on_ready(struct discord_client *client, const discord::user::dati *me) {
   fprintf(stderr, "\n\nEmbed-Bot succesfully connected to Discord as %s#%s!\n\n",
       me->username, me->discriminator);
 }
 
 void on_command(
-    discord::client *client,
+    struct discord_client *client,
     const discord::user::dati *me,
     const discord::channel::message::dati *msg)
 {
@@ -26,7 +26,7 @@ void on_command(
 
   discord::channel::create_message::params params = {
     .content = "This is an embed",
-    .embed = (discord::channel::embed::dati*)get_data(client)
+    .embed = (discord::channel::embed::dati*)discord_get_data(client)
   };
   discord_create_message(client, msg->channel_id, &params, NULL);
 }
@@ -56,12 +56,12 @@ int main(int argc, char *argv[])
   else
     config_file = "bot.config";
 
-  discord::global_init();
+  discord_global_init();
 
-  discord::client *client = discord::config_init(config_file);
+  struct discord_client *client = discord_config_init(config_file);
   assert(NULL != client);
 
-  discord::setcb_command(client, "show embed", &on_command);
+  discord_setcb_command(client, "show embed", &on_command);
 
   printf("\n\nThis bot demonstrates how easy it is to load embed"
          " from a json file.\n"
@@ -73,13 +73,13 @@ int main(int argc, char *argv[])
 
 
   discord::channel::embed::dati *embed = load_embed_from_json(JSON_FILE);
-  discord::set_data(client, embed);
+  discord_set_data(client, embed);
 
-  discord::run(client);
+  discord_run(client);
 
   discord::channel::embed::dati_free(embed);
-  discord::cleanup(client);
+  discord_cleanup(client);
 
-  discord::global_cleanup();
+  discord_global_cleanup();
 }
 

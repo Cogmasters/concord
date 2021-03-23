@@ -7,7 +7,7 @@
 
 
 void
-discord_get_user(discord::client *client, const u64_snowflake_t user_id, discord::user::dati *p_user)
+discord_get_user(struct discord_client *client, const u64_snowflake_t user_id, discord::user::dati *p_user)
 {
   if (!user_id) {
     D_PUTS("Missing 'user_id'");
@@ -17,7 +17,7 @@ discord_get_user(discord::client *client, const u64_snowflake_t user_id, discord
   struct resp_handle resp_handle =
     { .ok_cb = &discord::user::dati_from_json_v, .ok_obj = (void*)p_user};
 
-  discord::adapter::run( 
+  discord_adapter_run( 
     &client->adapter,
     &resp_handle,
     NULL,
@@ -26,12 +26,12 @@ discord_get_user(discord::client *client, const u64_snowflake_t user_id, discord
 }
 
 void 
-discord_get_current_user(discord::client *client, discord::user::dati *p_user)
+discord_get_current_user(struct discord_client *client, discord::user::dati *p_user)
 {
   struct resp_handle resp_handle =
     { .ok_cb = &discord::user::dati_from_json_v, .ok_obj = (void*)p_user};
 
-  discord::adapter::run( 
+  discord_adapter_run( 
     &client->adapter,
     &resp_handle,
     NULL,
@@ -48,12 +48,12 @@ json_to_sb(char *json, size_t len, void *p_sb_user)
 }
 
 void /* @todo this is a temporary solution for easily wrapping JS */
-sb_discord_get_current_user(discord::client *client, struct sized_buffer *p_sb_user)
+sb_discord_get_current_user(struct discord_client *client, struct sized_buffer *p_sb_user)
 {
   struct resp_handle resp_handle =
     {.ok_cb = &json_to_sb, .ok_obj = (void*)p_sb_user};
 
-  discord::adapter::run( 
+  discord_adapter_run( 
     &client->adapter,
     &resp_handle,
     NULL,
@@ -62,12 +62,12 @@ sb_discord_get_current_user(discord::client *client, struct sized_buffer *p_sb_u
 }
 
 void
-discord_get_current_user_guilds(discord::client *client, NTL_T(discord::guild::dati) *p_guilds)
+discord_get_current_user_guilds(struct discord_client *client, NTL_T(discord::guild::dati) *p_guilds)
 {
   struct resp_handle resp_handle =
     { .ok_cb = &discord::guild::dati_list_from_json_v, .ok_obj = (void*)p_guilds};
 
-  discord::adapter::run( 
+  discord_adapter_run( 
     &client->adapter,
     &resp_handle,
     NULL,
@@ -76,11 +76,11 @@ discord_get_current_user_guilds(discord::client *client, NTL_T(discord::guild::d
 }
 
 void 
-discord_leave_guild(discord::client *client, const u64_snowflake_t guild_id)
+discord_leave_guild(struct discord_client *client, const u64_snowflake_t guild_id)
 {
   struct sized_buffer req_body = {"{}", 2};
 
-  discord::adapter::run(
+  discord_adapter_run(
     &client->adapter,
     NULL,
     &req_body,

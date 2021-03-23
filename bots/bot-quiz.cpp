@@ -103,14 +103,14 @@ parse_session_config()
 }
 
 void 
-on_ready(discord::client *client, const discord::user::dati *me) {
+on_ready(struct discord_client *client, const discord::user::dati *me) {
   fprintf(stderr, "\n\nQuiz-Bot succesfully connected to Discord as %s#%s!\n\n",
       me->username, me->discriminator);
 }
 
 void
 close_existing_sessions(
-  discord::client *client,
+  struct discord_client *client,
   const u64_snowflake_t guild_id,
   const discord::guild::member::dati *member)
 {
@@ -144,7 +144,7 @@ close_existing_sessions(
 
 u64_snowflake_t
 create_session_channel(
-  discord::client *client,
+  struct discord_client *client,
   const u64_snowflake_t guild_id,
   const discord::guild::member::dati *member)
 {
@@ -156,7 +156,7 @@ create_session_channel(
     .topic = g_session.chat_topic
   };
 
-  discord::channel::overwrite::append(
+  discord_overwrite_append(
     &params1.permission_overwrites,
     guild_id, // @everyone role id is the same as guild id
     0, // role type
@@ -166,7 +166,7 @@ create_session_channel(
     | discord::permissions::VIEW_CHANNEL
     | discord::permissions::SEND_MESSAGES)); // Deny Read and Send Messages, Add Reactions permissions
 
-  discord::channel::overwrite::append(
+  discord_overwrite_append(
     &params1.permission_overwrites,
     member->user->id,
     1, // user type
@@ -207,7 +207,7 @@ create_session_channel(
 
 u64_snowflake_t
 add_session_role(
-  discord::client *client,
+  struct discord_client *client,
   const u64_snowflake_t guild_id, 
   const u64_snowflake_t channel_id,
   const discord::guild::member::dati *member)
@@ -240,7 +240,7 @@ add_session_role(
 }
 
 void start_new_session(
-  discord::client *client,
+  struct discord_client *client,
   const u64_snowflake_t guild_id,
   const discord::guild::member::dati *member)
 {
@@ -274,7 +274,7 @@ void start_new_session(
 }
 
 void send_next_question(
-  discord::client *client,
+  struct discord_client *client,
   u64_snowflake_t channel_id,
   struct session *session, 
   struct question *question)
@@ -322,7 +322,7 @@ void send_next_question(
 }
 
 void on_reaction_add(
-    discord::client *client,
+    struct discord_client *client,
     const discord::user::dati *me,
     const u64_snowflake_t channel_id, 
     const u64_snowflake_t message_id, 
@@ -391,12 +391,12 @@ int main(int argc, char *argv[])
 
   setlocale(LC_ALL, "");
 
-  discord::global_init();
+  discord_global_init();
 
-  discord::client *client = discord::config_init(config_file);
+  struct discord_client *client = discord_config_init(config_file);
   assert(NULL != client);
 
-  discord::setcb(client, discord::MESSAGE_REACTION_ADD, &on_reaction_add);
+  discord_setcb(client, MESSAGE_REACTION_ADD, &on_reaction_add);
 
   printf("\n\nTHIS IS A WORK IN PROGRESS"
          "\nTYPE ANY KEY TO START BOT\n");
@@ -411,11 +411,11 @@ int main(int argc, char *argv[])
     0, 
     g_session.reaction_emoji);
 
-  discord::run(client);
+  discord_run(client);
 
-  discord::cleanup(client);
+  discord_cleanup(client);
 
-  discord::global_cleanup();
+  discord_global_cleanup();
 }
 
 

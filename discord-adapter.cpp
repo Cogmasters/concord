@@ -3,16 +3,20 @@
 #include <string.h>
 #include <stdarg.h>
 
-#include <libdiscord.h>
+#include "libdiscord.h"
 #include "orka-utils.h"
 
 #define BASE_API_URL "https://discord.com/api"
 
-namespace discord {
-namespace adapter {
+
+struct _ratelimit {
+  struct discord_adapter *adapter;
+  struct discord_bucket *bucket;
+  char *endpoint;
+};
 
 void
-init(discord::adapter::dati *adapter, const char token[], const char config_file[])
+discord_adapter_init(struct discord_adapter *adapter, const char token[], const char config_file[])
 {
   if (config_file) {
     ua_config_init(&adapter->ua, BASE_API_URL, "DISCORD HTTP", config_file);
@@ -36,25 +40,19 @@ init(discord::adapter::dati *adapter, const char token[], const char config_file
 }
 
 void
-cleanup(discord::adapter::dati *adapter)
+discord_adapter_cleanup(struct discord_adapter *adapter)
 {
-  discord::adapter::bucket::cleanup(adapter);
+  discord_bucket_cleanup(adapter);
   ua_cleanup(&adapter->ua);
   pthread_mutex_destroy(&adapter->lock);
 }
-
-struct _ratelimit {
-  discord::adapter::dati *adapter;
-  discord::adapter::bucket::dati *bucket;
-  char *endpoint;
-};
 
 static int
 bucket_tryget_cb(void *p_ratelimit)
 {
   struct _ratelimit *rl = (struct _ratelimit*)p_ratelimit;
   pthread_mutex_lock(&rl->adapter->lock);
-  rl->bucket = discord::adapter::bucket::try_get(rl->adapter, rl->endpoint);
+  rl->bucket = discord_bucket_try_get(rl->adapter, rl->endpoint);
   pthread_mutex_unlock(&rl->adapter->lock);
   return 1;
 }
@@ -63,7 +61,7 @@ static void
 bucket_trycooldown_cb(void *p_ratelimit)
 {
   struct _ratelimit *rl = (struct _ratelimit*)p_ratelimit;
-  discord::adapter::bucket::try_cooldown(rl->bucket);
+  discord_bucket_try_cooldown(rl->bucket);
 }
 
 static void
@@ -71,7 +69,7 @@ bucket_trybuild_cb(void *p_ratelimit, struct ua_conn_s *conn)
 {
   struct _ratelimit *rl = (struct _ratelimit*)p_ratelimit;
   pthread_mutex_lock(&rl->adapter->lock);
-  discord::adapter::bucket::build(rl->adapter, rl->bucket, rl->endpoint, conn);
+  discord_bucket_build(rl->adapter, rl->bucket, rl->endpoint, conn);
   pthread_mutex_unlock(&rl->adapter->lock);
 }
 
@@ -173,8 +171,8 @@ json_error_cb(char *str, size_t len, void *p_err)
 
 /* template function for performing requests */
 void
-run(
-  discord::adapter::dati *adapter, 
+discord_adapter_run(
+  struct discord_adapter *adapter, 
   struct resp_handle *resp_handle,
   struct sized_buffer *req_body,
   enum http_method http_method,
@@ -216,6 +214,3 @@ run(
 
   va_end(args);
 }
-
-} // namespace adapter
-} // namespace discord

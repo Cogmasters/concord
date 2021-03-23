@@ -4,13 +4,13 @@
 #include "libdiscord.h"
 
 
-void on_ready(discord::client *client, const discord::user::dati *me) {
+void on_ready(struct discord_client *client, const discord::user::dati *me) {
   fprintf(stderr, "\n\nPingPong-Bot succesfully connected to Discord as %s#%s!\n\n",
       me->username, me->discriminator);
 }
 
 void on_ping(
-  discord::client *client,
+  struct discord_client *client,
   const discord::user::dati *me,
   const discord::channel::message::dati *msg)
 {
@@ -23,7 +23,7 @@ void on_ping(
 }
 
 void on_pong(
-    discord::client *client,
+    struct discord_client *client,
     const discord::user::dati *me,
     const discord::channel::message::dati *msg)
 {
@@ -43,18 +43,18 @@ int main(int argc, char *argv[])
   else
     config_file = "bot.config";
 
-  discord::global_init();
+  discord_global_init();
 
-  discord::client *client = discord::config_init(config_file);
+  struct discord_client *client = discord_config_init(config_file);
   assert(NULL != client);
 
-  discord::setcb(client, discord::READY, &on_ready);
-  discord::setcb_command(client, "ping", &on_ping);
-  discord::setcb_command(client, "pong", &on_pong);
+  discord_setcb(client, READY, &on_ready);
+  discord_setcb_command(client, "ping", &on_ping);
+  discord_setcb_command(client, "pong", &on_pong);
 
-  discord::run(client);
+  discord_run(client);
 
-  discord::cleanup(client);
+  discord_cleanup(client);
 
-  discord::global_cleanup();
+  discord_global_cleanup();
 }

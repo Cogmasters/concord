@@ -3,7 +3,7 @@
 #include <ctype.h> // for isspace()
 #include <pthread.h>
 
-#include <libdiscord.h>
+#include "libdiscord.h"
 
 #include "orka-utils.h"
 #include "discord-common.h"
@@ -11,25 +11,21 @@
 
 #define BASE_GATEWAY_URL "wss://gateway.discord.gg/?v=6&encoding=json"
 
-namespace discord {
-namespace gateway {
-
 static char*
 opcode_print(int opcode)
 {
-  using namespace opcodes;
   switch (opcode) {
-      CASE_RETURN_STR(DISPATCH);
-      CASE_RETURN_STR(HEARTBEAT);
-      CASE_RETURN_STR(IDENTIFY);
-      CASE_RETURN_STR(PRESENCE_UPDATE);
-      CASE_RETURN_STR(VOICE_STATE_UPDATE);
-      CASE_RETURN_STR(RESUME);
-      CASE_RETURN_STR(RECONNECT);
-      CASE_RETURN_STR(REQUEST_GUILD_MEMBERS);
-      CASE_RETURN_STR(INVALID_SESSION);
-      CASE_RETURN_STR(HELLO);
-      CASE_RETURN_STR(HEARTBEAT_ACK);
+      CASE_RETURN_STR(discord::gateway::opcodes::DISPATCH);
+      CASE_RETURN_STR(discord::gateway::opcodes::HEARTBEAT);
+      CASE_RETURN_STR(discord::gateway::opcodes::IDENTIFY);
+      CASE_RETURN_STR(discord::gateway::opcodes::PRESENCE_UPDATE);
+      CASE_RETURN_STR(discord::gateway::opcodes::VOICE_STATE_UPDATE);
+      CASE_RETURN_STR(discord::gateway::opcodes::RESUME);
+      CASE_RETURN_STR(discord::gateway::opcodes::RECONNECT);
+      CASE_RETURN_STR(discord::gateway::opcodes::REQUEST_GUILD_MEMBERS);
+      CASE_RETURN_STR(discord::gateway::opcodes::INVALID_SESSION);
+      CASE_RETURN_STR(discord::gateway::opcodes::HELLO);
+      CASE_RETURN_STR(discord::gateway::opcodes::HEARTBEAT_ACK);
   default:
       ERR("Invalid Gateway opcode (code: %d)", opcode);
   }
@@ -38,23 +34,23 @@ opcode_print(int opcode)
 }
 
 static char*
-close_opcode_print(enum close_opcodes gateway_opcode)
+close_opcode_print(discord::gateway::close_opcodes gateway_opcode)
 {
   switch (gateway_opcode) {
-      CASE_RETURN_STR(CLOSE_REASON_UNKNOWN_ERROR);
-      CASE_RETURN_STR(CLOSE_REASON_UNKNOWN_OPCODE);
-      CASE_RETURN_STR(CLOSE_REASON_DECODE_ERROR);
-      CASE_RETURN_STR(CLOSE_REASON_NOT_AUTHENTICATED);
-      CASE_RETURN_STR(CLOSE_REASON_AUTHENTICATION_FAILED);
-      CASE_RETURN_STR(CLOSE_REASON_ALREADY_AUTHENTICATED);
-      CASE_RETURN_STR(CLOSE_REASON_INVALID_SEQUENCE);
-      CASE_RETURN_STR(CLOSE_REASON_RATE_LIMITED);
-      CASE_RETURN_STR(CLOSE_REASON_SESSION_TIMED_OUT);
-      CASE_RETURN_STR(CLOSE_REASON_INVALID_SHARD);
-      CASE_RETURN_STR(CLOSE_REASON_SHARDING_REQUIRED);
-      CASE_RETURN_STR(CLOSE_REASON_INVALID_API_VERSION);
-      CASE_RETURN_STR(CLOSE_REASON_INVALID_INTENTS);
-      CASE_RETURN_STR(CLOSE_REASON_DISALLOWED_INTENTS);
+      CASE_RETURN_STR(discord::gateway::CLOSE_REASON_UNKNOWN_ERROR);
+      CASE_RETURN_STR(discord::gateway::CLOSE_REASON_UNKNOWN_OPCODE);
+      CASE_RETURN_STR(discord::gateway::CLOSE_REASON_DECODE_ERROR);
+      CASE_RETURN_STR(discord::gateway::CLOSE_REASON_NOT_AUTHENTICATED);
+      CASE_RETURN_STR(discord::gateway::CLOSE_REASON_AUTHENTICATION_FAILED);
+      CASE_RETURN_STR(discord::gateway::CLOSE_REASON_ALREADY_AUTHENTICATED);
+      CASE_RETURN_STR(discord::gateway::CLOSE_REASON_INVALID_SEQUENCE);
+      CASE_RETURN_STR(discord::gateway::CLOSE_REASON_RATE_LIMITED);
+      CASE_RETURN_STR(discord::gateway::CLOSE_REASON_SESSION_TIMED_OUT);
+      CASE_RETURN_STR(discord::gateway::CLOSE_REASON_INVALID_SHARD);
+      CASE_RETURN_STR(discord::gateway::CLOSE_REASON_SHARDING_REQUIRED);
+      CASE_RETURN_STR(discord::gateway::CLOSE_REASON_INVALID_API_VERSION);
+      CASE_RETURN_STR(discord::gateway::CLOSE_REASON_INVALID_INTENTS);
+      CASE_RETURN_STR(discord::gateway::CLOSE_REASON_DISALLOWED_INTENTS);
   default: {
       enum cws_close_reason cws_opcode = \
             (enum cws_close_reason)gateway_opcode;
@@ -84,12 +80,12 @@ close_opcode_print(enum close_opcodes gateway_opcode)
 }
 
 static void
-send_payload(discord::gateway::dati *gw, char payload[]) {
+send_payload(struct discord_gateway *gw, char payload[]) {
   ws_send_text(&gw->ws, payload);
 }
 
 static void
-send_resume(discord::gateway::dati *gw)
+send_resume(struct discord_gateway *gw)
 {
   char payload[MAX_PAYLOAD_LEN];
   int ret = json_inject(payload, sizeof(payload), 
@@ -110,7 +106,7 @@ send_resume(discord::gateway::dati *gw)
 }
 
 static void
-send_identify(discord::gateway::dati *gw)
+send_identify(struct discord_gateway *gw)
 {
   /* Ratelimit check */
   pthread_mutex_lock(&gw->lock);
@@ -144,7 +140,7 @@ send_identify(discord::gateway::dati *gw)
 static void
 on_hello(void *p_gw, void *curr_iter_data)
 {
-  discord::gateway::dati *gw = (discord::gateway::dati*)p_gw;
+  struct discord_gateway *gw = (struct discord_gateway*)p_gw;
   struct payload_s *payload = (struct payload_s*)curr_iter_data;
 
   pthread_mutex_lock(&gw->lock);
@@ -164,7 +160,7 @@ on_hello(void *p_gw, void *curr_iter_data)
 
 static void
 on_dispatch_message_reaction(
-  discord::gateway::dati *gw, 
+  struct discord_gateway *gw, 
   enum dispatch_code code,
   struct payload_s *payload)
 {
@@ -227,7 +223,7 @@ on_dispatch_message_reaction(
 
 static void
 on_dispatch_message(
-  discord::gateway::dati *gw, 
+  struct discord_gateway *gw, 
   enum dispatch_code code,
   struct payload_s *payload)
 {
@@ -334,7 +330,7 @@ on_dispatch_message(
 
 static void
 on_dispatch_guild_member(
-  discord::gateway::dati *gw, 
+  struct discord_gateway *gw, 
   enum dispatch_code code, 
   struct payload_s *payload)
 {
@@ -401,7 +397,7 @@ get_dispatch_code(char event_name[])
 static void
 on_dispatch(void *p_gw, void *curr_iter_data)
 {
-  discord::gateway::dati *gw = (discord::gateway::dati*)p_gw;
+  struct discord_gateway *gw = (struct discord_gateway*)p_gw;
   struct payload_s *payload = (struct payload_s*)curr_iter_data;
 
   /* Ratelimit check */
@@ -462,7 +458,7 @@ on_dispatch(void *p_gw, void *curr_iter_data)
 static void
 on_invalid_session(void *p_gw, void *curr_iter_data)
 {
-  discord::gateway::dati *gw = (discord::gateway::dati*)p_gw;
+  struct discord_gateway *gw = (struct discord_gateway*)p_gw;
   struct payload_s *payload = (struct payload_s*)curr_iter_data;
 
   bool is_resumable = strcmp(payload->event_data, "false");
@@ -482,7 +478,7 @@ on_invalid_session(void *p_gw, void *curr_iter_data)
 static void
 on_reconnect(void *p_gw, void *curr_iter_data)
 {
-  discord::gateway::dati *gw = (discord::gateway::dati*)p_gw;
+  struct discord_gateway *gw = (struct discord_gateway*)p_gw;
 
   ws_set_status(&gw->ws, WS_RESUME);
 
@@ -494,7 +490,7 @@ on_reconnect(void *p_gw, void *curr_iter_data)
 static void
 on_heartbeat_ack(void *p_gw, void *curr_iter_data)
 {
-  discord::gateway::dati *gw = (discord::gateway::dati*)p_gw;
+  struct discord_gateway *gw = (struct discord_gateway*)p_gw;
 
   // get request / response interval in milliseconds
   pthread_mutex_lock(&gw->lock);
@@ -511,28 +507,28 @@ on_connect_cb(void *p_gw, const char *ws_protocols) {
 static void
 on_close_cb(void *p_gw, enum cws_close_reason cwscode, const char *reason, size_t len)
 {
-  discord::gateway::dati *gw = (discord::gateway::dati*)p_gw;
-  enum close_opcodes opcode = (enum close_opcodes)cwscode;
+  struct discord_gateway *gw = (struct discord_gateway*)p_gw;
+  discord::gateway::close_opcodes opcode = (discord::gateway::close_opcodes)cwscode;
  
   switch (opcode) {
-  case CLOSE_REASON_UNKNOWN_OPCODE:
-  case CLOSE_REASON_DECODE_ERROR:
-  case CLOSE_REASON_NOT_AUTHENTICATED:
-  case CLOSE_REASON_AUTHENTICATION_FAILED:
-  case CLOSE_REASON_ALREADY_AUTHENTICATED:
-  case CLOSE_REASON_RATE_LIMITED:
-  case CLOSE_REASON_SHARDING_REQUIRED:
-  case CLOSE_REASON_INVALID_API_VERSION:
-  case CLOSE_REASON_INVALID_INTENTS:
-  case CLOSE_REASON_INVALID_SHARD:
-  case CLOSE_REASON_DISALLOWED_INTENTS:
+  case discord::gateway::CLOSE_REASON_UNKNOWN_OPCODE:
+  case discord::gateway::CLOSE_REASON_DECODE_ERROR:
+  case discord::gateway::CLOSE_REASON_NOT_AUTHENTICATED:
+  case discord::gateway::CLOSE_REASON_AUTHENTICATION_FAILED:
+  case discord::gateway::CLOSE_REASON_ALREADY_AUTHENTICATED:
+  case discord::gateway::CLOSE_REASON_RATE_LIMITED:
+  case discord::gateway::CLOSE_REASON_SHARDING_REQUIRED:
+  case discord::gateway::CLOSE_REASON_INVALID_API_VERSION:
+  case discord::gateway::CLOSE_REASON_INVALID_INTENTS:
+  case discord::gateway::CLOSE_REASON_INVALID_SHARD:
+  case discord::gateway::CLOSE_REASON_DISALLOWED_INTENTS:
       ws_set_status(&gw->ws, WS_DISCONNECTED);
       break;
-  case CLOSE_REASON_UNKNOWN_ERROR:
-  case CLOSE_REASON_INVALID_SEQUENCE:
+  case discord::gateway::CLOSE_REASON_UNKNOWN_ERROR:
+  case discord::gateway::CLOSE_REASON_INVALID_SEQUENCE:
       ws_set_status(&gw->ws, WS_RESUME);
       break;
-  case CLOSE_REASON_SESSION_TIMED_OUT:
+  case discord::gateway::CLOSE_REASON_SESSION_TIMED_OUT:
   default: //websocket/clouflare opcodes
       ws_set_status(&gw->ws, WS_FRESH);
       break;
@@ -552,7 +548,7 @@ on_text_cb(void *p_gw, const char *text, size_t len) {
 static int
 on_startup_cb(void *p_gw)
 {
-  discord::gateway::dati *gw = (discord::gateway::dati*)p_gw;
+  struct discord_gateway *gw = (struct discord_gateway*)p_gw;
 
   //get session info before starting it
   discord_get_gateway_bot(gw->p_client, &gw->session);
@@ -569,7 +565,7 @@ on_startup_cb(void *p_gw)
 /* send heartbeat pulse to websockets server in order
  *  to maintain connection alive */
 static void
-send_heartbeat(discord::gateway::dati *gw)
+send_heartbeat(struct discord_gateway *gw)
 {
   char payload[64];
   int ret = json_inject(payload, sizeof(payload), 
@@ -583,7 +579,7 @@ send_heartbeat(discord::gateway::dati *gw)
 static void
 on_iter_end_cb(void *p_gw)
 {
-  discord::gateway::dati *gw = (discord::gateway::dati*)p_gw;
+  struct discord_gateway *gw = (struct discord_gateway*)p_gw;
 
   /*check if timespan since first pulse is greater than
    * minimum heartbeat interval required*/
@@ -603,7 +599,7 @@ on_iter_end_cb(void *p_gw)
 static int
 on_text_event_cb(void *p_gw, const char *text, size_t len)
 {
-  discord::gateway::dati *gw = (discord::gateway::dati*)p_gw;
+  struct discord_gateway *gw = (struct discord_gateway*)p_gw;
 
   D_PRINT("ON_DISPATCH:\t%s\n", text);
 
@@ -640,7 +636,7 @@ on_text_event_cb(void *p_gw, const char *text, size_t len)
 }
 
 void
-init(discord::gateway::dati *gw, const char token[], const char config_file[])
+discord_gateway_init(struct discord_gateway *gw, const char token[], const char config_file[])
 {
   struct ws_callbacks cbs = {
     .data = (void*)gw,
@@ -669,11 +665,11 @@ init(discord::gateway::dati *gw, const char token[], const char config_file[])
 
   ws_set_refresh_rate(&gw->ws, 1);
   ws_set_max_reconnect(&gw->ws, 15);
-  ws_set_event(&gw->ws, opcodes::HELLO, &on_hello);
-  ws_set_event(&gw->ws, opcodes::DISPATCH, &on_dispatch);
-  ws_set_event(&gw->ws, opcodes::INVALID_SESSION, &on_invalid_session);
-  ws_set_event(&gw->ws, opcodes::RECONNECT, &on_reconnect);
-  ws_set_event(&gw->ws, opcodes::HEARTBEAT_ACK, &on_heartbeat_ack);
+  ws_set_event(&gw->ws, discord::gateway::opcodes::HELLO, &on_hello);
+  ws_set_event(&gw->ws, discord::gateway::opcodes::DISPATCH, &on_dispatch);
+  ws_set_event(&gw->ws, discord::gateway::opcodes::INVALID_SESSION, &on_invalid_session);
+  ws_set_event(&gw->ws, discord::gateway::opcodes::RECONNECT, &on_reconnect);
+  ws_set_event(&gw->ws, discord::gateway::opcodes::HEARTBEAT_ACK, &on_heartbeat_ack);
 
   gw->identify = discord::gateway::identify::dati_alloc();
   gw->identify->token = strdup(token);
@@ -682,7 +678,7 @@ init(discord::gateway::dati *gw, const char token[], const char config_file[])
   gw->identify->properties->$browser = strdup("orca");
   gw->identify->properties->$device = strdup("orca");
 
-  set_presence(gw->p_client, NULL, "online", false);
+  discord_set_presence(gw->p_client, NULL, "online", false);
   gw->identify->presence->since = orka_timestamp_ms();
 
   gw->me = discord::user::dati_alloc();
@@ -694,7 +690,7 @@ init(discord::gateway::dati *gw, const char token[], const char config_file[])
 }
 
 void
-cleanup(discord::gateway::dati *gw)
+discord_gateway_cleanup(struct discord_gateway *gw)
 {
   discord::user::dati_free(gw->me);
   discord::gateway::identify::dati_free(gw->identify);
@@ -704,16 +700,13 @@ cleanup(discord::gateway::dati *gw)
 
 /* connects to the discord websockets server */
 void
-run(discord::gateway::dati *gw) {
+discord_gateway_run(struct discord_gateway *gw) {
   ws_run(&gw->ws);
 }
 
 void
-shutdown(discord::gateway::dati *gw) {
+discord_gateway_shutdown(struct discord_gateway *gw) {
   ws_set_status(&gw->ws, WS_DISCONNECTED);
   char reason[] = "Shutdown gracefully";
   ws_close(&gw->ws, CWS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
 }
-
-} // namespace gateway
-} // namespace discord

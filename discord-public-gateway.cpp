@@ -2,16 +2,14 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <libdiscord.h>
-#include <orka-utils.h>
+#include "libdiscord.h"
+#include "orka-utils.h"
 
-namespace discord {
-namespace gateway {
-namespace session {
+
 static void
 dati_from_json(char *str, size_t len, void *p_session)
 {
-  discord::gateway::session::dati *session = (discord::gateway::session::dati*)p_session;
+  struct discord_session *session = (struct discord_session*)p_session;
 
   struct sized_buffer buf = {NULL, 0};
 
@@ -35,17 +33,14 @@ dati_from_json(char *str, size_t len, void *p_session)
 
   DS_NOTOP_PUTS("Session Start Limit object loaded with API response"); 
 }
-} // namespace session
-} // namespace gateway
-} // namespace discord
 
 void
-discord_get_gateway(discord::client *client, discord::gateway::session::dati *p_session)
+discord_get_gateway(struct discord_client *client, struct discord_session *p_session)
 {
   struct resp_handle resp_handle = \
-    { .ok_cb = &discord::gateway::session::dati_from_json, .ok_obj = (void*)p_session };
+    { .ok_cb = &dati_from_json, .ok_obj = (void*)p_session };
 
-  discord::adapter::run( 
+  discord_adapter_run( 
     &client->adapter,
     &resp_handle,
     NULL,
@@ -54,12 +49,12 @@ discord_get_gateway(discord::client *client, discord::gateway::session::dati *p_
 }
 
 void
-discord_get_gateway_bot(discord::client *client, discord::gateway::session::dati *p_session)
+discord_get_gateway_bot(struct discord_client *client, struct discord_session *p_session)
 {
   struct resp_handle resp_handle = \
-    { .ok_cb = &discord::gateway::session::dati_from_json, .ok_obj = (void*)p_session};
+    { .ok_cb = &dati_from_json, .ok_obj = (void*)p_session};
 
-  discord::adapter::run( 
+  discord_adapter_run( 
     &client->adapter,
     &resp_handle,
     NULL,

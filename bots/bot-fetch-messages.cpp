@@ -8,7 +8,7 @@
 //using namespace discord;
 
 u64_snowflake_t
-select_guild(discord::client *client)
+select_guild(struct discord_client *client)
 {
   // get guilds bot is a part of
   NTL_T(discord::guild::dati) guilds = NULL;
@@ -37,7 +37,7 @@ select_guild(discord::client *client)
 }
 
 u64_snowflake_t
-select_member(discord::client *client, u64_snowflake_t guild_id)
+select_member(struct discord_client *client, u64_snowflake_t guild_id)
 {
   // get guilds bot is a part of
   NTL_T(discord::guild::member::dati) members = NULL;
@@ -74,7 +74,7 @@ select_member(discord::client *client, u64_snowflake_t guild_id)
 }
 
 void
-fetch_member_msgs(discord::client *client, u64_snowflake_t guild_id, u64_snowflake_t user_id)
+fetch_member_msgs(struct discord_client *client, u64_snowflake_t guild_id, u64_snowflake_t user_id)
 {
   NTL_T(discord::channel::dati) channels = NULL;
   discord_get_channels(client, guild_id, &channels);
@@ -121,9 +121,9 @@ int main(int argc, char *argv[])
   else
     config_file = "bot.config";
 
-  discord::global_init();
+  discord_global_init();
 
-  discord::client *client = discord::config_init(config_file);
+  struct discord_client *client = discord_config_init(config_file);
   assert(NULL != client);
 
   u64_snowflake_t guild_id = select_guild(client);
@@ -131,7 +131,7 @@ int main(int argc, char *argv[])
 
   fetch_member_msgs(client, guild_id, user_id);
 
-  discord::cleanup(client);
+  discord_cleanup(client);
 
-  discord::global_cleanup();
+  discord_global_cleanup();
 }

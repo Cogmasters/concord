@@ -7,7 +7,7 @@
 
 
 void
-discord_get_guild(discord::client *client, const u64_snowflake_t guild_id, discord::guild::dati *p_guild)
+discord_get_guild(struct discord_client *client, const u64_snowflake_t guild_id, discord::guild::dati *p_guild)
 {
   if (!guild_id) {
     D_PUTS("Missing 'guild_id'");
@@ -17,7 +17,7 @@ discord_get_guild(discord::client *client, const u64_snowflake_t guild_id, disco
   struct resp_handle resp_handle =
     { .ok_cb = &discord::guild::dati_from_json_v, .ok_obj = (void*)p_guild};
 
-  discord::adapter::run( 
+  discord_adapter_run( 
     &client->adapter,
     &resp_handle,
     NULL,
@@ -27,7 +27,7 @@ discord_get_guild(discord::client *client, const u64_snowflake_t guild_id, disco
 
 void 
 discord_create_channel(
-  discord::client *client, 
+  struct discord_client *client, 
   const u64_snowflake_t guild_id, 
   discord::guild::create_channel::params *params, 
   discord::channel::dati *p_channel)
@@ -55,7 +55,7 @@ discord_create_channel(
 
   struct sized_buffer req_body = {payload, strlen(payload)};
 
-  discord::adapter::run( 
+  discord_adapter_run( 
     &client->adapter,
     &resp_handle,
     &req_body,
@@ -63,7 +63,7 @@ discord_create_channel(
 }
 void
 discord_get_channels(
-  discord::client *client, 
+  struct discord_client *client, 
   const u64_snowflake_t guild_id, 
   NTL_T(discord::channel::dati) *p_channels)
 {
@@ -75,7 +75,7 @@ discord_get_channels(
   struct resp_handle resp_handle = 
     { .ok_cb = &discord::channel::dati_list_from_json_v, .ok_obj = (void*)p_channels};
 
-  discord::adapter::run( 
+  discord_adapter_run( 
     &client->adapter,
     &resp_handle,
     NULL,
@@ -84,7 +84,7 @@ discord_get_channels(
 }
 
 void 
-discord_get_guild_member(discord::client *client, u64_snowflake_t guild_id, u64_snowflake_t user_id, discord::guild::member::dati **p_member) 
+discord_get_guild_member(struct discord_client *client, u64_snowflake_t guild_id, u64_snowflake_t user_id, discord::guild::member::dati **p_member) 
 {
   if (!guild_id) {
     D_PUTS("Missing 'guild_id'");
@@ -103,7 +103,7 @@ discord_get_guild_member(discord::client *client, u64_snowflake_t guild_id, u64_
     .ok_cb = discord::guild::member::dati_from_json_v, .ok_obj = *p_member
   };
 
-  discord::adapter::run(
+  discord_adapter_run(
     &client->adapter,
     &resp_handle,
     NULL,
@@ -113,7 +113,7 @@ discord_get_guild_member(discord::client *client, u64_snowflake_t guild_id, u64_
 
 void
 discord_list_guild_members(
-  discord::client *client, 
+  struct discord_client *client, 
   const u64_snowflake_t guild_id, 
   struct discord::guild::list_guild_members::params *params, 
   NTL_T(discord::guild::member::dati) *p_members)
@@ -140,7 +140,7 @@ discord_list_guild_members(
   struct resp_handle resp_handle =
     { .ok_cb = &discord::guild::member::dati_list_from_json_v, .ok_obj = (void*)p_members};
   
-  discord::adapter::run( 
+  discord_adapter_run( 
     &client->adapter,
     &resp_handle,
     NULL,
@@ -150,7 +150,7 @@ discord_list_guild_members(
 
 void 
 discord_remove_guild_member(
-  discord::client *client, 
+  struct discord_client *client, 
   const u64_snowflake_t guild_id, 
   const u64_snowflake_t user_id)
 {
@@ -163,7 +163,7 @@ discord_remove_guild_member(
     return;
   }
 
-  discord::adapter::run(
+  discord_adapter_run(
     &client->adapter,
     NULL,
     NULL,
@@ -172,7 +172,7 @@ discord_remove_guild_member(
 }
 void 
 discord_modify_guild_member(
-  discord::client *client, 
+  struct discord_client *client, 
   const u64_snowflake_t guild_id, 
   const u64_snowflake_t user_id, 
   discord::guild::modify_guild_member::params *params, 
@@ -197,7 +197,7 @@ discord_modify_guild_member(
 
   struct sized_buffer req_body = {payload, strlen(payload)};
 
-  discord::adapter::run( 
+  discord_adapter_run( 
     &client->adapter,
     &resp_handle,
     &req_body,
@@ -206,7 +206,7 @@ discord_modify_guild_member(
 
 void
 discord_get_guild_ban(
-  discord::client *client, 
+  struct discord_client *client, 
   const u64_snowflake_t guild_id, 
   const u64_snowflake_t user_id, 
   discord::guild::ban::dati *p_ban)
@@ -223,7 +223,7 @@ discord_get_guild_ban(
   struct resp_handle resp_handle =
     { .ok_cb = &discord::guild::ban::dati_from_json_v, .ok_obj = (void*)p_ban};
 
-  discord::adapter::run( 
+  discord_adapter_run( 
     &client->adapter,
     &resp_handle,
     NULL,
@@ -231,7 +231,7 @@ discord_get_guild_ban(
 }
 void
 discord_get_guild_bans(
-  discord::client *client, 
+  struct discord_client *client, 
   const u64_snowflake_t guild_id, 
   NTL_T(discord::guild::ban::dati) *p_bans)
 {
@@ -243,7 +243,7 @@ discord_get_guild_bans(
   struct resp_handle resp_handle =
     { .ok_cb = &discord::guild::ban::dati_list_from_json_v, .ok_obj = (void*)p_bans};
 
-  discord::adapter::run( 
+  discord_adapter_run( 
     &client->adapter,
     &resp_handle,
     NULL,
@@ -252,7 +252,7 @@ discord_get_guild_bans(
 
 void
 discord_create_guild_ban(
-  discord::client *client, 
+  struct discord_client *client, 
   const u64_snowflake_t guild_id, 
   const u64_snowflake_t user_id, 
   int delete_message_days, 
@@ -295,7 +295,7 @@ discord_create_guild_ban(
 
   struct sized_buffer req_body = {payload, (size_t)ret};
 
-  discord::adapter::run( 
+  discord_adapter_run( 
     &client->adapter,
     NULL,
     &req_body,
@@ -304,7 +304,7 @@ discord_create_guild_ban(
 
 void
 discord_get_guild_roles(
-  discord::client *client, 
+  struct discord_client *client, 
   const u64_snowflake_t guild_id, 
   NTL_T(discord::guild::role::dati) *p_roles)
 {
@@ -316,7 +316,7 @@ discord_get_guild_roles(
   struct resp_handle resp_handle =
     { .ok_cb = &discord::guild::role::dati_list_from_json_v, .ok_obj = (void*)p_roles};
 
-  discord::adapter::run( 
+  discord_adapter_run( 
     &client->adapter,
     &resp_handle,
     NULL,
@@ -324,7 +324,7 @@ discord_get_guild_roles(
 }
 void
 discord_remove_guild_ban(
-  discord::client *client, 
+  struct discord_client *client, 
   const u64_snowflake_t guild_id, 
   const u64_snowflake_t user_id, 
   const char reason[])
@@ -356,7 +356,7 @@ discord_remove_guild_ban(
 
   struct sized_buffer req_body = {payload, (size_t)ret};
 
-  discord::adapter::run( 
+  discord_adapter_run( 
     &client->adapter,
     NULL,
     &req_body,
@@ -365,7 +365,7 @@ discord_remove_guild_ban(
 
 void 
 discord_create_guild_role(
-  discord::client *client, 
+  struct discord_client *client, 
   const u64_snowflake_t guild_id, 
   discord::guild::create_guild_role::params *params, 
   discord::guild::role::dati *p_role)
@@ -385,7 +385,7 @@ discord_create_guild_role(
 
   struct sized_buffer req_body = {payload, strlen(payload)};
 
-  discord::adapter::run( 
+  discord_adapter_run( 
     &client->adapter,
     &resp_handle,
     &req_body,
@@ -394,7 +394,7 @@ discord_create_guild_role(
 
 void 
 discord_delete_guild_role(
-  discord::client *client, 
+  struct discord_client *client, 
   const u64_snowflake_t guild_id, 
   const u64_snowflake_t role_id)
 {
@@ -407,7 +407,7 @@ discord_delete_guild_role(
     return;
   }
 
-  discord::adapter::run(
+  discord_adapter_run(
     &client->adapter,
     NULL,
     NULL,

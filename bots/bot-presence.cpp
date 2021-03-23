@@ -8,13 +8,13 @@
 
 #define JSON_FILE "bot-presence.json"
 
-void on_ready(discord::client *client, const discord::user::dati *me) {
+void on_ready(struct discord_client *client, const discord::user::dati *me) {
   fprintf(stderr, "\n\nPresence-Bot succesfully connected to Discord as %s#%s!\n\n",
       me->username, me->discriminator);
 }
 
 void
-load_presence_from_json(discord::client *client, char filename[])
+load_presence_from_json(struct discord_client *client, char filename[])
 {
   /* get contents of file to string */
   size_t len;
@@ -23,7 +23,7 @@ load_presence_from_json(discord::client *client, char filename[])
   discord::presence::dati *new_presence = discord::presence::dati_alloc();
   discord::presence::dati_from_json(json_payload, len, new_presence);
 
-  replace_presence(client, new_presence);
+  discord_replace_presence(client, new_presence);
 
   free(json_payload);
 }
@@ -36,9 +36,9 @@ int main(int argc, char *argv[])
   else
     config_file = "bot.config";
 
-  discord::global_init();
+  discord_global_init();
 
-  discord::client *client = discord::config_init(config_file);
+  struct discord_client *client = discord_config_init(config_file);
   assert(NULL != client);
 
   printf("\n\nThis bot demonstrates how easy it is to change presence"
@@ -49,10 +49,10 @@ int main(int argc, char *argv[])
   fgetc(stdin); // wait for input
 
   load_presence_from_json(client, JSON_FILE);
-  discord::run(client);
+  discord_run(client);
 
-  discord::cleanup(client);
+  discord_cleanup(client);
 
-  discord::global_cleanup();
+  discord_global_cleanup();
 }
 

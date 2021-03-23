@@ -7,13 +7,13 @@
 
 
 
-void on_ready(discord::client *client, const discord::user::dati *me) {
+void on_ready(struct discord_client *client, const discord::user::dati *me) {
   fprintf(stderr, "\n\nCreate-Channel-Bot succesfully connected to Discord as %s#%s!\n\n",
       me->username, me->discriminator);
 }
 
 void on_create(
-    discord::client *client,
+    struct discord_client *client,
     const discord::user::dati *me,
     const discord::channel::message::dati *msg)
 {
@@ -39,7 +39,7 @@ void on_create(
 }
 
 void on_delete(
-    discord::client *client,
+    struct discord_client *client,
     const discord::user::dati *me,
     const discord::channel::message::dati *msg)
 {
@@ -58,14 +58,14 @@ int main(int argc, char *argv[])
   else
     config_file = "bot.config";
 
-  discord::global_init();
+  discord_global_init();
 
-  discord::client *client = discord::config_init(config_file);
+  struct discord_client *client = discord_config_init(config_file);
   assert(NULL != client);
 
-  discord::set_prefix(client, "!channel");
-  discord::setcb_command(client, "Create", &on_create);
-  discord::setcb_command(client, "DeleteHere", &on_delete);
+  discord_set_prefix(client, "!channel");
+  discord_setcb_command(client, "Create", &on_create);
+  discord_setcb_command(client, "DeleteHere", &on_delete);
 
   printf("\n\nThis bot demonstrates how easy it is to create/delete channels\n"
          "1. Type '!channelCreate <channel_name>' anywhere to create a new channel\n"
@@ -74,9 +74,9 @@ int main(int argc, char *argv[])
   fgetc(stdin); // wait for input
 
 
-  discord::run(client);
+  discord_run(client);
 
-  discord::cleanup(client);
+  discord_cleanup(client);
 
-  discord::global_cleanup();
+  discord_global_cleanup();
 }

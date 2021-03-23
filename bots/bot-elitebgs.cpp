@@ -229,7 +229,7 @@ void embed_from_json(char *str, size_t len, void *p_embed)
     free(l_fpresence);
     l_fpresence = NULL;
 
-    add_field(embed, doc->name, field_value, true);
+    discord_embed_add_field(embed, doc->name, field_value, true);
   }
 
   free(doc);
@@ -240,7 +240,7 @@ void embed_from_json(char *str, size_t len, void *p_embed)
   free(l_docs);
 }
 
-void on_ready(discord::client *client, const discord::user::dati *me)
+void on_ready(struct discord_client *client, const discord::user::dati *me)
 {
   fprintf(stderr, "\n\nEliteBGS-Bot succesfully connected to Discord as %s#%s!\n\n",
       me->username, me->discriminator);
@@ -249,7 +249,7 @@ void on_ready(discord::client *client, const discord::user::dati *me)
 }
 
 void on_command(
-    discord::client *client,
+    struct discord_client *client,
     const discord::user::dati *me,
     const discord::channel::message::dati *msg)
 {
@@ -268,7 +268,7 @@ void on_command(
   strncpy(new_embed->title, msg->content, sizeof(new_embed->title));
   new_embed->timestamp = orka_timestamp_ms();
   new_embed->color = 15844367; //gold
-  channel::embed::change_footer(new_embed, 
+  discord_embed_set_footer(new_embed, 
       "designed & built by https://cee.dev",
       "https://cee.dev/static/images/cee.png", NULL);
 
@@ -318,28 +318,28 @@ int main(int argc, char *argv[])
   ua_config_init(&g_elitebgs_ua, ELITEBGS_API_URL, "ELITEBGS HTTP", config_file);
 
   /* Initialize Discord User Agent */
-  discord::global_init();
-  discord::client *client = discord::config_init(config_file);
+  discord_global_init();
+  struct discord_client *client = discord_config_init(config_file);
   assert(NULL != client);
 
   /* Set discord callbacks */
-  discord::setcb(client, discord::READY, &on_ready);
-  discord::setcb_command(client, "!system", &on_command);
+  discord_setcb(client, READY, &on_ready);
+  discord_setcb_command(client, "!system", &on_command);
 
   /* Set bot presence activity */
   discord::presence::activity::dati *new_activity;
   new_activity = discord::presence::activity::dati_alloc();
   strcpy(new_activity->name, "!h | cee.dev");
   new_activity->type = 0; // Playing
-  discord::set_presence(client, new_activity, "online", false);
+  discord_set_presence(client, new_activity, "online", false);
 
   /* Start a connection to Discord */
-  discord::run(client);
+  discord_run(client);
 
   /* Cleanup resources */
   ua_cleanup(&g_elitebgs_ua);
-  discord::cleanup(client);
-  discord::global_cleanup();
+  discord_cleanup(client);
+  discord_global_cleanup();
 
   return EXIT_SUCCESS;
 }

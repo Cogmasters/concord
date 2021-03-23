@@ -6,13 +6,13 @@
 #include "libdiscord.h"
 
 
-void on_ready(discord::client *client, const discord::user::dati *me) {
+void on_ready(struct discord_client *client, const discord::user::dati *me) {
   fprintf(stderr, "\n\nLog-Bot succesfully connected to Discord as %s#%s!\n\n",
       me->username, me->discriminator);
 }
 
 void on_guild_member_add(
-  discord::client *client,
+  struct discord_client *client,
   const discord::user::dati *me,
   const uint64_t guild_id, 
   const discord::guild::member::dati *member)
@@ -21,7 +21,7 @@ void on_guild_member_add(
 }
 
 void on_guild_member_update(
-  discord::client *client,
+  struct discord_client *client,
   const discord::user::dati *me,
   const uint64_t guild_id, 
   const discord::guild::member::dati *member)
@@ -34,7 +34,7 @@ void on_guild_member_update(
 }
 
 void on_guild_member_remove(
-  discord::client *client,
+  struct discord_client *client,
   const discord::user::dati *me,
   const uint64_t guild_id, 
   const discord::user::dati *user)
@@ -50,19 +50,19 @@ int main(int argc, char *argv[])
   else
     config_file = "bot.config";
 
-  discord::global_init();
+  discord_global_init();
 
-  discord::client *client = discord::config_init(config_file);
+  struct discord_client *client = discord_config_init(config_file);
   assert(NULL != client);
 
-  discord::setcb(client, discord::READY, &on_ready);
-  discord::setcb(client, discord::GUILD_MEMBER_ADD, &on_guild_member_add);
-  discord::setcb(client, discord::GUILD_MEMBER_UPDATE, &on_guild_member_update);
-  discord::setcb(client, discord::GUILD_MEMBER_REMOVE, &on_guild_member_remove);
+  discord_setcb(client, READY, &on_ready);
+  discord_setcb(client, GUILD_MEMBER_ADD, &on_guild_member_add);
+  discord_setcb(client, GUILD_MEMBER_UPDATE, &on_guild_member_update);
+  discord_setcb(client, GUILD_MEMBER_REMOVE, &on_guild_member_remove);
 
-  discord::run(client);
+  discord_run(client);
 
-  discord::cleanup(client);
+  discord_cleanup(client);
 
-  discord::global_cleanup();
+  discord_global_cleanup();
 }

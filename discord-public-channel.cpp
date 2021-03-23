@@ -67,180 +67,6 @@ dati_from_json(char *str, size_t len, discord::channel::message::dati *message)
 }
 } // namespace message
 
-namespace embed {
-void
-change_footer(
-  discord::channel::embed::dati *embed, 
-  char text[], 
-  char icon_url[], 
-  char proxy_icon_url[])
-{
-  if (IS_EMPTY_STRING(text)) {
-    D_PUTS("Missing 'text'");
-    return;
-  }
-
-  if (embed->footer) {
-    free(embed->footer);
-  }
-
-  discord::channel::embed::footer::dati *new_footer = discord::channel::embed::footer::dati_alloc();
-  strncpy(new_footer->text, text, EMBED_FOOTER_TEXT_LEN);
-  if (!IS_EMPTY_STRING(icon_url))
-    strncpy(new_footer->icon_url, icon_url, MAX_URL_LEN);
-  if (!IS_EMPTY_STRING(proxy_icon_url))
-    strncpy(new_footer->proxy_icon_url, proxy_icon_url, MAX_URL_LEN);
-
-  embed->footer = new_footer;
-}
-
-void
-change_thumbnail(
-  discord::channel::embed::dati *embed, 
-  char url[], 
-  char proxy_url[], 
-  int height, 
-  int width)
-{
-  if (embed->thumbnail) {
-    free(embed->thumbnail);
-  }
-
-  discord::channel::embed::thumbnail::dati *new_thumbnail = discord::channel::embed::thumbnail::dati_alloc();
-  if (!IS_EMPTY_STRING(url))
-    strncpy(new_thumbnail->url, url, MAX_URL_LEN);
-  if (!IS_EMPTY_STRING(proxy_url))
-    strncpy(new_thumbnail->proxy_url, proxy_url, MAX_URL_LEN);
-  if (height)
-    new_thumbnail->height = height;
-  if (width)
-    new_thumbnail->width = width;
-
-  embed->thumbnail = new_thumbnail;
-}
-
-void
-change_image(
-  discord::channel::embed::dati *embed, 
-  char url[], 
-  char proxy_url[], 
-  int height, 
-  int width)
-{
-  if (embed->image) {
-    free(embed->image);
-  }
-
-  discord::channel::embed::image::dati *new_image = discord::channel::embed::image::dati_alloc();
-  if (!IS_EMPTY_STRING(url))
-    strncpy(new_image->url, url, MAX_URL_LEN);
-  if (!IS_EMPTY_STRING(proxy_url))
-    strncpy(new_image->proxy_url, proxy_url, MAX_URL_LEN);
-  if (height)
-    new_image->height = height;
-  if (width)
-    new_image->width = width;
-
-  embed->image = new_image;
-}
-
-void
-change_video(
-  discord::channel::embed::dati *embed, 
-  char url[], 
-  char proxy_url[], 
-  int height, 
-  int width)
-{
-  if (embed->video) {
-    free(embed->video);
-  }
-
-  discord::channel::embed::video::dati *new_video = discord::channel::embed::video::dati_alloc();
-  if (!IS_EMPTY_STRING(url))
-    strncpy(new_video->url, url, MAX_URL_LEN);
-  if (!IS_EMPTY_STRING(proxy_url))
-    strncpy(new_video->proxy_url, proxy_url, MAX_URL_LEN);
-  if (height)
-    new_video->height = height;
-  if (width)
-    new_video->width = width;
-
-  embed->video = new_video;
-}
-
-void
-change_provider(discord::channel::embed::dati *embed, char name[], char url[])
-{
-  if (embed->provider) {
-    free(embed->provider);
-  }
-
-  discord::channel::embed::provider::dati *new_provider = discord::channel::embed::provider::dati_alloc();
-  if (!IS_EMPTY_STRING(url))
-    strncpy(new_provider->url, url, MAX_URL_LEN);
-  if (!IS_EMPTY_STRING(name))
-    strncpy(new_provider->name, name, EMBED_AUTHOR_NAME_LEN);
-
-  embed->provider = new_provider;
-}
-
-void
-change_author(
-  discord::channel::embed::dati *embed, 
-  char name[], 
-  char url[], 
-  char icon_url[], 
-  char proxy_icon_url[])
-{
-  if (embed->author) {
-    free(embed->author);
-  }
-
-  discord::channel::embed::author::dati *new_author = discord::channel::embed::author::dati_alloc();
-  if (!IS_EMPTY_STRING(name))
-    strncpy(new_author->name, name, EMBED_AUTHOR_NAME_LEN);
-  if (!IS_EMPTY_STRING(url))
-    strncpy(new_author->url, url, MAX_URL_LEN);
-  if (!IS_EMPTY_STRING(icon_url))
-    strncpy(new_author->icon_url, icon_url, MAX_URL_LEN);
-  if (!IS_EMPTY_STRING(proxy_icon_url))
-    strncpy(new_author->proxy_icon_url, proxy_icon_url, MAX_URL_LEN);
-
-  embed->author = new_author;
-}
-
-void
-add_field(discord::channel::embed::dati *embed, char name[], char value[], bool Inline)
-{
-  if (IS_EMPTY_STRING(name)) {
-    D_PUTS("Missing 'name'");
-    return;
-  }
-  if (IS_EMPTY_STRING(value)) {
-    D_PUTS("Missing 'value'");
-    return;
-  }
-  if (embed->fields 
-      && ntl_length((NTL_T(void))embed->fields) >= EMBED_MAX_FIELDS)
-  {
-    D_PRINT("Reach embed fields threshold (max %d)", EMBED_MAX_FIELDS);
-    return;
-  }
-
-  discord::channel::embed::field::dati new_field;
-  discord::channel::embed::field::dati_init(&new_field);
-  strncpy(new_field.name, name, EMBED_FIELD_NAME_LEN);
-  strncpy(new_field.value, value, EMBED_FIELD_VALUE_LEN);
-  new_field.Inline = Inline;
-
-  embed->fields = (NTL_T(discord::channel::embed::field::dati))ntl_append(
-                        (NTL_T(void))embed->fields, 
-                        sizeof(discord::channel::embed::field::dati), &new_field);
-}
-
-} // namespace embed
-
 namespace overwrite {
 
 void dati_from_json(char *json, size_t len, discord::channel::overwrite::dati *p)
@@ -285,8 +111,184 @@ size_t dati_to_json(char *json, size_t len, discord::channel::overwrite::dati *p
   return r;
 }
 
+} // namespace overwrite
+
+} // namespace channel
+} // namespace discord
+
 void
-append(
+discord_embed_set_footer(
+  discord::channel::embed::dati *embed, 
+  char text[], 
+  char icon_url[], 
+  char proxy_icon_url[])
+{
+  if (IS_EMPTY_STRING(text)) {
+    D_PUTS("Missing 'text'");
+    return;
+  }
+
+  if (embed->footer) {
+    free(embed->footer);
+  }
+
+  discord::channel::embed::footer::dati *new_footer = discord::channel::embed::footer::dati_alloc();
+  strncpy(new_footer->text, text, EMBED_FOOTER_TEXT_LEN);
+  if (!IS_EMPTY_STRING(icon_url))
+    strncpy(new_footer->icon_url, icon_url, MAX_URL_LEN);
+  if (!IS_EMPTY_STRING(proxy_icon_url))
+    strncpy(new_footer->proxy_icon_url, proxy_icon_url, MAX_URL_LEN);
+
+  embed->footer = new_footer;
+}
+
+void
+discord_embed_set_thumbnail(
+  discord::channel::embed::dati *embed, 
+  char url[], 
+  char proxy_url[], 
+  int height, 
+  int width)
+{
+  if (embed->thumbnail) {
+    free(embed->thumbnail);
+  }
+
+  discord::channel::embed::thumbnail::dati *new_thumbnail = discord::channel::embed::thumbnail::dati_alloc();
+  if (!IS_EMPTY_STRING(url))
+    strncpy(new_thumbnail->url, url, MAX_URL_LEN);
+  if (!IS_EMPTY_STRING(proxy_url))
+    strncpy(new_thumbnail->proxy_url, proxy_url, MAX_URL_LEN);
+  if (height)
+    new_thumbnail->height = height;
+  if (width)
+    new_thumbnail->width = width;
+
+  embed->thumbnail = new_thumbnail;
+}
+
+void
+discord_embed_set_image(
+  discord::channel::embed::dati *embed, 
+  char url[], 
+  char proxy_url[], 
+  int height, 
+  int width)
+{
+  if (embed->image) {
+    free(embed->image);
+  }
+
+  discord::channel::embed::image::dati *new_image = discord::channel::embed::image::dati_alloc();
+  if (!IS_EMPTY_STRING(url))
+    strncpy(new_image->url, url, MAX_URL_LEN);
+  if (!IS_EMPTY_STRING(proxy_url))
+    strncpy(new_image->proxy_url, proxy_url, MAX_URL_LEN);
+  if (height)
+    new_image->height = height;
+  if (width)
+    new_image->width = width;
+
+  embed->image = new_image;
+}
+
+void
+discord_embed_set_video(
+  discord::channel::embed::dati *embed, 
+  char url[], 
+  char proxy_url[], 
+  int height, 
+  int width)
+{
+  if (embed->video) {
+    free(embed->video);
+  }
+
+  discord::channel::embed::video::dati *new_video = discord::channel::embed::video::dati_alloc();
+  if (!IS_EMPTY_STRING(url))
+    strncpy(new_video->url, url, MAX_URL_LEN);
+  if (!IS_EMPTY_STRING(proxy_url))
+    strncpy(new_video->proxy_url, proxy_url, MAX_URL_LEN);
+  if (height)
+    new_video->height = height;
+  if (width)
+    new_video->width = width;
+
+  embed->video = new_video;
+}
+
+void
+discord_embed_set_provider(discord::channel::embed::dati *embed, char name[], char url[])
+{
+  if (embed->provider) {
+    free(embed->provider);
+  }
+
+  discord::channel::embed::provider::dati *new_provider = discord::channel::embed::provider::dati_alloc();
+  if (!IS_EMPTY_STRING(url))
+    strncpy(new_provider->url, url, MAX_URL_LEN);
+  if (!IS_EMPTY_STRING(name))
+    strncpy(new_provider->name, name, EMBED_AUTHOR_NAME_LEN);
+
+  embed->provider = new_provider;
+}
+
+void
+discord_embed_set_author(
+  discord::channel::embed::dati *embed, 
+  char name[], 
+  char url[], 
+  char icon_url[], 
+  char proxy_icon_url[])
+{
+  if (embed->author) {
+    free(embed->author);
+  }
+
+  discord::channel::embed::author::dati *new_author = discord::channel::embed::author::dati_alloc();
+  if (!IS_EMPTY_STRING(name))
+    strncpy(new_author->name, name, EMBED_AUTHOR_NAME_LEN);
+  if (!IS_EMPTY_STRING(url))
+    strncpy(new_author->url, url, MAX_URL_LEN);
+  if (!IS_EMPTY_STRING(icon_url))
+    strncpy(new_author->icon_url, icon_url, MAX_URL_LEN);
+  if (!IS_EMPTY_STRING(proxy_icon_url))
+    strncpy(new_author->proxy_icon_url, proxy_icon_url, MAX_URL_LEN);
+
+  embed->author = new_author;
+}
+
+void
+discord_embed_add_field(discord::channel::embed::dati *embed, char name[], char value[], bool Inline)
+{
+  if (IS_EMPTY_STRING(name)) {
+    D_PUTS("Missing 'name'");
+    return;
+  }
+  if (IS_EMPTY_STRING(value)) {
+    D_PUTS("Missing 'value'");
+    return;
+  }
+  if (embed->fields 
+      && ntl_length((NTL_T(void))embed->fields) >= EMBED_MAX_FIELDS)
+  {
+    D_PRINT("Reach embed fields threshold (max %d)", EMBED_MAX_FIELDS);
+    return;
+  }
+
+  discord::channel::embed::field::dati new_field;
+  discord::channel::embed::field::dati_init(&new_field);
+  strncpy(new_field.name, name, EMBED_FIELD_NAME_LEN);
+  strncpy(new_field.value, value, EMBED_FIELD_VALUE_LEN);
+  new_field.Inline = Inline;
+
+  embed->fields = (NTL_T(discord::channel::embed::field::dati))ntl_append(
+                        (NTL_T(void))embed->fields, 
+                        sizeof(discord::channel::embed::field::dati), &new_field);
+}
+
+void
+discord_overwrite_append(
   NTL_T(discord::channel::overwrite::dati) *permission_overwrites, 
   u64_snowflake_t id, 
   int type, 
@@ -313,13 +315,8 @@ append(
                             sizeof(discord::channel::overwrite::dati), &new_overwrite);
 }
 
-} // namespace overwrite
-
-} // namespace channel
-} // namespace discord
-
 void
-discord_get_channel(discord::client *client, const u64_snowflake_t channel_id, discord::channel::dati *p_channel)
+discord_get_channel(struct discord_client *client, const u64_snowflake_t channel_id, discord::channel::dati *p_channel)
 {
   if (!channel_id) {
     D_PUTS("Missing 'channel_id");
@@ -329,7 +326,7 @@ discord_get_channel(discord::client *client, const u64_snowflake_t channel_id, d
   struct resp_handle resp_handle =
     { .ok_cb = &discord::channel::dati_from_json_v, .ok_obj = (void*)p_channel};
 
-  discord::adapter::run(
+  discord_adapter_run(
     &client->adapter,
     &resp_handle,
     NULL,
@@ -338,7 +335,7 @@ discord_get_channel(discord::client *client, const u64_snowflake_t channel_id, d
 }
 
 void
-discord_delete_channel(discord::client *client, const u64_snowflake_t channel_id, discord::channel::dati *p_channel)
+discord_delete_channel(struct discord_client *client, const u64_snowflake_t channel_id, discord::channel::dati *p_channel)
 {
   if (!channel_id) {
     D_PUTS("Missing 'channel_id");
@@ -350,7 +347,7 @@ discord_delete_channel(discord::client *client, const u64_snowflake_t channel_id
     .ok_obj = p_channel,
   };
 
-  discord::adapter::run( 
+  discord_adapter_run( 
     &client->adapter,
     &resp_handle,
     NULL,
@@ -360,7 +357,7 @@ discord_delete_channel(discord::client *client, const u64_snowflake_t channel_id
 
 void
 discord_add_pinned_channel_message(
-  discord::client *client, 
+  struct discord_client *client, 
   const u64_snowflake_t channel_id, 
   const u64_snowflake_t message_id)
 {
@@ -373,7 +370,7 @@ discord_add_pinned_channel_message(
     return;
   }
 
-  discord::adapter::run( 
+  discord_adapter_run( 
     &client->adapter,
     NULL,
     NULL,
@@ -383,7 +380,7 @@ discord_add_pinned_channel_message(
 
 void
 discord_delete_pinned_channel_message(
-  discord::client *client, 
+  struct discord_client *client, 
   const u64_snowflake_t channel_id, 
   const u64_snowflake_t message_id)
 {
@@ -396,7 +393,7 @@ discord_delete_pinned_channel_message(
     return;
   }
 
-  discord::adapter::run( 
+  discord_adapter_run( 
     &client->adapter,
     NULL,
     NULL,
@@ -406,7 +403,7 @@ discord_delete_pinned_channel_message(
 
 void
 discord_get_channel_messages(
-  discord::client *client, 
+  struct discord_client *client, 
   const u64_snowflake_t channel_id, 
   discord::channel::get_channel_messages::params *params, 
   NTL_T(discord::channel::message::dati) *p_messages)
@@ -449,7 +446,7 @@ discord_get_channel_messages(
   struct resp_handle resp_handle = 
     { .ok_cb = &discord::channel::message::dati_list_from_json_v, .ok_obj = (void*)p_messages};
 
-  discord::adapter::run( 
+  discord_adapter_run( 
     &client->adapter,
     &resp_handle,
     NULL,
@@ -460,7 +457,7 @@ discord_get_channel_messages(
 
 void
 discord_delete_message(
-  discord::client *client, 
+  struct discord_client *client, 
   u64_snowflake_t channel_id, 
   u64_snowflake_t message_id)
 {
@@ -472,7 +469,7 @@ discord_delete_message(
     D_PUTS("Missing 'message_id'");
     return;
   }
-  discord::adapter::run(
+  discord_adapter_run(
     &client->adapter,
     NULL,
     NULL,
@@ -508,7 +505,7 @@ curl_mime_cb(CURL *ehandle, void *data)
 
 void
 discord_create_message(
-  discord::client *client, 
+  struct discord_client *client, 
   const u64_snowflake_t channel_id, 
   discord::channel::create_message::params *params, 
   discord::channel::message::dati *p_message)
@@ -585,7 +582,7 @@ discord_create_message(
 
     struct sized_buffer req_body = {payload, strlen(payload)};
 
-    discord::adapter::run( 
+    discord_adapter_run( 
       &client->adapter,
       &resp_handle,
       &req_body,
@@ -598,7 +595,7 @@ discord_create_message(
 
     ua_mime_setopt(&client->adapter.ua, params, &curl_mime_cb);
 
-    discord::adapter::run( 
+    discord_adapter_run( 
       &client->adapter,
       &resp_handle,
       NULL,
@@ -611,7 +608,7 @@ discord_create_message(
 
 void
 discord_edit_message(
-  discord::client *client, 
+  struct discord_client *client, 
   const u64_snowflake_t channel_id, 
   const u64_snowflake_t message_id, 
   discord::channel::edit_message::params *params, 
@@ -658,7 +655,7 @@ discord_edit_message(
 
   struct sized_buffer req_body = { payload, strlen(payload) };
 
-  discord::adapter::run(&client->adapter,
+  discord_adapter_run(&client->adapter,
     &resp_handle,
     &req_body,
     HTTP_PATCH,
@@ -667,7 +664,7 @@ discord_edit_message(
 
 void 
 discord_create_reaction(
-  discord::client *client, 
+  struct discord_client *client, 
   const u64_snowflake_t channel_id, 
   const u64_snowflake_t message_id, 
   const u64_snowflake_t emoji_id, 
@@ -692,7 +689,7 @@ discord_create_reaction(
   else
     snprintf(emoji_endpoint, sizeof(emoji_endpoint), "%s", pct_emoji_name);
 
-  discord::adapter::run(
+  discord_adapter_run(
     &client->adapter,
     NULL,
     NULL,
@@ -704,14 +701,14 @@ discord_create_reaction(
 }
 
 void
-discord_trigger_typing_indicator(discord::client* client, u64_snowflake_t channel_id)
+discord_trigger_typing_indicator(struct discord_client* client, u64_snowflake_t channel_id)
 {
   if (!channel_id) {
     D_PUTS("Missing 'channel_id");
     return;
   }
 
-  discord::adapter::run( 
+  discord_adapter_run( 
     &client->adapter,
     NULL,
     NULL,

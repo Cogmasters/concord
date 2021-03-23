@@ -17,7 +17,7 @@ void msg_from_json(char *json, size_t size, void *msg)
 
 void
 discord_user_defined_bulk_delete_message(
-  discord::client *client, 
+  struct discord_client *client, 
   u64_snowflake_t channel_id, 
   u64_snowflake_t author_id)
 {
@@ -62,7 +62,7 @@ discord_user_defined_bulk_delete_message(
       .size = strlen(json)
     };
 
-    discord::adapter::run(
+    discord_adapter_run(
       &client->adapter,
       NULL,
       &req_body,

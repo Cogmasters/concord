@@ -6,13 +6,13 @@
 #include "libdiscord.h"
 #include "orka-utils.h" // for orka_timestamp_ms()
 
-void on_ready(discord::client *client, const discord::user::dati *me) {
+void on_ready(struct discord_client *client, const discord::user::dati *me) {
   fprintf(stderr, "\n\nCreate-Role-Bot succesfully connected to Discord as %s#%s!\n\n",
       me->username, me->discriminator);
 }
 
 void on_command(
-    discord::client *client,
+    struct discord_client *client,
     const discord::user::dati *me,
     const discord::channel::message::dati *msg)
 {
@@ -48,12 +48,12 @@ int main(int argc, char *argv[])
   else
     config_file = "bot.config";
 
-  discord::global_init();
+  discord_global_init();
 
-  discord::client *client = discord::config_init(config_file);
+  struct discord_client *client = discord_config_init(config_file);
   assert(NULL != client);
 
-  discord::setcb_command(client, "!createRole", &on_command);
+  discord_setcb_command(client, "!createRole", &on_command);
 
   printf("\n\nThis bot demonstrates how easy it is to create a"
          " new role.\n"
@@ -62,9 +62,9 @@ int main(int argc, char *argv[])
   fgetc(stdin); // wait for input
 
 
-  discord::run(client);
+  discord_run(client);
 
-  discord::cleanup(client);
+  discord_cleanup(client);
 
-  discord::global_cleanup();
+  discord_global_cleanup();
 }

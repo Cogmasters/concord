@@ -6,13 +6,13 @@
 
 
 
-void on_ready(discord::client *client, const discord::user::dati *me) {
+void on_ready(struct discord_client *client, const discord::user::dati *me) {
   fprintf(stderr, "\n\nEcho-Bot succesfully connected to Discord as %s#%s!\n\n",
       me->username, me->discriminator);
 }
 
 void on_reaction_add(
-    discord::client *client,
+    struct discord_client *client,
     const discord::user::dati *me,
     const uint64_t channel_id, 
     const uint64_t message_id, 
@@ -28,7 +28,7 @@ void on_reaction_add(
 }
 
 void on_message_create(
-    discord::client *client,
+    struct discord_client *client,
     const discord::user::dati *me,
     const discord::channel::message::dati *msg)
 {
@@ -53,7 +53,7 @@ void on_message_create(
 }
 
 void on_message_update(
-    discord::client *client,
+    struct discord_client *client,
     const discord::user::dati *me,
     const discord::channel::message::dati *msg)
 {
@@ -64,7 +64,7 @@ void on_message_update(
 }
 
 void on_message_delete(
-    discord::client *client,
+    struct discord_client *client,
     const discord::user::dati *me,
     const uint64_t id,
     const uint64_t channel_id,
@@ -77,7 +77,7 @@ void on_message_delete(
 }
 
 void on_message_delete_bulk(
-    discord::client *client,
+    struct discord_client *client,
     const discord::user::dati *me,
     const size_t nids,
     const uint64_t ids[],
@@ -101,23 +101,23 @@ int main(int argc, char *argv[])
   else
     config_file = "bot.config";
 
-  discord::global_init();
+  discord_global_init();
 
-  discord::client *client = discord::config_init(config_file);
+  struct discord_client *client = discord_config_init(config_file);
   assert(NULL != client);
 
-  discord::setcb(client, discord::READY, &on_ready);
-  discord::setcb(client, discord::MESSAGE_CREATE, &on_message_create);
-  discord::setcb(client, discord::MESSAGE_UPDATE, &on_message_update);
-  discord::setcb(client, discord::MESSAGE_DELETE, &on_message_delete);
-  discord::setcb(client, discord::MESSAGE_DELETE_BULK, &on_message_delete_bulk);
-  discord::setcb(client, discord::MESSAGE_REACTION_ADD, &on_reaction_add);
+  discord_setcb(client, READY, &on_ready);
+  discord_setcb(client, MESSAGE_CREATE, &on_message_create);
+  discord_setcb(client, MESSAGE_UPDATE, &on_message_update);
+  discord_setcb(client, MESSAGE_DELETE, &on_message_delete);
+  discord_setcb(client, MESSAGE_DELETE_BULK, &on_message_delete_bulk);
+  discord_setcb(client, MESSAGE_REACTION_ADD, &on_reaction_add);
 
-  discord::run(client);
+  discord_run(client);
 
-  discord::cleanup(client);
+  discord_cleanup(client);
 
-  discord::global_cleanup();
+  discord_global_cleanup();
 }
 
 

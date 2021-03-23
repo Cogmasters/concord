@@ -7,61 +7,59 @@
 #include "orka-utils.h"
 
 
-namespace discord {
-
-discord::client*
-init(const char token[])
+struct discord_client*
+discord_init(const char token[])
 {
-  discord::client *new_client = (discord::client*)calloc(1, sizeof(discord::client));
+  struct discord_client *new_client = (struct discord_client*)calloc(1, sizeof(struct discord_client));
   if (NULL == new_client) return NULL;
 
   new_client->adapter.p_client = new_client;
   new_client->gw.p_client = new_client;
   
-  discord::adapter::init(&new_client->adapter, token, NULL);
-  discord::gateway::init(&new_client->gw, token, NULL);
+  discord_adapter_init(&new_client->adapter, token, NULL);
+  discord_gateway_init(&new_client->gw, token, NULL);
 
   return new_client;
 }
 
-discord::client*
-config_init(const char config_file[])
+struct discord_client*
+discord_config_init(const char config_file[])
 {
-  discord::client *new_client = (discord::client*)calloc(1, sizeof(discord::client));
+  struct discord_client *new_client = (struct discord_client*)calloc(1, sizeof(struct discord_client));
   if (NULL == new_client) return NULL;
 
   new_client->adapter.p_client = new_client;
   new_client->gw.p_client = new_client;
   
-  discord::adapter::init(&new_client->adapter, NULL, config_file);
-  discord::gateway::init(&new_client->gw, NULL, config_file);
+  discord_adapter_init(&new_client->adapter, NULL, config_file);
+  discord_gateway_init(&new_client->gw, NULL, config_file);
 
   return new_client;
 }
 
 void
-cleanup(discord::client *client)
+discord_cleanup(struct discord_client *client)
 {
-  discord::adapter::cleanup(&client->adapter);
-  discord::gateway::cleanup(&client->gw);
+  discord_adapter_cleanup(&client->adapter);
+  discord_gateway_cleanup(&client->gw);
 
   free(client);
 }
 
 void
-global_init() {
+discord_global_init() {
   if (0 != curl_global_init(CURL_GLOBAL_DEFAULT)) {
     PUTS("Couldn't start libcurl's globals");
   }
 }
 
 void
-global_cleanup() {
+discord_global_cleanup() {
   curl_global_cleanup();
 }
 
 void
-add_intents(discord::client *client, int intent_code)
+discord_add_intents(struct discord_client *client, int intent_code)
 {
   if (WS_CONNECTED == ws_get_status(&client->gw.ws)) {
     PUTS("Can't set intents to a running client.");
@@ -72,7 +70,7 @@ add_intents(discord::client *client, int intent_code)
 }
 
 void
-set_prefix(discord::client *client, char *prefix) 
+discord_set_prefix(struct discord_client *client, char *prefix) 
 {
   const size_t PREFIX_LEN = 32;
   if (!orka_str_bounds_check(prefix, PREFIX_LEN)) {
@@ -84,9 +82,9 @@ set_prefix(discord::client *client, char *prefix)
 };
 
 void
-setcb_command(discord::client *client, char *command, message_cb *user_cb)
+discord_setcb_command(struct discord_client *client, char *command, message_cb *user_cb)
 {
-  discord::gateway::dati *gw = &client->gw;
+  struct discord_gateway *gw = &client->gw;
 
   const size_t CMD_LEN = 64;
   if (!orka_str_bounds_check(command, CMD_LEN)) {
@@ -95,22 +93,22 @@ setcb_command(discord::client *client, char *command, message_cb *user_cb)
   }
 
   ++gw->num_cmd;
-  gw->on_cmd = (discord::gateway::cmd_cbs*)realloc(gw->on_cmd, 
-                      gw->num_cmd * sizeof(discord::gateway::cmd_cbs));
+  gw->on_cmd = (struct cmd_cbs*)realloc(gw->on_cmd, 
+                      gw->num_cmd * sizeof(struct cmd_cbs));
 
   gw->on_cmd[gw->num_cmd-1].str = command;
   gw->on_cmd[gw->num_cmd-1].cb = user_cb;
 
-  discord::add_intents(client, 
+  discord_add_intents(client, 
       discord::gateway::intents::GUILD_MESSAGES | discord::gateway::intents::DIRECT_MESSAGES);
 }
 
 #define callback ... // varargs to avoid non-conforming function pointer error
 
 void
-setcb(discord::client *client, enum dispatch_code opt, callback)
+discord_setcb(struct discord_client *client, enum dispatch_code opt, callback)
 {
-  discord::gateway::dati *gw = &client->gw;
+  struct discord_gateway *gw = &client->gw;
 
   va_list args;
   va_start(args, opt);
@@ -175,28 +173,30 @@ setcb(discord::client *client, enum dispatch_code opt, callback)
       ERR("Invalid callback_opt (code: %d)", opt);
   }
 
-  discord::add_intents(client, code);
+  discord_add_intents(client, code);
 
   va_end(args);
 }
 
 void
-run(discord::client *client){
-  discord::gateway::run(&client->gw);
+discord_run(struct discord_client *client){
+  discord_gateway_run(&client->gw);
 }
 
+//@todo make this thread safe
 void*
-set_data(discord::client *client, void *data) {
+discord_set_data(struct discord_client *client, void *data) {
   return client->data = data;
 }
 
+//@todo make this thread safe
 void*
-get_data(discord::client *client) {
+discord_get_data(struct discord_client *client) {
   return client->data;
 }
 
 void
-replace_presence(discord::client *client, discord::presence::dati *presence)
+discord_replace_presence(struct discord_client *client, discord::presence::dati *presence)
 {
   if (NULL == presence) return;
 
@@ -205,8 +205,8 @@ replace_presence(discord::client *client, discord::presence::dati *presence)
 }
 
 void
-set_presence(
-  discord::client *client, 
+discord_set_presence(
+  struct discord_client *client, 
   discord::presence::activity::dati *activity, //will take ownership
   char status[], 
   bool afk)
@@ -228,5 +228,3 @@ set_presence(
 
   presence->afk = afk;
 }
-
-} // namespace discord

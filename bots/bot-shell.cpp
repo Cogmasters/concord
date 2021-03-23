@@ -14,13 +14,13 @@ struct sudo_s {
 } sudo;
 
 void 
-on_ready(discord::client *client, const discord::user::dati *me) {
+on_ready(struct discord_client *client, const discord::user::dati *me) {
   fprintf(stderr, "\n\nShell-Bot succesfully connected to Discord as %s#%s!\n\n",
       me->username, me->discriminator);
 }
 
 void
-on_command(discord::client *client,
+on_command(struct discord_client *client,
            const discord::user::dati *me,
            const discord::channel::message::dati *msg)
 {
@@ -113,12 +113,12 @@ int main(int argc, char *argv[])
 
   setlocale(LC_ALL, "");
 
-  discord::global_init();
+  discord_global_init();
 
-  discord::client *client = discord::config_init(config_file);
+  struct discord_client *client = discord_config_init(config_file);
   assert(NULL != client);
 
-  discord::setcb_command(client, "$", &on_command);
+  discord_setcb_command(client, "$", &on_command);
 
   printf("\n\nThis bot allows navigating its host machine like"
          " a shell terminal.\n\n"
@@ -137,9 +137,9 @@ int main(int argc, char *argv[])
   ++sudo.discriminator;
 
 
-  discord::run(client);
+  discord_run(client);
 
-  discord::cleanup(client);
+  discord_cleanup(client);
 
-  discord::global_cleanup();
+  discord_global_cleanup();
 }
