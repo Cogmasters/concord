@@ -14,11 +14,6 @@ int main (int argc, char ** argv) {
   size_t len = 0;
   char * json = orka_load_whole_file(argv[1], &len);
 
-  /*
-  discord::guild::member::dati ** p;
-  discord::guild::member::list_from_json(json, len, &p);
-   */
-
   int i;
   json_extract(json, len, "(total):d", &i);
   fprintf(stderr, "%d", i);

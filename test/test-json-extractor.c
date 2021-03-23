@@ -190,9 +190,6 @@ int main ()
     "(email):s,(flags):d,(premium_type):d,(public_flags):d,@arg_switches:b";
   fprintf (stderr, "input: %s\n", t);
 
-  //ret = json_extract(json, strlen(json), t);
-
-  int xx = 0;
   char *s = NULL;
   void * A[2] = {0};
 
