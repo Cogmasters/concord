@@ -20,11 +20,11 @@
       "fields":
       [
         { "name": "code", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"},
-        { "name": "guild", "type":{ "base":"discord::guild::dati", "dec":"*"}, "comment":"partial guild object"},
-        { "name": "channel", "type":{ "base":"discord::channel::dati", "dec":"*"}, "comment":"partial channel object"},
-        { "name": "inviter", "type":{ "base":"discord::user::dati", "dec":"*"}},
-        { "name": "target_user", "type":{ "base":"discord::user::dati", "dec":"*"}, "comment":"partial user object"},
-        { "name": "target_user_type", "type":{ "base":"int", "int_alias":"discord::invite::target_user_types::code" }},
+        { "name": "guild", "type":{ "base":"struct discord_guild_dati", "dec":"*"}, "comment":"partial guild object"},
+        { "name": "channel", "type":{ "base":"struct discord_channel_dati", "dec":"*"}, "comment":"partial channel object"},
+        { "name": "inviter", "type":{ "base":"struct discord_user_dati", "dec":"*"}},
+        { "name": "target_user", "type":{ "base":"struct discord_user_dati", "dec":"*"}, "comment":"partial user object"},
+        { "name": "target_user_type", "type":{ "base":"int", "int_alias":"enum discord_invite_target_user_types_code" }},
         { "name": "approximate_presence_count", "type":{ "base":"int" }},
         { "name": "approximate_member_count", "type":{ "base":"int" }}
       ]

@@ -7,9 +7,9 @@ https://discord.com/developers/docs/resources/guild#membership-screening-object
 /* This is defined at specs/guild.membership_screening.json:17:22 */
 struct discord_guild_membership_screening_field_dati {
   /* specs/guild.membership_screening.json:20:20
-     '{ "name": "field_type", "type":{ "base":"int", "int_alias":"discord::guild::membership_screening::field_type::code" }}'
+     '{ "name": "field_type", "type":{ "base":"int", "int_alias":"enum discord_guild_membership_screening_field_type_code" }}'
   */
-  discord_guild_membership_screening_field_type_code field_type;
+  enum discord_guild_membership_screening_field_type_code field_type;
 
   /* specs/guild.membership_screening.json:21:20
      '{ "name": "label", "type":{ "base":"char", "dec":"*" }}'
@@ -48,9 +48,9 @@ struct discord_guild_membership_screening_dati {
   uint64_t version;
 
   /* specs/guild.membership_screening.json:31:20
-     '{ "name": "fields", "type":{ "base":"discord::guild::membership_screening::field::dati", "dec":"ntl" }}'
+     '{ "name": "fields", "type":{ "base":"struct discord_guild_membership_screening_field_dati", "dec":"ntl" }}'
   */
-  discord_guild_membership_screening_field_dati **fields;
+  struct discord_guild_membership_screening_field_dati **fields;
 
   /* specs/guild.membership_screening.json:32:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }}'
@@ -155,9 +155,9 @@ struct discord_channel_modify_params {
   int user_limit;
 
   /* specs/channel.modify-channel.json:19:20
-     '{ "name": "permission_overwrites", "type":{ "base":"discord::channel::overwrite::dati", "dec":"ntl" }, "inject_if_not":null}'
+     '{ "name": "permission_overwrites", "type":{ "base":"struct discord_channel_overwrite_dati", "dec":"ntl" }, "inject_if_not":null}'
   */
-  discord_channel_overwrite_dati **permission_overwrites;
+  struct discord_channel_overwrite_dati **permission_overwrites;
 
   /* specs/channel.modify-channel.json:20:20
      '{ "name": "parent_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0}'
@@ -222,9 +222,9 @@ struct discord_channel_message_sticker_dati {
   char preview_asset[MAX_SHA256_LEN];
 
   /* specs/channel.message.json:30:18
-     '{"name":"type", "type":{"base":"int", "int_alias":"discord::channel::message::sticker::format_type::code"}}'
+     '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_channel_message_sticker_format_type_code"}}'
   */
-  discord_channel_message_sticker_format_type_code type;
+  enum discord_channel_message_sticker_format_type_code type;
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -331,9 +331,9 @@ struct discord_channel_message_application_dati {
 /* This is defined at specs/channel.message.json:92:22 */
 struct discord_channel_message_activity_dati {
   /* specs/channel.message.json:94:18
-     '{"name":"type", "type":{"base":"int", "int_alias":"discord::channel::message::activity::types::code"}}'
+     '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_channel_message_activity_types_code"}}'
   */
-  discord_channel_message_activity_types_code type;
+  enum discord_channel_message_activity_types_code type;
 
   /* specs/channel.message.json:95:18
      '{"name":"party_id", "type":{"base":"char", "dec":"*"},
@@ -375,16 +375,16 @@ struct discord_channel_message_dati {
   */
   u64_snowflake_t guild_id;
 
-  /* specs/channel.message.json:134:69
-     '{"type":{"base":"discord::user::dati", "dec":"*"}, "name":"author"}'
+  /* specs/channel.message.json:134:74
+     '{"type":{"base":"struct discord_user_dati", "dec":"*"}, "name":"author"}'
   */
-  discord_user_dati *author;
+  struct discord_user_dati *author;
 
-  /* specs/channel.message.json:135:78
-     '{"type":{"base":"discord::guild::member::dati", "dec":"*"}, "name":"member", 
+  /* specs/channel.message.json:135:82
+     '{"type":{"base":"struct discord_guild_member_dati", "dec":"*"}, "name":"member", 
           "option":true, "comment":"partial guild member object"}'
   */
-  discord_guild_member_dati *member; // partial guild member object
+  struct discord_guild_member_dati *member; // partial guild member object
 
   /* specs/channel.message.json:137:54
      '{"type":{"base":"char", "dec":"*"}, "name":"content"}'
@@ -412,38 +412,38 @@ struct discord_channel_message_dati {
   */
   bool mention_everyone;
 
-  /* specs/channel.message.json:143:71
-     '{"type":{"base":"discord::user::dati", "dec":"ntl"}, "name":"mentions", 
+  /* specs/channel.message.json:143:76
+     '{"type":{"base":"struct discord_user_dati", "dec":"ntl"}, "name":"mentions", 
           "comment":"array of user objects, with an additional partial member field"}'
   */
-  discord_user_dati **mentions; // array of user objects, with an additional partial member field
+  struct discord_user_dati **mentions; // array of user objects, with an additional partial member field
 
   /* specs/channel.message.json:145:58
      '{"type":{"base":"ja_u64", "dec":"ntl"}, "name":"mention_roles", "comment":"array of role object ids"}'
   */
   ja_u64 **mention_roles; // array of role object ids
 
-  /* specs/channel.message.json:146:83
-     '{"type":{"base":"discord::channel::mention::dati", "dec":"ntl"}, "name":"mention_channels",
+  /* specs/channel.message.json:146:87
+     '{"type":{"base":"struct discord_channel_mention_dati", "dec":"ntl"}, "name":"mention_channels",
           "option":true }'
   */
-  discord_channel_mention_dati **mention_channels;
+  struct discord_channel_mention_dati **mention_channels;
 
-  /* specs/channel.message.json:148:86
-     '{"type":{"base":"discord::channel::attachment::dati", "dec":"ntl"}, "name":"attachments"}'
+  /* specs/channel.message.json:148:90
+     '{"type":{"base":"struct discord_channel_attachment_dati", "dec":"ntl"}, "name":"attachments"}'
   */
-  discord_channel_attachment_dati **attachments;
+  struct discord_channel_attachment_dati **attachments;
 
-  /* specs/channel.message.json:149:81
-     '{"type":{"base":"discord::channel::embed::dati", "dec":"ntl"}, "name":"embeds"}'
+  /* specs/channel.message.json:149:85
+     '{"type":{"base":"struct discord_channel_embed_dati", "dec":"ntl"}, "name":"embeds"}'
   */
-  discord_channel_embed_dati **embeds;
+  struct discord_channel_embed_dati **embeds;
 
-  /* specs/channel.message.json:150:83
-     '{"type":{"base":"discord::channel::reaction::dati","dec":"ntl"}, "name":"reactions", 
+  /* specs/channel.message.json:150:87
+     '{"type":{"base":"struct discord_channel_reaction_dati","dec":"ntl"}, "name":"reactions", 
           "option":true }'
   */
-  discord_channel_reaction_dati **reactions;
+  struct discord_channel_reaction_dati **reactions;
 
   /* specs/channel.message.json:152:54
      '{"type":{"base":"char", "dec":"*"}, "name":"nonce", "comment":"integer or string",
@@ -462,47 +462,47 @@ struct discord_channel_message_dati {
   */
   u64_snowflake_t webhook_id;
 
-  /* specs/channel.message.json:157:96
-     '{"type":{"base":"int", "int_alias":"discord::channel::message::types::code"}, "name":"type"}'
+  /* specs/channel.message.json:157:97
+     '{"type":{"base":"int", "int_alias":"enum discord_channel_message_types_code"}, "name":"type"}'
   */
-  discord_channel_message_types_code type;
+  enum discord_channel_message_types_code type;
 
-  /* specs/channel.message.json:158:91
-     '{"type":{"base":"discord::channel::message::activity::dati", "dec":"*"}, "name":"activity", 
+  /* specs/channel.message.json:158:94
+     '{"type":{"base":"struct discord_channel_message_activity_dati", "dec":"*"}, "name":"activity", 
           "option":true, "inject_if_not":null }'
   */
-  discord_channel_message_activity_dati *activity;
+  struct discord_channel_message_activity_dati *activity;
 
-  /* specs/channel.message.json:160:96
-     '{"type":{"base":"discord::channel::message::application::dati", "dec":"ntl"}, "name":"application",
+  /* specs/channel.message.json:160:99
+     '{"type":{"base":"struct discord_channel_message_application_dati", "dec":"ntl"}, "name":"application",
           "option":true, "inject_if_not":null }'
   */
-  discord_channel_message_application_dati **application;
+  struct discord_channel_message_application_dati **application;
 
-  /* specs/channel.message.json:162:92
-     '{"type":{"base":"discord::channel::message::reference::dati", "dec":"*"}, "name":"message_reference",
+  /* specs/channel.message.json:162:95
+     '{"type":{"base":"struct discord_channel_message_reference_dati", "dec":"*"}, "name":"message_reference",
           "option":true, "inject_if_not":null }'
   */
-  discord_channel_message_reference_dati *message_reference;
+  struct discord_channel_message_reference_dati *message_reference;
 
-  /* specs/channel.message.json:164:96
-     '{"type":{"base":"int", "int_alias":"discord::channel::message::flags::code"}, "name":"flags",
+  /* specs/channel.message.json:164:97
+     '{"type":{"base":"int", "int_alias":"enum discord_channel_message_flags_code"}, "name":"flags",
           "option":true, "inject_if_not":0 }'
   */
-  discord_channel_message_flags_code flags;
+  enum discord_channel_message_flags_code flags;
 
-  /* specs/channel.message.json:166:92
-     '{"type":{"base":"discord::channel::message::sticker::dati", "dec":"ntl"}, "name":"stickers",
+  /* specs/channel.message.json:166:95
+     '{"type":{"base":"struct discord_channel_message_sticker_dati", "dec":"ntl"}, "name":"stickers",
           "option":true, "inject_if_not":null, "comment":"array of sticker objects"}'
   */
-  discord_channel_message_sticker_dati **stickers; // array of sticker objects
+  struct discord_channel_message_sticker_dati **stickers; // array of sticker objects
 
-  /* specs/channel.message.json:168:81
-     '{"type":{"base":"discord::channel::message::dati", "dec":"*"}, "name":"referenced_message", 
+  /* specs/channel.message.json:168:85
+     '{"type":{"base":"struct discord_channel_message_dati", "dec":"*"}, "name":"referenced_message", 
           "lazy_init":true, "option":true", "inject_if_not":null,
           "comment":"this will cause recursive allocation if allocating as the parent"}'
   */
-  discord_channel_message_dati *referenced_message; // this will cause recursive allocation if allocating as the parent
+  struct discord_channel_message_dati *referenced_message; // this will cause recursive allocation if allocating as the parent
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -532,17 +532,17 @@ struct discord_webhook_edit_webhook_message_params {
   char content[2000+1]; // name of the webhook(1-2000) chars
 
   /* specs/webhook.edit-webhook-message.json:13:20
-     '{ "name": "embeds", "type":{ "base":"discord::channel::embed::dati", "dec":"ntl" }, 
+     '{ "name": "embeds", "type":{ "base":"struct discord_channel_embed_dati", "dec":"ntl" }, 
           "comment":"array of up to 10 embeds objects" }'
   */
-  discord_channel_embed_dati **embeds; // array of up to 10 embeds objects
+  struct discord_channel_embed_dati **embeds; // array of up to 10 embeds objects
 
   /* specs/webhook.edit-webhook-message.json:15:20
      '{ "name": "allowed_mentions", 
-          "type":{ "base":"discord::channel::allowed_mentions::dati", "dec":"*" }, 
+          "type":{ "base":"struct discord_channel_allowed_mentions_dati", "dec":"*" }, 
           "comment":"allowed mentions for the message" }'
   */
-  discord_channel_allowed_mentions_dati *allowed_mentions; // allowed mentions for the message
+  struct discord_channel_allowed_mentions_dati *allowed_mentions; // allowed mentions for the message
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -691,9 +691,9 @@ struct discord_guild_ban_dati {
   char reason[MAX_REASON_LEN];
 
   /* specs/guild.ban.json:13:20
-     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*"}, "comment":"partial user object"}'
+     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*"}, "comment":"partial user object"}'
   */
-  discord_user_dati *user; // partial user object
+  struct discord_user_dati *user; // partial user object
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -733,9 +733,9 @@ struct discord_voice_dati {
   u64_snowflake_t user_id;
 
   /* specs/voice.json:15:20
-     '{ "name": "member", "type":{ "base":"discord::guild::member::dati", "dec":"*" }}'
+     '{ "name": "member", "type":{ "base":"struct discord_guild_member_dati", "dec":"*" }}'
   */
-  discord_guild_member_dati *member;
+  struct discord_guild_member_dati *member;
 
   /* specs/voice.json:16:20
      '{ "name": "session_id", "type":{ "base":"char", "dec":"*" }}'
@@ -952,33 +952,33 @@ struct discord_guild_dati {
   */
   u64_snowflake_t widget_channel_id;
 
-  /* specs/guild.json:26:97
-     '{"type":{"base":"int", "int_alias":"discord::guild::verification_level::code"}, "name":"verification_level"}'
+  /* specs/guild.json:26:99
+     '{"type":{"base":"int", "int_alias":"enum discord_guild_verification_level_code"}, "name":"verification_level"}'
   */
-  discord_guild_verification_level_code verification_level;
+  enum discord_guild_verification_level_code verification_level;
 
   /* specs/guild.json:28:32
-     '{"type":{"base":"int", "int_alias":"discord::guild::default_message_notification_level::code"}, 
+     '{"type":{"base":"int", "int_alias":"enum discord_guild_default_message_notification_level_code"}, 
               "name":"default_message_notifications"}'
   */
-  discord_guild_default_message_notification_level_code default_message_notifications;
+  enum discord_guild_default_message_notification_level_code default_message_notifications;
 
   /* specs/guild.json:30:32
-     '{"type":{"base":"int", "int_alias":"discord::guild::explicit_content_filter_level::code"},
+     '{"type":{"base":"int", "int_alias":"enum discord_guild_explicit_content_filter_level_code"},
               "name":"explicit_content_filter"}'
   */
-  discord_guild_explicit_content_filter_level_code explicit_content_filter;
+  enum discord_guild_explicit_content_filter_level_code explicit_content_filter;
 
-  /* specs/guild.json:31:77
-     '{"type":{"base":"discord::guild::role::dati", "dec":"ntl"}, "name":"roles", "todo":true, 
+  /* specs/guild.json:31:81
+     '{"type":{"base":"struct discord_guild_role_dati", "dec":"ntl"}, "name":"roles", "todo":true, 
               "comment":"array of role objects"}'
   */
   //@todo roles array of role objects;
 
-  /* specs/guild.json:33:71
-     '{"type":{"base":"discord::emoji::dati", "dec":"ntl"}, "name":"emojis"}'
+  /* specs/guild.json:33:76
+     '{"type":{"base":"struct discord_emoji_dati", "dec":"ntl"}, "name":"emojis"}'
   */
-  discord_emoji_dati **emojis;
+  struct discord_emoji_dati **emojis;
 
   /* specs/guild.json:34:57
      '{"type":{"base":"ja_str", "dec":"ntl"}, "name":"features", "todo":true", 
@@ -986,10 +986,10 @@ struct discord_guild_dati {
   */
   //@todo features array of guild feature strings;
 
-  /* specs/guild.json:36:88
-     '{"type":{"base":"int", "int_alias":"discord::guild::mfa_level::code"}, "name":"mfa_level"}'
+  /* specs/guild.json:36:90
+     '{"type":{"base":"int", "int_alias":"enum discord_guild_mfa_level_code"}, "name":"mfa_level"}'
   */
-  discord_guild_mfa_level_code mfa_level;
+  enum discord_guild_mfa_level_code mfa_level;
 
   /* specs/guild.json:37:95
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake", "nullable":true}, "name":"application_id"}'
@@ -1001,10 +1001,10 @@ struct discord_guild_dati {
   */
   u64_snowflake_t system_channel_id;
 
-  /* specs/guild.json:39:99
-     '{"type":{"base":"int", "int_alias":"discord::guild::system_channel_flags::code"}, "name":"system_channel_flags"}'
+  /* specs/guild.json:39:101
+     '{"type":{"base":"int", "int_alias":"enum discord_guild_system_channel_flags_code"}, "name":"system_channel_flags"}'
   */
-  discord_guild_system_channel_flags_code system_channel_flags;
+  enum discord_guild_system_channel_flags_code system_channel_flags;
 
   /* specs/guild.json:40:95
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake", "nullable":true}, "name":"rules_channel_id"}'
@@ -1031,22 +1031,22 @@ struct discord_guild_dati {
   */
   int member_count;
 
-  /* specs/guild.json:45:71
-     '{"type":{"base":"discord::voice::dati", "dec":"ntl"}, "name":"voice_states", "todo":true", 
+  /* specs/guild.json:45:76
+     '{"type":{"base":"struct discord_voice_dati", "dec":"ntl"}, "name":"voice_states", "todo":true", 
          "comment":"array of partial voice state objects"}'
   */
   //@todo voice_states array of partial voice state objects;
 
-  /* specs/guild.json:47:79
-     '{"type":{"base":"discord::guild::member::dati", "dec":"ntl"}, "name":"members", "option":true}'
+  /* specs/guild.json:47:83
+     '{"type":{"base":"struct discord_guild_member_dati", "dec":"ntl"}, "name":"members", "option":true}'
   */
-  discord_guild_member_dati **members;
+  struct discord_guild_member_dati **members;
 
-  /* specs/guild.json:48:73
-     '{"type":{"base":"discord::channel::dati", "dec":"ntl"}, "name":"channels", "option":true,
+  /* specs/guild.json:48:78
+     '{"type":{"base":"struct discord_channel_dati", "dec":"ntl"}, "name":"channels", "option":true,
          "comment":"array of channel objects"}'
   */
-  discord_channel_dati **channels; // array of channel objects
+  struct discord_channel_dati **channels; // array of channel objects
 
   /* specs/guild.json:50:41
      '{"type":{"base":"int"}, "name":"presences", "todo":true, "option":true,
@@ -1079,10 +1079,10 @@ struct discord_guild_dati {
   */
   char *banner;
 
-  /* specs/guild.json:57:91
-     '{"type":{"base":"int", "int_alias":"discord::guild::premium_tier::code"}, "name":"premium_tier"}'
+  /* specs/guild.json:57:93
+     '{"type":{"base":"int", "int_alias":"enum discord_guild_premium_tier_code"}, "name":"premium_tier"}'
   */
-  discord_guild_premium_tier_code premium_tier;
+  enum discord_guild_premium_tier_code premium_tier;
 
   /* specs/guild.json:58:41
      '{"type":{"base":"int"}, "name":"premium_subscription_count", "option":true}'
@@ -1115,10 +1115,10 @@ struct discord_guild_dati {
   */
   int approximate_presence_count;
 
-  /* specs/guild.json:65:85
-     '{"type":{"base":"discord::guild::welcome_screen::dati", "dec":"*"}, "name":"welcome_screen", "option":true}'
+  /* specs/guild.json:65:89
+     '{"type":{"base":"struct discord_guild_welcome_screen_dati", "dec":"*"}, "name":"welcome_screen", "option":true}'
   */
-  discord_guild_welcome_screen_dati *welcome_screen;
+  struct discord_guild_welcome_screen_dati *welcome_screen;
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -1192,19 +1192,19 @@ struct discord_user_dati {
   char email[MAX_EMAIL_LEN];
 
   /* specs/user.json:57:14
-     '{ "name": "flags", "type":{ "base":"int", "int_alias": "discord::user::flags::code" }}'
+     '{ "name": "flags", "type":{ "base":"int", "int_alias": "enum discord_user_flags_code" }}'
   */
-  discord_user_flags_code flags;
+  enum discord_user_flags_code flags;
 
   /* specs/user.json:58:14
-     '{ "name": "premium_type", "type":{ "base":"int", "int_alias": "discord::user::premium_types::code" }}'
+     '{ "name": "premium_type", "type":{ "base":"int", "int_alias": "enum discord_user_premium_types_code" }}'
   */
-  discord_user_premium_types_code premium_type;
+  enum discord_user_premium_types_code premium_type;
 
   /* specs/user.json:59:14
-     '{ "name": "public_flags", "type":{ "base":"int", "int_alias": "discord::user::flags::code" }}'
+     '{ "name": "public_flags", "type":{ "base":"int", "int_alias": "enum discord_user_flags_code" }}'
   */
-  discord_user_flags_code public_flags;
+  enum discord_user_flags_code public_flags;
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -1245,7 +1245,7 @@ struct discord_user_connection_dati {
   bool revoked;
 
   /* specs/user.json:84:20
-     '{ "name": "integrations", "type": {"base":"discord::guild::integration::dati", "dec":"ntl"}, "todo":true}'
+     '{ "name": "integrations", "type": {"base":"struct discord_guild_integration_dati", "dec":"ntl"}, "todo":true}'
   */
   //@todo integrations (null);
 
@@ -1265,9 +1265,9 @@ struct discord_user_connection_dati {
   bool show_activity;
 
   /* specs/user.json:88:14
-     '{ "name": "visibility", "type":{ "base":"int", "int_alias":"discord::user::connection::visibility_types::code" }}'
+     '{ "name": "visibility", "type":{ "base":"int", "int_alias":"enum discord_user_connection_visibility_types_code" }}'
   */
-  discord_user_connection_visibility_types_code visibility;
+  enum discord_user_connection_visibility_types_code visibility;
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -1391,9 +1391,9 @@ struct discord_guild_integration_application_dati {
   char *summary;
 
   /* specs/guild.integration.json:38:19
-     '{ "name":"bot", "type":{ "base":"discord::user::dati", "dec":"*" }, "option":true}'
+     '{ "name":"bot", "type":{ "base":"struct discord_user_dati", "dec":"*" }, "option":true}'
   */
-  discord_user_dati *bot;
+  struct discord_user_dati *bot;
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -1449,9 +1449,9 @@ struct discord_guild_integration_dati {
   bool enable_emotions;
 
   /* specs/guild.integration.json:55:20
-     '{ "name": "expire_behavior", "type":{ "base":"int", "int_alias":"discord::guild::integration::expire_behaviors::code"}}'
+     '{ "name": "expire_behavior", "type":{ "base":"int", "int_alias":"enum discord_guild_integration_expire_behaviors_code"}}'
   */
-  discord_guild_integration_expire_behaviors_code expire_behavior;
+  enum discord_guild_integration_expire_behaviors_code expire_behavior;
 
   /* specs/guild.integration.json:56:20
      '{ "name": "expire_grace_period", "type":{ "base":"int"}}'
@@ -1459,14 +1459,14 @@ struct discord_guild_integration_dati {
   int expire_grace_period;
 
   /* specs/guild.integration.json:57:20
-     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*"}, "opt":true}'
+     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*"}, "opt":true}'
   */
-  discord_user_dati *user;
+  struct discord_user_dati *user;
 
   /* specs/guild.integration.json:58:20
-     '{ "name": "account", "type":{ "base":"discord::guild::integration::account::dati", "dec":"*"}}'
+     '{ "name": "account", "type":{ "base":"struct discord_guild_integration_account_dati", "dec":"*"}}'
   */
-  discord_guild_integration_account_dati *account;
+  struct discord_guild_integration_account_dati *account;
 
   /* specs/guild.integration.json:59:20
      '{ "name": "synced_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601"}}'
@@ -1484,9 +1484,9 @@ struct discord_guild_integration_dati {
   bool revoked;
 
   /* specs/guild.integration.json:62:20
-     '{ "name": "application", "type":{ "base":"discord::guild::integration::application::dati", "dec":"*" }}'
+     '{ "name": "application", "type":{ "base":"struct discord_guild_integration_application_dati", "dec":"*" }}'
   */
-  discord_guild_integration_application_dati *application;
+  struct discord_guild_integration_application_dati *application;
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -1564,9 +1564,9 @@ struct discord_guild_preview_dati {
   char *discovery;
 
   /* specs/guild.enum.json:117:18
-     '{"name":"emojis", "type":{"base":"discord::emoji::dati", "dec":"*"}}'
+     '{"name":"emojis", "type":{"base":"struct discord_emoji_dati", "dec":"*"}}'
   */
-  discord_emoji_dati *emojis;
+  struct discord_emoji_dati *emojis;
 
   /* specs/guild.enum.json:118:18
      '{"name":"features", "todo":true, "type":{"base":"char", "dec":"ntl"}}'
@@ -1645,29 +1645,29 @@ struct discord_invite_dati {
   char *code; // @todo fixed size limit
 
   /* specs/invite.json:23:20
-     '{ "name": "guild", "type":{ "base":"discord::guild::dati", "dec":"*"}, "comment":"partial guild object"}'
+     '{ "name": "guild", "type":{ "base":"struct discord_guild_dati", "dec":"*"}, "comment":"partial guild object"}'
   */
-  discord_guild_dati *guild; // partial guild object
+  struct discord_guild_dati *guild; // partial guild object
 
   /* specs/invite.json:24:20
-     '{ "name": "channel", "type":{ "base":"discord::channel::dati", "dec":"*"}, "comment":"partial channel object"}'
+     '{ "name": "channel", "type":{ "base":"struct discord_channel_dati", "dec":"*"}, "comment":"partial channel object"}'
   */
-  discord_channel_dati *channel; // partial channel object
+  struct discord_channel_dati *channel; // partial channel object
 
   /* specs/invite.json:25:20
-     '{ "name": "inviter", "type":{ "base":"discord::user::dati", "dec":"*"}}'
+     '{ "name": "inviter", "type":{ "base":"struct discord_user_dati", "dec":"*"}}'
   */
-  discord_user_dati *inviter;
+  struct discord_user_dati *inviter;
 
   /* specs/invite.json:26:20
-     '{ "name": "target_user", "type":{ "base":"discord::user::dati", "dec":"*"}, "comment":"partial user object"}'
+     '{ "name": "target_user", "type":{ "base":"struct discord_user_dati", "dec":"*"}, "comment":"partial user object"}'
   */
-  discord_user_dati *target_user; // partial user object
+  struct discord_user_dati *target_user; // partial user object
 
   /* specs/invite.json:27:20
-     '{ "name": "target_user_type", "type":{ "base":"int", "int_alias":"discord::invite::target_user_types::code" }}'
+     '{ "name": "target_user_type", "type":{ "base":"int", "int_alias":"enum discord_invite_target_user_types_code" }}'
   */
-  discord_invite_target_user_types_code target_user_type;
+  enum discord_invite_target_user_types_code target_user_type;
 
   /* specs/invite.json:28:20
      '{ "name": "approximate_presence_count", "type":{ "base":"int" }}'
@@ -1825,16 +1825,16 @@ struct discord_channel_overwrite_dati {
   int type;
 
   /* specs/channel.objects.json:15:20
-     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"discord::permissions::bitwise_flags"}, 
+     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"discord_permissions_bitwise_flags"}, 
           "comment":"permission bit set"}'
   */
-  discord::permissions::bitwise_flags allow; // permission bit set
+  discord_permissions_bitwise_flags allow; // permission bit set
 
   /* specs/channel.objects.json:17:20
-     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"discord::permissions::bitwise_flags"}, 
+     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"discord_permissions_bitwise_flags"}, 
           "comment":"permission bit set"}'
   */
-  discord::permissions::bitwise_flags deny; // permission bit set
+  discord_permissions_bitwise_flags deny; // permission bit set
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -1864,9 +1864,9 @@ struct discord_channel_reaction_dati {
   bool me;
 
   /* specs/channel.objects.json:29:20
-     '{ "name": "emoji", "type":{ "base":"discord::emoji::dati", "dec":"*" }, "comment":"partial emoji object"}'
+     '{ "name": "emoji", "type":{ "base":"struct discord_emoji_dati", "dec":"*" }, "comment":"partial emoji object"}'
   */
-  discord_emoji_dati *emoji; // partial emoji object
+  struct discord_emoji_dati *emoji; // partial emoji object
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -1977,9 +1977,9 @@ struct discord_channel_mention_dati {
   u64_snowflake_t guild_id;
 
   /* specs/channel.objects.json:67:20
-     '{ "name": "type", "type":{ "base":"int", "int_alias":"discord::channel::types::code" }}'
+     '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_channel_types_code" }}'
   */
-  discord_channel_types_code type;
+  enum discord_channel_types_code type;
 
   /* specs/channel.objects.json:68:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }}'
@@ -2078,41 +2078,41 @@ struct discord_channel_embed_dati {
   int color;
 
   /* specs/channel.objects.json:102:20
-     '{ "name": "footer", "type":{ "base":"discord::channel::embed::footer::dati", "dec":"*"},
+     '{ "name": "footer", "type":{ "base":"struct discord_channel_embed_footer_dati", "dec":"*"},
           "option":true, "inject_if_not":null}'
   */
-  discord_channel_embed_footer_dati *footer;
+  struct discord_channel_embed_footer_dati *footer;
 
   /* specs/channel.objects.json:104:20
-     '{ "name": "image", "type":{ "base":"discord::channel::embed::image::dati", "dec":"*"}, "inject_if_not":null}'
+     '{ "name": "image", "type":{ "base":"struct discord_channel_embed_image_dati", "dec":"*"}, "inject_if_not":null}'
   */
-  discord_channel_embed_image_dati *image;
+  struct discord_channel_embed_image_dati *image;
 
   /* specs/channel.objects.json:105:20
-     '{ "name": "thumbnail", "type":{ "base":"discord::channel::embed::thumbnail::dati", "dec":"*"}, "inject_if_not":null}'
+     '{ "name": "thumbnail", "type":{ "base":"struct discord_channel_embed_thumbnail_dati", "dec":"*"}, "inject_if_not":null}'
   */
-  discord_channel_embed_thumbnail_dati *thumbnail;
+  struct discord_channel_embed_thumbnail_dati *thumbnail;
 
   /* specs/channel.objects.json:106:20
-     '{ "name": "video", "type":{ "base":"discord::channel::embed::video::dati", "dec":"*"}, "inject_if_not":null}'
+     '{ "name": "video", "type":{ "base":"struct discord_channel_embed_video_dati", "dec":"*"}, "inject_if_not":null}'
   */
-  discord_channel_embed_video_dati *video;
+  struct discord_channel_embed_video_dati *video;
 
   /* specs/channel.objects.json:107:20
-     '{ "name": "provider", "type":{ "base":"discord::channel::embed::provider::dati", "dec":"*"}, "inject_if_not":null}'
+     '{ "name": "provider", "type":{ "base":"struct discord_channel_embed_provider_dati", "dec":"*"}, "inject_if_not":null}'
   */
-  discord_channel_embed_provider_dati *provider;
+  struct discord_channel_embed_provider_dati *provider;
 
   /* specs/channel.objects.json:108:20
-     '{ "name": "author", "type":{ "base":"discord::channel::embed::author::dati", "dec":"*"}, "inject_if_not":null}'
+     '{ "name": "author", "type":{ "base":"struct discord_channel_embed_author_dati", "dec":"*"}, "inject_if_not":null}'
   */
-  discord_channel_embed_author_dati *author;
+  struct discord_channel_embed_author_dati *author;
 
   /* specs/channel.objects.json:109:20
-     '{ "name": "fields", "type":{ "base":"discord::channel::embed::field::dati", "dec":"ntl"},
+     '{ "name": "fields", "type":{ "base":"struct discord_channel_embed_field_dati", "dec":"ntl"},
           "option":true, "inject_if_not":null}'
   */
-  discord_channel_embed_field_dati **fields;
+  struct discord_channel_embed_field_dati **fields;
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -2419,9 +2419,9 @@ struct discord_guild_create_channel_params {
   int position;
 
   /* specs/guild.create-channel.json:18:20
-     '{ "name": "permission_overwrites", "type":{ "base":"discord::channel::overwrite::dati", "dec":"ntl" }, "inject_if_not":null}'
+     '{ "name": "permission_overwrites", "type":{ "base":"struct discord_channel_overwrite_dati", "dec":"ntl" }, "inject_if_not":null}'
   */
-  discord_channel_overwrite_dati **permission_overwrites;
+  struct discord_channel_overwrite_dati **permission_overwrites;
 
   /* specs/guild.create-channel.json:19:20
      '{ "name": "parent_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0}'
@@ -2465,15 +2465,15 @@ struct discord_emoji_dati {
   char name[MAX_NAME_LEN];
 
   /* specs/emoji.json:13:20
-     '{ "name": "roles", "type":{ "base":"discord::guild::role::dati", "dec":"ntl"}, "option":true,
+     '{ "name": "roles", "type":{ "base":"struct discord_guild_role_dati", "dec":"ntl"}, "option":true,
           "todo":true }'
   */
   //@todo roles (null);
 
   /* specs/emoji.json:15:20
-     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*" }, "option":true }'
+     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*" }, "option":true }'
   */
-  discord_user_dati *user;
+  struct discord_user_dati *user;
 
   /* specs/emoji.json:16:20
      '{ "name": "require_colons", "type":{ "base":"bool" }, "option":true}'
@@ -2595,9 +2595,9 @@ struct discord_guild_welcome_screen_dati {
   char *description; // @todo fixed size limit
 
   /* specs/guild.welcome_screen.json:27:20
-     '{ "name": "welcome_channels", "type":{ "base":"discord::guild::welcome_screen::screen_channel::dati", "dec":"ntl" }, "todo":false }'
+     '{ "name": "welcome_channels", "type":{ "base":"struct discord_guild_welcome_screen_screen_channel_dati", "dec":"ntl" }, "todo":false }'
   */
-  discord_guild_welcome_screen_screen_channel_dati **welcome_channels;
+  struct discord_guild_welcome_screen_screen_channel_dati **welcome_channels;
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -2663,10 +2663,10 @@ struct discord_guild_create_guild_params {
   //@todo roles new guild roles;
 
   /* specs/guild.create-guild.json:25:20
-     '{ "name": "channels", "type":{ "base":"discord::channel::dati", "dec":"ntl" }, 
+     '{ "name": "channels", "type":{ "base":"struct discord_channel_dati", "dec":"ntl" }, 
           "option":true, "inject_if_not":null, "comment":"array of partial channel objects"}'
   */
-  discord_channel_dati **channels; // array of partial channel objects
+  struct discord_channel_dati **channels; // array of partial channel objects
 
   /* specs/guild.create-guild.json:27:20
      '{ "name": "afk_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, 
@@ -2740,9 +2740,9 @@ struct discord_webhook_dati {
   u64_snowflake_t id;
 
   /* specs/webhook.json:23:20
-     '{ "name": "type", "type":{ "base":"int", "int_alias":"discord::webhook::types::code" }}'
+     '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_webhook_types_code" }}'
   */
-  discord_webhook_types_code type;
+  enum discord_webhook_types_code type;
 
   /* specs/webhook.json:24:20
      '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
@@ -2755,9 +2755,9 @@ struct discord_webhook_dati {
   u64_snowflake_t channel_id;
 
   /* specs/webhook.json:26:20
-     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*" }}'
+     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*" }}'
   */
-  discord_user_dati *user;
+  struct discord_user_dati *user;
 
   /* specs/webhook.json:27:20
      '{ "name": "name", "type":{ "base":"char", "dec":"[WEBHOOK_NAME_LEN]" }}'
@@ -2912,12 +2912,12 @@ struct discord_webhook_execute_webhook_params {
   char *file; // the contents of the file being sent
 
   /* specs/webhook.execute-webhook.json:34:20
-     '{ "name": "embeds", "type":{ "base":"discord::channel::embed::dati", "dec":"*" }, 
+     '{ "name": "embeds", "type":{ "base":"struct discord_channel_embed_dati", "dec":"*" }, 
           "comment":"embedded rich content",
           "required":"one of content, file, embeds"
         }'
   */
-  discord_channel_embed_dati *embeds; // embedded rich content
+  struct discord_channel_embed_dati *embeds; // embedded rich content
 
   /* specs/webhook.execute-webhook.json:38:20
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, 
@@ -2929,12 +2929,12 @@ struct discord_webhook_execute_webhook_params {
 
   /* specs/webhook.execute-webhook.json:42:20
      '{ "name": "allowed_mentions", 
-          "type":{ "base":"discord::channel::allowed_mentions::dati", "dec":"*" },
+          "type":{ "base":"struct discord_channel_allowed_mentions_dati", "dec":"*" },
           "comment":"allowed mentions for the message",
           "required":"false"
         }'
   */
-  discord_channel_allowed_mentions_dati *allowed_mentions; // allowed mentions for the message
+  struct discord_channel_allowed_mentions_dati *allowed_mentions; // allowed mentions for the message
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -2963,10 +2963,10 @@ struct discord_guild_create_guild_role_params {
   char *name;
 
   /* specs/guild.role.create.json:12:20
-     '{ "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"discord::permissions::bitwise_flags" }, 
+     '{ "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags" }, 
           "inject_if_not":0}'
   */
-  discord::permissions::bitwise_flags permissions;
+  enum discord_permissions_bitwise_flags permissions;
 
   /* specs/guild.role.create.json:14:20
      '{ "name": "color", "type":{ "base":"int" }, "inject_if_not":0}'
@@ -3010,24 +3010,24 @@ https://discord.com/developers/docs/topics/permissions
 /* This is defined at specs/audit_log.json:8:22 */
 struct discord_audit_log_dati {
   /* specs/audit_log.json:11:18
-     '{"name":"webhooks", "type": { "base":"discord::webhook::dati", "dec":"*" } }'
+     '{"name":"webhooks", "type": { "base":"struct discord_webhook_dati", "dec":"*" } }'
   */
-  discord_webhook_dati *webhooks;
+  struct discord_webhook_dati *webhooks;
 
   /* specs/audit_log.json:12:18
-     '{"name":"users", "type": { "base":"discord::user::dati", "dec":"*"}}'
+     '{"name":"users", "type": { "base":"struct discord_user_dati", "dec":"*"}}'
   */
-  discord_user_dati *users;
+  struct discord_user_dati *users;
 
   /* specs/audit_log.json:13:18
-     '{"name":"audit_log_entries", "type": { "base":"discord::audit_log::entry::dati", "dec":"*"}}'
+     '{"name":"audit_log_entries", "type": { "base":"struct discord_audit_log_entry_dati", "dec":"*"}}'
   */
-  discord_audit_log_entry_dati *audit_log_entries;
+  struct discord_audit_log_entry_dati *audit_log_entries;
 
   /* specs/audit_log.json:14:18
-     '{"name":"integrations", "type": { "base":"discord::guild::integration::dati", "dec":"ntl"}}'
+     '{"name":"integrations", "type": { "base":"struct discord_guild_integration_dati", "dec":"ntl"}}'
   */
-  discord_guild_integration_dati **integrations;
+  struct discord_guild_integration_dati **integrations;
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -3053,9 +3053,9 @@ struct discord_audit_log_entry_dati {
   char *target_id;
 
   /* specs/audit_log.json:68:18
-     '{"name":"changes", "type": {"base":"discord::audit_log::change::dati", "dec":"*"}}'
+     '{"name":"changes", "type": {"base":"struct discord_audit_log_change_dati", "dec":"*"}}'
   */
-  discord_audit_log_change_dati *changes;
+  struct discord_audit_log_change_dati *changes;
 
   /* specs/audit_log.json:69:18
      '{"name":"user_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
@@ -3068,14 +3068,14 @@ struct discord_audit_log_entry_dati {
   u64_snowflake_t id;
 
   /* specs/audit_log.json:71:18
-     '{"name":"action_type", "type": {"base":"int", "c_base":"discord::entry::events::code"}}'
+     '{"name":"action_type", "type": {"base":"int", "c_base":"enum discord_entry_events_code"}}'
   */
   int action_type;
 
   /* specs/audit_log.json:72:18
-     '{"name":"options", "type": {"base":"discord::audit_log::entry::optional_info::dati", "dec":"*"}}'
+     '{"name":"options", "type": {"base":"struct discord_audit_log_entry_optional_info_dati", "dec":"*"}}'
   */
-  discord_audit_log_entry_optional_info_dati *options;
+  struct discord_audit_log_entry_optional_info_dati *options;
 
   /* specs/audit_log.json:73:18
      '{"name":"reason", "type": {"base":"char", "dec":"[MAX_REASON_LEN]"}}'
@@ -3561,9 +3561,9 @@ struct discord_guild_role_dati {
   bool mentionable;
 
   /* specs/guild.role.json:31:20
-     '{ "name": "tags", "type":{"base":"discord::guild::role::tags::dati", "dec":"*"}}'
+     '{ "name": "tags", "type":{"base":"struct discord_guild_role_tags_dati", "dec":"*"}}'
   */
-  discord_guild_role_tags_dati *tags;
+  struct discord_guild_role_tags_dati *tags;
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -3648,9 +3648,9 @@ struct discord_Template_dati {
   u64_snowflake_t creator_id;
 
   /* specs/template.json:17:20
-     '{ "name": "creator", "type":{ "base":"discord::user::dati", "dec":"*" }}'
+     '{ "name": "creator", "type":{ "base":"struct discord_user_dati", "dec":"*" }}'
   */
-  discord_user_dati *creator;
+  struct discord_user_dati *creator;
 
   /* specs/template.json:18:20
      '{ "name": "created_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}'
@@ -3668,9 +3668,9 @@ struct discord_Template_dati {
   u64_snowflake_t source_guild_id;
 
   /* specs/template.json:21:20
-     '{ "name": "serialized_source_guild", "type":{ "base":"discord::guild::dati", "dec":"*" }}'
+     '{ "name": "serialized_source_guild", "type":{ "base":"struct discord_guild_dati", "dec":"*" }}'
   */
-  discord_guild_dati *serialized_source_guild;
+  struct discord_guild_dati *serialized_source_guild;
 
   /* specs/template.json:22:20
      '{ "name": "is_dirty", "type":{ "base":"bool" }}'
@@ -3731,9 +3731,9 @@ struct discord_gateway_identify_dati {
   char *token;
 
   /* specs/gateway.json:79:19
-     '{ "name":"properties","type":{"base":"discord::gateway::identify::connection::dati", "dec":"*"}}'
+     '{ "name":"properties","type":{"base":"struct discord_gateway_identify_connection_dati", "dec":"*"}}'
   */
-  discord_gateway_identify_connection_dati *properties;
+  struct discord_gateway_identify_connection_dati *properties;
 
   /* specs/gateway.json:80:19
      '{ "name":"compress","type":{"base":"bool"}}'
@@ -3756,9 +3756,9 @@ struct discord_gateway_identify_dati {
   //@todo shard (null);
 
   /* specs/gateway.json:84:19
-     '{ "name":"presence","type":{"base":"discord::gateway::identify::status_update::dati", "dec":"*"}}'
+     '{ "name":"presence","type":{"base":"struct discord_gateway_identify_status_update_dati", "dec":"*"}}'
   */
-  discord_gateway_identify_status_update_dati *presence;
+  struct discord_gateway_identify_status_update_dati *presence;
 
   /* specs/gateway.json:85:19
      '{ "name":"intents","type":{"base":"int"}}'
@@ -3790,10 +3790,10 @@ struct discord_gateway_identify_status_update_dati {
   u64_unix_ms_t since;
 
   /* specs/gateway.json:97:19
-     '{ "name":"activities","type":{"base":"discord::gateway::identify::status_update::activity::dati", "dec":"ntl"}, 
+     '{ "name":"activities","type":{"base":"struct discord_gateway_identify_status_update_activity_dati", "dec":"ntl"}, 
           "option":true, "inject_if_not":null}'
   */
-  discord_gateway_identify_status_update_activity_dati **activities;
+  struct discord_gateway_identify_status_update_activity_dati **activities;
 
   /* specs/gateway.json:99:19
      '{ "name":"status","type":{"base":"char", "dec":"[16]"}}'
@@ -3961,10 +3961,10 @@ struct discord_channel_dati {
   */
   u64_snowflake_t id;
 
-  /* specs/channel.json:29:86
-     '{"type":{"base":"int", "int_alias":"discord::channel::types::code"}, "name":"type"}'
+  /* specs/channel.json:29:88
+     '{"type":{"base":"int", "int_alias":"enum discord_channel_types_code"}, "name":"type"}'
   */
-  discord_channel_types_code type;
+  enum discord_channel_types_code type;
 
   /* specs/channel.json:30:78
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"guild_id",
@@ -3978,11 +3978,11 @@ struct discord_channel_dati {
   */
   int position;
 
-  /* specs/channel.json:34:84
-     '{"type":{"base":"discord::channel::overwrite::dati", "dec":"ntl"}, "name":"permission_overwrites",
+  /* specs/channel.json:34:88
+     '{"type":{"base":"struct discord_channel_overwrite_dati", "dec":"ntl"}, "name":"permission_overwrites",
          "option":true, "inject_if_not":null }'
   */
-  discord_channel_overwrite_dati **permission_overwrites;
+  struct discord_channel_overwrite_dati **permission_overwrites;
 
   /* specs/channel.json:36:66
      '{"type":{"base":"char", "dec":"[MAX_NAME_LEN]"}, "name":"name", 
@@ -4023,11 +4023,11 @@ struct discord_channel_dati {
   */
   int rate_limit_per_user;
 
-  /* specs/channel.json:47:70
-     '{"type":{"base":"discord::user::dati", "dec":"ntl"}, "name":"recipients",
+  /* specs/channel.json:47:75
+     '{"type":{"base":"struct discord_user_dati", "dec":"ntl"}, "name":"recipients",
          "option":true, "inject_if_not":null}'
   */
-  discord_user_dati **recipients;
+  struct discord_user_dati **recipients;
 
   /* specs/channel.json:49:68
      '{"type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}, "name":"icon",
@@ -4059,10 +4059,10 @@ struct discord_channel_dati {
   */
   u64_unix_ms_t last_pin_timestamp;
 
-  /* specs/channel.json:59:82
-     '{"type":{"base":"discord::channel::message::dati", "dec":"ntl"}, "name":"messages"}'
+  /* specs/channel.json:59:86
+     '{"type":{"base":"struct discord_channel_message_dati", "dec":"ntl"}, "name":"messages"}'
   */
-  discord_channel_message_dati **messages;
+  struct discord_channel_message_dati **messages;
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -4085,9 +4085,9 @@ https://discord.com/developers/docs/resources/guild#guild-member-object
 /* This is defined at specs/guild.member.json:9:22 */
 struct discord_guild_member_dati {
   /* specs/guild.member.json:12:20
-     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*" }, "option":true}'
+     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*" }, "option":true}'
   */
-  discord_user_dati *user;
+  struct discord_user_dati *user;
 
   /* specs/guild.member.json:13:20
      '{ "name": "nick", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]"}, "option":true}'

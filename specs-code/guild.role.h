@@ -98,9 +98,9 @@ struct discord_guild_role_dati {
   bool mentionable;
 
   /* specs/guild.role.json:31:20
-     '{ "name": "tags", "type":{"base":"discord::guild::role::tags::dati", "dec":"*"}}'
+     '{ "name": "tags", "type":{"base":"struct discord_guild_role_tags_dati", "dec":"*"}}'
   */
-  discord_guild_role_tags_dati *tags;
+  struct discord_guild_role_tags_dati *tags;
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected

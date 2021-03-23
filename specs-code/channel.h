@@ -23,10 +23,10 @@ struct discord_channel_dati {
   */
   u64_snowflake_t id;
 
-  /* specs/channel.json:29:86
-     '{"type":{"base":"int", "int_alias":"discord::channel::types::code"}, "name":"type"}'
+  /* specs/channel.json:29:88
+     '{"type":{"base":"int", "int_alias":"enum discord_channel_types_code"}, "name":"type"}'
   */
-  discord_channel_types_code type;
+  enum discord_channel_types_code type;
 
   /* specs/channel.json:30:78
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"guild_id",
@@ -40,11 +40,11 @@ struct discord_channel_dati {
   */
   int position;
 
-  /* specs/channel.json:34:84
-     '{"type":{"base":"discord::channel::overwrite::dati", "dec":"ntl"}, "name":"permission_overwrites",
+  /* specs/channel.json:34:88
+     '{"type":{"base":"struct discord_channel_overwrite_dati", "dec":"ntl"}, "name":"permission_overwrites",
          "option":true, "inject_if_not":null }'
   */
-  discord_channel_overwrite_dati **permission_overwrites;
+  struct discord_channel_overwrite_dati **permission_overwrites;
 
   /* specs/channel.json:36:66
      '{"type":{"base":"char", "dec":"[MAX_NAME_LEN]"}, "name":"name", 
@@ -85,11 +85,11 @@ struct discord_channel_dati {
   */
   int rate_limit_per_user;
 
-  /* specs/channel.json:47:70
-     '{"type":{"base":"discord::user::dati", "dec":"ntl"}, "name":"recipients",
+  /* specs/channel.json:47:75
+     '{"type":{"base":"struct discord_user_dati", "dec":"ntl"}, "name":"recipients",
          "option":true, "inject_if_not":null}'
   */
-  discord_user_dati **recipients;
+  struct discord_user_dati **recipients;
 
   /* specs/channel.json:49:68
      '{"type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}, "name":"icon",
@@ -121,10 +121,10 @@ struct discord_channel_dati {
   */
   u64_unix_ms_t last_pin_timestamp;
 
-  /* specs/channel.json:59:82
-     '{"type":{"base":"discord::channel::message::dati", "dec":"ntl"}, "name":"messages"}'
+  /* specs/channel.json:59:86
+     '{"type":{"base":"struct discord_channel_message_dati", "dec":"ntl"}, "name":"messages"}'
   */
-  discord_channel_message_dati **messages;
+  struct discord_channel_message_dati **messages;
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected

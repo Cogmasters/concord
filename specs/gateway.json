@@ -76,12 +76,12 @@
       "fields":
       [
         { "name":"token","type":{"base":"char", "dec":"*"}},
-        { "name":"properties","type":{"base":"discord::gateway::identify::connection::dati", "dec":"*"}},
+        { "name":"properties","type":{"base":"struct discord_gateway_identify_connection_dati", "dec":"*"}},
         { "name":"compress","type":{"base":"bool"}},
         { "name":"large_threshold","type":{"base":"int"}},
         { "name":"guild_subscriptions","type":{"base":"bool"}},
         { "name":"shard","type":{"base":"int", "dec":"*"}, "todo":true},
-        { "name":"presence","type":{"base":"discord::gateway::identify::status_update::dati", "dec":"*"}},
+        { "name":"presence","type":{"base":"struct discord_gateway_identify_status_update_dati", "dec":"*"}},
         { "name":"intents","type":{"base":"int"}}
       ]
     },
@@ -94,7 +94,7 @@
       [
         { "name":"since","type":{"base":"char", "dec":"*", "converter":"iso8601"},
           "option":true, "inject_if_not":0 },
-        { "name":"activities","type":{"base":"discord::gateway::identify::status_update::activity::dati", "dec":"ntl"}, 
+        { "name":"activities","type":{"base":"struct discord_gateway_identify_status_update_activity_dati", "dec":"ntl"}, 
           "option":true, "inject_if_not":null},
         { "name":"status","type":{"base":"char", "dec":"[16]"}},
         { "name":"afk","type":{"base":"bool"}} 

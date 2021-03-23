@@ -17,16 +17,16 @@ struct discord_channel_overwrite_dati {
   int type;
 
   /* specs/channel.objects.json:15:20
-     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"discord::permissions::bitwise_flags"}, 
+     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"discord_permissions_bitwise_flags"}, 
           "comment":"permission bit set"}'
   */
-  discord::permissions::bitwise_flags allow; // permission bit set
+  discord_permissions_bitwise_flags allow; // permission bit set
 
   /* specs/channel.objects.json:17:20
-     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"discord::permissions::bitwise_flags"}, 
+     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"discord_permissions_bitwise_flags"}, 
           "comment":"permission bit set"}'
   */
-  discord::permissions::bitwise_flags deny; // permission bit set
+  discord_permissions_bitwise_flags deny; // permission bit set
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -75,9 +75,9 @@ struct discord_channel_reaction_dati {
   bool me;
 
   /* specs/channel.objects.json:29:20
-     '{ "name": "emoji", "type":{ "base":"discord::emoji::dati", "dec":"*" }, "comment":"partial emoji object"}'
+     '{ "name": "emoji", "type":{ "base":"struct discord_emoji_dati", "dec":"*" }, "comment":"partial emoji object"}'
   */
-  discord_emoji_dati *emoji; // partial emoji object
+  struct discord_emoji_dati *emoji; // partial emoji object
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -245,9 +245,9 @@ struct discord_channel_mention_dati {
   u64_snowflake_t guild_id;
 
   /* specs/channel.objects.json:67:20
-     '{ "name": "type", "type":{ "base":"int", "int_alias":"discord::channel::types::code" }}'
+     '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_channel_types_code" }}'
   */
-  discord_channel_types_code type;
+  enum discord_channel_types_code type;
 
   /* specs/channel.objects.json:68:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }}'
@@ -384,41 +384,41 @@ struct discord_channel_embed_dati {
   int color;
 
   /* specs/channel.objects.json:102:20
-     '{ "name": "footer", "type":{ "base":"discord::channel::embed::footer::dati", "dec":"*"},
+     '{ "name": "footer", "type":{ "base":"struct discord_channel_embed_footer_dati", "dec":"*"},
           "option":true, "inject_if_not":null}'
   */
-  discord_channel_embed_footer_dati *footer;
+  struct discord_channel_embed_footer_dati *footer;
 
   /* specs/channel.objects.json:104:20
-     '{ "name": "image", "type":{ "base":"discord::channel::embed::image::dati", "dec":"*"}, "inject_if_not":null}'
+     '{ "name": "image", "type":{ "base":"struct discord_channel_embed_image_dati", "dec":"*"}, "inject_if_not":null}'
   */
-  discord_channel_embed_image_dati *image;
+  struct discord_channel_embed_image_dati *image;
 
   /* specs/channel.objects.json:105:20
-     '{ "name": "thumbnail", "type":{ "base":"discord::channel::embed::thumbnail::dati", "dec":"*"}, "inject_if_not":null}'
+     '{ "name": "thumbnail", "type":{ "base":"struct discord_channel_embed_thumbnail_dati", "dec":"*"}, "inject_if_not":null}'
   */
-  discord_channel_embed_thumbnail_dati *thumbnail;
+  struct discord_channel_embed_thumbnail_dati *thumbnail;
 
   /* specs/channel.objects.json:106:20
-     '{ "name": "video", "type":{ "base":"discord::channel::embed::video::dati", "dec":"*"}, "inject_if_not":null}'
+     '{ "name": "video", "type":{ "base":"struct discord_channel_embed_video_dati", "dec":"*"}, "inject_if_not":null}'
   */
-  discord_channel_embed_video_dati *video;
+  struct discord_channel_embed_video_dati *video;
 
   /* specs/channel.objects.json:107:20
-     '{ "name": "provider", "type":{ "base":"discord::channel::embed::provider::dati", "dec":"*"}, "inject_if_not":null}'
+     '{ "name": "provider", "type":{ "base":"struct discord_channel_embed_provider_dati", "dec":"*"}, "inject_if_not":null}'
   */
-  discord_channel_embed_provider_dati *provider;
+  struct discord_channel_embed_provider_dati *provider;
 
   /* specs/channel.objects.json:108:20
-     '{ "name": "author", "type":{ "base":"discord::channel::embed::author::dati", "dec":"*"}, "inject_if_not":null}'
+     '{ "name": "author", "type":{ "base":"struct discord_channel_embed_author_dati", "dec":"*"}, "inject_if_not":null}'
   */
-  discord_channel_embed_author_dati *author;
+  struct discord_channel_embed_author_dati *author;
 
   /* specs/channel.objects.json:109:20
-     '{ "name": "fields", "type":{ "base":"discord::channel::embed::field::dati", "dec":"ntl"},
+     '{ "name": "fields", "type":{ "base":"struct discord_channel_embed_field_dati", "dec":"ntl"},
           "option":true, "inject_if_not":null}'
   */
-  discord_channel_embed_field_dati **fields;
+  struct discord_channel_embed_field_dati **fields;
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected

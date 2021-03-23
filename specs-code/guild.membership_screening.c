@@ -10,7 +10,7 @@ void discord_guild_membership_screening_field_dati_from_json(char *json, size_t 
   size_t r=0;
   r=json_extract(json, len, 
   /* specs/guild.membership_screening.json:20:20
-     '{ "name": "field_type", "type":{ "base":"int", "int_alias":"discord::guild::membership_screening::field_type::code" }}'
+     '{ "name": "field_type", "type":{ "base":"int", "int_alias":"enum discord_guild_membership_screening_field_type_code" }}'
   */
                 "(field_type):d,"
   /* specs/guild.membership_screening.json:21:20
@@ -28,7 +28,7 @@ void discord_guild_membership_screening_field_dati_from_json(char *json, size_t 
                 "@record_defined"
                 "@record_null",
   /* specs/guild.membership_screening.json:20:20
-     '{ "name": "field_type", "type":{ "base":"int", "int_alias":"discord::guild::membership_screening::field_type::code" }}'
+     '{ "name": "field_type", "type":{ "base":"int", "int_alias":"enum discord_guild_membership_screening_field_type_code" }}'
   */
                 &p->field_type,
   /* specs/guild.membership_screening.json:21:20
@@ -52,7 +52,7 @@ static void discord_guild_membership_screening_field_dati_use_default_inject_set
 {
   p->__M.enable_arg_switches = true;
   /* specs/guild.membership_screening.json:20:20
-     '{ "name": "field_type", "type":{ "base":"int", "int_alias":"discord::guild::membership_screening::field_type::code" }}'
+     '{ "name": "field_type", "type":{ "base":"int", "int_alias":"enum discord_guild_membership_screening_field_type_code" }}'
   */
   p->__M.arg_switches[0] = &p->field_type;
 
@@ -78,7 +78,7 @@ size_t discord_guild_membership_screening_field_dati_to_json(char *json, size_t 
   discord_guild_membership_screening_field_dati_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/guild.membership_screening.json:20:20
-     '{ "name": "field_type", "type":{ "base":"int", "int_alias":"discord::guild::membership_screening::field_type::code" }}'
+     '{ "name": "field_type", "type":{ "base":"int", "int_alias":"enum discord_guild_membership_screening_field_type_code" }}'
   */
                 "(field_type):d,"
   /* specs/guild.membership_screening.json:21:20
@@ -94,7 +94,7 @@ size_t discord_guild_membership_screening_field_dati_to_json(char *json, size_t 
                 "(required):b,"
                 "@arg_switches:b",
   /* specs/guild.membership_screening.json:20:20
-     '{ "name": "field_type", "type":{ "base":"int", "int_alias":"discord::guild::membership_screening::field_type::code" }}'
+     '{ "name": "field_type", "type":{ "base":"int", "int_alias":"enum discord_guild_membership_screening_field_type_code" }}'
   */
                 &p->field_type,
   /* specs/guild.membership_screening.json:21:20
@@ -151,7 +151,7 @@ size_t discord_guild_membership_screening_field_dati_list_to_json_v(char *str, s
 
 void discord_guild_membership_screening_field_dati_cleanup(struct discord_guild_membership_screening_field_dati *d) {
   /* specs/guild.membership_screening.json:20:20
-     '{ "name": "field_type", "type":{ "base":"int", "int_alias":"discord::guild::membership_screening::field_type::code" }}'
+     '{ "name": "field_type", "type":{ "base":"int", "int_alias":"enum discord_guild_membership_screening_field_type_code" }}'
   */
   //p->field_type is a scalar
   /* specs/guild.membership_screening.json:21:20
@@ -172,7 +172,7 @@ void discord_guild_membership_screening_field_dati_cleanup(struct discord_guild_
 void discord_guild_membership_screening_field_dati_init(struct discord_guild_membership_screening_field_dati *p) {
   memset(p, 0, sizeof(struct discord_guild_membership_screening_field_dati));
   /* specs/guild.membership_screening.json:20:20
-     '{ "name": "field_type", "type":{ "base":"int", "int_alias":"discord::guild::membership_screening::field_type::code" }}'
+     '{ "name": "field_type", "type":{ "base":"int", "int_alias":"enum discord_guild_membership_screening_field_type_code" }}'
   */
 
   /* specs/guild.membership_screening.json:21:20
@@ -230,7 +230,7 @@ void discord_guild_membership_screening_dati_from_json(char *json, size_t len, s
   */
                 "(version):s_as_u64,"
   /* specs/guild.membership_screening.json:31:20
-     '{ "name": "fields", "type":{ "base":"discord::guild::membership_screening::field::dati", "dec":"ntl" }}'
+     '{ "name": "fields", "type":{ "base":"struct discord_guild_membership_screening_field_dati", "dec":"ntl" }}'
   */
                 "(fields):F,"
   /* specs/guild.membership_screening.json:32:20
@@ -245,9 +245,9 @@ void discord_guild_membership_screening_dati_from_json(char *json, size_t len, s
   */
                 &p->version,
   /* specs/guild.membership_screening.json:31:20
-     '{ "name": "fields", "type":{ "base":"discord::guild::membership_screening::field::dati", "dec":"ntl" }}'
+     '{ "name": "fields", "type":{ "base":"struct discord_guild_membership_screening_field_dati", "dec":"ntl" }}'
   */
-                discord_guild_membership_screening_field_dati_list_from_json, &p->fields,
+                struct discord_guild_membership_screening_field_dati_list_from_json, &p->fields,
   /* specs/guild.membership_screening.json:32:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }}'
   */
@@ -267,7 +267,7 @@ static void discord_guild_membership_screening_dati_use_default_inject_settings(
   p->__M.arg_switches[0] = &p->version;
 
   /* specs/guild.membership_screening.json:31:20
-     '{ "name": "fields", "type":{ "base":"discord::guild::membership_screening::field::dati", "dec":"ntl" }}'
+     '{ "name": "fields", "type":{ "base":"struct discord_guild_membership_screening_field_dati", "dec":"ntl" }}'
   */
   p->__M.arg_switches[1] = p->fields;
 
@@ -288,7 +288,7 @@ size_t discord_guild_membership_screening_dati_to_json(char *json, size_t len, s
   */
                 "(version):s_as_u64,"
   /* specs/guild.membership_screening.json:31:20
-     '{ "name": "fields", "type":{ "base":"discord::guild::membership_screening::field::dati", "dec":"ntl" }}'
+     '{ "name": "fields", "type":{ "base":"struct discord_guild_membership_screening_field_dati", "dec":"ntl" }}'
   */
                 "(fields):F,"
   /* specs/guild.membership_screening.json:32:20
@@ -301,9 +301,9 @@ size_t discord_guild_membership_screening_dati_to_json(char *json, size_t len, s
   */
                 &p->version,
   /* specs/guild.membership_screening.json:31:20
-     '{ "name": "fields", "type":{ "base":"discord::guild::membership_screening::field::dati", "dec":"ntl" }}'
+     '{ "name": "fields", "type":{ "base":"struct discord_guild_membership_screening_field_dati", "dec":"ntl" }}'
   */
-                discord_guild_membership_screening_field_dati_list_to_json, p->fields,
+                struct discord_guild_membership_screening_field_dati_list_to_json, p->fields,
   /* specs/guild.membership_screening.json:32:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }}'
   */
@@ -355,10 +355,10 @@ void discord_guild_membership_screening_dati_cleanup(struct discord_guild_member
   */
   //p->version is a scalar
   /* specs/guild.membership_screening.json:31:20
-     '{ "name": "fields", "type":{ "base":"discord::guild::membership_screening::field::dati", "dec":"ntl" }}'
+     '{ "name": "fields", "type":{ "base":"struct discord_guild_membership_screening_field_dati", "dec":"ntl" }}'
   */
   if (d->fields)
-    discord_guild_membership_screening_field_dati_list_free(d->fields);
+    struct discord_guild_membership_screening_field_dati_list_free(d->fields);
   /* specs/guild.membership_screening.json:32:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }}'
   */
@@ -373,7 +373,7 @@ void discord_guild_membership_screening_dati_init(struct discord_guild_membershi
   */
 
   /* specs/guild.membership_screening.json:31:20
-     '{ "name": "fields", "type":{ "base":"discord::guild::membership_screening::field::dati", "dec":"ntl" }}'
+     '{ "name": "fields", "type":{ "base":"struct discord_guild_membership_screening_field_dati", "dec":"ntl" }}'
   */
 
   /* specs/guild.membership_screening.json:32:20

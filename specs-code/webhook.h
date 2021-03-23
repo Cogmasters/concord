@@ -18,9 +18,9 @@ struct discord_webhook_dati {
   u64_snowflake_t id;
 
   /* specs/webhook.json:23:20
-     '{ "name": "type", "type":{ "base":"int", "int_alias":"discord::webhook::types::code" }}'
+     '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_webhook_types_code" }}'
   */
-  discord_webhook_types_code type;
+  enum discord_webhook_types_code type;
 
   /* specs/webhook.json:24:20
      '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
@@ -33,9 +33,9 @@ struct discord_webhook_dati {
   u64_snowflake_t channel_id;
 
   /* specs/webhook.json:26:20
-     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*" }}'
+     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*" }}'
   */
-  discord_user_dati *user;
+  struct discord_user_dati *user;
 
   /* specs/webhook.json:27:20
      '{ "name": "name", "type":{ "base":"char", "dec":"[WEBHOOK_NAME_LEN]" }}'

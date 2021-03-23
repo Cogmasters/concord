@@ -192,7 +192,7 @@ void discord_guild_preview_dati_from_json(char *json, size_t len, struct discord
   */
                 "(discovery):?s,"
   /* specs/guild.enum.json:117:18
-     '{"name":"emojis", "type":{"base":"discord::emoji::dati", "dec":"*"}}'
+     '{"name":"emojis", "type":{"base":"struct discord_emoji_dati", "dec":"*"}}'
   */
                 "(emojis):F,"
   /* specs/guild.enum.json:118:18
@@ -234,9 +234,9 @@ void discord_guild_preview_dati_from_json(char *json, size_t len, struct discord
   */
                 &p->discovery,
   /* specs/guild.enum.json:117:18
-     '{"name":"emojis", "type":{"base":"discord::emoji::dati", "dec":"*"}}'
+     '{"name":"emojis", "type":{"base":"struct discord_emoji_dati", "dec":"*"}}'
   */
-                discord_emoji_dati_from_json, p->emojis,
+                struct discord_emoji_dati_from_json, p->emojis,
   /* specs/guild.enum.json:118:18
      '{"name":"features", "todo":true, "type":{"base":"char", "dec":"ntl"}}'
   */
@@ -287,7 +287,7 @@ static void discord_guild_preview_dati_use_default_inject_settings(struct discor
   p->__M.arg_switches[4] = p->discovery;
 
   /* specs/guild.enum.json:117:18
-     '{"name":"emojis", "type":{"base":"discord::emoji::dati", "dec":"*"}}'
+     '{"name":"emojis", "type":{"base":"struct discord_emoji_dati", "dec":"*"}}'
   */
   p->__M.arg_switches[5] = p->emojis;
 
@@ -338,7 +338,7 @@ size_t discord_guild_preview_dati_to_json(char *json, size_t len, struct discord
   */
                 "(discovery):s,"
   /* specs/guild.enum.json:117:18
-     '{"name":"emojis", "type":{"base":"discord::emoji::dati", "dec":"*"}}'
+     '{"name":"emojis", "type":{"base":"struct discord_emoji_dati", "dec":"*"}}'
   */
                 "(emojis):F,"
   /* specs/guild.enum.json:118:18
@@ -378,9 +378,9 @@ size_t discord_guild_preview_dati_to_json(char *json, size_t len, struct discord
   */
                 p->discovery,
   /* specs/guild.enum.json:117:18
-     '{"name":"emojis", "type":{"base":"discord::emoji::dati", "dec":"*"}}'
+     '{"name":"emojis", "type":{"base":"struct discord_emoji_dati", "dec":"*"}}'
   */
-                discord_emoji_dati_to_json, p->emojis,
+                struct discord_emoji_dati_to_json, p->emojis,
   /* specs/guild.enum.json:118:18
      '{"name":"features", "todo":true, "type":{"base":"char", "dec":"ntl"}}'
   */
@@ -462,10 +462,10 @@ void discord_guild_preview_dati_cleanup(struct discord_guild_preview_dati *d) {
   if (d->discovery)
     free(d->discovery);
   /* specs/guild.enum.json:117:18
-     '{"name":"emojis", "type":{"base":"discord::emoji::dati", "dec":"*"}}'
+     '{"name":"emojis", "type":{"base":"struct discord_emoji_dati", "dec":"*"}}'
   */
   if (d->emojis)
-    discord_emoji_dati_free(d->emojis);
+    struct discord_emoji_dati_free(d->emojis);
   /* specs/guild.enum.json:118:18
      '{"name":"features", "todo":true, "type":{"base":"char", "dec":"ntl"}}'
   */
@@ -507,9 +507,9 @@ void discord_guild_preview_dati_init(struct discord_guild_preview_dati *p) {
   */
 
   /* specs/guild.enum.json:117:18
-     '{"name":"emojis", "type":{"base":"discord::emoji::dati", "dec":"*"}}'
+     '{"name":"emojis", "type":{"base":"struct discord_emoji_dati", "dec":"*"}}'
   */
-  p->emojis = discord_emoji_dati_alloc();
+  p->emojis = struct discord_emoji_dati_alloc();
 
   /* specs/guild.enum.json:118:18
      '{"name":"features", "todo":true, "type":{"base":"char", "dec":"ntl"}}'

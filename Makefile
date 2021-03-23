@@ -14,8 +14,8 @@ SPECS       := $(wildcard specs/*.json)
 DB_SRC      := $(wildcard sqlite3/*.c)
 
 SPECS_XX   := $(addprefix specs-code/, $(notdir $(SPECS)))
-SPECS_CC   := $(SPECS_XX:%.json=%.cc)
-SPECS_HH   := $(SPECS_XX:%.json=%.hh)
+SPECS_CC   := $(SPECS_XX:%.json=%.c)
+SPECS_HH   := $(SPECS_XX:%.json=%.h)
 SPECS_C    := $(SPECS_XX:%.json=%.c)
 SPECS_H    := $(SPECS_XX:%.json=%.h)
 
@@ -149,21 +149,10 @@ $(OBJDIR)/%.cpp.o: %.cpp
 
 all_headers: $(SPECS)
 	rm -rf specs-code/all_*
-	$(foreach var, $(SPECS),./bin/actor-gen.exe -S -a -o specs-code/all_structs.hh $(var);)
-	$(foreach var, $(SPECS),./bin/actor-gen.exe -E -a -o specs-code/all_enums.hh $(var);)
-	$(foreach var, $(SPECS),./bin/actor-gen.exe -F -a -o specs-code/all_fun.hh $(var);)
-	$(foreach var, $(SPECS),./bin/actor-gen.exe -O -a -o specs-code/all_opaque_struct.hh $(var);)
 	$(foreach var, $(SPECS),./bin/actor-gen.exe -C -S -a -o specs-code/all_structs.h $(var);)
 	$(foreach var, $(SPECS),./bin/actor-gen.exe -C -E -a -o specs-code/all_enums.h $(var);)
 	$(foreach var, $(SPECS),./bin/actor-gen.exe -C -F -a -o specs-code/all_fun.h $(var);)
 	$(foreach var, $(SPECS),./bin/actor-gen.exe -C -O -a -o specs-code/all_opaque_struct.h $(var);)
-
-specs-code/%.cc: specs/%.json
-	./bin/actor-gen.exe -c -o $@ $<
-
-specs-code/%.hh: specs/%.json
-	./bin/actor-gen.exe -d -o $@ $<
-
 
 specs-code/%.c: specs/%.json
 	./bin/actor-gen.exe -C -c -o $@ $<

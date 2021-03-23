@@ -50,15 +50,15 @@ void discord_user_dati_from_json(char *json, size_t len, struct discord_user_dat
   */
                 "(email):s,"
   /* specs/user.json:57:14
-     '{ "name": "flags", "type":{ "base":"int", "int_alias": "discord::user::flags::code" }}'
+     '{ "name": "flags", "type":{ "base":"int", "int_alias": "enum discord_user_flags_code" }}'
   */
                 "(flags):d,"
   /* specs/user.json:58:14
-     '{ "name": "premium_type", "type":{ "base":"int", "int_alias": "discord::user::premium_types::code" }}'
+     '{ "name": "premium_type", "type":{ "base":"int", "int_alias": "enum discord_user_premium_types_code" }}'
   */
                 "(premium_type):d,"
   /* specs/user.json:59:14
-     '{ "name": "public_flags", "type":{ "base":"int", "int_alias": "discord::user::flags::code" }}'
+     '{ "name": "public_flags", "type":{ "base":"int", "int_alias": "enum discord_user_flags_code" }}'
   */
                 "(public_flags):d,"
                 "@arg_switches:b"
@@ -105,15 +105,15 @@ void discord_user_dati_from_json(char *json, size_t len, struct discord_user_dat
   */
                 p->email,
   /* specs/user.json:57:14
-     '{ "name": "flags", "type":{ "base":"int", "int_alias": "discord::user::flags::code" }}'
+     '{ "name": "flags", "type":{ "base":"int", "int_alias": "enum discord_user_flags_code" }}'
   */
                 &p->flags,
   /* specs/user.json:58:14
-     '{ "name": "premium_type", "type":{ "base":"int", "int_alias": "discord::user::premium_types::code" }}'
+     '{ "name": "premium_type", "type":{ "base":"int", "int_alias": "enum discord_user_premium_types_code" }}'
   */
                 &p->premium_type,
   /* specs/user.json:59:14
-     '{ "name": "public_flags", "type":{ "base":"int", "int_alias": "discord::user::flags::code" }}'
+     '{ "name": "public_flags", "type":{ "base":"int", "int_alias": "enum discord_user_flags_code" }}'
   */
                 &p->public_flags,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
@@ -176,17 +176,17 @@ static void discord_user_dati_use_default_inject_settings(struct discord_user_da
   p->__M.arg_switches[9] = p->email;
 
   /* specs/user.json:57:14
-     '{ "name": "flags", "type":{ "base":"int", "int_alias": "discord::user::flags::code" }}'
+     '{ "name": "flags", "type":{ "base":"int", "int_alias": "enum discord_user_flags_code" }}'
   */
   p->__M.arg_switches[10] = &p->flags;
 
   /* specs/user.json:58:14
-     '{ "name": "premium_type", "type":{ "base":"int", "int_alias": "discord::user::premium_types::code" }}'
+     '{ "name": "premium_type", "type":{ "base":"int", "int_alias": "enum discord_user_premium_types_code" }}'
   */
   p->__M.arg_switches[11] = &p->premium_type;
 
   /* specs/user.json:59:14
-     '{ "name": "public_flags", "type":{ "base":"int", "int_alias": "discord::user::flags::code" }}'
+     '{ "name": "public_flags", "type":{ "base":"int", "int_alias": "enum discord_user_flags_code" }}'
   */
   p->__M.arg_switches[12] = &p->public_flags;
 
@@ -238,15 +238,15 @@ size_t discord_user_dati_to_json(char *json, size_t len, struct discord_user_dat
   */
                 "(email):s,"
   /* specs/user.json:57:14
-     '{ "name": "flags", "type":{ "base":"int", "int_alias": "discord::user::flags::code" }}'
+     '{ "name": "flags", "type":{ "base":"int", "int_alias": "enum discord_user_flags_code" }}'
   */
                 "(flags):d,"
   /* specs/user.json:58:14
-     '{ "name": "premium_type", "type":{ "base":"int", "int_alias": "discord::user::premium_types::code" }}'
+     '{ "name": "premium_type", "type":{ "base":"int", "int_alias": "enum discord_user_premium_types_code" }}'
   */
                 "(premium_type):d,"
   /* specs/user.json:59:14
-     '{ "name": "public_flags", "type":{ "base":"int", "int_alias": "discord::user::flags::code" }}'
+     '{ "name": "public_flags", "type":{ "base":"int", "int_alias": "enum discord_user_flags_code" }}'
   */
                 "(public_flags):d,"
                 "@arg_switches:b",
@@ -291,15 +291,15 @@ size_t discord_user_dati_to_json(char *json, size_t len, struct discord_user_dat
   */
                 p->email,
   /* specs/user.json:57:14
-     '{ "name": "flags", "type":{ "base":"int", "int_alias": "discord::user::flags::code" }}'
+     '{ "name": "flags", "type":{ "base":"int", "int_alias": "enum discord_user_flags_code" }}'
   */
                 &p->flags,
   /* specs/user.json:58:14
-     '{ "name": "premium_type", "type":{ "base":"int", "int_alias": "discord::user::premium_types::code" }}'
+     '{ "name": "premium_type", "type":{ "base":"int", "int_alias": "enum discord_user_premium_types_code" }}'
   */
                 &p->premium_type,
   /* specs/user.json:59:14
-     '{ "name": "public_flags", "type":{ "base":"int", "int_alias": "discord::user::flags::code" }}'
+     '{ "name": "public_flags", "type":{ "base":"int", "int_alias": "enum discord_user_flags_code" }}'
   */
                 &p->public_flags,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
@@ -385,15 +385,15 @@ void discord_user_dati_cleanup(struct discord_user_dati *d) {
   */
   //p->email is a scalar
   /* specs/user.json:57:14
-     '{ "name": "flags", "type":{ "base":"int", "int_alias": "discord::user::flags::code" }}'
+     '{ "name": "flags", "type":{ "base":"int", "int_alias": "enum discord_user_flags_code" }}'
   */
   //p->flags is a scalar
   /* specs/user.json:58:14
-     '{ "name": "premium_type", "type":{ "base":"int", "int_alias": "discord::user::premium_types::code" }}'
+     '{ "name": "premium_type", "type":{ "base":"int", "int_alias": "enum discord_user_premium_types_code" }}'
   */
   //p->premium_type is a scalar
   /* specs/user.json:59:14
-     '{ "name": "public_flags", "type":{ "base":"int", "int_alias": "discord::user::flags::code" }}'
+     '{ "name": "public_flags", "type":{ "base":"int", "int_alias": "enum discord_user_flags_code" }}'
   */
   //p->public_flags is a scalar
 }
@@ -441,15 +441,15 @@ void discord_user_dati_init(struct discord_user_dati *p) {
   */
 
   /* specs/user.json:57:14
-     '{ "name": "flags", "type":{ "base":"int", "int_alias": "discord::user::flags::code" }}'
+     '{ "name": "flags", "type":{ "base":"int", "int_alias": "enum discord_user_flags_code" }}'
   */
 
   /* specs/user.json:58:14
-     '{ "name": "premium_type", "type":{ "base":"int", "int_alias": "discord::user::premium_types::code" }}'
+     '{ "name": "premium_type", "type":{ "base":"int", "int_alias": "enum discord_user_premium_types_code" }}'
   */
 
   /* specs/user.json:59:14
-     '{ "name": "public_flags", "type":{ "base":"int", "int_alias": "discord::user::flags::code" }}'
+     '{ "name": "public_flags", "type":{ "base":"int", "int_alias": "enum discord_user_flags_code" }}'
   */
 
 }
@@ -507,7 +507,7 @@ void discord_user_connection_dati_from_json(char *json, size_t len, struct disco
   */
                 "(revoked):b,"
   /* specs/user.json:84:20
-     '{ "name": "integrations", "type": {"base":"discord::guild::integration::dati", "dec":"ntl"}, "todo":true}'
+     '{ "name": "integrations", "type": {"base":"struct discord_guild_integration_dati", "dec":"ntl"}, "todo":true}'
   */
   /* specs/user.json:85:14
      '{ "name": "verified", "type":{ "base":"bool" }}'
@@ -522,7 +522,7 @@ void discord_user_connection_dati_from_json(char *json, size_t len, struct disco
   */
                 "(show_activity):b,"
   /* specs/user.json:88:14
-     '{ "name": "visibility", "type":{ "base":"int", "int_alias":"discord::user::connection::visibility_types::code" }}'
+     '{ "name": "visibility", "type":{ "base":"int", "int_alias":"enum discord_user_connection_visibility_types_code" }}'
   */
                 "(visibility):d,"
                 "@arg_switches:b"
@@ -545,7 +545,7 @@ void discord_user_connection_dati_from_json(char *json, size_t len, struct disco
   */
                 &p->revoked,
   /* specs/user.json:84:20
-     '{ "name": "integrations", "type": {"base":"discord::guild::integration::dati", "dec":"ntl"}, "todo":true}'
+     '{ "name": "integrations", "type": {"base":"struct discord_guild_integration_dati", "dec":"ntl"}, "todo":true}'
   */
   /* specs/user.json:85:14
      '{ "name": "verified", "type":{ "base":"bool" }}'
@@ -560,7 +560,7 @@ void discord_user_connection_dati_from_json(char *json, size_t len, struct disco
   */
                 &p->show_activity,
   /* specs/user.json:88:14
-     '{ "name": "visibility", "type":{ "base":"int", "int_alias":"discord::user::connection::visibility_types::code" }}'
+     '{ "name": "visibility", "type":{ "base":"int", "int_alias":"enum discord_user_connection_visibility_types_code" }}'
   */
                 &p->visibility,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
@@ -593,7 +593,7 @@ static void discord_user_connection_dati_use_default_inject_settings(struct disc
   p->__M.arg_switches[3] = &p->revoked;
 
   /* specs/user.json:84:20
-     '{ "name": "integrations", "type": {"base":"discord::guild::integration::dati", "dec":"ntl"}, "todo":true}'
+     '{ "name": "integrations", "type": {"base":"struct discord_guild_integration_dati", "dec":"ntl"}, "todo":true}'
   */
 
   /* specs/user.json:85:14
@@ -612,7 +612,7 @@ static void discord_user_connection_dati_use_default_inject_settings(struct disc
   p->__M.arg_switches[7] = &p->show_activity;
 
   /* specs/user.json:88:14
-     '{ "name": "visibility", "type":{ "base":"int", "int_alias":"discord::user::connection::visibility_types::code" }}'
+     '{ "name": "visibility", "type":{ "base":"int", "int_alias":"enum discord_user_connection_visibility_types_code" }}'
   */
   p->__M.arg_switches[8] = &p->visibility;
 
@@ -640,7 +640,7 @@ size_t discord_user_connection_dati_to_json(char *json, size_t len, struct disco
   */
                 "(revoked):b,"
   /* specs/user.json:84:20
-     '{ "name": "integrations", "type": {"base":"discord::guild::integration::dati", "dec":"ntl"}, "todo":true}'
+     '{ "name": "integrations", "type": {"base":"struct discord_guild_integration_dati", "dec":"ntl"}, "todo":true}'
   */
   /* specs/user.json:85:14
      '{ "name": "verified", "type":{ "base":"bool" }}'
@@ -655,7 +655,7 @@ size_t discord_user_connection_dati_to_json(char *json, size_t len, struct disco
   */
                 "(show_activity):b,"
   /* specs/user.json:88:14
-     '{ "name": "visibility", "type":{ "base":"int", "int_alias":"discord::user::connection::visibility_types::code" }}'
+     '{ "name": "visibility", "type":{ "base":"int", "int_alias":"enum discord_user_connection_visibility_types_code" }}'
   */
                 "(visibility):d,"
                 "@arg_switches:b",
@@ -676,7 +676,7 @@ size_t discord_user_connection_dati_to_json(char *json, size_t len, struct disco
   */
                 &p->revoked,
   /* specs/user.json:84:20
-     '{ "name": "integrations", "type": {"base":"discord::guild::integration::dati", "dec":"ntl"}, "todo":true}'
+     '{ "name": "integrations", "type": {"base":"struct discord_guild_integration_dati", "dec":"ntl"}, "todo":true}'
   */
   /* specs/user.json:85:14
      '{ "name": "verified", "type":{ "base":"bool" }}'
@@ -691,7 +691,7 @@ size_t discord_user_connection_dati_to_json(char *json, size_t len, struct disco
   */
                 &p->show_activity,
   /* specs/user.json:88:14
-     '{ "name": "visibility", "type":{ "base":"int", "int_alias":"discord::user::connection::visibility_types::code" }}'
+     '{ "name": "visibility", "type":{ "base":"int", "int_alias":"enum discord_user_connection_visibility_types_code" }}'
   */
                 &p->visibility,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
@@ -756,7 +756,7 @@ void discord_user_connection_dati_cleanup(struct discord_user_connection_dati *d
   */
   //p->revoked is a scalar
   /* specs/user.json:84:20
-     '{ "name": "integrations", "type": {"base":"discord::guild::integration::dati", "dec":"ntl"}, "todo":true}'
+     '{ "name": "integrations", "type": {"base":"struct discord_guild_integration_dati", "dec":"ntl"}, "todo":true}'
   */
   //@todo p->(null)
   /* specs/user.json:85:14
@@ -772,7 +772,7 @@ void discord_user_connection_dati_cleanup(struct discord_user_connection_dati *d
   */
   //p->show_activity is a scalar
   /* specs/user.json:88:14
-     '{ "name": "visibility", "type":{ "base":"int", "int_alias":"discord::user::connection::visibility_types::code" }}'
+     '{ "name": "visibility", "type":{ "base":"int", "int_alias":"enum discord_user_connection_visibility_types_code" }}'
   */
   //p->visibility is a scalar
 }
@@ -796,7 +796,7 @@ void discord_user_connection_dati_init(struct discord_user_connection_dati *p) {
   */
 
   /* specs/user.json:84:20
-     '{ "name": "integrations", "type": {"base":"discord::guild::integration::dati", "dec":"ntl"}, "todo":true}'
+     '{ "name": "integrations", "type": {"base":"struct discord_guild_integration_dati", "dec":"ntl"}, "todo":true}'
   */
 
   /* specs/user.json:85:14
@@ -812,7 +812,7 @@ void discord_user_connection_dati_init(struct discord_user_connection_dati *p) {
   */
 
   /* specs/user.json:88:14
-     '{ "name": "visibility", "type":{ "base":"int", "int_alias":"discord::user::connection::visibility_types::code" }}'
+     '{ "name": "visibility", "type":{ "base":"int", "int_alias":"enum discord_user_connection_visibility_types_code" }}'
   */
 
 }

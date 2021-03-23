@@ -14,7 +14,7 @@ void discord_guild_ban_dati_from_json(char *json, size_t len, struct discord_gui
   */
                 "(reason):s,"
   /* specs/guild.ban.json:13:20
-     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*"}, "comment":"partial user object"}'
+     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*"}, "comment":"partial user object"}'
   */
                 "(user):F,"
                 "@arg_switches:b"
@@ -25,9 +25,9 @@ void discord_guild_ban_dati_from_json(char *json, size_t len, struct discord_gui
   */
                 p->reason,
   /* specs/guild.ban.json:13:20
-     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*"}, "comment":"partial user object"}'
+     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*"}, "comment":"partial user object"}'
   */
-                discord_user_dati_from_json, p->user,
+                struct discord_user_dati_from_json, p->user,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
                 p->__M.record_null, sizeof(p->__M.record_null));
@@ -43,7 +43,7 @@ static void discord_guild_ban_dati_use_default_inject_settings(struct discord_gu
   p->__M.arg_switches[0] = p->reason;
 
   /* specs/guild.ban.json:13:20
-     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*"}, "comment":"partial user object"}'
+     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*"}, "comment":"partial user object"}'
   */
   p->__M.arg_switches[1] = p->user;
 
@@ -59,7 +59,7 @@ size_t discord_guild_ban_dati_to_json(char *json, size_t len, struct discord_gui
   */
                 "(reason):s,"
   /* specs/guild.ban.json:13:20
-     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*"}, "comment":"partial user object"}'
+     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*"}, "comment":"partial user object"}'
   */
                 "(user):F,"
                 "@arg_switches:b",
@@ -68,9 +68,9 @@ size_t discord_guild_ban_dati_to_json(char *json, size_t len, struct discord_gui
   */
                 p->reason,
   /* specs/guild.ban.json:13:20
-     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*"}, "comment":"partial user object"}'
+     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*"}, "comment":"partial user object"}'
   */
-                discord_user_dati_to_json, p->user,
+                struct discord_user_dati_to_json, p->user,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
 }
@@ -118,10 +118,10 @@ void discord_guild_ban_dati_cleanup(struct discord_guild_ban_dati *d) {
   */
   //p->reason is a scalar
   /* specs/guild.ban.json:13:20
-     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*"}, "comment":"partial user object"}'
+     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*"}, "comment":"partial user object"}'
   */
   if (d->user)
-    discord_user_dati_free(d->user);
+    struct discord_user_dati_free(d->user);
 }
 
 void discord_guild_ban_dati_init(struct discord_guild_ban_dati *p) {
@@ -131,9 +131,9 @@ void discord_guild_ban_dati_init(struct discord_guild_ban_dati *p) {
   */
 
   /* specs/guild.ban.json:13:20
-     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*"}, "comment":"partial user object"}'
+     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*"}, "comment":"partial user object"}'
   */
-  p->user = discord_user_dati_alloc();
+  p->user = struct discord_user_dati_alloc();
 
 }
 struct discord_guild_ban_dati* discord_guild_ban_dati_alloc() {

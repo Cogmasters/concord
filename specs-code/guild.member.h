@@ -6,9 +6,9 @@ https://discord.com/developers/docs/resources/guild#guild-member-object
 /* This is defined at specs/guild.member.json:9:22 */
 struct discord_guild_member_dati {
   /* specs/guild.member.json:12:20
-     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*" }, "option":true}'
+     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*" }, "option":true}'
   */
-  discord_user_dati *user;
+  struct discord_user_dati *user;
 
   /* specs/guild.member.json:13:20
      '{ "name": "nick", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]"}, "option":true}'

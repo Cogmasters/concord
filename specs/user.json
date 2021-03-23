@@ -54,9 +54,9 @@
 		{ "name": "locale", "type":{ "base":"char", "dec":"[MAX_LOCALE_LEN]" }},
 		{ "name": "verified", "type":{ "base":"bool" }},
 		{ "name": "email", "type":{ "base":"char", "dec":"[MAX_EMAIL_LEN]" }},
-		{ "name": "flags", "type":{ "base":"int", "int_alias": "discord::user::flags::code" }},
-		{ "name": "premium_type", "type":{ "base":"int", "int_alias": "discord::user::premium_types::code" }},
-		{ "name": "public_flags", "type":{ "base":"int", "int_alias": "discord::user::flags::code" }}
+		{ "name": "flags", "type":{ "base":"int", "int_alias": "enum discord_user_flags_code" }},
+		{ "name": "premium_type", "type":{ "base":"int", "int_alias": "enum discord_user_premium_types_code" }},
+		{ "name": "public_flags", "type":{ "base":"int", "int_alias": "enum discord_user_flags_code" }}
 	    ]
 	},
 	{
@@ -81,11 +81,11 @@
 		{ "name": "name", "type":{ "base":"char", "dec":"*"}},
 		{ "name": "type", "type":{ "base":"char", "dec":"*"}},
 		{ "name": "revoked", "type":{ "base":"bool"}},
-        { "name": "integrations", "type": {"base":"discord::guild::integration::dati", "dec":"ntl"}, "todo":true},
+        { "name": "integrations", "type": {"base":"struct discord_guild_integration_dati", "dec":"ntl"}, "todo":true},
 		{ "name": "verified", "type":{ "base":"bool" }},
 		{ "name": "friend_sync", "type":{ "base":"bool" }},
 		{ "name": "show_activity", "type":{ "base":"bool" }},
-		{ "name": "visibility", "type":{ "base":"int", "int_alias":"discord::user::connection::visibility_types::code" }}
+		{ "name": "visibility", "type":{ "base":"int", "int_alias":"enum discord_user_connection_visibility_types_code" }}
 	    ]
 	}
     ]

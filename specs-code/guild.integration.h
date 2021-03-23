@@ -86,9 +86,9 @@ struct discord_guild_integration_application_dati {
   char *summary;
 
   /* specs/guild.integration.json:38:19
-     '{ "name":"bot", "type":{ "base":"discord::user::dati", "dec":"*" }, "option":true}'
+     '{ "name":"bot", "type":{ "base":"struct discord_user_dati", "dec":"*" }, "option":true}'
   */
-  discord_user_dati *bot;
+  struct discord_user_dati *bot;
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -163,9 +163,9 @@ struct discord_guild_integration_dati {
   bool enable_emotions;
 
   /* specs/guild.integration.json:55:20
-     '{ "name": "expire_behavior", "type":{ "base":"int", "int_alias":"discord::guild::integration::expire_behaviors::code"}}'
+     '{ "name": "expire_behavior", "type":{ "base":"int", "int_alias":"enum discord_guild_integration_expire_behaviors_code"}}'
   */
-  discord_guild_integration_expire_behaviors_code expire_behavior;
+  enum discord_guild_integration_expire_behaviors_code expire_behavior;
 
   /* specs/guild.integration.json:56:20
      '{ "name": "expire_grace_period", "type":{ "base":"int"}}'
@@ -173,14 +173,14 @@ struct discord_guild_integration_dati {
   int expire_grace_period;
 
   /* specs/guild.integration.json:57:20
-     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*"}, "opt":true}'
+     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*"}, "opt":true}'
   */
-  discord_user_dati *user;
+  struct discord_user_dati *user;
 
   /* specs/guild.integration.json:58:20
-     '{ "name": "account", "type":{ "base":"discord::guild::integration::account::dati", "dec":"*"}}'
+     '{ "name": "account", "type":{ "base":"struct discord_guild_integration_account_dati", "dec":"*"}}'
   */
-  discord_guild_integration_account_dati *account;
+  struct discord_guild_integration_account_dati *account;
 
   /* specs/guild.integration.json:59:20
      '{ "name": "synced_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601"}}'
@@ -198,9 +198,9 @@ struct discord_guild_integration_dati {
   bool revoked;
 
   /* specs/guild.integration.json:62:20
-     '{ "name": "application", "type":{ "base":"discord::guild::integration::application::dati", "dec":"*" }}'
+     '{ "name": "application", "type":{ "base":"struct discord_guild_integration_application_dati", "dec":"*" }}'
   */
-  discord_guild_integration_application_dati *application;
+  struct discord_guild_integration_application_dati *application;
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected

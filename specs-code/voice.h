@@ -23,9 +23,9 @@ struct discord_voice_dati {
   u64_snowflake_t user_id;
 
   /* specs/voice.json:15:20
-     '{ "name": "member", "type":{ "base":"discord::guild::member::dati", "dec":"*" }}'
+     '{ "name": "member", "type":{ "base":"struct discord_guild_member_dati", "dec":"*" }}'
   */
-  discord_guild_member_dati *member;
+  struct discord_guild_member_dati *member;
 
   /* specs/voice.json:16:20
      '{ "name": "session_id", "type":{ "base":"char", "dec":"*" }}'

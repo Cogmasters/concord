@@ -14,7 +14,7 @@ void discord_webhook_dati_from_json(char *json, size_t len, struct discord_webho
   */
                 "(id):F,"
   /* specs/webhook.json:23:20
-     '{ "name": "type", "type":{ "base":"int", "int_alias":"discord::webhook::types::code" }}'
+     '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_webhook_types_code" }}'
   */
                 "(type):d,"
   /* specs/webhook.json:24:20
@@ -26,7 +26,7 @@ void discord_webhook_dati_from_json(char *json, size_t len, struct discord_webho
   */
                 "(channel_id):F,"
   /* specs/webhook.json:26:20
-     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*" }}'
+     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*" }}'
   */
                 "(user):F,"
   /* specs/webhook.json:27:20
@@ -53,7 +53,7 @@ void discord_webhook_dati_from_json(char *json, size_t len, struct discord_webho
   */
                 orka_strtoull, &p->id,
   /* specs/webhook.json:23:20
-     '{ "name": "type", "type":{ "base":"int", "int_alias":"discord::webhook::types::code" }}'
+     '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_webhook_types_code" }}'
   */
                 &p->type,
   /* specs/webhook.json:24:20
@@ -65,9 +65,9 @@ void discord_webhook_dati_from_json(char *json, size_t len, struct discord_webho
   */
                 orka_strtoull, &p->channel_id,
   /* specs/webhook.json:26:20
-     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*" }}'
+     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*" }}'
   */
-                discord_user_dati_from_json, p->user,
+                struct discord_user_dati_from_json, p->user,
   /* specs/webhook.json:27:20
      '{ "name": "name", "type":{ "base":"char", "dec":"[WEBHOOK_NAME_LEN]" }}'
   */
@@ -99,7 +99,7 @@ static void discord_webhook_dati_use_default_inject_settings(struct discord_webh
   p->__M.arg_switches[0] = &p->id;
 
   /* specs/webhook.json:23:20
-     '{ "name": "type", "type":{ "base":"int", "int_alias":"discord::webhook::types::code" }}'
+     '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_webhook_types_code" }}'
   */
   p->__M.arg_switches[1] = &p->type;
 
@@ -114,7 +114,7 @@ static void discord_webhook_dati_use_default_inject_settings(struct discord_webh
   p->__M.arg_switches[3] = &p->channel_id;
 
   /* specs/webhook.json:26:20
-     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*" }}'
+     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*" }}'
   */
   p->__M.arg_switches[4] = p->user;
 
@@ -150,7 +150,7 @@ size_t discord_webhook_dati_to_json(char *json, size_t len, struct discord_webho
   */
                 "(id):|F|,"
   /* specs/webhook.json:23:20
-     '{ "name": "type", "type":{ "base":"int", "int_alias":"discord::webhook::types::code" }}'
+     '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_webhook_types_code" }}'
   */
                 "(type):d,"
   /* specs/webhook.json:24:20
@@ -162,7 +162,7 @@ size_t discord_webhook_dati_to_json(char *json, size_t len, struct discord_webho
   */
                 "(channel_id):|F|,"
   /* specs/webhook.json:26:20
-     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*" }}'
+     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*" }}'
   */
                 "(user):F,"
   /* specs/webhook.json:27:20
@@ -187,7 +187,7 @@ size_t discord_webhook_dati_to_json(char *json, size_t len, struct discord_webho
   */
                 orka_ulltostr, &p->id,
   /* specs/webhook.json:23:20
-     '{ "name": "type", "type":{ "base":"int", "int_alias":"discord::webhook::types::code" }}'
+     '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_webhook_types_code" }}'
   */
                 &p->type,
   /* specs/webhook.json:24:20
@@ -199,9 +199,9 @@ size_t discord_webhook_dati_to_json(char *json, size_t len, struct discord_webho
   */
                 orka_ulltostr, &p->channel_id,
   /* specs/webhook.json:26:20
-     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*" }}'
+     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*" }}'
   */
-                discord_user_dati_to_json, p->user,
+                struct discord_user_dati_to_json, p->user,
   /* specs/webhook.json:27:20
      '{ "name": "name", "type":{ "base":"char", "dec":"[WEBHOOK_NAME_LEN]" }}'
   */
@@ -265,7 +265,7 @@ void discord_webhook_dati_cleanup(struct discord_webhook_dati *d) {
   */
   //p->id is a scalar
   /* specs/webhook.json:23:20
-     '{ "name": "type", "type":{ "base":"int", "int_alias":"discord::webhook::types::code" }}'
+     '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_webhook_types_code" }}'
   */
   //p->type is a scalar
   /* specs/webhook.json:24:20
@@ -277,10 +277,10 @@ void discord_webhook_dati_cleanup(struct discord_webhook_dati *d) {
   */
   //p->channel_id is a scalar
   /* specs/webhook.json:26:20
-     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*" }}'
+     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*" }}'
   */
   if (d->user)
-    discord_user_dati_free(d->user);
+    struct discord_user_dati_free(d->user);
   /* specs/webhook.json:27:20
      '{ "name": "name", "type":{ "base":"char", "dec":"[WEBHOOK_NAME_LEN]" }}'
   */
@@ -308,7 +308,7 @@ void discord_webhook_dati_init(struct discord_webhook_dati *p) {
   */
 
   /* specs/webhook.json:23:20
-     '{ "name": "type", "type":{ "base":"int", "int_alias":"discord::webhook::types::code" }}'
+     '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_webhook_types_code" }}'
   */
 
   /* specs/webhook.json:24:20
@@ -320,9 +320,9 @@ void discord_webhook_dati_init(struct discord_webhook_dati *p) {
   */
 
   /* specs/webhook.json:26:20
-     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*" }}'
+     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*" }}'
   */
-  p->user = discord_user_dati_alloc();
+  p->user = struct discord_user_dati_alloc();
 
   /* specs/webhook.json:27:20
      '{ "name": "name", "type":{ "base":"char", "dec":"[WEBHOOK_NAME_LEN]" }}'

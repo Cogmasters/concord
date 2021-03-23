@@ -18,11 +18,11 @@ void discord_emoji_dati_from_json(char *json, size_t len, struct discord_emoji_d
   */
                 "(name):s,"
   /* specs/emoji.json:13:20
-     '{ "name": "roles", "type":{ "base":"discord::guild::role::dati", "dec":"ntl"}, "option":true,
+     '{ "name": "roles", "type":{ "base":"struct discord_guild_role_dati", "dec":"ntl"}, "option":true,
           "todo":true }'
   */
   /* specs/emoji.json:15:20
-     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*" }, "option":true }'
+     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*" }, "option":true }'
   */
                 "(user):F,"
   /* specs/emoji.json:16:20
@@ -53,13 +53,13 @@ void discord_emoji_dati_from_json(char *json, size_t len, struct discord_emoji_d
   */
                 p->name,
   /* specs/emoji.json:13:20
-     '{ "name": "roles", "type":{ "base":"discord::guild::role::dati", "dec":"ntl"}, "option":true,
+     '{ "name": "roles", "type":{ "base":"struct discord_guild_role_dati", "dec":"ntl"}, "option":true,
           "todo":true }'
   */
   /* specs/emoji.json:15:20
-     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*" }, "option":true }'
+     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*" }, "option":true }'
   */
-                discord_user_dati_from_json, p->user,
+                struct discord_user_dati_from_json, p->user,
   /* specs/emoji.json:16:20
      '{ "name": "require_colons", "type":{ "base":"bool" }, "option":true}'
   */
@@ -96,12 +96,12 @@ static void discord_emoji_dati_use_default_inject_settings(struct discord_emoji_
   p->__M.arg_switches[1] = p->name;
 
   /* specs/emoji.json:13:20
-     '{ "name": "roles", "type":{ "base":"discord::guild::role::dati", "dec":"ntl"}, "option":true,
+     '{ "name": "roles", "type":{ "base":"struct discord_guild_role_dati", "dec":"ntl"}, "option":true,
           "todo":true }'
   */
 
   /* specs/emoji.json:15:20
-     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*" }, "option":true }'
+     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*" }, "option":true }'
   */
   p->__M.arg_switches[3] = p->user;
 
@@ -141,11 +141,11 @@ size_t discord_emoji_dati_to_json(char *json, size_t len, struct discord_emoji_d
   */
                 "(name):s,"
   /* specs/emoji.json:13:20
-     '{ "name": "roles", "type":{ "base":"discord::guild::role::dati", "dec":"ntl"}, "option":true,
+     '{ "name": "roles", "type":{ "base":"struct discord_guild_role_dati", "dec":"ntl"}, "option":true,
           "todo":true }'
   */
   /* specs/emoji.json:15:20
-     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*" }, "option":true }'
+     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*" }, "option":true }'
   */
                 "(user):F,"
   /* specs/emoji.json:16:20
@@ -174,13 +174,13 @@ size_t discord_emoji_dati_to_json(char *json, size_t len, struct discord_emoji_d
   */
                 p->name,
   /* specs/emoji.json:13:20
-     '{ "name": "roles", "type":{ "base":"discord::guild::role::dati", "dec":"ntl"}, "option":true,
+     '{ "name": "roles", "type":{ "base":"struct discord_guild_role_dati", "dec":"ntl"}, "option":true,
           "todo":true }'
   */
   /* specs/emoji.json:15:20
-     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*" }, "option":true }'
+     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*" }, "option":true }'
   */
-                discord_user_dati_to_json, p->user,
+                struct discord_user_dati_to_json, p->user,
   /* specs/emoji.json:16:20
      '{ "name": "require_colons", "type":{ "base":"bool" }, "option":true}'
   */
@@ -248,15 +248,15 @@ void discord_emoji_dati_cleanup(struct discord_emoji_dati *d) {
   */
   //p->name is a scalar
   /* specs/emoji.json:13:20
-     '{ "name": "roles", "type":{ "base":"discord::guild::role::dati", "dec":"ntl"}, "option":true,
+     '{ "name": "roles", "type":{ "base":"struct discord_guild_role_dati", "dec":"ntl"}, "option":true,
           "todo":true }'
   */
   //@todo p->(null)
   /* specs/emoji.json:15:20
-     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*" }, "option":true }'
+     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*" }, "option":true }'
   */
   if (d->user)
-    discord_user_dati_free(d->user);
+    struct discord_user_dati_free(d->user);
   /* specs/emoji.json:16:20
      '{ "name": "require_colons", "type":{ "base":"bool" }, "option":true}'
   */
@@ -286,14 +286,14 @@ void discord_emoji_dati_init(struct discord_emoji_dati *p) {
   */
 
   /* specs/emoji.json:13:20
-     '{ "name": "roles", "type":{ "base":"discord::guild::role::dati", "dec":"ntl"}, "option":true,
+     '{ "name": "roles", "type":{ "base":"struct discord_guild_role_dati", "dec":"ntl"}, "option":true,
           "todo":true }'
   */
 
   /* specs/emoji.json:15:20
-     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*" }, "option":true }'
+     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*" }, "option":true }'
   */
-  p->user = discord_user_dati_alloc();
+  p->user = struct discord_user_dati_alloc();
 
   /* specs/emoji.json:16:20
      '{ "name": "require_colons", "type":{ "base":"bool" }, "option":true}'

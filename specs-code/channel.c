@@ -13,8 +13,8 @@ void discord_channel_dati_from_json(char *json, size_t len, struct discord_chann
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"id"}'
   */
                 "(id):F,"
-  /* specs/channel.json:29:86
-     '{"type":{"base":"int", "int_alias":"discord::channel::types::code"}, "name":"type"}'
+  /* specs/channel.json:29:88
+     '{"type":{"base":"int", "int_alias":"enum discord_channel_types_code"}, "name":"type"}'
   */
                 "(type):d,"
   /* specs/channel.json:30:78
@@ -27,8 +27,8 @@ void discord_channel_dati_from_json(char *json, size_t len, struct discord_chann
          "option":true, "inject_if_not":0 }'
   */
                 "(position):d,"
-  /* specs/channel.json:34:84
-     '{"type":{"base":"discord::channel::overwrite::dati", "dec":"ntl"}, "name":"permission_overwrites",
+  /* specs/channel.json:34:88
+     '{"type":{"base":"struct discord_channel_overwrite_dati", "dec":"ntl"}, "name":"permission_overwrites",
          "option":true, "inject_if_not":null }'
   */
                 "(permission_overwrites):F,"
@@ -64,8 +64,8 @@ void discord_channel_dati_from_json(char *json, size_t len, struct discord_chann
          "option":true, "inject_if_not":0}'
   */
                 "(rate_limit_per_user):d,"
-  /* specs/channel.json:47:70
-     '{"type":{"base":"discord::user::dati", "dec":"ntl"}, "name":"recipients",
+  /* specs/channel.json:47:75
+     '{"type":{"base":"struct discord_user_dati", "dec":"ntl"}, "name":"recipients",
          "option":true, "inject_if_not":null}'
   */
                 "(recipients):F,"
@@ -94,8 +94,8 @@ void discord_channel_dati_from_json(char *json, size_t len, struct discord_chann
          "option":true, "inject_if_not":0}'
   */
                 "(last_pin_timestamp):F,"
-  /* specs/channel.json:59:82
-     '{"type":{"base":"discord::channel::message::dati", "dec":"ntl"}, "name":"messages"}'
+  /* specs/channel.json:59:86
+     '{"type":{"base":"struct discord_channel_message_dati", "dec":"ntl"}, "name":"messages"}'
   */
                 "(messages):F,"
                 "@arg_switches:b"
@@ -105,8 +105,8 @@ void discord_channel_dati_from_json(char *json, size_t len, struct discord_chann
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"id"}'
   */
                 orka_strtoull, &p->id,
-  /* specs/channel.json:29:86
-     '{"type":{"base":"int", "int_alias":"discord::channel::types::code"}, "name":"type"}'
+  /* specs/channel.json:29:88
+     '{"type":{"base":"int", "int_alias":"enum discord_channel_types_code"}, "name":"type"}'
   */
                 &p->type,
   /* specs/channel.json:30:78
@@ -119,11 +119,11 @@ void discord_channel_dati_from_json(char *json, size_t len, struct discord_chann
          "option":true, "inject_if_not":0 }'
   */
                 &p->position,
-  /* specs/channel.json:34:84
-     '{"type":{"base":"discord::channel::overwrite::dati", "dec":"ntl"}, "name":"permission_overwrites",
+  /* specs/channel.json:34:88
+     '{"type":{"base":"struct discord_channel_overwrite_dati", "dec":"ntl"}, "name":"permission_overwrites",
          "option":true, "inject_if_not":null }'
   */
-                discord_channel_overwrite_dati_list_from_json, &p->permission_overwrites,
+                struct discord_channel_overwrite_dati_list_from_json, &p->permission_overwrites,
   /* specs/channel.json:36:66
      '{"type":{"base":"char", "dec":"[MAX_NAME_LEN]"}, "name":"name", 
          "option":true, "inject_if_not":""}'
@@ -156,11 +156,11 @@ void discord_channel_dati_from_json(char *json, size_t len, struct discord_chann
          "option":true, "inject_if_not":0}'
   */
                 &p->rate_limit_per_user,
-  /* specs/channel.json:47:70
-     '{"type":{"base":"discord::user::dati", "dec":"ntl"}, "name":"recipients",
+  /* specs/channel.json:47:75
+     '{"type":{"base":"struct discord_user_dati", "dec":"ntl"}, "name":"recipients",
          "option":true, "inject_if_not":null}'
   */
-                discord_user_dati_list_from_json, &p->recipients,
+                struct discord_user_dati_list_from_json, &p->recipients,
   /* specs/channel.json:49:68
      '{"type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}, "name":"icon",
          "option":true, "inject_if_not":""}'
@@ -186,10 +186,10 @@ void discord_channel_dati_from_json(char *json, size_t len, struct discord_chann
          "option":true, "inject_if_not":0}'
   */
                 orka_iso8601_to_unix_ms, &p->last_pin_timestamp,
-  /* specs/channel.json:59:82
-     '{"type":{"base":"discord::channel::message::dati", "dec":"ntl"}, "name":"messages"}'
+  /* specs/channel.json:59:86
+     '{"type":{"base":"struct discord_channel_message_dati", "dec":"ntl"}, "name":"messages"}'
   */
-                discord_channel_message_dati_list_from_json, &p->messages,
+                struct discord_channel_message_dati_list_from_json, &p->messages,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
                 p->__M.record_null, sizeof(p->__M.record_null));
@@ -204,8 +204,8 @@ static void discord_channel_dati_use_default_inject_settings(struct discord_chan
   */
   p->__M.arg_switches[0] = &p->id;
 
-  /* specs/channel.json:29:86
-     '{"type":{"base":"int", "int_alias":"discord::channel::types::code"}, "name":"type"}'
+  /* specs/channel.json:29:88
+     '{"type":{"base":"int", "int_alias":"enum discord_channel_types_code"}, "name":"type"}'
   */
   p->__M.arg_switches[1] = &p->type;
 
@@ -223,8 +223,8 @@ static void discord_channel_dati_use_default_inject_settings(struct discord_chan
   if (p->position != 0)
     p->__M.arg_switches[3] = &p->position;
 
-  /* specs/channel.json:34:84
-     '{"type":{"base":"discord::channel::overwrite::dati", "dec":"ntl"}, "name":"permission_overwrites",
+  /* specs/channel.json:34:88
+     '{"type":{"base":"struct discord_channel_overwrite_dati", "dec":"ntl"}, "name":"permission_overwrites",
          "option":true, "inject_if_not":null }'
   */
   if (p->permission_overwrites != NULL)
@@ -276,8 +276,8 @@ static void discord_channel_dati_use_default_inject_settings(struct discord_chan
   if (p->rate_limit_per_user != 0)
     p->__M.arg_switches[11] = &p->rate_limit_per_user;
 
-  /* specs/channel.json:47:70
-     '{"type":{"base":"discord::user::dati", "dec":"ntl"}, "name":"recipients",
+  /* specs/channel.json:47:75
+     '{"type":{"base":"struct discord_user_dati", "dec":"ntl"}, "name":"recipients",
          "option":true, "inject_if_not":null}'
   */
   if (p->recipients != NULL)
@@ -318,8 +318,8 @@ static void discord_channel_dati_use_default_inject_settings(struct discord_chan
   if (p->last_pin_timestamp != 0)
     p->__M.arg_switches[17] = &p->last_pin_timestamp;
 
-  /* specs/channel.json:59:82
-     '{"type":{"base":"discord::channel::message::dati", "dec":"ntl"}, "name":"messages"}'
+  /* specs/channel.json:59:86
+     '{"type":{"base":"struct discord_channel_message_dati", "dec":"ntl"}, "name":"messages"}'
   */
   p->__M.arg_switches[18] = p->messages;
 
@@ -334,8 +334,8 @@ size_t discord_channel_dati_to_json(char *json, size_t len, struct discord_chann
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"id"}'
   */
                 "(id):|F|,"
-  /* specs/channel.json:29:86
-     '{"type":{"base":"int", "int_alias":"discord::channel::types::code"}, "name":"type"}'
+  /* specs/channel.json:29:88
+     '{"type":{"base":"int", "int_alias":"enum discord_channel_types_code"}, "name":"type"}'
   */
                 "(type):d,"
   /* specs/channel.json:30:78
@@ -348,8 +348,8 @@ size_t discord_channel_dati_to_json(char *json, size_t len, struct discord_chann
          "option":true, "inject_if_not":0 }'
   */
                 "(position):d,"
-  /* specs/channel.json:34:84
-     '{"type":{"base":"discord::channel::overwrite::dati", "dec":"ntl"}, "name":"permission_overwrites",
+  /* specs/channel.json:34:88
+     '{"type":{"base":"struct discord_channel_overwrite_dati", "dec":"ntl"}, "name":"permission_overwrites",
          "option":true, "inject_if_not":null }'
   */
                 "(permission_overwrites):F,"
@@ -385,8 +385,8 @@ size_t discord_channel_dati_to_json(char *json, size_t len, struct discord_chann
          "option":true, "inject_if_not":0}'
   */
                 "(rate_limit_per_user):d,"
-  /* specs/channel.json:47:70
-     '{"type":{"base":"discord::user::dati", "dec":"ntl"}, "name":"recipients",
+  /* specs/channel.json:47:75
+     '{"type":{"base":"struct discord_user_dati", "dec":"ntl"}, "name":"recipients",
          "option":true, "inject_if_not":null}'
   */
                 "(recipients):F,"
@@ -415,8 +415,8 @@ size_t discord_channel_dati_to_json(char *json, size_t len, struct discord_chann
          "option":true, "inject_if_not":0}'
   */
                 "(last_pin_timestamp):|F|,"
-  /* specs/channel.json:59:82
-     '{"type":{"base":"discord::channel::message::dati", "dec":"ntl"}, "name":"messages"}'
+  /* specs/channel.json:59:86
+     '{"type":{"base":"struct discord_channel_message_dati", "dec":"ntl"}, "name":"messages"}'
   */
                 "(messages):F,"
                 "@arg_switches:b",
@@ -424,8 +424,8 @@ size_t discord_channel_dati_to_json(char *json, size_t len, struct discord_chann
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"id"}'
   */
                 orka_ulltostr, &p->id,
-  /* specs/channel.json:29:86
-     '{"type":{"base":"int", "int_alias":"discord::channel::types::code"}, "name":"type"}'
+  /* specs/channel.json:29:88
+     '{"type":{"base":"int", "int_alias":"enum discord_channel_types_code"}, "name":"type"}'
   */
                 &p->type,
   /* specs/channel.json:30:78
@@ -438,11 +438,11 @@ size_t discord_channel_dati_to_json(char *json, size_t len, struct discord_chann
          "option":true, "inject_if_not":0 }'
   */
                 &p->position,
-  /* specs/channel.json:34:84
-     '{"type":{"base":"discord::channel::overwrite::dati", "dec":"ntl"}, "name":"permission_overwrites",
+  /* specs/channel.json:34:88
+     '{"type":{"base":"struct discord_channel_overwrite_dati", "dec":"ntl"}, "name":"permission_overwrites",
          "option":true, "inject_if_not":null }'
   */
-                discord_channel_overwrite_dati_list_to_json, p->permission_overwrites,
+                struct discord_channel_overwrite_dati_list_to_json, p->permission_overwrites,
   /* specs/channel.json:36:66
      '{"type":{"base":"char", "dec":"[MAX_NAME_LEN]"}, "name":"name", 
          "option":true, "inject_if_not":""}'
@@ -475,11 +475,11 @@ size_t discord_channel_dati_to_json(char *json, size_t len, struct discord_chann
          "option":true, "inject_if_not":0}'
   */
                 &p->rate_limit_per_user,
-  /* specs/channel.json:47:70
-     '{"type":{"base":"discord::user::dati", "dec":"ntl"}, "name":"recipients",
+  /* specs/channel.json:47:75
+     '{"type":{"base":"struct discord_user_dati", "dec":"ntl"}, "name":"recipients",
          "option":true, "inject_if_not":null}'
   */
-                discord_user_dati_list_to_json, p->recipients,
+                struct discord_user_dati_list_to_json, p->recipients,
   /* specs/channel.json:49:68
      '{"type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}, "name":"icon",
          "option":true, "inject_if_not":""}'
@@ -505,10 +505,10 @@ size_t discord_channel_dati_to_json(char *json, size_t len, struct discord_chann
          "option":true, "inject_if_not":0}'
   */
                 orka_unix_ms_to_iso8601, &p->last_pin_timestamp,
-  /* specs/channel.json:59:82
-     '{"type":{"base":"discord::channel::message::dati", "dec":"ntl"}, "name":"messages"}'
+  /* specs/channel.json:59:86
+     '{"type":{"base":"struct discord_channel_message_dati", "dec":"ntl"}, "name":"messages"}'
   */
-                discord_channel_message_dati_list_to_json, p->messages,
+                struct discord_channel_message_dati_list_to_json, p->messages,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
 }
@@ -555,8 +555,8 @@ void discord_channel_dati_cleanup(struct discord_channel_dati *d) {
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"id"}'
   */
   //p->id is a scalar
-  /* specs/channel.json:29:86
-     '{"type":{"base":"int", "int_alias":"discord::channel::types::code"}, "name":"type"}'
+  /* specs/channel.json:29:88
+     '{"type":{"base":"int", "int_alias":"enum discord_channel_types_code"}, "name":"type"}'
   */
   //p->type is a scalar
   /* specs/channel.json:30:78
@@ -569,12 +569,12 @@ void discord_channel_dati_cleanup(struct discord_channel_dati *d) {
          "option":true, "inject_if_not":0 }'
   */
   //p->position is a scalar
-  /* specs/channel.json:34:84
-     '{"type":{"base":"discord::channel::overwrite::dati", "dec":"ntl"}, "name":"permission_overwrites",
+  /* specs/channel.json:34:88
+     '{"type":{"base":"struct discord_channel_overwrite_dati", "dec":"ntl"}, "name":"permission_overwrites",
          "option":true, "inject_if_not":null }'
   */
   if (d->permission_overwrites)
-    discord_channel_overwrite_dati_list_free(d->permission_overwrites);
+    struct discord_channel_overwrite_dati_list_free(d->permission_overwrites);
   /* specs/channel.json:36:66
      '{"type":{"base":"char", "dec":"[MAX_NAME_LEN]"}, "name":"name", 
          "option":true, "inject_if_not":""}'
@@ -607,12 +607,12 @@ void discord_channel_dati_cleanup(struct discord_channel_dati *d) {
          "option":true, "inject_if_not":0}'
   */
   //p->rate_limit_per_user is a scalar
-  /* specs/channel.json:47:70
-     '{"type":{"base":"discord::user::dati", "dec":"ntl"}, "name":"recipients",
+  /* specs/channel.json:47:75
+     '{"type":{"base":"struct discord_user_dati", "dec":"ntl"}, "name":"recipients",
          "option":true, "inject_if_not":null}'
   */
   if (d->recipients)
-    discord_user_dati_list_free(d->recipients);
+    struct discord_user_dati_list_free(d->recipients);
   /* specs/channel.json:49:68
      '{"type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}, "name":"icon",
          "option":true, "inject_if_not":""}'
@@ -638,11 +638,11 @@ void discord_channel_dati_cleanup(struct discord_channel_dati *d) {
          "option":true, "inject_if_not":0}'
   */
   //p->last_pin_timestamp is a scalar
-  /* specs/channel.json:59:82
-     '{"type":{"base":"discord::channel::message::dati", "dec":"ntl"}, "name":"messages"}'
+  /* specs/channel.json:59:86
+     '{"type":{"base":"struct discord_channel_message_dati", "dec":"ntl"}, "name":"messages"}'
   */
   if (d->messages)
-    discord_channel_message_dati_list_free(d->messages);
+    struct discord_channel_message_dati_list_free(d->messages);
 }
 
 void discord_channel_dati_init(struct discord_channel_dati *p) {
@@ -651,8 +651,8 @@ void discord_channel_dati_init(struct discord_channel_dati *p) {
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"id"}'
   */
 
-  /* specs/channel.json:29:86
-     '{"type":{"base":"int", "int_alias":"discord::channel::types::code"}, "name":"type"}'
+  /* specs/channel.json:29:88
+     '{"type":{"base":"int", "int_alias":"enum discord_channel_types_code"}, "name":"type"}'
   */
 
   /* specs/channel.json:30:78
@@ -665,8 +665,8 @@ void discord_channel_dati_init(struct discord_channel_dati *p) {
          "option":true, "inject_if_not":0 }'
   */
 
-  /* specs/channel.json:34:84
-     '{"type":{"base":"discord::channel::overwrite::dati", "dec":"ntl"}, "name":"permission_overwrites",
+  /* specs/channel.json:34:88
+     '{"type":{"base":"struct discord_channel_overwrite_dati", "dec":"ntl"}, "name":"permission_overwrites",
          "option":true, "inject_if_not":null }'
   */
 
@@ -702,8 +702,8 @@ void discord_channel_dati_init(struct discord_channel_dati *p) {
          "option":true, "inject_if_not":0}'
   */
 
-  /* specs/channel.json:47:70
-     '{"type":{"base":"discord::user::dati", "dec":"ntl"}, "name":"recipients",
+  /* specs/channel.json:47:75
+     '{"type":{"base":"struct discord_user_dati", "dec":"ntl"}, "name":"recipients",
          "option":true, "inject_if_not":null}'
   */
 
@@ -732,8 +732,8 @@ void discord_channel_dati_init(struct discord_channel_dati *p) {
          "option":true, "inject_if_not":0}'
   */
 
-  /* specs/channel.json:59:82
-     '{"type":{"base":"discord::channel::message::dati", "dec":"ntl"}, "name":"messages"}'
+  /* specs/channel.json:59:86
+     '{"type":{"base":"struct discord_channel_message_dati", "dec":"ntl"}, "name":"messages"}'
   */
 
 }

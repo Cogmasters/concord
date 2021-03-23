@@ -53,12 +53,12 @@ struct discord_webhook_execute_webhook_params {
   char *file; // the contents of the file being sent
 
   /* specs/webhook.execute-webhook.json:34:20
-     '{ "name": "embeds", "type":{ "base":"discord::channel::embed::dati", "dec":"*" }, 
+     '{ "name": "embeds", "type":{ "base":"struct discord_channel_embed_dati", "dec":"*" }, 
           "comment":"embedded rich content",
           "required":"one of content, file, embeds"
         }'
   */
-  discord_channel_embed_dati *embeds; // embedded rich content
+  struct discord_channel_embed_dati *embeds; // embedded rich content
 
   /* specs/webhook.execute-webhook.json:38:20
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, 
@@ -70,12 +70,12 @@ struct discord_webhook_execute_webhook_params {
 
   /* specs/webhook.execute-webhook.json:42:20
      '{ "name": "allowed_mentions", 
-          "type":{ "base":"discord::channel::allowed_mentions::dati", "dec":"*" },
+          "type":{ "base":"struct discord_channel_allowed_mentions_dati", "dec":"*" },
           "comment":"allowed mentions for the message",
           "required":"false"
         }'
   */
-  discord_channel_allowed_mentions_dati *allowed_mentions; // allowed mentions for the message
+  struct discord_channel_allowed_mentions_dati *allowed_mentions; // allowed mentions for the message
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected

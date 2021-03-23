@@ -12,9 +12,9 @@
       [
         { "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
         { "name": "type", "type":{ "base":"int" }},
-        { "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"discord::permissions::bitwise_flags"}, 
+        { "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"discord_permissions_bitwise_flags"}, 
           "comment":"permission bit set"},
-        { "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"discord::permissions::bitwise_flags"}, 
+        { "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"discord_permissions_bitwise_flags"}, 
           "comment":"permission bit set"}
       ]
     },
@@ -26,7 +26,7 @@
       [
         { "name": "count", "type":{ "base":"int" }},
         { "name": "me", "type":{ "base":"bool" }},
-        { "name": "emoji", "type":{ "base":"discord::emoji::dati", "dec":"*" }, "comment":"partial emoji object"}
+        { "name": "emoji", "type":{ "base":"struct discord_emoji_dati", "dec":"*" }, "comment":"partial emoji object"}
       ]
     },
     {
@@ -64,7 +64,7 @@
       [
         { "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
         { "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
-        { "name": "type", "type":{ "base":"int", "int_alias":"discord::channel::types::code" }},
+        { "name": "type", "type":{ "base":"int", "int_alias":"enum discord_channel_types_code" }},
         { "name": "name", "type":{ "base":"char", "dec":"*" }}
       ]
     },
@@ -99,14 +99,14 @@
         { "name": "timestamp", "type":{ "base":"char", "dec":"*", "converter":"iso8601" },
           "option":true, "inject_if_not":0},
         { "name": "color", "type":{ "base":"int" }, "option":true, "inject_if_not":0},
-        { "name": "footer", "type":{ "base":"discord::channel::embed::footer::dati", "dec":"*"},
+        { "name": "footer", "type":{ "base":"struct discord_channel_embed_footer_dati", "dec":"*"},
           "option":true, "inject_if_not":null},
-        { "name": "image", "type":{ "base":"discord::channel::embed::image::dati", "dec":"*"}, "inject_if_not":null},
-        { "name": "thumbnail", "type":{ "base":"discord::channel::embed::thumbnail::dati", "dec":"*"}, "inject_if_not":null},
-        { "name": "video", "type":{ "base":"discord::channel::embed::video::dati", "dec":"*"}, "inject_if_not":null},
-        { "name": "provider", "type":{ "base":"discord::channel::embed::provider::dati", "dec":"*"}, "inject_if_not":null},
-        { "name": "author", "type":{ "base":"discord::channel::embed::author::dati", "dec":"*"}, "inject_if_not":null},
-        { "name": "fields", "type":{ "base":"discord::channel::embed::field::dati", "dec":"ntl"},
+        { "name": "image", "type":{ "base":"struct discord_channel_embed_image_dati", "dec":"*"}, "inject_if_not":null},
+        { "name": "thumbnail", "type":{ "base":"struct discord_channel_embed_thumbnail_dati", "dec":"*"}, "inject_if_not":null},
+        { "name": "video", "type":{ "base":"struct discord_channel_embed_video_dati", "dec":"*"}, "inject_if_not":null},
+        { "name": "provider", "type":{ "base":"struct discord_channel_embed_provider_dati", "dec":"*"}, "inject_if_not":null},
+        { "name": "author", "type":{ "base":"struct discord_channel_embed_author_dati", "dec":"*"}, "inject_if_not":null},
+        { "name": "fields", "type":{ "base":"struct discord_channel_embed_field_dati", "dec":"ntl"},
           "option":true, "inject_if_not":null}
       ]
     },

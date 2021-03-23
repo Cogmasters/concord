@@ -14,7 +14,7 @@ void discord_guild_create_guild_role_params_from_json(char *json, size_t len, st
   */
                 "(name):?s,"
   /* specs/guild.role.create.json:12:20
-     '{ "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"discord::permissions::bitwise_flags" }, 
+     '{ "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags" }, 
           "inject_if_not":0}'
   */
                 "(permissions):s_as_hex_uint,"
@@ -38,7 +38,7 @@ void discord_guild_create_guild_role_params_from_json(char *json, size_t len, st
   */
                 &p->name,
   /* specs/guild.role.create.json:12:20
-     '{ "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"discord::permissions::bitwise_flags" }, 
+     '{ "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags" }, 
           "inject_if_not":0}'
   */
                 &p->permissions,
@@ -69,7 +69,7 @@ static void discord_guild_create_guild_role_params_use_default_inject_settings(s
   p->__M.arg_switches[0] = p->name;
 
   /* specs/guild.role.create.json:12:20
-     '{ "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"discord::permissions::bitwise_flags" }, 
+     '{ "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags" }, 
           "inject_if_not":0}'
   */
   if (p->permissions != 0)
@@ -105,7 +105,7 @@ size_t discord_guild_create_guild_role_params_to_json(char *json, size_t len, st
   */
                 "(name):s,"
   /* specs/guild.role.create.json:12:20
-     '{ "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"discord::permissions::bitwise_flags" }, 
+     '{ "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags" }, 
           "inject_if_not":0}'
   */
                 "(permissions):s_as_hex_uint,"
@@ -127,7 +127,7 @@ size_t discord_guild_create_guild_role_params_to_json(char *json, size_t len, st
   */
                 p->name,
   /* specs/guild.role.create.json:12:20
-     '{ "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"discord::permissions::bitwise_flags" }, 
+     '{ "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags" }, 
           "inject_if_not":0}'
   */
                 &p->permissions,
@@ -191,7 +191,7 @@ void discord_guild_create_guild_role_params_cleanup(struct discord_guild_create_
   if (d->name)
     free(d->name);
   /* specs/guild.role.create.json:12:20
-     '{ "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"discord::permissions::bitwise_flags" }, 
+     '{ "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags" }, 
           "inject_if_not":0}'
   */
   //p->permissions is a scalar
@@ -216,7 +216,7 @@ void discord_guild_create_guild_role_params_init(struct discord_guild_create_gui
   */
 
   /* specs/guild.role.create.json:12:20
-     '{ "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"discord::permissions::bitwise_flags" }, 
+     '{ "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags" }, 
           "inject_if_not":0}'
   */
 

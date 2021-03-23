@@ -31,7 +31,7 @@
           "comment":"the contents of the file being sent",
           "required":"one of content, file, embeds"
         },
-        { "name": "embeds", "type":{ "base":"discord::channel::embed::dati", "dec":"*" }, 
+        { "name": "embeds", "type":{ "base":"struct discord_channel_embed_dati", "dec":"*" }, 
           "comment":"embedded rich content",
           "required":"one of content, file, embeds"
         },
@@ -40,7 +40,7 @@
           "required":"multipart/form-data only"
         },
         { "name": "allowed_mentions", 
-          "type":{ "base":"discord::channel::allowed_mentions::dati", "dec":"*" },
+          "type":{ "base":"struct discord_channel_allowed_mentions_dati", "dec":"*" },
           "comment":"allowed mentions for the message",
           "required":"false"
         }

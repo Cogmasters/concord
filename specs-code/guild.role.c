@@ -233,7 +233,7 @@ void discord_guild_role_dati_from_json(char *json, size_t len, struct discord_gu
   */
                 "(mentionable):b,"
   /* specs/guild.role.json:31:20
-     '{ "name": "tags", "type":{"base":"discord::guild::role::tags::dati", "dec":"*"}}'
+     '{ "name": "tags", "type":{"base":"struct discord_guild_role_tags_dati", "dec":"*"}}'
   */
                 "(tags):F,"
                 "@arg_switches:b"
@@ -272,9 +272,9 @@ void discord_guild_role_dati_from_json(char *json, size_t len, struct discord_gu
   */
                 &p->mentionable,
   /* specs/guild.role.json:31:20
-     '{ "name": "tags", "type":{"base":"discord::guild::role::tags::dati", "dec":"*"}}'
+     '{ "name": "tags", "type":{"base":"struct discord_guild_role_tags_dati", "dec":"*"}}'
   */
-                discord_guild_role_tags_dati_from_json, p->tags,
+                struct discord_guild_role_tags_dati_from_json, p->tags,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
                 p->__M.record_null, sizeof(p->__M.record_null));
@@ -325,7 +325,7 @@ static void discord_guild_role_dati_use_default_inject_settings(struct discord_g
   p->__M.arg_switches[7] = &p->mentionable;
 
   /* specs/guild.role.json:31:20
-     '{ "name": "tags", "type":{"base":"discord::guild::role::tags::dati", "dec":"*"}}'
+     '{ "name": "tags", "type":{"base":"struct discord_guild_role_tags_dati", "dec":"*"}}'
   */
   p->__M.arg_switches[8] = p->tags;
 
@@ -369,7 +369,7 @@ size_t discord_guild_role_dati_to_json(char *json, size_t len, struct discord_gu
   */
                 "(mentionable):b,"
   /* specs/guild.role.json:31:20
-     '{ "name": "tags", "type":{"base":"discord::guild::role::tags::dati", "dec":"*"}}'
+     '{ "name": "tags", "type":{"base":"struct discord_guild_role_tags_dati", "dec":"*"}}'
   */
                 "(tags):F,"
                 "@arg_switches:b",
@@ -406,9 +406,9 @@ size_t discord_guild_role_dati_to_json(char *json, size_t len, struct discord_gu
   */
                 &p->mentionable,
   /* specs/guild.role.json:31:20
-     '{ "name": "tags", "type":{"base":"discord::guild::role::tags::dati", "dec":"*"}}'
+     '{ "name": "tags", "type":{"base":"struct discord_guild_role_tags_dati", "dec":"*"}}'
   */
-                discord_guild_role_tags_dati_to_json, p->tags,
+                struct discord_guild_role_tags_dati_to_json, p->tags,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
 }
@@ -485,10 +485,10 @@ void discord_guild_role_dati_cleanup(struct discord_guild_role_dati *d) {
   */
   //p->mentionable is a scalar
   /* specs/guild.role.json:31:20
-     '{ "name": "tags", "type":{"base":"discord::guild::role::tags::dati", "dec":"*"}}'
+     '{ "name": "tags", "type":{"base":"struct discord_guild_role_tags_dati", "dec":"*"}}'
   */
   if (d->tags)
-    discord_guild_role_tags_dati_free(d->tags);
+    struct discord_guild_role_tags_dati_free(d->tags);
 }
 
 void discord_guild_role_dati_init(struct discord_guild_role_dati *p) {
@@ -526,9 +526,9 @@ void discord_guild_role_dati_init(struct discord_guild_role_dati *p) {
   */
 
   /* specs/guild.role.json:31:20
-     '{ "name": "tags", "type":{"base":"discord::guild::role::tags::dati", "dec":"*"}}'
+     '{ "name": "tags", "type":{"base":"struct discord_guild_role_tags_dati", "dec":"*"}}'
   */
-  p->tags = discord_guild_role_tags_dati_alloc();
+  p->tags = struct discord_guild_role_tags_dati_alloc();
 
 }
 struct discord_guild_role_dati* discord_guild_role_dati_alloc() {

@@ -76,33 +76,33 @@ struct discord_guild_dati {
   */
   u64_snowflake_t widget_channel_id;
 
-  /* specs/guild.json:26:97
-     '{"type":{"base":"int", "int_alias":"discord::guild::verification_level::code"}, "name":"verification_level"}'
+  /* specs/guild.json:26:99
+     '{"type":{"base":"int", "int_alias":"enum discord_guild_verification_level_code"}, "name":"verification_level"}'
   */
-  discord_guild_verification_level_code verification_level;
+  enum discord_guild_verification_level_code verification_level;
 
   /* specs/guild.json:28:32
-     '{"type":{"base":"int", "int_alias":"discord::guild::default_message_notification_level::code"}, 
+     '{"type":{"base":"int", "int_alias":"enum discord_guild_default_message_notification_level_code"}, 
               "name":"default_message_notifications"}'
   */
-  discord_guild_default_message_notification_level_code default_message_notifications;
+  enum discord_guild_default_message_notification_level_code default_message_notifications;
 
   /* specs/guild.json:30:32
-     '{"type":{"base":"int", "int_alias":"discord::guild::explicit_content_filter_level::code"},
+     '{"type":{"base":"int", "int_alias":"enum discord_guild_explicit_content_filter_level_code"},
               "name":"explicit_content_filter"}'
   */
-  discord_guild_explicit_content_filter_level_code explicit_content_filter;
+  enum discord_guild_explicit_content_filter_level_code explicit_content_filter;
 
-  /* specs/guild.json:31:77
-     '{"type":{"base":"discord::guild::role::dati", "dec":"ntl"}, "name":"roles", "todo":true, 
+  /* specs/guild.json:31:81
+     '{"type":{"base":"struct discord_guild_role_dati", "dec":"ntl"}, "name":"roles", "todo":true, 
               "comment":"array of role objects"}'
   */
   //@todo roles array of role objects;
 
-  /* specs/guild.json:33:71
-     '{"type":{"base":"discord::emoji::dati", "dec":"ntl"}, "name":"emojis"}'
+  /* specs/guild.json:33:76
+     '{"type":{"base":"struct discord_emoji_dati", "dec":"ntl"}, "name":"emojis"}'
   */
-  discord_emoji_dati **emojis;
+  struct discord_emoji_dati **emojis;
 
   /* specs/guild.json:34:57
      '{"type":{"base":"ja_str", "dec":"ntl"}, "name":"features", "todo":true", 
@@ -110,10 +110,10 @@ struct discord_guild_dati {
   */
   //@todo features array of guild feature strings;
 
-  /* specs/guild.json:36:88
-     '{"type":{"base":"int", "int_alias":"discord::guild::mfa_level::code"}, "name":"mfa_level"}'
+  /* specs/guild.json:36:90
+     '{"type":{"base":"int", "int_alias":"enum discord_guild_mfa_level_code"}, "name":"mfa_level"}'
   */
-  discord_guild_mfa_level_code mfa_level;
+  enum discord_guild_mfa_level_code mfa_level;
 
   /* specs/guild.json:37:95
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake", "nullable":true}, "name":"application_id"}'
@@ -125,10 +125,10 @@ struct discord_guild_dati {
   */
   u64_snowflake_t system_channel_id;
 
-  /* specs/guild.json:39:99
-     '{"type":{"base":"int", "int_alias":"discord::guild::system_channel_flags::code"}, "name":"system_channel_flags"}'
+  /* specs/guild.json:39:101
+     '{"type":{"base":"int", "int_alias":"enum discord_guild_system_channel_flags_code"}, "name":"system_channel_flags"}'
   */
-  discord_guild_system_channel_flags_code system_channel_flags;
+  enum discord_guild_system_channel_flags_code system_channel_flags;
 
   /* specs/guild.json:40:95
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake", "nullable":true}, "name":"rules_channel_id"}'
@@ -155,22 +155,22 @@ struct discord_guild_dati {
   */
   int member_count;
 
-  /* specs/guild.json:45:71
-     '{"type":{"base":"discord::voice::dati", "dec":"ntl"}, "name":"voice_states", "todo":true", 
+  /* specs/guild.json:45:76
+     '{"type":{"base":"struct discord_voice_dati", "dec":"ntl"}, "name":"voice_states", "todo":true", 
          "comment":"array of partial voice state objects"}'
   */
   //@todo voice_states array of partial voice state objects;
 
-  /* specs/guild.json:47:79
-     '{"type":{"base":"discord::guild::member::dati", "dec":"ntl"}, "name":"members", "option":true}'
+  /* specs/guild.json:47:83
+     '{"type":{"base":"struct discord_guild_member_dati", "dec":"ntl"}, "name":"members", "option":true}'
   */
-  discord_guild_member_dati **members;
+  struct discord_guild_member_dati **members;
 
-  /* specs/guild.json:48:73
-     '{"type":{"base":"discord::channel::dati", "dec":"ntl"}, "name":"channels", "option":true,
+  /* specs/guild.json:48:78
+     '{"type":{"base":"struct discord_channel_dati", "dec":"ntl"}, "name":"channels", "option":true,
          "comment":"array of channel objects"}'
   */
-  discord_channel_dati **channels; // array of channel objects
+  struct discord_channel_dati **channels; // array of channel objects
 
   /* specs/guild.json:50:41
      '{"type":{"base":"int"}, "name":"presences", "todo":true, "option":true,
@@ -203,10 +203,10 @@ struct discord_guild_dati {
   */
   char *banner;
 
-  /* specs/guild.json:57:91
-     '{"type":{"base":"int", "int_alias":"discord::guild::premium_tier::code"}, "name":"premium_tier"}'
+  /* specs/guild.json:57:93
+     '{"type":{"base":"int", "int_alias":"enum discord_guild_premium_tier_code"}, "name":"premium_tier"}'
   */
-  discord_guild_premium_tier_code premium_tier;
+  enum discord_guild_premium_tier_code premium_tier;
 
   /* specs/guild.json:58:41
      '{"type":{"base":"int"}, "name":"premium_subscription_count", "option":true}'
@@ -239,10 +239,10 @@ struct discord_guild_dati {
   */
   int approximate_presence_count;
 
-  /* specs/guild.json:65:85
-     '{"type":{"base":"discord::guild::welcome_screen::dati", "dec":"*"}, "name":"welcome_screen", "option":true}'
+  /* specs/guild.json:65:89
+     '{"type":{"base":"struct discord_guild_welcome_screen_dati", "dec":"*"}, "name":"welcome_screen", "option":true}'
   */
-  discord_guild_welcome_screen_dati *welcome_screen;
+  struct discord_guild_welcome_screen_dati *welcome_screen;
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected

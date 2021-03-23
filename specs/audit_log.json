@@ -8,10 +8,10 @@
       "struct":"dati",
       "fields":
       [
-        {"name":"webhooks", "type": { "base":"discord::webhook::dati", "dec":"*" } },
-        {"name":"users", "type": { "base":"discord::user::dati", "dec":"*"}},
-        {"name":"audit_log_entries", "type": { "base":"discord::audit_log::entry::dati", "dec":"*"}},
-        {"name":"integrations", "type": { "base":"discord::guild::integration::dati", "dec":"ntl"}}
+        {"name":"webhooks", "type": { "base":"struct discord_webhook_dati", "dec":"*" } },
+        {"name":"users", "type": { "base":"struct discord_user_dati", "dec":"*"}},
+        {"name":"audit_log_entries", "type": { "base":"struct discord_audit_log_entry_dati", "dec":"*"}},
+        {"name":"integrations", "type": { "base":"struct discord_guild_integration_dati", "dec":"ntl"}}
       ]
     },
     {
@@ -65,11 +65,11 @@
       "fields":
       [
         {"name":"target_id", "type": {"base":"char", "dec":"*"}},
-        {"name":"changes", "type": {"base":"discord::audit_log::change::dati", "dec":"*"}},
+        {"name":"changes", "type": {"base":"struct discord_audit_log_change_dati", "dec":"*"}},
         {"name":"user_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}},
         {"name":"id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}},
-        {"name":"action_type", "type": {"base":"int", "c_base":"discord::entry::events::code"}},
-        {"name":"options", "type": {"base":"discord::audit_log::entry::optional_info::dati", "dec":"*"}},
+        {"name":"action_type", "type": {"base":"int", "c_base":"enum discord_entry_events_code"}},
+        {"name":"options", "type": {"base":"struct discord_audit_log_entry_optional_info_dati", "dec":"*"}},
         {"name":"reason", "type": {"base":"char", "dec":"[MAX_REASON_LEN]"}}
       ]
     },

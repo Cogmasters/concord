@@ -114,7 +114,7 @@
         {"name":"icon", "type":{"base":"char", "dec":"*", "nullable":true}},
         {"name":"splash", "type":{"base":"char", "dec":"*", "nullable":true}},
         {"name":"discovery", "type":{"base":"char", "dec":"*", "nullable":true}},
-        {"name":"emojis", "type":{"base":"discord::emoji::dati", "dec":"*"}},
+        {"name":"emojis", "type":{"base":"struct discord_emoji_dati", "dec":"*"}},
         {"name":"features", "todo":true, "type":{"base":"char", "dec":"ntl"}},
         {"name":"approximate_member_count", "type":{"base":"int"}},
         {"name":"approximate_presence_count", "type":{"base":"int"}},

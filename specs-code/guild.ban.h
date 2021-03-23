@@ -11,9 +11,9 @@ struct discord_guild_ban_dati {
   char reason[MAX_REASON_LEN];
 
   /* specs/guild.ban.json:13:20
-     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*"}, "comment":"partial user object"}'
+     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*"}, "comment":"partial user object"}'
   */
-  discord_user_dati *user; // partial user object
+  struct discord_user_dati *user; // partial user object
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected

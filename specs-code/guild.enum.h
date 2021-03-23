@@ -141,9 +141,9 @@ struct discord_guild_preview_dati {
   char *discovery;
 
   /* specs/guild.enum.json:117:18
-     '{"name":"emojis", "type":{"base":"discord::emoji::dati", "dec":"*"}}'
+     '{"name":"emojis", "type":{"base":"struct discord_emoji_dati", "dec":"*"}}'
   */
-  discord_emoji_dati *emojis;
+  struct discord_emoji_dati *emojis;
 
   /* specs/guild.enum.json:118:18
      '{"name":"features", "todo":true, "type":{"base":"char", "dec":"ntl"}}'

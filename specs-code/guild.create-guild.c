@@ -44,7 +44,7 @@ void discord_guild_create_guild_params_from_json(char *json, size_t len, struct 
           "todo":true, "comment":"new guild roles" }'
   */
   /* specs/guild.create-guild.json:25:20
-     '{ "name": "channels", "type":{ "base":"discord::channel::dati", "dec":"ntl" }, 
+     '{ "name": "channels", "type":{ "base":"struct discord_channel_dati", "dec":"ntl" }, 
           "option":true, "inject_if_not":null, "comment":"array of partial channel objects"}'
   */
                 "(channels):F,"
@@ -102,10 +102,10 @@ void discord_guild_create_guild_params_from_json(char *json, size_t len, struct 
           "todo":true, "comment":"new guild roles" }'
   */
   /* specs/guild.create-guild.json:25:20
-     '{ "name": "channels", "type":{ "base":"discord::channel::dati", "dec":"ntl" }, 
+     '{ "name": "channels", "type":{ "base":"struct discord_channel_dati", "dec":"ntl" }, 
           "option":true, "inject_if_not":null, "comment":"array of partial channel objects"}'
   */
-                discord_channel_dati_list_from_json, &p->channels,
+                struct discord_channel_dati_list_from_json, &p->channels,
   /* specs/guild.create-guild.json:27:20
      '{ "name": "afk_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, 
           "option":true, "inject_if_not":0, "comment":"id for afk channel"}'
@@ -178,7 +178,7 @@ static void discord_guild_create_guild_params_use_default_inject_settings(struct
   */
 
   /* specs/guild.create-guild.json:25:20
-     '{ "name": "channels", "type":{ "base":"discord::channel::dati", "dec":"ntl" }, 
+     '{ "name": "channels", "type":{ "base":"struct discord_channel_dati", "dec":"ntl" }, 
           "option":true, "inject_if_not":null, "comment":"array of partial channel objects"}'
   */
   if (p->channels != NULL)
@@ -248,7 +248,7 @@ size_t discord_guild_create_guild_params_to_json(char *json, size_t len, struct 
           "todo":true, "comment":"new guild roles" }'
   */
   /* specs/guild.create-guild.json:25:20
-     '{ "name": "channels", "type":{ "base":"discord::channel::dati", "dec":"ntl" }, 
+     '{ "name": "channels", "type":{ "base":"struct discord_channel_dati", "dec":"ntl" }, 
           "option":true, "inject_if_not":null, "comment":"array of partial channel objects"}'
   */
                 "(channels):F,"
@@ -304,10 +304,10 @@ size_t discord_guild_create_guild_params_to_json(char *json, size_t len, struct 
           "todo":true, "comment":"new guild roles" }'
   */
   /* specs/guild.create-guild.json:25:20
-     '{ "name": "channels", "type":{ "base":"discord::channel::dati", "dec":"ntl" }, 
+     '{ "name": "channels", "type":{ "base":"struct discord_channel_dati", "dec":"ntl" }, 
           "option":true, "inject_if_not":null, "comment":"array of partial channel objects"}'
   */
-                discord_channel_dati_list_to_json, p->channels,
+                struct discord_channel_dati_list_to_json, p->channels,
   /* specs/guild.create-guild.json:27:20
      '{ "name": "afk_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, 
           "option":true, "inject_if_not":0, "comment":"id for afk channel"}'
@@ -404,11 +404,11 @@ void discord_guild_create_guild_params_cleanup(struct discord_guild_create_guild
   */
   //@todo p->(null)
   /* specs/guild.create-guild.json:25:20
-     '{ "name": "channels", "type":{ "base":"discord::channel::dati", "dec":"ntl" }, 
+     '{ "name": "channels", "type":{ "base":"struct discord_channel_dati", "dec":"ntl" }, 
           "option":true, "inject_if_not":null, "comment":"array of partial channel objects"}'
   */
   if (d->channels)
-    discord_channel_dati_list_free(d->channels);
+    struct discord_channel_dati_list_free(d->channels);
   /* specs/guild.create-guild.json:27:20
      '{ "name": "afk_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, 
           "option":true, "inject_if_not":0, "comment":"id for afk channel"}'
@@ -465,7 +465,7 @@ void discord_guild_create_guild_params_init(struct discord_guild_create_guild_pa
   */
 
   /* specs/guild.create-guild.json:25:20
-     '{ "name": "channels", "type":{ "base":"discord::channel::dati", "dec":"ntl" }, 
+     '{ "name": "channels", "type":{ "base":"struct discord_channel_dati", "dec":"ntl" }, 
           "option":true, "inject_if_not":null, "comment":"array of partial channel objects"}'
   */
 

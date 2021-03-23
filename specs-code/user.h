@@ -79,19 +79,19 @@ struct discord_user_dati {
   char email[MAX_EMAIL_LEN];
 
   /* specs/user.json:57:14
-     '{ "name": "flags", "type":{ "base":"int", "int_alias": "discord::user::flags::code" }}'
+     '{ "name": "flags", "type":{ "base":"int", "int_alias": "enum discord_user_flags_code" }}'
   */
-  discord_user_flags_code flags;
+  enum discord_user_flags_code flags;
 
   /* specs/user.json:58:14
-     '{ "name": "premium_type", "type":{ "base":"int", "int_alias": "discord::user::premium_types::code" }}'
+     '{ "name": "premium_type", "type":{ "base":"int", "int_alias": "enum discord_user_premium_types_code" }}'
   */
-  discord_user_premium_types_code premium_type;
+  enum discord_user_premium_types_code premium_type;
 
   /* specs/user.json:59:14
-     '{ "name": "public_flags", "type":{ "base":"int", "int_alias": "discord::user::flags::code" }}'
+     '{ "name": "public_flags", "type":{ "base":"int", "int_alias": "enum discord_user_flags_code" }}'
   */
-  discord_user_flags_code public_flags;
+  enum discord_user_flags_code public_flags;
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -157,7 +157,7 @@ struct discord_user_connection_dati {
   bool revoked;
 
   /* specs/user.json:84:20
-     '{ "name": "integrations", "type": {"base":"discord::guild::integration::dati", "dec":"ntl"}, "todo":true}'
+     '{ "name": "integrations", "type": {"base":"struct discord_guild_integration_dati", "dec":"ntl"}, "todo":true}'
   */
   //@todo integrations (null);
 
@@ -177,9 +177,9 @@ struct discord_user_connection_dati {
   bool show_activity;
 
   /* specs/user.json:88:14
-     '{ "name": "visibility", "type":{ "base":"int", "int_alias":"discord::user::connection::visibility_types::code" }}'
+     '{ "name": "visibility", "type":{ "base":"int", "int_alias":"enum discord_user_connection_visibility_types_code" }}'
   */
-  discord_user_connection_visibility_types_code visibility;
+  enum discord_user_connection_visibility_types_code visibility;
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected

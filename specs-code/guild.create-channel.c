@@ -38,7 +38,7 @@ void discord_guild_create_channel_params_from_json(char *json, size_t len, struc
   */
                 "(position):d,"
   /* specs/guild.create-channel.json:18:20
-     '{ "name": "permission_overwrites", "type":{ "base":"discord::channel::overwrite::dati", "dec":"ntl" }, "inject_if_not":null}'
+     '{ "name": "permission_overwrites", "type":{ "base":"struct discord_channel_overwrite_dati", "dec":"ntl" }, "inject_if_not":null}'
   */
                 "(permission_overwrites):F,"
   /* specs/guild.create-channel.json:19:20
@@ -81,9 +81,9 @@ void discord_guild_create_channel_params_from_json(char *json, size_t len, struc
   */
                 &p->position,
   /* specs/guild.create-channel.json:18:20
-     '{ "name": "permission_overwrites", "type":{ "base":"discord::channel::overwrite::dati", "dec":"ntl" }, "inject_if_not":null}'
+     '{ "name": "permission_overwrites", "type":{ "base":"struct discord_channel_overwrite_dati", "dec":"ntl" }, "inject_if_not":null}'
   */
-                discord_channel_overwrite_dati_list_from_json, &p->permission_overwrites,
+                struct discord_channel_overwrite_dati_list_from_json, &p->permission_overwrites,
   /* specs/guild.create-channel.json:19:20
      '{ "name": "parent_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0}'
   */
@@ -140,7 +140,7 @@ static void discord_guild_create_channel_params_use_default_inject_settings(stru
   p->__M.arg_switches[6] = &p->position;
 
   /* specs/guild.create-channel.json:18:20
-     '{ "name": "permission_overwrites", "type":{ "base":"discord::channel::overwrite::dati", "dec":"ntl" }, "inject_if_not":null}'
+     '{ "name": "permission_overwrites", "type":{ "base":"struct discord_channel_overwrite_dati", "dec":"ntl" }, "inject_if_not":null}'
   */
   if (p->permission_overwrites != NULL)
     p->__M.arg_switches[7] = p->permission_overwrites;
@@ -192,7 +192,7 @@ size_t discord_guild_create_channel_params_to_json(char *json, size_t len, struc
   */
                 "(position):d,"
   /* specs/guild.create-channel.json:18:20
-     '{ "name": "permission_overwrites", "type":{ "base":"discord::channel::overwrite::dati", "dec":"ntl" }, "inject_if_not":null}'
+     '{ "name": "permission_overwrites", "type":{ "base":"struct discord_channel_overwrite_dati", "dec":"ntl" }, "inject_if_not":null}'
   */
                 "(permission_overwrites):F,"
   /* specs/guild.create-channel.json:19:20
@@ -233,9 +233,9 @@ size_t discord_guild_create_channel_params_to_json(char *json, size_t len, struc
   */
                 &p->position,
   /* specs/guild.create-channel.json:18:20
-     '{ "name": "permission_overwrites", "type":{ "base":"discord::channel::overwrite::dati", "dec":"ntl" }, "inject_if_not":null}'
+     '{ "name": "permission_overwrites", "type":{ "base":"struct discord_channel_overwrite_dati", "dec":"ntl" }, "inject_if_not":null}'
   */
-                discord_channel_overwrite_dati_list_to_json, p->permission_overwrites,
+                struct discord_channel_overwrite_dati_list_to_json, p->permission_overwrites,
   /* specs/guild.create-channel.json:19:20
      '{ "name": "parent_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0}'
   */
@@ -317,10 +317,10 @@ void discord_guild_create_channel_params_cleanup(struct discord_guild_create_cha
   */
   //p->position is a scalar
   /* specs/guild.create-channel.json:18:20
-     '{ "name": "permission_overwrites", "type":{ "base":"discord::channel::overwrite::dati", "dec":"ntl" }, "inject_if_not":null}'
+     '{ "name": "permission_overwrites", "type":{ "base":"struct discord_channel_overwrite_dati", "dec":"ntl" }, "inject_if_not":null}'
   */
   if (d->permission_overwrites)
-    discord_channel_overwrite_dati_list_free(d->permission_overwrites);
+    struct discord_channel_overwrite_dati_list_free(d->permission_overwrites);
   /* specs/guild.create-channel.json:19:20
      '{ "name": "parent_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0}'
   */
@@ -362,7 +362,7 @@ void discord_guild_create_channel_params_init(struct discord_guild_create_channe
   */
 
   /* specs/guild.create-channel.json:18:20
-     '{ "name": "permission_overwrites", "type":{ "base":"discord::channel::overwrite::dati", "dec":"ntl" }, "inject_if_not":null}'
+     '{ "name": "permission_overwrites", "type":{ "base":"struct discord_channel_overwrite_dati", "dec":"ntl" }, "inject_if_not":null}'
   */
 
   /* specs/guild.create-channel.json:19:20

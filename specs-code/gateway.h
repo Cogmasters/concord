@@ -65,9 +65,9 @@ struct discord_gateway_identify_dati {
   char *token;
 
   /* specs/gateway.json:79:19
-     '{ "name":"properties","type":{"base":"discord::gateway::identify::connection::dati", "dec":"*"}}'
+     '{ "name":"properties","type":{"base":"struct discord_gateway_identify_connection_dati", "dec":"*"}}'
   */
-  discord_gateway_identify_connection_dati *properties;
+  struct discord_gateway_identify_connection_dati *properties;
 
   /* specs/gateway.json:80:19
      '{ "name":"compress","type":{"base":"bool"}}'
@@ -90,9 +90,9 @@ struct discord_gateway_identify_dati {
   //@todo shard (null);
 
   /* specs/gateway.json:84:19
-     '{ "name":"presence","type":{"base":"discord::gateway::identify::status_update::dati", "dec":"*"}}'
+     '{ "name":"presence","type":{"base":"struct discord_gateway_identify_status_update_dati", "dec":"*"}}'
   */
-  discord_gateway_identify_status_update_dati *presence;
+  struct discord_gateway_identify_status_update_dati *presence;
 
   /* specs/gateway.json:85:19
      '{ "name":"intents","type":{"base":"int"}}'
@@ -143,10 +143,10 @@ struct discord_gateway_identify_status_update_dati {
   u64_unix_ms_t since;
 
   /* specs/gateway.json:97:19
-     '{ "name":"activities","type":{"base":"discord::gateway::identify::status_update::activity::dati", "dec":"ntl"}, 
+     '{ "name":"activities","type":{"base":"struct discord_gateway_identify_status_update_activity_dati", "dec":"ntl"}, 
           "option":true, "inject_if_not":null}'
   */
-  discord_gateway_identify_status_update_activity_dati **activities;
+  struct discord_gateway_identify_status_update_activity_dati **activities;
 
   /* specs/gateway.json:99:19
      '{ "name":"status","type":{"base":"char", "dec":"[16]"}}'

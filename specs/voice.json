@@ -12,7 +12,7 @@
         { "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
         { "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}},
         { "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
-        { "name": "member", "type":{ "base":"discord::guild::member::dati", "dec":"*" }},
+        { "name": "member", "type":{ "base":"struct discord_guild_member_dati", "dec":"*" }},
         { "name": "session_id", "type":{ "base":"char", "dec":"*" }},
         { "name": "deaf", "type":{ "base":"bool" }},
         { "name": "mute", "type":{ "base":"bool" }},

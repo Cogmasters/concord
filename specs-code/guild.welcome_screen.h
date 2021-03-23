@@ -70,9 +70,9 @@ struct discord_guild_welcome_screen_dati {
   char *description; // @todo fixed size limit
 
   /* specs/guild.welcome_screen.json:27:20
-     '{ "name": "welcome_channels", "type":{ "base":"discord::guild::welcome_screen::screen_channel::dati", "dec":"ntl" }, "todo":false }'
+     '{ "name": "welcome_channels", "type":{ "base":"struct discord_guild_welcome_screen_screen_channel_dati", "dec":"ntl" }, "todo":false }'
   */
-  discord_guild_welcome_screen_screen_channel_dati **welcome_channels;
+  struct discord_guild_welcome_screen_screen_channel_dati **welcome_channels;
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected

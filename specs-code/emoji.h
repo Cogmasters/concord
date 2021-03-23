@@ -17,15 +17,15 @@ struct discord_emoji_dati {
   char name[MAX_NAME_LEN];
 
   /* specs/emoji.json:13:20
-     '{ "name": "roles", "type":{ "base":"discord::guild::role::dati", "dec":"ntl"}, "option":true,
+     '{ "name": "roles", "type":{ "base":"struct discord_guild_role_dati", "dec":"ntl"}, "option":true,
           "todo":true }'
   */
   //@todo roles (null);
 
   /* specs/emoji.json:15:20
-     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*" }, "option":true }'
+     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*" }, "option":true }'
   */
-  discord_user_dati *user;
+  struct discord_user_dati *user;
 
   /* specs/emoji.json:16:20
      '{ "name": "require_colons", "type":{ "base":"bool" }, "option":true}'

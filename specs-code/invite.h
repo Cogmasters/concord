@@ -18,29 +18,29 @@ struct discord_invite_dati {
   char *code; // @todo fixed size limit
 
   /* specs/invite.json:23:20
-     '{ "name": "guild", "type":{ "base":"discord::guild::dati", "dec":"*"}, "comment":"partial guild object"}'
+     '{ "name": "guild", "type":{ "base":"struct discord_guild_dati", "dec":"*"}, "comment":"partial guild object"}'
   */
-  discord_guild_dati *guild; // partial guild object
+  struct discord_guild_dati *guild; // partial guild object
 
   /* specs/invite.json:24:20
-     '{ "name": "channel", "type":{ "base":"discord::channel::dati", "dec":"*"}, "comment":"partial channel object"}'
+     '{ "name": "channel", "type":{ "base":"struct discord_channel_dati", "dec":"*"}, "comment":"partial channel object"}'
   */
-  discord_channel_dati *channel; // partial channel object
+  struct discord_channel_dati *channel; // partial channel object
 
   /* specs/invite.json:25:20
-     '{ "name": "inviter", "type":{ "base":"discord::user::dati", "dec":"*"}}'
+     '{ "name": "inviter", "type":{ "base":"struct discord_user_dati", "dec":"*"}}'
   */
-  discord_user_dati *inviter;
+  struct discord_user_dati *inviter;
 
   /* specs/invite.json:26:20
-     '{ "name": "target_user", "type":{ "base":"discord::user::dati", "dec":"*"}, "comment":"partial user object"}'
+     '{ "name": "target_user", "type":{ "base":"struct discord_user_dati", "dec":"*"}, "comment":"partial user object"}'
   */
-  discord_user_dati *target_user; // partial user object
+  struct discord_user_dati *target_user; // partial user object
 
   /* specs/invite.json:27:20
-     '{ "name": "target_user_type", "type":{ "base":"int", "int_alias":"discord::invite::target_user_types::code" }}'
+     '{ "name": "target_user_type", "type":{ "base":"int", "int_alias":"enum discord_invite_target_user_types_code" }}'
   */
-  discord_invite_target_user_types_code target_user_type;
+  enum discord_invite_target_user_types_code target_user_type;
 
   /* specs/invite.json:28:20
      '{ "name": "approximate_presence_count", "type":{ "base":"int" }}'

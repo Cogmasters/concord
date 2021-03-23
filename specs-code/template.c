@@ -30,7 +30,7 @@ void discord_Template_dati_from_json(char *json, size_t len, struct discord_Temp
   */
                 "(creator_id):F,"
   /* specs/template.json:17:20
-     '{ "name": "creator", "type":{ "base":"discord::user::dati", "dec":"*" }}'
+     '{ "name": "creator", "type":{ "base":"struct discord_user_dati", "dec":"*" }}'
   */
                 "(creator):F,"
   /* specs/template.json:18:20
@@ -46,7 +46,7 @@ void discord_Template_dati_from_json(char *json, size_t len, struct discord_Temp
   */
                 "(source_guild_id):F,"
   /* specs/template.json:21:20
-     '{ "name": "serialized_source_guild", "type":{ "base":"discord::guild::dati", "dec":"*" }}'
+     '{ "name": "serialized_source_guild", "type":{ "base":"struct discord_guild_dati", "dec":"*" }}'
   */
                 "(serialized_source_guild):F,"
   /* specs/template.json:22:20
@@ -77,9 +77,9 @@ void discord_Template_dati_from_json(char *json, size_t len, struct discord_Temp
   */
                 orka_strtoull, &p->creator_id,
   /* specs/template.json:17:20
-     '{ "name": "creator", "type":{ "base":"discord::user::dati", "dec":"*" }}'
+     '{ "name": "creator", "type":{ "base":"struct discord_user_dati", "dec":"*" }}'
   */
-                discord_user_dati_from_json, p->creator,
+                struct discord_user_dati_from_json, p->creator,
   /* specs/template.json:18:20
      '{ "name": "created_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}'
   */
@@ -93,9 +93,9 @@ void discord_Template_dati_from_json(char *json, size_t len, struct discord_Temp
   */
                 orka_strtoull, &p->source_guild_id,
   /* specs/template.json:21:20
-     '{ "name": "serialized_source_guild", "type":{ "base":"discord::guild::dati", "dec":"*" }}'
+     '{ "name": "serialized_source_guild", "type":{ "base":"struct discord_guild_dati", "dec":"*" }}'
   */
-                discord_guild_dati_from_json, p->serialized_source_guild,
+                struct discord_guild_dati_from_json, p->serialized_source_guild,
   /* specs/template.json:22:20
      '{ "name": "is_dirty", "type":{ "base":"bool" }}'
   */
@@ -135,7 +135,7 @@ static void discord_Template_dati_use_default_inject_settings(struct discord_Tem
   p->__M.arg_switches[4] = &p->creator_id;
 
   /* specs/template.json:17:20
-     '{ "name": "creator", "type":{ "base":"discord::user::dati", "dec":"*" }}'
+     '{ "name": "creator", "type":{ "base":"struct discord_user_dati", "dec":"*" }}'
   */
   p->__M.arg_switches[5] = p->creator;
 
@@ -155,7 +155,7 @@ static void discord_Template_dati_use_default_inject_settings(struct discord_Tem
   p->__M.arg_switches[8] = &p->source_guild_id;
 
   /* specs/template.json:21:20
-     '{ "name": "serialized_source_guild", "type":{ "base":"discord::guild::dati", "dec":"*" }}'
+     '{ "name": "serialized_source_guild", "type":{ "base":"struct discord_guild_dati", "dec":"*" }}'
   */
   p->__M.arg_switches[9] = p->serialized_source_guild;
 
@@ -192,7 +192,7 @@ size_t discord_Template_dati_to_json(char *json, size_t len, struct discord_Temp
   */
                 "(creator_id):|F|,"
   /* specs/template.json:17:20
-     '{ "name": "creator", "type":{ "base":"discord::user::dati", "dec":"*" }}'
+     '{ "name": "creator", "type":{ "base":"struct discord_user_dati", "dec":"*" }}'
   */
                 "(creator):F,"
   /* specs/template.json:18:20
@@ -208,7 +208,7 @@ size_t discord_Template_dati_to_json(char *json, size_t len, struct discord_Temp
   */
                 "(source_guild_id):|F|,"
   /* specs/template.json:21:20
-     '{ "name": "serialized_source_guild", "type":{ "base":"discord::guild::dati", "dec":"*" }}'
+     '{ "name": "serialized_source_guild", "type":{ "base":"struct discord_guild_dati", "dec":"*" }}'
   */
                 "(serialized_source_guild):F,"
   /* specs/template.json:22:20
@@ -237,9 +237,9 @@ size_t discord_Template_dati_to_json(char *json, size_t len, struct discord_Temp
   */
                 orka_ulltostr, &p->creator_id,
   /* specs/template.json:17:20
-     '{ "name": "creator", "type":{ "base":"discord::user::dati", "dec":"*" }}'
+     '{ "name": "creator", "type":{ "base":"struct discord_user_dati", "dec":"*" }}'
   */
-                discord_user_dati_to_json, p->creator,
+                struct discord_user_dati_to_json, p->creator,
   /* specs/template.json:18:20
      '{ "name": "created_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}'
   */
@@ -253,9 +253,9 @@ size_t discord_Template_dati_to_json(char *json, size_t len, struct discord_Temp
   */
                 orka_ulltostr, &p->source_guild_id,
   /* specs/template.json:21:20
-     '{ "name": "serialized_source_guild", "type":{ "base":"discord::guild::dati", "dec":"*" }}'
+     '{ "name": "serialized_source_guild", "type":{ "base":"struct discord_guild_dati", "dec":"*" }}'
   */
-                discord_guild_dati_to_json, p->serialized_source_guild,
+                struct discord_guild_dati_to_json, p->serialized_source_guild,
   /* specs/template.json:22:20
      '{ "name": "is_dirty", "type":{ "base":"bool" }}'
   */
@@ -326,10 +326,10 @@ void discord_Template_dati_cleanup(struct discord_Template_dati *d) {
   */
   //p->creator_id is a scalar
   /* specs/template.json:17:20
-     '{ "name": "creator", "type":{ "base":"discord::user::dati", "dec":"*" }}'
+     '{ "name": "creator", "type":{ "base":"struct discord_user_dati", "dec":"*" }}'
   */
   if (d->creator)
-    discord_user_dati_free(d->creator);
+    struct discord_user_dati_free(d->creator);
   /* specs/template.json:18:20
      '{ "name": "created_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}'
   */
@@ -343,10 +343,10 @@ void discord_Template_dati_cleanup(struct discord_Template_dati *d) {
   */
   //p->source_guild_id is a scalar
   /* specs/template.json:21:20
-     '{ "name": "serialized_source_guild", "type":{ "base":"discord::guild::dati", "dec":"*" }}'
+     '{ "name": "serialized_source_guild", "type":{ "base":"struct discord_guild_dati", "dec":"*" }}'
   */
   if (d->serialized_source_guild)
-    discord_guild_dati_free(d->serialized_source_guild);
+    struct discord_guild_dati_free(d->serialized_source_guild);
   /* specs/template.json:22:20
      '{ "name": "is_dirty", "type":{ "base":"bool" }}'
   */
@@ -376,9 +376,9 @@ void discord_Template_dati_init(struct discord_Template_dati *p) {
   */
 
   /* specs/template.json:17:20
-     '{ "name": "creator", "type":{ "base":"discord::user::dati", "dec":"*" }}'
+     '{ "name": "creator", "type":{ "base":"struct discord_user_dati", "dec":"*" }}'
   */
-  p->creator = discord_user_dati_alloc();
+  p->creator = struct discord_user_dati_alloc();
 
   /* specs/template.json:18:20
      '{ "name": "created_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}'
@@ -393,9 +393,9 @@ void discord_Template_dati_init(struct discord_Template_dati *p) {
   */
 
   /* specs/template.json:21:20
-     '{ "name": "serialized_source_guild", "type":{ "base":"discord::guild::dati", "dec":"*" }}'
+     '{ "name": "serialized_source_guild", "type":{ "base":"struct discord_guild_dati", "dec":"*" }}'
   */
-  p->serialized_source_guild = discord_guild_dati_alloc();
+  p->serialized_source_guild = struct discord_guild_dati_alloc();
 
   /* specs/template.json:22:20
      '{ "name": "is_dirty", "type":{ "base":"bool" }}'

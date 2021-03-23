@@ -8,24 +8,24 @@
 /* This is defined at specs/audit_log.json:8:22 */
 struct discord_audit_log_dati {
   /* specs/audit_log.json:11:18
-     '{"name":"webhooks", "type": { "base":"discord::webhook::dati", "dec":"*" } }'
+     '{"name":"webhooks", "type": { "base":"struct discord_webhook_dati", "dec":"*" } }'
   */
-  discord_webhook_dati *webhooks;
+  struct discord_webhook_dati *webhooks;
 
   /* specs/audit_log.json:12:18
-     '{"name":"users", "type": { "base":"discord::user::dati", "dec":"*"}}'
+     '{"name":"users", "type": { "base":"struct discord_user_dati", "dec":"*"}}'
   */
-  discord_user_dati *users;
+  struct discord_user_dati *users;
 
   /* specs/audit_log.json:13:18
-     '{"name":"audit_log_entries", "type": { "base":"discord::audit_log::entry::dati", "dec":"*"}}'
+     '{"name":"audit_log_entries", "type": { "base":"struct discord_audit_log_entry_dati", "dec":"*"}}'
   */
-  discord_audit_log_entry_dati *audit_log_entries;
+  struct discord_audit_log_entry_dati *audit_log_entries;
 
   /* specs/audit_log.json:14:18
-     '{"name":"integrations", "type": { "base":"discord::guild::integration::dati", "dec":"ntl"}}'
+     '{"name":"integrations", "type": { "base":"struct discord_guild_integration_dati", "dec":"ntl"}}'
   */
-  discord_guild_integration_dati **integrations;
+  struct discord_guild_integration_dati **integrations;
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -108,9 +108,9 @@ struct discord_audit_log_entry_dati {
   char *target_id;
 
   /* specs/audit_log.json:68:18
-     '{"name":"changes", "type": {"base":"discord::audit_log::change::dati", "dec":"*"}}'
+     '{"name":"changes", "type": {"base":"struct discord_audit_log_change_dati", "dec":"*"}}'
   */
-  discord_audit_log_change_dati *changes;
+  struct discord_audit_log_change_dati *changes;
 
   /* specs/audit_log.json:69:18
      '{"name":"user_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
@@ -123,14 +123,14 @@ struct discord_audit_log_entry_dati {
   u64_snowflake_t id;
 
   /* specs/audit_log.json:71:18
-     '{"name":"action_type", "type": {"base":"int", "c_base":"discord::entry::events::code"}}'
+     '{"name":"action_type", "type": {"base":"int", "c_base":"enum discord_entry_events_code"}}'
   */
   int action_type;
 
   /* specs/audit_log.json:72:18
-     '{"name":"options", "type": {"base":"discord::audit_log::entry::optional_info::dati", "dec":"*"}}'
+     '{"name":"options", "type": {"base":"struct discord_audit_log_entry_optional_info_dati", "dec":"*"}}'
   */
-  discord_audit_log_entry_optional_info_dati *options;
+  struct discord_audit_log_entry_optional_info_dati *options;
 
   /* specs/audit_log.json:73:18
      '{"name":"reason", "type": {"base":"char", "dec":"[MAX_REASON_LEN]"}}'

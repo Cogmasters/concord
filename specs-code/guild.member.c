@@ -10,7 +10,7 @@ void discord_guild_member_dati_from_json(char *json, size_t len, struct discord_
   size_t r=0;
   r=json_extract(json, len, 
   /* specs/guild.member.json:12:20
-     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*" }, "option":true}'
+     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*" }, "option":true}'
   */
                 "(user):F,"
   /* specs/guild.member.json:13:20
@@ -49,9 +49,9 @@ void discord_guild_member_dati_from_json(char *json, size_t len, struct discord_
                 "@record_defined"
                 "@record_null",
   /* specs/guild.member.json:12:20
-     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*" }, "option":true}'
+     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*" }, "option":true}'
   */
-                discord_user_dati_from_json, p->user,
+                struct discord_user_dati_from_json, p->user,
   /* specs/guild.member.json:13:20
      '{ "name": "nick", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]"}, "option":true}'
   */
@@ -94,7 +94,7 @@ static void discord_guild_member_dati_use_default_inject_settings(struct discord
 {
   p->__M.enable_arg_switches = true;
   /* specs/guild.member.json:12:20
-     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*" }, "option":true}'
+     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*" }, "option":true}'
   */
   p->__M.arg_switches[0] = p->user;
 
@@ -146,7 +146,7 @@ size_t discord_guild_member_dati_to_json(char *json, size_t len, struct discord_
   discord_guild_member_dati_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/guild.member.json:12:20
-     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*" }, "option":true}'
+     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*" }, "option":true}'
   */
                 "(user):F,"
   /* specs/guild.member.json:13:20
@@ -183,9 +183,9 @@ size_t discord_guild_member_dati_to_json(char *json, size_t len, struct discord_
                 "(permissions):s,"
                 "@arg_switches:b",
   /* specs/guild.member.json:12:20
-     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*" }, "option":true}'
+     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*" }, "option":true}'
   */
-                discord_user_dati_to_json, p->user,
+                struct discord_user_dati_to_json, p->user,
   /* specs/guild.member.json:13:20
      '{ "name": "nick", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]"}, "option":true}'
   */
@@ -261,10 +261,10 @@ size_t discord_guild_member_dati_list_to_json_v(char *str, size_t len, void *p){
 
 void discord_guild_member_dati_cleanup(struct discord_guild_member_dati *d) {
   /* specs/guild.member.json:12:20
-     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*" }, "option":true}'
+     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*" }, "option":true}'
   */
   if (d->user)
-    discord_user_dati_free(d->user);
+    struct discord_user_dati_free(d->user);
   /* specs/guild.member.json:13:20
      '{ "name": "nick", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]"}, "option":true}'
   */
@@ -304,9 +304,9 @@ void discord_guild_member_dati_cleanup(struct discord_guild_member_dati *d) {
 void discord_guild_member_dati_init(struct discord_guild_member_dati *p) {
   memset(p, 0, sizeof(struct discord_guild_member_dati));
   /* specs/guild.member.json:12:20
-     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*" }, "option":true}'
+     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*" }, "option":true}'
   */
-  p->user = discord_user_dati_alloc();
+  p->user = struct discord_user_dati_alloc();
 
   /* specs/guild.member.json:13:20
      '{ "name": "nick", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]"}, "option":true}'

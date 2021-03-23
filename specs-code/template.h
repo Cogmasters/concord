@@ -32,9 +32,9 @@ struct discord_Template_dati {
   u64_snowflake_t creator_id;
 
   /* specs/template.json:17:20
-     '{ "name": "creator", "type":{ "base":"discord::user::dati", "dec":"*" }}'
+     '{ "name": "creator", "type":{ "base":"struct discord_user_dati", "dec":"*" }}'
   */
-  discord_user_dati *creator;
+  struct discord_user_dati *creator;
 
   /* specs/template.json:18:20
      '{ "name": "created_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}'
@@ -52,9 +52,9 @@ struct discord_Template_dati {
   u64_snowflake_t source_guild_id;
 
   /* specs/template.json:21:20
-     '{ "name": "serialized_source_guild", "type":{ "base":"discord::guild::dati", "dec":"*" }}'
+     '{ "name": "serialized_source_guild", "type":{ "base":"struct discord_guild_dati", "dec":"*" }}'
   */
-  discord_guild_dati *serialized_source_guild;
+  struct discord_guild_dati *serialized_source_guild;
 
   /* specs/template.json:22:20
      '{ "name": "is_dirty", "type":{ "base":"bool" }}'

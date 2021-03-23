@@ -47,9 +47,9 @@ struct discord_channel_modify_params {
   int user_limit;
 
   /* specs/channel.modify-channel.json:19:20
-     '{ "name": "permission_overwrites", "type":{ "base":"discord::channel::overwrite::dati", "dec":"ntl" }, "inject_if_not":null}'
+     '{ "name": "permission_overwrites", "type":{ "base":"struct discord_channel_overwrite_dati", "dec":"ntl" }, "inject_if_not":null}'
   */
-  discord_channel_overwrite_dati **permission_overwrites;
+  struct discord_channel_overwrite_dati **permission_overwrites;
 
   /* specs/channel.modify-channel.json:20:20
      '{ "name": "parent_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0}'

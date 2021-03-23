@@ -12,10 +12,10 @@ struct discord_guild_create_guild_role_params {
   char *name;
 
   /* specs/guild.role.create.json:12:20
-     '{ "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"discord::permissions::bitwise_flags" }, 
+     '{ "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags" }, 
           "inject_if_not":0}'
   */
-  discord::permissions::bitwise_flags permissions;
+  enum discord_permissions_bitwise_flags permissions;
 
   /* specs/guild.role.create.json:14:20
      '{ "name": "color", "type":{ "base":"int" }, "inject_if_not":0}'

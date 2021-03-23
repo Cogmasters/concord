@@ -12,9 +12,9 @@ enum discord_guild_membership_screening_field_type_code {
 /* This is defined at specs/guild.membership_screening.json:17:22 */
 struct discord_guild_membership_screening_field_dati {
   /* specs/guild.membership_screening.json:20:20
-     '{ "name": "field_type", "type":{ "base":"int", "int_alias":"discord::guild::membership_screening::field_type::code" }}'
+     '{ "name": "field_type", "type":{ "base":"int", "int_alias":"enum discord_guild_membership_screening_field_type_code" }}'
   */
-  discord_guild_membership_screening_field_type_code field_type;
+  enum discord_guild_membership_screening_field_type_code field_type;
 
   /* specs/guild.membership_screening.json:21:20
      '{ "name": "label", "type":{ "base":"char", "dec":"*" }}'
@@ -72,9 +72,9 @@ struct discord_guild_membership_screening_dati {
   uint64_t version;
 
   /* specs/guild.membership_screening.json:31:20
-     '{ "name": "fields", "type":{ "base":"discord::guild::membership_screening::field::dati", "dec":"ntl" }}'
+     '{ "name": "fields", "type":{ "base":"struct discord_guild_membership_screening_field_dati", "dec":"ntl" }}'
   */
-  discord_guild_membership_screening_field_dati **fields;
+  struct discord_guild_membership_screening_field_dati **fields;
 
   /* specs/guild.membership_screening.json:32:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }}'

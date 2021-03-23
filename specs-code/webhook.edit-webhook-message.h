@@ -13,17 +13,17 @@ struct discord_webhook_edit_webhook_message_params {
   char content[2000+1]; // name of the webhook(1-2000) chars
 
   /* specs/webhook.edit-webhook-message.json:13:20
-     '{ "name": "embeds", "type":{ "base":"discord::channel::embed::dati", "dec":"ntl" }, 
+     '{ "name": "embeds", "type":{ "base":"struct discord_channel_embed_dati", "dec":"ntl" }, 
           "comment":"array of up to 10 embeds objects" }'
   */
-  discord_channel_embed_dati **embeds; // array of up to 10 embeds objects
+  struct discord_channel_embed_dati **embeds; // array of up to 10 embeds objects
 
   /* specs/webhook.edit-webhook-message.json:15:20
      '{ "name": "allowed_mentions", 
-          "type":{ "base":"discord::channel::allowed_mentions::dati", "dec":"*" }, 
+          "type":{ "base":"struct discord_channel_allowed_mentions_dati", "dec":"*" }, 
           "comment":"allowed mentions for the message" }'
   */
-  discord_channel_allowed_mentions_dati *allowed_mentions; // allowed mentions for the message
+  struct discord_channel_allowed_mentions_dati *allowed_mentions; // allowed mentions for the message
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected

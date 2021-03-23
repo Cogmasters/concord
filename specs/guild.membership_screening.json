@@ -17,7 +17,7 @@
       "struct":"dati",
       "fields":
       [
-        { "name": "field_type", "type":{ "base":"int", "int_alias":"discord::guild::membership_screening::field_type::code" }},
+        { "name": "field_type", "type":{ "base":"int", "int_alias":"enum discord_guild_membership_screening_field_type_code" }},
         { "name": "label", "type":{ "base":"char", "dec":"*" }},
         { "name": "values", "todo":true, "type":{ "base":"char", "dec":"ntl" }},
         { "name": "required", "type":{ "base":"bool" }}
@@ -28,7 +28,7 @@
       "fields":
       [
         { "name": "version", "type":{ "base":"s_as_u64" }},
-        { "name": "fields", "type":{ "base":"discord::guild::membership_screening::field::dati", "dec":"ntl" }},
+        { "name": "fields", "type":{ "base":"struct discord_guild_membership_screening_field_dati", "dec":"ntl" }},
         { "name": "description", "type":{ "base":"char", "dec":"*" }}
       ]
     }

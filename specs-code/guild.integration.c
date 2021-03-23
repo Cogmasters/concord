@@ -193,7 +193,7 @@ void discord_guild_integration_application_dati_from_json(char *json, size_t len
   */
                 "(summary):?s,"
   /* specs/guild.integration.json:38:19
-     '{ "name":"bot", "type":{ "base":"discord::user::dati", "dec":"*" }, "option":true}'
+     '{ "name":"bot", "type":{ "base":"struct discord_user_dati", "dec":"*" }, "option":true}'
   */
                 "(bot):F,"
                 "@arg_switches:b"
@@ -220,9 +220,9 @@ void discord_guild_integration_application_dati_from_json(char *json, size_t len
   */
                 &p->summary,
   /* specs/guild.integration.json:38:19
-     '{ "name":"bot", "type":{ "base":"discord::user::dati", "dec":"*" }, "option":true}'
+     '{ "name":"bot", "type":{ "base":"struct discord_user_dati", "dec":"*" }, "option":true}'
   */
-                discord_user_dati_from_json, p->bot,
+                struct discord_user_dati_from_json, p->bot,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
                 p->__M.record_null, sizeof(p->__M.record_null));
@@ -258,7 +258,7 @@ static void discord_guild_integration_application_dati_use_default_inject_settin
   p->__M.arg_switches[4] = p->summary;
 
   /* specs/guild.integration.json:38:19
-     '{ "name":"bot", "type":{ "base":"discord::user::dati", "dec":"*" }, "option":true}'
+     '{ "name":"bot", "type":{ "base":"struct discord_user_dati", "dec":"*" }, "option":true}'
   */
   p->__M.arg_switches[5] = p->bot;
 
@@ -290,7 +290,7 @@ size_t discord_guild_integration_application_dati_to_json(char *json, size_t len
   */
                 "(summary):s,"
   /* specs/guild.integration.json:38:19
-     '{ "name":"bot", "type":{ "base":"discord::user::dati", "dec":"*" }, "option":true}'
+     '{ "name":"bot", "type":{ "base":"struct discord_user_dati", "dec":"*" }, "option":true}'
   */
                 "(bot):F,"
                 "@arg_switches:b",
@@ -315,9 +315,9 @@ size_t discord_guild_integration_application_dati_to_json(char *json, size_t len
   */
                 p->summary,
   /* specs/guild.integration.json:38:19
-     '{ "name":"bot", "type":{ "base":"discord::user::dati", "dec":"*" }, "option":true}'
+     '{ "name":"bot", "type":{ "base":"struct discord_user_dati", "dec":"*" }, "option":true}'
   */
-                discord_user_dati_to_json, p->bot,
+                struct discord_user_dati_to_json, p->bot,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
 }
@@ -384,10 +384,10 @@ void discord_guild_integration_application_dati_cleanup(struct discord_guild_int
   if (d->summary)
     free(d->summary);
   /* specs/guild.integration.json:38:19
-     '{ "name":"bot", "type":{ "base":"discord::user::dati", "dec":"*" }, "option":true}'
+     '{ "name":"bot", "type":{ "base":"struct discord_user_dati", "dec":"*" }, "option":true}'
   */
   if (d->bot)
-    discord_user_dati_free(d->bot);
+    struct discord_user_dati_free(d->bot);
 }
 
 void discord_guild_integration_application_dati_init(struct discord_guild_integration_application_dati *p) {
@@ -413,9 +413,9 @@ void discord_guild_integration_application_dati_init(struct discord_guild_integr
   */
 
   /* specs/guild.integration.json:38:19
-     '{ "name":"bot", "type":{ "base":"discord::user::dati", "dec":"*" }, "option":true}'
+     '{ "name":"bot", "type":{ "base":"struct discord_user_dati", "dec":"*" }, "option":true}'
   */
-  p->bot = discord_user_dati_alloc();
+  p->bot = struct discord_user_dati_alloc();
 
 }
 struct discord_guild_integration_application_dati* discord_guild_integration_application_dati_alloc() {
@@ -484,7 +484,7 @@ void discord_guild_integration_dati_from_json(char *json, size_t len, struct dis
   */
                 "(enable_emotions):b,"
   /* specs/guild.integration.json:55:20
-     '{ "name": "expire_behavior", "type":{ "base":"int", "int_alias":"discord::guild::integration::expire_behaviors::code"}}'
+     '{ "name": "expire_behavior", "type":{ "base":"int", "int_alias":"enum discord_guild_integration_expire_behaviors_code"}}'
   */
                 "(expire_behavior):d,"
   /* specs/guild.integration.json:56:20
@@ -492,11 +492,11 @@ void discord_guild_integration_dati_from_json(char *json, size_t len, struct dis
   */
                 "(expire_grace_period):d,"
   /* specs/guild.integration.json:57:20
-     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*"}, "opt":true}'
+     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*"}, "opt":true}'
   */
                 "(user):F,"
   /* specs/guild.integration.json:58:20
-     '{ "name": "account", "type":{ "base":"discord::guild::integration::account::dati", "dec":"*"}}'
+     '{ "name": "account", "type":{ "base":"struct discord_guild_integration_account_dati", "dec":"*"}}'
   */
                 "(account):F,"
   /* specs/guild.integration.json:59:20
@@ -512,7 +512,7 @@ void discord_guild_integration_dati_from_json(char *json, size_t len, struct dis
   */
                 "(revoked):b,"
   /* specs/guild.integration.json:62:20
-     '{ "name": "application", "type":{ "base":"discord::guild::integration::application::dati", "dec":"*" }}'
+     '{ "name": "application", "type":{ "base":"struct discord_guild_integration_application_dati", "dec":"*" }}'
   */
                 "(application):F,"
                 "@arg_switches:b"
@@ -547,7 +547,7 @@ void discord_guild_integration_dati_from_json(char *json, size_t len, struct dis
   */
                 &p->enable_emotions,
   /* specs/guild.integration.json:55:20
-     '{ "name": "expire_behavior", "type":{ "base":"int", "int_alias":"discord::guild::integration::expire_behaviors::code"}}'
+     '{ "name": "expire_behavior", "type":{ "base":"int", "int_alias":"enum discord_guild_integration_expire_behaviors_code"}}'
   */
                 &p->expire_behavior,
   /* specs/guild.integration.json:56:20
@@ -555,13 +555,13 @@ void discord_guild_integration_dati_from_json(char *json, size_t len, struct dis
   */
                 &p->expire_grace_period,
   /* specs/guild.integration.json:57:20
-     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*"}, "opt":true}'
+     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*"}, "opt":true}'
   */
-                discord_user_dati_from_json, p->user,
+                struct discord_user_dati_from_json, p->user,
   /* specs/guild.integration.json:58:20
-     '{ "name": "account", "type":{ "base":"discord::guild::integration::account::dati", "dec":"*"}}'
+     '{ "name": "account", "type":{ "base":"struct discord_guild_integration_account_dati", "dec":"*"}}'
   */
-                discord_guild_integration_account_dati_from_json, p->account,
+                struct discord_guild_integration_account_dati_from_json, p->account,
   /* specs/guild.integration.json:59:20
      '{ "name": "synced_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601"}}'
   */
@@ -575,9 +575,9 @@ void discord_guild_integration_dati_from_json(char *json, size_t len, struct dis
   */
                 &p->revoked,
   /* specs/guild.integration.json:62:20
-     '{ "name": "application", "type":{ "base":"discord::guild::integration::application::dati", "dec":"*" }}'
+     '{ "name": "application", "type":{ "base":"struct discord_guild_integration_application_dati", "dec":"*" }}'
   */
-                discord_guild_integration_application_dati_from_json, p->application,
+                struct discord_guild_integration_application_dati_from_json, p->application,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
                 p->__M.record_null, sizeof(p->__M.record_null));
@@ -623,7 +623,7 @@ static void discord_guild_integration_dati_use_default_inject_settings(struct di
   p->__M.arg_switches[6] = &p->enable_emotions;
 
   /* specs/guild.integration.json:55:20
-     '{ "name": "expire_behavior", "type":{ "base":"int", "int_alias":"discord::guild::integration::expire_behaviors::code"}}'
+     '{ "name": "expire_behavior", "type":{ "base":"int", "int_alias":"enum discord_guild_integration_expire_behaviors_code"}}'
   */
   p->__M.arg_switches[7] = &p->expire_behavior;
 
@@ -633,12 +633,12 @@ static void discord_guild_integration_dati_use_default_inject_settings(struct di
   p->__M.arg_switches[8] = &p->expire_grace_period;
 
   /* specs/guild.integration.json:57:20
-     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*"}, "opt":true}'
+     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*"}, "opt":true}'
   */
   p->__M.arg_switches[9] = p->user;
 
   /* specs/guild.integration.json:58:20
-     '{ "name": "account", "type":{ "base":"discord::guild::integration::account::dati", "dec":"*"}}'
+     '{ "name": "account", "type":{ "base":"struct discord_guild_integration_account_dati", "dec":"*"}}'
   */
   p->__M.arg_switches[10] = p->account;
 
@@ -658,7 +658,7 @@ static void discord_guild_integration_dati_use_default_inject_settings(struct di
   p->__M.arg_switches[13] = &p->revoked;
 
   /* specs/guild.integration.json:62:20
-     '{ "name": "application", "type":{ "base":"discord::guild::integration::application::dati", "dec":"*" }}'
+     '{ "name": "application", "type":{ "base":"struct discord_guild_integration_application_dati", "dec":"*" }}'
   */
   p->__M.arg_switches[14] = p->application;
 
@@ -698,7 +698,7 @@ size_t discord_guild_integration_dati_to_json(char *json, size_t len, struct dis
   */
                 "(enable_emotions):b,"
   /* specs/guild.integration.json:55:20
-     '{ "name": "expire_behavior", "type":{ "base":"int", "int_alias":"discord::guild::integration::expire_behaviors::code"}}'
+     '{ "name": "expire_behavior", "type":{ "base":"int", "int_alias":"enum discord_guild_integration_expire_behaviors_code"}}'
   */
                 "(expire_behavior):d,"
   /* specs/guild.integration.json:56:20
@@ -706,11 +706,11 @@ size_t discord_guild_integration_dati_to_json(char *json, size_t len, struct dis
   */
                 "(expire_grace_period):d,"
   /* specs/guild.integration.json:57:20
-     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*"}, "opt":true}'
+     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*"}, "opt":true}'
   */
                 "(user):F,"
   /* specs/guild.integration.json:58:20
-     '{ "name": "account", "type":{ "base":"discord::guild::integration::account::dati", "dec":"*"}}'
+     '{ "name": "account", "type":{ "base":"struct discord_guild_integration_account_dati", "dec":"*"}}'
   */
                 "(account):F,"
   /* specs/guild.integration.json:59:20
@@ -726,7 +726,7 @@ size_t discord_guild_integration_dati_to_json(char *json, size_t len, struct dis
   */
                 "(revoked):b,"
   /* specs/guild.integration.json:62:20
-     '{ "name": "application", "type":{ "base":"discord::guild::integration::application::dati", "dec":"*" }}'
+     '{ "name": "application", "type":{ "base":"struct discord_guild_integration_application_dati", "dec":"*" }}'
   */
                 "(application):F,"
                 "@arg_switches:b",
@@ -759,7 +759,7 @@ size_t discord_guild_integration_dati_to_json(char *json, size_t len, struct dis
   */
                 &p->enable_emotions,
   /* specs/guild.integration.json:55:20
-     '{ "name": "expire_behavior", "type":{ "base":"int", "int_alias":"discord::guild::integration::expire_behaviors::code"}}'
+     '{ "name": "expire_behavior", "type":{ "base":"int", "int_alias":"enum discord_guild_integration_expire_behaviors_code"}}'
   */
                 &p->expire_behavior,
   /* specs/guild.integration.json:56:20
@@ -767,13 +767,13 @@ size_t discord_guild_integration_dati_to_json(char *json, size_t len, struct dis
   */
                 &p->expire_grace_period,
   /* specs/guild.integration.json:57:20
-     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*"}, "opt":true}'
+     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*"}, "opt":true}'
   */
-                discord_user_dati_to_json, p->user,
+                struct discord_user_dati_to_json, p->user,
   /* specs/guild.integration.json:58:20
-     '{ "name": "account", "type":{ "base":"discord::guild::integration::account::dati", "dec":"*"}}'
+     '{ "name": "account", "type":{ "base":"struct discord_guild_integration_account_dati", "dec":"*"}}'
   */
-                discord_guild_integration_account_dati_to_json, p->account,
+                struct discord_guild_integration_account_dati_to_json, p->account,
   /* specs/guild.integration.json:59:20
      '{ "name": "synced_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601"}}'
   */
@@ -787,9 +787,9 @@ size_t discord_guild_integration_dati_to_json(char *json, size_t len, struct dis
   */
                 &p->revoked,
   /* specs/guild.integration.json:62:20
-     '{ "name": "application", "type":{ "base":"discord::guild::integration::application::dati", "dec":"*" }}'
+     '{ "name": "application", "type":{ "base":"struct discord_guild_integration_application_dati", "dec":"*" }}'
   */
-                discord_guild_integration_application_dati_to_json, p->application,
+                struct discord_guild_integration_application_dati_to_json, p->application,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
 }
@@ -863,7 +863,7 @@ void discord_guild_integration_dati_cleanup(struct discord_guild_integration_dat
   */
   //p->enable_emotions is a scalar
   /* specs/guild.integration.json:55:20
-     '{ "name": "expire_behavior", "type":{ "base":"int", "int_alias":"discord::guild::integration::expire_behaviors::code"}}'
+     '{ "name": "expire_behavior", "type":{ "base":"int", "int_alias":"enum discord_guild_integration_expire_behaviors_code"}}'
   */
   //p->expire_behavior is a scalar
   /* specs/guild.integration.json:56:20
@@ -871,15 +871,15 @@ void discord_guild_integration_dati_cleanup(struct discord_guild_integration_dat
   */
   //p->expire_grace_period is a scalar
   /* specs/guild.integration.json:57:20
-     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*"}, "opt":true}'
+     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*"}, "opt":true}'
   */
   if (d->user)
-    discord_user_dati_free(d->user);
+    struct discord_user_dati_free(d->user);
   /* specs/guild.integration.json:58:20
-     '{ "name": "account", "type":{ "base":"discord::guild::integration::account::dati", "dec":"*"}}'
+     '{ "name": "account", "type":{ "base":"struct discord_guild_integration_account_dati", "dec":"*"}}'
   */
   if (d->account)
-    discord_guild_integration_account_dati_free(d->account);
+    struct discord_guild_integration_account_dati_free(d->account);
   /* specs/guild.integration.json:59:20
      '{ "name": "synced_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601"}}'
   */
@@ -893,10 +893,10 @@ void discord_guild_integration_dati_cleanup(struct discord_guild_integration_dat
   */
   //p->revoked is a scalar
   /* specs/guild.integration.json:62:20
-     '{ "name": "application", "type":{ "base":"discord::guild::integration::application::dati", "dec":"*" }}'
+     '{ "name": "application", "type":{ "base":"struct discord_guild_integration_application_dati", "dec":"*" }}'
   */
   if (d->application)
-    discord_guild_integration_application_dati_free(d->application);
+    struct discord_guild_integration_application_dati_free(d->application);
 }
 
 void discord_guild_integration_dati_init(struct discord_guild_integration_dati *p) {
@@ -930,7 +930,7 @@ void discord_guild_integration_dati_init(struct discord_guild_integration_dati *
   */
 
   /* specs/guild.integration.json:55:20
-     '{ "name": "expire_behavior", "type":{ "base":"int", "int_alias":"discord::guild::integration::expire_behaviors::code"}}'
+     '{ "name": "expire_behavior", "type":{ "base":"int", "int_alias":"enum discord_guild_integration_expire_behaviors_code"}}'
   */
 
   /* specs/guild.integration.json:56:20
@@ -938,14 +938,14 @@ void discord_guild_integration_dati_init(struct discord_guild_integration_dati *
   */
 
   /* specs/guild.integration.json:57:20
-     '{ "name": "user", "type":{ "base":"discord::user::dati", "dec":"*"}, "opt":true}'
+     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*"}, "opt":true}'
   */
-  p->user = discord_user_dati_alloc();
+  p->user = struct discord_user_dati_alloc();
 
   /* specs/guild.integration.json:58:20
-     '{ "name": "account", "type":{ "base":"discord::guild::integration::account::dati", "dec":"*"}}'
+     '{ "name": "account", "type":{ "base":"struct discord_guild_integration_account_dati", "dec":"*"}}'
   */
-  p->account = discord_guild_integration_account_dati_alloc();
+  p->account = struct discord_guild_integration_account_dati_alloc();
 
   /* specs/guild.integration.json:59:20
      '{ "name": "synced_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601"}}'
@@ -960,9 +960,9 @@ void discord_guild_integration_dati_init(struct discord_guild_integration_dati *
   */
 
   /* specs/guild.integration.json:62:20
-     '{ "name": "application", "type":{ "base":"discord::guild::integration::application::dati", "dec":"*" }}'
+     '{ "name": "application", "type":{ "base":"struct discord_guild_integration_application_dati", "dec":"*" }}'
   */
-  p->application = discord_guild_integration_application_dati_alloc();
+  p->application = struct discord_guild_integration_application_dati_alloc();
 
 }
 struct discord_guild_integration_dati* discord_guild_integration_dati_alloc() {
