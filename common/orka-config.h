@@ -5,6 +5,7 @@
 extern "C" {
 #endif // __cplusplus
 
+#include <stdbool.h>
 #include "ntl.h"
 
 

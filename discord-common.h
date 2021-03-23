@@ -55,6 +55,7 @@ typedef uint64_t u64_snowflake_t;
 #include "./specs-code/all_enums.h"
 #include "./specs-code/all_structs.h"
 
+struct discord_client; // forward declaration
 
 /* IDLE CALLBACK (runs on every iteration, no trigger required) */
 typedef void (idle_cb)(struct discord_client *client, const struct discord_user_dati *me);

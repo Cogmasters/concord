@@ -2,6 +2,7 @@
 #define USER_AGENT_H
 
 #include <inttypes.h>
+#include <stdbool.h>
 #include <curl/curl.h>
 #include <pthread.h>
 
