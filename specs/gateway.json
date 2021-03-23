@@ -137,11 +137,10 @@
     },
     {
       "namespace": ["identify", "status_update", "activity", "types"],
-      "namespaces": [["presence"]],
       "title":"Activity Types",
       "comment": "https://discord.com/developers/docs/topics/gateway#activity-object-activity-types",
       "enum":"code",
-      "fields":
+      "items":
       [
         { "name":"GAME","value":0},
         { "name":"STREAMING","value":1}, 

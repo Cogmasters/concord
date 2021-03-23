@@ -42,13 +42,13 @@ static void discord_channel_overwrite_dati_use_default_inject_settings(struct di
   p->__M.arg_switches[1] = &p->type;
 
   /* specs/channel.objects.json:15:20
-     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"discord_permissions_bitwise_flags"}, 
+     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"}, 
           "comment":"permission bit set"}'
   */
   p->__M.arg_switches[2] = &p->allow;
 
   /* specs/channel.objects.json:17:20
-     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"discord_permissions_bitwise_flags"}, 
+     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"}, 
           "comment":"permission bit set"}'
   */
   p->__M.arg_switches[3] = &p->deny;
@@ -122,12 +122,12 @@ void discord_channel_overwrite_dati_cleanup(struct discord_channel_overwrite_dat
   */
   //p->type is a scalar
   /* specs/channel.objects.json:15:20
-     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"discord_permissions_bitwise_flags"}, 
+     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"}, 
           "comment":"permission bit set"}'
   */
   //p->allow is a scalar
   /* specs/channel.objects.json:17:20
-     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"discord_permissions_bitwise_flags"}, 
+     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"}, 
           "comment":"permission bit set"}'
   */
   //p->deny is a scalar
@@ -144,12 +144,12 @@ void discord_channel_overwrite_dati_init(struct discord_channel_overwrite_dati *
   */
 
   /* specs/channel.objects.json:15:20
-     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"discord_permissions_bitwise_flags"}, 
+     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"}, 
           "comment":"permission bit set"}'
   */
 
   /* specs/channel.objects.json:17:20
-     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"discord_permissions_bitwise_flags"}, 
+     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"}, 
           "comment":"permission bit set"}'
   */
 

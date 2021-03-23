@@ -1825,16 +1825,16 @@ struct discord_channel_overwrite_dati {
   int type;
 
   /* specs/channel.objects.json:15:20
-     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"discord_permissions_bitwise_flags"}, 
+     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"}, 
           "comment":"permission bit set"}'
   */
-  discord_permissions_bitwise_flags allow; // permission bit set
+  enum discord_permissions_bitwise_flags allow; // permission bit set
 
   /* specs/channel.objects.json:17:20
-     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"discord_permissions_bitwise_flags"}, 
+     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"}, 
           "comment":"permission bit set"}'
   */
-  discord_permissions_bitwise_flags deny; // permission bit set
+  enum discord_permissions_bitwise_flags deny; // permission bit set
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected

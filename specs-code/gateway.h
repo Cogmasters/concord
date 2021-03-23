@@ -328,8 +328,9 @@ extern size_t discord_gateway_identify_status_update_activity_dati_list_to_json(
 
 
 enum discord_gateway_identify_status_update_activity_types_code {
-};
-
-
-enum discord_gateway_presence_code {
+  DISCORD_GATEWAY_IDENTIFY_STATUS_UPDATE_ACTIVITY_TYPES_GAME = 0,
+  DISCORD_GATEWAY_IDENTIFY_STATUS_UPDATE_ACTIVITY_TYPES_STREAMING = 1,
+  DISCORD_GATEWAY_IDENTIFY_STATUS_UPDATE_ACTIVITY_TYPES_LISTENING = 2,
+  DISCORD_GATEWAY_IDENTIFY_STATUS_UPDATE_ACTIVITY_TYPES_CUSTOM = 4,
+  DISCORD_GATEWAY_IDENTIFY_STATUS_UPDATE_ACTIVITY_TYPES_COMPETING = 5,
 };
