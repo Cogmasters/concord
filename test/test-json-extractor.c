@@ -35,6 +35,11 @@ int main ()
   json_extract(json, strlen(json), "[d, d, d]", &i, &j, &k);
   fprintf (stderr, "%d, %d, %d\n", i, j, k);
 
+  char *key;
+  bool  flag;
+  json = "{\"a\":true}";
+  json_extract(json, strlen(json), "(*):b", &key, &flag);
+  fprintf (stderr, "%s:%d\n", key, flag);
 
   json = "{\n"
     "\t\"discord\": {\n"
