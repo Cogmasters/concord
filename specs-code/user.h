@@ -23,6 +23,9 @@ enum discord_user_flags_code {
 
 
 enum discord_user_premium_types_code {
+  DISCORD_USER_PREMIUM_TYPES_NONE = 0,
+  DISCORD_USER_PREMIUM_TYPES_NITRO_CLASSIC = 1,
+  DISCORD_USER_PREMIUM_TYPES_NITRO = 2,
 };
 
 /* Title: User Structure */

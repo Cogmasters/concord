@@ -32,7 +32,7 @@
         "comment":"https://discord.com/developers/docs/resources/user#user-object-premium-types",
 	    "namespace":["premium_types"],
 	    "enum":"code",
-	    "item":
+	    "items":
 	    [
 		{"name":"NONE", "value":0},
 		{"name":"NITRO_CLASSIC"},
