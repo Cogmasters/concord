@@ -36,13 +36,13 @@ DB_OBJS      := $(DB_SRC:%=$(OBJDIR)/%.o)
 OBJS := $(COMMON_OBJS) $(DISCORD_OBJS) $(GITHUB_OBJS) $(ORKA_OBJS)
 
 BOT_SRC  := $(wildcard bots/bot-*.c)
-BOT_EXES := $(patsubst %.cpp, %.exe, $(BOT_SRC))
+BOT_EXES := $(patsubst %.c, %.exe, $(BOT_SRC))
 
 BOT1_SRC := $(wildcard bots-1/bot-*.c)
-BOT1_EXES := $(patsubst %.cpp, %.b1, $(BOT1_SRC))
+BOT1_EXES := $(patsubst %.c, %.b1, $(BOT1_SRC))
 
 BOT2_SRC := $(wildcard bots-2/bot-*.c)
-BOT2_EXES := $(patsubst %.cpp, %.b2, $(BOT2_SRC))
+BOT2_EXES := $(patsubst %.c, %.b2, $(BOT2_SRC))
 
 TEST_SRC := $(wildcard test/test-*.cpp test/test-*.c)
 TEST_EXES := $(filter %.exe, $(TEST_SRC:.cpp=.exe) $(TEST_SRC:.c=.exe))
