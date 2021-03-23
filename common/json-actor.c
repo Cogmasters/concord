@@ -9,7 +9,7 @@
  *                | <access-path-value-list> <pointer-availability>? <defined>
  *                | [ # ]
  *
- * <access-path> := (<key>) | (<key>) <access-path>
+ * <access-path> := (<key>) | (*) | (<key>) <access-path>
  *
  * <value> := true | false | null | <int> | <float> | <string-literal>
  *            | <composite-value> | <action>
@@ -170,6 +170,7 @@ static char POP(struct stack * s)
 
 struct access_path {
   struct sized_buffer key;
+  bool is_star; // match any key and get its value
   struct access_path * next;
 };
 
@@ -250,6 +251,7 @@ struct action {
   struct fmt_arg fmt_args[8]; // no more than 8 arguments
   void * operand;
   struct size_specifier mem_size; // this designates the memory size of _;
+  void *key;
 };
 
 enum ptr_map_tag {
@@ -912,6 +914,8 @@ parse_access_path_value(
 
   curr_path->key.start = start_pos + 1;
   curr_path->key.size = len;
+  if (len == 1 && *(start_pos+1) == '*')
+    curr_path->is_star = true;
 
   if (')' == *pos)
     ++pos; // eat up ')'
@@ -921,6 +925,9 @@ parse_access_path_value(
   {
     case '(':
     case '.':
+      if (curr_path->is_star)
+        ERR("'*' has to be the final key");
+
       next_path = calloc(1, sizeof(struct access_path));
       curr_path->next = next_path;
       return parse_access_path_value(stack, pos, end_pos - pos, av, next_path);
@@ -1089,7 +1096,7 @@ parse_actor(
       pos = parse_access_path_value_list(stack, pos, end_pos - pos, &cv->_.pairs);
     }
     SKIP_SPACES(pos, end_pos);
-    char * next_pos = NULL;
+    char *next_pos = NULL;
     if ('@' == *pos && parse_pointer_maps(pos, end_pos - pos, cv->maps, &next_pos))
       pos = next_pos;
     SKIP_SPACES(pos, end_pos);
@@ -1175,6 +1182,11 @@ get_composite_value_operand_addrs (
   if(cv->is_object)
     for (size_t i = 0; i < cv->_.pairs.size; i++) {
       apv = cv->_.pairs.pos + i;
+      if (apv->path.is_star && apv->path.next == NULL) {
+        rec->addrs[rec->pos] = &(apv->value._.action.key);
+        rec->types[rec->pos] = ARG_PTR;
+        rec->pos++;
+      }
       get_value_operand_addrs(&apv->value, rec);
     }
   else
@@ -2265,6 +2277,12 @@ extract_object_value (
         //print_tok(stderr, json, t, key_idx);
         ret += extract_access_path(val_idx, p, p->path.next, info);
       }
+      else if (p->path.is_star) {
+        size_t ksize = tokens[key_idx].end - tokens[key_idx].start;
+        asprintf((char **)(p->value._.action.key),
+                 "%.*s", ksize, json + tokens[key_idx].start);
+        ret += extract_access_path(val_idx, p, p->path.next, info);
+      }
     }
 
     nkeys ++;
@@ -2622,3 +2640,57 @@ query_inject(char *query, size_t size, char *injector, ...)
   return used_bytes;
 }
 
+static int
+json_to_sized_buffer_ntl
+  (char *json, size_t size, NTL_T(struct sized_buffer) *p)
+{
+  jsmn_parser parser;
+  jsmn_init(&parser);
+  jsmntok_t * tokens = NULL;
+  int num_tok = jsmn_parse(&parser, json, size, NULL, 0);
+  DS_PRINT("# of tokens = %d", num_tok);
+  if (num_tok < 0)
+    ERR("Failed to parse JSON: %.*s, returned token number: %d",
+        (int)size, json, num_tok);
+
+  tokens = malloc(sizeof(jsmntok_t) * num_tok);
+  jsmn_init(&parser);
+  num_tok = jsmn_parse(&parser, json, size, tokens, num_tok);
+
+  if (num_tok < 0)
+    ERR("Invalid JSON %.*s", (int)size, json);
+
+  /* Assume the top-level element is an object */
+  if (!(tokens[0].type == JSMN_OBJECT || tokens[0].type == JSMN_ARRAY))
+    ERR("Found %d, Object or array expected", tokens[0].type);
+
+  for (int i = 0; i < num_tok; i++) {
+    //print_tok(stderr, json, tokens, i);
+  }
+
+  struct sized_buffer **token_array = NULL;
+  int n = tokens[0].size;
+  token_array = ntl_calloc(n, sizeof(struct sized_buffer));
+
+  int idx, ic;
+  for (idx = 0, ic = 0 + 1; ic < num_tok && idx < n; ic++) {
+    if (tokens[ic].parent != 0)
+      continue;
+    token_array[idx]->start = json + tokens[ic].start;
+    token_array[idx]->size = tokens[ic].end - tokens[ic].start;
+    ++idx;
+  }
+  free(tokens);
+  *p = token_array;
+  return n;
+}
+
+size_t
+extract_ntl_from_json(
+  char *buf,
+  size_t len,
+  struct ntl_deserializer *ntl_deserializer)
+{
+  ntl_deserializer->partition_as_sized_bufs = json_to_sized_buffer_ntl;
+  return ntl_from_buf(buf, len, ntl_deserializer);
+}

@@ -158,7 +158,8 @@ static void load_converters(char *filename)
     .elem_size = sizeof(struct converter),
     .elem_from_buf = (vcpsvp)load_converter
   };
-  orka_str_to_ntl(data, len, &d);
+  extract_ntl_from_json(data, len, &d);
+  //orka_str_to_ntl(data, len, &d);
 }
 
 static struct converter* get_converter(char *name) {
@@ -580,7 +581,8 @@ namespace_from_json(char *json, size_t size, NTL_T(name_t) *ns_p)
     .ntl_recipient_p = (ntl_t *)ns_p
   };
 
-  return orka_str_to_ntl(json, size, &d0);
+  //return orka_str_to_ntl(json, size, &d0);
+  return extract_ntl_from_json(json, size, &d0);
 }
 
 static size_t struct_from_json(char *json, size_t size, struct jc_struct *s)
@@ -603,9 +605,9 @@ static size_t struct_from_json(char *json, size_t size, struct jc_struct *s)
                             "(disable_methods):F,"
                             "(disable_methods):lnc,"
                             "(fields):F",
-                            orka_str_to_ntl, &dx,
+                            extract_ntl_from_json, &dx,
                             &s->disable_methods_lnc,
-                            orka_str_to_ntl, &d1);
+                            extract_ntl_from_json, &d1);
 
   adjust_lnc(json, &s->disable_methods_lnc);
   return ret;
@@ -646,7 +648,7 @@ static size_t enum_from_json(char * json, size_t size, struct jc_enum *e)
 
   size_t ret = json_extract(json, size,
                             "(items):F",
-                            orka_str_to_ntl, &d1);
+                            extract_ntl_from_json, &d1);
   return ret;
 }
 
@@ -678,8 +680,8 @@ static size_t def_from_json(char *json, size_t size, struct jc_def *def)
                "(struct):lnc",
                &def->comment,
                &def->title,
-               orka_str_to_ntl, &d0,
-               orka_str_to_ntl, &d0_alias,
+               extract_ntl_from_json, &d0,
+               extract_ntl_from_json, &d0_alias,
                &def->typedef_name,
                &is_struct, &is_enum,
                &def->name, &def->name,
@@ -799,8 +801,8 @@ definition_from_json(char *json, size_t size, struct jc_definition *s)
                             "(defs):F",
                             &s->is_disabled,
                             &s->comment,
-                            orka_str_to_ntl, &d1,
-                            orka_str_to_ntl, &d2);
+                            extract_ntl_from_json, &d1,
+                            extract_ntl_from_json, &d2);
   return ret;
 }
 
@@ -814,7 +816,7 @@ definition_list_from_json(char *json, size_t size,
     .init_elem = NULL,
     .ntl_recipient_p = (ntl_t *)s
   };
-  return orka_str_to_ntl(json, size, &d);
+  return extract_ntl_from_json(json, size, &d);
 }
 
 static size_t spec_from_json(char *json, size_t size,
@@ -1130,7 +1132,7 @@ static void gen_default(FILE *fp, struct jc_struct *s)
   fprintf(fp, "  d.init_elem = %s_init_v;\n", type);
   fprintf(fp, "  d.elem_from_buf = %s_from_json_v;\n", type);
   fprintf(fp, "  d.ntl_recipient_p= (void***)p;\n");
-  fprintf(fp, "  orka_str_to_ntl(str, len, &d);\n");
+  fprintf(fp, "  extract_ntl_from_json(str, len, &d);\n");
   fprintf(fp, "}\n\n");
 
   fprintf(fp, "size_t %s_list_to_json(char *str, size_t len, struct %s **p)\n",
