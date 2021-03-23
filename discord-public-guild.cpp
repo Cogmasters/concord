@@ -5,12 +5,9 @@
 #include <libdiscord.h>
 #include "orka-utils.h"
 
-namespace discord {
-namespace guild {
 
-namespace get_guild {
 void
-run(discord::client *client, const u64_snowflake_t guild_id, dati *p_guild)
+discord_get_guild(discord::client *client, const u64_snowflake_t guild_id, discord::guild::dati *p_guild)
 {
   if (!guild_id) {
     D_PUTS("Missing 'guild_id'");
@@ -27,34 +24,9 @@ run(discord::client *client, const u64_snowflake_t guild_id, dati *p_guild)
     HTTP_GET, 
     "/guilds/%llu", guild_id);
 }
-} // namespace get_guild
 
-namespace get_channels {
-void
-run(
-  discord::client *client, 
-  const u64_snowflake_t guild_id, 
-  NTL_T(discord::channel::dati) *p_channels)
-{
-  if (!guild_id) {
-    D_PUTS("Missing 'guild_id'");
-    return;
-  }
-
-  struct resp_handle resp_handle = 
-    { .ok_cb = &discord::channel::dati_list_from_json_v, .ok_obj = (void*)p_channels};
-
-  discord::adapter::run( 
-    &client->adapter,
-    &resp_handle,
-    NULL,
-    HTTP_GET, 
-    "/guilds/%llu/channels", guild_id);
-}
-} // namespace get_channels
-
-namespace create_channel {
-void run(
+void 
+discord_create_channel(
   discord::client *client, 
   const u64_snowflake_t guild_id, 
   discord::guild::create_channel::params *params, 
@@ -89,11 +61,30 @@ void run(
     &req_body,
     HTTP_POST, "/guilds/%llu/channels", guild_id);
 }
-} // namespace create_channel
+void
+discord_get_channels(
+  discord::client *client, 
+  const u64_snowflake_t guild_id, 
+  NTL_T(discord::channel::dati) *p_channels)
+{
+  if (!guild_id) {
+    D_PUTS("Missing 'guild_id'");
+    return;
+  }
 
-namespace get_guild_member {
+  struct resp_handle resp_handle = 
+    { .ok_cb = &discord::channel::dati_list_from_json_v, .ok_obj = (void*)p_channels};
+
+  discord::adapter::run( 
+    &client->adapter,
+    &resp_handle,
+    NULL,
+    HTTP_GET, 
+    "/guilds/%llu/channels", guild_id);
+}
+
 void 
-run(discord::client *client, u64_snowflake_t guild_id, u64_snowflake_t user_id, discord::guild::member::dati **p_member) 
+discord_get_guild_member(discord::client *client, u64_snowflake_t guild_id, u64_snowflake_t user_id, discord::guild::member::dati **p_member) 
 {
   if (!guild_id) {
     D_PUTS("Missing 'guild_id'");
@@ -119,11 +110,9 @@ run(discord::client *client, u64_snowflake_t guild_id, u64_snowflake_t user_id, 
     HTTP_GET, "/guilds/%llu/members/%llu", guild_id, user_id);
   D_PRINT("permssion %s\n", (*p_member)->permissions);
 }
-} // namespace get_guild_member
 
-namespace list_guild_members {
 void
-run(
+discord_list_guild_members(
   discord::client *client, 
   const u64_snowflake_t guild_id, 
   struct discord::guild::list_guild_members::params *params, 
@@ -158,11 +147,31 @@ run(
     HTTP_GET,
     "/guilds/%llu/members%s%s", guild_id, limit_query, after_query);
 }
-} // namespace list_guild_members
 
-namespace modify_guild_member {
 void 
-run(
+discord_remove_guild_member(
+  discord::client *client, 
+  const u64_snowflake_t guild_id, 
+  const u64_snowflake_t user_id)
+{
+  if (!guild_id) {
+    D_PUTS("Missing 'guild_id'");
+    return;
+  }
+  if (!user_id) {
+    D_PUTS("Missing 'user_id'");
+    return;
+  }
+
+  discord::adapter::run(
+    &client->adapter,
+    NULL,
+    NULL,
+    HTTP_DELETE,
+    "/guilds/%llu/members/%llu", guild_id, user_id);
+}
+void 
+discord_modify_guild_member(
   discord::client *client, 
   const u64_snowflake_t guild_id, 
   const u64_snowflake_t user_id, 
@@ -194,58 +203,9 @@ run(
     &req_body,
     HTTP_PATCH, "/guilds/%llu/members/%llu", guild_id, user_id);
 }
-} // namespace modify_guild_member
 
-namespace remove_guild_member {
-void run(
-  discord::client *client, 
-  const u64_snowflake_t guild_id, 
-  const u64_snowflake_t user_id)
-{
-  if (!guild_id) {
-    D_PUTS("Missing 'guild_id'");
-    return;
-  }
-  if (!user_id) {
-    D_PUTS("Missing 'user_id'");
-    return;
-  }
-
-  discord::adapter::run(
-    &client->adapter,
-    NULL,
-    NULL,
-    HTTP_DELETE,
-    "/guilds/%llu/members/%llu", guild_id, user_id);
-}
-} // namespace remove_guild_member
-
-namespace get_guild_bans {
 void
-run(
-  discord::client *client, 
-  const u64_snowflake_t guild_id, 
-  NTL_T(discord::guild::ban::dati) *p_bans)
-{
-  if (!guild_id) {
-    D_PUTS("Missing 'guild_id'");
-    return;
-  }
-
-  struct resp_handle resp_handle =
-    { .ok_cb = &discord::guild::ban::dati_list_from_json_v, .ok_obj = (void*)p_bans};
-
-  discord::adapter::run( 
-    &client->adapter,
-    &resp_handle,
-    NULL,
-    HTTP_GET, "/guilds/%llu/bans", guild_id);
-}
-} // namespace get_guild_bans
-
-namespace get_guild_ban {
-void
-run(
+discord_get_guild_ban(
   discord::client *client, 
   const u64_snowflake_t guild_id, 
   const u64_snowflake_t user_id, 
@@ -269,11 +229,29 @@ run(
     NULL,
     HTTP_GET, "/guilds/%llu/bans/%llu", guild_id, user_id);
 }
-} // namespace get_guild_ban
-
-namespace create_guild_ban {
 void
-run(
+discord_get_guild_bans(
+  discord::client *client, 
+  const u64_snowflake_t guild_id, 
+  NTL_T(discord::guild::ban::dati) *p_bans)
+{
+  if (!guild_id) {
+    D_PUTS("Missing 'guild_id'");
+    return;
+  }
+
+  struct resp_handle resp_handle =
+    { .ok_cb = &discord::guild::ban::dati_list_from_json_v, .ok_obj = (void*)p_bans};
+
+  discord::adapter::run( 
+    &client->adapter,
+    &resp_handle,
+    NULL,
+    HTTP_GET, "/guilds/%llu/bans", guild_id);
+}
+
+void
+discord_create_guild_ban(
   discord::client *client, 
   const u64_snowflake_t guild_id, 
   const u64_snowflake_t user_id, 
@@ -323,11 +301,29 @@ run(
     &req_body,
     HTTP_PUT, "/guilds/%llu/bans/%llu", guild_id, user_id);
 }
-} // namespace create_guild_ban
 
-namespace remove_guild_ban {
 void
-run(
+discord_get_guild_roles(
+  discord::client *client, 
+  const u64_snowflake_t guild_id, 
+  NTL_T(discord::guild::role::dati) *p_roles)
+{
+  if (!guild_id) {
+    D_PUTS("Missing 'guild_id'");
+    return;
+  }
+
+  struct resp_handle resp_handle =
+    { .ok_cb = &discord::guild::role::dati_list_from_json_v, .ok_obj = (void*)p_roles};
+
+  discord::adapter::run( 
+    &client->adapter,
+    &resp_handle,
+    NULL,
+    HTTP_GET, "/guilds/%llu/roles", guild_id);
+}
+void
+discord_remove_guild_ban(
   discord::client *client, 
   const u64_snowflake_t guild_id, 
   const u64_snowflake_t user_id, 
@@ -366,34 +362,9 @@ run(
     &req_body,
     HTTP_DELETE, "/guilds/%llu/bans/%llu", guild_id, user_id);
 }
-} // namespace remove_guild_ban
 
-namespace get_guild_roles {
-void
-run(
-  discord::client *client, 
-  const u64_snowflake_t guild_id, 
-  NTL_T(discord::guild::role::dati) *p_roles)
-{
-  if (!guild_id) {
-    D_PUTS("Missing 'guild_id'");
-    return;
-  }
-
-  struct resp_handle resp_handle =
-    { .ok_cb = &discord::guild::role::dati_list_from_json_v, .ok_obj = (void*)p_roles};
-
-  discord::adapter::run( 
-    &client->adapter,
-    &resp_handle,
-    NULL,
-    HTTP_GET, "/guilds/%llu/roles", guild_id);
-}
-} // namespace get_guild_roles
-
-namespace create_guild_role {
 void 
-run(
+discord_create_guild_role(
   discord::client *client, 
   const u64_snowflake_t guild_id, 
   discord::guild::create_guild_role::params *params, 
@@ -420,11 +391,9 @@ run(
     &req_body,
     HTTP_POST, "/guilds/%llu/roles", guild_id);
 }
-} // namespace create_guild_role
 
-namespace delete_guild_role {
 void 
-run(
+discord_delete_guild_role(
   discord::client *client, 
   const u64_snowflake_t guild_id, 
   const u64_snowflake_t role_id)
@@ -444,7 +413,3 @@ run(
     NULL,
     HTTP_DELETE, "/guilds/%llu/roles/%llu", guild_id, role_id);
 }
-} // namespace delete_guild_role
-
-} // namespace guild
-} // namespace discord

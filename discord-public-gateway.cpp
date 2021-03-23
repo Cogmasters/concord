@@ -7,7 +7,6 @@
 
 namespace discord {
 namespace gateway {
-
 namespace session {
 static void
 dati_from_json(char *str, size_t len, void *p_session)
@@ -37,10 +36,11 @@ dati_from_json(char *str, size_t len, void *p_session)
   DS_NOTOP_PUTS("Session Start Limit object loaded with API response"); 
 }
 } // namespace session
+} // namespace gateway
+} // namespace discord
 
-namespace get_gateway {
 void
-run(discord::client *client, discord::gateway::session::dati *p_session)
+discord_get_gateway(discord::client *client, discord::gateway::session::dati *p_session)
 {
   struct resp_handle resp_handle = \
     { .ok_cb = &discord::gateway::session::dati_from_json, .ok_obj = (void*)p_session };
@@ -52,11 +52,9 @@ run(discord::client *client, discord::gateway::session::dati *p_session)
     HTTP_GET,
     "/gateway");
 }
-} // namespace get_gateway
 
-namespace get_gateway_bot {
 void
-run(discord::client *client, discord::gateway::session::dati *p_session)
+discord_get_gateway_bot(discord::client *client, discord::gateway::session::dati *p_session)
 {
   struct resp_handle resp_handle = \
     { .ok_cb = &discord::gateway::session::dati_from_json, .ok_obj = (void*)p_session};
@@ -68,7 +66,3 @@ run(discord::client *client, discord::gateway::session::dati *p_session)
     HTTP_GET,
     "/gateway/bot");
 }
-} // namespace get_gateway_bot
-
-} // namespace gateway
-} // namespace discord

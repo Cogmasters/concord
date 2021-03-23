@@ -5,12 +5,9 @@
 #include <libdiscord.h>
 #include <orka-utils.h>
 
-namespace discord {
-namespace emoji {
 
-namespace list_guild_emojis {
 void
-run(discord::client *client, const uint64_t guild_id, NTL_T(discord::emoji::dati) *p_emojis)
+discord_list_guild_emojis(discord::client *client, const uint64_t guild_id, NTL_T(discord::emoji::dati) *p_emojis)
 {
   if (!guild_id) {
     D_PUTS("Missing 'guild_id'");
@@ -27,8 +24,3 @@ run(discord::client *client, const uint64_t guild_id, NTL_T(discord::emoji::dati
     HTTP_GET,
     "/guilds/%llu/emojis", guild_id);
 }
-} // namespace list_guild_emojis
-
-} // namespace emoji
-} // namespace discord
-

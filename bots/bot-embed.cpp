@@ -28,7 +28,7 @@ void on_command(
     .content = "This is an embed",
     .embed = (discord::channel::embed::dati*)get_data(client)
   };
-  discord::channel::create_message::run(client, msg->channel_id, &params, NULL);
+  discord_create_message(client, msg->channel_id, &params, NULL);
 }
 
 static discord::channel::embed::dati*

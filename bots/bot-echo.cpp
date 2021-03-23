@@ -24,7 +24,7 @@ void on_reaction_add(
   if (member->user->bot) 
     return;
 
-  discord::channel::create_reaction::run(client, channel_id, message_id, emoji->id, emoji->name);
+  discord_create_reaction(client, channel_id, message_id, emoji->id, emoji->name);
 }
 
 void on_message_create(
@@ -49,7 +49,7 @@ void on_message_create(
     params.message_reference = &msg_ref;
   }
 
-  discord::channel::create_message::run(client, msg->channel_id, &params, NULL);
+  discord_create_message(client, msg->channel_id, &params, NULL);
 }
 
 void on_message_update(
@@ -60,7 +60,7 @@ void on_message_update(
   discord::channel::create_message::params params = {
     .content = "I see what you did there."
   };
-  discord::channel::create_message::run(client, msg->channel_id, &params, NULL);
+  discord_create_message(client, msg->channel_id, &params, NULL);
 }
 
 void on_message_delete(
@@ -73,7 +73,7 @@ void on_message_delete(
   discord::channel::create_message::params params = {
     .content = "Did that message just disappear?"
   };
-  discord::channel::create_message::run(client, channel_id, &params, NULL);
+  discord_create_message(client, channel_id, &params, NULL);
 }
 
 void on_message_delete_bulk(
@@ -90,7 +90,7 @@ void on_message_delete_bulk(
   discord::channel::create_message::params params = {
     .content = buf
   };
-  discord::channel::create_message::run(client, channel_id, &params, NULL);
+  discord_create_message(client, channel_id, &params, NULL);
 }
 
 int main(int argc, char *argv[])

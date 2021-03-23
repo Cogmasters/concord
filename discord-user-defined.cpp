@@ -31,7 +31,7 @@ discord_user_defined_bulk_delete_message(
   };
 
   NTL_T(discord::channel::message::dati) messages = NULL;
-  discord::channel::get_channel_messages::run(client, channel_id, &params, &messages);
+  discord_get_channel_messages(client, channel_id, &params, &messages);
 
   NTL_T(ja_u64) list = NULL;
   int count = 0;
@@ -50,7 +50,7 @@ discord_user_defined_bulk_delete_message(
   ntl_free((ntl_t)messages, discord::channel::message::dati_cleanup_v);
 
   if (count == 1)
-    discord::channel::delete_message::run(client, channel_id, list[0]->value);
+    discord_delete_message(client, channel_id, list[0]->value);
   else {
     char *json = NULL;
     json_ainject(&json,

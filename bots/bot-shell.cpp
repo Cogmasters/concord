@@ -100,7 +100,7 @@ on_command(discord::client *client,
     pclose(fp);
   }
 
-  discord::channel::create_message::run(client, msg->channel_id, &params, NULL);
+  discord_create_message(client, msg->channel_id, &params, NULL);
 }
 
 int main(int argc, char *argv[])

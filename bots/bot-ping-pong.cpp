@@ -19,7 +19,7 @@ void on_ping(
     return;
 
   discord::channel::create_message::params params = {.content = "pong"};
-  discord::channel::create_message::run(client, msg->channel_id, &params, NULL);
+  discord_create_message(client, msg->channel_id, &params, NULL);
 }
 
 void on_pong(
@@ -32,7 +32,7 @@ void on_pong(
     return;
 
   discord::channel::create_message::params params = {.content = "ping"};
-  discord::channel::create_message::run(client, msg->channel_id, &params, NULL);
+  discord_create_message(client, msg->channel_id, &params, NULL);
 }
 
 int main(int argc, char *argv[])

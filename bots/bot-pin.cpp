@@ -20,7 +20,7 @@ void on_message_create(
     return;
 
   if (strstr(msg->content, "pin me")) {
-    discord::channel::add_pinned_channel_message::run(client, msg->channel_id, msg->id);
+    discord_add_pinned_channel_message(client, msg->channel_id, msg->id);
   }
 }
 

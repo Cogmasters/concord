@@ -42,7 +42,7 @@ on_command(discord::client *client,
   discord::guild::list_guild_members::params params1 = {
     .limit = 1000
   };
-  discord::guild::list_guild_members::run(client, msg->guild_id, &params1, &members);
+  discord_list_guild_members(client, msg->guild_id, &params1, &members);
   if (NULL == members) {
     printf("Missing members list\n");
     return;
@@ -55,7 +55,7 @@ on_command(discord::client *client,
       discord::guild::modify_guild_member::params params2 = {
         .nick = cxt.nick
       };
-      discord::guild::modify_guild_member::run(client, msg->guild_id, members[i]->user->id, &params2, NULL);
+      discord_modify_guild_member(client, msg->guild_id, members[i]->user->id, &params2, NULL);
     }
   }
 

@@ -25,7 +25,7 @@ void on_command(
   discord::guild::create_guild_role::params params1 = {
     .name = msg->content
   };
-  discord::guild::create_guild_role::run(client, msg->guild_id, &params1, role);
+  discord_create_guild_role(client, msg->guild_id, &params1, role);
 
   if (role->id) {
     char text[150];
@@ -34,7 +34,7 @@ void on_command(
     discord::channel::create_message::params params2 = {
       .content = text
     };
-    discord::channel::create_message::run(client, msg->channel_id, &params2, NULL);
+    discord_create_message(client, msg->channel_id, &params2, NULL);
   }
 
   discord::guild::role::dati_free(role);

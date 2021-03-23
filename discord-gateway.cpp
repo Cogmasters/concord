@@ -555,7 +555,7 @@ on_startup_cb(void *p_gw)
   discord::gateway::dati *gw = (discord::gateway::dati*)p_gw;
 
   //get session info before starting it
-  discord::gateway::get_gateway_bot::run(gw->p_client, &gw->session);
+  discord_get_gateway_bot(gw->p_client, &gw->session);
 
   if (!gw->session.remaining) {
     PRINT("Reach session starts threshold (%d)\n\t"
@@ -686,8 +686,8 @@ init(discord::gateway::dati *gw, const char token[], const char config_file[])
   gw->identify->presence->since = orka_timestamp_ms();
 
   gw->me = discord::user::dati_alloc();
-  user::get_current_user::run(gw->p_client, gw->me);
-  user::get_current_user::sb_run(gw->p_client, &gw->sb_me);
+  discord_get_current_user(gw->p_client, gw->me);
+  sb_discord_get_current_user(gw->p_client, &gw->sb_me);
 
   if (pthread_mutex_init(&gw->lock, NULL))
     ERR("Couldn't initialize pthread mutex");

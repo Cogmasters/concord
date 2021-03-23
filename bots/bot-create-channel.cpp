@@ -26,13 +26,13 @@ void on_create(
   discord::guild::create_channel::params params1 = {
     .name = msg->content
   };
-  discord::guild::create_channel::run(client, msg->guild_id, &params1, channel);
+  discord_create_channel(client, msg->guild_id, &params1, channel);
 
   if (channel->id) {
     discord::channel::create_message::params params2 = {
       .content = "Hello world!"
     };
-    discord::channel::create_message::run(client, channel->id, &params2, NULL);
+    discord_create_message(client, channel->id, &params2, NULL);
   }
 
   discord::channel::dati_free(channel);
@@ -47,7 +47,7 @@ void on_delete(
   if (msg->author->bot)
     return;
 
-  discord::channel::delete_channel::run(client, msg->channel_id, NULL);
+  discord_delete_channel(client, msg->channel_id, NULL);
 }
 
 int main(int argc, char *argv[])

@@ -5,12 +5,9 @@
 #include <libdiscord.h>
 #include "orka-utils.h"
 
-namespace discord {
-namespace user {
 
-namespace get_user {
 void
-run(discord::client *client, const u64_snowflake_t user_id, discord::user::dati *p_user)
+discord_get_user(discord::client *client, const u64_snowflake_t user_id, discord::user::dati *p_user)
 {
   if (!user_id) {
     D_PUTS("Missing 'user_id'");
@@ -27,11 +24,9 @@ run(discord::client *client, const u64_snowflake_t user_id, discord::user::dati 
     HTTP_GET, 
     "/users/%llu", user_id);
 }
-} // namespace get_user
 
-namespace get_current_user {
 void 
-run(discord::client *client, discord::user::dati *p_user)
+discord_get_current_user(discord::client *client, discord::user::dati *p_user)
 {
   struct resp_handle resp_handle =
     { .ok_cb = &discord::user::dati_from_json_v, .ok_obj = (void*)p_user};
@@ -53,7 +48,7 @@ json_to_sb(char *json, size_t len, void *p_sb_user)
 }
 
 void /* @todo this is a temporary solution for easily wrapping JS */
-sb_run(discord::client *client, struct sized_buffer *p_sb_user)
+sb_discord_get_current_user(discord::client *client, struct sized_buffer *p_sb_user)
 {
   struct resp_handle resp_handle =
     {.ok_cb = &json_to_sb, .ok_obj = (void*)p_sb_user};
@@ -66,11 +61,8 @@ sb_run(discord::client *client, struct sized_buffer *p_sb_user)
     "/users/@me");
 }
 
-} // namespace get_current_user
-
-namespace get_current_user_guilds {
 void
-run(discord::client *client, NTL_T(discord::guild::dati) *p_guilds)
+discord_get_current_user_guilds(discord::client *client, NTL_T(discord::guild::dati) *p_guilds)
 {
   struct resp_handle resp_handle =
     { .ok_cb = &discord::guild::dati_list_from_json_v, .ok_obj = (void*)p_guilds};
@@ -82,10 +74,9 @@ run(discord::client *client, NTL_T(discord::guild::dati) *p_guilds)
     HTTP_GET,
     "/users/@me/guilds");
 }
-} // namespace get_current_user_guilds
 
-namespace leave_guild {
-void run(discord::client *client, const u64_snowflake_t guild_id)
+void 
+discord_leave_guild(discord::client *client, const u64_snowflake_t guild_id)
 {
   struct sized_buffer req_body = {"{}", 2};
 
@@ -96,7 +87,3 @@ void run(discord::client *client, const u64_snowflake_t guild_id)
     HTTP_DELETE,
     "/users/@me/guilds/%llu", guild_id);
 }
-} // namespace leave_guild
-
-} // namespace user
-} // namespace discord

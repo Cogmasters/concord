@@ -281,7 +281,7 @@ void on_command(
 
   ASSERT_S(ret < (int)sizeof(query), "Out of bounds write attempt");
 
-  channel::trigger_typing_indicator::run(client, msg->channel_id);
+  discord_trigger_typing_indicator(client, msg->channel_id);
 
   /* Fetch factions from ELITEBGS API */
   struct resp_handle resp_handle =
@@ -300,7 +300,7 @@ void on_command(
     params.embed = new_embed;
   else 
     params.content = "System does not exist or could not be found.";
-  channel::create_message::run(client, msg->channel_id, &params, NULL);
+  discord_create_message(client, msg->channel_id, &params, NULL);
 
   /* Cleanup resources */
   channel::embed::dati_free(new_embed);

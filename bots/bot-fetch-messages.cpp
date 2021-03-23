@@ -12,7 +12,7 @@ select_guild(discord::client *client)
 {
   // get guilds bot is a part of
   NTL_T(discord::guild::dati) guilds = NULL;
-  discord::user::get_current_user_guilds::run(client, &guilds);
+  discord_get_current_user_guilds(client, &guilds);
   ASSERT_S(NULL != guilds, "Couldn't fetch guilds");
 
   fprintf(stderr, "\n\nSelect the guild that the user to be mimicked is part of");
@@ -45,7 +45,7 @@ select_member(discord::client *client, u64_snowflake_t guild_id)
     .limit = 1000,
     .after = 0
   };
-  discord::guild::list_guild_members::run(client, guild_id, &params, &members);
+  discord_list_guild_members(client, guild_id, &params, &members);
   ASSERT_S(NULL != members, "Guild is empty or bot needs to activate its privileged intents.\n\t"
                             "See this guide to activate it: https://discordpy.readthedocs.io/en/latest/intents.html#privileged-intents");
 
@@ -77,7 +77,7 @@ void
 fetch_member_msgs(discord::client *client, u64_snowflake_t guild_id, u64_snowflake_t user_id)
 {
   NTL_T(discord::channel::dati) channels = NULL;
-  discord::guild::get_channels::run(client, guild_id, &channels);
+  discord_get_channels(client, guild_id, &channels);
   ASSERT_S(NULL != channels, "Couldn't fetch channels from guild");
   
   discord::channel::get_channel_messages::params params = {
@@ -91,7 +91,7 @@ fetch_member_msgs(discord::client *client, u64_snowflake_t guild_id, u64_snowfla
 
     int n_msg;
     do {
-      discord::channel::get_channel_messages::run(client, channels[i]->id, &params, &messages);
+      discord_get_channel_messages(client, channels[i]->id, &params, &messages);
       ASSERT_S(NULL != messages, "Couldn't fetch messages from channel");
 
       for (n_msg = 0; messages[n_msg]; ++n_msg) {

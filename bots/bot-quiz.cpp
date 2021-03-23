@@ -116,7 +116,7 @@ close_existing_sessions(
 {
   /* Check if user already has a session role assigned to */
   NTL_T(discord::guild::role::dati) rls = NULL;
-  discord::guild::get_guild_roles::run(client, guild_id, &rls);
+  discord_get_guild_roles(client, guild_id, &rls);
 
   for (size_t i=0; rls[i]; ++i) {
     if ( strncmp("TMP", rls[i]->name, 3) )
@@ -126,8 +126,8 @@ close_existing_sessions(
     sscanf(rls[i]->name, "TMP%" PRIu64 "_%" PRIu64 , &user_id, &channel_id);
 
     if (member->user->id == user_id) {
-      discord::channel::delete_channel::run(client, channel_id, NULL);
-      discord::guild::delete_guild_role::run(client, guild_id, rls[i]->id);
+      discord_delete_channel(client, channel_id, NULL);
+      discord_delete_guild_role(client, guild_id, rls[i]->id);
 
       // reset active_session if exists
       for (size_t i=0; i < MAX_SESSIONS; ++i) {
@@ -176,7 +176,7 @@ create_session_channel(
     | discord::permissions::SEND_MESSAGES), // Allow Read and Send Messages, Add Reactions permissions
     discord::permissions::ZERO); // Don't set deny permissions
 
-  discord::guild::create_channel::run(client, guild_id, &params1, &ch);
+  discord_create_channel(client, guild_id, &params1, &ch);
   
   // create new active_session if doesn't exist
   for (size_t i=0; i < MAX_SESSIONS; ++i) {
@@ -221,7 +221,7 @@ add_session_role(
   discord::guild::create_guild_role::params params2 = {
     .name = text
   };
-  discord::guild::create_guild_role::run(client, guild_id, &params2, &ret_role);
+  discord_create_guild_role(client, guild_id, &params2, &ret_role);
   if (!ret_role.id) return 0;
 
   //@todo turn this into a public function
@@ -229,7 +229,7 @@ add_session_role(
   discord::guild::modify_guild_member::params params3 = {
     .roles = member->roles
   };
-  discord::guild::modify_guild_member::run(
+  discord_modify_guild_member(
     client, 
     guild_id, 
     member->user->id, 
@@ -261,9 +261,9 @@ void start_new_session(
   discord::channel::create_message::params params = {
     .content = "Would you like to start?"
   };
-  discord::channel::create_message::run(client, session_channel_id, &params, ret_msg);
+  discord_create_message(client, session_channel_id, &params, ret_msg);
 
-  discord::channel::create_reaction::run(
+  discord_create_reaction(
     client, 
     session_channel_id, 
     ret_msg->id, 
@@ -287,7 +287,7 @@ void send_next_question(
     discord::channel::create_message::params params = {
       .content = text
     };
-    discord::channel::create_message::run(client, channel_id, &params, NULL);
+    discord_create_message(client, channel_id, &params, NULL);
 
     session->status = FINISHED;
     return; /* EARLY RETURN */
@@ -306,10 +306,10 @@ void send_next_question(
   discord::channel::create_message::params params = {
     .content = text
   };
-  discord::channel::create_message::run(client, channel_id, &params, ret_msg);
+  discord_create_message(client, channel_id, &params, ret_msg);
 
   for (int i=0; i < question->num_answers; ++i) {
-    discord::channel::create_reaction::run(
+    discord_create_reaction(
       client, 
       channel_id, 
       ret_msg->id, 
@@ -354,7 +354,7 @@ void on_reaction_add(
   switch (session->status) {
   case RUNNING:
       // delete previous question from channel
-      discord::channel::delete_message::run(client, channel_id, message_id);
+      discord_delete_message(client, channel_id, message_id);
 
       // get current question associated to session
       question = &g_session.questions[session->curr_question];
@@ -404,7 +404,7 @@ int main(int argc, char *argv[])
 
   parse_session_config();
 
-  discord::channel::create_reaction::run(
+  discord_create_reaction(
     client, 
     g_session.channel_id, 
     g_session.message_id, 
