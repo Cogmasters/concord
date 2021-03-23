@@ -73,9 +73,7 @@ char* happiness_localised(char *happiness_band)
 
 void embed_from_json(char *str, size_t len, void *p_embed)
 {
-  using namespace discord::channel::embed;
-
-  dati *embed = (dati*)p_embed;
+  struct discord_channel_embed_dati *embed = (struct discord_channel_embed_dati*)p_embed;
 
   struct doc_s *doc = (struct doc_s*)malloc(sizeof *doc);
   NTL_T(struct sized_buffer) l_docs = NULL; // get docs token from JSON
@@ -240,7 +238,7 @@ void embed_from_json(char *str, size_t len, void *p_embed)
   free(l_docs);
 }
 
-void on_ready(struct discord_client *client, const discord::user::dati *me)
+void on_ready(struct discord_client *client, const struct discord_user_dati *me)
 {
   fprintf(stderr, "\n\nEliteBGS-Bot succesfully connected to Discord as %s#%s!\n\n",
       me->username, me->discriminator);
@@ -250,11 +248,9 @@ void on_ready(struct discord_client *client, const discord::user::dati *me)
 
 void on_command(
     struct discord_client *client,
-    const discord::user::dati *me,
-    const discord::channel::message::dati *msg)
+    const struct discord_user_dati *me,
+    const struct discord_channel_message_dati *msg)
 {
-  using namespace discord;
-
   // make sure bot doesn't echoes other bots
   if (msg->author->bot)
     return;
@@ -262,7 +258,7 @@ void on_command(
   update_last_tick_ms();
 
   /* Initialize embed struct that will be loaded to  */
-  channel::embed::dati *new_embed = channel::embed::dati_alloc();
+  struct discord_channel_embed_dati *new_embed = discord_channel_embed_dati_alloc();
 
   /* Set embed fields */
   strncpy(new_embed->title, msg->content, sizeof(new_embed->title));
@@ -295,7 +291,7 @@ void on_command(
       "/factions%s", query);
 
   /* Send embed to channel if embed was loaded */
-  channel::create_message::params params = {0};
+  struct discord_channel_create_message_params params = {0};
   if (new_embed->fields)
     params.embed = new_embed;
   else 
@@ -303,7 +299,7 @@ void on_command(
   discord_create_message(client, msg->channel_id, &params, NULL);
 
   /* Cleanup resources */
-  channel::embed::dati_free(new_embed);
+  discord_channel_embed_dati_free(new_embed);
 }
 
 int main(int argc, char *argv[])
@@ -327,8 +323,8 @@ int main(int argc, char *argv[])
   discord_setcb_command(client, "!system", &on_command);
 
   /* Set bot presence activity */
-  discord::presence::activity::dati *new_activity;
-  new_activity = discord::presence::activity::dati_alloc();
+  struct discord_presence_activity_dati *new_activity;
+  new_activity = discord_presence_activity_dati_alloc();
   strcpy(new_activity->name, "!h | cee.dev");
   new_activity->type = 0; // Playing
   discord_set_presence(client, new_activity, "online", false);

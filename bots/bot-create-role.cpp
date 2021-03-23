@@ -6,23 +6,23 @@
 #include "libdiscord.h"
 #include "orka-utils.h" // for orka_timestamp_ms()
 
-void on_ready(struct discord_client *client, const discord::user::dati *me) {
+void on_ready(struct discord_client *client, const struct discord_user_dati *me) {
   fprintf(stderr, "\n\nCreate-Role-Bot succesfully connected to Discord as %s#%s!\n\n",
       me->username, me->discriminator);
 }
 
 void on_command(
     struct discord_client *client,
-    const discord::user::dati *me,
-    const discord::channel::message::dati *msg)
+    const struct discord_user_dati *me,
+    const struct discord_channel_message_dati *msg)
 {
   // make sure bot doesn't echoes other bots
   if (msg->author->bot)
     return;
 
-  discord::guild::role::dati *role = discord::guild::role::dati_alloc();
+  struct discord_guild_role_dati *role = discord_guild_role_dati_alloc();
 
-  discord::guild::create_guild_role::params params1 = {
+  struct discord_guild_create_guild_role_params params1 = {
     .name = msg->content
   };
   discord_create_guild_role(client, msg->guild_id, &params1, role);
@@ -31,13 +31,13 @@ void on_command(
     char text[150];
     snprintf(text, sizeof(text), "Succesfully created <@&%" PRIu64 "> role", role->id);
 
-    discord::channel::create_message::params params2 = {
+    struct discord_channel_create_message_params params2 = {
       .content = text
     };
     discord_create_message(client, msg->channel_id, &params2, NULL);
   }
 
-  discord::guild::role::dati_free(role);
+  discord_guild_role_dati_free(role);
 }
 
 int main(int argc, char *argv[])

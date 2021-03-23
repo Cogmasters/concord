@@ -2,12 +2,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <libdiscord.h>
+#include "libdiscord.h"
 #include "orka-utils.h"
 
 
 void
-discord_get_guild(struct discord_client *client, const u64_snowflake_t guild_id, discord::guild::dati *p_guild)
+discord_get_guild(struct discord_client *client, const u64_snowflake_t guild_id, struct discord_guild_dati *p_guild)
 {
   if (!guild_id) {
     D_PUTS("Missing 'guild_id'");
@@ -15,7 +15,7 @@ discord_get_guild(struct discord_client *client, const u64_snowflake_t guild_id,
   }
 
   struct resp_handle resp_handle =
-    { .ok_cb = &discord::guild::dati_from_json_v, .ok_obj = (void*)p_guild};
+    { .ok_cb = &discord_guild_dati_from_json_v, .ok_obj = (void*)p_guild};
 
   discord_adapter_run( 
     &client->adapter,
@@ -29,8 +29,8 @@ void
 discord_create_channel(
   struct discord_client *client, 
   const u64_snowflake_t guild_id, 
-  discord::guild::create_channel::params *params, 
-  discord::channel::dati *p_channel)
+  struct discord_guild_create_channel_params *params, 
+  struct discord_channel_dati *p_channel)
 {
   if (!guild_id) {
     D_PUTS("Missing 'guild_id");
@@ -46,10 +46,10 @@ discord_create_channel(
   }
 
   char payload[MAX_PAYLOAD_LEN];
-  discord::guild::create_channel::params_to_json(payload, sizeof(payload), params);
+  discord_guild_create_channel_params_to_json(payload, sizeof(payload), params);
 
   struct resp_handle resp_handle = {
-    .ok_cb = p_channel ? &discord::channel::dati_from_json_v : NULL,
+    .ok_cb = p_channel ? &discord_channel_dati_from_json_v : NULL,
     .ok_obj = p_channel,
   };
 
@@ -65,7 +65,7 @@ void
 discord_get_channels(
   struct discord_client *client, 
   const u64_snowflake_t guild_id, 
-  NTL_T(discord::channel::dati) *p_channels)
+  NTL_T(struct discord_channel_dati) *p_channels)
 {
   if (!guild_id) {
     D_PUTS("Missing 'guild_id'");
@@ -73,7 +73,7 @@ discord_get_channels(
   }
 
   struct resp_handle resp_handle = 
-    { .ok_cb = &discord::channel::dati_list_from_json_v, .ok_obj = (void*)p_channels};
+    { .ok_cb = &discord_channel_dati_list_from_json_v, .ok_obj = (void*)p_channels};
 
   discord_adapter_run( 
     &client->adapter,
@@ -84,7 +84,7 @@ discord_get_channels(
 }
 
 void 
-discord_get_guild_member(struct discord_client *client, u64_snowflake_t guild_id, u64_snowflake_t user_id, discord::guild::member::dati **p_member) 
+discord_get_guild_member(struct discord_client *client, u64_snowflake_t guild_id, u64_snowflake_t user_id, struct discord_guild_member_dati **p_member) 
 {
   if (!guild_id) {
     D_PUTS("Missing 'guild_id'");
@@ -100,7 +100,7 @@ discord_get_guild_member(struct discord_client *client, u64_snowflake_t guild_id
   }
 
   struct resp_handle resp_handle = {
-    .ok_cb = discord::guild::member::dati_from_json_v, .ok_obj = *p_member
+    .ok_cb = discord_guild_member_dati_from_json_v, .ok_obj = *p_member
   };
 
   discord_adapter_run(
@@ -115,8 +115,8 @@ void
 discord_list_guild_members(
   struct discord_client *client, 
   const u64_snowflake_t guild_id, 
-  struct discord::guild::list_guild_members::params *params, 
-  NTL_T(discord::guild::member::dati) *p_members)
+  struct discord_guild_list_guild_members_params *params, 
+  NTL_T(struct discord_guild_member_dati) *p_members)
 {
   if (!guild_id) {
     D_PUTS("Missing 'guild_id'");
@@ -138,7 +138,7 @@ discord_list_guild_members(
   }
 
   struct resp_handle resp_handle =
-    { .ok_cb = &discord::guild::member::dati_list_from_json_v, .ok_obj = (void*)p_members};
+    { .ok_cb = &discord_guild_member_dati_list_from_json_v, .ok_obj = (void*)p_members};
   
   discord_adapter_run( 
     &client->adapter,
@@ -175,8 +175,8 @@ discord_modify_guild_member(
   struct discord_client *client, 
   const u64_snowflake_t guild_id, 
   const u64_snowflake_t user_id, 
-  discord::guild::modify_guild_member::params *params, 
-  discord::guild::member::dati *p_member)
+  struct discord_guild_modify_guild_member_params *params, 
+  struct discord_guild_member_dati *p_member)
 {
   if (!guild_id) {
     D_PUTS("Missing 'guild_id'");
@@ -188,10 +188,10 @@ discord_modify_guild_member(
   }
 
   char payload[MAX_PAYLOAD_LEN];
-  discord::guild::modify_guild_member::params_to_json(payload, sizeof(payload), params);
+  discord_guild_modify_guild_member_params_to_json(payload, sizeof(payload), params);
 
   struct resp_handle resp_handle = {
-    .ok_cb = p_member ? &discord::guild::member::dati_from_json_v : NULL,
+    .ok_cb = p_member ? &discord_guild_member_dati_from_json_v : NULL,
     .ok_obj = p_member,
   };
 
@@ -209,7 +209,7 @@ discord_get_guild_ban(
   struct discord_client *client, 
   const u64_snowflake_t guild_id, 
   const u64_snowflake_t user_id, 
-  discord::guild::ban::dati *p_ban)
+  struct discord_guild_ban_dati *p_ban)
 {
   if (!guild_id) {
     D_PUTS("Missing 'guild_id'");
@@ -221,7 +221,7 @@ discord_get_guild_ban(
   }
 
   struct resp_handle resp_handle =
-    { .ok_cb = &discord::guild::ban::dati_from_json_v, .ok_obj = (void*)p_ban};
+    { .ok_cb = &discord_guild_ban_dati_from_json_v, .ok_obj = (void*)p_ban};
 
   discord_adapter_run( 
     &client->adapter,
@@ -233,7 +233,7 @@ void
 discord_get_guild_bans(
   struct discord_client *client, 
   const u64_snowflake_t guild_id, 
-  NTL_T(discord::guild::ban::dati) *p_bans)
+  NTL_T(struct discord_guild_ban_dati) *p_bans)
 {
   if (!guild_id) {
     D_PUTS("Missing 'guild_id'");
@@ -241,7 +241,7 @@ discord_get_guild_bans(
   }
 
   struct resp_handle resp_handle =
-    { .ok_cb = &discord::guild::ban::dati_list_from_json_v, .ok_obj = (void*)p_bans};
+    { .ok_cb = &discord_guild_ban_dati_list_from_json_v, .ok_obj = (void*)p_bans};
 
   discord_adapter_run( 
     &client->adapter,
@@ -306,7 +306,7 @@ void
 discord_get_guild_roles(
   struct discord_client *client, 
   const u64_snowflake_t guild_id, 
-  NTL_T(discord::guild::role::dati) *p_roles)
+  NTL_T(struct discord_guild_role_dati) *p_roles)
 {
   if (!guild_id) {
     D_PUTS("Missing 'guild_id'");
@@ -314,7 +314,7 @@ discord_get_guild_roles(
   }
 
   struct resp_handle resp_handle =
-    { .ok_cb = &discord::guild::role::dati_list_from_json_v, .ok_obj = (void*)p_roles};
+    { .ok_cb = &discord_guild_role_dati_list_from_json_v, .ok_obj = (void*)p_roles};
 
   discord_adapter_run( 
     &client->adapter,
@@ -367,8 +367,8 @@ void
 discord_create_guild_role(
   struct discord_client *client, 
   const u64_snowflake_t guild_id, 
-  discord::guild::create_guild_role::params *params, 
-  discord::guild::role::dati *p_role)
+  struct discord_guild_create_guild_role_params *params, 
+  struct discord_guild_role_dati *p_role)
 {
   if (!guild_id) {
     D_PUTS("Missing 'guild_id'");
@@ -379,7 +379,7 @@ discord_create_guild_role(
   params_to_json(payload, sizeof(payload), params);
 
   struct resp_handle resp_handle = {
-    .ok_cb = p_role ? &discord::guild::role::dati_from_json_v : NULL,
+    .ok_cb = p_role ? &discord_guild_role_dati_from_json_v : NULL,
     .ok_obj = p_role,
   };
 

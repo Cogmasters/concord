@@ -57,24 +57,24 @@ typedef uint64_t u64_snowflake_t;
 
 
 /* IDLE CALLBACK (runs on every iteration, no trigger required) */
-typedef void (idle_cb)(struct discord_client *client, const discord::user::dati *me);
+typedef void (idle_cb)(struct discord_client *client, const struct discord_user_dati *me);
 
 /* MESSAGE EVENTS CALLBACKS */
 typedef void (message_cb)(
-    struct discord_client *client, const discord::user::dati *me, 
-    const discord::channel::message::dati *message);
+    struct discord_client *client, const struct discord_user_dati *me, 
+    const struct discord_channel_message_dati *message);
 typedef void (sb_message_cb)(
-    struct discord_client *client, const discord::user::dati *me,
+    struct discord_client *client, const struct discord_user_dati *me,
     struct sized_buffer sb_me,
-    const discord::channel::message::dati *message,
+    const struct discord_channel_message_dati *message,
     struct sized_buffer sb_message);
 typedef void (message_delete_cb)(
-    struct discord_client *client, const discord::user::dati *me, 
+    struct discord_client *client, const struct discord_user_dati *me, 
     const u64_snowflake_t id, 
     const u64_snowflake_t channel_id, 
     const u64_snowflake_t guild_id);
 typedef void (message_delete_bulk_cb)(
-    struct discord_client *client, const discord::user::dati *me, 
+    struct discord_client *client, const struct discord_user_dati *me, 
     const size_t nids, 
     const u64_snowflake_t ids[], 
     const u64_snowflake_t channel_id, 
@@ -82,39 +82,39 @@ typedef void (message_delete_bulk_cb)(
 
 /* MESSAGE REACTION EVENTS CALLBACKS */
 typedef void (reaction_add_cb)(
-    struct discord_client *client, const discord::user::dati *me, 
+    struct discord_client *client, const struct discord_user_dati *me, 
     const u64_snowflake_t channel_id, 
     const u64_snowflake_t message_id, 
     const u64_snowflake_t guild_id, 
-    const discord::guild::member::dati *member, 
-    const discord::emoji::dati *emoji);
+    const struct discord_guild_member_dati *member, 
+    const struct discord_emoji_dati *emoji);
 typedef void (reaction_remove_cb)(
-    struct discord_client *client, const discord::user::dati *me, 
+    struct discord_client *client, const struct discord_user_dati *me, 
     const u64_snowflake_t channel_id, 
     const u64_snowflake_t message_id, 
     const u64_snowflake_t guild_id, 
-    const discord::emoji::dati *emoji);
+    const struct discord_emoji_dati *emoji);
 typedef void (reaction_remove_all_cb)(
-    struct discord_client *client, const discord::user::dati *me, 
+    struct discord_client *client, const struct discord_user_dati *me, 
     const u64_snowflake_t channel_id, 
     const u64_snowflake_t message_id, 
     const u64_snowflake_t guild_id);
 typedef void (reaction_remove_emoji_cb)(
-    struct discord_client *client, const discord::user::dati *me, 
+    struct discord_client *client, const struct discord_user_dati *me, 
     const u64_snowflake_t channel_id, 
     const u64_snowflake_t message_id, 
     const u64_snowflake_t guild_id,
-    const discord::emoji::dati *emoji);
+    const struct discord_emoji_dati *emoji);
 
 /* GUILD MEMBER EVENTS CALLBACKS */
 typedef void (guild_member_cb)(
-    struct discord_client *client, const discord::user::dati *me, 
+    struct discord_client *client, const struct discord_user_dati *me, 
     const u64_snowflake_t guild_id, 
-    const discord::guild::member::dati *member);
+    const struct discord_guild_member_dati *member);
 typedef void (guild_member_remove_cb)(
-    struct discord_client *client, const discord::user::dati *me, 
+    struct discord_client *client, const struct discord_user_dati *me, 
     const u64_snowflake_t guild_id, 
-    const discord::user::dati *user);
+    const struct discord_user_dati *user);
 
 
 struct discord_adapter {
@@ -184,7 +184,7 @@ struct cmd_cbs {
 };
 
 struct payload_s { /* PAYLOAD STRUCTURE */
-  discord::gateway::opcodes::code opcode; //field 'op'
+  struct discord_gateway_opcodes_code opcode; //field 'op'
   int seq_number; //field 's'
   char event_name[64]; //field 't'
   char event_data[8192]; //field 'd'
@@ -193,7 +193,7 @@ struct payload_s { /* PAYLOAD STRUCTURE */
 struct discord_gateway { /* GATEWAY STRUCTURE */
   struct websockets_s ws;
 
-  discord::gateway::identify::dati *identify;
+  struct discord_gateway_identify_dati *identify;
   char session_id[512]; //the session id (for resuming lost connections)
 
   struct payload_s payload;
@@ -234,7 +234,7 @@ struct discord_gateway { /* GATEWAY STRUCTURE */
 
   int ping_ms; //latency between client and websockets server
 
-  discord::user::dati *me; //the user associated with this client
+  struct discord_user_dati *me; //the user associated with this client
   struct sized_buffer sb_me; //@todo this is temporary for wrapping JS
 
   struct discord_client *p_client; //points to client this struct is a part of

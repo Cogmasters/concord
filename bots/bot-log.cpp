@@ -1,30 +1,30 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
+
 #include "libdiscord.h"
 
 
-void on_ready(struct discord_client *client, const discord::user::dati *me) {
+void on_ready(struct discord_client *client, const struct discord_user_dati *me) {
   fprintf(stderr, "\n\nLog-Bot succesfully connected to Discord as %s#%s!\n\n",
       me->username, me->discriminator);
 }
 
 void on_guild_member_add(
   struct discord_client *client,
-  const discord::user::dati *me,
+  const struct discord_user_dati *me,
   const uint64_t guild_id, 
-  const discord::guild::member::dati *member)
+  const struct discord_guild_member_dati *member)
 {
   printf("%s#%s joined guild %" PRIu64".\n", member->user->username, member->user->discriminator, guild_id);
 }
 
 void on_guild_member_update(
   struct discord_client *client,
-  const discord::user::dati *me,
+  const struct discord_user_dati *me,
   const uint64_t guild_id, 
-  const discord::guild::member::dati *member)
+  const struct discord_guild_member_dati *member)
 {
   printf("%s#%s ", member->user->username, member->user->discriminator);
   if(!IS_EMPTY_STRING(member->nick)) {
@@ -35,9 +35,9 @@ void on_guild_member_update(
 
 void on_guild_member_remove(
   struct discord_client *client,
-  const discord::user::dati *me,
+  const struct discord_user_dati *me,
   const uint64_t guild_id, 
-  const discord::user::dati *user)
+  const struct discord_user_dati *user)
 {
   printf("%s#%s left guild %" PRIu64".\n", user->username, user->discriminator, guild_id);
 }

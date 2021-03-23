@@ -2,12 +2,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <libdiscord.h>
+#include "libdiscord.h"
 #include "orka-utils.h"
 
 
 void
-discord_get_user(struct discord_client *client, const u64_snowflake_t user_id, discord::user::dati *p_user)
+discord_get_user(struct discord_client *client, const u64_snowflake_t user_id, struct discord_user_dati *p_user)
 {
   if (!user_id) {
     D_PUTS("Missing 'user_id'");
@@ -15,7 +15,7 @@ discord_get_user(struct discord_client *client, const u64_snowflake_t user_id, d
   }
 
   struct resp_handle resp_handle =
-    { .ok_cb = &discord::user::dati_from_json_v, .ok_obj = (void*)p_user};
+    { .ok_cb = &discord_user_dati_from_json_v, .ok_obj = (void*)p_user};
 
   discord_adapter_run( 
     &client->adapter,
@@ -26,10 +26,10 @@ discord_get_user(struct discord_client *client, const u64_snowflake_t user_id, d
 }
 
 void 
-discord_get_current_user(struct discord_client *client, discord::user::dati *p_user)
+discord_get_current_user(struct discord_client *client, struct discord_user_dati *p_user)
 {
   struct resp_handle resp_handle =
-    { .ok_cb = &discord::user::dati_from_json_v, .ok_obj = (void*)p_user};
+    { .ok_cb = &discord_user_dati_from_json_v, .ok_obj = (void*)p_user};
 
   discord_adapter_run( 
     &client->adapter,
@@ -62,10 +62,10 @@ sb_discord_get_current_user(struct discord_client *client, struct sized_buffer *
 }
 
 void
-discord_get_current_user_guilds(struct discord_client *client, NTL_T(discord::guild::dati) *p_guilds)
+discord_get_current_user_guilds(struct discord_client *client, NTL_T(struct discord_guild_dati) *p_guilds)
 {
   struct resp_handle resp_handle =
-    { .ok_cb = &discord::guild::dati_list_from_json_v, .ok_obj = (void*)p_guilds};
+    { .ok_cb = &discord_guild_dati_list_from_json_v, .ok_obj = (void*)p_guilds};
 
   discord_adapter_run( 
     &client->adapter,

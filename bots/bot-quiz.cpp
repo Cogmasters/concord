@@ -103,7 +103,7 @@ parse_session_config()
 }
 
 void 
-on_ready(struct discord_client *client, const discord::user::dati *me) {
+on_ready(struct discord_client *client, const struct discord_user_dati *me) {
   fprintf(stderr, "\n\nQuiz-Bot succesfully connected to Discord as %s#%s!\n\n",
       me->username, me->discriminator);
 }
@@ -112,10 +112,10 @@ void
 close_existing_sessions(
   struct discord_client *client,
   const u64_snowflake_t guild_id,
-  const discord::guild::member::dati *member)
+  const struct discord_guild_member_dati *member)
 {
   /* Check if user already has a session role assigned to */
-  NTL_T(discord::guild::role::dati) rls = NULL;
+  NTL_T(struct discord_guild_role_dati) rls = NULL;
   discord_get_guild_roles(client, guild_id, &rls);
 
   for (size_t i=0; rls[i]; ++i) {
@@ -139,19 +139,19 @@ close_existing_sessions(
     }
   }
 
-  discord::guild::role::dati_list_free(rls);
+  discord_guild_role_dati_list_free(rls);
 }
 
 u64_snowflake_t
 create_session_channel(
   struct discord_client *client,
   const u64_snowflake_t guild_id,
-  const discord::guild::member::dati *member)
+  const struct discord_guild_member_dati *member)
 {
-  discord::channel::dati ch;
-  discord::channel::dati_init(&ch);
+  struct discord_channel_dati ch;
+  discord_channel_dati_init(&ch);
 
-  discord::guild::create_channel::params params1 = {
+  struct discord_guild_create_channel_params params1 = {
     .name = g_session.chat_name,
     .topic = g_session.chat_topic
   };
@@ -160,21 +160,19 @@ create_session_channel(
     &params1.permission_overwrites,
     guild_id, // @everyone role id is the same as guild id
     0, // role type
-    discord::permissions::ZERO, // Don't set allow permissions
-    (discord::permissions::bitwise_flags)(
-      discord::permissions::ADD_REACTIONS
-    | discord::permissions::VIEW_CHANNEL
-    | discord::permissions::SEND_MESSAGES)); // Deny Read and Send Messages, Add Reactions permissions
+    DISCORD_PERMISSIONS_ZERO, // Don't set allow permissions
+      DISCORD_PERMISSIONS_ADD_REACTIONS
+    | DISCORD_PERMISSIONS_VIEW_CHANNEL
+    | DISCORD_PERMISSIONS_SEND_MESSAGES); // Deny Read and Send Messages, Add Reactions permissions
 
   discord_overwrite_append(
     &params1.permission_overwrites,
     member->user->id,
     1, // user type
-    (discord::permissions::bitwise_flags)(
-      discord::permissions::ADD_REACTIONS
-    | discord::permissions::VIEW_CHANNEL
-    | discord::permissions::SEND_MESSAGES), // Allow Read and Send Messages, Add Reactions permissions
-    discord::permissions::ZERO); // Don't set deny permissions
+    DISCORD_PERMISSIONS_ADD_REACTIONS
+    | DISCORD_PERMISSIONS_VIEW_CHANNEL
+    | DISCORD_PERMISSIONS_SEND_MESSAGES, // Allow Read and Send Messages, Add Reactions permissions
+    DISCORD_PERMISSIONS_ZERO); // Don't set deny permissions
 
   discord_create_channel(client, guild_id, &params1, &ch);
   
@@ -210,15 +208,15 @@ add_session_role(
   struct discord_client *client,
   const u64_snowflake_t guild_id, 
   const u64_snowflake_t channel_id,
-  const discord::guild::member::dati *member)
+  const struct discord_guild_member_dati *member)
 {
   char text[64];
   snprintf(text, sizeof(text), \
     "TMP%" PRIu64 "_%" PRIu64, member->user->id, channel_id);
 
-  discord::guild::role::dati ret_role;
-  discord::guild::role::dati_init(&ret_role);
-  discord::guild::create_guild_role::params params2 = {
+  struct discord_guild_role_dati ret_role;
+  discord_guild_role_dati_init(&ret_role);
+  struct discord_guild_create_guild_role_params params2 = {
     .name = text
   };
   discord_create_guild_role(client, guild_id, &params2, &ret_role);
@@ -226,7 +224,7 @@ add_session_role(
 
   //@todo turn this into a public function
   ja_u64_list_append((ja_u64***)&member->roles, &ret_role.id);
-  discord::guild::modify_guild_member::params params3 = {
+  struct discord_guild_modify_guild_member_params params3 = {
     .roles = member->roles
   };
   discord_modify_guild_member(
@@ -242,7 +240,7 @@ add_session_role(
 void start_new_session(
   struct discord_client *client,
   const u64_snowflake_t guild_id,
-  const discord::guild::member::dati *member)
+  const struct discord_guild_member_dati *member)
 {
   close_existing_sessions(client, guild_id, member);
 
@@ -257,8 +255,8 @@ void start_new_session(
     return; // couldn't create role, delete channel and return
   }
 
-  discord::channel::message::dati *ret_msg = discord::channel::message::dati_alloc();
-  discord::channel::create_message::params params = {
+  struct discord_channel_message_dati *ret_msg = discord_channel_message_dati_alloc();
+  struct discord_channel_create_message_params params = {
     .content = "Would you like to start?"
   };
   discord_create_message(client, session_channel_id, &params, ret_msg);
@@ -270,7 +268,7 @@ void start_new_session(
     0, 
     g_session.reaction_emoji);
 
-  discord::channel::message::dati_free(ret_msg);
+  discord_channel_message_dati_free(ret_msg);
 }
 
 void send_next_question(
@@ -284,7 +282,7 @@ void send_next_question(
     sprintf(text, "You got %d out of %d! (%.1f%%)", \
       session->hits, g_session.questions_per_session,
       100*((float)session->hits / (float)g_session.questions_per_session));
-    discord::channel::create_message::params params = {
+    struct discord_channel_create_message_params params = {
       .content = text
     };
     discord_create_message(client, channel_id, &params, NULL);
@@ -302,8 +300,8 @@ void send_next_question(
       'A'+ i, question->answers[i].desc);
   }
 
-  discord::channel::message::dati *ret_msg = discord::channel::message::dati_alloc();
-  discord::channel::create_message::params params = {
+  struct discord_channel_message_dati *ret_msg = discord_channel_message_dati_alloc();
+  struct discord_channel_create_message_params params = {
     .content = text
   };
   discord_create_message(client, channel_id, &params, ret_msg);
@@ -316,19 +314,19 @@ void send_next_question(
       0, 
       ALPHA_EMOJI[i]);
   }
-  discord::channel::message::dati_free(ret_msg);
+  discord_channel_message_dati_free(ret_msg);
 
   session->status = RUNNING;
 }
 
 void on_reaction_add(
     struct discord_client *client,
-    const discord::user::dati *me,
+    const struct discord_user_dati *me,
     const u64_snowflake_t channel_id, 
     const u64_snowflake_t message_id, 
     const u64_snowflake_t guild_id, 
-    const discord::guild::member::dati *member,
-    const discord::emoji::dati *emoji)
+    const struct discord_guild_member_dati *member,
+    const struct discord_emoji_dati *emoji)
 {
   if (member->user->bot) 
     return; // ignore bots

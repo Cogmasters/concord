@@ -7,7 +7,7 @@
 
 
 static void
-dati_from_json(char *str, size_t len, void *p_session)
+discord_session_dati_from_json(char *str, size_t len, void *p_session)
 {
   struct discord_session *session = (struct discord_session*)p_session;
 
@@ -38,7 +38,7 @@ void
 discord_get_gateway(struct discord_client *client, struct discord_session *p_session)
 {
   struct resp_handle resp_handle = \
-    { .ok_cb = &dati_from_json, .ok_obj = (void*)p_session };
+    { .ok_cb = &discord_session_dati_from_json, .ok_obj = (void*)p_session };
 
   discord_adapter_run( 
     &client->adapter,

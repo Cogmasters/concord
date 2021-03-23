@@ -14,15 +14,15 @@ struct sudo_s {
 } sudo;
 
 void 
-on_ready(struct discord_client *client, const discord::user::dati *me) {
+on_ready(struct discord_client *client, const struct discord_user_dati *me) {
   fprintf(stderr, "\n\nShell-Bot succesfully connected to Discord as %s#%s!\n\n",
       me->username, me->discriminator);
 }
 
 void
 on_command(struct discord_client *client,
-           const discord::user::dati *me,
-           const discord::channel::message::dati *msg)
+           const struct discord_user_dati *me,
+           const struct discord_channel_message_dati *msg)
 {
   // make sure bot doesn't consider other bots
   if (msg->author->bot)
@@ -33,7 +33,7 @@ on_command(struct discord_client *client,
     return; // EARLY RETURN IF NOT SUDO USER
   }
 
-  discord::channel::create_message::params params = {0};
+  struct discord_channel_create_message_params params = {0};
 
   char *cmd = strchr(msg->content, ' '); //get first occurence of space
   size_t len;

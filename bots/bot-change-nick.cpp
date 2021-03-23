@@ -14,15 +14,15 @@ struct context_s {
 } cxt;
 
 void 
-on_ready(struct discord_client *client, const discord::user::dati *me) {
+on_ready(struct discord_client *client, const struct discord_user_dati *me) {
   fprintf(stderr, "\n\nChange-Nick-Bot succesfully connected to Discord as %s#%s!\n\n",
       me->username, me->discriminator);
 }
 
 void
 on_command(struct discord_client *client,
-           const discord::user::dati *me,
-           const discord::channel::message::dati *msg)
+           const struct discord_user_dati *me,
+           const struct discord_channel_message_dati *msg)
 {
   sscanf(msg->content, "%s %s", cxt.username, cxt.nick);
   cxt.discriminator = strchr(cxt.username, '#');
@@ -38,8 +38,8 @@ on_command(struct discord_client *client,
   *cxt.discriminator = '\0'; //split at #
   ++cxt.discriminator;
 
-  NTL_T(discord::guild::member::dati) members = NULL;
-  discord::guild::list_guild_members::params params1 = {
+  NTL_T(struct discord_guild_member_dati) members = NULL;
+  struct discord_guild_list_guild_members_params params1 = {
     .limit = 1000
   };
   discord_list_guild_members(client, msg->guild_id, &params1, &members);
@@ -52,14 +52,14 @@ on_command(struct discord_client *client,
     if (0 == strcmp(members[i]->user->username, cxt.username)
         && 0 == strcmp(members[i]->user->discriminator, cxt.discriminator))
     {
-      discord::guild::modify_guild_member::params params2 = {
+      struct discord_guild_modify_guild_member_params params2 = {
         .nick = cxt.nick
       };
       discord_modify_guild_member(client, msg->guild_id, members[i]->user->id, &params2, NULL);
     }
   }
 
-  discord::guild::member::dati_list_free(members);
+  discord_guild_member_dati_list_free(members);
 }
 
 int main(int argc, char *argv[])

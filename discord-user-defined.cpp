@@ -26,11 +26,11 @@ discord_user_defined_bulk_delete_message(
     return;
   }
 
-  discord::channel::get_channel_messages::params params = {
+  struct discord_channel_get_channel_messages_params params = {
     .limit = 100
   };
 
-  NTL_T(discord::channel::message::dati) messages = NULL;
+  NTL_T(struct discord_channel_message_dati) messages = NULL;
   discord_get_channel_messages(client, channel_id, &params, &messages);
 
   NTL_T(ja_u64) list = NULL;
@@ -47,7 +47,7 @@ discord_user_defined_bulk_delete_message(
       j++;
     }
   }
-  ntl_free((ntl_t)messages, discord::channel::message::dati_cleanup_v);
+  ntl_free((ntl_t)messages, discord_channel_message_dati_cleanup_v);
 
   if (count == 1)
     discord_delete_message(client, channel_id, list[0]->value);

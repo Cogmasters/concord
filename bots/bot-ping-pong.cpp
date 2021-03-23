@@ -4,34 +4,34 @@
 #include "libdiscord.h"
 
 
-void on_ready(struct discord_client *client, const discord::user::dati *me) {
+void on_ready(struct discord_client *client, const struct discord_user_dati *me) {
   fprintf(stderr, "\n\nPingPong-Bot succesfully connected to Discord as %s#%s!\n\n",
       me->username, me->discriminator);
 }
 
 void on_ping(
   struct discord_client *client,
-  const discord::user::dati *me,
-  const discord::channel::message::dati *msg)
+  const struct discord_user_dati *me,
+  const struct discord_channel_message_dati *msg)
 {
   // make sure bot doesn't echoes other bots
   if (msg->author->bot)
     return;
 
-  discord::channel::create_message::params params = {.content = "pong"};
+  struct discord_channel_create_message_params params = {.content = "pong"};
   discord_create_message(client, msg->channel_id, &params, NULL);
 }
 
 void on_pong(
     struct discord_client *client,
-    const discord::user::dati *me,
-    const discord::channel::message::dati *msg)
+    const struct discord_user_dati *me,
+    const struct discord_channel_message_dati *msg)
 {
   // make sure bot doesn't echoes other bots
   if (msg->author->bot)
     return;
 
-  discord::channel::create_message::params params = {.content = "ping"};
+  struct discord_channel_create_message_params params = {.content = "ping"};
   discord_create_message(client, msg->channel_id, &params, NULL);
 }
 

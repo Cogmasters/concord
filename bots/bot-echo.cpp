@@ -6,19 +6,19 @@
 
 
 
-void on_ready(struct discord_client *client, const discord::user::dati *me) {
+void on_ready(struct discord_client *client, const struct discord_user_dati *me) {
   fprintf(stderr, "\n\nEcho-Bot succesfully connected to Discord as %s#%s!\n\n",
       me->username, me->discriminator);
 }
 
 void on_reaction_add(
     struct discord_client *client,
-    const discord::user::dati *me,
+    const struct discord_user_dati *me,
     const uint64_t channel_id, 
     const uint64_t message_id, 
     const uint64_t guild_id, 
-    const discord::guild::member::dati *member,
-    const discord::emoji::dati *emoji)
+    const struct discord_guild_member_dati *member,
+    const struct discord_emoji_dati *emoji)
 { 
   // make sure bot doesn't echoes other bots
   if (member->user->bot) 
@@ -29,18 +29,18 @@ void on_reaction_add(
 
 void on_message_create(
     struct discord_client *client,
-    const discord::user::dati *me,
-    const discord::channel::message::dati *msg)
+    const struct discord_user_dati *me,
+    const struct discord_channel_message_dati *msg)
 {
   // make sure bot doesn't echoes other bots
   if (msg->author->bot)
     return;
 
-  discord::channel::create_message::params params = {
+  struct discord_channel_create_message_params params = {
     .content = msg->content
   };
-  discord::channel::message::reference::dati msg_ref;
-  discord::channel::message::reference::dati_init(&msg_ref);
+  struct discord_channel_message_reference_dati msg_ref;
+  discord_channel_message_reference_dati_init(&msg_ref);
   if(msg->referenced_message) {
     msg_ref.message_id = msg->referenced_message->id;
     msg_ref.channel_id = msg->channel_id;
@@ -54,10 +54,10 @@ void on_message_create(
 
 void on_message_update(
     struct discord_client *client,
-    const discord::user::dati *me,
-    const discord::channel::message::dati *msg)
+    const struct discord_user_dati *me,
+    const struct discord_channel_message_dati *msg)
 {
-  discord::channel::create_message::params params = {
+  struct discord_channel_create_message_params params = {
     .content = "I see what you did there."
   };
   discord_create_message(client, msg->channel_id, &params, NULL);
@@ -65,12 +65,12 @@ void on_message_update(
 
 void on_message_delete(
     struct discord_client *client,
-    const discord::user::dati *me,
+    const struct discord_user_dati *me,
     const uint64_t id,
     const uint64_t channel_id,
     const uint64_t guild_id)
 {
-  discord::channel::create_message::params params = {
+  struct discord_channel_create_message_params params = {
     .content = "Did that message just disappear?"
   };
   discord_create_message(client, channel_id, &params, NULL);
@@ -78,7 +78,7 @@ void on_message_delete(
 
 void on_message_delete_bulk(
     struct discord_client *client,
-    const discord::user::dati *me,
+    const struct discord_user_dati *me,
     const size_t nids,
     const uint64_t ids[],
     const uint64_t channel_id,
@@ -87,7 +87,7 @@ void on_message_delete_bulk(
   char buf[128];
   snprintf(buf, sizeof(buf), "Ouch! Where did those %zu messages go?", nids);
 
-  discord::channel::create_message::params params = {
+  struct discord_channel_create_message_params params = {
     .content = buf
   };
   discord_create_message(client, channel_id, &params, NULL);

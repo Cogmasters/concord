@@ -15,17 +15,17 @@ static char*
 opcode_print(int opcode)
 {
   switch (opcode) {
-      CASE_RETURN_STR(discord::gateway::opcodes::DISPATCH);
-      CASE_RETURN_STR(discord::gateway::opcodes::HEARTBEAT);
-      CASE_RETURN_STR(discord::gateway::opcodes::IDENTIFY);
-      CASE_RETURN_STR(discord::gateway::opcodes::PRESENCE_UPDATE);
-      CASE_RETURN_STR(discord::gateway::opcodes::VOICE_STATE_UPDATE);
-      CASE_RETURN_STR(discord::gateway::opcodes::RESUME);
-      CASE_RETURN_STR(discord::gateway::opcodes::RECONNECT);
-      CASE_RETURN_STR(discord::gateway::opcodes::REQUEST_GUILD_MEMBERS);
-      CASE_RETURN_STR(discord::gateway::opcodes::INVALID_SESSION);
-      CASE_RETURN_STR(discord::gateway::opcodes::HELLO);
-      CASE_RETURN_STR(discord::gateway::opcodes::HEARTBEAT_ACK);
+      CASE_RETURN_STR(DISCORD_GATEWAY_OPCODES_DISPATCH);
+      CASE_RETURN_STR(DISCORD_GATEWAY_OPCODES_HEARTBEAT);
+      CASE_RETURN_STR(DISCORD_GATEWAY_OPCODES_IDENTIFY);
+      CASE_RETURN_STR(DISCORD_GATEWAY_OPCODES_PRESENCE_UPDATE);
+      CASE_RETURN_STR(DISCORD_GATEWAY_OPCODES_VOICE_STATE_UPDATE);
+      CASE_RETURN_STR(DISCORD_GATEWAY_OPCODES_RESUME);
+      CASE_RETURN_STR(DISCORD_GATEWAY_OPCODES_RECONNECT);
+      CASE_RETURN_STR(DISCORD_GATEWAY_OPCODES_REQUEST_GUILD_MEMBERS);
+      CASE_RETURN_STR(DISCORD_GATEWAY_OPCODES_INVALID_SESSION);
+      CASE_RETURN_STR(DISCORD_GATEWAY_OPCODES_HELLO);
+      CASE_RETURN_STR(DISCORD_GATEWAY_OPCODES_HEARTBEAT_ACK);
   default:
       ERR("Invalid Gateway opcode (code: %d)", opcode);
   }
@@ -34,23 +34,23 @@ opcode_print(int opcode)
 }
 
 static char*
-close_opcode_print(discord::gateway::close_opcodes gateway_opcode)
+close_opcode_print(enum discord_gateway_close_opcodes gateway_opcode)
 {
   switch (gateway_opcode) {
-      CASE_RETURN_STR(discord::gateway::CLOSE_REASON_UNKNOWN_ERROR);
-      CASE_RETURN_STR(discord::gateway::CLOSE_REASON_UNKNOWN_OPCODE);
-      CASE_RETURN_STR(discord::gateway::CLOSE_REASON_DECODE_ERROR);
-      CASE_RETURN_STR(discord::gateway::CLOSE_REASON_NOT_AUTHENTICATED);
-      CASE_RETURN_STR(discord::gateway::CLOSE_REASON_AUTHENTICATION_FAILED);
-      CASE_RETURN_STR(discord::gateway::CLOSE_REASON_ALREADY_AUTHENTICATED);
-      CASE_RETURN_STR(discord::gateway::CLOSE_REASON_INVALID_SEQUENCE);
-      CASE_RETURN_STR(discord::gateway::CLOSE_REASON_RATE_LIMITED);
-      CASE_RETURN_STR(discord::gateway::CLOSE_REASON_SESSION_TIMED_OUT);
-      CASE_RETURN_STR(discord::gateway::CLOSE_REASON_INVALID_SHARD);
-      CASE_RETURN_STR(discord::gateway::CLOSE_REASON_SHARDING_REQUIRED);
-      CASE_RETURN_STR(discord::gateway::CLOSE_REASON_INVALID_API_VERSION);
-      CASE_RETURN_STR(discord::gateway::CLOSE_REASON_INVALID_INTENTS);
-      CASE_RETURN_STR(discord::gateway::CLOSE_REASON_DISALLOWED_INTENTS);
+      CASE_RETURN_STR(DISCORD_GATEWAY_CLOSE_REASON_UNKNOWN_ERROR);
+      CASE_RETURN_STR(DISCORD_GATEWAY_CLOSE_REASON_UNKNOWN_OPCODE);
+      CASE_RETURN_STR(DISCORD_GATEWAY_CLOSE_REASON_DECODE_ERROR);
+      CASE_RETURN_STR(DISCORD_GATEWAY_CLOSE_REASON_NOT_AUTHENTICATED);
+      CASE_RETURN_STR(DISCORD_GATEWAY_CLOSE_REASON_AUTHENTICATION_FAILED);
+      CASE_RETURN_STR(DISCORD_GATEWAY_CLOSE_REASON_ALREADY_AUTHENTICATED);
+      CASE_RETURN_STR(DISCORD_GATEWAY_CLOSE_REASON_INVALID_SEQUENCE);
+      CASE_RETURN_STR(DISCORD_GATEWAY_CLOSE_REASON_RATE_LIMITED);
+      CASE_RETURN_STR(DISCORD_GATEWAY_CLOSE_REASON_SESSION_TIMED_OUT);
+      CASE_RETURN_STR(DISCORD_GATEWAY_CLOSE_REASON_INVALID_SHARD);
+      CASE_RETURN_STR(DISCORD_GATEWAY_CLOSE_REASON_SHARDING_REQUIRED);
+      CASE_RETURN_STR(DISCORD_GATEWAY_CLOSE_REASON_INVALID_API_VERSION);
+      CASE_RETURN_STR(DISCORD_GATEWAY_CLOSE_REASON_INVALID_INTENTS);
+      CASE_RETURN_STR(DISCORD_GATEWAY_CLOSE_REASON_DISALLOWED_INTENTS);
   default: {
       enum cws_close_reason cws_opcode = \
             (enum cws_close_reason)gateway_opcode;
@@ -124,7 +124,7 @@ send_identify(struct discord_gateway *gw)
   int ret = json_inject(payload, sizeof(payload), 
               "(op):2" // IDENTIFY OPCODE
               "(d):F",
-              &discord::gateway::identify::dati_to_json_v, gw->identify);
+              &discord_gateway_identify_dati_to_json_v, gw->identify);
   ASSERT_S(ret < (int)sizeof(payload), "Out of bounds write attempt");
 
   // contain token (sensitive data), enable _ORKA_DEBUG_STRICT to print it
@@ -165,8 +165,8 @@ on_dispatch_message_reaction(
   struct payload_s *payload)
 {
   u64_snowflake_t user_id=0, message_id=0, channel_id=0, guild_id=0;
-  discord::guild::member::dati *member = discord::guild::member::dati_alloc();
-  discord::emoji::dati *emoji = discord::emoji::dati_alloc();
+  struct discord_guild_member_dati *member = discord_guild_member_dati_alloc();
+  struct discord_emoji_dati *emoji = discord_emoji_dati_alloc();
   json_scanf(payload->event_data, sizeof(payload->event_data),
       "[user_id]%F"
       "[message_id]%F"
@@ -176,8 +176,8 @@ on_dispatch_message_reaction(
       "[guild_id]%F",
       &orka_strtoull, &user_id,
       &orka_strtoull, &message_id,
-      &discord::guild::member::dati_from_json, member,
-      &discord::emoji::dati_from_json, emoji,
+      &discord_guild_member_dati_from_json, member,
+      &discord_emoji_dati_from_json, emoji,
       &orka_strtoull, &channel_id,
       &orka_strtoull, &guild_id);
 
@@ -217,8 +217,8 @@ on_dispatch_message_reaction(
   default: break; // will never trigger
   }
 
-  discord::guild::member::dati_free(member);
-  discord::emoji::dati_free(emoji);
+  discord_guild_member_dati_free(member);
+  discord_emoji_dati_free(emoji);
 }
 
 static void
@@ -253,8 +253,8 @@ on_dispatch_message(
     return; /* EARLY RETURN */
   }
 
-  discord::channel::message::dati *msg = discord::channel::message::dati_alloc();
-  discord::channel::message::dati_from_json(payload->event_data,
+  discord_channel_message_dati *msg = discord_channel_message_dati_alloc();
+  discord_channel_message_dati_from_json(payload->event_data,
       sizeof(payload->event_data), msg);
 
   struct sized_buffer sb_msg = {
@@ -325,7 +325,7 @@ on_dispatch_message(
   default: break; // will never trigger
   }
 
-  discord::channel::message::dati_free(msg);
+  discord_channel_message_dati_free(msg);
 }
 
 static void
@@ -334,8 +334,8 @@ on_dispatch_guild_member(
   enum dispatch_code code, 
   struct payload_s *payload)
 {
-  discord::guild::member::dati *member = discord::guild::member::dati_alloc();
-  discord::guild::member::dati_from_json(payload->event_data,
+  struct discord_guild_member_dati *member = discord_guild_member_dati_alloc();
+  discord_guild_member_dati_from_json(payload->event_data,
       sizeof(payload->event_data), member);
 
   u64_snowflake_t guild_id = 0;
@@ -373,7 +373,7 @@ on_dispatch_guild_member(
   default: break; // will never trigger
   }
 
-  discord::guild::member::dati_free(member);
+  discord_guild_member_dati_free(member);
 }
 
 static enum dispatch_code
@@ -508,27 +508,27 @@ static void
 on_close_cb(void *p_gw, enum cws_close_reason cwscode, const char *reason, size_t len)
 {
   struct discord_gateway *gw = (struct discord_gateway*)p_gw;
-  discord::gateway::close_opcodes opcode = (discord::gateway::close_opcodes)cwscode;
+  enum discord_gateway_close_opcodes opcode = (enum discord_gateway_close_opcodes)cwscode;
  
   switch (opcode) {
-  case discord::gateway::CLOSE_REASON_UNKNOWN_OPCODE:
-  case discord::gateway::CLOSE_REASON_DECODE_ERROR:
-  case discord::gateway::CLOSE_REASON_NOT_AUTHENTICATED:
-  case discord::gateway::CLOSE_REASON_AUTHENTICATION_FAILED:
-  case discord::gateway::CLOSE_REASON_ALREADY_AUTHENTICATED:
-  case discord::gateway::CLOSE_REASON_RATE_LIMITED:
-  case discord::gateway::CLOSE_REASON_SHARDING_REQUIRED:
-  case discord::gateway::CLOSE_REASON_INVALID_API_VERSION:
-  case discord::gateway::CLOSE_REASON_INVALID_INTENTS:
-  case discord::gateway::CLOSE_REASON_INVALID_SHARD:
-  case discord::gateway::CLOSE_REASON_DISALLOWED_INTENTS:
+  case DISCORD_GATEWAY_CLOSE_REASON_UNKNOWN_OPCODE:
+  case DISCORD_GATEWAY_CLOSE_REASON_DECODE_ERROR:
+  case DISCORD_GATEWAY_CLOSE_REASON_NOT_AUTHENTICATED:
+  case DISCORD_GATEWAY_CLOSE_REASON_AUTHENTICATION_FAILED:
+  case DISCORD_GATEWAY_CLOSE_REASON_ALREADY_AUTHENTICATED:
+  case DISCORD_GATEWAY_CLOSE_REASON_RATE_LIMITED:
+  case DISCORD_GATEWAY_CLOSE_REASON_SHARDING_REQUIRED:
+  case DISCORD_GATEWAY_CLOSE_REASON_INVALID_API_VERSION:
+  case DISCORD_GATEWAY_CLOSE_REASON_INVALID_INTENTS:
+  case DISCORD_GATEWAY_CLOSE_REASON_INVALID_SHARD:
+  case DISCORD_GATEWAY_CLOSE_REASON_DISALLOWED_INTENTS:
       ws_set_status(&gw->ws, WS_DISCONNECTED);
       break;
-  case discord::gateway::CLOSE_REASON_UNKNOWN_ERROR:
-  case discord::gateway::CLOSE_REASON_INVALID_SEQUENCE:
+  case DISCORD_GATEWAY_CLOSE_REASON_UNKNOWN_ERROR:
+  case DISCORD_GATEWAY_CLOSE_REASON_INVALID_SEQUENCE:
       ws_set_status(&gw->ws, WS_RESUME);
       break;
-  case discord::gateway::CLOSE_REASON_SESSION_TIMED_OUT:
+  case DISCORD_GATEWAY_CLOSE_REASON_SESSION_TIMED_OUT:
   default: //websocket/clouflare opcodes
       ws_set_status(&gw->ws, WS_FRESH);
       break;
@@ -665,13 +665,13 @@ discord_gateway_init(struct discord_gateway *gw, const char token[], const char 
 
   ws_set_refresh_rate(&gw->ws, 1);
   ws_set_max_reconnect(&gw->ws, 15);
-  ws_set_event(&gw->ws, discord::gateway::opcodes::HELLO, &on_hello);
-  ws_set_event(&gw->ws, discord::gateway::opcodes::DISPATCH, &on_dispatch);
-  ws_set_event(&gw->ws, discord::gateway::opcodes::INVALID_SESSION, &on_invalid_session);
-  ws_set_event(&gw->ws, discord::gateway::opcodes::RECONNECT, &on_reconnect);
-  ws_set_event(&gw->ws, discord::gateway::opcodes::HEARTBEAT_ACK, &on_heartbeat_ack);
+  ws_set_event(&gw->ws, DISCORD_GATEWAY_OPCODES_HELLO, &on_hello);
+  ws_set_event(&gw->ws, DISCORD_GATEWAY_OPCODES_DISPATCH, &on_dispatch);
+  ws_set_event(&gw->ws, DISCORD_GATEWAY_OPCODES_INVALID_SESSION, &on_invalid_session);
+  ws_set_event(&gw->ws, DISCORD_GATEWAY_OPCODES_RECONNECT, &on_reconnect);
+  ws_set_event(&gw->ws, DISCORD_GATEWAY_OPCODES_HEARTBEAT_ACK, &on_heartbeat_ack);
 
-  gw->identify = discord::gateway::identify::dati_alloc();
+  gw->identify = discord_gateway_identify_dati_alloc();
   gw->identify->token = strdup(token);
 
   gw->identify->properties->$os = strdup("POSIX");
@@ -681,7 +681,7 @@ discord_gateway_init(struct discord_gateway *gw, const char token[], const char 
   discord_set_presence(gw->p_client, NULL, "online", false);
   gw->identify->presence->since = orka_timestamp_ms();
 
-  gw->me = discord::user::dati_alloc();
+  gw->me = discord_user_dati_alloc();
   discord_get_current_user(gw->p_client, gw->me);
   sb_discord_get_current_user(gw->p_client, &gw->sb_me);
 
@@ -692,8 +692,8 @@ discord_gateway_init(struct discord_gateway *gw, const char token[], const char 
 void
 discord_gateway_cleanup(struct discord_gateway *gw)
 {
-  discord::user::dati_free(gw->me);
-  discord::gateway::identify::dati_free(gw->identify);
+  discord_user_dati_free(gw->me);
+  discord_gateway_identify_dati_free(gw->identify);
   ws_cleanup(&gw->ws);
   pthread_mutex_destroy(&gw->lock);
 }

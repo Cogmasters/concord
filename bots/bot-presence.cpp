@@ -8,7 +8,7 @@
 
 #define JSON_FILE "bot-presence.json"
 
-void on_ready(struct discord_client *client, const discord::user::dati *me) {
+void on_ready(struct discord_client *client, const struct discord_user_dati *me) {
   fprintf(stderr, "\n\nPresence-Bot succesfully connected to Discord as %s#%s!\n\n",
       me->username, me->discriminator);
 }
@@ -20,8 +20,8 @@ load_presence_from_json(struct discord_client *client, char filename[])
   size_t len;
   char *json_payload = orka_load_whole_file(filename, &len);
 
-  discord::presence::dati *new_presence = discord::presence::dati_alloc();
-  discord::presence::dati_from_json(json_payload, len, new_presence);
+  struct discord_presence_dati *new_presence = discord_presence_dati_alloc();
+  discord_presence_dati_from_json(json_payload, len, new_presence);
 
   discord_replace_presence(client, new_presence);
 
