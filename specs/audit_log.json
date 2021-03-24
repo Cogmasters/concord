@@ -1,83 +1,83 @@
 {
-  "namespace": ["discord", "audit_log"],
+  "namespace": ["discord"],
   "defs":
   [
     {
       "title":"Audit Log Structure",
       "comment":"https://discord.com/developers/docs/resources/audit-log#audit-log-object-audit-log-structure",
-      "struct":"dati",
+      "struct":"audit_log",
       "fields":
       [
-        {"name":"webhooks", "type": { "base":"struct discord_webhook_dati", "dec":"*" } },
-        {"name":"users", "type": { "base":"struct discord_user_dati", "dec":"*"}},
-        {"name":"audit_log_entries", "type": { "base":"struct discord_audit_log_entry_dati", "dec":"*"}},
-        {"name":"integrations", "type": { "base":"struct discord_guild_integration_dati", "dec":"ntl"}}
+        {"name":"webhooks", "type": { "base":"struct discord_webhook", "dec":"*" } },
+        {"name":"users", "type": { "base":"struct discord_user", "dec":"*"}},
+        {"name":"audit_log_entries", "type": { "base":"struct discord_audit_log_entry", "dec":"*"}},
+        {"name":"integrations", "type": { "base":"struct discord_guild_integration", "dec":"ntl"}}
       ]
     },
     {
       "title":"Audit Log Events",
       "comment":"https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-events",
-      "namespace":["entry","events"],
-      "enum":"code",
+      "namespace":["audit_log"],
+      "enum":"events",
       "items":
       [
-        {"name":"GUILD_UPDATE", "value":1},
-        {"name":"CHANNEL_CREATE","value":10},
-        {"name":"CHANNEL_UPDATE","value":11},
-        {"name":"CHANNEL_DELETE","value":12},
-        {"name":"CHANNEL_OVERWRITE_CREATE","value":13},
-        {"name":"CHANNEL_OVERWRITE_UPDATE"},
-        {"name":"CHANNEL_OVERWRITE_DELETE"},
-        {"name":"MEMBER_KICK","value":20},
-        {"name":"MEMBER_PRUNE"},
-        {"name":"MEMBER_BAN_ADD"},
-        {"name":"MEMBER_BAN_REMOVE"},
-        {"name":"MEMBER_UPDATE"},
-        {"name":"MEMBER_ROLE_UPDATE"},
-        {"name":"MEMBER_MOVE"},
-        {"name":"MEMBER_DISCONNECT"},
-        {"name":"BOT_ADD"},
-        {"name":"ROLE_CREATE", "value":30},
-        {"name":"ROLE_UPDATE"},
-        {"name":"ROLE_DELETE"},
-        {"name":"INVITE_CREATE", "value":40},
-        {"name":"INVITE_DELETE", "value":42},
-        {"name":"WEBHOOK_CREATE", "value":50},
-        {"name":"WEBHOOK_UPDATE"},
-        {"name":"WEBHOOK_DELETE"},
-        {"name":"EMOJI_CREATE", "value":60},
-        {"name":"EMOJI_UPDATE"},
-        {"name":"EMOJI_DELETE"},
-        {"name":"MESSAGE_DELETE", "value":72},
-        {"name":"MESSAGE_BULK_DELETE"},
-        {"name":"MESSAGE_PIN"},
-        {"name":"MESSAGE_UNPIN"},
-        {"name":"INTEGRATION_CREATE", "value":80},
-        {"name":"INTEGRATION_UPDATE"},
-        {"name":"INTEGRATION_DELETE"}
+        {"name":"DISCORD_AUDIT_LOG_GUILD_UPDATE", "value":1},
+        {"name":"DISCORD_AUDIT_LOG_CHANNEL_CREATE","value":10},
+        {"name":"DISCORD_AUDIT_LOG_CHANNEL_UPDATE","value":11},
+        {"name":"DISCORD_AUDIT_LOG_CHANNEL_DELETE","value":12},
+        {"name":"DISCORD_AUDIT_LOG_CHANNEL_OVERWRITE_CREATE","value":13},
+        {"name":"DISCORD_AUDIT_LOG_CHANNEL_OVERWRITE_UPDATE"},
+        {"name":"DISCORD_AUDIT_LOG_CHANNEL_OVERWRITE_DELETE"},
+        {"name":"DISCORD_AUDIT_LOG_MEMBER_KICK","value":20},
+        {"name":"DISCORD_AUDIT_LOG_MEMBER_PRUNE"},
+        {"name":"DISCORD_AUDIT_LOG_MEMBER_BAN_ADD"},
+        {"name":"DISCORD_AUDIT_LOG_MEMBER_BAN_REMOVE"},
+        {"name":"DISCORD_AUDIT_LOG_MEMBER_UPDATE"},
+        {"name":"DISCORD_AUDIT_LOG_MEMBER_ROLE_UPDATE"},
+        {"name":"DISCORD_AUDIT_LOG_MEMBER_MOVE"},
+        {"name":"DISCORD_AUDIT_LOG_MEMBER_DISCONNECT"},
+        {"name":"DISCORD_AUDIT_LOG_BOT_ADD"},
+        {"name":"DISCORD_AUDIT_LOG_ROLE_CREATE", "value":30},
+        {"name":"DISCORD_AUDIT_LOG_ROLE_UPDATE"},
+        {"name":"DISCORD_AUDIT_LOG_ROLE_DELETE"},
+        {"name":"DISCORD_AUDIT_LOG_INVITE_CREATE", "value":40},
+        {"name":"DISCORD_AUDIT_LOG_INVITE_DELETE", "value":42},
+        {"name":"DISCORD_AUDIT_LOG_WEBHOOK_CREATE", "value":50},
+        {"name":"DISCORD_AUDIT_LOG_WEBHOOK_UPDATE"},
+        {"name":"DISCORD_AUDIT_LOG_WEBHOOK_DELETE"},
+        {"name":"DISCORD_AUDIT_LOG_EMOJI_CREATE", "value":60},
+        {"name":"DISCORD_AUDIT_LOG_EMOJI_UPDATE"},
+        {"name":"DISCORD_AUDIT_LOG_EMOJI_DELETE"},
+        {"name":"DISCORD_AUDIT_LOG_MESSAGE_DELETE", "value":72},
+        {"name":"DISCORD_AUDIT_LOG_MESSAGE_BULK_DELETE"},
+        {"name":"DISCORD_AUDIT_LOG_MESSAGE_PIN"},
+        {"name":"DISCORD_AUDIT_LOG_MESSAGE_UNPIN"},
+        {"name":"DISCORD_AUDIT_LOG_INTEGRATION_CREATE", "value":80},
+        {"name":"DISCORD_AUDIT_LOG_INTEGRATION_UPDATE"},
+        {"name":"DISCORD_AUDIT_LOG_INTEGRATION_DELETE"}
       ]
     },
     {
       "title":"Audit Log Entry Structure",
       "comment":"https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-entry-structure",
-      "namespace":["entry"],
-      "struct":"dati",
+      "namespace":["audit_log"],
+      "struct":"entry",
       "fields":
       [
         {"name":"target_id", "type": {"base":"char", "dec":"*"}},
-        {"name":"changes", "type": {"base":"struct discord_audit_log_change_dati", "dec":"*"}},
+        {"name":"changes", "type": {"base":"struct discord_audit_log_change", "dec":"*"}},
         {"name":"user_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}},
         {"name":"id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}},
-        {"name":"action_type", "type": {"base":"int", "c_base":"enum discord_entry_events_code"}},
-        {"name":"options", "type": {"base":"struct discord_audit_log_entry_optional_info_dati", "dec":"*"}},
+        {"name":"action_type", "type": {"base":"int", "c_base":"enum discord_audit_log_events"}},
+        {"name":"options", "type": {"base":"struct discord_audit_log_entry_optional_info", "dec":"*"}},
         {"name":"reason", "type": {"base":"char", "dec":"[MAX_REASON_LEN]"}}
       ]
     },
     {
       "title":"Optional Audit Entry Info Structure",
       "comment": "https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-optional-audit-entry-info",
-      "namespace": ["entry", "optional_info"],
-      "struct":"dati",
+      "namespace": ["audit_log", "entry"],
+      "struct":"optional_info",
       "fields":
       [
         { "name": "delete_member_days", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"},
@@ -93,8 +93,8 @@
     {
       "title":"Audit Log Change Structure",
       "comment": "https://discord.com/developers/docs/resources/audit-log#audit-log-change-object-audit-log-change-structure",
-      "namespace": ["change"],
-      "struct":"dati",
+      "namespace": ["audit_log"],
+      "struct":"change",
       "fields":
       [
         {"name":"new_value", "type": {"base":"char", "dec":"*"}},
@@ -105,8 +105,8 @@
     {
       "title":"Audit Log Change Key",
       "comment": "https://discord.com/developers/docs/resources/audit-log#audit-log-change-object-audit-log-change-key",
-      "namespace": ["change", "key"],
-      "struct":"dati",
+      "namespace": ["audit_log"],
+      "struct":"change_key",
       "fields":
       [
         {"name":"name", "type": {"base":"char", "dec":"[MAX_NAME_LEN]"}},
