@@ -78,23 +78,17 @@ The primary design goals are:
 
 ### Implementation
 
-Orca is implemented primarily in plain C, but we also use C++'s
-namespace to organize symbols so we could establish 1-1 mappings
-between Orca APIs and supported REST APIs.
+Orca is implemented in plain C. The symbols are organized in a intuitive
+fashion to be easily identified by matching to the REST API docs.
 
-Establishing these 1-1 mappings has two purposes:
+There are three purposes for this:
 
-1.  Reduce the need of documenting every Orca API
-
+1.  Reduce the need of thoroughly documenting every Orca API
 2.  Reduce our user's cognitive burden of having to read both Orca API
-documenation and supported REST API documentations.
+documenation and supported REST API documentations. 
+3. The codebase becomes easier to navigate.
 
-Orca is implemented in two parts: All the functions that do the heavy
-lifting are implemented in plain C code.  The functions that can be
-mapped to REST APIs are wrapped in C++'s namespace to establish the
-1-1 mappings.
-
-Orca's implemnetation has minimum external dependencies to make bot
+Orca's implementation has minimum external dependencies to make bot
 deployment deadly simple.
 
 Keywords:
