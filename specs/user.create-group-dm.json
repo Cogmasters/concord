@@ -1,5 +1,5 @@
 {
-  "namespace": ["discord", "user", "create_group_dm"],
+  "namespace": ["discord", "create_group_dm"],
   "comment": "",
   "defs":
   [

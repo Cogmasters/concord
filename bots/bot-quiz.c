@@ -151,7 +151,7 @@ create_session_channel(
   struct discord_channel ch;
   discord_channel_init(&ch);
 
-  struct discord_guild_create_channel_params params1 = {
+  struct discord_create_guild_channel_params params1 = {
     .name = g_session.chat_name,
     .topic = g_session.chat_topic
   };
@@ -174,7 +174,7 @@ create_session_channel(
     | DISCORD_PERMISSIONS_SEND_MESSAGES, // Allow Read and Send Messages, Add Reactions permissions
     DISCORD_PERMISSIONS_ZERO); // Don't set deny permissions
 
-  discord_create_channel(client, guild_id, &params1, &ch);
+  discord_create_guild_channel(client, guild_id, &params1, &ch);
   
   // create new active_session if doesn't exist
   for (size_t i=0; i < MAX_SESSIONS; ++i) {
@@ -216,7 +216,7 @@ add_session_role(
 
   struct discord_guild_role ret_role;
   discord_guild_role_init(&ret_role);
-  struct discord_guild_create_guild_role_params params2 = {
+  struct discord_create_guild_role_params params2 = {
     .name = text
   };
   discord_create_guild_role(client, guild_id, &params2, &ret_role);
@@ -224,7 +224,7 @@ add_session_role(
 
   //@todo turn this into a public function
   ja_u64_list_append((ja_u64***)&member->roles, &ret_role.id);
-  struct discord_guild_modify_guild_member_params params3 = {
+  struct discord_modify_guild_member_params params3 = {
     .roles = member->roles
   };
   discord_modify_guild_member(
@@ -256,7 +256,7 @@ void start_new_session(
   }
 
   struct discord_message *ret_msg = discord_message_alloc();
-  struct discord_channel_create_message_params params = {
+  struct discord_create_message_params params = {
     .content = "Would you like to start?"
   };
   discord_create_message(client, session_channel_id, &params, ret_msg);
@@ -282,7 +282,7 @@ void send_next_question(
     sprintf(text, "You got %d out of %d! (%.1f%%)", \
       session->hits, g_session.questions_per_session,
       100*((float)session->hits / (float)g_session.questions_per_session));
-    struct discord_channel_create_message_params params = {
+    struct discord_create_message_params params = {
       .content = text
     };
     discord_create_message(client, channel_id, &params, NULL);
@@ -301,7 +301,7 @@ void send_next_question(
   }
 
   struct discord_message *ret_msg = discord_message_alloc();
-  struct discord_channel_create_message_params params = {
+  struct discord_create_message_params params = {
     .content = text
   };
   discord_create_message(client, channel_id, &params, ret_msg);

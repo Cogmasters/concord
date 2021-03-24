@@ -34,7 +34,7 @@ on_command(struct discord *client,
     return; // EARLY RETURN IF NOT SUDO USER
   }
 
-  struct discord_channel_create_message_params params = {0};
+  struct discord_create_message_params params = {0};
 
   char *cmd = strchr(msg->content, ' '); //get first occurence of space
   size_t len;

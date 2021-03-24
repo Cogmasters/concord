@@ -5,7 +5,7 @@
 
 /* https://discord.com/developers/docs/resources/template#create-guild-template */
 /* This is defined at specs/template.create-guild-template.json:8:22 */
-struct discord_Template_create_guild_template_params {
+struct discord_create_guild_template_params {
   /* specs/template.create-guild-template.json:11:20
      '{ "name": "name", "type":{ "base":"char", "dec":"[100+1]"}, "comment":"name of the guild"}'
   */
@@ -30,22 +30,22 @@ struct discord_Template_create_guild_template_params {
     void *record_null[2];
   } __M; // metadata
 };
-extern void discord_Template_create_guild_template_params_cleanup_v(void *p);
-extern void discord_Template_create_guild_template_params_cleanup(struct discord_Template_create_guild_template_params *p);
-extern void discord_Template_create_guild_template_params_init_v(void *p);
-extern void discord_Template_create_guild_template_params_init(struct discord_Template_create_guild_template_params *p);
-extern struct discord_Template_create_guild_template_params * discord_Template_create_guild_template_params_alloc();
-extern void discord_Template_create_guild_template_params_free_v(void *p);
-extern void discord_Template_create_guild_template_params_free(struct discord_Template_create_guild_template_params *p);
-extern void discord_Template_create_guild_template_params_from_json_v(char *json, size_t len, void *p);
-extern void discord_Template_create_guild_template_params_from_json(char *json, size_t len, struct discord_Template_create_guild_template_params *p);
-extern size_t discord_Template_create_guild_template_params_to_json_v(char *json, size_t len, void *p);
-extern size_t discord_Template_create_guild_template_params_to_json(char *json, size_t len, struct discord_Template_create_guild_template_params *p);
-extern size_t discord_Template_create_guild_template_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_Template_create_guild_template_params_to_query(char *json, size_t len, struct discord_Template_create_guild_template_params *p);
-extern void discord_Template_create_guild_template_params_list_free_v(void **p);
-extern void discord_Template_create_guild_template_params_list_free(struct discord_Template_create_guild_template_params **p);
-extern void discord_Template_create_guild_template_params_list_from_json_v(char *str, size_t len, void *p);
-extern void discord_Template_create_guild_template_params_list_from_json(char *str, size_t len, struct discord_Template_create_guild_template_params ***p);
-extern size_t discord_Template_create_guild_template_params_list_to_json_v(char *str, size_t len, void *p);
-extern size_t discord_Template_create_guild_template_params_list_to_json(char *str, size_t len, struct discord_Template_create_guild_template_params **p);
+extern void discord_create_guild_template_params_cleanup_v(void *p);
+extern void discord_create_guild_template_params_cleanup(struct discord_create_guild_template_params *p);
+extern void discord_create_guild_template_params_init_v(void *p);
+extern void discord_create_guild_template_params_init(struct discord_create_guild_template_params *p);
+extern struct discord_create_guild_template_params * discord_create_guild_template_params_alloc();
+extern void discord_create_guild_template_params_free_v(void *p);
+extern void discord_create_guild_template_params_free(struct discord_create_guild_template_params *p);
+extern void discord_create_guild_template_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_create_guild_template_params_from_json(char *json, size_t len, struct discord_create_guild_template_params *p);
+extern size_t discord_create_guild_template_params_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_create_guild_template_params_to_json(char *json, size_t len, struct discord_create_guild_template_params *p);
+extern size_t discord_create_guild_template_params_to_query_v(char *json, size_t len, void *p);
+extern size_t discord_create_guild_template_params_to_query(char *json, size_t len, struct discord_create_guild_template_params *p);
+extern void discord_create_guild_template_params_list_free_v(void **p);
+extern void discord_create_guild_template_params_list_free(struct discord_create_guild_template_params **p);
+extern void discord_create_guild_template_params_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_create_guild_template_params_list_from_json(char *str, size_t len, struct discord_create_guild_template_params ***p);
+extern size_t discord_create_guild_template_params_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_create_guild_template_params_list_to_json(char *str, size_t len, struct discord_create_guild_template_params **p);

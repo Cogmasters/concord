@@ -291,7 +291,7 @@ void on_command(
       "/factions%s", query);
 
   /* Send embed to channel if embed was loaded */
-  struct discord_channel_create_message_params params = {0};
+  struct discord_create_message_params params = {0};
   if (new_embed->fields)
     params.embed = new_embed;
   else 

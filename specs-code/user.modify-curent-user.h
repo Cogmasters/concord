@@ -5,7 +5,7 @@
 
 /* https://discord.com/developers/docs/resources/user#modify-current-user */
 /* This is defined at specs/user.modify-curent-user.json:8:22 */
-struct discord_user_modify_current_user_params {
+struct discord_modify_current_user_params {
   /* specs/user.modify-curent-user.json:11:20
      '{ "name": "username", "type":{ "base":"char", "dec":"*" }}'
   */
@@ -29,22 +29,22 @@ struct discord_user_modify_current_user_params {
     void *record_null[2];
   } __M; // metadata
 };
-extern void discord_user_modify_current_user_params_cleanup_v(void *p);
-extern void discord_user_modify_current_user_params_cleanup(struct discord_user_modify_current_user_params *p);
-extern void discord_user_modify_current_user_params_init_v(void *p);
-extern void discord_user_modify_current_user_params_init(struct discord_user_modify_current_user_params *p);
-extern struct discord_user_modify_current_user_params * discord_user_modify_current_user_params_alloc();
-extern void discord_user_modify_current_user_params_free_v(void *p);
-extern void discord_user_modify_current_user_params_free(struct discord_user_modify_current_user_params *p);
-extern void discord_user_modify_current_user_params_from_json_v(char *json, size_t len, void *p);
-extern void discord_user_modify_current_user_params_from_json(char *json, size_t len, struct discord_user_modify_current_user_params *p);
-extern size_t discord_user_modify_current_user_params_to_json_v(char *json, size_t len, void *p);
-extern size_t discord_user_modify_current_user_params_to_json(char *json, size_t len, struct discord_user_modify_current_user_params *p);
-extern size_t discord_user_modify_current_user_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_user_modify_current_user_params_to_query(char *json, size_t len, struct discord_user_modify_current_user_params *p);
-extern void discord_user_modify_current_user_params_list_free_v(void **p);
-extern void discord_user_modify_current_user_params_list_free(struct discord_user_modify_current_user_params **p);
-extern void discord_user_modify_current_user_params_list_from_json_v(char *str, size_t len, void *p);
-extern void discord_user_modify_current_user_params_list_from_json(char *str, size_t len, struct discord_user_modify_current_user_params ***p);
-extern size_t discord_user_modify_current_user_params_list_to_json_v(char *str, size_t len, void *p);
-extern size_t discord_user_modify_current_user_params_list_to_json(char *str, size_t len, struct discord_user_modify_current_user_params **p);
+extern void discord_modify_current_user_params_cleanup_v(void *p);
+extern void discord_modify_current_user_params_cleanup(struct discord_modify_current_user_params *p);
+extern void discord_modify_current_user_params_init_v(void *p);
+extern void discord_modify_current_user_params_init(struct discord_modify_current_user_params *p);
+extern struct discord_modify_current_user_params * discord_modify_current_user_params_alloc();
+extern void discord_modify_current_user_params_free_v(void *p);
+extern void discord_modify_current_user_params_free(struct discord_modify_current_user_params *p);
+extern void discord_modify_current_user_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_modify_current_user_params_from_json(char *json, size_t len, struct discord_modify_current_user_params *p);
+extern size_t discord_modify_current_user_params_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_modify_current_user_params_to_json(char *json, size_t len, struct discord_modify_current_user_params *p);
+extern size_t discord_modify_current_user_params_to_query_v(char *json, size_t len, void *p);
+extern size_t discord_modify_current_user_params_to_query(char *json, size_t len, struct discord_modify_current_user_params *p);
+extern void discord_modify_current_user_params_list_free_v(void **p);
+extern void discord_modify_current_user_params_list_free(struct discord_modify_current_user_params **p);
+extern void discord_modify_current_user_params_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_modify_current_user_params_list_from_json(char *str, size_t len, struct discord_modify_current_user_params ***p);
+extern size_t discord_modify_current_user_params_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_modify_current_user_params_list_to_json(char *str, size_t len, struct discord_modify_current_user_params **p);

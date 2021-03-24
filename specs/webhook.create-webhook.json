@@ -1,5 +1,5 @@
 {
-  "namespace": ["discord", "webhook", "create_webhook"],
+  "namespace": ["discord", "create_webhook"],
   "comment": "",
   "defs":
   [

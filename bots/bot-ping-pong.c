@@ -18,7 +18,7 @@ void on_ping(
   if (msg->author->bot)
     return;
 
-  struct discord_channel_create_message_params params = {.content = "pong"};
+  struct discord_create_message_params params = {.content = "pong"};
   discord_create_message(client, msg->channel_id, &params, NULL);
 }
 
@@ -31,7 +31,7 @@ void on_pong(
   if (msg->author->bot)
     return;
 
-  struct discord_channel_create_message_params params = {.content = "ping"};
+  struct discord_create_message_params params = {.content = "ping"};
   discord_create_message(client, msg->channel_id, &params, NULL);
 }
 

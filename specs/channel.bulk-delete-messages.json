@@ -1,5 +1,5 @@
 {
-  "namespace": ["discord", "channel", "bulk_delete_messages"],
+  "namespace": ["discord", "bulk_delete_messages"],
   "comment": "",
   "defs":
   [

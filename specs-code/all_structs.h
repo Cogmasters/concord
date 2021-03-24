@@ -77,7 +77,7 @@ struct discord_guild_membership_screening {
 
 /* https://discord.com/developers/docs/resources/channel#edit-channel-permissions */
 /* This is defined at specs/channel.edit-channel-permissions.json:8:22 */
-struct discord_channel_edit_channel_permissions_params {
+struct discord_edit_channel_permissions_params {
   /* specs/channel.edit-channel-permissions.json:11:20
      '{ "name": "allow", "type":{ "base":"char", "dec":"*"}}'
   */
@@ -113,7 +113,7 @@ struct discord_channel_edit_channel_permissions_params {
 
 /* https://discord.com/developers/docs/resources/channel#modify-channel */
 /* This is defined at specs/channel.modify-channel.json:8:22 */
-struct discord_channel_modify_params {
+struct discord_modify_channel_params {
   /* specs/channel.modify-channel.json:11:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }}'
   */
@@ -524,7 +524,7 @@ struct discord_message {
 
 /* https://discord.com/developers/docs/resources/template#create-guild-template */
 /* This is defined at specs/template.create-guild-template.json:8:22 */
-struct discord_Template_create_guild_template_params {
+struct discord_create_guild_template_params {
   /* specs/template.create-guild-template.json:11:20
      '{ "name": "name", "type":{ "base":"char", "dec":"[100+1]"}, "comment":"name of the guild"}'
   */
@@ -556,7 +556,7 @@ struct discord_Template_create_guild_template_params {
 
 /* https://discord.com/developers/docs/resources/channel#group-dm-add-recipient */
 /* This is defined at specs/channel.group-dm-add-recipient.json:8:22 */
-struct discord_channel_group_dm_add_recipient_params {
+struct discord_group_dm_add_recipient_params {
   /* specs/channel.group-dm-add-recipient.json:11:20
      '{ "name": "access_token", "type":{ "base":"char", "dec":"*"}}'
   */
@@ -587,7 +587,7 @@ struct discord_channel_group_dm_add_recipient_params {
 
 /* https://discord.com/developers/docs/resources/channel#create-channel-invite */
 /* This is defined at specs/channel.create-channel-invite.json:8:22 */
-struct discord_channel_create_channel_invite_params {
+struct discord_create_channel_invite_params {
   /* specs/channel.create-channel-invite.json:11:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "loc":"url"}'
   */
@@ -775,7 +775,7 @@ struct discord_voice_region {
 
 /* https://discord.com/developers/docs/resources/channel#get-reactions */
 /* This is defined at specs/channel.get-reactions.json:8:22 */
-struct discord_channel_get_reactions_params {
+struct discord_get_reactions_params {
   /* specs/channel.get-reactions.json:11:20
      '{ "name": "before", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "loc":"query"}'
   */
@@ -1100,7 +1100,7 @@ struct discord_guild_ban {
 
 /* https://discord.com/developers/docs/resources/guild#modify-guild-member */
 /* This is defined at specs/guild.modify-guild-member.json:8:22 */
-struct discord_guild_modify_guild_member_params {
+struct discord_modify_guild_member_params {
   /* specs/guild.modify-guild-member.json:11:20
      '{ "name": "nick", "type":{ "base":"char", "dec":"*" }}'
   */
@@ -1578,7 +1578,7 @@ struct discord_channel {
 
 /* https://discord.com/developers/docs/resources/webhook#edit-webhook-message */
 /* This is defined at specs/webhook.edit-webhook-message.json:8:22 */
-struct discord_webhook_edit_webhook_message_params {
+struct discord_edit_webhook_message_params {
   /* specs/webhook.edit-webhook-message.json:11:20
      '{ "name": "content", "type":{ "base":"char", "dec":"[2000+1]" }, 
           "comment":"name of the webhook(1-2000) chars" }'
@@ -2098,7 +2098,7 @@ struct discord_audit_log_change_key {
 
 /* https://discord.com/developers/docs/resources/template#create-guild-from-template */
 /* This is defined at specs/template.create-guild-from-template.json:8:22 */
-struct discord_Template_create_guild_from_template_params {
+struct discord_create_guild_from_template_params {
   /* specs/template.create-guild-from-template.json:11:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}'
   */
@@ -2129,7 +2129,7 @@ struct discord_Template_create_guild_from_template_params {
 
 /* https://discord.com/developers/docs/resources/webhook#modify-webhook */
 /* This is defined at specs/webhook.modify-webhook.json:8:22 */
-struct discord_webhook_modify_webhook_params {
+struct discord_modify_webhook_params {
   /* specs/webhook.modify-webhook.json:11:20
      '{ "name": "name", "type":{ "base":"char", "dec":"[80+1]" }, 
           "comment":"name of the webhook(1-80) chars" }'
@@ -2738,7 +2738,7 @@ struct discord_channel_embed_field {
 
 /* https://discord.com/developers/docs/resources/guild#create-guild-channel */
 /* This is defined at specs/guild.create-channel.json:8:22 */
-struct discord_guild_create_channel_params {
+struct discord_create_guild_channel_params {
   /* specs/guild.create-channel.json:11:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }}'
   */
@@ -2871,7 +2871,7 @@ struct discord_emoji {
 
 /* https://discord.com/developers/docs/resources/webhook#create-webhook */
 /* This is defined at specs/webhook.create-webhook.json:8:22 */
-struct discord_webhook_create_webhook_params {
+struct discord_create_webhook_params {
   /* specs/webhook.create-webhook.json:11:20
      '{ "name": "name", "type":{ "base":"char", "dec":"[80+1]" }, 
           "comment":"name of the webhook(1-80) chars" }'
@@ -2975,7 +2975,7 @@ struct discord_guild_welcome_screen {
 
 /* https://discord.com/developers/docs/resources/guild#create-guild */
 /* This is defined at specs/guild.create-guild.json:8:22 */
-struct discord_guild_create_guild_params {
+struct discord_create_guild_params {
   /* specs/guild.create-guild.json:11:20
      '{ "name": "name", "type":{ "base":"char", "dec":"[200+1]" }, 
           "comment":"name of the guild (2-100) characters"}'
@@ -3063,7 +3063,7 @@ struct discord_guild_create_guild_params {
 
 /* https://discord.com/developers/docs/resources/channel#bulk-delete-messages */
 /* This is defined at specs/channel.bulk-delete-messages.json:8:22 */
-struct discord_channel_bulk_delete_messages_params {
+struct discord_bulk_delete_messages_params {
   /* specs/channel.bulk-delete-messages.json:11:20
      '{ "name": "messages", "type":{ "base":"ja_u64", "dec":"ntl" }}'
   */
@@ -3155,7 +3155,7 @@ struct discord_webhook {
 
 /* https://discord.com/developers/docs/resources/user#create-group-dm */
 /* This is defined at specs/user.create-group-dm.json:8:22 */
-struct discord_user_create_group_dm_params {
+struct discord_create_group_dm_params {
   /* specs/user.create-group-dm.json:11:20
      '{ "name": "access_tokens", "type":{ "base":"ja_str", "dec":"ntl" }, 
           "comment":"access tokens of users that have granted your app the gdm.join scope"}'
@@ -3187,9 +3187,9 @@ struct discord_user_create_group_dm_params {
 
 */
 
-/* https://discord.com/developers/docs/resources/emoji#create-guild-emoji */
+/* https://discord.com/developers/docs/resources/emoji#modify-guild-emoji */
 /* This is defined at specs/emoji.modify-guild-emoji.json:8:22 */
-struct discord_emoji_modify_guild_emoji_params {
+struct discord_modify_guild_emoji_params {
   /* specs/emoji.modify-guild-emoji.json:11:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}}'
   */
@@ -3369,7 +3369,7 @@ struct discord_connection {
 
 /* https://discord.com/developers/docs/resources/guild#create-guild-role */
 /* This is defined at specs/guild.role.create.json:8:22 */
-struct discord_guild_create_guild_role_params {
+struct discord_create_guild_role_params {
   /* specs/guild.role.create.json:11:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }}'
   */
@@ -3420,7 +3420,7 @@ https://discord.com/developers/docs/topics/permissions
 
 /* https://discord.com/developers/docs/resources/webhook#execute-webhook */
 /* This is defined at specs/webhook.execute-webhook.json:8:22 */
-struct discord_webhook_execute_webhook_params {
+struct discord_execute_webhook_params {
   /* specs/webhook.execute-webhook.json:12:20
      '{ "name": "wait", "type":{ "base":"bool"}, "loc":"query",
           "comment":"name of the webhook(1-80) chars",
@@ -3610,7 +3610,7 @@ struct discord_guild_role {
 
 /* https://discord.com/developers/docs/resources/emoji#create-guild-emoji */
 /* This is defined at specs/emoji.create-guild-emoji.json:8:22 */
-struct discord_emoji_create_guild_emoji_params {
+struct discord_create_guild_emoji_params {
   /* specs/emoji.create-guild-emoji.json:11:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}}'
   */
@@ -3722,7 +3722,7 @@ struct discord_template {
 
 /* https://discord.com/developers/docs/resources/channel#follow-news-channel */
 /* This is defined at specs/channel.follow-news-channel.json:8:22 */
-struct discord_channel_follow_news_channel_params {
+struct discord_follow_news_channel_params {
   /* specs/channel.follow-news-channel.json:11:20
      '{ "name": "webhook_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
@@ -3947,7 +3947,7 @@ struct discord_gateway_identify_status_update_activity {
 
 /* https://discord.com/developers/docs/resources/template#modify-guild-template */
 /* This is defined at specs/template.modify-guild-template.json:8:22 */
-struct discord_Template_modify_guild_template_params {
+struct discord_modify_guild_template_params {
   /* specs/template.modify-guild-template.json:11:20
      '{ "name": "name", "type":{ "base":"char", "dec":"[100+1]"}, "comment":"name of the guild"}'
   */
@@ -4044,7 +4044,7 @@ struct discord_guild_member {
 
 /* https://discord.com/developers/docs/resources/user#modify-current-user */
 /* This is defined at specs/user.modify-curent-user.json:8:22 */
-struct discord_user_modify_current_user_params {
+struct discord_modify_current_user_params {
   /* specs/user.modify-curent-user.json:11:20
      '{ "name": "username", "type":{ "base":"char", "dec":"*" }}'
   */

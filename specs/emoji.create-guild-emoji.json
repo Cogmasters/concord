@@ -1,5 +1,5 @@
 {
-  "namespace": ["discord", "emoji", "create_guild_emoji"],
+  "namespace": ["discord", "create_guild_emoji"],
   "comment": "",
   "defs":
   [

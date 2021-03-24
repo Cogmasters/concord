@@ -24,7 +24,7 @@ void on_command(
   if (msg->author->bot)
     return;
 
-  struct discord_channel_create_message_params params = {
+  struct discord_create_message_params params = {
     .content = "This is an embed",
     .embed = (struct discord_channel_embed*)discord_get_data(client)
   };

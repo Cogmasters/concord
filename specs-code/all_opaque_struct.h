@@ -16,7 +16,7 @@ struct discord_guild_membership_screening;
 
 /* https://discord.com/developers/docs/resources/channel#edit-channel-permissions */
 /* This is defined at specs/channel.edit-channel-permissions.json:8:22 */
-struct discord_channel_edit_channel_permissions_params;
+struct discord_edit_channel_permissions_params;
 /* This file is generated from specs/channel.modify-channel.json, Please don't edit it. */
 /*
 
@@ -24,7 +24,7 @@ struct discord_channel_edit_channel_permissions_params;
 
 /* https://discord.com/developers/docs/resources/channel#modify-channel */
 /* This is defined at specs/channel.modify-channel.json:8:22 */
-struct discord_channel_modify_params;
+struct discord_modify_channel_params;
 /* This file is generated from specs/channel.message.json, Please don't edit it. */
 /*
 
@@ -60,7 +60,7 @@ struct discord_message;
 
 /* https://discord.com/developers/docs/resources/template#create-guild-template */
 /* This is defined at specs/template.create-guild-template.json:8:22 */
-struct discord_Template_create_guild_template_params;
+struct discord_create_guild_template_params;
 /* This file is generated from specs/channel.group-dm-add-recipient.json, Please don't edit it. */
 /*
 
@@ -68,7 +68,7 @@ struct discord_Template_create_guild_template_params;
 
 /* https://discord.com/developers/docs/resources/channel#group-dm-add-recipient */
 /* This is defined at specs/channel.group-dm-add-recipient.json:8:22 */
-struct discord_channel_group_dm_add_recipient_params;
+struct discord_group_dm_add_recipient_params;
 /* This file is generated from specs/channel.create-channel-invite.json, Please don't edit it. */
 /*
 
@@ -76,7 +76,7 @@ struct discord_channel_group_dm_add_recipient_params;
 
 /* https://discord.com/developers/docs/resources/channel#create-channel-invite */
 /* This is defined at specs/channel.create-channel-invite.json:8:22 */
-struct discord_channel_create_channel_invite_params;
+struct discord_create_channel_invite_params;
 /* This file is generated from specs/voice.json, Please don't edit it. */
 /*
 (null)
@@ -98,7 +98,7 @@ struct discord_voice_region;
 
 /* https://discord.com/developers/docs/resources/channel#get-reactions */
 /* This is defined at specs/channel.get-reactions.json:8:22 */
-struct discord_channel_get_reactions_params;
+struct discord_get_reactions_params;
 /* This file is generated from specs/guild.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/resources/guild#guild-object-guild-structure
@@ -121,7 +121,7 @@ struct discord_guild_ban;
 
 /* https://discord.com/developers/docs/resources/guild#modify-guild-member */
 /* This is defined at specs/guild.modify-guild-member.json:8:22 */
-struct discord_guild_modify_guild_member_params;
+struct discord_modify_guild_member_params;
 /* This file is generated from specs/guild.integration.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/resources/guild#integration-object-integration-structure
@@ -176,7 +176,7 @@ struct discord_channel;
 
 /* https://discord.com/developers/docs/resources/webhook#edit-webhook-message */
 /* This is defined at specs/webhook.edit-webhook-message.json:8:22 */
-struct discord_webhook_edit_webhook_message_params;
+struct discord_edit_webhook_message_params;
 /* This file is generated from specs/audit_log.json, Please don't edit it. */
 /*
 (null)
@@ -213,7 +213,7 @@ struct discord_audit_log_change_key;
 
 /* https://discord.com/developers/docs/resources/template#create-guild-from-template */
 /* This is defined at specs/template.create-guild-from-template.json:8:22 */
-struct discord_Template_create_guild_from_template_params;
+struct discord_create_guild_from_template_params;
 /* This file is generated from specs/webhook.modify-webhook.json, Please don't edit it. */
 /*
 
@@ -221,7 +221,7 @@ struct discord_Template_create_guild_from_template_params;
 
 /* https://discord.com/developers/docs/resources/webhook#modify-webhook */
 /* This is defined at specs/webhook.modify-webhook.json:8:22 */
-struct discord_webhook_modify_webhook_params;
+struct discord_modify_webhook_params;
 /* This file is generated from specs/channel.objects.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/resources/channel#overwrite-object-overwrite-structure
@@ -300,7 +300,7 @@ struct discord_channel_embed_field;
 
 /* https://discord.com/developers/docs/resources/guild#create-guild-channel */
 /* This is defined at specs/guild.create-channel.json:8:22 */
-struct discord_guild_create_channel_params;
+struct discord_create_guild_channel_params;
 /* This file is generated from specs/emoji.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/resources/emoji#emoji-object-emoji-structure
@@ -316,7 +316,7 @@ struct discord_emoji;
 
 /* https://discord.com/developers/docs/resources/webhook#create-webhook */
 /* This is defined at specs/webhook.create-webhook.json:8:22 */
-struct discord_webhook_create_webhook_params;
+struct discord_create_webhook_params;
 /* This file is generated from specs/guild.welcome_screen.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/resources/guild#welcome-screen-object
@@ -338,7 +338,7 @@ struct discord_guild_welcome_screen;
 
 /* https://discord.com/developers/docs/resources/guild#create-guild */
 /* This is defined at specs/guild.create-guild.json:8:22 */
-struct discord_guild_create_guild_params;
+struct discord_create_guild_params;
 /* This file is generated from specs/channel.bulk-delete-messages.json, Please don't edit it. */
 /*
 
@@ -346,7 +346,7 @@ struct discord_guild_create_guild_params;
 
 /* https://discord.com/developers/docs/resources/channel#bulk-delete-messages */
 /* This is defined at specs/channel.bulk-delete-messages.json:8:22 */
-struct discord_channel_bulk_delete_messages_params;
+struct discord_bulk_delete_messages_params;
 /* This file is generated from specs/webhook.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/resources/webhook#webhook-object-webhook-structure
@@ -362,15 +362,15 @@ struct discord_webhook;
 
 /* https://discord.com/developers/docs/resources/user#create-group-dm */
 /* This is defined at specs/user.create-group-dm.json:8:22 */
-struct discord_user_create_group_dm_params;
+struct discord_create_group_dm_params;
 /* This file is generated from specs/emoji.modify-guild-emoji.json, Please don't edit it. */
 /*
 
 */
 
-/* https://discord.com/developers/docs/resources/emoji#create-guild-emoji */
+/* https://discord.com/developers/docs/resources/emoji#modify-guild-emoji */
 /* This is defined at specs/emoji.modify-guild-emoji.json:8:22 */
-struct discord_emoji_modify_guild_emoji_params;
+struct discord_modify_guild_emoji_params;
 /* This file is generated from specs/user.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/resources/user#user-object
@@ -391,7 +391,7 @@ struct discord_connection;
 
 /* https://discord.com/developers/docs/resources/guild#create-guild-role */
 /* This is defined at specs/guild.role.create.json:8:22 */
-struct discord_guild_create_guild_role_params;
+struct discord_create_guild_role_params;
 /* This file is generated from specs/permissions.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/topics/permissions
@@ -403,7 +403,7 @@ https://discord.com/developers/docs/topics/permissions
 
 /* https://discord.com/developers/docs/resources/webhook#execute-webhook */
 /* This is defined at specs/webhook.execute-webhook.json:8:22 */
-struct discord_webhook_execute_webhook_params;
+struct discord_execute_webhook_params;
 /* This file is generated from specs/guild.role.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/topics/permissions#role-object-role-structure
@@ -423,7 +423,7 @@ struct discord_guild_role;
 
 /* https://discord.com/developers/docs/resources/emoji#create-guild-emoji */
 /* This is defined at specs/emoji.create-guild-emoji.json:8:22 */
-struct discord_emoji_create_guild_emoji_params;
+struct discord_create_guild_emoji_params;
 /* This file is generated from specs/template.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/resources/template#template-object-template-structure
@@ -439,7 +439,7 @@ struct discord_template;
 
 /* https://discord.com/developers/docs/resources/channel#follow-news-channel */
 /* This is defined at specs/channel.follow-news-channel.json:8:22 */
-struct discord_channel_follow_news_channel_params;
+struct discord_follow_news_channel_params;
 /* This file is generated from specs/gateway.json, Please don't edit it. */
 /*
 (null)
@@ -471,7 +471,7 @@ struct discord_gateway_identify_status_update_activity;
 
 /* https://discord.com/developers/docs/resources/template#modify-guild-template */
 /* This is defined at specs/template.modify-guild-template.json:8:22 */
-struct discord_Template_modify_guild_template_params;
+struct discord_modify_guild_template_params;
 /* This file is generated from specs/guild.member.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/resources/guild#guild-member-object
@@ -486,7 +486,7 @@ struct discord_guild_member;
 
 /* https://discord.com/developers/docs/resources/user#modify-current-user */
 /* This is defined at specs/user.modify-curent-user.json:8:22 */
-struct discord_user_modify_current_user_params;
+struct discord_modify_current_user_params;
 /* This file is generated from specs/invite.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/resources/invite#invite-object

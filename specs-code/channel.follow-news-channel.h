@@ -5,7 +5,7 @@
 
 /* https://discord.com/developers/docs/resources/channel#follow-news-channel */
 /* This is defined at specs/channel.follow-news-channel.json:8:22 */
-struct discord_channel_follow_news_channel_params {
+struct discord_follow_news_channel_params {
   /* specs/channel.follow-news-channel.json:11:20
      '{ "name": "webhook_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
@@ -24,22 +24,22 @@ struct discord_channel_follow_news_channel_params {
     void *record_null[1];
   } __M; // metadata
 };
-extern void discord_channel_follow_news_channel_params_cleanup_v(void *p);
-extern void discord_channel_follow_news_channel_params_cleanup(struct discord_channel_follow_news_channel_params *p);
-extern void discord_channel_follow_news_channel_params_init_v(void *p);
-extern void discord_channel_follow_news_channel_params_init(struct discord_channel_follow_news_channel_params *p);
-extern struct discord_channel_follow_news_channel_params * discord_channel_follow_news_channel_params_alloc();
-extern void discord_channel_follow_news_channel_params_free_v(void *p);
-extern void discord_channel_follow_news_channel_params_free(struct discord_channel_follow_news_channel_params *p);
-extern void discord_channel_follow_news_channel_params_from_json_v(char *json, size_t len, void *p);
-extern void discord_channel_follow_news_channel_params_from_json(char *json, size_t len, struct discord_channel_follow_news_channel_params *p);
-extern size_t discord_channel_follow_news_channel_params_to_json_v(char *json, size_t len, void *p);
-extern size_t discord_channel_follow_news_channel_params_to_json(char *json, size_t len, struct discord_channel_follow_news_channel_params *p);
-extern size_t discord_channel_follow_news_channel_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_channel_follow_news_channel_params_to_query(char *json, size_t len, struct discord_channel_follow_news_channel_params *p);
-extern void discord_channel_follow_news_channel_params_list_free_v(void **p);
-extern void discord_channel_follow_news_channel_params_list_free(struct discord_channel_follow_news_channel_params **p);
-extern void discord_channel_follow_news_channel_params_list_from_json_v(char *str, size_t len, void *p);
-extern void discord_channel_follow_news_channel_params_list_from_json(char *str, size_t len, struct discord_channel_follow_news_channel_params ***p);
-extern size_t discord_channel_follow_news_channel_params_list_to_json_v(char *str, size_t len, void *p);
-extern size_t discord_channel_follow_news_channel_params_list_to_json(char *str, size_t len, struct discord_channel_follow_news_channel_params **p);
+extern void discord_follow_news_channel_params_cleanup_v(void *p);
+extern void discord_follow_news_channel_params_cleanup(struct discord_follow_news_channel_params *p);
+extern void discord_follow_news_channel_params_init_v(void *p);
+extern void discord_follow_news_channel_params_init(struct discord_follow_news_channel_params *p);
+extern struct discord_follow_news_channel_params * discord_follow_news_channel_params_alloc();
+extern void discord_follow_news_channel_params_free_v(void *p);
+extern void discord_follow_news_channel_params_free(struct discord_follow_news_channel_params *p);
+extern void discord_follow_news_channel_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_follow_news_channel_params_from_json(char *json, size_t len, struct discord_follow_news_channel_params *p);
+extern size_t discord_follow_news_channel_params_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_follow_news_channel_params_to_json(char *json, size_t len, struct discord_follow_news_channel_params *p);
+extern size_t discord_follow_news_channel_params_to_query_v(char *json, size_t len, void *p);
+extern size_t discord_follow_news_channel_params_to_query(char *json, size_t len, struct discord_follow_news_channel_params *p);
+extern void discord_follow_news_channel_params_list_free_v(void **p);
+extern void discord_follow_news_channel_params_list_free(struct discord_follow_news_channel_params **p);
+extern void discord_follow_news_channel_params_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_follow_news_channel_params_list_from_json(char *str, size_t len, struct discord_follow_news_channel_params ***p);
+extern size_t discord_follow_news_channel_params_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_follow_news_channel_params_list_to_json(char *str, size_t len, struct discord_follow_news_channel_params **p);

@@ -127,7 +127,7 @@ struct discord_session {
   int event_count; //count elements to avoid reaching 120/60sec limit
 };
 
-struct discord_channel_get_channel_messages_params {
+struct discord_get_channel_messages_params {
   u64_snowflake_t around;
   u64_snowflake_t before;
   u64_snowflake_t after;
@@ -135,7 +135,7 @@ struct discord_channel_get_channel_messages_params {
 };
 
 /* default is application/json unless any multipart/form-data parameter is set */
-struct discord_channel_create_message_params {
+struct discord_create_message_params {
   // common parameters
   char *content;
   char *nonce;
@@ -153,14 +153,14 @@ struct discord_channel_create_message_params {
   char *payload_json;
 };
 
-struct discord_channel_edit_message_params {
+struct discord_edit_message_params {
   char *content;
   struct discord_channel_embed *embed; //must be initialized
   enum discord_message_flags_code *flags;
   struct discord_channel_allowed_mentions *allowed_mentions; //must be initialized
 };
 
-struct discord_guild_list_guild_members_params {
+struct discord_list_guild_members_params {
   int limit; // the number of members to return (1-1000)
   u64_snowflake_t after; // the highest user id in the previous page
 };
@@ -232,10 +232,10 @@ void discord_get_channel(struct discord *client, const u64_snowflake_t channel_i
 void discord_delete_channel(struct discord *client, const u64_snowflake_t channel_id, struct discord_channel *p_channel);
 void discord_add_pinned_channel_message(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id);
 void discord_delete_pinned_channel_message(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id);
-void discord_get_channel_messages(struct discord *client, const u64_snowflake_t channel_id, struct discord_channel_get_channel_messages_params *params, NTL_T(struct discord_message) *p_messages);
+void discord_get_channel_messages(struct discord *client, const u64_snowflake_t channel_id, struct discord_get_channel_messages_params *params, NTL_T(struct discord_message) *p_messages);
 void discord_delete_message(struct discord *client, u64_snowflake_t channel_id, u64_snowflake_t message_id);
-void discord_create_message(struct discord *client, const u64_snowflake_t channel_id, struct discord_channel_create_message_params *params, struct discord_message *p_message);
-void discord_edit_message(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id, struct discord_channel_edit_message_params *params, struct discord_message *p_message);
+void discord_create_message(struct discord *client, const u64_snowflake_t channel_id, struct discord_create_message_params *params, struct discord_message *p_message);
+void discord_edit_message(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id, struct discord_edit_message_params *params, struct discord_message *p_message);
 void discord_create_reaction(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id, const u64_snowflake_t emoji_id, const char emoji_name[]);
 void discord_trigger_typing_indicator(struct discord *client, const u64_snowflake_t channel_id);
 
@@ -245,17 +245,17 @@ void discord_list_guild_emojis(struct discord *client, const u64_snowflake_t gui
 // GUILD PUBLIC FUNCTIONS
 void discord_get_guild(struct discord *client, const u64_snowflake_t guild_id, struct discord_guild *p_guild);
 void discord_get_channels(struct discord *client, const u64_snowflake_t guild_id, NTL_T(struct discord_channel) *p_channels);
-void discord_create_channel(struct discord *client, const u64_snowflake_t guild_id, struct discord_guild_create_channel_params *params, struct discord_channel *p_channel);
+void discord_create_guild_channel(struct discord *client, const u64_snowflake_t guild_id, struct discord_create_guild_channel_params *params, struct discord_channel *p_channel);
 void  discord_get_guild_member(struct discord *client, u64_snowflake_t guild_id, u64_snowflake_t user_id, struct discord_guild_member *p_member);
-void discord_list_guild_members(struct discord *client, const u64_snowflake_t guild_id, struct discord_guild_list_guild_members_params *params, NTL_T(struct discord_guild_member) *p_members);
-void discord_modify_guild_member(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id, struct discord_guild_modify_guild_member_params *params, struct discord_guild_member *p_member);
+void discord_list_guild_members(struct discord *client, const u64_snowflake_t guild_id, struct discord_list_guild_members_params *params, NTL_T(struct discord_guild_member) *p_members);
+void discord_modify_guild_member(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id, struct discord_modify_guild_member_params *params, struct discord_guild_member *p_member);
 void discord_remove_guild_member(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id);
 void discord_get_guild_bans(struct discord *client, const u64_snowflake_t guild_id, NTL_T(struct discord_guild_ban) *p_bans);
 void discord_get_guild_ban(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id, struct discord_guild_ban *p_ban);
 void discord_create_guild_ban(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id, int delete_message_days, const char reason[]);
 void discord_remove_guild_ban(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id, const char reason[]);
 void discord_get_guild_roles(struct discord *client, const u64_snowflake_t guild_id, NTL_T(struct discord_guild_role) *p_roles);
-void discord_create_guild_role(struct discord *client, const u64_snowflake_t guild_id, struct discord_guild_create_guild_role_params *params, struct discord_guild_role *p_role);
+void discord_create_guild_role(struct discord *client, const u64_snowflake_t guild_id, struct discord_create_guild_role_params *params, struct discord_guild_role *p_role);
 void discord_delete_guild_role(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t role_id);
 
 // USER PUBLIC FUNCTIONS

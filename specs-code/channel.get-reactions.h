@@ -5,7 +5,7 @@
 
 /* https://discord.com/developers/docs/resources/channel#get-reactions */
 /* This is defined at specs/channel.get-reactions.json:8:22 */
-struct discord_channel_get_reactions_params {
+struct discord_get_reactions_params {
   /* specs/channel.get-reactions.json:11:20
      '{ "name": "before", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "loc":"query"}'
   */
@@ -34,22 +34,22 @@ struct discord_channel_get_reactions_params {
     void *record_null[3];
   } __M; // metadata
 };
-extern void discord_channel_get_reactions_params_cleanup_v(void *p);
-extern void discord_channel_get_reactions_params_cleanup(struct discord_channel_get_reactions_params *p);
-extern void discord_channel_get_reactions_params_init_v(void *p);
-extern void discord_channel_get_reactions_params_init(struct discord_channel_get_reactions_params *p);
-extern struct discord_channel_get_reactions_params * discord_channel_get_reactions_params_alloc();
-extern void discord_channel_get_reactions_params_free_v(void *p);
-extern void discord_channel_get_reactions_params_free(struct discord_channel_get_reactions_params *p);
-extern void discord_channel_get_reactions_params_from_json_v(char *json, size_t len, void *p);
-extern void discord_channel_get_reactions_params_from_json(char *json, size_t len, struct discord_channel_get_reactions_params *p);
-extern size_t discord_channel_get_reactions_params_to_json_v(char *json, size_t len, void *p);
-extern size_t discord_channel_get_reactions_params_to_json(char *json, size_t len, struct discord_channel_get_reactions_params *p);
-extern size_t discord_channel_get_reactions_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_channel_get_reactions_params_to_query(char *json, size_t len, struct discord_channel_get_reactions_params *p);
-extern void discord_channel_get_reactions_params_list_free_v(void **p);
-extern void discord_channel_get_reactions_params_list_free(struct discord_channel_get_reactions_params **p);
-extern void discord_channel_get_reactions_params_list_from_json_v(char *str, size_t len, void *p);
-extern void discord_channel_get_reactions_params_list_from_json(char *str, size_t len, struct discord_channel_get_reactions_params ***p);
-extern size_t discord_channel_get_reactions_params_list_to_json_v(char *str, size_t len, void *p);
-extern size_t discord_channel_get_reactions_params_list_to_json(char *str, size_t len, struct discord_channel_get_reactions_params **p);
+extern void discord_get_reactions_params_cleanup_v(void *p);
+extern void discord_get_reactions_params_cleanup(struct discord_get_reactions_params *p);
+extern void discord_get_reactions_params_init_v(void *p);
+extern void discord_get_reactions_params_init(struct discord_get_reactions_params *p);
+extern struct discord_get_reactions_params * discord_get_reactions_params_alloc();
+extern void discord_get_reactions_params_free_v(void *p);
+extern void discord_get_reactions_params_free(struct discord_get_reactions_params *p);
+extern void discord_get_reactions_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_get_reactions_params_from_json(char *json, size_t len, struct discord_get_reactions_params *p);
+extern size_t discord_get_reactions_params_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_get_reactions_params_to_json(char *json, size_t len, struct discord_get_reactions_params *p);
+extern size_t discord_get_reactions_params_to_query_v(char *json, size_t len, void *p);
+extern size_t discord_get_reactions_params_to_query(char *json, size_t len, struct discord_get_reactions_params *p);
+extern void discord_get_reactions_params_list_free_v(void **p);
+extern void discord_get_reactions_params_list_free(struct discord_get_reactions_params **p);
+extern void discord_get_reactions_params_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_get_reactions_params_list_from_json(char *str, size_t len, struct discord_get_reactions_params ***p);
+extern size_t discord_get_reactions_params_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_get_reactions_params_list_to_json(char *str, size_t len, struct discord_get_reactions_params **p);

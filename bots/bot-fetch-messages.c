@@ -43,7 +43,7 @@ select_member(struct discord *client, u64_snowflake_t guild_id)
 {
   // get guilds bot is a part of
   NTL_T(struct discord_guild_member) members = NULL;
-  struct discord_guild_list_guild_members_params params = {
+  struct discord_list_guild_members_params params = {
     .limit = 1000,
     .after = 0
   };
@@ -82,7 +82,7 @@ fetch_member_msgs(struct discord *client, u64_snowflake_t guild_id, u64_snowflak
   discord_get_channels(client, guild_id, &channels);
   ASSERT_S(NULL != channels, "Couldn't fetch channels from guild");
   
-  struct discord_channel_get_channel_messages_params params = {
+  struct discord_get_channel_messages_params params = {
     .limit = 100
   };
 

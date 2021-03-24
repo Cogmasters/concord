@@ -1,5 +1,5 @@
 {
-  "namespace": ["discord", "guild", "create_guild"],
+  "namespace": ["discord", "create_guild"],
   "comment": "",
   "defs":
   [

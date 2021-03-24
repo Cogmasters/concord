@@ -23,13 +23,13 @@ void on_create(
 
   struct discord_channel *channel = discord_channel_alloc();
 
-  struct discord_guild_create_channel_params params1 = {
+  struct discord_create_guild_channel_params params1 = {
     .name = msg->content
   };
-  discord_create_channel(client, msg->guild_id, &params1, channel);
+  discord_create_guild_channel(client, msg->guild_id, &params1, channel);
 
   if (channel->id) {
-    struct discord_channel_create_message_params params2 = {
+    struct discord_create_message_params params2 = {
       .content = "Hello world!"
     };
     discord_create_message(client, channel->id, &params2, NULL);

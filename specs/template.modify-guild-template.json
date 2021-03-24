@@ -1,5 +1,5 @@
 {
-  "namespace": ["discord", "Template", "modify_guild_template"],
+  "namespace": ["discord", "modify_guild_template"],
   "comment": "",
   "defs":
   [

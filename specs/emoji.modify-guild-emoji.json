@@ -1,10 +1,10 @@
 {
-  "namespace": ["discord", "emoji", "modify_guild_emoji"],
+  "namespace": ["discord", "modify_guild_emoji"],
   "comment": "",
   "defs":
   [
     {
-      "comment":"https://discord.com/developers/docs/resources/emoji#create-guild-emoji",
+      "comment":"https://discord.com/developers/docs/resources/emoji#modify-guild-emoji",
       "struct":"params",
       "fields":
       [

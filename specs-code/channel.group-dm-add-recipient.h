@@ -5,7 +5,7 @@
 
 /* https://discord.com/developers/docs/resources/channel#group-dm-add-recipient */
 /* This is defined at specs/channel.group-dm-add-recipient.json:8:22 */
-struct discord_channel_group_dm_add_recipient_params {
+struct discord_group_dm_add_recipient_params {
   /* specs/channel.group-dm-add-recipient.json:11:20
      '{ "name": "access_token", "type":{ "base":"char", "dec":"*"}}'
   */
@@ -29,22 +29,22 @@ struct discord_channel_group_dm_add_recipient_params {
     void *record_null[2];
   } __M; // metadata
 };
-extern void discord_channel_group_dm_add_recipient_params_cleanup_v(void *p);
-extern void discord_channel_group_dm_add_recipient_params_cleanup(struct discord_channel_group_dm_add_recipient_params *p);
-extern void discord_channel_group_dm_add_recipient_params_init_v(void *p);
-extern void discord_channel_group_dm_add_recipient_params_init(struct discord_channel_group_dm_add_recipient_params *p);
-extern struct discord_channel_group_dm_add_recipient_params * discord_channel_group_dm_add_recipient_params_alloc();
-extern void discord_channel_group_dm_add_recipient_params_free_v(void *p);
-extern void discord_channel_group_dm_add_recipient_params_free(struct discord_channel_group_dm_add_recipient_params *p);
-extern void discord_channel_group_dm_add_recipient_params_from_json_v(char *json, size_t len, void *p);
-extern void discord_channel_group_dm_add_recipient_params_from_json(char *json, size_t len, struct discord_channel_group_dm_add_recipient_params *p);
-extern size_t discord_channel_group_dm_add_recipient_params_to_json_v(char *json, size_t len, void *p);
-extern size_t discord_channel_group_dm_add_recipient_params_to_json(char *json, size_t len, struct discord_channel_group_dm_add_recipient_params *p);
-extern size_t discord_channel_group_dm_add_recipient_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_channel_group_dm_add_recipient_params_to_query(char *json, size_t len, struct discord_channel_group_dm_add_recipient_params *p);
-extern void discord_channel_group_dm_add_recipient_params_list_free_v(void **p);
-extern void discord_channel_group_dm_add_recipient_params_list_free(struct discord_channel_group_dm_add_recipient_params **p);
-extern void discord_channel_group_dm_add_recipient_params_list_from_json_v(char *str, size_t len, void *p);
-extern void discord_channel_group_dm_add_recipient_params_list_from_json(char *str, size_t len, struct discord_channel_group_dm_add_recipient_params ***p);
-extern size_t discord_channel_group_dm_add_recipient_params_list_to_json_v(char *str, size_t len, void *p);
-extern size_t discord_channel_group_dm_add_recipient_params_list_to_json(char *str, size_t len, struct discord_channel_group_dm_add_recipient_params **p);
+extern void discord_group_dm_add_recipient_params_cleanup_v(void *p);
+extern void discord_group_dm_add_recipient_params_cleanup(struct discord_group_dm_add_recipient_params *p);
+extern void discord_group_dm_add_recipient_params_init_v(void *p);
+extern void discord_group_dm_add_recipient_params_init(struct discord_group_dm_add_recipient_params *p);
+extern struct discord_group_dm_add_recipient_params * discord_group_dm_add_recipient_params_alloc();
+extern void discord_group_dm_add_recipient_params_free_v(void *p);
+extern void discord_group_dm_add_recipient_params_free(struct discord_group_dm_add_recipient_params *p);
+extern void discord_group_dm_add_recipient_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_group_dm_add_recipient_params_from_json(char *json, size_t len, struct discord_group_dm_add_recipient_params *p);
+extern size_t discord_group_dm_add_recipient_params_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_group_dm_add_recipient_params_to_json(char *json, size_t len, struct discord_group_dm_add_recipient_params *p);
+extern size_t discord_group_dm_add_recipient_params_to_query_v(char *json, size_t len, void *p);
+extern size_t discord_group_dm_add_recipient_params_to_query(char *json, size_t len, struct discord_group_dm_add_recipient_params *p);
+extern void discord_group_dm_add_recipient_params_list_free_v(void **p);
+extern void discord_group_dm_add_recipient_params_list_free(struct discord_group_dm_add_recipient_params **p);
+extern void discord_group_dm_add_recipient_params_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_group_dm_add_recipient_params_list_from_json(char *str, size_t len, struct discord_group_dm_add_recipient_params ***p);
+extern size_t discord_group_dm_add_recipient_params_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_group_dm_add_recipient_params_list_to_json(char *str, size_t len, struct discord_group_dm_add_recipient_params **p);

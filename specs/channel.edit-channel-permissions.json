@@ -1,5 +1,5 @@
 {
-  "namespace": ["discord", "channel", "edit_channel_permissions"],
+  "namespace": ["discord", "edit_channel_permissions"],
   "comment": "",
   "defs":
   [

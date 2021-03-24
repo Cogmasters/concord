@@ -5,7 +5,7 @@
 
 /* https://discord.com/developers/docs/resources/guild#modify-guild-member */
 /* This is defined at specs/guild.modify-guild-member.json:8:22 */
-struct discord_guild_modify_guild_member_params {
+struct discord_modify_guild_member_params {
   /* specs/guild.modify-guild-member.json:11:20
      '{ "name": "nick", "type":{ "base":"char", "dec":"*" }}'
   */
@@ -44,22 +44,22 @@ struct discord_guild_modify_guild_member_params {
     void *record_null[5];
   } __M; // metadata
 };
-extern void discord_guild_modify_guild_member_params_cleanup_v(void *p);
-extern void discord_guild_modify_guild_member_params_cleanup(struct discord_guild_modify_guild_member_params *p);
-extern void discord_guild_modify_guild_member_params_init_v(void *p);
-extern void discord_guild_modify_guild_member_params_init(struct discord_guild_modify_guild_member_params *p);
-extern struct discord_guild_modify_guild_member_params * discord_guild_modify_guild_member_params_alloc();
-extern void discord_guild_modify_guild_member_params_free_v(void *p);
-extern void discord_guild_modify_guild_member_params_free(struct discord_guild_modify_guild_member_params *p);
-extern void discord_guild_modify_guild_member_params_from_json_v(char *json, size_t len, void *p);
-extern void discord_guild_modify_guild_member_params_from_json(char *json, size_t len, struct discord_guild_modify_guild_member_params *p);
-extern size_t discord_guild_modify_guild_member_params_to_json_v(char *json, size_t len, void *p);
-extern size_t discord_guild_modify_guild_member_params_to_json(char *json, size_t len, struct discord_guild_modify_guild_member_params *p);
-extern size_t discord_guild_modify_guild_member_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_guild_modify_guild_member_params_to_query(char *json, size_t len, struct discord_guild_modify_guild_member_params *p);
-extern void discord_guild_modify_guild_member_params_list_free_v(void **p);
-extern void discord_guild_modify_guild_member_params_list_free(struct discord_guild_modify_guild_member_params **p);
-extern void discord_guild_modify_guild_member_params_list_from_json_v(char *str, size_t len, void *p);
-extern void discord_guild_modify_guild_member_params_list_from_json(char *str, size_t len, struct discord_guild_modify_guild_member_params ***p);
-extern size_t discord_guild_modify_guild_member_params_list_to_json_v(char *str, size_t len, void *p);
-extern size_t discord_guild_modify_guild_member_params_list_to_json(char *str, size_t len, struct discord_guild_modify_guild_member_params **p);
+extern void discord_modify_guild_member_params_cleanup_v(void *p);
+extern void discord_modify_guild_member_params_cleanup(struct discord_modify_guild_member_params *p);
+extern void discord_modify_guild_member_params_init_v(void *p);
+extern void discord_modify_guild_member_params_init(struct discord_modify_guild_member_params *p);
+extern struct discord_modify_guild_member_params * discord_modify_guild_member_params_alloc();
+extern void discord_modify_guild_member_params_free_v(void *p);
+extern void discord_modify_guild_member_params_free(struct discord_modify_guild_member_params *p);
+extern void discord_modify_guild_member_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_modify_guild_member_params_from_json(char *json, size_t len, struct discord_modify_guild_member_params *p);
+extern size_t discord_modify_guild_member_params_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_modify_guild_member_params_to_json(char *json, size_t len, struct discord_modify_guild_member_params *p);
+extern size_t discord_modify_guild_member_params_to_query_v(char *json, size_t len, void *p);
+extern size_t discord_modify_guild_member_params_to_query(char *json, size_t len, struct discord_modify_guild_member_params *p);
+extern void discord_modify_guild_member_params_list_free_v(void **p);
+extern void discord_modify_guild_member_params_list_free(struct discord_modify_guild_member_params **p);
+extern void discord_modify_guild_member_params_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_modify_guild_member_params_list_from_json(char *str, size_t len, struct discord_modify_guild_member_params ***p);
+extern size_t discord_modify_guild_member_params_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_modify_guild_member_params_list_to_json(char *str, size_t len, struct discord_modify_guild_member_params **p);

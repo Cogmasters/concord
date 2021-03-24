@@ -4,7 +4,7 @@
 
 */
 
-void discord_channel_create_channel_invite_params_from_json(char *json, size_t len, struct discord_channel_create_channel_invite_params *p)
+void discord_create_channel_invite_params_from_json(char *json, size_t len, struct discord_create_channel_invite_params *p)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
@@ -78,7 +78,7 @@ void discord_channel_create_channel_invite_params_from_json(char *json, size_t l
   ret = r;
 }
 
-static void discord_channel_create_channel_invite_params_use_default_inject_settings(struct discord_channel_create_channel_invite_params *p)
+static void discord_create_channel_invite_params_use_default_inject_settings(struct discord_create_channel_invite_params *p)
 {
   p->__M.enable_arg_switches = true;
   /* specs/channel.create-channel-invite.json:11:20
@@ -122,10 +122,10 @@ static void discord_channel_create_channel_invite_params_use_default_inject_sett
 
 }
 
-size_t discord_channel_create_channel_invite_params_to_json(char *json, size_t len, struct discord_channel_create_channel_invite_params *p)
+size_t discord_create_channel_invite_params_to_json(char *json, size_t len, struct discord_create_channel_invite_params *p)
 {
   size_t r;
-  discord_channel_create_channel_invite_params_use_default_inject_settings(p);
+  discord_create_channel_invite_params_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/channel.create-channel-invite.json:11:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "loc":"url"}'
@@ -196,40 +196,40 @@ size_t discord_channel_create_channel_invite_params_to_json(char *json, size_t l
 typedef void (*vfvp)(void *);
 typedef void (*vfcpsvp)(char *, size_t, void *);
 typedef size_t (*sfcpsvp)(char *, size_t, void *);
-void discord_channel_create_channel_invite_params_cleanup_v(void *p) {
-  discord_channel_create_channel_invite_params_cleanup((struct discord_channel_create_channel_invite_params *)p);
+void discord_create_channel_invite_params_cleanup_v(void *p) {
+  discord_create_channel_invite_params_cleanup((struct discord_create_channel_invite_params *)p);
 }
 
-void discord_channel_create_channel_invite_params_init_v(void *p) {
-  discord_channel_create_channel_invite_params_init((struct discord_channel_create_channel_invite_params *)p);
+void discord_create_channel_invite_params_init_v(void *p) {
+  discord_create_channel_invite_params_init((struct discord_create_channel_invite_params *)p);
 }
 
-void discord_channel_create_channel_invite_params_free_v(void *p) {
- discord_channel_create_channel_invite_params_free((struct discord_channel_create_channel_invite_params *)p);
+void discord_create_channel_invite_params_free_v(void *p) {
+ discord_create_channel_invite_params_free((struct discord_create_channel_invite_params *)p);
 };
 
-void discord_channel_create_channel_invite_params_from_json_v(char *json, size_t len, void *p) {
- discord_channel_create_channel_invite_params_from_json(json, len, (struct discord_channel_create_channel_invite_params*)p);
+void discord_create_channel_invite_params_from_json_v(char *json, size_t len, void *p) {
+ discord_create_channel_invite_params_from_json(json, len, (struct discord_create_channel_invite_params*)p);
 }
 
-size_t discord_channel_create_channel_invite_params_to_json_v(char *json, size_t len, void *p) {
-  return discord_channel_create_channel_invite_params_to_json(json, len, (struct discord_channel_create_channel_invite_params*)p);
+size_t discord_create_channel_invite_params_to_json_v(char *json, size_t len, void *p) {
+  return discord_create_channel_invite_params_to_json(json, len, (struct discord_create_channel_invite_params*)p);
 }
 
-void discord_channel_create_channel_invite_params_list_free_v(void **p) {
-  discord_channel_create_channel_invite_params_list_free((struct discord_channel_create_channel_invite_params**)p);
+void discord_create_channel_invite_params_list_free_v(void **p) {
+  discord_create_channel_invite_params_list_free((struct discord_create_channel_invite_params**)p);
 }
 
-void discord_channel_create_channel_invite_params_list_from_json_v(char *str, size_t len, void *p) {
-  discord_channel_create_channel_invite_params_list_from_json(str, len, (struct discord_channel_create_channel_invite_params ***)p);
+void discord_create_channel_invite_params_list_from_json_v(char *str, size_t len, void *p) {
+  discord_create_channel_invite_params_list_from_json(str, len, (struct discord_create_channel_invite_params ***)p);
 }
 
-size_t discord_channel_create_channel_invite_params_list_to_json_v(char *str, size_t len, void *p){
-  return discord_channel_create_channel_invite_params_list_to_json(str, len, (struct discord_channel_create_channel_invite_params **)p);
+size_t discord_create_channel_invite_params_list_to_json_v(char *str, size_t len, void *p){
+  return discord_create_channel_invite_params_list_to_json(str, len, (struct discord_create_channel_invite_params **)p);
 }
 
 
-void discord_channel_create_channel_invite_params_cleanup(struct discord_channel_create_channel_invite_params *d) {
+void discord_create_channel_invite_params_cleanup(struct discord_create_channel_invite_params *d) {
   /* specs/channel.create-channel-invite.json:11:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "loc":"url"}'
   */
@@ -263,8 +263,8 @@ void discord_channel_create_channel_invite_params_cleanup(struct discord_channel
   //p->target_user_type is a scalar
 }
 
-void discord_channel_create_channel_invite_params_init(struct discord_channel_create_channel_invite_params *p) {
-  memset(p, 0, sizeof(struct discord_channel_create_channel_invite_params));
+void discord_create_channel_invite_params_init(struct discord_create_channel_invite_params *p) {
+  memset(p, 0, sizeof(struct discord_create_channel_invite_params));
   /* specs/channel.create-channel-invite.json:11:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "loc":"url"}'
   */
@@ -296,34 +296,34 @@ void discord_channel_create_channel_invite_params_init(struct discord_channel_cr
   */
 
 }
-struct discord_channel_create_channel_invite_params* discord_channel_create_channel_invite_params_alloc() {
-  struct discord_channel_create_channel_invite_params *p= (struct discord_channel_create_channel_invite_params*)malloc(sizeof(struct discord_channel_create_channel_invite_params));
-  discord_channel_create_channel_invite_params_init(p);
+struct discord_create_channel_invite_params* discord_create_channel_invite_params_alloc() {
+  struct discord_create_channel_invite_params *p= (struct discord_create_channel_invite_params*)malloc(sizeof(struct discord_create_channel_invite_params));
+  discord_create_channel_invite_params_init(p);
   return p;
 }
 
-void discord_channel_create_channel_invite_params_free(struct discord_channel_create_channel_invite_params *p) {
-  discord_channel_create_channel_invite_params_cleanup(p);
+void discord_create_channel_invite_params_free(struct discord_create_channel_invite_params *p) {
+  discord_create_channel_invite_params_cleanup(p);
   free(p);
 }
 
-void discord_channel_create_channel_invite_params_list_free(struct discord_channel_create_channel_invite_params **p) {
-  ntl_free((void**)p, (vfvp)discord_channel_create_channel_invite_params_cleanup);
+void discord_create_channel_invite_params_list_free(struct discord_create_channel_invite_params **p) {
+  ntl_free((void**)p, (vfvp)discord_create_channel_invite_params_cleanup);
 }
 
-void discord_channel_create_channel_invite_params_list_from_json(char *str, size_t len, struct discord_channel_create_channel_invite_params ***p)
+void discord_create_channel_invite_params_list_from_json(char *str, size_t len, struct discord_create_channel_invite_params ***p)
 {
   struct ntl_deserializer d;
   memset(&d, 0, sizeof(d));
-  d.elem_size = sizeof(struct discord_channel_create_channel_invite_params);
-  d.init_elem = discord_channel_create_channel_invite_params_init_v;
-  d.elem_from_buf = discord_channel_create_channel_invite_params_from_json_v;
+  d.elem_size = sizeof(struct discord_create_channel_invite_params);
+  d.init_elem = discord_create_channel_invite_params_init_v;
+  d.elem_from_buf = discord_create_channel_invite_params_from_json_v;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json(str, len, &d);
 }
 
-size_t discord_channel_create_channel_invite_params_list_to_json(char *str, size_t len, struct discord_channel_create_channel_invite_params **p)
+size_t discord_create_channel_invite_params_list_to_json(char *str, size_t len, struct discord_create_channel_invite_params **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_channel_create_channel_invite_params_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, discord_create_channel_invite_params_to_json_v);
 }
 

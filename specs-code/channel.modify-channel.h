@@ -5,7 +5,7 @@
 
 /* https://discord.com/developers/docs/resources/channel#modify-channel */
 /* This is defined at specs/channel.modify-channel.json:8:22 */
-struct discord_channel_modify_params {
+struct discord_modify_channel_params {
   /* specs/channel.modify-channel.json:11:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }}'
   */
@@ -69,22 +69,22 @@ struct discord_channel_modify_params {
     void *record_null[10];
   } __M; // metadata
 };
-extern void discord_channel_modify_params_cleanup_v(void *p);
-extern void discord_channel_modify_params_cleanup(struct discord_channel_modify_params *p);
-extern void discord_channel_modify_params_init_v(void *p);
-extern void discord_channel_modify_params_init(struct discord_channel_modify_params *p);
-extern struct discord_channel_modify_params * discord_channel_modify_params_alloc();
-extern void discord_channel_modify_params_free_v(void *p);
-extern void discord_channel_modify_params_free(struct discord_channel_modify_params *p);
-extern void discord_channel_modify_params_from_json_v(char *json, size_t len, void *p);
-extern void discord_channel_modify_params_from_json(char *json, size_t len, struct discord_channel_modify_params *p);
-extern size_t discord_channel_modify_params_to_json_v(char *json, size_t len, void *p);
-extern size_t discord_channel_modify_params_to_json(char *json, size_t len, struct discord_channel_modify_params *p);
-extern size_t discord_channel_modify_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_channel_modify_params_to_query(char *json, size_t len, struct discord_channel_modify_params *p);
-extern void discord_channel_modify_params_list_free_v(void **p);
-extern void discord_channel_modify_params_list_free(struct discord_channel_modify_params **p);
-extern void discord_channel_modify_params_list_from_json_v(char *str, size_t len, void *p);
-extern void discord_channel_modify_params_list_from_json(char *str, size_t len, struct discord_channel_modify_params ***p);
-extern size_t discord_channel_modify_params_list_to_json_v(char *str, size_t len, void *p);
-extern size_t discord_channel_modify_params_list_to_json(char *str, size_t len, struct discord_channel_modify_params **p);
+extern void discord_modify_channel_params_cleanup_v(void *p);
+extern void discord_modify_channel_params_cleanup(struct discord_modify_channel_params *p);
+extern void discord_modify_channel_params_init_v(void *p);
+extern void discord_modify_channel_params_init(struct discord_modify_channel_params *p);
+extern struct discord_modify_channel_params * discord_modify_channel_params_alloc();
+extern void discord_modify_channel_params_free_v(void *p);
+extern void discord_modify_channel_params_free(struct discord_modify_channel_params *p);
+extern void discord_modify_channel_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_modify_channel_params_from_json(char *json, size_t len, struct discord_modify_channel_params *p);
+extern size_t discord_modify_channel_params_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_modify_channel_params_to_json(char *json, size_t len, struct discord_modify_channel_params *p);
+extern size_t discord_modify_channel_params_to_query_v(char *json, size_t len, void *p);
+extern size_t discord_modify_channel_params_to_query(char *json, size_t len, struct discord_modify_channel_params *p);
+extern void discord_modify_channel_params_list_free_v(void **p);
+extern void discord_modify_channel_params_list_free(struct discord_modify_channel_params **p);
+extern void discord_modify_channel_params_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_modify_channel_params_list_from_json(char *str, size_t len, struct discord_modify_channel_params ***p);
+extern size_t discord_modify_channel_params_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_modify_channel_params_list_to_json(char *str, size_t len, struct discord_modify_channel_params **p);

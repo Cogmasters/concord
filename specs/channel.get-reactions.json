@@ -1,5 +1,5 @@
 {
-  "namespace": ["discord", "channel", "get_reactions"],
+  "namespace": ["discord", "get_reactions"],
   "comment": "",
   "defs":
   [

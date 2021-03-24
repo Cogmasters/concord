@@ -1,5 +1,5 @@
 {
-  "namespace": ["discord", "channel", "follow_news_channel"],
+  "namespace": ["discord", "follow_news_channel"],
   "comment": "",
   "defs":
   [

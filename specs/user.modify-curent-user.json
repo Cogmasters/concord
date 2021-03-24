@@ -1,5 +1,5 @@
 {
-  "namespace": ["discord", "user", "modify_current_user"],
+  "namespace": ["discord", "modify_current_user"],
   "comment": "",
   "defs":
   [

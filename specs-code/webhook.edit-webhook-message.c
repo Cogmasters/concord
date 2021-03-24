@@ -4,7 +4,7 @@
 
 */
 
-void discord_webhook_edit_webhook_message_params_from_json(char *json, size_t len, struct discord_webhook_edit_webhook_message_params *p)
+void discord_edit_webhook_message_params_from_json(char *json, size_t len, struct discord_edit_webhook_message_params *p)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
@@ -50,7 +50,7 @@ void discord_webhook_edit_webhook_message_params_from_json(char *json, size_t le
   ret = r;
 }
 
-static void discord_webhook_edit_webhook_message_params_use_default_inject_settings(struct discord_webhook_edit_webhook_message_params *p)
+static void discord_edit_webhook_message_params_use_default_inject_settings(struct discord_edit_webhook_message_params *p)
 {
   p->__M.enable_arg_switches = true;
   /* specs/webhook.edit-webhook-message.json:11:20
@@ -74,10 +74,10 @@ static void discord_webhook_edit_webhook_message_params_use_default_inject_setti
 
 }
 
-size_t discord_webhook_edit_webhook_message_params_to_json(char *json, size_t len, struct discord_webhook_edit_webhook_message_params *p)
+size_t discord_edit_webhook_message_params_to_json(char *json, size_t len, struct discord_edit_webhook_message_params *p)
 {
   size_t r;
-  discord_webhook_edit_webhook_message_params_use_default_inject_settings(p);
+  discord_edit_webhook_message_params_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/webhook.edit-webhook-message.json:11:20
      '{ "name": "content", "type":{ "base":"char", "dec":"[2000+1]" }, 
@@ -120,40 +120,40 @@ size_t discord_webhook_edit_webhook_message_params_to_json(char *json, size_t le
 typedef void (*vfvp)(void *);
 typedef void (*vfcpsvp)(char *, size_t, void *);
 typedef size_t (*sfcpsvp)(char *, size_t, void *);
-void discord_webhook_edit_webhook_message_params_cleanup_v(void *p) {
-  discord_webhook_edit_webhook_message_params_cleanup((struct discord_webhook_edit_webhook_message_params *)p);
+void discord_edit_webhook_message_params_cleanup_v(void *p) {
+  discord_edit_webhook_message_params_cleanup((struct discord_edit_webhook_message_params *)p);
 }
 
-void discord_webhook_edit_webhook_message_params_init_v(void *p) {
-  discord_webhook_edit_webhook_message_params_init((struct discord_webhook_edit_webhook_message_params *)p);
+void discord_edit_webhook_message_params_init_v(void *p) {
+  discord_edit_webhook_message_params_init((struct discord_edit_webhook_message_params *)p);
 }
 
-void discord_webhook_edit_webhook_message_params_free_v(void *p) {
- discord_webhook_edit_webhook_message_params_free((struct discord_webhook_edit_webhook_message_params *)p);
+void discord_edit_webhook_message_params_free_v(void *p) {
+ discord_edit_webhook_message_params_free((struct discord_edit_webhook_message_params *)p);
 };
 
-void discord_webhook_edit_webhook_message_params_from_json_v(char *json, size_t len, void *p) {
- discord_webhook_edit_webhook_message_params_from_json(json, len, (struct discord_webhook_edit_webhook_message_params*)p);
+void discord_edit_webhook_message_params_from_json_v(char *json, size_t len, void *p) {
+ discord_edit_webhook_message_params_from_json(json, len, (struct discord_edit_webhook_message_params*)p);
 }
 
-size_t discord_webhook_edit_webhook_message_params_to_json_v(char *json, size_t len, void *p) {
-  return discord_webhook_edit_webhook_message_params_to_json(json, len, (struct discord_webhook_edit_webhook_message_params*)p);
+size_t discord_edit_webhook_message_params_to_json_v(char *json, size_t len, void *p) {
+  return discord_edit_webhook_message_params_to_json(json, len, (struct discord_edit_webhook_message_params*)p);
 }
 
-void discord_webhook_edit_webhook_message_params_list_free_v(void **p) {
-  discord_webhook_edit_webhook_message_params_list_free((struct discord_webhook_edit_webhook_message_params**)p);
+void discord_edit_webhook_message_params_list_free_v(void **p) {
+  discord_edit_webhook_message_params_list_free((struct discord_edit_webhook_message_params**)p);
 }
 
-void discord_webhook_edit_webhook_message_params_list_from_json_v(char *str, size_t len, void *p) {
-  discord_webhook_edit_webhook_message_params_list_from_json(str, len, (struct discord_webhook_edit_webhook_message_params ***)p);
+void discord_edit_webhook_message_params_list_from_json_v(char *str, size_t len, void *p) {
+  discord_edit_webhook_message_params_list_from_json(str, len, (struct discord_edit_webhook_message_params ***)p);
 }
 
-size_t discord_webhook_edit_webhook_message_params_list_to_json_v(char *str, size_t len, void *p){
-  return discord_webhook_edit_webhook_message_params_list_to_json(str, len, (struct discord_webhook_edit_webhook_message_params **)p);
+size_t discord_edit_webhook_message_params_list_to_json_v(char *str, size_t len, void *p){
+  return discord_edit_webhook_message_params_list_to_json(str, len, (struct discord_edit_webhook_message_params **)p);
 }
 
 
-void discord_webhook_edit_webhook_message_params_cleanup(struct discord_webhook_edit_webhook_message_params *d) {
+void discord_edit_webhook_message_params_cleanup(struct discord_edit_webhook_message_params *d) {
   /* specs/webhook.edit-webhook-message.json:11:20
      '{ "name": "content", "type":{ "base":"char", "dec":"[2000+1]" }, 
           "comment":"name of the webhook(1-2000) chars" }'
@@ -174,8 +174,8 @@ void discord_webhook_edit_webhook_message_params_cleanup(struct discord_webhook_
     discord_channel_allowed_mentions_free(d->allowed_mentions);
 }
 
-void discord_webhook_edit_webhook_message_params_init(struct discord_webhook_edit_webhook_message_params *p) {
-  memset(p, 0, sizeof(struct discord_webhook_edit_webhook_message_params));
+void discord_edit_webhook_message_params_init(struct discord_edit_webhook_message_params *p) {
+  memset(p, 0, sizeof(struct discord_edit_webhook_message_params));
   /* specs/webhook.edit-webhook-message.json:11:20
      '{ "name": "content", "type":{ "base":"char", "dec":"[2000+1]" }, 
           "comment":"name of the webhook(1-2000) chars" }'
@@ -194,34 +194,34 @@ void discord_webhook_edit_webhook_message_params_init(struct discord_webhook_edi
   p->allowed_mentions = discord_channel_allowed_mentions_alloc();
 
 }
-struct discord_webhook_edit_webhook_message_params* discord_webhook_edit_webhook_message_params_alloc() {
-  struct discord_webhook_edit_webhook_message_params *p= (struct discord_webhook_edit_webhook_message_params*)malloc(sizeof(struct discord_webhook_edit_webhook_message_params));
-  discord_webhook_edit_webhook_message_params_init(p);
+struct discord_edit_webhook_message_params* discord_edit_webhook_message_params_alloc() {
+  struct discord_edit_webhook_message_params *p= (struct discord_edit_webhook_message_params*)malloc(sizeof(struct discord_edit_webhook_message_params));
+  discord_edit_webhook_message_params_init(p);
   return p;
 }
 
-void discord_webhook_edit_webhook_message_params_free(struct discord_webhook_edit_webhook_message_params *p) {
-  discord_webhook_edit_webhook_message_params_cleanup(p);
+void discord_edit_webhook_message_params_free(struct discord_edit_webhook_message_params *p) {
+  discord_edit_webhook_message_params_cleanup(p);
   free(p);
 }
 
-void discord_webhook_edit_webhook_message_params_list_free(struct discord_webhook_edit_webhook_message_params **p) {
-  ntl_free((void**)p, (vfvp)discord_webhook_edit_webhook_message_params_cleanup);
+void discord_edit_webhook_message_params_list_free(struct discord_edit_webhook_message_params **p) {
+  ntl_free((void**)p, (vfvp)discord_edit_webhook_message_params_cleanup);
 }
 
-void discord_webhook_edit_webhook_message_params_list_from_json(char *str, size_t len, struct discord_webhook_edit_webhook_message_params ***p)
+void discord_edit_webhook_message_params_list_from_json(char *str, size_t len, struct discord_edit_webhook_message_params ***p)
 {
   struct ntl_deserializer d;
   memset(&d, 0, sizeof(d));
-  d.elem_size = sizeof(struct discord_webhook_edit_webhook_message_params);
-  d.init_elem = discord_webhook_edit_webhook_message_params_init_v;
-  d.elem_from_buf = discord_webhook_edit_webhook_message_params_from_json_v;
+  d.elem_size = sizeof(struct discord_edit_webhook_message_params);
+  d.init_elem = discord_edit_webhook_message_params_init_v;
+  d.elem_from_buf = discord_edit_webhook_message_params_from_json_v;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json(str, len, &d);
 }
 
-size_t discord_webhook_edit_webhook_message_params_list_to_json(char *str, size_t len, struct discord_webhook_edit_webhook_message_params **p)
+size_t discord_edit_webhook_message_params_list_to_json(char *str, size_t len, struct discord_edit_webhook_message_params **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_webhook_edit_webhook_message_params_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, discord_edit_webhook_message_params_to_json_v);
 }
 

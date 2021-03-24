@@ -27,7 +27,7 @@ discord_delete_messages_by_author_id(
     return;
   }
 
-  struct discord_channel_get_channel_messages_params params = {
+  struct discord_get_channel_messages_params params = {
     .limit = 100
   };
 

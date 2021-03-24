@@ -22,7 +22,7 @@ void on_command(
 
   struct discord_guild_role *role = discord_guild_role_alloc();
 
-  struct discord_guild_create_guild_role_params params1 = {
+  struct discord_create_guild_role_params params1 = {
     .name = msg->content
   };
   discord_create_guild_role(client, msg->guild_id, &params1, role);
@@ -31,7 +31,7 @@ void on_command(
     char text[150];
     snprintf(text, sizeof(text), "Succesfully created <@&%" PRIu64 "> role", role->id);
 
-    struct discord_channel_create_message_params params2 = {
+    struct discord_create_message_params params2 = {
       .content = text
     };
     discord_create_message(client, msg->channel_id, &params2, NULL);

@@ -39,7 +39,7 @@ on_command(struct discord *client,
   ++cxt.discriminator;
 
   NTL_T(struct discord_guild_member) members = NULL;
-  struct discord_guild_list_guild_members_params params1 = {
+  struct discord_list_guild_members_params params1 = {
     .limit = 1000
   };
   discord_list_guild_members(client, msg->guild_id, &params1, &members);
@@ -52,7 +52,7 @@ on_command(struct discord *client,
     if (0 == strcmp(members[i]->user->username, cxt.username)
         && 0 == strcmp(members[i]->user->discriminator, cxt.discriminator))
     {
-      struct discord_guild_modify_guild_member_params params2 = {
+      struct discord_modify_guild_member_params params2 = {
         .nick = cxt.nick
       };
       discord_modify_guild_member(client, msg->guild_id, members[i]->user->id, &params2, NULL);

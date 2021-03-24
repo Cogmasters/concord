@@ -36,7 +36,7 @@ void on_message_create(
   if (msg->author->bot)
     return;
 
-  struct discord_channel_create_message_params params = {
+  struct discord_create_message_params params = {
     .content = msg->content
   };
   struct discord_message_reference msg_ref;
@@ -57,7 +57,7 @@ void on_message_update(
     const struct discord_user *me,
     const struct discord_message *msg)
 {
-  struct discord_channel_create_message_params params = {
+  struct discord_create_message_params params = {
     .content = "I see what you did there."
   };
   discord_create_message(client, msg->channel_id, &params, NULL);
@@ -70,7 +70,7 @@ void on_message_delete(
     const uint64_t channel_id,
     const uint64_t guild_id)
 {
-  struct discord_channel_create_message_params params = {
+  struct discord_create_message_params params = {
     .content = "Did that message just disappear?"
   };
   discord_create_message(client, channel_id, &params, NULL);
@@ -87,7 +87,7 @@ void on_message_delete_bulk(
   char buf[128];
   snprintf(buf, sizeof(buf), "Ouch! Where did those %zu messages go?", nids);
 
-  struct discord_channel_create_message_params params = {
+  struct discord_create_message_params params = {
     .content = buf
   };
   discord_create_message(client, channel_id, &params, NULL);

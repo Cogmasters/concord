@@ -5,7 +5,7 @@
 
 /* https://discord.com/developers/docs/resources/channel#create-channel-invite */
 /* This is defined at specs/channel.create-channel-invite.json:8:22 */
-struct discord_channel_create_channel_invite_params {
+struct discord_create_channel_invite_params {
   /* specs/channel.create-channel-invite.json:11:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "loc":"url"}'
   */
@@ -56,22 +56,22 @@ struct discord_channel_create_channel_invite_params {
     void *record_null[7];
   } __M; // metadata
 };
-extern void discord_channel_create_channel_invite_params_cleanup_v(void *p);
-extern void discord_channel_create_channel_invite_params_cleanup(struct discord_channel_create_channel_invite_params *p);
-extern void discord_channel_create_channel_invite_params_init_v(void *p);
-extern void discord_channel_create_channel_invite_params_init(struct discord_channel_create_channel_invite_params *p);
-extern struct discord_channel_create_channel_invite_params * discord_channel_create_channel_invite_params_alloc();
-extern void discord_channel_create_channel_invite_params_free_v(void *p);
-extern void discord_channel_create_channel_invite_params_free(struct discord_channel_create_channel_invite_params *p);
-extern void discord_channel_create_channel_invite_params_from_json_v(char *json, size_t len, void *p);
-extern void discord_channel_create_channel_invite_params_from_json(char *json, size_t len, struct discord_channel_create_channel_invite_params *p);
-extern size_t discord_channel_create_channel_invite_params_to_json_v(char *json, size_t len, void *p);
-extern size_t discord_channel_create_channel_invite_params_to_json(char *json, size_t len, struct discord_channel_create_channel_invite_params *p);
-extern size_t discord_channel_create_channel_invite_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_channel_create_channel_invite_params_to_query(char *json, size_t len, struct discord_channel_create_channel_invite_params *p);
-extern void discord_channel_create_channel_invite_params_list_free_v(void **p);
-extern void discord_channel_create_channel_invite_params_list_free(struct discord_channel_create_channel_invite_params **p);
-extern void discord_channel_create_channel_invite_params_list_from_json_v(char *str, size_t len, void *p);
-extern void discord_channel_create_channel_invite_params_list_from_json(char *str, size_t len, struct discord_channel_create_channel_invite_params ***p);
-extern size_t discord_channel_create_channel_invite_params_list_to_json_v(char *str, size_t len, void *p);
-extern size_t discord_channel_create_channel_invite_params_list_to_json(char *str, size_t len, struct discord_channel_create_channel_invite_params **p);
+extern void discord_create_channel_invite_params_cleanup_v(void *p);
+extern void discord_create_channel_invite_params_cleanup(struct discord_create_channel_invite_params *p);
+extern void discord_create_channel_invite_params_init_v(void *p);
+extern void discord_create_channel_invite_params_init(struct discord_create_channel_invite_params *p);
+extern struct discord_create_channel_invite_params * discord_create_channel_invite_params_alloc();
+extern void discord_create_channel_invite_params_free_v(void *p);
+extern void discord_create_channel_invite_params_free(struct discord_create_channel_invite_params *p);
+extern void discord_create_channel_invite_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_create_channel_invite_params_from_json(char *json, size_t len, struct discord_create_channel_invite_params *p);
+extern size_t discord_create_channel_invite_params_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_create_channel_invite_params_to_json(char *json, size_t len, struct discord_create_channel_invite_params *p);
+extern size_t discord_create_channel_invite_params_to_query_v(char *json, size_t len, void *p);
+extern size_t discord_create_channel_invite_params_to_query(char *json, size_t len, struct discord_create_channel_invite_params *p);
+extern void discord_create_channel_invite_params_list_free_v(void **p);
+extern void discord_create_channel_invite_params_list_free(struct discord_create_channel_invite_params **p);
+extern void discord_create_channel_invite_params_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_create_channel_invite_params_list_from_json(char *str, size_t len, struct discord_create_channel_invite_params ***p);
+extern size_t discord_create_channel_invite_params_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_create_channel_invite_params_list_to_json(char *str, size_t len, struct discord_create_channel_invite_params **p);

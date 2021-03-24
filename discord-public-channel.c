@@ -396,7 +396,7 @@ void
 discord_get_channel_messages(
   struct discord *client, 
   const u64_snowflake_t channel_id, 
-  struct discord_channel_get_channel_messages_params *params, 
+  struct discord_get_channel_messages_params *params, 
   NTL_T(struct discord_message) *p_messages)
 {
   if (!channel_id) {
@@ -472,7 +472,7 @@ discord_delete_message(
 static curl_mime*
 curl_mime_cb(CURL *ehandle, void *data) 
 {
-  struct discord_channel_create_message_params *params = (struct discord_channel_create_message_params*)data;
+  struct discord_create_message_params *params = data;
 
   curl_mime *mime = curl_mime_init(ehandle);
   curl_mimepart *part = curl_mime_addpart(mime);
@@ -498,7 +498,7 @@ void
 discord_create_message(
   struct discord *client, 
   const u64_snowflake_t channel_id, 
-  struct discord_channel_create_message_params *params, 
+  struct discord_create_message_params *params, 
   struct discord_message *p_message)
 {
   if (ws_get_status(client->gw.ws) != WS_CONNECTED) {
@@ -602,7 +602,7 @@ discord_edit_message(
   struct discord *client, 
   const u64_snowflake_t channel_id, 
   const u64_snowflake_t message_id, 
-  struct discord_channel_edit_message_params *params, 
+  struct discord_edit_message_params *params, 
   struct discord_message *p_message)
 {
   if (!channel_id) {

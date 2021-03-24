@@ -5,7 +5,7 @@
 
 /* https://discord.com/developers/docs/resources/guild#create-guild-channel */
 /* This is defined at specs/guild.create-channel.json:8:22 */
-struct discord_guild_create_channel_params {
+struct discord_create_guild_channel_params {
   /* specs/guild.create-channel.json:11:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }}'
   */
@@ -69,22 +69,22 @@ struct discord_guild_create_channel_params {
     void *record_null[10];
   } __M; // metadata
 };
-extern void discord_guild_create_channel_params_cleanup_v(void *p);
-extern void discord_guild_create_channel_params_cleanup(struct discord_guild_create_channel_params *p);
-extern void discord_guild_create_channel_params_init_v(void *p);
-extern void discord_guild_create_channel_params_init(struct discord_guild_create_channel_params *p);
-extern struct discord_guild_create_channel_params * discord_guild_create_channel_params_alloc();
-extern void discord_guild_create_channel_params_free_v(void *p);
-extern void discord_guild_create_channel_params_free(struct discord_guild_create_channel_params *p);
-extern void discord_guild_create_channel_params_from_json_v(char *json, size_t len, void *p);
-extern void discord_guild_create_channel_params_from_json(char *json, size_t len, struct discord_guild_create_channel_params *p);
-extern size_t discord_guild_create_channel_params_to_json_v(char *json, size_t len, void *p);
-extern size_t discord_guild_create_channel_params_to_json(char *json, size_t len, struct discord_guild_create_channel_params *p);
-extern size_t discord_guild_create_channel_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_guild_create_channel_params_to_query(char *json, size_t len, struct discord_guild_create_channel_params *p);
-extern void discord_guild_create_channel_params_list_free_v(void **p);
-extern void discord_guild_create_channel_params_list_free(struct discord_guild_create_channel_params **p);
-extern void discord_guild_create_channel_params_list_from_json_v(char *str, size_t len, void *p);
-extern void discord_guild_create_channel_params_list_from_json(char *str, size_t len, struct discord_guild_create_channel_params ***p);
-extern size_t discord_guild_create_channel_params_list_to_json_v(char *str, size_t len, void *p);
-extern size_t discord_guild_create_channel_params_list_to_json(char *str, size_t len, struct discord_guild_create_channel_params **p);
+extern void discord_create_guild_channel_params_cleanup_v(void *p);
+extern void discord_create_guild_channel_params_cleanup(struct discord_create_guild_channel_params *p);
+extern void discord_create_guild_channel_params_init_v(void *p);
+extern void discord_create_guild_channel_params_init(struct discord_create_guild_channel_params *p);
+extern struct discord_create_guild_channel_params * discord_create_guild_channel_params_alloc();
+extern void discord_create_guild_channel_params_free_v(void *p);
+extern void discord_create_guild_channel_params_free(struct discord_create_guild_channel_params *p);
+extern void discord_create_guild_channel_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_create_guild_channel_params_from_json(char *json, size_t len, struct discord_create_guild_channel_params *p);
+extern size_t discord_create_guild_channel_params_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_create_guild_channel_params_to_json(char *json, size_t len, struct discord_create_guild_channel_params *p);
+extern size_t discord_create_guild_channel_params_to_query_v(char *json, size_t len, void *p);
+extern size_t discord_create_guild_channel_params_to_query(char *json, size_t len, struct discord_create_guild_channel_params *p);
+extern void discord_create_guild_channel_params_list_free_v(void **p);
+extern void discord_create_guild_channel_params_list_free(struct discord_create_guild_channel_params **p);
+extern void discord_create_guild_channel_params_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_create_guild_channel_params_list_from_json(char *str, size_t len, struct discord_create_guild_channel_params ***p);
+extern size_t discord_create_guild_channel_params_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_create_guild_channel_params_list_to_json(char *str, size_t len, struct discord_create_guild_channel_params **p);

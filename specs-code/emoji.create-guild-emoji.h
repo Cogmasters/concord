@@ -5,7 +5,7 @@
 
 /* https://discord.com/developers/docs/resources/emoji#create-guild-emoji */
 /* This is defined at specs/emoji.create-guild-emoji.json:8:22 */
-struct discord_emoji_create_guild_emoji_params {
+struct discord_create_guild_emoji_params {
   /* specs/emoji.create-guild-emoji.json:11:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}}'
   */
@@ -34,22 +34,22 @@ struct discord_emoji_create_guild_emoji_params {
     void *record_null[3];
   } __M; // metadata
 };
-extern void discord_emoji_create_guild_emoji_params_cleanup_v(void *p);
-extern void discord_emoji_create_guild_emoji_params_cleanup(struct discord_emoji_create_guild_emoji_params *p);
-extern void discord_emoji_create_guild_emoji_params_init_v(void *p);
-extern void discord_emoji_create_guild_emoji_params_init(struct discord_emoji_create_guild_emoji_params *p);
-extern struct discord_emoji_create_guild_emoji_params * discord_emoji_create_guild_emoji_params_alloc();
-extern void discord_emoji_create_guild_emoji_params_free_v(void *p);
-extern void discord_emoji_create_guild_emoji_params_free(struct discord_emoji_create_guild_emoji_params *p);
-extern void discord_emoji_create_guild_emoji_params_from_json_v(char *json, size_t len, void *p);
-extern void discord_emoji_create_guild_emoji_params_from_json(char *json, size_t len, struct discord_emoji_create_guild_emoji_params *p);
-extern size_t discord_emoji_create_guild_emoji_params_to_json_v(char *json, size_t len, void *p);
-extern size_t discord_emoji_create_guild_emoji_params_to_json(char *json, size_t len, struct discord_emoji_create_guild_emoji_params *p);
-extern size_t discord_emoji_create_guild_emoji_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_emoji_create_guild_emoji_params_to_query(char *json, size_t len, struct discord_emoji_create_guild_emoji_params *p);
-extern void discord_emoji_create_guild_emoji_params_list_free_v(void **p);
-extern void discord_emoji_create_guild_emoji_params_list_free(struct discord_emoji_create_guild_emoji_params **p);
-extern void discord_emoji_create_guild_emoji_params_list_from_json_v(char *str, size_t len, void *p);
-extern void discord_emoji_create_guild_emoji_params_list_from_json(char *str, size_t len, struct discord_emoji_create_guild_emoji_params ***p);
-extern size_t discord_emoji_create_guild_emoji_params_list_to_json_v(char *str, size_t len, void *p);
-extern size_t discord_emoji_create_guild_emoji_params_list_to_json(char *str, size_t len, struct discord_emoji_create_guild_emoji_params **p);
+extern void discord_create_guild_emoji_params_cleanup_v(void *p);
+extern void discord_create_guild_emoji_params_cleanup(struct discord_create_guild_emoji_params *p);
+extern void discord_create_guild_emoji_params_init_v(void *p);
+extern void discord_create_guild_emoji_params_init(struct discord_create_guild_emoji_params *p);
+extern struct discord_create_guild_emoji_params * discord_create_guild_emoji_params_alloc();
+extern void discord_create_guild_emoji_params_free_v(void *p);
+extern void discord_create_guild_emoji_params_free(struct discord_create_guild_emoji_params *p);
+extern void discord_create_guild_emoji_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_create_guild_emoji_params_from_json(char *json, size_t len, struct discord_create_guild_emoji_params *p);
+extern size_t discord_create_guild_emoji_params_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_create_guild_emoji_params_to_json(char *json, size_t len, struct discord_create_guild_emoji_params *p);
+extern size_t discord_create_guild_emoji_params_to_query_v(char *json, size_t len, void *p);
+extern size_t discord_create_guild_emoji_params_to_query(char *json, size_t len, struct discord_create_guild_emoji_params *p);
+extern void discord_create_guild_emoji_params_list_free_v(void **p);
+extern void discord_create_guild_emoji_params_list_free(struct discord_create_guild_emoji_params **p);
+extern void discord_create_guild_emoji_params_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_create_guild_emoji_params_list_from_json(char *str, size_t len, struct discord_create_guild_emoji_params ***p);
+extern size_t discord_create_guild_emoji_params_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_create_guild_emoji_params_list_to_json(char *str, size_t len, struct discord_create_guild_emoji_params **p);

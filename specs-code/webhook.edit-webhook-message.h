@@ -5,7 +5,7 @@
 
 /* https://discord.com/developers/docs/resources/webhook#edit-webhook-message */
 /* This is defined at specs/webhook.edit-webhook-message.json:8:22 */
-struct discord_webhook_edit_webhook_message_params {
+struct discord_edit_webhook_message_params {
   /* specs/webhook.edit-webhook-message.json:11:20
      '{ "name": "content", "type":{ "base":"char", "dec":"[2000+1]" }, 
           "comment":"name of the webhook(1-2000) chars" }'
@@ -38,22 +38,22 @@ struct discord_webhook_edit_webhook_message_params {
     void *record_null[3];
   } __M; // metadata
 };
-extern void discord_webhook_edit_webhook_message_params_cleanup_v(void *p);
-extern void discord_webhook_edit_webhook_message_params_cleanup(struct discord_webhook_edit_webhook_message_params *p);
-extern void discord_webhook_edit_webhook_message_params_init_v(void *p);
-extern void discord_webhook_edit_webhook_message_params_init(struct discord_webhook_edit_webhook_message_params *p);
-extern struct discord_webhook_edit_webhook_message_params * discord_webhook_edit_webhook_message_params_alloc();
-extern void discord_webhook_edit_webhook_message_params_free_v(void *p);
-extern void discord_webhook_edit_webhook_message_params_free(struct discord_webhook_edit_webhook_message_params *p);
-extern void discord_webhook_edit_webhook_message_params_from_json_v(char *json, size_t len, void *p);
-extern void discord_webhook_edit_webhook_message_params_from_json(char *json, size_t len, struct discord_webhook_edit_webhook_message_params *p);
-extern size_t discord_webhook_edit_webhook_message_params_to_json_v(char *json, size_t len, void *p);
-extern size_t discord_webhook_edit_webhook_message_params_to_json(char *json, size_t len, struct discord_webhook_edit_webhook_message_params *p);
-extern size_t discord_webhook_edit_webhook_message_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_webhook_edit_webhook_message_params_to_query(char *json, size_t len, struct discord_webhook_edit_webhook_message_params *p);
-extern void discord_webhook_edit_webhook_message_params_list_free_v(void **p);
-extern void discord_webhook_edit_webhook_message_params_list_free(struct discord_webhook_edit_webhook_message_params **p);
-extern void discord_webhook_edit_webhook_message_params_list_from_json_v(char *str, size_t len, void *p);
-extern void discord_webhook_edit_webhook_message_params_list_from_json(char *str, size_t len, struct discord_webhook_edit_webhook_message_params ***p);
-extern size_t discord_webhook_edit_webhook_message_params_list_to_json_v(char *str, size_t len, void *p);
-extern size_t discord_webhook_edit_webhook_message_params_list_to_json(char *str, size_t len, struct discord_webhook_edit_webhook_message_params **p);
+extern void discord_edit_webhook_message_params_cleanup_v(void *p);
+extern void discord_edit_webhook_message_params_cleanup(struct discord_edit_webhook_message_params *p);
+extern void discord_edit_webhook_message_params_init_v(void *p);
+extern void discord_edit_webhook_message_params_init(struct discord_edit_webhook_message_params *p);
+extern struct discord_edit_webhook_message_params * discord_edit_webhook_message_params_alloc();
+extern void discord_edit_webhook_message_params_free_v(void *p);
+extern void discord_edit_webhook_message_params_free(struct discord_edit_webhook_message_params *p);
+extern void discord_edit_webhook_message_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_edit_webhook_message_params_from_json(char *json, size_t len, struct discord_edit_webhook_message_params *p);
+extern size_t discord_edit_webhook_message_params_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_edit_webhook_message_params_to_json(char *json, size_t len, struct discord_edit_webhook_message_params *p);
+extern size_t discord_edit_webhook_message_params_to_query_v(char *json, size_t len, void *p);
+extern size_t discord_edit_webhook_message_params_to_query(char *json, size_t len, struct discord_edit_webhook_message_params *p);
+extern void discord_edit_webhook_message_params_list_free_v(void **p);
+extern void discord_edit_webhook_message_params_list_free(struct discord_edit_webhook_message_params **p);
+extern void discord_edit_webhook_message_params_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_edit_webhook_message_params_list_from_json(char *str, size_t len, struct discord_edit_webhook_message_params ***p);
+extern size_t discord_edit_webhook_message_params_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_edit_webhook_message_params_list_to_json(char *str, size_t len, struct discord_edit_webhook_message_params **p);

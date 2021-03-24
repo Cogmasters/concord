@@ -27,10 +27,10 @@ discord_get_guild(struct discord *client, const u64_snowflake_t guild_id, struct
 }
 
 void 
-discord_create_channel(
+discord_create_guild_channel(
   struct discord *client, 
   const u64_snowflake_t guild_id, 
-  struct discord_guild_create_channel_params *params, 
+  struct discord_create_guild_channel_params *params, 
   struct discord_channel *p_channel)
 {
   if (!guild_id) {
@@ -47,7 +47,7 @@ discord_create_channel(
   }
 
   char payload[MAX_PAYLOAD_LEN];
-  discord_guild_create_channel_params_to_json(payload, sizeof(payload), params);
+  discord_create_guild_channel_params_to_json(payload, sizeof(payload), params);
 
   struct resp_handle resp_handle = {
     .ok_cb = p_channel ? &discord_channel_from_json_v : NULL,
@@ -111,7 +111,7 @@ void
 discord_list_guild_members(
   struct discord *client, 
   const u64_snowflake_t guild_id, 
-  struct discord_guild_list_guild_members_params *params, 
+  struct discord_list_guild_members_params *params, 
   NTL_T(struct discord_guild_member) *p_members)
 {
   if (!guild_id) {
@@ -171,7 +171,7 @@ discord_modify_guild_member(
   struct discord *client, 
   const u64_snowflake_t guild_id, 
   const u64_snowflake_t user_id, 
-  struct discord_guild_modify_guild_member_params *params, 
+  struct discord_modify_guild_member_params *params, 
   struct discord_guild_member *p_member)
 {
   if (!guild_id) {
@@ -184,7 +184,7 @@ discord_modify_guild_member(
   }
 
   char payload[MAX_PAYLOAD_LEN];
-  discord_guild_modify_guild_member_params_to_json(payload, sizeof(payload), params);
+  discord_modify_guild_member_params_to_json(payload, sizeof(payload), params);
 
   struct resp_handle resp_handle = {
     .ok_cb = p_member ? &discord_guild_member_from_json_v : NULL,
@@ -363,7 +363,7 @@ void
 discord_create_guild_role(
   struct discord *client, 
   const u64_snowflake_t guild_id, 
-  struct discord_guild_create_guild_role_params *params, 
+  struct discord_create_guild_role_params *params, 
   struct discord_guild_role *p_role)
 {
   if (!guild_id) {
@@ -372,7 +372,7 @@ discord_create_guild_role(
   }
 
   char payload[MAX_PAYLOAD_LEN];
-  discord_guild_create_guild_role_params_to_json(payload, sizeof(payload), params);
+  discord_create_guild_role_params_to_json(payload, sizeof(payload), params);
 
   struct resp_handle resp_handle = {
     .ok_cb = p_role ? &discord_guild_role_from_json_v : NULL,
