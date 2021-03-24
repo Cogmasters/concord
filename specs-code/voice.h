@@ -6,7 +6,7 @@
 /* Title: Voice State Object */
 /* https://discord.com/developers/docs/resources/voice#voice-state-object-voice-state-structure */
 /* This is defined at specs/voice.json:8:22 */
-struct discord_voice {
+struct discord_voice_state {
   /* specs/voice.json:11:20
      '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
@@ -80,56 +80,56 @@ struct discord_voice {
     void *record_null[12];
   } __M; // metadata
 };
-extern void discord_voice_cleanup_v(void *p);
-extern void discord_voice_cleanup(struct discord_voice *p);
-extern void discord_voice_init_v(void *p);
-extern void discord_voice_init(struct discord_voice *p);
-extern struct discord_voice * discord_voice_alloc();
-extern void discord_voice_free_v(void *p);
-extern void discord_voice_free(struct discord_voice *p);
-extern void discord_voice_from_json_v(char *json, size_t len, void *p);
-extern void discord_voice_from_json(char *json, size_t len, struct discord_voice *p);
-extern size_t discord_voice_to_json_v(char *json, size_t len, void *p);
-extern size_t discord_voice_to_json(char *json, size_t len, struct discord_voice *p);
-extern size_t discord_voice_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_voice_to_query(char *json, size_t len, struct discord_voice *p);
-extern void discord_voice_list_free_v(void **p);
-extern void discord_voice_list_free(struct discord_voice **p);
-extern void discord_voice_list_from_json_v(char *str, size_t len, void *p);
-extern void discord_voice_list_from_json(char *str, size_t len, struct discord_voice ***p);
-extern size_t discord_voice_list_to_json_v(char *str, size_t len, void *p);
-extern size_t discord_voice_list_to_json(char *str, size_t len, struct discord_voice **p);
+extern void discord_voice_state_cleanup_v(void *p);
+extern void discord_voice_state_cleanup(struct discord_voice_state *p);
+extern void discord_voice_state_init_v(void *p);
+extern void discord_voice_state_init(struct discord_voice_state *p);
+extern struct discord_voice_state * discord_voice_state_alloc();
+extern void discord_voice_state_free_v(void *p);
+extern void discord_voice_state_free(struct discord_voice_state *p);
+extern void discord_voice_state_from_json_v(char *json, size_t len, void *p);
+extern void discord_voice_state_from_json(char *json, size_t len, struct discord_voice_state *p);
+extern size_t discord_voice_state_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_voice_state_to_json(char *json, size_t len, struct discord_voice_state *p);
+extern size_t discord_voice_state_to_query_v(char *json, size_t len, void *p);
+extern size_t discord_voice_state_to_query(char *json, size_t len, struct discord_voice_state *p);
+extern void discord_voice_state_list_free_v(void **p);
+extern void discord_voice_state_list_free(struct discord_voice_state **p);
+extern void discord_voice_state_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_voice_state_list_from_json(char *str, size_t len, struct discord_voice_state ***p);
+extern size_t discord_voice_state_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_voice_state_list_to_json(char *str, size_t len, struct discord_voice_state **p);
 
 /* Title: Voice Region Object */
 /* https://discord.com/developers/docs/resources/voice#voice-region-object-voice-region-structure */
-/* This is defined at specs/voice.json:29:22 */
+/* This is defined at specs/voice.json:28:22 */
 struct discord_voice_region {
-  /* specs/voice.json:32:20
+  /* specs/voice.json:31:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }'
   */
   char *id; // @todo fixed size limit
 
-  /* specs/voice.json:33:20
+  /* specs/voice.json:32:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }'
   */
   char *name; // @todo fixed size limit
 
-  /* specs/voice.json:34:20
+  /* specs/voice.json:33:20
      '{ "name": "vip", "type":{ "base":"bool" }}'
   */
   bool vip;
 
-  /* specs/voice.json:35:20
+  /* specs/voice.json:34:20
      '{ "name": "optimal", "type":{ "base":"bool" }}'
   */
   bool optimal;
 
-  /* specs/voice.json:36:20
+  /* specs/voice.json:35:20
      '{ "name": "deprecated", "type":{ "base":"bool" }}'
   */
   bool deprecated;
 
-  /* specs/voice.json:37:20
+  /* specs/voice.json:36:20
      '{ "name": "custom", "type":{ "base":"bool" }}'
   */
   bool custom;

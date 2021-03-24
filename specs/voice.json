@@ -1,11 +1,11 @@
 {
-  "namespace": ["discord"],
+  "namespace": ["discord", "voice"],
   "defs":
   [
     {
       "title":"Voice State Object",
       "comment": "https://discord.com/developers/docs/resources/voice#voice-state-object-voice-state-structure",
-      "struct":"voice",
+      "struct":"state",
       "fields":
       [
         { "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
@@ -25,7 +25,6 @@
     {
       "title":"Voice Region Object",
       "comment":"https://discord.com/developers/docs/resources/voice#voice-region-object-voice-region-structure",
-      "namespace": ["voice"],
       "struct":"region",
       "fields":
       [

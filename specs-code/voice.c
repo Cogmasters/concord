@@ -4,7 +4,7 @@
 (null)
 */
 
-void discord_voice_from_json(char *json, size_t len, struct discord_voice *p)
+void discord_voice_state_from_json(char *json, size_t len, struct discord_voice_state *p)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
@@ -114,7 +114,7 @@ void discord_voice_from_json(char *json, size_t len, struct discord_voice *p)
   ret = r;
 }
 
-static void discord_voice_use_default_inject_settings(struct discord_voice *p)
+static void discord_voice_state_use_default_inject_settings(struct discord_voice_state *p)
 {
   p->__M.enable_arg_switches = true;
   /* specs/voice.json:11:20
@@ -179,10 +179,10 @@ static void discord_voice_use_default_inject_settings(struct discord_voice *p)
 
 }
 
-size_t discord_voice_to_json(char *json, size_t len, struct discord_voice *p)
+size_t discord_voice_state_to_json(char *json, size_t len, struct discord_voice_state *p)
 {
   size_t r;
-  discord_voice_use_default_inject_settings(p);
+  discord_voice_state_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/voice.json:11:20
      '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
@@ -289,40 +289,40 @@ size_t discord_voice_to_json(char *json, size_t len, struct discord_voice *p)
 typedef void (*vfvp)(void *);
 typedef void (*vfcpsvp)(char *, size_t, void *);
 typedef size_t (*sfcpsvp)(char *, size_t, void *);
-void discord_voice_cleanup_v(void *p) {
-  discord_voice_cleanup((struct discord_voice *)p);
+void discord_voice_state_cleanup_v(void *p) {
+  discord_voice_state_cleanup((struct discord_voice_state *)p);
 }
 
-void discord_voice_init_v(void *p) {
-  discord_voice_init((struct discord_voice *)p);
+void discord_voice_state_init_v(void *p) {
+  discord_voice_state_init((struct discord_voice_state *)p);
 }
 
-void discord_voice_free_v(void *p) {
- discord_voice_free((struct discord_voice *)p);
+void discord_voice_state_free_v(void *p) {
+ discord_voice_state_free((struct discord_voice_state *)p);
 };
 
-void discord_voice_from_json_v(char *json, size_t len, void *p) {
- discord_voice_from_json(json, len, (struct discord_voice*)p);
+void discord_voice_state_from_json_v(char *json, size_t len, void *p) {
+ discord_voice_state_from_json(json, len, (struct discord_voice_state*)p);
 }
 
-size_t discord_voice_to_json_v(char *json, size_t len, void *p) {
-  return discord_voice_to_json(json, len, (struct discord_voice*)p);
+size_t discord_voice_state_to_json_v(char *json, size_t len, void *p) {
+  return discord_voice_state_to_json(json, len, (struct discord_voice_state*)p);
 }
 
-void discord_voice_list_free_v(void **p) {
-  discord_voice_list_free((struct discord_voice**)p);
+void discord_voice_state_list_free_v(void **p) {
+  discord_voice_state_list_free((struct discord_voice_state**)p);
 }
 
-void discord_voice_list_from_json_v(char *str, size_t len, void *p) {
-  discord_voice_list_from_json(str, len, (struct discord_voice ***)p);
+void discord_voice_state_list_from_json_v(char *str, size_t len, void *p) {
+  discord_voice_state_list_from_json(str, len, (struct discord_voice_state ***)p);
 }
 
-size_t discord_voice_list_to_json_v(char *str, size_t len, void *p){
-  return discord_voice_list_to_json(str, len, (struct discord_voice **)p);
+size_t discord_voice_state_list_to_json_v(char *str, size_t len, void *p){
+  return discord_voice_state_list_to_json(str, len, (struct discord_voice_state **)p);
 }
 
 
-void discord_voice_cleanup(struct discord_voice *d) {
+void discord_voice_state_cleanup(struct discord_voice_state *d) {
   /* specs/voice.json:11:20
      '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
@@ -375,8 +375,8 @@ void discord_voice_cleanup(struct discord_voice *d) {
   //p->supress is a scalar
 }
 
-void discord_voice_init(struct discord_voice *p) {
-  memset(p, 0, sizeof(struct discord_voice));
+void discord_voice_state_init(struct discord_voice_state *p) {
+  memset(p, 0, sizeof(struct discord_voice_state));
   /* specs/voice.json:11:20
      '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
@@ -427,35 +427,35 @@ void discord_voice_init(struct discord_voice *p) {
   */
 
 }
-struct discord_voice* discord_voice_alloc() {
-  struct discord_voice *p= (struct discord_voice*)malloc(sizeof(struct discord_voice));
-  discord_voice_init(p);
+struct discord_voice_state* discord_voice_state_alloc() {
+  struct discord_voice_state *p= (struct discord_voice_state*)malloc(sizeof(struct discord_voice_state));
+  discord_voice_state_init(p);
   return p;
 }
 
-void discord_voice_free(struct discord_voice *p) {
-  discord_voice_cleanup(p);
+void discord_voice_state_free(struct discord_voice_state *p) {
+  discord_voice_state_cleanup(p);
   free(p);
 }
 
-void discord_voice_list_free(struct discord_voice **p) {
-  ntl_free((void**)p, (vfvp)discord_voice_cleanup);
+void discord_voice_state_list_free(struct discord_voice_state **p) {
+  ntl_free((void**)p, (vfvp)discord_voice_state_cleanup);
 }
 
-void discord_voice_list_from_json(char *str, size_t len, struct discord_voice ***p)
+void discord_voice_state_list_from_json(char *str, size_t len, struct discord_voice_state ***p)
 {
   struct ntl_deserializer d;
   memset(&d, 0, sizeof(d));
-  d.elem_size = sizeof(struct discord_voice);
-  d.init_elem = discord_voice_init_v;
-  d.elem_from_buf = discord_voice_from_json_v;
+  d.elem_size = sizeof(struct discord_voice_state);
+  d.init_elem = discord_voice_state_init_v;
+  d.elem_from_buf = discord_voice_state_from_json_v;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json(str, len, &d);
 }
 
-size_t discord_voice_list_to_json(char *str, size_t len, struct discord_voice **p)
+size_t discord_voice_state_list_to_json(char *str, size_t len, struct discord_voice_state **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_voice_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, discord_voice_state_to_json_v);
 }
 
 
@@ -464,54 +464,54 @@ void discord_voice_region_from_json(char *json, size_t len, struct discord_voice
   static size_t ret=0; // used for debugging
   size_t r=0;
   r=json_extract(json, len, 
-  /* specs/voice.json:32:20
+  /* specs/voice.json:31:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }'
   */
                 "(id):?s,"
-  /* specs/voice.json:33:20
+  /* specs/voice.json:32:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }'
   */
                 "(name):?s,"
-  /* specs/voice.json:34:20
+  /* specs/voice.json:33:20
      '{ "name": "vip", "type":{ "base":"bool" }}'
   */
                 "(vip):b,"
-  /* specs/voice.json:35:20
+  /* specs/voice.json:34:20
      '{ "name": "optimal", "type":{ "base":"bool" }}'
   */
                 "(optimal):b,"
-  /* specs/voice.json:36:20
+  /* specs/voice.json:35:20
      '{ "name": "deprecated", "type":{ "base":"bool" }}'
   */
                 "(deprecated):b,"
-  /* specs/voice.json:37:20
+  /* specs/voice.json:36:20
      '{ "name": "custom", "type":{ "base":"bool" }}'
   */
                 "(custom):b,"
                 "@arg_switches:b"
                 "@record_defined"
                 "@record_null",
-  /* specs/voice.json:32:20
+  /* specs/voice.json:31:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }'
   */
                 &p->id,
-  /* specs/voice.json:33:20
+  /* specs/voice.json:32:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }'
   */
                 &p->name,
-  /* specs/voice.json:34:20
+  /* specs/voice.json:33:20
      '{ "name": "vip", "type":{ "base":"bool" }}'
   */
                 &p->vip,
-  /* specs/voice.json:35:20
+  /* specs/voice.json:34:20
      '{ "name": "optimal", "type":{ "base":"bool" }}'
   */
                 &p->optimal,
-  /* specs/voice.json:36:20
+  /* specs/voice.json:35:20
      '{ "name": "deprecated", "type":{ "base":"bool" }}'
   */
                 &p->deprecated,
-  /* specs/voice.json:37:20
+  /* specs/voice.json:36:20
      '{ "name": "custom", "type":{ "base":"bool" }}'
   */
                 &p->custom,
@@ -524,32 +524,32 @@ void discord_voice_region_from_json(char *json, size_t len, struct discord_voice
 static void discord_voice_region_use_default_inject_settings(struct discord_voice_region *p)
 {
   p->__M.enable_arg_switches = true;
-  /* specs/voice.json:32:20
+  /* specs/voice.json:31:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }'
   */
   p->__M.arg_switches[0] = p->id;
 
-  /* specs/voice.json:33:20
+  /* specs/voice.json:32:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }'
   */
   p->__M.arg_switches[1] = p->name;
 
-  /* specs/voice.json:34:20
+  /* specs/voice.json:33:20
      '{ "name": "vip", "type":{ "base":"bool" }}'
   */
   p->__M.arg_switches[2] = &p->vip;
 
-  /* specs/voice.json:35:20
+  /* specs/voice.json:34:20
      '{ "name": "optimal", "type":{ "base":"bool" }}'
   */
   p->__M.arg_switches[3] = &p->optimal;
 
-  /* specs/voice.json:36:20
+  /* specs/voice.json:35:20
      '{ "name": "deprecated", "type":{ "base":"bool" }}'
   */
   p->__M.arg_switches[4] = &p->deprecated;
 
-  /* specs/voice.json:37:20
+  /* specs/voice.json:36:20
      '{ "name": "custom", "type":{ "base":"bool" }}'
   */
   p->__M.arg_switches[5] = &p->custom;
@@ -561,52 +561,52 @@ size_t discord_voice_region_to_json(char *json, size_t len, struct discord_voice
   size_t r;
   discord_voice_region_use_default_inject_settings(p);
   r=json_inject(json, len, 
-  /* specs/voice.json:32:20
+  /* specs/voice.json:31:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }'
   */
                 "(id):s,"
-  /* specs/voice.json:33:20
+  /* specs/voice.json:32:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }'
   */
                 "(name):s,"
-  /* specs/voice.json:34:20
+  /* specs/voice.json:33:20
      '{ "name": "vip", "type":{ "base":"bool" }}'
   */
                 "(vip):b,"
-  /* specs/voice.json:35:20
+  /* specs/voice.json:34:20
      '{ "name": "optimal", "type":{ "base":"bool" }}'
   */
                 "(optimal):b,"
-  /* specs/voice.json:36:20
+  /* specs/voice.json:35:20
      '{ "name": "deprecated", "type":{ "base":"bool" }}'
   */
                 "(deprecated):b,"
-  /* specs/voice.json:37:20
+  /* specs/voice.json:36:20
      '{ "name": "custom", "type":{ "base":"bool" }}'
   */
                 "(custom):b,"
                 "@arg_switches:b",
-  /* specs/voice.json:32:20
+  /* specs/voice.json:31:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }'
   */
                 p->id,
-  /* specs/voice.json:33:20
+  /* specs/voice.json:32:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }'
   */
                 p->name,
-  /* specs/voice.json:34:20
+  /* specs/voice.json:33:20
      '{ "name": "vip", "type":{ "base":"bool" }}'
   */
                 &p->vip,
-  /* specs/voice.json:35:20
+  /* specs/voice.json:34:20
      '{ "name": "optimal", "type":{ "base":"bool" }}'
   */
                 &p->optimal,
-  /* specs/voice.json:36:20
+  /* specs/voice.json:35:20
      '{ "name": "deprecated", "type":{ "base":"bool" }}'
   */
                 &p->deprecated,
-  /* specs/voice.json:37:20
+  /* specs/voice.json:36:20
      '{ "name": "custom", "type":{ "base":"bool" }}'
   */
                 &p->custom,
@@ -652,29 +652,29 @@ size_t discord_voice_region_list_to_json_v(char *str, size_t len, void *p){
 
 
 void discord_voice_region_cleanup(struct discord_voice_region *d) {
-  /* specs/voice.json:32:20
+  /* specs/voice.json:31:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }'
   */
   if (d->id)
     free(d->id);
-  /* specs/voice.json:33:20
+  /* specs/voice.json:32:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }'
   */
   if (d->name)
     free(d->name);
-  /* specs/voice.json:34:20
+  /* specs/voice.json:33:20
      '{ "name": "vip", "type":{ "base":"bool" }}'
   */
   //p->vip is a scalar
-  /* specs/voice.json:35:20
+  /* specs/voice.json:34:20
      '{ "name": "optimal", "type":{ "base":"bool" }}'
   */
   //p->optimal is a scalar
-  /* specs/voice.json:36:20
+  /* specs/voice.json:35:20
      '{ "name": "deprecated", "type":{ "base":"bool" }}'
   */
   //p->deprecated is a scalar
-  /* specs/voice.json:37:20
+  /* specs/voice.json:36:20
      '{ "name": "custom", "type":{ "base":"bool" }}'
   */
   //p->custom is a scalar
@@ -682,27 +682,27 @@ void discord_voice_region_cleanup(struct discord_voice_region *d) {
 
 void discord_voice_region_init(struct discord_voice_region *p) {
   memset(p, 0, sizeof(struct discord_voice_region));
-  /* specs/voice.json:32:20
+  /* specs/voice.json:31:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }'
   */
 
-  /* specs/voice.json:33:20
+  /* specs/voice.json:32:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }'
   */
 
-  /* specs/voice.json:34:20
+  /* specs/voice.json:33:20
      '{ "name": "vip", "type":{ "base":"bool" }}'
   */
 
-  /* specs/voice.json:35:20
+  /* specs/voice.json:34:20
      '{ "name": "optimal", "type":{ "base":"bool" }}'
   */
 
-  /* specs/voice.json:36:20
+  /* specs/voice.json:35:20
      '{ "name": "deprecated", "type":{ "base":"bool" }}'
   */
 
-  /* specs/voice.json:37:20
+  /* specs/voice.json:36:20
      '{ "name": "custom", "type":{ "base":"bool" }}'
   */
 
