@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <ctype.h> // for isspace()
 #include <pthread.h>
 
@@ -10,6 +11,7 @@
 
 
 #define BASE_GATEWAY_URL "wss://gateway.discord.gg/?v=6&encoding=json"
+
 
 static char*
 opcode_print(int opcode)
@@ -27,16 +29,15 @@ opcode_print(int opcode)
       CASE_RETURN_STR(DISCORD_GATEWAY_OPCODES_HELLO);
       CASE_RETURN_STR(DISCORD_GATEWAY_OPCODES_HEARTBEAT_ACK);
   default:
-      ERR("Invalid Gateway opcode (code: %d)", opcode);
+      PRINT("Invalid Gateway opcode (code: %d)", opcode);
+      return "Invalid Gateway opcode";
   }
-
-  return NULL;
 }
 
 static char*
 close_opcode_print(enum discord_gateway_close_opcodes gateway_opcode)
 {
-  switch (gateway_opcode) {
+  switch (gateway_opcode) { // check for discord specific opcodes
       CASE_RETURN_STR(DISCORD_GATEWAY_CLOSE_REASON_UNKNOWN_ERROR);
       CASE_RETURN_STR(DISCORD_GATEWAY_CLOSE_REASON_UNKNOWN_OPCODE);
       CASE_RETURN_STR(DISCORD_GATEWAY_CLOSE_REASON_DECODE_ERROR);
@@ -51,37 +52,33 @@ close_opcode_print(enum discord_gateway_close_opcodes gateway_opcode)
       CASE_RETURN_STR(DISCORD_GATEWAY_CLOSE_REASON_INVALID_API_VERSION);
       CASE_RETURN_STR(DISCORD_GATEWAY_CLOSE_REASON_INVALID_INTENTS);
       CASE_RETURN_STR(DISCORD_GATEWAY_CLOSE_REASON_DISALLOWED_INTENTS);
-  default: {
-      enum cws_close_reason cws_opcode = \
-            (enum cws_close_reason)gateway_opcode;
-      switch (cws_opcode) {
-          CASE_RETURN_STR(CWS_CLOSE_REASON_NORMAL);
-          CASE_RETURN_STR(CWS_CLOSE_REASON_GOING_AWAY);
-          CASE_RETURN_STR(CWS_CLOSE_REASON_PROTOCOL_ERROR);
-          CASE_RETURN_STR(CWS_CLOSE_REASON_UNEXPECTED_DATA);
-          CASE_RETURN_STR(CWS_CLOSE_REASON_NO_REASON);
-          CASE_RETURN_STR(CWS_CLOSE_REASON_ABRUPTLY);
-          CASE_RETURN_STR(CWS_CLOSE_REASON_INCONSISTENT_DATA);
-          CASE_RETURN_STR(CWS_CLOSE_REASON_POLICY_VIOLATION);
-          CASE_RETURN_STR(CWS_CLOSE_REASON_TOO_BIG);
-          CASE_RETURN_STR(CWS_CLOSE_REASON_MISSING_EXTENSION);
-          CASE_RETURN_STR(CWS_CLOSE_REASON_SERVER_ERROR);
-          CASE_RETURN_STR(CWS_CLOSE_REASON_IANA_REGISTRY_START);
-          CASE_RETURN_STR(CWS_CLOSE_REASON_IANA_REGISTRY_END);
-          CASE_RETURN_STR(CWS_CLOSE_REASON_PRIVATE_START);
-          CASE_RETURN_STR(CWS_CLOSE_REASON_PRIVATE_END);
+  default: // check for normal ws_close opcodes
+      switch ((enum ws_close_reason)gateway_opcode) {
+          CASE_RETURN_STR(WS_CLOSE_REASON_NORMAL);
+          CASE_RETURN_STR(WS_CLOSE_REASON_GOING_AWAY);
+          CASE_RETURN_STR(WS_CLOSE_REASON_PROTOCOL_ERROR);
+          CASE_RETURN_STR(WS_CLOSE_REASON_UNEXPECTED_DATA);
+          CASE_RETURN_STR(WS_CLOSE_REASON_NO_REASON);
+          CASE_RETURN_STR(WS_CLOSE_REASON_ABRUPTLY);
+          CASE_RETURN_STR(WS_CLOSE_REASON_INCONSISTENT_DATA);
+          CASE_RETURN_STR(WS_CLOSE_REASON_POLICY_VIOLATION);
+          CASE_RETURN_STR(WS_CLOSE_REASON_TOO_BIG);
+          CASE_RETURN_STR(WS_CLOSE_REASON_MISSING_EXTENSION);
+          CASE_RETURN_STR(WS_CLOSE_REASON_SERVER_ERROR);
+          CASE_RETURN_STR(WS_CLOSE_REASON_IANA_REGISTRY_START);
+          CASE_RETURN_STR(WS_CLOSE_REASON_IANA_REGISTRY_END);
+          CASE_RETURN_STR(WS_CLOSE_REASON_PRIVATE_START);
+          CASE_RETURN_STR(WS_CLOSE_REASON_PRIVATE_END);
       default:
-          ERR("Unknown WebSockets close opcode (code: %d)", cws_opcode);
+          PRINT("Unknown WebSockets close opcode (code: %d)", gateway_opcode);
+          return "Unknown WebSockets close opcode";
       }
-   }
   }
-
-  return NULL;
 }
 
 static void
 send_payload(struct discord_gateway *gw, char payload[]) {
-  ws_send_text(&gw->ws, payload);
+  ws_send_text(gw->ws, payload);
 }
 
 static void
@@ -110,7 +107,7 @@ send_identify(struct discord_gateway *gw)
 {
   /* Ratelimit check */
   pthread_mutex_lock(&gw->lock);
-  if ((ws_timestamp(&gw->ws) - gw->session.identify_tstamp) < 5) {
+  if ((ws_timestamp(gw->ws) - gw->session.identify_tstamp) < 5) {
     ++gw->session.concurrent;
     VASSERT_S(gw->session.concurrent < gw->session.max_concurrency,
         "Reach identify request threshold (%d every 5 seconds)", gw->session.max_concurrency);
@@ -133,7 +130,7 @@ send_identify(struct discord_gateway *gw)
 
   //get timestamp for this identify
   pthread_mutex_lock(&gw->lock);
-  gw->session.identify_tstamp = ws_timestamp(&gw->ws);
+  gw->session.identify_tstamp = ws_timestamp(gw->ws);
   pthread_mutex_unlock(&gw->lock);
 }
 
@@ -152,7 +149,7 @@ on_hello(void *p_gw, void *curr_iter_data)
   ASSERT_S(gw->hbeat.interval_ms > 0, "Invalid heartbeat_ms");
   pthread_mutex_unlock(&gw->lock);
 
-  if (WS_RESUME == ws_get_status(&gw->ws))
+  if (WS_RESUME == ws_get_status(gw->ws))
     send_resume(gw);
   else // WS_FRESH || WS_DISCONNECTED
     send_identify(gw);
@@ -402,13 +399,13 @@ on_dispatch(void *p_gw, void *curr_iter_data)
 
   /* Ratelimit check */
   pthread_mutex_lock(&gw->lock);
-  if ((ws_timestamp(&gw->ws) - gw->session.event_tstamp) < 60) {
+  if ((ws_timestamp(gw->ws) - gw->session.event_tstamp) < 60) {
     ++gw->session.event_count;
     ASSERT_S(gw->session.event_count < 120,
         "Reach event dispatch threshold (120 every 60 seconds)");
   }
   else {
-    gw->session.event_tstamp = ws_timestamp(&gw->ws);
+    gw->session.event_tstamp = ws_timestamp(gw->ws);
     gw->session.event_count = 0;
   }
   pthread_mutex_unlock(&gw->lock);
@@ -416,7 +413,7 @@ on_dispatch(void *p_gw, void *curr_iter_data)
   enum dispatch_code code = get_dispatch_code(payload->event_name);
   switch (code) {
   case READY:
-      ws_set_status(&gw->ws, WS_CONNECTED);
+      ws_set_status(gw->ws, WS_CONNECTED);
       D_PUTS("Succesfully started a Discord session!");
 
       json_scanf(payload->event_data, sizeof(payload->event_data),
@@ -428,7 +425,7 @@ on_dispatch(void *p_gw, void *curr_iter_data)
 
       break;
   case RESUMED:
-      ws_set_status(&gw->ws, WS_CONNECTED);
+      ws_set_status(gw->ws, WS_CONNECTED);
       PUTS("Succesfully resumed a Discord session!");
       break;
   case MESSAGE_REACTION_ADD: 
@@ -464,15 +461,15 @@ on_invalid_session(void *p_gw, void *curr_iter_data)
   bool is_resumable = strcmp(payload->event_data, "false");
   const char *reason;
   if (is_resumable) {
-    ws_set_status(&gw->ws, WS_RESUME);
+    ws_set_status(gw->ws, WS_RESUME);
     reason = "Attempting to session resume";
   }
   else {
-    ws_set_status(&gw->ws, WS_FRESH);
+    ws_set_status(gw->ws, WS_FRESH);
     reason = "Attempting to start a fresh new session";
   }
   PUTS(reason);
-  ws_close(&gw->ws, CWS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
+  ws_close(gw->ws, WS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
 }
 
 static void
@@ -480,11 +477,11 @@ on_reconnect(void *p_gw, void *curr_iter_data)
 {
   struct discord_gateway *gw = (struct discord_gateway*)p_gw;
 
-  ws_set_status(&gw->ws, WS_RESUME);
+  ws_set_status(gw->ws, WS_RESUME);
 
   const char reason[] = "Attempting to session resume";
   PUTS(reason);
-  ws_close(&gw->ws, CWS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
+  ws_close(gw->ws, WS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
 }
 
 static void
@@ -505,10 +502,10 @@ on_connect_cb(void *p_gw, const char *ws_protocols) {
 }
 
 static void
-on_close_cb(void *p_gw, enum cws_close_reason cwscode, const char *reason, size_t len)
+on_close_cb(void *p_gw, enum ws_close_reason wscode, const char *reason, size_t len)
 {
   struct discord_gateway *gw = (struct discord_gateway*)p_gw;
-  enum discord_gateway_close_opcodes opcode = (enum discord_gateway_close_opcodes)cwscode;
+  enum discord_gateway_close_opcodes opcode = (enum discord_gateway_close_opcodes)wscode;
  
   switch (opcode) {
   case DISCORD_GATEWAY_CLOSE_REASON_UNKNOWN_OPCODE:
@@ -522,15 +519,15 @@ on_close_cb(void *p_gw, enum cws_close_reason cwscode, const char *reason, size_
   case DISCORD_GATEWAY_CLOSE_REASON_INVALID_INTENTS:
   case DISCORD_GATEWAY_CLOSE_REASON_INVALID_SHARD:
   case DISCORD_GATEWAY_CLOSE_REASON_DISALLOWED_INTENTS:
-      ws_set_status(&gw->ws, WS_DISCONNECTED);
+      ws_set_status(gw->ws, WS_DISCONNECTED);
       break;
   case DISCORD_GATEWAY_CLOSE_REASON_UNKNOWN_ERROR:
   case DISCORD_GATEWAY_CLOSE_REASON_INVALID_SEQUENCE:
-      ws_set_status(&gw->ws, WS_RESUME);
+      ws_set_status(gw->ws, WS_RESUME);
       break;
   case DISCORD_GATEWAY_CLOSE_REASON_SESSION_TIMED_OUT:
   default: //websocket/clouflare opcodes
-      ws_set_status(&gw->ws, WS_FRESH);
+      ws_set_status(gw->ws, WS_FRESH);
       break;
   }
 
@@ -584,10 +581,10 @@ on_iter_end_cb(void *p_gw)
   /*check if timespan since first pulse is greater than
    * minimum heartbeat interval required*/
   pthread_mutex_lock(&gw->lock);
-  if (gw->hbeat.interval_ms < (ws_timestamp(&gw->ws) - gw->hbeat.tstamp)) {
+  if (gw->hbeat.interval_ms < (ws_timestamp(gw->ws) - gw->hbeat.tstamp)) {
     send_heartbeat(gw);
 
-    gw->hbeat.tstamp = ws_timestamp(&gw->ws); //update heartbeat timestamp
+    gw->hbeat.tstamp = ws_timestamp(gw->ws); //update heartbeat timestamp
   }
   pthread_mutex_unlock(&gw->lock);
 
@@ -603,8 +600,7 @@ on_text_event_cb(void *p_gw, const char *text, size_t len)
 
   D_PRINT("ON_DISPATCH:\t%s\n", text);
 
-  struct payload_s *payloadcpy = \
-        (struct payload_s*)calloc(1, sizeof(struct payload_s));
+  struct payload_s *payloadcpy = calloc(1, sizeof(struct payload_s));
 
   int tmp_seq_number; //check value first, then assign
   json_scanf((char*)text, len,
@@ -630,7 +626,7 @@ on_text_event_cb(void *p_gw, const char *text, size_t len)
                 gw->payload.event_data);
 
   memcpy(payloadcpy, &gw->payload, sizeof(struct payload_s));
-  ws_set_curr_iter_data(&gw->ws, payloadcpy, &free);
+  ws_set_curr_iter_data(gw->ws, payloadcpy, &free);
 
   return gw->payload.opcode;
 }
@@ -648,28 +644,19 @@ discord_gateway_init(struct discord_gateway *gw, const char token[], const char 
     .on_close = &on_close_cb
   };
 
+  gw->ws = ws_config_init(BASE_GATEWAY_URL, &cbs, "DISCORD GATEWAY", config_file);
   if (config_file) { 
-    ws_config_init(
-      &gw->ws, 
-      BASE_GATEWAY_URL, 
-      &cbs,
-      "DISCORD GATEWAY", 
-      config_file);
-    token = orka_config_get_field(&gw->ws.config, "discord.token");
-  }
-  else {
-    ws_init(&gw->ws, BASE_GATEWAY_URL, &cbs);
-    orka_config_init(&gw->ws.config, "DISCORD GATEWAY", NULL);
+    token = ws_config_get_field(gw->ws, "discord.token");
   }
   if (!token) ERR("Missing bot token");
 
-  ws_set_refresh_rate(&gw->ws, 1);
-  ws_set_max_reconnect(&gw->ws, 15);
-  ws_set_event(&gw->ws, DISCORD_GATEWAY_OPCODES_HELLO, &on_hello);
-  ws_set_event(&gw->ws, DISCORD_GATEWAY_OPCODES_DISPATCH, &on_dispatch);
-  ws_set_event(&gw->ws, DISCORD_GATEWAY_OPCODES_INVALID_SESSION, &on_invalid_session);
-  ws_set_event(&gw->ws, DISCORD_GATEWAY_OPCODES_RECONNECT, &on_reconnect);
-  ws_set_event(&gw->ws, DISCORD_GATEWAY_OPCODES_HEARTBEAT_ACK, &on_heartbeat_ack);
+  ws_set_refresh_rate(gw->ws, 1);
+  ws_set_max_reconnect(gw->ws, 15);
+  ws_set_event(gw->ws, DISCORD_GATEWAY_OPCODES_HELLO, &on_hello);
+  ws_set_event(gw->ws, DISCORD_GATEWAY_OPCODES_DISPATCH, &on_dispatch);
+  ws_set_event(gw->ws, DISCORD_GATEWAY_OPCODES_INVALID_SESSION, &on_invalid_session);
+  ws_set_event(gw->ws, DISCORD_GATEWAY_OPCODES_RECONNECT, &on_reconnect);
+  ws_set_event(gw->ws, DISCORD_GATEWAY_OPCODES_HEARTBEAT_ACK, &on_heartbeat_ack);
 
   gw->identify = discord_gateway_identify_dati_alloc();
   gw->identify->token = strdup(token);
@@ -692,19 +679,20 @@ discord_gateway_cleanup(struct discord_gateway *gw)
 {
   discord_user_dati_free(gw->me);
   discord_gateway_identify_dati_free(gw->identify);
-  ws_cleanup(&gw->ws);
+  ws_cleanup(gw->ws);
   pthread_mutex_destroy(&gw->lock);
 }
 
 /* connects to the discord websockets server */
 void
 discord_run(struct discord_client *client) {
-  ws_run(&client->gw.ws);
+  ws_run(client->gw.ws);
 }
 
 void
-discord_gateway_shutdown(struct discord_gateway *gw) {
-  ws_set_status(&gw->ws, WS_DISCONNECTED);
+discord_gateway_shutdown(struct discord_gateway *gw) 
+{
+  ws_set_status(gw->ws, WS_DISCONNECTED);
   char reason[] = "Shutdown gracefully";
-  ws_close(&gw->ws, CWS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
+  ws_close(gw->ws, WS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
 }

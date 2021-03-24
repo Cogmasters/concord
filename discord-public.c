@@ -12,12 +12,10 @@ struct discord_client*
 discord_init(const char token[])
 {
   struct discord_client *new_client = calloc(1, sizeof *new_client);
-
   new_client->adapter.p_client = new_client;
   new_client->gw.p_client = new_client;
   discord_adapter_init(&new_client->adapter, token, NULL);
   discord_gateway_init(&new_client->gw, token, NULL);
-
   return new_client;
 }
 
@@ -25,12 +23,10 @@ struct discord_client*
 discord_config_init(const char config_file[])
 {
   struct discord_client *new_client = calloc(1, sizeof *new_client);
-
   new_client->adapter.p_client = new_client;
   new_client->gw.p_client = new_client;
   discord_adapter_init(&new_client->adapter, NULL, config_file);
   discord_gateway_init(&new_client->gw, NULL, config_file);
-
   return new_client;
 }
 
@@ -69,7 +65,7 @@ discord_get_data(struct discord_client *client) {
 void
 discord_add_intents(struct discord_client *client, int intent_code)
 {
-  if (WS_CONNECTED == ws_get_status(&client->gw.ws)) {
+  if (WS_CONNECTED == ws_get_status(client->gw.ws)) {
     PUTS("Can't set intents to a running client.");
     return;
   }
@@ -101,8 +97,7 @@ discord_setcb_command(struct discord_client *client, char *command, message_cb *
   }
 
   ++gw->num_cmd;
-  gw->on_cmd = (struct cmd_cbs*)realloc(gw->on_cmd, 
-                      gw->num_cmd * sizeof(struct cmd_cbs));
+  gw->on_cmd = realloc(gw->on_cmd, gw->num_cmd * sizeof(struct cmd_cbs));
 
   gw->on_cmd[gw->num_cmd-1].str = command;
   gw->on_cmd[gw->num_cmd-1].cb = user_cb;
@@ -204,9 +199,8 @@ discord_set_presence(
   struct discord_gateway_identify_status_update_dati *presence = client->gw.identify->presence;
 
   if (activity) {
-    presence->activities = (struct discord_gateway_identify_status_update_activity_dati**)ntl_append(
-                              (void**)presence->activities, 
-                              sizeof(struct discord_gateway_identify_status_update_activity_dati), activity);
+    presence->activities = ntl_append(presence->activities, 
+                              sizeof **presence->activities, activity);
   }
   if (status) {
     int ret = snprintf(presence->status, 

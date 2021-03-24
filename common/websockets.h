@@ -5,9 +5,6 @@
 extern "C" {
 #endif // __cplusplus
 
-#include <inttypes.h>
-#include "curl-websocket.h"
-#include "orka-config.h"
 
 enum ws_status {
   WS_DISCONNECTED,  //disconnected from ws
@@ -16,17 +13,27 @@ enum ws_status {
   WS_CONNECTED      //connected to ws
 };
 
-struct event_cbs {
-  int code; // code that should trigger the callback
-  void (*cb)(void *data, void *curr_iter_data); // see ws_set_curr_iter_data()
+/* see https://tools.ietf.org/html/rfc6455#section-7.4.1 */
+enum ws_close_reason {
+    WS_CLOSE_REASON_NORMAL               = 1000,
+    WS_CLOSE_REASON_GOING_AWAY           = 1001,
+    WS_CLOSE_REASON_PROTOCOL_ERROR       = 1002,
+    WS_CLOSE_REASON_UNEXPECTED_DATA      = 1003,
+    WS_CLOSE_REASON_NO_REASON            = 1005,
+    WS_CLOSE_REASON_ABRUPTLY             = 1006,
+    WS_CLOSE_REASON_INCONSISTENT_DATA    = 1007,
+    WS_CLOSE_REASON_POLICY_VIOLATION     = 1008,
+    WS_CLOSE_REASON_TOO_BIG              = 1009,
+    WS_CLOSE_REASON_MISSING_EXTENSION    = 1010,
+    WS_CLOSE_REASON_SERVER_ERROR         = 1011,
+    WS_CLOSE_REASON_IANA_REGISTRY_START  = 3000,
+    WS_CLOSE_REASON_IANA_REGISTRY_END    = 3999,
+    WS_CLOSE_REASON_PRIVATE_START        = 4000,
+    WS_CLOSE_REASON_PRIVATE_END          = 4999
 };
 
 struct ws_callbacks {
-  void *data; // user arbitrary data to be passed to callbacks
-
-  struct event_cbs *on_event;
-  size_t num_events;
-
+  void *data; // user arbitrary data received by callbacks
   int (*on_startup)(void *data); // exec before loop starts (return 1 for proceed, 0 for abort)
   void (*on_iter_start)(void *data); // execs at end of every loop iteration
   void (*on_iter_end)(void *data); // execs at end of every loop iteration
@@ -40,53 +47,11 @@ struct ws_callbacks {
   void (*on_binary)(void *data, const void *mem, size_t len);
   void (*on_ping)(void *data, const char *reason, size_t len);
   void (*on_pong)(void *data, const char *reason, size_t len);
-  void (*on_close)(void *data, enum cws_close_reason cwscode, const char *reason, size_t len);
+  void (*on_close)(void *data, enum ws_close_reason wscode, const char *reason, size_t len);
 };
 
-struct wthread_s { // worker thread
-  pthread_t tid;
-  bool is_busy;
-
-  /* the following are set by ws_set_curr_iter_data() */
-  void *data; //user arbitrary data that lasts for this thread cycle
-  void (*cleanup)(void *data); //data cleanup method
-};
-
-#define MAX_THREADS 10 //@todo temp size just for prototyping
-struct websockets_s {
-  struct orka_config config;
-  enum ws_status status;
-  CURLM *mhandle;
-  CURL *ehandle;
-  uint64_t wait_ms; // how long to wait for sockets activity
-
-  uint64_t now_tstamp; //timestamp updated every loop iteration
-
-  struct { /* RECONNECT STRUCT */
-    int threshold; // max reconnections attempts before quitting
-    int attempt; // current count of reconnection attempt
-  } reconnect;
-
-  char *base_url;
-
-  struct ws_callbacks cbs;
-
-  /* will last only for this current loop iteration, the data is 
-   *   passed as a on_event callback parameter, and free'd from 
-   *   memory with the given cleanup function (if any is given) */
-  void *curr_iter_data;
-  void (*curr_iter_cleanup)(void *curr_iter_data);
-
-  struct wthread_s thread_pool[MAX_THREADS];
-  int num_notbusy; // num of available threads
-
-  pthread_mutex_t lock;
-  pthread_cond_t cond;
-};
-
-void ws_init(struct websockets_s *ws, const char base_url[], struct ws_callbacks *cbs);
-void ws_config_init(
-  struct websockets_s *ws, 
+struct websockets_s* ws_init(const char base_url[], struct ws_callbacks *cbs);
+struct websockets_s* ws_config_init(
   const char base_url[], 
   struct ws_callbacks *cbs,
   const char tag[], 
@@ -94,7 +59,7 @@ void ws_config_init(
 void ws_cleanup(struct websockets_s *ws);
 void ws_close(
   struct websockets_s *ws,
-  enum cws_close_reason cwscode, 
+  enum ws_close_reason wscode, 
   const char reason[], 
   size_t len);
 void ws_send_text(struct websockets_s *ws, char text[]);
@@ -114,6 +79,7 @@ void ws_set_curr_iter_data(
   struct websockets_s *ws, 
   void *curr_iter_data, 
   void (*curr_iter_cleanup)(void *curr_iter_data));
+char* ws_config_get_field(struct websockets_s *ws, char *json_field);
 
 #ifdef __cplusplus
 }

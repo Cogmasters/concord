@@ -501,7 +501,7 @@ discord_create_message(
   struct discord_channel_create_message_params *params, 
   struct discord_channel_message_dati *p_message)
 {
-  if (ws_get_status(&client->gw.ws) != WS_CONNECTED) {
+  if (ws_get_status(client->gw.ws) != WS_CONNECTED) {
     D_PUTS("Can't perform action unless client has an active"
            " websockets connection");
     return;
