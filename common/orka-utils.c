@@ -257,9 +257,9 @@ orka_str_bounds_check(const char *str, const size_t threshold_len)
   return false; 
 }
 
-void gen_readlink(char *linkbuf, ssize_t linkbuf_size)
+void gen_readlink(char *linkbuf, size_t linkbuf_size)
 {
-  ssize_t r;
+  size_t r;
   r = readlink("/proc/self/exe", linkbuf, linkbuf_size);
   if (r < 0) {
     perror("readlink");
