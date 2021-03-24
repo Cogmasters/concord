@@ -16,6 +16,12 @@ enum session_status {
   PAUSED, RUNNING, FINISHED
 };
 
+/* @sqlite THIS SHOULD BE STORED IN DB 
+ *  @status can be used to resume state
+ *  @user_id the user who this session belongs to
+ *  @channel_id the channel this session is happening 
+ *  @curr_question the current question index 
+ *  @hits how many questions the user got correct */
 struct session {
   enum session_status status;
   u64_snowflake_t user_id;
@@ -24,19 +30,16 @@ struct session {
   int hits; // correct answers
 };
 
+#define MAX_SESSIONS 100 //@sqlite this can be removed after DB is implemented
 struct answer {
   char *desc;
   bool value;
 };
-
 struct question {
   char *desc;
   struct answer *answers;
   int num_answers;
 };
-
-#define MAX_SESSIONS 100
-
 struct session_config {
   char *chat_name;
   char *chat_topic;
@@ -48,6 +51,9 @@ struct session_config {
   int num_questions;
   int questions_per_session;
 
+  /* @sqlite
+   *  @active_sessions can be rid of, its not thread safe and it shouldn't be
+   *    necessary to maintain a register of ongoing sessions */
   struct session active_sessions[MAX_SESSIONS];
 } g_session; /* GLOBAL VARIABLE */
 
@@ -108,12 +114,16 @@ on_ready(struct discord *client, const struct discord_user *me) {
       me->username, me->discriminator);
 }
 
+/* @sqlite after DB is implemented there will be no need of checking if a session exists
+ *  by checking if there is a corresponding role attributed to the user */
 void
 close_existing_sessions(
   struct discord *client,
   const u64_snowflake_t guild_id,
   const struct discord_guild_member *member)
 {
+  /* @sqlite simply fetching a database row by the user_id should be enough to get a ongoing session */
+
   /* Check if user already has a session role assigned to */
   NTL_T(struct discord_guild_role) rls = NULL;
   discord_get_guild_roles(client, guild_id, &rls);
@@ -160,49 +170,34 @@ create_session_channel(
     &params1.permission_overwrites,
     guild_id, // @everyone role id is the same as guild id
     0, // role type
-    DISCORD_PERMISSIONS_ZERO, // Don't set allow permissions
-      DISCORD_PERMISSIONS_ADD_REACTIONS
-    | DISCORD_PERMISSIONS_VIEW_CHANNEL
-    | DISCORD_PERMISSIONS_SEND_MESSAGES); // Deny Read and Send Messages, Add Reactions permissions
+    DISCORD_PERMISSIONS_ZERO, //Allow
+    DISCORD_PERMISSIONS_ADD_REACTIONS | DISCORD_PERMISSIONS_VIEW_CHANNEL | DISCORD_PERMISSIONS_SEND_MESSAGES); //Deny
 
   discord_overwrite_append(
     &params1.permission_overwrites,
     member->user->id,
     1, // user type
-    DISCORD_PERMISSIONS_ADD_REACTIONS
-    | DISCORD_PERMISSIONS_VIEW_CHANNEL
-    | DISCORD_PERMISSIONS_SEND_MESSAGES, // Allow Read and Send Messages, Add Reactions permissions
-    DISCORD_PERMISSIONS_ZERO); // Don't set deny permissions
+    DISCORD_PERMISSIONS_ADD_REACTIONS | DISCORD_PERMISSIONS_VIEW_CHANNEL | DISCORD_PERMISSIONS_SEND_MESSAGES, //Allow
+    DISCORD_PERMISSIONS_ZERO); //Deny
 
   discord_create_guild_channel(client, guild_id, &params1, &ch);
   
+  /* @sqlite here you can try and fetch the session from the database
+   *  by the user_id, instead of using this for loop to find a match */
   // create new active_session if doesn't exist
   for (size_t i=0; i < MAX_SESSIONS; ++i) {
     if (0 == g_session.active_sessions[i].user_id) {
       g_session.active_sessions[i].user_id = member->user->id;
       g_session.active_sessions[i].channel_id = ch.id;
       g_session.active_sessions[i].status = PAUSED;
-#if 0
-      int *indexes = malloc(g_session.num_questions * sizeof(int));
-      for (size_t i=0; i < g_session.num_questions; ++i)
-        indexes[i] = i;
-
-      size_t rand_index;
-      int tmp;
-      for (size_t i=0; i < g_session.num_questions; ++i) {
-        rand_index = rand() % g_session.num_questions; 
-        tmp = indexes[i];
-        indexes[i] = rand_index;
-        indexes[rand_index] = tmp;
-      }
-      free(indexes);
-#endif
     }
   }
 
   return ch.id;
 }
 
+/* @sqlite this is irrelevant and unecessary when a DB is added, as we won't need a unique
+ *  role created per user that associates himself and a session's channel */
 u64_snowflake_t
 add_session_role(
   struct discord *client,
@@ -242,6 +237,10 @@ void start_new_session(
   const u64_snowflake_t guild_id,
   const struct discord_guild_member *member)
 {
+#if 1 /* @sqlite this section can be replaced by a simple DB fetch, try to fetch
+          a row by the user_id, if it doesn't exist create a new session and store in DB,
+          otherwise if it exists you can delete the channel_id associated with the ongoing
+          session, (or continue/restart the quiz in the same channel) */
   close_existing_sessions(client, guild_id, member);
 
   u64_snowflake_t session_channel_id, session_role_id;
@@ -254,6 +253,7 @@ void start_new_session(
     close_existing_sessions(client, guild_id, member);
     return; // couldn't create role, delete channel and return
   }
+#endif
 
   struct discord_message *ret_msg = discord_message_alloc();
   struct discord_create_message_params params = {
@@ -415,5 +415,3 @@ int main(int argc, char *argv[])
 
   discord_global_cleanup();
 }
-
-
