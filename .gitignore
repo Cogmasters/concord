@@ -11,7 +11,5 @@ bots/botdev.config
 obj
 lib
 dump.*
-specs-code/*.cc
-specs-code/*.hh
 .cee-contributor
 mujs/build
