@@ -9,44 +9,42 @@ Building a bot is pretty simple with this library, but there are some basic thin
 # Ping-pong bot code
 
 The entire code of ping-pong bot is below. We will go over it in further down:
-```c++
+```c
 #include <stdio.h>
 #include <stdlib.h>
-#include <libdiscord.h>
 
-void on_ready(discord::client *client, const discord::user::data *me) {
+#include "libdiscord.h"
+
+
+void on_ready(struct discord *client, const struct discord_user *me) {
   fprintf(stderr, "\n\nPingPong-Bot succesfully connected to Discord as %s#%s!\n\n",
       me->username, me->discriminator);
 }
 
 void on_ping(
-    discord::client *client,
-    const discord::user::dati *me,
-    const discord::channel::message::dati *msg)
+  struct discord *client,
+  const struct discord_user *me,
+  const struct discord_message *msg)
 {
   // make sure bot doesn't echoes other bots
   if (msg->author->bot)
     return;
 
-  discord::channel::create_message::params params = {
-    .content = "pong"
-  };
-  discord::channel::create_message::run(client, msg->channel_id, &params, NULL);
+  struct discord_create_message_params params = {.content = "pong"};
+  discord_create_message(client, msg->channel_id, &params, NULL);
 }
 
 void on_pong(
-    discord::client *client,
-    const discord::user::dati *me,
-    const discord::channel::message::dati *msg)
+    struct discord *client,
+    const struct discord_user *me,
+    const struct discord_message *msg)
 {
   // make sure bot doesn't echoes other bots
   if (msg->author->bot)
     return;
 
-  discord::channel::create_message::params params = {
-    .content = "ping"
-  };
-  discord::channel::create_message::run(client, msg->channel_id, &params, NULL);
+  struct discord_create_message_params params = {.content = "ping"};
+  discord_create_message(client, msg->channel_id, &params, NULL);
 }
 
 int main(int argc, char *argv[])
@@ -57,106 +55,106 @@ int main(int argc, char *argv[])
   else
     config_file = "bot.config";
 
-  discord::global_init();
+  discord_global_init();
 
-  discord::client *client = discord::config_init(config_file);
+  struct discord *client = discord_config_init(config_file);
 
-  discord::setcb(client, READY, &on_ready);
-  discord::setcb_command(client, "ping", &on_ping);
-  discord::setcb_command(client, "pong", &on_pong);
+  discord_setcb(client, READY, &on_ready);
+  discord_setcb_command(client, "ping", &on_ping);
+  discord_setcb_command(client, "pong", &on_pong);
 
-  discord::run(client); // run the discord websockets
+  discord_run(client);
 
-  discord::cleanup(client);
+  discord_cleanup(client);
 
-  discord::global_cleanup();
+  discord_global_cleanup();
 }
 ```
 
 # Setting up the bot settings
 
-You can set it automatically by initializing it with the bot.config file located at orca/bots folder. Simply give the file path as a parameter of discord::config_init(), as following:
-```c++
-  discord::client *client = discord::config_init("bot.config");
+You can set it automatically by initializing it with the bot.config file located at orca/bots folder. Simply give the file path as a parameter of discord_config_init(), as following:
+```c
+  struct discord *client = discord_config_init("bot.config");
 ```
-Or you can initialize directly with discord::init() by giving it the bot token, like so:
-```c++
-  discord::client *client = discord::init("BOT_TOKEN_HERE");
+Or you can initialize directly with discord_init() by giving it the bot token, like so:
+```c
+  struct discord *client = discord_init("BOT_TOKEN_HERE");
 ```
 
-## discord::global_init
-`discord::global_init()` : the function to run before using any other functions, it will set some important global configurations from curl
+## discord_global_init
+`discord_global_init()` : the function to run before using any other functions, it will set some important global configurations from curl
 
-## discord::config_init
-`discord::config_init(char[])` : function for initializing the bot using some presets
+## discord_config_init
+`discord_config_init(char[])` : function for initializing the bot using some presets
 
-Returns `discord::client`: the client structure
+Returns `struct discord`: the client structure
 
 |Member Parameters|Description                |
 |:----------------|:--------------------------|
 |char[]| the name of the bot config file|
 
-## discord::init
-`discord::init(char[])` : function for initializing the bot with a token
+## discord_init
+`discord_init(char[])` : function for initializing the bot with a token
 
-Returns `discord::client`: the client structure
+Returns `struct discord`: the client structure
 
 |Member Parameters|Description                |
 |:----------------|:--------------------------|
 |char[]| the bot token string|
 
 # Starting up the bot
-```c++
-discord::setcb(client, READY, &on_ready);
-discord::setcb_command(discord::client*, "ping", &on_ping);
-discord::setcb_command(discord::client*, "pong", &on_pong);
+```c
+discord_setcb(client, READY, &on_ready);
+discord_setcb_command(struct discord*, "ping", &on_ping);
+discord_setcb_command(struct discord*, "pong", &on_pong);
 
-discord::run(discord::client*);
+discord_run(struct discord*);
 ```
 
-## discord::setcb
-`discord::setcb(discord::client*, enum callback_opt, callback*)`: calls callback function when `enum callback_opt` event is triggered
+## discord_setcb
+`discord_setcb(struct discord*, enum callback_opt, callback*)`: calls callback function when `enum callback_opt` event is triggered
 
 |Member Parameters|Description                |
 |:----------------|:--------------------------|
-|discord::client| the client stucture |
+|struct discord| the client stucture |
 |enum callback_opt| The event expected to trigger a callback response |
 |callback*| the function callback to run when its corresponding event is triggered (see discord-common.h for callback definitions) |
 
-## discord::setcb_command
-`discord::setcb_command(discord::client*, char[], message_cb*)`: executes callback function when `char[]` command is triggered on chat
+## discord_setcb_command
+`discord_setcb_command(struct discord*, char[], message_cb*)`: executes callback function when `char[]` command is triggered on chat
 
 |Member Parameters|Description                |
 |:----------------|:--------------------------|
-|discord::client| the client stucture |
+|struct discord| the client stucture |
 |char[]| The chat command expected to trigger a callback response |
 |message_cb*| the message type function callback to run when its corresponding event is triggered (see discord-common.h for message_cb definitions) |
 
-## discord::run
-`discord::run(discord::client*)`: the functions that establishes starts the bot by establishing a connection to Discord, runs until error
+## discord_run
+`discord_run(struct discord*)`: the functions that establishes starts the bot by establishing a connection to Discord, runs until error
 
 |Member Parameters|Description                |
 |:----------------|:--------------------------|
-|discord::client| the client stucture  |
+|struct discord| the client stucture  |
 
 
 # Cleaning up the bot
 
 ```c
-  discord::cleanup(discord::client);
+  discord_cleanup(struct discord);
 
-  discord::global_cleanup();
+  discord_global_cleanup();
 ```
 
-## discord::cleanup
-`discord::cleanup(discord::client)`: function that cleans up bot resources
+## discord_cleanup
+`discord_cleanup(struct discord)`: function that cleans up bot resources
 
 |Member Parameters|Description                |
 |:----------------|:--------------------------|
-|discord::client| the client stucture |
+|struct discord| the client stucture |
 
-## discord::global_cleanup
-`discord::global_cleanup()`: function that cleans up resources set by `discord::global_init()`
+## discord_global_cleanup
+`discord_global_cleanup()`: function that cleans up resources set by `discord_global_init()`
 
 # Running the bot
 

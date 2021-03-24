@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <assert.h>
+
 #include "libdiscord.h"
 
 
@@ -46,7 +46,6 @@ int main(int argc, char *argv[])
   discord_global_init();
 
   struct discord *client = discord_config_init(config_file);
-  assert(NULL != client);
 
   discord_setcb(client, READY, &on_ready);
   discord_setcb_command(client, "ping", &on_ping);
