@@ -3,49 +3,49 @@
 https://discord.com/developers/docs/resources/guild#guild-member-object
 */
 
-/* This is defined at specs/guild.member.json:9:22 */
-struct discord_guild_member_dati {
-  /* specs/guild.member.json:12:20
-     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*" }, "option":true}'
+/* This is defined at specs/guild.member.json:7:22 */
+struct discord_guild_member {
+  /* specs/guild.member.json:10:20
+     '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }, "option":true}'
   */
-  struct discord_user_dati *user;
+  struct discord_user *user;
 
-  /* specs/guild.member.json:13:20
+  /* specs/guild.member.json:11:20
      '{ "name": "nick", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]"}, "option":true}'
   */
   char nick[MAX_NAME_LEN];
 
-  /* specs/guild.member.json:14:20
+  /* specs/guild.member.json:12:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl"}, "comment":"array of role object ids"}'
   */
   ja_u64 **roles; // array of role object ids
 
-  /* specs/guild.member.json:15:20
+  /* specs/guild.member.json:13:20
      '{ "name": "joined_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}'
   */
   u64_unix_ms_t joined_at;
 
-  /* specs/guild.member.json:16:20
+  /* specs/guild.member.json:14:20
      '{ "name": "premium_since", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}'
   */
   u64_unix_ms_t premium_since;
 
-  /* specs/guild.member.json:17:20
+  /* specs/guild.member.json:15:20
      '{ "name": "deaf", "type":{ "base":"bool" }}'
   */
   bool deaf;
 
-  /* specs/guild.member.json:18:20
+  /* specs/guild.member.json:16:20
      '{ "name": "mute", "type":{ "base":"bool" }}'
   */
   bool mute;
 
-  /* specs/guild.member.json:19:20
+  /* specs/guild.member.json:17:20
      '{ "name": "pending", "type":{ "base":"bool" }, "option":true}'
   */
   bool pending;
 
-  /* specs/guild.member.json:20:20
+  /* specs/guild.member.json:18:20
      '{ "name": "permissions", "type":{ "base":"char", "dec":"*"}, "option":true}'
   */
   char *permissions;
@@ -63,22 +63,22 @@ struct discord_guild_member_dati {
     void *record_null[9];
   } __M; // metadata
 };
-extern void discord_guild_member_dati_cleanup_v(void *p);
-extern void discord_guild_member_dati_cleanup(struct discord_guild_member_dati *p);
-extern void discord_guild_member_dati_init_v(void *p);
-extern void discord_guild_member_dati_init(struct discord_guild_member_dati *p);
-extern struct discord_guild_member_dati * discord_guild_member_dati_alloc();
-extern void discord_guild_member_dati_free_v(void *p);
-extern void discord_guild_member_dati_free(struct discord_guild_member_dati *p);
-extern void discord_guild_member_dati_from_json_v(char *json, size_t len, void *p);
-extern void discord_guild_member_dati_from_json(char *json, size_t len, struct discord_guild_member_dati *p);
-extern size_t discord_guild_member_dati_to_json_v(char *json, size_t len, void *p);
-extern size_t discord_guild_member_dati_to_json(char *json, size_t len, struct discord_guild_member_dati *p);
-extern size_t discord_guild_member_dati_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_guild_member_dati_to_query(char *json, size_t len, struct discord_guild_member_dati *p);
-extern void discord_guild_member_dati_list_free_v(void **p);
-extern void discord_guild_member_dati_list_free(struct discord_guild_member_dati **p);
-extern void discord_guild_member_dati_list_from_json_v(char *str, size_t len, void *p);
-extern void discord_guild_member_dati_list_from_json(char *str, size_t len, struct discord_guild_member_dati ***p);
-extern size_t discord_guild_member_dati_list_to_json_v(char *str, size_t len, void *p);
-extern size_t discord_guild_member_dati_list_to_json(char *str, size_t len, struct discord_guild_member_dati **p);
+extern void discord_guild_member_cleanup_v(void *p);
+extern void discord_guild_member_cleanup(struct discord_guild_member *p);
+extern void discord_guild_member_init_v(void *p);
+extern void discord_guild_member_init(struct discord_guild_member *p);
+extern struct discord_guild_member * discord_guild_member_alloc();
+extern void discord_guild_member_free_v(void *p);
+extern void discord_guild_member_free(struct discord_guild_member *p);
+extern void discord_guild_member_from_json_v(char *json, size_t len, void *p);
+extern void discord_guild_member_from_json(char *json, size_t len, struct discord_guild_member *p);
+extern size_t discord_guild_member_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_guild_member_to_json(char *json, size_t len, struct discord_guild_member *p);
+extern size_t discord_guild_member_to_query_v(char *json, size_t len, void *p);
+extern size_t discord_guild_member_to_query(char *json, size_t len, struct discord_guild_member *p);
+extern void discord_guild_member_list_free_v(void **p);
+extern void discord_guild_member_list_free(struct discord_guild_member **p);
+extern void discord_guild_member_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_guild_member_list_from_json(char *str, size_t len, struct discord_guild_member ***p);
+extern size_t discord_guild_member_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_guild_member_list_to_json(char *str, size_t len, struct discord_guild_member **p);

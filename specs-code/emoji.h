@@ -5,7 +5,7 @@ https://discord.com/developers/docs/resources/emoji#emoji-object-emoji-structure
 
 /* Title: Emoji Structure */
 /* This is defined at specs/emoji.json:8:22 */
-struct discord_emoji_dati {
+struct discord_emoji {
   /* specs/emoji.json:11:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}}'
   */
@@ -17,15 +17,15 @@ struct discord_emoji_dati {
   char name[MAX_NAME_LEN];
 
   /* specs/emoji.json:13:20
-     '{ "name": "roles", "type":{ "base":"struct discord_guild_role_dati", "dec":"ntl"}, "option":true,
+     '{ "name": "roles", "type":{ "base":"struct discord_guild_role", "dec":"ntl"}, "option":true,
           "todo":true }'
   */
   //@todo roles (null);
 
   /* specs/emoji.json:15:20
-     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*" }, "option":true }'
+     '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }, "option":true }'
   */
-  struct discord_user_dati *user;
+  struct discord_user *user;
 
   /* specs/emoji.json:16:20
      '{ "name": "require_colons", "type":{ "base":"bool" }, "option":true}'
@@ -60,22 +60,22 @@ struct discord_emoji_dati {
     void *record_null[8];
   } __M; // metadata
 };
-extern void discord_emoji_dati_cleanup_v(void *p);
-extern void discord_emoji_dati_cleanup(struct discord_emoji_dati *p);
-extern void discord_emoji_dati_init_v(void *p);
-extern void discord_emoji_dati_init(struct discord_emoji_dati *p);
-extern struct discord_emoji_dati * discord_emoji_dati_alloc();
-extern void discord_emoji_dati_free_v(void *p);
-extern void discord_emoji_dati_free(struct discord_emoji_dati *p);
-extern void discord_emoji_dati_from_json_v(char *json, size_t len, void *p);
-extern void discord_emoji_dati_from_json(char *json, size_t len, struct discord_emoji_dati *p);
-extern size_t discord_emoji_dati_to_json_v(char *json, size_t len, void *p);
-extern size_t discord_emoji_dati_to_json(char *json, size_t len, struct discord_emoji_dati *p);
-extern size_t discord_emoji_dati_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_emoji_dati_to_query(char *json, size_t len, struct discord_emoji_dati *p);
-extern void discord_emoji_dati_list_free_v(void **p);
-extern void discord_emoji_dati_list_free(struct discord_emoji_dati **p);
-extern void discord_emoji_dati_list_from_json_v(char *str, size_t len, void *p);
-extern void discord_emoji_dati_list_from_json(char *str, size_t len, struct discord_emoji_dati ***p);
-extern size_t discord_emoji_dati_list_to_json_v(char *str, size_t len, void *p);
-extern size_t discord_emoji_dati_list_to_json(char *str, size_t len, struct discord_emoji_dati **p);
+extern void discord_emoji_cleanup_v(void *p);
+extern void discord_emoji_cleanup(struct discord_emoji *p);
+extern void discord_emoji_init_v(void *p);
+extern void discord_emoji_init(struct discord_emoji *p);
+extern struct discord_emoji * discord_emoji_alloc();
+extern void discord_emoji_free_v(void *p);
+extern void discord_emoji_free(struct discord_emoji *p);
+extern void discord_emoji_from_json_v(char *json, size_t len, void *p);
+extern void discord_emoji_from_json(char *json, size_t len, struct discord_emoji *p);
+extern size_t discord_emoji_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_emoji_to_json(char *json, size_t len, struct discord_emoji *p);
+extern size_t discord_emoji_to_query_v(char *json, size_t len, void *p);
+extern size_t discord_emoji_to_query(char *json, size_t len, struct discord_emoji *p);
+extern void discord_emoji_list_free_v(void **p);
+extern void discord_emoji_list_free(struct discord_emoji **p);
+extern void discord_emoji_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_emoji_list_from_json(char *str, size_t len, struct discord_emoji ***p);
+extern size_t discord_emoji_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_emoji_list_to_json(char *str, size_t len, struct discord_emoji **p);

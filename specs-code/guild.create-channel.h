@@ -42,9 +42,9 @@ struct discord_guild_create_channel_params {
   int position;
 
   /* specs/guild.create-channel.json:18:20
-     '{ "name": "permission_overwrites", "type":{ "base":"struct discord_channel_overwrite_dati", "dec":"ntl" }, "inject_if_not":null}'
+     '{ "name": "permission_overwrites", "type":{ "base":"struct discord_channel_overwrite", "dec":"ntl" }, "inject_if_not":null}'
   */
-  struct discord_channel_overwrite_dati **permission_overwrites;
+  struct discord_channel_overwrite **permission_overwrites;
 
   /* specs/guild.create-channel.json:19:20
      '{ "name": "parent_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0}'

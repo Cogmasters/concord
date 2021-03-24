@@ -1,11 +1,11 @@
 {
-  "namespace": ["discord", "guild", "membership_screening" ],
+  "namespace": ["discord", "guild"],
   "comment": "https://discord.com/developers/docs/resources/guild#membership-screening-object", 
   "defs":
   [
     {
-      "namespace": ["field_type"],
-      "enum":"code",
+      "namespace": ["membership_screening"],
+      "enum":"field_type",
       "items":
       [
         {"name":"TERMS" }
@@ -13,22 +13,22 @@
     },
     {
       "comment":"https://discord.com/developers/docs/resources/guild#membership-screening-object-membership-screening-field-structure",
-      "namespace":["field"],
-      "struct":"dati",
+      "namespace":["membership_screening"],
+      "struct":"field",
       "fields":
       [
-        { "name": "field_type", "type":{ "base":"int", "int_alias":"enum discord_guild_membership_screening_field_type_code" }},
+        { "name": "field_type", "type":{ "base":"int", "int_alias":"enum discord_guild_membership_screening_field_type" }},
         { "name": "label", "type":{ "base":"char", "dec":"*" }},
         { "name": "values", "todo":true, "type":{ "base":"char", "dec":"ntl" }},
         { "name": "required", "type":{ "base":"bool" }}
       ]
     },
     {
-      "struct":"dati",
+      "struct":"membership_screening",
       "fields":
       [
         { "name": "version", "type":{ "base":"s_as_u64" }},
-        { "name": "fields", "type":{ "base":"struct discord_guild_membership_screening_field_dati", "dec":"ntl" }},
+        { "name": "fields", "type":{ "base":"struct discord_guild_membership_screening_field", "dec":"ntl" }},
         { "name": "description", "type":{ "base":"char", "dec":"*" }}
       ]
     }

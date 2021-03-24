@@ -6,21 +6,21 @@
 #include "libdiscord.h"
 #include "orka-utils.h" // for orka_timestamp_ms()
 
-void on_ready(struct discord_client *client, const struct discord_user_dati *me) {
+void on_ready(struct discord *client, const struct discord_user *me) {
   fprintf(stderr, "\n\nCreate-Role-Bot succesfully connected to Discord as %s#%s!\n\n",
       me->username, me->discriminator);
 }
 
 void on_command(
-    struct discord_client *client,
-    const struct discord_user_dati *me,
-    const struct discord_channel_message_dati *msg)
+    struct discord *client,
+    const struct discord_user *me,
+    const struct discord_message *msg)
 {
   // make sure bot doesn't echoes other bots
   if (msg->author->bot)
     return;
 
-  struct discord_guild_role_dati *role = discord_guild_role_dati_alloc();
+  struct discord_guild_role *role = discord_guild_role_alloc();
 
   struct discord_guild_create_guild_role_params params1 = {
     .name = msg->content
@@ -37,7 +37,7 @@ void on_command(
     discord_create_message(client, msg->channel_id, &params2, NULL);
   }
 
-  discord_guild_role_dati_free(role);
+  discord_guild_role_free(role);
 }
 
 int main(int argc, char *argv[])
@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
 
   discord_global_init();
 
-  struct discord_client *client = discord_config_init(config_file);
+  struct discord *client = discord_config_init(config_file);
   assert(NULL != client);
 
   discord_setcb_command(client, "!createRole", &on_command);

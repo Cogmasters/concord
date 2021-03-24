@@ -5,7 +5,7 @@ https://discord.com/developers/docs/resources/channel#overwrite-object-overwrite
 
 /* Title: Overwrite Structure */
 /* This is defined at specs/channel.objects.json:10:22 */
-struct discord_channel_overwrite_dati {
+struct discord_channel_overwrite {
   /* specs/channel.objects.json:13:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
@@ -41,29 +41,29 @@ struct discord_channel_overwrite_dati {
     void *record_null[4];
   } __M; // metadata
 };
-extern void discord_channel_overwrite_dati_cleanup_v(void *p);
-extern void discord_channel_overwrite_dati_cleanup(struct discord_channel_overwrite_dati *p);
-extern void discord_channel_overwrite_dati_init_v(void *p);
-extern void discord_channel_overwrite_dati_init(struct discord_channel_overwrite_dati *p);
-extern struct discord_channel_overwrite_dati * discord_channel_overwrite_dati_alloc();
-extern void discord_channel_overwrite_dati_free_v(void *p);
-extern void discord_channel_overwrite_dati_free(struct discord_channel_overwrite_dati *p);
-extern void discord_channel_overwrite_dati_from_json_v(char *json, size_t len, void *p);
-extern void discord_channel_overwrite_dati_from_json(char *json, size_t len, struct discord_channel_overwrite_dati *p);
-extern size_t discord_channel_overwrite_dati_to_json_v(char *json, size_t len, void *p);
-extern size_t discord_channel_overwrite_dati_to_json(char *json, size_t len, struct discord_channel_overwrite_dati *p);
-extern size_t discord_channel_overwrite_dati_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_channel_overwrite_dati_to_query(char *json, size_t len, struct discord_channel_overwrite_dati *p);
-extern void discord_channel_overwrite_dati_list_free_v(void **p);
-extern void discord_channel_overwrite_dati_list_free(struct discord_channel_overwrite_dati **p);
-extern void discord_channel_overwrite_dati_list_from_json_v(char *str, size_t len, void *p);
-extern void discord_channel_overwrite_dati_list_from_json(char *str, size_t len, struct discord_channel_overwrite_dati ***p);
-extern size_t discord_channel_overwrite_dati_list_to_json_v(char *str, size_t len, void *p);
-extern size_t discord_channel_overwrite_dati_list_to_json(char *str, size_t len, struct discord_channel_overwrite_dati **p);
+extern void discord_channel_overwrite_cleanup_v(void *p);
+extern void discord_channel_overwrite_cleanup(struct discord_channel_overwrite *p);
+extern void discord_channel_overwrite_init_v(void *p);
+extern void discord_channel_overwrite_init(struct discord_channel_overwrite *p);
+extern struct discord_channel_overwrite * discord_channel_overwrite_alloc();
+extern void discord_channel_overwrite_free_v(void *p);
+extern void discord_channel_overwrite_free(struct discord_channel_overwrite *p);
+extern void discord_channel_overwrite_from_json_v(char *json, size_t len, void *p);
+extern void discord_channel_overwrite_from_json(char *json, size_t len, struct discord_channel_overwrite *p);
+extern size_t discord_channel_overwrite_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_channel_overwrite_to_json(char *json, size_t len, struct discord_channel_overwrite *p);
+extern size_t discord_channel_overwrite_to_query_v(char *json, size_t len, void *p);
+extern size_t discord_channel_overwrite_to_query(char *json, size_t len, struct discord_channel_overwrite *p);
+extern void discord_channel_overwrite_list_free_v(void **p);
+extern void discord_channel_overwrite_list_free(struct discord_channel_overwrite **p);
+extern void discord_channel_overwrite_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_channel_overwrite_list_from_json(char *str, size_t len, struct discord_channel_overwrite ***p);
+extern size_t discord_channel_overwrite_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_channel_overwrite_list_to_json(char *str, size_t len, struct discord_channel_overwrite **p);
 
 /* https://discord.com/developers/docs/resources/channel#reaction-object-reaction-structure */
 /* This is defined at specs/channel.objects.json:24:22 */
-struct discord_channel_reaction_dati {
+struct discord_channel_reaction {
   /* specs/channel.objects.json:27:20
      '{ "name": "count", "type":{ "base":"int" }}'
   */
@@ -75,9 +75,9 @@ struct discord_channel_reaction_dati {
   bool me;
 
   /* specs/channel.objects.json:29:20
-     '{ "name": "emoji", "type":{ "base":"struct discord_emoji_dati", "dec":"*" }, "comment":"partial emoji object"}'
+     '{ "name": "emoji", "type":{ "base":"struct discord_emoji", "dec":"*" }, "comment":"partial emoji object"}'
   */
-  struct discord_emoji_dati *emoji; // partial emoji object
+  struct discord_emoji *emoji; // partial emoji object
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -92,30 +92,30 @@ struct discord_channel_reaction_dati {
     void *record_null[3];
   } __M; // metadata
 };
-extern void discord_channel_reaction_dati_cleanup_v(void *p);
-extern void discord_channel_reaction_dati_cleanup(struct discord_channel_reaction_dati *p);
-extern void discord_channel_reaction_dati_init_v(void *p);
-extern void discord_channel_reaction_dati_init(struct discord_channel_reaction_dati *p);
-extern struct discord_channel_reaction_dati * discord_channel_reaction_dati_alloc();
-extern void discord_channel_reaction_dati_free_v(void *p);
-extern void discord_channel_reaction_dati_free(struct discord_channel_reaction_dati *p);
-extern void discord_channel_reaction_dati_from_json_v(char *json, size_t len, void *p);
-extern void discord_channel_reaction_dati_from_json(char *json, size_t len, struct discord_channel_reaction_dati *p);
-extern size_t discord_channel_reaction_dati_to_json_v(char *json, size_t len, void *p);
-extern size_t discord_channel_reaction_dati_to_json(char *json, size_t len, struct discord_channel_reaction_dati *p);
-extern size_t discord_channel_reaction_dati_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_channel_reaction_dati_to_query(char *json, size_t len, struct discord_channel_reaction_dati *p);
-extern void discord_channel_reaction_dati_list_free_v(void **p);
-extern void discord_channel_reaction_dati_list_free(struct discord_channel_reaction_dati **p);
-extern void discord_channel_reaction_dati_list_from_json_v(char *str, size_t len, void *p);
-extern void discord_channel_reaction_dati_list_from_json(char *str, size_t len, struct discord_channel_reaction_dati ***p);
-extern size_t discord_channel_reaction_dati_list_to_json_v(char *str, size_t len, void *p);
-extern size_t discord_channel_reaction_dati_list_to_json(char *str, size_t len, struct discord_channel_reaction_dati **p);
+extern void discord_channel_reaction_cleanup_v(void *p);
+extern void discord_channel_reaction_cleanup(struct discord_channel_reaction *p);
+extern void discord_channel_reaction_init_v(void *p);
+extern void discord_channel_reaction_init(struct discord_channel_reaction *p);
+extern struct discord_channel_reaction * discord_channel_reaction_alloc();
+extern void discord_channel_reaction_free_v(void *p);
+extern void discord_channel_reaction_free(struct discord_channel_reaction *p);
+extern void discord_channel_reaction_from_json_v(char *json, size_t len, void *p);
+extern void discord_channel_reaction_from_json(char *json, size_t len, struct discord_channel_reaction *p);
+extern size_t discord_channel_reaction_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_channel_reaction_to_json(char *json, size_t len, struct discord_channel_reaction *p);
+extern size_t discord_channel_reaction_to_query_v(char *json, size_t len, void *p);
+extern size_t discord_channel_reaction_to_query(char *json, size_t len, struct discord_channel_reaction *p);
+extern void discord_channel_reaction_list_free_v(void **p);
+extern void discord_channel_reaction_list_free(struct discord_channel_reaction **p);
+extern void discord_channel_reaction_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_channel_reaction_list_from_json(char *str, size_t len, struct discord_channel_reaction ***p);
+extern size_t discord_channel_reaction_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_channel_reaction_list_to_json(char *str, size_t len, struct discord_channel_reaction **p);
 
 /* Title: Followed Channel Structure */
 /* https://discord.com/developers/docs/resources/channel#followed-channel-object-followed-channel-structure */
 /* This is defined at specs/channel.objects.json:36:22 */
-struct discord_channel_followed_channel_dati {
+struct discord_channel_followed_channel {
   /* specs/channel.objects.json:39:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
@@ -139,29 +139,29 @@ struct discord_channel_followed_channel_dati {
     void *record_null[2];
   } __M; // metadata
 };
-extern void discord_channel_followed_channel_dati_cleanup_v(void *p);
-extern void discord_channel_followed_channel_dati_cleanup(struct discord_channel_followed_channel_dati *p);
-extern void discord_channel_followed_channel_dati_init_v(void *p);
-extern void discord_channel_followed_channel_dati_init(struct discord_channel_followed_channel_dati *p);
-extern struct discord_channel_followed_channel_dati * discord_channel_followed_channel_dati_alloc();
-extern void discord_channel_followed_channel_dati_free_v(void *p);
-extern void discord_channel_followed_channel_dati_free(struct discord_channel_followed_channel_dati *p);
-extern void discord_channel_followed_channel_dati_from_json_v(char *json, size_t len, void *p);
-extern void discord_channel_followed_channel_dati_from_json(char *json, size_t len, struct discord_channel_followed_channel_dati *p);
-extern size_t discord_channel_followed_channel_dati_to_json_v(char *json, size_t len, void *p);
-extern size_t discord_channel_followed_channel_dati_to_json(char *json, size_t len, struct discord_channel_followed_channel_dati *p);
-extern size_t discord_channel_followed_channel_dati_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_channel_followed_channel_dati_to_query(char *json, size_t len, struct discord_channel_followed_channel_dati *p);
-extern void discord_channel_followed_channel_dati_list_free_v(void **p);
-extern void discord_channel_followed_channel_dati_list_free(struct discord_channel_followed_channel_dati **p);
-extern void discord_channel_followed_channel_dati_list_from_json_v(char *str, size_t len, void *p);
-extern void discord_channel_followed_channel_dati_list_from_json(char *str, size_t len, struct discord_channel_followed_channel_dati ***p);
-extern size_t discord_channel_followed_channel_dati_list_to_json_v(char *str, size_t len, void *p);
-extern size_t discord_channel_followed_channel_dati_list_to_json(char *str, size_t len, struct discord_channel_followed_channel_dati **p);
+extern void discord_channel_followed_channel_cleanup_v(void *p);
+extern void discord_channel_followed_channel_cleanup(struct discord_channel_followed_channel *p);
+extern void discord_channel_followed_channel_init_v(void *p);
+extern void discord_channel_followed_channel_init(struct discord_channel_followed_channel *p);
+extern struct discord_channel_followed_channel * discord_channel_followed_channel_alloc();
+extern void discord_channel_followed_channel_free_v(void *p);
+extern void discord_channel_followed_channel_free(struct discord_channel_followed_channel *p);
+extern void discord_channel_followed_channel_from_json_v(char *json, size_t len, void *p);
+extern void discord_channel_followed_channel_from_json(char *json, size_t len, struct discord_channel_followed_channel *p);
+extern size_t discord_channel_followed_channel_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_channel_followed_channel_to_json(char *json, size_t len, struct discord_channel_followed_channel *p);
+extern size_t discord_channel_followed_channel_to_query_v(char *json, size_t len, void *p);
+extern size_t discord_channel_followed_channel_to_query(char *json, size_t len, struct discord_channel_followed_channel *p);
+extern void discord_channel_followed_channel_list_free_v(void **p);
+extern void discord_channel_followed_channel_list_free(struct discord_channel_followed_channel **p);
+extern void discord_channel_followed_channel_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_channel_followed_channel_list_from_json(char *str, size_t len, struct discord_channel_followed_channel ***p);
+extern size_t discord_channel_followed_channel_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_channel_followed_channel_list_to_json(char *str, size_t len, struct discord_channel_followed_channel **p);
 
 /* https://discord.com/developers/docs/resources/channel#attachment-object */
 /* This is defined at specs/channel.objects.json:46:22 */
-struct discord_channel_attachment_dati {
+struct discord_channel_attachment {
   /* specs/channel.objects.json:49:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
@@ -210,30 +210,30 @@ struct discord_channel_attachment_dati {
     void *record_null[7];
   } __M; // metadata
 };
-extern void discord_channel_attachment_dati_cleanup_v(void *p);
-extern void discord_channel_attachment_dati_cleanup(struct discord_channel_attachment_dati *p);
-extern void discord_channel_attachment_dati_init_v(void *p);
-extern void discord_channel_attachment_dati_init(struct discord_channel_attachment_dati *p);
-extern struct discord_channel_attachment_dati * discord_channel_attachment_dati_alloc();
-extern void discord_channel_attachment_dati_free_v(void *p);
-extern void discord_channel_attachment_dati_free(struct discord_channel_attachment_dati *p);
-extern void discord_channel_attachment_dati_from_json_v(char *json, size_t len, void *p);
-extern void discord_channel_attachment_dati_from_json(char *json, size_t len, struct discord_channel_attachment_dati *p);
-extern size_t discord_channel_attachment_dati_to_json_v(char *json, size_t len, void *p);
-extern size_t discord_channel_attachment_dati_to_json(char *json, size_t len, struct discord_channel_attachment_dati *p);
-extern size_t discord_channel_attachment_dati_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_channel_attachment_dati_to_query(char *json, size_t len, struct discord_channel_attachment_dati *p);
-extern void discord_channel_attachment_dati_list_free_v(void **p);
-extern void discord_channel_attachment_dati_list_free(struct discord_channel_attachment_dati **p);
-extern void discord_channel_attachment_dati_list_from_json_v(char *str, size_t len, void *p);
-extern void discord_channel_attachment_dati_list_from_json(char *str, size_t len, struct discord_channel_attachment_dati ***p);
-extern size_t discord_channel_attachment_dati_list_to_json_v(char *str, size_t len, void *p);
-extern size_t discord_channel_attachment_dati_list_to_json(char *str, size_t len, struct discord_channel_attachment_dati **p);
+extern void discord_channel_attachment_cleanup_v(void *p);
+extern void discord_channel_attachment_cleanup(struct discord_channel_attachment *p);
+extern void discord_channel_attachment_init_v(void *p);
+extern void discord_channel_attachment_init(struct discord_channel_attachment *p);
+extern struct discord_channel_attachment * discord_channel_attachment_alloc();
+extern void discord_channel_attachment_free_v(void *p);
+extern void discord_channel_attachment_free(struct discord_channel_attachment *p);
+extern void discord_channel_attachment_from_json_v(char *json, size_t len, void *p);
+extern void discord_channel_attachment_from_json(char *json, size_t len, struct discord_channel_attachment *p);
+extern size_t discord_channel_attachment_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_channel_attachment_to_json(char *json, size_t len, struct discord_channel_attachment *p);
+extern size_t discord_channel_attachment_to_query_v(char *json, size_t len, void *p);
+extern size_t discord_channel_attachment_to_query(char *json, size_t len, struct discord_channel_attachment *p);
+extern void discord_channel_attachment_list_free_v(void **p);
+extern void discord_channel_attachment_list_free(struct discord_channel_attachment **p);
+extern void discord_channel_attachment_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_channel_attachment_list_from_json(char *str, size_t len, struct discord_channel_attachment ***p);
+extern size_t discord_channel_attachment_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_channel_attachment_list_to_json(char *str, size_t len, struct discord_channel_attachment **p);
 
 /* Title: Channel Mention Structure */
 /* https://discord.com/developers/docs/resources/channel#channel-mention-object-channel-mention-structure */
 /* This is defined at specs/channel.objects.json:62:22 */
-struct discord_channel_mention_dati {
+struct discord_channel_mention {
   /* specs/channel.objects.json:65:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
@@ -245,9 +245,9 @@ struct discord_channel_mention_dati {
   u64_snowflake_t guild_id;
 
   /* specs/channel.objects.json:67:20
-     '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_channel_types_code" }}'
+     '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_channel_types" }}'
   */
-  enum discord_channel_types_code type;
+  enum discord_channel_types type;
 
   /* specs/channel.objects.json:68:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }}'
@@ -267,30 +267,30 @@ struct discord_channel_mention_dati {
     void *record_null[4];
   } __M; // metadata
 };
-extern void discord_channel_mention_dati_cleanup_v(void *p);
-extern void discord_channel_mention_dati_cleanup(struct discord_channel_mention_dati *p);
-extern void discord_channel_mention_dati_init_v(void *p);
-extern void discord_channel_mention_dati_init(struct discord_channel_mention_dati *p);
-extern struct discord_channel_mention_dati * discord_channel_mention_dati_alloc();
-extern void discord_channel_mention_dati_free_v(void *p);
-extern void discord_channel_mention_dati_free(struct discord_channel_mention_dati *p);
-extern void discord_channel_mention_dati_from_json_v(char *json, size_t len, void *p);
-extern void discord_channel_mention_dati_from_json(char *json, size_t len, struct discord_channel_mention_dati *p);
-extern size_t discord_channel_mention_dati_to_json_v(char *json, size_t len, void *p);
-extern size_t discord_channel_mention_dati_to_json(char *json, size_t len, struct discord_channel_mention_dati *p);
-extern size_t discord_channel_mention_dati_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_channel_mention_dati_to_query(char *json, size_t len, struct discord_channel_mention_dati *p);
-extern void discord_channel_mention_dati_list_free_v(void **p);
-extern void discord_channel_mention_dati_list_free(struct discord_channel_mention_dati **p);
-extern void discord_channel_mention_dati_list_from_json_v(char *str, size_t len, void *p);
-extern void discord_channel_mention_dati_list_from_json(char *str, size_t len, struct discord_channel_mention_dati ***p);
-extern size_t discord_channel_mention_dati_list_to_json_v(char *str, size_t len, void *p);
-extern size_t discord_channel_mention_dati_list_to_json(char *str, size_t len, struct discord_channel_mention_dati **p);
+extern void discord_channel_mention_cleanup_v(void *p);
+extern void discord_channel_mention_cleanup(struct discord_channel_mention *p);
+extern void discord_channel_mention_init_v(void *p);
+extern void discord_channel_mention_init(struct discord_channel_mention *p);
+extern struct discord_channel_mention * discord_channel_mention_alloc();
+extern void discord_channel_mention_free_v(void *p);
+extern void discord_channel_mention_free(struct discord_channel_mention *p);
+extern void discord_channel_mention_from_json_v(char *json, size_t len, void *p);
+extern void discord_channel_mention_from_json(char *json, size_t len, struct discord_channel_mention *p);
+extern size_t discord_channel_mention_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_channel_mention_to_json(char *json, size_t len, struct discord_channel_mention *p);
+extern size_t discord_channel_mention_to_query_v(char *json, size_t len, void *p);
+extern size_t discord_channel_mention_to_query(char *json, size_t len, struct discord_channel_mention *p);
+extern void discord_channel_mention_list_free_v(void **p);
+extern void discord_channel_mention_list_free(struct discord_channel_mention **p);
+extern void discord_channel_mention_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_channel_mention_list_from_json(char *str, size_t len, struct discord_channel_mention ***p);
+extern size_t discord_channel_mention_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_channel_mention_list_to_json(char *str, size_t len, struct discord_channel_mention **p);
 
 /* Title: Allowed Mentions Structure */
 /* https://discord.com/developers/docs/resources/channel#allowed-mentions-object-allowed-mentions-structure */
 /* This is defined at specs/channel.objects.json:75:22 */
-struct discord_channel_allowed_mentions_dati {
+struct discord_channel_allowed_mentions {
   /* specs/channel.objects.json:78:20
      '{ "name": "parse", "type":{ "base":"ja_str", "dec":"ntl" }}'
   */
@@ -324,30 +324,30 @@ struct discord_channel_allowed_mentions_dati {
     void *record_null[4];
   } __M; // metadata
 };
-extern void discord_channel_allowed_mentions_dati_cleanup_v(void *p);
-extern void discord_channel_allowed_mentions_dati_cleanup(struct discord_channel_allowed_mentions_dati *p);
-extern void discord_channel_allowed_mentions_dati_init_v(void *p);
-extern void discord_channel_allowed_mentions_dati_init(struct discord_channel_allowed_mentions_dati *p);
-extern struct discord_channel_allowed_mentions_dati * discord_channel_allowed_mentions_dati_alloc();
-extern void discord_channel_allowed_mentions_dati_free_v(void *p);
-extern void discord_channel_allowed_mentions_dati_free(struct discord_channel_allowed_mentions_dati *p);
-extern void discord_channel_allowed_mentions_dati_from_json_v(char *json, size_t len, void *p);
-extern void discord_channel_allowed_mentions_dati_from_json(char *json, size_t len, struct discord_channel_allowed_mentions_dati *p);
-extern size_t discord_channel_allowed_mentions_dati_to_json_v(char *json, size_t len, void *p);
-extern size_t discord_channel_allowed_mentions_dati_to_json(char *json, size_t len, struct discord_channel_allowed_mentions_dati *p);
-extern size_t discord_channel_allowed_mentions_dati_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_channel_allowed_mentions_dati_to_query(char *json, size_t len, struct discord_channel_allowed_mentions_dati *p);
-extern void discord_channel_allowed_mentions_dati_list_free_v(void **p);
-extern void discord_channel_allowed_mentions_dati_list_free(struct discord_channel_allowed_mentions_dati **p);
-extern void discord_channel_allowed_mentions_dati_list_from_json_v(char *str, size_t len, void *p);
-extern void discord_channel_allowed_mentions_dati_list_from_json(char *str, size_t len, struct discord_channel_allowed_mentions_dati ***p);
-extern size_t discord_channel_allowed_mentions_dati_list_to_json_v(char *str, size_t len, void *p);
-extern size_t discord_channel_allowed_mentions_dati_list_to_json(char *str, size_t len, struct discord_channel_allowed_mentions_dati **p);
+extern void discord_channel_allowed_mentions_cleanup_v(void *p);
+extern void discord_channel_allowed_mentions_cleanup(struct discord_channel_allowed_mentions *p);
+extern void discord_channel_allowed_mentions_init_v(void *p);
+extern void discord_channel_allowed_mentions_init(struct discord_channel_allowed_mentions *p);
+extern struct discord_channel_allowed_mentions * discord_channel_allowed_mentions_alloc();
+extern void discord_channel_allowed_mentions_free_v(void *p);
+extern void discord_channel_allowed_mentions_free(struct discord_channel_allowed_mentions *p);
+extern void discord_channel_allowed_mentions_from_json_v(char *json, size_t len, void *p);
+extern void discord_channel_allowed_mentions_from_json(char *json, size_t len, struct discord_channel_allowed_mentions *p);
+extern size_t discord_channel_allowed_mentions_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_channel_allowed_mentions_to_json(char *json, size_t len, struct discord_channel_allowed_mentions *p);
+extern size_t discord_channel_allowed_mentions_to_query_v(char *json, size_t len, void *p);
+extern size_t discord_channel_allowed_mentions_to_query(char *json, size_t len, struct discord_channel_allowed_mentions *p);
+extern void discord_channel_allowed_mentions_list_free_v(void **p);
+extern void discord_channel_allowed_mentions_list_free(struct discord_channel_allowed_mentions **p);
+extern void discord_channel_allowed_mentions_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_channel_allowed_mentions_list_from_json(char *str, size_t len, struct discord_channel_allowed_mentions ***p);
+extern size_t discord_channel_allowed_mentions_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_channel_allowed_mentions_list_to_json(char *str, size_t len, struct discord_channel_allowed_mentions **p);
 
 /* Title: Embed Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-structure */
 /* This is defined at specs/channel.objects.json:88:22 */
-struct discord_channel_embed_dati {
+struct discord_channel_embed {
   /* specs/channel.objects.json:91:20
      '{ "name": "title", "type":{ "base":"char", "dec":"[EMBED_TITLE_LEN]" }, 
           "option":true, "inject_if_not":""}'
@@ -384,41 +384,41 @@ struct discord_channel_embed_dati {
   int color;
 
   /* specs/channel.objects.json:102:20
-     '{ "name": "footer", "type":{ "base":"struct discord_channel_embed_footer_dati", "dec":"*"},
+     '{ "name": "footer", "type":{ "base":"struct discord_channel_embed_footer", "dec":"*"},
           "option":true, "inject_if_not":null}'
   */
-  struct discord_channel_embed_footer_dati *footer;
+  struct discord_channel_embed_footer *footer;
 
   /* specs/channel.objects.json:104:20
-     '{ "name": "image", "type":{ "base":"struct discord_channel_embed_image_dati", "dec":"*"}, "inject_if_not":null}'
+     '{ "name": "image", "type":{ "base":"struct discord_channel_embed_image", "dec":"*"}, "inject_if_not":null}'
   */
-  struct discord_channel_embed_image_dati *image;
+  struct discord_channel_embed_image *image;
 
   /* specs/channel.objects.json:105:20
-     '{ "name": "thumbnail", "type":{ "base":"struct discord_channel_embed_thumbnail_dati", "dec":"*"}, "inject_if_not":null}'
+     '{ "name": "thumbnail", "type":{ "base":"struct discord_channel_embed_thumbnail", "dec":"*"}, "inject_if_not":null}'
   */
-  struct discord_channel_embed_thumbnail_dati *thumbnail;
+  struct discord_channel_embed_thumbnail *thumbnail;
 
   /* specs/channel.objects.json:106:20
-     '{ "name": "video", "type":{ "base":"struct discord_channel_embed_video_dati", "dec":"*"}, "inject_if_not":null}'
+     '{ "name": "video", "type":{ "base":"struct discord_channel_embed_video", "dec":"*"}, "inject_if_not":null}'
   */
-  struct discord_channel_embed_video_dati *video;
+  struct discord_channel_embed_video *video;
 
   /* specs/channel.objects.json:107:20
-     '{ "name": "provider", "type":{ "base":"struct discord_channel_embed_provider_dati", "dec":"*"}, "inject_if_not":null}'
+     '{ "name": "provider", "type":{ "base":"struct discord_channel_embed_provider", "dec":"*"}, "inject_if_not":null}'
   */
-  struct discord_channel_embed_provider_dati *provider;
+  struct discord_channel_embed_provider *provider;
 
   /* specs/channel.objects.json:108:20
-     '{ "name": "author", "type":{ "base":"struct discord_channel_embed_author_dati", "dec":"*"}, "inject_if_not":null}'
+     '{ "name": "author", "type":{ "base":"struct discord_channel_embed_author", "dec":"*"}, "inject_if_not":null}'
   */
-  struct discord_channel_embed_author_dati *author;
+  struct discord_channel_embed_author *author;
 
   /* specs/channel.objects.json:109:20
-     '{ "name": "fields", "type":{ "base":"struct discord_channel_embed_field_dati", "dec":"ntl"},
+     '{ "name": "fields", "type":{ "base":"struct discord_channel_embed_field", "dec":"ntl"},
           "option":true, "inject_if_not":null}'
   */
-  struct discord_channel_embed_field_dati **fields;
+  struct discord_channel_embed_field **fields;
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -433,46 +433,46 @@ struct discord_channel_embed_dati {
     void *record_null[13];
   } __M; // metadata
 };
-extern void discord_channel_embed_dati_cleanup_v(void *p);
-extern void discord_channel_embed_dati_cleanup(struct discord_channel_embed_dati *p);
-extern void discord_channel_embed_dati_init_v(void *p);
-extern void discord_channel_embed_dati_init(struct discord_channel_embed_dati *p);
-extern struct discord_channel_embed_dati * discord_channel_embed_dati_alloc();
-extern void discord_channel_embed_dati_free_v(void *p);
-extern void discord_channel_embed_dati_free(struct discord_channel_embed_dati *p);
-extern void discord_channel_embed_dati_from_json_v(char *json, size_t len, void *p);
-extern void discord_channel_embed_dati_from_json(char *json, size_t len, struct discord_channel_embed_dati *p);
-extern size_t discord_channel_embed_dati_to_json_v(char *json, size_t len, void *p);
-extern size_t discord_channel_embed_dati_to_json(char *json, size_t len, struct discord_channel_embed_dati *p);
-extern size_t discord_channel_embed_dati_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_channel_embed_dati_to_query(char *json, size_t len, struct discord_channel_embed_dati *p);
-extern void discord_channel_embed_dati_list_free_v(void **p);
-extern void discord_channel_embed_dati_list_free(struct discord_channel_embed_dati **p);
-extern void discord_channel_embed_dati_list_from_json_v(char *str, size_t len, void *p);
-extern void discord_channel_embed_dati_list_from_json(char *str, size_t len, struct discord_channel_embed_dati ***p);
-extern size_t discord_channel_embed_dati_list_to_json_v(char *str, size_t len, void *p);
-extern size_t discord_channel_embed_dati_list_to_json(char *str, size_t len, struct discord_channel_embed_dati **p);
+extern void discord_channel_embed_cleanup_v(void *p);
+extern void discord_channel_embed_cleanup(struct discord_channel_embed *p);
+extern void discord_channel_embed_init_v(void *p);
+extern void discord_channel_embed_init(struct discord_channel_embed *p);
+extern struct discord_channel_embed * discord_channel_embed_alloc();
+extern void discord_channel_embed_free_v(void *p);
+extern void discord_channel_embed_free(struct discord_channel_embed *p);
+extern void discord_channel_embed_from_json_v(char *json, size_t len, void *p);
+extern void discord_channel_embed_from_json(char *json, size_t len, struct discord_channel_embed *p);
+extern size_t discord_channel_embed_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_channel_embed_to_json(char *json, size_t len, struct discord_channel_embed *p);
+extern size_t discord_channel_embed_to_query_v(char *json, size_t len, void *p);
+extern size_t discord_channel_embed_to_query(char *json, size_t len, struct discord_channel_embed *p);
+extern void discord_channel_embed_list_free_v(void **p);
+extern void discord_channel_embed_list_free(struct discord_channel_embed **p);
+extern void discord_channel_embed_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_channel_embed_list_from_json(char *str, size_t len, struct discord_channel_embed ***p);
+extern size_t discord_channel_embed_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_channel_embed_list_to_json(char *str, size_t len, struct discord_channel_embed **p);
 
 /* Title: Embed Thumbnail Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-thumbnail-structure */
-/* This is defined at specs/channel.objects.json:119:22 */
-struct discord_channel_embed_thumbnail_dati {
-  /* specs/channel.objects.json:121:20
+/* This is defined at specs/channel.objects.json:117:22 */
+struct discord_channel_embed_thumbnail {
+  /* specs/channel.objects.json:119:20
      '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
   char url[MAX_URL_LEN];
 
-  /* specs/channel.objects.json:122:20
+  /* specs/channel.objects.json:120:20
      '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
   char proxy_url[MAX_URL_LEN];
 
-  /* specs/channel.objects.json:123:20
+  /* specs/channel.objects.json:121:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}'
   */
   int height;
 
-  /* specs/channel.objects.json:124:20
+  /* specs/channel.objects.json:122:20
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}'
   */
   int width;
@@ -490,46 +490,46 @@ struct discord_channel_embed_thumbnail_dati {
     void *record_null[4];
   } __M; // metadata
 };
-extern void discord_channel_embed_thumbnail_dati_cleanup_v(void *p);
-extern void discord_channel_embed_thumbnail_dati_cleanup(struct discord_channel_embed_thumbnail_dati *p);
-extern void discord_channel_embed_thumbnail_dati_init_v(void *p);
-extern void discord_channel_embed_thumbnail_dati_init(struct discord_channel_embed_thumbnail_dati *p);
-extern struct discord_channel_embed_thumbnail_dati * discord_channel_embed_thumbnail_dati_alloc();
-extern void discord_channel_embed_thumbnail_dati_free_v(void *p);
-extern void discord_channel_embed_thumbnail_dati_free(struct discord_channel_embed_thumbnail_dati *p);
-extern void discord_channel_embed_thumbnail_dati_from_json_v(char *json, size_t len, void *p);
-extern void discord_channel_embed_thumbnail_dati_from_json(char *json, size_t len, struct discord_channel_embed_thumbnail_dati *p);
-extern size_t discord_channel_embed_thumbnail_dati_to_json_v(char *json, size_t len, void *p);
-extern size_t discord_channel_embed_thumbnail_dati_to_json(char *json, size_t len, struct discord_channel_embed_thumbnail_dati *p);
-extern size_t discord_channel_embed_thumbnail_dati_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_channel_embed_thumbnail_dati_to_query(char *json, size_t len, struct discord_channel_embed_thumbnail_dati *p);
-extern void discord_channel_embed_thumbnail_dati_list_free_v(void **p);
-extern void discord_channel_embed_thumbnail_dati_list_free(struct discord_channel_embed_thumbnail_dati **p);
-extern void discord_channel_embed_thumbnail_dati_list_from_json_v(char *str, size_t len, void *p);
-extern void discord_channel_embed_thumbnail_dati_list_from_json(char *str, size_t len, struct discord_channel_embed_thumbnail_dati ***p);
-extern size_t discord_channel_embed_thumbnail_dati_list_to_json_v(char *str, size_t len, void *p);
-extern size_t discord_channel_embed_thumbnail_dati_list_to_json(char *str, size_t len, struct discord_channel_embed_thumbnail_dati **p);
+extern void discord_channel_embed_thumbnail_cleanup_v(void *p);
+extern void discord_channel_embed_thumbnail_cleanup(struct discord_channel_embed_thumbnail *p);
+extern void discord_channel_embed_thumbnail_init_v(void *p);
+extern void discord_channel_embed_thumbnail_init(struct discord_channel_embed_thumbnail *p);
+extern struct discord_channel_embed_thumbnail * discord_channel_embed_thumbnail_alloc();
+extern void discord_channel_embed_thumbnail_free_v(void *p);
+extern void discord_channel_embed_thumbnail_free(struct discord_channel_embed_thumbnail *p);
+extern void discord_channel_embed_thumbnail_from_json_v(char *json, size_t len, void *p);
+extern void discord_channel_embed_thumbnail_from_json(char *json, size_t len, struct discord_channel_embed_thumbnail *p);
+extern size_t discord_channel_embed_thumbnail_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_channel_embed_thumbnail_to_json(char *json, size_t len, struct discord_channel_embed_thumbnail *p);
+extern size_t discord_channel_embed_thumbnail_to_query_v(char *json, size_t len, void *p);
+extern size_t discord_channel_embed_thumbnail_to_query(char *json, size_t len, struct discord_channel_embed_thumbnail *p);
+extern void discord_channel_embed_thumbnail_list_free_v(void **p);
+extern void discord_channel_embed_thumbnail_list_free(struct discord_channel_embed_thumbnail **p);
+extern void discord_channel_embed_thumbnail_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_channel_embed_thumbnail_list_from_json(char *str, size_t len, struct discord_channel_embed_thumbnail ***p);
+extern size_t discord_channel_embed_thumbnail_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_channel_embed_thumbnail_list_to_json(char *str, size_t len, struct discord_channel_embed_thumbnail **p);
 
 /* Title: Embed Thumbnail Structure */
-/* https://discord.com/developers/docs/resources/channel#embed-object-embed-thumbnail-structure */
-/* This is defined at specs/channel.objects.json:119:22 */
-struct discord_channel_embed_video_dati {
-  /* specs/channel.objects.json:121:20
+/* https://discord.com/developers/docs/resources/channel#embed-object-embed-video-structure */
+/* This is defined at specs/channel.objects.json:129:22 */
+struct discord_channel_embed_video {
+  /* specs/channel.objects.json:131:20
      '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
   char url[MAX_URL_LEN];
 
-  /* specs/channel.objects.json:122:20
+  /* specs/channel.objects.json:132:20
      '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
   char proxy_url[MAX_URL_LEN];
 
-  /* specs/channel.objects.json:123:20
+  /* specs/channel.objects.json:133:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}'
   */
   int height;
 
-  /* specs/channel.objects.json:124:20
+  /* specs/channel.objects.json:134:20
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}'
   */
   int width;
@@ -547,46 +547,46 @@ struct discord_channel_embed_video_dati {
     void *record_null[4];
   } __M; // metadata
 };
-extern void discord_channel_embed_video_dati_cleanup_v(void *p);
-extern void discord_channel_embed_video_dati_cleanup(struct discord_channel_embed_video_dati *p);
-extern void discord_channel_embed_video_dati_init_v(void *p);
-extern void discord_channel_embed_video_dati_init(struct discord_channel_embed_video_dati *p);
-extern struct discord_channel_embed_video_dati * discord_channel_embed_video_dati_alloc();
-extern void discord_channel_embed_video_dati_free_v(void *p);
-extern void discord_channel_embed_video_dati_free(struct discord_channel_embed_video_dati *p);
-extern void discord_channel_embed_video_dati_from_json_v(char *json, size_t len, void *p);
-extern void discord_channel_embed_video_dati_from_json(char *json, size_t len, struct discord_channel_embed_video_dati *p);
-extern size_t discord_channel_embed_video_dati_to_json_v(char *json, size_t len, void *p);
-extern size_t discord_channel_embed_video_dati_to_json(char *json, size_t len, struct discord_channel_embed_video_dati *p);
-extern size_t discord_channel_embed_video_dati_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_channel_embed_video_dati_to_query(char *json, size_t len, struct discord_channel_embed_video_dati *p);
-extern void discord_channel_embed_video_dati_list_free_v(void **p);
-extern void discord_channel_embed_video_dati_list_free(struct discord_channel_embed_video_dati **p);
-extern void discord_channel_embed_video_dati_list_from_json_v(char *str, size_t len, void *p);
-extern void discord_channel_embed_video_dati_list_from_json(char *str, size_t len, struct discord_channel_embed_video_dati ***p);
-extern size_t discord_channel_embed_video_dati_list_to_json_v(char *str, size_t len, void *p);
-extern size_t discord_channel_embed_video_dati_list_to_json(char *str, size_t len, struct discord_channel_embed_video_dati **p);
+extern void discord_channel_embed_video_cleanup_v(void *p);
+extern void discord_channel_embed_video_cleanup(struct discord_channel_embed_video *p);
+extern void discord_channel_embed_video_init_v(void *p);
+extern void discord_channel_embed_video_init(struct discord_channel_embed_video *p);
+extern struct discord_channel_embed_video * discord_channel_embed_video_alloc();
+extern void discord_channel_embed_video_free_v(void *p);
+extern void discord_channel_embed_video_free(struct discord_channel_embed_video *p);
+extern void discord_channel_embed_video_from_json_v(char *json, size_t len, void *p);
+extern void discord_channel_embed_video_from_json(char *json, size_t len, struct discord_channel_embed_video *p);
+extern size_t discord_channel_embed_video_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_channel_embed_video_to_json(char *json, size_t len, struct discord_channel_embed_video *p);
+extern size_t discord_channel_embed_video_to_query_v(char *json, size_t len, void *p);
+extern size_t discord_channel_embed_video_to_query(char *json, size_t len, struct discord_channel_embed_video *p);
+extern void discord_channel_embed_video_list_free_v(void **p);
+extern void discord_channel_embed_video_list_free(struct discord_channel_embed_video **p);
+extern void discord_channel_embed_video_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_channel_embed_video_list_from_json(char *str, size_t len, struct discord_channel_embed_video ***p);
+extern size_t discord_channel_embed_video_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_channel_embed_video_list_to_json(char *str, size_t len, struct discord_channel_embed_video **p);
 
-/* Title: Embed Thumbnail Structure */
-/* https://discord.com/developers/docs/resources/channel#embed-object-embed-thumbnail-structure */
-/* This is defined at specs/channel.objects.json:119:22 */
-struct discord_channel_embed_image_dati {
-  /* specs/channel.objects.json:121:20
+/* Title: Embed Image Structure */
+/* https://discord.com/developers/docs/resources/channel#embed-object-embed-image-structure */
+/* This is defined at specs/channel.objects.json:141:22 */
+struct discord_channel_embed_image {
+  /* specs/channel.objects.json:143:20
      '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
   char url[MAX_URL_LEN];
 
-  /* specs/channel.objects.json:122:20
+  /* specs/channel.objects.json:144:20
      '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
   char proxy_url[MAX_URL_LEN];
 
-  /* specs/channel.objects.json:123:20
+  /* specs/channel.objects.json:145:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}'
   */
   int height;
 
-  /* specs/channel.objects.json:124:20
+  /* specs/channel.objects.json:146:20
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}'
   */
   int width;
@@ -604,36 +604,36 @@ struct discord_channel_embed_image_dati {
     void *record_null[4];
   } __M; // metadata
 };
-extern void discord_channel_embed_image_dati_cleanup_v(void *p);
-extern void discord_channel_embed_image_dati_cleanup(struct discord_channel_embed_image_dati *p);
-extern void discord_channel_embed_image_dati_init_v(void *p);
-extern void discord_channel_embed_image_dati_init(struct discord_channel_embed_image_dati *p);
-extern struct discord_channel_embed_image_dati * discord_channel_embed_image_dati_alloc();
-extern void discord_channel_embed_image_dati_free_v(void *p);
-extern void discord_channel_embed_image_dati_free(struct discord_channel_embed_image_dati *p);
-extern void discord_channel_embed_image_dati_from_json_v(char *json, size_t len, void *p);
-extern void discord_channel_embed_image_dati_from_json(char *json, size_t len, struct discord_channel_embed_image_dati *p);
-extern size_t discord_channel_embed_image_dati_to_json_v(char *json, size_t len, void *p);
-extern size_t discord_channel_embed_image_dati_to_json(char *json, size_t len, struct discord_channel_embed_image_dati *p);
-extern size_t discord_channel_embed_image_dati_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_channel_embed_image_dati_to_query(char *json, size_t len, struct discord_channel_embed_image_dati *p);
-extern void discord_channel_embed_image_dati_list_free_v(void **p);
-extern void discord_channel_embed_image_dati_list_free(struct discord_channel_embed_image_dati **p);
-extern void discord_channel_embed_image_dati_list_from_json_v(char *str, size_t len, void *p);
-extern void discord_channel_embed_image_dati_list_from_json(char *str, size_t len, struct discord_channel_embed_image_dati ***p);
-extern size_t discord_channel_embed_image_dati_list_to_json_v(char *str, size_t len, void *p);
-extern size_t discord_channel_embed_image_dati_list_to_json(char *str, size_t len, struct discord_channel_embed_image_dati **p);
+extern void discord_channel_embed_image_cleanup_v(void *p);
+extern void discord_channel_embed_image_cleanup(struct discord_channel_embed_image *p);
+extern void discord_channel_embed_image_init_v(void *p);
+extern void discord_channel_embed_image_init(struct discord_channel_embed_image *p);
+extern struct discord_channel_embed_image * discord_channel_embed_image_alloc();
+extern void discord_channel_embed_image_free_v(void *p);
+extern void discord_channel_embed_image_free(struct discord_channel_embed_image *p);
+extern void discord_channel_embed_image_from_json_v(char *json, size_t len, void *p);
+extern void discord_channel_embed_image_from_json(char *json, size_t len, struct discord_channel_embed_image *p);
+extern size_t discord_channel_embed_image_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_channel_embed_image_to_json(char *json, size_t len, struct discord_channel_embed_image *p);
+extern size_t discord_channel_embed_image_to_query_v(char *json, size_t len, void *p);
+extern size_t discord_channel_embed_image_to_query(char *json, size_t len, struct discord_channel_embed_image *p);
+extern void discord_channel_embed_image_list_free_v(void **p);
+extern void discord_channel_embed_image_list_free(struct discord_channel_embed_image **p);
+extern void discord_channel_embed_image_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_channel_embed_image_list_from_json(char *str, size_t len, struct discord_channel_embed_image ***p);
+extern size_t discord_channel_embed_image_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_channel_embed_image_list_to_json(char *str, size_t len, struct discord_channel_embed_image **p);
 
 /* Title: Embed Provider Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-provider-structure */
-/* This is defined at specs/channel.objects.json:131:22 */
-struct discord_channel_embed_provider_dati {
-  /* specs/channel.objects.json:133:20
+/* This is defined at specs/channel.objects.json:153:22 */
+struct discord_channel_embed_provider {
+  /* specs/channel.objects.json:155:20
      '{ "name": "name", "type":{"base":"char", "dec":"[EMBED_AUTHOR_NAME_LEN]"}, "inject_if_not":""}'
   */
   char name[EMBED_AUTHOR_NAME_LEN];
 
-  /* specs/channel.objects.json:134:20
+  /* specs/channel.objects.json:156:20
      '{ "name": "url", "type":{"base":"char", "dec":"[MAX_URL_LEN]"}, "inject_if_not":""}'
   */
   char url[MAX_URL_LEN];
@@ -651,46 +651,46 @@ struct discord_channel_embed_provider_dati {
     void *record_null[2];
   } __M; // metadata
 };
-extern void discord_channel_embed_provider_dati_cleanup_v(void *p);
-extern void discord_channel_embed_provider_dati_cleanup(struct discord_channel_embed_provider_dati *p);
-extern void discord_channel_embed_provider_dati_init_v(void *p);
-extern void discord_channel_embed_provider_dati_init(struct discord_channel_embed_provider_dati *p);
-extern struct discord_channel_embed_provider_dati * discord_channel_embed_provider_dati_alloc();
-extern void discord_channel_embed_provider_dati_free_v(void *p);
-extern void discord_channel_embed_provider_dati_free(struct discord_channel_embed_provider_dati *p);
-extern void discord_channel_embed_provider_dati_from_json_v(char *json, size_t len, void *p);
-extern void discord_channel_embed_provider_dati_from_json(char *json, size_t len, struct discord_channel_embed_provider_dati *p);
-extern size_t discord_channel_embed_provider_dati_to_json_v(char *json, size_t len, void *p);
-extern size_t discord_channel_embed_provider_dati_to_json(char *json, size_t len, struct discord_channel_embed_provider_dati *p);
-extern size_t discord_channel_embed_provider_dati_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_channel_embed_provider_dati_to_query(char *json, size_t len, struct discord_channel_embed_provider_dati *p);
-extern void discord_channel_embed_provider_dati_list_free_v(void **p);
-extern void discord_channel_embed_provider_dati_list_free(struct discord_channel_embed_provider_dati **p);
-extern void discord_channel_embed_provider_dati_list_from_json_v(char *str, size_t len, void *p);
-extern void discord_channel_embed_provider_dati_list_from_json(char *str, size_t len, struct discord_channel_embed_provider_dati ***p);
-extern size_t discord_channel_embed_provider_dati_list_to_json_v(char *str, size_t len, void *p);
-extern size_t discord_channel_embed_provider_dati_list_to_json(char *str, size_t len, struct discord_channel_embed_provider_dati **p);
+extern void discord_channel_embed_provider_cleanup_v(void *p);
+extern void discord_channel_embed_provider_cleanup(struct discord_channel_embed_provider *p);
+extern void discord_channel_embed_provider_init_v(void *p);
+extern void discord_channel_embed_provider_init(struct discord_channel_embed_provider *p);
+extern struct discord_channel_embed_provider * discord_channel_embed_provider_alloc();
+extern void discord_channel_embed_provider_free_v(void *p);
+extern void discord_channel_embed_provider_free(struct discord_channel_embed_provider *p);
+extern void discord_channel_embed_provider_from_json_v(char *json, size_t len, void *p);
+extern void discord_channel_embed_provider_from_json(char *json, size_t len, struct discord_channel_embed_provider *p);
+extern size_t discord_channel_embed_provider_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_channel_embed_provider_to_json(char *json, size_t len, struct discord_channel_embed_provider *p);
+extern size_t discord_channel_embed_provider_to_query_v(char *json, size_t len, void *p);
+extern size_t discord_channel_embed_provider_to_query(char *json, size_t len, struct discord_channel_embed_provider *p);
+extern void discord_channel_embed_provider_list_free_v(void **p);
+extern void discord_channel_embed_provider_list_free(struct discord_channel_embed_provider **p);
+extern void discord_channel_embed_provider_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_channel_embed_provider_list_from_json(char *str, size_t len, struct discord_channel_embed_provider ***p);
+extern size_t discord_channel_embed_provider_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_channel_embed_provider_list_to_json(char *str, size_t len, struct discord_channel_embed_provider **p);
 
 /* Title: Embed Author Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-author-structure */
-/* This is defined at specs/channel.objects.json:141:22 */
-struct discord_channel_embed_author_dati {
-  /* specs/channel.objects.json:143:20
+/* This is defined at specs/channel.objects.json:163:22 */
+struct discord_channel_embed_author {
+  /* specs/channel.objects.json:165:20
      '{ "name": "name", "type":{ "base":"char", "dec":"[EMBED_AUTHOR_NAME_LEN]" }, "inject_if_not":""}'
   */
   char name[EMBED_AUTHOR_NAME_LEN];
 
-  /* specs/channel.objects.json:144:20
+  /* specs/channel.objects.json:166:20
      '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
   char url[MAX_URL_LEN];
 
-  /* specs/channel.objects.json:145:20
+  /* specs/channel.objects.json:167:20
      '{ "name": "icon_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
   char icon_url[MAX_URL_LEN];
 
-  /* specs/channel.objects.json:146:20
+  /* specs/channel.objects.json:168:20
      '{ "name": "proxy_icon_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
   */
   char proxy_icon_url[MAX_URL_LEN];
@@ -708,42 +708,42 @@ struct discord_channel_embed_author_dati {
     void *record_null[4];
   } __M; // metadata
 };
-extern void discord_channel_embed_author_dati_cleanup_v(void *p);
-extern void discord_channel_embed_author_dati_cleanup(struct discord_channel_embed_author_dati *p);
-extern void discord_channel_embed_author_dati_init_v(void *p);
-extern void discord_channel_embed_author_dati_init(struct discord_channel_embed_author_dati *p);
-extern struct discord_channel_embed_author_dati * discord_channel_embed_author_dati_alloc();
-extern void discord_channel_embed_author_dati_free_v(void *p);
-extern void discord_channel_embed_author_dati_free(struct discord_channel_embed_author_dati *p);
-extern void discord_channel_embed_author_dati_from_json_v(char *json, size_t len, void *p);
-extern void discord_channel_embed_author_dati_from_json(char *json, size_t len, struct discord_channel_embed_author_dati *p);
-extern size_t discord_channel_embed_author_dati_to_json_v(char *json, size_t len, void *p);
-extern size_t discord_channel_embed_author_dati_to_json(char *json, size_t len, struct discord_channel_embed_author_dati *p);
-extern size_t discord_channel_embed_author_dati_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_channel_embed_author_dati_to_query(char *json, size_t len, struct discord_channel_embed_author_dati *p);
-extern void discord_channel_embed_author_dati_list_free_v(void **p);
-extern void discord_channel_embed_author_dati_list_free(struct discord_channel_embed_author_dati **p);
-extern void discord_channel_embed_author_dati_list_from_json_v(char *str, size_t len, void *p);
-extern void discord_channel_embed_author_dati_list_from_json(char *str, size_t len, struct discord_channel_embed_author_dati ***p);
-extern size_t discord_channel_embed_author_dati_list_to_json_v(char *str, size_t len, void *p);
-extern size_t discord_channel_embed_author_dati_list_to_json(char *str, size_t len, struct discord_channel_embed_author_dati **p);
+extern void discord_channel_embed_author_cleanup_v(void *p);
+extern void discord_channel_embed_author_cleanup(struct discord_channel_embed_author *p);
+extern void discord_channel_embed_author_init_v(void *p);
+extern void discord_channel_embed_author_init(struct discord_channel_embed_author *p);
+extern struct discord_channel_embed_author * discord_channel_embed_author_alloc();
+extern void discord_channel_embed_author_free_v(void *p);
+extern void discord_channel_embed_author_free(struct discord_channel_embed_author *p);
+extern void discord_channel_embed_author_from_json_v(char *json, size_t len, void *p);
+extern void discord_channel_embed_author_from_json(char *json, size_t len, struct discord_channel_embed_author *p);
+extern size_t discord_channel_embed_author_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_channel_embed_author_to_json(char *json, size_t len, struct discord_channel_embed_author *p);
+extern size_t discord_channel_embed_author_to_query_v(char *json, size_t len, void *p);
+extern size_t discord_channel_embed_author_to_query(char *json, size_t len, struct discord_channel_embed_author *p);
+extern void discord_channel_embed_author_list_free_v(void **p);
+extern void discord_channel_embed_author_list_free(struct discord_channel_embed_author **p);
+extern void discord_channel_embed_author_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_channel_embed_author_list_from_json(char *str, size_t len, struct discord_channel_embed_author ***p);
+extern size_t discord_channel_embed_author_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_channel_embed_author_list_to_json(char *str, size_t len, struct discord_channel_embed_author **p);
 
 /* Title: Embed Footer Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-footer-structure */
-/* This is defined at specs/channel.objects.json:153:22 */
-struct discord_channel_embed_footer_dati {
-  /* specs/channel.objects.json:155:20
+/* This is defined at specs/channel.objects.json:175:22 */
+struct discord_channel_embed_footer {
+  /* specs/channel.objects.json:177:20
      '{ "name": "text", "type": {"base":"char", "dec":"[EMBED_FOOTER_TEXT_LEN]"}, "inject_if_not":""}'
   */
   char text[EMBED_FOOTER_TEXT_LEN];
 
-  /* specs/channel.objects.json:156:20
+  /* specs/channel.objects.json:178:20
      '{ "name": "icon_url", "type": {"base":"char", "dec":"[MAX_URL_LEN]" }, 
           "option":true, "inject_if_not":""}'
   */
   char icon_url[MAX_URL_LEN];
 
-  /* specs/channel.objects.json:158:20
+  /* specs/channel.objects.json:180:20
      '{ "name": "proxy_icon_url", "type": {"base":"char", "dec":"[MAX_URL_LEN]"}, 
           "option":true, "inject_if_not":""}'
   */
@@ -762,41 +762,41 @@ struct discord_channel_embed_footer_dati {
     void *record_null[3];
   } __M; // metadata
 };
-extern void discord_channel_embed_footer_dati_cleanup_v(void *p);
-extern void discord_channel_embed_footer_dati_cleanup(struct discord_channel_embed_footer_dati *p);
-extern void discord_channel_embed_footer_dati_init_v(void *p);
-extern void discord_channel_embed_footer_dati_init(struct discord_channel_embed_footer_dati *p);
-extern struct discord_channel_embed_footer_dati * discord_channel_embed_footer_dati_alloc();
-extern void discord_channel_embed_footer_dati_free_v(void *p);
-extern void discord_channel_embed_footer_dati_free(struct discord_channel_embed_footer_dati *p);
-extern void discord_channel_embed_footer_dati_from_json_v(char *json, size_t len, void *p);
-extern void discord_channel_embed_footer_dati_from_json(char *json, size_t len, struct discord_channel_embed_footer_dati *p);
-extern size_t discord_channel_embed_footer_dati_to_json_v(char *json, size_t len, void *p);
-extern size_t discord_channel_embed_footer_dati_to_json(char *json, size_t len, struct discord_channel_embed_footer_dati *p);
-extern size_t discord_channel_embed_footer_dati_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_channel_embed_footer_dati_to_query(char *json, size_t len, struct discord_channel_embed_footer_dati *p);
-extern void discord_channel_embed_footer_dati_list_free_v(void **p);
-extern void discord_channel_embed_footer_dati_list_free(struct discord_channel_embed_footer_dati **p);
-extern void discord_channel_embed_footer_dati_list_from_json_v(char *str, size_t len, void *p);
-extern void discord_channel_embed_footer_dati_list_from_json(char *str, size_t len, struct discord_channel_embed_footer_dati ***p);
-extern size_t discord_channel_embed_footer_dati_list_to_json_v(char *str, size_t len, void *p);
-extern size_t discord_channel_embed_footer_dati_list_to_json(char *str, size_t len, struct discord_channel_embed_footer_dati **p);
+extern void discord_channel_embed_footer_cleanup_v(void *p);
+extern void discord_channel_embed_footer_cleanup(struct discord_channel_embed_footer *p);
+extern void discord_channel_embed_footer_init_v(void *p);
+extern void discord_channel_embed_footer_init(struct discord_channel_embed_footer *p);
+extern struct discord_channel_embed_footer * discord_channel_embed_footer_alloc();
+extern void discord_channel_embed_footer_free_v(void *p);
+extern void discord_channel_embed_footer_free(struct discord_channel_embed_footer *p);
+extern void discord_channel_embed_footer_from_json_v(char *json, size_t len, void *p);
+extern void discord_channel_embed_footer_from_json(char *json, size_t len, struct discord_channel_embed_footer *p);
+extern size_t discord_channel_embed_footer_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_channel_embed_footer_to_json(char *json, size_t len, struct discord_channel_embed_footer *p);
+extern size_t discord_channel_embed_footer_to_query_v(char *json, size_t len, void *p);
+extern size_t discord_channel_embed_footer_to_query(char *json, size_t len, struct discord_channel_embed_footer *p);
+extern void discord_channel_embed_footer_list_free_v(void **p);
+extern void discord_channel_embed_footer_list_free(struct discord_channel_embed_footer **p);
+extern void discord_channel_embed_footer_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_channel_embed_footer_list_from_json(char *str, size_t len, struct discord_channel_embed_footer ***p);
+extern size_t discord_channel_embed_footer_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_channel_embed_footer_list_to_json(char *str, size_t len, struct discord_channel_embed_footer **p);
 
 /* Title: Embed Field Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-field-structure */
-/* This is defined at specs/channel.objects.json:166:22 */
-struct discord_channel_embed_field_dati {
-  /* specs/channel.objects.json:168:20
+/* This is defined at specs/channel.objects.json:188:22 */
+struct discord_channel_embed_field {
+  /* specs/channel.objects.json:190:20
      '{ "name": "name", "type": { "base":"char", "dec":"[EMBED_FIELD_NAME_LEN]" }, "inject_if_not":""}'
   */
   char name[EMBED_FIELD_NAME_LEN];
 
-  /* specs/channel.objects.json:169:20
+  /* specs/channel.objects.json:191:20
      '{ "name": "value", "type": { "base":"char", "dec":"[EMBED_FIELD_VALUE_LEN]" }, "inject_if_not":""}'
   */
   char value[EMBED_FIELD_VALUE_LEN];
 
-  /* specs/channel.objects.json:170:20
+  /* specs/channel.objects.json:192:20
      '{ "name": "Inline", "json_key":"inline", "type": { "base":"bool" }, "option":true}'
   */
   bool Inline;
@@ -814,22 +814,22 @@ struct discord_channel_embed_field_dati {
     void *record_null[3];
   } __M; // metadata
 };
-extern void discord_channel_embed_field_dati_cleanup_v(void *p);
-extern void discord_channel_embed_field_dati_cleanup(struct discord_channel_embed_field_dati *p);
-extern void discord_channel_embed_field_dati_init_v(void *p);
-extern void discord_channel_embed_field_dati_init(struct discord_channel_embed_field_dati *p);
-extern struct discord_channel_embed_field_dati * discord_channel_embed_field_dati_alloc();
-extern void discord_channel_embed_field_dati_free_v(void *p);
-extern void discord_channel_embed_field_dati_free(struct discord_channel_embed_field_dati *p);
-extern void discord_channel_embed_field_dati_from_json_v(char *json, size_t len, void *p);
-extern void discord_channel_embed_field_dati_from_json(char *json, size_t len, struct discord_channel_embed_field_dati *p);
-extern size_t discord_channel_embed_field_dati_to_json_v(char *json, size_t len, void *p);
-extern size_t discord_channel_embed_field_dati_to_json(char *json, size_t len, struct discord_channel_embed_field_dati *p);
-extern size_t discord_channel_embed_field_dati_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_channel_embed_field_dati_to_query(char *json, size_t len, struct discord_channel_embed_field_dati *p);
-extern void discord_channel_embed_field_dati_list_free_v(void **p);
-extern void discord_channel_embed_field_dati_list_free(struct discord_channel_embed_field_dati **p);
-extern void discord_channel_embed_field_dati_list_from_json_v(char *str, size_t len, void *p);
-extern void discord_channel_embed_field_dati_list_from_json(char *str, size_t len, struct discord_channel_embed_field_dati ***p);
-extern size_t discord_channel_embed_field_dati_list_to_json_v(char *str, size_t len, void *p);
-extern size_t discord_channel_embed_field_dati_list_to_json(char *str, size_t len, struct discord_channel_embed_field_dati **p);
+extern void discord_channel_embed_field_cleanup_v(void *p);
+extern void discord_channel_embed_field_cleanup(struct discord_channel_embed_field *p);
+extern void discord_channel_embed_field_init_v(void *p);
+extern void discord_channel_embed_field_init(struct discord_channel_embed_field *p);
+extern struct discord_channel_embed_field * discord_channel_embed_field_alloc();
+extern void discord_channel_embed_field_free_v(void *p);
+extern void discord_channel_embed_field_free(struct discord_channel_embed_field *p);
+extern void discord_channel_embed_field_from_json_v(char *json, size_t len, void *p);
+extern void discord_channel_embed_field_from_json(char *json, size_t len, struct discord_channel_embed_field *p);
+extern size_t discord_channel_embed_field_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_channel_embed_field_to_json(char *json, size_t len, struct discord_channel_embed_field *p);
+extern size_t discord_channel_embed_field_to_query_v(char *json, size_t len, void *p);
+extern size_t discord_channel_embed_field_to_query(char *json, size_t len, struct discord_channel_embed_field *p);
+extern void discord_channel_embed_field_list_free_v(void **p);
+extern void discord_channel_embed_field_list_free(struct discord_channel_embed_field **p);
+extern void discord_channel_embed_field_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_channel_embed_field_list_from_json(char *str, size_t len, struct discord_channel_embed_field ***p);
+extern size_t discord_channel_embed_field_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_channel_embed_field_list_to_json(char *str, size_t len, struct discord_channel_embed_field **p);

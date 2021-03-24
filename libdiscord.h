@@ -6,7 +6,7 @@
 #include "user-agent.h"
 
 
-struct discord_client; // forward declaration
+struct discord; // forward declaration
 
 typedef uint64_t u64_unix_ms_t;
 typedef uint64_t u64_snowflake_t;
@@ -52,24 +52,24 @@ https://discord.com/developers/docs/reference#snowflakes */
 
 
 /* IDLE CALLBACK (runs on every iteration, no trigger required) */
-typedef void (idle_cb)(struct discord_client *client, const struct discord_user_dati *me);
+typedef void (idle_cb)(struct discord *client, const struct discord_user *me);
 
 /* MESSAGE EVENTS CALLBACKS */
 typedef void (message_cb)(
-    struct discord_client *client, const struct discord_user_dati *me, 
-    const struct discord_channel_message_dati *message);
+    struct discord *client, const struct discord_user *me, 
+    const struct discord_message *message);
 typedef void (sb_message_cb)(
-    struct discord_client *client, const struct discord_user_dati *me,
+    struct discord *client, const struct discord_user *me,
     struct sized_buffer sb_me,
-    const struct discord_channel_message_dati *message,
+    const struct discord_message *message,
     struct sized_buffer sb_message);
 typedef void (message_delete_cb)(
-    struct discord_client *client, const struct discord_user_dati *me, 
+    struct discord *client, const struct discord_user *me, 
     const u64_snowflake_t id, 
     const u64_snowflake_t channel_id, 
     const u64_snowflake_t guild_id);
 typedef void (message_delete_bulk_cb)(
-    struct discord_client *client, const struct discord_user_dati *me, 
+    struct discord *client, const struct discord_user *me, 
     const size_t nids, 
     const u64_snowflake_t ids[], 
     const u64_snowflake_t channel_id, 
@@ -77,39 +77,39 @@ typedef void (message_delete_bulk_cb)(
 
 /* MESSAGE REACTION EVENTS CALLBACKS */
 typedef void (reaction_add_cb)(
-    struct discord_client *client, const struct discord_user_dati *me, 
+    struct discord *client, const struct discord_user *me, 
     const u64_snowflake_t channel_id, 
     const u64_snowflake_t message_id, 
     const u64_snowflake_t guild_id, 
-    const struct discord_guild_member_dati *member, 
-    const struct discord_emoji_dati *emoji);
+    const struct discord_guild_member *member, 
+    const struct discord_emoji *emoji);
 typedef void (reaction_remove_cb)(
-    struct discord_client *client, const struct discord_user_dati *me, 
+    struct discord *client, const struct discord_user *me, 
     const u64_snowflake_t channel_id, 
     const u64_snowflake_t message_id, 
     const u64_snowflake_t guild_id, 
-    const struct discord_emoji_dati *emoji);
+    const struct discord_emoji *emoji);
 typedef void (reaction_remove_all_cb)(
-    struct discord_client *client, const struct discord_user_dati *me, 
+    struct discord *client, const struct discord_user *me, 
     const u64_snowflake_t channel_id, 
     const u64_snowflake_t message_id, 
     const u64_snowflake_t guild_id);
 typedef void (reaction_remove_emoji_cb)(
-    struct discord_client *client, const struct discord_user_dati *me, 
+    struct discord *client, const struct discord_user *me, 
     const u64_snowflake_t channel_id, 
     const u64_snowflake_t message_id, 
     const u64_snowflake_t guild_id,
-    const struct discord_emoji_dati *emoji);
+    const struct discord_emoji *emoji);
 
 /* GUILD MEMBER EVENTS CALLBACKS */
 typedef void (guild_member_cb)(
-    struct discord_client *client, const struct discord_user_dati *me, 
+    struct discord *client, const struct discord_user *me, 
     const u64_snowflake_t guild_id, 
-    const struct discord_guild_member_dati *member);
+    const struct discord_guild_member *member);
 typedef void (guild_member_remove_cb)(
-    struct discord_client *client, const struct discord_user_dati *me, 
+    struct discord *client, const struct discord_user *me, 
     const u64_snowflake_t guild_id, 
-    const struct discord_user_dati *user);
+    const struct discord_user *user);
 
 struct discord_session {
   char url[MAX_URL_LEN];
@@ -141,9 +141,9 @@ struct discord_channel_create_message_params {
   char *nonce;
   bool tts;
   // parameters for application/json
-  struct discord_channel_embed_dati *embed;
-  struct discord_channel_allowed_mentions_dati *allowed_mentions;
-  struct discord_channel_message_reference_dati *message_reference;
+  struct discord_channel_embed *embed;
+  struct discord_channel_allowed_mentions *allowed_mentions;
+  struct discord_message_reference *message_reference;
   // parameters for multipart/form-data
   struct { // FILE STRUCT @todo better explanation
     char *name; //if only name is set, will search in working directory
@@ -155,9 +155,9 @@ struct discord_channel_create_message_params {
 
 struct discord_channel_edit_message_params {
   char *content;
-  struct discord_channel_embed_dati *embed; //must be initialized
-  enum discord_channel_message_flags_code *flags;
-  struct discord_channel_allowed_mentions_dati *allowed_mentions; //must be initialized
+  struct discord_channel_embed *embed; //must be initialized
+  enum discord_message_flags_code *flags;
+  struct discord_channel_allowed_mentions *allowed_mentions; //must be initialized
 };
 
 struct discord_guild_list_guild_members_params {
@@ -191,36 +191,36 @@ enum dispatch_code {
 void discord_global_init();
 void discord_global_cleanup();
 
-struct discord_client* discord_init(const char token[]);
-struct discord_client* discord_config_init(const char config_file[]);
-void discord_cleanup(struct discord_client *client);
+struct discord* discord_init(const char token[]);
+struct discord* discord_config_init(const char config_file[]);
+void discord_cleanup(struct discord *client);
 
-void discord_add_intents(struct discord_client *client, int intent_code);
-void discord_set_prefix(struct discord_client *client, char *prefix);
-void discord_setcb_command(struct discord_client *client, char *command, message_cb *user_cb);
-void discord_setcb(struct discord_client *client, enum dispatch_code opt, ...);
-void discord_run(struct discord_client *client);
+void discord_add_intents(struct discord *client, int intent_code);
+void discord_set_prefix(struct discord *client, char *prefix);
+void discord_setcb_command(struct discord *client, char *command, message_cb *user_cb);
+void discord_setcb(struct discord *client, enum dispatch_code opt, ...);
+void discord_run(struct discord *client);
 
-void* discord_set_data(struct discord_client *client, void *data);
-void* discord_get_data(struct discord_client *client);
+void* discord_set_data(struct discord *client, void *data);
+void* discord_get_data(struct discord *client);
 
-void discord_replace_presence(struct discord_client *client, struct discord_gateway_identify_status_update_dati *presence);
-void discord_set_presence(struct discord_client *client, struct discord_gateway_identify_status_update_activity_dati *activity, char status[], bool afk);
-enum ws_status discord_gateway_status(struct discord_client *client);
+void discord_replace_presence(struct discord *client, struct discord_gateway_identify_status_update *presence);
+void discord_set_presence(struct discord *client, struct discord_gateway_identify_status_update_activity *activity, char status[], bool afk);
+enum ws_status discord_gateway_status(struct discord *client);
 
 
 // EMBED MISC FUNCTIONS
-void discord_embed_set_thumbnail(struct discord_channel_embed_dati *embed, char url[], char proxy_url[], int height, int width);
-void discord_embed_set_image(struct discord_channel_embed_dati *embed, char url[], char proxy_url[], int height, int width);
-void discord_embed_set_video(struct discord_channel_embed_dati *embed, char url[], char proxy_url[], int height, int width);
-void discord_embed_set_footer(struct discord_channel_embed_dati *embed, char text[], char icon_url[], char proxy_icon_url[]);
-void discord_embed_set_provider(struct discord_channel_embed_dati *embed, char name[], char url[]);
-void discord_embed_set_author(struct discord_channel_embed_dati *embed, char name[], char url[], char icon_url[], char proxy_icon_url[]);
-void discord_embed_add_field(struct discord_channel_embed_dati *embed, char name[], char value[], bool Inline);
+void discord_embed_set_thumbnail(struct discord_channel_embed *embed, char url[], char proxy_url[], int height, int width);
+void discord_embed_set_image(struct discord_channel_embed *embed, char url[], char proxy_url[], int height, int width);
+void discord_embed_set_video(struct discord_channel_embed *embed, char url[], char proxy_url[], int height, int width);
+void discord_embed_set_footer(struct discord_channel_embed *embed, char text[], char icon_url[], char proxy_icon_url[]);
+void discord_embed_set_provider(struct discord_channel_embed *embed, char name[], char url[]);
+void discord_embed_set_author(struct discord_channel_embed *embed, char name[], char url[], char icon_url[], char proxy_icon_url[]);
+void discord_embed_add_field(struct discord_channel_embed *embed, char name[], char value[], bool Inline);
 
 // CHANNEL OVERWRITE MISC FUNCTIONS
 void discord_overwrite_append(
-  NTL_T(struct discord_channel_overwrite_dati) *permission_overwrites, 
+  NTL_T(struct discord_channel_overwrite) *permission_overwrites, 
   u64_snowflake_t id, 
   int type, 
   enum discord_permissions_bitwise_flags allow, 
@@ -228,46 +228,46 @@ void discord_overwrite_append(
 
 
 // CHANNEL PUBLIC FUNCTIONS
-void discord_get_channel(struct discord_client *client, const u64_snowflake_t channel_id, struct discord_channel_dati *p_channel);
-void discord_delete_channel(struct discord_client *client, const u64_snowflake_t channel_id, struct discord_channel_dati *p_channel);
-void discord_add_pinned_channel_message(struct discord_client *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id);
-void discord_delete_pinned_channel_message(struct discord_client *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id);
-void discord_get_channel_messages(struct discord_client *client, const u64_snowflake_t channel_id, struct discord_channel_get_channel_messages_params *params, NTL_T(struct discord_channel_message_dati) *p_messages);
-void discord_delete_message(struct discord_client *client, u64_snowflake_t channel_id, u64_snowflake_t message_id);
-void discord_create_message(struct discord_client *client, const u64_snowflake_t channel_id, struct discord_channel_create_message_params *params, struct discord_channel_message_dati *p_message);
-void discord_edit_message(struct discord_client *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id, struct discord_channel_edit_message_params *params, struct discord_channel_message_dati *p_message);
-void discord_create_reaction(struct discord_client *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id, const u64_snowflake_t emoji_id, const char emoji_name[]);
-void discord_trigger_typing_indicator(struct discord_client *client, const u64_snowflake_t channel_id);
+void discord_get_channel(struct discord *client, const u64_snowflake_t channel_id, struct discord_channel *p_channel);
+void discord_delete_channel(struct discord *client, const u64_snowflake_t channel_id, struct discord_channel *p_channel);
+void discord_add_pinned_channel_message(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id);
+void discord_delete_pinned_channel_message(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id);
+void discord_get_channel_messages(struct discord *client, const u64_snowflake_t channel_id, struct discord_channel_get_channel_messages_params *params, NTL_T(struct discord_message) *p_messages);
+void discord_delete_message(struct discord *client, u64_snowflake_t channel_id, u64_snowflake_t message_id);
+void discord_create_message(struct discord *client, const u64_snowflake_t channel_id, struct discord_channel_create_message_params *params, struct discord_message *p_message);
+void discord_edit_message(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id, struct discord_channel_edit_message_params *params, struct discord_message *p_message);
+void discord_create_reaction(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id, const u64_snowflake_t emoji_id, const char emoji_name[]);
+void discord_trigger_typing_indicator(struct discord *client, const u64_snowflake_t channel_id);
 
 // EMOJI PUBLIC FUNCTIONS
-void discord_list_guild_emojis(struct discord_client *client, const u64_snowflake_t guild_id, NTL_T(struct discord_emoji_dati) *p_emojis);
+void discord_list_guild_emojis(struct discord *client, const u64_snowflake_t guild_id, NTL_T(struct discord_emoji) *p_emojis);
 
 // GUILD PUBLIC FUNCTIONS
-void discord_get_guild(struct discord_client *client, const u64_snowflake_t guild_id, struct discord_guild_dati *p_guild);
-void discord_get_channels(struct discord_client *client, const u64_snowflake_t guild_id, NTL_T(struct discord_channel_dati) *p_channels);
-void discord_create_channel(struct discord_client *client, const u64_snowflake_t guild_id, struct discord_guild_create_channel_params *params, struct discord_channel_dati *p_channel);
-void  discord_get_guild_member(struct discord_client *client, u64_snowflake_t guild_id, u64_snowflake_t user_id, struct discord_guild_member_dati *p_member);
-void discord_list_guild_members(struct discord_client *client, const u64_snowflake_t guild_id, struct discord_guild_list_guild_members_params *params, NTL_T(struct discord_guild_member_dati) *p_members);
-void discord_modify_guild_member(struct discord_client *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id, struct discord_guild_modify_guild_member_params *params, struct discord_guild_member_dati *p_member);
-void discord_remove_guild_member(struct discord_client *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id);
-void discord_get_guild_bans(struct discord_client *client, const u64_snowflake_t guild_id, NTL_T(struct discord_guild_ban_dati) *p_bans);
-void discord_get_guild_ban(struct discord_client *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id, struct discord_guild_ban_dati *p_ban);
-void discord_create_guild_ban(struct discord_client *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id, int delete_message_days, const char reason[]);
-void discord_remove_guild_ban(struct discord_client *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id, const char reason[]);
-void discord_get_guild_roles(struct discord_client *client, const u64_snowflake_t guild_id, NTL_T(struct discord_guild_role_dati) *p_roles);
-void discord_create_guild_role(struct discord_client *client, const u64_snowflake_t guild_id, struct discord_guild_create_guild_role_params *params, struct discord_guild_role_dati *p_role);
-void discord_delete_guild_role(struct discord_client *client, const u64_snowflake_t guild_id, const u64_snowflake_t role_id);
+void discord_get_guild(struct discord *client, const u64_snowflake_t guild_id, struct discord_guild *p_guild);
+void discord_get_channels(struct discord *client, const u64_snowflake_t guild_id, NTL_T(struct discord_channel) *p_channels);
+void discord_create_channel(struct discord *client, const u64_snowflake_t guild_id, struct discord_guild_create_channel_params *params, struct discord_channel *p_channel);
+void  discord_get_guild_member(struct discord *client, u64_snowflake_t guild_id, u64_snowflake_t user_id, struct discord_guild_member *p_member);
+void discord_list_guild_members(struct discord *client, const u64_snowflake_t guild_id, struct discord_guild_list_guild_members_params *params, NTL_T(struct discord_guild_member) *p_members);
+void discord_modify_guild_member(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id, struct discord_guild_modify_guild_member_params *params, struct discord_guild_member *p_member);
+void discord_remove_guild_member(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id);
+void discord_get_guild_bans(struct discord *client, const u64_snowflake_t guild_id, NTL_T(struct discord_guild_ban) *p_bans);
+void discord_get_guild_ban(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id, struct discord_guild_ban *p_ban);
+void discord_create_guild_ban(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id, int delete_message_days, const char reason[]);
+void discord_remove_guild_ban(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id, const char reason[]);
+void discord_get_guild_roles(struct discord *client, const u64_snowflake_t guild_id, NTL_T(struct discord_guild_role) *p_roles);
+void discord_create_guild_role(struct discord *client, const u64_snowflake_t guild_id, struct discord_guild_create_guild_role_params *params, struct discord_guild_role *p_role);
+void discord_delete_guild_role(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t role_id);
 
 // USER PUBLIC FUNCTIONS
-void discord_get_user(struct discord_client *client, const u64_snowflake_t user_id, struct discord_user_dati *p_user);
-void discord_get_current_user(struct discord_client *client, struct discord_user_dati *p_user);
-void sb_discord_get_current_user(struct discord_client *client, struct sized_buffer *p_sb_user);
-void discord_get_current_user_guilds(struct discord_client *client, NTL_T(struct discord_guild_dati) *p_guilds);
-void discord_leave_guild(struct discord_client *client, const u64_snowflake_t guild_id);
+void discord_get_user(struct discord *client, const u64_snowflake_t user_id, struct discord_user *p_user);
+void discord_get_current_user(struct discord *client, struct discord_user *p_user);
+void sb_discord_get_current_user(struct discord *client, struct sized_buffer *p_sb_user);
+void discord_get_current_user_guilds(struct discord *client, NTL_T(struct discord_guild) *p_guilds);
+void discord_leave_guild(struct discord *client, const u64_snowflake_t guild_id);
 
 // GATEWAY PUBLIC FUNCTIONS
-void discord_get_gateway(struct discord_client *client, struct discord_session *p_session);
-void discord_get_gateway_bot(struct discord_client *client, struct discord_session *p_session);
+void discord_get_gateway(struct discord *client, struct discord_session *p_session);
+void discord_get_gateway_bot(struct discord *client, struct discord_session *p_session);
 
 #include "user-defined.h"
 #include "./specs-code/all_fun.h"

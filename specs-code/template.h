@@ -4,59 +4,59 @@ https://discord.com/developers/docs/resources/template#template-object-template-
 */
 
 /* Title: Template Structure */
-/* This is defined at specs/template.json:9:22 */
-struct discord_Template_dati {
-  /* specs/template.json:12:20
+/* This is defined at specs/template.json:8:22 */
+struct discord_template {
+  /* specs/template.json:11:20
      '{ "name": "code", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"}'
   */
   char *code; // @todo find fixed size limit
 
-  /* specs/template.json:13:20
+  /* specs/template.json:12:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"}'
   */
   char *name; // @todo find fixed size limit
 
-  /* specs/template.json:14:20
+  /* specs/template.json:13:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment": "@todo find fixed size limit"}'
   */
   char *description; // @todo find fixed size limit
 
-  /* specs/template.json:15:20
+  /* specs/template.json:14:20
      '{ "name": "usage_count", "type":{ "base":"int"}}'
   */
   int usage_count;
 
-  /* specs/template.json:16:20
+  /* specs/template.json:15:20
      '{ "name": "creator_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
   u64_snowflake_t creator_id;
 
-  /* specs/template.json:17:20
-     '{ "name": "creator", "type":{ "base":"struct discord_user_dati", "dec":"*" }}'
+  /* specs/template.json:16:20
+     '{ "name": "creator", "type":{ "base":"struct discord_user", "dec":"*" }}'
   */
-  struct discord_user_dati *creator;
+  struct discord_user *creator;
 
-  /* specs/template.json:18:20
+  /* specs/template.json:17:20
      '{ "name": "created_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}'
   */
   u64_unix_ms_t created_at;
 
-  /* specs/template.json:19:20
+  /* specs/template.json:18:20
      '{ "name": "updated_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}'
   */
   u64_unix_ms_t updated_at;
 
-  /* specs/template.json:20:20
+  /* specs/template.json:19:20
      '{ "name": "source_guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
   u64_snowflake_t source_guild_id;
 
-  /* specs/template.json:21:20
-     '{ "name": "serialized_source_guild", "type":{ "base":"struct discord_guild_dati", "dec":"*" }}'
+  /* specs/template.json:20:20
+     '{ "name": "serialized_source_guild", "type":{ "base":"struct discord_guild", "dec":"*" }}'
   */
-  struct discord_guild_dati *serialized_source_guild;
+  struct discord_guild *serialized_source_guild;
 
-  /* specs/template.json:22:20
+  /* specs/template.json:21:20
      '{ "name": "is_dirty", "type":{ "base":"bool" }}'
   */
   bool is_dirty;
@@ -74,22 +74,22 @@ struct discord_Template_dati {
     void *record_null[11];
   } __M; // metadata
 };
-extern void discord_Template_dati_cleanup_v(void *p);
-extern void discord_Template_dati_cleanup(struct discord_Template_dati *p);
-extern void discord_Template_dati_init_v(void *p);
-extern void discord_Template_dati_init(struct discord_Template_dati *p);
-extern struct discord_Template_dati * discord_Template_dati_alloc();
-extern void discord_Template_dati_free_v(void *p);
-extern void discord_Template_dati_free(struct discord_Template_dati *p);
-extern void discord_Template_dati_from_json_v(char *json, size_t len, void *p);
-extern void discord_Template_dati_from_json(char *json, size_t len, struct discord_Template_dati *p);
-extern size_t discord_Template_dati_to_json_v(char *json, size_t len, void *p);
-extern size_t discord_Template_dati_to_json(char *json, size_t len, struct discord_Template_dati *p);
-extern size_t discord_Template_dati_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_Template_dati_to_query(char *json, size_t len, struct discord_Template_dati *p);
-extern void discord_Template_dati_list_free_v(void **p);
-extern void discord_Template_dati_list_free(struct discord_Template_dati **p);
-extern void discord_Template_dati_list_from_json_v(char *str, size_t len, void *p);
-extern void discord_Template_dati_list_from_json(char *str, size_t len, struct discord_Template_dati ***p);
-extern size_t discord_Template_dati_list_to_json_v(char *str, size_t len, void *p);
-extern size_t discord_Template_dati_list_to_json(char *str, size_t len, struct discord_Template_dati **p);
+extern void discord_template_cleanup_v(void *p);
+extern void discord_template_cleanup(struct discord_template *p);
+extern void discord_template_init_v(void *p);
+extern void discord_template_init(struct discord_template *p);
+extern struct discord_template * discord_template_alloc();
+extern void discord_template_free_v(void *p);
+extern void discord_template_free(struct discord_template *p);
+extern void discord_template_from_json_v(char *json, size_t len, void *p);
+extern void discord_template_from_json(char *json, size_t len, struct discord_template *p);
+extern size_t discord_template_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_template_to_json(char *json, size_t len, struct discord_template *p);
+extern size_t discord_template_to_query_v(char *json, size_t len, void *p);
+extern size_t discord_template_to_query(char *json, size_t len, struct discord_template *p);
+extern void discord_template_list_free_v(void **p);
+extern void discord_template_list_free(struct discord_template **p);
+extern void discord_template_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_template_list_from_json(char *str, size_t len, struct discord_template ***p);
+extern size_t discord_template_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_template_list_to_json(char *str, size_t len, struct discord_template **p);

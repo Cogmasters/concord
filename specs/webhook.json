@@ -5,25 +5,24 @@
   [
     {
       "title":"Webhook Types",
-      "namespace":["webhook", "types"],
-      "enum":"code",
+      "namespace":["webhook"],
+      "enum":"types",
       "items":
       [
         {"name": "INCOMING", "value":1 },
-	    {"name": "CHANNEL_FOLLOWER" }
+        {"name": "CHANNEL_FOLLOWER" }
       ]
     },	
     {
       "title":"Webhook Structure",
-      "namespace":["webhook"],
-      "struct":"dati",
+      "struct":"webhook",
       "fields":
       [
         { "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
-        { "name": "type", "type":{ "base":"int", "int_alias":"enum discord_webhook_types_code" }},
+        { "name": "type", "type":{ "base":"int", "int_alias":"enum discord_webhook_types" }},
         { "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
         { "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
-        { "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*" }},
+        { "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }},
         { "name": "name", "type":{ "base":"char", "dec":"[WEBHOOK_NAME_LEN]" }},
         { "name": "avatar", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"},
         { "name": "token", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"},

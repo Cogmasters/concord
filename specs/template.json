@@ -5,8 +5,7 @@
   [
     {
       "title":"Template Structure",
-      "namespace":["Template"],
-      "struct":"dati",
+      "struct":"template",
       "fields":
       [
         { "name": "code", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"},
@@ -14,11 +13,11 @@
         { "name": "description", "type":{ "base":"char", "dec":"*" }, "comment": "@todo find fixed size limit"},
         { "name": "usage_count", "type":{ "base":"int"}},
         { "name": "creator_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
-        { "name": "creator", "type":{ "base":"struct discord_user_dati", "dec":"*" }},
+        { "name": "creator", "type":{ "base":"struct discord_user", "dec":"*" }},
         { "name": "created_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }},
         { "name": "updated_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }},
         { "name": "source_guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
-        { "name": "serialized_source_guild", "type":{ "base":"struct discord_guild_dati", "dec":"*" }},
+        { "name": "serialized_source_guild", "type":{ "base":"struct discord_guild", "dec":"*" }},
         { "name": "is_dirty", "type":{ "base":"bool" }}
       ]
     }

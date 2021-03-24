@@ -4,29 +4,29 @@ https://discord.com/developers/docs/resources/channel#channel-object-channel-typ
 */
 
 
-enum discord_channel_types_code {
-  DISCORD_CHANNEL_TYPES_GUILD_TEXT = 0,
-  DISCORD_CHANNEL_TYPES_DM = 1,
-  DISCORD_CHANNEL_TYPES_GUILD_VOICE = 2,
-  DISCORD_CHANNEL_TYPES_GROUP_DM = 3,
-  DISCORD_CHANNEL_TYPES_GUILD_CATEGORY = 4,
-  DISCORD_CHANNEL_TYPES_GUILD_NEWS = 5,
-  DISCORD_CHANNEL_TYPES_GUILD_STORE = 6,
+enum discord_channel_types {
+  DISCORD_CHANNEL_GUILD_TEXT = 0,
+  DISCORD_CHANNEL_DM = 1,
+  DISCORD_CHANNEL_GUILD_VOICE = 2,
+  DISCORD_CHANNEL_GROUP_DM = 3,
+  DISCORD_CHANNEL_GUILD_CATEGORY = 4,
+  DISCORD_CHANNEL_GUILD_NEWS = 5,
+  DISCORD_CHANNEL_GUILD_STORE = 6,
 };
 
 /* Title: Channel Structure */
 /* https://discord.com/developers/docs/resources/channel#channel-object-channel-structure */
 /* This is defined at specs/channel.json:25:22 */
-struct discord_channel_dati {
+struct discord_channel {
   /* specs/channel.json:28:78
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"id"}'
   */
   u64_snowflake_t id;
 
-  /* specs/channel.json:29:88
-     '{"type":{"base":"int", "int_alias":"enum discord_channel_types_code"}, "name":"type"}'
+  /* specs/channel.json:29:83
+     '{"type":{"base":"int", "int_alias":"enum discord_channel_types"}, "name":"type"}'
   */
-  enum discord_channel_types_code type;
+  enum discord_channel_types type;
 
   /* specs/channel.json:30:78
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"guild_id",
@@ -40,11 +40,11 @@ struct discord_channel_dati {
   */
   int position;
 
-  /* specs/channel.json:34:88
-     '{"type":{"base":"struct discord_channel_overwrite_dati", "dec":"ntl"}, "name":"permission_overwrites",
+  /* specs/channel.json:34:83
+     '{"type":{"base":"struct discord_channel_overwrite", "dec":"ntl"}, "name":"permission_overwrites",
          "option":true, "inject_if_not":null }'
   */
-  struct discord_channel_overwrite_dati **permission_overwrites;
+  struct discord_channel_overwrite **permission_overwrites;
 
   /* specs/channel.json:36:66
      '{"type":{"base":"char", "dec":"[MAX_NAME_LEN]"}, "name":"name", 
@@ -85,11 +85,11 @@ struct discord_channel_dati {
   */
   int rate_limit_per_user;
 
-  /* specs/channel.json:47:75
-     '{"type":{"base":"struct discord_user_dati", "dec":"ntl"}, "name":"recipients",
+  /* specs/channel.json:47:70
+     '{"type":{"base":"struct discord_user", "dec":"ntl"}, "name":"recipients",
          "option":true, "inject_if_not":null}'
   */
-  struct discord_user_dati **recipients;
+  struct discord_user **recipients;
 
   /* specs/channel.json:49:68
      '{"type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}, "name":"icon",
@@ -121,10 +121,10 @@ struct discord_channel_dati {
   */
   u64_unix_ms_t last_pin_timestamp;
 
-  /* specs/channel.json:59:86
-     '{"type":{"base":"struct discord_channel_message_dati", "dec":"ntl"}, "name":"messages"}'
+  /* specs/channel.json:59:73
+     '{"type":{"base":"struct discord_message", "dec":"ntl"}, "name":"messages"}'
   */
-  struct discord_channel_message_dati **messages;
+  struct discord_message **messages;
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -139,22 +139,22 @@ struct discord_channel_dati {
     void *record_null[19];
   } __M; // metadata
 };
-extern void discord_channel_dati_cleanup_v(void *p);
-extern void discord_channel_dati_cleanup(struct discord_channel_dati *p);
-extern void discord_channel_dati_init_v(void *p);
-extern void discord_channel_dati_init(struct discord_channel_dati *p);
-extern struct discord_channel_dati * discord_channel_dati_alloc();
-extern void discord_channel_dati_free_v(void *p);
-extern void discord_channel_dati_free(struct discord_channel_dati *p);
-extern void discord_channel_dati_from_json_v(char *json, size_t len, void *p);
-extern void discord_channel_dati_from_json(char *json, size_t len, struct discord_channel_dati *p);
-extern size_t discord_channel_dati_to_json_v(char *json, size_t len, void *p);
-extern size_t discord_channel_dati_to_json(char *json, size_t len, struct discord_channel_dati *p);
-extern size_t discord_channel_dati_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_channel_dati_to_query(char *json, size_t len, struct discord_channel_dati *p);
-extern void discord_channel_dati_list_free_v(void **p);
-extern void discord_channel_dati_list_free(struct discord_channel_dati **p);
-extern void discord_channel_dati_list_from_json_v(char *str, size_t len, void *p);
-extern void discord_channel_dati_list_from_json(char *str, size_t len, struct discord_channel_dati ***p);
-extern size_t discord_channel_dati_list_to_json_v(char *str, size_t len, void *p);
-extern size_t discord_channel_dati_list_to_json(char *str, size_t len, struct discord_channel_dati **p);
+extern void discord_channel_cleanup_v(void *p);
+extern void discord_channel_cleanup(struct discord_channel *p);
+extern void discord_channel_init_v(void *p);
+extern void discord_channel_init(struct discord_channel *p);
+extern struct discord_channel * discord_channel_alloc();
+extern void discord_channel_free_v(void *p);
+extern void discord_channel_free(struct discord_channel *p);
+extern void discord_channel_from_json_v(char *json, size_t len, void *p);
+extern void discord_channel_from_json(char *json, size_t len, struct discord_channel *p);
+extern size_t discord_channel_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_channel_to_json(char *json, size_t len, struct discord_channel *p);
+extern size_t discord_channel_to_query_v(char *json, size_t len, void *p);
+extern size_t discord_channel_to_query(char *json, size_t len, struct discord_channel *p);
+extern void discord_channel_list_free_v(void **p);
+extern void discord_channel_list_free(struct discord_channel **p);
+extern void discord_channel_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_channel_list_from_json(char *str, size_t len, struct discord_channel ***p);
+extern size_t discord_channel_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_channel_list_to_json(char *str, size_t len, struct discord_channel **p);

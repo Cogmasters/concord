@@ -6,26 +6,26 @@
 /* Title: Audit Log Structure */
 /* https://discord.com/developers/docs/resources/audit-log#audit-log-object-audit-log-structure */
 /* This is defined at specs/audit_log.json:8:22 */
-struct discord_audit_log_dati {
+struct discord_audit_log {
   /* specs/audit_log.json:11:18
-     '{"name":"webhooks", "type": { "base":"struct discord_webhook_dati", "dec":"*" } }'
+     '{"name":"webhooks", "type": { "base":"struct discord_webhook", "dec":"*" } }'
   */
-  struct discord_webhook_dati *webhooks;
+  struct discord_webhook *webhooks;
 
   /* specs/audit_log.json:12:18
-     '{"name":"users", "type": { "base":"struct discord_user_dati", "dec":"*"}}'
+     '{"name":"users", "type": { "base":"struct discord_user", "dec":"*"}}'
   */
-  struct discord_user_dati *users;
+  struct discord_user *users;
 
   /* specs/audit_log.json:13:18
-     '{"name":"audit_log_entries", "type": { "base":"struct discord_audit_log_entry_dati", "dec":"*"}}'
+     '{"name":"audit_log_entries", "type": { "base":"struct discord_audit_log_entry", "dec":"*"}}'
   */
-  struct discord_audit_log_entry_dati *audit_log_entries;
+  struct discord_audit_log_entry *audit_log_entries;
 
   /* specs/audit_log.json:14:18
-     '{"name":"integrations", "type": { "base":"struct discord_guild_integration_dati", "dec":"ntl"}}'
+     '{"name":"integrations", "type": { "base":"struct discord_guild_integration", "dec":"ntl"}}'
   */
-  struct discord_guild_integration_dati **integrations;
+  struct discord_guild_integration **integrations;
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -40,77 +40,77 @@ struct discord_audit_log_dati {
     void *record_null[4];
   } __M; // metadata
 };
-extern void discord_audit_log_dati_cleanup_v(void *p);
-extern void discord_audit_log_dati_cleanup(struct discord_audit_log_dati *p);
-extern void discord_audit_log_dati_init_v(void *p);
-extern void discord_audit_log_dati_init(struct discord_audit_log_dati *p);
-extern struct discord_audit_log_dati * discord_audit_log_dati_alloc();
-extern void discord_audit_log_dati_free_v(void *p);
-extern void discord_audit_log_dati_free(struct discord_audit_log_dati *p);
-extern void discord_audit_log_dati_from_json_v(char *json, size_t len, void *p);
-extern void discord_audit_log_dati_from_json(char *json, size_t len, struct discord_audit_log_dati *p);
-extern size_t discord_audit_log_dati_to_json_v(char *json, size_t len, void *p);
-extern size_t discord_audit_log_dati_to_json(char *json, size_t len, struct discord_audit_log_dati *p);
-extern size_t discord_audit_log_dati_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_audit_log_dati_to_query(char *json, size_t len, struct discord_audit_log_dati *p);
-extern void discord_audit_log_dati_list_free_v(void **p);
-extern void discord_audit_log_dati_list_free(struct discord_audit_log_dati **p);
-extern void discord_audit_log_dati_list_from_json_v(char *str, size_t len, void *p);
-extern void discord_audit_log_dati_list_from_json(char *str, size_t len, struct discord_audit_log_dati ***p);
-extern size_t discord_audit_log_dati_list_to_json_v(char *str, size_t len, void *p);
-extern size_t discord_audit_log_dati_list_to_json(char *str, size_t len, struct discord_audit_log_dati **p);
+extern void discord_audit_log_cleanup_v(void *p);
+extern void discord_audit_log_cleanup(struct discord_audit_log *p);
+extern void discord_audit_log_init_v(void *p);
+extern void discord_audit_log_init(struct discord_audit_log *p);
+extern struct discord_audit_log * discord_audit_log_alloc();
+extern void discord_audit_log_free_v(void *p);
+extern void discord_audit_log_free(struct discord_audit_log *p);
+extern void discord_audit_log_from_json_v(char *json, size_t len, void *p);
+extern void discord_audit_log_from_json(char *json, size_t len, struct discord_audit_log *p);
+extern size_t discord_audit_log_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_audit_log_to_json(char *json, size_t len, struct discord_audit_log *p);
+extern size_t discord_audit_log_to_query_v(char *json, size_t len, void *p);
+extern size_t discord_audit_log_to_query(char *json, size_t len, struct discord_audit_log *p);
+extern void discord_audit_log_list_free_v(void **p);
+extern void discord_audit_log_list_free(struct discord_audit_log **p);
+extern void discord_audit_log_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_audit_log_list_from_json(char *str, size_t len, struct discord_audit_log ***p);
+extern size_t discord_audit_log_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_audit_log_list_to_json(char *str, size_t len, struct discord_audit_log **p);
 
 
-enum discord_audit_log_entry_events_code {
-  DISCORD_AUDIT_LOG_ENTRY_EVENTS_GUILD_UPDATE = 1,
-  DISCORD_AUDIT_LOG_ENTRY_EVENTS_CHANNEL_CREATE = 10,
-  DISCORD_AUDIT_LOG_ENTRY_EVENTS_CHANNEL_UPDATE = 11,
-  DISCORD_AUDIT_LOG_ENTRY_EVENTS_CHANNEL_DELETE = 12,
-  DISCORD_AUDIT_LOG_ENTRY_EVENTS_CHANNEL_OVERWRITE_CREATE = 13,
-  DISCORD_AUDIT_LOG_ENTRY_EVENTS_CHANNEL_OVERWRITE_UPDATE = 14,
-  DISCORD_AUDIT_LOG_ENTRY_EVENTS_CHANNEL_OVERWRITE_DELETE = 15,
-  DISCORD_AUDIT_LOG_ENTRY_EVENTS_MEMBER_KICK = 20,
-  DISCORD_AUDIT_LOG_ENTRY_EVENTS_MEMBER_PRUNE = 21,
-  DISCORD_AUDIT_LOG_ENTRY_EVENTS_MEMBER_BAN_ADD = 22,
-  DISCORD_AUDIT_LOG_ENTRY_EVENTS_MEMBER_BAN_REMOVE = 23,
-  DISCORD_AUDIT_LOG_ENTRY_EVENTS_MEMBER_UPDATE = 24,
-  DISCORD_AUDIT_LOG_ENTRY_EVENTS_MEMBER_ROLE_UPDATE = 25,
-  DISCORD_AUDIT_LOG_ENTRY_EVENTS_MEMBER_MOVE = 26,
-  DISCORD_AUDIT_LOG_ENTRY_EVENTS_MEMBER_DISCONNECT = 27,
-  DISCORD_AUDIT_LOG_ENTRY_EVENTS_BOT_ADD = 28,
-  DISCORD_AUDIT_LOG_ENTRY_EVENTS_ROLE_CREATE = 30,
-  DISCORD_AUDIT_LOG_ENTRY_EVENTS_ROLE_UPDATE = 31,
-  DISCORD_AUDIT_LOG_ENTRY_EVENTS_ROLE_DELETE = 32,
-  DISCORD_AUDIT_LOG_ENTRY_EVENTS_INVITE_CREATE = 40,
-  DISCORD_AUDIT_LOG_ENTRY_EVENTS_INVITE_DELETE = 42,
-  DISCORD_AUDIT_LOG_ENTRY_EVENTS_WEBHOOK_CREATE = 50,
-  DISCORD_AUDIT_LOG_ENTRY_EVENTS_WEBHOOK_UPDATE = 51,
-  DISCORD_AUDIT_LOG_ENTRY_EVENTS_WEBHOOK_DELETE = 52,
-  DISCORD_AUDIT_LOG_ENTRY_EVENTS_EMOJI_CREATE = 60,
-  DISCORD_AUDIT_LOG_ENTRY_EVENTS_EMOJI_UPDATE = 61,
-  DISCORD_AUDIT_LOG_ENTRY_EVENTS_EMOJI_DELETE = 62,
-  DISCORD_AUDIT_LOG_ENTRY_EVENTS_MESSAGE_DELETE = 72,
-  DISCORD_AUDIT_LOG_ENTRY_EVENTS_MESSAGE_BULK_DELETE = 73,
-  DISCORD_AUDIT_LOG_ENTRY_EVENTS_MESSAGE_PIN = 74,
-  DISCORD_AUDIT_LOG_ENTRY_EVENTS_MESSAGE_UNPIN = 75,
-  DISCORD_AUDIT_LOG_ENTRY_EVENTS_INTEGRATION_CREATE = 80,
-  DISCORD_AUDIT_LOG_ENTRY_EVENTS_INTEGRATION_UPDATE = 81,
-  DISCORD_AUDIT_LOG_ENTRY_EVENTS_INTEGRATION_DELETE = 82,
+enum discord_audit_log_events {
+  DISCORD_AUDIT_LOG_GUILD_UPDATE = 1,
+  DISCORD_AUDIT_LOG_CHANNEL_CREATE = 10,
+  DISCORD_AUDIT_LOG_CHANNEL_UPDATE = 11,
+  DISCORD_AUDIT_LOG_CHANNEL_DELETE = 12,
+  DISCORD_AUDIT_LOG_CHANNEL_OVERWRITE_CREATE = 13,
+  DISCORD_AUDIT_LOG_CHANNEL_OVERWRITE_UPDATE = 14,
+  DISCORD_AUDIT_LOG_CHANNEL_OVERWRITE_DELETE = 15,
+  DISCORD_AUDIT_LOG_MEMBER_KICK = 20,
+  DISCORD_AUDIT_LOG_MEMBER_PRUNE = 21,
+  DISCORD_AUDIT_LOG_MEMBER_BAN_ADD = 22,
+  DISCORD_AUDIT_LOG_MEMBER_BAN_REMOVE = 23,
+  DISCORD_AUDIT_LOG_MEMBER_UPDATE = 24,
+  DISCORD_AUDIT_LOG_MEMBER_ROLE_UPDATE = 25,
+  DISCORD_AUDIT_LOG_MEMBER_MOVE = 26,
+  DISCORD_AUDIT_LOG_MEMBER_DISCONNECT = 27,
+  DISCORD_AUDIT_LOG_BOT_ADD = 28,
+  DISCORD_AUDIT_LOG_ROLE_CREATE = 30,
+  DISCORD_AUDIT_LOG_ROLE_UPDATE = 31,
+  DISCORD_AUDIT_LOG_ROLE_DELETE = 32,
+  DISCORD_AUDIT_LOG_INVITE_CREATE = 40,
+  DISCORD_AUDIT_LOG_INVITE_DELETE = 42,
+  DISCORD_AUDIT_LOG_WEBHOOK_CREATE = 50,
+  DISCORD_AUDIT_LOG_WEBHOOK_UPDATE = 51,
+  DISCORD_AUDIT_LOG_WEBHOOK_DELETE = 52,
+  DISCORD_AUDIT_LOG_EMOJI_CREATE = 60,
+  DISCORD_AUDIT_LOG_EMOJI_UPDATE = 61,
+  DISCORD_AUDIT_LOG_EMOJI_DELETE = 62,
+  DISCORD_AUDIT_LOG_MESSAGE_DELETE = 72,
+  DISCORD_AUDIT_LOG_MESSAGE_BULK_DELETE = 73,
+  DISCORD_AUDIT_LOG_MESSAGE_PIN = 74,
+  DISCORD_AUDIT_LOG_MESSAGE_UNPIN = 75,
+  DISCORD_AUDIT_LOG_INTEGRATION_CREATE = 80,
+  DISCORD_AUDIT_LOG_INTEGRATION_UPDATE = 81,
+  DISCORD_AUDIT_LOG_INTEGRATION_DELETE = 82,
 };
 
 /* Title: Audit Log Entry Structure */
 /* https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-entry-structure */
 /* This is defined at specs/audit_log.json:64:22 */
-struct discord_audit_log_entry_dati {
+struct discord_audit_log_entry {
   /* specs/audit_log.json:67:18
      '{"name":"target_id", "type": {"base":"char", "dec":"*"}}'
   */
   char *target_id;
 
   /* specs/audit_log.json:68:18
-     '{"name":"changes", "type": {"base":"struct discord_audit_log_change_dati", "dec":"*"}}'
+     '{"name":"changes", "type": {"base":"struct discord_audit_log_change", "dec":"*"}}'
   */
-  struct discord_audit_log_change_dati *changes;
+  struct discord_audit_log_change *changes;
 
   /* specs/audit_log.json:69:18
      '{"name":"user_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
@@ -123,14 +123,14 @@ struct discord_audit_log_entry_dati {
   u64_snowflake_t id;
 
   /* specs/audit_log.json:71:18
-     '{"name":"action_type", "type": {"base":"int", "c_base":"enum discord_entry_events_code"}}'
+     '{"name":"action_type", "type": {"base":"int", "c_base":"enum discord_audit_log_events"}}'
   */
   int action_type;
 
   /* specs/audit_log.json:72:18
-     '{"name":"options", "type": {"base":"struct discord_audit_log_entry_optional_info_dati", "dec":"*"}}'
+     '{"name":"options", "type": {"base":"struct discord_audit_log_entry_optional_info", "dec":"*"}}'
   */
-  struct discord_audit_log_entry_optional_info_dati *options;
+  struct discord_audit_log_entry_optional_info *options;
 
   /* specs/audit_log.json:73:18
      '{"name":"reason", "type": {"base":"char", "dec":"[MAX_REASON_LEN]"}}'
@@ -150,30 +150,30 @@ struct discord_audit_log_entry_dati {
     void *record_null[7];
   } __M; // metadata
 };
-extern void discord_audit_log_entry_dati_cleanup_v(void *p);
-extern void discord_audit_log_entry_dati_cleanup(struct discord_audit_log_entry_dati *p);
-extern void discord_audit_log_entry_dati_init_v(void *p);
-extern void discord_audit_log_entry_dati_init(struct discord_audit_log_entry_dati *p);
-extern struct discord_audit_log_entry_dati * discord_audit_log_entry_dati_alloc();
-extern void discord_audit_log_entry_dati_free_v(void *p);
-extern void discord_audit_log_entry_dati_free(struct discord_audit_log_entry_dati *p);
-extern void discord_audit_log_entry_dati_from_json_v(char *json, size_t len, void *p);
-extern void discord_audit_log_entry_dati_from_json(char *json, size_t len, struct discord_audit_log_entry_dati *p);
-extern size_t discord_audit_log_entry_dati_to_json_v(char *json, size_t len, void *p);
-extern size_t discord_audit_log_entry_dati_to_json(char *json, size_t len, struct discord_audit_log_entry_dati *p);
-extern size_t discord_audit_log_entry_dati_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_audit_log_entry_dati_to_query(char *json, size_t len, struct discord_audit_log_entry_dati *p);
-extern void discord_audit_log_entry_dati_list_free_v(void **p);
-extern void discord_audit_log_entry_dati_list_free(struct discord_audit_log_entry_dati **p);
-extern void discord_audit_log_entry_dati_list_from_json_v(char *str, size_t len, void *p);
-extern void discord_audit_log_entry_dati_list_from_json(char *str, size_t len, struct discord_audit_log_entry_dati ***p);
-extern size_t discord_audit_log_entry_dati_list_to_json_v(char *str, size_t len, void *p);
-extern size_t discord_audit_log_entry_dati_list_to_json(char *str, size_t len, struct discord_audit_log_entry_dati **p);
+extern void discord_audit_log_entry_cleanup_v(void *p);
+extern void discord_audit_log_entry_cleanup(struct discord_audit_log_entry *p);
+extern void discord_audit_log_entry_init_v(void *p);
+extern void discord_audit_log_entry_init(struct discord_audit_log_entry *p);
+extern struct discord_audit_log_entry * discord_audit_log_entry_alloc();
+extern void discord_audit_log_entry_free_v(void *p);
+extern void discord_audit_log_entry_free(struct discord_audit_log_entry *p);
+extern void discord_audit_log_entry_from_json_v(char *json, size_t len, void *p);
+extern void discord_audit_log_entry_from_json(char *json, size_t len, struct discord_audit_log_entry *p);
+extern size_t discord_audit_log_entry_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_audit_log_entry_to_json(char *json, size_t len, struct discord_audit_log_entry *p);
+extern size_t discord_audit_log_entry_to_query_v(char *json, size_t len, void *p);
+extern size_t discord_audit_log_entry_to_query(char *json, size_t len, struct discord_audit_log_entry *p);
+extern void discord_audit_log_entry_list_free_v(void **p);
+extern void discord_audit_log_entry_list_free(struct discord_audit_log_entry **p);
+extern void discord_audit_log_entry_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_audit_log_entry_list_from_json(char *str, size_t len, struct discord_audit_log_entry ***p);
+extern size_t discord_audit_log_entry_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_audit_log_entry_list_to_json(char *str, size_t len, struct discord_audit_log_entry **p);
 
 /* Title: Optional Audit Entry Info Structure */
 /* https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-optional-audit-entry-info */
 /* This is defined at specs/audit_log.json:80:22 */
-struct discord_audit_log_entry_optional_info_dati {
+struct discord_audit_log_entry_optional_info {
   /* specs/audit_log.json:83:20
      '{ "name": "delete_member_days", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"}'
   */
@@ -227,30 +227,30 @@ struct discord_audit_log_entry_optional_info_dati {
     void *record_null[8];
   } __M; // metadata
 };
-extern void discord_audit_log_entry_optional_info_dati_cleanup_v(void *p);
-extern void discord_audit_log_entry_optional_info_dati_cleanup(struct discord_audit_log_entry_optional_info_dati *p);
-extern void discord_audit_log_entry_optional_info_dati_init_v(void *p);
-extern void discord_audit_log_entry_optional_info_dati_init(struct discord_audit_log_entry_optional_info_dati *p);
-extern struct discord_audit_log_entry_optional_info_dati * discord_audit_log_entry_optional_info_dati_alloc();
-extern void discord_audit_log_entry_optional_info_dati_free_v(void *p);
-extern void discord_audit_log_entry_optional_info_dati_free(struct discord_audit_log_entry_optional_info_dati *p);
-extern void discord_audit_log_entry_optional_info_dati_from_json_v(char *json, size_t len, void *p);
-extern void discord_audit_log_entry_optional_info_dati_from_json(char *json, size_t len, struct discord_audit_log_entry_optional_info_dati *p);
-extern size_t discord_audit_log_entry_optional_info_dati_to_json_v(char *json, size_t len, void *p);
-extern size_t discord_audit_log_entry_optional_info_dati_to_json(char *json, size_t len, struct discord_audit_log_entry_optional_info_dati *p);
-extern size_t discord_audit_log_entry_optional_info_dati_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_audit_log_entry_optional_info_dati_to_query(char *json, size_t len, struct discord_audit_log_entry_optional_info_dati *p);
-extern void discord_audit_log_entry_optional_info_dati_list_free_v(void **p);
-extern void discord_audit_log_entry_optional_info_dati_list_free(struct discord_audit_log_entry_optional_info_dati **p);
-extern void discord_audit_log_entry_optional_info_dati_list_from_json_v(char *str, size_t len, void *p);
-extern void discord_audit_log_entry_optional_info_dati_list_from_json(char *str, size_t len, struct discord_audit_log_entry_optional_info_dati ***p);
-extern size_t discord_audit_log_entry_optional_info_dati_list_to_json_v(char *str, size_t len, void *p);
-extern size_t discord_audit_log_entry_optional_info_dati_list_to_json(char *str, size_t len, struct discord_audit_log_entry_optional_info_dati **p);
+extern void discord_audit_log_entry_optional_info_cleanup_v(void *p);
+extern void discord_audit_log_entry_optional_info_cleanup(struct discord_audit_log_entry_optional_info *p);
+extern void discord_audit_log_entry_optional_info_init_v(void *p);
+extern void discord_audit_log_entry_optional_info_init(struct discord_audit_log_entry_optional_info *p);
+extern struct discord_audit_log_entry_optional_info * discord_audit_log_entry_optional_info_alloc();
+extern void discord_audit_log_entry_optional_info_free_v(void *p);
+extern void discord_audit_log_entry_optional_info_free(struct discord_audit_log_entry_optional_info *p);
+extern void discord_audit_log_entry_optional_info_from_json_v(char *json, size_t len, void *p);
+extern void discord_audit_log_entry_optional_info_from_json(char *json, size_t len, struct discord_audit_log_entry_optional_info *p);
+extern size_t discord_audit_log_entry_optional_info_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_audit_log_entry_optional_info_to_json(char *json, size_t len, struct discord_audit_log_entry_optional_info *p);
+extern size_t discord_audit_log_entry_optional_info_to_query_v(char *json, size_t len, void *p);
+extern size_t discord_audit_log_entry_optional_info_to_query(char *json, size_t len, struct discord_audit_log_entry_optional_info *p);
+extern void discord_audit_log_entry_optional_info_list_free_v(void **p);
+extern void discord_audit_log_entry_optional_info_list_free(struct discord_audit_log_entry_optional_info **p);
+extern void discord_audit_log_entry_optional_info_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_audit_log_entry_optional_info_list_from_json(char *str, size_t len, struct discord_audit_log_entry_optional_info ***p);
+extern size_t discord_audit_log_entry_optional_info_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_audit_log_entry_optional_info_list_to_json(char *str, size_t len, struct discord_audit_log_entry_optional_info **p);
 
 /* Title: Audit Log Change Structure */
 /* https://discord.com/developers/docs/resources/audit-log#audit-log-change-object-audit-log-change-structure */
 /* This is defined at specs/audit_log.json:97:22 */
-struct discord_audit_log_change_dati {
+struct discord_audit_log_change {
   /* specs/audit_log.json:100:18
      '{"name":"new_value", "type": {"base":"char", "dec":"*"}}'
   */
@@ -279,30 +279,30 @@ struct discord_audit_log_change_dati {
     void *record_null[3];
   } __M; // metadata
 };
-extern void discord_audit_log_change_dati_cleanup_v(void *p);
-extern void discord_audit_log_change_dati_cleanup(struct discord_audit_log_change_dati *p);
-extern void discord_audit_log_change_dati_init_v(void *p);
-extern void discord_audit_log_change_dati_init(struct discord_audit_log_change_dati *p);
-extern struct discord_audit_log_change_dati * discord_audit_log_change_dati_alloc();
-extern void discord_audit_log_change_dati_free_v(void *p);
-extern void discord_audit_log_change_dati_free(struct discord_audit_log_change_dati *p);
-extern void discord_audit_log_change_dati_from_json_v(char *json, size_t len, void *p);
-extern void discord_audit_log_change_dati_from_json(char *json, size_t len, struct discord_audit_log_change_dati *p);
-extern size_t discord_audit_log_change_dati_to_json_v(char *json, size_t len, void *p);
-extern size_t discord_audit_log_change_dati_to_json(char *json, size_t len, struct discord_audit_log_change_dati *p);
-extern size_t discord_audit_log_change_dati_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_audit_log_change_dati_to_query(char *json, size_t len, struct discord_audit_log_change_dati *p);
-extern void discord_audit_log_change_dati_list_free_v(void **p);
-extern void discord_audit_log_change_dati_list_free(struct discord_audit_log_change_dati **p);
-extern void discord_audit_log_change_dati_list_from_json_v(char *str, size_t len, void *p);
-extern void discord_audit_log_change_dati_list_from_json(char *str, size_t len, struct discord_audit_log_change_dati ***p);
-extern size_t discord_audit_log_change_dati_list_to_json_v(char *str, size_t len, void *p);
-extern size_t discord_audit_log_change_dati_list_to_json(char *str, size_t len, struct discord_audit_log_change_dati **p);
+extern void discord_audit_log_change_cleanup_v(void *p);
+extern void discord_audit_log_change_cleanup(struct discord_audit_log_change *p);
+extern void discord_audit_log_change_init_v(void *p);
+extern void discord_audit_log_change_init(struct discord_audit_log_change *p);
+extern struct discord_audit_log_change * discord_audit_log_change_alloc();
+extern void discord_audit_log_change_free_v(void *p);
+extern void discord_audit_log_change_free(struct discord_audit_log_change *p);
+extern void discord_audit_log_change_from_json_v(char *json, size_t len, void *p);
+extern void discord_audit_log_change_from_json(char *json, size_t len, struct discord_audit_log_change *p);
+extern size_t discord_audit_log_change_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_audit_log_change_to_json(char *json, size_t len, struct discord_audit_log_change *p);
+extern size_t discord_audit_log_change_to_query_v(char *json, size_t len, void *p);
+extern size_t discord_audit_log_change_to_query(char *json, size_t len, struct discord_audit_log_change *p);
+extern void discord_audit_log_change_list_free_v(void **p);
+extern void discord_audit_log_change_list_free(struct discord_audit_log_change **p);
+extern void discord_audit_log_change_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_audit_log_change_list_from_json(char *str, size_t len, struct discord_audit_log_change ***p);
+extern size_t discord_audit_log_change_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_audit_log_change_list_to_json(char *str, size_t len, struct discord_audit_log_change **p);
 
 /* Title: Audit Log Change Key */
 /* https://discord.com/developers/docs/resources/audit-log#audit-log-change-object-audit-log-change-key */
 /* This is defined at specs/audit_log.json:109:22 */
-struct discord_audit_log_change_key_dati {
+struct discord_audit_log_change_key {
   /* specs/audit_log.json:112:18
      '{"name":"name", "type": {"base":"char", "dec":"[MAX_NAME_LEN]"}}'
   */
@@ -391,9 +391,9 @@ struct discord_audit_log_change_key_dati {
   int default_message_notifications;
 
   /* specs/audit_log.json:131:18
-     '{"name":"vanity_url_code", "type": {"base":"char", "dec":"*"}}'
+     '{"name":"vanity_url", "type": {"base":"char", "dec":"*"}}'
   */
-  char *vanity_url_code;
+  char *vanity_url;
 
   /* specs/audit_log.json:132:18
      '{"name":"add", "json_key":"$add", "type": {"base":"char", "dec":"*"},
@@ -592,22 +592,22 @@ struct discord_audit_log_change_key_dati {
     void *record_null[54];
   } __M; // metadata
 };
-extern void discord_audit_log_change_key_dati_cleanup_v(void *p);
-extern void discord_audit_log_change_key_dati_cleanup(struct discord_audit_log_change_key_dati *p);
-extern void discord_audit_log_change_key_dati_init_v(void *p);
-extern void discord_audit_log_change_key_dati_init(struct discord_audit_log_change_key_dati *p);
-extern struct discord_audit_log_change_key_dati * discord_audit_log_change_key_dati_alloc();
-extern void discord_audit_log_change_key_dati_free_v(void *p);
-extern void discord_audit_log_change_key_dati_free(struct discord_audit_log_change_key_dati *p);
-extern void discord_audit_log_change_key_dati_from_json_v(char *json, size_t len, void *p);
-extern void discord_audit_log_change_key_dati_from_json(char *json, size_t len, struct discord_audit_log_change_key_dati *p);
-extern size_t discord_audit_log_change_key_dati_to_json_v(char *json, size_t len, void *p);
-extern size_t discord_audit_log_change_key_dati_to_json(char *json, size_t len, struct discord_audit_log_change_key_dati *p);
-extern size_t discord_audit_log_change_key_dati_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_audit_log_change_key_dati_to_query(char *json, size_t len, struct discord_audit_log_change_key_dati *p);
-extern void discord_audit_log_change_key_dati_list_free_v(void **p);
-extern void discord_audit_log_change_key_dati_list_free(struct discord_audit_log_change_key_dati **p);
-extern void discord_audit_log_change_key_dati_list_from_json_v(char *str, size_t len, void *p);
-extern void discord_audit_log_change_key_dati_list_from_json(char *str, size_t len, struct discord_audit_log_change_key_dati ***p);
-extern size_t discord_audit_log_change_key_dati_list_to_json_v(char *str, size_t len, void *p);
-extern size_t discord_audit_log_change_key_dati_list_to_json(char *str, size_t len, struct discord_audit_log_change_key_dati **p);
+extern void discord_audit_log_change_key_cleanup_v(void *p);
+extern void discord_audit_log_change_key_cleanup(struct discord_audit_log_change_key *p);
+extern void discord_audit_log_change_key_init_v(void *p);
+extern void discord_audit_log_change_key_init(struct discord_audit_log_change_key *p);
+extern struct discord_audit_log_change_key * discord_audit_log_change_key_alloc();
+extern void discord_audit_log_change_key_free_v(void *p);
+extern void discord_audit_log_change_key_free(struct discord_audit_log_change_key *p);
+extern void discord_audit_log_change_key_from_json_v(char *json, size_t len, void *p);
+extern void discord_audit_log_change_key_from_json(char *json, size_t len, struct discord_audit_log_change_key *p);
+extern size_t discord_audit_log_change_key_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_audit_log_change_key_to_json(char *json, size_t len, struct discord_audit_log_change_key *p);
+extern size_t discord_audit_log_change_key_to_query_v(char *json, size_t len, void *p);
+extern size_t discord_audit_log_change_key_to_query(char *json, size_t len, struct discord_audit_log_change_key *p);
+extern void discord_audit_log_change_key_list_free_v(void **p);
+extern void discord_audit_log_change_key_list_free(struct discord_audit_log_change_key **p);
+extern void discord_audit_log_change_key_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_audit_log_change_key_list_from_json(char *str, size_t len, struct discord_audit_log_change_key ***p);
+extern size_t discord_audit_log_change_key_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_audit_log_change_key_list_to_json(char *str, size_t len, struct discord_audit_log_change_key **p);

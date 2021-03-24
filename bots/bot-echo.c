@@ -6,19 +6,19 @@
 
 
 
-void on_ready(struct discord_client *client, const struct discord_user_dati *me) {
+void on_ready(struct discord *client, const struct discord_user *me) {
   fprintf(stderr, "\n\nEcho-Bot succesfully connected to Discord as %s#%s!\n\n",
       me->username, me->discriminator);
 }
 
 void on_reaction_add(
-    struct discord_client *client,
-    const struct discord_user_dati *me,
+    struct discord *client,
+    const struct discord_user *me,
     const uint64_t channel_id, 
     const uint64_t message_id, 
     const uint64_t guild_id, 
-    const struct discord_guild_member_dati *member,
-    const struct discord_emoji_dati *emoji)
+    const struct discord_guild_member *member,
+    const struct discord_emoji *emoji)
 { 
   // make sure bot doesn't echoes other bots
   if (member->user->bot) 
@@ -28,9 +28,9 @@ void on_reaction_add(
 }
 
 void on_message_create(
-    struct discord_client *client,
-    const struct discord_user_dati *me,
-    const struct discord_channel_message_dati *msg)
+    struct discord *client,
+    const struct discord_user *me,
+    const struct discord_message *msg)
 {
   // make sure bot doesn't echoes other bots
   if (msg->author->bot)
@@ -39,8 +39,8 @@ void on_message_create(
   struct discord_channel_create_message_params params = {
     .content = msg->content
   };
-  struct discord_channel_message_reference_dati msg_ref;
-  discord_channel_message_reference_dati_init(&msg_ref);
+  struct discord_message_reference msg_ref;
+  discord_message_reference_init(&msg_ref);
   if(msg->referenced_message) {
     msg_ref.message_id = msg->referenced_message->id;
     msg_ref.channel_id = msg->channel_id;
@@ -53,9 +53,9 @@ void on_message_create(
 }
 
 void on_message_update(
-    struct discord_client *client,
-    const struct discord_user_dati *me,
-    const struct discord_channel_message_dati *msg)
+    struct discord *client,
+    const struct discord_user *me,
+    const struct discord_message *msg)
 {
   struct discord_channel_create_message_params params = {
     .content = "I see what you did there."
@@ -64,8 +64,8 @@ void on_message_update(
 }
 
 void on_message_delete(
-    struct discord_client *client,
-    const struct discord_user_dati *me,
+    struct discord *client,
+    const struct discord_user *me,
     const uint64_t id,
     const uint64_t channel_id,
     const uint64_t guild_id)
@@ -77,8 +77,8 @@ void on_message_delete(
 }
 
 void on_message_delete_bulk(
-    struct discord_client *client,
-    const struct discord_user_dati *me,
+    struct discord *client,
+    const struct discord_user *me,
     const size_t nids,
     const uint64_t ids[],
     const uint64_t channel_id,
@@ -103,7 +103,7 @@ int main(int argc, char *argv[])
 
   discord_global_init();
 
-  struct discord_client *client = discord_config_init(config_file);
+  struct discord *client = discord_config_init(config_file);
   assert(NULL != client);
 
   discord_setcb(client, READY, &on_ready);

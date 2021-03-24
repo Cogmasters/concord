@@ -8,20 +8,20 @@
 
 #define JSON_FILE "bot-presence.json"
 
-void on_ready(struct discord_client *client, const struct discord_user_dati *me) {
+void on_ready(struct discord *client, const struct discord_user *me) {
   fprintf(stderr, "\n\nPresence-Bot succesfully connected to Discord as %s#%s!\n\n",
       me->username, me->discriminator);
 }
 
 void
-load_presence_from_json(struct discord_client *client, char filename[])
+load_presence_from_json(struct discord *client, char filename[])
 {
   /* get contents of file to string */
   size_t len;
   char *json_payload = orka_load_whole_file(filename, &len);
 
-  struct discord_gateway_identify_status_update_dati *new_presence = discord_gateway_identify_status_update_dati_alloc();
-  discord_gateway_identify_status_update_dati_from_json(json_payload, len, new_presence);
+  struct discord_gateway_identify_status_update *new_presence = discord_gateway_identify_status_update_alloc();
+  discord_gateway_identify_status_update_from_json(json_payload, len, new_presence);
 
   discord_replace_presence(client, new_presence);
 
@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
 
   discord_global_init();
 
-  struct discord_client *client = discord_config_init(config_file);
+  struct discord *client = discord_config_init(config_file);
   assert(NULL != client);
 
   printf("\n\nThis bot demonstrates how easy it is to change presence"

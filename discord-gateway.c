@@ -17,17 +17,17 @@ static char*
 opcode_print(int opcode)
 {
   switch (opcode) {
-      CASE_RETURN_STR(DISCORD_GATEWAY_OPCODES_DISPATCH);
-      CASE_RETURN_STR(DISCORD_GATEWAY_OPCODES_HEARTBEAT);
-      CASE_RETURN_STR(DISCORD_GATEWAY_OPCODES_IDENTIFY);
-      CASE_RETURN_STR(DISCORD_GATEWAY_OPCODES_PRESENCE_UPDATE);
-      CASE_RETURN_STR(DISCORD_GATEWAY_OPCODES_VOICE_STATE_UPDATE);
-      CASE_RETURN_STR(DISCORD_GATEWAY_OPCODES_RESUME);
-      CASE_RETURN_STR(DISCORD_GATEWAY_OPCODES_RECONNECT);
-      CASE_RETURN_STR(DISCORD_GATEWAY_OPCODES_REQUEST_GUILD_MEMBERS);
-      CASE_RETURN_STR(DISCORD_GATEWAY_OPCODES_INVALID_SESSION);
-      CASE_RETURN_STR(DISCORD_GATEWAY_OPCODES_HELLO);
-      CASE_RETURN_STR(DISCORD_GATEWAY_OPCODES_HEARTBEAT_ACK);
+      CASE_RETURN_STR(DISCORD_GATEWAY_DISPATCH);
+      CASE_RETURN_STR(DISCORD_GATEWAY_HEARTBEAT);
+      CASE_RETURN_STR(DISCORD_GATEWAY_IDENTIFY);
+      CASE_RETURN_STR(DISCORD_GATEWAY_PRESENCE_UPDATE);
+      CASE_RETURN_STR(DISCORD_GATEWAY_VOICE_STATE_UPDATE);
+      CASE_RETURN_STR(DISCORD_GATEWAY_RESUME);
+      CASE_RETURN_STR(DISCORD_GATEWAY_RECONNECT);
+      CASE_RETURN_STR(DISCORD_GATEWAY_REQUEST_GUILD_MEMBERS);
+      CASE_RETURN_STR(DISCORD_GATEWAY_INVALID_SESSION);
+      CASE_RETURN_STR(DISCORD_GATEWAY_HELLO);
+      CASE_RETURN_STR(DISCORD_GATEWAY_HEARTBEAT_ACK);
   default:
       PRINT("Invalid Gateway opcode (code: %d)", opcode);
       return "Invalid Gateway opcode";
@@ -121,7 +121,7 @@ send_identify(struct discord_gateway *gw)
   int ret = json_inject(payload, sizeof(payload), 
               "(op):2" // IDENTIFY OPCODE
               "(d):F",
-              &discord_gateway_identify_dati_to_json_v, gw->identify);
+              &discord_gateway_identify_to_json_v, gw->identify);
   ASSERT_S(ret < (int)sizeof(payload), "Out of bounds write attempt");
 
   // contain token (sensitive data), enable _ORKA_DEBUG_STRICT to print it
@@ -162,8 +162,8 @@ on_dispatch_message_reaction(
   struct payload_s *payload)
 {
   u64_snowflake_t user_id=0, message_id=0, channel_id=0, guild_id=0;
-  struct discord_guild_member_dati *member = discord_guild_member_dati_alloc();
-  struct discord_emoji_dati *emoji = discord_emoji_dati_alloc();
+  struct discord_guild_member *member = discord_guild_member_alloc();
+  struct discord_emoji *emoji = discord_emoji_alloc();
   json_scanf(payload->event_data, sizeof(payload->event_data),
       "[user_id]%F"
       "[message_id]%F"
@@ -173,8 +173,8 @@ on_dispatch_message_reaction(
       "[guild_id]%F",
       &orka_strtoull, &user_id,
       &orka_strtoull, &message_id,
-      &discord_guild_member_dati_from_json, member,
-      &discord_emoji_dati_from_json, emoji,
+      &discord_guild_member_from_json, member,
+      &discord_emoji_from_json, emoji,
       &orka_strtoull, &channel_id,
       &orka_strtoull, &guild_id);
 
@@ -214,8 +214,8 @@ on_dispatch_message_reaction(
   default: break; // will never trigger
   }
 
-  discord_guild_member_dati_free(member);
-  discord_emoji_dati_free(emoji);
+  discord_guild_member_free(member);
+  discord_emoji_free(emoji);
 }
 
 static void
@@ -250,8 +250,8 @@ on_dispatch_message(
     return; /* EARLY RETURN */
   }
 
-  struct discord_channel_message_dati *msg = discord_channel_message_dati_alloc();
-  discord_channel_message_dati_from_json(payload->event_data,
+  struct discord_message *msg = discord_message_alloc();
+  discord_message_from_json(payload->event_data,
       sizeof(payload->event_data), msg);
 
   struct sized_buffer sb_msg = {
@@ -322,7 +322,7 @@ on_dispatch_message(
   default: break; // will never trigger
   }
 
-  discord_channel_message_dati_free(msg);
+  discord_message_free(msg);
 }
 
 static void
@@ -331,8 +331,8 @@ on_dispatch_guild_member(
   enum dispatch_code code, 
   struct payload_s *payload)
 {
-  struct discord_guild_member_dati *member = discord_guild_member_dati_alloc();
-  discord_guild_member_dati_from_json(payload->event_data,
+  struct discord_guild_member *member = discord_guild_member_alloc();
+  discord_guild_member_from_json(payload->event_data,
       sizeof(payload->event_data), member);
 
   u64_snowflake_t guild_id = 0;
@@ -370,7 +370,7 @@ on_dispatch_guild_member(
   default: break; // will never trigger
   }
 
-  discord_guild_member_dati_free(member);
+  discord_guild_member_free(member);
 }
 
 static enum dispatch_code
@@ -652,20 +652,20 @@ discord_gateway_init(struct discord_gateway *gw, const char token[], const char 
 
   ws_set_refresh_rate(gw->ws, 1);
   ws_set_max_reconnect(gw->ws, 15);
-  ws_set_event(gw->ws, DISCORD_GATEWAY_OPCODES_HELLO, &on_hello);
-  ws_set_event(gw->ws, DISCORD_GATEWAY_OPCODES_DISPATCH, &on_dispatch);
-  ws_set_event(gw->ws, DISCORD_GATEWAY_OPCODES_INVALID_SESSION, &on_invalid_session);
-  ws_set_event(gw->ws, DISCORD_GATEWAY_OPCODES_RECONNECT, &on_reconnect);
-  ws_set_event(gw->ws, DISCORD_GATEWAY_OPCODES_HEARTBEAT_ACK, &on_heartbeat_ack);
+  ws_set_event(gw->ws, DISCORD_GATEWAY_HELLO, &on_hello);
+  ws_set_event(gw->ws, DISCORD_GATEWAY_DISPATCH, &on_dispatch);
+  ws_set_event(gw->ws, DISCORD_GATEWAY_INVALID_SESSION, &on_invalid_session);
+  ws_set_event(gw->ws, DISCORD_GATEWAY_RECONNECT, &on_reconnect);
+  ws_set_event(gw->ws, DISCORD_GATEWAY_HEARTBEAT_ACK, &on_heartbeat_ack);
 
-  gw->identify = discord_gateway_identify_dati_alloc();
+  gw->identify = discord_gateway_identify_alloc();
   gw->identify->token = strdup(token);
 
   gw->identify->properties->$os = strdup("POSIX");
   gw->identify->properties->$browser = strdup("orca");
   gw->identify->properties->$device = strdup("orca");
   gw->identify->presence->since = orka_timestamp_ms();
-  gw->me = discord_user_dati_alloc();
+  gw->me = discord_user_alloc();
   discord_set_presence(gw->p_client, NULL, "online", false);
   discord_get_current_user(gw->p_client, gw->me);
   sb_discord_get_current_user(gw->p_client, &gw->sb_me);
@@ -677,15 +677,15 @@ discord_gateway_init(struct discord_gateway *gw, const char token[], const char 
 void
 discord_gateway_cleanup(struct discord_gateway *gw)
 {
-  discord_user_dati_free(gw->me);
-  discord_gateway_identify_dati_free(gw->identify);
+  discord_user_free(gw->me);
+  discord_gateway_identify_free(gw->identify);
   ws_cleanup(gw->ws);
   pthread_mutex_destroy(&gw->lock);
 }
 
 /* connects to the discord websockets server */
 void
-discord_run(struct discord_client *client) {
+discord_run(struct discord *client) {
   ws_run(client->gw.ws);
 }
 

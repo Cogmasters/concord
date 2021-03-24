@@ -1,5 +1,5 @@
 {
-  "namespace": ["discord", "guild", "welcome_screen" ],
+  "namespace": ["discord", "guild"],
   "title": "Welcome Screen Object",
   "comment": "https://discord.com/developers/docs/resources/guild#welcome-screen-object", 
   "defs":
@@ -7,8 +7,8 @@
     {
       "comment":"https://discord.com/developers/docs/resources/guild#welcome-screen-object-welcome-screen-channel-structure",
       "title":"Welcome Screen Channel Structure",
-      "namespace":["screen_channel"],
-      "struct":"dati",
+      "namespace":["welcome_screen"],
+      "struct":"channel",
       "fields":
       [
         { "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
@@ -20,11 +20,11 @@
     {
       "comment":"https://discord.com/developers/docs/resources/guild#welcome-screen-object-welcome-screen-structure",
       "title":"Welcome Screen Structure",
-      "struct":"dati",
+      "struct":"welcome_screen",
       "fields":
       [
         { "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"},
-        { "name": "welcome_channels", "type":{ "base":"struct discord_guild_welcome_screen_screen_channel_dati", "dec":"ntl" }, "todo":false }
+        { "name": "welcome_channels", "type":{ "base":"struct discord_guild_welcome_screen_channel", "dec":"ntl" }, "todo":false }
       ]
     }
   ]

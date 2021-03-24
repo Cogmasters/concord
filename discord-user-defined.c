@@ -18,7 +18,7 @@ void msg_from_json(char *json, size_t size, void *msg)
 
 void
 discord_delete_messages_by_author_id(
-  struct discord_client *client, 
+  struct discord *client, 
   u64_snowflake_t channel_id, 
   u64_snowflake_t author_id)
 {
@@ -31,7 +31,7 @@ discord_delete_messages_by_author_id(
     .limit = 100
   };
 
-  NTL_T(struct discord_channel_message_dati) messages = NULL;
+  NTL_T(struct discord_message) messages = NULL;
   discord_get_channel_messages(client, channel_id, &params, &messages);
 
   NTL_T(ja_u64) list = NULL;
@@ -48,7 +48,7 @@ discord_delete_messages_by_author_id(
       j++;
     }
   }
-  ntl_free((ntl_t)messages, discord_channel_message_dati_cleanup_v);
+  ntl_free((ntl_t)messages, discord_message_cleanup_v);
 
   if (count == 1)
     discord_delete_message(client, channel_id, list[0]->value);

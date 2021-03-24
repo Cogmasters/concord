@@ -7,8 +7,8 @@
     {
       "title": "Integration Expire Behaviors",
       "comment": "https://discord.com/developers/docs/resources/guild#integration-object-integration-expire-behaviors",
-      "namespace": ["integration", "expire_behaviors"],
-      "enum": "code",
+      "namespace": ["integration"],
+      "enum": "expire_behaviors",
       "items": [
         {"name":"REMOVE_ROLE", "value":0},
         {"name":"KICK"}
@@ -17,8 +17,8 @@
     {
       "title":"Integration Account Structure",
       "comment":"https://discord.com/developers/docs/resources/guild#integration-account-object-integration-account-structure",
-      "namespace": ["integration", "account"],
-      "struct":"dati",
+      "namespace": ["integration"],
+      "struct":"account",
       "fields": [
         { "name":"id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
         { "name":"name", "type":{ "base":"char", "dec":"*" }}
@@ -27,22 +27,21 @@
     {
       "title":"Integration Application Object",
       "comment":"https://discord.com/developers/docs/resources/guild#integration-application-object-integration-application-structure",
-      "namespace": ["integration", "application"],
-      "struct":"dati",
+      "namespace": ["integration"],
+      "struct":"application",
       "fields": [
         { "name":"id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
         { "name":"name", "type":{ "base":"char", "dec":"*" }},
         { "name":"icon", "type":{ "base":"char", "dec":"[MAX_SHA256_LEN]" }},
         { "name":"description", "type":{ "base":"char", "dec":"*" }},
         { "name":"summary", "type":{ "base":"char", "dec":"*" }},
-        { "name":"bot", "type":{ "base":"struct discord_user_dati", "dec":"*" }, "option":true}
+        { "name":"bot", "type":{ "base":"struct discord_user", "dec":"*" }, "option":true}
       ]
     },
     {
       "comment": "https://discord.com/developers/docs/resources/guild#integration-object-integration-structure",
       "title":"Integration Structure",
-      "namespace": ["integration"],
-      "struct":"dati",
+      "struct":"integration",
       "fields":
       [
         { "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
@@ -52,14 +51,14 @@
         { "name": "syncing", "type":{ "base":"bool"}},
         { "name": "role_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}},
         { "name": "enable_emotions", "type":{ "base":"bool"}},
-        { "name": "expire_behavior", "type":{ "base":"int", "int_alias":"enum discord_guild_integration_expire_behaviors_code"}},
+        { "name": "expire_behavior", "type":{ "base":"int", "int_alias":"enum discord_guild_integration_expire_behaviors"}},
         { "name": "expire_grace_period", "type":{ "base":"int"}},
-        { "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*"}, "opt":true},
-        { "name": "account", "type":{ "base":"struct discord_guild_integration_account_dati", "dec":"*"}},
+        { "name": "user", "type":{ "base":"struct discord_user", "dec":"*"}, "opt":true},
+        { "name": "account", "type":{ "base":"struct discord_guild_integration_account", "dec":"*"}},
         { "name": "synced_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601"}},
         { "name": "subscriber_count", "type":{ "base":"int"}},
         { "name": "revoked", "type":{ "base":"bool"}},
-        { "name": "application", "type":{ "base":"struct discord_guild_integration_application_dati", "dec":"*" }}
+        { "name": "application", "type":{ "base":"struct discord_guild_integration_application", "dec":"*" }}
       ]
     }
   ]

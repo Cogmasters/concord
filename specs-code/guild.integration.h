@@ -4,15 +4,15 @@ https://discord.com/developers/docs/resources/guild#integration-object-integrati
 */
 
 
-enum discord_guild_integration_expire_behaviors_code {
-  DISCORD_GUILD_INTEGRATION_EXPIRE_BEHAVIORS_REMOVE_ROLE = 0,
-  DISCORD_GUILD_INTEGRATION_EXPIRE_BEHAVIORS_KICK = 1,
+enum discord_guild_integration_expire_behaviors {
+  DISCORD_GUILD_INTEGRATION_REMOVE_ROLE = 0,
+  DISCORD_GUILD_INTEGRATION_KICK = 1,
 };
 
 /* Title: Integration Account Structure */
 /* https://discord.com/developers/docs/resources/guild#integration-account-object-integration-account-structure */
 /* This is defined at specs/guild.integration.json:21:22 */
-struct discord_guild_integration_account_dati {
+struct discord_guild_integration_account {
   /* specs/guild.integration.json:23:19
      '{ "name":"id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
@@ -36,30 +36,30 @@ struct discord_guild_integration_account_dati {
     void *record_null[2];
   } __M; // metadata
 };
-extern void discord_guild_integration_account_dati_cleanup_v(void *p);
-extern void discord_guild_integration_account_dati_cleanup(struct discord_guild_integration_account_dati *p);
-extern void discord_guild_integration_account_dati_init_v(void *p);
-extern void discord_guild_integration_account_dati_init(struct discord_guild_integration_account_dati *p);
-extern struct discord_guild_integration_account_dati * discord_guild_integration_account_dati_alloc();
-extern void discord_guild_integration_account_dati_free_v(void *p);
-extern void discord_guild_integration_account_dati_free(struct discord_guild_integration_account_dati *p);
-extern void discord_guild_integration_account_dati_from_json_v(char *json, size_t len, void *p);
-extern void discord_guild_integration_account_dati_from_json(char *json, size_t len, struct discord_guild_integration_account_dati *p);
-extern size_t discord_guild_integration_account_dati_to_json_v(char *json, size_t len, void *p);
-extern size_t discord_guild_integration_account_dati_to_json(char *json, size_t len, struct discord_guild_integration_account_dati *p);
-extern size_t discord_guild_integration_account_dati_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_guild_integration_account_dati_to_query(char *json, size_t len, struct discord_guild_integration_account_dati *p);
-extern void discord_guild_integration_account_dati_list_free_v(void **p);
-extern void discord_guild_integration_account_dati_list_free(struct discord_guild_integration_account_dati **p);
-extern void discord_guild_integration_account_dati_list_from_json_v(char *str, size_t len, void *p);
-extern void discord_guild_integration_account_dati_list_from_json(char *str, size_t len, struct discord_guild_integration_account_dati ***p);
-extern size_t discord_guild_integration_account_dati_list_to_json_v(char *str, size_t len, void *p);
-extern size_t discord_guild_integration_account_dati_list_to_json(char *str, size_t len, struct discord_guild_integration_account_dati **p);
+extern void discord_guild_integration_account_cleanup_v(void *p);
+extern void discord_guild_integration_account_cleanup(struct discord_guild_integration_account *p);
+extern void discord_guild_integration_account_init_v(void *p);
+extern void discord_guild_integration_account_init(struct discord_guild_integration_account *p);
+extern struct discord_guild_integration_account * discord_guild_integration_account_alloc();
+extern void discord_guild_integration_account_free_v(void *p);
+extern void discord_guild_integration_account_free(struct discord_guild_integration_account *p);
+extern void discord_guild_integration_account_from_json_v(char *json, size_t len, void *p);
+extern void discord_guild_integration_account_from_json(char *json, size_t len, struct discord_guild_integration_account *p);
+extern size_t discord_guild_integration_account_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_guild_integration_account_to_json(char *json, size_t len, struct discord_guild_integration_account *p);
+extern size_t discord_guild_integration_account_to_query_v(char *json, size_t len, void *p);
+extern size_t discord_guild_integration_account_to_query(char *json, size_t len, struct discord_guild_integration_account *p);
+extern void discord_guild_integration_account_list_free_v(void **p);
+extern void discord_guild_integration_account_list_free(struct discord_guild_integration_account **p);
+extern void discord_guild_integration_account_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_guild_integration_account_list_from_json(char *str, size_t len, struct discord_guild_integration_account ***p);
+extern size_t discord_guild_integration_account_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_guild_integration_account_list_to_json(char *str, size_t len, struct discord_guild_integration_account **p);
 
 /* Title: Integration Application Object */
 /* https://discord.com/developers/docs/resources/guild#integration-application-object-integration-application-structure */
 /* This is defined at specs/guild.integration.json:31:22 */
-struct discord_guild_integration_application_dati {
+struct discord_guild_integration_application {
   /* specs/guild.integration.json:33:19
      '{ "name":"id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
@@ -86,9 +86,9 @@ struct discord_guild_integration_application_dati {
   char *summary;
 
   /* specs/guild.integration.json:38:19
-     '{ "name":"bot", "type":{ "base":"struct discord_user_dati", "dec":"*" }, "option":true}'
+     '{ "name":"bot", "type":{ "base":"struct discord_user", "dec":"*" }, "option":true}'
   */
-  struct discord_user_dati *bot;
+  struct discord_user *bot;
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -103,104 +103,104 @@ struct discord_guild_integration_application_dati {
     void *record_null[6];
   } __M; // metadata
 };
-extern void discord_guild_integration_application_dati_cleanup_v(void *p);
-extern void discord_guild_integration_application_dati_cleanup(struct discord_guild_integration_application_dati *p);
-extern void discord_guild_integration_application_dati_init_v(void *p);
-extern void discord_guild_integration_application_dati_init(struct discord_guild_integration_application_dati *p);
-extern struct discord_guild_integration_application_dati * discord_guild_integration_application_dati_alloc();
-extern void discord_guild_integration_application_dati_free_v(void *p);
-extern void discord_guild_integration_application_dati_free(struct discord_guild_integration_application_dati *p);
-extern void discord_guild_integration_application_dati_from_json_v(char *json, size_t len, void *p);
-extern void discord_guild_integration_application_dati_from_json(char *json, size_t len, struct discord_guild_integration_application_dati *p);
-extern size_t discord_guild_integration_application_dati_to_json_v(char *json, size_t len, void *p);
-extern size_t discord_guild_integration_application_dati_to_json(char *json, size_t len, struct discord_guild_integration_application_dati *p);
-extern size_t discord_guild_integration_application_dati_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_guild_integration_application_dati_to_query(char *json, size_t len, struct discord_guild_integration_application_dati *p);
-extern void discord_guild_integration_application_dati_list_free_v(void **p);
-extern void discord_guild_integration_application_dati_list_free(struct discord_guild_integration_application_dati **p);
-extern void discord_guild_integration_application_dati_list_from_json_v(char *str, size_t len, void *p);
-extern void discord_guild_integration_application_dati_list_from_json(char *str, size_t len, struct discord_guild_integration_application_dati ***p);
-extern size_t discord_guild_integration_application_dati_list_to_json_v(char *str, size_t len, void *p);
-extern size_t discord_guild_integration_application_dati_list_to_json(char *str, size_t len, struct discord_guild_integration_application_dati **p);
+extern void discord_guild_integration_application_cleanup_v(void *p);
+extern void discord_guild_integration_application_cleanup(struct discord_guild_integration_application *p);
+extern void discord_guild_integration_application_init_v(void *p);
+extern void discord_guild_integration_application_init(struct discord_guild_integration_application *p);
+extern struct discord_guild_integration_application * discord_guild_integration_application_alloc();
+extern void discord_guild_integration_application_free_v(void *p);
+extern void discord_guild_integration_application_free(struct discord_guild_integration_application *p);
+extern void discord_guild_integration_application_from_json_v(char *json, size_t len, void *p);
+extern void discord_guild_integration_application_from_json(char *json, size_t len, struct discord_guild_integration_application *p);
+extern size_t discord_guild_integration_application_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_guild_integration_application_to_json(char *json, size_t len, struct discord_guild_integration_application *p);
+extern size_t discord_guild_integration_application_to_query_v(char *json, size_t len, void *p);
+extern size_t discord_guild_integration_application_to_query(char *json, size_t len, struct discord_guild_integration_application *p);
+extern void discord_guild_integration_application_list_free_v(void **p);
+extern void discord_guild_integration_application_list_free(struct discord_guild_integration_application **p);
+extern void discord_guild_integration_application_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_guild_integration_application_list_from_json(char *str, size_t len, struct discord_guild_integration_application ***p);
+extern size_t discord_guild_integration_application_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_guild_integration_application_list_to_json(char *str, size_t len, struct discord_guild_integration_application **p);
 
 /* Title: Integration Structure */
 /* https://discord.com/developers/docs/resources/guild#integration-object-integration-structure */
-/* This is defined at specs/guild.integration.json:45:22 */
-struct discord_guild_integration_dati {
-  /* specs/guild.integration.json:48:20
+/* This is defined at specs/guild.integration.json:44:22 */
+struct discord_guild_integration {
+  /* specs/guild.integration.json:47:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
   u64_snowflake_t id;
 
-  /* specs/guild.integration.json:49:20
+  /* specs/guild.integration.json:48:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}}'
   */
   char *name;
 
-  /* specs/guild.integration.json:50:20
+  /* specs/guild.integration.json:49:20
      '{ "name": "type", "type":{ "base":"char", "dec":"*"}}'
   */
   char *type;
 
-  /* specs/guild.integration.json:51:20
+  /* specs/guild.integration.json:50:20
      '{ "name": "enabled", "type":{ "base":"bool"}}'
   */
   bool enabled;
 
-  /* specs/guild.integration.json:52:20
+  /* specs/guild.integration.json:51:20
      '{ "name": "syncing", "type":{ "base":"bool"}}'
   */
   bool syncing;
 
-  /* specs/guild.integration.json:53:20
+  /* specs/guild.integration.json:52:20
      '{ "name": "role_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}}'
   */
   u64_snowflake_t role_id;
 
-  /* specs/guild.integration.json:54:20
+  /* specs/guild.integration.json:53:20
      '{ "name": "enable_emotions", "type":{ "base":"bool"}}'
   */
   bool enable_emotions;
 
-  /* specs/guild.integration.json:55:20
-     '{ "name": "expire_behavior", "type":{ "base":"int", "int_alias":"enum discord_guild_integration_expire_behaviors_code"}}'
+  /* specs/guild.integration.json:54:20
+     '{ "name": "expire_behavior", "type":{ "base":"int", "int_alias":"enum discord_guild_integration_expire_behaviors"}}'
   */
-  enum discord_guild_integration_expire_behaviors_code expire_behavior;
+  enum discord_guild_integration_expire_behaviors expire_behavior;
 
-  /* specs/guild.integration.json:56:20
+  /* specs/guild.integration.json:55:20
      '{ "name": "expire_grace_period", "type":{ "base":"int"}}'
   */
   int expire_grace_period;
 
-  /* specs/guild.integration.json:57:20
-     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*"}, "opt":true}'
+  /* specs/guild.integration.json:56:20
+     '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*"}, "opt":true}'
   */
-  struct discord_user_dati *user;
+  struct discord_user *user;
+
+  /* specs/guild.integration.json:57:20
+     '{ "name": "account", "type":{ "base":"struct discord_guild_integration_account", "dec":"*"}}'
+  */
+  struct discord_guild_integration_account *account;
 
   /* specs/guild.integration.json:58:20
-     '{ "name": "account", "type":{ "base":"struct discord_guild_integration_account_dati", "dec":"*"}}'
-  */
-  struct discord_guild_integration_account_dati *account;
-
-  /* specs/guild.integration.json:59:20
      '{ "name": "synced_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601"}}'
   */
   u64_unix_ms_t synced_at;
 
-  /* specs/guild.integration.json:60:20
+  /* specs/guild.integration.json:59:20
      '{ "name": "subscriber_count", "type":{ "base":"int"}}'
   */
   int subscriber_count;
 
-  /* specs/guild.integration.json:61:20
+  /* specs/guild.integration.json:60:20
      '{ "name": "revoked", "type":{ "base":"bool"}}'
   */
   bool revoked;
 
-  /* specs/guild.integration.json:62:20
-     '{ "name": "application", "type":{ "base":"struct discord_guild_integration_application_dati", "dec":"*" }}'
+  /* specs/guild.integration.json:61:20
+     '{ "name": "application", "type":{ "base":"struct discord_guild_integration_application", "dec":"*" }}'
   */
-  struct discord_guild_integration_application_dati *application;
+  struct discord_guild_integration_application *application;
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -215,22 +215,22 @@ struct discord_guild_integration_dati {
     void *record_null[15];
   } __M; // metadata
 };
-extern void discord_guild_integration_dati_cleanup_v(void *p);
-extern void discord_guild_integration_dati_cleanup(struct discord_guild_integration_dati *p);
-extern void discord_guild_integration_dati_init_v(void *p);
-extern void discord_guild_integration_dati_init(struct discord_guild_integration_dati *p);
-extern struct discord_guild_integration_dati * discord_guild_integration_dati_alloc();
-extern void discord_guild_integration_dati_free_v(void *p);
-extern void discord_guild_integration_dati_free(struct discord_guild_integration_dati *p);
-extern void discord_guild_integration_dati_from_json_v(char *json, size_t len, void *p);
-extern void discord_guild_integration_dati_from_json(char *json, size_t len, struct discord_guild_integration_dati *p);
-extern size_t discord_guild_integration_dati_to_json_v(char *json, size_t len, void *p);
-extern size_t discord_guild_integration_dati_to_json(char *json, size_t len, struct discord_guild_integration_dati *p);
-extern size_t discord_guild_integration_dati_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_guild_integration_dati_to_query(char *json, size_t len, struct discord_guild_integration_dati *p);
-extern void discord_guild_integration_dati_list_free_v(void **p);
-extern void discord_guild_integration_dati_list_free(struct discord_guild_integration_dati **p);
-extern void discord_guild_integration_dati_list_from_json_v(char *str, size_t len, void *p);
-extern void discord_guild_integration_dati_list_from_json(char *str, size_t len, struct discord_guild_integration_dati ***p);
-extern size_t discord_guild_integration_dati_list_to_json_v(char *str, size_t len, void *p);
-extern size_t discord_guild_integration_dati_list_to_json(char *str, size_t len, struct discord_guild_integration_dati **p);
+extern void discord_guild_integration_cleanup_v(void *p);
+extern void discord_guild_integration_cleanup(struct discord_guild_integration *p);
+extern void discord_guild_integration_init_v(void *p);
+extern void discord_guild_integration_init(struct discord_guild_integration *p);
+extern struct discord_guild_integration * discord_guild_integration_alloc();
+extern void discord_guild_integration_free_v(void *p);
+extern void discord_guild_integration_free(struct discord_guild_integration *p);
+extern void discord_guild_integration_from_json_v(char *json, size_t len, void *p);
+extern void discord_guild_integration_from_json(char *json, size_t len, struct discord_guild_integration *p);
+extern size_t discord_guild_integration_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_guild_integration_to_json(char *json, size_t len, struct discord_guild_integration *p);
+extern size_t discord_guild_integration_to_query_v(char *json, size_t len, void *p);
+extern size_t discord_guild_integration_to_query(char *json, size_t len, struct discord_guild_integration *p);
+extern void discord_guild_integration_list_free_v(void **p);
+extern void discord_guild_integration_list_free(struct discord_guild_integration **p);
+extern void discord_guild_integration_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_guild_integration_list_from_json(char *str, size_t len, struct discord_guild_integration ***p);
+extern size_t discord_guild_integration_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_guild_integration_list_to_json(char *str, size_t len, struct discord_guild_integration **p);

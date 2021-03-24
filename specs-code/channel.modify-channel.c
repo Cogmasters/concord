@@ -42,7 +42,7 @@ void discord_channel_modify_params_from_json(char *json, size_t len, struct disc
   */
                 "(user_limit):d,"
   /* specs/channel.modify-channel.json:19:20
-     '{ "name": "permission_overwrites", "type":{ "base":"struct discord_channel_overwrite_dati", "dec":"ntl" }, "inject_if_not":null}'
+     '{ "name": "permission_overwrites", "type":{ "base":"struct discord_channel_overwrite", "dec":"ntl" }, "inject_if_not":null}'
   */
                 "(permission_overwrites):F,"
   /* specs/channel.modify-channel.json:20:20
@@ -85,9 +85,9 @@ void discord_channel_modify_params_from_json(char *json, size_t len, struct disc
   */
                 &p->user_limit,
   /* specs/channel.modify-channel.json:19:20
-     '{ "name": "permission_overwrites", "type":{ "base":"struct discord_channel_overwrite_dati", "dec":"ntl" }, "inject_if_not":null}'
+     '{ "name": "permission_overwrites", "type":{ "base":"struct discord_channel_overwrite", "dec":"ntl" }, "inject_if_not":null}'
   */
-                discord_channel_overwrite_dati_list_from_json, &p->permission_overwrites,
+                discord_channel_overwrite_list_from_json, &p->permission_overwrites,
   /* specs/channel.modify-channel.json:20:20
      '{ "name": "parent_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0}'
   */
@@ -145,7 +145,7 @@ static void discord_channel_modify_params_use_default_inject_settings(struct dis
     p->__M.arg_switches[7] = &p->user_limit;
 
   /* specs/channel.modify-channel.json:19:20
-     '{ "name": "permission_overwrites", "type":{ "base":"struct discord_channel_overwrite_dati", "dec":"ntl" }, "inject_if_not":null}'
+     '{ "name": "permission_overwrites", "type":{ "base":"struct discord_channel_overwrite", "dec":"ntl" }, "inject_if_not":null}'
   */
   if (p->permission_overwrites != NULL)
     p->__M.arg_switches[8] = p->permission_overwrites;
@@ -196,7 +196,7 @@ size_t discord_channel_modify_params_to_json(char *json, size_t len, struct disc
   */
                 "(user_limit):d,"
   /* specs/channel.modify-channel.json:19:20
-     '{ "name": "permission_overwrites", "type":{ "base":"struct discord_channel_overwrite_dati", "dec":"ntl" }, "inject_if_not":null}'
+     '{ "name": "permission_overwrites", "type":{ "base":"struct discord_channel_overwrite", "dec":"ntl" }, "inject_if_not":null}'
   */
                 "(permission_overwrites):F,"
   /* specs/channel.modify-channel.json:20:20
@@ -237,9 +237,9 @@ size_t discord_channel_modify_params_to_json(char *json, size_t len, struct disc
   */
                 &p->user_limit,
   /* specs/channel.modify-channel.json:19:20
-     '{ "name": "permission_overwrites", "type":{ "base":"struct discord_channel_overwrite_dati", "dec":"ntl" }, "inject_if_not":null}'
+     '{ "name": "permission_overwrites", "type":{ "base":"struct discord_channel_overwrite", "dec":"ntl" }, "inject_if_not":null}'
   */
-                discord_channel_overwrite_dati_list_to_json, p->permission_overwrites,
+                discord_channel_overwrite_list_to_json, p->permission_overwrites,
   /* specs/channel.modify-channel.json:20:20
      '{ "name": "parent_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0}'
   */
@@ -321,10 +321,10 @@ void discord_channel_modify_params_cleanup(struct discord_channel_modify_params 
   */
   //p->user_limit is a scalar
   /* specs/channel.modify-channel.json:19:20
-     '{ "name": "permission_overwrites", "type":{ "base":"struct discord_channel_overwrite_dati", "dec":"ntl" }, "inject_if_not":null}'
+     '{ "name": "permission_overwrites", "type":{ "base":"struct discord_channel_overwrite", "dec":"ntl" }, "inject_if_not":null}'
   */
   if (d->permission_overwrites)
-    discord_channel_overwrite_dati_list_free(d->permission_overwrites);
+    discord_channel_overwrite_list_free(d->permission_overwrites);
   /* specs/channel.modify-channel.json:20:20
      '{ "name": "parent_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0}'
   */
@@ -366,7 +366,7 @@ void discord_channel_modify_params_init(struct discord_channel_modify_params *p)
   */
 
   /* specs/channel.modify-channel.json:19:20
-     '{ "name": "permission_overwrites", "type":{ "base":"struct discord_channel_overwrite_dati", "dec":"ntl" }, "inject_if_not":null}'
+     '{ "name": "permission_overwrites", "type":{ "base":"struct discord_channel_overwrite", "dec":"ntl" }, "inject_if_not":null}'
   */
 
   /* specs/channel.modify-channel.json:20:20

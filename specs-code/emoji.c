@@ -4,7 +4,7 @@
 https://discord.com/developers/docs/resources/emoji#emoji-object-emoji-structure
 */
 
-void discord_emoji_dati_from_json(char *json, size_t len, struct discord_emoji_dati *p)
+void discord_emoji_from_json(char *json, size_t len, struct discord_emoji *p)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
@@ -18,11 +18,11 @@ void discord_emoji_dati_from_json(char *json, size_t len, struct discord_emoji_d
   */
                 "(name):s,"
   /* specs/emoji.json:13:20
-     '{ "name": "roles", "type":{ "base":"struct discord_guild_role_dati", "dec":"ntl"}, "option":true,
+     '{ "name": "roles", "type":{ "base":"struct discord_guild_role", "dec":"ntl"}, "option":true,
           "todo":true }'
   */
   /* specs/emoji.json:15:20
-     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*" }, "option":true }'
+     '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }, "option":true }'
   */
                 "(user):F,"
   /* specs/emoji.json:16:20
@@ -53,13 +53,13 @@ void discord_emoji_dati_from_json(char *json, size_t len, struct discord_emoji_d
   */
                 p->name,
   /* specs/emoji.json:13:20
-     '{ "name": "roles", "type":{ "base":"struct discord_guild_role_dati", "dec":"ntl"}, "option":true,
+     '{ "name": "roles", "type":{ "base":"struct discord_guild_role", "dec":"ntl"}, "option":true,
           "todo":true }'
   */
   /* specs/emoji.json:15:20
-     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*" }, "option":true }'
+     '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }, "option":true }'
   */
-                discord_user_dati_from_json, p->user,
+                discord_user_from_json, p->user,
   /* specs/emoji.json:16:20
      '{ "name": "require_colons", "type":{ "base":"bool" }, "option":true}'
   */
@@ -82,7 +82,7 @@ void discord_emoji_dati_from_json(char *json, size_t len, struct discord_emoji_d
   ret = r;
 }
 
-static void discord_emoji_dati_use_default_inject_settings(struct discord_emoji_dati *p)
+static void discord_emoji_use_default_inject_settings(struct discord_emoji *p)
 {
   p->__M.enable_arg_switches = true;
   /* specs/emoji.json:11:20
@@ -96,12 +96,12 @@ static void discord_emoji_dati_use_default_inject_settings(struct discord_emoji_
   p->__M.arg_switches[1] = p->name;
 
   /* specs/emoji.json:13:20
-     '{ "name": "roles", "type":{ "base":"struct discord_guild_role_dati", "dec":"ntl"}, "option":true,
+     '{ "name": "roles", "type":{ "base":"struct discord_guild_role", "dec":"ntl"}, "option":true,
           "todo":true }'
   */
 
   /* specs/emoji.json:15:20
-     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*" }, "option":true }'
+     '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }, "option":true }'
   */
   p->__M.arg_switches[3] = p->user;
 
@@ -127,10 +127,10 @@ static void discord_emoji_dati_use_default_inject_settings(struct discord_emoji_
 
 }
 
-size_t discord_emoji_dati_to_json(char *json, size_t len, struct discord_emoji_dati *p)
+size_t discord_emoji_to_json(char *json, size_t len, struct discord_emoji *p)
 {
   size_t r;
-  discord_emoji_dati_use_default_inject_settings(p);
+  discord_emoji_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/emoji.json:11:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}}'
@@ -141,11 +141,11 @@ size_t discord_emoji_dati_to_json(char *json, size_t len, struct discord_emoji_d
   */
                 "(name):s,"
   /* specs/emoji.json:13:20
-     '{ "name": "roles", "type":{ "base":"struct discord_guild_role_dati", "dec":"ntl"}, "option":true,
+     '{ "name": "roles", "type":{ "base":"struct discord_guild_role", "dec":"ntl"}, "option":true,
           "todo":true }'
   */
   /* specs/emoji.json:15:20
-     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*" }, "option":true }'
+     '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }, "option":true }'
   */
                 "(user):F,"
   /* specs/emoji.json:16:20
@@ -174,13 +174,13 @@ size_t discord_emoji_dati_to_json(char *json, size_t len, struct discord_emoji_d
   */
                 p->name,
   /* specs/emoji.json:13:20
-     '{ "name": "roles", "type":{ "base":"struct discord_guild_role_dati", "dec":"ntl"}, "option":true,
+     '{ "name": "roles", "type":{ "base":"struct discord_guild_role", "dec":"ntl"}, "option":true,
           "todo":true }'
   */
   /* specs/emoji.json:15:20
-     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*" }, "option":true }'
+     '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }, "option":true }'
   */
-                discord_user_dati_to_json, p->user,
+                discord_user_to_json, p->user,
   /* specs/emoji.json:16:20
      '{ "name": "require_colons", "type":{ "base":"bool" }, "option":true}'
   */
@@ -205,40 +205,40 @@ size_t discord_emoji_dati_to_json(char *json, size_t len, struct discord_emoji_d
 typedef void (*vfvp)(void *);
 typedef void (*vfcpsvp)(char *, size_t, void *);
 typedef size_t (*sfcpsvp)(char *, size_t, void *);
-void discord_emoji_dati_cleanup_v(void *p) {
-  discord_emoji_dati_cleanup((struct discord_emoji_dati *)p);
+void discord_emoji_cleanup_v(void *p) {
+  discord_emoji_cleanup((struct discord_emoji *)p);
 }
 
-void discord_emoji_dati_init_v(void *p) {
-  discord_emoji_dati_init((struct discord_emoji_dati *)p);
+void discord_emoji_init_v(void *p) {
+  discord_emoji_init((struct discord_emoji *)p);
 }
 
-void discord_emoji_dati_free_v(void *p) {
- discord_emoji_dati_free((struct discord_emoji_dati *)p);
+void discord_emoji_free_v(void *p) {
+ discord_emoji_free((struct discord_emoji *)p);
 };
 
-void discord_emoji_dati_from_json_v(char *json, size_t len, void *p) {
- discord_emoji_dati_from_json(json, len, (struct discord_emoji_dati*)p);
+void discord_emoji_from_json_v(char *json, size_t len, void *p) {
+ discord_emoji_from_json(json, len, (struct discord_emoji*)p);
 }
 
-size_t discord_emoji_dati_to_json_v(char *json, size_t len, void *p) {
-  return discord_emoji_dati_to_json(json, len, (struct discord_emoji_dati*)p);
+size_t discord_emoji_to_json_v(char *json, size_t len, void *p) {
+  return discord_emoji_to_json(json, len, (struct discord_emoji*)p);
 }
 
-void discord_emoji_dati_list_free_v(void **p) {
-  discord_emoji_dati_list_free((struct discord_emoji_dati**)p);
+void discord_emoji_list_free_v(void **p) {
+  discord_emoji_list_free((struct discord_emoji**)p);
 }
 
-void discord_emoji_dati_list_from_json_v(char *str, size_t len, void *p) {
-  discord_emoji_dati_list_from_json(str, len, (struct discord_emoji_dati ***)p);
+void discord_emoji_list_from_json_v(char *str, size_t len, void *p) {
+  discord_emoji_list_from_json(str, len, (struct discord_emoji ***)p);
 }
 
-size_t discord_emoji_dati_list_to_json_v(char *str, size_t len, void *p){
-  return discord_emoji_dati_list_to_json(str, len, (struct discord_emoji_dati **)p);
+size_t discord_emoji_list_to_json_v(char *str, size_t len, void *p){
+  return discord_emoji_list_to_json(str, len, (struct discord_emoji **)p);
 }
 
 
-void discord_emoji_dati_cleanup(struct discord_emoji_dati *d) {
+void discord_emoji_cleanup(struct discord_emoji *d) {
   /* specs/emoji.json:11:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}}'
   */
@@ -248,15 +248,15 @@ void discord_emoji_dati_cleanup(struct discord_emoji_dati *d) {
   */
   //p->name is a scalar
   /* specs/emoji.json:13:20
-     '{ "name": "roles", "type":{ "base":"struct discord_guild_role_dati", "dec":"ntl"}, "option":true,
+     '{ "name": "roles", "type":{ "base":"struct discord_guild_role", "dec":"ntl"}, "option":true,
           "todo":true }'
   */
   //@todo p->(null)
   /* specs/emoji.json:15:20
-     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*" }, "option":true }'
+     '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }, "option":true }'
   */
   if (d->user)
-    discord_user_dati_free(d->user);
+    discord_user_free(d->user);
   /* specs/emoji.json:16:20
      '{ "name": "require_colons", "type":{ "base":"bool" }, "option":true}'
   */
@@ -275,8 +275,8 @@ void discord_emoji_dati_cleanup(struct discord_emoji_dati *d) {
   //p->available is a scalar
 }
 
-void discord_emoji_dati_init(struct discord_emoji_dati *p) {
-  memset(p, 0, sizeof(struct discord_emoji_dati));
+void discord_emoji_init(struct discord_emoji *p) {
+  memset(p, 0, sizeof(struct discord_emoji));
   /* specs/emoji.json:11:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}}'
   */
@@ -286,14 +286,14 @@ void discord_emoji_dati_init(struct discord_emoji_dati *p) {
   */
 
   /* specs/emoji.json:13:20
-     '{ "name": "roles", "type":{ "base":"struct discord_guild_role_dati", "dec":"ntl"}, "option":true,
+     '{ "name": "roles", "type":{ "base":"struct discord_guild_role", "dec":"ntl"}, "option":true,
           "todo":true }'
   */
 
   /* specs/emoji.json:15:20
-     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*" }, "option":true }'
+     '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }, "option":true }'
   */
-  p->user = discord_user_dati_alloc();
+  p->user = discord_user_alloc();
 
   /* specs/emoji.json:16:20
      '{ "name": "require_colons", "type":{ "base":"bool" }, "option":true}'
@@ -312,34 +312,34 @@ void discord_emoji_dati_init(struct discord_emoji_dati *p) {
   */
 
 }
-struct discord_emoji_dati* discord_emoji_dati_alloc() {
-  struct discord_emoji_dati *p= (struct discord_emoji_dati*)malloc(sizeof(struct discord_emoji_dati));
-  discord_emoji_dati_init(p);
+struct discord_emoji* discord_emoji_alloc() {
+  struct discord_emoji *p= (struct discord_emoji*)malloc(sizeof(struct discord_emoji));
+  discord_emoji_init(p);
   return p;
 }
 
-void discord_emoji_dati_free(struct discord_emoji_dati *p) {
-  discord_emoji_dati_cleanup(p);
+void discord_emoji_free(struct discord_emoji *p) {
+  discord_emoji_cleanup(p);
   free(p);
 }
 
-void discord_emoji_dati_list_free(struct discord_emoji_dati **p) {
-  ntl_free((void**)p, (vfvp)discord_emoji_dati_cleanup);
+void discord_emoji_list_free(struct discord_emoji **p) {
+  ntl_free((void**)p, (vfvp)discord_emoji_cleanup);
 }
 
-void discord_emoji_dati_list_from_json(char *str, size_t len, struct discord_emoji_dati ***p)
+void discord_emoji_list_from_json(char *str, size_t len, struct discord_emoji ***p)
 {
   struct ntl_deserializer d;
   memset(&d, 0, sizeof(d));
-  d.elem_size = sizeof(struct discord_emoji_dati);
-  d.init_elem = discord_emoji_dati_init_v;
-  d.elem_from_buf = discord_emoji_dati_from_json_v;
+  d.elem_size = sizeof(struct discord_emoji);
+  d.init_elem = discord_emoji_init_v;
+  d.elem_from_buf = discord_emoji_from_json_v;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json(str, len, &d);
 }
 
-size_t discord_emoji_dati_list_to_json(char *str, size_t len, struct discord_emoji_dati **p)
+size_t discord_emoji_list_to_json(char *str, size_t len, struct discord_emoji **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_emoji_dati_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, discord_emoji_to_json_v);
 }
 

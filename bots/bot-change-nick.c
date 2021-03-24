@@ -14,15 +14,15 @@ struct context_s {
 } cxt;
 
 void 
-on_ready(struct discord_client *client, const struct discord_user_dati *me) {
+on_ready(struct discord *client, const struct discord_user *me) {
   fprintf(stderr, "\n\nChange-Nick-Bot succesfully connected to Discord as %s#%s!\n\n",
       me->username, me->discriminator);
 }
 
 void
-on_command(struct discord_client *client,
-           const struct discord_user_dati *me,
-           const struct discord_channel_message_dati *msg)
+on_command(struct discord *client,
+           const struct discord_user *me,
+           const struct discord_message *msg)
 {
   sscanf(msg->content, "%s %s", cxt.username, cxt.nick);
   cxt.discriminator = strchr(cxt.username, '#');
@@ -38,7 +38,7 @@ on_command(struct discord_client *client,
   *cxt.discriminator = '\0'; //split at #
   ++cxt.discriminator;
 
-  NTL_T(struct discord_guild_member_dati) members = NULL;
+  NTL_T(struct discord_guild_member) members = NULL;
   struct discord_guild_list_guild_members_params params1 = {
     .limit = 1000
   };
@@ -59,7 +59,7 @@ on_command(struct discord_client *client,
     }
   }
 
-  discord_guild_member_dati_list_free(members);
+  discord_guild_member_list_free(members);
 }
 
 int main(int argc, char *argv[])
@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
 
   discord_global_init();
 
-  struct discord_client *client = discord_config_init(config_file);
+  struct discord *client = discord_config_init(config_file);
   assert(NULL != client);
 
   discord_setcb_command(client, "!nickChange", &on_command);

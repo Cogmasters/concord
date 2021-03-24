@@ -73,7 +73,7 @@ char* happiness_localised(char *happiness_band)
 
 void embed_from_json(char *str, size_t len, void *p_embed)
 {
-  struct discord_channel_embed_dati *embed = (struct discord_channel_embed_dati*)p_embed;
+  struct discord_channel_embed *embed = (struct discord_channel_embed*)p_embed;
 
   struct doc_s *doc = (struct doc_s*)malloc(sizeof *doc);
   NTL_T(struct sized_buffer) l_docs = NULL; // get docs token from JSON
@@ -238,7 +238,7 @@ void embed_from_json(char *str, size_t len, void *p_embed)
   free(l_docs);
 }
 
-void on_ready(struct discord_client *client, const struct discord_user_dati *me)
+void on_ready(struct discord *client, const struct discord_user *me)
 {
   fprintf(stderr, "\n\nEliteBGS-Bot succesfully connected to Discord as %s#%s!\n\n",
       me->username, me->discriminator);
@@ -247,9 +247,9 @@ void on_ready(struct discord_client *client, const struct discord_user_dati *me)
 }
 
 void on_command(
-    struct discord_client *client,
-    const struct discord_user_dati *me,
-    const struct discord_channel_message_dati *msg)
+    struct discord *client,
+    const struct discord_user *me,
+    const struct discord_message *msg)
 {
   // make sure bot doesn't echoes other bots
   if (msg->author->bot)
@@ -258,7 +258,7 @@ void on_command(
   update_last_tick_ms();
 
   /* Initialize embed struct that will be loaded to  */
-  struct discord_channel_embed_dati *new_embed = discord_channel_embed_dati_alloc();
+  struct discord_channel_embed *new_embed = discord_channel_embed_alloc();
 
   /* Set embed fields */
   strncpy(new_embed->title, msg->content, sizeof(new_embed->title));
@@ -299,7 +299,7 @@ void on_command(
   discord_create_message(client, msg->channel_id, &params, NULL);
 
   /* Cleanup resources */
-  discord_channel_embed_dati_free(new_embed);
+  discord_channel_embed_free(new_embed);
 }
 
 int main(int argc, char *argv[])
@@ -315,7 +315,7 @@ int main(int argc, char *argv[])
 
   /* Initialize Discord User Agent */
   discord_global_init();
-  struct discord_client *client = discord_config_init(config_file);
+  struct discord *client = discord_config_init(config_file);
   assert(NULL != client);
 
   /* Set discord callbacks */
@@ -323,8 +323,8 @@ int main(int argc, char *argv[])
   discord_setcb_command(client, "!system", &on_command);
 
   /* Set bot presence activity */
-  struct discord_gateway_identify_status_update_activity_dati *new_activity;
-  new_activity = discord_gateway_identify_status_update_activity_dati_alloc();
+  struct discord_gateway_identify_status_update_activity *new_activity;
+  new_activity = discord_gateway_identify_status_update_activity_alloc();
   strcpy(new_activity->name, "!h | cee.dev");
   new_activity->type = 0; // Playing
   discord_set_presence(client, new_activity, "online", false);

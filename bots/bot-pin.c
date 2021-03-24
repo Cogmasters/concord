@@ -5,15 +5,15 @@
 #include "libdiscord.h"
 
 
-void on_ready(struct discord_client *client, const struct discord_user_dati *me) {
+void on_ready(struct discord *client, const struct discord_user *me) {
   fprintf(stderr, "\n\nPin-Bot succesfully connected to Discord as %s#%s!\n\n",
       me->username, me->discriminator);
 }
 
 void on_message_create(
-    struct discord_client *client,
-    const struct discord_user_dati *me,
-    const struct discord_channel_message_dati *msg)
+    struct discord *client,
+    const struct discord_user *me,
+    const struct discord_message *msg)
 {
   // make sure bot ignores msgs from other bots
   if (msg->author->bot)
@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
 
   discord_global_init();
 
-  struct discord_client *client = discord_config_init(config_file);
+  struct discord *client = discord_config_init(config_file);
   assert(NULL != client);
 
   discord_setcb(client, READY, &on_ready);

@@ -10,10 +10,10 @@
 //using namespace discord;
 
 u64_snowflake_t
-select_guild(struct discord_client *client)
+select_guild(struct discord *client)
 {
   // get guilds bot is a part of
-  NTL_T(struct discord_guild_dati) guilds = NULL;
+  NTL_T(struct discord_guild) guilds = NULL;
   discord_get_current_user_guilds(client, &guilds);
   ASSERT_S(NULL != guilds, "Couldn't fetch guilds");
 
@@ -31,7 +31,7 @@ select_guild(struct discord_client *client)
     int num = strtol(strnum, NULL, 10);
     if (num > 0 && num <= i) {
       u64_snowflake_t guild_id = guilds[num-1]->id;
-      discord_guild_dati_list_free(guilds);
+      discord_guild_list_free(guilds);
       return guild_id;
     }
     fprintf(stderr, "\nPlease, insert a value between 1 and %d", i);
@@ -39,10 +39,10 @@ select_guild(struct discord_client *client)
 }
 
 u64_snowflake_t
-select_member(struct discord_client *client, u64_snowflake_t guild_id)
+select_member(struct discord *client, u64_snowflake_t guild_id)
 {
   // get guilds bot is a part of
-  NTL_T(struct discord_guild_member_dati) members = NULL;
+  NTL_T(struct discord_guild_member) members = NULL;
   struct discord_guild_list_guild_members_params params = {
     .limit = 1000,
     .after = 0
@@ -68,7 +68,7 @@ select_member(struct discord_client *client, u64_snowflake_t guild_id)
     int num = strtol(strnum, NULL, 10);
     if (num > 0 && num <= i) {
       u64_snowflake_t user_id = members[num-1]->user->id;
-      discord_guild_member_dati_list_free(members);
+      discord_guild_member_list_free(members);
       return user_id;
     }
     fprintf(stderr, "\nPlease, insert a value between 1 and %d", i);
@@ -76,9 +76,9 @@ select_member(struct discord_client *client, u64_snowflake_t guild_id)
 }
 
 void
-fetch_member_msgs(struct discord_client *client, u64_snowflake_t guild_id, u64_snowflake_t user_id)
+fetch_member_msgs(struct discord *client, u64_snowflake_t guild_id, u64_snowflake_t user_id)
 {
-  NTL_T(struct discord_channel_dati) channels = NULL;
+  NTL_T(struct discord_channel) channels = NULL;
   discord_get_channels(client, guild_id, &channels);
   ASSERT_S(NULL != channels, "Couldn't fetch channels from guild");
   
@@ -86,7 +86,7 @@ fetch_member_msgs(struct discord_client *client, u64_snowflake_t guild_id, u64_s
     .limit = 100
   };
 
-  NTL_T(struct discord_channel_message_dati) messages = NULL;
+  NTL_T(struct discord_message) messages = NULL;
   for (int i=0; channels[i]; ++i)
   {
     params.before = 0;
@@ -107,12 +107,12 @@ fetch_member_msgs(struct discord_client *client, u64_snowflake_t guild_id, u64_s
         params.before = messages[n_msg-1]->id;
       }
 
-      discord_channel_message_dati_list_free(messages);
+      discord_message_list_free(messages);
 
     } while (n_msg == params.limit);
   }
 
-  discord_channel_dati_list_free(channels);
+  discord_channel_list_free(channels);
 }
 
 int main(int argc, char *argv[])
@@ -125,7 +125,7 @@ int main(int argc, char *argv[])
 
   discord_global_init();
 
-  struct discord_client *client = discord_config_init(config_file);
+  struct discord *client = discord_config_init(config_file);
   assert(NULL != client);
 
   u64_snowflake_t guild_id = select_guild(client);

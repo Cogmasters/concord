@@ -3,7 +3,7 @@
 #include <assert.h>
 #include <libdiscord.h>
 
-void on_ready(struct discord_client *client, const struct discord_user_dati *me) {
+void on_ready(struct discord *client, const struct discord_user *me) {
   fprintf(stderr, "\n\nSuccesfully connected to Discord as %s#%s!\n\n",
       me->username, me->discriminator);
 }
@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
 
   discord_global_init();
 
-  struct discord_client *client = discord_config_init(config_file);
+  struct discord *client = discord_config_init(config_file);
   assert(NULL != client);
 
   discord_setcb(client, READY, &on_ready);

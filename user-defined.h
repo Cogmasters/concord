@@ -4,7 +4,7 @@
 
 void
 discord_delete_messages_by_author_id(
-  struct discord_client *client,
+  struct discord *client,
   u64_snowflake_t channel_id,
   u64_snowflake_t author_id);
 

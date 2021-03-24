@@ -10,10 +10,10 @@
       [
         { "name": "content", "type":{ "base":"char", "dec":"[2000+1]" }, 
           "comment":"name of the webhook(1-2000) chars" },
-        { "name": "embeds", "type":{ "base":"struct discord_channel_embed_dati", "dec":"ntl" }, 
+        { "name": "embeds", "type":{ "base":"struct discord_channel_embed", "dec":"ntl" }, 
           "comment":"array of up to 10 embeds objects" },
         { "name": "allowed_mentions", 
-          "type":{ "base":"struct discord_channel_allowed_mentions_dati", "dec":"*" }, 
+          "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, 
           "comment":"allowed mentions for the message" }
       ]
     }

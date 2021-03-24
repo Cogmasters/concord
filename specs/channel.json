@@ -1,13 +1,13 @@
 {
-  "namespace": ["discord", "channel"],
+  "namespace": ["discord"],
   "comment":"https://discord.com/developers/docs/resources/channel#channel-object-channel-types",
   "defs":
   [
     {
       "title":"Channel Types",
       "comment":"https://discord.com/developers/docs/resources/channel#channel-object-channel-types",
-      "namespace":["types"], 
-      "enum":"code",
+      "namespace":["channel"], 
+      "enum":"types",
       "items":
       [
         { "name": "GUILD_TEXT", "value":0}, 
@@ -22,16 +22,16 @@
     {
       "comment":"https://discord.com/developers/docs/resources/channel#channel-object-channel-structure",
       "title":"Channel Structure",
-      "struct":"dati",
+      "struct":"channel",
       "fields":
       [
         {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"id"},
-        {"type":{"base":"int", "int_alias":"enum discord_channel_types_code"}, "name":"type"},
+        {"type":{"base":"int", "int_alias":"enum discord_channel_types"}, "name":"type"},
         {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"guild_id",
          "option":true, "inject_if_not":0 },
         {"type":{"base":"int"}, "name":"position",
          "option":true, "inject_if_not":0 },
-        {"type":{"base":"struct discord_channel_overwrite_dati", "dec":"ntl"}, "name":"permission_overwrites",
+        {"type":{"base":"struct discord_channel_overwrite", "dec":"ntl"}, "name":"permission_overwrites",
          "option":true, "inject_if_not":null }, 
         {"type":{"base":"char", "dec":"[MAX_NAME_LEN]"}, "name":"name", 
          "option":true, "inject_if_not":""},
@@ -44,7 +44,7 @@
         {"type":{"base":"int"}, "name":"user_limit", "option":true, "inject_if_not":0},
         {"type":{"base":"int"}, "name":"rate_limit_per_user", 
          "option":true, "inject_if_not":0},
-        {"type":{"base":"struct discord_user_dati", "dec":"ntl"}, "name":"recipients",
+        {"type":{"base":"struct discord_user", "dec":"ntl"}, "name":"recipients",
          "option":true, "inject_if_not":null},
         {"type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}, "name":"icon",
          "option":true, "inject_if_not":""},
@@ -56,7 +56,7 @@
          "option":true, "inject_if_not":0},
         {"type":{"base":"char", "dec":"*", "converter":"iso8601", "nullable":true}, "name":"last_pin_timestamp",
          "option":true, "inject_if_not":0},
-        {"type":{"base":"struct discord_channel_message_dati", "dec":"ntl"}, "name":"messages"}
+        {"type":{"base":"struct discord_message", "dec":"ntl"}, "name":"messages"}
       ]
     }
   ]

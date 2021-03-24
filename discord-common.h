@@ -23,7 +23,7 @@ struct discord_adapter {
     void *routes_root; //the encountered routes tree's root
   } ratelimit;
 
-  struct discord_client *p_client; //points to client this struct is a part of
+  struct discord *p_client; //points to client this struct is a part of
 
   pthread_mutex_t lock; // used when increasing/fetching buckets
 };
@@ -65,7 +65,7 @@ struct cmd_cbs {
 };
 
 struct payload_s { /* PAYLOAD STRUCTURE */
-  enum discord_gateway_opcodes_code opcode; //field 'op'
+  enum discord_gateway_opcodes opcode; //field 'op'
   int seq_number; //field 's'
   char event_name[64]; //field 't'
   char event_data[8192]; //field 'd'
@@ -74,7 +74,7 @@ struct payload_s { /* PAYLOAD STRUCTURE */
 struct discord_gateway { /* GATEWAY STRUCTURE */
   struct websockets_s *ws;
 
-  struct discord_gateway_identify_dati *identify;
+  struct discord_gateway_identify *identify;
   char session_id[512]; //the session id (for resuming lost connections)
 
   struct payload_s payload;
@@ -115,10 +115,10 @@ struct discord_gateway { /* GATEWAY STRUCTURE */
 
   int ping_ms; //latency between client and websockets server
 
-  struct discord_user_dati *me; //the user associated with this client
+  struct discord_user *me; //the user associated with this client
   struct sized_buffer sb_me; //@todo this is temporary for wrapping JS
 
-  struct discord_client *p_client; //points to client this struct is a part of
+  struct discord *p_client; //points to client this struct is a part of
 
   pthread_mutex_t lock; //for accessing gw fields within events
 };
@@ -130,7 +130,7 @@ void discord_gateway_run(struct discord_gateway *gw);
 /* gracefully exit the infinite loop */
 void discord_gateway_shutdown(struct discord_gateway *gw);
 
-struct discord_client {
+struct discord {
   struct discord_adapter adapter;
   struct discord_gateway gw;
   void *data; //space for user arbitrary data

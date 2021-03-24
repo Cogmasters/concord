@@ -25,10 +25,9 @@
       ]
     },
     {
-      "namespace": ["intents"],
       "title":"Gateway Intents",
       "comment": "https://discord.com/developers/docs/topics/gateway#gateway-intents",
-      "enum":"code",
+      "enum":"intents",
       "items":
       [
         { "name":"GUILDS","value":1, "comment":"1 << 0"},
@@ -49,10 +48,9 @@
       ]
     },
     {
-      "namespace": ["opcodes"],
       "title":"Gateway Opcodes",
       "comment": "https://discord.com/developers/docs/topics/opcodes-and-status-codes#gateway-gateway-opcodes",
-      "enum":"code",
+      "enum":"opcodes",
       "items":
       [
         { "name":"DISPATCH","value":0},
@@ -69,42 +67,41 @@
       ]
     },
     {
-      "namespace": ["identify"],
       "title":"Identify Structure",
       "comment": "https://discord.com/developers/docs/topics/gateway#identify-identify-structure",
-      "struct":"dati",
+      "struct":"identify",
       "fields":
       [
         { "name":"token","type":{"base":"char", "dec":"*"}},
-        { "name":"properties","type":{"base":"struct discord_gateway_identify_connection_dati", "dec":"*"}},
+        { "name":"properties","type":{"base":"struct discord_gateway_identify_connection", "dec":"*"}},
         { "name":"compress","type":{"base":"bool"}},
         { "name":"large_threshold","type":{"base":"int"}},
         { "name":"guild_subscriptions","type":{"base":"bool"}},
         { "name":"shard","type":{"base":"int", "dec":"*"}, "todo":true},
-        { "name":"presence","type":{"base":"struct discord_gateway_identify_status_update_dati", "dec":"*"}},
+        { "name":"presence","type":{"base":"struct discord_gateway_identify_status_update", "dec":"*"}},
         { "name":"intents","type":{"base":"int"}}
       ]
     },
     {
-      "namespace": ["identify", "status_update"],
+      "namespace": ["identify"],
       "title":"Gateway Status Update Structure",
       "comment": "https://discord.com/developers/docs/topics/gateway#update-status-gateway-status-update-structure",
-      "struct":"dati",
+      "struct":"status_update",
       "fields":
       [
         { "name":"since","type":{"base":"char", "dec":"*", "converter":"iso8601"},
           "option":true, "inject_if_not":0 },
-        { "name":"activities","type":{"base":"struct discord_gateway_identify_status_update_activity_dati", "dec":"ntl"}, 
+        { "name":"activities","type":{"base":"struct discord_gateway_identify_status_update_activity", "dec":"ntl"}, 
           "option":true, "inject_if_not":null},
         { "name":"status","type":{"base":"char", "dec":"[16]"}},
         { "name":"afk","type":{"base":"bool"}} 
       ]
     },
     {
-      "namespace": ["identify", "connection"],
+      "namespace": ["identify"],
       "title": "Identify Connection Properties",
       "comment": "https://discord.com/developers/docs/topics/gateway#identify-identify-connection-properties",
-      "struct":"dati",
+      "struct":"connection",
       "fields":
       [
         { "name":"$os", "type":{"base":"char", "dec":"*"}},
@@ -113,10 +110,10 @@
       ]
     },
     {
-      "namespace": ["identify", "status_update", "activity"],
+      "namespace": ["identify", "status_update"],
       "title":"Activity Structure",
       "comment": "https://discord.com/developers/docs/topics/gateway#activity-object-activity-structure",
-      "struct":"dati",
+      "struct":"activity",
       "fields":
       [
         { "name":"name","type":{"base":"char", "dec":"[512]"}},
@@ -136,10 +133,10 @@
       ]
     },
     {
-      "namespace": ["identify", "status_update", "activity", "types"],
+      "namespace": ["identify", "status_update", "activity"],
       "title":"Activity Types",
       "comment": "https://discord.com/developers/docs/topics/gateway#activity-object-activity-types",
-      "enum":"code",
+      "enum":"types",
       "items":
       [
         { "name":"GAME","value":0},

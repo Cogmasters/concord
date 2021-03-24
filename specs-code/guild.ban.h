@@ -3,17 +3,17 @@
 https://discord.com/developers/docs/resources/guild#ban-object
 */
 
-/* This is defined at specs/guild.ban.json:9:22 */
-struct discord_guild_ban_dati {
-  /* specs/guild.ban.json:12:20
+/* This is defined at specs/guild.ban.json:7:22 */
+struct discord_guild_ban {
+  /* specs/guild.ban.json:10:20
      '{ "name": "reason", "type":{ "base":"char", "dec":"[MAX_REASON_LEN]" }}'
   */
   char reason[MAX_REASON_LEN];
 
-  /* specs/guild.ban.json:13:20
-     '{ "name": "user", "type":{ "base":"struct discord_user_dati", "dec":"*"}, "comment":"partial user object"}'
+  /* specs/guild.ban.json:11:20
+     '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*"}, "comment":"partial user object"}'
   */
-  struct discord_user_dati *user; // partial user object
+  struct discord_user *user; // partial user object
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -28,22 +28,22 @@ struct discord_guild_ban_dati {
     void *record_null[2];
   } __M; // metadata
 };
-extern void discord_guild_ban_dati_cleanup_v(void *p);
-extern void discord_guild_ban_dati_cleanup(struct discord_guild_ban_dati *p);
-extern void discord_guild_ban_dati_init_v(void *p);
-extern void discord_guild_ban_dati_init(struct discord_guild_ban_dati *p);
-extern struct discord_guild_ban_dati * discord_guild_ban_dati_alloc();
-extern void discord_guild_ban_dati_free_v(void *p);
-extern void discord_guild_ban_dati_free(struct discord_guild_ban_dati *p);
-extern void discord_guild_ban_dati_from_json_v(char *json, size_t len, void *p);
-extern void discord_guild_ban_dati_from_json(char *json, size_t len, struct discord_guild_ban_dati *p);
-extern size_t discord_guild_ban_dati_to_json_v(char *json, size_t len, void *p);
-extern size_t discord_guild_ban_dati_to_json(char *json, size_t len, struct discord_guild_ban_dati *p);
-extern size_t discord_guild_ban_dati_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_guild_ban_dati_to_query(char *json, size_t len, struct discord_guild_ban_dati *p);
-extern void discord_guild_ban_dati_list_free_v(void **p);
-extern void discord_guild_ban_dati_list_free(struct discord_guild_ban_dati **p);
-extern void discord_guild_ban_dati_list_from_json_v(char *str, size_t len, void *p);
-extern void discord_guild_ban_dati_list_from_json(char *str, size_t len, struct discord_guild_ban_dati ***p);
-extern size_t discord_guild_ban_dati_list_to_json_v(char *str, size_t len, void *p);
-extern size_t discord_guild_ban_dati_list_to_json(char *str, size_t len, struct discord_guild_ban_dati **p);
+extern void discord_guild_ban_cleanup_v(void *p);
+extern void discord_guild_ban_cleanup(struct discord_guild_ban *p);
+extern void discord_guild_ban_init_v(void *p);
+extern void discord_guild_ban_init(struct discord_guild_ban *p);
+extern struct discord_guild_ban * discord_guild_ban_alloc();
+extern void discord_guild_ban_free_v(void *p);
+extern void discord_guild_ban_free(struct discord_guild_ban *p);
+extern void discord_guild_ban_from_json_v(char *json, size_t len, void *p);
+extern void discord_guild_ban_from_json(char *json, size_t len, struct discord_guild_ban *p);
+extern size_t discord_guild_ban_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_guild_ban_to_json(char *json, size_t len, struct discord_guild_ban *p);
+extern size_t discord_guild_ban_to_query_v(char *json, size_t len, void *p);
+extern size_t discord_guild_ban_to_query(char *json, size_t len, struct discord_guild_ban *p);
+extern void discord_guild_ban_list_free_v(void **p);
+extern void discord_guild_ban_list_free(struct discord_guild_ban **p);
+extern void discord_guild_ban_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_guild_ban_list_from_json(char *str, size_t len, struct discord_guild_ban ***p);
+extern size_t discord_guild_ban_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_guild_ban_list_to_json(char *str, size_t len, struct discord_guild_ban **p);

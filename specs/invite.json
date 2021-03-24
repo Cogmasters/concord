@@ -1,13 +1,13 @@
 {
-  "namespace": ["discord", "invite"],
+  "namespace": ["discord"],
   "comment": "https://discord.com/developers/docs/resources/invite#invite-object",
   "defs":
   [
     {
       "title":"Target User Types",
       "comment":"https://discord.com/developers/docs/resources/invite#invite-object-target-user-types",
-      "namespace":["target_user_types"],
-      "enum":"code",
+      "namespace":["invite"],
+      "enum":"target_user_types",
       "items":
       [
         {"name":"STREAM", "value":1}
@@ -16,15 +16,15 @@
     {
       "title":"Invite Structure",
       "comment":"https://discord.com/developers/docs/resources/invite#invite-object-invite-structure",
-      "struct":"dati",
+      "struct":"invite",
       "fields":
       [
         { "name": "code", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"},
-        { "name": "guild", "type":{ "base":"struct discord_guild_dati", "dec":"*"}, "comment":"partial guild object"},
-        { "name": "channel", "type":{ "base":"struct discord_channel_dati", "dec":"*"}, "comment":"partial channel object"},
-        { "name": "inviter", "type":{ "base":"struct discord_user_dati", "dec":"*"}},
-        { "name": "target_user", "type":{ "base":"struct discord_user_dati", "dec":"*"}, "comment":"partial user object"},
-        { "name": "target_user_type", "type":{ "base":"int", "int_alias":"enum discord_invite_target_user_types_code" }},
+        { "name": "guild", "type":{ "base":"struct discord_guild", "dec":"*"}, "comment":"partial guild object"},
+        { "name": "channel", "type":{ "base":"struct discord_channel", "dec":"*"}, "comment":"partial channel object"},
+        { "name": "inviter", "type":{ "base":"struct discord_user", "dec":"*"}},
+        { "name": "target_user", "type":{ "base":"struct discord_user", "dec":"*"}, "comment":"partial user object"},
+        { "name": "target_user_type", "type":{ "base":"int", "int_alias":"enum discord_invite_target_user_types" }},
         { "name": "approximate_presence_count", "type":{ "base":"int" }},
         { "name": "approximate_member_count", "type":{ "base":"int" }}
       ]
@@ -32,8 +32,8 @@
     {
       "comment":"https://discord.com/developers/docs/resources/invite#invite-metadata-object",
       "title":"Invite Metadata Structure",
-      "namespace":["metadata"],
-      "struct":"dati",
+      "namespace":["invite"],
+      "struct":"metadata",
       "fields":
       [
         { "name": "user", "type":{ "base":"int" }},

@@ -5,8 +5,8 @@
   [
     {
       "title":"Role Tags Structure",
-      "namespace":["role", "tags"],
-      "struct":"dati",
+      "namespace":["role"],
+      "struct":"tags",
       "fields":
       [
         { "name": "bot_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
@@ -16,8 +16,7 @@
     },
     {
       "title":"Role Object",
-      "namespace":["role"],
-      "struct":"dati",
+      "struct":"role",
       "fields":
       [
         { "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
@@ -28,7 +27,7 @@
         { "name": "permissions", "type":{ "base":"char", "dec":"*" }},
         { "name": "managed", "type":{ "base":"bool" }},
         { "name": "mentionable", "type":{ "base":"bool" }},
-        { "name": "tags", "type":{"base":"struct discord_guild_role_tags_dati", "dec":"*"}}
+        { "name": "tags", "type":{"base":"struct discord_guild_role_tags", "dec":"*"}}
       ]
     }
   ]

@@ -7,21 +7,21 @@
 
 
 
-void on_ready(struct discord_client *client, const struct discord_user_dati *me) {
+void on_ready(struct discord *client, const struct discord_user *me) {
   fprintf(stderr, "\n\nCreate-Channel-Bot succesfully connected to Discord as %s#%s!\n\n",
       me->username, me->discriminator);
 }
 
 void on_create(
-    struct discord_client *client,
-    const struct discord_user_dati *me,
-    const struct discord_channel_message_dati *msg)
+    struct discord *client,
+    const struct discord_user *me,
+    const struct discord_message *msg)
 {
   // make sure bot doesn't echoes other bots
   if (msg->author->bot)
     return;
 
-  struct discord_channel_dati *channel = discord_channel_dati_alloc();
+  struct discord_channel *channel = discord_channel_alloc();
 
   struct discord_guild_create_channel_params params1 = {
     .name = msg->content
@@ -35,13 +35,13 @@ void on_create(
     discord_create_message(client, channel->id, &params2, NULL);
   }
 
-  discord_channel_dati_free(channel);
+  discord_channel_free(channel);
 }
 
 void on_delete(
-    struct discord_client *client,
-    const struct discord_user_dati *me,
-    const struct discord_channel_message_dati *msg)
+    struct discord *client,
+    const struct discord_user *me,
+    const struct discord_message *msg)
 {
   // make sure bot doesn't echoes other bots
   if (msg->author->bot)
@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
 
   discord_global_init();
 
-  struct discord_client *client = discord_config_init(config_file);
+  struct discord *client = discord_config_init(config_file);
   assert(NULL != client);
 
   discord_set_prefix(client, "!channel");

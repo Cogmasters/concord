@@ -7,7 +7,7 @@
 #include "orka-utils.h"
 
 void
-discord_channel_message_dati_from_json(char *str, size_t len, struct discord_channel_message_dati *message)
+discord_message_from_json(char *str, size_t len, struct discord_message *message)
 {
   if (message->nonce) {
     free(message->nonce);
@@ -18,7 +18,7 @@ discord_channel_message_dati_from_json(char *str, size_t len, struct discord_cha
     message->content = NULL;
   }
 
-  message->referenced_message = discord_channel_message_dati_alloc();
+  message->referenced_message = discord_message_alloc();
 
   json_scanf(str, len,
      "[id]%F"
@@ -41,8 +41,8 @@ discord_channel_message_dati_from_json(char *str, size_t len, struct discord_cha
       &orka_strtoull, &message->id,
       &orka_strtoull, &message->channel_id,
       &orka_strtoull, &message->guild_id,
-      &discord_user_dati_from_json, message->author,
-      &discord_guild_member_dati_from_json, message->member,
+      &discord_user_from_json, message->author,
+      &discord_guild_member_from_json, message->member,
       &message->content,
       &orka_iso8601_to_unix_ms, &message->timestamp,
       &orka_iso8601_to_unix_ms, &message->edited_timestamp,
@@ -53,17 +53,17 @@ discord_channel_message_dati_from_json(char *str, size_t len, struct discord_cha
       &orka_strtoull, &message->webhook_id,
       &message->type,
       &message->flags,
-      &discord_channel_message_dati_from_json, message->referenced_message);
+      &discord_message_from_json, message->referenced_message);
 
   if(!message->referenced_message->id) {
-    discord_channel_message_dati_free(message->referenced_message);
+    discord_message_free(message->referenced_message);
     message->referenced_message = NULL;
   }
 
   DS_NOTOP_PUTS("Message object loaded with API response"); 
 }
 
-void discord_channel_overwrite_dati_from_json(char *json, size_t len, struct discord_channel_overwrite_dati *p)
+void discord_channel_overwrite_from_json(char *json, size_t len, struct discord_channel_overwrite *p)
 {
   static size_t ret=0; //used for debugging
   size_t r=0;
@@ -89,7 +89,7 @@ void discord_channel_overwrite_dati_from_json(char *json, size_t len, struct dis
 }
 
 size_t 
-discord_channel_overwrite_dati_to_json(char *json, size_t len, struct discord_channel_overwrite_dati *p)
+discord_channel_overwrite_to_json(char *json, size_t len, struct discord_channel_overwrite *p)
 {
   size_t r;
   r=json_inject(json, len,
@@ -108,7 +108,7 @@ discord_channel_overwrite_dati_to_json(char *json, size_t len, struct discord_ch
 
 void
 discord_embed_set_footer(
-  struct discord_channel_embed_dati *embed, 
+  struct discord_channel_embed *embed, 
   char text[], 
   char icon_url[], 
   char proxy_icon_url[])
@@ -122,7 +122,7 @@ discord_embed_set_footer(
     free(embed->footer);
   }
 
-  struct discord_channel_embed_footer_dati *new_footer = discord_channel_embed_footer_dati_alloc();
+  struct discord_channel_embed_footer *new_footer = discord_channel_embed_footer_alloc();
   strncpy(new_footer->text, text, EMBED_FOOTER_TEXT_LEN);
   if (!IS_EMPTY_STRING(icon_url))
     strncpy(new_footer->icon_url, icon_url, MAX_URL_LEN);
@@ -134,7 +134,7 @@ discord_embed_set_footer(
 
 void
 discord_embed_set_thumbnail(
-  struct discord_channel_embed_dati *embed, 
+  struct discord_channel_embed *embed, 
   char url[], 
   char proxy_url[], 
   int height, 
@@ -144,7 +144,7 @@ discord_embed_set_thumbnail(
     free(embed->thumbnail);
   }
 
-  struct discord_channel_embed_thumbnail_dati *new_thumbnail = discord_channel_embed_thumbnail_dati_alloc();
+  struct discord_channel_embed_thumbnail *new_thumbnail = discord_channel_embed_thumbnail_alloc();
   if (!IS_EMPTY_STRING(url))
     strncpy(new_thumbnail->url, url, MAX_URL_LEN);
   if (!IS_EMPTY_STRING(proxy_url))
@@ -159,7 +159,7 @@ discord_embed_set_thumbnail(
 
 void
 discord_embed_set_image(
-  struct discord_channel_embed_dati *embed, 
+  struct discord_channel_embed *embed, 
   char url[], 
   char proxy_url[], 
   int height, 
@@ -169,7 +169,7 @@ discord_embed_set_image(
     free(embed->image);
   }
 
-  struct discord_channel_embed_image_dati *new_image = discord_channel_embed_image_dati_alloc();
+  struct discord_channel_embed_image *new_image = discord_channel_embed_image_alloc();
   if (!IS_EMPTY_STRING(url))
     strncpy(new_image->url, url, MAX_URL_LEN);
   if (!IS_EMPTY_STRING(proxy_url))
@@ -184,7 +184,7 @@ discord_embed_set_image(
 
 void
 discord_embed_set_video(
-  struct discord_channel_embed_dati *embed, 
+  struct discord_channel_embed *embed, 
   char url[], 
   char proxy_url[], 
   int height, 
@@ -194,7 +194,7 @@ discord_embed_set_video(
     free(embed->video);
   }
 
-  struct discord_channel_embed_video_dati *new_video = discord_channel_embed_video_dati_alloc();
+  struct discord_channel_embed_video *new_video = discord_channel_embed_video_alloc();
   if (!IS_EMPTY_STRING(url))
     strncpy(new_video->url, url, MAX_URL_LEN);
   if (!IS_EMPTY_STRING(proxy_url))
@@ -208,13 +208,13 @@ discord_embed_set_video(
 }
 
 void
-discord_embed_set_provider(struct discord_channel_embed_dati *embed, char name[], char url[])
+discord_embed_set_provider(struct discord_channel_embed *embed, char name[], char url[])
 {
   if (embed->provider) {
     free(embed->provider);
   }
 
-  struct discord_channel_embed_provider_dati *new_provider = discord_channel_embed_provider_dati_alloc();
+  struct discord_channel_embed_provider *new_provider = discord_channel_embed_provider_alloc();
   if (!IS_EMPTY_STRING(url))
     strncpy(new_provider->url, url, MAX_URL_LEN);
   if (!IS_EMPTY_STRING(name))
@@ -225,7 +225,7 @@ discord_embed_set_provider(struct discord_channel_embed_dati *embed, char name[]
 
 void
 discord_embed_set_author(
-  struct discord_channel_embed_dati *embed, 
+  struct discord_channel_embed *embed, 
   char name[], 
   char url[], 
   char icon_url[], 
@@ -235,7 +235,7 @@ discord_embed_set_author(
     free(embed->author);
   }
 
-  struct discord_channel_embed_author_dati *new_author = discord_channel_embed_author_dati_alloc();
+  struct discord_channel_embed_author *new_author = discord_channel_embed_author_alloc();
   if (!IS_EMPTY_STRING(name))
     strncpy(new_author->name, name, EMBED_AUTHOR_NAME_LEN);
   if (!IS_EMPTY_STRING(url))
@@ -249,7 +249,7 @@ discord_embed_set_author(
 }
 
 void
-discord_embed_add_field(struct discord_channel_embed_dati *embed, char name[], char value[], bool Inline)
+discord_embed_add_field(struct discord_channel_embed *embed, char name[], char value[], bool Inline)
 {
   if (IS_EMPTY_STRING(name)) {
     D_PUTS("Missing 'name'");
@@ -266,20 +266,20 @@ discord_embed_add_field(struct discord_channel_embed_dati *embed, char name[], c
     return;
   }
 
-  struct discord_channel_embed_field_dati new_field;
-  discord_channel_embed_field_dati_init(&new_field);
+  struct discord_channel_embed_field new_field;
+  discord_channel_embed_field_init(&new_field);
   strncpy(new_field.name, name, EMBED_FIELD_NAME_LEN);
   strncpy(new_field.value, value, EMBED_FIELD_VALUE_LEN);
   new_field.Inline = Inline;
 
-  embed->fields = (NTL_T(struct discord_channel_embed_field_dati))ntl_append(
+  embed->fields = (NTL_T(struct discord_channel_embed_field))ntl_append(
                         (NTL_T(void))embed->fields, 
-                        sizeof(struct discord_channel_embed_field_dati), &new_field);
+                        sizeof(struct discord_channel_embed_field), &new_field);
 }
 
 void
 discord_overwrite_append(
-  NTL_T(struct discord_channel_overwrite_dati) *permission_overwrites, 
+  NTL_T(struct discord_channel_overwrite) *permission_overwrites, 
   u64_snowflake_t id, 
   int type, 
   enum discord_permissions_bitwise_flags allow, 
@@ -294,20 +294,20 @@ discord_overwrite_append(
     return;
   }
 
-  struct discord_channel_overwrite_dati new_overwrite;
-  discord_channel_overwrite_dati_init(&new_overwrite);
+  struct discord_channel_overwrite new_overwrite;
+  discord_channel_overwrite_init(&new_overwrite);
   new_overwrite.id = id;
   new_overwrite.type = type;
   new_overwrite.allow = allow;
   new_overwrite.deny = deny;
 
-  *permission_overwrites = (NTL_T(struct discord_channel_overwrite_dati))ntl_append(
+  *permission_overwrites = (NTL_T(struct discord_channel_overwrite))ntl_append(
                             (NTL_T(void))*permission_overwrites, 
-                            sizeof(struct discord_channel_overwrite_dati), &new_overwrite);
+                            sizeof(struct discord_channel_overwrite), &new_overwrite);
 }
 
 void
-discord_get_channel(struct discord_client *client, const u64_snowflake_t channel_id, struct discord_channel_dati *p_channel)
+discord_get_channel(struct discord *client, const u64_snowflake_t channel_id, struct discord_channel *p_channel)
 {
   if (!channel_id) {
     D_PUTS("Missing 'channel_id");
@@ -315,7 +315,7 @@ discord_get_channel(struct discord_client *client, const u64_snowflake_t channel
   }
 
   struct resp_handle resp_handle =
-    { .ok_cb = &discord_channel_dati_from_json_v, .ok_obj = (void*)p_channel};
+    { .ok_cb = &discord_channel_from_json_v, .ok_obj = (void*)p_channel};
 
   discord_adapter_run(
     &client->adapter,
@@ -326,7 +326,7 @@ discord_get_channel(struct discord_client *client, const u64_snowflake_t channel
 }
 
 void
-discord_delete_channel(struct discord_client *client, const u64_snowflake_t channel_id, struct discord_channel_dati *p_channel)
+discord_delete_channel(struct discord *client, const u64_snowflake_t channel_id, struct discord_channel *p_channel)
 {
   if (!channel_id) {
     D_PUTS("Missing 'channel_id");
@@ -334,7 +334,7 @@ discord_delete_channel(struct discord_client *client, const u64_snowflake_t chan
   }
 
   struct resp_handle resp_handle = {
-    .ok_cb = p_channel ? discord_channel_dati_from_json_v : NULL,
+    .ok_cb = p_channel ? discord_channel_from_json_v : NULL,
     .ok_obj = p_channel,
   };
 
@@ -348,7 +348,7 @@ discord_delete_channel(struct discord_client *client, const u64_snowflake_t chan
 
 void
 discord_add_pinned_channel_message(
-  struct discord_client *client, 
+  struct discord *client, 
   const u64_snowflake_t channel_id, 
   const u64_snowflake_t message_id)
 {
@@ -371,7 +371,7 @@ discord_add_pinned_channel_message(
 
 void
 discord_delete_pinned_channel_message(
-  struct discord_client *client, 
+  struct discord *client, 
   const u64_snowflake_t channel_id, 
   const u64_snowflake_t message_id)
 {
@@ -394,10 +394,10 @@ discord_delete_pinned_channel_message(
 
 void
 discord_get_channel_messages(
-  struct discord_client *client, 
+  struct discord *client, 
   const u64_snowflake_t channel_id, 
   struct discord_channel_get_channel_messages_params *params, 
-  NTL_T(struct discord_channel_message_dati) *p_messages)
+  NTL_T(struct discord_message) *p_messages)
 {
   if (!channel_id) {
     D_PUTS("Missing 'channel_id'");
@@ -435,7 +435,7 @@ discord_get_channel_messages(
   }
 
   struct resp_handle resp_handle = 
-    { .ok_cb = &discord_channel_message_dati_list_from_json_v, .ok_obj = (void*)p_messages};
+    { .ok_cb = &discord_message_list_from_json_v, .ok_obj = (void*)p_messages};
 
   discord_adapter_run( 
     &client->adapter,
@@ -448,7 +448,7 @@ discord_get_channel_messages(
 
 void
 discord_delete_message(
-  struct discord_client *client, 
+  struct discord *client, 
   u64_snowflake_t channel_id, 
   u64_snowflake_t message_id)
 {
@@ -496,10 +496,10 @@ curl_mime_cb(CURL *ehandle, void *data)
 
 void
 discord_create_message(
-  struct discord_client *client, 
+  struct discord *client, 
   const u64_snowflake_t channel_id, 
   struct discord_channel_create_message_params *params, 
-  struct discord_channel_message_dati *p_message)
+  struct discord_message *p_message)
 {
   if (ws_get_status(client->gw.ws) != WS_CONNECTED) {
     D_PUTS("Can't perform action unless client has an active"
@@ -516,7 +516,7 @@ discord_create_message(
   }
 
   struct resp_handle resp_handle = {
-    .ok_cb = p_message ? &discord_channel_message_dati_from_json_v : NULL,
+    .ok_cb = p_message ? &discord_message_from_json_v : NULL,
     .ok_obj = p_message,
   };
 
@@ -564,11 +564,11 @@ discord_create_message(
         params->content,
         params->nonce,
         &params->tts,
-        &discord_channel_embed_dati_to_json, params->embed,
+        &discord_channel_embed_to_json, params->embed,
         /* @todo
         params->allowed_mentions,
         */
-        &discord_channel_message_reference_dati_to_json, params->message_reference,
+        &discord_message_reference_to_json, params->message_reference,
         A, sizeof(A));
 
     struct sized_buffer req_body = {payload, strlen(payload)};
@@ -599,11 +599,11 @@ discord_create_message(
 
 void
 discord_edit_message(
-  struct discord_client *client, 
+  struct discord *client, 
   const u64_snowflake_t channel_id, 
   const u64_snowflake_t message_id, 
   struct discord_channel_edit_message_params *params, 
-  struct discord_channel_message_dati *p_message)
+  struct discord_message *p_message)
 {
   if (!channel_id) {
     D_PUTS("Missing 'channel_id'");
@@ -619,7 +619,7 @@ discord_edit_message(
   }
 
   struct resp_handle resp_handle = {
-    .ok_cb = p_message ? &discord_channel_message_dati_from_json_v : NULL,
+    .ok_cb = p_message ? &discord_message_from_json_v : NULL,
     .ok_obj = p_message,
   };
 
@@ -639,10 +639,10 @@ discord_edit_message(
     //"(allowed_mentions):F"
     "@arg_switches",
     params->content,
-    &discord_channel_embed_dati_to_json, params->embed,
+    &discord_channel_embed_to_json, params->embed,
     params->flags,
     A, sizeof(A));
-    //&allowed_mentions_dati_to_json, params->allowed_mentions);
+    //&allowed_mentions_to_json, params->allowed_mentions);
 
   struct sized_buffer req_body = { payload, strlen(payload) };
 
@@ -655,7 +655,7 @@ discord_edit_message(
 
 void 
 discord_create_reaction(
-  struct discord_client *client, 
+  struct discord *client, 
   const u64_snowflake_t channel_id, 
   const u64_snowflake_t message_id, 
   const u64_snowflake_t emoji_id, 
@@ -692,7 +692,7 @@ discord_create_reaction(
 }
 
 void
-discord_trigger_typing_indicator(struct discord_client* client, u64_snowflake_t channel_id)
+discord_trigger_typing_indicator(struct discord* client, u64_snowflake_t channel_id)
 {
   if (!channel_id) {
     D_PUTS("Missing 'channel_id");

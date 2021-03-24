@@ -49,10 +49,10 @@ struct discord_guild_create_guild_params {
   //@todo roles new guild roles;
 
   /* specs/guild.create-guild.json:25:20
-     '{ "name": "channels", "type":{ "base":"struct discord_channel_dati", "dec":"ntl" }, 
+     '{ "name": "channels", "type":{ "base":"struct discord_channel", "dec":"ntl" }, 
           "option":true, "inject_if_not":null, "comment":"array of partial channel objects"}'
   */
-  struct discord_channel_dati **channels; // array of partial channel objects
+  struct discord_channel **channels; // array of partial channel objects
 
   /* specs/guild.create-guild.json:27:20
      '{ "name": "afk_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, 

@@ -5,14 +5,13 @@
     {
       "title":"Voice State Object",
       "comment": "https://discord.com/developers/docs/resources/voice#voice-state-object-voice-state-structure",
-      "namespace":["voice"],
-      "struct":"dati",
+      "struct":"voice",
       "fields":
       [
         { "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
         { "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}},
         { "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
-        { "name": "member", "type":{ "base":"struct discord_guild_member_dati", "dec":"*" }},
+        { "name": "member", "type":{ "base":"struct discord_guild_member", "dec":"*" }},
         { "name": "session_id", "type":{ "base":"char", "dec":"*" }},
         { "name": "deaf", "type":{ "base":"bool" }},
         { "name": "mute", "type":{ "base":"bool" }},
@@ -26,8 +25,8 @@
     {
       "title":"Voice Region Object",
       "comment":"https://discord.com/developers/docs/resources/voice#voice-region-object-voice-region-structure",
-      "namespace": ["voice", "region"],
-      "struct":"dati",
+      "namespace": ["voice"],
+      "struct":"region",
       "fields":
       [
         { "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" },

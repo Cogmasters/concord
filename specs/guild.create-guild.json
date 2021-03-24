@@ -22,7 +22,7 @@
           "option":true, "inject_if_not":0, "comment":"explicit content filter level"},
         { "name": "roles", "type":{ "base":"int" }, 
           "todo":true, "comment":"new guild roles" },
-        { "name": "channels", "type":{ "base":"struct discord_channel_dati", "dec":"ntl" }, 
+        { "name": "channels", "type":{ "base":"struct discord_channel", "dec":"ntl" }, 
           "option":true, "inject_if_not":null, "comment":"array of partial channel objects"},
         { "name": "afk_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, 
           "option":true, "inject_if_not":0, "comment":"id for afk channel"},

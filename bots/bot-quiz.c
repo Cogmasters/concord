@@ -103,19 +103,19 @@ parse_session_config()
 }
 
 void 
-on_ready(struct discord_client *client, const struct discord_user_dati *me) {
+on_ready(struct discord *client, const struct discord_user *me) {
   fprintf(stderr, "\n\nQuiz-Bot succesfully connected to Discord as %s#%s!\n\n",
       me->username, me->discriminator);
 }
 
 void
 close_existing_sessions(
-  struct discord_client *client,
+  struct discord *client,
   const u64_snowflake_t guild_id,
-  const struct discord_guild_member_dati *member)
+  const struct discord_guild_member *member)
 {
   /* Check if user already has a session role assigned to */
-  NTL_T(struct discord_guild_role_dati) rls = NULL;
+  NTL_T(struct discord_guild_role) rls = NULL;
   discord_get_guild_roles(client, guild_id, &rls);
 
   for (size_t i=0; rls[i]; ++i) {
@@ -139,17 +139,17 @@ close_existing_sessions(
     }
   }
 
-  discord_guild_role_dati_list_free(rls);
+  discord_guild_role_list_free(rls);
 }
 
 u64_snowflake_t
 create_session_channel(
-  struct discord_client *client,
+  struct discord *client,
   const u64_snowflake_t guild_id,
-  const struct discord_guild_member_dati *member)
+  const struct discord_guild_member *member)
 {
-  struct discord_channel_dati ch;
-  discord_channel_dati_init(&ch);
+  struct discord_channel ch;
+  discord_channel_init(&ch);
 
   struct discord_guild_create_channel_params params1 = {
     .name = g_session.chat_name,
@@ -205,17 +205,17 @@ create_session_channel(
 
 u64_snowflake_t
 add_session_role(
-  struct discord_client *client,
+  struct discord *client,
   const u64_snowflake_t guild_id, 
   const u64_snowflake_t channel_id,
-  const struct discord_guild_member_dati *member)
+  const struct discord_guild_member *member)
 {
   char text[64];
   snprintf(text, sizeof(text), \
     "TMP%" PRIu64 "_%" PRIu64, member->user->id, channel_id);
 
-  struct discord_guild_role_dati ret_role;
-  discord_guild_role_dati_init(&ret_role);
+  struct discord_guild_role ret_role;
+  discord_guild_role_init(&ret_role);
   struct discord_guild_create_guild_role_params params2 = {
     .name = text
   };
@@ -238,9 +238,9 @@ add_session_role(
 }
 
 void start_new_session(
-  struct discord_client *client,
+  struct discord *client,
   const u64_snowflake_t guild_id,
-  const struct discord_guild_member_dati *member)
+  const struct discord_guild_member *member)
 {
   close_existing_sessions(client, guild_id, member);
 
@@ -255,7 +255,7 @@ void start_new_session(
     return; // couldn't create role, delete channel and return
   }
 
-  struct discord_channel_message_dati *ret_msg = discord_channel_message_dati_alloc();
+  struct discord_message *ret_msg = discord_message_alloc();
   struct discord_channel_create_message_params params = {
     .content = "Would you like to start?"
   };
@@ -268,11 +268,11 @@ void start_new_session(
     0, 
     g_session.reaction_emoji);
 
-  discord_channel_message_dati_free(ret_msg);
+  discord_message_free(ret_msg);
 }
 
 void send_next_question(
-  struct discord_client *client,
+  struct discord *client,
   u64_snowflake_t channel_id,
   struct session *session, 
   struct question *question)
@@ -300,7 +300,7 @@ void send_next_question(
       'A'+ i, question->answers[i].desc);
   }
 
-  struct discord_channel_message_dati *ret_msg = discord_channel_message_dati_alloc();
+  struct discord_message *ret_msg = discord_message_alloc();
   struct discord_channel_create_message_params params = {
     .content = text
   };
@@ -314,19 +314,19 @@ void send_next_question(
       0, 
       ALPHA_EMOJI[i]);
   }
-  discord_channel_message_dati_free(ret_msg);
+  discord_message_free(ret_msg);
 
   session->status = RUNNING;
 }
 
 void on_reaction_add(
-    struct discord_client *client,
-    const struct discord_user_dati *me,
+    struct discord *client,
+    const struct discord_user *me,
     const u64_snowflake_t channel_id, 
     const u64_snowflake_t message_id, 
     const u64_snowflake_t guild_id, 
-    const struct discord_guild_member_dati *member,
-    const struct discord_emoji_dati *emoji)
+    const struct discord_guild_member *member,
+    const struct discord_emoji *emoji)
 {
   if (member->user->bot) 
     return; // ignore bots
@@ -391,7 +391,7 @@ int main(int argc, char *argv[])
 
   discord_global_init();
 
-  struct discord_client *client = discord_config_init(config_file);
+  struct discord *client = discord_config_init(config_file);
   assert(NULL != client);
 
   discord_setcb(client, MESSAGE_REACTION_ADD, &on_reaction_add);
