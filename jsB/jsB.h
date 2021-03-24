@@ -1,8 +1,6 @@
 #ifndef JSB_H
 #define JSB_H
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include "mujs.h"
 
 FILE* jsB_log_file();
 void jsB_log(char *fmt, ...);
@@ -16,9 +14,5 @@ void jsB_me_channel(js_State *J,
                     uint64_t author_id,
                     uint64_t channel_id,
                     uint64_t message_id);
-
-#ifdef __cplusplus
-}
-#endif // __cplusplus
 
 #endif //JSB_H

@@ -1,8 +1,13 @@
+#include <stdio.h>
+#include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
+#include "json-scanf.h"
 #include "jsB.h"
 #include "mujs.h"
 #define TAG  "SB"
 
-static SB_ator(char *pos, size_t s)
+static void* SB_ator(char *pos, size_t s)
 {
   fprintf(stderr, "%.*s\n", s, pos);
   char *p = malloc(s);
@@ -25,11 +30,11 @@ static void new_SB(js_State * J)
   else {
     // custom configuration
     const char *config = js_tostring(J, 1);
-    req = SB_ator(config);
+    req = SB_ator(config, 0);
   }
   js_currentfunction(J);
   js_getproperty(J, -1, "prototype");
-  js_newuserdata(J, TAG, req, dtor);
+  js_newuserdata(J, TAG, req, SB_dtor);
 }
 
 static void prototype_json(js_State *J) {
@@ -49,7 +54,7 @@ static void prototype_json(js_State *J) {
     fwrite(response, strlen(response), 1, f);
     fclose(f);
     fprintf(stderr, "error: %s, json-file %s\n", js_tostring(J, -1), file);
-    js_pop(J, nparam+1);
+    js_pop(J, 0+1);
     js_pushundefined(J);
   }
   js_call(J, 1);
@@ -88,6 +93,6 @@ void jsB_init_SB(js_State *J)
     js_newcfunction(J, prototype_string, TAG ".prototype.unescape", 1);
     js_defproperty(J, -2, "unescape", JS_DONTENUM);
   }
-  js_newcconstructor(J, new_TAG, new_TAG, TAG, 1);
+  js_newcconstructor(J, new_SB, new_SB, TAG, 1);
   js_defglobal(J, TAG, JS_DONTENUM);
 }

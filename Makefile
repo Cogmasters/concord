@@ -12,10 +12,9 @@ DISCORD_SRC := $(wildcard discord-*.c)
 GITHUB_SRC  := $(wildcard github-*.c)
 SPECS       := $(wildcard specs/*.json)
 DB_SRC      := $(wildcard sqlite3/*.c)
+JSB_SRC     := $(wildcard jsB/*.c)
 
 SPECS_XX   := $(addprefix specs-code/, $(notdir $(SPECS)))
-SPECS_CC   := $(SPECS_XX:%.json=%.c)
-SPECS_HH   := $(SPECS_XX:%.json=%.h)
 SPECS_C    := $(SPECS_XX:%.json=%.c)
 SPECS_H    := $(SPECS_XX:%.json=%.h)
 
@@ -30,8 +29,9 @@ COMMON_OBJS  := $(COMMON_SRC:%=$(OBJDIR)/%.o)
 ORKA_OBJS    := $(ORKA_SRC:%=$(OBJDIR)/%.o)
 DISCORD_OBJS := $(DISCORD_SRC:%=$(OBJDIR)/%.o)
 GITHUB_OBJS  := $(GITHUB_SRC:%=$(OBJDIR)/%.o)
-SPECS_OBJS   := $(SPECS_CC:%=$(OBJDIR)/%.o)
+SPECS_OBJS   := $(SPECS_C:%=$(OBJDIR)/%.o)
 DB_OBJS      := $(DB_SRC:%=$(OBJDIR)/%.o)
+JSB_OBJS      := $(JSB_SRC:%=$(OBJDIR)/%.o)
 
 OBJS := $(COMMON_OBJS) $(DISCORD_OBJS) $(GITHUB_OBJS) $(ORKA_OBJS)
 
@@ -47,7 +47,7 @@ BOT2_EXES := $(patsubst %.c, %.b2, $(BOT2_SRC))
 TEST_SRC := $(wildcard test/test-*.cpp test/test-*.c)
 TEST_EXES := $(filter %.exe, $(TEST_SRC:.cpp=.exe) $(TEST_SRC:.c=.exe))
 
-LIBDISCORD_CFLAGS	:= -I./ -I./mujs  -I./sqlite3
+LIBDISCORD_CFLAGS	:= -I./ -I./mujs  -I./sqlite3 -I./jsB
 LIBDISCORD_LDFLAGS	:= -L./$(LIBDIR) -ldiscord -lcurl -lpthread
 
 ifeq ($(BEARSSL),1)
@@ -100,15 +100,15 @@ discord: mkdir $(DISCORD_OBJS) libdiscord
 github: mkdir $(GITHUB_OBJS)
 db: mkdir $(DB_OBJS)
 
-specs_hh: $(SPECS_HH) $(SPECS_H)
-specs_cc: $(SPECS_CC) $(SPECS_C)
+specs_h: $(SPECS_H)
+specs_c: $(SPECS_C)
 
-specs: mkdir specs_hh specs_cc $(SPECS_OBJS)
+specs: mkdir specs_h specs_c $(SPECS_OBJS)
 
 echo:
-	@echo SPECS:      $(SPECS)
-	@echo SPECS_HH:   $(SPECS_HH)
-	@echo SPECS_CC:   $(SPECS_CC)
+	@echo SPECS:     $(SPECS)
+	@echo SPECS_H:   $(SPECS_H)
+	@echo SPECS_C:   $(SPECS_C)
 	@echo SPECS_OBJS: $(SPECS_OBJS)
 
 bot: $(BOT_EXES) #@todo should we split by categories (bot_discord, bot_github, etc)?
@@ -120,7 +120,7 @@ test: common orka discord github $(TEST_EXES) #@todo should we split by categori
 mkdir :
 	mkdir -p $(ACTOR_OBJDIR)/common  $(ACTOR_OBJDIR)/test bin
 	mkdir -p $(OBJDIR) $(OBJDIR)/common $(OBJDIR)/specs $(LIBDIR)
-	mkdir -p $(OBJDIR)/test
+	mkdir -p $(OBJDIR)/test $(OBJDIR)/jsB
 	mkdir -p specs-code  $(OBJDIR)/specs-code
 	mkdir -p $(OBJDIR)/sqlite3
 
@@ -157,8 +157,8 @@ actor-gen.exe: mkdir $(ACTOR_GEN_OBJS)
 %.b1: %.c libdiscord db
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBS_LDFLAGS) $(OBJDIR)/sqlite3/sqlite3.o
 
-%.b2: %.c libdiscord mujs
-	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBS_LDFLAGS) -lmujs
+%.b2: %.c libdiscord mujs $(JSB_OBJS)
+	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBS_LDFLAGS) -lmujs $(JSB_OBJS) -lsqlite3
 
 %.exe : %.c libdiscord
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBS_LDFLAGS)

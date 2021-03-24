@@ -7,12 +7,13 @@
 #endif
 
 #include "mujs.h"
+#include "orka-utils.h"
+#include "libdiscord.h"
 #include "discord-common.h"
 #include "jsB.h"
-#include "orka-utils.h"
 #define TAG "discord"
 
-using namespace discord;
+//using namespace discord;
 
 FILE* jsB_log_file()
 {
@@ -39,25 +40,25 @@ void jsB_log(char *fmt, ...)
   fflush(log);
 }
 
-static user_agent::dati* ator(const char *config)
+static struct discord_adapter* ator(const char *config)
 {
   jsB_log("config:%s\n", config);
-  user_agent::dati *ua = (user_agent::dati *)calloc(1, sizeof(user_agent::dati));
-  user_agent::init(ua, NULL, config);
+  struct discord_adapter *ua = (struct discord_adapter *)calloc(1, sizeof(*ua));
+  discord_adapter_init(ua, NULL, config);
   return ua;
 }
 
 static void dtor(js_State *J, void *p)
 {
   jsB_log("dtor is called\n");
-  user_agent::dati *req = (user_agent::dati *)p;
-  user_agent::cleanup(req);
+  struct discord_adapter *req = p;
+  discord_adapter_cleanup(req);
   free(req);
 }
 
 static void new_TAG(js_State * J)
 {
-  user_agent::dati *req = NULL;
+  struct discord_adapter *req = NULL;
   if (js_isundefined(J, 1)) {
     // default configuration
     char buf[512], file[1024];
@@ -110,7 +111,7 @@ static enum http_method check_method(char *s) {
 
 static char* do_url(js_State *J, int *nparam_p)
 {
-  user_agent::dati *req = (user_agent::dati *)js_touserdata(J, 0, TAG);
+  struct discord_adapter *req = js_touserdata(J, 0, TAG);
   char *url, *m, *b = "";
 
   int n = js_gettop(J);
@@ -158,7 +159,7 @@ static char* do_url(js_State *J, int *nparam_p)
   struct sized_buffer req_body =
     { .start = b, .size = strlen(b) };
 
-  user_agent::run(req, &resp_handle, &req_body, method, url);
+  discord_adapter_run(req, &resp_handle, &req_body, method, url);
   return buf;
 }
 
@@ -234,16 +235,9 @@ void jsB_me_channel(js_State *J,
     js_pushstring(J, p);
     js_setproperty(J, -2, "guild_id");
 
-    js_pushstring(J, me_name);
-    js_setproperty(J, -2, "me_name");
-
-    snprintf(p, sizeof(p), "%llu", me_id);
-    js_pushstring(J, p);
-    js_setproperty(J, -2, "me_id");
-
     snprintf(p, sizeof(p), "%llu", author_id);
     js_pushstring(J, p);
-    js_setproperty(J, -2, "author_id");
+    js_setproperty(J, -2, "user_id");
 
     snprintf(p, sizeof(p), "%llu", channel_id);
     js_pushstring(J, p);
@@ -253,5 +247,10 @@ void jsB_me_channel(js_State *J,
     js_pushstring(J, p);
     js_setproperty(J, -2, "message_id");
   }
-  js_setglobal(J, "discord_my_info");
+  js_setglobal(J, "Discord_my_info");
+}
+
+void jsB_my_info(js_State *J, uint64_t user_id) 
+{
+  return;
 }
