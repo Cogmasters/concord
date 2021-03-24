@@ -85,11 +85,11 @@ struct discord_create_channel_invite_params;
 /* Title: Voice State Object */
 /* https://discord.com/developers/docs/resources/voice#voice-state-object-voice-state-structure */
 /* This is defined at specs/voice.json:8:22 */
-struct discord_voice;
+struct discord_voice_state;
 
 /* Title: Voice Region Object */
 /* https://discord.com/developers/docs/resources/voice#voice-region-object-voice-region-structure */
-/* This is defined at specs/voice.json:29:22 */
+/* This is defined at specs/voice.json:28:22 */
 struct discord_voice_region;
 /* This file is generated from specs/channel.get-reactions.json, Please don't edit it. */
 /*

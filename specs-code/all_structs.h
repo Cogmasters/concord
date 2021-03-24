@@ -646,7 +646,7 @@ struct discord_create_channel_invite_params {
 /* Title: Voice State Object */
 /* https://discord.com/developers/docs/resources/voice#voice-state-object-voice-state-structure */
 /* This is defined at specs/voice.json:8:22 */
-struct discord_voice {
+struct discord_voice_state {
   /* specs/voice.json:11:20
      '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
@@ -723,34 +723,34 @@ struct discord_voice {
 
 /* Title: Voice Region Object */
 /* https://discord.com/developers/docs/resources/voice#voice-region-object-voice-region-structure */
-/* This is defined at specs/voice.json:29:22 */
+/* This is defined at specs/voice.json:28:22 */
 struct discord_voice_region {
-  /* specs/voice.json:32:20
+  /* specs/voice.json:31:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }'
   */
   char *id; // @todo fixed size limit
 
-  /* specs/voice.json:33:20
+  /* specs/voice.json:32:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }'
   */
   char *name; // @todo fixed size limit
 
-  /* specs/voice.json:34:20
+  /* specs/voice.json:33:20
      '{ "name": "vip", "type":{ "base":"bool" }}'
   */
   bool vip;
 
-  /* specs/voice.json:35:20
+  /* specs/voice.json:34:20
      '{ "name": "optimal", "type":{ "base":"bool" }}'
   */
   bool optimal;
 
-  /* specs/voice.json:36:20
+  /* specs/voice.json:35:20
      '{ "name": "deprecated", "type":{ "base":"bool" }}'
   */
   bool deprecated;
 
-  /* specs/voice.json:37:20
+  /* specs/voice.json:36:20
      '{ "name": "custom", "type":{ "base":"bool" }}'
   */
   bool custom;

@@ -271,25 +271,25 @@ extern size_t discord_create_channel_invite_params_list_to_json(char *str, size_
 (null)
 */
 
-extern void discord_voice_cleanup_v(void *p);
-extern void discord_voice_cleanup(struct discord_voice *p);
-extern void discord_voice_init_v(void *p);
-extern void discord_voice_init(struct discord_voice *p);
-extern struct discord_voice * discord_voice_alloc();
-extern void discord_voice_free_v(void *p);
-extern void discord_voice_free(struct discord_voice *p);
-extern void discord_voice_from_json_v(char *json, size_t len, void *p);
-extern void discord_voice_from_json(char *json, size_t len, struct discord_voice *p);
-extern size_t discord_voice_to_json_v(char *json, size_t len, void *p);
-extern size_t discord_voice_to_json(char *json, size_t len, struct discord_voice *p);
-extern size_t discord_voice_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_voice_to_query(char *json, size_t len, struct discord_voice *p);
-extern void discord_voice_list_free_v(void **p);
-extern void discord_voice_list_free(struct discord_voice **p);
-extern void discord_voice_list_from_json_v(char *str, size_t len, void *p);
-extern void discord_voice_list_from_json(char *str, size_t len, struct discord_voice ***p);
-extern size_t discord_voice_list_to_json_v(char *str, size_t len, void *p);
-extern size_t discord_voice_list_to_json(char *str, size_t len, struct discord_voice **p);
+extern void discord_voice_state_cleanup_v(void *p);
+extern void discord_voice_state_cleanup(struct discord_voice_state *p);
+extern void discord_voice_state_init_v(void *p);
+extern void discord_voice_state_init(struct discord_voice_state *p);
+extern struct discord_voice_state * discord_voice_state_alloc();
+extern void discord_voice_state_free_v(void *p);
+extern void discord_voice_state_free(struct discord_voice_state *p);
+extern void discord_voice_state_from_json_v(char *json, size_t len, void *p);
+extern void discord_voice_state_from_json(char *json, size_t len, struct discord_voice_state *p);
+extern size_t discord_voice_state_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_voice_state_to_json(char *json, size_t len, struct discord_voice_state *p);
+extern size_t discord_voice_state_to_query_v(char *json, size_t len, void *p);
+extern size_t discord_voice_state_to_query(char *json, size_t len, struct discord_voice_state *p);
+extern void discord_voice_state_list_free_v(void **p);
+extern void discord_voice_state_list_free(struct discord_voice_state **p);
+extern void discord_voice_state_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_voice_state_list_from_json(char *str, size_t len, struct discord_voice_state ***p);
+extern size_t discord_voice_state_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_voice_state_list_to_json(char *str, size_t len, struct discord_voice_state **p);
 
 extern void discord_voice_region_cleanup_v(void *p);
 extern void discord_voice_region_cleanup(struct discord_voice_region *p);
