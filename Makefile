@@ -68,7 +68,7 @@ LIBDISCORD	:= $(LIBDIR)/libdiscord.a
 
 
 CFLAGS += -Wall -std=c11 -O0 -g -D_GNU_SOURCE \
-	-Wno-incompatible-pointer-types -Wno-unused-function -Wno-unused-but-set-variable \
+	-Wno-unused-function -Wno-unused-but-set-variable \
 	-I. -I./common 
 
 ifeq ($(release),1)
