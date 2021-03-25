@@ -106,12 +106,12 @@ int main(int argc, char *argv[])
   struct discord *client = discord_config_init(config_file);
   assert(NULL != client);
 
-  discord_setcb(client, READY, &on_ready);
-  discord_setcb(client, MESSAGE_CREATE, &on_message_create);
-  discord_setcb(client, MESSAGE_UPDATE, &on_message_update);
-  discord_setcb(client, MESSAGE_DELETE, &on_message_delete);
-  discord_setcb(client, MESSAGE_DELETE_BULK, &on_message_delete_bulk);
-  discord_setcb(client, MESSAGE_REACTION_ADD, &on_reaction_add);
+  discord_on_ready(client, &on_ready);
+  discord_on_message_create(client, &on_message_create);
+  discord_on_message_update(client, &on_message_update);
+  discord_on_message_delete(client, &on_message_delete);
+  discord_on_message_delete_bulk(client, &on_message_delete_bulk);
+  discord_on_reaction_add(client, &on_reaction_add);
 
   discord_run(client);
 

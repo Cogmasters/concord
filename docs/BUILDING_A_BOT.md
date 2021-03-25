@@ -47,26 +47,18 @@ void on_pong(
   discord_create_message(client, msg->channel_id, &params, NULL);
 }
 
-int main(int argc, char *argv[])
+int main()
 {
-  const char *config_file;
-  if (argc > 1)
-    config_file = argv[1];
-  else
-    config_file = "bot.config";
-
   discord_global_init();
+  struct discord *client = discord_config_init("bot.config");
 
-  struct discord *client = discord_config_init(config_file);
-
-  discord_setcb(client, READY, &on_ready);
-  discord_setcb_command(client, "ping", &on_ping);
-  discord_setcb_command(client, "pong", &on_pong);
+  discord_on_ready(client, &on_ready);
+  discord_on_command(client, "ping", &on_ping);
+  discord_on_command(client, "pong", &on_pong);
 
   discord_run(client);
 
   discord_cleanup(client);
-
   discord_global_cleanup();
 }
 ```
@@ -105,24 +97,23 @@ Returns `struct discord`: the client structure
 
 # Starting up the bot
 ```c
-discord_setcb(client, READY, &on_ready);
-discord_setcb_command(struct discord*, "ping", &on_ping);
-discord_setcb_command(struct discord*, "pong", &on_pong);
+discord_on_ready(client, &on_ready);
+discord_on_command(client, "ping", &on_ping);
+discord_on_command(client, "pong", &on_pong);
 
 discord_run(struct discord*);
 ```
 
-## discord_setcb
-`discord_setcb(struct discord*, enum callback_opt, callback*)`: calls callback function when `enum callback_opt` event is triggered
+## discord_on_ready
+`discord_on_ready(struct discord*, on_idle_cb*)`: calls `on_ready` callback function when Discord's `READY` event is triggered
 
 |Member Parameters|Description                |
 |:----------------|:--------------------------|
 |struct discord| the client stucture |
-|enum callback_opt| The event expected to trigger a callback response |
-|callback*| the function callback to run when its corresponding event is triggered (see discord-common.h for callback definitions) |
+|on_idle_cb *callback| the callback to run when the READY event is triggered (see libdiscord.h for more callbacks definitions) |
 
-## discord_setcb_command
-`discord_setcb_command(struct discord*, char[], message_cb*)`: executes callback function when `char[]` command is triggered on chat
+## discord_on_command
+`discord_on_command(struct discord*, char[], message_cb*)`: executes callback function when `char[]` command is triggered on chat
 
 |Member Parameters|Description                |
 |:----------------|:--------------------------|
@@ -131,7 +122,7 @@ discord_run(struct discord*);
 |message_cb*| the message type function callback to run when its corresponding event is triggered (see discord-common.h for message_cb definitions) |
 
 ## discord_run
-`discord_run(struct discord*)`: the functions that establishes starts the bot by establishing a connection to Discord, runs until error
+`discord_run(struct discord*)`: the functions that starts the bot by establishing a connection to Discord, runs until error
 
 |Member Parameters|Description                |
 |:----------------|:--------------------------|
@@ -141,13 +132,12 @@ discord_run(struct discord*);
 # Cleaning up the bot
 
 ```c
-  discord_cleanup(struct discord);
-
+  discord_cleanup(client);
   discord_global_cleanup();
 ```
 
 ## discord_cleanup
-`discord_cleanup(struct discord)`: function that cleans up bot resources
+`discord_cleanup(struct discord*)`: function that cleans up bot resources
 
 |Member Parameters|Description                |
 |:----------------|:--------------------------|

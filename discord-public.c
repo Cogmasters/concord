@@ -86,98 +86,104 @@ discord_set_prefix(struct discord *client, char *prefix)
 }
 
 void
-discord_setcb_command(struct discord *client, char *command, message_cb *user_cb)
+discord_on_command(struct discord *client, char *command, message_cb *callback)
 {
-  struct discord_gateway *gw = &client->gw;
-
   const size_t CMD_LEN = 64;
   if (!orka_str_bounds_check(command, CMD_LEN)) {
     PRINT("Command length greater than threshold (%zu chars)", CMD_LEN);
     return;
   }
 
-  ++gw->num_cmd;
-  gw->on_cmd = realloc(gw->on_cmd, gw->num_cmd * sizeof(struct cmd_cbs));
+  ++client->gw.num_cmd;
+  client->gw.on_cmd = realloc(client->gw.on_cmd, client->gw.num_cmd * sizeof(struct cmd_cbs));
 
-  gw->on_cmd[gw->num_cmd-1].str = command;
-  gw->on_cmd[gw->num_cmd-1].cb = user_cb;
+  client->gw.on_cmd[client->gw.num_cmd-1].str = command;
+  client->gw.on_cmd[client->gw.num_cmd-1].cb = callback;
 
   discord_add_intents(client, DISCORD_GATEWAY_GUILD_MESSAGES | DISCORD_GATEWAY_DIRECT_MESSAGES);
 }
 
-#define callback ... // varargs to avoid non-conforming function pointer error
+void
+discord_on_idle(struct discord *client, idle_cb *callback) {
+  client->gw.cbs.on_idle = callback;
+}
 
 void
-discord_setcb(struct discord *client, enum dispatch_code opt, callback)
+discord_on_ready(struct discord *client, idle_cb *callback) {
+  client->gw.cbs.on_ready = callback;
+}
+
+void
+discord_on_message_create(struct discord *client, message_cb *callback) {
+  client->gw.cbs.on_message.create = callback;
+  discord_add_intents(client, DISCORD_GATEWAY_GUILD_MESSAGES | DISCORD_GATEWAY_DIRECT_MESSAGES);
+}
+
+void 
+discord_on_sb_message_create(struct discord *client, sb_message_cb *callback)
 {
-  struct discord_gateway *gw = &client->gw;
+  client->gw.cbs.on_message.sb_create = callback;
+  discord_add_intents(client, DISCORD_GATEWAY_GUILD_MESSAGES | DISCORD_GATEWAY_DIRECT_MESSAGES);
+}
 
-  va_list args;
-  va_start(args, opt);
+void
+discord_on_message_update(struct discord *client, message_cb *callback) {
+  client->gw.cbs.on_message.update = callback;
+  discord_add_intents(client, DISCORD_GATEWAY_GUILD_MESSAGES | DISCORD_GATEWAY_DIRECT_MESSAGES);
+}
 
-  int code = 0;
-  switch (opt) {
-  case IDLE:
-      gw->cbs.on_idle = va_arg(args, idle_cb*);
-      break;
-  case READY:
-      gw->cbs.on_ready = va_arg(args, idle_cb*);
-      break;
-  case MESSAGE_CREATE:
-      gw->cbs.on_message.create = va_arg(args, message_cb*);
-      code |= DISCORD_GATEWAY_GUILD_MESSAGES | DISCORD_GATEWAY_DIRECT_MESSAGES;
-      break;
-  case SB_MESSAGE_CREATE: /* @todo this is temporary for wrapping JS */
-      gw->cbs.on_message.sb_create = va_arg(args, sb_message_cb*);
-      code |= DISCORD_GATEWAY_GUILD_MESSAGES | DISCORD_GATEWAY_DIRECT_MESSAGES;
-      break;
-  case MESSAGE_UPDATE:
-      gw->cbs.on_message.update = va_arg(args, message_cb*);
-      code |= DISCORD_GATEWAY_GUILD_MESSAGES | DISCORD_GATEWAY_DIRECT_MESSAGES;
-      break;
-  case MESSAGE_DELETE:
-      gw->cbs.on_message.del = va_arg(args, message_delete_cb*);
-      code |= DISCORD_GATEWAY_GUILD_MESSAGES | DISCORD_GATEWAY_DIRECT_MESSAGES;
-      break;
-  case MESSAGE_DELETE_BULK:
-      gw->cbs.on_message.delete_bulk = va_arg(args, message_delete_bulk_cb*);
-      code |= DISCORD_GATEWAY_GUILD_MESSAGES | DISCORD_GATEWAY_DIRECT_MESSAGES;
-      break;
-  case MESSAGE_REACTION_ADD:
-      gw->cbs.on_reaction.add = va_arg(args, reaction_add_cb*);
-      code |= DISCORD_GATEWAY_GUILD_MESSAGE_REACTIONS | DISCORD_GATEWAY_DIRECT_MESSAGE_REACTIONS;
-      break;
-  case MESSAGE_REACTION_REMOVE:
-      gw->cbs.on_reaction.remove = va_arg(args, reaction_remove_cb*);
-      code |= DISCORD_GATEWAY_GUILD_MESSAGE_REACTIONS | DISCORD_GATEWAY_DIRECT_MESSAGE_REACTIONS;
-      break;
-  case MESSAGE_REACTION_REMOVE_ALL:
-      gw->cbs.on_reaction.remove_all = va_arg(args, reaction_remove_all_cb*);
-      code |= DISCORD_GATEWAY_GUILD_MESSAGE_REACTIONS | DISCORD_GATEWAY_DIRECT_MESSAGE_REACTIONS;
-      break;
-  case MESSAGE_REACTION_REMOVE_EMOJI:
-      gw->cbs.on_reaction.remove_emoji = va_arg(args, reaction_remove_emoji_cb*);
-      code |= DISCORD_GATEWAY_GUILD_MESSAGE_REACTIONS | DISCORD_GATEWAY_DIRECT_MESSAGE_REACTIONS;
-      break;
-  case GUILD_MEMBER_ADD:
-      gw->cbs.on_guild_member.add = va_arg(args, guild_member_cb*);
-      code |= DISCORD_GATEWAY_GUILD_MEMBERS;
-      break;
-  case GUILD_MEMBER_UPDATE:
-      gw->cbs.on_guild_member.update = va_arg(args, guild_member_cb*);
-      code |= DISCORD_GATEWAY_GUILD_MEMBERS;
-      break;
-  case GUILD_MEMBER_REMOVE:
-      gw->cbs.on_guild_member.remove = va_arg(args, guild_member_remove_cb*);
-      code |= DISCORD_GATEWAY_GUILD_MEMBERS;
-      break;
-  default:
-      ERR("Invalid callback_opt (code: %d)", opt);
-  }
+void
+discord_on_message_delete(struct discord *client, message_delete_cb *callback) {
+  client->gw.cbs.on_message.del = callback;
+  discord_add_intents(client, DISCORD_GATEWAY_GUILD_MESSAGES | DISCORD_GATEWAY_DIRECT_MESSAGES);
+}
 
-  discord_add_intents(client, code);
+void
+discord_on_message_delete_bulk(struct discord *client, message_delete_bulk_cb *callback) {
+  client->gw.cbs.on_message.delete_bulk = callback;
+  discord_add_intents(client, DISCORD_GATEWAY_GUILD_MESSAGES | DISCORD_GATEWAY_DIRECT_MESSAGES);
+}
 
-  va_end(args);
+void
+discord_on_reaction_add(struct discord *client, reaction_add_cb *callback) {
+  client->gw.cbs.on_reaction.add = callback;
+  discord_add_intents(client, DISCORD_GATEWAY_GUILD_MESSAGE_REACTIONS | DISCORD_GATEWAY_DIRECT_MESSAGE_REACTIONS);
+}
+
+void
+discord_on_reaction_remove(struct discord *client, reaction_remove_cb *callback) {
+  client->gw.cbs.on_reaction.remove = callback;
+  discord_add_intents(client, DISCORD_GATEWAY_GUILD_MESSAGE_REACTIONS | DISCORD_GATEWAY_DIRECT_MESSAGE_REACTIONS);
+}
+
+void
+discord_on_reaction_remove_all(struct discord *client, reaction_remove_all_cb* callback) {
+  client->gw.cbs.on_reaction.remove_all = callback;
+  discord_add_intents(client, DISCORD_GATEWAY_GUILD_MESSAGE_REACTIONS | DISCORD_GATEWAY_DIRECT_MESSAGE_REACTIONS);
+}
+
+void
+discord_on_reaction_remove_emoji(struct discord *client, reaction_remove_emoji_cb *callback) {
+  client->gw.cbs.on_reaction.remove_emoji = callback;
+  discord_add_intents(client, DISCORD_GATEWAY_GUILD_MESSAGE_REACTIONS | DISCORD_GATEWAY_DIRECT_MESSAGE_REACTIONS);
+}
+
+void 
+discord_on_guild_member_add(struct discord *client, guild_member_cb *callback) {
+  client->gw.cbs.on_guild_member.add = callback;
+  discord_add_intents(client, DISCORD_GATEWAY_GUILD_MEMBERS);
+}
+
+void 
+discord_on_guild_member_update(struct discord *client, guild_member_cb *callback) {
+  client->gw.cbs.on_guild_member.update = callback;
+  discord_add_intents(client, DISCORD_GATEWAY_GUILD_MEMBERS);
+}
+
+void 
+discord_on_guild_member_remove(struct discord *client, guild_member_remove_cb *callback) {
+  client->gw.cbs.on_guild_member.remove = callback;
+  discord_add_intents(client, DISCORD_GATEWAY_GUILD_MEMBERS);
 }
 
 void

@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
   struct discord *client = discord_config_init(config_file);
   assert(NULL != client);
 
-  discord_setcb_command(client, "show embed", &on_command);
+  discord_on_command(client, "show embed", &on_command);
 
   printf("\n\nThis bot demonstrates how easy it is to load embed"
          " from a json file.\n"

@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
   struct discord *client = discord_config_init(config_file);
   assert(NULL != client);
 
-  discord_setcb_command(client, "!createRole", &on_command);
+  discord_on_command(client, "!createRole", &on_command);
 
   printf("\n\nThis bot demonstrates how easy it is to create a"
          " new role.\n"

@@ -197,8 +197,22 @@ void discord_cleanup(struct discord *client);
 
 void discord_add_intents(struct discord *client, int intent_code);
 void discord_set_prefix(struct discord *client, char *prefix);
-void discord_setcb_command(struct discord *client, char *command, message_cb *user_cb);
-void discord_setcb(struct discord *client, enum dispatch_code opt, ...);
+void discord_on_command(struct discord *client, char *command, message_cb *callback);
+void discord_on_idle(struct discord *client, idle_cb *callback);
+void discord_on_ready(struct discord *client, idle_cb *callback);
+void discord_on_message_create(struct discord *client, message_cb *callback);
+void discord_on_sb_message_create(struct discord *client, sb_message_cb *callback);
+void discord_on_message_update(struct discord *client, message_cb *callback);
+void discord_on_message_delete(struct discord *client, message_delete_cb *callback);
+void discord_on_message_delete_bulk(struct discord *client, message_delete_bulk_cb *callback);
+void discord_on_reaction_add(struct discord *client, reaction_add_cb *callback);
+void discord_on_reaction_remove(struct discord *client, reaction_remove_cb *callback);
+void discord_on_reaction_remove_all(struct discord *client, reaction_remove_all_cb* callback);
+void discord_on_reaction_remove_emoji(struct discord *client, reaction_remove_emoji_cb *callback);
+void discord_on_guild_member_add(struct discord *client, guild_member_cb *callback);
+void discord_on_guild_member_update(struct discord *client, guild_member_cb *callback);
+void discord_on_guild_member_remove(struct discord *client, guild_member_remove_cb *callback);
+
 void discord_run(struct discord *client);
 
 void* discord_set_data(struct discord *client, void *data);
