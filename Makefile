@@ -10,7 +10,7 @@ COMMON_SRC  := $(wildcard common/*.c)
 ORKA_SRC    := $(wildcard orka-*.c)
 DISCORD_SRC := $(wildcard discord-*.c)
 GITHUB_SRC  := $(wildcard github-*.c)
-SPECS       := $(shell ls specs/*.json)
+SPECS       := $(sort $(wildcard specs/*.json))
 DB_SRC      := $(wildcard sqlite3/*.c)
 JSB_SRC     := $(wildcard jsB/*.c)
 
