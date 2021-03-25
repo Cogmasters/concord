@@ -1970,9 +1970,9 @@ struct discord_gateway_identify {
   //@todo shard (null);
 
   /* specs/gateway.json:81:19
-     '{ "name":"presence","type":{"base":"struct discord_gateway_identify_status_update", "dec":"*"}}'
+     '{ "name":"presence","type":{"base":"struct discord_gateway_status_update", "dec":"*"}}'
   */
-  struct discord_gateway_identify_status_update *presence;
+  struct discord_gateway_status_update *presence;
 
   /* specs/gateway.json:82:19
      '{ "name":"intents","type":{"base":"int"}}'
@@ -1995,26 +1995,26 @@ struct discord_gateway_identify {
 
 /* Title: Gateway Status Update Structure */
 /* https://discord.com/developers/docs/topics/gateway#update-status-gateway-status-update-structure */
-/* This is defined at specs/gateway.json:89:22 */
-struct discord_gateway_identify_status_update {
-  /* specs/gateway.json:92:19
+/* This is defined at specs/gateway.json:88:22 */
+struct discord_gateway_status_update {
+  /* specs/gateway.json:91:19
      '{ "name":"since","type":{"base":"char", "dec":"*", "converter":"iso8601"},
           "option":true, "inject_if_not":0 }'
   */
   u64_unix_ms_t since;
 
-  /* specs/gateway.json:94:19
-     '{ "name":"activities","type":{"base":"struct discord_gateway_identify_status_update_activity", "dec":"ntl"}, 
+  /* specs/gateway.json:93:19
+     '{ "name":"activities","type":{"base":"struct discord_gateway_activity", "dec":"ntl"}, 
           "option":true, "inject_if_not":null}'
   */
-  struct discord_gateway_identify_status_update_activity **activities;
+  struct discord_gateway_activity **activities;
 
-  /* specs/gateway.json:96:19
+  /* specs/gateway.json:95:19
      '{ "name":"status","type":{"base":"char", "dec":"[16]"}}'
   */
   char status[16];
 
-  /* specs/gateway.json:97:19
+  /* specs/gateway.json:96:19
      '{ "name":"afk","type":{"base":"bool"}}'
   */
   bool afk;
@@ -2035,19 +2035,19 @@ struct discord_gateway_identify_status_update {
 
 /* Title: Identify Connection Properties */
 /* https://discord.com/developers/docs/topics/gateway#identify-identify-connection-properties */
-/* This is defined at specs/gateway.json:104:22 */
+/* This is defined at specs/gateway.json:103:22 */
 struct discord_gateway_identify_connection {
-  /* specs/gateway.json:107:19
+  /* specs/gateway.json:106:19
      '{ "name":"$os", "type":{"base":"char", "dec":"*"}}'
   */
   char *$os;
 
-  /* specs/gateway.json:108:19
+  /* specs/gateway.json:107:19
      '{ "name":"$browser", "type":{"base":"char", "dec":"*"}}'
   */
   char *$browser;
 
-  /* specs/gateway.json:109:19
+  /* specs/gateway.json:108:19
      '{ "name":"$device", "type":{"base":"char", "dec":"*"}}'
   */
   char *$device;
@@ -2068,49 +2068,49 @@ struct discord_gateway_identify_connection {
 
 /* Title: Activity Structure */
 /* https://discord.com/developers/docs/topics/gateway#activity-object-activity-structure */
-/* This is defined at specs/gateway.json:116:22 */
-struct discord_gateway_identify_status_update_activity {
-  /* specs/gateway.json:119:19
+/* This is defined at specs/gateway.json:114:22 */
+struct discord_gateway_activity {
+  /* specs/gateway.json:117:19
      '{ "name":"name","type":{"base":"char", "dec":"[512]"}}'
   */
   char name[512];
 
-  /* specs/gateway.json:120:19
+  /* specs/gateway.json:118:19
      '{ "name":"type","type":{"base":"int"}}'
   */
   int type;
 
-  /* specs/gateway.json:121:19
+  /* specs/gateway.json:119:19
      '{ "name":"url","type":{"base":"char", "dec":"[MAX_URL_LEN]"},
           "option":true, "inject_if_not":""}'
   */
   char url[MAX_URL_LEN];
 
-  /* specs/gateway.json:123:19
+  /* specs/gateway.json:121:19
      '{ "name":"created_at","type":{"base":"char", "dec":"*", "converter":"iso8601"},
           "option":true, "inject_if_not":0 }'
   */
   u64_unix_ms_t created_at;
 
-  /* specs/gateway.json:125:19
+  /* specs/gateway.json:123:19
      '{ "name":"application_id","type":{"base":"char", "dec":"*", "converter":"snowflake" },
           "option":true, "inject_if_not":0 }'
   */
   u64_snowflake_t application_id;
 
-  /* specs/gateway.json:127:19
+  /* specs/gateway.json:125:19
      '{ "name":"details","type":{"base":"char", "dec":"*"},
           "option":true, "inject_if_not":null}'
   */
   char *details;
 
-  /* specs/gateway.json:129:19
+  /* specs/gateway.json:127:19
      '{ "name":"state","type":{"base":"char", "dec":"*"},
           "option":true, "inject_if_not":null}'
   */
   char *state;
 
-  /* specs/gateway.json:131:19
+  /* specs/gateway.json:129:19
      '{ "name":"instance","type":{"base":"bool"},
           "option":true, "inject_if_not":false}'
   */

@@ -181,22 +181,22 @@ discord_setcb(struct discord *client, enum dispatch_code opt, callback)
 }
 
 void
-discord_replace_presence(struct discord *client, struct discord_gateway_identify_status_update *presence)
+discord_replace_presence(struct discord *client, struct discord_gateway_status_update *presence)
 {
   if (NULL == presence) return;
 
-  discord_gateway_identify_status_update_free(client->gw.identify->presence);
+  discord_gateway_status_update_free(client->gw.identify->presence);
   client->gw.identify->presence = presence;
 }
 
 void
 discord_set_presence(
   struct discord *client, 
-  struct discord_gateway_identify_status_update_activity *activity, //will take ownership
+  struct discord_gateway_activity *activity, //will take ownership
   char status[], 
   bool afk)
 {
-  struct discord_gateway_identify_status_update *presence = client->gw.identify->presence;
+  struct discord_gateway_status_update *presence = client->gw.identify->presence;
 
   if (activity) {
     presence->activities = ntl_append(presence->activities, 

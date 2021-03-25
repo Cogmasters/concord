@@ -204,8 +204,8 @@ void discord_run(struct discord *client);
 void* discord_set_data(struct discord *client, void *data);
 void* discord_get_data(struct discord *client);
 
-void discord_replace_presence(struct discord *client, struct discord_gateway_identify_status_update *presence);
-void discord_set_presence(struct discord *client, struct discord_gateway_identify_status_update_activity *activity, char status[], bool afk);
+void discord_replace_presence(struct discord *client, struct discord_gateway_status_update *presence);
+void discord_set_presence(struct discord *client, struct discord_gateway_activity *activity, char status[], bool afk);
 enum ws_status discord_gateway_status(struct discord *client);
 
 

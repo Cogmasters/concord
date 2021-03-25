@@ -227,18 +227,18 @@ struct discord_gateway_identify;
 
 /* Title: Gateway Status Update Structure */
 /* https://discord.com/developers/docs/topics/gateway#update-status-gateway-status-update-structure */
-/* This is defined at specs/gateway.json:89:22 */
-struct discord_gateway_identify_status_update;
+/* This is defined at specs/gateway.json:88:22 */
+struct discord_gateway_status_update;
 
 /* Title: Identify Connection Properties */
 /* https://discord.com/developers/docs/topics/gateway#identify-identify-connection-properties */
-/* This is defined at specs/gateway.json:104:22 */
+/* This is defined at specs/gateway.json:103:22 */
 struct discord_gateway_identify_connection;
 
 /* Title: Activity Structure */
 /* https://discord.com/developers/docs/topics/gateway#activity-object-activity-structure */
-/* This is defined at specs/gateway.json:116:22 */
-struct discord_gateway_identify_status_update_activity;
+/* This is defined at specs/gateway.json:114:22 */
+struct discord_gateway_activity;
 /* This file is generated from specs/guild.ban.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/resources/guild#ban-object

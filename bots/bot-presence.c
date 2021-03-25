@@ -20,8 +20,8 @@ load_presence_from_json(struct discord *client, char filename[])
   size_t len;
   char *json_payload = orka_load_whole_file(filename, &len);
 
-  struct discord_gateway_identify_status_update *new_presence = discord_gateway_identify_status_update_alloc();
-  discord_gateway_identify_status_update_from_json(json_payload, len, new_presence);
+  struct discord_gateway_status_update *new_presence = discord_gateway_status_update_alloc();
+  discord_gateway_status_update_from_json(json_payload, len, new_presence);
 
   discord_replace_presence(client, new_presence);
 

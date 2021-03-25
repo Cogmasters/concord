@@ -78,12 +78,11 @@
         { "name":"large_threshold","type":{"base":"int"}},
         { "name":"guild_subscriptions","type":{"base":"bool"}},
         { "name":"shard","type":{"base":"int", "dec":"*"}, "todo":true},
-        { "name":"presence","type":{"base":"struct discord_gateway_identify_status_update", "dec":"*"}},
+        { "name":"presence","type":{"base":"struct discord_gateway_status_update", "dec":"*"}},
         { "name":"intents","type":{"base":"int"}}
       ]
     },
     {
-      "namespace": ["identify"],
       "title":"Gateway Status Update Structure",
       "comment": "https://discord.com/developers/docs/topics/gateway#update-status-gateway-status-update-structure",
       "struct":"status_update",
@@ -91,7 +90,7 @@
       [
         { "name":"since","type":{"base":"char", "dec":"*", "converter":"iso8601"},
           "option":true, "inject_if_not":0 },
-        { "name":"activities","type":{"base":"struct discord_gateway_identify_status_update_activity", "dec":"ntl"}, 
+        { "name":"activities","type":{"base":"struct discord_gateway_activity", "dec":"ntl"}, 
           "option":true, "inject_if_not":null},
         { "name":"status","type":{"base":"char", "dec":"[16]"}},
         { "name":"afk","type":{"base":"bool"}} 
@@ -110,7 +109,6 @@
       ]
     },
     {
-      "namespace": ["identify", "status_update"],
       "title":"Activity Structure",
       "comment": "https://discord.com/developers/docs/topics/gateway#activity-object-activity-structure",
       "struct":"activity",
@@ -133,7 +131,7 @@
       ]
     },
     {
-      "namespace": ["identify", "status_update", "activity"],
+      "namespace": ["activity"],
       "title":"Activity Types",
       "comment": "https://discord.com/developers/docs/topics/gateway#activity-object-activity-types",
       "enum":"types",

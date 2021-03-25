@@ -323,8 +323,8 @@ int main(int argc, char *argv[])
   discord_setcb_command(client, "!system", &on_command);
 
   /* Set bot presence activity */
-  struct discord_gateway_identify_status_update_activity *new_activity;
-  new_activity = discord_gateway_identify_status_update_activity_alloc();
+  struct discord_gateway_activity *new_activity;
+  new_activity = discord_gateway_activity_alloc();
   strcpy(new_activity->name, "!h | cee.dev");
   new_activity->type = 0; // Playing
   discord_set_presence(client, new_activity, "online", false);

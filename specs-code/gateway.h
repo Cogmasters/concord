@@ -90,9 +90,9 @@ struct discord_gateway_identify {
   //@todo shard (null);
 
   /* specs/gateway.json:81:19
-     '{ "name":"presence","type":{"base":"struct discord_gateway_identify_status_update", "dec":"*"}}'
+     '{ "name":"presence","type":{"base":"struct discord_gateway_status_update", "dec":"*"}}'
   */
-  struct discord_gateway_identify_status_update *presence;
+  struct discord_gateway_status_update *presence;
 
   /* specs/gateway.json:82:19
      '{ "name":"intents","type":{"base":"int"}}'
@@ -134,26 +134,26 @@ extern size_t discord_gateway_identify_list_to_json(char *str, size_t len, struc
 
 /* Title: Gateway Status Update Structure */
 /* https://discord.com/developers/docs/topics/gateway#update-status-gateway-status-update-structure */
-/* This is defined at specs/gateway.json:89:22 */
-struct discord_gateway_identify_status_update {
-  /* specs/gateway.json:92:19
+/* This is defined at specs/gateway.json:88:22 */
+struct discord_gateway_status_update {
+  /* specs/gateway.json:91:19
      '{ "name":"since","type":{"base":"char", "dec":"*", "converter":"iso8601"},
           "option":true, "inject_if_not":0 }'
   */
   u64_unix_ms_t since;
 
-  /* specs/gateway.json:94:19
-     '{ "name":"activities","type":{"base":"struct discord_gateway_identify_status_update_activity", "dec":"ntl"}, 
+  /* specs/gateway.json:93:19
+     '{ "name":"activities","type":{"base":"struct discord_gateway_activity", "dec":"ntl"}, 
           "option":true, "inject_if_not":null}'
   */
-  struct discord_gateway_identify_status_update_activity **activities;
+  struct discord_gateway_activity **activities;
 
-  /* specs/gateway.json:96:19
+  /* specs/gateway.json:95:19
      '{ "name":"status","type":{"base":"char", "dec":"[16]"}}'
   */
   char status[16];
 
-  /* specs/gateway.json:97:19
+  /* specs/gateway.json:96:19
      '{ "name":"afk","type":{"base":"bool"}}'
   */
   bool afk;
@@ -171,41 +171,41 @@ struct discord_gateway_identify_status_update {
     void *record_null[4];
   } __M; // metadata
 };
-extern void discord_gateway_identify_status_update_cleanup_v(void *p);
-extern void discord_gateway_identify_status_update_cleanup(struct discord_gateway_identify_status_update *p);
-extern void discord_gateway_identify_status_update_init_v(void *p);
-extern void discord_gateway_identify_status_update_init(struct discord_gateway_identify_status_update *p);
-extern struct discord_gateway_identify_status_update * discord_gateway_identify_status_update_alloc();
-extern void discord_gateway_identify_status_update_free_v(void *p);
-extern void discord_gateway_identify_status_update_free(struct discord_gateway_identify_status_update *p);
-extern void discord_gateway_identify_status_update_from_json_v(char *json, size_t len, void *p);
-extern void discord_gateway_identify_status_update_from_json(char *json, size_t len, struct discord_gateway_identify_status_update *p);
-extern size_t discord_gateway_identify_status_update_to_json_v(char *json, size_t len, void *p);
-extern size_t discord_gateway_identify_status_update_to_json(char *json, size_t len, struct discord_gateway_identify_status_update *p);
-extern size_t discord_gateway_identify_status_update_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_gateway_identify_status_update_to_query(char *json, size_t len, struct discord_gateway_identify_status_update *p);
-extern void discord_gateway_identify_status_update_list_free_v(void **p);
-extern void discord_gateway_identify_status_update_list_free(struct discord_gateway_identify_status_update **p);
-extern void discord_gateway_identify_status_update_list_from_json_v(char *str, size_t len, void *p);
-extern void discord_gateway_identify_status_update_list_from_json(char *str, size_t len, struct discord_gateway_identify_status_update ***p);
-extern size_t discord_gateway_identify_status_update_list_to_json_v(char *str, size_t len, void *p);
-extern size_t discord_gateway_identify_status_update_list_to_json(char *str, size_t len, struct discord_gateway_identify_status_update **p);
+extern void discord_gateway_status_update_cleanup_v(void *p);
+extern void discord_gateway_status_update_cleanup(struct discord_gateway_status_update *p);
+extern void discord_gateway_status_update_init_v(void *p);
+extern void discord_gateway_status_update_init(struct discord_gateway_status_update *p);
+extern struct discord_gateway_status_update * discord_gateway_status_update_alloc();
+extern void discord_gateway_status_update_free_v(void *p);
+extern void discord_gateway_status_update_free(struct discord_gateway_status_update *p);
+extern void discord_gateway_status_update_from_json_v(char *json, size_t len, void *p);
+extern void discord_gateway_status_update_from_json(char *json, size_t len, struct discord_gateway_status_update *p);
+extern size_t discord_gateway_status_update_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_gateway_status_update_to_json(char *json, size_t len, struct discord_gateway_status_update *p);
+extern size_t discord_gateway_status_update_to_query_v(char *json, size_t len, void *p);
+extern size_t discord_gateway_status_update_to_query(char *json, size_t len, struct discord_gateway_status_update *p);
+extern void discord_gateway_status_update_list_free_v(void **p);
+extern void discord_gateway_status_update_list_free(struct discord_gateway_status_update **p);
+extern void discord_gateway_status_update_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_gateway_status_update_list_from_json(char *str, size_t len, struct discord_gateway_status_update ***p);
+extern size_t discord_gateway_status_update_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_gateway_status_update_list_to_json(char *str, size_t len, struct discord_gateway_status_update **p);
 
 /* Title: Identify Connection Properties */
 /* https://discord.com/developers/docs/topics/gateway#identify-identify-connection-properties */
-/* This is defined at specs/gateway.json:104:22 */
+/* This is defined at specs/gateway.json:103:22 */
 struct discord_gateway_identify_connection {
-  /* specs/gateway.json:107:19
+  /* specs/gateway.json:106:19
      '{ "name":"$os", "type":{"base":"char", "dec":"*"}}'
   */
   char *$os;
 
-  /* specs/gateway.json:108:19
+  /* specs/gateway.json:107:19
      '{ "name":"$browser", "type":{"base":"char", "dec":"*"}}'
   */
   char *$browser;
 
-  /* specs/gateway.json:109:19
+  /* specs/gateway.json:108:19
      '{ "name":"$device", "type":{"base":"char", "dec":"*"}}'
   */
   char *$device;
@@ -245,49 +245,49 @@ extern size_t discord_gateway_identify_connection_list_to_json(char *str, size_t
 
 /* Title: Activity Structure */
 /* https://discord.com/developers/docs/topics/gateway#activity-object-activity-structure */
-/* This is defined at specs/gateway.json:116:22 */
-struct discord_gateway_identify_status_update_activity {
-  /* specs/gateway.json:119:19
+/* This is defined at specs/gateway.json:114:22 */
+struct discord_gateway_activity {
+  /* specs/gateway.json:117:19
      '{ "name":"name","type":{"base":"char", "dec":"[512]"}}'
   */
   char name[512];
 
-  /* specs/gateway.json:120:19
+  /* specs/gateway.json:118:19
      '{ "name":"type","type":{"base":"int"}}'
   */
   int type;
 
-  /* specs/gateway.json:121:19
+  /* specs/gateway.json:119:19
      '{ "name":"url","type":{"base":"char", "dec":"[MAX_URL_LEN]"},
           "option":true, "inject_if_not":""}'
   */
   char url[MAX_URL_LEN];
 
-  /* specs/gateway.json:123:19
+  /* specs/gateway.json:121:19
      '{ "name":"created_at","type":{"base":"char", "dec":"*", "converter":"iso8601"},
           "option":true, "inject_if_not":0 }'
   */
   u64_unix_ms_t created_at;
 
-  /* specs/gateway.json:125:19
+  /* specs/gateway.json:123:19
      '{ "name":"application_id","type":{"base":"char", "dec":"*", "converter":"snowflake" },
           "option":true, "inject_if_not":0 }'
   */
   u64_snowflake_t application_id;
 
-  /* specs/gateway.json:127:19
+  /* specs/gateway.json:125:19
      '{ "name":"details","type":{"base":"char", "dec":"*"},
           "option":true, "inject_if_not":null}'
   */
   char *details;
 
-  /* specs/gateway.json:129:19
+  /* specs/gateway.json:127:19
      '{ "name":"state","type":{"base":"char", "dec":"*"},
           "option":true, "inject_if_not":null}'
   */
   char *state;
 
-  /* specs/gateway.json:131:19
+  /* specs/gateway.json:129:19
      '{ "name":"instance","type":{"base":"bool"},
           "option":true, "inject_if_not":false}'
   */
@@ -306,31 +306,31 @@ struct discord_gateway_identify_status_update_activity {
     void *record_null[8];
   } __M; // metadata
 };
-extern void discord_gateway_identify_status_update_activity_cleanup_v(void *p);
-extern void discord_gateway_identify_status_update_activity_cleanup(struct discord_gateway_identify_status_update_activity *p);
-extern void discord_gateway_identify_status_update_activity_init_v(void *p);
-extern void discord_gateway_identify_status_update_activity_init(struct discord_gateway_identify_status_update_activity *p);
-extern struct discord_gateway_identify_status_update_activity * discord_gateway_identify_status_update_activity_alloc();
-extern void discord_gateway_identify_status_update_activity_free_v(void *p);
-extern void discord_gateway_identify_status_update_activity_free(struct discord_gateway_identify_status_update_activity *p);
-extern void discord_gateway_identify_status_update_activity_from_json_v(char *json, size_t len, void *p);
-extern void discord_gateway_identify_status_update_activity_from_json(char *json, size_t len, struct discord_gateway_identify_status_update_activity *p);
-extern size_t discord_gateway_identify_status_update_activity_to_json_v(char *json, size_t len, void *p);
-extern size_t discord_gateway_identify_status_update_activity_to_json(char *json, size_t len, struct discord_gateway_identify_status_update_activity *p);
-extern size_t discord_gateway_identify_status_update_activity_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_gateway_identify_status_update_activity_to_query(char *json, size_t len, struct discord_gateway_identify_status_update_activity *p);
-extern void discord_gateway_identify_status_update_activity_list_free_v(void **p);
-extern void discord_gateway_identify_status_update_activity_list_free(struct discord_gateway_identify_status_update_activity **p);
-extern void discord_gateway_identify_status_update_activity_list_from_json_v(char *str, size_t len, void *p);
-extern void discord_gateway_identify_status_update_activity_list_from_json(char *str, size_t len, struct discord_gateway_identify_status_update_activity ***p);
-extern size_t discord_gateway_identify_status_update_activity_list_to_json_v(char *str, size_t len, void *p);
-extern size_t discord_gateway_identify_status_update_activity_list_to_json(char *str, size_t len, struct discord_gateway_identify_status_update_activity **p);
+extern void discord_gateway_activity_cleanup_v(void *p);
+extern void discord_gateway_activity_cleanup(struct discord_gateway_activity *p);
+extern void discord_gateway_activity_init_v(void *p);
+extern void discord_gateway_activity_init(struct discord_gateway_activity *p);
+extern struct discord_gateway_activity * discord_gateway_activity_alloc();
+extern void discord_gateway_activity_free_v(void *p);
+extern void discord_gateway_activity_free(struct discord_gateway_activity *p);
+extern void discord_gateway_activity_from_json_v(char *json, size_t len, void *p);
+extern void discord_gateway_activity_from_json(char *json, size_t len, struct discord_gateway_activity *p);
+extern size_t discord_gateway_activity_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_gateway_activity_to_json(char *json, size_t len, struct discord_gateway_activity *p);
+extern size_t discord_gateway_activity_to_query_v(char *json, size_t len, void *p);
+extern size_t discord_gateway_activity_to_query(char *json, size_t len, struct discord_gateway_activity *p);
+extern void discord_gateway_activity_list_free_v(void **p);
+extern void discord_gateway_activity_list_free(struct discord_gateway_activity **p);
+extern void discord_gateway_activity_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_gateway_activity_list_from_json(char *str, size_t len, struct discord_gateway_activity ***p);
+extern size_t discord_gateway_activity_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_gateway_activity_list_to_json(char *str, size_t len, struct discord_gateway_activity **p);
 
 
-enum discord_gateway_identify_status_update_activity_types {
-  DISCORD_GATEWAY_IDENTIFY_STATUS_UPDATE_ACTIVITY_GAME = 0,
-  DISCORD_GATEWAY_IDENTIFY_STATUS_UPDATE_ACTIVITY_STREAMING = 1,
-  DISCORD_GATEWAY_IDENTIFY_STATUS_UPDATE_ACTIVITY_LISTENING = 2,
-  DISCORD_GATEWAY_IDENTIFY_STATUS_UPDATE_ACTIVITY_CUSTOM = 4,
-  DISCORD_GATEWAY_IDENTIFY_STATUS_UPDATE_ACTIVITY_COMPETING = 5,
+enum discord_gateway_activity_types {
+  DISCORD_GATEWAY_ACTIVITY_GAME = 0,
+  DISCORD_GATEWAY_ACTIVITY_STREAMING = 1,
+  DISCORD_GATEWAY_ACTIVITY_LISTENING = 2,
+  DISCORD_GATEWAY_ACTIVITY_CUSTOM = 4,
+  DISCORD_GATEWAY_ACTIVITY_COMPETING = 5,
 };
