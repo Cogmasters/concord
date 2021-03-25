@@ -186,7 +186,6 @@ specs_clean :
 clean : 
 	rm -rf $(OBJDIR) *.exe test/*.exe bots/*.exe
 	rm -rf bots-1/*.b1 bots-2/*.b2
-	$(MAKE) -C mujs clean
 	rm -rf $(LIBDIR)
 
 
