@@ -182,6 +182,7 @@ on_dispatch_message_reaction(
   case MESSAGE_REACTION_ADD:
       if (gw->cbs.on_reaction.add)
         (*gw->cbs.on_reaction.add)(gw->p_client, gw->me, 
+            user_id,
             channel_id, 
             message_id, 
             guild_id, 
@@ -191,6 +192,7 @@ on_dispatch_message_reaction(
   case MESSAGE_REACTION_REMOVE:
       if (gw->cbs.on_reaction.remove)
         (*gw->cbs.on_reaction.remove)(gw->p_client, gw->me, 
+            user_id,
             channel_id, 
             message_id, 
             guild_id, 

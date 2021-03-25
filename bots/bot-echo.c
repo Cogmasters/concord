@@ -14,6 +14,7 @@ void on_ready(struct discord *client, const struct discord_user *me) {
 void on_reaction_add(
     struct discord *client,
     const struct discord_user *me,
+    const uint64_t user_id, 
     const uint64_t channel_id, 
     const uint64_t message_id, 
     const uint64_t guild_id, 

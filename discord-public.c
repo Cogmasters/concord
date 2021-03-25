@@ -205,7 +205,7 @@ discord_set_presence(
   struct discord_gateway_status_update *presence = client->gw.identify->presence;
 
   if (activity) {
-    presence->activities = ntl_append(presence->activities, 
+    presence->activities = (void*)ntl_append((void*)presence->activities, 
                               sizeof **presence->activities, activity);
   }
   if (status) {

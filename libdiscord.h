@@ -78,6 +78,7 @@ typedef void (message_delete_bulk_cb)(
 /* MESSAGE REACTION EVENTS CALLBACKS */
 typedef void (reaction_add_cb)(
     struct discord *client, const struct discord_user *me, 
+    const u64_snowflake_t user_id,
     const u64_snowflake_t channel_id, 
     const u64_snowflake_t message_id, 
     const u64_snowflake_t guild_id, 
@@ -85,6 +86,7 @@ typedef void (reaction_add_cb)(
     const struct discord_emoji *emoji);
 typedef void (reaction_remove_cb)(
     struct discord *client, const struct discord_user *me, 
+    const u64_snowflake_t user_id,
     const u64_snowflake_t channel_id, 
     const u64_snowflake_t message_id, 
     const u64_snowflake_t guild_id, 
