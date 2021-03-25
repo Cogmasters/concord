@@ -214,12 +214,12 @@ strndup (const char *s, size_t n)
 }
 ```
 
-Now, go to `discord-ratelimit.cpp` and include `tdestroy.h`:
+Now, go to `discord-ratelimit.c` and include `tdestroy.h`:
 ```c
 #include "tdestroy.h"
 ```
 
-Then, go to `discord-public-user.cpp` and include `strndup.h`:
+Then, go to `discord-public-user.c` and include `strndup.h`:
 ```c
 #include "strndup.h"
 ```
