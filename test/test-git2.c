@@ -49,7 +49,7 @@ int main (int argc, char ** argv)
 
 
   struct github_v3_git_op_file ** files = NULL;
-  files = ntl_calloc(argc - optind, sizeof(struct github_v3_git_op_file));
+  files = (struct github_v3_git_op_file**)ntl_calloc(argc-optind, sizeof(struct github_v3_git_op_file));
   for (int i = 0; files[i]; ++i)
     files[i]->path = argv[optind + i];
 

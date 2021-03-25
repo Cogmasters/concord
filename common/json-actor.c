@@ -2670,7 +2670,7 @@ json_to_sized_buffer_ntl
 
   struct sized_buffer **token_array = NULL;
   int n = tokens[0].size;
-  token_array = ntl_calloc(n, sizeof(struct sized_buffer));
+  token_array = (struct sized_buffer **)ntl_calloc(n, sizeof(struct sized_buffer));
 
   int idx, ic;
   for (idx = 0, ic = 0 + 1; ic < num_tok && idx < n; ic++) {

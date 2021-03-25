@@ -120,7 +120,7 @@ static char * converter_file = NULL;
 
 
 static void init_converters () {
-  converters = (NTL_T(struct converters))ntl_calloc(2, sizeof(struct converter));
+  converters = (struct converter**)ntl_calloc(2, sizeof(struct converter));
   converters[0]->name = "iso8601";
   converters[0]->input_type = "char*";
   converters[0]->output_type = "u64_unix_ms_t";
