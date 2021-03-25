@@ -1086,7 +1086,7 @@ void discord_message_from_json_disabled(char *json, size_t len, struct discord_m
                 ja_u64_list_from_json, &p->mention_roles,
                 discord_channel_mention_list_from_json, &p->mention_channels,
                 discord_channel_attachment_list_from_json, &p->attachments,
-                discord_channel_embed_list_from_json, &p->embeds,
+                discord_embed_list_from_json, &p->embeds,
                 discord_channel_reaction_list_from_json, &p->reactions,
                 &p->nonce,
                 &p->pinned,
@@ -1184,8 +1184,8 @@ static void discord_message_use_default_inject_settings(struct discord_message *
   */
   p->__M.arg_switches[13] = p->attachments;
 
-  /* specs/channel.message.json:149:80
-     '{"type":{"base":"struct discord_channel_embed", "dec":"ntl"}, "name":"embeds"}'
+  /* specs/channel.message.json:149:72
+     '{"type":{"base":"struct discord_embed", "dec":"ntl"}, "name":"embeds"}'
   */
   p->__M.arg_switches[14] = p->embeds;
 
@@ -1328,8 +1328,8 @@ size_t discord_message_to_json(char *json, size_t len, struct discord_message *p
      '{"type":{"base":"struct discord_channel_attachment", "dec":"ntl"}, "name":"attachments"}'
   */
                 "(attachments):F,"
-  /* specs/channel.message.json:149:80
-     '{"type":{"base":"struct discord_channel_embed", "dec":"ntl"}, "name":"embeds"}'
+  /* specs/channel.message.json:149:72
+     '{"type":{"base":"struct discord_embed", "dec":"ntl"}, "name":"embeds"}'
   */
                 "(embeds):F,"
   /* specs/channel.message.json:150:82
@@ -1448,10 +1448,10 @@ size_t discord_message_to_json(char *json, size_t len, struct discord_message *p
      '{"type":{"base":"struct discord_channel_attachment", "dec":"ntl"}, "name":"attachments"}'
   */
                 discord_channel_attachment_list_to_json, p->attachments,
-  /* specs/channel.message.json:149:80
-     '{"type":{"base":"struct discord_channel_embed", "dec":"ntl"}, "name":"embeds"}'
+  /* specs/channel.message.json:149:72
+     '{"type":{"base":"struct discord_embed", "dec":"ntl"}, "name":"embeds"}'
   */
-                discord_channel_embed_list_to_json, p->embeds,
+                discord_embed_list_to_json, p->embeds,
   /* specs/channel.message.json:150:82
      '{"type":{"base":"struct discord_channel_reaction","dec":"ntl"}, "name":"reactions", 
           "option":true }'
@@ -1616,11 +1616,11 @@ void discord_message_cleanup(struct discord_message *d) {
   */
   if (d->attachments)
     discord_channel_attachment_list_free(d->attachments);
-  /* specs/channel.message.json:149:80
-     '{"type":{"base":"struct discord_channel_embed", "dec":"ntl"}, "name":"embeds"}'
+  /* specs/channel.message.json:149:72
+     '{"type":{"base":"struct discord_embed", "dec":"ntl"}, "name":"embeds"}'
   */
   if (d->embeds)
-    discord_channel_embed_list_free(d->embeds);
+    discord_embed_list_free(d->embeds);
   /* specs/channel.message.json:150:82
      '{"type":{"base":"struct discord_channel_reaction","dec":"ntl"}, "name":"reactions", 
           "option":true }'
@@ -1749,8 +1749,8 @@ void discord_message_init(struct discord_message *p) {
      '{"type":{"base":"struct discord_channel_attachment", "dec":"ntl"}, "name":"attachments"}'
   */
 
-  /* specs/channel.message.json:149:80
-     '{"type":{"base":"struct discord_channel_embed", "dec":"ntl"}, "name":"embeds"}'
+  /* specs/channel.message.json:149:72
+     '{"type":{"base":"struct discord_embed", "dec":"ntl"}, "name":"embeds"}'
   */
 
   /* specs/channel.message.json:150:82

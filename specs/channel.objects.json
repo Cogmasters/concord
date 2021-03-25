@@ -84,7 +84,6 @@
     {
       "title":"Embed Structure",
       "comment":"https://discord.com/developers/docs/resources/channel#embed-object-embed-structure",
-      "namespace":["channel"],
       "struct":"embed",
       "fields":
       [
@@ -99,21 +98,21 @@
         { "name": "timestamp", "type":{ "base":"char", "dec":"*", "converter":"iso8601" },
           "option":true, "inject_if_not":0},
         { "name": "color", "type":{ "base":"int" }, "option":true, "inject_if_not":0},
-        { "name": "footer", "type":{ "base":"struct discord_channel_embed_footer", "dec":"*"},
+        { "name": "footer", "type":{ "base":"struct discord_embed_footer", "dec":"*"},
           "option":true, "inject_if_not":null},
-        { "name": "image", "type":{ "base":"struct discord_channel_embed_image", "dec":"*"}, "inject_if_not":null},
-        { "name": "thumbnail", "type":{ "base":"struct discord_channel_embed_thumbnail", "dec":"*"}, "inject_if_not":null},
-        { "name": "video", "type":{ "base":"struct discord_channel_embed_video", "dec":"*"}, "inject_if_not":null},
-        { "name": "provider", "type":{ "base":"struct discord_channel_embed_provider", "dec":"*"}, "inject_if_not":null},
-        { "name": "author", "type":{ "base":"struct discord_channel_embed_author", "dec":"*"}, "inject_if_not":null},
-        { "name": "fields", "type":{ "base":"struct discord_channel_embed_field", "dec":"ntl"},
+        { "name": "image", "type":{ "base":"struct discord_embed_image", "dec":"*"}, "inject_if_not":null},
+        { "name": "thumbnail", "type":{ "base":"struct discord_embed_thumbnail", "dec":"*"}, "inject_if_not":null},
+        { "name": "video", "type":{ "base":"struct discord_embed_video", "dec":"*"}, "inject_if_not":null},
+        { "name": "provider", "type":{ "base":"struct discord_embed_provider", "dec":"*"}, "inject_if_not":null},
+        { "name": "author", "type":{ "base":"struct discord_embed_author", "dec":"*"}, "inject_if_not":null},
+        { "name": "fields", "type":{ "base":"struct discord_embed_field", "dec":"ntl"},
           "option":true, "inject_if_not":null}
       ]
     },
     {
       "comment": "https://discord.com/developers/docs/resources/channel#embed-object-embed-thumbnail-structure",
       "title":"Embed Thumbnail Structure",
-      "namespace":["channel","embed"],
+      "namespace":["embed"],
       "struct":"thumbnail",
       "fields": [
         { "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""},
@@ -125,7 +124,7 @@
     {
       "comment": "https://discord.com/developers/docs/resources/channel#embed-object-embed-video-structure",
       "title":"Embed Thumbnail Structure",
-      "namespace":["channel","embed"],
+      "namespace":["embed"],
       "struct":"video",
       "fields": [
         { "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""},
@@ -137,7 +136,7 @@
     {
       "comment": "https://discord.com/developers/docs/resources/channel#embed-object-embed-image-structure",
       "title":"Embed Image Structure",
-      "namespace":["channel","embed"],
+      "namespace":["embed"],
       "struct":"image",
       "fields": [
         { "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""},
@@ -149,7 +148,7 @@
     {
       "title":"Embed Provider Structure",
       "comment": "https://discord.com/developers/docs/resources/channel#embed-object-embed-provider-structure",
-      "namespace":["channel","embed"],
+      "namespace":["embed"],
       "struct":"provider",
       "fields": [
         { "name": "name", "type":{"base":"char", "dec":"[EMBED_AUTHOR_NAME_LEN]"}, "inject_if_not":""},
@@ -159,7 +158,7 @@
     {
       "title":"Embed Author Structure",
       "comment": "https://discord.com/developers/docs/resources/channel#embed-object-embed-author-structure",
-      "namespace":["channel","embed"],
+      "namespace":["embed"],
       "struct":"author",
       "fields": [
         { "name": "name", "type":{ "base":"char", "dec":"[EMBED_AUTHOR_NAME_LEN]" }, "inject_if_not":""},
@@ -171,7 +170,7 @@
     {
       "title":"Embed Footer Structure",
       "comment": "https://discord.com/developers/docs/resources/channel#embed-object-embed-footer-structure",
-      "namespace":["channel","embed"],
+      "namespace":["embed"],
       "struct":"footer",
       "fields": [
         { "name": "text", "type": {"base":"char", "dec":"[EMBED_FOOTER_TEXT_LEN]"}, "inject_if_not":""},
@@ -184,7 +183,7 @@
     {
       "title":"Embed Field Structure",
       "comment": "https://discord.com/developers/docs/resources/channel#embed-object-embed-field-structure",
-      "namespace":["channel","embed"],
+      "namespace":["embed"],
       "struct":"field",
       "fields": [
         { "name": "name", "type": { "base":"char", "dec":"[EMBED_FIELD_NAME_LEN]" }, "inject_if_not":""},

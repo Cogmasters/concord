@@ -154,43 +154,43 @@ struct discord_channel_allowed_mentions;
 
 /* Title: Embed Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-structure */
-/* This is defined at specs/channel.objects.json:88:22 */
-struct discord_channel_embed;
+/* This is defined at specs/channel.objects.json:87:22 */
+struct discord_embed;
 
 /* Title: Embed Thumbnail Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-thumbnail-structure */
-/* This is defined at specs/channel.objects.json:117:22 */
-struct discord_channel_embed_thumbnail;
+/* This is defined at specs/channel.objects.json:116:22 */
+struct discord_embed_thumbnail;
 
 /* Title: Embed Thumbnail Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-video-structure */
-/* This is defined at specs/channel.objects.json:129:22 */
-struct discord_channel_embed_video;
+/* This is defined at specs/channel.objects.json:128:22 */
+struct discord_embed_video;
 
 /* Title: Embed Image Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-image-structure */
-/* This is defined at specs/channel.objects.json:141:22 */
-struct discord_channel_embed_image;
+/* This is defined at specs/channel.objects.json:140:22 */
+struct discord_embed_image;
 
 /* Title: Embed Provider Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-provider-structure */
-/* This is defined at specs/channel.objects.json:153:22 */
-struct discord_channel_embed_provider;
+/* This is defined at specs/channel.objects.json:152:22 */
+struct discord_embed_provider;
 
 /* Title: Embed Author Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-author-structure */
-/* This is defined at specs/channel.objects.json:163:22 */
-struct discord_channel_embed_author;
+/* This is defined at specs/channel.objects.json:162:22 */
+struct discord_embed_author;
 
 /* Title: Embed Footer Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-footer-structure */
-/* This is defined at specs/channel.objects.json:175:22 */
-struct discord_channel_embed_footer;
+/* This is defined at specs/channel.objects.json:174:22 */
+struct discord_embed_footer;
 
 /* Title: Embed Field Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-field-structure */
-/* This is defined at specs/channel.objects.json:188:22 */
-struct discord_channel_embed_field;
+/* This is defined at specs/channel.objects.json:187:22 */
+struct discord_embed_field;
 /* This file is generated from specs/emoji.create-guild-emoji.json, Please don't edit it. */
 /*
 

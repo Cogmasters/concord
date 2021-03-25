@@ -13,10 +13,10 @@ struct discord_edit_webhook_message_params {
   char content[2000+1]; // name of the webhook(1-2000) chars
 
   /* specs/webhook.edit-webhook-message.json:13:20
-     '{ "name": "embeds", "type":{ "base":"struct discord_channel_embed", "dec":"ntl" }, 
+     '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, 
           "comment":"array of up to 10 embeds objects" }'
   */
-  struct discord_channel_embed **embeds; // array of up to 10 embeds objects
+  struct discord_embed **embeds; // array of up to 10 embeds objects
 
   /* specs/webhook.edit-webhook-message.json:15:20
      '{ "name": "allowed_mentions", 

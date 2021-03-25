@@ -53,12 +53,12 @@ struct discord_execute_webhook_params {
   char *file; // the contents of the file being sent
 
   /* specs/webhook.execute-webhook.json:34:20
-     '{ "name": "embeds", "type":{ "base":"struct discord_channel_embed", "dec":"*" }, 
+     '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"*" }, 
           "comment":"embedded rich content",
           "required":"one of content, file, embeds"
         }'
   */
-  struct discord_channel_embed *embeds; // embedded rich content
+  struct discord_embed *embeds; // embedded rich content
 
   /* specs/webhook.execute-webhook.json:38:20
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, 

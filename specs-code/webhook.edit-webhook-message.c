@@ -15,7 +15,7 @@ void discord_edit_webhook_message_params_from_json(char *json, size_t len, struc
   */
                 "(content):s,"
   /* specs/webhook.edit-webhook-message.json:13:20
-     '{ "name": "embeds", "type":{ "base":"struct discord_channel_embed", "dec":"ntl" }, 
+     '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, 
           "comment":"array of up to 10 embeds objects" }'
   */
                 "(embeds):F,"
@@ -34,10 +34,10 @@ void discord_edit_webhook_message_params_from_json(char *json, size_t len, struc
   */
                 p->content,
   /* specs/webhook.edit-webhook-message.json:13:20
-     '{ "name": "embeds", "type":{ "base":"struct discord_channel_embed", "dec":"ntl" }, 
+     '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, 
           "comment":"array of up to 10 embeds objects" }'
   */
-                discord_channel_embed_list_from_json, &p->embeds,
+                discord_embed_list_from_json, &p->embeds,
   /* specs/webhook.edit-webhook-message.json:15:20
      '{ "name": "allowed_mentions", 
           "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, 
@@ -60,7 +60,7 @@ static void discord_edit_webhook_message_params_use_default_inject_settings(stru
   p->__M.arg_switches[0] = p->content;
 
   /* specs/webhook.edit-webhook-message.json:13:20
-     '{ "name": "embeds", "type":{ "base":"struct discord_channel_embed", "dec":"ntl" }, 
+     '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, 
           "comment":"array of up to 10 embeds objects" }'
   */
   p->__M.arg_switches[1] = p->embeds;
@@ -85,7 +85,7 @@ size_t discord_edit_webhook_message_params_to_json(char *json, size_t len, struc
   */
                 "(content):s,"
   /* specs/webhook.edit-webhook-message.json:13:20
-     '{ "name": "embeds", "type":{ "base":"struct discord_channel_embed", "dec":"ntl" }, 
+     '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, 
           "comment":"array of up to 10 embeds objects" }'
   */
                 "(embeds):F,"
@@ -102,10 +102,10 @@ size_t discord_edit_webhook_message_params_to_json(char *json, size_t len, struc
   */
                 p->content,
   /* specs/webhook.edit-webhook-message.json:13:20
-     '{ "name": "embeds", "type":{ "base":"struct discord_channel_embed", "dec":"ntl" }, 
+     '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, 
           "comment":"array of up to 10 embeds objects" }'
   */
-                discord_channel_embed_list_to_json, p->embeds,
+                discord_embed_list_to_json, p->embeds,
   /* specs/webhook.edit-webhook-message.json:15:20
      '{ "name": "allowed_mentions", 
           "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, 
@@ -160,11 +160,11 @@ void discord_edit_webhook_message_params_cleanup(struct discord_edit_webhook_mes
   */
   //p->content is a scalar
   /* specs/webhook.edit-webhook-message.json:13:20
-     '{ "name": "embeds", "type":{ "base":"struct discord_channel_embed", "dec":"ntl" }, 
+     '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, 
           "comment":"array of up to 10 embeds objects" }'
   */
   if (d->embeds)
-    discord_channel_embed_list_free(d->embeds);
+    discord_embed_list_free(d->embeds);
   /* specs/webhook.edit-webhook-message.json:15:20
      '{ "name": "allowed_mentions", 
           "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, 
@@ -182,7 +182,7 @@ void discord_edit_webhook_message_params_init(struct discord_edit_webhook_messag
   */
 
   /* specs/webhook.edit-webhook-message.json:13:20
-     '{ "name": "embeds", "type":{ "base":"struct discord_channel_embed", "dec":"ntl" }, 
+     '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, 
           "comment":"array of up to 10 embeds objects" }'
   */
 

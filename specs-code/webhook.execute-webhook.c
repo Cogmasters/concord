@@ -50,7 +50,7 @@ void discord_execute_webhook_params_from_json(char *json, size_t len, struct dis
   */
                 "(file):?s,"
   /* specs/webhook.execute-webhook.json:34:20
-     '{ "name": "embeds", "type":{ "base":"struct discord_channel_embed", "dec":"*" }, 
+     '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"*" }, 
           "comment":"embedded rich content",
           "required":"one of content, file, embeds"
         }'
@@ -115,12 +115,12 @@ void discord_execute_webhook_params_from_json(char *json, size_t len, struct dis
   */
                 &p->file,
   /* specs/webhook.execute-webhook.json:34:20
-     '{ "name": "embeds", "type":{ "base":"struct discord_channel_embed", "dec":"*" }, 
+     '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"*" }, 
           "comment":"embedded rich content",
           "required":"one of content, file, embeds"
         }'
   */
-                discord_channel_embed_from_json, p->embeds,
+                discord_embed_from_json, p->embeds,
   /* specs/webhook.execute-webhook.json:38:20
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, 
           "comment":"See message create",
@@ -192,7 +192,7 @@ static void discord_execute_webhook_params_use_default_inject_settings(struct di
   p->__M.arg_switches[5] = p->file;
 
   /* specs/webhook.execute-webhook.json:34:20
-     '{ "name": "embeds", "type":{ "base":"struct discord_channel_embed", "dec":"*" }, 
+     '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"*" }, 
           "comment":"embedded rich content",
           "required":"one of content, file, embeds"
         }'
@@ -264,7 +264,7 @@ size_t discord_execute_webhook_params_to_json(char *json, size_t len, struct dis
   */
                 "(file):s,"
   /* specs/webhook.execute-webhook.json:34:20
-     '{ "name": "embeds", "type":{ "base":"struct discord_channel_embed", "dec":"*" }, 
+     '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"*" }, 
           "comment":"embedded rich content",
           "required":"one of content, file, embeds"
         }'
@@ -327,12 +327,12 @@ size_t discord_execute_webhook_params_to_json(char *json, size_t len, struct dis
   */
                 p->file,
   /* specs/webhook.execute-webhook.json:34:20
-     '{ "name": "embeds", "type":{ "base":"struct discord_channel_embed", "dec":"*" }, 
+     '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"*" }, 
           "comment":"embedded rich content",
           "required":"one of content, file, embeds"
         }'
   */
-                discord_channel_embed_to_json, p->embeds,
+                discord_embed_to_json, p->embeds,
   /* specs/webhook.execute-webhook.json:38:20
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, 
           "comment":"See message create",
@@ -434,13 +434,13 @@ void discord_execute_webhook_params_cleanup(struct discord_execute_webhook_param
   if (d->file)
     free(d->file);
   /* specs/webhook.execute-webhook.json:34:20
-     '{ "name": "embeds", "type":{ "base":"struct discord_channel_embed", "dec":"*" }, 
+     '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"*" }, 
           "comment":"embedded rich content",
           "required":"one of content, file, embeds"
         }'
   */
   if (d->embeds)
-    discord_channel_embed_free(d->embeds);
+    discord_embed_free(d->embeds);
   /* specs/webhook.execute-webhook.json:38:20
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, 
           "comment":"See message create",
@@ -503,12 +503,12 @@ void discord_execute_webhook_params_init(struct discord_execute_webhook_params *
   */
 
   /* specs/webhook.execute-webhook.json:34:20
-     '{ "name": "embeds", "type":{ "base":"struct discord_channel_embed", "dec":"*" }, 
+     '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"*" }, 
           "comment":"embedded rich content",
           "required":"one of content, file, embeds"
         }'
   */
-  p->embeds = discord_channel_embed_alloc();
+  p->embeds = discord_embed_alloc();
 
   /* specs/webhook.execute-webhook.json:38:20
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, 

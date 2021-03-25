@@ -108,7 +108,7 @@ discord_channel_overwrite_to_json(char *json, size_t len, struct discord_channel
 
 void
 discord_embed_set_footer(
-  struct discord_channel_embed *embed, 
+  struct discord_embed *embed, 
   char text[], 
   char icon_url[], 
   char proxy_icon_url[])
@@ -122,7 +122,7 @@ discord_embed_set_footer(
     free(embed->footer);
   }
 
-  struct discord_channel_embed_footer *new_footer = discord_channel_embed_footer_alloc();
+  struct discord_embed_footer *new_footer = discord_embed_footer_alloc();
   strncpy(new_footer->text, text, EMBED_FOOTER_TEXT_LEN);
   if (!IS_EMPTY_STRING(icon_url))
     strncpy(new_footer->icon_url, icon_url, MAX_URL_LEN);
@@ -134,7 +134,7 @@ discord_embed_set_footer(
 
 void
 discord_embed_set_thumbnail(
-  struct discord_channel_embed *embed, 
+  struct discord_embed *embed, 
   char url[], 
   char proxy_url[], 
   int height, 
@@ -144,7 +144,7 @@ discord_embed_set_thumbnail(
     free(embed->thumbnail);
   }
 
-  struct discord_channel_embed_thumbnail *new_thumbnail = discord_channel_embed_thumbnail_alloc();
+  struct discord_embed_thumbnail *new_thumbnail = discord_embed_thumbnail_alloc();
   if (!IS_EMPTY_STRING(url))
     strncpy(new_thumbnail->url, url, MAX_URL_LEN);
   if (!IS_EMPTY_STRING(proxy_url))
@@ -159,7 +159,7 @@ discord_embed_set_thumbnail(
 
 void
 discord_embed_set_image(
-  struct discord_channel_embed *embed, 
+  struct discord_embed *embed, 
   char url[], 
   char proxy_url[], 
   int height, 
@@ -169,7 +169,7 @@ discord_embed_set_image(
     free(embed->image);
   }
 
-  struct discord_channel_embed_image *new_image = discord_channel_embed_image_alloc();
+  struct discord_embed_image *new_image = discord_embed_image_alloc();
   if (!IS_EMPTY_STRING(url))
     strncpy(new_image->url, url, MAX_URL_LEN);
   if (!IS_EMPTY_STRING(proxy_url))
@@ -184,7 +184,7 @@ discord_embed_set_image(
 
 void
 discord_embed_set_video(
-  struct discord_channel_embed *embed, 
+  struct discord_embed *embed, 
   char url[], 
   char proxy_url[], 
   int height, 
@@ -194,7 +194,7 @@ discord_embed_set_video(
     free(embed->video);
   }
 
-  struct discord_channel_embed_video *new_video = discord_channel_embed_video_alloc();
+  struct discord_embed_video *new_video = discord_embed_video_alloc();
   if (!IS_EMPTY_STRING(url))
     strncpy(new_video->url, url, MAX_URL_LEN);
   if (!IS_EMPTY_STRING(proxy_url))
@@ -208,13 +208,13 @@ discord_embed_set_video(
 }
 
 void
-discord_embed_set_provider(struct discord_channel_embed *embed, char name[], char url[])
+discord_embed_set_provider(struct discord_embed *embed, char name[], char url[])
 {
   if (embed->provider) {
     free(embed->provider);
   }
 
-  struct discord_channel_embed_provider *new_provider = discord_channel_embed_provider_alloc();
+  struct discord_embed_provider *new_provider = discord_embed_provider_alloc();
   if (!IS_EMPTY_STRING(url))
     strncpy(new_provider->url, url, MAX_URL_LEN);
   if (!IS_EMPTY_STRING(name))
@@ -225,7 +225,7 @@ discord_embed_set_provider(struct discord_channel_embed *embed, char name[], cha
 
 void
 discord_embed_set_author(
-  struct discord_channel_embed *embed, 
+  struct discord_embed *embed, 
   char name[], 
   char url[], 
   char icon_url[], 
@@ -235,7 +235,7 @@ discord_embed_set_author(
     free(embed->author);
   }
 
-  struct discord_channel_embed_author *new_author = discord_channel_embed_author_alloc();
+  struct discord_embed_author *new_author = discord_embed_author_alloc();
   if (!IS_EMPTY_STRING(name))
     strncpy(new_author->name, name, EMBED_AUTHOR_NAME_LEN);
   if (!IS_EMPTY_STRING(url))
@@ -249,7 +249,7 @@ discord_embed_set_author(
 }
 
 void
-discord_embed_add_field(struct discord_channel_embed *embed, char name[], char value[], bool Inline)
+discord_embed_add_field(struct discord_embed *embed, char name[], char value[], bool Inline)
 {
   if (IS_EMPTY_STRING(name)) {
     D_PUTS("Missing 'name'");
@@ -266,15 +266,15 @@ discord_embed_add_field(struct discord_channel_embed *embed, char name[], char v
     return;
   }
 
-  struct discord_channel_embed_field new_field;
-  discord_channel_embed_field_init(&new_field);
+  struct discord_embed_field new_field;
+  discord_embed_field_init(&new_field);
   strncpy(new_field.name, name, EMBED_FIELD_NAME_LEN);
   strncpy(new_field.value, value, EMBED_FIELD_VALUE_LEN);
   new_field.Inline = Inline;
 
-  embed->fields = (NTL_T(struct discord_channel_embed_field))ntl_append(
+  embed->fields = (NTL_T(struct discord_embed_field))ntl_append(
                         (NTL_T(void))embed->fields, 
-                        sizeof(struct discord_channel_embed_field), &new_field);
+                        sizeof(struct discord_embed_field), &new_field);
 }
 
 void
@@ -564,7 +564,7 @@ discord_create_message(
         params->content,
         params->nonce,
         &params->tts,
-        &discord_channel_embed_to_json, params->embed,
+        &discord_embed_to_json, params->embed,
         /* @todo
         params->allowed_mentions,
         */
@@ -639,7 +639,7 @@ discord_edit_message(
     //"(allowed_mentions):F"
     "@arg_switches",
     params->content,
-    &discord_channel_embed_to_json, params->embed,
+    &discord_embed_to_json, params->embed,
     params->flags,
     A, sizeof(A));
     //&allowed_mentions_to_json, params->allowed_mentions);

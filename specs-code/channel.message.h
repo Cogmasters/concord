@@ -376,10 +376,10 @@ struct discord_message {
   */
   struct discord_channel_attachment **attachments;
 
-  /* specs/channel.message.json:149:80
-     '{"type":{"base":"struct discord_channel_embed", "dec":"ntl"}, "name":"embeds"}'
+  /* specs/channel.message.json:149:72
+     '{"type":{"base":"struct discord_embed", "dec":"ntl"}, "name":"embeds"}'
   */
-  struct discord_channel_embed **embeds;
+  struct discord_embed **embeds;
 
   /* specs/channel.message.json:150:82
      '{"type":{"base":"struct discord_channel_reaction","dec":"ntl"}, "name":"reactions", 

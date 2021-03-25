@@ -73,7 +73,7 @@ char* happiness_localised(char *happiness_band)
 
 void embed_from_json(char *str, size_t len, void *p_embed)
 {
-  struct discord_channel_embed *embed = (struct discord_channel_embed*)p_embed;
+  struct discord_embed *embed = (struct discord_embed*)p_embed;
 
   struct doc_s *doc = (struct doc_s*)malloc(sizeof *doc);
   NTL_T(struct sized_buffer) l_docs = NULL; // get docs token from JSON
@@ -258,7 +258,7 @@ void on_command(
   update_last_tick_ms();
 
   /* Initialize embed struct that will be loaded to  */
-  struct discord_channel_embed *new_embed = discord_channel_embed_alloc();
+  struct discord_embed *new_embed = discord_embed_alloc();
 
   /* Set embed fields */
   strncpy(new_embed->title, msg->content, sizeof(new_embed->title));
@@ -299,7 +299,7 @@ void on_command(
   discord_create_message(client, msg->channel_id, &params, NULL);
 
   /* Cleanup resources */
-  discord_channel_embed_free(new_embed);
+  discord_embed_free(new_embed);
 }
 
 int main(int argc, char *argv[])

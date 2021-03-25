@@ -146,7 +146,7 @@
          {"type":{"base":"struct discord_channel_mention", "dec":"ntl"}, "name":"mention_channels",
           "option":true },
          {"type":{"base":"struct discord_channel_attachment", "dec":"ntl"}, "name":"attachments"},
-         {"type":{"base":"struct discord_channel_embed", "dec":"ntl"}, "name":"embeds"},
+         {"type":{"base":"struct discord_embed", "dec":"ntl"}, "name":"embeds"},
          {"type":{"base":"struct discord_channel_reaction","dec":"ntl"}, "name":"reactions", 
           "option":true },
          {"type":{"base":"char", "dec":"*"}, "name":"nonce", "comment":"integer or string",

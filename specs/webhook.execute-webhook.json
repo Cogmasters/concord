@@ -31,7 +31,7 @@
           "comment":"the contents of the file being sent",
           "required":"one of content, file, embeds"
         },
-        { "name": "embeds", "type":{ "base":"struct discord_channel_embed", "dec":"*" }, 
+        { "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"*" }, 
           "comment":"embedded rich content",
           "required":"one of content, file, embeds"
         },

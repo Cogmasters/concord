@@ -26,20 +26,20 @@ void on_command(
 
   struct discord_create_message_params params = {
     .content = "This is an embed",
-    .embed = (struct discord_channel_embed*)discord_get_data(client)
+    .embed = (struct discord_embed*)discord_get_data(client)
   };
   discord_create_message(client, msg->channel_id, &params, NULL);
 }
 
-static struct discord_channel_embed*
+static struct discord_embed*
 load_embed_from_json(char filename[])
 {
   /* get contents of file to string */
   size_t len;
   char *json_payload = orka_load_whole_file(filename, &len);
 
-  struct discord_channel_embed *new_embed = discord_channel_embed_alloc();
-  discord_channel_embed_from_json(json_payload, len, new_embed);
+  struct discord_embed *new_embed = discord_embed_alloc();
+  discord_embed_from_json(json_payload, len, new_embed);
 
   new_embed->timestamp = orka_timestamp_ms(); // get current timestamp
 
@@ -72,12 +72,12 @@ int main(int argc, char *argv[])
   fgetc(stdin); // wait for input
 
 
-  struct discord_channel_embed *embed = load_embed_from_json(JSON_FILE);
+  struct discord_embed *embed = load_embed_from_json(JSON_FILE);
   discord_set_data(client, embed);
 
   discord_run(client);
 
-  discord_channel_embed_free(embed);
+  discord_embed_free(embed);
   discord_cleanup(client);
 
   discord_global_cleanup();

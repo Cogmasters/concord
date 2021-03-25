@@ -141,7 +141,7 @@ struct discord_create_message_params {
   char *nonce;
   bool tts;
   // parameters for application/json
-  struct discord_channel_embed *embed;
+  struct discord_embed *embed;
   struct discord_channel_allowed_mentions *allowed_mentions;
   struct discord_message_reference *message_reference;
   // parameters for multipart/form-data
@@ -155,7 +155,7 @@ struct discord_create_message_params {
 
 struct discord_edit_message_params {
   char *content;
-  struct discord_channel_embed *embed; //must be initialized
+  struct discord_embed *embed; //must be initialized
   enum discord_message_flags_code *flags;
   struct discord_channel_allowed_mentions *allowed_mentions; //must be initialized
 };
@@ -210,13 +210,13 @@ enum ws_status discord_gateway_status(struct discord *client);
 
 
 // EMBED MISC FUNCTIONS
-void discord_embed_set_thumbnail(struct discord_channel_embed *embed, char url[], char proxy_url[], int height, int width);
-void discord_embed_set_image(struct discord_channel_embed *embed, char url[], char proxy_url[], int height, int width);
-void discord_embed_set_video(struct discord_channel_embed *embed, char url[], char proxy_url[], int height, int width);
-void discord_embed_set_footer(struct discord_channel_embed *embed, char text[], char icon_url[], char proxy_icon_url[]);
-void discord_embed_set_provider(struct discord_channel_embed *embed, char name[], char url[]);
-void discord_embed_set_author(struct discord_channel_embed *embed, char name[], char url[], char icon_url[], char proxy_icon_url[]);
-void discord_embed_add_field(struct discord_channel_embed *embed, char name[], char value[], bool Inline);
+void discord_embed_set_thumbnail(struct discord_embed *embed, char url[], char proxy_url[], int height, int width);
+void discord_embed_set_image(struct discord_embed *embed, char url[], char proxy_url[], int height, int width);
+void discord_embed_set_video(struct discord_embed *embed, char url[], char proxy_url[], int height, int width);
+void discord_embed_set_footer(struct discord_embed *embed, char text[], char icon_url[], char proxy_icon_url[]);
+void discord_embed_set_provider(struct discord_embed *embed, char name[], char url[]);
+void discord_embed_set_author(struct discord_embed *embed, char name[], char url[], char icon_url[], char proxy_icon_url[]);
+void discord_embed_add_field(struct discord_embed *embed, char name[], char value[], bool Inline);
 
 // CHANNEL OVERWRITE MISC FUNCTIONS
 void discord_overwrite_append(
