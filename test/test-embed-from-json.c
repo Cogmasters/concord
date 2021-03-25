@@ -10,9 +10,9 @@ int main (int argc, char ** argv) {
   size_t len = 0;
   char * json = orka_load_whole_file(argv[1], &len);
 
-  struct discord_channel_embed_dati p;
-  discord_channel_embed_dati_init(&p);
-  discord_channel_embed_dati_from_json(json, len, &p);
+  struct discord_embed p;
+  discord_embed_init(&p);
+  discord_embed_from_json(json, len, &p);
   return 0;
 }
 

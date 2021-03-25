@@ -1,10 +1,14 @@
 #include <locale.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <inttypes.h>
 #include <string.h>
 #include <assert.h>
 
 #include "libdiscord.h"
+#include "orka-utils.h"
+#include "json-scanf.h"
+#include "json-actor.h"
 
 
 

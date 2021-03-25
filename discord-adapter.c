@@ -20,12 +20,8 @@ void
 discord_adapter_init(struct discord_adapter *adapter, const char token[], const char config_file[])
 {
   if (config_file) {
-    ua_config_init(&adapter->ua, BASE_API_URL, "DISCORD HTTP", config_file);
-    token = orka_config_get_field(&adapter->ua.config, "discord.token");
-  }
-  else {
-    ua_init(&adapter->ua, BASE_API_URL);
-    orka_config_init(&adapter->ua.config, "DISCORD HTTP", NULL);
+    adapter->ua = ua_config_init(BASE_API_URL, "DISCORD HTTP", config_file);
+    token = ua_config_get_field(adapter->ua, "discord.token");
   }
   if (!token) ERR("Missing bot token");
 
@@ -33,8 +29,8 @@ discord_adapter_init(struct discord_adapter *adapter, const char token[], const 
   int ret = snprintf(auth, sizeof(auth), "Bot %s", token);
   ASSERT_S(ret < (int)sizeof(auth), "Out of bounds write attempt");
 
-  ua_reqheader_add(&adapter->ua, "Authorization", auth);
-  ua_reqheader_add(&adapter->ua, "X-RateLimit-Precision", "millisecond");
+  ua_reqheader_add(adapter->ua, "Authorization", auth);
+  ua_reqheader_add(adapter->ua, "X-RateLimit-Precision", "millisecond");
 
   if (pthread_mutex_init(&adapter->lock, NULL))
     ERR("Couldn't initialize pthread mutex");
@@ -44,14 +40,14 @@ void
 discord_adapter_cleanup(struct discord_adapter *adapter)
 {
   discord_bucket_cleanup(adapter);
-  ua_cleanup(&adapter->ua);
+  ua_cleanup(adapter->ua);
   pthread_mutex_destroy(&adapter->lock);
 }
 
 static int
 bucket_tryget_cb(void *p_ratelimit)
 {
-  struct _ratelimit *rl = (struct _ratelimit*)p_ratelimit;
+  struct _ratelimit *rl = p_ratelimit;
   pthread_mutex_lock(&rl->adapter->lock);
   rl->bucket = discord_bucket_try_get(rl->adapter, rl->endpoint);
   pthread_mutex_unlock(&rl->adapter->lock);
@@ -61,14 +57,14 @@ bucket_tryget_cb(void *p_ratelimit)
 static void
 bucket_trycooldown_cb(void *p_ratelimit)
 {
-  struct _ratelimit *rl = (struct _ratelimit*)p_ratelimit;
+  struct _ratelimit *rl = p_ratelimit;
   discord_bucket_try_cooldown(rl->bucket);
 }
 
 static void
 bucket_trybuild_cb(void *p_ratelimit, struct ua_conn_s *conn)
 {
-  struct _ratelimit *rl = (struct _ratelimit*)p_ratelimit;
+  struct _ratelimit *rl = p_ratelimit;
   pthread_mutex_lock(&rl->adapter->lock);
   discord_bucket_build(rl->adapter, rl->bucket, rl->endpoint, conn);
   pthread_mutex_unlock(&rl->adapter->lock);
@@ -94,7 +90,7 @@ on_failure_cb(
   int httpcode,
   struct ua_conn_s *conn)
 {
-  struct _ratelimit *rl = (struct _ratelimit*)p_ratelimit;
+  struct _ratelimit *rl = p_ratelimit;
 
   if (httpcode >= 500) { // server related error, retry
     NOTOP_PRINT("(%d)%s - %s", 
@@ -102,7 +98,7 @@ on_failure_cb(
         http_code_print(httpcode),
         http_reason_print(httpcode));
 
-    ua_block_ms(&rl->adapter->ua, 5000); // wait for 5 seconds
+    ua_block_ms(rl->adapter->ua, 5000); // wait for 5 seconds
 
     return UA_RETRY;
   }
@@ -143,7 +139,7 @@ on_failure_cb(
       if (retry_after_ms) { // retry after attribute received
         NOTOP_PRINT("RATELIMIT MESSAGE:\n\t%s (wait: %lld ms)", message, retry_after_ms);
 
-        ua_block_ms(&rl->adapter->ua, retry_after_ms);
+        ua_block_ms(rl->adapter->ua, retry_after_ms);
 
         return UA_RETRY;
       }
@@ -189,7 +185,7 @@ discord_adapter_run(
   };
 
   struct ua_callbacks cbs = {
-    .data = (void*)&ratelimit,
+    .data = &ratelimit,
     .on_startup = &bucket_tryget_cb,
     .on_iter_start = &bucket_trycooldown_cb,
     .on_iter_end = &bucket_trybuild_cb,
@@ -207,7 +203,7 @@ discord_adapter_run(
   }
 
   ua_vrun(
-    &adapter->ua,
+    adapter->ua,
     resp_handle,
     req_body,
     &cbs,

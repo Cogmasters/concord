@@ -1,10 +1,13 @@
-#include "json-actor.c"
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#include <limits.h>
 #include <assert.h>
-#include <orka-utils.h>
-#include "orka-utils.h"
 
-int main ()
+#include "orka-utils.h"
+#include "json-actor.c"
+
+int main()
 {
   int i, j, k;
   char * json = "{ \"a\":10 }";

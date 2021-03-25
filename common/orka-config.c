@@ -4,6 +4,7 @@
 #include <stdarg.h>
 #include <pthread.h>
 #include <string.h>
+#include <limits.h> // for PATH_MAX
 
 #include "orka-config.h"
 #include "orka-utils.h"

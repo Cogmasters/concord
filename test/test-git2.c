@@ -5,6 +5,7 @@
 
 #include "github-v3.h"
 #include "orka-utils.h"
+#include "orka-config.h"
 
 
 static
@@ -56,11 +57,11 @@ int main (int argc, char ** argv)
 
   struct orka_config config;
   memset(&config, 0, sizeof(config));
-  orka_config_init(&config, "GIT HTTP", config_file);
+  orka_config_init(&config, NULL, config_file);
   char *username = orka_config_get_field(&config, "github.username");
   char *token = orka_config_get_field(&config, "github.token");
 
-  struct github_v3_git_op_dati *data = github_v3_git_op_init(username, token, ".cee-repo");
+  struct github_v3_git_op *data = github_v3_git_op_init(username, token, ".cee-repo");
 
   github_v3_git_op_update_my_fork(data);
   github_v3_git_op_create_blobs(data, files);

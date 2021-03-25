@@ -6,9 +6,33 @@
 #include <string.h>
 #include <pthread.h>
 
+#include <curl/curl.h>
+
 #include "user-agent.h"
 #include "orka-utils.h"
+#include "orka-config.h"
 
+
+struct user_agent_s {
+  struct orka_config config;
+  struct curl_slist *req_header; // the request header sent to the api
+
+  struct ua_conn_s **conn_pool; // connection pool for reuse
+  int num_notbusy; // num of available conns
+  size_t num_conn; // amount of conns created
+
+  char *base_url;
+
+  uint64_t blockuntil_tstamp; // for global ratelimiting purposes
+  pthread_mutex_t lock;
+
+  void *data; // user arbitrary data for setopt_cb
+  void (*setopt_cb)(CURL *ehandle, void *data); // set custom easy_setopts
+
+  void *data2; // @todo this is temporary
+  curl_mime *mime; // @todo this is temporary
+  curl_mime* (*mime_cb)(CURL *ehandle, void *data); // @todo this is temporary
+};
 
 /* attempt to get value from matching response header field */
 char*
@@ -19,7 +43,6 @@ ua_respheader_value(struct ua_conn_s *conn, char field[])
       return conn->resp_header.value[i]; //found header field, return its value
     }
   }
-
   return NULL; //couldn't find header field
 }
 
@@ -81,7 +104,7 @@ static size_t
 conn_resheader_cb(char *str, size_t size, size_t nmemb, void *p_userdata)
 {
   size_t realsize = size * nmemb;
-  struct ua_respheader_s *resp_header = (struct ua_respheader_s *)p_userdata;
+  struct ua_respheader_s *resp_header = p_userdata;
 
   char *ptr;
   if (!(ptr = strchr(str, ':'))) { //returns if can't find ':' token match
@@ -122,7 +145,7 @@ static size_t
 conn_resbody_cb(char *str, size_t size, size_t nmemb, void *p_userdata)
 {
   size_t realsize = size * nmemb;
-  struct sized_buffer *resp_body = (struct sized_buffer *)p_userdata;
+  struct sized_buffer *resp_body = p_userdata;
 
   //update response body string size
   resp_body->start = realloc(resp_body->start, resp_body->size + realsize + 1);
@@ -282,34 +305,37 @@ ua_conn_get_data(struct ua_conn_s *conn) {
   return conn->data;
 }
 
-void
-ua_init(struct user_agent_s *ua, const char base_url[]) 
+struct user_agent_s*
+ua_init(const char base_url[]) 
 {
-  memset(ua, 0, sizeof(struct user_agent_s));
-  ua->base_url = strdup(base_url);
+  struct user_agent_s *new_ua = calloc(1, sizeof *new_ua);
+
+  new_ua->base_url = strdup(base_url);
 
   // default header
   char user_agent[] = "orca (http://github.com/cee-studio/orca)";
-  ua_reqheader_add(ua, "User-Agent", user_agent);
-  ua_reqheader_add(ua, "Content-Type", "application/json");
-  ua_reqheader_add(ua, "Accept", "application/json");
+  ua_reqheader_add(new_ua, "User-Agent", user_agent);
+  ua_reqheader_add(new_ua, "Content-Type", "application/json");
+  ua_reqheader_add(new_ua, "Accept", "application/json");
 
   // default configs
-  orka_config_init(&ua->config, NULL, NULL);
+  orka_config_init(&new_ua->config, NULL, NULL);
 
-  if (pthread_mutex_init(&ua->lock, NULL))
+  if (pthread_mutex_init(&new_ua->lock, NULL))
     ERR("Couldn't initialize mutex");
+
+  return new_ua;
 }
 
-void
+struct user_agent_s*
 ua_config_init(
-  struct user_agent_s *ua, 
   const char base_url[], 
   const char tag[], 
   const char config_file[]) 
 {
-  ua_init(ua, base_url);
-  orka_config_init(&ua->config, tag, config_file);
+  struct user_agent_s *new_ua = ua_init(base_url);
+  orka_config_init(&new_ua->config, tag, config_file);
+  return new_ua;
 }
 
 void
@@ -325,31 +351,31 @@ ua_cleanup(struct user_agent_s *ua)
     free(ua->conn_pool);
   }
   pthread_mutex_destroy(&ua->lock);
+  free(ua);
 }
 
 char*
 http_code_print(int httpcode)
 {
   switch (httpcode) {
-      case HTTP_OK:                   return "OK";
-      case HTTP_CREATED:              return "CREATED";
-      case HTTP_NO_CONTENT:           return "NO_CONTENT";
-      case HTTP_NOT_MODIFIED:         return "NOT_MODIFIED";
-      case HTTP_BAD_REQUEST:          return "BAD_REQUEST";
-      case HTTP_UNAUTHORIZED:         return "UNAUTHORIZED";
-      case HTTP_FORBIDDEN:            return "FORBIDDEN";
-      case HTTP_NOT_FOUND:            return "NOT_FOUND";
-      case HTTP_METHOD_NOT_ALLOWED:   return "METHOD_NOT_ALLOWED";
-      case HTTP_UNPROCESSABLE_ENTITY: return "UNPROCESSABLE_ENTITY";
-      case HTTP_TOO_MANY_REQUESTS:    return "TOO_MANY_REQUESTS";
-      case HTTP_GATEWAY_UNAVAILABLE:  return "GATEWAY_UNAVAILABLE";
+  case HTTP_OK:                   return "OK";
+  case HTTP_CREATED:              return "CREATED";
+  case HTTP_NO_CONTENT:           return "NO_CONTENT";
+  case HTTP_NOT_MODIFIED:         return "NOT_MODIFIED";
+  case HTTP_BAD_REQUEST:          return "BAD_REQUEST";
+  case HTTP_UNAUTHORIZED:         return "UNAUTHORIZED";
+  case HTTP_FORBIDDEN:            return "FORBIDDEN";
+  case HTTP_NOT_FOUND:            return "NOT_FOUND";
+  case HTTP_METHOD_NOT_ALLOWED:   return "METHOD_NOT_ALLOWED";
+  case HTTP_UNPROCESSABLE_ENTITY: return "UNPROCESSABLE_ENTITY";
+  case HTTP_TOO_MANY_REQUESTS:    return "TOO_MANY_REQUESTS";
+  case HTTP_GATEWAY_UNAVAILABLE:  return "GATEWAY_UNAVAILABLE";
   default:
       if (httpcode >= 500) return "5xx_SERVER_ERROR";
       if (httpcode >= 400) return "4xx_CLIENT_ERROR";
       if (httpcode >= 300) return "3xx_REDIRECTING";
       if (httpcode >= 200) return "2xx_SUCCESS";
       if (httpcode >= 100) return "1xx_INFO";
-
       return "UNUSUAL_HTTP_CODE";
   }
 }
@@ -402,12 +428,12 @@ char*
 http_method_print(enum http_method method)
 {
   switch(method) {
-      case HTTP_DELETE:   return "DELETE";
-      case HTTP_GET:      return "GET";
-      case HTTP_POST:     return "POST";
-      case HTTP_MIMEPOST: return "MIMEPOST";
-      case HTTP_PATCH:    return "PATCH";
-      case HTTP_PUT:      return "PUT";
+  case HTTP_DELETE:   return "DELETE";
+  case HTTP_GET:      return "GET";
+  case HTTP_POST:     return "POST";
+  case HTTP_MIMEPOST: return "MIMEPOST";
+  case HTTP_PATCH:    return "PATCH";
+  case HTTP_PUT:      return "PUT";
   default:
       PRINT("Invalid HTTP method (code: %d)", method);
       return "INVALID_HTTP_METHOD";
@@ -658,8 +684,7 @@ ua_vrun(
   struct resp_handle *resp_handle,
   struct sized_buffer *req_body,
   struct ua_callbacks *cbs,
-  enum http_method http_method,
-  char endpoint[], va_list args)
+  enum http_method http_method, char endpoint[], va_list args)
 {
   static struct sized_buffer blank_req_body = {"", 0};
   if (NULL == req_body) {
@@ -687,8 +712,7 @@ ua_run(
   struct resp_handle *resp_handle,
   struct sized_buffer *req_body,
   struct ua_callbacks *cbs,
-  enum http_method http_method,
-  char endpoint[], ...)
+  enum http_method http_method, char endpoint[], ...)
 {
   va_list args;
   va_start(args, endpoint);
@@ -701,4 +725,9 @@ ua_run(
     http_method, endpoint, args);
 
   va_end(args);
+}
+
+char*
+ua_config_get_field(struct user_agent_s *ua, char *json_field) {
+  return orka_config_get_field(&ua->config, json_field);
 }

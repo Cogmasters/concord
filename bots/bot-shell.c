@@ -46,7 +46,7 @@ on_command(struct discord *client,
     len = strlen(msg->content);
   }
 
-  if (STRNEQ(msg->content, "cd", len)) {
+  if (0 == strncmp(msg->content, "cd", len)) {
     char path[100];
 
     chdir(cmd);
@@ -65,9 +65,9 @@ on_command(struct discord *client,
     char *path = (char*)malloc(MAX_FSIZE);
     char *pathtmp = (char*)malloc(MAX_FSIZE);
 
-    if (STRNEQ(msg->content, "less", len) 
-        || STRNEQ(msg->content, "cat", len)
-        || STRNEQ(msg->content, "hexdump", len)) 
+    if (0 == strncmp(msg->content, "less", len) 
+        || 0 == strncmp(msg->content, "cat", len)
+        || 0 == strncmp(msg->content, "hexdump", len)) 
     {
       strncat(pathtmp, "```\n", MAX_FSIZE-1);
       while (NULL != fgets(path, MAX_FSIZE, fp)) {

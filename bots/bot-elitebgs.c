@@ -5,11 +5,13 @@
 
 #include "libdiscord.h"
 #include "orka-utils.h"
+#include "json-scanf.h"
+#include "json-actor.h"
 
 #define ELITEBGS_API_URL "https://elitebgs.app/api/ebgs/v5"
 
 /* ELITEBGS User Agent for performing connections to the API */
-struct user_agent_s g_elitebgs_ua;
+struct user_agent_s *g_elitebgs_ua;
 uint64_t g_tick_ms;
 
 struct doc_s {
@@ -49,7 +51,7 @@ void update_last_tick_ms()
 
   /* Fetch ticks from ELITEBGS API */
   ua_run(
-      &g_elitebgs_ua, 
+      g_elitebgs_ua, 
       &resp_handle,
       NULL,
       NULL,
@@ -283,7 +285,7 @@ void on_command(
   struct resp_handle resp_handle =
     { .ok_cb = &embed_from_json, .ok_obj = (void*)new_embed};
   ua_run(
-      &g_elitebgs_ua, 
+      g_elitebgs_ua, 
       &resp_handle,
       NULL,
       NULL,
@@ -311,7 +313,7 @@ int main(int argc, char *argv[])
     config_file = "bot.config";
 
   /* Initialize ELITEBGS User Agent */
-  ua_config_init(&g_elitebgs_ua, ELITEBGS_API_URL, "ELITEBGS HTTP", config_file);
+  g_elitebgs_ua = ua_config_init(ELITEBGS_API_URL, "ELITEBGS HTTP", config_file);
 
   /* Initialize Discord User Agent */
   discord_global_init();
@@ -333,7 +335,7 @@ int main(int argc, char *argv[])
   discord_run(client);
 
   /* Cleanup resources */
-  ua_cleanup(&g_elitebgs_ua);
+  ua_cleanup(g_elitebgs_ua);
   discord_cleanup(client);
   discord_global_cleanup();
 

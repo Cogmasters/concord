@@ -2,7 +2,8 @@
 #define LIBDISCORD_COMMON_H
 
 #include <inttypes.h>
-#include <curl/curl.h>
+#include <pthread.h>
+
 #include "json-scanf.h"
 #include "json-actor.h"
 #include "json-actor-boxed.h"
@@ -13,18 +14,16 @@
 
 
 struct discord_adapter {
-  struct user_agent_s ua;
+  struct user_agent_s *ua;
 
   struct { /* RATELIMITING STRUCTURE */
     struct discord_bucket **bucket_pool; //active client buckets
     size_t num_buckets; //amount of active client buckets
-    
+    void *routes_root; //the bucket's routes encountered
     //check GNU tree functions from search.h
-    void *routes_root; //the encountered routes tree's root
   } ratelimit;
 
   struct discord *p_client; //points to client this struct is a part of
-
   pthread_mutex_t lock; // used when increasing/fetching buckets
 };
 

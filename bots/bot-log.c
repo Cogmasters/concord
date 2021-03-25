@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <inttypes.h>
 #include <string.h>
 #include <assert.h>
 
@@ -27,7 +28,7 @@ void on_guild_member_update(
   const struct discord_guild_member *member)
 {
   printf("%s#%s ", member->user->username, member->user->discriminator);
-  if(!IS_EMPTY_STRING(member->nick)) {
+  if(member->nick && *member->nick) { // is not empty string
     printf("(%s) ", member->nick);
   }
   printf("updated (guild %" PRIu64")\n", guild_id);

@@ -5,9 +5,9 @@
 #include <pthread.h>
 
 #include "libdiscord.h"
+#include "discord-common.h"
 
 #include "orka-utils.h"
-#include "discord-common.h"
 
 
 #define BASE_GATEWAY_URL "wss://gateway.discord.gg/?v=6&encoding=json"

@@ -582,9 +582,9 @@ discord_create_message(
   }
   else 
   { // content-type is multipart/form-data
-    ua_reqheader_add(&client->adapter.ua, "Content-Type", "multipart/form-data");
+    ua_reqheader_add(client->adapter.ua, "Content-Type", "multipart/form-data");
 
-    ua_mime_setopt(&client->adapter.ua, params, &curl_mime_cb);
+    ua_mime_setopt(client->adapter.ua, params, &curl_mime_cb);
 
     discord_adapter_run( 
       &client->adapter,
@@ -593,7 +593,7 @@ discord_create_message(
       HTTP_MIMEPOST, "/channels/%llu/messages", channel_id);
 
     //set back to default
-    ua_reqheader_add(&client->adapter.ua, "Content-Type", "application/json");
+    ua_reqheader_add(client->adapter.ua, "Content-Type", "application/json");
   }
 }
 

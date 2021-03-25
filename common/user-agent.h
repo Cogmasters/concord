@@ -1,16 +1,15 @@
 #ifndef USER_AGENT_H
 #define USER_AGENT_H
 
-#include <inttypes.h>
-#include <stdbool.h>
-#include <curl/curl.h>
-#include <pthread.h>
-
-#include "orka-config.h"
+#include <stdint.h>
+#include <curl/curl.h> 
+#include "ntl.h" // for struct sized_buffer
 
 #ifdef __cplusplus
 extern "C" {
 #endif // __cplusplus
+
+struct user_agent_s;
 
 //possible http methods
 enum http_method {
@@ -38,18 +37,9 @@ https://en.wikipedia.org/wiki/List_of_HTTP_status_codes */
 #define HTTP_TOO_MANY_REQUESTS    429
 #define HTTP_GATEWAY_UNAVAILABLE  502
 
-
-
 #define MAX_HEADER_SIZE 100 + 1
 #define MAX_HEADER_LEN  1024 + 1
 #define MAX_URL_LEN     512 + 1
-
-
-struct ua_respheader_s {
-  char field[MAX_HEADER_SIZE][MAX_HEADER_LEN];
-  char value[MAX_HEADER_SIZE][MAX_HEADER_LEN];
-  int size;
-};
 
 typedef enum { 
   UA_IDLE = 0, // haven't performed yet
@@ -59,8 +49,14 @@ typedef enum {
   UA_ABORT     // abort after failed request
 } ua_status_t;
 
+struct ua_respheader_s {
+  char field[MAX_HEADER_SIZE][MAX_HEADER_LEN];
+  char value[MAX_HEADER_SIZE][MAX_HEADER_LEN];
+  int size;
+};
+
 struct ua_conn_s {
-  bool is_busy;
+  _Bool is_busy;
   uint64_t perform_tstamp; // timestamp of when the request completed
 
   CURL *ehandle; //the curl's easy handle used to perform requests
@@ -80,7 +76,6 @@ void* ua_conn_get_data(struct ua_conn_s *conn);
 
 //callback for object to be loaded by api response
 typedef void (load_obj_cb)(char *str, size_t len, void *p_obj);
-
 typedef void (cxt_load_obj_cb)(void * cxt, char *str, size_t len, void *p_obj);
 
 struct resp_handle {
@@ -92,32 +87,8 @@ struct resp_handle {
   load_obj_cb *err_cb;
   void *err_obj; // the pointer to be passed to err_cb
 
-  // ok call back with an execution context
-  cxt_load_obj_cb *cxt_ok_cb;
-
-  // err call back with an execution context
-  cxt_load_obj_cb *cxt_err_cb;
-};
-
-struct user_agent_s {
-  struct orka_config config;
-  struct curl_slist *req_header; // the request header sent to the api
-
-  struct ua_conn_s **conn_pool; // connection pool for reuse
-  int num_notbusy; // num of available conns
-  size_t num_conn; // amount of conns created
-
-  char *base_url;
-
-  uint64_t blockuntil_tstamp; // for global ratelimiting purposes
-  pthread_mutex_t lock;
-
-  void *data; // user arbitrary data for setopt_cb
-  void (*setopt_cb)(CURL *ehandle, void *data); // set custom easy_setopts
-
-  void *data2; // @todo this is temporary
-  curl_mime *mime; // @todo this is temporary
-  curl_mime* (*mime_cb)(CURL *ehandle, void *data); // @todo this is temporary
+  cxt_load_obj_cb *cxt_ok_cb; // ok call back with an execution context
+  cxt_load_obj_cb *cxt_err_cb; // err call back with an execution context
 };
 
 typedef ua_status_t 
@@ -151,9 +122,8 @@ void ua_reqheader_del(struct user_agent_s *ua, char field[]);
 void ua_easy_setopt(struct user_agent_s *ua, void *data, void (setopt_cb)(CURL *ehandle, void *data));
 void ua_mime_setopt(struct user_agent_s *ua, void *data, curl_mime* (mime_cb)(CURL *ehandle, void *data)); // @todo this is temporary
 
-void ua_init(struct user_agent_s *ua, const char base_url[]);
-void ua_config_init(
-  struct user_agent_s *ua, 
+struct user_agent_s* ua_init(const char base_url[]);
+struct user_agent_s* ua_config_init(
   const char base_url[], 
   const char tag[], 
   const char config_file[]);
@@ -164,15 +134,14 @@ void ua_vrun(
   struct resp_handle *resp_handle,
   struct sized_buffer *req_body,
   struct ua_callbacks *cbs,
-  enum http_method http_method,
-  char endpoint[], va_list args);
+  enum http_method http_method, char endpoint[], va_list args);
 void ua_run(
   struct user_agent_s *ua,
   struct resp_handle *resp_handle,
   struct sized_buffer *req_body,
   struct ua_callbacks *cbs,
-  enum http_method http_method,
-  char endpoint[], ...);
+  enum http_method http_method, char endpoint[], ...);
+char* ua_config_get_field(struct user_agent_s *ua, char *json_field);
 
 #ifdef __cplusplus
 }
