@@ -1,5 +1,5 @@
-#ifndef LIBDISCORD_COMMON_H
-#define LIBDISCORD_COMMON_H
+#ifndef DISCORD_COMMON_H
+#define DISCORD_COMMON_H
 
 #include <inttypes.h>
 #include <pthread.h>
@@ -19,12 +19,11 @@ struct discord_adapter {
   struct { /* RATELIMITING STRUCTURE */
     struct discord_bucket **bucket_pool; //active client buckets
     size_t num_buckets; //amount of active client buckets
-    void *routes_root; //the bucket's routes encountered
-    //check GNU tree functions from search.h
+    void *routes_root; //the bucket's routes encountered (see search.h)
+    pthread_mutex_t lock; // used when increasing/fetching buckets
   } ratelimit;
 
   struct discord *p_client; //points to client this struct is a part of
-  pthread_mutex_t lock; // used when increasing/fetching buckets
 };
 
 /* ADAPTER PRIVATE FUNCTIONS */
@@ -135,4 +134,4 @@ struct discord {
   void *data; //space for user arbitrary data
 };
 
-#endif // LIBDISCORD_COMMON_H
+#endif // DISCORD_COMMON_H
