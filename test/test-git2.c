@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <curl/curl.h>
 
 #include "github-v3.h"
 #include "orka-utils.h"

@@ -1,9 +1,6 @@
 #ifndef GITHUB_V3_H
 #define GITHUB_V3_H
 
-#include "github-v3-adapter.h"
-
-
 struct github_v3_git_op_file {
   char *path;
   char *sha;

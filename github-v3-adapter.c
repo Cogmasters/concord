@@ -4,6 +4,7 @@
 #include <stdarg.h>
 
 #include "github-v3.h"
+#include "github-v3-adapter.h"
 
 #include "json-scanf.h"
 #include "orka-utils.h"
