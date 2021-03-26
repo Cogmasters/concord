@@ -158,7 +158,7 @@ on_hello(void *p_gw, void *curr_iter_data)
 static void
 on_dispatch_message_reaction(
   struct discord_gateway *gw, 
-  enum dispatch_code code,
+  enum discord_gateway_events event,
   struct payload_s *payload)
 {
   u64_snowflake_t user_id=0, message_id=0, channel_id=0, guild_id=0;
@@ -178,8 +178,8 @@ on_dispatch_message_reaction(
       &orka_strtoull, &channel_id,
       &orka_strtoull, &guild_id);
 
-  switch (code) {
-  case MESSAGE_REACTION_ADD:
+  switch (event) {
+  case DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_ADD:
       if (gw->cbs.on_reaction.add)
         (*gw->cbs.on_reaction.add)(gw->p_client, gw->me, 
             user_id,
@@ -189,7 +189,7 @@ on_dispatch_message_reaction(
             member, 
             emoji);
       break;
-  case MESSAGE_REACTION_REMOVE:
+  case DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE:
       if (gw->cbs.on_reaction.remove)
         (*gw->cbs.on_reaction.remove)(gw->p_client, gw->me, 
             user_id,
@@ -198,14 +198,14 @@ on_dispatch_message_reaction(
             guild_id, 
             emoji);
       break;
-  case MESSAGE_REACTION_REMOVE_ALL:
+  case DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE_ALL:
       if (gw->cbs.on_reaction.remove_all)
         (*gw->cbs.on_reaction.remove_all)(gw->p_client, gw->me, 
             channel_id, 
             message_id, 
             guild_id);
       break;
-  case MESSAGE_REACTION_REMOVE_EMOJI:
+  case DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE_EMOJI:
       if (gw->cbs.on_reaction.remove_emoji)
         (*gw->cbs.on_reaction.remove_emoji)(gw->p_client, gw->me, 
             channel_id, 
@@ -223,10 +223,10 @@ on_dispatch_message_reaction(
 static void
 on_dispatch_message(
   struct discord_gateway *gw, 
-  enum dispatch_code code,
+  enum discord_gateway_events event,
   struct payload_s *payload)
 {
-  if (MESSAGE_DELETE_BULK == code && gw->cbs.on_message.delete_bulk)
+  if (DISCORD_GATEWAY_EVENTS_MESSAGE_DELETE_BULK == event && gw->cbs.on_message.delete_bulk)
   {
     NTL_T(struct sized_buffer) buf = NULL;
     u64_snowflake_t channel_id = 0, guild_id = 0;
@@ -261,9 +261,9 @@ on_dispatch_message(
     .size = strlen(payload->event_data)
   };
 
-  switch (code) {
-  case SB_MESSAGE_CREATE: /* @todo this is temporary for wrapping JS */
-  case MESSAGE_CREATE:
+  switch (event) {
+  case DISCORD_GATEWAY_EVENTS_SB_MESSAGE_CREATE: /* @todo this is temporary for wrapping JS */
+  case DISCORD_GATEWAY_EVENTS_MESSAGE_CREATE:
       if (gw->on_cmd) {
         // prefix offset if available
         size_t offset = IS_EMPTY_STRING(gw->prefix) 
@@ -310,11 +310,11 @@ on_dispatch_message(
         (*gw->cbs.on_message.create)(gw->p_client, gw->me, msg);
 
       break;
-  case MESSAGE_UPDATE:
+  case DISCORD_GATEWAY_EVENTS_MESSAGE_UPDATE:
       if (gw->cbs.on_message.update)
         (*gw->cbs.on_message.update)(gw->p_client, gw->me, msg);
       break;
-  case MESSAGE_DELETE:
+  case DISCORD_GATEWAY_EVENTS_MESSAGE_DELETE:
       if (gw->cbs.on_message.del)
         (*gw->cbs.on_message.del)(gw->p_client, gw->me, 
             msg->id, 
@@ -330,7 +330,7 @@ on_dispatch_message(
 static void
 on_dispatch_guild_member(
   struct discord_gateway *gw, 
-  enum dispatch_code code, 
+  enum discord_gateway_events event, 
   struct payload_s *payload)
 {
   struct discord_guild_member *member = discord_guild_member_alloc();
@@ -344,8 +344,8 @@ on_dispatch_guild_member(
     "[guild_id]%F",
     &orka_strtoull, &guild_id);
 
-  switch (code) {
-  case GUILD_MEMBER_ADD:
+  switch (event) {
+  case DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_ADD:
       if (gw->cbs.on_guild_member.add)
         (*gw->cbs.on_guild_member.add)(
             gw->p_client, 
@@ -353,7 +353,7 @@ on_dispatch_guild_member(
             guild_id, 
             member);
       break;
-  case GUILD_MEMBER_UPDATE:
+  case DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_UPDATE:
       if (gw->cbs.on_guild_member.update)
         (*gw->cbs.on_guild_member.update)(
             gw->p_client, 
@@ -361,7 +361,7 @@ on_dispatch_guild_member(
             guild_id, 
             member);
       break;
-  case GUILD_MEMBER_REMOVE:
+  case DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_REMOVE:
     if (gw->cbs.on_guild_member.remove)
       (*gw->cbs.on_guild_member.remove)(
             gw->p_client, 
@@ -375,22 +375,23 @@ on_dispatch_guild_member(
   discord_guild_member_free(member);
 }
 
-static enum dispatch_code
-get_dispatch_code(char event_name[])
+static enum discord_gateway_events
+get_dispatch_event(char event_name[])
 {
-  STREQ_RETURN_ENUM(READY, event_name);
-  STREQ_RETURN_ENUM(RESUMED, event_name);
-  STREQ_RETURN_ENUM(MESSAGE_REACTION_ADD, event_name);
-  STREQ_RETURN_ENUM(MESSAGE_REACTION_REMOVE_ALL, event_name);
-  STREQ_RETURN_ENUM(MESSAGE_REACTION_REMOVE_EMOJI, event_name);
-  STREQ_RETURN_ENUM(MESSAGE_CREATE, event_name);
-  STREQ_RETURN_ENUM(MESSAGE_UPDATE, event_name);
-  STREQ_RETURN_ENUM(MESSAGE_DELETE, event_name);
-  STREQ_RETURN_ENUM(MESSAGE_DELETE_BULK, event_name);
-  STREQ_RETURN_ENUM(GUILD_MEMBER_ADD, event_name);
-  STREQ_RETURN_ENUM(GUILD_MEMBER_UPDATE, event_name);
-  STREQ_RETURN_ENUM(GUILD_MEMBER_REMOVE, event_name);
-  return UNKNOWN;
+  if (STREQ("READY", event_name)) return DISCORD_GATEWAY_EVENTS_READY;
+  if (STREQ("RESUMED", event_name)) return DISCORD_GATEWAY_EVENTS_RESUMED;
+  if (STREQ("MESSAGE_REACTION_ADD", event_name)) return DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_ADD;
+  if (STREQ("MESSAGE_REACTION_REMOVE", event_name)) return DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE;
+  if (STREQ("MESSAGE_REACTION_REMOVE_ALL", event_name)) return DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE_ALL;
+  if (STREQ("MESSAGE_REACTION_REMOVE_EMOJI", event_name)) return DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE_EMOJI;
+  if (STREQ("MESSAGE_CREATE", event_name)) return DISCORD_GATEWAY_EVENTS_MESSAGE_CREATE;
+  if (STREQ("MESSAGE_UPDATE", event_name)) return DISCORD_GATEWAY_EVENTS_MESSAGE_UPDATE;
+  if (STREQ("MESSAGE_DELETE", event_name)) return DISCORD_GATEWAY_EVENTS_MESSAGE_DELETE;
+  if (STREQ("MESSAGE_DELETE_BULK", event_name)) return DISCORD_GATEWAY_EVENTS_MESSAGE_DELETE_BULK;
+  if (STREQ("GUILD_MEMBER_ADD", event_name)) return DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_ADD;
+  if (STREQ("GUILD_MEMBER_UPDATE", event_name)) return DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_UPDATE;
+  if (STREQ("GUILD_MEMBER_REMOVE", event_name)) return DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_REMOVE;
+  return DISCORD_GATEWAY_EVENTS_NONE;
 }
 
 static void
@@ -412,46 +413,41 @@ on_dispatch(void *p_gw, void *curr_iter_data)
   }
   pthread_mutex_unlock(&gw->lock);
 
-  enum dispatch_code code = get_dispatch_code(payload->event_name);
-  switch (code) {
-  case READY:
-      ws_set_status(gw->ws, WS_CONNECTED);
-      D_PUTS("Succesfully started a Discord session!");
+  enum discord_gateway_events event = get_dispatch_event(payload->event_name);
 
-      json_scanf(payload->event_data, sizeof(payload->event_data),
-                 "[session_id]%s", gw->session_id);
-      ASSERT_S(gw->session_id, "Missing session_id from READY event");
-
-      if (gw->cbs.on_ready)
-        (*gw->cbs.on_ready)(gw->p_client, gw->me);
-
-      break;
-  case RESUMED:
-      ws_set_status(gw->ws, WS_CONNECTED);
-      PUTS("Succesfully resumed a Discord session!");
-      break;
-  case MESSAGE_REACTION_ADD: 
-  case MESSAGE_REACTION_REMOVE:
-  case MESSAGE_REACTION_REMOVE_ALL: 
-  case MESSAGE_REACTION_REMOVE_EMOJI:
-      on_dispatch_message_reaction(gw, code, payload);
-      break;
-  case MESSAGE_CREATE: 
-  case MESSAGE_UPDATE:
-  case MESSAGE_DELETE: 
-  case MESSAGE_DELETE_BULK:
-      on_dispatch_message(gw, code, payload);
-      break;
-  case GUILD_MEMBER_ADD: 
-  case GUILD_MEMBER_UPDATE:
-  case GUILD_MEMBER_REMOVE:
-      on_dispatch_guild_member(gw, code, payload);
-      break;
-  default:
-      PRINT("Expected not yet implemented GATEWAY DISPATCH event: %s",
-          payload->event_name);
-      break;
+  if (event >= DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_ADD) {
+    on_dispatch_guild_member(gw, event, payload);
+    return; /* EARLY RETURN */
   }
+  if (event >= DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_ADD) {
+    on_dispatch_message_reaction(gw, event, payload);
+    return; /* EARLY RETURN */
+  }
+  if (event >= DISCORD_GATEWAY_EVENTS_MESSAGE_CREATE) {
+    on_dispatch_message(gw, event, payload);
+    return; /* EARLY RETURN */
+  }
+  if (event == DISCORD_GATEWAY_EVENTS_RESUMED) {
+    ws_set_status(gw->ws, WS_CONNECTED);
+    PUTS("Succesfully resumed a Discord session!");
+    return; /* EARLY RETURN */
+  }
+  if (event == DISCORD_GATEWAY_EVENTS_READY) {
+    ws_set_status(gw->ws, WS_CONNECTED);
+    D_PUTS("Succesfully started a Discord session!");
+
+    json_scanf(payload->event_data, sizeof(payload->event_data),
+               "[session_id]%s", gw->session_id);
+    ASSERT_S(gw->session_id, "Missing session_id from READY event");
+
+    if (gw->cbs.on_ready)
+      (*gw->cbs.on_ready)(gw->p_client, gw->me);
+
+    return; /* EARLY RETURN */
+  }
+
+  PRINT("Expected not yet implemented GATEWAY DISPATCH event: %s",
+      payload->event_name);
 }
 
 static void

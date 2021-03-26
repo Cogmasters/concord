@@ -167,26 +167,6 @@ struct discord_list_guild_members_params {
   u64_snowflake_t after; // the highest user id in the previous page
 };
 
-// @todo add discord_ prefix
-enum dispatch_code {
-  UNKNOWN = 0,
-  IDLE,
-  READY,
-  RESUMED,
-  MESSAGE_CREATE,
-  SB_MESSAGE_CREATE, //@todo this is temporary for wrapping JS
-  MESSAGE_UPDATE,
-  MESSAGE_DELETE,
-  MESSAGE_DELETE_BULK,
-  MESSAGE_REACTION_ADD,
-  MESSAGE_REACTION_REMOVE,
-  MESSAGE_REACTION_REMOVE_ALL,
-  MESSAGE_REACTION_REMOVE_EMOJI,
-  GUILD_MEMBER_ADD,
-  GUILD_MEMBER_UPDATE,
-  GUILD_MEMBER_REMOVE
-};
-
 /* * * * * * * * * * * * * * * * * * */
 /* * * * FUNCTION DECLARATIONS * * * */
 

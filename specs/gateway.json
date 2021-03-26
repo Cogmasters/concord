@@ -67,6 +67,30 @@
       ]
     },
     {
+      "title":"Gateway Events",
+      "comment": "https://discord.com/developers/docs/topics/gateway#commands-and-events-gateway-events",
+      "enum":"events",
+      "items":
+      [
+        { "name":"EVENTS_NONE","value":0 },
+        { "name":"EVENTS_IDLE" },
+        { "name":"EVENTS_READY" },
+        { "name":"EVENTS_RESUMED" },
+        { "name":"EVENTS_MESSAGE_CREATE" },
+        { "name":"EVENTS_SB_MESSAGE_CREATE" },
+        { "name":"EVENTS_MESSAGE_UPDATE" },
+        { "name":"EVENTS_MESSAGE_DELETE" },
+        { "name":"EVENTS_MESSAGE_DELETE_BULK" },
+        { "name":"EVENTS_MESSAGE_REACTION_ADD" },
+        { "name":"EVENTS_MESSAGE_REACTION_REMOVE" },
+        { "name":"EVENTS_MESSAGE_REACTION_REMOVE_ALL" },
+        { "name":"EVENTS_MESSAGE_REACTION_REMOVE_EMOJI" },
+        { "name":"EVENTS_GUILD_MEMBER_ADD" },
+        { "name":"EVENTS_GUILD_MEMBER_UPDATE" },
+        { "name":"EVENTS_GUILD_MEMBER_REMOVE" }
+      ]
+    },
+    {
       "title":"Identify Structure",
       "comment": "https://discord.com/developers/docs/topics/gateway#identify-identify-structure",
       "struct":"identify",
