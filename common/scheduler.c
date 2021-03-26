@@ -38,7 +38,7 @@ task_cleanup(struct task_s *task)
 }
 
 static bool
-keepalive(struct task_s *task)
+is_alive(struct task_s *task)
 {
   pthread_mutex_lock(&task->lock);
   bool status = task->keepalive;
@@ -52,15 +52,13 @@ event_run(void *p_task)
   struct task_s *task = p_task;
 
   orka_sleep_ms(task->timeout_ms);
-  while (keepalive(task)) {
+  while (is_alive(task)) {
     (*task->callback)(task->data);
     if (!task->repeat_ms) break; /* EARLY BREAK */
     orka_sleep_ms(task->repeat_ms);
   }
   pthread_exit(NULL);
 }
-
-static void noop_task(void *a){return;}
 
 void
 task_start(
@@ -70,16 +68,19 @@ task_start(
   void *data,
   void (*callback)(void *data))
 {
+  if (!callback) return;
+
+  if (is_alive(task)) {
+    task_stop(task);
+  }
+
   task->keepalive = true;
-  
+
   // add values associated with task
   task->timeout_ms = timeout_ms;
   task->repeat_ms = repeat_ms;
   task->data = data;
-  if (callback)
-    task->callback = callback;
-  else
-    task->callback = &noop_task;
+  task->callback = callback;
 
   if (pthread_create(&task->tid, NULL, &event_run, task))
     ERR("Couldn't create thread");
