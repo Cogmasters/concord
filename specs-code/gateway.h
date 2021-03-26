@@ -20,6 +20,8 @@ enum discord_gateway_close_opcodes {
   DISCORD_GATEWAY_CLOSE_REASON_INVALID_INTENTS = 4013,
   DISCORD_GATEWAY_CLOSE_REASON_DISALLOWED_INTENTS = 4014,
 };
+extern char* discord_gateway_close_opcodes_to_string(enum discord_gateway_close_opcodes);
+extern enum discord_gateway_close_opcodes discord_gateway_close_opcodes_from_string(char*);
 
 
 enum discord_gateway_intents {
@@ -39,6 +41,8 @@ enum discord_gateway_intents {
   DISCORD_GATEWAY_DIRECT_MESSAGE_REACTIONS = 8192, // 1 << 13
   DISCORD_GATEWAY_DIRECT_MESSAGE_TYPING = 16384, // 1 << 14
 };
+extern char* discord_gateway_intents_to_string(enum discord_gateway_intents);
+extern enum discord_gateway_intents discord_gateway_intents_from_string(char*);
 
 
 enum discord_gateway_opcodes {
@@ -54,6 +58,8 @@ enum discord_gateway_opcodes {
   DISCORD_GATEWAY_HELLO = 10,
   DISCORD_GATEWAY_HEARTBEAT_ACK = 11,
 };
+extern char* discord_gateway_opcodes_to_string(enum discord_gateway_opcodes);
+extern enum discord_gateway_opcodes discord_gateway_opcodes_from_string(char*);
 
 
 enum discord_gateway_events {
@@ -74,6 +80,8 @@ enum discord_gateway_events {
   DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_UPDATE = 14,
   DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_REMOVE = 15,
 };
+extern char* discord_gateway_events_to_string(enum discord_gateway_events);
+extern enum discord_gateway_events discord_gateway_events_from_string(char*);
 
 /* Title: Identify Structure */
 /* https://discord.com/developers/docs/topics/gateway#identify-identify-structure */
@@ -354,3 +362,5 @@ enum discord_gateway_activity_types {
   DISCORD_GATEWAY_ACTIVITY_CUSTOM = 4,
   DISCORD_GATEWAY_ACTIVITY_COMPETING = 5,
 };
+extern char* discord_gateway_activity_types_to_string(enum discord_gateway_activity_types);
+extern enum discord_gateway_activity_types discord_gateway_activity_types_from_string(char*);

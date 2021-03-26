@@ -268,7 +268,7 @@ void gen_readlink(char *linkbuf, size_t linkbuf_size)
   }
 
   if (r > linkbuf_size) {
-    fprintf(stderr, "symlink size is great than %d\n", linkbuf_size);
+    fprintf(stderr, "symlink size is great than %zu\n", linkbuf_size);
     exit(EXIT_FAILURE);
   }
   linkbuf[r]='\0';

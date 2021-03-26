@@ -7,6 +7,8 @@ https://discord.com/developers/docs/resources/invite#invite-object
 enum discord_invite_target_user_types {
   DISCORD_INVITE_STREAM = 1,
 };
+extern char* discord_invite_target_user_types_to_string(enum discord_invite_target_user_types);
+extern enum discord_invite_target_user_types discord_invite_target_user_types_from_string(char*);
 
 /* Title: Invite Structure */
 /* https://discord.com/developers/docs/resources/invite#invite-object-invite-structure */

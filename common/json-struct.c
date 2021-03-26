@@ -191,8 +191,6 @@ enum file_type {
 
 
 struct emit_option {
-  bool wrapper_only; // emit C++ code which only wrap around C functions.
-  bool lang_C; // emit C code instead of C++ which is the default
   enum file_type type;
   NTL_T(name_t) namespace_stack[8];
   int stack_top;
@@ -202,51 +200,42 @@ struct emit_option global_option;
 static void init_emit_option(struct emit_option *opt)
 {
   memset(&global_option, 0, sizeof(global_option));
-  global_option.lang_C = opt->lang_C;
   global_option.type = opt->type;
 }
 
 static char* ns_to_symbol_name(char *name)
 {
-  if (global_option.lang_C) {
-    char *buf;
-    size_t len;
-    FILE *fp = open_memstream(&buf, &len);
-    for (int s = 0; s < global_option.stack_top; s++) {
-      NTL_T(name_t) ns = global_option.namespace_stack[s];
-      for (int i = 0; ns[i]; i++)
-        fprintf(fp, "%s_", (char *)ns[i]);
-    }
-    fprintf(fp, "%s", name);
-    fclose(fp);
-    return buf;
+  char *buf;
+  size_t len;
+  FILE *fp = open_memstream(&buf, &len);
+  for (int s = 0; s < global_option.stack_top; s++) {
+    NTL_T(name_t) ns = global_option.namespace_stack[s];
+    for (int i = 0; ns[i]; i++)
+      fprintf(fp, "%s_", (char *)ns[i]);
   }
-  else
-    return name;
+  fprintf(fp, "%s", name);
+  fclose(fp);
+  return buf;
 }
 
 static char* ns_to_item_name(char *name)
 {
-  if (global_option.lang_C) {
-    char *buf;
-    size_t len;
-    FILE *fp = open_memstream(&buf, &len);
-    for (int s = 0; s < global_option.stack_top; s++) {
-      NTL_T(name_t) ns = global_option.namespace_stack[s];
-      for (int i = 0; ns[i]; i++)
-        fprintf(fp, "%s_", (char *)ns[i]);
-    }
-    fprintf(fp, "%s", name);
-    fclose(fp);
-    char *s = buf;
-    while (*s) {
-      *s = toupper((unsigned char) *s);
-      s++;
-    }
-    return buf;
+  char *buf;
+  size_t len;
+  FILE *fp = open_memstream(&buf, &len);
+  for (int s = 0; s < global_option.stack_top; s++) {
+    NTL_T(name_t) ns = global_option.namespace_stack[s];
+    for (int i = 0; ns[i]; i++)
+      fprintf(fp, "%s_", (char *)ns[i]);
   }
-  else
-    return name;
+  fprintf(fp, "%s", name);
+  fclose(fp);
+  char *s = buf;
+  while (*s) {
+    *s = toupper((unsigned char) *s);
+    s++;
+  }
+  return buf;
 }
 
 static char* get_file_suffix(enum file_type t)
@@ -732,36 +721,19 @@ static size_t def_from_json(char *json, size_t size, struct jc_def *def)
 static void gen_open_namespace(FILE *fp, NTL_T(name_t) p)
 {
   if (NULL == p) return;
-  if (global_option.lang_C) {
-    global_option.namespace_stack[global_option.stack_top] = p;
-    global_option.stack_top ++;
-  }
-  else {
-    for (int i = 0; p[i]; i++)
-      fprintf(fp, "namespace %s {\n", (char *)p[i]);
-  }
+  global_option.namespace_stack[global_option.stack_top] = p;
+  global_option.stack_top ++;
 }
 
 static void gen_close_namespace(FILE *fp, NTL_T(name_t) p)
 {
   if (NULL == p) return;
-  if (global_option.lang_C) {
-    global_option.stack_top --;
-    global_option.namespace_stack[global_option.stack_top] = NULL;
-  }
-  else {
-    int n = ntl_length((ntl_t)p);
-    for (int i = n - 1; i >= 0; i--)
-      fprintf(fp, "} // namespace %s\n", (char *)p[i]);
-  }
+  global_option.stack_top --;
+  global_option.namespace_stack[global_option.stack_top] = NULL;
 }
 
-static void gen_enum(FILE *fp, struct jc_enum *e, name_t **ns)
+static void gen_enum(FILE *fp, struct jc_enum *e)
 {
-  fprintf(stderr, "%d\n", global_option.type);
-  fprintf(fp, "\n\n");
-
-  gen_open_namespace(fp, ns);
   char *t = ns_to_symbol_name(e->name);
   char *t_alias = NULL;
   
@@ -775,7 +747,7 @@ static void gen_enum(FILE *fp, struct jc_enum *e, name_t **ns)
   int i = 0, prev_value = -1;
 
   for (i = 0; e->items && e->items[i]; i++) {
-    struct jc_item * item = e->items[i];
+    struct jc_item *item = e->items[i];
     char *item_name = ns_to_item_name(item->name);
 
     if (item->todo) {
@@ -801,9 +773,98 @@ static void gen_enum(FILE *fp, struct jc_enum *e, name_t **ns)
     fprintf(fp, "} %s\n", t_alias);
   else
     fprintf(fp, "};\n");
-  gen_close_namespace(fp, ns);
 }
 
+static void gen_enum_from_string(FILE *fp, struct jc_enum *e)
+{
+  char *t = ns_to_symbol_name(e->name);
+  char *t_alias = NULL;
+  
+  if (e->typedef_name) 
+    t_alias = ns_to_symbol_name(e->typedef_name);
+
+  if (t_alias)
+    fprintf(fp, "%s %s_from_string(char *s){\n", t_alias, t_alias);
+  else
+    fprintf(fp, "enum %s %s_from_string(char *s){\n", t, t);
+
+  for (int i = 0; e->items && e->items[i]; i++) {
+    struct jc_item *item = e->items[i];
+    char *item_name = ns_to_item_name(item->name);
+    if (item->todo)
+      fprintf(fp, "/* %s */\n", item->name);
+    else
+      fprintf(fp, "  if(strcmp(\"%s\", s) == 0) return %s;\n", 
+              item->name, item_name);
+  }
+  fprintf(fp, "  abort();\n");
+  fprintf(fp, "}\n");
+}
+
+static void gen_enum_to_string(FILE *fp, struct jc_enum *e)
+{
+  char *t = ns_to_symbol_name(e->name);
+  char *t_alias = NULL;
+  
+  if (e->typedef_name) 
+    t_alias = ns_to_symbol_name(e->typedef_name);
+
+  if (t_alias)
+    fprintf(fp, "char* %s_to_string(%s v){\n", t_alias, t_alias);
+  else
+    fprintf(fp, "char* %s_to_string(enum %s v){\n", t, t);
+
+  for (int i = 0; e->items && e->items[i]; i++) {
+    struct jc_item *item = e->items[i];
+    char *item_name = ns_to_item_name(item->name);
+    if (item->todo)
+      fprintf(fp, "/* %s */\n", item->name);
+    else
+      fprintf(fp, "  if (v == %s) return \"%s\";\n", 
+              item_name, item->name);
+  }
+  fprintf(fp, "\n  abort();\n");
+  fprintf(fp, "}\n");
+}
+
+
+static void gen_forward_enum_fun_declare(FILE *fp, struct jc_enum *e)
+{
+  char *t = ns_to_symbol_name(e->name);
+  char *t_alias = NULL;
+  if (e->typedef_name)
+    t_alias = ns_to_symbol_name(e->typedef_name);
+
+  if (t_alias) {
+    fprintf(fp, "extern char* %s_to_string(%s);\n", t_alias, t_alias);
+    fprintf(fp, "extern %s %s_from_string(char*);\n", t_alias, t_alias);
+  }
+  else {
+    fprintf(fp, "extern char* %s_to_string(enum %s);\n", t, t);
+    fprintf(fp, "extern enum %s %s_from_string(char*);\n", t, t);
+  }
+}
+
+static void gen_enum_all(FILE *fp, struct jc_def *d, name_t **ns)
+{
+  struct jc_enum *e = (struct jc_enum*)d;
+  fprintf(fp, "\n\n");
+
+  gen_open_namespace(fp, ns);
+  /* */
+  if (global_option.type == FILE_DECLARATION 
+      || global_option.type == FILE_ENUM_DECLARATION
+      || global_option.type == FILE_HEADER) {
+    gen_enum(fp, e);
+    gen_forward_enum_fun_declare(fp, e);
+  }
+  else if (global_option.type == FILE_CODE) {
+    gen_enum_from_string(fp, e);
+    gen_enum_to_string(fp, e);
+  }
+  /* */
+  gen_close_namespace(fp, ns);
+}
 
 static size_t
 definition_from_json(char *json, size_t size, struct jc_definition *s)
@@ -1039,9 +1100,7 @@ static void to_action(struct jc_field *f, struct action *act)
       while (*tok && isspace(*tok)) tok++;
       asprintf(&act->fun_prefix, "%s", tok);
       is_user_defined_type = true;
-      if (global_option.lang_C) {
-        act->fun_prefix = to_C_name(act->fun_prefix);
-      }
+      act->fun_prefix = to_C_name(act->fun_prefix);
     }
     else {
       act->fun_prefix = f->type.base;
@@ -1672,8 +1731,9 @@ static void gen_typedef (FILE *fp, struct jc_struct *s)
 #endif
 }
 
-static void gen_opaque_struct(FILE *fp, struct jc_struct *s, name_t **ns)
+static void gen_opaque_struct(FILE *fp, struct jc_def *d, name_t **ns)
 {
+  struct jc_struct *s = (struct jc_struct*)d;
   fprintf(fp, "\n");
   gen_open_namespace(fp, ns);
 
@@ -1692,8 +1752,9 @@ static void gen_opaque_struct(FILE *fp, struct jc_struct *s, name_t **ns)
   gen_close_namespace(fp, ns);
 }
 
-static void gen_struct_all(FILE *fp, struct jc_struct *s, name_t **ns)
+static void gen_struct_all(FILE *fp, struct jc_def *d, name_t **ns)
 {
+  struct jc_struct *s = (struct jc_struct*)d;
   fprintf(fp, "\n");
   gen_open_namespace(fp, ns);
 
@@ -1779,12 +1840,7 @@ static void gen_def (FILE *fp, struct jc_def *def)
     }
   }
   else {
-    if (global_option.type == FILE_HEADER
-        || global_option.type == FILE_DECLARATION
-        || global_option.type == FILE_ENUM_DECLARATION
-        || global_option.type == FILE_SINGLE_FILE) {
-      gen_all_ns(fp, def, gen_enum);
-    }
+    gen_all_ns(fp, def, gen_enum_all);
   }
 }
 
@@ -1804,17 +1860,11 @@ gen_definition(FILE *fp, struct emit_option * option, struct jc_definition *d)
     fprintf(fp, "#include \"specs.h\"\n");
 
   fprintf(fp, "/*\n%s\n*/\n", d->comment);
-  if (global_option.lang_C ||
-      (global_option.type != FILE_DECLARATION
-       && global_option.type != FILE_DEFINITION))
-    gen_open_namespace(fp, d->namespace);
+  gen_open_namespace(fp, d->namespace);
 
   ntl_apply(fp, (ntl_t)d->defs, (vvpvp)gen_def);
 
-  if (global_option.lang_C ||
-      (global_option.type != FILE_DECLARATION
-       && global_option.type != FILE_DEFINITION))
-    gen_close_namespace(fp, d->namespace);
+  gen_close_namespace(fp, d->namespace);
   return;
 }
 

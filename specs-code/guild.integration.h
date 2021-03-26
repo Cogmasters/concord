@@ -8,6 +8,8 @@ enum discord_guild_integration_expire_behaviors {
   DISCORD_GUILD_INTEGRATION_REMOVE_ROLE = 0,
   DISCORD_GUILD_INTEGRATION_KICK = 1,
 };
+extern char* discord_guild_integration_expire_behaviors_to_string(enum discord_guild_integration_expire_behaviors);
+extern enum discord_guild_integration_expire_behaviors discord_guild_integration_expire_behaviors_from_string(char*);
 
 /* Title: Integration Account Structure */
 /* https://discord.com/developers/docs/resources/guild#integration-account-object-integration-account-structure */

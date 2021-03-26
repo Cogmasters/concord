@@ -4,6 +4,19 @@
 https://discord.com/developers/docs/resources/guild#integration-object-integration-structure
 */
 
+
+enum discord_guild_integration_expire_behaviors discord_guild_integration_expire_behaviors_from_string(char *s){
+  if(strcmp("REMOVE_ROLE", s) == 0) return DISCORD_GUILD_INTEGRATION_REMOVE_ROLE;
+  if(strcmp("KICK", s) == 0) return DISCORD_GUILD_INTEGRATION_KICK;
+  abort();
+}
+char* discord_guild_integration_expire_behaviors_to_string(enum discord_guild_integration_expire_behaviors v){
+  if (v == DISCORD_GUILD_INTEGRATION_REMOVE_ROLE) return "REMOVE_ROLE";
+  if (v == DISCORD_GUILD_INTEGRATION_KICK) return "KICK";
+
+  abort();
+}
+
 void discord_guild_integration_account_from_json(char *json, size_t len, struct discord_guild_integration_account *p)
 {
   static size_t ret=0; // used for debugging

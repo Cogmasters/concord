@@ -23,6 +23,8 @@ extern void discord_audit_log_list_from_json(char *str, size_t len, struct disco
 extern size_t discord_audit_log_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_audit_log_list_to_json(char *str, size_t len, struct discord_audit_log **p);
 
+
+
 extern void discord_audit_log_entry_cleanup_v(void *p);
 extern void discord_audit_log_entry_cleanup(struct discord_audit_log_entry *p);
 extern void discord_audit_log_entry_init_v(void *p);
@@ -251,6 +253,8 @@ extern size_t discord_group_dm_add_recipient_params_list_to_json(char *str, size
 https://discord.com/developers/docs/resources/channel#channel-object-channel-types
 */
 
+
+
 extern void discord_channel_cleanup_v(void *p);
 extern void discord_channel_cleanup(struct discord_channel *p);
 extern void discord_channel_init_v(void *p);
@@ -275,6 +279,8 @@ extern size_t discord_channel_list_to_json(char *str, size_t len, struct discord
 
 */
 
+
+
 extern void discord_message_sticker_cleanup_v(void *p);
 extern void discord_message_sticker_cleanup(struct discord_message_sticker *p);
 extern void discord_message_sticker_init_v(void *p);
@@ -294,6 +300,8 @@ extern void discord_message_sticker_list_from_json_v(char *str, size_t len, void
 extern void discord_message_sticker_list_from_json(char *str, size_t len, struct discord_message_sticker ***p);
 extern size_t discord_message_sticker_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_message_sticker_list_to_json(char *str, size_t len, struct discord_message_sticker **p);
+
+
 
 extern void discord_message_reference_cleanup_v(void *p);
 extern void discord_message_reference_cleanup(struct discord_message_reference *p);
@@ -335,6 +343,8 @@ extern void discord_message_application_list_from_json(char *str, size_t len, st
 extern size_t discord_message_application_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_message_application_list_to_json(char *str, size_t len, struct discord_message_application **p);
 
+
+
 extern void discord_message_activity_cleanup_v(void *p);
 extern void discord_message_activity_cleanup(struct discord_message_activity *p);
 extern void discord_message_activity_init_v(void *p);
@@ -354,6 +364,8 @@ extern void discord_message_activity_list_from_json_v(char *str, size_t len, voi
 extern void discord_message_activity_list_from_json(char *str, size_t len, struct discord_message_activity ***p);
 extern size_t discord_message_activity_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_message_activity_list_to_json(char *str, size_t len, struct discord_message_activity **p);
+
+
 
 extern void discord_message_cleanup_v(void *p);
 extern void discord_message_cleanup(struct discord_message *p);
@@ -759,6 +771,14 @@ extern size_t discord_modify_guild_emoji_params_list_to_json(char *str, size_t l
 (null)
 */
 
+
+
+
+
+
+
+
+
 extern void discord_gateway_identify_cleanup_v(void *p);
 extern void discord_gateway_identify_cleanup(struct discord_gateway_identify *p);
 extern void discord_gateway_identify_init_v(void *p);
@@ -838,6 +858,8 @@ extern void discord_gateway_activity_list_from_json_v(char *str, size_t len, voi
 extern void discord_gateway_activity_list_from_json(char *str, size_t len, struct discord_gateway_activity ***p);
 extern size_t discord_gateway_activity_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_gateway_activity_list_to_json(char *str, size_t len, struct discord_gateway_activity **p);
+
+
 /* This file is generated from specs/guild.ban.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/resources/guild#ban-object
@@ -915,6 +937,20 @@ extern size_t discord_create_guild_params_list_to_json(char *str, size_t len, st
 https://discord.com/developers/docs/resources/guild#integration-object-integration-structure
 */
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 extern void discord_guild_unavailable_cleanup_v(void *p);
 extern void discord_guild_unavailable_cleanup(struct discord_guild_unavailable *p);
 extern void discord_guild_unavailable_init_v(void *p);
@@ -978,6 +1014,8 @@ extern size_t discord_guild_widget_list_to_json(char *str, size_t len, struct di
 /*
 https://discord.com/developers/docs/resources/guild#integration-object-integration-structure
 */
+
+
 
 extern void discord_guild_integration_account_cleanup_v(void *p);
 extern void discord_guild_integration_account_cleanup(struct discord_guild_integration_account *p);
@@ -1090,6 +1128,8 @@ extern size_t discord_guild_member_list_to_json(char *str, size_t len, struct di
 /*
 https://discord.com/developers/docs/resources/guild#membership-screening-object
 */
+
+
 
 extern void discord_guild_membership_screening_field_cleanup_v(void *p);
 extern void discord_guild_membership_screening_field_cleanup(struct discord_guild_membership_screening_field *p);
@@ -1271,6 +1311,8 @@ extern size_t discord_guild_welcome_screen_list_to_json(char *str, size_t len, s
 https://discord.com/developers/docs/resources/invite#invite-object
 */
 
+
+
 extern void discord_invite_cleanup_v(void *p);
 extern void discord_invite_cleanup(struct discord_invite *p);
 extern void discord_invite_init_v(void *p);
@@ -1314,6 +1356,8 @@ extern size_t discord_invite_metadata_list_to_json(char *str, size_t len, struct
 /*
 https://discord.com/developers/docs/topics/permissions
 */
+
+
 /* This file is generated from specs/template.create-guild-from-template.json, Please don't edit it. */
 /*
 
@@ -1439,6 +1483,10 @@ extern size_t discord_create_group_dm_params_list_to_json(char *str, size_t len,
 https://discord.com/developers/docs/resources/user#user-object
 */
 
+
+
+
+
 extern void discord_user_cleanup_v(void *p);
 extern void discord_user_cleanup(struct discord_user *p);
 extern void discord_user_init_v(void *p);
@@ -1458,6 +1506,8 @@ extern void discord_user_list_from_json_v(char *str, size_t len, void *p);
 extern void discord_user_list_from_json(char *str, size_t len, struct discord_user ***p);
 extern size_t discord_user_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_user_list_to_json(char *str, size_t len, struct discord_user **p);
+
+
 
 extern void discord_connection_cleanup_v(void *p);
 extern void discord_connection_cleanup(struct discord_connection *p);
@@ -1622,6 +1672,8 @@ extern size_t discord_execute_webhook_params_list_to_json(char *str, size_t len,
 /*
 https://discord.com/developers/docs/resources/webhook#webhook-object-webhook-structure
 */
+
+
 
 extern void discord_webhook_cleanup_v(void *p);
 extern void discord_webhook_cleanup(struct discord_webhook *p);

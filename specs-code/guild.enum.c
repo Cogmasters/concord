@@ -4,6 +4,135 @@
 https://discord.com/developers/docs/resources/guild#integration-object-integration-structure
 */
 
+
+enum discord_guild_default_message_notification_level discord_guild_default_message_notification_level_from_string(char *s){
+  if(strcmp("ALL_MESSAGES", s) == 0) return DISCORD_GUILD_ALL_MESSAGES;
+  if(strcmp("ONLY_MENTIONS", s) == 0) return DISCORD_GUILD_ONLY_MENTIONS;
+  abort();
+}
+char* discord_guild_default_message_notification_level_to_string(enum discord_guild_default_message_notification_level v){
+  if (v == DISCORD_GUILD_ALL_MESSAGES) return "ALL_MESSAGES";
+  if (v == DISCORD_GUILD_ONLY_MENTIONS) return "ONLY_MENTIONS";
+
+  abort();
+}
+
+
+enum discord_guild_explicit_content_filter_level discord_guild_explicit_content_filter_level_from_string(char *s){
+  if(strcmp("DISABLED", s) == 0) return DISCORD_GUILD_DISABLED;
+  if(strcmp("MEMBERS_WITHOUT_ROLES", s) == 0) return DISCORD_GUILD_MEMBERS_WITHOUT_ROLES;
+  if(strcmp("ALL_MEMBERS", s) == 0) return DISCORD_GUILD_ALL_MEMBERS;
+  abort();
+}
+char* discord_guild_explicit_content_filter_level_to_string(enum discord_guild_explicit_content_filter_level v){
+  if (v == DISCORD_GUILD_DISABLED) return "DISABLED";
+  if (v == DISCORD_GUILD_MEMBERS_WITHOUT_ROLES) return "MEMBERS_WITHOUT_ROLES";
+  if (v == DISCORD_GUILD_ALL_MEMBERS) return "ALL_MEMBERS";
+
+  abort();
+}
+
+
+enum discord_guild_mfa_level discord_guild_mfa_level_from_string(char *s){
+  if(strcmp("DISCORD_MFA_NONE", s) == 0) return DISCORD_GUILD_DISCORD_MFA_NONE;
+  if(strcmp("ELEVATED", s) == 0) return DISCORD_GUILD_ELEVATED;
+  abort();
+}
+char* discord_guild_mfa_level_to_string(enum discord_guild_mfa_level v){
+  if (v == DISCORD_GUILD_DISCORD_MFA_NONE) return "DISCORD_MFA_NONE";
+  if (v == DISCORD_GUILD_ELEVATED) return "ELEVATED";
+
+  abort();
+}
+
+
+enum discord_guild_verification_level discord_guild_verification_level_from_string(char *s){
+  if(strcmp("DISCORD_VL_NONE", s) == 0) return DISCORD_GUILD_DISCORD_VL_NONE;
+  if(strcmp("LOW", s) == 0) return DISCORD_GUILD_LOW;
+  if(strcmp("MEDIUM", s) == 0) return DISCORD_GUILD_MEDIUM;
+  if(strcmp("HIGH", s) == 0) return DISCORD_GUILD_HIGH;
+  if(strcmp("VERY_HIGH", s) == 0) return DISCORD_GUILD_VERY_HIGH;
+  abort();
+}
+char* discord_guild_verification_level_to_string(enum discord_guild_verification_level v){
+  if (v == DISCORD_GUILD_DISCORD_VL_NONE) return "DISCORD_VL_NONE";
+  if (v == DISCORD_GUILD_LOW) return "LOW";
+  if (v == DISCORD_GUILD_MEDIUM) return "MEDIUM";
+  if (v == DISCORD_GUILD_HIGH) return "HIGH";
+  if (v == DISCORD_GUILD_VERY_HIGH) return "VERY_HIGH";
+
+  abort();
+}
+
+
+enum discord_guild_premium_tier discord_guild_premium_tier_from_string(char *s){
+  if(strcmp("DISCORD_PREMIUM_NONE", s) == 0) return DISCORD_GUILD_DISCORD_PREMIUM_NONE;
+  if(strcmp("TIER_1", s) == 0) return DISCORD_GUILD_TIER_1;
+  if(strcmp("TIER_2", s) == 0) return DISCORD_GUILD_TIER_2;
+  if(strcmp("TIER_3", s) == 0) return DISCORD_GUILD_TIER_3;
+  abort();
+}
+char* discord_guild_premium_tier_to_string(enum discord_guild_premium_tier v){
+  if (v == DISCORD_GUILD_DISCORD_PREMIUM_NONE) return "DISCORD_PREMIUM_NONE";
+  if (v == DISCORD_GUILD_TIER_1) return "TIER_1";
+  if (v == DISCORD_GUILD_TIER_2) return "TIER_2";
+  if (v == DISCORD_GUILD_TIER_3) return "TIER_3";
+
+  abort();
+}
+
+
+enum discord_guild_system_channel_flags discord_guild_system_channel_flags_from_string(char *s){
+  if(strcmp("SUPRESS_JOIN_NOTIFICATIONS", s) == 0) return DISCORD_GUILD_SUPRESS_JOIN_NOTIFICATIONS;
+  if(strcmp("SUPRESS_PREMIUM_SUBSCRIPTIONS", s) == 0) return DISCORD_GUILD_SUPRESS_PREMIUM_SUBSCRIPTIONS;
+  abort();
+}
+char* discord_guild_system_channel_flags_to_string(enum discord_guild_system_channel_flags v){
+  if (v == DISCORD_GUILD_SUPRESS_JOIN_NOTIFICATIONS) return "SUPRESS_JOIN_NOTIFICATIONS";
+  if (v == DISCORD_GUILD_SUPRESS_PREMIUM_SUBSCRIPTIONS) return "SUPRESS_PREMIUM_SUBSCRIPTIONS";
+
+  abort();
+}
+
+
+enum discord_guild_guild_features discord_guild_guild_features_from_string(char *s){
+  if(strcmp("INVITE_SPLASH", s) == 0) return DISCORD_GUILD_INVITE_SPLASH;
+  if(strcmp("VIP_REGIONS", s) == 0) return DISCORD_GUILD_VIP_REGIONS;
+  if(strcmp("VANITY_URL", s) == 0) return DISCORD_GUILD_VANITY_URL;
+  if(strcmp("VERIFIED", s) == 0) return DISCORD_GUILD_VERIFIED;
+  if(strcmp("PARTNERED", s) == 0) return DISCORD_GUILD_PARTNERED;
+  if(strcmp("COMMUNITY", s) == 0) return DISCORD_GUILD_COMMUNITY;
+  if(strcmp("COMMERCE", s) == 0) return DISCORD_GUILD_COMMERCE;
+  if(strcmp("NEWS", s) == 0) return DISCORD_GUILD_NEWS;
+  if(strcmp("DISCOVERABLE", s) == 0) return DISCORD_GUILD_DISCOVERABLE;
+  if(strcmp("FEATURABLE", s) == 0) return DISCORD_GUILD_FEATURABLE;
+  if(strcmp("ANIMATED_ICON", s) == 0) return DISCORD_GUILD_ANIMATED_ICON;
+  if(strcmp("BANNER", s) == 0) return DISCORD_GUILD_BANNER;
+  if(strcmp("WELCOME_SCREEN_ENABLED", s) == 0) return DISCORD_GUILD_WELCOME_SCREEN_ENABLED;
+  if(strcmp("MEMBER_VERIFICATION_GATE_ENABLED", s) == 0) return DISCORD_GUILD_MEMBER_VERIFICATION_GATE_ENABLED;
+  if(strcmp("PREVIEW_ENABLED", s) == 0) return DISCORD_GUILD_PREVIEW_ENABLED;
+  abort();
+}
+char* discord_guild_guild_features_to_string(enum discord_guild_guild_features v){
+  if (v == DISCORD_GUILD_INVITE_SPLASH) return "INVITE_SPLASH";
+  if (v == DISCORD_GUILD_VIP_REGIONS) return "VIP_REGIONS";
+  if (v == DISCORD_GUILD_VANITY_URL) return "VANITY_URL";
+  if (v == DISCORD_GUILD_VERIFIED) return "VERIFIED";
+  if (v == DISCORD_GUILD_PARTNERED) return "PARTNERED";
+  if (v == DISCORD_GUILD_COMMUNITY) return "COMMUNITY";
+  if (v == DISCORD_GUILD_COMMERCE) return "COMMERCE";
+  if (v == DISCORD_GUILD_NEWS) return "NEWS";
+  if (v == DISCORD_GUILD_DISCOVERABLE) return "DISCOVERABLE";
+  if (v == DISCORD_GUILD_FEATURABLE) return "FEATURABLE";
+  if (v == DISCORD_GUILD_ANIMATED_ICON) return "ANIMATED_ICON";
+  if (v == DISCORD_GUILD_BANNER) return "BANNER";
+  if (v == DISCORD_GUILD_WELCOME_SCREEN_ENABLED) return "WELCOME_SCREEN_ENABLED";
+  if (v == DISCORD_GUILD_MEMBER_VERIFICATION_GATE_ENABLED) return "MEMBER_VERIFICATION_GATE_ENABLED";
+  if (v == DISCORD_GUILD_PREVIEW_ENABLED) return "PREVIEW_ENABLED";
+
+  abort();
+}
+
 void discord_guild_unavailable_from_json(char *json, size_t len, struct discord_guild_unavailable *p)
 {
   static size_t ret=0; // used for debugging

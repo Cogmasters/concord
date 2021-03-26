@@ -40,6 +40,8 @@ enum discord_audit_log_events {
   DISCORD_AUDIT_LOG_INTEGRATION_UPDATE = 81,
   DISCORD_AUDIT_LOG_INTEGRATION_DELETE = 82,
 };
+extern char* discord_audit_log_events_to_string(enum discord_audit_log_events);
+extern enum discord_audit_log_events discord_audit_log_events_from_string(char*);
 /* This file is generated from specs/channel.bulk-delete-messages.json, Please don't edit it. */
 /*
 
@@ -79,6 +81,8 @@ enum discord_channel_types {
   DISCORD_CHANNEL_GUILD_NEWS = 5,
   DISCORD_CHANNEL_GUILD_STORE = 6,
 };
+extern char* discord_channel_types_to_string(enum discord_channel_types);
+extern enum discord_channel_types discord_channel_types_from_string(char*);
 /* This file is generated from specs/channel.message.json, Please don't edit it. */
 /*
 
@@ -90,6 +94,8 @@ enum discord_message_sticker_format_types {
   DISCORD_MESSAGE_STICKER_APNG = 2,
   DISCORD_MESSAGE_STICKER_LOTTIE = 3,
 };
+extern char* discord_message_sticker_format_types_to_string(enum discord_message_sticker_format_types);
+extern enum discord_message_sticker_format_types discord_message_sticker_format_types_from_string(char*);
 
 
 enum discord_message_flags {
@@ -99,6 +105,8 @@ enum discord_message_flags {
   DISCORD_MESSAGE_SOURCE_MESSAGE_DELETED = 8, // 1<<3
   DISCORD_MESSAGE_URGENT = 16, // 1<<4
 };
+extern char* discord_message_flags_to_string(enum discord_message_flags);
+extern enum discord_message_flags discord_message_flags_from_string(char*);
 
 
 enum discord_message_activity_types {
@@ -107,6 +115,8 @@ enum discord_message_activity_types {
   DISCORD_MESSAGE_ACTIVITY_LISTEN = 3,
   DISCORD_MESSAGE_ACTIVITY_JOIN_REQUEST = 5,
 };
+extern char* discord_message_activity_types_to_string(enum discord_message_activity_types);
+extern enum discord_message_activity_types discord_message_activity_types_from_string(char*);
 
 
 enum discord_message_types {
@@ -128,6 +138,8 @@ enum discord_message_types {
   DISCORD_MESSAGE_REPLY = 19,
   DISCORD_MESSAGE_APPLICATION_COMMAND = 20,
 };
+extern char* discord_message_types_to_string(enum discord_message_types);
+extern enum discord_message_types discord_message_types_from_string(char*);
 /* This file is generated from specs/channel.modify-channel.json, Please don't edit it. */
 /*
 
@@ -170,6 +182,8 @@ enum discord_gateway_close_opcodes {
   DISCORD_GATEWAY_CLOSE_REASON_INVALID_INTENTS = 4013,
   DISCORD_GATEWAY_CLOSE_REASON_DISALLOWED_INTENTS = 4014,
 };
+extern char* discord_gateway_close_opcodes_to_string(enum discord_gateway_close_opcodes);
+extern enum discord_gateway_close_opcodes discord_gateway_close_opcodes_from_string(char*);
 
 
 enum discord_gateway_intents {
@@ -189,6 +203,8 @@ enum discord_gateway_intents {
   DISCORD_GATEWAY_DIRECT_MESSAGE_REACTIONS = 8192, // 1 << 13
   DISCORD_GATEWAY_DIRECT_MESSAGE_TYPING = 16384, // 1 << 14
 };
+extern char* discord_gateway_intents_to_string(enum discord_gateway_intents);
+extern enum discord_gateway_intents discord_gateway_intents_from_string(char*);
 
 
 enum discord_gateway_opcodes {
@@ -204,6 +220,8 @@ enum discord_gateway_opcodes {
   DISCORD_GATEWAY_HELLO = 10,
   DISCORD_GATEWAY_HEARTBEAT_ACK = 11,
 };
+extern char* discord_gateway_opcodes_to_string(enum discord_gateway_opcodes);
+extern enum discord_gateway_opcodes discord_gateway_opcodes_from_string(char*);
 
 
 enum discord_gateway_events {
@@ -224,6 +242,8 @@ enum discord_gateway_events {
   DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_UPDATE = 14,
   DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_REMOVE = 15,
 };
+extern char* discord_gateway_events_to_string(enum discord_gateway_events);
+extern enum discord_gateway_events discord_gateway_events_from_string(char*);
 
 
 enum discord_gateway_activity_types {
@@ -233,6 +253,8 @@ enum discord_gateway_activity_types {
   DISCORD_GATEWAY_ACTIVITY_CUSTOM = 4,
   DISCORD_GATEWAY_ACTIVITY_COMPETING = 5,
 };
+extern char* discord_gateway_activity_types_to_string(enum discord_gateway_activity_types);
+extern enum discord_gateway_activity_types discord_gateway_activity_types_from_string(char*);
 /* This file is generated from specs/guild.ban.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/resources/guild#ban-object
@@ -255,6 +277,8 @@ enum discord_guild_default_message_notification_level {
   DISCORD_GUILD_ALL_MESSAGES = 0,
   DISCORD_GUILD_ONLY_MENTIONS = 1,
 };
+extern char* discord_guild_default_message_notification_level_to_string(enum discord_guild_default_message_notification_level);
+extern enum discord_guild_default_message_notification_level discord_guild_default_message_notification_level_from_string(char*);
 
 
 enum discord_guild_explicit_content_filter_level {
@@ -262,12 +286,16 @@ enum discord_guild_explicit_content_filter_level {
   DISCORD_GUILD_MEMBERS_WITHOUT_ROLES = 1,
   DISCORD_GUILD_ALL_MEMBERS = 2,
 };
+extern char* discord_guild_explicit_content_filter_level_to_string(enum discord_guild_explicit_content_filter_level);
+extern enum discord_guild_explicit_content_filter_level discord_guild_explicit_content_filter_level_from_string(char*);
 
 
 enum discord_guild_mfa_level {
   DISCORD_GUILD_DISCORD_MFA_NONE = 0,
   DISCORD_GUILD_ELEVATED = 1,
 };
+extern char* discord_guild_mfa_level_to_string(enum discord_guild_mfa_level);
+extern enum discord_guild_mfa_level discord_guild_mfa_level_from_string(char*);
 
 
 enum discord_guild_verification_level {
@@ -277,6 +305,8 @@ enum discord_guild_verification_level {
   DISCORD_GUILD_HIGH = 3,
   DISCORD_GUILD_VERY_HIGH = 4,
 };
+extern char* discord_guild_verification_level_to_string(enum discord_guild_verification_level);
+extern enum discord_guild_verification_level discord_guild_verification_level_from_string(char*);
 
 
 enum discord_guild_premium_tier {
@@ -285,12 +315,16 @@ enum discord_guild_premium_tier {
   DISCORD_GUILD_TIER_2 = 2,
   DISCORD_GUILD_TIER_3 = 3,
 };
+extern char* discord_guild_premium_tier_to_string(enum discord_guild_premium_tier);
+extern enum discord_guild_premium_tier discord_guild_premium_tier_from_string(char*);
 
 
 enum discord_guild_system_channel_flags {
   DISCORD_GUILD_SUPRESS_JOIN_NOTIFICATIONS = 1, // 1<<0
   DISCORD_GUILD_SUPRESS_PREMIUM_SUBSCRIPTIONS = 2, // 1<<1
 };
+extern char* discord_guild_system_channel_flags_to_string(enum discord_guild_system_channel_flags);
+extern enum discord_guild_system_channel_flags discord_guild_system_channel_flags_from_string(char*);
 
 
 enum discord_guild_guild_features {
@@ -310,6 +344,8 @@ enum discord_guild_guild_features {
   DISCORD_GUILD_MEMBER_VERIFICATION_GATE_ENABLED = 13,
   DISCORD_GUILD_PREVIEW_ENABLED = 14,
 };
+extern char* discord_guild_guild_features_to_string(enum discord_guild_guild_features);
+extern enum discord_guild_guild_features discord_guild_guild_features_from_string(char*);
 /* This file is generated from specs/guild.integration.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/resources/guild#integration-object-integration-structure
@@ -320,6 +356,8 @@ enum discord_guild_integration_expire_behaviors {
   DISCORD_GUILD_INTEGRATION_REMOVE_ROLE = 0,
   DISCORD_GUILD_INTEGRATION_KICK = 1,
 };
+extern char* discord_guild_integration_expire_behaviors_to_string(enum discord_guild_integration_expire_behaviors);
+extern enum discord_guild_integration_expire_behaviors discord_guild_integration_expire_behaviors_from_string(char*);
 /* This file is generated from specs/guild.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/resources/guild#guild-object-guild-structure
@@ -337,6 +375,8 @@ https://discord.com/developers/docs/resources/guild#membership-screening-object
 enum discord_guild_membership_screening_field_type {
   DISCORD_GUILD_MEMBERSHIP_SCREENING_TERMS = 0,
 };
+extern char* discord_guild_membership_screening_field_type_to_string(enum discord_guild_membership_screening_field_type);
+extern enum discord_guild_membership_screening_field_type discord_guild_membership_screening_field_type_from_string(char*);
 /* This file is generated from specs/guild.modify-guild-member.json, Please don't edit it. */
 /*
 
@@ -362,6 +402,8 @@ https://discord.com/developers/docs/resources/invite#invite-object
 enum discord_invite_target_user_types {
   DISCORD_INVITE_STREAM = 1,
 };
+extern char* discord_invite_target_user_types_to_string(enum discord_invite_target_user_types);
+extern enum discord_invite_target_user_types discord_invite_target_user_types_from_string(char*);
 /* This file is generated from specs/permissions.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/topics/permissions
@@ -402,6 +444,8 @@ enum discord_permissions_bitwise_flags {
   DISCORD_PERMISSIONS_MANAGE_WEBHOOKS = 536870912, // Allows management and editing of webhooks   T, V
   DISCORD_PERMISSIONS_MANAGE_EMOJIS = 1073741824, // Allows management and editing of emojis
 };
+extern char* discord_permissions_bitwise_flags_to_string(enum discord_permissions_bitwise_flags);
+extern enum discord_permissions_bitwise_flags discord_permissions_bitwise_flags_from_string(char*);
 /* This file is generated from specs/template.create-guild-from-template.json, Please don't edit it. */
 /*
 
@@ -443,18 +487,24 @@ enum discord_user_flags {
   DISCORD_USER_VERIFIED_BOT = 65536, // 1 << 16
   DISCORD_USER_EARLY_VERIFIED_BOT_DEVELOPER = 131072, // 1 << 17
 };
+extern char* discord_user_flags_to_string(enum discord_user_flags);
+extern enum discord_user_flags discord_user_flags_from_string(char*);
 
 
 enum discord_user_premium_types {
   DISCORD_USER_NITRO_CLASSIC = 0,
   DISCORD_USER_NITRO = 1,
 };
+extern char* discord_user_premium_types_to_string(enum discord_user_premium_types);
+extern enum discord_user_premium_types discord_user_premium_types_from_string(char*);
 
 
 enum discord_user_connection_visibility_types {
   DISCORD_USER_CONNECTION_NONE = 0,
   DISCORD_USER_CONNECTION_EVERYONE = 1,
 };
+extern char* discord_user_connection_visibility_types_to_string(enum discord_user_connection_visibility_types);
+extern enum discord_user_connection_visibility_types discord_user_connection_visibility_types_from_string(char*);
 /* This file is generated from specs/user.modify-curent-user.json, Please don't edit it. */
 /*
 
@@ -485,6 +535,8 @@ enum discord_webhook_types {
   DISCORD_WEBHOOK_INCOMING = 1,
   DISCORD_WEBHOOK_CHANNEL_FOLLOWER = 2,
 };
+extern char* discord_webhook_types_to_string(enum discord_webhook_types);
+extern enum discord_webhook_types discord_webhook_types_from_string(char*);
 /* This file is generated from specs/webhook.modify-webhook.json, Please don't edit it. */
 /*
 

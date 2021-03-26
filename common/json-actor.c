@@ -2280,7 +2280,7 @@ extract_object_value (
       else if (p->path.is_star) {
         size_t ksize = tokens[key_idx].end - tokens[key_idx].start;
         asprintf((char **)(p->value._.action.key),
-                 "%.*s", ksize, json + tokens[key_idx].start);
+                 "%.*s", (int)ksize, json + tokens[key_idx].start);
         ret += extract_access_path(val_idx, p, p->path.next, info);
       }
     }

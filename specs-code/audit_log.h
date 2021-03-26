@@ -97,6 +97,8 @@ enum discord_audit_log_events {
   DISCORD_AUDIT_LOG_INTEGRATION_UPDATE = 81,
   DISCORD_AUDIT_LOG_INTEGRATION_DELETE = 82,
 };
+extern char* discord_audit_log_events_to_string(enum discord_audit_log_events);
+extern enum discord_audit_log_events discord_audit_log_events_from_string(char*);
 
 /* Title: Audit Log Entry Structure */
 /* https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-entry-structure */

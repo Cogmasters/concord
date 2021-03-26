@@ -7,6 +7,8 @@ https://discord.com/developers/docs/resources/guild#membership-screening-object
 enum discord_guild_membership_screening_field_type {
   DISCORD_GUILD_MEMBERSHIP_SCREENING_TERMS = 0,
 };
+extern char* discord_guild_membership_screening_field_type_to_string(enum discord_guild_membership_screening_field_type);
+extern enum discord_guild_membership_screening_field_type discord_guild_membership_screening_field_type_from_string(char*);
 
 /* https://discord.com/developers/docs/resources/guild#membership-screening-object-membership-screening-field-structure */
 /* This is defined at specs/guild.membership_screening.json:17:22 */

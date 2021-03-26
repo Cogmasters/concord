@@ -19,12 +19,16 @@ enum discord_user_flags {
   DISCORD_USER_VERIFIED_BOT = 65536, // 1 << 16
   DISCORD_USER_EARLY_VERIFIED_BOT_DEVELOPER = 131072, // 1 << 17
 };
+extern char* discord_user_flags_to_string(enum discord_user_flags);
+extern enum discord_user_flags discord_user_flags_from_string(char*);
 
 
 enum discord_user_premium_types {
   DISCORD_USER_NITRO_CLASSIC = 0,
   DISCORD_USER_NITRO = 1,
 };
+extern char* discord_user_premium_types_to_string(enum discord_user_premium_types);
+extern enum discord_user_premium_types discord_user_premium_types_from_string(char*);
 
 /* Title: User Structure */
 /* This is defined at specs/user.json:42:18 */
@@ -132,6 +136,8 @@ enum discord_user_connection_visibility_types {
   DISCORD_USER_CONNECTION_NONE = 0,
   DISCORD_USER_CONNECTION_EVERYONE = 1,
 };
+extern char* discord_user_connection_visibility_types_to_string(enum discord_user_connection_visibility_types);
+extern enum discord_user_connection_visibility_types discord_user_connection_visibility_types_from_string(char*);
 
 /* Title: Connection Structure */
 /* https://discord.com/developers/docs/resources/user#connection-object-connection-structure */

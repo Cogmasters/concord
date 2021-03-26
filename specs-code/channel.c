@@ -4,6 +4,29 @@
 https://discord.com/developers/docs/resources/channel#channel-object-channel-types
 */
 
+
+enum discord_channel_types discord_channel_types_from_string(char *s){
+  if(strcmp("GUILD_TEXT", s) == 0) return DISCORD_CHANNEL_GUILD_TEXT;
+  if(strcmp("DM", s) == 0) return DISCORD_CHANNEL_DM;
+  if(strcmp("GUILD_VOICE", s) == 0) return DISCORD_CHANNEL_GUILD_VOICE;
+  if(strcmp("GROUP_DM", s) == 0) return DISCORD_CHANNEL_GROUP_DM;
+  if(strcmp("GUILD_CATEGORY", s) == 0) return DISCORD_CHANNEL_GUILD_CATEGORY;
+  if(strcmp("GUILD_NEWS", s) == 0) return DISCORD_CHANNEL_GUILD_NEWS;
+  if(strcmp("GUILD_STORE", s) == 0) return DISCORD_CHANNEL_GUILD_STORE;
+  abort();
+}
+char* discord_channel_types_to_string(enum discord_channel_types v){
+  if (v == DISCORD_CHANNEL_GUILD_TEXT) return "GUILD_TEXT";
+  if (v == DISCORD_CHANNEL_DM) return "DM";
+  if (v == DISCORD_CHANNEL_GUILD_VOICE) return "GUILD_VOICE";
+  if (v == DISCORD_CHANNEL_GROUP_DM) return "GROUP_DM";
+  if (v == DISCORD_CHANNEL_GUILD_CATEGORY) return "GUILD_CATEGORY";
+  if (v == DISCORD_CHANNEL_GUILD_NEWS) return "GUILD_NEWS";
+  if (v == DISCORD_CHANNEL_GUILD_STORE) return "GUILD_STORE";
+
+  abort();
+}
+
 void discord_channel_from_json(char *json, size_t len, struct discord_channel *p)
 {
   static size_t ret=0; // used for debugging

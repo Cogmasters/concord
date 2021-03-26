@@ -9,17 +9,15 @@ static
 void print_usage (char * prog)
 {
   fprintf(stderr,
-          "Usage: %s [-h|-c|-d|-f|-C] -o output-file input-file\n"
-          "      -C generate C code instead of C++ code which is the default\n"
-          "      -h generate header with namespace\n"
-          "      -c generate data and function definitions with namespace\n"
-          "      -d generate data and function declarations without namespace\n"
-          "      -S generate struct declarations without namespace\n"
-          "      -E generate enum declarations without namespace\n"
-          "      -F generate function declarations without namespace\n"
-          "      -f generate function definitions without namespace\n"
-          "      -B generate all boilerplate code without namespace\n"
-          "      -O generate all opaque struct declarations without namespace\n"
+          "Usage: %s [-h|-c|-d|-f] -o output-file input-file\n"
+          "      -h generate header\n"
+          "      -c generate data and function definitions\n"
+          "      -d generate data and function declarations\n"
+          "      -S generate struct declarations\n"
+          "      -E generate enum declarations\n"
+          "      -F generate function declarations\n"
+          "      -f generate function definitions\n"
+          "      -O generate all opaque struct declarations\n"
           "      -a append to output\n",
           prog);
   exit(EXIT_FAILURE);
@@ -34,12 +32,11 @@ int main (int argc, char ** argv)
   char * config_file = NULL;
   /*enum file_type type = FILE_SINGLE_FILE;*/
   struct emit_option eo = {
-    .lang_C = false,
     .type = FILE_SINGLE_FILE
   };
 
   char * open_mode = "w";;
-  while ((opt = getopt(argc, argv, "ahcdfSEFWOCo:")) != -1) {
+  while ((opt = getopt(argc, argv, "ahcdfSEFOo:")) != -1) {
     switch (opt) {
       case 'a':
         open_mode = "a";
@@ -70,12 +67,6 @@ int main (int argc, char ** argv)
         break;
       case 'O':
         eo.type = FILE_OPAQUE_STRUCT_DECLARATION;
-        break;
-      case 'C':
-        eo.lang_C = true;
-        break;
-      case 'W':
-        eo.wrapper_only = true;
         break;
       default: /* '?' */
         print_usage(argv[0]);

@@ -8,6 +8,8 @@ enum discord_guild_default_message_notification_level {
   DISCORD_GUILD_ALL_MESSAGES = 0,
   DISCORD_GUILD_ONLY_MENTIONS = 1,
 };
+extern char* discord_guild_default_message_notification_level_to_string(enum discord_guild_default_message_notification_level);
+extern enum discord_guild_default_message_notification_level discord_guild_default_message_notification_level_from_string(char*);
 
 
 enum discord_guild_explicit_content_filter_level {
@@ -15,12 +17,16 @@ enum discord_guild_explicit_content_filter_level {
   DISCORD_GUILD_MEMBERS_WITHOUT_ROLES = 1,
   DISCORD_GUILD_ALL_MEMBERS = 2,
 };
+extern char* discord_guild_explicit_content_filter_level_to_string(enum discord_guild_explicit_content_filter_level);
+extern enum discord_guild_explicit_content_filter_level discord_guild_explicit_content_filter_level_from_string(char*);
 
 
 enum discord_guild_mfa_level {
   DISCORD_GUILD_DISCORD_MFA_NONE = 0,
   DISCORD_GUILD_ELEVATED = 1,
 };
+extern char* discord_guild_mfa_level_to_string(enum discord_guild_mfa_level);
+extern enum discord_guild_mfa_level discord_guild_mfa_level_from_string(char*);
 
 
 enum discord_guild_verification_level {
@@ -30,6 +36,8 @@ enum discord_guild_verification_level {
   DISCORD_GUILD_HIGH = 3,
   DISCORD_GUILD_VERY_HIGH = 4,
 };
+extern char* discord_guild_verification_level_to_string(enum discord_guild_verification_level);
+extern enum discord_guild_verification_level discord_guild_verification_level_from_string(char*);
 
 
 enum discord_guild_premium_tier {
@@ -38,12 +46,16 @@ enum discord_guild_premium_tier {
   DISCORD_GUILD_TIER_2 = 2,
   DISCORD_GUILD_TIER_3 = 3,
 };
+extern char* discord_guild_premium_tier_to_string(enum discord_guild_premium_tier);
+extern enum discord_guild_premium_tier discord_guild_premium_tier_from_string(char*);
 
 
 enum discord_guild_system_channel_flags {
   DISCORD_GUILD_SUPRESS_JOIN_NOTIFICATIONS = 1, // 1<<0
   DISCORD_GUILD_SUPRESS_PREMIUM_SUBSCRIPTIONS = 2, // 1<<1
 };
+extern char* discord_guild_system_channel_flags_to_string(enum discord_guild_system_channel_flags);
+extern enum discord_guild_system_channel_flags discord_guild_system_channel_flags_from_string(char*);
 
 
 enum discord_guild_guild_features {
@@ -63,6 +75,8 @@ enum discord_guild_guild_features {
   DISCORD_GUILD_MEMBER_VERIFICATION_GATE_ENABLED = 13,
   DISCORD_GUILD_PREVIEW_ENABLED = 14,
 };
+extern char* discord_guild_guild_features_to_string(enum discord_guild_guild_features);
+extern enum discord_guild_guild_features discord_guild_guild_features_from_string(char*);
 
 /* Title: Unavailable Guild Object */
 /* https://discord.com/developers/docs/resources/guild#unavailable-guild-object */

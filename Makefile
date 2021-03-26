@@ -136,16 +136,16 @@ $(OBJDIR)/%.c.o : %.c
 
 all_headers: $(SPECS)
 	rm -rf specs-code/all_*
-	$(foreach var, $(SPECS),./bin/actor-gen.exe -C -S -a -o specs-code/all_structs.h $(var);)
-	$(foreach var, $(SPECS),./bin/actor-gen.exe -C -E -a -o specs-code/all_enums.h $(var);)
-	$(foreach var, $(SPECS),./bin/actor-gen.exe -C -F -a -o specs-code/all_fun.h $(var);)
-	$(foreach var, $(SPECS),./bin/actor-gen.exe -C -O -a -o specs-code/all_opaque_struct.h $(var);)
+	$(foreach var, $(SPECS),./bin/actor-gen.exe -S -a -o specs-code/all_structs.h $(var);)
+	$(foreach var, $(SPECS),./bin/actor-gen.exe -E -a -o specs-code/all_enums.h $(var);)
+	$(foreach var, $(SPECS),./bin/actor-gen.exe -F -a -o specs-code/all_fun.h $(var);)
+	$(foreach var, $(SPECS),./bin/actor-gen.exe -O -a -o specs-code/all_opaque_struct.h $(var);)
 
 specs-code/%.c: specs/%.json
-	./bin/actor-gen.exe -C -c -o $@ $<
+	./bin/actor-gen.exe -c -o $@ $<
 
 specs-code/%.h: specs/%.json
-	./bin/actor-gen.exe -C -d -o $@ $<
+	./bin/actor-gen.exe -d -o $@ $<
 
 actor-gen.exe: mkdir $(ACTOR_GEN_OBJS)
 	$(ACC) -o $@ $(ACTOR_GEN_OBJS) -lm

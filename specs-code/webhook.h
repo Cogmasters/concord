@@ -8,6 +8,8 @@ enum discord_webhook_types {
   DISCORD_WEBHOOK_INCOMING = 1,
   DISCORD_WEBHOOK_CHANNEL_FOLLOWER = 2,
 };
+extern char* discord_webhook_types_to_string(enum discord_webhook_types);
+extern enum discord_webhook_types discord_webhook_types_from_string(char*);
 
 /* Title: Webhook Structure */
 /* This is defined at specs/webhook.json:18:22 */

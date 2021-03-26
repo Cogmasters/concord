@@ -13,6 +13,8 @@ enum discord_channel_types {
   DISCORD_CHANNEL_GUILD_NEWS = 5,
   DISCORD_CHANNEL_GUILD_STORE = 6,
 };
+extern char* discord_channel_types_to_string(enum discord_channel_types);
+extern enum discord_channel_types discord_channel_types_from_string(char*);
 
 /* Title: Channel Structure */
 /* https://discord.com/developers/docs/resources/channel#channel-object-channel-structure */

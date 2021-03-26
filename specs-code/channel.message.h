@@ -9,6 +9,8 @@ enum discord_message_sticker_format_types {
   DISCORD_MESSAGE_STICKER_APNG = 2,
   DISCORD_MESSAGE_STICKER_LOTTIE = 3,
 };
+extern char* discord_message_sticker_format_types_to_string(enum discord_message_sticker_format_types);
+extern enum discord_message_sticker_format_types discord_message_sticker_format_types_from_string(char*);
 
 /* https://discord.com/developers/docs/resources/channel#message-object-message-sticker-structure */
 /* This is defined at specs/channel.message.json:20:22 */
@@ -95,6 +97,8 @@ enum discord_message_flags {
   DISCORD_MESSAGE_SOURCE_MESSAGE_DELETED = 8, // 1<<3
   DISCORD_MESSAGE_URGENT = 16, // 1<<4
 };
+extern char* discord_message_flags_to_string(enum discord_message_flags);
+extern enum discord_message_flags discord_message_flags_from_string(char*);
 
 /* Title: Message Reference Structure */
 /* https://discord.com/developers/docs/resources/channel#message-object-message-reference-structure */
@@ -227,6 +231,8 @@ enum discord_message_activity_types {
   DISCORD_MESSAGE_ACTIVITY_LISTEN = 3,
   DISCORD_MESSAGE_ACTIVITY_JOIN_REQUEST = 5,
 };
+extern char* discord_message_activity_types_to_string(enum discord_message_activity_types);
+extern enum discord_message_activity_types discord_message_activity_types_from_string(char*);
 
 /* Title: Message Activity Structure */
 /* https://discord.com/developers/docs/resources/channel#message-object-message-activity-structure */
@@ -296,6 +302,8 @@ enum discord_message_types {
   DISCORD_MESSAGE_REPLY = 19,
   DISCORD_MESSAGE_APPLICATION_COMMAND = 20,
 };
+extern char* discord_message_types_to_string(enum discord_message_types);
+extern enum discord_message_types discord_message_types_from_string(char*);
 
 /* Title: Message Structure */
 /* https://discord.com/developers/docs/resources/channel#message-object */

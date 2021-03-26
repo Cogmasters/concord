@@ -38,3 +38,5 @@ enum discord_permissions_bitwise_flags {
   DISCORD_PERMISSIONS_MANAGE_WEBHOOKS = 536870912, // Allows management and editing of webhooks   T, V
   DISCORD_PERMISSIONS_MANAGE_EMOJIS = 1073741824, // Allows management and editing of emojis
 };
+extern char* discord_permissions_bitwise_flags_to_string(enum discord_permissions_bitwise_flags);
+extern enum discord_permissions_bitwise_flags discord_permissions_bitwise_flags_from_string(char*);

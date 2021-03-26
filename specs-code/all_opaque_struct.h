@@ -8,6 +8,8 @@
 /* This is defined at specs/audit_log.json:8:22 */
 struct discord_audit_log;
 
+
+
 /* Title: Audit Log Entry Structure */
 /* https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-entry-structure */
 /* This is defined at specs/audit_log.json:64:22 */
@@ -80,6 +82,8 @@ struct discord_group_dm_add_recipient_params;
 https://discord.com/developers/docs/resources/channel#channel-object-channel-types
 */
 
+
+
 /* Title: Channel Structure */
 /* https://discord.com/developers/docs/resources/channel#channel-object-channel-structure */
 /* This is defined at specs/channel.json:25:22 */
@@ -89,9 +93,13 @@ struct discord_channel;
 
 */
 
+
+
 /* https://discord.com/developers/docs/resources/channel#message-object-message-sticker-structure */
 /* This is defined at specs/channel.message.json:20:22 */
 struct discord_message_sticker;
+
+
 
 /* Title: Message Reference Structure */
 /* https://discord.com/developers/docs/resources/channel#message-object-message-reference-structure */
@@ -103,10 +111,14 @@ struct discord_message_reference;
 /* This is defined at specs/channel.message.json:66:22 */
 struct discord_message_application;
 
+
+
 /* Title: Message Activity Structure */
 /* https://discord.com/developers/docs/resources/channel#message-object-message-activity-structure */
 /* This is defined at specs/channel.message.json:92:22 */
 struct discord_message_activity;
+
+
 
 /* Title: Message Structure */
 /* https://discord.com/developers/docs/resources/channel#message-object */
@@ -220,6 +232,14 @@ struct discord_modify_guild_emoji_params;
 (null)
 */
 
+
+
+
+
+
+
+
+
 /* Title: Identify Structure */
 /* https://discord.com/developers/docs/topics/gateway#identify-identify-structure */
 /* This is defined at specs/gateway.json:96:22 */
@@ -239,6 +259,8 @@ struct discord_gateway_identify_connection;
 /* https://discord.com/developers/docs/topics/gateway#activity-object-activity-structure */
 /* This is defined at specs/gateway.json:138:22 */
 struct discord_gateway_activity;
+
+
 /* This file is generated from specs/guild.ban.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/resources/guild#ban-object
@@ -267,6 +289,20 @@ struct discord_create_guild_params;
 https://discord.com/developers/docs/resources/guild#integration-object-integration-structure
 */
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Title: Unavailable Guild Object */
 /* https://discord.com/developers/docs/resources/guild#unavailable-guild-object */
 /* This is defined at specs/guild.enum.json:91:23 */
@@ -285,6 +321,8 @@ struct discord_guild_widget;
 /*
 https://discord.com/developers/docs/resources/guild#integration-object-integration-structure
 */
+
+
 
 /* Title: Integration Account Structure */
 /* https://discord.com/developers/docs/resources/guild#integration-account-object-integration-account-structure */
@@ -319,6 +357,8 @@ struct discord_guild_member;
 /*
 https://discord.com/developers/docs/resources/guild#membership-screening-object
 */
+
+
 
 /* https://discord.com/developers/docs/resources/guild#membership-screening-object-membership-screening-field-structure */
 /* This is defined at specs/guild.membership_screening.json:17:22 */
@@ -373,6 +413,8 @@ struct discord_guild_welcome_screen;
 https://discord.com/developers/docs/resources/invite#invite-object
 */
 
+
+
 /* Title: Invite Structure */
 /* https://discord.com/developers/docs/resources/invite#invite-object-invite-structure */
 /* This is defined at specs/invite.json:19:22 */
@@ -386,6 +428,8 @@ struct discord_invite_metadata;
 /*
 https://discord.com/developers/docs/topics/permissions
 */
+
+
 /* This file is generated from specs/template.create-guild-from-template.json, Please don't edit it. */
 /*
 
@@ -431,9 +475,15 @@ struct discord_create_group_dm_params;
 https://discord.com/developers/docs/resources/user#user-object
 */
 
+
+
+
+
 /* Title: User Structure */
 /* This is defined at specs/user.json:42:18 */
 struct discord_user;
+
+
 
 /* Title: Connection Structure */
 /* https://discord.com/developers/docs/resources/user#connection-object-connection-structure */
@@ -489,6 +539,8 @@ struct discord_execute_webhook_params;
 /*
 https://discord.com/developers/docs/resources/webhook#webhook-object-webhook-structure
 */
+
+
 
 /* Title: Webhook Structure */
 /* This is defined at specs/webhook.json:18:22 */
