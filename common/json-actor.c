@@ -2045,6 +2045,17 @@ static size_t extract_scalar (struct action * a, int i, struct e_info * info)
     case B_KEY_EXISTENCE:
       *(bool *)a->operand = true;
       break;
+    case B_LONG:
+      if (is_null)
+        *(long *) a->operand = 0;
+      else {
+        *(long *) a->operand = strtol(json + tokens[i].start, &xend, 10);
+        if (xend != json + tokens[i].end)
+          ERR("failed to extract long from %.*s\n",
+              tokens[i].end - tokens[i].start, json + tokens[i].start);
+      }
+      add_defined(info->E, a->operand);
+      break;      
     case B_LONG_LONG:
       if (is_null)
         *(long long *) a->operand = 0;
@@ -2079,7 +2090,7 @@ static size_t extract_scalar (struct action * a, int i, struct e_info * info)
       add_defined(info->E, a->operand);
       break;
     default:
-      ERR("unexpected");
+      ERR("unexpected %d\n", a->_.builtin);
   }
   return 1;
 }
