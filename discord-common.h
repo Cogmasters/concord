@@ -62,7 +62,7 @@ struct cmd_cbs {
   message_cb *cb;
 };
 
-struct payload_s { /* PAYLOAD STRUCTURE */
+struct discord_gateway_payload { /* PAYLOAD STRUCTURE */
   enum discord_gateway_opcodes opcode; //field 'op'
   int seq_number; //field 's'
   char event_name[64]; //field 't'
@@ -75,7 +75,7 @@ struct discord_gateway { /* GATEWAY STRUCTURE */
   struct discord_gateway_identify *identify;
   char session_id[512]; //the session id (for resuming lost connections)
 
-  struct payload_s payload;
+  struct discord_gateway_payload payload;
 
   struct { /* HEARTBEAT STRUCTURE */
     u64_unix_ms_t interval_ms; //fixed interval between heartbeats

@@ -81,7 +81,7 @@ void on_message_delete_bulk(
     struct discord *client,
     const struct discord_user *me,
     const size_t nids,
-    const uint64_t ids[],
+    const NTL_T(ja_u64) ids,
     const uint64_t channel_id,
     const uint64_t guild_id)
 {

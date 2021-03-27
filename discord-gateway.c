@@ -137,15 +137,15 @@ send_identify(struct discord_gateway *gw)
 static void
 on_hello_cb(void *p_gw, void *curr_iter_data)
 {
-  struct discord_gateway *gw = (struct discord_gateway*)p_gw;
-  struct payload_s *payload = (struct payload_s*)curr_iter_data;
+  struct discord_gateway *gw = p_gw;
+  struct discord_gateway_payload *payload = curr_iter_data;
 
   pthread_mutex_lock(&gw->lock);
   gw->hbeat.interval_ms = 0;
   gw->hbeat.tstamp = orka_timestamp_ms();
 
-  json_scanf(payload->event_data, sizeof(payload->event_data),
-             "[heartbeat_interval]%ld", &gw->hbeat.interval_ms);
+  json_extract(payload->event_data, sizeof(payload->event_data),
+             "(heartbeat_interval):ld", &gw->hbeat.interval_ms);
   ASSERT_S(gw->hbeat.interval_ms > 0, "Invalid heartbeat_ms");
   pthread_mutex_unlock(&gw->lock);
 
@@ -175,7 +175,7 @@ get_dispatch_event(char event_name[])
 }
 
 static void
-on_guild_member_add(struct discord_gateway *gw, struct payload_s *payload)
+on_guild_member_add(struct discord_gateway *gw, struct discord_gateway_payload *payload)
 {
   struct discord_guild_member *member = discord_guild_member_alloc();
   discord_guild_member_from_json(payload->event_data,
@@ -196,7 +196,7 @@ on_guild_member_add(struct discord_gateway *gw, struct payload_s *payload)
 }
 
 static void
-on_guild_member_remove(struct discord_gateway *gw, struct payload_s *payload)
+on_guild_member_remove(struct discord_gateway *gw, struct discord_gateway_payload *payload)
 {
   if (!gw->cbs.on_guild_member.remove) return;
 
@@ -218,7 +218,7 @@ on_guild_member_remove(struct discord_gateway *gw, struct payload_s *payload)
 }
 
 static void
-on_guild_member_update(struct discord_gateway *gw, struct payload_s *payload)
+on_guild_member_update(struct discord_gateway *gw, struct discord_gateway_payload *payload)
 {
   if (!gw->cbs.on_guild_member.update) return;
 
@@ -240,7 +240,7 @@ on_guild_member_update(struct discord_gateway *gw, struct payload_s *payload)
 }
 
 static void
-on_message_create(struct discord_gateway *gw, struct payload_s *payload)
+on_message_create(struct discord_gateway *gw, struct discord_gateway_payload *payload)
 {
   struct discord_message *msg = discord_message_alloc();
   discord_message_from_json(payload->event_data,
@@ -300,7 +300,7 @@ on_message_create(struct discord_gateway *gw, struct payload_s *payload)
 }
 
 static void
-on_message_update(struct discord_gateway *gw, struct payload_s *payload)
+on_message_update(struct discord_gateway *gw, struct discord_gateway_payload *payload)
 {
   if (!gw->cbs.on_message.update) return;
 
@@ -314,7 +314,7 @@ on_message_update(struct discord_gateway *gw, struct payload_s *payload)
 }
 
 static void
-on_message_delete(struct discord_gateway *gw, struct payload_s *payload)
+on_message_delete(struct discord_gateway *gw, struct discord_gateway_payload *payload)
 {
   if (!gw->cbs.on_message.del) return;
 
@@ -332,34 +332,27 @@ on_message_delete(struct discord_gateway *gw, struct payload_s *payload)
 }
 
 static void
-on_message_delete_bulk(struct discord_gateway *gw, struct payload_s *payload)
+on_message_delete_bulk(struct discord_gateway *gw, struct discord_gateway_payload *payload)
 {
   if (!gw->cbs.on_message.delete_bulk) return;
 
-  NTL_T(struct sized_buffer) buf = NULL;
+  const NTL_T(ja_u64) ids = NULL;
   u64_snowflake_t channel_id = 0, guild_id = 0;
-  json_scanf(payload->event_data, sizeof(payload->event_data),
-      "[ids]%A"
-      "[channel_id]%F"
-      "[guild_id]%F",
-      &buf,
-      &orka_strtoull, &channel_id,
-      &orka_strtoull, &guild_id);
+  json_extract(payload->event_data, sizeof(payload->event_data),
+      "(ids):F"
+      "(channel_id):s_as_u64"
+      "(guild_id):s_as_u64",
+      &ja_u64_list_from_json, &ids,
+      &channel_id,
+      &guild_id);
 
-  size_t nids = ntl_length((NTL_T(void)) buf);
-  u64_snowflake_t *ids = (u64_snowflake_t*)malloc(nids * sizeof(u64_snowflake_t));
-  for(size_t i = 0; i < nids; i++) {
-    orka_strtoull(buf[i]->start, buf[i]->size, ids + i);
-  }
+  (*gw->cbs.on_message.delete_bulk)(gw->p_client, gw->me, ntl_length((ntl_t)ids), ids, channel_id, guild_id);
 
-  free(buf);
-
-  (*gw->cbs.on_message.delete_bulk)(gw->p_client, gw->me, nids, ids, channel_id, guild_id);
   free(ids);
 }
 
 static void
-on_message_reaction_add(struct discord_gateway *gw, struct payload_s *payload)
+on_message_reaction_add(struct discord_gateway *gw, struct discord_gateway_payload *payload)
 {
   if (!gw->cbs.on_reaction.add) return;
 
@@ -394,7 +387,7 @@ on_message_reaction_add(struct discord_gateway *gw, struct payload_s *payload)
 }
 
 static void
-on_message_reaction_remove(struct discord_gateway *gw, struct payload_s *payload)
+on_message_reaction_remove(struct discord_gateway *gw, struct discord_gateway_payload *payload)
 {
   if (!gw->cbs.on_reaction.remove) return;
 
@@ -424,7 +417,7 @@ on_message_reaction_remove(struct discord_gateway *gw, struct payload_s *payload
 }
 
 static void
-on_message_reaction_remove_all(struct discord_gateway *gw, struct payload_s *payload)
+on_message_reaction_remove_all(struct discord_gateway *gw, struct discord_gateway_payload *payload)
 {
   if (!gw->cbs.on_reaction.remove_all) return;
 
@@ -444,7 +437,7 @@ on_message_reaction_remove_all(struct discord_gateway *gw, struct payload_s *pay
 }
 
 static void
-on_message_reaction_remove_emoji(struct discord_gateway *gw, struct payload_s *payload)
+on_message_reaction_remove_emoji(struct discord_gateway *gw, struct discord_gateway_payload *payload)
 {
   if (!gw->cbs.on_reaction.remove_emoji) return;
 
@@ -468,7 +461,7 @@ on_message_reaction_remove_emoji(struct discord_gateway *gw, struct payload_s *p
 }
 
 static void
-on_ready(struct discord_gateway *gw, struct payload_s *payload)
+on_ready(struct discord_gateway *gw, struct discord_gateway_payload *payload)
 {
   if (!gw->cbs.on_ready) return;
 
@@ -483,7 +476,7 @@ on_ready(struct discord_gateway *gw, struct payload_s *payload)
 }
 
 static void
-on_resumed(struct discord_gateway *gw, struct payload_s *payload)
+on_resumed(struct discord_gateway *gw, struct discord_gateway_payload *payload)
 {
   ws_set_status(gw->ws, WS_CONNECTED);
   PUTS("Succesfully resumed a Discord session!");
@@ -492,8 +485,8 @@ on_resumed(struct discord_gateway *gw, struct payload_s *payload)
 static void
 on_dispatch_cb(void *p_gw, void *curr_iter_data)
 {
-  struct discord_gateway *gw = (struct discord_gateway*)p_gw;
-  struct payload_s *payload = (struct payload_s*)curr_iter_data;
+  struct discord_gateway *gw = p_gw;
+  struct discord_gateway_payload *payload = curr_iter_data;
 
   /* Ratelimit check */
   pthread_mutex_lock(&gw->lock);
@@ -601,8 +594,8 @@ on_dispatch_cb(void *p_gw, void *curr_iter_data)
 static void
 on_invalid_session_cb(void *p_gw, void *curr_iter_data)
 {
-  struct discord_gateway *gw = (struct discord_gateway*)p_gw;
-  struct payload_s *payload = (struct payload_s*)curr_iter_data;
+  struct discord_gateway *gw = p_gw;
+  struct discord_gateway_payload *payload = curr_iter_data;
 
   bool is_resumable = strcmp(payload->event_data, "false");
   const char *reason;
@@ -621,7 +614,7 @@ on_invalid_session_cb(void *p_gw, void *curr_iter_data)
 static void
 on_reconnect_cb(void *p_gw, void *curr_iter_data)
 {
-  struct discord_gateway *gw = (struct discord_gateway*)p_gw;
+  struct discord_gateway *gw = p_gw;
 
   ws_set_status(gw->ws, WS_RESUME);
 
@@ -633,7 +626,7 @@ on_reconnect_cb(void *p_gw, void *curr_iter_data)
 static void
 on_heartbeat_ack_cb(void *p_gw, void *curr_iter_data)
 {
-  struct discord_gateway *gw = (struct discord_gateway*)p_gw;
+  struct discord_gateway *gw = p_gw;
 
   // get request / response interval in milliseconds
   pthread_mutex_lock(&gw->lock);
@@ -650,8 +643,8 @@ on_connect_cb(void *p_gw, const char *ws_protocols) {
 static void
 on_close_cb(void *p_gw, enum ws_close_reason wscode, const char *reason, size_t len)
 {
-  struct discord_gateway *gw = (struct discord_gateway*)p_gw;
-  enum discord_gateway_close_opcodes opcode = (enum discord_gateway_close_opcodes)wscode;
+  struct discord_gateway *gw = p_gw;
+  enum discord_gateway_close_opcodes opcode = wscode;
  
   switch (opcode) {
   case DISCORD_GATEWAY_CLOSE_REASON_UNKNOWN_OPCODE:
@@ -691,7 +684,7 @@ on_text_cb(void *p_gw, const char *text, size_t len) {
 static int
 on_startup_cb(void *p_gw)
 {
-  struct discord_gateway *gw = (struct discord_gateway*)p_gw;
+  struct discord_gateway *gw = p_gw;
 
   //get session info before starting it
   discord_get_gateway_bot(gw->p_client, &gw->session);
@@ -722,7 +715,7 @@ send_heartbeat(struct discord_gateway *gw)
 static void
 on_iter_end_cb(void *p_gw)
 {
-  struct discord_gateway *gw = (struct discord_gateway*)p_gw;
+  struct discord_gateway *gw = p_gw;
 
   /*check if timespan since first pulse is greater than
    * minimum heartbeat interval required*/
@@ -742,11 +735,11 @@ on_iter_end_cb(void *p_gw)
 static int
 on_text_event_cb(void *p_gw, const char *text, size_t len)
 {
-  struct discord_gateway *gw = (struct discord_gateway*)p_gw;
+  struct discord_gateway *gw = p_gw;
 
   D_PRINT("ON_DISPATCH:\t%s\n", text);
 
-  struct payload_s *payloadcpy = calloc(1, sizeof(struct payload_s));
+  struct discord_gateway_payload *payloadcpy = calloc(1, sizeof(struct discord_gateway_payload));
 
   int tmp_seq_number; //check value first, then assign
   json_scanf((char*)text, len,
@@ -771,7 +764,7 @@ on_text_event_cb(void *p_gw, const char *text, size_t len)
                 gw->payload.seq_number,
                 gw->payload.event_data);
 
-  memcpy(payloadcpy, &gw->payload, sizeof(struct payload_s));
+  memcpy(payloadcpy, &gw->payload, sizeof(struct discord_gateway_payload));
   ws_set_curr_iter_data(gw->ws, payloadcpy, &free);
 
   return gw->payload.opcode;
