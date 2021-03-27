@@ -99,6 +99,7 @@ enum discord_audit_log_events {
 };
 extern char* discord_audit_log_events_to_string(enum discord_audit_log_events);
 extern enum discord_audit_log_events discord_audit_log_events_from_string(char*);
+extern bool discord_audit_log_events_has(enum discord_audit_log_events, char*);
 
 /* Title: Audit Log Entry Structure */
 /* https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-entry-structure */

@@ -6,19 +6,19 @@ https://discord.com/developers/docs/resources/user#user-object
 
 
 enum discord_user_flags discord_user_flags_from_string(char *s){
-  if(strcmp("DISCORD_EMPLOYEE", s) == 0) return DISCORD_USER_DISCORD_EMPLOYEE;
-  if(strcmp("PARTNERED_SERVER_OWNER", s) == 0) return DISCORD_USER_PARTNERED_SERVER_OWNER;
-  if(strcmp("HYPESQUAD_EVENTS", s) == 0) return DISCORD_USER_HYPESQUAD_EVENTS;
-  if(strcmp("BUG_HUNTER_LEVEL_1", s) == 0) return DISCORD_USER_BUG_HUNTER_LEVEL_1;
-  if(strcmp("HOUSE_BRAVERY", s) == 0) return DISCORD_USER_HOUSE_BRAVERY;
-  if(strcmp("HOUSE_BRILLIANCE", s) == 0) return DISCORD_USER_HOUSE_BRILLIANCE;
-  if(strcmp("HOUSE_BALANCE", s) == 0) return DISCORD_USER_HOUSE_BALANCE;
-  if(strcmp("EARLY_SUPPORTER", s) == 0) return DISCORD_USER_EARLY_SUPPORTER;
-  if(strcmp("TEAM_USER", s) == 0) return DISCORD_USER_TEAM_USER;
-  if(strcmp("SYSTEM", s) == 0) return DISCORD_USER_SYSTEM;
-  if(strcmp("BUG_HUNTER_LEVEL_2", s) == 0) return DISCORD_USER_BUG_HUNTER_LEVEL_2;
-  if(strcmp("VERIFIED_BOT", s) == 0) return DISCORD_USER_VERIFIED_BOT;
-  if(strcmp("EARLY_VERIFIED_BOT_DEVELOPER", s) == 0) return DISCORD_USER_EARLY_VERIFIED_BOT_DEVELOPER;
+  if(strcasecmp("DISCORD_EMPLOYEE", s) == 0) return DISCORD_USER_DISCORD_EMPLOYEE;
+  if(strcasecmp("PARTNERED_SERVER_OWNER", s) == 0) return DISCORD_USER_PARTNERED_SERVER_OWNER;
+  if(strcasecmp("HYPESQUAD_EVENTS", s) == 0) return DISCORD_USER_HYPESQUAD_EVENTS;
+  if(strcasecmp("BUG_HUNTER_LEVEL_1", s) == 0) return DISCORD_USER_BUG_HUNTER_LEVEL_1;
+  if(strcasecmp("HOUSE_BRAVERY", s) == 0) return DISCORD_USER_HOUSE_BRAVERY;
+  if(strcasecmp("HOUSE_BRILLIANCE", s) == 0) return DISCORD_USER_HOUSE_BRILLIANCE;
+  if(strcasecmp("HOUSE_BALANCE", s) == 0) return DISCORD_USER_HOUSE_BALANCE;
+  if(strcasecmp("EARLY_SUPPORTER", s) == 0) return DISCORD_USER_EARLY_SUPPORTER;
+  if(strcasecmp("TEAM_USER", s) == 0) return DISCORD_USER_TEAM_USER;
+  if(strcasecmp("SYSTEM", s) == 0) return DISCORD_USER_SYSTEM;
+  if(strcasecmp("BUG_HUNTER_LEVEL_2", s) == 0) return DISCORD_USER_BUG_HUNTER_LEVEL_2;
+  if(strcasecmp("VERIFIED_BOT", s) == 0) return DISCORD_USER_VERIFIED_BOT;
+  if(strcasecmp("EARLY_VERIFIED_BOT_DEVELOPER", s) == 0) return DISCORD_USER_EARLY_VERIFIED_BOT_DEVELOPER;
   abort();
 }
 char* discord_user_flags_to_string(enum discord_user_flags v){
@@ -38,11 +38,28 @@ char* discord_user_flags_to_string(enum discord_user_flags v){
 
   abort();
 }
+bool discord_user_flags_has(enum discord_user_flags v, char *s) {
+  enum discord_user_flags v1 = discord_user_flags_from_string(s);
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  return false;
+}
 
 
 enum discord_user_premium_types discord_user_premium_types_from_string(char *s){
-  if(strcmp("NITRO_CLASSIC", s) == 0) return DISCORD_USER_NITRO_CLASSIC;
-  if(strcmp("NITRO", s) == 0) return DISCORD_USER_NITRO;
+  if(strcasecmp("NITRO_CLASSIC", s) == 0) return DISCORD_USER_NITRO_CLASSIC;
+  if(strcasecmp("NITRO", s) == 0) return DISCORD_USER_NITRO;
   abort();
 }
 char* discord_user_premium_types_to_string(enum discord_user_premium_types v){
@@ -50,6 +67,12 @@ char* discord_user_premium_types_to_string(enum discord_user_premium_types v){
   if (v == DISCORD_USER_NITRO) return "NITRO";
 
   abort();
+}
+bool discord_user_premium_types_has(enum discord_user_premium_types v, char *s) {
+  enum discord_user_premium_types v1 = discord_user_premium_types_from_string(s);
+  if (v == v1) return true;
+  if (v == v1) return true;
+  return false;
 }
 
 void discord_user_from_json(char *json, size_t len, struct discord_user *p)
@@ -535,8 +558,8 @@ size_t discord_user_list_to_json(char *str, size_t len, struct discord_user **p)
 
 
 enum discord_user_connection_visibility_types discord_user_connection_visibility_types_from_string(char *s){
-  if(strcmp("NONE", s) == 0) return DISCORD_USER_CONNECTION_NONE;
-  if(strcmp("EVERYONE", s) == 0) return DISCORD_USER_CONNECTION_EVERYONE;
+  if(strcasecmp("NONE", s) == 0) return DISCORD_USER_CONNECTION_NONE;
+  if(strcasecmp("EVERYONE", s) == 0) return DISCORD_USER_CONNECTION_EVERYONE;
   abort();
 }
 char* discord_user_connection_visibility_types_to_string(enum discord_user_connection_visibility_types v){
@@ -544,6 +567,12 @@ char* discord_user_connection_visibility_types_to_string(enum discord_user_conne
   if (v == DISCORD_USER_CONNECTION_EVERYONE) return "EVERYONE";
 
   abort();
+}
+bool discord_user_connection_visibility_types_has(enum discord_user_connection_visibility_types v, char *s) {
+  enum discord_user_connection_visibility_types v1 = discord_user_connection_visibility_types_from_string(s);
+  if (v == v1) return true;
+  if (v == v1) return true;
+  return false;
 }
 
 void discord_connection_from_json(char *json, size_t len, struct discord_connection *p)

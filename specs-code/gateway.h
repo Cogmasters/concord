@@ -22,6 +22,7 @@ enum discord_gateway_close_opcodes {
 };
 extern char* discord_gateway_close_opcodes_to_string(enum discord_gateway_close_opcodes);
 extern enum discord_gateway_close_opcodes discord_gateway_close_opcodes_from_string(char*);
+extern bool discord_gateway_close_opcodes_has(enum discord_gateway_close_opcodes, char*);
 
 
 enum discord_gateway_intents {
@@ -43,6 +44,7 @@ enum discord_gateway_intents {
 };
 extern char* discord_gateway_intents_to_string(enum discord_gateway_intents);
 extern enum discord_gateway_intents discord_gateway_intents_from_string(char*);
+extern bool discord_gateway_intents_has(enum discord_gateway_intents, char*);
 
 
 enum discord_gateway_opcodes {
@@ -60,6 +62,7 @@ enum discord_gateway_opcodes {
 };
 extern char* discord_gateway_opcodes_to_string(enum discord_gateway_opcodes);
 extern enum discord_gateway_opcodes discord_gateway_opcodes_from_string(char*);
+extern bool discord_gateway_opcodes_has(enum discord_gateway_opcodes, char*);
 
 
 enum discord_gateway_events {
@@ -82,6 +85,7 @@ enum discord_gateway_events {
 };
 extern char* discord_gateway_events_to_string(enum discord_gateway_events);
 extern enum discord_gateway_events discord_gateway_events_from_string(char*);
+extern bool discord_gateway_events_has(enum discord_gateway_events, char*);
 
 /* Title: Identify Structure */
 /* https://discord.com/developers/docs/topics/gateway#identify-identify-structure */
@@ -364,3 +368,4 @@ enum discord_gateway_activity_types {
 };
 extern char* discord_gateway_activity_types_to_string(enum discord_gateway_activity_types);
 extern enum discord_gateway_activity_types discord_gateway_activity_types_from_string(char*);
+extern bool discord_gateway_activity_types_has(enum discord_gateway_activity_types, char*);

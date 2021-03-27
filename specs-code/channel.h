@@ -15,6 +15,7 @@ enum discord_channel_types {
 };
 extern char* discord_channel_types_to_string(enum discord_channel_types);
 extern enum discord_channel_types discord_channel_types_from_string(char*);
+extern bool discord_channel_types_has(enum discord_channel_types, char*);
 
 /* Title: Channel Structure */
 /* https://discord.com/developers/docs/resources/channel#channel-object-channel-structure */

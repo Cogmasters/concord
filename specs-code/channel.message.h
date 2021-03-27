@@ -11,6 +11,7 @@ enum discord_message_sticker_format_types {
 };
 extern char* discord_message_sticker_format_types_to_string(enum discord_message_sticker_format_types);
 extern enum discord_message_sticker_format_types discord_message_sticker_format_types_from_string(char*);
+extern bool discord_message_sticker_format_types_has(enum discord_message_sticker_format_types, char*);
 
 /* https://discord.com/developers/docs/resources/channel#message-object-message-sticker-structure */
 /* This is defined at specs/channel.message.json:20:22 */
@@ -99,6 +100,7 @@ enum discord_message_flags {
 };
 extern char* discord_message_flags_to_string(enum discord_message_flags);
 extern enum discord_message_flags discord_message_flags_from_string(char*);
+extern bool discord_message_flags_has(enum discord_message_flags, char*);
 
 /* Title: Message Reference Structure */
 /* https://discord.com/developers/docs/resources/channel#message-object-message-reference-structure */
@@ -233,6 +235,7 @@ enum discord_message_activity_types {
 };
 extern char* discord_message_activity_types_to_string(enum discord_message_activity_types);
 extern enum discord_message_activity_types discord_message_activity_types_from_string(char*);
+extern bool discord_message_activity_types_has(enum discord_message_activity_types, char*);
 
 /* Title: Message Activity Structure */
 /* https://discord.com/developers/docs/resources/channel#message-object-message-activity-structure */
@@ -304,6 +307,7 @@ enum discord_message_types {
 };
 extern char* discord_message_types_to_string(enum discord_message_types);
 extern enum discord_message_types discord_message_types_from_string(char*);
+extern bool discord_message_types_has(enum discord_message_types, char*);
 
 /* Title: Message Structure */
 /* https://discord.com/developers/docs/resources/channel#message-object */

@@ -9,6 +9,7 @@ enum discord_invite_target_user_types {
 };
 extern char* discord_invite_target_user_types_to_string(enum discord_invite_target_user_types);
 extern enum discord_invite_target_user_types discord_invite_target_user_types_from_string(char*);
+extern bool discord_invite_target_user_types_has(enum discord_invite_target_user_types, char*);
 
 /* Title: Invite Structure */
 /* https://discord.com/developers/docs/resources/invite#invite-object-invite-structure */

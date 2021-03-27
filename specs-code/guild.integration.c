@@ -6,8 +6,8 @@ https://discord.com/developers/docs/resources/guild#integration-object-integrati
 
 
 enum discord_guild_integration_expire_behaviors discord_guild_integration_expire_behaviors_from_string(char *s){
-  if(strcmp("REMOVE_ROLE", s) == 0) return DISCORD_GUILD_INTEGRATION_REMOVE_ROLE;
-  if(strcmp("KICK", s) == 0) return DISCORD_GUILD_INTEGRATION_KICK;
+  if(strcasecmp("REMOVE_ROLE", s) == 0) return DISCORD_GUILD_INTEGRATION_REMOVE_ROLE;
+  if(strcasecmp("KICK", s) == 0) return DISCORD_GUILD_INTEGRATION_KICK;
   abort();
 }
 char* discord_guild_integration_expire_behaviors_to_string(enum discord_guild_integration_expire_behaviors v){
@@ -15,6 +15,12 @@ char* discord_guild_integration_expire_behaviors_to_string(enum discord_guild_in
   if (v == DISCORD_GUILD_INTEGRATION_KICK) return "KICK";
 
   abort();
+}
+bool discord_guild_integration_expire_behaviors_has(enum discord_guild_integration_expire_behaviors v, char *s) {
+  enum discord_guild_integration_expire_behaviors v1 = discord_guild_integration_expire_behaviors_from_string(s);
+  if (v == v1) return true;
+  if (v == v1) return true;
+  return false;
 }
 
 void discord_guild_integration_account_from_json(char *json, size_t len, struct discord_guild_integration_account *p)

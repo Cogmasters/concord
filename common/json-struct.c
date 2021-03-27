@@ -349,6 +349,7 @@ print_field(FILE *fp, struct jc_field *p)
   NTL_T(NTL_T(name_t)) namespaces; \
   char *name; \
   char *typedef_name; \
+  bool enum_is_bitwise_flag; \
   struct line_and_column name_lnc;
 
 
@@ -691,7 +692,8 @@ static size_t def_from_json(char *json, size_t size, struct jc_def *def)
                "(typedef):?s,"
                "(struct):key,(enum):key,"
                "(struct):?s, (enum):?s,"
-               "(struct):lnc",
+               "(struct):lnc,"
+               "(bitwise):b",
                &def->comment,
                &def->title,
                extract_ntl_from_json, &d0,
@@ -699,8 +701,8 @@ static size_t def_from_json(char *json, size_t size, struct jc_def *def)
                &def->typedef_name,
                &is_struct, &is_enum,
                &def->name, &def->name,
-               &def->name_lnc
-               );
+               &def->name_lnc,
+               &def->enum_is_bitwise_flag);
 
   adjust_lnc(json, &def->name_lnc);
   if (is_struct) {
@@ -794,7 +796,7 @@ static void gen_enum_from_string(FILE *fp, struct jc_enum *e)
     if (item->todo)
       fprintf(fp, "/* %s */\n", item->name);
     else
-      fprintf(fp, "  if(strcmp(\"%s\", s) == 0) return %s;\n", 
+      fprintf(fp, "  if(strcasecmp(\"%s\", s) == 0) return %s;\n", 
               item->name, item_name);
   }
   fprintf(fp, "  abort();\n");
@@ -827,6 +829,74 @@ static void gen_enum_to_string(FILE *fp, struct jc_enum *e)
   fprintf(fp, "}\n");
 }
 
+static void gen_enum_to_strings(FILE *fp, struct jc_enum *e)
+{
+  char *t = ns_to_symbol_name(e->name);
+  char *t_alias = NULL;
+  
+  if (e->typedef_name) 
+    t_alias = ns_to_symbol_name(e->typedef_name);
+    
+  if (t_alias)
+    fprintf(fp, "char** %s_to_ntl_string(%s v){\n", t_alias, t_alias);
+  else
+    fprintf(fp, "char** %s_to_ntl_string(enum %s v){\n", t, t);
+
+  fprintf(fp, "  int count = 0;\n");
+  for (int i = 0; e->items && e->items[i]; i++) {
+    struct jc_item *item = e->items[i];
+    char *item_name = ns_to_item_name(item->name);
+    if (item->todo)
+      fprintf(fp, "/* %s */\n", item->name);
+    else
+      fprintf(fp, "  if (v & %s) count ++;\n", item_name);
+  }
+
+  fprintf(fp, "  char **ls = (char**)ntl_calloc(count, sizeof(name_t));\n");
+  fprintf(fp, "  int i = 0;\n");
+  for (int i = 0; e->items && e->items[i]; i++) {
+    struct jc_item *item = e->items[i];
+    char *item_name = ns_to_item_name(item->name);
+    if (item->todo)
+      fprintf(fp, "/* %s */\n", item->name);
+    else
+      fprintf(fp, "  if (v & %s) strcpy(ls[i], \"%s\"); i++;\n", item_name, item->name);
+  }
+
+  fprintf(fp, "\n  abort();\n");
+  fprintf(fp, "}\n");
+}
+
+static void gen_enum_has(FILE *fp, struct jc_enum *e)
+{
+  char *t = ns_to_symbol_name(e->name);
+  char *t_alias = NULL;
+  
+  if (e->typedef_name) 
+    t_alias = ns_to_symbol_name(e->typedef_name);
+
+  if (t_alias) {
+    fprintf(fp, "bool %s_has(%s v, char *s) {\n", t_alias, t_alias);
+    fprintf(fp, "  %s v1 = %s_from_string(s);\n", t_alias, t_alias);
+  }
+  else {
+    fprintf(fp, "bool %s_has(enum %s v, char *s) {\n", t, t);
+    fprintf(fp, "  enum %s v1 = %s_from_string(s);\n", t, t);
+  }
+
+  for (int i = 0; e->items && e->items[i]; i++) {
+    struct jc_item *item = e->items[i];
+    //char *item_name = ns_to_item_name(item->name);
+    if (item->todo)
+      fprintf(fp, "/* %s */\n", item->name);
+    else if (e->enum_is_bitwise_flag)
+      fprintf(fp, "  if (v & v1) return true;\n");
+    else
+      fprintf(fp, "  if (v == v1) return true;\n");
+  }
+  fprintf(fp, "  return false;\n");
+  fprintf(fp, "}\n");
+}
 
 static void gen_forward_enum_fun_declare(FILE *fp, struct jc_enum *e)
 {
@@ -838,10 +908,12 @@ static void gen_forward_enum_fun_declare(FILE *fp, struct jc_enum *e)
   if (t_alias) {
     fprintf(fp, "extern char* %s_to_string(%s);\n", t_alias, t_alias);
     fprintf(fp, "extern %s %s_from_string(char*);\n", t_alias, t_alias);
+    fprintf(fp, "extern bool %s_has(%s, char*);\n", t_alias, t_alias);
   }
   else {
     fprintf(fp, "extern char* %s_to_string(enum %s);\n", t, t);
     fprintf(fp, "extern enum %s %s_from_string(char*);\n", t, t);
+    fprintf(fp, "extern bool %s_has(enum %s, char*);\n", t, t);
   }
 }
 
@@ -861,6 +933,7 @@ static void gen_enum_all(FILE *fp, struct jc_def *d, name_t **ns)
   else if (global_option.type == FILE_CODE) {
     gen_enum_from_string(fp, e);
     gen_enum_to_string(fp, e);
+    gen_enum_has(fp, e);
   }
   /* */
   gen_close_namespace(fp, ns);

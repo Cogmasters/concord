@@ -6,8 +6,8 @@ https://discord.com/developers/docs/resources/webhook#webhook-object-webhook-str
 
 
 enum discord_webhook_types discord_webhook_types_from_string(char *s){
-  if(strcmp("INCOMING", s) == 0) return DISCORD_WEBHOOK_INCOMING;
-  if(strcmp("CHANNEL_FOLLOWER", s) == 0) return DISCORD_WEBHOOK_CHANNEL_FOLLOWER;
+  if(strcasecmp("INCOMING", s) == 0) return DISCORD_WEBHOOK_INCOMING;
+  if(strcasecmp("CHANNEL_FOLLOWER", s) == 0) return DISCORD_WEBHOOK_CHANNEL_FOLLOWER;
   abort();
 }
 char* discord_webhook_types_to_string(enum discord_webhook_types v){
@@ -15,6 +15,12 @@ char* discord_webhook_types_to_string(enum discord_webhook_types v){
   if (v == DISCORD_WEBHOOK_CHANNEL_FOLLOWER) return "CHANNEL_FOLLOWER";
 
   abort();
+}
+bool discord_webhook_types_has(enum discord_webhook_types v, char *s) {
+  enum discord_webhook_types v1 = discord_webhook_types_from_string(s);
+  if (v == v1) return true;
+  if (v == v1) return true;
+  return false;
 }
 
 void discord_webhook_from_json(char *json, size_t len, struct discord_webhook *p)

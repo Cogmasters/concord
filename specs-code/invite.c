@@ -6,13 +6,18 @@ https://discord.com/developers/docs/resources/invite#invite-object
 
 
 enum discord_invite_target_user_types discord_invite_target_user_types_from_string(char *s){
-  if(strcmp("STREAM", s) == 0) return DISCORD_INVITE_STREAM;
+  if(strcasecmp("STREAM", s) == 0) return DISCORD_INVITE_STREAM;
   abort();
 }
 char* discord_invite_target_user_types_to_string(enum discord_invite_target_user_types v){
   if (v == DISCORD_INVITE_STREAM) return "STREAM";
 
   abort();
+}
+bool discord_invite_target_user_types_has(enum discord_invite_target_user_types v, char *s) {
+  enum discord_invite_target_user_types v1 = discord_invite_target_user_types_from_string(s);
+  if (v == v1) return true;
+  return false;
 }
 
 void discord_invite_from_json(char *json, size_t len, struct discord_invite *p)

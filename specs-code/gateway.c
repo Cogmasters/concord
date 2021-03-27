@@ -6,20 +6,20 @@
 
 
 enum discord_gateway_close_opcodes discord_gateway_close_opcodes_from_string(char *s){
-  if(strcmp("CLOSE_REASON_UNKNOWN_ERROR", s) == 0) return DISCORD_GATEWAY_CLOSE_REASON_UNKNOWN_ERROR;
-  if(strcmp("CLOSE_REASON_UNKNOWN_OPCODE", s) == 0) return DISCORD_GATEWAY_CLOSE_REASON_UNKNOWN_OPCODE;
-  if(strcmp("CLOSE_REASON_DECODE_ERROR", s) == 0) return DISCORD_GATEWAY_CLOSE_REASON_DECODE_ERROR;
-  if(strcmp("CLOSE_REASON_NOT_AUTHENTICATED", s) == 0) return DISCORD_GATEWAY_CLOSE_REASON_NOT_AUTHENTICATED;
-  if(strcmp("CLOSE_REASON_AUTHENTICATION_FAILED", s) == 0) return DISCORD_GATEWAY_CLOSE_REASON_AUTHENTICATION_FAILED;
-  if(strcmp("CLOSE_REASON_ALREADY_AUTHENTICATED", s) == 0) return DISCORD_GATEWAY_CLOSE_REASON_ALREADY_AUTHENTICATED;
-  if(strcmp("CLOSE_REASON_INVALID_SEQUENCE", s) == 0) return DISCORD_GATEWAY_CLOSE_REASON_INVALID_SEQUENCE;
-  if(strcmp("CLOSE_REASON_RATE_LIMITED", s) == 0) return DISCORD_GATEWAY_CLOSE_REASON_RATE_LIMITED;
-  if(strcmp("CLOSE_REASON_SESSION_TIMED_OUT", s) == 0) return DISCORD_GATEWAY_CLOSE_REASON_SESSION_TIMED_OUT;
-  if(strcmp("CLOSE_REASON_INVALID_SHARD", s) == 0) return DISCORD_GATEWAY_CLOSE_REASON_INVALID_SHARD;
-  if(strcmp("CLOSE_REASON_SHARDING_REQUIRED", s) == 0) return DISCORD_GATEWAY_CLOSE_REASON_SHARDING_REQUIRED;
-  if(strcmp("CLOSE_REASON_INVALID_API_VERSION", s) == 0) return DISCORD_GATEWAY_CLOSE_REASON_INVALID_API_VERSION;
-  if(strcmp("CLOSE_REASON_INVALID_INTENTS", s) == 0) return DISCORD_GATEWAY_CLOSE_REASON_INVALID_INTENTS;
-  if(strcmp("CLOSE_REASON_DISALLOWED_INTENTS", s) == 0) return DISCORD_GATEWAY_CLOSE_REASON_DISALLOWED_INTENTS;
+  if(strcasecmp("CLOSE_REASON_UNKNOWN_ERROR", s) == 0) return DISCORD_GATEWAY_CLOSE_REASON_UNKNOWN_ERROR;
+  if(strcasecmp("CLOSE_REASON_UNKNOWN_OPCODE", s) == 0) return DISCORD_GATEWAY_CLOSE_REASON_UNKNOWN_OPCODE;
+  if(strcasecmp("CLOSE_REASON_DECODE_ERROR", s) == 0) return DISCORD_GATEWAY_CLOSE_REASON_DECODE_ERROR;
+  if(strcasecmp("CLOSE_REASON_NOT_AUTHENTICATED", s) == 0) return DISCORD_GATEWAY_CLOSE_REASON_NOT_AUTHENTICATED;
+  if(strcasecmp("CLOSE_REASON_AUTHENTICATION_FAILED", s) == 0) return DISCORD_GATEWAY_CLOSE_REASON_AUTHENTICATION_FAILED;
+  if(strcasecmp("CLOSE_REASON_ALREADY_AUTHENTICATED", s) == 0) return DISCORD_GATEWAY_CLOSE_REASON_ALREADY_AUTHENTICATED;
+  if(strcasecmp("CLOSE_REASON_INVALID_SEQUENCE", s) == 0) return DISCORD_GATEWAY_CLOSE_REASON_INVALID_SEQUENCE;
+  if(strcasecmp("CLOSE_REASON_RATE_LIMITED", s) == 0) return DISCORD_GATEWAY_CLOSE_REASON_RATE_LIMITED;
+  if(strcasecmp("CLOSE_REASON_SESSION_TIMED_OUT", s) == 0) return DISCORD_GATEWAY_CLOSE_REASON_SESSION_TIMED_OUT;
+  if(strcasecmp("CLOSE_REASON_INVALID_SHARD", s) == 0) return DISCORD_GATEWAY_CLOSE_REASON_INVALID_SHARD;
+  if(strcasecmp("CLOSE_REASON_SHARDING_REQUIRED", s) == 0) return DISCORD_GATEWAY_CLOSE_REASON_SHARDING_REQUIRED;
+  if(strcasecmp("CLOSE_REASON_INVALID_API_VERSION", s) == 0) return DISCORD_GATEWAY_CLOSE_REASON_INVALID_API_VERSION;
+  if(strcasecmp("CLOSE_REASON_INVALID_INTENTS", s) == 0) return DISCORD_GATEWAY_CLOSE_REASON_INVALID_INTENTS;
+  if(strcasecmp("CLOSE_REASON_DISALLOWED_INTENTS", s) == 0) return DISCORD_GATEWAY_CLOSE_REASON_DISALLOWED_INTENTS;
   abort();
 }
 char* discord_gateway_close_opcodes_to_string(enum discord_gateway_close_opcodes v){
@@ -40,24 +40,42 @@ char* discord_gateway_close_opcodes_to_string(enum discord_gateway_close_opcodes
 
   abort();
 }
+bool discord_gateway_close_opcodes_has(enum discord_gateway_close_opcodes v, char *s) {
+  enum discord_gateway_close_opcodes v1 = discord_gateway_close_opcodes_from_string(s);
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  return false;
+}
 
 
 enum discord_gateway_intents discord_gateway_intents_from_string(char *s){
-  if(strcmp("GUILDS", s) == 0) return DISCORD_GATEWAY_GUILDS;
-  if(strcmp("GUILD_MEMBERS", s) == 0) return DISCORD_GATEWAY_GUILD_MEMBERS;
-  if(strcmp("GUILD_BANS", s) == 0) return DISCORD_GATEWAY_GUILD_BANS;
-  if(strcmp("GUILD_EMOJIS", s) == 0) return DISCORD_GATEWAY_GUILD_EMOJIS;
-  if(strcmp("GUILD_INTEGRATIONS", s) == 0) return DISCORD_GATEWAY_GUILD_INTEGRATIONS;
-  if(strcmp("GUILD_WEBHOOKS", s) == 0) return DISCORD_GATEWAY_GUILD_WEBHOOKS;
-  if(strcmp("GUILD_INVITES", s) == 0) return DISCORD_GATEWAY_GUILD_INVITES;
-  if(strcmp("GUILD_VOICE_STATES", s) == 0) return DISCORD_GATEWAY_GUILD_VOICE_STATES;
-  if(strcmp("GUILD_PRESENCES", s) == 0) return DISCORD_GATEWAY_GUILD_PRESENCES;
-  if(strcmp("GUILD_MESSAGES", s) == 0) return DISCORD_GATEWAY_GUILD_MESSAGES;
-  if(strcmp("GUILD_MESSAGE_REACTIONS", s) == 0) return DISCORD_GATEWAY_GUILD_MESSAGE_REACTIONS;
-  if(strcmp("GUILD_MESSAGE_TYPING", s) == 0) return DISCORD_GATEWAY_GUILD_MESSAGE_TYPING;
-  if(strcmp("DIRECT_MESSAGES", s) == 0) return DISCORD_GATEWAY_DIRECT_MESSAGES;
-  if(strcmp("DIRECT_MESSAGE_REACTIONS", s) == 0) return DISCORD_GATEWAY_DIRECT_MESSAGE_REACTIONS;
-  if(strcmp("DIRECT_MESSAGE_TYPING", s) == 0) return DISCORD_GATEWAY_DIRECT_MESSAGE_TYPING;
+  if(strcasecmp("GUILDS", s) == 0) return DISCORD_GATEWAY_GUILDS;
+  if(strcasecmp("GUILD_MEMBERS", s) == 0) return DISCORD_GATEWAY_GUILD_MEMBERS;
+  if(strcasecmp("GUILD_BANS", s) == 0) return DISCORD_GATEWAY_GUILD_BANS;
+  if(strcasecmp("GUILD_EMOJIS", s) == 0) return DISCORD_GATEWAY_GUILD_EMOJIS;
+  if(strcasecmp("GUILD_INTEGRATIONS", s) == 0) return DISCORD_GATEWAY_GUILD_INTEGRATIONS;
+  if(strcasecmp("GUILD_WEBHOOKS", s) == 0) return DISCORD_GATEWAY_GUILD_WEBHOOKS;
+  if(strcasecmp("GUILD_INVITES", s) == 0) return DISCORD_GATEWAY_GUILD_INVITES;
+  if(strcasecmp("GUILD_VOICE_STATES", s) == 0) return DISCORD_GATEWAY_GUILD_VOICE_STATES;
+  if(strcasecmp("GUILD_PRESENCES", s) == 0) return DISCORD_GATEWAY_GUILD_PRESENCES;
+  if(strcasecmp("GUILD_MESSAGES", s) == 0) return DISCORD_GATEWAY_GUILD_MESSAGES;
+  if(strcasecmp("GUILD_MESSAGE_REACTIONS", s) == 0) return DISCORD_GATEWAY_GUILD_MESSAGE_REACTIONS;
+  if(strcasecmp("GUILD_MESSAGE_TYPING", s) == 0) return DISCORD_GATEWAY_GUILD_MESSAGE_TYPING;
+  if(strcasecmp("DIRECT_MESSAGES", s) == 0) return DISCORD_GATEWAY_DIRECT_MESSAGES;
+  if(strcasecmp("DIRECT_MESSAGE_REACTIONS", s) == 0) return DISCORD_GATEWAY_DIRECT_MESSAGE_REACTIONS;
+  if(strcasecmp("DIRECT_MESSAGE_TYPING", s) == 0) return DISCORD_GATEWAY_DIRECT_MESSAGE_TYPING;
   abort();
 }
 char* discord_gateway_intents_to_string(enum discord_gateway_intents v){
@@ -79,20 +97,39 @@ char* discord_gateway_intents_to_string(enum discord_gateway_intents v){
 
   abort();
 }
+bool discord_gateway_intents_has(enum discord_gateway_intents v, char *s) {
+  enum discord_gateway_intents v1 = discord_gateway_intents_from_string(s);
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  return false;
+}
 
 
 enum discord_gateway_opcodes discord_gateway_opcodes_from_string(char *s){
-  if(strcmp("DISPATCH", s) == 0) return DISCORD_GATEWAY_DISPATCH;
-  if(strcmp("HEARTBEAT", s) == 0) return DISCORD_GATEWAY_HEARTBEAT;
-  if(strcmp("IDENTIFY", s) == 0) return DISCORD_GATEWAY_IDENTIFY;
-  if(strcmp("PRESENCE_UPDATE", s) == 0) return DISCORD_GATEWAY_PRESENCE_UPDATE;
-  if(strcmp("VOICE_STATE_UPDATE", s) == 0) return DISCORD_GATEWAY_VOICE_STATE_UPDATE;
-  if(strcmp("RESUME", s) == 0) return DISCORD_GATEWAY_RESUME;
-  if(strcmp("RECONNECT", s) == 0) return DISCORD_GATEWAY_RECONNECT;
-  if(strcmp("REQUEST_GUILD_MEMBERS", s) == 0) return DISCORD_GATEWAY_REQUEST_GUILD_MEMBERS;
-  if(strcmp("INVALID_SESSION", s) == 0) return DISCORD_GATEWAY_INVALID_SESSION;
-  if(strcmp("HELLO", s) == 0) return DISCORD_GATEWAY_HELLO;
-  if(strcmp("HEARTBEAT_ACK", s) == 0) return DISCORD_GATEWAY_HEARTBEAT_ACK;
+  if(strcasecmp("DISPATCH", s) == 0) return DISCORD_GATEWAY_DISPATCH;
+  if(strcasecmp("HEARTBEAT", s) == 0) return DISCORD_GATEWAY_HEARTBEAT;
+  if(strcasecmp("IDENTIFY", s) == 0) return DISCORD_GATEWAY_IDENTIFY;
+  if(strcasecmp("PRESENCE_UPDATE", s) == 0) return DISCORD_GATEWAY_PRESENCE_UPDATE;
+  if(strcasecmp("VOICE_STATE_UPDATE", s) == 0) return DISCORD_GATEWAY_VOICE_STATE_UPDATE;
+  if(strcasecmp("RESUME", s) == 0) return DISCORD_GATEWAY_RESUME;
+  if(strcasecmp("RECONNECT", s) == 0) return DISCORD_GATEWAY_RECONNECT;
+  if(strcasecmp("REQUEST_GUILD_MEMBERS", s) == 0) return DISCORD_GATEWAY_REQUEST_GUILD_MEMBERS;
+  if(strcasecmp("INVALID_SESSION", s) == 0) return DISCORD_GATEWAY_INVALID_SESSION;
+  if(strcasecmp("HELLO", s) == 0) return DISCORD_GATEWAY_HELLO;
+  if(strcasecmp("HEARTBEAT_ACK", s) == 0) return DISCORD_GATEWAY_HEARTBEAT_ACK;
   abort();
 }
 char* discord_gateway_opcodes_to_string(enum discord_gateway_opcodes v){
@@ -110,25 +147,40 @@ char* discord_gateway_opcodes_to_string(enum discord_gateway_opcodes v){
 
   abort();
 }
+bool discord_gateway_opcodes_has(enum discord_gateway_opcodes v, char *s) {
+  enum discord_gateway_opcodes v1 = discord_gateway_opcodes_from_string(s);
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  return false;
+}
 
 
 enum discord_gateway_events discord_gateway_events_from_string(char *s){
-  if(strcmp("EVENTS_NONE", s) == 0) return DISCORD_GATEWAY_EVENTS_NONE;
-  if(strcmp("EVENTS_IDLE", s) == 0) return DISCORD_GATEWAY_EVENTS_IDLE;
-  if(strcmp("EVENTS_READY", s) == 0) return DISCORD_GATEWAY_EVENTS_READY;
-  if(strcmp("EVENTS_RESUMED", s) == 0) return DISCORD_GATEWAY_EVENTS_RESUMED;
-  if(strcmp("EVENTS_MESSAGE_CREATE", s) == 0) return DISCORD_GATEWAY_EVENTS_MESSAGE_CREATE;
-  if(strcmp("EVENTS_SB_MESSAGE_CREATE", s) == 0) return DISCORD_GATEWAY_EVENTS_SB_MESSAGE_CREATE;
-  if(strcmp("EVENTS_MESSAGE_UPDATE", s) == 0) return DISCORD_GATEWAY_EVENTS_MESSAGE_UPDATE;
-  if(strcmp("EVENTS_MESSAGE_DELETE", s) == 0) return DISCORD_GATEWAY_EVENTS_MESSAGE_DELETE;
-  if(strcmp("EVENTS_MESSAGE_DELETE_BULK", s) == 0) return DISCORD_GATEWAY_EVENTS_MESSAGE_DELETE_BULK;
-  if(strcmp("EVENTS_MESSAGE_REACTION_ADD", s) == 0) return DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_ADD;
-  if(strcmp("EVENTS_MESSAGE_REACTION_REMOVE", s) == 0) return DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE;
-  if(strcmp("EVENTS_MESSAGE_REACTION_REMOVE_ALL", s) == 0) return DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE_ALL;
-  if(strcmp("EVENTS_MESSAGE_REACTION_REMOVE_EMOJI", s) == 0) return DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE_EMOJI;
-  if(strcmp("EVENTS_GUILD_MEMBER_ADD", s) == 0) return DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_ADD;
-  if(strcmp("EVENTS_GUILD_MEMBER_UPDATE", s) == 0) return DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_UPDATE;
-  if(strcmp("EVENTS_GUILD_MEMBER_REMOVE", s) == 0) return DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_REMOVE;
+  if(strcasecmp("EVENTS_NONE", s) == 0) return DISCORD_GATEWAY_EVENTS_NONE;
+  if(strcasecmp("EVENTS_IDLE", s) == 0) return DISCORD_GATEWAY_EVENTS_IDLE;
+  if(strcasecmp("EVENTS_READY", s) == 0) return DISCORD_GATEWAY_EVENTS_READY;
+  if(strcasecmp("EVENTS_RESUMED", s) == 0) return DISCORD_GATEWAY_EVENTS_RESUMED;
+  if(strcasecmp("EVENTS_MESSAGE_CREATE", s) == 0) return DISCORD_GATEWAY_EVENTS_MESSAGE_CREATE;
+  if(strcasecmp("EVENTS_SB_MESSAGE_CREATE", s) == 0) return DISCORD_GATEWAY_EVENTS_SB_MESSAGE_CREATE;
+  if(strcasecmp("EVENTS_MESSAGE_UPDATE", s) == 0) return DISCORD_GATEWAY_EVENTS_MESSAGE_UPDATE;
+  if(strcasecmp("EVENTS_MESSAGE_DELETE", s) == 0) return DISCORD_GATEWAY_EVENTS_MESSAGE_DELETE;
+  if(strcasecmp("EVENTS_MESSAGE_DELETE_BULK", s) == 0) return DISCORD_GATEWAY_EVENTS_MESSAGE_DELETE_BULK;
+  if(strcasecmp("EVENTS_MESSAGE_REACTION_ADD", s) == 0) return DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_ADD;
+  if(strcasecmp("EVENTS_MESSAGE_REACTION_REMOVE", s) == 0) return DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE;
+  if(strcasecmp("EVENTS_MESSAGE_REACTION_REMOVE_ALL", s) == 0) return DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE_ALL;
+  if(strcasecmp("EVENTS_MESSAGE_REACTION_REMOVE_EMOJI", s) == 0) return DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE_EMOJI;
+  if(strcasecmp("EVENTS_GUILD_MEMBER_ADD", s) == 0) return DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_ADD;
+  if(strcasecmp("EVENTS_GUILD_MEMBER_UPDATE", s) == 0) return DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_UPDATE;
+  if(strcasecmp("EVENTS_GUILD_MEMBER_REMOVE", s) == 0) return DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_REMOVE;
   abort();
 }
 char* discord_gateway_events_to_string(enum discord_gateway_events v){
@@ -150,6 +202,26 @@ char* discord_gateway_events_to_string(enum discord_gateway_events v){
   if (v == DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_REMOVE) return "EVENTS_GUILD_MEMBER_REMOVE";
 
   abort();
+}
+bool discord_gateway_events_has(enum discord_gateway_events v, char *s) {
+  enum discord_gateway_events v1 = discord_gateway_events_from_string(s);
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  return false;
 }
 
 void discord_gateway_identify_from_json(char *json, size_t len, struct discord_gateway_identify *p)
@@ -1307,11 +1379,11 @@ size_t discord_gateway_activity_list_to_json(char *str, size_t len, struct disco
 
 
 enum discord_gateway_activity_types discord_gateway_activity_types_from_string(char *s){
-  if(strcmp("GAME", s) == 0) return DISCORD_GATEWAY_ACTIVITY_GAME;
-  if(strcmp("STREAMING", s) == 0) return DISCORD_GATEWAY_ACTIVITY_STREAMING;
-  if(strcmp("LISTENING", s) == 0) return DISCORD_GATEWAY_ACTIVITY_LISTENING;
-  if(strcmp("CUSTOM", s) == 0) return DISCORD_GATEWAY_ACTIVITY_CUSTOM;
-  if(strcmp("COMPETING", s) == 0) return DISCORD_GATEWAY_ACTIVITY_COMPETING;
+  if(strcasecmp("GAME", s) == 0) return DISCORD_GATEWAY_ACTIVITY_GAME;
+  if(strcasecmp("STREAMING", s) == 0) return DISCORD_GATEWAY_ACTIVITY_STREAMING;
+  if(strcasecmp("LISTENING", s) == 0) return DISCORD_GATEWAY_ACTIVITY_LISTENING;
+  if(strcasecmp("CUSTOM", s) == 0) return DISCORD_GATEWAY_ACTIVITY_CUSTOM;
+  if(strcasecmp("COMPETING", s) == 0) return DISCORD_GATEWAY_ACTIVITY_COMPETING;
   abort();
 }
 char* discord_gateway_activity_types_to_string(enum discord_gateway_activity_types v){
@@ -1322,4 +1394,13 @@ char* discord_gateway_activity_types_to_string(enum discord_gateway_activity_typ
   if (v == DISCORD_GATEWAY_ACTIVITY_COMPETING) return "COMPETING";
 
   abort();
+}
+bool discord_gateway_activity_types_has(enum discord_gateway_activity_types v, char *s) {
+  enum discord_gateway_activity_types v1 = discord_gateway_activity_types_from_string(s);
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  return false;
 }

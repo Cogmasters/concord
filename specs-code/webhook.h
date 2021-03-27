@@ -10,6 +10,7 @@ enum discord_webhook_types {
 };
 extern char* discord_webhook_types_to_string(enum discord_webhook_types);
 extern enum discord_webhook_types discord_webhook_types_from_string(char*);
+extern bool discord_webhook_types_has(enum discord_webhook_types, char*);
 
 /* Title: Webhook Structure */
 /* This is defined at specs/webhook.json:18:22 */

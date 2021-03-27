@@ -6,13 +6,18 @@ https://discord.com/developers/docs/resources/guild#membership-screening-object
 
 
 enum discord_guild_membership_screening_field_type discord_guild_membership_screening_field_type_from_string(char *s){
-  if(strcmp("TERMS", s) == 0) return DISCORD_GUILD_MEMBERSHIP_SCREENING_TERMS;
+  if(strcasecmp("TERMS", s) == 0) return DISCORD_GUILD_MEMBERSHIP_SCREENING_TERMS;
   abort();
 }
 char* discord_guild_membership_screening_field_type_to_string(enum discord_guild_membership_screening_field_type v){
   if (v == DISCORD_GUILD_MEMBERSHIP_SCREENING_TERMS) return "TERMS";
 
   abort();
+}
+bool discord_guild_membership_screening_field_type_has(enum discord_guild_membership_screening_field_type v, char *s) {
+  enum discord_guild_membership_screening_field_type v1 = discord_guild_membership_screening_field_type_from_string(s);
+  if (v == v1) return true;
+  return false;
 }
 
 void discord_guild_membership_screening_field_from_json(char *json, size_t len, struct discord_guild_membership_screening_field *p)

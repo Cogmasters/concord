@@ -40,3 +40,4 @@ enum discord_permissions_bitwise_flags {
 };
 extern char* discord_permissions_bitwise_flags_to_string(enum discord_permissions_bitwise_flags);
 extern enum discord_permissions_bitwise_flags discord_permissions_bitwise_flags_from_string(char*);
+extern bool discord_permissions_bitwise_flags_has(enum discord_permissions_bitwise_flags, char*);

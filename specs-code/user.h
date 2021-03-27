@@ -21,6 +21,7 @@ enum discord_user_flags {
 };
 extern char* discord_user_flags_to_string(enum discord_user_flags);
 extern enum discord_user_flags discord_user_flags_from_string(char*);
+extern bool discord_user_flags_has(enum discord_user_flags, char*);
 
 
 enum discord_user_premium_types {
@@ -29,6 +30,7 @@ enum discord_user_premium_types {
 };
 extern char* discord_user_premium_types_to_string(enum discord_user_premium_types);
 extern enum discord_user_premium_types discord_user_premium_types_from_string(char*);
+extern bool discord_user_premium_types_has(enum discord_user_premium_types, char*);
 
 /* Title: User Structure */
 /* This is defined at specs/user.json:42:18 */
@@ -138,6 +140,7 @@ enum discord_user_connection_visibility_types {
 };
 extern char* discord_user_connection_visibility_types_to_string(enum discord_user_connection_visibility_types);
 extern enum discord_user_connection_visibility_types discord_user_connection_visibility_types_from_string(char*);
+extern bool discord_user_connection_visibility_types_has(enum discord_user_connection_visibility_types, char*);
 
 /* Title: Connection Structure */
 /* https://discord.com/developers/docs/resources/user#connection-object-connection-structure */

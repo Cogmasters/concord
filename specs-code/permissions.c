@@ -6,38 +6,38 @@ https://discord.com/developers/docs/topics/permissions
 
 
 enum discord_permissions_bitwise_flags discord_permissions_bitwise_flags_from_string(char *s){
-  if(strcmp("ZERO", s) == 0) return DISCORD_PERMISSIONS_ZERO;
-  if(strcmp("CREATE_INSTANT_INVITE", s) == 0) return DISCORD_PERMISSIONS_CREATE_INSTANT_INVITE;
-  if(strcmp("KICK_MEMBERS", s) == 0) return DISCORD_PERMISSIONS_KICK_MEMBERS;
-  if(strcmp("BAN_MEMBERS", s) == 0) return DISCORD_PERMISSIONS_BAN_MEMBERS;
-  if(strcmp("ADMINISTRATOR", s) == 0) return DISCORD_PERMISSIONS_ADMINISTRATOR;
-  if(strcmp("MANAGE_CHANNELS", s) == 0) return DISCORD_PERMISSIONS_MANAGE_CHANNELS;
-  if(strcmp("MANAGE_GUILD", s) == 0) return DISCORD_PERMISSIONS_MANAGE_GUILD;
-  if(strcmp("ADD_REACTIONS", s) == 0) return DISCORD_PERMISSIONS_ADD_REACTIONS;
-  if(strcmp("VIEW_AUDIT_LOG", s) == 0) return DISCORD_PERMISSIONS_VIEW_AUDIT_LOG;
-  if(strcmp("PRIORITY_SPEAKER", s) == 0) return DISCORD_PERMISSIONS_PRIORITY_SPEAKER;
-  if(strcmp("STREAM", s) == 0) return DISCORD_PERMISSIONS_STREAM;
-  if(strcmp("VIEW_CHANNEL", s) == 0) return DISCORD_PERMISSIONS_VIEW_CHANNEL;
-  if(strcmp("SEND_MESSAGES", s) == 0) return DISCORD_PERMISSIONS_SEND_MESSAGES;
-  if(strcmp("SEND_TTS_MESSAGES", s) == 0) return DISCORD_PERMISSIONS_SEND_TTS_MESSAGES;
-  if(strcmp("MANAGE_MESSAGES", s) == 0) return DISCORD_PERMISSIONS_MANAGE_MESSAGES;
-  if(strcmp("EMBED_LINKS", s) == 0) return DISCORD_PERMISSIONS_EMBED_LINKS;
-  if(strcmp("ATTACH_FILES", s) == 0) return DISCORD_PERMISSIONS_ATTACH_FILES;
-  if(strcmp("READ_MESSAGE_HISTORY", s) == 0) return DISCORD_PERMISSIONS_READ_MESSAGE_HISTORY;
-  if(strcmp("MENTION_EVERYONE", s) == 0) return DISCORD_PERMISSIONS_MENTION_EVERYONE;
-  if(strcmp("USE_EXTERNAL_EMOJIS", s) == 0) return DISCORD_PERMISSIONS_USE_EXTERNAL_EMOJIS;
-  if(strcmp("VIEW_GUILD_INSIGHTS", s) == 0) return DISCORD_PERMISSIONS_VIEW_GUILD_INSIGHTS;
-  if(strcmp("CONNECT", s) == 0) return DISCORD_PERMISSIONS_CONNECT;
-  if(strcmp("SPEAK", s) == 0) return DISCORD_PERMISSIONS_SPEAK;
-  if(strcmp("MUTE_MEMBERS", s) == 0) return DISCORD_PERMISSIONS_MUTE_MEMBERS;
-  if(strcmp("DEAFEN_MEMBERS", s) == 0) return DISCORD_PERMISSIONS_DEAFEN_MEMBERS;
-  if(strcmp("MOVE_MEMBERS", s) == 0) return DISCORD_PERMISSIONS_MOVE_MEMBERS;
-  if(strcmp("USE_VAD", s) == 0) return DISCORD_PERMISSIONS_USE_VAD;
-  if(strcmp("CHANGE_NICKNAME", s) == 0) return DISCORD_PERMISSIONS_CHANGE_NICKNAME;
-  if(strcmp("MANAGE_NICKNAMES", s) == 0) return DISCORD_PERMISSIONS_MANAGE_NICKNAMES;
-  if(strcmp("MANAGE_ROLES", s) == 0) return DISCORD_PERMISSIONS_MANAGE_ROLES;
-  if(strcmp("MANAGE_WEBHOOKS", s) == 0) return DISCORD_PERMISSIONS_MANAGE_WEBHOOKS;
-  if(strcmp("MANAGE_EMOJIS", s) == 0) return DISCORD_PERMISSIONS_MANAGE_EMOJIS;
+  if(strcasecmp("ZERO", s) == 0) return DISCORD_PERMISSIONS_ZERO;
+  if(strcasecmp("CREATE_INSTANT_INVITE", s) == 0) return DISCORD_PERMISSIONS_CREATE_INSTANT_INVITE;
+  if(strcasecmp("KICK_MEMBERS", s) == 0) return DISCORD_PERMISSIONS_KICK_MEMBERS;
+  if(strcasecmp("BAN_MEMBERS", s) == 0) return DISCORD_PERMISSIONS_BAN_MEMBERS;
+  if(strcasecmp("ADMINISTRATOR", s) == 0) return DISCORD_PERMISSIONS_ADMINISTRATOR;
+  if(strcasecmp("MANAGE_CHANNELS", s) == 0) return DISCORD_PERMISSIONS_MANAGE_CHANNELS;
+  if(strcasecmp("MANAGE_GUILD", s) == 0) return DISCORD_PERMISSIONS_MANAGE_GUILD;
+  if(strcasecmp("ADD_REACTIONS", s) == 0) return DISCORD_PERMISSIONS_ADD_REACTIONS;
+  if(strcasecmp("VIEW_AUDIT_LOG", s) == 0) return DISCORD_PERMISSIONS_VIEW_AUDIT_LOG;
+  if(strcasecmp("PRIORITY_SPEAKER", s) == 0) return DISCORD_PERMISSIONS_PRIORITY_SPEAKER;
+  if(strcasecmp("STREAM", s) == 0) return DISCORD_PERMISSIONS_STREAM;
+  if(strcasecmp("VIEW_CHANNEL", s) == 0) return DISCORD_PERMISSIONS_VIEW_CHANNEL;
+  if(strcasecmp("SEND_MESSAGES", s) == 0) return DISCORD_PERMISSIONS_SEND_MESSAGES;
+  if(strcasecmp("SEND_TTS_MESSAGES", s) == 0) return DISCORD_PERMISSIONS_SEND_TTS_MESSAGES;
+  if(strcasecmp("MANAGE_MESSAGES", s) == 0) return DISCORD_PERMISSIONS_MANAGE_MESSAGES;
+  if(strcasecmp("EMBED_LINKS", s) == 0) return DISCORD_PERMISSIONS_EMBED_LINKS;
+  if(strcasecmp("ATTACH_FILES", s) == 0) return DISCORD_PERMISSIONS_ATTACH_FILES;
+  if(strcasecmp("READ_MESSAGE_HISTORY", s) == 0) return DISCORD_PERMISSIONS_READ_MESSAGE_HISTORY;
+  if(strcasecmp("MENTION_EVERYONE", s) == 0) return DISCORD_PERMISSIONS_MENTION_EVERYONE;
+  if(strcasecmp("USE_EXTERNAL_EMOJIS", s) == 0) return DISCORD_PERMISSIONS_USE_EXTERNAL_EMOJIS;
+  if(strcasecmp("VIEW_GUILD_INSIGHTS", s) == 0) return DISCORD_PERMISSIONS_VIEW_GUILD_INSIGHTS;
+  if(strcasecmp("CONNECT", s) == 0) return DISCORD_PERMISSIONS_CONNECT;
+  if(strcasecmp("SPEAK", s) == 0) return DISCORD_PERMISSIONS_SPEAK;
+  if(strcasecmp("MUTE_MEMBERS", s) == 0) return DISCORD_PERMISSIONS_MUTE_MEMBERS;
+  if(strcasecmp("DEAFEN_MEMBERS", s) == 0) return DISCORD_PERMISSIONS_DEAFEN_MEMBERS;
+  if(strcasecmp("MOVE_MEMBERS", s) == 0) return DISCORD_PERMISSIONS_MOVE_MEMBERS;
+  if(strcasecmp("USE_VAD", s) == 0) return DISCORD_PERMISSIONS_USE_VAD;
+  if(strcasecmp("CHANGE_NICKNAME", s) == 0) return DISCORD_PERMISSIONS_CHANGE_NICKNAME;
+  if(strcasecmp("MANAGE_NICKNAMES", s) == 0) return DISCORD_PERMISSIONS_MANAGE_NICKNAMES;
+  if(strcasecmp("MANAGE_ROLES", s) == 0) return DISCORD_PERMISSIONS_MANAGE_ROLES;
+  if(strcasecmp("MANAGE_WEBHOOKS", s) == 0) return DISCORD_PERMISSIONS_MANAGE_WEBHOOKS;
+  if(strcasecmp("MANAGE_EMOJIS", s) == 0) return DISCORD_PERMISSIONS_MANAGE_EMOJIS;
   abort();
 }
 char* discord_permissions_bitwise_flags_to_string(enum discord_permissions_bitwise_flags v){
@@ -75,4 +75,40 @@ char* discord_permissions_bitwise_flags_to_string(enum discord_permissions_bitwi
   if (v == DISCORD_PERMISSIONS_MANAGE_EMOJIS) return "MANAGE_EMOJIS";
 
   abort();
+}
+bool discord_permissions_bitwise_flags_has(enum discord_permissions_bitwise_flags v, char *s) {
+  enum discord_permissions_bitwise_flags v1 = discord_permissions_bitwise_flags_from_string(s);
+  if (v & v1) return true;
+  if (v & v1) return true;
+  if (v & v1) return true;
+  if (v & v1) return true;
+  if (v & v1) return true;
+  if (v & v1) return true;
+  if (v & v1) return true;
+  if (v & v1) return true;
+  if (v & v1) return true;
+  if (v & v1) return true;
+  if (v & v1) return true;
+  if (v & v1) return true;
+  if (v & v1) return true;
+  if (v & v1) return true;
+  if (v & v1) return true;
+  if (v & v1) return true;
+  if (v & v1) return true;
+  if (v & v1) return true;
+  if (v & v1) return true;
+  if (v & v1) return true;
+  if (v & v1) return true;
+  if (v & v1) return true;
+  if (v & v1) return true;
+  if (v & v1) return true;
+  if (v & v1) return true;
+  if (v & v1) return true;
+  if (v & v1) return true;
+  if (v & v1) return true;
+  if (v & v1) return true;
+  if (v & v1) return true;
+  if (v & v1) return true;
+  if (v & v1) return true;
+  return false;
 }

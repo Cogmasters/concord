@@ -5,6 +5,7 @@
   [
     {
       "title":"Bitwise Permission Flags",
+      "bitwise":true,
       "enum":"bitwise_flags",
       "items":
       [
