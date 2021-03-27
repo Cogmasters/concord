@@ -228,8 +228,6 @@ int main (int argc, char ** argv)
   SET(field_init, "");
   test_one();
 
-
-  global_option.lang_C = true;
   SET(spec, "{(name):|f1|, (type):{ (base):|a::dati|, (dec):|*| }, (lazy_init):true }");
   SET(field_struct, "a_dati *f1;\n");
   SET(field_cleanup, "if (d->f1)\n    a_dati_free(d->f1);\n");

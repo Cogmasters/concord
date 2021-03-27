@@ -94,7 +94,6 @@ int main (int argc, char ** argv)
   definition_from_json(s, len, &d);
   print_definition(stderr, &d);
   struct emit_option eo = {
-    .lang_C = false,
     .type = FILE_SINGLE_FILE
   };
   gen_definition(stderr, &eo, &d);
@@ -113,8 +112,8 @@ int main (int argc, char ** argv)
     .ntl_recipient_p = (ntl_t *)&namespaces
   };
   orka_str_to_ntl(ns, strlen(ns), &d0_alias);
-  fprintf(stderr, "%d\n", ntl_length(namespaces));
-  fprintf(stderr, "%d\n", ntl_length(*(namespaces[0])));
+  fprintf(stderr, "%d\n", ntl_length((ntl_t)namespaces));
+  fprintf(stderr, "%d\n", ntl_length((ntl_t)*(namespaces[0])));
 
   return 0;
 }
