@@ -5,6 +5,7 @@
 
 #include "libdiscord.h"
 #include "discord-common.h"
+
 #include "orka-utils.h"
 
 #define BASE_API_URL "https://discord.com/api"
@@ -172,9 +173,7 @@ discord_adapter_run(
   struct discord_adapter *adapter, 
   struct resp_handle *resp_handle,
   struct sized_buffer *req_body,
-  enum http_method http_method,
-  char endpoint[],
-  ...)
+  enum http_method http_method, char endpoint[], ...)
 {
   va_list args;
   va_start(args, endpoint);
