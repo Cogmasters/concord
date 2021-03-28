@@ -1,5 +1,5 @@
-#ifndef LIBDISCORD_H_
-#define LIBDISCORD_H_
+#ifndef LIBDISCORD_H
+#define LIBDISCORD_H
 
 #include <stdbool.h>
 #include "json-actor-boxed.h"
@@ -167,8 +167,8 @@ struct discord_list_guild_members_params {
   u64_snowflake_t after; // the highest user id in the previous page
 };
 
-/* * * * * * * * * * * * * * * * * * */
-/* * * * FUNCTION DECLARATIONS * * * */
+ /* * * * * * * * * * * * * * * */
+/* * * * CLIENT FUNCTIONS * * * */
 
 void discord_global_init();
 void discord_global_cleanup();
@@ -205,25 +205,10 @@ void discord_set_presence(struct discord *client, struct discord_gateway_activit
 enum ws_status discord_gateway_status(struct discord *client);
 
 
-// EMBED MISC FUNCTIONS
-void discord_embed_set_thumbnail(struct discord_embed *embed, char url[], char proxy_url[], int height, int width);
-void discord_embed_set_image(struct discord_embed *embed, char url[], char proxy_url[], int height, int width);
-void discord_embed_set_video(struct discord_embed *embed, char url[], char proxy_url[], int height, int width);
-void discord_embed_set_footer(struct discord_embed *embed, char text[], char icon_url[], char proxy_icon_url[]);
-void discord_embed_set_provider(struct discord_embed *embed, char name[], char url[]);
-void discord_embed_set_author(struct discord_embed *embed, char name[], char url[], char icon_url[], char proxy_icon_url[]);
-void discord_embed_add_field(struct discord_embed *embed, char name[], char value[], bool Inline);
+ /* * * * * * * * * * * * * * * * */
+/* * * * ENDPOINT FUNCTIONS * * * */
 
-// CHANNEL OVERWRITE MISC FUNCTIONS
-void discord_overwrite_append(
-  NTL_T(struct discord_channel_overwrite) *permission_overwrites, 
-  u64_snowflake_t id, 
-  int type, 
-  enum discord_permissions_bitwise_flags allow, 
-  enum discord_permissions_bitwise_flags deny);
-
-
-// CHANNEL PUBLIC FUNCTIONS
+// CHANNEL ENDPOINTS
 void discord_get_channel(struct discord *client, const u64_snowflake_t channel_id, struct discord_channel *p_channel);
 void discord_delete_channel(struct discord *client, const u64_snowflake_t channel_id, struct discord_channel *p_channel);
 void discord_add_pinned_channel_message(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id);
@@ -235,10 +220,10 @@ void discord_edit_message(struct discord *client, const u64_snowflake_t channel_
 void discord_create_reaction(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id, const u64_snowflake_t emoji_id, const char emoji_name[]);
 void discord_trigger_typing_indicator(struct discord *client, const u64_snowflake_t channel_id);
 
-// EMOJI PUBLIC FUNCTIONS
+// EMOJI ENDPOINTS
 void discord_list_guild_emojis(struct discord *client, const u64_snowflake_t guild_id, NTL_T(struct discord_emoji) *p_emojis);
 
-// GUILD PUBLIC FUNCTIONS
+// GUILD ENDPOINTS
 void discord_get_guild(struct discord *client, const u64_snowflake_t guild_id, struct discord_guild *p_guild);
 void discord_get_channels(struct discord *client, const u64_snowflake_t guild_id, NTL_T(struct discord_channel) *p_channels);
 void discord_create_guild_channel(struct discord *client, const u64_snowflake_t guild_id, struct discord_create_guild_channel_params *params, struct discord_channel *p_channel);
@@ -254,17 +239,44 @@ void discord_get_guild_roles(struct discord *client, const u64_snowflake_t guild
 void discord_create_guild_role(struct discord *client, const u64_snowflake_t guild_id, struct discord_create_guild_role_params *params, struct discord_guild_role *p_role);
 void discord_delete_guild_role(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t role_id);
 
-// USER PUBLIC FUNCTIONS
+// USER ENDPOINTS
 void discord_get_user(struct discord *client, const u64_snowflake_t user_id, struct discord_user *p_user);
 void discord_get_current_user(struct discord *client, struct discord_user *p_user);
 void sb_discord_get_current_user(struct discord *client, struct sized_buffer *p_sb_user);
 void discord_get_current_user_guilds(struct discord *client, NTL_T(struct discord_guild) *p_guilds);
 void discord_leave_guild(struct discord *client, const u64_snowflake_t guild_id);
 
-// GATEWAY PUBLIC FUNCTIONS
+// GATEWAY ENDPOINTS
 void discord_get_gateway(struct discord *client, struct discord_session *p_session);
 void discord_get_gateway_bot(struct discord *client, struct discord_session *p_session);
 
-#include "user-defined.h"
+
+/* * * * * * * * * * * * * * * * * * * */
+/* * * * MISCELLANEOUS FUNCTIONS * * * */
+
+// EMBED MISC
+void discord_embed_set_thumbnail(struct discord_embed *embed, char url[], char proxy_url[], int height, int width);
+void discord_embed_set_image(struct discord_embed *embed, char url[], char proxy_url[], int height, int width);
+void discord_embed_set_video(struct discord_embed *embed, char url[], char proxy_url[], int height, int width);
+void discord_embed_set_footer(struct discord_embed *embed, char text[], char icon_url[], char proxy_icon_url[]);
+void discord_embed_set_provider(struct discord_embed *embed, char name[], char url[]);
+void discord_embed_set_author(struct discord_embed *embed, char name[], char url[], char icon_url[], char proxy_icon_url[]);
+void discord_embed_add_field(struct discord_embed *embed, char name[], char value[], bool Inline);
+
+// CHANNEL MISC
+void discord_overwrite_append(
+  NTL_T(struct discord_channel_overwrite) *permission_overwrites, 
+  u64_snowflake_t id, 
+  int type, 
+  enum discord_permissions_bitwise_flags allow, 
+  enum discord_permissions_bitwise_flags deny);
+
+// MESSAGE MISC
+void discord_delete_messages_by_author_id(
+  struct discord *client,
+  u64_snowflake_t channel_id,
+  u64_snowflake_t author_id);
+
 #include "./specs-code/all_fun.h"
-#endif
+
+#endif // LIBDISCORD_H
