@@ -62,7 +62,7 @@ typedef void (sb_message_cb)(
     struct discord *client, const struct discord_user *me,
     struct sized_buffer sb_me,
     const struct discord_message *message,
-    struct sized_buffer sb_message);
+    struct sized_buffer msg_payload);
 typedef void (message_delete_cb)(
     struct discord *client, const struct discord_user *me, 
     const u64_snowflake_t id, 
@@ -70,7 +70,6 @@ typedef void (message_delete_cb)(
     const u64_snowflake_t guild_id);
 typedef void (message_delete_bulk_cb)(
     struct discord *client, const struct discord_user *me, 
-    const size_t nids, 
     const NTL_T(ja_u64) ids, 
     const u64_snowflake_t channel_id, 
     const u64_snowflake_t guild_id);
