@@ -798,23 +798,17 @@ on_text_event_cb(void *p_gw, const char *text, size_t len)
 
   D_PRINT("ON_DISPATCH:\t%s\n", text);
 
-  struct sized_buffer tmp_event_data;
   int tmp_seq_number; //check value first, then assign
   json_extract((char*)text, len,
               "(t):s (s):d (op):d (d):T",
                gw->payload.event_name,
                &tmp_seq_number,
                &gw->payload.opcode,
-               &tmp_event_data);
+               &gw->payload.event_data);
 
   if (tmp_seq_number) {
     gw->payload.seq_number = tmp_seq_number;
   }
-
-  gw->payload.event_data.start = strndup(
-                                    tmp_event_data.start,
-                                    tmp_event_data.size);
-  gw->payload.event_data.size = tmp_event_data.size;
 
   D_NOTOP_PRINT("OP:\t\t%s\n\t"
                 "EVENT NAME:\t%s\n\t"
@@ -830,6 +824,10 @@ on_text_event_cb(void *p_gw, const char *text, size_t len)
 
   struct discord_gateway_payload *payloadcpy = malloc(sizeof(struct discord_gateway_payload));
   memcpy(payloadcpy, &gw->payload, sizeof(struct discord_gateway_payload));
+  payloadcpy->event_data.start = strndup(
+                                    gw->payload.event_data.start,
+                                    gw->payload.event_data.size);
+
   ws_set_curr_iter_data(gw->ws, payloadcpy, &payload_cleanup_cb);
 
   return gw->payload.opcode;
