@@ -1,0 +1,171 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <assert.h>
+
+#include "libdiscord.h"
+
+
+
+void on_ready(struct discord *client, const struct discord_user *bot) {
+  fprintf(stderr, "\n\nBan-Bot succesfully connected to Discord as %s#%s!\n\n",
+      bot->username, bot->discriminator);
+}
+
+void on_guild_ban_add(
+    struct discord *client,
+    const struct discord_user *bot,
+    const u64_snowflake_t guild_id,
+    const struct discord_user *user)
+{
+  NTL_T(struct discord_channel) channels = NULL;
+  discord_get_guild_channels(client, guild_id, &channels);
+  if (NULL == channels) return;
+
+  struct discord_channel *general = NULL; // get general chat
+  for (size_t i=0; channels[i]; ++i) {
+    if (DISCORD_CHANNEL_GUILD_TEXT == channels[i]->type) {
+      general = channels[i];
+      break; /* EARLY BREAK */
+    }
+  }
+
+  if (NULL == general) return;
+
+  char text[128];
+  snprintf(text, sizeof(text), "User `%s` has been banned.", user->username);
+  struct discord_create_message_params params = { .content = text };
+  discord_create_message(client, general->id, &params, NULL);
+}
+
+void on_guild_ban_remove(
+    struct discord *client,
+    const struct discord_user *bot,
+    const u64_snowflake_t guild_id,
+    const struct discord_user *user)
+{
+  NTL_T(struct discord_channel) channels = NULL;
+  discord_get_guild_channels(client, guild_id, &channels);
+  if (NULL == channels) return;
+
+  struct discord_channel *general = NULL; // get general chat
+  for (size_t i=0; channels[i]; ++i) {
+    if (DISCORD_CHANNEL_GUILD_TEXT == channels[i]->type) {
+      general = channels[i];
+      break; /* EARLY BREAK */
+    }
+  }
+
+  char text[128];
+  snprintf(text, sizeof(text), "User `%s` has been unbanned.", user->username);
+  struct discord_create_message_params params = { .content = text };
+  discord_create_message(client, general->id, &params, NULL);
+}
+
+void on_ban(
+    struct discord *client,
+    const struct discord_user *bot,
+    const struct discord_message *msg)
+{
+  // get member list
+  NTL_T(struct discord_guild_member) members = NULL;
+  struct discord_list_guild_members_params params = {
+    .limit = 1000,
+    .after = 0
+  };
+  discord_list_guild_members(client, msg->guild_id, &params, &members);
+  if (NULL == members) return;
+
+  // get username and discriminator of the to be banned user
+  char username[128] = {0};
+  char discriminator[5] = {0};
+  sscanf(msg->content, "%[^#]#%s", username, discriminator);
+  if (!*username || !*discriminator) return;
+
+  // try to find match for to be banned user
+  struct discord_user *target = NULL;
+  for (size_t i=0; members[i]; ++i) {
+    if (0 == strcmp(members[i]->user->username, username)
+        && 
+        0 == strcmp(members[i]->user->discriminator, discriminator))
+    {
+      target = members[i]->user;
+      break; /* EARLY BREAK */
+    }
+  }
+  if (NULL == target) return; // member is not in guild
+
+  char reason[128];
+  snprintf(reason, sizeof(reason), "%s said so", msg->author->username);
+  discord_create_guild_ban(client, msg->guild_id, target->id, 1, reason);
+
+  discord_guild_member_list_free(members);
+}
+
+void on_unban(
+    struct discord *client,
+    const struct discord_user *bot,
+    const struct discord_message *msg)
+{
+  // get banned list
+  NTL_T(struct discord_guild_ban) bans = NULL;
+  discord_get_guild_bans(client, msg->guild_id, &bans);
+  if (NULL == bans) return;
+
+  // get username and discriminator of the to be banned user
+  char username[128] = {0};
+  char discriminator[5] = {0};
+  sscanf(msg->content, "%[^#]#%s", username, discriminator);
+  if (!*username || !*discriminator) return;
+
+  // try to find match for to be banned user
+  struct discord_user *target = NULL;
+  for (size_t i=0; bans[i]; ++i) {
+    if (0 == strcmp(bans[i]->user->username, username)
+        && 
+        0 == strcmp(bans[i]->user->discriminator, discriminator))
+    {
+      target = bans[i]->user;
+      break; /* EARLY BREAK */
+    }
+  }
+  if (NULL == target) return; // member wasn't banned
+
+  char reason[128];
+  snprintf(reason, sizeof(reason), "%s said so", msg->author->username);
+  discord_remove_guild_ban(client, msg->guild_id, target->id, reason);
+
+  discord_guild_ban_list_free(bans);
+}
+
+int main(int argc, char *argv[])
+{
+  const char *config_file;
+  if (argc > 1)
+    config_file = argv[1];
+  else
+    config_file = "bot.config";
+
+  discord_global_init();
+
+  struct discord *client = discord_config_init(config_file);
+  assert(NULL != client);
+
+  discord_on_guild_ban_add(client, &on_guild_ban_add);
+  discord_on_guild_ban_remove(client, &on_guild_ban_remove);
+  discord_on_command(client, "!ban", &on_ban);
+  discord_on_command(client, "!unban", &on_unban);
+
+  printf("\n\nThis bot demonstrates how easy it is to ban/unban people\n"
+         "1. Type '!ban user#1234' to ban user\n"
+         "2. Type '!unban user#1234' to unban user\n"
+         "\nTYPE ANY KEY TO START BOT\n");
+  fgetc(stdin); // wait for input
+
+
+  discord_run(client);
+
+  discord_cleanup(client);
+
+  discord_global_cleanup();
+}
