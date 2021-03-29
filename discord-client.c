@@ -149,6 +149,30 @@ discord_on_guild_member_remove(struct discord *client, guild_member_remove_cb *c
   discord_add_intents(client, DISCORD_GATEWAY_GUILD_MEMBERS);
 }
 
+void 
+discord_on_channel_create(struct discord *client, channel_cb *callback) {
+  client->gw.cbs.on_channel_create = callback;
+  discord_add_intents(client, DISCORD_GATEWAY_GUILDS);
+}
+
+void 
+discord_on_channel_update(struct discord *client, channel_cb *callback) {
+  client->gw.cbs.on_channel_update = callback;
+  discord_add_intents(client, DISCORD_GATEWAY_GUILDS);
+}
+
+void 
+discord_on_channel_delete(struct discord *client, channel_cb *callback) {
+  client->gw.cbs.on_channel_delete = callback;
+  discord_add_intents(client, DISCORD_GATEWAY_GUILDS);
+}
+
+void 
+discord_on_channel_pins_update(struct discord *client, channel_pins_update_cb *callback) {
+  client->gw.cbs.on_channel_pins_update = callback;
+  discord_add_intents(client, DISCORD_GATEWAY_GUILDS);
+}
+
 void
 discord_on_message_create(struct discord *client, message_cb *callback) {
   client->gw.cbs.on_message_create = callback;

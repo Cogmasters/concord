@@ -337,6 +337,28 @@ on_guild_member_add(struct discord_gateway *gw, struct discord_gateway_payload *
 }
 
 static void
+on_guild_member_update(struct discord_gateway *gw, struct discord_gateway_payload *payload)
+{
+  if (!gw->cbs.on_guild_member_update) return;
+
+  struct discord_guild_member *member = discord_guild_member_alloc();
+  discord_guild_member_from_json(payload->event_data.start,
+      payload->event_data.size, member);
+
+  u64_snowflake_t guild_id = 0;
+  json_extract(payload->event_data.start, payload->event_data.size,
+    "(guild_id):s_as_u64", &guild_id);
+
+  (*gw->cbs.on_guild_member_update)(
+      gw->p_client, 
+      gw->bot, 
+      guild_id, 
+      member);
+
+  discord_guild_member_free(member);
+}
+
+static void
 on_guild_member_remove(struct discord_gateway *gw, struct discord_gateway_payload *payload)
 {
   if (!gw->cbs.on_guild_member_remove) return;
@@ -359,25 +381,76 @@ on_guild_member_remove(struct discord_gateway *gw, struct discord_gateway_payloa
 }
 
 static void
-on_guild_member_update(struct discord_gateway *gw, struct discord_gateway_payload *payload)
+on_channel_create(struct discord_gateway *gw, struct discord_gateway_payload *payload)
 {
-  if (!gw->cbs.on_guild_member_update) return;
+  if (!gw->cbs.on_channel_create) return;
 
-  struct discord_guild_member *member = discord_guild_member_alloc();
-  discord_guild_member_from_json(payload->event_data.start,
-      payload->event_data.size, member);
+  struct discord_channel *channel = discord_channel_alloc();
+  discord_channel_from_json(payload->event_data.start, 
+      payload->event_data.size, channel);
 
-  u64_snowflake_t guild_id = 0;
+  (*gw->cbs.on_channel_create)(
+        gw->p_client, 
+        gw->bot, 
+        channel);
+
+  discord_channel_free(channel);
+}
+
+static void
+on_channel_update(struct discord_gateway *gw, struct discord_gateway_payload *payload)
+{
+  if (!gw->cbs.on_channel_update) return;
+
+  struct discord_channel *channel = discord_channel_alloc();
+  discord_channel_from_json(payload->event_data.start, 
+      payload->event_data.size, channel);
+
+  (*gw->cbs.on_channel_update)(
+        gw->p_client, 
+        gw->bot, 
+        channel);
+
+  discord_channel_free(channel);
+}
+
+static void
+on_channel_delete(struct discord_gateway *gw, struct discord_gateway_payload *payload)
+{
+  if (!gw->cbs.on_channel_delete) return;
+
+  struct discord_channel *channel = discord_channel_alloc();
+  discord_channel_from_json(payload->event_data.start, 
+      payload->event_data.size, channel);
+
+  (*gw->cbs.on_channel_delete)(
+        gw->p_client, 
+        gw->bot, 
+        channel);
+
+  discord_channel_free(channel);
+}
+
+static void
+on_channel_pins_update(struct discord_gateway *gw, struct discord_gateway_payload *payload)
+{
+  if (!gw->cbs.on_channel_pins_update) return;
+
+  u64_snowflake_t guild_id=0, channel_id=0;
+  u64_unix_ms_t last_pin_timestamp=0;
   json_extract(payload->event_data.start, payload->event_data.size,
-    "(guild_id):s_as_u64", &guild_id);
+    "(guild_id):s_as_u64"
+    "(channel_id):s_as_u64"
+    "(last_pin_timestamp):F",
+    &guild_id, &channel_id,
+    &orka_iso8601_to_unix_ms, &last_pin_timestamp);
 
-  (*gw->cbs.on_guild_member_update)(
-      gw->p_client, 
-      gw->bot, 
-      guild_id, 
-      member);
-
-  discord_guild_member_free(member);
+  (*gw->cbs.on_channel_pins_update)(
+        gw->p_client, 
+        gw->bot, 
+        guild_id,
+        channel_id,
+        last_pin_timestamp);
 }
 
 static void
@@ -638,30 +711,13 @@ on_dispatch_cb(void *p_gw, void *curr_iter_data)
 
   switch(get_dispatch_event(payload->event_name)) {
   case DISCORD_GATEWAY_EVENTS_GUILD_CREATE:
+      //@todo implement
+      break;
   case DISCORD_GATEWAY_EVENTS_GUILD_UPDATE:
       //@todo implement
       break;
   case DISCORD_GATEWAY_EVENTS_GUILD_DELETE:
       //@todo implement
-      break;
-  case DISCORD_GATEWAY_EVENTS_GUILD_BAN_ADD:
-  case DISCORD_GATEWAY_EVENTS_GUILD_BAN_REMOVE:
-      //@todo implement
-      break;
-  case DISCORD_GATEWAY_EVENTS_GUILD_EMOJIS_UPDATE:
-      //@todo implement
-      break;
-  case DISCORD_GATEWAY_EVENTS_GUILD_INTEGRATIONS_UPDATE:
-      //@todo implement
-      break;
-  case DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_ADD:
-      on_guild_member_add(gw, payload);
-      break;
-  case DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_REMOVE:
-      on_guild_member_remove(gw, payload);
-      break;
-  case DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_UPDATE: 
-      on_guild_member_update(gw, payload);
       break;
   case DISCORD_GATEWAY_EVENTS_GUILD_ROLE_CREATE:
       on_guild_role_create(gw, payload);
@@ -671,6 +727,39 @@ on_dispatch_cb(void *p_gw, void *curr_iter_data)
       break;
   case DISCORD_GATEWAY_EVENTS_GUILD_ROLE_DELETE:
       on_guild_role_delete(gw, payload);
+      break;
+  case DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_ADD:
+      on_guild_member_add(gw, payload);
+      break;
+  case DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_UPDATE: 
+      on_guild_member_update(gw, payload);
+      break;
+  case DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_REMOVE:
+      on_guild_member_remove(gw, payload);
+      break;
+  case DISCORD_GATEWAY_EVENTS_GUILD_BAN_ADD:
+      //@todo implement
+      break;
+  case DISCORD_GATEWAY_EVENTS_GUILD_BAN_REMOVE:
+      //@todo implement
+      break;
+  case DISCORD_GATEWAY_EVENTS_GUILD_EMOJIS_UPDATE:
+      //@todo implement
+      break;
+  case DISCORD_GATEWAY_EVENTS_GUILD_INTEGRATIONS_UPDATE:
+      //@todo implement
+      break;
+  case DISCORD_GATEWAY_EVENTS_CHANNEL_CREATE:
+      on_channel_create(gw, payload);
+      break;
+  case DISCORD_GATEWAY_EVENTS_CHANNEL_UPDATE:
+      on_channel_update(gw, payload);
+      break;
+  case DISCORD_GATEWAY_EVENTS_CHANNEL_DELETE:
+      on_channel_delete(gw, payload);
+      break;
+  case DISCORD_GATEWAY_EVENTS_CHANNEL_PINS_UPDATE:
+      on_channel_pins_update(gw, payload);
       break;
   case DISCORD_GATEWAY_EVENTS_INVITE_CREATE:
       //@todo implement
@@ -702,11 +791,11 @@ on_dispatch_cb(void *p_gw, void *curr_iter_data)
   case DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE_EMOJI:
       on_message_reaction_remove_emoji(gw, payload);
       break;
-  case DISCORD_GATEWAY_EVENTS_READY:
-      on_ready(gw, payload);
+  case DISCORD_GATEWAY_EVENTS_WEBHOOKS_UPDATE:
+      // @todo implement
       break;
-  case DISCORD_GATEWAY_EVENTS_RESUMED:
-      on_resumed(gw, payload);
+  case DISCORD_GATEWAY_EVENTS_VOICE_STATE_UPDATE:
+      // @todo implement
       break;
   case DISCORD_GATEWAY_EVENTS_TYPING_START:
       // @todo implement
@@ -714,11 +803,11 @@ on_dispatch_cb(void *p_gw, void *curr_iter_data)
   case DISCORD_GATEWAY_EVENTS_PRESENCE_UPDATE:
       // @todo implement
       break;
-  case DISCORD_GATEWAY_EVENTS_VOICE_STATE_UPDATE:
-      // @todo implement
+  case DISCORD_GATEWAY_EVENTS_READY:
+      on_ready(gw, payload);
       break;
-  case DISCORD_GATEWAY_EVENTS_WEBHOOKS_UPDATE:
-      // @todo implement
+  case DISCORD_GATEWAY_EVENTS_RESUMED:
+      on_resumed(gw, payload);
       break;
   default:
       PRINT("Expected not yet implemented GATEWAY DISPATCH event: %s", payload->event_name);

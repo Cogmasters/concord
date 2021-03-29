@@ -98,6 +98,16 @@ typedef void (message_delete_bulk_cb)(
     const u64_snowflake_t channel_id, 
     const u64_snowflake_t guild_id);
 
+/* CHANNEL EVENTS CALLBACKS */
+typedef void (channel_cb)(
+    struct discord *client, const struct discord_user *bot, 
+    const struct discord_channel *channel);
+typedef void (channel_pins_update_cb)(
+    struct discord *client, const struct discord_user *bot, 
+    const u64_snowflake_t guild_id,
+    const u64_snowflake_t channel_id,
+    const u64_unix_ms_t last_pin_timestamp);
+
 /* MESSAGE REACTION EVENTS CALLBACKS */
 typedef void (message_reaction_add_cb)(
     struct discord *client, const struct discord_user *bot, 
@@ -200,6 +210,10 @@ void discord_on_guild_role_delete(struct discord *client, guild_role_delete_cb *
 void discord_on_guild_member_add(struct discord *client, guild_member_cb *callback);
 void discord_on_guild_member_update(struct discord *client, guild_member_cb *callback);
 void discord_on_guild_member_remove(struct discord *client, guild_member_remove_cb *callback);
+void discord_on_channel_create(struct discord *client, channel_cb *callback);
+void discord_on_channel_update(struct discord *client, channel_cb *callback);
+void discord_on_channel_delete(struct discord *client, channel_cb *callback);
+void discord_on_channel_pins_update(struct discord *client, channel_pins_update_cb *callback);
 void discord_on_message_create(struct discord *client, message_cb *callback);
 void discord_on_sb_message_create(struct discord *client, sb_message_cb *callback);
 void discord_on_message_update(struct discord *client, message_cb *callback);

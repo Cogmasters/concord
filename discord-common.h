@@ -96,8 +96,12 @@ struct discord_gateway { /* GATEWAY STRUCTURE */
     guild_role_cb *on_guild_role_update;
     guild_role_delete_cb *on_guild_role_delete;
     guild_member_cb *on_guild_member_add;
-    guild_member_cb *on_guild_member_update;
     guild_member_remove_cb *on_guild_member_remove;
+    guild_member_cb *on_guild_member_update;
+    channel_cb *on_channel_create;
+    channel_cb *on_channel_update;
+    channel_cb *on_channel_delete;
+    channel_pins_update_cb *on_channel_pins_update;
     message_cb *on_message_create;
     sb_message_cb *sb_on_message_create; //@todo this is temporary
     message_cb *on_message_update;

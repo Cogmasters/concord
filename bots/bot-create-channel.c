@@ -12,6 +12,50 @@ void on_ready(struct discord *client, const struct discord_user *bot) {
       bot->username, bot->discriminator);
 }
 
+void on_channel_create(
+    struct discord *client,
+    const struct discord_user *bot,
+    const struct discord_channel *channel)
+{
+  struct discord_create_message_params params = { .content = "Hello world!" };
+  discord_create_message(client, channel->id, &params, NULL);
+}
+
+void on_channel_update(
+    struct discord *client,
+    const struct discord_user *bot,
+    const struct discord_channel *channel)
+{
+  struct discord_create_message_params params = { .content = "Succesfully updated channel!" };
+  discord_create_message(client, channel->id, &params, NULL);
+}
+
+void on_channel_delete(
+    struct discord *client,
+    const struct discord_user *bot,
+    const struct discord_channel *channel)
+{
+  NTL_T(struct discord_channel) channels = NULL;
+  discord_get_guild_channels(client, channel->guild_id, &channels);
+  if (NULL == channels) return;
+
+  struct discord_channel *general = NULL; // get general chat
+  for (size_t i=0; channels[i]; ++i) {
+    if (DISCORD_CHANNEL_GUILD_TEXT == channels[i]->type) {
+      general = channels[i];
+      break; /* EARLY BREAK */
+    }
+  }
+  if (NULL == general) return;
+
+  char text[150];
+  snprintf(text, sizeof(text), "Succesfully deleted `%s` channel", channel->name);
+  struct discord_create_message_params params = { .content = text };
+  discord_create_message(client, general->id, &params, NULL);
+
+  discord_channel_list_free(channels);
+}
+
 void on_create(
     struct discord *client,
     const struct discord_user *bot,
@@ -21,21 +65,10 @@ void on_create(
   if (msg->author->bot)
     return;
 
-  struct discord_channel *channel = discord_channel_alloc();
-
-  struct discord_create_guild_channel_params params1 = {
+  struct discord_create_guild_channel_params params = {
     .name = msg->content
   };
-  discord_create_guild_channel(client, msg->guild_id, &params1, channel);
-
-  if (channel->id) {
-    struct discord_create_message_params params2 = {
-      .content = "Hello world!"
-    };
-    discord_create_message(client, channel->id, &params2, NULL);
-  }
-
-  discord_channel_free(channel);
+  discord_create_guild_channel(client, msg->guild_id, &params, NULL);
 }
 
 void on_delete(
@@ -66,6 +99,9 @@ int main(int argc, char *argv[])
   discord_set_prefix(client, "!channel");
   discord_on_command(client, "Create", &on_create);
   discord_on_command(client, "DeleteHere", &on_delete);
+  discord_on_channel_create(client, &on_channel_create);
+  discord_on_channel_update(client, &on_channel_update);
+  discord_on_channel_delete(client, &on_channel_delete);
 
   printf("\n\nThis bot demonstrates how easy it is to create/delete channels\n"
          "1. Type '!channelCreate <channel_name>' anywhere to create a new channel\n"
