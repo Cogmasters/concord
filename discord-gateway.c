@@ -381,6 +381,50 @@ on_guild_member_remove(struct discord_gateway *gw, struct discord_gateway_payloa
 }
 
 static void
+on_guild_ban_add(struct discord_gateway *gw, struct discord_gateway_payload *payload)
+{
+  if (!gw->cbs.on_guild_ban_add) return;
+
+  u64_snowflake_t guild_id = 0;
+  struct discord_user *user = discord_user_alloc();
+  json_extract(payload->event_data.start, payload->event_data.size,
+    "(guild_id):s_as_u64"
+    "(user):F", 
+    &guild_id,
+    &discord_user_from_json, user);
+
+  (*gw->cbs.on_guild_ban_add)(
+        gw->p_client, 
+        gw->bot, 
+        guild_id, 
+        user);
+
+  discord_user_free(user);
+}
+
+static void
+on_guild_ban_remove(struct discord_gateway *gw, struct discord_gateway_payload *payload)
+{
+  if (!gw->cbs.on_guild_ban_remove) return;
+
+  u64_snowflake_t guild_id = 0;
+  struct discord_user *user = discord_user_alloc();
+  json_extract(payload->event_data.start, payload->event_data.size,
+    "(guild_id):s_as_u64"
+    "(user):F", 
+    &guild_id,
+    &discord_user_from_json, user);
+
+  (*gw->cbs.on_guild_ban_remove)(
+        gw->p_client, 
+        gw->bot, 
+        guild_id, 
+        user);
+
+  discord_user_free(user);
+}
+
+static void
 on_channel_create(struct discord_gateway *gw, struct discord_gateway_payload *payload)
 {
   if (!gw->cbs.on_channel_create) return;
@@ -738,10 +782,10 @@ on_dispatch_cb(void *p_gw, void *curr_iter_data)
       on_guild_member_remove(gw, payload);
       break;
   case DISCORD_GATEWAY_EVENTS_GUILD_BAN_ADD:
-      //@todo implement
+      on_guild_ban_add(gw, payload);
       break;
   case DISCORD_GATEWAY_EVENTS_GUILD_BAN_REMOVE:
-      //@todo implement
+      on_guild_ban_remove(gw, payload);
       break;
   case DISCORD_GATEWAY_EVENTS_GUILD_EMOJIS_UPDATE:
       //@todo implement

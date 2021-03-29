@@ -98,6 +98,8 @@ struct discord_gateway { /* GATEWAY STRUCTURE */
     guild_member_cb *on_guild_member_add;
     guild_member_remove_cb *on_guild_member_remove;
     guild_member_cb *on_guild_member_update;
+    guild_ban_cb *on_guild_ban_add;
+    guild_ban_cb *on_guild_ban_remove;
     channel_cb *on_channel_create;
     channel_cb *on_channel_update;
     channel_cb *on_channel_delete;

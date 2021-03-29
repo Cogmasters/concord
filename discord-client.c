@@ -150,6 +150,18 @@ discord_on_guild_member_remove(struct discord *client, guild_member_remove_cb *c
 }
 
 void 
+discord_on_guild_ban_add(struct discord *client, guild_ban_cb *callback) {
+  client->gw.cbs.on_guild_ban_add = callback;
+  discord_add_intents(client, DISCORD_GATEWAY_GUILD_BANS);
+}
+
+void 
+discord_on_guild_ban_remove(struct discord *client, guild_ban_cb *callback) {
+  client->gw.cbs.on_guild_ban_remove = callback;
+  discord_add_intents(client, DISCORD_GATEWAY_GUILD_BANS);
+}
+
+void 
 discord_on_channel_create(struct discord *client, channel_cb *callback) {
   client->gw.cbs.on_channel_create = callback;
   discord_add_intents(client, DISCORD_GATEWAY_GUILDS);

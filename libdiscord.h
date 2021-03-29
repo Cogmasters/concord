@@ -78,6 +78,12 @@ typedef void (guild_member_remove_cb)(
     const u64_snowflake_t guild_id, 
     const struct discord_user *user);
 
+/* GUILD BAN EVENTS CALLBACKS */
+typedef void (guild_ban_cb)(
+    struct discord *client, const struct discord_user *bot, 
+    const u64_snowflake_t guild_id, 
+    const struct discord_user *user);
+
 /* MESSAGE EVENTS CALLBACKS */
 typedef void (message_cb)(
     struct discord *client, const struct discord_user *bot, 
