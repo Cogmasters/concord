@@ -17,7 +17,7 @@ select_guild(struct discord *client)
   discord_get_current_user_guilds(client, &guilds);
   ASSERT_S(NULL != guilds, "Couldn't fetch guilds");
 
-  fprintf(stderr, "\n\nSelect the guild that the user to be mimicked is part of");
+  fprintf(stderr, "\n\nSelect the guild that the user you wish to fetch messages from is part of");
   int i=0;
   do {
     fprintf(stderr, "\n%d. %s", i+1, guilds[i]->name);
@@ -51,7 +51,7 @@ select_member(struct discord *client, u64_snowflake_t guild_id)
   ASSERT_S(NULL != members, "Guild is empty or bot needs to activate its privileged intents.\n\t"
                             "See this guide to activate it: https://discordpy.readthedocs.io/en/latest/intents.html#privileged-intents");
 
-  fprintf(stderr, "\n\nSelect the member to be mimicked");
+  fprintf(stderr, "\n\nSelect the member that will have its messages fetched");
   int i=0;
   do {
     fprintf(stderr, "\n%d. %s", i+1, members[i]->user->username);

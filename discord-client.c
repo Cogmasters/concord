@@ -113,6 +113,24 @@ discord_on_ready(struct discord *client, idle_cb *callback) {
   client->gw.cbs.on_ready = callback;
 }
 
+void 
+discord_on_guild_member_add(struct discord *client, guild_member_cb *callback) {
+  client->gw.cbs.on_guild_member_add = callback;
+  discord_add_intents(client, DISCORD_GATEWAY_GUILD_MEMBERS);
+}
+
+void 
+discord_on_guild_member_update(struct discord *client, guild_member_cb *callback) {
+  client->gw.cbs.on_guild_member_update = callback;
+  discord_add_intents(client, DISCORD_GATEWAY_GUILD_MEMBERS);
+}
+
+void 
+discord_on_guild_member_remove(struct discord *client, guild_member_remove_cb *callback) {
+  client->gw.cbs.on_guild_member_remove = callback;
+  discord_add_intents(client, DISCORD_GATEWAY_GUILD_MEMBERS);
+}
+
 void
 discord_on_message_create(struct discord *client, message_cb *callback) {
   client->gw.cbs.on_message_create = callback;
@@ -122,7 +140,7 @@ discord_on_message_create(struct discord *client, message_cb *callback) {
 void 
 discord_on_sb_message_create(struct discord *client, sb_message_cb *callback)
 {
-  client->gw.cbs.on_message_create_sb = callback;
+  client->gw.cbs.sb_on_message_create = callback;
   discord_add_intents(client, DISCORD_GATEWAY_GUILD_MESSAGES | DISCORD_GATEWAY_DIRECT_MESSAGES);
 }
 
@@ -166,24 +184,6 @@ void
 discord_on_message_reaction_remove_emoji(struct discord *client, message_reaction_remove_emoji_cb *callback) {
   client->gw.cbs.on_message_reaction_remove_emoji = callback;
   discord_add_intents(client, DISCORD_GATEWAY_GUILD_MESSAGE_REACTIONS | DISCORD_GATEWAY_DIRECT_MESSAGE_REACTIONS);
-}
-
-void 
-discord_on_guild_member_add(struct discord *client, guild_member_cb *callback) {
-  client->gw.cbs.on_guild_member_add = callback;
-  discord_add_intents(client, DISCORD_GATEWAY_GUILD_MEMBERS);
-}
-
-void 
-discord_on_guild_member_update(struct discord *client, guild_member_cb *callback) {
-  client->gw.cbs.on_guild_member_update = callback;
-  discord_add_intents(client, DISCORD_GATEWAY_GUILD_MEMBERS);
-}
-
-void 
-discord_on_guild_member_remove(struct discord *client, guild_member_remove_cb *callback) {
-  client->gw.cbs.on_guild_member_remove = callback;
-  discord_add_intents(client, DISCORD_GATEWAY_GUILD_MEMBERS);
 }
 
 void

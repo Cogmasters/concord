@@ -96,7 +96,7 @@ struct discord_gateway { /* GATEWAY STRUCTURE */
     guild_member_cb *on_guild_member_update;
     guild_member_remove_cb *on_guild_member_remove;
     message_cb *on_message_create;
-    sb_message_cb *on_message_create_sb; //@todo this is temporary
+    sb_message_cb *sb_on_message_create; //@todo this is temporary
     message_cb *on_message_update;
     message_delete_cb *on_message_delete;
     message_delete_bulk_cb *on_message_delete_bulk;
@@ -108,8 +108,8 @@ struct discord_gateway { /* GATEWAY STRUCTURE */
 
   int ping_ms; //latency between client and websockets server
 
-  struct discord_user *me; //the user associated with this client
-  struct sized_buffer sb_me; //@todo this is temporary
+  struct discord_user *bot; //the user associated with this client
+  struct sized_buffer sb_bot; //@todo this is temporary
 
   struct discord *p_client; //points to client this struct is a part of
 

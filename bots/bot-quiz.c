@@ -113,9 +113,9 @@ parse_session_config()
 }
 
 void 
-on_ready(struct discord *client, const struct discord_user *me) {
+on_ready(struct discord *client, const struct discord_user *bot) {
   fprintf(stderr, "\n\nQuiz-Bot succesfully connected to Discord as %s#%s!\n\n",
-      me->username, me->discriminator);
+      bot->username, bot->discriminator);
 }
 
 /* @sqlite after DB is implemented there will be no need of checking if a session exists
@@ -325,7 +325,7 @@ void send_next_question(
 
 void on_reaction_add(
     struct discord *client,
-    const struct discord_user *me,
+    const struct discord_user *bot,
     const u64_snowflake_t user_id, 
     const u64_snowflake_t channel_id, 
     const u64_snowflake_t message_id, 

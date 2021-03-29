@@ -14,14 +14,14 @@ struct context_s {
 } cxt;
 
 void 
-on_ready(struct discord *client, const struct discord_user *me) {
+on_ready(struct discord *client, const struct discord_user *bot) {
   fprintf(stderr, "\n\nChange-Nick-Bot succesfully connected to Discord as %s#%s!\n\n",
-      me->username, me->discriminator);
+      bot->username, bot->discriminator);
 }
 
 void
 on_command(struct discord *client,
-           const struct discord_user *me,
+           const struct discord_user *bot,
            const struct discord_message *msg)
 {
   sscanf(msg->content, "%s %s", cxt.username, cxt.nick);

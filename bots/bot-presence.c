@@ -8,9 +8,9 @@
 
 #define JSON_FILE "bot-presence.json"
 
-void on_ready(struct discord *client, const struct discord_user *me) {
+void on_ready(struct discord *client, const struct discord_user *bot) {
   fprintf(stderr, "\n\nPresence-Bot succesfully connected to Discord as %s#%s!\n\n",
-      me->username, me->discriminator);
+      bot->username, bot->discriminator);
 }
 
 void

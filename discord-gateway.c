@@ -245,7 +245,7 @@ on_guild_member_add(struct discord_gateway *gw, struct discord_gateway_payload *
 
   (*gw->cbs.on_guild_member_add)(
       gw->p_client, 
-      gw->me, 
+      gw->bot, 
       guild_id,
       member);
 
@@ -267,7 +267,7 @@ on_guild_member_remove(struct discord_gateway *gw, struct discord_gateway_payloa
 
   (*gw->cbs.on_guild_member_remove)(
         gw->p_client, 
-        gw->me, 
+        gw->bot, 
         guild_id, 
         user);
 
@@ -289,7 +289,7 @@ on_guild_member_update(struct discord_gateway *gw, struct discord_gateway_payloa
 
   (*gw->cbs.on_guild_member_update)(
       gw->p_client, 
-      gw->me, 
+      gw->bot, 
       guild_id, 
       member);
 
@@ -335,18 +335,18 @@ on_message_create(struct discord_gateway *gw, struct discord_gateway_payload *pa
         ++msg->content;
       }
 
-      (*cmd_cb)(gw->p_client, gw->me, msg);
+      (*cmd_cb)(gw->p_client, gw->bot, msg);
 
       msg->content = tmp; // retrieve original ptr
     }
   }
-  else if (gw->cbs.on_message_create_sb) /* @todo temporary */
-    (*gw->cbs.on_message_create_sb)(
+  else if (gw->cbs.sb_on_message_create) /* @todo temporary */
+    (*gw->cbs.sb_on_message_create)(
       gw->p_client, 
-      gw->me, gw->sb_me,
+      gw->bot, gw->sb_bot,
       msg, payload->event_data);
   else if (gw->cbs.on_message_create)
-    (*gw->cbs.on_message_create)(gw->p_client, gw->me, msg);
+    (*gw->cbs.on_message_create)(gw->p_client, gw->bot, msg);
 
   discord_message_free(msg);
 }
@@ -359,7 +359,7 @@ on_message_update(struct discord_gateway *gw, struct discord_gateway_payload *pa
   struct discord_message *msg = discord_message_alloc();
   discord_message_from_json(payload->event_data.start, payload->event_data.size, msg);
 
-  (*gw->cbs.on_message_update)(gw->p_client, gw->me, msg);
+  (*gw->cbs.on_message_update)(gw->p_client, gw->bot, msg);
 
   discord_message_free(msg);
 }
@@ -376,7 +376,7 @@ on_message_delete(struct discord_gateway *gw, struct discord_gateway_payload *pa
     "(guild_id):s_as_u64",
     &message_id, &channel_id, &guild_id);
 
-  (*gw->cbs.on_message_delete)(gw->p_client, gw->me, 
+  (*gw->cbs.on_message_delete)(gw->p_client, gw->bot, 
       message_id, 
       channel_id, 
       guild_id);
@@ -397,7 +397,7 @@ on_message_delete_bulk(struct discord_gateway *gw, struct discord_gateway_payloa
       &channel_id,
       &guild_id);
 
-  (*gw->cbs.on_message_delete_bulk)(gw->p_client, gw->me, ids, channel_id, guild_id);
+  (*gw->cbs.on_message_delete_bulk)(gw->p_client, gw->bot, ids, channel_id, guild_id);
 
   free(ids);
 }
@@ -425,7 +425,7 @@ on_message_reaction_add(struct discord_gateway *gw, struct discord_gateway_paylo
       &channel_id,
       &guild_id);
 
-  (*gw->cbs.on_message_reaction_add)(gw->p_client, gw->me, 
+  (*gw->cbs.on_message_reaction_add)(gw->p_client, gw->bot, 
       user_id,
       channel_id, 
       message_id, 
@@ -457,7 +457,7 @@ on_message_reaction_remove(struct discord_gateway *gw, struct discord_gateway_pa
       &channel_id,
       &guild_id);
 
-  (*gw->cbs.on_message_reaction_remove)(gw->p_client, gw->me, 
+  (*gw->cbs.on_message_reaction_remove)(gw->p_client, gw->bot, 
       user_id,
       channel_id, 
       message_id, 
@@ -481,7 +481,7 @@ on_message_reaction_remove_all(struct discord_gateway *gw, struct discord_gatewa
       &message_id,
       &guild_id);
 
-  (*gw->cbs.on_message_reaction_remove_all)(gw->p_client, gw->me, 
+  (*gw->cbs.on_message_reaction_remove_all)(gw->p_client, gw->bot, 
       channel_id, 
       message_id, 
       guild_id);
@@ -504,7 +504,7 @@ on_message_reaction_remove_emoji(struct discord_gateway *gw, struct discord_gate
       &message_id,
       &discord_emoji_from_json, emoji);
 
-    (*gw->cbs.on_message_reaction_remove_emoji)(gw->p_client, gw->me, 
+    (*gw->cbs.on_message_reaction_remove_emoji)(gw->p_client, gw->bot, 
         channel_id, 
         guild_id, 
         message_id,
@@ -523,7 +523,7 @@ on_ready(struct discord_gateway *gw, struct discord_gateway_payload *payload)
              "(session_id):s", gw->session_id);
   ASSERT_S(gw->session_id, "Missing session_id from READY event");
 
-  (*gw->cbs.on_ready)(gw->p_client, gw->me);
+  (*gw->cbs.on_ready)(gw->p_client, gw->bot);
 }
 
 static void
@@ -778,7 +778,7 @@ on_iter_end_cb(void *p_gw)
   pthread_mutex_unlock(&gw->lock);
 
   if (gw->cbs.on_idle) {
-    (*gw->cbs.on_idle)(gw->p_client, gw->me);
+    (*gw->cbs.on_idle)(gw->p_client, gw->bot);
   }
 }
 
@@ -867,10 +867,10 @@ discord_gateway_init(struct discord_gateway *gw, const char token[], const char 
   gw->identify->properties->$browser = strdup("orca");
   gw->identify->properties->$device = strdup("orca");
   gw->identify->presence->since = orka_timestamp_ms();
-  gw->me = discord_user_alloc();
+  gw->bot = discord_user_alloc();
   discord_set_presence(gw->p_client, NULL, "online", false);
-  discord_get_current_user(gw->p_client, gw->me);
-  sb_discord_get_current_user(gw->p_client, &gw->sb_me);
+  discord_get_current_user(gw->p_client, gw->bot);
+  sb_discord_get_current_user(gw->p_client, &gw->sb_bot);
 
   if (pthread_mutex_init(&gw->lock, NULL))
     ERR("Couldn't initialize pthread mutex");
@@ -879,7 +879,7 @@ discord_gateway_init(struct discord_gateway *gw, const char token[], const char 
 void
 discord_gateway_cleanup(struct discord_gateway *gw)
 {
-  discord_user_free(gw->me);
+  discord_user_free(gw->bot);
   discord_gateway_identify_free(gw->identify);
   ws_cleanup(gw->ws);
   pthread_mutex_destroy(&gw->lock);

@@ -6,14 +6,14 @@
 
 
 
-void on_ready(struct discord *client, const struct discord_user *me) {
+void on_ready(struct discord *client, const struct discord_user *bot) {
   fprintf(stderr, "\n\nEcho-Bot succesfully connected to Discord as %s#%s!\n\n",
-      me->username, me->discriminator);
+      bot->username, bot->discriminator);
 }
 
 void on_reaction_add(
     struct discord *client,
-    const struct discord_user *me,
+    const struct discord_user *bot,
     const uint64_t user_id, 
     const uint64_t channel_id, 
     const uint64_t message_id, 
@@ -30,7 +30,7 @@ void on_reaction_add(
 
 void on_message_create(
     struct discord *client,
-    const struct discord_user *me,
+    const struct discord_user *bot,
     const struct discord_message *msg)
 {
   // make sure bot doesn't echoes other bots
@@ -55,7 +55,7 @@ void on_message_create(
 
 void on_message_update(
     struct discord *client,
-    const struct discord_user *me,
+    const struct discord_user *bot,
     const struct discord_message *msg)
 {
   struct discord_create_message_params params = {
@@ -66,7 +66,7 @@ void on_message_update(
 
 void on_message_delete(
     struct discord *client,
-    const struct discord_user *me,
+    const struct discord_user *bot,
     const uint64_t id,
     const uint64_t channel_id,
     const uint64_t guild_id)
@@ -79,7 +79,7 @@ void on_message_delete(
 
 void on_message_delete_bulk(
     struct discord *client,
-    const struct discord_user *me,
+    const struct discord_user *bot,
     const NTL_T(ja_u64) ids,
     const uint64_t channel_id,
     const uint64_t guild_id)

@@ -7,14 +7,14 @@
 #include "libdiscord.h"
 
 
-void on_ready(struct discord *client, const struct discord_user *me) {
+void on_ready(struct discord *client, const struct discord_user *bot) {
   fprintf(stderr, "\n\nLog-Bot succesfully connected to Discord as %s#%s!\n\n",
-      me->username, me->discriminator);
+      bot->username, bot->discriminator);
 }
 
 void on_guild_member_add(
   struct discord *client,
-  const struct discord_user *me,
+  const struct discord_user *bot,
   const uint64_t guild_id, 
   const struct discord_guild_member *member)
 {
@@ -23,7 +23,7 @@ void on_guild_member_add(
 
 void on_guild_member_update(
   struct discord *client,
-  const struct discord_user *me,
+  const struct discord_user *bot,
   const uint64_t guild_id, 
   const struct discord_guild_member *member)
 {
@@ -36,7 +36,7 @@ void on_guild_member_update(
 
 void on_guild_member_remove(
   struct discord *client,
-  const struct discord_user *me,
+  const struct discord_user *bot,
   const uint64_t guild_id, 
   const struct discord_user *user)
 {
