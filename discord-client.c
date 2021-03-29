@@ -63,14 +63,14 @@ discord_get_data(struct discord *client) {
 }
 
 void
-discord_add_intents(struct discord *client, int intent_code)
+discord_add_intents(struct discord *client, enum discord_gateway_intents code)
 {
   if (WS_CONNECTED == ws_get_status(client->gw.ws)) {
     PUTS("Can't set intents to a running client.");
     return;
   }
 
-  client->gw.identify->intents |= intent_code;
+  client->gw.identify->intents |= code;
 }
 
 void
@@ -111,6 +111,24 @@ discord_on_idle(struct discord *client, idle_cb *callback) {
 void
 discord_on_ready(struct discord *client, idle_cb *callback) {
   client->gw.cbs.on_ready = callback;
+}
+
+void 
+discord_on_guild_role_create(struct discord *client, guild_role_cb *callback) {
+  client->gw.cbs.on_guild_role_create = callback;
+  discord_add_intents(client, DISCORD_GATEWAY_GUILDS);
+}
+
+void 
+discord_on_guild_role_update(struct discord *client, guild_role_cb *callback) {
+  client->gw.cbs.on_guild_role_update = callback;
+  discord_add_intents(client, DISCORD_GATEWAY_GUILDS);
+}
+
+void 
+discord_on_guild_role_delete(struct discord *client, guild_role_delete_cb *callback) {
+  client->gw.cbs.on_guild_role_delete = callback;
+  discord_add_intents(client, DISCORD_GATEWAY_GUILDS);
 }
 
 void 

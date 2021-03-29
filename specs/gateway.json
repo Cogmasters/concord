@@ -93,7 +93,6 @@
         { "name":"EVENTS_INVITE_CREATE" },
         { "name":"EVENTS_INVITE_DELETE" },
         { "name":"EVENTS_MESSAGE_CREATE" },
-        { "name":"EVENTS_SB_MESSAGE_CREATE" },
         { "name":"EVENTS_MESSAGE_UPDATE" },
         { "name":"EVENTS_MESSAGE_DELETE" },
         { "name":"EVENTS_MESSAGE_DELETE_BULK" },

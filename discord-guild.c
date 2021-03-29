@@ -63,7 +63,7 @@ discord_create_guild_channel(
     HTTP_POST, "/guilds/%llu/channels", guild_id);
 }
 void
-discord_get_channels(
+discord_get_guild_channels(
   struct discord *client, 
   const u64_snowflake_t guild_id, 
   NTL_T(struct discord_channel) *p_channels)

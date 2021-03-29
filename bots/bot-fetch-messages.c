@@ -79,7 +79,7 @@ void
 fetch_member_msgs(struct discord *client, u64_snowflake_t guild_id, u64_snowflake_t user_id)
 {
   NTL_T(struct discord_channel) channels = NULL;
-  discord_get_channels(client, guild_id, &channels);
+  discord_get_guild_channels(client, guild_id, &channels);
   ASSERT_S(NULL != channels, "Couldn't fetch channels from guild");
   
   struct discord_get_channel_messages_params params = {

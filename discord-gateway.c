@@ -214,21 +214,105 @@ on_hello_cb(void *p_gw, void *curr_iter_data)
 static enum discord_gateway_events
 get_dispatch_event(char event_name[])
 {
-  if (STREQ("READY", event_name)) return DISCORD_GATEWAY_EVENTS_READY;
-  if (STREQ("RESUMED", event_name)) return DISCORD_GATEWAY_EVENTS_RESUMED;
-  if (STREQ("MESSAGE_REACTION_ADD", event_name)) return DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_ADD;
-  if (STREQ("MESSAGE_REACTION_REMOVE", event_name)) return DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE;
-  if (STREQ("MESSAGE_REACTION_REMOVE_ALL", event_name)) return DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE_ALL;
-  if (STREQ("MESSAGE_REACTION_REMOVE_EMOJI", event_name)) return DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE_EMOJI;
+  if (STREQ("GUILD_CREATE", event_name)) return DISCORD_GATEWAY_EVENTS_GUILD_CREATE;
+  if (STREQ("GUILD_UPDATE", event_name)) return DISCORD_GATEWAY_EVENTS_GUILD_UPDATE;
+  if (STREQ("GUILD_DELETE", event_name)) return DISCORD_GATEWAY_EVENTS_GUILD_DELETE;
+  if (STREQ("GUILD_ROLE_CREATE", event_name)) return DISCORD_GATEWAY_EVENTS_GUILD_ROLE_CREATE;
+  if (STREQ("GUILD_ROLE_UPDATE", event_name)) return DISCORD_GATEWAY_EVENTS_GUILD_ROLE_UPDATE;
+  if (STREQ("GUILD_ROLE_DELETE", event_name)) return DISCORD_GATEWAY_EVENTS_GUILD_ROLE_DELETE;
+  if (STREQ("GUILD_MEMBER_ADD", event_name)) return DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_ADD;
+  if (STREQ("GUILD_MEMBER_UPDATE", event_name)) return DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_UPDATE;
+  if (STREQ("GUILD_MEMBER_REMOVE", event_name)) return DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_REMOVE;
+  if (STREQ("GUILD_BAN_ADD", event_name)) return DISCORD_GATEWAY_EVENTS_GUILD_BAN_ADD;
+  if (STREQ("GUILD_BAN_REMOVE", event_name)) return DISCORD_GATEWAY_EVENTS_GUILD_BAN_REMOVE;
+  if (STREQ("GUILD_EMOJIS_UPDATE", event_name)) return DISCORD_GATEWAY_EVENTS_GUILD_EMOJIS_UPDATE;
+  if (STREQ("GUILD_INTEGRATIONS_UPDATE", event_name)) return DISCORD_GATEWAY_EVENTS_GUILD_INTEGRATIONS_UPDATE;
+  if (STREQ("CHANNEL_CREATE", event_name)) return DISCORD_GATEWAY_EVENTS_CHANNEL_CREATE;
+  if (STREQ("CHANNEL_UPDATE", event_name)) return DISCORD_GATEWAY_EVENTS_CHANNEL_UPDATE;
+  if (STREQ("CHANNEL_DELETE", event_name)) return DISCORD_GATEWAY_EVENTS_CHANNEL_DELETE;
+  if (STREQ("CHANNEL_PINS_UPDATE", event_name)) return DISCORD_GATEWAY_EVENTS_CHANNEL_PINS_UPDATE;
+  if (STREQ("INVITE_CREATE", event_name)) return DISCORD_GATEWAY_EVENTS_INVITE_CREATE;
+  if (STREQ("INVITE_DELETE", event_name)) return DISCORD_GATEWAY_EVENTS_INVITE_DELETE;
   if (STREQ("MESSAGE_CREATE", event_name)) return DISCORD_GATEWAY_EVENTS_MESSAGE_CREATE;
   if (STREQ("MESSAGE_UPDATE", event_name)) return DISCORD_GATEWAY_EVENTS_MESSAGE_UPDATE;
   if (STREQ("MESSAGE_DELETE", event_name)) return DISCORD_GATEWAY_EVENTS_MESSAGE_DELETE;
   if (STREQ("MESSAGE_DELETE_BULK", event_name)) return DISCORD_GATEWAY_EVENTS_MESSAGE_DELETE_BULK;
-  if (STREQ("GUILD_MEMBER_ADD", event_name)) return DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_ADD;
-  if (STREQ("GUILD_MEMBER_UPDATE", event_name)) return DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_UPDATE;
-  if (STREQ("GUILD_MEMBER_REMOVE", event_name)) return DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_REMOVE;
+  if (STREQ("MESSAGE_REACTION_ADD", event_name)) return DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_ADD;
+  if (STREQ("MESSAGE_REACTION_REMOVE", event_name)) return DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE;
+  if (STREQ("MESSAGE_REACTION_REMOVE_ALL", event_name)) return DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE_ALL;
+  if (STREQ("MESSAGE_REACTION_REMOVE_EMOJI", event_name)) return DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE_EMOJI;
+  if (STREQ("WEBHOOKS_UPDATE", event_name)) return DISCORD_GATEWAY_EVENTS_WEBHOOKS_UPDATE;
+  if (STREQ("VOICE_STATE_UPDATE", event_name)) return DISCORD_GATEWAY_EVENTS_VOICE_STATE_UPDATE;
+  if (STREQ("TYPING_START", event_name)) return DISCORD_GATEWAY_EVENTS_TYPING_START;
+  if (STREQ("READY", event_name)) return DISCORD_GATEWAY_EVENTS_READY;
+  if (STREQ("RESUMED", event_name)) return DISCORD_GATEWAY_EVENTS_RESUMED;
   return DISCORD_GATEWAY_EVENTS_NONE;
 }
+
+static void
+on_guild_role_create(struct discord_gateway *gw, struct discord_gateway_payload *payload)
+{
+  if (!gw->cbs.on_guild_role_create) return;
+
+  struct discord_guild_role *role = discord_guild_role_alloc();
+
+  u64_snowflake_t guild_id = 0;
+  json_extract(payload->event_data.start, payload->event_data.size,
+    "(guild_id):s_as_u64"
+    "(role):F", 
+    &guild_id,
+    &discord_guild_role_from_json, role);
+
+  (*gw->cbs.on_guild_role_create)(
+      gw->p_client, 
+      gw->bot, 
+      guild_id, 
+      role);
+
+  discord_guild_role_free(role);
+}
+
+static void
+on_guild_role_update(struct discord_gateway *gw, struct discord_gateway_payload *payload)
+{
+  if (!gw->cbs.on_guild_role_update) return;
+
+  struct discord_guild_role *role = discord_guild_role_alloc();
+
+  u64_snowflake_t guild_id = 0;
+  json_extract(payload->event_data.start, payload->event_data.size,
+    "(guild_id):s_as_u64"
+    "(role):F", 
+    &guild_id,
+    &discord_guild_role_from_json, role);
+
+  (*gw->cbs.on_guild_role_update)(
+      gw->p_client, 
+      gw->bot, 
+      guild_id, 
+      role);
+
+  discord_guild_role_free(role);
+}
+
+static void
+on_guild_role_delete(struct discord_gateway *gw, struct discord_gateway_payload *payload)
+{
+  if (!gw->cbs.on_guild_role_delete) return;
+
+  u64_snowflake_t guild_id=0, role_id=0;
+  json_extract(payload->event_data.start, payload->event_data.size,
+    "(guild_id):s_as_u64"
+    "(role_id):s_as_u64", 
+    &guild_id, &role_id);
+
+  (*gw->cbs.on_guild_role_delete)(
+      gw->p_client, 
+      gw->bot, 
+      guild_id, 
+      role_id);
+}
+
 
 static void
 on_guild_member_add(struct discord_gateway *gw, struct discord_gateway_payload *payload)
@@ -514,9 +598,9 @@ on_message_reaction_remove_emoji(struct discord_gateway *gw, struct discord_gate
 static void
 on_ready(struct discord_gateway *gw, struct discord_gateway_payload *payload)
 {
+  ws_set_status(gw->ws, WS_CONNECTED);
   if (!gw->cbs.on_ready) return;
 
-  ws_set_status(gw->ws, WS_CONNECTED);
   D_PUTS("Succesfully started a Discord session!");
 
   json_extract(payload->event_data.start, payload->event_data.size,
@@ -580,11 +664,13 @@ on_dispatch_cb(void *p_gw, void *curr_iter_data)
       on_guild_member_update(gw, payload);
       break;
   case DISCORD_GATEWAY_EVENTS_GUILD_ROLE_CREATE:
+      on_guild_role_create(gw, payload);
+      break;
   case DISCORD_GATEWAY_EVENTS_GUILD_ROLE_UPDATE:
-      //@todo implement
+      on_guild_role_update(gw, payload);
       break;
   case DISCORD_GATEWAY_EVENTS_GUILD_ROLE_DELETE:
-      //@todo implement
+      on_guild_role_delete(gw, payload);
       break;
   case DISCORD_GATEWAY_EVENTS_INVITE_CREATE:
       //@todo implement
@@ -635,8 +721,7 @@ on_dispatch_cb(void *p_gw, void *curr_iter_data)
       // @todo implement
       break;
   default:
-      PRINT("Expected not yet implemented GATEWAY DISPATCH event: %s",
-          payload->event_name);
+      PRINT("Expected not yet implemented GATEWAY DISPATCH event: %s", payload->event_name);
       break;
   }
 }

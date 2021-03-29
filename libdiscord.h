@@ -52,41 +52,55 @@ https://discord.com/developers/docs/reference#snowflakes */
 
 
 /* IDLE CALLBACK (runs on every iteration, no trigger required) */
-typedef void (idle_cb)(struct discord *client, const struct discord_user *me);
+typedef void (idle_cb)(struct discord *client, const struct discord_user *bot);
+
+/* GUILD ROLE EVENTS CALLBACKS */
+typedef void (guild_role_cb)(
+    struct discord *client, const struct discord_user *bot,
+    const u64_snowflake_t guild_id,
+    const struct discord_guild_role *role);
+typedef void (guild_role_cb)(
+    struct discord *client, const struct discord_user *bot,
+    const u64_snowflake_t guild_id,
+    const struct discord_guild_role *role);
+typedef void (guild_role_delete_cb)(
+    struct discord *client, const struct discord_user *bot,
+    const u64_snowflake_t guild_id,
+    const u64_snowflake_t role_id);
 
 /* GUILD MEMBER EVENTS CALLBACKS */
 typedef void (guild_member_cb)(
-    struct discord *client, const struct discord_user *me, 
+    struct discord *client, const struct discord_user *bot, 
     const u64_snowflake_t guild_id, 
     const struct discord_guild_member *member);
 typedef void (guild_member_remove_cb)(
-    struct discord *client, const struct discord_user *me, 
+    struct discord *client, const struct discord_user *bot, 
     const u64_snowflake_t guild_id, 
     const struct discord_user *user);
 
 /* MESSAGE EVENTS CALLBACKS */
 typedef void (message_cb)(
-    struct discord *client, const struct discord_user *me, 
+    struct discord *client, const struct discord_user *bot, 
     const struct discord_message *message);
 typedef void (sb_message_cb)(
-    struct discord *client, const struct discord_user *me,
+    struct discord *client, const struct discord_user *bot,
     struct sized_buffer sb_me,
     const struct discord_message *message,
     struct sized_buffer msg_payload);
 typedef void (message_delete_cb)(
-    struct discord *client, const struct discord_user *me, 
+    struct discord *client, const struct discord_user *bot, 
     const u64_snowflake_t id, 
     const u64_snowflake_t channel_id, 
     const u64_snowflake_t guild_id);
 typedef void (message_delete_bulk_cb)(
-    struct discord *client, const struct discord_user *me, 
+    struct discord *client, const struct discord_user *bot, 
     const NTL_T(ja_u64) ids, 
     const u64_snowflake_t channel_id, 
     const u64_snowflake_t guild_id);
 
 /* MESSAGE REACTION EVENTS CALLBACKS */
 typedef void (message_reaction_add_cb)(
-    struct discord *client, const struct discord_user *me, 
+    struct discord *client, const struct discord_user *bot, 
     const u64_snowflake_t user_id,
     const u64_snowflake_t channel_id, 
     const u64_snowflake_t message_id, 
@@ -94,19 +108,19 @@ typedef void (message_reaction_add_cb)(
     const struct discord_guild_member *member, 
     const struct discord_emoji *emoji);
 typedef void (message_reaction_remove_cb)(
-    struct discord *client, const struct discord_user *me, 
+    struct discord *client, const struct discord_user *bot, 
     const u64_snowflake_t user_id,
     const u64_snowflake_t channel_id, 
     const u64_snowflake_t message_id, 
     const u64_snowflake_t guild_id, 
     const struct discord_emoji *emoji);
 typedef void (message_reaction_remove_all_cb)(
-    struct discord *client, const struct discord_user *me, 
+    struct discord *client, const struct discord_user *bot, 
     const u64_snowflake_t channel_id, 
     const u64_snowflake_t message_id, 
     const u64_snowflake_t guild_id);
 typedef void (message_reaction_remove_emoji_cb)(
-    struct discord *client, const struct discord_user *me, 
+    struct discord *client, const struct discord_user *bot, 
     const u64_snowflake_t channel_id, 
     const u64_snowflake_t message_id, 
     const u64_snowflake_t guild_id,
@@ -176,11 +190,13 @@ struct discord* discord_init(const char token[]);
 struct discord* discord_config_init(const char config_file[]);
 void discord_cleanup(struct discord *client);
 
-void discord_add_intents(struct discord *client, int intent_code);
+void discord_add_intents(struct discord *client, enum discord_gateway_intents code);
 void discord_set_prefix(struct discord *client, char *prefix);
 void discord_on_command(struct discord *client, char *command, message_cb *callback);
 void discord_on_idle(struct discord *client, idle_cb *callback);
-void discord_on_ready(struct discord *client, idle_cb *callback);
+void discord_on_guild_role_create(struct discord *client, guild_role_cb *callback);
+void discord_on_guild_role_update(struct discord *client, guild_role_cb *callback);
+void discord_on_guild_role_delete(struct discord *client, guild_role_delete_cb *callback);
 void discord_on_guild_member_add(struct discord *client, guild_member_cb *callback);
 void discord_on_guild_member_update(struct discord *client, guild_member_cb *callback);
 void discord_on_guild_member_remove(struct discord *client, guild_member_remove_cb *callback);
@@ -193,6 +209,7 @@ void discord_on_message_reaction_add(struct discord *client, message_reaction_ad
 void discord_on_message_reaction_remove(struct discord *client, message_reaction_remove_cb *callback);
 void discord_on_message_reaction_remove_all(struct discord *client, message_reaction_remove_all_cb* callback);
 void discord_on_message_reaction_remove_emoji(struct discord *client, message_reaction_remove_emoji_cb *callback);
+void discord_on_ready(struct discord *client, idle_cb *callback);
 
 void discord_run(struct discord *client);
 
@@ -224,7 +241,7 @@ void discord_list_guild_emojis(struct discord *client, const u64_snowflake_t gui
 
 // GUILD ENDPOINTS
 void discord_get_guild(struct discord *client, const u64_snowflake_t guild_id, struct discord_guild *p_guild);
-void discord_get_channels(struct discord *client, const u64_snowflake_t guild_id, NTL_T(struct discord_channel) *p_channels);
+void discord_get_guild_channels(struct discord *client, const u64_snowflake_t guild_id, NTL_T(struct discord_channel) *p_channels);
 void discord_create_guild_channel(struct discord *client, const u64_snowflake_t guild_id, struct discord_create_guild_channel_params *params, struct discord_channel *p_channel);
 void  discord_get_guild_member(struct discord *client, u64_snowflake_t guild_id, u64_snowflake_t user_id, struct discord_guild_member *p_member);
 void discord_list_guild_members(struct discord *client, const u64_snowflake_t guild_id, struct discord_list_guild_members_params *params, NTL_T(struct discord_guild_member) *p_members);

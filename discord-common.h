@@ -92,6 +92,9 @@ struct discord_gateway { /* GATEWAY STRUCTURE */
     idle_cb *on_idle;   //triggers in every event loop iteration
     idle_cb *on_ready;  //triggers when connection first establishes
 
+    guild_role_cb *on_guild_role_create;
+    guild_role_cb *on_guild_role_update;
+    guild_role_delete_cb *on_guild_role_delete;
     guild_member_cb *on_guild_member_add;
     guild_member_cb *on_guild_member_update;
     guild_member_remove_cb *on_guild_member_remove;
