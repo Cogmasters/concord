@@ -216,6 +216,8 @@ void discord_on_guild_role_delete(struct discord *client, guild_role_delete_cb *
 void discord_on_guild_member_add(struct discord *client, guild_member_cb *callback);
 void discord_on_guild_member_update(struct discord *client, guild_member_cb *callback);
 void discord_on_guild_member_remove(struct discord *client, guild_member_remove_cb *callback);
+void discord_on_guild_ban_add(struct discord *client, guild_ban_cb *callback);
+void discord_on_guild_ban_remove(struct discord *client, guild_ban_cb *callback);
 void discord_on_channel_create(struct discord *client, channel_cb *callback);
 void discord_on_channel_update(struct discord *client, channel_cb *callback);
 void discord_on_channel_delete(struct discord *client, channel_cb *callback);
