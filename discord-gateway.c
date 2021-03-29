@@ -233,7 +233,7 @@ get_dispatch_event(char event_name[])
 static void
 on_guild_member_add(struct discord_gateway *gw, struct discord_gateway_payload *payload)
 {
-  if (!gw->cbs.on_guild_member.add) return;
+  if (!gw->cbs.on_guild_member_add) return;
 
   struct discord_guild_member *member = discord_guild_member_alloc();
   discord_guild_member_from_json(payload->event_data.start,
@@ -243,7 +243,7 @@ on_guild_member_add(struct discord_gateway *gw, struct discord_gateway_payload *
   json_extract(payload->event_data.start, payload->event_data.size,
     "(guild_id):s_as_u64", &guild_id);
 
-  (*gw->cbs.on_guild_member.add)(
+  (*gw->cbs.on_guild_member_add)(
       gw->p_client, 
       gw->me, 
       guild_id,
@@ -255,7 +255,7 @@ on_guild_member_add(struct discord_gateway *gw, struct discord_gateway_payload *
 static void
 on_guild_member_remove(struct discord_gateway *gw, struct discord_gateway_payload *payload)
 {
-  if (!gw->cbs.on_guild_member.remove) return;
+  if (!gw->cbs.on_guild_member_remove) return;
 
   u64_snowflake_t guild_id = 0;
   struct discord_user *user = discord_user_alloc();
@@ -265,7 +265,7 @@ on_guild_member_remove(struct discord_gateway *gw, struct discord_gateway_payloa
     &guild_id,
     &discord_user_from_json, user);
 
-  (*gw->cbs.on_guild_member.remove)(
+  (*gw->cbs.on_guild_member_remove)(
         gw->p_client, 
         gw->me, 
         guild_id, 
@@ -277,7 +277,7 @@ on_guild_member_remove(struct discord_gateway *gw, struct discord_gateway_payloa
 static void
 on_guild_member_update(struct discord_gateway *gw, struct discord_gateway_payload *payload)
 {
-  if (!gw->cbs.on_guild_member.update) return;
+  if (!gw->cbs.on_guild_member_update) return;
 
   struct discord_guild_member *member = discord_guild_member_alloc();
   discord_guild_member_from_json(payload->event_data.start,
@@ -287,7 +287,7 @@ on_guild_member_update(struct discord_gateway *gw, struct discord_gateway_payloa
   json_extract(payload->event_data.start, payload->event_data.size,
     "(guild_id):s_as_u64", &guild_id);
 
-  (*gw->cbs.on_guild_member.update)(
+  (*gw->cbs.on_guild_member_update)(
       gw->p_client, 
       gw->me, 
       guild_id, 
@@ -340,13 +340,13 @@ on_message_create(struct discord_gateway *gw, struct discord_gateway_payload *pa
       msg->content = tmp; // retrieve original ptr
     }
   }
-  else if (gw->cbs.on_message.sb_create) /* @todo temporary */
-    (*gw->cbs.on_message.sb_create)(
+  else if (gw->cbs.on_message_create_sb) /* @todo temporary */
+    (*gw->cbs.on_message_create_sb)(
       gw->p_client, 
       gw->me, gw->sb_me,
       msg, payload->event_data);
-  else if (gw->cbs.on_message.create)
-    (*gw->cbs.on_message.create)(gw->p_client, gw->me, msg);
+  else if (gw->cbs.on_message_create)
+    (*gw->cbs.on_message_create)(gw->p_client, gw->me, msg);
 
   discord_message_free(msg);
 }
@@ -354,12 +354,12 @@ on_message_create(struct discord_gateway *gw, struct discord_gateway_payload *pa
 static void
 on_message_update(struct discord_gateway *gw, struct discord_gateway_payload *payload)
 {
-  if (!gw->cbs.on_message.update) return;
+  if (!gw->cbs.on_message_update) return;
 
   struct discord_message *msg = discord_message_alloc();
   discord_message_from_json(payload->event_data.start, payload->event_data.size, msg);
 
-  (*gw->cbs.on_message.update)(gw->p_client, gw->me, msg);
+  (*gw->cbs.on_message_update)(gw->p_client, gw->me, msg);
 
   discord_message_free(msg);
 }
@@ -367,7 +367,7 @@ on_message_update(struct discord_gateway *gw, struct discord_gateway_payload *pa
 static void
 on_message_delete(struct discord_gateway *gw, struct discord_gateway_payload *payload)
 {
-  if (!gw->cbs.on_message.del) return;
+  if (!gw->cbs.on_message_delete) return;
 
   u64_snowflake_t message_id=0, channel_id=0, guild_id=0;
   json_extract(payload->event_data.start, payload->event_data.size,
@@ -376,7 +376,7 @@ on_message_delete(struct discord_gateway *gw, struct discord_gateway_payload *pa
     "(guild_id):s_as_u64",
     &message_id, &channel_id, &guild_id);
 
-  (*gw->cbs.on_message.del)(gw->p_client, gw->me, 
+  (*gw->cbs.on_message_delete)(gw->p_client, gw->me, 
       message_id, 
       channel_id, 
       guild_id);
@@ -385,7 +385,7 @@ on_message_delete(struct discord_gateway *gw, struct discord_gateway_payload *pa
 static void
 on_message_delete_bulk(struct discord_gateway *gw, struct discord_gateway_payload *payload)
 {
-  if (!gw->cbs.on_message.delete_bulk) return;
+  if (!gw->cbs.on_message_delete_bulk) return;
 
   const NTL_T(ja_u64) ids = NULL;
   u64_snowflake_t channel_id = 0, guild_id = 0;
@@ -397,7 +397,7 @@ on_message_delete_bulk(struct discord_gateway *gw, struct discord_gateway_payloa
       &channel_id,
       &guild_id);
 
-  (*gw->cbs.on_message.delete_bulk)(gw->p_client, gw->me, ids, channel_id, guild_id);
+  (*gw->cbs.on_message_delete_bulk)(gw->p_client, gw->me, ids, channel_id, guild_id);
 
   free(ids);
 }
@@ -405,7 +405,7 @@ on_message_delete_bulk(struct discord_gateway *gw, struct discord_gateway_payloa
 static void
 on_message_reaction_add(struct discord_gateway *gw, struct discord_gateway_payload *payload)
 {
-  if (!gw->cbs.on_reaction.add) return;
+  if (!gw->cbs.on_message_reaction_add) return;
 
   u64_snowflake_t user_id=0, message_id=0, channel_id=0, guild_id=0;
   struct discord_guild_member *member = discord_guild_member_alloc();
@@ -425,7 +425,7 @@ on_message_reaction_add(struct discord_gateway *gw, struct discord_gateway_paylo
       &channel_id,
       &guild_id);
 
-  (*gw->cbs.on_reaction.add)(gw->p_client, gw->me, 
+  (*gw->cbs.on_message_reaction_add)(gw->p_client, gw->me, 
       user_id,
       channel_id, 
       message_id, 
@@ -440,7 +440,7 @@ on_message_reaction_add(struct discord_gateway *gw, struct discord_gateway_paylo
 static void
 on_message_reaction_remove(struct discord_gateway *gw, struct discord_gateway_payload *payload)
 {
-  if (!gw->cbs.on_reaction.remove) return;
+  if (!gw->cbs.on_message_reaction_remove) return;
 
   u64_snowflake_t user_id=0, message_id=0, channel_id=0, guild_id=0;
   struct discord_emoji *emoji = discord_emoji_alloc();
@@ -457,7 +457,7 @@ on_message_reaction_remove(struct discord_gateway *gw, struct discord_gateway_pa
       &channel_id,
       &guild_id);
 
-  (*gw->cbs.on_reaction.remove)(gw->p_client, gw->me, 
+  (*gw->cbs.on_message_reaction_remove)(gw->p_client, gw->me, 
       user_id,
       channel_id, 
       message_id, 
@@ -470,7 +470,7 @@ on_message_reaction_remove(struct discord_gateway *gw, struct discord_gateway_pa
 static void
 on_message_reaction_remove_all(struct discord_gateway *gw, struct discord_gateway_payload *payload)
 {
-  if (!gw->cbs.on_reaction.remove_all) return;
+  if (!gw->cbs.on_message_reaction_remove_all) return;
 
   u64_snowflake_t channel_id=0, message_id=0, guild_id=0;
   json_extract(payload->event_data.start, payload->event_data.size,
@@ -481,7 +481,7 @@ on_message_reaction_remove_all(struct discord_gateway *gw, struct discord_gatewa
       &message_id,
       &guild_id);
 
-  (*gw->cbs.on_reaction.remove_all)(gw->p_client, gw->me, 
+  (*gw->cbs.on_message_reaction_remove_all)(gw->p_client, gw->me, 
       channel_id, 
       message_id, 
       guild_id);
@@ -490,7 +490,7 @@ on_message_reaction_remove_all(struct discord_gateway *gw, struct discord_gatewa
 static void
 on_message_reaction_remove_emoji(struct discord_gateway *gw, struct discord_gateway_payload *payload)
 {
-  if (!gw->cbs.on_reaction.remove_emoji) return;
+  if (!gw->cbs.on_message_reaction_remove_emoji) return;
 
   u64_snowflake_t channel_id=0, guild_id=0, message_id=0;
   struct discord_emoji *emoji = discord_emoji_alloc();
@@ -504,7 +504,7 @@ on_message_reaction_remove_emoji(struct discord_gateway *gw, struct discord_gate
       &message_id,
       &discord_emoji_from_json, emoji);
 
-    (*gw->cbs.on_reaction.remove_emoji)(gw->p_client, gw->me, 
+    (*gw->cbs.on_message_reaction_remove_emoji)(gw->p_client, gw->me, 
         channel_id, 
         guild_id, 
         message_id,

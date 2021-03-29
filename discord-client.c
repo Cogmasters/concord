@@ -115,74 +115,74 @@ discord_on_ready(struct discord *client, idle_cb *callback) {
 
 void
 discord_on_message_create(struct discord *client, message_cb *callback) {
-  client->gw.cbs.on_message.create = callback;
+  client->gw.cbs.on_message_create = callback;
   discord_add_intents(client, DISCORD_GATEWAY_GUILD_MESSAGES | DISCORD_GATEWAY_DIRECT_MESSAGES);
 }
 
 void 
 discord_on_sb_message_create(struct discord *client, sb_message_cb *callback)
 {
-  client->gw.cbs.on_message.sb_create = callback;
+  client->gw.cbs.on_message_create_sb = callback;
   discord_add_intents(client, DISCORD_GATEWAY_GUILD_MESSAGES | DISCORD_GATEWAY_DIRECT_MESSAGES);
 }
 
 void
 discord_on_message_update(struct discord *client, message_cb *callback) {
-  client->gw.cbs.on_message.update = callback;
+  client->gw.cbs.on_message_update = callback;
   discord_add_intents(client, DISCORD_GATEWAY_GUILD_MESSAGES | DISCORD_GATEWAY_DIRECT_MESSAGES);
 }
 
 void
 discord_on_message_delete(struct discord *client, message_delete_cb *callback) {
-  client->gw.cbs.on_message.del = callback;
+  client->gw.cbs.on_message_delete = callback;
   discord_add_intents(client, DISCORD_GATEWAY_GUILD_MESSAGES | DISCORD_GATEWAY_DIRECT_MESSAGES);
 }
 
 void
 discord_on_message_delete_bulk(struct discord *client, message_delete_bulk_cb *callback) {
-  client->gw.cbs.on_message.delete_bulk = callback;
+  client->gw.cbs.on_message_delete_bulk = callback;
   discord_add_intents(client, DISCORD_GATEWAY_GUILD_MESSAGES | DISCORD_GATEWAY_DIRECT_MESSAGES);
 }
 
 void
-discord_on_reaction_add(struct discord *client, reaction_add_cb *callback) {
-  client->gw.cbs.on_reaction.add = callback;
+discord_on_message_reaction_add(struct discord *client, message_reaction_add_cb *callback) {
+  client->gw.cbs.on_message_reaction_add = callback;
   discord_add_intents(client, DISCORD_GATEWAY_GUILD_MESSAGE_REACTIONS | DISCORD_GATEWAY_DIRECT_MESSAGE_REACTIONS);
 }
 
 void
-discord_on_reaction_remove(struct discord *client, reaction_remove_cb *callback) {
-  client->gw.cbs.on_reaction.remove = callback;
+discord_on_message_reaction_remove(struct discord *client, message_reaction_remove_cb *callback) {
+  client->gw.cbs.on_message_reaction_remove = callback;
   discord_add_intents(client, DISCORD_GATEWAY_GUILD_MESSAGE_REACTIONS | DISCORD_GATEWAY_DIRECT_MESSAGE_REACTIONS);
 }
 
 void
-discord_on_reaction_remove_all(struct discord *client, reaction_remove_all_cb* callback) {
-  client->gw.cbs.on_reaction.remove_all = callback;
+discord_on_message_reaction_remove_all(struct discord *client, message_reaction_remove_all_cb* callback) {
+  client->gw.cbs.on_message_reaction_remove_all = callback;
   discord_add_intents(client, DISCORD_GATEWAY_GUILD_MESSAGE_REACTIONS | DISCORD_GATEWAY_DIRECT_MESSAGE_REACTIONS);
 }
 
 void
-discord_on_reaction_remove_emoji(struct discord *client, reaction_remove_emoji_cb *callback) {
-  client->gw.cbs.on_reaction.remove_emoji = callback;
+discord_on_message_reaction_remove_emoji(struct discord *client, message_reaction_remove_emoji_cb *callback) {
+  client->gw.cbs.on_message_reaction_remove_emoji = callback;
   discord_add_intents(client, DISCORD_GATEWAY_GUILD_MESSAGE_REACTIONS | DISCORD_GATEWAY_DIRECT_MESSAGE_REACTIONS);
 }
 
 void 
 discord_on_guild_member_add(struct discord *client, guild_member_cb *callback) {
-  client->gw.cbs.on_guild_member.add = callback;
+  client->gw.cbs.on_guild_member_add = callback;
   discord_add_intents(client, DISCORD_GATEWAY_GUILD_MEMBERS);
 }
 
 void 
 discord_on_guild_member_update(struct discord *client, guild_member_cb *callback) {
-  client->gw.cbs.on_guild_member.update = callback;
+  client->gw.cbs.on_guild_member_update = callback;
   discord_add_intents(client, DISCORD_GATEWAY_GUILD_MEMBERS);
 }
 
 void 
 discord_on_guild_member_remove(struct discord *client, guild_member_remove_cb *callback) {
-  client->gw.cbs.on_guild_member.remove = callback;
+  client->gw.cbs.on_guild_member_remove = callback;
   discord_add_intents(client, DISCORD_GATEWAY_GUILD_MEMBERS);
 }
 

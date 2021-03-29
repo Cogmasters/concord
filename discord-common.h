@@ -90,31 +90,26 @@ struct discord_gateway { /* GATEWAY STRUCTURE */
 
   struct { /* CALLBACKS STRUCTURE */
     idle_cb *on_idle;   //triggers in every event loop iteration
-    idle_cb *on_ready; //triggers when connection first establishes
-    struct { /* MESSAGE CALLBACKS STRUCTURE */
-      message_cb *create; //triggers when a message is created
-      sb_message_cb *sb_create; //@todo this is temporary for wrapping JS
-      message_cb *update; //triggers when a message is updated (edited)
-      message_delete_cb *del; //triggers when a message is deleted
-      message_delete_bulk_cb *delete_bulk; //triggers when multiple messages are deleted at once
-    } on_message;
-    struct { /* GUILD MEMBER CALLBACKS STRUCTURE */
-      guild_member_cb *add; //triggers when a member joins a guild
-      guild_member_cb *update; //triggers when a member is updated
-      guild_member_remove_cb *remove; //triggers when a member leaves or is removed a guild
-    } on_guild_member;
-    struct { /* REACTION CALLBACKS STRUCTURE */
-      reaction_add_cb *add; //triggers when a reaction is added
-      reaction_remove_cb *remove; //triggers when a reaction is removed
-      reaction_remove_all_cb *remove_all; //triggers when all reaction are removed
-      reaction_remove_emoji_cb *remove_emoji; //triggers when given emoji is removed
-    } on_reaction;
+    idle_cb *on_ready;  //triggers when connection first establishes
+
+    guild_member_cb *on_guild_member_add;
+    guild_member_cb *on_guild_member_update;
+    guild_member_remove_cb *on_guild_member_remove;
+    message_cb *on_message_create;
+    sb_message_cb *on_message_create_sb; //@todo this is temporary
+    message_cb *on_message_update;
+    message_delete_cb *on_message_delete;
+    message_delete_bulk_cb *on_message_delete_bulk;
+    message_reaction_add_cb *on_message_reaction_add;
+    message_reaction_remove_cb *on_message_reaction_remove;
+    message_reaction_remove_all_cb *on_message_reaction_remove_all;
+    message_reaction_remove_emoji_cb *on_message_reaction_remove_emoji;
   } cbs;
 
   int ping_ms; //latency between client and websockets server
 
   struct discord_user *me; //the user associated with this client
-  struct sized_buffer sb_me; //@todo this is temporary for wrapping JS
+  struct sized_buffer sb_me; //@todo this is temporary
 
   struct discord *p_client; //points to client this struct is a part of
 

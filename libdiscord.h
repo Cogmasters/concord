@@ -54,6 +54,16 @@ https://discord.com/developers/docs/reference#snowflakes */
 /* IDLE CALLBACK (runs on every iteration, no trigger required) */
 typedef void (idle_cb)(struct discord *client, const struct discord_user *me);
 
+/* GUILD MEMBER EVENTS CALLBACKS */
+typedef void (guild_member_cb)(
+    struct discord *client, const struct discord_user *me, 
+    const u64_snowflake_t guild_id, 
+    const struct discord_guild_member *member);
+typedef void (guild_member_remove_cb)(
+    struct discord *client, const struct discord_user *me, 
+    const u64_snowflake_t guild_id, 
+    const struct discord_user *user);
+
 /* MESSAGE EVENTS CALLBACKS */
 typedef void (message_cb)(
     struct discord *client, const struct discord_user *me, 
@@ -75,7 +85,7 @@ typedef void (message_delete_bulk_cb)(
     const u64_snowflake_t guild_id);
 
 /* MESSAGE REACTION EVENTS CALLBACKS */
-typedef void (reaction_add_cb)(
+typedef void (message_reaction_add_cb)(
     struct discord *client, const struct discord_user *me, 
     const u64_snowflake_t user_id,
     const u64_snowflake_t channel_id, 
@@ -83,34 +93,24 @@ typedef void (reaction_add_cb)(
     const u64_snowflake_t guild_id, 
     const struct discord_guild_member *member, 
     const struct discord_emoji *emoji);
-typedef void (reaction_remove_cb)(
+typedef void (message_reaction_remove_cb)(
     struct discord *client, const struct discord_user *me, 
     const u64_snowflake_t user_id,
     const u64_snowflake_t channel_id, 
     const u64_snowflake_t message_id, 
     const u64_snowflake_t guild_id, 
     const struct discord_emoji *emoji);
-typedef void (reaction_remove_all_cb)(
+typedef void (message_reaction_remove_all_cb)(
     struct discord *client, const struct discord_user *me, 
     const u64_snowflake_t channel_id, 
     const u64_snowflake_t message_id, 
     const u64_snowflake_t guild_id);
-typedef void (reaction_remove_emoji_cb)(
+typedef void (message_reaction_remove_emoji_cb)(
     struct discord *client, const struct discord_user *me, 
     const u64_snowflake_t channel_id, 
     const u64_snowflake_t message_id, 
     const u64_snowflake_t guild_id,
     const struct discord_emoji *emoji);
-
-/* GUILD MEMBER EVENTS CALLBACKS */
-typedef void (guild_member_cb)(
-    struct discord *client, const struct discord_user *me, 
-    const u64_snowflake_t guild_id, 
-    const struct discord_guild_member *member);
-typedef void (guild_member_remove_cb)(
-    struct discord *client, const struct discord_user *me, 
-    const u64_snowflake_t guild_id, 
-    const struct discord_user *user);
 
 struct discord_session {
   char url[MAX_URL_LEN];
@@ -181,18 +181,18 @@ void discord_set_prefix(struct discord *client, char *prefix);
 void discord_on_command(struct discord *client, char *command, message_cb *callback);
 void discord_on_idle(struct discord *client, idle_cb *callback);
 void discord_on_ready(struct discord *client, idle_cb *callback);
+void discord_on_guild_member_add(struct discord *client, guild_member_cb *callback);
+void discord_on_guild_member_update(struct discord *client, guild_member_cb *callback);
+void discord_on_guild_member_remove(struct discord *client, guild_member_remove_cb *callback);
 void discord_on_message_create(struct discord *client, message_cb *callback);
 void discord_on_sb_message_create(struct discord *client, sb_message_cb *callback);
 void discord_on_message_update(struct discord *client, message_cb *callback);
 void discord_on_message_delete(struct discord *client, message_delete_cb *callback);
 void discord_on_message_delete_bulk(struct discord *client, message_delete_bulk_cb *callback);
-void discord_on_reaction_add(struct discord *client, reaction_add_cb *callback);
-void discord_on_reaction_remove(struct discord *client, reaction_remove_cb *callback);
-void discord_on_reaction_remove_all(struct discord *client, reaction_remove_all_cb* callback);
-void discord_on_reaction_remove_emoji(struct discord *client, reaction_remove_emoji_cb *callback);
-void discord_on_guild_member_add(struct discord *client, guild_member_cb *callback);
-void discord_on_guild_member_update(struct discord *client, guild_member_cb *callback);
-void discord_on_guild_member_remove(struct discord *client, guild_member_remove_cb *callback);
+void discord_on_message_reaction_add(struct discord *client, message_reaction_add_cb *callback);
+void discord_on_message_reaction_remove(struct discord *client, message_reaction_remove_cb *callback);
+void discord_on_message_reaction_remove_all(struct discord *client, message_reaction_remove_all_cb* callback);
+void discord_on_message_reaction_remove_emoji(struct discord *client, message_reaction_remove_emoji_cb *callback);
 
 void discord_run(struct discord *client);
 

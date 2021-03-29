@@ -111,7 +111,7 @@ int main(int argc, char *argv[])
   discord_on_message_update(client, &on_message_update);
   discord_on_message_delete(client, &on_message_delete);
   discord_on_message_delete_bulk(client, &on_message_delete_bulk);
-  discord_on_reaction_add(client, &on_reaction_add);
+  discord_on_message_reaction_add(client, &on_reaction_add);
 
   discord_run(client);
 
