@@ -255,6 +255,8 @@ orka_config_cleanup(struct orka_config *config)
 char*
 orka_config_get_field(struct orka_config *config, char *json_field)
 {
+  if (NULL == json_field) return NULL;
+
   char fmt[512];
   int ret = snprintf(fmt, sizeof(fmt), "(%s):?s", json_field);
   ASSERT_S(ret < sizeof(fmt), "Out of bounds write attempt");

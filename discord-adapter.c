@@ -20,8 +20,8 @@ struct _context {
 void
 discord_adapter_init(struct discord_adapter *adapter, const char token[], const char config_file[])
 {
+  adapter->ua = ua_config_init(BASE_API_URL, "DISCORD HTTP", config_file);
   if (config_file) {
-    adapter->ua = ua_config_init(BASE_API_URL, "DISCORD HTTP", config_file);
     token = ua_config_get_field(adapter->ua, "discord.token");
   }
   if (!token) ERR("Missing bot token");
