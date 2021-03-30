@@ -23,6 +23,7 @@ slack_adapter_init(struct slack_adapter *adapter, const char config_file[])
   ASSERT_S(ret < sizeof(auth), "Out of bounds write attempt");
 
   ua_reqheader_add(adapter->ua, "Authorization", auth);
+  ua_reqheader_add(adapter->ua, "Content-type", "application/x-www-form-urlencoded");
 
   free(token);
 }
