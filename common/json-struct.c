@@ -1963,9 +1963,13 @@ field_to_string(
   void (*emitter)(void *cxt, FILE *fp, struct jc_field *),
   struct jc_field *f)
 {
-  char * buf; size_t len;
+  char * buf = NULL; size_t len;
   FILE *fp = open_memstream(&buf, &len);
   emitter(cxt, fp, f);
   fclose(fp);
+  if (len == 0 && buf) {
+    free(buf);
+    buf = NULL;
+  }
   return buf;
 }

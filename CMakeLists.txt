@@ -1,18 +1,16 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.6)
 project(orca)
 ## This is for testing only, you won't be able to build all code with this cmake file
 ## There is no plan to support cmake to build all code.
 
-
-
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_STANDARD 99)
+set(CMAKE_C_COMPILER stensal-c)
 
 set(CMAKE_BUILD_TYPE DEBUG)
 set(CMAKE_C_FLAGS "-DLIBDISCORD_DEBUG -DJSON_SCANF_DEBUG -D_XOPEN_SOURCE=700")
 set(CMAKE_CXX_FLAGS "-DLIBDISCORD_DEBUG -D_XOPEN_SOURCE=700 -Wno-write-strings -Wno-c++11-compat-deprecated-writable-strings")
 
-set(CMAKE_EXE_LINKER_FLAGS "")
+set(CMAKE_EXE_LINKER_FLAGS "-static")
 
 set(JSON_SCANF
         common/jsmn.h
@@ -28,10 +26,10 @@ set(SOURCE_FILES
         common/curl-websocket.c
         common/curl-websocket.h
         discord-common.h
-        discord-public.cpp
-        discord-public-guild.cpp
-        discord-public-user.cpp
-        discord-websockets.cpp
+        discord-channel.c
+        discord-guild.c
+        discord-user.c
+        discord-gateway.c
         libdiscord.h
         ${JSON_SCANF})
 
@@ -40,9 +38,9 @@ set(ORKA_FILES
         common/orka-utils.h)
 
 set(GITHUB_FILES
-        github-v3.hpp
-        github-v3-user-agent.cpp
-        github-v3-git-op.cpp
+        github-v3.h
+        github-v3-user-agent.c
+        github-v3-git-op.c
         ${JSON_SCANF}
         ${ORKA_FILES})
 
@@ -62,10 +60,7 @@ include_directories(${CMAKE_SOURCE_DIR}/mujs)
 include_directories(${CMAKE_SOURCE_DIR}/sqlite3)
 
 
-add_executable(test-api.exe ${SOURCE_FILES} test/test-api.cpp)
-target_link_libraries(test-api.exe curl ssl crypto)
 
-add_executable(test-ws.exe ${SOURCE_FILES} test/test-ws.cpp)
 add_executable(test-json-scanf.exe ${JSON_SCANF} test/test-json-scanf.c)
 
 add_executable(test-json-scanf-array.exe ${JSON_SCANF} ${ORKA_FILES}
@@ -77,19 +72,16 @@ add_executable(test-json-string.exe ${JSON_SCANF} ${ORKA_FILES}
         test/test-json-string.c)
 target_link_libraries(test-json-string.exe m)
 
-add_executable(test-git.exe ${GITHUB_FILES}  test/test-git.cpp)
-target_link_libraries(test-git.exe curl ssl crypto)
+#add_executable(test-git2.exe
+#        ${JSON_SCANF}
+#        common/json-actor.c
+#        ${GITHUB_FILES} ${ORKA_FILES}
+#        test/test-git2.c)
 
-add_executable(test-git2.exe
-        ${JSON_SCANF}
-        common/json-actor.c
-        ${GITHUB_FILES} ${ORKA_FILES}
-        test/test-git2.cpp)
+#target_link_libraries(test-git2.exe curl ssl crypto)
 
-target_link_libraries(test-git2.exe curl ssl crypto)
-
-add_executable(test-cee.exe ${CEE_FILES} test/test-cee.cpp)
-target_link_libraries(test-cee.exe curl ssl crypto)
+add_executable(test-cee.exe ${CEE_FILES} test/test-cee.c)
+target_link_libraries(test-cee.exe curl bearssl discord)
 
 add_executable(test-json-injector.exe
         common/ntl.c
@@ -123,8 +115,7 @@ add_executable(test-json-load.exe
         common/json-scanf.c
         common/orka-utils.c
         common/ntl.c
-        common/json-actor.c
-        test/test-json-load.cpp)
+        common/json-actor.c)
 
 add_executable(test-ntl.exe
         common/ntl.c
@@ -162,6 +153,3 @@ add_executable(test-spec.exe
         common/json-printf.c
         test/test-spec.c)
 target_link_libraries(test-spec.exe m)
-
-add_executable(js.exe ${MUJS_FILES} jsB/jsB-discord-client.cpp)
-target_link_libraries(js.exe m)
