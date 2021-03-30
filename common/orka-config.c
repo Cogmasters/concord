@@ -120,6 +120,8 @@ orka_config_init(
 void
 orka_config_cleanup(struct orka_config *config)
 {
+  if (config->fcontents)
+    free(config->fcontents);
   if (config->tag)
     free(config->tag);
   if (config->f_resp_dump)
