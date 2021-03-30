@@ -54,6 +54,9 @@ LIBDISCORD_LDFLAGS	:= -L./$(LIBDIR) -ldiscord -lcurl -lpthread
 ifeq ($(BEARSSL),1)
 	LIBDISCORD_LDFLAGS += -lbearssl -static
 	CFLAGS += -DBEARSSL -DBEAR_SSL
+else ifeq ($(MBEDTLS),1)
+	LIBDISCORD_LDFLAGS += -lmbedtls -static
+	CFLAGS += -DMBEDTLS
 else ifeq ($(CC),stensal-c)
 	LIBDISCORD_LDFLAGS += -lbearssl -static
 	CFLAGS += -DBEARSSL

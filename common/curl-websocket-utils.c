@@ -32,7 +32,6 @@
 #include <fcntl.h>
 
 #ifdef BEARSSL
-
 #include <bearssl_hash.h>
 
 static void
@@ -43,7 +42,18 @@ _cws_sha1(const void *input, const size_t input_len, void *output)
     br_sha1_update(&cxt, input, input_len);
     br_sha1_out(&cxt, output);
 }
-
+#elif defined(MBEDTLS)
+#include "mbedtls/sha1.h"
+static void
+_cws_sha1(const void *input, const size_t input_len, void *output)
+{
+    mbedtls_sha1_context cxt;
+    mbedtls_sha1_init(&cxt);
+    mbedtls_sha1_start_ret(&cxt);
+    mbedtls_sha1_update(&cxt, input, input_len);
+    mbedtls_sha1_finish(&cxt, output);
+    mbedtls_sha1_free(&cxt);
+}
 #else
 
 #include <openssl/evp.h>
