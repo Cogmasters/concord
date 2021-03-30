@@ -49,9 +49,9 @@ ua_respheader_value(struct ua_conn_s *conn, char field[])
 void
 ua_reqheader_add(struct user_agent_s *ua, char field[],  char value[])
 {
-  char buf[MAX_HEADER_LEN];
+  char buf[UA_MAX_HEADER_LEN];
   int ret = snprintf(buf, sizeof(buf), "%s: %s", field, value);
-  ASSERT_S(ret < MAX_HEADER_LEN, "Out of bounds write attempt");
+  ASSERT_S(ret < UA_MAX_HEADER_LEN, "Out of bounds write attempt");
 
   /* check for match in existing fields */
   size_t len = strlen(field);
@@ -113,8 +113,8 @@ conn_resheader_cb(char *str, size_t size, size_t nmemb, void *p_userdata)
 
   *ptr = '\0'; //replace ':' with '\0' to separate field from value
 
-  int ret = snprintf(resp_header->field[resp_header->size], MAX_HEADER_LEN, "%s", str);
-  ASSERT_S(ret < MAX_HEADER_LEN, "oob of resp_header->field");
+  int ret = snprintf(resp_header->field[resp_header->size], UA_MAX_HEADER_LEN, "%s", str);
+  ASSERT_S(ret < UA_MAX_HEADER_LEN, "oob of resp_header->field");
 
   if (!(ptr = strstr(ptr + 1, "\r\n"))) {//returns if can't find CRLF match
     return realsize;
@@ -129,12 +129,12 @@ conn_resheader_cb(char *str, size_t size, size_t nmemb, void *p_userdata)
   }
 
   //get the value part from string
-  ret = snprintf(resp_header->value[resp_header->size], MAX_HEADER_LEN, "%s",
+  ret = snprintf(resp_header->value[resp_header->size], UA_MAX_HEADER_LEN, "%s",
                  &str[strlen(str) + offset]);
-  ASSERT_S(ret < MAX_HEADER_LEN, "oob write attempt");
+  ASSERT_S(ret < UA_MAX_HEADER_LEN, "oob write attempt");
 
   ++resp_header->size; //update header amount of field/value resp_header
-  ASSERT_S(resp_header->size < MAX_HEADER_SIZE, "oob write of resp_header");
+  ASSERT_S(resp_header->size < UA_MAX_HEADER_SIZE, "oob write of resp_header");
 
   return realsize;
 }
@@ -490,7 +490,7 @@ static void
 set_url(struct user_agent_s *ua, struct ua_conn_s *conn, char endpoint[], va_list args)
 {
   //create the url route
-  char url_route[MAX_URL_LEN];
+  char url_route[UA_MAX_URL_LEN];
   int ret = vsnprintf(url_route, sizeof(url_route), endpoint, args);
   ASSERT_S(ret < (int)sizeof(url_route), "oob write of url_route");
 

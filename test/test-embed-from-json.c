@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 #include "libdiscord.h"
 #include "orka-utils.h"
 

@@ -2,9 +2,8 @@
 #define LIBDISCORD_H
 
 #include <stdbool.h>
-#include "json-actor-boxed.h"
-#include "user-agent.h"
 
+#include "json-actor-boxed.h"
 
 struct discord; // forward declaration
 
@@ -24,6 +23,7 @@ typedef uint64_t u64_snowflake_t;
 #define MAX_REASON_LEN        512 + 1
 #define MAX_MESSAGE_LEN       2000 + 1
 #define MAX_PAYLOAD_LEN       4096 + 1
+#define MAX_URL_LEN           512 + 1
 
 /* EMBED LIMITS
 https://discord.com/developers/docs/resources/channel#embed-limits */

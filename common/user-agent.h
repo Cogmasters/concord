@@ -37,9 +37,9 @@ https://en.wikipedia.org/wiki/List_of_HTTP_status_codes */
 #define HTTP_TOO_MANY_REQUESTS    429
 #define HTTP_GATEWAY_UNAVAILABLE  502
 
-#define MAX_HEADER_SIZE 100 + 1
-#define MAX_HEADER_LEN  1024 + 1
-#define MAX_URL_LEN     512 + 1
+#define UA_MAX_HEADER_SIZE 100 + 1
+#define UA_MAX_HEADER_LEN  1024 + 1
+#define UA_MAX_URL_LEN     512 + 1
 
 typedef enum { 
   UA_IDLE = 0, // haven't performed yet
@@ -50,8 +50,8 @@ typedef enum {
 } ua_status_t;
 
 struct ua_respheader_s {
-  char field[MAX_HEADER_SIZE][MAX_HEADER_LEN];
-  char value[MAX_HEADER_SIZE][MAX_HEADER_LEN];
+  char field[UA_MAX_HEADER_SIZE][UA_MAX_HEADER_LEN];
+  char value[UA_MAX_HEADER_SIZE][UA_MAX_HEADER_LEN];
   int size;
 };
 
@@ -63,7 +63,7 @@ struct ua_conn_s {
   struct sized_buffer resp_body; //the api response string
   struct ua_respheader_s resp_header; //the key/field response header
 
-  char req_url[MAX_URL_LEN]; //request's url
+  char req_url[UA_MAX_URL_LEN]; //request's url
   char *resp_url; //response's url
 
   ua_status_t status; //the conn request's status
