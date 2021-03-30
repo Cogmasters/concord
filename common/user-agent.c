@@ -575,7 +575,7 @@ perform_request(
 
     int httpcode = send_request(ua, conn);
 
-    (*ua->config.json_cb)(
+    (*ua->config.resp_dump_cb)(
       true, 
       httpcode, http_code_print(httpcode), 
       &ua->config, 
@@ -693,7 +693,7 @@ ua_vrun(
   struct ua_conn_s *conn = get_conn(ua);
   set_url(ua, conn, endpoint, args); //set the request url
 
-  (*ua->config.json_cb)(
+  (*ua->config.resp_dump_cb)(
     false, 
     0, http_method_print(http_method), 
     &ua->config, 

@@ -12,17 +12,14 @@ struct orka_config {
   char *fcontents; // config file contents
   size_t flen; // config file len
 
-  FILE *f_json_dump; //default stderr
-  void (*json_cb)(
-      _Bool is_response, 
-      int code, char *meaning, // related code and its meaning
-      struct orka_config*, 
+  FILE *f_resp_dump; //default stderr
+  void (*resp_dump_cb)(
+      _Bool show_code,  // if false code is ignored
+      int code, 
+      char *code_reason,
+      struct orka_config* config, 
       char *url, 
       char *body);
-#if 0  
-  FILE *f_curl_dump; //default stderr
-  int (*curl_cb)(CURL*, curl_infotype, char*, size_t, void*);
-#endif
 };
 
 void orka_config_init(struct orka_config*, const char tag[], const char config_file[]);

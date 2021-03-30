@@ -114,7 +114,7 @@ cws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
 
     pthread_mutex_lock(&ws->lock);
 
-    (*ws->config.json_cb)(
+    (*ws->config.resp_dump_cb)(
       true,
       event_code, "ON_EVENT",
       &ws->config, 
@@ -164,7 +164,7 @@ cws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
   ws->curr_iter_cleanup = NULL;
   ws->curr_iter_data = NULL;
 
-  (*ws->config.json_cb)(
+  (*ws->config.resp_dump_cb)(
     false,
     0, "ON_TEXT",
     &ws->config, 
@@ -374,7 +374,7 @@ void
 ws_send_text(struct websockets_s *ws, char text[])
 {
   pthread_mutex_lock(&ws->lock);
-  (*ws->config.json_cb)(
+  (*ws->config.resp_dump_cb)(
     false, 
     0, "SEND", 
     &ws->config, 

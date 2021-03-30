@@ -14,120 +14,38 @@
 static bool g_first_run = true; // used to delete existent dump files
 
 static void
-json_dump(
-  bool is_response, // if not response then code is ignored
-  int code, char *meaning, // related code and its meaning
+resp_dump(
+  bool show_code, // if false code is ignored
+  int code, 
+  char *code_reason,
   struct orka_config *config, 
   char *url,
-  char *json_text)
+  char *body)
 {
   char timestr[64] = {0};
   orka_timestamp_str(timestr, sizeof(timestr));
 
-  char reason[256];
-  if (true == is_response)
-    snprintf(reason, sizeof(reason), "RESPONSE %s(%d)", meaning, code);
+  char header[256];
+  if (true == show_code)
+    snprintf(header, sizeof(header), "RESPONSE %s(%d)", code_reason, code);
   else
-    snprintf(reason, sizeof(reason), "REQUEST %s", meaning);
+    snprintf(header, sizeof(header), "REQUEST %s", code_reason);
 
-  fprintf(config->f_json_dump, 
-    "\r\r\r\r%s [%s #TID%ld] - %s - %s\n%s\n", 
-    reason,
+  fprintf(config->f_resp_dump, 
+    "%s [%s #TID%ld] - %s - %s\r\r\r\r\n%s\n", 
+    header,
     config->tag, 
     pthread_self(),
     timestr, 
     url,
-    (*json_text) ? json_text : "empty body");
+    IS_EMPTY_STRING(body) ? "empty body" : body);
 
-  fflush(config->f_json_dump);
+  fflush(config->f_resp_dump);
 }
 
-static void // see json_dump for parameter definitions
-noop_json_dump(bool a, int b, char *c, struct orka_config *d, char *e, char *f) { return; (void)a; (void)b; (void)c; (void)d; (void)e; (void)f;
+static void // see resp_dump for parameter definitions
+noop_resp_dump(bool a, int b, char *c, struct orka_config *d, char *e, char *f) { return; (void)a; (void)b; (void)c; (void)d; (void)e; (void)f;
 }
-
-#if 0
-static int
-curl_dump(
-  CURL *ehandle,
-  curl_infotype type,
-  char *data,
-  size_t size,
-  void *p_userdata)
-{
-  struct orka_config *config = (struct orka_config *)p_userdata;
-
-  FILE *f_dump = config->f_curl_dump;
-
-  const char *text = NULL;
-  switch (type) {
-  case CURLINFO_TEXT:
-    {
-      char timestr[64] = {0};
-      orka_timestamp_str(timestr, sizeof(timestr));
-
-      fprintf(f_dump, "\r\r\r\rCURL INFO - %s\n%s\n", timestr, data);
-      fflush(f_dump);
-    }
-  /* fallthrough */
-  default:
-      return 0;
-  case CURLINFO_HEADER_OUT:
-      text = "SEND HEADER";
-      break;
-  case CURLINFO_DATA_OUT:
-      text = "SEND DATA";
-      break;
-  case CURLINFO_SSL_DATA_OUT:
-      text = "SEND SSL DATA";
-      break;
-  case CURLINFO_HEADER_IN:
-      text = "RECEIVE HEADER";
-      break;
-  case CURLINFO_DATA_IN:
-      text = "RECEIVE DATA";
-      break;
-  case CURLINFO_SSL_DATA_IN:
-      text = "RECEIVE SSL DATA";
-      break;
-  }
-
-  const unsigned int WIDTH = 0x10;
-
-  char timestr[64] = {0};
-  orka_timestamp_str(timestr, sizeof(timestr));
-
-  fprintf(f_dump, "\r\r\r\r%s %10.10ld bytes (0x%8.8lx) - %s\n%s\n",
-          text, (long)size, (long)size, timestr, data);
-
-  for(size_t i=0; i < size; i += WIDTH)
-  {
-    fprintf(f_dump, "%4.4lx: ", (long)i);
-
-    //show hex to the left
-    for(size_t c = 0; c < WIDTH; c++) {
-      if(i+c < size)
-        fprintf(f_dump, "%02x ", data[i+c]);
-      else
-        fputs("   ", f_dump);
-    }
-
-    //show data on the right
-    for(size_t c = 0; (c < WIDTH) && (i+c < size); c++) {
-      char x = (data[i+c] >= 0x20 && data[i+c] < 0x80) ? data[i+c] : '.';
-      fputc(x, f_dump);
-    }
-
-    fputc('\n', f_dump); //newline
-  }
-
-  fflush(f_dump);
-
-  return 0;
-
-  (void)ehandle;
-}
-#endif
 
 void
 orka_config_init(
@@ -140,13 +58,9 @@ orka_config_init(
   }
   config->tag = (tag) ? strdup(tag) : strdup("USER AGENT");
 
-  if (!config_file || !*config_file) {
-    config->json_cb = &noop_json_dump;
-    config->f_json_dump = stderr;
-#if 0
-    config->curl_cb = NULL;
-    config->f_curl_dump = stderr;
-#endif
+  if (IS_EMPTY_STRING(config_file)) {
+    config->resp_dump_cb = &noop_resp_dump;
+    config->f_resp_dump = stderr;
     return; /* EARLY RETURN */
   }
 
@@ -159,9 +73,6 @@ orka_config_init(
     char filename[PATH_MAX];
     char level[128];
     struct _dump_s dump_json;
-#if 0
-    struct _dump_s dump_curl;
-#endif
   } logging = {{0}};
 
   if (config->fcontents) {
@@ -173,36 +84,20 @@ orka_config_init(
   json_extract(config->fcontents, config->flen,
              "(logging.filename):s"
              "(logging.level):s"
-#if 0
-             "(logging.dump_curl.filename):s"
-             "(logging.dump_curl.enable):b"
-#endif
              "(logging.dump_json.filename):s"
              "(logging.dump_json.enable):b",
              logging.filename,
              logging.level,
-#if 0
-             logging.dump_curl.filename,
-             &logging.dump_curl.enable,
-#endif
              logging.dump_json.filename,
              &logging.dump_json.enable);
 
   DS_PRINT(
     "logging.filename %s\n"
     "logging.level %s\n"
-#if 0
-    "logging.dump_curl.filename %s\n"
-    "logging.dump_curl.enable %d\n"
-#endif
     "logging.dump_json.filename %s\n"
     "logging.dump_json.enable %d\n",
     logging.filename,
     logging.level,
-#if 0
-    logging.dump_curl.filename,
-    logging.dump_curl.enable,
-#endif
     logging.dump_json.filename,
     logging.dump_json.enable);
 
@@ -211,28 +106,11 @@ orka_config_init(
       if (g_first_run == true) {
         remove(logging.dump_json.filename);
       }
-      config->f_json_dump = fopen(logging.dump_json.filename, "a+");
-      ASSERT_S(NULL != config->f_json_dump, "Could not create dump file");
+      config->f_resp_dump = fopen(logging.dump_json.filename, "a+");
+      ASSERT_S(NULL != config->f_resp_dump, "Could not create dump file");
     }
-    config->json_cb = &json_dump;
+    config->resp_dump_cb = &resp_dump;
   }
-#if 0
-  if (true == logging.dump_curl.enable) {
-    if (*logging.dump_curl.filename) {
-      if (g_first_run == true) {
-        remove(logging.dump_curl.filename);
-      }
-      config->f_curl_dump = fopen(logging.dump_curl.filename, "a+");
-      ASSERT_S(NULL != config->f_curl_dump, "Could not create dump file");
-    }
-    else {
-      config->f_curl_dump = stderr;
-    }
-    config->curl_cb = &curl_dump;
-  } else {
-    config->curl_cb = NULL;
-  }
-#endif
 
   if (g_first_run == true) {
     g_first_run = false;
@@ -244,12 +122,8 @@ orka_config_cleanup(struct orka_config *config)
 {
   if (config->tag)
     free(config->tag);
-  if (config->f_json_dump)
-    fclose(config->f_json_dump);
-#if 0
-  if (config->f_curl_dump)
-    fclose(config->f_curl_dump);
-#endif
+  if (config->f_resp_dump)
+    fclose(config->f_resp_dump);
 }
 
 char*
