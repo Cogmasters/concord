@@ -62,6 +62,13 @@ typedef void** ntl_t;
  */
 #define NTL_T(t)  t**
 
+/*
+ * a conventional foreach loop that can be used with NTLs
+ */
+#define NTL_FOREACH(element, ntl) \
+  for (int __i=0,__=1;__;__=0) \
+    for (element = *ntl; ntl[__i]; element = ntl[++__i])
+
 
 /*
  * this is the preferred method to allocate a ntl
