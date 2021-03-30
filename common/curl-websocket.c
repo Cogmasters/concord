@@ -945,12 +945,21 @@ cws_new(const char *url, const char *websocket_protocols, const struct cws_callb
      * Then we manually override the string sent to be "GET".
      */
     curl_easy_setopt(easy, CURLOPT_CUSTOMREQUEST, "GET");
+#if 0
     /*
      * CURLOPT_UPLOAD=1 with HTTP/1.1 implies:
      *     Expect: 100-continue
      * but we don't want that, rather 101. Then force: 101.
      */
     priv->headers = curl_slist_append(priv->headers, "Expect: 101");
+#else
+    /*
+     * This disables a automatic CURL behaviour where we receive a
+     * error if the server can't be bothered to send just a header
+     * with a 100 response code (https://stackoverflow.com/questions/9120760/curl-simple-file-upload-417-expectation-failed/19250636")
+     */
+    priv->headers = curl_slist_append(priv->headers, "Expect:");
+#endif
     /*
      * CURLOPT_UPLOAD=1 without a size implies in:
      *     Transfer-Encoding: chunked
