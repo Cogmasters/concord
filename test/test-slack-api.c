@@ -1,11 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "slack-common.h"
+#include "slack.h"
 
-void print_json_cb(char str[], size_t len, void *data) {
-  fprintf(stderr, "%.*s", (int)len, str);
-}
 
 int main(int argc, char *argv[])
 {
@@ -15,16 +12,9 @@ int main(int argc, char *argv[])
   else
     config_file = "bot.config";
 
-  struct slack_adapter adapter = {0};
-  slack_adapter_init(&adapter, NULL, config_file);
+  struct slack *client = slack_config_init(config_file);
 
-  struct resp_handle resp_handle = { .ok_cb = &print_json_cb };
+  slack_apps_connections_open(client); 
 
-  slack_adapter_run(
-    &adapter,
-    &resp_handle,
-    NULL,
-    HTTP_GET, "/conversations.list?limit=50");
-
-  slack_adapter_cleanup(&adapter);
+  slack_cleanup(client);
 }
