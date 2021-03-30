@@ -11,7 +11,7 @@
 #define BASE_API_URL "https://discord.com/api"
 
 
-struct _context {
+struct _ratelimit_cxt {
   struct discord_adapter *adapter;
   struct discord_bucket *bucket;
   char *endpoint;
@@ -48,7 +48,7 @@ discord_adapter_cleanup(struct discord_adapter *adapter)
 static int
 bucket_tryget_cb(void *p_cxt)
 {
-  struct _context *cxt = p_cxt;
+  struct _ratelimit_cxt *cxt = p_cxt;
   pthread_mutex_lock(&cxt->adapter->ratelimit.lock);
   cxt->bucket = discord_bucket_try_get(cxt->adapter, cxt->endpoint);
   pthread_mutex_unlock(&cxt->adapter->ratelimit.lock);
@@ -58,14 +58,14 @@ bucket_tryget_cb(void *p_cxt)
 static void
 bucket_trycooldown_cb(void *p_cxt)
 {
-  struct _context *cxt = p_cxt;
+  struct _ratelimit_cxt *cxt = p_cxt;
   discord_bucket_try_cooldown(cxt->bucket);
 }
 
 static void
 bucket_trybuild_cb(void *p_cxt, struct ua_conn_s *conn)
 {
-  struct _context *cxt = p_cxt;
+  struct _ratelimit_cxt *cxt = p_cxt;
   pthread_mutex_lock(&cxt->adapter->ratelimit.lock);
   discord_bucket_build(cxt->adapter, cxt->bucket, cxt->endpoint, conn);
   pthread_mutex_unlock(&cxt->adapter->ratelimit.lock);
@@ -91,7 +91,7 @@ on_failure_cb(
   int httpcode,
   struct ua_conn_s *conn)
 {
-  struct _context *cxt = p_cxt;
+  struct _ratelimit_cxt *cxt = p_cxt;
 
   if (httpcode >= 500) { // server related error, retry
     NOTOP_PRINT("(%d)%s - %s", 
@@ -178,7 +178,7 @@ discord_adapter_run(
   va_list args;
   va_start(args, endpoint);
 
-  struct _context cxt = {
+  struct _ratelimit_cxt cxt = {
     .adapter = adapter, 
     .endpoint = endpoint
   };

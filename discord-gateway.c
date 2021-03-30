@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h> // for isspace()
-#include <pthread.h>
 
 #include "libdiscord.h"
 #include "discord-common.h"
