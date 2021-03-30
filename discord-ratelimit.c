@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#define _GNU_SOURCE  // tdestroy
 #include <search.h> // for POSIX tree (tfind, tsearch, tdestroy)
 #include <pthread.h> // for bucket synchronization
 

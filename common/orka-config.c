@@ -32,7 +32,7 @@ resp_dump(
     snprintf(header, sizeof(header), "REQUEST %s", code_reason);
 
   fprintf(config->f_resp_dump, 
-    "%s [%s #TID%ld] - %s - %s\r\r\r\r\n%s\n", 
+    "%s [%s #TID%p] - %s - %s\r\r\r\r\n%s\n",
     header,
     config->tag, 
     pthread_self(),

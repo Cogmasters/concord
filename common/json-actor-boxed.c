@@ -61,7 +61,7 @@ size_t ja_str_to_query_v(char *json, size_t len, void *p) {
 }
 
 void ja_str_list_free(ja_str **p) {
-  ntl_free(p, ja_str_free);
+  ntl_free((ntl_t)p, ja_str_free);
 }
 
 void ja_str_list_free_v(void **p) {
@@ -154,7 +154,7 @@ size_t ja_u64_to_query_v(char *json, size_t len, void *p) {
 }
 
 void ja_u64_list_free(ja_u64 **p) {
-  ntl_free(p, ja_u64_free);
+  ntl_free((ntl_t)p, ja_u64_free);
 }
 
 void ja_u64_list_free_v(void **p) {

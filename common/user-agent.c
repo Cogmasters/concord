@@ -4,6 +4,7 @@
 #include <stdarg.h>
 #include <ctype.h> //for isspace()
 #include <string.h>
+#include <strings.h>
 #include <pthread.h>
 
 #include <curl/curl.h>

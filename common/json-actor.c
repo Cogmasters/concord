@@ -47,6 +47,7 @@
  * query_inject(pos, size, "(key)=d&(key1)=s", &i, str);
  *
  */
+#define _GNU_SOURCE
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
