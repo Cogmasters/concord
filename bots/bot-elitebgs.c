@@ -4,6 +4,7 @@
 #include <assert.h>
 
 #include "libdiscord.h"
+#include "user-agent.h"
 #include "orka-utils.h"
 #include "json-scanf.h"
 #include "json-actor.h"
