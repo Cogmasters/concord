@@ -7,6 +7,7 @@
 
 struct slack* slack_config_init(const char config_file[]);
 void slack_cleanup(struct slack *client);
+void slack_run(struct slack *client);
 
 void slack_apps_connections_open(struct slack *client);
 

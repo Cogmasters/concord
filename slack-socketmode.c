@@ -22,7 +22,9 @@ apps_connections_open_from_json(char str[], size_t len, void *p_url)
     (char*)p_url,
     &metadata);
 
-  json_extract(metadata.start, metadata.size, "(messages):T", &messages);
+  if (metadata.start) {
+    json_extract(metadata.start, metadata.size, "(messages):T", &messages);
+  }
 
   VASSERT_S(true == status, "Couldn't fetch connections for websockets:\n\t\tMessage: %.*s", (int)messages.size, messages.start);
 }
@@ -57,20 +59,44 @@ slack_apps_connections_open(struct slack *client)
   free(bot_token);
 }
 
+static int
+on_startup_cb(void *p_sm) {
+  return 1;
+}
+
+static void
+on_connect_cb(void *p_sm, const char *ws_protocols) {
+  D_PRINT("Connected, WS-Protocols: '%s'", ws_protocols);
+}
+
+static void
+on_text_cb(void *p_sm, const char *text, size_t len) {
+  ERR("%.*s", (int)len, text);
+}
+
+static void
+on_close_cb(void *p_sm, enum ws_close_reason wscode, const char *reason, size_t len)
+{
+  struct slack_socketmode *sm = p_sm;
+  ws_set_status(sm->ws, WS_DISCONNECTED);
+
+  PRINT("(code: %4d) : %zd bytes\n\t"
+          "REASON: '%s'", 
+          wscode, len, reason);
+}
+
 void
 slack_socketmode_init(struct slack_socketmode *sm, const char config_file[])
 {
   if (!config_file) ERR("Missing config file");
   struct ws_callbacks cbs = {
     .data = sm,
-#if 0
     .on_startup = &on_startup_cb,
-    .on_iter_end = &on_iter_end_cb,
-    .on_text_event = &on_text_event_cb,
+    .on_iter_end = NULL,
+    .on_text_event = NULL,
     .on_connect = &on_connect_cb,
     .on_text = &on_text_cb,
     .on_close = &on_close_cb
-#endif
   };
 
   sm->ws = ws_config_init(sm->base_url, &cbs, "SLACK SOCKET MODE", config_file);

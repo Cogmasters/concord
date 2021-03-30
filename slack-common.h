@@ -27,7 +27,7 @@ void slack_adapter_run(
 struct slack_socketmode {
   struct websockets_s *ws;
   char base_url[UA_MAX_URL_LEN];
-  pthread_mutex_t lock; //for accessing gw fields within events
+  pthread_mutex_t lock; //for accessing sm fields within events
 };
 
 /* SOCKET MODE PRIVATE FUNCTIONS */
