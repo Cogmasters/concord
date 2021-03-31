@@ -86,15 +86,15 @@ fetch_member_msgs(struct discord *client, u64_snowflake_t guild_id, u64_snowflak
     .limit = 100
   };
 
-  NTL_T(struct discord_message) messages = NULL;
   for (int i=0; channels[i]; ++i)
   {
     params.before = 0;
 
     int n_msg;
+    NTL_T(struct discord_message) messages = NULL;
     do {
       discord_get_channel_messages(client, channels[i]->id, &params, &messages);
-      ASSERT_S(NULL != messages, "Couldn't fetch messages from channel");
+      if (!messages) break; /* EARLY BREAK */
 
       for (n_msg = 0; messages[n_msg]; ++n_msg) {
         if (user_id == messages[n_msg]->author->id 
