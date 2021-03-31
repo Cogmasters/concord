@@ -150,8 +150,7 @@ send_resume(struct discord_gateway *gw)
               gw->identify->token,
               gw->session_id, 
               &gw->payload.seq_number);
-
-  ASSERT_S(ret < (int)sizeof(payload), "Out of bounds write attempt");
+  ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
 
   D_NOTOP_PRINT("RESUME PAYLOAD:\n\t%s", payload);
   send_payload(gw, payload);
@@ -177,7 +176,7 @@ send_identify(struct discord_gateway *gw)
               "(op):2" // IDENTIFY OPCODE
               "(d):F",
               &discord_gateway_identify_to_json_v, gw->identify);
-  ASSERT_S(ret < (int)sizeof(payload), "Out of bounds write attempt");
+  ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
 
   // contain token (sensitive data), enable _ORKA_DEBUG_STRICT to print it
   DS_PRINT("IDENTIFY PAYLOAD:\n\t%s", payload);
@@ -973,7 +972,7 @@ send_heartbeat(struct discord_gateway *gw)
   char payload[64];
   int ret = json_inject(payload, sizeof(payload), 
               "(op):1, (d):d", &gw->payload.seq_number);
-  ASSERT_S(ret < (int)sizeof(payload), "Out of bounds write attempt");
+  ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
 
   D_PRINT("HEARTBEAT_PAYLOAD:\n\t\t%s", payload);
   send_payload(gw, payload);

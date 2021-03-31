@@ -278,8 +278,7 @@ void on_command(
               "(timeMax):F", 
               msg->content,
               &orka_ulltostr, &g_tick_ms);
-
-  ASSERT_S(ret < (int)sizeof(query), "Out of bounds write attempt");
+  ASSERT_S(ret < sizeof(query), "Out of bounds write attempt");
 
   discord_trigger_typing_indicator(client, msg->channel_id);
 
