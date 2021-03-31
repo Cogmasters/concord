@@ -71,7 +71,7 @@ on_connect_cb(void *p_sm, const char *ws_protocols) {
 
 static void
 on_text_cb(void *p_sm, const char *text, size_t len) {
-  ERR("%.*s", (int)len, text);
+  PRINT("%.*s", (int)len, text);
 }
 
 static void
@@ -98,6 +98,9 @@ slack_socketmode_init(struct slack_socketmode *sm, const char config_file[])
     .on_text = &on_text_cb,
     .on_close = &on_close_cb
   };
+
+  // @todo temporary debug_reconnect while development phase
+  strncat(sm->base_url, "&debug_reconnects=true", sizeof(sm->base_url));
 
   sm->ws = ws_config_init(sm->base_url, &cbs, "SLACK SOCKET MODE", config_file);
 
