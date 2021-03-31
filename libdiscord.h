@@ -55,10 +55,12 @@ https://discord.com/developers/docs/reference#snowflakes */
 typedef void (idle_cb)(struct discord *client, const struct discord_user *bot);
 
 /* GUILD ROLE EVENTS CALLBACKS */
+#if 0
 typedef void (guild_role_cb)(
     struct discord *client, const struct discord_user *bot,
     const u64_snowflake_t guild_id,
     const struct discord_guild_role *role);
+#endif
 typedef void (guild_role_cb)(
     struct discord *client, const struct discord_user *bot,
     const u64_snowflake_t guild_id,

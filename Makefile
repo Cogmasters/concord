@@ -55,7 +55,7 @@ ifeq ($(BEARSSL),1)
 	LIBDISCORD_LDFLAGS += -lbearssl -static
 	CFLAGS += -DBEARSSL -DBEAR_SSL
 else ifeq ($(MBEDTLS),1)
-	LIBDISCORD_LDFLAGS += -lmbedtls -static
+	LIBDISCORD_LDFLAGS += -lmbedx509 -lmbedtls -lmbedcrypto -static
 	CFLAGS += -DMBEDTLS
 else ifeq ($(CC),stensal-c)
 	LIBDISCORD_LDFLAGS += -lbearssl -static
@@ -71,7 +71,7 @@ LIBS_LDFLAGS := $(LIBDISCORD_LDFLAGS)
 LIBDISCORD	:= $(LIBDIR)/libdiscord.a
 
 
-CFLAGS += -Wall -std=c11 -O0 -g -D_GNU_SOURCE \
+CFLAGS += -Wall -std=c11 -O0 -g \
 	-Wno-unused-function -Wno-unused-but-set-variable \
 	-I. -I./common 
 

@@ -19,6 +19,6 @@ int main ()
     .ntl_recipient_p = (ntl_t *)&namespaces
   };
   orka_str_to_ntl(ns, strlen(ns), &d0_alias);
-  fprintf(stderr, "%d\n", ntl_length(namespaces));
-  fprintf(stderr, "%d\n", ntl_length(*(namespaces[0])));
+  fprintf(stderr, "%d\n", ntl_length((ntl_t)namespaces));
+  fprintf(stderr, "%d\n", ntl_length((ntl_t)*(namespaces[0])));
 }

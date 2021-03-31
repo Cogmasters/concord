@@ -26,13 +26,6 @@ struct expect_at {
 };
 
 #define SKIP_SPACES(s)  while(isspace(*s)) s++;
-static int
-cmp(char *s1, char *s2) {
-  SKIP_SPACES(s1);
-  SKIP_SPACES(s2);
-  while (*s1 == *s2) {
-  }
-}
 
 struct expected_results {
   struct expect_at spec;
