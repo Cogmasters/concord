@@ -4,12 +4,9 @@
 
 #include "slack.h"
 
-#if 0
-void on_ready(struct slack *client, const struct slack_user *me) {
-  fprintf(stderr, "\n\nSuccesfully connected to Slack as %s#%s!\n\n",
-      me->username, me->discriminator);
+void on_hello(struct slack *client) {
+  fputs("\n\nSuccesfully connected to Slack!\n\n", stderr);
 }
-#endif
 
 int main(int argc, char *argv[])
 {
@@ -22,11 +19,10 @@ int main(int argc, char *argv[])
 
   struct slack *client = slack_config_init(config_file);
   assert(NULL != client);
-#if 0
-  slack_on_ready(client, &on_ready);
-#endif
 
-  slack_run(client);
+  slack_on_hello(client, &on_hello);
+
+  slack_rtm_run(client);
 
   slack_cleanup(client);
 }

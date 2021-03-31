@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
 
   struct slack *client = slack_config_init(config_file);
 
-  slack_apps_connections_open(client); 
+  slack_rtm_connect(client); 
 
   slack_cleanup(client);
 }
