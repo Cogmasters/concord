@@ -35,7 +35,7 @@ resp_dump(
     "%s [%s #TID%p] - %s - %s\r\r\r\r\n%s\n",
     header,
     config->tag, 
-    pthread_self(),
+    (void*)pthread_self(),
     timestr, 
     url,
     IS_EMPTY_STRING(body) ? "empty body" : body);
