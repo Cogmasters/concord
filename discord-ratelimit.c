@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define _GNU_SOURCE  // tdestroy
-#include <search.h> // for POSIX tree (tfind, tsearch, tdestroy)
+#include <search.h> /* tfind, tsearch, tdelete */
 #include <pthread.h> // for bucket synchronization
 
 #include "libdiscord.h"
@@ -208,23 +207,20 @@ discord_bucket_build(struct discord_adapter *adapter, struct discord_bucket *buc
     parse_ratelimits(bucket, conn);
 }
 
-/* This comparison routines can be used with tdestroy()
- * when explicity deleting a root node, as no comparison
- * is necessary. */
-static void
-route_cleanup(void *p_route) 
-{
-  struct _route_s *route = (struct _route_s*)p_route;
-  free(route->str);
-  free(route);
-}
+static int tdelete_noop_cb(const void *a, const void *b){return 0;}
 
 /* clean routes and buckets */
 void
 discord_bucket_cleanup(struct discord_adapter *adapter)
-{
-  //destroy every route encountered
-  tdestroy(adapter->ratelimit.routes_root, &route_cleanup);
+{ 
+  // repeatedly deletes root until tree is empty
+  struct _route_s *p_route;
+  while (adapter->ratelimit.routes_root) {
+    p_route = *(struct _route_s **)adapter->ratelimit.routes_root;
+    tdelete((void*)p_route, &adapter->ratelimit.routes_root, &tdelete_noop_cb);
+    free(p_route->str);
+    free(p_route);
+  }
 
   //destroy every client bucket found
   for (size_t i=0; i < adapter->ratelimit.num_buckets; ++i) {
