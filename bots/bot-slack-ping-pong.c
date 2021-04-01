@@ -16,12 +16,14 @@ void on_hello(struct slack *client, char payload[], size_t len) {
 void on_message(struct slack *client, char payload[], size_t len) 
 {
   char *text=NULL, *channel=NULL;
-  json_extract(payload, len, "(text):?s,(channel):?s", &text, &channel);
+  struct sized_buffer check_bot={0};
+  json_extract(payload, len, "(text):?s,(channel):?s,(bot_id):T", &text, &channel, &check_bot);
+  if (check_bot.start) return; // means message belongs to a bot
 
   if (strcasestr(text, "ping"))
-    slack_send_message(client, channel, "pong");
+    slack_chat_post_message(client, channel, "pong");
   else if (strcasestr(text, "pong"))
-    slack_send_message(client, channel, "ping");
+    slack_chat_post_message(client, channel, "ping");
 
   if (text) free(text);
   if (channel) free(channel);
@@ -42,7 +44,7 @@ int main(int argc, char *argv[])
   slack_on_hello(client, &on_hello);
   slack_on_message(client, &on_message);
 
-  slack_rtm_run(client);
+  slack_socketmode_run(client);
 
   slack_cleanup(client);
 }
