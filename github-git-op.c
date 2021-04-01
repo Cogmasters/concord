@@ -2,11 +2,11 @@
 #include <stdlib.h>
 #include <math.h>
 
-#include "github-v3-adapter.h"
+#include "github-adapter.h"
 
 #include "orka-utils.h"
 #include "json-actor.h"
-#include "github-v3.h"
+#include "github.h"
 
 struct github_config {
   char *owner;
@@ -26,15 +26,15 @@ github_config_init(struct github_config *data, char * username, char *file)
   free(json);
 }
 
-struct github_v3_git_op {
-  struct github_v3_adapter adapter;
+struct github_git_op {
+  struct github_adapter adapter;
   struct github_config config;
   struct sized_buffer body;
   struct resp_handle handle;
 };
 
 /*
-struct github_v3_git_op_file {
+struct github_git_op_file {
   char *path;
   char *sha;
 };
@@ -61,12 +61,12 @@ _log(char *str, size_t len, void *ptr) {
   fprintf(stderr, "%.*s\n", (int)len, str);
 }
 
-struct github_v3_git_op*
-github_v3_git_op_init(char *username, char *token, char *repo_config)
+struct github_git_op*
+github_git_op_init(char *username, char *token, char *repo_config)
 {
-  struct github_v3_git_op *d = calloc(1, sizeof(*d));
+  struct github_git_op *d = calloc(1, sizeof(*d));
 
-  github_v3_adapter_init (&d->adapter, username, token);
+  github_adapter_init (&d->adapter, username, token);
   github_config_init(&d->config, username, repo_config);
 
   d->handle.ok_cb = NULL;
@@ -78,13 +78,13 @@ github_v3_git_op_init(char *username, char *token, char *repo_config)
   return d;
 }
 
-char * github_v3_git_op_update_my_fork(struct github_v3_git_op *d)
+char * github_git_op_update_my_fork(struct github_git_op *d)
 {
   fprintf(stderr, "===update-my-fork===\n");
   char *sha = NULL;
   d->handle.ok_cb = load_object_sha;
   d->handle.ok_obj = &sha;
-  github_v3_adapter_run(&d->adapter, &d->handle, NULL,
+  github_adapter_run(&d->adapter, &d->handle, NULL,
                   HTTP_GET, "/repos/%s/%s/git/refs/heads/%s",
                   d->config.owner, d->config.repo, d->config.default_branch);
 
@@ -93,7 +93,7 @@ char * github_v3_git_op_update_my_fork(struct github_v3_git_op *d)
   d->body.size = json_ainject(&d->body.start, "(sha):s", sha);
 
   fprintf(stderr, "PATCH: %.*s %zu\n", (int)d->body.size, d->body.start, d->body.size);
-  github_v3_adapter_run(&d->adapter, &d->handle, &d->body,
+  github_adapter_run(&d->adapter, &d->handle, &d->body,
                   HTTP_PATCH, "/repos/%s/%s/git/refs/heads/%s",
                   d->config.username, d->config.repo, d->config.default_branch);
   free(d->body.start);
@@ -102,12 +102,12 @@ char * github_v3_git_op_update_my_fork(struct github_v3_git_op *d)
 
 
 char *
-github_v3_git_op_get_head_commit(struct github_v3_git_op *d)
+github_git_op_get_head_commit(struct github_git_op *d)
 {
   char *sha = NULL;
   d->handle.ok_cb = load_object_sha;
   d->handle.ok_obj = &sha;
-  github_v3_adapter_run(&d->adapter, &d->handle, NULL,
+  github_adapter_run(&d->adapter, &d->handle, NULL,
           HTTP_GET, "/repos/%s/%s/git/refs/heads/%s",
           d->config.username, d->config.repo, d->config.default_branch);
   return sha;
@@ -115,13 +115,13 @@ github_v3_git_op_get_head_commit(struct github_v3_git_op *d)
 
 
 char *
-github_v3_git_op_get_tree_sha(struct github_v3_git_op *d, char *commit_sha)
+github_git_op_get_tree_sha(struct github_git_op *d, char *commit_sha)
 {
   fprintf(stderr, "===get-tree-sha==\n");
   char *sha = NULL;
   d->handle.ok_cb = load_sha;
   d->handle.ok_obj = &sha;
-  github_v3_adapter_run(&d->adapter, &d->handle, NULL,
+  github_adapter_run(&d->adapter, &d->handle, NULL,
           HTTP_GET, "/repos/%s/%s/git/trees/%s",
           d->config.username, d->config.repo, commit_sha);
 
@@ -130,7 +130,7 @@ github_v3_git_op_get_tree_sha(struct github_v3_git_op *d, char *commit_sha)
 }
 
 void
-github_v3_git_op_create_blobs(struct github_v3_git_op *d, struct github_v3_git_op_file **files)
+github_git_op_create_blobs(struct github_git_op *d, struct github_git_op_file **files)
 {
   char *file_sha = NULL;
   d->handle.ok_cb = load_sha;
@@ -146,7 +146,7 @@ github_v3_git_op_create_blobs(struct github_v3_git_op *d, struct github_v3_git_o
                                      len, content);
 
     fprintf(stderr, "%.*s\n", (int)d->body.size, d->body.start);
-    github_v3_adapter_run(&d->adapter, &d->handle, &d->body,
+    github_adapter_run(&d->adapter, &d->handle, &d->body,
             HTTP_POST, "/repos/%s/%s/git/blobs",
             d->config.username, d->config.repo);
     free(d->body.start);
@@ -159,7 +159,7 @@ github_v3_git_op_create_blobs(struct github_v3_git_op *d, struct github_v3_git_o
 static size_t
 node2json(char *str, size_t size, void *p)
 {
-  struct github_v3_git_op_file *f = (struct github_v3_git_op_file *)p;
+  struct github_git_op_file *f = (struct github_git_op_file *)p;
   return json_inject(str, size,
                      "(path) : s"
                      "(mode) : |100644|"
@@ -175,9 +175,9 @@ node_list2json(char *buf, size_t size, void *p) {
 }
 
 char *
-github_v3_git_op_create_tree(
-  struct github_v3_git_op *d, char *base_tree_sha, 
-  struct github_v3_git_op_file **files)
+github_git_op_create_tree(
+  struct github_git_op *d, char *base_tree_sha, 
+  struct github_git_op_file **files)
 {
   fprintf(stderr, "==create-tree==\n");
 
@@ -192,7 +192,7 @@ github_v3_git_op_create_tree(
   d->handle.ok_obj = &new_tree_sha;
 
   fprintf(stderr, "%s\n", d->body.start);
-  github_v3_adapter_run(&d->adapter, &d->handle, &d->body,
+  github_adapter_run(&d->adapter, &d->handle, &d->body,
           HTTP_POST, "/repos/%s/%s/git/trees",
           d->config.username, d->config.repo);
 
@@ -203,7 +203,7 @@ github_v3_git_op_create_tree(
 }
 
 char *
-github_v3_git_op_create_a_commit(struct github_v3_git_op *d, char *tree_sha, 
+github_git_op_create_a_commit(struct github_git_op *d, char *tree_sha, 
                  char *parent_commit_sha, char *commit_msg)
 {
   fprintf(stderr, "===create-a-commit===\n");
@@ -219,7 +219,7 @@ github_v3_git_op_create_a_commit(struct github_v3_git_op *d, char *tree_sha,
                               tree_sha,
                               parent_commit_sha);
 
-  github_v3_adapter_run(&d->adapter, &d->handle, &d->body,
+  github_adapter_run(&d->adapter, &d->handle, &d->body,
           HTTP_POST, "/repos/%s/%s/git/commits",
           d->config.username, d->config.repo);
 
@@ -229,7 +229,7 @@ github_v3_git_op_create_a_commit(struct github_v3_git_op *d, char *tree_sha,
 }
 
 void
-github_v3_git_op_create_a_branch(struct github_v3_git_op *d, char *head_commit_sha, char *branch)
+github_git_op_create_a_branch(struct github_git_op *d, char *head_commit_sha, char *branch)
 {
   fprintf(stderr, "===create-a-branch===\n");
   d->body.size = json_ainject(&d->body.start,
@@ -240,27 +240,27 @@ github_v3_git_op_create_a_branch(struct github_v3_git_op *d, char *head_commit_s
   fprintf(stderr, "%.*s\n", (int)d->body.size, d->body.start);
   d->handle.ok_cb = _log;
   d->handle.ok_obj = NULL;
-  github_v3_adapter_run(&d->adapter, &d->handle, &d->body,
+  github_adapter_run(&d->adapter, &d->handle, &d->body,
           HTTP_POST, "/repos/%s/%s/git/refs",
           d->config.username, d->config.repo);
   free(d->body.start);
 }
 
 void
-github_v3_git_op_update_a_commit(struct github_v3_git_op *d, char *branch, char *commit_sha)
+github_git_op_update_a_commit(struct github_git_op *d, char *branch, char *commit_sha)
 {
   fprintf(stderr, "===update-a-commit===\n");
   d->handle.ok_cb = _log;
   d->body.size = json_ainject(&d->body.start, "(sha):s", commit_sha);
   fprintf(stderr, "PATCH: %s\n", d->body.start);
-  github_v3_adapter_run(&d->adapter, &d->handle, &d->body,
+  github_adapter_run(&d->adapter, &d->handle, &d->body,
           HTTP_PATCH, "/repos/%s/%s/git/refs/heads/%s",
           d->config.username, d->config.repo, branch);
   free(d->body.start);
 }
 
 void
-github_v3_git_op_create_a_pull_request(struct github_v3_git_op *d, char *branch, char *pull_msg) {
+github_git_op_create_a_pull_request(struct github_git_op *d, char *branch, char *pull_msg) {
   // 5. create a pull request
   fprintf(stderr, "===create-a-pull-request===\n");
 
@@ -273,7 +273,7 @@ github_v3_git_op_create_a_pull_request(struct github_v3_git_op *d, char *branch,
                               branch, d->config.default_branch);
 
   d->handle.ok_cb = _log;
-  github_v3_adapter_run(&d->adapter, &d->handle, &d->body,
+  github_adapter_run(&d->adapter, &d->handle, &d->body,
           HTTP_POST, "/repos/%s/%s/pulls", d->config.owner, d->config.repo);
   free(d->body.start);
 }
