@@ -1,3 +1,5 @@
+#include <string.h>
+
 #include "slack.h"
 #include "slack-common.h"
 
@@ -28,21 +30,21 @@ slack_cleanup(struct slack *client)
 
 void
 slack_on_idle(struct slack *client, idle_cb *callback) {
-  client->rtm.cbs.on_hello = callback;
+  client->cbs.on_hello = callback;
 }
 
 void
 slack_on_hello(struct slack *client, idle_cb *callback) {
-  client->rtm.cbs.on_hello = callback;
+  client->cbs.on_hello = callback;
 }
 
 void
 slack_on_message(struct slack *client, idle_cb *callback) {
-  client->rtm.cbs.on_message = callback;
+  client->cbs.on_message = callback;
 }
 
 void
-slack_send_message(struct slack *client, char channel[], char text[]) 
+slack_rtm_send_message(struct slack *client, char channel[], char text[]) 
 {
   if (WS_CONNECTED != ws_get_status(client->rtm.ws)) {
     PRINT("Can't send messages via RTM unless connected");
@@ -59,4 +61,42 @@ slack_send_message(struct slack *client, char channel[], char text[])
   ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
 
   ws_send_text(client->rtm.ws, payload);
+}
+
+// @todo move to slack-chat.c
+// @todo missing response object
+void
+slack_chat_post_message(struct slack *client, char channel[], char text[])
+{
+  if (IS_EMPTY_STRING(channel)) {
+    D_PRINT("Missing 'channel'");
+    return;
+  }
+
+  char *token = ua_config_get_field(client->adapter.ua, "slack.bot-token");
+  if (!token) {
+    D_PRINT("Missing bot token");
+    return;
+  }
+
+  char payload[4096+1];
+  json_inject(payload, sizeof(payload), 
+      "(channel):s"
+      "(token):s"
+      "(text):s", 
+      channel, token, text);
+
+  ua_reqheader_add(client->adapter.ua, "Content-type", "application/json");
+
+  struct sized_buffer req_body = {payload, strlen(payload)};
+
+  slack_adapter_run(
+    &client->adapter,
+    NULL,
+    &req_body,
+    HTTP_POST, "/chat.postMessage");
+
+  ua_reqheader_add(client->adapter.ua, "Content-type", "application/x-www-form-urlencoded");
+
+  free(token);
 }

@@ -89,24 +89,24 @@ on_close_cb(void *p_rtm, enum ws_close_reason wscode, const char *reason, size_t
 static void
 on_hello_cb(void *p_rtm, void *curr_iter_data)
 {
-  struct slack_rtm *rtm = p_rtm;
+  struct slack *client = ((struct slack_rtm*)p_rtm)->p_client;
 
-  ws_set_status(rtm->ws, WS_CONNECTED);
-  if (!rtm->cbs.on_hello) return;
+  ws_set_status(client->rtm.ws, WS_CONNECTED);
+  if (!client->cbs.on_hello) return;
 
   struct sized_buffer *payload = curr_iter_data;
-  (*rtm->cbs.on_hello)(rtm->p_client, payload->start, payload->size);
+  (*client->cbs.on_hello)(client, payload->start, payload->size);
 }
 
 static void
 on_message_cb(void *p_rtm, void *curr_iter_data)
 {
-  struct slack_rtm *rtm = p_rtm;
+  struct slack *client = ((struct slack_rtm*)p_rtm)->p_client;
 
-  if (!rtm->cbs.on_message) return;
+  if (!client->cbs.on_message) return;
 
   struct sized_buffer *payload = curr_iter_data;
-  (*rtm->cbs.on_message)(rtm->p_client, payload->start, payload->size);
+  (*client->cbs.on_message)(client, payload->start, payload->size);
 }
 
 void

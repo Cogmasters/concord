@@ -27,11 +27,6 @@ void slack_adapter_run(
 struct slack_rtm {
   struct websockets_s *ws;
   char base_url[UA_MAX_URL_LEN];
-  struct { /* CALLBACKS STRUCTURE */
-    idle_cb *on_idle; //trigers in every event loop iteration
-    idle_cb *on_hello; //triggers when connections first establishes
-    idle_cb *on_message;
-  } cbs;
   struct slack *p_client;
 };
 
@@ -39,9 +34,17 @@ struct slack_rtm {
 void slack_rtm_init(struct slack_rtm *rtm, const char config_file[]);
 void slack_rtm_cleanup(struct slack_rtm *rtm);
 
+struct slack_socketmode_resp {
+  struct sized_buffer payload;
+  char envelope_id[64];
+  char type[64];
+  bool accepts_response_payload;
+};
+
 struct slack_socketmode {
   struct websockets_s *ws;
   char base_url[UA_MAX_URL_LEN];
+  struct slack_socketmode_resp resp; // unique per iteration
   struct slack *p_client;
 };
 
@@ -51,8 +54,15 @@ void slack_socketmode_cleanup(struct slack_socketmode *sm);
 
 struct slack {
   struct slack_adapter adapter;
-  struct slack_rtm rtm;
+
   struct slack_socketmode sm;
+  struct slack_rtm rtm;
+
+  struct { /* CALLBACKS STRUCTURE */
+    idle_cb *on_idle; //trigers in every event loop iteration
+    idle_cb *on_hello; //triggers when connections first establishes
+    idle_cb *on_message;
+  } cbs;
 };
 
 #endif // SLACK_COMMON_H
