@@ -141,7 +141,7 @@ void ua_run(
   struct sized_buffer *req_body,
   struct ua_callbacks *cbs,
   enum http_method http_method, char endpoint[], ...);
-char* ua_config_get_field(struct user_agent_s *ua, char *json_field);
+struct sized_buffer ua_config_get_field(struct user_agent_s *ua, char *json_field);
 
 #ifdef __cplusplus
 }

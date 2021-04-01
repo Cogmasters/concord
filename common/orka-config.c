@@ -14,7 +14,7 @@
 static bool g_first_run = true; // used to delete existent dump files
 
 static void
-resp_dump(
+http_dump(
   bool show_code, // if false code is ignored
   int code, 
   char *code_reason,
@@ -31,7 +31,7 @@ resp_dump(
   else
     snprintf(header, sizeof(header), "REQUEST %s", code_reason);
 
-  fprintf(config->f_resp_dump, 
+  fprintf(config->f_http_dump, 
     "%s [%s #TID%p] - %s - %s\r\r\r\r\n%s\n",
     header,
     config->tag, 
@@ -40,11 +40,11 @@ resp_dump(
     url,
     IS_EMPTY_STRING(body) ? "empty body" : body);
 
-  fflush(config->f_resp_dump);
+  fflush(config->f_http_dump);
 }
 
-static void // see resp_dump for parameter definitions
-noop_resp_dump(bool a, int b, char *c, struct orka_config *d, char *e, char *f) { return; (void)a; (void)b; (void)c; (void)d; (void)e; (void)f;
+static void // see http_dump for parameter definitions
+noop_http_dump(bool a, int b, char *c, struct orka_config *d, char *e, char *f) { return; (void)a; (void)b; (void)c; (void)d; (void)e; (void)f;
 }
 
 void
@@ -59,8 +59,8 @@ orka_config_init(
   config->tag = (tag) ? strdup(tag) : strdup("USER AGENT");
 
   if (IS_EMPTY_STRING(config_file)) {
-    config->resp_dump_cb = &noop_resp_dump;
-    config->f_resp_dump = stderr;
+    config->http_dump_cb = &noop_http_dump;
+    config->f_http_dump = stderr;
     return; /* EARLY RETURN */
   }
 
@@ -80,6 +80,7 @@ orka_config_init(
     config->flen = 0;
   }
 
+  //@todo rename dump_json to http_dump
   config->fcontents = orka_load_whole_file(config_file, &config->flen);
   json_extract(config->fcontents, config->flen,
              "(logging.filename):s"
@@ -106,10 +107,10 @@ orka_config_init(
       if (g_first_run == true) {
         remove(logging.dump_json.filename);
       }
-      config->f_resp_dump = fopen(logging.dump_json.filename, "a+");
-      ASSERT_S(NULL != config->f_resp_dump, "Could not create dump file");
+      config->f_http_dump = fopen(logging.dump_json.filename, "a+");
+      ASSERT_S(NULL != config->f_http_dump, "Could not create dump file");
     }
-    config->resp_dump_cb = &resp_dump;
+    config->http_dump_cb = &http_dump;
   }
 
   if (g_first_run == true) {
@@ -124,20 +125,20 @@ orka_config_cleanup(struct orka_config *config)
     free(config->fcontents);
   if (config->tag)
     free(config->tag);
-  if (config->f_resp_dump)
-    fclose(config->f_resp_dump);
+  if (config->f_http_dump)
+    fclose(config->f_http_dump);
 }
 
-char*
+struct sized_buffer
 orka_config_get_field(struct orka_config *config, char *json_field)
 {
-  if (NULL == json_field) return NULL;
+  struct sized_buffer field = {0};
+  if (NULL == json_field) return field; // empty field
 
   char fmt[512];
-  int ret = snprintf(fmt, sizeof(fmt), "(%s):?s", json_field);
+  int ret = snprintf(fmt, sizeof(fmt), "(%s):T", json_field);
   ASSERT_S(ret < sizeof(fmt), "Out of bounds write attempt");
 
-  char *field = NULL;
   json_extract(config->fcontents, config->flen, fmt, &field);
 
   return field;

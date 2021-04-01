@@ -576,7 +576,7 @@ perform_request(
 
     int httpcode = send_request(ua, conn);
 
-    (*ua->config.resp_dump_cb)(
+    (*ua->config.http_dump_cb)(
       true, 
       httpcode, http_code_print(httpcode), 
       &ua->config, 
@@ -694,7 +694,7 @@ ua_vrun(
   struct ua_conn_s *conn = get_conn(ua);
   set_url(ua, conn, endpoint, args); //set the request url
 
-  (*ua->config.resp_dump_cb)(
+  (*ua->config.http_dump_cb)(
     false, 
     0, http_method_print(http_method), 
     &ua->config, 
@@ -728,7 +728,7 @@ ua_run(
   va_end(args);
 }
 
-char*
+struct sized_buffer
 ua_config_get_field(struct user_agent_s *ua, char *json_field) {
   return orka_config_get_field(&ua->config, json_field);
 }

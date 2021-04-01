@@ -27,7 +27,8 @@ struct discord_adapter {
 };
 
 /* ADAPTER PRIVATE FUNCTIONS */
-void discord_adapter_init(struct discord_adapter *adapter, const char token[], const char config_file[]);
+void discord_adapter_init(struct discord_adapter *adapter, const char token[]);
+void discord_adapter_config_init(struct discord_adapter *adapter, const char config_file[]);
 void discord_adapter_cleanup(struct discord_adapter *adapter);
 void discord_adapter_run(
   struct discord_adapter *adapter, 
@@ -126,7 +127,8 @@ struct discord_gateway { /* GATEWAY STRUCTURE */
 };
 
 /* GATEWAY PRIVATE FUNCTIONS */
-void discord_gateway_init(struct discord_gateway *gw, const char token[], const char config_file[]);
+void discord_gateway_init(struct discord_gateway *gw, const char token[]);
+void discord_gateway_config_init(struct discord_gateway *gw, const char config_file[]);
 void discord_gateway_cleanup(struct discord_gateway *gw);
 void discord_gateway_run(struct discord_gateway *gw);
 /* gracefully exit the infinite loop */

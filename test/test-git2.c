@@ -59,10 +59,17 @@ int main (int argc, char ** argv)
   struct orka_config config;
   memset(&config, 0, sizeof(config));
   orka_config_init(&config, NULL, config_file);
-  char *username = orka_config_get_field(&config, "github.username");
-  char *token = orka_config_get_field(&config, "github.token");
+  struct sized_buffer username = orka_config_get_field(&config, "github.username");
+  struct sized_buffer token = orka_config_get_field(&config, "github.token");
+  if (!username.start || !token.start) {
+    PRINT("Missing username or token");
+    return EXIT_FAILURE;
+  }
 
-  struct github_git_op *data = github_git_op_init(username, token, ".cee-repo");
+  char *usernamecpy = strndup(username.start, username.size);
+  char *tokencpy = strndup(username.start, username.size);
+
+  struct github_git_op *data = github_git_op_init(usernamecpy, tokencpy, ".cee-repo");
 
   github_git_op_update_my_fork(data);
   github_git_op_create_blobs(data, files);
@@ -77,5 +84,6 @@ int main (int argc, char ** argv)
   github_git_op_create_a_branch(data, head_commit_sha, new_branch);
   github_git_op_update_a_commit(data, new_branch, commit_sha);
   github_git_op_create_a_pull_request(data, new_branch, commit_msg);
+
   return 0;
 }

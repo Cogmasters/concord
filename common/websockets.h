@@ -79,7 +79,7 @@ void ws_set_curr_iter_data(
   struct websockets_s *ws, 
   void *curr_iter_data, 
   void (*curr_iter_cleanup)(void *curr_iter_data));
-char* ws_config_get_field(struct websockets_s *ws, char *json_field);
+struct sized_buffer ws_config_get_field(struct websockets_s *ws, char *json_field);
 
 #ifdef __cplusplus
 }

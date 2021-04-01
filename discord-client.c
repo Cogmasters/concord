@@ -14,8 +14,8 @@ discord_init(const char token[])
   struct discord *new_client = calloc(1, sizeof *new_client);
   new_client->adapter.p_client = new_client;
   new_client->gw.p_client = new_client;
-  discord_adapter_init(&new_client->adapter, token, NULL);
-  discord_gateway_init(&new_client->gw, token, NULL);
+  discord_adapter_init(&new_client->adapter, token);
+  discord_gateway_init(&new_client->gw, token);
   return new_client;
 }
 
@@ -25,8 +25,8 @@ discord_config_init(const char config_file[])
   struct discord *new_client = calloc(1, sizeof *new_client);
   new_client->adapter.p_client = new_client;
   new_client->gw.p_client = new_client;
-  discord_adapter_init(&new_client->adapter, NULL, config_file);
-  discord_gateway_init(&new_client->gw, NULL, config_file);
+  discord_adapter_config_init(&new_client->adapter, config_file);
+  discord_gateway_config_init(&new_client->gw, config_file);
   return new_client;
 }
 

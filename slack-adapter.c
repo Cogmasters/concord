@@ -13,20 +13,18 @@
 void
 slack_adapter_init(struct slack_adapter *adapter, const char config_file[])
 {
-  if (!config_file) ERR("Missing config file");
+  ASSERT_S(NULL != config_file, "Missing config file");
 
   adapter->ua = ua_config_init(BASE_API_URL, "SLACK HTTP", config_file);
-  char *token = ua_config_get_field(adapter->ua, "slack.bot-token");
-  if (!token) ERR("Missing bot token");
+  struct sized_buffer token = ua_config_get_field(adapter->ua, "slack.bot-token");
+  ASSERT_S(NULL != token.start, "Missing bot token");
 
   char auth[128];
-  int ret = snprintf(auth, sizeof(auth), "Bearer %s", token);
+  int ret = snprintf(auth, sizeof(auth), "Bearer %.*s", (int)token.size, token.start);
   ASSERT_S(ret < sizeof(auth), "Out of bounds write attempt");
 
   ua_reqheader_add(adapter->ua, "Authorization", auth);
   ua_reqheader_add(adapter->ua, "Content-type", "application/x-www-form-urlencoded");
-
-  free(token);
 }
 
 void

@@ -12,8 +12,8 @@ struct orka_config {
   char *fcontents; // config file contents
   size_t flen; // config file len
 
-  FILE *f_resp_dump; //default stderr
-  void (*resp_dump_cb)(
+  FILE *f_http_dump; //default stderr
+  void (*http_dump_cb)(
       _Bool show_code,  // if false code is ignored
       int code, 
       char *code_reason,
@@ -25,7 +25,7 @@ struct orka_config {
 void orka_config_init(struct orka_config*, const char tag[], const char config_file[]);
 void orka_config_cleanup(struct orka_config*);
 
-char* orka_config_get_field(struct orka_config *config, char *json_field);
+struct sized_buffer orka_config_get_field(struct orka_config *config, char *json_field);
 
 #ifdef __cplusplus
 }

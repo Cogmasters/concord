@@ -73,8 +73,8 @@ slack_chat_post_message(struct slack *client, char channel[], char text[])
     return;
   }
 
-  char *token = ua_config_get_field(client->adapter.ua, "slack.bot-token");
-  if (!token) {
+  struct sized_buffer token = ua_config_get_field(client->adapter.ua, "slack.bot-token");
+  if (!token.start) {
     D_PRINT("Missing bot token");
     return;
   }
@@ -82,9 +82,11 @@ slack_chat_post_message(struct slack *client, char channel[], char text[])
   char payload[4096+1];
   json_inject(payload, sizeof(payload), 
       "(channel):s"
-      "(token):s"
+      "(token):.*s"
       "(text):s", 
-      channel, token, text);
+      channel, 
+      (int)token.size, token.start, 
+      text);
 
   ua_reqheader_add(client->adapter.ua, "Content-type", "application/json");
 
@@ -97,6 +99,4 @@ slack_chat_post_message(struct slack *client, char channel[], char text[])
     HTTP_POST, "/chat.postMessage");
 
   ua_reqheader_add(client->adapter.ua, "Content-type", "application/x-www-form-urlencoded");
-
-  free(token);
 }

@@ -31,14 +31,14 @@ apps_connections_open_from_json(char str[], size_t len, void *p_url)
 void
 slack_apps_connections_open(struct slack *client)
 {
-  char *app_token = ua_config_get_field(client->adapter.ua, "slack.app-token");
-  if (!app_token) {
+  struct sized_buffer app_token = ua_config_get_field(client->adapter.ua, "slack.app-token");
+  if (!app_token.start) {
     PRINT("Missing app token");
     return;
   }
 
   char auth[128];
-  int ret = snprintf(auth, sizeof(auth), "Bearer %s", app_token);
+  int ret = snprintf(auth, sizeof(auth), "Bearer %.*s", (int)app_token.size, app_token.start);
   ASSERT_S(ret < sizeof(auth), "Out of bounds write attempt");
   ua_reqheader_add(client->adapter.ua, "Authorization", auth);
 
@@ -50,15 +50,12 @@ slack_apps_connections_open(struct slack *client)
     NULL,
     HTTP_POST, "/apps.connections.open");
 
-  char *bot_token = ua_config_get_field(client->adapter.ua, "slack.bot-token");
-  if (!bot_token) ERR("Missing bot token");
+  struct sized_buffer bot_token = ua_config_get_field(client->adapter.ua, "slack.bot-token");
+  if (!bot_token.start) ERR("Missing bot token");
 
-  ret = snprintf(auth, sizeof(auth), "Bearer %s", bot_token);
+  ret = snprintf(auth, sizeof(auth), "Bearer %.*s", (int)bot_token.size, bot_token.start);
   ASSERT_S(ret < sizeof(auth), "Out of bounds write attempt");
   ua_reqheader_add(client->adapter.ua, "Authorization", auth);
-
-  free(app_token);
-  free(bot_token);
 }
 
 static void

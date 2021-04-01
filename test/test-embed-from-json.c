@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include "libdiscord.h"
+#include "discord.h"
 #include "orka-utils.h"
 
 int main (int argc, char ** argv) {
