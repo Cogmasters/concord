@@ -4,7 +4,7 @@
 #include <string.h>
 #include <curl/curl.h>
 
-#include "github-v3.h"
+#include "github.h"
 #include "orka-utils.h"
 #include "orka-config.h"
 
@@ -49,8 +49,8 @@ int main (int argc, char ** argv)
   }
 
 
-  struct github_v3_git_op_file ** files = NULL;
-  files = (struct github_v3_git_op_file**)ntl_calloc(argc-optind, sizeof(struct github_v3_git_op_file));
+  struct github_git_op_file ** files = NULL;
+  files = (struct github_git_op_file**)ntl_calloc(argc-optind, sizeof(struct github_git_op_file));
   for (int i = 0; files[i]; ++i)
     files[i]->path = argv[optind + i];
 
@@ -62,20 +62,20 @@ int main (int argc, char ** argv)
   char *username = orka_config_get_field(&config, "github.username");
   char *token = orka_config_get_field(&config, "github.token");
 
-  struct github_v3_git_op *data = github_v3_git_op_init(username, token, ".cee-repo");
+  struct github_git_op *data = github_git_op_init(username, token, ".cee-repo");
 
-  github_v3_git_op_update_my_fork(data);
-  github_v3_git_op_create_blobs(data, files);
-  char * head_commit_sha = github_v3_git_op_get_head_commit(data);
-  char * base_tree_sha = github_v3_git_op_get_tree_sha(data, head_commit_sha);
-  char * tree_sha = github_v3_git_op_create_tree(data, base_tree_sha, files);
+  github_git_op_update_my_fork(data);
+  github_git_op_create_blobs(data, files);
+  char * head_commit_sha = github_git_op_get_head_commit(data);
+  char * base_tree_sha = github_git_op_get_tree_sha(data, head_commit_sha);
+  char * tree_sha = github_git_op_create_tree(data, base_tree_sha, files);
   char * commit_sha =
-    github_v3_git_op_create_a_commit(data, tree_sha, head_commit_sha, commit_msg);
+    github_git_op_create_a_commit(data, tree_sha, head_commit_sha, commit_msg);
 
   char new_branch[256];
   snprintf(new_branch, sizeof(new_branch), "n%ld", time(NULL));
-  github_v3_git_op_create_a_branch(data, head_commit_sha, new_branch);
-  github_v3_git_op_update_a_commit(data, new_branch, commit_sha);
-  github_v3_git_op_create_a_pull_request(data, new_branch, commit_msg);
+  github_git_op_create_a_branch(data, head_commit_sha, new_branch);
+  github_git_op_update_a_commit(data, new_branch, commit_sha);
+  github_git_op_create_a_pull_request(data, new_branch, commit_msg);
   return 0;
 }
