@@ -2652,7 +2652,7 @@ query_inject(char *query, size_t size, char *injector, ...)
   return used_bytes;
 }
 
-static int
+int
 json_to_sized_buffer_ntl
   (char *json, size_t size, NTL_T(struct sized_buffer) *p)
 {

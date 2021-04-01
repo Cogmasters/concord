@@ -158,6 +158,10 @@ extract_ntl_from_json(
   size_t len,
   struct ntl_deserializer *ntl_deserializer);
 
+extern int
+json_to_sized_buffer_ntl
+  (char *json, size_t size, NTL_T(struct sized_buffer) *p);
+
 #ifdef __cplusplus
 }
 #endif // __cplusplus
