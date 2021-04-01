@@ -92,9 +92,9 @@ typedef void (message_cb)(
     const struct discord_message *message);
 typedef void (sb_message_cb)(
     struct discord *client, const struct discord_user *bot,
-    struct sized_buffer sb_me,
+    struct sized_buffer *sb_bot,
     const struct discord_message *message,
-    struct sized_buffer msg_payload);
+    struct sized_buffer *msg_payload);
 typedef void (message_delete_cb)(
     struct discord *client, const struct discord_user *bot, 
     const u64_snowflake_t id, 

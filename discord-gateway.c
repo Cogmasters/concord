@@ -542,8 +542,8 @@ on_message_create(struct discord_gateway *gw, struct discord_gateway_payload *pa
   else if (gw->cbs.sb_on_message_create) /* @todo temporary */
     (*gw->cbs.sb_on_message_create)(
       gw->p_client, 
-      gw->bot, gw->sb_bot,
-      msg, payload->event_data);
+      gw->bot, &gw->sb_bot,
+      msg, &payload->event_data);
   else if (gw->cbs.on_message_create)
     (*gw->cbs.on_message_create)(gw->p_client, gw->bot, msg);
 
