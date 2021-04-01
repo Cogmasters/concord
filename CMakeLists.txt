@@ -15,7 +15,7 @@ file(GLOB ADAPTER_CODE "*.h" "*.c")
 file(GLOB SPECS_CODE "specs-code/*.h" "specs-code/*.c")
 
 file(GLOB MUJS_CODE "mujs/*.h" "mujs/*.c")
-file(GLOB SQLITE3_CODE "sqlite3/*.h" "sqlite3/*.c")
+#file(GLOB SQLITE3_CODE "sqlite3/*.h" "sqlite3/*.c")
 
 include_directories(${CMAKE_SOURCE_DIR})
 include_directories(${CMAKE_SOURCE_DIR}/common)
@@ -26,8 +26,7 @@ include_directories(${CMAKE_SOURCE_DIR}/specs-code)
 add_library(discord ${CORE_CODE} ${ADAPTER_CODE} ${SPECS_CODE})
 
 add_library(mujs ${MUJS_CODE})
-add_library(sqlite3 ${SQLITE3_CODE})
-
+#add_library(sqlite3 ${SQLITE3_CODE})
 set(ORCA_INCLUDE_PATH  ${CMAKE_SOURCE_DIR})
 
 add_executable(bot-echo.exe bots/bot-echo.c)
