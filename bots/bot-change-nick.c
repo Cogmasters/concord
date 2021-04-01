@@ -3,7 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
-#include "libdiscord.h"
+
+#include "discord.h"
 
 
 

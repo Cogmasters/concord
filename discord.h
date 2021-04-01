@@ -1,5 +1,5 @@
-#ifndef LIBDISCORD_H
-#define LIBDISCORD_H
+#ifndef DISCORD_H
+#define DISCORD_H
 
 #include <stdbool.h>
 
@@ -319,4 +319,4 @@ void discord_delete_messages_by_author_id(
 
 #include "./specs-code/all_fun.h"
 
-#endif // LIBDISCORD_H
+#endif // DISCORD_H

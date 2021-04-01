@@ -3,7 +3,7 @@
 #include <inttypes.h>
 #include <assert.h>
 
-#include "libdiscord.h"
+#include "discord.h"
 
 int main(int argc, char *argv[])
 {

@@ -5,7 +5,7 @@
 #include <unistd.h>
 #include <assert.h>
 
-#include "libdiscord.h"
+#include "discord.h"
 #include "orka-debug.h"
 
 

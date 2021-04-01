@@ -4,7 +4,7 @@
 #include <search.h> /* tfind, tsearch, tdelete */
 #include <pthread.h> // for bucket synchronization
 
-#include "libdiscord.h"
+#include "discord.h"
 #include "discord-common.h"
 #include "orka-utils.h"
 

@@ -6,5 +6,5 @@
 #include "ntl.h"
 #include "json-actor.h"
 #include "json-actor-boxed.h"
-#include "libdiscord.h"
+#include "discord.h"
 #include "orka-utils.h"

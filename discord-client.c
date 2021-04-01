@@ -3,7 +3,7 @@
 #include <string.h>
 #include <ctype.h> //for isgraph()
 
-#include "libdiscord.h"
+#include "discord.h"
 #include "discord-common.h"
 #include "orka-utils.h"
 

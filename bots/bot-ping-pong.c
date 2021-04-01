@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "libdiscord.h"
+#include "discord.h"
 
 
 void on_ready(struct discord *client, const struct discord_user *bot) {

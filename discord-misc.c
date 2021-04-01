@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "libdiscord.h"
+#include "discord.h"
 #include "discord-common.h"
 #include "orka-utils.h"
 

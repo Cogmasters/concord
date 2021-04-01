@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <assert.h>
 
-#include "libdiscord.h"
+#include "discord.h"
 
 void on_ready(struct discord *client, const struct discord_user *me) {
   fprintf(stderr, "\n\nSuccesfully connected to Discord as %s#%s!\n\n",
