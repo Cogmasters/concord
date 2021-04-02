@@ -124,8 +124,6 @@ orka_config_cleanup(struct orka_config *config)
 {
   if (config->fcontents)
     free(config->fcontents);
-  if (config->tag)
-    free(config->tag);
   if (config->f_http_dump)
     fclose(config->f_http_dump);
 }
