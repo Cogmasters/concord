@@ -11,6 +11,7 @@ ORKA_SRC    := $(wildcard orka-*.c)
 DISCORD_SRC := $(wildcard discord-*.c)
 SLACK_SRC 	:= $(wildcard slack-*.c)
 GITHUB_SRC  := $(wildcard github-*.c)
+REDDIT_SRC  := $(wildcard reddit-*.c)
 SPECS       := $(sort $(wildcard specs/*.json))
 DB_SRC      := $(wildcard sqlite3/*.c)
 JSB_SRC     := $(wildcard jsB/*.c)
@@ -31,10 +32,11 @@ ORKA_OBJS    := $(ORKA_SRC:%=$(OBJDIR)/%.o)
 DISCORD_OBJS := $(DISCORD_SRC:%=$(OBJDIR)/%.o)
 SLACK_OBJS 	 := $(SLACK_SRC:%=$(OBJDIR)/%.o)
 GITHUB_OBJS  := $(GITHUB_SRC:%=$(OBJDIR)/%.o)
+REDDIT_OBJS  := $(REDDIT_SRC:%=$(OBJDIR)/%.o)
 SPECS_OBJS   := $(SPECS_C:%=$(OBJDIR)/%.o)
 DB_OBJS      := $(DB_SRC:%=$(OBJDIR)/%.o)
 
-OBJS := $(COMMON_OBJS) $(DISCORD_OBJS) $(SLACK_OBJS) $(GITHUB_OBJS) $(ORKA_OBJS)
+OBJS := $(COMMON_OBJS) $(DISCORD_OBJS) $(SLACK_OBJS) $(GITHUB_OBJS) $(REDDIT_OBJS) $(ORKA_OBJS)
 
 BOT_SRC  := $(wildcard bots/bot-*.c)
 BOT_EXES := $(patsubst %.c, %.exe, $(BOT_SRC))
@@ -103,6 +105,7 @@ orka: mkdir $(ORKA_OBJS)
 discord: mkdir $(DISCORD_OBJS) libdiscord
 slack: mkdir $(SLACK_OBJS)
 github: mkdir $(GITHUB_OBJS)
+reddit: mkdir $(REDDIT_OBJS)
 db: mkdir $(DB_OBJS)
 
 specs_h: $(SPECS_H)
@@ -120,7 +123,7 @@ bot: $(BOT_EXES) #@todo should we split by categories (bot_discord, bot_github, 
 bot1: $(BOT1_EXES)
 bot2: $(BOT2_EXES)
 
-test: common orka discord slack github $(TEST_EXES) #@todo should we split by categories too ?
+test: common orka discord slack github reddit $(TEST_EXES) #@todo should we split by categories too ?
 
 mkdir :
 	mkdir -p $(ACTOR_OBJDIR)/common  $(ACTOR_OBJDIR)/test bin
