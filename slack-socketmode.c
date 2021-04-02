@@ -31,7 +31,7 @@ apps_connections_open_from_json(char str[], size_t len, void *p_url)
 void
 slack_apps_connections_open(struct slack *client)
 {
-  struct sized_buffer app_token = ua_config_get_field(client->adapter.ua, "slack.app-token");
+  struct sized_buffer app_token = ua_config_get_field(client->adapter.ua, "slack.app_token");
   if (!app_token.start) {
     PRINT("Missing app token");
     return;
@@ -50,7 +50,7 @@ slack_apps_connections_open(struct slack *client)
     NULL,
     HTTP_POST, "/apps.connections.open");
 
-  struct sized_buffer bot_token = ua_config_get_field(client->adapter.ua, "slack.bot-token");
+  struct sized_buffer bot_token = ua_config_get_field(client->adapter.ua, "slack.bot_token");
   if (!bot_token.start) ERR("Missing bot token");
 
   ret = snprintf(auth, sizeof(auth), "Bearer %.*s", (int)bot_token.size, bot_token.start);

@@ -16,7 +16,7 @@ slack_adapter_config_init(struct slack_adapter *adapter, const char config_file[
   ASSERT_S(NULL != config_file, "Missing config file");
 
   adapter->ua = ua_config_init(BASE_API_URL, "SLACK HTTP", config_file);
-  struct sized_buffer token = ua_config_get_field(adapter->ua, "slack.bot-token");
+  struct sized_buffer token = ua_config_get_field(adapter->ua, "slack.bot_token");
   ASSERT_S(NULL != token.start, "Missing bot token");
 
   char auth[128];
