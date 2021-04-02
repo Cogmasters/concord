@@ -53,4 +53,3 @@ slack_adapter_run(
 
   va_end(args);
 }
-
