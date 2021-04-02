@@ -4,7 +4,7 @@
 
 #include "slack.h"
 
-void on_hello(struct slack *client) {
+void on_hello(struct slack *client, char *text, size_t len) {
   fputs("\n\nSuccesfully connected to Slack!\n\n", stderr);
 }
 
