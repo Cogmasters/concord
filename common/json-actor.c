@@ -1368,6 +1368,7 @@ inject_builtin (
           else if (ENCODING_URL == info->encoding) {
             escaped = url_encode_ext(s, strlen(s));
             ret = xprintf(pos, size, info, "%s", escaped);
+            free(escaped);
           }
           return ret;
         case SIZE_FIXED:
