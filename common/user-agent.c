@@ -493,10 +493,10 @@ set_url(struct user_agent_s *ua, struct ua_conn_s *conn, char endpoint[], va_lis
   //create the url route
   char url_route[UA_MAX_URL_LEN];
   int ret = vsnprintf(url_route, sizeof(url_route), endpoint, args);
-  ASSERT_S(ret < (int)sizeof(url_route), "oob write of url_route");
+  ASSERT_S(ret < sizeof(url_route), "oob write of url_route");
 
   ret = snprintf(conn->req_url, sizeof(conn->req_url), "%s%s", ua->base_url, url_route);
-  ASSERT_S(ret < (int)sizeof(conn->req_url), "Out of bounds write attempt");
+  ASSERT_S(ret < sizeof(conn->req_url), "Out of bounds write attempt");
 
   CURLcode ecode = curl_easy_setopt(conn->ehandle, CURLOPT_URL, conn->req_url);
   ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
