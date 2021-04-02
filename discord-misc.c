@@ -32,13 +32,21 @@ discord_delete_messages_by_author_id(
   NTL_T(ja_u64) list = NULL;
   int count = 0;
   for (int i = 0; messages[i]; i++) {
-    if (messages[i]->author->id == author_id)
+    if (author_id == 0)
+      count ++;
+    else if (messages[i]->author->id == author_id)
       count ++;
   }
+  if (count == 0)
+    return;
   list = (NTL_T(ja_u64))ntl_calloc(count, sizeof(ja_u64));
 
   for (int i = 0, j = 0; messages[i] && j < count; i++) {
-    if (messages[i]->author->id == author_id) {
+    if (author_id == 0) {
+      list[j]->value = messages[i]->id;
+      j++;
+    }
+    else if (messages[i]->author->id == author_id) {
       list[j]->value = messages[i]->id;
       j++;
     }
