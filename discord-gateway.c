@@ -553,12 +553,16 @@ on_message_create(struct discord_gateway *gw, struct discord_gateway_payload *pa
 static void
 on_message_update(struct discord_gateway *gw, struct discord_gateway_payload *payload)
 {
-  if (!gw->cbs.on_message_update) return;
-
   struct discord_message *msg = discord_message_alloc();
   discord_message_from_json(payload->event_data.start, payload->event_data.size, msg);
 
-  (*gw->cbs.on_message_update)(gw->p_client, gw->bot, msg);
+  if (gw->cbs.sb_on_message_update)
+    (*gw->cbs.sb_on_message_update)(
+      gw->p_client, 
+      gw->bot, &gw->sb_bot,
+      msg, &payload->event_data);
+  else if (gw->cbs.on_message_update)
+    (*gw->cbs.on_message_update)(gw->p_client, gw->bot, msg);
 
   discord_message_free(msg);
 }
@@ -751,7 +755,8 @@ on_dispatch_cb(void *p_gw, void *curr_iter_data)
   }
   pthread_mutex_unlock(&gw->lock);
 
-  switch(get_dispatch_event(payload->event_name)) {
+  enum discord_gateway_events event = get_dispatch_event(payload->event_name);
+  switch(event) {
   case DISCORD_GATEWAY_EVENTS_GUILD_CREATE:
       //@todo implement
       break;
@@ -854,6 +859,10 @@ on_dispatch_cb(void *p_gw, void *curr_iter_data)
   default:
       PRINT("Expected not yet implemented GATEWAY DISPATCH event: %s", payload->event_name);
       break;
+  }
+
+  if (gw->cbs.on_event_raw) {
+    (*gw->cbs.on_event_raw)(gw->p_client, event, &gw->sb_bot, &gw->payload.event_data);
   }
 }
 

@@ -108,6 +108,11 @@ discord_on_idle(struct discord *client, idle_cb *callback) {
   client->gw.cbs.on_idle = callback;
 }
 
+void 
+discord_on_event_raw(struct discord *client, event_raw_cb *callback) {
+  client->gw.cbs.on_event_raw = callback;
+}
+
 void
 discord_on_ready(struct discord *client, idle_cb *callback) {
   client->gw.cbs.on_ready = callback;
@@ -201,6 +206,13 @@ discord_on_sb_message_create(struct discord *client, sb_message_cb *callback)
 void
 discord_on_message_update(struct discord *client, message_cb *callback) {
   client->gw.cbs.on_message_update = callback;
+  discord_add_intents(client, DISCORD_GATEWAY_GUILD_MESSAGES | DISCORD_GATEWAY_DIRECT_MESSAGES);
+}
+
+void 
+discord_on_sb_message_update(struct discord *client, sb_message_cb *callback)
+{
+  client->gw.cbs.sb_on_message_update = callback;
   discord_add_intents(client, DISCORD_GATEWAY_GUILD_MESSAGES | DISCORD_GATEWAY_DIRECT_MESSAGES);
 }
 

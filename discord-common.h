@@ -93,6 +93,8 @@ struct discord_gateway { /* GATEWAY STRUCTURE */
     idle_cb *on_idle;   //triggers in every event loop iteration
     idle_cb *on_ready;  //triggers when connection first establishes
 
+    event_raw_cb *on_event_raw;
+
     guild_role_cb *on_guild_role_create;
     guild_role_cb *on_guild_role_update;
     guild_role_delete_cb *on_guild_role_delete;
@@ -107,6 +109,7 @@ struct discord_gateway { /* GATEWAY STRUCTURE */
     channel_pins_update_cb *on_channel_pins_update;
     message_cb *on_message_create;
     sb_message_cb *sb_on_message_create; //@todo this is temporary
+    sb_message_cb *sb_on_message_update; //@todo this is temporary
     message_cb *on_message_update;
     message_delete_cb *on_message_delete;
     message_delete_bulk_cb *on_message_delete_bulk;

@@ -54,13 +54,13 @@ https://discord.com/developers/docs/reference#snowflakes */
 /* IDLE CALLBACK (runs on every iteration, no trigger required) */
 typedef void (idle_cb)(struct discord *client, const struct discord_user *bot);
 
+typedef void (event_raw_cb)(
+    struct discord *client, 
+    enum discord_gateway_events event, 
+    struct sized_buffer *sb_bot, 
+    struct sized_buffer *event_data);
+
 /* GUILD ROLE EVENTS CALLBACKS */
-#if 0
-typedef void (guild_role_cb)(
-    struct discord *client, const struct discord_user *bot,
-    const u64_snowflake_t guild_id,
-    const struct discord_guild_role *role);
-#endif
 typedef void (guild_role_cb)(
     struct discord *client, const struct discord_user *bot,
     const u64_snowflake_t guild_id,
@@ -211,6 +211,7 @@ void discord_cleanup(struct discord *client);
 void discord_add_intents(struct discord *client, enum discord_gateway_intents code);
 void discord_set_prefix(struct discord *client, char *prefix);
 void discord_on_command(struct discord *client, char *command, message_cb *callback);
+void discord_on_event_raw(struct discord *client, event_raw_cb *callback);
 void discord_on_idle(struct discord *client, idle_cb *callback);
 void discord_on_guild_role_create(struct discord *client, guild_role_cb *callback);
 void discord_on_guild_role_update(struct discord *client, guild_role_cb *callback);
@@ -227,6 +228,7 @@ void discord_on_channel_pins_update(struct discord *client, channel_pins_update_
 void discord_on_message_create(struct discord *client, message_cb *callback);
 void discord_on_sb_message_create(struct discord *client, sb_message_cb *callback);
 void discord_on_message_update(struct discord *client, message_cb *callback);
+void discord_on_sb_message_update(struct discord *client, sb_message_cb *callback);
 void discord_on_message_delete(struct discord *client, message_delete_cb *callback);
 void discord_on_message_delete_bulk(struct discord *client, message_delete_bulk_cb *callback);
 void discord_on_message_reaction_add(struct discord *client, message_reaction_add_cb *callback);
