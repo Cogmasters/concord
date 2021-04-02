@@ -7,7 +7,7 @@ extern "C" {
 
 
 struct orka_config {
-  char *tag;
+  char tag[64];
 
   char *fcontents; // config file contents
   size_t flen; // config file len

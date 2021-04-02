@@ -11,7 +11,7 @@
 
 
 void
-slack_adapter_init(struct slack_adapter *adapter, const char config_file[])
+slack_adapter_config_init(struct slack_adapter *adapter, const char config_file[])
 {
   ASSERT_S(NULL != config_file, "Missing config file");
 

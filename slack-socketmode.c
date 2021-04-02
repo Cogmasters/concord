@@ -159,7 +159,7 @@ on_close_cb(void *p_sm, enum ws_close_reason wscode, const char *reason, size_t 
 }
 
 void
-slack_socketmode_init(struct slack_socketmode *sm, const char config_file[])
+slack_socketmode_config_init(struct slack_socketmode *sm, const char config_file[])
 {
   ASSERT_S(NULL != sm->p_client, "Not meant to be called standalone");
   slack_apps_connections_open(sm->p_client);

@@ -15,7 +15,7 @@ struct slack_adapter {
 };
 
 /* ADAPTER PRIVATE FUNCTIONS */
-void slack_adapter_init(struct slack_adapter *adapter, const char config_file[]);
+void slack_adapter_config_init(struct slack_adapter *adapter, const char config_file[]);
 void slack_adapter_cleanup(struct slack_adapter *adapter);
 
 void slack_adapter_run(
@@ -31,7 +31,7 @@ struct slack_rtm {
 };
 
 /* RTM PRIVATE FUNCTIONS */
-void slack_rtm_init(struct slack_rtm *rtm, const char config_file[]);
+void slack_rtm_config_init(struct slack_rtm *rtm, const char config_file[]);
 void slack_rtm_cleanup(struct slack_rtm *rtm);
 
 struct slack_socketmode_resp {
@@ -49,7 +49,7 @@ struct slack_socketmode {
 };
 
 /* SOCKET MODE PRIVATE FUNCTIONS */
-void slack_socketmode_init(struct slack_socketmode *sm, const char config_file[]);
+void slack_socketmode_config_init(struct slack_socketmode *sm, const char config_file[]);
 void slack_socketmode_cleanup(struct slack_socketmode *sm);
 
 struct slack {

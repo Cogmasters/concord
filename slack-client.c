@@ -11,9 +11,9 @@ slack_config_init(const char config_file[])
   new_client->adapter.p_client = new_client;
   new_client->rtm.p_client = new_client;
   new_client->sm.p_client = new_client;
-  slack_adapter_init(&new_client->adapter, config_file);
-  slack_rtm_init(&new_client->rtm, config_file);
-  slack_socketmode_init(&new_client->sm, config_file);
+  slack_adapter_config_init(&new_client->adapter, config_file);
+  slack_rtm_config_init(&new_client->rtm, config_file);
+  slack_socketmode_config_init(&new_client->sm, config_file);
 
   return new_client;
 }

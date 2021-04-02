@@ -110,7 +110,7 @@ on_message_cb(void *p_rtm, void *curr_iter_data)
 }
 
 void
-slack_rtm_init(struct slack_rtm *rtm, const char config_file[])
+slack_rtm_config_init(struct slack_rtm *rtm, const char config_file[])
 {
   ASSERT_S(NULL != rtm->p_client, "Not meant to be called standalone");
   slack_rtm_connect(rtm->p_client);

@@ -1,7 +1,8 @@
+#define _GNU_SOURCE /* asprintf() */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h> // for isspace()
+#include <ctype.h> /* isspace() */
 
 #include "discord.h"
 #include "discord-common.h"
@@ -1058,23 +1059,12 @@ on_text_event_cb(void *p_gw, const char *text, size_t len)
   return gw->payload.opcode;
 }
 
-void
-discord_gateway_init(struct discord_gateway *gw, const char token[])
+static void
+_gateway_init(
+  struct discord_gateway *gw,
+  struct sized_buffer *token,
+  const char config_file[])
 {
-  ASSERT_S(NULL != token, "Missing bot token");
-
-  struct ws_callbacks cbs = {
-    .data = gw,
-    .on_startup = &on_startup_cb,
-    .on_iter_end = &on_iter_end_cb,
-    .on_text_event = &on_text_event_cb,
-    .on_connect = &on_connect_cb,
-    .on_text = &on_text_cb,
-    .on_close = &on_close_cb
-  };
-
-  gw->ws = ws_config_init(BASE_GATEWAY_URL, &cbs, "DISCORD GATEWAY", NULL);
-
   ws_set_refresh_rate(gw->ws, 1);
   ws_set_max_reconnect(gw->ws, 15);
   ws_set_event(gw->ws, DISCORD_GATEWAY_HELLO, &on_hello_cb);
@@ -1084,7 +1074,7 @@ discord_gateway_init(struct discord_gateway *gw, const char token[])
   ws_set_event(gw->ws, DISCORD_GATEWAY_HEARTBEAT_ACK, &on_heartbeat_ack_cb);
 
   gw->identify = discord_gateway_identify_alloc();
-  gw->identify->token = strdup(token);
+  asprintf(&gw->identify->token, "%.*s", (int)token->size, token->start);
 
   gw->identify->properties->$os = strdup("POSIX");
   gw->identify->properties->$browser = strdup("orca");
@@ -1100,10 +1090,9 @@ discord_gateway_init(struct discord_gateway *gw, const char token[])
 }
 
 void
-discord_gateway_config_init(struct discord_gateway *gw, const char config_file[])
+discord_gateway_init(struct discord_gateway *gw, const char token[])
 {
-  ASSERT_S(NULL != config_file, "Missing config file");
-
+  ASSERT_S(NULL != token, "Missing bot token");
   struct ws_callbacks cbs = {
     .data = gw,
     .on_startup = &on_startup_cb,
@@ -1113,34 +1102,30 @@ discord_gateway_config_init(struct discord_gateway *gw, const char config_file[]
     .on_text = &on_text_cb,
     .on_close = &on_close_cb
   };
+  gw->ws = ws_config_init(BASE_GATEWAY_URL, &cbs, "DISCORD GATEWAY", NULL);
+  struct sized_buffer ttoken = {
+    .start = (char*)token, 
+    .size = strlen(token) 
+  };
+  _gateway_init(gw, &ttoken, NULL);
+}
 
+void
+discord_gateway_config_init(struct discord_gateway *gw, const char config_file[])
+{
+  ASSERT_S(NULL != config_file, "Missing config file");
+  struct ws_callbacks cbs = {
+    .data = gw,
+    .on_startup = &on_startup_cb,
+    .on_iter_end = &on_iter_end_cb,
+    .on_text_event = &on_text_event_cb,
+    .on_connect = &on_connect_cb,
+    .on_text = &on_text_cb,
+    .on_close = &on_close_cb
+  };
   gw->ws = ws_config_init(BASE_GATEWAY_URL, &cbs, "DISCORD GATEWAY", config_file);
-
-  ws_set_refresh_rate(gw->ws, 1);
-  ws_set_max_reconnect(gw->ws, 15);
-  ws_set_event(gw->ws, DISCORD_GATEWAY_HELLO, &on_hello_cb);
-  ws_set_event(gw->ws, DISCORD_GATEWAY_DISPATCH, &on_dispatch_cb);
-  ws_set_event(gw->ws, DISCORD_GATEWAY_INVALID_SESSION, &on_invalid_session_cb);
-  ws_set_event(gw->ws, DISCORD_GATEWAY_RECONNECT, &on_reconnect_cb);
-  ws_set_event(gw->ws, DISCORD_GATEWAY_HEARTBEAT_ACK, &on_heartbeat_ack_cb);
-
-  gw->identify = discord_gateway_identify_alloc();
-
-  struct sized_buffer token = ws_config_get_field(gw->ws, "discord.token");
-  ASSERT_S(NULL != token.start, "Missing bot token");
-  gw->identify->token = strndup(token.start, token.size);
-
-  gw->identify->properties->$os = strdup("POSIX");
-  gw->identify->properties->$browser = strdup("orca");
-  gw->identify->properties->$device = strdup("orca");
-  gw->identify->presence->since = orka_timestamp_ms();
-  gw->bot = discord_user_alloc();
-  discord_set_presence(gw->p_client, NULL, "online", false);
-  discord_get_current_user(gw->p_client, gw->bot);
-  sb_discord_get_current_user(gw->p_client, &gw->sb_bot);
-
-  if (pthread_mutex_init(&gw->lock, NULL))
-    ERR("Couldn't initialize pthread mutex");
+  struct sized_buffer ttoken = ws_config_get_field(gw->ws, "discord.token");
+  _gateway_init(gw, &ttoken, config_file);
 }
 
 void
@@ -1155,8 +1140,8 @@ discord_gateway_cleanup(struct discord_gateway *gw)
 
 /* connects to the discord websockets server */
 void
-discord_run(struct discord *client) {
-  ws_run(client->gw.ws);
+discord_gateway_run(struct discord_gateway *gw) {
+  ws_run(gw->ws);
 }
 
 void

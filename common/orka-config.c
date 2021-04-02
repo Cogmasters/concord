@@ -53,11 +53,12 @@ orka_config_init(
   const char tag[], 
   const char config_file[])
 {
-  if (config->tag) {
-    free(config->tag);
+  if (IS_EMPTY_STRING(tag)) 
+    tag = "USER AGENT"; // default tag
+  if (IS_EMPTY_STRING(config->tag) || !STREQ(config->tag, tag)) {
+    int ret = snprintf(config->tag, sizeof(config->tag), "%s", tag);
+    ASSERT_S(ret < sizeof(config->tag), "Out of bounds write attempt");
   }
-  config->tag = (tag) ? strdup(tag) : strdup("USER AGENT");
-
   if (IS_EMPTY_STRING(config_file)) {
     config->http_dump_cb = &noop_http_dump;
     config->f_http_dump = stderr;

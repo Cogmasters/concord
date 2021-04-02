@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h> //for isgraph()
+#include <ctype.h> /* isgraph() */
 
 #include "discord.h"
 #include "discord-common.h"
@@ -116,6 +116,11 @@ discord_on_event_raw(struct discord *client, event_raw_cb *callback) {
 void
 discord_on_ready(struct discord *client, idle_cb *callback) {
   client->gw.cbs.on_ready = callback;
+}
+
+void
+discord_run(struct discord *client) {
+  ws_run(client->gw.ws);
 }
 
 void 
