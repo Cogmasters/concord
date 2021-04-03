@@ -9,7 +9,7 @@
 
 #include "user-agent.h"
 //#include <curl/curl.h> /* implicit */
-//
+
 #include "orka-utils.h"
 #include "orka-config.h"
 
@@ -22,7 +22,7 @@ struct user_agent {
   int num_notbusy; // num of available conns
   size_t num_conn; // amount of conns created
 
-  char *base_url;
+  char base_url[UA_MAX_URL_LEN];
 
   uint64_t blockuntil_tstamp; // for global ratelimiting purposes
   pthread_mutex_t lock;
@@ -35,24 +35,23 @@ struct user_agent {
   curl_mime* (*mime_cb)(CURL *ehandle, void *data); // @todo this is temporary
 };
 
-struct ua_respheader_s {
+struct conn_resp_header {
   char field[UA_MAX_HEADER_SIZE][UA_MAX_HEADER_LEN];
   char value[UA_MAX_HEADER_SIZE][UA_MAX_HEADER_LEN];
   int size;
 };
 
 struct ua_conn {
-  _Bool is_busy;
-  uint64_t request_tstamp; // timestamp of when the request completed
-
   CURL *ehandle; //the curl's easy handle used to perform requests
-  struct sized_buffer resp_body; //the api response string
-  struct ua_respheader_s resp_header; //the key/field response header
+  bool is_busy; // true if current conn is performing a request
+  ua_status_t status; //the conn request's status
 
   char req_url[UA_MAX_URL_LEN]; //request's url
-  char *resp_url; //response's url
+  uint64_t req_tstamp; // timestamp of when its request completed
 
-  ua_status_t status; //the conn request's status
+  struct conn_resp_header resp_header; //the key/field response header
+  struct sized_buffer resp_body; //the api response string
+  char *resp_url; //response's url
 
   void *data; //user arbitrary data
 };
@@ -127,7 +126,7 @@ static size_t
 conn_resheader_cb(char *str, size_t size, size_t nmemb, void *p_userdata)
 {
   size_t realsize = size * nmemb;
-  struct ua_respheader_s *resp_header = p_userdata;
+  struct conn_resp_header *resp_header = p_userdata;
 
   char *ptr;
   if (!(ptr = strchr(str, ':'))) { //returns if can't find ':' token match
@@ -263,7 +262,7 @@ conn_cleanup(struct ua_conn *conn)
 static void
 conn_soft_reset(struct ua_conn *conn)
 {
-  conn->request_tstamp = 0;
+  conn->req_tstamp = 0;
   *conn->resp_body.start = '\0';
   conn->resp_body.size = 0;
   conn->resp_header.size = 0;
@@ -319,7 +318,7 @@ get_conn(struct user_agent *ua)
 }
 
 void*
-ua_connet_data(struct ua_conn *conn, void *data) {
+ua_conn_set_data(struct ua_conn *conn, void *data) {
   return conn->data = data;
 }
 
@@ -340,7 +339,7 @@ ua_conn_get_status(struct ua_conn *conn) {
 
 uint64_t
 ua_conn_timestamp(struct ua_conn *conn) {
-  return conn->request_tstamp;
+  return conn->req_tstamp;
 }
 
 struct user_agent*
@@ -348,7 +347,7 @@ ua_init(const char base_url[])
 {
   struct user_agent *new_ua = calloc(1, sizeof *new_ua);
 
-  new_ua->base_url = strdup(base_url);
+  ua_set_base_url(new_ua, base_url);
 
   // default header
   char user_agent[] = "orca (http://github.com/cee-studio/orca)";
@@ -379,7 +378,6 @@ ua_config_init(
 void
 ua_cleanup(struct user_agent *ua)
 {
-  free(ua->base_url);
   curl_slist_free_all(ua->req_header);
   orka_config_cleanup(&ua->config);
 
@@ -390,6 +388,18 @@ ua_cleanup(struct user_agent *ua)
   }
   pthread_mutex_destroy(&ua->lock);
   free(ua);
+}
+
+char*
+ua_get_base_url(struct user_agent *ua) {
+  return ua->base_url;
+}
+
+void
+ua_set_base_url(struct user_agent *ua, const char base_url[])
+{
+  int ret = snprintf(ua->base_url, sizeof(ua->base_url), "%s", base_url);
+  ASSERT_S(ret < sizeof(ua->base_url), "Out of bounds write attempt");
 }
 
 char*
@@ -564,7 +574,7 @@ send_request(struct user_agent *ua, struct ua_conn *conn)
   //@todo shouldn't abort on error
   ecode = curl_easy_perform(conn->ehandle);
   ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
-  conn->request_tstamp = orka_timestamp_ms();
+  conn->req_tstamp = orka_timestamp_ms();
 
   //get response's code
   int httpcode;

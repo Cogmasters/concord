@@ -10,8 +10,8 @@ extern "C" {
 #endif // __cplusplus
 
 /* FORWARD DECLARATIONS */
-struct user_agent;
-struct ua_conn; // unique connector per request
+struct user_agent; // the user agent that perform requests
+struct ua_conn;    // unique connector per request
 
 //possible http methods
 enum http_method {
@@ -111,6 +111,8 @@ struct user_agent* ua_config_init(
   const char tag[], 
   const char config_file[]);
 void ua_cleanup(struct user_agent *ua);
+char* ua_get_base_url(struct user_agent *ua);
+void ua_set_base_url(struct user_agent *ua, const char base_url[]);
 void ua_block_ms(struct user_agent *ua, const uint64_t wait_ms);
 void ua_vrun(
   struct user_agent *ua,
