@@ -71,7 +71,7 @@ struct discord_gateway_payload { /* PAYLOAD STRUCTURE */
 };
 
 struct discord_gateway { /* GATEWAY STRUCTURE */
-  struct websockets_s *ws;
+  struct websockets *ws;
 
   struct discord_gateway_identify *identify;
   char session_id[512]; //the session id (for resuming lost connections)

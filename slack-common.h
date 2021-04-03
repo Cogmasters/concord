@@ -25,7 +25,7 @@ void slack_adapter_run(
   enum http_method http_method, char endpoint[], ...);
 
 struct slack_rtm {
-  struct websockets_s *ws;
+  struct websockets *ws;
   char base_url[UA_MAX_URL_LEN];
   struct slack *p_client;
 };
@@ -42,7 +42,7 @@ struct slack_socketmode_resp {
 };
 
 struct slack_socketmode {
-  struct websockets_s *ws;
+  struct websockets *ws;
   char base_url[UA_MAX_URL_LEN];
   struct slack_socketmode_resp resp; // unique per iteration
   struct slack *p_client;

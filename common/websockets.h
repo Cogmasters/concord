@@ -5,6 +5,8 @@
 extern "C" {
 #endif // __cplusplus
 
+/* FORWARD DECLARATIONS */
+struct websockets;
 
 enum ws_status {
   WS_DISCONNECTED,  //disconnected from ws
@@ -50,36 +52,36 @@ struct ws_callbacks {
   void (*on_close)(void *data, enum ws_close_reason wscode, const char *reason, size_t len);
 };
 
-struct websockets_s* ws_init(const char base_url[], struct ws_callbacks *cbs);
-struct websockets_s* ws_config_init(
+struct websockets* ws_init(const char base_url[], struct ws_callbacks *cbs);
+struct websockets* ws_config_init(
   const char base_url[], 
   struct ws_callbacks *cbs,
   const char tag[], 
   const char config_file[]);
-void ws_cleanup(struct websockets_s *ws);
+void ws_cleanup(struct websockets *ws);
 void ws_close(
-  struct websockets_s *ws,
+  struct websockets *ws,
   enum ws_close_reason wscode, 
   const char reason[], 
   size_t len);
-void ws_send_text(struct websockets_s *ws, char text[]);
-void ws_run(struct websockets_s *ws);
-uint64_t ws_timestamp(struct websockets_s *ws);
-enum ws_status ws_get_status(struct websockets_s *ws);
-void ws_set_status(struct websockets_s *ws, enum ws_status status);
-void ws_set_refresh_rate(struct websockets_s *ws, uint64_t wait_ms);
-void ws_set_max_reconnect(struct websockets_s *ws, int max_attempts);
+void ws_send_text(struct websockets *ws, char text[]);
+void ws_run(struct websockets *ws);
+uint64_t ws_timestamp(struct websockets *ws);
+enum ws_status ws_get_status(struct websockets *ws);
+void ws_set_status(struct websockets *ws, enum ws_status status);
+void ws_set_refresh_rate(struct websockets *ws, uint64_t wait_ms);
+void ws_set_max_reconnect(struct websockets *ws, int max_attempts);
 void ws_set_event(
-  struct websockets_s *ws, 
+  struct websockets *ws, 
   int event_code, 
   void (*user_cb)(void *data, void *curr_iter_data));
 /* this should be used at on_text_event callbacks, it is the data that
  *  can be accessed within the on_event callbacks parameter */
 void ws_set_curr_iter_data(
-  struct websockets_s *ws, 
+  struct websockets *ws, 
   void *curr_iter_data, 
   void (*curr_iter_cleanup)(void *curr_iter_data));
-struct sized_buffer ws_config_get_field(struct websockets_s *ws, char *json_field);
+struct sized_buffer ws_config_get_field(struct websockets *ws, char *json_field);
 
 #ifdef __cplusplus
 }

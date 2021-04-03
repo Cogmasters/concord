@@ -25,7 +25,7 @@ struct wthread { // worker thread
 };
 
 #define MAX_THREADS 10 //@todo temp size just for prototyping
-struct websockets_s {
+struct websockets {
   struct orka_config config;
   enum ws_status status;
   CURLM *mhandle;
@@ -61,19 +61,19 @@ struct websockets_s {
 static void
 cws_on_connect_cb(void *p_ws, CURL *ehandle, const char *ws_protocols)
 {
-  struct websockets_s *ws = p_ws;
+  struct websockets *ws = p_ws;
   (*ws->cbs.on_connect)(ws->cbs.data, ws_protocols);
 }
 
 static void
 cws_on_close_cb(void *p_ws, CURL *ehandle, enum cws_close_reason cwscode, const char *reason, size_t len)
 {
-  struct websockets_s *ws = p_ws;
+  struct websockets *ws = p_ws;
   (*ws->cbs.on_close)(ws->cbs.data, cwscode, reason, len);
 }
 
 struct _event_cxt {
-  struct websockets_s *ws; // the websockets client
+  struct websockets *ws; // the websockets client
   struct event_cb *event; // callback associated with event
   struct wthread *thread; // thread associated with event
 };
@@ -105,7 +105,7 @@ event_run(void *p_cxt)
 static void
 cws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
 {
-  struct websockets_s *ws = p_ws;
+  struct websockets *ws = p_ws;
 
   int event_code = (*ws->cbs.on_text_event)(ws->cbs.data, text, len);
   for (size_t i=0; i < ws->num_events; ++i) {
@@ -179,27 +179,27 @@ cws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
 static void
 cws_on_binary_cb(void *p_ws, CURL *ehandle, const void *mem, size_t len)
 {
-  struct websockets_s *ws = p_ws;
+  struct websockets *ws = p_ws;
   (*ws->cbs.on_binary)(ws->cbs.data, mem, len);
 }
 
 static void
 cws_on_ping_cb(void *p_ws, CURL *ehandle, const char *reason, size_t len)
 {
-  struct websockets_s *ws = p_ws;
+  struct websockets *ws = p_ws;
   (*ws->cbs.on_ping)(ws->cbs.data, reason, len);
 }
 
 static void
 cws_on_pong_cb(void *p_ws, CURL *ehandle, const char *reason, size_t len)
 {
-  struct websockets_s *ws = p_ws;
+  struct websockets *ws = p_ws;
   (*ws->cbs.on_pong)(ws->cbs.data, reason, len);
 }
 
 /* init easy handle with some default opt */
 static CURL*
-custom_cws_new(struct websockets_s *ws)
+custom_cws_new(struct websockets *ws)
 {
   struct cws_callbacks cws_cbs = {0};
   cws_cbs.on_connect = &cws_on_connect_cb;
@@ -240,10 +240,10 @@ static void noop_on_ping(void *a, const char *b, size_t c){return;}
 static void noop_on_pong(void *a, const char *b, size_t c){return;}
 static void noop_on_close(void *a, enum ws_close_reason b, const char *c, size_t d){return;}
 
-struct websockets_s*
+struct websockets*
 ws_init(const char base_url[], struct ws_callbacks *cbs)
 {
-  struct websockets_s *new_ws = calloc(1, sizeof *new_ws);
+  struct websockets *new_ws = calloc(1, sizeof *new_ws);
 
   new_ws->base_url = strdup(base_url);
   new_ws->status = WS_DISCONNECTED;
@@ -287,20 +287,20 @@ ws_init(const char base_url[], struct ws_callbacks *cbs)
   return new_ws;
 }
 
-struct websockets_s*
+struct websockets*
 ws_config_init(
   const char base_url[], 
   struct ws_callbacks *cbs,
   const char tag[], 
   const char config_file[]) 
 {
-  struct websockets_s *new_ws = ws_init(base_url, cbs);
+  struct websockets *new_ws = ws_init(base_url, cbs);
   orka_config_init(&new_ws->config, tag, config_file);
   return new_ws;
 }
 
 void
-ws_cleanup(struct websockets_s *ws)
+ws_cleanup(struct websockets *ws)
 {
   if (ws->event_pool)
     free(ws->event_pool);
@@ -314,7 +314,7 @@ ws_cleanup(struct websockets_s *ws)
 }
 
 static void
-event_loop(struct websockets_s *ws)
+event_loop(struct websockets *ws)
 {
   curl_multi_add_handle(ws->mhandle, ws->ehandle);
 
@@ -359,7 +359,7 @@ event_loop(struct websockets_s *ws)
 
 void
 ws_close(
-  struct websockets_s *ws, 
+  struct websockets *ws, 
   enum ws_close_reason wscode, 
   const char reason[], 
   size_t len)
@@ -371,7 +371,7 @@ ws_close(
 }
 
 void
-ws_send_text(struct websockets_s *ws, char text[])
+ws_send_text(struct websockets *ws, char text[])
 {
   pthread_mutex_lock(&ws->lock);
   (*ws->config.http_dump_cb)(
@@ -387,7 +387,7 @@ ws_send_text(struct websockets_s *ws, char text[])
 }
 
 uint64_t
-ws_timestamp(struct websockets_s *ws) 
+ws_timestamp(struct websockets *ws) 
 {
   pthread_mutex_lock(&ws->lock);
   uint64_t now_tstamp = ws->now_tstamp;
@@ -396,7 +396,7 @@ ws_timestamp(struct websockets_s *ws)
 }
 
 enum ws_status
-ws_get_status(struct websockets_s *ws) 
+ws_get_status(struct websockets *ws) 
 {
   pthread_mutex_lock(&ws->lock);
   enum ws_status status = ws->status;
@@ -405,7 +405,7 @@ ws_get_status(struct websockets_s *ws)
 }
 
 void
-ws_set_status(struct websockets_s *ws, enum ws_status status) 
+ws_set_status(struct websockets *ws, enum ws_status status) 
 {
   pthread_mutex_lock(&ws->lock);
   if (status == WS_CONNECTED) {
@@ -416,7 +416,7 @@ ws_set_status(struct websockets_s *ws, enum ws_status status)
 }
 
 void
-ws_set_refresh_rate(struct websockets_s *ws, uint64_t wait_ms) 
+ws_set_refresh_rate(struct websockets *ws, uint64_t wait_ms) 
 {
   pthread_mutex_lock(&ws->lock);
   ws->wait_ms = wait_ms;
@@ -424,7 +424,7 @@ ws_set_refresh_rate(struct websockets_s *ws, uint64_t wait_ms)
 }
 
 void
-ws_set_max_reconnect(struct websockets_s *ws, int max_attempts) 
+ws_set_max_reconnect(struct websockets *ws, int max_attempts) 
 {
   pthread_mutex_lock(&ws->lock);
   ws->reconnect.threshold = max_attempts;
@@ -433,7 +433,7 @@ ws_set_max_reconnect(struct websockets_s *ws, int max_attempts)
 
 void
 ws_set_event(
-  struct websockets_s *ws, 
+  struct websockets *ws, 
   int event_code, 
   void (*user_cb)(void *data, void *event_data))
 {
@@ -452,7 +452,7 @@ ws_set_event(
  *  iteration by calling user defined cleanup() method */
 void
 ws_set_curr_iter_data(
-  struct websockets_s *ws, 
+  struct websockets *ws, 
   void *curr_iter_data, 
   void (*curr_iter_cleanup)(void *curr_iter_data))
 {
@@ -461,7 +461,7 @@ ws_set_curr_iter_data(
 }
 
 static enum ws_status
-attempt_reconnect(struct websockets_s *ws)
+attempt_reconnect(struct websockets *ws)
 {
   switch (ws->status) {
   default:
@@ -486,7 +486,7 @@ attempt_reconnect(struct websockets_s *ws)
 
 /* connects to the websockets server */
 void
-ws_run(struct websockets_s *ws)
+ws_run(struct websockets *ws)
 {
   ASSERT_S(WS_DISCONNECTED == ws_get_status(ws), 
       "Failed attempt to run websockets recursively");
@@ -499,6 +499,6 @@ ws_run(struct websockets_s *ws)
 }
 
 struct sized_buffer
-ws_config_get_field(struct websockets_s *ws, char *json_field) {
+ws_config_get_field(struct websockets *ws, char *json_field) {
   return orka_config_get_field(&ws->config, json_field);
 }
