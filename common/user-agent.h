@@ -51,7 +51,7 @@ typedef enum {
   UA_ABORT     // abort after failed request
 } ua_status_t;
 
-void* ua_connet_data(struct ua_conn *conn, void *data);
+void* ua_conn_set_data(struct ua_conn *conn, void *data);
 void* ua_conn_get_data(struct ua_conn *conn);
 struct sized_buffer ua_conn_get_resp_body(struct ua_conn *conn);
 ua_status_t ua_conn_get_status(struct ua_conn *conn);
