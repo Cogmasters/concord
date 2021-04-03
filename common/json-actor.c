@@ -204,6 +204,7 @@ enum builtin_type {
   B_INT,
   B_LONG,
   B_LONG_LONG,
+  B_UINT64,
   B_STRING_AS_HEX_UINT,
   B_STRING_AS_U64,
   B_STRING_AS_HEX64,
@@ -683,8 +684,18 @@ parse_value(
       act->_.builtin = B_INT;
       pos ++;
       goto return_true;
-    case 'u':
-      ERR("unexpected %s\n", pos);
+    case 'u': {
+      size_t sz = strlen("u64");
+      if (pos + sz <= end_pos && 0 == strncmp(pos, "u64", sz)) {
+        act->mem_size.size = sizeof(long);
+        act->mem_size.tag = SIZE_FIXED;
+        act->_.builtin = B_UINT64;
+        pos += sz;
+        goto return_true;
+      }
+      else
+        ERR("unexpected %s\n", pos);
+    }
     case 'f':
       act->mem_size.size = sizeof(float);
       act->mem_size.tag = SIZE_FIXED;
@@ -1339,6 +1350,12 @@ inject_builtin (
         return xprintf(pos, size, info, "false");
     case B_INT:
       return xprintf(pos, size, info, "%d", *(int*)v->operand);
+    case B_LONG:
+      return xprintf(pos, size, info, "%ld", *(long*)v->operand);
+    case B_LONG_LONG:
+      return xprintf(pos, size, info, "%lld", *(long long*)v->operand);
+    case B_UINT64:
+      return xprintf(pos, size, info, "%" PRIu64, *(uint64_t*)v->operand);
     case B_STRING_AS_HEX_UINT:
       return xprintf(pos, size, info, "\"%u\"", *(unsigned int*)v->operand);
     case B_STRING_AS_U64:
@@ -2057,7 +2074,18 @@ static size_t extract_scalar (struct action * a, int i, struct e_info * info)
               tokens[i].end - tokens[i].start, json + tokens[i].start);
       }
       add_defined(info->E, a->operand);
-      break;      
+      break;
+    case B_UINT64:
+      if (is_null)
+        *(uint64_t *) a->operand = 0;
+      else {
+        *(uint64_t *) a->operand = strtoll(json + tokens[i].start, &xend, 10);
+        if (xend != json + tokens[i].end)
+          ERR("failed to extract long long from %.*s\n",
+              tokens[i].end - tokens[i].start, json + tokens[i].start);
+      }
+      add_defined(info->E, a->operand);
+      break;
     case B_LONG_LONG:
       if (is_null)
         *(long long *) a->operand = 0;
