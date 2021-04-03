@@ -111,14 +111,13 @@ on_failure_cb(
 {
   struct _ratelimit_cxt *cxt = p_cxt;
 
+  NOTOP_PRINT("(%d)%s - %s", 
+      httpcode,
+      http_code_print(httpcode),
+      http_reason_print(httpcode));
+
   if (httpcode >= 500) { // server related error, retry
-    NOTOP_PRINT("(%d)%s - %s", 
-        httpcode,
-        http_code_print(httpcode),
-        http_reason_print(httpcode));
-
     ua_block_ms(cxt->adapter->ua, 5000); // wait for 5 seconds
-
     return UA_RETRY;
   }
 
@@ -126,28 +125,13 @@ on_failure_cb(
   case HTTP_FORBIDDEN:
   case HTTP_NOT_FOUND:
   case HTTP_BAD_REQUEST:
-      NOTOP_PRINT("(%d)%s - %s",  //print error and continue
-          httpcode,
-          http_code_print(httpcode),
-          http_reason_print(httpcode));
-
       return UA_FAILURE;
   case HTTP_UNAUTHORIZED:
   case HTTP_METHOD_NOT_ALLOWED:
   default:
-      NOTOP_PRINT("(%d)%s - %s",  //print error and abort
-          httpcode,
-          http_code_print(httpcode),
-          http_reason_print(httpcode));
-
       return UA_ABORT;
   case HTTP_TOO_MANY_REQUESTS:
    {
-      NOTOP_PRINT("(%d)%s - %s", 
-          httpcode,
-          http_code_print(httpcode),
-          http_reason_print(httpcode));
-
       char message[256];
       long long retry_after_ms = 0;
       struct sized_buffer body = ua_conn_get_resp_body(conn);
