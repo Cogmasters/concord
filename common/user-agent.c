@@ -2,23 +2,23 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <stdarg.h>
-#include <ctype.h> //for isspace()
+#include <ctype.h> /* isspace() */
 #include <string.h>
 #include <strings.h>
 #include <pthread.h>
 
-#include <curl/curl.h>
-
 #include "user-agent.h"
+//#include <curl/curl.h> /* implicit */
+//
 #include "orka-utils.h"
 #include "orka-config.h"
 
 
-struct user_agent_s {
+struct user_agent {
   struct orka_config config;
   struct curl_slist *req_header; // the request header sent to the api
 
-  struct ua_conn_s **conn_pool; // connection pool for reuse
+  struct ua_conn **conn_pool; // connection pool for reuse
   int num_notbusy; // num of available conns
   size_t num_conn; // amount of conns created
 
@@ -35,9 +35,31 @@ struct user_agent_s {
   curl_mime* (*mime_cb)(CURL *ehandle, void *data); // @todo this is temporary
 };
 
+struct ua_respheader_s {
+  char field[UA_MAX_HEADER_SIZE][UA_MAX_HEADER_LEN];
+  char value[UA_MAX_HEADER_SIZE][UA_MAX_HEADER_LEN];
+  int size;
+};
+
+struct ua_conn {
+  _Bool is_busy;
+  uint64_t request_tstamp; // timestamp of when the request completed
+
+  CURL *ehandle; //the curl's easy handle used to perform requests
+  struct sized_buffer resp_body; //the api response string
+  struct ua_respheader_s resp_header; //the key/field response header
+
+  char req_url[UA_MAX_URL_LEN]; //request's url
+  char *resp_url; //response's url
+
+  ua_status_t status; //the conn request's status
+
+  void *data; //user arbitrary data
+};
+
 /* attempt to get value from matching response header field */
 char*
-ua_respheader_value(struct ua_conn_s *conn, char field[])
+ua_respheader_value(struct ua_conn *conn, char field[])
 {
   for (int i=0; i < conn->resp_header.size; ++i) {
     if (0 == strcasecmp(field, conn->resp_header.field[i])) {
@@ -48,7 +70,7 @@ ua_respheader_value(struct ua_conn_s *conn, char field[])
 }
 
 void
-ua_reqheader_add(struct user_agent_s *ua, char field[],  char value[])
+ua_reqheader_add(struct user_agent *ua, char field[],  char value[])
 {
   char buf[UA_MAX_HEADER_LEN];
   int ret = snprintf(buf, sizeof(buf), "%s: %s", field, value);
@@ -75,7 +97,7 @@ ua_reqheader_add(struct user_agent_s *ua, char field[],  char value[])
 
 // @todo this needs some testing
 void
-ua_reqheader_del(struct user_agent_s *ua, char field[])
+ua_reqheader_del(struct user_agent *ua, char field[])
 {
   struct curl_slist *node = ua->req_header;
   size_t len = strlen(field);
@@ -157,23 +179,23 @@ conn_resbody_cb(char *str, size_t size, size_t nmemb, void *p_userdata)
 }
 
 void
-ua_easy_setopt(struct user_agent_s *ua, void *data, void (setopt_cb)(CURL *ehandle, void *data)) 
+ua_easy_setopt(struct user_agent *ua, void *data, void (setopt_cb)(CURL *ehandle, void *data)) 
 {
   ua->setopt_cb = setopt_cb;
   ua->data = data;
 }
 
 void
-ua_mime_setopt(struct user_agent_s *ua, void *data, curl_mime* (mime_cb)(CURL *ehandle, void *data)) 
+ua_mime_setopt(struct user_agent *ua, void *data, curl_mime* (mime_cb)(CURL *ehandle, void *data)) 
 {
   ua->mime_cb = mime_cb;
   ua->data2 = data;
 }
 
-static struct ua_conn_s*
-conn_init(struct user_agent_s *ua)
+static struct ua_conn*
+conn_init(struct user_agent *ua)
 {
-  struct ua_conn_s *new_conn = calloc(1, sizeof(struct ua_conn_s));
+  struct ua_conn *new_conn = calloc(1, sizeof(struct ua_conn));
 
   CURL *new_ehandle = curl_easy_init(); // will be given to new_conn
 
@@ -230,7 +252,7 @@ conn_init(struct user_agent_s *ua)
 }
 
 static void
-conn_cleanup(struct ua_conn_s *conn)
+conn_cleanup(struct ua_conn *conn)
 {
   curl_easy_cleanup(conn->ehandle);
   if (conn->resp_body.start)
@@ -239,16 +261,16 @@ conn_cleanup(struct ua_conn_s *conn)
 }
 
 static void
-conn_soft_reset(struct ua_conn_s *conn)
+conn_soft_reset(struct ua_conn *conn)
 {
-  conn->perform_tstamp = 0;
+  conn->request_tstamp = 0;
   *conn->resp_body.start = '\0';
   conn->resp_body.size = 0;
   conn->resp_header.size = 0;
 }
 
 static void
-conn_full_reset(struct user_agent_s *ua, struct ua_conn_s *conn)
+conn_full_reset(struct user_agent *ua, struct ua_conn *conn)
 {
   pthread_mutex_lock(&ua->lock);
 
@@ -265,10 +287,10 @@ conn_full_reset(struct user_agent_s *ua, struct ua_conn_s *conn)
   pthread_mutex_unlock(&ua->lock);
 }
 
-static struct ua_conn_s*
-get_conn(struct user_agent_s *ua)
+static struct ua_conn*
+get_conn(struct user_agent *ua)
 {
-  struct ua_conn_s *ret_conn = NULL;
+  struct ua_conn *ret_conn = NULL;
 
   pthread_mutex_lock(&ua->lock);
   if (!ua->num_notbusy) { // no available conn, create new
@@ -297,19 +319,34 @@ get_conn(struct user_agent_s *ua)
 }
 
 void*
-ua_conn_set_data(struct ua_conn_s *conn, void *data) {
+ua_connet_data(struct ua_conn *conn, void *data) {
   return conn->data = data;
 }
 
 void*
-ua_conn_get_data(struct ua_conn_s *conn) {
+ua_conn_get_data(struct ua_conn *conn) {
   return conn->data;
 }
 
-struct user_agent_s*
+struct sized_buffer
+ua_conn_get_resp_body(struct ua_conn *conn) {
+  return conn->resp_body;
+}
+
+ua_status_t 
+ua_conn_get_status(struct ua_conn *conn) {
+  return conn->status;
+}
+
+uint64_t
+ua_conn_timestamp(struct ua_conn *conn) {
+  return conn->request_tstamp;
+}
+
+struct user_agent*
 ua_init(const char base_url[]) 
 {
-  struct user_agent_s *new_ua = calloc(1, sizeof *new_ua);
+  struct user_agent *new_ua = calloc(1, sizeof *new_ua);
 
   new_ua->base_url = strdup(base_url);
 
@@ -328,19 +365,19 @@ ua_init(const char base_url[])
   return new_ua;
 }
 
-struct user_agent_s*
+struct user_agent*
 ua_config_init(
   const char base_url[], 
   const char tag[], 
   const char config_file[]) 
 {
-  struct user_agent_s *new_ua = ua_init(base_url);
+  struct user_agent *new_ua = ua_init(base_url);
   orka_config_init(&new_ua->config, tag, config_file);
   return new_ua;
 }
 
 void
-ua_cleanup(struct user_agent_s *ua)
+ua_cleanup(struct user_agent *ua)
 {
   free(ua->base_url);
   curl_slist_free_all(ua->req_header);
@@ -444,8 +481,8 @@ http_method_print(enum http_method method)
 /* set specific http method used for the request */
 static void
 set_method(
-  struct user_agent_s *ua, //@todo unnecessary after multipart_inject()
-  struct ua_conn_s *conn, 
+  struct user_agent *ua, //@todo unnecessary after multipart_inject()
+  struct ua_conn *conn, 
   enum http_method method, 
   struct sized_buffer *req_body)
 {
@@ -488,7 +525,7 @@ set_method(
 }
 
 static void
-set_url(struct user_agent_s *ua, struct ua_conn_s *conn, char endpoint[], va_list args)
+set_url(struct user_agent *ua, struct ua_conn *conn, char endpoint[], va_list args)
 {
   //create the url route
   char url_route[UA_MAX_URL_LEN];
@@ -506,17 +543,17 @@ set_url(struct user_agent_s *ua, struct ua_conn_s *conn, char endpoint[], va_lis
 
 static void noop_iter_start_cb(void *a)
 {return;}
-static void noop_iter_end_cb(void *a, struct ua_conn_s *b)
+static void noop_iter_end_cb(void *a, struct ua_conn *b)
 {return;}
-static ua_status_t noop_success_cb(void *a, int b, struct ua_conn_s *c)
+static ua_status_t noop_success_cb(void *a, int b, struct ua_conn *c)
 {return UA_SUCCESS;}
-static ua_status_t noop_retry_cb(void *a, int b, struct ua_conn_s *c) 
+static ua_status_t noop_retry_cb(void *a, int b, struct ua_conn *c) 
 {return UA_RETRY;}
-static ua_status_t noop_abort_cb(void *a, int b, struct ua_conn_s *c) 
+static ua_status_t noop_abort_cb(void *a, int b, struct ua_conn *c) 
 {return UA_ABORT;}
 
 static int
-send_request(struct user_agent_s *ua, struct ua_conn_s *conn)
+send_request(struct user_agent *ua, struct ua_conn *conn)
 {
   pthread_mutex_lock(&ua->lock);
   
@@ -527,7 +564,7 @@ send_request(struct user_agent_s *ua, struct ua_conn_s *conn)
   //@todo shouldn't abort on error
   ecode = curl_easy_perform(conn->ehandle);
   ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
-  conn->perform_tstamp = orka_timestamp_ms();
+  conn->request_tstamp = orka_timestamp_ms();
 
   //get response's code
   int httpcode;
@@ -545,9 +582,9 @@ send_request(struct user_agent_s *ua, struct ua_conn_s *conn)
 
 static void
 perform_request(
-  struct user_agent_s *ua,
-  struct ua_conn_s *conn, 
-  struct resp_handle *resp_handle,
+  struct user_agent *ua,
+  struct ua_conn *conn, 
+  struct ua_resp_handle *resp_handle,
   struct ua_callbacks *p_cbs)
 {
   struct ua_callbacks cbs;
@@ -671,7 +708,7 @@ perform_request(
 
 // make the main thread wait for a specified amount of time
 void
-ua_block_ms(struct user_agent_s *ua, const uint64_t wait_ms) 
+ua_block_ms(struct user_agent *ua, const uint64_t wait_ms) 
 {
   pthread_mutex_lock(&ua->lock);
   ua->blockuntil_tstamp = orka_timestamp_ms() + wait_ms;
@@ -681,8 +718,8 @@ ua_block_ms(struct user_agent_s *ua, const uint64_t wait_ms)
 /* template function for performing requests */
 void 
 ua_vrun(
-  struct user_agent_s *ua,
-  struct resp_handle *resp_handle,
+  struct user_agent *ua,
+  struct ua_resp_handle *resp_handle,
   struct sized_buffer *req_body,
   struct ua_callbacks *cbs,
   enum http_method http_method, char endpoint[], va_list args)
@@ -691,7 +728,7 @@ ua_vrun(
   if (NULL == req_body) {
     req_body = &blank_req_body;
   }
-  struct ua_conn_s *conn = get_conn(ua);
+  struct ua_conn *conn = get_conn(ua);
   set_url(ua, conn, endpoint, args); //set the request url
 
   (*ua->config.http_dump_cb)(
@@ -709,8 +746,8 @@ ua_vrun(
 /* template function for performing requests */
 void 
 ua_run(
-  struct user_agent_s *ua,
-  struct resp_handle *resp_handle,
+  struct user_agent *ua,
+  struct ua_resp_handle *resp_handle,
   struct sized_buffer *req_body,
   struct ua_callbacks *cbs,
   enum http_method http_method, char endpoint[], ...)
@@ -729,6 +766,6 @@ ua_run(
 }
 
 struct sized_buffer
-ua_config_get_field(struct user_agent_s *ua, char *json_field) {
+ua_config_get_field(struct user_agent *ua, char *json_field) {
   return orka_config_get_field(&ua->config, json_field);
 }

@@ -38,7 +38,7 @@ github_adapter_init(struct github_adapter *adapter, char username[], char token[
 /* template function for performing requests */
 void github_adapter_run(
   struct github_adapter *adapter,
-  struct resp_handle *resp_handle,
+  struct ua_resp_handle *resp_handle,
   struct sized_buffer *req_body,
   enum http_method http_method,
   char endpoint[],

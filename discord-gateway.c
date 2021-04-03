@@ -44,7 +44,7 @@ discord_session_from_json(char *str, size_t len, void *p_session)
 void
 discord_get_gateway(struct discord *client, struct discord_session *p_session)
 {
-  struct resp_handle resp_handle = \
+  struct ua_resp_handle resp_handle = \
     { .ok_cb = &discord_session_from_json, .ok_obj = (void*)p_session };
 
   discord_adapter_run( 
@@ -58,7 +58,7 @@ discord_get_gateway(struct discord *client, struct discord_session *p_session)
 void
 discord_get_gateway_bot(struct discord *client, struct discord_session *p_session)
 {
-  struct resp_handle resp_handle = \
+  struct ua_resp_handle resp_handle = \
     { .ok_cb = &discord_session_from_json, .ok_obj = (void*)p_session};
 
   discord_adapter_run( 

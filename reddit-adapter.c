@@ -13,7 +13,7 @@
 static void
 curl_setopt_cb(CURL *ehandle, void *p_ua)
 {
-  struct user_agent_s *ua = p_ua;
+  struct user_agent *ua = p_ua;
 
   struct sized_buffer tclient_id = ua_config_get_field(ua, "reddit.client_id");
   ASSERT_S(NULL != tclient_id.start, "Missing client_id");
@@ -54,7 +54,7 @@ reddit_adapter_cleanup(struct reddit_adapter *adapter) {
 void
 reddit_adapter_run(
   struct reddit_adapter *adapter, 
-  struct resp_handle *resp_handle,
+  struct ua_resp_handle *resp_handle,
   struct sized_buffer *req_body,
   enum http_method http_method, char endpoint[], ...)
 {

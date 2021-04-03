@@ -4,7 +4,7 @@
 #include "user-agent.h"
 
 struct github_adapter {
-  struct user_agent_s *ua;
+  struct user_agent *ua;
   char *username;
   char *token;
 };
@@ -16,7 +16,7 @@ extern void github_adapter_init(
 
 extern void github_adapter_run(
   struct github_adapter *adapter,
-  struct resp_handle *resp_handle,
+  struct ua_resp_handle *resp_handle,
   struct sized_buffer *req_body,
   enum http_method http_method,
   char endpoint[],

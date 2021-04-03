@@ -81,7 +81,7 @@ bucket_trycooldown_cb(void *p_cxt)
 }
 
 static void
-bucket_trybuild_cb(void *p_cxt, struct ua_conn_s *conn)
+bucket_trybuild_cb(void *p_cxt, struct ua_conn *conn)
 {
   struct _ratelimit_cxt *cxt = p_cxt;
   pthread_mutex_lock(&cxt->adapter->ratelimit.lock);
@@ -93,7 +93,7 @@ static ua_status_t
 on_success_cb(
   void *p_cxt,
   int httpcode,
-  struct ua_conn_s *conn)
+  struct ua_conn *conn)
 {
   DS_NOTOP_PRINT("(%d)%s - %s", 
       httpcode,
@@ -107,7 +107,7 @@ static ua_status_t
 on_failure_cb(
   void *p_cxt,
   int httpcode,
-  struct ua_conn_s *conn)
+  struct ua_conn *conn)
 {
   struct _ratelimit_cxt *cxt = p_cxt;
 
@@ -150,9 +150,10 @@ on_failure_cb(
 
       char message[256];
       long long retry_after_ms = 0;
+      struct sized_buffer body = ua_conn_get_resp_body(conn);
 
-      json_scanf(conn->resp_body.start, conn->resp_body.size,
-                  "[message]%s [retry_after]%lld",
+      json_extract(body.start, body.size,
+                  "(message):s (retry_after):lld",
                   message, &retry_after_ms);
 
       if (retry_after_ms) { // retry after attribute received
@@ -189,7 +190,7 @@ json_error_cb(char *str, size_t len, void *p_err)
 void
 discord_adapter_run(
   struct discord_adapter *adapter, 
-  struct resp_handle *resp_handle,
+  struct ua_resp_handle *resp_handle,
   struct sized_buffer *req_body,
   enum http_method http_method, char endpoint[], ...)
 {

@@ -15,7 +15,7 @@ discord_get_user(struct discord *client, const u64_snowflake_t user_id, struct d
     return;
   }
 
-  struct resp_handle resp_handle =
+  struct ua_resp_handle resp_handle =
     { .ok_cb = &discord_user_from_json_v, .ok_obj = (void*)p_user};
 
   discord_adapter_run( 
@@ -29,7 +29,7 @@ discord_get_user(struct discord *client, const u64_snowflake_t user_id, struct d
 void 
 discord_get_current_user(struct discord *client, struct discord_user *p_user)
 {
-  struct resp_handle resp_handle =
+  struct ua_resp_handle resp_handle =
     { .ok_cb = &discord_user_from_json_v, .ok_obj = (void*)p_user};
 
   discord_adapter_run( 
@@ -51,7 +51,7 @@ json_to_sb(char *json, size_t len, void *p_sb_user)
 void /* @todo this is a temporary solution for easily wrapping JS */
 sb_discord_get_current_user(struct discord *client, struct sized_buffer *p_sb_user)
 {
-  struct resp_handle resp_handle =
+  struct ua_resp_handle resp_handle =
     {.ok_cb = &json_to_sb, .ok_obj = (void*)p_sb_user};
 
   discord_adapter_run( 
@@ -65,7 +65,7 @@ sb_discord_get_current_user(struct discord *client, struct sized_buffer *p_sb_us
 void
 discord_get_current_user_guilds(struct discord *client, NTL_T(struct discord_guild) *p_guilds)
 {
-  struct resp_handle resp_handle =
+  struct ua_resp_handle resp_handle =
     { .ok_cb = &discord_guild_list_from_json_v, .ok_obj = (void*)p_guilds};
 
   discord_adapter_run( 

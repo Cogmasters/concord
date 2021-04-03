@@ -1,15 +1,17 @@
 #ifndef USER_AGENT_H
 #define USER_AGENT_H
 
-#include <stdint.h>
+#include <stdint.h> /* uint64_t */
 #include <curl/curl.h> 
-#include "ntl.h" // for struct sized_buffer
+#include "ntl.h" /* struct sized_buffer */
 
 #ifdef __cplusplus
 extern "C" {
 #endif // __cplusplus
 
-struct user_agent_s;
+/* FORWARD DECLARATIONS */
+struct user_agent;
+struct ua_conn; // unique connector per request
 
 //possible http methods
 enum http_method {
@@ -49,36 +51,17 @@ typedef enum {
   UA_ABORT     // abort after failed request
 } ua_status_t;
 
-struct ua_respheader_s {
-  char field[UA_MAX_HEADER_SIZE][UA_MAX_HEADER_LEN];
-  char value[UA_MAX_HEADER_SIZE][UA_MAX_HEADER_LEN];
-  int size;
-};
-
-struct ua_conn_s {
-  _Bool is_busy;
-  uint64_t perform_tstamp; // timestamp of when the request completed
-
-  CURL *ehandle; //the curl's easy handle used to perform requests
-  struct sized_buffer resp_body; //the api response string
-  struct ua_respheader_s resp_header; //the key/field response header
-
-  char req_url[UA_MAX_URL_LEN]; //request's url
-  char *resp_url; //response's url
-
-  ua_status_t status; //the conn request's status
-
-  void *data; //user arbitrary data
-};
-
-void* ua_conn_set_data(struct ua_conn_s *conn, void *data);
-void* ua_conn_get_data(struct ua_conn_s *conn);
+void* ua_connet_data(struct ua_conn *conn, void *data);
+void* ua_conn_get_data(struct ua_conn *conn);
+struct sized_buffer ua_conn_get_resp_body(struct ua_conn *conn);
+ua_status_t ua_conn_get_status(struct ua_conn *conn);
+uint64_t ua_conn_timestamp(struct ua_conn *conn);
 
 //callback for object to be loaded by api response
 typedef void (load_obj_cb)(char *str, size_t len, void *p_obj);
 typedef void (cxt_load_obj_cb)(void * cxt, char *str, size_t len, void *p_obj);
 
-struct resp_handle {
+struct ua_resp_handle {
   void *cxt; // the context for cxt_ok_cb;
 
   load_obj_cb *ok_cb;
@@ -92,7 +75,7 @@ struct resp_handle {
 };
 
 typedef ua_status_t 
-(http_response_cb)(void *data, int httpcode, struct ua_conn_s *conn);
+(http_response_cb)(void *data, int httpcode, struct ua_conn *conn);
 
 /* these can be used on any MT contexts, but the user still
     have to synchronize his data accessed between callbacks */
@@ -101,7 +84,7 @@ struct ua_callbacks {
 
   int (*on_startup)(void *data); // exec before loop starts (return 1 for proceed, 0 for abort)
   void (*on_iter_start)(void *data); // execs at end of every loop iteration
-  void (*on_iter_end)(void *data, struct ua_conn_s *conn); // execs at end of every loop iteration
+  void (*on_iter_end)(void *data, struct ua_conn *conn); // execs at end of every loop iteration
 
   http_response_cb *on_1xx; // execs on 1xx code
   http_response_cb *on_2xx; // execs on 2xx code
@@ -114,34 +97,34 @@ char* http_code_print(int httpcode);
 char* http_reason_print(int httpcode);
 char* http_method_print(enum http_method method);
 
-char* ua_respheader_value(struct ua_conn_s *conn, char field[]);
+char* ua_respheader_value(struct ua_conn *conn, char field[]);
 
-void ua_reqheader_add(struct user_agent_s *ua, char field[], char value[]);
-void ua_reqheader_del(struct user_agent_s *ua, char field[]);
+void ua_reqheader_add(struct user_agent *ua, char field[], char value[]);
+void ua_reqheader_del(struct user_agent *ua, char field[]);
 
-void ua_easy_setopt(struct user_agent_s *ua, void *data, void (setopt_cb)(CURL *ehandle, void *data));
-void ua_mime_setopt(struct user_agent_s *ua, void *data, curl_mime* (mime_cb)(CURL *ehandle, void *data)); // @todo this is temporary
+void ua_easy_setopt(struct user_agent *ua, void *data, void (setopt_cb)(CURL *ehandle, void *data));
+void ua_mime_setopt(struct user_agent *ua, void *data, curl_mime* (mime_cb)(CURL *ehandle, void *data)); // @todo this is temporary
 
-struct user_agent_s* ua_init(const char base_url[]);
-struct user_agent_s* ua_config_init(
+struct user_agent* ua_init(const char base_url[]);
+struct user_agent* ua_config_init(
   const char base_url[], 
   const char tag[], 
   const char config_file[]);
-void ua_cleanup(struct user_agent_s *ua);
-void ua_block_ms(struct user_agent_s *ua, const uint64_t wait_ms);
+void ua_cleanup(struct user_agent *ua);
+void ua_block_ms(struct user_agent *ua, const uint64_t wait_ms);
 void ua_vrun(
-  struct user_agent_s *ua,
-  struct resp_handle *resp_handle,
+  struct user_agent *ua,
+  struct ua_resp_handle *resp_handle,
   struct sized_buffer *req_body,
   struct ua_callbacks *cbs,
   enum http_method http_method, char endpoint[], va_list args);
 void ua_run(
-  struct user_agent_s *ua,
-  struct resp_handle *resp_handle,
+  struct user_agent *ua,
+  struct ua_resp_handle *resp_handle,
   struct sized_buffer *req_body,
   struct ua_callbacks *cbs,
   enum http_method http_method, char endpoint[], ...);
-struct sized_buffer ua_config_get_field(struct user_agent_s *ua, char *json_field);
+struct sized_buffer ua_config_get_field(struct user_agent *ua, char *json_field);
 
 #ifdef __cplusplus
 }

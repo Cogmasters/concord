@@ -106,15 +106,15 @@ discord_bucket_try_get(struct discord_adapter *adapter, char endpoint[])
 /* attempt to parse rate limit's header fields to the bucket
  *  linked with the connection which was performed */
 static void
-parse_ratelimits(struct discord_bucket *bucket, struct ua_conn_s *conn)
+parse_ratelimits(struct discord_bucket *bucket, struct ua_conn *conn)
 { 
   pthread_mutex_lock(&bucket->lock);
   --bucket->busy;
 
-  if (UA_SUCCESS == conn->status 
-      && bucket->update_tstamp < conn->perform_tstamp) 
+  if (UA_SUCCESS == ua_conn_get_status(conn)
+      && bucket->update_tstamp < ua_conn_timestamp(conn)) 
   {
-    bucket->update_tstamp = conn->perform_tstamp;
+    bucket->update_tstamp = ua_conn_timestamp(conn);
 
     char *str; // fetch header value as string
     if ( (str = ua_respheader_value(conn, "x-ratelimit-reset")) )
@@ -155,7 +155,7 @@ bucket_cleanup(struct discord_bucket *bucket)
  *  client buckets.
  * If no match is found then we create a new client bucket */
 static void
-match_route(struct discord_adapter *adapter, char endpoint[], struct ua_conn_s *conn)
+match_route(struct discord_adapter *adapter, char endpoint[], struct ua_conn *conn)
 {
   char *bucket_hash = ua_respheader_value(conn, "x-ratelimit-bucket");
   if (!bucket_hash) return; //no hash information in header
@@ -196,7 +196,7 @@ match_route(struct discord_adapter *adapter, char endpoint[], struct ua_conn_s *
  * In case that the endpoint doesn't have a bucket for routing, no 
  *  clashing will occur */
 void
-discord_bucket_build(struct discord_adapter *adapter, struct discord_bucket *bucket, char endpoint[], struct ua_conn_s *conn)
+discord_bucket_build(struct discord_adapter *adapter, struct discord_bucket *bucket, char endpoint[], struct ua_conn *conn)
 {
   /* no bucket means first time using this endpoint.  attempt to 
    *  establish a route between it and a bucket via its unique hash 

@@ -37,7 +37,7 @@ slack_adapter_cleanup(struct slack_adapter *adapter)
 void
 slack_adapter_run(
   struct slack_adapter *adapter, 
-  struct resp_handle *resp_handle,
+  struct ua_resp_handle *resp_handle,
   struct sized_buffer *req_body,
   enum http_method http_method, char endpoint[], ...)
 {

@@ -13,7 +13,7 @@
 #define ELITEBGS_API_URL "https://elitebgs.app/api/ebgs/v5"
 
 /* ELITEBGS User Agent for performing connections to the API */
-struct user_agent_s *g_elitebgs_ua;
+struct user_agent *g_elitebgs_ua;
 uint64_t g_tick_ms;
 
 struct doc_s {
@@ -48,7 +48,7 @@ void ticks_from_json(char *str, size_t len, void *data)
 
 void update_last_tick_ms()
 {
-  struct resp_handle resp_handle =
+  struct ua_resp_handle resp_handle =
     { .ok_cb = &ticks_from_json, .ok_obj = NULL};
 
   /* Fetch ticks from ELITEBGS API */
@@ -283,7 +283,7 @@ void on_command(
   discord_trigger_typing_indicator(client, msg->channel_id);
 
   /* Fetch factions from ELITEBGS API */
-  struct resp_handle resp_handle =
+  struct ua_resp_handle resp_handle =
     { .ok_cb = &embed_from_json, .ok_obj = (void*)new_embed};
   ua_run(
       g_elitebgs_ua, 

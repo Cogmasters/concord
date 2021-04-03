@@ -30,7 +30,7 @@ struct github_git_op {
   struct github_adapter adapter;
   struct github_config config;
   struct sized_buffer body;
-  struct resp_handle handle;
+  struct ua_resp_handle handle;
 };
 
 /*

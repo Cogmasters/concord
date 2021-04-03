@@ -10,7 +10,7 @@
 #include "orka-utils.h"
 
 struct reddit_adapter {
-  struct user_agent_s *ua;
+  struct user_agent *ua;
   struct reddit *p_client;
 };
 
@@ -20,7 +20,7 @@ void reddit_adapter_cleanup(struct reddit_adapter *adapter);
 
 void reddit_adapter_run(
   struct reddit_adapter *adapter, 
-  struct resp_handle *resp_handle,
+  struct ua_resp_handle *resp_handle,
   struct sized_buffer *req_body,
   enum http_method http_method, char endpoint[], ...);
 

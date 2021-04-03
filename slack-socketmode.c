@@ -42,7 +42,7 @@ slack_apps_connections_open(struct slack *client)
   ASSERT_S(ret < sizeof(auth), "Out of bounds write attempt");
   ua_reqheader_add(client->adapter.ua, "Authorization", auth);
 
-  struct resp_handle resp_handle = { .ok_cb = &apps_connections_open_from_json, .ok_obj = client->sm.base_url };
+  struct ua_resp_handle resp_handle = { .ok_cb = &apps_connections_open_from_json, .ok_obj = client->sm.base_url };
 
   slack_adapter_run(
     &client->adapter,

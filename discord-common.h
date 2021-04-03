@@ -14,7 +14,7 @@
 
 
 struct discord_adapter {
-  struct user_agent_s *ua;
+  struct user_agent *ua;
 
   struct { /* RATELIMITING STRUCTURE */
     struct discord_bucket **bucket_pool; //active client buckets
@@ -32,7 +32,7 @@ void discord_adapter_config_init(struct discord_adapter *adapter, const char con
 void discord_adapter_cleanup(struct discord_adapter *adapter);
 void discord_adapter_run(
   struct discord_adapter *adapter, 
-  struct resp_handle *resp_handle,
+  struct ua_resp_handle *resp_handle,
   struct sized_buffer *req_body, // needed for POST/PUT/PATCH methods
   enum http_method http_method,
   char endpoint[],
@@ -56,7 +56,7 @@ struct discord_bucket {
 void discord_bucket_cleanup(struct discord_adapter *bucket);
 void discord_bucket_try_cooldown(struct discord_bucket *bucket);
 struct discord_bucket* discord_bucket_try_get(struct discord_adapter *adapter, char endpoint[]);
-void discord_bucket_build(struct discord_adapter *adapter, struct discord_bucket *bucket, char endpoint[], struct ua_conn_s *conn);
+void discord_bucket_build(struct discord_adapter *adapter, struct discord_bucket *bucket, char endpoint[], struct ua_conn *conn);
 
 struct cmd_cbs {
   char *str;

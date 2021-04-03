@@ -22,7 +22,7 @@ rtm_connect_from_json(char str[], size_t len, void *p_url)
 void
 slack_rtm_connect(struct slack *client)
 {
-  struct resp_handle resp_handle = { .ok_cb = &rtm_connect_from_json, .ok_obj = client->rtm.base_url };
+  struct ua_resp_handle resp_handle = { .ok_cb = &rtm_connect_from_json, .ok_obj = client->rtm.base_url };
 
   slack_adapter_run(
     &client->adapter,

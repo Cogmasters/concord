@@ -15,7 +15,7 @@ discord_get_channel(struct discord *client, const u64_snowflake_t channel_id, st
     return;
   }
 
-  struct resp_handle resp_handle =
+  struct ua_resp_handle resp_handle =
     { .ok_cb = &discord_channel_from_json_v, .ok_obj = (void*)p_channel};
 
   discord_adapter_run(
@@ -34,7 +34,7 @@ discord_delete_channel(struct discord *client, const u64_snowflake_t channel_id,
     return;
   }
 
-  struct resp_handle resp_handle = {
+  struct ua_resp_handle resp_handle = {
     .ok_cb = p_channel ? discord_channel_from_json_v : NULL,
     .ok_obj = p_channel,
   };
@@ -135,7 +135,7 @@ discord_get_channel_messages(
         "&after=%" PRIu64 , params->after);
   }
 
-  struct resp_handle resp_handle = 
+  struct ua_resp_handle resp_handle = 
     { .ok_cb = &discord_message_list_from_json_v, .ok_obj = (void*)p_messages};
 
   discord_adapter_run( 
@@ -215,7 +215,7 @@ discord_create_message(
     return;
   }
 
-  struct resp_handle resp_handle = {
+  struct ua_resp_handle resp_handle = {
     .ok_cb = p_message ? &discord_message_from_json_v : NULL,
     .ok_obj = p_message,
   };
@@ -318,7 +318,7 @@ discord_edit_message(
     return;
   }
 
-  struct resp_handle resp_handle = {
+  struct ua_resp_handle resp_handle = {
     .ok_cb = p_message ? &discord_message_from_json_v : NULL,
     .ok_obj = p_message,
   };

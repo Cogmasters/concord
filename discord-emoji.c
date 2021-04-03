@@ -15,7 +15,7 @@ discord_list_guild_emojis(struct discord *client, const uint64_t guild_id, NTL_T
     return;
   }
 
-  struct resp_handle resp_handle =
+  struct ua_resp_handle resp_handle =
     { .ok_cb = &discord_emoji_list_from_json_v, .ok_obj = (void*)p_emojis};
 
   discord_adapter_run( 

@@ -15,7 +15,7 @@ discord_get_guild(struct discord *client, const u64_snowflake_t guild_id, struct
     return;
   }
 
-  struct resp_handle resp_handle =
+  struct ua_resp_handle resp_handle =
     { .ok_cb = &discord_guild_from_json_v, .ok_obj = (void*)p_guild};
 
   discord_adapter_run( 
@@ -49,7 +49,7 @@ discord_create_guild_channel(
   char payload[MAX_PAYLOAD_LEN];
   discord_create_guild_channel_params_to_json(payload, sizeof(payload), params);
 
-  struct resp_handle resp_handle = {
+  struct ua_resp_handle resp_handle = {
     .ok_cb = p_channel ? &discord_channel_from_json_v : NULL,
     .ok_obj = p_channel,
   };
@@ -73,7 +73,7 @@ discord_get_guild_channels(
     return;
   }
 
-  struct resp_handle resp_handle = 
+  struct ua_resp_handle resp_handle = 
     { .ok_cb = &discord_channel_list_from_json_v, .ok_obj = (void*)p_channels};
 
   discord_adapter_run( 
@@ -96,7 +96,7 @@ discord_get_guild_member(struct discord *client, u64_snowflake_t guild_id, u64_s
     return;
   }
 
-  struct resp_handle resp_handle = {
+  struct ua_resp_handle resp_handle = {
     .ok_cb = discord_guild_member_from_json_v, .ok_obj = p_member
   };
 
@@ -133,7 +133,7 @@ discord_list_guild_members(
         "&after=%" PRIu64 , params->after);
   }
 
-  struct resp_handle resp_handle =
+  struct ua_resp_handle resp_handle =
     { .ok_cb = &discord_guild_member_list_from_json_v, .ok_obj = (void*)p_members};
   
   discord_adapter_run( 
@@ -186,7 +186,7 @@ discord_modify_guild_member(
   char payload[MAX_PAYLOAD_LEN];
   discord_modify_guild_member_params_to_json(payload, sizeof(payload), params);
 
-  struct resp_handle resp_handle = {
+  struct ua_resp_handle resp_handle = {
     .ok_cb = p_member ? &discord_guild_member_from_json_v : NULL,
     .ok_obj = p_member,
   };
@@ -216,7 +216,7 @@ discord_get_guild_ban(
     return;
   }
 
-  struct resp_handle resp_handle =
+  struct ua_resp_handle resp_handle =
     { .ok_cb = &discord_guild_ban_from_json_v, .ok_obj = (void*)p_ban};
 
   discord_adapter_run( 
@@ -236,7 +236,7 @@ discord_get_guild_bans(
     return;
   }
 
-  struct resp_handle resp_handle =
+  struct ua_resp_handle resp_handle =
     { .ok_cb = &discord_guild_ban_list_from_json_v, .ok_obj = (void*)p_bans};
 
   discord_adapter_run( 
@@ -309,7 +309,7 @@ discord_get_guild_roles(
     return;
   }
 
-  struct resp_handle resp_handle =
+  struct ua_resp_handle resp_handle =
     { .ok_cb = &discord_guild_role_list_from_json_v, .ok_obj = (void*)p_roles};
 
   discord_adapter_run( 
@@ -374,7 +374,7 @@ discord_create_guild_role(
   char payload[MAX_PAYLOAD_LEN];
   discord_create_guild_role_params_to_json(payload, sizeof(payload), params);
 
-  struct resp_handle resp_handle = {
+  struct ua_resp_handle resp_handle = {
     .ok_cb = p_role ? &discord_guild_role_from_json_v : NULL,
     .ok_obj = p_role,
   };
