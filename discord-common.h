@@ -117,6 +117,7 @@ struct discord_gateway { /* GATEWAY STRUCTURE */
     message_reaction_remove_cb *on_message_reaction_remove;
     message_reaction_remove_all_cb *on_message_reaction_remove_all;
     message_reaction_remove_emoji_cb *on_message_reaction_remove_emoji;
+    voice_state_update_cb *on_voice_state_update;
   } cbs;
 
   int ping_ms; //latency between client and websockets server

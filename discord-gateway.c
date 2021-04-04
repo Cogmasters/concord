@@ -716,6 +716,27 @@ on_message_reaction_remove_emoji(struct discord_gateway *gw, struct discord_gate
 }
 
 static void
+on_voice_state_update(struct discord_gateway *gw, struct discord_gateway_payload *payload)
+{
+  if (!gw->cbs.on_voice_state_update) return;
+
+  u64_snowflake_t guild_id=0;
+  char *token = NULL, *endpoint = NULL;
+  json_extract(payload->event_data.start, payload->event_data.size,
+               "(token):?s"
+               "(guild_id):s_as_u64"
+               "(endpoint):?s",
+               &token,
+               &guild_id,
+               &endpoint);
+
+  (*gw->cbs.on_voice_state_update)(gw->p_client, gw->bot,
+                                   token,
+                                   guild_id,
+                                   endpoint);
+}
+
+static void
 on_ready(struct discord_gateway *gw, struct discord_gateway_payload *payload)
 {
   ws_set_status(gw->ws, WS_CONNECTED);
@@ -985,6 +1006,26 @@ send_heartbeat(struct discord_gateway *gw)
   ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
 
   D_PRINT("HEARTBEAT_PAYLOAD:\n\t\t%s", payload);
+  send_payload(gw, payload);
+}
+
+void
+send_voice_state_update(struct discord_gateway *gw,
+                        uint64_t guild_id,
+                        uint64_t channel_id)
+{
+  char payload[128];
+  int ret = json_inject(payload, sizeof(payload),
+                        "(op):4,"
+                        "(d):{"
+                        "(guild_id):s_as_u64,"
+                        "(channel_id):s_as_u64,"
+                        "(self_mute):false,"
+                        "(self_deaf):false,"
+                        "}",
+                        &guild_id, &channel_id);
+  ASSERT_S(ret < sizeof(payload), "oob write");
+  D_PRINT("VOICE_STATE_UPDATE_PAYLOAD:\n\t\t%s", payload);
   send_payload(gw, payload);
 }
 
