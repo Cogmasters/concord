@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 mypath=$(dirname $(readlink -f $0))
 pushd $mypath/..
 make purge
