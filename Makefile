@@ -51,7 +51,7 @@ BOTZ_SRC  := $(patsubst %c, %.bz, $(BOTZ_SRC))
 TEST_SRC  := $(wildcard test/test-*.cpp test/test-*.c)
 TEST_EXES := $(filter %.exe, $(TEST_SRC:.cpp=.exe) $(TEST_SRC:.c=.exe))
 
-LIBDISCORD_CFLAGS	:= -I./ -I./mujs  -I./sqlite3 -I./jsB
+LIBDISCORD_CFLAGS	:= -I./ -I./mujs  -I./sqlite3 -I./add-ons
 LIBDISCORD_LDFLAGS	:= -L./$(LIBDIR) -ldiscord -lcurl -lpthread
 
 ifeq ($(BEARSSL),1)
