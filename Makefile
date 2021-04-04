@@ -9,12 +9,12 @@ ACC          ?= gcc
 COMMON_SRC  := $(wildcard common/*.c)
 ORKA_SRC    := $(wildcard orka-*.c)
 DISCORD_SRC := $(wildcard discord-*.c)
-SLACK_SRC 	:= $(wildcard slack-*.c)
+SLACK_SRC   := $(wildcard slack-*.c)
 GITHUB_SRC  := $(wildcard github-*.c)
 REDDIT_SRC  := $(wildcard reddit-*.c)
 SPECS       := $(sort $(wildcard specs/*.json))
 DB_SRC      := $(wildcard sqlite3/*.c)
-JSB_SRC     := $(wildcard jsB/*.c)
+ADD_ONS_SRC := $(wildcard add-ons/*.c)
 
 SPECS_XX   := $(addprefix specs-code/, $(notdir $(SPECS)))
 SPECS_C    := $(SPECS_XX:%.json=%.c)
@@ -30,24 +30,25 @@ ACTOR_GEN_OBJS := $(ACTOR_GEN_SRC:%=$(ACTOR_OBJDIR)/%.o)
 COMMON_OBJS  := $(COMMON_SRC:%=$(OBJDIR)/%.o)
 ORKA_OBJS    := $(ORKA_SRC:%=$(OBJDIR)/%.o)
 DISCORD_OBJS := $(DISCORD_SRC:%=$(OBJDIR)/%.o)
-SLACK_OBJS 	 := $(SLACK_SRC:%=$(OBJDIR)/%.o)
+SLACK_OBJS   := $(SLACK_SRC:%=$(OBJDIR)/%.o)
 GITHUB_OBJS  := $(GITHUB_SRC:%=$(OBJDIR)/%.o)
 REDDIT_OBJS  := $(REDDIT_SRC:%=$(OBJDIR)/%.o)
 SPECS_OBJS   := $(SPECS_C:%=$(OBJDIR)/%.o)
 DB_OBJS      := $(DB_SRC:%=$(OBJDIR)/%.o)
+ADD_ONS_OBJS := $(ADD_ONS_SRC:%=$(OBJDIR)/%.o)
 
 OBJS := $(COMMON_OBJS) $(DISCORD_OBJS) $(SLACK_OBJS) $(GITHUB_OBJS) $(REDDIT_OBJS) $(ORKA_OBJS)
 
 BOT_SRC  := $(wildcard bots/bot-*.c)
 BOT_EXES := $(patsubst %.c, %.exe, $(BOT_SRC))
 
-BOT1_SRC := $(wildcard bots-1/bot-*.c)
-BOT1_EXES := $(patsubst %.c, %.b1, $(BOT1_SRC))
+BOTX_SRC  := $(wildcard botx/bot-*.c)
+BOTX_EXES := $(patsubst %.c, %.bx, $(BOTX_SRC))
 
-BOT2_SRC := $(wildcard bots-2/bot-*.c)
-BOT2_EXES := $(patsubst %.c, %.b2, $(BOT2_SRC))
+BOTZ_SRC  := $(wildcard adds-on/bots/bot-*.c)
+BOTZ_SRC  := $(patsubst %c, %.bz, $(BOTZ_SRC))
 
-TEST_SRC := $(wildcard test/test-*.cpp test/test-*.c)
+TEST_SRC  := $(wildcard test/test-*.cpp test/test-*.c)
 TEST_EXES := $(filter %.exe, $(TEST_SRC:.cpp=.exe) $(TEST_SRC:.c=.exe))
 
 LIBDISCORD_CFLAGS	:= -I./ -I./mujs  -I./sqlite3 -I./jsB
@@ -67,10 +68,10 @@ else
 endif
 
 
-LIBS_CFLAGS	:= $(LIBDISCORD_CFLAGS)
+LIBS_CFLAGS  := $(LIBDISCORD_CFLAGS)
 LIBS_LDFLAGS := $(LIBDISCORD_LDFLAGS)
 
-LIBDISCORD	:= $(LIBDIR)/libdiscord.a
+LIBDISCORD   := $(LIBDIR)/libdiscord.a
 
 
 CFLAGS += -Wall -std=c11 -O0 -g \
@@ -114,23 +115,24 @@ specs_c: $(SPECS_C)
 specs: mkdir specs_h specs_c $(SPECS_OBJS)
 
 echo:
-	@echo SPECS:     $(SPECS)
-	@echo SPECS_H:   $(SPECS_H)
-	@echo SPECS_C:   $(SPECS_C)
+	@echo SPECS:      $(SPECS)
+	@echo SPECS_H:    $(SPECS_H)
+	@echo SPECS_C:    $(SPECS_C)
 	@echo SPECS_OBJS: $(SPECS_OBJS)
+	@echo BOTZ_EXES:  $(BOTZ_EXES)
 
 bot: $(BOT_EXES) #@todo should we split by categories (bot_discord, bot_github, etc)?
-bot1: $(BOT1_EXES)
-bot2: $(BOT2_EXES)
+botx: all $(BOTX_EXES)
+botz: all $(BOTZ_EXES)
 
 test: common orka discord slack github reddit $(TEST_EXES) #@todo should we split by categories too ?
 
 mkdir :
 	mkdir -p $(ACTOR_OBJDIR)/common  $(ACTOR_OBJDIR)/test bin
 	mkdir -p $(OBJDIR) $(OBJDIR)/common $(OBJDIR)/specs $(LIBDIR)
-	mkdir -p $(OBJDIR)/test $(OBJDIR)/jsB
+	mkdir -p $(OBJDIR)/test
 	mkdir -p specs-code  $(OBJDIR)/specs-code
-	mkdir -p $(OBJDIR)/sqlite3
+	mkdir -p $(OBJDIR)/sqlite3 $(OBJDIR)/add-ons
 
 
 #generic compilation
@@ -159,18 +161,17 @@ actor-gen.exe: mkdir $(ACTOR_GEN_OBJS)
 	mv $@ ./bin
 
 #generic compilation
-%.b1: %.c libdiscord db
-	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBS_LDFLAGS) $(OBJDIR)/sqlite3/sqlite3.o
-
-%.b2: %.c libdiscord mujs 
+%.bx:%.c libdiscord mujs
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBS_LDFLAGS) -lmujs -lsqlite3
 
-%.exe : %.c libdiscord
+%.bz:%.c libdiscord mujs $(ADD_ONS_OBJS)
+	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBS_LDFLAGS) $(ADD_ONS_OBJS) -lmujs -lsqlite3
+
+%.exe:%.c libdiscord
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBS_LDFLAGS)
 
 libdiscord: mkdir $(OBJS) $(SPECS_OBJS)
 	$(AR) -cvq $(LIBDISCORD) $(OBJS) $(SPECS_OBJS)
-
 
 mujs:
 	$(MAKE) -C mujs
@@ -190,7 +191,7 @@ specs_clean :
 
 clean : 
 	rm -rf $(OBJDIR) *.exe test/*.exe bots/*.exe
-	rm -rf bots-1/*.b1 bots-2/*.b2
+	rm -rf botx/*.bx
 	rm -rf $(LIBDIR)
 
 
