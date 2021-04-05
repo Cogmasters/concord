@@ -258,6 +258,20 @@ discord_on_message_reaction_remove_emoji(struct discord *client, message_reactio
 }
 
 void
+discord_on_voice_state_update(struct discord *client, voice_state_update_cb *callback)
+{
+  client->gw.cbs.on_voice_state_update = callback;
+  discord_add_intents(client, DISCORD_GATEWAY_GUILD_VOICE_STATES);
+}
+
+void
+discord_on_voice_server_update(struct discord *client, voice_server_update_cb *callback)
+{
+  client->gw.cbs.on_voice_server_update = callback;
+  discord_add_intents(client, DISCORD_GATEWAY_GUILD_VOICE_STATES);
+}
+
+void
 discord_replace_presence(struct discord *client, struct discord_gateway_status_update *presence)
 {
   if (NULL == presence) return;

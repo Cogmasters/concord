@@ -676,6 +676,20 @@ on_message_reaction_remove_emoji(struct discord_gateway *gw, struct discord_gate
 }
 
 static void
+on_voice_state_update(struct discord_gateway *gw, struct discord_gateway_payload *payload)
+{
+  if (!gw->cbs.on_voice_state_update) return;
+
+  struct discord_voice_state *voice_state = discord_voice_state_alloc();
+  discord_voice_state_from_json(payload->event_data.start,
+      payload->event_data.size, voice_state);
+
+  (*gw->cbs.on_voice_state_update)(gw->p_client, gw->bot, voice_state);
+
+  discord_voice_state_free(voice_state);
+}
+
+static void
 on_voice_server_update(struct discord_gateway *gw, struct discord_gateway_payload *payload)
 {
   if (!gw->cbs.on_voice_server_update) return;
@@ -824,7 +838,7 @@ on_dispatch_cb(void *p_gw, void *curr_iter_data)
       // @todo implement
       break;
   case DISCORD_GATEWAY_EVENTS_VOICE_STATE_UPDATE:
-      // @todo implement
+      on_voice_state_update(gw, payload);
       break;
   case DISCORD_GATEWAY_EVENTS_VOICE_SERVER_UPDATE:
       on_voice_server_update(gw, payload);
@@ -1072,10 +1086,10 @@ _gateway_init(
 {
   ws_set_refresh_rate(gw->ws, 1);
   ws_set_max_reconnect(gw->ws, 15);
-  ws_set_event(gw->ws, DISCORD_GATEWAY_HELLO, &on_hello_cb);
   ws_set_event(gw->ws, DISCORD_GATEWAY_DISPATCH, &on_dispatch_cb);
   ws_set_event(gw->ws, DISCORD_GATEWAY_INVALID_SESSION, &on_invalid_session_cb);
   ws_set_event(gw->ws, DISCORD_GATEWAY_RECONNECT, &on_reconnect_cb);
+  ws_set_event(gw->ws, DISCORD_GATEWAY_HELLO, &on_hello_cb);
   ws_set_event(gw->ws, DISCORD_GATEWAY_HEARTBEAT_ACK, &on_heartbeat_ack_cb);
 
   gw->identify = discord_gateway_identify_alloc();

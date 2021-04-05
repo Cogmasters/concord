@@ -143,6 +143,9 @@ typedef void (message_reaction_remove_emoji_cb)(
     const u64_snowflake_t message_id, 
     const u64_snowflake_t guild_id,
     const struct discord_emoji *emoji);
+typedef void (voice_state_update_cb)(
+    struct discord *client, const struct discord_user *bot,
+    struct discord_voice_state *voice_state);
 typedef void (voice_server_update_cb)(
     struct discord *client, const struct discord_user *bot,
     char *token,
