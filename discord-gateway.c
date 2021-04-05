@@ -70,66 +70,25 @@ discord_get_gateway_bot(struct discord *client, struct discord_session *p_sessio
 }
 
 static char*
-opcode_print(int opcode)
+opcode_print(enum discord_gateway_opcodes opcode)
 {
-  switch (opcode) {
-      CASE_RETURN_STR(DISCORD_GATEWAY_DISPATCH);
-      CASE_RETURN_STR(DISCORD_GATEWAY_HEARTBEAT);
-      CASE_RETURN_STR(DISCORD_GATEWAY_IDENTIFY);
-      CASE_RETURN_STR(DISCORD_GATEWAY_PRESENCE_UPDATE);
-      CASE_RETURN_STR(DISCORD_GATEWAY_VOICE_STATE_UPDATE);
-      CASE_RETURN_STR(DISCORD_GATEWAY_RESUME);
-      CASE_RETURN_STR(DISCORD_GATEWAY_RECONNECT);
-      CASE_RETURN_STR(DISCORD_GATEWAY_REQUEST_GUILD_MEMBERS);
-      CASE_RETURN_STR(DISCORD_GATEWAY_INVALID_SESSION);
-      CASE_RETURN_STR(DISCORD_GATEWAY_HELLO);
-      CASE_RETURN_STR(DISCORD_GATEWAY_HEARTBEAT_ACK);
-  default:
-      PRINT("Invalid Gateway opcode (code: %d)", opcode);
-      return "Invalid Gateway opcode";
+  char *str = discord_gateway_opcodes_to_string(opcode);
+  if (NULL == str) {
+    PRINT("Invalid Gateway opcode (code: %d)", opcode);
+    str = "Invalid Gateway opcode";
   }
+  return str;
 }
 
 static char*
 close_opcode_print(enum discord_gateway_close_opcodes opcode)
 {
-  switch (opcode) { // check for discord specific opcodes
-      CASE_RETURN_STR(DISCORD_GATEWAY_CLOSE_REASON_UNKNOWN_ERROR);
-      CASE_RETURN_STR(DISCORD_GATEWAY_CLOSE_REASON_UNKNOWN_OPCODE);
-      CASE_RETURN_STR(DISCORD_GATEWAY_CLOSE_REASON_DECODE_ERROR);
-      CASE_RETURN_STR(DISCORD_GATEWAY_CLOSE_REASON_NOT_AUTHENTICATED);
-      CASE_RETURN_STR(DISCORD_GATEWAY_CLOSE_REASON_AUTHENTICATION_FAILED);
-      CASE_RETURN_STR(DISCORD_GATEWAY_CLOSE_REASON_ALREADY_AUTHENTICATED);
-      CASE_RETURN_STR(DISCORD_GATEWAY_CLOSE_REASON_INVALID_SEQUENCE);
-      CASE_RETURN_STR(DISCORD_GATEWAY_CLOSE_REASON_RATE_LIMITED);
-      CASE_RETURN_STR(DISCORD_GATEWAY_CLOSE_REASON_SESSION_TIMED_OUT);
-      CASE_RETURN_STR(DISCORD_GATEWAY_CLOSE_REASON_INVALID_SHARD);
-      CASE_RETURN_STR(DISCORD_GATEWAY_CLOSE_REASON_SHARDING_REQUIRED);
-      CASE_RETURN_STR(DISCORD_GATEWAY_CLOSE_REASON_INVALID_API_VERSION);
-      CASE_RETURN_STR(DISCORD_GATEWAY_CLOSE_REASON_INVALID_INTENTS);
-      CASE_RETURN_STR(DISCORD_GATEWAY_CLOSE_REASON_DISALLOWED_INTENTS);
-  default: // check for normal ws_close opcodes
-      switch ((enum ws_close_reason)opcode) {
-          CASE_RETURN_STR(WS_CLOSE_REASON_NORMAL);
-          CASE_RETURN_STR(WS_CLOSE_REASON_GOING_AWAY);
-          CASE_RETURN_STR(WS_CLOSE_REASON_PROTOCOL_ERROR);
-          CASE_RETURN_STR(WS_CLOSE_REASON_UNEXPECTED_DATA);
-          CASE_RETURN_STR(WS_CLOSE_REASON_NO_REASON);
-          CASE_RETURN_STR(WS_CLOSE_REASON_ABRUPTLY);
-          CASE_RETURN_STR(WS_CLOSE_REASON_INCONSISTENT_DATA);
-          CASE_RETURN_STR(WS_CLOSE_REASON_POLICY_VIOLATION);
-          CASE_RETURN_STR(WS_CLOSE_REASON_TOO_BIG);
-          CASE_RETURN_STR(WS_CLOSE_REASON_MISSING_EXTENSION);
-          CASE_RETURN_STR(WS_CLOSE_REASON_SERVER_ERROR);
-          CASE_RETURN_STR(WS_CLOSE_REASON_IANA_REGISTRY_START);
-          CASE_RETURN_STR(WS_CLOSE_REASON_IANA_REGISTRY_END);
-          CASE_RETURN_STR(WS_CLOSE_REASON_PRIVATE_START);
-          CASE_RETURN_STR(WS_CLOSE_REASON_PRIVATE_END);
-      default:
-          PRINT("Unknown WebSockets close opcode (code: %d)", opcode);
-          return "Unknown WebSockets close opcode";
-      }
-  }
+  char *str = discord_gateway_close_opcodes_to_string(opcode);
+  if (str) return str;
+  str = ws_close_opcode_print((enum ws_close_reason)opcode);
+  if (str) return str;
+  PRINT("Unknown WebSockets close opcode (code: %d)", opcode);
+  return "Unknown WebSockets close opcode";
 }
 
 static void

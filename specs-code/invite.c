@@ -12,7 +12,7 @@ enum discord_invite_target_user_types discord_invite_target_user_types_from_stri
 char* discord_invite_target_user_types_to_string(enum discord_invite_target_user_types v){
   if (v == DISCORD_INVITE_STREAM) return "STREAM";
 
-  abort();
+  return (void*)0;
 }
 bool discord_invite_target_user_types_has(enum discord_invite_target_user_types v, char *s) {
   enum discord_invite_target_user_types v1 = discord_invite_target_user_types_from_string(s);

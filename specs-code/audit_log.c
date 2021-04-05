@@ -305,7 +305,7 @@ char* discord_audit_log_events_to_string(enum discord_audit_log_events v){
   if (v == DISCORD_AUDIT_LOG_INTEGRATION_UPDATE) return "INTEGRATION_UPDATE";
   if (v == DISCORD_AUDIT_LOG_INTEGRATION_DELETE) return "INTEGRATION_DELETE";
 
-  abort();
+  return (void*)0;
 }
 bool discord_audit_log_events_has(enum discord_audit_log_events v, char *s) {
   enum discord_audit_log_events v1 = discord_audit_log_events_from_string(s);

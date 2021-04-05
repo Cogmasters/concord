@@ -72,6 +72,29 @@ cws_on_close_cb(void *p_ws, CURL *ehandle, enum cws_close_reason cwscode, const 
   (*ws->cbs.on_close)(ws->cbs.data, cwscode, reason, len);
 }
 
+char*
+ws_close_opcode_print(enum ws_close_reason opcode) 
+{
+  switch (opcode) {
+  CASE_RETURN_STR(WS_CLOSE_REASON_NORMAL);
+  CASE_RETURN_STR(WS_CLOSE_REASON_GOING_AWAY);
+  CASE_RETURN_STR(WS_CLOSE_REASON_PROTOCOL_ERROR);
+  CASE_RETURN_STR(WS_CLOSE_REASON_UNEXPECTED_DATA);
+  CASE_RETURN_STR(WS_CLOSE_REASON_NO_REASON);
+  CASE_RETURN_STR(WS_CLOSE_REASON_ABRUPTLY);
+  CASE_RETURN_STR(WS_CLOSE_REASON_INCONSISTENT_DATA);
+  CASE_RETURN_STR(WS_CLOSE_REASON_POLICY_VIOLATION);
+  CASE_RETURN_STR(WS_CLOSE_REASON_TOO_BIG);
+  CASE_RETURN_STR(WS_CLOSE_REASON_MISSING_EXTENSION);
+  CASE_RETURN_STR(WS_CLOSE_REASON_SERVER_ERROR);
+  CASE_RETURN_STR(WS_CLOSE_REASON_IANA_REGISTRY_START);
+  CASE_RETURN_STR(WS_CLOSE_REASON_IANA_REGISTRY_END);
+  CASE_RETURN_STR(WS_CLOSE_REASON_PRIVATE_START);
+  CASE_RETURN_STR(WS_CLOSE_REASON_PRIVATE_END);
+  default: return NULL;
+  }
+}
+
 struct _event_cxt {
   struct websockets *ws; // the websockets client
   struct event_cb *event; // callback associated with event

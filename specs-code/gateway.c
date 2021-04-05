@@ -38,7 +38,7 @@ char* discord_gateway_close_opcodes_to_string(enum discord_gateway_close_opcodes
   if (v == DISCORD_GATEWAY_CLOSE_REASON_INVALID_INTENTS) return "CLOSE_REASON_INVALID_INTENTS";
   if (v == DISCORD_GATEWAY_CLOSE_REASON_DISALLOWED_INTENTS) return "CLOSE_REASON_DISALLOWED_INTENTS";
 
-  abort();
+  return (void*)0;
 }
 bool discord_gateway_close_opcodes_has(enum discord_gateway_close_opcodes v, char *s) {
   enum discord_gateway_close_opcodes v1 = discord_gateway_close_opcodes_from_string(s);
@@ -95,7 +95,7 @@ char* discord_gateway_intents_to_string(enum discord_gateway_intents v){
   if (v == DISCORD_GATEWAY_DIRECT_MESSAGE_REACTIONS) return "DIRECT_MESSAGE_REACTIONS";
   if (v == DISCORD_GATEWAY_DIRECT_MESSAGE_TYPING) return "DIRECT_MESSAGE_TYPING";
 
-  abort();
+  return (void*)0;
 }
 bool discord_gateway_intents_has(enum discord_gateway_intents v, char *s) {
   enum discord_gateway_intents v1 = discord_gateway_intents_from_string(s);
@@ -145,7 +145,7 @@ char* discord_gateway_opcodes_to_string(enum discord_gateway_opcodes v){
   if (v == DISCORD_GATEWAY_HELLO) return "HELLO";
   if (v == DISCORD_GATEWAY_HEARTBEAT_ACK) return "HEARTBEAT_ACK";
 
-  abort();
+  return (void*)0;
 }
 bool discord_gateway_opcodes_has(enum discord_gateway_opcodes v, char *s) {
   enum discord_gateway_opcodes v1 = discord_gateway_opcodes_from_string(s);
@@ -237,7 +237,7 @@ char* discord_gateway_events_to_string(enum discord_gateway_events v){
   if (v == DISCORD_GATEWAY_EVENTS_READY) return "EVENTS_READY";
   if (v == DISCORD_GATEWAY_EVENTS_RESUMED) return "EVENTS_RESUMED";
 
-  abort();
+  return (void*)0;
 }
 bool discord_gateway_events_has(enum discord_gateway_events v, char *s) {
   enum discord_gateway_events v1 = discord_gateway_events_from_string(s);
@@ -1447,7 +1447,7 @@ char* discord_gateway_activity_types_to_string(enum discord_gateway_activity_typ
   if (v == DISCORD_GATEWAY_ACTIVITY_CUSTOM) return "CUSTOM";
   if (v == DISCORD_GATEWAY_ACTIVITY_COMPETING) return "COMPETING";
 
-  abort();
+  return (void*)0;
 }
 bool discord_gateway_activity_types_has(enum discord_gateway_activity_types v, char *s) {
   enum discord_gateway_activity_types v1 = discord_gateway_activity_types_from_string(s);

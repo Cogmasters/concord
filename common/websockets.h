@@ -82,6 +82,7 @@ void ws_set_curr_iter_data(
   void *curr_iter_data, 
   void (*curr_iter_cleanup)(void *curr_iter_data));
 struct sized_buffer ws_config_get_field(struct websockets *ws, char *json_field);
+char* ws_close_opcode_print(enum ws_close_reason opcode);
 
 #ifdef __cplusplus
 }

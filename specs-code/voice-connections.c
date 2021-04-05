@@ -34,7 +34,7 @@ char* discord_voice_close_opcodes_to_string(enum discord_voice_close_opcodes v){
   if (v == DISCORD_VOICE_CLOSE_REASON_SERVER_CRASH) return "CLOSE_REASON_SERVER_CRASH";
   if (v == DISCORD_VOICE_CLOSE_REASON_UNKNOWN_ENCRYPTION_MODE) return "CLOSE_REASON_UNKNOWN_ENCRYPTION_MODE";
 
-  abort();
+  return (void*)0;
 }
 bool discord_voice_close_opcodes_has(enum discord_voice_close_opcodes v, char *s) {
   enum discord_voice_close_opcodes v1 = discord_voice_close_opcodes_from_string(s);
@@ -81,7 +81,7 @@ char* discord_voice_opcodes_to_string(enum discord_voice_opcodes v){
   if (v == DISCORD_VOICE_RESUMED) return "RESUMED";
   if (v == DISCORD_VOICE_CLIENT_DISCONNECT) return "CLIENT_DISCONNECT";
 
-  abort();
+  return (void*)0;
 }
 bool discord_voice_opcodes_has(enum discord_voice_opcodes v, char *s) {
   enum discord_voice_opcodes v1 = discord_voice_opcodes_from_string(s);

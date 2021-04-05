@@ -16,7 +16,7 @@ char* discord_message_sticker_format_types_to_string(enum discord_message_sticke
   if (v == DISCORD_MESSAGE_STICKER_APNG) return "APNG";
   if (v == DISCORD_MESSAGE_STICKER_LOTTIE) return "LOTTIE";
 
-  abort();
+  return (void*)0;
 }
 bool discord_message_sticker_format_types_has(enum discord_message_sticker_format_types v, char *s) {
   enum discord_message_sticker_format_types v1 = discord_message_sticker_format_types_from_string(s);
@@ -389,7 +389,7 @@ char* discord_message_flags_to_string(enum discord_message_flags v){
   if (v == DISCORD_MESSAGE_SOURCE_MESSAGE_DELETED) return "SOURCE_MESSAGE_DELETED";
   if (v == DISCORD_MESSAGE_URGENT) return "URGENT";
 
-  abort();
+  return (void*)0;
 }
 bool discord_message_flags_has(enum discord_message_flags v, char *s) {
   enum discord_message_flags v1 = discord_message_flags_from_string(s);
@@ -929,7 +929,7 @@ char* discord_message_activity_types_to_string(enum discord_message_activity_typ
   if (v == DISCORD_MESSAGE_ACTIVITY_LISTEN) return "LISTEN";
   if (v == DISCORD_MESSAGE_ACTIVITY_JOIN_REQUEST) return "JOIN_REQUEST";
 
-  abort();
+  return (void*)0;
 }
 bool discord_message_activity_types_has(enum discord_message_activity_types v, char *s) {
   enum discord_message_activity_types v1 = discord_message_activity_types_from_string(s);
@@ -1151,7 +1151,7 @@ char* discord_message_types_to_string(enum discord_message_types v){
   if (v == DISCORD_MESSAGE_REPLY) return "REPLY";
   if (v == DISCORD_MESSAGE_APPLICATION_COMMAND) return "APPLICATION_COMMAND";
 
-  abort();
+  return (void*)0;
 }
 bool discord_message_types_has(enum discord_message_types v, char *s) {
   enum discord_message_types v1 = discord_message_types_from_string(s);
