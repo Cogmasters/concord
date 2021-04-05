@@ -201,6 +201,7 @@ get_dispatch_event(char event_name[])
   if (STREQ("MESSAGE_REACTION_REMOVE_EMOJI", event_name)) return DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE_EMOJI;
   if (STREQ("WEBHOOKS_UPDATE", event_name)) return DISCORD_GATEWAY_EVENTS_WEBHOOKS_UPDATE;
   if (STREQ("VOICE_STATE_UPDATE", event_name)) return DISCORD_GATEWAY_EVENTS_VOICE_STATE_UPDATE;
+  if (STREQ("VOICE_SERVER_UPDATE", event_name)) return DISCORD_GATEWAY_EVENTS_VOICE_SERVER_UPDATE;
   if (STREQ("TYPING_START", event_name)) return DISCORD_GATEWAY_EVENTS_TYPING_START;
   if (STREQ("READY", event_name)) return DISCORD_GATEWAY_EVENTS_READY;
   if (STREQ("RESUMED", event_name)) return DISCORD_GATEWAY_EVENTS_RESUMED;
@@ -675,9 +676,9 @@ on_message_reaction_remove_emoji(struct discord_gateway *gw, struct discord_gate
 }
 
 static void
-on_voice_state_update(struct discord_gateway *gw, struct discord_gateway_payload *payload)
+on_voice_server_update(struct discord_gateway *gw, struct discord_gateway_payload *payload)
 {
-  if (!gw->cbs.on_voice_state_update) return;
+  if (!gw->cbs.on_voice_server_update) return;
 
   u64_snowflake_t guild_id=0;
   char *token = NULL, *endpoint = NULL;
@@ -689,7 +690,7 @@ on_voice_state_update(struct discord_gateway *gw, struct discord_gateway_payload
                &guild_id,
                &endpoint);
 
-  (*gw->cbs.on_voice_state_update)(gw->p_client, gw->bot,
+  (*gw->cbs.on_voice_server_update)(gw->p_client, gw->bot,
                                    token,
                                    guild_id,
                                    endpoint);
@@ -824,6 +825,9 @@ on_dispatch_cb(void *p_gw, void *curr_iter_data)
       break;
   case DISCORD_GATEWAY_EVENTS_VOICE_STATE_UPDATE:
       // @todo implement
+      break;
+  case DISCORD_GATEWAY_EVENTS_VOICE_SERVER_UPDATE:
+      on_voice_server_update(gw, payload);
       break;
   case DISCORD_GATEWAY_EVENTS_TYPING_START:
       // @todo implement

@@ -1957,44 +1957,44 @@ struct discord_modify_guild_emoji_params {
 
 /* Title: Identify Structure */
 /* https://discord.com/developers/docs/topics/gateway#identify-identify-structure */
-/* This is defined at specs/gateway.json:114:22 */
+/* This is defined at specs/gateway.json:115:22 */
 struct discord_gateway_identify {
-  /* specs/gateway.json:117:19
+  /* specs/gateway.json:118:19
      '{ "name":"token","type":{"base":"char", "dec":"*"}}'
   */
   char *token;
 
-  /* specs/gateway.json:118:19
+  /* specs/gateway.json:119:19
      '{ "name":"properties","type":{"base":"struct discord_gateway_identify_connection", "dec":"*"}}'
   */
   struct discord_gateway_identify_connection *properties;
 
-  /* specs/gateway.json:119:19
+  /* specs/gateway.json:120:19
      '{ "name":"compress","type":{"base":"bool"}}'
   */
   bool compress;
 
-  /* specs/gateway.json:120:19
+  /* specs/gateway.json:121:19
      '{ "name":"large_threshold","type":{"base":"int"}}'
   */
   int large_threshold;
 
-  /* specs/gateway.json:121:19
+  /* specs/gateway.json:122:19
      '{ "name":"guild_subscriptions","type":{"base":"bool"}}'
   */
   bool guild_subscriptions;
 
-  /* specs/gateway.json:122:19
+  /* specs/gateway.json:123:19
      '{ "name":"shard","type":{"base":"int", "dec":"*"}, "todo":true}'
   */
   //@todo shard (null);
 
-  /* specs/gateway.json:123:19
+  /* specs/gateway.json:124:19
      '{ "name":"presence","type":{"base":"struct discord_gateway_status_update", "dec":"*"}}'
   */
   struct discord_gateway_status_update *presence;
 
-  /* specs/gateway.json:124:19
+  /* specs/gateway.json:125:19
      '{ "name":"intents","type":{"base":"int"}}'
   */
   int intents;
@@ -2015,26 +2015,26 @@ struct discord_gateway_identify {
 
 /* Title: Gateway Status Update Structure */
 /* https://discord.com/developers/docs/topics/gateway#update-status-gateway-status-update-structure */
-/* This is defined at specs/gateway.json:130:22 */
+/* This is defined at specs/gateway.json:131:22 */
 struct discord_gateway_status_update {
-  /* specs/gateway.json:133:19
+  /* specs/gateway.json:134:19
      '{ "name":"since","type":{"base":"char", "dec":"*", "converter":"iso8601"},
           "option":true, "inject_if_not":0 }'
   */
   u64_unix_ms_t since;
 
-  /* specs/gateway.json:135:19
+  /* specs/gateway.json:136:19
      '{ "name":"activities","type":{"base":"struct discord_gateway_activity", "dec":"ntl"}, 
           "option":true, "inject_if_not":null}'
   */
   struct discord_gateway_activity **activities;
 
-  /* specs/gateway.json:137:19
+  /* specs/gateway.json:138:19
      '{ "name":"status","type":{"base":"char", "dec":"[16]"}}'
   */
   char status[16];
 
-  /* specs/gateway.json:138:19
+  /* specs/gateway.json:139:19
      '{ "name":"afk","type":{"base":"bool"}}'
   */
   bool afk;
@@ -2055,19 +2055,19 @@ struct discord_gateway_status_update {
 
 /* Title: Identify Connection Properties */
 /* https://discord.com/developers/docs/topics/gateway#identify-identify-connection-properties */
-/* This is defined at specs/gateway.json:145:22 */
+/* This is defined at specs/gateway.json:146:22 */
 struct discord_gateway_identify_connection {
-  /* specs/gateway.json:148:19
+  /* specs/gateway.json:149:19
      '{ "name":"$os", "type":{"base":"char", "dec":"*"}}'
   */
   char *$os;
 
-  /* specs/gateway.json:149:19
+  /* specs/gateway.json:150:19
      '{ "name":"$browser", "type":{"base":"char", "dec":"*"}}'
   */
   char *$browser;
 
-  /* specs/gateway.json:150:19
+  /* specs/gateway.json:151:19
      '{ "name":"$device", "type":{"base":"char", "dec":"*"}}'
   */
   char *$device;
@@ -2088,49 +2088,49 @@ struct discord_gateway_identify_connection {
 
 /* Title: Activity Structure */
 /* https://discord.com/developers/docs/topics/gateway#activity-object-activity-structure */
-/* This is defined at specs/gateway.json:156:22 */
+/* This is defined at specs/gateway.json:157:22 */
 struct discord_gateway_activity {
-  /* specs/gateway.json:159:19
+  /* specs/gateway.json:160:19
      '{ "name":"name","type":{"base":"char", "dec":"[512]"}}'
   */
   char name[512];
 
-  /* specs/gateway.json:160:19
+  /* specs/gateway.json:161:19
      '{ "name":"type","type":{"base":"int"}}'
   */
   int type;
 
-  /* specs/gateway.json:161:19
+  /* specs/gateway.json:162:19
      '{ "name":"url","type":{"base":"char", "dec":"[MAX_URL_LEN]"},
           "option":true, "inject_if_not":""}'
   */
   char url[MAX_URL_LEN];
 
-  /* specs/gateway.json:163:19
+  /* specs/gateway.json:164:19
      '{ "name":"created_at","type":{"base":"char", "dec":"*", "converter":"iso8601"},
           "option":true, "inject_if_not":0 }'
   */
   u64_unix_ms_t created_at;
 
-  /* specs/gateway.json:165:19
+  /* specs/gateway.json:166:19
      '{ "name":"application_id","type":{"base":"char", "dec":"*", "converter":"snowflake" },
           "option":true, "inject_if_not":0 }'
   */
   u64_snowflake_t application_id;
 
-  /* specs/gateway.json:167:19
+  /* specs/gateway.json:168:19
      '{ "name":"details","type":{"base":"char", "dec":"*"},
           "option":true, "inject_if_not":null}'
   */
   char *details;
 
-  /* specs/gateway.json:169:19
+  /* specs/gateway.json:170:19
      '{ "name":"state","type":{"base":"char", "dec":"*"},
           "option":true, "inject_if_not":null}'
   */
   char *state;
 
-  /* specs/gateway.json:171:19
+  /* specs/gateway.json:172:19
      '{ "name":"instance","type":{"base":"bool"},
           "option":true, "inject_if_not":false}'
   */

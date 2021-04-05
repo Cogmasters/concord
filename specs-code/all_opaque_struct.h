@@ -242,22 +242,22 @@ struct discord_modify_guild_emoji_params;
 
 /* Title: Identify Structure */
 /* https://discord.com/developers/docs/topics/gateway#identify-identify-structure */
-/* This is defined at specs/gateway.json:114:22 */
+/* This is defined at specs/gateway.json:115:22 */
 struct discord_gateway_identify;
 
 /* Title: Gateway Status Update Structure */
 /* https://discord.com/developers/docs/topics/gateway#update-status-gateway-status-update-structure */
-/* This is defined at specs/gateway.json:130:22 */
+/* This is defined at specs/gateway.json:131:22 */
 struct discord_gateway_status_update;
 
 /* Title: Identify Connection Properties */
 /* https://discord.com/developers/docs/topics/gateway#identify-identify-connection-properties */
-/* This is defined at specs/gateway.json:145:22 */
+/* This is defined at specs/gateway.json:146:22 */
 struct discord_gateway_identify_connection;
 
 /* Title: Activity Structure */
 /* https://discord.com/developers/docs/topics/gateway#activity-object-activity-structure */
-/* This is defined at specs/gateway.json:156:22 */
+/* This is defined at specs/gateway.json:157:22 */
 struct discord_gateway_activity;
 
 

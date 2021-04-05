@@ -102,6 +102,7 @@
         { "name":"EVENTS_MESSAGE_REACTION_REMOVE_EMOJI" },
         { "name":"EVENTS_WEBHOOKS_UPDATE" },
         { "name":"EVENTS_VOICE_STATE_UPDATE" },
+        { "name":"EVENTS_VOICE_SERVER_UPDATE" },
         { "name":"EVENTS_PRESENCE_UPDATE" },
         { "name":"EVENTS_TYPING_START" },
         { "name":"EVENTS_READY" },
