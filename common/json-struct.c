@@ -826,7 +826,7 @@ static void gen_enum_to_string(FILE *fp, struct jc_enum *e)
       fprintf(fp, "  if (v == %s) return \"%s\";\n", 
               item_name, item->name);
   }
-  fprintf(fp, "\n  abort();\n");
+  fprintf(fp, "\n  return (void*)0;\n");
   fprintf(fp, "}\n");
 }
 
