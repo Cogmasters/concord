@@ -138,17 +138,16 @@ void discord_gateway_cleanup(struct discord_gateway *gw);
 void discord_gateway_run(struct discord_gateway *gw);
 /* gracefully exit the infinite loop */
 void discord_gateway_shutdown(struct discord_gateway *gw);
-void gateway_send_voice_state_update(
-  struct discord_gateway *gw,
-  u64_snowflake_t guild_id,
-  u64_snowflake_t channel_id);
 
 struct discord_voice { /* VOICE CONNECTIONS STRUCTURE */
   struct websockets *ws;
 
-  //struct discord_voice_identify *identify;
-  char session_id[512]; //the session id (for resuming lost connections)
-  u64_snowflake_t server_id; //the server id (for resuming lost connections)
+  struct { /* VOICE IDENTIFY STRUCTURE */
+    char *token; //the session token
+    u64_snowflake_t user_id; // the bot user id
+    char session_id[512]; // the session id
+    u64_snowflake_t server_id; // the guild id
+  } identify;
 
   struct discord_gateway_payload payload;
 
@@ -163,6 +162,17 @@ struct discord_voice { /* VOICE CONNECTIONS STRUCTURE */
 
   pthread_mutex_t lock; //for accessing gw fields within events
 };
+
+#if 0 /* defined at discord.h and discord-voice.c */
+struct discord_voice* discord_send_voice_state_update(
+  u64_snowflake_t guild_id,
+  u64_snowflake_t channel_id,
+  bool self_mute,
+  bool self_deaf);
+void discord_voice_cleanup(struct discord_voice *voice_connection);
+void discord_voice_run(struct discord_voice *voice_connection);
+void discord_voice_shutdown(struct discord_voice *voice_connection);
+#endif
 
 struct discord {
   struct discord_adapter adapter;

@@ -986,27 +986,6 @@ send_heartbeat(struct discord_gateway *gw)
   send_payload(gw, payload);
 }
 
-void
-gateway_send_voice_state_update(
-  struct discord_gateway *gw,
-  u64_snowflake_t guild_id,
-  u64_snowflake_t channel_id)
-{
-  char payload[128];
-  int ret = json_inject(payload, sizeof(payload),
-                        "(op):4," // VOICE STATE UPDATE OPCODE
-                        "(d):{"
-                          "(guild_id):s_as_u64,"
-                          "(channel_id):s_as_u64,"
-                          "(self_mute):false,"
-                          "(self_deaf):false"
-                        "}",
-                        &guild_id, &channel_id);
-  ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
-  D_PRINT("VOICE_STATE_UPDATE PAYLOAD:\n\t\t%s", payload);
-  send_payload(gw, payload);
-}
-
 static void
 on_iter_end_cb(void *p_gw)
 {

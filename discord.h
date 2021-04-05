@@ -5,7 +5,8 @@
 
 #include "json-actor-boxed.h"
 
-struct discord; // forward declaration
+struct discord; //forward declaration
+struct discord_voice; //forward declaration
 
 typedef uint64_t u64_unix_ms_t;
 typedef uint64_t u64_snowflake_t;
@@ -253,6 +254,19 @@ void* discord_get_data(struct discord *client);
 void discord_replace_presence(struct discord *client, struct discord_gateway_status_update *presence);
 void discord_set_presence(struct discord *client, struct discord_gateway_activity *activity, char status[], bool afk);
 enum ws_status discord_gateway_status(struct discord *client);
+
+/* * * * * * * * * * * * * * * * * * * * * */
+/* * * * VOICE CONNECTIONS FUNCTIONS * * * */
+
+void discord_voice_cleanup(struct discord_voice *voice_connection);
+struct discord_voice* discord_send_voice_state_update(
+  struct discord *client,
+  u64_snowflake_t guild_id,
+  u64_snowflake_t channel_id,
+  bool self_mute,
+  bool self_deaf);
+void discord_voice_run(struct discord_voice *voice_connection);
+void discord_voice_shutdown(struct discord_voice *voice_connection);
 
 
  /* * * * * * * * * * * * * * * * */
