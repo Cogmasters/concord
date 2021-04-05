@@ -3821,6 +3821,14 @@ struct discord_modify_current_user_params {
     void *record_null[2];
   } __M; // metadata
 };
+/* This file is generated from specs/voice-connections.json, Please don't edit it. */
+/*
+(null)
+*/
+
+
+
+
 /* This file is generated from specs/voice.json, Please don't edit it. */
 /*
 (null)

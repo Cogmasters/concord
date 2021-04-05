@@ -91,9 +91,9 @@ opcode_print(int opcode)
 }
 
 static char*
-close_opcode_print(enum discord_gateway_close_opcodes gateway_opcode)
+close_opcode_print(enum discord_gateway_close_opcodes opcode)
 {
-  switch (gateway_opcode) { // check for discord specific opcodes
+  switch (opcode) { // check for discord specific opcodes
       CASE_RETURN_STR(DISCORD_GATEWAY_CLOSE_REASON_UNKNOWN_ERROR);
       CASE_RETURN_STR(DISCORD_GATEWAY_CLOSE_REASON_UNKNOWN_OPCODE);
       CASE_RETURN_STR(DISCORD_GATEWAY_CLOSE_REASON_DECODE_ERROR);
@@ -109,7 +109,7 @@ close_opcode_print(enum discord_gateway_close_opcodes gateway_opcode)
       CASE_RETURN_STR(DISCORD_GATEWAY_CLOSE_REASON_INVALID_INTENTS);
       CASE_RETURN_STR(DISCORD_GATEWAY_CLOSE_REASON_DISALLOWED_INTENTS);
   default: // check for normal ws_close opcodes
-      switch ((enum ws_close_reason)gateway_opcode) {
+      switch ((enum ws_close_reason)opcode) {
           CASE_RETURN_STR(WS_CLOSE_REASON_NORMAL);
           CASE_RETURN_STR(WS_CLOSE_REASON_GOING_AWAY);
           CASE_RETURN_STR(WS_CLOSE_REASON_PROTOCOL_ERROR);
@@ -126,7 +126,7 @@ close_opcode_print(enum discord_gateway_close_opcodes gateway_opcode)
           CASE_RETURN_STR(WS_CLOSE_REASON_PRIVATE_START);
           CASE_RETURN_STR(WS_CLOSE_REASON_PRIVATE_END);
       default:
-          PRINT("Unknown WebSockets close opcode (code: %d)", gateway_opcode);
+          PRINT("Unknown WebSockets close opcode (code: %d)", opcode);
           return "Unknown WebSockets close opcode";
       }
   }
@@ -1010,22 +1010,23 @@ send_heartbeat(struct discord_gateway *gw)
 }
 
 void
-send_voice_state_update(struct discord_gateway *gw,
-                        uint64_t guild_id,
-                        uint64_t channel_id)
+gateway_send_voice_state_update(
+  struct discord_gateway *gw,
+  u64_snowflake_t guild_id,
+  u64_snowflake_t channel_id)
 {
   char payload[128];
   int ret = json_inject(payload, sizeof(payload),
-                        "(op):4,"
+                        "(op):4," // VOICE STATE UPDATE OPCODE
                         "(d):{"
-                        "(guild_id):s_as_u64,"
-                        "(channel_id):s_as_u64,"
-                        "(self_mute):false,"
-                        "(self_deaf):false,"
+                          "(guild_id):s_as_u64,"
+                          "(channel_id):s_as_u64,"
+                          "(self_mute):false,"
+                          "(self_deaf):false"
                         "}",
                         &guild_id, &channel_id);
-  ASSERT_S(ret < sizeof(payload), "oob write");
-  D_PRINT("VOICE_STATE_UPDATE_PAYLOAD:\n\t\t%s", payload);
+  ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
+  D_PRINT("VOICE_STATE_UPDATE PAYLOAD:\n\t\t%s", payload);
   send_payload(gw, payload);
 }
 
@@ -1063,7 +1064,7 @@ on_text_event_cb(void *p_gw, const char *text, size_t len)
 {
   struct discord_gateway *gw = p_gw;
 
-  D_PRINT("ON_DISPATCH:\t%s\n", text);
+  D_PRINT("GATEWAY EVENT:\t%s\n", text);
 
   int tmp_seq_number; //check value first, then assign
   json_extract((char*)text, len,

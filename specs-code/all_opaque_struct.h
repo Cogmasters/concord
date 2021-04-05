@@ -497,6 +497,14 @@ struct discord_connection;
 /* https://discord.com/developers/docs/resources/user#modify-current-user */
 /* This is defined at specs/user.modify-curent-user.json:8:22 */
 struct discord_modify_current_user_params;
+/* This file is generated from specs/voice-connections.json, Please don't edit it. */
+/*
+(null)
+*/
+
+
+
+
 /* This file is generated from specs/voice.json, Please don't edit it. */
 /*
 (null)

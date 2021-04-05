@@ -1,0 +1,46 @@
+{
+  "namespace": ["discord", "voice"],
+  "defs":
+  [
+    {
+      "title":"Voice Close Event Codes",
+      "comment": "https://discord.com/developers/docs/topics/opcodes-and-status-codes#voice-voice-close-event-codes",
+      "enum":"close_opcodes",
+      "items":
+      [
+        { "name":"CLOSE_REASON_UNKNOWN_OPCODE", "value":4001 },
+        { "name":"CLOSE_REASON_DECODE_ERROR", "value":4002 },
+        { "name":"CLOSE_REASON_NOT_AUTHENTICATED", "value":4003 },
+        { "name":"CLOSE_REASON_AUTHENTICATION_FAILED", "value":4004 },
+        { "name":"CLOSE_REASON_ALREADY_AUTHENTICATED", "value":4005 },
+        { "name":"CLOSE_REASON_INVALID_SESSION", "value":4006 },
+        { "name":"CLOSE_REASON_SESSION_TIMED_OUT", "value":4009 },
+        { "name":"CLOSE_REASON_SERVER_NOT_FOUND", "value":4011 },
+        { "name":"CLOSE_REASON_UNKNOWN_PROTOCOL", "value":4012 },
+        { "name":"CLOSE_REASON_DISCONNECTED", "value":4014 },
+        { "name":"CLOSE_REASON_SERVER_CRASH", "value":4015 },
+        { "name":"CLOSE_REASON_UNKNOWN_ENCRYPTION_MODE", "value":4016 }
+      ]
+    },
+    {
+      "title":"Voice Opcodes",
+      "comment": "https://discord.com/developers/docs/topics/opcodes-and-status-codes#voice-voice-opcodes",
+      "enum":"opcodes",
+      "items":
+      [
+        { "name":"IDENTIFY","value":0},
+        { "name":"SELECT_PROTOCOL","value":1},
+        { "name":"READY","value":2},
+        { "name":"HEARTBEAT","value":3},
+        { "name":"SESSION_DESCRIPTION","value":4},
+        { "name":"SPEAKING","value":5},
+        { "name":"HEARTBEAT_ACK","value":6},
+        { "name":"RESUME","value":7},
+        { "name":"HELLO","value":8},
+        { "name":"RESUMED","value":9},
+        { "name":"CLIENT_DISCONNECT","value":13}
+      ]
+    }
+  ]
+}
+

@@ -1552,6 +1552,14 @@ extern void discord_modify_current_user_params_list_from_json_v(char *str, size_
 extern void discord_modify_current_user_params_list_from_json(char *str, size_t len, struct discord_modify_current_user_params ***p);
 extern size_t discord_modify_current_user_params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_modify_current_user_params_list_to_json(char *str, size_t len, struct discord_modify_current_user_params **p);
+/* This file is generated from specs/voice-connections.json, Please don't edit it. */
+/*
+(null)
+*/
+
+
+
+
 /* This file is generated from specs/voice.json, Please don't edit it. */
 /*
 (null)

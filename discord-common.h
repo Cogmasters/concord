@@ -63,7 +63,7 @@ struct cmd_cbs {
   message_cb *cb;
 };
 
-struct discord_gateway_payload { /* PAYLOAD STRUCTURE */
+struct discord_gateway_payload { /* GATEWAY PAYLOAD STRUCTURE */
   enum discord_gateway_opcodes opcode; //field 'op'
   int seq_number;                      //field 's'
   char event_name[64];                 //field 't'
@@ -137,6 +137,31 @@ void discord_gateway_cleanup(struct discord_gateway *gw);
 void discord_gateway_run(struct discord_gateway *gw);
 /* gracefully exit the infinite loop */
 void discord_gateway_shutdown(struct discord_gateway *gw);
+void gateway_send_voice_state_update(
+  struct discord_gateway *gw,
+  u64_snowflake_t guild_id,
+  u64_snowflake_t channel_id);
+
+struct discord_voice { /* VOICE CONNECTIONS STRUCTURE */
+  struct websockets *ws;
+
+  //struct discord_voice_identify *identify;
+  char session_id[512]; //the session id (for resuming lost connections)
+  u64_snowflake_t server_id; //the server id (for resuming lost connections)
+
+  struct discord_gateway_payload payload;
+
+  struct { /* HEARTBEAT STRUCTURE */
+    u64_unix_ms_t interval_ms; //fixed interval between heartbeats
+    u64_unix_ms_t tstamp; //start pulse timestamp in milliseconds
+  } hbeat;
+
+  int ping_ms; //latency between client and websockets server
+
+  struct discord_gateway *p_gw; //points to gateway which started this connection
+
+  pthread_mutex_t lock; //for accessing gw fields within events
+};
 
 struct discord {
   struct discord_adapter adapter;
