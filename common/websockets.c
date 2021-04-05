@@ -525,3 +525,8 @@ struct sized_buffer
 ws_config_get_field(struct websockets *ws, char *json_field) {
   return orka_config_get_field(&ws->config, json_field);
 }
+
+char*
+ws_config_get_fname(struct websockets *ws) {
+  return orka_config_get_fname(&ws->config);
+}

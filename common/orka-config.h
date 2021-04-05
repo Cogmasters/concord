@@ -9,8 +9,9 @@ extern "C" {
 struct orka_config {
   char tag[64];
 
-  char *fcontents; // config file contents
-  size_t flen; // config file len
+  char fname[PATH_MAX]; // config file name
+  char *fcontents;      // config file contents
+  size_t flen;          // config file len
 
   FILE *f_http_dump; //default stderr
   void (*http_dump_cb)(
@@ -26,6 +27,7 @@ void orka_config_init(struct orka_config*, const char tag[], const char config_f
 void orka_config_cleanup(struct orka_config*);
 
 struct sized_buffer orka_config_get_field(struct orka_config *config, char *json_field);
+char* orka_config_get_fname(struct orka_config *config);
 
 #ifdef __cplusplus
 }

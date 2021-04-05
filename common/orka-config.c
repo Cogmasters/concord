@@ -65,6 +65,10 @@ orka_config_init(
     return; /* EARLY RETURN */
   }
 
+  // save file name for possible references
+  int ret = snprintf(config->fname, sizeof(config->fname), "%s", config_file);
+  ASSERT_S(ret < sizeof(config->fname), "Out of bounds write attempt");
+
   struct _dump_s {
     char filename[PATH_MAX];
     bool enable;
@@ -141,4 +145,9 @@ orka_config_get_field(struct orka_config *config, char *json_field)
   json_extract(config->fcontents, config->flen, fmt, &field);
 
   return field;
+}
+
+char*
+orka_config_get_fname(struct orka_config *config) {
+  return config->fname;
 }
