@@ -44,11 +44,10 @@ https://en.wikipedia.org/wiki/List_of_HTTP_status_codes */
 #define UA_MAX_URL_LEN     512 + 1
 
 typedef enum { 
-  UA_IDLE = 0, // haven't performed yet
-  UA_SUCCESS,  // continue after succesfull request
-  UA_FAILURE,  // continue after failed request
-  UA_RETRY,    // retry connection
-  UA_ABORT     // abort after failed request
+  UA_SUCCESS = 1,  // continue after succesfull request
+  UA_FAILURE,      // continue after failed request
+  UA_RETRY,        // retry connection
+  UA_ABORT         // abort after failed request
 } ua_status_t;
 
 void* ua_conn_set_data(struct ua_conn *conn, void *data);
