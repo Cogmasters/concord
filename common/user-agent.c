@@ -276,7 +276,7 @@ conn_full_reset(struct user_agent *ua, struct ua_conn *conn)
   conn_soft_reset(conn); // just to be sure
   conn->data = NULL;
   conn->is_busy = false;
-  conn->status = UA_IDLE;
+  conn->status = 0;
 
   ++ua->num_notbusy;
   if (ua->mime) { // @todo this is temporary

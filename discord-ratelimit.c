@@ -132,7 +132,7 @@ parse_ratelimits(struct discord_bucket *bucket, struct ua_conn *conn)
 static struct discord_bucket*
 bucket_init(char bucket_hash[])
 {
-  struct discord_bucket *new_bucket = (struct discord_bucket*) calloc(1, sizeof *new_bucket);
+  struct discord_bucket *new_bucket = calloc(1, sizeof *new_bucket);
   new_bucket->hash = strdup(bucket_hash);
   if (pthread_mutex_init(&new_bucket->lock, NULL))
     ERR("Couldn't initialize pthread mutex");
@@ -161,7 +161,7 @@ match_route(struct discord_adapter *adapter, char endpoint[], struct ua_conn *co
   if (!bucket_hash) return; //no hash information in header
 
   // create new route that will link the endpoint with a bucket
-  struct _route_s *new_route = (struct _route_s*)calloc(1, sizeof *new_route);
+  struct _route_s *new_route = calloc(1, sizeof *new_route);
 
   new_route->str = strdup(endpoint);
 
@@ -176,8 +176,7 @@ match_route(struct discord_adapter *adapter, char endpoint[], struct ua_conn *co
   if (!new_route->p_bucket) { //couldn't find match, create new bucket
     ++adapter->ratelimit.num_buckets; //increments client buckets
 
-    adapter->ratelimit.bucket_pool = \
-          (struct discord_bucket**)realloc(adapter->ratelimit.bucket_pool, \
+    adapter->ratelimit.bucket_pool = realloc(adapter->ratelimit.bucket_pool, \
                       adapter->ratelimit.num_buckets * sizeof(struct discord_bucket*));
 
     struct discord_bucket *new_bucket = bucket_init(bucket_hash);

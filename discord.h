@@ -146,12 +146,12 @@ typedef void (message_reaction_remove_emoji_cb)(
     const struct discord_emoji *emoji);
 typedef void (voice_state_update_cb)(
     struct discord *client, const struct discord_user *bot,
-    struct discord_voice_state *voice_state);
+    const struct discord_voice_state *voice_state);
 typedef void (voice_server_update_cb)(
     struct discord *client, const struct discord_user *bot,
-    char *token,
+    const char *token,
     const u64_snowflake_t guild_id,
-    char *endpoint);
+    const char *endpoint);
 
 struct discord_session {
   char url[MAX_URL_LEN];
@@ -258,15 +258,14 @@ enum ws_status discord_gateway_status(struct discord *client);
 /* * * * * * * * * * * * * * * * * * * * * */
 /* * * * VOICE CONNECTIONS FUNCTIONS * * * */
 
-void discord_voice_cleanup(struct discord_voice *voice_connection);
 struct discord_voice* discord_send_voice_state_update(
   struct discord *client,
   u64_snowflake_t guild_id,
   u64_snowflake_t channel_id,
   bool self_mute,
   bool self_deaf);
-void discord_voice_run(struct discord_voice *voice_connection);
-void discord_voice_shutdown(struct discord_voice *voice_connection);
+void discord_vc_run(struct discord_voice *voice_connection);
+void discord_vc_shutdown(struct discord_voice *voice_connection);
 
 
  /* * * * * * * * * * * * * * * * */

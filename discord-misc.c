@@ -341,9 +341,7 @@ discord_embed_add_field(struct discord_embed *embed, char name[], char value[], 
   strncpy(new_field.value, value, EMBED_FIELD_VALUE_LEN);
   new_field.Inline = Inline;
 
-  embed->fields = (NTL_T(struct discord_embed_field))ntl_append(
-                        (NTL_T(void))embed->fields, 
-                        sizeof(struct discord_embed_field), &new_field);
+  ntl_append2((ntl_t*)&embed->fields, sizeof(struct discord_embed_field), &new_field);
 }
 
 void
@@ -370,7 +368,5 @@ discord_overwrite_append(
   new_overwrite.allow = allow;
   new_overwrite.deny = deny;
 
-  *permission_overwrites = (NTL_T(struct discord_channel_overwrite))ntl_append(
-                            (NTL_T(void))*permission_overwrites, 
-                            sizeof(struct discord_channel_overwrite), &new_overwrite);
+  ntl_append2((ntl_t*)permission_overwrites, sizeof(struct discord_channel_overwrite), &new_overwrite);
 }
