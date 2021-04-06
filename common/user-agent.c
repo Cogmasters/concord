@@ -123,7 +123,7 @@ ua_reqheader_del(struct user_agent *ua, char field[])
 }
 
 static size_t
-conn_resheader_cb(char *str, size_t size, size_t nmemb, void *p_userdata)
+conn_respheader_cb(char *str, size_t size, size_t nmemb, void *p_userdata)
 {
   size_t realsize = size * nmemb;
   struct conn_resp_header *resp_header = p_userdata;
@@ -164,12 +164,13 @@ conn_resheader_cb(char *str, size_t size, size_t nmemb, void *p_userdata)
 /* get api response body string
 * see: https://curl.se/libcurl/c/CURLOPT_WRITEFUNCTION.html */
 static size_t
-conn_resbody_cb(char *str, size_t size, size_t nmemb, void *p_userdata)
+conn_respbody_cb(char *str, size_t size, size_t nmemb, void *p_userdata)
 {
   size_t realsize = size * nmemb;
   struct sized_buffer *resp_body = p_userdata;
 
   //update response body string size
+  //@todo this unnecessarily decreases the memory at the next request
   resp_body->start = realloc(resp_body->start, resp_body->size + realsize + 1);
   memcpy(resp_body->start + resp_body->size, str, realsize);
   resp_body->size += realsize;
@@ -209,7 +210,7 @@ conn_init(struct user_agent *ua)
   ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
   //set response body callback
-  ecode = curl_easy_setopt(new_ehandle, CURLOPT_WRITEFUNCTION, &conn_resbody_cb);
+  ecode = curl_easy_setopt(new_ehandle, CURLOPT_WRITEFUNCTION, &conn_respbody_cb);
   ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
   //set ptr to response body to be filled at callback
@@ -217,7 +218,7 @@ conn_init(struct user_agent *ua)
   ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
   //set response header callback
-  ecode = curl_easy_setopt(new_ehandle, CURLOPT_HEADERFUNCTION, &conn_resheader_cb);
+  ecode = curl_easy_setopt(new_ehandle, CURLOPT_HEADERFUNCTION, &conn_respheader_cb);
   ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
   //set ptr to response header to be filled at callback
@@ -263,7 +264,8 @@ static void
 conn_soft_reset(struct ua_conn *conn)
 {
   conn->req_tstamp = 0;
-  *conn->resp_body.start = '\0';
+  if (conn->resp_body.start)
+    *conn->resp_body.start = '\0';
   conn->resp_body.size = 0;
   conn->resp_header.size = 0;
 }
