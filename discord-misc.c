@@ -370,3 +370,27 @@ discord_overwrite_append(
 
   ntl_append2((ntl_t*)permission_overwrites, sizeof(struct discord_channel_overwrite), &new_overwrite);
 }
+
+void
+discord_get_text_channel(
+  struct discord *client, 
+  const u64_snowflake_t guild_id, 
+  const size_t position,
+  struct discord_channel **p_channel)
+{
+  ASSERT_S(NULL != p_channel, "Missing 'p_channel'");
+  *p_channel = NULL;
+
+  NTL_T(struct discord_channel) channels = NULL;
+  discord_get_guild_channels(client, guild_id, &channels);
+  if (NULL == channels) return;
+
+  size_t j=0; // calculate position
+  for (size_t i=0; channels[i]; ++i) {
+    if (DISCORD_CHANNEL_GUILD_TEXT == channels[i]->type && j++ == position) {
+      *p_channel = channels[i];
+      break; /* EARLY BREAK */
+    }
+  }
+  discord_channel_list_free(channels);
+}

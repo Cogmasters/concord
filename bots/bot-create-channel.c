@@ -35,25 +35,14 @@ void on_channel_delete(
     const struct discord_user *bot,
     const struct discord_channel *channel)
 {
-  NTL_T(struct discord_channel) channels = NULL;
-  discord_get_guild_channels(client, channel->guild_id, &channels);
-  if (NULL == channels) return;
-
   struct discord_channel *general = NULL; // get general chat
-  for (size_t i=0; channels[i]; ++i) {
-    if (DISCORD_CHANNEL_GUILD_TEXT == channels[i]->type) {
-      general = channels[i];
-      break; /* EARLY BREAK */
-    }
-  }
+  discord_get_text_channel(client, channel->guild_id, 0, &general);
   if (NULL == general) return;
 
   char text[150];
   snprintf(text, sizeof(text), "Succesfully deleted `%s` channel", channel->name);
   struct discord_create_message_params params = { .content = text };
   discord_create_message(client, general->id, &params, NULL);
-
-  discord_channel_list_free(channels);
 }
 
 void on_create(

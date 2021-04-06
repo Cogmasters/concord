@@ -18,18 +18,8 @@ void on_guild_ban_add(
     const u64_snowflake_t guild_id,
     const struct discord_user *user)
 {
-  NTL_T(struct discord_channel) channels = NULL;
-  discord_get_guild_channels(client, guild_id, &channels);
-  if (NULL == channels) return;
-
   struct discord_channel *general = NULL; // get general chat
-  for (size_t i=0; channels[i]; ++i) {
-    if (DISCORD_CHANNEL_GUILD_TEXT == channels[i]->type) {
-      general = channels[i];
-      break; /* EARLY BREAK */
-    }
-  }
-
+  discord_get_text_channel(client, guild_id, 0, &general);
   if (NULL == general) return;
 
   char text[128];
@@ -44,17 +34,9 @@ void on_guild_ban_remove(
     const u64_snowflake_t guild_id,
     const struct discord_user *user)
 {
-  NTL_T(struct discord_channel) channels = NULL;
-  discord_get_guild_channels(client, guild_id, &channels);
-  if (NULL == channels) return;
-
   struct discord_channel *general = NULL; // get general chat
-  for (size_t i=0; channels[i]; ++i) {
-    if (DISCORD_CHANNEL_GUILD_TEXT == channels[i]->type) {
-      general = channels[i];
-      break; /* EARLY BREAK */
-    }
-  }
+  discord_get_text_channel(client, guild_id, 0, &general);
+  if (NULL == general) return;
 
   char text[128];
   snprintf(text, sizeof(text), "User `%s` has been unbanned.", user->username);

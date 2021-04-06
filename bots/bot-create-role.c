@@ -18,25 +18,14 @@ void on_role_create(
     const u64_snowflake_t guild_id,
     const struct discord_guild_role *role)
 {
-  NTL_T(struct discord_channel) channels = NULL;
-  discord_get_guild_channels(client, guild_id, &channels);
-  if (NULL == channels) return;
-
   struct discord_channel *general = NULL; // get general chat
-  for (size_t i=0; channels[i]; ++i) {
-    if (DISCORD_CHANNEL_GUILD_TEXT == channels[i]->type) {
-      general = channels[i];
-      break; /* EARLY BREAK */
-    }
-  }
+  discord_get_text_channel(client, guild_id, 0, &general);
   if (NULL == general) return;
 
   char text[150];
   snprintf(text, sizeof(text), "Succesfully created <@&%" PRIu64 "> role", role->id);
   struct discord_create_message_params params = { .content = text };
   discord_create_message(client, general->id, &params, NULL);
-
-  discord_channel_list_free(channels);
 }
 
 void on_role_update(
@@ -45,25 +34,14 @@ void on_role_update(
     const u64_snowflake_t guild_id,
     const struct discord_guild_role *role)
 {
-  NTL_T(struct discord_channel) channels = NULL;
-  discord_get_guild_channels(client, guild_id, &channels);
-  if (NULL == channels) return;
-
   struct discord_channel *general = NULL; // get general chat
-  for (size_t i=0; channels[i]; ++i) {
-    if (DISCORD_CHANNEL_GUILD_TEXT == channels[i]->type) {
-      general = channels[i];
-      break; /* EARLY BREAK */
-    }
-  }
+  discord_get_text_channel(client, guild_id, 0, &general);
   if (NULL == general) return;
 
   char text[150];
   snprintf(text, sizeof(text), "Succesfully updated <@&%" PRIu64 "> role", role->id);
   struct discord_create_message_params params = { .content = text };
   discord_create_message(client, general->id, &params, NULL);
-
-  discord_channel_list_free(channels);
 }
 
 void on_role_delete(
@@ -72,25 +50,14 @@ void on_role_delete(
     const u64_snowflake_t guild_id,
     const u64_snowflake_t role_id)
 {
-  NTL_T(struct discord_channel) channels = NULL;
-  discord_get_guild_channels(client, guild_id, &channels);
-  if (NULL == channels) return;
-
   struct discord_channel *general = NULL; // get general chat
-  for (size_t i=0; channels[i]; ++i) {
-    if (DISCORD_CHANNEL_GUILD_TEXT == channels[i]->type) {
-      general = channels[i];
-      break; /* EARLY BREAK */
-    }
-  }
+  discord_get_text_channel(client, guild_id, 0, &general);
   if (NULL == general) return;
 
   struct discord_create_message_params params = { 
     .content = "Succesfully deleted role" 
   };
   discord_create_message(client, general->id, &params, NULL);
-
-  discord_channel_list_free(channels);
 }
 
 void on_command(

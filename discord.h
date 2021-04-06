@@ -336,6 +336,13 @@ void discord_overwrite_append(
   enum discord_permissions_bitwise_flags allow, 
   enum discord_permissions_bitwise_flags deny);
 
+void
+discord_get_text_channel(
+  struct discord *client, 
+  const u64_snowflake_t guild_id, 
+  const size_t position,
+  struct discord_channel **p_channel);
+
 // MESSAGE MISC
 void discord_delete_messages_by_author_id(
   struct discord *client,
