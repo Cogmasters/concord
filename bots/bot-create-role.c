@@ -18,14 +18,14 @@ void on_role_create(
     const u64_snowflake_t guild_id,
     const struct discord_guild_role *role)
 {
-  struct discord_channel *general = NULL; // get general chat
-  discord_get_text_channel(client, guild_id, 0, &general);
-  if (NULL == general) return;
+  struct discord_channel *general = discord_channel_alloc();
+  discord_get_text_channel(client, guild_id, 0, general);
 
   char text[150];
   snprintf(text, sizeof(text), "Succesfully created <@&%" PRIu64 "> role", role->id);
   struct discord_create_message_params params = { .content = text };
   discord_create_message(client, general->id, &params, NULL);
+  discord_channel_free(general);
 }
 
 void on_role_update(
@@ -34,14 +34,14 @@ void on_role_update(
     const u64_snowflake_t guild_id,
     const struct discord_guild_role *role)
 {
-  struct discord_channel *general = NULL; // get general chat
-  discord_get_text_channel(client, guild_id, 0, &general);
-  if (NULL == general) return;
+  struct discord_channel *general = discord_channel_alloc();
+  discord_get_text_channel(client, guild_id, 0, general);
 
   char text[150];
   snprintf(text, sizeof(text), "Succesfully updated <@&%" PRIu64 "> role", role->id);
   struct discord_create_message_params params = { .content = text };
   discord_create_message(client, general->id, &params, NULL);
+  discord_channel_free(general);
 }
 
 void on_role_delete(
@@ -50,14 +50,14 @@ void on_role_delete(
     const u64_snowflake_t guild_id,
     const u64_snowflake_t role_id)
 {
-  struct discord_channel *general = NULL; // get general chat
-  discord_get_text_channel(client, guild_id, 0, &general);
-  if (NULL == general) return;
+  struct discord_channel *general = discord_channel_alloc();
+  discord_get_text_channel(client, guild_id, 0, general);
 
   struct discord_create_message_params params = { 
     .content = "Succesfully deleted role" 
   };
   discord_create_message(client, general->id, &params, NULL);
+  discord_channel_free(general);
 }
 
 void on_command(
