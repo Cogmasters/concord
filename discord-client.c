@@ -16,6 +16,8 @@ discord_init(const char token[])
   new_client->gw.p_client = new_client;
   discord_adapter_init(&new_client->adapter, token);
   discord_gateway_init(&new_client->gw, token);
+  if (pthread_mutex_init(&new_client->lock, NULL))
+    ERR("Couldn't initialize pthread mutex");
   return new_client;
 }
 
@@ -27,6 +29,8 @@ discord_config_init(const char config_file[])
   new_client->gw.p_client = new_client;
   discord_adapter_config_init(&new_client->adapter, config_file);
   discord_gateway_config_init(&new_client->gw, config_file);
+  if (pthread_mutex_init(&new_client->lock, NULL))
+    ERR("Couldn't initialize pthread mutex");
   return new_client;
 }
 
@@ -35,6 +39,7 @@ discord_cleanup(struct discord *client)
 {
   discord_adapter_cleanup(&client->adapter);
   discord_gateway_cleanup(&client->gw);
+  pthread_mutex_destroy(&client->lock);
   free(client);
 }
 
