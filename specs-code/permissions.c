@@ -74,7 +74,7 @@ char* discord_permissions_bitwise_flags_to_string(enum discord_permissions_bitwi
   if (v == DISCORD_PERMISSIONS_MANAGE_WEBHOOKS) return "MANAGE_WEBHOOKS";
   if (v == DISCORD_PERMISSIONS_MANAGE_EMOJIS) return "MANAGE_EMOJIS";
 
-  return (void*)0;
+  abort();
 }
 bool discord_permissions_bitwise_flags_has(enum discord_permissions_bitwise_flags v, char *s) {
   enum discord_permissions_bitwise_flags v1 = discord_permissions_bitwise_flags_from_string(s);

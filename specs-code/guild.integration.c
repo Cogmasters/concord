@@ -14,7 +14,7 @@ char* discord_guild_integration_expire_behaviors_to_string(enum discord_guild_in
   if (v == DISCORD_GUILD_INTEGRATION_REMOVE_ROLE) return "REMOVE_ROLE";
   if (v == DISCORD_GUILD_INTEGRATION_KICK) return "KICK";
 
-  return (void*)0;
+  abort();
 }
 bool discord_guild_integration_expire_behaviors_has(enum discord_guild_integration_expire_behaviors v, char *s) {
   enum discord_guild_integration_expire_behaviors v1 = discord_guild_integration_expire_behaviors_from_string(s);

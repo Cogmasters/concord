@@ -14,7 +14,7 @@ char* discord_webhook_types_to_string(enum discord_webhook_types v){
   if (v == DISCORD_WEBHOOK_INCOMING) return "INCOMING";
   if (v == DISCORD_WEBHOOK_CHANNEL_FOLLOWER) return "CHANNEL_FOLLOWER";
 
-  return (void*)0;
+  abort();
 }
 bool discord_webhook_types_has(enum discord_webhook_types v, char *s) {
   enum discord_webhook_types v1 = discord_webhook_types_from_string(s);

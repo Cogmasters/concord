@@ -24,7 +24,7 @@ char* discord_channel_types_to_string(enum discord_channel_types v){
   if (v == DISCORD_CHANNEL_GUILD_NEWS) return "GUILD_NEWS";
   if (v == DISCORD_CHANNEL_GUILD_STORE) return "GUILD_STORE";
 
-  return (void*)0;
+  abort();
 }
 bool discord_channel_types_has(enum discord_channel_types v, char *s) {
   enum discord_channel_types v1 = discord_channel_types_from_string(s);

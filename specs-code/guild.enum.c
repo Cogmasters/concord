@@ -14,7 +14,7 @@ char* discord_guild_default_message_notification_level_to_string(enum discord_gu
   if (v == DISCORD_GUILD_ALL_MESSAGES) return "ALL_MESSAGES";
   if (v == DISCORD_GUILD_ONLY_MENTIONS) return "ONLY_MENTIONS";
 
-  return (void*)0;
+  abort();
 }
 bool discord_guild_default_message_notification_level_has(enum discord_guild_default_message_notification_level v, char *s) {
   enum discord_guild_default_message_notification_level v1 = discord_guild_default_message_notification_level_from_string(s);
@@ -35,7 +35,7 @@ char* discord_guild_explicit_content_filter_level_to_string(enum discord_guild_e
   if (v == DISCORD_GUILD_MEMBERS_WITHOUT_ROLES) return "MEMBERS_WITHOUT_ROLES";
   if (v == DISCORD_GUILD_ALL_MEMBERS) return "ALL_MEMBERS";
 
-  return (void*)0;
+  abort();
 }
 bool discord_guild_explicit_content_filter_level_has(enum discord_guild_explicit_content_filter_level v, char *s) {
   enum discord_guild_explicit_content_filter_level v1 = discord_guild_explicit_content_filter_level_from_string(s);
@@ -55,7 +55,7 @@ char* discord_guild_mfa_level_to_string(enum discord_guild_mfa_level v){
   if (v == DISCORD_GUILD_DISCORD_MFA_NONE) return "DISCORD_MFA_NONE";
   if (v == DISCORD_GUILD_ELEVATED) return "ELEVATED";
 
-  return (void*)0;
+  abort();
 }
 bool discord_guild_mfa_level_has(enum discord_guild_mfa_level v, char *s) {
   enum discord_guild_mfa_level v1 = discord_guild_mfa_level_from_string(s);
@@ -80,7 +80,7 @@ char* discord_guild_verification_level_to_string(enum discord_guild_verification
   if (v == DISCORD_GUILD_HIGH) return "HIGH";
   if (v == DISCORD_GUILD_VERY_HIGH) return "VERY_HIGH";
 
-  return (void*)0;
+  abort();
 }
 bool discord_guild_verification_level_has(enum discord_guild_verification_level v, char *s) {
   enum discord_guild_verification_level v1 = discord_guild_verification_level_from_string(s);
@@ -106,7 +106,7 @@ char* discord_guild_premium_tier_to_string(enum discord_guild_premium_tier v){
   if (v == DISCORD_GUILD_TIER_2) return "TIER_2";
   if (v == DISCORD_GUILD_TIER_3) return "TIER_3";
 
-  return (void*)0;
+  abort();
 }
 bool discord_guild_premium_tier_has(enum discord_guild_premium_tier v, char *s) {
   enum discord_guild_premium_tier v1 = discord_guild_premium_tier_from_string(s);
@@ -127,7 +127,7 @@ char* discord_guild_system_channel_flags_to_string(enum discord_guild_system_cha
   if (v == DISCORD_GUILD_SUPRESS_JOIN_NOTIFICATIONS) return "SUPRESS_JOIN_NOTIFICATIONS";
   if (v == DISCORD_GUILD_SUPRESS_PREMIUM_SUBSCRIPTIONS) return "SUPRESS_PREMIUM_SUBSCRIPTIONS";
 
-  return (void*)0;
+  abort();
 }
 bool discord_guild_system_channel_flags_has(enum discord_guild_system_channel_flags v, char *s) {
   enum discord_guild_system_channel_flags v1 = discord_guild_system_channel_flags_from_string(s);
@@ -172,7 +172,7 @@ char* discord_guild_guild_features_to_string(enum discord_guild_guild_features v
   if (v == DISCORD_GUILD_MEMBER_VERIFICATION_GATE_ENABLED) return "MEMBER_VERIFICATION_GATE_ENABLED";
   if (v == DISCORD_GUILD_PREVIEW_ENABLED) return "PREVIEW_ENABLED";
 
-  return (void*)0;
+  abort();
 }
 bool discord_guild_guild_features_has(enum discord_guild_guild_features v, char *s) {
   enum discord_guild_guild_features v1 = discord_guild_guild_features_from_string(s);
