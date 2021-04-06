@@ -45,8 +45,8 @@ BOT_EXES := $(patsubst %.c, %.exe, $(BOT_SRC))
 BOTX_SRC  := $(wildcard botx/bot-*.c)
 BOTX_EXES := $(patsubst %.c, %.bx, $(BOTX_SRC))
 
-BOTZ_SRC  := $(wildcard adds-on/bots/bot-*.c)
-BOTZ_SRC  := $(patsubst %c, %.bz, $(BOTZ_SRC))
+BOTZ_SRC  := $(wildcard add-ons/bots/bot-*.c)
+BOTZ_EXES := $(patsubst %.c, %.bz, $(BOTZ_SRC))
 
 TEST_SRC  := $(wildcard test/test-*.cpp test/test-*.c)
 TEST_EXES := $(filter %.exe, $(TEST_SRC:.cpp=.exe) $(TEST_SRC:.c=.exe))
@@ -119,11 +119,12 @@ echo:
 	@echo SPECS_H:    $(SPECS_H)
 	@echo SPECS_C:    $(SPECS_C)
 	@echo SPECS_OBJS: $(SPECS_OBJS)
+	@echo BOTZ_SRC:   $(BOTZ_SRC)
 	@echo BOTZ_EXES:  $(BOTZ_EXES)
 
 bot: $(BOT_EXES) #@todo should we split by categories (bot_discord, bot_github, etc)?
-botx: all $(BOTX_EXES)
-botz: all $(BOTZ_EXES)
+botx: mkdir common orka discord | $(BOTX_EXES)
+botz: mkdir common orka discord | $(BOTZ_EXES)
 
 test: common orka discord slack github reddit $(TEST_EXES) #@todo should we split by categories too ?
 
