@@ -142,6 +142,8 @@ void discord_gateway_shutdown(struct discord_gateway *gw);
 struct discord_voice { /* VOICE CONNECTION STRUCTURE */
   struct websockets *ws;
 
+  char *base_url;
+
   struct { /* VOICE IDENTIFY STRUCTURE */
     char *token;                // the session token
     char session_id[512];       // the session id
@@ -162,6 +164,7 @@ struct discord_voice { /* VOICE CONNECTION STRUCTURE */
   struct discord_gateway *p_gw; //points to gateway which started this connection
 
   pthread_mutex_t lock; //for accessing gw fields within events
+  pthread_cond_t cond; //for synchronizing voice connections
 };
 
 #if 0 /* defined at discord.h and discord-voice.c */
@@ -180,6 +183,7 @@ struct discord {
 
   NTL_T(struct discord_voice) vcs;
   pthread_mutex_t lock; // for synchronizing vcs
+  int pending_vcs;
 
   void *data; //space for user arbitrary data
 };

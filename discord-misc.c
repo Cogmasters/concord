@@ -371,11 +371,12 @@ discord_overwrite_append(
   ntl_append2((ntl_t*)permission_overwrites, sizeof(struct discord_channel_overwrite), &new_overwrite);
 }
 
-//@todo create some manner of copying a struct, including its fields
+//@todo create some manner of copying a struct, including its pointer fields
 void
-discord_get_text_channel(
+discord_get_channel_at_pos(
   struct discord *client, 
   const u64_snowflake_t guild_id, 
+  const enum discord_channel_types type,
   const size_t position,
   struct discord_channel *p_channel)
 {
@@ -385,8 +386,12 @@ discord_get_text_channel(
 
   size_t j=0; // calculate position
   for (size_t i=0; channels[i]; ++i) {
-    if (DISCORD_CHANNEL_GUILD_TEXT == channels[i]->type && j++ == position) {
+    if (type == channels[i]->type && j++ == position) {
       memcpy(p_channel, channels[i], sizeof(struct discord_channel));
+      // avoid double freeing
+      p_channel->permission_overwrites = NULL;
+      p_channel->recipients = NULL;
+      p_channel->messages = NULL;
       break; /* EARLY BREAK */
     }
   }

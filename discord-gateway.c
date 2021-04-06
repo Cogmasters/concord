@@ -678,13 +678,25 @@ on_message_reaction_remove_emoji(struct discord_gateway *gw, struct discord_gate
 static void
 on_voice_state_update(struct discord_gateway *gw, struct discord_gateway_payload *payload)
 {
-  if (!gw->cbs.on_voice_state_update) return;
-
   struct discord_voice_state *voice_state = discord_voice_state_alloc();
   discord_voice_state_from_json(payload->event_data.start,
       payload->event_data.size, voice_state);
 
-  (*gw->cbs.on_voice_state_update)(gw->p_client, gw->bot, voice_state);
+  if (gw->p_client->pending_vcs) {
+    NTL_T(struct discord_voice) vcs = gw->p_client->vcs;
+    for (size_t i=0; vcs[i]; ++i) {
+      if (voice_state->guild_id == vcs[i]->identify.server_id) {
+        int ret = snprintf(vcs[i]->identify.session_id, sizeof(vcs[i]->identify.session_id), "%s", voice_state->session_id);
+        ASSERT_S(ret < sizeof(vcs[i]->identify.session_id), "Out of bounds write attempt");
+
+        --gw->p_client->pending_vcs;
+        break; /* EARLY BREAK */
+      }
+    }
+  }
+
+  if (gw->cbs.on_voice_state_update)
+    (*gw->cbs.on_voice_state_update)(gw->p_client, gw->bot, voice_state);
 
   discord_voice_state_free(voice_state);
 }
@@ -692,22 +704,36 @@ on_voice_state_update(struct discord_gateway *gw, struct discord_gateway_payload
 static void
 on_voice_server_update(struct discord_gateway *gw, struct discord_gateway_payload *payload)
 {
-  if (!gw->cbs.on_voice_server_update) return;
-
   u64_snowflake_t guild_id=0;
-  char *token = NULL, *endpoint = NULL;
+  char token[512], endpoint[MAX_URL_LEN];
   json_extract(payload->event_data.start, payload->event_data.size,
-               "(token):?s"
+               "(token):s"
                "(guild_id):s_as_u64"
-               "(endpoint):?s",
+               "(endpoint):s",
                &token,
                &guild_id,
                &endpoint);
 
-  (*gw->cbs.on_voice_server_update)(gw->p_client, gw->bot,
-                                   token,
-                                   guild_id,
-                                   endpoint);
+  if (gw->p_client->pending_vcs) 
+  {
+    NTL_T(struct discord_voice) vcs = gw->p_client->vcs;
+    for (size_t i=0; vcs[i]; ++i) {
+      if (guild_id == vcs[i]->identify.server_id) {
+        vcs[i]->identify.token = strdup(token);
+        asprintf(&vcs[i]->base_url, "wss://%s?v=4", endpoint);
+
+        --gw->p_client->pending_vcs;
+        break; /* EARLY BREAK */
+      }
+    }
+  }
+
+
+  if (gw->cbs.on_voice_server_update)
+    (*gw->cbs.on_voice_server_update)(gw->p_client, gw->bot,
+                                     token,
+                                     guild_id,
+                                     endpoint);
 }
 
 static void

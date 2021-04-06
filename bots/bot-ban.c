@@ -19,7 +19,7 @@ void on_guild_ban_add(
     const struct discord_user *user)
 {
   struct discord_channel *general = discord_channel_alloc();
-  discord_get_text_channel(client, guild_id, 0, general);
+  discord_get_channel_at_pos(client, guild_id, DISCORD_CHANNEL_GUILD_TEXT, 0, general);
 
   char text[128];
   snprintf(text, sizeof(text), "User `%s` has been banned.", user->username);
@@ -35,7 +35,7 @@ void on_guild_ban_remove(
     const struct discord_user *user)
 {
   struct discord_channel *general = discord_channel_alloc();
-  discord_get_text_channel(client, guild_id, 0, general);
+  discord_get_channel_at_pos(client, guild_id, DISCORD_CHANNEL_GUILD_TEXT, 0, general);
 
   char text[128];
   snprintf(text, sizeof(text), "User `%s` has been unbanned.", user->username);

@@ -36,7 +36,7 @@ void on_channel_delete(
     const struct discord_channel *channel)
 {
   struct discord_channel *general = discord_channel_alloc();
-  discord_get_text_channel(client, channel->guild_id, 0, general);
+  discord_get_channel_at_pos(client, channel->guild_id, DISCORD_CHANNEL_GUILD_TEXT, 0, general);
 
   char text[150];
   snprintf(text, sizeof(text), "Succesfully deleted `%s` channel", channel->name);

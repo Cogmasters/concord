@@ -337,9 +337,10 @@ void discord_overwrite_append(
   enum discord_permissions_bitwise_flags deny);
 
 void
-discord_get_text_channel(
+discord_get_channel_at_pos(
   struct discord *client, 
   const u64_snowflake_t guild_id, 
+  const enum discord_channel_types type,
   const size_t position,
   struct discord_channel *p_channel);
 
