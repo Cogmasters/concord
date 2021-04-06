@@ -244,6 +244,8 @@ void discord_on_message_reaction_add(struct discord *client, message_reaction_ad
 void discord_on_message_reaction_remove(struct discord *client, message_reaction_remove_cb *callback);
 void discord_on_message_reaction_remove_all(struct discord *client, message_reaction_remove_all_cb* callback);
 void discord_on_message_reaction_remove_emoji(struct discord *client, message_reaction_remove_emoji_cb *callback);
+void discord_on_voice_state_update(struct discord *client, voice_state_update_cb *callback);
+void discord_on_voice_server_update(struct discord *client, voice_server_update_cb *callback);
 void discord_on_ready(struct discord *client, idle_cb *callback);
 
 void discord_run(struct discord *client);
