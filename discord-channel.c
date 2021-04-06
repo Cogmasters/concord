@@ -392,6 +392,68 @@ discord_create_reaction(
 }
 
 void
+discord_delete_all_reactions(
+  struct discord *client, 
+  u64_snowflake_t channel_id, 
+  u64_snowflake_t message_id)
+{
+  if (!channel_id) {
+    D_PUTS("Missing 'channel_id'");
+    return;
+  }
+  if (!message_id) {
+    D_PUTS("Missing 'message_id'");
+    return;
+  }
+
+  discord_adapter_run(
+    &client->adapter,
+    NULL,
+    NULL,
+    HTTP_DELETE,
+    "/channels/%llu/messages/%llu/reactions", 
+    channel_id, message_id);
+}
+
+void 
+discord_delete_all_reactions_for_emoji(
+  struct discord *client, 
+  const u64_snowflake_t channel_id, 
+  const u64_snowflake_t message_id, 
+  const u64_snowflake_t emoji_id, 
+  const char emoji_name[])
+{
+  if (!channel_id) {
+    D_PUTS("Missing 'channel_id'");
+    return;
+  }
+  if (!message_id) {
+    D_PUTS("Missing 'message_id'");
+    return;
+  }
+
+  char *pct_emoji_name = (emoji_name) 
+                  ? url_encode((char*)emoji_name)
+                  : NULL;
+
+  char emoji_endpoint[256];
+  if (emoji_id)
+    snprintf(emoji_endpoint, sizeof(emoji_endpoint), "%s:%" PRIu64, pct_emoji_name, emoji_id);
+  else
+    snprintf(emoji_endpoint, sizeof(emoji_endpoint), "%s", pct_emoji_name);
+
+  discord_adapter_run(
+    &client->adapter,
+    NULL,
+    NULL,
+    HTTP_DELETE,
+    "/channels/%llu/messages/%llu/reactions/%s", 
+    channel_id, message_id, emoji_endpoint);
+
+  free(pct_emoji_name);
+}
+
+void
 discord_trigger_typing_indicator(struct discord* client, u64_snowflake_t channel_id)
 {
   if (!channel_id) {
