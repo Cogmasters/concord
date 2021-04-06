@@ -36,7 +36,7 @@ char* discord_user_flags_to_string(enum discord_user_flags v){
   if (v == DISCORD_USER_VERIFIED_BOT) return "VERIFIED_BOT";
   if (v == DISCORD_USER_EARLY_VERIFIED_BOT_DEVELOPER) return "EARLY_VERIFIED_BOT_DEVELOPER";
 
-  abort();
+  return (void*)0;
 }
 bool discord_user_flags_has(enum discord_user_flags v, char *s) {
   enum discord_user_flags v1 = discord_user_flags_from_string(s);
@@ -66,7 +66,7 @@ char* discord_user_premium_types_to_string(enum discord_user_premium_types v){
   if (v == DISCORD_USER_NITRO_CLASSIC) return "NITRO_CLASSIC";
   if (v == DISCORD_USER_NITRO) return "NITRO";
 
-  abort();
+  return (void*)0;
 }
 bool discord_user_premium_types_has(enum discord_user_premium_types v, char *s) {
   enum discord_user_premium_types v1 = discord_user_premium_types_from_string(s);
@@ -566,7 +566,7 @@ char* discord_user_connection_visibility_types_to_string(enum discord_user_conne
   if (v == DISCORD_USER_CONNECTION_NONE) return "NONE";
   if (v == DISCORD_USER_CONNECTION_EVERYONE) return "EVERYONE";
 
-  abort();
+  return (void*)0;
 }
 bool discord_user_connection_visibility_types_has(enum discord_user_connection_visibility_types v, char *s) {
   enum discord_user_connection_visibility_types v1 = discord_user_connection_visibility_types_from_string(s);

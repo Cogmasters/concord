@@ -12,7 +12,7 @@ enum discord_guild_membership_screening_field_type discord_guild_membership_scre
 char* discord_guild_membership_screening_field_type_to_string(enum discord_guild_membership_screening_field_type v){
   if (v == DISCORD_GUILD_MEMBERSHIP_SCREENING_TERMS) return "TERMS";
 
-  abort();
+  return (void*)0;
 }
 bool discord_guild_membership_screening_field_type_has(enum discord_guild_membership_screening_field_type v, char *s) {
   enum discord_guild_membership_screening_field_type v1 = discord_guild_membership_screening_field_type_from_string(s);
