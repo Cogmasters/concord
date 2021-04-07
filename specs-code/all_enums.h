@@ -594,6 +594,16 @@ enum discord_voice_opcodes {
 extern char* discord_voice_opcodes_to_string(enum discord_voice_opcodes);
 extern enum discord_voice_opcodes discord_voice_opcodes_from_string(char*);
 extern bool discord_voice_opcodes_has(enum discord_voice_opcodes, char*);
+
+
+enum discord_voice_speaking_flags {
+  DISCORD_VOICE_MICROPHONE = 1, // 1 << 0
+  DISCORD_VOICE_SOUNDSHARE = 2, // 1 << 1
+  DISCORD_VOICE_PRIORITY = 4, // 1 << 2
+};
+extern char* discord_voice_speaking_flags_to_string(enum discord_voice_speaking_flags);
+extern enum discord_voice_speaking_flags discord_voice_speaking_flags_from_string(char*);
+extern bool discord_voice_speaking_flags_has(enum discord_voice_speaking_flags, char*);
 /* This file is generated from specs/voice.json, Please don't edit it. */
 /*
 (null)

@@ -98,3 +98,25 @@ bool discord_voice_opcodes_has(enum discord_voice_opcodes v, char *s) {
   if (v == v1) return true;
   return false;
 }
+
+
+enum discord_voice_speaking_flags discord_voice_speaking_flags_from_string(char *s){
+  if(strcasecmp("MICROPHONE", s) == 0) return DISCORD_VOICE_MICROPHONE;
+  if(strcasecmp("SOUNDSHARE", s) == 0) return DISCORD_VOICE_SOUNDSHARE;
+  if(strcasecmp("PRIORITY", s) == 0) return DISCORD_VOICE_PRIORITY;
+  abort();
+}
+char* discord_voice_speaking_flags_to_string(enum discord_voice_speaking_flags v){
+  if (v == DISCORD_VOICE_MICROPHONE) return "MICROPHONE";
+  if (v == DISCORD_VOICE_SOUNDSHARE) return "SOUNDSHARE";
+  if (v == DISCORD_VOICE_PRIORITY) return "PRIORITY";
+
+  return (void*)0;
+}
+bool discord_voice_speaking_flags_has(enum discord_voice_speaking_flags v, char *s) {
+  enum discord_voice_speaking_flags v1 = discord_voice_speaking_flags_from_string(s);
+  if (v == v1) return true;
+  if (v == v1) return true;
+  if (v == v1) return true;
+  return false;
+}

@@ -40,6 +40,17 @@
         { "name":"RESUMED","value":9},
         { "name":"CLIENT_DISCONNECT","value":13}
       ]
+    },
+    {
+      "title":"Voice Speaking Flags",
+      "comment": "https://discord.com/developers/docs/topics/voice-connections#speaking",
+      "enum":"speaking_flags",
+      "items":
+      [
+        { "name":"MICROPHONE","value":1, "comment":"1 << 0"},
+        { "name":"SOUNDSHARE","value":2, "comment":"1 << 1"},
+        { "name":"PRIORITY","value":4, "comment":"1 << 2"}
+      ]
     }
   ]
 }
