@@ -266,8 +266,8 @@ struct discord_voice* discord_send_voice_state_update(
   u64_snowflake_t channel_id,
   bool self_mute,
   bool self_deaf);
+void discord_send_speaking(struct discord *client, struct discord_voice *vc, enum discord_voice_speaking_flags flag, int delay, int ssrc);
 void discord_vc_run(struct discord_voice *voice_connection);
-void discord_vc_shutdown(struct discord_voice *voice_connection);
 
 
  /* * * * * * * * * * * * * * * * */

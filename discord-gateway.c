@@ -682,18 +682,20 @@ on_voice_state_update(struct discord_gateway *gw, struct discord_gateway_payload
   discord_voice_state_from_json(payload->event_data.start,
       payload->event_data.size, voice_state);
 
+  pthread_mutex_lock(&gw->p_client->lock);
   if (gw->p_client->pending_vcs) {
     NTL_T(struct discord_voice) vcs = gw->p_client->vcs;
     for (size_t i=0; vcs[i]; ++i) {
       if (voice_state->guild_id == vcs[i]->identify.server_id) {
+        pthread_mutex_lock(&vcs[i]->lock);
         int ret = snprintf(vcs[i]->identify.session_id, sizeof(vcs[i]->identify.session_id), "%s", voice_state->session_id);
         ASSERT_S(ret < sizeof(vcs[i]->identify.session_id), "Out of bounds write attempt");
-
-        --gw->p_client->pending_vcs;
+        pthread_mutex_unlock(&vcs[i]->lock);
         break; /* EARLY BREAK */
       }
     }
   }
+  pthread_mutex_unlock(&gw->p_client->lock);
 
   if (gw->cbs.on_voice_state_update)
     (*gw->cbs.on_voice_state_update)(gw->p_client, gw->bot, voice_state);
@@ -714,19 +716,25 @@ on_voice_server_update(struct discord_gateway *gw, struct discord_gateway_payloa
                &guild_id,
                &endpoint);
 
+  pthread_mutex_lock(&gw->p_client->lock);
   if (gw->p_client->pending_vcs) 
   {
     NTL_T(struct discord_voice) vcs = gw->p_client->vcs;
     for (size_t i=0; vcs[i]; ++i) {
       if (guild_id == vcs[i]->identify.server_id) {
+        pthread_mutex_lock(&vcs[i]->lock);
         vcs[i]->identify.token = strdup(token);
         asprintf(&vcs[i]->base_url, "wss://%s?v=4", endpoint);
 
         --gw->p_client->pending_vcs;
+
+        pthread_cond_signal(&vcs[i]->cond);
+        pthread_mutex_unlock(&vcs[i]->lock);
         break; /* EARLY BREAK */
       }
     }
   }
+  pthread_mutex_unlock(&gw->p_client->lock);
 
 
   if (gw->cbs.on_voice_server_update)

@@ -174,7 +174,6 @@ struct discord_voice* discord_send_voice_state_update(
   bool self_mute,
   bool self_deaf);
 void discord_vc_run(struct discord_voice *vc);
-void discord_vc_shutdown(struct discord_voice *vc);
 #endif
 
 struct discord {
