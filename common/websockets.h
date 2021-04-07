@@ -66,6 +66,9 @@ void ws_close(
   size_t len);
 void ws_send_text(struct websockets *ws, char text[]);
 void ws_run(struct websockets *ws);
+void ws_shutdown(struct websockets *ws);
+void ws_redirect(struct websockets *ws, char base_url[]);
+void ws_reconnect(struct websockets *ws);
 uint64_t ws_timestamp(struct websockets *ws);
 enum ws_status ws_get_status(struct websockets *ws);
 void ws_set_status(struct websockets *ws, enum ws_status status);

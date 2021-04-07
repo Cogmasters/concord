@@ -375,7 +375,7 @@ event_loop(struct websockets *ws)
     if (ws_get_status(ws) == WS_CONNECTED) { // run if connection established
       (*ws->cbs.on_iter_end)(ws->cbs.data);
     }
-  } while(is_running);
+  } while (is_running);
 
   curl_multi_remove_handle(ws->mhandle, ws->ehandle);
 }
@@ -517,8 +517,60 @@ ws_run(struct websockets *ws)
   while (1) {
     event_loop(ws);
     if (WS_DISCONNECTED == attempt_reconnect(ws))
-      break; /* EXIT LOOP */
+      return; /* EXIT */
   }
+}
+
+void
+ws_shutdown(struct websockets *ws)
+{
+  pthread_mutex_lock(&ws->lock);
+  if (WS_DISCONNECTED == ws->status) {
+    pthread_mutex_unlock(&ws->lock);
+    return;
+  }
+
+  char reason[] = "Shutdown gracefully";
+  cws_close(ws->ehandle, WS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
+
+  /* force reset */
+  cws_free(ws->ehandle);
+  ws->ehandle = custom_cws_new(ws);
+  pthread_mutex_unlock(&ws->lock);
+}
+
+void
+ws_redirect(struct websockets *ws, char base_url[])
+{
+  pthread_mutex_lock(&ws->lock);
+  if (WS_DISCONNECTED == ws->status) {
+    pthread_mutex_unlock(&ws->lock);
+    return;
+  }
+
+  char reason[] = "Redirect gracefully";
+
+  /* swap with new url */
+  if (ws->base_url)
+    free(ws->base_url);
+  ws->base_url = strdup(base_url);
+
+  cws_close(ws->ehandle, WS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
+}
+
+void
+ws_reconnect(struct websockets *ws)
+{
+  pthread_mutex_lock(&ws->lock);
+  if (WS_DISCONNECTED == ws->status) {
+    pthread_mutex_unlock(&ws->lock);
+    return;
+  }
+
+  char reason[] = "Reconnect gracefully";
+  cws_close(ws->ehandle, WS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
+  attempt_reconnect(ws);
+  pthread_mutex_unlock(&ws->lock);
 }
 
 struct sized_buffer
