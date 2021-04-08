@@ -539,16 +539,17 @@ void
 ws_redirect(struct websockets *ws, char base_url[])
 {
   pthread_mutex_lock(&ws->lock);
-  if (WS_DISCONNECTED == ws->status) {
-    pthread_mutex_unlock(&ws->lock);
-    return;
+  if (WS_DISCONNECTED != ws->status) {
+    char reason[] = "Redirect gracefully";
+    cws_close(ws->ehandle, WS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
+    ws->status = WS_DISCONNECTING;
   }
-  ws->status = WS_DISCONNECTING;
 
   /* swap with new url */
   if (ws->base_url)
     free(ws->base_url);
   ws->base_url = strdup(base_url);
+
   pthread_mutex_unlock(&ws->lock);
 }
 
