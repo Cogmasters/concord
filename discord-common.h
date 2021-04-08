@@ -180,7 +180,8 @@ struct discord {
   struct discord_adapter adapter;
   struct discord_gateway gw;
 
-  NTL_T(struct discord_voice) vcs;
+  struct discord_voice **vcs;
+  size_t num_vcs;
   pthread_mutex_t lock; // for synchronizing vcs
   int pending_vcs;
 
