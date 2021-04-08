@@ -9,10 +9,11 @@ extern "C" {
 struct websockets;
 
 enum ws_status {
-  WS_DISCONNECTED,  //disconnected from ws
-  WS_RESUME,        //attempt to resume ws session
-  WS_FRESH,         //attempt a fresh ws session (session timed out)
-  WS_CONNECTED      //connected to ws
+  WS_DISCONNECTED = 0,  //disconnected from ws
+  WS_DISCONNECTING,     //disconnecting from ws
+  WS_CONNECTED,         //connected to ws
+  WS_RESUME,            //attempt to resume ws session
+  WS_FRESH              //attempt a fresh ws session
 };
 
 /* see https://tools.ietf.org/html/rfc6455#section-7.4.1 */

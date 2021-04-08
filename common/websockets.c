@@ -273,7 +273,6 @@ ws_init(const char base_url[], struct ws_callbacks *cbs)
   new_ws->reconnect.threshold = 5;
   new_ws->wait_ms = 100;
 
-  new_ws->ehandle = custom_cws_new(new_ws);
   new_ws->mhandle = curl_multi_init();
 
   orka_config_init(&new_ws->config, NULL, NULL);
@@ -339,12 +338,13 @@ ws_cleanup(struct websockets *ws)
 static void
 event_loop(struct websockets *ws)
 {
-  curl_multi_add_handle(ws->mhandle, ws->ehandle);
-
   if ( !(*ws->cbs.on_startup)(ws->cbs.data) ) {
-    ws_set_status(ws, WS_DISCONNECTED);
+    ws_set_status(ws, WS_DISCONNECTING);
     return; /* EARLY RETURN */
   }
+
+  ws->ehandle = custom_cws_new(ws);
+  curl_multi_add_handle(ws->mhandle, ws->ehandle);
 
   // kickstart a connection then enter loop
   CURLMcode mcode;
@@ -378,6 +378,7 @@ event_loop(struct websockets *ws)
   } while (is_running);
 
   curl_multi_remove_handle(ws->mhandle, ws->ehandle);
+  cws_free(ws->ehandle);
 }
 
 void
@@ -492,15 +493,12 @@ attempt_reconnect(struct websockets *ws)
         break;
 
       PRINT("Failed all reconnect attempts (%d)", ws->reconnect.attempt);
-      ws->status = WS_DISCONNECTED;
+      ws->status = WS_DISCONNECTING;
   /* fall through */
-  case WS_DISCONNECTED:
-      return ws->status; /* WS_DISCONNECTED */
+  case WS_DISCONNECTING:
+      ws->reconnect.attempt = 0;
+      return ws->status; /* WS_DISCONNECTING */
   }
-
-  /* force reset */
-  cws_free(ws->ehandle);
-  ws->ehandle = custom_cws_new(ws);
 
   ++ws->reconnect.attempt;
 
@@ -516,9 +514,10 @@ ws_run(struct websockets *ws)
 
   while (1) {
     event_loop(ws);
-    if (WS_DISCONNECTED == attempt_reconnect(ws))
-      return; /* EXIT */
+    if (WS_DISCONNECTING == attempt_reconnect(ws))
+      break; /* EXIT LOOP */
   }
+  ws_set_status(ws, WS_DISCONNECTED);
 }
 
 void
@@ -529,13 +528,10 @@ ws_shutdown(struct websockets *ws)
     pthread_mutex_unlock(&ws->lock);
     return;
   }
+  ws->status = WS_DISCONNECTING;
 
   char reason[] = "Shutdown gracefully";
   cws_close(ws->ehandle, WS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
-
-  /* force reset */
-  cws_free(ws->ehandle);
-  ws->ehandle = custom_cws_new(ws);
   pthread_mutex_unlock(&ws->lock);
 }
 
@@ -547,15 +543,13 @@ ws_redirect(struct websockets *ws, char base_url[])
     pthread_mutex_unlock(&ws->lock);
     return;
   }
-
-  char reason[] = "Redirect gracefully";
+  ws->status = WS_DISCONNECTING;
 
   /* swap with new url */
   if (ws->base_url)
     free(ws->base_url);
   ws->base_url = strdup(base_url);
-
-  cws_close(ws->ehandle, WS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
+  pthread_mutex_unlock(&ws->lock);
 }
 
 void
@@ -566,10 +560,10 @@ ws_reconnect(struct websockets *ws)
     pthread_mutex_unlock(&ws->lock);
     return;
   }
+  ws->status = WS_FRESH;
 
   char reason[] = "Reconnect gracefully";
   cws_close(ws->ehandle, WS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
-  attempt_reconnect(ws);
   pthread_mutex_unlock(&ws->lock);
 }
 

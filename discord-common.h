@@ -164,7 +164,7 @@ struct discord_voice { /* VOICE CONNECTION STRUCTURE */
   struct discord_gateway *p_gw; //points to gateway which started this connection
 
   pthread_mutex_t lock; //for accessing gw fields within events
-  pthread_cond_t cond; //for synchronizing voice connections
+  pthread_cond_t cond_server_update; // wait for server update cond
 };
 
 #if 0 /* defined at discord.h and discord-voice.c */
