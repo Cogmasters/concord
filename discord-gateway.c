@@ -165,7 +165,7 @@ on_hello_cb(void *p_gw, void *curr_iter_data)
 
   if (WS_RESUME == ws_get_status(gw->ws))
     send_resume(gw);
-  else // WS_FRESH || WS_DISCONNECTED
+  else // WS_FRESH || WS_DISCONNECTING
     send_identify(gw);
 }
 
@@ -687,10 +687,8 @@ on_voice_state_update(struct discord_gateway *gw, struct discord_gateway_payload
     NTL_T(struct discord_voice) vcs = gw->p_client->vcs;
     for (size_t i=0; vcs[i]; ++i) {
       if (voice_state->guild_id == vcs[i]->identify.server_id) {
-        pthread_mutex_lock(&vcs[i]->lock);
         int ret = snprintf(vcs[i]->identify.session_id, sizeof(vcs[i]->identify.session_id), "%s", voice_state->session_id);
         ASSERT_S(ret < sizeof(vcs[i]->identify.session_id), "Out of bounds write attempt");
-        pthread_mutex_unlock(&vcs[i]->lock);
         break; /* EARLY BREAK */
       }
     }
@@ -728,7 +726,7 @@ on_voice_server_update(struct discord_gateway *gw, struct discord_gateway_payloa
 
         --gw->p_client->pending_vcs;
 
-        pthread_cond_signal(&vcs[i]->cond);
+        pthread_cond_signal(&vcs[i]->cond_server_update);
         pthread_mutex_unlock(&vcs[i]->lock);
         break; /* EARLY BREAK */
       }
@@ -966,7 +964,7 @@ on_close_cb(void *p_gw, enum ws_close_reason wscode, const char *reason, size_t 
   case DISCORD_GATEWAY_CLOSE_REASON_INVALID_INTENTS:
   case DISCORD_GATEWAY_CLOSE_REASON_INVALID_SHARD:
   case DISCORD_GATEWAY_CLOSE_REASON_DISALLOWED_INTENTS:
-      ws_set_status(gw->ws, WS_DISCONNECTED);
+      ws_set_status(gw->ws, WS_DISCONNECTING);
       break;
   case DISCORD_GATEWAY_CLOSE_REASON_UNKNOWN_ERROR:
   case DISCORD_GATEWAY_CLOSE_REASON_INVALID_SEQUENCE:
@@ -1177,9 +1175,6 @@ discord_gateway_run(struct discord_gateway *gw) {
 }
 
 void
-discord_gateway_shutdown(struct discord_gateway *gw) 
-{
-  ws_set_status(gw->ws, WS_DISCONNECTED);
-  char reason[] = "Shutdown gracefully";
-  ws_close(gw->ws, WS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
+discord_gateway_shutdown(struct discord_gateway *gw) {
+  ws_shutdown(gw->ws);
 }
