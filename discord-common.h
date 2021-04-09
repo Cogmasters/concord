@@ -144,6 +144,12 @@ struct discord_voice { /* VOICE CONNECTION STRUCTURE */
 
   char *base_url;
 
+  // obtained after on_ready_cb()
+  int ssrc;    // secret
+  // obtained after succesful rtp_ip_discovery()
+  char ip[64]; // client external IP
+  short port;  // client external port
+
   struct { /* VOICE IDENTIFY STRUCTURE */
     char *token;                // the session token
     char session_id[512];       // the session id
@@ -160,8 +166,6 @@ struct discord_voice { /* VOICE CONNECTION STRUCTURE */
   } hbeat;
 
   int ping_ms; //latency between client and websockets server
-
-  struct discord_gateway *p_gw; //points to gateway which started this connection
 
   pthread_mutex_t lock; //for accessing gw fields within events
   pthread_cond_t cond_server_update; // wait for server update cond
