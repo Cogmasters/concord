@@ -177,7 +177,7 @@ struct discord_voice* discord_send_voice_state_update(
   u64_snowflake_t channel_id,
   bool self_mute,
   bool self_deaf);
-void discord_vc_run(struct discord_voice *vc);
+void discord_voice_connect(struct discord_voice *vc);
 #endif
 
 struct discord {
