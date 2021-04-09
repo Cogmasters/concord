@@ -75,7 +75,7 @@ discord_add_intents(struct discord *client, enum discord_gateway_intents code)
     return;
   }
 
-  client->gw.identify->intents |= code;
+  client->gw.id->intents |= code;
 }
 
 void
@@ -281,8 +281,8 @@ discord_replace_presence(struct discord *client, struct discord_gateway_status_u
 {
   if (NULL == presence) return;
 
-  discord_gateway_status_update_free(client->gw.identify->presence);
-  client->gw.identify->presence = presence;
+  discord_gateway_status_update_free(client->gw.id->presence);
+  client->gw.id->presence = presence;
 }
 
 void
@@ -292,7 +292,7 @@ discord_set_presence(
   char status[], 
   bool afk)
 {
-  struct discord_gateway_status_update *presence = client->gw.identify->presence;
+  struct discord_gateway_status_update *presence = client->gw.id->presence;
 
   if (activity) {
     presence->activities = (void*)ntl_append((void*)presence->activities, 

@@ -5,11 +5,26 @@
 
 #include "json-actor-boxed.h"
 
-struct discord; //forward declaration
-struct discord_voice; //forward declaration
-
 typedef uint64_t u64_unix_ms_t;
 typedef uint64_t u64_snowflake_t;
+
+struct discord; //forward declaration
+
+struct discord_voice { /* VOICE CONNECTION STRUCTURE */
+  char token[128];            // the session token
+  char session_id[512];       // the session id
+  u64_snowflake_t server_id;  // the session guild id
+  u64_snowflake_t channel_id; // the session channel id
+  u64_snowflake_t user_id;    // the bot user id
+  
+  // obtained after on_ready_cb()
+  int ssrc;    // secret
+  // obtained after succesful rtp_ip_discovery()
+  char ip[64]; // client external IP
+  short port;  // client external port
+
+  struct _discord_voice *priv; // declared at discord-common.h
+};
 
 /* Size limits encountered in the Docs and searching the web */
 #define MAX_NAME_LEN          100 + 1
@@ -260,12 +275,13 @@ enum ws_status discord_gateway_status(struct discord *client);
 /* * * * * * * * * * * * * * * * * * * * * */
 /* * * * VOICE CONNECTIONS FUNCTIONS * * * */
 
-struct discord_voice* discord_send_voice_state_update(
+void discord_send_voice_state_update(
   struct discord *client,
   u64_snowflake_t guild_id,
   u64_snowflake_t channel_id,
   bool self_mute,
-  bool self_deaf);
+  bool self_deaf,
+  struct discord_voice *p_vc);
 void discord_send_speaking(struct discord *client, struct discord_voice *vc, enum discord_voice_speaking_flags flag, int delay, int ssrc);
 void discord_voice_connect(struct discord_voice *vc);
 
@@ -351,6 +367,8 @@ void discord_delete_messages_by_author_id(
   struct discord *client,
   u64_snowflake_t channel_id,
   u64_snowflake_t author_id);
+
+void discord_get_voice_connections(struct discord *client, NTL_T(struct discord_voice) *vcs);
 
 #include "./specs-code/all_fun.h"
 

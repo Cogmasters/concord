@@ -107,7 +107,7 @@ send_resume(struct discord_gateway *gw)
                 "(session_id):s"
                 "(seq):d"
               "}",
-              gw->identify->token,
+              gw->id->token,
               gw->session_id, 
               &gw->payload.seq_number);
   ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
@@ -135,7 +135,7 @@ send_identify(struct discord_gateway *gw)
   int ret = json_inject(payload, sizeof(payload), 
               "(op):2" // IDENTIFY OPCODE
               "(d):F",
-              &discord_gateway_identify_to_json_v, gw->identify);
+              &discord_gateway_identify_to_json_v, gw->id);
   ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
 
   // contain token (sensitive data), enable _ORKA_DEBUG_STRICT to print it
@@ -683,12 +683,13 @@ on_voice_state_update(struct discord_gateway *gw, struct discord_gateway_payload
       payload->event_data.size, voice_state);
 
   pthread_mutex_lock(&gw->p_client->lock);
-  if (gw->p_client->pending_vcs) {
+  if (gw->p_client->pending_vcs) 
+  {
     struct discord_voice **vcs = gw->p_client->vcs;
     for (size_t i=0; i < gw->p_client->num_vcs; ++i) {
-      if (voice_state->guild_id == vcs[i]->identify.server_id) {
-        int ret = snprintf(vcs[i]->identify.session_id, sizeof(vcs[i]->identify.session_id), "%s", voice_state->session_id);
-        ASSERT_S(ret < sizeof(vcs[i]->identify.session_id), "Out of bounds write attempt");
+      if (voice_state->guild_id == vcs[i]->server_id) {
+        int ret = snprintf(vcs[i]->session_id, sizeof(vcs[i]->session_id), "%s", voice_state->session_id);
+        ASSERT_S(ret < sizeof(vcs[i]->session_id), "Out of bounds write attempt");
         break; /* EARLY BREAK */
       }
     }
@@ -719,16 +720,20 @@ on_voice_server_update(struct discord_gateway *gw, struct discord_gateway_payloa
   {
     struct discord_voice **vcs = gw->p_client->vcs;
     for (size_t i=0; i < gw->p_client->num_vcs; ++i) {
-      if (guild_id == vcs[i]->identify.server_id) {
+      if (guild_id == vcs[i]->server_id) {
         --gw->p_client->pending_vcs;
 
         struct discord_voice *vc = vcs[i];
-        pthread_mutex_lock(&vc->lock);
-        asprintf(&vc->identify.token, "%s", token);
-        asprintf(&vc->base_url, "wss://%s?v=4", endpoint);
+        pthread_mutex_lock(&vc->priv->lock);
 
-        pthread_cond_signal(&vc->cond_server_update);
-        pthread_mutex_unlock(&vc->lock);
+        int ret;
+        ret = snprintf(vc->token, sizeof(vc->token), "%s", token);
+        ASSERT_S(ret < sizeof(vc->token), "Out of bounds write attempt");
+        ret = snprintf(vc->priv->base_url, sizeof(vc->priv->base_url), "wss://%s?v=4", endpoint);
+        ASSERT_S(ret < sizeof(vc->priv->base_url), "Out of bounds write attempt");
+
+        pthread_cond_signal(&vc->priv->cond_server_update);
+        pthread_mutex_unlock(&vc->priv->lock);
         break; /* EARLY BREAK */
       }
     }
@@ -1104,13 +1109,13 @@ _gateway_init(
   ws_set_event(gw->ws, DISCORD_GATEWAY_HELLO, &on_hello_cb);
   ws_set_event(gw->ws, DISCORD_GATEWAY_HEARTBEAT_ACK, &on_heartbeat_ack_cb);
 
-  gw->identify = discord_gateway_identify_alloc();
-  asprintf(&gw->identify->token, "%.*s", (int)token->size, token->start);
+  gw->id = discord_gateway_identify_alloc();
+  asprintf(&gw->id->token, "%.*s", (int)token->size, token->start);
 
-  gw->identify->properties->$os = strdup("POSIX");
-  gw->identify->properties->$browser = strdup("orca");
-  gw->identify->properties->$device = strdup("orca");
-  gw->identify->presence->since = orka_timestamp_ms();
+  gw->id->properties->$os = strdup("POSIX");
+  gw->id->properties->$browser = strdup("orca");
+  gw->id->properties->$device = strdup("orca");
+  gw->id->presence->since = orka_timestamp_ms();
   gw->bot = discord_user_alloc();
   discord_set_presence(gw->p_client, NULL, "online", false);
   discord_get_current_user(gw->p_client, gw->bot);
@@ -1164,7 +1169,7 @@ discord_gateway_cleanup(struct discord_gateway *gw)
 {
   discord_user_free(gw->bot);
   free(gw->sb_bot.start);
-  discord_gateway_identify_free(gw->identify);
+  discord_gateway_identify_free(gw->id);
   ws_cleanup(gw->ws);
   pthread_mutex_destroy(&gw->lock);
 }

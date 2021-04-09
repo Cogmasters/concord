@@ -73,7 +73,7 @@ struct discord_gateway_payload { /* GATEWAY PAYLOAD STRUCTURE */
 struct discord_gateway { /* GATEWAY STRUCTURE */
   struct websockets *ws;
 
-  struct discord_gateway_identify *identify;
+  struct discord_gateway_identify *id;
   char session_id[512]; //the session id (for resuming lost connections)
 
   struct discord_gateway_payload payload;
@@ -139,24 +139,9 @@ void discord_gateway_run(struct discord_gateway *gw);
 /* gracefully exit the infinite loop */
 void discord_gateway_shutdown(struct discord_gateway *gw);
 
-struct discord_voice { /* VOICE CONNECTION STRUCTURE */
+struct _discord_voice { /* PRIVATE VOICE CONNECTION STRUCTURE */
   struct websockets *ws;
-
-  char *base_url;
-
-  // obtained after on_ready_cb()
-  int ssrc;    // secret
-  // obtained after succesful rtp_ip_discovery()
-  char ip[64]; // client external IP
-  short port;  // client external port
-
-  struct { /* VOICE IDENTIFY STRUCTURE */
-    char *token;                // the session token
-    char session_id[512];       // the session id
-    u64_snowflake_t server_id;  // the session guild id
-    u64_snowflake_t channel_id; // the session channel id
-    u64_snowflake_t user_id;    // the bot user id
-  } identify;
+  char base_url[MAX_URL_LEN];
 
   struct discord_gateway_payload payload;
 
