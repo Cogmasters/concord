@@ -41,6 +41,11 @@ struct conn_resp_header {
   int size;
 };
 
+struct conn_resp_body {
+  struct sized_buffer content; //the api response string
+  size_t real_size; //the literal array size
+};
+
 struct ua_conn {
   CURL *ehandle; //the curl's easy handle used to perform requests
   bool is_busy; // true if current conn is performing a request
@@ -49,9 +54,9 @@ struct ua_conn {
   char req_url[UA_MAX_URL_LEN]; //request's url
   uint64_t req_tstamp; // timestamp of when its request completed
 
-  struct conn_resp_header resp_header; //the key/field response header
-  struct sized_buffer resp_body; //the api response string
   char *resp_url; //response's url
+  struct conn_resp_header resp_header; //the key/field response header
+  struct conn_resp_body resp_body; //the response body
 
   void *data; //user arbitrary data
 };
@@ -125,12 +130,12 @@ ua_reqheader_del(struct user_agent *ua, char field[])
 static size_t
 conn_respheader_cb(char *str, size_t size, size_t nmemb, void *p_userdata)
 {
-  size_t realsize = size * nmemb;
+  size_t chunk_size = size * nmemb;
   struct conn_resp_header *resp_header = p_userdata;
 
   char *ptr;
   if (!(ptr = strchr(str, ':'))) { //returns if can't find ':' token match
-    return realsize;
+    return chunk_size;
   }
 
   *ptr = '\0'; //replace ':' with '\0' to separate field from value
@@ -139,7 +144,7 @@ conn_respheader_cb(char *str, size_t size, size_t nmemb, void *p_userdata)
   ASSERT_S(ret < UA_MAX_HEADER_LEN, "oob of resp_header->field");
 
   if (!(ptr = strstr(ptr + 1, "\r\n"))) {//returns if can't find CRLF match
-    return realsize;
+    return chunk_size;
   }
 
   *ptr = '\0'; //replace CRLF with '\0' to isolate field
@@ -158,7 +163,7 @@ conn_respheader_cb(char *str, size_t size, size_t nmemb, void *p_userdata)
   ++resp_header->size; //update header amount of field/value resp_header
   ASSERT_S(resp_header->size < UA_MAX_HEADER_SIZE, "oob write of resp_header");
 
-  return realsize;
+  return chunk_size;
 }
 
 /* get api response body string
@@ -166,16 +171,18 @@ conn_respheader_cb(char *str, size_t size, size_t nmemb, void *p_userdata)
 static size_t
 conn_respbody_cb(char *str, size_t size, size_t nmemb, void *p_userdata)
 {
-  size_t realsize = size * nmemb;
-  struct sized_buffer *resp_body = p_userdata;
+  size_t chunk_size = size * nmemb;
+  struct conn_resp_body *body = p_userdata;
 
-  //update response body string size
-  //@todo this unnecessarily decreases the memory at the next request
-  resp_body->start = realloc(resp_body->start, resp_body->size + realsize + 1);
-  memcpy(resp_body->start + resp_body->size, str, realsize);
-  resp_body->size += realsize;
-  resp_body->start[resp_body->size] = '\0';
-  return realsize;
+  //increase response body memory block size only if necessary
+  if (body->real_size < (body->content.size + chunk_size + 1)) {
+    body->real_size = body->content.size + chunk_size + 1;
+    body->content.start = realloc(body->content.start, body->real_size);
+  }
+  memcpy(&body->content.start[body->content.size], str, chunk_size);
+  body->content.size += chunk_size;
+  body->content.start[body->content.size] = '\0';
+  return chunk_size;
 }
 
 void
@@ -255,8 +262,8 @@ static void
 conn_cleanup(struct ua_conn *conn)
 {
   curl_easy_cleanup(conn->ehandle);
-  if (conn->resp_body.start)
-    free(conn->resp_body.start);
+  if (conn->resp_body.content.start)
+    free(conn->resp_body.content.start);
   free(conn);
 }
 
@@ -264,9 +271,9 @@ static void
 conn_soft_reset(struct ua_conn *conn)
 {
   conn->req_tstamp = 0;
-  if (conn->resp_body.start)
-    *conn->resp_body.start = '\0';
-  conn->resp_body.size = 0;
+  if (conn->resp_body.content.start)
+    *conn->resp_body.content.start = '\0';
+  conn->resp_body.content.size = 0;
   conn->resp_header.size = 0;
 }
 
@@ -331,7 +338,7 @@ ua_conn_get_data(struct ua_conn *conn) {
 
 struct sized_buffer
 ua_conn_get_resp_body(struct ua_conn *conn) {
-  return conn->resp_body;
+  return conn->resp_body.content;
 }
 
 ua_status_t 
@@ -630,7 +637,7 @@ perform_request(
       httpcode, http_code_print(httpcode), 
       &ua->config, 
       conn->resp_url, 
-      conn->resp_body.start);
+      conn->resp_body.content.start);
 
     /* triggers response related callbacks */
     if (httpcode >= 500) { // SERVER ERROR
@@ -639,15 +646,15 @@ perform_request(
       if (resp_handle) {
         if (resp_handle->err_cb) {
           (*resp_handle->err_cb)(
-            conn->resp_body.start,
-            conn->resp_body.size,
+            conn->resp_body.content.start,
+            conn->resp_body.content.size,
             resp_handle->err_obj);
         }
         else if (resp_handle->cxt_err_cb) {
           (*resp_handle->cxt_err_cb)(
             resp_handle->cxt,
-            conn->resp_body.start,
-            conn->resp_body.size,
+            conn->resp_body.content.start,
+            conn->resp_body.content.size,
             resp_handle->err_obj);
         }
       }
@@ -658,15 +665,15 @@ perform_request(
       if (resp_handle) {
         if(resp_handle->err_cb) {
           (*resp_handle->err_cb)(
-            conn->resp_body.start,
-            conn->resp_body.size,
+            conn->resp_body.content.start,
+            conn->resp_body.content.size,
             resp_handle->err_obj);
         }
         else if (resp_handle->cxt_err_cb) {
           (*resp_handle->cxt_err_cb)(
             resp_handle->cxt,
-            conn->resp_body.start,
-            conn->resp_body.size,
+            conn->resp_body.content.start,
+            conn->resp_body.content.size,
             resp_handle->err_obj);
         }
       }
@@ -680,15 +687,15 @@ perform_request(
       if (resp_handle) {
         if (resp_handle->ok_cb) {
           (*resp_handle->ok_cb)(
-            conn->resp_body.start,
-            conn->resp_body.size,
+            conn->resp_body.content.start,
+            conn->resp_body.content.size,
             resp_handle->ok_obj);
         }
         else if (resp_handle->cxt_ok_cb) {
           (*resp_handle->cxt_ok_cb)(
             resp_handle->cxt,
-            conn->resp_body.start,
-            conn->resp_body.size,
+            conn->resp_body.content.start,
+            conn->resp_body.content.size,
             resp_handle->ok_obj);
         }
       }
