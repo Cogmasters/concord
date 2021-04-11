@@ -32,13 +32,14 @@ struct websockets {
   CURL *ehandle;
   uint64_t wait_ms; // how long to wait for sockets activity
   uint64_t now_tstamp; // timestamp updated every loop iteration
+  bool is_running; // used internally
 
   struct { /* RECONNECT STRUCT */
     int threshold; // max reconnections attempts before quitting
     int attempt; // current count of reconnection attempt
   } reconnect;
 
-  char *base_url;
+  char base_url[512 + 1];
 
   struct ws_callbacks cbs; 
   struct event_cb *event_pool; //events set with ws_set_event()
@@ -69,6 +70,14 @@ static void
 cws_on_close_cb(void *p_ws, CURL *ehandle, enum cws_close_reason cwscode, const char *reason, size_t len)
 {
   struct websockets *ws = p_ws;
+
+  (*ws->config.http_dump_cb)(
+    true, 
+    cwscode, "ON_CLOSE", 
+    &ws->config, 
+    ws->base_url, 
+    (char*)reason);
+
   (*ws->cbs.on_close)(ws->cbs.data, cwscode, reason, len);
 }
 
@@ -241,13 +250,6 @@ custom_cws_new(struct websockets *ws)
   ecode = curl_easy_setopt(new_ehandle, CURLOPT_FOLLOWLOCATION, 2L);
   ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
-/* @todo
-  // execute user-defined curl_easy_setopts
-  if (ws->setopt_cb) {
-    (*ws->setopt_cb)(new_ehandle, ws->cbs.data);
-  }
-*/
-
   return new_ehandle;
 }
 
@@ -268,12 +270,15 @@ ws_init(const char base_url[], struct ws_callbacks *cbs)
 {
   struct websockets *new_ws = calloc(1, sizeof *new_ws);
 
-  new_ws->base_url = strdup(base_url);
+  int ret = snprintf(new_ws->base_url, sizeof(new_ws->base_url), "%s", base_url);
+  ASSERT_S(ret < sizeof(new_ws->base_url), "Out of bounds write attempt");
   new_ws->status = WS_DISCONNECTED;
   new_ws->reconnect.threshold = 5;
   new_ws->wait_ms = 100;
 
   new_ws->mhandle = curl_multi_init();
+  new_ws->ehandle = custom_cws_new(new_ws);
+  curl_multi_add_handle(new_ws->mhandle, new_ws->ehandle);
 
   orka_config_init(&new_ws->config, NULL, NULL);
 
@@ -326,7 +331,6 @@ ws_cleanup(struct websockets *ws)
 {
   if (ws->event_pool)
     free(ws->event_pool);
-  free(ws->base_url);
   curl_multi_cleanup(ws->mhandle);
   cws_free(ws->ehandle);
   orka_config_cleanup(&ws->config);
@@ -335,50 +339,87 @@ ws_cleanup(struct websockets *ws)
   free(ws);
 }
 
+void
+ws_perform(struct websockets *ws, bool *is_running)
+{
+  pthread_mutex_lock(&ws->lock);
+  ws->now_tstamp = orka_timestamp_ms(); //update our concept of now
+  pthread_mutex_unlock(&ws->lock);
+
+  CURLMcode mcode = curl_multi_perform(ws->mhandle, (int*)&ws->is_running);
+  ASSERT_S(CURLM_OK == mcode, curl_multi_strerror(mcode));
+
+  if (!ws->is_running) 
+  {
+    ws_set_status(ws, WS_DISCONNECTED);
+    do {
+      if (ws->reconnect.attempt >= ws->reconnect.threshold) {
+        PRINT("Failed all reconnect attempts (%d)\n\t"
+              "Shutting down ...", ws->reconnect.attempt);
+        ws->reconnect.attempt = 0;
+        break; /* EARLY BREAK */
+      }
+
+      mcode = curl_multi_perform(ws->mhandle, (int*)&ws->is_running);
+      ASSERT_S(CURLM_OK == mcode, curl_multi_strerror(mcode));
+      mcode = curl_multi_wait(ws->mhandle, NULL, 0, 1000, NULL);
+      ASSERT_S(CURLM_OK == mcode, curl_multi_strerror(mcode));
+
+      ++ws->reconnect.attempt;
+    } while (!ws->is_running);
+  }
+  *is_running = ws->is_running;
+}
+
+void 
+ws_wait_activity(struct websockets *ws, uint64_t wait_ms) 
+{
+  CURLMcode mcode = curl_multi_wait(ws->mhandle, NULL, 0, wait_ms, NULL);
+  ASSERT_S(CURLM_OK == mcode, curl_multi_strerror(mcode));
+}
+
 static void
 event_loop(struct websockets *ws)
 {
-  if ( !(*ws->cbs.on_startup)(ws->cbs.data) ) {
-    ws_set_status(ws, WS_DISCONNECTING);
+  if (!(*ws->cbs.on_startup)(ws->cbs.data)) {
+    ws_set_status(ws, WS_DISCONNECTED);
     return; /* EARLY RETURN */
   }
 
-  ws->ehandle = custom_cws_new(ws);
-  curl_multi_add_handle(ws->mhandle, ws->ehandle);
-
-  // kickstart a connection then enter loop
-  CURLMcode mcode;
-  int is_running = 0;
-  mcode = curl_multi_perform(ws->mhandle, &is_running);
-  ASSERT_S(CURLM_OK == mcode, curl_multi_strerror(mcode));
-
+  bool is_running;
   do {
-    int numfds;
-
-    pthread_mutex_lock(&ws->lock);
-    ws->now_tstamp = orka_timestamp_ms(); //update our concept of now
-    pthread_mutex_unlock(&ws->lock);
-
     // @todo branchless alternative ?
     if (ws_get_status(ws) == WS_CONNECTED) { // run if connection established
       (*ws->cbs.on_iter_start)(ws->cbs.data);
     }
 
-    mcode = curl_multi_perform(ws->mhandle, &is_running);
-    ASSERT_S(CURLM_OK == mcode, curl_multi_strerror(mcode));
+    ws_perform(ws, &is_running);
 
     // wait for activity or timeout
-    mcode = curl_multi_wait(ws->mhandle, NULL, 0, ws->wait_ms, &numfds);
-    ASSERT_S(CURLM_OK == mcode, curl_multi_strerror(mcode));
+    ws_wait_activity(ws, 1);
 
     // @todo branchless alternative ?
     if (ws_get_status(ws) == WS_CONNECTED) { // run if connection established
       (*ws->cbs.on_iter_end)(ws->cbs.data);
     }
   } while (is_running);
+}
 
-  curl_multi_remove_handle(ws->mhandle, ws->ehandle);
-  cws_free(ws->ehandle);
+static void
+_ws_close(
+  struct websockets *ws, 
+  enum ws_close_reason wscode, 
+  const char reason[], 
+  size_t len)
+{
+  (*ws->config.http_dump_cb)(
+    false, 
+    0, "SEND_CLOSE", 
+    &ws->config, 
+    ws->base_url, 
+    (char*)reason);
+
+  cws_close(ws->ehandle, (enum cws_close_reason)wscode, reason, len);
 }
 
 void
@@ -389,8 +430,7 @@ ws_close(
   size_t len)
 {
   pthread_mutex_lock(&ws->lock);
-  //@todo add pthread_join() here
-  cws_close(ws->ehandle, (enum cws_close_reason)wscode, reason, len);
+  _ws_close(ws, wscode, reason, len);
   pthread_mutex_unlock(&ws->lock);
 }
 
@@ -429,11 +469,37 @@ ws_get_status(struct websockets *ws)
 }
 
 void
-ws_set_status(struct websockets *ws, enum ws_status status) 
+ws_set_status(struct websockets *ws, enum ws_status status)
 {
   pthread_mutex_lock(&ws->lock);
-  if (status == WS_CONNECTED) {
-    ws->reconnect.attempt = 0;
+  // if status is WS_DISCONNECTED but websockets is still running
+  // we must safely shutdown first
+  if ((WS_DISCONNECTED == status) && (true == ws->is_running)) {
+    status = WS_DISCONNECTING;
+  }
+
+  switch (status) {
+  case WS_CONNECTED:
+      ws->reconnect.attempt = 0;
+      break;
+  case WS_DISCONNECTED: // reset
+      curl_multi_remove_handle(ws->mhandle, ws->ehandle);
+      cws_free(ws->ehandle);
+      ws->ehandle = custom_cws_new(ws);
+      curl_multi_add_handle(ws->mhandle, ws->ehandle);
+      break;
+  case WS_SHUTDOWN:
+      ws->reconnect.attempt = ws->reconnect.threshold;
+      status = WS_DISCONNECTING;
+  /* fall through */
+  case WS_DISCONNECTING:
+      if (true == ws->is_running) { // safely shutdown connection
+        char reason[] = "Shutdown gracefully";
+        _ws_close(ws, WS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
+      }
+      break;
+  default: 
+      break;
   }
   ws->status = status;
   pthread_mutex_unlock(&ws->lock);
@@ -484,71 +550,28 @@ ws_set_curr_iter_data(
   ws->curr_iter_cleanup = curr_iter_cleanup;
 }
 
-static enum ws_status
-attempt_reconnect(struct websockets *ws)
-{
-  switch (ws->status) {
-  default:
-      if (ws->reconnect.attempt < ws->reconnect.threshold)
-        break;
-
-      PRINT("Failed all reconnect attempts (%d)", ws->reconnect.attempt);
-      ws->status = WS_DISCONNECTING;
-  /* fall through */
-  case WS_DISCONNECTING:
-      ws->reconnect.attempt = 0;
-      return ws->status; /* WS_DISCONNECTING */
-  }
-
-  ++ws->reconnect.attempt;
-
-  return ws->status; /* WS_CONNECTED || WS_RESUME || WS_FRESH */
-}
-
 /* connects to the websockets server */
 void
 ws_run(struct websockets *ws)
 {
-  ASSERT_S(WS_DISCONNECTED == ws_get_status(ws), 
-      "Failed attempt to run websockets recursively");
+  ASSERT_S(WS_DISCONNECTED == ws_get_status(ws), "Can't run websockets recursively");
 
-  while (1) {
-    event_loop(ws);
-    if (WS_DISCONNECTING == attempt_reconnect(ws))
-      break; /* EXIT LOOP */
-  }
-  ws_set_status(ws, WS_DISCONNECTED);
-}
-
-void
-ws_shutdown(struct websockets *ws)
-{
-  pthread_mutex_lock(&ws->lock);
-  if (WS_DISCONNECTED == ws->status) {
-    pthread_mutex_unlock(&ws->lock);
-    return;
-  }
-  ws->status = WS_DISCONNECTING;
-
-  char reason[] = "Shutdown gracefully";
-  cws_close(ws->ehandle, WS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
-  pthread_mutex_unlock(&ws->lock);
+  event_loop(ws);
 }
 
 void
 ws_redirect(struct websockets *ws, char base_url[])
 {
   pthread_mutex_lock(&ws->lock);
-  if (WS_DISCONNECTED != ws->status) {
+  if (true == ws->is_running) {
     char reason[] = "Redirect gracefully";
-    cws_close(ws->ehandle, WS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
+    _ws_close(ws, WS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
     ws->status = WS_DISCONNECTING;
   }
 
   /* swap with new url */
-  if (ws->base_url)
-    free(ws->base_url);
-  ws->base_url = strdup(base_url);
+  int ret = snprintf(ws->base_url, sizeof(ws->base_url), "%s", base_url);
+  ASSERT_S(ret < sizeof(ws->base_url), "Out of bounds write attempt");
 
   pthread_mutex_unlock(&ws->lock);
 }
@@ -564,7 +587,7 @@ ws_reconnect(struct websockets *ws)
   ws->status = WS_FRESH;
 
   char reason[] = "Reconnect gracefully";
-  cws_close(ws->ehandle, WS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
+  _ws_close(ws, WS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
   pthread_mutex_unlock(&ws->lock);
 }
 

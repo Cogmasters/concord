@@ -1171,6 +1171,9 @@ discord_gateway_cleanup(struct discord_gateway *gw)
   free(gw->sb_bot.start);
   discord_gateway_identify_free(gw->id);
   ws_cleanup(gw->ws);
+  if (gw->on_cmd) {
+    free(gw->on_cmd);
+  }
   pthread_mutex_destroy(&gw->lock);
 }
 
@@ -1182,5 +1185,5 @@ discord_gateway_run(struct discord_gateway *gw) {
 
 void
 discord_gateway_shutdown(struct discord_gateway *gw) {
-  ws_shutdown(gw->ws);
+  ws_set_status(gw->ws, WS_SHUTDOWN);
 }

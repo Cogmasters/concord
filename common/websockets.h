@@ -13,7 +13,8 @@ enum ws_status {
   WS_DISCONNECTING,     //disconnecting from ws
   WS_CONNECTED,         //connected to ws
   WS_RESUME,            //attempt to resume ws session
-  WS_FRESH              //attempt a fresh ws session
+  WS_FRESH,             //attempt a fresh ws session
+  WS_SHUTDOWN           //shutdown current ws session (don't reconnect)
 };
 
 /* see https://tools.ietf.org/html/rfc6455#section-7.4.1 */
@@ -67,7 +68,6 @@ void ws_close(
   size_t len);
 void ws_send_text(struct websockets *ws, char text[]);
 void ws_run(struct websockets *ws);
-void ws_shutdown(struct websockets *ws);
 void ws_redirect(struct websockets *ws, char base_url[]);
 void ws_reconnect(struct websockets *ws);
 uint64_t ws_timestamp(struct websockets *ws);
