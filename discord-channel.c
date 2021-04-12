@@ -11,7 +11,7 @@ void
 discord_get_channel(struct discord *client, const u64_snowflake_t channel_id, struct discord_channel *p_channel)
 {
   if (!channel_id) {
-    D_PUTS("Missing 'channel_id");
+    log_error("Missing 'channel_id");
     return;
   }
 
@@ -30,7 +30,7 @@ void
 discord_delete_channel(struct discord *client, const u64_snowflake_t channel_id, struct discord_channel *p_channel)
 {
   if (!channel_id) {
-    D_PUTS("Missing 'channel_id");
+    log_error("Missing 'channel_id");
     return;
   }
 
@@ -54,11 +54,11 @@ discord_add_pinned_channel_message(
   const u64_snowflake_t message_id)
 {
   if (!channel_id) {
-    D_PUTS("Missing 'channel_id'");
+    log_error("Missing 'channel_id'");
     return;
   }
   if (!message_id) {
-    D_PUTS("Missing 'message_id'");
+    log_error("Missing 'message_id'");
     return;
   }
 
@@ -77,11 +77,11 @@ discord_delete_pinned_channel_message(
   const u64_snowflake_t message_id)
 {
   if (!channel_id) {
-    D_PUTS("Missing 'channel_id'");
+    log_error("Missing 'channel_id'");
     return;
   }
   if (!message_id) {
-    D_PUTS("Missing 'message_id'");
+    log_error("Missing 'message_id'");
     return;
   }
 
@@ -101,15 +101,15 @@ discord_get_channel_messages(
   NTL_T(struct discord_message) *p_messages)
 {
   if (!channel_id) {
-    D_PUTS("Missing 'channel_id'");
+    log_error("Missing 'channel_id'");
     return;
   }
   if (!params) {
-    D_PUTS("Missing 'params'");
+    log_error("Missing 'params'");
     return;
   }
   if (params->limit < 1 || params->limit > 100) {
-    D_PUTS("'limit' value should be in an interval of (1-100)");
+    log_error("'limit' value should be in an interval of (1-100)");
     return;
   }
 
@@ -154,11 +154,11 @@ discord_delete_message(
   u64_snowflake_t message_id)
 {
   if (!channel_id) {
-    D_PUTS("Missing 'channel_id'");
+    log_error("Missing 'channel_id'");
     return;
   }
   if (!message_id) {
-    D_PUTS("Missing 'message_id'");
+    log_error("Missing 'message_id'");
     return;
   }
   discord_adapter_run(
@@ -203,15 +203,15 @@ discord_create_message(
   struct discord_message *p_message)
 {
   if (ws_get_status(client->gw.ws) != WS_CONNECTED) {
-    D_PUTS("Can't perform action unless client has an active websockets connection");
+    log_warn("Can't perform action unless client has an active websockets connection");
     return;
   }
   if (!channel_id) {
-    D_PUTS("Missing 'channel_id'");
+    log_error("Missing 'channel_id'");
     return;
   }
   if (!params) {
-    D_PUTS("Missing 'params'");
+    log_error("Missing 'params'");
     return;
   }
 
@@ -224,11 +224,11 @@ discord_create_message(
   {  // content-type is application/json
     if (!params->embed) {
       if (IS_EMPTY_STRING(params->content)) {
-        D_PUTS("Missing 'content'");
+        log_error("Missing 'content'");
         return;
       }
       if (strlen(params->content) >= MAX_MESSAGE_LEN) {
-        D_PRINT("Content length exceeds %d characters threshold (%zu)",
+        log_error("Content length exceeds %d characters threshold (%zu)",
             MAX_MESSAGE_LEN, strlen(params->content));
         return;
       }
@@ -306,15 +306,15 @@ discord_edit_message(
   struct discord_message *p_message)
 {
   if (!channel_id) {
-    D_PUTS("Missing 'channel_id'");
+    log_error("Missing 'channel_id'");
     return;
   }
   if (!message_id) {
-    D_PUTS("Missing 'message_id'");
+    log_error("Missing 'message_id'");
     return;
   }
   if (!params) {
-    D_PUTS("Missing 'params'");
+    log_error("Missing 'params'");
     return;
   }
 
@@ -362,11 +362,11 @@ discord_create_reaction(
   const char emoji_name[])
 {
   if (!channel_id) {
-    D_PUTS("Missing 'channel_id'");
+    log_error("Missing 'channel_id'");
     return;
   }
   if (!message_id) {
-    D_PUTS("Missing 'message_id'");
+    log_error("Missing 'message_id'");
     return;
   }
 
@@ -398,11 +398,11 @@ discord_delete_all_reactions(
   u64_snowflake_t message_id)
 {
   if (!channel_id) {
-    D_PUTS("Missing 'channel_id'");
+    log_error("Missing 'channel_id'");
     return;
   }
   if (!message_id) {
-    D_PUTS("Missing 'message_id'");
+    log_error("Missing 'message_id'");
     return;
   }
 
@@ -424,11 +424,11 @@ discord_delete_all_reactions_for_emoji(
   const char emoji_name[])
 {
   if (!channel_id) {
-    D_PUTS("Missing 'channel_id'");
+    log_error("Missing 'channel_id'");
     return;
   }
   if (!message_id) {
-    D_PUTS("Missing 'message_id'");
+    log_error("Missing 'message_id'");
     return;
   }
 
@@ -457,7 +457,7 @@ void
 discord_trigger_typing_indicator(struct discord* client, u64_snowflake_t channel_id)
 {
   if (!channel_id) {
-    D_PUTS("Missing 'channel_id");
+    log_error("Missing 'channel_id");
     return;
   }
 

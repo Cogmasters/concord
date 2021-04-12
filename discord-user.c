@@ -11,7 +11,7 @@ void
 discord_get_user(struct discord *client, const u64_snowflake_t user_id, struct discord_user *p_user)
 {
   if (!user_id) {
-    D_PUTS("Missing 'user_id'");
+    log_error("Missing 'user_id'");
     return;
   }
 

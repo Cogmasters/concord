@@ -11,7 +11,7 @@ void
 discord_list_guild_emojis(struct discord *client, const uint64_t guild_id, NTL_T(struct discord_emoji) *p_emojis)
 {
   if (!guild_id) {
-    D_PUTS("Missing 'guild_id'");
+    log_error("Missing 'guild_id'");
     return;
   }
 

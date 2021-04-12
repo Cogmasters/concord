@@ -18,7 +18,7 @@ discord_delete_messages_by_author_id(
   u64_snowflake_t author_id)
 {
   if (!channel_id) {
-    D_PUTS("Missing 'channel_id");
+    log_error("Missing 'channel_id");
     return;
   }
 
@@ -129,7 +129,7 @@ discord_message_from_json(char *str, size_t len, struct discord_message *message
     message->referenced_message = NULL;
   }
 
-  DS_NOTOP_PUTS("Message object loaded with API response"); 
+  log_trace("Message object loaded with API response");
 }
 
 void discord_channel_overwrite_from_json(char *json, size_t len, struct discord_channel_overwrite *p)
@@ -183,7 +183,7 @@ discord_embed_set_footer(
   char proxy_icon_url[])
 {
   if (IS_EMPTY_STRING(text)) {
-    D_PUTS("Missing 'text'");
+    log_error("Missing 'text'");
     return;
   }
 
@@ -321,17 +321,17 @@ void
 discord_embed_add_field(struct discord_embed *embed, char name[], char value[], bool Inline)
 {
   if (IS_EMPTY_STRING(name)) {
-    D_PUTS("Missing 'name'");
+    log_error("Missing 'name'");
     return;
   }
   if (IS_EMPTY_STRING(value)) {
-    D_PUTS("Missing 'value'");
+    log_error("Missing 'value'");
     return;
   }
   if (embed->fields 
       && ntl_length((NTL_T(void))embed->fields) >= EMBED_MAX_FIELDS)
   {
-    D_PRINT("Reach embed fields threshold (max %d)", EMBED_MAX_FIELDS);
+    log_error("Reach embed fields threshold (max %d)", EMBED_MAX_FIELDS);
     return;
   }
 
@@ -353,11 +353,11 @@ discord_overwrite_append(
   enum discord_permissions_bitwise_flags deny)
 {
   if (!id) {
-    D_PUTS("Missing 'id'");
+    log_error("Missing 'id'");
     return;
   }
   if ( !(0 == type || 1 == type) ) {
-    D_PUTS("'type' should be 0 (role) or 1 (member)");
+    log_error("'type' should be 0 (role) or 1 (member)");
     return;
   }
 
