@@ -90,31 +90,14 @@ bucket_trybuild_cb(void *p_cxt, struct ua_conn *conn)
 }
 
 static ua_status_t
-on_success_cb(
-  void *p_cxt,
-  int httpcode,
-  struct ua_conn *conn)
-{
-  log_trace("(%d)%s - %s",
-      httpcode,
-      http_code_print(httpcode),
-      http_reason_print(httpcode));
-
+on_success_cb(void *p_cxt, int httpcode, struct ua_conn *conn) {
   return UA_SUCCESS;
 }
 
 static ua_status_t
-on_failure_cb(
-  void *p_cxt,
-  int httpcode,
-  struct ua_conn *conn)
+on_failure_cb(void *p_cxt, int httpcode, struct ua_conn *conn)
 {
   struct _ratelimit_cxt *cxt = p_cxt;
-
-  log_warn("(%d)%s - %s",
-      httpcode,
-      http_code_print(httpcode),
-      http_reason_print(httpcode));
 
   if (httpcode >= 500) { // server related error, retry
     ua_block_ms(cxt->adapter->ua, 5000); // wait for 5 seconds
@@ -150,7 +133,7 @@ on_failure_cb(
       
       // no retry after included, we should abort
 
-      log_warn("RATELIMIT MESSAGE:\n\t%s", message);
+      log_fatal("RATELIMIT MESSAGE:\n\t%s", message);
       return UA_ABORT;
    }
   }

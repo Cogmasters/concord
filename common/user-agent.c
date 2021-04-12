@@ -557,7 +557,7 @@ set_url(struct user_agent *ua, struct ua_conn *conn, char endpoint[], va_list ar
   CURLcode ecode = curl_easy_setopt(conn->ehandle, CURLOPT_URL, conn->req_url);
   ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
-  log_error("Request URL: %s", conn->req_url);
+  log_trace("Request URL: %s", conn->req_url);
 }
 
 static void noop_iter_start_cb(void *a)
@@ -592,7 +592,6 @@ send_request(struct user_agent *ua, struct ua_conn *conn)
 
   ecode = curl_easy_getinfo(conn->ehandle, CURLINFO_EFFECTIVE_URL, &conn->resp_url);
   ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
-  log_trace("Response URL: %s", conn->resp_url);
 
   (*ua->config.http_dump_cb)(
     &ua->config, 
@@ -705,15 +704,29 @@ perform_request(
 
     switch (conn->status) {
     case UA_SUCCESS:
+        log_info("SUCCESS (%d)%s - %s",
+            httpcode,
+            http_code_print(httpcode),
+            http_reason_print(httpcode));
+        break;
     case UA_FAILURE:
-        log_trace("FINISHED REQUEST AT %s", conn->resp_url);
+        log_warn("FAILURE (%d)%s - %s",
+            httpcode,
+            http_code_print(httpcode),
+            http_reason_print(httpcode));
         break;
     case UA_RETRY:
-        log_trace("RETRYING REQUEST AT %s", conn->resp_url);
+        log_info("RETRY (%d)%s - %s",
+            httpcode,
+            http_code_print(httpcode),
+            http_reason_print(httpcode));
         break;
     case UA_ABORT:
     default:
-        ERR("COULDN'T PERFORM REQUEST AT %s", conn->resp_url);
+        ERR("ABORT (%d)%s - %s",
+            httpcode,
+            http_code_print(httpcode),
+            http_reason_print(httpcode));
     }
 
     (*cbs.on_iter_end)(cbs.data, conn);
