@@ -19,9 +19,11 @@ struct discord_voice { /* VOICE CONNECTION STRUCTURE */
   
   // obtained after on_ready_cb()
   int ssrc;    // secret
+  char server_ip[64]; // server external IP
+  int server_port; // server external port
   // obtained after succesful rtp_ip_discovery()
-  char ip[64]; // client external IP
-  short port;  // client external port
+  char client_ip[64]; // client external IP
+  int client_port;  // client external port
 
   struct _discord_voice *priv; // declared at discord-common.h
 };

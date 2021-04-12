@@ -156,15 +156,6 @@ struct _discord_voice { /* PRIVATE VOICE CONNECTION STRUCTURE */
   pthread_cond_t cond_server_update; // wait for server update cond
 };
 
-#if 0 /* defined at discord.h and discord-voice.c */
-struct discord_voice* discord_send_voice_state_update(
-  u64_snowflake_t guild_id,
-  u64_snowflake_t channel_id,
-  bool self_mute,
-  bool self_deaf);
-void discord_voice_connect(struct discord_voice *vc);
-#endif
-
 struct discord {
   struct discord_adapter adapter;
   struct discord_gateway gw;
