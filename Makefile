@@ -76,7 +76,7 @@ LIBDISCORD   := $(LIBDIR)/libdiscord.a
 
 CFLAGS += -Wall -std=c11 -O0 -g \
 	-Wno-unused-function -Wno-unused-but-set-variable \
-	-I. -I./common 
+	-I. -I./common -DLOG_USE_COLOR
 
 ifeq ($(release),1)
 else
