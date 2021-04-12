@@ -110,7 +110,7 @@ send_resume(struct discord_gateway *gw)
               &gw->payload.seq_number);
   ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
 
-  log_trace("\n\tRESUME PAYLOAD:\n\t%s", payload);
+  log_info("\n\tRESUME PAYLOAD:\n\t%s", payload);
   send_payload(gw, payload, ret);
 }
 
@@ -137,7 +137,7 @@ send_identify(struct discord_gateway *gw)
   ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
 
   // contain token (sensitive data), enable _ORKA_DEBUG_STRICT to print it
-  log_trace("\n\tIDENTIFY PAYLOAD:\n\t%s", payload);
+  log_info("\n\tIDENTIFY PAYLOAD:\n\t%s", payload);
   send_payload(gw, payload, ret);
 
   //get timestamp for this identify
@@ -1018,7 +1018,7 @@ send_heartbeat(struct discord_gateway *gw)
               "(op):1, (d):d", &gw->payload.seq_number);
   ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
 
-  log_trace("\n\tHEARTBEAT_PAYLOAD:\n\t\t%s", payload);
+  log_info("\n\tHEARTBEAT_PAYLOAD:\n\t\t%s", payload);
   send_payload(gw, payload, ret);
 }
 
