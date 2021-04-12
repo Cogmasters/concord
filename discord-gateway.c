@@ -685,7 +685,7 @@ on_voice_state_update(struct discord_gateway *gw, struct discord_gateway_payload
   {
     struct discord_voice **vcs = gw->p_client->vcs;
     for (size_t i=0; i < gw->p_client->num_vcs; ++i) {
-      if (voice_state->guild_id == vcs[i]->server_id) {
+      if (voice_state->guild_id == vcs[i]->guild_id) {
         int ret = snprintf(vcs[i]->session_id, sizeof(vcs[i]->session_id), "%s", voice_state->session_id);
         ASSERT_S(ret < sizeof(vcs[i]->session_id), "Out of bounds write attempt");
         break; /* EARLY BREAK */
@@ -718,7 +718,7 @@ on_voice_server_update(struct discord_gateway *gw, struct discord_gateway_payloa
   {
     struct discord_voice **vcs = gw->p_client->vcs;
     for (size_t i=0; i < gw->p_client->num_vcs; ++i) {
-      if (guild_id == vcs[i]->server_id) {
+      if (guild_id == vcs[i]->guild_id) {
         --gw->p_client->pending_vcs;
 
         struct discord_voice *vc = vcs[i];

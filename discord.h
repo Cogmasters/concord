@@ -13,7 +13,7 @@ struct discord; //forward declaration
 struct discord_voice { /* VOICE CONNECTION STRUCTURE */
   char token[128];            // the session token
   char session_id[512];       // the session id
-  u64_snowflake_t server_id;  // the session guild id
+  u64_snowflake_t guild_id;  // the session guild id
   u64_snowflake_t channel_id; // the session channel id
   u64_snowflake_t user_id;    // the bot user id
   
@@ -169,6 +169,25 @@ typedef void (voice_server_update_cb)(
     const char *token,
     const u64_snowflake_t guild_id,
     const char *endpoint);
+typedef void (voice_speaking_cb)(
+    struct discord *client, 
+    struct discord_voice *vc,
+    const struct discord_user *bot,
+    const u64_snowflake_t user_id,
+    const int speaking,
+    const int delay,
+    const int ssrc);
+typedef void (voice_client_disconnect_cb)(
+    struct discord *client, 
+    struct discord_voice *vc,
+    const struct discord_user *bot,
+    const u64_snowflake_t user_id);
+typedef void (voice_codec_cb)(
+    struct discord *client, 
+    struct discord_voice *vc,
+    const struct discord_user *bot,
+    const char audio_codec[],
+    const char video_codec[]);
 
 struct discord_session {
   char url[MAX_URL_LEN];
@@ -264,6 +283,9 @@ void discord_on_message_reaction_remove_emoji(struct discord *client, message_re
 void discord_on_voice_state_update(struct discord *client, voice_state_update_cb *callback);
 void discord_on_voice_server_update(struct discord *client, voice_server_update_cb *callback);
 void discord_on_ready(struct discord *client, idle_cb *callback);
+void discord_voice_on_speaking(struct discord_voice *vc, voice_speaking_cb *callback);
+void discord_voice_on_client_disconnect(struct discord_voice *vc, voice_client_disconnect_cb *callback);
+void discord_voice_on_codec(struct discord_voice *vc, voice_codec_cb *callback);
 
 void discord_run(struct discord *client);
 

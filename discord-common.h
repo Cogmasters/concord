@@ -150,7 +150,15 @@ struct _discord_voice { /* PRIVATE VOICE CONNECTION STRUCTURE */
     u64_unix_ms_t tstamp; //start pulse timestamp in milliseconds
   } hbeat;
 
+  struct { /* CALLBACKS STRUCTURE */
+    voice_speaking_cb *on_speaking;
+    voice_client_disconnect_cb *on_client_disconnect;
+    voice_codec_cb *on_codec;
+  } cbs;
+
   int ping_ms; //latency between client and websockets server
+
+  struct discord *p_client;
 
   pthread_mutex_t lock; //for accessing gw fields within events
   pthread_cond_t cond_server_update; // wait for server update cond
