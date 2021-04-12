@@ -21,26 +21,28 @@
 #define PRINT(...) __PRINT(__VA_ARGS__, "")
 #define __NOTOP_PRINT(fmt, ...) fprintf(D_OUT, "\t" fmt "\n%s", __VA_ARGS__)
 #define NOTOP_PRINT(...) __NOTOP_PRINT(__VA_ARGS__, "")
-#define __ERR(fmt, ...) fprintf(D_OUT, D_FMT_PREFIX "ERROR:\t" fmt "\n%s", D_FMT_ARGS, __VA_ARGS__)
-#define ERR(...) \
-  do { \
+#define __ERR(fmt, ...) log_error("\n\t" fmt "\n%s", D_FMT_ARGS, __VA_ARGS__)
+#define ERR(...)            \
+  do {                      \
     __ERR(__VA_ARGS__, ""); \
-    ABORT(); \
+    ABORT();                \
   } while (0)
 
-#define ASSERT_S(expr, msg) \
-  do { \
-    if (!(expr)){ \
-      ERR("Assert Failed:\t%s\n\tExpected:\t" #expr, msg); \
-    } \
+#define ASSERT_S(expr, msg)          \
+  do {                               \
+    if (!(expr)){                    \
+      ERR("Assert Failed:\t%s\n\t"   \
+          "Expected:\t" #expr, msg); \
+    }                                \
   } while(0)
 
 // THIS WILL ONLY WORK IF __VA_ARGS__ IS SET
-#define VASSERT_S(expr, fmt, ...) \
-  do { \
-    if (!(expr)){ \
-      ERR("Assert Failed:\t" fmt "\n\tExpected:\t" #expr, __VA_ARGS__); \
-    } \
+#define VASSERT_S(expr, fmt, ...)            \
+  do {                                       \
+    if (!(expr)){                            \
+      ERR("Assert Failed:\t" fmt "\n\t"      \
+          "Expected:\t" #expr, __VA_ARGS__); \
+    }                                        \
   } while(0)
 
 #if _STATIC_DEBUG /* DEBUG MODE ACTIVE */
