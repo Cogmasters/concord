@@ -83,7 +83,7 @@ orka_config_init(struct orka_config *config, const char tag[], const char config
   ASSERT_S(ret < sizeof(config->fname), "Out of bounds write attempt");
 
   struct {
-    char level[128];
+    char level[16];
     char filename[PATH_MAX];
     bool quiet;
     struct {
