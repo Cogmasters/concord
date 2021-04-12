@@ -113,7 +113,11 @@ orka_config_init(struct orka_config *config, const char tag[], const char config
 
   /* SET LOGGER CONFIGS */
   log_set_level(get_log_level(logging->level));
-  log_set_quiet(logging->quiet);
+  if (true == logging->quiet) { // make sure fatal still prints to stderr
+    log_set_quiet(logging->quiet);
+    log_add_fp(stderr, LOG_FATAL);
+  }
+
   if (!IS_EMPTY_STRING(logging->filename)) {
     if (true == g_first_run) { // delete file if already exists
       remove(logging->filename);

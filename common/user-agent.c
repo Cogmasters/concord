@@ -585,7 +585,7 @@ send_request(struct user_agent *ua, struct ua_conn *conn)
   conn->req_tstamp = orka_timestamp_ms();
 
   //get response's code
-  int httpcode;
+  int httpcode=0;
   ecode = curl_easy_getinfo(conn->ehandle, CURLINFO_RESPONSE_CODE, &httpcode);
   ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
@@ -704,26 +704,26 @@ perform_request(
 
     switch (conn->status) {
     case UA_SUCCESS:
-        log_info("SUCCESS (%d)%s - %s",
+        log_info(ANSICOLOR("SUCCESS (%d)%s", 32)" - %s",
             httpcode,
             http_code_print(httpcode),
             http_reason_print(httpcode));
         break;
     case UA_FAILURE:
-        log_warn("FAILURE (%d)%s - %s",
+        log_warn(ANSICOLOR("FAILURE (%d)%s", 31)" - %s",
             httpcode,
             http_code_print(httpcode),
             http_reason_print(httpcode));
         break;
     case UA_RETRY:
-        log_info("RETRY (%d)%s - %s",
+        log_info(ANSICOLOR("RETRY (%d)%s", 33)" - %s",
             httpcode,
             http_code_print(httpcode),
             http_reason_print(httpcode));
         break;
     case UA_ABORT:
     default:
-        ERR("ABORT (%d)%s - %s",
+        ERR(ANSICOLOR("ABORT (%d)%s", 31)" - %s",
             httpcode,
             http_code_print(httpcode),
             http_reason_print(httpcode));

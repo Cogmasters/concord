@@ -23,6 +23,8 @@ _adapter_init(
   struct sized_buffer *token,
   const char config_file[])
 {
+  ASSERT_S(NULL != token->start, "Missing bot token");
+
   char auth[128];
   int ret = snprintf(auth, sizeof(auth), "Bot %.*s", (int)token->size, token->start);
   ASSERT_S(ret < sizeof(auth), "Out of bounds write attempt");
@@ -41,7 +43,7 @@ discord_adapter_init(struct discord_adapter *adapter, const char token[])
   adapter->ua = ua_config_init(BASE_API_URL, "DISCORD HTTP", NULL);
   struct sized_buffer ttoken = {
     .start = (char*)token, 
-    .size = strlen(token) 
+    .size = (token) ? strlen(token) : 0
   };
   _adapter_init(adapter, &ttoken, NULL);
 }
@@ -52,6 +54,10 @@ discord_adapter_config_init(struct discord_adapter *adapter, const char config_f
   ASSERT_S(NULL != config_file, "Missing config file");
   adapter->ua = ua_config_init(BASE_API_URL, "DISCORD HTTP", config_file);
   struct sized_buffer ttoken = ua_config_get_field(adapter->ua, "discord.token");
+  if (STRNEQ("YOUR-BOT-TOKEN", ttoken.start, ttoken.size)) {
+    ttoken.start = NULL;
+  }
+
   _adapter_init(adapter, &ttoken, config_file);
 }
 
