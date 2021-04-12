@@ -95,7 +95,7 @@ on_success_cb(
   int httpcode,
   struct ua_conn *conn)
 {
-  DS_NOTOP_PRINT("(%d)%s - %s", 
+  log_trace("(%d)%s - %s",
       httpcode,
       http_code_print(httpcode),
       http_reason_print(httpcode));
@@ -111,7 +111,7 @@ on_failure_cb(
 {
   struct _ratelimit_cxt *cxt = p_cxt;
 
-  NOTOP_PRINT("(%d)%s - %s", 
+  log_warn("(%d)%s - %s",
       httpcode,
       http_code_print(httpcode),
       http_reason_print(httpcode));
@@ -141,7 +141,7 @@ on_failure_cb(
                   message, &retry_after_ms);
 
       if (retry_after_ms) { // retry after attribute received
-        NOTOP_PRINT("RATELIMIT MESSAGE:\n\t%s (wait: %lld ms)", message, retry_after_ms);
+        log_warn("RATELIMIT MESSAGE:\n\t%s (wait: %lld ms)", message, retry_after_ms);
 
         ua_block_ms(cxt->adapter->ua, retry_after_ms);
 
@@ -150,7 +150,7 @@ on_failure_cb(
       
       // no retry after included, we should abort
 
-      NOTOP_PRINT("RATELIMIT MESSAGE:\n\t%s", message);
+      log_warn("RATELIMIT MESSAGE:\n\t%s", message);
       return UA_ABORT;
    }
   }
@@ -166,7 +166,7 @@ json_error_cb(char *str, size_t len, void *p_err)
 
   json_scanf(str, len, "[message]%s [code]%d", message, &code);
 
-  NOTOP_PRINT("Error Description:\n\t\t%s (code %d)"
+  log_warn("Error Description:\n\t\t%s (code %d)"
       "- See Discord's JSON Error Codes", message, code);
 }
 
