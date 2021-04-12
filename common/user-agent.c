@@ -54,7 +54,6 @@ struct ua_conn {
   char req_url[UA_MAX_URL_LEN]; //request's url
   uint64_t req_tstamp; // timestamp of when its request completed
 
-  char *resp_url; //response's url
   struct conn_resp_header resp_header; //the key/field response header
   struct conn_resp_body resp_body; //the response body
 
@@ -590,12 +589,13 @@ send_request(struct user_agent *ua, struct ua_conn *conn)
   ecode = curl_easy_getinfo(conn->ehandle, CURLINFO_RESPONSE_CODE, &httpcode);
   ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
-  ecode = curl_easy_getinfo(conn->ehandle, CURLINFO_EFFECTIVE_URL, &conn->resp_url);
+  char *resp_url=NULL;
+  ecode = curl_easy_getinfo(conn->ehandle, CURLINFO_EFFECTIVE_URL, &resp_url);
   ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
-  (*ua->config.http_dump_cb)(
+  (*ua->config.http_dump.cb)(
     &ua->config, 
-    conn->resp_url, 
+    resp_url, 
     conn->resp_body.content,
     "HTTP_RESPONSE %s(%d)", http_code_print(httpcode), httpcode);
 
@@ -762,7 +762,7 @@ ua_vrun(
   struct ua_conn *conn = get_conn(ua);
   set_url(ua, conn, endpoint, args); //set the request url
 
-  (*ua->config.http_dump_cb)(
+  (*ua->config.http_dump.cb)(
     &ua->config, 
     conn->req_url, 
     *req_body,

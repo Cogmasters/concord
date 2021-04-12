@@ -9,18 +9,24 @@ extern "C" {
 
 
 struct orka_config {
-  char tag[64];
+  char tag[16];         // a unique name to identify
 
   char fname[PATH_MAX]; // config file name
-  char *fcontents;      // config file contents
-  size_t flen;          // config file len
+  char *contents;      // config file contents
+  size_t len;          // config file len
 
-  FILE *f_http_dump; //default stderr
-  void (*http_dump_cb)(
-      struct orka_config* config, 
-      char url[], 
-      struct sized_buffer body,
-      char header_fmt[], ...);
+  struct { /* the bot.log file */
+    FILE *f;
+  } logger;
+
+  struct { /* the dump.json file */
+    FILE *f;
+    void (*cb)(
+        struct orka_config* config, 
+        char url[], 
+        struct sized_buffer body,
+        char header_fmt[], ...);
+  } http_dump;
 };
 
 void orka_config_init(struct orka_config*, const char tag[], const char config_file[]);

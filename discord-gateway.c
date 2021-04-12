@@ -1068,7 +1068,7 @@ on_text_event_cb(void *p_gw, const char *text, size_t len)
     gw->payload.seq_number = tmp_seq_number;
   }
 
-  log_trace("OP:%s, NAME:%s, SEQ:%d, DATA:%s%.*s", 
+  log_trace("OP:%s, EVENT:%s, SEQ:%d, DATA:%s%.*s", 
             opcode_print(gw->payload.opcode), 
             *gw->payload.event_name ? gw->payload.event_name : "NULL",
             gw->payload.seq_number,
@@ -1077,9 +1077,7 @@ on_text_event_cb(void *p_gw, const char *text, size_t len)
 
   struct discord_gateway_payload *payloadcpy = malloc(sizeof(struct discord_gateway_payload));
   memcpy(payloadcpy, &gw->payload, sizeof(struct discord_gateway_payload));
-  payloadcpy->event_data.start = strndup(
-                                    gw->payload.event_data.start,
-                                    gw->payload.event_data.size);
+  asprintf(&payloadcpy->event_data.start, "%.*s", (int)gw->payload.event_data.size, gw->payload.event_data.start);
 
   ws_set_curr_iter_data(gw->ws, payloadcpy, &payload_cleanup_cb);
 

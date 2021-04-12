@@ -71,7 +71,7 @@ cws_on_close_cb(void *p_ws, CURL *ehandle, enum cws_close_reason cwscode, const 
 {
   struct websockets *ws = p_ws;
 
-  (*ws->config.http_dump_cb)(
+  (*ws->config.http_dump.cb)(
     &ws->config, 
     ws->base_url, 
     (struct sized_buffer){(char*)reason, len},
@@ -145,7 +145,7 @@ cws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
 
     pthread_mutex_lock(&ws->lock);
 
-    (*ws->config.http_dump_cb)(
+    (*ws->config.http_dump.cb)(
       &ws->config, 
       ws->base_url, 
       (struct sized_buffer){(char*)text, len},
@@ -194,7 +194,7 @@ cws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
   ws->curr_iter_cleanup = NULL;
   ws->curr_iter_data = NULL;
 
-  (*ws->config.http_dump_cb)(
+  (*ws->config.http_dump.cb)(
     &ws->config, 
     ws->base_url, 
     (struct sized_buffer){(char*)text, len},
@@ -409,7 +409,7 @@ _ws_close(
   const char reason[], 
   size_t len)
 {
-  (*ws->config.http_dump_cb)(
+  (*ws->config.http_dump.cb)(
     &ws->config, 
     ws->base_url, 
     (struct sized_buffer){(char*)reason, len},
@@ -434,7 +434,7 @@ void
 ws_send_text(struct websockets *ws, char text[], size_t len)
 {
   pthread_mutex_lock(&ws->lock);
-  (*ws->config.http_dump_cb)(
+  (*ws->config.http_dump.cb)(
     &ws->config, 
     ws->base_url, 
     (struct sized_buffer){text, len},
