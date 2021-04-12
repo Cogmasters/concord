@@ -21,7 +21,7 @@
 #define PRINT(...) __PRINT(__VA_ARGS__, "")
 #define __NOTOP_PRINT(fmt, ...) fprintf(D_OUT, "\t" fmt "\n%s", __VA_ARGS__)
 #define NOTOP_PRINT(...) __NOTOP_PRINT(__VA_ARGS__, "")
-#define __ERR(fmt, ...) log_error("\n\t" fmt "\n%s", D_FMT_ARGS, __VA_ARGS__)
+#define __ERR(fmt, ...) log_fatal("\n\t" fmt "\n%s", D_FMT_ARGS, __VA_ARGS__)
 #define ERR(...)            \
   do {                      \
     __ERR(__VA_ARGS__, ""); \
