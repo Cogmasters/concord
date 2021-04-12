@@ -110,7 +110,7 @@ send_resume(struct discord_gateway *gw)
               &gw->payload.seq_number);
   ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
 
-  log_info("\n\tRESUME PAYLOAD:\n\t%s", payload);
+  log_info("RESUME:%s", payload);
   send_payload(gw, payload, ret);
 }
 
@@ -137,7 +137,7 @@ send_identify(struct discord_gateway *gw)
   ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
 
   // contain token (sensitive data), enable _ORKA_DEBUG_STRICT to print it
-  log_info("\n\tIDENTIFY PAYLOAD:\n\t%s", payload);
+  log_info("IDENTIFY:%s", payload);
   send_payload(gw, payload, ret);
 
   //get timestamp for this identify
@@ -941,7 +941,7 @@ on_heartbeat_ack_cb(void *p_gw, void *curr_iter_data)
   // get request / response interval in milliseconds
   pthread_mutex_lock(&gw->lock);
   gw->ping_ms = orka_timestamp_ms() - gw->hbeat.tstamp;
-  log_info("PING: %d ms", gw->ping_ms);
+  log_trace("PING: %d ms", gw->ping_ms);
   pthread_mutex_unlock(&gw->lock);
 }
 
@@ -980,7 +980,7 @@ on_close_cb(void *p_gw, enum ws_close_reason wscode, const char *reason, size_t 
       break;
   }
 
-  log_warn("%s (code: %4d) : %zd bytes\n\t"
+  log_warn("%s (code: %4d) : %zd bytes,"
           "REASON: '%s'", 
           close_opcode_print(opcode), opcode, len,
           reason);
@@ -1000,7 +1000,7 @@ on_startup_cb(void *p_gw)
   discord_get_gateway_bot(gw->p_client, &gw->session);
 
   if (!gw->session.remaining) {
-    log_fatal("Reach session starts threshold (%d)\n\t"
+    log_fatal("Reach session starts threshold (%d),"
           "Please wait %d seconds and try again", 
           gw->session.total, gw->session.reset_after/1000);
     return 0;
@@ -1018,7 +1018,7 @@ send_heartbeat(struct discord_gateway *gw)
               "(op):1, (d):d", &gw->payload.seq_number);
   ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
 
-  log_info("\n\tHEARTBEAT_PAYLOAD:\n\t\t%s", payload);
+  log_trace("HEARTBEAT:%s", payload);
   send_payload(gw, payload, ret);
 }
 
@@ -1068,17 +1068,12 @@ on_text_event_cb(void *p_gw, const char *text, size_t len)
     gw->payload.seq_number = tmp_seq_number;
   }
 
-  log_trace("\n\tOP:\t\t%s\n\t"
-            "EVENT NAME:\t%s\n\t"
-            "SEQ NUMBER:\t%d\n\t"
-            "EVENT DATA:\t%.*s\n", 
+  log_trace("OP:%s, NAME:%s, SEQ:%d, DATA:%s%.*s", 
             opcode_print(gw->payload.opcode), 
-            *gw->payload.event_name //if event name exists
-               ? gw->payload.event_name //prints event name
-               : "NULL", //otherwise prints NULL
+            *gw->payload.event_name ? gw->payload.event_name : "NULL",
             gw->payload.seq_number,
-            (int)gw->payload.event_data.size,
-            gw->payload.event_data.start);
+            gw->payload.event_data.size < 100 ? "" : "\n\t",
+            (int)gw->payload.event_data.size, gw->payload.event_data.start);
 
   struct discord_gateway_payload *payloadcpy = malloc(sizeof(struct discord_gateway_payload));
   memcpy(payloadcpy, &gw->payload, sizeof(struct discord_gateway_payload));
