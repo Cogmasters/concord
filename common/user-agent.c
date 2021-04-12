@@ -124,7 +124,7 @@ ua_reqheader_del(struct user_agent *ua, char field[])
     node = node->next;
   } while (node != NULL);
 
-  D_PRINT("Couldn't find field '%s' in existing request header", field);
+  log_warn("Couldn't find field '%s' in existing request header", field);
 }
 
 static size_t
@@ -492,7 +492,7 @@ http_method_print(enum http_method method)
   case HTTP_PATCH:    return "PATCH";
   case HTTP_PUT:      return "PUT";
   default:
-      PRINT("Invalid HTTP method (code: %d)", method);
+      log_error("Invalid HTTP method (code: %d)", method);
       return "INVALID_HTTP_METHOD";
   }
 }
@@ -557,7 +557,7 @@ set_url(struct user_agent *ua, struct ua_conn *conn, char endpoint[], va_list ar
   CURLcode ecode = curl_easy_setopt(conn->ehandle, CURLOPT_URL, conn->req_url);
   ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
-  DS_PRINT("Request URL: %s", conn->req_url);
+  log_error("Request URL: %s", conn->req_url);
 }
 
 static void noop_iter_start_cb(void *a)
@@ -592,7 +592,7 @@ send_request(struct user_agent *ua, struct ua_conn *conn)
 
   ecode = curl_easy_getinfo(conn->ehandle, CURLINFO_EFFECTIVE_URL, &conn->resp_url);
   ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
-  DS_PRINT("Response URL: %s", conn->resp_url);
+  log_trace("Response URL: %s", conn->resp_url);
 
   (*ua->config.http_dump_cb)(
     &ua->config, 
@@ -706,10 +706,10 @@ perform_request(
     switch (conn->status) {
     case UA_SUCCESS:
     case UA_FAILURE:
-        D_PRINT("FINISHED REQUEST AT %s", conn->resp_url);
+        log_trace("FINISHED REQUEST AT %s", conn->resp_url);
         break;
     case UA_RETRY:
-        D_PRINT("RETRYING REQUEST AT %s", conn->resp_url);
+        log_trace("RETRYING REQUEST AT %s", conn->resp_url);
         break;
     case UA_ABORT:
     default:

@@ -87,7 +87,6 @@ list(void **p, size_t n, char *path)
 
       if (0 == strcmp(type, "file")) {
         ++num_files;
-        D_PRINT("%s\n", dir->d_name);
       }
       else { // nested folder
         // @todo how should we deal with?

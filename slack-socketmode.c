@@ -33,7 +33,7 @@ slack_apps_connections_open(struct slack *client)
 {
   struct sized_buffer app_token = ua_config_get_field(client->adapter.ua, "slack.app_token");
   if (!app_token.start) {
-    PRINT("Missing app token");
+    log_warn("Missing app token");
     return;
   }
 
@@ -106,7 +106,7 @@ on_text_event_cb(void *p_sm, const char *text, size_t len)
 {
   struct slack_socketmode *sm = p_sm;
 
-  D_PRINT("ON_EVENT:\t%s", text);
+  log_trace("ON_EVENT:\t%s", text);
 
   json_extract((char*)text, len, 
       "(payload):T"
@@ -139,12 +139,12 @@ on_text_event_cb(void *p_sm, const char *text, size_t len)
 
 static void
 on_connect_cb(void *p_sm, const char *ws_protocols) {
-  D_PRINT("Connected, WS-Protocols: '%s'", ws_protocols);
+  log_info("Connected, WS-Protocols: '%s'", ws_protocols);
 }
 
 static void
 on_text_cb(void *p_sm, const char *text, size_t len) {
-  D_NOTOP_PUTS("FALLBACK TO ON_TEXT");
+  log_warn("FALLBACK TO ON_TEXT");
 }
 
 static void
@@ -153,9 +153,9 @@ on_close_cb(void *p_sm, enum ws_close_reason wscode, const char *reason, size_t 
   struct slack_socketmode *sm = p_sm;
   ws_set_status(sm->ws, WS_DISCONNECTED);
 
-  PRINT("(code: %4d) : %zd bytes\n\t"
-          "REASON: '%s'", 
-          wscode, len, reason);
+  log_warn("\n\t(code: %4d) : %zd bytes\n\t"
+           "REASON: '%s'", 
+           wscode, len, reason);
 }
 
 void

@@ -47,7 +47,7 @@ void
 slack_rtm_send_message(struct slack *client, char channel[], char text[]) 
 {
   if (WS_CONNECTED != ws_get_status(client->rtm.ws)) {
-    PRINT("Can't send messages via RTM unless connected");
+    log_warn("Can't send messages via RTM unless connected");
     return;
   }
 
@@ -69,13 +69,13 @@ void
 slack_chat_post_message(struct slack *client, char channel[], char text[])
 {
   if (IS_EMPTY_STRING(channel)) {
-    D_PRINT("Missing 'channel'");
+    log_warn("Missing 'channel'");
     return;
   }
 
   struct sized_buffer token = ua_config_get_field(client->adapter.ua, "slack.bot-token");
   if (!token.start) {
-    D_PRINT("Missing bot token");
+    log_warn("Missing bot token");
     return;
   }
 

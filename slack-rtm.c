@@ -44,7 +44,7 @@ on_text_event_cb(void *p_rtm, const char *text, size_t len)
 {
   struct slack_rtm *rtm = p_rtm;
 
-  D_PRINT("ON_EVENT:\t%s", text);
+  log_trace("ON_EVENT:\t%s", text);
 
   char event[128] = {0};
   json_extract((char*)text, len, "(type):s", event);
@@ -67,12 +67,12 @@ on_text_event_cb(void *p_rtm, const char *text, size_t len)
 
 static void
 on_connect_cb(void *p_rtm, const char *ws_protocols) {
-  D_PRINT("Connected, WS-Protocols: '%s'", ws_protocols);
+  log_info("Connected, WS-Protocols: '%s'", ws_protocols);
 }
 
 static void
 on_text_cb(void *p_rtm, const char *text, size_t len) {
-  D_NOTOP_PUTS("FALLBACK TO ON_TEXT");
+  log_warn("FALLBACK TO ON_TEXT");
 }
 
 static void
@@ -81,9 +81,9 @@ on_close_cb(void *p_rtm, enum ws_close_reason wscode, const char *reason, size_t
   struct slack_rtm *rtm = p_rtm;
   ws_set_status(rtm->ws, WS_DISCONNECTED);
 
-  PRINT("(code: %4d) : %zd bytes\n\t"
-        "REASON: '%s'", 
-        wscode, len, reason);
+  log_warn("\n\t(code: %4d) : %zd bytes\n\t"
+          "REASON: '%s'", 
+          wscode, len, reason);
 }
 
 static void

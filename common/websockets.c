@@ -351,7 +351,7 @@ ws_perform(struct websockets *ws, bool *is_running)
     ws_set_status(ws, WS_DISCONNECTED);
     do {
       if (ws->reconnect.attempt >= ws->reconnect.threshold) {
-        PRINT("Failed all reconnect attempts (%d)\n\t"
+        log_warn("\n\tFailed all reconnect attempts (%d)\n\t"
               "Shutting down ...", ws->reconnect.attempt);
         ws->reconnect.attempt = 0;
         break; /* EARLY BREAK */
@@ -441,7 +441,7 @@ ws_send_text(struct websockets *ws, char text[], size_t len)
     "WS_SEND_TEXT");
 
   bool ret = cws_send(ws->ehandle, true, text, len);
-  if (false == ret) PRINT("Couldn't send websockets payload");
+  if (false == ret) log_error("Couldn't send websockets payload");
   pthread_mutex_unlock(&ws->lock);
 }
 
