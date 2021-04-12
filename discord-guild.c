@@ -11,7 +11,7 @@ void
 discord_get_guild(struct discord *client, const u64_snowflake_t guild_id, struct discord_guild *p_guild)
 {
   if (!guild_id) {
-    D_PUTS("Missing 'guild_id'");
+    log_error("Missing 'guild_id'");
     return;
   }
 
@@ -34,15 +34,15 @@ discord_create_guild_channel(
   struct discord_channel *p_channel)
 {
   if (!guild_id) {
-    D_PUTS("Missing 'guild_id");
+    log_error("Missing 'guild_id");
     return;
   }
   if (IS_EMPTY_STRING(params->name)) {
-    D_PUTS("Missing channel name (params.name)");
+    log_error("Missing channel name (params.name)");
     return;
   }
   if (!orka_str_bounds_check(params->topic, 1024)) {
-    D_PUTS("'params.topic' exceeds threshold of 1024");
+    log_error("'params.topic' exceeds threshold of 1024");
     return;
   }
 
@@ -69,7 +69,7 @@ discord_get_guild_channels(
   NTL_T(struct discord_channel) *p_channels)
 {
   if (!guild_id) {
-    D_PUTS("Missing 'guild_id'");
+    log_error("Missing 'guild_id'");
     return;
   }
 
@@ -88,11 +88,11 @@ void
 discord_get_guild_member(struct discord *client, u64_snowflake_t guild_id, u64_snowflake_t user_id, struct discord_guild_member *p_member) 
 {
   if (!guild_id) {
-    D_PUTS("Missing 'guild_id'");
+    log_error("Missing 'guild_id'");
     return;
   }
   if (!user_id) {
-    D_PUTS("Missing 'user_id'");
+    log_error("Missing 'user_id'");
     return;
   }
 
@@ -115,11 +115,11 @@ discord_list_guild_members(
   NTL_T(struct discord_guild_member) *p_members)
 {
   if (!guild_id) {
-    D_PUTS("Missing 'guild_id'");
+    log_error("Missing 'guild_id'");
     return;
   }
   if (params->limit < 1 || params->limit > 1000) {
-    D_PUTS("'limit' value should be in an interval of (1-1000)");
+    log_error("'limit' value should be in an interval of (1-1000)");
     return;
   }
 
@@ -151,11 +151,11 @@ discord_remove_guild_member(
   const u64_snowflake_t user_id)
 {
   if (!guild_id) {
-    D_PUTS("Missing 'guild_id'");
+    log_error("Missing 'guild_id'");
     return;
   }
   if (!user_id) {
-    D_PUTS("Missing 'user_id'");
+    log_error("Missing 'user_id'");
     return;
   }
 
@@ -175,11 +175,11 @@ discord_modify_guild_member(
   struct discord_guild_member *p_member)
 {
   if (!guild_id) {
-    D_PUTS("Missing 'guild_id'");
+    log_error("Missing 'guild_id'");
     return;
   }
   if (!user_id) {
-    D_PUTS("Missing 'user_id'");
+    log_error("Missing 'user_id'");
     return;
   }
 
@@ -208,11 +208,11 @@ discord_get_guild_ban(
   struct discord_guild_ban *p_ban)
 {
   if (!guild_id) {
-    D_PUTS("Missing 'guild_id'");
+    log_error("Missing 'guild_id'");
     return;
   }
   if (!user_id) {
-    D_PUTS("Missing 'user_id'");
+    log_error("Missing 'user_id'");
     return;
   }
 
@@ -232,7 +232,7 @@ discord_get_guild_bans(
   NTL_T(struct discord_guild_ban) *p_bans)
 {
   if (!guild_id) {
-    D_PUTS("Missing 'guild_id'");
+    log_error("Missing 'guild_id'");
     return;
   }
 
@@ -256,20 +256,20 @@ discord_create_guild_ban(
 {
   const int MAX_DELETE_MESSAGE_DAYS = 7;
   if (!guild_id) {
-    D_PUTS("Missing 'guild_id'");
+    log_error("Missing 'guild_id'");
     return;
   }
   if (!user_id) {
-    D_PUTS("Missing 'user_id'");
+    log_error("Missing 'user_id'");
     return;
   }
   if (reason && strlen(reason) > MAX_REASON_LEN) {
-    D_PRINT("Reason length exceeds %u characters threshold (%zu)",
+    log_error("Reason length exceeds %u characters threshold (%zu)",
         MAX_REASON_LEN, strlen(reason));
     return;
   }
   if (delete_message_days < 0 || delete_message_days > MAX_DELETE_MESSAGE_DAYS) {
-    D_PRINT("'delete_message_days' is outside the interval (0, %d)",
+    log_error("'delete_message_days' is outside the interval (0, %d)",
         MAX_DELETE_MESSAGE_DAYS);
     return;
   }
@@ -305,7 +305,7 @@ discord_get_guild_roles(
   NTL_T(struct discord_guild_role) *p_roles)
 {
   if (!guild_id) {
-    D_PUTS("Missing 'guild_id'");
+    log_error("Missing 'guild_id'");
     return;
   }
 
@@ -326,15 +326,15 @@ discord_remove_guild_ban(
   const char reason[])
 {
   if (!guild_id) {
-    D_PUTS("Missing 'guild_id'");
+    log_error("Missing 'guild_id'");
     return;
   }
   if (!user_id) {
-    D_PUTS("Missing 'user_id'");
+    log_error("Missing 'user_id'");
     return;
   }
   if (!orka_str_bounds_check(reason, MAX_REASON_LEN)) {
-    D_PRINT("Reason length exceeds %u characters threshold (%zu)",
+    log_error("Reason length exceeds %u characters threshold (%zu)",
         MAX_REASON_LEN, strlen(reason));
     return;
   }
@@ -367,7 +367,7 @@ discord_create_guild_role(
   struct discord_guild_role *p_role)
 {
   if (!guild_id) {
-    D_PUTS("Missing 'guild_id'");
+    log_error("Missing 'guild_id'");
     return;
   }
 
@@ -395,11 +395,11 @@ discord_delete_guild_role(
   const u64_snowflake_t role_id)
 {
   if (!guild_id) {
-    D_PUTS("Missing 'guild_id'");
+    log_error("Missing 'guild_id'");
     return;
   }
   if (!role_id) {
-    D_PUTS("Missing 'role_id'");
+    log_error("Missing 'role_id'");
     return;
   }
 

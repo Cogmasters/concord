@@ -46,7 +46,7 @@ discord_cleanup(struct discord *client)
 void
 discord_global_init() {
   if (0 != curl_global_init(CURL_GLOBAL_DEFAULT)) {
-    PUTS("Couldn't start libcurl's globals");
+    log_warn("Couldn't start libcurl's globals");
   }
 }
 
@@ -71,7 +71,7 @@ void
 discord_add_intents(struct discord *client, enum discord_gateway_intents code)
 {
   if (WS_CONNECTED == ws_get_status(client->gw.ws)) {
-    PUTS("Can't set intents to a running client.");
+    log_error("Can't set intents to a running client.");
     return;
   }
 
@@ -83,7 +83,7 @@ discord_set_prefix(struct discord *client, char *prefix)
 {
   const size_t PREFIX_LEN = 32;
   if (!orka_str_bounds_check(prefix, PREFIX_LEN)) {
-    PRINT("Prefix length greater than threshold (%zu chars)", PREFIX_LEN);
+    log_error("Prefix length greater than threshold (%zu chars)", PREFIX_LEN);
     return;
   }
 
@@ -95,7 +95,7 @@ discord_on_command(struct discord *client, char *command, message_cb *callback)
 {
   const size_t CMD_LEN = 64;
   if (!orka_str_bounds_check(command, CMD_LEN)) {
-    PRINT("Command length greater than threshold (%zu chars)", CMD_LEN);
+    log_error("Command length greater than threshold (%zu chars)", CMD_LEN);
     return;
   }
 

@@ -48,9 +48,9 @@ discord_bucket_try_cooldown(struct discord_bucket *bucket)
   if (delay_ms > bucket->reset_after_ms) //don't delay in excess
     delay_ms = bucket->reset_after_ms;
 
-  D_PRINT("RATELIMITING (reach bucket's connection threshold):\n\t"
+  log_trace("\n\tRATELIMITING (reach bucket's connection threshold):\n\t"
           "\tBucket:\t\t%s\n\t"
-          "\tWait for:\t %" PRId64 " ms",
+          "\tWait for:\t %"PRId64" ms",
           bucket->hash, delay_ms);
 
   orka_sleep_ms(delay_ms); //sleep for delay amount (if any)
