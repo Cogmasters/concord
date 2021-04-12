@@ -63,8 +63,8 @@
 #define JSMN_STRICT  // parse json in strict mode
 #include "jsmn.h"
 #include "ntl.h"
+#include "debug.h"
 #include "json-actor.h"
-#include "orka-debug.h"
 
 
 static int strong_type = 1;

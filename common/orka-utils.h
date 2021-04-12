@@ -4,7 +4,6 @@
 #include <stdint.h>
 
 #include "debug.h"
-#include "log.h"
 #include "ntl.h"
 
 #ifdef __cplusplus

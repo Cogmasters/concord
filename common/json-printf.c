@@ -5,7 +5,7 @@
 #include <string.h>
 
 #include "json-scanf.h"
-#include "orka-debug.h"
+#include "debug.h"
 
 #include "ntl.h"
 
