@@ -2,9 +2,9 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <stdarg.h>
-#include <pthread.h>
+#include <pthread.h> /* pthread_self() */
 #include <string.h>
-#include <limits.h> // for PATH_MAX
+#include <limits.h> /* PATH_MAX */
 
 #include "orka-config.h"
 #include "orka-utils.h"
@@ -15,37 +15,40 @@ static bool g_first_run = true; // used to delete existent dump files
 
 static void
 http_dump(
-  bool show_code, // if false code is ignored
-  int code, 
-  char *code_reason,
   struct orka_config *config, 
-  char *url,
-  char *body)
+  char url[],
+  struct sized_buffer body,
+  char header_fmt[], ...)
 {
-  char timestr[64] = {0};
-  orka_timestamp_str(timestr, sizeof(timestr));
+  va_list args;
+  va_start(args, header_fmt);
 
-  char header[256];
-  if (true == show_code)
-    snprintf(header, sizeof(header), "RESPONSE %s(%d)", code_reason, code);
-  else
-    snprintf(header, sizeof(header), "REQUEST %s", code_reason);
+  static struct sized_buffer empty_body = {"empty", 5};
+  if (0 == body.size) {
+    body = empty_body;
+  }
 
+  char header[512];
+  int ret = vsnprintf(header, sizeof(header), header_fmt, args);
+  ASSERT_S(ret < sizeof(header), "Out of bounds write attempt");
+
+  char timestr[64];
   fprintf(config->f_http_dump, 
-    "%s [%s #TID%zu] - %s - %s\r\r\r\r\n%s\n",
+    "%s [%s #TID%zu] - %s - %s\r\r\r\r\n%.*s\n",
     header,
     config->tag, 
     (size_t)pthread_self(),
-    timestr, 
+    orka_timestamp_str(timestr, sizeof(timestr)), 
     url,
-    IS_EMPTY_STRING(body) ? "empty body" : body);
+    (int)body.size, body.start);
 
   fflush(config->f_http_dump);
+
+  va_end(args);
 }
 
 static void // see http_dump for parameter definitions
-noop_http_dump(bool a, int b, char *c, struct orka_config *d, char *e, char *f) { return; (void)a; (void)b; (void)c; (void)d; (void)e; (void)f;
-}
+noop_http_dump(struct orka_config *a, char b[], struct sized_buffer c, char d[], ...) { return; }
 
 void
 orka_config_init(
@@ -56,8 +59,7 @@ orka_config_init(
   if (IS_EMPTY_STRING(tag)) 
     tag = "USER AGENT"; // default tag
   if (IS_EMPTY_STRING(config->tag) || !STREQ(config->tag, tag)) {
-    int ret = snprintf(config->tag, sizeof(config->tag), "%s", tag);
-    ASSERT_S(ret < sizeof(config->tag), "Out of bounds write attempt");
+    snprintf(config->tag, sizeof(config->tag), "%s", tag);
   }
   if (IS_EMPTY_STRING(config_file)) {
     config->http_dump_cb = &noop_http_dump;
@@ -74,45 +76,37 @@ orka_config_init(
     bool enable;
   };
 
-  struct {
+  struct _logging_s {
     char filename[PATH_MAX];
     char level[128];
-    struct _dump_s dump_json;
-  } logging = {{0}};
+    struct _dump_s http_dump;
+  }; 
+
+  struct _logging_s *logging = calloc(1, sizeof *logging);
+
 
   if (config->fcontents) {
     free(config->fcontents);
     config->flen = 0;
   }
 
-  //@todo rename dump_json to http_dump
   config->fcontents = orka_load_whole_file(config_file, &config->flen);
   json_extract(config->fcontents, config->flen,
              "(logging.filename):s"
              "(logging.level):s"
-             "(logging.dump_json.filename):s"
-             "(logging.dump_json.enable):b",
-             logging.filename,
-             logging.level,
-             logging.dump_json.filename,
-             &logging.dump_json.enable);
+             "(logging.http_dump.enable):b"
+             "(logging.http_dump.filename):s",
+             logging->filename,
+             logging->level,
+             &logging->http_dump.enable,
+             logging->http_dump.filename);
 
-  DS_PRINT(
-    "logging.filename %s\n"
-    "logging.level %s\n"
-    "logging.dump_json.filename %s\n"
-    "logging.dump_json.enable %d\n",
-    logging.filename,
-    logging.level,
-    logging.dump_json.filename,
-    logging.dump_json.enable);
-
-  if (true == logging.dump_json.enable) {
-    if (*logging.dump_json.filename) {
+  if (true == logging->http_dump.enable) {
+    if (*logging->http_dump.filename) {
       if (g_first_run == true) {
-        remove(logging.dump_json.filename);
+        remove(logging->http_dump.filename);
       }
-      config->f_http_dump = fopen(logging.dump_json.filename, "a+");
+      config->f_http_dump = fopen(logging->http_dump.filename, "a+");
       ASSERT_S(NULL != config->f_http_dump, "Could not create dump file");
     }
     config->http_dump_cb = &http_dump;

@@ -60,7 +60,7 @@ slack_rtm_send_message(struct slack *client, char channel[], char text[])
               channel, text);
   ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
 
-  ws_send_text(client->rtm.ws, payload);
+  ws_send_text(client->rtm.ws, payload, ret);
 }
 
 // @todo move to slack-chat.c

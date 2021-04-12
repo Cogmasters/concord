@@ -72,11 +72,10 @@ cws_on_close_cb(void *p_ws, CURL *ehandle, enum cws_close_reason cwscode, const 
   struct websockets *ws = p_ws;
 
   (*ws->config.http_dump_cb)(
-    true, 
-    cwscode, "ON_CLOSE", 
     &ws->config, 
     ws->base_url, 
-    (char*)reason);
+    (struct sized_buffer){(char*)reason, len},
+    "WS_RCV_CLOSE(%s)", cwscode);
 
   (*ws->cbs.on_close)(ws->cbs.data, cwscode, reason, len);
 }
@@ -147,11 +146,10 @@ cws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
     pthread_mutex_lock(&ws->lock);
 
     (*ws->config.http_dump_cb)(
-      true,
-      event_code, "ON_EVENT",
       &ws->config, 
       ws->base_url, 
-      (char*)text);
+      (struct sized_buffer){(char*)text, len},
+      "WS_RCV_TEXT(code: %d)", event_code);
 
     // wait until a thread is available before proceeding
     while (!ws->num_notbusy) {
@@ -197,11 +195,10 @@ cws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
   ws->curr_iter_data = NULL;
 
   (*ws->config.http_dump_cb)(
-    false,
-    0, "ON_TEXT",
     &ws->config, 
     ws->base_url, 
-    (char*)text);
+    (struct sized_buffer){(char*)text, len},
+    "WS_ON_TEXT");
 
   pthread_mutex_unlock(&ws->lock);
 
@@ -413,11 +410,10 @@ _ws_close(
   size_t len)
 {
   (*ws->config.http_dump_cb)(
-    false, 
-    0, "SEND_CLOSE", 
     &ws->config, 
     ws->base_url, 
-    (char*)reason);
+    (struct sized_buffer){(char*)reason, len},
+    "WS_SEND_CLOSE");
 
   cws_close(ws->ehandle, (enum cws_close_reason)wscode, reason, len);
 }
@@ -435,17 +431,16 @@ ws_close(
 }
 
 void
-ws_send_text(struct websockets *ws, char text[])
+ws_send_text(struct websockets *ws, char text[], size_t len)
 {
   pthread_mutex_lock(&ws->lock);
   (*ws->config.http_dump_cb)(
-    false, 
-    0, "SEND", 
     &ws->config, 
     ws->base_url, 
-    text);
+    (struct sized_buffer){text, len},
+    "WS_SEND_TEXT");
 
-  bool ret = cws_send_text(ws->ehandle, text);
+  bool ret = cws_send(ws->ehandle, true, text, len);
   if (false == ret) PRINT("Couldn't send websockets payload");
   pthread_mutex_unlock(&ws->lock);
 }

@@ -1,5 +1,5 @@
-#ifndef ORKA_DEBUG_H
-#define ORKA_DEBUG_H
+#ifndef DEBUG_H
+#define DEBUG_H
 
 #include <stdlib.h>
 
@@ -42,7 +42,7 @@
     } \
   } while(0)
 
-#if _ORCA_DEBUG /* DEBUG MODE ACTIVE */
+#if _STATIC_DEBUG /* DEBUG MODE ACTIVE */
 
 /* @param msg string to be printed in debug mode */
 #  define D_PUTS(msg) PUTS(msg)
@@ -67,7 +67,7 @@
 
 #endif
 
-#if _ORCA_DEBUG_STRICT /* DEBUG STRICT MODE ACTIVE */
+#if _STRICT_STATIC_DEBUG /* DEBUG STRICT MODE ACTIVE */
 
 /* @param msg string to be printed in debug mode */
 #  define DS_PUTS(msg) PUTS(msg)
@@ -92,4 +92,4 @@
 
 #endif
 
-#endif // ORKA_DEBUG_H
+#endif // DEBUG_H

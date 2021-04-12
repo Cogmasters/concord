@@ -594,6 +594,12 @@ send_request(struct user_agent *ua, struct ua_conn *conn)
   ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
   DS_PRINT("Response URL: %s", conn->resp_url);
 
+  (*ua->config.http_dump_cb)(
+    &ua->config, 
+    conn->resp_url, 
+    conn->resp_body.content,
+    "HTTP_RESPONSE %s(%d)", http_code_print(httpcode), httpcode);
+
   pthread_mutex_unlock(&ua->lock);
 
   return httpcode;
@@ -631,13 +637,6 @@ perform_request(
     (*cbs.on_iter_start)(cbs.data);
 
     int httpcode = send_request(ua, conn);
-
-    (*ua->config.http_dump_cb)(
-      true, 
-      httpcode, http_code_print(httpcode), 
-      &ua->config, 
-      conn->resp_url, 
-      conn->resp_body.content.start);
 
     /* triggers response related callbacks */
     if (httpcode >= 500) { // SERVER ERROR
@@ -751,11 +750,10 @@ ua_vrun(
   set_url(ua, conn, endpoint, args); //set the request url
 
   (*ua->config.http_dump_cb)(
-    false, 
-    0, http_method_print(http_method), 
     &ua->config, 
     conn->req_url, 
-    req_body->start);
+    *req_body,
+    "HTTP_REQUEST %s", http_method_print(http_method));
 
   set_method(ua, conn, http_method, req_body); //set the request method
 

@@ -80,11 +80,11 @@ CFLAGS += -Wall -std=c11 -O0 -g \
 
 ifeq ($(release),1)
 else
-	CFLAGS +=  -D_ORCA_DEBUG
+	CFLAGS +=  -D_STATIC_DEBUG
 endif
 
 ifeq ($(DEBUG_JSON),1)
-	CFLAGS += -D_ORCA_DEBUG_STRICT
+	CFLAGS += -D_STRICT_STATIC_DEBUG
 endif
 
 ifeq ($(CC),stensal-c)

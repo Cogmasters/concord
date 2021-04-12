@@ -66,7 +66,7 @@ void ws_close(
   enum ws_close_reason wscode, 
   const char reason[], 
   size_t len);
-void ws_send_text(struct websockets *ws, char text[]);
+void ws_send_text(struct websockets *ws, char text[], size_t len);
 void ws_run(struct websockets *ws);
 void ws_redirect(struct websockets *ws, char base_url[]);
 void ws_reconnect(struct websockets *ws);

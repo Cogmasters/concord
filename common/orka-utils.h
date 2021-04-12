@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-#include "orka-debug.h"
+#include "debug.h"
 #include "ntl.h"
 
 #ifdef __cplusplus
@@ -36,7 +36,7 @@ int orka_ulltostr(char *str, size_t len, void *p_data);
 
 void orka_sleep_ms(const int64_t delay_ms);
 uint64_t orka_timestamp_ms();
-void orka_timestamp_str(char *p_str, int len);
+char* orka_timestamp_str(char *p_str, int len);
 
 size_t orka_str_to_ntl(char *str, size_t size, struct ntl_deserializer*);
 _Bool orka_str_bounds_check(const char *str, const size_t threshold_len);

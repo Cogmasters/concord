@@ -5,6 +5,8 @@
 extern "C" {
 #endif // __cplusplus
 
+#include "ntl.h" /* struct sized_buffer */
+
 
 struct orka_config {
   char tag[64];
@@ -15,12 +17,10 @@ struct orka_config {
 
   FILE *f_http_dump; //default stderr
   void (*http_dump_cb)(
-      _Bool show_code,  // if false code is ignored
-      int code, 
-      char *code_reason,
       struct orka_config* config, 
-      char *url, 
-      char *body);
+      char url[], 
+      struct sized_buffer body,
+      char header_fmt[], ...);
 };
 
 void orka_config_init(struct orka_config*, const char tag[], const char config_file[]);

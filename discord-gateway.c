@@ -92,8 +92,8 @@ close_opcode_print(enum discord_gateway_close_opcodes opcode)
 }
 
 static void
-send_payload(struct discord_gateway *gw, char payload[]) {
-  ws_send_text(gw->ws, payload);
+send_payload(struct discord_gateway *gw, char payload[], size_t len) {
+  ws_send_text(gw->ws, payload, len);
 }
 
 static void
@@ -113,7 +113,7 @@ send_resume(struct discord_gateway *gw)
   ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
 
   D_NOTOP_PRINT("RESUME PAYLOAD:\n\t%s", payload);
-  send_payload(gw, payload);
+  send_payload(gw, payload, ret);
 }
 
 static void
@@ -140,7 +140,7 @@ send_identify(struct discord_gateway *gw)
 
   // contain token (sensitive data), enable _ORKA_DEBUG_STRICT to print it
   DS_PRINT("IDENTIFY PAYLOAD:\n\t%s", payload);
-  send_payload(gw, payload);
+  send_payload(gw, payload, ret);
 
   //get timestamp for this identify
   pthread_mutex_lock(&gw->lock);
@@ -1021,7 +1021,7 @@ send_heartbeat(struct discord_gateway *gw)
   ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
 
   D_PRINT("HEARTBEAT_PAYLOAD:\n\t\t%s", payload);
-  send_payload(gw, payload);
+  send_payload(gw, payload, ret);
 }
 
 static void

@@ -213,7 +213,7 @@ orka_timestamp_ms()
   return (uint64_t)t.tv_sec*1000 + (uint64_t)t.tv_nsec/1000000;
 }
 
-void
+char*
 orka_timestamp_str(char *p_str, int len)
 {
   time_t t = time(NULL);
@@ -222,6 +222,8 @@ orka_timestamp_str(char *p_str, int len)
 
   int ret = strftime(p_str, len, "%c", tm);
   ASSERT_S(ret != 0, "Could not retrieve string timestamp");
+
+  return p_str;
 }
 
 static int
