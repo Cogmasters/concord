@@ -93,6 +93,11 @@ else
 	CFLAGS += -fPIC -D_XOPEN_SOURCE=700
 endif
 
+ifeq ($(addons),0)
+	CFLAGS += -D_DISCORD_ADD_ONS
+	OBJS += $(ADD_ONS_OBJS)
+endif
+
 
 PREFIX ?= /usr/local
 
