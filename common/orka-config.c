@@ -112,28 +112,29 @@ orka_config_init(struct orka_config *config, const char tag[], const char config
              logging->http_dump.filename);
 
   /* SET LOGGER CONFIGS */
-  log_set_level(get_log_level(logging->level));
-  if (true == logging->quiet) { // make sure fatal still prints to stderr
-    log_set_quiet(logging->quiet);
-    log_add_fp(stderr, LOG_FATAL);
-  }
-
   if (!IS_EMPTY_STRING(logging->filename)) {
-    if (true == g_first_run) { // delete file if already exists
-      remove(logging->filename);
+    if (true == g_first_run) {
+      config->logger.f = fopen(logging->filename, "w+");
+      log_add_fp(config->logger.f, get_log_level(logging->level));
+      if (true == logging->quiet) { // make sure fatal still prints to stderr
+        log_add_fp(stderr, LOG_FATAL);
+      }
+      log_set_level(get_log_level(logging->level));
+      log_set_quiet(logging->quiet);
     }
-    config->logger.f = fopen(logging->filename, "a+");
+    else {
+      config->logger.f = fopen(logging->filename, "a+");
+    }
     ASSERT_S(NULL != config->logger.f, "Could not create logger file");
-    log_add_fp(config->logger.f, get_log_level(logging->level));
   }
 
   /* SET HTTP DUMP CONFIGS */
   if (true == logging->http_dump.enable) {
     if (!IS_EMPTY_STRING(logging->http_dump.filename)) {
-      if (true == g_first_run) { // delete file if already exists
-        remove(logging->http_dump.filename);
-      }
-      config->http_dump.f = fopen(logging->http_dump.filename, "a+");
+      if (true == g_first_run) 
+        config->http_dump.f = fopen(logging->http_dump.filename, "w+");
+      else
+        config->http_dump.f = fopen(logging->http_dump.filename, "a+");
       ASSERT_S(NULL != config->http_dump.f, "Could not create dump file");
     }
     config->http_dump.cb = &http_dump;
