@@ -306,7 +306,7 @@ void discord_send_voice_state_update(
   bool self_mute,
   bool self_deaf,
   struct discord_voice *p_vc);
-void discord_send_speaking(struct discord *client, struct discord_voice *vc, enum discord_voice_speaking_flags flag, int delay, int ssrc);
+void discord_send_speaking(struct discord_voice *vc, enum discord_voice_speaking_flags flag, int delay, int ssrc);
 void discord_voice_connect(struct discord_voice *vc);
 
 
