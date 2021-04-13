@@ -676,28 +676,20 @@ on_message_reaction_remove_emoji(struct discord_gateway *gw, struct discord_gate
 static void
 on_voice_state_update(struct discord_gateway *gw, struct discord_gateway_payload *payload)
 {
-  struct discord_voice_state *voice_state = discord_voice_state_alloc();
+  struct discord_voice_state *vs = discord_voice_state_alloc();
   discord_voice_state_from_json(payload->event_data.start,
-      payload->event_data.size, voice_state);
+      payload->event_data.size, vs);
 
-  pthread_mutex_lock(&gw->p_client->lock);
-  if (gw->p_client->pending_vcs) 
-  {
-    struct discord_voice **vcs = gw->p_client->vcs;
-    for (size_t i=0; i < gw->p_client->num_vcs; ++i) {
-      if (voice_state->guild_id == vcs[i]->guild_id) {
-        int ret = snprintf(vcs[i]->session_id, sizeof(vcs[i]->session_id), "%s", voice_state->session_id);
-        ASSERT_S(ret < sizeof(vcs[i]->session_id), "Out of bounds write attempt");
-        break; /* EARLY BREAK */
-      }
-    }
+#ifdef _DISCORD_ADD_ONS
+  if (!discord_voice_state_update(gw->p_client, vs->guild_id, vs->session_id)) {
+    log_debug("Couldn't match a voice connection to guild_id");
   }
-  pthread_mutex_unlock(&gw->p_client->lock);
+#endif // _DISCORD_ADD_ONS
 
   if (gw->cbs.on_voice_state_update)
-    (*gw->cbs.on_voice_state_update)(gw->p_client, gw->bot, voice_state);
+    (*gw->cbs.on_voice_state_update)(gw->p_client, gw->bot, vs);
 
-  discord_voice_state_free(voice_state);
+  discord_voice_state_free(vs);
 }
 
 static void
@@ -713,31 +705,11 @@ on_voice_server_update(struct discord_gateway *gw, struct discord_gateway_payloa
                &guild_id,
                &endpoint);
 
-  pthread_mutex_lock(&gw->p_client->lock);
-  if (gw->p_client->pending_vcs) 
-  {
-    struct discord_voice **vcs = gw->p_client->vcs;
-    for (size_t i=0; i < gw->p_client->num_vcs; ++i) {
-      if (guild_id == vcs[i]->guild_id) {
-        --gw->p_client->pending_vcs;
-
-        struct discord_voice *vc = vcs[i];
-        pthread_mutex_lock(&vc->priv->lock);
-
-        int ret;
-        ret = snprintf(vc->token, sizeof(vc->token), "%s", token);
-        ASSERT_S(ret < sizeof(vc->token), "Out of bounds write attempt");
-        ret = snprintf(vc->priv->base_url, sizeof(vc->priv->base_url), "wss://%s?v=4", endpoint);
-        ASSERT_S(ret < sizeof(vc->priv->base_url), "Out of bounds write attempt");
-
-        pthread_cond_signal(&vc->priv->cond_server_update);
-        pthread_mutex_unlock(&vc->priv->lock);
-        break; /* EARLY BREAK */
-      }
-    }
+#ifdef _DISCORD_ADD_ONS
+  if (!discord_voice_server_update(gw->p_client, guild_id, token, endpoint)) {
+    log_debug("Couldn't match a voice connection to guild_id");
   }
-  pthread_mutex_unlock(&gw->p_client->lock);
-
+#endif // _DISCORD_ADD_ONS
 
   if (gw->cbs.on_voice_server_update)
     (*gw->cbs.on_voice_server_update)(gw->p_client, gw->bot,

@@ -139,31 +139,6 @@ void discord_gateway_run(struct discord_gateway *gw);
 /* gracefully exit the infinite loop */
 void discord_gateway_shutdown(struct discord_gateway *gw);
 
-struct _discord_voice { /* PRIVATE VOICE CONNECTION STRUCTURE */
-  struct websockets *ws;
-  char base_url[MAX_URL_LEN];
-
-  struct discord_gateway_payload payload;
-
-  struct { /* HEARTBEAT STRUCTURE */
-    u64_unix_ms_t interval_ms; //fixed interval between heartbeats
-    u64_unix_ms_t tstamp; //start pulse timestamp in milliseconds
-  } hbeat;
-
-  struct { /* CALLBACKS STRUCTURE */
-    voice_speaking_cb *on_speaking;
-    voice_client_disconnect_cb *on_client_disconnect;
-    voice_codec_cb *on_codec;
-  } cbs;
-
-  int ping_ms; //latency between client and websockets server
-
-  struct discord *p_client;
-
-  pthread_mutex_t lock; //for accessing gw fields within events
-  pthread_cond_t cond_server_update; // wait for server update cond
-};
-
 struct discord {
   struct discord_adapter adapter;
   struct discord_gateway gw;
@@ -171,7 +146,6 @@ struct discord {
   struct discord_voice **vcs;
   size_t num_vcs;
   pthread_mutex_t lock; // for synchronizing vcs
-  int pending_vcs;
 
   void *data; //space for user arbitrary data
 };

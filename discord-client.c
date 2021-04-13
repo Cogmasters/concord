@@ -277,21 +277,6 @@ discord_on_voice_server_update(struct discord *client, voice_server_update_cb *c
 }
 
 void
-discord_voice_on_speaking(struct discord_voice *vc, voice_speaking_cb *callback) {
-  vc->priv->cbs.on_speaking = callback;
-}
-
-void
-discord_voice_on_client_disconnect(struct discord_voice *vc, voice_client_disconnect_cb *callback) {
-  vc->priv->cbs.on_client_disconnect = callback;
-}
-
-void
-discord_voice_on_codec(struct discord_voice *vc, voice_codec_cb *callback) {
-  vc->priv->cbs.on_codec = callback;
-}
-
-void
 discord_replace_presence(struct discord *client, struct discord_gateway_status_update *presence)
 {
   if (NULL == presence) return;

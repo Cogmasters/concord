@@ -2,31 +2,12 @@
 #define DISCORD_H
 
 #include <stdbool.h>
-
 #include "json-actor-boxed.h"
 
 typedef uint64_t u64_unix_ms_t;
 typedef uint64_t u64_snowflake_t;
 
 struct discord; //forward declaration
-
-struct discord_voice { /* VOICE CONNECTION STRUCTURE */
-  char token[128];            // the session token
-  char session_id[512];       // the session id
-  u64_snowflake_t guild_id;  // the session guild id
-  u64_snowflake_t channel_id; // the session channel id
-  u64_snowflake_t user_id;    // the bot user id
-  
-  // obtained after on_ready_cb()
-  int ssrc;    // secret
-  char server_ip[64]; // server external IP
-  int server_port; // server external port
-  // obtained after succesful rtp_ip_discovery()
-  char client_ip[64]; // client external IP
-  int client_port;  // client external port
-
-  struct _discord_voice *priv; // declared at discord-common.h
-};
 
 /* Size limits encountered in the Docs and searching the web */
 #define MAX_NAME_LEN          100 + 1
@@ -169,25 +150,6 @@ typedef void (voice_server_update_cb)(
     const char *token,
     const u64_snowflake_t guild_id,
     const char *endpoint);
-typedef void (voice_speaking_cb)(
-    struct discord *client, 
-    struct discord_voice *vc,
-    const struct discord_user *bot,
-    const u64_snowflake_t user_id,
-    const int speaking,
-    const int delay,
-    const int ssrc);
-typedef void (voice_client_disconnect_cb)(
-    struct discord *client, 
-    struct discord_voice *vc,
-    const struct discord_user *bot,
-    const u64_snowflake_t user_id);
-typedef void (voice_codec_cb)(
-    struct discord *client, 
-    struct discord_voice *vc,
-    const struct discord_user *bot,
-    const char audio_codec[],
-    const char video_codec[]);
 
 struct discord_session {
   char url[MAX_URL_LEN];
@@ -280,12 +242,9 @@ void discord_on_message_reaction_add(struct discord *client, message_reaction_ad
 void discord_on_message_reaction_remove(struct discord *client, message_reaction_remove_cb *callback);
 void discord_on_message_reaction_remove_all(struct discord *client, message_reaction_remove_all_cb* callback);
 void discord_on_message_reaction_remove_emoji(struct discord *client, message_reaction_remove_emoji_cb *callback);
+void discord_on_ready(struct discord *client, idle_cb *callback);
 void discord_on_voice_state_update(struct discord *client, voice_state_update_cb *callback);
 void discord_on_voice_server_update(struct discord *client, voice_server_update_cb *callback);
-void discord_on_ready(struct discord *client, idle_cb *callback);
-void discord_voice_on_speaking(struct discord_voice *vc, voice_speaking_cb *callback);
-void discord_voice_on_client_disconnect(struct discord_voice *vc, voice_client_disconnect_cb *callback);
-void discord_voice_on_codec(struct discord_voice *vc, voice_codec_cb *callback);
 
 void discord_run(struct discord *client);
 
@@ -295,19 +254,6 @@ void* discord_get_data(struct discord *client);
 void discord_replace_presence(struct discord *client, struct discord_gateway_status_update *presence);
 void discord_set_presence(struct discord *client, struct discord_gateway_activity *activity, char status[], bool afk);
 enum ws_status discord_gateway_status(struct discord *client);
-
-/* * * * * * * * * * * * * * * * * * * * * */
-/* * * * VOICE CONNECTIONS FUNCTIONS * * * */
-
-void discord_send_voice_state_update(
-  struct discord *client,
-  u64_snowflake_t guild_id,
-  u64_snowflake_t channel_id,
-  bool self_mute,
-  bool self_deaf,
-  struct discord_voice *p_vc);
-void discord_send_speaking(struct discord_voice *vc, enum discord_voice_speaking_flags flag, int delay, int ssrc);
-void discord_voice_connect(struct discord_voice *vc);
 
 
  /* * * * * * * * * * * * * * * * */
@@ -392,8 +338,10 @@ void discord_delete_messages_by_author_id(
   u64_snowflake_t channel_id,
   u64_snowflake_t author_id);
 
-void discord_get_voice_connections(struct discord *client, NTL_T(struct discord_voice) *vcs);
-
 #include "./specs-code/all_fun.h"
+
+#ifdef _DISCORD_ADD_ONS
+#include "discord-voice-connections.h"
+#endif
 
 #endif // DISCORD_H
