@@ -4,7 +4,7 @@
 #include <assert.h>
 
 #include "discord.h"
-#include "orka-debug.h"
+#include "debug.h"
 
 
 //using namespace discord;
