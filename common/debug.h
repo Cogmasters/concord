@@ -14,9 +14,12 @@
 #define D_FMT_PREFIX "[%s:%d] %s()\n\t"
 #define D_FMT_ARGS __FILE__, __LINE__, __func__
 
-
 // Encode a string with ANSI color
-#define ANSICOLOR(str, code) "\x1b["#code"m"str"\x1b[0m"
+#ifdef LOG_USE_COLOR
+# define ANSICOLOR(str, code) "\x1b["#code"m"str"\x1b[0m"
+#else
+# define ANSICOLOR(str, code) str
+#endif
 
 #define PUTS(msg) fprintf(D_OUT, D_FMT_PREFIX "%s\n", D_FMT_ARGS, msg)
 #define NOTOP_PUTS(msg) fprintf(D_OUT, "\t%s\n", msg)

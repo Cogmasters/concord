@@ -1040,7 +1040,7 @@ on_text_event_cb(void *p_gw, const char *text, size_t len)
     gw->payload.seq_number = tmp_seq_number;
   }
 
-  log_trace("OP:%s, EVENT:%s, SEQ:%d, DATA:%s%.*s", 
+  log_trace(ANSICOLOR("%s", 93)", EVENT:%s, SEQ:%d, DATA:%s%.*s", 
             opcode_print(gw->payload.opcode), 
             *gw->payload.event_name ? gw->payload.event_name : "NULL",
             gw->payload.seq_number,
