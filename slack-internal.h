@@ -1,5 +1,5 @@
-#ifndef SLACK_COMMON_H
-#define SLACK_COMMON_H
+#ifndef SLACK_INTERNAL_H
+#define SLACK_INTERNAL_H
 
 
 #include "json-actor.h"
@@ -63,4 +63,4 @@ struct slack {
   } cbs;
 };
 
-#endif // SLACK_COMMON_H
+#endif // SLACK_INTERNAL_H

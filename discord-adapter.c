@@ -4,7 +4,7 @@
 #include <stdarg.h>
 
 #include "discord.h"
-#include "discord-common.h"
+#include "discord-internal.h"
 
 #include "orka-utils.h"
 

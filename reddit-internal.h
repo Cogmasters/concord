@@ -1,5 +1,5 @@
-#ifndef REDDIT_COMMON_H
-#define REDDIT_COMMON_H
+#ifndef REDDIT_INTERNAL_H
+#define REDDIT_INTERNAL_H
 
 
 #include "json-actor.h"
@@ -28,4 +28,4 @@ struct reddit {
   struct reddit_adapter adapter;
 };
 
-#endif // REDDIT_COMMON_H
+#endif // REDDIT_INTERNAL_H

@@ -4,7 +4,7 @@
 #include <stdarg.h>
 
 #include "slack.h"
-#include "slack-common.h"
+#include "slack-internal.h"
 #include "orka-utils.h"
 
 #define BASE_API_URL "https://slack.com/api"

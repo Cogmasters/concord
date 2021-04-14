@@ -1,5 +1,5 @@
-#ifndef DISCORD_COMMON_H
-#define DISCORD_COMMON_H
+#ifndef DISCORD_INTERNAL_H
+#define DISCORD_INTERNAL_H
 
 #include <inttypes.h>
 #include <pthread.h>
@@ -150,4 +150,4 @@ struct discord {
   void *data; //space for user arbitrary data
 };
 
-#endif // DISCORD_COMMON_H
+#endif // DISCORD_INTERNAL_H

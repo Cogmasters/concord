@@ -1,7 +1,7 @@
 #include <string.h>
 
 #include "reddit.h"
-#include "reddit-common.h"
+#include "reddit-internal.h"
 
 struct reddit* 
 reddit_config_init(const char config_file[])

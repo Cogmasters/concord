@@ -5,7 +5,7 @@
 #include <ctype.h> /* isspace() */
 
 #include "discord.h"
-#include "discord-common.h"
+#include "discord-internal.h"
 
 #include "orka-utils.h"
 

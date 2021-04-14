@@ -4,7 +4,7 @@
 #include <stdarg.h>
 
 #include "reddit.h"
-#include "reddit-common.h"
+#include "reddit-internal.h"
 #include "orka-utils.h"
 
 #define BASE_API_URL "https://www.reddit.com/api/v1"

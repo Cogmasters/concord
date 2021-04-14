@@ -3,7 +3,7 @@
 #include <string.h>
 
 #include "slack.h"
-#include "slack-common.h"
+#include "slack-internal.h"
 
 #include "orka-utils.h"
 

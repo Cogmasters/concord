@@ -1,7 +1,7 @@
 #include <string.h>
 
 #include "slack.h"
-#include "slack-common.h"
+#include "slack-internal.h"
 
 struct slack* 
 slack_config_init(const char config_file[])
