@@ -39,11 +39,6 @@ enum ws_close_reason {
 struct ws_callbacks {
   void *data; // user arbitrary data received by callbacks
 
-  /* on_text_event should return a valid event code by parsing the text,
-   *  if code is invalid then on_text will be executed instead */
-  int (*on_text_event)(void *data, const char *text, size_t len);
-
-  /* common websockets callbacks */
   void (*on_connect)(void *data, const char *protocols);
   void (*on_text)(void *data, const char *text, size_t len);
   void (*on_binary)(void *data, const void *mem, size_t len);
@@ -73,18 +68,7 @@ void ws_reconnect(struct websockets *ws);
 uint64_t ws_timestamp(struct websockets *ws);
 enum ws_status ws_get_status(struct websockets *ws);
 void ws_set_status(struct websockets *ws, enum ws_status status);
-void ws_set_refresh_rate(struct websockets *ws, uint64_t wait_ms);
 void ws_set_max_reconnect(struct websockets *ws, int max_attempts);
-void ws_set_event(
-  struct websockets *ws, 
-  int event_code, 
-  void (*user_cb)(void *data, void *curr_iter_data));
-/* this should be used at on_text_event callbacks, it is the data that
- *  can be accessed within the on_event callbacks parameter */
-void ws_set_curr_iter_data(
-  struct websockets *ws, 
-  void *curr_iter_data, 
-  void (*curr_iter_cleanup)(void *curr_iter_data));
 struct sized_buffer ws_config_get_field(struct websockets *ws, char *json_field);
 char* ws_close_opcode_print(enum ws_close_reason opcode);
 char* ws_config_get_fname(struct websockets *ws);

@@ -10,27 +10,11 @@
 #include "orka-config.h"
 
 
-struct event_cb {
-  int code; // code that should trigger the callback
-  void (*cb)(void *data, void *curr_iter_data); // see ws_set_curr_iter_data()
-};
-
-struct wthread { // worker thread
-  pthread_t tid;
-  bool is_busy;
-
-  /* the following are set by ws_set_curr_iter_data() */
-  void *data; //user arbitrary data that lasts for this thread cycle
-  void (*cleanup)(void *data); //data cleanup method
-};
-
-#define MAX_THREADS 10 //@todo temp size just for prototyping
 struct websockets {
   struct orka_config config;
   enum ws_status status;
   CURLM *mhandle;
   CURL *ehandle;
-  uint64_t wait_ms; // how long to wait for sockets activity
   uint64_t now_tstamp; // timestamp updated every loop iteration
   bool is_running; // used internally
 
@@ -40,22 +24,9 @@ struct websockets {
   } reconnect;
 
   char base_url[512 + 1];
-
   struct ws_callbacks cbs; 
-  struct event_cb *event_pool; //events set with ws_set_event()
-  size_t num_events;
-
-  /* will last only for this current loop iteration, the data is 
-   *   passed as a event_pool callback parameter, and free'd from 
-   *   memory with the given cleanup function (if any is given) */
-  void *curr_iter_data;
-  void (*curr_iter_cleanup)(void *curr_iter_data);
-
-  struct wthread thread_pool[MAX_THREADS];
-  int num_notbusy; // num of available threads
 
   pthread_mutex_t lock;
-  pthread_cond_t cond;
 };
 
 
@@ -110,36 +81,6 @@ ws_close_opcode_print(enum ws_close_reason opcode)
   }
 }
 
-struct _event_cxt {
-  struct websockets *ws; // the websockets client
-  struct event_cb *event; // callback associated with event
-  struct wthread *thread; // thread associated with event
-};
-
-static void*
-event_run(void *p_cxt)
-{
-  struct _event_cxt *cxt = p_cxt;
-
-  (*cxt->event->cb)(cxt->ws->cbs.data, cxt->thread->data);
-
-  pthread_mutex_lock(&cxt->ws->lock);
-  cxt->thread->is_busy = false;
-  ++cxt->ws->num_notbusy;
-  if (cxt->thread->data && cxt->thread->cleanup) {
-    (*cxt->thread->cleanup)(cxt->thread->data);
-  }
-  cxt->thread->cleanup = NULL;
-  cxt->thread->data = NULL;
-
-  pthread_cond_signal(&cxt->ws->cond);
-  pthread_mutex_unlock(&cxt->ws->lock);
-
-  free(cxt);
-
-  return NULL;
-}
-
 static void
 cws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
 {
@@ -150,58 +91,6 @@ cws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
     ws->base_url, 
     (struct sized_buffer){(char*)text, len},
     "WS_RCV_TEXT");
-
-  int event_code = (*ws->cbs.on_text_event)(ws->cbs.data, text, len);
-  for (size_t i=0; i < ws->num_events; ++i) {
-    if (event_code != ws->event_pool[i].code) 
-      continue;
-
-    pthread_mutex_lock(&ws->lock);
-
-    // wait until a thread is available before proceeding
-    while (!ws->num_notbusy) {
-      pthread_cond_wait(&ws->cond, &ws->lock);
-    }
-
-    //@todo non-heap MT-Safe alternative ?
-    struct _event_cxt *cxt = calloc(1, sizeof(struct _event_cxt));
-    cxt->ws = ws;
-    cxt->event = &ws->event_pool[i];
-
-    // get a available thread
-    for (size_t i=0; i < MAX_THREADS; ++i) {
-      if (!ws->thread_pool[i].is_busy) {
-        --ws->num_notbusy;
-
-        cxt->thread = &ws->thread_pool[i];
-        cxt->thread->is_busy = true;
-        cxt->thread->data = ws->curr_iter_data;
-        cxt->thread->cleanup = ws->curr_iter_cleanup;
-        ws->curr_iter_data = NULL;
-        ws->curr_iter_cleanup = NULL;
-        break; /* EARLY BREAK */
-      }
-    }
-    ASSERT_S(NULL != cxt->thread, "Internal thread synchronization error (couldn't fetch thread)");
-
-    if (pthread_create(&cxt->thread->tid, NULL, &event_run, cxt))
-      ERR("Couldn't create thread");
-    if (pthread_detach(cxt->thread->tid))
-      ERR("Couldn't detach thread");
-
-    pthread_mutex_unlock(&ws->lock);
-    return; /* EARLY RETURN */
-  }
-
-  pthread_mutex_lock(&ws->lock);
-
-  if (ws->curr_iter_data && ws->curr_iter_cleanup) {
-    (*ws->curr_iter_cleanup)(ws->curr_iter_data);
-  }
-  ws->curr_iter_cleanup = NULL;
-  ws->curr_iter_data = NULL;
-
-  pthread_mutex_unlock(&ws->lock);
 
   (*ws->cbs.on_text)(ws->cbs.data, text, len);
 }
@@ -272,9 +161,6 @@ custom_cws_new(struct websockets *ws)
   return new_ehandle;
 }
 
-static int noop_on_text_event(void *a, const char *b, size_t c)
-{return INT_MIN;} // return unlikely event value as default
-
 static void noop_on_connect(void *a, const char *b){return;}
 static void noop_on_text(void *a, const char *b, size_t c){return;}
 static void noop_on_binary(void *a, const void *b, size_t c){return;}
@@ -291,7 +177,6 @@ ws_init(const char base_url[], struct ws_callbacks *cbs)
   ASSERT_S(ret < sizeof(new_ws->base_url), "Out of bounds write attempt");
   new_ws->status = WS_DISCONNECTED;
   new_ws->reconnect.threshold = 5;
-  new_ws->wait_ms = 100;
 
   new_ws->mhandle = curl_multi_init();
   new_ws->ehandle = custom_cws_new(new_ws);
@@ -299,11 +184,7 @@ ws_init(const char base_url[], struct ws_callbacks *cbs)
 
   orka_config_init(&new_ws->config, NULL, NULL);
 
-  new_ws->num_notbusy = MAX_THREADS;
-
   memcpy(&new_ws->cbs, cbs, sizeof(struct ws_callbacks));
-  if (!new_ws->cbs.on_text_event) 
-    new_ws->cbs.on_text_event = &noop_on_text_event;
   if (!new_ws->cbs.on_connect) 
     new_ws->cbs.on_connect = &noop_on_connect;
   if (!new_ws->cbs.on_text) 
@@ -319,8 +200,6 @@ ws_init(const char base_url[], struct ws_callbacks *cbs)
 
   if (pthread_mutex_init(&new_ws->lock, NULL))
     ERR("Couldn't initialize pthread mutex");
-  if (pthread_cond_init(&new_ws->cond, NULL))
-    ERR("Couldn't initialize pthread cond");
 
   return new_ws;
 }
@@ -340,13 +219,10 @@ ws_config_init(
 void
 ws_cleanup(struct websockets *ws)
 {
-  if (ws->event_pool)
-    free(ws->event_pool);
   curl_multi_cleanup(ws->mhandle);
   cws_free(ws->ehandle);
   orka_config_cleanup(&ws->config);
   pthread_mutex_destroy(&ws->lock);
-  pthread_cond_destroy(&ws->cond);
   free(ws);
 }
 
@@ -488,48 +364,11 @@ ws_set_status(struct websockets *ws, enum ws_status status)
 }
 
 void
-ws_set_refresh_rate(struct websockets *ws, uint64_t wait_ms) 
-{
-  pthread_mutex_lock(&ws->lock);
-  ws->wait_ms = wait_ms;
-  pthread_mutex_unlock(&ws->lock);
-}
-
-void
 ws_set_max_reconnect(struct websockets *ws, int max_attempts) 
 {
   pthread_mutex_lock(&ws->lock);
   ws->reconnect.threshold = max_attempts;
   pthread_mutex_unlock(&ws->lock);
-}
-
-void
-ws_set_event(
-  struct websockets *ws, 
-  int event_code, 
-  void (*user_cb)(void *data, void *event_data))
-{
-  ASSERT_S(WS_DISCONNECTED == ws_get_status(ws), "Can't set event on a running client");
-
-  ++ws->num_events;
-  ws->event_pool = realloc(ws->event_pool, ws->num_events * sizeof(struct event_cb));
-
-  memset(&ws->event_pool[ws->num_events-1], 0, sizeof(struct event_cb));
-  ws->event_pool[ws->num_events-1].code = event_code;
-  ws->event_pool[ws->num_events-1].cb = user_cb;
-}
-
-/* set data that will be accessable on current loop iteration with 
- *  any event_pool callback.  It will be freed before the next 
- *  iteration by calling user defined cleanup() method */
-void
-ws_set_curr_iter_data(
-  struct websockets *ws, 
-  void *curr_iter_data, 
-  void (*curr_iter_cleanup)(void *curr_iter_data))
-{
-  ws->curr_iter_data = curr_iter_data;
-  ws->curr_iter_cleanup = curr_iter_cleanup;
 }
 
 void
