@@ -140,14 +140,16 @@ void discord_gateway_run(struct discord_gateway *gw);
 void discord_gateway_shutdown(struct discord_gateway *gw);
 
 struct discord {
+  void *data; //space for user arbitrary data
   struct discord_adapter adapter;
   struct discord_gateway gw;
 
+#ifdef DISCORD_VOICE_CONNECTIONS_H
   struct discord_voice **vcs;
   size_t num_vcs;
   pthread_mutex_t lock; // for synchronizing vcs
+#endif // DISCORD_VOICE_CONNECTIONS_H
 
-  void *data; //space for user arbitrary data
 };
 
 #endif // DISCORD_INTERNAL_H

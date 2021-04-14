@@ -52,9 +52,9 @@ int main()
   discord_global_init();
   struct discord *client = discord_config_init("bot.config");
 
-  discord_on_ready(client, &on_ready);
-  discord_on_command(client, "ping", &on_ping);
-  discord_on_command(client, "pong", &on_pong);
+  discord_set_on_ready(client, &on_ready);
+  discord_set_on_command(client, "ping", &on_ping);
+  discord_set_on_command(client, "pong", &on_pong);
 
   discord_run(client);
 
@@ -97,23 +97,23 @@ Returns `struct discord`: the client structure
 
 # Starting up the bot
 ```c
-discord_on_ready(client, &on_ready);
-discord_on_command(client, "ping", &on_ping);
-discord_on_command(client, "pong", &on_pong);
+discord_set_on_ready(client, &on_ready);
+discord_set_on_command(client, "ping", &on_ping);
+discord_set_on_command(client, "pong", &on_pong);
 
 discord_run(struct discord*);
 ```
 
-## discord_on_ready
-`discord_on_ready(struct discord*, on_idle_cb*)`: calls `on_ready` callback function when Discord's `READY` event is triggered
+## discord_set_on_ready
+`discord_set_on_ready(struct discord*, on_idle_cb*)`: calls `on_ready` callback function when Discord's `READY` event is triggered
 
 |Member Parameters|Description                |
 |:----------------|:--------------------------|
 |struct discord| the client stucture |
 |on_idle_cb *callback| the callback to run when the READY event is triggered (see libdiscord.h for more callbacks definitions) |
 
-## discord_on_command
-`discord_on_command(struct discord*, char[], message_cb*)`: executes callback function when `char[]` command is triggered on chat
+## discord_set_on_command
+`discord_set_on_command(struct discord*, char[], message_cb*)`: executes callback function when `char[]` command is triggered on chat
 
 |Member Parameters|Description                |
 |:----------------|:--------------------------|
