@@ -118,8 +118,6 @@ slack_rtm_config_init(struct slack_rtm *rtm, const char config_file[])
   if (!config_file) ERR("Missing config file");
   struct ws_callbacks cbs = {
     .data = rtm,
-    .on_startup = NULL,
-    .on_iter_end = NULL,
     .on_text_event = &on_text_event_cb,
     .on_connect = &on_connect_cb,
     .on_text = &on_text_cb,
@@ -143,14 +141,28 @@ slack_rtm_cleanup(struct slack_rtm *rtm) {
 
 /* connects to the slack websockets server */
 void
-slack_rtm_run(struct slack *client) {
-  ws_run(client->rtm.ws);
+slack_rtm_run(struct slack *client) 
+{
+  struct slack_rtm *rtm = &client->rtm;
+
+  ASSERT_S(WS_DISCONNECTED == ws_get_status(rtm->ws), "Can't run websockets recursively");
+
+  bool is_running;
+  do {
+    ws_perform(rtm->ws, &is_running);
+
+    // wait for activity or timeout
+    ws_wait_activity(rtm->ws, 1);
+
+    if (WS_CONNECTED != ws_get_status(rtm->ws))
+      continue;
+    
+    // connection established
+    
+  } while (is_running);
 }
 
 void
-slack_rtm_shutdown(struct slack *client) 
-{
-  ws_set_status(client->rtm.ws, WS_DISCONNECTED);
-  char reason[] = "Shutdown gracefully";
-  ws_close(client->rtm.ws, WS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
+slack_rtm_shutdown(struct slack *client) {
+  ws_set_status(client->sm.ws, WS_SHUTDOWN);
 }

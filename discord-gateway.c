@@ -90,11 +90,6 @@ close_opcode_print(enum discord_gateway_close_opcodes opcode)
 }
 
 static void
-send_payload(struct discord_gateway *gw, char payload[], size_t len) {
-  ws_send_text(gw->ws, payload, len);
-}
-
-static void
 send_resume(struct discord_gateway *gw)
 {
   char payload[MAX_PAYLOAD_LEN];
@@ -110,8 +105,8 @@ send_resume(struct discord_gateway *gw)
               &gw->payload.seq_number);
   ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
 
-  log_info("RESUME:%s", payload);
-  send_payload(gw, payload, ret);
+  log_info("sending RESUME(%d bytes)", ret);
+  ws_send_text(gw->ws, payload, ret);
 }
 
 static void
@@ -137,8 +132,8 @@ send_identify(struct discord_gateway *gw)
   ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
 
   // contain token (sensitive data), enable _ORKA_DEBUG_STRICT to print it
-  log_info("IDENTIFY:%s", payload);
-  send_payload(gw, payload, ret);
+  log_info("sending IDENTIFY(%d bytes)", ret);
+  ws_send_text(gw->ws, payload, ret);
 
   //get timestamp for this identify
   pthread_mutex_lock(&gw->lock);
@@ -927,6 +922,11 @@ on_close_cb(void *p_gw, enum ws_close_reason wscode, const char *reason, size_t 
 {
   struct discord_gateway *gw = p_gw;
   enum discord_gateway_close_opcodes opcode = wscode;
+
+  log_warn(ANSICOLOR("%s",31)" (code: %4d) : %zd bytes,"
+          "REASON: '%s'", 
+          close_opcode_print(opcode), opcode, len,
+          reason);
  
   switch (opcode) {
   case DISCORD_GATEWAY_CLOSE_REASON_UNKNOWN_OPCODE:
@@ -951,33 +951,11 @@ on_close_cb(void *p_gw, enum ws_close_reason wscode, const char *reason, size_t 
       ws_set_status(gw->ws, WS_FRESH);
       break;
   }
-
-  log_warn("%s (code: %4d) : %zd bytes,"
-          "REASON: '%s'", 
-          close_opcode_print(opcode), opcode, len,
-          reason);
 }
 
 static void
 on_text_cb(void *p_gw, const char *text, size_t len) {
   log_warn("FALLBACK TO ON_TEXT");
-}
-
-static int
-on_startup_cb(void *p_gw)
-{
-  struct discord_gateway *gw = p_gw;
-
-  //get session info before starting it
-  discord_get_gateway_bot(gw->p_client, &gw->session);
-
-  if (!gw->session.remaining) {
-    log_fatal("Reach session starts threshold (%d),"
-          "Please wait %d seconds and try again", 
-          gw->session.total, gw->session.reset_after/1000);
-    return 0;
-  }
-  return 1;
 }
 
 /* send heartbeat pulse to websockets server in order
@@ -990,28 +968,8 @@ send_heartbeat(struct discord_gateway *gw)
               "(op):1, (d):d", &gw->payload.seq_number);
   ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
 
-  log_trace("HEARTBEAT:%s", payload);
-  send_payload(gw, payload, ret);
-}
-
-static void
-on_iter_end_cb(void *p_gw)
-{
-  struct discord_gateway *gw = p_gw;
-
-  /*check if timespan since first pulse is greater than
-   * minimum heartbeat interval required*/
-  pthread_mutex_lock(&gw->lock);
-  if (gw->hbeat.interval_ms < (ws_timestamp(gw->ws) - gw->hbeat.tstamp)) {
-    send_heartbeat(gw);
-
-    gw->hbeat.tstamp = ws_timestamp(gw->ws); //update heartbeat timestamp
-  }
-  pthread_mutex_unlock(&gw->lock);
-
-  if (gw->cbs.on_idle) {
-    (*gw->cbs.on_idle)(gw->p_client, gw->bot);
-  }
+  log_trace("sending HEARTBEAT(%d bytes)", ret);
+  ws_send_text(gw->ws, payload, ret);
 }
 
 static void
@@ -1056,6 +1014,9 @@ on_text_event_cb(void *p_gw, const char *text, size_t len)
   return gw->payload.opcode;
 }
 
+static void noop_idle_cb(struct discord *a, const struct discord_user *b)
+{ return; }
+
 static void
 _gateway_init(
   struct discord_gateway *gw,
@@ -1077,6 +1038,9 @@ _gateway_init(
   gw->id->properties->$browser = strdup("orca");
   gw->id->properties->$device = strdup("orca");
   gw->id->presence->since = orka_timestamp_ms();
+
+  gw->cbs.on_idle = &noop_idle_cb;
+
   gw->bot = discord_user_alloc();
   discord_set_presence(gw->p_client, NULL, "online", false);
   discord_get_current_user(gw->p_client, gw->bot);
@@ -1092,8 +1056,6 @@ discord_gateway_init(struct discord_gateway *gw, const char token[])
   ASSERT_S(NULL != token, "Missing bot token");
   struct ws_callbacks cbs = {
     .data = gw,
-    .on_startup = &on_startup_cb,
-    .on_iter_end = &on_iter_end_cb,
     .on_text_event = &on_text_event_cb,
     .on_connect = &on_connect_cb,
     .on_text = &on_text_cb,
@@ -1113,8 +1075,6 @@ discord_gateway_config_init(struct discord_gateway *gw, const char config_file[]
   ASSERT_S(NULL != config_file, "Missing config file");
   struct ws_callbacks cbs = {
     .data = gw,
-    .on_startup = &on_startup_cb,
-    .on_iter_end = &on_iter_end_cb,
     .on_text_event = &on_text_event_cb,
     .on_connect = &on_connect_cb,
     .on_text = &on_text_cb,
@@ -1140,8 +1100,44 @@ discord_gateway_cleanup(struct discord_gateway *gw)
 
 /* connects to the discord websockets server */
 void
-discord_gateway_run(struct discord_gateway *gw) {
-  ws_run(gw->ws);
+discord_gateway_run(struct discord_gateway *gw) 
+{
+  ASSERT_S(WS_DISCONNECTED == ws_get_status(gw->ws), "Can't run websockets recursively");
+
+  //get session info before starting it
+  discord_get_gateway_bot(gw->p_client, &gw->session);
+  if (!gw->session.remaining) {
+    log_fatal("Reach session starts threshold (%d),"
+          "Please wait %d seconds and try again", 
+          gw->session.total, gw->session.reset_after/1000);
+    return; /* EARLY RETURN */
+  }
+
+  bool is_running;
+  do {
+    ws_perform(gw->ws, &is_running);
+
+    // wait for activity or timeout
+    ws_wait_activity(gw->ws, 1);
+
+    if (WS_CONNECTED != ws_get_status(gw->ws))
+      continue;
+    
+    // connection established
+
+    /*check if timespan since first pulse is greater than
+     * minimum heartbeat interval required*/
+    pthread_mutex_lock(&gw->lock);
+    if (gw->hbeat.interval_ms < (ws_timestamp(gw->ws) - gw->hbeat.tstamp)) {
+      send_heartbeat(gw);
+
+      gw->hbeat.tstamp = ws_timestamp(gw->ws); //update heartbeat timestamp
+    }
+    pthread_mutex_unlock(&gw->lock);
+
+    (*gw->cbs.on_idle)(gw->p_client, gw->bot);
+
+  } while (is_running);
 }
 
 void

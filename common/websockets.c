@@ -63,6 +63,13 @@ static void
 cws_on_connect_cb(void *p_ws, CURL *ehandle, const char *ws_protocols)
 {
   struct websockets *ws = p_ws;
+
+  (*ws->config.http_dump.cb)(
+    &ws->config, 
+    ws->base_url, 
+    (struct sized_buffer){(char*)ws_protocols, strlen(ws_protocols)},
+    "WS_RCV_CONNECT");
+
   (*ws->cbs.on_connect)(ws->cbs.data, ws_protocols);
 }
 
@@ -138,18 +145,18 @@ cws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
 {
   struct websockets *ws = p_ws;
 
+  (*ws->config.http_dump.cb)(
+    &ws->config, 
+    ws->base_url, 
+    (struct sized_buffer){(char*)text, len},
+    "WS_RCV_TEXT");
+
   int event_code = (*ws->cbs.on_text_event)(ws->cbs.data, text, len);
   for (size_t i=0; i < ws->num_events; ++i) {
     if (event_code != ws->event_pool[i].code) 
       continue;
 
     pthread_mutex_lock(&ws->lock);
-
-    (*ws->config.http_dump.cb)(
-      &ws->config, 
-      ws->base_url, 
-      (struct sized_buffer){(char*)text, len},
-      "WS_RCV_TEXT(%d)", event_code);
 
     // wait until a thread is available before proceeding
     while (!ws->num_notbusy) {
@@ -194,12 +201,6 @@ cws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
   ws->curr_iter_cleanup = NULL;
   ws->curr_iter_data = NULL;
 
-  (*ws->config.http_dump.cb)(
-    &ws->config, 
-    ws->base_url, 
-    (struct sized_buffer){(char*)text, len},
-    "WS_ON_TEXT");
-
   pthread_mutex_unlock(&ws->lock);
 
   (*ws->cbs.on_text)(ws->cbs.data, text, len);
@@ -209,6 +210,13 @@ static void
 cws_on_binary_cb(void *p_ws, CURL *ehandle, const void *mem, size_t len)
 {
   struct websockets *ws = p_ws;
+
+  (*ws->config.http_dump.cb)(
+    &ws->config, 
+    ws->base_url, 
+    (struct sized_buffer){(char*)mem, len},
+    "WS_RCV_BINARY");
+
   (*ws->cbs.on_binary)(ws->cbs.data, mem, len);
 }
 
@@ -216,6 +224,13 @@ static void
 cws_on_ping_cb(void *p_ws, CURL *ehandle, const char *reason, size_t len)
 {
   struct websockets *ws = p_ws;
+
+  (*ws->config.http_dump.cb)(
+    &ws->config, 
+    ws->base_url, 
+    (struct sized_buffer){(char*)reason, len},
+    "WS_RCV_PING");
+
   (*ws->cbs.on_ping)(ws->cbs.data, reason, len);
 }
 
@@ -223,6 +238,13 @@ static void
 cws_on_pong_cb(void *p_ws, CURL *ehandle, const char *reason, size_t len)
 {
   struct websockets *ws = p_ws;
+
+  (*ws->config.http_dump.cb)(
+    &ws->config, 
+    ws->base_url, 
+    (struct sized_buffer){(char*)reason, len},
+    "WS_RCV_PONG");
+
   (*ws->cbs.on_pong)(ws->cbs.data, reason, len);
 }
 
@@ -250,8 +272,6 @@ custom_cws_new(struct websockets *ws)
   return new_ehandle;
 }
 
-static int noop_on_startup(void *a){return 1;}
-static void noop_on_iter(void *a){return;}
 static int noop_on_text_event(void *a, const char *b, size_t c)
 {return INT_MIN;} // return unlikely event value as default
 
@@ -282,12 +302,6 @@ ws_init(const char base_url[], struct ws_callbacks *cbs)
   new_ws->num_notbusy = MAX_THREADS;
 
   memcpy(&new_ws->cbs, cbs, sizeof(struct ws_callbacks));
-  if (!new_ws->cbs.on_startup) 
-    new_ws->cbs.on_startup = &noop_on_startup;
-  if (!new_ws->cbs.on_iter_start) 
-    new_ws->cbs.on_iter_start = &noop_on_iter;
-  if (!new_ws->cbs.on_iter_end) 
-    new_ws->cbs.on_iter_end = &noop_on_iter;
   if (!new_ws->cbs.on_text_event) 
     new_ws->cbs.on_text_event = &noop_on_text_event;
   if (!new_ws->cbs.on_connect) 
@@ -373,33 +387,6 @@ ws_wait_activity(struct websockets *ws, uint64_t wait_ms)
 {
   CURLMcode mcode = curl_multi_wait(ws->mhandle, NULL, 0, wait_ms, NULL);
   ASSERT_S(CURLM_OK == mcode, curl_multi_strerror(mcode));
-}
-
-static void
-event_loop(struct websockets *ws)
-{
-  if (!(*ws->cbs.on_startup)(ws->cbs.data)) {
-    ws_set_status(ws, WS_DISCONNECTED);
-    return; /* EARLY RETURN */
-  }
-
-  bool is_running;
-  do {
-    // @todo branchless alternative ?
-    if (ws_get_status(ws) == WS_CONNECTED) { // run if connection established
-      (*ws->cbs.on_iter_start)(ws->cbs.data);
-    }
-
-    ws_perform(ws, &is_running);
-
-    // wait for activity or timeout
-    ws_wait_activity(ws, 1);
-
-    // @todo branchless alternative ?
-    if (ws_get_status(ws) == WS_CONNECTED) { // run if connection established
-      (*ws->cbs.on_iter_end)(ws->cbs.data);
-    }
-  } while (is_running);
 }
 
 static void
@@ -543,15 +530,6 @@ ws_set_curr_iter_data(
 {
   ws->curr_iter_data = curr_iter_data;
   ws->curr_iter_cleanup = curr_iter_cleanup;
-}
-
-/* connects to the websockets server */
-void
-ws_run(struct websockets *ws)
-{
-  ASSERT_S(WS_DISCONNECTED == ws_get_status(ws), "Can't run websockets recursively");
-
-  event_loop(ws);
 }
 
 void

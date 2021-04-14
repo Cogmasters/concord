@@ -125,7 +125,7 @@ discord_on_ready(struct discord *client, idle_cb *callback) {
 
 void
 discord_run(struct discord *client) {
-  ws_run(client->gw.ws);
+  discord_gateway_run(&client->gw);
 }
 
 void 

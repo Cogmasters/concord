@@ -38,9 +38,7 @@ enum ws_close_reason {
 
 struct ws_callbacks {
   void *data; // user arbitrary data received by callbacks
-  int (*on_startup)(void *data); // exec before loop starts (return 1 for proceed, 0 for abort)
-  void (*on_iter_start)(void *data); // execs at end of every loop iteration
-  void (*on_iter_end)(void *data); // execs at end of every loop iteration
+
   /* on_text_event should return a valid event code by parsing the text,
    *  if code is invalid then on_text will be executed instead */
   int (*on_text_event)(void *data, const char *text, size_t len);
@@ -67,7 +65,9 @@ void ws_close(
   const char reason[], 
   size_t len);
 void ws_send_text(struct websockets *ws, char text[], size_t len);
-void ws_run(struct websockets *ws);
+void ws_perform(struct websockets *ws, _Bool *is_running);
+void ws_wait_activity(struct websockets *ws, uint64_t wait_ms);
+
 void ws_redirect(struct websockets *ws, char base_url[]);
 void ws_reconnect(struct websockets *ws);
 uint64_t ws_timestamp(struct websockets *ws);
