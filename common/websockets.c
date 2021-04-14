@@ -75,7 +75,7 @@ cws_on_close_cb(void *p_ws, CURL *ehandle, enum cws_close_reason cwscode, const 
     &ws->config, 
     ws->base_url, 
     (struct sized_buffer){(char*)reason, len},
-    "WS_RCV_CLOSE(%s)", cwscode);
+    "WS_RCV_CLOSE(%d)", cwscode);
 
   (*ws->cbs.on_close)(ws->cbs.data, cwscode, reason, len);
 }
@@ -149,7 +149,7 @@ cws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
       &ws->config, 
       ws->base_url, 
       (struct sized_buffer){(char*)text, len},
-      "WS_RCV_TEXT(code: %d)", event_code);
+      "WS_RCV_TEXT(%d)", event_code);
 
     // wait until a thread is available before proceeding
     while (!ws->num_notbusy) {
