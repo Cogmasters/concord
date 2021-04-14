@@ -322,8 +322,8 @@ int main(int argc, char *argv[])
   assert(NULL != client);
 
   /* Set discord callbacks */
-  discord_on_ready(client, &on_ready);
-  discord_on_command(client, "!system", &on_command);
+  discord_set_on_ready(client, &on_ready);
+  discord_set_on_command(client, "!system", &on_command);
 
   /* Set bot presence activity */
   struct discord_gateway_activity *new_activity;

@@ -78,7 +78,7 @@ int main(int argc, char *argv[])
   struct discord *client = discord_config_init(config_file);
   assert(NULL != client);
 
-  discord_on_command(client, "!nickChange", &on_command);
+  discord_set_on_command(client, "!nickChange", &on_command);
 
   printf("\n\nThis demonstrates how easy it is to modify the"
          " nickname of some guild member.\n\n"

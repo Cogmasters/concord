@@ -107,12 +107,12 @@ int main(int argc, char *argv[])
   struct discord *client = discord_config_init(config_file);
   assert(NULL != client);
 
-  discord_on_ready(client, &on_ready);
-  discord_on_message_create(client, &on_message_create);
-  discord_on_message_update(client, &on_message_update);
-  discord_on_message_delete(client, &on_message_delete);
-  discord_on_message_delete_bulk(client, &on_message_delete_bulk);
-  discord_on_message_reaction_add(client, &on_reaction_add);
+  discord_set_on_ready(client, &on_ready);
+  discord_set_on_message_create(client, &on_message_create);
+  discord_set_on_message_update(client, &on_message_update);
+  discord_set_on_message_delete(client, &on_message_delete);
+  discord_set_on_message_delete_bulk(client, &on_message_delete_bulk);
+  discord_set_on_message_reaction_add(client, &on_reaction_add);
 
   discord_run(client);
 

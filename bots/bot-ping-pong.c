@@ -47,9 +47,9 @@ int main(int argc, char *argv[])
 
   struct discord *client = discord_config_init(config_file);
 
-  discord_on_ready(client, &on_ready);
-  discord_on_command(client, "ping", &on_ping);
-  discord_on_command(client, "pong", &on_pong);
+  discord_set_on_ready(client, &on_ready);
+  discord_set_on_command(client, "ping", &on_ping);
+  discord_set_on_command(client, "pong", &on_pong);
 
   discord_run(client);
 

@@ -43,9 +43,9 @@ int main(int argc, char *argv[])
   struct discord *client = discord_config_init(config_file);
   assert(NULL != client);
 
-  discord_on_ready(client, &on_ready);
-  discord_on_command(client, "!deleteAll", &on_delete_all);
-  discord_on_command(client, "!deleteEmoji", &on_delete_emoji);
+  discord_set_on_ready(client, &on_ready);
+  discord_set_on_command(client, "!deleteAll", &on_delete_all);
+  discord_set_on_command(client, "!deleteEmoji", &on_delete_emoji);
 
   printf("\n\nThis bot demonstrates how easy it is to delete reactions"
          " from a message.\n"

@@ -86,10 +86,10 @@ int main(int argc, char *argv[])
   struct discord *client = discord_config_init(config_file);
   assert(NULL != client);
 
-  discord_on_command(client, "!createRole", &on_command);
-  discord_on_guild_role_create(client, &on_role_create);
-  discord_on_guild_role_update(client, &on_role_update);
-  discord_on_guild_role_delete(client, &on_role_delete);
+  discord_set_on_command(client, "!createRole", &on_command);
+  discord_set_on_guild_role_create(client, &on_role_create);
+  discord_set_on_guild_role_update(client, &on_role_update);
+  discord_set_on_guild_role_delete(client, &on_role_delete);
 
   printf("\n\nThis bot demonstrates how easy it is to create a"
          " new role.\n"

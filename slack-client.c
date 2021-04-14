@@ -29,17 +29,17 @@ slack_cleanup(struct slack *client)
 }
 
 void
-slack_on_idle(struct slack *client, idle_cb *callback) {
+slack_set_on_idle(struct slack *client, idle_cb *callback) {
   client->cbs.on_hello = callback;
 }
 
 void
-slack_on_hello(struct slack *client, idle_cb *callback) {
+slack_set_on_hello(struct slack *client, idle_cb *callback) {
   client->cbs.on_hello = callback;
 }
 
 void
-slack_on_message(struct slack *client, idle_cb *callback) {
+slack_set_on_message(struct slack *client, idle_cb *callback) {
   client->cbs.on_message = callback;
 }
 

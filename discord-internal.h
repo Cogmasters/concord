@@ -147,9 +147,9 @@ struct discord {
 #ifdef DISCORD_VOICE_CONNECTIONS_H
   struct discord_voice **vcs;
   size_t num_vcs;
-  pthread_mutex_t lock; // for synchronizing vcs
 #endif // DISCORD_VOICE_CONNECTIONS_H
 
+  pthread_mutex_t lock;
 };
 
 #endif // DISCORD_INTERNAL_H

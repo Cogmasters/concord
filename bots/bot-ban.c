@@ -133,10 +133,10 @@ int main(int argc, char *argv[])
   struct discord *client = discord_config_init(config_file);
   assert(NULL != client);
 
-  discord_on_guild_ban_add(client, &on_guild_ban_add);
-  discord_on_guild_ban_remove(client, &on_guild_ban_remove);
-  discord_on_command(client, "!ban", &on_ban);
-  discord_on_command(client, "!unban", &on_unban);
+  discord_set_on_guild_ban_add(client, &on_guild_ban_add);
+  discord_set_on_guild_ban_remove(client, &on_guild_ban_remove);
+  discord_set_on_command(client, "!ban", &on_ban);
+  discord_set_on_command(client, "!unban", &on_unban);
 
   printf("\n\nThis bot demonstrates how easy it is to ban/unban people\n"
          "1. Type '!ban user#1234' to ban user\n"

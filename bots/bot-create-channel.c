@@ -86,11 +86,11 @@ int main(int argc, char *argv[])
   assert(NULL != client);
 
   discord_set_prefix(client, "!channel");
-  discord_on_command(client, "Create", &on_create);
-  discord_on_command(client, "DeleteHere", &on_delete);
-  discord_on_channel_create(client, &on_channel_create);
-  discord_on_channel_update(client, &on_channel_update);
-  discord_on_channel_delete(client, &on_channel_delete);
+  discord_set_on_command(client, "Create", &on_create);
+  discord_set_on_command(client, "DeleteHere", &on_delete);
+  discord_set_on_channel_create(client, &on_channel_create);
+  discord_set_on_channel_update(client, &on_channel_update);
+  discord_set_on_channel_delete(client, &on_channel_delete);
 
   printf("\n\nThis bot demonstrates how easy it is to create/delete channels\n"
          "1. Type '!channelCreate <channel_name>' anywhere to create a new channel\n"

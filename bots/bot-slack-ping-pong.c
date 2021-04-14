@@ -41,8 +41,8 @@ int main(int argc, char *argv[])
   struct slack *client = slack_config_init(config_file);
   assert(NULL != client);
 
-  slack_on_hello(client, &on_hello);
-  slack_on_message(client, &on_message);
+  slack_set_on_hello(client, &on_hello);
+  slack_set_on_message(client, &on_message);
 
   slack_socketmode_run(client);
 

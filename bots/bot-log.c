@@ -56,10 +56,10 @@ int main(int argc, char *argv[])
   struct discord *client = discord_config_init(config_file);
   assert(NULL != client);
 
-  discord_on_ready(client, &on_ready);
-  discord_on_guild_member_add(client, &on_guild_member_add);
-  discord_on_guild_member_update(client, &on_guild_member_update);
-  discord_on_guild_member_remove(client, &on_guild_member_remove);
+  discord_set_on_ready(client, &on_ready);
+  discord_set_on_guild_member_add(client, &on_guild_member_add);
+  discord_set_on_guild_member_update(client, &on_guild_member_update);
+  discord_set_on_guild_member_remove(client, &on_guild_member_remove);
 
   discord_run(client);
 

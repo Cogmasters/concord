@@ -38,8 +38,8 @@ int main(int argc, char *argv[])
   struct discord *client = discord_config_init(config_file);
   assert(NULL != client);
 
-  discord_on_ready(client, &on_ready);
-  discord_on_message_create(client, &on_message_create);
+  discord_set_on_ready(client, &on_ready);
+  discord_set_on_message_create(client, &on_message_create);
 
   discord_run(client);
 

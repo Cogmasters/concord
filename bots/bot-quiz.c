@@ -399,7 +399,7 @@ int main(int argc, char *argv[])
   struct discord *client = discord_config_init(config_file);
   assert(NULL != client);
 
-  discord_on_message_reaction_add(client, &on_reaction_add);
+  discord_set_on_message_reaction_add(client, &on_reaction_add);
 
   printf("\n\nTHIS IS A WORK IN PROGRESS"
          "\nTYPE ANY KEY TO START BOT\n");

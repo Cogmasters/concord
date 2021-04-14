@@ -119,7 +119,7 @@ int main(int argc, char *argv[])
   struct discord *client = discord_config_init(config_file);
   assert(NULL != client);
 
-  discord_on_command(client, "$", &on_command);
+  discord_set_on_command(client, "$", &on_command);
 
   printf("\n\nThis bot allows navigating its host machine like"
          " a shell terminal.\n\n"
