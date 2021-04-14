@@ -23,23 +23,16 @@ struct _event_cxt {
 static void
 discord_session_from_json(char *str, size_t len, void *p_session)
 {
-  struct discord_session *session = (struct discord_session*)p_session;
-
-  struct sized_buffer buf = {NULL, 0};
-
-  json_scanf(str, len,
-     "[url]%s"
-     "[shards]%d"
-     "[session_start_limit]%T",
-     session->url,
-     &session->shards,
-     &buf);
-
-  json_scanf(buf.start, buf.size,
-      "[total]%d"
-      "[remaining]%d"
-      "[reset_after]%d"
-      "[max_concurrency]%d",
+  struct discord_session *session = p_session;
+  json_extract(str, len,
+      "(url):s"
+      "(shards):d"
+      "(session_start_limit.total):d"
+      "(session_start_limit.remaining):d"
+      "(session_start_limit.reset_after):d"
+      "(session_start_limit.max_concurrency):d",
+      session->url,
+      &session->shards,
       &session->total,
       &session->remaining,
       &session->reset_after,
@@ -272,8 +265,7 @@ on_guild_member_add(struct discord_gateway *gw, struct sized_buffer *data)
   discord_guild_member_from_json(data->start, data->size, member);
 
   u64_snowflake_t guild_id = 0;
-  json_extract(data->start, data->size,
-    "(guild_id):s_as_u64", &guild_id);
+  json_extract(data->start, data->size, "(guild_id):s_as_u64", &guild_id);
 
   (*gw->cbs.on_guild_member_add)(
       gw->p_client, 
@@ -293,8 +285,7 @@ on_guild_member_update(struct discord_gateway *gw, struct sized_buffer *data)
   discord_guild_member_from_json(data->start, data->size, member);
 
   u64_snowflake_t guild_id = 0;
-  json_extract(data->start, data->size,
-    "(guild_id):s_as_u64", &guild_id);
+  json_extract(data->start, data->size, "(guild_id):s_as_u64", &guild_id);
 
   (*gw->cbs.on_guild_member_update)(
       gw->p_client, 
@@ -430,7 +421,8 @@ on_channel_pins_update(struct discord_gateway *gw, struct sized_buffer *data)
     "(guild_id):s_as_u64"
     "(channel_id):s_as_u64"
     "(last_pin_timestamp):F",
-    &guild_id, &channel_id,
+    &guild_id, 
+    &channel_id,
     &orka_iso8601_to_unix_ms, &last_pin_timestamp);
 
   (*gw->cbs.on_channel_pins_update)(
@@ -522,7 +514,9 @@ on_message_delete(struct discord_gateway *gw, struct sized_buffer *data)
     "(id):s_as_u64"
     "(channel_id):s_as_u64"
     "(guild_id):s_as_u64",
-    &message_id, &channel_id, &guild_id);
+    &message_id, 
+    &channel_id, 
+    &guild_id);
 
   (*gw->cbs.on_message_delete)(gw->p_client, gw->bot, 
       message_id, 
@@ -665,11 +659,11 @@ on_voice_state_update(struct discord_gateway *gw, struct sized_buffer *data)
   struct discord_voice_state *vs = discord_voice_state_alloc();
   discord_voice_state_from_json(data->start, data->size, vs);
 
-#ifdef _DISCORD_ADD_ONS
+#ifdef DISCORD_VOICE_CONNECTIONS_H
   if (!discord_voice_state_update(gw->p_client, vs->guild_id, vs->session_id)) {
     log_debug("Couldn't match a voice connection to guild_id");
   }
-#endif // _DISCORD_ADD_ONS
+#endif // DISCORD_VOICE_CONNECTIONS_H
 
   if (gw->cbs.on_voice_state_update)
     (*gw->cbs.on_voice_state_update)(gw->p_client, gw->bot, vs);
@@ -688,11 +682,11 @@ on_voice_server_update(struct discord_gateway *gw, struct sized_buffer *data)
                "(endpoint):s",
                &token, &guild_id, &endpoint);
 
-#ifdef _DISCORD_ADD_ONS
+#ifdef DISCORD_VOICE_CONNECTIONS_H
   if (!discord_voice_server_update(gw->p_client, guild_id, token, endpoint)) {
     log_debug("Couldn't match a voice connection to guild_id");
   }
-#endif // _DISCORD_ADD_ONS
+#endif // DISCORD_VOICE_CONNECTIONS_H
 
   if (gw->cbs.on_voice_server_update)
     (*gw->cbs.on_voice_server_update)(gw->p_client, gw->bot,
@@ -864,14 +858,10 @@ on_dispatch(struct discord_gateway *gw)
   }
 
   struct _event_cxt *cxt = malloc(sizeof(struct _event_cxt));
-  char *datacpy;
-  asprintf(&datacpy, "%.*s", \
+  asprintf(&cxt->data.start, "%.*s", \
       (int)gw->payload.event_data.size, gw->payload.event_data.start);
+  cxt->data.size = gw->payload.event_data.size;
   cxt->p_gw = gw;
-  cxt->data = (struct sized_buffer){
-    .start = datacpy,
-    .size = gw->payload.event_data.size
-  };
   cxt->event = get_dispatch_event(gw->payload.event_name);
 
   if (pthread_create(&cxt->tid, NULL, &dispatch_run, cxt))
@@ -1029,7 +1019,6 @@ _gateway_init(
   struct sized_buffer *token,
   const char config_file[])
 {
-  ws_set_refresh_rate(gw->ws, 1);
   ws_set_max_reconnect(gw->ws, 15);
 
   gw->id = discord_gateway_identify_alloc();
