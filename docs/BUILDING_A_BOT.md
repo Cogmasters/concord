@@ -18,12 +18,12 @@ The entire code of ping-pong bot is below. We will go over it in further down:
 
 void on_ready(struct discord *client, const struct discord_user *me) {
   fprintf(stderr, "\n\nPingPong-Bot succesfully connected to Discord as %s#%s!\n\n",
-      me->username, me->discriminator);
+      bot->username, bot->discriminator);
 }
 
 void on_ping(
   struct discord *client,
-  const struct discord_user *me,
+  const struct discord_user *bot,
   const struct discord_message *msg)
 {
   // make sure bot doesn't echoes other bots
@@ -36,7 +36,7 @@ void on_ping(
 
 void on_pong(
     struct discord *client,
-    const struct discord_user *me,
+    const struct discord_user *bot,
     const struct discord_message *msg)
 {
   // make sure bot doesn't echoes other bots
