@@ -34,17 +34,15 @@ struct slack_rtm {
 void slack_rtm_config_init(struct slack_rtm *rtm, const char config_file[]);
 void slack_rtm_cleanup(struct slack_rtm *rtm);
 
-struct slack_socketmode_resp {
-  struct sized_buffer payload;
-  char envelope_id[64];
-  char type[64];
-  bool accepts_response_payload;
-};
-
 struct slack_socketmode {
   struct websockets *ws;
   char base_url[UA_MAX_URL_LEN];
-  struct slack_socketmode_resp resp; // unique per iteration
+  struct { /* SLACK SOCKETMODE RESPONSE STRUCT */
+    struct sized_buffer payload;
+    char envelope_id[64];
+    char type[64];
+    bool accepts_response_payload;
+  } text;
   struct slack *p_client;
 };
 

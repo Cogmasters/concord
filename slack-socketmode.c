@@ -59,50 +59,45 @@ slack_apps_connections_open(struct slack *client)
 }
 
 static void
-on_hello_cb(void *p_sm, void *curr_iter_data)
+on_hello(struct slack_socketmode *sm)
 {
-  struct slack *client = ((struct slack_socketmode*)p_sm)->p_client;
+  struct slack *client = sm->p_client;
 
-  ws_set_status(client->sm.ws, WS_CONNECTED);
+  ws_set_status(sm->ws, WS_CONNECTED);
   if (!client->cbs.on_hello) return;
 
-  struct sized_buffer *payload = curr_iter_data;
-  (*client->cbs.on_hello)(client, payload->start, payload->size);
+  (*client->cbs.on_hello)(client, sm->text.payload.start, sm->text.payload.size);
 }
 
 static void
-on_message(struct slack_socketmode *sm, struct sized_buffer *payload)
+on_message(struct slack_socketmode *sm, struct sized_buffer *event)
 {
   if (!sm->p_client->cbs.on_message) return;
 
-  (*sm->p_client->cbs.on_message)(sm->p_client, payload->start, payload->size);
+  (*sm->p_client->cbs.on_message)(sm->p_client, event->start, event->size);
 }
 
 static void
-on_events_api_cb(void *p_sm,void *curr_iter_data)
+on_events_api(struct slack_socketmode *sm)
 {
-  struct slack_socketmode_resp *resp = curr_iter_data;
   struct sized_buffer t_event = {0}, t_type = {0};
-  json_extract(resp->payload.start, resp->payload.size, "(event):T", &t_event);
+  json_extract(sm->text.payload.start, sm->text.payload.size, 
+      "(event):T", &t_event);
   if (t_event.start) {
     json_extract(t_event.start, t_event.size, "(type):T", &t_type);
   }
 
   if (STRNEQ("message", t_type.start, sizeof("message")-1))
-    on_message(p_sm, &t_event);
+    on_message(sm, &t_event);
 }
 
 static void
-response_cleanup_cb(void *p_resp)
-{
-  struct slack_socketmode_resp *resp = p_resp;
-  if (resp->payload.start)
-    free(resp->payload.start);
-  free(resp);
+on_connect_cb(void *p_sm, const char *ws_protocols) {
+  log_info("Connected, WS-Protocols: '%s'", ws_protocols);
 }
 
-static int
-on_text_event_cb(void *p_sm, const char *text, size_t len)
+static void
+on_text_cb(void *p_sm, const char *text, size_t len) 
 {
   struct slack_socketmode *sm = p_sm;
 
@@ -113,38 +108,16 @@ on_text_event_cb(void *p_sm, const char *text, size_t len)
       "(envelope_id):s"
       "(type):s"
       "(accepts_response_payload):b",
-      &sm->resp.payload,
-      sm->resp.envelope_id,
-      sm->resp.type,
-      &sm->resp.accepts_response_payload);
-
-  struct slack_socketmode_resp *respcpy = malloc(sizeof *respcpy);
-  memcpy(respcpy, &sm->resp, sizeof(struct slack_socketmode_resp));
-
-  respcpy->payload.start = strndup(
-                              sm->resp.payload.start,
-                              sm->resp.payload.size);
-
-  ws_set_curr_iter_data(sm->ws, respcpy, &response_cleanup_cb);
+      &sm->text.payload,
+      sm->text.envelope_id,
+      sm->text.type,
+      &sm->text.accepts_response_payload);
 
   // @todo just two events for testing purposes
-  int opcode = INT_MIN;
-  if (STREQ(sm->resp.type, "hello"))
-    opcode = 1;
-  if (STREQ(sm->resp.type, "events_api"))
-    opcode = 2;
-
-  return opcode;
-}
-
-static void
-on_connect_cb(void *p_sm, const char *ws_protocols) {
-  log_info("Connected, WS-Protocols: '%s'", ws_protocols);
-}
-
-static void
-on_text_cb(void *p_sm, const char *text, size_t len) {
-  log_warn("FALLBACK TO ON_TEXT");
+  if (STREQ(sm->text.type, "hello"))
+    on_hello(sm);
+  if (STREQ(sm->text.type, "events_api"))
+    on_events_api(sm);
 }
 
 static void
@@ -167,7 +140,6 @@ slack_socketmode_config_init(struct slack_socketmode *sm, const char config_file
   if (!config_file) ERR("Missing config file");
   struct ws_callbacks cbs = {
     .data = sm,
-    .on_text_event = &on_text_event_cb,
     .on_connect = &on_connect_cb,
     .on_text = &on_text_cb,
     .on_close = &on_close_cb
@@ -178,12 +150,7 @@ slack_socketmode_config_init(struct slack_socketmode *sm, const char config_file
 
   sm->ws = ws_config_init(sm->base_url, &cbs, "SLACK SOCKET MODE", config_file);
 
-  ws_set_refresh_rate(sm->ws, 1);
   ws_set_max_reconnect(sm->ws, 15);
-  
-  //@todo for testing purposes
-  ws_set_event(sm->ws, 1, &on_hello_cb); // hello
-  ws_set_event(sm->ws, 2, &on_events_api_cb); // events_api
 }
 
 void

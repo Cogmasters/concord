@@ -32,37 +32,22 @@ slack_rtm_connect(struct slack *client)
 }
 
 static void
-payload_cleanup(void *p_payload)
+on_hello(struct slack_rtm *rtm, struct sized_buffer *payload)
 {
-  struct sized_buffer *payload = p_payload;
-  free(payload->start);
-  free(payload);
+  struct slack *client = rtm->p_client;
+
+  ws_set_status(client->rtm.ws, WS_CONNECTED);
+  if (client->cbs.on_hello)
+    (*client->cbs.on_hello)(client, payload->start, payload->size);
 }
 
-static int
-on_text_event_cb(void *p_rtm, const char *text, size_t len)
+static void
+on_message(struct slack_rtm *rtm, struct sized_buffer *payload)
 {
-  struct slack_rtm *rtm = p_rtm;
+  struct slack *client = rtm->p_client;
 
-  log_trace("ON_EVENT:\t%s", text);
-
-  char event[128] = {0};
-  json_extract((char*)text, len, "(type):s", event);
-
-  struct sized_buffer *payload = malloc(sizeof *payload);
-  payload->start = strndup(text, len);
-  payload->size = len;
-
-  ws_set_curr_iter_data(rtm->ws, payload, &payload_cleanup);
-
-  // @todo just two events for testing purposes
-  int opcode = INT_MIN;
-  if (STREQ(event, "hello"))
-    opcode = 1;
-  if (STREQ(event, "message"))
-    opcode = 2;
-
-  return opcode;
+  if (client->cbs.on_message)
+    (*client->cbs.on_message)(client, payload->start, payload->size);
 }
 
 static void
@@ -71,8 +56,21 @@ on_connect_cb(void *p_rtm, const char *ws_protocols) {
 }
 
 static void
-on_text_cb(void *p_rtm, const char *text, size_t len) {
-  log_warn("FALLBACK TO ON_TEXT");
+on_text_cb(void *p_rtm, const char *text, size_t len) 
+{
+  struct slack_rtm *rtm = p_rtm;
+
+  log_trace("ON_EVENT:\t%s", text);
+
+  char event[128] = {0};
+  json_extract((char*)text, len, "(type):s", event);
+
+  struct sized_buffer payload = {(char*)text, len};
+  // @todo just two events for testing purposes
+  if (STREQ(event, "hello"))
+    on_hello(rtm, &payload);
+  if (STREQ(event, "message"))
+    on_message(rtm, &payload);
 }
 
 static void
@@ -86,29 +84,6 @@ on_close_cb(void *p_rtm, enum ws_close_reason wscode, const char *reason, size_t
           wscode, len, reason);
 }
 
-static void
-on_hello_cb(void *p_rtm, void *curr_iter_data)
-{
-  struct slack *client = ((struct slack_rtm*)p_rtm)->p_client;
-
-  ws_set_status(client->rtm.ws, WS_CONNECTED);
-  if (!client->cbs.on_hello) return;
-
-  struct sized_buffer *payload = curr_iter_data;
-  (*client->cbs.on_hello)(client, payload->start, payload->size);
-}
-
-static void
-on_message_cb(void *p_rtm, void *curr_iter_data)
-{
-  struct slack *client = ((struct slack_rtm*)p_rtm)->p_client;
-
-  if (!client->cbs.on_message) return;
-
-  struct sized_buffer *payload = curr_iter_data;
-  (*client->cbs.on_message)(client, payload->start, payload->size);
-}
-
 void
 slack_rtm_config_init(struct slack_rtm *rtm, const char config_file[])
 {
@@ -118,7 +93,6 @@ slack_rtm_config_init(struct slack_rtm *rtm, const char config_file[])
   if (!config_file) ERR("Missing config file");
   struct ws_callbacks cbs = {
     .data = rtm,
-    .on_text_event = &on_text_event_cb,
     .on_connect = &on_connect_cb,
     .on_text = &on_text_cb,
     .on_close = &on_close_cb
@@ -126,12 +100,7 @@ slack_rtm_config_init(struct slack_rtm *rtm, const char config_file[])
 
   rtm->ws = ws_config_init(rtm->base_url, &cbs, "SLACK RTM", config_file);
 
-  ws_set_refresh_rate(rtm->ws, 1);
   ws_set_max_reconnect(rtm->ws, 15);
-
-  //@todo for testing purposes
-  ws_set_event(rtm->ws, 1, &on_hello_cb); // hello
-  ws_set_event(rtm->ws, 2, &on_message_cb); // message
 }
 
 void
