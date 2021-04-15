@@ -8,6 +8,7 @@
 #include "json-actor.h"
 #include "json-actor-boxed.h"
 
+#include "logconf.h" /* struct logconf */
 #include "user-agent.h"
 #include "websockets.h"
 #include "orka-utils.h"
@@ -27,8 +28,7 @@ struct discord_adapter {
 };
 
 /* ADAPTER PRIVATE FUNCTIONS */
-void discord_adapter_init(struct discord_adapter *adapter, const char token[]);
-void discord_adapter_config_init(struct discord_adapter *adapter, const char config_file[]);
+void discord_adapter_init(struct discord_adapter *adapter, struct logconf *config, struct sized_buffer *token);
 void discord_adapter_cleanup(struct discord_adapter *adapter);
 void discord_adapter_run(
   struct discord_adapter *adapter, 
@@ -129,8 +129,7 @@ struct discord_gateway { /* GATEWAY STRUCTURE */
 };
 
 /* GATEWAY PRIVATE FUNCTIONS */
-void discord_gateway_init(struct discord_gateway *gw, const char token[]);
-void discord_gateway_config_init(struct discord_gateway *gw, const char config_file[]);
+void discord_gateway_init(struct discord_gateway *gw, struct logconf *config, struct sized_buffer *token);
 void discord_gateway_cleanup(struct discord_gateway *gw);
 void discord_gateway_run(struct discord_gateway *gw);
 /* gracefully exit the infinite loop */
@@ -138,8 +137,12 @@ void discord_gateway_shutdown(struct discord_gateway *gw);
 
 struct discord {
   void *data; //space for user arbitrary data
+  struct sized_buffer token;
+
   struct discord_adapter adapter;
   struct discord_gateway gw;
+
+  struct logconf config;
 
 #ifdef DISCORD_VOICE_CONNECTIONS_H
   struct discord_voice **vcs;

@@ -5,6 +5,7 @@
 #include "json-actor.h"
 #include "json-actor-boxed.h"
 
+#include "logconf.h"
 #include "user-agent.h"
 #include "websockets.h"
 #include "orka-utils.h"
@@ -15,7 +16,7 @@ struct reddit_adapter {
 };
 
 /* ADAPTER PRIVATE FUNCTIONS */
-void reddit_adapter_config_init(struct reddit_adapter *adapter, const char config_file[]);
+void reddit_adapter_init(struct reddit_adapter *adapter, struct logconf *config);
 void reddit_adapter_cleanup(struct reddit_adapter *adapter);
 
 void reddit_adapter_run(
@@ -25,7 +26,13 @@ void reddit_adapter_run(
   enum http_method http_method, char endpoint[], ...);
 
 struct reddit {
+  struct sized_buffer username;
+  struct sized_buffer password;
+  struct sized_buffer client_id;
+  struct sized_buffer client_secret;
+
   struct reddit_adapter adapter;
+  struct logconf config;
 };
 
 #endif // REDDIT_INTERNAL_H

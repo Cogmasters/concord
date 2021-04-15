@@ -8,9 +8,10 @@ void load(char * str, size_t len, void * ptr) {
   fprintf(stderr, "%.*s", (int)len, str);
 }
 
-int commit(char *base_url, char config_file[])
+int commit(char *base_url, struct logconf *config)
 {
-  struct user_agent *data = ua_config_init(base_url, "CEE HTTP", config_file);
+  struct user_agent *data = ua_init(base_url, config);
+  logconf_add_id(config, data, "CEE_HTTP");
 
   curl_global_init(CURL_GLOBAL_ALL);
   struct sized_buffer body = {NULL, 0};
@@ -38,7 +39,10 @@ int main(int argc, char *argv[])
   else
     config_file = "bot.config";
 
-  commit("https://cee.studio", config_file);
+  struct logconf config={0};
+  logconf_setup(&config, config_file);
+
+  commit("https://cee.studio", &config);
 
   return 0;
 }

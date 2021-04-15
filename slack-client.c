@@ -8,12 +8,19 @@ slack_config_init(const char config_file[])
 {
   struct slack *new_client = calloc(1, sizeof *new_client);
 
+  logconf_setup(&new_client->config, config_file);
+  new_client->bot_token = logconf_get_field(&new_client->config, "slack.bot_token");
+  new_client->app_token = logconf_get_field(&new_client->config, "slack.app_token");
+
   new_client->adapter.p_client = new_client;
   new_client->rtm.p_client = new_client;
   new_client->sm.p_client = new_client;
-  slack_adapter_config_init(&new_client->adapter, config_file);
-  slack_rtm_config_init(&new_client->rtm, config_file);
-  slack_socketmode_config_init(&new_client->sm, config_file);
+  slack_adapter_init(
+    &new_client->adapter, 
+    &new_client->config,
+    &new_client->bot_token);
+  slack_rtm_init(&new_client->rtm, &new_client->config);
+  slack_socketmode_init(&new_client->sm, &new_client->config);
 
   return new_client;
 }
@@ -21,6 +28,7 @@ slack_config_init(const char config_file[])
 void 
 slack_cleanup(struct slack *client)
 {
+  logconf_cleanup(&client->config);
   slack_adapter_cleanup(&client->adapter);
   slack_rtm_cleanup(&client->rtm);
   slack_socketmode_cleanup(&client->sm);
@@ -73,8 +81,7 @@ slack_chat_post_message(struct slack *client, char channel[], char text[])
     return;
   }
 
-  struct sized_buffer token = ua_config_get_field(client->adapter.ua, "slack.bot-token");
-  if (!token.start) {
+  if (!client->bot_token.start) {
     log_warn("Missing bot token");
     return;
   }
@@ -85,7 +92,7 @@ slack_chat_post_message(struct slack *client, char channel[], char text[])
       "(token):.*s"
       "(text):s", 
       channel, 
-      (int)token.size, token.start, 
+      (int)client->bot_token.size, client->bot_token.start, 
       text);
 
   ua_reqheader_add(client->adapter.ua, "Content-type", "application/json");

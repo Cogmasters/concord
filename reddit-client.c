@@ -7,8 +7,15 @@ struct reddit*
 reddit_config_init(const char config_file[])
 {
   struct reddit *new_client = calloc(1, sizeof *new_client);
+  logconf_setup(&new_client->config, config_file);
+  new_client->username = logconf_get_field(&new_client->config, "reddit.username");
+  new_client->password = logconf_get_field(&new_client->config, "reddit.password");
+  new_client->client_id = logconf_get_field(&new_client->config, "reddit.client_id");
+  new_client->client_secret = logconf_get_field(&new_client->config, "reddit.client_secret");
+
   new_client->adapter.p_client = new_client;
-  reddit_adapter_config_init(&new_client->adapter, config_file);
+  reddit_adapter_init(&new_client->adapter, &new_client->config);
+
   return new_client;
 }
 
@@ -22,8 +29,6 @@ reddit_cleanup(struct reddit *client)
 void
 reddit_access_token(struct reddit *client)
 {
-  struct sized_buffer username = ua_config_get_field(client->adapter.ua, "reddit.username");
-  struct sized_buffer password = ua_config_get_field(client->adapter.ua, "reddit.password");
 
   char query[512];
   int ret = query_inject(query, sizeof(query),
@@ -31,8 +36,8 @@ reddit_access_token(struct reddit *client)
               "(username):.*s"
               "(password):.*s", 
               "password",
-              (int)username.size, username.start,
-              (int)password.size, password.start);
+              (int)client->username.size, client->username.start,
+              (int)client->password.size, client->password.start);
   ASSERT_S(ret < sizeof(query), "Out of bounds write attempt");
 
   reddit_adapter_run(

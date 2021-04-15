@@ -5,6 +5,8 @@
 #include <assert.h>
 
 #include "discord.h"
+#include "discord-internal.h" /* access struct logconf from struct discord */
+
 #include "user-agent.h"
 #include "orka-utils.h"
 #include "json-scanf.h"
@@ -313,13 +315,14 @@ int main(int argc, char *argv[])
   else
     config_file = "bot.config";
 
-  /* Initialize ELITEBGS User Agent */
-  g_elitebgs_ua = ua_config_init(ELITEBGS_API_URL, "ELITEBGS HTTP", config_file);
-
   /* Initialize Discord User Agent */
   discord_global_init();
   struct discord *client = discord_config_init(config_file);
   assert(NULL != client);
+
+  /* Initialize ELITEBGS User Agent (share discord logconf) */
+  g_elitebgs_ua = ua_init(ELITEBGS_API_URL, &client->config);
+  logconf_add_id(&client->config, g_elitebgs_ua, "ELITEBGS_HTTP");
 
   /* Set discord callbacks */
   discord_set_on_ready(client, &on_ready);

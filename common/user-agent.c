@@ -6,16 +6,15 @@
 #include <string.h>
 #include <strings.h>
 #include <pthread.h>
-
-#include "user-agent.h"
 //#include <curl/curl.h> /* implicit */
 
+#include "user-agent.h"
 #include "orka-utils.h"
-#include "orka-config.h"
 
 
 struct user_agent {
-  struct orka_config config;
+  struct logconf *p_config;
+
   struct curl_slist *req_header; // the request header sent to the api
 
   struct ua_conn **conn_pool; // connection pool for reuse
@@ -59,6 +58,7 @@ struct ua_conn {
 
   void *data; //user arbitrary data
 };
+
 
 /* attempt to get value from matching response header field */
 char*
@@ -230,23 +230,7 @@ conn_init(struct user_agent *ua)
   //set ptr to response header to be filled at callback
   ecode = curl_easy_setopt(new_ehandle, CURLOPT_HEADERDATA, &new_conn->resp_header);
   ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
-#if 0
-  /* DEBUG MODE SETOPTS START */
 
-  //set debug callback
-  D_ONLY(ecode = curl_easy_setopt(new_ehandle, CURLOPT_DEBUGFUNCTION, ua->global->curl_cb));
-  D_ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
-
-  //set ptr to global containing dump files
-  D_ONLY(ecode = curl_easy_setopt(new_ehandle, CURLOPT_DEBUGDATA, ua->global));
-  D_ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
-
-  //enable verbose
-  D_ONLY(ecode = curl_easy_setopt(new_ehandle, CURLOPT_VERBOSE, 1L));
-  D_ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
-
-  /* DEBUG MODE SETOPTS END */
-#endif 
   // execute user-defined curl_easy_setopts
   if (ua->setopt_cb) {
     (*ua->setopt_cb)(new_ehandle, ua->data);
@@ -351,11 +335,11 @@ ua_conn_timestamp(struct ua_conn *conn) {
 }
 
 struct user_agent*
-ua_init(const char base_url[]) 
+ua_init(const char base_url[], struct logconf *config) 
 {
   struct user_agent *new_ua = calloc(1, sizeof *new_ua);
 
-  ua_set_base_url(new_ua, base_url);
+  ua_set_url(new_ua, base_url);
 
   // default header
   char user_agent[] = "orca (http://github.com/cee-studio/orca)";
@@ -363,8 +347,8 @@ ua_init(const char base_url[])
   ua_reqheader_add(new_ua, "Content-Type", "application/json");
   ua_reqheader_add(new_ua, "Accept", "application/json");
 
-  // default configs
-  orka_config_init(&new_ua->config, NULL, NULL);
+  logconf_add_id(config, new_ua, "USER_AGENT");
+  new_ua->p_config = config;
 
   if (pthread_mutex_init(&new_ua->lock, NULL))
     ERR("Couldn't initialize mutex");
@@ -372,23 +356,10 @@ ua_init(const char base_url[])
   return new_ua;
 }
 
-struct user_agent*
-ua_config_init(
-  const char base_url[], 
-  const char tag[], 
-  const char config_file[]) 
-{
-  struct user_agent *new_ua = ua_init(base_url);
-  orka_config_init(&new_ua->config, tag, config_file);
-  return new_ua;
-}
-
 void
 ua_cleanup(struct user_agent *ua)
 {
   curl_slist_free_all(ua->req_header);
-  orka_config_cleanup(&ua->config);
-
   if (ua->conn_pool) {
     for (size_t i=0; i < ua->num_conn; ++i)
       conn_cleanup(ua->conn_pool[i]);
@@ -399,12 +370,12 @@ ua_cleanup(struct user_agent *ua)
 }
 
 char*
-ua_get_base_url(struct user_agent *ua) {
+ua_get_url(struct user_agent *ua) {
   return ua->base_url;
 }
 
 void
-ua_set_base_url(struct user_agent *ua, const char base_url[])
+ua_set_url(struct user_agent *ua, const char base_url[])
 {
   int ret = snprintf(ua->base_url, sizeof(ua->base_url), "%s", base_url);
   ASSERT_S(ret < sizeof(ua->base_url), "Out of bounds write attempt");
@@ -593,8 +564,9 @@ send_request(struct user_agent *ua, struct ua_conn *conn)
   ecode = curl_easy_getinfo(conn->ehandle, CURLINFO_EFFECTIVE_URL, &resp_url);
   ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
 
-  (*ua->config.http_dump.cb)(
-    &ua->config, 
+  log_http(
+    ua->p_config, 
+    ua,
     resp_url, 
     conn->resp_body.content,
     "HTTP_RESPONSE %s(%d)", http_code_print(httpcode), httpcode);
@@ -762,8 +734,9 @@ ua_vrun(
   struct ua_conn *conn = get_conn(ua);
   set_url(ua, conn, endpoint, args); //set the request url
 
-  (*ua->config.http_dump.cb)(
-    &ua->config, 
+  log_http(
+    ua->p_config, 
+    ua,
     conn->req_url, 
     *req_body,
     "HTTP_REQUEST %s", http_method_print(http_method));
@@ -793,9 +766,4 @@ ua_run(
     http_method, endpoint, args);
 
   va_end(args);
-}
-
-struct sized_buffer
-ua_config_get_field(struct user_agent *ua, char *json_field) {
-  return orka_config_get_field(&ua->config, json_field);
 }

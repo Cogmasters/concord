@@ -31,14 +31,12 @@ apps_connections_open_from_json(char str[], size_t len, void *p_url)
 void
 slack_apps_connections_open(struct slack *client)
 {
-  struct sized_buffer app_token = ua_config_get_field(client->adapter.ua, "slack.app_token");
-  if (!app_token.start) {
-    log_warn("Missing app token");
-    return;
-  }
+
+  ASSERT_S(NULL != client->bot_token.start, "Missing bot token");
+  ASSERT_S(NULL != client->app_token.start, "Missing app token");
 
   char auth[128];
-  int ret = snprintf(auth, sizeof(auth), "Bearer %.*s", (int)app_token.size, app_token.start);
+  int ret = snprintf(auth, sizeof(auth), "Bearer %.*s", (int)client->app_token.size, client->app_token.start);
   ASSERT_S(ret < sizeof(auth), "Out of bounds write attempt");
   ua_reqheader_add(client->adapter.ua, "Authorization", auth);
 
@@ -50,10 +48,7 @@ slack_apps_connections_open(struct slack *client)
     NULL,
     HTTP_POST, "/apps.connections.open");
 
-  struct sized_buffer bot_token = ua_config_get_field(client->adapter.ua, "slack.bot_token");
-  if (!bot_token.start) ERR("Missing bot token");
-
-  ret = snprintf(auth, sizeof(auth), "Bearer %.*s", (int)bot_token.size, bot_token.start);
+  ret = snprintf(auth, sizeof(auth), "Bearer %.*s", (int)client->bot_token.size, client->bot_token.start);
   ASSERT_S(ret < sizeof(auth), "Out of bounds write attempt");
   ua_reqheader_add(client->adapter.ua, "Authorization", auth);
 }
@@ -132,12 +127,11 @@ on_close_cb(void *p_sm, enum ws_close_reason wscode, const char *reason, size_t 
 }
 
 void
-slack_socketmode_config_init(struct slack_socketmode *sm, const char config_file[])
+slack_socketmode_init(struct slack_socketmode *sm, struct logconf *config)
 {
   ASSERT_S(NULL != sm->p_client, "Not meant to be called standalone");
   slack_apps_connections_open(sm->p_client);
 
-  if (!config_file) ERR("Missing config file");
   struct ws_callbacks cbs = {
     .data = sm,
     .on_connect = &on_connect_cb,
@@ -148,9 +142,10 @@ slack_socketmode_config_init(struct slack_socketmode *sm, const char config_file
   // @todo temporary debug_reconnect while development phase
   strncat(sm->base_url, "&debug_reconnects=true", sizeof(sm->base_url));
 
-  sm->ws = ws_config_init(sm->base_url, &cbs, "SLACK SOCKET MODE", config_file);
-
+  sm->ws = ws_init(&cbs, config);
+  ws_set_url(sm->ws, sm->base_url, NULL);
   ws_set_max_reconnect(sm->ws, 15);
+  logconf_add_id(config, sm->ws, "SLACK_SOCKETMODE");
 }
 
 void

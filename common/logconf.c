@@ -7,50 +7,13 @@
 #include <pthread.h> /* pthread_self() */
 #include <limits.h> /* PATH_MAX */
 
-#include "orka-config.h"
+#include "logconf.h"
+
 #include "orka-utils.h"
 #include "json-actor.h"
 
 
 static bool g_first_run = true; // used to delete existent dump files
-
-static void
-http_dump(
-  struct orka_config *config, 
-  char url[],
-  struct sized_buffer body,
-  char header_fmt[], ...)
-{
-  va_list args;
-  va_start(args, header_fmt);
-
-  static struct sized_buffer empty_body = {"empty body", 10};
-  if (0 == body.size) {
-    body = empty_body;
-  }
-
-  char header[512];
-  int ret = vsnprintf(header, sizeof(header), header_fmt, args);
-  ASSERT_S(ret < sizeof(header), "Out of bounds write attempt");
-
-  char timestr[64];
-  fprintf(config->http_dump.f, 
-    "%s [%s #TID%zu] - %s - %s\r\r\r\r\n%.*s\n",
-    header,
-    config->tag, 
-    (size_t)pthread_self(),
-    orka_timestamp_str(timestr, sizeof(timestr)), 
-    url,
-    (int)body.size, body.start);
-
-  fflush(config->http_dump.f);
-
-  va_end(args);
-}
-
-static void // see http_dump for parameter definitions
-noop_http_dump(struct orka_config *a, char b[], struct sized_buffer c, char d[], ...) 
-{ return; }
 
 static int
 get_log_level(char level[])
@@ -65,22 +28,30 @@ get_log_level(char level[])
 }
 
 void
-orka_config_init(struct orka_config *config, const char tag[], const char config_file[])
+logconf_add_id(struct logconf *config, void *addr, const char tag[])
 {
-  const char DEFAULT_TAG[] = "USER AGENT";
-  if (IS_EMPTY_STRING(tag)) 
-    tag = DEFAULT_TAG;
-  if (IS_EMPTY_STRING(config->tag) || !STREQ(config->tag, tag))
-    snprintf(config->tag, sizeof(config->tag), "%s", tag);
+  if (!config || !addr || IS_EMPTY_STRING(tag)) 
+    return; /* EARLY RETURN */
+
+  for (size_t i=0; i < MAX_LOGCONF_IDS; ++i) {
+    if ( (NULL == config->ids[i].addr) || (addr == config->ids[i].addr) ) {
+      config->ids[i].addr = addr;
+      snprintf(config->ids[i].tag, sizeof(config->ids[i].tag), "%s", tag);
+      return; /* EARLY RETURN */
+    }
+  }
+  ERR("Reach maximum logconf_ids threshold (%d)", MAX_LOGCONF_IDS);
+}
+
+void
+logconf_setup(struct logconf *config, const char config_file[])
+{
+  ASSERT_S(NULL != config, "Missing 'struct logconf'");
+
   if (IS_EMPTY_STRING(config_file)) {
-    config->http_dump.cb = &noop_http_dump;
-    config->http_dump.f = stderr;
+    config->http.f = stderr;
     return; /* EARLY RETURN */
   }
-
-  // save file name for possible references
-  int ret = snprintf(config->fname, sizeof(config->fname), "%s", config_file);
-  ASSERT_S(ret < sizeof(config->fname), "Out of bounds write attempt");
 
   struct {
     char level[16];
@@ -89,7 +60,7 @@ orka_config_init(struct orka_config *config, const char tag[], const char config
     struct {
       char filename[PATH_MAX];
       bool enable;
-    } http_dump;
+    } http;
   } *logging = calloc(1, sizeof *logging); 
 
 
@@ -108,8 +79,8 @@ orka_config_init(struct orka_config *config, const char tag[], const char config
              logging->level,
              logging->filename,
              &logging->quiet,
-             &logging->http_dump.enable,
-             logging->http_dump.filename);
+             &logging->http.enable,
+             logging->http.filename);
 
   /* SET LOGGER CONFIGS */
   if (!IS_EMPTY_STRING(logging->filename)) {
@@ -129,15 +100,14 @@ orka_config_init(struct orka_config *config, const char tag[], const char config
   }
 
   /* SET HTTP DUMP CONFIGS */
-  if (true == logging->http_dump.enable) {
-    if (!IS_EMPTY_STRING(logging->http_dump.filename)) {
+  if (true == logging->http.enable) {
+    if (!IS_EMPTY_STRING(logging->http.filename)) {
       if (true == g_first_run) 
-        config->http_dump.f = fopen(logging->http_dump.filename, "w+");
+        config->http.f = fopen(logging->http.filename, "w+");
       else
-        config->http_dump.f = fopen(logging->http_dump.filename, "a+");
-      ASSERT_S(NULL != config->http_dump.f, "Could not create dump file");
+        config->http.f = fopen(logging->http.filename, "a+");
+      ASSERT_S(NULL != config->http.f, "Could not create dump file");
     }
-    config->http_dump.cb = &http_dump;
   }
 
   if (true == g_first_run) {
@@ -148,21 +118,21 @@ orka_config_init(struct orka_config *config, const char tag[], const char config
 }
 
 void
-orka_config_cleanup(struct orka_config *config)
+logconf_cleanup(struct logconf *config)
 {
   if (config->contents)
     free(config->contents);
   if (config->logger.f)
     fclose(config->logger.f);
-  if (config->http_dump.f)
-    fclose(config->http_dump.f);
+  if (config->http.f)
+    fclose(config->http.f);
 }
 
 struct sized_buffer
-orka_config_get_field(struct orka_config *config, char *json_field)
+logconf_get_field(struct logconf *config, char *json_field)
 {
   struct sized_buffer field = {0};
-  if (NULL == json_field) return field; // empty field
+  if (!config || !json_field) return field; // empty field
 
   char fmt[512];
   int ret = snprintf(fmt, sizeof(fmt), "(%s):T", json_field);
@@ -173,7 +143,46 @@ orka_config_get_field(struct orka_config *config, char *json_field)
   return field;
 }
 
-char*
-orka_config_get_fname(struct orka_config *config) {
-  return config->fname;
+void
+log_http(
+  struct logconf *config, 
+  void *addr_id,
+  char url[],
+  struct sized_buffer body,
+  char header_fmt[], ...)
+{
+  if (!config) return;
+
+  char *tag = "NO TAG";
+  for (size_t i=0; i < MAX_LOGCONF_IDS; ++i) {
+    if (addr_id == config->ids[i].addr) {
+      tag = config->ids[i].tag;
+    }
+  }
+
+  va_list args;
+  va_start(args, header_fmt);
+
+  static struct sized_buffer empty_body = {"empty body", 10};
+  if (0 == body.size) {
+    body = empty_body;
+  }
+
+  char header[512];
+  int ret = vsnprintf(header, sizeof(header), header_fmt, args);
+  ASSERT_S(ret < sizeof(header), "Out of bounds write attempt");
+
+  char timestr[64];
+  fprintf(config->http.f, 
+    "%s [%s #TID%zu] - %s - %s\r\r\r\r\n%.*s\n",
+    header,
+    tag, 
+    (size_t)pthread_self(),
+    orka_timestamp_str(timestr, sizeof(timestr)), 
+    url,
+    (int)body.size, body.start);
+
+  fflush(config->http.f);
+
+  va_end(args);
 }

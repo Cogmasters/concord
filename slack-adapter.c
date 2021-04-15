@@ -11,16 +11,18 @@
 
 
 void
-slack_adapter_config_init(struct slack_adapter *adapter, const char config_file[])
+slack_adapter_init(struct slack_adapter *adapter, struct logconf *config, struct sized_buffer *token)
 {
-  ASSERT_S(NULL != config_file, "Missing config file");
+  adapter->ua = ua_init(BASE_API_URL, config);
+  logconf_add_id(config, adapter->ua, "SLACK_WEBAPI");
 
-  adapter->ua = ua_config_init(BASE_API_URL, "SLACK HTTP", config_file);
-  struct sized_buffer token = ua_config_get_field(adapter->ua, "slack.bot_token");
-  ASSERT_S(NULL != token.start, "Missing bot token");
+  if (STRNEQ("YOUR-BOT-TOKEN", token->start, token->size)) {
+    token->start = NULL;
+  }
+  ASSERT_S(NULL != token->start, "Missing bot token");
 
   char auth[128];
-  int ret = snprintf(auth, sizeof(auth), "Bearer %.*s", (int)token.size, token.start);
+  int ret = snprintf(auth, sizeof(auth), "Bearer %.*s", (int)token->size, token->start);
   ASSERT_S(ret < sizeof(auth), "Out of bounds write attempt");
 
   ua_reqheader_add(adapter->ua, "Authorization", auth);

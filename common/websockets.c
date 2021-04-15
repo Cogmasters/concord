@@ -7,11 +7,10 @@
 
 #include "websockets.h"
 #include "orka-utils.h"
-#include "orka-config.h"
 
 
 struct websockets {
-  struct orka_config config;
+  struct logconf *p_log;
   enum ws_status status;
   CURLM *mhandle;
   CURL *ehandle;
@@ -35,8 +34,9 @@ cws_on_connect_cb(void *p_ws, CURL *ehandle, const char *ws_protocols)
 {
   struct websockets *ws = p_ws;
 
-  (*ws->config.http_dump.cb)(
-    &ws->config, 
+  log_http(
+    ws->p_log, 
+    ws,
     ws->base_url, 
     (struct sized_buffer){(char*)ws_protocols, strlen(ws_protocols)},
     "WS_RCV_CONNECT");
@@ -49,8 +49,9 @@ cws_on_close_cb(void *p_ws, CURL *ehandle, enum cws_close_reason cwscode, const 
 {
   struct websockets *ws = p_ws;
 
-  (*ws->config.http_dump.cb)(
-    &ws->config, 
+  log_http(
+    ws->p_log, 
+    ws,
     ws->base_url, 
     (struct sized_buffer){(char*)reason, len},
     "WS_RCV_CLOSE(%d)", cwscode);
@@ -86,8 +87,9 @@ cws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
 {
   struct websockets *ws = p_ws;
 
-  (*ws->config.http_dump.cb)(
-    &ws->config, 
+  log_http(
+    ws->p_log, 
+    ws,
     ws->base_url, 
     (struct sized_buffer){(char*)text, len},
     "WS_RCV_TEXT");
@@ -100,8 +102,9 @@ cws_on_binary_cb(void *p_ws, CURL *ehandle, const void *mem, size_t len)
 {
   struct websockets *ws = p_ws;
 
-  (*ws->config.http_dump.cb)(
-    &ws->config, 
+  log_http(
+    ws->p_log, 
+    ws,
     ws->base_url, 
     (struct sized_buffer){(char*)mem, len},
     "WS_RCV_BINARY");
@@ -114,8 +117,9 @@ cws_on_ping_cb(void *p_ws, CURL *ehandle, const char *reason, size_t len)
 {
   struct websockets *ws = p_ws;
 
-  (*ws->config.http_dump.cb)(
-    &ws->config, 
+  log_http(
+    ws->p_log, 
+    ws,
     ws->base_url, 
     (struct sized_buffer){(char*)reason, len},
     "WS_RCV_PING");
@@ -128,8 +132,9 @@ cws_on_pong_cb(void *p_ws, CURL *ehandle, const char *reason, size_t len)
 {
   struct websockets *ws = p_ws;
 
-  (*ws->config.http_dump.cb)(
-    &ws->config, 
+  log_http(
+    ws->p_log, 
+    ws,
     ws->base_url, 
     (struct sized_buffer){(char*)reason, len},
     "WS_RCV_PONG");
@@ -139,7 +144,7 @@ cws_on_pong_cb(void *p_ws, CURL *ehandle, const char *reason, size_t len)
 
 /* init easy handle with some default opt */
 static CURL*
-custom_cws_new(struct websockets *ws)
+cws_custom_new(struct websockets *ws, const char ws_protocols[])
 {
   struct cws_callbacks cws_cbs = {0};
   cws_cbs.on_connect = &cws_on_connect_cb;
@@ -150,7 +155,7 @@ custom_cws_new(struct websockets *ws)
   cws_cbs.on_close = &cws_on_close_cb;
   cws_cbs.data = ws;
 
-  CURL *new_ehandle = cws_new(ws->base_url, NULL, &cws_cbs);
+  CURL *new_ehandle = cws_new(ws->base_url, ws_protocols, &cws_cbs);
   ASSERT_S(NULL != new_ehandle, "Out of memory");
 
   CURLcode ecode;
@@ -169,20 +174,18 @@ static void noop_on_pong(void *a, const char *b, size_t c){return;}
 static void noop_on_close(void *a, enum ws_close_reason b, const char *c, size_t d){return;}
 
 struct websockets*
-ws_init(const char base_url[], struct ws_callbacks *cbs)
+ws_init(struct ws_callbacks *cbs, struct logconf *config)
 {
   struct websockets *new_ws = calloc(1, sizeof *new_ws);
-
-  int ret = snprintf(new_ws->base_url, sizeof(new_ws->base_url), "%s", base_url);
-  ASSERT_S(ret < sizeof(new_ws->base_url), "Out of bounds write attempt");
   new_ws->status = WS_DISCONNECTED;
   new_ws->reconnect.threshold = 5;
 
   new_ws->mhandle = curl_multi_init();
-  new_ws->ehandle = custom_cws_new(new_ws);
-  curl_multi_add_handle(new_ws->mhandle, new_ws->ehandle);
 
-  orka_config_init(&new_ws->config, NULL, NULL);
+  if (config) {
+    logconf_add_id(config, new_ws, "WEBSOCKETS");
+    new_ws->p_log = config;
+  }
 
   memcpy(&new_ws->cbs, cbs, sizeof(struct ws_callbacks));
   if (!new_ws->cbs.on_connect) 
@@ -204,30 +207,33 @@ ws_init(const char base_url[], struct ws_callbacks *cbs)
   return new_ws;
 }
 
-struct websockets*
-ws_config_init(
-  const char base_url[], 
-  struct ws_callbacks *cbs,
-  const char tag[], 
-  const char config_file[]) 
+void
+ws_set_url(struct websockets *ws, const char base_url[], const char ws_protocols[])
 {
-  struct websockets *new_ws = ws_init(base_url, cbs);
-  orka_config_init(&new_ws->config, tag, config_file);
-  return new_ws;
+  int ret = snprintf(ws->base_url, sizeof(ws->base_url), "%s", base_url);
+  ASSERT_S(ret < sizeof(ws->base_url), "Out of bounds write attempt");
+
+  if (ws->ehandle) {
+    curl_multi_remove_handle(ws->mhandle, ws->ehandle);
+    cws_free(ws->ehandle);
+  }
+  ws->ehandle = cws_custom_new(ws, ws_protocols);
+  curl_multi_add_handle(ws->mhandle, ws->ehandle);
 }
+
 
 void
 ws_cleanup(struct websockets *ws)
 {
   curl_multi_cleanup(ws->mhandle);
-  cws_free(ws->ehandle);
-  orka_config_cleanup(&ws->config);
+  if (ws->ehandle)
+    cws_free(ws->ehandle);
   pthread_mutex_destroy(&ws->lock);
   free(ws);
 }
 
-void
-ws_perform(struct websockets *ws, bool *is_running)
+static void
+_ws_perform(struct websockets *ws)
 {
   pthread_mutex_lock(&ws->lock);
   ws->now_tstamp = orka_timestamp_ms(); //update our concept of now
@@ -235,25 +241,32 @@ ws_perform(struct websockets *ws, bool *is_running)
 
   CURLMcode mcode = curl_multi_perform(ws->mhandle, (int*)&ws->is_running);
   ASSERT_S(CURLM_OK == mcode, curl_multi_strerror(mcode));
+}
 
-  if (!ws->is_running) 
+
+void
+ws_perform(struct websockets *ws, bool *is_running)
+{
+  _ws_perform(ws);
+
+  // attempt reconnecting if connection has been closed
+  while (!ws->is_running) 
   {
-    ws_set_status(ws, WS_DISCONNECTED);
-    do {
-      if (ws->reconnect.attempt >= ws->reconnect.threshold) {
-        log_warn("\n\tFailed all reconnect attempts (%d)\n\t"
-              "Shutting down ...", ws->reconnect.attempt);
+    if (-1 == ws->reconnect.attempt) { // WS_SHUTDOWN
+      log_info("WebSockets client shutdown", ws->reconnect.attempt);
+      ws->reconnect.attempt = 0;
+      ws_set_status(ws, WS_DISCONNECTED);
+      break; /* EARLY BREAK */
+    }
+    if (ws->reconnect.attempt >= ws->reconnect.threshold) {
+        log_warn("Failed all (%d) reconnect attempts", ws->reconnect.attempt);
         ws->reconnect.attempt = 0;
+        ws_set_status(ws, WS_DISCONNECTED);
         break; /* EARLY BREAK */
-      }
+    }
 
-      mcode = curl_multi_perform(ws->mhandle, (int*)&ws->is_running);
-      ASSERT_S(CURLM_OK == mcode, curl_multi_strerror(mcode));
-      mcode = curl_multi_wait(ws->mhandle, NULL, 0, 1000, NULL);
-      ASSERT_S(CURLM_OK == mcode, curl_multi_strerror(mcode));
-
-      ++ws->reconnect.attempt;
-    } while (!ws->is_running);
+    _ws_perform(ws);
+    ++ws->reconnect.attempt;
   }
   *is_running = ws->is_running;
 }
@@ -272,8 +285,9 @@ _ws_close(
   const char reason[], 
   size_t len)
 {
-  (*ws->config.http_dump.cb)(
-    &ws->config, 
+  log_http(
+    ws->p_log, 
+    ws,
     ws->base_url, 
     (struct sized_buffer){(char*)reason, len},
     "WS_SEND_CLOSE");
@@ -296,15 +310,17 @@ ws_close(
 void
 ws_send_text(struct websockets *ws, char text[], size_t len)
 {
-  pthread_mutex_lock(&ws->lock);
-  (*ws->config.http_dump.cb)(
-    &ws->config, 
+  log_http(
+    ws->p_log, 
+    ws,
     ws->base_url, 
     (struct sized_buffer){text, len},
     "WS_SEND_TEXT");
 
-  bool ret = cws_send(ws->ehandle, true, text, len);
-  if (false == ret) log_error("Couldn't send websockets payload");
+  pthread_mutex_lock(&ws->lock);
+  if (false == cws_send(ws->ehandle, true, text, len)) {
+    log_error("Couldn't send websockets payload");
+  }
   pthread_mutex_unlock(&ws->lock);
 }
 
@@ -341,23 +357,21 @@ ws_set_status(struct websockets *ws, enum ws_status status)
       ws->reconnect.attempt = 0;
       break;
   case WS_DISCONNECTED: // reset
-      curl_multi_remove_handle(ws->mhandle, ws->ehandle);
-      cws_free(ws->ehandle);
-      ws->ehandle = custom_cws_new(ws);
-      curl_multi_add_handle(ws->mhandle, ws->ehandle);
+      ws_set_url(ws, ws->base_url, NULL);
       break;
   case WS_SHUTDOWN:
-      ws->reconnect.attempt = ws->reconnect.threshold;
-      status = WS_DISCONNECTING;
-  /* fall through */
-  case WS_DISCONNECTING:
+      ws->reconnect.attempt = -1; // value set to signal shutdown
       if (true == ws->is_running) { // safely shutdown connection
         char reason[] = "Shutdown gracefully";
         _ws_close(ws, WS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
       }
+      status = WS_DISCONNECTING;
+  /* fall through */
+  case WS_DISCONNECTING:
+      log_info("Closing WebSockets client ...");
       break;
   default: 
-      break;
+      ERR("Unknown 'status' (code: %d)", status);
   }
   ws->status = status;
   pthread_mutex_unlock(&ws->lock);
@@ -401,14 +415,4 @@ ws_reconnect(struct websockets *ws)
   char reason[] = "Reconnect gracefully";
   _ws_close(ws, WS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
   pthread_mutex_unlock(&ws->lock);
-}
-
-struct sized_buffer
-ws_config_get_field(struct websockets *ws, char *json_field) {
-  return orka_config_get_field(&ws->config, json_field);
-}
-
-char*
-ws_config_get_fname(struct websockets *ws) {
-  return orka_config_get_fname(&ws->config);
 }

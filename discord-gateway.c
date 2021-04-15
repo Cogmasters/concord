@@ -1013,13 +1013,25 @@ send_heartbeat(struct discord_gateway *gw)
 static void noop_idle_cb(struct discord *a, const struct discord_user *b)
 { return; }
 
-static void
-_gateway_init(
-  struct discord_gateway *gw,
-  struct sized_buffer *token,
-  const char config_file[])
+void
+discord_gateway_init(struct discord_gateway *gw, struct logconf *config, struct sized_buffer *token)
 {
+  struct ws_callbacks cbs = {
+    .data = gw,
+    .on_connect = &on_connect_cb,
+    .on_text = &on_text_cb,
+    .on_close = &on_close_cb
+  };
+
+  gw->ws = ws_init(&cbs, config);
+  ws_set_url(gw->ws, BASE_GATEWAY_URL, NULL);
   ws_set_max_reconnect(gw->ws, 15);
+  logconf_add_id(config, gw->ws, "DISCORD_GATEWAY");
+
+  if (STRNEQ("YOUR-BOT-TOKEN", token->start, token->size)) {
+    token->start = NULL;
+  }
+  ASSERT_S(NULL != token->start, "Missing bot token");
 
   gw->id = discord_gateway_identify_alloc();
   asprintf(&gw->id->token, "%.*s", (int)token->size, token->start);
@@ -1032,55 +1044,26 @@ _gateway_init(
   gw->cbs.on_idle = &noop_idle_cb;
 
   gw->bot = discord_user_alloc();
-  discord_set_presence(gw->p_client, NULL, "online", false);
-  discord_get_current_user(gw->p_client, gw->bot);
-  sb_discord_get_current_user(gw->p_client, &gw->sb_bot);
+
+  if (gw->p_client) {
+    discord_set_presence(gw->p_client, NULL, "online", false);
+    discord_get_current_user(gw->p_client, gw->bot);
+    sb_discord_get_current_user(gw->p_client, &gw->sb_bot);
+  }
 
   if (pthread_mutex_init(&gw->lock, NULL))
     ERR("Couldn't initialize pthread mutex");
-}
 
-void
-discord_gateway_init(struct discord_gateway *gw, const char token[])
-{
-  ASSERT_S(NULL != token, "Missing bot token");
-  struct ws_callbacks cbs = {
-    .data = gw,
-    .on_connect = &on_connect_cb,
-    .on_text = &on_text_cb,
-    .on_close = &on_close_cb
-  };
-  gw->ws = ws_config_init(BASE_GATEWAY_URL, &cbs, "DISCORD GATEWAY", NULL);
-  struct sized_buffer ttoken = {
-    .start = (char*)token, 
-    .size = strlen(token) 
-  };
-  _gateway_init(gw, &ttoken, NULL);
-}
-
-void
-discord_gateway_config_init(struct discord_gateway *gw, const char config_file[])
-{
-  ASSERT_S(NULL != config_file, "Missing config file");
-  struct ws_callbacks cbs = {
-    .data = gw,
-    .on_connect = &on_connect_cb,
-    .on_text = &on_text_cb,
-    .on_close = &on_close_cb
-  };
-  gw->ws = ws_config_init(BASE_GATEWAY_URL, &cbs, "DISCORD GATEWAY", config_file);
-  struct sized_buffer ttoken = ws_config_get_field(gw->ws, "discord.token");
-  _gateway_init(gw, &ttoken, config_file);
-
-  struct sized_buffer tdefault_prefix = ws_config_get_field(gw->ws, "discord.default_prefix");
-  if (NULL == tdefault_prefix.start) return;
-
-  bool enable_prefix=false;
-  char prefix[128]={0}; // large buffer just in case
-  json_extract(tdefault_prefix.start, tdefault_prefix.size,
-      "(enable):b, (prefix):s", &enable_prefix, prefix);
-  if (true == enable_prefix) {
-    discord_set_prefix(gw->p_client, prefix);
+  struct sized_buffer default_prefix = logconf_get_field(config, "discord.default_prefix");
+  if (default_prefix.start) {
+    bool enable_prefix=false;
+    char prefix[64]={0};
+    json_extract(default_prefix.start, default_prefix.size, \
+        "(enable):b,(prefix):.*s", &enable_prefix, sizeof(prefix), prefix);
+    if (true == enable_prefix) {
+      int ret = snprintf(gw->prefix, sizeof(gw->prefix), "%s", prefix);
+      ASSERT_S(ret < sizeof(gw->prefix), "Out of bounds write attempt");
+    }
   }
 }
 

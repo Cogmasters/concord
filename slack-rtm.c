@@ -85,12 +85,11 @@ on_close_cb(void *p_rtm, enum ws_close_reason wscode, const char *reason, size_t
 }
 
 void
-slack_rtm_config_init(struct slack_rtm *rtm, const char config_file[])
+slack_rtm_init(struct slack_rtm *rtm, struct logconf *config)
 {
   ASSERT_S(NULL != rtm->p_client, "Not meant to be called standalone");
   slack_rtm_connect(rtm->p_client);
 
-  if (!config_file) ERR("Missing config file");
   struct ws_callbacks cbs = {
     .data = rtm,
     .on_connect = &on_connect_cb,
@@ -98,9 +97,10 @@ slack_rtm_config_init(struct slack_rtm *rtm, const char config_file[])
     .on_close = &on_close_cb
   };
 
-  rtm->ws = ws_config_init(rtm->base_url, &cbs, "SLACK RTM", config_file);
-
+  rtm->ws = ws_init(&cbs, config);
+  ws_set_url(rtm->ws, rtm->base_url, NULL);
   ws_set_max_reconnect(rtm->ws, 15);
+  logconf_add_id(config, rtm->ws, "SLACK_RTM");
 }
 
 void

@@ -1,13 +1,14 @@
 #ifndef USER_AGENT_H
 #define USER_AGENT_H
 
-#include <stdint.h> /* uint64_t */
-#include <curl/curl.h> 
-#include "ntl.h" /* struct sized_buffer */
-
 #ifdef __cplusplus
 extern "C" {
 #endif // __cplusplus
+
+#include <stdint.h> /* uint64_t */
+#include <curl/curl.h> 
+#include "ntl.h" /* struct sized_buffer */
+#include "logconf.h"
 
 /* FORWARD DECLARATIONS */
 struct user_agent; // the user agent that perform requests
@@ -104,14 +105,11 @@ void ua_reqheader_del(struct user_agent *ua, char field[]);
 void ua_easy_setopt(struct user_agent *ua, void *data, void (setopt_cb)(CURL *ehandle, void *data));
 void ua_mime_setopt(struct user_agent *ua, void *data, curl_mime* (mime_cb)(CURL *ehandle, void *data)); // @todo this is temporary
 
-struct user_agent* ua_init(const char base_url[]);
-struct user_agent* ua_config_init(
-  const char base_url[], 
-  const char tag[], 
-  const char config_file[]);
+struct user_agent* ua_init(const char base_url[], struct logconf *conf);
 void ua_cleanup(struct user_agent *ua);
-char* ua_get_base_url(struct user_agent *ua);
-void ua_set_base_url(struct user_agent *ua, const char base_url[]);
+
+char* ua_get_url(struct user_agent *ua);
+void ua_set_url(struct user_agent *ua, const char base_url[]);
 void ua_block_ms(struct user_agent *ua, const uint64_t wait_ms);
 void ua_vrun(
   struct user_agent *ua,
@@ -125,7 +123,6 @@ void ua_run(
   struct sized_buffer *req_body,
   struct ua_callbacks *cbs,
   enum http_method http_method, char endpoint[], ...);
-struct sized_buffer ua_config_get_field(struct user_agent *ua, char *json_field);
 
 #ifdef __cplusplus
 }

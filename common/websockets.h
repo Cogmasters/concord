@@ -6,6 +6,8 @@ extern "C" {
 #endif // __cplusplus
 
 /* FORWARD DECLARATIONS */
+#include "logconf.h"
+
 struct websockets;
 
 enum ws_status {
@@ -47,13 +49,11 @@ struct ws_callbacks {
   void (*on_close)(void *data, enum ws_close_reason wscode, const char *reason, size_t len);
 };
 
-struct websockets* ws_init(const char base_url[], struct ws_callbacks *cbs);
-struct websockets* ws_config_init(
-  const char base_url[], 
-  struct ws_callbacks *cbs,
-  const char tag[], 
-  const char config_file[]);
+struct websockets* ws_init(struct ws_callbacks *cbs, struct logconf *config);
 void ws_cleanup(struct websockets *ws);
+
+void ws_set_url(struct websockets *ws, const char base_url[], const char ws_protocols[]);
+
 void ws_close(
   struct websockets *ws,
   enum ws_close_reason wscode, 
@@ -69,9 +69,7 @@ uint64_t ws_timestamp(struct websockets *ws);
 enum ws_status ws_get_status(struct websockets *ws);
 void ws_set_status(struct websockets *ws, enum ws_status status);
 void ws_set_max_reconnect(struct websockets *ws, int max_attempts);
-struct sized_buffer ws_config_get_field(struct websockets *ws, char *json_field);
 char* ws_close_opcode_print(enum ws_close_reason opcode);
-char* ws_config_get_fname(struct websockets *ws);
 
 #ifdef __cplusplus
 }

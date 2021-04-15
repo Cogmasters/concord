@@ -8,16 +8,37 @@
 #include "orka-utils.h"
 
 
+static void
+_discord_init(struct discord *new_client)
+{
+  new_client->adapter.p_client = new_client;
+  new_client->gw.p_client = new_client;
+  discord_adapter_init(
+    &new_client->adapter, 
+    &new_client->config, 
+    &new_client->token);
+  discord_gateway_init(
+    &new_client->gw, 
+    &new_client->config,
+    &new_client->token);
+
+  if (pthread_mutex_init(&new_client->lock, NULL))
+    ERR("Couldn't initialize pthread mutex");
+}
+
 struct discord*
 discord_init(const char token[])
 {
   struct discord *new_client = calloc(1, sizeof *new_client);
-  new_client->adapter.p_client = new_client;
-  new_client->gw.p_client = new_client;
-  discord_adapter_init(&new_client->adapter, token);
-  discord_gateway_init(&new_client->gw, token);
-  if (pthread_mutex_init(&new_client->lock, NULL))
-    ERR("Couldn't initialize pthread mutex");
+
+  logconf_setup(&new_client->config, NULL);
+  new_client->token = (struct sized_buffer){
+    .start = (char*)token,
+    .size = strlen(token)
+  };
+
+  _discord_init(new_client);
+
   return new_client;
 }
 
@@ -25,18 +46,19 @@ struct discord*
 discord_config_init(const char config_file[])
 {
   struct discord *new_client = calloc(1, sizeof *new_client);
-  new_client->adapter.p_client = new_client;
-  new_client->gw.p_client = new_client;
-  discord_adapter_config_init(&new_client->adapter, config_file);
-  discord_gateway_config_init(&new_client->gw, config_file);
-  if (pthread_mutex_init(&new_client->lock, NULL))
-    ERR("Couldn't initialize pthread mutex");
+
+  logconf_setup(&new_client->config, config_file);
+  new_client->token = logconf_get_field(&new_client->config, "discord.token");
+
+  _discord_init(new_client);
+
   return new_client;
 }
 
 void
 discord_cleanup(struct discord *client)
 {
+  logconf_cleanup(&client->config);
   discord_adapter_cleanup(&client->adapter);
   discord_gateway_cleanup(&client->gw);
   pthread_mutex_destroy(&client->lock);

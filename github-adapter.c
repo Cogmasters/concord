@@ -27,7 +27,7 @@ curl_easy_setopt_cb(CURL *ehandle, void *data)
 void
 github_adapter_init(struct github_adapter *adapter, char username[], char token[])
 {
-  adapter->ua = ua_config_init(BASE_API_URL, "GITHUB HTTP", NULL);
+  adapter->ua = ua_init(BASE_API_URL, NULL);
   ua_reqheader_add(adapter->ua, "Accept", "application/vnd.github.v3+json");
 
   ua_easy_setopt(adapter->ua, adapter, &curl_easy_setopt_cb);

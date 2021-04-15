@@ -6,7 +6,7 @@
 
 #include "github.h"
 #include "orka-utils.h"
-#include "orka-config.h"
+#include "logconf.h"
 
 
 static
@@ -56,11 +56,10 @@ int main (int argc, char ** argv)
 
   curl_global_init(CURL_GLOBAL_ALL);
 
-  struct orka_config config;
-  memset(&config, 0, sizeof(config));
-  orka_config_init(&config, NULL, config_file);
-  struct sized_buffer username = orka_config_get_field(&config, "github.username");
-  struct sized_buffer token = orka_config_get_field(&config, "github.token");
+  struct logconf config = {0};
+  logconf_setup(&config, config_file);
+  struct sized_buffer username = logconf_get_field(&config, "github.username");
+  struct sized_buffer token = logconf_get_field(&config, "github.token");
   if (!username.start || !token.start) {
     PRINT("Missing username or token");
     return EXIT_FAILURE;
