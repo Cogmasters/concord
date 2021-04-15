@@ -82,7 +82,7 @@ struct discord_gateway { /* GATEWAY STRUCTURE */
 
   struct discord_session session;
 
-  char *prefix; //the command prefix
+  char prefix[32]; //the command prefix
   struct cmd_cbs *on_cmd; //triggers on a user set command
   size_t num_cmd; //amt of set commands
 

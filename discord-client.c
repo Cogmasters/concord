@@ -81,13 +81,13 @@ discord_add_intents(struct discord *client, enum discord_gateway_intents code)
 void
 discord_set_prefix(struct discord *client, char *prefix) 
 {
-  const size_t PREFIX_LEN = 32;
+  const size_t PREFIX_LEN = sizeof(client->gw.prefix);
   if (!orka_str_bounds_check(prefix, PREFIX_LEN)) {
     log_error("Prefix length greater than threshold (%zu chars)", PREFIX_LEN);
     return;
   }
-
-  client->gw.prefix = prefix;
+  int ret = snprintf(client->gw.prefix, PREFIX_LEN, "%s", prefix);
+  ASSERT_S(ret < PREFIX_LEN, "Out of bounds write attempt");
 }
 
 void

@@ -1071,6 +1071,17 @@ discord_gateway_config_init(struct discord_gateway *gw, const char config_file[]
   gw->ws = ws_config_init(BASE_GATEWAY_URL, &cbs, "DISCORD GATEWAY", config_file);
   struct sized_buffer ttoken = ws_config_get_field(gw->ws, "discord.token");
   _gateway_init(gw, &ttoken, config_file);
+
+  struct sized_buffer tdefault_prefix = ws_config_get_field(gw->ws, "discord.default_prefix");
+  if (NULL == tdefault_prefix.start) return;
+
+  bool enable_prefix=false;
+  char prefix[128]={0}; // large buffer just in case
+  json_extract(tdefault_prefix.start, tdefault_prefix.size,
+      "(enable):b, (prefix):s", &enable_prefix, prefix);
+  if (true == enable_prefix) {
+    discord_set_prefix(gw->p_client, prefix);
+  }
 }
 
 void
