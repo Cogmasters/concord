@@ -58,7 +58,7 @@ on_hello(struct slack_socketmode *sm)
 {
   struct slack *client = sm->p_client;
 
-  ws_set_status(sm->ws, WS_CONNECTED);
+  sm->is_ready = true;
   if (!client->cbs.on_hello) return;
 
   (*client->cbs.on_hello)(client, sm->text.payload.start, sm->text.payload.size);
@@ -119,11 +119,13 @@ static void
 on_close_cb(void *p_sm, enum ws_close_reason wscode, const char *reason, size_t len)
 {
   struct slack_socketmode *sm = p_sm;
-  ws_set_status(sm->ws, WS_DISCONNECTED);
 
   log_warn("\n\t(code: %4d) : %zd bytes\n\t"
            "REASON: '%s'", 
            wscode, len, reason);
+
+  sm->is_ready = false; // reset
+  ws_set_action(sm->ws, WS_ACTION_DISCONNECT);
 }
 
 void
@@ -144,7 +146,6 @@ slack_socketmode_init(struct slack_socketmode *sm, struct logconf *config)
 
   sm->ws = ws_init(&cbs, config);
   ws_set_url(sm->ws, sm->base_url, NULL);
-  ws_set_max_reconnect(sm->ws, 15);
   logconf_add_id(config, sm->ws, "SLACK_SOCKETMODE");
 }
 
@@ -168,7 +169,7 @@ slack_socketmode_run(struct slack *client)
     // wait for activity or timeout
     ws_wait_activity(sm->ws, 1);
 
-    if (WS_CONNECTED != ws_get_status(sm->ws))
+    if (!sm->is_ready)
       continue;
     
     // connection established
@@ -178,5 +179,5 @@ slack_socketmode_run(struct slack *client)
 
 void
 slack_socketmode_shutdown(struct slack *client) {
-  ws_set_status(client->sm.ws, WS_SHUTDOWN);
+  ws_set_action(client->sm.ws, WS_ACTION_DISCONNECT);
 }

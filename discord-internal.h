@@ -65,6 +65,9 @@ struct cmd_cbs {
 
 struct discord_gateway { /* GATEWAY STRUCTURE */
   struct websockets *ws;
+  _Bool try_reconnect;
+  _Bool is_resumable;
+  _Bool is_ready;
 
   struct discord_gateway_identify *id;
   char session_id[512]; //the session id (for resuming lost connections)

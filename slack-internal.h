@@ -27,6 +27,8 @@ void slack_adapter_run(
 
 struct slack_rtm {
   struct websockets *ws;
+  bool is_ready;
+
   char base_url[UA_MAX_URL_LEN];
   struct slack *p_client;
 };
@@ -37,6 +39,8 @@ void slack_rtm_cleanup(struct slack_rtm *rtm);
 
 struct slack_socketmode {
   struct websockets *ws;
+  bool is_ready;
+
   char base_url[UA_MAX_URL_LEN];
   struct { /* SLACK SOCKETMODE RESPONSE STRUCT */
     struct sized_buffer payload;

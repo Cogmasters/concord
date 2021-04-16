@@ -107,6 +107,8 @@ send_resume(struct discord_gateway *gw)
 
   log_info("sending RESUME(%d bytes)", ret);
   ws_send_text(gw->ws, payload, ret);
+
+  gw->is_resumable = false; // reset
 }
 
 static void
@@ -146,7 +148,7 @@ on_hello(struct discord_gateway *gw)
   json_extract(gw->payload.event_data.start, gw->payload.event_data.size,
              "(heartbeat_interval):ld", &gw->hbeat.interval_ms);
 
-  if (WS_RESUME == ws_get_status(gw->ws))
+  if (gw->is_resumable)
     send_resume(gw);
   else
     send_identify(gw);
@@ -440,43 +442,40 @@ on_message_create(struct discord_gateway *gw, struct sized_buffer *data)
   discord_message_from_json(data->start, data->size, msg);
 
   if (gw->on_cmd) {
-    // prefix offset if available
-    size_t offset = IS_EMPTY_STRING(gw->prefix) 
-                            ? 0 
-                            : strlen(gw->prefix);
+    // get prefix offset
+    size_t offset = strlen(gw->prefix);
 
     message_cb *cmd_cb = NULL;
     char *cmd_str = NULL;
     for (size_t i=0; i < gw->num_cmd; ++i) 
     {
-      if (gw->prefix && !STRNEQ(gw->prefix, msg->content, offset))
+      if (!STRNEQ(gw->prefix, msg->content, offset))
           continue; //prefix doesn't match msg->content
 
       // check if command from channel matches set command
-      if (STRNEQ(gw->on_cmd[i].str, 
-            msg->content + offset, 
+      if (STRNEQ(gw->on_cmd[i].str, \
+            msg->content + offset,  \
             strlen(gw->on_cmd[i].str)))
       {
         cmd_cb = gw->on_cmd[i].cb;
         cmd_str = gw->on_cmd[i].str;
-        break;
+
+        char *tmp = msg->content; // hold original ptr
+        msg->content = msg->content + offset + strlen(gw->on_cmd[i].str);
+        while (isspace(*msg->content)) { // offset blank chars
+          ++msg->content;
+        }
+        (*gw->on_cmd[i].cb)(gw->p_client, gw->bot, msg);
+
+        msg->content = tmp; // retrieve original ptr
+
+        discord_message_free(msg);
+        return; /* EARLY RETURN */
       }
-    }
-
-    if (cmd_cb && cmd_str) {
-      char *tmp = msg->content; // hold original ptr
-
-      msg->content = msg->content + offset + strlen(cmd_str);
-      while (isspace(*msg->content)) { // offset blank chars
-        ++msg->content;
-      }
-
-      (*cmd_cb)(gw->p_client, gw->bot, msg);
-
-      msg->content = tmp; // retrieve original ptr
     }
   }
-  else if (gw->cbs.sb_on_message_create) /* @todo temporary */
+
+  if (gw->cbs.sb_on_message_create) /* @todo temporary */
     (*gw->cbs.sb_on_message_create)(
       gw->p_client, 
       gw->bot, &gw->sb_bot,
@@ -698,7 +697,7 @@ on_voice_server_update(struct discord_gateway *gw, struct sized_buffer *data)
 static void
 on_ready(struct discord_gateway *gw, struct sized_buffer *data)
 {
-  ws_set_status(gw->ws, WS_CONNECTED);
+  gw->is_ready = true;
   if (!gw->cbs.on_ready) return;
 
   log_info("Succesfully started a Discord session!");
@@ -712,7 +711,7 @@ on_ready(struct discord_gateway *gw, struct sized_buffer *data)
 static void
 on_resumed(struct discord_gateway *gw)
 {
-  ws_set_status(gw->ws, WS_CONNECTED);
+  gw->is_ready = true;
   log_info("Succesfully resumed a Discord session!");
 }
 
@@ -873,28 +872,26 @@ on_dispatch(struct discord_gateway *gw)
 static void
 on_invalid_session(struct discord_gateway *gw)
 {
-  bool is_resumable = strcmp(gw->payload.event_data.start, "false");
-  const char *reason;
-  if (is_resumable) {
-    ws_set_status(gw->ws, WS_RESUME);
-    reason = "Attempting to session resume";
+  gw->try_reconnect = true;
+  if (true == (gw->is_resumable = strcmp(gw->payload.event_data.start, "false"))) {
+    char reason[] = "Attempting to resume session";
+    log_warn("%.*s", sizeof(reason), reason);
+    ws_close(gw->ws, WS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
   }
   else {
-    ws_set_status(gw->ws, WS_FRESH);
-    reason = "Attempting to start a fresh new session";
+    char reason[] = "Attempting to restart session";
+    log_warn("%.*s", sizeof(reason), reason);
+    ws_close(gw->ws, WS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
   }
-
-  log_warn("%.*s", strlen(reason), reason);
-  ws_close(gw->ws, WS_CLOSE_REASON_NORMAL, reason, strlen(reason));
 }
 
 static void
 on_reconnect(struct discord_gateway *gw)
 {
-  ws_set_status(gw->ws, WS_RESUME);
+  gw->is_resumable = true;
+  gw->try_reconnect = true;
 
   const char reason[] = "Attempting to session resume";
-
   log_warn("%.*s", sizeof(reason), reason);
   ws_close(gw->ws, WS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
 }
@@ -920,12 +917,19 @@ on_close_cb(void *p_gw, enum ws_close_reason wscode, const char *reason, size_t 
   struct discord_gateway *gw = p_gw;
   enum discord_gateway_close_opcodes opcode = wscode;
 
+
   log_warn(ANSICOLOR("%s",31)" (code: %4d) : %zd bytes,"
           "REASON: '%s'", 
           close_opcode_print(opcode), opcode, len,
           reason);
+
+  gw->is_ready = false; // reset
  
   switch (opcode) {
+  case DISCORD_GATEWAY_CLOSE_REASON_UNKNOWN_ERROR:
+  case DISCORD_GATEWAY_CLOSE_REASON_INVALID_SEQUENCE:
+      gw->is_resumable = true;
+  /* fall through */
   case DISCORD_GATEWAY_CLOSE_REASON_UNKNOWN_OPCODE:
   case DISCORD_GATEWAY_CLOSE_REASON_DECODE_ERROR:
   case DISCORD_GATEWAY_CLOSE_REASON_NOT_AUTHENTICATED:
@@ -937,15 +941,14 @@ on_close_cb(void *p_gw, enum ws_close_reason wscode, const char *reason, size_t 
   case DISCORD_GATEWAY_CLOSE_REASON_INVALID_INTENTS:
   case DISCORD_GATEWAY_CLOSE_REASON_INVALID_SHARD:
   case DISCORD_GATEWAY_CLOSE_REASON_DISALLOWED_INTENTS:
-      ws_set_status(gw->ws, WS_DISCONNECTING);
-      break;
-  case DISCORD_GATEWAY_CLOSE_REASON_UNKNOWN_ERROR:
-  case DISCORD_GATEWAY_CLOSE_REASON_INVALID_SEQUENCE:
-      ws_set_status(gw->ws, WS_RESUME);
+      gw->try_reconnect = true;
+      ws_set_action(gw->ws, WS_ACTION_DISCONNECT);
       break;
   case DISCORD_GATEWAY_CLOSE_REASON_SESSION_TIMED_OUT:
   default: //websocket/clouflare opcodes
-      ws_set_status(gw->ws, WS_FRESH);
+      gw->is_resumable = false;
+      gw->try_reconnect = false;
+      ws_set_action(gw->ws, WS_ACTION_DISCONNECT);
       break;
   }
 }
@@ -1025,7 +1028,6 @@ discord_gateway_init(struct discord_gateway *gw, struct logconf *config, struct 
 
   gw->ws = ws_init(&cbs, config);
   ws_set_url(gw->ws, BASE_GATEWAY_URL, NULL);
-  ws_set_max_reconnect(gw->ws, 15);
   logconf_add_id(config, gw->ws, "DISCORD_GATEWAY");
 
   if (STRNEQ("YOUR-BOT-TOKEN", token->start, token->size)) {
@@ -1081,8 +1083,8 @@ discord_gateway_cleanup(struct discord_gateway *gw)
 }
 
 /* connects to the discord websockets server */
-void
-discord_gateway_run(struct discord_gateway *gw) 
+static void
+event_loop(struct discord_gateway *gw) 
 {
   ASSERT_S(WS_DISCONNECTED == ws_get_status(gw->ws), "Can't run websockets recursively");
 
@@ -1095,14 +1097,14 @@ discord_gateway_run(struct discord_gateway *gw)
     return; /* EARLY RETURN */
   }
 
-  bool is_running;
+  bool is_running=false;
   do {
     ws_perform(gw->ws, &is_running);
 
     // wait for activity or timeout
     ws_wait_activity(gw->ws, 1);
 
-    if (WS_CONNECTED != ws_get_status(gw->ws))
+    if (!gw->is_ready) // wait until on_ready()
       continue;
     
     // connection established
@@ -1121,6 +1123,15 @@ discord_gateway_run(struct discord_gateway *gw)
 }
 
 void
+discord_gateway_run(struct discord_gateway *gw)
+{
+  const int REC_LIMIT=15;
+  for (int attempt=0; attempt < REC_LIMIT; ++attempt) {
+    event_loop(gw);
+  }
+}
+
+void
 discord_gateway_shutdown(struct discord_gateway *gw) {
-  ws_set_status(gw->ws, WS_SHUTDOWN);
+  ws_set_action(gw->ws, WS_ACTION_DISCONNECT);
 }
