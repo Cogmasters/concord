@@ -4,6 +4,7 @@
 #include <inttypes.h>
 #include <string.h>
 #include <math.h> //for round()
+#include <limits.h>
 #define _POSIX_THREAD_SAFE_FUNCTIONS
 #include <time.h>
 #include <sys/stat.h>
@@ -248,15 +249,16 @@ orka_str_to_ntl(
 
 /* this can be used for checking if a user-given string does not
  *  exceeds a arbitrary threshold length */
-bool
+long long
 orka_str_bounds_check(const char *str, const size_t threshold_len)
 {
-  if (NULL == str) return true;
+  if (!str || threshold_len > LLONG_MAX) 
+    return -1; // Missing string or overflow
 
-  for (size_t i=0; i < threshold_len; ++i) {
-    if ('\0' == str[i]) return true;
+  for (long long i=0; i < threshold_len; ++i) {
+    if ('\0' == str[i]) return i; // bound check succeeded
   }
-  return false; 
+  return 0; // bound check failed
 }
 
 void gen_readlink(char *linkbuf, size_t linkbuf_size)

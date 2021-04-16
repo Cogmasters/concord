@@ -34,7 +34,7 @@ discord_init(const char token[])
   logconf_setup(&new_client->config, NULL);
   new_client->token = (struct sized_buffer){
     .start = (char*)token,
-    .size = strlen(token)
+    .size = orka_str_bounds_check(token, 128) // avoid overflow
   };
 
   _discord_init(new_client);
@@ -103,6 +103,8 @@ discord_add_intents(struct discord *client, enum discord_gateway_intents code)
 void
 discord_set_prefix(struct discord *client, char *prefix) 
 {
+  if (!prefix) return;
+
   const size_t PREFIX_LEN = sizeof(client->gw.prefix);
   if (!orka_str_bounds_check(prefix, PREFIX_LEN)) {
     log_error("Prefix length greater than threshold (%zu chars)", PREFIX_LEN);
@@ -115,6 +117,8 @@ discord_set_prefix(struct discord *client, char *prefix)
 void
 discord_set_on_command(struct discord *client, char *command, message_cb *callback)
 {
+  if (!command) return;
+
   const size_t CMD_LEN = 64;
   if (!orka_str_bounds_check(command, CMD_LEN)) {
     log_error("Command length greater than threshold (%zu chars)", CMD_LEN);
@@ -310,22 +314,18 @@ discord_replace_presence(struct discord *client, struct discord_gateway_status_u
 void
 discord_set_presence(
   struct discord *client, 
-  struct discord_gateway_activity *activity, //will take ownership
+  struct discord_gateway_activity *activity, // can be safely free'd
   char status[], 
   bool afk)
 {
   struct discord_gateway_status_update *presence = client->gw.id->presence;
 
   if (activity) {
-    presence->activities = (void*)ntl_append((void*)presence->activities, 
-                              sizeof **presence->activities, activity);
+    ntl_append2((ntl_t*)&presence->activities, sizeof(struct discord_gateway_activity), activity);
   }
   if (status) {
-    int ret = snprintf(presence->status, 
-                sizeof(presence->status), "%s", status);
-
-    ASSERT_S(ret < (int)sizeof(presence->status),
-        "Out of bounds write attempt");
+    int ret = snprintf(presence->status, sizeof(presence->status), "%s", status);
+    ASSERT_S(ret < sizeof(presence->status), "Out of bounds write attempt");
   }
 
   presence->afk = afk;
