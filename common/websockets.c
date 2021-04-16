@@ -13,7 +13,6 @@ struct websockets {
   enum ws_status status;
   enum ws_action action;
   bool is_running;
-  bool is_closing;
 
   CURLM *mhandle;
   CURL *ehandle;
@@ -62,7 +61,6 @@ _ws_set_status_nolock(struct websockets *ws, enum ws_status status)
   case WS_DISCONNECTED: // reset
       log_debug("Change status to WS_DISCONNECTED");
       ws->action = 0;
-      ws->is_closing = false;
       ws_reset(ws);
       break;
   case WS_CONNECTED:
@@ -88,6 +86,15 @@ _ws_set_status(struct websockets *ws, enum ws_status status)
   pthread_mutex_unlock(&ws->lock);
 }
 
+enum ws_status
+ws_get_status(struct websockets *ws) 
+{
+  pthread_mutex_lock(&ws->lock);
+  enum ws_status status = ws->status;
+  pthread_mutex_unlock(&ws->lock);
+  return status;
+}
+
 enum ws_action
 ws_get_action(struct websockets *ws) 
 {
@@ -101,7 +108,7 @@ void
 ws_set_action(struct websockets *ws, enum ws_action action)
 {
   pthread_mutex_lock(&ws->lock);
-  if (ws->is_closing) { // closing process already started by client
+  if (WS_DISCONNECTING == ws->status) { // closing process already started
     pthread_mutex_unlock(&ws->lock);
     return;
   }
@@ -111,7 +118,6 @@ ws_set_action(struct websockets *ws, enum ws_action action)
       log_info("Disconnecting WebSockets client ...");
       _ws_set_status_nolock(ws, WS_DISCONNECTING);
       if (ws->is_running) { // safely close connection
-        ws->is_closing = true;
         char reason[] = "Disconnect gracefully";
         _ws_close_nolock(ws, WS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
       }
@@ -120,6 +126,24 @@ ws_set_action(struct websockets *ws, enum ws_action action)
       ERR("Unknown ws_action (code: %d)", action);
       break;
   }
+  pthread_mutex_unlock(&ws->lock);
+}
+
+static bool
+_ws_is_running(struct websockets *ws)
+{
+  bool is_running;
+  pthread_mutex_lock(&ws->lock);
+  is_running = ws->is_running;
+  pthread_mutex_unlock(&ws->lock);
+  return is_running;
+}
+
+static void
+_ws_set_running(struct websockets *ws, bool status)
+{
+  pthread_mutex_lock(&ws->lock);
+  ws->is_running = status;
   pthread_mutex_unlock(&ws->lock);
 }
 
@@ -307,8 +331,9 @@ ws_set_url(struct websockets *ws, const char base_url[], const char ws_protocols
   ASSERT_S(WS_DISCONNECTED == ws->status, "Can only set url to a disconnected client");
 
   if (base_url) {
-  int ret = snprintf(ws->base_url, sizeof(ws->base_url), "%s", base_url);
-  ASSERT_S(ret < sizeof(ws->base_url), "Out of bounds write attempt");
+    log_debug("WebSockets redirecting:\n\tfrom: %s\n\tto: %s", ws->base_url, base_url);
+    int ret = snprintf(ws->base_url, sizeof(ws->base_url), "%s", base_url);
+    ASSERT_S(ret < sizeof(ws->base_url), "Out of bounds write attempt");
   }
   if (ws->ehandle) {
     curl_multi_remove_handle(ws->mhandle, ws->ehandle);
@@ -320,6 +345,7 @@ ws_set_url(struct websockets *ws, const char base_url[], const char ws_protocols
 
 void
 ws_reset(struct websockets *ws) {
+  log_debug("Resetting curl's multi and easy handles");
   ws_set_url(ws, NULL, NULL);
 }
 
@@ -351,15 +377,6 @@ ws_send_text(struct websockets *ws, char text[], size_t len)
   pthread_mutex_unlock(&ws->lock);
 }
 
-enum ws_status
-ws_get_status(struct websockets *ws) 
-{
-  pthread_mutex_lock(&ws->lock);
-  enum ws_status status = ws->status;
-  pthread_mutex_unlock(&ws->lock);
-  return status;
-}
-
 static void
 _ws_perform(struct websockets *ws)
 {
@@ -367,19 +384,22 @@ _ws_perform(struct websockets *ws)
   ws->now_tstamp = orka_timestamp_ms(); //update our concept of now
   pthread_mutex_unlock(&ws->lock);
 
-  CURLMcode mcode = curl_multi_perform(ws->mhandle, (int*)&ws->is_running);
+  bool is_running;
+  CURLMcode mcode = curl_multi_perform(ws->mhandle, (int*)&is_running);
   ASSERT_S(CURLM_OK == mcode, curl_multi_strerror(mcode));
-}
 
+  _ws_set_running(ws, is_running);
+}
 
 void
 ws_perform(struct websockets *ws, bool *p_is_running)
 {
   _ws_perform(ws);
-  if (!ws->is_running)
+
+  if (!_ws_is_running(ws))
     _ws_set_status(ws, WS_DISCONNECTED);
   if (p_is_running)
-    *p_is_running = ws->is_running;
+    *p_is_running = _ws_is_running(ws);
 }
 
 void 
