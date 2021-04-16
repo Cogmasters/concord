@@ -11,12 +11,14 @@ extern "C" {
 struct websockets;
 
 enum ws_status {
-  WS_DISCONNECTED = 0,  //disconnected from ws
-  WS_DISCONNECTING,     //disconnecting from ws
-  WS_CONNECTED,         //connected to ws
-  WS_RESUME,            //attempt to resume ws session
-  WS_FRESH,             //attempt a fresh ws session
-  WS_SHUTDOWN           //shutdown current ws session (don't reconnect)
+  WS_DISCONNECTED = 0, //disconnected from ws
+  WS_CONNECTED,        //connected to ws
+  WS_DISCONNECTING,    //in the process of setting a status
+  WS_CONNECTING,       //in the process of setting a status
+};
+
+enum ws_action {
+  WS_ACTION_DISCONNECT = 1, //disconnect session
 };
 
 /* see https://tools.ietf.org/html/rfc6455#section-7.4.1 */
@@ -53,6 +55,7 @@ struct websockets* ws_init(struct ws_callbacks *cbs, struct logconf *config);
 void ws_cleanup(struct websockets *ws);
 
 void ws_set_url(struct websockets *ws, const char base_url[], const char ws_protocols[]);
+void ws_reset(struct websockets *ws);
 
 void ws_close(
   struct websockets *ws,
@@ -63,12 +66,10 @@ void ws_send_text(struct websockets *ws, char text[], size_t len);
 void ws_perform(struct websockets *ws, _Bool *is_running);
 void ws_wait_activity(struct websockets *ws, uint64_t wait_ms);
 
-void ws_redirect(struct websockets *ws, char base_url[]);
-void ws_reconnect(struct websockets *ws);
 uint64_t ws_timestamp(struct websockets *ws);
 enum ws_status ws_get_status(struct websockets *ws);
-void ws_set_status(struct websockets *ws, enum ws_status status);
-void ws_set_max_reconnect(struct websockets *ws, int max_attempts);
+enum ws_action ws_get_action(struct websockets *ws);
+void ws_set_action(struct websockets *ws, enum ws_action action);
 char* ws_close_opcode_print(enum ws_close_reason opcode);
 
 #ifdef __cplusplus
