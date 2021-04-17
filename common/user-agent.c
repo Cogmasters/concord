@@ -12,6 +12,9 @@
 #include "orka-utils.h"
 
 
+#define CURLE_CHECK(ecode) VASSERT_S(CURLE_OK == ecode, "Code: %d\n\tDescription: %s", ecode, curl_easy_strerror(ecode))
+
+
 struct user_agent {
   struct logconf *p_config;
 
@@ -209,27 +212,27 @@ conn_init(struct user_agent *ua)
 
   //set ptr to request header we will be using for API communication
   ecode = curl_easy_setopt(new_ehandle, CURLOPT_HTTPHEADER, ua->req_header);
-  ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
+  CURLE_CHECK(ecode);
 
   //enable follow redirections
   ecode = curl_easy_setopt(new_ehandle, CURLOPT_FOLLOWLOCATION, 1L);
-  ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
+  CURLE_CHECK(ecode);
 
   //set response body callback
   ecode = curl_easy_setopt(new_ehandle, CURLOPT_WRITEFUNCTION, &conn_respbody_cb);
-  ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
+  CURLE_CHECK(ecode);
 
   //set ptr to response body to be filled at callback
   ecode = curl_easy_setopt(new_ehandle, CURLOPT_WRITEDATA, &new_conn->resp_body);
-  ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
+  CURLE_CHECK(ecode);
 
   //set response header callback
   ecode = curl_easy_setopt(new_ehandle, CURLOPT_HEADERFUNCTION, &conn_respheader_cb);
-  ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
+  CURLE_CHECK(ecode);
 
   //set ptr to response header to be filled at callback
   ecode = curl_easy_setopt(new_ehandle, CURLOPT_HEADERDATA, &new_conn->resp_header);
-  ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
+  CURLE_CHECK(ecode);
 
   // execute user-defined curl_easy_setopts
   if (ua->setopt_cb) {
@@ -482,11 +485,11 @@ set_method(
   switch (method) {
   case HTTP_DELETE:
       ecode = curl_easy_setopt(conn->ehandle, CURLOPT_CUSTOMREQUEST, "DELETE");
-      ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
+      CURLE_CHECK(ecode);
       break;
   case HTTP_GET:
       ecode = curl_easy_setopt(conn->ehandle, CURLOPT_HTTPGET, 1L);
-      ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
+      CURLE_CHECK(ecode);
       return; /* EARLY RETURN */
   case HTTP_POST:
       curl_easy_setopt(conn->ehandle, CURLOPT_POST, 1L);
@@ -525,7 +528,7 @@ set_url(struct user_agent *ua, struct ua_conn *conn, char endpoint[], va_list ar
   ASSERT_S(ret < sizeof(conn->req_url), "Out of bounds write attempt");
 
   CURLcode ecode = curl_easy_setopt(conn->ehandle, CURLOPT_URL, conn->req_url);
-  ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
+  CURLE_CHECK(ecode);
 
   log_trace("Request URL: %s", conn->req_url);
 }
@@ -552,17 +555,17 @@ send_request(struct user_agent *ua, struct ua_conn *conn)
   
   //@todo shouldn't abort on error
   ecode = curl_easy_perform(conn->ehandle);
-  ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
+  CURLE_CHECK(ecode);
   conn->req_tstamp = orka_timestamp_ms();
 
   //get response's code
   int httpcode=0;
   ecode = curl_easy_getinfo(conn->ehandle, CURLINFO_RESPONSE_CODE, &httpcode);
-  ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
+  CURLE_CHECK(ecode);
 
   char *resp_url=NULL;
   ecode = curl_easy_getinfo(conn->ehandle, CURLINFO_EFFECTIVE_URL, &resp_url);
-  ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
+  CURLE_CHECK(ecode);
 
   log_http(
     ua->p_config, 
