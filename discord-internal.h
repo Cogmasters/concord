@@ -28,7 +28,7 @@ struct discord_adapter {
     struct discord_bucket **bucket_pool;
     size_t num_buckets;
     // endpoint/routes discovered, check a endpoint/bucket matchwith tree search functions
-    void *routes_root; // @see search.h root
+    void *routes_root; /** @see search.h root */
 
     // lock when adding/searching for buckets
     pthread_mutex_t lock;
@@ -156,7 +156,7 @@ struct discord_gateway { /* GATEWAY STRUCTURE */
   _Bool is_ready; 
 
   // this info sent expecting a connection authentication
-  struct discord_gateway_identify *id; // @see specs/gateway.json and specs-code/gateway.h for definition
+  struct discord_gateway_identify *id; /** @see specs/gateway.json and specs-code/gateway.h for definition */
   // the session id (for resuming lost connections)
   char session_id[512]; 
   
@@ -178,24 +178,24 @@ struct discord_gateway { /* GATEWAY STRUCTURE */
   } hbeat;
 
   // on-going Discord Gateway session
-  struct discord_session session; // @see discord.h for definition
+  struct discord_session session; /** @see discord.h for definition */
 
   // the prefix expected before every command
-  char prefix[32]; // @see discord_set_prefix()
+  char prefix[32]; /** @see discord_set_prefix() */
   // user's command/callback pair and amount of callback pairs
-  struct cmd_cbs *on_cmd; // @see discord_set_on_command()
+  struct cmd_cbs *on_cmd; /** @see discord_set_on_command() */
   size_t num_cmd;
 
   // @see discord.h for definition
   struct { /* CALLBACKS STRUCTURE */
     // triggers in every event loop iteration
-    idle_cb *on_idle; // @see discord_set_on_idle()
+    idle_cb *on_idle; /** @see discord_set_on_idle() */
     
     // triggers for every event if set
-    // @note will include the event payload in its raw string format
-    event_raw_cb *on_event_raw; // @see discord_set_on_event_raw()
+    /// @note will include the event payload in its raw string format
+    event_raw_cb *on_event_raw; /** @see discord_set_on_event_raw() */
 
-    // @see discord_set_on_xxx() for every matching callback function
+    /// @see discord_set_on_xxx() for every matching callback function
     // triggers when connection first establishes
     idle_cb *on_ready;
     // triggers when a guild role is created
@@ -224,10 +224,10 @@ struct discord_gateway { /* GATEWAY STRUCTURE */
     channel_pins_update_cb *on_channel_pins_update;
     // triggers when a message is created
     message_cb *on_message_create;
-    sb_message_cb *sb_on_message_create; // @todo this is temporary
+    sb_message_cb *sb_on_message_create; /** @todo this is temporary */
     // trigger when a message is updated
     message_cb *on_message_update;
-    sb_message_cb *sb_on_message_update; // @todo this is temporary
+    sb_message_cb *sb_on_message_update; /** @todo this is temporary */
     // triggers when a message is deleted
     message_delete_cb *on_message_delete;
     // triggers when a bulk of messages is deleted
@@ -247,13 +247,13 @@ struct discord_gateway { /* GATEWAY STRUCTURE */
   } cbs;
   
   // latency between client and websockets server
-  // @note calculated by interval response between HEARTBEAT and HEARTBEAT_ACK
+  /// @note calculated by interval response between HEARTBEAT and HEARTBEAT_ACK
   int ping_ms;
-  pthread_mutex_t lock; // @todo implement ws_ping_ms()
+  pthread_mutex_t lock; /** @todo implement ws_ping_ms() */
   
   // the bot user structure
   struct discord_user *bot;
-  struct sized_buffer sb_bot; // @todo this is temporary
+  struct sized_buffer sb_bot; /** @todo this is temporary */
 
   // pointer to client this struct is part of
   struct discord *p_client;
@@ -315,7 +315,7 @@ struct discord {
 #endif // DISCORD_VOICE_CONNECTIONS_H
   
   // space for user arbitrary data
-  // @see discord_get_data() and discord_set_data()
+  /// @see discord_get_data() and discord_set_data()
   void *data;
   
   // sync client data that may increase in size, ex discord_voice **vcs

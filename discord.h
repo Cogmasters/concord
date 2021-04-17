@@ -46,7 +46,7 @@ https://discord.com/developers/docs/resources/channel#embed-limits */
 https://discord.com/developers/docs/resources/webhook#create-webhook */
 #define WEBHOOK_NAME_LEN 80 + 1
 
-/* @see orca/specs/ for generated code specs */
+/// @see orca/specs/ for generated code specs
 #include "./specs-code/all_opaque_struct.h"
 #include "./specs-code/all_enums.h"
 #include "./specs-code/all_structs.h"
@@ -195,15 +195,15 @@ typedef void (voice_server_update_cb)(
     const char *endpoint);
 
 struct discord_session {
-  // @todo this can become spec generated code
-  // @see https://discord.com/developers/docs/topics/gateway#get-gateway-bot-json-response
+  /// @todo this can become spec generated code
+  /// @see https://discord.com/developers/docs/topics/gateway#get-gateway-bot-json-response
   // The WSS URL that can be used for connecting to the gateway
   char url[MAX_URL_LEN];
   // The recommended number of shards to use when connecting
   int shards;
   
-  // @todo this can become spec generated code
-  // @see https://discord.com/developers/docs/topics/gateway#session-start-limit-object
+  /// @todo this can become spec generated code
+  /// @see https://discord.com/developers/docs/topics/gateway#session-start-limit-object
   // the total number of session starts the current user is allowed
   int total;
   // the remaining number of session starts the current user is allowed
@@ -236,9 +236,9 @@ struct discord_get_channel_messages_params {
 /**
  * @note by content-type sent is @b application/json, UNLESS any 
  *        @b multipart/form-data parameter is set */
-// @todo this can become specs generated code
+/// @todo this can become specs generated code
 struct discord_create_message_params {
-  // common to @b application/json and @b multipart/form-data parameters
+  /// common to @b application/json and @b multipart/form-data parameters
   // the content of the message being sent
   char *content;
   // the nonce of the message being sent
@@ -246,25 +246,25 @@ struct discord_create_message_params {
   // enable/disable text-to-speech
   bool tts;
   
-  // parameters for @b application/json
-  struct discord_embed *embed; // @see specs-code/channel.objects.h and discord-misc.c
-  struct discord_channel_allowed_mentions *allowed_mentions; // @see specs-code/channel.objects.h
-  struct discord_message_reference *message_reference; // @see specs-code/channel.message.h
+  /// parameters for @b application/json
+  struct discord_embed *embed; /** @see specs-code/channel.objects.h and discord-misc.c */
+  struct discord_channel_allowed_mentions *allowed_mentions; /** @see specs-code/channel.objects.h */
+  struct discord_message_reference *message_reference; /** @see specs-code/channel.message.h */
   
-  // parameters for @b multipart/form-data
-  // @note if just name field is set, will search for file in working directory
+  /// parameters for @b multipart/form-data
+  /// @note if just name field is set, will search for file in working directory
   struct { // FILE STRUCT
     // the name of the file being sent
     char *name;
     // the contents and size of the file being sent (optional)
-    // @todo could be a struct sized_buffer
+    /// @todo could be a struct sized_buffer
     char *content;
     size_t size;
   } file;
   char *payload_json;
 };
 
-// @todo this can become specs generated code
+/// @todo this can become specs generated code
 struct discord_edit_message_params {
   char *content;
   struct discord_embed *embed;
@@ -272,7 +272,7 @@ struct discord_edit_message_params {
   struct discord_channel_allowed_mentions *allowed_mentions;
 };
 
-// @todo this can become specs generated code
+/// @todo this can become specs generated code
 struct discord_list_guild_members_params {
   // the number of members to return (1-1000)
   int limit;
