@@ -384,7 +384,7 @@ _ws_perform(struct websockets *ws)
   ws->now_tstamp = orka_timestamp_ms(); //update our concept of now
   pthread_mutex_unlock(&ws->lock);
 
-  bool is_running;
+  int is_running;
   CURLMcode mcode = curl_multi_perform(ws->mhandle, (int*)&is_running);
   ASSERT_S(CURLM_OK == mcode, curl_multi_strerror(mcode));
 
