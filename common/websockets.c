@@ -25,7 +25,7 @@ struct websockets {
   pthread_mutex_t lock;
 };
 
-static void
+static bool
 _ws_close_nolock(
   struct websockets *ws, 
   enum ws_close_reason wscode, 
@@ -39,10 +39,10 @@ _ws_close_nolock(
     (struct sized_buffer){(char*)reason, len},
     "WS_SEND_CLOSE");
 
-  cws_close(ws->ehandle, (enum cws_close_reason)wscode, reason, len);
+  return cws_close(ws->ehandle, (enum cws_close_reason)wscode, reason, len);
 }
 
-void
+bool
 ws_close(
   struct websockets *ws, 
   enum ws_close_reason wscode, 
@@ -50,8 +50,9 @@ ws_close(
   size_t len)
 {
   pthread_mutex_lock(&ws->lock);
-  _ws_close_nolock(ws, wscode, reason, len);
+  bool ret = _ws_close_nolock(ws, wscode, reason, len);
   pthread_mutex_unlock(&ws->lock);
+  return ret;
 }
 
 static void
@@ -119,7 +120,9 @@ ws_set_action(struct websockets *ws, enum ws_action action)
       _ws_set_status_nolock(ws, WS_DISCONNECTING);
       if (ws->is_running) { // safely close connection
         char reason[] = "Disconnect gracefully";
-        _ws_close_nolock(ws, WS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
+        if (false == _ws_close_nolock(ws, WS_CLOSE_REASON_NORMAL, reason, sizeof(reason))) {
+          log_error("Couldn't send ws_close()");
+        }
       }
       break;
   default: 
@@ -359,7 +362,7 @@ ws_cleanup(struct websockets *ws)
   free(ws);
 }
 
-void
+bool
 ws_send_text(struct websockets *ws, char text[], size_t len)
 {
   log_http(
@@ -370,10 +373,9 @@ ws_send_text(struct websockets *ws, char text[], size_t len)
     "WS_SEND_TEXT");
 
   pthread_mutex_lock(&ws->lock);
-  if (false == cws_send(ws->ehandle, true, text, len)) {
-    log_error("Couldn't send websockets payload");
-  }
+  bool ret = cws_send(ws->ehandle, true, text, len);
   pthread_mutex_unlock(&ws->lock);
+  return ret;
 }
 
 static void
