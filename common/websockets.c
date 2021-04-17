@@ -278,12 +278,11 @@ cws_custom_new(struct websockets *ws, const char ws_protocols[])
   cws_cbs.data = ws;
 
   CURL *new_ehandle = cws_new(ws->base_url, ws_protocols, &cws_cbs);
-  ASSERT_S(NULL != new_ehandle, "Out of memory");
 
   CURLcode ecode;
   //enable follow redirections
   ecode = curl_easy_setopt(new_ehandle, CURLOPT_FOLLOWLOCATION, 2L);
-  ASSERT_S(CURLE_OK == ecode, curl_easy_strerror(ecode));
+  VASSERT_S(CURLE_OK == ecode, "Code: %d\n\tDescription: %s", ecode, curl_easy_strerror(ecode));
 
   return new_ehandle;
 }
@@ -385,10 +384,11 @@ _ws_perform(struct websockets *ws)
   pthread_mutex_unlock(&ws->lock);
 
   int is_running;
-  CURLMcode mcode = curl_multi_perform(ws->mhandle, (int*)&is_running);
-  ASSERT_S(CURLM_OK == mcode, curl_multi_strerror(mcode));
+  CURLMcode mcode = curl_multi_perform(ws->mhandle, &is_running);
+  VASSERT_S(CURLM_OK == mcode, "Code: %d\n\tDescription: %s", mcode, curl_multi_strerror(mcode));
 
-  _ws_set_running(ws, is_running);
+
+  _ws_set_running(ws, (bool)is_running);
 }
 
 void
@@ -406,7 +406,7 @@ void
 ws_wait_activity(struct websockets *ws, uint64_t wait_ms) 
 {
   CURLMcode mcode = curl_multi_wait(ws->mhandle, NULL, 0, wait_ms, NULL);
-  ASSERT_S(CURLM_OK == mcode, curl_multi_strerror(mcode));
+  VASSERT_S(CURLM_OK == mcode, "Code: %d\n\tDescription: %s", mcode, curl_multi_strerror(mcode));
 }
 
 uint64_t
