@@ -128,8 +128,6 @@ discord_message_from_json(char *str, size_t len, struct discord_message *message
     discord_message_free(message->referenced_message);
     message->referenced_message = NULL;
   }
-
-  log_trace("Message object loaded with API response");
 }
 
 void discord_channel_overwrite_from_json(char *json, size_t len, struct discord_channel_overwrite *p)

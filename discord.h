@@ -234,11 +234,11 @@ struct discord_get_channel_messages_params {
 };
 
 /**
- * @note by content-type sent is @a application/json, UNLESS any 
+ * @note by content-type sent is @b application/json, UNLESS any 
  *        @b multipart/form-data parameter is set */
 // @todo this can become specs generated code
 struct discord_create_message_params {
-  // common to @a and @b parameters
+  // common to @b application/json and @b multipart/form-data parameters
   // the content of the message being sent
   char *content;
   // the nonce of the message being sent
@@ -246,12 +246,12 @@ struct discord_create_message_params {
   // enable/disable text-to-speech
   bool tts;
   
-  // @a parameters for application/json
-  struct discord_embed *embed; // @see channel.objects.h and discord-misc.c
-  struct discord_channel_allowed_mentions *allowed_mentions; // @see channel.objects.h
-  struct discord_message_reference *message_reference; // @see channel.message.h
+  // parameters for @b application/json
+  struct discord_embed *embed; // @see specs-code/channel.objects.h and discord-misc.c
+  struct discord_channel_allowed_mentions *allowed_mentions; // @see specs-code/channel.objects.h
+  struct discord_message_reference *message_reference; // @see specs-code/channel.message.h
   
-  // @b parameters for multipart/form-data
+  // parameters for @b multipart/form-data
   // @note if just name field is set, will search for file in working directory
   struct { // FILE STRUCT
     // the name of the file being sent
