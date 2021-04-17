@@ -4,12 +4,20 @@
 #include <stdbool.h>
 #include "json-actor-boxed.h"
 
-typedef uint64_t u64_unix_ms_t;
-typedef uint64_t u64_snowflake_t;
+/* FORWARD DECLARATIONS */
+struct discord;
 
-struct discord; //forward declaration
+typedef uint64_t u64_unix_ms_t; // unix time in ms
 
-/* Size limits encountered in the Docs and searching the web */
+/* SNOWFLAKES
+https://discord.com/developers/docs/reference#snowflakes */
+typedef uint64_t u64_snowflake_t; // discord's snowflake datatype
+#define SNOWFLAKE_INCREMENT           12
+#define SNOWFLAKE_PROCESS_ID          17
+#define SNOWFLAKE_INTERNAL_WORKER_ID  22
+#define SNOWFLAKE_TIMESTAMP           64
+
+/* Size limits discovered from Discord docs and across the web */
 #define MAX_NAME_LEN          100 + 1
 #define MAX_TOPIC_LEN         1024 + 1
 #define MAX_DESCRIPTION_LEN   2048 + 1
@@ -38,28 +46,37 @@ https://discord.com/developers/docs/resources/channel#embed-limits */
 https://discord.com/developers/docs/resources/webhook#create-webhook */
 #define WEBHOOK_NAME_LEN 80 + 1
 
-/* SNOWFLAKES
-https://discord.com/developers/docs/reference#snowflakes */
-#define SNOWFLAKE_INCREMENT           12
-#define SNOWFLAKE_PROCESS_ID          17
-#define SNOWFLAKE_INTERNAL_WORKER_ID  22
-#define SNOWFLAKE_TIMESTAMP           64
-
+/* @see orca/specs/ for generated code specs */
 #include "./specs-code/all_opaque_struct.h"
 #include "./specs-code/all_enums.h"
 #include "./specs-code/all_structs.h"
 
 
-/* IDLE CALLBACK (runs on every iteration, no trigger required) */
+/** 
+ * IDLE CALLBACK 
+ * @note runs on every WebSockets loop iteration, no trigger required
+ * @see discord_set_on_idle()
+ */
 typedef void (idle_cb)(struct discord *client, const struct discord_user *bot);
 
+/**
+ * RAW EVENT CALLBACK
+ * @note if activated, the callback is triggered on every event detected.
+ *        it is called after every "normal" callback, and it doesn't
+ *        overwrite any existing callback
+ * @see discord_set_on_raw_event()
+ */
 typedef void (event_raw_cb)(
     struct discord *client, 
     enum discord_gateway_events event, 
     struct sized_buffer *sb_bot, 
     struct sized_buffer *event_data);
 
-/* GUILD ROLE EVENTS CALLBACKS */
+/**
+ * GUILD ROLE EVENTS CALLBACKS 
+ * @see https://discord.com/developers/docs/topics/gateway#guilds 
+ * @see discord_set_on_guild_xxx() 
+ */
 typedef void (guild_role_cb)(
     struct discord *client, const struct discord_user *bot,
     const u64_snowflake_t guild_id,
@@ -69,7 +86,11 @@ typedef void (guild_role_delete_cb)(
     const u64_snowflake_t guild_id,
     const u64_snowflake_t role_id);
 
-/* GUILD MEMBER EVENTS CALLBACKS */
+/**
+ * GUILD MEMBER EVENTS CALLBACKS 
+ * @see https://discord.com/developers/docs/topics/gateway#guilds 
+ * @see discord_set_on_guild_member_xxx() 
+ */
 typedef void (guild_member_cb)(
     struct discord *client, const struct discord_user *bot, 
     const u64_snowflake_t guild_id, 
@@ -79,13 +100,21 @@ typedef void (guild_member_remove_cb)(
     const u64_snowflake_t guild_id, 
     const struct discord_user *user);
 
-/* GUILD BAN EVENTS CALLBACKS */
+/**
+ * GUILD BAN EVENTS CALLBACKS 
+ * @see https://discord.com/developers/docs/topics/gateway#guilds 
+ * @see discord_set_on_guild_ban_xxx() 
+ */
 typedef void (guild_ban_cb)(
     struct discord *client, const struct discord_user *bot, 
     const u64_snowflake_t guild_id, 
     const struct discord_user *user);
 
-/* MESSAGE EVENTS CALLBACKS */
+/**
+ * MESSAGE EVENTS CALLBACKS 
+ * @see https://discord.com/developers/docs/topics/gateway#messages 
+ * @see discord_set_on_message_xxx() 
+ */
 typedef void (message_cb)(
     struct discord *client, const struct discord_user *bot, 
     const struct discord_message *message);
@@ -105,7 +134,11 @@ typedef void (message_delete_bulk_cb)(
     const u64_snowflake_t channel_id, 
     const u64_snowflake_t guild_id);
 
-/* CHANNEL EVENTS CALLBACKS */
+/**
+ * CHANNEL EVENTS CALLBACKS 
+ * @see https://discord.com/developers/docs/topics/gateway#channels 
+ * @see discord_set_on_channel_xxx() 
+ */
 typedef void (channel_cb)(
     struct discord *client, const struct discord_user *bot, 
     const struct discord_channel *channel);
@@ -115,7 +148,11 @@ typedef void (channel_pins_update_cb)(
     const u64_snowflake_t channel_id,
     const u64_unix_ms_t last_pin_timestamp);
 
-/* MESSAGE REACTION EVENTS CALLBACKS */
+/**
+ * MESSAGE REACTION EVENTS CALLBACKS 
+ * @see https://discord.com/developers/docs/topics/gateway#messages 
+ * @see discord_set_on_message_reaction_xxx() 
+ */
 typedef void (message_reaction_add_cb)(
     struct discord *client, const struct discord_user *bot, 
     const u64_snowflake_t user_id,
@@ -142,6 +179,12 @@ typedef void (message_reaction_remove_emoji_cb)(
     const u64_snowflake_t message_id, 
     const u64_snowflake_t guild_id,
     const struct discord_emoji *emoji);
+
+/**
+ * VOICE EVENTS CALLBACKS 
+ * @see https://discord.com/developers/docs/topics/gateway#voice
+ * @see discord_set_on_voice_xxx() 
+ */
 typedef void (voice_state_update_cb)(
     struct discord *client, const struct discord_user *bot,
     const struct discord_voice_state *voice_state);
@@ -152,21 +195,37 @@ typedef void (voice_server_update_cb)(
     const char *endpoint);
 
 struct discord_session {
+  // @todo this can become spec generated code
+  // @see https://discord.com/developers/docs/topics/gateway#get-gateway-bot-json-response
+  // The WSS URL that can be used for connecting to the gateway
   char url[MAX_URL_LEN];
+  // The recommended number of shards to use when connecting
   int shards;
-
+  
+  // @todo this can become spec generated code
+  // @see https://discord.com/developers/docs/topics/gateway#session-start-limit-object
+  // the total number of session starts the current user is allowed
   int total;
+  // the remaining number of session starts the current user is allowed
   int remaining;
+  // the number of milliseconds after which the limit resets
   int reset_after;
-  int max_concurrency; //max concurrent sessions we can handle
+  // the number of identify requests allowed per 5 seconds
+  int max_concurrency;
 
-  int concurrent; //active concurrent sessions
-  u64_unix_ms_t identify_tstamp; //identify timestamp in ms
+  // active concurrent sessions
+  int concurrent;
+  // timestamp of last succesful identify request
+  u64_unix_ms_t identify_tstamp;
 
-  u64_unix_ms_t event_tstamp; //event timestamp in ms (resets every 60s)
-  int event_count; //count elements to avoid reaching 120/60sec limit
+  // timestamp of last succesful event timestamp in ms (resets every 60s)
+  u64_unix_ms_t event_tstamp;
+
+  // event counter to avoid reaching limit of 120 events per 60 sec
+  int event_count;
 };
 
+// @todo this can become specs generated code
 struct discord_get_channel_messages_params {
   u64_snowflake_t around;
   u64_snowflake_t before;
@@ -174,52 +233,155 @@ struct discord_get_channel_messages_params {
   int limit; // max number of messages (1-100)
 };
 
-/* default is application/json unless any multipart/form-data parameter is set */
+/**
+ * @note by content-type sent is @a application/json, UNLESS any 
+ *        @b multipart/form-data parameter is set */
+// @todo this can become specs generated code
 struct discord_create_message_params {
-  // common parameters
+  // common to @a and @b parameters
+  // the content of the message being sent
   char *content;
+  // the nonce of the message being sent
   char *nonce;
+  // enable/disable text-to-speech
   bool tts;
-  // parameters for application/json
-  struct discord_embed *embed;
-  struct discord_channel_allowed_mentions *allowed_mentions;
-  struct discord_message_reference *message_reference;
-  // parameters for multipart/form-data
-  struct { // FILE STRUCT @todo better explanation
-    char *name; //if only name is set, will search in working directory
-    char *content; //the file contents
-    size_t size; //the size must accompany the content
+  
+  // @a parameters for application/json
+  struct discord_embed *embed; // @see channel.objects.h and discord-misc.c
+  struct discord_channel_allowed_mentions *allowed_mentions; // @see channel.objects.h
+  struct discord_message_reference *message_reference; // @see channel.message.h
+  
+  // @b parameters for multipart/form-data
+  // @note if just name field is set, will search for file in working directory
+  struct { // FILE STRUCT
+    // the name of the file being sent
+    char *name;
+    // the contents and size of the file being sent (optional)
+    // @todo could be a struct sized_buffer
+    char *content;
+    size_t size;
   } file;
   char *payload_json;
 };
 
+// @todo this can become specs generated code
 struct discord_edit_message_params {
   char *content;
-  struct discord_embed *embed; //must be initialized
+  struct discord_embed *embed;
   enum discord_message_flags_code *flags;
-  struct discord_channel_allowed_mentions *allowed_mentions; //must be initialized
+  struct discord_channel_allowed_mentions *allowed_mentions;
 };
 
+// @todo this can become specs generated code
 struct discord_list_guild_members_params {
-  int limit; // the number of members to return (1-1000)
-  u64_snowflake_t after; // the highest user id in the previous page
+  // the number of members to return (1-1000)
+  int limit;
+  // the highest user id in the previous page
+  u64_snowflake_t after;
 };
+
 
  /* * * * * * * * * * * * * * * */
 /* * * * CLIENT FUNCTIONS * * * */
 
+/**
+ * Initialize resources of globals used by discord.h
+ */
 void discord_global_init();
+
+/**
+ * Free resources of globals used by discord.h
+ */
 void discord_global_cleanup();
 
+/**
+ * Create a Discord Client handle by its token
+ *
+ * @param token the bot token
+ * @return the newly created Discord Client handle
+ */
 struct discord* discord_init(const char token[]);
+
+/**
+ * Create a Discord Client handle by a bot.config file
+ *
+ * @param config_file the bot.config file name
+ * @return the newly created Discord Client handle
+ */
 struct discord* discord_config_init(const char config_file[]);
+
+/**
+ * Free a Discord Client handle
+ */
 void discord_cleanup(struct discord *client);
 
+/**
+ * Subscribe to Discord Gateway events
+ *
+ * @see https://discord.com/developers/docs/topics/gateway#gateway-intents
+ * @see specs/gateway.json and specs-code/gateway.h for definition
+ *
+ * @param client the client created with discord_init()
+ * @param code the intents opcode
+ *        @note can be set as a bitmask operation (ex: A | B | C)
+ */
 void discord_add_intents(struct discord *client, enum discord_gateway_intents code);
+
+/**
+ * Set a mandatory prefix set commands
+ * ex: if a "help" command and a "!" prefix is set, the command will
+ *        only be validated if its read as "!help"
+ *
+ * @param client the client created with discord_init()
+ * @param prefix the prefix that should accompany any command
+ *
+ * @see discord_set_on_command()
+ */
 void discord_set_prefix(struct discord *client, char *prefix);
+
+/**
+ * Set command/callback pair, the call back is triggered if someone
+ *        types the command in chat.
+ * @note the command and any subjacent empty space is automatically 
+ *        left out of the message->content received by the call back
+ *
+ * @param client the client created with discord_init()
+ * @param command the command to trigger the callback
+ * @param callback the callback to run when triggered by the command
+ *
+ * @see discord_set_prefix() for changing a command prefix
+ */
 void discord_set_on_command(struct discord *client, char *command, message_cb *callback);
+
+/**
+ * Set a callback that triggers a response for any event the client is
+ *        subscribed to. The call back will be the last call back to be
+ *        executed.
+ * @note this gives the raw JSON payload associated with the event
+ *
+ * @param client the client created with discord_init()
+ * @param callback the callback to run when any event is detected
+ */
 void discord_set_on_event_raw(struct discord *client, event_raw_cb *callback);
+
+/**
+ * Set a callback that triggers despite any event being detected. It
+ *        is detected every discord_gateway_run() event loop iteration.
+ *
+ * @param client the client created with discord_init()
+ * @param callback the callback to run when triggered at every event loop iteration
+ */
 void discord_set_on_idle(struct discord *client, idle_cb *callback);
+
+/**
+ * The following functions can be used to assign a user-callback to
+ *        execute when its corresponding events is detected. 
+ * @note these functions will automatically set the necessary intent(s)
+ *        @see discord_add_intents()
+ *
+ * @param client the client created with discord_init()
+ * @param callback the callback to run when triggered by the event
+ */
 void discord_set_on_guild_role_create(struct discord *client, guild_role_cb *callback);
 void discord_set_on_guild_role_update(struct discord *client, guild_role_cb *callback);
 void discord_set_on_guild_role_delete(struct discord *client, guild_role_delete_cb *callback);
@@ -246,14 +408,57 @@ void discord_set_on_ready(struct discord *client, idle_cb *callback);
 void discord_set_on_voice_state_update(struct discord *client, voice_state_update_cb *callback);
 void discord_set_on_voice_server_update(struct discord *client, voice_server_update_cb *callback);
 
+/**
+ * Start a connection to the Discord Gateway
+ *
+ * @param client the client created with discord_init()
+ */
 void discord_run(struct discord *client);
 
+/**
+ * Set a user arbitrary data, by associating it to the client
+ * @note the user should provide his own locking mechanism to protect
+ *        his data from race conditions
+ *
+ * @param client the client created with discord_init()
+ * @param data user arbitrary data to be accessed via discord_get_data()
+ * @see discord_get_data()
+ */
 void* discord_set_data(struct discord *client, void *data);
+
+/**
+ * Get a user arbitrary data associated to the client via discord_set_data()
+ * @note the user should provide his own locking mechanism to protect
+ *        his data from race conditions
+ *
+ * @param client the client created with discord_init()
+ *
+ * @see discord_set_data()
+ */
 void* discord_get_data(struct discord *client);
 
+/**
+ * Replace the Client presence with a struct discord_gateway_status_update
+ * @note discord_set_presence() is a more comprehensible alternative
+ *
+ * @param client the client created with discord_init()
+ * @param presence the presence to replace the client's
+ *        @see specs/gateway.json and specs-code/gateway.h for definition
+ *
+ * @see discord_set_presence()
+ */
 void discord_replace_presence(struct discord *client, struct discord_gateway_status_update *presence);
+
+/**
+ * Modify the Client presence state
+ *
+ * @param client the client created with discord_init()
+ * @param activity the user current activities
+ *        @see specs/gateway.json and specs-code/gateway.h for definition
+ * @param status either "idle","dnd","online", or "offline"
+ * @param afk #true or #false
+ */
 void discord_set_presence(struct discord *client, struct discord_gateway_activity *activity, char status[], bool afk);
-enum ws_status discord_gateway_status(struct discord *client);
 
 
  /* * * * * * * * * * * * * * * * */

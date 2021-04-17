@@ -5,7 +5,7 @@
 extern "C" {
 #endif // __cplusplus
 
-#include "logconf.h"
+#include "logconf.h" /* struct logconf */
 
 /* FORWARD DECLARATIONS */
 struct websockets;
@@ -16,10 +16,10 @@ struct websockets;
  * @see _ws_set_status()
  */
 enum ws_status {
-  WS_DISCONNECTED = 0, //client disconnected from ws
-  WS_CONNECTED,        //client connected to ws
-  WS_DISCONNECTING,    //client in the process of disconnecting to ws
-  WS_CONNECTING,       //client in the process of connecting from ws
+  WS_DISCONNECTED = 0, // client disconnected from ws
+  WS_CONNECTED,        // client connected to ws
+  WS_DISCONNECTING,    // client in the process of disconnecting to ws
+  WS_CONNECTING,       // client in the process of connecting from ws
 };
 
 /**
@@ -28,7 +28,7 @@ enum ws_status {
  * @see ws_get_action()
  */
 enum ws_action {
-  WS_ACTION_DISCONNECT = 1, //trigger disconnect response
+  WS_ACTION_DISCONNECT = 1, // trigger disconnect response
 };
 
 /* @see https://tools.ietf.org/html/rfc6455#section-7.4.1 */
@@ -100,7 +100,8 @@ struct ws_callbacks {
  * Create a new (CURL-based) WebSockets handle
  *
  * @param cbs set of functions to call back when server report events.
- * @param config optional pointer to a pre-initialized logconf (see logconf.h)
+ * @param config optional pointer to a pre-initialized logconf 
+ *        @see logconf.h
  * @return newly created WebSockets handle, free with ws_cleanup
  */
 struct websockets* ws_init(struct ws_callbacks *cbs, struct logconf *config);
@@ -185,6 +186,7 @@ void ws_wait_activity(struct websockets *ws, uint64_t wait_ms);
  * at every ws_perform() call
  *
  * @param ws the WebSockets handle created with ws_init()
+ * @return the timestamp in milliseconds from when ws_perform() was last called
  */
 uint64_t ws_timestamp(struct websockets *ws);
 
