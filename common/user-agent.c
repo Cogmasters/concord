@@ -129,62 +129,64 @@ ua_reqheader_del(struct user_agent *ua, char field[])
   log_warn("Couldn't find field '%s' in existing request header", field);
 }
 
+/* get http response header by lines
+* @see: https://curl.se/libcurl/c/CURLOPT_HEADERFUNCTION.html */
 static size_t
-conn_respheader_cb(char *str, size_t size, size_t nmemb, void *p_userdata)
+conn_respheader_cb(char *buf, size_t size, size_t nmemb, void *p_userdata)
 {
-  size_t chunk_size = size * nmemb;
+  size_t bufsize = size * nmemb;
   struct conn_resp_header *resp_header = p_userdata;
 
   char *ptr;
-  if (!(ptr = strchr(str, ':'))) { //returns if can't find ':' token match
-    return chunk_size;
+  if (!(ptr = strchr(buf, ':'))) { // returns if can't find ':' field/value separator
+    return bufsize;
   }
 
-  *ptr = '\0'; //replace ':' with '\0' to separate field from value
+  ptrdiff_t separator_idx = ptr - buf; // get ':' index
 
-  int ret = snprintf(resp_header->field[resp_header->size], UA_MAX_HEADER_LEN, "%s", str);
-  ASSERT_S(ret < UA_MAX_HEADER_LEN, "oob of resp_header->field");
+  int ret = snprintf(resp_header->field[resp_header->size], UA_MAX_HEADER_LEN, "%.*s", (int)separator_idx, buf);
+  ASSERT_S(ret < UA_MAX_HEADER_LEN, "Out of bounds write attempt");
 
   if (!(ptr = strstr(ptr + 1, "\r\n"))) {//returns if can't find CRLF match
-    return chunk_size;
+    return bufsize;
   }
 
-  *ptr = '\0'; //replace CRLF with '\0' to isolate field
-
-  //adjust offset to start of value
-  int offset = 1; //offset starts after '\0' separator token
-  while (isspace(str[strlen(str) + offset])) {
+  // offsets blank characters
+  int offset=1; // starts after the ':' separator
+  while (separator_idx + offset < bufsize) {
+    if (!isspace(buf[separator_idx + offset]))
+      break; /* EARLY BREAK (not blank character) */
     ++offset;
   }
 
-  //get the value part from string
-  ret = snprintf(resp_header->value[resp_header->size], UA_MAX_HEADER_LEN, "%s",
-                 &str[strlen(str) + offset]);
-  ASSERT_S(ret < UA_MAX_HEADER_LEN, "oob write attempt");
+  // get the value part of the string
+  const int value_size = bufsize - (separator_idx + offset);
+  ret = snprintf(resp_header->value[resp_header->size], UA_MAX_HEADER_LEN, "%.*s", value_size, &buf[separator_idx + offset]);
+  ASSERT_S(ret < UA_MAX_HEADER_LEN, "Out of bounds write attempt");
 
   ++resp_header->size; //update header amount of field/value resp_header
-  ASSERT_S(resp_header->size < UA_MAX_HEADER_SIZE, "oob write of resp_header");
+  ASSERT_S(resp_header->size < UA_MAX_HEADER_SIZE, "Out of bounds write attempt");
 
-  return chunk_size;
+  return bufsize;
 }
 
-/* get api response body string
-* see: https://curl.se/libcurl/c/CURLOPT_WRITEFUNCTION.html */
+/* get http response body in chunks
+* @see: https://curl.se/libcurl/c/CURLOPT_WRITEFUNCTION.html */
 static size_t
-conn_respbody_cb(char *str, size_t size, size_t nmemb, void *p_userdata)
+conn_respbody_cb(char *buf, size_t size, size_t nmemb, void *p_userdata)
 {
-  size_t chunk_size = size * nmemb;
+  size_t bufchunk_size = size * nmemb;
   struct conn_resp_body *body = p_userdata;
 
   //increase response body memory block size only if necessary
-  if (body->real_size < (body->content.size + chunk_size + 1)) {
-    body->real_size = body->content.size + chunk_size + 1;
+  if (body->real_size < (body->content.size + bufchunk_size + 1)) {
+    body->real_size = body->content.size + bufchunk_size + 1;
     body->content.start = realloc(body->content.start, body->real_size);
   }
-  memcpy(&body->content.start[body->content.size], str, chunk_size);
-  body->content.size += chunk_size;
+  memcpy(&body->content.start[body->content.size], buf, bufchunk_size);
+  body->content.size += bufchunk_size;
   body->content.start[body->content.size] = '\0';
-  return chunk_size;
+  return bufchunk_size;
 }
 
 void
@@ -553,9 +555,16 @@ send_request(struct user_agent *ua, struct ua_conn *conn)
   orka_sleep_ms(ua->blockuntil_tstamp - orka_timestamp_ms());
   CURLcode ecode;
   
-  //@todo shouldn't abort on error
   ecode = curl_easy_perform(conn->ehandle);
-  CURLE_CHECK(ecode);
+  switch (ecode) {
+  case CURLE_WRITE_ERROR:
+      log_error("An error was returned to libcurl from a write callback\nRetrying request ...");
+      pthread_mutex_unlock(&ua->lock);
+      return CURL_NO_RESPONSE;
+  default:
+      CURLE_CHECK(ecode);
+  }
+
   conn->req_tstamp = orka_timestamp_ms();
 
   //get response's code
@@ -675,6 +684,9 @@ perform_request(
     }
     else if (httpcode >= 100) { // INFO RESPONSE
       conn->status = (*cbs.on_1xx)(cbs.data, httpcode, conn);
+    }
+    else {
+      conn->status = UA_RETRY;
     }
 
     switch (conn->status) {
