@@ -60,27 +60,27 @@ BOTZ_EXES := $(patsubst %.c, %.bz, $(BOTZ_SRC))
 TEST_SRC  := $(wildcard test/test-*.cpp test/test-*.c)
 TEST_EXES := $(filter %.exe, $(TEST_SRC:.cpp=.exe) $(TEST_SRC:.c=.exe))
 
-DISCORD_CFLAGS	:= -I./ -I./mujs  -I./sqlite3 -I./add-ons
-DISCORD_LDFLAGS	:= -L./$(LIBDIR) -ldiscord -lcurl -lpthread
+LIBDISCORD_CFLAGS	:= -I./ -I./mujs  -I./sqlite3 -I./add-ons
+LIBDISCORD_LDFLAGS	:= -L./$(LIBDIR) -ldiscord -lcurl -lpthread
 
 ifeq ($(BEARSSL),1)
-	DISCORD_LDFLAGS += -lbearssl -static
+	LIBDISCORD_LDFLAGS += -lbearssl -static
 	CFLAGS += -DBEARSSL -DBEAR_SSL
 else ifeq ($(MBEDTLS),1)
-	DISCORD_LDFLAGS += -lmbedx509 -lmbedtls -lmbedcrypto -static
+	LIBDISCORD_LDFLAGS += -lmbedx509 -lmbedtls -lmbedcrypto -static
 	CFLAGS += -DMBEDTLS
 else ifeq ($(CC),stensal-c)
-	DISCORD_LDFLAGS += -lbearssl -static
+	LIBDISCORD_LDFLAGS += -lbearssl -static
 	CFLAGS += -DBEARSSL
 else
-	DISCORD_LDFLAGS += $(pkg-config --libs --cflags libcurl) -lcrypto -lm
+	LIBDISCORD_LDFLAGS += $(pkg-config --libs --cflags libcurl) -lcrypto -lm
 endif
 
 
-LIBS_CFLAGS  := $(DISCORD_CFLAGS)
-LIBS_LDFLAGS := $(DISCORD_LDFLAGS)
+LIBS_CFLAGS  := $(LIBDISCORD_CFLAGS)
+LIBS_LDFLAGS := $(LIBDISCORD_LDFLAGS)
 
-DISCORD   := $(LIBDIR)/libdiscord.a
+LIBDISCORD   := $(LIBDIR)/libdiscord.a
 
 
 CFLAGS += -Wall -std=c11 -O0 -g \
@@ -111,7 +111,7 @@ PREFIX ?= /usr/local
 all : mkdir common discord | bot
 
 common: mkdir $(COMMON_OBJS)
-discord: mkdir $(DISCORD_OBJS) discord
+discord: mkdir $(DISCORD_OBJS) libdiscord
 slack: mkdir $(SLACK_OBJS)
 github: mkdir $(GITHUB_OBJS)
 reddit: mkdir $(REDDIT_OBJS)
@@ -174,11 +174,11 @@ actor-gen.exe: mkdir $(ACTOR_GEN_OBJS)
 %.bz:%.c discord mujs $(ADD_ONS_OBJS)
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(ADD_ONS_OBJS) $(LIBS_LDFLAGS) 
 
-%.exe:%.c discord
+%.exe:%.c libdiscord
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBS_LDFLAGS)
 
-discord: mkdir $(OBJS) $(SPECS_OBJS)
-	$(AR) -cvq $(DISCORD) $(OBJS) $(SPECS_OBJS)
+libdiscord: mkdir $(OBJS) $(SPECS_OBJS)
+	$(AR) -cvq $(LIBDISCORD) $(OBJS) $(SPECS_OBJS)
 
 mujs:
 	$(MAKE) -C mujs
@@ -189,7 +189,7 @@ install : all
 	mkdir -p $(PREFIX)/lib/
 	mkdir -p $(PREFIX)/include/orca
 	install -d $(PREFIX)/lib/
-	install -m 644 $(DISCORD) $(PREFIX)/lib/
+	install -m 644 $(LIBDISCORD) $(PREFIX)/lib/
 	install -d $(PREFIX)/include/orca/
 	install -m 644 *.h common/*.h common/**/*.h $(PREFIX)/include/orca/
 	install -d $(PREFIX)/include/orca/specs-code/
