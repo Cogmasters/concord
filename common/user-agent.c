@@ -556,14 +556,7 @@ send_request(struct user_agent *ua, struct ua_conn *conn)
   CURLcode ecode;
   
   ecode = curl_easy_perform(conn->ehandle);
-  switch (ecode) {
-  case CURLE_WRITE_ERROR:
-      log_error("An error was returned to libcurl from a write callback\nRetrying request ...");
-      pthread_mutex_unlock(&ua->lock);
-      return CURL_NO_RESPONSE;
-  default:
-      CURLE_CHECK(ecode);
-  }
+  CURLE_CHECK(ecode);
 
   conn->req_tstamp = orka_timestamp_ms();
 
@@ -685,8 +678,12 @@ perform_request(
     else if (httpcode >= 100) { // INFO RESPONSE
       conn->status = (*cbs.on_1xx)(cbs.data, httpcode, conn);
     }
+    else if (httpcode == CURL_NO_RESPONSE){
+      log_error("No http response received by libcurl");
+      conn->status = UA_FAILURE;
+    }
     else {
-      conn->status = UA_RETRY;
+      ERR("Unusual HTTP response code: %d", httpcode);
     }
 
     switch (conn->status) {
