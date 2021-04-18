@@ -6,8 +6,7 @@ ACTOR_OBJDIR := actor_obj
 ACC          ?= gcc
 
 
-COMMON_SRC  := $(wildcard common/*.c)
-ORKA_SRC    := $(wildcard orka-*.c)
+COMMON_SRC  := $(wildcard common/*.c) $(wildcard common/**/*.c)
 DISCORD_SRC := $(wildcard discord-*.c)
 SLACK_SRC   := $(wildcard slack-*.c)
 GITHUB_SRC  := $(wildcard github-*.c)
@@ -20,15 +19,18 @@ SPECS_XX   := $(addprefix specs-code/, $(notdir $(SPECS)))
 SPECS_C    := $(SPECS_XX:%.json=%.c)
 SPECS_H    := $(SPECS_XX:%.json=%.h)
 
-ACTOR_GEN_SRC = common/orka-utils.c common/json-actor.c \
-	common/ntl.c common/json-string.c common/json-scanf.c \
-	common/json-struct.c common/json-printf.c \
-	test/test-json-struct-gen.c
+ACTOR_GEN_SRC = common/orka-utils.c 	\
+								common/json-actor.c 	\
+								common/ntl.c 					\
+								common/json-string.c 	\
+								common/json-scanf.c 	\
+								common/json-struct.c 	\
+								common/json-printf.c 	\
+								test/test-json-struct-gen.c
 
 ACTOR_GEN_OBJS := $(ACTOR_GEN_SRC:%=$(ACTOR_OBJDIR)/%.o)
 
 COMMON_OBJS  := $(COMMON_SRC:%=$(OBJDIR)/%.o)
-ORKA_OBJS    := $(ORKA_SRC:%=$(OBJDIR)/%.o)
 DISCORD_OBJS := $(DISCORD_SRC:%=$(OBJDIR)/%.o)
 SLACK_OBJS   := $(SLACK_SRC:%=$(OBJDIR)/%.o)
 GITHUB_OBJS  := $(GITHUB_SRC:%=$(OBJDIR)/%.o)
@@ -37,7 +39,13 @@ SPECS_OBJS   := $(SPECS_C:%=$(OBJDIR)/%.o)
 DB_OBJS      := $(DB_SRC:%=$(OBJDIR)/%.o)
 ADD_ONS_OBJS := $(ADD_ONS_SRC:%=$(OBJDIR)/%.o)
 
-OBJS := $(COMMON_OBJS) $(DISCORD_OBJS) $(SLACK_OBJS) $(GITHUB_OBJS) $(REDDIT_OBJS) $(ORKA_OBJS)
+OBJS := $(COMMON_OBJS) $(DISCORD_OBJS) $(SLACK_OBJS) $(GITHUB_OBJS) $(REDDIT_OBJS)
+
+ifeq ($(addons),0)
+	CFLAGS += -D_DISCORD_ADD_ONS
+	OBJS += $(ADD_ONS_OBJS)
+endif
+
 
 BOT_SRC  := $(wildcard bots/bot-*.c)
 BOT_EXES := $(patsubst %.c, %.exe, $(BOT_SRC))
@@ -76,7 +84,7 @@ LIBDISCORD   := $(LIBDIR)/libdiscord.a
 
 CFLAGS += -Wall -std=c11 -O0 -g \
 	-Wno-unused-function -Wno-unused-but-set-variable \
-	-I. -I./common -DLOG_USE_COLOR
+	-I. -I./common -I./common/third-party -DLOG_USE_COLOR
 
 ifeq ($(release),1)
 else
@@ -93,21 +101,15 @@ else
 	CFLAGS += -fPIC -D_XOPEN_SOURCE=700
 endif
 
-ifeq ($(addons),0)
-	CFLAGS += -D_DISCORD_ADD_ONS
-	OBJS += $(ADD_ONS_OBJS)
-endif
-
 
 PREFIX ?= /usr/local
 
 .PHONY : install clean purge mujs
 
 
-all : mkdir common orka discord | bot
+all : mkdir common discord | bot
 
 common: mkdir $(COMMON_OBJS)
-orka: mkdir $(ORKA_OBJS)
 discord: mkdir $(DISCORD_OBJS) libdiscord
 slack: mkdir $(SLACK_OBJS)
 github: mkdir $(GITHUB_OBJS)
@@ -128,14 +130,14 @@ echo:
 	@echo BOTZ_EXES:  $(BOTZ_EXES)
 
 bot: $(BOT_EXES) #@todo should we split by categories (bot_discord, bot_github, etc)?
-botx: mkdir common orka discord | $(BOTX_EXES)
-botz: mkdir common orka discord | $(BOTZ_EXES)
+botx: mkdir common discord | $(BOTX_EXES)
+botz: mkdir common discord | $(BOTZ_EXES)
 
-test: common orka discord slack github reddit $(TEST_EXES) #@todo should we split by categories too ?
+test: common discord slack github reddit $(TEST_EXES) #@todo should we split by categories too ?
 
 mkdir :
 	mkdir -p $(ACTOR_OBJDIR)/common  $(ACTOR_OBJDIR)/test bin
-	mkdir -p $(OBJDIR) $(OBJDIR)/common $(OBJDIR)/specs $(LIBDIR)
+	mkdir -p $(OBJDIR) $(OBJDIR)/common $(OBJDIR)/common/third-party $(OBJDIR)/specs $(LIBDIR)
 	mkdir -p $(OBJDIR)/test
 	mkdir -p specs-code  $(OBJDIR)/specs-code
 	mkdir -p $(OBJDIR)/sqlite3 $(OBJDIR)/add-ons
@@ -199,7 +201,6 @@ clean :
 	rm -rf $(OBJDIR) *.exe test/*.exe bots/*.exe
 	rm -rf botx/*.bx
 	rm -rf $(LIBDIR)
-
 
 clean_actor_gen:
 	rm -rf $(ACTOR_OBJDIR) bin/*
