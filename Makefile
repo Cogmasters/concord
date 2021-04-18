@@ -11,17 +11,18 @@ DISCORD_SRC := $(wildcard discord-*.c)
 SLACK_SRC   := $(wildcard slack-*.c)
 GITHUB_SRC  := $(wildcard github-*.c)
 REDDIT_SRC  := $(wildcard reddit-*.c)
-SPECS       := $(sort $(wildcard specs/*.json))
+
 DB_SRC      := $(wildcard sqlite3/*.c)
 ADD_ONS_SRC := $(wildcard add-ons/*.c)
 
-SPECS_XX   := $(addprefix specs-code/, $(notdir $(SPECS)))
-SPECS_C    := $(SPECS_XX:%.json=%.c)
-SPECS_H    := $(SPECS_XX:%.json=%.h)
+SPECS      := $(sort $(wildcard specs/*.json))
+__SPECS    := $(addprefix specs-code/, $(notdir $(SPECS)))
+SPECS_C    := $(__SPECS:%.json=%.c)
+SPECS_H    := $(__SPECS:%.json=%.h)
 
 ACTOR_GEN_SRC = common/orka-utils.c 	\
 				common/json-actor.c 	\
-				common/ntl.c 					\
+				common/ntl.c 			\
 				common/json-string.c 	\
 				common/json-scanf.c 	\
 				common/json-struct.c 	\
@@ -59,27 +60,27 @@ BOTZ_EXES := $(patsubst %.c, %.bz, $(BOTZ_SRC))
 TEST_SRC  := $(wildcard test/test-*.cpp test/test-*.c)
 TEST_EXES := $(filter %.exe, $(TEST_SRC:.cpp=.exe) $(TEST_SRC:.c=.exe))
 
-LIBDISCORD_CFLAGS	:= -I./ -I./mujs  -I./sqlite3 -I./add-ons
-LIBDISCORD_LDFLAGS	:= -L./$(LIBDIR) -ldiscord -lcurl -lpthread
+DISCORD_CFLAGS	:= -I./ -I./mujs  -I./sqlite3 -I./add-ons
+DISCORD_LDFLAGS	:= -L./$(LIBDIR) -ldiscord -lcurl -lpthread
 
 ifeq ($(BEARSSL),1)
-	LIBDISCORD_LDFLAGS += -lbearssl -static
+	DISCORD_LDFLAGS += -lbearssl -static
 	CFLAGS += -DBEARSSL -DBEAR_SSL
 else ifeq ($(MBEDTLS),1)
-	LIBDISCORD_LDFLAGS += -lmbedx509 -lmbedtls -lmbedcrypto -static
+	DISCORD_LDFLAGS += -lmbedx509 -lmbedtls -lmbedcrypto -static
 	CFLAGS += -DMBEDTLS
 else ifeq ($(CC),stensal-c)
-	LIBDISCORD_LDFLAGS += -lbearssl -static
+	DISCORD_LDFLAGS += -lbearssl -static
 	CFLAGS += -DBEARSSL
 else
-	LIBDISCORD_LDFLAGS += $(pkg-config --libs --cflags libcurl) -lcrypto -lm
+	DISCORD_LDFLAGS += $(pkg-config --libs --cflags libcurl) -lcrypto -lm
 endif
 
 
-LIBS_CFLAGS  := $(LIBDISCORD_CFLAGS)
-LIBS_LDFLAGS := $(LIBDISCORD_LDFLAGS)
+LIBS_CFLAGS  := $(DISCORD_CFLAGS)
+LIBS_LDFLAGS := $(DISCORD_LDFLAGS)
 
-LIBDISCORD   := $(LIBDIR)/libdiscord.a
+DISCORD   := $(LIBDIR)/libdiscord.a
 
 
 CFLAGS += -Wall -std=c11 -O0 -g \
@@ -110,16 +111,13 @@ PREFIX ?= /usr/local
 all : mkdir common discord | bot
 
 common: mkdir $(COMMON_OBJS)
-discord: mkdir $(DISCORD_OBJS) libdiscord
+discord: mkdir $(DISCORD_OBJS) discord
 slack: mkdir $(SLACK_OBJS)
 github: mkdir $(GITHUB_OBJS)
 reddit: mkdir $(REDDIT_OBJS)
 db: mkdir $(DB_OBJS)
 
-specs_h: $(SPECS_H)
-specs_c: $(SPECS_C)
-
-specs: mkdir specs_h specs_c $(SPECS_OBJS)
+specs: mkdir $(SPECS_H) $(SPECS_C) $(SPECS_OBJS)
 
 echo:
 	@echo SPECS:      $(SPECS)
@@ -137,10 +135,11 @@ test: common discord slack github reddit $(TEST_EXES) #@todo should we split by 
 
 mkdir :
 	mkdir -p $(ACTOR_OBJDIR)/common  $(ACTOR_OBJDIR)/test bin
-	mkdir -p $(OBJDIR) $(OBJDIR)/common $(OBJDIR)/common/third-party $(OBJDIR)/specs $(LIBDIR)
+	mkdir -p $(OBJDIR)/common/third-party $(OBJDIR)/specs $(LIBDIR)
 	mkdir -p $(OBJDIR)/test
-	mkdir -p specs-code  $(OBJDIR)/specs-code
-	mkdir -p $(OBJDIR)/sqlite3 $(OBJDIR)/add-ons
+	mkdir -p $(OBJDIR)/specs-code
+	mkdir -p $(OBJDIR)/sqlite3 
+	mkdir -p $(OBJDIR)/add-ons
 
 
 #generic compilation
@@ -169,17 +168,17 @@ actor-gen.exe: mkdir $(ACTOR_GEN_OBJS)
 	mv $@ ./bin
 
 #generic compilation
-%.bx:%.c libdiscord mujs
+%.bx:%.c discord mujs
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBS_LDFLAGS) -lmujs -lsqlite3
 
-%.bz:%.c libdiscord mujs $(ADD_ONS_OBJS)
+%.bz:%.c discord mujs $(ADD_ONS_OBJS)
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(ADD_ONS_OBJS) $(LIBS_LDFLAGS) 
 
-%.exe:%.c libdiscord
+%.exe:%.c discord
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBS_LDFLAGS)
 
-libdiscord: mkdir $(OBJS) $(SPECS_OBJS)
-	$(AR) -cvq $(LIBDISCORD) $(OBJS) $(SPECS_OBJS)
+discord: mkdir $(OBJS) $(SPECS_OBJS)
+	$(AR) -cvq $(DISCORD) $(OBJS) $(SPECS_OBJS)
 
 mujs:
 	$(MAKE) -C mujs
@@ -187,12 +186,14 @@ mujs:
 	cp mujs/build/release/libmujs.a $(LIBDIR)
 
 install : all
+	mkdir -p $(PREFIX)/lib/
+	mkdir -p $(PREFIX)/include/orca
 	install -d $(PREFIX)/lib/
-	install -m 644 $(LIBDISCORD) $(PREFIX)/lib/
-	install -d $(PREFIX)/include/
-	install -m 644 *.h common/*.h $(PREFIX)/include/
-	install -d $(PREFIX)/include/specs-code
-	install -m 644 specs-code/*.h  $(PREFIX)/include/specs-code
+	install -m 644 $(DISCORD) $(PREFIX)/lib/
+	install -d $(PREFIX)/include/orca/
+	install -m 644 *.h common/*.h common/**/*.h $(PREFIX)/include/orca/
+	install -d $(PREFIX)/include/orca/specs-code/
+	install -m 644 specs-code/*.h  $(PREFIX)/include/orca/specs-code/
 
 specs_clean :
 	rm -f specs-code/*
