@@ -13,7 +13,7 @@ The entire code of ping-pong bot is below. We will go over it in further down:
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "libdiscord.h"
+#include <orca/discord.h>
 
 
 void on_ready(struct discord *client, const struct discord_user *me) {
