@@ -141,6 +141,7 @@ test: common discord slack github reddit $(TEST_EXES)
 mkdir :
 	mkdir -p $(ACTOR_OBJDIR)/common/third-party  $(ACTOR_OBJDIR)/test
 	mkdir -p $(OBJDIR)/common/third-party $(LIBDIR)
+	$(foreach var, $(SPECS_SUBDIR), @mkdir -p $(SPECSDIR)/$(var) $(OBJDIR)/$(SPECSDIR)/$(var))
 	mkdir -p $(OBJDIR)/test
 	mkdir -p $(OBJDIR)/sqlite3 
 	mkdir -p $(OBJDIR)/add-ons
@@ -156,7 +157,6 @@ $(OBJDIR)/%.c.o : %.c
 
 all_headers: $(SPECS)
 	rm -rf $(SPECSDIR)/*/all_*
-	$(foreach var, $(SPECS_SUBDIR), @mkdir -p $(SPECSDIR)/$(var) $(OBJDIR)/$(SPECSDIR)/$(var))
 	$(foreach var, $(SPECS),./bin/actor-gen.exe -S -a -o $(patsubst specs/%, $(SPECSDIR)/%, $(dir $(var))all_structs.h) $(var);)
 	$(foreach var, $(SPECS),./bin/actor-gen.exe -E -a -o $(patsubst specs/%, $(SPECSDIR)/%, $(dir $(var))all_enums.h) $(var);)
 	$(foreach var, $(SPECS),./bin/actor-gen.exe -F -a -o $(patsubst specs/%, $(SPECSDIR)/%, $(dir $(var))all_functions.h) $(var);)
