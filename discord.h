@@ -46,7 +46,8 @@ https://discord.com/developers/docs/resources/channel#embed-limits */
 https://discord.com/developers/docs/resources/webhook#create-webhook */
 #define WEBHOOK_NAME_LEN 80 + 1
 
-/// @see specs/discord for generated code specs #include "specs-code/discord/all_opaque_struct.h"
+/// @see specs/discord for generated code specs 
+#include "specs-code/discord/all_opaque_struct.h"
 #include "specs-code/discord/all_enums.h"
 #include "specs-code/discord/all_structs.h"
 #include "specs-code/discord/all_functions.h"
