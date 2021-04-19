@@ -7,7 +7,7 @@
 #include "reddit-internal.h"
 #include "orka-utils.h"
 
-#define BASE_API_URL "https://www.reddit.com/api/v1"
+#define BASE_API_URL "https://www.reddit.com"
 
 static void
 curl_setopt_cb(CURL *ehandle, void *p_client)

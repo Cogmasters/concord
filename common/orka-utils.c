@@ -254,7 +254,7 @@ long long
 orka_str_bounds_check(const char *str, const size_t threshold_len)
 {
   if (!str)
-    return -1; // Missing string or overflow
+    return -1; // Missing string
 
   for (long long i=0; i < threshold_len; ++i) {
     if ('\0' == str[i]) return i; // bound check succeeded

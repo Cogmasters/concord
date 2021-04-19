@@ -7,4 +7,5 @@
 #include "json-actor.h"
 #include "json-actor-boxed.h"
 #include "discord.h"
+#include "reddit.h"
 #include "orka-utils.h"
