@@ -17,13 +17,12 @@ int main(int argc, char *argv[])
   reddit_access_token(client); 
 
   struct reddit_search_params params = {
-    .sort = "new",
-    .t = "all",
-    .q = "nvim"
+    .limit = 100,
+    .q = "C Discord library",
   };
 
   struct sized_buffer json_resp={0};
-  reddit_search(client, &params, "vim", &json_resp);
+  reddit_search(client, &params, "all", &json_resp);
 
   FILE *f_out = fopen("reddit-search.json", "w+");
   fwrite(json_resp.start, 1, json_resp.size, f_out);

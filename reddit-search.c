@@ -40,12 +40,12 @@ reddit_search(
     log_error("'params.show' should be NULL or \"all\"");
     return;
   }
-  if (IS_EMPTY_STRING(params->sort)
-      || (!STREQ(params->sort, "relevance")
-         && !STREQ(params->sort, "hot")
-         && !STREQ(params->sort, "top")
-         && !STREQ(params->sort, "new")
-         && !STREQ(params->sort, "comments")))
+  if (!IS_EMPTY_STRING(params->sort)
+      && (!STREQ(params->sort, "relevance")
+         || !STREQ(params->sort, "hot")
+         || !STREQ(params->sort, "top")
+         || !STREQ(params->sort, "new")
+         || !STREQ(params->sort, "comments")))
   {
     log_error("'params.sort' should be one of: (relevance, hot, top, new, comments)");
     return;
@@ -54,13 +54,13 @@ reddit_search(
     log_error("Missing 'params->q'");
     return;
   }
-  if (IS_EMPTY_STRING(params->t)
-      || (!STREQ(params->t, "hour")
-         && !STREQ(params->t, "day")
-         && !STREQ(params->t, "week")
-         && !STREQ(params->t, "month")
-         && !STREQ(params->t, "year")
-         && !STREQ(params->t, "all")))
+  if (!IS_EMPTY_STRING(params->t)
+      && (!STREQ(params->t, "hour")
+         || !STREQ(params->t, "day")
+         || !STREQ(params->t, "week")
+         || !STREQ(params->t, "month")
+         || !STREQ(params->t, "year")
+         || !STREQ(params->t, "all")))
   {
     log_error("'params.t' should be one of: (hour, day, week, month, year, all)");
     return;
@@ -79,6 +79,12 @@ reddit_search(
   else if (params->limit > 100)
     params->limit = 100;
 
+  struct ua_resp_handle resp_handle = {
+    .ok_cb = p_json ? &get_json : NULL,
+    .ok_obj = p_json,
+  };
+
+#if 0
   char query[1024];
   int ret = query_inject(query, sizeof(query),
               "(after):s"
@@ -109,14 +115,43 @@ reddit_search(
               params->type);
   ASSERT_S(ret < sizeof(query), "Out of bounds write attempt");
 
-  struct ua_resp_handle resp_handle = {
-    .ok_cb = p_json ? &get_json : NULL,
-    .ok_obj = p_json,
-  };
-
   reddit_adapter_run(
     &client->adapter,
     &resp_handle,
     NULL,
     HTTP_GET, "/r/%s/search.json%s", subreddit, query);
+#else
+  char limit_query[64];
+  snprintf(limit_query, sizeof(limit_query),
+      "?limit=%d", params->limit);
+  char restrict_sr_query[32] = "";
+  if (true == params->restrict_sr) {
+    snprintf(restrict_sr_query, sizeof(restrict_sr_query),
+        "&restrict_sr=1");
+  }
+  char q_query[600] = "";
+  if (params->q) {
+    char *q_url_encoded = url_encode(params->q);
+    snprintf(q_query, sizeof(q_query),
+        "&q=%s", q_url_encoded);
+    free(q_url_encoded);
+  }
+  char t_query[32] = "";
+  if (params->t) {
+    snprintf(t_query, sizeof(t_query),
+        "&t=%s", params->t);
+  }
+  char sort_query[32] = "";
+  if (params->sort) {
+    snprintf(sort_query, sizeof(sort_query),
+        "&sort=%s", params->sort);
+  }
+
+  reddit_adapter_run(
+    &client->adapter,
+    &resp_handle,
+    NULL,
+    HTTP_GET, "/r/%s/search.json%s%s%s%s%s", 
+    subreddit, limit_query, restrict_sr_query, q_query, t_query, sort_query);
+#endif
 }
