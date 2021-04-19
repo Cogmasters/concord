@@ -17,7 +17,7 @@
  * The handle used for performing HTTP Requests 
  *
  * @note A wrapper over struct user_agent
- * @see user-agent.h 
+ *        @see user-agent.h 
  */
 struct discord_adapter {
   // the user agent handle that performs requests
@@ -141,26 +141,28 @@ struct cmd_cbs {
 };
 
 /**
- * The handle used for establishing a Discord WebSockets connection
+ * The handle used for establishing a Discord Gateway connection
+ *        via WebSockets
  *
  * @note A wrapper over struct websockets
- * @see websockets.h 
+ *        @see websockets.h 
  */
-struct discord_gateway { /* GATEWAY STRUCTURE */
-  struct websockets *ws; //the websockets handle that connects to Discord
+struct discord_gateway {
+  // the websockets handle that connects to Discord
+  struct websockets *ws;
    // will attempt reconnecting if connection shutdowns
-  _Bool try_reconnect; 
-   // will attempt to resume session if connection shutdowns
-  _Bool is_resumable; 
+  bool try_reconnect; 
+   // will attempt to resume session if connection shutsdowns
+  bool is_resumable; 
    // can start sending/receiving additional events to discord
-  _Bool is_ready; 
+  bool is_ready; 
 
   // this info sent expecting a connection authentication
   struct discord_gateway_identify *id; /** @see specs/gateway.json and specs-code/gateway.h for definition */
   // the session id (for resuming lost connections)
   char session_id[512]; 
   
-  // @see https://discord.com/developers/docs/topics/gateway#payloads-gateway-payload-structure
+  /// @see https://discord.com/developers/docs/topics/gateway#payloads-gateway-payload-structure
   struct { /* GATEWAY PAYLOAD STRUCTURE */
     enum discord_gateway_opcodes opcode; // field 'op'
     int seq_number;                      // field 's'
@@ -168,8 +170,8 @@ struct discord_gateway { /* GATEWAY STRUCTURE */
     struct sized_buffer event_data;      // field 'd'
   } payload;
 
-  // @note Discord expects a proccess called heartbeating in order to keep the client-server connection alive
-  // @see https://discord.com/developers/docs/topics/gateway#heartbeating
+  /// @note Discord expects a proccess called heartbeating in order to keep the client-server connection alive
+  /// @see https://discord.com/developers/docs/topics/gateway#heartbeating
   struct { /* HEARTBEAT STRUCTURE */
     // fixed interval between heartbeats
     u64_unix_ms_t interval_ms;
@@ -186,9 +188,9 @@ struct discord_gateway { /* GATEWAY STRUCTURE */
   struct cmd_cbs *on_cmd; /** @see discord_set_on_command() */
   size_t num_cmd;
 
-  // @see discord.h for definition
+  /// @see discord.h for definition
   struct { /* CALLBACKS STRUCTURE */
-    // triggers in every event loop iteration
+    // triggers on every event loop iteration
     idle_cb *on_idle; /** @see discord_set_on_idle() */
     
     // triggers for every event if set
@@ -248,8 +250,9 @@ struct discord_gateway { /* GATEWAY STRUCTURE */
   
   // latency between client and websockets server
   /// @note calculated by interval response between HEARTBEAT and HEARTBEAT_ACK
-  int ping_ms;
-  pthread_mutex_t lock; /** @todo implement ws_ping_ms() */
+  int ping_ms; /** @todo implement discord_gateway_ping_ms() */
+
+  pthread_mutex_t lock;
   
   // the bot user structure
   struct discord_user *bot;

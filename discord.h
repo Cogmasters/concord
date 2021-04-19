@@ -226,7 +226,7 @@ struct discord_session {
   int event_count;
 };
 
-// @todo this can become specs generated code
+/// @todo this can become specs generated code
 struct discord_get_channel_messages_params {
   u64_snowflake_t around;
   u64_snowflake_t before;
@@ -235,9 +235,9 @@ struct discord_get_channel_messages_params {
 };
 
 /**
+ * @todo this can become specs generated code
  * @note by content-type sent is @b application/json, UNLESS any 
  *        @b multipart/form-data parameter is set */
-/// @todo this can become specs generated code
 struct discord_create_message_params {
   /// common to @b application/json and @b multipart/form-data parameters
   // the content of the message being sent
@@ -258,8 +258,7 @@ struct discord_create_message_params {
     // the name of the file being sent
     char *name;
     // the contents and size of the file being sent (optional)
-    /// @todo could be a struct sized_buffer
-    char *content;
+    char *content; /** @todo could be a struct sized_buffer */
     size_t size;
   } file;
   char *payload_json;
@@ -367,7 +366,7 @@ void discord_set_on_event_raw(struct discord *client, event_raw_cb *callback);
 
 /**
  * Set a callback that triggers despite any event being detected. It
- *        is detected every discord_gateway_run() event loop iteration.
+ *        is triggered every discord_gateway_run() event loop iteration.
  *
  * @param client the client created with discord_init()
  * @param callback the callback to run when triggered at every event loop iteration
@@ -376,12 +375,12 @@ void discord_set_on_idle(struct discord *client, idle_cb *callback);
 
 /**
  * The following functions can be used to assign a user-callback to
- *        execute when its corresponding events is detected. 
+ *        execute when its corresponding events are detected. 
  * @note these functions will automatically set the necessary intent(s)
  *        @see discord_add_intents()
  *
  * @param client the client created with discord_init()
- * @param callback the callback to run when triggered by the event
+ * @param callback the callback to run when triggered by event
  */
 void discord_set_on_guild_role_create(struct discord *client, guild_role_cb *callback);
 void discord_set_on_guild_role_update(struct discord *client, guild_role_cb *callback);
@@ -423,6 +422,8 @@ void discord_run(struct discord *client);
  *
  * @param client the client created with discord_init()
  * @param data user arbitrary data to be accessed via discord_get_data()
+ * @return the arbitrary user data address
+ * 
  * @see discord_get_data()
  */
 void* discord_set_data(struct discord *client, void *data);
@@ -433,6 +434,7 @@ void* discord_set_data(struct discord *client, void *data);
  *        his data from race conditions
  *
  * @param client the client created with discord_init()
+ * @return the arbitrary user data address
  *
  * @see discord_set_data()
  */
