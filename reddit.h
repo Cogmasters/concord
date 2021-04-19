@@ -4,7 +4,8 @@
 #include <stdbool.h>
 #include "json-actor-boxed.h"
 
-/// @see specs/discord for generated code specs #include "specs-code/discord/all_opaque_struct.h"
+/// @see specs/discord for generated code specs 
+#include "specs-code/discord/all_opaque_struct.h"
 #include "specs-code/reddit/all_enums.h"
 #include "specs-code/reddit/all_structs.h"
 #include "specs-code/reddit/all_functions.h"
