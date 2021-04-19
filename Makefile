@@ -1,12 +1,15 @@
 CC           ?= gcc
 OBJDIR	     := obj
 LIBDIR	     := lib
+SPECSDIR     := specs-code
 ACTOR_OBJDIR := actor_obj
 
 ACC          ?= gcc
 
 
+# common src with utility functions
 COMMON_SRC  := $(wildcard common/*.c) $(wildcard common/**/*.c)
+# API specific src
 DISCORD_SRC := $(wildcard discord-*.c)
 SLACK_SRC   := $(wildcard slack-*.c)
 GITHUB_SRC  := $(wildcard github-*.c)
@@ -15,10 +18,9 @@ REDDIT_SRC  := $(wildcard reddit-*.c)
 DB_SRC      := $(wildcard sqlite3/*.c)
 ADD_ONS_SRC := $(wildcard add-ons/*.c)
 
-SPECS      := $(sort $(wildcard specs/*.json))
-__SPECS    := $(addprefix specs-code/, $(notdir $(SPECS)))
-SPECS_C    := $(__SPECS:%.json=%.c)
-SPECS_H    := $(__SPECS:%.json=%.h)
+SPECS      	:= $(sort $(wildcard specs/*/*.json))
+SPECS_SUBDIR:= $(sort $(patsubst specs/%, %, $(dir $(SPECS))))
+SPECS_SRC   := $(patsubst specs/%, $(SPECSDIR)/%, $(SPECS:%.json=%.c))
 
 ACTOR_GEN_SRC = common/orka-utils.c 	\
 				common/json-actor.c 	\
@@ -27,6 +29,7 @@ ACTOR_GEN_SRC = common/orka-utils.c 	\
 				common/json-scanf.c 	\
 				common/json-struct.c 	\
 				common/json-printf.c 	\
+				common/third-party/log.c \
 				test/test-json-struct-gen.c
 
 ACTOR_GEN_OBJS := $(ACTOR_GEN_SRC:%=$(ACTOR_OBJDIR)/%.o)
@@ -36,7 +39,7 @@ DISCORD_OBJS := $(DISCORD_SRC:%=$(OBJDIR)/%.o)
 SLACK_OBJS   := $(SLACK_SRC:%=$(OBJDIR)/%.o)
 GITHUB_OBJS  := $(GITHUB_SRC:%=$(OBJDIR)/%.o)
 REDDIT_OBJS  := $(REDDIT_SRC:%=$(OBJDIR)/%.o)
-SPECS_OBJS   := $(SPECS_C:%=$(OBJDIR)/%.o)
+SPECS_OBJS   := $(SPECS_SRC:%=$(OBJDIR)/%.o)
 DB_OBJS      := $(DB_SRC:%=$(OBJDIR)/%.o)
 ADD_ONS_OBJS := $(ADD_ONS_SRC:%=$(OBJDIR)/%.o)
 
@@ -108,7 +111,7 @@ PREFIX ?= /usr/local
 .PHONY : install clean purge mujs
 
 
-all : mkdir common discord | bot
+all : mkdir common discord | bots
 
 common: mkdir $(COMMON_OBJS)
 discord: mkdir $(DISCORD_OBJS) libdiscord
@@ -117,49 +120,49 @@ github: mkdir $(GITHUB_OBJS)
 reddit: mkdir $(REDDIT_OBJS)
 db: mkdir $(DB_OBJS)
 
-specs: mkdir $(SPECS_H) $(SPECS_C) $(SPECS_OBJS)
+specs: mkdir $(SPECS_SRC) $(SPECS_OBJS)
 
 echo:
-	@echo SPECS:      $(SPECS)
-	@echo SPECS_H:    $(SPECS_H)
-	@echo SPECS_C:    $(SPECS_C)
-	@echo SPECS_OBJS: $(SPECS_OBJS)
-	@echo BOTZ_SRC:   $(BOTZ_SRC)
-	@echo BOTZ_EXES:  $(BOTZ_EXES)
+	@echo SPECS:        $(SPECS)
+	@echo SPECS_SRC:    $(SPECS_SRC)
+	@echo SPECS_OBJS:   $(SPECS_OBJS)
+	@echo SPECS_SUBDIR: $(SPECS_SUBDIR)
+	@echo BOTZ_SRC:     $(BOTZ_SRC)
+	@echo BOTZ_EXES:    $(BOTZ_EXES)
 
-bot: $(BOT_EXES) #@todo should we split by categories (bot_discord, bot_github, etc)?
+##@todo should we split by categories (bot_discord, bot_github, etc)?
+bots: $(BOT_EXES)
 botx: mkdir common discord | $(BOTX_EXES)
 botz: mkdir common discord | $(BOTZ_EXES)
 
-test: common discord slack github reddit $(TEST_EXES) #@todo should we split by categories too ?
+##@todo should we split by categories too ?
+test: common discord slack github reddit $(TEST_EXES)
 
 mkdir :
-	mkdir -p $(ACTOR_OBJDIR)/common  $(ACTOR_OBJDIR)/test bin
-	mkdir -p $(OBJDIR)/common/third-party $(OBJDIR)/specs $(LIBDIR)
+	mkdir -p $(ACTOR_OBJDIR)/common/third-party  $(ACTOR_OBJDIR)/test
+	mkdir -p $(OBJDIR)/common/third-party $(LIBDIR)
 	mkdir -p $(OBJDIR)/test
-	mkdir -p $(OBJDIR)/specs-code
 	mkdir -p $(OBJDIR)/sqlite3 
 	mkdir -p $(OBJDIR)/add-ons
-
-
-#generic compilation
 
 
 $(ACTOR_OBJDIR)/%.c.o : %.c
 	$(ACC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 
+#generic compilation
 $(OBJDIR)/%.c.o : %.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 
 
 all_headers: $(SPECS)
-	rm -rf specs-code/all_*
-	$(foreach var, $(SPECS),./bin/actor-gen.exe -S -a -o specs-code/all_structs.h $(var);)
-	$(foreach var, $(SPECS),./bin/actor-gen.exe -E -a -o specs-code/all_enums.h $(var);)
-	$(foreach var, $(SPECS),./bin/actor-gen.exe -F -a -o specs-code/all_fun.h $(var);)
-	$(foreach var, $(SPECS),./bin/actor-gen.exe -O -a -o specs-code/all_opaque_struct.h $(var);)
-	$(foreach var, $(SPECS),./bin/actor-gen.exe -c -o specs-code/$(notdir $(var:.json=.c)) $(var);)
-	$(foreach var, $(SPECS),./bin/actor-gen.exe -d -o specs-code/$(notdir $(var:.json=.h)) $(var);)
+	rm -rf $(SPECSDIR)/*/all_*
+	$(foreach var, $(SPECS_SUBDIR), @mkdir -p $(SPECSDIR)/$(var) $(OBJDIR)/$(SPECSDIR)/$(var))
+	$(foreach var, $(SPECS),./bin/actor-gen.exe -S -a -o $(patsubst specs/%, $(SPECSDIR)/%, $(dir $(var))all_structs.h) $(var);)
+	$(foreach var, $(SPECS),./bin/actor-gen.exe -E -a -o $(patsubst specs/%, $(SPECSDIR)/%, $(dir $(var))all_enums.h) $(var);)
+	$(foreach var, $(SPECS),./bin/actor-gen.exe -F -a -o $(patsubst specs/%, $(SPECSDIR)/%, $(dir $(var))all_functions.h) $(var);)
+	$(foreach var, $(SPECS),./bin/actor-gen.exe -O -a -o $(patsubst specs/%, $(SPECSDIR)/%, $(dir $(var))all_opaque_struct.h) $(var);)
+	$(foreach var, $(SPECS),./bin/actor-gen.exe -c -o $(patsubst specs/%, $(SPECSDIR)/%, $(var:%.json=%.c)) $(var);)
+	$(foreach var, $(SPECS),./bin/actor-gen.exe -d -o $(patsubst specs/%, $(SPECSDIR)/%, $(var:%.json=%.h)) $(var);)
 
 
 actor-gen.exe: mkdir $(ACTOR_GEN_OBJS)
@@ -170,13 +173,12 @@ actor-gen.exe: mkdir $(ACTOR_GEN_OBJS)
 #generic compilation
 %.bx:%.c discord mujs
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBS_LDFLAGS) -lmujs -lsqlite3
-
 %.bz:%.c discord mujs $(ADD_ONS_OBJS)
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(ADD_ONS_OBJS) $(LIBS_LDFLAGS) 
-
 %.exe:%.c libdiscord
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBS_LDFLAGS)
 
+#API libraries compilation
 libdiscord: mkdir $(OBJS) $(SPECS_OBJS)
 	$(AR) -cvq $(LIBDISCORD) $(OBJS) $(SPECS_OBJS)
 
@@ -192,11 +194,11 @@ install : all
 	install -m 644 $(LIBDISCORD) $(PREFIX)/lib/
 	install -d $(PREFIX)/include/orca/
 	install -m 644 *.h common/*.h common/**/*.h $(PREFIX)/include/orca/
-	install -d $(PREFIX)/include/orca/specs-code/
-	install -m 644 specs-code/*.h  $(PREFIX)/include/orca/specs-code/
+	$(foreach var, $(SPECS_SUBDIR), install -d $(PREFIX)/include/orca/$(SPECSDIR)/$(var))
+	$(foreach var, $(SPECS_SUBDIR), install -m 644 $(SPECSDIR)/$(var)*.h $(PREFIX)/include/orca/$(SPECSDIR)/$(var))
 
 specs_clean :
-	rm -f specs-code/*
+	rm -rf $(SPECSDIR)
 
 clean : 
 	rm -rf $(OBJDIR) *.exe test/*.exe bots/*.exe

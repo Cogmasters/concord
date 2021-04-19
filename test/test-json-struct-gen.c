@@ -2,11 +2,11 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
+
 #include "json-struct.c"
 #include "json-scanf.h"
 
-static
-void print_usage (char * prog)
+static void print_usage(char *prog)
 {
   fprintf(stderr,
           "Usage: %s [-h|-c|-d|-f] -o output-file input-file\n"
@@ -23,20 +23,21 @@ void print_usage (char * prog)
   exit(EXIT_FAILURE);
 }
 
-int main (int argc, char ** argv)
+int main(int argc, char **argv)
 {
   size_t len = 0;
-  char * s;
+  char *s;
 
-  int opt;
-  char * config_file = NULL;
+  char *config_file = NULL;
   /*enum file_type type = FILE_SINGLE_FILE;*/
   struct emit_option eo = {
     .type = FILE_SINGLE_FILE
   };
 
-  char * open_mode = "w";;
-  while ((opt = getopt(argc, argv, "ahcdfSEFOo:")) != -1) {
+  char *open_mode = "w";
+
+  int opt;
+  while (-1 != (opt = getopt(argc, argv, "ahcdfSEFOo:"))) {
     switch (opt) {
       case 'a':
         open_mode = "a";
@@ -72,10 +73,11 @@ int main (int argc, char ** argv)
         print_usage(argv[0]);
     }
   }
+
   if (!config_file)
     print_usage(argv[0]);
   
-  char * file =  argv[optind];
+  char *file =  argv[optind];
   s = orka_load_whole_file(file, &len);
   spec_name = file;
   spec_buffer.start = s;
@@ -85,9 +87,10 @@ int main (int argc, char ** argv)
   memset(&d, 0, sizeof(d));
   definition_from_json(s, len, &d);
   //print_definition(stderr, &d);
-  FILE * fp = fopen(config_file, open_mode);
+  FILE *fp = fopen(config_file, open_mode);
   d.spec_name = file;
   gen_definition(fp, &eo, &d);
   fclose(fp);
-  return 0;
+
+  return EXIT_SUCCESS;
 }

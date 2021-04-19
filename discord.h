@@ -47,9 +47,10 @@ https://discord.com/developers/docs/resources/webhook#create-webhook */
 #define WEBHOOK_NAME_LEN 80 + 1
 
 /// @see orca/specs/ for generated code specs
-#include "./specs-code/all_opaque_struct.h"
-#include "./specs-code/all_enums.h"
-#include "./specs-code/all_structs.h"
+#include "specs-code/discord/all_opaque_struct.h"
+#include "specs-code/discord/all_enums.h"
+#include "specs-code/discord/all_structs.h"
+#include "specs-code/discord/all_functions.h"
 
 
 /** 
@@ -542,8 +543,6 @@ void discord_delete_messages_by_author_id(
   struct discord *client,
   u64_snowflake_t channel_id,
   u64_snowflake_t author_id);
-
-#include "./specs-code/all_fun.h"
 
 #ifdef _DISCORD_ADD_ONS
 #include "discord-voice-connections.h"
