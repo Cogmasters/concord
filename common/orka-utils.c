@@ -253,7 +253,7 @@ orka_str_to_ntl(
 long long
 orka_str_bounds_check(const char *str, const size_t threshold_len)
 {
-  if (!str || threshold_len > LLONG_MAX) 
+  if (!str)
     return -1; // Missing string or overflow
 
   for (long long i=0; i < threshold_len; ++i) {
