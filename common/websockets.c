@@ -302,13 +302,13 @@ ws_set_action(struct websockets *ws, enum ws_action action)
   switch (ws->action = action) {
   case WS_ACTION_DISCONNECT:
       log_info("Disconnecting WebSockets client ...");
-      _ws_set_status_nolock(ws, WS_DISCONNECTING);
       if (ws->is_running) { // safely close connection
         char reason[] = "Disconnect gracefully";
         if (false == _ws_close_nolock(ws, WS_CLOSE_REASON_NORMAL, reason, sizeof(reason))) {
           log_error("Couldn't send ws_close()");
         }
       }
+      _ws_set_status_nolock(ws, WS_DISCONNECTING);
       break;
   default: 
       ERR("Unknown ws_action (code: %d)", action);
