@@ -659,8 +659,8 @@ on_voice_state_update(struct discord_gateway *gw, struct sized_buffer *data)
   discord_voice_state_from_json(data->start, data->size, vs);
 
 #ifdef DISCORD_VOICE_CONNECTIONS_H
-  if (!discord_voice_state_update(gw->p_client, vs->guild_id, vs->session_id)) {
-    log_debug("Couldn't match a voice connection to guild_id");
+  if (vs->user_id == gw->bot->id) { // update bot voice state
+    _discord_voice_state_update(gw->p_client, vs->guild_id, vs->session_id);
   }
 #endif // DISCORD_VOICE_CONNECTIONS_H
 
@@ -682,9 +682,7 @@ on_voice_server_update(struct discord_gateway *gw, struct sized_buffer *data)
                &token, &guild_id, &endpoint);
 
 #ifdef DISCORD_VOICE_CONNECTIONS_H
-  if (!discord_voice_server_update(gw->p_client, guild_id, token, endpoint)) {
-    log_debug("Couldn't match a voice connection to guild_id");
-  }
+  _discord_voice_server_update(gw->p_client, guild_id, token, endpoint);
 #endif // DISCORD_VOICE_CONNECTIONS_H
 
   if (gw->cbs.on_voice_server_update)
