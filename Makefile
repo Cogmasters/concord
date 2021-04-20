@@ -30,7 +30,7 @@ ACTOR_GEN_SRC = common/orka-utils.c 	\
 				common/json-struct.c 	\
 				common/json-printf.c 	\
 				common/third-party/log.c \
-				test/test-json-struct-gen.c
+				specs/specs-gen.c
 
 ACTOR_GEN_OBJS := $(ACTOR_GEN_SRC:%=$(ACTOR_OBJDIR)/%.o)
 
@@ -139,7 +139,7 @@ botz: mkdir common discord | $(BOTZ_EXES)
 test: common discord slack github reddit $(TEST_EXES)
 
 mkdir :
-	mkdir -p $(ACTOR_OBJDIR)/common/third-party  $(ACTOR_OBJDIR)/test
+	mkdir -p $(ACTOR_OBJDIR)/common/third-party  $(ACTOR_OBJDIR)/specs
 	mkdir -p $(OBJDIR)/common/third-party $(LIBDIR)
 	$(foreach var, $(SPECS_SUBDIR), @mkdir -p $(SPECSDIR)/$(var) $(OBJDIR)/$(SPECSDIR)/$(var))
 	mkdir -p $(OBJDIR)/test
