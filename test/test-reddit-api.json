@@ -1,0 +1,11 @@
+{
+  "keywords":[
+    "C Discord library", 
+    "Segfault"
+  ],
+  "restrict_sr": true,
+  "subreddits": [
+    "discordapp",
+    "c_programming"
+  ]
+}

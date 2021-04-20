@@ -20,8 +20,8 @@ reddit_search(
   char subreddit[], 
   struct sized_buffer *p_json)
 {
-  if (orka_str_bounds_check(subreddit, 19) <= 0) {
-    log_error("Missing 'subreddit' or over 19 characters threshold");
+  if (IS_EMPTY_STRING(subreddit)) {
+    log_error("Missing 'subreddit'");
     return;
   }
   if (params->after && params->before) {
