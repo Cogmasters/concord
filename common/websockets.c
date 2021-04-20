@@ -9,6 +9,13 @@
 #include "orka-utils.h"
 
 
+#define CURLE_CHECK(errbuf, ecode)                    \
+  VASSERT_S(CURLE_OK == ecode, "(CURLE code: %d) %s", \
+      ecode,                                          \
+      IS_EMPTY_STRING(errbuf)                         \
+        ? curl_easy_strerror(ecode)                   \
+        : errbuf)
+
 struct websockets {
   enum ws_status status;
   enum ws_action action;
@@ -21,7 +28,13 @@ struct websockets {
   char base_url[512 + 1];
   struct ws_callbacks cbs; 
 
-  struct logconf *p_log;
+  /** 
+   * capture curl error messages
+   * @note should only be accessed after a error code returns
+   */
+  char errbuf[CURL_ERROR_SIZE]; /** @see https://curl.se/libcurl/c/CURLOPT_ERRORBUFFER.html */
+
+  struct logconf *p_config;
   pthread_mutex_t lock;
 };
 
@@ -33,7 +46,7 @@ _ws_close_nolock(
   size_t len)
 {
   log_http(
-    ws->p_log, 
+    ws->p_config, 
     ws,
     ws->base_url, 
     (struct sized_buffer){(char*)reason, len},
@@ -59,19 +72,38 @@ static void
 _ws_set_status_nolock(struct websockets *ws, enum ws_status status)
 {
   switch (ws->status = status) {
-  case WS_DISCONNECTED: // reset
+  case WS_DISCONNECTED:
       log_debug("Change status to WS_DISCONNECTED");
-      ws->action = 0;
-      ws_reset(ws);
+
+      // read messages/informationals from the individual transfers
+      int msgq = 0;
+      struct CURLMsg *curlmsg = curl_multi_info_read(ws->mhandle, &msgq);
+      ASSERT_S(NULL != curlmsg, "Attempt to run WebSockets without calling ws_start() first");
+
+      CURLcode ecode = curlmsg->data.result;
+      if (CURLMSG_DONE == curlmsg->msg) {
+        log_debug("Disconnected gracefully");
+        if (CURLE_OK != ecode) {
+          log_warn("(CURLE code: %d) %s", \
+              ecode, IS_EMPTY_STRING(ws->errbuf) ? curl_easy_strerror(ecode) : ws->errbuf);
+        }
+      }
+      else {
+        log_warn("Disconnected abruptly");
+      }
+
+      ws_reset(ws); // reset curl's easy and multi handle
       break;
   case WS_CONNECTED:
       log_debug("Change status to WS_CONNECTED");
       break;
   case WS_DISCONNECTING:
       log_debug("Change status to WS_DISCONNECTING");
+      curl_multi_remove_handle(ws->mhandle, ws->ehandle);
       break;
   case WS_CONNECTING:
       log_debug("Change status to WS_CONNECTING");
+      curl_multi_add_handle(ws->mhandle, ws->ehandle);
       break;
   default:
       ERR("Unknown ws_status (code: %d)", ws->status);
@@ -156,15 +188,16 @@ cws_on_connect_cb(void *p_ws, CURL *ehandle, const char *ws_protocols)
   struct websockets *ws = p_ws;
 
   log_http(
-    ws->p_log, 
+    ws->p_config, 
     ws,
     ws->base_url, 
     (struct sized_buffer){(char*)ws_protocols, strlen(ws_protocols)},
     "WS_RCV_CONNECT");
-
-  _ws_set_status(ws, WS_CONNECTING);
-  (*ws->cbs.on_connect)(ws->cbs.data, ws_protocols);
+  
+   // ws_start() should have been called first
+   ASSERT_S(WS_CONNECTING == ws->status, "Call ws_start() before entering the event loop");
   _ws_set_status(ws, WS_CONNECTED);
+  (*ws->cbs.on_connect)(ws->cbs.data, ws_protocols);
 }
 
 static void
@@ -173,7 +206,7 @@ cws_on_close_cb(void *p_ws, CURL *ehandle, enum cws_close_reason cwscode, const 
   struct websockets *ws = p_ws;
 
   log_http(
-    ws->p_log, 
+    ws->p_config, 
     ws,
     ws->base_url, 
     (struct sized_buffer){(char*)reason, len},
@@ -213,7 +246,7 @@ cws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
   struct websockets *ws = p_ws;
 
   log_http(
-    ws->p_log, 
+    ws->p_config, 
     ws,
     ws->base_url, 
     (struct sized_buffer){(char*)text, len},
@@ -228,7 +261,7 @@ cws_on_binary_cb(void *p_ws, CURL *ehandle, const void *mem, size_t len)
   struct websockets *ws = p_ws;
 
   log_http(
-    ws->p_log, 
+    ws->p_config, 
     ws,
     ws->base_url, 
     (struct sized_buffer){(char*)mem, len},
@@ -243,7 +276,7 @@ cws_on_ping_cb(void *p_ws, CURL *ehandle, const char *reason, size_t len)
   struct websockets *ws = p_ws;
 
   log_http(
-    ws->p_log, 
+    ws->p_config, 
     ws,
     ws->base_url, 
     (struct sized_buffer){(char*)reason, len},
@@ -258,7 +291,7 @@ cws_on_pong_cb(void *p_ws, CURL *ehandle, const char *reason, size_t len)
   struct websockets *ws = p_ws;
 
   log_http(
-    ws->p_log, 
+    ws->p_config, 
     ws,
     ws->base_url, 
     (struct sized_buffer){(char*)reason, len},
@@ -283,9 +316,12 @@ cws_custom_new(struct websockets *ws, const char ws_protocols[])
   CURL *new_ehandle = cws_new(ws->base_url, ws_protocols, &cws_cbs);
 
   CURLcode ecode;
+  //set error buffer for capturing CURL error descriptions
+  ecode = curl_easy_setopt(new_ehandle, CURLOPT_ERRORBUFFER, ws->errbuf);
+  CURLE_CHECK(ws->errbuf, ecode);
   //enable follow redirections
   ecode = curl_easy_setopt(new_ehandle, CURLOPT_FOLLOWLOCATION, 2L);
-  VASSERT_S(CURLE_OK == ecode, "Code: %d\n\tDescription: %s", ecode, curl_easy_strerror(ecode));
+  CURLE_CHECK(ws->errbuf, ecode);
 
   return new_ehandle;
 }
@@ -305,7 +341,7 @@ ws_init(struct ws_callbacks *cbs, struct logconf *config)
   new_ws->mhandle = curl_multi_init();
 
   logconf_add_id(config, new_ws, "WEBSOCKETS");
-  new_ws->p_log = config;
+  new_ws->p_config = config;
 
   memcpy(&new_ws->cbs, cbs, sizeof(struct ws_callbacks));
   if (!new_ws->cbs.on_connect) 
@@ -337,18 +373,17 @@ ws_set_url(struct websockets *ws, const char base_url[], const char ws_protocols
     int ret = snprintf(ws->base_url, sizeof(ws->base_url), "%s", base_url);
     ASSERT_S(ret < sizeof(ws->base_url), "Out of bounds write attempt");
   }
-  if (ws->ehandle) {
-    curl_multi_remove_handle(ws->mhandle, ws->ehandle);
-    cws_free(ws->ehandle);
-  }
+  cws_free(ws->ehandle);
   ws->ehandle = cws_custom_new(ws, ws_protocols);
-  curl_multi_add_handle(ws->mhandle, ws->ehandle);
 }
 
 void
-ws_reset(struct websockets *ws) {
-  log_debug("Resetting curl's multi and easy handles");
+ws_reset(struct websockets *ws) 
+{
+  log_debug("Resetting websockets individual curl easy handle");
   ws_set_url(ws, NULL, NULL);
+  ws->action = 0; // reset action
+  *ws->errbuf = '\0'; // reset errbuf
 }
 
 
@@ -366,7 +401,7 @@ bool
 ws_send_text(struct websockets *ws, char text[], size_t len)
 {
   log_http(
-    ws->p_log, 
+    ws->p_config, 
     ws,
     ws->base_url, 
     (struct sized_buffer){text, len},
@@ -378,8 +413,15 @@ ws_send_text(struct websockets *ws, char text[], size_t len)
   return ret;
 }
 
-static void
-_ws_perform(struct websockets *ws)
+void
+ws_start(struct websockets *ws) 
+{
+  ASSERT_S(WS_DISCONNECTED == ws_get_status(ws), "Shutdown current WebSockets connection before calling ws_start()");
+  _ws_set_status(ws, WS_CONNECTING);  
+}
+
+void
+ws_perform(struct websockets *ws, bool *p_is_running)
 {
   pthread_mutex_lock(&ws->lock);
   ws->now_tstamp = orka_timestamp_ms(); //update our concept of now
@@ -387,16 +429,9 @@ _ws_perform(struct websockets *ws)
 
   int is_running;
   CURLMcode mcode = curl_multi_perform(ws->mhandle, &is_running);
-  VASSERT_S(CURLM_OK == mcode, "Code: %d\n\tDescription: %s", mcode, curl_multi_strerror(mcode));
-
+  VASSERT_S(CURLM_OK == mcode, "(CURLM code: %d) %s", mcode, curl_multi_strerror(mcode));
 
   _ws_set_running(ws, (bool)is_running);
-}
-
-void
-ws_perform(struct websockets *ws, bool *p_is_running)
-{
-  _ws_perform(ws);
 
   if (!_ws_is_running(ws))
     _ws_set_status(ws, WS_DISCONNECTED);

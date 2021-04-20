@@ -12,29 +12,47 @@
 #include "orka-utils.h"
 
 
-#define CURLE_CHECK(ecode) VASSERT_S(CURLE_OK == ecode, "Code: %d\n\tDescription: %s", ecode, curl_easy_strerror(ecode))
+#define CURLE_CHECK(errbuf, ecode)                    \
+  VASSERT_S(CURLE_OK == ecode, "(CURLE code: %d) %s", \
+      ecode,                                          \
+      IS_EMPTY_STRING(errbuf)                         \
+        ? curl_easy_strerror(ecode)                   \
+        : errbuf)
 
 
 struct user_agent {
-  struct logconf *p_config;
+  // the user agent request header
+  struct curl_slist *req_header;
 
-  struct curl_slist *req_header; // the request header sent to the api
+  /**
+   * a pool of connectors for easy reuse, 
+   * the amount of conns in the pool and innactive conns
+   * @note conns are wrappers around basic CURL functionalities,
+   *        each active conn is responsible for a HTTP request
+   */
+  struct ua_conn **conn_pool;
+  size_t num_conn;
+  int num_notbusy;
 
-  struct ua_conn **conn_pool; // connection pool for reuse
-  int num_notbusy; // num of available conns
-  size_t num_conn; // amount of conns created
-
+  // the base_url for every conn
   char base_url[UA_MAX_URL_LEN];
 
-  uint64_t blockuntil_tstamp; // for global ratelimiting purposes
+  // lock every active conn from conn_pool until timestamp
+  uint64_t blockuntil_tstamp;
   pthread_mutex_t lock;
-
-  void *data; // user arbitrary data for setopt_cb
+  
+  // user arbitrary data accessed by setopt_cb
+  void *data;
   void (*setopt_cb)(CURL *ehandle, void *data); // set custom easy_setopts
 
-  void *data2; // @todo this is temporary
-  curl_mime *mime; // @todo this is temporary
-  curl_mime* (*mime_cb)(CURL *ehandle, void *data); // @todo this is temporary
+  struct logconf *p_config;
+
+  /** @todo this is temporary, we should implement a non-curl reliant way of
+        sending MIME type data */
+  // user arbitrary data accessed by mime_cb
+  void *data2;
+  curl_mime *mime; 
+  curl_mime* (*mime_cb)(CURL *ehandle, void *data2);
 };
 
 struct conn_resp_header {
@@ -59,7 +77,11 @@ struct ua_conn {
   struct conn_resp_header resp_header; //the key/field response header
   struct conn_resp_body resp_body; //the response body
 
-  void *data; //user arbitrary data
+  /** 
+   * capture curl error messages
+   * @note should only be accessed after a error code returns
+   */
+  char errbuf[CURL_ERROR_SIZE]; /** @see https://curl.se/libcurl/c/CURLOPT_ERRORBUFFER.html */
 };
 
 
@@ -208,33 +230,35 @@ conn_init(struct user_agent *ua)
 {
   struct ua_conn *new_conn = calloc(1, sizeof(struct ua_conn));
 
-  CURL *new_ehandle = curl_easy_init(); // will be given to new_conn
+  CURL *new_ehandle = curl_easy_init(); // will be assigned to new_conn
 
   CURLcode ecode;
-
+  //set error buffer for capturing CURL error descriptions
+  ecode = curl_easy_setopt(new_ehandle, CURLOPT_ERRORBUFFER, new_conn->errbuf);
+  CURLE_CHECK(new_conn->errbuf, ecode);
   //set ptr to request header we will be using for API communication
   ecode = curl_easy_setopt(new_ehandle, CURLOPT_HTTPHEADER, ua->req_header);
-  CURLE_CHECK(ecode);
+  CURLE_CHECK(new_conn->errbuf, ecode);
 
   //enable follow redirections
   ecode = curl_easy_setopt(new_ehandle, CURLOPT_FOLLOWLOCATION, 1L);
-  CURLE_CHECK(ecode);
+  CURLE_CHECK(new_conn->errbuf, ecode);
 
   //set response body callback
   ecode = curl_easy_setopt(new_ehandle, CURLOPT_WRITEFUNCTION, &conn_respbody_cb);
-  CURLE_CHECK(ecode);
+  CURLE_CHECK(new_conn->errbuf, ecode);
 
   //set ptr to response body to be filled at callback
   ecode = curl_easy_setopt(new_ehandle, CURLOPT_WRITEDATA, &new_conn->resp_body);
-  CURLE_CHECK(ecode);
+  CURLE_CHECK(new_conn->errbuf, ecode);
 
   //set response header callback
   ecode = curl_easy_setopt(new_ehandle, CURLOPT_HEADERFUNCTION, &conn_respheader_cb);
-  CURLE_CHECK(ecode);
+  CURLE_CHECK(new_conn->errbuf, ecode);
 
   //set ptr to response header to be filled at callback
   ecode = curl_easy_setopt(new_ehandle, CURLOPT_HEADERDATA, &new_conn->resp_header);
-  CURLE_CHECK(ecode);
+  CURLE_CHECK(new_conn->errbuf, ecode);
 
   // execute user-defined curl_easy_setopts
   if (ua->setopt_cb) {
@@ -263,6 +287,7 @@ conn_soft_reset(struct ua_conn *conn)
     *conn->resp_body.content.start = '\0';
   conn->resp_body.content.size = 0;
   conn->resp_header.size = 0;
+  *conn->errbuf = '\0';
 }
 
 static void
@@ -271,7 +296,6 @@ conn_full_reset(struct user_agent *ua, struct ua_conn *conn)
   pthread_mutex_lock(&ua->lock);
 
   conn_soft_reset(conn); // just to be sure
-  conn->data = NULL;
   conn->is_busy = false;
   conn->status = 0;
 
@@ -314,16 +338,6 @@ get_conn(struct user_agent *ua)
   return ret_conn;
 }
 
-void*
-ua_conn_set_data(struct ua_conn *conn, void *data) {
-  return conn->data = data;
-}
-
-void*
-ua_conn_get_data(struct ua_conn *conn) {
-  return conn->data;
-}
-
 struct sized_buffer
 ua_conn_get_resp_body(struct ua_conn *conn) {
   return conn->resp_body.content;
@@ -337,6 +351,11 @@ ua_conn_get_status(struct ua_conn *conn) {
 uint64_t
 ua_conn_timestamp(struct ua_conn *conn) {
   return conn->req_tstamp;
+}
+
+char*
+ua_conn_strerror(struct ua_conn *conn) {
+  return conn->errbuf;
 }
 
 struct user_agent*
@@ -487,11 +506,11 @@ set_method(
   switch (method) {
   case HTTP_DELETE:
       ecode = curl_easy_setopt(conn->ehandle, CURLOPT_CUSTOMREQUEST, "DELETE");
-      CURLE_CHECK(ecode);
+      CURLE_CHECK(conn->errbuf, ecode);
       break;
   case HTTP_GET:
       ecode = curl_easy_setopt(conn->ehandle, CURLOPT_HTTPGET, 1L);
-      CURLE_CHECK(ecode);
+      CURLE_CHECK(conn->errbuf, ecode);
       return; /* EARLY RETURN */
   case HTTP_POST:
       curl_easy_setopt(conn->ehandle, CURLOPT_POST, 1L);
@@ -530,7 +549,7 @@ set_url(struct user_agent *ua, struct ua_conn *conn, char endpoint[], va_list ar
   ASSERT_S(ret < sizeof(conn->req_url), "Out of bounds write attempt");
 
   CURLcode ecode = curl_easy_setopt(conn->ehandle, CURLOPT_URL, conn->req_url);
-  CURLE_CHECK(ecode);
+  CURLE_CHECK(conn->errbuf, ecode);
 
   log_trace("Request URL: %s", conn->req_url);
 }
@@ -541,6 +560,8 @@ static void noop_iter_end_cb(void *a, struct ua_conn *b)
 {return;}
 static ua_status_t noop_success_cb(void *a, int b, struct ua_conn *c)
 {return UA_SUCCESS;}
+static ua_status_t noop_failure_cb(void *a, int b, struct ua_conn *c)
+{return UA_FAILURE;}
 static ua_status_t noop_retry_cb(void *a, int b, struct ua_conn *c) 
 {return UA_RETRY;}
 static ua_status_t noop_abort_cb(void *a, int b, struct ua_conn *c) 
@@ -556,18 +577,18 @@ send_request(struct user_agent *ua, struct ua_conn *conn)
   CURLcode ecode;
   
   ecode = curl_easy_perform(conn->ehandle);
-  CURLE_CHECK(ecode);
+  CURLE_CHECK(conn->errbuf, ecode);
 
   conn->req_tstamp = orka_timestamp_ms();
 
   //get response's code
   int httpcode=0;
   ecode = curl_easy_getinfo(conn->ehandle, CURLINFO_RESPONSE_CODE, &httpcode);
-  CURLE_CHECK(ecode);
+  CURLE_CHECK(conn->errbuf, ecode);
 
   char *resp_url=NULL;
   ecode = curl_easy_getinfo(conn->ehandle, CURLINFO_EFFECTIVE_URL, &resp_url);
-  CURLE_CHECK(ecode);
+  CURLE_CHECK(conn->errbuf, ecode);
 
   log_http(
     ua->p_config, 
@@ -601,7 +622,7 @@ perform_request(
   if (!cbs.on_2xx) cbs.on_2xx = &noop_success_cb;
   if (!cbs.on_3xx) cbs.on_3xx = &noop_success_cb;
   if (!cbs.on_4xx) cbs.on_4xx = &noop_abort_cb;
-  if (!cbs.on_5xx) cbs.on_5xx = &noop_retry_cb;
+  if (!cbs.on_5xx) cbs.on_5xx = &noop_failure_cb;
 
   if (cbs.on_startup) {
     int ret = (*cbs.on_startup)(cbs.data);

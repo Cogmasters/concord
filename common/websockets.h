@@ -159,6 +159,15 @@ bool ws_close(
 bool ws_send_text(struct websockets *ws, char text[], size_t len);
 
 /**
+ * Signals connecting state before entering the WebSockets event loop
+ *
+ * Helper over _ws_set_status(ws, WS_CONNECTING)
+ *
+ * @param ws the WebSockets handle created with ws_init()
+ */
+void ws_start(struct websockets *ws);
+
+/**
  * Reads/Write available data from WebSockets
  *
  * Helper over curl_multi_perform()

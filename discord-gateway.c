@@ -1084,7 +1084,7 @@ discord_gateway_cleanup(struct discord_gateway *gw)
 static void
 event_loop(struct discord_gateway *gw) 
 {
-  ASSERT_S(WS_DISCONNECTED == ws_get_status(gw->ws), "Can't run websockets recursively");
+  ws_start(gw->ws);
 
   //get session info before starting it
   discord_get_gateway_bot(gw->p_client, &gw->session);
@@ -1096,16 +1096,18 @@ event_loop(struct discord_gateway *gw)
   }
 
   bool is_running=false;
-  do {
+  while (1) {
     ws_perform(gw->ws, &is_running);
 
     // wait for activity or timeout
     ws_wait_activity(gw->ws, 1);
 
+    if (!is_running) // exit event loop
+      break;
     if (!gw->is_ready) // wait until on_ready()
       continue;
     
-    // connection established
+    // connection is established
 
     /*check if timespan since first pulse is greater than
      * minimum heartbeat interval required*/
@@ -1116,8 +1118,7 @@ event_loop(struct discord_gateway *gw)
     }
 
     (*gw->cbs.on_idle)(gw->p_client, gw->bot);
-
-  } while (is_running);
+  }
 }
 
 void
