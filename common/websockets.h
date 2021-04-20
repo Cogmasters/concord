@@ -86,8 +86,6 @@ struct ws_callbacks {
    *
    * Clients should not transmit any more data after the server is
    * closed
-   * @see ws_cleanup() if you don't want reconnect
-   * @see ws_reset() if you wish to reconnect
    */
   void (*on_close)(void *data, enum ws_close_reason wscode, const char *reason, size_t len);
   /**
@@ -119,13 +117,6 @@ void ws_cleanup(struct websockets *ws);
  * @param ws_protocols #NULL or something like "chat", "superchat",...
  */
 void ws_set_url(struct websockets *ws, const char base_url[], const char ws_protocols[]);
-
-/**
- * Reset a WebSockets handle for reuse
- *
- * @param ws the handle to be reset
- */
-void ws_reset(struct websockets *ws);
 
 /**
  * Send a CLOSE (opcode 0x8) frame with @a reason as payload.
