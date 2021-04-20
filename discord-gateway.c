@@ -717,6 +717,7 @@ static void*
 dispatch_run(void *p_cxt)
 {
   struct _event_cxt *cxt = p_cxt;
+  log_info(ANSICOLOR("pthread_run %u", 31), cxt->tid);
 
   switch(cxt->event) {
   case DISCORD_GATEWAY_EVENTS_GUILD_CREATE:
@@ -834,6 +835,7 @@ dispatch_run(void *p_cxt)
         &cxt->data);
   }
 
+  log_info(ANSICOLOR("pthread_exit %u", 31), cxt->tid);
   free(cxt->data.start);
   free(cxt);
 
@@ -861,6 +863,7 @@ on_dispatch(struct discord_gateway *gw)
   cxt->p_gw = gw;
   cxt->event = get_dispatch_event(gw->payload.event_name);
 
+  log_info(ANSICOLOR("pthread_create", 31));
   if (pthread_create(&cxt->tid, NULL, &dispatch_run, cxt))
     ERR("Couldn't create thread");
   if (pthread_detach(cxt->tid))
@@ -913,8 +916,8 @@ static void
 on_close_cb(void *p_gw, enum ws_close_reason wscode, const char *reason, size_t len)
 {
   struct discord_gateway *gw = p_gw;
-  enum discord_gateway_close_opcodes opcode = wscode;
-
+  enum discord_gateway_close_opcodes opcode =
+    (enum discord_gateway_close_opcodes)wscode;
 
   log_warn(ANSICOLOR("%s",31)" (code: %4d) : %zd bytes,"
           "REASON: '%s'", 
