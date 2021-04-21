@@ -141,7 +141,7 @@ test: common discord slack github reddit $(TEST_EXES)
 mkdir :
 	mkdir -p $(ACTOR_OBJDIR)/common/third-party  $(ACTOR_OBJDIR)/specs
 	mkdir -p $(OBJDIR)/common/third-party $(LIBDIR)
-	$(foreach var, $(SPECS_SUBDIR), mkdir -p $(SPECSDIR)/$(var) $(OBJDIR)/$(SPECSDIR)/$(var))
+	mkdir -p $(addprefix $(SPECSDIR)/, $(SPECS_SUBDIR)) $(addprefix $(OBJDIR)/$(SPECSDIR)/, $(SPECS_SUBDIR))
 	mkdir -p $(OBJDIR)/test
 	mkdir -p $(OBJDIR)/sqlite3 
 	mkdir -p $(OBJDIR)/add-ons
