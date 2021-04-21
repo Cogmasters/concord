@@ -194,8 +194,8 @@ install : all
 	install -m 644 $(LIBDISCORD) $(PREFIX)/lib/
 	install -d $(PREFIX)/include/orca/
 	install -m 644 *.h common/*.h common/**/*.h $(PREFIX)/include/orca/
-	$(foreach var, $(SPECS_SUBDIR), install -d $(PREFIX)/include/orca/$(SPECSDIR)/$(var))
-	$(foreach var, $(SPECS_SUBDIR), install -m 644 $(SPECSDIR)/$(var)*.h $(PREFIX)/include/orca/$(SPECSDIR)/$(var))
+	install -d $(PREFIX)/include/orca/$(SPECSDIR)/discord/
+	install -m 644 $(SPECSDIR)/discord/*.h $(PREFIX)/include/orca/$(SPECSDIR)/discord/
 
 specs_clean :
 	rm -rf $(SPECSDIR)
