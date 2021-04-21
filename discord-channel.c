@@ -180,6 +180,13 @@ void discord_bulk_delete_messages(struct discord *client, u64_snowflake_t channe
     return;
   }
 
+  size_t count = ntl_length_max(messages, 101);
+  if(count < 2 || count > 100)
+  {
+    log_error("Message count should be between 2 and 100");
+    return;
+  }
+
   size_t len = json_ainject(&json,
     "(messages):F",
     ja_u64_list_to_json, (NTL_T(ja_u64))messages);

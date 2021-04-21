@@ -150,6 +150,27 @@ STATIC size_t ntl_length(ntl_t p)
   return i;
 }
 
+/*
+ * @p a NTL
+ * @max maximum length the function can return, used for optimization
+ */
+STATIC size_t ntl_length_max(ntl_t p, size_t max)
+{
+  if (NULL == p) // NULL is treated as empty
+    return 0;
+
+  static size_t dummy;
+  size_t i = 0;
+  while (p[i] && i < max) {
+    // dummy will never be used, but it can prevent compilers
+    // from optimizing this loop away.
+    dummy ++;
+    i ++;
+  }
+
+  return i;
+}
+
 
 STATIC ntl_t ntl_dup(ntl_t p, size_t elem_size)
 {

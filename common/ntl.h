@@ -110,6 +110,7 @@ ntl_t ntl_dup(ntl_t p, size_t size);
 void ntl_free(ntl_t p, void (*cleanup)(void *));
 
 size_t ntl_length(ntl_t p);
+size_t ntl_length_max(ntl_t p, size_t max);
 size_t ntl_elem_size(ntl_t p);
 
 /*
