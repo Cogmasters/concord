@@ -726,31 +726,31 @@ on_dispatch(struct discord_gateway *gw)
       break;
   case DISCORD_GATEWAY_EVENTS_GUILD_ROLE_UPDATE:
       if (gw->cbs.on_guild_role_update)
-      	on_event = &on_guild_role_update;
+        on_event = &on_guild_role_update;
       break;
   case DISCORD_GATEWAY_EVENTS_GUILD_ROLE_DELETE:
       if (gw->cbs.on_guild_role_delete)
-      	on_event = &on_guild_role_delete;
+        on_event = &on_guild_role_delete;
       break;
   case DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_ADD:
       if (gw->cbs.on_guild_member_add)
-      	on_event = &on_guild_member_add;
+        on_event = &on_guild_member_add;
       break;
   case DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_UPDATE: 
       if (gw->cbs.on_guild_member_update)
-      	on_event = &on_guild_member_update;
+        on_event = &on_guild_member_update;
       break;
   case DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_REMOVE:
       if (gw->cbs.on_guild_member_remove)
-      	on_event = &on_guild_member_remove;
+        on_event = &on_guild_member_remove;
       break;
   case DISCORD_GATEWAY_EVENTS_GUILD_BAN_ADD:
       if (gw->cbs.on_guild_ban_add)
-      	on_event = &on_guild_ban_add;
+        on_event = &on_guild_ban_add;
       break;
   case DISCORD_GATEWAY_EVENTS_GUILD_BAN_REMOVE:
       if (gw->cbs.on_guild_ban_remove)
-      	on_event = &on_guild_ban_remove;
+        on_event = &on_guild_ban_remove;
       break;
   case DISCORD_GATEWAY_EVENTS_GUILD_EMOJIS_UPDATE:
       /// @todo implement
@@ -760,19 +760,19 @@ on_dispatch(struct discord_gateway *gw)
       break;
   case DISCORD_GATEWAY_EVENTS_CHANNEL_CREATE:
       if (gw->cbs.on_channel_create)
-      	on_event = &on_channel_create;
+        on_event = &on_channel_create;
       break;
   case DISCORD_GATEWAY_EVENTS_CHANNEL_UPDATE:
       if (gw->cbs.on_channel_update)
-      	on_event = &on_channel_update;
+        on_event = &on_channel_update;
       break;
   case DISCORD_GATEWAY_EVENTS_CHANNEL_DELETE:
       if (gw->cbs.on_channel_delete)
-      	on_event = &on_channel_delete;
+        on_event = &on_channel_delete;
       break;
   case DISCORD_GATEWAY_EVENTS_CHANNEL_PINS_UPDATE:
       if (gw->cbs.on_channel_pins_update)
-      	on_event = &on_channel_pins_update;
+        on_event = &on_channel_pins_update;
       break;
   case DISCORD_GATEWAY_EVENTS_INVITE_CREATE:
       /// @todo implement
@@ -782,46 +782,46 @@ on_dispatch(struct discord_gateway *gw)
       break;
   case DISCORD_GATEWAY_EVENTS_MESSAGE_CREATE:
       if (gw->cbs.on_message_create)
-      	on_event = &on_message_create;
+        on_event = &on_message_create;
       break;
   case DISCORD_GATEWAY_EVENTS_MESSAGE_UPDATE:
       if (gw->cbs.on_message_update)
-      	on_event = &on_message_update;
+        on_event = &on_message_update;
       break;
   case DISCORD_GATEWAY_EVENTS_MESSAGE_DELETE:
       if (gw->cbs.on_message_delete)
-      	on_event = &on_message_delete;
+        on_event = &on_message_delete;
       break;
   case DISCORD_GATEWAY_EVENTS_MESSAGE_DELETE_BULK:
       if (gw->cbs.on_message_delete_bulk)
-      	on_event = &on_message_delete_bulk;
+        on_event = &on_message_delete_bulk;
       break;
   case DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_ADD:
       if (gw->cbs.on_message_reaction_add)
-      	on_event = &on_message_reaction_add;
+        on_event = &on_message_reaction_add;
       break;
   case DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE:
       if (gw->cbs.on_message_reaction_remove)
-      	on_event = &on_message_reaction_remove;
+        on_event = &on_message_reaction_remove;
       break;
   case DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE_ALL:
       if (gw->cbs.on_message_reaction_remove_all)
-      	on_event = &on_message_reaction_remove_all;
+        on_event = &on_message_reaction_remove_all;
       break;
   case DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE_EMOJI:
       if (gw->cbs.on_message_reaction_remove_emoji)
-      	on_event = &on_message_reaction_remove_emoji;
+        on_event = &on_message_reaction_remove_emoji;
       break;
   case DISCORD_GATEWAY_EVENTS_WEBHOOKS_UPDATE:
       /// @todo implement
       break;
   case DISCORD_GATEWAY_EVENTS_VOICE_STATE_UPDATE:
       if (gw->cbs.on_voice_state_update)
-      	on_event = &on_voice_state_update;
+        on_event = &on_voice_state_update;
       break;
   case DISCORD_GATEWAY_EVENTS_VOICE_SERVER_UPDATE:
       if (gw->cbs.on_voice_server_update)
-      	on_event = &on_voice_server_update;
+        on_event = &on_voice_server_update;
       break;
   case DISCORD_GATEWAY_EVENTS_TYPING_START:
       /// @todo implement
@@ -833,7 +833,7 @@ on_dispatch(struct discord_gateway *gw)
       log_info("Succesfully started a Discord session!");
       gw->is_ready = true;
       if (gw->cbs.on_ready)
-      	on_event = &on_ready;
+        on_event = &on_ready;
       break;
   case DISCORD_GATEWAY_EVENTS_RESUMED:
       log_info("Succesfully resumed a Discord session!");
@@ -1127,7 +1127,7 @@ discord_gateway_run(struct discord_gateway *gw)
   const int REC_LIMIT=15;
   for (int attempt=0; attempt < REC_LIMIT; ++attempt) {
     event_loop(gw);
-    if (!gw->is_resumable)
+    if (!gw->try_reconnect)
       break; /* EARLY BREAK */
   }
 }
