@@ -23,7 +23,7 @@ struct task_s {
 struct task_s*
 task_init()
 {
-  struct task_s *new_task = malloc(sizeof *new_task);
+  struct task_s *new_task = calloc(1, sizeof *new_task);
   if (pthread_mutex_init(&new_task->lock, NULL))
     ERR("Couldn't initialize mutex");
   return new_task;
@@ -41,9 +41,9 @@ static bool
 is_alive(struct task_s *task)
 {
   pthread_mutex_lock(&task->lock);
-  bool status = task->keepalive;
+  bool alive = task->keepalive;
   pthread_mutex_unlock(&task->lock);
-  return status;
+  return alive;
 }
 
 static void*
@@ -74,8 +74,9 @@ task_start(
     task_stop(task);
   }
 
-  task->keepalive = true;
+  pthread_mutex_lock(&task->lock);
 
+  task->keepalive = true;
   // add values associated with task
   task->timeout_ms = timeout_ms;
   task->repeat_ms = repeat_ms;
@@ -84,6 +85,8 @@ task_start(
 
   if (pthread_create(&task->tid, NULL, &event_run, task))
     ERR("Couldn't create thread");
+
+  pthread_mutex_unlock(&task->lock);
 }
 
 void
@@ -91,8 +94,11 @@ task_stop(struct task_s *task)
 {
   pthread_mutex_lock(&task->lock);
   task->keepalive = false;
-  pthread_mutex_unlock(&task->lock);
 
-  pthread_cancel(task->tid);
-  pthread_join(task->tid, NULL);
+  if (task->tid) {
+    pthread_cancel(task->tid);
+    pthread_join(task->tid, NULL);
+  }
+
+  pthread_mutex_unlock(&task->lock);
 }
