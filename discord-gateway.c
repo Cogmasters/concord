@@ -14,9 +14,12 @@
 
 struct _event_cxt {
   pthread_t tid; // the thread id
-  struct discord_gateway *p_gw; // the gateway client
   struct sized_buffer data; // a copy of payload data
-  enum discord_gateway_events event; // the gateway event
+  struct discord_gateway *p_gw; // the gateway client
+  enum discord_gateway_events event;
+  void (*on_event)(
+    struct discord_gateway *gw, 
+    struct sized_buffer *data);
 };
 
 
@@ -196,8 +199,6 @@ get_dispatch_event(char event_name[])
 static void
 on_guild_role_create(struct discord_gateway *gw, struct sized_buffer *data)
 {
-  if (!gw->cbs.on_guild_role_create) return;
-
   struct discord_guild_role *role = discord_guild_role_alloc();
 
   u64_snowflake_t guild_id = 0;
@@ -219,8 +220,6 @@ on_guild_role_create(struct discord_gateway *gw, struct sized_buffer *data)
 static void
 on_guild_role_update(struct discord_gateway *gw, struct sized_buffer *data)
 {
-  if (!gw->cbs.on_guild_role_update) return;
-
   struct discord_guild_role *role = discord_guild_role_alloc();
 
   u64_snowflake_t guild_id = 0;
@@ -242,8 +241,6 @@ on_guild_role_update(struct discord_gateway *gw, struct sized_buffer *data)
 static void
 on_guild_role_delete(struct discord_gateway *gw, struct sized_buffer *data)
 {
-  if (!gw->cbs.on_guild_role_delete) return;
-
   u64_snowflake_t guild_id=0, role_id=0;
   json_extract(data->start, data->size,
     "(guild_id):s_as_u64"
@@ -261,8 +258,6 @@ on_guild_role_delete(struct discord_gateway *gw, struct sized_buffer *data)
 static void
 on_guild_member_add(struct discord_gateway *gw, struct sized_buffer *data)
 {
-  if (!gw->cbs.on_guild_member_add) return;
-
   struct discord_guild_member *member = discord_guild_member_alloc();
   discord_guild_member_from_json(data->start, data->size, member);
 
@@ -281,8 +276,6 @@ on_guild_member_add(struct discord_gateway *gw, struct sized_buffer *data)
 static void
 on_guild_member_update(struct discord_gateway *gw, struct sized_buffer *data)
 {
-  if (!gw->cbs.on_guild_member_update) return;
-
   struct discord_guild_member *member = discord_guild_member_alloc();
   discord_guild_member_from_json(data->start, data->size, member);
 
@@ -301,8 +294,6 @@ on_guild_member_update(struct discord_gateway *gw, struct sized_buffer *data)
 static void
 on_guild_member_remove(struct discord_gateway *gw, struct sized_buffer *data)
 {
-  if (!gw->cbs.on_guild_member_remove) return;
-
   u64_snowflake_t guild_id = 0;
   struct discord_user *user = discord_user_alloc();
   json_extract(data->start, data->size,
@@ -323,8 +314,6 @@ on_guild_member_remove(struct discord_gateway *gw, struct sized_buffer *data)
 static void
 on_guild_ban_add(struct discord_gateway *gw, struct sized_buffer *data)
 {
-  if (!gw->cbs.on_guild_ban_add) return;
-
   u64_snowflake_t guild_id = 0;
   struct discord_user *user = discord_user_alloc();
   json_extract(data->start, data->size,
@@ -345,8 +334,6 @@ on_guild_ban_add(struct discord_gateway *gw, struct sized_buffer *data)
 static void
 on_guild_ban_remove(struct discord_gateway *gw, struct sized_buffer *data)
 {
-  if (!gw->cbs.on_guild_ban_remove) return;
-
   u64_snowflake_t guild_id = 0;
   struct discord_user *user = discord_user_alloc();
   json_extract(data->start, data->size,
@@ -367,8 +354,6 @@ on_guild_ban_remove(struct discord_gateway *gw, struct sized_buffer *data)
 static void
 on_channel_create(struct discord_gateway *gw, struct sized_buffer *data)
 {
-  if (!gw->cbs.on_channel_create) return;
-
   struct discord_channel *channel = discord_channel_alloc();
   discord_channel_from_json(data->start, data->size, channel);
 
@@ -383,8 +368,6 @@ on_channel_create(struct discord_gateway *gw, struct sized_buffer *data)
 static void
 on_channel_update(struct discord_gateway *gw, struct sized_buffer *data)
 {
-  if (!gw->cbs.on_channel_update) return;
-
   struct discord_channel *channel = discord_channel_alloc();
   discord_channel_from_json(data->start, data->size, channel);
 
@@ -399,8 +382,6 @@ on_channel_update(struct discord_gateway *gw, struct sized_buffer *data)
 static void
 on_channel_delete(struct discord_gateway *gw, struct sized_buffer *data)
 {
-  if (!gw->cbs.on_channel_delete) return;
-
   struct discord_channel *channel = discord_channel_alloc();
   discord_channel_from_json(data->start, data->size, channel);
 
@@ -415,8 +396,6 @@ on_channel_delete(struct discord_gateway *gw, struct sized_buffer *data)
 static void
 on_channel_pins_update(struct discord_gateway *gw, struct sized_buffer *data)
 {
-  if (!gw->cbs.on_channel_pins_update) return;
-
   u64_snowflake_t guild_id=0, channel_id=0;
   u64_unix_ms_t last_pin_timestamp=0;
   json_extract(data->start, data->size,
@@ -506,8 +485,6 @@ on_message_update(struct discord_gateway *gw, struct sized_buffer *data)
 static void
 on_message_delete(struct discord_gateway *gw, struct sized_buffer *data)
 {
-  if (!gw->cbs.on_message_delete) return;
-
   u64_snowflake_t message_id=0, channel_id=0, guild_id=0;
   json_extract(data->start, data->size,
     "(id):s_as_u64"
@@ -526,8 +503,6 @@ on_message_delete(struct discord_gateway *gw, struct sized_buffer *data)
 static void
 on_message_delete_bulk(struct discord_gateway *gw, struct sized_buffer *data)
 {
-  if (!gw->cbs.on_message_delete_bulk) return;
-
   const NTL_T(ja_u64) ids = NULL;
   u64_snowflake_t channel_id = 0, guild_id = 0;
   json_extract(data->start, data->size,
@@ -546,8 +521,6 @@ on_message_delete_bulk(struct discord_gateway *gw, struct sized_buffer *data)
 static void
 on_message_reaction_add(struct discord_gateway *gw, struct sized_buffer *data)
 {
-  if (!gw->cbs.on_message_reaction_add) return;
-
   u64_snowflake_t user_id=0, message_id=0, channel_id=0, guild_id=0;
   struct discord_guild_member *member = discord_guild_member_alloc();
   struct discord_emoji *emoji = discord_emoji_alloc();
@@ -581,8 +554,6 @@ on_message_reaction_add(struct discord_gateway *gw, struct sized_buffer *data)
 static void
 on_message_reaction_remove(struct discord_gateway *gw, struct sized_buffer *data)
 {
-  if (!gw->cbs.on_message_reaction_remove) return;
-
   u64_snowflake_t user_id=0, message_id=0, channel_id=0, guild_id=0;
   struct discord_emoji *emoji = discord_emoji_alloc();
 
@@ -611,8 +582,6 @@ on_message_reaction_remove(struct discord_gateway *gw, struct sized_buffer *data
 static void
 on_message_reaction_remove_all(struct discord_gateway *gw, struct sized_buffer *data)
 {
-  if (!gw->cbs.on_message_reaction_remove_all) return;
-
   u64_snowflake_t channel_id=0, message_id=0, guild_id=0;
   json_extract(data->start, data->size,
       "(channel_id):s_as_u64"
@@ -631,8 +600,6 @@ on_message_reaction_remove_all(struct discord_gateway *gw, struct sized_buffer *
 static void
 on_message_reaction_remove_emoji(struct discord_gateway *gw, struct sized_buffer *data)
 {
-  if (!gw->cbs.on_message_reaction_remove_emoji) return;
-
   u64_snowflake_t channel_id=0, guild_id=0, message_id=0;
   struct discord_emoji *emoji = discord_emoji_alloc();
   json_extract(data->start, data->size,
@@ -695,22 +662,10 @@ on_voice_server_update(struct discord_gateway *gw, struct sized_buffer *data)
 static void
 on_ready(struct discord_gateway *gw, struct sized_buffer *data)
 {
-  gw->is_ready = true;
-  if (!gw->cbs.on_ready) return;
-
-  log_info("Succesfully started a Discord session!");
-
   json_extract(data->start, data->size, "(session_id):s", gw->session_id);
   ASSERT_S(gw->session_id, "Missing session_id from READY event");
 
   (*gw->cbs.on_ready)(gw->p_client, gw->bot);
-}
-
-static void
-on_resumed(struct discord_gateway *gw)
-{
-  gw->is_ready = true;
-  log_info("Succesfully resumed a Discord session!");
 }
 
 static void*
@@ -719,121 +674,13 @@ dispatch_run(void *p_cxt)
   struct _event_cxt *cxt = p_cxt;
   log_info(ANSICOLOR("pthread_run %u", 31), cxt->tid);
 
-  switch(cxt->event) {
-  case DISCORD_GATEWAY_EVENTS_GUILD_CREATE:
-      //@todo implement
-      break;
-  case DISCORD_GATEWAY_EVENTS_GUILD_UPDATE:
-      //@todo implement
-      break;
-  case DISCORD_GATEWAY_EVENTS_GUILD_DELETE:
-      //@todo implement
-      break;
-  case DISCORD_GATEWAY_EVENTS_GUILD_ROLE_CREATE:
-      on_guild_role_create(cxt->p_gw, &cxt->data);
-      break;
-  case DISCORD_GATEWAY_EVENTS_GUILD_ROLE_UPDATE:
-      on_guild_role_update(cxt->p_gw, &cxt->data);
-      break;
-  case DISCORD_GATEWAY_EVENTS_GUILD_ROLE_DELETE:
-      on_guild_role_delete(cxt->p_gw, &cxt->data);
-      break;
-  case DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_ADD:
-      on_guild_member_add(cxt->p_gw, &cxt->data);
-      break;
-  case DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_UPDATE: 
-      on_guild_member_update(cxt->p_gw, &cxt->data);
-      break;
-  case DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_REMOVE:
-      on_guild_member_remove(cxt->p_gw, &cxt->data);
-      break;
-  case DISCORD_GATEWAY_EVENTS_GUILD_BAN_ADD:
-      on_guild_ban_add(cxt->p_gw, &cxt->data);
-      break;
-  case DISCORD_GATEWAY_EVENTS_GUILD_BAN_REMOVE:
-      on_guild_ban_remove(cxt->p_gw, &cxt->data);
-      break;
-  case DISCORD_GATEWAY_EVENTS_GUILD_EMOJIS_UPDATE:
-      //@todo implement
-      break;
-  case DISCORD_GATEWAY_EVENTS_GUILD_INTEGRATIONS_UPDATE:
-      //@todo implement
-      break;
-  case DISCORD_GATEWAY_EVENTS_CHANNEL_CREATE:
-      on_channel_create(cxt->p_gw, &cxt->data);
-      break;
-  case DISCORD_GATEWAY_EVENTS_CHANNEL_UPDATE:
-      on_channel_update(cxt->p_gw, &cxt->data);
-      break;
-  case DISCORD_GATEWAY_EVENTS_CHANNEL_DELETE:
-      on_channel_delete(cxt->p_gw, &cxt->data);
-      break;
-  case DISCORD_GATEWAY_EVENTS_CHANNEL_PINS_UPDATE:
-      on_channel_pins_update(cxt->p_gw, &cxt->data);
-      break;
-  case DISCORD_GATEWAY_EVENTS_INVITE_CREATE:
-      //@todo implement
-      break;
-  case DISCORD_GATEWAY_EVENTS_INVITE_DELETE:
-      //@todo implement
-      break;
-  case DISCORD_GATEWAY_EVENTS_MESSAGE_CREATE:
-      on_message_create(cxt->p_gw, &cxt->data);
-      break;
-  case DISCORD_GATEWAY_EVENTS_MESSAGE_UPDATE:
-      on_message_update(cxt->p_gw, &cxt->data);
-      break;
-  case DISCORD_GATEWAY_EVENTS_MESSAGE_DELETE:
-      on_message_delete(cxt->p_gw, &cxt->data);
-      break;
-  case DISCORD_GATEWAY_EVENTS_MESSAGE_DELETE_BULK:
-      on_message_delete_bulk(cxt->p_gw, &cxt->data);
-      break;
-  case DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_ADD:
-      on_message_reaction_add(cxt->p_gw, &cxt->data);
-      break;
-  case DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE:
-      on_message_reaction_remove(cxt->p_gw, &cxt->data);
-      break;
-  case DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE_ALL:
-      on_message_reaction_remove_all(cxt->p_gw, &cxt->data);
-      break;
-  case DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE_EMOJI:
-      on_message_reaction_remove_emoji(cxt->p_gw, &cxt->data);
-      break;
-  case DISCORD_GATEWAY_EVENTS_WEBHOOKS_UPDATE:
-      // @todo implement
-      break;
-  case DISCORD_GATEWAY_EVENTS_VOICE_STATE_UPDATE:
-      on_voice_state_update(cxt->p_gw, &cxt->data);
-      break;
-  case DISCORD_GATEWAY_EVENTS_VOICE_SERVER_UPDATE:
-      on_voice_server_update(cxt->p_gw, &cxt->data);
-      break;
-  case DISCORD_GATEWAY_EVENTS_TYPING_START:
-      // @todo implement
-      break;
-  case DISCORD_GATEWAY_EVENTS_PRESENCE_UPDATE:
-      // @todo implement
-      break;
-  case DISCORD_GATEWAY_EVENTS_READY:
-      on_ready(cxt->p_gw, &cxt->data);
-      break;
-  case DISCORD_GATEWAY_EVENTS_RESUMED:
-      on_resumed(cxt->p_gw);
-      break;
-  default:
-      log_warn("Expected unimplemented GATEWAY_DISPATCH event (code: %d)", cxt->event);
-      break;
-  }
+  (*cxt->on_event)(cxt->p_gw, &cxt->data);
 
-  if (cxt->p_gw->cbs.on_event_raw) {
-    (*cxt->p_gw->cbs.on_event_raw)(
-        cxt->p_gw->p_client, 
-        cxt->event, 
-        &cxt->p_gw->sb_bot, 
-        &cxt->data);
-  }
+  (*cxt->p_gw->cbs.on_event_raw)(
+      cxt->p_gw->p_client, 
+      cxt->event, 
+      &cxt->p_gw->sb_bot, 
+      &cxt->data);
 
   log_info(ANSICOLOR("pthread_exit %u", 31), cxt->tid);
   free(cxt->data.start);
@@ -856,12 +703,159 @@ on_dispatch(struct discord_gateway *gw)
     gw->session.event_count = 0;
   }
 
+  /** 
+   * Filter through user event's subscriptions. If there are user-defined
+   *      callbacks assigned to the detected event, a new thread will be
+   *      created to run it, otherwise we just return.
+   */
+  void (*on_event)(struct discord_gateway*, struct sized_buffer*) = NULL;
+  enum discord_gateway_events event = get_dispatch_event(gw->payload.event_name);
+  switch(event) {
+  case DISCORD_GATEWAY_EVENTS_GUILD_CREATE:
+      /// @todo implement
+      break;
+  case DISCORD_GATEWAY_EVENTS_GUILD_UPDATE:
+      /// @todo implement
+      break;
+  case DISCORD_GATEWAY_EVENTS_GUILD_DELETE:
+      /// @todo implement
+      break;
+  case DISCORD_GATEWAY_EVENTS_GUILD_ROLE_CREATE:
+      if (gw->cbs.on_guild_role_create)
+        on_event = &on_guild_role_create;
+      break;
+  case DISCORD_GATEWAY_EVENTS_GUILD_ROLE_UPDATE:
+      if (gw->cbs.on_guild_role_update)
+      	on_event = &on_guild_role_update;
+      break;
+  case DISCORD_GATEWAY_EVENTS_GUILD_ROLE_DELETE:
+      if (gw->cbs.on_guild_role_delete)
+      	on_event = &on_guild_role_delete;
+      break;
+  case DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_ADD:
+      if (gw->cbs.on_guild_member_add)
+      	on_event = &on_guild_member_add;
+      break;
+  case DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_UPDATE: 
+      if (gw->cbs.on_guild_member_update)
+      	on_event = &on_guild_member_update;
+      break;
+  case DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_REMOVE:
+      if (gw->cbs.on_guild_member_remove)
+      	on_event = &on_guild_member_remove;
+      break;
+  case DISCORD_GATEWAY_EVENTS_GUILD_BAN_ADD:
+      if (gw->cbs.on_guild_ban_add)
+      	on_event = &on_guild_ban_add;
+      break;
+  case DISCORD_GATEWAY_EVENTS_GUILD_BAN_REMOVE:
+      if (gw->cbs.on_guild_ban_remove)
+      	on_event = &on_guild_ban_remove;
+      break;
+  case DISCORD_GATEWAY_EVENTS_GUILD_EMOJIS_UPDATE:
+      /// @todo implement
+      break;
+  case DISCORD_GATEWAY_EVENTS_GUILD_INTEGRATIONS_UPDATE:
+      /// @todo implement
+      break;
+  case DISCORD_GATEWAY_EVENTS_CHANNEL_CREATE:
+      if (gw->cbs.on_channel_create)
+      	on_event = &on_channel_create;
+      break;
+  case DISCORD_GATEWAY_EVENTS_CHANNEL_UPDATE:
+      if (gw->cbs.on_channel_update)
+      	on_event = &on_channel_update;
+      break;
+  case DISCORD_GATEWAY_EVENTS_CHANNEL_DELETE:
+      if (gw->cbs.on_channel_delete)
+      	on_event = &on_channel_delete;
+      break;
+  case DISCORD_GATEWAY_EVENTS_CHANNEL_PINS_UPDATE:
+      if (gw->cbs.on_channel_pins_update)
+      	on_event = &on_channel_pins_update;
+      break;
+  case DISCORD_GATEWAY_EVENTS_INVITE_CREATE:
+      /// @todo implement
+      break;
+  case DISCORD_GATEWAY_EVENTS_INVITE_DELETE:
+      /// @todo implement
+      break;
+  case DISCORD_GATEWAY_EVENTS_MESSAGE_CREATE:
+      if (gw->cbs.on_message_create)
+      	on_event = &on_message_create;
+      break;
+  case DISCORD_GATEWAY_EVENTS_MESSAGE_UPDATE:
+      if (gw->cbs.on_message_update)
+      	on_event = &on_message_update;
+      break;
+  case DISCORD_GATEWAY_EVENTS_MESSAGE_DELETE:
+      if (gw->cbs.on_message_delete)
+      	on_event = &on_message_delete;
+      break;
+  case DISCORD_GATEWAY_EVENTS_MESSAGE_DELETE_BULK:
+      if (gw->cbs.on_message_delete_bulk)
+      	on_event = &on_message_delete_bulk;
+      break;
+  case DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_ADD:
+      if (gw->cbs.on_message_reaction_add)
+      	on_event = &on_message_reaction_add;
+      break;
+  case DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE:
+      if (gw->cbs.on_message_reaction_remove)
+      	on_event = &on_message_reaction_remove;
+      break;
+  case DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE_ALL:
+      if (gw->cbs.on_message_reaction_remove_all)
+      	on_event = &on_message_reaction_remove_all;
+      break;
+  case DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE_EMOJI:
+      if (gw->cbs.on_message_reaction_remove_emoji)
+      	on_event = &on_message_reaction_remove_emoji;
+      break;
+  case DISCORD_GATEWAY_EVENTS_WEBHOOKS_UPDATE:
+      /// @todo implement
+      break;
+  case DISCORD_GATEWAY_EVENTS_VOICE_STATE_UPDATE:
+      if (gw->cbs.on_voice_state_update)
+      	on_event = &on_voice_state_update;
+      break;
+  case DISCORD_GATEWAY_EVENTS_VOICE_SERVER_UPDATE:
+      if (gw->cbs.on_voice_server_update)
+      	on_event = &on_voice_server_update;
+      break;
+  case DISCORD_GATEWAY_EVENTS_TYPING_START:
+      /// @todo implement
+      break;
+  case DISCORD_GATEWAY_EVENTS_PRESENCE_UPDATE:
+      /// @todo implement
+      break;
+  case DISCORD_GATEWAY_EVENTS_READY:
+      log_info("Succesfully started a Discord session!");
+      gw->is_ready = true;
+      if (gw->cbs.on_ready)
+      	on_event = &on_ready;
+      break;
+  case DISCORD_GATEWAY_EVENTS_RESUMED:
+      log_info("Succesfully resumed a Discord session!");
+      gw->is_ready = true;
+      /// @todo implement
+      break;
+  default:
+      log_warn("Expected unimplemented GATEWAY_DISPATCH event (code: %d)", event);
+      break;
+  }
+
+  if (!on_event) return; /* user not subscribed to the event */
+
+  // create a new thread to execute callback
+  
   struct _event_cxt *cxt = malloc(sizeof(struct _event_cxt));
   asprintf(&cxt->data.start, "%.*s", \
       (int)gw->payload.event_data.size, gw->payload.event_data.start);
   cxt->data.size = gw->payload.event_data.size;
   cxt->p_gw = gw;
-  cxt->event = get_dispatch_event(gw->payload.event_name);
+  cxt->event = event;
+  cxt->on_event = on_event;
 
   log_info(ANSICOLOR("pthread_create", 31));
   if (pthread_create(&cxt->tid, NULL, &dispatch_run, cxt))
@@ -1016,6 +1010,8 @@ send_heartbeat(struct discord_gateway *gw)
 
 static void noop_idle_cb(struct discord *a, const struct discord_user *b)
 { return; }
+static void noop_event_raw_cb(struct discord *a, enum discord_gateway_events b, struct sized_buffer *c, struct sized_buffer *d)
+{ return; }
 
 void
 discord_gateway_init(struct discord_gateway *gw, struct logconf *config, struct sized_buffer *token)
@@ -1045,6 +1041,7 @@ discord_gateway_init(struct discord_gateway *gw, struct logconf *config, struct 
   gw->id->presence->since = orka_timestamp_ms();
 
   gw->cbs.on_idle = &noop_idle_cb;
+  gw->cbs.on_event_raw = &noop_event_raw_cb;
 
   gw->bot = discord_user_alloc();
 
@@ -1130,6 +1127,8 @@ discord_gateway_run(struct discord_gateway *gw)
   const int REC_LIMIT=15;
   for (int attempt=0; attempt < REC_LIMIT; ++attempt) {
     event_loop(gw);
+    if (!gw->is_resumable)
+      break; /* EARLY BREAK */
   }
 }
 

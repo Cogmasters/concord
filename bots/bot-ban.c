@@ -133,6 +133,7 @@ int main(int argc, char *argv[])
   struct discord *client = discord_config_init(config_file);
   assert(NULL != client);
 
+  discord_set_on_ready(client, &on_ready);
   discord_set_on_guild_ban_add(client, &on_guild_ban_add);
   discord_set_on_guild_ban_remove(client, &on_guild_ban_remove);
   discord_set_on_command(client, "!ban", &on_ban);
