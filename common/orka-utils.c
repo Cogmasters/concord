@@ -14,6 +14,7 @@
 
 #include "orka-utils.h"
 #include "json-scanf.h"
+#include "json-actor-boxed.h" /* ja_str and functions */
 #include "json-actor.h"
 #include "debug.h"
 
@@ -250,16 +251,32 @@ orka_str_to_ntl(
 
 /* this can be used for checking if a user-given string does not
  *  exceeds a arbitrary threshold length */
-long long
+ssize_t
 orka_str_bounds_check(const char *str, const size_t threshold_len)
 {
-  if (!str)
-    return -1; // Missing string
+  if (!str) return -1; // Missing string
 
-  for (long long i=0; i < threshold_len; ++i) {
+  for (size_t i=0; i < threshold_len; ++i) {
     if ('\0' == str[i]) return i; // bound check succeeded
   }
   return 0; // bound check failed
+}
+
+char* 
+orka_cat_strings(char** strings, const size_t nmemb, const char delim[], const size_t wordlen, const size_t maxlen)
+{
+  char *buf = malloc(maxlen);
+  char *cur = buf, * const end = cur + maxlen;
+
+  for (size_t i=0; i < nmemb; ++i) {
+    VASSERT_S(orka_str_bounds_check(strings[i], wordlen) > 0,
+        "'%s' exceeds threshold of %zu characters", strings[i], wordlen);
+    cur += snprintf(cur, end-cur, "%s%s", strings[i], delim);
+    ASSERT_S(cur < end, "Out of bounds write attempt");
+  }
+  *(cur - strlen(delim)) = '\0';
+
+  return buf;
 }
 
 void gen_readlink(char *linkbuf, size_t linkbuf_size)
