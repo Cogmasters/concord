@@ -84,20 +84,19 @@ logconf_setup(struct logconf *config, const char config_file[])
 
   /* SET LOGGER CONFIGS */
   if (!IS_EMPTY_STRING(logging->filename)) {
-    if (true == g_first_run) {
+    if (true == g_first_run)
       config->logger.f = fopen(logging->filename, "w+");
-      log_add_fp(config->logger.f, get_log_level(logging->level));
-      if (true == logging->quiet) { // make sure fatal still prints to stderr
-        log_add_fp(stderr, LOG_FATAL);
-      }
-      log_set_level(get_log_level(logging->level));
-      log_set_quiet(logging->quiet);
-    }
-    else {
+    else
       config->logger.f = fopen(logging->filename, "a+");
-    }
+    log_add_fp(config->logger.f, get_log_level(logging->level));
     ASSERT_S(NULL != config->logger.f, "Could not create logger file");
   }
+
+  if (true == logging->quiet) { // make sure fatal still prints to stderr
+    log_add_fp(stderr, LOG_FATAL);
+  }
+  log_set_level(get_log_level(logging->level));
+  log_set_quiet(logging->quiet);
 
   /* SET HTTP DUMP CONFIGS */
   if (true == logging->http.enable) {
