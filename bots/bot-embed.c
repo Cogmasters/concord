@@ -4,9 +4,8 @@
 #include <assert.h>
 
 #include "discord.h"
-#include "orka-utils.h" // for orka_timestamp_ms()
+#include "orka-utils.h" /* orka_timestamp_ms() */
 
-//using namespace discord;
 
 #define JSON_FILE "bot-embed.json"
 
@@ -61,6 +60,7 @@ int main(int argc, char *argv[])
   struct discord *client = discord_config_init(config_file);
   assert(NULL != client);
 
+  discord_set_on_ready(client, &on_ready);
   discord_set_on_command(client, "show embed", &on_command);
 
   printf("\n\nThis bot demonstrates how easy it is to load embed"
