@@ -29,9 +29,15 @@ discord_delete_messages_by_author_id(
   NTL_T(struct discord_message) messages = NULL;
   discord_get_channel_messages(client, channel_id, &params, &messages);
 
+  u64_unix_ms_t now = orka_timestamp_ms();
+
   NTL_T(u64_snowflake_t) list = NULL;
   int count = 0;
   for (int i = 0; messages[i]; i++) {
+    if(now > messages[i]->timestamp && now - messages[i]->timestamp > 1209600000)
+    {
+      break;
+    }
     if (author_id == 0)
       count ++;
     else if (messages[i]->author->id == author_id)

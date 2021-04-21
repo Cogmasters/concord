@@ -169,7 +169,7 @@ discord_delete_message(
     "/channels/%llu/messages/%llu", channel_id, message_id);
 }
 
-// @todo add complex verifications
+// @todo add duplicated ID verification
 
 void discord_bulk_delete_messages(struct discord *client, u64_snowflake_t channel_id, NTL_T(u64_snowflake_t) messages)
 {
@@ -185,6 +185,17 @@ void discord_bulk_delete_messages(struct discord *client, u64_snowflake_t channe
   {
     log_error("Message count should be between 2 and 100");
     return;
+  }
+
+  u64_unix_ms_t now = orka_timestamp_ms();
+  for(size_t i = 0; messages[i]; i++)
+  {
+    u64_unix_ms_t timestamp = (*messages[i] >> 22) + 1420070400000;
+    if(now > timestamp && now - timestamp > 1209600000)
+    {
+      log_error("Messages should not be older than 2 weeks.");
+      return;
+    }
   }
 
   size_t len = json_ainject(&json,
