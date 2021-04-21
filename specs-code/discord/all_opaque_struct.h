@@ -29,14 +29,6 @@ struct discord_audit_log_change;
 /* https://discord.com/developers/docs/resources/audit-log#audit-log-change-object-audit-log-change-key */
 /* This is defined at specs/discord/audit_log.json:109:22 */
 struct discord_audit_log_change_key;
-/* This file is generated from specs/discord/channel.bulk-delete-messages.json, Please don't edit it. */
-/*
-
-*/
-
-/* https://discord.com/developers/docs/resources/channel#bulk-delete-messages */
-/* This is defined at specs/discord/channel.bulk-delete-messages.json:8:22 */
-struct discord_bulk_delete_messages_params;
 /* This file is generated from specs/discord/channel.create-channel-invite.json, Please don't edit it. */
 /*
 

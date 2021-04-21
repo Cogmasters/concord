@@ -480,32 +480,6 @@ struct discord_audit_log_change_key {
     void *record_null[54];
   } __M; // metadata
 };
-/* This file is generated from specs/discord/channel.bulk-delete-messages.json, Please don't edit it. */
-/*
-
-*/
-
-/* https://discord.com/developers/docs/resources/channel#bulk-delete-messages */
-/* This is defined at specs/discord/channel.bulk-delete-messages.json:8:22 */
-struct discord_bulk_delete_messages_params {
-  /* specs/discord/channel.bulk-delete-messages.json:11:20
-     '{ "name": "messages", "type":{ "base":"ja_u64", "dec":"ntl" }}'
-  */
-  ja_u64 **messages;
-
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[1];
-    void *record_defined[1];
-    void *record_null[1];
-  } __M; // metadata
-};
 /* This file is generated from specs/discord/channel.create-channel-invite.json, Please don't edit it. */
 /*
 

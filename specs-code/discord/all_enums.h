@@ -43,10 +43,6 @@ enum discord_audit_log_events {
 extern char* discord_audit_log_events_to_string(enum discord_audit_log_events);
 extern enum discord_audit_log_events discord_audit_log_events_from_string(char*);
 extern bool discord_audit_log_events_has(enum discord_audit_log_events, char*);
-/* This file is generated from specs/discord/channel.bulk-delete-messages.json, Please don't edit it. */
-/*
-
-*/
 /* This file is generated from specs/discord/channel.create-channel-invite.json, Please don't edit it. */
 /*
 

@@ -29,7 +29,7 @@ discord_delete_messages_by_author_id(
   NTL_T(struct discord_message) messages = NULL;
   discord_get_channel_messages(client, channel_id, &params, &messages);
 
-  NTL_T(ja_u64) list = NULL;
+  NTL_T(u64_snowflake_t) list = NULL;
   int count = 0;
   for (int i = 0; messages[i]; i++) {
     if (author_id == 0)
@@ -39,40 +39,24 @@ discord_delete_messages_by_author_id(
   }
   if (count == 0)
     return;
-  list = (NTL_T(ja_u64))ntl_calloc(count, sizeof(ja_u64));
+  list = (NTL_T(u64_snowflake_t))ntl_calloc(count, sizeof(u64_snowflake_t));
 
   for (int i = 0, j = 0; messages[i] && j < count; i++) {
     if (author_id == 0) {
-      list[j]->value = messages[i]->id;
+      *list[j] = messages[i]->id;
       j++;
     }
     else if (messages[i]->author->id == author_id) {
-      list[j]->value = messages[i]->id;
+      *list[j] = messages[i]->id;
       j++;
     }
   }
   ntl_free((ntl_t)messages, discord_message_cleanup_v);
 
   if (count == 1)
-    discord_delete_message(client, channel_id, list[0]->value);
-  else {
-    char *json = NULL;
-    json_ainject(&json,
-                 "(messages):F",
-                 ja_u64_list_to_json, list);
-
-    struct sized_buffer req_body = {
-      .start = json,
-      .size = strlen(json)
-    };
-
-    discord_adapter_run(
-      &client->adapter,
-      NULL,
-      &req_body,
-      HTTP_POST,
-      "/channels/%llu/messages/bulk-delete", channel_id);
-  }
+    discord_delete_message(client, channel_id, *list[0]);
+  else
+    discord_bulk_delete_messages(client, channel_id, list);
 }
 
 void

@@ -104,30 +104,6 @@ extern void discord_audit_log_change_key_list_from_json_v(char *str, size_t len,
 extern void discord_audit_log_change_key_list_from_json(char *str, size_t len, struct discord_audit_log_change_key ***p);
 extern size_t discord_audit_log_change_key_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_audit_log_change_key_list_to_json(char *str, size_t len, struct discord_audit_log_change_key **p);
-/* This file is generated from specs/discord/channel.bulk-delete-messages.json, Please don't edit it. */
-/*
-
-*/
-
-extern void discord_bulk_delete_messages_params_cleanup_v(void *p);
-extern void discord_bulk_delete_messages_params_cleanup(struct discord_bulk_delete_messages_params *p);
-extern void discord_bulk_delete_messages_params_init_v(void *p);
-extern void discord_bulk_delete_messages_params_init(struct discord_bulk_delete_messages_params *p);
-extern struct discord_bulk_delete_messages_params * discord_bulk_delete_messages_params_alloc();
-extern void discord_bulk_delete_messages_params_free_v(void *p);
-extern void discord_bulk_delete_messages_params_free(struct discord_bulk_delete_messages_params *p);
-extern void discord_bulk_delete_messages_params_from_json_v(char *json, size_t len, void *p);
-extern void discord_bulk_delete_messages_params_from_json(char *json, size_t len, struct discord_bulk_delete_messages_params *p);
-extern size_t discord_bulk_delete_messages_params_to_json_v(char *json, size_t len, void *p);
-extern size_t discord_bulk_delete_messages_params_to_json(char *json, size_t len, struct discord_bulk_delete_messages_params *p);
-extern size_t discord_bulk_delete_messages_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_bulk_delete_messages_params_to_query(char *json, size_t len, struct discord_bulk_delete_messages_params *p);
-extern void discord_bulk_delete_messages_params_list_free_v(void **p);
-extern void discord_bulk_delete_messages_params_list_free(struct discord_bulk_delete_messages_params **p);
-extern void discord_bulk_delete_messages_params_list_from_json_v(char *str, size_t len, void *p);
-extern void discord_bulk_delete_messages_params_list_from_json(char *str, size_t len, struct discord_bulk_delete_messages_params ***p);
-extern size_t discord_bulk_delete_messages_params_list_to_json_v(char *str, size_t len, void *p);
-extern size_t discord_bulk_delete_messages_params_list_to_json(char *str, size_t len, struct discord_bulk_delete_messages_params **p);
 /* This file is generated from specs/discord/channel.create-channel-invite.json, Please don't edit it. */
 /*
 

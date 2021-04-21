@@ -169,6 +169,34 @@ discord_delete_message(
     "/channels/%llu/messages/%llu", channel_id, message_id);
 }
 
+// @todo add complex verifications
+
+void discord_bulk_delete_messages(struct discord *client, u64_snowflake_t channel_id, NTL_T(u64_snowflake_t) messages)
+{
+  char *json = NULL;
+
+  if(!messages) {
+    log_error("Missing 'messages'");
+    return;
+  }
+
+  size_t len = json_ainject(&json,
+    "(messages):F",
+    ja_u64_list_to_json, (NTL_T(ja_u64))messages);
+
+  struct sized_buffer req_body = {
+    .start = json,
+    .size = len
+  };
+
+  discord_adapter_run(
+    &client->adapter,
+    NULL,
+    &req_body,
+    HTTP_POST,
+    "/channels/%llu/messages/bulk-delete", channel_id);
+}
+
 //@todo this is a temporary solution
 static curl_mime*
 curl_mime_cb(CURL *ehandle, void *data) 
