@@ -1142,12 +1142,12 @@ discord_gateway_run(struct discord_gateway *gw)
 
 void
 discord_gateway_shutdown(struct discord_gateway *gw) {
-  ws_set_action(gw->ws, WS_ACTION_DISCONNECT);
   gw->reconnect.enable = false;
+  ws_set_action(gw->ws, WS_ACTION_DISCONNECT);
 }
 
 void
 discord_gateway_reconnect(struct discord_gateway *gw) {
-  ws_set_action(gw->ws, WS_ACTION_DISCONNECT);
   gw->reconnect.enable = true;
+  ws_set_action(gw->ws, WS_ACTION_DISCONNECT);
 }
