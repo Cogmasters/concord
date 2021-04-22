@@ -207,6 +207,7 @@ json_item_t* json_append(json_item_t *item, json_item_t *new_branch);
 json_item_t* json_iter_next(json_item_t* item);
 json_item_t* json_clone(json_item_t *item);
 char* json_typeof(const json_item_t* item);
+char *json_strdup(const json_item_t* item);
 int json_typecmp(const json_item_t* item, const enum json_type type);
 int json_keycmp(const json_item_t* item, const char *key);
 int json_numcmp(const json_item_t* item, const long double number);

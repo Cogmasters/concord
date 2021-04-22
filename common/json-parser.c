@@ -897,6 +897,17 @@ json_typeof(const json_item_t *item)
     }
 }
 
+char*
+json_strdup(const json_item_t *item)
+{
+    char *src = json_get_string(item);
+    if (NULL == src) return NULL;
+
+    char *dest = strdup(src);
+
+    return dest;
+}
+
 int
 json_typecmp(const json_item_t *item, const enum json_type type){
     return item->type & type; /* BITMASK AND */
