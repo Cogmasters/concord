@@ -832,12 +832,14 @@ on_dispatch(struct discord_gateway *gw)
   case DISCORD_GATEWAY_EVENTS_READY:
       log_info("Succesfully started a Discord session!");
       gw->is_ready = true;
+      gw->reconnect.attempt = 0;
       if (gw->cbs.on_ready)
         on_event = &on_ready;
       break;
   case DISCORD_GATEWAY_EVENTS_RESUMED:
       log_info("Succesfully resumed a Discord session!");
       gw->is_ready = true;
+      gw->reconnect.attempt = 0;
       /// @todo implement
       break;
   default:
@@ -867,7 +869,7 @@ on_dispatch(struct discord_gateway *gw)
 static void
 on_invalid_session(struct discord_gateway *gw)
 {
-  gw->try_reconnect = true;
+  gw->reconnect.enable = true;
   if (true == (gw->is_resumable = strcmp(gw->payload.event_data.start, "false"))) {
     char reason[] = "Attempting to resume session";
     log_warn("%.*s", sizeof(reason), reason);
@@ -884,7 +886,7 @@ static void
 on_reconnect(struct discord_gateway *gw)
 {
   gw->is_resumable = true;
-  gw->try_reconnect = true;
+  gw->reconnect.enable = true;
 
   const char reason[] = "Attempting to session resume";
   log_warn("%.*s", sizeof(reason), reason);
@@ -936,13 +938,13 @@ on_close_cb(void *p_gw, enum ws_close_reason wscode, const char *reason, size_t 
   case DISCORD_GATEWAY_CLOSE_REASON_INVALID_INTENTS:
   case DISCORD_GATEWAY_CLOSE_REASON_INVALID_SHARD:
   case DISCORD_GATEWAY_CLOSE_REASON_DISALLOWED_INTENTS:
-      gw->try_reconnect = true;
+      gw->reconnect.enable = true;
       ws_set_action(gw->ws, WS_ACTION_DISCONNECT);
       break;
   case DISCORD_GATEWAY_CLOSE_REASON_SESSION_TIMED_OUT:
   default: //websocket/clouflare opcodes
       gw->is_resumable = false;
-      gw->try_reconnect = false;
+      gw->reconnect.enable = false;
       ws_set_action(gw->ws, WS_ACTION_DISCONNECT);
       break;
   }
@@ -1026,6 +1028,8 @@ discord_gateway_init(struct discord_gateway *gw, struct logconf *config, struct 
   gw->ws = ws_init(&cbs, config);
   ws_set_url(gw->ws, BASE_GATEWAY_URL, NULL);
   logconf_add_id(config, gw->ws, "DISCORD_GATEWAY");
+
+  gw->reconnect.threshold = 5; /** hard limit for now */
 
   if (STRNEQ("YOUR-BOT-TOKEN", token->start, token->size)) {
     token->start = NULL;
@@ -1124,22 +1128,27 @@ event_loop(struct discord_gateway *gw)
 void
 discord_gateway_run(struct discord_gateway *gw)
 {
-  const int REC_LIMIT=15;
-  for (int attempt=0; attempt < REC_LIMIT; ++attempt) {
+  while (gw->reconnect.attempt < gw->reconnect.threshold) {
     event_loop(gw);
-    if (!gw->try_reconnect)
-      break; /* EARLY BREAK */
+    if (!gw->reconnect.enable) {
+      log_warn("Discord Gateway Shutdown");
+      return; /* EARLY RETURN */
+    }
+
+    ++gw->reconnect.attempt;
+    log_info("Reconnect attempt #%d", gw->reconnect.attempt);
   }
+  log_error("Could not reconnect to Discord Gateway after %d tries", gw->reconnect.threshold);
 }
 
 void
 discord_gateway_shutdown(struct discord_gateway *gw) {
   ws_set_action(gw->ws, WS_ACTION_DISCONNECT);
-  gw->try_reconnect = false;
+  gw->reconnect.enable = false;
 }
 
 void
 discord_gateway_reconnect(struct discord_gateway *gw) {
   ws_set_action(gw->ws, WS_ACTION_DISCONNECT);
-  gw->try_reconnect = true;
+  gw->reconnect.enable = true;
 }

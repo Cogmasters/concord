@@ -150,11 +150,17 @@ struct cmd_cbs {
 struct discord_gateway {
   // the websockets handle that connects to Discord
   struct websockets *ws;
-   // will attempt reconnecting if connection shutdowns
-  bool try_reconnect; 
-   // will attempt to resume session if connection shutsdowns
+  struct {
+    // will attempt reconnecting if true
+    bool enable;
+    // current reconnect attempt (resets to 0 when succesful)
+    int attempt;
+    // max amount of reconnects before giving up
+    int threshold;
+  } reconnect;
+  // will attempt to resume session if connection shutsdowns
   bool is_resumable; 
-   // can start sending/receiving additional events to discord
+  // can start sending/receiving additional events to discord
   bool is_ready; 
 
   // this info sent expecting a connection authentication
