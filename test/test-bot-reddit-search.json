@@ -1,7 +1,5 @@
 {
-  "discord_guild_channel_IDpairs":[
-    [796685395009732619, 829401938805391442]
-  ],
+  "discord_bind_channel_ids": [834781038571552798, 834781058586902558],
   "keywords":[
     "C Discord library", 
     "Segfault"

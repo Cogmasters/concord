@@ -24,6 +24,7 @@ struct {
   } reddit;
   struct {
     struct discord *client;
+    NTL_T(ja_u64) channel_ids;
   } discord;
 } BOT;
 
@@ -37,7 +38,14 @@ void perform_reddit_search()
     .file.size = json.size, 
     .file.content = json.start
   };
-  discord_create_message(BOT.discord.client, 796685395009732622, &params, NULL);
+
+  for (size_t i=0; BOT.discord.channel_ids[i]; ++i) {
+    discord_create_message(
+      BOT.discord.client, 
+      BOT.discord.channel_ids[i]->value, 
+      &params, 
+      NULL);
+  }
 }
 
 void on_ready(struct discord *client, const struct discord_user *bot) 
@@ -66,14 +74,17 @@ void load_BOT(const char config_file[])
   NTL_T(ja_str) ja_q=NULL;
   NTL_T(ja_str) ja_sr=NULL;
   json_extract(json.start, json.size,
+      "(discord_bind_channel_ids):F" 
       "(keywords):F"
       "(restrict_sr):b"
       "(subreddits):F",
+      &ja_u64_list_from_json, &BOT.discord.channel_ids,
       &ja_str_list_from_json, &ja_q,
       &BOT.reddit.params.restrict_sr, 
       &ja_str_list_from_json, &ja_sr);
-  assert(NULL != ja_q && "Missing ja_q");
-  assert(NULL != ja_sr && "Missing ja_sr");
+  assert(NULL != BOT.discord.channel_ids && "Missing 'discord_bind_channel_ids'");
+  assert(NULL != ja_q && "Missing 'keywords'");
+  assert(NULL != ja_sr && "Missing 'subreddits'");
 
   BOT.reddit.params.q = orka_cat_strings(
                           (char**)(*ja_q), 
@@ -108,6 +119,7 @@ void load_BOT(const char config_file[])
   BOT.reddit.t_search = task_init();
 
   BOT.discord.client = discord_config_init(config_file);
+
 #if 0
   ja_str_list_free(ja_q);
   ja_str_list_free(ja_sr);
@@ -121,6 +133,7 @@ void cleanup_BOT()
   free(BOT.reddit.params.q);
   free(BOT.reddit.srs);
   reddit_cleanup(BOT.reddit.client);
+  ja_u64_list_free(BOT.discord.channel_ids); 
 }
 
 int main(int argc, char *argv[])
