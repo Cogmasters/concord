@@ -33,32 +33,94 @@ void perform_reddit_search()
 {
   struct sized_buffer json={0};
   reddit_search(BOT.reddit.client, &BOT.reddit.params, BOT.reddit.srs, &json);
-  struct discord_create_message_params params = {
-    .file.name = "reddit-search.json",
-    .file.size = json.size, 
-    .file.content = json.start
-  };
 
-  for (size_t i=0; BOT.discord.channel_ids[i]; ++i) {
-    discord_create_message(
-      BOT.discord.client, 
-      BOT.discord.channel_ids[i]->value, 
-      &params, 
-      NULL);
+  json_item_t *root = json_parse(json.start);
+  json_item_t *children = NULL;
+  for (json_item_t *iter = root; iter ; iter = json_iter_next(iter)) {
+    if (0 == json_keycmp(iter, "children")) {
+      children = iter;
+      break; /* EARLY BREAK */
+    }
   }
+  if (NULL == children) {
+    json_cleanup(root);
+    return; /* EARLY RETURN */
+  }
+
+  char res[MAX_MESSAGE_LEN];
+  struct discord_create_message_params params = { .content = res };
+
+  for (json_item_t *iter = children; iter ; iter = json_iter_next(iter)) {
+    if (0 == json_keycmp(iter, "selftext")) {
+      snprintf(res, sizeof(res), "```%.*s```", 1500, json_get_string(iter));
+      for (size_t i=0; BOT.discord.channel_ids[i]; ++i) {
+        discord_create_message(
+          BOT.discord.client, 
+          BOT.discord.channel_ids[i]->value, 
+          &params, 
+          NULL);
+      }
+    }
+  }
+
+  json_cleanup(root);
+}
+
+void on_search(
+  struct discord *client, 
+  const struct discord_user *bot,
+  const struct discord_message *msg)
+{
+  struct sized_buffer json={0};
+  {
+    struct reddit_search_params params = { .q = msg->content };
+    reddit_search(BOT.reddit.client, &params, "all", &json);
+  }
+
+  json_item_t *root = json_parse(json.start);
+  json_item_t *selftext = NULL, *title = NULL;
+  for (json_item_t *iter = root; iter ; iter = json_iter_next(iter)) {
+    if (0 == json_keycmp(iter, "title")) { // get 1st result
+      title = iter;
+      selftext = json_get_branch(json_get_parent(iter), "selftext");
+      break;
+    }
+  }
+
+  char res[MAX_MESSAGE_LEN];
+  struct discord_create_message_params params = {0};
+  if (IS_EMPTY_STRING(json_get_string(title)) 
+      && IS_EMPTY_STRING(json_get_string(selftext))) 
+  {
+    params.content = "Couldn't retrieve any results";
+  }
+  else {
+    params.content = res;
+    snprintf(res, sizeof(res), "```%s\n\n%.*s```", \
+        json_get_string(title), 1500, json_get_string(selftext));
+  }
+
+  discord_create_message(
+    BOT.discord.client, 
+    msg->channel_id, 
+    &params, 
+    NULL);
+
+  json_cleanup(root);
 }
 
 void on_ready(struct discord *client, const struct discord_user *bot) 
 {
   fprintf(stderr, "\n\nReddit-Search-Bot succesfully connected to Discord as %s#%s!\n\n",
       bot->username, bot->discriminator);
-
+#if 0
   task_start(
       BOT.reddit.t_search, 
       0, // start immediately
-      10000, // refresh every 10s
+      3600000, // refresh every 1h
       NULL, 
       &perform_reddit_search);
+#endif
 }
 
 void refresh_reddit_access_token(void *data) {
@@ -145,6 +207,9 @@ int main(int argc, char *argv[])
     config_file = "bot.config";
 
   load_BOT(config_file);
+
+  discord_set_prefix(BOT.discord.client, "reddit.");
+  discord_set_on_command(BOT.discord.client, "search", &on_search);
 
   discord_set_on_ready(BOT.discord.client, &on_ready);
   discord_run(BOT.discord.client);

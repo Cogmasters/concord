@@ -4,7 +4,7 @@
     "C Discord library", 
     "Segfault"
   ],
-  "restrict_sr": true,
+  "restrict_sr": false,
   "subreddits": [
     "discordapp",
     "c_programming"

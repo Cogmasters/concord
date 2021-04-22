@@ -129,7 +129,7 @@ _json_branch_init(json_item_t *item)
 }
 
 static void
-_json_composite_destroy(json_item_t *item)
+_json_composite_cleanup(json_item_t *item)
 {
     free(item->comp->branch);
     item->comp->branch = NULL;
@@ -139,15 +139,15 @@ _json_composite_destroy(json_item_t *item)
 }
 
 static void
-_json_destroy_preorder(json_item_t *item)
+_json_preorder_cleanup(json_item_t *item)
 {
     switch (item->type){
     case JSON_OBJECT:
     case JSON_ARRAY:
         for (size_t i=0; i < item->comp->num_branch; ++i){
-            _json_destroy_preorder(item->comp->branch[i]);
+            _json_preorder_cleanup(item->comp->branch[i]);
         }
-        _json_composite_destroy(item);
+        _json_composite_cleanup(item);
         break;
     case JSON_STRING:
         free(item->string);
@@ -166,10 +166,10 @@ _json_destroy_preorder(json_item_t *item)
     item = NULL;
 }
 
-/* destroy current item and all of its nested object/arrays */
+/* cleanup current item and all of its nested object/arrays */
 void
-json_destroy(json_item_t *item){
-    _json_destroy_preorder(json_get_root(item));
+json_cleanup(json_item_t *item){
+    _json_preorder_cleanup(json_get_root(item));
 }
 
 static json_composite_t*
@@ -871,7 +871,7 @@ json_clone(json_item_t *item)
     if (NULL != item->key){
         clone->key = strdup(item->key);
         if (NULL == clone->key){
-            json_destroy(clone);
+            json_cleanup(clone);
             clone = NULL;
         }
     }
@@ -904,13 +904,13 @@ json_typecmp(const json_item_t *item, const enum json_type type){
 
 int
 json_keycmp(const json_item_t *item, const char *key){
-    return (NULL != item->key) ? STREQ(item->key, key) : 0;
+    return (NULL != item->key) ? strcmp(item->key, key) : 1;
 }
 
 int
 json_numcmp(const json_item_t *item, const long double number){
     ASSERT_S(JSON_NUMBER == item->type, "Not a Number");
-    return item->number == number;
+    return !(item->number == number);
 }
 
 json_item_t*
