@@ -781,7 +781,7 @@ on_dispatch(struct discord_gateway *gw)
       /// @todo implement
       break;
   case DISCORD_GATEWAY_EVENTS_MESSAGE_CREATE:
-      if (gw->cbs.on_message_create)
+      if (gw->on_cmd || gw->cbs.sb_on_message_create || gw->cbs.on_message_create)
         on_event = &on_message_create;
       break;
   case DISCORD_GATEWAY_EVENTS_MESSAGE_UPDATE:
