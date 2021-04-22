@@ -2403,7 +2403,7 @@ extract_array_value (
 }
 
 size_t
-json_vextract (char * json, size_t size, char * extractor, va_list ap)
+json_vextract(char * json, size_t size, char * extractor, va_list ap)
 {
   struct stack stack = { .array = {0}, .top = 0, .actor = EXTRACTOR };
   struct operand_addrs rec;
@@ -2421,24 +2421,18 @@ json_vextract (char * json, size_t size, char * extractor, va_list ap)
   jsmntok_t * tokens = NULL;
   int num_tok = jsmn_parse(&parser, json, size, NULL, 0);
   DS_PRINT("# of tokens = %d", num_tok);
-  if (num_tok < 0)
-    ERR("Failed to parse JSON: %.*s, returned token number: %d",
-        (int)size, json, num_tok);
+  VASSERT_S(num_tok >= 0, "Failed to parse JSON: %.*s, returned token number: %d", \
+      (int)size, json, num_tok);
 
   tokens = malloc(sizeof(jsmntok_t) * num_tok);
+
   jsmn_init(&parser);
   num_tok = jsmn_parse(&parser, json, size, tokens, num_tok);
-
-  if (num_tok < 0)
-    ERR("Invalid JSON %.*s", (int)size, json);
+  VASSERT_S(num_tok >= 0, "Invalid JSON %.*s", (int)size, json);
 
   /* Assume the top-level element is an object */
   if (!(tokens[0].type == JSMN_OBJECT || tokens[0].type == JSMN_ARRAY))
     ERR("Found %d, Object or array expected", tokens[0].type);
-
-  for (int i = 0; i < num_tok; i++) {
-    //print_tok(stderr, json, tokens, i);
-  }
 
   info.n_tokens = num_tok;
   info.tokens = tokens;

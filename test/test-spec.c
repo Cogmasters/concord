@@ -3,17 +3,12 @@
 #include "json-struct.c"
 #include "orka-utils.h"
 
-char* json_string(char *s)
-{
-  char * b;
-  json_ainject(&b, s);
-  return b;
-}
 
 void load_field(struct jc_field *f, char *str)
 {
   memset(f, 0, sizeof(*f));
-  char *json = json_string(str);
+  char *json=NULL;
+  json_ainject(&json, str);
   fprintf(stderr, "%s\n", json);
   field_from_json(json, strlen(json), f);
 }

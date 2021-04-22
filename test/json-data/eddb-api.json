@@ -1,0 +1,1410 @@
+﻿{
+  "info": {
+    "title": "EDDB API",
+    "version": "4.0.0",
+    "description": "An API for EDDB Data"
+  },
+  "host": "eddbapi.kodeblox.com",
+  "basePath": "/api/v4",
+  "definitions": {
+    "AtmosphereComposition": {
+      "properties": {
+        "_id": {
+          "type": "string"
+        },
+        "atmosphere_component_id": {
+          "type": "integer"
+        },
+        "share": {
+          "type": "integer"
+        },
+        "atmosphere_component_name": {
+          "type": "string"
+        }
+      }
+    },
+    "Bodies": {
+      "properties": {
+        "_id": {
+          "type": "string"
+        },
+        "__v": {
+          "type": "integer"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "created_at": {
+          "type": "string"
+        },
+        "updated_at": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "name_lower": {
+          "type": "string"
+        },
+        "system_id": {
+          "type": "integer"
+        },
+        "group_id": {
+          "type": "integer"
+        },
+        "group_name": {
+          "type": "string"
+        },
+        "type_id": {
+          "type": "integer"
+        },
+        "type_name": {
+          "type": "string"
+        },
+        "distance_to_arrival": {
+          "type": "integer"
+        },
+        "full_spectral_class": {
+          "type": "string"
+        },
+        "spectral_class": {
+          "type": "string"
+        },
+        "spectral_sub_class": {
+          "type": "string"
+        },
+        "luminosity_class": {
+          "type": "string"
+        },
+        "luminosity_sub_class": {
+          "type": "string"
+        },
+        "surface_temperature": {
+          "type": "integer"
+        },
+        "is_main_star": {
+          "type": "boolean"
+        },
+        "age": {
+          "type": "integer"
+        },
+        "solar_masses": {
+          "type": "integer"
+        },
+        "solar_radius": {
+          "type": "integer"
+        },
+        "catalogue_gliese_id": {
+          "type": "string"
+        },
+        "catalogue_hipp_id": {
+          "type": "string"
+        },
+        "catalogue_hd_id": {
+          "type": "string"
+        },
+        "volcanism_type_id": {
+          "type": "integer"
+        },
+        "volcanism_type_name": {
+          "type": "string"
+        },
+        "atmosphere_type_id": {
+          "type": "integer"
+        },
+        "atmosphere_type_name": {
+          "type": "string"
+        },
+        "terraforming_state_id": {
+          "type": "integer"
+        },
+        "terraforming_state_name": {
+          "type": "string"
+        },
+        "earth_masses": {
+          "type": "integer"
+        },
+        "radius": {
+          "type": "integer"
+        },
+        "gravity": {
+          "type": "integer"
+        },
+        "surface_pressure": {
+          "type": "integer"
+        },
+        "orbital_period": {
+          "type": "integer"
+        },
+        "semi_major_axis": {
+          "type": "integer"
+        },
+        "orbital_eccentricity": {
+          "type": "integer"
+        },
+        "orbital_inclination": {
+          "type": "integer"
+        },
+        "arg_of_periapsis": {
+          "type": "integer"
+        },
+        "rotational_period": {
+          "type": "integer"
+        },
+        "is_rotational_period_tidally_locked": {
+          "type": "boolean"
+        },
+        "axis_tilt": {
+          "type": "integer"
+        },
+        "eg_id": {
+          "type": "integer"
+        },
+        "belt_moon_masses": {
+          "type": "integer"
+        },
+        "ring_type_id": {
+          "type": "integer"
+        },
+        "ring_type_name": {
+          "type": "string"
+        },
+        "ring_mass": {
+          "type": "integer"
+        },
+        "ring_inner_radius": {
+          "type": "integer"
+        },
+        "ring_outer_radius": {
+          "type": "integer"
+        },
+        "rings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Rings"
+          }
+        },
+        "atmosphere_composition": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AtmosphereComposition"
+          }
+        },
+        "solid_composition": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SolidComposition"
+          }
+        },
+        "materials": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Materials"
+          }
+        },
+        "is_landable": {
+          "type": "boolean"
+        }
+      }
+    },
+    "Commodities": {
+      "properties": {
+        "_id": {
+          "type": "string"
+        },
+        "__v": {
+          "type": "integer"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "station_id": {
+          "type": "integer"
+        },
+        "commodity_id": {
+          "type": "integer"
+        },
+        "supply": {
+          "type": "integer"
+        },
+        "buy_price": {
+          "type": "integer"
+        },
+        "sell_price": {
+          "type": "integer"
+        },
+        "demand": {
+          "type": "integer"
+        },
+        "collected_at": {
+          "type": "string"
+        }
+      }
+    },
+    "Factions": {
+      "properties": {
+        "_id": {
+          "type": "string"
+        },
+        "__v": {
+          "type": "integer"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "name_lower": {
+          "type": "string"
+        },
+        "updated_at": {
+          "type": "string"
+        },
+        "government_id": {
+          "type": "integer"
+        },
+        "government": {
+          "type": "string"
+        },
+        "allegiance_id": {
+          "type": "integer"
+        },
+        "allegiance": {
+          "type": "string"
+        },
+        "state_id": {
+          "type": "integer"
+        },
+        "state": {
+          "type": "string"
+        },
+        "home_system_id": {
+          "type": "integer"
+        },
+        "is_player_faction": {
+          "type": "boolean"
+        }
+      }
+    },
+    "Materials": {
+      "properties": {
+        "_id": {
+          "type": "string"
+        },
+        "material_id": {
+          "type": "integer"
+        },
+        "share": {
+          "type": "integer"
+        },
+        "material_name": {
+          "type": "string"
+        }
+      }
+    },
+    "PopulatedSystemPresence": {
+      "properties": {
+        "_id": {
+          "type": "string"
+        },
+        "minor_faction_id": {
+          "type": "integer"
+        },
+        "state_id": {
+          "type": "integer"
+        },
+        "state": {
+          "type": "string"
+        },
+        "influence": {
+          "type": "integer"
+        }
+      }
+    },
+    "PopulatedSystems": {
+      "properties": {
+        "_id": {
+          "type": "string"
+        },
+        "__v": {
+          "type": "integer"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "edsm_id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "name_lower": {
+          "type": "string"
+        },
+        "x": {
+          "type": "integer"
+        },
+        "y": {
+          "type": "integer"
+        },
+        "z": {
+          "type": "integer"
+        },
+        "population": {
+          "type": "integer"
+        },
+        "is_populated": {
+          "type": "boolean"
+        },
+        "government_id": {
+          "type": "integer"
+        },
+        "government": {
+          "type": "string"
+        },
+        "allegiance_id": {
+          "type": "integer"
+        },
+        "allegiance": {
+          "type": "string"
+        },
+        "state_id": {
+          "type": "integer"
+        },
+        "state": {
+          "type": "string"
+        },
+        "security_id": {
+          "type": "integer"
+        },
+        "security": {
+          "type": "string"
+        },
+        "primary_economy_id": {
+          "type": "integer"
+        },
+        "primary_economy": {
+          "type": "string"
+        },
+        "power": {
+          "type": "string"
+        },
+        "power_state": {
+          "type": "string"
+        },
+        "power_state_id": {
+          "type": "integer"
+        },
+        "needs_permit": {
+          "type": "boolean"
+        },
+        "updated_at": {
+          "type": "string"
+        },
+        "simbad_ref": {
+          "type": "string"
+        },
+        "controlling_minor_faction_id": {
+          "type": "integer"
+        },
+        "controlling_minor_faction": {
+          "type": "string"
+        },
+        "reserve_type_id": {
+          "type": "integer"
+        },
+        "reserve_type": {
+          "type": "string"
+        },
+        "minor_faction_presences": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PopulatedSystemPresence"
+          }
+        }
+      }
+    },
+    "Rings": {
+      "properties": {
+        "_id": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "created_at": {
+          "type": "string"
+        },
+        "updated_at": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "name_lower": {
+          "type": "string"
+        },
+        "semi_major_axis": {
+          "type": "integer"
+        },
+        "ring_type_id": {
+          "type": "integer"
+        },
+        "ring_type_name": {
+          "type": "string"
+        },
+        "ring_mass": {
+          "type": "integer"
+        },
+        "ring_inner_radius": {
+          "type": "integer"
+        },
+        "ring_outer_radius": {
+          "type": "integer"
+        }
+      }
+    },
+    "SolidComposition": {
+      "properties": {
+        "_id": {
+          "type": "string"
+        },
+        "solid_component_id": {
+          "type": "integer"
+        },
+        "share": {
+          "type": "integer"
+        },
+        "solid_component_name": {
+          "type": "string"
+        }
+      }
+    },
+    "StationItems": {
+      "properties": {
+        "_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "name_lower": {
+          "type": "string"
+        }
+      }
+    },
+    "Stations": {
+      "properties": {
+        "_id": {
+          "type": "string"
+        },
+        "__v": {
+          "type": "integer"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "name_lower": {
+          "type": "string"
+        },
+        "system_id": {
+          "type": "integer"
+        },
+        "updated_at": {
+          "type": "string"
+        },
+        "max_landing_pad_size": {
+          "type": "string"
+        },
+        "distance_to_star": {
+          "type": "integer"
+        },
+        "government_id": {
+          "type": "integer"
+        },
+        "government": {
+          "type": "string"
+        },
+        "allegiance_id": {
+          "type": "integer"
+        },
+        "allegiance": {
+          "type": "string"
+        },
+        "state_id": {
+          "type": "integer"
+        },
+        "state": {
+          "type": "string"
+        },
+        "type_id": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string"
+        },
+        "has_blackmarket": {
+          "type": "boolean"
+        },
+        "has_market": {
+          "type": "boolean"
+        },
+        "has_refuel": {
+          "type": "boolean"
+        },
+        "has_repair": {
+          "type": "boolean"
+        },
+        "has_rearm": {
+          "type": "boolean"
+        },
+        "has_outfitting": {
+          "type": "boolean"
+        },
+        "has_shipyard": {
+          "type": "boolean"
+        },
+        "has_docking": {
+          "type": "boolean"
+        },
+        "has_commodities": {
+          "type": "boolean"
+        },
+        "import_commodities": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/StationItems"
+          }
+        },
+        "export_commodities": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/StationItems"
+          }
+        },
+        "prohibited_commodities": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/StationItems"
+          }
+        },
+        "economies": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/StationItems"
+          }
+        },
+        "shipyard_updated_at": {
+          "type": "string"
+        },
+        "outfitting_updated_at": {
+          "type": "string"
+        },
+        "market_updated_at": {
+          "type": "string"
+        },
+        "is_planetary": {
+          "type": "boolean"
+        },
+        "selling_ships": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/StationItems"
+          }
+        },
+        "selling_modules": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "settlement_size_id": {
+          "type": "integer"
+        },
+        "settlement_size": {
+          "type": "string"
+        },
+        "settlement_security_id": {
+          "type": "integer"
+        },
+        "settlement_security": {
+          "type": "string"
+        },
+        "body_id": {
+          "type": "integer"
+        },
+        "controlling_minor_faction_id": {
+          "type": "integer"
+        }
+      }
+    },
+    "Systems": {
+      "properties": {
+        "_id": {
+          "type": "string"
+        },
+        "__v": {
+          "type": "integer"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "edsm_id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "name_lower": {
+          "type": "string"
+        },
+        "x": {
+          "type": "integer"
+        },
+        "y": {
+          "type": "integer"
+        },
+        "z": {
+          "type": "integer"
+        },
+        "population": {
+          "type": "integer"
+        },
+        "is_populated": {
+          "type": "boolean"
+        },
+        "government_id": {
+          "type": "integer"
+        },
+        "government": {
+          "type": "string"
+        },
+        "allegiance_id": {
+          "type": "integer"
+        },
+        "allegiance": {
+          "type": "string"
+        },
+        "state_id": {
+          "type": "integer"
+        },
+        "state": {
+          "type": "string"
+        },
+        "security_id": {
+          "type": "integer"
+        },
+        "security": {
+          "type": "string"
+        },
+        "primary_economy_id": {
+          "type": "integer"
+        },
+        "primary_economy": {
+          "type": "string"
+        },
+        "power": {
+          "type": "string"
+        },
+        "power_state": {
+          "type": "string"
+        },
+        "power_state_id": {
+          "type": "integer"
+        },
+        "needs_permit": {
+          "type": "boolean"
+        },
+        "updated_at": {
+          "type": "string"
+        },
+        "simbad_ref": {
+          "type": "string"
+        },
+        "controlling_minor_faction_id": {
+          "type": "integer"
+        },
+        "controlling_minor_faction": {
+          "type": "string"
+        },
+        "reserve_type_id": {
+          "type": "integer"
+        },
+        "reserve_type": {
+          "type": "string"
+        }
+      }
+    },
+    "BodiesPage": {
+      "properties": {
+        "docs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Bodies"
+          }
+        },
+        "total": {
+          "type": "integer"
+        },
+        "limit": {
+          "type": "integer"
+        },
+        "page": {
+          "type": "integer"
+        },
+        "pages": {
+          "type": "integer"
+        }
+      }
+    },
+    "FactionsPage": {
+      "properties": {
+        "docs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Factions"
+          }
+        },
+        "total": {
+          "type": "integer"
+        },
+        "limit": {
+          "type": "integer"
+        },
+        "page": {
+          "type": "integer"
+        },
+        "pages": {
+          "type": "integer"
+        }
+      }
+    },
+    "PopulatedSystemsPage": {
+      "properties": {
+        "docs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PopulatedSystems"
+          }
+        },
+        "total": {
+          "type": "integer"
+        },
+        "limit": {
+          "type": "integer"
+        },
+        "page": {
+          "type": "integer"
+        },
+        "pages": {
+          "type": "integer"
+        }
+      }
+    },
+    "StationsPage": {
+      "properties": {
+        "docs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Stations"
+          }
+        },
+        "total": {
+          "type": "integer"
+        },
+        "limit": {
+          "type": "integer"
+        },
+        "page": {
+          "type": "integer"
+        },
+        "pages": {
+          "type": "integer"
+        }
+      }
+    },
+    "SystemsPage": {
+      "properties": {
+        "docs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Systems"
+          }
+        },
+        "total": {
+          "type": "integer"
+        },
+        "limit": {
+          "type": "integer"
+        },
+        "page": {
+          "type": "integer"
+        },
+        "pages": {
+          "type": "integer"
+        }
+      }
+    }
+  },
+  "schemes": "https",
+  "swagger": "2.0",
+  "paths": {
+    "/bodies": {
+      "get": {
+        "description": "Get the Bodies",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "eddbid",
+            "description": "EDDB ID.",
+            "in": "query",
+            "type": "integer"
+          },
+          {
+            "name": "name",
+            "description": "Body name.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "materials",
+            "description": "Comma seperated material names.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "systemname",
+            "description": "System name to filter the body.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "reservetypename",
+            "description": "Reserve type of the system.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "ispopulated",
+            "description": "Whether the system is populated.",
+            "in": "query",
+            "type": "boolean"
+          },
+          {
+            "name": "power",
+            "description": "Name of the power in influence in the system.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "ringtypename",
+            "description": "Name of type of ring.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "bodygroupname",
+            "description": "Comma seperated names of group of body.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "hasrings",
+            "description": "Whether the body has rings.",
+            "in": "query",
+            "type": "boolean"
+          },
+          {
+            "name": "bodytypename",
+            "description": "Comma seperated names of type of body.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "distancearrival",
+            "description": "Distance to arrival of the body.",
+            "in": "query",
+            "type": "integer"
+          },
+          {
+            "name": "ismainstar",
+            "description": "Whether the star is a main star.",
+            "in": "query",
+            "type": "boolean"
+          },
+          {
+            "name": "specclass",
+            "description": "Comma seperated specular classes of the star.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "lumoclass",
+            "description": "Comma seperated luminosity classes of the star.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "landable",
+            "description": "Whether the body is landable",
+            "in": "query",
+            "type": "boolean"
+          },
+          {
+            "name": "page",
+            "description": "Page no of response.",
+            "in": "query",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An array of bodies in EDDB format",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/BodiesPage"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/factions": {
+      "get": {
+        "description": "Get the Factions",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "eddbid",
+            "description": "EDDB ID.",
+            "in": "query",
+            "type": "integer"
+          },
+          {
+            "name": "name",
+            "description": "Faction name.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "allegiancename",
+            "description": "Name of the allegiance.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "governmentname",
+            "description": "Name of the government type.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "playerfaction",
+            "description": "Whether the faction is a player faction.",
+            "in": "query",
+            "type": "boolean"
+          },
+          {
+            "name": "power",
+            "description": "Name of the power in influence in a system the faction is in.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "homesystemname",
+            "description": "Name of the home system of the faction.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "description": "Page no of response.",
+            "in": "query",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An array of factions in EDDB format",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/FactionsPage"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/populatedsystems": {
+      "get": {
+        "description": "Get the Populated Systems",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "eddbid",
+            "description": "EDDB ID.",
+            "in": "query",
+            "type": "integer"
+          },
+          {
+            "name": "systemaddress",
+            "description": "FDev System Address.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "description": "System name.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "allegiancename",
+            "description": "Name of the allegiance.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "governmentname",
+            "description": "Name of the government type.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "statenames",
+            "description": "Comma seperated names of states.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "primaryeconomyname",
+            "description": "The primary economy of the system.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "power",
+            "description": "Comma seperated names of powers in influence in the system.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "powerstatename",
+            "description": "Comma seperated states of the powers in influence in the system.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "permit",
+            "description": "Whether the system is permit locked.",
+            "in": "query",
+            "type": "boolean"
+          },
+          {
+            "name": "securityname",
+            "description": "The name of the security status in the system.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "factionname",
+            "description": "Name of a faction present in the system.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "presencetype",
+            "description": "Presence type of the faction.",
+            "enum": [
+              "presence",
+              "controlling"
+            ],
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "description": "Page no of response.",
+            "in": "query",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An array of populated systems in EDDB format",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/PopulatedSystemsPage"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stations": {
+      "get": {
+        "description": "Get the Stations",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "eddbid",
+            "description": "EDDB ID.",
+            "in": "query",
+            "type": "integer"
+          },
+          {
+            "name": "marketid",
+            "description": "FDev Station market id.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "description": "Station name.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "ships",
+            "description": "Comma seperated names of ships sold.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "moduleid",
+            "description": "Comma seperated ids of modules sold.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "controllingfactionname",
+            "description": "Name of the controlling minor faction.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "statenames",
+            "description": "Comma seperated names of states.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "allegiancename",
+            "description": "Name of the allegiance.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "governmentname",
+            "description": "Name of the government type.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "minlandingpad",
+            "description": "Minimum landing pad size available.",
+            "enum": [
+              "l",
+              "m",
+              "s"
+            ],
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "distancestar",
+            "description": "Maximum distance from the star.",
+            "in": "query",
+            "type": "integer"
+          },
+          {
+            "name": "facilities",
+            "description": "Comma seperated names of facilities available in the station.",
+            "enum": [
+              "blackmarket",
+              "market",
+              "refuel",
+              "repair",
+              "restock",
+              "outfitting",
+              "shipyard"
+            ],
+            "in": "query",
+            "type": "boolean"
+          },
+          {
+            "name": "commodities",
+            "description": "Comma seperated names of commodities available.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "stationtypename",
+            "description": "Comma seperated types of station.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "planetary",
+            "description": "Whether the station is planetary.",
+            "in": "query",
+            "type": "boolean"
+          },
+          {
+            "name": "economyname",
+            "description": "The economy of the station.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "permit",
+            "description": "Whether the system where the station exists is permit locked.",
+            "in": "query",
+            "type": "boolean"
+          },
+          {
+            "name": "power",
+            "description": "Comma seperated names of powers in influence in the system the station is in.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "powerstatename",
+            "description": "Comma seperated states of the powers in influence in the system the station is in.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "systemname",
+            "description": "Name of the system the station is in.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "description": "Page no of response.",
+            "in": "query",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An array of stations in EDDB format",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/StationsPage"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/systems": {
+      "get": {
+        "description": "Get the Systems",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "eddbid",
+            "description": "EDDB ID.",
+            "in": "query",
+            "type": "integer"
+          },
+          {
+            "name": "systemaddress",
+            "description": "FDev System Address.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "description": "System name.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "allegiancename",
+            "description": "Name of the allegiance.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "governmentname",
+            "description": "Name of the government type.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "primaryeconomyname",
+            "description": "The primary economy of the system.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "power",
+            "description": "Comma seperated names of powers in influence in the system.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "powerstatename",
+            "description": "Comma seperated states of the powers in influence in the system.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "permit",
+            "description": "Whether the system is permit locked.",
+            "in": "query",
+            "type": "boolean"
+          },
+          {
+            "name": "securityname",
+            "description": "The name of the security status in the system.",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "description": "Page no of response.",
+            "in": "query",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An array of systems in EDDB format",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/SystemsPage"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "responses": {},
+  "parameters": {},
+  "securityDefinitions": {},
+  "tags": []
+}
