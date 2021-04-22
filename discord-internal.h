@@ -297,6 +297,15 @@ void discord_gateway_run(struct discord_gateway *gw);
  */
 void discord_gateway_shutdown(struct discord_gateway *gw);
 
+/**
+ * Gracefully reconnects a  ongoing Discord connection over WebSockets
+ * @note Wraps around ws_set_action()
+ *        @see websockets.h
+ * 
+ * @param gw the handle initialized with discord_gateway_init()
+ */
+void discord_gateway_reconnect(struct discord_gateway *gw);
+
 
 /* The Discord Client structure, used to performing every kind of
  *  function from discord.h */
