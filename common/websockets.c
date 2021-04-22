@@ -225,18 +225,19 @@ _ws_set_status_nolock(struct websockets *ws, enum ws_status status)
       // read messages/informationals from the individual transfers
       int msgq = 0;
       struct CURLMsg *curlmsg = curl_multi_info_read(ws->mhandle, &msgq);
-      ASSERT_S(NULL != curlmsg, "Attempt to run WebSockets without calling ws_start() first");
-
-      CURLcode ecode = curlmsg->data.result;
-      if (CURLMSG_DONE == curlmsg->msg) {
-        if (CURLE_OK != ecode) {
+      if (curlmsg) {
+        CURLcode ecode = curlmsg->data.result;
+        if (CURLMSG_DONE == curlmsg->msg || CURLE_OK != ecode) {
           log_warn("(CURLE code: %d) %s", \
               ecode, IS_EMPTY_STRING(ws->errbuf) ? curl_easy_strerror(ecode) : ws->errbuf);
+          log_warn("Disconnected abruptly");
         }
-        log_debug("Disconnected gracefully");
+        else {
+          log_debug("Disconnected gracefully");
+        }
       }
       else {
-        log_warn("Disconnected abruptly");
+        log_debug("Disconnected gracefully");
       }
       
       // reset for next iteration
