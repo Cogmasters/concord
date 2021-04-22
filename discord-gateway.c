@@ -912,21 +912,21 @@ static void
 on_close_cb(void *p_gw, enum ws_close_reason wscode, const char *reason, size_t len)
 {
   struct discord_gateway *gw = p_gw;
-  enum discord_gateway_close_opcodes opcode =
+  enum discord_gateway_close_opcodes opcode = \
     (enum discord_gateway_close_opcodes)wscode;
 
   log_warn(ANSICOLOR("%s",31)" (code: %4d) : %zd bytes,"
           "REASON: '%s'", 
           close_opcode_print(opcode), opcode, len,
           reason);
-
-  gw->is_ready = false; // reset
+  
+  // reset in case its set
+  gw->is_ready = false;
+  gw->is_resumable = false;
  
   switch (opcode) {
   case DISCORD_GATEWAY_CLOSE_REASON_UNKNOWN_ERROR:
   case DISCORD_GATEWAY_CLOSE_REASON_INVALID_SEQUENCE:
-      gw->is_resumable = true;
-  /* fall through */
   case DISCORD_GATEWAY_CLOSE_REASON_UNKNOWN_OPCODE:
   case DISCORD_GATEWAY_CLOSE_REASON_DECODE_ERROR:
   case DISCORD_GATEWAY_CLOSE_REASON_NOT_AUTHENTICATED:
@@ -939,15 +939,14 @@ on_close_cb(void *p_gw, enum ws_close_reason wscode, const char *reason, size_t 
   case DISCORD_GATEWAY_CLOSE_REASON_INVALID_SHARD:
   case DISCORD_GATEWAY_CLOSE_REASON_DISALLOWED_INTENTS:
       gw->reconnect.enable = true;
-      ws_set_action(gw->ws, WS_ACTION_DISCONNECT);
       break;
   case DISCORD_GATEWAY_CLOSE_REASON_SESSION_TIMED_OUT:
   default: //websocket/clouflare opcodes
-      gw->is_resumable = false;
       gw->reconnect.enable = false;
-      ws_set_action(gw->ws, WS_ACTION_DISCONNECT);
       break;
   }
+
+  ws_set_action(gw->ws, WS_ACTION_DISCONNECT);
 }
 
 static void
