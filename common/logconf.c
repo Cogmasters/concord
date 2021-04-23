@@ -43,6 +43,17 @@ logconf_add_id(struct logconf *config, void *addr, const char tag[])
   ERR("Reach maximum logconf_ids threshold (%d)", MAX_LOGCONF_IDS);
 }
 
+char*
+logconf_tag(struct logconf *config, void *addr)
+{
+  for (size_t i=0; i < MAX_LOGCONF_IDS; ++i) {
+    if (addr == config->ids[i].addr) {
+      return config->ids[i].tag;
+    }
+  }
+  return "NO_TAG";
+}
+
 void
 logconf_setup(struct logconf *config, const char config_file[])
 {
@@ -152,13 +163,6 @@ log_http(
 {
   if (!config) return;
 
-  char *tag = "NO TAG";
-  for (size_t i=0; i < MAX_LOGCONF_IDS; ++i) {
-    if (addr_id == config->ids[i].addr) {
-      tag = config->ids[i].tag;
-    }
-  }
-
   va_list args;
   va_start(args, header_fmt);
 
@@ -175,7 +179,7 @@ log_http(
   fprintf(config->http.f, 
     "%s [%s #TID%zu] - %s - %s\r\r\r\r\n%.*s\n",
     header,
-    tag, 
+    logconf_tag(config, addr_id), 
     (size_t)pthread_self(),
     orka_timestamp_str(timestr, sizeof(timestr)), 
     url,

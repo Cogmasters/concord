@@ -29,6 +29,7 @@ struct logconf {
 };
 
 void logconf_add_id(struct logconf *config, void *addr, const char tag[]);
+char* logconf_tag(struct logconf *config, void *addr);
 void logconf_setup(struct logconf*, const char config_file[]);
 void logconf_cleanup(struct logconf*);
 struct sized_buffer logconf_get_field(struct logconf *config, char *json_field);
