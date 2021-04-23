@@ -150,7 +150,8 @@ struct cmd_cbs {
 struct discord_gateway {
   // the websockets handle that connects to Discord
   struct websockets *ws;
-  struct {
+  // handle reconnect logic
+  struct { /* RECONNECT STRUCTURE */
     // will attempt reconnecting if true
     bool enable;
     // current reconnect attempt (resets to 0 when succesful)
@@ -304,7 +305,7 @@ void discord_gateway_run(struct discord_gateway *gw);
 void discord_gateway_shutdown(struct discord_gateway *gw);
 
 /**
- * Gracefully reconnects a  ongoing Discord connection over WebSockets
+ * Gracefully reconnect a ongoing Discord connection over WebSockets
  * @note Wraps around ws_set_action()
  *        @see websockets.h
  * 

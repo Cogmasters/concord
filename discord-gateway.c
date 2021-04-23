@@ -1132,7 +1132,6 @@ discord_gateway_run(struct discord_gateway *gw)
       log_warn("Discord Gateway Shutdown");
       return; /* EARLY RETURN */
     }
-
     ++gw->reconnect.attempt;
     log_info("Reconnect attempt #%d", gw->reconnect.attempt);
   }
