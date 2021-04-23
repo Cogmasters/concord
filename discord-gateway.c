@@ -424,8 +424,6 @@ on_message_create(struct discord_gateway *gw, struct sized_buffer *data)
     // get prefix offset
     size_t offset = strlen(gw->prefix);
 
-    message_cb *cmd_cb = NULL;
-    char *cmd_str = NULL;
     for (size_t i=0; i < gw->num_cmd; ++i) 
     {
       if (!STRNEQ(gw->prefix, msg->content, offset))
@@ -436,9 +434,6 @@ on_message_create(struct discord_gateway *gw, struct sized_buffer *data)
             msg->content + offset,  \
             strlen(gw->on_cmd[i].str)))
       {
-        cmd_cb = gw->on_cmd[i].cb;
-        cmd_str = gw->on_cmd[i].str;
-
         char *tmp = msg->content; // hold original ptr
         msg->content = msg->content + offset + strlen(gw->on_cmd[i].str);
         while (isspace(*msg->content)) { // offset blank chars

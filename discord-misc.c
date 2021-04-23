@@ -143,6 +143,7 @@ void discord_channel_overwrite_from_json(char *json, size_t len, struct discord_
                  p->__M.record_defined, sizeof(p->__M.record_defined),
                  p->__M.record_null, sizeof(p->__M.record_null));
   ret = r;
+  (void)ret;
 }
 
 size_t 
