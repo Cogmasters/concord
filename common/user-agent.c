@@ -12,12 +12,13 @@
 #include "orka-utils.h"
 
 
-#define CURLE_CHECK(errbuf, ecode)                    \
-  VASSERT_S(CURLE_OK == ecode, "(CURLE code: %d) %s", \
-      ecode,                                          \
-      IS_EMPTY_STRING(errbuf)                         \
-        ? curl_easy_strerror(ecode)                   \
-        : errbuf)
+#define CURLE_CHECK(conn, ecode)                           \
+  VASSERT_S(CURLE_OK == ecode, "[%s] (CURLE code: %d) %s", \
+      conn->tag,                                           \
+      ecode,                                               \
+      IS_EMPTY_STRING(conn->errbuf)                        \
+        ? curl_easy_strerror(ecode)                        \
+        : conn->errbuf)
 
 
 struct user_agent {
@@ -82,6 +83,7 @@ struct ua_conn {
    * @note should only be accessed after a error code returns
    */
   char errbuf[CURL_ERROR_SIZE]; /** @see https://curl.se/libcurl/c/CURLOPT_ERRORBUFFER.html */
+  char tag[32];
 };
 
 
@@ -102,7 +104,7 @@ ua_reqheader_add(struct user_agent *ua, char field[],  char value[])
 {
   char buf[UA_MAX_HEADER_LEN];
   int ret = snprintf(buf, sizeof(buf), "%s: %s", field, value);
-  ASSERT_S(ret < UA_MAX_HEADER_LEN, "Out of bounds write attempt");
+  VASSERT_S(ret < UA_MAX_HEADER_LEN, "[%s] Out of bounds write attempt", logconf_tag(ua->p_config, ua));
 
   /* check for match in existing fields */
   size_t len = strlen(field);
@@ -148,7 +150,7 @@ ua_reqheader_del(struct user_agent *ua, char field[])
     node = node->next;
   } while (node != NULL);
 
-  log_warn("Couldn't find field '%s' in existing request header", field);
+  log_warn("[%s] Couldn't find field '%s' in existing request header", field, logconf_tag(ua->p_config, ua));
 }
 
 /* get http response header by lines
@@ -226,39 +228,40 @@ ua_mime_setopt(struct user_agent *ua, void *data, curl_mime* (mime_cb)(CURL *eha
 }
 
 static struct ua_conn*
-conn_init(struct user_agent *ua)
+conn_init(struct user_agent *ua, size_t conn_pos)
 {
   struct ua_conn *new_conn = calloc(1, sizeof(struct ua_conn));
+  snprintf(new_conn->tag, sizeof(new_conn->tag), "%s#%zu", logconf_tag(ua->p_config, ua), conn_pos+1);
 
   CURL *new_ehandle = curl_easy_init(); // will be assigned to new_conn
 
   CURLcode ecode;
   //set error buffer for capturing CURL error descriptions
   ecode = curl_easy_setopt(new_ehandle, CURLOPT_ERRORBUFFER, new_conn->errbuf);
-  CURLE_CHECK(new_conn->errbuf, ecode);
+  CURLE_CHECK(new_conn, ecode);
   //set ptr to request header we will be using for API communication
   ecode = curl_easy_setopt(new_ehandle, CURLOPT_HTTPHEADER, ua->req_header);
-  CURLE_CHECK(new_conn->errbuf, ecode);
+  CURLE_CHECK(new_conn, ecode);
 
   //enable follow redirections
   ecode = curl_easy_setopt(new_ehandle, CURLOPT_FOLLOWLOCATION, 1L);
-  CURLE_CHECK(new_conn->errbuf, ecode);
+  CURLE_CHECK(new_conn, ecode);
 
   //set response body callback
   ecode = curl_easy_setopt(new_ehandle, CURLOPT_WRITEFUNCTION, &conn_respbody_cb);
-  CURLE_CHECK(new_conn->errbuf, ecode);
+  CURLE_CHECK(new_conn, ecode);
 
   //set ptr to response body to be filled at callback
   ecode = curl_easy_setopt(new_ehandle, CURLOPT_WRITEDATA, &new_conn->resp_body);
-  CURLE_CHECK(new_conn->errbuf, ecode);
+  CURLE_CHECK(new_conn, ecode);
 
   //set response header callback
   ecode = curl_easy_setopt(new_ehandle, CURLOPT_HEADERFUNCTION, &conn_respheader_cb);
-  CURLE_CHECK(new_conn->errbuf, ecode);
+  CURLE_CHECK(new_conn, ecode);
 
   //set ptr to response header to be filled at callback
   ecode = curl_easy_setopt(new_ehandle, CURLOPT_HEADERDATA, &new_conn->resp_header);
-  CURLE_CHECK(new_conn->errbuf, ecode);
+  CURLE_CHECK(new_conn, ecode);
 
   // execute user-defined curl_easy_setopts
   if (ua->setopt_cb) {
@@ -311,15 +314,15 @@ static struct ua_conn*
 get_conn(struct user_agent *ua)
 {
   struct ua_conn *ret_conn = NULL;
-
   pthread_mutex_lock(&ua->lock);
   if (!ua->num_notbusy) { // no available conn, create new
     ++ua->num_conn;
 
     ua->conn_pool = realloc(ua->conn_pool, ua->num_conn * sizeof *ua->conn_pool);
-    ua->conn_pool[ua->num_conn-1] = conn_init(ua);
 
-    ret_conn = ua->conn_pool[ua->num_conn-1];
+    size_t pos = ua->num_conn-1;
+    ua->conn_pool[pos] = conn_init(ua, pos);
+    ret_conn = ua->conn_pool[pos];
   }
   else { // available conn, pick one
     for (size_t i=0; i < ua->num_conn; ++i) {
@@ -330,7 +333,7 @@ get_conn(struct user_agent *ua)
       }
     }
   }
-  ASSERT_S(NULL != ret_conn, "Internal thread synchronization error (couldn't fetch conn)");
+  VASSERT_S(NULL != ret_conn, "[%s] Internal thread synchronization error (couldn't fetch conn)", logconf_tag(ua->p_config, ua));
 
   ret_conn->is_busy = true;
   pthread_mutex_unlock(&ua->lock);
@@ -375,7 +378,7 @@ ua_init(const char base_url[], struct logconf *config)
   new_ua->p_config = config;
 
   if (pthread_mutex_init(&new_ua->lock, NULL))
-    ERR("Couldn't initialize mutex");
+    ERR("[%s] Couldn't initialize mutex", logconf_tag(new_ua->p_config, new_ua));
 
   return new_ua;
 }
@@ -506,11 +509,11 @@ set_method(
   switch (method) {
   case HTTP_DELETE:
       ecode = curl_easy_setopt(conn->ehandle, CURLOPT_CUSTOMREQUEST, "DELETE");
-      CURLE_CHECK(conn->errbuf, ecode);
+      CURLE_CHECK(conn, ecode);
       break;
   case HTTP_GET:
       ecode = curl_easy_setopt(conn->ehandle, CURLOPT_HTTPGET, 1L);
-      CURLE_CHECK(conn->errbuf, ecode);
+      CURLE_CHECK(conn, ecode);
       return; /* EARLY RETURN */
   case HTTP_POST:
       curl_easy_setopt(conn->ehandle, CURLOPT_POST, 1L);
@@ -529,7 +532,7 @@ set_method(
       curl_easy_setopt(conn->ehandle, CURLOPT_CUSTOMREQUEST, "PUT");
       break;
   default:
-      ERR("Unknown http method (code: %d)", method);
+      ERR("[%s] Unknown http method (code: %d)", method, conn->tag);
   }
   
   //set ptr to payload that will be sent via POST/PUT/PATCH
@@ -549,9 +552,9 @@ set_url(struct user_agent *ua, struct ua_conn *conn, char endpoint[], va_list ar
   ASSERT_S(ret < sizeof(conn->req_url), "Out of bounds write attempt");
 
   CURLcode ecode = curl_easy_setopt(conn->ehandle, CURLOPT_URL, conn->req_url);
-  CURLE_CHECK(conn->errbuf, ecode);
+  CURLE_CHECK(conn, ecode);
 
-  log_trace("Request URL: %s", conn->req_url);
+  log_trace("[%s] Request URL: %s", conn->tag, conn->req_url);
 }
 
 static void noop_iter_start_cb(void *a)
@@ -577,25 +580,25 @@ send_request(struct user_agent *ua, struct ua_conn *conn)
   CURLcode ecode;
   
   ecode = curl_easy_perform(conn->ehandle);
-  CURLE_CHECK(conn->errbuf, ecode);
+  CURLE_CHECK(conn, ecode);
 
   conn->req_tstamp = orka_timestamp_ms();
 
   //get response's code
   int httpcode=0;
   ecode = curl_easy_getinfo(conn->ehandle, CURLINFO_RESPONSE_CODE, &httpcode);
-  CURLE_CHECK(conn->errbuf, ecode);
+  CURLE_CHECK(conn, ecode);
 
   char *resp_url=NULL;
   ecode = curl_easy_getinfo(conn->ehandle, CURLINFO_EFFECTIVE_URL, &resp_url);
-  CURLE_CHECK(conn->errbuf, ecode);
+  CURLE_CHECK(conn, ecode);
 
   log_http(
     ua->p_config, 
     ua,
     resp_url, 
     conn->resp_body.content,
-    "HTTP_RESPONSE %s(%d)", http_code_print(httpcode), httpcode);
+    "HTTP_RCV_%s(%d)", http_code_print(httpcode), httpcode);
 
   pthread_mutex_unlock(&ua->lock);
 
@@ -700,35 +703,39 @@ perform_request(
       conn->status = (*cbs.on_1xx)(cbs.data, httpcode, conn);
     }
     else if (httpcode == CURL_NO_RESPONSE){
-      log_error("No http response received by libcurl");
+      log_error("[%s] No http response received by libcurl", conn->tag);
       conn->status = UA_FAILURE;
     }
     else {
-      ERR("Unusual HTTP response code: %d", httpcode);
+      ERR("[%s] Unusual HTTP response code: %d", conn->tag, httpcode);
     }
 
     switch (conn->status) {
     case UA_SUCCESS:
-        log_info(ANSICOLOR("SUCCESS (%d)%s", 32)" - %s",
+        log_info("[%s] "ANSICOLOR("SUCCESS (%d)%s", 32)" - %s",
+            conn->tag,
             httpcode,
             http_code_print(httpcode),
             http_reason_print(httpcode));
         break;
     case UA_FAILURE:
-        log_warn(ANSICOLOR("FAILURE (%d)%s", 31)" - %s",
+        log_warn("[%s] "ANSICOLOR("FAILURE (%d)%s", 31)" - %s",
+            conn->tag,
             httpcode,
             http_code_print(httpcode),
             http_reason_print(httpcode));
         break;
     case UA_RETRY:
-        log_info(ANSICOLOR("RETRY (%d)%s", 33)" - %s",
+        log_info("[%s] "ANSICOLOR("RETRY (%d)%s", 33)" - %s",
+            conn->tag,
             httpcode,
             http_code_print(httpcode),
             http_reason_print(httpcode));
         break;
     case UA_ABORT:
     default:
-        ERR(ANSICOLOR("ABORT (%d)%s", 31)" - %s",
+        ERR("[%s] "ANSICOLOR("ABORT (%d)%s", 31)" - %s",
+            conn->tag,
             httpcode,
             http_code_print(httpcode),
             http_reason_print(httpcode));
@@ -772,7 +779,7 @@ ua_vrun(
     ua,
     conn->req_url, 
     *req_body,
-    "HTTP_REQUEST %s", http_method_print(http_method));
+    "HTTP_SEND %s", http_method_print(http_method));
 
   set_method(ua, conn, http_method, req_body); //set the request method
 
