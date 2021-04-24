@@ -676,7 +676,7 @@ dispatch_run(void *p_cxt)
       &cxt->p_gw->sb_bot, 
       &cxt->data);
 
-  log_info(ANSICOLOR("pthread %u finishs to serve %s", 31), 
+  log_info(ANSICOLOR("pthread %u exit to serve %s", 31),
            cxt->tid, cxt->p_gw->payload.event_name);
   free(cxt->data.start);
   free(cxt);
