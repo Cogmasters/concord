@@ -59,7 +59,7 @@
 - [x] [Delete All Reactions for Emoji](https://discord.com/developers/docs/resources/channel#delete-all-reactions-for-emoji)
 - [x] [Edit Message](https://discord.com/developers/docs/resources/channel#edit-message)
 - [X] [Delete Message](https://discord.com/developers/docs/resources/channel#delete-message)
-- [ ] [Bulk Delete Messages](https://discord.com/developers/docs/resources/channel#bulk-delete-messages)
+- [X] [Bulk Delete Messages](https://discord.com/developers/docs/resources/channel#bulk-delete-messages)
 - [ ] [Edit Channel Permissions](https://discord.com/developers/docs/resources/channel#edit-channel-permissions)
 - [ ] [Get Channel Invites](https://discord.com/developers/docs/resources/channel#get-channel-invites)
 - [ ] [Create Channel Invite](https://discord.com/developers/docs/resources/channel#create-channel-invite)
