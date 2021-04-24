@@ -382,8 +382,6 @@ ws_init(struct ws_callbacks *cbs, struct logconf *config)
 void
 ws_set_url(struct websockets *ws, const char base_url[], const char ws_protocols[])
 {
-  VASSERT_S(WS_DISCONNECTED == ws->status, "[%s] Can only set url to a disconnected client", ws->tag);
-
   if (IS_EMPTY_STRING(ws->base_url))
     log_debug("[%s] Websockets new URL: %s", ws->tag, base_url);
   else
