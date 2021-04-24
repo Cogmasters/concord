@@ -328,17 +328,12 @@ struct discord {
   struct logconf config;
 
 #ifdef DISCORD_VOICE_CONNECTIONS_H
-  // the voice connections this client started
-  struct discord_voice *vcs[1024];
-  size_t num_vcs;
+  struct discord_voice *pending_vc;
 #endif // DISCORD_VOICE_CONNECTIONS_H
   
   // space for user arbitrary data
   /// @see discord_get_data() and discord_set_data()
   void *data;
-  
-  // sync client data that may increase in size, ex discord_voice **vcs
-  pthread_mutex_t lock;
 };
 
 #endif // DISCORD_INTERNAL_H

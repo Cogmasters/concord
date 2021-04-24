@@ -21,9 +21,6 @@ _discord_init(struct discord *new_client)
     &new_client->gw, 
     &new_client->config,
     &new_client->token);
-
-  if (pthread_mutex_init(&new_client->lock, NULL))
-    ERR("Couldn't initialize pthread mutex");
 }
 
 struct discord*
@@ -61,7 +58,6 @@ discord_cleanup(struct discord *client)
   logconf_cleanup(&client->config);
   discord_adapter_cleanup(&client->adapter);
   discord_gateway_cleanup(&client->gw);
-  pthread_mutex_destroy(&client->lock);
   free(client);
 }
 
