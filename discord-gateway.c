@@ -665,7 +665,8 @@ static void*
 dispatch_run(void *p_cxt)
 {
   struct _event_cxt *cxt = p_cxt;
-  log_info(ANSICOLOR("pthread_run %u", 31), cxt->tid);
+  log_info(ANSICOLOR("pthread %u is running to serve %s", 31),
+           cxt->tid, cxt->p_gw->payload.event_name);
 
   (*cxt->on_event)(cxt->p_gw, &cxt->data);
 
@@ -675,7 +676,8 @@ dispatch_run(void *p_cxt)
       &cxt->p_gw->sb_bot, 
       &cxt->data);
 
-  log_info(ANSICOLOR("pthread_exit %u", 31), cxt->tid);
+  log_info(ANSICOLOR("pthread %u finishs to serve %s", 31), 
+           cxt->tid, cxt->p_gw->payload.event_name);
   free(cxt->data.start);
   free(cxt);
 
