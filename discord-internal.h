@@ -328,7 +328,8 @@ struct discord {
   struct logconf config;
 
 #ifdef DISCORD_VOICE_CONNECTIONS_H
-  struct discord_voice *pending_vc;
+  struct discord_voice *vcs[1024];
+  size_t num_vcs;
 #endif // DISCORD_VOICE_CONNECTIONS_H
   
   // space for user arbitrary data

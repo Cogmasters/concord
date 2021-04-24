@@ -621,9 +621,7 @@ on_voice_state_update(struct discord_gateway *gw, struct sized_buffer *data)
   discord_voice_state_from_json(data->start, data->size, vs);
 
 #ifdef DISCORD_VOICE_CONNECTIONS_H
-  if (vs->user_id == gw->bot->id) { // update bot voice state
-    _discord_on_voice_state_update(gw->p_client, vs->guild_id, vs->session_id);
-  }
+  _discord_on_voice_state_update(gw->p_client, vs);
 #endif // DISCORD_VOICE_CONNECTIONS_H
 
   if (gw->cbs.on_voice_state_update)
