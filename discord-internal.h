@@ -328,7 +328,7 @@ struct discord {
 
 #ifdef DISCORD_VOICE_CONNECTIONS_H
   // the voice connections this client started
-  struct discord_voice **vcs;
+  struct discord_voice *vcs[1024];
   size_t num_vcs;
 #endif // DISCORD_VOICE_CONNECTIONS_H
   

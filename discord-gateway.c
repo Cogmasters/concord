@@ -627,7 +627,7 @@ on_voice_state_update(struct discord_gateway *gw, struct sized_buffer *data)
 
 #ifdef DISCORD_VOICE_CONNECTIONS_H
   if (vs->user_id == gw->bot->id) { // update bot voice state
-    _discord_voice_state_update(gw->p_client, vs->guild_id, vs->session_id);
+    _discord_on_voice_state_update(gw->p_client, vs->guild_id, vs->session_id);
   }
 #endif // DISCORD_VOICE_CONNECTIONS_H
 
@@ -649,7 +649,7 @@ on_voice_server_update(struct discord_gateway *gw, struct sized_buffer *data)
                &token, &guild_id, &endpoint);
 
 #ifdef DISCORD_VOICE_CONNECTIONS_H
-  _discord_voice_server_update(gw->p_client, guild_id, token, endpoint);
+  _discord_on_voice_server_update(gw->p_client, guild_id, token, endpoint);
 #endif // DISCORD_VOICE_CONNECTIONS_H
 
   if (gw->cbs.on_voice_server_update)
@@ -859,7 +859,6 @@ on_dispatch(struct discord_gateway *gw)
   cxt->event = event;
   cxt->on_event = on_event;
 
-  log_info(ANSICOLOR("pthread_create", 31));
   if (pthread_create(&cxt->tid, NULL, &dispatch_run, cxt))
     ERR("Couldn't create thread");
   if (pthread_detach(cxt->tid))
