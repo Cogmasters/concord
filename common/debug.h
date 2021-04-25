@@ -16,10 +16,45 @@
 
 // Encode a string with ANSI color
 #ifdef LOG_USE_COLOR
-# define ANSICOLOR(str, code) "\x1b["#code"m"str"\x1b[0m"
+# define ANSICOLOR(str, color) "\x1b["color"m"str"\x1b[0m"
 #else
-# define ANSICOLOR(str, code) str
+# define ANSICOLOR(str, color) str
 #endif
+
+#define ANSI_FG_BLACK           "30"
+#define ANSI_FG_RED             "31" 
+#define ANSI_FG_GREEN           "32"
+#define ANSI_FG_YELLOW          "33"
+#define ANSI_FG_BLUE            "34"
+#define ANSI_FG_MAGENTA         "35"
+#define ANSI_FG_CYAN            "36"
+#define ANSI_FG_WHITE           "37"
+#define ANSI_FG_GRAY            "90"
+#define ANSI_FG_BRIGHT_RED      "91"
+#define ANSI_FG_BRIGHT_GREEN    "92"
+#define ANSI_FG_BRIGHT_YELLOW   "93"
+#define ANSI_FG_BRIGHT_BLUE     "94"
+#define ANSI_FG_BRIGHT_MAGENTA  "95"
+#define ANSI_FG_BRIGHT_CYAN     "96"
+#define ANSI_FG_BRIGHT_WHITE    "97"
+
+#define ANSI_BG_BLACK           "40"
+#define ANSI_BG_RED             "41" 
+#define ANSI_BG_GREEN           "42"
+#define ANSI_BG_YELLOW          "43"
+#define ANSI_BG_BLUE            "44"
+#define ANSI_BG_MAGENTA         "45"
+#define ANSI_BG_CYAN            "46"
+#define ANSI_BG_WHITE           "47"
+#define ANSI_BG_GRAY            "100"
+#define ANSI_BG_BRIGHT_RED      "101"
+#define ANSI_BG_BRIGHT_GREEN    "102"
+#define ANSI_BG_BRIGHT_YELLOW   "103"
+#define ANSI_BG_BRIGHT_BLUE     "104"
+#define ANSI_BG_BRIGHT_MAGENTA  "105"
+#define ANSI_BG_BRIGHT_CYAN     "106"
+#define ANSI_BG_BRIGHT_WHITE    "107"
+
 
 #define PUTS(msg) fprintf(D_OUT, D_FMT_PREFIX "%s\n", D_FMT_ARGS, msg)
 #define NOTOP_PUTS(msg) fprintf(D_OUT, "\t%s\n", msg)
@@ -37,8 +72,8 @@
 #define ASSERT_S(expr, msg)                              \
   do {                                                   \
     if (!(expr)){                                        \
-      ERR(ANSICOLOR("\n\tAssert Failed",31)":\t%s\n\t"   \
-          ANSICOLOR("Expected",31)":\t" #expr, msg);     \
+      ERR(ANSICOLOR("\n\tAssert Failed",ANSI_FG_RED)":\t%s\n\t"   \
+          ANSICOLOR("Expected",ANSI_FG_RED)":\t" #expr, msg);     \
     }                                                    \
   } while(0)
 
@@ -46,8 +81,8 @@
 #define VASSERT_S(expr, fmt, ...)                            \
   do {                                                       \
     if (!(expr)){                                            \
-      ERR(ANSICOLOR("\n\tAssert Failed",31)":\t"fmt"\n\t"    \
-          ANSICOLOR("Expected",31)":\t" #expr, __VA_ARGS__); \
+      ERR(ANSICOLOR("\n\tAssert Failed",ANSI_FG_RED)":\t"fmt"\n\t"    \
+          ANSICOLOR("Expected",ANSI_FG_RED)":\t" #expr, __VA_ARGS__); \
     }                                                        \
   } while(0)
 

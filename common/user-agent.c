@@ -712,21 +712,21 @@ perform_request(
 
     switch (conn->status) {
     case UA_SUCCESS:
-        log_info("[%s] "ANSICOLOR("SUCCESS (%d)%s", 32)" - %s",
+        log_info("[%s] "ANSICOLOR("SUCCESS (%d)%s", ANSI_FG_GREEN)" - %s",
             conn->tag,
             httpcode,
             http_code_print(httpcode),
             http_reason_print(httpcode));
         break;
     case UA_FAILURE:
-        log_warn("[%s] "ANSICOLOR("FAILURE (%d)%s", 31)" - %s",
+        log_warn("[%s] "ANSICOLOR("FAILURE (%d)%s", ANSI_FG_RED)" - %s",
             conn->tag,
             httpcode,
             http_code_print(httpcode),
             http_reason_print(httpcode));
         break;
     case UA_RETRY:
-        log_info("[%s] "ANSICOLOR("RETRY (%d)%s", 33)" - %s",
+        log_info("[%s] "ANSICOLOR("RETRY (%d)%s", ANSI_FG_YELLOW)" - %s",
             conn->tag,
             httpcode,
             http_code_print(httpcode),
@@ -734,7 +734,7 @@ perform_request(
         break;
     case UA_ABORT:
     default:
-        ERR("[%s] "ANSICOLOR("ABORT (%d)%s", 31)" - %s",
+        ERR("[%s] "ANSICOLOR("ABORT (%d)%s", ANSI_FG_RED)" - %s",
             conn->tag,
             httpcode,
             http_code_print(httpcode),
