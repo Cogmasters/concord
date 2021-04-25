@@ -10,7 +10,7 @@
 #include "orka-utils.h"
 
 
-#define BASE_GATEWAY_URL "wss://gateway.discord.gg/?v=6&encoding=json"
+#define BASE_GATEWAY_URL "wss://gateway.discord.gg/?v=8&encoding=json"
 
 struct _event_cxt {
   pthread_t tid; // the thread id
