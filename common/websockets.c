@@ -266,7 +266,7 @@ void
 ws_set_action(struct websockets *ws, enum ws_action action)
 {
   pthread_mutex_lock(&ws->lock);
-  if (WS_DISCONNECTING == ws->status) { // closing process already started
+  if (WS_DISCONNECTING == ws->status || WS_DISCONNECTED == ws->status) { // closing process already started
     pthread_mutex_unlock(&ws->lock);
     return;
   }
