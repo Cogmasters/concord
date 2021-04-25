@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <inttypes.h>
 #include "ntl.h"
 #include "orka-utils.h"
 #include "json-actor-boxed.h"
@@ -102,12 +103,12 @@ void ja_u64_from_json(char * json, size_t len, ja_u64 * ja)
 
 size_t ja_u64_to_json(char * json, size_t len, ja_u64 * ja)
 {
-  int ret =  snprintf(json, len, "\"%llu\"", ja->value);
+  int ret =  snprintf(json, len, "\"%"PRIu64"\"", ja->value);
   return (size_t)ret;
 }
 
 size_t ja_u64_to_query(char *json, size_t len, ja_u64 *p) {
-  return snprintf(json, len, "\"%llu\"", p->value);
+  return snprintf(json, len, "\"%"PRIu64"\"", p->value);
 }
 
 void ja_u64_init(ja_u64 *p) {
