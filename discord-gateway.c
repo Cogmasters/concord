@@ -669,7 +669,7 @@ static void*
 dispatch_run(void *p_cxt)
 {
   struct _event_cxt *cxt = p_cxt;
-  log_info(ANSICOLOR("pthread %u is running to serve %s", 31),
+  log_info(ANSICOLOR("pthread %u is running to serve %s", ANSI_FG_RED),
            cxt->tid, cxt->p_gw->payload.event_name);
 
   (*cxt->on_event)(cxt->p_gw, &cxt->data);
@@ -680,7 +680,7 @@ dispatch_run(void *p_cxt)
       &cxt->p_gw->sb_bot, 
       &cxt->data);
 
-  log_info(ANSICOLOR("pthread %u exit to serve %s", 31),
+  log_info(ANSICOLOR("pthread %u exit to serve %s", ANSI_FG_RED),
            cxt->tid, cxt->p_gw->payload.event_name);
   free(cxt->data.start);
   free(cxt);
@@ -913,7 +913,7 @@ on_close_cb(void *p_gw, enum ws_close_reason wscode, const char *reason, size_t 
   enum discord_gateway_close_opcodes opcode = \
     (enum discord_gateway_close_opcodes)wscode;
 
-  log_warn(ANSICOLOR("%s",31)" (code: %4d) : %zd bytes,"
+  log_warn(ANSICOLOR("%s",ANSI_FG_RED)" (code: %4d) : %zd bytes,"
           "REASON: '%s'", 
           close_opcode_print(opcode), opcode, len,
           reason);
@@ -964,7 +964,7 @@ on_text_cb(void *p_gw, const char *text, size_t len)
     gw->payload.seq_number = seq_number;
   }
 
-  log_trace(ANSICOLOR("%s", 93)", EVENT:%s, SEQ:%d, DATA:%s%.*s", 
+  log_trace(ANSICOLOR("%s", ANSI_FG_BRIGHT_YELLOW)", EVENT:%s, SEQ:%d, DATA:%s%.*s", 
             opcode_print(gw->payload.opcode), 
             *gw->payload.event_name ? gw->payload.event_name : "NULL",
             gw->payload.seq_number,
