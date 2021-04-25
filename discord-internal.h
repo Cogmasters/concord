@@ -310,8 +310,10 @@ void discord_gateway_shutdown(struct discord_gateway *gw);
  *        @see websockets.h
  * 
  * @param gw the handle initialized with discord_gateway_init()
+ * @param resume #TRUE to attempt to resume to previous session,
+ *        #FALSE restart a fresh session
  */
-void discord_gateway_reconnect(struct discord_gateway *gw);
+void discord_gateway_reconnect(struct discord_gateway *gw, bool resume);
 
 
 /* The Discord Client structure, used to performing every kind of

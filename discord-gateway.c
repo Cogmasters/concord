@@ -1138,13 +1138,23 @@ discord_gateway_run(struct discord_gateway *gw)
 }
 
 void
-discord_gateway_shutdown(struct discord_gateway *gw) {
+discord_gateway_shutdown(struct discord_gateway *gw) 
+{
   gw->reconnect.enable = false;
+  gw->is_resumable = false;
   ws_set_action(gw->ws, WS_ACTION_DISCONNECT);
+  while (WS_DISCONNECTED != ws_get_status(gw->ws)) {
+    orka_sleep_ms(500);
+  }
 }
 
 void
-discord_gateway_reconnect(struct discord_gateway *gw) {
+discord_gateway_reconnect(struct discord_gateway *gw, bool resume) 
+{
   gw->reconnect.enable = true;
+  gw->is_resumable = resume;
   ws_set_action(gw->ws, WS_ACTION_DISCONNECT);
+  while (WS_CONNECTED != ws_get_status(gw->ws)) {
+    orka_sleep_ms(500);
+  }
 }
