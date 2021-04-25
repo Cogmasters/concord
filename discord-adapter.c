@@ -8,7 +8,7 @@
 
 #include "orka-utils.h"
 
-#define BASE_API_URL "https://discord.com/api"
+#define BASE_API_URL "https://discord.com/api/v8"
 
 
 struct _ratelimit_cxt {
