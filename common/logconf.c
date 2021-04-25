@@ -13,8 +13,6 @@
 #include "json-actor.h"
 
 
-static bool g_first_run = true; // used to delete existent dump files
-
 static int
 get_log_level(char level[])
 {
@@ -95,10 +93,7 @@ logconf_setup(struct logconf *config, const char config_file[])
 
   /* SET LOGGER CONFIGS */
   if (!IS_EMPTY_STRING(logging->filename)) {
-    if (true == g_first_run)
-      config->logger.f = fopen(logging->filename, "w+");
-    else
-      config->logger.f = fopen(logging->filename, "a+");
+    config->logger.f = fopen(logging->filename, "a+");
     log_add_fp(config->logger.f, get_log_level(logging->level));
     ASSERT_S(NULL != config->logger.f, "Could not create logger file");
   }
@@ -112,16 +107,9 @@ logconf_setup(struct logconf *config, const char config_file[])
   /* SET HTTP DUMP CONFIGS */
   if (true == logging->http.enable) {
     if (!IS_EMPTY_STRING(logging->http.filename)) {
-      if (true == g_first_run) 
-        config->http.f = fopen(logging->http.filename, "w+");
-      else
-        config->http.f = fopen(logging->http.filename, "a+");
+      config->http.f = fopen(logging->http.filename, "a+");
       ASSERT_S(NULL != config->http.f, "Could not create dump file");
     }
-  }
-
-  if (true == g_first_run) {
-    g_first_run = false;
   }
 
   free(logging);
