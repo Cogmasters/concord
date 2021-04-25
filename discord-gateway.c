@@ -1143,7 +1143,7 @@ discord_gateway_shutdown(struct discord_gateway *gw)
   gw->reconnect.enable = false;
   gw->is_resumable = false;
   ws_set_action(gw->ws, WS_ACTION_DISCONNECT);
-  while (WS_DISCONNECTED != ws_get_status(gw->ws)) {
+  while (ws_is_alive(gw->ws)) {
     orka_sleep_ms(500);
   }
 }

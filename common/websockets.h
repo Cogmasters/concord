@@ -225,6 +225,14 @@ void ws_set_action(struct websockets *ws, enum ws_action action);
  */
 char* ws_close_opcode_print(enum ws_close_reason opcode);
 
+/**
+ * Check if a WebSockets connection is alive
+ *
+ * @return #TRUE if WebSockets status is different than
+ *        WS_DISCONNECTED, #FALSE otherwise.
+ */
+bool ws_is_alive(struct websockets *ws);
+
 #ifdef __cplusplus
 }
 #endif // __cplusplus

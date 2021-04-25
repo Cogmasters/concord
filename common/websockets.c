@@ -391,7 +391,7 @@ void
 ws_start(struct websockets *ws) 
 {
   ws->tag = logconf_tag(ws->p_config, ws);
-  VASSERT_S(WS_DISCONNECTED == ws_get_status(ws), "[%s] Shutdown current WebSockets connection before calling ws_start()", ws->tag);
+  VASSERT_S(false == ws_is_alive(ws), "[%s] Shutdown current WebSockets connection before calling ws_start()", ws->tag);
   _ws_set_status(ws, WS_CONNECTING);  
 }
 
@@ -479,4 +479,9 @@ ws_timestamp(struct websockets *ws)
   uint64_t now_tstamp = ws->now_tstamp;
   pthread_mutex_unlock(&ws->lock);
   return now_tstamp;
+}
+
+bool
+ws_is_alive(struct websockets *ws) {
+  return WS_DISCONNECTED != ws_get_status(ws);
 }
