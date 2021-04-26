@@ -47,7 +47,6 @@ static CURL* cws_custom_new(struct websockets *ws, const char ws_protocols[]);
 static void
 _ws_set_status(struct websockets *ws, enum ws_status status)
 {
-  pthread_mutex_lock(&ws->lock);
   switch (ws->status = status) {
   case WS_DISCONNECTED:
       log_debug("[%s] Change status to WS_DISCONNECTED", ws->tag);
@@ -60,15 +59,11 @@ _ws_set_status(struct websockets *ws, enum ws_status status)
       break;
   case WS_CONNECTING:
       log_debug("[%s] Change status to WS_CONNECTING", ws->tag);
-      VASSERT_S(NULL == ws->ehandle, "[%s] (Internal error) ws->ehandle should be NULL before connecting", ws->tag);
-      ws->ehandle = cws_custom_new(ws, ws->protocols);
-      curl_multi_add_handle(ws->mhandle, ws->ehandle);
       break;
   default:
       ERR("[%s] Unknown ws_status (code: %d)", ws->tag, status);
       break;
   }
-  pthread_mutex_unlock(&ws->lock);
 }
 
 static void
@@ -93,6 +88,7 @@ static void
 cws_on_close_cb(void *p_ws, CURL *ehandle, enum cws_close_reason cwscode, const char *reason, size_t len)
 {
   struct websockets *ws = p_ws;
+  _ws_set_status(ws, WS_DISCONNECTING);
 
   log_http(
     ws->p_config, 
@@ -101,7 +97,7 @@ cws_on_close_cb(void *p_ws, CURL *ehandle, enum cws_close_reason cwscode, const 
     (struct sized_buffer){(char*)reason, len},
     "WS_RCV_CLOSE(%d)", cwscode);
 
-  _ws_set_status(ws, WS_DISCONNECTING);
+  log_debug("[%s] Receive CLOSE(%d): %.*s", ws->tag, cwscode, (int)len, reason);
   (*ws->cbs.on_close)(ws->cbs.data, cwscode, reason, len);
   // will set status to WS_DISCONNECTED when ws->is_running == false
 }
@@ -222,6 +218,8 @@ _ws_close_nolock(
   const char reason[], 
   size_t len)
 {
+  _ws_set_status(ws, WS_DISCONNECTING);
+
   log_http(
     ws->p_config, 
     ws,
@@ -229,6 +227,7 @@ _ws_close_nolock(
     (struct sized_buffer){(char*)reason, len},
     "WS_SEND_CLOSE");
 
+  log_debug("[%s] Sending CLOSE(%d): %.*s", ws->tag, wscode, (int)len, reason);
   return cws_close(ws->ehandle, (enum cws_close_reason)wscode, reason, len);
 }
 
@@ -254,58 +253,16 @@ ws_get_status(struct websockets *ws)
   return status;
 }
 
+/// @todo remove this
 enum ws_action
-ws_get_action(struct websockets *ws) 
-{
-  pthread_mutex_lock(&ws->lock);
-  enum ws_action action = ws->action;
-  pthread_mutex_unlock(&ws->lock);
-  return action;
+ws_get_action(struct websockets *ws) {
+  return 0;
 }
 
+/// @todo remove this
 void
-ws_set_action(struct websockets *ws, enum ws_action action)
-{
-  pthread_mutex_lock(&ws->lock);
-  if (WS_DISCONNECTING == ws->status || WS_DISCONNECTED == ws->status) { // closing process already started
-    pthread_mutex_unlock(&ws->lock);
-    return;
-  }
-
-  switch (ws->action = action) {
-  case WS_ACTION_DISCONNECT:
-      log_info("[%s] Disconnecting WebSockets client ...", ws->tag);
-      if (ws->is_running) { // safely close connection
-        char reason[] = "Disconnect gracefully";
-        if (false == _ws_close_nolock(ws, WS_CLOSE_REASON_NORMAL, reason, sizeof(reason))) {
-          log_error("[%s] Couldn't send ws_close()", ws->tag);
-        }
-      }
-      ws->status = WS_DISCONNECTING;
-      break;
-  default: 
-      ERR("[%s] Unknown ws_action (code: %d)", ws->tag, action);
-      break;
-  }
-  pthread_mutex_unlock(&ws->lock);
-}
-
-static bool
-_ws_is_running(struct websockets *ws)
-{
-  bool is_running;
-  pthread_mutex_lock(&ws->lock);
-  is_running = ws->is_running;
-  pthread_mutex_unlock(&ws->lock);
-  return is_running;
-}
-
-static void
-_ws_set_running(struct websockets *ws, bool status)
-{
-  pthread_mutex_lock(&ws->lock);
-  ws->is_running = status;
-  pthread_mutex_unlock(&ws->lock);
+ws_set_action(struct websockets *ws, enum ws_action action) {
+  return;
 }
 
 static void noop_on_connect(void *a, const char *b){return;}
@@ -375,6 +332,7 @@ ws_cleanup(struct websockets *ws)
 bool
 ws_send_text(struct websockets *ws, char text[], size_t len)
 {
+  pthread_mutex_lock(&ws->lock);
   log_http(
     ws->p_config, 
     ws,
@@ -382,7 +340,6 @@ ws_send_text(struct websockets *ws, char text[], size_t len)
     (struct sized_buffer){text, len},
     "WS_SEND_TEXT");
 
-  pthread_mutex_lock(&ws->lock);
   bool ret = cws_send(ws->ehandle, true, text, len);
   pthread_mutex_unlock(&ws->lock);
   return ret;
@@ -393,54 +350,10 @@ ws_start(struct websockets *ws)
 {
   ws->tag = logconf_tag(ws->p_config, ws);
   VASSERT_S(false == ws_is_alive(ws), "[%s] Shutdown current WebSockets connection before calling ws_start()", ws->tag);
+  VASSERT_S(NULL == ws->ehandle, "[%s] (Internal error) ws->ehandle should be NULL before connecting", ws->tag);
+  ws->ehandle = cws_custom_new(ws, ws->protocols);
+  curl_multi_add_handle(ws->mhandle, ws->ehandle);
   _ws_set_status(ws, WS_CONNECTING);  
-}
-
-static void
-_ws_check_status(struct websockets *ws)
-{
-  enum ws_status status = ws_get_status(ws);
-  switch (status) {
-  case WS_CONNECTED:
-  case WS_CONNECTING:
-      break;
-  case WS_DISCONNECTED: {
-      // read messages/informationals from the individual transfers
-      int msgq = 0;
-      struct CURLMsg *curlmsg = curl_multi_info_read(ws->mhandle, &msgq);
-      if (curlmsg) {
-        CURLcode ecode = curlmsg->data.result;
-        if (CURLMSG_DONE == curlmsg->msg || CURLE_OK != ecode) {
-          log_error("[%s] (CURLE code: %d) %s", \
-              ws->tag,
-              ecode, 
-              IS_EMPTY_STRING(ws->errbuf) 
-                  ? curl_easy_strerror(ecode) 
-                  : ws->errbuf);
-          log_warn("[%s] Disconnected abruptly", ws->tag);
-        }
-        else {
-          log_debug("[%s] Disconnected gracefully", ws->tag);
-        }
-      }
-      else {
-        log_debug("[%s] Disconnected gracefully", ws->tag);
-      }
-      
-      // reset for next iteration
-      ws->action = 0;
-      *ws->errbuf = '\0';
-      cws_free(ws->ehandle);
-      ws->ehandle = NULL;
-      break; }
-  case WS_DISCONNECTING:
-      log_debug("[%s] Forcing connection to stop ...", ws->tag);
-      curl_multi_remove_handle(ws->mhandle, ws->ehandle);
-      break;
-  default:
-      ERR("[%s] Unknown ws_status (code: %d)", ws->tag, status);
-      break;
-  }
 }
 
 void
@@ -450,30 +363,56 @@ ws_perform(struct websockets *ws, bool *p_is_running)
   ws->now_tstamp = orka_timestamp_ms(); //update our concept of now
   pthread_mutex_unlock(&ws->lock);
 
-  _ws_check_status(ws);
-
   int is_running;
   CURLMcode mcode = curl_multi_perform(ws->mhandle, &is_running);
   VASSERT_S(CURLM_OK == mcode, "[%s] (CURLM code: %d) %s", ws->tag, mcode, curl_multi_strerror(mcode));
 
-  _ws_set_running(ws, (bool)is_running);
+  *p_is_running = ws->is_running = is_running;
 
-  if (!_ws_is_running(ws))
+  if (!ws->is_running) {
     _ws_set_status(ws, WS_DISCONNECTED);
-  if (p_is_running)
-    *p_is_running = _ws_is_running(ws);
 
-  _ws_check_status(ws);
+    // read messages/informationals from the individual transfers
+    int msgq = 0;
+    struct CURLMsg *curlmsg = curl_multi_info_read(ws->mhandle, &msgq);
+    if (curlmsg) {
+      CURLcode ecode = curlmsg->data.result;
+      if (CURLMSG_DONE == curlmsg->msg || CURLE_OK != ecode) {
+        log_error("[%s] (CURLE code: %d) %s", \
+            ws->tag,
+            ecode, 
+            IS_EMPTY_STRING(ws->errbuf) 
+                ? curl_easy_strerror(ecode) 
+                : ws->errbuf);
+        log_error("[%s] Disconnected abruptly", ws->tag);
+      }
+      else {
+        log_debug("[%s] Disconnected gracefully", ws->tag);
+      }
+    }
+    else {
+      log_debug("[%s] Disconnected gracefully", ws->tag);
+    }
+    
+    // reset for next iteration
+    ws->action = 0;
+    *ws->errbuf = '\0';
+    cws_free(ws->ehandle);
+    ws->ehandle = NULL;
+  }
 }
 
 void 
 ws_wait_activity(struct websockets *ws, uint64_t wait_ms) 
 {
-  if (!_ws_is_running(ws))
-    return; /* EARLY RETURN */
+  if (!ws->is_running) return; /* no activity to wait for */
 
   CURLMcode mcode = curl_multi_wait(ws->mhandle, NULL, 0, wait_ms, &ws->numfds);
-  VASSERT_S(CURLM_OK == mcode, "[%s] Code: %d\n\tDescription: %s", ws->tag, mcode, curl_multi_strerror(mcode));
+  VASSERT_S(CURLM_OK == mcode, "[%s] (CURLM code: %d) %s", ws->tag, mcode, curl_multi_strerror(mcode));
+
+  if (WS_DISCONNECTING == ws_get_status(ws)) {
+    curl_multi_remove_handle(ws->mhandle, ws->ehandle);
+  }
 }
 
 uint64_t
