@@ -12,7 +12,6 @@
 #include "orka-utils.h"
 #include "json-actor.h"
 
-
 static int
 get_log_level(char level[])
 {
@@ -57,6 +56,8 @@ logconf_setup(struct logconf *config, const char config_file[])
 {
   ASSERT_S(NULL != config, "Missing 'struct logconf'");
 
+  static bool first_run = true; // delete existent dump files if overwrite == true
+
   if (IS_EMPTY_STRING(config_file)) {
     config->http.f = stderr;
     return; /* EARLY RETURN */
@@ -66,6 +67,7 @@ logconf_setup(struct logconf *config, const char config_file[])
     char level[16];
     char filename[PATH_MAX];
     bool quiet;
+    bool overwrite;
     struct {
       char filename[PATH_MAX];
       bool enable;
@@ -83,17 +85,22 @@ logconf_setup(struct logconf *config, const char config_file[])
              "(logging.level):s"
              "(logging.filename):s"
              "(logging.quiet):b"
+             "(logging.overwrite):b"
              "(logging.http_dump.enable):b"
              "(logging.http_dump.filename):s",
              logging->level,
              logging->filename,
              &logging->quiet,
+             &logging->overwrite,
              &logging->http.enable,
              logging->http.filename);
 
   /* SET LOGGER CONFIGS */
   if (!IS_EMPTY_STRING(logging->filename)) {
-    config->logger.f = fopen(logging->filename, "a+");
+    if (first_run && logging->overwrite)
+      config->logger.f = fopen(logging->filename, "w+");
+    else
+      config->logger.f = fopen(logging->filename, "a+");
     log_add_fp(config->logger.f, get_log_level(logging->level));
     ASSERT_S(NULL != config->logger.f, "Could not create logger file");
   }
@@ -107,10 +114,16 @@ logconf_setup(struct logconf *config, const char config_file[])
   /* SET HTTP DUMP CONFIGS */
   if (true == logging->http.enable) {
     if (!IS_EMPTY_STRING(logging->http.filename)) {
-      config->http.f = fopen(logging->http.filename, "a+");
+      if (first_run && logging->overwrite)
+        config->http.f = fopen(logging->http.filename, "w+");
+      else
+        config->http.f = fopen(logging->http.filename, "a+");
       ASSERT_S(NULL != config->http.f, "Could not create dump file");
     }
   }
+
+  if (first_run)
+    first_run = false;
 
   free(logging);
 }
