@@ -333,7 +333,7 @@ get_conn(struct user_agent *ua)
       }
     }
   }
-  VASSERT_S(NULL != ret_conn, "[%s] Internal thread synchronization error (couldn't fetch conn)", logconf_tag(ua->p_config, ua));
+  VASSERT_S(NULL != ret_conn, "[%s] (Internal error) Couldn't fetch conn", logconf_tag(ua->p_config, ua));
 
   ret_conn->is_busy = true;
   pthread_mutex_unlock(&ua->lock);
