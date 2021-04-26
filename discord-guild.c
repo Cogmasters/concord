@@ -23,7 +23,7 @@ discord_get_guild(struct discord *client, const u64_snowflake_t guild_id, struct
     &resp_handle,
     NULL,
     HTTP_GET, 
-    "/guilds/%llu", guild_id);
+    "/guilds/%"PRIu64, guild_id);
 }
 
 void 
@@ -60,7 +60,8 @@ discord_create_guild_channel(
     &client->adapter,
     &resp_handle,
     &req_body,
-    HTTP_POST, "/guilds/%llu/channels", guild_id);
+    HTTP_POST, 
+    "/guilds/%"PRIu64"/channels", guild_id);
 }
 void
 discord_get_guild_channels(
@@ -81,7 +82,7 @@ discord_get_guild_channels(
     &resp_handle,
     NULL,
     HTTP_GET, 
-    "/guilds/%llu/channels", guild_id);
+    "/guilds/%"PRIu64"/channels", guild_id);
 }
 
 void 
@@ -104,7 +105,8 @@ discord_get_guild_member(struct discord *client, u64_snowflake_t guild_id, u64_s
     &client->adapter,
     &resp_handle,
     NULL,
-    HTTP_GET, "/guilds/%llu/members/%llu", guild_id, user_id);
+    HTTP_GET, 
+    "/guilds/%"PRIu64"/members/%"PRIu64, guild_id, user_id);
 }
 
 void
@@ -141,7 +143,7 @@ discord_list_guild_members(
     &resp_handle,
     NULL,
     HTTP_GET,
-    "/guilds/%llu/members%s%s", guild_id, limit_query, after_query);
+    "/guilds/%"PRIu64"/members%s%s", guild_id, limit_query, after_query);
 }
 
 void 
@@ -164,7 +166,7 @@ discord_remove_guild_member(
     NULL,
     NULL,
     HTTP_DELETE,
-    "/guilds/%llu/members/%llu", guild_id, user_id);
+    "/guilds/%"PRIu64"/members/%"PRIu64, guild_id, user_id);
 }
 void 
 discord_modify_guild_member(
@@ -197,7 +199,8 @@ discord_modify_guild_member(
     &client->adapter,
     &resp_handle,
     &req_body,
-    HTTP_PATCH, "/guilds/%llu/members/%llu", guild_id, user_id);
+    HTTP_PATCH, 
+    "/guilds/%"PRIu64"/members/%"PRIu64, guild_id, user_id);
 }
 
 void
@@ -223,7 +226,8 @@ discord_get_guild_ban(
     &client->adapter,
     &resp_handle,
     NULL,
-    HTTP_GET, "/guilds/%llu/bans/%llu", guild_id, user_id);
+    HTTP_GET, 
+    "/guilds/%"PRIu64"/bans/%"PRIu64, guild_id, user_id);
 }
 void
 discord_get_guild_bans(
@@ -243,7 +247,8 @@ discord_get_guild_bans(
     &client->adapter,
     &resp_handle,
     NULL,
-    HTTP_GET, "/guilds/%llu/bans", guild_id);
+    HTTP_GET, 
+    "/guilds/%"PRIu64"/bans", guild_id);
 }
 
 void
@@ -295,7 +300,8 @@ discord_create_guild_ban(
     &client->adapter,
     NULL,
     &req_body,
-    HTTP_PUT, "/guilds/%llu/bans/%llu", guild_id, user_id);
+    HTTP_PUT, 
+    "/guilds/%"PRIu64"/bans/%"PRIu64, guild_id, user_id);
 }
 
 void
@@ -316,7 +322,8 @@ discord_get_guild_roles(
     &client->adapter,
     &resp_handle,
     NULL,
-    HTTP_GET, "/guilds/%llu/roles", guild_id);
+    HTTP_GET, 
+    "/guilds/%"PRIu64"/roles", guild_id);
 }
 void
 discord_remove_guild_ban(
@@ -356,7 +363,8 @@ discord_remove_guild_ban(
     &client->adapter,
     NULL,
     &req_body,
-    HTTP_DELETE, "/guilds/%llu/bans/%llu", guild_id, user_id);
+    HTTP_DELETE, 
+    "/guilds/%"PRIu64"/bans/%"PRIu64, guild_id, user_id);
 }
 
 void 
@@ -385,7 +393,8 @@ discord_create_guild_role(
     &client->adapter,
     &resp_handle,
     &req_body,
-    HTTP_POST, "/guilds/%llu/roles", guild_id);
+    HTTP_POST, 
+    "/guilds/%"PRIu64"/roles", guild_id);
 }
 
 void 
@@ -407,5 +416,6 @@ discord_delete_guild_role(
     &client->adapter,
     NULL,
     NULL,
-    HTTP_DELETE, "/guilds/%llu/roles/%llu", guild_id, role_id);
+    HTTP_DELETE, 
+    "/guilds/%"PRIu64"/roles/%"PRIu64, guild_id, role_id);
 }

@@ -23,5 +23,5 @@ discord_list_guild_emojis(struct discord *client, const uint64_t guild_id, NTL_T
     &resp_handle,
     NULL,
     HTTP_GET,
-    "/guilds/%llu/emojis", guild_id);
+    "/guilds/%"PRIu64"/emojis", guild_id);
 }

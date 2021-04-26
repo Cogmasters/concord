@@ -23,7 +23,7 @@ discord_get_user(struct discord *client, const u64_snowflake_t user_id, struct d
     &resp_handle,
     NULL,
     HTTP_GET, 
-    "/users/%llu", user_id);
+    "/users/%"PRIu64, user_id);
 }
 
 void 
@@ -86,5 +86,5 @@ discord_leave_guild(struct discord *client, const u64_snowflake_t guild_id)
     NULL,
     &req_body,
     HTTP_DELETE,
-    "/users/@me/guilds/%llu", guild_id);
+    "/users/@me/guilds/%"PRIu64, guild_id);
 }

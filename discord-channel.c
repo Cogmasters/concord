@@ -23,7 +23,7 @@ discord_get_channel(struct discord *client, const u64_snowflake_t channel_id, st
     &resp_handle,
     NULL,
     HTTP_GET,
-    "/channels/%llu", channel_id);
+    "/channels/%"PRIu64, channel_id);
 }
 
 void
@@ -44,7 +44,7 @@ discord_delete_channel(struct discord *client, const u64_snowflake_t channel_id,
     &resp_handle,
     NULL,
     HTTP_DELETE,
-    "/channels/%llu", channel_id);
+    "/channels/%"PRIu64, channel_id);
 }
 
 void
@@ -67,7 +67,7 @@ discord_add_pinned_channel_message(
     NULL,
     NULL,
     HTTP_PUT, 
-    "/channels/%llu/pins/%llu", channel_id, message_id);
+    "/channels/%"PRIu64"/pins/%"PRIu64, channel_id, message_id);
 }
 
 void
@@ -90,7 +90,7 @@ discord_delete_pinned_channel_message(
     NULL,
     NULL,
     HTTP_DELETE,
-    "/channels/%llu/pins/%llu", channel_id, message_id);
+    "/channels/%"PRIu64"/pins/%"PRIu64, channel_id, message_id);
 }
 
 void
@@ -143,7 +143,7 @@ discord_get_channel_messages(
     &resp_handle,
     NULL,
     HTTP_GET, 
-    "/channels/%llu/messages%s%s%s", 
+    "/channels/%"PRIu64"/messages%s%s%s", 
     channel_id, limit_query, around_query, before_query, after_query);
 }
 
@@ -166,7 +166,7 @@ discord_delete_message(
     NULL,
     NULL,
     HTTP_DELETE,
-    "/channels/%llu/messages/%llu", channel_id, message_id);
+    "/channels/%"PRIu64"/messages/%"PRIu64, channel_id, message_id);
 }
 
 // @todo add duplicated ID verification
@@ -212,7 +212,7 @@ void discord_bulk_delete_messages(struct discord *client, u64_snowflake_t channe
     NULL,
     &req_body,
     HTTP_POST,
-    "/channels/%llu/messages/bulk-delete", channel_id);
+    "/channels/%"PRIu64"/messages/bulk-delete", channel_id);
 
   free(json);
 }
@@ -326,7 +326,7 @@ discord_create_message(
       &resp_handle,
       &req_body,
       HTTP_POST, 
-      "/channels/%llu/messages", channel_id);
+      "/channels/%"PRIu64"/messages", channel_id);
   }
   else 
   { // content-type is multipart/form-data
@@ -338,7 +338,7 @@ discord_create_message(
       &client->adapter,
       &resp_handle,
       NULL,
-      HTTP_MIMEPOST, "/channels/%llu/messages", channel_id);
+      HTTP_MIMEPOST, "/channels/%"PRIu64"/messages", channel_id);
 
     //set back to default
     ua_reqheader_add(client->adapter.ua, "Content-Type", "application/json");
@@ -398,7 +398,7 @@ discord_edit_message(
     &resp_handle,
     &req_body,
     HTTP_PATCH,
-    "/channels/%llu/messages/%llu", channel_id, message_id);
+    "/channels/%"PRIu64"/messages/%"PRIu64, channel_id, message_id);
 }
 
 void 
@@ -433,7 +433,7 @@ discord_create_reaction(
     NULL,
     NULL,
     HTTP_PUT,
-    "/channels/%llu/messages/%llu/reactions/%s/@me", 
+    "/channels/%"PRIu64"/messages/%"PRIu64"/reactions/%s/@me", 
     channel_id, message_id, emoji_endpoint);
 
   free(pct_emoji_name);
@@ -459,7 +459,7 @@ discord_delete_all_reactions(
     NULL,
     NULL,
     HTTP_DELETE,
-    "/channels/%llu/messages/%llu/reactions", 
+    "/channels/%"PRIu64"/messages/%"PRIu64"/reactions", 
     channel_id, message_id);
 }
 
@@ -495,7 +495,7 @@ discord_delete_all_reactions_for_emoji(
     NULL,
     NULL,
     HTTP_DELETE,
-    "/channels/%llu/messages/%llu/reactions/%s", 
+    "/channels/%"PRIu64"/messages/%"PRIu64"/reactions/%s", 
     channel_id, message_id, emoji_endpoint);
 
   free(pct_emoji_name);
@@ -514,5 +514,5 @@ discord_trigger_typing_indicator(struct discord* client, u64_snowflake_t channel
     NULL,
     NULL,
     HTTP_POST, 
-    "/channels/%llu/typing", channel_id);
+    "/channels/%"PRIu64"/typing", channel_id);
 }
