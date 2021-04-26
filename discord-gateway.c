@@ -940,8 +940,6 @@ on_close_cb(void *p_gw, enum ws_close_reason wscode, const char *reason, size_t 
       gw->reconnect.enable = false;
       break;
   }
-
-  ws_set_action(gw->ws, WS_ACTION_DISCONNECT);
 }
 
 static void
@@ -1139,7 +1137,8 @@ discord_gateway_shutdown(struct discord_gateway *gw)
 {
   gw->reconnect.enable = false;
   gw->is_resumable = false;
-  ws_set_action(gw->ws, WS_ACTION_DISCONNECT);
+  char reason[] = "Disconnecting gracefully";
+  ws_close(gw->ws, WS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
   while (ws_is_alive(gw->ws)) {
     orka_sleep_ms(500);
   }
@@ -1150,7 +1149,8 @@ discord_gateway_reconnect(struct discord_gateway *gw, bool resume)
 {
   gw->reconnect.enable = true;
   gw->is_resumable = resume;
-  ws_set_action(gw->ws, WS_ACTION_DISCONNECT);
+  char reason[] = "Reconnecting gracefully";
+  ws_close(gw->ws, WS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
   while (WS_CONNECTED != ws_get_status(gw->ws)) {
     orka_sleep_ms(500);
   }
