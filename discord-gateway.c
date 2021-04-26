@@ -850,9 +850,11 @@ on_dispatch(struct discord_gateway *gw)
   cxt->on_event = on_event;
 
   if (gw->blocking_event_handler && gw->blocking_event_handler(cxt)) {
+    free(cxt->data.start);
     free(cxt);
-    return;
+    return; /* EARLY RETURN */
   }
+
   if (pthread_create(&cxt->tid, NULL, &dispatch_run, cxt))
     ERR("Couldn't create thread");
   if (pthread_detach(cxt->tid))
