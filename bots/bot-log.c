@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <inttypes.h>
+#include <limits.h>
 #include <string.h>
 #include <assert.h>
 
@@ -56,6 +57,7 @@ int main(int argc, char *argv[])
   struct discord *client = discord_config_init(config_file);
   assert(NULL != client);
 
+  discord_add_intents(client, 32767);
   discord_set_on_ready(client, &on_ready);
   discord_set_on_guild_member_add(client, &on_guild_member_add);
   discord_set_on_guild_member_update(client, &on_guild_member_update);
