@@ -254,6 +254,11 @@ struct discord_gateway {
     // triggers when a voice server is updated
     voice_server_update_cb *on_voice_server_update;
   } cbs;
+
+  // The function will handle an event in the current thread and return
+  // true, otherwise it return false and the event will be passed to
+  // a newly created thread.
+  bool (*blocking_event_handler)(void *cxt);
   
   // latency between client and websockets server
   /// @note calculated by interval response between HEARTBEAT and HEARTBEAT_ACK
@@ -337,6 +342,16 @@ struct discord {
   // space for user arbitrary data
   /// @see discord_get_data() and discord_set_data()
   void *data;
+};
+
+struct discord_event_cxt {
+  pthread_t tid; // the thread id
+  struct sized_buffer data; // a copy of payload data
+  struct discord_gateway *p_gw; // the gateway client
+  enum discord_gateway_events event;
+  void (*on_event)(
+    struct discord_gateway *gw,
+    struct sized_buffer *data);
 };
 
 #endif // DISCORD_INTERNAL_H

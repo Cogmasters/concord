@@ -299,6 +299,12 @@ discord_set_on_voice_server_update(struct discord *client, voice_server_update_c
 }
 
 void
+discord_set_blocking_event_handler(struct discord *client, bool (*f)(void *cxt))
+{
+  client->gw.blocking_event_handler = f;
+}
+
+void
 discord_replace_presence(struct discord *client, struct discord_gateway_status_update *presence)
 {
   if (NULL == presence) return;

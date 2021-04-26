@@ -12,15 +12,6 @@
 
 #define BASE_GATEWAY_URL "wss://gateway.discord.gg/?v=8&encoding=json"
 
-struct _event_cxt {
-  pthread_t tid; // the thread id
-  struct sized_buffer data; // a copy of payload data
-  struct discord_gateway *p_gw; // the gateway client
-  enum discord_gateway_events event;
-  void (*on_event)(
-    struct discord_gateway *gw, 
-    struct sized_buffer *data);
-};
 
 
 static void
@@ -668,7 +659,7 @@ on_ready(struct discord_gateway *gw, struct sized_buffer *data)
 static void*
 dispatch_run(void *p_cxt)
 {
-  struct _event_cxt *cxt = p_cxt;
+  struct discord_event_cxt *cxt = p_cxt;
   log_info(ANSICOLOR("pthread %u is running to serve %s", ANSI_FG_RED),
            cxt->tid, cxt->p_gw->payload.event_name);
 
@@ -850,7 +841,7 @@ on_dispatch(struct discord_gateway *gw)
 
   // create a new thread to execute callback
   
-  struct _event_cxt *cxt = malloc(sizeof(struct _event_cxt));
+  struct discord_event_cxt *cxt = malloc(sizeof(struct discord_event_cxt));
   asprintf(&cxt->data.start, "%.*s", \
       (int)gw->payload.event_data.size, gw->payload.event_data.start);
   cxt->data.size = gw->payload.event_data.size;
@@ -858,6 +849,10 @@ on_dispatch(struct discord_gateway *gw)
   cxt->event = event;
   cxt->on_event = on_event;
 
+  if (gw->blocking_event_handler && gw->blocking_event_handler(cxt)) {
+    free(cxt);
+    return;
+  }
   if (pthread_create(&cxt->tid, NULL, &dispatch_run, cxt))
     ERR("Couldn't create thread");
   if (pthread_detach(cxt->tid))

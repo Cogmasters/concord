@@ -407,6 +407,7 @@ void discord_set_on_message_reaction_remove_emoji(struct discord *client, messag
 void discord_set_on_ready(struct discord *client, idle_cb *callback);
 void discord_set_on_voice_state_update(struct discord *client, voice_state_update_cb *callback);
 void discord_set_on_voice_server_update(struct discord *client, voice_server_update_cb *callback);
+void discord_set_blocking_event_handler(struct discord *client, bool (*f)(void *cxt));
 
 /**
  * Start a connection to the Discord Gateway
