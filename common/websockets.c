@@ -21,6 +21,7 @@ struct websockets {
   enum ws_status status;
   enum ws_action action;
   bool is_running;
+  int numfds;
 
   CURLM *mhandle;
   CURL *ehandle;
@@ -468,7 +469,10 @@ ws_perform(struct websockets *ws, bool *p_is_running)
 void 
 ws_wait_activity(struct websockets *ws, uint64_t wait_ms) 
 {
-  CURLMcode mcode = curl_multi_wait(ws->mhandle, NULL, 0, wait_ms, NULL);
+  if (!_ws_is_running(ws))
+    return; /* EARLY RETURN */
+
+  CURLMcode mcode = curl_multi_wait(ws->mhandle, NULL, 0, wait_ms, &ws->numfds);
   VASSERT_S(CURLM_OK == mcode, "[%s] Code: %d\n\tDescription: %s", ws->tag, mcode, curl_multi_strerror(mcode));
 }
 
