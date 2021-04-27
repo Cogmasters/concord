@@ -233,6 +233,10 @@ static bool // main-thread
 _ws_close(struct websockets *ws)
 {
   pthread_mutex_lock(&ws->lock);
+  if (!ws->closing.enable) {
+    pthread_mutex_unlock(&ws->lock);
+    return false; /* EARLY RETURN */
+  }
 
   log_http(
     ws->p_config, 
@@ -244,11 +248,6 @@ _ws_close(struct websockets *ws)
   log_debug("[%s] Sending CLOSE(%d): %.*s", ws->tag, ws->closing.wscode, (int)ws->closing.len, ws->closing.reason);
 
   bool ret = cws_close(ws->ehandle, (enum cws_close_reason)ws->closing.wscode, ws->closing.reason, ws->closing.len);
-
-  ws->closing.wscode = 0;
-  ws->closing.enable = false;
-  *ws->closing.reason = '\0';
-  ws->closing.len = 0;
 
   pthread_mutex_unlock(&ws->lock);
   return ret;
@@ -387,32 +386,31 @@ ws_perform(struct websockets *ws, bool *p_is_running, uint64_t wait_ms)
   mcode = curl_multi_perform(ws->mhandle, &is_running);
   VASSERT_S(CURLM_OK == mcode, "[%s] (CURLM code: %d) %s", ws->tag, mcode, curl_multi_strerror(mcode));
 
-  if (!is_running) {
-    _ws_set_status(ws, WS_DISCONNECTED);
-  }
-  else { // wait for activity or timeout
+  if (is_running) { // wait for activity or timeout
     mcode = curl_multi_wait(ws->mhandle, NULL, 0, wait_ms, &ws->numfds);
     VASSERT_S(CURLM_OK == mcode, "[%s] (CURLM code: %d) %s", ws->tag, mcode, curl_multi_strerror(mcode));
-  }
 
-  switch (ws_get_status(ws)) {
-  case WS_CONNECTING:
-      break;
-  case WS_CONNECTED:
-      break;
-  case WS_DISCONNECTING:
-      if (ws->closing.enable) {
-        _ws_close(ws);
-      }
-      curl_multi_remove_handle(ws->mhandle, ws->ehandle);
-      break;
-  case WS_DISCONNECTED: {
-      // read messages/informationals from the individual transfers
-      int msgq = 0;
-      struct CURLMsg *curlmsg = curl_multi_info_read(ws->mhandle, &msgq);
-      if (curlmsg) {
-        CURLcode ecode = curlmsg->data.result;
-        if (CURLMSG_DONE == curlmsg->msg || CURLE_OK != ecode) {
+    if (WS_DISCONNECTING == ws_get_status(ws)) {
+      _ws_close(ws);
+    }
+  }
+  else {
+    // read messages/informationals from the individual transfers
+    int msgq = 0;
+    struct CURLMsg *curlmsg = curl_multi_info_read(ws->mhandle, &msgq);
+    if (curlmsg) {
+      CURLcode ecode = curlmsg->data.result;
+      switch (ecode) {
+      case CURLE_OK:
+          log_debug("[%s] Disconnected gracefully", ws->tag);
+          break;
+      case CURLE_OPERATION_TIMEDOUT:
+          if (ws->closing.enable) { // timeout is forced by cws_close()
+            log_debug("[%s] Disconnected gracefully", ws->tag);
+            break;
+          }
+      /* fall through */
+      default:
           log_error("[%s] (CURLE code: %d) %s", \
               ws->tag,
               ecode, 
@@ -420,22 +418,28 @@ ws_perform(struct websockets *ws, bool *p_is_running, uint64_t wait_ms)
                   ? curl_easy_strerror(ecode) 
                   : ws->errbuf);
           log_error("[%s] Disconnected abruptly", ws->tag);
-        }
-        else {
-          log_debug("[%s] Disconnected gracefully", ws->tag);
-        }
+          break;
       }
-      else {
-        log_debug("[%s] Disconnected gracefully", ws->tag);
-      }
-      
-      // reset for next iteration
-      *ws->errbuf = '\0';
-      if (ws->ehandle) {
-        cws_free(ws->ehandle);
-        ws->ehandle = NULL;
-      }
-      break; }
+    }
+    else {
+      log_warn("[%s] Exit before establishing a connection", ws->tag);
+    }
+    
+    curl_multi_remove_handle(ws->mhandle, ws->ehandle);
+
+    // reset for next iteration
+    *ws->errbuf = '\0';
+    if (ws->ehandle) {
+      cws_free(ws->ehandle);
+      ws->ehandle = NULL;
+    }
+
+    ws->closing.wscode = 0;
+    ws->closing.enable = false;
+    *ws->closing.reason = '\0';
+    ws->closing.len = 0;
+
+    _ws_set_status(ws, WS_DISCONNECTED);
   }
 
   *p_is_running = ws->is_running = is_running;
