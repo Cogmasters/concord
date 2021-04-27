@@ -19,8 +19,15 @@
 
 struct websockets {
   enum ws_status status;
-  enum ws_action action;
   bool is_running;
+
+  struct {
+    bool enable;
+    enum ws_close_reason wscode;
+    char reason[1028];
+    size_t len;
+  } closing;
+
   int numfds;
 
   CURLM *mhandle;
@@ -212,11 +219,7 @@ cws_custom_new(struct websockets *ws, const char ws_protocols[])
 }
 
 static bool
-_ws_close_nolock(
-  struct websockets *ws, 
-  enum ws_close_reason wscode, 
-  const char reason[], 
-  size_t len)
+_ws_close(struct websockets *ws)
 {
   _ws_set_status(ws, WS_DISCONNECTING);
 
@@ -224,11 +227,11 @@ _ws_close_nolock(
     ws->p_config, 
     ws,
     ws->base_url, 
-    (struct sized_buffer){(char*)reason, len},
+    (struct sized_buffer){ws->closing.reason, ws->closing.len},
     "WS_SEND_CLOSE");
 
-  log_debug("[%s] Sending CLOSE(%d): %.*s", ws->tag, wscode, (int)len, reason);
-  return cws_close(ws->ehandle, (enum cws_close_reason)wscode, reason, len);
+  log_debug("[%s] Sending CLOSE(%d): %.*s", ws->tag, ws->closing.wscode, (int)ws->closing.len, ws->closing.reason);
+  return cws_close(ws->ehandle, (enum cws_close_reason)ws->closing.wscode, ws->closing.reason, ws->closing.len);
 }
 
 bool
@@ -239,9 +242,14 @@ ws_close(
   size_t len)
 {
   pthread_mutex_lock(&ws->lock);
-  bool ret = _ws_close_nolock(ws, wscode, reason, len);
+  if (!ws->closing.enable) {
+    ws->closing.wscode = wscode;
+    snprintf(ws->closing.reason, sizeof(ws->closing.reason), "%.*s", (int)len, reason);
+    ws->closing.len = len;
+    ws->closing.enable = true;
+  }
   pthread_mutex_unlock(&ws->lock);
-  return ret;
+  return true;
 }
 
 enum ws_status
@@ -251,18 +259,6 @@ ws_get_status(struct websockets *ws)
   enum ws_status status = ws->status;
   pthread_mutex_unlock(&ws->lock);
   return status;
-}
-
-/// @todo remove this
-enum ws_action
-ws_get_action(struct websockets *ws) {
-  return 0;
-}
-
-/// @todo remove this
-void
-ws_set_action(struct websockets *ws, enum ws_action action) {
-  return;
 }
 
 static void noop_on_connect(void *a, const char *b){return;}
@@ -357,7 +353,7 @@ ws_start(struct websockets *ws)
 }
 
 void
-ws_perform(struct websockets *ws, bool *p_is_running)
+ws_perform(struct websockets *ws, bool *p_is_running, uint64_t wait_ms)
 {
   pthread_mutex_lock(&ws->lock);
   ws->now_tstamp = orka_timestamp_ms(); //update our concept of now
@@ -369,7 +365,25 @@ ws_perform(struct websockets *ws, bool *p_is_running)
 
   *p_is_running = ws->is_running = is_running;
 
-  if (!ws->is_running) {
+  if (ws->is_running) {
+    CURLMcode mcode = curl_multi_wait(ws->mhandle, NULL, 0, wait_ms, &ws->numfds);
+    VASSERT_S(CURLM_OK == mcode, "[%s] (CURLM code: %d) %s", ws->tag, mcode, curl_multi_strerror(mcode));
+
+    if (WS_DISCONNECTING == ws_get_status(ws)) {
+      curl_multi_remove_handle(ws->mhandle, ws->ehandle);
+    }
+
+    pthread_mutex_lock(&ws->lock);
+    if (ws->closing.enable) {
+      _ws_close(ws);
+      ws->wscode = 0;
+      ws->closing.enable = false;
+      *ws->closing.reason = '\0';
+      ws->closing.len = 0;
+    }
+    pthread_mutex_unlock(&ws->lock);
+  }
+  else {
     _ws_set_status(ws, WS_DISCONNECTED);
 
     // read messages/informationals from the individual transfers
@@ -395,23 +409,9 @@ ws_perform(struct websockets *ws, bool *p_is_running)
     }
     
     // reset for next iteration
-    ws->action = 0;
     *ws->errbuf = '\0';
     cws_free(ws->ehandle);
     ws->ehandle = NULL;
-  }
-}
-
-void 
-ws_wait_activity(struct websockets *ws, uint64_t wait_ms) 
-{
-  if (!ws->is_running) return; /* no activity to wait for */
-
-  CURLMcode mcode = curl_multi_wait(ws->mhandle, NULL, 0, wait_ms, &ws->numfds);
-  VASSERT_S(CURLM_OK == mcode, "[%s] (CURLM code: %d) %s", ws->tag, mcode, curl_multi_strerror(mcode));
-
-  if (WS_DISCONNECTING == ws_get_status(ws)) {
-    curl_multi_remove_handle(ws->mhandle, ws->ehandle);
   }
 }
 

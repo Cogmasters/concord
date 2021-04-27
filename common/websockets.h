@@ -22,15 +22,6 @@ enum ws_status {
   WS_CONNECTING,       // client in the process of connecting from ws
 };
 
-/**
- * Action that will trigger a reaction response from the client
- * @see ws_set_action()
- * @see ws_get_action()
- */
-enum ws_action {
-  WS_ACTION_DISCONNECT = 1, // trigger disconnect response
-};
-
 /* @see https://tools.ietf.org/html/rfc6455#section-7.4.1 */
 enum ws_close_reason {
     WS_CLOSE_REASON_NORMAL               = 1000,
@@ -166,20 +157,9 @@ void ws_start(struct websockets *ws);
  *
  * @param ws the WebSockets handle created with ws_init()
  * @param is_running receives #true if the client is running and #false otherwise
- */
-void ws_perform(struct websockets *ws, _Bool *is_running);
-
-/**
- * Block until activity is detected on internal file descriptors, or
- * until wait_ms has passed
- *
- * Helper over curl_multi_wait()
- * @see https://curl.se/libcurl/c/curl_multi_wait.html
- *
- * @param ws the WebSockets handle created with ws_init()
  * @param wait_ms limit amount in milliseconds to wait for until activity
  */
-void ws_wait_activity(struct websockets *ws, uint64_t wait_ms);
+void ws_perform(struct websockets *ws, _Bool *is_running);
 
 /**
  * The WebSockets handle concept of "now", the timestamp is updated
@@ -197,25 +177,6 @@ uint64_t ws_timestamp(struct websockets *ws);
  * @return a ws_status opcode
  */
 enum ws_status ws_get_status(struct websockets *ws);
-
-/**
- * Returns the WebSockets handle triggered action
- *
- * @note This can only be checked before status being changed to WS_DISCONNECTED
- *
- * @param ws the WebSockets handle created with ws_init()
- * @return a enum ws_action opcode
- */
-enum ws_action ws_get_action(struct websockets *ws);
-
-/**
- * Trigger a action to take place for the WebSockets handle
- * Example: #WS_ACTION_DISCONNECTED will force a connection shutdown
- *
- * @param ws the WebSockets handle created with ws_init()
- * @param action the action to trigger a response
- */
-void ws_set_action(struct websockets *ws, enum ws_action action);
 
 /**
  * Returns a enum ws_close_reason opcode in a string format
