@@ -82,8 +82,6 @@ on_close_cb(void *p_rtm, enum ws_close_reason wscode, const char *reason, size_t
           wscode, len, reason);
 
   rtm->is_ready = false; // reset
-
-  ws_set_action(rtm->ws, WS_ACTION_DISCONNECT);
 }
 
 void
@@ -119,13 +117,8 @@ slack_rtm_run(struct slack *client)
 
   bool is_running;
   do {
-    ws_perform(rtm->ws, &is_running);
-
-    // wait for activity or timeout
-    ws_wait_activity(rtm->ws, 1);
-
-    if (rtm->is_ready)
-      continue;
+    ws_perform(rtm->ws, &is_running, 1);
+    if (rtm->is_ready) continue;
     
     // connection established
     
@@ -134,5 +127,5 @@ slack_rtm_run(struct slack *client)
 
 void
 slack_rtm_shutdown(struct slack *client) {
-  ws_set_action(client->sm.ws, WS_ACTION_DISCONNECT);
+  /// @todo
 }

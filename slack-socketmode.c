@@ -125,7 +125,6 @@ on_close_cb(void *p_sm, enum ws_close_reason wscode, const char *reason, size_t 
            wscode, len, reason);
 
   sm->is_ready = false; // reset
-  ws_set_action(sm->ws, WS_ACTION_DISCONNECT);
 }
 
 void
@@ -164,13 +163,8 @@ slack_socketmode_run(struct slack *client)
 
   bool is_running;
   do {
-    ws_perform(sm->ws, &is_running);
-
-    // wait for activity or timeout
-    ws_wait_activity(sm->ws, 1);
-
-    if (!sm->is_ready)
-      continue;
+    ws_perform(sm->ws, &is_running, 1);
+    if (!sm->is_ready) continue;
     
     // connection established
     
@@ -179,5 +173,5 @@ slack_socketmode_run(struct slack *client)
 
 void
 slack_socketmode_shutdown(struct slack *client) {
-  ws_set_action(client->sm.ws, WS_ACTION_DISCONNECT);
+  /// @todo
 }

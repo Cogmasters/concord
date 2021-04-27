@@ -159,7 +159,7 @@ void ws_start(struct websockets *ws);
  * @param is_running receives #true if the client is running and #false otherwise
  * @param wait_ms limit amount in milliseconds to wait for until activity
  */
-void ws_perform(struct websockets *ws, _Bool *is_running);
+void ws_perform(struct websockets *ws, _Bool *is_running, uint64_t wait_ms);
 
 /**
  * The WebSockets handle concept of "now", the timestamp is updated

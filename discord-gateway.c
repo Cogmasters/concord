@@ -1093,15 +1093,9 @@ event_loop(struct discord_gateway *gw)
 
   bool is_running=false;
   while (1) {
-    ws_perform(gw->ws, &is_running);
-
-    // wait for activity or timeout
-    ws_wait_activity(gw->ws, 1);
-
-    if (!is_running) // exit event loop
-      break;
-    if (!gw->is_ready) // wait until on_ready()
-      continue;
+    ws_perform(gw->ws, &is_running, 100);
+    if (!is_running) break; // exit event loop
+    if (!gw->is_ready) continue; // wait until on_ready()
     
     // connection is established
 
