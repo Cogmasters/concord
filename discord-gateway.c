@@ -1123,6 +1123,10 @@ discord_gateway_run(struct discord_gateway *gw)
     ++gw->reconnect.attempt;
     log_info("Reconnect attempt #%d", gw->reconnect.attempt);
   }
+  // reset if set
+  gw->is_resumable = false;
+  gw->reconnect.enable = false;
+  gw->reconnect.attempt = 0;
   log_error("Could not reconnect to Discord Gateway after %d tries", gw->reconnect.threshold);
 }
 
