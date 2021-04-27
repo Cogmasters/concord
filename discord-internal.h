@@ -345,6 +345,7 @@ struct discord {
 };
 
 struct discord_event_cxt {
+  char event_name[64];
   pthread_t tid; // the thread id
   struct sized_buffer data; // a copy of payload data
   struct discord_gateway *p_gw; // the gateway client

@@ -661,7 +661,7 @@ dispatch_run(void *p_cxt)
 {
   struct discord_event_cxt *cxt = p_cxt;
   log_info("thread " ANSICOLOR("%u", ANSI_BG_RED) " is serving %s",
-           cxt->tid, cxt->p_gw->payload.event_name);
+           cxt->tid, cxt->event_name);
 
   (*cxt->on_event)(cxt->p_gw, &cxt->data);
 
@@ -672,7 +672,7 @@ dispatch_run(void *p_cxt)
       &cxt->data);
 
   log_info("thread " ANSICOLOR("%u", ANSI_FG_RED) " exits serving %s",
-           cxt->tid, cxt->p_gw->payload.event_name);
+           cxt->tid, cxt->event_name);
   free(cxt->data.start);
   free(cxt);
 
@@ -848,6 +848,7 @@ on_dispatch(struct discord_gateway *gw)
   cxt->p_gw = gw;
   cxt->event = event;
   cxt->on_event = on_event;
+  strcpy(cxt->event_name, gw->payload.event_name);
 
   if (gw->blocking_event_handler && gw->blocking_event_handler(cxt)) {
     free(cxt->data.start);
