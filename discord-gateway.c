@@ -660,7 +660,7 @@ static void*
 dispatch_run(void *p_cxt)
 {
   struct discord_event_cxt *cxt = p_cxt;
-  log_info(ANSICOLOR("pthread %u is running to serve %s", ANSI_FG_RED),
+  log_info("thread " ANSICOLOR("%u", ANSI_BG_RED) " is serving %s",
            cxt->tid, cxt->p_gw->payload.event_name);
 
   (*cxt->on_event)(cxt->p_gw, &cxt->data);
@@ -671,7 +671,7 @@ dispatch_run(void *p_cxt)
       &cxt->p_gw->sb_bot, 
       &cxt->data);
 
-  log_info(ANSICOLOR("pthread %u exit serving %s", ANSI_BG_RED),
+  log_info("thread " ANSICOLOR("%u", ANSI_FG_RED) " exits serving %s",
            cxt->tid, cxt->p_gw->payload.event_name);
   free(cxt->data.start);
   free(cxt);
