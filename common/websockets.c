@@ -21,13 +21,6 @@ struct websockets {
   enum ws_status status;
   bool is_running;
 
-  struct {
-    bool enable;
-    enum ws_close_reason wscode;
-    char reason[1028];
-    size_t len;
-  } closing;
-
   CURLM *mhandle;
   CURL *ehandle;
   uint64_t now_tstamp; // timestamp updated every loop iteration
@@ -44,6 +37,10 @@ struct websockets {
 
   char *tag;
   struct logconf *p_config;
+
+  bool wthread_action; // worker-thread action
+  pthread_t tid; // save main-thread id
+  pthread_cond_t cond;
   pthread_mutex_t lock;
 };
 
@@ -88,16 +85,18 @@ static CURL* cws_custom_new(struct websockets *ws, const char ws_protocols[]);
 static void
 _ws_set_status_nolock(struct websockets *ws, enum ws_status status)
 {
-  if (status == ws->status) return;
+  if ((WS_DISCONNECTING == ws->status) && (status != WS_DISCONNECTED)) 
+    return; /* EARLY RETURN */
 
   switch (status) {
   case WS_DISCONNECTED:
       VASSERT_S(WS_DISCONNECTING == ws->status, \
           "[%s] (Internal Error) Disconnect abruptly (Current status: %s)", ws->tag, _ws_status_print(ws->status));
       log_debug("[%s] Change status to WS_DISCONNECTED", ws->tag);
+      pthread_cond_broadcast(&ws->cond); // unblock any pending threads
+      ws->wthread_action = false;
       break;
   case WS_CONNECTED:
-      // ws_start() should have been called first
       VASSERT_S(WS_CONNECTING == ws->status, \
           "[%s] Missing ws_start() before the event loop (Current status: %s)", ws->tag, _ws_status_print(ws->status));
       log_debug("[%s] Change status to WS_CONNECTED", ws->tag);
@@ -244,38 +243,6 @@ cws_custom_new(struct websockets *ws, const char ws_protocols[])
   return new_ehandle;
 }
 
-static void // main-thread
-_ws_close(struct websockets *ws)
-{
-  pthread_mutex_lock(&ws->lock);
-  if (!ws->closing.enable) {
-    pthread_mutex_unlock(&ws->lock);
-    return; /* EARLY RETURN */
-  }
-  if (WS_CONNECTED != ws->status ) {
-    log_error("[%s] Failed attempt to send 'ws_close()' before connecting", ws->tag);
-    pthread_mutex_unlock(&ws->lock);
-    return;
-  }
-
-  _ws_set_status_nolock(ws, WS_DISCONNECTING);
-
-  log_http(
-    ws->p_config, 
-    ws,
-    ws->base_url, 
-    (struct sized_buffer){ws->closing.reason, ws->closing.len},
-    "WS_SEND_CLOSE");
-
-  log_debug("[%s] Sending CLOSE(%d): %.*s", ws->tag, ws->closing.wscode, (int)ws->closing.len, ws->closing.reason);
-  if (false == cws_close(ws->ehandle, (enum cws_close_reason)ws->closing.wscode, ws->closing.reason, ws->closing.len)) {
-    log_error("[%s] Couldn't send CLOSE(%d): %.*s", ws->tag, ws->closing.wscode, (int)ws->closing.len, ws->closing.reason);
-  }
-  ws->closing.enable = false;
-
-  pthread_mutex_unlock(&ws->lock);
-}
-
 bool // multi-thread
 ws_close(
   struct websockets *ws, 
@@ -285,17 +252,51 @@ ws_close(
 {
   pthread_mutex_lock(&ws->lock);
 
-  // there's not reason to close if there's a pending close already
-  bool will_close = !ws->closing.enable;
-  if (will_close) {
-    ws->closing.wscode = wscode;
-    snprintf(ws->closing.reason, sizeof(ws->closing.reason), "%.*s", (int)len, reason);
-    ws->closing.len = len;
-    ws->closing.enable = true;
+  log_http(
+    ws->p_config, 
+    ws,
+    ws->base_url, 
+    (struct sized_buffer){(char*)reason, len},
+    "WS_SEND_CLOSE");
+
+  if (WS_DISCONNECTED == ws->status) {
+    log_debug("[%s] Connection already closed", ws->tag);
+    pthread_mutex_unlock(&ws->lock);
+    return false;
+  }
+  if (WS_DISCONNECTING == ws->status) {
+    log_debug("[%s] Close already taking place", ws->tag);
+    pthread_mutex_unlock(&ws->lock);
+    return false;
+  }
+  _ws_set_status_nolock(ws, WS_DISCONNECTING);
+
+  bool ret;
+  if (pthread_self() == ws->tid) {
+    log_debug("[%s] Sending CLOSE(%d): %.*s", ws->tag, wscode, (int)len, reason);
+    ret = cws_close(ws->ehandle, (enum cws_close_reason)wscode, reason, len);
+  }
+  else {
+    ws->wthread_action = true;
+    log_debug("[%s] Calling 'ws_close()' from a different thread, wait until main-thread blocks", ws->tag);
+    pthread_cond_wait(&ws->cond, &ws->lock);
+    if (WS_DISCONNECTED == ws->status) {
+      log_debug("[%s] Connection died before could send 'ws_close()'", ws->tag);
+      pthread_mutex_unlock(&ws->lock);
+      return false;
+    }
+
+    log_debug("[%s] Sending CLOSE(%d): %.*s", ws->tag, wscode, (int)len, reason);
+    ret = cws_close(ws->ehandle, (enum cws_close_reason)wscode, reason, len);
+
+    pthread_cond_signal(&ws->cond); // unblock main-thread
   }
 
+  if (false == ret)
+    log_error("[%s] Couldn't send CLOSE(%d): %.*s", ws->tag, wscode, (int)len, reason);
+
   pthread_mutex_unlock(&ws->lock);
-  return will_close;
+  return ret;
 }
 
 enum ws_status // MT-Safe as long _ws_set_status() is used properly
@@ -333,6 +334,8 @@ ws_init(struct ws_callbacks *cbs, struct logconf *config)
 
   if (pthread_mutex_init(&new_ws->lock, NULL))
     ERR("[%s] Couldn't initialize pthread mutex", new_ws->tag);
+  if (pthread_cond_init(&new_ws->cond, NULL))
+    ERR("[%s] Couldn't initialize pthread cond", new_ws->tag);
 
   return new_ws;
 }
@@ -341,6 +344,7 @@ void // multi-thread
 ws_set_url(struct websockets *ws, const char base_url[], const char ws_protocols[])
 {
   pthread_mutex_lock(&ws->lock);
+
   if (IS_EMPTY_STRING(ws->base_url))
     log_debug("[%s] Websockets new URL: %s", ws->tag, base_url);
   else
@@ -353,6 +357,7 @@ ws_set_url(struct websockets *ws, const char base_url[], const char ws_protocols
     ret = snprintf(ws->protocols, sizeof(ws->protocols), "%s", ws_protocols);
     VASSERT_S(ret < sizeof(ws->protocols), "[%s] Out of bounds write attempt", ws->tag);
   }
+
   pthread_mutex_unlock(&ws->lock);
 }
 
@@ -363,10 +368,11 @@ ws_cleanup(struct websockets *ws)
   if (ws->ehandle)
     cws_free(ws->ehandle);
   pthread_mutex_destroy(&ws->lock);
+  pthread_cond_destroy(&ws->cond);
   free(ws);
 }
 
-bool // multi-thread / unsafe
+bool // multi-thread
 ws_send_text(struct websockets *ws, char text[], size_t len)
 {
   pthread_mutex_lock(&ws->lock);
@@ -379,12 +385,35 @@ ws_send_text(struct websockets *ws, char text[], size_t len)
     "WS_SEND_TEXT");
 
   if (WS_CONNECTED != ws->status) {
-    log_error("[%s] Failed attempt to send 'ws_send_text()' before connecting", ws->tag);
+    log_error("[%s] Failed attempt to send 'ws_send_text()'", ws->tag);
     pthread_mutex_unlock(&ws->lock);
     return false;
   }
 
-  bool ret = cws_send(ws->ehandle, true, text, len);
+  bool ret;
+  if (pthread_self() == ws->tid) {
+    log_debug("[%s] Sending TEXT(%zu bytes)", ws->tag, len);
+    ret = cws_send(ws->ehandle, true, text, len);
+  }
+  else {
+    ws->wthread_action = true;
+    log_debug("[%s] Calling 'ws_send_text()' from a different thread, wait until main-thread blocks", ws->tag);
+    pthread_cond_wait(&ws->cond, &ws->lock);
+    if (WS_DISCONNECTED == ws->status) {
+      log_debug("[%s] Connection died before could send 'ws_send_text()'", ws->tag);
+      pthread_mutex_unlock(&ws->lock);
+      return false;
+    }
+
+    log_debug("[%s] Sending TEXT(%zu bytes)", ws->tag, len);
+    ret = cws_send(ws->ehandle, true, text, len);
+
+    pthread_cond_signal(&ws->cond); // unblock main-thread
+  }
+
+  if (false == ret)
+    log_error("[%s] Couldn't send TEXT(%zu bytes)", ws->tag, len);
+
   pthread_mutex_unlock(&ws->lock);
   return ret;
 }
@@ -392,8 +421,9 @@ ws_send_text(struct websockets *ws, char text[], size_t len)
 void // main-thread
 ws_start(struct websockets *ws) 
 {
+  ws->tid = pthread_self(); // save main-thread id
   ws->tag = logconf_tag(ws->p_config, ws);
-  VASSERT_S(false == ws_is_alive(ws), "[%s] Shutdown current WebSockets connection before calling ws_start()", ws->tag);
+  VASSERT_S(false == ws_is_alive(ws), "[%s] Shutdown current WebSockets connection before calling ws_start() (Current status: %s)", ws->tag, _ws_status_print(ws->status));
   VASSERT_S(NULL == ws->ehandle, "[%s] (Internal error) Attempt to reconnect without properly closing the connection", ws->tag);
   ws->ehandle = cws_custom_new(ws, ws->protocols);
   curl_multi_add_handle(ws->mhandle, ws->ehandle);
@@ -419,8 +449,15 @@ ws_perform(struct websockets *ws, bool *p_is_running, uint64_t wait_ms)
     mcode = curl_multi_wait(ws->mhandle, NULL, 0, wait_ms, NULL);
     VASSERT_S(CURLM_OK == mcode, "[%s] (CURLM code: %d) %s", ws->tag, mcode, curl_multi_strerror(mcode));
 
-    // execute any user pending close event
-    _ws_close(ws);
+    // execute any user pending events
+    pthread_mutex_lock(&ws->lock);
+    if (ws->wthread_action) {
+      log_debug("[%s] Main-thread blocking to receive event", ws->tag);
+      pthread_cond_signal(&ws->cond);
+      pthread_cond_wait(&ws->cond, &ws->lock); // let ws_close() do its thing
+      ws->wthread_action = false;
+    }
+    pthread_mutex_unlock(&ws->lock);
   }
   else {
     _ws_set_status(ws, WS_DISCONNECTING);
@@ -457,11 +494,6 @@ ws_perform(struct websockets *ws, bool *p_is_running, uint64_t wait_ms)
       cws_free(ws->ehandle);
       ws->ehandle = NULL;
     }
-
-    ws->closing.wscode = 0;
-    ws->closing.enable = false;
-    *ws->closing.reason = '\0';
-    ws->closing.len = 0;
 
     _ws_set_status(ws, WS_DISCONNECTED);
   }
