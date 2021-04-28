@@ -660,7 +660,7 @@ static void*
 dispatch_run(void *p_cxt)
 {
   struct discord_event_cxt *cxt = p_cxt;
-  log_info("thread " ANSICOLOR("starts", ANSI_BG_RED) " to serve %s",
+  log_info("thread " ANSICOLOR("starts", ANSI_FG_RED) " to serve %s",
            cxt->event_name);
 
   (*cxt->on_event)(cxt->p_gw, &cxt->data);
