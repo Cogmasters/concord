@@ -930,11 +930,11 @@ on_close_cb(void *p_gw, enum ws_close_reason wscode, const char *reason, size_t 
   case DISCORD_GATEWAY_CLOSE_REASON_INVALID_INTENTS:
   case DISCORD_GATEWAY_CLOSE_REASON_INVALID_SHARD:
   case DISCORD_GATEWAY_CLOSE_REASON_DISALLOWED_INTENTS:
+  default: //websocket/clouflare opcodes
       gw->reconnect.enable = true;
       gw->is_resumable = false;
       break;
   case DISCORD_GATEWAY_CLOSE_REASON_SESSION_TIMED_OUT:
-  default: //websocket/clouflare opcodes
       gw->reconnect.enable = false;
       gw->is_resumable = false;
       break;
