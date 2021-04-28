@@ -248,14 +248,14 @@ static void // main-thread
 _ws_close(struct websockets *ws)
 {
   pthread_mutex_lock(&ws->lock);
+  if (!ws->closing.enable) {
+    pthread_mutex_unlock(&ws->lock);
+    return; /* EARLY RETURN */
+  }
   if (WS_CONNECTED != ws->status ) {
     log_error("[%s] Failed attempt to send 'ws_close()' before connecting", ws->tag);
     pthread_mutex_unlock(&ws->lock);
     return;
-  }
-  if (!ws->closing.enable) {
-    pthread_mutex_unlock(&ws->lock);
-    return; /* EARLY RETURN */
   }
 
   _ws_set_status_nolock(ws, WS_DISCONNECTING);
