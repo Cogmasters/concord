@@ -47,4 +47,5 @@ int log_add_fp(FILE *fp, int level);
 
 void log_log(int level, const char *file, int line, const char *fmt, ...);
 
+extern pthread_t main_tid;
 #endif
