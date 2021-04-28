@@ -12,6 +12,9 @@
 #include "orka-utils.h"
 #include "json-actor.h"
 
+
+static bool use_color;
+
 static int
 get_log_level(char level[])
 {
@@ -51,6 +54,43 @@ logconf_tag(struct logconf *config, void *addr)
   return "NO_TAG";
 }
 
+static void
+log_nocolor_cb(log_Event *ev)
+{
+  char buf[16];
+  buf[strftime(buf, sizeof(buf), "%H:%M:%S", ev->time)] = '\0';
+
+  fprintf(
+    ev->udata, "%s|%010u %-5s %s:%d: ",
+    buf, (unsigned)pthread_self(), level_strings[ev->level], ev->file, ev->line);
+
+  vfprintf(ev->udata, ev->fmt, ev->ap);
+  fprintf(ev->udata, "\n");
+  fflush(ev->udata);
+}
+
+static void 
+log_color_cb(log_Event *ev)
+{
+  char buf[16];
+  buf[strftime(buf, sizeof(buf), "%H:%M:%S", ev->time)] = '\0';
+
+  int tid_color;
+  if (main_tid == pthread_self())
+    tid_color = 31;
+  else
+    tid_color = 90;
+
+  fprintf(
+    ev->udata, "%s|\x1b[%dm%010u\x1b[0m %s%-5s\x1b[0m \x1b[90m%s:%d:\x1b[0m ",
+    buf, tid_color, (unsigned)pthread_self(), level_colors[ev->level], level_strings[ev->level],
+    ev->file, ev->line);
+
+  vfprintf(ev->udata, ev->fmt, ev->ap);
+  fprintf(ev->udata, "\n");
+  fflush(ev->udata);
+}
+
 void
 logconf_setup(struct logconf *config, const char config_file[])
 {
@@ -85,15 +125,18 @@ logconf_setup(struct logconf *config, const char config_file[])
              "(logging.level):s"
              "(logging.filename):s"
              "(logging.quiet):b"
+             "(logging.use_color):b"
              "(logging.overwrite):b"
              "(logging.http_dump.enable):b"
              "(logging.http_dump.filename):s",
              logging->level,
              logging->filename,
              &logging->quiet,
+             &use_color,
              &logging->overwrite,
              &logging->http.enable,
              logging->http.filename);
+
 
   /* SET LOGGER CONFIGS */
   if (!IS_EMPTY_STRING(logging->filename)) {
@@ -101,15 +144,23 @@ logconf_setup(struct logconf *config, const char config_file[])
       config->logger.f = fopen(logging->filename, "w+");
     else
       config->logger.f = fopen(logging->filename, "a+");
-    log_add_fp(config->logger.f, get_log_level(logging->level));
+    log_add_callback(
+        use_color ? &log_color_cb : &log_nocolor_cb, 
+        config->logger.f, 
+        get_log_level(logging->level));
     ASSERT_S(NULL != config->logger.f, "Could not create logger file");
   }
 
-  if (true == logging->quiet) { // make sure fatal still prints to stderr
-    log_add_fp(stderr, LOG_FATAL);
-  }
-  log_set_level(get_log_level(logging->level));
-  log_set_quiet(logging->quiet);
+  if (true == logging->quiet) // make sure fatal still prints to stderr
+    log_add_callback(
+        use_color ? &log_color_cb : &log_nocolor_cb, 
+        stderr, 
+        LOG_FATAL);
+  else
+    log_add_callback(
+        use_color ? &log_color_cb : &log_nocolor_cb, 
+        stderr, 
+        get_log_level(logging->level));
 
   /* SET HTTP DUMP CONFIGS */
   if (true == logging->http.enable) {
@@ -122,8 +173,10 @@ logconf_setup(struct logconf *config, const char config_file[])
     }
   }
 
-  if (first_run)
+  if (first_run) {
+    log_set_quiet(true); // disable default log.c callbacks
     first_run = false;
+  }
 
   free(logging);
 }
