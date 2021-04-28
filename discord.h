@@ -407,7 +407,16 @@ void discord_set_on_message_reaction_remove_emoji(struct discord *client, messag
 void discord_set_on_ready(struct discord *client, idle_cb *callback);
 void discord_set_on_voice_state_update(struct discord *client, voice_state_update_cb *callback);
 void discord_set_on_voice_server_update(struct discord *client, voice_server_update_cb *callback);
-void discord_set_blocking_event_handler(struct discord *client, bool (*f)(void *cxt));
+
+enum discord_event_handling_mode {
+  EVENT_IS_HANDLED,  // this event has been handled
+  EVENT_WILL_BE_HANDLED_IN_MAIN_THREAD, // handle this event in main thread
+  EVENT_WILL_BE_HANDLED_IN_CHILD_THREAD // handle this event in a child thread
+};
+
+
+void discord_set_blocking_event_handler(struct discord *client,
+  enum discord_event_handling_mode (*f)(void *cxt));
 
 /**
  * Start a connection to the Discord Gateway

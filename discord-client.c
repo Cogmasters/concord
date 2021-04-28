@@ -299,7 +299,7 @@ discord_set_on_voice_server_update(struct discord *client, voice_server_update_c
 }
 
 void
-discord_set_blocking_event_handler(struct discord *client, bool (*f)(void *cxt))
+discord_set_blocking_event_handler(struct discord *client, enum discord_event_handling_mode (*f)(void *cxt))
 {
   client->gw.blocking_event_handler = f;
 }

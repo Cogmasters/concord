@@ -258,7 +258,7 @@ struct discord_gateway {
   // The function will handle an event in the current thread and return
   // true, otherwise it return false and the event will be passed to
   // a newly created thread.
-  bool (*blocking_event_handler)(void *cxt);
+  enum discord_event_handling_mode (*blocking_event_handler)(void *cxt);
   
   // latency between client and websockets server
   /// @note calculated by interval response between HEARTBEAT and HEARTBEAT_ACK
@@ -353,6 +353,7 @@ struct discord_event_cxt {
   void (*on_event)(
     struct discord_gateway *gw,
     struct sized_buffer *data);
+  bool is_main_thread;
 };
 
 #endif // DISCORD_INTERNAL_H

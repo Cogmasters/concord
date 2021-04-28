@@ -660,8 +660,10 @@ static void*
 dispatch_run(void *p_cxt)
 {
   struct discord_event_cxt *cxt = p_cxt;
-  log_info("thread " ANSICOLOR("starts", ANSI_FG_RED) " to serve %s",
-           cxt->event_name);
+  bool is_main_thread = cxt->is_main_thread;
+  if (!is_main_thread)
+    log_info("thread " ANSICOLOR("starts", ANSI_FG_RED) " to serve %s",
+             cxt->event_name);
 
   (*cxt->on_event)(cxt->p_gw, &cxt->data);
 
@@ -671,12 +673,15 @@ dispatch_run(void *p_cxt)
       &cxt->p_gw->sb_bot, 
       &cxt->data);
 
-  log_info("thread " ANSICOLOR("exits", ANSI_FG_RED) " from serving %s",
-           cxt->event_name);
+  if (!is_main_thread)
+    log_info("thread " ANSICOLOR("exits", ANSI_FG_RED) " from serving %s",
+             cxt->event_name);
   free(cxt->data.start);
   free(cxt);
 
-  pthread_exit(NULL);
+  if (!is_main_thread)
+    pthread_exit(NULL);
+  return NULL;
 }
 
 static void
@@ -850,12 +855,24 @@ on_dispatch(struct discord_gateway *gw)
   cxt->on_event = on_event;
   strcpy(cxt->event_name, gw->payload.event_name);
 
-  if (gw->blocking_event_handler && gw->blocking_event_handler(cxt)) {
-    free(cxt->data.start);
-    free(cxt);
-    return; /* EARLY RETURN */
+  if (gw->blocking_event_handler) {
+    switch (gw->blocking_event_handler(cxt)) {
+      case EVENT_IS_HANDLED:
+        free(cxt->data.start);
+        free(cxt);
+        return;
+      case EVENT_WILL_BE_HANDLED_IN_MAIN_THREAD:
+        cxt->is_main_thread = true;
+        cxt->tid = pthread_self();
+        dispatch_run(cxt);
+        return;
+      default:
+        goto create_a_new_thread;
+    }
   }
 
+create_a_new_thread:
+  cxt->is_main_thread = false;
   if (pthread_create(&cxt->tid, NULL, &dispatch_run, cxt))
     ERR("Couldn't create thread");
   if (pthread_detach(cxt->tid))
