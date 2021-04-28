@@ -55,13 +55,13 @@ static void stdout_callback(log_Event *ev) {
   buf[strftime(buf, sizeof(buf), "%H:%M:%S", ev->time)] = '\0';
 #ifdef LOG_USE_COLOR
   fprintf(
-    ev->udata, "%s %s%-5s\x1b[0m \x1b[90m%s:%d:\x1b[0m ",
-    buf, level_colors[ev->level], level_strings[ev->level],
+    ev->udata, "%s|\x1b[90m%010u\x1b[0m %s%-5s\x1b[0m \x1b[90m%s:%d:\x1b[0m ",
+    buf, (unsigned)pthread_self(), level_colors[ev->level], level_strings[ev->level],
     ev->file, ev->line);
 #else
   fprintf(
-    ev->udata, "%s %-5s %s:%d: ",
-    buf, level_strings[ev->level], ev->file, ev->line);
+    ev->udata, "%s.%010u %-5s %s:%d: ",
+    buf, (unsigned)pthread_self(), level_strings[ev->level], ev->file, ev->line);
 #endif
   vfprintf(ev->udata, ev->fmt, ev->ap);
   fprintf(ev->udata, "\n");
