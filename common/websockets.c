@@ -54,6 +54,8 @@ static CURL* cws_custom_new(struct websockets *ws, const char ws_protocols[]);
 static void
 _ws_set_status_nolock(struct websockets *ws, enum ws_status status)
 {
+  if (status == ws->status) return;
+
   switch (status) {
   case WS_DISCONNECTED:
       VASSERT_S(WS_DISCONNECTING == ws->status, "[%s] (Internal Error) Disconnect abruptly", ws->tag);
@@ -380,36 +382,35 @@ ws_perform(struct websockets *ws, bool *p_is_running, uint64_t wait_ms)
   CURLMcode mcode;
 
   pthread_mutex_lock(&ws->lock);
-  ws->now_tstamp = orka_timestamp_ms(); //update our concept of now
+  ws->now_tstamp = orka_timestamp_ms(); // update our concept of now
   pthread_mutex_unlock(&ws->lock);
 
+  // read/write pending activity if any
   mcode = curl_multi_perform(ws->mhandle, &is_running);
   VASSERT_S(CURLM_OK == mcode, "[%s] (CURLM code: %d) %s", ws->tag, mcode, curl_multi_strerror(mcode));
 
-  if (is_running) { // wait for activity or timeout
+  if (is_running) {
+    // wait for some activity or timeout after wait_ms
     mcode = curl_multi_wait(ws->mhandle, NULL, 0, wait_ms, &ws->numfds);
     VASSERT_S(CURLM_OK == mcode, "[%s] (CURLM code: %d) %s", ws->tag, mcode, curl_multi_strerror(mcode));
 
+    // execute any user started pending close event
     if (WS_DISCONNECTING == ws_get_status(ws)) {
       _ws_close(ws);
     }
   }
   else {
+    _ws_set_status(ws, WS_DISCONNECTING);
     // read messages/informationals from the individual transfers
     int msgq = 0;
     struct CURLMsg *curlmsg = curl_multi_info_read(ws->mhandle, &msgq);
     if (curlmsg) {
       CURLcode ecode = curlmsg->data.result;
       switch (ecode) {
+      case CURLE_OPERATION_TIMEDOUT: // timeout is forced by curl-websocket
       case CURLE_OK:
           log_debug("[%s] Disconnected gracefully", ws->tag);
           break;
-      case CURLE_OPERATION_TIMEDOUT:
-          if (ws->closing.enable) { // timeout is forced by cws_close()
-            log_debug("[%s] Disconnected gracefully", ws->tag);
-            break;
-          }
-      /* fall through */
       default:
           log_error("[%s] (CURLE code: %d) %s", \
               ws->tag,
