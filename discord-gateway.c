@@ -99,7 +99,7 @@ send_resume(struct discord_gateway *gw)
               &gw->payload.seq_number);
   ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
 
-  log_info("sending RESUME(%d bytes)", ret);
+  log_info("Sending RESUME(%d bytes)", ret);
   ws_send_text(gw->ws, payload, ret);
 
   gw->is_resumable = false; // reset
@@ -126,7 +126,7 @@ send_identify(struct discord_gateway *gw)
   ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
 
   // contain token (sensitive data), enable _ORKA_DEBUG_STRICT to print it
-  log_info("sending IDENTIFY(%d bytes)", ret);
+  log_info("Sending IDENTIFY(%d bytes)", ret);
   ws_send_text(gw->ws, payload, ret);
 
   //get timestamp for this identify
@@ -661,8 +661,10 @@ dispatch_run(void *p_cxt)
 {
   struct discord_event_cxt *cxt = p_cxt;
   bool is_main_thread = cxt->is_main_thread;
+  cxt->tid = pthread_self();
+
   if (!is_main_thread)
-    log_info("thread " ANSICOLOR("starts", ANSI_FG_RED) " to serve %s",
+    log_info("Thread " ANSICOLOR("starts", ANSI_FG_RED) " to serve %s",
              cxt->event_name);
 
   (*cxt->on_event)(cxt->p_gw, &cxt->data);
@@ -673,14 +675,14 @@ dispatch_run(void *p_cxt)
       &cxt->p_gw->sb_bot, 
       &cxt->data);
 
-  if (!is_main_thread)
-    log_info("thread " ANSICOLOR("exits", ANSI_FG_RED) " from serving %s",
+  if (!is_main_thread) {
+    log_info("Thread " ANSICOLOR("exits", ANSI_FG_RED) " from serving %s",
              cxt->event_name);
-  free(cxt->data.start);
-  free(cxt);
 
-  if (!is_main_thread)
+    free(cxt->data.start);
+    free(cxt);
     pthread_exit(NULL);
+  }
   return NULL;
 }
 
@@ -846,25 +848,22 @@ on_dispatch(struct discord_gateway *gw)
 
   // create a new thread to execute callback
   
-  struct discord_event_cxt *cxt = malloc(sizeof(struct discord_event_cxt));
-  asprintf(&cxt->data.start, "%.*s", \
+  struct discord_event_cxt cxt, *cxt_p;
+  asprintf(&cxt.data.start, "%.*s", \
       (int)gw->payload.event_data.size, gw->payload.event_data.start);
-  cxt->data.size = gw->payload.event_data.size;
-  cxt->p_gw = gw;
-  cxt->event = event;
-  cxt->on_event = on_event;
-  strcpy(cxt->event_name, gw->payload.event_name);
+  cxt.data.size = gw->payload.event_data.size;
+  cxt.p_gw = gw;
+  cxt.event = event;
+  cxt.on_event = on_event;
+  strcpy(cxt.event_name, gw->payload.event_name);
 
   if (gw->blocking_event_handler) {
-    switch (gw->blocking_event_handler(cxt)) {
+    switch (gw->blocking_event_handler(&cxt)) {
       case EVENT_IS_HANDLED:
-        free(cxt->data.start);
-        free(cxt);
         return;
       case EVENT_WILL_BE_HANDLED_IN_MAIN_THREAD:
-        cxt->is_main_thread = true;
-        cxt->tid = pthread_self();
-        dispatch_run(cxt);
+        cxt.is_main_thread = true;
+        dispatch_run(&cxt);
         return;
       default:
         goto create_a_new_thread;
@@ -872,10 +871,14 @@ on_dispatch(struct discord_gateway *gw)
   }
 
 create_a_new_thread:
-  cxt->is_main_thread = false;
-  if (pthread_create(&cxt->tid, NULL, &dispatch_run, cxt))
+  cxt_p = malloc(sizeof(struct discord_event_cxt));
+  cxt.is_main_thread = false;
+  memcpy(cxt_p, &cxt, sizeof(cxt));
+  pthread_t tid;
+  if (pthread_create(&tid, NULL, &dispatch_run, cxt_p))
     ERR("Couldn't create thread");
-  if (pthread_detach(cxt->tid))
+
+  if (pthread_detach(tid))
     ERR("Couldn't detach thread");
 }
 
@@ -1014,7 +1017,7 @@ send_heartbeat(struct discord_gateway *gw)
               "(op):1, (d):d", &gw->payload.seq_number);
   ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
 
-  log_trace("sending HEARTBEAT(%d bytes)", ret);
+  log_trace("Sending HEARTBEAT(%d bytes)", ret);
   ws_send_text(gw->ws, payload, ret);
 }
 
