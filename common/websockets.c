@@ -98,6 +98,12 @@ struct websockets {
    * Some functions can only run in the same thread
    */
   pthread_t tid;
+
+  /*
+   * the user of ws can send two commands:
+   * exit, reconnect
+   */
+  enum ws_user_cmd user_cmd;
 };
 
 
@@ -299,7 +305,7 @@ cws_custom_new(struct websockets *ws, const char ws_protocols[])
   return new_ehandle;
 }
 
-bool
+static bool
 ws_close(
   struct websockets *ws, 
   enum ws_close_reason wscode, 
@@ -307,11 +313,6 @@ ws_close(
   size_t len)
 {
   log_info("ws_close is called");
-  if (ws->tid != pthread_self()) {
-    log_fatal("ws_close is called in a different thread");
-    ABORT();
-  }
-
   log_http(
     ws->p_config, 
     ws,
@@ -403,7 +404,6 @@ ws_cleanup(struct websockets *ws)
   if (ws->ehandle)
     cws_free(ws->ehandle);
   pthread_mutex_destroy(&ws->lock);
-  //pthread_cond_destroy(&ws->cond);
   free(ws);
 }
 
@@ -411,8 +411,7 @@ bool
 ws_send_text(struct websockets *ws, char text[], size_t len)
 {
   if (ws->tid != pthread_self()) {
-    log_fatal("ws_send_text can only be called from the start thread %u",
-              ws->tid);
+    log_fatal("ws_send_text can only be called from thread %u", ws->tid);
     ABORT();
   }
 
@@ -443,6 +442,7 @@ ws_start(struct websockets *ws)
   log_info("ws_start");
   ws->tid = pthread_self(); // save the starting thread
   ws->tag = logconf_tag(ws->p_config, ws);
+  ws->user_cmd = WS_USER_CMD_NONE;
   VASSERT_S(false == ws_is_alive(ws), "[%s] Shutdown current WebSockets connection before calling ws_start() (Current status: %s)", ws->tag, _ws_status_print(ws->status));
   VASSERT_S(NULL == ws->ehandle, "[%s] (Internal error) Attempt to reconnect without properly closing the connection", ws->tag);
   ws->ehandle = cws_custom_new(ws, ws->protocols);
@@ -460,6 +460,14 @@ ws_perform(struct websockets *ws, bool *p_is_running, uint64_t wait_ms)
   int is_running;
   CURLMcode mcode;
 
+  pthread_mutex_lock(&ws->lock);
+  if (ws->user_cmd == WS_USER_CMD_EXIT) {
+    static char reason[] = "Disconnecting gracefully";
+    ws_close(ws, WS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
+    ws->user_cmd = WS_USER_CMD_NONE;
+  }
+  pthread_mutex_unlock(&ws->lock);
+
   /**
    * Update WebSockets concept of "now"
    * @see ws_timestamp()
@@ -468,7 +476,6 @@ ws_perform(struct websockets *ws, bool *p_is_running, uint64_t wait_ms)
   ws->now_tstamp = orka_timestamp_ms();
   pthread_mutex_unlock(&ws->lock);
 
-  //log_trace("ws_perform");
   /**
    * Perform Read/Write pending sockets activity (if any)
    * @note ws_close() and ws_send_text() are example of pending
@@ -542,4 +549,15 @@ ws_timestamp(struct websockets *ws)
 bool
 ws_is_alive(struct websockets *ws) {
   return WS_DISCONNECTED != ws_get_status(ws);
+}
+
+/*
+ * can be called from any thread
+ */
+void ws_force_exit(struct websockets *ws)
+{
+  pthread_mutex_lock(&ws->lock);
+  log_warn("ws_force_exit is called");
+  ws->user_cmd = WS_USER_CMD_EXIT;
+  pthread_mutex_unlock(&ws->lock);
 }

@@ -22,6 +22,11 @@ enum ws_status {
   WS_CONNECTING,       // client in the process of connecting from ws
 };
 
+enum ws_user_cmd {
+  WS_USER_CMD_NONE,
+  WS_USER_CMD_EXIT,
+};
+
 /* @see https://tools.ietf.org/html/rfc6455#section-7.4.1 */
 enum ws_close_reason {
     WS_CLOSE_REASON_NORMAL               = 1000,
@@ -109,6 +114,7 @@ void ws_cleanup(struct websockets *ws);
  */
 void ws_set_url(struct websockets *ws, const char base_url[], const char ws_protocols[]);
 
+#if 0
 /**
  * Send a CLOSE (opcode 0x8) frame with @a reason as payload.
  *
@@ -125,6 +131,7 @@ bool ws_close(
   enum ws_close_reason wscode, 
   const char reason[],
   size_t len);
+#endif
 
 /**
  * Send a text message of given size.
@@ -193,6 +200,9 @@ char* ws_close_opcode_print(enum ws_close_reason opcode);
  *        WS_DISCONNECTED, #FALSE otherwise.
  */
 bool ws_is_alive(struct websockets *ws);
+
+
+void ws_force_exit(struct websockets *ws);
 
 #ifdef __cplusplus
 }

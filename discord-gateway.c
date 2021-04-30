@@ -887,26 +887,22 @@ on_invalid_session(struct discord_gateway *gw)
 {
   gw->reconnect.enable = true;
   if (true == (gw->is_resumable = strcmp(gw->payload.event_data.start, "false"))) {
-    static char reason[] = "Attempting to resume session";
-    log_warn("%.*s", sizeof(reason), reason);
-    ws_close(gw->ws, WS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
+    log_warn("on_invalid_session: attempting to resume session");
+    ws_force_exit(gw->ws);
   }
   else {
-    static char reason[] = "Attempting to restart session";
-    log_warn("%.*s", sizeof(reason), reason);
-    ws_close(gw->ws, WS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
+    log_warn("on_invalid_session: attempting to restart session");
+    ws_force_exit(gw->ws);
   }
 }
 
 static void
 on_reconnect(struct discord_gateway *gw)
 {
+  log_warn("on_reconnect: attempting to resume session");
   gw->is_resumable = true;
   gw->reconnect.enable = true;
-
-  static const char reason[] = "Attempting to session resume";
-  log_warn("%.*s", sizeof(reason), reason);
-  ws_close(gw->ws, WS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
+  ws_force_exit(gw->ws);
 }
 
 static void
@@ -1155,13 +1151,7 @@ discord_gateway_shutdown(struct discord_gateway *gw)
 {
   gw->reconnect.enable = false;
   gw->is_resumable = false;
-  static char reason[] = "Disconnecting gracefully";
-  ws_close(gw->ws, WS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
-  /*
-  while (ws_is_alive(gw->ws)) {
-    orka_sleep_ms(500);
-  }
-   */
+  ws_force_exit(gw->ws);
 }
 
 void
@@ -1169,11 +1159,5 @@ discord_gateway_reconnect(struct discord_gateway *gw, bool resume)
 {
   gw->reconnect.enable = true;
   gw->is_resumable = resume;
-  static char reason[] = "Reconnecting gracefully";
-  ws_close(gw->ws, WS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
-  /*
-  while (WS_CONNECTED != ws_get_status(gw->ws)) {
-    orka_sleep_ms(500);
-  }
-   */
+  ws_force_exit(gw->ws);
 }
