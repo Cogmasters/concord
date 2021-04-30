@@ -12,7 +12,7 @@ extern "C" {
 
 struct logconf_ids {
   void *addr;
-  char tag[16];
+  char tag[32];
 };
 
 struct logconf {

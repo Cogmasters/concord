@@ -335,7 +335,7 @@ struct discord {
   struct logconf config;
 
 #ifdef DISCORD_VOICE_CONNECTIONS_H
-#define NUM_VCS 1024
+#define NUM_VCS 512
   struct discord_voice vcs[NUM_VCS];
 #endif // DISCORD_VOICE_CONNECTIONS_H
   
