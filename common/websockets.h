@@ -123,7 +123,7 @@ void ws_set_url(struct websockets *ws, const char base_url[], const char ws_prot
 bool ws_close(
   struct websockets *ws,
   enum ws_close_reason wscode, 
-  char *reason,
+  const char reason[],
   size_t len);
 
 /**

@@ -208,7 +208,6 @@ cws_on_close_cb(void *p_ws, CURL *ehandle, enum cws_close_reason cwscode, const 
   log_debug("[%s] Receive CLOSE(%d): %.*s", ws->tag, cwscode, (int)len, reason);
   (*ws->cbs.on_close)(ws->cbs.data, cwscode, reason, len);
   // will set status to WS_DISCONNECTED when is_running == false
-  _ws_set_status(ws, WS_DISCONNECTED);
 }
 
 static void // main-thread
@@ -302,15 +301,14 @@ bool
 ws_close(
   struct websockets *ws, 
   enum ws_close_reason wscode, 
-  char *reason,
+  const char reason[],
   size_t len)
 {
+  log_info("ws_close is called");
   if (ws->tid != pthread_self()) {
     log_fatal("ws_close is called in a different thread");
     ABORT();
   }
-
-  pthread_mutex_lock(&ws->lock);
 
   log_http(
     ws->p_config, 
@@ -320,25 +318,23 @@ ws_close(
     "WS_SEND_CLOSE");
 
   if (WS_DISCONNECTED == ws->status) {
-    log_debug("[%s] Connection already closed", ws->tag);
-    pthread_mutex_unlock(&ws->lock);
+    log_warn("[%s] Connection already closed", ws->tag);
     return false;
   }
   if (WS_DISCONNECTING == ws->status) {
-    log_debug("[%s] Close already taking place", ws->tag);
-    pthread_mutex_unlock(&ws->lock);
+    log_warn("[%s] Close already taking place", ws->tag);
     return false;
   }
   _ws_set_status_nolock(ws, WS_DISCONNECTING);
 
-  bool ret;
   log_debug("[%s] Sending CLOSE(%d): %.*s", ws->tag, wscode, (int)len, reason);
-  ret = cws_close(ws->ehandle, (enum cws_close_reason)wscode, reason, len);
+  bool ret = cws_close(ws->ehandle, (enum cws_close_reason)wscode, reason, len);
 
   if (false == ret)
     log_error("[%s] Couldn't send CLOSE(%d): %.*s", ws->tag, wscode, (int)len, reason);
 
-  pthread_mutex_unlock(&ws->lock);
+  log_info("ws_close returns %d", ret);
+  return ret;
 }
 
 enum ws_status // thread-safe
@@ -411,11 +407,12 @@ ws_cleanup(struct websockets *ws)
   free(ws);
 }
 
-bool // thread-safe
+bool
 ws_send_text(struct websockets *ws, char text[], size_t len)
 {
   if (ws->tid != pthread_self()) {
-    log_fatal("ws_perform is called in a different thread");
+    log_fatal("ws_send_text can only be called from the start thread %u",
+              ws->tid);
     ABORT();
   }
 
@@ -434,26 +431,8 @@ ws_send_text(struct websockets *ws, char text[], size_t len)
     return false;
   }
 
-  bool ret;
-  if (pthread_self() == ws->tid) { // being called from main-thread
-    log_debug("[%s] Sending TEXT(%zu bytes)", ws->tag, len);
-    ret = cws_send(ws->ehandle, true, text, len);
-  }
-  else { // being called from separate-thread
-    //ws->wthread_action = true;
-    log_debug("[%s] Calling 'ws_send_text()' from a different thread, wait until main-thread blocks", ws->tag);
-    //pthread_cond_wait(&ws->cond, &ws->lock);
-    if (WS_DISCONNECTED == ws->status) {
-      log_debug("[%s] Connection died before could send 'ws_send_text()'", ws->tag);
-      pthread_mutex_unlock(&ws->lock);
-      return false;
-    }
-
-    log_debug("[%s] Sending TEXT(%zu bytes)", ws->tag, len);
-    ret = cws_send(ws->ehandle, true, text, len);
-
-    //pthread_cond_signal(&ws->cond); // unblock main-thread
-  }
+  log_trace("[%s] Sending TEXT(%zu bytes)", ws->tag, len);
+  bool ret = cws_send(ws->ehandle, true, text, len);
 
   if (false == ret)
     log_error("[%s] Couldn't send TEXT(%zu bytes)", ws->tag, len);
@@ -465,6 +444,7 @@ ws_send_text(struct websockets *ws, char text[], size_t len)
 void // main-thread
 ws_start(struct websockets *ws) 
 {
+  log_info("ws_start");
   ws->tid = pthread_self(); // save the starting thread
   ws->tag = logconf_tag(ws->p_config, ws);
   VASSERT_S(false == ws_is_alive(ws), "[%s] Shutdown current WebSockets connection before calling ws_start() (Current status: %s)", ws->tag, _ws_status_print(ws->status));
@@ -478,7 +458,7 @@ void // main-thread
 ws_perform(struct websockets *ws, bool *p_is_running, uint64_t wait_ms)
 {
   if (ws->tid != pthread_self()) {
-    log_fatal("ws_perform is called in a different thread");
+    log_fatal("ws_perform can only be called from the starting thread %u", ws->tid);
     ABORT();
   }
   int is_running;
