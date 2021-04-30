@@ -112,7 +112,7 @@ logconf_setup(struct logconf *config, const char config_file[])
       char filename[PATH_MAX];
       bool enable;
     } http;
-  } *logging = calloc(1, sizeof *logging); 
+  } logging = {0};
 
 
   if (config->contents) {
@@ -129,56 +129,51 @@ logconf_setup(struct logconf *config, const char config_file[])
              "(logging.overwrite):b"
              "(logging.http_dump.enable):b"
              "(logging.http_dump.filename):s",
-             logging->level,
-             logging->filename,
-             &logging->quiet,
+             logging.level,
+             logging.filename,
+             &logging.quiet,
              &use_color,
-             &logging->overwrite,
-             &logging->http.enable,
-             logging->http.filename);
-
+             &logging.overwrite,
+             &logging.http.enable,
+             logging.http.filename);
 
   /* SET LOGGER CONFIGS */
-  if (!IS_EMPTY_STRING(logging->filename)) {
-    if (first_run && logging->overwrite)
-      config->logger.f = fopen(logging->filename, "w+");
+  if (!IS_EMPTY_STRING(logging.filename)) {
+    if (first_run && logging.overwrite)
+      config->logger.f = fopen(logging.filename, "w+");
     else
-      config->logger.f = fopen(logging->filename, "a+");
+      config->logger.f = fopen(logging.filename, "a+");
     log_add_callback(
         use_color ? &log_color_cb : &log_nocolor_cb, 
         config->logger.f, 
-        get_log_level(logging->level));
+        get_log_level(logging.level));
     ASSERT_S(NULL != config->logger.f, "Could not create logger file");
   }
 
-  if (true == logging->quiet) // make sure fatal still prints to stderr
-    log_add_callback(
-        use_color ? &log_color_cb : &log_nocolor_cb, 
-        stderr, 
-        LOG_FATAL);
-  else
-    log_add_callback(
-        use_color ? &log_color_cb : &log_nocolor_cb, 
-        stderr, 
-        get_log_level(logging->level));
-
   /* SET HTTP DUMP CONFIGS */
-  if (true == logging->http.enable) {
-    if (!IS_EMPTY_STRING(logging->http.filename)) {
-      if (first_run && logging->overwrite)
-        config->http.f = fopen(logging->http.filename, "w+");
-      else
-        config->http.f = fopen(logging->http.filename, "a+");
-      ASSERT_S(NULL != config->http.f, "Could not create dump file");
-    }
+  if (logging.http.enable && !IS_EMPTY_STRING(logging.http.filename)) {
+    if (first_run && logging.overwrite)
+      config->http.f = fopen(logging.http.filename, "w+");
+    else
+      config->http.f = fopen(logging.http.filename, "a+");
+    ASSERT_S(NULL != config->http.f, "Could not create dump file");
   }
 
   if (first_run) {
     log_set_quiet(true); // disable default log.c callbacks
+    if (logging.quiet) // make sure fatal still prints to stderr
+      log_add_callback(
+          use_color ? &log_color_cb : &log_nocolor_cb, 
+          stderr, 
+          LOG_FATAL);
+    else
+      log_add_callback(
+          use_color ? &log_color_cb : &log_nocolor_cb, 
+          stderr, 
+          get_log_level(logging.level));
+
     first_run = false;
   }
-
-  free(logging);
 }
 
 void
