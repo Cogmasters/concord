@@ -95,7 +95,7 @@ struct websockets {
   /*
    * This is used to check whether the running thread
    * is the same as the thread that ran ws_start.
-   * Some functions can only be run in the same thread
+   * Some functions can only run in the same thread
    */
   pthread_t tid;
 };
@@ -179,6 +179,7 @@ _ws_set_status(struct websockets *ws, enum ws_status status)
 static void // main-thread
 cws_on_connect_cb(void *p_ws, CURL *ehandle, const char *ws_protocols)
 {
+  log_trace("cws_on_connect_cb is called");
   struct websockets *ws = p_ws;
   _ws_set_status(ws, WS_CONNECTED);
 
@@ -195,6 +196,7 @@ cws_on_connect_cb(void *p_ws, CURL *ehandle, const char *ws_protocols)
 static void // main-thread
 cws_on_close_cb(void *p_ws, CURL *ehandle, enum cws_close_reason cwscode, const char *reason, size_t len)
 {
+  log_trace("cws_on_close_cb is called");
   struct websockets *ws = p_ws;
   _ws_set_status(ws, WS_DISCONNECTING);
 
@@ -332,8 +334,6 @@ ws_close(
 
   if (false == ret)
     log_error("[%s] Couldn't send CLOSE(%d): %.*s", ws->tag, wscode, (int)len, reason);
-
-  log_info("ws_close returns %d", ret);
   return ret;
 }
 
@@ -416,8 +416,6 @@ ws_send_text(struct websockets *ws, char text[], size_t len)
     ABORT();
   }
 
-  pthread_mutex_lock(&ws->lock);
-
   log_http(
     ws->p_config, 
     ws,
@@ -427,7 +425,6 @@ ws_send_text(struct websockets *ws, char text[], size_t len)
 
   if (WS_CONNECTED != ws->status) {
     log_error("[%s] Failed attempt to send 'ws_send_text()'", ws->tag);
-    pthread_mutex_unlock(&ws->lock);
     return false;
   }
 
@@ -437,7 +434,6 @@ ws_send_text(struct websockets *ws, char text[], size_t len)
   if (false == ret)
     log_error("[%s] Couldn't send TEXT(%zu bytes)", ws->tag, len);
 
-  pthread_mutex_unlock(&ws->lock);
   return ret;
 }
 
@@ -472,6 +468,7 @@ ws_perform(struct websockets *ws, bool *p_is_running, uint64_t wait_ms)
   ws->now_tstamp = orka_timestamp_ms();
   pthread_mutex_unlock(&ws->lock);
 
+  //log_trace("ws_perform");
   /**
    * Perform Read/Write pending sockets activity (if any)
    * @note ws_close() and ws_send_text() are example of pending
@@ -492,7 +489,7 @@ ws_perform(struct websockets *ws, bool *p_is_running, uint64_t wait_ms)
     VASSERT_S(CURLM_OK == mcode, "[%s] (CURLM code: %d) %s", ws->tag, mcode, curl_multi_strerror(mcode));
   }
   else { // WebSockets connection is severed
-    log_warn("ws connection is severed.");
+    log_warn("ws connection is severed: is_running %d", is_running);
     _ws_set_status(ws, WS_DISCONNECTING);
     // read messages/informationals from the individual transfers
     int msgq = 0;

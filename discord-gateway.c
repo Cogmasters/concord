@@ -1157,9 +1157,11 @@ discord_gateway_shutdown(struct discord_gateway *gw)
   gw->is_resumable = false;
   static char reason[] = "Disconnecting gracefully";
   ws_close(gw->ws, WS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
+  /*
   while (ws_is_alive(gw->ws)) {
     orka_sleep_ms(500);
   }
+   */
 }
 
 void
@@ -1169,7 +1171,9 @@ discord_gateway_reconnect(struct discord_gateway *gw, bool resume)
   gw->is_resumable = resume;
   static char reason[] = "Reconnecting gracefully";
   ws_close(gw->ws, WS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
+  /*
   while (WS_CONNECTED != ws_get_status(gw->ws)) {
     orka_sleep_ms(500);
   }
+   */
 }
