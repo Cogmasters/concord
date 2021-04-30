@@ -14,10 +14,6 @@ typedef int (extractor)(char *, size_t, void *p);
 extern int json_scanf(char *buffer, size_t buf_size, char *format, ...);
 extern int json_asprintf(char **buf, char *format, ...);
 extern int json_snprintf(char *str, size_t size, char *format, ...);
-extern char * json_string_escape(size_t *new_size, char *str, size_t old_size);
-
-extern int json_string_unescape(char **new_str, size_t *new_size,
-                                char *str, size_t old_size);
 
 #define IS_DEFINED(p, field)   (ntl_is_a_member((p)->E, &((p)->field)))
 

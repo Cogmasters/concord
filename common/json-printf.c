@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <string.h>
 
+#include "json-actor.h"
 #include "json-scanf.h"
 #include "debug.h"
 

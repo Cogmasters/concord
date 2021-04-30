@@ -20,6 +20,7 @@
  * SOFTWARE.
  */
 
+#define _GNU_SOURCE /* asprintf() */
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -82,7 +83,7 @@ typedef struct json_composite_s {
  *      by its type.  */
 typedef struct json_item_s {
     union {
-        char *string;
+        struct sized_buffer string;
         long double number;
         _Bool boolean;
         json_composite_t *comp;
@@ -150,8 +151,8 @@ _json_preorder_cleanup(json_item_t *item)
         _json_composite_cleanup(item);
         break;
     case JSON_STRING:
-        free(item->string);
-        item->string = NULL;
+        free(item->string.start);
+        item->string.start = NULL;
         break;
     default:
         break;
@@ -186,7 +187,7 @@ _json_decode_composite(char **p_buffer, size_t n_branch){
 }
 
 static char*
-_json_decode_string(char **p_buffer)
+_json_decode_string(char **p_buffer, size_t *len)
 {
     char *start = *p_buffer;
     ASSERT_S('\"' == *start, "Not a string");
@@ -201,10 +202,11 @@ _json_decode_string(char **p_buffer)
 
     *p_buffer = end + 1;
 
-    char *set_str = strndup(start, end-start);
-    ASSERT_S(NULL != set_str, "Out of memory");
-
-    return set_str;
+    *len = end-start;
+    char *str = NULL;
+    asprintf(&str, "%.*s", (int)*len, start);
+    ASSERT_S(NULL != str, "Out of memory");
+    return str;
 }
 
 static long double
@@ -273,7 +275,15 @@ static void
 _json_value_set_string(json_item_t *item, struct _parse_context *cxt)
 {
     item->type = JSON_STRING;
-    item->string = _json_decode_string(&cxt->buffer);
+
+    size_t size = 0;
+    char *str = _json_decode_string(&cxt->buffer, &size);
+
+    char *unstr = NULL; // unescape string
+    if (!json_string_unescape(&unstr, &item->string.size, str, size)) {
+      ERR("(Internal Error) Cannot unescape an ill-formed-string %.*s", (int)size, str);
+    }
+    item->string.start = unstr;
 }
 
 /* fetch number json type by parsing string,
@@ -534,13 +544,14 @@ _json_object_build(json_item_t *item, struct _parse_context *cxt)
         ++cxt->buffer; /* skips ',' */
         CONSUME_BLANK_CHARS(cxt->buffer);
     /* fall through */
-    case '\"':/*KEY STRING DETECTED*/
+    case '\"': { /*KEY STRING DETECTED*/
         ASSERT_S(NULL == cxt->key, "Memory wasn't free'd");
-        cxt->key = _json_decode_string(&cxt->buffer);
+        size_t noop=0;
+        cxt->key = _json_decode_string(&cxt->buffer, &noop);
         ASSERT_S(':' == *cxt->buffer, "Missing colon after key");
         ++cxt->buffer; /* skips ':' */
         CONSUME_BLANK_CHARS(cxt->buffer);
-        return _json_branch_build(item, cxt);
+        return _json_branch_build(item, cxt); }
     default:
         if (!IS_BLANK_CHAR(*cxt->buffer))
             ERR("%s", "Unexpected token");
@@ -692,8 +703,9 @@ json_string(const char *key, char *string)
     json_item_t *new_item = _json_new(key, JSON_STRING);
     if (NULL == new_item) return NULL;
 
-    new_item->string = strdup(string);
-    if (NULL == new_item->string) goto cleanupA;
+    new_item->string.start = strdup(string);
+    new_item->string.size = strlen(string);
+    if (NULL == new_item->string.start) goto cleanupA;
 
     return new_item;
 
@@ -864,9 +876,9 @@ json_clone(json_item_t *item)
 {
     if (NULL == item) return NULL;
 
-    char *tmp_buffer = json_stringify(item, JSON_ANY);
-    json_item_t *clone = json_parse(tmp_buffer);
-    free(tmp_buffer);
+    struct sized_buffer tmp = json_stringify(item, JSON_ANY);
+    json_item_t *clone = json_parse(tmp.start);
+    free(tmp.start);
 
     if (NULL != item->key){
         clone->key = strdup(item->key);
@@ -900,11 +912,12 @@ json_typeof(const json_item_t *item)
 char*
 json_strdup(const json_item_t *item)
 {
-    char *src = json_get_string(item);
-    if (NULL == src) return NULL;
+    struct sized_buffer src = {0};
+    src.start = json_get_string(item, &src.size);
+    if (NULL == src.start) return NULL;
 
-    char *dest = strdup(src);
-
+    char *dest;
+    asprintf(&dest, "%.*s", (int)src.size, src.start);
     return dest;
 }
 
@@ -1030,12 +1043,12 @@ json_get_boolean(const json_item_t *item)
 }
 
 char*
-json_get_string(const json_item_t *item)
+json_get_string(const json_item_t *item, size_t *len)
 {
     if (NULL == item || JSON_NULL == item->type) return NULL;
-
     ASSERT_S(JSON_STRING == item->type, "Not a string");
-    return item->string;
+    if (len) *len = item->string.size;
+    return item->string.start;
 }
 
 long double
@@ -1056,11 +1069,10 @@ json_set_boolean(json_item_t *item, bool boolean)
 json_item_t*
 json_set_string(json_item_t *item, char *string)
 {
-    if (item->string){
-      free(item->string);
-    }
-
-    item->string = strdup(string);
+    if (item->string.start)
+      free(item->string.start);
+    item->string.start = strdup(string);
+    item->string.size = strlen(string);
     return item;
 }
 
@@ -1073,19 +1085,18 @@ json_set_number(json_item_t *item, long double number) {
 /* STRINGIFY IMPLEMENTATION */
 
 struct _stringify_context {
-    char *buffer_base; /* buffer's base (first position) */
-    size_t buffer_offset; /* current distance to buffer's base (aka length) */
+    struct sized_buffer buffer;
     /*a setter method that can be either _json_cxt_analyze or
        _json_cxt_encode*/
     void (*method)(char get_char, struct _stringify_context* cxt);
 };
 
-/* every time its called, it adds one position to buffer_offset,
+/* every time its called, it adds one position to buffer.size,
       so that it can be used for counting how many position to be expected
       for buffer */ 
 static void
 _json_cxt_analyze(char get_char, struct _stringify_context *cxt){
-    ++cxt->buffer_offset;
+    ++cxt->buffer.size;
     (void)get_char;
 }
 
@@ -1094,8 +1105,8 @@ _json_cxt_analyze(char get_char, struct _stringify_context *cxt){
 static void
 _json_cxt_encode(char get_char, struct _stringify_context *cxt)
 {
-    cxt->buffer_base[cxt->buffer_offset] = get_char;
-    ++cxt->buffer_offset;
+    cxt->buffer.start[cxt->buffer.size] = get_char;
+    ++cxt->buffer.size;
 }
 
 /* get string value to perform buffer method calls */
@@ -1199,7 +1210,7 @@ _json_stringify_preorder(json_item_t *item, enum json_type type, struct _stringi
         break;
     case JSON_STRING:
         (*cxt->method)('\"', cxt);
-        _json_cxt_apply_string(item->string, cxt);
+        _json_cxt_apply_string(item->string.start, cxt);
         (*cxt->method)('\"', cxt);
         break;
     case JSON_OBJECT:
@@ -1263,12 +1274,12 @@ _json_stringify_preorder(json_item_t *item, enum json_type type, struct _stringi
 }
 
 /* converts a json item to a json formatted text, and return it */
-char*
+struct sized_buffer
 json_stringify(json_item_t *root, enum json_type type)
 {
     ASSERT_S(NULL != root, "Missing 'root'");
 
-    struct _stringify_context cxt = {.buffer_offset = 0};
+    struct _stringify_context cxt = {0};
 
     /* 1st STEP: remove root->key and root->parent temporarily to make
         sure the given item is treated as a root when printing, in the
@@ -1283,19 +1294,23 @@ json_stringify(json_item_t *root, enum json_type type)
         _json_cxt_analyze, then allocate the buffer to that amount */
     cxt.method = &_json_cxt_analyze;
     _json_stringify_preorder(root, type, &cxt);
-    cxt.buffer_base = malloc(cxt.buffer_offset+5);/* 5 for extra safety */
-    if (NULL == cxt.buffer_base) return NULL;
+    cxt.buffer.start = malloc(cxt.buffer.size += 5);/* +5 for extra safety */
+    if (NULL == cxt.buffer.start) return (struct sized_buffer){0};
 
-    /* 3rd STEP: reset buffer_offset and proceed with
+    /* 3rd STEP: reset buffer.size and proceed with
         _json_cxt_encode to fill allocated buffer */
-    cxt.buffer_offset = 0;
+    cxt.buffer.size = 0;
     cxt.method = &_json_cxt_encode;
     _json_stringify_preorder(root, type, &cxt);
-    cxt.buffer_base[cxt.buffer_offset] = 0; /* end of buffer token */
+    cxt.buffer.start[cxt.buffer.size] = 0; /* end of buffer token */
 
     /* 4th STEP: reattach key and parents from step 1 */
     root->key = hold_key;
     root->parent = hold_parent;
 
-    return cxt.buffer_base;
+    struct sized_buffer ret={0};
+    if (!json_string_unescape(&ret.start, &ret.size, cxt.buffer.start, cxt.buffer.size)) {
+      ERR("Cannot unescape an ill-formed-string %.*s", (int)ret.size, ret.start);
+    }
+    return ret;
 }

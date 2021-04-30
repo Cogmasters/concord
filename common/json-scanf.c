@@ -28,6 +28,7 @@
 #include <ctype.h>
 
 #include "json-scanf.h"
+#include "json-actor.h"
 #include "debug.h"
 
 #include "ntl.h"

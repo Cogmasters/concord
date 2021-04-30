@@ -129,6 +129,11 @@ json_extract (char * json, size_t size, char * extractor, ...);
 extern size_t
 json_vextract (char * json, size_t size, char * extractor, va_list ap);
 
+extern char* 
+json_string_escape(size_t *new_size, char *str, size_t old_size);
+extern int 
+json_string_unescape(char **new_str, size_t *new_size, char *str, size_t old_size);
+
 
 extern size_t
 query_inject(char *query, size_t size, char *injector, ...);
@@ -199,7 +204,7 @@ void json_cleanup(json_item_t *item);
 json_item_t* json_parse(char *buffer);
  
 /* JSON ENCODING */
-char* json_stringify(json_item_t *root, enum json_type type);
+struct sized_buffer json_stringify(json_item_t *root, enum json_type type);
 
 /* JSON UTILITIES */
 size_t json_size(const json_item_t* item);
@@ -222,7 +227,7 @@ long json_get_index(const json_item_t* item, const char *key);
 enum json_type json_get_type(const json_item_t* item);
 char* json_get_key(const json_item_t* item);
 _Bool json_get_boolean(const json_item_t* item);
-char* json_get_string(const json_item_t* item);
+char* json_get_string(const json_item_t* item, size_t *len);
 long double json_get_number(const json_item_t* item);
 
 /* JSON SETTERS */
