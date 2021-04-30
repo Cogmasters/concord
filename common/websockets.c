@@ -423,7 +423,7 @@ ws_send_text(struct websockets *ws, char text[], size_t len)
     "WS_SEND_TEXT");
 
   if (WS_CONNECTED != ws->status) {
-    log_error("[%s] Failed attempt to send 'ws_send_text()'", ws->tag);
+    log_error("[%s] Failed to send '%.*s'", ws->tag, len, text);
     return false;
   }
 
@@ -460,14 +460,6 @@ ws_perform(struct websockets *ws, bool *p_is_running, uint64_t wait_ms)
   int is_running;
   CURLMcode mcode;
 
-  pthread_mutex_lock(&ws->lock);
-  if (ws->user_cmd == WS_USER_CMD_EXIT) {
-    static char reason[] = "Disconnecting gracefully";
-    ws_close(ws, WS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
-    ws->user_cmd = WS_USER_CMD_NONE;
-  }
-  pthread_mutex_unlock(&ws->lock);
-
   /**
    * Update WebSockets concept of "now"
    * @see ws_timestamp()
@@ -490,10 +482,23 @@ ws_perform(struct websockets *ws, bool *p_is_running, uint64_t wait_ms)
   mcode = curl_multi_perform(ws->mhandle, &is_running);
   VASSERT_S(CURLM_OK == mcode, "[%s] (CURLM code: %d) %s", ws->tag, mcode, curl_multi_strerror(mcode));
 
+  int numfds = 0;
   if (is_running) { // WebSockets connection is active
     // wait for some activity or timeout after "wait_ms" elapsed
-    mcode = curl_multi_wait(ws->mhandle, NULL, 0, wait_ms, NULL);
+    mcode = curl_multi_wait(ws->mhandle, NULL, 0, wait_ms, &numfds);
     VASSERT_S(CURLM_OK == mcode, "[%s] (CURLM code: %d) %s", ws->tag, mcode, curl_multi_strerror(mcode));
+
+    pthread_mutex_lock(&ws->lock);
+    if (ws->user_cmd == WS_USER_CMD_EXIT) {
+      if (numfds) {
+        log_debug("curl_multi_wait returns %d pending file descriptors.",
+                  numfds);
+        orka_sleep_ms(500);
+      }
+      ws_close(ws, WS_CLOSE_REASON_NORMAL, NULL, 0);
+      ws->user_cmd = WS_USER_CMD_NONE;
+    }
+    pthread_mutex_unlock(&ws->lock);
   }
   else { // WebSockets connection is severed
     log_warn("ws connection is severed: is_running %d", is_running);
