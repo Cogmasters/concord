@@ -43,7 +43,8 @@ int main(int argc, char *argv[])
 
     json_item_t *root = json_parse(json_text);
 
-    fprintf(stderr, "%s", json_stringify(root, JSON_ANY));
+    struct sized_buffer str = json_stringify(root, JSON_ANY);
+    fprintf(stderr, "%.*s", (int)str.size, str.start);
 
     return EXIT_SUCCESS;
 }
@@ -92,7 +93,7 @@ get_json_text(char filename[])
 json_item_t *callback_test(json_item_t *item)
 {
     if (NULL != item && json_keycmp(item, "m")){
-        fprintf(stdout, "%s\n", json_get_string(item));
+        fprintf(stdout, "%s\n", json_get_string(item, NULL));
     }
       
     return item;

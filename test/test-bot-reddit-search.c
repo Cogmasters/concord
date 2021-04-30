@@ -52,7 +52,7 @@ void perform_reddit_search()
 
   for (json_item_t *iter = children; iter ; iter = json_iter_next(iter)) {
     if (0 == json_keycmp(iter, "selftext")) {
-      snprintf(res, sizeof(res), "```%.*s```", 1500, json_get_string(iter));
+      snprintf(res, sizeof(res), "```%.*s```", 1500, json_get_string(iter, NULL));
       for (size_t i=0; BOT.discord.channel_ids[i]; ++i) {
         discord_create_message(
           BOT.discord.client, 
@@ -89,15 +89,15 @@ void on_search(
 
   char res[MAX_MESSAGE_LEN];
   struct discord_create_message_params params = {0};
-  if (IS_EMPTY_STRING(json_get_string(title)) 
-      && IS_EMPTY_STRING(json_get_string(selftext))) 
+  if (IS_EMPTY_STRING(json_get_string(title, NULL)) 
+      && IS_EMPTY_STRING(json_get_string(selftext, NULL))) 
   {
     params.content = "Couldn't retrieve any results";
   }
   else {
     params.content = res;
     snprintf(res, sizeof(res), "```%s\n\n%.*s```", \
-        json_get_string(title), 1500, json_get_string(selftext));
+        json_get_string(title, NULL), 1500, json_get_string(selftext, NULL));
   }
 
   discord_create_message(

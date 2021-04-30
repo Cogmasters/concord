@@ -3,7 +3,7 @@
 #include <string.h> // for memcmp()
 
 #include "orka-utils.h"
-#include "json-scanf.h"
+#include "json-actor.h"
 
 int main(int argc, char *argv[])
 {

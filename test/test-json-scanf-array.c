@@ -6,6 +6,7 @@
 #include "orka-utils.h"
 
 #include "jsmn.h"
+#include "json-actor.h"
 #include "json-scanf.h"
 
 #if 0
