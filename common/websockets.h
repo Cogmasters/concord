@@ -201,8 +201,14 @@ char* ws_close_opcode_print(enum ws_close_reason opcode);
  */
 bool ws_is_alive(struct websockets *ws);
 
+/*
+ * send/recv only works for a functional ws connection.
+ */
+bool ws_is_functional(struct websockets *ws);
 
 void ws_force_exit(struct websockets *ws);
+
+extern bool ws_same_thread(struct websockets *ws);
 
 #ifdef __cplusplus
 }

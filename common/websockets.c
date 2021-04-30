@@ -312,7 +312,7 @@ ws_close(
   const char reason[],
   size_t len)
 {
-  log_info("ws_close is called");
+  log_debug("ws_close is called");
   log_http(
     ws->p_config, 
     ws,
@@ -436,10 +436,14 @@ ws_send_text(struct websockets *ws, char text[], size_t len)
   return ret;
 }
 
+/*
+ * start a ws connection, and on_hello will be triggered
+ * if the connection is established.
+ */
 void // main-thread
 ws_start(struct websockets *ws) 
 {
-  log_info("ws_start");
+  log_debug("ws_start");
   ws->tid = pthread_self(); // save the starting thread
   ws->tag = logconf_tag(ws->p_config, ws);
   ws->user_cmd = WS_USER_CMD_NONE;
@@ -510,7 +514,7 @@ ws_perform(struct websockets *ws, bool *p_is_running, uint64_t wait_ms)
       CURLcode ecode = curlmsg->data.result;
       switch (ecode) {
       case CURLE_OK:
-          log_debug("[%s] Disconnected gracefully", ws->tag);
+          log_info("[%s] Disconnected gracefully", ws->tag);
           break;
       default:
           log_error("[%s] (CURLE code: %d) %s", \
@@ -551,9 +555,14 @@ ws_timestamp(struct websockets *ws)
   return now_tstamp;
 }
 
-bool
-ws_is_alive(struct websockets *ws) {
+bool ws_is_alive(struct websockets *ws)
+{
   return WS_DISCONNECTED != ws_get_status(ws);
+}
+
+bool ws_is_functional(struct websockets *ws)
+{
+  return WS_CONNECTED == ws_get_status(ws);
 }
 
 /*
@@ -565,4 +574,9 @@ void ws_force_exit(struct websockets *ws)
   log_warn("ws_force_exit is called");
   ws->user_cmd = WS_USER_CMD_EXIT;
   pthread_mutex_unlock(&ws->lock);
+}
+
+bool ws_same_thread(struct websockets *ws)
+{
+  return (ws->tid == pthread_self());
 }

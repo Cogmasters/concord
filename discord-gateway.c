@@ -101,7 +101,6 @@ send_resume(struct discord_gateway *gw)
 
   log_info("Sending RESUME(%d bytes)", ret);
   ws_send_text(gw->ws, payload, ret);
-
   gw->is_resumable = false; // reset
 }
 
@@ -909,10 +908,8 @@ static void
 on_heartbeat_ack(struct discord_gateway *gw)
 {
   // get request / response interval in milliseconds
-  pthread_mutex_lock(&gw->lock);
   gw->ping_ms = orka_timestamp_ms() - gw->hbeat.tstamp;
   log_trace("PING: %d ms", gw->ping_ms);
-  pthread_mutex_unlock(&gw->lock);
 }
 
 static void
@@ -927,10 +924,8 @@ on_close_cb(void *p_gw, enum ws_close_reason wscode, const char *reason, size_t 
   enum discord_gateway_close_opcodes opcode = \
     (enum discord_gateway_close_opcodes)wscode;
 
-  log_warn(ANSICOLOR("%s",ANSI_FG_RED)" (code: %4d) : %zd bytes,"
-          "REASON: '%s'", 
-          close_opcode_print(opcode), opcode, len,
-          reason);
+  log_warn("on_close_cb " ANSICOLOR("%s",ANSI_FG_RED)" (code: %4d) : %zd bytes,"
+          "REASON: '%s'", close_opcode_print(opcode), opcode, len, reason);
   
   switch (opcode) {
   case DISCORD_GATEWAY_CLOSE_REASON_UNKNOWN_ERROR:
@@ -1036,7 +1031,7 @@ discord_gateway_init(struct discord_gateway *gw, struct logconf *config, struct 
   ws_set_url(gw->ws, BASE_GATEWAY_URL, NULL);
   logconf_add_id(config, gw->ws, "DISCORD_GATEWAY");
 
-  gw->reconnect.threshold = 5; /** hard limit for now */
+  gw->reconnect.threshold = 10; /** hard limit for now */
 
   if (STRNEQ("YOUR-BOT-TOKEN", token->start, token->size)) {
     token->start = NULL;
@@ -1091,7 +1086,9 @@ discord_gateway_cleanup(struct discord_gateway *gw)
   pthread_mutex_destroy(&gw->lock);
 }
 
-/* connects to the discord websockets server */
+/*
+ * the event loop to serve the events sent by Discord
+ */
 static void
 event_loop(struct discord_gateway *gw) 
 {
@@ -1101,9 +1098,9 @@ event_loop(struct discord_gateway *gw)
   discord_get_gateway_bot(gw->p_client, &gw->session);
   if (!gw->session.remaining) {
     log_fatal("Reach session starts threshold (%d),"
-          "Please wait %d seconds and try again", 
-          gw->session.total, gw->session.reset_after/1000);
-    return; /* EARLY RETURN */
+              "Please wait %d seconds and try again",
+              gw->session.total, gw->session.reset_after/1000);
+    return;
   }
 
   bool is_running=false;
@@ -1118,15 +1115,17 @@ event_loop(struct discord_gateway *gw)
      * minimum heartbeat interval required*/
     if (gw->hbeat.interval_ms < (ws_timestamp(gw->ws) - gw->hbeat.tstamp)) {
       send_heartbeat(gw);
-
       gw->hbeat.tstamp = ws_timestamp(gw->ws); //update heartbeat timestamp
     }
-
     (*gw->cbs.on_idle)(gw->p_client, gw->bot);
   }
   gw->is_ready = false;
 }
 
+/*
+ * Discord's ws is not reliable. This function is responsible for
+ * reconnection/resume/exit
+ */
 void
 discord_gateway_run(struct discord_gateway *gw)
 {
@@ -1143,7 +1142,8 @@ discord_gateway_run(struct discord_gateway *gw)
   gw->is_resumable = false;
   gw->reconnect.enable = false;
   gw->reconnect.attempt = 0;
-  log_error("Could not reconnect to Discord Gateway after %d tries", gw->reconnect.threshold);
+  log_fatal("Could not reconnect to Discord Gateway after %d tries",
+            gw->reconnect.threshold);
 }
 
 void
