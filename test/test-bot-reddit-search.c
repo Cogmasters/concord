@@ -34,7 +34,7 @@ void perform_reddit_search()
   struct sized_buffer json={0};
   reddit_search(BOT.reddit.client, &BOT.reddit.params, BOT.reddit.srs, &json);
 
-  json_item_t *root = json_parse(json.start);
+  json_item_t *root = json_parse(json.start, json.size);
   json_item_t *children = NULL;
   for (json_item_t *iter = root; iter ; iter = json_iter_next(iter)) {
     if (0 == json_keycmp(iter, "children")) {
@@ -77,7 +77,7 @@ void on_search(
     reddit_search(BOT.reddit.client, &params, "all", &json);
   }
 
-  json_item_t *root = json_parse(json.start);
+  json_item_t *root = json_parse(json.start, json.size);
   json_item_t *selftext = NULL, *title = NULL;
   for (json_item_t *iter = root; iter ; iter = json_iter_next(iter)) {
     if (0 == json_keycmp(iter, "title")) { // get 1st result

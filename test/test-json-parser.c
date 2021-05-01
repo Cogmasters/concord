@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
 
     char *json_text = get_json_text(argv[1]);
 
-    json_item_t *root = json_parse(json_text);
+    json_item_t *root = json_parse(json_text, strlen(json_text));
 
     struct sized_buffer str = json_stringify(root, JSON_ANY);
     fprintf(stderr, "%.*s", (int)str.size, str.start);

@@ -613,18 +613,19 @@ token_error:
 /* parse contents from buffer into a json item object
     and return its root */
 json_item_t*
-json_parse(char *buffer)
+json_parse(char *buffer, size_t len)
 {
     json_item_t *root = calloc(1, sizeof *root);
     if (NULL == root) return NULL;
 
-    struct _parse_context cxt = {
-        .buffer = buffer,
-    };
+    struct _parse_context cxt = { .buffer = buffer, };
     
     /* build while item and buffer aren't nulled */
     json_item_t *item = root;
-    while ((NULL != item) && ('\0' != *cxt.buffer)){
+    while ((NULL != item) 
+        && ((cxt.buffer - buffer) < len)
+        && ('\0' != *cxt.buffer))
+    {
         switch(item->type){
         case JSON_OBJECT:
             item = _json_object_build(item, &cxt);
@@ -877,7 +878,7 @@ json_clone(json_item_t *item)
     if (NULL == item) return NULL;
 
     struct sized_buffer tmp = json_stringify(item, JSON_ANY);
-    json_item_t *clone = json_parse(tmp.start);
+    json_item_t *clone = json_parse(tmp.start, tmp.size);
     free(tmp.start);
 
     if (NULL != item->key){

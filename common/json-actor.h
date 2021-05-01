@@ -201,7 +201,7 @@ void json_cleanup(json_item_t *item);
 
 /* JSON DECODING
  * parse buffer and returns a json item */
-json_item_t* json_parse(char *buffer);
+json_item_t* json_parse(char *buffer, size_t len);
  
 /* JSON ENCODING */
 struct sized_buffer json_stringify(json_item_t *root, enum json_type type);
