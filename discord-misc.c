@@ -322,32 +322,31 @@ discord_embed_add_field(struct discord_embed *embed, char name[], char value[], 
     return;
   }
 
-  struct discord_embed_field new_field;
-  discord_embed_field_init(&new_field);
-  new_field.Inline = Inline;
+  struct discord_embed_field *field = discord_embed_field_alloc();
+  field->Inline = Inline;
 
   size_t ret;
-  if (!(ret = orka_str_bounds_check(name, EMBED_FIELD_NAME_LEN))) {
-    log_warn("'name' exceeds %d characters, truncation will occur", EMBED_FIELD_NAME_LEN);
-    snprintf(new_field.name, EMBED_FIELD_NAME_LEN, "%.*s(...)", \
-        EMBED_FIELD_NAME_LEN-6, name);
+  if (!(ret = orka_str_bounds_check(name, sizeof(field->name)))) {
+    log_warn("'name' exceeds %d characters, truncation will occur", sizeof(field->name));
+    snprintf(field->name, sizeof(field->name), "%.*s(...)", \
+        (int)(sizeof(field->name)-6), name);
   }
   else {
-    snprintf(new_field.name, EMBED_FIELD_NAME_LEN, "%.*s", \
-        (int)ret, name);
+    snprintf(field->name, sizeof(field->name), "%s", name);
   }
 
-  if (!(ret = orka_str_bounds_check(value, EMBED_FIELD_VALUE_LEN))) {
-    log_warn("'value' exceeds %d characters, truncation will occur", EMBED_FIELD_VALUE_LEN);
-    snprintf(new_field.value, EMBED_FIELD_VALUE_LEN, "%.*s(...)", \
-        EMBED_FIELD_VALUE_LEN-6, value);
+  if (!(ret = orka_str_bounds_check(value, sizeof(field->value)))) {
+    log_warn("'value' exceeds %d characters, truncation will occur", sizeof(field->value));
+    snprintf(field->value, sizeof(field->value), "%.*s(...)", \
+        (int)(sizeof(field->value)-6), value);
   }
   else {
-    snprintf(new_field.value, EMBED_FIELD_VALUE_LEN, "%.*s", \
-        (int)ret, value);
+    snprintf(field->value, sizeof(field->value), "%s", value);
   }
 
-  ntl_append2((ntl_t*)&embed->fields, sizeof(struct discord_embed_field), &new_field);
+  ntl_append2((ntl_t*)&embed->fields, sizeof(struct discord_embed_field), field);
+
+  discord_embed_field_free(field);
 }
 
 void
