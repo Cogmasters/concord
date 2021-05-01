@@ -313,6 +313,14 @@ discord_embed_add_field(struct discord_embed *embed, char name[], char value[], 
     log_error("Reach embed fields threshold (max %d)", EMBED_MAX_FIELDS);
     return;
   }
+  if (IS_EMPTY_STRING(name)) {
+    log_error("Missing 'name'");
+    return;
+  }
+  if (IS_EMPTY_STRING(value)) {
+    log_error("Missing 'value'");
+    return;
+  }
 
   struct discord_embed_field new_field;
   discord_embed_field_init(&new_field);
