@@ -309,26 +309,35 @@ discord_embed_set_author(
 void
 discord_embed_add_field(struct discord_embed *embed, char name[], char value[], bool Inline)
 {
-  if (IS_EMPTY_STRING(name)) {
-    log_error("Missing 'name'");
-    return;
-  }
-  if (IS_EMPTY_STRING(value)) {
-    log_error("Missing 'value'");
-    return;
-  }
-  if (embed->fields 
-      && ntl_length((NTL_T(void))embed->fields) >= EMBED_MAX_FIELDS)
-  {
+  if (ntl_length((ntl_t)embed->fields) >= EMBED_MAX_FIELDS) {
     log_error("Reach embed fields threshold (max %d)", EMBED_MAX_FIELDS);
     return;
   }
 
   struct discord_embed_field new_field;
   discord_embed_field_init(&new_field);
-  strncpy(new_field.name, name, EMBED_FIELD_NAME_LEN);
-  strncpy(new_field.value, value, EMBED_FIELD_VALUE_LEN);
   new_field.Inline = Inline;
+
+  size_t ret;
+  if (!(ret = orka_str_bounds_check(name, EMBED_FIELD_NAME_LEN))) {
+    log_warn("'name' exceeds %d characters, truncation will occur", EMBED_FIELD_NAME_LEN);
+    snprintf(new_field.name, EMBED_FIELD_NAME_LEN, "%.*s(...)", \
+        EMBED_FIELD_NAME_LEN-6, name);
+  }
+  else {
+    snprintf(new_field.name, EMBED_FIELD_NAME_LEN, "%.*s", \
+        (int)ret, name);
+  }
+
+  if (!(ret = orka_str_bounds_check(value, EMBED_FIELD_VALUE_LEN))) {
+    log_warn("'value' exceeds %d characters, truncation will occur", EMBED_FIELD_VALUE_LEN);
+    snprintf(new_field.value, EMBED_FIELD_VALUE_LEN, "%.*s(...)", \
+        EMBED_FIELD_VALUE_LEN-6, value);
+  }
+  else {
+    snprintf(new_field.value, EMBED_FIELD_VALUE_LEN, "%.*s", \
+        (int)ret, value);
+  }
 
   ntl_append2((ntl_t*)&embed->fields, sizeof(struct discord_embed_field), &new_field);
 }
