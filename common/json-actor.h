@@ -220,7 +220,8 @@ int json_numcmp(const json_item_t* item, const long double number);
 /* JSON GETTERS */
 json_item_t* json_get_root(json_item_t* item);
 json_item_t* json_get_branch(json_item_t* item, const char *key);
-json_item_t* json_get_sibling(const json_item_t* item, const size_t relative_index);
+json_item_t* json_get_sibling(const json_item_t* item, const char *key);
+json_item_t* json_get_sibling_byindex(const json_item_t* item, const size_t relative_index);
 json_item_t* json_get_parent(const json_item_t* item);
 json_item_t* json_get_byindex(const json_item_t* item, const size_t index);
 long json_get_index(const json_item_t* item, const char *key);

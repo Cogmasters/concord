@@ -975,9 +975,16 @@ json_get_branch(json_item_t *item, const char *key)
     return _json_composite_get(key, item);
 }
 
+json_item_t*
+json_get_sibling(const json_item_t* item, const char *key)
+{
+    ASSERT_S(!IS_ROOT(item), "Item is root (has no siblings)");
+    return json_get_branch(item->parent, key);
+}
+
 /* get origin item sibling by the relative index, if origin item is of index 3 (from parent's perspective), and relative index is -1, then this function will return item of index 2 (from parent's perspective) */
 json_item_t*
-json_get_sibling(const json_item_t* item, const size_t relative_index)
+json_get_sibling_byindex(const json_item_t* item, const size_t relative_index)
 {
     ASSERT_S(!IS_ROOT(item), "Item is root (has no siblings)");
 
