@@ -948,31 +948,20 @@ json_get_root(json_item_t *item)
     return item;
 }
 
-static json_item_t*
-_json_composite_get(const char *key, json_item_t *item)
-{
-    if (!IS_COMPOSITE(item)) return NULL;
-
-    json_item_t *iter = item;
-    do { 
-      iter = json_iter_next(iter);
-      if (STREQ(iter->key, key)) return iter;
-    } while (iter);
-
-    return NULL;
-}
-
 /* get item branch with given key */
 json_item_t*
 json_get_branch(json_item_t *item, const char *key)
 {
     ASSERT_S(IS_COMPOSITE(item), "Not a composite");
-
     if (NULL == key) return NULL;
 
     /* search for entry with given key at item's comp,
       and retrieve found or not found(NULL) item */
-    return _json_composite_get(key, item);
+    for (size_t i=0; i < item->comp->num_branch; ++i) {
+        if (STREQ(item->comp->branch[i]->key, key))
+            return item->comp->branch[i];
+    }
+    return NULL;
 }
 
 json_item_t*
@@ -1008,7 +997,7 @@ json_get_parent(const json_item_t *item){
 json_item_t*
 json_get_byindex(const json_item_t *item, const size_t index)
 {
-    ASSERT_S(IS_COMPOSITE(item), "Note a composite");
+    ASSERT_S(IS_COMPOSITE(item), "Not a composite");
     return (index < item->comp->num_branch) ? item->comp->branch[index] : NULL;
 }
 
@@ -1017,8 +1006,13 @@ json_get_index(const json_item_t *item, const char *key)
 {
     ASSERT_S(IS_COMPOSITE(item), "Not a composite");
 
-    json_item_t *lookup_item = _json_composite_get(key, (json_item_t*)item);
-
+    json_item_t *lookup_item = NULL;
+    for (size_t i=0; i < item->comp->num_branch; ++i) {
+        if (STREQ(item->comp->branch[i]->key, key)) {
+            lookup_item = item->comp->branch[i];
+            break;
+        }
+    }
     if (NULL == lookup_item) return -1;
 
     /* @todo currently this is O(n), a possible alternative
