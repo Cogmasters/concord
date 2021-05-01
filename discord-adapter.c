@@ -130,11 +130,11 @@ json_error_cb(char *str, size_t len, void *p_err)
   https://discord.com/developers/docs/topics/opcodes-and-status-codes#json-json-error-codes */
   int code = 0; //last error code received
   char message[256] = {0}; //meaning of the error received
-
-  json_scanf(str, len, "[message]%s [code]%d", message, &code);
-
-  log_warn("Error Description:\n\t\t%s (code %d)"
-      "- See Discord's JSON Error Codes", message, code);
+  json_extract(str, len, \
+      "(message):.*s (code):d", sizeof(message), message, &code);
+  log_warn("Error Description:\n\t\t%s (code %d)" \
+           " - See Discord's JSON Error Codes\n\t\t"  \
+           "Payload\n\t\t: %.*s", message, code, (int)len, str);
 }
 
 /* template function for performing requests */
