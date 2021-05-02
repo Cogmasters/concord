@@ -206,7 +206,7 @@ bool ws_is_alive(struct websockets *ws);
  */
 bool ws_is_functional(struct websockets *ws);
 
-void ws_force_exit(struct websockets *ws);
+void ws_exit_event_loop(struct websockets *ws);
 
 extern bool ws_same_thread(struct websockets *ws);
 

@@ -164,6 +164,8 @@ struct discord_gateway {
   // can start sending/receiving additional events to discord
   bool is_ready; 
 
+  bool shutdown;
+
   // this info sent expecting a connection authentication
   struct discord_gateway_identify *id; /** @see specs/gateway.json and specs-code/gateway.h for definition */
   // the session id (for resuming lost connections)

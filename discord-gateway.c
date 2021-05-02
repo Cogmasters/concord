@@ -887,12 +887,11 @@ on_invalid_session(struct discord_gateway *gw)
   gw->reconnect.enable = true;
   if (true == (gw->is_resumable = strcmp(gw->payload.event_data.start, "false"))) {
     log_warn("on_invalid_session: attempting to resume session");
-    ws_force_exit(gw->ws);
   }
   else {
     log_warn("on_invalid_session: attempting to restart session");
-    ws_force_exit(gw->ws);
   }
+  ws_exit_event_loop(gw->ws);
 }
 
 static void
@@ -901,7 +900,7 @@ on_reconnect(struct discord_gateway *gw)
   log_warn("on_reconnect: attempting to resume session");
   gw->is_resumable = true;
   gw->reconnect.enable = true;
-  ws_force_exit(gw->ws);
+  ws_exit_event_loop(gw->ws);
 }
 
 static void
@@ -925,7 +924,14 @@ on_close_cb(void *p_gw, enum ws_close_reason wscode, const char *reason, size_t 
     (enum discord_gateway_close_opcodes)wscode;
 
   log_warn("on_close_cb " ANSICOLOR("%s",ANSI_FG_RED)" (code: %4d) : %zd bytes,"
-          "REASON: '%s'", close_opcode_print(opcode), opcode, len, reason);
+          "REASON: '%.*s'", close_opcode_print(opcode), opcode, len, len, reason);
+
+  if (gw->shutdown) {
+    log_warn("gateway was actively shutted down.");
+    gw->reconnect.enable = false;
+    gw->is_resumable = false;
+    return;
+  }
   
   switch (opcode) {
   case DISCORD_GATEWAY_CLOSE_REASON_UNKNOWN_ERROR:
@@ -1105,7 +1111,7 @@ event_loop(struct discord_gateway *gw)
 
   bool is_running=false;
   while (1) {
-    ws_perform(gw->ws, &is_running, 100);
+    ws_perform(gw->ws, &is_running, 5);
     if (!is_running) break; // exit event loop
     if (!gw->is_ready) continue; // wait until on_ready()
     
@@ -1151,7 +1157,8 @@ discord_gateway_shutdown(struct discord_gateway *gw)
 {
   gw->reconnect.enable = false;
   gw->is_resumable = false;
-  ws_force_exit(gw->ws);
+  gw->shutdown = true;
+  ws_exit_event_loop(gw->ws);
 }
 
 void
@@ -1159,5 +1166,5 @@ discord_gateway_reconnect(struct discord_gateway *gw, bool resume)
 {
   gw->reconnect.enable = true;
   gw->is_resumable = resume;
-  ws_force_exit(gw->ws);
+  ws_exit_event_loop(gw->ws);
 }

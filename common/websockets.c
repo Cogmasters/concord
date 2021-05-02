@@ -299,27 +299,20 @@ cws_custom_new(struct websockets *ws, const char ws_protocols[])
   ecode = curl_easy_setopt(new_ehandle, CURLOPT_ERRORBUFFER, ws->errbuf);
   CURLE_CHECK(ws, ecode);
   //enable follow redirections
-  ecode = curl_easy_setopt(new_ehandle, CURLOPT_FOLLOWLOCATION, 2L);
+  ecode = curl_easy_setopt(new_ehandle, CURLOPT_FOLLOWLOCATION, 1L);
+  CURLE_CHECK(ws, ecode);
+
+#if defined(BEARSSL)
+  curl_easy_setopt(new_ehandle, CURLOPT_TIMEOUT, 0L); // never timeout
+#endif
   CURLE_CHECK(ws, ecode);
 
   return new_ehandle;
 }
 
-static bool
-ws_close(
-  struct websockets *ws, 
-  enum ws_close_reason wscode, 
-  const char reason[],
-  size_t len)
+static bool _ws_close(struct websockets *ws)
 {
-  log_debug("ws_close is called");
-  log_http(
-    ws->p_config, 
-    ws,
-    ws->base_url, 
-    (struct sized_buffer){(char*)reason, len},
-    "WS_SEND_CLOSE");
-
+  log_debug("_ws_close is called");
   if (WS_DISCONNECTED == ws->status) {
     log_warn("[%s] Connection already closed", ws->tag);
     return false;
@@ -329,17 +322,18 @@ ws_close(
     return false;
   }
   _ws_set_status_nolock(ws, WS_DISCONNECTING);
+  static char reason [] = "client initializes close";
 
-  log_debug("[%s] Sending CLOSE(%d): %.*s", ws->tag, wscode, (int)len, reason);
-  bool ret = cws_close(ws->ehandle, (enum cws_close_reason)wscode, reason, len);
+  enum cws_close_reason code = (enum cws_close_reason)WS_CLOSE_REASON_NORMAL;
+  log_debug("[%s] Sending CLOSE(%d): %s", ws->tag, code, reason);
+  bool ret = cws_close(ws->ehandle, code, reason, sizeof reason);
 
   if (false == ret)
-    log_error("[%s] Couldn't send CLOSE(%d): %.*s", ws->tag, wscode, (int)len, reason);
+    log_error("[%s] Couldn't send CLOSE(%d): %s", ws->tag, code, reason);
   return ret;
 }
 
-enum ws_status // thread-safe
-ws_get_status(struct websockets *ws) 
+enum ws_status ws_get_status(struct websockets *ws)
 {
   pthread_mutex_lock(&ws->lock);
   enum ws_status status = ws->status;
@@ -454,15 +448,21 @@ ws_start(struct websockets *ws)
   _ws_set_status(ws, WS_CONNECTING);  
 }
 
+static bool logging_after_exit = false;
+
 void // main-thread
 ws_perform(struct websockets *ws, bool *p_is_running, uint64_t wait_ms)
 {
+  if (logging_after_exit)
+    log_info("ws_perform after ws_exit_event_loop");
+
   if (ws->tid != pthread_self()) {
     log_fatal("ws_perform can only be called from the starting thread %u", ws->tid);
     ABORT();
   }
-  int is_running;
+  int is_running = 0;
   CURLMcode mcode;
+  int numfds = 0;
 
   /**
    * Update WebSockets concept of "now"
@@ -486,7 +486,6 @@ ws_perform(struct websockets *ws, bool *p_is_running, uint64_t wait_ms)
   mcode = curl_multi_perform(ws->mhandle, &is_running);
   VASSERT_S(CURLM_OK == mcode, "[%s] (CURLM code: %d) %s", ws->tag, mcode, curl_multi_strerror(mcode));
 
-  int numfds = 0;
   if (is_running) { // WebSockets connection is active
     // wait for some activity or timeout after "wait_ms" elapsed
     mcode = curl_multi_wait(ws->mhandle, NULL, 0, wait_ms, &numfds);
@@ -494,17 +493,20 @@ ws_perform(struct websockets *ws, bool *p_is_running, uint64_t wait_ms)
 
     pthread_mutex_lock(&ws->lock);
     if (ws->user_cmd == WS_USER_CMD_EXIT) {
+      log_warn("user_cmd WS_USER_CMD_EXIT");
       if (numfds) {
         log_debug("curl_multi_wait returns %d pending file descriptors.",
                   numfds);
-        orka_sleep_ms(500);
+        orka_sleep_ms(5);
       }
-      ws_close(ws, WS_CLOSE_REASON_NORMAL, NULL, 0);
+      _ws_close(ws);
       ws->user_cmd = WS_USER_CMD_NONE;
+      logging_after_exit = true;
     }
     pthread_mutex_unlock(&ws->lock);
   }
   else { // WebSockets connection is severed
+    logging_after_exit = false;
     log_warn("ws connection is severed: is_running %d", is_running);
     _ws_set_status(ws, WS_DISCONNECTING);
     // read messages/informationals from the individual transfers
@@ -515,6 +517,15 @@ ws_perform(struct websockets *ws, bool *p_is_running, uint64_t wait_ms)
       switch (ecode) {
       case CURLE_OK:
           log_info("[%s] Disconnected gracefully", ws->tag);
+          break;
+      case CURLE_READ_ERROR:
+          log_error("[%s] (CURLE code: %d) %s", \
+              ws->tag,
+                    ecode,
+                    IS_EMPTY_STRING(ws->errbuf)
+                    ? curl_easy_strerror(ecode)
+                    : ws->errbuf);
+          log_error("[%s] Disconnected abruptly", ws->tag);
           break;
       default:
           log_error("[%s] (CURLE code: %d) %s", \
@@ -566,12 +577,19 @@ bool ws_is_functional(struct websockets *ws)
 }
 
 /*
- * can be called from any thread
+ * It can be called from any thread to exit
+ * ws event loop. The result will be one of the
+ * followings:
+ *
+ *   1. reconnect: send out new identifier
+ *   2. resume
+ *   3. exit
+ *
  */
-void ws_force_exit(struct websockets *ws)
+void ws_exit_event_loop(struct websockets *ws)
 {
   pthread_mutex_lock(&ws->lock);
-  log_warn("ws_force_exit is called");
+  log_warn("ws_exit_event_loop is called");
   ws->user_cmd = WS_USER_CMD_EXIT;
   pthread_mutex_unlock(&ws->lock);
 }
