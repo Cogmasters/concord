@@ -132,9 +132,9 @@ json_error_cb(char *str, size_t len, void *p_err)
   char message[256] = {0}; //meaning of the error received
   json_extract(str, len, \
       "(message):.*s (code):d", sizeof(message), message, &code);
-  log_warn("Error Description:\n\t\t%s (code %d)" \
-           " - See Discord's JSON Error Codes\n\t\t"  \
-           "Payload\n\t\t: %.*s", message, code, (int)len, str);
+  log_error(ANSICOLOR("(JSON Error %d) %s", ANSI_BG_RED)
+            " - See Discord's JSON Error Codes\n\t\t%.*s", 
+            code, message, (int)len, str);
 }
 
 /* template function for performing requests */
