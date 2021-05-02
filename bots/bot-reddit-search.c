@@ -10,7 +10,9 @@
 #include "scheduler.h"
 
 
-#define SEARCH_PARAMS_FILE "test-bot-reddit-search.json"
+#define SEARCH_PARAMS_FILE "bot-reddit-search.json"
+#define EMBED_THUMBNAIL \
+  "https://external-preview.redd.it/ei2UEblhohs09-oGeS6Ws14T2pOd37GN1_1VUzisvZE.png?auto=webp&s=9fc63c64245f6aa267d712c8b4ad885aa5555b7b"
 
 
 /* Read-Only after load_BOT */
@@ -40,10 +42,6 @@ void on_search(
     reddit_search(BOT.reddit.client, &params, "all", &json);
   }
 
-  struct discord_embed embed;
-  discord_embed_init(&embed);
-  embed.color = 15158332; // RED
-
   json_item_t *root = json_parse(json.start, json.size);
 
   json_item_t *children=0;
@@ -55,36 +53,38 @@ void on_search(
   }
 
   struct discord_create_message_params params = {0};
-  char text[MAX_MESSAGE_LEN] = "";
-  if (!children)
+  if (!children) {
     params.content = "Couldn't retrieve any results";
+    discord_create_message(BOT.discord.client, msg->channel_id, &params, NULL);
+  }
   else {
-    json_item_t *data;
-    char *title, *selftext;
-    size_t n_results = json_size(children);
-    for (size_t i=0; i < n_results; ++i) {
-      if (6 == i) break; /** @todo remove this limit */
+    struct discord_embed embed;
+    discord_embed_init(&embed);
+    embed.color = 0xff0000; // RED
+    snprintf(embed.title, sizeof(embed.title), "Reddit Search");
+    discord_embed_set_thumbnail(&embed, EMBED_THUMBNAIL, NULL, 100, 100);
+    discord_embed_set_author(&embed,
+        "designed & built by https://cee.dev",
+        "https://cee.dev",
+        "https://cee.dev/static/images/cee.png", NULL);
 
+    ///@todo add check to make sure embed is not over 6000 characters
+    json_item_t *data;
+    size_t n_size = json_size(children);
+    for (size_t i=0; i < n_size; ++i) {
       data = json_get_branch(json_get_byindex(children, i), "data");
-      title = json_get_string(json_get_branch(data, "title"), NULL);
-      selftext = json_get_string(json_get_branch(data, "selftext"), NULL);
       discord_embed_add_field(
         &embed, 
-        title,
-        IS_EMPTY_STRING(selftext) ? "[blank]" : selftext,
-        true);
+        json_get_string(json_get_branch(data, "title"), NULL),
+        json_get_string(json_get_branch(data, "url"), NULL),
+        false);
     }
+    snprintf(embed.description, sizeof(embed.description), "%zu results", n_size);
+    discord_embed_set_footer(&embed, embed.description, NULL, NULL);
 
-    snprintf(text, sizeof(text), "Showing %zu results:", n_results);
-    params.content = text;
     params.embed = &embed;
+    discord_create_message(BOT.discord.client, msg->channel_id, &params, NULL);
   }
-
-  discord_create_message(
-    BOT.discord.client, 
-    msg->channel_id, 
-    &params, 
-    NULL);
 
   json_cleanup(root);
 }
