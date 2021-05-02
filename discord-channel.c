@@ -298,28 +298,33 @@ discord_create_message(
     if (params->message_reference)
       A[4] = (void *)params->message_reference;
 
-    char payload[MAX_PAYLOAD_LEN];
-    json_inject(payload, sizeof(payload),
-        "(content):s"
-        "(nonce):s"
-        "(tts):b"
-        "(embed):F"
-        /* @todo
-        "(allowed_mentions):F"
-        */
-        "(message_reference):F"
-        "@arg_switches",
-        params->content,
-        params->nonce,
-        &params->tts,
-        &discord_embed_to_json, params->embed,
-        /* @todo
-        params->allowed_mentions,
-        */
-        &discord_message_reference_to_json, params->message_reference,
-        A, sizeof(A));
+    char *payload=NULL;
+    size_t ret = json_ainject(&payload,
+                  "(content):s"
+                  "(nonce):s"
+                  "(tts):b"
+                  "(embed):F"
+                  /* @todo
+                  "(allowed_mentions):F"
+                  */
+                  "(message_reference):F"
+                  "@arg_switches",
+                  params->content,
+                  params->nonce,
+                  &params->tts,
+                  &discord_embed_to_json, params->embed,
+                  /* @todo
+                  params->allowed_mentions,
+                  */
+                  &discord_message_reference_to_json, params->message_reference,
+                  A, sizeof(A));
 
-    struct sized_buffer req_body = {payload, strlen(payload)};
+    if (!payload) {
+      log_error("Couldn't create JSON Payload");
+      return;
+    }
+
+    struct sized_buffer req_body = {payload, ret};
 
     discord_adapter_run( 
       &client->adapter,
@@ -327,6 +332,8 @@ discord_create_message(
       &req_body,
       HTTP_POST, 
       "/channels/%"PRIu64"/messages", channel_id);
+
+    free(payload);
   }
   else 
   { // content-type is multipart/form-data
