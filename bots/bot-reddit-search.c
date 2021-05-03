@@ -25,6 +25,7 @@ struct {
     struct task_s *tsk_search;
     struct reddit_search_params params;
     char *srs; // subreddits
+    char before[16];
   } R;
   struct { /* DISCORD UTILS */
     struct discord *client;
@@ -39,34 +40,74 @@ void on_search(
   const struct discord_user *bot,
   const struct discord_message *msg)
 {
-  char *subreddits = NULL;
-  char *msg_content = msg->content;
-  if ('#' == *msg_content) {
-    ++msg_content; // eat up '#'
+  char *start = msg->content;
+  struct discord_create_message_params params = {0};
 
-    const char *end_srs = strchr(msg_content, ' ');
-    if (!end_srs) {
-      struct discord_create_message_params params = { .content = "Invalid syntax: Missing keywords" };
-      discord_create_message(BOT.D.client, msg->channel_id, &params, NULL);
-      return;
+  char *subreddits=NULL, *before=NULL, *after=NULL;
+  if ('?' == *start) { // '?' means query string attached
+    ++start; // eat up '?'
+    
+    // there should be a space between query string and keywords
+    char *end = strchr(start, ' ');
+    if (!end) {
+      params.content = "Invalid syntax: Missing space between query and keywords";
+      goto _send_msg;
     }
-    const size_t size = end_srs - msg_content;
-    for (size_t i=0; i < size; ++i) {
-      if ( !(isalnum(msg_content[i]) || '_' == msg_content[i]) && msg_content[i] != '+') {
-        struct discord_create_message_params params = { 
-          .content = "Invalid syntax: Subreddits must be separated with a '+'" 
-        };
-        discord_create_message(BOT.D.client, msg->channel_id, &params, NULL);
-        return;
+
+    // parse query variables, values and next (if any)
+    char *var, *value, *next;
+    do {
+      var = start;
+      value = strchr(var, '=');
+      if (!value) {
+        params.content = "Invalid syntax: Missing value from query string";
+        goto _send_msg;
       }
-    }
-    asprintf(&subreddits, "%.*s", (int)size, msg_content);
-    msg_content += size+1;
+      ++value; // eat up '='
+
+      if (!(next = strchr(var, '&')))
+        next = end; // last query string
+
+      ptrdiff_t size = next-value;
+      if (0 == strncmp(var, "srs", 3)) // subreddits
+      {
+        for (size_t i=0; i < size; ++i) {
+          switch (value[i]) {
+          default:
+              if (!isalnum(value[i])) {
+                params.content = "Invalid syntax: Subreddits must be separated with a '+'";
+                goto _send_msg;
+              }
+          case '_': 
+          case '+':
+              break;
+          }
+        }
+        asprintf(&subreddits, "%.*s", (int)size, value);
+      }
+      else if (0 == strncmp(var, "before", 6)) {
+        asprintf(&before, "%.*s", (int)size, value);
+      }
+      else if (0 == strncmp(var, "after", 5)) {
+        asprintf(&after, "%.*s", (int)size, value);
+      }
+      else {
+        params.content = "Invalid query command";
+        goto _send_msg;
+      }
+
+      start = next+1;
+
+    } while (start < end);
   }
 
   struct sized_buffer json={0};
   { // anonymous block
-    struct reddit_search_params params = { .q = msg_content };
+    struct reddit_search_params params = { 
+      .q = start,
+      .before = before ? before : NULL,
+      .after = after ? after : NULL
+    };
     if (subreddits) {
       params.restrict_sr = true;
       reddit_search(BOT.R.client, &params, subreddits, &json);
@@ -77,41 +118,42 @@ void on_search(
   }
 
   json_item_t *root = json_parse(json.start, json.size);
-  json_item_t *children = NULL;
-  for (json_item_t *ji = root; ji != NULL; ji = json_iter_next(ji)) {
-    if (0 == json_keycmp(ji, "children")) {
-      children = ji;
-      break;
-    }
-  }
-
-  struct discord_create_message_params params = {0};
+  json_item_t *children = json_get_child(root, "data.children");
   if (!children) {
     params.content = "Couldn't retrieve any results";
-    discord_create_message(BOT.D.client, msg->channel_id, &params, NULL);
+    goto _send_msg;
   }
   else {
     ///@todo add check to make sure embed is not over 6000 characters
-    json_item_t *title, *url;
+    json_item_t *data;
+    char title[EMBED_TITLE_LEN + 1]; // +1 to trigger auto-truncation
     size_t n_size = json_size(children);
     for (size_t i=0; i < n_size; ++i) {
-      title = json_get_child(json_get_byindex(children, i), "data.title");
-      url = json_get_child(json_get_byindex(children, i), "data.url");
+      data = json_get_child(json_get_byindex(children, i), "data");
+      snprintf(title, sizeof(title), "`%s` %s", \
+          json_get_string(json_get_child(data, "name"), NULL), 
+          json_get_string(json_get_child(data, "title"), NULL));
+
       discord_embed_add_field(
         &BOT.D.embed, 
-        json_get_string(title, NULL),
-        json_get_string(url, NULL),
+        title,
+        json_get_string(json_get_child(data, "url"), NULL),
         false);
     }
     snprintf(BOT.D.embed.description, sizeof(BOT.D.embed.description), "%zu results", n_size);
     discord_embed_set_footer(&BOT.D.embed, BOT.D.embed.description, NULL, NULL);
 
     params.embed = &BOT.D.embed;
-    discord_create_message(BOT.D.client, msg->channel_id, &params, NULL);
   }
 
   json_cleanup(root);
+
+_send_msg:
+  discord_create_message(BOT.D.client, msg->channel_id, &params, NULL);
+
   if (subreddits) free(subreddits);
+  if (before) free(before);
+  if (after) free(after);
 }
 
 void on_ready(struct discord *client, const struct discord_user *bot) {
