@@ -40,7 +40,7 @@ char* orka_timestamp_str(char *p_str, int len);
 
 size_t orka_str_to_ntl(char *str, size_t size, struct ntl_deserializer*);
 ssize_t orka_str_bounds_check(const char *str, const size_t threshold_len);
-char* orka_cat_strings(char** strings, const size_t nmemb, const char delim[], const size_t wordlen, const size_t maxlen);
+char* orka_join_strings(char** strings, const size_t nmemb, const char delim[], const size_t wordlen, const size_t maxlen);
 
 void gen_readlink(char *linkbuf, size_t linkbuf_size);
 

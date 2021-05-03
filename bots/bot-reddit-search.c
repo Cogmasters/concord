@@ -18,19 +18,19 @@
   "https://external-preview.redd.it/ei2UEblhohs09-oGeS6Ws14T2pOd37GN1_1VUzisvZE.png?auto=webp&s=9fc63c64245f6aa267d712c8b4ad885aa5555b7b"
 
 
-/* Read-Only after load_BOT */
 struct {
-  struct {
+  struct { /* REDDIT UTILS */
     struct reddit *client;
-    struct task_s *t_refresh_token;
-    struct task_s *t_search;
+    struct task_s *tsk_refresh_token;
+    struct task_s *tsk_search;
     struct reddit_search_params params;
     char *srs; // subreddits
-  } reddit;
-  struct {
+  } R;
+  struct { /* DISCORD UTILS */
     struct discord *client;
     NTL_T(ja_u64) channel_ids;
-  } discord;
+    struct discord_embed embed;
+  } D;
 } BOT;
 
 
@@ -47,16 +47,16 @@ void on_search(
     const char *end_srs = strchr(msg_content, ' ');
     if (!end_srs) {
       struct discord_create_message_params params = { .content = "Invalid syntax: Missing keywords" };
-      discord_create_message(BOT.discord.client, msg->channel_id, &params, NULL);
+      discord_create_message(BOT.D.client, msg->channel_id, &params, NULL);
       return;
     }
     const size_t size = end_srs - msg_content;
     for (size_t i=0; i < size; ++i) {
-      if (!(isalnum(msg_content[i]) || '_' == msg_content[i]) && msg_content[i] != '+') {
+      if ( !(isalnum(msg_content[i]) || '_' == msg_content[i]) && msg_content[i] != '+') {
         struct discord_create_message_params params = { 
           .content = "Invalid syntax: Subreddits must be separated with a '+'" 
         };
-        discord_create_message(BOT.discord.client, msg->channel_id, &params, NULL);
+        discord_create_message(BOT.D.client, msg->channel_id, &params, NULL);
         return;
       }
     }
@@ -69,10 +69,10 @@ void on_search(
     struct reddit_search_params params = { .q = msg_content };
     if (subreddits) {
       params.restrict_sr = true;
-      reddit_search(BOT.reddit.client, &params, subreddits, &json);
+      reddit_search(BOT.R.client, &params, subreddits, &json);
     }
     else {
-      reddit_search(BOT.reddit.client, &params, "all", &json);
+      reddit_search(BOT.R.client, &params, "all", &json);
     }
   }
 
@@ -88,19 +88,9 @@ void on_search(
   struct discord_create_message_params params = {0};
   if (!children) {
     params.content = "Couldn't retrieve any results";
-    discord_create_message(BOT.discord.client, msg->channel_id, &params, NULL);
+    discord_create_message(BOT.D.client, msg->channel_id, &params, NULL);
   }
   else {
-    struct discord_embed embed;
-    discord_embed_init(&embed);
-    embed.color = 0xff0000; // RED
-    snprintf(embed.title, sizeof(embed.title), "Reddit Search");
-    discord_embed_set_thumbnail(&embed, EMBED_THUMBNAIL, NULL, 100, 100);
-    discord_embed_set_author(&embed,
-        "designed & built by https://cee.dev",
-        "https://cee.dev",
-        "https://cee.dev/static/images/cee.png", NULL);
-
     ///@todo add check to make sure embed is not over 6000 characters
     json_item_t *title, *url;
     size_t n_size = json_size(children);
@@ -108,16 +98,16 @@ void on_search(
       title = json_get_child(json_get_byindex(children, i), "data.title");
       url = json_get_child(json_get_byindex(children, i), "data.url");
       discord_embed_add_field(
-        &embed, 
+        &BOT.D.embed, 
         json_get_string(title, NULL),
         json_get_string(url, NULL),
         false);
     }
-    snprintf(embed.description, sizeof(embed.description), "%zu results", n_size);
-    discord_embed_set_footer(&embed, embed.description, NULL, NULL);
+    snprintf(BOT.D.embed.description, sizeof(BOT.D.embed.description), "%zu results", n_size);
+    discord_embed_set_footer(&BOT.D.embed, BOT.D.embed.description, NULL, NULL);
 
-    params.embed = &embed;
-    discord_create_message(BOT.discord.client, msg->channel_id, &params, NULL);
+    params.embed = &BOT.D.embed;
+    discord_create_message(BOT.D.client, msg->channel_id, &params, NULL);
   }
 
   json_cleanup(root);
@@ -130,7 +120,7 @@ void on_ready(struct discord *client, const struct discord_user *bot) {
 }
 
 void refresh_reddit_access_token(void *data) {
-  reddit_access_token(BOT.reddit.client);
+  reddit_access_token(BOT.R.client);
 }
 
 void load_BOT(const char config_file[])
@@ -146,47 +136,56 @@ void load_BOT(const char config_file[])
       "(keywords):F"
       "(restrict_sr):b"
       "(subreddits):F",
-      &ja_u64_list_from_json, &BOT.discord.channel_ids,
+      &ja_u64_list_from_json, &BOT.D.channel_ids,
       &ja_str_list_from_json, &ja_q,
-      &BOT.reddit.params.restrict_sr, 
+      &BOT.R.params.restrict_sr, 
       &ja_str_list_from_json, &ja_sr);
-  assert(NULL != BOT.discord.channel_ids && "Missing 'discord_bind_channel_ids'");
+  assert(NULL != BOT.D.channel_ids && "Missing 'discord_bind_channel_ids'");
   assert(NULL != ja_q && "Missing 'keywords'");
   assert(NULL != ja_sr && "Missing 'subreddits'");
 
-  BOT.reddit.params.q = orka_cat_strings(
-                          (char**)(*ja_q), 
-                          ntl_length((ntl_t)ja_q), 
-                          " ", 
-                          512, 
-                          512);
-  assert(NULL != BOT.reddit.params.q && "Missing keywords");
+  BOT.R.params.q = \
+    orka_join_strings((char**)(*ja_q), ntl_length((ntl_t)ja_q), " ", 512, 512);
+  assert(NULL != BOT.R.params.q && "Missing keywords");
 
-  BOT.reddit.srs = orka_cat_strings(
-                            (char**)(*ja_sr), 
-                            ntl_length((ntl_t)ja_sr), 
-                            "+", 
-                            19,
-                            1024);
-  assert(NULL != BOT.reddit.srs && "Missing subreddits");
+  BOT.R.srs = \
+    orka_join_strings((char**)(*ja_sr), ntl_length((ntl_t)ja_sr), "+", 19, 1024);
+  assert(NULL != BOT.R.srs && "Missing subreddits");
 
-  BOT.reddit.params.limit = 100;
-  BOT.reddit.client = reddit_config_init(config_file);
 
-  BOT.reddit.t_refresh_token = task_init();
+  /**
+   * Initialize Reddit utils 
+   */
+  BOT.R.params.limit = 100;
+  BOT.R.client = reddit_config_init(config_file);
+
+  BOT.R.tsk_refresh_token = task_init();
   task_start(
-      BOT.reddit.t_refresh_token, 
+      BOT.R.tsk_refresh_token, 
       3600000, // start 1h from now
       3600000, // refresh every 1h
       NULL, 
       &refresh_reddit_access_token);
 
   // get the first one immediatelly
-  reddit_access_token(BOT.reddit.client);
+  reddit_access_token(BOT.R.client);
+  BOT.R.tsk_search = task_init();
 
-  BOT.reddit.t_search = task_init();
 
-  BOT.discord.client = discord_config_init(config_file);
+  /**
+   * Initialize Discord utils 
+   */
+  BOT.D.client = discord_config_init(config_file);
+  discord_embed_init(&BOT.D.embed);
+  BOT.D.embed.color = 0xff0000; // RED
+  snprintf(BOT.D.embed.title, \
+      sizeof(BOT.D.embed.title), "Reddit Search");
+  discord_embed_set_thumbnail(&BOT.D.embed, EMBED_THUMBNAIL, NULL, 100, 100);
+  discord_embed_set_author(
+      &BOT.D.embed,
+      "designed & built by https://cee.dev",
+      "https://cee.dev",
+      "https://cee.dev/static/images/cee.png", NULL);
 
 #if 0
   ja_str_list_free(ja_q);
@@ -196,12 +195,12 @@ void load_BOT(const char config_file[])
 
 void cleanup_BOT()
 {
-  task_cleanup(BOT.reddit.t_search);
-  task_cleanup(BOT.reddit.t_refresh_token);
-  free(BOT.reddit.params.q);
-  free(BOT.reddit.srs);
-  reddit_cleanup(BOT.reddit.client);
-  ja_u64_list_free(BOT.discord.channel_ids); 
+  task_cleanup(BOT.R.tsk_search);
+  task_cleanup(BOT.R.tsk_refresh_token);
+  free(BOT.R.params.q);
+  free(BOT.R.srs);
+  reddit_cleanup(BOT.R.client);
+  ja_u64_list_free(BOT.D.channel_ids); 
 }
 
 int main(int argc, char *argv[])
@@ -214,11 +213,11 @@ int main(int argc, char *argv[])
 
   load_BOT(config_file);
 
-  discord_set_prefix(BOT.discord.client, "reddit.");
-  discord_set_on_command(BOT.discord.client, "search", &on_search);
+  discord_set_prefix(BOT.D.client, "reddit.");
+  discord_set_on_command(BOT.D.client, "search", &on_search);
 
-  discord_set_on_ready(BOT.discord.client, &on_ready);
-  discord_run(BOT.discord.client);
+  discord_set_on_ready(BOT.D.client, &on_ready);
+  discord_run(BOT.D.client);
 
   cleanup_BOT();
 }

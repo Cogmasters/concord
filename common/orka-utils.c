@@ -263,13 +263,13 @@ orka_str_bounds_check(const char *str, const size_t threshold_len)
 }
 
 char* 
-orka_cat_strings(char** strings, const size_t nmemb, const char delim[], const size_t wordlen, const size_t maxlen)
+orka_join_strings(char** strings, const size_t nmemb, const char delim[], const size_t wordlen, const size_t maxlen)
 {
   char *buf = malloc(maxlen);
   char *cur = buf, * const end = cur + maxlen;
 
   for (size_t i=0; i < nmemb; ++i) {
-    VASSERT_S(orka_str_bounds_check(strings[i], wordlen) > 0,
+    VASSERT_S(orka_str_bounds_check(strings[i], wordlen) > 0, \
         "'%s' exceeds threshold of %zu characters", strings[i], wordlen);
     cur += snprintf(cur, end-cur, "%s%s", strings[i], delim);
     ASSERT_S(cur < end, "Out of bounds write attempt");
