@@ -1,5 +1,8 @@
+#define _GNU_SOURCE /* asprintf() */
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h> /* strchr() */
+#include <ctype.h> /* isalpha() */
 #include <assert.h>
 
 #include "reddit.h"
@@ -36,15 +39,46 @@ void on_search(
   const struct discord_user *bot,
   const struct discord_message *msg)
 {
+  char *subreddits = NULL;
+  char *msg_content = msg->content;
+  if ('#' == *msg_content) {
+    ++msg_content; // eat up '#'
+
+    const char *end_srs = strchr(msg_content, ' ');
+    if (!end_srs) {
+      struct discord_create_message_params params = { .content = "Invalid syntax: Missing keywords" };
+      discord_create_message(BOT.discord.client, msg->channel_id, &params, NULL);
+      return;
+    }
+    const size_t size = end_srs - msg_content;
+    for (size_t i=0; i < size; ++i) {
+      if (!(isalnum(msg_content[i]) || '_' == msg_content[i]) && msg_content[i] != '+') {
+        ERR("%s", msg_content+i);
+        struct discord_create_message_params params = { 
+          .content = "Invalid syntax: Subreddits must be separated with a '+'" 
+        };
+        discord_create_message(BOT.discord.client, msg->channel_id, &params, NULL);
+        return;
+      }
+    }
+    asprintf(&subreddits, "%.*s", (int)size, msg_content);
+    msg_content += size+1;
+  }
+
   struct sized_buffer json={0};
-  {
-    struct reddit_search_params params = { .q = msg->content };
-    reddit_search(BOT.reddit.client, &params, "all", &json);
+  { // anonymous block
+    struct reddit_search_params params = { .q = msg_content };
+    if (subreddits) {
+      params.restrict_sr = true;
+      reddit_search(BOT.reddit.client, &params, subreddits, &json);
+    }
+    else {
+      reddit_search(BOT.reddit.client, &params, "all", &json);
+    }
   }
 
   json_item_t *root = json_parse(json.start, json.size);
-
-  json_item_t *children=0;
+  json_item_t *children = NULL;
   for (json_item_t *ji = root; ji != NULL; ji = json_iter_next(ji)) {
     if (0 == json_keycmp(ji, "children")) {
       children = ji;
@@ -88,10 +122,10 @@ void on_search(
   }
 
   json_cleanup(root);
+  if (subreddits) free(subreddits);
 }
 
-void on_ready(struct discord *client, const struct discord_user *bot) 
-{
+void on_ready(struct discord *client, const struct discord_user *bot) {
   fprintf(stderr, "\n\nReddit-Search-Bot succesfully connected to Discord as %s#%s!\n\n",
       bot->username, bot->discriminator);
 }
