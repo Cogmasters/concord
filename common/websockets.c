@@ -312,7 +312,17 @@ cws_custom_new(struct websockets *ws, const char ws_protocols[])
 
 static bool _ws_close(struct websockets *ws)
 {
+  static const char reason[] = "Client initializes close";
+  static const enum cws_close_reason code = CWS_CLOSE_REASON_NORMAL;
+
   log_debug("_ws_close is called");
+  log_http(
+    ws->p_config, 
+    ws,
+    ws->base_url, 
+    (struct sized_buffer){(char*)reason, sizeof(reason)},
+    "WS_SEND_CLOSE");
+
   if (WS_DISCONNECTED == ws->status) {
     log_warn("[%s] Connection already closed", ws->tag);
     return false;
@@ -322,15 +332,13 @@ static bool _ws_close(struct websockets *ws)
     return false;
   }
   _ws_set_status_nolock(ws, WS_DISCONNECTING);
-  static char reason [] = "client initializes close";
 
-  enum cws_close_reason code = (enum cws_close_reason)WS_CLOSE_REASON_NORMAL;
   log_debug("[%s] Sending CLOSE(%d): %s", ws->tag, code, reason);
-  bool ret = cws_close(ws->ehandle, code, reason, sizeof reason);
-
-  if (false == ret)
+  if (!cws_close(ws->ehandle, code, reason, sizeof(reason))) {
     log_error("[%s] Couldn't send CLOSE(%d): %s", ws->tag, code, reason);
-  return ret;
+    return false;
+  }
+  return true;
 }
 
 enum ws_status ws_get_status(struct websockets *ws)
@@ -441,25 +449,25 @@ ws_start(struct websockets *ws)
   ws->tid = pthread_self(); // save the starting thread
   ws->tag = logconf_tag(ws->p_config, ws);
   ws->user_cmd = WS_USER_CMD_NONE;
-  VASSERT_S(false == ws_is_alive(ws), "[%s] Shutdown current WebSockets connection before calling ws_start() (Current status: %s)", ws->tag, _ws_status_print(ws->status));
-  VASSERT_S(NULL == ws->ehandle, "[%s] (Internal error) Attempt to reconnect without properly closing the connection", ws->tag);
+  VASSERT_S(false == ws_is_alive(ws), \
+      "[%s] Please shutdown current WebSockets connection before calling ws_start() (Current status: %s)", ws->tag, _ws_status_print(ws->status));
+  VASSERT_S(NULL == ws->ehandle, \
+      "[%s] (Internal error) Attempt to reconnect without properly closing the connection", ws->tag);
   ws->ehandle = cws_custom_new(ws, ws->protocols);
   curl_multi_add_handle(ws->mhandle, ws->ehandle);
   _ws_set_status(ws, WS_CONNECTING);  
 }
 
-static bool logging_after_exit = false;
+static bool logging_after_exit = false; /** @todo won't this activate for every active WS client ? */
 
 void // main-thread
 ws_perform(struct websockets *ws, bool *p_is_running, uint64_t wait_ms)
 {
   if (logging_after_exit)
     log_info("ws_perform after ws_exit_event_loop");
+  if (ws->tid != pthread_self())
+    ERR("ws_perform can only be called from the starting thread %u", ws->tid);
 
-  if (ws->tid != pthread_self()) {
-    log_fatal("ws_perform can only be called from the starting thread %u", ws->tid);
-    ABORT();
-  }
   int is_running = 0;
   CURLMcode mcode;
   int numfds = 0;
@@ -480,8 +488,7 @@ ws_perform(struct websockets *ws, bool *p_is_running, uint64_t wait_ms)
    *        example of pending read activities
    * @note Its worth noting that all websockets.c callbacks are
    *        inherently single-threaded. websockets.c doesn't create
-   *        new threads, but tries to synchronize if its functions are
-   *        being called outside of the main-thread.
+   *        new threads.
    */
   mcode = curl_multi_perform(ws->mhandle, &is_running);
   VASSERT_S(CURLM_OK == mcode, "[%s] (CURLM code: %d) %s", ws->tag, mcode, curl_multi_strerror(mcode));
@@ -517,15 +524,6 @@ ws_perform(struct websockets *ws, bool *p_is_running, uint64_t wait_ms)
       switch (ecode) {
       case CURLE_OK:
           log_info("[%s] Disconnected gracefully", ws->tag);
-          break;
-      case CURLE_READ_ERROR:
-          log_error("[%s] (CURLE code: %d) %s", \
-              ws->tag,
-                    ecode,
-                    IS_EMPTY_STRING(ws->errbuf)
-                    ? curl_easy_strerror(ecode)
-                    : ws->errbuf);
-          log_error("[%s] Disconnected abruptly", ws->tag);
           break;
       default:
           log_error("[%s] (CURLE code: %d) %s", \
