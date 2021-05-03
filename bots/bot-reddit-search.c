@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h> /* strchr() */
-#include <ctype.h> /* isalpha() */
+#include <ctype.h> /* isalnum() */
 #include <assert.h>
 
 #include "reddit.h"
@@ -53,7 +53,6 @@ void on_search(
     const size_t size = end_srs - msg_content;
     for (size_t i=0; i < size; ++i) {
       if (!(isalnum(msg_content[i]) || '_' == msg_content[i]) && msg_content[i] != '+') {
-        ERR("%s", msg_content+i);
         struct discord_create_message_params params = { 
           .content = "Invalid syntax: Subreddits must be separated with a '+'" 
         };
