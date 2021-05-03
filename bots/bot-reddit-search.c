@@ -69,14 +69,15 @@ void on_search(
         "https://cee.dev/static/images/cee.png", NULL);
 
     ///@todo add check to make sure embed is not over 6000 characters
-    json_item_t *data;
+    json_item_t *title, *url;
     size_t n_size = json_size(children);
     for (size_t i=0; i < n_size; ++i) {
-      data = json_get_branch(json_get_byindex(children, i), "data");
+      title = json_get_child(json_get_byindex(children, i), "data.title");
+      url = json_get_child(json_get_byindex(children, i), "data.url");
       discord_embed_add_field(
         &embed, 
-        json_get_string(json_get_branch(data, "title"), NULL),
-        json_get_string(json_get_branch(data, "url"), NULL),
+        json_get_string(title, NULL),
+        json_get_string(url, NULL),
         false);
     }
     snprintf(embed.description, sizeof(embed.description), "%zu results", n_size);

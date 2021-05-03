@@ -950,16 +950,23 @@ json_get_root(json_item_t *item)
 
 /* get item branch with given key */
 json_item_t*
-json_get_branch(json_item_t *item, const char *key)
+json_get_child(json_item_t *item, const char *key)
 {
     ASSERT_S(IS_COMPOSITE(item), "Not a composite");
-    if (NULL == key) return NULL;
+    if (!key) return NULL;
 
     /* search for entry with given key at item's comp,
       and retrieve found or not found(NULL) item */
-    for (size_t i=0; i < item->comp->num_branch; ++i) {
-        if (STREQ(item->comp->branch[i]->key, key))
+    for (size_t i=0, len; i < item->comp->num_branch; ++i) {
+        len = strlen(item->comp->branch[i]->key);
+        if (STRNEQ(item->comp->branch[i]->key, key, len)) {
+            if ('.' == key[len]) { // get child
+              item = item->comp->branch[i];
+              key += len+1;
+              continue;
+            }
             return item->comp->branch[i];
+        }
     }
     return NULL;
 }
@@ -968,7 +975,7 @@ json_item_t*
 json_get_sibling(const json_item_t* item, const char *key)
 {
     ASSERT_S(!IS_ROOT(item), "Item is root (has no siblings)");
-    return json_get_branch(item->parent, key);
+    return json_get_child(item->parent, key);
 }
 
 /* get origin item sibling by the relative index, if origin item is of index 3 (from parent's perspective), and relative index is -1, then this function will return item of index 2 (from parent's perspective) */
