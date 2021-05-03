@@ -123,7 +123,7 @@ reddit_search(
 #else
   char limit_query[64];
   snprintf(limit_query, sizeof(limit_query),
-      "?limit=%d", params->limit);
+      "&limit=%d", params->limit);
   char restrict_sr_query[32] = "";
   if (true == params->restrict_sr) {
     snprintf(restrict_sr_query, sizeof(restrict_sr_query),
@@ -146,12 +146,22 @@ reddit_search(
     snprintf(sort_query, sizeof(sort_query),
         "&sort=%s", params->sort);
   }
+  char before_query[32] = "";
+  if (params->before) {
+    snprintf(before_query, sizeof(before_query),
+        "&before=%s", params->before);
+  }
+  char after_query[32] = "";
+  if (params->after) {
+    snprintf(after_query, sizeof(after_query),
+        "&after=%s", params->after);
+  }
 
   reddit_adapter_run(
     &client->adapter,
     &resp_handle,
     NULL,
-    HTTP_GET, "/r/%s/search.json%s%s%s%s%s", 
-    subreddit, limit_query, restrict_sr_query, q_query, t_query, sort_query);
+    HTTP_GET, "/r/%s/search.json?raw_json=1%s%s%s%s%s%s%s", 
+    subreddit, limit_query, restrict_sr_query, q_query, t_query, sort_query, before_query, after_query);
 #endif
 }
