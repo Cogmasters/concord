@@ -263,6 +263,11 @@ conn_init(struct user_agent *ua, size_t conn_pos)
   ecode = curl_easy_setopt(new_ehandle, CURLOPT_HEADERDATA, &new_conn->resp_header);
   CURLE_CHECK(new_conn, ecode);
 
+#if defined(BEARSSL)
+  ecode = curl_easy_setopt(new_ehandle, CURLOPT_TIMEOUT, 0L); // never timeout
+  CURLE_CHECK(new_conn, ecode);
+#endif
+
   // execute user-defined curl_easy_setopts
   if (ua->setopt_cb) {
     (*ua->setopt_cb)(new_ehandle, ua->data);
@@ -580,8 +585,15 @@ send_request(struct user_agent *ua, struct ua_conn *conn)
   CURLcode ecode;
   
   ecode = curl_easy_perform(conn->ehandle);
+#ifdef BEARSSL
+  if (CURLE_READ_ERROR == ecode &&
+      strcmp(conn->errbuf, "SSL: EOF without close notify") == 0)
+    log_warn("The remote server closes connection without terminating ssl");
+  else
+    CURLE_CHECK(conn, ecode);
+#else
   CURLE_CHECK(conn, ecode);
-
+#endif
   conn->req_tstamp = orka_timestamp_ms();
 
   //get response's code

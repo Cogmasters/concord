@@ -202,7 +202,7 @@ cws_on_connect_cb(void *p_ws, CURL *ehandle, const char *ws_protocols)
 static void // main-thread
 cws_on_close_cb(void *p_ws, CURL *ehandle, enum cws_close_reason cwscode, const char *reason, size_t len)
 {
-  log_trace("cws_on_close_cb is called");
+  log_info("cws_on_close_cb is called");
   struct websockets *ws = p_ws;
   _ws_set_status(ws, WS_DISCONNECTING);
 
@@ -304,8 +304,8 @@ cws_custom_new(struct websockets *ws, const char ws_protocols[])
 
 #if defined(BEARSSL)
   curl_easy_setopt(new_ehandle, CURLOPT_TIMEOUT, 0L); // never timeout
-#endif
   CURLE_CHECK(ws, ecode);
+#endif
 
   return new_ehandle;
 }
@@ -525,6 +525,15 @@ ws_perform(struct websockets *ws, bool *p_is_running, uint64_t wait_ms)
       case CURLE_OK:
           log_info("[%s] Disconnected gracefully", ws->tag);
           break;
+      case CURLE_READ_ERROR:
+          log_error("[%s] (CURLE code: %d) %s", \
+              ws->tag,
+                    ecode,
+                    IS_EMPTY_STRING(ws->errbuf)
+                    ? curl_easy_strerror(ecode)
+                    : ws->errbuf);
+          log_error("[%s] Disconnected abruptly", ws->tag);
+          break;
       default:
           log_error("[%s] (CURLE code: %d) %s", \
               ws->tag,
@@ -576,8 +585,9 @@ bool ws_is_functional(struct websockets *ws)
 
 /*
  * It can be called from any thread to exit
- * ws event loop. The result will be one of the
- * followings:
+ * the ws event loop. Depending on the values of
+ * reconnect and is_resumable, the outer loop will
+ * do one of the followings:
  *
  *   1. reconnect: send out new identifier
  *   2. resume

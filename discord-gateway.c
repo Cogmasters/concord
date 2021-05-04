@@ -135,6 +135,7 @@ send_identify(struct discord_gateway *gw)
 static void
 on_hello(struct discord_gateway *gw)
 {
+  log_info("on_hello:%.*s", gw->payload.event_data.size, gw->payload.event_data.start);
   gw->hbeat.interval_ms = 0;
   gw->hbeat.tstamp = orka_timestamp_ms();
 
@@ -884,22 +885,27 @@ create_a_new_thread:
 static void
 on_invalid_session(struct discord_gateway *gw)
 {
+  log_info("on_invalid_session:%.*s",
+           gw->payload.event_data.size, gw->payload.event_data.start);
+
   gw->reconnect.enable = true;
-  if (true == (gw->is_resumable = strcmp(gw->payload.event_data.start, "false"))) {
-    log_warn("on_invalid_session: attempting to resume session");
-  }
-  else {
-    log_warn("on_invalid_session: attempting to restart session");
-  }
+  gw->is_resumable = strncmp(gw->payload.event_data.start,
+                             "false", gw->payload.event_data.size);
+
+  if (gw->is_resumable)
+    log_warn("on_invalid_session: is resumable");
+  else
+    log_warn("on_invalid_session: is not resumable");
   ws_exit_event_loop(gw->ws);
 }
 
 static void
 on_reconnect(struct discord_gateway *gw)
 {
-  log_warn("on_reconnect: attempting to resume session");
+  log_info("on_reconnect:%.*s",
+           gw->payload.event_data.size, gw->payload.event_data.start);
   gw->is_resumable = true;
-  gw->reconnect.enable = true;
+  //gw->reconnect.enable = true;
   ws_exit_event_loop(gw->ws);
 }
 
@@ -947,12 +953,22 @@ on_close_cb(void *p_gw, enum ws_close_reason wscode, const char *reason, size_t 
   case DISCORD_GATEWAY_CLOSE_REASON_INVALID_INTENTS:
   case DISCORD_GATEWAY_CLOSE_REASON_INVALID_SHARD:
   case DISCORD_GATEWAY_CLOSE_REASON_DISALLOWED_INTENTS:
-  default: //websocket/clouflare opcodes
-      gw->reconnect.enable = true;
       gw->is_resumable = false;
+      gw->reconnect.enable = false;
+      break;
+  default: //websocket/clouflare opcodes
+      if (opcode == WS_CLOSE_REASON_NORMAL) {
+        //gw->is_resumable = true;
+        //gw->reconnect.enable = true;
+      }
+      else {
+        log_warn("don't resume, but reconnect");
+        gw->is_resumable = false;
+        gw->reconnect.enable = true;
+      }
       break;
   case DISCORD_GATEWAY_CLOSE_REASON_SESSION_TIMED_OUT:
-      gw->reconnect.enable = false;
+      gw->reconnect.enable = true;
       gw->is_resumable = false;
       break;
   }
@@ -1037,7 +1053,8 @@ discord_gateway_init(struct discord_gateway *gw, struct logconf *config, struct 
   ws_set_url(gw->ws, BASE_GATEWAY_URL, NULL);
   logconf_add_id(config, gw->ws, "DISCORD_GATEWAY");
 
-  gw->reconnect.threshold = 10; /** hard limit for now */
+  gw->reconnect.threshold = 5; /** hard limit for now */
+  gw->reconnect.enable = true;
 
   if (STRNEQ("YOUR-BOT-TOKEN", token->start, token->size)) {
     token->start = NULL;
