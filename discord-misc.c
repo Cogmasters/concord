@@ -66,58 +66,77 @@ discord_delete_messages_by_author_id(
 }
 
 void
-discord_message_from_json(char *str, size_t len, struct discord_message *message)
+discord_message_from_json(char *json, size_t len, struct discord_message *p)
 {
-  if (message->nonce) {
-    free(message->nonce);
-    message->nonce = NULL;
-  }
-  if (message->content) {
-    free(message->content);
-    message->content = NULL;
-  }
+  p->referenced_message = discord_message_alloc();
 
-  message->referenced_message = discord_message_alloc();
+  static size_t ret=0; // used for debugging
+  size_t r=0;
+  r=json_extract(json, len, 
+                "(id):F,"
+                "(channel_id):F,"
+                "(guild_id):F,"
+                "(author):F,"
+                "(member):F,"
+                "(content):?s,"
+                "(timestamp):F,"
+                "(edited_timestamp):F,"
+                "(tts):b,"
+                "(mention_everyone):b,"
+                "(mentions):F,"
+                "(mention_roles):F,"
+                "(mention_channels):F,"
+                "(attachments):F,"
+                "(embeds):F,"
+                "(reactions):F,"
+                "(nonce):?s,"
+                "(pinned):b,"
+                "(webhook_id):F,"
+                "(type):d,"
+                "(activity):F,"
+                "(application):F,"
+                "(message_reference):F,"
+                "(flags):d,"
+                "(stickers):F,"
+                "(referenced_message):F,"
+                "@arg_switches:b"
+                "@record_defined"
+                "@record_null",
+                orka_strtoull, &p->id,
+                orka_strtoull, &p->channel_id,
+                orka_strtoull, &p->guild_id,
+                discord_user_from_json, p->author,
+                discord_guild_member_from_json, p->member,
+                &p->content,
+                orka_iso8601_to_unix_ms, &p->timestamp,
+                orka_iso8601_to_unix_ms, &p->edited_timestamp,
+                &p->tts,
+                &p->mention_everyone,
+                discord_user_list_from_json, &p->mentions,
+                ja_u64_list_from_json, &p->mention_roles,
+                discord_channel_mention_list_from_json, &p->mention_channels,
+                discord_channel_attachment_list_from_json, &p->attachments,
+                discord_embed_list_from_json, &p->embeds,
+                discord_channel_reaction_list_from_json, &p->reactions,
+                &p->nonce,
+                &p->pinned,
+                orka_strtoull, &p->webhook_id,
+                &p->type,
+                discord_message_activity_from_json, p->activity,
+                discord_message_application_list_from_json, &p->application,
+                discord_message_reference_from_json, p->message_reference,
+                &p->flags,
+                discord_message_sticker_list_from_json, &p->stickers,
+                discord_message_from_json, p->referenced_message,
+                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
+                p->__M.record_defined, sizeof(p->__M.record_defined),
+                p->__M.record_null, sizeof(p->__M.record_null));
 
-  json_scanf(str, len,
-     "[id]%F"
-     "[channel_id]%F"
-     "[guild_id]%F"
-     "[author]%F"
-     "[member]%F"
-     "[content]%?s"
-     "[timestamp]%F"
-     "[edited_timestamp]%F"
-     "[tts]%b"
-     "[mention_everyone]%b"
-     //"[mentions]%F"
-     "[nonce]%?s"
-     "[pinned]%b"
-     "[webhook_id]%F"
-     "[type]%d"
-     "[flags]%d"
-     "[referenced_message]%F",
-      &orka_strtoull, &message->id,
-      &orka_strtoull, &message->channel_id,
-      &orka_strtoull, &message->guild_id,
-      &discord_user_from_json, message->author,
-      &discord_guild_member_from_json, message->member,
-      &message->content,
-      &orka_iso8601_to_unix_ms, &message->timestamp,
-      &orka_iso8601_to_unix_ms, &message->edited_timestamp,
-      &message->tts,
-      &message->mention_everyone,
-      &message->nonce,
-      &message->pinned,
-      &orka_strtoull, &message->webhook_id,
-      &message->type,
-      &message->flags,
-      &discord_message_from_json, message->referenced_message);
-
-  if(!message->referenced_message->id) {
-    discord_message_free(message->referenced_message);
-    message->referenced_message = NULL;
+  if(!p->referenced_message->id) {
+    discord_message_free(p->referenced_message);
+    p->referenced_message = NULL;
   }
+  ret = r;
 }
 
 void discord_channel_overwrite_from_json(char *json, size_t len, struct discord_channel_overwrite *p)
