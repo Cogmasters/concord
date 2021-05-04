@@ -48,7 +48,7 @@
 - [ ] [Modify Channel](https://discord.com/developers/docs/resources/channel#modify-channel)
 - [x] [Delete/Close Channel](https://discord.com/developers/docs/resources/channel#deleteclose-channel)
 - [x] [Get Channel Messages](https://discord.com/developers/docs/resources/channel#get-channel-messages)
-- [ ] [Get Channel Message](https://discord.com/developers/docs/resources/channel#get-channel-message)
+- [x] [Get Channel Message](https://discord.com/developers/docs/resources/channel#get-channel-message)
 - [x] [Create Message](https://discord.com/developers/docs/resources/channel#create-message)
 - [ ] [Crosspost Message](https://discord.com/developers/docs/resources/channel#crosspost-message)
 - [ ] [Create Reaction](https://discord.com/developers/docs/resources/channel#create-reaction)

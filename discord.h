@@ -483,6 +483,7 @@ void discord_delete_channel(struct discord *client, const u64_snowflake_t channe
 void discord_add_pinned_channel_message(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id);
 void discord_delete_pinned_channel_message(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id);
 void discord_get_channel_messages(struct discord *client, const u64_snowflake_t channel_id, struct discord_get_channel_messages_params *params, NTL_T(struct discord_message) *p_messages);
+void discord_get_channel_message(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id, struct discord_message *p_message);
 void discord_delete_message(struct discord *client, u64_snowflake_t channel_id, u64_snowflake_t message_id);
 void discord_bulk_delete_messages(struct discord *client, u64_snowflake_t channel_id, NTL_T(u64_snowflake_t) messages);
 void discord_create_message(struct discord *client, const u64_snowflake_t channel_id, struct discord_create_message_params *params, struct discord_message *p_message);

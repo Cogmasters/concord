@@ -148,6 +148,37 @@ discord_get_channel_messages(
 }
 
 void
+discord_get_channel_message(
+  struct discord *client, 
+  const u64_snowflake_t channel_id, 
+  const u64_snowflake_t message_id,
+  struct discord_message *p_message)
+{
+  if (!channel_id) {
+    log_error("Missing 'channel_id'");
+    return;
+  }
+  if (!message_id) {
+    log_error("Missing 'message_id'");
+    return;
+  }
+  if (!p_message) {
+    log_error("Missing 'p_message'");
+    return;
+  }
+
+  struct ua_resp_handle resp_handle = 
+    { .ok_cb = &discord_message_from_json_v, .ok_obj = p_message };
+
+  discord_adapter_run(
+    &client->adapter,
+    &resp_handle,
+    NULL,
+    HTTP_GET,
+    "/channels/%"PRIu64"/messages/%"PRIu64, channel_id, message_id);
+}
+
+void
 discord_delete_message(
   struct discord *client, 
   u64_snowflake_t channel_id, 
