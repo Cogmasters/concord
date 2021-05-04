@@ -895,7 +895,7 @@ json_clone(json_item_t *item)
 char*
 json_typeof(const json_item_t *item)
 {
-    if (NULL == item) return "JSON_UNDEFINED";
+    if (NULL == item) return "NO ITEM (NULL)";
 
     switch (item->type){
     CASE_RETURN_STR(JSON_NUMBER);
@@ -904,9 +904,8 @@ json_typeof(const json_item_t *item)
     CASE_RETURN_STR(JSON_BOOLEAN);
     CASE_RETURN_STR(JSON_OBJECT);
     CASE_RETURN_STR(JSON_ARRAY);
+    default:
     CASE_RETURN_STR(JSON_UNDEFINED);
-
-    default: return "JSON_UNDEFINED";
     }
 }
 
@@ -952,21 +951,32 @@ json_get_root(json_item_t *item)
 json_item_t*
 json_get_child(json_item_t *item, const char *key)
 {
-    ASSERT_S(IS_COMPOSITE(item), "Not a composite");
-    if (!key) return NULL;
+    if (!IS_COMPOSITE(item)) {
+      log_error("Can't get child from '%s' (item type is %s)", 
+          json_get_key(item), json_typeof(item));
+      return NULL;
+    }
+    if (!key) {
+      log_error("Missing 'key'");
+      return NULL;
+    }
 
     /* search for entry with given key at item's comp,
       and retrieve found or not found(NULL) item */
-    for (size_t i=0, len; i < item->comp->num_branch; ++i) {
-        len = strlen(item->comp->branch[i]->key);
-        if (STRNEQ(item->comp->branch[i]->key, key, len)) {
-            if ('.' == key[len]) { // get child
-              item = item->comp->branch[i];
-              key += len+1;
-              continue;
+    json_item_t *ji = item;
+    size_t i=0, len;
+    while (i < json_size(ji)) {
+        len = strlen(ji->comp->branch[i]->key);
+        if (STRNEQ(ji->comp->branch[i]->key, key, len)) {
+            if ('.' == key[len]) {
+                ji = ji->comp->branch[i]; // get child
+                i = 0; // reset branch counter
+                key += len+1; // skip to next key
+                continue;
             }
-            return item->comp->branch[i];
+            return ji->comp->branch[i];
         }
+        ++i;
     }
     return NULL;
 }
