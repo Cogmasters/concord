@@ -25,7 +25,7 @@ struct _route_s {
 void
 discord_bucket_try_cooldown(struct discord_bucket *bucket)
 {
-  if (NULL == bucket) return; /* EARLY RETURN */
+  if (!bucket) return; /* EARLY RETURN */
 
   pthread_mutex_lock(&bucket->lock);
   ++bucket->busy;

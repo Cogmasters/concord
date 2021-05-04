@@ -33,7 +33,6 @@ discord_adapter_init(struct discord_adapter *adapter, struct logconf *config, st
   ASSERT_S(ret < sizeof(auth), "Out of bounds write attempt");
 
   ua_reqheader_add(adapter->ua, "Authorization", auth);
-  ua_reqheader_add(adapter->ua, "X-RateLimit-Precision", "millisecond");
 
   if (pthread_mutex_init(&adapter->ratelimit.lock, NULL))
     ERR("Couldn't initialize pthread mutex");
@@ -99,25 +98,24 @@ on_failure_cb(void *p_cxt, int httpcode, struct ua_conn *conn)
       return UA_ABORT;
   case HTTP_TOO_MANY_REQUESTS:
    {
-      char message[256];
-      double retry_after_ms = 0;
-      struct sized_buffer body = ua_conn_get_resp_body(conn);
+      char message[256]="";
+      double retry_after=-1; // seconds
 
+      struct sized_buffer body = ua_conn_get_resp_body(conn);
       json_extract(body.start, body.size,
                   "(message):s (retry_after):lf",
-                  message, &retry_after_ms);
+                  message, &retry_after);
 
-      if (retry_after_ms) { // retry after attribute received
-        log_warn("RATELIMIT MESSAGE:\n\t%s (wait: %.lf ms)", message, retry_after_ms);
+      if (retry_after != -1) { // retry after attribute received
+        log_warn("%s (wait: %.2lf s)", message, retry_after);
 
-        ua_block_ms(cxt->adapter->ua, (uint64_t)retry_after_ms);
+        ua_block_ms(cxt->adapter->ua, (uint64_t)(1000*retry_after));
 
         return UA_RETRY;
       }
       
       // no retry after included, we should abort
-
-      log_fatal("RATELIMIT MESSAGE:\n\t%s", message);
+      log_fatal("%s", message);
       return UA_ABORT;
    }
   }
