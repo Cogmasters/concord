@@ -30,18 +30,16 @@ struct {
   struct { /* DISCORD UTILS */
     struct discord *client;
     NTL_T(ja_u64) channel_ids;
-    struct discord_embed embed;
   } D;
 } BOT;
 
-
-void on_search(
+void post_reddit_results(
   struct discord *client, 
-  const struct discord_user *bot,
-  const struct discord_message *msg)
+  char *start, 
+  u64_snowflake_t channel_id)
 {
-  char *start = msg->content;
-  struct discord_create_message_params params = {0};
+  struct discord_create_message_params params={};
+  struct discord_message *p_msg = discord_message_alloc();
 
   char *subreddits=NULL, *before=NULL, *after=NULL;
   if ('?' == *start) { // '?' means query string attached
@@ -51,7 +49,7 @@ void on_search(
     char *end = strchr(start, ' ');
     if (!end) {
       params.content = "Invalid syntax: Missing space between query and keywords";
-      goto _send_msg;
+      goto send_message;
     }
 
     // parse query variables, values and next (if any)
@@ -61,7 +59,7 @@ void on_search(
       value = strchr(var, '=');
       if (!value) {
         params.content = "Invalid syntax: Missing value from query string";
-        goto _send_msg;
+        goto send_message;
       }
       ++value; // eat up '='
 
@@ -76,7 +74,7 @@ void on_search(
           default:
               if (!isalnum(value[i])) {
                 params.content = "Invalid syntax: Subreddits must be separated with a '+'";
-                goto _send_msg;
+                goto send_message;
               }
           case '_': 
           case '+':
@@ -93,7 +91,7 @@ void on_search(
       }
       else {
         params.content = "Invalid query command";
-        goto _send_msg;
+        goto send_message;
       }
 
       start = next+1;
@@ -117,43 +115,109 @@ void on_search(
     }
   }
 
+  struct discord_embed embed;
+  discord_embed_init(&embed);
+  embed.color = 0xff0000; // RED
+  snprintf(embed.title, sizeof(embed.title), "Reddit Search");
+  discord_embed_set_thumbnail(&embed, EMBED_THUMBNAIL, NULL, 100, 100);
+  discord_embed_set_author(
+      &embed,
+      "designed & built by https://cee.dev",
+      "https://cee.dev",
+      "https://cee.dev/static/images/cee.png", NULL);
+
   json_item_t *root = json_parse(json.start, json.size);
   json_item_t *children = json_get_child(root, "data.children");
   if (!children) {
     params.content = "Couldn't retrieve any results";
-    goto _send_msg;
+    goto send_message;
   }
-  else {
-    ///@todo add check to make sure embed is not over 6000 characters
-    json_item_t *data;
-    char title[EMBED_TITLE_LEN + 1]; // +1 to trigger auto-truncation
-    size_t n_size = json_size(children);
-    for (size_t i=0; i < n_size; ++i) {
-      data = json_get_child(json_get_byindex(children, i), "data");
-      snprintf(title, sizeof(title), "`%s` %s", \
-          json_get_string(json_get_child(data, "name"), NULL), 
-          json_get_string(json_get_child(data, "title"), NULL));
-
-      discord_embed_add_field(
-        &BOT.D.embed, 
-        title,
-        json_get_string(json_get_child(data, "url"), NULL),
-        false);
-    }
-    snprintf(BOT.D.embed.description, sizeof(BOT.D.embed.description), "%zu results", n_size);
-    discord_embed_set_footer(&BOT.D.embed, BOT.D.embed.description, NULL, NULL);
-
-    params.embed = &BOT.D.embed;
+  
+  ///@todo add check to make sure embed is not over 6000 characters
+  json_item_t *data;
+  char title[EMBED_TITLE_LEN + 1]; // +1 to trigger auto-truncation
+  size_t n_size = json_size(children);
+  for (size_t i=0; i < n_size; ++i) {
+    data = json_get_child(json_get_byindex(children, i), "data");
+    snprintf(title, sizeof(title), "`%s` %s", \
+        json_get_string(json_get_child(data, "name"), NULL), 
+        json_get_string(json_get_child(data, "title"), NULL));
+    discord_embed_add_field(
+      &embed, 
+      title,
+      json_get_string(json_get_child(data, "url"), NULL),
+      false);
   }
+  snprintf(embed.description, sizeof(embed.description), "%zu results", n_size);
+
+  char footer[EMBED_FOOTER_TEXT_LEN];
+  snprintf(footer, sizeof(footer), "➡️ %s\t🔎 %s", \
+      json_get_string(json_get_child(root, "data.after"), NULL), \
+      start);
+  discord_embed_set_footer(&embed, footer, NULL, NULL);
+
+  params.embed = &embed;
 
   json_cleanup(root);
 
-_send_msg:
-  discord_create_message(BOT.D.client, msg->channel_id, &params, NULL);
+send_message:
 
-  if (subreddits) free(subreddits);
-  if (before) free(before);
-  if (after) free(after);
+  discord_create_message(BOT.D.client, channel_id, &params, p_msg);
+  if (params.embed) {
+    discord_create_reaction(client, channel_id, p_msg->id, 0, "➡️");
+    discord_create_reaction(client, channel_id, p_msg->id, 0, "❌");
+    discord_embed_cleanup(params.embed);
+  }
+
+  if (subreddits) 
+    free(subreddits);
+  if (before) 
+    free(before);
+  if (after) 
+    free(after);
+
+  discord_message_free(p_msg);
+}
+
+void on_reaction_add(
+    struct discord *client,
+    const struct discord_user *bot,
+    const uint64_t user_id, 
+    const uint64_t channel_id, 
+    const uint64_t message_id, 
+    const uint64_t guild_id, 
+    const struct discord_guild_member *member,
+    const struct discord_emoji *emoji)
+{ 
+  if (member->user->bot) return;
+
+  struct discord_message *msg = discord_message_alloc();
+  discord_get_channel_message(client, channel_id, message_id, msg);
+  if (msg->author->id == bot->id && msg->embeds) {
+    char after[16]="", keywords[512]="";
+    sscanf(msg->embeds[0]->footer->text, "➡️ %s\t🔎 %[^\n]", after, keywords);
+    char text[MAX_MESSAGE_LEN];
+    if (strcmp(after, "(null)") && 0 == strcmp(emoji->name, "➡️")) {
+      snprintf(text, sizeof(text), "?after=%s %s", after, keywords);
+      discord_delete_message(client, channel_id, message_id);
+      post_reddit_results(client, text, channel_id);
+    }
+    else if (0 == strcmp(emoji->name, "❌")) {
+      discord_delete_message(client, channel_id, message_id);
+    }
+  }
+
+  discord_message_free(msg);
+}
+
+
+void on_search(
+  struct discord *client, 
+  const struct discord_user *bot,
+  const struct discord_message *msg)
+{
+  if (msg->author->bot) return;
+  post_reddit_results(client, msg->content, msg->channel_id);
 }
 
 void on_ready(struct discord *client, const struct discord_user *bot) {
@@ -167,7 +231,7 @@ void refresh_reddit_access_token(void *data) {
 
 void load_BOT(const char config_file[])
 {
-  struct sized_buffer json={0};
+  struct sized_buffer json={};
   json.start = orka_load_whole_file(SEARCH_PARAMS_FILE, &json.size);
   assert(NULL != json.start && "Missing search config file!");
 
@@ -218,17 +282,6 @@ void load_BOT(const char config_file[])
    * Initialize Discord utils 
    */
   BOT.D.client = discord_config_init(config_file);
-  discord_embed_init(&BOT.D.embed);
-  BOT.D.embed.color = 0xff0000; // RED
-  snprintf(BOT.D.embed.title, \
-      sizeof(BOT.D.embed.title), "Reddit Search");
-  discord_embed_set_thumbnail(&BOT.D.embed, EMBED_THUMBNAIL, NULL, 100, 100);
-  discord_embed_set_author(
-      &BOT.D.embed,
-      "designed & built by https://cee.dev",
-      "https://cee.dev",
-      "https://cee.dev/static/images/cee.png", NULL);
-
 #if 0
   ja_str_list_free(ja_q);
   ja_str_list_free(ja_sr);
@@ -257,6 +310,7 @@ int main(int argc, char *argv[])
 
   discord_set_prefix(BOT.D.client, "reddit.");
   discord_set_on_command(BOT.D.client, "search", &on_search);
+  discord_set_on_message_reaction_add(BOT.D.client, &on_reaction_add);
 
   discord_set_on_ready(BOT.D.client, &on_ready);
   discord_run(BOT.D.client);
