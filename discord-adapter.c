@@ -100,17 +100,17 @@ on_failure_cb(void *p_cxt, int httpcode, struct ua_conn *conn)
   case HTTP_TOO_MANY_REQUESTS:
    {
       char message[256];
-      long long retry_after_ms = 0;
+      double retry_after_ms = 0;
       struct sized_buffer body = ua_conn_get_resp_body(conn);
 
       json_extract(body.start, body.size,
-                  "(message):s (retry_after):lld",
+                  "(message):s (retry_after):lf",
                   message, &retry_after_ms);
 
       if (retry_after_ms) { // retry after attribute received
-        log_warn("RATELIMIT MESSAGE:\n\t%s (wait: %lld ms)", message, retry_after_ms);
+        log_warn("RATELIMIT MESSAGE:\n\t%s (wait: %.lf ms)", message, retry_after_ms);
 
-        ua_block_ms(cxt->adapter->ua, retry_after_ms);
+        ua_block_ms(cxt->adapter->ua, (uint64_t)retry_after_ms);
 
         return UA_RETRY;
       }
