@@ -7,8 +7,6 @@
 #include "debug.h"
 
 
-//using namespace discord;
-
 u64_snowflake_t
 select_guild(struct discord *client)
 {
