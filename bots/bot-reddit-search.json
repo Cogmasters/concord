@@ -4,9 +4,9 @@
     "C Discord library", 
     "Segfault"
   ],
-  "restrict_sr": false,
   "subreddits": [
     "discordapp",
     "c_programming"
-  ]
+  ],
+  "before":null
 }
