@@ -39,6 +39,7 @@ embed_reddit_search_result(
   char subreddits[], 
   char before[],
   char after[],
+  char sort[],
   char keywords[])
 {
   struct sized_buffer search_json={0};
@@ -46,7 +47,8 @@ embed_reddit_search_result(
     struct reddit_search_params params = { 
       .q = (keywords && *keywords) ? keywords : NULL,
       .before = (before && *before) ? before : NULL,
-      .after = (after && *after) ? after : NULL
+      .after = (after && *after) ? after : NULL,
+      .sort = (sort && *sort) ? sort : NULL
     };
 
     if (subreddits && *subreddits)
@@ -131,6 +133,7 @@ void on_reaction_add(
                         subreddits, 
                         before, 
                         NULL, 
+                        "relevance",
                         keywords);
 
       if (!params.embed) {
@@ -160,6 +163,7 @@ void on_reaction_add(
                         subreddits, 
                         NULL, 
                         after, 
+                        "relevance",
                         keywords);
 
       if (!params.embed) {
@@ -263,6 +267,7 @@ void on_search(
                     subreddits, 
                     before, 
                     after, 
+                    "relevance",
                     msg_content);
 
   if (!params.embed) {
@@ -300,6 +305,7 @@ void search_reddit_cb(void *data)
             BOT.R.srs, 
             BOT.R.params.before, 
             NULL, 
+            BOT.R.params.sort,
             BOT.R.params.q);
 
   if (!embed || !embed->fields) {
@@ -342,30 +348,36 @@ void load_BOT(const char config_file[])
   assert(NULL != BOT.json.start && "Missing json file!");
 
   bool enable=false;
+  int refresh_seconds=0;
   NTL_T(ja_str) ja_q=NULL;
   NTL_T(ja_str) ja_sr=NULL;
   json_extract(BOT.json.start, BOT.json.size,
       "(enable):b"
+      "(refresh_seconds):d"
+      "(sort):?s"
       "(discord_bind_channel_ids):F" 
       "(keywords):F"
       "(subreddits):F"
       "(before):?s",
       &enable,
+      &refresh_seconds,
+      &BOT.R.params.sort,
       &ja_u64_list_from_json, &BOT.D.channel_ids,
       &ja_str_list_from_json, &ja_q,
       &ja_str_list_from_json, &ja_sr,
       &BOT.R.params.before);
   assert(NULL != BOT.D.channel_ids && "Missing 'discord_bind_channel_ids'");
   assert(NULL != ja_q && "Missing 'keywords'");
-  assert(NULL != ja_sr && "Missing 'subreddits'");
 
   BOT.R.params.q = \
     orka_join_strings((char**)(*ja_q), ntl_length((ntl_t)ja_q), " ", 512, 512);
   assert(NULL != BOT.R.params.q && "Missing keywords");
 
-  BOT.R.srs = \
-    orka_join_strings((char**)(*ja_sr), ntl_length((ntl_t)ja_sr), "+", 19, 1024);
-  assert(NULL != BOT.R.srs && "Missing subreddits");
+  if (ja_sr) {
+    BOT.R.srs = \
+      orka_join_strings((char**)(*ja_sr), ntl_length((ntl_t)ja_sr), "+", 19, 1024);
+    assert(NULL != BOT.R.srs && "Missing subreddits");
+  }
 
   /**
    * Initialize Discord utils 
@@ -394,7 +406,7 @@ void load_BOT(const char config_file[])
     task_start(
         BOT.R.tsk_search, 
         10000, // start 10s from now
-        10000, // refresh every 10s
+        refresh_seconds*1000,
         NULL, 
         &search_reddit_cb);
   }
