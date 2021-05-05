@@ -36,25 +36,24 @@ struct {
 
 struct discord_embed* 
 embed_reddit_search_result(
-  char *subreddits, 
-  char *before,
-  char *after,
-  char *keywords)
+  char subreddits[], 
+  char before[],
+  char after[],
+  char keywords[])
 {
   struct sized_buffer search_json={0};
   { // anonymous block
     struct reddit_search_params params = { 
-      .q = keywords,
-      .before = before,
-      .after = after
+      .q = (keywords && *keywords) ? keywords : NULL,
+      .before = (before && *before) ? before : NULL,
+      .after = (after && *after) ? after : NULL
     };
-    if (subreddits) {
+
+    if (subreddits && *subreddits)
       params.restrict_sr = true;
-      reddit_search(BOT.R.client, &params, subreddits, &search_json);
-    }
-    else {
-      reddit_search(BOT.R.client, &params, "all", &search_json);
-    }
+    else
+      subreddits = "all";
+    reddit_search(BOT.R.client, &params, subreddits, &search_json);
   }
 
   struct discord_embed *embed = discord_embed_alloc();
@@ -89,9 +88,7 @@ embed_reddit_search_result(
   snprintf(embed->description, sizeof(embed->description), "%zu results", n_size);
 
   char footer[EMBED_FOOTER_TEXT_LEN];
-  snprintf(footer, sizeof(footer), "➡️ %s\t🔎 %s", \
-      json_get_string(json_get_child(root, "data.after"), NULL), \
-      keywords);
+  snprintf(footer, sizeof(footer), "🔎 %s\t🔗 %s", keywords, subreddits);
   discord_embed_set_footer(embed, footer, NULL, NULL);
 
   json_cleanup(root);
@@ -117,16 +114,50 @@ void on_reaction_add(
   discord_get_channel_message(client, channel_id, message_id, msg);
 
   if (msg->author->id == bot->id && msg->embeds) {
-    char after[16]="", keywords[512]="";
-    if (msg->embeds) {
-      sscanf(msg->embeds[0]->footer->text, "➡️ %s\t🔎 %[^\n]", \
-          after, keywords);
+    char keywords[512]="", subreddits[1024]="";
+    struct discord_embed *embed = msg->embeds[0];
+    if (!embed->fields) {
+      discord_message_free(msg);
+      return; /* EARLY RETURN */
     }
+    size_t size = ntl_length((ntl_t)embed->fields);
+    sscanf(embed->footer->text, "🔎 %[^\t]\t🔗 %[^\n]", keywords, subreddits);
 
-    if (strcmp(after, "(null)") && 0 == strcmp(emoji->name, "➡️")) 
-    {
+    if (0 == strcmp(emoji->name, "⬅️")) {
+      char before[16]="";
+      sscanf(embed->fields[0]->name, "`%[^`]", before);
+
       params.embed = embed_reddit_search_result(
+                        subreddits, 
+                        before, 
                         NULL, 
+                        keywords);
+
+      if (!params.embed) {
+        params.content = "Couldn't complete search";
+        discord_create_message(client, channel_id, &params, NULL);
+      }
+      else {
+        struct discord_message *ret = discord_message_alloc();
+
+        discord_delete_message(client, channel_id, message_id);
+
+        discord_create_message(client, channel_id, &params, ret);
+        discord_create_reaction(client, channel_id, ret->id, 0, "⬅️");
+        discord_create_reaction(client, channel_id, ret->id, 0, "➡️");
+        discord_create_reaction(client, channel_id, ret->id, 0, "❌");
+
+        discord_embed_free(params.embed);
+        discord_message_free(ret);
+      }
+    }
+    else if (0 == strcmp(emoji->name, "➡️"))
+    {
+      char after[16]="";
+      sscanf(embed->fields[size-1]->name, "`%[^`]", after);
+
+      params.embed = embed_reddit_search_result(
+                        subreddits, 
                         NULL, 
                         after, 
                         keywords);
@@ -141,6 +172,7 @@ void on_reaction_add(
         discord_delete_message(client, channel_id, message_id);
 
         discord_create_message(client, channel_id, &params, ret);
+        discord_create_reaction(client, channel_id, ret->id, 0, "⬅️");
         discord_create_reaction(client, channel_id, ret->id, 0, "➡️");
         discord_create_reaction(client, channel_id, ret->id, 0, "❌");
 
@@ -166,41 +198,41 @@ void on_search(
 
   struct discord_create_message_params params={};
 
-  char *subreddits=NULL, *before=NULL, *after=NULL;
+  char subreddits[1024]="", before[16]="", after[16]="";
   char *msg_content = msg->content;
   if ('?' == *msg_content) { // '?' means separate query from keywords
     ++msg_content; // eat up '?'
     
     // there should be a space between query string and keywords
-    char *end = strchr(msg_content, ' ');
-    if (!end) {
+    char *query_end = strchr(msg_content, ' ');
+    if (!query_end) {
       params.content = "Invalid syntax: Missing space between query and keywords";
       discord_create_message(client, msg->channel_id, &params, NULL);
       return; /* EARLY RETURN */
     }
 
     // parse query variables, values and next_var (if any)
-    char *var, *value, *next_var;
+    char *query_var, *query_value, *query_next_var;
     do {
-      var = msg_content;
-      value = strchr(var, '=');
-      if (!value) {
+      query_var = msg_content;
+      query_value = strchr(query_var, '=');
+      if (!query_value) {
         params.content = "Invalid syntax: Missing value from query string";
         discord_create_message(client, msg->channel_id, &params, NULL);
         return; /* EARLY RETURN */
       }
-      ++value; // eat up '='
+      ++query_value; // eat up '='
 
-      if (!(next_var = strchr(var, '&')))
-        next_var = end; // last query string
+      if (!(query_next_var = strchr(query_var, '&')))
+        query_next_var = query_end; // last query string
 
-      ptrdiff_t size = next_var - value;
-      if (0 == strncmp(var, "srs", 3)) // subreddits
+      ptrdiff_t query_size = query_next_var - query_value;
+      if (0 == strncmp(query_var, "srs", 3)) // subreddits
       {
-        for (size_t i=0; i < size; ++i) {
-          switch (value[i]) {
+        for (size_t i=0; i < query_size; ++i) {
+          switch (query_value[i]) {
           default:
-              if (!isalnum(value[i])) {
+              if (!isalnum(query_value[i])) {
                 params.content = "Invalid syntax: Subreddits must be separated with a '+'";
                 discord_create_message(client, msg->channel_id, &params, NULL);
                 return; /* EARLY RETURN */
@@ -210,21 +242,21 @@ void on_search(
               break;
           }
         }
-        asprintf(&subreddits, "%.*s", (int)size, value);
+        snprintf(subreddits, sizeof(subreddits), "%.*s", (int)query_size, query_value);
       }
-      else if (0 == strncmp(var, "before", 6))
-        asprintf(&before, "%.*s", (int)size, value);
-      else if (0 == strncmp(var, "after", 5))
-        asprintf(&after, "%.*s", (int)size, value);
+      else if (0 == strncmp(query_var, "before", 6))
+        snprintf(before, sizeof(before), "%.*s", (int)query_size, query_value);
+      else if (0 == strncmp(query_var, "after", 5))
+        snprintf(after, sizeof(after), "%.*s", (int)query_size, query_value);
       else {
         params.content = "Invalid query command";
         discord_create_message(client, msg->channel_id, &params, NULL);
         return; /* EARLY RETURN */
       }
 
-      msg_content = next_var+1;
+      msg_content = query_next_var+1;
 
-    } while (msg_content < end);
+    } while (msg_content < query_end);
   }
 
   params.embed = embed_reddit_search_result(
@@ -243,19 +275,13 @@ void on_search(
   discord_create_message(client, msg->channel_id, &params, ret);
 
   if (params.embed) { // succesfully sent a embed
+    discord_create_reaction(client, msg->channel_id, ret->id, 0, "⬅️");
     discord_create_reaction(client, msg->channel_id, ret->id, 0, "➡️");
     discord_create_reaction(client, msg->channel_id, ret->id, 0, "❌");
     discord_embed_free(params.embed);
   }
 
   discord_message_free(ret);
-
-  if (subreddits) 
-    free(subreddits);
-  if (before) 
-    free(before);
-  if (after) 
-    free(after);
 }
 
 void on_ready(struct discord *client, const struct discord_user *bot) {
@@ -276,20 +302,23 @@ void search_reddit_cb(void *data)
             NULL, 
             BOT.R.params.q);
 
-  if (!embed) {
+  if (!embed || !embed->fields) {
     log_error("Couldn't complete search");
     return; /* EARLY RETURN */
   }
 
   char name[16]="";
-  if (embed->fields) {
-    sscanf(embed->fields[0]->name, "`%[^`]", name);
-    if (BOT.R.params.before) free(BOT.R.params.before);
-    BOT.R.params.before = strdup(name);
+  sscanf(embed->fields[0]->name, "`%[^`]", name);
+  if (!*name) {
+    log_error("Couldn't complete search");
+    return; /* EARLY RETURN */
   }
 
-  if (BOT.R.params.before && strcmp(name, BOT.R.params.before)) {
-    log_error("Search couldn't fetch new results");
+  if (BOT.R.params.before) free(BOT.R.params.before);
+  BOT.R.params.before = strdup(name);
+
+  if (strcmp(name, BOT.R.params.before)) {
+    log_trace("Search couldn't fetch new results");
     discord_embed_free(embed);
     return; /* EARLY RETURN */
   }
@@ -298,6 +327,7 @@ void search_reddit_cb(void *data)
   struct discord_create_message_params params = { .embed = embed };
   for (size_t i=0; BOT.D.channel_ids[i]; ++i) {
     discord_create_message(BOT.D.client, *BOT.D.channel_ids[i], &params, ret);
+    discord_create_reaction(BOT.D.client, *BOT.D.channel_ids[i], ret->id, 0, "⬅️");
     discord_create_reaction(BOT.D.client, *BOT.D.channel_ids[i], ret->id, 0, "➡️");
     discord_create_reaction(BOT.D.client, *BOT.D.channel_ids[i], ret->id, 0, "❌");
   }
@@ -311,13 +341,16 @@ void load_BOT(const char config_file[])
   BOT.json.start = orka_load_whole_file(SEARCH_PARAMS_FILE, &BOT.json.size);
   assert(NULL != BOT.json.start && "Missing json file!");
 
+  bool enable=false;
   NTL_T(ja_str) ja_q=NULL;
   NTL_T(ja_str) ja_sr=NULL;
   json_extract(BOT.json.start, BOT.json.size,
+      "(enable):b"
       "(discord_bind_channel_ids):F" 
       "(keywords):F"
       "(subreddits):F"
       "(before):?s",
+      &enable,
       &ja_u64_list_from_json, &BOT.D.channel_ids,
       &ja_str_list_from_json, &ja_q,
       &ja_str_list_from_json, &ja_sr,
@@ -333,6 +366,11 @@ void load_BOT(const char config_file[])
   BOT.R.srs = \
     orka_join_strings((char**)(*ja_sr), ntl_length((ntl_t)ja_sr), "+", 19, 1024);
   assert(NULL != BOT.R.srs && "Missing subreddits");
+
+  /**
+   * Initialize Discord utils 
+   */
+  BOT.D.client = discord_config_init(config_file);
 
 
   /**
@@ -351,19 +389,15 @@ void load_BOT(const char config_file[])
   // get the first one immediatelly
   reddit_access_token(BOT.R.client);
 
-  BOT.R.tsk_search = task_init();
-  task_start(
-      BOT.R.tsk_search, 
-      10000, // start 10s from now
-      10000, // refresh every 10s
-      NULL, 
-      &search_reddit_cb);
-
-
-  /**
-   * Initialize Discord utils 
-   */
-  BOT.D.client = discord_config_init(config_file);
+  if (true == enable) {
+    BOT.R.tsk_search = task_init();
+    task_start(
+        BOT.R.tsk_search, 
+        10000, // start 10s from now
+        10000, // refresh every 10s
+        NULL, 
+        &search_reddit_cb);
+  }
 
 #if 0
   ja_str_list_free(ja_q);

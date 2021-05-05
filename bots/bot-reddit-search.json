@@ -1,4 +1,5 @@
 {
+  "enable":false,
   "discord_bind_channel_ids": [834781038571552798, 834781058586902558],
   "keywords":[
     "C Discord library", 
