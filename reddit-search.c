@@ -41,11 +41,11 @@ reddit_search(
     return;
   }
   if (!IS_EMPTY_STRING(params->sort)
-      && (!STREQ(params->sort, "relevance")
-         || !STREQ(params->sort, "hot")
-         || !STREQ(params->sort, "top")
-         || !STREQ(params->sort, "new")
-         || !STREQ(params->sort, "comments")))
+      && !(STREQ(params->sort, "relevance")
+         || STREQ(params->sort, "hot")
+         || STREQ(params->sort, "top")
+         || STREQ(params->sort, "new")
+         || STREQ(params->sort, "comments")))
   {
     log_error("'params.sort' should be one of: (relevance, hot, top, new, comments)");
     return;
@@ -55,20 +55,20 @@ reddit_search(
     return;
   }
   if (!IS_EMPTY_STRING(params->t)
-      && (!STREQ(params->t, "hour")
-         || !STREQ(params->t, "day")
-         || !STREQ(params->t, "week")
-         || !STREQ(params->t, "month")
-         || !STREQ(params->t, "year")
-         || !STREQ(params->t, "all")))
+      && !(STREQ(params->t, "hour")
+         || STREQ(params->t, "day")
+         || STREQ(params->t, "week")
+         || STREQ(params->t, "month")
+         || STREQ(params->t, "year")
+         || STREQ(params->t, "all")))
   {
     log_error("'params.t' should be one of: (hour, day, week, month, year, all)");
     return;
   }
   if (!IS_EMPTY_STRING(params->type)
-      && (!STREQ(params->type, "sr")
-         || !STREQ(params->type, "link")
-         || !STREQ(params->type, "user")))
+      && !(STREQ(params->type, "sr")
+         || STREQ(params->type, "link")
+         || STREQ(params->type, "user")))
   {
     log_error("'params.type' should be one of: (sr, link, user)");
     return;
