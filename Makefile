@@ -68,13 +68,17 @@ LIBDISCORD_LDFLAGS	:= -L./$(LIBDIR) -ldiscord -lcurl -lpthread
 
 ifeq ($(BEARSSL),1)
 	LIBDISCORD_LDFLAGS += -lbearssl -static
-	CFLAGS += -DBEARSSL -DBEAR_SSL
+	CFLAGS += -DBEARSSL
 else ifeq ($(MBEDTLS),1)
 	LIBDISCORD_LDFLAGS += -lmbedx509 -lmbedtls -lmbedcrypto -static
 	CFLAGS += -DMBEDTLS
+else ifeq ($(WOLFSSL),1)
+	LIBDISCORD_LDFLAGS += -lwolfssl -static
+	CFLAGS += -DWOLFSSL
 else ifeq ($(CC),stensal-c)
-	LIBDISCORD_LDFLAGS += -lbearssl -static
-	CFLAGS += -DBEARSSL
+	LIBDISCORD_LDFLAGS += -lwolfssl -static
+	#CFLAGS += -DBEARSSL
+	CFLAGS += -DWOLFSSL
 else
 	LIBDISCORD_LDFLAGS += $(pkg-config --libs --cflags libcurl) -lcrypto -lm
 endif

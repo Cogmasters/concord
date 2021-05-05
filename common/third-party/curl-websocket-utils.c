@@ -49,6 +49,17 @@ _cws_sha1(const void *input, const size_t input_len, void *output)
 {
     mbedtls_sha1(input, input_len, output);
 }
+#elif defined(WOLFSSL)
+#include <stdint.h>
+#include "wolfssl/wolfcrypt/sha.h"
+static void
+_cws_sha1(const void *input, const size_t input_len, void *output)
+{
+    Sha sha;
+    wc_InitSha(&sha);
+    wc_ShaUpdate(&sha, input, input_len);
+    wc_ShaFinal(&sha, output);
+}
 #else
 
 #include <openssl/evp.h>

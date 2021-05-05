@@ -373,7 +373,7 @@ cws_close(CURL *easy, enum cws_close_reason reason, const char *reason_text, siz
         fprintf(stderr,"not CWS (no CURLINFO_PRIVATE): %p", easy);
         return false;
     }
-#if defined(BEARSSL)
+#if defined(BEARSSL) || defined(WOLFSSL)
     curl_easy_setopt(easy, CURLOPT_TIMEOUT, 0L); // never time out
 #else
     curl_easy_setopt(easy, CURLOPT_TIMEOUT, 2L);

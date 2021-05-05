@@ -263,7 +263,7 @@ conn_init(struct user_agent *ua, size_t conn_pos)
   ecode = curl_easy_setopt(new_ehandle, CURLOPT_HEADERDATA, &new_conn->resp_header);
   CURLE_CHECK(new_conn, ecode);
 
-#if defined(BEARSSL)
+#if defined(BEARSSL) || defined(WOLFSSL)
   ecode = curl_easy_setopt(new_ehandle, CURLOPT_TIMEOUT, 0L); // never timeout
   CURLE_CHECK(new_conn, ecode);
 #endif

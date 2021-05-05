@@ -104,6 +104,11 @@ struct websockets {
    * exit, reconnect
    */
   enum ws_user_cmd user_cmd;
+
+  /*
+   * This is used to debug ws close event
+   */
+  bool logging_after_exit;
 };
 
 
@@ -375,6 +380,8 @@ ws_init(struct ws_callbacks *cbs, struct logconf *config)
 
   if (pthread_mutex_init(&new_ws->lock, NULL))
     ERR("[%s] Couldn't initialize pthread mutex", new_ws->tag);
+
+  new_ws->logging_after_exit = false;
   return new_ws;
 }
 
@@ -458,12 +465,10 @@ ws_start(struct websockets *ws)
   _ws_set_status(ws, WS_CONNECTING);  
 }
 
-static bool logging_after_exit = false; /** @todo won't this activate for every active WS client ? */
-
 void // main-thread
 ws_perform(struct websockets *ws, bool *p_is_running, uint64_t wait_ms)
 {
-  if (logging_after_exit)
+  if (ws->logging_after_exit)
     log_info("ws_perform after ws_exit_event_loop");
   if (ws->tid != pthread_self())
     ERR("ws_perform can only be called from the starting thread %u", ws->tid);
@@ -508,12 +513,12 @@ ws_perform(struct websockets *ws, bool *p_is_running, uint64_t wait_ms)
       }
       _ws_close(ws);
       ws->user_cmd = WS_USER_CMD_NONE;
-      logging_after_exit = true;
+      ws->logging_after_exit = true;
     }
     pthread_mutex_unlock(&ws->lock);
   }
   else { // WebSockets connection is severed
-    logging_after_exit = false;
+    ws->logging_after_exit = false;
     log_warn("ws connection is severed: is_running %d", is_running);
     _ws_set_status(ws, WS_DISCONNECTING);
     // read messages/informationals from the individual transfers
