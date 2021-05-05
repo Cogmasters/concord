@@ -648,11 +648,7 @@ on_voice_server_update(struct discord_gateway *gw, struct sized_buffer *data)
 }
 
 static void
-on_ready(struct discord_gateway *gw, struct sized_buffer *data)
-{
-  json_extract(data->start, data->size, "(session_id):s", gw->session_id);
-  ASSERT_S(gw->session_id, "Missing session_id from READY event");
-
+on_ready(struct discord_gateway *gw, struct sized_buffer *data) {
   (*gw->cbs.on_ready)(gw->p_client, gw->bot);
 }
 
@@ -828,6 +824,9 @@ on_dispatch(struct discord_gateway *gw)
       break;
   case DISCORD_GATEWAY_EVENTS_READY:
       log_info("Succesfully started a Discord session!");
+      json_extract(gw->payload.event_data.start, gw->payload.event_data.size, "(session_id):s", gw->session_id);
+      ASSERT_S(!IS_EMPTY_STRING(gw->session_id), "Missing session_id from READY event");
+
       gw->is_ready = true;
       gw->reconnect.attempt = 0;
       if (gw->cbs.on_ready)
