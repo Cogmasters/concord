@@ -318,7 +318,7 @@ cws_custom_new(struct websockets *ws, const char ws_protocols[])
 static bool _ws_close(struct websockets *ws)
 {
   static const char reason[] = "Client initializes close";
-  static const enum cws_close_reason code = CWS_CLOSE_REASON_NORMAL;
+  static const enum cws_close_reason code = CWS_CLOSE_REASON_NO_REASON;
 
   log_debug("_ws_close is called");
   log_http(
@@ -326,7 +326,7 @@ static bool _ws_close(struct websockets *ws)
     ws,
     ws->base_url, 
     (struct sized_buffer){(char*)reason, sizeof(reason)},
-    "WS_SEND_CLOSE");
+    "WS_SEND_CLOSE(%d)", code);
 
   if (WS_DISCONNECTED == ws->status) {
     log_warn("[%s] Connection already closed", ws->tag);
