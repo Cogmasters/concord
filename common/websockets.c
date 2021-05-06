@@ -468,8 +468,10 @@ ws_start(struct websockets *ws)
 void // main-thread
 ws_perform(struct websockets *ws, bool *p_is_running, uint64_t wait_ms)
 {
+  /*
   if (ws->logging_after_exit)
     log_info("ws_perform after ws_exit_event_loop");
+  */
   if (ws->tid != pthread_self())
     ERR("ws_perform can only be called from the starting thread %u", ws->tid);
 
