@@ -192,17 +192,17 @@ routecmp(char key[], struct _route_s *route)
   if (0 == ret) return 0;
 
   /* check if fits major parameter criteria */
-  if (strstr(route->key, "/channels/%llu")
+  if (strstr(key, "/channels/%llu")
    && strstr(route->key, "/channels/%llu"))
   {
     return 0;
   }
-  if (strstr(route->key, "/guilds/%llu")
+  if (strstr(key, "/guilds/%llu")
    && strstr(route->key, "/guilds/%llu"))
   {
     return 0;
   }
-  if (strstr(route->key, "/webhook/%llu")
+  if (strstr(key, "/webhook/%llu")
    && strstr(route->key, "/webhook/%llu"))
   {
     return 0;
