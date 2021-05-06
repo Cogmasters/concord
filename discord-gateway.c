@@ -99,7 +99,7 @@ send_resume(struct discord_gateway *gw)
               &gw->payload.seq_number);
   ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
 
-  log_info("Sending RESUME:\n\t", payload);
+  log_info("Sending RESUME:\n\t%s", payload);
   ws_send_text(gw->ws, payload, ret);
   gw->is_resumable = false; // reset
 }
@@ -125,7 +125,7 @@ send_identify(struct discord_gateway *gw)
   ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
 
   // contain token (sensitive data), enable _ORKA_DEBUG_STRICT to print it
-  log_info("Sending IDENTIFY(%d bytes)", ret);
+  log_info("Sending IDENTIFY:\t\n%s", payload);
   ws_send_text(gw->ws, payload, ret);
 
   //get timestamp for this identify
@@ -1153,7 +1153,8 @@ discord_gateway_run(struct discord_gateway *gw)
 {
   while (gw->reconnect.attempt < gw->reconnect.threshold) {
     event_loop(gw);
-    log_trace("after event_loop reconnect.attempt:%d, reconnect.enable:%d, is_resumable:%d",
+    log_trace("after event_loop: "
+              "reconnect.attempt:%d, reconnect.enable:%d, is_resumable:%d",
               gw->reconnect.attempt, gw->reconnect.enable, gw->is_resumable);
     if (!gw->reconnect.enable) {
       log_warn("Discord Gateway Shutdown");
