@@ -36,14 +36,16 @@ discord_adapter_init(struct discord_adapter *adapter, struct logconf *config, st
 
   if (pthread_mutex_init(&adapter->ratelimit.lock, NULL))
     ERR("Couldn't initialize pthread mutex");
+
+  discord_buckets_init(adapter);
 }
 
 void
 discord_adapter_cleanup(struct discord_adapter *adapter)
 {
-  discord_bucket_cleanup(adapter);
   ua_cleanup(adapter->ua);
   pthread_mutex_destroy(&adapter->ratelimit.lock);
+  discord_buckets_cleanup(adapter);
 }
 
 static int

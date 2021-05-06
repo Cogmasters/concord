@@ -3,6 +3,7 @@
 
 #include <inttypes.h>
 #include <pthread.h>
+#include "avl.h"
 
 #include "json-scanf.h"
 #include "json-actor.h"
@@ -28,7 +29,7 @@ struct discord_adapter {
     struct discord_bucket **bucket_pool;
     size_t num_buckets;
     // endpoint/routes discovered, check a endpoint/bucket matchwith tree search functions
-    void *routes_root; /** @see search.h root */
+    avl_tree_t routes;
 
     // lock when adding/searching for buckets
     pthread_mutex_t lock;
@@ -79,7 +80,7 @@ void discord_adapter_run(
 /* The bucket struct that will handle ratelimiting */
 struct discord_bucket {
   // the unique hash associated with this bucket
-  char *hash;
+  char hash[128];
   // amount of busy connections that have not yet finished its requests
   int busy;
   // connections this bucket can do before waiting for cooldown
@@ -100,7 +101,8 @@ struct discord_bucket {
 /**
  * Free a bucket
  */
-void discord_bucket_cleanup(struct discord_adapter *bucket);
+void discord_buckets_init(struct discord_adapter *bucket);
+void discord_buckets_cleanup(struct discord_adapter *bucket);
 
 /**
  * Check if connections from a bucket hit its threshold, and lock every connection
