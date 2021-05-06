@@ -124,7 +124,6 @@ send_identify(struct discord_gateway *gw)
               &discord_gateway_identify_to_json_v, gw->id);
   ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
 
-  // contain token (sensitive data), enable _ORKA_DEBUG_STRICT to print it
   log_info("Sending IDENTIFY:\t\n%s", payload);
   ws_send_text(gw->ws, payload, ret);
 
