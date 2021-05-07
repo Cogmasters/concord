@@ -445,9 +445,17 @@ int main(int argc, char *argv[])
   printf("\n\nThis bot demonstrates how easy it is to have two distinct"
          " APIs interacting with eachother (Reddit + Discord).\n"
          "1. Type reddit.search<?query> <keywords> \n"
-         "Ex1: reddit.search Hello everyone!\n"
-         "Ex2: reddit.search?srs=CryptoCurrency+dogecoin dogecoin made me poor\n"
-         "Ex3: reddit.search?srs=c_programming&before=t_a1234 Segfault\n"
+         "\tEx1: reddit.search Hello everyone!\n"
+         "\tEx2: reddit.search?srs=CryptoCurrency+dogecoin dogecoin made me poor\n"
+         "\tEx3: reddit.search?srs=c_programming&before=t_a1234 Segfault\n"
+         "2. Edit bot-reddit-search.json to enable auto-search mode \n"
+         "\t2.1. enable: enable auto-search mode\n"
+         "\t2.2. refresh_seconds: interval when bot should perform search\n"
+         "\t2.3. sort: sort results by [new, hot, comments, relevance] \n"
+         "\t2.4. discord_bind_channel_ids: array of channel ids the search results will be output to \n"
+         "\t2.5. keywords: array of keywords that will be searched for\n"
+         "\t2.6. subreddits: array of subreddits for lookup (leave null to include all)\n"
+         "\t2.7. before: show results before a certain message ID\n"
          "\nTYPE ANY KEY TO START BOT\n");
   fgetc(stdin); // wait for input
 
