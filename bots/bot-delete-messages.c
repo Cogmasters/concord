@@ -6,6 +6,7 @@
 #include "discord.h"
 #include "debug.h"
 
+
 char *SPAM[] = {
   "Yes I love to spam", //1
   "Do you?", //2
@@ -40,35 +41,10 @@ void on_clear(
 {
   if (msg->author->bot) return;
 
-  NTL_T(struct discord_message) msgs=NULL;
-  {
-    struct discord_get_channel_messages_params params = {
-      .limit = 100
-    };
-    discord_get_channel_messages(client, msg->channel_id, &params, &msgs);
-  }
-
-  struct discord_create_message_params params={};
-  if (!msgs) {
-    params.content = "Couldn't fetch any message from channel";
-    goto send_message;
-  }
-
-  size_t clear_count=0;
-  for (size_t i=0; msgs[i]; ++i) {
-    if (msgs[i]->author->id == bot->id) {
-      discord_delete_message(client, msg->channel_id, msgs[i]->id);
-      ++clear_count;
-    }
-  }
-
-  char text[MAX_MESSAGE_LEN];
-  snprintf(text, sizeof(text), "Deleted %zu messages.", clear_count);
-  params.content = text;
-
-  discord_message_list_free(msgs);
-
-send_message:
+  discord_delete_messages_by_author_id(client, msg->channel_id, bot->id);
+  struct discord_create_message_params params = {
+    .content = "Deleted 100 messages or less"
+  };
   discord_create_message(client, msg->channel_id, &params, NULL);
 }
 
@@ -83,7 +59,7 @@ int main(int argc, char *argv[])
   discord_global_init();
 
   struct discord *client = discord_config_init(config_file);
-  assert(NULL != client && "Couldn't start client");
+  assert(NULL != client && "Couldn't initialize client");
 
   discord_set_on_command(client, "!spam", &on_spam);
   discord_set_on_command(client, "!clear", &on_clear);

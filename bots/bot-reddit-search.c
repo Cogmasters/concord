@@ -42,7 +42,7 @@ embed_reddit_search_result(
   char sort[],
   char keywords[])
 {
-  struct sized_buffer search_json={0};
+  struct sized_buffer search_json={};
   { // anonymous block
     struct reddit_search_params params = { 
       .q = (keywords && *keywords) ? keywords : NULL,
@@ -440,8 +440,17 @@ int main(int argc, char *argv[])
   discord_set_prefix(BOT.D.client, "reddit.");
   discord_set_on_command(BOT.D.client, "search", &on_search);
   discord_set_on_message_reaction_add(BOT.D.client, &on_reaction_add);
-
   discord_set_on_ready(BOT.D.client, &on_ready);
+
+  printf("\n\nThis bot demonstrates how easy it is to have two distinct"
+         " APIs interacting with eachother (Reddit + Discord).\n"
+         "1. Type reddit.search<?query> <keywords> \n"
+         "Ex1: reddit.search Hello everyone!\n"
+         "Ex2: reddit.search?srs=CryptoCurrency+dogecoin dogecoin made me poor\n"
+         "Ex3: reddit.search?srs=c_programming&before=t_a1234 Segfault\n"
+         "\nTYPE ANY KEY TO START BOT\n");
+  fgetc(stdin); // wait for input
+
   discord_run(BOT.D.client);
 
   cleanup_BOT();

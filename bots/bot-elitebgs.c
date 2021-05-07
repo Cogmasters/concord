@@ -9,14 +9,12 @@
 
 #include "user-agent.h"
 #include "orka-utils.h"
-#include "json-scanf.h"
 #include "json-actor.h"
 
 #define ELITEBGS_API_URL "https://elitebgs.app/api/ebgs/v5"
 
 /* ELITEBGS User Agent for performing connections to the API */
 struct user_agent *g_elitebgs_ua;
-uint64_t g_tick_ms;
 
 struct doc_s {
   char name[512];
@@ -39,19 +37,24 @@ struct state_s {
 };
 
 
-void ticks_from_json(char *str, size_t len, void *data)
+void ticks_from_json(char *str, size_t len, void *p_tick_ms)
 {
-  NTL_T(struct sized_buffer) t_ticks = NULL;
-  json_scanf(str, len, "[]%L", &t_ticks);
-  json_scanf(t_ticks[0]->start, t_ticks[0]->size, "[time]%F", &orka_iso8601_to_unix_ms, &g_tick_ms);
+  uint64_t *tick_ms = p_tick_ms;
 
-  free(t_ticks);
+  struct sized_buffer **ticks=NULL;
+  json_extract(str, len, "[L]", &ticks);
+  if (!ticks) return;
+
+  json_extract(ticks[0]->start, ticks[0]->size, \
+      "(time):F", &orka_iso8601_to_unix_ms, tick_ms);
+
+  free(ticks);
 }
 
-void update_last_tick_ms()
+void update_last_tick_ms(uint64_t *tick_ms)
 {
-  struct ua_resp_handle resp_handle =
-    { .ok_cb = &ticks_from_json, .ok_obj = NULL};
+  struct ua_resp_handle resp_handle = \
+    { .ok_cb = &ticks_from_json, .ok_obj = tick_ms };
 
   /* Fetch ticks from ELITEBGS API */
   ua_run(
@@ -79,155 +82,152 @@ char* happiness_localised(char *happiness_band)
 
 void embed_from_json(char *str, size_t len, void *p_embed)
 {
-  struct discord_embed *embed = (struct discord_embed*)p_embed;
+  struct discord_embed *embed = p_embed;
 
-  struct doc_s *doc = (struct doc_s*)malloc(sizeof *doc);
-  NTL_T(struct sized_buffer) l_docs = NULL; // get docs token from JSON
+  NTL_T(struct sized_buffer) l_docs = NULL;
+  NTL_T(struct sized_buffer) l_fpresence = NULL;
+  NTL_T(struct sized_buffer) l_history = NULL;
+  NTL_T(struct sized_buffer) l_active_states = NULL;
+  NTL_T(struct sized_buffer) l_pending_states = NULL;
+  NTL_T(struct sized_buffer) l_recovering_states = NULL;
 
-  struct faction_presence_s *fpresence = (struct faction_presence_s*)malloc(sizeof *fpresence);
-  struct faction_presence_s *history = (struct faction_presence_s*)malloc(sizeof *history);
-  NTL_T(struct sized_buffer) l_fpresence = NULL; // get faction_presence token from JSON
-  NTL_T(struct sized_buffer) l_history = NULL; // get recovering_states token from JSON
-
-  struct state_s *state = (struct state_s*)malloc(sizeof *state);
-  NTL_T(struct sized_buffer) l_active_states = NULL; // get active_states token from JSON
-  NTL_T(struct sized_buffer) l_pending_states = NULL; // get pending_states token from JSON
-  NTL_T(struct sized_buffer) l_recovering_states = NULL; // get recovering_states token from JSON
+  struct doc_s *doc = malloc(sizeof *doc);
+  struct faction_presence_s *fpresence = malloc(sizeof *fpresence);
+  struct faction_presence_s *history = malloc(sizeof *history);
+  struct state_s *state = malloc(sizeof *state);
 
 
-  json_scanf(str, len, "[docs]%L", &l_docs);
+  json_extract(str, len, "(docs):[L]", &l_docs);
 
   char field_value[EMBED_FIELD_VALUE_LEN];
-
   for (size_t i=0; l_docs[i]; ++i) 
   {
-    json_scanf(l_docs[i]->start, l_docs[i]->size,
-        "[name]%S"
-        "[government]%S"
-        "[faction_presence]%L"
-        "[updated_at]%S"
-        "[history]%L",
-        doc->name,
-        doc->government,
+    json_extract(l_docs[i]->start, l_docs[i]->size,
+        "(name):.*s"
+        "(government):.*s"
+        "(faction_presence):[L]"
+        "(updated_at):.*s"
+        "(history):[L]",
+        sizeof(doc->name), doc->name,
+        sizeof(doc->government), doc->government,
         &l_fpresence,
-        doc->updated_at,
+        sizeof(doc->updated_at), doc->updated_at,
         &l_history);
 
-    if (l_fpresence[0]) 
+    for (size_t i=0; l_fpresence[i]; ++i)
     {
-      for (size_t j=0; l_fpresence[j]; ++j)
+      json_extract(l_fpresence[i]->start, l_fpresence[i]->size,
+          "(system_name):.*s"
+          "(system_id):.*s"
+          "(state):.*s"
+          "(influence):f"
+          "(happiness):.*s"
+          "(active_states):[L]"
+          "(pending_states):[L]"
+          "(recovering_states):[L]"
+          "(updated_at):.*s",
+          sizeof(fpresence->system_name), fpresence->system_name,
+          sizeof(fpresence->system_id), fpresence->system_id,
+          sizeof(fpresence->state), fpresence->state,
+          &fpresence->influence,
+          sizeof(fpresence->happiness), fpresence->happiness,
+          &l_active_states,
+          &l_pending_states,
+          &l_recovering_states,
+          sizeof(fpresence->updated_at), fpresence->updated_at);
+
+      if (strcasecmp(embed->title, fpresence->system_name))
+        continue; /* not the system we are interested in */
+
+      float influence_diff = 0.0;
+      char *influence_emoji = "🔷";
+      for (size_t i=0; l_history[i]; ++i)
       {
-        json_scanf(l_fpresence[j]->start, l_fpresence[j]->size,
-            "[system_name]%S"
-            "[system_id]%S"
-            "[state]%S"
-            "[influence]%f"
-            "[happiness]%S"
-            "[active_states]%L"
-            "[pending_states]%L"
-            "[recovering_states]%L"
-            "[updated_at]%S",
-            fpresence->system_name,
-            fpresence->system_id,
-            fpresence->state,
-            &fpresence->influence,
-            fpresence->happiness,
-            &l_active_states,
-            &l_pending_states,
-            &l_recovering_states,
-            fpresence->updated_at);
+        json_extract(l_history[i]->start, l_history[i]->size,
+            "(system_id):.*s"
+            "(influence):f"
+            "(updated_at):.*s",
+            sizeof(history->system_id), history->system_id,
+            &history->influence,
+            sizeof(history->system_id), history->updated_at);
 
-        if (0 != strcasecmp(embed->title, fpresence->system_name))
-          continue;
+        if (strcmp(history->system_id, fpresence->system_id)) {
+          influence_diff = 100*(fpresence->influence - history->influence);
+          if (influence_diff > 0) influence_emoji = "📈";
+          else if (influence_diff < 0) influence_emoji = "📉";
 
-        for (size_t j2=0; l_history[j2]; ++j2)
-        {
-          json_scanf(l_history[j2]->start, l_history[j2]->size,
-              "[system_id]%S"
-              "[influence]%f"
-              "[updated_at]%S",
-              history->system_id,
-              &history->influence,
-              history->updated_at);
-
-          if (0 == strcmp(history->system_id, fpresence->system_id)){
-            break;
-          }
-        }
-
-        float influence_diff = 100*(fpresence->influence - history->influence);
-        char *influence_emoji;
-        if (influence_diff > 0)
-          influence_emoji = "📈";
-        else if (influence_diff < 0)
-          influence_emoji = "📉";
-        else
-          influence_emoji = "🔷";
-
-        int ret = snprintf(field_value, sizeof(field_value), 
-                    "State: %s\n"
-                    "Influence: %.1f%s%.1f\n"
-                    "Happiness: %s\n",
-                    fpresence->state,
-                    fpresence->influence * 100, influence_emoji, influence_diff,
-                    happiness_localised(fpresence->happiness));
-
-        ret += snprintf(&field_value[ret], sizeof(field_value) - ret, "Active States:");
-        if (l_active_states[0]) 
-        {
-          for (size_t k=0; l_active_states[k]; ++k) 
-          {
-            json_scanf(l_active_states[k]->start, l_active_states[k]->size,
-                "[state]%S", state->state);
-            ret += snprintf(&field_value[ret], sizeof(field_value) - ret, " %s,", state->state);
-          }
-          field_value[ret-1] = '\n'; //replace end comma with newline
-        }
-        else {
-          ret += snprintf(&field_value[ret], sizeof(field_value) - ret, " none\n");
-        }
-
-        ret += snprintf(&field_value[ret], sizeof(field_value) - ret, "Pending States:");
-        if (l_pending_states[0]) 
-        {
-          for (size_t k=0; l_pending_states[k]; ++k) 
-          {
-            json_scanf(l_pending_states[k]->start, l_pending_states[k]->size,
-                "[state]%S", state->state);
-            ret += snprintf(&field_value[ret], sizeof(field_value) - ret, " %s,", state->state);
-          }
-          field_value[ret-1] = '\n'; //replace end comma with newline
-        }
-        else {
-          ret += snprintf(&field_value[ret], sizeof(field_value) - ret, " none\n");
-        }
-
-        ret += snprintf(&field_value[ret], sizeof(field_value) - ret, "Recovering States:");
-        if (l_recovering_states[0]) 
-        {
-          for (size_t k=0; l_recovering_states[k]; ++k) 
-          {
-            json_scanf(l_recovering_states[k]->start, l_recovering_states[k]->size,
-                "[state]%S [trend]%S", state->state, state->trend);
-            ret += snprintf(&field_value[ret], sizeof(field_value) - ret, " %s,", state->state);
-            //@todo use trend
-          }
-          field_value[ret-1] = '\n'; //replace end comma with newline
-        }
-        else {
-          ret += snprintf(&field_value[ret], sizeof(field_value) - ret, " none\n");
+          break; /* found a match */
         }
       }
 
-      free(l_active_states);
-      l_active_states = NULL;
+      if (!influence_diff) {
+        influence_diff = fpresence->influence * 100;
+      }
 
-      free(l_pending_states);
-      l_pending_states = NULL;
+      int ret = snprintf(field_value, sizeof(field_value), 
+                  "State: %s\n"
+                  "Influence: %.1f%s%.1f\n"
+                  "Happiness: %s\n",
+                  fpresence->state,
+                  fpresence->influence * 100, influence_emoji, influence_diff,
+                  happiness_localised(fpresence->happiness));
 
-      free(l_recovering_states);
-      l_recovering_states = NULL;
+      ret += snprintf(&field_value[ret], sizeof(field_value) - ret, "Active States:");
+
+      if (!*l_active_states) {
+        for (size_t i=0; l_active_states[i]; ++i) {
+          json_extract(l_active_states[i]->start, l_active_states[i]->size,
+              "(state):.*s", 
+              sizeof(state->state), state->state);
+          ret += snprintf(&field_value[ret], sizeof(field_value) - ret, " %s,", state->state);
+        }
+        field_value[ret-1] = '\n'; //replace end comma with newline
+      }
+      else {
+        ret += snprintf(&field_value[ret], sizeof(field_value) - ret, " none\n");
+      }
+
+      ret += snprintf(&field_value[ret], sizeof(field_value) - ret, "Pending States:");
+      if (*l_pending_states) {
+        for (size_t i=0; l_pending_states[i]; ++i) {
+          json_extract(l_pending_states[i]->start, l_pending_states[i]->size,
+              "(state):.*s", 
+              sizeof(state->state), state->state);
+          ret += snprintf(&field_value[ret], sizeof(field_value) - ret, " %s,", state->state);
+        }
+        field_value[ret-1] = '\n'; //replace end comma with newline
+      }
+      else {
+        ret += snprintf(&field_value[ret], sizeof(field_value) - ret, " none\n");
+      }
+
+      ret += snprintf(&field_value[ret], sizeof(field_value) - ret, "Recovering States:");
+      if (*l_recovering_states) {
+        for (size_t i=0; l_recovering_states[i]; ++i) 
+        {
+          json_extract(l_recovering_states[i]->start, l_recovering_states[i]->size,
+              "(state):.*s"
+              "(trend):.*s", 
+              sizeof(state->state), state->state, 
+              sizeof(state->trend), state->trend);
+          ret += snprintf(&field_value[ret], sizeof(field_value) - ret, " %s,", state->state);
+          //@todo use trend
+        }
+        field_value[ret-1] = '\n'; //replace end comma with newline
+      }
+      else {
+        ret += snprintf(&field_value[ret], sizeof(field_value) - ret, " none\n");
+      }
     }
+
+    free(l_active_states);
+    l_active_states = NULL;
+
+    free(l_pending_states);
+    l_pending_states = NULL;
+
+    free(l_recovering_states);
+    l_recovering_states = NULL;
 
     free(l_history);
     free(l_fpresence);
@@ -240,7 +240,6 @@ void embed_from_json(char *str, size_t len, void *p_embed)
   free(history);
   free(fpresence);
   free(state);
-
   free(l_docs);
 }
 
@@ -258,10 +257,10 @@ void on_command(
     const struct discord_message *msg)
 {
   // make sure bot doesn't echoes other bots
-  if (msg->author->bot)
-    return;
+  if (msg->author->bot) return;
 
-  update_last_tick_ms();
+  uint64_t tick_ms=0;
+  update_last_tick_ms(&tick_ms);
 
   /* Initialize embed struct that will be loaded to  */
   struct discord_embed *new_embed = discord_embed_alloc();
@@ -279,13 +278,13 @@ void on_command(
               "(system):s"
               "(timeMax):F", 
               msg->content,
-              &orka_ulltostr, &g_tick_ms);
+              &orka_ulltostr, &tick_ms);
   ASSERT_S(ret < sizeof(query), "Out of bounds write attempt");
 
   discord_trigger_typing_indicator(client, msg->channel_id);
 
   /* Fetch factions from ELITEBGS API */
-  struct ua_resp_handle resp_handle =
+  struct ua_resp_handle resp_handle = \
     { .ok_cb = &embed_from_json, .ok_obj = (void*)new_embed};
   ua_run(
       g_elitebgs_ua, 
@@ -328,10 +327,16 @@ int main(int argc, char *argv[])
   discord_set_on_ready(client, &on_ready);
   discord_set_on_command(client, "!system", &on_command);
 
+  printf("\n\nThis bot demonstrates how easy it is to make two"
+         " distinct APIs work together, EliteBGS + Discord.\n"
+         "1. Type !system <system_name> to print informations about that system (ex: !system Qa'Wakana)\n"
+         "\nTYPE ANY KEY TO START BOT\n");
+  fgetc(stdin); // wait for input
+
   /* Set bot presence activity */
   struct discord_gateway_activity *new_activity;
   new_activity = discord_gateway_activity_alloc();
-  strcpy(new_activity->name, "!h | cee.dev");
+  strcpy(new_activity->name, "cee.dev");
   new_activity->type = 0; // Playing
   discord_set_presence(client, new_activity, "online", false);
 

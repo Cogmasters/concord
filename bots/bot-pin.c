@@ -16,9 +16,7 @@ void on_message_create(
     const struct discord_user *bot,
     const struct discord_message *msg)
 {
-  // make sure bot ignores msgs from other bots
-  if (msg->author->bot)
-    return;
+  if (msg->author->bot) return;
 
   if (strstr(msg->content, "pin me")) {
     discord_add_pinned_channel_message(client, msg->channel_id, msg->id);
@@ -36,10 +34,16 @@ int main(int argc, char *argv[])
   discord_global_init();
 
   struct discord *client = discord_config_init(config_file);
-  assert(NULL != client);
+  assert(NULL != client && "Couldn't initialize client");
 
   discord_set_on_ready(client, &on_ready);
   discord_set_on_message_create(client, &on_message_create);
+
+  printf("\n\nThis bot demonstrates how easy it is to have a"
+         " message be pinned.\n"
+         "1. Type 'pin me' anywhere in a message\n"
+         "\nTYPE ANY KEY TO START BOT\n");
+  fgetc(stdin); // wait for input
 
   discord_run(client);
 

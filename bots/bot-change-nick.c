@@ -7,13 +7,6 @@
 #include "discord.h"
 
 
-
-struct context_s {
-  char username[64];
-  char nick[64];
-  char *discriminator;
-} cxt;
-
 void 
 on_ready(struct discord *client, const struct discord_user *bot) {
   fprintf(stderr, "\n\nChange-Nick-Bot succesfully connected to Discord as %s#%s!\n\n",
@@ -25,38 +18,39 @@ on_command(struct discord *client,
            const struct discord_user *bot,
            const struct discord_message *msg)
 {
-  sscanf(msg->content, "%s %s", cxt.username, cxt.nick);
-  cxt.discriminator = strchr(cxt.username, '#');
-  if (!*cxt.nick) {
+  char username[64]="", nick[64]="";
+  sscanf(msg->content, "%s %s", username, nick);
+  if (!*nick) {
     printf("Missing nickname or bad format string\n");
     return;
   }
-  if (NULL == cxt.discriminator) {
-    printf("Wrong formatted username (%s)\n", cxt.username);
+
+  char *discriminator = strchr(username, '#');
+  if (!discriminator) {
+    printf("Wrong formatted username (%s)\n", username);
     return;
   }
+  *discriminator = '\0'; // split username/discriminator at #
+  ++discriminator; // eat-up '#'
 
-  *cxt.discriminator = '\0'; //split at #
-  ++cxt.discriminator;
-
-  NTL_T(struct discord_guild_member) members = NULL;
-  struct discord_list_guild_members_params params1 = {
-    .limit = 1000
-  };
-  discord_list_guild_members(client, msg->guild_id, &params1, &members);
-  if (NULL == members) {
+  NTL_T(struct discord_guild_member) members=NULL;
+  {
+    struct discord_list_guild_members_params params = { .limit = 1000 };
+    discord_list_guild_members(client, msg->guild_id, &params, &members);
+  }
+  if (!members) {
     printf("Missing members list\n");
     return;
   }
 
-  for (size_t i=0; members[i]; ++i) {
-    if (0 == strcmp(members[i]->user->username, cxt.username)
-        && 0 == strcmp(members[i]->user->discriminator, cxt.discriminator))
+  for (size_t i=0; members[i]; ++i) 
+  {
+    if (0 == strcmp(members[i]->user->username, username)
+        && 0 == strcmp(members[i]->user->discriminator, discriminator))
     {
-      struct discord_modify_guild_member_params params2 = {
-        .nick = cxt.nick
-      };
-      discord_modify_guild_member(client, msg->guild_id, members[i]->user->id, &params2, NULL);
+      struct discord_modify_guild_member_params params = { .nick = nick };
+      discord_modify_guild_member(client, msg->guild_id, members[i]->user->id, &params, NULL);
+      break; /* EARLY BREAK */
     }
   }
 
@@ -76,7 +70,7 @@ int main(int argc, char *argv[])
   discord_global_init();
 
   struct discord *client = discord_config_init(config_file);
-  assert(NULL != client);
+  assert(NULL != client && "Couldn't initialize client");
 
   discord_set_on_command(client, "!nickChange", &on_command);
 

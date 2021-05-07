@@ -4,7 +4,6 @@
 #include <assert.h>
 
 #include "discord.h"
-#include "debug.h"
 
 
 u64_snowflake_t
@@ -13,14 +12,14 @@ select_guild(struct discord *client)
   // get guilds bot is a part of
   NTL_T(struct discord_guild) guilds = NULL;
   discord_get_current_user_guilds(client, &guilds);
-  ASSERT_S(NULL != guilds, "Couldn't fetch guilds");
+  assert(NULL != guilds && "Couldn't fetch guilds");
 
   fprintf(stderr, "\n\nSelect the guild that the user you wish to fetch messages from is part of");
   int i=0;
-  do {
+  while (guilds[i]) {
     fprintf(stderr, "\n%d. %s", i+1, guilds[i]->name);
     ++i;
-  } while (guilds[i]);
+  }
 
   do {
     fputs("\n\nNUMBER >>\n", stderr);
@@ -46,18 +45,18 @@ select_member(struct discord *client, u64_snowflake_t guild_id)
     .after = 0
   };
   discord_list_guild_members(client, guild_id, &params, &members);
-  ASSERT_S(NULL != members, "Guild is empty or bot needs to activate its privileged intents.\n\t"
+  assert(NULL != members && "Guild is empty or bot needs to activate its privileged intents.\n\t"
                             "See this guide to activate it: https://discordpy.readthedocs.io/en/latest/intents.html#privileged-intents");
 
   fprintf(stderr, "\n\nSelect the member that will have its messages fetched");
   int i=0;
-  do {
+  while (members[i]) {
     fprintf(stderr, "\n%d. %s", i+1, members[i]->user->username);
     if (*members[i]->nick) { // prints nick if available
       fprintf(stderr, " (%s)", members[i]->nick);
     }
     ++i;
-  } while (members[i]);
+  }
 
   do {
     fputs("\n\nNUMBER >>\n", stderr);
@@ -78,7 +77,7 @@ fetch_member_msgs(struct discord *client, u64_snowflake_t guild_id, u64_snowflak
 {
   NTL_T(struct discord_channel) channels = NULL;
   discord_get_guild_channels(client, guild_id, &channels);
-  ASSERT_S(NULL != channels, "Couldn't fetch channels from guild");
+  assert(NULL != channels && "Couldn't fetch channels from guild");
   
   struct discord_get_channel_messages_params params = {
     .limit = 100
@@ -124,11 +123,16 @@ int main(int argc, char *argv[])
   discord_global_init();
 
   struct discord *client = discord_config_init(config_file);
-  assert(NULL != client);
+  assert(NULL != client && "Couldn't initialize client");
+
+  printf("\n\nThis bot demonstrates how easy it is to fetch"
+         " messages from a particular user (without even connecting"
+         " to Discord Gateway).\n"
+         "\nTYPE ANY KEY TO START BOT\n");
+  fgetc(stdin); // wait for input
 
   u64_snowflake_t guild_id = select_guild(client);
   u64_snowflake_t user_id = select_member(client, guild_id);
-
   fetch_member_msgs(client, guild_id, user_id);
 
   discord_cleanup(client);

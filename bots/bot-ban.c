@@ -6,7 +6,6 @@
 #include "discord.h"
 
 
-
 void on_ready(struct discord *client, const struct discord_user *bot) {
   fprintf(stderr, "\n\nBan-Bot succesfully connected to Discord as %s#%s!\n\n",
       bot->username, bot->discriminator);
@@ -56,26 +55,25 @@ void on_ban(
     .after = 0
   };
   discord_list_guild_members(client, msg->guild_id, &params, &members);
-  if (NULL == members) return;
+  if (!members) return;
 
   // get username and discriminator of the to be banned user
-  char username[128] = {0};
-  char discriminator[5] = {0};
+  char username[128]="";
+  char discriminator[5]="";
   sscanf(msg->content, "%[^#]#%s", username, discriminator);
   if (!*username || !*discriminator) return;
 
   // try to find match for to be banned user
-  struct discord_user *target = NULL;
+  struct discord_user *target=NULL;
   for (size_t i=0; members[i]; ++i) {
     if (0 == strcmp(members[i]->user->username, username)
-        && 
-        0 == strcmp(members[i]->user->discriminator, discriminator))
+        && 0 == strcmp(members[i]->user->discriminator, discriminator))
     {
       target = members[i]->user;
       break; /* EARLY BREAK */
     }
   }
-  if (NULL == target) return; // member is not in guild
+  if (!target) return; // member is not in guild
 
   char reason[128];
   snprintf(reason, sizeof(reason), "%s said so", msg->author->username);
@@ -90,28 +88,27 @@ void on_unban(
     const struct discord_message *msg)
 {
   // get banned list
-  NTL_T(struct discord_guild_ban) bans = NULL;
+  NTL_T(struct discord_guild_ban) bans=NULL;
   discord_get_guild_bans(client, msg->guild_id, &bans);
-  if (NULL == bans) return;
+  if (!bans) return;
 
   // get username and discriminator of the to be banned user
-  char username[128] = {0};
-  char discriminator[5] = {0};
+  char username[128]="";
+  char discriminator[5]="";
   sscanf(msg->content, "%[^#]#%s", username, discriminator);
   if (!*username || !*discriminator) return;
 
   // try to find match for to be banned user
-  struct discord_user *target = NULL;
+  struct discord_user *target=NULL;
   for (size_t i=0; bans[i]; ++i) {
     if (0 == strcmp(bans[i]->user->username, username)
-        && 
-        0 == strcmp(bans[i]->user->discriminator, discriminator))
+        && 0 == strcmp(bans[i]->user->discriminator, discriminator))
     {
       target = bans[i]->user;
       break; /* EARLY BREAK */
     }
   }
-  if (NULL == target) return; // member wasn't banned
+  if (!target) return; // member wasn't banned
 
   char reason[128];
   snprintf(reason, sizeof(reason), "%s said so", msg->author->username);

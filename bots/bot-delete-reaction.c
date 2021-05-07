@@ -6,7 +6,6 @@
 #include "discord.h"
 
 
-
 void on_ready(struct discord *client, const struct discord_user *bot) {
   fprintf(stderr, "\n\nDelete-Reaction-Bot succesfully connected to Discord as %s#%s!\n\n",
       bot->username, bot->discriminator);
@@ -18,7 +17,11 @@ void on_delete_all(
     const struct discord_message *msg)
 { 
   if (msg->author->bot || !msg->referenced_message) return;
-  discord_delete_all_reactions(client, msg->referenced_message->channel_id, msg->referenced_message->id);
+
+  discord_delete_all_reactions(
+      client, 
+      msg->referenced_message->channel_id, 
+      msg->referenced_message->id);
 }
 
 void on_delete_emoji(
@@ -27,7 +30,13 @@ void on_delete_emoji(
     const struct discord_message *msg)
 { 
   if (msg->author->bot || !msg->referenced_message) return;
-  discord_delete_all_reactions_for_emoji(client, msg->referenced_message->channel_id, msg->referenced_message->id, 0, msg->content);
+
+  discord_delete_all_reactions_for_emoji(
+      client, 
+      msg->referenced_message->channel_id, 
+      msg->referenced_message->id, 
+      0, 
+      msg->content);
 }
 
 int main(int argc, char *argv[])

@@ -14,9 +14,7 @@ void on_ping(
   const struct discord_user *bot,
   const struct discord_message *msg)
 {
-  // make sure bot doesn't echoes other bots
-  if (msg->author->bot)
-    return;
+  if (msg->author->bot) return;
 
   struct discord_create_message_params params = {.content = "pong"};
   discord_create_message(client, msg->channel_id, &params, NULL);
@@ -27,9 +25,7 @@ void on_pong(
     const struct discord_user *bot,
     const struct discord_message *msg)
 {
-  // make sure bot doesn't echoes other bots
-  if (msg->author->bot)
-    return;
+  if (msg->author->bot) return;
 
   struct discord_create_message_params params = {.content = "ping"};
   discord_create_message(client, msg->channel_id, &params, NULL);
@@ -50,6 +46,12 @@ int main(int argc, char *argv[])
   discord_set_on_ready(client, &on_ready);
   discord_set_on_command(client, "ping", &on_ping);
   discord_set_on_command(client, "pong", &on_pong);
+
+  printf("\n\nThis bot demonstrates a simple ping-pong response.\n"
+         "1. Type 'pong' in chat\n"
+         "2. Type 'ping' in chat\n"
+         "\nTYPE ANY KEY TO START BOT\n");
+  fgetc(stdin); // wait for input
 
   discord_run(client);
 

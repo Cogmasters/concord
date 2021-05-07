@@ -6,13 +6,12 @@
 #include <assert.h>
 
 #include "discord.h"
-#include "debug.h"
 
 
-struct sudo_s {
+struct {
   char username[64];
   char *discriminator;
-} sudo;
+} SUDO;
 
 void 
 on_ready(struct discord *client, const struct discord_user *bot) {
@@ -25,16 +24,13 @@ on_command(struct discord *client,
            const struct discord_user *bot,
            const struct discord_message *msg)
 {
-  // make sure bot doesn't consider other bots
-  if (msg->author->bot)
-    return;
+  if (msg->author->bot) return;
 
-  if (strcmp(sudo.discriminator, msg->author->discriminator)
-      || strcmp(sudo.username, msg->author->username)) {
+  if (strcmp(SUDO.discriminator, msg->author->discriminator)
+      || strcmp(SUDO.username, msg->author->username)) 
+  {
     return; // EARLY RETURN IF NOT SUDO USER
   }
-
-  struct discord_create_message_params params = {0};
 
   char *cmd = strchr(msg->content, ' '); //get first occurence of space
   size_t len;
@@ -46,6 +42,7 @@ on_command(struct discord *client,
     len = strlen(msg->content);
   }
 
+  struct discord_create_message_params params = {};
   if (0 == strncmp(msg->content, "cd", len)) {
     char path[100];
 
@@ -75,13 +72,10 @@ on_command(struct discord *client,
       }
       strncat(pathtmp, "\n```", MAX_FSIZE-1);
 
-      if (strlen(pathtmp) > 2000) { // MAX MESSAGE LEN is 2000 bytes
-        //@todo need some checks to make sure its a valid filename
+      if (strlen(pathtmp) > MAX_MESSAGE_LEN)
         params.file.name = 1 + msg->content + len;
-      }
-      else {
+      else
         params.content = pathtmp;
-      }
     }
     else { /* DEFAULT CASE */
       while (NULL != fgets(path, MAX_FSIZE, fp)) {
@@ -128,14 +122,14 @@ int main(int argc, char *argv[])
          " or someone trustworthy.\n\n\n");
 
   fputs("\n\nType name of user with admin privileges (eg. user#1234)\n", stderr);
-  fgets(sudo.username, sizeof(sudo.username), stdin);
+  fgets(SUDO.username, sizeof(SUDO.username), stdin);
 
-  sudo.discriminator = strchr(sudo.username, '#');
-  VASSERT_S(NULL != sudo.discriminator, "Wrong formatted username (%s)", sudo.username);
+  SUDO.discriminator = strchr(SUDO.username, '#');
+  assert(NULL != SUDO.discriminator && "Wrong formatted username");
 
-  sudo.discriminator[strlen(sudo.discriminator)-1] = '\0'; //remove \n
-  *sudo.discriminator = '\0'; //split at #
-  ++sudo.discriminator;
+  SUDO.discriminator[strlen(SUDO.discriminator)-1] = '\0'; //remove \n
+  *SUDO.discriminator = '\0'; //split at #
+  ++SUDO.discriminator;
 
 
   discord_run(client);

@@ -6,8 +6,8 @@
 #include "discord.h"
 #include "orka-utils.h" /* orka_timestamp_ms() */
 
-
 #define JSON_FILE "bot-embed.json"
+
 
 void on_ready(struct discord *client, const struct discord_user *bot) {
   fprintf(stderr, "\n\nEmbed-Bot succesfully connected to Discord as %s#%s!\n\n",
@@ -19,13 +19,11 @@ void on_command(
     const struct discord_user *bot,
     const struct discord_message *msg)
 {
-  // make sure bot doesn't echoes other bots
-  if (msg->author->bot)
-    return;
+  if (msg->author->bot) return;
 
   struct discord_create_message_params params = {
     .content = "This is an embed",
-    .embed = (struct discord_embed*)discord_get_data(client)
+    .embed = discord_get_data(client)
   };
   discord_create_message(client, msg->channel_id, &params, NULL);
 }
@@ -33,7 +31,6 @@ void on_command(
 static struct discord_embed*
 load_embed_from_json(char filename[])
 {
-  /* get contents of file to string */
   size_t len;
   char *json_payload = orka_load_whole_file(filename, &len);
 
@@ -58,7 +55,7 @@ int main(int argc, char *argv[])
   discord_global_init();
 
   struct discord *client = discord_config_init(config_file);
-  assert(NULL != client);
+  assert(NULL != client && "Couldn't initialize client");
 
   discord_set_on_ready(client, &on_ready);
   discord_set_on_command(client, "show embed", &on_command);

@@ -16,7 +16,7 @@ void on_hello(struct slack *client, char payload[], size_t len) {
 void on_message(struct slack *client, char payload[], size_t len) 
 {
   char *text=NULL, *channel=NULL;
-  struct sized_buffer check_bot={0};
+  struct sized_buffer check_bot={};
   json_extract(payload, len, "(text):?s,(channel):?s,(bot_id):T", &text, &channel, &check_bot);
   if (check_bot.start) return; // means message belongs to a bot
 
@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
 
 
   struct slack *client = slack_config_init(config_file);
-  assert(NULL != client);
+  assert(NULL != client && "Couldn't initialize client");
 
   slack_set_on_hello(client, &on_hello);
   slack_set_on_message(client, &on_message);

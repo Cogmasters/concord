@@ -4,7 +4,7 @@
 #include <assert.h>
 
 #include "discord.h"
-#include "orka-utils.h" // for orka_timestamp_ms()
+#include "orka-utils.h" /* orka_load_whole_file() */
 
 #define JSON_FILE "bot-presence.json"
 
@@ -20,12 +20,13 @@ load_presence_from_json(struct discord *client, char filename[])
   size_t len;
   char *json_payload = orka_load_whole_file(filename, &len);
 
-  struct discord_gateway_status_update *new_presence = discord_gateway_status_update_alloc();
-  discord_gateway_status_update_from_json(json_payload, len, new_presence);
+  struct discord_gateway_status_update *presence = discord_gateway_status_update_alloc();
+  discord_gateway_status_update_from_json(json_payload, len, presence);
 
-  discord_replace_presence(client, new_presence);
+  discord_replace_presence(client, presence);
 
   free(json_payload);
+  discord_gateway_status_update_free(presence);
 }
 
 int main(int argc, char *argv[])
@@ -39,7 +40,7 @@ int main(int argc, char *argv[])
   discord_global_init();
 
   struct discord *client = discord_config_init(config_file);
-  assert(NULL != client);
+  assert(NULL != client && "Couldn't initialize client");
 
   printf("\n\nThis bot demonstrates how easy it is to change presence"
          " from a json file.\n"

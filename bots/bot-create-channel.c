@@ -6,7 +6,6 @@
 #include "discord.h"
 
 
-
 void on_ready(struct discord *client, const struct discord_user *bot) {
   fprintf(stderr, "\n\nCreate-Channel-Bot succesfully connected to Discord as %s#%s!\n\n",
       bot->username, bot->discriminator);
@@ -38,7 +37,7 @@ void on_channel_delete(
   struct discord_channel *general = discord_channel_alloc();
   discord_get_channel_at_pos(client, channel->guild_id, DISCORD_CHANNEL_GUILD_TEXT, 0, general);
 
-  char text[150];
+  char text[256];
   snprintf(text, sizeof(text), "Succesfully deleted `%s` channel", channel->name);
   struct discord_create_message_params params = { .content = text };
   discord_create_message(client, general->id, &params, NULL);
@@ -50,13 +49,9 @@ void on_create(
     const struct discord_user *bot,
     const struct discord_message *msg)
 {
-  // make sure bot doesn't echoes other bots
-  if (msg->author->bot)
-    return;
+  if (msg->author->bot) return;
 
-  struct discord_create_guild_channel_params params = {
-    .name = msg->content
-  };
+  struct discord_create_guild_channel_params params = { .name = msg->content };
   discord_create_guild_channel(client, msg->guild_id, &params, NULL);
 }
 
@@ -65,9 +60,7 @@ void on_delete(
     const struct discord_user *bot,
     const struct discord_message *msg)
 {
-  // make sure bot doesn't echoes other bots
-  if (msg->author->bot)
-    return;
+  if (msg->author->bot) return;
 
   discord_delete_channel(client, msg->channel_id, NULL);
 }

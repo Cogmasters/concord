@@ -7,7 +7,6 @@
 
 #include "discord.h"
 #include "orka-utils.h"
-#include "json-scanf.h"
 #include "json-actor.h"
 
 
@@ -82,7 +81,7 @@ parse_session_config()
     &g_session.chat_topic,
     &g_session.questions_per_session);
 
-  json_scanf(json_payload, len, "[questions]%L", &t_questions);
+  json_extract(json_payload, len, "(questions):[L]", &t_questions);
 
   g_session.num_questions = ntl_length((void**)t_questions);
   if (g_session.num_questions < g_session.questions_per_session)
@@ -94,8 +93,8 @@ parse_session_config()
     NTL_T(struct sized_buffer) t_answers = NULL;
     json_extract(t_questions[i]->start, t_questions[i]->size,
       "(description):?s", &g_session.questions[i].desc);
-    json_scanf(t_questions[i]->start, t_questions[i]->size,
-      "[answers]%L", &t_answers);
+    json_extract(t_questions[i]->start, t_questions[i]->size,
+      "(answers):[L]", &t_answers);
 
     g_session.questions[i].num_answers = ntl_length((void**)t_answers);
     g_session.questions[i].answers = (struct answer*)calloc(1, g_session.questions[i].num_answers * sizeof(struct answer));
