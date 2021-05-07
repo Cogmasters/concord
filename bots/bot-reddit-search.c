@@ -435,13 +435,6 @@ int main(int argc, char *argv[])
   else
     config_file = "bot.config";
 
-  load_BOT(config_file);
-
-  discord_set_prefix(BOT.D.client, "reddit.");
-  discord_set_on_command(BOT.D.client, "search", &on_search);
-  discord_set_on_message_reaction_add(BOT.D.client, &on_reaction_add);
-  discord_set_on_ready(BOT.D.client, &on_ready);
-
   printf("\n\nThis bot demonstrates how easy it is to have two distinct"
          " APIs interacting with eachother (Reddit + Discord).\n"
          "1. Type reddit.search<?query> <keywords> \n"
@@ -458,6 +451,13 @@ int main(int argc, char *argv[])
          "\t2.7. before: show results before a certain message ID\n"
          "\nTYPE ANY KEY TO START BOT\n");
   fgetc(stdin); // wait for input
+
+  load_BOT(config_file);
+
+  discord_set_prefix(BOT.D.client, "reddit.");
+  discord_set_on_command(BOT.D.client, "search", &on_search);
+  discord_set_on_message_reaction_add(BOT.D.client, &on_reaction_add);
+  discord_set_on_ready(BOT.D.client, &on_ready);
 
   discord_run(BOT.D.client);
 

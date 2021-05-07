@@ -3,9 +3,7 @@
   "refresh_seconds": 600,
   "sort":"new",
   "discord_bind_channel_ids": [834781038571552798],
-  "keywords":[
-    "C Discord library"
-  ],
-  "subreddits": null,
+  "keywords":["Hello"],
+  "subreddits": ["c_programming"],
   "before":null
 }
