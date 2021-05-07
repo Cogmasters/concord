@@ -109,8 +109,8 @@ logconf_setup(struct logconf *config, const char config_file[])
     bool quiet;
     bool overwrite;
     struct {
-      char filename[PATH_MAX];
       bool enable;
+      char filename[PATH_MAX];
     } http;
   } logging = {0};
 
@@ -208,28 +208,28 @@ log_http(
   void *addr_id,
   char url[],
   struct sized_buffer body,
-  char header_fmt[], ...)
+  char label_fmt[], ...)
 {
+  static struct sized_buffer empty_body = {"empty body", 10};
+
   if (!config) return;
 
   va_list args;
-  va_start(args, header_fmt);
+  va_start(args, label_fmt);
 
-  static struct sized_buffer empty_body = {"empty body", 10};
-  if (0 == body.size) {
+  if (0 == body.size)
     body = empty_body;
-  }
 
-  char header[512];
-  int ret = vsnprintf(header, sizeof(header), header_fmt, args);
-  ASSERT_S(ret < sizeof(header), "Out of bounds write attempt");
+  char label[512];
+  int ret = vsnprintf(label, sizeof(label), label_fmt, args);
+  ASSERT_S(ret < sizeof(label), "Out of bounds write attempt");
 
   char timestr[64];
   fprintf(config->http.f, 
-    "%s [%s #TID%zu] - %s - %s\r\r\r\r\n%.*s\n",
-    header,
+    "%s [%s #TID%u] - %s - %s\r\r\r\r\n%.*s\n",
+    label,
     logconf_tag(config, addr_id), 
-    (size_t)pthread_self(),
+    (unsigned)pthread_self(),
     orka_timestamp_str(timestr, sizeof(timestr)), 
     url,
     (int)body.size, body.start);

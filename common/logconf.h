@@ -39,7 +39,7 @@ void log_http(
   void *addr_id,
   char url[],
   struct sized_buffer body,
-  char header_fmt[], ...);
+  char label_fmt[], ...);
 
 #ifdef __cplusplus
 }
