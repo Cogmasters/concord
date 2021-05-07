@@ -347,7 +347,51 @@ send_heartbeat(struct discord_voice *vc)
 }
 
 static void noop_idle_cb(struct discord *a, struct discord_voice *b, const struct discord_user *c)
-{ return; }
+{
+  return;
+}
+
+// triggers when a user start speaking
+static void noop_on_speaking(
+  struct discord *client,
+  struct discord_voice *vc,
+  const struct discord_user *bot,
+  const u64_snowflake_t user_id,
+  const int speaking,
+  const int delay,
+  const int ssrc) {
+  log_trace("noop_on_speaking");
+  return;
+}
+
+static void noop_on_voice_client_disconnect (
+  struct discord *client,
+  struct discord_voice *vc,
+  const struct discord_user *bot,
+  const u64_snowflake_t user_id) {
+  log_trace("noop_on_voice_client_disconnect");
+  return;
+}
+
+static void noop_on_voice_codec (
+  struct discord *client,
+  struct discord_voice *vc,
+  const struct discord_user *bot,
+  const char audio_codec[],
+  const char video_codec[]) {
+  log_trace("noop_on_voice_codec");
+  return;
+}
+
+static void noop_on_ready(struct discord_voice *vc) {
+  log_trace("noop_on_ready");
+  return;
+}
+
+static void noop_on_session_descriptor(struct discord_voice *vc) {
+  log_trace("noop_on_session_descriptor");
+  return;
+}
 
 static void
 _discord_voice_cleanup(struct discord_voice *vc)
@@ -730,7 +774,12 @@ discord_voice_set_on_idle(struct discord_voice *vc, voice_idle_cb *callback){
 #endif
 
 void discord_init_voice_cbs(struct discord_voice_cbs *cbs) {
-  cbs->on_idle = &noop_idle_cb;
+  cbs->on_idle = noop_idle_cb;
+  cbs->on_ready = noop_on_ready;
+  cbs->on_client_disconnect = noop_on_voice_client_disconnect;
+  cbs->on_session_descriptor = noop_on_session_descriptor;
+  cbs->on_codec = noop_on_voice_codec;
+  cbs->on_speaking = noop_on_speaking;
 }
 
 void

@@ -851,17 +851,16 @@ on_dispatch(struct discord_gateway *gw)
   cxt.on_event = on_event;
   strcpy(cxt.event_name, gw->payload.event_name);
 
-  if (gw->blocking_event_handler) {
-    switch (gw->blocking_event_handler(&cxt)) {
-      case EVENT_IS_HANDLED:
-        return;
-      case EVENT_WILL_BE_HANDLED_IN_MAIN_THREAD:
-        cxt.is_main_thread = true;
-        dispatch_run(&cxt);
-        return;
-      default:
-        goto create_a_new_thread;
-    }
+
+  switch (gw->blocking_event_handler(&cxt)) {
+    case EVENT_IS_HANDLED:
+      return;
+    case EVENT_WILL_BE_HANDLED_IN_MAIN_THREAD:
+      cxt.is_main_thread = true;
+      dispatch_run(&cxt);
+      return;
+    default:
+      goto create_a_new_thread;
   }
 
 create_a_new_thread:
@@ -1032,6 +1031,11 @@ static void noop_idle_cb(struct discord *a, const struct discord_user *b)
 { return; }
 static void noop_event_raw_cb(struct discord *a, enum discord_gateway_events b, struct sized_buffer *c, struct sized_buffer *d)
 { return; }
+static enum discord_event_handling_mode noop_blocking_event_handler(void *cxt)
+{
+  log_trace("noop_blocking_event_handler");
+  return EVENT_WILL_BE_HANDLED_IN_MAIN_THREAD;
+}
 
 void
 discord_gateway_init(struct discord_gateway *gw, struct logconf *config, struct sized_buffer *token)
@@ -1065,6 +1069,7 @@ discord_gateway_init(struct discord_gateway *gw, struct logconf *config, struct 
 
   gw->cbs.on_idle = &noop_idle_cb;
   gw->cbs.on_event_raw = &noop_event_raw_cb;
+  gw->blocking_event_handler = &noop_blocking_event_handler;
 
   gw->bot = discord_user_alloc();
 

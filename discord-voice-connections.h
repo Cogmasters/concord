@@ -156,11 +156,13 @@ void discord_voice_set_on_idle(struct discord_voice *vc, voice_idle_cb *callback
  * @param vc the VC obtained with discord_join_vc()
  * @param callback the callback to run when triggered by event
  */
+ /*
 void discord_voice_set_on_speaking(struct discord_voice *vc, voice_speaking_cb *callback);
 void discord_voice_set_on_client_disconnect(struct discord_voice *vc, voice_client_disconnect_cb *callback);
 void discord_voice_set_on_codec(struct discord_voice *vc, voice_codec_cb *callback);
 void discord_voice_set_on_ready(struct discord_voice *vc, voice_idle_cb *callback);
 void discord_voice_set_on_on_session_description(struct discord_voice *vc, voice_idle_cb *callback);
+  */
 
 /**
  * Send a Voice State Update to Discord, in order to connect to the
@@ -243,5 +245,7 @@ void discord_voice_reconnect(struct discord_voice *vc, bool resume);
 bool discord_voice_is_alive(struct discord_voice *vc);
 
 void discord_voice_send_select_protocol(struct discord_voice *vc, char *ip, int port);
+
+extern void discord_init_voice_cbs(struct discord_voice_cbs *cbs);
 
 #endif // DISCORD_VOICE_CONNECTIONS_H

@@ -21,6 +21,8 @@ _discord_init(struct discord *new_client)
     &new_client->gw, 
     &new_client->config,
     &new_client->token);
+
+  discord_init_voice_cbs(&new_client->voice_cbs);
 }
 
 struct discord*
@@ -301,7 +303,18 @@ discord_set_on_voice_server_update(struct discord *client, voice_server_update_c
 void
 discord_set_voice_cbs(struct discord *client, struct discord_voice_cbs *callbacks)
 {
-  memcpy(&client->voice_cbs, callbacks, sizeof (*callbacks));
+  if (callbacks->on_speaking)
+    client->voice_cbs.on_speaking = callbacks->on_speaking;
+  if (callbacks->on_codec)
+    client->voice_cbs.on_codec = callbacks->on_codec;
+  if (callbacks->on_session_descriptor)
+    client->voice_cbs.on_session_descriptor = callbacks->on_session_descriptor;
+  if (callbacks->on_client_disconnect)
+    client->voice_cbs.on_client_disconnect = callbacks->on_client_disconnect;
+  if (callbacks->on_ready)
+    client->voice_cbs.on_ready = callbacks->on_ready;
+  if (callbacks->on_idle)
+    client->voice_cbs.on_idle = callbacks->on_idle;
 }
 
 void
