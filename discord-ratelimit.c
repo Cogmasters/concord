@@ -13,13 +13,11 @@ https://discord.com/developers/docs/topics/rate-limits#rate-limits */
 
 
 static struct discord_bucket*
-bucket_init(char bucket_hash[])
+bucket_init(char hash[])
 {
   struct discord_bucket *new_bucket = calloc(1, sizeof *new_bucket);
-  int ret = snprintf(new_bucket->hash, sizeof(new_bucket->hash), "%s", \
-      bucket_hash);
+  int ret = snprintf(new_bucket->hash, sizeof(new_bucket->hash), "%s", hash);
   ASSERT_S(ret < sizeof(new_bucket->hash), "Out of bounds write attempt");
-
   if (pthread_mutex_init(&new_bucket->lock, NULL))
     ERR("Couldn't initialize pthread mutex");
   if (pthread_cond_init(&new_bucket->cond, NULL))
@@ -36,31 +34,44 @@ bucket_cleanup(struct discord_bucket *bucket)
   free(bucket);
 }
 
-static struct discord_bucket*
-find_bucket(struct discord_adapter *adapter, char route[], char bucket_hash[])
+/* works like strcmp, but will check if route matches major 
+ *  parameter criteria too */
+static int
+routecmp(char route[], char node_route[])
 {
-  //attempt to match hash to client bucket hashes
-  for (size_t i=0; i < adapter->ratelimit.num_buckets; ++i) {
-    if (STREQ(bucket_hash, adapter->ratelimit.bucket_pool[i]->hash)) {
-      return adapter->ratelimit.bucket_pool[i];
-    }
-  }
+  int ret = strcmp(route, node_route);
+  if (0 == ret) return 0;
 
-  //couldn't find match, create new bucket
-  
-  ++adapter->ratelimit.num_buckets; //increments client buckets
+  /* check if fits major parameter criteria */
+  if (strstr(route, "/channels/%"PRIu64)
+   && strstr(node_route, "/channels/%"PRIu64))
+    return 0;
+  if (strstr(route, "/guilds/%"PRIu64)
+   && strstr(node_route, "/guilds/%"PRIu64))
+    return 0;
+  if (strstr(route, "/webhook/%"PRIu64)
+   && strstr(node_route, "/webhook/%"PRIu64))
+    return 0;
 
-  adapter->ratelimit.bucket_pool = realloc(adapter->ratelimit.bucket_pool, \
-                    adapter->ratelimit.num_buckets * sizeof(struct discord_bucket*));
-
-  struct discord_bucket *new_bucket = bucket_init(bucket_hash);
-  adapter->ratelimit.bucket_pool[adapter->ratelimit.num_buckets-1] = new_bucket;
-  return new_bucket;
+  return ret; //couldn't find any match, return strcmp diff value
 }
 
-static void
-route_free(void *route, void *noop) {
-  free(route);
+void
+discord_buckets_init(struct discord_adapter *adapter) {
+  avl_initialize(&adapter->ratelimit.routes, (avl_comparator_t)&routecmp, &free);
+}
+
+static void route_free(void *route, void *noop) { free(route); }
+
+/* clean routes and buckets */
+void
+discord_buckets_cleanup(struct discord_adapter *adapter)
+{ 
+  avl_destroy(&adapter->ratelimit.routes, &route_free);
+  for (size_t i=0; i < adapter->ratelimit.num_buckets; ++i) {
+    bucket_cleanup(adapter->ratelimit.bucket_pool[i]);
+  }
+  free(adapter->ratelimit.bucket_pool);
 }
 
 /* sleep cooldown for a connection within this bucket in milliseconds */
@@ -133,26 +144,46 @@ parse_ratelimits(struct discord_bucket *bucket, struct ua_conn *conn)
   pthread_mutex_unlock(&bucket->lock);
 }
 
-/* Attempt to create a route between route and a client bucket by
- *  comparing the hash retrieved from header to hashes from existing
- *  client buckets.
- * If no match is found then we create a new client bucket */
+/* Attempt to find/link a route between route and a client bucket by
+ *  comparing the hash retrieved from response header with discovered
+ *  buckets hashes
+ * If no match is found then a new bucket is created and linked to the
+ *  route*/
 static void
 match_route(struct discord_adapter *adapter, char route[], struct ua_conn *conn)
 {
-  char *bucket_hash = ua_respheader_value(conn, "x-ratelimit-bucket");
-  if (!bucket_hash) return; //no hash information in header
+  char *hash = ua_respheader_value(conn, "x-ratelimit-bucket");
+  if (!hash) return; //no bucket hash information in header
 
-  // create new route that will link the route to a bucket
-  struct discord_bucket *bucket = find_bucket(adapter, route, bucket_hash);
+  struct discord_bucket **bucket_pool = adapter->ratelimit.bucket_pool;
+  struct discord_bucket *bucket=NULL;
+
+  //attempt to match hash to client bucket hashes
+  for (size_t i=0; i < adapter->ratelimit.num_buckets; ++i) {
+    if (STREQ(hash, bucket_pool[i]->hash)) {
+      bucket = bucket_pool[i];
+      break;
+    }
+  }
+
+  //couldn't find match, create new bucket
+  if (!bucket) 
+  {
+    ++adapter->ratelimit.num_buckets; //increments client buckets
+
+    bucket_pool = realloc(bucket_pool, adapter->ratelimit.num_buckets * sizeof(struct discord_bucket*));
+    adapter->ratelimit.bucket_pool = bucket_pool;
+
+    bucket = bucket_init(hash);
+    bucket_pool[adapter->ratelimit.num_buckets-1] = bucket;
+  }
+
   //add new route to tree and update its bucket ratelimit fields
   avl_insert(&adapter->ratelimit.routes, strdup(route), bucket);
   parse_ratelimits(bucket, conn);
 }
 
-/* Attempt to build and/or updates bucket's rate limiting information.
- * In case that the route doesn't have a bucket for routing, no 
- *  clashing will occur */
+/* Attempt to build and/or update bucket's rate limiting information. */
 void
 discord_bucket_build(struct discord_adapter *adapter, struct discord_bucket *bucket, char route[], struct ua_conn *conn)
 {
@@ -163,42 +194,4 @@ discord_bucket_build(struct discord_adapter *adapter, struct discord_bucket *buc
     match_route(adapter, route, conn);
   else // update the bucket rate limit values
     parse_ratelimits(bucket, conn);
-}
-
-/* works like strcmp, but will check if endpoing matches a major 
- *  parameters criteria too */
-static int
-routecmp(char route[], char node_route[])
-{
-  int ret = strcmp(route, node_route);
-  if (0 == ret) return 0;
-
-  /* check if fits major parameter criteria */
-  if (strstr(route, "/channels/%"PRIu64)
-   && strstr(node_route, "/channels/%"PRIu64))
-    return 0;
-  if (strstr(route, "/guilds/%"PRIu64)
-   && strstr(node_route, "/guilds/%"PRIu64))
-    return 0;
-  if (strstr(route, "/webhook/%"PRIu64)
-   && strstr(node_route, "/webhook/%"PRIu64))
-    return 0;
-
-  return ret; //couldn't find any match, return strcmp diff value
-}
-
-void
-discord_buckets_init(struct discord_adapter *adapter) {
-  avl_initialize(&adapter->ratelimit.routes, (avl_comparator_t)&routecmp, &free);
-}
-
-/* clean routes and buckets */
-void
-discord_buckets_cleanup(struct discord_adapter *adapter)
-{ 
-  avl_destroy(&adapter->ratelimit.routes, &route_free);
-  for (size_t i=0; i < adapter->ratelimit.num_buckets; ++i) {
-    bucket_cleanup(adapter->ratelimit.bucket_pool[i]);
-  }
-  free(adapter->ratelimit.bucket_pool);
 }
