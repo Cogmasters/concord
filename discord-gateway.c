@@ -610,12 +610,10 @@ on_voice_state_update(struct discord_gateway *gw, struct sized_buffer *data)
   struct discord_voice_state *vs = discord_voice_state_alloc();
   discord_voice_state_from_json(data->start, data->size, vs);
 
-#ifdef DISCORD_VOICE_CONNECTIONS_H
   if (vs->user_id == gw->bot->id) {
     // we only care about the voice_state_update of bot
     _discord_on_voice_state_update(gw->p_client, vs);
   }
-#endif // DISCORD_VOICE_CONNECTIONS_H
 
   if (gw->cbs.on_voice_state_update)
     (*gw->cbs.on_voice_state_update)(gw->p_client, gw->bot, vs);
@@ -634,10 +632,8 @@ on_voice_server_update(struct discord_gateway *gw, struct sized_buffer *data)
                "(endpoint):s",
                &token, &guild_id, &endpoint);
 
-#ifdef DISCORD_VOICE_CONNECTIONS_H
   // this happens for everyone
   _discord_on_voice_server_update(gw->p_client, guild_id, token, endpoint);
-#endif // DISCORD_VOICE_CONNECTIONS_H
 
   if (gw->cbs.on_voice_server_update)
     (*gw->cbs.on_voice_server_update)(gw->p_client, gw->bot,

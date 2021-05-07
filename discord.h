@@ -6,6 +6,7 @@
 
 /* FORWARD DECLARATIONS */
 struct discord;
+struct discord_voice_cbs;
 
 typedef uint64_t u64_unix_ms_t; // unix time in ms
 
@@ -407,6 +408,7 @@ void discord_set_on_message_reaction_remove_emoji(struct discord *client, messag
 void discord_set_on_ready(struct discord *client, idle_cb *callback);
 void discord_set_on_voice_state_update(struct discord *client, voice_state_update_cb *callback);
 void discord_set_on_voice_server_update(struct discord *client, voice_server_update_cb *callback);
+void discord_set_voice_cbs(struct discord *client, struct discord_voice_cbs *callbacks);
 
 enum discord_event_handling_mode {
   EVENT_IS_HANDLED,  // this event has been handled
