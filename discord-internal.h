@@ -139,7 +139,8 @@ void discord_bucket_build(struct discord_adapter *adapter, struct discord_bucket
  * @see discord_set_on_command()
  */
 struct cmd_cbs {
-  char *str;
+  char *start;
+  size_t size;
   message_cb *cb;
 };
 
@@ -195,9 +196,12 @@ struct discord_gateway {
   struct discord_session session; /** @see discord.h for definition */
 
   // the prefix expected before every command
-  char prefix[32]; /** @see discord_set_prefix() */
+  /// @see discord_set_prefix()
+  struct sized_buffer prefix;
   // user's command/callback pair and amount of callback pairs
-  struct cmd_cbs *on_cmd; /** @see discord_set_on_command() */
+  /// @see discord_set_on_command()
+  struct cmd_cbs on_default_cmd;
+  struct cmd_cbs *on_cmd;
   size_t num_cmd;
 
   /// @see discord.h for definition

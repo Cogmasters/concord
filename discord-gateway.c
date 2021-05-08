@@ -410,32 +410,34 @@ on_message_create(struct discord_gateway *gw, struct sized_buffer *data)
   struct discord_message *msg = discord_message_alloc();
   discord_message_from_json(data->start, data->size, msg);
 
-  if (gw->on_cmd) {
-    // get prefix offset
-    size_t offset = strlen(gw->prefix);
-
-    for (size_t i=0; i < gw->num_cmd; ++i) 
-    {
-      if (!STRNEQ(gw->prefix, msg->content, offset))
-          continue; //prefix doesn't match msg->content
-
+  if (gw->on_cmd \
+      && STRNEQ(gw->prefix.start, msg->content, gw->prefix.size)) 
+  {
+    struct cmd_cbs *cmd=NULL;
+    for (size_t i=0; i < gw->num_cmd; ++i) {
       // check if command from channel matches set command
-      if (STRNEQ(gw->on_cmd[i].str, \
-            msg->content + offset,  \
-            strlen(gw->on_cmd[i].str)))
-      {
-        char *tmp = msg->content; // hold original ptr
-        msg->content = msg->content + offset + strlen(gw->on_cmd[i].str);
-        while (isspace(*msg->content)) { // offset blank chars
-          ++msg->content;
-        }
-        (*gw->on_cmd[i].cb)(gw->p_client, gw->bot, msg);
-
-        msg->content = tmp; // retrieve original ptr
-
-        discord_message_free(msg);
-        return; /* EARLY RETURN */
+      if (STRNEQ(gw->on_cmd[i].start, \
+            msg->content + gw->prefix.size, gw->on_cmd[i].size)) {
+        cmd = &gw->on_cmd[i];
       }
+    }
+    if (!cmd && gw->prefix.size) {
+      cmd = &gw->on_default_cmd;
+    }
+
+    if (cmd) {
+      char *tmp = msg->content; // hold original ptr
+      msg->content = msg->content + gw->prefix.size + cmd->size;
+      while (isspace(*msg->content)) { // skip blank chars
+        ++msg->content;
+      }
+
+      (cmd->cb)(gw->p_client, gw->bot, msg);
+
+      msg->content = tmp; // retrieve original ptr
+
+      discord_message_free(msg);
+      return; /* EARLY RETURN */
     }
   }
 
@@ -1085,12 +1087,14 @@ discord_gateway_init(struct discord_gateway *gw, struct logconf *config, struct 
   struct sized_buffer default_prefix = logconf_get_field(config, "discord.default_prefix");
   if (default_prefix.start) {
     bool enable_prefix=false;
-    char prefix[64]={0};
+    static char prefix[64]="";
     json_extract(default_prefix.start, default_prefix.size, \
         "(enable):b,(prefix):.*s", &enable_prefix, sizeof(prefix), prefix);
-    if (true == enable_prefix) {
-      int ret = snprintf(gw->prefix, sizeof(gw->prefix), "%s", prefix);
-      ASSERT_S(ret < sizeof(gw->prefix), "Out of bounds write attempt");
+    if (enable_prefix) {
+      gw->prefix = (struct sized_buffer){
+        .start = prefix,
+        .size = strlen(prefix)
+      };
     }
   }
 }

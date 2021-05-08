@@ -104,21 +104,35 @@ discord_set_prefix(struct discord *client, char *prefix)
   if (!prefix) return;
 
   const size_t PREFIX_LEN = sizeof(client->gw.prefix);
-  if (!orka_str_bounds_check(prefix, PREFIX_LEN)) {
+  ssize_t len;
+  if (!(len = orka_str_bounds_check(prefix, PREFIX_LEN))) {
     log_error("Prefix length greater than threshold (%zu chars)", PREFIX_LEN);
     return;
   }
-  int ret = snprintf(client->gw.prefix, PREFIX_LEN, "%s", prefix);
-  ASSERT_S(ret < PREFIX_LEN, "Out of bounds write attempt");
+
+  client->gw.prefix = (struct sized_buffer){
+    .start = prefix,
+    .size = (size_t)len
+  };
 }
 
 void
 discord_set_on_command(struct discord *client, char *command, message_cb *callback)
 {
-  if (!command) return;
+  /** 
+   * default command callback if prefix is detected, but command isn't
+   *  specified
+   */
+  if (client->gw.prefix.size && IS_EMPTY_STRING(command)) 
+  {
+    client->gw.on_default_cmd = (struct cmd_cbs){ .cb = callback };
+    return; /* EARLY RETURN */
+  }
 
   const size_t CMD_LEN = 64;
-  if (!orka_str_bounds_check(command, CMD_LEN)) {
+  ssize_t len;
+  if (!(len = orka_str_bounds_check(command, CMD_LEN))) 
+  {
     log_error("Command length greater than threshold (%zu chars)", CMD_LEN);
     return;
   }
@@ -126,8 +140,11 @@ discord_set_on_command(struct discord *client, char *command, message_cb *callba
   ++client->gw.num_cmd;
   client->gw.on_cmd = realloc(client->gw.on_cmd, client->gw.num_cmd * sizeof(struct cmd_cbs));
 
-  client->gw.on_cmd[client->gw.num_cmd-1].str = command;
-  client->gw.on_cmd[client->gw.num_cmd-1].cb = callback;
+  client->gw.on_cmd[client->gw.num_cmd-1] = (struct cmd_cbs){
+    .start = command,
+    .size = (size_t)len,
+    .cb = callback
+  };
 
   discord_add_intents(client, DISCORD_GATEWAY_GUILD_MESSAGES | DISCORD_GATEWAY_DIRECT_MESSAGES);
 }
