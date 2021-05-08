@@ -82,28 +82,6 @@ send_identify(struct discord_voice *vc)
   ws_send_text(vc->ws, payload, ret);
 }
 
-void
-discord_voice_send_select_protocol(struct discord_voice *vc, char *ip, int port)
-{
-  char payload[MAX_PAYLOAD_LEN];
-  int ret = json_inject(payload, sizeof(payload), 
-              "(op):1" // SELECT PROTOCOL OPCODE
-              "(d):{"
-                "(protocol):\"udp\""
-                "(data):{"
-                  "(address):s"
-                  "(port):d"
-                  "(mode):\"xsalsa20_poly1305\""
-                "}"
-              "}",
-              ip, &port);
-  ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
-
-  // contain token (sensitive data), enable _ORKA_DEBUG_STRICT to print it
-  log_debug("sending VOICE_SELECT_PROTOCOL:\n\t%s", payload);
-  ws_send_text(vc->ws, payload, ret);
-}
-
 static void
 on_hello(struct discord_voice *vc)
 {
@@ -328,6 +306,7 @@ on_text_cb(void *p_vc, const char *text, size_t len)
       break;
   default:
       log_error("Not yet implemented Voice Event(code: %d)", vc->payload.opcode);
+      log_error("payload:%.*s", vc->payload.event_data.size, vc->payload.event_data.start);
       break;
   }
 }

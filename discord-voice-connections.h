@@ -244,8 +244,6 @@ void discord_voice_reconnect(struct discord_voice *vc, bool resume);
  */
 bool discord_voice_is_alive(struct discord_voice *vc);
 
-void discord_voice_send_select_protocol(struct discord_voice *vc, char *ip, int port);
-
 extern void discord_init_voice_cbs(struct discord_voice_cbs *cbs);
 
 #endif // DISCORD_VOICE_CONNECTIONS_H
