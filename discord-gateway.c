@@ -775,7 +775,7 @@ on_dispatch(struct discord_gateway *gw)
         on_event = &on_message_create;
       break;
   case DISCORD_GATEWAY_EVENTS_MESSAGE_UPDATE:
-      if (gw->cbs.on_message_update)
+      if (gw->cbs.sb_on_message_update || gw->cbs.on_message_update)
         on_event = &on_message_update;
       break;
   case DISCORD_GATEWAY_EVENTS_MESSAGE_DELETE:
