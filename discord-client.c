@@ -23,6 +23,9 @@ _discord_init(struct discord *new_client)
     &new_client->token);
 
   discord_init_voice_cbs(&new_client->voice_cbs);
+  int i;
+  for (i = 0; i < NUM_VCS; i++)
+    new_client->vcs[i].p_voice_cbs = &new_client->voice_cbs;
 }
 
 struct discord*
@@ -332,6 +335,8 @@ discord_set_voice_cbs(struct discord *client, struct discord_voice_cbs *callback
     client->voice_cbs.on_ready = callbacks->on_ready;
   if (callbacks->on_idle)
     client->voice_cbs.on_idle = callbacks->on_idle;
+  if (callbacks->on_udp_server_connected)
+    client->voice_cbs.on_udp_server_connected = callbacks->on_udp_server_connected;
 }
 
 void

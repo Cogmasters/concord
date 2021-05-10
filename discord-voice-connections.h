@@ -65,6 +65,7 @@ struct discord_voice_cbs { /* CALLBACKS STRUCTURE */
 
   void (*on_ready)(struct discord_voice *vc);
   void (*on_session_descriptor)(struct discord_voice *vc);
+  void (*on_udp_server_connected)(struct discord_voice *vc);
 };
 /**
  * The Discord Voice Connection structure, contain information
@@ -138,6 +139,12 @@ struct discord_voice {
     int audio_udp_pid;
     time_t start_time;
   } udp_service;
+
+  struct discord_voice_cbs *p_voice_cbs;
+
+  // used to communicate the status of
+  // the bot state changes
+  uint64_t  message_channel_id;
 };
 
 /**
@@ -164,6 +171,14 @@ void discord_voice_set_on_ready(struct discord_voice *vc, voice_idle_cb *callbac
 void discord_voice_set_on_on_session_description(struct discord_voice *vc, voice_idle_cb *callback);
   */
 
+
+enum discord_join_vc_status {
+  DISCORD_JOIN_VC_ERROR = 0,
+  DISCORD_JOIN_VC_JOINED = 1,
+  DISCORD_JOIN_VC_EXHAUST_CAPACITY,
+  DISCORD_JOIN_VC_ALREADY_JOINED
+};
+
 /**
  * Send a Voice State Update to Discord, in order to connect to the
  *        voice server. When succesful @b p_vc will be assigned a VC handle
@@ -177,8 +192,9 @@ void discord_voice_set_on_on_session_description(struct discord_voice *vc, voice
  * @param self_deaf #true will join as deaf 
  * @param p_vc will receive the VC struct once its done
  */
-char* discord_join_vc (
+enum discord_join_vc_status discord_join_vc(
   struct discord *client,
+  struct discord_message *msg,
   u64_snowflake_t guild_id,
   u64_snowflake_t channel_id,
   bool self_mute,

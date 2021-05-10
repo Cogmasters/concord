@@ -1,18 +1,10 @@
 #define _GNU_SOURCE /* asprintf() */
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/stat.h>
-#include <unistd.h>
-#include <fcntl.h>
 #include <math.h>
-
 #include "discord.h"
 #include "discord-internal.h"
 #include "discord-voice-connections.h"
 #include "orka-utils.h"
-#include "vc-proto.h"
-
 
 static pthread_mutex_t client_lock = PTHREAD_MUTEX_INITIALIZER;
 
@@ -372,6 +364,11 @@ static void noop_on_session_descriptor(struct discord_voice *vc) {
   return;
 }
 
+static void noop_on_udp_server_connected(struct discord_voice *vc) {
+  log_trace("noop_on_udp_server_connected");
+  return;
+}
+
 static void
 _discord_voice_cleanup(struct discord_voice *vc)
 {
@@ -503,32 +500,29 @@ send_voice_state_update(
   ws_send_text(gw->ws, payload, ret);
 }
 
-/*
- * this is sent by a user
- */
-char*
-discord_join_vc(
-  struct discord *client,
-  u64_snowflake_t guild_id,
-  u64_snowflake_t channel_id,
-  bool self_mute,
-  bool self_deaf)
+enum discord_join_vc_status
+discord_join_vc (struct discord *client,
+                 struct discord_message *msg,
+                 u64_snowflake_t guild_id,
+                 u64_snowflake_t voice_channel_id,
+                 bool self_mute,
+                 bool self_deaf)
 {
   if (!ws_is_functional(client->gw.ws))
-    return "Cannot join a voice channel, duo to voice connection problem, please report this";
+    return DISCORD_JOIN_VC_ERROR;
 
   bool found_a_running_vcs = false;
   pthread_mutex_lock(&client_lock);
   struct discord_voice *vc=NULL;
   for (size_t i=0; i < NUM_VCS; ++i) {
     if (0 == client->vcs[i].guild_id) {
-      log_info("found an unused vcs at %d", i);
+      log_debug("found an unused vcs at %d", i);
       vc = client->vcs+i;
-      _discord_voice_init(vc, client, guild_id, channel_id);
+      _discord_voice_init(vc, client, guild_id, voice_channel_id);
       break;
     }
     if (guild_id == client->vcs[i].guild_id) {
-      if (channel_id == client->vcs[i].channel_id) {
+      if (voice_channel_id == client->vcs[i].channel_id) {
         log_warn("found an active vcs at %d, ignore the command", i);
         found_a_running_vcs = true;
       }
@@ -541,15 +535,16 @@ discord_join_vc(
   if (!vc) {
     log_error("exhaust all vcs, cannot send VOICE_STATE_UPDATE");
     // run out of vcs connections, report error to users
-    return "Exhaust all capacity";
+    return DISCORD_JOIN_VC_EXHAUST_CAPACITY;
   }
   if (found_a_running_vcs) {
-    return "Ignore this command, the bot is already in the vc";
+    return DISCORD_JOIN_VC_ALREADY_JOINED;
   }
 
-  recycle_active_vc(vc, guild_id, channel_id);
-  send_voice_state_update(&client->gw, guild_id, channel_id, self_mute, self_deaf);
-  return "joined vc";
+  recycle_active_vc(vc, guild_id, voice_channel_id);
+  vc->message_channel_id = msg->channel_id;
+  send_voice_state_update(&client->gw, guild_id, voice_channel_id, self_mute, self_deaf);
+  return DISCORD_JOIN_VC_JOINED;
 }
 
 /*
@@ -730,28 +725,6 @@ _discord_on_voice_server_update(struct discord *client, u64_snowflake_t guild_id
   }
 }
 
-#if 0
-void
-discord_voice_set_on_speaking(struct discord_voice *vc, voice_speaking_cb *callback) {
-  vc->cbs.on_speaking = callback;
-}
-
-void
-discord_voice_set_on_client_disconnect(struct discord_voice *vc, voice_client_disconnect_cb *callback) {
-  vc->cbs.on_client_disconnect = callback;
-}
-
-void
-discord_voice_set_on_codec(struct discord_voice *vc, voice_codec_cb *callback) {
-  vc->cbs.on_codec = callback;
-}
-
-void 
-discord_voice_set_on_idle(struct discord_voice *vc, voice_idle_cb *callback){
-  vc->cbs.on_idle = callback;
-}
-#endif
-
 void discord_init_voice_cbs(struct discord_voice_cbs *cbs) {
   cbs->on_idle = noop_idle_cb;
   cbs->on_ready = noop_on_ready;
@@ -759,6 +732,7 @@ void discord_init_voice_cbs(struct discord_voice_cbs *cbs) {
   cbs->on_session_descriptor = noop_on_session_descriptor;
   cbs->on_codec = noop_on_voice_codec;
   cbs->on_speaking = noop_on_speaking;
+  cbs->on_udp_server_connected = noop_on_udp_server_connected;
 }
 
 void
