@@ -1,4 +1,3 @@
-#define _GNU_SOURCE /* strcasestr */
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
@@ -20,9 +19,9 @@ void on_message(struct slack *client, char payload[], size_t len)
   json_extract(payload, len, "(text):?s,(channel):?s,(bot_id):T", &text, &channel, &check_bot);
   if (check_bot.start) return; // means message belongs to a bot
 
-  if (strcasestr(text, "ping"))
+  if (strstr(text, "ping"))
     slack_chat_post_message(client, channel, "pong");
-  else if (strcasestr(text, "pong"))
+  else if (strstr(text, "pong"))
     slack_chat_post_message(client, channel, "ping");
 
   if (text) free(text);
