@@ -19,15 +19,7 @@ void on_dm_receive(
     const struct discord_message *msg)
 {
   if (msg->author->bot) return;
-
-  struct discord_channel *dm_channel = discord_channel_alloc();
-  discord_get_channel(client, msg->channel_id, dm_channel);
-  if (dm_channel->type != DISCORD_CHANNEL_DM) {
-    discord_channel_free(dm_channel);
-    return;
-  }
   fprintf(stdout, "%s:%s\n", msg->author->username, msg->content);
-  discord_channel_free(dm_channel);
 }
 
 void* read_input(void *p_client)
@@ -82,6 +74,9 @@ int main(int argc, char *argv[])
 
   discord_set_on_ready(client, &on_ready);
   discord_set_on_message_create(client, &on_dm_receive);
+
+  /* Keep just DISCORD_GATEWAY_DIRECT_MESSAGES */
+  discord_remove_intents(client, DISCORD_GATEWAY_GUILD_MESSAGES);
 
   printf("\n\nThis bot demonstrates how easy it is to start a DM"
          " with someone and talk without leaving the terminal\n" 

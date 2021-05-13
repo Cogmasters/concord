@@ -329,6 +329,18 @@ void discord_cleanup(struct discord *client);
 void discord_add_intents(struct discord *client, enum discord_gateway_intents code);
 
 /**
+ * Unsubscribe from Discord Gateway events
+ *
+ * @see https://discord.com/developers/docs/topics/gateway#gateway-intents
+ * @see specs/gateway.json and specs-code/gateway.h for definition
+ *
+ * @param client the client created with discord_init()
+ * @param code the intents opcode
+ *        @note can be set as a bitmask operation (ex: A | B | C)
+ */
+void discord_remove_intents(struct discord *client, enum discord_gateway_intents code);
+
+/**
  * Set a mandatory prefix set commands
  * ex: if a "help" command and a "!" prefix is set, the command will
  *        only be validated if its read as "!help"

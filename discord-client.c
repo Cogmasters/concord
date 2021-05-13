@@ -102,6 +102,17 @@ discord_add_intents(struct discord *client, enum discord_gateway_intents code)
 }
 
 void
+discord_remove_intents(struct discord *client, enum discord_gateway_intents code)
+{
+  if (WS_CONNECTED == ws_get_status(client->gw.ws)) {
+    log_error("Can't remove intents from a running client.");
+    return;
+  }
+
+  client->gw.id->intents &= ~code;
+}
+
+void
 discord_set_prefix(struct discord *client, char *prefix) 
 {
   if (!prefix) return;
