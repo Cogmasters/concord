@@ -520,6 +520,7 @@ void discord_get_current_user(struct discord *client, struct discord_user *p_use
 void sb_discord_get_current_user(struct discord *client, struct sized_buffer *p_sb_user);
 void discord_get_current_user_guilds(struct discord *client, NTL_T(struct discord_guild) *p_guilds);
 void discord_leave_guild(struct discord *client, const u64_snowflake_t guild_id);
+void discord_create_dm(struct discord *client, const u64_snowflake_t recipient_id, struct discord_channel *p_dm_channel);
 
 // GATEWAY ENDPOINTS
 void discord_get_gateway(struct discord *client, struct discord_session *p_session);

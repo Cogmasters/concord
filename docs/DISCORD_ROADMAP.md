@@ -162,7 +162,7 @@
 - [x] [Get Current User Guilds](https://discord.com/developers/docs/resources/user#get-current-user-guilds)
 - [X] [Leave Guild](https://discord.com/developers/docs/resources/user#leave-guild)
 - [ ] [Get User DMs](https://discord.com/developers/docs/resources/user#get-user-dms)
-- [ ] [Create DM](https://discord.com/developers/docs/resources/user#create-dm)
+- [x] [Create DM](https://discord.com/developers/docs/resources/user#create-dm)
 - [ ] [Create Group DM](https://discord.com/developers/docs/resources/user#create-group-dm)
 - [ ] [Get User Connections](https://discord.com/developers/docs/resources/user#get-user-connections)
 ### [Voice Resouce](https://discord.com/developers/docs/resources/voice#voice-resource)

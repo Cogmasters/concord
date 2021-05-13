@@ -88,3 +88,29 @@ discord_leave_guild(struct discord *client, const u64_snowflake_t guild_id)
     HTTP_DELETE,
     "/users/@me/guilds/%"PRIu64, guild_id);
 }
+
+void 
+discord_create_dm(struct discord *client, const u64_snowflake_t recipient_id, struct discord_channel *p_dm_channel)
+{
+  if (!recipient_id) {
+    log_error("Missing 'recipient_id'");
+    return;
+  }
+
+  char payload[256]; // can safely assume the payload size to be small
+  size_t ret = json_inject(payload, sizeof(payload), \
+      "(recipient_id):s_as_u64", &recipient_id);
+
+  struct ua_resp_handle resp_handle = {
+    .ok_cb = p_dm_channel ? &discord_channel_from_json_v : NULL,
+    .ok_obj = p_dm_channel
+  };
+  struct sized_buffer req_body = {payload, ret};
+
+  discord_adapter_run(
+    &client->adapter,
+    &resp_handle,
+    &req_body,
+    HTTP_POST,
+    "/users/@me/channels");
+}
