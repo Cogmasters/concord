@@ -8,9 +8,6 @@
 #include "discord.h"
 
 
-/* Save ID so we don't have to specify it everytime */
-u64_snowflake_t curr_dm_channel_id;
-
 void on_ready(struct discord *client, const struct discord_user *bot) {
   fprintf(stderr, "\n\nManualDM-Bot succesfully connected to Discord as %s#%s!\n\n",
       bot->username, bot->discriminator);
@@ -40,6 +37,7 @@ void* read_input(void *p_client)
 
   char buf[32 + MAX_MESSAGE_LEN];
   u64_snowflake_t recipient_id;
+  u64_snowflake_t dm_channel_id;
   char msg[MAX_MESSAGE_LEN];
   while (1) {
     memset(buf, 0, sizeof(buf));
@@ -59,11 +57,11 @@ void* read_input(void *p_client)
     else { /* reset active chat */
       struct discord_channel *dm_channel = discord_channel_alloc();
       discord_create_dm(client, recipient_id, dm_channel);
-      curr_dm_channel_id = dm_channel->id;
+      dm_channel_id = dm_channel->id;
       discord_channel_free(dm_channel);
     }
     struct discord_create_message_params params = { .content = msg };
-    discord_create_message(client, curr_dm_channel_id, &params, NULL);
+    discord_create_message(client, dm_channel_id, &params, NULL);
   }
 
   pthread_exit(NULL);
