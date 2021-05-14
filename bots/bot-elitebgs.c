@@ -59,8 +59,8 @@ void update_last_tick_ms(uint64_t *tick_ms)
   /* Fetch ticks from ELITEBGS API */
   ua_run(
       g_elitebgs_ua, 
-      &resp_handle,
       NULL,
+      &resp_handle,
       NULL,
       HTTP_GET, "/ticks");
 }
@@ -287,12 +287,12 @@ void on_command(
   struct ua_resp_handle resp_handle = \
     { .ok_cb = &embed_from_json, .ok_obj = (void*)new_embed};
   ua_run(
-      g_elitebgs_ua, 
-      &resp_handle,
-      NULL,
-      NULL,
-      HTTP_GET,
-      "/factions%s", query);
+    g_elitebgs_ua, 
+    NULL,
+    &resp_handle,
+    NULL,
+    HTTP_GET,
+    "/factions%s", query);
 
   /* Send embed to channel if embed was loaded */
   struct discord_create_message_params params = {0};

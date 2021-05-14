@@ -70,8 +70,11 @@ void discord_adapter_cleanup(struct discord_adapter *adapter);
  *        @see user-agent.h
  * @param endpoint the format endpoint that be appended to base_url when
  *        performing a request, same behavior as printf()
+ * @return a code for checking on how the transfer went
+ *        #ORCA_OK means the transfer was succesful
+ *        @see logconf.h for definition
  */
-void discord_adapter_run(
+ORCAcode discord_adapter_run(
   struct discord_adapter *adapter, 
   struct ua_resp_handle *resp_handle,
   struct sized_buffer *req_body, // needed for POST/PUT/PATCH methods
@@ -129,9 +132,9 @@ struct discord_bucket* discord_bucket_try_get(struct discord_adapter *adapter, c
  * @param adapter the handle created with discord_adapter_init()
  * @param bucket #NULL when bucket is first discovered
  * @param endpoint the endpoint associated with the bucket
- * @conn the connection node that performed the request
+ * @info information struct regarding the current transfer
  */
-void discord_bucket_build(struct discord_adapter *adapter, struct discord_bucket *bucket, char endpoint[], struct ua_conn *conn);
+void discord_bucket_build(struct discord_adapter *adapter, struct discord_bucket *bucket, char endpoint[], struct ua_info *info);
 
 /** 
  * Struct for storing user-specific commands/callback pair for the bot to listen 

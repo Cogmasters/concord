@@ -11,7 +11,7 @@ struct msg {
   bool matched;
 };
 
-void
+ORCAcode
 discord_delete_messages_by_author_id(
   struct discord *client, 
   u64_snowflake_t channel_id, 
@@ -19,50 +19,54 @@ discord_delete_messages_by_author_id(
 {
   if (!channel_id) {
     log_error("Missing 'channel_id");
-    return;
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!author_id) {
+    log_error("Missing 'author_id");
+    return ORCA_MISSING_PARAMETER;
   }
 
-  struct discord_get_channel_messages_params params = {
-    .limit = 100
-  };
+  ORCAcode code;
+  struct discord_get_channel_messages_params params = { .limit = 100 };
 
-  NTL_T(struct discord_message) messages = NULL;
-  discord_get_channel_messages(client, channel_id, &params, &messages);
+  NTL_T(struct discord_message) messages=NULL;
+  code = discord_get_channel_messages(client, channel_id, &params, &messages);
+  if (ORCA_OK != code) {
+    log_error("Couldn't fetch channel messages");
+    return code;
+  }
 
   u64_unix_ms_t now = orka_timestamp_ms();
 
   NTL_T(u64_snowflake_t) list = NULL;
-  int count = 0;
-  for (int i = 0; messages[i]; i++) {
+  int count=0;
+  for (int i=0; messages[i]; ++i) {
     if(now > messages[i]->timestamp && now - messages[i]->timestamp > 1209600000)
     {
       break;
     }
-    if (author_id == 0)
-      count ++;
-    else if (messages[i]->author->id == author_id)
-      count ++;
+    if (!author_id || author_id == messages[i]->author->id)
+      ++count;
   }
-  if (count == 0)
-    return;
-  list = (NTL_T(u64_snowflake_t))ntl_calloc(count, sizeof(u64_snowflake_t));
+  if (0 == count) {
+    log_trace("Couldn't fetch messages from author");
+    return ORCA_OK;
+  }
 
-  for (int i = 0, j = 0; messages[i] && j < count; i++) {
-    if (author_id == 0) {
+  list = (NTL_T(u64_snowflake_t))ntl_calloc(count, sizeof(u64_snowflake_t));
+  for (int i=0, j=0; messages[i] && j < count; ++i) {
+    if (!author_id || author_id == messages[i]->author->id) {
       *list[j] = messages[i]->id;
-      j++;
-    }
-    else if (messages[i]->author->id == author_id) {
-      *list[j] = messages[i]->id;
-      j++;
+      ++j;
     }
   }
   ntl_free((ntl_t)messages, discord_message_cleanup_v);
 
   if (count == 1)
-    discord_delete_message(client, channel_id, *list[0]);
+    code = discord_delete_message(client, channel_id, *list[0]);
   else
-    discord_bulk_delete_messages(client, channel_id, list);
+    code = discord_bulk_delete_messages(client, channel_id, list);
+  return code;
 }
 
 void
@@ -396,7 +400,7 @@ discord_overwrite_append(
 }
 
 //@todo create some manner of copying a struct, including its pointer fields
-void
+ORCAcode
 discord_get_channel_at_pos(
   struct discord *client, 
   const u64_snowflake_t guild_id, 
@@ -404,9 +408,22 @@ discord_get_channel_at_pos(
   const size_t position,
   struct discord_channel *p_channel)
 {
+  if (!guild_id) {
+    log_error("Missing 'guild_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!p_channel) {
+    log_error("Missing 'p_channel'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
   NTL_T(struct discord_channel) channels = NULL;
-  discord_get_guild_channels(client, guild_id, &channels);
-  if (NULL == channels) return;
+  ORCAcode code;
+  code = discord_get_guild_channels(client, guild_id, &channels);
+  if (ORCA_OK != code) {
+    log_error("Couldn't fetch channels from guild");
+    return code;
+  }
 
   size_t j=0; // calculate position
   for (size_t i=0; channels[i]; ++i) {
@@ -420,4 +437,5 @@ discord_get_channel_at_pos(
     }
   }
   discord_channel_list_free(channels);
+  return code; // ORCA_OK
 }

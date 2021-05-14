@@ -12,7 +12,6 @@ extern "C" {
 
 /* FORWARD DECLARATIONS */
 struct user_agent; // the user agent that perform requests
-struct ua_conn;    // unique connector per request
 
 //possible http methods
 enum http_method {
@@ -26,7 +25,6 @@ enum http_method {
 
 /* COMMON HTTP RESPONSE CODES
 https://en.wikipedia.org/wiki/List_of_HTTP_status_codes */
-#define CURL_NO_RESPONSE           0
 #define HTTP_OK                   200
 #define HTTP_CREATED              201
 #define HTTP_NO_CONTENT           204
@@ -43,17 +41,6 @@ https://en.wikipedia.org/wiki/List_of_HTTP_status_codes */
 #define UA_MAX_HEADER_SIZE 100 + 1
 #define UA_MAX_HEADER_LEN  1024 + 1
 #define UA_MAX_URL_LEN     512 + 1
-
-typedef enum { 
-  UA_SUCCESS = 1,  // continue after succesfull request
-  UA_FAILURE,      // continue after failed request
-  UA_RETRY,        // retry connection
-  UA_ABORT         // abort after failed request
-} ua_status_t;
-
-struct sized_buffer ua_conn_get_resp_body(struct ua_conn *conn);
-ua_status_t ua_conn_get_status(struct ua_conn *conn);
-uint64_t ua_conn_timestamp(struct ua_conn *conn);
 
 //callback for object to be loaded by api response
 typedef void (load_obj_cb)(char *str, size_t len, void *p_obj);
@@ -72,30 +59,53 @@ struct ua_resp_handle {
   cxt_load_obj_cb *cxt_err_cb; // err call back with an execution context
 };
 
-typedef ua_status_t 
-(http_response_cb)(void *data, int httpcode, struct ua_conn *conn);
+struct ua_resp_header {
+  char field[UA_MAX_HEADER_SIZE][UA_MAX_HEADER_LEN];
+  char value[UA_MAX_HEADER_SIZE][UA_MAX_HEADER_LEN];
+  int size;
+};
 
-/* these can be used on any MT contexts, but the user still
-    have to synchronize his data accessed between callbacks */
-struct ua_callbacks {
-  void *data; // user arbitrary data to be passed to callbacks
+struct ua_resp_body {
+  /**
+   * the api response string and its length
+   */
+  char *start;
+  size_t size;
+  /**
+   * the real size occupied in memory
+   */
+  size_t real_size;
+};
 
-  int (*on_startup)(void *data); // exec before loop starts (return 1 for proceed, 0 for abort)
-  void (*on_iter_start)(void *data); // execs at end of every loop iteration
-  void (*on_iter_end)(void *data, struct ua_conn *conn); // execs at end of every loop iteration
-
-  http_response_cb *on_1xx; // execs on 1xx code
-  http_response_cb *on_2xx; // execs on 2xx code
-  http_response_cb *on_3xx; // execs on 3xx code
-  http_response_cb *on_4xx; // execs on 4xx code
-  http_response_cb *on_5xx; // execs on 5xx code
+struct ua_info {
+  /**
+   * how the request went 
+   *    equal 0 means success (2xx)
+   *    greater than 0 means failure (check value for http code)
+   *    lesser than 0 means failure from specialized error codes
+   */
+  ORCAcode code;
+  /** 
+   * request's url
+   */
+  char req_url[UA_MAX_URL_LEN];
+  /** 
+   * timestamp of when its request completed
+   */
+  uint64_t req_tstamp;
+  /**
+   * the key/field response header
+   */
+  struct ua_resp_header resp_header;
+  /**
+   * the response body
+   */
+  struct ua_resp_body resp_body;
 };
 
 char* http_code_print(int httpcode);
 char* http_reason_print(int httpcode);
 char* http_method_print(enum http_method method);
-
-char* ua_respheader_value(struct ua_conn *conn, char field[]);
 
 void ua_reqheader_add(struct user_agent *ua, char field[], char value[]);
 void ua_reqheader_del(struct user_agent *ua, char field[]);
@@ -109,18 +119,22 @@ void ua_cleanup(struct user_agent *ua);
 char* ua_get_url(struct user_agent *ua);
 void ua_set_url(struct user_agent *ua, const char base_url[]);
 void ua_block_ms(struct user_agent *ua, const uint64_t wait_ms);
-void ua_vrun(
+ORCAcode ua_vrun(
   struct user_agent *ua,
+  struct ua_info *info,
   struct ua_resp_handle *resp_handle,
   struct sized_buffer *req_body,
-  struct ua_callbacks *cbs,
   enum http_method http_method, char endpoint[], va_list args);
-void ua_run(
+ORCAcode ua_run(
   struct user_agent *ua,
+  struct ua_info *info,
   struct ua_resp_handle *resp_handle,
   struct sized_buffer *req_body,
-  struct ua_callbacks *cbs,
   enum http_method http_method, char endpoint[], ...);
+
+void ua_info_cleanup(struct ua_info *info);
+char* ua_info_respheader_field(struct ua_info *info, char field[]);
+struct sized_buffer ua_info_get_resp_body(struct ua_info *info);
 
 #ifdef __cplusplus
 }

@@ -11,12 +11,6 @@
 #define BASE_API_URL "https://discord.com/api/v8"
 
 
-struct _ratelimit_cxt {
-  struct discord_adapter *adapter;
-  struct discord_bucket *bucket;
-  char *endpoint;
-};
-
 void
 discord_adapter_init(struct discord_adapter *adapter, struct logconf *config, struct sized_buffer *token)
 {
@@ -48,97 +42,24 @@ discord_adapter_cleanup(struct discord_adapter *adapter)
   discord_buckets_cleanup(adapter);
 }
 
-static int
-bucket_tryget_cb(void *p_cxt)
-{
-  struct _ratelimit_cxt *cxt = p_cxt;
-  pthread_mutex_lock(&cxt->adapter->ratelimit.lock);
-  cxt->bucket = discord_bucket_try_get(cxt->adapter, cxt->endpoint);
-  pthread_mutex_unlock(&cxt->adapter->ratelimit.lock);
-  return 1;
-}
-
-static void
-bucket_trycooldown_cb(void *p_cxt)
-{
-  struct _ratelimit_cxt *cxt = p_cxt;
-  discord_bucket_try_cooldown(cxt->bucket);
-}
-
-static void
-bucket_trybuild_cb(void *p_cxt, struct ua_conn *conn)
-{
-  struct _ratelimit_cxt *cxt = p_cxt;
-  pthread_mutex_lock(&cxt->adapter->ratelimit.lock);
-  discord_bucket_build(cxt->adapter, cxt->bucket, cxt->endpoint, conn);
-  pthread_mutex_unlock(&cxt->adapter->ratelimit.lock);
-}
-
-static ua_status_t
-on_success_cb(void *p_cxt, int httpcode, struct ua_conn *conn) {
-  return UA_SUCCESS;
-}
-
-static ua_status_t
-on_failure_cb(void *p_cxt, int httpcode, struct ua_conn *conn)
-{
-  struct _ratelimit_cxt *cxt = p_cxt;
-
-  if (httpcode >= 500) { // server related error, retry
-    ua_block_ms(cxt->adapter->ua, 5000); // wait for 5 seconds
-    return UA_RETRY;
-  }
-
-  switch (httpcode) {
-  case HTTP_FORBIDDEN:
-  case HTTP_NOT_FOUND:
-  case HTTP_BAD_REQUEST:
-      return UA_FAILURE;
-  case HTTP_UNAUTHORIZED:
-  case HTTP_METHOD_NOT_ALLOWED:
-  default:
-      return UA_ABORT;
-  case HTTP_TOO_MANY_REQUESTS:
-   {
-      char message[256]="";
-      double retry_after=-1; // seconds
-
-      struct sized_buffer body = ua_conn_get_resp_body(conn);
-      json_extract(body.start, body.size,
-                  "(message):s (retry_after):lf",
-                  message, &retry_after);
-
-      if (retry_after != -1) { // retry after attribute received
-        log_warn("%s (wait: %.2lf s)", message, retry_after);
-
-        ua_block_ms(cxt->adapter->ua, (uint64_t)(1000*retry_after));
-
-        return UA_RETRY;
-      }
-      
-      // no retry after included, we should abort
-      log_fatal("%s", message);
-      return UA_ABORT;
-   }
-  }
-}
-
 static void
 json_error_cb(char *str, size_t len, void *p_err)
 {
-  /* JSON ERROR CODES
-  https://discord.com/developers/docs/topics/opcodes-and-status-codes#json-json-error-codes */
-  int code = 0; //last error code received
-  char message[256] = {0}; //meaning of the error received
+  /**
+   * JSON ERROR CODES
+   * https://discord.com/developers/docs/topics/opcodes-and-status-codes#json-json-error-codes 
+   */
+  int code=0; // last error code received
+  char message[256] = {0}; // meaning of the error received
   json_extract(str, len, \
       "(message):.*s (code):d", sizeof(message), message, &code);
-  log_error(ANSICOLOR("(JSON Error %d) %s", ANSI_BG_RED)
-            " - See Discord's JSON Error Codes\n\t\t%.*s", 
+  log_error(ANSICOLOR("(JSON Error %d) %s", ANSI_BG_RED)   \
+            " - See Discord's JSON Error Codes\n\t\t%.*s", \
             code, message, (int)len, str);
 }
 
 /* template function for performing requests */
-void
+ORCAcode
 discord_adapter_run(
   struct discord_adapter *adapter, 
   struct ua_resp_handle *resp_handle,
@@ -148,35 +69,77 @@ discord_adapter_run(
   va_list args;
   va_start(args, endpoint);
 
-  struct _ratelimit_cxt cxt = {
-    .adapter = adapter, 
-    .endpoint = endpoint
-  };
-
-  struct ua_callbacks cbs = {
-    .data = &cxt,
-    .on_startup = &bucket_tryget_cb,
-    .on_iter_start = &bucket_trycooldown_cb,
-    .on_iter_end = &bucket_trybuild_cb,
-    .on_1xx = NULL,
-    .on_2xx = &on_success_cb,
-    .on_3xx = &on_success_cb,
-    .on_4xx = &on_failure_cb,
-    .on_5xx = &on_failure_cb,
-  };
-
   /* IF UNSET, SET TO DEFAULT ERROR HANDLING CALLBACKS */
   if (resp_handle && !resp_handle->err_cb) {
     resp_handle->err_cb = &json_error_cb;
     resp_handle->err_obj = NULL;
   }
 
-  ua_vrun(
-    adapter->ua,
-    resp_handle,
-    req_body,
-    &cbs,
-    http_method, endpoint, args);
+  struct discord_bucket *bucket;
+  pthread_mutex_lock(&adapter->ratelimit.lock);
+  bucket = discord_bucket_try_get(adapter, endpoint);
+  pthread_mutex_unlock(&adapter->ratelimit.lock);
+
+  ORCAcode code;
+  bool keepalive=true;
+  while (keepalive) 
+  {
+    discord_bucket_try_cooldown(bucket);
+
+    struct ua_info info;
+    code = ua_vrun(
+      adapter->ua,
+      &info,
+      resp_handle,
+      req_body,
+      http_method, endpoint, args);
+
+    switch (code) {
+    case ORCA_OK:
+    case ORCA_UNUSUAL_HTTP_CODE:
+    case ORCA_NO_RESPONSE:
+        keepalive = false;
+        break;
+    case HTTP_FORBIDDEN:
+    case HTTP_NOT_FOUND:
+    case HTTP_BAD_REQUEST:
+        keepalive = false; 
+        break;
+    case HTTP_UNAUTHORIZED:
+    case HTTP_METHOD_NOT_ALLOWED:
+        ERR("Aborting after %s received", http_code_print(code));
+        break;
+    case HTTP_TOO_MANY_REQUESTS: {
+        char message[256]="";
+        double retry_after=-1; // seconds
+
+        struct sized_buffer body = ua_info_get_resp_body(&info);
+        json_extract(body.start, body.size,         \
+                    "(message):s (retry_after):lf", \
+                    message, &retry_after);
+
+        if (retry_after != -1) { // retry after attribute received
+          log_warn("%s (wait: %.2lf ms)", message, 1000*retry_after);
+          ua_block_ms(adapter->ua, (uint64_t)(1000*retry_after));
+        }
+        else { // no retry after included, we should abort
+          ERR("(NO RETRY-AFTER INCLUDED) %s", message);
+        }
+       break; }
+    default:
+        if (code >= 500) // server related error, retry
+          ua_block_ms(adapter->ua, 5000); // wait for 5 seconds
+        break;
+    }
+
+    pthread_mutex_lock(&adapter->ratelimit.lock);
+    discord_bucket_build(adapter, bucket, endpoint, &info);
+    pthread_mutex_unlock(&adapter->ratelimit.lock);
+    
+    ua_info_cleanup(&info);
+  }
 
   va_end(args);
+
+  return code;
 }

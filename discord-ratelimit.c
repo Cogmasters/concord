@@ -121,22 +121,21 @@ discord_bucket_try_get(struct discord_adapter *adapter, char route[]) {
 /* attempt to parse rate limit's header fields to the bucket
  *  linked with the connection which was performed */
 static void
-parse_ratelimits(struct discord_bucket *bucket, struct ua_conn *conn)
+parse_ratelimits(struct discord_bucket *bucket, struct ua_info *info)
 { 
   pthread_mutex_lock(&bucket->lock);
   --bucket->busy;
 
-  if (UA_SUCCESS == ua_conn_get_status(conn)
-      && bucket->update_tstamp < ua_conn_timestamp(conn)) 
+  if (ORCA_OK == info->code && bucket->update_tstamp < info->req_tstamp) 
   {
-    bucket->update_tstamp = ua_conn_timestamp(conn);
+    bucket->update_tstamp = info->req_tstamp;
 
     char *str; // fetch header value as string
-    if ( (str = ua_respheader_value(conn, "x-ratelimit-reset")) )
+    if ( (str = ua_info_respheader_field(info, "x-ratelimit-reset")) )
       bucket->reset_tstamp = 1000 * strtod(str, NULL);
-    if ( (str = ua_respheader_value(conn, "x-ratelimit-remaining")) )
+    if ( (str = ua_info_respheader_field(info, "x-ratelimit-remaining")) )
       bucket->remaining =  strtol(str, NULL, 10);
-    if ( (str = ua_respheader_value(conn, "x-ratelimit-reset-after")) )
+    if ( (str = ua_info_respheader_field(info, "x-ratelimit-reset-after")) )
       bucket->reset_after_ms = 1000 * strtod(str, NULL);
   }
 
@@ -150,9 +149,9 @@ parse_ratelimits(struct discord_bucket *bucket, struct ua_conn *conn)
  * If no match is found then a new bucket is created and linked to the
  *  route*/
 static void
-match_route(struct discord_adapter *adapter, char route[], struct ua_conn *conn)
+match_route(struct discord_adapter *adapter, char route[], struct ua_info *info)
 {
-  char *hash = ua_respheader_value(conn, "x-ratelimit-bucket");
+  char *hash = ua_info_respheader_field(info, "x-ratelimit-bucket");
   if (!hash) return; //no bucket hash information in header
 
   struct discord_bucket **bucket_pool = adapter->ratelimit.bucket_pool;
@@ -180,18 +179,18 @@ match_route(struct discord_adapter *adapter, char route[], struct ua_conn *conn)
 
   //add new route to tree and update its bucket ratelimit fields
   avl_insert(&adapter->ratelimit.routes, strdup(route), bucket);
-  parse_ratelimits(bucket, conn);
+  parse_ratelimits(bucket, info);
 }
 
 /* Attempt to build and/or update bucket's rate limiting information. */
 void
-discord_bucket_build(struct discord_adapter *adapter, struct discord_bucket *bucket, char route[], struct ua_conn *conn)
+discord_bucket_build(struct discord_adapter *adapter, struct discord_bucket *bucket, char route[], struct ua_info *info)
 {
   /* no bucket means first time using this route.  attempt to 
    *  establish a route between it and a bucket via its unique hash 
    *  (will create a new bucket if it can't establish a route) */
   if (!bucket)
-    match_route(adapter, route, conn);
+    match_route(adapter, route, info);
   else // update the bucket rate limit values
-    parse_ratelimits(bucket, conn);
+    parse_ratelimits(bucket, info);
 }

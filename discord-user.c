@@ -7,18 +7,22 @@
 #include "orka-utils.h"
 
 
-void
+ORCAcode
 discord_get_user(struct discord *client, const u64_snowflake_t user_id, struct discord_user *p_user)
 {
   if (!user_id) {
     log_error("Missing 'user_id'");
-    return;
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!p_user) {
+    log_error("Missing 'p_user'");
+    return ORCA_MISSING_PARAMETER;
   }
 
-  struct ua_resp_handle resp_handle =
-    { .ok_cb = &discord_user_from_json_v, .ok_obj = (void*)p_user};
+  struct ua_resp_handle resp_handle = \
+    { .ok_cb = &discord_user_from_json_v, .ok_obj = p_user};
 
-  discord_adapter_run( 
+  return discord_adapter_run( 
     &client->adapter,
     &resp_handle,
     NULL,
@@ -26,13 +30,18 @@ discord_get_user(struct discord *client, const u64_snowflake_t user_id, struct d
     "/users/%"PRIu64, user_id);
 }
 
-void 
+ORCAcode 
 discord_get_current_user(struct discord *client, struct discord_user *p_user)
 {
-  struct ua_resp_handle resp_handle =
-    { .ok_cb = &discord_user_from_json_v, .ok_obj = (void*)p_user};
+  if (!p_user) {
+    log_error("Missing 'p_user'");
+    return ORCA_MISSING_PARAMETER;
+  }
 
-  discord_adapter_run( 
+  struct ua_resp_handle resp_handle = \
+    { .ok_cb = &discord_user_from_json_v, .ok_obj = p_user};
+
+  return discord_adapter_run( 
     &client->adapter,
     &resp_handle,
     NULL,
@@ -48,13 +57,18 @@ json_to_sb(char *json, size_t len, void *p_sb_user)
   sb_user->start = strndup(json, len);
 }
 
-void /* @todo this is a temporary solution for easily wrapping JS */
+ORCAcode /* @todo this is a temporary solution for easily wrapping JS */
 sb_discord_get_current_user(struct discord *client, struct sized_buffer *p_sb_user)
 {
-  struct ua_resp_handle resp_handle =
-    {.ok_cb = &json_to_sb, .ok_obj = (void*)p_sb_user};
+  if (!p_sb_user) {
+    log_error("Missing 'p_sb_user'");
+    return ORCA_MISSING_PARAMETER;
+  }
 
-  discord_adapter_run( 
+  struct ua_resp_handle resp_handle = \
+    {.ok_cb = &json_to_sb, .ok_obj = p_sb_user};
+
+  return discord_adapter_run( 
     &client->adapter,
     &resp_handle,
     NULL,
@@ -62,13 +76,18 @@ sb_discord_get_current_user(struct discord *client, struct sized_buffer *p_sb_us
     "/users/@me");
 }
 
-void
+ORCAcode
 discord_get_current_user_guilds(struct discord *client, NTL_T(struct discord_guild) *p_guilds)
 {
-  struct ua_resp_handle resp_handle =
-    { .ok_cb = &discord_guild_list_from_json_v, .ok_obj = (void*)p_guilds};
+  if (!p_guilds) {
+    log_error("Missing 'p_guilds'");
+    return ORCA_MISSING_PARAMETER;
+  }
 
-  discord_adapter_run( 
+  struct ua_resp_handle resp_handle = \
+    { .ok_cb = &discord_guild_list_from_json_v, .ok_obj = p_guilds};
+
+  return discord_adapter_run( 
     &client->adapter,
     &resp_handle,
     NULL,
@@ -76,12 +95,17 @@ discord_get_current_user_guilds(struct discord *client, NTL_T(struct discord_gui
     "/users/@me/guilds");
 }
 
-void 
+ORCAcode 
 discord_leave_guild(struct discord *client, const u64_snowflake_t guild_id)
 {
+  if (!guild_id) {
+    log_error("Missing 'guild_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
   struct sized_buffer req_body = {"{}", 2};
 
-  discord_adapter_run(
+  return discord_adapter_run(
     &client->adapter,
     NULL,
     &req_body,
@@ -89,12 +113,12 @@ discord_leave_guild(struct discord *client, const u64_snowflake_t guild_id)
     "/users/@me/guilds/%"PRIu64, guild_id);
 }
 
-void 
+ORCAcode 
 discord_create_dm(struct discord *client, const u64_snowflake_t recipient_id, struct discord_channel *p_dm_channel)
 {
   if (!recipient_id) {
     log_error("Missing 'recipient_id'");
-    return;
+    return ORCA_MISSING_PARAMETER;
   }
 
   char payload[256]; // can safely assume the payload size to be small
@@ -105,9 +129,9 @@ discord_create_dm(struct discord *client, const u64_snowflake_t recipient_id, st
     .ok_cb = p_dm_channel ? &discord_channel_from_json_v : NULL,
     .ok_obj = p_dm_channel
   };
-  struct sized_buffer req_body = {payload, ret};
+  struct sized_buffer req_body = { payload, ret };
 
-  discord_adapter_run(
+  return discord_adapter_run(
     &client->adapter,
     &resp_handle,
     &req_body,

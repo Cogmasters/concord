@@ -55,9 +55,9 @@ reddit_adapter_run(
 
   ua_vrun(
     adapter->ua,
+    NULL,
     resp_handle,
     req_body,
-    NULL,
     http_method, endpoint, args);
 
   va_end(args);

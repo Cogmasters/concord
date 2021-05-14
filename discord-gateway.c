@@ -33,13 +33,18 @@ discord_session_from_json(char *str, size_t len, void *p_session)
       &session->max_concurrency);
 }
 
-void
+ORCAcode
 discord_get_gateway(struct discord *client, struct discord_session *p_session)
 {
-  struct ua_resp_handle resp_handle = \
-    { .ok_cb = &discord_session_from_json, .ok_obj = (void*)p_session };
+  if (!p_session) {
+    log_error("Missing 'p_session'");
+    return ORCA_MISSING_PARAMETER;
+  }
 
-  discord_adapter_run( 
+  struct ua_resp_handle resp_handle = \
+    { .ok_cb = &discord_session_from_json, .ok_obj = p_session };
+
+  return discord_adapter_run( 
     &client->adapter,
     &resp_handle,
     NULL,
@@ -47,13 +52,18 @@ discord_get_gateway(struct discord *client, struct discord_session *p_session)
     "/gateway");
 }
 
-void
+ORCAcode
 discord_get_gateway_bot(struct discord *client, struct discord_session *p_session)
 {
-  struct ua_resp_handle resp_handle = \
-    { .ok_cb = &discord_session_from_json, .ok_obj = (void*)p_session};
+  if (!p_session) {
+    log_error("Missing 'p_session'");
+    return ORCA_MISSING_PARAMETER;
+  }
 
-  discord_adapter_run( 
+  struct ua_resp_handle resp_handle = \
+    { .ok_cb = &discord_session_from_json, .ok_obj = p_session};
+
+  return discord_adapter_run( 
     &client->adapter,
     &resp_handle,
     NULL,

@@ -8,6 +8,19 @@ extern "C" {
 #include "ntl.h" /* struct sized_buffer */
 #include "debug.h"
 
+/**
+ * @todo add more error codes and a strerror()
+ * @todo move to a file easier to find
+ */
+typedef int ORCAcode;
+#define ORCA_OK                  0
+#define ORCA_NO_RESPONSE        -1
+#define ORCA_UNUSUAL_HTTP_CODE  -2
+#define ORCA_MISSING_PARAMETER  -3
+#define ORCA_BAD_PARAMETER      -4
+#define ORCA_BAD_JSON           -5
+
+
 #define MAX_LOGCONF_IDS 32
 
 struct logconf_ids {

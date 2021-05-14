@@ -7,18 +7,22 @@
 #include "orka-utils.h"
 
 
-void
+ORCAcode
 discord_get_guild(struct discord *client, const u64_snowflake_t guild_id, struct discord_guild *p_guild)
 {
   if (!guild_id) {
     log_error("Missing 'guild_id'");
-    return;
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!p_guild) {
+    log_error("Missing 'p_guild'");
+    return ORCA_MISSING_PARAMETER;
   }
 
-  struct ua_resp_handle resp_handle =
-    { .ok_cb = &discord_guild_from_json_v, .ok_obj = (void*)p_guild};
+  struct ua_resp_handle resp_handle = \
+    { .ok_cb = &discord_guild_from_json_v, .ok_obj = p_guild };
 
-  discord_adapter_run( 
+  return discord_adapter_run( 
     &client->adapter,
     &resp_handle,
     NULL,
@@ -26,7 +30,7 @@ discord_get_guild(struct discord *client, const u64_snowflake_t guild_id, struct
     "/guilds/%"PRIu64, guild_id);
 }
 
-void 
+ORCAcode 
 discord_create_guild_channel(
   struct discord *client, 
   const u64_snowflake_t guild_id, 
@@ -35,15 +39,15 @@ discord_create_guild_channel(
 {
   if (!guild_id) {
     log_error("Missing 'guild_id");
-    return;
+    return ORCA_MISSING_PARAMETER;
   }
   if (IS_EMPTY_STRING(params->name)) {
     log_error("Missing channel name (params.name)");
-    return;
+    return ORCA_BAD_PARAMETER;
   }
   if (!orka_str_bounds_check(params->topic, 1024)) {
     log_error("'params.topic' exceeds threshold of 1024");
-    return;
+    return ORCA_BAD_PARAMETER;
   }
 
   char payload[MAX_PAYLOAD_LEN];
@@ -54,16 +58,17 @@ discord_create_guild_channel(
     .ok_obj = p_channel,
   };
 
-  struct sized_buffer req_body = {payload, strlen(payload)};
+  struct sized_buffer req_body = { payload, strlen(payload) };
 
-  discord_adapter_run( 
+  return discord_adapter_run( 
     &client->adapter,
     &resp_handle,
     &req_body,
     HTTP_POST, 
     "/guilds/%"PRIu64"/channels", guild_id);
 }
-void
+
+ORCAcode
 discord_get_guild_channels(
   struct discord *client, 
   const u64_snowflake_t guild_id, 
@@ -71,13 +76,17 @@ discord_get_guild_channels(
 {
   if (!guild_id) {
     log_error("Missing 'guild_id'");
-    return;
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!p_channels) {
+    log_error("Missing 'p_channels'");
+    return ORCA_MISSING_PARAMETER;
   }
 
-  struct ua_resp_handle resp_handle = 
-    { .ok_cb = &discord_channel_list_from_json_v, .ok_obj = (void*)p_channels};
+  struct ua_resp_handle resp_handle = \
+    { .ok_cb = &discord_channel_list_from_json_v, .ok_obj = p_channels };
 
-  discord_adapter_run( 
+  return discord_adapter_run( 
     &client->adapter,
     &resp_handle,
     NULL,
@@ -85,23 +94,27 @@ discord_get_guild_channels(
     "/guilds/%"PRIu64"/channels", guild_id);
 }
 
-void 
+ORCAcode 
 discord_get_guild_member(struct discord *client, u64_snowflake_t guild_id, u64_snowflake_t user_id, struct discord_guild_member *p_member) 
 {
   if (!guild_id) {
     log_error("Missing 'guild_id'");
-    return;
+    return ORCA_MISSING_PARAMETER;
   }
   if (!user_id) {
     log_error("Missing 'user_id'");
-    return;
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!p_member) {
+    log_error("Missing 'p_member'");
+    return ORCA_MISSING_PARAMETER;
   }
 
   struct ua_resp_handle resp_handle = {
     .ok_cb = discord_guild_member_from_json_v, .ok_obj = p_member
   };
 
-  discord_adapter_run(
+  return discord_adapter_run(
     &client->adapter,
     &resp_handle,
     NULL,
@@ -109,7 +122,7 @@ discord_get_guild_member(struct discord *client, u64_snowflake_t guild_id, u64_s
     "/guilds/%"PRIu64"/members/%"PRIu64, guild_id, user_id);
 }
 
-void
+ORCAcode
 discord_list_guild_members(
   struct discord *client, 
   const u64_snowflake_t guild_id, 
@@ -118,11 +131,19 @@ discord_list_guild_members(
 {
   if (!guild_id) {
     log_error("Missing 'guild_id'");
-    return;
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!p_members) {
+    log_error("Missing 'p_members'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!params) {
+    log_error("Missing 'params'");
+    return ORCA_MISSING_PARAMETER;
   }
   if (params->limit < 1 || params->limit > 1000) {
     log_error("'limit' value should be in an interval of (1-1000)");
-    return;
+    return ORCA_BAD_PARAMETER;
   }
 
   char limit_query[64];
@@ -135,10 +156,10 @@ discord_list_guild_members(
         "&after=%" PRIu64 , params->after);
   }
 
-  struct ua_resp_handle resp_handle =
-    { .ok_cb = &discord_guild_member_list_from_json_v, .ok_obj = (void*)p_members};
+  struct ua_resp_handle resp_handle = \
+    { .ok_cb = &discord_guild_member_list_from_json_v, .ok_obj = p_members };
   
-  discord_adapter_run( 
+  return discord_adapter_run( 
     &client->adapter,
     &resp_handle,
     NULL,
@@ -146,7 +167,7 @@ discord_list_guild_members(
     "/guilds/%"PRIu64"/members%s%s", guild_id, limit_query, after_query);
 }
 
-void 
+ORCAcode 
 discord_remove_guild_member(
   struct discord *client, 
   const u64_snowflake_t guild_id, 
@@ -154,21 +175,22 @@ discord_remove_guild_member(
 {
   if (!guild_id) {
     log_error("Missing 'guild_id'");
-    return;
+    return ORCA_MISSING_PARAMETER;
   }
   if (!user_id) {
     log_error("Missing 'user_id'");
-    return;
+    return ORCA_MISSING_PARAMETER;
   }
 
-  discord_adapter_run(
+  return discord_adapter_run(
     &client->adapter,
     NULL,
     NULL,
     HTTP_DELETE,
     "/guilds/%"PRIu64"/members/%"PRIu64, guild_id, user_id);
 }
-void 
+
+ORCAcode 
 discord_modify_guild_member(
   struct discord *client, 
   const u64_snowflake_t guild_id, 
@@ -178,11 +200,15 @@ discord_modify_guild_member(
 {
   if (!guild_id) {
     log_error("Missing 'guild_id'");
-    return;
+    return ORCA_MISSING_PARAMETER;
   }
   if (!user_id) {
     log_error("Missing 'user_id'");
-    return;
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!params) {
+    log_error("Missing 'params'");
+    return ORCA_MISSING_PARAMETER;
   }
 
   char payload[MAX_PAYLOAD_LEN];
@@ -193,9 +219,9 @@ discord_modify_guild_member(
     .ok_obj = p_member,
   };
 
-  struct sized_buffer req_body = {payload, strlen(payload)};
+  struct sized_buffer req_body = { payload, strlen(payload) };
 
-  discord_adapter_run( 
+  return discord_adapter_run( 
     &client->adapter,
     &resp_handle,
     &req_body,
@@ -203,7 +229,7 @@ discord_modify_guild_member(
     "/guilds/%"PRIu64"/members/%"PRIu64, guild_id, user_id);
 }
 
-void
+ORCAcode
 discord_get_guild_ban(
   struct discord *client, 
   const u64_snowflake_t guild_id, 
@@ -212,24 +238,29 @@ discord_get_guild_ban(
 {
   if (!guild_id) {
     log_error("Missing 'guild_id'");
-    return;
+    return ORCA_MISSING_PARAMETER;
   }
   if (!user_id) {
     log_error("Missing 'user_id'");
-    return;
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!p_ban) {
+    log_error("Missing 'p_ban'");
+    return ORCA_MISSING_PARAMETER;
   }
 
-  struct ua_resp_handle resp_handle =
-    { .ok_cb = &discord_guild_ban_from_json_v, .ok_obj = (void*)p_ban};
+  struct ua_resp_handle resp_handle = \
+    { .ok_cb = &discord_guild_ban_from_json_v, .ok_obj = p_ban};
 
-  discord_adapter_run( 
+  return discord_adapter_run( 
     &client->adapter,
     &resp_handle,
     NULL,
     HTTP_GET, 
     "/guilds/%"PRIu64"/bans/%"PRIu64, guild_id, user_id);
 }
-void
+
+ORCAcode
 discord_get_guild_bans(
   struct discord *client, 
   const u64_snowflake_t guild_id, 
@@ -237,13 +268,17 @@ discord_get_guild_bans(
 {
   if (!guild_id) {
     log_error("Missing 'guild_id'");
-    return;
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!p_bans) {
+    log_error("Missing 'p_bans'");
+    return ORCA_MISSING_PARAMETER;
   }
 
-  struct ua_resp_handle resp_handle =
-    { .ok_cb = &discord_guild_ban_list_from_json_v, .ok_obj = (void*)p_bans};
+  struct ua_resp_handle resp_handle = \
+    { .ok_cb = &discord_guild_ban_list_from_json_v, .ok_obj = p_bans };
 
-  discord_adapter_run( 
+  return discord_adapter_run( 
     &client->adapter,
     &resp_handle,
     NULL,
@@ -251,7 +286,7 @@ discord_get_guild_bans(
     "/guilds/%"PRIu64"/bans", guild_id);
 }
 
-void
+ORCAcode
 discord_create_guild_ban(
   struct discord *client, 
   const u64_snowflake_t guild_id, 
@@ -262,21 +297,21 @@ discord_create_guild_ban(
   const int MAX_DELETE_MESSAGE_DAYS = 7;
   if (!guild_id) {
     log_error("Missing 'guild_id'");
-    return;
+    return ORCA_MISSING_PARAMETER;
   }
   if (!user_id) {
     log_error("Missing 'user_id'");
-    return;
+    return ORCA_MISSING_PARAMETER;
   }
   if (reason && strlen(reason) > MAX_REASON_LEN) {
     log_error("Reason length exceeds %u characters threshold (%zu)",
         MAX_REASON_LEN, strlen(reason));
-    return;
+    return ORCA_BAD_PARAMETER;
   }
   if (delete_message_days < 0 || delete_message_days > MAX_DELETE_MESSAGE_DAYS) {
     log_error("'delete_message_days' is outside the interval (0, %d)",
         MAX_DELETE_MESSAGE_DAYS);
-    return;
+    return ORCA_BAD_PARAMETER;
   }
 
   void *A[2] = {0}; // pointer availability array.
@@ -296,7 +331,7 @@ discord_create_guild_ban(
 
   struct sized_buffer req_body = {payload, (size_t)ret};
 
-  discord_adapter_run( 
+  return discord_adapter_run( 
     &client->adapter,
     NULL,
     &req_body,
@@ -304,7 +339,7 @@ discord_create_guild_ban(
     "/guilds/%"PRIu64"/bans/%"PRIu64, guild_id, user_id);
 }
 
-void
+ORCAcode
 discord_get_guild_roles(
   struct discord *client, 
   const u64_snowflake_t guild_id, 
@@ -312,20 +347,25 @@ discord_get_guild_roles(
 {
   if (!guild_id) {
     log_error("Missing 'guild_id'");
-    return;
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!p_roles) {
+    log_error("Missing 'p_roles'");
+    return ORCA_MISSING_PARAMETER;
   }
 
-  struct ua_resp_handle resp_handle =
-    { .ok_cb = &discord_guild_role_list_from_json_v, .ok_obj = (void*)p_roles};
+  struct ua_resp_handle resp_handle = \
+    { .ok_cb = &discord_guild_role_list_from_json_v, .ok_obj = p_roles };
 
-  discord_adapter_run( 
+  return discord_adapter_run( 
     &client->adapter,
     &resp_handle,
     NULL,
     HTTP_GET, 
     "/guilds/%"PRIu64"/roles", guild_id);
 }
-void
+
+ORCAcode
 discord_remove_guild_ban(
   struct discord *client, 
   const u64_snowflake_t guild_id, 
@@ -334,16 +374,16 @@ discord_remove_guild_ban(
 {
   if (!guild_id) {
     log_error("Missing 'guild_id'");
-    return;
+    return ORCA_MISSING_PARAMETER;
   }
   if (!user_id) {
     log_error("Missing 'user_id'");
-    return;
+    return ORCA_MISSING_PARAMETER;
   }
   if (!orka_str_bounds_check(reason, MAX_REASON_LEN)) {
     log_error("Reason length exceeds %u characters threshold (%zu)",
         MAX_REASON_LEN, strlen(reason));
-    return;
+    return ORCA_BAD_PARAMETER;
   }
 
   void *A[1] = {0}; // pointer availability array.
@@ -357,9 +397,9 @@ discord_remove_guild_ban(
                         reason,
                         A, sizeof(A));
 
-  struct sized_buffer req_body = {payload, (size_t)ret};
+  struct sized_buffer req_body = { payload, (size_t)ret };
 
-  discord_adapter_run( 
+  return discord_adapter_run( 
     &client->adapter,
     NULL,
     &req_body,
@@ -367,7 +407,7 @@ discord_remove_guild_ban(
     "/guilds/%"PRIu64"/bans/%"PRIu64, guild_id, user_id);
 }
 
-void 
+ORCAcode 
 discord_create_guild_role(
   struct discord *client, 
   const u64_snowflake_t guild_id, 
@@ -376,7 +416,7 @@ discord_create_guild_role(
 {
   if (!guild_id) {
     log_error("Missing 'guild_id'");
-    return;
+    return ORCA_MISSING_PARAMETER;
   }
 
   char payload[MAX_PAYLOAD_LEN];
@@ -387,9 +427,9 @@ discord_create_guild_role(
     .ok_obj = p_role,
   };
 
-  struct sized_buffer req_body = {payload, strlen(payload)};
+  struct sized_buffer req_body = { payload, strlen(payload) };
 
-  discord_adapter_run( 
+  return discord_adapter_run( 
     &client->adapter,
     &resp_handle,
     &req_body,
@@ -397,7 +437,7 @@ discord_create_guild_role(
     "/guilds/%"PRIu64"/roles", guild_id);
 }
 
-void 
+ORCAcode 
 discord_delete_guild_role(
   struct discord *client, 
   const u64_snowflake_t guild_id, 
@@ -405,14 +445,14 @@ discord_delete_guild_role(
 {
   if (!guild_id) {
     log_error("Missing 'guild_id'");
-    return;
+    return ORCA_MISSING_PARAMETER;
   }
   if (!role_id) {
     log_error("Missing 'role_id'");
-    return;
+    return ORCA_MISSING_PARAMETER;
   }
 
-  discord_adapter_run(
+  return discord_adapter_run(
     &client->adapter,
     NULL,
     NULL,
