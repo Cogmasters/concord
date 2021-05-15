@@ -412,7 +412,7 @@ _discord_voice_init(
 
 void
 discord_send_speaking(struct discord_voice *vc, enum discord_voice_speaking_flags flag,
-                      int delay, int ssrc)
+                      int delay)
 {
   ASSERT_S(WS_CONNECTED == ws_get_status(vc->ws), "Action requires an active connection to Discord");
 
@@ -426,13 +426,12 @@ discord_send_speaking(struct discord_voice *vc, enum discord_voice_speaking_flag
                         "}",
                         &flag, 
                         &delay,
-                        &ssrc);
+                        &vc->ssrc);
   ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
 
   log_info("Sending VOICE_SPEAKING(%d bytes)", ret);
   ws_send_text(vc->ws, payload, ret);
 }
-
 
 static void
 recycle_active_vc(

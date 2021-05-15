@@ -205,9 +205,9 @@ enum discord_join_vc_status discord_join_vc(
  * 
  * @param vc the VC obtained with discord_join_vc()
  * @param flag @see https://discord.com/developers/docs/topics/voice-connections#speaking
- * @param ssrc the source of a stream of RTP packets (a identifier carried across RTP header)
+ * @param delay Should be set to 0. https://github.com/discord/discord-api-docs/issues/859#issuecomment-466602485
  */
-void discord_send_speaking(struct discord_voice *vc, enum discord_voice_speaking_flags flag, int delay, int ssrc);
+void discord_send_speaking(struct discord_voice *vc, enum discord_voice_speaking_flags flag, int delay);
 
 /**
  * Update the voice session with a new session_id
