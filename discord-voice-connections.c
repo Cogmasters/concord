@@ -426,7 +426,7 @@ discord_send_speaking(struct discord_voice *vc, enum discord_voice_speaking_flag
                         "}",
                         &flag, 
                         &delay,
-                        &vc->ssrc);
+                        &vc->udp_service.ssrc);
   ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
 
   log_info("Sending VOICE_SPEAKING(%d bytes)", ret);
