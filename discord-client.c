@@ -348,6 +348,7 @@ discord_set_voice_cbs(struct discord *client, struct discord_voice_cbs *callback
     client->voice_cbs.on_idle = callbacks->on_idle;
   if (callbacks->on_udp_server_connected)
     client->voice_cbs.on_udp_server_connected = callbacks->on_udp_server_connected;
+  discord_add_intents(client, DISCORD_GATEWAY_GUILD_VOICE_STATES);
 }
 
 void

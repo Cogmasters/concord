@@ -98,6 +98,10 @@ on_hello(struct discord_voice *vc)
 static void
 on_ready(struct discord_voice *vc)
 {
+  vc->is_ready = true;
+  vc->reconnect.attempt = 0;
+  log_info("Succesfully started a Discord Voice session!");
+
   struct discord *client = vc->p_client;
   if (!client->voice_cbs.on_ready) return;
   client->voice_cbs.on_ready(vc);
