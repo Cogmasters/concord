@@ -181,16 +181,13 @@ enum discord_join_vc_status {
 
 /**
  * Send a Voice State Update to Discord, in order to connect to the
- *        voice server. When succesful @b p_vc will be assigned a VC handle
+ *        voice server. When succesful a VC will start running 
  * 
- * @todo Assign NULL to p_vc if a certain waiting for response timeout has been reach
- *
  * @param client the client created with discord_init()
  * @param guild_id the guild that houses the voice channel
  * @param channel_id the voice channel the client wants to connect to
  * @param self_mute #true will join as mute 
  * @param self_deaf #true will join as deaf 
- * @param p_vc will receive the VC struct once its done
  */
 enum discord_join_vc_status discord_join_vc(
   struct discord *client,
@@ -260,6 +257,6 @@ void discord_voice_reconnect(struct discord_voice *vc, bool resume);
  */
 bool discord_voice_is_alive(struct discord_voice *vc);
 
-extern void discord_init_voice_cbs(struct discord_voice_cbs *cbs);
+extern void discord_voice_connections_init(struct discord *client);
 
 #endif // DISCORD_VOICE_CONNECTIONS_H

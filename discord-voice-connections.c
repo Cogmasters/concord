@@ -1,6 +1,8 @@
 #define _GNU_SOURCE /* asprintf() */
 #include <stdio.h>
+#include <string.h>
 #include <math.h>
+
 #include "discord.h"
 #include "discord-internal.h"
 #include "discord-voice-connections.h"
@@ -103,16 +105,18 @@ on_ready(struct discord_voice *vc)
   log_info("Succesfully started a Discord Voice session!");
 
   struct discord *client = vc->p_client;
-  if (!client->voice_cbs.on_ready) return;
-  client->voice_cbs.on_ready(vc);
+  if (client->voice_cbs.on_ready) {
+    client->voice_cbs.on_ready(vc);
+  }
 }
 
 static void
 on_session_description(struct discord_voice *vc)
 {
   struct discord *client = vc->p_client;
-  if (!client->voice_cbs.on_session_descriptor) return;
-  client->voice_cbs.on_session_descriptor(vc);
+  if (client->voice_cbs.on_session_descriptor) {
+    client->voice_cbs.on_session_descriptor(vc);
+  }
 }
 
 static void
@@ -321,58 +325,6 @@ send_heartbeat(struct discord_voice *vc)
   ws_send_text(vc->ws, payload, ret);
 }
 
-static void noop_idle_cb(struct discord *a, struct discord_voice *b, const struct discord_user *c)
-{
-  return;
-}
-
-// triggers when a user start speaking
-static void noop_on_speaking(
-  struct discord *client,
-  struct discord_voice *vc,
-  const struct discord_user *bot,
-  const u64_snowflake_t user_id,
-  const int speaking,
-  const int delay,
-  const int ssrc) {
-  log_trace("noop_on_speaking");
-  return;
-}
-
-static void noop_on_voice_client_disconnect (
-  struct discord *client,
-  struct discord_voice *vc,
-  const struct discord_user *bot,
-  const u64_snowflake_t user_id) {
-  log_trace("noop_on_voice_client_disconnect");
-  return;
-}
-
-static void noop_on_voice_codec (
-  struct discord *client,
-  struct discord_voice *vc,
-  const struct discord_user *bot,
-  const char audio_codec[],
-  const char video_codec[]) {
-  log_trace("noop_on_voice_codec");
-  return;
-}
-
-static void noop_on_ready(struct discord_voice *vc) {
-  log_trace("noop_on_ready");
-  return;
-}
-
-static void noop_on_session_descriptor(struct discord_voice *vc) {
-  log_trace("noop_on_session_descriptor");
-  return;
-}
-
-static void noop_on_udp_server_connected(struct discord_voice *vc) {
-  log_trace("noop_on_udp_server_connected");
-  return;
-}
-
 static void
 _discord_voice_cleanup(struct discord_voice *vc)
 {
@@ -504,12 +456,13 @@ send_voice_state_update(
 }
 
 enum discord_join_vc_status
-discord_join_vc (struct discord *client,
-                 struct discord_message *msg,
-                 u64_snowflake_t guild_id,
-                 u64_snowflake_t voice_channel_id,
-                 bool self_mute,
-                 bool self_deaf)
+discord_join_vc(
+  struct discord *client,
+  struct discord_message *msg,
+  u64_snowflake_t guild_id,
+  u64_snowflake_t voice_channel_id,
+  bool self_mute,
+  bool self_deaf)
 {
   if (!ws_is_functional(client->gw.ws))
     return DISCORD_JOIN_VC_ERROR;
@@ -622,12 +575,14 @@ event_loop(struct discord_voice *vc)
 }
 
 static void*
-start_voice_ws_thread(void *cxt) {
+start_voice_ws_thread(void *p_vc) 
+{
   log_info("new voice ws thread");
-  struct discord_voice *vc = cxt;
+  struct discord_voice *vc = p_vc;
 
   // handle ws reconnect/resume/redirect logic
-  while (vc->reconnect.attempt < vc->reconnect.threshold) {
+  while (vc->reconnect.attempt < vc->reconnect.threshold) 
+  {
     event_loop(vc);
 
     log_debug("after event_loop "
@@ -687,7 +642,6 @@ _discord_on_voice_server_update(struct discord *client, u64_snowflake_t guild_id
     }
   }
   pthread_mutex_unlock(&client_lock);
-
   if (!vc) {
     log_fatal("This should not happen, couldn't match voice-server update to client");
     return;
@@ -708,7 +662,6 @@ _discord_on_voice_server_update(struct discord *client, u64_snowflake_t guild_id
     // exits the current event_loop to redirect
     vc->is_redirect = true;
     ws_exit_event_loop(vc->ws);
-    return;
   }
   else {
     log_info("Voice ws uses " ANSICOLOR("%s", ANSI_FG_RED), vc->new_url);
@@ -722,20 +675,38 @@ _discord_on_voice_server_update(struct discord *client, u64_snowflake_t guild_id
     pthread_t tid;
     if (pthread_create(&tid, NULL, &start_voice_ws_thread, vc))
       ERR("Couldn't create thread");
-
     if (pthread_detach(tid))
       ERR("Couldn't detach thread");
   }
 }
 
-void discord_init_voice_cbs(struct discord_voice_cbs *cbs) {
-  cbs->on_idle = noop_idle_cb;
-  cbs->on_ready = noop_on_ready;
-  cbs->on_client_disconnect = noop_on_voice_client_disconnect;
-  cbs->on_session_descriptor = noop_on_session_descriptor;
-  cbs->on_codec = noop_on_voice_codec;
-  cbs->on_speaking = noop_on_speaking;
-  cbs->on_udp_server_connected = noop_on_udp_server_connected;
+static void noop_voice_state_update_cb(struct discord *a, const struct discord_user *b, const struct discord_voice_state *c) {return;}
+static void noop_voice_server_update_cb(struct discord *a, const struct discord_user *b, const char *c, const u64_snowflake_t d, const char *endpoint) {return;}
+static void noop_idle_cb(struct discord *a, struct discord_voice *b, const struct discord_user *c) { return; }
+static void noop_on_speaking(struct discord *a, struct discord_voice *b, const struct discord_user *c, const u64_snowflake_t d, const int e, const int f, const int g) { return; }
+static void noop_on_voice_client_disconnect(struct discord *a, struct discord_voice *b, const struct discord_user *c, const u64_snowflake_t d) { return; }
+static void noop_on_voice_codec(struct discord *a, struct discord_voice *b, const struct discord_user *c, const char d[], const char e[]) { return; }
+static void noop_on_ready(struct discord_voice *a) { return; }
+static void noop_on_session_descriptor(struct discord_voice *a) { return; }
+static void noop_on_udp_server_connected(struct discord_voice *a) { return; }
+
+void 
+discord_voice_connections_init(struct discord *client) 
+{
+  client->gw.cbs.on_voice_state_update = noop_voice_state_update_cb;
+  client->gw.cbs.on_voice_server_update = noop_voice_server_update_cb;
+
+  client->voice_cbs.on_idle = noop_idle_cb;
+  client->voice_cbs.on_ready = noop_on_ready;
+  client->voice_cbs.on_client_disconnect = noop_on_voice_client_disconnect;
+  client->voice_cbs.on_session_descriptor = noop_on_session_descriptor;
+  client->voice_cbs.on_codec = noop_on_voice_codec;
+  client->voice_cbs.on_speaking = noop_on_speaking;
+  client->voice_cbs.on_udp_server_connected = noop_on_udp_server_connected;
+
+  for (int i=0; i < NUM_VCS; ++i) {
+    client->vcs[i].p_voice_cbs = &client->voice_cbs;
+  }
 }
 
 void

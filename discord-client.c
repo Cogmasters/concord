@@ -21,11 +21,7 @@ _discord_init(struct discord *new_client)
     &new_client->gw, 
     &new_client->config,
     &new_client->token);
-
-  discord_init_voice_cbs(&new_client->voice_cbs);
-  int i;
-  for (i = 0; i < NUM_VCS; i++)
-    new_client->vcs[i].p_voice_cbs = &new_client->voice_cbs;
+  discord_voice_connections_init(new_client);
 }
 
 struct discord*
