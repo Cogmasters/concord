@@ -145,6 +145,13 @@ struct discord_voice {
   // used to communicate the status of
   // the bot state changes
   uint64_t  message_channel_id;
+
+  /*
+   *  Interval to divide the received packets
+   *  0 store in one file
+   *  n store packets received every n minutes in a new file
+   */
+  int recv_interval;
 };
 
 /**
