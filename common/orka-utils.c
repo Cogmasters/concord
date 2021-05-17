@@ -228,6 +228,7 @@ orka_timestamp_str(char *p_str, int len)
   return p_str;
 }
 
+#if 0
 static int
 json_load_array (char *  str, size_t len, struct sized_buffer ***p) {
   return json_scanf(str, len, "[]%A", p);
@@ -248,6 +249,7 @@ orka_str_to_ntl(
   ntl_deserializer->partition_as_sized_bufs = json_load_array;
   return ntl_from_buf(buf, len, ntl_deserializer);
 }
+#endif
 
 /* this can be used for checking if a user-given string does not
  *  exceeds a arbitrary threshold length */

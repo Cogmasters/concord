@@ -3,8 +3,8 @@
 #include <stdio.h>
 #include <inttypes.h>
 #include "ntl.h"
-#include "orka-utils.h"
 #include "json-actor-boxed.h"
+#include "json-actor.h"
 
 void ja_str_from_json(char * json, size_t len, ja_str * ja)
 {
@@ -76,7 +76,7 @@ void ja_str_list_from_json(char *str, size_t len, ja_str ***p) {
   d.init_elem = ja_str_init_v;
   d.elem_from_buf = ja_str_from_json_v;
   d.ntl_recipient_p= (void***)p;
-  orka_str_to_ntl(str, len, &d);
+  extract_ntl_from_json(str, len, &d);
 }
 
 void ja_str_list_from_json_v(char *str, size_t len, void *p) {
@@ -169,7 +169,7 @@ void ja_u64_list_from_json(char *str, size_t len, ja_u64 ***p) {
   d.init_elem = ja_u64_init_v;
   d.elem_from_buf = ja_u64_from_json_v;
   d.ntl_recipient_p= (void***)p;
-  orka_str_to_ntl(str, len, &d);
+  extract_ntl_from_json(str, len, &d);
 }
 
 void ja_u64_list_append(NTL_T(ja_u64) *ntl_p, uint64_t *u64_p) {
