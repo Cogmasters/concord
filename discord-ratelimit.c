@@ -43,14 +43,11 @@ routecmp(char route[], char node_route[])
   if (0 == ret) return 0;
 
   /* check if fits major parameter criteria */
-  if (strstr(route, "/channels/%"PRIu64)
-   && strstr(node_route, "/channels/%"PRIu64))
+  if (strstr(route, "/channels/%") && strstr(node_route, "/channels/%"))
     return 0;
-  if (strstr(route, "/guilds/%"PRIu64)
-   && strstr(node_route, "/guilds/%"PRIu64))
+  if (strstr(route, "/guilds/%") && strstr(node_route, "/guilds/%"))
     return 0;
-  if (strstr(route, "/webhook/%"PRIu64)
-   && strstr(node_route, "/webhook/%"PRIu64))
+  if (strstr(route, "/webhook/%") && strstr(node_route, "/webhook/%"))
     return 0;
 
   return ret; //couldn't find any match, return strcmp diff value
@@ -78,23 +75,32 @@ discord_buckets_cleanup(struct discord_adapter *adapter)
 void
 discord_bucket_try_cooldown(struct discord_bucket *bucket)
 {
-  if (!bucket) return; /* EARLY RETURN */
+  if (!bucket) {
+    log_debug("[BUCKET-?] Missing 'bucket', skipping cooldown");
+    return; /* EARLY RETURN */
+  }
 
   pthread_mutex_lock(&bucket->lock);
   ++bucket->busy;
 
   // wait for a while if busy requests reach threshold
   /// @todo? add pthread_broadcast() to avoid zombie threads
-  if (bucket->busy > bucket->remaining)
+  if (bucket->busy > bucket->remaining) {
+    log_debug("[BUCKET-%s] Reach live transfers threshold (%d)\n" \
+              "Transfer is now locked in queue.", bucket->hash, bucket->remaining);
     pthread_cond_wait(&bucket->cond, &bucket->lock);
+    log_debug("[BUCKET-%s] Transfer unlocked from queue", bucket->hash);
+  }
   if (bucket->remaining) {
     --bucket->remaining;
+    log_debug("[BUCKET-%s] %d remaining transfers before cooldown", bucket->hash, bucket->remaining);
     pthread_mutex_unlock(&bucket->lock);
     return; /* EARLY RETURN */
   }
 
   int64_t delay_ms = (int64_t)(bucket->reset_tstamp - orka_timestamp_ms());
   if (delay_ms <= 0) { //no delay needed
+    log_debug("[BUCKET-%s] Skipping cooldown because current timestamp exceeds bucket reset-timestamp");
     pthread_mutex_unlock(&bucket->lock);
     return; /* EARLY RETURN */
   }
@@ -102,10 +108,7 @@ discord_bucket_try_cooldown(struct discord_bucket *bucket)
   if (delay_ms > bucket->reset_after_ms) //don't delay in excess
     delay_ms = bucket->reset_after_ms;
 
-  log_trace("\n\tRATELIMITING (reach bucket's connection threshold):\n\t"
-          "\tBucket:\t\t%s\n\t"
-          "\tWait for:\t %"PRId64" ms",
-          bucket->hash, delay_ms);
+  log_trace("[BUCKET-%s] RATELIMITING (wait %"PRId64" ms)", bucket->hash, delay_ms);
 
   orka_sleep_ms(delay_ms); //sleep for delay amount (if any)
 
@@ -114,8 +117,16 @@ discord_bucket_try_cooldown(struct discord_bucket *bucket)
 
 /* attempt to find a bucket associated with this route */
 struct discord_bucket*
-discord_bucket_try_get(struct discord_adapter *adapter, char route[]) {
-  return avl_search(&adapter->ratelimit.routes, route);
+discord_bucket_try_get(struct discord_adapter *adapter, char route[]) 
+{
+  log_debug("[BUCKET-?] Attempt to find matching bucket for '%s'", route);
+  struct discord_bucket *ret = avl_search(&adapter->ratelimit.routes, route);
+  if (!ret)
+    log_debug("[BUCKET-?] Couldn't match bucket to '%s', will attempt to create a new one", route);
+  else
+    log_debug("[BUCKET-%s] Found a match!", ret->hash);
+
+  return ret;
 }
 
 /* attempt to parse rate limit's header fields to the bucket
@@ -131,12 +142,25 @@ parse_ratelimits(struct discord_bucket *bucket, struct ua_info *info)
     bucket->update_tstamp = info->req_tstamp;
 
     char *str; // fetch header value as string
-    if ( (str = ua_info_respheader_field(info, "x-ratelimit-reset")) )
+    if ((str = ua_info_respheader_field(info, "x-ratelimit-reset")))
       bucket->reset_tstamp = 1000 * strtod(str, NULL);
-    if ( (str = ua_info_respheader_field(info, "x-ratelimit-remaining")) )
+    if ((str = ua_info_respheader_field(info, "x-ratelimit-remaining")))
       bucket->remaining =  strtol(str, NULL, 10);
-    if ( (str = ua_info_respheader_field(info, "x-ratelimit-reset-after")) )
+    if ((str = ua_info_respheader_field(info, "x-ratelimit-reset-after")))
       bucket->reset_after_ms = 1000 * strtod(str, NULL);
+
+    log_debug("\n\t[BUCKET-%s]\n\t"         \
+              "reset_tstamp: %"PRIu64"\n\t" \
+              "remaining: %d\n\t"           \
+              "reset_after_ms: %"PRId64,    \
+              bucket->hash, 
+              bucket->reset_tstamp, 
+              bucket->remaining, 
+              bucket->reset_after_ms);
+  }
+  else {
+    log_debug("[BUCKET-%s] Couldn't complete request or" \
+              " request timestamp is older than bucket last update", bucket->hash);
   }
 
   pthread_cond_signal(&bucket->cond);
@@ -152,7 +176,11 @@ static void
 match_route(struct discord_adapter *adapter, char route[], struct ua_info *info)
 {
   char *hash = ua_info_respheader_field(info, "x-ratelimit-bucket");
-  if (!hash) return; //no bucket hash information in header
+  if (!hash) {
+    log_debug("[BUCKET-?] Missing bucket-hash from response header," \
+              " route '%s' can't be assigned to a bucket", route);
+    return;
+  }
 
   struct discord_bucket **bucket_pool = adapter->ratelimit.bucket_pool;
   struct discord_bucket *bucket=NULL;
@@ -178,6 +206,7 @@ match_route(struct discord_adapter *adapter, char route[], struct ua_info *info)
   }
 
   //add new route to tree and update its bucket ratelimit fields
+  log_debug("[BUCKET-%s] New route '%s'", bucket->hash, route);
   avl_insert(&adapter->ratelimit.routes, strdup(route), bucket);
   parse_ratelimits(bucket, info);
 }
