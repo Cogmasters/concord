@@ -249,6 +249,7 @@ conn_respheader_cb(char *buf, size_t size, size_t nmemb, void *p_userdata)
   if (!(ptr = strstr(ptr + 1, "\r\n"))) {//returns if can't find CRLF match
     return bufsize;
   }
+  *ptr = '\0'; // trim CRLF
 
   // offsets blank characters
   int offset=1; // starts after the ':' separator
