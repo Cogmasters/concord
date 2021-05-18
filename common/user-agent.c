@@ -237,31 +237,30 @@ conn_respheader_cb(char *buf, size_t size, size_t nmemb, void *p_userdata)
   struct ua_resp_header *resp_header = p_userdata;
 
   char *ptr;
-  if (!(ptr = strchr(buf, ':'))) { // returns if can't find ':' field/value separator
+  if (!(ptr = strchr(buf, ':'))) { // returns if can't find ':' field/value delimiter
     return bufsize;
   }
 
-  ptrdiff_t separator_idx = ptr - buf; // get ':' index
+  ptrdiff_t delim_idx = ptr - buf; // get ':' index
 
-  int ret = snprintf(resp_header->field[resp_header->size], UA_MAX_HEADER_LEN, "%.*s", (int)separator_idx, buf);
+  int ret = snprintf(resp_header->field[resp_header->size], UA_MAX_HEADER_LEN, "%.*s", (int)delim_idx, buf);
   ASSERT_S(ret < UA_MAX_HEADER_LEN, "Out of bounds write attempt");
 
   if (!(ptr = strstr(ptr + 1, "\r\n"))) {//returns if can't find CRLF match
     return bufsize;
   }
-  *ptr = '\0'; // trim CRLF
 
   // offsets blank characters
-  int offset=1; // starts after the ':' separator
-  while (separator_idx + offset < bufsize) {
-    if (!isspace(buf[separator_idx + offset]))
+  int offset=1; // starts after the ':' delimiter
+  while (delim_idx + offset < bufsize) {
+    if (!isspace(buf[delim_idx + offset]))
       break; /* EARLY BREAK (not blank character) */
     ++offset;
   }
 
   // get the value part of the string
-  const int value_size = bufsize - (separator_idx + offset);
-  ret = snprintf(resp_header->value[resp_header->size], UA_MAX_HEADER_LEN, "%.*s", value_size, &buf[separator_idx + offset]);
+  const int value_size = (ptr - buf) - (delim_idx + offset);
+  ret = snprintf(resp_header->value[resp_header->size], UA_MAX_HEADER_LEN, "%.*s", value_size, &buf[delim_idx + offset]);
   ASSERT_S(ret < UA_MAX_HEADER_LEN, "Out of bounds write attempt");
 
   ++resp_header->size; //update header amount of field/value resp_header
