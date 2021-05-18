@@ -13,7 +13,7 @@ get_json(char *str, size_t len, void *p_json)
   json->size = len;
 }
 
-void
+ORCAcode
 reddit_search(
   struct reddit *client, 
   struct reddit_search_params *params, 
@@ -22,23 +22,23 @@ reddit_search(
 {
   if (IS_EMPTY_STRING(subreddit)) {
     log_error("Missing 'subreddit'");
-    return;
+    return ORCA_MISSING_PARAMETER;
   }
   if (params->after && params->before) {
     log_error("Can't have both 'params.after' and 'params.before'");
-    return;
+    return ORCA_BAD_PARAMETER;
   }
   if (!orka_str_bounds_check(params->category, 5)) {
     log_error("'params.category' should be no longer than 5 characters");
-    return;
+    return ORCA_BAD_PARAMETER;
   }
   if (!orka_str_bounds_check(params->q, 512)) {
     log_error("'params.q' should be no longer than 512 characters");
-    return;
+    return ORCA_BAD_PARAMETER;
   }
   if (!IS_EMPTY_STRING(params->show) && !STREQ(params->show, "all")) {
     log_error("'params.show' should be NULL or \"all\"");
-    return;
+    return ORCA_BAD_PARAMETER;
   }
   if (!IS_EMPTY_STRING(params->sort)
       && !(STREQ(params->sort, "relevance")
@@ -48,11 +48,11 @@ reddit_search(
          || STREQ(params->sort, "comments")))
   {
     log_error("'params.sort' should be one of: (relevance, hot, top, new, comments)");
-    return;
+    return ORCA_BAD_PARAMETER;
   }
   if (IS_EMPTY_STRING(params->q)) {
     log_error("Missing 'params->q'");
-    return;
+    return ORCA_MISSING_PARAMETER;
   }
   if (!IS_EMPTY_STRING(params->t)
       && !(STREQ(params->t, "hour")
@@ -63,7 +63,7 @@ reddit_search(
          || STREQ(params->t, "all")))
   {
     log_error("'params.t' should be one of: (hour, day, week, month, year, all)");
-    return;
+    return ORCA_BAD_PARAMETER;
   }
   if (!IS_EMPTY_STRING(params->type)
       && !(STREQ(params->type, "sr")
@@ -71,7 +71,7 @@ reddit_search(
          || STREQ(params->type, "user")))
   {
     log_error("'params.type' should be one of: (sr, link, user)");
-    return;
+    return ORCA_BAD_PARAMETER;
   }
 
   if (!params->limit) // default is 25
@@ -157,7 +157,7 @@ reddit_search(
         "&after=%s", params->after);
   }
 
-  reddit_adapter_run(
+  return reddit_adapter_run(
     &client->adapter,
     &resp_handle,
     NULL,

@@ -5,7 +5,6 @@
 #include "json-actor.h"
 #include "json-actor-boxed.h"
 
-#include "logconf.h"
 #include "user-agent.h"
 #include "websockets.h"
 #include "orka-utils.h"
@@ -19,7 +18,7 @@ struct reddit_adapter {
 void reddit_adapter_init(struct reddit_adapter *adapter, struct logconf *config);
 void reddit_adapter_cleanup(struct reddit_adapter *adapter);
 
-void reddit_adapter_run(
+ORCAcode reddit_adapter_run(
   struct reddit_adapter *adapter, 
   struct ua_resp_handle *resp_handle,
   struct sized_buffer *req_body,

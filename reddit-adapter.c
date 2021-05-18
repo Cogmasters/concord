@@ -43,7 +43,7 @@ reddit_adapter_cleanup(struct reddit_adapter *adapter) {
 }
 
 /* template function for performing requests */
-void
+ORCAcode
 reddit_adapter_run(
   struct reddit_adapter *adapter, 
   struct ua_resp_handle *resp_handle,
@@ -53,12 +53,15 @@ reddit_adapter_run(
   va_list args;
   va_start(args, endpoint);
 
-  ua_vrun(
-    adapter->ua,
-    NULL,
-    resp_handle,
-    req_body,
-    http_method, endpoint, args);
+  ORCAcode code;
+  code = ua_vrun(
+           adapter->ua,
+           NULL,
+           resp_handle,
+           req_body,
+           http_method, endpoint, args);
 
   va_end(args);
+
+  return code;
 }

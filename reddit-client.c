@@ -7,6 +7,7 @@ struct reddit*
 reddit_config_init(const char config_file[])
 {
   struct reddit *new_client = calloc(1, sizeof *new_client);
+
   logconf_setup(&new_client->config, config_file);
   new_client->username = logconf_get_field(&new_client->config, "reddit.username");
   ASSERT_S(NULL != new_client->username.start, "Missing reddit.username");
@@ -19,6 +20,7 @@ reddit_config_init(const char config_file[])
 
   new_client->adapter.p_client = new_client;
   reddit_adapter_init(&new_client->adapter, &new_client->config);
+
   return new_client;
 }
 
@@ -30,7 +32,7 @@ reddit_cleanup(struct reddit *client)
   free(client);
 }
 
-void
+ORCAcode
 reddit_access_token(struct reddit *client)
 {
   char query[512];
@@ -43,7 +45,7 @@ reddit_access_token(struct reddit *client)
               (int)client->password.size, client->password.start);
   ASSERT_S(ret < sizeof(query), "Out of bounds write attempt");
 
-  reddit_adapter_run(
+  return reddit_adapter_run(
     &client->adapter,
     NULL,
     NULL,
