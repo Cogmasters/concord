@@ -92,6 +92,43 @@ log_color_cb(log_Event *ev)
 }
 
 void
+log_http(
+  struct logconf *config, 
+  void *addr_id,
+  char url[],
+  struct sized_buffer body,
+  char label_fmt[], ...)
+{
+  static struct sized_buffer empty_body = {"empty body", 10};
+
+  if (!config) return;
+
+  va_list args;
+  va_start(args, label_fmt);
+
+  if (0 == body.size)
+    body = empty_body;
+
+  char label[512];
+  int ret = vsnprintf(label, sizeof(label), label_fmt, args);
+  ASSERT_S(ret < sizeof(label), "Out of bounds write attempt");
+
+  char timestr[64];
+  fprintf(config->http.f, 
+    "%s [%s #TID%u] - %s - %s\r\r\r\r\n%.*s\n",
+    label,
+    logconf_tag(config, addr_id), 
+    (unsigned)pthread_self(),
+    orka_timestamp_str(timestr, sizeof(timestr)), 
+    url,
+    (int)body.size, body.start);
+
+  fflush(config->http.f);
+
+  va_end(args);
+}
+
+void
 logconf_setup(struct logconf *config, const char config_file[])
 {
   ASSERT_S(NULL != config, "Missing 'struct logconf'");
@@ -200,41 +237,4 @@ logconf_get_field(struct logconf *config, char *json_field)
   json_extract(config->contents, config->len, fmt, &field);
 
   return field;
-}
-
-void
-log_http(
-  struct logconf *config, 
-  void *addr_id,
-  char url[],
-  struct sized_buffer body,
-  char label_fmt[], ...)
-{
-  static struct sized_buffer empty_body = {"empty body", 10};
-
-  if (!config) return;
-
-  va_list args;
-  va_start(args, label_fmt);
-
-  if (0 == body.size)
-    body = empty_body;
-
-  char label[512];
-  int ret = vsnprintf(label, sizeof(label), label_fmt, args);
-  ASSERT_S(ret < sizeof(label), "Out of bounds write attempt");
-
-  char timestr[64];
-  fprintf(config->http.f, 
-    "%s [%s #TID%u] - %s - %s\r\r\r\r\n%.*s\n",
-    label,
-    logconf_tag(config, addr_id), 
-    (unsigned)pthread_self(),
-    orka_timestamp_str(timestr, sizeof(timestr)), 
-    url,
-    (int)body.size, body.start);
-
-  fflush(config->http.f);
-
-  va_end(args);
 }

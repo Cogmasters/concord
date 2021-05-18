@@ -384,7 +384,6 @@ void load_BOT(const char config_file[])
    */
   BOT.D.client = discord_config_init(config_file);
 
-
   /**
    * Initialize Reddit utils 
    */
@@ -398,7 +397,7 @@ void load_BOT(const char config_file[])
       3600000, // refresh every 1h
       NULL, 
       &refresh_reddit_access_token_cb);
-  // get the first one immediatelly
+  // get the first one immediately
   reddit_access_token(BOT.R.client);
 
   if (true == enable) {
