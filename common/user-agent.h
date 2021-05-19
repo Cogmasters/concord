@@ -15,6 +15,7 @@ struct user_agent; // the user agent that perform requests
 
 //possible http methods
 enum http_method {
+  HTTP_INVALID = -1,
   HTTP_DELETE, 
   HTTP_GET, 
   HTTP_POST, 
@@ -106,6 +107,7 @@ struct ua_info {
 char* http_code_print(int httpcode);
 char* http_reason_print(int httpcode);
 char* http_method_print(enum http_method method);
+enum http_method http_method_eval(char method[]);
 
 void ua_reqheader_add(struct user_agent *ua, char field[], char value[]);
 void ua_reqheader_del(struct user_agent *ua, char field[]);

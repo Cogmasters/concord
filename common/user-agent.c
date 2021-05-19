@@ -166,8 +166,21 @@ http_method_print(enum http_method method)
   case HTTP_MIMEPOST: return "MIMEPOST";
   case HTTP_PATCH:    return "PATCH";
   case HTTP_PUT:      return "PUT";
+  case HTTP_INVALID:
   default:            return "INVALID_HTTP_METHOD";
   }
+}
+
+enum http_method
+http_method_eval(char method[])
+{
+  if (STREQ(method, "DELETE"))   return HTTP_DELETE;
+  if (STREQ(method, "GET"))      return HTTP_GET;
+  if (STREQ(method, "POST"))     return HTTP_POST;
+  if (STREQ(method, "MIMEPOST")) return HTTP_MIMEPOST;
+  if (STREQ(method, "PATCH"))    return HTTP_PATCH;
+  if (STREQ(method, "PUT"))      return HTTP_PUT;
+  return HTTP_INVALID;
 }
 
 void
