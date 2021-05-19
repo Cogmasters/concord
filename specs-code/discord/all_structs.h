@@ -1341,14 +1341,14 @@ struct discord_channel_attachment {
   int size;
 
   /* specs/discord/channel.objects.json:52:20
-     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }}'
+     '{ "name": "url", "type":{ "base":"char", "dec":"*" }}'
   */
-  char url[MAX_URL_LEN];
+  char *url;
 
   /* specs/discord/channel.objects.json:53:20
-     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }}'
+     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }}'
   */
-  char proxy_url[MAX_URL_LEN];
+  char *proxy_url;
 
   /* specs/discord/channel.objects.json:54:20
      '{ "name": "height", "type":{ "base":"int", "nullable":true }}'
@@ -1473,10 +1473,10 @@ struct discord_embed {
   char description[EMBED_DESCRIPTION_LEN];
 
   /* specs/discord/channel.objects.json:96:20
-     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]"},
+     '{ "name": "url", "type":{ "base":"char", "dec":"*"},
           "option":true, "inject_if_not":""}'
   */
-  char url[MAX_URL_LEN];
+  char *url;
 
   /* specs/discord/channel.objects.json:98:20
      '{ "name": "timestamp", "type":{ "base":"char", "dec":"*", "converter":"iso8601" },
@@ -1545,14 +1545,14 @@ struct discord_embed {
 /* This is defined at specs/discord/channel.objects.json:116:22 */
 struct discord_embed_thumbnail {
   /* specs/discord/channel.objects.json:118:20
-     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
-  char url[MAX_URL_LEN];
+  char *url;
 
   /* specs/discord/channel.objects.json:119:20
-     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
-  char proxy_url[MAX_URL_LEN];
+  char *proxy_url;
 
   /* specs/discord/channel.objects.json:120:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}'
@@ -1578,19 +1578,19 @@ struct discord_embed_thumbnail {
   } __M; // metadata
 };
 
-/* Title: Embed Thumbnail Structure */
+/* Title: Embed Video Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-video-structure */
 /* This is defined at specs/discord/channel.objects.json:128:22 */
 struct discord_embed_video {
   /* specs/discord/channel.objects.json:130:20
-     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
-  char url[MAX_URL_LEN];
+  char *url;
 
   /* specs/discord/channel.objects.json:131:20
-     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
-  char proxy_url[MAX_URL_LEN];
+  char *proxy_url;
 
   /* specs/discord/channel.objects.json:132:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}'
@@ -1621,14 +1621,14 @@ struct discord_embed_video {
 /* This is defined at specs/discord/channel.objects.json:140:22 */
 struct discord_embed_image {
   /* specs/discord/channel.objects.json:142:20
-     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
-  char url[MAX_URL_LEN];
+  char *url;
 
   /* specs/discord/channel.objects.json:143:20
-     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
-  char proxy_url[MAX_URL_LEN];
+  char *proxy_url;
 
   /* specs/discord/channel.objects.json:144:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}'
@@ -1664,9 +1664,9 @@ struct discord_embed_provider {
   char name[EMBED_AUTHOR_NAME_LEN];
 
   /* specs/discord/channel.objects.json:155:20
-     '{ "name": "url", "type":{"base":"char", "dec":"[MAX_URL_LEN]"}, "inject_if_not":""}'
+     '{ "name": "url", "type":{"base":"char", "dec":"*"}, "inject_if_not":""}'
   */
-  char url[MAX_URL_LEN];
+  char *url;
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -1692,19 +1692,19 @@ struct discord_embed_author {
   char name[EMBED_AUTHOR_NAME_LEN];
 
   /* specs/discord/channel.objects.json:165:20
-     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
-  char url[MAX_URL_LEN];
+  char *url;
 
   /* specs/discord/channel.objects.json:166:20
-     '{ "name": "icon_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "icon_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
-  char icon_url[MAX_URL_LEN];
+  char *icon_url;
 
   /* specs/discord/channel.objects.json:167:20
-     '{ "name": "proxy_icon_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "proxy_icon_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
-  char proxy_icon_url[MAX_URL_LEN];
+  char *proxy_icon_url;
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -1730,16 +1730,16 @@ struct discord_embed_footer {
   char text[EMBED_FOOTER_TEXT_LEN];
 
   /* specs/discord/channel.objects.json:177:20
-     '{ "name": "icon_url", "type": {"base":"char", "dec":"[MAX_URL_LEN]" }, 
+     '{ "name": "icon_url", "type": {"base":"char", "dec":"*" }, 
           "option":true, "inject_if_not":""}'
   */
-  char icon_url[MAX_URL_LEN];
+  char *icon_url;
 
   /* specs/discord/channel.objects.json:179:20
-     '{ "name": "proxy_icon_url", "type": {"base":"char", "dec":"[MAX_URL_LEN]"}, 
+     '{ "name": "proxy_icon_url", "type": {"base":"char", "dec":"*"}, 
           "option":true, "inject_if_not":""}'
   */
-  char proxy_icon_url[MAX_URL_LEN];
+  char *proxy_icon_url;
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -2075,10 +2075,10 @@ struct discord_gateway_activity {
   int type;
 
   /* specs/discord/gateway.json:162:19
-     '{ "name":"url","type":{"base":"char", "dec":"[MAX_URL_LEN]"},
+     '{ "name":"url","type":{"base":"char", "dec":"*"},
           "option":true, "inject_if_not":""}'
   */
-  char url[MAX_URL_LEN];
+  char *url;
 
   /* specs/discord/gateway.json:164:19
      '{ "name":"created_at","type":{"base":"char", "dec":"*", "converter":"iso8601"},

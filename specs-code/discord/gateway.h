@@ -309,10 +309,10 @@ struct discord_gateway_activity {
   int type;
 
   /* specs/discord/gateway.json:162:19
-     '{ "name":"url","type":{"base":"char", "dec":"[MAX_URL_LEN]"},
+     '{ "name":"url","type":{"base":"char", "dec":"*"},
           "option":true, "inject_if_not":""}'
   */
-  char url[MAX_URL_LEN];
+  char *url;
 
   /* specs/discord/gateway.json:164:19
      '{ "name":"created_at","type":{"base":"char", "dec":"*", "converter":"iso8601"},

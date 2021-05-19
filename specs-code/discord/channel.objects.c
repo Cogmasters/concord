@@ -559,13 +559,13 @@ void discord_channel_attachment_from_json(char *json, size_t len, struct discord
   */
                 "(size):d,"
   /* specs/discord/channel.objects.json:52:20
-     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }}'
+     '{ "name": "url", "type":{ "base":"char", "dec":"*" }}'
   */
-                "(url):s,"
+                "(url):?s,"
   /* specs/discord/channel.objects.json:53:20
-     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }}'
+     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }}'
   */
-                "(proxy_url):s,"
+                "(proxy_url):?s,"
   /* specs/discord/channel.objects.json:54:20
      '{ "name": "height", "type":{ "base":"int", "nullable":true }}'
   */
@@ -590,13 +590,13 @@ void discord_channel_attachment_from_json(char *json, size_t len, struct discord
   */
                 &p->size,
   /* specs/discord/channel.objects.json:52:20
-     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }}'
+     '{ "name": "url", "type":{ "base":"char", "dec":"*" }}'
   */
-                p->url,
+                &p->url,
   /* specs/discord/channel.objects.json:53:20
-     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }}'
+     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }}'
   */
-                p->proxy_url,
+                &p->proxy_url,
   /* specs/discord/channel.objects.json:54:20
      '{ "name": "height", "type":{ "base":"int", "nullable":true }}'
   */
@@ -630,12 +630,12 @@ static void discord_channel_attachment_use_default_inject_settings(struct discor
   p->__M.arg_switches[2] = &p->size;
 
   /* specs/discord/channel.objects.json:52:20
-     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }}'
+     '{ "name": "url", "type":{ "base":"char", "dec":"*" }}'
   */
   p->__M.arg_switches[3] = p->url;
 
   /* specs/discord/channel.objects.json:53:20
-     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }}'
+     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }}'
   */
   p->__M.arg_switches[4] = p->proxy_url;
 
@@ -669,11 +669,11 @@ size_t discord_channel_attachment_to_json(char *json, size_t len, struct discord
   */
                 "(size):d,"
   /* specs/discord/channel.objects.json:52:20
-     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }}'
+     '{ "name": "url", "type":{ "base":"char", "dec":"*" }}'
   */
                 "(url):s,"
   /* specs/discord/channel.objects.json:53:20
-     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }}'
+     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }}'
   */
                 "(proxy_url):s,"
   /* specs/discord/channel.objects.json:54:20
@@ -698,11 +698,11 @@ size_t discord_channel_attachment_to_json(char *json, size_t len, struct discord
   */
                 &p->size,
   /* specs/discord/channel.objects.json:52:20
-     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }}'
+     '{ "name": "url", "type":{ "base":"char", "dec":"*" }}'
   */
                 p->url,
   /* specs/discord/channel.objects.json:53:20
-     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }}'
+     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }}'
   */
                 p->proxy_url,
   /* specs/discord/channel.objects.json:54:20
@@ -768,13 +768,15 @@ void discord_channel_attachment_cleanup(struct discord_channel_attachment *d) {
   */
   //p->size is a scalar
   /* specs/discord/channel.objects.json:52:20
-     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }}'
+     '{ "name": "url", "type":{ "base":"char", "dec":"*" }}'
   */
-  //p->url is a scalar
+  if (d->url)
+    free(d->url);
   /* specs/discord/channel.objects.json:53:20
-     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }}'
+     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }}'
   */
-  //p->proxy_url is a scalar
+  if (d->proxy_url)
+    free(d->proxy_url);
   /* specs/discord/channel.objects.json:54:20
      '{ "name": "height", "type":{ "base":"int", "nullable":true }}'
   */
@@ -800,11 +802,11 @@ void discord_channel_attachment_init(struct discord_channel_attachment *p) {
   */
 
   /* specs/discord/channel.objects.json:52:20
-     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }}'
+     '{ "name": "url", "type":{ "base":"char", "dec":"*" }}'
   */
 
   /* specs/discord/channel.objects.json:53:20
-     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }}'
+     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }}'
   */
 
   /* specs/discord/channel.objects.json:54:20
@@ -1313,10 +1315,10 @@ void discord_embed_from_json(char *json, size_t len, struct discord_embed *p)
   */
                 "(description):s,"
   /* specs/discord/channel.objects.json:96:20
-     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]"},
+     '{ "name": "url", "type":{ "base":"char", "dec":"*"},
           "option":true, "inject_if_not":""}'
   */
-                "(url):s,"
+                "(url):?s,"
   /* specs/discord/channel.objects.json:98:20
      '{ "name": "timestamp", "type":{ "base":"char", "dec":"*", "converter":"iso8601" },
           "option":true, "inject_if_not":0}'
@@ -1375,10 +1377,10 @@ void discord_embed_from_json(char *json, size_t len, struct discord_embed *p)
   */
                 p->description,
   /* specs/discord/channel.objects.json:96:20
-     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]"},
+     '{ "name": "url", "type":{ "base":"char", "dec":"*"},
           "option":true, "inject_if_not":""}'
   */
-                p->url,
+                &p->url,
   /* specs/discord/channel.objects.json:98:20
      '{ "name": "timestamp", "type":{ "base":"char", "dec":"*", "converter":"iso8601" },
           "option":true, "inject_if_not":0}'
@@ -1449,10 +1451,10 @@ static void discord_embed_use_default_inject_settings(struct discord_embed *p)
     p->__M.arg_switches[2] = p->description;
 
   /* specs/discord/channel.objects.json:96:20
-     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]"},
+     '{ "name": "url", "type":{ "base":"char", "dec":"*"},
           "option":true, "inject_if_not":""}'
   */
-  if (strlen(p->url) != 0)
+  if (p->url != NULL && strlen(p->url) != 0)
     p->__M.arg_switches[3] = p->url;
 
   /* specs/discord/channel.objects.json:98:20
@@ -1535,7 +1537,7 @@ size_t discord_embed_to_json(char *json, size_t len, struct discord_embed *p)
   */
                 "(description):s,"
   /* specs/discord/channel.objects.json:96:20
-     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]"},
+     '{ "name": "url", "type":{ "base":"char", "dec":"*"},
           "option":true, "inject_if_not":""}'
   */
                 "(url):s,"
@@ -1595,7 +1597,7 @@ size_t discord_embed_to_json(char *json, size_t len, struct discord_embed *p)
   */
                 p->description,
   /* specs/discord/channel.objects.json:96:20
-     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]"},
+     '{ "name": "url", "type":{ "base":"char", "dec":"*"},
           "option":true, "inject_if_not":""}'
   */
                 p->url,
@@ -1696,10 +1698,11 @@ void discord_embed_cleanup(struct discord_embed *d) {
   */
   //p->description is a scalar
   /* specs/discord/channel.objects.json:96:20
-     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]"},
+     '{ "name": "url", "type":{ "base":"char", "dec":"*"},
           "option":true, "inject_if_not":""}'
   */
-  //p->url is a scalar
+  if (d->url)
+    free(d->url);
   /* specs/discord/channel.objects.json:98:20
      '{ "name": "timestamp", "type":{ "base":"char", "dec":"*", "converter":"iso8601" },
           "option":true, "inject_if_not":0}'
@@ -1766,7 +1769,7 @@ void discord_embed_init(struct discord_embed *p) {
   */
 
   /* specs/discord/channel.objects.json:96:20
-     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]"},
+     '{ "name": "url", "type":{ "base":"char", "dec":"*"},
           "option":true, "inject_if_not":""}'
   */
 
@@ -1854,13 +1857,13 @@ void discord_embed_thumbnail_from_json(char *json, size_t len, struct discord_em
   size_t r=0;
   r=json_extract(json, len, 
   /* specs/discord/channel.objects.json:118:20
-     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
-                "(url):s,"
+                "(url):?s,"
   /* specs/discord/channel.objects.json:119:20
-     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
-                "(proxy_url):s,"
+                "(proxy_url):?s,"
   /* specs/discord/channel.objects.json:120:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}'
   */
@@ -1873,13 +1876,13 @@ void discord_embed_thumbnail_from_json(char *json, size_t len, struct discord_em
                 "@record_defined"
                 "@record_null",
   /* specs/discord/channel.objects.json:118:20
-     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
-                p->url,
+                &p->url,
   /* specs/discord/channel.objects.json:119:20
-     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
-                p->proxy_url,
+                &p->proxy_url,
   /* specs/discord/channel.objects.json:120:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}'
   */
@@ -1898,15 +1901,15 @@ static void discord_embed_thumbnail_use_default_inject_settings(struct discord_e
 {
   p->__M.enable_arg_switches = true;
   /* specs/discord/channel.objects.json:118:20
-     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
-  if (strlen(p->url) != 0)
+  if (p->url != NULL && strlen(p->url) != 0)
     p->__M.arg_switches[0] = p->url;
 
   /* specs/discord/channel.objects.json:119:20
-     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
-  if (strlen(p->proxy_url) != 0)
+  if (p->proxy_url != NULL && strlen(p->proxy_url) != 0)
     p->__M.arg_switches[1] = p->proxy_url;
 
   /* specs/discord/channel.objects.json:120:20
@@ -1929,11 +1932,11 @@ size_t discord_embed_thumbnail_to_json(char *json, size_t len, struct discord_em
   discord_embed_thumbnail_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/discord/channel.objects.json:118:20
-     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
                 "(url):s,"
   /* specs/discord/channel.objects.json:119:20
-     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
                 "(proxy_url):s,"
   /* specs/discord/channel.objects.json:120:20
@@ -1946,11 +1949,11 @@ size_t discord_embed_thumbnail_to_json(char *json, size_t len, struct discord_em
                 "(width):d,"
                 "@arg_switches:b",
   /* specs/discord/channel.objects.json:118:20
-     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
                 p->url,
   /* specs/discord/channel.objects.json:119:20
-     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
                 p->proxy_url,
   /* specs/discord/channel.objects.json:120:20
@@ -2004,13 +2007,15 @@ size_t discord_embed_thumbnail_list_to_json_v(char *str, size_t len, void *p){
 
 void discord_embed_thumbnail_cleanup(struct discord_embed_thumbnail *d) {
   /* specs/discord/channel.objects.json:118:20
-     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
-  //p->url is a scalar
+  if (d->url)
+    free(d->url);
   /* specs/discord/channel.objects.json:119:20
-     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
-  //p->proxy_url is a scalar
+  if (d->proxy_url)
+    free(d->proxy_url);
   /* specs/discord/channel.objects.json:120:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}'
   */
@@ -2024,11 +2029,11 @@ void discord_embed_thumbnail_cleanup(struct discord_embed_thumbnail *d) {
 void discord_embed_thumbnail_init(struct discord_embed_thumbnail *p) {
   memset(p, 0, sizeof(struct discord_embed_thumbnail));
   /* specs/discord/channel.objects.json:118:20
-     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
 
   /* specs/discord/channel.objects.json:119:20
-     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
 
   /* specs/discord/channel.objects.json:120:20
@@ -2078,13 +2083,13 @@ void discord_embed_video_from_json(char *json, size_t len, struct discord_embed_
   size_t r=0;
   r=json_extract(json, len, 
   /* specs/discord/channel.objects.json:130:20
-     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
-                "(url):s,"
+                "(url):?s,"
   /* specs/discord/channel.objects.json:131:20
-     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
-                "(proxy_url):s,"
+                "(proxy_url):?s,"
   /* specs/discord/channel.objects.json:132:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}'
   */
@@ -2097,13 +2102,13 @@ void discord_embed_video_from_json(char *json, size_t len, struct discord_embed_
                 "@record_defined"
                 "@record_null",
   /* specs/discord/channel.objects.json:130:20
-     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
-                p->url,
+                &p->url,
   /* specs/discord/channel.objects.json:131:20
-     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
-                p->proxy_url,
+                &p->proxy_url,
   /* specs/discord/channel.objects.json:132:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}'
   */
@@ -2122,15 +2127,15 @@ static void discord_embed_video_use_default_inject_settings(struct discord_embed
 {
   p->__M.enable_arg_switches = true;
   /* specs/discord/channel.objects.json:130:20
-     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
-  if (strlen(p->url) != 0)
+  if (p->url != NULL && strlen(p->url) != 0)
     p->__M.arg_switches[0] = p->url;
 
   /* specs/discord/channel.objects.json:131:20
-     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
-  if (strlen(p->proxy_url) != 0)
+  if (p->proxy_url != NULL && strlen(p->proxy_url) != 0)
     p->__M.arg_switches[1] = p->proxy_url;
 
   /* specs/discord/channel.objects.json:132:20
@@ -2153,11 +2158,11 @@ size_t discord_embed_video_to_json(char *json, size_t len, struct discord_embed_
   discord_embed_video_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/discord/channel.objects.json:130:20
-     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
                 "(url):s,"
   /* specs/discord/channel.objects.json:131:20
-     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
                 "(proxy_url):s,"
   /* specs/discord/channel.objects.json:132:20
@@ -2170,11 +2175,11 @@ size_t discord_embed_video_to_json(char *json, size_t len, struct discord_embed_
                 "(width):d,"
                 "@arg_switches:b",
   /* specs/discord/channel.objects.json:130:20
-     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
                 p->url,
   /* specs/discord/channel.objects.json:131:20
-     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
                 p->proxy_url,
   /* specs/discord/channel.objects.json:132:20
@@ -2228,13 +2233,15 @@ size_t discord_embed_video_list_to_json_v(char *str, size_t len, void *p){
 
 void discord_embed_video_cleanup(struct discord_embed_video *d) {
   /* specs/discord/channel.objects.json:130:20
-     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
-  //p->url is a scalar
+  if (d->url)
+    free(d->url);
   /* specs/discord/channel.objects.json:131:20
-     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
-  //p->proxy_url is a scalar
+  if (d->proxy_url)
+    free(d->proxy_url);
   /* specs/discord/channel.objects.json:132:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}'
   */
@@ -2248,11 +2255,11 @@ void discord_embed_video_cleanup(struct discord_embed_video *d) {
 void discord_embed_video_init(struct discord_embed_video *p) {
   memset(p, 0, sizeof(struct discord_embed_video));
   /* specs/discord/channel.objects.json:130:20
-     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
 
   /* specs/discord/channel.objects.json:131:20
-     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
 
   /* specs/discord/channel.objects.json:132:20
@@ -2302,13 +2309,13 @@ void discord_embed_image_from_json(char *json, size_t len, struct discord_embed_
   size_t r=0;
   r=json_extract(json, len, 
   /* specs/discord/channel.objects.json:142:20
-     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
-                "(url):s,"
+                "(url):?s,"
   /* specs/discord/channel.objects.json:143:20
-     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
-                "(proxy_url):s,"
+                "(proxy_url):?s,"
   /* specs/discord/channel.objects.json:144:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}'
   */
@@ -2321,13 +2328,13 @@ void discord_embed_image_from_json(char *json, size_t len, struct discord_embed_
                 "@record_defined"
                 "@record_null",
   /* specs/discord/channel.objects.json:142:20
-     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
-                p->url,
+                &p->url,
   /* specs/discord/channel.objects.json:143:20
-     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
-                p->proxy_url,
+                &p->proxy_url,
   /* specs/discord/channel.objects.json:144:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}'
   */
@@ -2346,15 +2353,15 @@ static void discord_embed_image_use_default_inject_settings(struct discord_embed
 {
   p->__M.enable_arg_switches = true;
   /* specs/discord/channel.objects.json:142:20
-     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
-  if (strlen(p->url) != 0)
+  if (p->url != NULL && strlen(p->url) != 0)
     p->__M.arg_switches[0] = p->url;
 
   /* specs/discord/channel.objects.json:143:20
-     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
-  if (strlen(p->proxy_url) != 0)
+  if (p->proxy_url != NULL && strlen(p->proxy_url) != 0)
     p->__M.arg_switches[1] = p->proxy_url;
 
   /* specs/discord/channel.objects.json:144:20
@@ -2377,11 +2384,11 @@ size_t discord_embed_image_to_json(char *json, size_t len, struct discord_embed_
   discord_embed_image_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/discord/channel.objects.json:142:20
-     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
                 "(url):s,"
   /* specs/discord/channel.objects.json:143:20
-     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
                 "(proxy_url):s,"
   /* specs/discord/channel.objects.json:144:20
@@ -2394,11 +2401,11 @@ size_t discord_embed_image_to_json(char *json, size_t len, struct discord_embed_
                 "(width):d,"
                 "@arg_switches:b",
   /* specs/discord/channel.objects.json:142:20
-     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
                 p->url,
   /* specs/discord/channel.objects.json:143:20
-     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
                 p->proxy_url,
   /* specs/discord/channel.objects.json:144:20
@@ -2452,13 +2459,15 @@ size_t discord_embed_image_list_to_json_v(char *str, size_t len, void *p){
 
 void discord_embed_image_cleanup(struct discord_embed_image *d) {
   /* specs/discord/channel.objects.json:142:20
-     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
-  //p->url is a scalar
+  if (d->url)
+    free(d->url);
   /* specs/discord/channel.objects.json:143:20
-     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
-  //p->proxy_url is a scalar
+  if (d->proxy_url)
+    free(d->proxy_url);
   /* specs/discord/channel.objects.json:144:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}'
   */
@@ -2472,11 +2481,11 @@ void discord_embed_image_cleanup(struct discord_embed_image *d) {
 void discord_embed_image_init(struct discord_embed_image *p) {
   memset(p, 0, sizeof(struct discord_embed_image));
   /* specs/discord/channel.objects.json:142:20
-     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
 
   /* specs/discord/channel.objects.json:143:20
-     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
 
   /* specs/discord/channel.objects.json:144:20
@@ -2530,9 +2539,9 @@ void discord_embed_provider_from_json(char *json, size_t len, struct discord_emb
   */
                 "(name):s,"
   /* specs/discord/channel.objects.json:155:20
-     '{ "name": "url", "type":{"base":"char", "dec":"[MAX_URL_LEN]"}, "inject_if_not":""}'
+     '{ "name": "url", "type":{"base":"char", "dec":"*"}, "inject_if_not":""}'
   */
-                "(url):s,"
+                "(url):?s,"
                 "@arg_switches:b"
                 "@record_defined"
                 "@record_null",
@@ -2541,9 +2550,9 @@ void discord_embed_provider_from_json(char *json, size_t len, struct discord_emb
   */
                 p->name,
   /* specs/discord/channel.objects.json:155:20
-     '{ "name": "url", "type":{"base":"char", "dec":"[MAX_URL_LEN]"}, "inject_if_not":""}'
+     '{ "name": "url", "type":{"base":"char", "dec":"*"}, "inject_if_not":""}'
   */
-                p->url,
+                &p->url,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
                 p->__M.record_null, sizeof(p->__M.record_null));
@@ -2560,9 +2569,9 @@ static void discord_embed_provider_use_default_inject_settings(struct discord_em
     p->__M.arg_switches[0] = p->name;
 
   /* specs/discord/channel.objects.json:155:20
-     '{ "name": "url", "type":{"base":"char", "dec":"[MAX_URL_LEN]"}, "inject_if_not":""}'
+     '{ "name": "url", "type":{"base":"char", "dec":"*"}, "inject_if_not":""}'
   */
-  if (strlen(p->url) != 0)
+  if (p->url != NULL && strlen(p->url) != 0)
     p->__M.arg_switches[1] = p->url;
 
 }
@@ -2577,7 +2586,7 @@ size_t discord_embed_provider_to_json(char *json, size_t len, struct discord_emb
   */
                 "(name):s,"
   /* specs/discord/channel.objects.json:155:20
-     '{ "name": "url", "type":{"base":"char", "dec":"[MAX_URL_LEN]"}, "inject_if_not":""}'
+     '{ "name": "url", "type":{"base":"char", "dec":"*"}, "inject_if_not":""}'
   */
                 "(url):s,"
                 "@arg_switches:b",
@@ -2586,7 +2595,7 @@ size_t discord_embed_provider_to_json(char *json, size_t len, struct discord_emb
   */
                 p->name,
   /* specs/discord/channel.objects.json:155:20
-     '{ "name": "url", "type":{"base":"char", "dec":"[MAX_URL_LEN]"}, "inject_if_not":""}'
+     '{ "name": "url", "type":{"base":"char", "dec":"*"}, "inject_if_not":""}'
   */
                 p->url,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
@@ -2636,9 +2645,10 @@ void discord_embed_provider_cleanup(struct discord_embed_provider *d) {
   */
   //p->name is a scalar
   /* specs/discord/channel.objects.json:155:20
-     '{ "name": "url", "type":{"base":"char", "dec":"[MAX_URL_LEN]"}, "inject_if_not":""}'
+     '{ "name": "url", "type":{"base":"char", "dec":"*"}, "inject_if_not":""}'
   */
-  //p->url is a scalar
+  if (d->url)
+    free(d->url);
 }
 
 void discord_embed_provider_init(struct discord_embed_provider *p) {
@@ -2648,7 +2658,7 @@ void discord_embed_provider_init(struct discord_embed_provider *p) {
   */
 
   /* specs/discord/channel.objects.json:155:20
-     '{ "name": "url", "type":{"base":"char", "dec":"[MAX_URL_LEN]"}, "inject_if_not":""}'
+     '{ "name": "url", "type":{"base":"char", "dec":"*"}, "inject_if_not":""}'
   */
 
 }
@@ -2694,17 +2704,17 @@ void discord_embed_author_from_json(char *json, size_t len, struct discord_embed
   */
                 "(name):s,"
   /* specs/discord/channel.objects.json:165:20
-     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
-                "(url):s,"
+                "(url):?s,"
   /* specs/discord/channel.objects.json:166:20
-     '{ "name": "icon_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "icon_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
-                "(icon_url):s,"
+                "(icon_url):?s,"
   /* specs/discord/channel.objects.json:167:20
-     '{ "name": "proxy_icon_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "proxy_icon_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
-                "(proxy_icon_url):s,"
+                "(proxy_icon_url):?s,"
                 "@arg_switches:b"
                 "@record_defined"
                 "@record_null",
@@ -2713,17 +2723,17 @@ void discord_embed_author_from_json(char *json, size_t len, struct discord_embed
   */
                 p->name,
   /* specs/discord/channel.objects.json:165:20
-     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
-                p->url,
+                &p->url,
   /* specs/discord/channel.objects.json:166:20
-     '{ "name": "icon_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "icon_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
-                p->icon_url,
+                &p->icon_url,
   /* specs/discord/channel.objects.json:167:20
-     '{ "name": "proxy_icon_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "proxy_icon_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
-                p->proxy_icon_url,
+                &p->proxy_icon_url,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
                 p->__M.record_null, sizeof(p->__M.record_null));
@@ -2740,21 +2750,21 @@ static void discord_embed_author_use_default_inject_settings(struct discord_embe
     p->__M.arg_switches[0] = p->name;
 
   /* specs/discord/channel.objects.json:165:20
-     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
-  if (strlen(p->url) != 0)
+  if (p->url != NULL && strlen(p->url) != 0)
     p->__M.arg_switches[1] = p->url;
 
   /* specs/discord/channel.objects.json:166:20
-     '{ "name": "icon_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "icon_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
-  if (strlen(p->icon_url) != 0)
+  if (p->icon_url != NULL && strlen(p->icon_url) != 0)
     p->__M.arg_switches[2] = p->icon_url;
 
   /* specs/discord/channel.objects.json:167:20
-     '{ "name": "proxy_icon_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "proxy_icon_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
-  if (strlen(p->proxy_icon_url) != 0)
+  if (p->proxy_icon_url != NULL && strlen(p->proxy_icon_url) != 0)
     p->__M.arg_switches[3] = p->proxy_icon_url;
 
 }
@@ -2769,15 +2779,15 @@ size_t discord_embed_author_to_json(char *json, size_t len, struct discord_embed
   */
                 "(name):s,"
   /* specs/discord/channel.objects.json:165:20
-     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
                 "(url):s,"
   /* specs/discord/channel.objects.json:166:20
-     '{ "name": "icon_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "icon_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
                 "(icon_url):s,"
   /* specs/discord/channel.objects.json:167:20
-     '{ "name": "proxy_icon_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "proxy_icon_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
                 "(proxy_icon_url):s,"
                 "@arg_switches:b",
@@ -2786,15 +2796,15 @@ size_t discord_embed_author_to_json(char *json, size_t len, struct discord_embed
   */
                 p->name,
   /* specs/discord/channel.objects.json:165:20
-     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
                 p->url,
   /* specs/discord/channel.objects.json:166:20
-     '{ "name": "icon_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "icon_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
                 p->icon_url,
   /* specs/discord/channel.objects.json:167:20
-     '{ "name": "proxy_icon_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "proxy_icon_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
                 p->proxy_icon_url,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
@@ -2844,17 +2854,20 @@ void discord_embed_author_cleanup(struct discord_embed_author *d) {
   */
   //p->name is a scalar
   /* specs/discord/channel.objects.json:165:20
-     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
-  //p->url is a scalar
+  if (d->url)
+    free(d->url);
   /* specs/discord/channel.objects.json:166:20
-     '{ "name": "icon_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "icon_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
-  //p->icon_url is a scalar
+  if (d->icon_url)
+    free(d->icon_url);
   /* specs/discord/channel.objects.json:167:20
-     '{ "name": "proxy_icon_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "proxy_icon_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
-  //p->proxy_icon_url is a scalar
+  if (d->proxy_icon_url)
+    free(d->proxy_icon_url);
 }
 
 void discord_embed_author_init(struct discord_embed_author *p) {
@@ -2864,15 +2877,15 @@ void discord_embed_author_init(struct discord_embed_author *p) {
   */
 
   /* specs/discord/channel.objects.json:165:20
-     '{ "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
 
   /* specs/discord/channel.objects.json:166:20
-     '{ "name": "icon_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "icon_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
 
   /* specs/discord/channel.objects.json:167:20
-     '{ "name": "proxy_icon_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}'
+     '{ "name": "proxy_icon_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}'
   */
 
 }
@@ -2918,15 +2931,15 @@ void discord_embed_footer_from_json(char *json, size_t len, struct discord_embed
   */
                 "(text):s,"
   /* specs/discord/channel.objects.json:177:20
-     '{ "name": "icon_url", "type": {"base":"char", "dec":"[MAX_URL_LEN]" }, 
+     '{ "name": "icon_url", "type": {"base":"char", "dec":"*" }, 
           "option":true, "inject_if_not":""}'
   */
-                "(icon_url):s,"
+                "(icon_url):?s,"
   /* specs/discord/channel.objects.json:179:20
-     '{ "name": "proxy_icon_url", "type": {"base":"char", "dec":"[MAX_URL_LEN]"}, 
+     '{ "name": "proxy_icon_url", "type": {"base":"char", "dec":"*"}, 
           "option":true, "inject_if_not":""}'
   */
-                "(proxy_icon_url):s,"
+                "(proxy_icon_url):?s,"
                 "@arg_switches:b"
                 "@record_defined"
                 "@record_null",
@@ -2935,15 +2948,15 @@ void discord_embed_footer_from_json(char *json, size_t len, struct discord_embed
   */
                 p->text,
   /* specs/discord/channel.objects.json:177:20
-     '{ "name": "icon_url", "type": {"base":"char", "dec":"[MAX_URL_LEN]" }, 
+     '{ "name": "icon_url", "type": {"base":"char", "dec":"*" }, 
           "option":true, "inject_if_not":""}'
   */
-                p->icon_url,
+                &p->icon_url,
   /* specs/discord/channel.objects.json:179:20
-     '{ "name": "proxy_icon_url", "type": {"base":"char", "dec":"[MAX_URL_LEN]"}, 
+     '{ "name": "proxy_icon_url", "type": {"base":"char", "dec":"*"}, 
           "option":true, "inject_if_not":""}'
   */
-                p->proxy_icon_url,
+                &p->proxy_icon_url,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
                 p->__M.record_null, sizeof(p->__M.record_null));
@@ -2960,17 +2973,17 @@ static void discord_embed_footer_use_default_inject_settings(struct discord_embe
     p->__M.arg_switches[0] = p->text;
 
   /* specs/discord/channel.objects.json:177:20
-     '{ "name": "icon_url", "type": {"base":"char", "dec":"[MAX_URL_LEN]" }, 
+     '{ "name": "icon_url", "type": {"base":"char", "dec":"*" }, 
           "option":true, "inject_if_not":""}'
   */
-  if (strlen(p->icon_url) != 0)
+  if (p->icon_url != NULL && strlen(p->icon_url) != 0)
     p->__M.arg_switches[1] = p->icon_url;
 
   /* specs/discord/channel.objects.json:179:20
-     '{ "name": "proxy_icon_url", "type": {"base":"char", "dec":"[MAX_URL_LEN]"}, 
+     '{ "name": "proxy_icon_url", "type": {"base":"char", "dec":"*"}, 
           "option":true, "inject_if_not":""}'
   */
-  if (strlen(p->proxy_icon_url) != 0)
+  if (p->proxy_icon_url != NULL && strlen(p->proxy_icon_url) != 0)
     p->__M.arg_switches[2] = p->proxy_icon_url;
 
 }
@@ -2985,12 +2998,12 @@ size_t discord_embed_footer_to_json(char *json, size_t len, struct discord_embed
   */
                 "(text):s,"
   /* specs/discord/channel.objects.json:177:20
-     '{ "name": "icon_url", "type": {"base":"char", "dec":"[MAX_URL_LEN]" }, 
+     '{ "name": "icon_url", "type": {"base":"char", "dec":"*" }, 
           "option":true, "inject_if_not":""}'
   */
                 "(icon_url):s,"
   /* specs/discord/channel.objects.json:179:20
-     '{ "name": "proxy_icon_url", "type": {"base":"char", "dec":"[MAX_URL_LEN]"}, 
+     '{ "name": "proxy_icon_url", "type": {"base":"char", "dec":"*"}, 
           "option":true, "inject_if_not":""}'
   */
                 "(proxy_icon_url):s,"
@@ -3000,12 +3013,12 @@ size_t discord_embed_footer_to_json(char *json, size_t len, struct discord_embed
   */
                 p->text,
   /* specs/discord/channel.objects.json:177:20
-     '{ "name": "icon_url", "type": {"base":"char", "dec":"[MAX_URL_LEN]" }, 
+     '{ "name": "icon_url", "type": {"base":"char", "dec":"*" }, 
           "option":true, "inject_if_not":""}'
   */
                 p->icon_url,
   /* specs/discord/channel.objects.json:179:20
-     '{ "name": "proxy_icon_url", "type": {"base":"char", "dec":"[MAX_URL_LEN]"}, 
+     '{ "name": "proxy_icon_url", "type": {"base":"char", "dec":"*"}, 
           "option":true, "inject_if_not":""}'
   */
                 p->proxy_icon_url,
@@ -3056,15 +3069,17 @@ void discord_embed_footer_cleanup(struct discord_embed_footer *d) {
   */
   //p->text is a scalar
   /* specs/discord/channel.objects.json:177:20
-     '{ "name": "icon_url", "type": {"base":"char", "dec":"[MAX_URL_LEN]" }, 
+     '{ "name": "icon_url", "type": {"base":"char", "dec":"*" }, 
           "option":true, "inject_if_not":""}'
   */
-  //p->icon_url is a scalar
+  if (d->icon_url)
+    free(d->icon_url);
   /* specs/discord/channel.objects.json:179:20
-     '{ "name": "proxy_icon_url", "type": {"base":"char", "dec":"[MAX_URL_LEN]"}, 
+     '{ "name": "proxy_icon_url", "type": {"base":"char", "dec":"*"}, 
           "option":true, "inject_if_not":""}'
   */
-  //p->proxy_icon_url is a scalar
+  if (d->proxy_icon_url)
+    free(d->proxy_icon_url);
 }
 
 void discord_embed_footer_init(struct discord_embed_footer *p) {
@@ -3074,12 +3089,12 @@ void discord_embed_footer_init(struct discord_embed_footer *p) {
   */
 
   /* specs/discord/channel.objects.json:177:20
-     '{ "name": "icon_url", "type": {"base":"char", "dec":"[MAX_URL_LEN]" }, 
+     '{ "name": "icon_url", "type": {"base":"char", "dec":"*" }, 
           "option":true, "inject_if_not":""}'
   */
 
   /* specs/discord/channel.objects.json:179:20
-     '{ "name": "proxy_icon_url", "type": {"base":"char", "dec":"[MAX_URL_LEN]"}, 
+     '{ "name": "proxy_icon_url", "type": {"base":"char", "dec":"*"}, 
           "option":true, "inject_if_not":""}'
   */
 

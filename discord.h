@@ -32,7 +32,6 @@ typedef uint64_t u64_snowflake_t; // discord's snowflake datatype
 #define MAX_REASON_LEN        512 + 1
 #define MAX_MESSAGE_LEN       2000 + 1
 #define MAX_PAYLOAD_LEN       4096 + 1
-#define MAX_URL_LEN           512 + 1
 
 /* EMBED LIMITS
 https://discord.com/developers/docs/resources/channel#embed-limits */
@@ -201,7 +200,7 @@ struct discord_session {
   /// @todo this can become spec generated code
   /// @see https://discord.com/developers/docs/topics/gateway#get-gateway-bot-json-response
   // The WSS URL that can be used for connecting to the gateway
-  char url[MAX_URL_LEN];
+  char url[1024];
   // The recommended number of shards to use when connecting
   int shards;
   

@@ -637,7 +637,7 @@ static void
 on_voice_server_update(struct discord_gateway *gw, struct sized_buffer *data)
 {
   u64_snowflake_t guild_id=0;
-  char token[512], endpoint[MAX_URL_LEN];
+  char token[512], endpoint[1024];
   json_extract(data->start, data->size,
                "(token):s"
                "(guild_id):s_as_u64"
@@ -931,8 +931,7 @@ static void
 on_close_cb(void *p_gw, enum ws_close_reason wscode, const char *reason, size_t len)
 {
   struct discord_gateway *gw = p_gw;
-  enum discord_gateway_close_opcodes opcode = \
-    (enum discord_gateway_close_opcodes)wscode;
+  enum discord_gateway_close_opcodes opcode = (enum discord_gateway_close_opcodes)wscode;
 
   log_warn("on_close_cb " ANSICOLOR("%s",ANSI_FG_RED)" (code: %4d) : %zd bytes,"
           "REASON: '%.*s'", close_opcode_print(opcode), opcode, len, len, reason);
@@ -962,7 +961,7 @@ on_close_cb(void *p_gw, enum ws_close_reason wscode, const char *reason, size_t 
       gw->reconnect.enable = false;
       break;
   default: //websocket/clouflare opcodes
-      if (opcode == WS_CLOSE_REASON_NORMAL) {
+      if (WS_CLOSE_REASON_NORMAL == (enum ws_close_reason)opcode) {
         //gw->is_resumable = true;
         //gw->reconnect.enable = true;
       }

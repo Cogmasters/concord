@@ -247,7 +247,7 @@ on_close_cb(void *p_vc, enum ws_close_reason wscode, const char *reason, size_t 
       vc->reconnect.enable = true;
       break;
   default: //websocket/clouflare opcodes
-      if (opcode == WS_CLOSE_REASON_NORMAL) {
+      if (WS_CLOSE_REASON_NORMAL == (enum ws_close_reason)opcode) {
         vc->is_resumable = true;
         vc->reconnect.enable = true;
       }
@@ -301,7 +301,7 @@ on_text_cb(void *p_vc, const char *text, size_t len)
   case DISCORD_VOICE_CLIENT_DISCONNECT:
       on_client_disconnect(vc);
       break;
-  case 14: // @todo add a proper macro
+  case DISCORD_VOICE_CODEC:
       on_codec(vc);
       break;
   default:
@@ -406,7 +406,7 @@ recycle_active_vc(
   vc->shutdown = false;
 
   char tag[64];
-  snprintf(tag, sizeof tag, "VC_%lld", guild_id);
+  snprintf(tag, sizeof tag, "VC_%"PRIu64, guild_id);
   logconf_add_id(&vc->p_client->config, vc->ws, tag);
 }
 

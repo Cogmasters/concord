@@ -166,7 +166,7 @@ struct discord_embed;
 /* This is defined at specs/discord/channel.objects.json:116:22 */
 struct discord_embed_thumbnail;
 
-/* Title: Embed Thumbnail Structure */
+/* Title: Embed Video Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-video-structure */
 /* This is defined at specs/discord/channel.objects.json:128:22 */
 struct discord_embed_video;

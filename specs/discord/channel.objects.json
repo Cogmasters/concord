@@ -49,8 +49,8 @@
         { "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
         { "name": "filename", "type":{ "base":"char", "dec":"[256]" }},
         { "name": "size", "type":{ "base":"int" }},
-        { "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }},
-        { "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }},
+        { "name": "url", "type":{ "base":"char", "dec":"*" }},
+        { "name": "proxy_url", "type":{ "base":"char", "dec":"*" }},
         { "name": "height", "type":{ "base":"int", "nullable":true }},
         { "name": "width", "type":{ "base":"int", "nullable":true }}
       ]
@@ -93,7 +93,7 @@
           "option":true, "inject_if_not":""},
         { "name": "description", "type":{ "base":"char", "dec":"[EMBED_DESCRIPTION_LEN]"}, 
           "option":true, "inject_if_not":""},
-        { "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]"},
+        { "name": "url", "type":{ "base":"char", "dec":"*"},
           "option":true, "inject_if_not":""},
         { "name": "timestamp", "type":{ "base":"char", "dec":"*", "converter":"iso8601" },
           "option":true, "inject_if_not":0},
@@ -115,8 +115,8 @@
       "namespace":["embed"],
       "struct":"thumbnail",
       "fields": [
-        { "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""},
-        { "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""},
+        { "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""},
+        { "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""},
         { "name": "height", "type":{ "base":"int" }, "inject_if_not":0},
         { "name": "width", "type":{ "base":"int" }, "inject_if_not":0}
       ]
@@ -127,8 +127,8 @@
       "namespace":["embed"],
       "struct":"video",
       "fields": [
-        { "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""},
-        { "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""},
+        { "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""},
+        { "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""},
         { "name": "height", "type":{ "base":"int" }, "inject_if_not":0},
         { "name": "width", "type":{ "base":"int" }, "inject_if_not":0}
       ]
@@ -139,8 +139,8 @@
       "namespace":["embed"],
       "struct":"image",
       "fields": [
-        { "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""},
-        { "name": "proxy_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""},
+        { "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""},
+        { "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""},
         { "name": "height", "type":{ "base":"int" }, "inject_if_not":0},
         { "name": "width", "type":{ "base":"int" }, "inject_if_not":0}
       ]
@@ -152,7 +152,7 @@
       "struct":"provider",
       "fields": [
         { "name": "name", "type":{"base":"char", "dec":"[EMBED_AUTHOR_NAME_LEN]"}, "inject_if_not":""},
-        { "name": "url", "type":{"base":"char", "dec":"[MAX_URL_LEN]"}, "inject_if_not":""}
+        { "name": "url", "type":{"base":"char", "dec":"*"}, "inject_if_not":""}
       ]
     },
     {
@@ -162,9 +162,9 @@
       "struct":"author",
       "fields": [
         { "name": "name", "type":{ "base":"char", "dec":"[EMBED_AUTHOR_NAME_LEN]" }, "inject_if_not":""},
-        { "name": "url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""},
-        { "name": "icon_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""},
-        { "name": "proxy_icon_url", "type":{ "base":"char", "dec":"[MAX_URL_LEN]" }, "inject_if_not":""}
+        { "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""},
+        { "name": "icon_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""},
+        { "name": "proxy_icon_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":""}
       ]
     },
     {
@@ -174,9 +174,9 @@
       "struct":"footer",
       "fields": [
         { "name": "text", "type": {"base":"char", "dec":"[EMBED_FOOTER_TEXT_LEN]"}, "inject_if_not":""},
-        { "name": "icon_url", "type": {"base":"char", "dec":"[MAX_URL_LEN]" }, 
+        { "name": "icon_url", "type": {"base":"char", "dec":"*" }, 
           "option":true, "inject_if_not":""},
-        { "name": "proxy_icon_url", "type": {"base":"char", "dec":"[MAX_URL_LEN]"}, 
+        { "name": "proxy_icon_url", "type": {"base":"char", "dec":"*"}, 
           "option":true, "inject_if_not":""}
       ]
     },

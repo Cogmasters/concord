@@ -35,6 +35,7 @@ enum discord_voice_opcodes {
   DISCORD_VOICE_HELLO = 8,
   DISCORD_VOICE_RESUMED = 9,
   DISCORD_VOICE_CLIENT_DISCONNECT = 13,
+  DISCORD_VOICE_CODEC = 14,
 };
 extern char* discord_voice_opcodes_to_string(enum discord_voice_opcodes);
 extern enum discord_voice_opcodes discord_voice_opcodes_from_string(char*);

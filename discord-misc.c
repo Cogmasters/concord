@@ -1,3 +1,4 @@
+#define _GNU_SOURCE /* asprintf() */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -205,10 +206,10 @@ discord_embed_set_footer(
 
   struct discord_embed_footer *new_footer = discord_embed_footer_alloc();
   strncpy(new_footer->text, text, EMBED_FOOTER_TEXT_LEN);
-  if (!IS_EMPTY_STRING(icon_url))
-    strncpy(new_footer->icon_url, icon_url, MAX_URL_LEN);
-  if (!IS_EMPTY_STRING(proxy_icon_url))
-    strncpy(new_footer->proxy_icon_url, proxy_icon_url, MAX_URL_LEN);
+  if (icon_url)
+    asprintf(&new_footer->icon_url, "%s", icon_url);
+  if (proxy_icon_url)
+    asprintf(&new_footer->proxy_icon_url, "%s", proxy_icon_url);
 
   embed->footer = new_footer;
 }
@@ -226,10 +227,10 @@ discord_embed_set_thumbnail(
   }
 
   struct discord_embed_thumbnail *new_thumbnail = discord_embed_thumbnail_alloc();
-  if (!IS_EMPTY_STRING(url))
-    strncpy(new_thumbnail->url, url, MAX_URL_LEN);
-  if (!IS_EMPTY_STRING(proxy_url))
-    strncpy(new_thumbnail->proxy_url, proxy_url, MAX_URL_LEN);
+  if (url)
+    asprintf(&new_thumbnail->url, "%s", url);
+  if (proxy_url)
+    asprintf(&new_thumbnail->proxy_url, "%s", proxy_url);
   if (height)
     new_thumbnail->height = height;
   if (width)
@@ -251,10 +252,10 @@ discord_embed_set_image(
   }
 
   struct discord_embed_image *new_image = discord_embed_image_alloc();
-  if (!IS_EMPTY_STRING(url))
-    strncpy(new_image->url, url, MAX_URL_LEN);
-  if (!IS_EMPTY_STRING(proxy_url))
-    strncpy(new_image->proxy_url, proxy_url, MAX_URL_LEN);
+  if (url)
+    asprintf(&new_image->url, "%s", url);
+  if (proxy_url)
+    asprintf(&new_image->proxy_url, "%s", proxy_url);
   if (height)
     new_image->height = height;
   if (width)
@@ -276,10 +277,10 @@ discord_embed_set_video(
   }
 
   struct discord_embed_video *new_video = discord_embed_video_alloc();
-  if (!IS_EMPTY_STRING(url))
-    strncpy(new_video->url, url, MAX_URL_LEN);
-  if (!IS_EMPTY_STRING(proxy_url))
-    strncpy(new_video->proxy_url, proxy_url, MAX_URL_LEN);
+  if (url)
+    asprintf(&new_video->url, "%s", url);
+  if (proxy_url)
+    asprintf(&new_video->proxy_url, "%s", proxy_url);
   if (height)
     new_video->height = height;
   if (width)
@@ -296,8 +297,8 @@ discord_embed_set_provider(struct discord_embed *embed, char name[], char url[])
   }
 
   struct discord_embed_provider *new_provider = discord_embed_provider_alloc();
-  if (!IS_EMPTY_STRING(url))
-    strncpy(new_provider->url, url, MAX_URL_LEN);
+  if (url)
+    asprintf(&new_provider->url, "%s", url);
   if (!IS_EMPTY_STRING(name))
     strncpy(new_provider->name, name, EMBED_AUTHOR_NAME_LEN);
 
@@ -319,13 +320,13 @@ discord_embed_set_author(
   struct discord_embed_author *new_author = discord_embed_author_alloc();
   if (!IS_EMPTY_STRING(name))
     strncpy(new_author->name, name, EMBED_AUTHOR_NAME_LEN);
-  if (!IS_EMPTY_STRING(url))
-    strncpy(new_author->url, url, MAX_URL_LEN);
-  if (!IS_EMPTY_STRING(icon_url))
-    strncpy(new_author->icon_url, icon_url, MAX_URL_LEN);
-  if (!IS_EMPTY_STRING(proxy_icon_url))
-    strncpy(new_author->proxy_icon_url, proxy_icon_url, MAX_URL_LEN);
 
+  if (url)
+    asprintf(&new_author->url, "%s", url);
+  if (icon_url)
+    asprintf(&new_author->icon_url, "%s", icon_url);
+  if (proxy_icon_url)
+    asprintf(&new_author->proxy_icon_url, "%s", proxy_icon_url);
   embed->author = new_author;
 }
 

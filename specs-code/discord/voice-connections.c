@@ -66,6 +66,7 @@ enum discord_voice_opcodes discord_voice_opcodes_from_string(char *s){
   if(strcasecmp("HELLO", s) == 0) return DISCORD_VOICE_HELLO;
   if(strcasecmp("RESUMED", s) == 0) return DISCORD_VOICE_RESUMED;
   if(strcasecmp("CLIENT_DISCONNECT", s) == 0) return DISCORD_VOICE_CLIENT_DISCONNECT;
+  if(strcasecmp("CODEC", s) == 0) return DISCORD_VOICE_CODEC;
   abort();
 }
 char* discord_voice_opcodes_to_string(enum discord_voice_opcodes v){
@@ -80,11 +81,13 @@ char* discord_voice_opcodes_to_string(enum discord_voice_opcodes v){
   if (v == DISCORD_VOICE_HELLO) return "HELLO";
   if (v == DISCORD_VOICE_RESUMED) return "RESUMED";
   if (v == DISCORD_VOICE_CLIENT_DISCONNECT) return "CLIENT_DISCONNECT";
+  if (v == DISCORD_VOICE_CODEC) return "CODEC";
 
   return (void*)0;
 }
 bool discord_voice_opcodes_has(enum discord_voice_opcodes v, char *s) {
   enum discord_voice_opcodes v1 = discord_voice_opcodes_from_string(s);
+  if (v == v1) return true;
   if (v == v1) return true;
   if (v == v1) return true;
   if (v == v1) return true;

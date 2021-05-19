@@ -1062,10 +1062,10 @@ void discord_gateway_activity_from_json(char *json, size_t len, struct discord_g
   */
                 "(type):d,"
   /* specs/discord/gateway.json:162:19
-     '{ "name":"url","type":{"base":"char", "dec":"[MAX_URL_LEN]"},
+     '{ "name":"url","type":{"base":"char", "dec":"*"},
           "option":true, "inject_if_not":""}'
   */
-                "(url):s,"
+                "(url):?s,"
   /* specs/discord/gateway.json:164:19
      '{ "name":"created_at","type":{"base":"char", "dec":"*", "converter":"iso8601"},
           "option":true, "inject_if_not":0 }'
@@ -1103,10 +1103,10 @@ void discord_gateway_activity_from_json(char *json, size_t len, struct discord_g
   */
                 &p->type,
   /* specs/discord/gateway.json:162:19
-     '{ "name":"url","type":{"base":"char", "dec":"[MAX_URL_LEN]"},
+     '{ "name":"url","type":{"base":"char", "dec":"*"},
           "option":true, "inject_if_not":""}'
   */
-                p->url,
+                &p->url,
   /* specs/discord/gateway.json:164:19
      '{ "name":"created_at","type":{"base":"char", "dec":"*", "converter":"iso8601"},
           "option":true, "inject_if_not":0 }'
@@ -1152,10 +1152,10 @@ static void discord_gateway_activity_use_default_inject_settings(struct discord_
   p->__M.arg_switches[1] = &p->type;
 
   /* specs/discord/gateway.json:162:19
-     '{ "name":"url","type":{"base":"char", "dec":"[MAX_URL_LEN]"},
+     '{ "name":"url","type":{"base":"char", "dec":"*"},
           "option":true, "inject_if_not":""}'
   */
-  if (strlen(p->url) != 0)
+  if (p->url != NULL && strlen(p->url) != 0)
     p->__M.arg_switches[2] = p->url;
 
   /* specs/discord/gateway.json:164:19
@@ -1209,7 +1209,7 @@ size_t discord_gateway_activity_to_json(char *json, size_t len, struct discord_g
   */
                 "(type):d,"
   /* specs/discord/gateway.json:162:19
-     '{ "name":"url","type":{"base":"char", "dec":"[MAX_URL_LEN]"},
+     '{ "name":"url","type":{"base":"char", "dec":"*"},
           "option":true, "inject_if_not":""}'
   */
                 "(url):s,"
@@ -1248,7 +1248,7 @@ size_t discord_gateway_activity_to_json(char *json, size_t len, struct discord_g
   */
                 &p->type,
   /* specs/discord/gateway.json:162:19
-     '{ "name":"url","type":{"base":"char", "dec":"[MAX_URL_LEN]"},
+     '{ "name":"url","type":{"base":"char", "dec":"*"},
           "option":true, "inject_if_not":""}'
   */
                 p->url,
@@ -1328,10 +1328,11 @@ void discord_gateway_activity_cleanup(struct discord_gateway_activity *d) {
   */
   //p->type is a scalar
   /* specs/discord/gateway.json:162:19
-     '{ "name":"url","type":{"base":"char", "dec":"[MAX_URL_LEN]"},
+     '{ "name":"url","type":{"base":"char", "dec":"*"},
           "option":true, "inject_if_not":""}'
   */
-  //p->url is a scalar
+  if (d->url)
+    free(d->url);
   /* specs/discord/gateway.json:164:19
      '{ "name":"created_at","type":{"base":"char", "dec":"*", "converter":"iso8601"},
           "option":true, "inject_if_not":0 }'
@@ -1372,7 +1373,7 @@ void discord_gateway_activity_init(struct discord_gateway_activity *p) {
   */
 
   /* specs/discord/gateway.json:162:19
-     '{ "name":"url","type":{"base":"char", "dec":"[MAX_URL_LEN]"},
+     '{ "name":"url","type":{"base":"char", "dec":"*"},
           "option":true, "inject_if_not":""}'
   */
 

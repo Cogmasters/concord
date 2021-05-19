@@ -38,7 +38,8 @@
         { "name":"RESUME","value":7},
         { "name":"HELLO","value":8},
         { "name":"RESUMED","value":9},
-        { "name":"CLIENT_DISCONNECT","value":13}
+        { "name":"CLIENT_DISCONNECT","value":13},
+        { "name":"CODEC","value":14}
       ]
     },
     {
