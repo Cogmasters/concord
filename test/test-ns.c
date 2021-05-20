@@ -18,7 +18,7 @@ int main ()
     .init_elem = NULL,
     .ntl_recipient_p = (ntl_t *)&namespaces
   };
-  orka_str_to_ntl(ns, strlen(ns), &d0_alias);
+  extract_ntl_from_json(ns, strlen(ns), &d0_alias);
   fprintf(stderr, "%d\n", ntl_length((ntl_t)namespaces));
   fprintf(stderr, "%d\n", ntl_length((ntl_t)*(namespaces[0])));
 }
