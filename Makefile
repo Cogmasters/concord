@@ -106,7 +106,9 @@ PREFIX ?= /usr/local
 all : mkdir cee_utils common discord | bots
 
 get_cee_utils:
-	./scripts/get-cee-utils.sh
+	if [ ! -d cee-utils ]; then \
+		./scripts/get-cee-utils.sh; \
+	fi
 
 cee_utils: mkdir get_cee_utils $(CEE_UTILS_OBJS)
 common: mkdir $(COMMON_OBJS)
@@ -208,3 +210,4 @@ clean_actor_gen:
 purge : clean
 	rm -rf $(LIBDIR)
 	rm -rf $(ACTOR_OBJDIR)
+	rm -rf cee-utils
