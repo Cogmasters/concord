@@ -76,7 +76,9 @@ int main(int argc, char *argv[])
   discord_global_init();
 
   struct discord *client = discord_config_init(config_file);
-  assert(NULL != client);
+  assert(NULL != client && "Could not initialize client");
+
+  discord_set_on_ready(client, &on_ready);
 
   discord_set_prefix(client, "!channel");
   discord_set_on_command(client, "Create", &on_create);

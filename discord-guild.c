@@ -19,8 +19,10 @@ discord_get_guild(struct discord *client, const u64_snowflake_t guild_id, struct
     return ORCA_MISSING_PARAMETER;
   }
 
-  struct ua_resp_handle resp_handle = \
-    { .ok_cb = &discord_guild_from_json_v, .ok_obj = p_guild };
+  struct ua_resp_handle resp_handle = { 
+    .ok_cb = &discord_guild_from_json_v, 
+    .ok_obj = p_guild 
+  };
 
   return discord_adapter_run( 
     &client->adapter,
@@ -83,8 +85,10 @@ discord_get_guild_channels(
     return ORCA_MISSING_PARAMETER;
   }
 
-  struct ua_resp_handle resp_handle = \
-    { .ok_cb = &discord_channel_list_from_json_v, .ok_obj = p_channels };
+  struct ua_resp_handle resp_handle = { 
+    .ok_cb = &discord_channel_list_from_json_v, 
+    .ok_obj = p_channels 
+  };
 
   return discord_adapter_run( 
     &client->adapter,
@@ -111,7 +115,8 @@ discord_get_guild_member(struct discord *client, u64_snowflake_t guild_id, u64_s
   }
 
   struct ua_resp_handle resp_handle = {
-    .ok_cb = discord_guild_member_from_json_v, .ok_obj = p_member
+    .ok_cb = discord_guild_member_from_json_v, 
+    .ok_obj = p_member
   };
 
   return discord_adapter_run(
@@ -156,8 +161,10 @@ discord_list_guild_members(
         "&after=%" PRIu64 , params->after);
   }
 
-  struct ua_resp_handle resp_handle = \
-    { .ok_cb = &discord_guild_member_list_from_json_v, .ok_obj = p_members };
+  struct ua_resp_handle resp_handle = { 
+    .ok_cb = &discord_guild_member_list_from_json_v, 
+    .ok_obj = p_members 
+  };
   
   return discord_adapter_run( 
     &client->adapter,
@@ -249,8 +256,10 @@ discord_get_guild_ban(
     return ORCA_MISSING_PARAMETER;
   }
 
-  struct ua_resp_handle resp_handle = \
-    { .ok_cb = &discord_guild_ban_from_json_v, .ok_obj = p_ban};
+  struct ua_resp_handle resp_handle = { 
+    .ok_cb = &discord_guild_ban_from_json_v, 
+    .ok_obj = p_ban
+  };
 
   return discord_adapter_run( 
     &client->adapter,
@@ -275,8 +284,10 @@ discord_get_guild_bans(
     return ORCA_MISSING_PARAMETER;
   }
 
-  struct ua_resp_handle resp_handle = \
-    { .ok_cb = &discord_guild_ban_list_from_json_v, .ok_obj = p_bans };
+  struct ua_resp_handle resp_handle = { 
+    .ok_cb = &discord_guild_ban_list_from_json_v, 
+    .ok_obj = p_bans 
+  };
 
   return discord_adapter_run( 
     &client->adapter,
@@ -321,7 +332,7 @@ discord_create_guild_ban(
     A[1] = (void *)reason;
 
   char payload[MAX_PAYLOAD_LEN];
-  int ret = json_inject(payload, sizeof(payload),
+  size_t ret = json_inject(payload, sizeof(payload),
                         "(delete_message_days):d"
                         "(reason):s"
                         "@arg_switches",
@@ -329,7 +340,7 @@ discord_create_guild_ban(
                         reason,
                         A, sizeof(A));
 
-  struct sized_buffer req_body = {payload, (size_t)ret};
+  struct sized_buffer req_body = { payload, ret };
 
   return discord_adapter_run( 
     &client->adapter,
@@ -354,8 +365,10 @@ discord_get_guild_roles(
     return ORCA_MISSING_PARAMETER;
   }
 
-  struct ua_resp_handle resp_handle = \
-    { .ok_cb = &discord_guild_role_list_from_json_v, .ok_obj = p_roles };
+  struct ua_resp_handle resp_handle = { 
+    .ok_cb = &discord_guild_role_list_from_json_v, 
+    .ok_obj = p_roles 
+  };
 
   return discord_adapter_run( 
     &client->adapter,
@@ -391,13 +404,13 @@ discord_remove_guild_ban(
     A[0] = (void *)reason;
 
   char payload[MAX_PAYLOAD_LEN];
-  int ret = json_inject(payload, sizeof (payload),
+  size_t ret = json_inject(payload, sizeof (payload),
                         "(reason):s"
                         "@arg_switches",
                         reason,
                         A, sizeof(A));
 
-  struct sized_buffer req_body = { payload, (size_t)ret };
+  struct sized_buffer req_body = { payload, ret };
 
   return discord_adapter_run( 
     &client->adapter,

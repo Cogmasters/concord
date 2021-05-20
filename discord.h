@@ -535,6 +535,9 @@ ORCAcode discord_get_current_user_guilds(struct discord *client, NTL_T(struct di
 ORCAcode discord_leave_guild(struct discord *client, const u64_snowflake_t guild_id);
 ORCAcode discord_create_dm(struct discord *client, const u64_snowflake_t recipient_id, struct discord_channel *p_dm_channel);
 
+// VOICE ENDPOINTS
+ORCAcode discord_list_voice_regions(struct discord *client, NTL_T(struct discord_voice_region) *p_voice_regions);
+
 // GATEWAY ENDPOINTS
 ORCAcode discord_get_gateway(struct discord *client, struct discord_session *p_session);
 ORCAcode discord_get_gateway_bot(struct discord *client, struct discord_session *p_session);

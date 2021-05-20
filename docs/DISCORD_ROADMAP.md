@@ -167,7 +167,7 @@
 ### [Voice Resouce](https://discord.com/developers/docs/resources/voice#voice-resource)
 - [x] [Voice State Object](https://discord.com/developers/docs/resources/voice#voice-state-object)
 - [x] [Voice Region Object](https://discord.com/developers/docs/resources/voice#voice-region-object)
-- [ ] [List Voice Regions](https://discord.com/developers/docs/resources/voice#list-voice-regions)
+- [x] [List Voice Regions](https://discord.com/developers/docs/resources/voice#list-voice-regions)
 ### [Webhook Resource](https://discord.com/developers/docs/resources/webhook#webhook-resource)
 - [x] [Webhook Object](https://discord.com/developers/docs/resources/webhook#webhook-object)
 - [x] [Webhook Types](https://discord.com/developers/docs/resources/webhook#webhook-object-webhook-types)
