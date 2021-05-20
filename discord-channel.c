@@ -492,6 +492,51 @@ discord_delete_own_reaction(
 }
 
 ORCAcode
+discord_delete_user_reaction(
+  struct discord *client,
+  const u64_snowflake_t channel_id,
+  const u64_snowflake_t message_id,
+  const u64_snowflake_t user_id,
+  const u64_snowflake_t emoji_id,
+  const char emoji_name[])
+{
+  if (!channel_id) {
+    log_error("Missing 'channel_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!message_id) {
+    log_error("Missing 'message_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!user_id) {
+    log_error("Missing 'user_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
+  char *pct_emoji_name = (emoji_name) 
+                  ? url_encode((char*)emoji_name)
+                  : NULL;
+
+  char emoji_endpoint[256];
+  if (emoji_id)
+    snprintf(emoji_endpoint, sizeof(emoji_endpoint), "%s:%"PRIu64, pct_emoji_name, emoji_id);
+  else
+    snprintf(emoji_endpoint, sizeof(emoji_endpoint), "%s", pct_emoji_name);
+
+  ORCAcode code;
+  code = discord_adapter_run(
+          &client->adapter,
+          NULL,
+          NULL,
+          HTTP_DELETE,
+          "/channels/%"PRIu64"/messages/%"PRIu64"/reactions/%s/%"PRIu64, 
+          channel_id, message_id, emoji_endpoint, user_id);
+  free(pct_emoji_name);
+
+  return code;
+}
+
+ORCAcode
 discord_delete_all_reactions(
   struct discord *client, 
   u64_snowflake_t channel_id, 
