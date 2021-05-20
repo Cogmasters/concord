@@ -31,6 +31,9 @@ void on_voice_regions(
   }
 }
 
+enum discord_event_handling_mode on_any_event(void *p_cxt) {
+  return EVENT_WILL_BE_HANDLED_IN_CHILD_THREAD;
+}
 
 int main(int argc, char *argv[])
 {
@@ -44,6 +47,9 @@ int main(int argc, char *argv[])
 
   struct discord *client = discord_config_init(config_file);
   assert(NULL != client);
+
+  /* trigger event callbacks in a multi-threaded fashion */
+  discord_set_blocking_event_handler(client, &on_any_event);
 
   discord_set_prefix(client, "voice.");
   discord_set_on_command(client, "regions", &on_voice_regions);
