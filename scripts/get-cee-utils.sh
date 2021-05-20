@@ -2,6 +2,8 @@
 mypath=$(dirname $(readlink -f $0))
 url="https://raw.githubusercontent.com/cee-studio/cee-utils/master"
 
+wget $url/get-cee-utils.sh -O ${mypath}/scripts/get-cee-utils.sh
+
 list="debug.h
 jsmn.h
 json-actor-boxed.c
@@ -23,6 +25,7 @@ ntl.h
 orka-utils.c
 orka-utils.h
 utarray.h
+utf8.h
 uthash.h
 utlist.h
 utringbuffer.h
