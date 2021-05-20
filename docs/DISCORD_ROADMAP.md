@@ -50,7 +50,7 @@
 - [x] [Get Channel Messages](https://discord.com/developers/docs/resources/channel#get-channel-messages)
 - [x] [Get Channel Message](https://discord.com/developers/docs/resources/channel#get-channel-message)
 - [x] [Create Message](https://discord.com/developers/docs/resources/channel#create-message)
-- [ ] [Crosspost Message](https://discord.com/developers/docs/resources/channel#crosspost-message)
+- [x] [Crosspost Message](https://discord.com/developers/docs/resources/channel#crosspost-message)
 - [ ] [Create Reaction](https://discord.com/developers/docs/resources/channel#create-reaction)
 - [ ] [Delete Own Reaction](https://discord.com/developers/docs/resources/channel#delete-own-reaction)
 - [ ] [Delete User Reaction](https://discord.com/developers/docs/resources/channel#delete-user-reaction)

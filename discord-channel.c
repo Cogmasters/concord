@@ -15,8 +15,10 @@ discord_get_channel(struct discord *client, const u64_snowflake_t channel_id, st
     return ORCA_MISSING_PARAMETER;
   }
 
-  struct ua_resp_handle resp_handle =
-    { .ok_cb = &discord_channel_from_json_v, .ok_obj = p_channel};
+  struct ua_resp_handle resp_handle = { 
+    .ok_cb = &discord_channel_from_json_v, 
+    .ok_obj = p_channel
+  };
 
   return discord_adapter_run(
     &client->adapter,
@@ -377,6 +379,36 @@ discord_create_message(
     ua_reqheader_add(client->adapter.ua, "Content-Type", "application/json");
   }
   return code;
+}
+
+ORCAcode
+discord_crosspost_message(
+  struct discord *client,
+  const u64_snowflake_t channel_id,
+  const u64_snowflake_t message_id,
+  struct discord_message *p_message)
+{
+  if (!channel_id) {
+    log_error("Missing 'channel_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!message_id) {
+    log_error("Missing 'message_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
+  struct ua_resp_handle resp_handle = {
+    .ok_cb = p_message ? &discord_message_from_json_v : NULL,
+    .ok_obj = p_message
+  };
+
+  return discord_adapter_run(
+    &client->adapter,
+    &resp_handle,
+    NULL,
+    HTTP_POST,
+    "/channels/%"PRIu64"/messages/%"PRIu64"/crosspost", 
+    channel_id, message_id);
 }
 
 ORCAcode
