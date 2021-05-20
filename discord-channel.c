@@ -537,6 +537,78 @@ discord_delete_user_reaction(
 }
 
 ORCAcode
+discord_get_reactions(
+  struct discord *client,
+  u64_snowflake_t channel_id,
+  u64_snowflake_t message_id,
+  const u64_snowflake_t emoji_id,
+  const char emoji_name[],
+  struct discord_get_reactions_params *params,
+  NTL_T(struct discord_user) *p_users)
+{
+  if (!channel_id) {
+    log_error("Missing 'channel_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!message_id) {
+    log_error("Missing 'message_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!p_users) {
+    log_error("Missing 'p_users'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
+  struct ua_resp_handle resp_handle = { 
+    .ok_cb = &discord_user_list_from_json_v, 
+    .ok_obj = p_users 
+  };
+
+  char *pct_emoji_name = (emoji_name) 
+                  ? url_encode((char*)emoji_name)
+                  : NULL;
+
+  char emoji_endpoint[256];
+  if (emoji_id)
+    snprintf(emoji_endpoint, sizeof(emoji_endpoint), "%s:%"PRIu64, pct_emoji_name, emoji_id);
+  else
+    snprintf(emoji_endpoint, sizeof(emoji_endpoint), "%s", pct_emoji_name);
+
+  char query[1024]="";
+  if (params) {
+    if (params->limit < 0 || params->limit > 25)
+      params->limit = 25; /* default */
+
+    int ret;
+    if (params->after) {
+      ret = query_inject(query, sizeof(query),
+              "(after):F"
+              "(limit):d",
+              &orka_ulltostr, &params->after,
+              &params->limit);
+    }
+    else {
+      ret = query_inject(query, sizeof(query),
+              "(limit):d",
+              &params->limit);
+    }
+    ASSERT_S(ret < sizeof(query), "Out of bounds write attempt");
+  }
+
+  ORCAcode code;
+  code = discord_adapter_run(
+          &client->adapter,
+          &resp_handle,
+          NULL,
+          HTTP_GET,
+          "/channels/%"PRIu64"/messages/%"PRIu64"/reactions/%s%s", 
+          channel_id, message_id, emoji_endpoint, query);
+  free(pct_emoji_name);
+
+  return code;
+}
+
+ORCAcode
 discord_delete_all_reactions(
   struct discord *client, 
   u64_snowflake_t channel_id, 
