@@ -414,11 +414,9 @@ get_conn(struct user_agent *ua)
 }
 
 struct user_agent*
-ua_init(const char base_url[], struct logconf *config) 
+ua_init(struct logconf *config) 
 {
   struct user_agent *new_ua = calloc(1, sizeof *new_ua);
-
-  ua_set_url(new_ua, base_url);
 
   // default header
   char user_agent[] = "orca (http://github.com/cee-studio/orca)";

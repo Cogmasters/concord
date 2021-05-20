@@ -115,11 +115,11 @@ void ua_reqheader_del(struct user_agent *ua, char field[]);
 void ua_easy_setopt(struct user_agent *ua, void *data, void (setopt_cb)(CURL *ehandle, void *data));
 void ua_mime_setopt(struct user_agent *ua, void *data, curl_mime* (mime_cb)(CURL *ehandle, void *data)); // @todo this is temporary
 
-struct user_agent* ua_init(const char base_url[], struct logconf *conf);
+struct user_agent* ua_init(struct logconf *conf);
 void ua_cleanup(struct user_agent *ua);
 
-char* ua_get_url(struct user_agent *ua);
 void ua_set_url(struct user_agent *ua, const char base_url[]);
+char* ua_get_url(struct user_agent *ua);
 void ua_block_ms(struct user_agent *ua, const uint64_t wait_ms);
 ORCAcode ua_vrun(
   struct user_agent *ua,
