@@ -4,17 +4,10 @@
 #include <string.h>
 
 #include "mujs.h"
-#include "user-agent.h"
+#include "js-addons.h"
 
 
-static void 
-respbody_copy_cb(char *start, size_t size, void *p_body)
-{
-  char **body = p_body;
-  asprintf(body, "%.*s", (int)size, start);
-}
-
-ORCAcode orcajs_run(
+ORCAcode js_ua_run(
   js_State *J, 
   struct user_agent *ua, 
   struct sized_buffer *resp_body,
@@ -29,22 +22,17 @@ ORCAcode orcajs_run(
     log_fatal("expect a METHOD string");
     exit(1);
   }
-
-  char *strmethod = (char *)js_tostring(J, 1);
-  log_debug("method: %s", strmethod);
-  method = http_method_eval(strmethod);
-
   if (!js_isstring(J, 2)) {
     log_fatal("expect a URL string");
     exit(1);
   }
 
-  char *url = (char *)js_tostring(J, 2);
-  log_debug("url: %s", url);
+  char *strmethod = (char *)js_tostring(J, 1);
+  log_debug("method: %s", strmethod);
+  method = http_method_eval(strmethod);
 
-  char *buf=NULL;
-  struct ua_resp_handle  resp_handle = \
-    { .ok_cb = respbody_copy_cb, .ok_obj = &buf };
+  char *endpoint = (char *)js_tostring(J, 2);
+  log_debug("endpoint: %s", endpoint);
 
   struct sized_buffer req_body={};
   if (4 == nparam) { // has body
@@ -55,18 +43,15 @@ ORCAcode orcajs_run(
     }
   }
 
-  struct ua_info info={}; // can be used to extract info on the transfer
-  ORCAcode code = ua_vrun(
+  struct ua_info info={}; // extract transfer info
+  ORCAcode code = ua_run(
                     ua, 
                     &info, 
-                    &resp_handle, 
+                    NULL, 
                     &req_body, 
-                    method, url, NULL);
+                    method, endpoint, "");
 
-  *resp_body = (struct sized_buffer){
-    .start = buf,
-    .size = buf ? strlen(buf) : 0
-  };
+  *resp_body = ua_info_get_resp_body(&info);
 
   return code;
 }
