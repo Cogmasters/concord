@@ -16,7 +16,7 @@
  * @elem_size  the size of element
  * @init   the function to initialize each element, it can be NULL
  */
-STATIC ntl_t ntl_malloc_init(size_t n_elems,  size_t elem_size, void (*init)(void *))
+STATIC ntl_t ntl_malloc_init(size_t n_elems,  size_t elem_size, ntl_init_cb init_cb)
 {
   /*
    * allocate one consecutive memory block for storing
@@ -38,8 +38,8 @@ STATIC ntl_t ntl_malloc_init(size_t n_elems,  size_t elem_size, void (*init)(voi
   for (size_t i = 0; i < n_elems; i++) {
     // p[i] points to the start of ith element.
     p[i] = (void *)elem_start;
-    if (init)
-      init(p[i]);
+    if (init_cb)
+      init_cb(p[i]);
 
     // move elem_start to point to the start of the next element
     elem_start += elem_size;
@@ -60,7 +60,7 @@ STATIC ntl_t ntl_malloc(size_t n_elems, size_t elem_size)
  * @e_size   the size of each element
  * @init     the function to initialize an element
  */
-STATIC ntl_t ntl_calloc_init(size_t n_elems, size_t e_size, void (*init)(void *))
+STATIC ntl_t ntl_calloc_init(size_t n_elems, size_t e_size, ntl_init_cb init_cb)
 {
   ntl_t p = ntl_malloc_init(n_elems, e_size, NULL);
   /*
@@ -70,9 +70,9 @@ STATIC ntl_t ntl_calloc_init(size_t n_elems, size_t e_size, void (*init)(void *)
    */
   char * elem_start = (char *)(&p[n_elems + 1]);
   memset(elem_start, 0, n_elems * e_size);
-  if (init) {
+  if (init_cb) {
     for (int i = 0; p[i]; i++)
-      init(p[i]);
+      init_cb(p[i]);
   }
   return p;
 }
@@ -89,7 +89,7 @@ STATIC ntl_t ntl_calloc(size_t n_elems,  size_t elem_size)
  * @init        the function to initialize an element, it can be NULL
  *
  */
-STATIC ntl_t ntl_realloc_init(ntl_t p, size_t new_n_elems, size_t elem_size, void (*init)(void *))
+STATIC ntl_t ntl_realloc_init(ntl_t p, size_t new_n_elems, size_t elem_size, ntl_init_cb init_cb)
 {
   ntl_t new_p = ntl_calloc_init(new_n_elems, elem_size, NULL);
 
@@ -104,10 +104,10 @@ STATIC ntl_t ntl_realloc_init(ntl_t p, size_t new_n_elems, size_t elem_size, voi
     free(p);
   }
 
-  if (init) {
+  if (init_cb) {
     for ( ; new_p[i]; ++i) {
       // initialize new elements
-      init(new_p[i]);
+      init_cb(new_p[i]);
     }
   }
 
@@ -119,14 +119,14 @@ STATIC ntl_t ntl_realloc_init(ntl_t p, size_t new_n_elems, size_t elem_size, voi
  * @p a NTL to be freed, it can be NULL
  * @cleanup  clean up each element, it can be NULL
  */
-STATIC void ntl_free(ntl_t p, void (*cleanup)(void *))
+STATIC void ntl_free(ntl_t p, ntl_free_cb free_cb)
 {
   if (p == NULL)
     return;
 
-  if (cleanup)
+  if (free_cb)
     for (size_t i = 0; p[i]; i++)
-      (*cleanup)(p[i]);
+      (*free_cb)(p[i]);
   free(p);
 }
 

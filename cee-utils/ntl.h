@@ -62,19 +62,14 @@ typedef void** ntl_t;
  */
 #define NTL_T(t)  t**
 
-/*
- * a conventional foreach loop that can be used with NTLs
- */
-#define NTL_FOREACH(element, ntl) \
-  for (int __i=0,__=1;__;__=0) \
-    for (element = *ntl; ntl[__i]; element = ntl[++__i])
 
+typedef void (*ntl_init_cb)(void *);
 
 /*
  * this is the preferred method to allocate a ntl
  * if init is NULL, it is the same as ntl_calloc
  */
-ntl_t ntl_calloc_init(size_t nelems, size_t elem_size, void (*init)(void *));
+ntl_t ntl_calloc_init(size_t nelems, size_t elem_size, ntl_init_cb init_cb);
 
 
 /*
@@ -87,7 +82,7 @@ ntl_t ntl_calloc(size_t nelems,  size_t elem_size);
  * please use ntl_calloc_init unless you have a very good reason to use this
  * if init is NULL, it is the same as ntl_malloc
  */
-ntl_t ntl_malloc_init(size_t nelems, size_t elem_size, void (*init)(void *));
+ntl_t ntl_malloc_init(size_t nelems, size_t elem_size, ntl_init_cb init_cb);
 
 
 /*
@@ -96,18 +91,19 @@ ntl_t ntl_malloc_init(size_t nelems, size_t elem_size, void (*init)(void *));
 ntl_t ntl_malloc(size_t nelems,  size_t elem_size);
 
 
-ntl_t ntl_realloc_init(void **p, size_t new_nelems, size_t elem_size, void (*init)(void *));
+ntl_t ntl_realloc_init(void **p, size_t new_nelems, size_t elem_size, ntl_init_cb init_cb);
 
 /*
  * duplicate a ntl
  */
 ntl_t ntl_dup(ntl_t p, size_t size);
 
+typedef void (*ntl_free_cb)(void*);
 /*
  * for each element e, calls cleanup(e)
  * free(p);
  */
-void ntl_free(ntl_t p, void (*cleanup)(void *));
+void ntl_free(ntl_t p, ntl_free_cb cb);
 
 size_t ntl_length(ntl_t p);
 size_t ntl_length_max(ntl_t p, size_t max);

@@ -9,6 +9,7 @@ ACC          ?= gcc
 
 # common src with utility functions
 COMMON_SRC  := $(wildcard common/*.c) $(wildcard common/**/*.c)
+CEE_UTILS_SRC  := $(wildcard cee-utils/*.c) 
 # API specific src
 DISCORD_SRC := $(wildcard discord-*.c)
 SLACK_SRC   := $(wildcard slack-*.c)
@@ -21,18 +22,19 @@ SPECS      	:= $(sort $(wildcard specs/*/*.json))
 SPECS_SUBDIR:= $(sort $(patsubst specs/%, %, $(dir $(SPECS))))
 SPECS_SRC   := $(patsubst specs/%, $(SPECSDIR)/%, $(SPECS:%.json=%.c))
 
-ACTOR_GEN_SRC = common/orka-utils.c 	\
-				common/json-actor.c 	\
-				common/ntl.c 			\
-				common/json-string.c 	\
-				common/json-scanf.c 	\
-				common/json-struct.c 	\
-				common/json-printf.c 	\
-				common/third-party/log.c \
-				specs/specs-gen.c
+ACTOR_GEN_SRC = cee-utils/orka-utils.c 	\
+				cee-utils/json-actor.c 	\
+				cee-utils/ntl.c 			\
+				cee-utils/json-string.c 	\
+				cee-utils/json-scanf.c 	\
+				cee-utils/json-struct.c 	\
+				cee-utils/json-printf.c 	\
+				cee-utils/log.c \
+				cee-utils/specs-gen.c
 
 ACTOR_GEN_OBJS := $(ACTOR_GEN_SRC:%=$(ACTOR_OBJDIR)/%.o)
 
+CEE_UTILS_OBJS  := $(CEE_UTILS_SRC:%=$(OBJDIR)/%.o)
 COMMON_OBJS  := $(COMMON_SRC:%=$(OBJDIR)/%.o)
 DISCORD_OBJS := $(DISCORD_SRC:%=$(OBJDIR)/%.o)
 SLACK_OBJS   := $(SLACK_SRC:%=$(OBJDIR)/%.o)
@@ -41,7 +43,7 @@ REDDIT_OBJS  := $(REDDIT_SRC:%=$(OBJDIR)/%.o)
 SPECS_OBJS   := $(SPECS_SRC:%=$(OBJDIR)/%.o)
 DB_OBJS      := $(DB_SRC:%=$(OBJDIR)/%.o)
 
-OBJS := $(COMMON_OBJS) $(DISCORD_OBJS) $(SLACK_OBJS) $(GITHUB_OBJS) $(REDDIT_OBJS)
+OBJS := $(CEE_UTILS_OBJS) $(COMMON_OBJS) $(DISCORD_OBJS) $(SLACK_OBJS) $(GITHUB_OBJS) $(REDDIT_OBJS)
 
 BOT_SRC  := $(wildcard bots/bot-*.c)
 BOT_EXES := $(patsubst %.c, %.exe, $(BOT_SRC))
@@ -78,7 +80,7 @@ LIBDISCORD   := $(LIBDIR)/libdiscord.a
 
 CFLAGS += -Wall -std=c11 -O0 -g \
 	-Wno-unused-function -Wno-unused-but-set-variable \
-	-I. -I./common -I./common/third-party -DLOG_USE_COLOR
+	-I. -I./cee-utils -I./common -I./common/third-party -DLOG_USE_COLOR
 
 ifeq ($(release),1)
 else
@@ -101,8 +103,12 @@ PREFIX ?= /usr/local
 .PHONY : install clean purge mujs
 
 
-all : mkdir common discord | bots
+all : mkdir cee_utils common discord | bots
 
+get_cee_utils:
+	./scripts/get-cee-utils.sh
+
+cee_utils: mkdir get_cee_utils $(CEE_UTILS_OBJS)
 common: mkdir $(COMMON_OBJS)
 discord: mkdir $(DISCORD_OBJS) libdiscord
 slack: mkdir $(SLACK_OBJS)
@@ -122,13 +128,14 @@ echo:
 
 ##@todo should we split by categories (bot_discord, bot_github, etc)?
 bots: $(BOT_EXES)
-botx: mkdir common discord | $(BOTX_EXES)
-botz: mkdir common discord | $(BOTZ_EXES)
+botx: mkdir cee_utils common discord | $(BOTX_EXES)
+botz: mkdir cee_utils common discord | $(BOTZ_EXES)
 
 ##@todo should we split by categories too ?
-test: common discord slack github reddit $(TEST_EXES)
+test: cee_utils common discord slack github reddit $(TEST_EXES)
 
 mkdir :
+	mkdir -p $(OBJDIR)/cee-utils
 	mkdir -p $(ACTOR_OBJDIR)/common/third-party  $(ACTOR_OBJDIR)/specs
 	mkdir -p $(OBJDIR)/common/third-party $(LIBDIR)
 	mkdir -p $(addprefix $(SPECSDIR)/, $(SPECS_SUBDIR)) $(addprefix $(OBJDIR)/$(SPECSDIR)/, $(SPECS_SUBDIR))

@@ -25,6 +25,7 @@ get_log_level(char level[])
   if (0 == strcasecmp(level, "ERROR")) return LOG_ERROR;
   if (0 == strcasecmp(level, "FATAL")) return LOG_FATAL;
   ERR("Log level doesn't exist: %s", level);
+  return 0;// make compiler happy
 }
 
 void
