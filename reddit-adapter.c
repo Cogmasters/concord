@@ -31,7 +31,8 @@ curl_setopt_cb(CURL *ehandle, void *p_client)
 void
 reddit_adapter_init(struct reddit_adapter *adapter, struct logconf *config)
 {
-  adapter->ua = ua_init(BASE_API_URL, config);
+  adapter->ua = ua_init(config);
+  ua_set_url(adapter->ua, BASE_API_URL);
   logconf_add_id(config, adapter->ua, "REDDIT_HTTP");
 
   ua_easy_setopt(adapter->ua, adapter->p_client, &curl_setopt_cb);

@@ -13,7 +13,8 @@
 void
 slack_adapter_init(struct slack_adapter *adapter, struct logconf *config, struct sized_buffer *token)
 {
-  adapter->ua = ua_init(BASE_API_URL, config);
+  adapter->ua = ua_init(config);
+  ua_set_url(adapter->ua, BASE_API_URL);
   logconf_add_id(config, adapter->ua, "SLACK_WEBAPI");
 
   if (STRNEQ("YOUR-BOT-TOKEN", token->start, token->size)) {

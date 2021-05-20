@@ -10,7 +10,8 @@ void load(char * str, size_t len, void * ptr) {
 
 int commit(char *base_url, struct logconf *config)
 {
-  struct user_agent *data = ua_init(base_url, config);
+  struct user_agent *data = ua_init(config);
+  ua_set_url(data, base_url);
   logconf_add_id(config, data, "CEE_HTTP");
 
   curl_global_init(CURL_GLOBAL_ALL);
