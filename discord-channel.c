@@ -411,62 +411,6 @@ discord_crosspost_message(
     channel_id, message_id);
 }
 
-ORCAcode
-discord_edit_message(
-  struct discord *client, 
-  const u64_snowflake_t channel_id, 
-  const u64_snowflake_t message_id, 
-  struct discord_edit_message_params *params, 
-  struct discord_message *p_message)
-{
-  if (!channel_id) {
-    log_error("Missing 'channel_id'");
-    return ORCA_MISSING_PARAMETER;
-  }
-  if (!message_id) {
-    log_error("Missing 'message_id'");
-    return ORCA_MISSING_PARAMETER;
-  }
-  if (!params) {
-    log_error("Missing 'params'");
-    return ORCA_MISSING_PARAMETER;
-  }
-
-  struct ua_resp_handle resp_handle = {
-    .ok_cb = p_message ? &discord_message_from_json_v : NULL,
-    .ok_obj = p_message
-  };
-
-  char payload[MAX_PAYLOAD_LEN];
-
-  void *A[4] = {0}; // pointer availability array
-
-  A[0] = params->content;
-  A[1] = params->embed;
-  A[2] = params->flags;
-//A[3] = params->allowed_mentions;
-
-  size_t ret = json_inject(payload, sizeof(payload),
-                "(content):s"
-                "(embed):F"
-                "(flags):d"
-              //"(allowed_mentions):F"
-                "@arg_switches",
-                params->content,
-                &discord_embed_to_json, params->embed,
-                params->flags,
-              //&allowed_mentions_to_json, params->allowed_mentions,
-                A, sizeof(A));
-
-  struct sized_buffer req_body = { payload, ret };
-
-  return discord_adapter_run(&client->adapter,
-    &resp_handle,
-    &req_body,
-    HTTP_PATCH,
-    "/channels/%"PRIu64"/messages/%"PRIu64, channel_id, message_id);
-}
-
 ORCAcode 
 discord_create_reaction(
   struct discord *client, 
@@ -502,6 +446,46 @@ discord_create_reaction(
     HTTP_PUT,
     "/channels/%"PRIu64"/messages/%"PRIu64"/reactions/%s/@me", 
     channel_id, message_id, emoji_endpoint);
+  free(pct_emoji_name);
+
+  return code;
+}
+
+ORCAcode
+discord_delete_own_reaction(
+  struct discord *client,
+  const u64_snowflake_t channel_id,
+  const u64_snowflake_t message_id,
+  const u64_snowflake_t emoji_id,
+  const char emoji_name[])
+{
+  if (!channel_id) {
+    log_error("Missing 'channel_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!message_id) {
+    log_error("Missing 'message_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
+  char *pct_emoji_name = (emoji_name) 
+                  ? url_encode((char*)emoji_name)
+                  : NULL;
+
+  char emoji_endpoint[256];
+  if (emoji_id)
+    snprintf(emoji_endpoint, sizeof(emoji_endpoint), "%s:%"PRIu64, pct_emoji_name, emoji_id);
+  else
+    snprintf(emoji_endpoint, sizeof(emoji_endpoint), "%s", pct_emoji_name);
+
+  ORCAcode code;
+  code = discord_adapter_run(
+          &client->adapter,
+          NULL,
+          NULL,
+          HTTP_DELETE,
+          "/channels/%"PRIu64"/messages/%"PRIu64"/reactions/%s/@me", 
+          channel_id, message_id, emoji_endpoint);
   free(pct_emoji_name);
 
   return code;
@@ -569,6 +553,62 @@ discord_delete_all_reactions_for_emoji(
   free(pct_emoji_name);
 
   return code;
+}
+
+ORCAcode
+discord_edit_message(
+  struct discord *client, 
+  const u64_snowflake_t channel_id, 
+  const u64_snowflake_t message_id, 
+  struct discord_edit_message_params *params, 
+  struct discord_message *p_message)
+{
+  if (!channel_id) {
+    log_error("Missing 'channel_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!message_id) {
+    log_error("Missing 'message_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!params) {
+    log_error("Missing 'params'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
+  struct ua_resp_handle resp_handle = {
+    .ok_cb = p_message ? &discord_message_from_json_v : NULL,
+    .ok_obj = p_message
+  };
+
+  char payload[MAX_PAYLOAD_LEN];
+
+  void *A[4] = {0}; // pointer availability array
+
+  A[0] = params->content;
+  A[1] = params->embed;
+  A[2] = params->flags;
+//A[3] = params->allowed_mentions;
+
+  size_t ret = json_inject(payload, sizeof(payload),
+                "(content):s"
+                "(embed):F"
+                "(flags):d"
+              //"(allowed_mentions):F"
+                "@arg_switches",
+                params->content,
+                &discord_embed_to_json, params->embed,
+                params->flags,
+              //&allowed_mentions_to_json, params->allowed_mentions,
+                A, sizeof(A));
+
+  struct sized_buffer req_body = { payload, ret };
+
+  return discord_adapter_run(&client->adapter,
+    &resp_handle,
+    &req_body,
+    HTTP_PATCH,
+    "/channels/%"PRIu64"/messages/%"PRIu64, channel_id, message_id);
 }
 
 ORCAcode
