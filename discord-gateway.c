@@ -854,7 +854,7 @@ on_dispatch(struct discord_gateway *gw)
 
   // create a new thread to execute callback
   
-  struct discord_event_cxt cxt, *cxt_p;
+  struct discord_event_cxt cxt;
   asprintf(&cxt.data.start, "%.*s", \
       (int)gw->payload.event_data.size, gw->payload.event_data.start);
   cxt.data.size = gw->payload.event_data.size;
@@ -863,28 +863,28 @@ on_dispatch(struct discord_gateway *gw)
   cxt.on_event = on_event;
   strcpy(cxt.event_name, gw->payload.event_name);
 
-
-  switch (gw->blocking_event_handler(&cxt)) {
-    case EVENT_IS_HANDLED:
+  enum discord_event_handling_mode mode = \
+                                gw->blocking_event_handler(&cxt);
+  switch (mode) {
+  case EVENT_IS_HANDLED: 
       return;
-    case EVENT_WILL_BE_HANDLED_IN_MAIN_THREAD:
+  case EVENT_WILL_BE_HANDLED_IN_MAIN_THREAD:
       cxt.is_main_thread = true;
       dispatch_run(&cxt);
       return;
-    default:
-      goto create_a_new_thread;
+  case EVENT_WILL_BE_HANDLED_IN_CHILD_THREAD: {
+      cxt.is_main_thread = false;
+      struct discord_event_cxt *cxt_p = malloc(sizeof(struct discord_event_cxt));
+      memcpy(cxt_p, &cxt, sizeof(cxt));
+      pthread_t tid;
+      if (pthread_create(&tid, NULL, &dispatch_run, cxt_p))
+        ERR("Couldn't create thread");
+      if (pthread_detach(tid))
+        ERR("Couldn't detach thread");
+      return; }
+  default:
+      ERR("Unknown event handling mode (code: %d)", mode);
   }
-
-create_a_new_thread:
-  cxt_p = malloc(sizeof(struct discord_event_cxt));
-  cxt.is_main_thread = false;
-  memcpy(cxt_p, &cxt, sizeof(cxt));
-  pthread_t tid;
-  if (pthread_create(&tid, NULL, &dispatch_run, cxt_p))
-    ERR("Couldn't create thread");
-
-  if (pthread_detach(tid))
-    ERR("Couldn't detach thread");
 }
 
 static void
@@ -1042,11 +1042,8 @@ static void noop_idle_cb(struct discord *a, const struct discord_user *b)
 { return; }
 static void noop_event_raw_cb(struct discord *a, enum discord_gateway_events b, struct sized_buffer *c, struct sized_buffer *d)
 { return; }
-static enum discord_event_handling_mode noop_blocking_event_handler(void *cxt)
-{
-  log_trace("noop_blocking_event_handler");
-  return EVENT_WILL_BE_HANDLED_IN_MAIN_THREAD;
-}
+static enum discord_event_handling_mode noop_blocking_event_handler(void *a)
+{ return EVENT_WILL_BE_HANDLED_IN_MAIN_THREAD; }
 
 void
 discord_gateway_init(struct discord_gateway *gw, struct logconf *config, struct sized_buffer *token)
