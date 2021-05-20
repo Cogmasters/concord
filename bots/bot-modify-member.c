@@ -9,14 +9,15 @@
 
 void 
 on_ready(struct discord *client, const struct discord_user *bot) {
-  fprintf(stderr, "\n\nChange-Nick-Bot succesfully connected to Discord as %s#%s!\n\n",
+  fprintf(stderr, "\n\nModify-Member-Bot succesfully connected to Discord as %s#%s!\n\n",
       bot->username, bot->discriminator);
 }
 
 void
-on_command(struct discord *client,
-           const struct discord_user *bot,
-           const struct discord_message *msg)
+on_member_nick(
+  struct discord *client,
+  const struct discord_user *bot,
+  const struct discord_message *msg)
 {
   char username[64]="", nick[64]="";
   sscanf(msg->content, "%s %s", username, nick);
@@ -57,6 +58,16 @@ on_command(struct discord *client,
   discord_guild_member_list_free(members);
 }
 
+void
+on_self_nick(
+  struct discord *client,
+  const struct discord_user *bot,
+  const struct discord_message *msg)
+{
+  if (msg->author->bot) return;
+  discord_modify_current_user(client, msg->content, NULL, NULL);
+}
+
 int main(int argc, char *argv[])
 {
   const char *config_file;
@@ -72,11 +83,14 @@ int main(int argc, char *argv[])
   struct discord *client = discord_config_init(config_file);
   assert(NULL != client && "Couldn't initialize client");
 
-  discord_set_on_command(client, "!nickChange", &on_command);
+  discord_set_on_ready(client, &on_ready);
+  discord_set_on_command(client, "!memberNick", &on_member_nick);
+  discord_set_on_command(client, "!selfNick", &on_self_nick);
 
   printf("\n\nThis demonstrates how easy it is to modify the"
          " nickname of some guild member.\n\n"
-         "1. Type !nickChange <user#1234> <nick>\n"
+         "1. Type !memberNick <user#1234> <nick>\n"
+         "2. Type !selfNick <nick>\n"
          "\nTYPE ANY KEY TO START BOT\n");
   fgetc(stdin); // wait for input
 

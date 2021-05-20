@@ -19,8 +19,10 @@ discord_get_user(struct discord *client, const u64_snowflake_t user_id, struct d
     return ORCA_MISSING_PARAMETER;
   }
 
-  struct ua_resp_handle resp_handle = \
-    { .ok_cb = &discord_user_from_json_v, .ok_obj = p_user};
+  struct ua_resp_handle resp_handle = { 
+    .ok_cb = &discord_user_from_json_v, 
+    .ok_obj = p_user
+  };
 
   return discord_adapter_run( 
     &client->adapter,
@@ -28,6 +30,38 @@ discord_get_user(struct discord *client, const u64_snowflake_t user_id, struct d
     NULL,
     HTTP_GET, 
     "/users/%"PRIu64, user_id);
+}
+
+ORCAcode
+discord_modify_current_user(struct discord *client, const char username[], const char avatar[], struct discord_user *p_user)
+{
+  struct ua_resp_handle resp_handle = { 
+    .ok_cb = p_user ? &discord_user_from_json_v : NULL, 
+    .ok_obj = p_user
+  };
+
+  char payload[MAX_PAYLOAD_LEN];
+  void *A[2]={}; // pointer availability array
+  if (!IS_EMPTY_STRING(username))
+    A[0] = (void*)username;
+  if (!IS_EMPTY_STRING(avatar))
+    A[1] = (void*)avatar;
+
+  size_t ret = json_inject(payload, sizeof(payload),
+                "(username):s"
+                "(avatar):s"
+                "@arg_switches",
+                username,
+                avatar,
+                A, sizeof(A));
+
+  struct sized_buffer req_body = { payload, ret };
+
+  return discord_adapter_run(&client->adapter,
+    &resp_handle,
+    &req_body,
+    HTTP_PATCH,
+    "/users/@me");
 }
 
 ORCAcode 
@@ -38,8 +72,10 @@ discord_get_current_user(struct discord *client, struct discord_user *p_user)
     return ORCA_MISSING_PARAMETER;
   }
 
-  struct ua_resp_handle resp_handle = \
-    { .ok_cb = &discord_user_from_json_v, .ok_obj = p_user};
+  struct ua_resp_handle resp_handle = { 
+    .ok_cb = &discord_user_from_json_v, 
+    .ok_obj = p_user
+  };
 
   return discord_adapter_run( 
     &client->adapter,
@@ -65,8 +101,10 @@ sb_discord_get_current_user(struct discord *client, struct sized_buffer *p_sb_us
     return ORCA_MISSING_PARAMETER;
   }
 
-  struct ua_resp_handle resp_handle = \
-    {.ok_cb = &json_to_sb, .ok_obj = p_sb_user};
+  struct ua_resp_handle resp_handle = {
+    .ok_cb = &json_to_sb, 
+    .ok_obj = p_sb_user
+  };
 
   return discord_adapter_run( 
     &client->adapter,
@@ -84,8 +122,10 @@ discord_get_current_user_guilds(struct discord *client, NTL_T(struct discord_gui
     return ORCA_MISSING_PARAMETER;
   }
 
-  struct ua_resp_handle resp_handle = \
-    { .ok_cb = &discord_guild_list_from_json_v, .ok_obj = p_guilds};
+  struct ua_resp_handle resp_handle = { 
+    .ok_cb = &discord_guild_list_from_json_v, 
+    .ok_obj = p_guilds
+  };
 
   return discord_adapter_run( 
     &client->adapter,

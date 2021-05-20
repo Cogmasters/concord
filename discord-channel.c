@@ -402,7 +402,7 @@ discord_edit_message(
 
   struct ua_resp_handle resp_handle = {
     .ok_cb = p_message ? &discord_message_from_json_v : NULL,
-    .ok_obj = p_message,
+    .ok_obj = p_message
   };
 
   char payload[MAX_PAYLOAD_LEN];
@@ -412,21 +412,21 @@ discord_edit_message(
   A[0] = params->content;
   A[1] = params->embed;
   A[2] = params->flags;
-  // A[3] = params->allowed_mentions;
+//A[3] = params->allowed_mentions;
 
-  json_inject(payload, sizeof(payload),
-    "(content):s"
-    "(embed):F"
-    "(flags):d"
-    //"(allowed_mentions):F"
-    "@arg_switches",
-    params->content,
-    &discord_embed_to_json, params->embed,
-    params->flags,
-    A, sizeof(A));
-    //&allowed_mentions_to_json, params->allowed_mentions);
+  size_t ret = json_inject(payload, sizeof(payload),
+                "(content):s"
+                "(embed):F"
+                "(flags):d"
+              //"(allowed_mentions):F"
+                "@arg_switches",
+                params->content,
+                &discord_embed_to_json, params->embed,
+                params->flags,
+              //&allowed_mentions_to_json, params->allowed_mentions,
+                A, sizeof(A));
 
-  struct sized_buffer req_body = { payload, strlen(payload) };
+  struct sized_buffer req_body = { payload, ret };
 
   return discord_adapter_run(&client->adapter,
     &resp_handle,
