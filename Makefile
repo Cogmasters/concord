@@ -165,8 +165,8 @@ actor-gen.exe: mkdir $(ACTOR_GEN_OBJS)
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBS_LDFLAGS) -lmujs -lsqlite3
 %.bz:%.c discord mujs 
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBS_LDFLAGS) 
-%.exe:%.c libdiscord
-	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBS_LDFLAGS)
+%.exe:%.c libdiscord mujs
+	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBS_LDFLAGS) -lmujs
 
 #API libraries compilation
 libdiscord: mkdir $(OBJS) $(SPECS_OBJS)
