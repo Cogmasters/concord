@@ -161,14 +161,15 @@ discord_create_dm(struct discord *client, const u64_snowflake_t recipient_id, st
     return ORCA_MISSING_PARAMETER;
   }
 
-  char payload[256]; // can safely assume the payload size to be small
-  size_t ret = json_inject(payload, sizeof(payload), \
-      "(recipient_id):s_as_u64", &recipient_id);
-
   struct ua_resp_handle resp_handle = {
     .ok_cb = p_dm_channel ? &discord_channel_from_json_v : NULL,
     .ok_obj = p_dm_channel
   };
+
+  char payload[256];
+  size_t ret = json_inject(payload, sizeof(payload), \
+      "(recipient_id):s_as_u64", &recipient_id);
+
   struct sized_buffer req_body = { payload, ret };
 
   return discord_adapter_run(

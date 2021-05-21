@@ -14,6 +14,10 @@ discord_get_channel(struct discord *client, const u64_snowflake_t channel_id, st
     log_error("Missing 'channel_id");
     return ORCA_MISSING_PARAMETER;
   }
+  if (!p_channel) {
+    log_error("Missing 'p_channel'");
+    return ORCA_MISSING_PARAMETER;
+  }
 
   struct ua_resp_handle resp_handle = { 
     .ok_cb = &discord_channel_from_json_v, 
@@ -114,6 +118,10 @@ discord_get_channel_messages(
     log_error("'limit' value should be in an interval of (1-100)");
     return ORCA_BAD_PARAMETER;
   }
+  if (!p_messages) {
+    log_error("Missing 'p_messages'");
+    return ORCA_MISSING_PARAMETER;
+  }
 
   char limit_query[64];
   snprintf(limit_query, sizeof(limit_query),
@@ -134,8 +142,10 @@ discord_get_channel_messages(
         "&after=%" PRIu64 , params->after);
   }
 
-  struct ua_resp_handle resp_handle = \
-    { .ok_cb = &discord_message_list_from_json_v, .ok_obj = p_messages };
+  struct ua_resp_handle resp_handle = { 
+    .ok_cb = &discord_message_list_from_json_v, 
+    .ok_obj = p_messages 
+  };
 
   return discord_adapter_run( 
     &client->adapter,
@@ -166,8 +176,10 @@ discord_get_channel_message(
     return ORCA_MISSING_PARAMETER;
   }
 
-  struct ua_resp_handle resp_handle = \
-    { .ok_cb = &discord_message_from_json_v, .ok_obj = p_message };
+  struct ua_resp_handle resp_handle = { 
+    .ok_cb = &discord_message_from_json_v, 
+    .ok_obj = p_message 
+  };
 
   return discord_adapter_run(
     &client->adapter,
@@ -209,28 +221,30 @@ ORCAcode discord_bulk_delete_messages(struct discord *client, u64_snowflake_t ch
   }
 
   size_t count = ntl_length_max((ntl_t)messages, 101);
-  if(count < 2 || count > 100)
-  {
+  if(count < 2 || count > 100) {
     log_error("Message count should be between 2 and 100");
     return ORCA_BAD_PARAMETER;
   }
 
   u64_unix_ms_t now = orka_timestamp_ms();
-  for(size_t i = 0; messages[i]; i++)
-  {
+  for(size_t i = 0; messages[i]; i++) {
     u64_unix_ms_t timestamp = (*messages[i] >> 22) + 1420070400000;
-    if(now > timestamp && now - timestamp > 1209600000)
-    {
+    if(now > timestamp && now - timestamp > 1209600000) {
       log_error("Messages should not be older than 2 weeks.");
       return ORCA_BAD_PARAMETER;
     }
   }
 
-  char *json=NULL;
-  size_t len = json_ainject(&json, "(messages):F", \
-    ja_u64_list_to_json, (NTL_T(ja_u64))messages);
+  char *payload=NULL;
+  size_t ret = json_ainject(&payload, "(messages):F", \
+                  ja_u64_list_to_json, (NTL_T(ja_u64))messages);
 
-  struct sized_buffer req_body = { json, len };
+  if (!payload) {
+    log_error("Couldn't create JSON Payload");
+    return ORCA_BAD_JSON;
+  }
+
+  struct sized_buffer req_body = { payload, ret };
 
   ORCAcode code;
   code = discord_adapter_run(
@@ -239,9 +253,42 @@ ORCAcode discord_bulk_delete_messages(struct discord *client, u64_snowflake_t ch
     &req_body,
     HTTP_POST,
     "/channels/%"PRIu64"/messages/bulk-delete", channel_id);
-  free(json);
 
-  return code;
+  free(payload);
+
+  return ret;
+}
+
+ORCAcode
+discord_edit_channel_permissions(
+  struct discord *client, 
+  const u64_snowflake_t channel_id, 
+  const u64_snowflake_t overwrite_id,
+  struct discord_edit_channel_permissions_params *params)
+{
+  if (!channel_id) {
+    log_error("Missing 'channel_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!overwrite_id) {
+    log_error("Missing 'overwrite_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!params) {
+    log_error("Missing 'params'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
+  char payload[MAX_PAYLOAD_LEN];
+  size_t ret = discord_edit_channel_permissions_params_to_json(payload, sizeof(payload), params);
+  struct sized_buffer req_body = { payload, ret };
+
+  return discord_adapter_run(
+    &client->adapter,
+    NULL,
+    &req_body,
+    HTTP_PUT,
+    "/channels/%"PRIu64"/permissions/%"PRIu64, channel_id, overwrite_id);
 }
 
 //@todo this is a temporary solution
@@ -303,14 +350,14 @@ discord_create_message(
         log_error("Missing 'content'");
         return ORCA_BAD_PARAMETER;
       }
-      if (strlen(params->content) >= MAX_MESSAGE_LEN) {
+      if (!orka_str_bounds_check(params->content, MAX_MESSAGE_LEN)) {
         log_error("Content length exceeds %d characters threshold (%zu)",
             MAX_MESSAGE_LEN, strlen(params->content));
         return ORCA_BAD_PARAMETER;
       }
     }
 
-    void *A[6] = {0}; // pointer availability array
+    void *A[6]={}; // pointer availability array
     if (params->content)
       A[0] = (void *)params->content;
     if (params->nonce)
@@ -352,7 +399,7 @@ discord_create_message(
       return ORCA_BAD_JSON;
     }
 
-    struct sized_buffer req_body = {payload, ret};
+    struct sized_buffer req_body = { payload, ret };
 
     code = discord_adapter_run( 
       &client->adapter,
@@ -373,7 +420,8 @@ discord_create_message(
       &client->adapter,
       &resp_handle,
       NULL,
-      HTTP_MIMEPOST, "/channels/%"PRIu64"/messages", channel_id);
+      HTTP_MIMEPOST, 
+      "/channels/%"PRIu64"/messages", channel_id);
 
     //set back to default
     ua_reqheader_add(client->adapter.ua, "Content-Type", "application/json");
@@ -564,20 +612,12 @@ discord_get_reactions(
     .ok_obj = p_users 
   };
 
-  char *pct_emoji_name = (emoji_name) 
-                  ? url_encode((char*)emoji_name)
-                  : NULL;
-
-  char emoji_endpoint[256];
-  if (emoji_id)
-    snprintf(emoji_endpoint, sizeof(emoji_endpoint), "%s:%"PRIu64, pct_emoji_name, emoji_id);
-  else
-    snprintf(emoji_endpoint, sizeof(emoji_endpoint), "%s", pct_emoji_name);
-
   char query[1024]="";
   if (params) {
-    if (params->limit < 0 || params->limit > 25)
-      params->limit = 25; /* default */
+    if (params->limit <= 0 || params->limit > 100) {
+      log_error("'params.limit' should be between [1-100]");
+      return ORCA_BAD_PARAMETER;
+    }
 
     int ret;
     if (params->after) {
@@ -594,6 +634,16 @@ discord_get_reactions(
     }
     ASSERT_S(ret < sizeof(query), "Out of bounds write attempt");
   }
+
+  char *pct_emoji_name = (emoji_name) 
+                  ? url_encode((char*)emoji_name)
+                  : NULL;
+
+  char emoji_endpoint[256];
+  if (emoji_id)
+    snprintf(emoji_endpoint, sizeof(emoji_endpoint), "%s:%"PRIu64, pct_emoji_name, emoji_id);
+  else
+    snprintf(emoji_endpoint, sizeof(emoji_endpoint), "%s", pct_emoji_name);
 
   ORCAcode code;
   code = discord_adapter_run(
@@ -698,16 +748,14 @@ discord_edit_message(
     .ok_obj = p_message
   };
 
-  char payload[MAX_PAYLOAD_LEN];
-
-  void *A[4] = {0}; // pointer availability array
-
+  void *A[4]={}; // pointer availability array
   A[0] = params->content;
   A[1] = params->embed;
   A[2] = params->flags;
 //A[3] = params->allowed_mentions;
 
-  size_t ret = json_inject(payload, sizeof(payload),
+  char *payload=NULL;
+  size_t ret = json_ainject(&payload, 
                 "(content):s"
                 "(embed):F"
                 "(flags):d"
@@ -719,6 +767,11 @@ discord_edit_message(
               //&allowed_mentions_to_json, params->allowed_mentions,
                 A, sizeof(A));
 
+  if (!payload) {
+    log_error("Couldn't create JSON Payload");
+    return ORCA_BAD_JSON;
+  }
+
   struct sized_buffer req_body = { payload, ret };
 
   return discord_adapter_run(&client->adapter,
@@ -726,6 +779,8 @@ discord_edit_message(
     &req_body,
     HTTP_PATCH,
     "/channels/%"PRIu64"/messages/%"PRIu64, channel_id, message_id);
+
+  free(payload);
 }
 
 ORCAcode

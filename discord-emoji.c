@@ -19,8 +19,10 @@ discord_list_guild_emojis(struct discord *client, const uint64_t guild_id, NTL_T
     return ORCA_MISSING_PARAMETER;
   }
 
-  struct ua_resp_handle resp_handle = \
-    { .ok_cb = &discord_emoji_list_from_json_v, .ok_obj = p_emojis};
+  struct ua_resp_handle resp_handle = { 
+    .ok_cb = &discord_emoji_list_from_json_v, 
+    .ok_obj = p_emojis
+  };
 
   return discord_adapter_run( 
     &client->adapter,

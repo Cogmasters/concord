@@ -7,7 +7,7 @@
 
 
 void on_ready(struct discord *client, const struct discord_user *bot) {
-  fprintf(stderr, "\n\nCreate-Channel-Bot succesfully connected to Discord as %s#%s!\n\n",
+  fprintf(stderr, "\n\nChannel-Bot succesfully connected to Discord as %s#%s!\n\n",
       bot->username, bot->discriminator);
 }
 
@@ -38,7 +38,7 @@ void on_channel_delete(
   discord_get_channel_at_pos(client, channel->guild_id, DISCORD_CHANNEL_GUILD_TEXT, 0, general);
 
   char text[256];
-  snprintf(text, sizeof(text), "Succesfully deleted `%s` channel", channel->name);
+  snprintf(text, sizeof(text), "Succesfully deleted '%s' channel", channel->name);
   struct discord_create_message_params params = { .content = text };
   discord_create_message(client, general->id, &params, NULL);
   discord_channel_free(general);
@@ -65,6 +65,16 @@ void on_delete(
   discord_delete_channel(client, msg->channel_id, NULL);
 }
 
+void on_edit_permissions(
+    struct discord *client,
+    const struct discord_user *bot,
+    const struct discord_message *msg)
+{
+  if (msg->author->bot) return;
+
+  discord_delete_channel(client, msg->channel_id, NULL);
+}
+
 int main(int argc, char *argv[])
 {
   const char *config_file;
@@ -80,16 +90,17 @@ int main(int argc, char *argv[])
 
   discord_set_on_ready(client, &on_ready);
 
-  discord_set_prefix(client, "!channel");
-  discord_set_on_command(client, "Create", &on_create);
-  discord_set_on_command(client, "DeleteHere", &on_delete);
+  discord_set_prefix(client, "channel.");
+  discord_set_on_command(client, "create", &on_create);
+  discord_set_on_command(client, "delete_here", &on_delete);
+  discord_set_on_command(client, "edit_permissions", &on_edit_permissions);
   discord_set_on_channel_create(client, &on_channel_create);
   discord_set_on_channel_update(client, &on_channel_update);
   discord_set_on_channel_delete(client, &on_channel_delete);
 
   printf("\n\nThis bot demonstrates how easy it is to create/delete channels\n"
-         "1. Type '!channelCreate <channel_name>' anywhere to create a new channel\n"
-         "2. (USE WITH CAUTION) Type '!channelDeleteHere' to delete the current channel\n"
+         "1. Type 'channel.create <channel_name>' anywhere to create a new channel\n"
+         "2. (USE WITH CAUTION) Type 'channel.delete_here' to delete the current channel\n"
          "\nTYPE ANY KEY TO START BOT\n");
   fgetc(stdin); // wait for input
 

@@ -29,6 +29,8 @@ void on_voice_regions(
     params.content = voice_regions[i]->name;
     discord_create_message(client, msg->channel_id, &params, NULL);
   }
+
+  discord_voice_region_list_free(voice_regions);
 }
 
 enum discord_event_handling_mode on_any_event(void *p_cxt) {

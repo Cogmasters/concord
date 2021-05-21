@@ -8,8 +8,10 @@
       "struct":"params",
       "fields":
       [
-        { "name": "allow", "type":{ "base":"char", "dec":"*"}},
-        { "name": "deny", "type":{ "base":"char", "dec":"*"}},
+        { "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"},
+          "comment":"permission bit set"},
+        { "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"},
+          "comment":"permission bit set"},
         { "name": "type", "type":{ "base":"int" }}
       ]
     }

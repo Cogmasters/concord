@@ -52,15 +52,14 @@ discord_create_guild_channel(
     return ORCA_BAD_PARAMETER;
   }
 
-  char payload[MAX_PAYLOAD_LEN];
-  discord_create_guild_channel_params_to_json(payload, sizeof(payload), params);
-
   struct ua_resp_handle resp_handle = {
     .ok_cb = p_channel ? &discord_channel_from_json_v : NULL,
     .ok_obj = p_channel,
   };
 
-  struct sized_buffer req_body = { payload, strlen(payload) };
+  char payload[MAX_PAYLOAD_LEN];
+  size_t ret = discord_create_guild_channel_params_to_json(payload, sizeof(payload), params);
+  struct sized_buffer req_body = { payload, ret };
 
   return discord_adapter_run( 
     &client->adapter,
@@ -218,15 +217,14 @@ discord_modify_guild_member(
     return ORCA_MISSING_PARAMETER;
   }
 
-  char payload[MAX_PAYLOAD_LEN];
-  discord_modify_guild_member_params_to_json(payload, sizeof(payload), params);
-
   struct ua_resp_handle resp_handle = {
     .ok_cb = p_member ? &discord_guild_member_from_json_v : NULL,
     .ok_obj = p_member,
   };
 
-  struct sized_buffer req_body = { payload, strlen(payload) };
+  char payload[MAX_PAYLOAD_LEN];
+  size_t ret = discord_modify_guild_member_params_to_json(payload, sizeof(payload), params);
+  struct sized_buffer req_body = { payload, ret };
 
   return discord_adapter_run( 
     &client->adapter,
@@ -305,7 +303,6 @@ discord_create_guild_ban(
   int delete_message_days, 
   const char reason[])
 {
-  const int MAX_DELETE_MESSAGE_DAYS = 7;
   if (!guild_id) {
     log_error("Missing 'guild_id'");
     return ORCA_MISSING_PARAMETER;
@@ -314,22 +311,22 @@ discord_create_guild_ban(
     log_error("Missing 'user_id'");
     return ORCA_MISSING_PARAMETER;
   }
-  if (reason && strlen(reason) > MAX_REASON_LEN) {
-    log_error("Reason length exceeds %u characters threshold (%zu)",
-        MAX_REASON_LEN, strlen(reason));
-    return ORCA_BAD_PARAMETER;
-  }
-  if (delete_message_days < 0 || delete_message_days > MAX_DELETE_MESSAGE_DAYS) {
-    log_error("'delete_message_days' is outside the interval (0, %d)",
-        MAX_DELETE_MESSAGE_DAYS);
+  if (delete_message_days < 0 || delete_message_days > 7) {
+    log_error("'delete_message_days' is outside the interval (0, 7)");
     return ORCA_BAD_PARAMETER;
   }
 
-  void *A[2] = {0}; // pointer availability array.
-  if (delete_message_days > 0)
-    A[0] = (void *)&delete_message_days;
-  if (!IS_EMPTY_STRING(reason))
+  void *A[2]={}; // pointer availability array.
+  A[0] = (void *)&delete_message_days;
+  if (!IS_EMPTY_STRING(reason)) {
+    if (!orka_str_bounds_check(reason, MAX_REASON_LEN)) {
+      log_error("Reason length exceeds %d characters threshold (%zu)",
+          MAX_REASON_LEN, strlen(reason));
+      return ORCA_BAD_PARAMETER;
+    }
     A[1] = (void *)reason;
+  }
+
 
   char payload[MAX_PAYLOAD_LEN];
   size_t ret = json_inject(payload, sizeof(payload),
@@ -393,23 +390,17 @@ discord_remove_guild_ban(
     log_error("Missing 'user_id'");
     return ORCA_MISSING_PARAMETER;
   }
-  if (!orka_str_bounds_check(reason, MAX_REASON_LEN)) {
-    log_error("Reason length exceeds %u characters threshold (%zu)",
-        MAX_REASON_LEN, strlen(reason));
-    return ORCA_BAD_PARAMETER;
+
+  char payload[MAX_PAYLOAD_LEN]="";
+  size_t ret=0;
+  if(!IS_EMPTY_STRING(reason)) {
+    if (!orka_str_bounds_check(reason, MAX_REASON_LEN)) {
+      log_error("Reason length exceeds %d characters threshold (%zu)",
+          MAX_REASON_LEN, strlen(reason));
+      return ORCA_BAD_PARAMETER;
+    }
+    ret = json_inject(payload, sizeof(payload), "(reason):s", reason);
   }
-
-  void *A[1] = {0}; // pointer availability array.
-  if(!IS_EMPTY_STRING(reason))
-    A[0] = (void *)reason;
-
-  char payload[MAX_PAYLOAD_LEN];
-  size_t ret = json_inject(payload, sizeof (payload),
-                        "(reason):s"
-                        "@arg_switches",
-                        reason,
-                        A, sizeof(A));
-
   struct sized_buffer req_body = { payload, ret };
 
   return discord_adapter_run( 
@@ -432,15 +423,14 @@ discord_create_guild_role(
     return ORCA_MISSING_PARAMETER;
   }
 
-  char payload[MAX_PAYLOAD_LEN];
-  discord_create_guild_role_params_to_json(payload, sizeof(payload), params);
-
   struct ua_resp_handle resp_handle = {
     .ok_cb = p_role ? &discord_guild_role_from_json_v : NULL,
     .ok_obj = p_role,
   };
 
-  struct sized_buffer req_body = { payload, strlen(payload) };
+  char payload[MAX_PAYLOAD_LEN];
+  size_t ret = discord_create_guild_role_params_to_json(payload, sizeof(payload), params);
+  struct sized_buffer req_body = { payload, ret };
 
   return discord_adapter_run( 
     &client->adapter,

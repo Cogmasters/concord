@@ -41,8 +41,10 @@ discord_get_gateway(struct discord *client, struct discord_session *p_session)
     return ORCA_MISSING_PARAMETER;
   }
 
-  struct ua_resp_handle resp_handle = \
-    { .ok_cb = &discord_session_from_json, .ok_obj = p_session };
+  struct ua_resp_handle resp_handle = { 
+    .ok_cb = &discord_session_from_json, 
+    .ok_obj = p_session 
+  };
 
   return discord_adapter_run( 
     &client->adapter,
@@ -60,8 +62,10 @@ discord_get_gateway_bot(struct discord *client, struct discord_session *p_sessio
     return ORCA_MISSING_PARAMETER;
   }
 
-  struct ua_resp_handle resp_handle = \
-    { .ok_cb = &discord_session_from_json, .ok_obj = p_session};
+  struct ua_resp_handle resp_handle = { 
+    .ok_cb = &discord_session_from_json, 
+    .ok_obj = p_session
+  };
 
   return discord_adapter_run( 
     &client->adapter,
