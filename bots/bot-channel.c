@@ -65,16 +65,6 @@ void on_delete(
   discord_delete_channel(client, msg->channel_id, NULL);
 }
 
-void on_edit_permissions(
-    struct discord *client,
-    const struct discord_user *bot,
-    const struct discord_message *msg)
-{
-  if (msg->author->bot) return;
-
-  discord_delete_channel(client, msg->channel_id, NULL);
-}
-
 int main(int argc, char *argv[])
 {
   const char *config_file;
@@ -93,14 +83,13 @@ int main(int argc, char *argv[])
   discord_set_prefix(client, "channel.");
   discord_set_on_command(client, "create", &on_create);
   discord_set_on_command(client, "delete_here", &on_delete);
-  discord_set_on_command(client, "edit_permissions", &on_edit_permissions);
   discord_set_on_channel_create(client, &on_channel_create);
   discord_set_on_channel_update(client, &on_channel_update);
   discord_set_on_channel_delete(client, &on_channel_delete);
 
-  printf("\n\nThis bot demonstrates how easy it is to create/delete channels\n"
+  printf("\n\(USE WITH CAUTION) nThis bot demonstrates how easy it is to create/delete channels\n"
          "1. Type 'channel.create <channel_name>' anywhere to create a new channel\n"
-         "2. (USE WITH CAUTION) Type 'channel.delete_here' to delete the current channel\n"
+         "2. Type 'channel.delete_here' to delete the current channel\n"
          "\nTYPE ANY KEY TO START BOT\n");
   fgetc(stdin); // wait for input
 
