@@ -55,7 +55,7 @@ void on_create(
   discord_create_guild_channel(client, msg->guild_id, &params, NULL);
 }
 
-void on_delete(
+void on_delete_here(
     struct discord *client,
     const struct discord_user *bot,
     const struct discord_message *msg)
@@ -63,6 +63,26 @@ void on_delete(
   if (msg->author->bot) return;
 
   discord_delete_channel(client, msg->channel_id, NULL);
+}
+
+void on_get_invites(
+    struct discord *client,
+    const struct discord_user *bot,
+    const struct discord_message *msg)
+{
+  if (msg->author->bot) return;
+
+  NTL_T(struct discord_invite) invites=NULL;
+  discord_get_channel_invites(client, msg->channel_id, &invites);
+
+  char text[MAX_MESSAGE_LEN];
+  snprintf(text, sizeof(text), "%zu invite links created.", ntl_length((ntl_t)invites));
+  struct discord_create_message_params params = { .content = text };
+  discord_create_message(client, msg->channel_id, &params, NULL);
+
+  if (invites) {
+    discord_invite_list_free(invites);
+  }
 }
 
 int main(int argc, char *argv[])
@@ -82,7 +102,8 @@ int main(int argc, char *argv[])
 
   discord_set_prefix(client, "channel.");
   discord_set_on_command(client, "create", &on_create);
-  discord_set_on_command(client, "delete_here", &on_delete);
+  discord_set_on_command(client, "delete_here", &on_delete_here);
+  discord_set_on_command(client, "get_invites", &on_get_invites);
   discord_set_on_channel_create(client, &on_channel_create);
   discord_set_on_channel_update(client, &on_channel_update);
   discord_set_on_channel_delete(client, &on_channel_delete);
@@ -90,6 +111,7 @@ int main(int argc, char *argv[])
   printf("\n\(USE WITH CAUTION) nThis bot demonstrates how easy it is to create/delete channels\n"
          "1. Type 'channel.create <channel_name>' anywhere to create a new channel\n"
          "2. Type 'channel.delete_here' to delete the current channel\n"
+         "3. Type 'channel.get_invites' to check how many have been created\n"
          "\nTYPE ANY KEY TO START BOT\n");
   fgetc(stdin); // wait for input
 

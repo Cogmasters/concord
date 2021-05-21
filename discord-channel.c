@@ -291,6 +291,34 @@ discord_edit_channel_permissions(
     "/channels/%"PRIu64"/permissions/%"PRIu64, channel_id, overwrite_id);
 }
 
+ORCAcode
+discord_get_channel_invites(
+  struct discord *client, 
+  const u64_snowflake_t channel_id, 
+  NTL_T(struct discord_invite) *p_invites)
+{
+  if (!channel_id) {
+    log_error("Missing 'channel_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!p_invites) {
+    log_error("Missing 'p_invites'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
+  struct ua_resp_handle resp_handle = {
+    .ok_cb = &discord_invite_list_from_json_v,
+    .ok_obj = p_invites
+  };
+
+  return discord_adapter_run(
+          &client->adapter,
+          &resp_handle,
+          NULL,
+          HTTP_GET,
+          "/channels/%"PRIu64"/invites", channel_id);
+}
+
 //@todo this is a temporary solution
 static curl_mime*
 curl_mime_cb(CURL *ehandle, void *data) 
