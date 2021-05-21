@@ -138,6 +138,7 @@ test: cee_utils common discord slack github reddit $(TEST_EXES)
 
 mkdir :
 	mkdir -p $(OBJDIR)/cee-utils
+	mkdir -p $(ACTOR_OBJDIR)/cee-utils
 	mkdir -p $(ACTOR_OBJDIR)/common/third-party  $(ACTOR_OBJDIR)/specs
 	mkdir -p $(OBJDIR)/common/third-party $(LIBDIR)
 	mkdir -p $(addprefix $(SPECSDIR)/, $(SPECS_SUBDIR)) $(addprefix $(OBJDIR)/$(SPECSDIR)/, $(SPECS_SUBDIR))
