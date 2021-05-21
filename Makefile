@@ -30,7 +30,7 @@ ACTOR_GEN_SRC = cee-utils/orka-utils.c 	\
 				cee-utils/json-struct.c 	\
 				cee-utils/json-printf.c 	\
 				cee-utils/log.c \
-				cee-utils/specs-gen.c
+				specs/specs-gen.c
 
 ACTOR_GEN_OBJS := $(ACTOR_GEN_SRC:%=$(ACTOR_OBJDIR)/%.o)
 
