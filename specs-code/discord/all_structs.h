@@ -547,16 +547,18 @@ struct discord_create_channel_invite_params {
 /* This is defined at specs/discord/channel.edit-channel-permissions.json:8:22 */
 struct discord_edit_channel_permissions_params {
   /* specs/discord/channel.edit-channel-permissions.json:11:20
-     '{ "name": "allow", "type":{ "base":"char", "dec":"*"}}'
+     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"},
+          "comment":"permission bit set"}'
   */
-  char *allow;
-
-  /* specs/discord/channel.edit-channel-permissions.json:12:20
-     '{ "name": "deny", "type":{ "base":"char", "dec":"*"}}'
-  */
-  char *deny;
+  enum discord_permissions_bitwise_flags allow; // permission bit set
 
   /* specs/discord/channel.edit-channel-permissions.json:13:20
+     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"},
+          "comment":"permission bit set"}'
+  */
+  enum discord_permissions_bitwise_flags deny; // permission bit set
+
+  /* specs/discord/channel.edit-channel-permissions.json:15:20
      '{ "name": "type", "type":{ "base":"int" }}'
   */
   int type;

@@ -10,14 +10,16 @@ void discord_edit_channel_permissions_params_from_json(char *json, size_t len, s
   size_t r=0;
   r=json_extract(json, len, 
   /* specs/discord/channel.edit-channel-permissions.json:11:20
-     '{ "name": "allow", "type":{ "base":"char", "dec":"*"}}'
+     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"},
+          "comment":"permission bit set"}'
   */
-                "(allow):?s,"
-  /* specs/discord/channel.edit-channel-permissions.json:12:20
-     '{ "name": "deny", "type":{ "base":"char", "dec":"*"}}'
-  */
-                "(deny):?s,"
+                "(allow):s_as_hex_uint,"
   /* specs/discord/channel.edit-channel-permissions.json:13:20
+     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"},
+          "comment":"permission bit set"}'
+  */
+                "(deny):s_as_hex_uint,"
+  /* specs/discord/channel.edit-channel-permissions.json:15:20
      '{ "name": "type", "type":{ "base":"int" }}'
   */
                 "(type):d,"
@@ -25,14 +27,16 @@ void discord_edit_channel_permissions_params_from_json(char *json, size_t len, s
                 "@record_defined"
                 "@record_null",
   /* specs/discord/channel.edit-channel-permissions.json:11:20
-     '{ "name": "allow", "type":{ "base":"char", "dec":"*"}}'
+     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"},
+          "comment":"permission bit set"}'
   */
                 &p->allow,
-  /* specs/discord/channel.edit-channel-permissions.json:12:20
-     '{ "name": "deny", "type":{ "base":"char", "dec":"*"}}'
+  /* specs/discord/channel.edit-channel-permissions.json:13:20
+     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"},
+          "comment":"permission bit set"}'
   */
                 &p->deny,
-  /* specs/discord/channel.edit-channel-permissions.json:13:20
+  /* specs/discord/channel.edit-channel-permissions.json:15:20
      '{ "name": "type", "type":{ "base":"int" }}'
   */
                 &p->type,
@@ -46,16 +50,18 @@ static void discord_edit_channel_permissions_params_use_default_inject_settings(
 {
   p->__M.enable_arg_switches = true;
   /* specs/discord/channel.edit-channel-permissions.json:11:20
-     '{ "name": "allow", "type":{ "base":"char", "dec":"*"}}'
+     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"},
+          "comment":"permission bit set"}'
   */
-  p->__M.arg_switches[0] = p->allow;
-
-  /* specs/discord/channel.edit-channel-permissions.json:12:20
-     '{ "name": "deny", "type":{ "base":"char", "dec":"*"}}'
-  */
-  p->__M.arg_switches[1] = p->deny;
+  p->__M.arg_switches[0] = &p->allow;
 
   /* specs/discord/channel.edit-channel-permissions.json:13:20
+     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"},
+          "comment":"permission bit set"}'
+  */
+  p->__M.arg_switches[1] = &p->deny;
+
+  /* specs/discord/channel.edit-channel-permissions.json:15:20
      '{ "name": "type", "type":{ "base":"int" }}'
   */
   p->__M.arg_switches[2] = &p->type;
@@ -68,27 +74,31 @@ size_t discord_edit_channel_permissions_params_to_json(char *json, size_t len, s
   discord_edit_channel_permissions_params_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/discord/channel.edit-channel-permissions.json:11:20
-     '{ "name": "allow", "type":{ "base":"char", "dec":"*"}}'
+     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"},
+          "comment":"permission bit set"}'
   */
-                "(allow):s,"
-  /* specs/discord/channel.edit-channel-permissions.json:12:20
-     '{ "name": "deny", "type":{ "base":"char", "dec":"*"}}'
-  */
-                "(deny):s,"
+                "(allow):s_as_hex_uint,"
   /* specs/discord/channel.edit-channel-permissions.json:13:20
+     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"},
+          "comment":"permission bit set"}'
+  */
+                "(deny):s_as_hex_uint,"
+  /* specs/discord/channel.edit-channel-permissions.json:15:20
      '{ "name": "type", "type":{ "base":"int" }}'
   */
                 "(type):d,"
                 "@arg_switches:b",
   /* specs/discord/channel.edit-channel-permissions.json:11:20
-     '{ "name": "allow", "type":{ "base":"char", "dec":"*"}}'
+     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"},
+          "comment":"permission bit set"}'
   */
-                p->allow,
-  /* specs/discord/channel.edit-channel-permissions.json:12:20
-     '{ "name": "deny", "type":{ "base":"char", "dec":"*"}}'
-  */
-                p->deny,
+                &p->allow,
   /* specs/discord/channel.edit-channel-permissions.json:13:20
+     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"},
+          "comment":"permission bit set"}'
+  */
+                &p->deny,
+  /* specs/discord/channel.edit-channel-permissions.json:15:20
      '{ "name": "type", "type":{ "base":"int" }}'
   */
                 &p->type,
@@ -135,16 +145,16 @@ size_t discord_edit_channel_permissions_params_list_to_json_v(char *str, size_t 
 
 void discord_edit_channel_permissions_params_cleanup(struct discord_edit_channel_permissions_params *d) {
   /* specs/discord/channel.edit-channel-permissions.json:11:20
-     '{ "name": "allow", "type":{ "base":"char", "dec":"*"}}'
+     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"},
+          "comment":"permission bit set"}'
   */
-  if (d->allow)
-    free(d->allow);
-  /* specs/discord/channel.edit-channel-permissions.json:12:20
-     '{ "name": "deny", "type":{ "base":"char", "dec":"*"}}'
-  */
-  if (d->deny)
-    free(d->deny);
+  //p->allow is a scalar
   /* specs/discord/channel.edit-channel-permissions.json:13:20
+     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"},
+          "comment":"permission bit set"}'
+  */
+  //p->deny is a scalar
+  /* specs/discord/channel.edit-channel-permissions.json:15:20
      '{ "name": "type", "type":{ "base":"int" }}'
   */
   //p->type is a scalar
@@ -153,14 +163,16 @@ void discord_edit_channel_permissions_params_cleanup(struct discord_edit_channel
 void discord_edit_channel_permissions_params_init(struct discord_edit_channel_permissions_params *p) {
   memset(p, 0, sizeof(struct discord_edit_channel_permissions_params));
   /* specs/discord/channel.edit-channel-permissions.json:11:20
-     '{ "name": "allow", "type":{ "base":"char", "dec":"*"}}'
-  */
-
-  /* specs/discord/channel.edit-channel-permissions.json:12:20
-     '{ "name": "deny", "type":{ "base":"char", "dec":"*"}}'
+     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"},
+          "comment":"permission bit set"}'
   */
 
   /* specs/discord/channel.edit-channel-permissions.json:13:20
+     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"},
+          "comment":"permission bit set"}'
+  */
+
+  /* specs/discord/channel.edit-channel-permissions.json:15:20
      '{ "name": "type", "type":{ "base":"int" }}'
   */
 
