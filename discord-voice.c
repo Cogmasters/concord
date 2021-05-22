@@ -20,9 +20,9 @@ discord_list_voice_regions(struct discord *client, NTL_T(struct discord_voice_re
   };
 
   return discord_adapter_run(
-    &client->adapter,
-    &resp_handle,
-    NULL,
-    HTTP_GET,
-    "/voice/regions");
+           &client->adapter,
+           &resp_handle,
+           NULL,
+           HTTP_GET,
+           "/voice/regions");
 }

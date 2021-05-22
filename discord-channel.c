@@ -25,11 +25,11 @@ discord_get_channel(struct discord *client, const u64_snowflake_t channel_id, st
   };
 
   return discord_adapter_run(
-    &client->adapter,
-    &resp_handle,
-    NULL,
-    HTTP_GET,
-    "/channels/%"PRIu64, channel_id);
+           &client->adapter,
+           &resp_handle,
+           NULL,
+           HTTP_GET,
+           "/channels/%"PRIu64, channel_id);
 }
 
 ORCAcode
@@ -46,11 +46,11 @@ discord_delete_channel(struct discord *client, const u64_snowflake_t channel_id,
   };
 
   return discord_adapter_run( 
-    &client->adapter,
-    &resp_handle,
-    NULL,
-    HTTP_DELETE,
-    "/channels/%"PRIu64, channel_id);
+           &client->adapter,
+           &resp_handle,
+           NULL,
+           HTTP_DELETE,
+           "/channels/%"PRIu64, channel_id);
 }
 
 ORCAcode
@@ -74,11 +74,11 @@ discord_get_pinned_messages(
   };
 
   return discord_adapter_run( 
-    &client->adapter,
-    &resp_handle,
-    NULL,
-    HTTP_GET, 
-    "/channels/%"PRIu64"/pins", channel_id);
+           &client->adapter,
+           &resp_handle,
+           NULL,
+           HTTP_GET, 
+           "/channels/%"PRIu64"/pins", channel_id);
 }
 
 ORCAcode
@@ -97,11 +97,11 @@ discord_add_pinned_channel_message(
   }
 
   return discord_adapter_run( 
-    &client->adapter,
-    NULL,
-    NULL,
-    HTTP_PUT, 
-    "/channels/%"PRIu64"/pins/%"PRIu64, channel_id, message_id);
+           &client->adapter,
+           NULL,
+           NULL,
+           HTTP_PUT, 
+           "/channels/%"PRIu64"/pins/%"PRIu64, channel_id, message_id);
 }
 
 ORCAcode
@@ -120,11 +120,11 @@ discord_delete_pinned_channel_message(
   }
 
   return discord_adapter_run( 
-    &client->adapter,
-    NULL,
-    NULL,
-    HTTP_DELETE,
-    "/channels/%"PRIu64"/pins/%"PRIu64, channel_id, message_id);
+           &client->adapter,
+           NULL,
+           NULL,
+           HTTP_DELETE,
+           "/channels/%"PRIu64"/pins/%"PRIu64, channel_id, message_id);
 }
 
 ORCAcode
@@ -176,12 +176,12 @@ discord_get_channel_messages(
   };
 
   return discord_adapter_run( 
-    &client->adapter,
-    &resp_handle,
-    NULL,
-    HTTP_GET, 
-    "/channels/%"PRIu64"/messages%s%s%s", 
-    channel_id, limit_query, around_query, before_query, after_query);
+           &client->adapter,
+           &resp_handle,
+           NULL,
+           HTTP_GET, 
+           "/channels/%"PRIu64"/messages%s%s%s", 
+           channel_id, limit_query, around_query, before_query, after_query);
 }
 
 ORCAcode
@@ -210,11 +210,11 @@ discord_get_channel_message(
   };
 
   return discord_adapter_run(
-    &client->adapter,
-    &resp_handle,
-    NULL,
-    HTTP_GET,
-    "/channels/%"PRIu64"/messages/%"PRIu64, channel_id, message_id);
+           &client->adapter,
+           &resp_handle,
+           NULL,
+           HTTP_GET,
+           "/channels/%"PRIu64"/messages/%"PRIu64, channel_id, message_id);
 }
 
 ORCAcode
@@ -233,11 +233,11 @@ discord_delete_message(
   }
 
   return discord_adapter_run(
-    &client->adapter,
-    NULL,
-    NULL,
-    HTTP_DELETE,
-    "/channels/%"PRIu64"/messages/%"PRIu64, channel_id, message_id);
+           &client->adapter,
+           NULL,
+           NULL,
+           HTTP_DELETE,
+           "/channels/%"PRIu64"/messages/%"PRIu64, channel_id, message_id);
 }
 
 /// @todo add duplicated ID verification
@@ -276,11 +276,11 @@ ORCAcode discord_bulk_delete_messages(struct discord *client, u64_snowflake_t ch
 
   ORCAcode code;
   code = discord_adapter_run(
-    &client->adapter,
-    NULL,
-    &req_body,
-    HTTP_POST,
-    "/channels/%"PRIu64"/messages/bulk-delete", channel_id);
+           &client->adapter,
+           NULL,
+           &req_body,
+           HTTP_POST,
+           "/channels/%"PRIu64"/messages/bulk-delete", channel_id);
 
   free(payload);
 
@@ -312,11 +312,12 @@ discord_edit_channel_permissions(
   struct sized_buffer req_body = { payload, ret };
 
   return discord_adapter_run(
-    &client->adapter,
-    NULL,
-    &req_body,
-    HTTP_PUT,
-    "/channels/%"PRIu64"/permissions/%"PRIu64, channel_id, overwrite_id);
+           &client->adapter,
+           NULL,
+           &req_body,
+           HTTP_PUT,
+           "/channels/%"PRIu64"/permissions/%"PRIu64, 
+           channel_id, overwrite_id);
 }
 
 ORCAcode
@@ -340,11 +341,11 @@ discord_get_channel_invites(
   };
 
   return discord_adapter_run(
-          &client->adapter,
-          &resp_handle,
-          NULL,
-          HTTP_GET,
-          "/channels/%"PRIu64"/invites", channel_id);
+           &client->adapter,
+           &resp_handle,
+           NULL,
+           HTTP_GET,
+           "/channels/%"PRIu64"/invites", channel_id);
 }
 
 //@todo this is a temporary solution
@@ -458,11 +459,11 @@ discord_create_message(
     struct sized_buffer req_body = { payload, ret };
 
     code = discord_adapter_run( 
-      &client->adapter,
-      &resp_handle,
-      &req_body,
-      HTTP_POST, 
-      "/channels/%"PRIu64"/messages", channel_id);
+             &client->adapter,
+             &resp_handle,
+             &req_body,
+             HTTP_POST, 
+             "/channels/%"PRIu64"/messages", channel_id);
 
     free(payload);
   }
@@ -473,11 +474,11 @@ discord_create_message(
     ua_mime_setopt(client->adapter.ua, params, &curl_mime_cb);
 
     code = discord_adapter_run( 
-      &client->adapter,
-      &resp_handle,
-      NULL,
-      HTTP_MIMEPOST, 
-      "/channels/%"PRIu64"/messages", channel_id);
+             &client->adapter,
+             &resp_handle,
+             NULL,
+             HTTP_MIMEPOST, 
+             "/channels/%"PRIu64"/messages", channel_id);
 
     //set back to default
     ua_reqheader_add(client->adapter.ua, "Content-Type", "application/json");
@@ -507,12 +508,12 @@ discord_crosspost_message(
   };
 
   return discord_adapter_run(
-    &client->adapter,
-    &resp_handle,
-    NULL,
-    HTTP_POST,
-    "/channels/%"PRIu64"/messages/%"PRIu64"/crosspost", 
-    channel_id, message_id);
+           &client->adapter,
+           &resp_handle,
+           NULL,
+           HTTP_POST,
+           "/channels/%"PRIu64"/messages/%"PRIu64"/crosspost", 
+           channel_id, message_id);
 }
 
 ORCAcode 
@@ -544,12 +545,13 @@ discord_create_reaction(
 
   ORCAcode code;
   code = discord_adapter_run(
-    &client->adapter,
-    NULL,
-    NULL,
-    HTTP_PUT,
-    "/channels/%"PRIu64"/messages/%"PRIu64"/reactions/%s/@me", 
-    channel_id, message_id, emoji_endpoint);
+           &client->adapter,
+           NULL,
+           NULL,
+           HTTP_PUT,
+           "/channels/%"PRIu64"/messages/%"PRIu64"/reactions/%s/@me", 
+           channel_id, message_id, emoji_endpoint);
+
   free(pct_emoji_name);
 
   return code;
@@ -584,12 +586,13 @@ discord_delete_own_reaction(
 
   ORCAcode code;
   code = discord_adapter_run(
-          &client->adapter,
-          NULL,
-          NULL,
-          HTTP_DELETE,
-          "/channels/%"PRIu64"/messages/%"PRIu64"/reactions/%s/@me", 
-          channel_id, message_id, emoji_endpoint);
+           &client->adapter,
+           NULL,
+           NULL,
+           HTTP_DELETE,
+           "/channels/%"PRIu64"/messages/%"PRIu64"/reactions/%s/@me", 
+           channel_id, message_id, emoji_endpoint);
+
   free(pct_emoji_name);
 
   return code;
@@ -629,12 +632,13 @@ discord_delete_user_reaction(
 
   ORCAcode code;
   code = discord_adapter_run(
-          &client->adapter,
-          NULL,
-          NULL,
-          HTTP_DELETE,
-          "/channels/%"PRIu64"/messages/%"PRIu64"/reactions/%s/%"PRIu64, 
-          channel_id, message_id, emoji_endpoint, user_id);
+           &client->adapter,
+           NULL,
+           NULL,
+           HTTP_DELETE,
+           "/channels/%"PRIu64"/messages/%"PRIu64"/reactions/%s/%"PRIu64, 
+           channel_id, message_id, emoji_endpoint, user_id);
+
   free(pct_emoji_name);
 
   return code;
@@ -703,12 +707,13 @@ discord_get_reactions(
 
   ORCAcode code;
   code = discord_adapter_run(
-          &client->adapter,
-          &resp_handle,
-          NULL,
-          HTTP_GET,
-          "/channels/%"PRIu64"/messages/%"PRIu64"/reactions/%s%s", 
-          channel_id, message_id, emoji_endpoint, query);
+           &client->adapter,
+           &resp_handle,
+           NULL,
+           HTTP_GET,
+           "/channels/%"PRIu64"/messages/%"PRIu64"/reactions/%s%s", 
+           channel_id, message_id, emoji_endpoint, query);
+
   free(pct_emoji_name);
 
   return code;
@@ -730,12 +735,12 @@ discord_delete_all_reactions(
   }
 
   return discord_adapter_run(
-    &client->adapter,
-    NULL,
-    NULL,
-    HTTP_DELETE,
-    "/channels/%"PRIu64"/messages/%"PRIu64"/reactions", 
-    channel_id, message_id);
+           &client->adapter,
+           NULL,
+           NULL,
+           HTTP_DELETE,
+           "/channels/%"PRIu64"/messages/%"PRIu64"/reactions", 
+           channel_id, message_id);
 }
 
 ORCAcode 
@@ -767,12 +772,13 @@ discord_delete_all_reactions_for_emoji(
 
   ORCAcode code;
   code = discord_adapter_run(
-          &client->adapter,
-          NULL,
-          NULL,
-          HTTP_DELETE,
-          "/channels/%"PRIu64"/messages/%"PRIu64"/reactions/%s", 
-          channel_id, message_id, emoji_endpoint);
+           &client->adapter,
+           NULL,
+           NULL,
+           HTTP_DELETE,
+           "/channels/%"PRIu64"/messages/%"PRIu64"/reactions/%s", 
+           channel_id, message_id, emoji_endpoint);
+
   free(pct_emoji_name);
 
   return code;
@@ -830,13 +836,18 @@ discord_edit_message(
 
   struct sized_buffer req_body = { payload, ret };
 
-  return discord_adapter_run(&client->adapter,
-    &resp_handle,
-    &req_body,
-    HTTP_PATCH,
-    "/channels/%"PRIu64"/messages/%"PRIu64, channel_id, message_id);
+  ORCAcode code;
+  code = discord_adapter_run(
+           &client->adapter,
+           &resp_handle,
+           &req_body,
+           HTTP_PATCH,
+           "/channels/%"PRIu64"/messages/%"PRIu64, 
+           channel_id, message_id);
 
   free(payload);
+
+  return code;
 }
 
 ORCAcode
@@ -848,9 +859,9 @@ discord_trigger_typing_indicator(struct discord* client, u64_snowflake_t channel
   }
 
   return discord_adapter_run( 
-    &client->adapter,
-    NULL,
-    NULL,
-    HTTP_POST, 
-    "/channels/%"PRIu64"/typing", channel_id);
+           &client->adapter,
+           NULL,
+           NULL,
+           HTTP_POST, 
+           "/channels/%"PRIu64"/typing", channel_id);
 }

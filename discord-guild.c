@@ -25,11 +25,11 @@ discord_get_guild(struct discord *client, const u64_snowflake_t guild_id, struct
   };
 
   return discord_adapter_run( 
-    &client->adapter,
-    &resp_handle,
-    NULL,
-    HTTP_GET, 
-    "/guilds/%"PRIu64, guild_id);
+           &client->adapter,
+           &resp_handle,
+           NULL,
+           HTTP_GET, 
+           "/guilds/%"PRIu64, guild_id);
 }
 
 ORCAcode 
@@ -62,11 +62,11 @@ discord_create_guild_channel(
   struct sized_buffer req_body = { payload, ret };
 
   return discord_adapter_run( 
-    &client->adapter,
-    &resp_handle,
-    &req_body,
-    HTTP_POST, 
-    "/guilds/%"PRIu64"/channels", guild_id);
+           &client->adapter,
+           &resp_handle,
+           &req_body,
+           HTTP_POST, 
+           "/guilds/%"PRIu64"/channels", guild_id);
 }
 
 ORCAcode
@@ -90,11 +90,11 @@ discord_get_guild_channels(
   };
 
   return discord_adapter_run( 
-    &client->adapter,
-    &resp_handle,
-    NULL,
-    HTTP_GET, 
-    "/guilds/%"PRIu64"/channels", guild_id);
+           &client->adapter,
+           &resp_handle,
+           NULL,
+           HTTP_GET, 
+           "/guilds/%"PRIu64"/channels", guild_id);
 }
 
 ORCAcode 
@@ -119,11 +119,11 @@ discord_get_guild_member(struct discord *client, u64_snowflake_t guild_id, u64_s
   };
 
   return discord_adapter_run(
-    &client->adapter,
-    &resp_handle,
-    NULL,
-    HTTP_GET, 
-    "/guilds/%"PRIu64"/members/%"PRIu64, guild_id, user_id);
+           &client->adapter,
+           &resp_handle,
+           NULL,
+           HTTP_GET, 
+           "/guilds/%"PRIu64"/members/%"PRIu64, guild_id, user_id);
 }
 
 ORCAcode
@@ -166,11 +166,12 @@ discord_list_guild_members(
   };
   
   return discord_adapter_run( 
-    &client->adapter,
-    &resp_handle,
-    NULL,
-    HTTP_GET,
-    "/guilds/%"PRIu64"/members%s%s", guild_id, limit_query, after_query);
+           &client->adapter,
+           &resp_handle,
+           NULL,
+           HTTP_GET,
+           "/guilds/%"PRIu64"/members%s%s", 
+           guild_id, limit_query, after_query);
 }
 
 ORCAcode 
@@ -189,11 +190,11 @@ discord_remove_guild_member(
   }
 
   return discord_adapter_run(
-    &client->adapter,
-    NULL,
-    NULL,
-    HTTP_DELETE,
-    "/guilds/%"PRIu64"/members/%"PRIu64, guild_id, user_id);
+           &client->adapter,
+           NULL,
+           NULL,
+           HTTP_DELETE,
+           "/guilds/%"PRIu64"/members/%"PRIu64, guild_id, user_id);
 }
 
 ORCAcode 
@@ -227,11 +228,11 @@ discord_modify_guild_member(
   struct sized_buffer req_body = { payload, ret };
 
   return discord_adapter_run( 
-    &client->adapter,
-    &resp_handle,
-    &req_body,
-    HTTP_PATCH, 
-    "/guilds/%"PRIu64"/members/%"PRIu64, guild_id, user_id);
+           &client->adapter,
+           &resp_handle,
+           &req_body,
+           HTTP_PATCH, 
+           "/guilds/%"PRIu64"/members/%"PRIu64, guild_id, user_id);
 }
 
 ORCAcode
@@ -260,11 +261,11 @@ discord_get_guild_ban(
   };
 
   return discord_adapter_run( 
-    &client->adapter,
-    &resp_handle,
-    NULL,
-    HTTP_GET, 
-    "/guilds/%"PRIu64"/bans/%"PRIu64, guild_id, user_id);
+           &client->adapter,
+           &resp_handle,
+           NULL,
+           HTTP_GET, 
+           "/guilds/%"PRIu64"/bans/%"PRIu64, guild_id, user_id);
 }
 
 ORCAcode
@@ -288,11 +289,11 @@ discord_get_guild_bans(
   };
 
   return discord_adapter_run( 
-    &client->adapter,
-    &resp_handle,
-    NULL,
-    HTTP_GET, 
-    "/guilds/%"PRIu64"/bans", guild_id);
+           &client->adapter,
+           &resp_handle,
+           NULL,
+           HTTP_GET, 
+           "/guilds/%"PRIu64"/bans", guild_id);
 }
 
 ORCAcode
@@ -340,11 +341,11 @@ discord_create_guild_ban(
   struct sized_buffer req_body = { payload, ret };
 
   return discord_adapter_run( 
-    &client->adapter,
-    NULL,
-    &req_body,
-    HTTP_PUT, 
-    "/guilds/%"PRIu64"/bans/%"PRIu64, guild_id, user_id);
+           &client->adapter,
+           NULL,
+           &req_body,
+           HTTP_PUT, 
+           "/guilds/%"PRIu64"/bans/%"PRIu64, guild_id, user_id);
 }
 
 ORCAcode
@@ -368,11 +369,11 @@ discord_get_guild_roles(
   };
 
   return discord_adapter_run( 
-    &client->adapter,
-    &resp_handle,
-    NULL,
-    HTTP_GET, 
-    "/guilds/%"PRIu64"/roles", guild_id);
+           &client->adapter,
+           &resp_handle,
+           NULL,
+           HTTP_GET, 
+           "/guilds/%"PRIu64"/roles", guild_id);
 }
 
 ORCAcode
@@ -404,11 +405,11 @@ discord_remove_guild_ban(
   struct sized_buffer req_body = { payload, ret };
 
   return discord_adapter_run( 
-    &client->adapter,
-    NULL,
-    &req_body,
-    HTTP_DELETE, 
-    "/guilds/%"PRIu64"/bans/%"PRIu64, guild_id, user_id);
+           &client->adapter,
+           NULL,
+           &req_body,
+           HTTP_DELETE, 
+           "/guilds/%"PRIu64"/bans/%"PRIu64, guild_id, user_id);
 }
 
 ORCAcode 
@@ -433,11 +434,11 @@ discord_create_guild_role(
   struct sized_buffer req_body = { payload, ret };
 
   return discord_adapter_run( 
-    &client->adapter,
-    &resp_handle,
-    &req_body,
-    HTTP_POST, 
-    "/guilds/%"PRIu64"/roles", guild_id);
+           &client->adapter,
+           &resp_handle,
+           &req_body,
+           HTTP_POST, 
+           "/guilds/%"PRIu64"/roles", guild_id);
 }
 
 ORCAcode 
@@ -456,9 +457,9 @@ discord_delete_guild_role(
   }
 
   return discord_adapter_run(
-    &client->adapter,
-    NULL,
-    NULL,
-    HTTP_DELETE, 
-    "/guilds/%"PRIu64"/roles/%"PRIu64, guild_id, role_id);
+           &client->adapter,
+           NULL,
+           NULL,
+           HTTP_DELETE, 
+           "/guilds/%"PRIu64"/roles/%"PRIu64, guild_id, role_id);
 }

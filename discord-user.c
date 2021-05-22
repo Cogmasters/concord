@@ -25,11 +25,11 @@ discord_get_user(struct discord *client, const u64_snowflake_t user_id, struct d
   };
 
   return discord_adapter_run( 
-    &client->adapter,
-    &resp_handle,
-    NULL,
-    HTTP_GET, 
-    "/users/%"PRIu64, user_id);
+           &client->adapter,
+           &resp_handle,
+           NULL,
+           HTTP_GET, 
+           "/users/%"PRIu64, user_id);
 }
 
 ORCAcode
@@ -57,11 +57,12 @@ discord_modify_current_user(struct discord *client, const char username[], const
 
   struct sized_buffer req_body = { payload, ret };
 
-  return discord_adapter_run(&client->adapter,
-    &resp_handle,
-    &req_body,
-    HTTP_PATCH,
-    "/users/@me");
+  return discord_adapter_run(
+           &client->adapter,
+           &resp_handle,
+           &req_body,
+           HTTP_PATCH,
+           "/users/@me");
 }
 
 ORCAcode 
@@ -78,11 +79,11 @@ discord_get_current_user(struct discord *client, struct discord_user *p_user)
   };
 
   return discord_adapter_run( 
-    &client->adapter,
-    &resp_handle,
-    NULL,
-    HTTP_GET, 
-    "/users/@me");
+           &client->adapter,
+           &resp_handle,
+           NULL,
+           HTTP_GET, 
+           "/users/@me");
 }
 
 /* @todo this is a temporary solution for wrapping with JS */
@@ -107,11 +108,11 @@ sb_discord_get_current_user(struct discord *client, struct sized_buffer *p_sb_us
   };
 
   return discord_adapter_run( 
-    &client->adapter,
-    &resp_handle,
-    NULL,
-    HTTP_GET, 
-    "/users/@me");
+           &client->adapter,
+           &resp_handle,
+           NULL,
+           HTTP_GET, 
+           "/users/@me");
 }
 
 ORCAcode
@@ -128,11 +129,11 @@ discord_get_current_user_guilds(struct discord *client, NTL_T(struct discord_gui
   };
 
   return discord_adapter_run( 
-    &client->adapter,
-    &resp_handle,
-    NULL,
-    HTTP_GET,
-    "/users/@me/guilds");
+           &client->adapter,
+           &resp_handle,
+           NULL,
+           HTTP_GET,
+           "/users/@me/guilds");
 }
 
 ORCAcode 
@@ -146,11 +147,11 @@ discord_leave_guild(struct discord *client, const u64_snowflake_t guild_id)
   struct sized_buffer req_body = {"{}", 2};
 
   return discord_adapter_run(
-    &client->adapter,
-    NULL,
-    &req_body,
-    HTTP_DELETE,
-    "/users/@me/guilds/%"PRIu64, guild_id);
+           &client->adapter,
+           NULL,
+           &req_body,
+           HTTP_DELETE,
+           "/users/@me/guilds/%"PRIu64, guild_id);
 }
 
 ORCAcode 
@@ -173,9 +174,9 @@ discord_create_dm(struct discord *client, const u64_snowflake_t recipient_id, st
   struct sized_buffer req_body = { payload, ret };
 
   return discord_adapter_run(
-    &client->adapter,
-    &resp_handle,
-    &req_body,
-    HTTP_POST,
-    "/users/@me/channels");
+           &client->adapter,
+           &resp_handle,
+           &req_body,
+           HTTP_POST,
+           "/users/@me/channels");
 }

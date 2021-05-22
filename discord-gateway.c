@@ -47,11 +47,11 @@ discord_get_gateway(struct discord *client, struct discord_session *p_session)
   };
 
   return discord_adapter_run( 
-    &client->adapter,
-    &resp_handle,
-    NULL,
-    HTTP_GET,
-    "/gateway");
+           &client->adapter,
+           &resp_handle,
+           NULL,
+           HTTP_GET,
+           "/gateway");
 }
 
 ORCAcode
@@ -68,11 +68,11 @@ discord_get_gateway_bot(struct discord *client, struct discord_session *p_sessio
   };
 
   return discord_adapter_run( 
-    &client->adapter,
-    &resp_handle,
-    NULL,
-    HTTP_GET,
-    "/gateway/bot");
+           &client->adapter,
+           &resp_handle,
+           NULL,
+           HTTP_GET,
+           "/gateway/bot");
 }
 
 static char*
