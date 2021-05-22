@@ -284,7 +284,7 @@ ORCAcode discord_bulk_delete_messages(struct discord *client, u64_snowflake_t ch
 
   free(payload);
 
-  return ret;
+  return code;
 }
 
 ORCAcode
@@ -395,7 +395,7 @@ discord_create_message(
 
   struct ua_resp_handle resp_handle = {
     .ok_cb = p_message ? &discord_message_from_json_v : NULL,
-    .ok_obj = p_message,
+    .ok_obj = p_message
   };
 
   ORCAcode code;

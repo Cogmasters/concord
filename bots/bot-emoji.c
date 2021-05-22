@@ -103,7 +103,6 @@ int main(int argc, char *argv[])
   discord_set_on_command(client, "list", &on_list);
   discord_set_on_command(client, "get", &on_get);
 #if 0
-  discord_set_on_command(client, "create", &on_create);
   discord_set_on_command(client, "modify", &on_modify);
   discord_set_on_command(client, "delete", &on_delete);
 #endif

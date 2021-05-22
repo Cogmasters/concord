@@ -67,3 +67,51 @@ discord_get_guild_emoji(
     HTTP_GET,
     "/guilds/%"PRIu64"/emojis/%"PRIu64, guild_id, emoji_id);
 }
+
+ORCAcode
+discord_create_guild_emoji(
+  struct discord *client,
+  const u64_snowflake_t guild_id,
+  struct discord_create_guild_emoji_params *params,
+  struct discord_emoji *p_emoji)
+{
+  if (!guild_id) {
+    log_error("Missing 'guild_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!params) {
+    log_error("Missing 'params'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
+  struct ua_resp_handle resp_handle = {
+    .ok_cb = p_emoji ? &discord_emoji_from_json_v : NULL,
+    .ok_obj = p_emoji
+  };
+
+  char *payload=NULL;
+  size_t ret = json_ainject(&payload, 
+                  "(name):s,(image):s,(roles):F",
+                  params->name, 
+                  params->image, 
+                  &ja_u64_list_to_json, params->roles);
+
+  if (!payload) {
+    log_error("Couldn't create JSON Payload");
+    return ORCA_BAD_JSON;
+  }
+
+  struct sized_buffer req_body = { payload, ret };
+
+  ORCAcode code;
+  code = discord_adapter_run(
+    &client->adapter,
+    &resp_handle,
+    &req_body,
+    HTTP_POST,
+    "/guilds/%"PRIu64"/emojis", guild_id);
+
+  free(payload);
+
+  return code;
+}
