@@ -152,8 +152,8 @@ int main(int argc, char *argv[])
   discord_set_on_command(client, "delete_self", &on_delete_self);
   discord_set_on_command(client, "delete_user", &on_delete_user);
 
-  printf("\n\nThis bot demonstrates how easy it is to delete reactions"
-         " from a message.\n"
+  printf("\n\nThis bot demonstrates how easy it is to create/delete"
+         " reactions from a message.\n"
          "1. Reply to a message with 'reaction.get_users <emoji>' to get all the users who reacted with that particular emoji\n"
          "2. Reply to a message with 'reaction.create <emoji>' and the bot will react with that emoji\n"
          "3. Reply to a message with 'reaction.delete <emoji>' to delete all reactions with a particular emoji\n"
