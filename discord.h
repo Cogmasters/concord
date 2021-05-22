@@ -516,6 +516,7 @@ ORCAcode discord_trigger_typing_indicator(struct discord *client, const u64_snow
 
 // EMOJI ENDPOINTS
 ORCAcode discord_list_guild_emojis(struct discord *client, const u64_snowflake_t guild_id, NTL_T(struct discord_emoji) *p_emojis);
+ORCAcode discord_get_guild_emoji(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t emoji_id, struct discord_emoji *p_emoji);
 
 // GUILD ENDPOINTS
 ORCAcode discord_get_guild(struct discord *client, const u64_snowflake_t guild_id, struct discord_guild *p_guild);

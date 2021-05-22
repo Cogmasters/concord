@@ -85,7 +85,7 @@
 ### [Emoji Resource](https://discord.com/developers/docs/resources/emoji#emoji-resource)
 - [x] [Emoji Object](https://discord.com/developers/docs/resources/emoji#emoji-object)
 - [x] [List Guild Emojis](https://discord.com/developers/docs/resources/emoji#list-guild-emojis)
-- [ ] [Get Guild Emoji](https://discord.com/developers/docs/resources/emoji#get-guild-emoji)
+- [x] [Get Guild Emoji](https://discord.com/developers/docs/resources/emoji#get-guild-emoji)
 - [ ] [Create Guild Emoji](https://discord.com/developers/docs/resources/emoji#create-guild-emoji)
 - [ ] [Modify Guild Emoji](https://discord.com/developers/docs/resources/emoji#modify-guild-emoji)
 - [ ] [Delete Guild Emoji](https://discord.com/developers/docs/resources/emoji#delete-guild-emoji)

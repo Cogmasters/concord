@@ -108,7 +108,7 @@ int main(int argc, char *argv[])
   discord_set_on_channel_update(client, &on_channel_update);
   discord_set_on_channel_delete(client, &on_channel_delete);
 
-  printf("\n\(USE WITH CAUTION) nThis bot demonstrates how easy it is to create/delete channels\n"
+  printf("\n\n(USE WITH CAUTION) This bot demonstrates how easy it is to create/delete channels\n"
          "1. Type 'channel.create <channel_name>' anywhere to create a new channel\n"
          "2. Type 'channel.delete_here' to delete the current channel\n"
          "3. Type 'channel.get_invites' to check how many have been created\n"

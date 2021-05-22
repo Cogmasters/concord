@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <inttypes.h> /* SCNu64 */
+#include <inttypes.h> /* PRIu64, SCNu64 */
 #include <assert.h>
 
 #include "discord.h"
@@ -19,8 +19,7 @@ void on_pin(
   if (msg->author->bot) return;
 
   u64_snowflake_t msg_id=0;
-  if (*msg->content)
-    sscanf(msg->content, "%"SCNu64, &msg_id);
+  sscanf(msg->content, "%"SCNu64, &msg_id);
   if (!msg_id) {
     if (!msg->referenced_message) return;
     msg_id = msg->referenced_message->id;
@@ -37,8 +36,7 @@ void on_unpin(
   if (msg->author->bot) return;
 
   u64_snowflake_t msg_id=0;
-  if (*msg->content)
-    sscanf(msg->content, "%"SCNu64, &msg_id);
+  sscanf(msg->content, "%"SCNu64, &msg_id);
   if (!msg_id) {
     if (!msg->referenced_message) return;
     msg_id = msg->referenced_message->id;
