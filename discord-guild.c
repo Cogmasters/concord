@@ -32,6 +32,34 @@ discord_get_guild(struct discord *client, const u64_snowflake_t guild_id, struct
            "/guilds/%"PRIu64, guild_id);
 }
 
+ORCAcode
+discord_get_guild_channels(
+  struct discord *client, 
+  const u64_snowflake_t guild_id, 
+  NTL_T(struct discord_channel) *p_channels)
+{
+  if (!guild_id) {
+    log_error("Missing 'guild_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!p_channels) {
+    log_error("Missing 'p_channels'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
+  struct ua_resp_handle resp_handle = { 
+    .ok_cb = &discord_channel_list_from_json_v, 
+    .ok_obj = p_channels 
+  };
+
+  return discord_adapter_run( 
+           &client->adapter,
+           &resp_handle,
+           NULL,
+           HTTP_GET, 
+           "/guilds/%"PRIu64"/channels", guild_id);
+}
+
 ORCAcode 
 discord_create_guild_channel(
   struct discord *client, 
@@ -66,34 +94,6 @@ discord_create_guild_channel(
            &resp_handle,
            &req_body,
            HTTP_POST, 
-           "/guilds/%"PRIu64"/channels", guild_id);
-}
-
-ORCAcode
-discord_get_guild_channels(
-  struct discord *client, 
-  const u64_snowflake_t guild_id, 
-  NTL_T(struct discord_channel) *p_channels)
-{
-  if (!guild_id) {
-    log_error("Missing 'guild_id'");
-    return ORCA_MISSING_PARAMETER;
-  }
-  if (!p_channels) {
-    log_error("Missing 'p_channels'");
-    return ORCA_MISSING_PARAMETER;
-  }
-
-  struct ua_resp_handle resp_handle = { 
-    .ok_cb = &discord_channel_list_from_json_v, 
-    .ok_obj = p_channels 
-  };
-
-  return discord_adapter_run( 
-           &client->adapter,
-           &resp_handle,
-           NULL,
-           HTTP_GET, 
            "/guilds/%"PRIu64"/channels", guild_id);
 }
 
@@ -175,29 +175,6 @@ discord_list_guild_members(
 }
 
 ORCAcode 
-discord_remove_guild_member(
-  struct discord *client, 
-  const u64_snowflake_t guild_id, 
-  const u64_snowflake_t user_id)
-{
-  if (!guild_id) {
-    log_error("Missing 'guild_id'");
-    return ORCA_MISSING_PARAMETER;
-  }
-  if (!user_id) {
-    log_error("Missing 'user_id'");
-    return ORCA_MISSING_PARAMETER;
-  }
-
-  return discord_adapter_run(
-           &client->adapter,
-           NULL,
-           NULL,
-           HTTP_DELETE,
-           "/guilds/%"PRIu64"/members/%"PRIu64, guild_id, user_id);
-}
-
-ORCAcode 
 discord_modify_guild_member(
   struct discord *client, 
   const u64_snowflake_t guild_id, 
@@ -251,6 +228,57 @@ discord_modify_guild_member(
            "/guilds/%"PRIu64"/members/%"PRIu64, guild_id, user_id);
 }
 
+ORCAcode 
+discord_remove_guild_member(
+  struct discord *client, 
+  const u64_snowflake_t guild_id, 
+  const u64_snowflake_t user_id)
+{
+  if (!guild_id) {
+    log_error("Missing 'guild_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!user_id) {
+    log_error("Missing 'user_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
+  return discord_adapter_run(
+           &client->adapter,
+           NULL,
+           NULL,
+           HTTP_DELETE,
+           "/guilds/%"PRIu64"/members/%"PRIu64, guild_id, user_id);
+}
+
+ORCAcode
+discord_get_guild_bans(
+  struct discord *client, 
+  const u64_snowflake_t guild_id, 
+  NTL_T(struct discord_guild_ban) *p_bans)
+{
+  if (!guild_id) {
+    log_error("Missing 'guild_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!p_bans) {
+    log_error("Missing 'p_bans'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
+  struct ua_resp_handle resp_handle = { 
+    .ok_cb = &discord_guild_ban_list_from_json_v, 
+    .ok_obj = p_bans 
+  };
+
+  return discord_adapter_run( 
+           &client->adapter,
+           &resp_handle,
+           NULL,
+           HTTP_GET, 
+           "/guilds/%"PRIu64"/bans", guild_id);
+}
+
 ORCAcode
 discord_get_guild_ban(
   struct discord *client, 
@@ -282,34 +310,6 @@ discord_get_guild_ban(
            NULL,
            HTTP_GET, 
            "/guilds/%"PRIu64"/bans/%"PRIu64, guild_id, user_id);
-}
-
-ORCAcode
-discord_get_guild_bans(
-  struct discord *client, 
-  const u64_snowflake_t guild_id, 
-  NTL_T(struct discord_guild_ban) *p_bans)
-{
-  if (!guild_id) {
-    log_error("Missing 'guild_id'");
-    return ORCA_MISSING_PARAMETER;
-  }
-  if (!p_bans) {
-    log_error("Missing 'p_bans'");
-    return ORCA_MISSING_PARAMETER;
-  }
-
-  struct ua_resp_handle resp_handle = { 
-    .ok_cb = &discord_guild_ban_list_from_json_v, 
-    .ok_obj = p_bans 
-  };
-
-  return discord_adapter_run( 
-           &client->adapter,
-           &resp_handle,
-           NULL,
-           HTTP_GET, 
-           "/guilds/%"PRIu64"/bans", guild_id);
 }
 
 ORCAcode
@@ -363,35 +363,6 @@ discord_create_guild_ban(
            HTTP_PUT, 
            "/guilds/%"PRIu64"/bans/%"PRIu64, guild_id, user_id);
 }
-
-ORCAcode
-discord_get_guild_roles(
-  struct discord *client, 
-  const u64_snowflake_t guild_id, 
-  NTL_T(struct discord_guild_role) *p_roles)
-{
-  if (!guild_id) {
-    log_error("Missing 'guild_id'");
-    return ORCA_MISSING_PARAMETER;
-  }
-  if (!p_roles) {
-    log_error("Missing 'p_roles'");
-    return ORCA_MISSING_PARAMETER;
-  }
-
-  struct ua_resp_handle resp_handle = { 
-    .ok_cb = &discord_guild_role_list_from_json_v, 
-    .ok_obj = p_roles 
-  };
-
-  return discord_adapter_run( 
-           &client->adapter,
-           &resp_handle,
-           NULL,
-           HTTP_GET, 
-           "/guilds/%"PRIu64"/roles", guild_id);
-}
-
 ORCAcode
 discord_remove_guild_ban(
   struct discord *client, 
@@ -426,6 +397,34 @@ discord_remove_guild_ban(
            &req_body,
            HTTP_DELETE, 
            "/guilds/%"PRIu64"/bans/%"PRIu64, guild_id, user_id);
+}
+
+ORCAcode
+discord_get_guild_roles(
+  struct discord *client, 
+  const u64_snowflake_t guild_id, 
+  NTL_T(struct discord_guild_role) *p_roles)
+{
+  if (!guild_id) {
+    log_error("Missing 'guild_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!p_roles) {
+    log_error("Missing 'p_roles'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
+  struct ua_resp_handle resp_handle = { 
+    .ok_cb = &discord_guild_role_list_from_json_v, 
+    .ok_obj = p_roles 
+  };
+
+  return discord_adapter_run( 
+           &client->adapter,
+           &resp_handle,
+           NULL,
+           HTTP_GET, 
+           "/guilds/%"PRIu64"/roles", guild_id);
 }
 
 ORCAcode 
