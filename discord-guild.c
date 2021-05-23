@@ -157,7 +157,7 @@ discord_list_guild_members(
   char after_query[64] = "";
   if (params->after) {
     snprintf(after_query, sizeof(after_query),
-        "&after=%" PRIu64 , params->after);
+        "&after=%"PRIu64, params->after);
   }
 
   struct ua_resp_handle resp_handle = { 
@@ -201,22 +201,7 @@ discord_modify_guild_member(
   };
 
   char payload[MAX_PAYLOAD_LEN];
-  size_t ret;
-  if (!params->channel_id)
-    ret = json_inject(payload, sizeof(payload), 
-                  "(nick):s,"
-                  "(roles):F,"
-                  "(mute):b,"
-                  "(deaf):b,"
-                  "(channel_id):null,"
-                  "@arg_switches:b",
-                  params->nick,
-                  ja_u64_list_to_json, params->roles,
-                  &params->mute,
-                  &params->deaf,
-                  params->__M.arg_switches, sizeof(params->__M.arg_switches), params->__M.enable_arg_switches);
-  else
-    ret = discord_modify_guild_member_params_to_json(payload, sizeof(payload), params);
+  size_t ret = discord_modify_guild_member_params_to_json(payload, sizeof(payload), params);
 
   struct sized_buffer req_body = { payload, ret };
 
@@ -226,6 +211,64 @@ discord_modify_guild_member(
            &req_body,
            HTTP_PATCH, 
            "/guilds/%"PRIu64"/members/%"PRIu64, guild_id, user_id);
+}
+
+ORCAcode
+discord_add_guild_member_role(
+  struct discord *client,
+  const u64_snowflake_t guild_id,
+  const u64_snowflake_t user_id,
+  const u64_snowflake_t role_id)
+{
+  if (!guild_id) {
+    log_error("Missing 'guild_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!user_id) {
+    log_error("Missing 'user_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!role_id) {
+    log_error("Missing 'role_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
+  return discord_adapter_run(
+           &client->adapter,
+           NULL,
+           NULL,
+           HTTP_PUT,
+           "/guilds/%"PRIu64"/members/%"PRIu64"/roles/%"PRIu64, 
+           guild_id, user_id, role_id);
+}
+
+ORCAcode
+discord_remove_guild_member_role(
+  struct discord *client,
+  const u64_snowflake_t guild_id,
+  const u64_snowflake_t user_id,
+  const u64_snowflake_t role_id)
+{
+  if (!guild_id) {
+    log_error("Missing 'guild_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!user_id) {
+    log_error("Missing 'user_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!role_id) {
+    log_error("Missing 'role_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
+  return discord_adapter_run(
+           &client->adapter,
+           NULL,
+           NULL,
+           HTTP_DELETE,
+           "/guilds/%"PRIu64"/members/%"PRIu64"/roles/%"PRIu64, 
+           guild_id, user_id, role_id);
 }
 
 ORCAcode 

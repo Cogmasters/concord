@@ -448,6 +448,28 @@ discord_disconnect_guild_member(
   const u64_snowflake_t user_id,
   struct discord_guild_member *p_member)
 {
-  struct discord_modify_guild_member_params params = { .channel_id=0 };
-  return discord_modify_guild_member(client, guild_id, user_id, &params, p_member);
+  if (!guild_id) {
+    log_error("Missing 'guild_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!user_id) {
+    log_error("Missing 'user_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
+  struct ua_resp_handle resp_handle = {
+    .ok_cb = p_member ? &discord_guild_member_from_json_v : NULL,
+    .ok_obj = p_member,
+  };
+
+  char payload[MAX_PAYLOAD_LEN];
+  size_t ret = json_inject(payload, sizeof(payload), "(channel_id):null");
+  struct sized_buffer req_body = { payload, ret };
+
+  return discord_adapter_run( 
+           &client->adapter,
+           &resp_handle,
+           &req_body,
+           HTTP_PATCH, 
+           "/guilds/%"PRIu64"/members/%"PRIu64, guild_id, user_id);
 }
