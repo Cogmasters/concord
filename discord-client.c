@@ -111,7 +111,7 @@ discord_remove_intents(struct discord *client, enum discord_gateway_intents code
 void
 discord_set_prefix(struct discord *client, char *prefix) 
 {
-  if (!prefix) return;
+  if (IS_EMPTY_STRING(prefix)) return;
 
   const size_t PREFIX_LEN = sizeof(client->gw.prefix);
   ssize_t len;

@@ -439,7 +439,7 @@ on_message_create(struct discord_gateway *gw, struct sized_buffer *data)
       cmd = &gw->on_default_cmd;
     }
 
-    if (cmd) {
+    if (cmd && cmd->cb) {
       char *tmp = msg->content; // hold original ptr
       msg->content = msg->content + gw->prefix.size + cmd->size;
       while (isspace(*msg->content)) { // skip blank chars
@@ -449,10 +449,10 @@ on_message_create(struct discord_gateway *gw, struct sized_buffer *data)
       (cmd->cb)(gw->p_client, gw->bot, msg);
 
       msg->content = tmp; // retrieve original ptr
-
-      discord_message_free(msg);
-      return; /* EARLY RETURN */
     }
+
+    discord_message_free(msg);
+    return; /* EARLY RETURN */
   }
 
   if (gw->cbs.sb_on_message_create) /* @todo temporary */
@@ -855,8 +855,6 @@ on_dispatch(struct discord_gateway *gw)
   }
 
   if (!on_event) return; /* user not subscribed to the event */
-
-  // create a new thread to execute callback
   
   struct discord_event_cxt cxt;
   asprintf(&cxt.data.start, "%.*s", \
@@ -865,10 +863,9 @@ on_dispatch(struct discord_gateway *gw)
   cxt.p_gw = gw;
   cxt.event = event;
   cxt.on_event = on_event;
-  strcpy(cxt.event_name, gw->payload.event_name);
+  snprintf(cxt.event_name, sizeof(cxt.event_name), "%s", gw->payload.event_name);
 
-  enum discord_event_handling_mode mode = \
-                                gw->blocking_event_handler(&cxt);
+  enum discord_event_handling_mode mode = gw->blocking_event_handler(&cxt);
   switch (mode) {
   case EVENT_IS_HANDLED: 
       return;
