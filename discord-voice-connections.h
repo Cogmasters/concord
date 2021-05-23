@@ -9,7 +9,6 @@ struct discord_voice; //forward
 /**
  * IDLE CALLBACK
  * @note runs on every WebSockets loop iteration, no trigger required
- * @see discord_voice_set_on_idle()
  */
 typedef void (voice_idle_cb)(
   struct discord *client,
@@ -19,7 +18,6 @@ typedef void (voice_idle_cb)(
 /**
  * VOICE SPEAKING CALLBACK
  * @see https://discord.com/developers/docs/topics/voice-connections#speaking
- * @see discord_voice_set_on_speaking()
  */
 typedef void (voice_speaking_cb)(
     struct discord *client,
@@ -32,7 +30,6 @@ typedef void (voice_speaking_cb)(
 
 /**
  * VOICE CLIENT DISCONNECT CALLBACK
- * @see discord_voice_set_on_client_disconnect()
  */
 typedef void (voice_client_disconnect_cb)(
     struct discord *client,
@@ -42,7 +39,6 @@ typedef void (voice_client_disconnect_cb)(
 
 /**
  * VOICE CODEC CALLBACK
- * @see discord_voice_set_on_codec()
  */
 typedef void (voice_codec_cb)(
     struct discord *client,
@@ -57,11 +53,11 @@ struct discord_voice_cbs { /* CALLBACKS STRUCTURE */
   voice_idle_cb  *on_idle; /** @see discord_voice_set_on_idle() */
 
   // triggers when a user start speaking
-  voice_speaking_cb *on_speaking; /** @see discord_voice_set_on_speaking() */
+  voice_speaking_cb *on_speaking;
   // triggers when a user has disconnected from the voice channel
-  voice_client_disconnect_cb *on_client_disconnect; /** @see discord_voice_set_on_client_disconnect() */
+  voice_client_disconnect_cb *on_client_disconnect;
   // ? triggers when a codec is received
-  voice_codec_cb *on_codec; /** @see discord_voice_set_on_codec() */
+  voice_codec_cb *on_codec;
 
   void (*on_ready)(struct discord_voice *vc);
   void (*on_session_descriptor)(struct discord_voice *vc);
@@ -162,22 +158,6 @@ struct discord_voice {
  * @param callback the callback to run when triggered at every event loop iteration
  */
 void discord_voice_set_on_idle(struct discord_voice *vc, voice_idle_cb *callback);
-
-/**
- * The following functions can be used to assign a user-callback to
- *        execute when its corresponding events are detected.
- *  
- * @param vc the VC obtained with discord_join_vc()
- * @param callback the callback to run when triggered by event
- */
- /*
-void discord_voice_set_on_speaking(struct discord_voice *vc, voice_speaking_cb *callback);
-void discord_voice_set_on_client_disconnect(struct discord_voice *vc, voice_client_disconnect_cb *callback);
-void discord_voice_set_on_codec(struct discord_voice *vc, voice_codec_cb *callback);
-void discord_voice_set_on_ready(struct discord_voice *vc, voice_idle_cb *callback);
-void discord_voice_set_on_on_session_description(struct discord_voice *vc, voice_idle_cb *callback);
-  */
-
 
 enum discord_join_vc_status {
   DISCORD_JOIN_VC_ERROR = 0,

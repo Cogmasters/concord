@@ -224,7 +224,23 @@ discord_modify_guild_member(
   };
 
   char payload[MAX_PAYLOAD_LEN];
-  size_t ret = discord_modify_guild_member_params_to_json(payload, sizeof(payload), params);
+  size_t ret;
+  if (!params->channel_id)
+    ret = json_inject(payload, sizeof(payload), 
+                  "(nick):s,"
+                  "(roles):F,"
+                  "(mute):b,"
+                  "(deaf):b,"
+                  "(channel_id):null,"
+                  "@arg_switches:b",
+                  params->nick,
+                  ja_u64_list_to_json, params->roles,
+                  &params->mute,
+                  &params->deaf,
+                  params->__M.arg_switches, sizeof(params->__M.arg_switches), params->__M.enable_arg_switches);
+  else
+    ret = discord_modify_guild_member_params_to_json(payload, sizeof(payload), params);
+
   struct sized_buffer req_body = { payload, ret };
 
   return discord_adapter_run( 

@@ -567,25 +567,13 @@ void discord_embed_set_author(struct discord_embed *embed, char name[], char url
 void discord_embed_add_field(struct discord_embed *embed, char name[], char value[], bool Inline);
 
 // CHANNEL MISC
-void discord_overwrite_append(
-  NTL_T(struct discord_channel_overwrite) *permission_overwrites, 
-  u64_snowflake_t id, 
-  int type, 
-  enum discord_permissions_bitwise_flags allow, 
-  enum discord_permissions_bitwise_flags deny);
+void discord_overwrite_append(NTL_T(struct discord_channel_overwrite) *permission_overwrites, u64_snowflake_t id, int type, enum discord_permissions_bitwise_flags allow, enum discord_permissions_bitwise_flags deny);
+ORCAcode discord_get_channel_at_pos(struct discord *client, const u64_snowflake_t guild_id, const enum discord_channel_types type, const size_t position, struct discord_channel *p_channel);
+ORCAcode discord_delete_messages_by_author_id(struct discord *client, u64_snowflake_t channel_id, u64_snowflake_t author_id);
 
-ORCAcode discord_get_channel_at_pos(
-  struct discord *client, 
-  const u64_snowflake_t guild_id, 
-  const enum discord_channel_types type,
-  const size_t position,
-  struct discord_channel *p_channel);
+// GUILD MISC
+ORCAcode discord_disconnect_guild_member(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id, struct discord_guild_member *p_member);
 
-// MESSAGE MISC
-ORCAcode discord_delete_messages_by_author_id(
-  struct discord *client,
-  u64_snowflake_t channel_id,
-  u64_snowflake_t author_id);
 
 #ifdef _DISCORD_ADD_ONS
 #include "discord-voice-connections.h"

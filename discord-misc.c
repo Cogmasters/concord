@@ -42,7 +42,7 @@ discord_delete_messages_by_author_id(
   NTL_T(u64_snowflake_t) list = NULL;
   int count=0;
   for (int i=0; messages[i]; ++i) {
-    if(now > messages[i]->timestamp && now - messages[i]->timestamp > 1209600000)
+    if (now > messages[i]->timestamp && now - messages[i]->timestamp > 1209600000)
     {
       break;
     }
@@ -439,4 +439,15 @@ discord_get_channel_at_pos(
   }
   discord_channel_list_free(channels);
   return code; // ORCA_OK
+}
+
+ORCAcode
+discord_disconnect_guild_member(
+  struct discord *client,
+  const u64_snowflake_t guild_id,
+  const u64_snowflake_t user_id,
+  struct discord_guild_member *p_member)
+{
+  struct discord_modify_guild_member_params params = { .channel_id=0 };
+  return discord_modify_guild_member(client, guild_id, user_id, &params, p_member);
 }
