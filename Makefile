@@ -187,13 +187,13 @@ mujs:
 	mkdir -p $(LIBDIR)
 	cp mujs/build/release/libmujs.a $(LIBDIR)
 
-install : all
+install :
 	mkdir -p $(PREFIX)/lib/
 	mkdir -p $(PREFIX)/include/orca
 	install -d $(PREFIX)/lib/
 	install -m 644 $(LIBDISCORD) $(PREFIX)/lib/
 	install -d $(PREFIX)/include/orca/
-	install -m 644 *.h common/*.h common/**/*.h $(PREFIX)/include/orca/
+	install -m 644 *.h cee-utils/*.h common/*.h common/**/*.h $(PREFIX)/include/orca/
 	install -d $(PREFIX)/include/orca/$(SPECSDIR)/discord/
 	install -m 644 $(SPECSDIR)/discord/*.h $(PREFIX)/include/orca/$(SPECSDIR)/discord/
 
