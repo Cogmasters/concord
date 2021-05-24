@@ -9,9 +9,7 @@
 
 #include "orka-utils.h"
 
-
-#define BASE_GATEWAY_URL "wss://gateway.discord.gg/?v=8&encoding=json"
-
+#define GATEWAY_URL_SUFFIX "?v=9&encoding=json"
 
 
 static void
@@ -1057,7 +1055,6 @@ discord_gateway_init(struct discord_gateway *gw, struct logconf *config, struct 
   };
 
   gw->ws = ws_init(&cbs, config);
-  ws_set_url(gw->ws, BASE_GATEWAY_URL, NULL);
   logconf_add_id(config, gw->ws, "DISCORD_GATEWAY");
 
   gw->reconnect.threshold = 5; /** hard limit for now */
@@ -1125,10 +1122,21 @@ discord_gateway_cleanup(struct discord_gateway *gw)
 static void
 event_loop(struct discord_gateway *gw) 
 {
+  // get session info
+  discord_get_gateway_bot(gw->p_client, &gw->session);
+
+  // build URL that will be used to connect to Discord
+  char url[1024];
+  size_t ret = snprintf(url, sizeof(url), "%s%s"GATEWAY_URL_SUFFIX,
+                 gw->session.url,                                    \
+                 ('/' == gw->session.url[strlen(gw->session.url)-1]) \
+                    ? "" : "/");
+  ASSERT_S(ret < sizeof(url), "Out of bounds write attempt");
+
+  ws_set_url(gw->ws, url, NULL);
+
   ws_start(gw->ws);
 
-  //get session info before starting it
-  discord_get_gateway_bot(gw->p_client, &gw->session);
   if (!gw->session.remaining) {
     log_fatal("Reach session starts threshold (%d),"
               "Please wait %d seconds and try again",
