@@ -42,7 +42,7 @@ embed_reddit_search_result(
   char sort[],
   char keywords[])
 {
-  struct sized_buffer search_json={};
+  struct sized_buffer search_json={0};
   { // anonymous block
     struct reddit_search_params params = { 
       .q = (keywords && *keywords) ? keywords : NULL,
@@ -75,16 +75,18 @@ embed_reddit_search_result(
   ///@todo add check to make sure embed is not over 6000 characters
   json_item_t *data;
   char title[EMBED_TITLE_LEN + 1]; // +1 to trigger auto-truncation
+  char permalink[EMBED_FIELD_VALUE_LEN + 1];
   size_t n_size = json_size(children);
   for (size_t i=0; i < n_size; ++i) {
     data = json_get_child(json_get_byindex(children, i), "data");
-    snprintf(title, sizeof(title), "`%s` %s", \
-        json_get_string(json_get_child(data, "name"), NULL), 
+    snprintf(title, sizeof(title), "%s", \
         json_get_string(json_get_child(data, "title"), NULL));
+    snprintf(permalink, sizeof(permalink), "https://reddit.com%s", \
+        json_get_string(json_get_child(data, "permalink"), NULL));
     discord_embed_add_field(
       embed, 
       title,
-      json_get_string(json_get_child(data, "url"), NULL),
+      permalink,
       false);
   }
   snprintf(embed->description, sizeof(embed->description), "%zu results", n_size);
@@ -110,7 +112,7 @@ void on_reaction_add(
 { 
   if (member->user->bot) return;
 
-  struct discord_create_message_params params={};
+  struct discord_create_message_params params={0};
   struct discord_message *msg = discord_message_alloc();
 
   discord_get_channel_message(client, channel_id, message_id, msg);
@@ -122,12 +124,13 @@ void on_reaction_add(
       discord_message_free(msg);
       return; /* EARLY RETURN */
     }
-    size_t size = ntl_length((ntl_t)embed->fields);
     sscanf(embed->footer->text, "🔎 %[^\t]\t🔗 %[^\n]", keywords, subreddits);
 
-    if (0 == strcmp(emoji->name, "⬅️")) {
-      char before[16]="";
-      sscanf(embed->fields[0]->name, "`%[^`]", before);
+    if (0 == strcmp(emoji->name, "⬅️")) 
+    {
+      char before[16] = "t3_";
+      sscanf(embed->fields[0]->value, \
+          "https://reddit.com/r/%*[^/]/comments/%[^/]", &before[sizeof("t3_")-1]);
 
       params.embed = embed_reddit_search_result(
                         subreddits, 
@@ -156,8 +159,10 @@ void on_reaction_add(
     }
     else if (0 == strcmp(emoji->name, "➡️"))
     {
-      char after[16]="";
-      sscanf(embed->fields[size-1]->name, "`%[^`]", after);
+      size_t len = ntl_length((ntl_t)embed->fields);
+      char after[16] = "t3_";
+      sscanf(embed->fields[len-1]->value, \
+          "https://reddit.com/r/%*[^/]/comments/%[^/]", &after[sizeof("t3_")-1]);
 
       params.embed = embed_reddit_search_result(
                         subreddits, 
@@ -200,7 +205,7 @@ void on_search(
 {
   if (msg->author->bot) return;
 
-  struct discord_create_message_params params={};
+  struct discord_create_message_params params={0};
 
   char subreddits[1024]="", before[16]="", after[16]="";
   char *msg_content = msg->content;
@@ -426,6 +431,10 @@ void cleanup_BOT()
   ja_u64_list_free((NTL_T(ja_u64))BOT.D.channel_ids); 
 }
 
+enum discord_event_handling_mode on_any_event(void *p_cxt) {
+  return EVENT_WILL_BE_HANDLED_IN_CHILD_THREAD;
+}
+
 int main(int argc, char *argv[])
 {
   const char *config_file;
@@ -452,6 +461,9 @@ int main(int argc, char *argv[])
   fgetc(stdin); // wait for input
 
   load_BOT(config_file);
+
+  /* trigger event callbacks in a multi-threaded fashion */
+  discord_set_blocking_event_handler(BOT.D.client, &on_any_event);
 
   discord_set_prefix(BOT.D.client, "reddit.");
   discord_set_on_command(BOT.D.client, "search", &on_search);
