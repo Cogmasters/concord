@@ -1,9 +1,11 @@
 {
-  "namespace": ["reddit", "search"],
+  "namespace": ["reddit"],
   "comment": "",
   "defs":
   [
     {
+      "title":"Search",
+      "namespace":["search"],
       "comment":"https://www.reddit.com/dev/api/#GET_search",
       "struct":"params",
       "fields":

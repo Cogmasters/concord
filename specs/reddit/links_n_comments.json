@@ -1,0 +1,22 @@
+{
+  "namespace": ["reddit"],
+  "comment": "",
+  "defs":
+  [
+    {
+      "title":"Comment",
+      "namespace":["comment"],
+      "comment":"https://www.reddit.com/dev/api/#POST_api_comment",
+      "struct":"params",
+      "fields":
+      [
+        { "name": "api_type", "type":{ "base":"char", "dec":"*" }, "comment":"the string json" },
+        { "name": "return_rtjson", "type":{ "base":"bool" }, "comment":"boolean value" },
+        { "name": "richtext_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON data" },
+        { "name": "text", "type":{ "base":"char", "dec":"*" }, "comment":"raw markdown text" },
+        { "name": "thing_id", "type":{ "base":"char", "dec":"*" }, "comment":"fullname of parent thing" },
+        { "name": "uh", "type":{ "base":"char", "dec":"*" }, "comment":"a modhash" }
+      ]
+    }
+  ]
+}
