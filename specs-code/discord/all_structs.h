@@ -489,41 +489,42 @@ struct discord_audit_log_change_key {
 /* This is defined at specs/discord/channel.create-channel-invite.json:8:22 */
 struct discord_create_channel_invite_params {
   /* specs/discord/channel.create-channel-invite.json:11:20
-     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "loc":"url"}'
-  */
-  u64_snowflake_t channel_id;
-
-  /* specs/discord/channel.create-channel-invite.json:12:20
      '{ "name": "max_age", "type":{ "base":"int" } }'
   */
   int max_age;
 
-  /* specs/discord/channel.create-channel-invite.json:13:20
+  /* specs/discord/channel.create-channel-invite.json:12:20
      '{ "name": "max_uses", "type":{ "base":"int" } }'
   */
   int max_uses;
 
-  /* specs/discord/channel.create-channel-invite.json:14:20
+  /* specs/discord/channel.create-channel-invite.json:13:20
      '{ "name": "temporary", "type":{ "base":"bool"}}'
   */
   bool temporary;
 
-  /* specs/discord/channel.create-channel-invite.json:15:20
+  /* specs/discord/channel.create-channel-invite.json:14:20
      '{ "name": "unique", "type":{ "base":"bool"}}'
   */
   bool unique;
 
-  /* specs/discord/channel.create-channel-invite.json:16:20
-     '{ "name": "target_user", "type":{ "base":"char", "dec":"*"}, 
-          "option":true, "inject_if_not":null}'
-  */
-  char *target_user;
-
-  /* specs/discord/channel.create-channel-invite.json:18:20
-     '{ "name": "target_user_type", "type":{ "base":"int" },
+  /* specs/discord/channel.create-channel-invite.json:15:20
+     '{ "name": "target_type", "type":{ "base":"int" },
           "option":true, "inject_if_not":0}'
   */
-  int target_user_type;
+  int target_type;
+
+  /* specs/discord/channel.create-channel-invite.json:17:20
+     '{ "name": "target_user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, 
+          "option":true, "inject_if_not":0}'
+  */
+  u64_snowflake_t target_user_id;
+
+  /* specs/discord/channel.create-channel-invite.json:19:20
+     '{ "name": "target_application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, 
+          "option":true, "inject_if_not":0}'
+  */
+  u64_snowflake_t target_application_id;
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected

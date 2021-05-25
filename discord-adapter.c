@@ -43,15 +43,15 @@ discord_adapter_cleanup(struct discord_adapter *adapter)
   discord_buckets_cleanup(adapter);
 }
 
+/**
+ * JSON ERROR CODES
+ * https://discord.com/developers/docs/topics/opcodes-and-status-codes#json-json-error-codes 
+ */
 static void
 json_error_cb(char *str, size_t len, void *p_err)
 {
-  /**
-   * JSON ERROR CODES
-   * https://discord.com/developers/docs/topics/opcodes-and-status-codes#json-json-error-codes 
-   */
   int code=0; // last error code received
-  char message[256] = {0}; // meaning of the error received
+  char message[256]=""; // meaning of the error received
   json_extract(str, len, \
       "(message):.*s (code):d", sizeof(message), message, &code);
   log_error(ANSICOLOR("(JSON Error %d) %s", ANSI_BG_RED)   \

@@ -62,7 +62,7 @@
 - [X] [Bulk Delete Messages](https://discord.com/developers/docs/resources/channel#bulk-delete-messages)
 - [x] [Edit Channel Permissions](https://discord.com/developers/docs/resources/channel#edit-channel-permissions)
 - [x] [Get Channel Invites](https://discord.com/developers/docs/resources/channel#get-channel-invites)
-- [ ] [Create Channel Invite](https://discord.com/developers/docs/resources/channel#create-channel-invite)
+- [x] [Create Channel Invite](https://discord.com/developers/docs/resources/channel#create-channel-invite)
 - [ ] [Delete Channel Permission](https://discord.com/developers/docs/resources/channel#delete-channel-permission)
 - [ ] [Follow News Channels](https://discord.com/developers/docs/resources/channel#follow-news-channel)
 - [x] [Trigger Typing Indicator](https://discord.com/developers/docs/resources/channel#trigger-typing-indicator)

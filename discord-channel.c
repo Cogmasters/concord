@@ -348,6 +348,39 @@ discord_get_channel_invites(
            "/channels/%"PRIu64"/invites", channel_id);
 }
 
+ORCAcode
+discord_create_channel_invite(
+  struct discord *client, 
+  const u64_snowflake_t channel_id,
+  struct discord_create_channel_invite_params *params,
+  struct discord_invite *p_invite)
+{
+  if (!channel_id) {
+    log_error("Missing 'channel_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
+  struct ua_resp_handle resp_handle = {
+    .ok_cb = p_invite ? &discord_invite_from_json_v : NULL,
+    .ok_obj = p_invite
+  };
+
+  char payload[MAX_PAYLOAD_LEN];
+  size_t ret;
+  if (params)
+    ret = discord_create_channel_invite_params_to_json(payload, sizeof(payload), params);
+  else
+    ret = sprintf(payload, "{}");
+  struct sized_buffer req_body = { payload, ret };
+
+  return discord_adapter_run(
+           &client->adapter,
+           &resp_handle,
+           &req_body,
+           HTTP_POST,
+           "/channels/%"PRIu64"/invites", channel_id);
+}
+
 //@todo this is a temporary solution
 static curl_mime*
 curl_mime_cb(CURL *ehandle, void *data) 

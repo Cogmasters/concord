@@ -10,68 +10,70 @@ void discord_create_channel_invite_params_from_json(char *json, size_t len, stru
   size_t r=0;
   r=json_extract(json, len, 
   /* specs/discord/channel.create-channel-invite.json:11:20
-     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "loc":"url"}'
-  */
-                "(channel_id):F,"
-  /* specs/discord/channel.create-channel-invite.json:12:20
      '{ "name": "max_age", "type":{ "base":"int" } }'
   */
                 "(max_age):d,"
-  /* specs/discord/channel.create-channel-invite.json:13:20
+  /* specs/discord/channel.create-channel-invite.json:12:20
      '{ "name": "max_uses", "type":{ "base":"int" } }'
   */
                 "(max_uses):d,"
-  /* specs/discord/channel.create-channel-invite.json:14:20
+  /* specs/discord/channel.create-channel-invite.json:13:20
      '{ "name": "temporary", "type":{ "base":"bool"}}'
   */
                 "(temporary):b,"
-  /* specs/discord/channel.create-channel-invite.json:15:20
+  /* specs/discord/channel.create-channel-invite.json:14:20
      '{ "name": "unique", "type":{ "base":"bool"}}'
   */
                 "(unique):b,"
-  /* specs/discord/channel.create-channel-invite.json:16:20
-     '{ "name": "target_user", "type":{ "base":"char", "dec":"*"}, 
-          "option":true, "inject_if_not":null}'
-  */
-                "(target_user):?s,"
-  /* specs/discord/channel.create-channel-invite.json:18:20
-     '{ "name": "target_user_type", "type":{ "base":"int" },
+  /* specs/discord/channel.create-channel-invite.json:15:20
+     '{ "name": "target_type", "type":{ "base":"int" },
           "option":true, "inject_if_not":0}'
   */
-                "(target_user_type):d,"
+                "(target_type):d,"
+  /* specs/discord/channel.create-channel-invite.json:17:20
+     '{ "name": "target_user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, 
+          "option":true, "inject_if_not":0}'
+  */
+                "(target_user_id):F,"
+  /* specs/discord/channel.create-channel-invite.json:19:20
+     '{ "name": "target_application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, 
+          "option":true, "inject_if_not":0}'
+  */
+                "(target_application_id):F,"
                 "@arg_switches:b"
                 "@record_defined"
                 "@record_null",
   /* specs/discord/channel.create-channel-invite.json:11:20
-     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "loc":"url"}'
-  */
-                orka_strtoull, &p->channel_id,
-  /* specs/discord/channel.create-channel-invite.json:12:20
      '{ "name": "max_age", "type":{ "base":"int" } }'
   */
                 &p->max_age,
-  /* specs/discord/channel.create-channel-invite.json:13:20
+  /* specs/discord/channel.create-channel-invite.json:12:20
      '{ "name": "max_uses", "type":{ "base":"int" } }'
   */
                 &p->max_uses,
-  /* specs/discord/channel.create-channel-invite.json:14:20
+  /* specs/discord/channel.create-channel-invite.json:13:20
      '{ "name": "temporary", "type":{ "base":"bool"}}'
   */
                 &p->temporary,
-  /* specs/discord/channel.create-channel-invite.json:15:20
+  /* specs/discord/channel.create-channel-invite.json:14:20
      '{ "name": "unique", "type":{ "base":"bool"}}'
   */
                 &p->unique,
-  /* specs/discord/channel.create-channel-invite.json:16:20
-     '{ "name": "target_user", "type":{ "base":"char", "dec":"*"}, 
-          "option":true, "inject_if_not":null}'
-  */
-                &p->target_user,
-  /* specs/discord/channel.create-channel-invite.json:18:20
-     '{ "name": "target_user_type", "type":{ "base":"int" },
+  /* specs/discord/channel.create-channel-invite.json:15:20
+     '{ "name": "target_type", "type":{ "base":"int" },
           "option":true, "inject_if_not":0}'
   */
-                &p->target_user_type,
+                &p->target_type,
+  /* specs/discord/channel.create-channel-invite.json:17:20
+     '{ "name": "target_user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, 
+          "option":true, "inject_if_not":0}'
+  */
+                orka_strtoull, &p->target_user_id,
+  /* specs/discord/channel.create-channel-invite.json:19:20
+     '{ "name": "target_application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, 
+          "option":true, "inject_if_not":0}'
+  */
+                orka_strtoull, &p->target_application_id,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
                 p->__M.record_null, sizeof(p->__M.record_null));
@@ -82,43 +84,45 @@ static void discord_create_channel_invite_params_use_default_inject_settings(str
 {
   p->__M.enable_arg_switches = true;
   /* specs/discord/channel.create-channel-invite.json:11:20
-     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "loc":"url"}'
-  */
-  p->__M.arg_switches[0] = &p->channel_id;
-
-  /* specs/discord/channel.create-channel-invite.json:12:20
      '{ "name": "max_age", "type":{ "base":"int" } }'
   */
-  p->__M.arg_switches[1] = &p->max_age;
+  p->__M.arg_switches[0] = &p->max_age;
 
-  /* specs/discord/channel.create-channel-invite.json:13:20
+  /* specs/discord/channel.create-channel-invite.json:12:20
      '{ "name": "max_uses", "type":{ "base":"int" } }'
   */
-  p->__M.arg_switches[2] = &p->max_uses;
+  p->__M.arg_switches[1] = &p->max_uses;
 
-  /* specs/discord/channel.create-channel-invite.json:14:20
+  /* specs/discord/channel.create-channel-invite.json:13:20
      '{ "name": "temporary", "type":{ "base":"bool"}}'
   */
-  p->__M.arg_switches[3] = &p->temporary;
+  p->__M.arg_switches[2] = &p->temporary;
 
-  /* specs/discord/channel.create-channel-invite.json:15:20
+  /* specs/discord/channel.create-channel-invite.json:14:20
      '{ "name": "unique", "type":{ "base":"bool"}}'
   */
-  p->__M.arg_switches[4] = &p->unique;
+  p->__M.arg_switches[3] = &p->unique;
 
-  /* specs/discord/channel.create-channel-invite.json:16:20
-     '{ "name": "target_user", "type":{ "base":"char", "dec":"*"}, 
-          "option":true, "inject_if_not":null}'
-  */
-  if (p->target_user != NULL)
-    p->__M.arg_switches[5] = p->target_user;
-
-  /* specs/discord/channel.create-channel-invite.json:18:20
-     '{ "name": "target_user_type", "type":{ "base":"int" },
+  /* specs/discord/channel.create-channel-invite.json:15:20
+     '{ "name": "target_type", "type":{ "base":"int" },
           "option":true, "inject_if_not":0}'
   */
-  if (p->target_user_type != 0)
-    p->__M.arg_switches[6] = &p->target_user_type;
+  if (p->target_type != 0)
+    p->__M.arg_switches[4] = &p->target_type;
+
+  /* specs/discord/channel.create-channel-invite.json:17:20
+     '{ "name": "target_user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, 
+          "option":true, "inject_if_not":0}'
+  */
+  if (p->target_user_id != 0)
+    p->__M.arg_switches[5] = &p->target_user_id;
+
+  /* specs/discord/channel.create-channel-invite.json:19:20
+     '{ "name": "target_application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, 
+          "option":true, "inject_if_not":0}'
+  */
+  if (p->target_application_id != 0)
+    p->__M.arg_switches[6] = &p->target_application_id;
 
 }
 
@@ -128,66 +132,68 @@ size_t discord_create_channel_invite_params_to_json(char *json, size_t len, stru
   discord_create_channel_invite_params_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/discord/channel.create-channel-invite.json:11:20
-     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "loc":"url"}'
-  */
-                "(channel_id):|F|,"
-  /* specs/discord/channel.create-channel-invite.json:12:20
      '{ "name": "max_age", "type":{ "base":"int" } }'
   */
                 "(max_age):d,"
-  /* specs/discord/channel.create-channel-invite.json:13:20
+  /* specs/discord/channel.create-channel-invite.json:12:20
      '{ "name": "max_uses", "type":{ "base":"int" } }'
   */
                 "(max_uses):d,"
-  /* specs/discord/channel.create-channel-invite.json:14:20
+  /* specs/discord/channel.create-channel-invite.json:13:20
      '{ "name": "temporary", "type":{ "base":"bool"}}'
   */
                 "(temporary):b,"
-  /* specs/discord/channel.create-channel-invite.json:15:20
+  /* specs/discord/channel.create-channel-invite.json:14:20
      '{ "name": "unique", "type":{ "base":"bool"}}'
   */
                 "(unique):b,"
-  /* specs/discord/channel.create-channel-invite.json:16:20
-     '{ "name": "target_user", "type":{ "base":"char", "dec":"*"}, 
-          "option":true, "inject_if_not":null}'
-  */
-                "(target_user):s,"
-  /* specs/discord/channel.create-channel-invite.json:18:20
-     '{ "name": "target_user_type", "type":{ "base":"int" },
+  /* specs/discord/channel.create-channel-invite.json:15:20
+     '{ "name": "target_type", "type":{ "base":"int" },
           "option":true, "inject_if_not":0}'
   */
-                "(target_user_type):d,"
+                "(target_type):d,"
+  /* specs/discord/channel.create-channel-invite.json:17:20
+     '{ "name": "target_user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, 
+          "option":true, "inject_if_not":0}'
+  */
+                "(target_user_id):|F|,"
+  /* specs/discord/channel.create-channel-invite.json:19:20
+     '{ "name": "target_application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, 
+          "option":true, "inject_if_not":0}'
+  */
+                "(target_application_id):|F|,"
                 "@arg_switches:b",
   /* specs/discord/channel.create-channel-invite.json:11:20
-     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "loc":"url"}'
-  */
-                orka_ulltostr, &p->channel_id,
-  /* specs/discord/channel.create-channel-invite.json:12:20
      '{ "name": "max_age", "type":{ "base":"int" } }'
   */
                 &p->max_age,
-  /* specs/discord/channel.create-channel-invite.json:13:20
+  /* specs/discord/channel.create-channel-invite.json:12:20
      '{ "name": "max_uses", "type":{ "base":"int" } }'
   */
                 &p->max_uses,
-  /* specs/discord/channel.create-channel-invite.json:14:20
+  /* specs/discord/channel.create-channel-invite.json:13:20
      '{ "name": "temporary", "type":{ "base":"bool"}}'
   */
                 &p->temporary,
-  /* specs/discord/channel.create-channel-invite.json:15:20
+  /* specs/discord/channel.create-channel-invite.json:14:20
      '{ "name": "unique", "type":{ "base":"bool"}}'
   */
                 &p->unique,
-  /* specs/discord/channel.create-channel-invite.json:16:20
-     '{ "name": "target_user", "type":{ "base":"char", "dec":"*"}, 
-          "option":true, "inject_if_not":null}'
-  */
-                p->target_user,
-  /* specs/discord/channel.create-channel-invite.json:18:20
-     '{ "name": "target_user_type", "type":{ "base":"int" },
+  /* specs/discord/channel.create-channel-invite.json:15:20
+     '{ "name": "target_type", "type":{ "base":"int" },
           "option":true, "inject_if_not":0}'
   */
-                &p->target_user_type,
+                &p->target_type,
+  /* specs/discord/channel.create-channel-invite.json:17:20
+     '{ "name": "target_user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, 
+          "option":true, "inject_if_not":0}'
+  */
+                orka_ulltostr, &p->target_user_id,
+  /* specs/discord/channel.create-channel-invite.json:19:20
+     '{ "name": "target_application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, 
+          "option":true, "inject_if_not":0}'
+  */
+                orka_ulltostr, &p->target_application_id,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
 }
@@ -231,67 +237,68 @@ size_t discord_create_channel_invite_params_list_to_json_v(char *str, size_t len
 
 void discord_create_channel_invite_params_cleanup(struct discord_create_channel_invite_params *d) {
   /* specs/discord/channel.create-channel-invite.json:11:20
-     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "loc":"url"}'
-  */
-  //p->channel_id is a scalar
-  /* specs/discord/channel.create-channel-invite.json:12:20
      '{ "name": "max_age", "type":{ "base":"int" } }'
   */
   //p->max_age is a scalar
-  /* specs/discord/channel.create-channel-invite.json:13:20
+  /* specs/discord/channel.create-channel-invite.json:12:20
      '{ "name": "max_uses", "type":{ "base":"int" } }'
   */
   //p->max_uses is a scalar
-  /* specs/discord/channel.create-channel-invite.json:14:20
+  /* specs/discord/channel.create-channel-invite.json:13:20
      '{ "name": "temporary", "type":{ "base":"bool"}}'
   */
   //p->temporary is a scalar
-  /* specs/discord/channel.create-channel-invite.json:15:20
+  /* specs/discord/channel.create-channel-invite.json:14:20
      '{ "name": "unique", "type":{ "base":"bool"}}'
   */
   //p->unique is a scalar
-  /* specs/discord/channel.create-channel-invite.json:16:20
-     '{ "name": "target_user", "type":{ "base":"char", "dec":"*"}, 
-          "option":true, "inject_if_not":null}'
-  */
-  if (d->target_user)
-    free(d->target_user);
-  /* specs/discord/channel.create-channel-invite.json:18:20
-     '{ "name": "target_user_type", "type":{ "base":"int" },
+  /* specs/discord/channel.create-channel-invite.json:15:20
+     '{ "name": "target_type", "type":{ "base":"int" },
           "option":true, "inject_if_not":0}'
   */
-  //p->target_user_type is a scalar
+  //p->target_type is a scalar
+  /* specs/discord/channel.create-channel-invite.json:17:20
+     '{ "name": "target_user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, 
+          "option":true, "inject_if_not":0}'
+  */
+  //p->target_user_id is a scalar
+  /* specs/discord/channel.create-channel-invite.json:19:20
+     '{ "name": "target_application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, 
+          "option":true, "inject_if_not":0}'
+  */
+  //p->target_application_id is a scalar
 }
 
 void discord_create_channel_invite_params_init(struct discord_create_channel_invite_params *p) {
   memset(p, 0, sizeof(struct discord_create_channel_invite_params));
   /* specs/discord/channel.create-channel-invite.json:11:20
-     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "loc":"url"}'
-  */
-
-  /* specs/discord/channel.create-channel-invite.json:12:20
      '{ "name": "max_age", "type":{ "base":"int" } }'
   */
 
-  /* specs/discord/channel.create-channel-invite.json:13:20
+  /* specs/discord/channel.create-channel-invite.json:12:20
      '{ "name": "max_uses", "type":{ "base":"int" } }'
   */
 
-  /* specs/discord/channel.create-channel-invite.json:14:20
+  /* specs/discord/channel.create-channel-invite.json:13:20
      '{ "name": "temporary", "type":{ "base":"bool"}}'
   */
 
-  /* specs/discord/channel.create-channel-invite.json:15:20
+  /* specs/discord/channel.create-channel-invite.json:14:20
      '{ "name": "unique", "type":{ "base":"bool"}}'
   */
 
-  /* specs/discord/channel.create-channel-invite.json:16:20
-     '{ "name": "target_user", "type":{ "base":"char", "dec":"*"}, 
-          "option":true, "inject_if_not":null}'
+  /* specs/discord/channel.create-channel-invite.json:15:20
+     '{ "name": "target_type", "type":{ "base":"int" },
+          "option":true, "inject_if_not":0}'
   */
 
-  /* specs/discord/channel.create-channel-invite.json:18:20
-     '{ "name": "target_user_type", "type":{ "base":"int" },
+  /* specs/discord/channel.create-channel-invite.json:17:20
+     '{ "name": "target_user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, 
+          "option":true, "inject_if_not":0}'
+  */
+
+  /* specs/discord/channel.create-channel-invite.json:19:20
+     '{ "name": "target_application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, 
           "option":true, "inject_if_not":0}'
   */
 

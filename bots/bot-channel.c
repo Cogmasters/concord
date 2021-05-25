@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+#include <inttypes.h> /* PRIu64 */
 #include <assert.h>
 
 #include "discord.h"
@@ -11,43 +11,34 @@ void on_ready(struct discord *client, const struct discord_user *bot) {
       bot->username, bot->discriminator);
 }
 
+void log_on_channel_create(
+  struct discord *client,
+  const struct discord_user *bot,
+  const struct discord_channel *channel)
+{
+  log_warn("Channel %s (%"PRIu64") created", channel->name, channel->id);
+}
+
+void log_on_channel_update(
+  struct discord *client,
+  const struct discord_user *bot,
+  const struct discord_channel *channel)
+{
+  log_warn("Channel %s (%"PRIu64") updated", channel->name, channel->id);
+}
+
+void log_on_channel_delete(
+  struct discord *client,
+  const struct discord_user *bot,
+  const struct discord_channel *channel)
+{
+  log_warn("Channel %s (%"PRIu64") deleted", channel->name, channel->id);
+}
+
 void on_channel_create(
-    struct discord *client,
-    const struct discord_user *bot,
-    const struct discord_channel *channel)
-{
-  struct discord_create_message_params params = { .content = "Hello world!" };
-  discord_create_message(client, channel->id, &params, NULL);
-}
-
-void on_channel_update(
-    struct discord *client,
-    const struct discord_user *bot,
-    const struct discord_channel *channel)
-{
-  struct discord_create_message_params params = { .content = "Succesfully updated channel!" };
-  discord_create_message(client, channel->id, &params, NULL);
-}
-
-void on_channel_delete(
-    struct discord *client,
-    const struct discord_user *bot,
-    const struct discord_channel *channel)
-{
-  struct discord_channel *general = discord_channel_alloc();
-  discord_get_channel_at_pos(client, channel->guild_id, DISCORD_CHANNEL_GUILD_TEXT, 0, general);
-
-  char text[256];
-  snprintf(text, sizeof(text), "Succesfully deleted '%s' channel", channel->name);
-  struct discord_create_message_params params = { .content = text };
-  discord_create_message(client, general->id, &params, NULL);
-  discord_channel_free(general);
-}
-
-void on_create(
-    struct discord *client,
-    const struct discord_user *bot,
-    const struct discord_message *msg)
+  struct discord *client,
+  const struct discord_user *bot,
+  const struct discord_message *msg)
 {
   if (msg->author->bot) return;
 
@@ -55,20 +46,20 @@ void on_create(
   discord_create_guild_channel(client, msg->guild_id, &params, NULL);
 }
 
-void on_delete_here(
-    struct discord *client,
-    const struct discord_user *bot,
-    const struct discord_message *msg)
+void on_channel_delete_here(
+  struct discord *client,
+  const struct discord_user *bot,
+  const struct discord_message *msg)
 {
   if (msg->author->bot) return;
 
   discord_delete_channel(client, msg->channel_id, NULL);
 }
 
-void on_get_invites(
-    struct discord *client,
-    const struct discord_user *bot,
-    const struct discord_message *msg)
+void on_channel_get_invites(
+  struct discord *client,
+  const struct discord_user *bot,
+  const struct discord_message *msg)
 {
   if (msg->author->bot) return;
 
@@ -85,6 +76,27 @@ void on_get_invites(
   }
 }
 
+void on_channel_create_invite(
+  struct discord *client,
+  const struct discord_user *bot,
+  const struct discord_message *msg)
+{
+  if (msg->author->bot) return;
+
+  struct discord_invite *invite = discord_invite_alloc();
+
+  char text[MAX_MESSAGE_LEN];
+  if (ORCA_OK == discord_create_channel_invite(client, msg->channel_id, NULL, invite))
+    sprintf(text, "https://discord.gg/%s", invite->code);
+  else
+    sprintf(text, "Couldn't create invite.");
+
+  struct discord_create_message_params params = { .content = text };
+  discord_create_message(client, msg->channel_id, &params, NULL);
+
+  discord_invite_free(invite);
+}
+
 int main(int argc, char *argv[])
 {
   const char *config_file;
@@ -99,19 +111,21 @@ int main(int argc, char *argv[])
   assert(NULL != client && "Could not initialize client");
 
   discord_set_on_ready(client, &on_ready);
+  discord_set_on_channel_create(client, &log_on_channel_create);
+  discord_set_on_channel_update(client, &log_on_channel_update);
+  discord_set_on_channel_delete(client, &log_on_channel_delete);
 
   discord_set_prefix(client, "channel.");
-  discord_set_on_command(client, "create", &on_create);
-  discord_set_on_command(client, "delete_here", &on_delete_here);
-  discord_set_on_command(client, "get_invites", &on_get_invites);
-  discord_set_on_channel_create(client, &on_channel_create);
-  discord_set_on_channel_update(client, &on_channel_update);
-  discord_set_on_channel_delete(client, &on_channel_delete);
+  discord_set_on_command(client, "create", &on_channel_create);
+  discord_set_on_command(client, "delete_here", &on_channel_delete_here);
+  discord_set_on_command(client, "get_invites", &on_channel_get_invites);
+  discord_set_on_command(client, "create_invite", &on_channel_create_invite);
 
   printf("\n\n(USE WITH CAUTION) This bot demonstrates how easy it is to create/delete channels\n"
          "1. Type 'channel.create <channel_name>' anywhere to create a new channel\n"
          "2. Type 'channel.delete_here' to delete the current channel\n"
          "3. Type 'channel.get_invites' to check how many have been created\n"
+         "4. Type 'channel.create_invite' to create a new invite\n"
          "\nTYPE ANY KEY TO START BOT\n");
   fgetc(stdin); // wait for input
 

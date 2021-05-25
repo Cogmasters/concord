@@ -1127,7 +1127,7 @@ event_loop(struct discord_gateway *gw)
 
   // build URL that will be used to connect to Discord
   char url[1024];
-  size_t ret = snprintf(url, sizeof(url), "%s%s"GATEWAY_URL_SUFFIX,
+  size_t ret = snprintf(url, sizeof(url), "%s%s"GATEWAY_URL_SUFFIX,  \
                  gw->session.url,                                    \
                  ('/' == gw->session.url[strlen(gw->session.url)-1]) \
                     ? "" : "/");
