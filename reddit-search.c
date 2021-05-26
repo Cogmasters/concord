@@ -1,17 +1,8 @@
-#define _GNU_SOURCE /* asprintf() */
 #include <string.h>
 
 #include "reddit.h"
 #include "reddit-internal.h"
 
-
-static void
-get_json(char *str, size_t len, void *p_json)
-{
-  struct sized_buffer *json = p_json;
-  asprintf(&json->start, "%.*s", (int)len, str);
-  json->size = len;
-}
 
 ORCAcode
 reddit_search(
@@ -22,6 +13,10 @@ reddit_search(
 {
   if (IS_EMPTY_STRING(subreddit)) {
     log_error("Missing 'subreddit'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!params) {
+    log_error("Missing 'params'");
     return ORCA_MISSING_PARAMETER;
   }
   if (params->after && params->before) {
@@ -79,48 +74,6 @@ reddit_search(
   else if (params->limit > 100)
     params->limit = 100;
 
-  struct ua_resp_handle resp_handle = {
-    .ok_cb = p_json ? &get_json : NULL,
-    .ok_obj = p_json,
-  };
-
-#if 0
-  char query[1024];
-  int ret = query_inject(query, sizeof(query),
-              "(after):s"
-              "(before):s"
-              "(category):s"
-              "(count):d"
-              "(include_facets):b"
-              "(limit):d"
-              "(q):s"
-              "(restrict_sr):b"
-              "(show):s"
-              "(sort):s"
-              "(sr_detail):s"
-              "(t):s"
-              "(type):s", 
-              params->after,
-              params->before,
-              params->category,
-              &params->count,
-              &params->include_facets,
-              &params->limit,
-              params->q,
-              &params->restrict_sr,
-              params->show,
-              params->sort,
-              params->sr_detail,
-              params->t,
-              params->type);
-  ASSERT_S(ret < sizeof(query), "Out of bounds write attempt");
-
-  reddit_adapter_run(
-    &client->adapter,
-    &resp_handle,
-    NULL,
-    HTTP_GET, "/r/%s/search.json%s", subreddit, query);
-#else
   char limit_query[64];
   snprintf(limit_query, sizeof(limit_query),
       "&limit=%d", params->limit);
@@ -159,9 +112,8 @@ reddit_search(
 
   return reddit_adapter_run(
     &client->adapter,
-    &resp_handle,
+    p_json,
     NULL,
     HTTP_GET, "/r/%s/search.json?raw_json=1%s%s%s%s%s%s%s", 
     subreddit, limit_query, restrict_sr_query, q_query, t_query, sort_query, before_query, after_query);
-#endif
 }

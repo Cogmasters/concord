@@ -16,6 +16,7 @@ void reddit_cleanup(struct reddit *client);
 
 ORCAcode reddit_access_token(struct reddit *client);
 
+ORCAcode reddit_comment(struct reddit *client, struct reddit_comment_params *params, struct sized_buffer *p_json);
 ORCAcode reddit_search(struct reddit *client, struct reddit_search_params *params, char subreddit[], struct sized_buffer *p_json);
 
 #endif // REDDIT_H

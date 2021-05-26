@@ -1,3 +1,4 @@
+#define _GNU_SOURCE /* asprintf() */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -43,22 +44,36 @@ reddit_adapter_cleanup(struct reddit_adapter *adapter) {
   ua_cleanup(adapter->ua);
 }
 
+static void
+get_response(char *str, size_t len, void *p_json)
+{
+  struct sized_buffer *json = p_json;
+  asprintf(&json->start, "%.*s", (int)len, str);
+  json->size = len;
+}
+
 /* template function for performing requests */
 ORCAcode
 reddit_adapter_run(
   struct reddit_adapter *adapter, 
-  struct ua_resp_handle *resp_handle,
+  struct sized_buffer *resp_body,
   struct sized_buffer *req_body,
   enum http_method http_method, char endpoint[], ...)
 {
   va_list args;
   va_start(args, endpoint);
 
+  struct ua_resp_handle resp_handle = {
+    .ok_cb = resp_body ? &get_response : NULL,
+    .ok_obj = resp_body,
+  };
+
   ORCAcode code;
+
   code = ua_vrun(
            adapter->ua,
            NULL,
-           resp_handle,
+           &resp_handle,
            req_body,
            http_method, endpoint, args);
 

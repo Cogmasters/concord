@@ -20,7 +20,7 @@ void reddit_adapter_cleanup(struct reddit_adapter *adapter);
 
 ORCAcode reddit_adapter_run(
   struct reddit_adapter *adapter, 
-  struct ua_resp_handle *resp_handle,
+  struct sized_buffer *resp_body,
   struct sized_buffer *req_body,
   enum http_method http_method, char endpoint[], ...);
 
