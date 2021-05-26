@@ -30,6 +30,8 @@
 
 #include <json-actor.h>
 
+#define TEXT1 "{\"a\": 12, \"ab\": 481}"
+
 
 char *get_json_text(char filename[]);
 json_item_t *callback_test(json_item_t *item);
@@ -42,9 +44,12 @@ int main(int argc, char *argv[])
     char *json_text = get_json_text(argv[1]);
 
     json_item_t *root = json_parse(json_text, strlen(json_text));
-
     struct sized_buffer str = json_stringify(root, JSON_ANY);
     fprintf(stderr, "%.*s", (int)str.size, str.start);
+    json_cleanup(root);
+
+    root = json_parse(TEXT1, sizeof(TEXT1));
+    fprintf(stderr, "%Lf\n", json_get_number(json_get_child(root, "ab")));
 
     return EXIT_SUCCESS;
 }
