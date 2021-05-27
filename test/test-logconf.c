@@ -37,6 +37,7 @@ int main(int argc, char *argv[])
     &conf, 
     &varA, 
     "TITLE1", 
+    (struct sized_buffer){"HEADER1", 7},
     (struct sized_buffer){"BODY1", 5},
     "%s", varA);
 
@@ -44,6 +45,7 @@ int main(int argc, char *argv[])
     &conf, 
     &varB, 
     "TITLE2", 
+    (struct sized_buffer){"HEADER2", 7},
     (struct sized_buffer){"BODY2", 5},
     "%d", varB);
 
@@ -51,6 +53,7 @@ int main(int argc, char *argv[])
     &conf, 
     &varC, 
     "TITLE3", 
+    (struct sized_buffer){"HEADER3", 7},
     (struct sized_buffer){"BODY3", 5},
     "%d", varC.x);
 
