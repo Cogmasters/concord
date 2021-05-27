@@ -246,7 +246,7 @@ ua_reqheader_str(struct user_agent *ua, char *buf, size_t bufsize)
   struct curl_slist *node = ua->req_header;
   size_t ret=0;
   while (NULL != node) {
-    ret += snprintf(buf+ret, bufsize-ret, "%s\n", node->data);
+    ret += snprintf(buf+ret, bufsize-ret, "%s\r\n", node->data);
     VASSERT_S(ret < bufsize, "[%s] Out of bounds write attempt", logconf_tag(ua->p_config, ua));
     node = node->next;
   }
