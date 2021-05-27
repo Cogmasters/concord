@@ -27,6 +27,10 @@ reddit_search(
     log_error("'params.category' should be no longer than 5 characters");
     return ORCA_BAD_PARAMETER;
   }
+  if (IS_EMPTY_STRING(params->q)) {
+    log_error("Missing 'params->q'");
+    return ORCA_MISSING_PARAMETER;
+  }
   if (!orka_str_bounds_check(params->q, 512)) {
     log_error("'params.q' should be no longer than 512 characters");
     return ORCA_BAD_PARAMETER;
@@ -44,10 +48,6 @@ reddit_search(
   {
     log_error("'params.sort' should be one of: (relevance, hot, top, new, comments)");
     return ORCA_BAD_PARAMETER;
-  }
-  if (IS_EMPTY_STRING(params->q)) {
-    log_error("Missing 'params->q'");
-    return ORCA_MISSING_PARAMETER;
   }
   if (!IS_EMPTY_STRING(params->t)
       && !(STREQ(params->t, "hour")
@@ -74,46 +74,41 @@ reddit_search(
   else if (params->limit > 100)
     params->limit = 100;
 
-  char limit_query[64];
-  snprintf(limit_query, sizeof(limit_query),
-      "&limit=%d", params->limit);
-  char restrict_sr_query[32] = "";
+  char query[1024];
+  size_t ret=0;
+  ret += snprintf(query, sizeof(query), "?limit=%d", params->limit);
+  ASSERT_S(ret < sizeof(query), "Out of bounds write attempt");
+
+  char *q_url_encoded = url_encode(params->q);
+  ret += snprintf(query+ret, sizeof(query)-ret, "&q=%s", q_url_encoded);
+  ASSERT_S(ret < sizeof(query), "Out of bounds write attempt");
+  free(q_url_encoded);
+
   if (true == params->restrict_sr) {
-    snprintf(restrict_sr_query, sizeof(restrict_sr_query),
-        "&restrict_sr=1");
+    ret += snprintf(query+ret, sizeof(query)-ret, "&restrict_sr=1");
+    ASSERT_S(ret < sizeof(query), "Out of bounds write attempt");
   }
-  char q_query[600] = "";
-  if (params->q) {
-    char *q_url_encoded = url_encode(params->q);
-    snprintf(q_query, sizeof(q_query),
-        "&q=%s", q_url_encoded);
-    free(q_url_encoded);
-  }
-  char t_query[32] = "";
   if (params->t) {
-    snprintf(t_query, sizeof(t_query),
-        "&t=%s", params->t);
+    ret += snprintf(query+ret, sizeof(query)-ret, "&t=%s", params->t);
+    ASSERT_S(ret < sizeof(query), "Out of bounds write attempt");
   }
-  char sort_query[32] = "";
   if (params->sort) {
-    snprintf(sort_query, sizeof(sort_query),
-        "&sort=%s", params->sort);
+    ret += snprintf(query+ret, sizeof(query)-ret, "&sort=%s", params->sort);
+    ASSERT_S(ret < sizeof(query), "Out of bounds write attempt");
   }
   char before_query[32] = "";
   if (params->before) {
-    snprintf(before_query, sizeof(before_query),
-        "&before=%s", params->before);
+    ret += snprintf(query+ret, sizeof(query)-ret, "&before=%s", params->before);
+    ASSERT_S(ret < sizeof(query), "Out of bounds write attempt");
   }
-  char after_query[32] = "";
   if (params->after) {
-    snprintf(after_query, sizeof(after_query),
-        "&after=%s", params->after);
+    ret += snprintf(query+ret, sizeof(query)-ret, "&after=%s", params->after);
+    ASSERT_S(ret < sizeof(query), "Out of bounds write attempt");
   }
 
   return reddit_adapter_run(
     &client->adapter,
     p_json,
     NULL,
-    HTTP_GET, "/r/%s/search.json?raw_json=1%s%s%s%s%s%s%s", 
-    subreddit, limit_query, restrict_sr_query, q_query, t_query, sort_query, before_query, after_query);
+    HTTP_GET, "/r/%s/search.json?raw_json=1%s", subreddit, query);
 }
