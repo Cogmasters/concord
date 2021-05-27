@@ -569,6 +569,7 @@ send_request(struct user_agent *ua, struct _ua_conn *conn)
     ua->p_config, 
     ua,
     resp_url, 
+    (struct sized_buffer){conn->info.resp_header.buf, conn->info.resp_header.length},
     (struct sized_buffer){conn->info.resp_body.buf, conn->info.resp_body.length},
     "HTTP_RCV_%s(%d)", http_code_print(httpcode), httpcode);
 
@@ -712,6 +713,7 @@ ua_vrun(
     ua->p_config, 
     ua,
     conn->info.req_url, 
+    (struct sized_buffer){"", 0},
     *req_body,
     "HTTP_SEND %s", http_method_print(http_method));
 

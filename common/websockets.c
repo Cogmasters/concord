@@ -198,6 +198,7 @@ cws_on_connect_cb(void *p_ws, CURL *ehandle, const char *ws_protocols)
     ws->p_config, 
     ws,
     ws->base_url, 
+    (struct sized_buffer){"", 0},
     (struct sized_buffer){(char*)ws_protocols, strlen(ws_protocols)},
     "WS_RCV_CONNECT");
 
@@ -215,6 +216,7 @@ cws_on_close_cb(void *p_ws, CURL *ehandle, enum cws_close_reason cwscode, const 
     ws->p_config, 
     ws,
     ws->base_url, 
+    (struct sized_buffer){"", 0},
     (struct sized_buffer){(char*)reason, len},
     "WS_RCV_CLOSE(%d)", cwscode);
 
@@ -232,6 +234,7 @@ cws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
     ws->p_config, 
     ws,
     ws->base_url, 
+    (struct sized_buffer){"", 0},
     (struct sized_buffer){(char*)text, len},
     "WS_RCV_TEXT");
 
@@ -247,6 +250,7 @@ cws_on_binary_cb(void *p_ws, CURL *ehandle, const void *mem, size_t len)
     ws->p_config, 
     ws,
     ws->base_url, 
+    (struct sized_buffer){"", 0},
     (struct sized_buffer){(char*)mem, len},
     "WS_RCV_BINARY");
 
@@ -262,6 +266,7 @@ cws_on_ping_cb(void *p_ws, CURL *ehandle, const char *reason, size_t len)
     ws->p_config, 
     ws,
     ws->base_url, 
+    (struct sized_buffer){"", 0},
     (struct sized_buffer){(char*)reason, len},
     "WS_RCV_PING");
 
@@ -277,6 +282,7 @@ cws_on_pong_cb(void *p_ws, CURL *ehandle, const char *reason, size_t len)
     ws->p_config, 
     ws,
     ws->base_url, 
+    (struct sized_buffer){"", 0},
     (struct sized_buffer){(char*)reason, len},
     "WS_RCV_PONG");
 
@@ -325,6 +331,7 @@ static bool _ws_close(struct websockets *ws)
     ws->p_config, 
     ws,
     ws->base_url, 
+    (struct sized_buffer){"", 0},
     (struct sized_buffer){(char*)reason, sizeof(reason)},
     "WS_SEND_CLOSE(%d)", code);
 
@@ -428,6 +435,7 @@ ws_send_text(struct websockets *ws, char text[], size_t len)
     ws->p_config, 
     ws,
     ws->base_url, 
+    (struct sized_buffer){"", 0},
     (struct sized_buffer){text, len},
     "WS_SEND_TEXT");
 
