@@ -40,7 +40,6 @@ https://en.wikipedia.org/wiki/List_of_HTTP_status_codes */
 #define HTTP_GATEWAY_UNAVAILABLE  502
 
 #define UA_MAX_HEADER_SIZE 100 + 1
-#define UA_MAX_HEADER_LEN  1024 + 1
 #define UA_MAX_URL_LEN     512 + 1
 
 //callback for object to be loaded by api response
@@ -60,9 +59,28 @@ struct ua_resp_handle {
   cxt_load_obj_cb *cxt_err_cb; // err call back with an execution context
 };
 
+/**
+ * like 'struct sized_buffer', but used for buffers that might move
+ *        in memory. (ex. via realloc)
+ */ 
+struct pos_buffer {
+  uintptr_t start;
+  size_t size;
+};
+
 struct ua_resp_header {
-  char field[UA_MAX_HEADER_SIZE][UA_MAX_HEADER_LEN];
-  char value[UA_MAX_HEADER_SIZE][UA_MAX_HEADER_LEN];
+  /**
+   * the api response header and its length
+   */
+  char *buf;
+  size_t length;
+  /**
+   * the real size occupied in memory by 'buf'
+   */
+  size_t bufsize;
+
+  struct pos_buffer field[UA_MAX_HEADER_SIZE];
+  struct pos_buffer value[UA_MAX_HEADER_SIZE];
   int size;
 };
 
@@ -70,12 +88,12 @@ struct ua_resp_body {
   /**
    * the api response string and its length
    */
-  char *start;
-  size_t size;
+  char *buf;
+  size_t length;
   /**
-   * the real size occupied in memory
+   * the real size occupied in memory by 'buf'
    */
-  size_t real_size;
+  size_t bufsize;
 };
 
 struct ua_info {
@@ -135,7 +153,7 @@ ORCAcode ua_run(
   enum http_method http_method, char endpoint[], ...);
 
 void ua_info_cleanup(struct ua_info *info);
-char* ua_info_respheader_field(struct ua_info *info, char field[]);
+struct sized_buffer ua_info_respheader_field(struct ua_info *info, char field[]);
 struct sized_buffer ua_info_get_resp_body(struct ua_info *info);
 
 #ifdef __cplusplus

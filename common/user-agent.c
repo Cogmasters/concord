@@ -186,9 +186,8 @@ http_method_eval(char method[])
 void
 ua_reqheader_add(struct user_agent *ua, char field[],  char value[])
 {
-  char buf[UA_MAX_HEADER_LEN];
-  int ret = snprintf(buf, sizeof(buf), "%s: %s", field, value);
-  VASSERT_S(ret < UA_MAX_HEADER_LEN, "[%s] Out of bounds write attempt", logconf_tag(ua->p_config, ua));
+  char *buf;
+  size_t ret = asprintf(&buf, "%s: %s", field, value);
 
   /* check for match in existing fields */
   size_t len = strlen(field);
@@ -196,7 +195,8 @@ ua_reqheader_add(struct user_agent *ua, char field[],  char value[])
   while (NULL != node) {
     if (0 == strncasecmp(node->data, field, len)) {
       free(node->data);
-      node->data = strndup(buf, sizeof(buf));
+      node->data = strndup(buf, ret);
+      free(buf);
       return; /* EARLY RETURN */
     }
     node = node->next;
@@ -207,6 +207,8 @@ ua_reqheader_add(struct user_agent *ua, char field[],  char value[])
     ua->req_header = curl_slist_append(NULL, buf);
   else
     curl_slist_append(ua->req_header, buf);
+
+  free(buf);
 }
 
 /**
@@ -247,37 +249,48 @@ static size_t
 conn_respheader_cb(char *buf, size_t size, size_t nmemb, void *p_userdata)
 {
   size_t bufsize = size * nmemb;
-  struct ua_resp_header *resp_header = p_userdata;
+  struct ua_resp_header *header = p_userdata;
 
   char *ptr;
   if (!(ptr = strchr(buf, ':'))) { // returns if can't find ':' field/value delimiter
     return bufsize;
   }
 
-  ptrdiff_t delim_idx = ptr - buf; // get ':' index
-
-  int ret = snprintf(resp_header->field[resp_header->size], UA_MAX_HEADER_LEN, "%.*s", (int)delim_idx, buf);
-  ASSERT_S(ret < UA_MAX_HEADER_LEN, "Out of bounds write attempt");
-
-  if (!(ptr = strstr(ptr + 1, "\r\n"))) {//returns if can't find CRLF match
+  ptrdiff_t delim_idx = ptr - buf; // get ':' position
+  if (!(ptr = strstr(ptr + 1, "\r\n"))) { //returns if can't find CRLF match
     return bufsize;
   }
 
+  if (header->bufsize < (header->length + bufsize + 1)) {
+    header->bufsize = header->length + bufsize + 1;
+    header->buf = realloc(header->buf, header->bufsize);
+  }
+  memcpy(&header->buf[header->length], buf, bufsize);
+
+  // get the field part of the string
+  header->field[header->size] = (struct pos_buffer){
+    .start = header->length,
+    .size = delim_idx
+  };
+
   // offsets blank characters
-  int offset=1; // starts after the ':' delimiter
-  while (delim_idx + offset < bufsize) {
-    if (!isspace(buf[delim_idx + offset]))
+  size_t bufoffset=1; // starts after the ':' delimiter
+  while (delim_idx + bufoffset < bufsize) {
+    if (!isspace(buf[delim_idx + bufoffset]))
       break; /* EARLY BREAK (not blank character) */
-    ++offset;
+    ++bufoffset;
   }
 
   // get the value part of the string
-  const int value_size = (ptr - buf) - (delim_idx + offset);
-  ret = snprintf(resp_header->value[resp_header->size], UA_MAX_HEADER_LEN, "%.*s", value_size, &buf[delim_idx + offset]);
-  ASSERT_S(ret < UA_MAX_HEADER_LEN, "Out of bounds write attempt");
+  header->value[header->size] = (struct pos_buffer){
+    .start = header->length + (delim_idx + bufoffset),
+    .size = (ptr - buf) - (delim_idx + bufoffset)
+  };
 
-  ++resp_header->size; //update header amount of field/value resp_header
-  ASSERT_S(resp_header->size < UA_MAX_HEADER_SIZE, "Out of bounds write attempt");
+  header->length += bufsize;
+
+  ++header->size; // update header amount of field/value header
+  ASSERT_S(header->size < UA_MAX_HEADER_SIZE, "Out of bounds write attempt");
 
   return bufsize;
 }
@@ -293,13 +306,13 @@ conn_respbody_cb(char *buf, size_t size, size_t nmemb, void *p_userdata)
   struct ua_resp_body *body = p_userdata;
 
   //increase response body memory block size only if necessary
-  if (body->real_size < (body->size + bufchunk_size + 1)) {
-    body->real_size = body->size + bufchunk_size + 1;
-    body->start = realloc(body->start, body->real_size);
+  if (body->bufsize < (body->length + bufchunk_size + 1)) {
+    body->bufsize = body->length + bufchunk_size + 1;
+    body->buf = realloc(body->buf, body->bufsize);
   }
-  memcpy(&body->start[body->size], buf, bufchunk_size);
-  body->size += bufchunk_size;
-  body->start[body->size] = '\0';
+  memcpy(&body->buf[body->length], buf, bufchunk_size);
+  body->length += bufchunk_size;
+  body->buf[body->length] = '\0';
   return bufchunk_size;
 }
 
@@ -382,7 +395,8 @@ conn_reset(struct _ua_conn *conn)
   conn->is_busy = false;
   conn->info.code = 0;
   conn->info.req_tstamp = 0;
-  conn->info.resp_body.size = 0;
+  conn->info.resp_body.length = 0;
+  conn->info.resp_header.length = 0;
   conn->info.resp_header.size = 0;
   *conn->errbuf = '\0';
 }
@@ -555,7 +569,7 @@ send_request(struct user_agent *ua, struct _ua_conn *conn)
     ua->p_config, 
     ua,
     resp_url, 
-    (struct sized_buffer){conn->info.resp_body.start, conn->info.resp_body.size},
+    (struct sized_buffer){conn->info.resp_body.buf, conn->info.resp_body.length},
     "HTTP_RCV_%s(%d)", http_code_print(httpcode), httpcode);
 
   pthread_mutex_unlock(&ua->lock);
@@ -582,15 +596,15 @@ perform_request(
     if (resp_handle) {
       if (resp_handle->err_cb) {
         (*resp_handle->err_cb)(
-          conn->info.resp_body.start,
-          conn->info.resp_body.size,
+          conn->info.resp_body.buf,
+          conn->info.resp_body.length,
           resp_handle->err_obj);
       }
       else if (resp_handle->cxt_err_cb) {
         (*resp_handle->cxt_err_cb)(
           resp_handle->cxt,
-          conn->info.resp_body.start,
-          conn->info.resp_body.size,
+          conn->info.resp_body.buf,
+          conn->info.resp_body.length,
           resp_handle->err_obj);
       }
     }
@@ -606,15 +620,15 @@ perform_request(
     if (resp_handle) {
       if(resp_handle->err_cb) {
         (*resp_handle->err_cb)(
-          conn->info.resp_body.start,
-          conn->info.resp_body.size,
+          conn->info.resp_body.buf,
+          conn->info.resp_body.length,
           resp_handle->err_obj);
       }
       else if (resp_handle->cxt_err_cb) {
         (*resp_handle->cxt_err_cb)(
           resp_handle->cxt,
-          conn->info.resp_body.start,
-          conn->info.resp_body.size,
+          conn->info.resp_body.buf,
+          conn->info.resp_body.length,
           resp_handle->err_obj);
       }
     }
@@ -638,15 +652,15 @@ perform_request(
     if (resp_handle) {
       if (resp_handle->ok_cb) {
         (*resp_handle->ok_cb)(
-          conn->info.resp_body.start,
-          conn->info.resp_body.size,
+          conn->info.resp_body.buf,
+          conn->info.resp_body.length,
           resp_handle->ok_obj);
       }
       else if (resp_handle->cxt_ok_cb) {
         (*resp_handle->cxt_ok_cb)(
           resp_handle->cxt,
-          conn->info.resp_body.start,
-          conn->info.resp_body.size,
+          conn->info.resp_body.buf,
+          conn->info.resp_body.length,
           resp_handle->ok_obj);
       }
     }
@@ -707,8 +721,8 @@ ua_vrun(
   pthread_mutex_lock(&ua->lock);
   if (info) {
     memcpy(info, &conn->info, sizeof(struct ua_info));
-    asprintf(&info->resp_body.start, "%.*s", \
-        (int)conn->info.resp_body.size, conn->info.resp_body.start);
+    asprintf(&info->resp_body.buf, "%.*s", \
+        (int)conn->info.resp_body.length, conn->info.resp_body.buf);
   }
 
   conn_reset(conn); // reset for next iteration
@@ -734,11 +748,11 @@ ua_run(
   va_start(args, endpoint);
 
   ORCAcode code = ua_vrun(
-                         ua, 
-                         info,
-                         resp_handle, 
-                         req_body, 
-                         http_method, endpoint, args);
+                    ua, 
+                    info,
+                    resp_handle, 
+                    req_body, 
+                    http_method, endpoint, args);
 
   va_end(args);
   return code;
@@ -747,26 +761,35 @@ ua_run(
 void
 ua_info_cleanup(struct ua_info *info) 
 {
-  if (info->resp_body.start)
-    free(info->resp_body.start);
+  if (info->resp_body.buf)
+    free(info->resp_body.buf);
   memset(info, 0, sizeof(struct ua_info));
 }
 
 /**
  * attempt to get value from matching response header field
  */
-char*
+struct sized_buffer
 ua_info_respheader_field(struct ua_info *info, char field[])
 {
+  size_t len = strlen(field);
+  struct sized_buffer h_field; // header field
   for (int i=0; i < info->resp_header.size; ++i) {
-    if (0 == strcasecmp(field, info->resp_header.field[i])) {
-      return info->resp_header.value[i]; //found header field, return its value
+    h_field = (struct sized_buffer){
+      .start = info->resp_header.buf + info->resp_header.field[i].start,
+      .size = info->resp_header.field[i].size
+    };
+    if (len == h_field.size && 0 == strncasecmp(field, h_field.start, len)) {
+      return (struct sized_buffer){
+        .start = info->resp_header.buf + info->resp_header.value[i].start,
+        .size = info->resp_header.value[i].size
+      };
     }
   }
-  return NULL; //couldn't find header field
+  return (struct sized_buffer){NULL, 0};
 }
 
 struct sized_buffer
 ua_info_get_resp_body(struct ua_info *info) {
-  return (struct sized_buffer){info->resp_body.start, info->resp_body.size};
+  return (struct sized_buffer){info->resp_body.buf, info->resp_body.length};
 }

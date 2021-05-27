@@ -13,10 +13,10 @@ https://discord.com/developers/docs/topics/rate-limits#rate-limits */
 
 
 static struct discord_bucket*
-bucket_init(char hash[])
+bucket_init(struct sized_buffer *hash)
 {
   struct discord_bucket *new_bucket = calloc(1, sizeof *new_bucket);
-  int ret = snprintf(new_bucket->hash, sizeof(new_bucket->hash), "%s", hash);
+  int ret = snprintf(new_bucket->hash, sizeof(new_bucket->hash), "%.*s", (int)hash->size, hash->start);
   ASSERT_S(ret < sizeof(new_bucket->hash), "Out of bounds write attempt");
   if (pthread_mutex_init(&new_bucket->lock, NULL))
     ERR("Couldn't initialize pthread mutex");
@@ -147,13 +147,13 @@ parse_ratelimits(struct discord_bucket *bucket, struct ua_info *info)
   {
     bucket->update_tstamp = info->req_tstamp;
 
-    char *str; // fetch header value as string
-    if ((str = ua_info_respheader_field(info, "x-ratelimit-reset")))
-      bucket->reset_tstamp = 1000 * strtod(str, NULL);
-    if ((str = ua_info_respheader_field(info, "x-ratelimit-remaining")))
-      bucket->remaining =  strtol(str, NULL, 10);
-    if ((str = ua_info_respheader_field(info, "x-ratelimit-reset-after")))
-      bucket->reset_after_ms = 1000 * strtod(str, NULL);
+    struct sized_buffer value; // fetch header value as string
+    value = ua_info_respheader_field(info, "x-ratelimit-reset");
+    if (value.size) bucket->reset_tstamp = 1000 * strtod(value.start, NULL);
+    value = ua_info_respheader_field(info, "x-ratelimit-remaining");
+    if (value.size) bucket->remaining = strtol(value.start, NULL, 10);
+    value = ua_info_respheader_field(info, "x-ratelimit-reset-after");
+    if (value.size) bucket->reset_after_ms = 1000 * strtod(value.start, NULL);
 
     log_debug("\n\t[%s]\n\t"         \
               "reset_tstamp: %"PRIu64"\n\t" \
@@ -181,8 +181,8 @@ parse_ratelimits(struct discord_bucket *bucket, struct ua_info *info)
 static void
 match_route(struct discord_adapter *adapter, char route[], struct ua_info *info)
 {
-  char *hash = ua_info_respheader_field(info, "x-ratelimit-bucket");
-  if (!hash) {
+  struct sized_buffer hash = ua_info_respheader_field(info, "x-ratelimit-bucket");
+  if (!hash.size) {
     log_debug("[?] Missing bucket-hash from response header," \
               " route '%s' can't be assigned to a bucket", route);
     return;
@@ -193,7 +193,7 @@ match_route(struct discord_adapter *adapter, char route[], struct ua_info *info)
 
   //attempt to match hash to client bucket hashes
   for (size_t i=0; i < adapter->ratelimit.num_buckets; ++i) {
-    if (STREQ(hash, bucket_pool[i]->hash)) {
+    if (STRNEQ(bucket_pool[i]->hash, hash.start, hash.size)) {
       bucket = bucket_pool[i];
       break;
     }
@@ -207,7 +207,7 @@ match_route(struct discord_adapter *adapter, char route[], struct ua_info *info)
     bucket_pool = realloc(bucket_pool, adapter->ratelimit.num_buckets * sizeof(struct discord_bucket*));
     adapter->ratelimit.bucket_pool = bucket_pool;
 
-    bucket = bucket_init(hash);
+    bucket = bucket_init(&hash);
     bucket_pool[adapter->ratelimit.num_buckets-1] = bucket;
   }
 
