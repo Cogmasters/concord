@@ -187,7 +187,7 @@ void
 ua_reqheader_add(struct user_agent *ua, char field[],  char value[])
 {
   char *buf;
-  size_t ret = asprintf(&buf, "%s: %s", field, value);
+  asprintf(&buf, "%s: %s", field, value);
 
   /* check for match in existing fields */
   size_t len = strlen(field);
@@ -195,8 +195,7 @@ ua_reqheader_add(struct user_agent *ua, char field[],  char value[])
   while (NULL != node) {
     if (0 == strncasecmp(node->data, field, len)) {
       free(node->data);
-      node->data = strndup(buf, ret);
-      free(buf);
+      node->data = buf;
       return; /* EARLY RETURN */
     }
     node = node->next;
@@ -238,7 +237,23 @@ ua_reqheader_del(struct user_agent *ua, char field[])
     node = node->next;
   } while (node != NULL);
 
-  log_warn("[%s] Couldn't find field '%s' in existing request header", field, logconf_tag(ua->p_config, ua));
+  log_warn("[%s] Couldn't find field '%s' in existing request header", logconf_tag(ua->p_config, ua), field);
+}
+
+char*
+ua_reqheader_str(struct user_agent *ua, char *buf, size_t bufsize) 
+{
+  struct curl_slist *node = ua->req_header;
+  size_t ret=0;
+  while (NULL != node) {
+    ret += snprintf(buf+ret, bufsize-ret, "%s\n", node->data);
+    VASSERT_S(ret < bufsize, "[%s] Out of bounds write attempt", logconf_tag(ua->p_config, ua));
+    node = node->next;
+  }
+  if (!ret) return NULL;
+
+  buf[ret-1] = '\0';
+  return buf;
 }
 
 /**
@@ -709,11 +724,14 @@ ua_vrun(
   struct _ua_conn *conn = get_conn(ua);
   set_url(ua, conn, endpoint, args); //set the request url
 
+  char buf[1024]="";
+  ua_reqheader_str(ua, buf, sizeof(buf));
+
   log_http(
     ua->p_config, 
     ua,
     conn->info.req_url, 
-    (struct sized_buffer){"", 0},
+    (struct sized_buffer){buf, sizeof(buf)},
     *req_body,
     "HTTP_SEND %s", http_method_print(http_method));
 
