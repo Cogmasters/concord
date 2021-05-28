@@ -200,8 +200,13 @@ ua_reqheader_add(struct user_agent *ua, char field[],  char value[])
     if (field_len == ptr - node->data
         && 0 == strncasecmp(node->data, field, field_len)) 
     {
-      free(node->data);
-      node->data = strdup(buf);
+      if (strlen(node->data) < ret) {
+        free(node->data);
+        node->data = strdup(buf);
+      }
+      else {
+        memcpy(node->data, buf, ret);
+      }
       return; /* EARLY RETURN */
     }
     node = node->next;
