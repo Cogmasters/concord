@@ -128,7 +128,7 @@ void on_reaction_add(
 
     if (0 == strcmp(emoji->name, "⬅️")) 
     {
-      char before[16] = "t3_";
+      char before[16]="t3_";
       sscanf(embed->fields[0]->value, \
           "https://reddit.com/r/%*[^/]/comments/%[^/]", &before[sizeof("t3_")-1]);
 
@@ -160,7 +160,7 @@ void on_reaction_add(
     else if (0 == strcmp(emoji->name, "➡️"))
     {
       size_t len = ntl_length((ntl_t)embed->fields);
-      char after[16] = "t3_";
+      char after[16]="t3_";
       sscanf(embed->fields[len-1]->value, \
           "https://reddit.com/r/%*[^/]/comments/%[^/]", &after[sizeof("t3_")-1]);
 
@@ -299,8 +299,12 @@ void on_ready(struct discord *client, const struct discord_user *bot) {
       bot->username, bot->discriminator);
 }
 
-void refresh_reddit_access_token_cb(void *data) {
-  reddit_access_token(BOT.R.client);
+void refresh_reddit_access_token_cb(void *data) 
+{
+  struct sized_buffer resp_body={0};
+  struct reddit_access_token_params params = { .grant_type = "password" };
+  reddit_access_token(BOT.R.client, &params, &resp_body);
+  ERR("%.*s", (int)resp_body.size, resp_body.start);
 }
 
 void search_reddit_cb(void *data) 
@@ -318,21 +322,19 @@ void search_reddit_cb(void *data)
     return; /* EARLY RETURN */
   }
 
-  char name[16]="";
-  sscanf(embed->fields[0]->name, "`%[^`]", name);
-  if (!*name) {
-    log_error("Couldn't complete search");
-    return; /* EARLY RETURN */
-  }
+  char before[16]="";
+  sscanf(embed->fields[0]->value, \
+      "https://reddit.com/r/%*[^/]/comments/%[^/]", before);
 
-  if (BOT.R.params.before) free(BOT.R.params.before);
-  BOT.R.params.before = strdup(name);
-
-  if (strcmp(name, BOT.R.params.before)) {
-    log_trace("Search couldn't fetch new results");
-    discord_embed_free(embed);
-    return; /* EARLY RETURN */
+  if (BOT.R.params.before) {
+    if (strcmp(before, BOT.R.params.before)) {
+      log_trace("Search couldn't fetch new results");
+      discord_embed_free(embed);
+      return; /* EARLY RETURN */
+    }
+    free(BOT.R.params.before);
   }
+  asprintf(&BOT.R.params.before, "t3_%s", before);
 
   struct discord_message *ret = discord_message_alloc();
   struct discord_create_message_params params = { .embed = embed };
@@ -403,7 +405,10 @@ void load_BOT(const char config_file[])
       NULL, 
       &refresh_reddit_access_token_cb);
   // get the first one immediately
-  reddit_access_token(BOT.R.client);
+  struct sized_buffer resp_body={0};
+  struct reddit_access_token_params params = { .grant_type = "password" };
+  reddit_access_token(BOT.R.client, &params, &resp_body);
+  ERR("%.*s", (int)resp_body.size, resp_body.start);
 
   if (true == enable) {
     BOT.R.tsk_search = task_init();
@@ -461,6 +466,16 @@ int main(int argc, char *argv[])
   fgetc(stdin); // wait for input
 
   load_BOT(config_file);
+
+  struct reddit_comment_params params = {
+    .return_rtjson = true,
+    .api_type = "json",
+    .thing_id = "t3_nlpvwx",
+    .text = "This is a test."
+  };
+  struct sized_buffer json={0};
+  reddit_comment(BOT.R.client, &params, &json);
+  ERR("%.*s", (int)json.size, json.start);
 
   /* trigger event callbacks in a multi-threaded fashion */
   discord_set_blocking_event_handler(BOT.D.client, &on_any_event);
