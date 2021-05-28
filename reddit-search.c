@@ -9,7 +9,7 @@ reddit_search(
   struct reddit *client, 
   struct reddit_search_params *params, 
   char subreddit[], 
-  struct sized_buffer *p_json)
+  struct sized_buffer *p_resp_body)
 {
   if (IS_EMPTY_STRING(subreddit)) {
     log_error("Missing 'subreddit'");
@@ -96,7 +96,6 @@ reddit_search(
     ret += snprintf(query+ret, sizeof(query)-ret, "&sort=%s", params->sort);
     ASSERT_S(ret < sizeof(query), "Out of bounds write attempt");
   }
-  char before_query[32] = "";
   if (params->before) {
     ret += snprintf(query+ret, sizeof(query)-ret, "&before=%s", params->before);
     ASSERT_S(ret < sizeof(query), "Out of bounds write attempt");
@@ -108,7 +107,7 @@ reddit_search(
 
   return reddit_adapter_run(
     &client->adapter,
-    p_json,
+    p_resp_body,
     NULL,
     HTTP_GET, "/r/%s/search.json?raw_json=1%s", subreddit, query);
 }

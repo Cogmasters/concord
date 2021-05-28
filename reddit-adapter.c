@@ -9,6 +9,7 @@
 #include "orka-utils.h"
 
 #define BASE_API_URL "https://www.reddit.com"
+#define BASE_OAUTH_URL "https://oauth.reddit.com"
 
 static void
 curl_setopt_cb(CURL *ehandle, void *p_client)

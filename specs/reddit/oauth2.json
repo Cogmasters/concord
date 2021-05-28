@@ -1,0 +1,20 @@
+{
+  "namespace": ["reddit"],
+  "comment": "https://github.com/reddit-archive/reddit/wiki/OAuth2-Quick-Start-Example",
+  "defs":
+  [
+    {
+      "title":"Access Token",
+      "namespace":["access_token"],
+      "struct":"params",
+      "fields":
+      [
+        { "name": "grant_type", "type":{ "base":"char", "dec":"*" }, "comment":"'password' for script type apps, 'refresh_token' for renewing access token and 'authorization_code' for webapps"},
+        { "name": "username", "type":{ "base":"char", "dec":"*" }, "comment":"username for script app"},
+        { "name": "password", "type":{ "base":"char", "dec":"*" }, "comment":"password for script app"},
+        { "name": "code", "type":{ "base":"char", "dec":"*" }, "comment":"the code retrieved by the webapp"},
+        { "name": "redirect_uri", "type":{ "base":"char", "dec":"*" }, "comment":"redirect uri for webapp"}
+      ]
+    }
+  ]
+}
