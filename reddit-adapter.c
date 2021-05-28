@@ -37,7 +37,11 @@ reddit_adapter_init(struct reddit_adapter *adapter, struct logconf *config)
 
   ua_easy_setopt(adapter->ua, adapter->p_client, &curl_setopt_cb);
 
-  ua_reqheader_add(adapter->ua, "User-Agent", "orca:github.com/cee-studio/orca:v.0 (by /u/LucasMull)");
+  char auth[512];
+  snprintf(auth, sizeof(auth), "orca:github.com/cee-studio/orca:v.0 (by /u/%.*s)",
+      (int)adapter->p_client->username.size,
+      adapter->p_client->username.start);
+  ua_reqheader_add(adapter->ua, "User-Agent", auth);
   ua_reqheader_add(adapter->ua, "Content-Type", "application/x-www-form-urlencoded");
 }
 
