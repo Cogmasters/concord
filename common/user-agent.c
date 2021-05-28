@@ -205,7 +205,7 @@ ua_reqheader_add(struct user_agent *ua, char field[],  char value[])
         node->data = strdup(buf);
       }
       else {
-        memcpy(node->data, buf, ret);
+        memcpy(node->data, buf, ret+1);
       }
       return; /* EARLY RETURN */
     }
