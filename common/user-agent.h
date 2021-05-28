@@ -59,15 +59,6 @@ struct ua_resp_handle {
   cxt_load_obj_cb *cxt_err_cb; // err call back with an execution context
 };
 
-/**
- * like 'struct sized_buffer', but used for buffers that might move
- *        in memory. (ex. via realloc)
- */ 
-struct pos_buffer {
-  uintptr_t start;
-  size_t size;
-};
-
 struct ua_resp_header {
   /**
    * the api response header and its length
@@ -79,8 +70,19 @@ struct ua_resp_header {
    */
   size_t bufsize;
 
-  struct pos_buffer field[UA_MAX_HEADER_SIZE];
-  struct pos_buffer value[UA_MAX_HEADER_SIZE];
+  /**
+   * index and size of individual field and values
+   *        from 'buf'
+   */
+  struct {
+    struct {
+      uintptr_t idx;
+      size_t size;
+    } field, value;
+  } pos[UA_MAX_HEADER_SIZE];
+  /**
+   * amount of field/value pairs
+   */
   int size;
 };
 

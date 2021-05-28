@@ -283,10 +283,8 @@ conn_respheader_cb(char *buf, size_t size, size_t nmemb, void *p_userdata)
   memcpy(&header->buf[header->length], buf, bufsize);
 
   // get the field part of the string
-  header->field[header->size] = (struct pos_buffer){
-    .start = header->length,
-    .size = delim_idx
-  };
+  header->pos[header->size].field.idx = header->length;
+  header->pos[header->size].field.size = delim_idx;
 
   // offsets blank characters
   size_t bufoffset=1; // starts after the ':' delimiter
@@ -297,10 +295,8 @@ conn_respheader_cb(char *buf, size_t size, size_t nmemb, void *p_userdata)
   }
 
   // get the value part of the string
-  header->value[header->size] = (struct pos_buffer){
-    .start = header->length + (delim_idx + bufoffset),
-    .size = (ptr - buf) - (delim_idx + bufoffset)
-  };
+  header->pos[header->size].value.idx = header->length + (delim_idx + bufoffset);
+  header->pos[header->size].value.size = (ptr - buf) - (delim_idx + bufoffset);
 
   header->length += bufsize;
 
@@ -561,8 +557,8 @@ send_request(struct user_agent *ua, struct _ua_conn *conn)
   
   ecode = curl_easy_perform(conn->ehandle);
 #ifdef BEARSSL
-  if (CURLE_READ_ERROR == ecode &&
-      strcmp(conn->errbuf, "SSL: EOF without close notify") == 0)
+  if (CURLE_READ_ERROR == ecode 
+      && 0 == strcmp(conn->errbuf, "SSL: EOF without close notify"))
     log_warn("The remote server closes connection without terminating ssl");
   else
     CURLE_CHECK(conn, ecode);
@@ -792,17 +788,17 @@ ua_info_cleanup(struct ua_info *info)
 struct sized_buffer
 ua_info_respheader_field(struct ua_info *info, char field[])
 {
-  size_t len = strlen(field);
+  const size_t len = strlen(field);
   struct sized_buffer h_field; // header field
   for (int i=0; i < info->resp_header.size; ++i) {
     h_field = (struct sized_buffer){
-      .start = info->resp_header.buf + info->resp_header.field[i].start,
-      .size = info->resp_header.field[i].size
+      info->resp_header.buf + info->resp_header.pos[i].field.idx,
+      info->resp_header.pos[i].field.size
     };
     if (len == h_field.size && 0 == strncasecmp(field, h_field.start, len)) {
       return (struct sized_buffer){
-        .start = info->resp_header.buf + info->resp_header.value[i].start,
-        .size = info->resp_header.value[i].size
+        info->resp_header.buf + info->resp_header.pos[i].value.idx,
+        info->resp_header.pos[i].value.size
       };
     }
   }
