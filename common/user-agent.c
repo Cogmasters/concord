@@ -186,16 +186,22 @@ http_method_eval(char method[])
 void
 ua_reqheader_add(struct user_agent *ua, char field[],  char value[])
 {
-  char *buf;
-  asprintf(&buf, "%s: %s", field, value);
+  char buf[4096];
+  size_t ret = snprintf(buf, sizeof(buf), "%s: %s", field, value);
+  ASSERT_S(ret < sizeof(buf), "Out of bounds write attempt");
 
   /* check for match in existing fields */
-  size_t len = strlen(field);
+  size_t field_len = strlen(field);
+  char *ptr;
   struct curl_slist *node = ua->req_header;
   while (NULL != node) {
-    if (0 == strncasecmp(node->data, field, len)) {
+    if (!(ptr = strchr(node->data, ':')))
+      ERR("Missing ':' in header:\n\t%s", node->data);
+    if (field_len == ptr - node->data
+        && 0 == strncasecmp(node->data, field, field_len)) 
+    {
       free(node->data);
-      node->data = buf;
+      node->data = strdup(buf);
       return; /* EARLY RETURN */
     }
     node = node->next;
@@ -206,8 +212,6 @@ ua_reqheader_add(struct user_agent *ua, char field[],  char value[])
     ua->req_header = curl_slist_append(NULL, buf);
   else
     curl_slist_append(ua->req_header, buf);
-
-  free(buf);
 }
 
 /**
@@ -217,22 +221,30 @@ void
 ua_reqheader_del(struct user_agent *ua, char field[])
 {
   struct curl_slist *node = ua->req_header;
-  size_t len = strlen(field);
-  if (0 == strncasecmp(node->data, field, len)) {
+  size_t field_len = strlen(field);
+  char *ptr;
+  if (!(ptr = strchr(node->data, ':')))
+    ERR("Missing ':' in header: %s", node->data);
+  if (field_len == ptr - node->data
+      && 0 == strncasecmp(node->data, field, field_len)) 
+  {
     free(node->data);
     free(node);
     ua->req_header = NULL;
-
     return; /* EARLY EXIT */
   }
 
   do { // iterate linked list to try and find field match
-    if (node->next && 0 == strncasecmp(node->next->data, field, len)) {
-      free(node->next->data);
-      free(node->next);
-      node->next = NULL;
-
-      return; /* EARLY EXIT */
+    if (node->next) {
+      if (!(ptr = strchr(node->next->data, ':')))
+        ERR("Missing ':' in header: %s", node->next->data);
+      if (field_len == ptr - node->next->data
+          && 0 == strncasecmp(node->next->data, field, field_len)) {
+        free(node->next->data);
+        free(node->next);
+        node->next = NULL;
+        return; /* EARLY EXIT */
+      }
     }
     node = node->next;
   } while (node != NULL);

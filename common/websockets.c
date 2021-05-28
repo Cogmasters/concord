@@ -61,8 +61,9 @@ struct websockets {
   /** 
    * Capture curl error messages
    * @note should only be accessed after a error code returns
+   * @see https://curl.se/libcurl/c/CURLOPT_ERRORBUFFER.html
    */
-  char errbuf[CURL_ERROR_SIZE]; /** @see https://curl.se/libcurl/c/CURLOPT_ERRORBUFFER.html */
+  char errbuf[CURL_ERROR_SIZE];
 
   /**
    * A unique tag to identify this WebSockets client
