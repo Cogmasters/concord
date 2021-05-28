@@ -76,7 +76,7 @@ reddit_search(
 
   char query[1024];
   size_t ret=0;
-  ret += snprintf(query, sizeof(query), "?limit=%d", params->limit);
+  ret += snprintf(query, sizeof(query), "limit=%d", params->limit);
   ASSERT_S(ret < sizeof(query), "Out of bounds write attempt");
 
   char *q_url_encoded = url_encode(params->q);

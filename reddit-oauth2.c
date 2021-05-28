@@ -21,7 +21,7 @@ reddit_access_token(
 
   char query[1024];
   size_t ret=0;
-  ret += snprintf(query, sizeof(query), "?grant_type=%s", params->grant_type);
+  ret += snprintf(query, sizeof(query), "grant_type=%s", params->grant_type);
   ASSERT_S(ret < sizeof(query), "Out of bounds write attempt");
 
   if (STREQ(params->grant_type, "password")) { // script apps
@@ -68,11 +68,36 @@ reddit_access_token(
     return ORCA_BAD_PARAMETER;
   }
 
+  struct sized_buffer resp_body={0};
   struct sized_buffer req_body = { query, ret };
 
-  return reddit_adapter_run(
-    &client->adapter,
-    p_resp_body,
-    &req_body,
-    HTTP_POST, "/api/v1/access_token");
+  ua_set_url(client->adapter.ua, BASE_API_URL);
+
+  ORCAcode code;
+  code = reddit_adapter_run(
+           &client->adapter,
+           &resp_body,
+           &req_body,
+           HTTP_POST, "/api/v1/access_token");
+
+  char access_token[64], token_type[64];
+  json_extract(resp_body.start, resp_body.size,
+    "(access_token):.*s"
+    "(token_type):.*s",
+    sizeof(access_token), access_token,
+    sizeof(token_type), token_type);
+
+  char auth[256];
+  ret = snprintf(auth, sizeof(auth), "%s %s", token_type, access_token);
+  ASSERT_S(ret < sizeof(auth), "Out of bounds write attempt");
+
+  ua_reqheader_add(client->adapter.ua, "Authorization", auth);
+  ua_set_url(client->adapter.ua, BASE_OAUTH_URL);
+
+  if (p_resp_body)
+    memcpy(p_resp_body, &resp_body, sizeof(struct sized_buffer));
+  else
+    free(resp_body.start);
+
+  return code;
 }

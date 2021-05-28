@@ -461,8 +461,7 @@ ua_init(struct logconf *config)
   struct user_agent *new_ua = calloc(1, sizeof *new_ua);
 
   // default header
-  char user_agent[] = "orca (http://github.com/cee-studio/orca)";
-  ua_reqheader_add(new_ua, "User-Agent", user_agent);
+  ua_reqheader_add(new_ua, "User-Agent", "orca (http://github.com/cee-studio/orca)");
   ua_reqheader_add(new_ua, "Content-Type", "application/json");
   ua_reqheader_add(new_ua, "Accept", "application/json");
 

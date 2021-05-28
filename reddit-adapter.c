@@ -8,8 +8,6 @@
 #include "reddit-internal.h"
 #include "orka-utils.h"
 
-#define BASE_API_URL "https://www.reddit.com"
-#define BASE_OAUTH_URL "https://oauth.reddit.com"
 
 static void
 curl_setopt_cb(CURL *ehandle, void *p_client)
@@ -38,6 +36,9 @@ reddit_adapter_init(struct reddit_adapter *adapter, struct logconf *config)
   logconf_add_id(config, adapter->ua, "REDDIT_HTTP");
 
   ua_easy_setopt(adapter->ua, adapter->p_client, &curl_setopt_cb);
+
+  ua_reqheader_add(adapter->ua, "User-Agent", "orca:github.com/cee-studio/orca:v.0 (by /u/LucasMull)");
+  ua_reqheader_add(adapter->ua, "Content-Type", "application/x-www-form-urlencoded");
 }
 
 void

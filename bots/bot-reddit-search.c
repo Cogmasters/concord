@@ -408,7 +408,7 @@ void load_BOT(const char config_file[])
   struct sized_buffer resp_body={0};
   struct reddit_access_token_params params = { .grant_type = "password" };
   reddit_access_token(BOT.R.client, &params, &resp_body);
-  ERR("%.*s", (int)resp_body.size, resp_body.start);
+  log_debug("%.*s", (int)resp_body.size, resp_body.start);
 
   if (true == enable) {
     BOT.R.tsk_search = task_init();

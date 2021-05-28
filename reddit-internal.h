@@ -9,6 +9,10 @@
 #include "websockets.h"
 #include "orka-utils.h"
 
+#define BASE_API_URL "https://www.reddit.com"
+#define BASE_OAUTH_URL "https://oauth.reddit.com"
+
+
 struct reddit_adapter {
   struct user_agent *ua;
   struct reddit *p_client;
