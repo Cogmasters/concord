@@ -283,8 +283,8 @@ conn_respheader_cb(char *buf, size_t size, size_t nmemb, void *p_userdata)
   memcpy(&header->buf[header->length], buf, bufsize);
 
   // get the field part of the string
-  header->pos[header->size].field.idx = header->length;
-  header->pos[header->size].field.size = delim_idx;
+  header->pairs[header->size].field.idx = header->length;
+  header->pairs[header->size].field.size = delim_idx;
 
   // offsets blank characters
   size_t bufoffset=1; // starts after the ':' delimiter
@@ -295,8 +295,8 @@ conn_respheader_cb(char *buf, size_t size, size_t nmemb, void *p_userdata)
   }
 
   // get the value part of the string
-  header->pos[header->size].value.idx = header->length + (delim_idx + bufoffset);
-  header->pos[header->size].value.size = (ptr - buf) - (delim_idx + bufoffset);
+  header->pairs[header->size].value.idx = header->length + (delim_idx + bufoffset);
+  header->pairs[header->size].value.size = (ptr - buf) - (delim_idx + bufoffset);
 
   header->length += bufsize;
 
@@ -792,13 +792,13 @@ ua_info_respheader_field(struct ua_info *info, char field[])
   struct sized_buffer h_field; // header field
   for (int i=0; i < info->resp_header.size; ++i) {
     h_field = (struct sized_buffer){
-      info->resp_header.buf + info->resp_header.pos[i].field.idx,
-      info->resp_header.pos[i].field.size
+      info->resp_header.buf + info->resp_header.pairs[i].field.idx,
+      info->resp_header.pairs[i].field.size
     };
     if (len == h_field.size && 0 == strncasecmp(field, h_field.start, len)) {
       return (struct sized_buffer){
-        info->resp_header.buf + info->resp_header.pos[i].value.idx,
-        info->resp_header.pos[i].value.size
+        info->resp_header.buf + info->resp_header.pairs[i].value.idx,
+        info->resp_header.pairs[i].value.size
       };
     }
   }

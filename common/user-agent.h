@@ -79,7 +79,7 @@ struct ua_resp_header {
       uintptr_t idx;
       size_t size;
     } field, value;
-  } pos[UA_MAX_HEADER_SIZE];
+  } pairs[UA_MAX_HEADER_SIZE];
   /**
    * amount of field/value pairs
    */
