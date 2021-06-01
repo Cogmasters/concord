@@ -302,9 +302,8 @@ void on_ready(struct discord *client, const struct discord_user *bot) {
 void refresh_reddit_access_token_cb(void *data) 
 {
   struct sized_buffer resp_body={0};
-  struct reddit_access_token_params params = { .grant_type = "password" };
+  struct reddit_access_token_params params = { .grant_type = "refresh_token" };
   reddit_access_token(BOT.R.client, &params, &resp_body);
-  ERR("%.*s", (int)resp_body.size, resp_body.start);
 }
 
 void search_reddit_cb(void *data) 
@@ -466,16 +465,6 @@ int main(int argc, char *argv[])
   fgetc(stdin); // wait for input
 
   load_BOT(config_file);
-
-  struct reddit_comment_params params = {
-    .return_rtjson = true,
-    .api_type = "json",
-    .thing_id = "t3_nlpvwx",
-    .text = "This is a test."
-  };
-  struct sized_buffer json={0};
-  reddit_comment(BOT.R.client, &params, &json);
-  ERR("%.*s", (int)json.size, json.start);
 
   /* trigger event callbacks in a multi-threaded fashion */
   discord_set_blocking_event_handler(BOT.D.client, &on_any_event);

@@ -1,5 +1,5 @@
 {
-  "enable":false,
+  "enable":true,
   "refresh_seconds": 600,
   "sort":"new",
   "discord_bind_channel_ids": [834781038571552798],
