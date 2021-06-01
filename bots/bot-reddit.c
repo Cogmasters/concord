@@ -13,7 +13,7 @@
 #include "scheduler.h"
 
 
-#define SEARCH_PARAMS_FILE "bot-reddit-search.json"
+#define SEARCH_PARAMS_FILE "bot-reddit.json"
 #define EMBED_THUMBNAIL \
   "https://external-preview.redd.it/ei2UEblhohs09-oGeS6Ws14T2pOd37GN1_1VUzisvZE.png?auto=webp&s=9fc63c64245f6aa267d712c8b4ad885aa5555b7b"
 
@@ -33,6 +33,11 @@ struct {
   } D;
 } BOT;
 
+
+void on_ready(struct discord *client, const struct discord_user *bot) {
+  fprintf(stderr, "\n\nReddit-Bot succesfully connected to Discord as %s#%s!\n\n",
+      bot->username, bot->discriminator);
+}
 
 struct discord_embed* 
 embed_reddit_search_result(
@@ -294,11 +299,6 @@ void on_search(
   discord_message_free(ret);
 }
 
-void on_ready(struct discord *client, const struct discord_user *bot) {
-  fprintf(stderr, "\n\nReddit-Search-Bot succesfully connected to Discord as %s#%s!\n\n",
-      bot->username, bot->discriminator);
-}
-
 void refresh_reddit_access_token_cb(void *data) 
 {
   struct sized_buffer resp_body={0};
@@ -346,6 +346,27 @@ void search_reddit_cb(void *data)
 
   discord_message_free(ret);
   discord_embed_free(embed);
+}
+
+void on_comment(
+  struct discord *client, 
+  const struct discord_user *bot,
+  const struct discord_message *msg)
+{
+  if (msg->author->bot) return;
+
+  char *delim = strchr(msg->content, ' ');
+  if (!delim) return;
+
+  char thing_id[16]={0};
+  memcpy(thing_id, msg->content, delim - msg->content);
+
+  struct reddit_comment_params params = {
+    .text = delim+1,
+    .thing_id = thing_id,
+    .api_type = "json"
+  };
+  reddit_comment(BOT.R.client, &params, NULL);
 }
 
 void load_BOT(const char config_file[])
@@ -453,7 +474,7 @@ int main(int argc, char *argv[])
          "\tEx1: reddit.search Hello everyone!\n"
          "\tEx2: reddit.search?srs=CryptoCurrency+dogecoin dogecoin made me poor\n"
          "\tEx3: reddit.search?srs=c_programming&before=t_a1234 Segfault\n"
-         "2. Edit bot-reddit-search.json to enable auto-search mode \n"
+         "2. Edit bot-reddit.json to enable auto-search mode \n"
          "\t2.1. enable: enable auto-search mode\n"
          "\t2.2. refresh_seconds: interval when bot should perform search\n"
          "\t2.3. sort: sort results by [new, hot, comments, relevance] \n"
@@ -461,6 +482,8 @@ int main(int argc, char *argv[])
          "\t2.5. keywords: array of keywords that will be searched for\n"
          "\t2.6. subreddits: array of subreddits for lookup (leave null to include all)\n"
          "\t2.7. before: show results before a certain message ID\n"
+         "3. Type reddit.comment <thing_id> <text> to comment to some post \n"
+         "\tEx1: reddit.comment t3_15bfi0 Hello there!\n"
          "\nTYPE ANY KEY TO START BOT\n");
   fgetc(stdin); // wait for input
 
@@ -469,10 +492,12 @@ int main(int argc, char *argv[])
   /* trigger event callbacks in a multi-threaded fashion */
   discord_set_blocking_event_handler(BOT.D.client, &on_any_event);
 
+  discord_set_on_ready(BOT.D.client, &on_ready);
+
   discord_set_prefix(BOT.D.client, "reddit.");
   discord_set_on_command(BOT.D.client, "search", &on_search);
   discord_set_on_message_reaction_add(BOT.D.client, &on_reaction_add);
-  discord_set_on_ready(BOT.D.client, &on_ready);
+  discord_set_on_command(BOT.D.client, "comment", &on_comment);
 
   discord_run(BOT.D.client);
 
