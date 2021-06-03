@@ -46,7 +46,18 @@ void on_channel_create(
   discord_create_guild_channel(client, msg->guild_id, &params, NULL);
 }
 
-void on_channel_delete_here(
+void on_channel_rename_this(
+  struct discord *client,
+  const struct discord_user *bot,
+  const struct discord_message *msg)
+{
+  if (msg->author->bot) return;
+
+  struct discord_modify_channel_params params = { .name = msg->content };
+  discord_modify_channel(client, msg->channel_id, &params, NULL);
+}
+
+void on_channel_delete_this(
   struct discord *client,
   const struct discord_user *bot,
   const struct discord_message *msg)
@@ -117,13 +128,15 @@ int main(int argc, char *argv[])
 
   discord_set_prefix(client, "channel.");
   discord_set_on_command(client, "create", &on_channel_create);
-  discord_set_on_command(client, "delete_here", &on_channel_delete_here);
+  discord_set_on_command(client, "rename_this", &on_channel_rename_this);
+  discord_set_on_command(client, "delete_this", &on_channel_delete_this);
   discord_set_on_command(client, "get_invites", &on_channel_get_invites);
   discord_set_on_command(client, "create_invite", &on_channel_create_invite);
 
   printf("\n\n(USE WITH CAUTION) This bot demonstrates how easy it is to create/delete channels\n"
          "1. Type 'channel.create <channel_name>' anywhere to create a new channel\n"
-         "2. Type 'channel.delete_here' to delete the current channel\n"
+         "2. Type 'channel.rename_this <channel_name>' to rename the current channel\n"
+         "2. Type 'channel.delete_this' to delete the current channel\n"
          "3. Type 'channel.get_invites' to check how many have been created\n"
          "4. Type 'channel.create_invite' to create a new invite\n"
          "\nTYPE ANY KEY TO START BOT\n");

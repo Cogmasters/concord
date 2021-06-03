@@ -33,6 +33,40 @@ discord_get_channel(struct discord *client, const u64_snowflake_t channel_id, st
 }
 
 ORCAcode
+discord_modify_channel(
+  struct discord *client, 
+  const u64_snowflake_t channel_id, 
+  struct discord_modify_channel_params *params, 
+  struct discord_channel *p_channel)
+{
+  if (!channel_id) {
+    log_error("Missing 'channel_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!params) {
+    log_error("Missing 'params'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
+  struct ua_resp_handle resp_handle = {
+    .ok_cb = p_channel ? &discord_channel_from_json_v : NULL,
+    .ok_obj = p_channel
+  };
+
+  char payload[MAX_PAYLOAD_LEN];
+  size_t ret = discord_modify_channel_params_to_json(payload, sizeof(payload), params);
+
+  struct sized_buffer req_body = { payload, ret };
+
+  return discord_adapter_run(
+           &client->adapter,
+           &resp_handle,
+           &req_body,
+           HTTP_PATCH,
+           "/channels/%"PRIu64, channel_id);
+}
+
+ORCAcode
 discord_delete_channel(struct discord *client, const u64_snowflake_t channel_id, struct discord_channel *p_channel)
 {
   if (!channel_id) {
@@ -241,7 +275,8 @@ discord_delete_message(
 }
 
 /// @todo add duplicated ID verification
-ORCAcode discord_bulk_delete_messages(struct discord *client, u64_snowflake_t channel_id, NTL_T(u64_snowflake_t) messages)
+ORCAcode 
+discord_bulk_delete_messages(struct discord *client, u64_snowflake_t channel_id, NTL_T(u64_snowflake_t) messages)
 {
   if(!messages) {
     log_error("Missing 'messages'");
