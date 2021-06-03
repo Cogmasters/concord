@@ -20,12 +20,13 @@ int commit(char *base_url, struct logconf *config)
   body.size = strlen(body.start);
 
   struct ua_resp_handle handle = {.ok_cb = load, .ok_obj = NULL};
+  struct ua_info info = {};
 
-  ua_run(data, &handle, &body, NULL, HTTP_POST, "/echo?m=POST");
-  ua_run(data, &handle, &body, NULL, HTTP_PATCH, "/echo?m=PATCH");
-  ua_run(data, &handle, &body, NULL, HTTP_GET, "/echo?m=GET");
-  ua_run(data, &handle, &body, NULL, HTTP_PUT, "/echo?m=PUT");
-  ua_run(data, &handle, &body, NULL, HTTP_DELETE, "/echo?m=DELETE");
+  ua_run(data, &info, &handle, &body, NULL, HTTP_POST, "/echo?m=POST");
+  ua_run(data, &info, &handle, &body, NULL, HTTP_PATCH, "/echo?m=PATCH");
+  ua_run(data, &info, &handle, &body, NULL, HTTP_GET, "/echo?m=GET");
+  ua_run(data, &info, &handle, &body, NULL, HTTP_PUT, "/echo?m=PUT");
+  ua_run(data, &info, &handle, &body, NULL, HTTP_DELETE, "/echo?m=DELETE");
 
   curl_global_cleanup();
 
