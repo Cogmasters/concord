@@ -845,6 +845,29 @@ discord_create_channel_invite(
 }
 
 ORCAcode
+discord_delete_channel_permission(
+  struct discord *client, 
+  const u64_snowflake_t channel_id,
+  const u64_snowflake_t overwrite_id)
+{
+  if (!channel_id) {
+    log_error("Missing 'channel_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!overwrite_id) {
+    log_error("Missing 'overwrite_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
+  return discord_adapter_run( 
+           &client->adapter,
+           NULL,
+           NULL,
+           HTTP_DELETE,
+           "/channels/%"PRIu64"/permissions/%"PRIu64, channel_id, overwrite_id);
+}
+
+ORCAcode
 discord_trigger_typing_indicator(struct discord* client, u64_snowflake_t channel_id)
 {
   if (!channel_id) {
