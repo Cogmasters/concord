@@ -88,80 +88,6 @@ discord_delete_channel(struct discord *client, const u64_snowflake_t channel_id,
 }
 
 ORCAcode
-discord_get_pinned_messages(
-  struct discord *client, 
-  const u64_snowflake_t channel_id, 
-  NTL_T(struct discord_message) *p_messages)
-{
-  if (!channel_id) {
-    log_error("Missing 'channel_id'");
-    return ORCA_MISSING_PARAMETER;
-  }
-  if (!p_messages) {
-    log_error("Missing 'p_messages'");
-    return ORCA_MISSING_PARAMETER;
-  }
-
-  struct ua_resp_handle resp_handle = { 
-    .ok_cb = &discord_message_list_from_json_v, 
-    .ok_obj = p_messages 
-  };
-
-  return discord_adapter_run( 
-           &client->adapter,
-           &resp_handle,
-           NULL,
-           HTTP_GET, 
-           "/channels/%"PRIu64"/pins", channel_id);
-}
-
-ORCAcode
-discord_add_pinned_channel_message(
-  struct discord *client, 
-  const u64_snowflake_t channel_id, 
-  const u64_snowflake_t message_id)
-{
-  if (!channel_id) {
-    log_error("Missing 'channel_id'");
-    return ORCA_MISSING_PARAMETER;
-  }
-  if (!message_id) {
-    log_error("Missing 'message_id'");
-    return ORCA_MISSING_PARAMETER;
-  }
-
-  return discord_adapter_run( 
-           &client->adapter,
-           NULL,
-           NULL,
-           HTTP_PUT, 
-           "/channels/%"PRIu64"/pins/%"PRIu64, channel_id, message_id);
-}
-
-ORCAcode
-discord_delete_pinned_channel_message(
-  struct discord *client, 
-  const u64_snowflake_t channel_id, 
-  const u64_snowflake_t message_id)
-{
-  if (!channel_id) {
-    log_error("Missing 'channel_id'");
-    return ORCA_MISSING_PARAMETER;
-  }
-  if (!message_id) {
-    log_error("Missing 'message_id'");
-    return ORCA_MISSING_PARAMETER;
-  }
-
-  return discord_adapter_run( 
-           &client->adapter,
-           NULL,
-           NULL,
-           HTTP_DELETE,
-           "/channels/%"PRIu64"/pins/%"PRIu64, channel_id, message_id);
-}
-
-ORCAcode
 discord_get_channel_messages(
   struct discord *client, 
   const u64_snowflake_t channel_id, 
@@ -249,171 +175,6 @@ discord_get_channel_message(
            NULL,
            HTTP_GET,
            "/channels/%"PRIu64"/messages/%"PRIu64, channel_id, message_id);
-}
-
-ORCAcode
-discord_delete_message(
-  struct discord *client, 
-  u64_snowflake_t channel_id, 
-  u64_snowflake_t message_id)
-{
-  if (!channel_id) {
-    log_error("Missing 'channel_id'");
-    return ORCA_MISSING_PARAMETER;
-  }
-  if (!message_id) {
-    log_error("Missing 'message_id'");
-    return ORCA_MISSING_PARAMETER;
-  }
-
-  return discord_adapter_run(
-           &client->adapter,
-           NULL,
-           NULL,
-           HTTP_DELETE,
-           "/channels/%"PRIu64"/messages/%"PRIu64, channel_id, message_id);
-}
-
-/// @todo add duplicated ID verification
-ORCAcode 
-discord_bulk_delete_messages(struct discord *client, u64_snowflake_t channel_id, NTL_T(u64_snowflake_t) messages)
-{
-  if(!messages) {
-    log_error("Missing 'messages'");
-    return ORCA_MISSING_PARAMETER;
-  }
-
-  size_t count = ntl_length_max((ntl_t)messages, 101);
-  if(count < 2 || count > 100) {
-    log_error("Message count should be between 2 and 100");
-    return ORCA_BAD_PARAMETER;
-  }
-
-  u64_unix_ms_t now = orka_timestamp_ms();
-  for(size_t i = 0; messages[i]; i++) {
-    u64_unix_ms_t timestamp = (*messages[i] >> 22) + 1420070400000;
-    if(now > timestamp && now - timestamp > 1209600000) {
-      log_error("Messages should not be older than 2 weeks.");
-      return ORCA_BAD_PARAMETER;
-    }
-  }
-
-  char *payload=NULL;
-  size_t ret = json_ainject(&payload, "(messages):F", \
-                  ja_u64_list_to_json, (NTL_T(ja_u64))messages);
-
-  if (!payload) {
-    log_error("Couldn't create JSON Payload");
-    return ORCA_BAD_JSON;
-  }
-
-  struct sized_buffer req_body = { payload, ret };
-
-  ORCAcode code;
-  code = discord_adapter_run(
-           &client->adapter,
-           NULL,
-           &req_body,
-           HTTP_POST,
-           "/channels/%"PRIu64"/messages/bulk-delete", channel_id);
-
-  free(payload);
-
-  return code;
-}
-
-ORCAcode
-discord_edit_channel_permissions(
-  struct discord *client, 
-  const u64_snowflake_t channel_id, 
-  const u64_snowflake_t overwrite_id,
-  struct discord_edit_channel_permissions_params *params)
-{
-  if (!channel_id) {
-    log_error("Missing 'channel_id'");
-    return ORCA_MISSING_PARAMETER;
-  }
-  if (!overwrite_id) {
-    log_error("Missing 'overwrite_id'");
-    return ORCA_MISSING_PARAMETER;
-  }
-  if (!params) {
-    log_error("Missing 'params'");
-    return ORCA_MISSING_PARAMETER;
-  }
-
-  char payload[MAX_PAYLOAD_LEN];
-  size_t ret = discord_edit_channel_permissions_params_to_json(payload, sizeof(payload), params);
-  struct sized_buffer req_body = { payload, ret };
-
-  return discord_adapter_run(
-           &client->adapter,
-           NULL,
-           &req_body,
-           HTTP_PUT,
-           "/channels/%"PRIu64"/permissions/%"PRIu64, 
-           channel_id, overwrite_id);
-}
-
-ORCAcode
-discord_get_channel_invites(
-  struct discord *client, 
-  const u64_snowflake_t channel_id, 
-  NTL_T(struct discord_invite) *p_invites)
-{
-  if (!channel_id) {
-    log_error("Missing 'channel_id'");
-    return ORCA_MISSING_PARAMETER;
-  }
-  if (!p_invites) {
-    log_error("Missing 'p_invites'");
-    return ORCA_MISSING_PARAMETER;
-  }
-
-  struct ua_resp_handle resp_handle = {
-    .ok_cb = &discord_invite_list_from_json_v,
-    .ok_obj = p_invites
-  };
-
-  return discord_adapter_run(
-           &client->adapter,
-           &resp_handle,
-           NULL,
-           HTTP_GET,
-           "/channels/%"PRIu64"/invites", channel_id);
-}
-
-ORCAcode
-discord_create_channel_invite(
-  struct discord *client, 
-  const u64_snowflake_t channel_id,
-  struct discord_create_channel_invite_params *params,
-  struct discord_invite *p_invite)
-{
-  if (!channel_id) {
-    log_error("Missing 'channel_id'");
-    return ORCA_MISSING_PARAMETER;
-  }
-
-  struct ua_resp_handle resp_handle = {
-    .ok_cb = p_invite ? &discord_invite_from_json_v : NULL,
-    .ok_obj = p_invite
-  };
-
-  char payload[MAX_PAYLOAD_LEN];
-  size_t ret;
-  if (params)
-    ret = discord_create_channel_invite_params_to_json(payload, sizeof(payload), params);
-  else
-    ret = sprintf(payload, "{}");
-  struct sized_buffer req_body = { payload, ret };
-
-  return discord_adapter_run(
-           &client->adapter,
-           &resp_handle,
-           &req_body,
-           HTTP_POST,
-           "/channels/%"PRIu64"/invites", channel_id);
 }
 
 //@todo this is a temporary solution
@@ -919,6 +680,171 @@ discord_edit_message(
 }
 
 ORCAcode
+discord_delete_message(
+  struct discord *client, 
+  u64_snowflake_t channel_id, 
+  u64_snowflake_t message_id)
+{
+  if (!channel_id) {
+    log_error("Missing 'channel_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!message_id) {
+    log_error("Missing 'message_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
+  return discord_adapter_run(
+           &client->adapter,
+           NULL,
+           NULL,
+           HTTP_DELETE,
+           "/channels/%"PRIu64"/messages/%"PRIu64, channel_id, message_id);
+}
+
+/// @todo add duplicated ID verification
+ORCAcode 
+discord_bulk_delete_messages(struct discord *client, u64_snowflake_t channel_id, NTL_T(u64_snowflake_t) messages)
+{
+  if(!messages) {
+    log_error("Missing 'messages'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
+  size_t count = ntl_length_max((ntl_t)messages, 101);
+  if(count < 2 || count > 100) {
+    log_error("Message count should be between 2 and 100");
+    return ORCA_BAD_PARAMETER;
+  }
+
+  u64_unix_ms_t now = orka_timestamp_ms();
+  for(size_t i = 0; messages[i]; i++) {
+    u64_unix_ms_t timestamp = (*messages[i] >> 22) + 1420070400000;
+    if(now > timestamp && now - timestamp > 1209600000) {
+      log_error("Messages should not be older than 2 weeks.");
+      return ORCA_BAD_PARAMETER;
+    }
+  }
+
+  char *payload=NULL;
+  size_t ret = json_ainject(&payload, "(messages):F", \
+                  ja_u64_list_to_json, (NTL_T(ja_u64))messages);
+
+  if (!payload) {
+    log_error("Couldn't create JSON Payload");
+    return ORCA_BAD_JSON;
+  }
+
+  struct sized_buffer req_body = { payload, ret };
+
+  ORCAcode code;
+  code = discord_adapter_run(
+           &client->adapter,
+           NULL,
+           &req_body,
+           HTTP_POST,
+           "/channels/%"PRIu64"/messages/bulk-delete", channel_id);
+
+  free(payload);
+
+  return code;
+}
+
+ORCAcode
+discord_edit_channel_permissions(
+  struct discord *client, 
+  const u64_snowflake_t channel_id, 
+  const u64_snowflake_t overwrite_id,
+  struct discord_edit_channel_permissions_params *params)
+{
+  if (!channel_id) {
+    log_error("Missing 'channel_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!overwrite_id) {
+    log_error("Missing 'overwrite_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!params) {
+    log_error("Missing 'params'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
+  char payload[MAX_PAYLOAD_LEN];
+  size_t ret = discord_edit_channel_permissions_params_to_json(payload, sizeof(payload), params);
+  struct sized_buffer req_body = { payload, ret };
+
+  return discord_adapter_run(
+           &client->adapter,
+           NULL,
+           &req_body,
+           HTTP_PUT,
+           "/channels/%"PRIu64"/permissions/%"PRIu64, 
+           channel_id, overwrite_id);
+}
+
+ORCAcode
+discord_get_channel_invites(
+  struct discord *client, 
+  const u64_snowflake_t channel_id, 
+  NTL_T(struct discord_invite) *p_invites)
+{
+  if (!channel_id) {
+    log_error("Missing 'channel_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!p_invites) {
+    log_error("Missing 'p_invites'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
+  struct ua_resp_handle resp_handle = {
+    .ok_cb = &discord_invite_list_from_json_v,
+    .ok_obj = p_invites
+  };
+
+  return discord_adapter_run(
+           &client->adapter,
+           &resp_handle,
+           NULL,
+           HTTP_GET,
+           "/channels/%"PRIu64"/invites", channel_id);
+}
+
+ORCAcode
+discord_create_channel_invite(
+  struct discord *client, 
+  const u64_snowflake_t channel_id,
+  struct discord_create_channel_invite_params *params,
+  struct discord_invite *p_invite)
+{
+  if (!channel_id) {
+    log_error("Missing 'channel_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
+  struct ua_resp_handle resp_handle = {
+    .ok_cb = p_invite ? &discord_invite_from_json_v : NULL,
+    .ok_obj = p_invite
+  };
+
+  char payload[MAX_PAYLOAD_LEN];
+  size_t ret;
+  if (params)
+    ret = discord_create_channel_invite_params_to_json(payload, sizeof(payload), params);
+  else
+    ret = sprintf(payload, "{}");
+  struct sized_buffer req_body = { payload, ret };
+
+  return discord_adapter_run(
+           &client->adapter,
+           &resp_handle,
+           &req_body,
+           HTTP_POST,
+           "/channels/%"PRIu64"/invites", channel_id);
+}
+
+ORCAcode
 discord_trigger_typing_indicator(struct discord* client, u64_snowflake_t channel_id)
 {
   if (!channel_id) {
@@ -932,4 +858,78 @@ discord_trigger_typing_indicator(struct discord* client, u64_snowflake_t channel
            NULL,
            HTTP_POST, 
            "/channels/%"PRIu64"/typing", channel_id);
+}
+
+ORCAcode
+discord_get_pinned_messages(
+  struct discord *client, 
+  const u64_snowflake_t channel_id, 
+  NTL_T(struct discord_message) *p_messages)
+{
+  if (!channel_id) {
+    log_error("Missing 'channel_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!p_messages) {
+    log_error("Missing 'p_messages'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
+  struct ua_resp_handle resp_handle = { 
+    .ok_cb = &discord_message_list_from_json_v, 
+    .ok_obj = p_messages 
+  };
+
+  return discord_adapter_run( 
+           &client->adapter,
+           &resp_handle,
+           NULL,
+           HTTP_GET, 
+           "/channels/%"PRIu64"/pins", channel_id);
+}
+
+ORCAcode
+discord_add_pinned_channel_message(
+  struct discord *client, 
+  const u64_snowflake_t channel_id, 
+  const u64_snowflake_t message_id)
+{
+  if (!channel_id) {
+    log_error("Missing 'channel_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!message_id) {
+    log_error("Missing 'message_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
+  return discord_adapter_run( 
+           &client->adapter,
+           NULL,
+           NULL,
+           HTTP_PUT, 
+           "/channels/%"PRIu64"/pins/%"PRIu64, channel_id, message_id);
+}
+
+ORCAcode
+discord_delete_pinned_channel_message(
+  struct discord *client, 
+  const u64_snowflake_t channel_id, 
+  const u64_snowflake_t message_id)
+{
+  if (!channel_id) {
+    log_error("Missing 'channel_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!message_id) {
+    log_error("Missing 'message_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
+  return discord_adapter_run( 
+           &client->adapter,
+           NULL,
+           NULL,
+           HTTP_DELETE,
+           "/channels/%"PRIu64"/pins/%"PRIu64, channel_id, message_id);
 }
