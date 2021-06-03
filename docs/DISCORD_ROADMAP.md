@@ -64,7 +64,7 @@
 - [x] [Get Channel Invites](https://discord.com/developers/docs/resources/channel#get-channel-invites)
 - [x] [Create Channel Invite](https://discord.com/developers/docs/resources/channel#create-channel-invite)
 - [x] [Delete Channel Permission](https://discord.com/developers/docs/resources/channel#delete-channel-permission)
-- [ ] [Follow News Channels](https://discord.com/developers/docs/resources/channel#follow-news-channel)
+- [x] [Follow News Channels](https://discord.com/developers/docs/resources/channel#follow-news-channel)
 - [x] [Trigger Typing Indicator](https://discord.com/developers/docs/resources/channel#trigger-typing-indicator)
 - [x] [Get Pinned Messages](https://discord.com/developers/docs/resources/channel#get-pinned-messages)
 - [x] [Add Pinned Channel Message](https://discord.com/developers/docs/resources/channel#add-pinned-channel-message)

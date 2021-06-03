@@ -868,6 +868,40 @@ discord_delete_channel_permission(
 }
 
 ORCAcode
+discord_follow_news_channel(
+  struct discord *client,
+  const u64_snowflake_t channel_id,
+  struct discord_follow_news_channel_params *params,
+  struct discord_channel *p_followed_channel)
+{
+  if (!channel_id) {
+    log_error("Missing 'channel_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!params || !params->webhook_channel_id) {
+    log_error("Missing 'params.webhook_channel_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
+  char payload[256]; // should be more than enough for this
+  size_t ret = discord_follow_news_channel_params_to_json(payload, sizeof(payload), params);
+
+  struct sized_buffer req_body = { payload, ret };
+
+  struct ua_resp_handle resp_handle = {
+    .ok_cb = p_followed_channel ? &discord_channel_from_json_v : NULL,
+    .ok_obj = p_followed_channel
+  };
+
+  return discord_adapter_run(
+           &client->adapter,
+           &resp_handle,
+           &req_body,
+           HTTP_POST,
+           "/channels/%"PRIu64"/followers", channel_id);
+}
+
+ORCAcode
 discord_trigger_typing_indicator(struct discord* client, u64_snowflake_t channel_id)
 {
   if (!channel_id) {
