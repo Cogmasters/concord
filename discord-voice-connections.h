@@ -3,6 +3,7 @@
 
 #include <time.h>
 #include <pthread.h>
+#include "cee-data-sizes.h"
 
 struct discord_voice; //forward
 
@@ -129,8 +130,8 @@ struct discord_voice {
   struct {
     int ssrc;
     int server_port;
-    char server_ip[128];
-
+    char server_ip[CEE_MAX_IP_ADDR_STR_LEN];
+    char digest[CEE_SHA1_STR_LEN];
     char unique_key[128];
     int audio_udp_pid;
     time_t start_time;
