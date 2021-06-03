@@ -542,7 +542,7 @@ ORCAcode discord_delete_guild_role(struct discord *client, const u64_snowflake_t
 
 // USER ENDPOINTS
 ORCAcode discord_get_user(struct discord *client, const u64_snowflake_t user_id, struct discord_user *p_user);
-ORCAcode discord_modify_current_user(struct discord *client, const char username[], const char avatar[], struct discord_user *p_user);
+ORCAcode discord_modify_current_user(struct discord *client, struct discord_modify_current_user_params *params, struct discord_user *p_user);
 ORCAcode discord_get_current_user(struct discord *client, struct discord_user *p_user);
 ORCAcode sb_discord_get_current_user(struct discord *client, struct sized_buffer *p_sb_user);
 ORCAcode discord_get_current_user_guilds(struct discord *client, NTL_T(struct discord_guild) *p_guilds);

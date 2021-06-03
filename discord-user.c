@@ -54,27 +54,20 @@ discord_get_user(struct discord *client, const u64_snowflake_t user_id, struct d
 }
 
 ORCAcode
-discord_modify_current_user(struct discord *client, const char username[], const char avatar[], struct discord_user *p_user)
+discord_modify_current_user(struct discord *client, struct discord_modify_current_user_params *params, struct discord_user *p_user)
 {
+  if (!params) {
+    log_error("Missing 'params'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
   struct ua_resp_handle resp_handle = { 
     .ok_cb = p_user ? &discord_user_from_json_v : NULL, 
     .ok_obj = p_user
   };
 
   char payload[MAX_PAYLOAD_LEN];
-  void *A[2]={}; // pointer availability array
-  if (!IS_EMPTY_STRING(username))
-    A[0] = (void*)username;
-  if (!IS_EMPTY_STRING(avatar))
-    A[1] = (void*)avatar;
-
-  size_t ret = json_inject(payload, sizeof(payload),
-                "(username):s"
-                "(avatar):s"
-                "@arg_switches",
-                username,
-                avatar,
-                A, sizeof(A));
+  size_t ret = discord_modify_current_user_params_to_json(payload, sizeof(payload), params);
 
   struct sized_buffer req_body = { payload, ret };
 
