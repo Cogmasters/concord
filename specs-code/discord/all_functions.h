@@ -1282,6 +1282,30 @@ extern void discord_guild_welcome_screen_list_from_json_v(char *str, size_t len,
 extern void discord_guild_welcome_screen_list_from_json(char *str, size_t len, struct discord_guild_welcome_screen ***p);
 extern size_t discord_guild_welcome_screen_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_guild_welcome_screen_list_to_json(char *str, size_t len, struct discord_guild_welcome_screen **p);
+/* This file is generated from specs/discord/invite.get-invite.json, Please don't edit it. */
+/*
+https://discord.com/developers/docs/resources/invite#get-invite
+*/
+
+extern void discord_get_invite_params_cleanup_v(void *p);
+extern void discord_get_invite_params_cleanup(struct discord_get_invite_params *p);
+extern void discord_get_invite_params_init_v(void *p);
+extern void discord_get_invite_params_init(struct discord_get_invite_params *p);
+extern struct discord_get_invite_params * discord_get_invite_params_alloc();
+extern void discord_get_invite_params_free_v(void *p);
+extern void discord_get_invite_params_free(struct discord_get_invite_params *p);
+extern void discord_get_invite_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_get_invite_params_from_json(char *json, size_t len, struct discord_get_invite_params *p);
+extern size_t discord_get_invite_params_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_get_invite_params_to_json(char *json, size_t len, struct discord_get_invite_params *p);
+extern size_t discord_get_invite_params_to_query_v(char *json, size_t len, void *p);
+extern size_t discord_get_invite_params_to_query(char *json, size_t len, struct discord_get_invite_params *p);
+extern void discord_get_invite_params_list_free_v(void **p);
+extern void discord_get_invite_params_list_free(struct discord_get_invite_params **p);
+extern void discord_get_invite_params_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_get_invite_params_list_from_json(char *str, size_t len, struct discord_get_invite_params ***p);
+extern size_t discord_get_invite_params_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_get_invite_params_list_to_json(char *str, size_t len, struct discord_get_invite_params **p);
 /* This file is generated from specs/discord/invite.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/resources/invite#invite-object

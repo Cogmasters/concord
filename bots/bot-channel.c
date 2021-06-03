@@ -136,9 +136,9 @@ int main(int argc, char *argv[])
   printf("\n\n(USE WITH CAUTION) This bot demonstrates how easy it is to create/delete channels\n"
          "1. Type 'channel.create <channel_name>' anywhere to create a new channel\n"
          "2. Type 'channel.rename_this <channel_name>' to rename the current channel\n"
-         "2. Type 'channel.delete_this' to delete the current channel\n"
-         "3. Type 'channel.get_invites' to check how many have been created\n"
-         "4. Type 'channel.create_invite' to create a new invite\n"
+         "3. Type 'channel.delete_this' to delete the current channel\n"
+         "4. Type 'channel.get_invites' to check how many have been created\n"
+         "5. Type 'channel.create_invite' to create a new invite\n"
          "\nTYPE ANY KEY TO START BOT\n");
   fgetc(stdin); // wait for input
 

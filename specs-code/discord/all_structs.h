@@ -3324,6 +3324,39 @@ struct discord_guild_welcome_screen {
     void *record_null[2];
   } __M; // metadata
 };
+/* This file is generated from specs/discord/invite.get-invite.json, Please don't edit it. */
+/*
+https://discord.com/developers/docs/resources/invite#get-invite
+*/
+
+/* https://discord.com/developers/docs/resources/invite#get-invite-query-string-params */
+/* This is defined at specs/discord/invite.get-invite.json:8:22 */
+struct discord_get_invite_params {
+  /* specs/discord/invite.get-invite.json:11:20
+     '{ "name": "with_counts", "type":{ "base":"bool" },
+          "comment":"whether the invite should contain approximate member counts"}'
+  */
+  bool with_counts; // whether the invite should contain approximate member counts
+
+  /* specs/discord/invite.get-invite.json:13:20
+     '{ "name": "with_expiration", "type":{ "base":"bool" },
+          "comment":"whether the invite should contain the expiration date"}'
+  */
+  bool with_expiration; // whether the invite should contain the expiration date
+
+  // The following is metadata used to 
+  // 1. control which field should be extracted/injected
+  // 2. record which field is presented(defined) in JSON
+  // 3. record which field is null in JSON
+  struct {
+    bool enable_arg_switches;
+    bool enable_record_defined;
+    bool enable_record_null;
+    void *arg_switches[2];
+    void *record_defined[2];
+    void *record_null[2];
+  } __M; // metadata
+};
 /* This file is generated from specs/discord/invite.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/resources/invite#invite-object

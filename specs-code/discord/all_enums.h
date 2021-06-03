@@ -428,6 +428,10 @@ https://discord.com/developers/docs/topics/permissions#role-object-role-structur
 /*
 https://discord.com/developers/docs/resources/guild#welcome-screen-object
 */
+/* This file is generated from specs/discord/invite.get-invite.json, Please don't edit it. */
+/*
+https://discord.com/developers/docs/resources/invite#get-invite
+*/
 /* This file is generated from specs/discord/invite.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/resources/invite#invite-object

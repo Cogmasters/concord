@@ -543,6 +543,10 @@ ORCAcode discord_get_guild_roles(struct discord *client, const u64_snowflake_t g
 ORCAcode discord_create_guild_role(struct discord *client, const u64_snowflake_t guild_id, struct discord_create_guild_role_params *params, struct discord_guild_role *p_role);
 ORCAcode discord_delete_guild_role(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t role_id);
 
+// INVITE ENDPOINTS
+ORCAcode discord_get_invite(struct discord *client, char *invite_code, struct discord_get_invite_params *params, struct discord_invite *p_invite);
+ORCAcode discord_delete_invite(struct discord *client, char *invite_code, struct discord_invite *p_invite);
+
 // USER ENDPOINTS
 ORCAcode discord_get_user(struct discord *client, const u64_snowflake_t user_id, struct discord_user *p_user);
 ORCAcode discord_modify_current_user(struct discord *client, struct discord_modify_current_user_params *params, struct discord_user *p_user);

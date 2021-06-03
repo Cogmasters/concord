@@ -400,6 +400,14 @@ struct discord_guild_welcome_screen_channel;
 /* https://discord.com/developers/docs/resources/guild#welcome-screen-object-welcome-screen-structure */
 /* This is defined at specs/discord/guild.welcome_screen.json:23:22 */
 struct discord_guild_welcome_screen;
+/* This file is generated from specs/discord/invite.get-invite.json, Please don't edit it. */
+/*
+https://discord.com/developers/docs/resources/invite#get-invite
+*/
+
+/* https://discord.com/developers/docs/resources/invite#get-invite-query-string-params */
+/* This is defined at specs/discord/invite.get-invite.json:8:22 */
+struct discord_get_invite_params;
 /* This file is generated from specs/discord/invite.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/resources/invite#invite-object
