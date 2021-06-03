@@ -548,6 +548,8 @@ ORCAcode sb_discord_get_current_user(struct discord *client, struct sized_buffer
 ORCAcode discord_get_current_user_guilds(struct discord *client, NTL_T(struct discord_guild) *p_guilds);
 ORCAcode discord_leave_guild(struct discord *client, const u64_snowflake_t guild_id);
 ORCAcode discord_create_dm(struct discord *client, const u64_snowflake_t recipient_id, struct discord_channel *p_dm_channel);
+ORCAcode discord_create_group_dm(struct discord *client, struct discord_create_group_dm_params *params, struct discord_channel *p_dm_channel);
+ORCAcode discord_get_user_connections(struct discord *client, NTL_T(struct discord_connection) *p_connections);
 
 // VOICE ENDPOINTS
 ORCAcode discord_list_voice_regions(struct discord *client, NTL_T(struct discord_voice_region) *p_voice_regions);

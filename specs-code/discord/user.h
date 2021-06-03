@@ -166,10 +166,10 @@ struct discord_connection {
   */
   bool revoked;
 
-  /* specs/discord/user.json:81:20
-     '{ "name": "integrations", "type": {"base":"struct discord_guild_integration", "dec":"ntl"}, "todo":true}'
+  /* specs/discord/user.json:81:16
+     '{ "name": "integrations", "type": {"base":"struct discord_guild_integration", "dec":"ntl"}}'
   */
-  //@todo integrations (null);
+  struct discord_guild_integration **integrations;
 
   /* specs/discord/user.json:82:14
      '{ "name": "verified", "type":{ "base":"bool" }}'

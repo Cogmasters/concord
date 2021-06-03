@@ -596,9 +596,10 @@ void discord_connection_from_json(char *json, size_t len, struct discord_connect
      '{ "name": "revoked", "type":{ "base":"bool"}}'
   */
                 "(revoked):b,"
-  /* specs/discord/user.json:81:20
-     '{ "name": "integrations", "type": {"base":"struct discord_guild_integration", "dec":"ntl"}, "todo":true}'
+  /* specs/discord/user.json:81:16
+     '{ "name": "integrations", "type": {"base":"struct discord_guild_integration", "dec":"ntl"}}'
   */
+                "(integrations):F,"
   /* specs/discord/user.json:82:14
      '{ "name": "verified", "type":{ "base":"bool" }}'
   */
@@ -634,9 +635,10 @@ void discord_connection_from_json(char *json, size_t len, struct discord_connect
      '{ "name": "revoked", "type":{ "base":"bool"}}'
   */
                 &p->revoked,
-  /* specs/discord/user.json:81:20
-     '{ "name": "integrations", "type": {"base":"struct discord_guild_integration", "dec":"ntl"}, "todo":true}'
+  /* specs/discord/user.json:81:16
+     '{ "name": "integrations", "type": {"base":"struct discord_guild_integration", "dec":"ntl"}}'
   */
+                discord_guild_integration_list_from_json, &p->integrations,
   /* specs/discord/user.json:82:14
      '{ "name": "verified", "type":{ "base":"bool" }}'
   */
@@ -682,9 +684,10 @@ static void discord_connection_use_default_inject_settings(struct discord_connec
   */
   p->__M.arg_switches[3] = &p->revoked;
 
-  /* specs/discord/user.json:81:20
-     '{ "name": "integrations", "type": {"base":"struct discord_guild_integration", "dec":"ntl"}, "todo":true}'
+  /* specs/discord/user.json:81:16
+     '{ "name": "integrations", "type": {"base":"struct discord_guild_integration", "dec":"ntl"}}'
   */
+  p->__M.arg_switches[4] = p->integrations;
 
   /* specs/discord/user.json:82:14
      '{ "name": "verified", "type":{ "base":"bool" }}'
@@ -729,9 +732,10 @@ size_t discord_connection_to_json(char *json, size_t len, struct discord_connect
      '{ "name": "revoked", "type":{ "base":"bool"}}'
   */
                 "(revoked):b,"
-  /* specs/discord/user.json:81:20
-     '{ "name": "integrations", "type": {"base":"struct discord_guild_integration", "dec":"ntl"}, "todo":true}'
+  /* specs/discord/user.json:81:16
+     '{ "name": "integrations", "type": {"base":"struct discord_guild_integration", "dec":"ntl"}}'
   */
+                "(integrations):F,"
   /* specs/discord/user.json:82:14
      '{ "name": "verified", "type":{ "base":"bool" }}'
   */
@@ -765,9 +769,10 @@ size_t discord_connection_to_json(char *json, size_t len, struct discord_connect
      '{ "name": "revoked", "type":{ "base":"bool"}}'
   */
                 &p->revoked,
-  /* specs/discord/user.json:81:20
-     '{ "name": "integrations", "type": {"base":"struct discord_guild_integration", "dec":"ntl"}, "todo":true}'
+  /* specs/discord/user.json:81:16
+     '{ "name": "integrations", "type": {"base":"struct discord_guild_integration", "dec":"ntl"}}'
   */
+                discord_guild_integration_list_to_json, p->integrations,
   /* specs/discord/user.json:82:14
      '{ "name": "verified", "type":{ "base":"bool" }}'
   */
@@ -845,10 +850,11 @@ void discord_connection_cleanup(struct discord_connection *d) {
      '{ "name": "revoked", "type":{ "base":"bool"}}'
   */
   //p->revoked is a scalar
-  /* specs/discord/user.json:81:20
-     '{ "name": "integrations", "type": {"base":"struct discord_guild_integration", "dec":"ntl"}, "todo":true}'
+  /* specs/discord/user.json:81:16
+     '{ "name": "integrations", "type": {"base":"struct discord_guild_integration", "dec":"ntl"}}'
   */
-  //@todo p->(null)
+  if (d->integrations)
+    discord_guild_integration_list_free(d->integrations);
   /* specs/discord/user.json:82:14
      '{ "name": "verified", "type":{ "base":"bool" }}'
   */
@@ -885,8 +891,8 @@ void discord_connection_init(struct discord_connection *p) {
      '{ "name": "revoked", "type":{ "base":"bool"}}'
   */
 
-  /* specs/discord/user.json:81:20
-     '{ "name": "integrations", "type": {"base":"struct discord_guild_integration", "dec":"ntl"}, "todo":true}'
+  /* specs/discord/user.json:81:16
+     '{ "name": "integrations", "type": {"base":"struct discord_guild_integration", "dec":"ntl"}}'
   */
 
   /* specs/discord/user.json:82:14

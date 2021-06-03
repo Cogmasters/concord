@@ -78,7 +78,7 @@
 		{ "name": "name", "type":{ "base":"char", "dec":"*"}},
 		{ "name": "type", "type":{ "base":"char", "dec":"*"}},
 		{ "name": "revoked", "type":{ "base":"bool"}},
-        { "name": "integrations", "type": {"base":"struct discord_guild_integration", "dec":"ntl"}, "todo":true},
+    { "name": "integrations", "type": {"base":"struct discord_guild_integration", "dec":"ntl"}},
 		{ "name": "verified", "type":{ "base":"bool" }},
 		{ "name": "friend_sync", "type":{ "base":"bool" }},
 		{ "name": "show_activity", "type":{ "base":"bool" }},

@@ -15,10 +15,10 @@ void discord_create_group_dm_params_from_json(char *json, size_t len, struct dis
   */
                 "(access_tokens):F,"
   /* specs/discord/user.create-group-dm.json:13:19
-     '{ "name":"nick", "type":{ "base":"char", "dec":"*"}, 
-          "todo":true,
+     '{ "name":"nicks", "type":{ "base":"ja_u64", "dec":"ntl"}, 
           "comment":"ia dictionary of user ids to their respective nicknames"}'
   */
+                "(nicks):F,"
                 "@arg_switches:b"
                 "@record_defined"
                 "@record_null",
@@ -28,10 +28,10 @@ void discord_create_group_dm_params_from_json(char *json, size_t len, struct dis
   */
                 ja_str_list_from_json, &p->access_tokens,
   /* specs/discord/user.create-group-dm.json:13:19
-     '{ "name":"nick", "type":{ "base":"char", "dec":"*"}, 
-          "todo":true,
+     '{ "name":"nicks", "type":{ "base":"ja_u64", "dec":"ntl"}, 
           "comment":"ia dictionary of user ids to their respective nicknames"}'
   */
+                ja_u64_list_from_json, &p->nicks,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
                 p->__M.record_null, sizeof(p->__M.record_null));
@@ -48,10 +48,10 @@ static void discord_create_group_dm_params_use_default_inject_settings(struct di
   p->__M.arg_switches[0] = p->access_tokens;
 
   /* specs/discord/user.create-group-dm.json:13:19
-     '{ "name":"nick", "type":{ "base":"char", "dec":"*"}, 
-          "todo":true,
+     '{ "name":"nicks", "type":{ "base":"ja_u64", "dec":"ntl"}, 
           "comment":"ia dictionary of user ids to their respective nicknames"}'
   */
+  p->__M.arg_switches[1] = p->nicks;
 
 }
 
@@ -66,10 +66,10 @@ size_t discord_create_group_dm_params_to_json(char *json, size_t len, struct dis
   */
                 "(access_tokens):F,"
   /* specs/discord/user.create-group-dm.json:13:19
-     '{ "name":"nick", "type":{ "base":"char", "dec":"*"}, 
-          "todo":true,
+     '{ "name":"nicks", "type":{ "base":"ja_u64", "dec":"ntl"}, 
           "comment":"ia dictionary of user ids to their respective nicknames"}'
   */
+                "(nicks):F,"
                 "@arg_switches:b",
   /* specs/discord/user.create-group-dm.json:11:20
      '{ "name": "access_tokens", "type":{ "base":"ja_str", "dec":"ntl" }, 
@@ -77,10 +77,10 @@ size_t discord_create_group_dm_params_to_json(char *json, size_t len, struct dis
   */
                 ja_str_list_to_json, p->access_tokens,
   /* specs/discord/user.create-group-dm.json:13:19
-     '{ "name":"nick", "type":{ "base":"char", "dec":"*"}, 
-          "todo":true,
+     '{ "name":"nicks", "type":{ "base":"ja_u64", "dec":"ntl"}, 
           "comment":"ia dictionary of user ids to their respective nicknames"}'
   */
+                ja_u64_list_to_json, p->nicks,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
 }
@@ -130,11 +130,11 @@ void discord_create_group_dm_params_cleanup(struct discord_create_group_dm_param
   if (d->access_tokens)
     ja_str_list_free(d->access_tokens);
   /* specs/discord/user.create-group-dm.json:13:19
-     '{ "name":"nick", "type":{ "base":"char", "dec":"*"}, 
-          "todo":true,
+     '{ "name":"nicks", "type":{ "base":"ja_u64", "dec":"ntl"}, 
           "comment":"ia dictionary of user ids to their respective nicknames"}'
   */
-  //@todo p->(null)
+  if (d->nicks)
+    ja_u64_list_free(d->nicks);
 }
 
 void discord_create_group_dm_params_init(struct discord_create_group_dm_params *p) {
@@ -145,8 +145,7 @@ void discord_create_group_dm_params_init(struct discord_create_group_dm_params *
   */
 
   /* specs/discord/user.create-group-dm.json:13:19
-     '{ "name":"nick", "type":{ "base":"char", "dec":"*"}, 
-          "todo":true,
+     '{ "name":"nicks", "type":{ "base":"ja_u64", "dec":"ntl"}, 
           "comment":"ia dictionary of user ids to their respective nicknames"}'
   */
 

@@ -7,6 +7,27 @@
 #include "orka-utils.h"
 
 
+ORCAcode 
+discord_get_current_user(struct discord *client, struct discord_user *p_user)
+{
+  if (!p_user) {
+    log_error("Missing 'p_user'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
+  struct ua_resp_handle resp_handle = { 
+    .ok_cb = &discord_user_from_json_v, 
+    .ok_obj = p_user
+  };
+
+  return discord_adapter_run( 
+           &client->adapter,
+           &resp_handle,
+           NULL,
+           HTTP_GET, 
+           "/users/@me");
+}
+
 ORCAcode
 discord_get_user(struct discord *client, const u64_snowflake_t user_id, struct discord_user *p_user)
 {
@@ -62,27 +83,6 @@ discord_modify_current_user(struct discord *client, const char username[], const
            &resp_handle,
            &req_body,
            HTTP_PATCH,
-           "/users/@me");
-}
-
-ORCAcode 
-discord_get_current_user(struct discord *client, struct discord_user *p_user)
-{
-  if (!p_user) {
-    log_error("Missing 'p_user'");
-    return ORCA_MISSING_PARAMETER;
-  }
-
-  struct ua_resp_handle resp_handle = { 
-    .ok_cb = &discord_user_from_json_v, 
-    .ok_obj = p_user
-  };
-
-  return discord_adapter_run( 
-           &client->adapter,
-           &resp_handle,
-           NULL,
-           HTTP_GET, 
            "/users/@me");
 }
 
@@ -179,4 +179,58 @@ discord_create_dm(struct discord *client, const u64_snowflake_t recipient_id, st
            &req_body,
            HTTP_POST,
            "/users/@me/channels");
+}
+
+ORCAcode
+discord_create_group_dm(struct discord *client, struct discord_create_group_dm_params *params, struct discord_channel *p_dm_channel)
+{
+  if (!params) {
+    log_error("Missing 'params'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!params->access_tokens) {
+    log_error("Missing 'params.access_tokens'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!params->nicks) {
+    log_error("Missing 'params.nicks'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
+  struct ua_resp_handle resp_handle = {
+    .ok_cb = p_dm_channel ? &discord_channel_from_json_v : NULL,
+    .ok_obj = p_dm_channel
+  };
+
+  char payload[1024];
+  size_t ret = discord_create_group_dm_params_to_json(payload, sizeof(payload), params);
+  struct sized_buffer req_body = { payload, ret };
+
+  return discord_adapter_run(
+           &client->adapter,
+           &resp_handle,
+           &req_body,
+           HTTP_POST,
+           "/users/@me/channels");
+}
+
+ORCAcode
+discord_get_user_connections(struct discord *client, NTL_T(struct discord_connection) *p_connections)
+{
+  if (!p_connections) {
+    log_error("Missing 'p_connections'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
+  struct ua_resp_handle resp_handle = {
+    .ok_cb = &discord_connection_list_from_json_v,
+    .ok_obj = p_connections
+  };
+
+  return discord_adapter_run(
+           &client->adapter,
+           &resp_handle,
+           NULL,
+           HTTP_GET,
+           "/users/@me/connections");
 }

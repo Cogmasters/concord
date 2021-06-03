@@ -3593,11 +3593,10 @@ struct discord_create_group_dm_params {
   ja_str **access_tokens; // access tokens of users that have granted your app the gdm.join scope
 
   /* specs/discord/user.create-group-dm.json:13:19
-     '{ "name":"nick", "type":{ "base":"char", "dec":"*"}, 
-          "todo":true,
+     '{ "name":"nicks", "type":{ "base":"ja_u64", "dec":"ntl"}, 
           "comment":"ia dictionary of user ids to their respective nicknames"}'
   */
-  //@todo nick ia dictionary of user ids to their respective nicknames;
+  ja_u64 **nicks; // ia dictionary of user ids to their respective nicknames
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -3729,10 +3728,10 @@ struct discord_connection {
   */
   bool revoked;
 
-  /* specs/discord/user.json:81:20
-     '{ "name": "integrations", "type": {"base":"struct discord_guild_integration", "dec":"ntl"}, "todo":true}'
+  /* specs/discord/user.json:81:16
+     '{ "name": "integrations", "type": {"base":"struct discord_guild_integration", "dec":"ntl"}}'
   */
-  //@todo integrations (null);
+  struct discord_guild_integration **integrations;
 
   /* specs/discord/user.json:82:14
      '{ "name": "verified", "type":{ "base":"bool" }}'
