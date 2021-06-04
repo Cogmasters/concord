@@ -946,7 +946,7 @@ discord_get_pinned_messages(
 }
 
 ORCAcode
-discord_add_pinned_channel_message(
+discord_pin_message(
   struct discord *client, 
   const u64_snowflake_t channel_id, 
   const u64_snowflake_t message_id)
@@ -969,7 +969,7 @@ discord_add_pinned_channel_message(
 }
 
 ORCAcode
-discord_delete_pinned_channel_message(
+discord_unpin_message(
   struct discord *client, 
   const u64_snowflake_t channel_id, 
   const u64_snowflake_t message_id)

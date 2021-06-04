@@ -25,7 +25,7 @@ void on_pin(
     msg_id = msg->referenced_message->id;
   }
 
-  discord_add_pinned_channel_message(client, msg->channel_id, msg_id);
+  discord_pin_message(client, msg->channel_id, msg_id);
 }
 
 void on_unpin(
@@ -42,7 +42,7 @@ void on_unpin(
     msg_id = msg->referenced_message->id;
   }
 
-  discord_delete_pinned_channel_message(client, msg->channel_id, msg_id);
+  discord_unpin_message(client, msg->channel_id, msg_id);
 }
 
 void on_get_pins(
