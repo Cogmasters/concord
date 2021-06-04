@@ -1,0 +1,18 @@
+{
+  "namespace": ["discord", "start_thread_with_message"],
+  "comment": "",
+  "defs":
+  [
+    {
+      "comment":"https://discord.com/developers/docs/resources/channel#start-thread-with-message-json-params",
+      "struct":"params",
+      "fields":
+      [
+        { "name": "name", "type":{ "base":"char", "dec":"*" } },
+        { "name": "auto_archive_duration", "type":{ "base":"int" }, "inject_if_not":0 }
+      ]
+    }
+  ]
+}
+
+

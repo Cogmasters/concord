@@ -19,6 +19,7 @@
       ]
     },
     {
+      "title":"Reaction Structure",
       "comment": "https://discord.com/developers/docs/resources/channel#reaction-object-reaction-structure",
       "namespace":["channel"], 
       "struct":"reaction",
@@ -27,6 +28,33 @@
         { "name": "count", "type":{ "base":"int" }},
         { "name": "me", "type":{ "base":"bool" }},
         { "name": "emoji", "type":{ "base":"struct discord_emoji", "dec":"*" }, "comment":"partial emoji object"}
+      ]
+    },
+    {
+      "title":"Thread Metadata Object",
+      "comment": "https://discord.com/developers/docs/resources/channel#thread-metadata-object",
+      "namespace":["thread"], 
+      "struct":"metadata",
+      "fields":
+      [
+        { "name": "archived", "type":{ "base":"bool" }},
+        { "name": "archiver_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
+        { "name": "auto_archive_duration", "type":{ "base":"int" }},
+        { "name": "archive_timestamp", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }},
+        { "name": "locked", "type":{ "base":"bool" }}
+      ]
+    },
+    {
+      "title":"Thread Member Object",
+      "comment": "https://discord.com/developers/docs/resources/channel#thread-member-object",
+      "namespace":["thread"], 
+      "struct":"member",
+      "fields":
+      [
+        { "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
+        { "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
+        { "name": "join_timestamp", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }},
+        { "name": "flags", "type":{ "base":"int" }}
       ]
     },
     {

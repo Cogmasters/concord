@@ -80,6 +80,38 @@ https://discord.com/developers/docs/resources/channel#channel-object-channel-typ
 /* https://discord.com/developers/docs/resources/channel#channel-object-channel-structure */
 /* This is defined at specs/discord/channel.json:25:22 */
 struct discord_channel;
+/* This file is generated from specs/discord/channel.list-active-threads.json, Please don't edit it. */
+/*
+
+*/
+
+/* https://discord.com/developers/docs/resources/channel#list-active-threads-response-body */
+/* This is defined at specs/discord/channel.list-active-threads.json:8:22 */
+struct discord_list_active_threads_params;
+/* This file is generated from specs/discord/channel.list-joined-private-archived-threads.json, Please don't edit it. */
+/*
+
+*/
+
+/* https://discord.com/developers/docs/resources/channel#list-joined-private-archived-threads */
+/* This is defined at specs/discord/channel.list-joined-private-archived-threads.json:8:22 */
+struct discord_list_joined_private_archived_threads_params;
+/* This file is generated from specs/discord/channel.list-private-archived-threads.json, Please don't edit it. */
+/*
+
+*/
+
+/* https://discord.com/developers/docs/resources/channel#list-private-archived-threads */
+/* This is defined at specs/discord/channel.list-private-archived-threads.json:8:22 */
+struct discord_list_private_archived_threads_params;
+/* This file is generated from specs/discord/channel.list-public-archived-threads.json, Please don't edit it. */
+/*
+
+*/
+
+/* https://discord.com/developers/docs/resources/channel#list-public-archived-threads-query-string-params */
+/* This is defined at specs/discord/channel.list-public-archived-threads.json:8:22 */
+struct discord_list_public_archived_threads_params;
 /* This file is generated from specs/discord/channel.message.json, Please don't edit it. */
 /*
 
@@ -133,68 +165,95 @@ https://discord.com/developers/docs/resources/channel#overwrite-object-overwrite
 /* This is defined at specs/discord/channel.objects.json:10:22 */
 struct discord_channel_overwrite;
 
+/* Title: Reaction Structure */
 /* https://discord.com/developers/docs/resources/channel#reaction-object-reaction-structure */
-/* This is defined at specs/discord/channel.objects.json:24:22 */
+/* This is defined at specs/discord/channel.objects.json:25:22 */
 struct discord_channel_reaction;
+
+/* Title: Thread Metadata Object */
+/* https://discord.com/developers/docs/resources/channel#thread-metadata-object */
+/* This is defined at specs/discord/channel.objects.json:37:22 */
+struct discord_thread_metadata;
+
+/* Title: Thread Member Object */
+/* https://discord.com/developers/docs/resources/channel#thread-member-object */
+/* This is defined at specs/discord/channel.objects.json:51:22 */
+struct discord_thread_member;
 
 /* Title: Followed Channel Structure */
 /* https://discord.com/developers/docs/resources/channel#followed-channel-object-followed-channel-structure */
-/* This is defined at specs/discord/channel.objects.json:36:22 */
+/* This is defined at specs/discord/channel.objects.json:64:22 */
 struct discord_channel_followed_channel;
 
 /* https://discord.com/developers/docs/resources/channel#attachment-object */
-/* This is defined at specs/discord/channel.objects.json:46:22 */
+/* This is defined at specs/discord/channel.objects.json:74:22 */
 struct discord_channel_attachment;
 
 /* Title: Channel Mention Structure */
 /* https://discord.com/developers/docs/resources/channel#channel-mention-object-channel-mention-structure */
-/* This is defined at specs/discord/channel.objects.json:62:22 */
+/* This is defined at specs/discord/channel.objects.json:90:22 */
 struct discord_channel_mention;
 
 /* Title: Allowed Mentions Structure */
 /* https://discord.com/developers/docs/resources/channel#allowed-mentions-object-allowed-mentions-structure */
-/* This is defined at specs/discord/channel.objects.json:75:22 */
+/* This is defined at specs/discord/channel.objects.json:103:22 */
 struct discord_channel_allowed_mentions;
 
 /* Title: Embed Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-structure */
-/* This is defined at specs/discord/channel.objects.json:87:22 */
+/* This is defined at specs/discord/channel.objects.json:115:22 */
 struct discord_embed;
 
 /* Title: Embed Thumbnail Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-thumbnail-structure */
-/* This is defined at specs/discord/channel.objects.json:116:22 */
+/* This is defined at specs/discord/channel.objects.json:144:22 */
 struct discord_embed_thumbnail;
 
 /* Title: Embed Video Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-video-structure */
-/* This is defined at specs/discord/channel.objects.json:128:22 */
+/* This is defined at specs/discord/channel.objects.json:156:22 */
 struct discord_embed_video;
 
 /* Title: Embed Image Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-image-structure */
-/* This is defined at specs/discord/channel.objects.json:140:22 */
+/* This is defined at specs/discord/channel.objects.json:168:22 */
 struct discord_embed_image;
 
 /* Title: Embed Provider Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-provider-structure */
-/* This is defined at specs/discord/channel.objects.json:152:22 */
+/* This is defined at specs/discord/channel.objects.json:180:22 */
 struct discord_embed_provider;
 
 /* Title: Embed Author Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-author-structure */
-/* This is defined at specs/discord/channel.objects.json:162:22 */
+/* This is defined at specs/discord/channel.objects.json:190:22 */
 struct discord_embed_author;
 
 /* Title: Embed Footer Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-footer-structure */
-/* This is defined at specs/discord/channel.objects.json:174:22 */
+/* This is defined at specs/discord/channel.objects.json:202:22 */
 struct discord_embed_footer;
 
 /* Title: Embed Field Structure */
 /* https://discord.com/developers/docs/resources/channel#embed-object-embed-field-structure */
-/* This is defined at specs/discord/channel.objects.json:187:22 */
+/* This is defined at specs/discord/channel.objects.json:215:22 */
 struct discord_embed_field;
+/* This file is generated from specs/discord/channel.start-thread-with-message.json, Please don't edit it. */
+/*
+
+*/
+
+/* https://discord.com/developers/docs/resources/channel#start-thread-with-message-json-params */
+/* This is defined at specs/discord/channel.start-thread-with-message.json:8:22 */
+struct discord_start_thread_with_message_params;
+/* This file is generated from specs/discord/channel.start-thread-without-message.json, Please don't edit it. */
+/*
+
+*/
+
+/* https://discord.com/developers/docs/resources/channel#start-thread-without-message-json-params */
+/* This is defined at specs/discord/channel.start-thread-without-message.json:8:22 */
+struct discord_start_thread_without_message_params;
 /* This file is generated from specs/discord/emoji.create-guild-emoji.json, Please don't edit it. */
 /*
 
