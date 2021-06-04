@@ -108,6 +108,49 @@ void on_channel_create_invite(
   discord_invite_free(invite);
 }
 
+void on_channel_start_thread(
+  struct discord *client,
+  const struct discord_user *bot,
+  const struct discord_message *msg)
+{
+  if (msg->author->bot) return;
+
+  struct discord_channel *channel = discord_channel_alloc();
+
+  char text[MAX_MESSAGE_LEN];
+  {
+    ORCAcode code;
+    char *name = "new_thread";
+    if (msg->message_reference->message_id) {
+      struct discord_start_thread_with_message_params params = { .name = name };
+      code = discord_start_thread_with_message(
+               client, 
+               msg->channel_id, 
+               msg->message_reference->message_id, 
+               &params, 
+               channel);
+    }
+    else {
+      struct discord_start_thread_without_message_params params = { .name = name };
+      code = discord_start_thread_without_message(
+              client, 
+              msg->channel_id, 
+              &params, 
+              channel);
+    }
+
+    if (ORCA_OK == code)
+      sprintf(text, "Created thread-channel <#%"PRIu64">", channel->id);
+    else
+      sprintf(text, "Couldn't create channel.");
+  }
+
+  struct discord_create_message_params params = { .content = text };
+  discord_create_message(client, msg->channel_id, &params, NULL);
+
+  discord_channel_free(channel);
+}
+
 int main(int argc, char *argv[])
 {
   const char *config_file;
@@ -132,6 +175,7 @@ int main(int argc, char *argv[])
   discord_set_on_command(client, "delete_this", &on_channel_delete_this);
   discord_set_on_command(client, "get_invites", &on_channel_get_invites);
   discord_set_on_command(client, "create_invite", &on_channel_create_invite);
+  discord_set_on_command(client, "start_thread", &on_channel_start_thread);
 
   printf("\n\n(USE WITH CAUTION) This bot demonstrates how easy it is to create/delete channels\n"
          "1. Type 'channel.create <channel_name>' anywhere to create a new channel\n"
@@ -139,6 +183,7 @@ int main(int argc, char *argv[])
          "3. Type 'channel.delete_this' to delete the current channel\n"
          "4. Type 'channel.get_invites' to check how many have been created\n"
          "5. Type 'channel.create_invite' to create a new invite\n"
+         "6. Type 'channel.start_thread' to start a new thread (reply to a message if you wish start a thread under it)\n"
          "\nTYPE ANY KEY TO START BOT\n");
   fgetc(stdin); // wait for input
 
