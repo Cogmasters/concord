@@ -210,10 +210,6 @@ discord_create_message(
   struct discord_create_message_params *params, 
   struct discord_message *p_message)
 {
-  if (ws_get_status(client->gw.ws) != WS_CONNECTED) {
-    log_warn("Can't perform action unless client has an active websockets connection");
-    return ORCA_MISSING_PARAMETER;
-  }
   if (!channel_id) {
     log_error("Missing 'channel_id'");
     return ORCA_MISSING_PARAMETER;
