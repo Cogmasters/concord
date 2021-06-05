@@ -134,7 +134,7 @@ struct discord_voice {
     char digest[CEE_SHA1_STR_LEN];
     char unique_key[128];
     int audio_udp_pid;
-    time_t start_time;
+    uintmax_t start_time;
   } udp_service;
 
   struct discord_voice_cbs *p_voice_cbs;
