@@ -106,17 +106,19 @@ struct discord_bucket {
 /**
  * Match endpoint to a route
  *
+ * @see https://discord.com/developers/docs/topics/rate-limits#rate-limits
+ *
  * @param endpoint that will be matched
- * @return the bucket assigned to this endpoint, can be itself or a major parameter
+ * @return the route from @endpoint (can be itself or a major parameter)
  */
 char* discord_get_route(const char *endpoint);
 
 /**
- * Free buckets
+ * Free client buckets
  *
- * @param Client buckets
+ * @param adapter the client adapter containinig every bucket found
  */
-void discord_buckets_cleanup(struct discord_adapter *bucket);
+void discord_buckets_cleanup(struct discord_adapter *adapter);
 
 /**
  * Check if connections from a bucket hit its threshold, and lock every connection
