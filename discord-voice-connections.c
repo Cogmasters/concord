@@ -651,7 +651,8 @@ _discord_on_voice_server_update(struct discord *client, u64_snowflake_t guild_id
   ret = snprintf(vc->new_token, sizeof(vc->new_token), "%s", token);
   ASSERT_S(ret < sizeof(vc->new_token), "Out of bounds write attempt");
   //char base_url[MAX_URL_LEN]; // the session base url
-  ret = snprintf(vc->new_url, sizeof(vc->new_url), "wss://%s?v=4", endpoint);
+  ret = snprintf(vc->new_url, sizeof(vc->new_url), \
+      "wss://%s"DISCORD_VOICE_CONNECTIONS_URL_SUFFIX, endpoint);
   ASSERT_S(ret < sizeof(vc->new_url), "Out of bounds write attempt");
 
   // @todo: replace with the more reliable thread alive check

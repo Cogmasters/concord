@@ -5,6 +5,11 @@
 #include "json-actor-boxed.h"
 #include "logconf.h"
 
+
+#define DISCORD_API_BASE_URL "https://discord.com/api/v9"
+#define DISCORD_GATEWAY_URL_SUFFIX "?v=9&encoding=json"
+#define DISCORD_VOICE_CONNECTIONS_URL_SUFFIX "?v=4"
+
 /* FORWARD DECLARATIONS */
 struct discord;
 struct discord_voice_cbs;

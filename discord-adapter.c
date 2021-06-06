@@ -8,14 +8,12 @@
 
 #include "orka-utils.h"
 
-#define BASE_API_URL "https://discord.com/api/v9"
-
 
 void
 discord_adapter_init(struct discord_adapter *adapter, struct logconf *config, struct sized_buffer *token)
 {
   adapter->ua = ua_init(config);
-  ua_set_url(adapter->ua, BASE_API_URL);
+  ua_set_url(adapter->ua, DISCORD_API_BASE_URL);
   logconf_add_id(config, adapter->ua, "DISCORD_HTTP");
 
   if (STRNEQ("YOUR-BOT-TOKEN", token->start, token->size)) {

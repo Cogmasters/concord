@@ -9,8 +9,6 @@
 
 #include "orka-utils.h"
 
-#define GATEWAY_URL_SUFFIX "?v=9&encoding=json"
-
 
 static void
 discord_session_from_json(char *str, size_t len, void *p_session)
@@ -1127,7 +1125,8 @@ event_loop(struct discord_gateway *gw)
 
   // build URL that will be used to connect to Discord
   char url[1024];
-  size_t ret = snprintf(url, sizeof(url), "%s%s"GATEWAY_URL_SUFFIX,  \
+  size_t ret = snprintf(url, sizeof(url),                            \
+      "%s%s"DISCORD_GATEWAY_URL_SUFFIX,                              \
                  gw->session.url,                                    \
                  ('/' == gw->session.url[strlen(gw->session.url)-1]) \
                     ? "" : "/");

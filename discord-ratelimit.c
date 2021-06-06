@@ -77,7 +77,7 @@ discord_bucket_try_cooldown(struct discord_bucket *bucket)
               " exceeds bucket reset timestamp\n\t"
               "Reset At:\t%"PRIu64"\n\t"
               "Current:\t%"PRIu64"\n\t"
-              "Delay:\t%"PRId64, 
+              "Delay:\t\t%"PRId64" ms", 
               bucket->hash, bucket->reset_tstamp, curr_tstamp, delay_ms);
     pthread_mutex_unlock(&bucket->lock);
     return; /* EARLY RETURN */
