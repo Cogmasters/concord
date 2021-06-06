@@ -755,6 +755,8 @@ ua_vrun(
     memcpy(info, &conn->info, sizeof(struct ua_info));
     asprintf(&info->resp_body.buf, "%.*s", \
         (int)conn->info.resp_body.length, conn->info.resp_body.buf);
+    asprintf(&info->resp_header.buf, "%.*s", \
+        (int)conn->info.resp_header.length, conn->info.resp_header.buf);
   }
 
   conn_reset(conn); // reset for next iteration
@@ -795,6 +797,8 @@ ua_info_cleanup(struct ua_info *info)
 {
   if (info->resp_body.buf)
     free(info->resp_body.buf);
+  if (info->resp_header.buf)
+    free(info->resp_header.buf);
   memset(info, 0, sizeof(struct ua_info));
 }
 
