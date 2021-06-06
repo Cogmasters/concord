@@ -104,16 +104,6 @@ struct discord_bucket {
 };
 
 /**
- * Match endpoint to a route
- *
- * @see https://discord.com/developers/docs/topics/rate-limits#rate-limits
- *
- * @param endpoint that will be matched
- * @return the route from @endpoint (can be itself or a major parameter)
- */
-char* discord_get_route(const char *endpoint);
-
-/**
  * Free client buckets
  *
  * @param adapter the client adapter containinig every bucket found

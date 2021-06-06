@@ -74,7 +74,16 @@ discord_adapter_run(
     resp_handle->err_obj = NULL;
   }
 
-  const char *route = discord_get_route(endpoint);
+  /* Check if endpoint contain a major param */
+  const char *route;
+  if (strstr(endpoint, "/channels/%")) 
+    route = "@channel";
+  else if (strstr(endpoint, "/guilds/%"))   
+    route = "@guild";
+  else if (strstr(endpoint, "/webhook/%"))  
+    route = "@webhook";
+  else
+    route = endpoint;
 
   struct discord_bucket *bucket;
   pthread_mutex_lock(&adapter->ratelimit.lock);
@@ -119,7 +128,7 @@ discord_adapter_run(
                     "(message):s (retry_after):lf", \
                     message, &retry_after);
 
-        if (retry_after != -1) { // retry after attribute received
+        if (retry_after >= 0) { // retry after attribute received
           log_warn("%s (wait: %.2lf ms)", message, 1000*retry_after);
           ua_block_ms(adapter->ua, (uint64_t)(1000*retry_after));
         }

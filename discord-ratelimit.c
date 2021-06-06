@@ -4,22 +4,12 @@ https://discord.com/developers/docs/topics/rate-limits#rate-limits */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <pthread.h> // for bucket synchronization
 
 #include "discord.h"
 #include "discord-internal.h"
+
 #include "orka-utils.h"
 
-
-char*
-discord_get_route(const char *endpoint)
-{
-  /* check if fits major parameter criteria */
-  if (strstr(endpoint, "/channels/%")) return "/channels/%";
-  if (strstr(endpoint, "/guilds/%"))   return "/guilds/%";
-  if (strstr(endpoint, "/webhook/%"))  return "/webhook/%";
-  return (char*)endpoint; //couldn't match to major params
-}
 
 static struct discord_bucket*
 bucket_init(struct sized_buffer *hash, const char route[])
@@ -60,10 +50,7 @@ discord_buckets_cleanup(struct discord_adapter *adapter)
 void
 discord_bucket_try_cooldown(struct discord_bucket *bucket)
 {
-  if (!bucket) {
-    log_debug("[?] Missing 'bucket', skipping cooldown");
-    return; /* EARLY RETURN */
-  }
+  if (!bucket) return;
 
   pthread_mutex_lock(&bucket->lock);
   ++bucket->busy;
@@ -96,7 +83,7 @@ discord_bucket_try_cooldown(struct discord_bucket *bucket)
     return; /* EARLY RETURN */
   }
 
-  if (delay_ms > bucket->reset_after_ms) //don't delay in excess
+  if (delay_ms > bucket->reset_after_ms) //don't delay excessively
     delay_ms = bucket->reset_after_ms;
 
   log_trace("[%s] RATELIMITING (wait %"PRId64" ms)", bucket->hash, delay_ms);
@@ -110,11 +97,11 @@ discord_bucket_try_cooldown(struct discord_bucket *bucket)
 struct discord_bucket*
 discord_bucket_try_get(struct discord_adapter *adapter, const char route[]) 
 {
-  log_debug("[?] Attempt to find matching bucket for '%s'", route);
+  log_debug("[?] Attempt to find matching bucket for route '%s'", route);
   struct discord_bucket *bucket;
   HASH_FIND_STR(adapter->ratelimit.buckets, route, bucket);
   if (!bucket)
-    log_debug("[?] Couldn't match bucket to '%s', will attempt to create a new one", route);
+    log_debug("[?] Couldn't match bucket to route '%s', will attempt to create a new one", route);
   else
     log_debug("[%s] Found a match!", bucket->hash);
 
@@ -141,7 +128,7 @@ parse_ratelimits(struct discord_bucket *bucket, struct ua_info *info)
     value = ua_info_respheader_field(info, "x-ratelimit-reset-after");
     if (value.size) bucket->reset_after_ms = 1000 * strtod(value.start, NULL);
 
-    log_debug("\n\t[%s]\n\t"                \
+    log_debug("\n  [%s]\n\t"                \
               "reset_tstamp: %"PRIu64"\n\t" \
               "remaining: %d\n\t"           \
               "reset_after_ms: %"PRId64,    \
@@ -174,22 +161,18 @@ match_route(struct discord_adapter *adapter, const char route[], struct ua_info 
     return;
   }
 
-  struct discord_bucket *bucket, *tmp;
-
+  struct discord_bucket *bucket=NULL, *iter, *tmp;
   //attempt to match hash to client bucket hashes
-  HASH_ITER(hh, adapter->ratelimit.buckets, bucket, tmp) {
-    if (STRNEQ(bucket->hash, hash.start, hash.size))
+  HASH_ITER(hh, adapter->ratelimit.buckets, iter, tmp) {
+    if (STRNEQ(iter->hash, hash.start, hash.size)) {
+      bucket = iter;
       break;
-    bucket = NULL;
+    }
   }
+  if (!bucket) bucket = bucket_init(&hash, route);
 
-  //couldn't find match, create new bucket
-  if (!bucket) {
-    bucket = bucket_init(&hash, route);
-  }
-
-  //add new route to tree and update its bucket ratelimit fields
-  log_debug("[%s] New route '%s'", bucket->hash, bucket->route);
+  //assign new route and update bucket ratelimit fields
+  log_debug("[%s] Assign new route '%s' to bucket", bucket->hash, bucket->route);
   HASH_ADD_STR(adapter->ratelimit.buckets, route, bucket);
   parse_ratelimits(bucket, info);
 }
