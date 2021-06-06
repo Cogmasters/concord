@@ -104,7 +104,17 @@ struct discord_bucket {
 };
 
 /**
- * Free a bucket
+ * Match endpoint to a route
+ *
+ * @param endpoint that will be matched
+ * @return the bucket assigned to this endpoint, can be itself or a major parameter
+ */
+char* discord_get_route(const char *endpoint);
+
+/**
+ * Free buckets
+ *
+ * @param Client buckets
  */
 void discord_buckets_cleanup(struct discord_adapter *bucket);
 
@@ -117,13 +127,14 @@ void discord_buckets_cleanup(struct discord_adapter *bucket);
 void discord_bucket_try_cooldown(struct discord_bucket *bucket);
 
 /**
- *  Check if bucket associated with given endpoint has already been discovered
+ *  Check if bucket associated with @route has already been discovered
  *
  *  @param adapter the handle created with discord_adapter_init()
  *  @param bucket check if a cooldown is necessary
- *  @return bucket associated with endpoint or #NULL if no match found
+ *  @param route that will be checked for a bucket match
+ *  @return bucket associated with route or #NULL if no match found
  */
-struct discord_bucket* discord_bucket_try_get(struct discord_adapter *adapter, char endpoint[]);
+struct discord_bucket* discord_bucket_try_get(struct discord_adapter *adapter, const char route[]);
 
 /**
  * Update the bucket internal information from the response header
@@ -131,10 +142,10 @@ struct discord_bucket* discord_bucket_try_get(struct discord_adapter *adapter, c
  *
  * @param adapter the handle created with discord_adapter_init()
  * @param bucket #NULL when bucket is first discovered
- * @param endpoint the endpoint associated with the bucket
- * @info information struct regarding the current transfer
+ * @param route the route associated with the bucket
+ * @param info information struct regarding the current transfer
  */
-void discord_bucket_build(struct discord_adapter *adapter, struct discord_bucket *bucket, char endpoint[], struct ua_info *info);
+void discord_bucket_build(struct discord_adapter *adapter, struct discord_bucket *bucket, const char route[], struct ua_info *info);
 
 /** 
  * Struct for storing user-specific commands/callback pair for the bot to listen 

@@ -74,9 +74,11 @@ discord_adapter_run(
     resp_handle->err_obj = NULL;
   }
 
+  const char *route = discord_get_route(endpoint);
+
   struct discord_bucket *bucket;
   pthread_mutex_lock(&adapter->ratelimit.lock);
-  bucket = discord_bucket_try_get(adapter, endpoint);
+  bucket = discord_bucket_try_get(adapter, route);
   pthread_mutex_unlock(&adapter->ratelimit.lock);
 
   ORCAcode code;
@@ -132,7 +134,7 @@ discord_adapter_run(
     }
 
     pthread_mutex_lock(&adapter->ratelimit.lock);
-    discord_bucket_build(adapter, bucket, endpoint, &info);
+    discord_bucket_build(adapter, bucket, route, &info);
     pthread_mutex_unlock(&adapter->ratelimit.lock);
     
     ua_info_cleanup(&info);

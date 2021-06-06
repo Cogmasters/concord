@@ -10,30 +10,19 @@ https://discord.com/developers/docs/topics/rate-limits#rate-limits */
 #include "discord-internal.h"
 #include "orka-utils.h"
 
-#undef HASH_KEYCMP
-#define HASH_KEYCMP(a, b, len) routecmp(a, b)
 
-/* works like strcmp, but will check if route matches major 
- *  parameter criteria too */
-static int
-routecmp(const void *p_route, const void *p_bucket_route)
+char*
+discord_get_route(const char *endpoint)
 {
-  char *route = (char*)p_route, *bucket_route = (char*)p_bucket_route;
-  int ret = strcmp(route, bucket_route);
-  if (0 == ret) return 0;
-
   /* check if fits major parameter criteria */
-  if (strstr(route, "/channels/%") && strstr(bucket_route, "/channels/%"))
-    return 0;
-  if (strstr(route, "/guilds/%") && strstr(bucket_route, "/guilds/%"))
-    return 0;
-  if (strstr(route, "/webhook/%") && strstr(bucket_route, "/webhook/%"))
-    return 0;
-  return ret; //couldn't find any match, return strcmp diff value
+  if (strstr(endpoint, "/channels/%")) return "/channels/%";
+  if (strstr(endpoint, "/guilds/%"))   return "/guilds/%";
+  if (strstr(endpoint, "/webhook/%"))  return "/webhook/%";
+  return (char*)endpoint; //couldn't match to major params
 }
 
 static struct discord_bucket*
-bucket_init(struct sized_buffer *hash, char route[])
+bucket_init(struct sized_buffer *hash, const char route[])
 {
   struct discord_bucket *new_bucket = calloc(1, sizeof *new_bucket);
   int ret = snprintf(new_bucket->hash, sizeof(new_bucket->hash), "%.*s", (int)hash->size, hash->start);
@@ -119,7 +108,7 @@ discord_bucket_try_cooldown(struct discord_bucket *bucket)
 
 /* attempt to find a bucket associated with this route */
 struct discord_bucket*
-discord_bucket_try_get(struct discord_adapter *adapter, char route[]) 
+discord_bucket_try_get(struct discord_adapter *adapter, const char route[]) 
 {
   log_debug("[?] Attempt to find matching bucket for '%s'", route);
   struct discord_bucket *bucket;
@@ -176,7 +165,7 @@ parse_ratelimits(struct discord_bucket *bucket, struct ua_info *info)
  * If no match is found then a new bucket is created and linked to the
  *  route*/
 static void
-match_route(struct discord_adapter *adapter, char route[], struct ua_info *info)
+match_route(struct discord_adapter *adapter, const char route[], struct ua_info *info)
 {
   struct sized_buffer hash = ua_info_respheader_field(info, "x-ratelimit-bucket");
   if (!hash.size) {
@@ -207,7 +196,7 @@ match_route(struct discord_adapter *adapter, char route[], struct ua_info *info)
 
 /* Attempt to build and/or update bucket's rate limiting information. */
 void
-discord_bucket_build(struct discord_adapter *adapter, struct discord_bucket *bucket, char route[], struct ua_info *info)
+discord_bucket_build(struct discord_adapter *adapter, struct discord_bucket *bucket, const char route[], struct ua_info *info)
 {
   /* no bucket means first time using this route.  attempt to 
    *  establish a route between it and a bucket via its unique hash 
