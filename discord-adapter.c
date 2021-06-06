@@ -31,8 +31,6 @@ discord_adapter_init(struct discord_adapter *adapter, struct logconf *config, st
 
   if (pthread_mutex_init(&adapter->ratelimit.lock, NULL))
     ERR("Couldn't initialize pthread mutex");
-
-  discord_buckets_init(adapter);
 }
 
 void

@@ -3,7 +3,7 @@
 
 #include <inttypes.h>
 #include <pthread.h>
-#include "avl.h"
+#include "uthash.h"
 
 #include "json-scanf.h"
 #include "json-actor.h"
@@ -26,11 +26,8 @@ struct discord_adapter {
   struct user_agent *ua;
 
   struct { /* RATELIMITING STRUCTURE */
-    // buckets discovered and its amount
-    struct discord_bucket **bucket_pool;
-    size_t num_buckets;
     // endpoint/routes discovered, check a endpoint/bucket matchwith tree search functions
-    avl_tree_t routes;
+    struct discord_bucket *buckets;
 
     // lock when adding/searching for buckets
     pthread_mutex_t lock;
@@ -100,12 +97,15 @@ struct discord_bucket {
   // synchronize buckets between threads
   pthread_mutex_t lock;
   pthread_cond_t cond;
+
+  // makes this structure hashable
+  char route[256]; // this bucket 'key'
+  UT_hash_handle hh;
 };
 
 /**
  * Free a bucket
  */
-void discord_buckets_init(struct discord_adapter *bucket);
 void discord_buckets_cleanup(struct discord_adapter *bucket);
 
 /**
