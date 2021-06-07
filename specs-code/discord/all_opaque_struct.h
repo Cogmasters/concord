@@ -80,38 +80,6 @@ https://discord.com/developers/docs/resources/channel#channel-object-channel-typ
 /* https://discord.com/developers/docs/resources/channel#channel-object-channel-structure */
 /* This is defined at specs/discord/channel.json:25:22 */
 struct discord_channel;
-/* This file is generated from specs/discord/channel.list-active-threads.json, Please don't edit it. */
-/*
-
-*/
-
-/* https://discord.com/developers/docs/resources/channel#list-active-threads-response-body */
-/* This is defined at specs/discord/channel.list-active-threads.json:8:22 */
-struct discord_list_active_threads_params;
-/* This file is generated from specs/discord/channel.list-joined-private-archived-threads.json, Please don't edit it. */
-/*
-
-*/
-
-/* https://discord.com/developers/docs/resources/channel#list-joined-private-archived-threads */
-/* This is defined at specs/discord/channel.list-joined-private-archived-threads.json:8:22 */
-struct discord_list_joined_private_archived_threads_params;
-/* This file is generated from specs/discord/channel.list-private-archived-threads.json, Please don't edit it. */
-/*
-
-*/
-
-/* https://discord.com/developers/docs/resources/channel#list-private-archived-threads */
-/* This is defined at specs/discord/channel.list-private-archived-threads.json:8:22 */
-struct discord_list_private_archived_threads_params;
-/* This file is generated from specs/discord/channel.list-public-archived-threads.json, Please don't edit it. */
-/*
-
-*/
-
-/* https://discord.com/developers/docs/resources/channel#list-public-archived-threads-query-string-params */
-/* This is defined at specs/discord/channel.list-public-archived-threads.json:8:22 */
-struct discord_list_public_archived_threads_params;
 /* This file is generated from specs/discord/channel.message.json, Please don't edit it. */
 /*
 
@@ -254,6 +222,14 @@ struct discord_start_thread_with_message_params;
 /* https://discord.com/developers/docs/resources/channel#start-thread-without-message-json-params */
 /* This is defined at specs/discord/channel.start-thread-without-message.json:8:22 */
 struct discord_start_thread_without_message_params;
+/* This file is generated from specs/discord/channel.thread-response-body.json, Please don't edit it. */
+/*
+
+*/
+
+/* https://discord.com/developers/docs/resources/channel#list-active-threads-response-body */
+/* This is defined at specs/discord/channel.thread-response-body.json:8:22 */
+struct discord_thread_response_body;
 /* This file is generated from specs/discord/emoji.create-guild-emoji.json, Please don't edit it. */
 /*
 

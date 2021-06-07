@@ -250,102 +250,6 @@ extern void discord_channel_list_from_json_v(char *str, size_t len, void *p);
 extern void discord_channel_list_from_json(char *str, size_t len, struct discord_channel ***p);
 extern size_t discord_channel_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_channel_list_to_json(char *str, size_t len, struct discord_channel **p);
-/* This file is generated from specs/discord/channel.list-active-threads.json, Please don't edit it. */
-/*
-
-*/
-
-extern void discord_list_active_threads_params_cleanup_v(void *p);
-extern void discord_list_active_threads_params_cleanup(struct discord_list_active_threads_params *p);
-extern void discord_list_active_threads_params_init_v(void *p);
-extern void discord_list_active_threads_params_init(struct discord_list_active_threads_params *p);
-extern struct discord_list_active_threads_params * discord_list_active_threads_params_alloc();
-extern void discord_list_active_threads_params_free_v(void *p);
-extern void discord_list_active_threads_params_free(struct discord_list_active_threads_params *p);
-extern void discord_list_active_threads_params_from_json_v(char *json, size_t len, void *p);
-extern void discord_list_active_threads_params_from_json(char *json, size_t len, struct discord_list_active_threads_params *p);
-extern size_t discord_list_active_threads_params_to_json_v(char *json, size_t len, void *p);
-extern size_t discord_list_active_threads_params_to_json(char *json, size_t len, struct discord_list_active_threads_params *p);
-extern size_t discord_list_active_threads_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_list_active_threads_params_to_query(char *json, size_t len, struct discord_list_active_threads_params *p);
-extern void discord_list_active_threads_params_list_free_v(void **p);
-extern void discord_list_active_threads_params_list_free(struct discord_list_active_threads_params **p);
-extern void discord_list_active_threads_params_list_from_json_v(char *str, size_t len, void *p);
-extern void discord_list_active_threads_params_list_from_json(char *str, size_t len, struct discord_list_active_threads_params ***p);
-extern size_t discord_list_active_threads_params_list_to_json_v(char *str, size_t len, void *p);
-extern size_t discord_list_active_threads_params_list_to_json(char *str, size_t len, struct discord_list_active_threads_params **p);
-/* This file is generated from specs/discord/channel.list-joined-private-archived-threads.json, Please don't edit it. */
-/*
-
-*/
-
-extern void discord_list_joined_private_archived_threads_params_cleanup_v(void *p);
-extern void discord_list_joined_private_archived_threads_params_cleanup(struct discord_list_joined_private_archived_threads_params *p);
-extern void discord_list_joined_private_archived_threads_params_init_v(void *p);
-extern void discord_list_joined_private_archived_threads_params_init(struct discord_list_joined_private_archived_threads_params *p);
-extern struct discord_list_joined_private_archived_threads_params * discord_list_joined_private_archived_threads_params_alloc();
-extern void discord_list_joined_private_archived_threads_params_free_v(void *p);
-extern void discord_list_joined_private_archived_threads_params_free(struct discord_list_joined_private_archived_threads_params *p);
-extern void discord_list_joined_private_archived_threads_params_from_json_v(char *json, size_t len, void *p);
-extern void discord_list_joined_private_archived_threads_params_from_json(char *json, size_t len, struct discord_list_joined_private_archived_threads_params *p);
-extern size_t discord_list_joined_private_archived_threads_params_to_json_v(char *json, size_t len, void *p);
-extern size_t discord_list_joined_private_archived_threads_params_to_json(char *json, size_t len, struct discord_list_joined_private_archived_threads_params *p);
-extern size_t discord_list_joined_private_archived_threads_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_list_joined_private_archived_threads_params_to_query(char *json, size_t len, struct discord_list_joined_private_archived_threads_params *p);
-extern void discord_list_joined_private_archived_threads_params_list_free_v(void **p);
-extern void discord_list_joined_private_archived_threads_params_list_free(struct discord_list_joined_private_archived_threads_params **p);
-extern void discord_list_joined_private_archived_threads_params_list_from_json_v(char *str, size_t len, void *p);
-extern void discord_list_joined_private_archived_threads_params_list_from_json(char *str, size_t len, struct discord_list_joined_private_archived_threads_params ***p);
-extern size_t discord_list_joined_private_archived_threads_params_list_to_json_v(char *str, size_t len, void *p);
-extern size_t discord_list_joined_private_archived_threads_params_list_to_json(char *str, size_t len, struct discord_list_joined_private_archived_threads_params **p);
-/* This file is generated from specs/discord/channel.list-private-archived-threads.json, Please don't edit it. */
-/*
-
-*/
-
-extern void discord_list_private_archived_threads_params_cleanup_v(void *p);
-extern void discord_list_private_archived_threads_params_cleanup(struct discord_list_private_archived_threads_params *p);
-extern void discord_list_private_archived_threads_params_init_v(void *p);
-extern void discord_list_private_archived_threads_params_init(struct discord_list_private_archived_threads_params *p);
-extern struct discord_list_private_archived_threads_params * discord_list_private_archived_threads_params_alloc();
-extern void discord_list_private_archived_threads_params_free_v(void *p);
-extern void discord_list_private_archived_threads_params_free(struct discord_list_private_archived_threads_params *p);
-extern void discord_list_private_archived_threads_params_from_json_v(char *json, size_t len, void *p);
-extern void discord_list_private_archived_threads_params_from_json(char *json, size_t len, struct discord_list_private_archived_threads_params *p);
-extern size_t discord_list_private_archived_threads_params_to_json_v(char *json, size_t len, void *p);
-extern size_t discord_list_private_archived_threads_params_to_json(char *json, size_t len, struct discord_list_private_archived_threads_params *p);
-extern size_t discord_list_private_archived_threads_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_list_private_archived_threads_params_to_query(char *json, size_t len, struct discord_list_private_archived_threads_params *p);
-extern void discord_list_private_archived_threads_params_list_free_v(void **p);
-extern void discord_list_private_archived_threads_params_list_free(struct discord_list_private_archived_threads_params **p);
-extern void discord_list_private_archived_threads_params_list_from_json_v(char *str, size_t len, void *p);
-extern void discord_list_private_archived_threads_params_list_from_json(char *str, size_t len, struct discord_list_private_archived_threads_params ***p);
-extern size_t discord_list_private_archived_threads_params_list_to_json_v(char *str, size_t len, void *p);
-extern size_t discord_list_private_archived_threads_params_list_to_json(char *str, size_t len, struct discord_list_private_archived_threads_params **p);
-/* This file is generated from specs/discord/channel.list-public-archived-threads.json, Please don't edit it. */
-/*
-
-*/
-
-extern void discord_list_public_archived_threads_params_cleanup_v(void *p);
-extern void discord_list_public_archived_threads_params_cleanup(struct discord_list_public_archived_threads_params *p);
-extern void discord_list_public_archived_threads_params_init_v(void *p);
-extern void discord_list_public_archived_threads_params_init(struct discord_list_public_archived_threads_params *p);
-extern struct discord_list_public_archived_threads_params * discord_list_public_archived_threads_params_alloc();
-extern void discord_list_public_archived_threads_params_free_v(void *p);
-extern void discord_list_public_archived_threads_params_free(struct discord_list_public_archived_threads_params *p);
-extern void discord_list_public_archived_threads_params_from_json_v(char *json, size_t len, void *p);
-extern void discord_list_public_archived_threads_params_from_json(char *json, size_t len, struct discord_list_public_archived_threads_params *p);
-extern size_t discord_list_public_archived_threads_params_to_json_v(char *json, size_t len, void *p);
-extern size_t discord_list_public_archived_threads_params_to_json(char *json, size_t len, struct discord_list_public_archived_threads_params *p);
-extern size_t discord_list_public_archived_threads_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_list_public_archived_threads_params_to_query(char *json, size_t len, struct discord_list_public_archived_threads_params *p);
-extern void discord_list_public_archived_threads_params_list_free_v(void **p);
-extern void discord_list_public_archived_threads_params_list_free(struct discord_list_public_archived_threads_params **p);
-extern void discord_list_public_archived_threads_params_list_from_json_v(char *str, size_t len, void *p);
-extern void discord_list_public_archived_threads_params_list_from_json(char *str, size_t len, struct discord_list_public_archived_threads_params ***p);
-extern size_t discord_list_public_archived_threads_params_list_to_json_v(char *str, size_t len, void *p);
-extern size_t discord_list_public_archived_threads_params_list_to_json(char *str, size_t len, struct discord_list_public_archived_threads_params **p);
 /* This file is generated from specs/discord/channel.message.json, Please don't edit it. */
 /*
 
@@ -854,6 +758,30 @@ extern void discord_start_thread_without_message_params_list_from_json_v(char *s
 extern void discord_start_thread_without_message_params_list_from_json(char *str, size_t len, struct discord_start_thread_without_message_params ***p);
 extern size_t discord_start_thread_without_message_params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_start_thread_without_message_params_list_to_json(char *str, size_t len, struct discord_start_thread_without_message_params **p);
+/* This file is generated from specs/discord/channel.thread-response-body.json, Please don't edit it. */
+/*
+
+*/
+
+extern void discord_thread_response_body_cleanup_v(void *p);
+extern void discord_thread_response_body_cleanup(struct discord_thread_response_body *p);
+extern void discord_thread_response_body_init_v(void *p);
+extern void discord_thread_response_body_init(struct discord_thread_response_body *p);
+extern struct discord_thread_response_body * discord_thread_response_body_alloc();
+extern void discord_thread_response_body_free_v(void *p);
+extern void discord_thread_response_body_free(struct discord_thread_response_body *p);
+extern void discord_thread_response_body_from_json_v(char *json, size_t len, void *p);
+extern void discord_thread_response_body_from_json(char *json, size_t len, struct discord_thread_response_body *p);
+extern size_t discord_thread_response_body_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_thread_response_body_to_json(char *json, size_t len, struct discord_thread_response_body *p);
+extern size_t discord_thread_response_body_to_query_v(char *json, size_t len, void *p);
+extern size_t discord_thread_response_body_to_query(char *json, size_t len, struct discord_thread_response_body *p);
+extern void discord_thread_response_body_list_free_v(void **p);
+extern void discord_thread_response_body_list_free(struct discord_thread_response_body **p);
+extern void discord_thread_response_body_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_thread_response_body_list_from_json(char *str, size_t len, struct discord_thread_response_body ***p);
+extern size_t discord_thread_response_body_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_thread_response_body_list_to_json(char *str, size_t len, struct discord_thread_response_body **p);
 /* This file is generated from specs/discord/emoji.create-guild-emoji.json, Please don't edit it. */
 /*
 

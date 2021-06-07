@@ -802,180 +802,6 @@ struct discord_channel {
     void *record_null[19];
   } __M; // metadata
 };
-/* This file is generated from specs/discord/channel.list-active-threads.json, Please don't edit it. */
-/*
-
-*/
-
-/* https://discord.com/developers/docs/resources/channel#list-active-threads-response-body */
-/* This is defined at specs/discord/channel.list-active-threads.json:8:22 */
-struct discord_list_active_threads_params {
-  /* specs/discord/channel.list-active-threads.json:11:20
-     '{ "name": "threads", "type":{ "base":"struct discord_channel", "dec":"ntl" } }'
-  */
-  struct discord_channel **threads;
-
-  /* specs/discord/channel.list-active-threads.json:12:20
-     '{ "name": "members", "type":{ "base":"struct discord_thread_member", "dec":"ntl" } }'
-  */
-  struct discord_thread_member **members;
-
-  /* specs/discord/channel.list-active-threads.json:13:20
-     '{ "name": "has_more", "type":{ "base":"bool" } }'
-  */
-  bool has_more;
-
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[3];
-    void *record_defined[3];
-    void *record_null[3];
-  } __M; // metadata
-};
-/* This file is generated from specs/discord/channel.list-joined-private-archived-threads.json, Please don't edit it. */
-/*
-
-*/
-
-/* https://discord.com/developers/docs/resources/channel#list-joined-private-archived-threads */
-/* This is defined at specs/discord/channel.list-joined-private-archived-threads.json:8:22 */
-struct discord_list_joined_private_archived_threads_params {
-  /* specs/discord/channel.list-joined-private-archived-threads.json:11:20
-     '{ "name": "before", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }, "inject_if_not":0}'
-  */
-  u64_unix_ms_t before;
-
-  /* specs/discord/channel.list-joined-private-archived-threads.json:12:20
-     '{ "name": "limit", "type":{ "base":"int" }, "inject_if_not":0 }'
-  */
-  int limit;
-
-  /* specs/discord/channel.list-joined-private-archived-threads.json:13:20
-     '{ "name": "threads", "type":{ "base":"struct discord_channel", "dec":"ntl" } }'
-  */
-  struct discord_channel **threads;
-
-  /* specs/discord/channel.list-joined-private-archived-threads.json:14:20
-     '{ "name": "members", "type":{ "base":"struct discord_thread_member", "dec":"ntl" } }'
-  */
-  struct discord_thread_member **members;
-
-  /* specs/discord/channel.list-joined-private-archived-threads.json:15:20
-     '{ "name": "has_more", "type":{ "base":"bool" } }'
-  */
-  bool has_more;
-
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[5];
-    void *record_defined[5];
-    void *record_null[5];
-  } __M; // metadata
-};
-/* This file is generated from specs/discord/channel.list-private-archived-threads.json, Please don't edit it. */
-/*
-
-*/
-
-/* https://discord.com/developers/docs/resources/channel#list-private-archived-threads */
-/* This is defined at specs/discord/channel.list-private-archived-threads.json:8:22 */
-struct discord_list_private_archived_threads_params {
-  /* specs/discord/channel.list-private-archived-threads.json:11:20
-     '{ "name": "before", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }, "inject_if_not":0}'
-  */
-  u64_unix_ms_t before;
-
-  /* specs/discord/channel.list-private-archived-threads.json:12:20
-     '{ "name": "limit", "type":{ "base":"int" }, "inject_if_not":0 }'
-  */
-  int limit;
-
-  /* specs/discord/channel.list-private-archived-threads.json:13:20
-     '{ "name": "threads", "type":{ "base":"struct discord_channel", "dec":"ntl" } }'
-  */
-  struct discord_channel **threads;
-
-  /* specs/discord/channel.list-private-archived-threads.json:14:20
-     '{ "name": "members", "type":{ "base":"struct discord_thread_member", "dec":"ntl" } }'
-  */
-  struct discord_thread_member **members;
-
-  /* specs/discord/channel.list-private-archived-threads.json:15:20
-     '{ "name": "has_more", "type":{ "base":"bool" } }'
-  */
-  bool has_more;
-
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[5];
-    void *record_defined[5];
-    void *record_null[5];
-  } __M; // metadata
-};
-/* This file is generated from specs/discord/channel.list-public-archived-threads.json, Please don't edit it. */
-/*
-
-*/
-
-/* https://discord.com/developers/docs/resources/channel#list-public-archived-threads-query-string-params */
-/* This is defined at specs/discord/channel.list-public-archived-threads.json:8:22 */
-struct discord_list_public_archived_threads_params {
-  /* specs/discord/channel.list-public-archived-threads.json:11:20
-     '{ "name": "before", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }, "inject_if_not":0}'
-  */
-  u64_unix_ms_t before;
-
-  /* specs/discord/channel.list-public-archived-threads.json:12:20
-     '{ "name": "limit", "type":{ "base":"int" }, "inject_if_not":0 }'
-  */
-  int limit;
-
-  /* specs/discord/channel.list-public-archived-threads.json:13:20
-     '{ "name": "threads", "type":{ "base":"struct discord_channel", "dec":"ntl" } }'
-  */
-  struct discord_channel **threads;
-
-  /* specs/discord/channel.list-public-archived-threads.json:14:20
-     '{ "name": "members", "type":{ "base":"struct discord_thread_member", "dec":"ntl" } }'
-  */
-  struct discord_thread_member **members;
-
-  /* specs/discord/channel.list-public-archived-threads.json:15:20
-     '{ "name": "has_more", "type":{ "base":"bool" } }'
-  */
-  bool has_more;
-
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[5];
-    void *record_defined[5];
-    void *record_null[5];
-  } __M; // metadata
-};
 /* This file is generated from specs/discord/channel.message.json, Please don't edit it. */
 /*
 
@@ -2136,6 +1962,42 @@ struct discord_start_thread_without_message_params {
     void *arg_switches[2];
     void *record_defined[2];
     void *record_null[2];
+  } __M; // metadata
+};
+/* This file is generated from specs/discord/channel.thread-response-body.json, Please don't edit it. */
+/*
+
+*/
+
+/* https://discord.com/developers/docs/resources/channel#list-active-threads-response-body */
+/* This is defined at specs/discord/channel.thread-response-body.json:8:22 */
+struct discord_thread_response_body {
+  /* specs/discord/channel.thread-response-body.json:11:20
+     '{ "name": "threads", "type":{ "base":"struct discord_channel", "dec":"ntl" } }'
+  */
+  struct discord_channel **threads;
+
+  /* specs/discord/channel.thread-response-body.json:12:20
+     '{ "name": "members", "type":{ "base":"struct discord_thread_member", "dec":"ntl" } }'
+  */
+  struct discord_thread_member **members;
+
+  /* specs/discord/channel.thread-response-body.json:13:20
+     '{ "name": "has_more", "type":{ "base":"bool" } }'
+  */
+  bool has_more;
+
+  // The following is metadata used to 
+  // 1. control which field should be extracted/injected
+  // 2. record which field is presented(defined) in JSON
+  // 3. record which field is null in JSON
+  struct {
+    bool enable_arg_switches;
+    bool enable_record_defined;
+    bool enable_record_null;
+    void *arg_switches[3];
+    void *record_defined[3];
+    void *record_null[3];
   } __M; // metadata
 };
 /* This file is generated from specs/discord/emoji.create-guild-emoji.json, Please don't edit it. */

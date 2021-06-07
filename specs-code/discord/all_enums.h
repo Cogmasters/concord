@@ -81,22 +81,6 @@ enum discord_channel_types {
 extern char* discord_channel_types_to_string(enum discord_channel_types);
 extern enum discord_channel_types discord_channel_types_from_string(char*);
 extern bool discord_channel_types_has(enum discord_channel_types, char*);
-/* This file is generated from specs/discord/channel.list-active-threads.json, Please don't edit it. */
-/*
-
-*/
-/* This file is generated from specs/discord/channel.list-joined-private-archived-threads.json, Please don't edit it. */
-/*
-
-*/
-/* This file is generated from specs/discord/channel.list-private-archived-threads.json, Please don't edit it. */
-/*
-
-*/
-/* This file is generated from specs/discord/channel.list-public-archived-threads.json, Please don't edit it. */
-/*
-
-*/
 /* This file is generated from specs/discord/channel.message.json, Please don't edit it. */
 /*
 
@@ -171,6 +155,10 @@ https://discord.com/developers/docs/resources/channel#overwrite-object-overwrite
 
 */
 /* This file is generated from specs/discord/channel.start-thread-without-message.json, Please don't edit it. */
+/*
+
+*/
+/* This file is generated from specs/discord/channel.thread-response-body.json, Please don't edit it. */
 /*
 
 */
