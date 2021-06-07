@@ -8,19 +8,19 @@
 /* This is defined at specs/discord/audit_log.json:8:22 */
 struct discord_audit_log {
   /* specs/discord/audit_log.json:11:18
-     '{"name":"webhooks", "type": { "base":"struct discord_webhook", "dec":"*" } }'
+     '{"name":"webhooks", "type": { "base":"struct discord_webhook", "dec":"ntl" } }'
   */
-  struct discord_webhook *webhooks;
+  struct discord_webhook **webhooks;
 
   /* specs/discord/audit_log.json:12:18
-     '{"name":"users", "type": { "base":"struct discord_user", "dec":"*"}}'
+     '{"name":"users", "type": { "base":"struct discord_user", "dec":"ntl"}}'
   */
-  struct discord_user *users;
+  struct discord_user **users;
 
   /* specs/discord/audit_log.json:13:18
-     '{"name":"audit_log_entries", "type": { "base":"struct discord_audit_log_entry", "dec":"*"}}'
+     '{"name":"audit_log_entries", "type": { "base":"struct discord_audit_log_entry", "dec":"ntl"}}'
   */
-  struct discord_audit_log_entry *audit_log_entries;
+  struct discord_audit_log_entry **audit_log_entries;
 
   /* specs/discord/audit_log.json:14:18
      '{"name":"integrations", "type": { "base":"struct discord_guild_integration", "dec":"ntl"}}'
@@ -111,9 +111,9 @@ struct discord_audit_log_entry {
   char *target_id;
 
   /* specs/discord/audit_log.json:68:18
-     '{"name":"changes", "type": {"base":"struct discord_audit_log_change", "dec":"*"}}'
+     '{"name":"changes", "type": {"base":"struct discord_audit_log_change", "dec":"ntl"}}'
   */
-  struct discord_audit_log_change *changes;
+  struct discord_audit_log_change **changes;
 
   /* specs/discord/audit_log.json:69:18
      '{"name":"user_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
@@ -131,9 +131,9 @@ struct discord_audit_log_entry {
   int action_type;
 
   /* specs/discord/audit_log.json:72:18
-     '{"name":"options", "type": {"base":"struct discord_audit_log_entry_optional_info", "dec":"*"}}'
+     '{"name":"options", "type": {"base":"struct discord_audit_log_entry_optional_info", "dec":"ntl"}}'
   */
-  struct discord_audit_log_entry_optional_info *options;
+  struct discord_audit_log_entry_optional_info **options;
 
   /* specs/discord/audit_log.json:73:18
      '{"name":"reason", "type": {"base":"char", "dec":"[MAX_REASON_LEN]"}}'

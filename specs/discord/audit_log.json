@@ -8,9 +8,9 @@
       "struct":"audit_log",
       "fields":
       [
-        {"name":"webhooks", "type": { "base":"struct discord_webhook", "dec":"*" } },
-        {"name":"users", "type": { "base":"struct discord_user", "dec":"*"}},
-        {"name":"audit_log_entries", "type": { "base":"struct discord_audit_log_entry", "dec":"*"}},
+        {"name":"webhooks", "type": { "base":"struct discord_webhook", "dec":"ntl" } },
+        {"name":"users", "type": { "base":"struct discord_user", "dec":"ntl"}},
+        {"name":"audit_log_entries", "type": { "base":"struct discord_audit_log_entry", "dec":"ntl"}},
         {"name":"integrations", "type": { "base":"struct discord_guild_integration", "dec":"ntl"}}
       ]
     },
@@ -65,11 +65,11 @@
       "fields":
       [
         {"name":"target_id", "type": {"base":"char", "dec":"*"}},
-        {"name":"changes", "type": {"base":"struct discord_audit_log_change", "dec":"*"}},
+        {"name":"changes", "type": {"base":"struct discord_audit_log_change", "dec":"ntl"}},
         {"name":"user_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}},
         {"name":"id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}},
         {"name":"action_type", "type": {"base":"int", "c_base":"enum discord_audit_log_events"}},
-        {"name":"options", "type": {"base":"struct discord_audit_log_entry_optional_info", "dec":"*"}},
+        {"name":"options", "type": {"base":"struct discord_audit_log_entry_optional_info", "dec":"ntl"}},
         {"name":"reason", "type": {"base":"char", "dec":"[MAX_REASON_LEN]"}}
       ]
     },
