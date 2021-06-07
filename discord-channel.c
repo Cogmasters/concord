@@ -1221,12 +1221,12 @@ discord_list_public_archived_threads(
   size_t offset=0;
   if (before) {
     offset += snprintf(query+offset, sizeof(query)-offset, \
-        "?%"PRIu64, before);
+        "?before=%"PRIu64, before);
     ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
   }
   if (limit) {
     offset += snprintf(query+offset, sizeof(query)-offset, \
-        "%s%d", (*query)?"&":"?", limit);
+        "%slimit=%d", (*query)?"&":"?", limit);
     ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
   }
 
@@ -1265,12 +1265,12 @@ discord_list_private_archived_threads(
   size_t offset=0;
   if (before) {
     offset += snprintf(query+offset, sizeof(query)-offset, \
-        "?%"PRIu64, before);
+        "?before=%"PRIu64, before);
     ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
   }
   if (limit) {
     offset += snprintf(query+offset, sizeof(query)-offset, \
-        "%s%d", (*query)?"&":"?", limit);
+        "%slimit=%d", (*query)?"&":"?", limit);
     ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
   }
 
@@ -1309,12 +1309,12 @@ discord_list_joined_private_archived_threads(
   size_t offset=0;
   if (before) {
     offset += snprintf(query+offset, sizeof(query)-offset, \
-        "?%"PRIu64, before);
+        "?before=%"PRIu64, before);
     ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
   }
   if (limit) {
     offset += snprintf(query+offset, sizeof(query)-offset, \
-        "%s%d", (*query)?"&":"?", limit);
+        "%slimit=%d", (*query)?"&":"?", limit);
     ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
   }
 
