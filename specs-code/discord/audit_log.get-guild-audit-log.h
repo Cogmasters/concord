@@ -7,17 +7,17 @@
 /* This is defined at specs/discord/audit_log.get-guild-audit-log.json:8:22 */
 struct discord_get_guild_audit_log_params {
   /* specs/discord/audit_log.get-guild-audit-log.json:11:20
-     '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" } }'
+     '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }'
   */
   u64_snowflake_t user_id;
 
   /* specs/discord/audit_log.get-guild-audit-log.json:12:20
-     '{ "name": "action_type", "type":{ "base":"int", "int_alias":"enum discord_audit_log_events" } }'
+     '{ "name": "action_type", "type":{ "base":"int", "int_alias":"enum discord_audit_log_events" }, "inject_if_not":0 }'
   */
   enum discord_audit_log_events action_type;
 
   /* specs/discord/audit_log.get-guild-audit-log.json:13:20
-     '{ "name": "before", "type":{ "base":"char", "dec":"*", "converter":"snowflake" } }'
+     '{ "name": "before", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }'
   */
   u64_snowflake_t before;
 

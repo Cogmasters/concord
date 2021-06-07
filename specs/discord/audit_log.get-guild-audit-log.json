@@ -8,9 +8,9 @@
       "struct":"params",
       "fields":
       [
-        { "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" } },
-        { "name": "action_type", "type":{ "base":"int", "int_alias":"enum discord_audit_log_events" } },
-        { "name": "before", "type":{ "base":"char", "dec":"*", "converter":"snowflake" } },
+        { "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 },
+        { "name": "action_type", "type":{ "base":"int", "int_alias":"enum discord_audit_log_events" }, "inject_if_not":0 },
+        { "name": "before", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 },
         { "name": "limit", "type":{ "base":"int" }, "inject_if_not":0 }
       ]
     }
