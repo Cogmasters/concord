@@ -1,3 +1,27 @@
+/* This file is generated from specs/discord/audit_log.get-guild-audit-log.json, Please don't edit it. */
+/*
+
+*/
+
+extern void discord_get_guild_audit_log_params_cleanup_v(void *p);
+extern void discord_get_guild_audit_log_params_cleanup(struct discord_get_guild_audit_log_params *p);
+extern void discord_get_guild_audit_log_params_init_v(void *p);
+extern void discord_get_guild_audit_log_params_init(struct discord_get_guild_audit_log_params *p);
+extern struct discord_get_guild_audit_log_params * discord_get_guild_audit_log_params_alloc();
+extern void discord_get_guild_audit_log_params_free_v(void *p);
+extern void discord_get_guild_audit_log_params_free(struct discord_get_guild_audit_log_params *p);
+extern void discord_get_guild_audit_log_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_get_guild_audit_log_params_from_json(char *json, size_t len, struct discord_get_guild_audit_log_params *p);
+extern size_t discord_get_guild_audit_log_params_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_get_guild_audit_log_params_to_json(char *json, size_t len, struct discord_get_guild_audit_log_params *p);
+extern size_t discord_get_guild_audit_log_params_to_query_v(char *json, size_t len, void *p);
+extern size_t discord_get_guild_audit_log_params_to_query(char *json, size_t len, struct discord_get_guild_audit_log_params *p);
+extern void discord_get_guild_audit_log_params_list_free_v(void **p);
+extern void discord_get_guild_audit_log_params_list_free(struct discord_get_guild_audit_log_params **p);
+extern void discord_get_guild_audit_log_params_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_get_guild_audit_log_params_list_from_json(char *str, size_t len, struct discord_get_guild_audit_log_params ***p);
+extern size_t discord_get_guild_audit_log_params_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_get_guild_audit_log_params_list_to_json(char *str, size_t len, struct discord_get_guild_audit_log_params **p);
 /* This file is generated from specs/discord/audit_log.json, Please don't edit it. */
 /*
 (null)

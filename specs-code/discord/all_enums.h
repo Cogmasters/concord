@@ -1,3 +1,7 @@
+/* This file is generated from specs/discord/audit_log.get-guild-audit-log.json, Please don't edit it. */
+/*
+
+*/
 /* This file is generated from specs/discord/audit_log.json, Please don't edit it. */
 /*
 (null)

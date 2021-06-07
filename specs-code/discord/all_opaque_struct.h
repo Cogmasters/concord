@@ -1,3 +1,11 @@
+/* This file is generated from specs/discord/audit_log.get-guild-audit-log.json, Please don't edit it. */
+/*
+
+*/
+
+/* https://discord.com/developers/docs/resources/audit-log#get-guild-audit-log */
+/* This is defined at specs/discord/audit_log.get-guild-audit-log.json:8:22 */
+struct discord_get_guild_audit_log_params;
 /* This file is generated from specs/discord/audit_log.json, Please don't edit it. */
 /*
 (null)
