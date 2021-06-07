@@ -1058,3 +1058,271 @@ discord_start_thread_without_message(
            HTTP_POST,
            "/channels/%"PRIu64"/threads", channel_id);
 }
+
+ORCAcode
+discord_join_thread(struct discord *client, const u64_snowflake_t channel_id) 
+{
+  if (!channel_id) {
+    log_error("Missing 'channel_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
+  return discord_adapter_run(
+           &client->adapter,
+           NULL,
+           NULL,
+           HTTP_PUT,
+           "/channels/%"PRIu64"/thread-members/@me", channel_id);
+}
+
+ORCAcode
+discord_add_thread_member(
+  struct discord *client, 
+  const u64_snowflake_t channel_id, 
+  const u64_snowflake_t user_id)
+{
+  if (!channel_id) {
+    log_error("Missing 'channel_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!user_id) {
+    log_error("Missing 'user_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
+  return discord_adapter_run(
+           &client->adapter,
+           NULL,
+           NULL,
+           HTTP_PUT,
+           "/channels/%"PRIu64"/thread-members/"PRIu64, 
+           channel_id, user_id);
+}
+
+ORCAcode
+discord_leave_thread(struct discord *client, const u64_snowflake_t channel_id) 
+{
+  if (!channel_id) {
+    log_error("Missing 'channel_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
+  return discord_adapter_run(
+           &client->adapter,
+           NULL,
+           NULL,
+           HTTP_DELETE,
+           "/channels/%"PRIu64"/thread-members/@me", channel_id);
+}
+
+ORCAcode
+discord_remove_thread_member(
+  struct discord *client, 
+  const u64_snowflake_t channel_id, 
+  const u64_snowflake_t user_id)
+{
+  if (!channel_id) {
+    log_error("Missing 'channel_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!user_id) {
+    log_error("Missing 'user_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
+  return discord_adapter_run(
+           &client->adapter,
+           NULL,
+           NULL,
+           HTTP_DELETE,
+           "/channels/%"PRIu64"/thread-members/"PRIu64, 
+           channel_id, user_id);
+}
+
+ORCAcode
+discord_list_thread_members(
+  struct discord *client,
+  const u64_snowflake_t channel_id,
+  NTL_T(struct discord_thread_member) *p_thread_members)
+{
+  if (!channel_id) {
+    log_error("Missing 'channel_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!p_thread_members) {
+    log_error("Missing 'p_thread_members'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
+  struct ua_resp_handle resp_handle = {
+    .ok_cb = &discord_thread_member_list_from_json_v,
+    .ok_obj = p_thread_members
+  };
+
+  return discord_adapter_run(
+           &client->adapter,
+           &resp_handle,
+           NULL,
+           HTTP_GET,
+           "/channels/%"PRIu64"/thread-members", channel_id);
+}
+
+ORCAcode
+discord_list_active_threads(
+  struct discord *client,
+  const u64_snowflake_t channel_id,
+  struct discord_thread_response_body *body)
+{
+  if (!channel_id) {
+    log_error("Missing 'channel_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!body) {
+    log_error("Missing 'body'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
+  struct ua_resp_handle resp_handle = {
+    .ok_cb = &discord_thread_response_body_from_json_v,
+    .ok_obj = body
+  };
+
+  return discord_adapter_run(
+           &client->adapter,
+           &resp_handle,
+           NULL,
+           HTTP_GET,
+           "/channels/%"PRIu64"/threads/active", channel_id);
+}
+
+ORCAcode
+discord_list_public_archived_threads(
+  struct discord *client,
+  const u64_snowflake_t channel_id,
+  const u64_unix_ms_t before,
+  const int limit,
+  struct discord_thread_response_body *body)
+{
+  if (!channel_id) {
+    log_error("Missing 'channel_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!body) {
+    log_error("Missing 'body'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
+  struct ua_resp_handle resp_handle = {
+    .ok_cb = &discord_thread_response_body_from_json_v,
+    .ok_obj = body
+  };
+
+  char query[1024]="";
+  size_t offset=0;
+  if (before) {
+    offset += snprintf(query+offset, sizeof(query)-offset, \
+        "?%"PRIu64, before);
+    ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
+  }
+  if (limit) {
+    offset += snprintf(query+offset, sizeof(query)-offset, \
+        "%s%d", (*query)?"&":"?", limit);
+    ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
+  }
+
+  return discord_adapter_run(
+           &client->adapter,
+           &resp_handle,
+           NULL,
+           HTTP_GET,
+           "/channels/%"PRIu64"/threads/archived/public%s", 
+           channel_id, query);
+}
+
+ORCAcode
+discord_list_private_archived_threads(
+  struct discord *client,
+  const u64_snowflake_t channel_id,
+  const u64_unix_ms_t before,
+  const int limit,
+  struct discord_thread_response_body *body)
+{
+  if (!channel_id) {
+    log_error("Missing 'channel_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!body) {
+    log_error("Missing 'body'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
+  struct ua_resp_handle resp_handle = {
+    .ok_cb = &discord_thread_response_body_from_json_v,
+    .ok_obj = body
+  };
+
+  char query[1024]="";
+  size_t offset=0;
+  if (before) {
+    offset += snprintf(query+offset, sizeof(query)-offset, \
+        "?%"PRIu64, before);
+    ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
+  }
+  if (limit) {
+    offset += snprintf(query+offset, sizeof(query)-offset, \
+        "%s%d", (*query)?"&":"?", limit);
+    ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
+  }
+
+  return discord_adapter_run(
+           &client->adapter,
+           &resp_handle,
+           NULL,
+           HTTP_GET,
+           "/channels/%"PRIu64"/threads/archived/private%s", 
+           channel_id, query);
+}
+
+ORCAcode
+discord_list_joined_private_archived_threads(
+  struct discord *client,
+  const u64_snowflake_t channel_id,
+  const u64_unix_ms_t before,
+  const int limit,
+  struct discord_thread_response_body *body)
+{
+  if (!channel_id) {
+    log_error("Missing 'channel_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!body) {
+    log_error("Missing 'body'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
+  struct ua_resp_handle resp_handle = {
+    .ok_cb = &discord_thread_response_body_from_json_v,
+    .ok_obj = body
+  };
+
+  char query[1024]="";
+  size_t offset=0;
+  if (before) {
+    offset += snprintf(query+offset, sizeof(query)-offset, \
+        "?%"PRIu64, before);
+    ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
+  }
+  if (limit) {
+    offset += snprintf(query+offset, sizeof(query)-offset, \
+        "%s%d", (*query)?"&":"?", limit);
+    ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
+  }
+
+  return discord_adapter_run(
+           &client->adapter,
+           &resp_handle,
+           NULL,
+           HTTP_GET,
+           "/channels/%"PRIu64"/users/@me/threads/archived/private%s", 
+           channel_id, query);
+}
