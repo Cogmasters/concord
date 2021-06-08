@@ -3,6 +3,7 @@ OBJDIR	     := obj
 LIBDIR	     := lib
 SPECSDIR     := specs-code
 ACTOR_OBJDIR := actor_obj
+SHELL        := /bin/bash
 
 ACC          ?= gcc
 
@@ -101,12 +102,13 @@ endif
 PREFIX ?= /usr/local
 
 .PHONY : install clean purge mujs
+.ONESHELL:
 
 
 all : mkdir cee_utils common discord | bots
 
 get_cee_utils:
-	if [ ! -d cee-utils ]; then \
+	if [[ ! -d cee-utils ]]; then \
 		./scripts/get-cee-utils.sh; \
 	fi
 
