@@ -7,7 +7,7 @@
 #include "orka-utils.h"
 #include "json-actor.c"
 
-#define UTF8_JSON "{\"a\":\"Ì\",\"b\":\"Ü\",\"c\":\"的\",\"d\":\"😊\"}"
+#define UTF8_JSON "{\"a\":\"Íñdîæ\",\"b\":\"Müller\",\"c\":\"的\",\"d\":\"😊\"}"
 
 int main()
 {
