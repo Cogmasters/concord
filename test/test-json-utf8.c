@@ -24,7 +24,7 @@ int main()
 
   char payload[1024];
   json_inject(payload, sizeof(payload), \
-      "(a):s,(b):s,(c):s,(d):d", a, b, c, d);
+      "(a):s,(b):s,(c):s,(d):s", a, b, c, d);
   printf("original json:\n"UTF8_JSON"\nnew json:\n%s\n", payload);
 
   assert(0 == strcmp(a, "Íñdîæ"));
