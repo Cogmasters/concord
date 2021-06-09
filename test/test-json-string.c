@@ -1,3 +1,12 @@
+#include "greatest.h"
+#include "orka-utils.h"
+#include "ntl.h"
+#include "json-actor.h"
+
+GREATEST_MAIN_DEFS();
+
+SUITE(json_escape_unescape_suite);
+
 TEST expect_unescaped_equal_original(void)
 {
   char *str=NULL, *estr=NULL, *unstr=NULL;
@@ -24,4 +33,29 @@ TEST expect_escaped_equal_original(void)
   ASSERT_EQ_FMT(size, estr_size, "%zu");
   ASSERT_STRN_EQ(str, estr, size);
   PASS();
+}
+
+SUITE(json_escape_suite)
+{
+  RUN_TEST(expect_unescaped_equal_original);
+}
+
+SUITE(json_unescape_suite)
+{
+  RUN_TEST(expect_escaped_equal_original);
+}
+
+SUITE(json_escape_unescape_suite)
+{
+  RUN_SUITE(json_escape_suite);
+  RUN_SUITE(json_unescape_suite);
+}
+
+int main(int argc, char **argv)
+{
+  GREATEST_MAIN_BEGIN();
+
+  RUN_SUITE(json_escape_unescape_suite);
+
+  GREATEST_MAIN_END();
 }

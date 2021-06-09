@@ -1,3 +1,12 @@
+#include "greatest.h"
+#include "orka-utils.h"
+#include "ntl.h"
+#include "json-actor.h"
+
+GREATEST_MAIN_DEFS();
+
+SUITE(json_parser_suite);
+
 TEST expect_stringify_equal_original(void)
 {
     size_t size=0;
@@ -16,4 +25,18 @@ TEST expect_stringify_equal_original(void)
     json_cleanup(root);
     free(sb.start);
     PASS();
+}
+
+SUITE(json_parser_suite)
+{
+    RUN_TEST(expect_stringify_equal_original);
+}
+
+int main(int argc, char **argv)
+{
+  GREATEST_MAIN_BEGIN();
+
+  RUN_SUITE(json_parser_suite);
+
+  GREATEST_MAIN_END();
 }
