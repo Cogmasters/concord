@@ -1,17 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <assert.h>
-
-#include "discord.h"
-#include "orka-utils.h"
-#include "json-actor.c"
-#include "greatest.h"
-
-SUITE(json_utf8);
-
-GREATEST_MAIN_DEFS();
-
 #define A "Íñdîæ"
 #define B "m\u00fcller"
 #define C "的"
@@ -33,13 +19,4 @@ TEST expect_doubly_encoded_equal_original(void)
       "(a):s,(b):s,(c):s,(d):s", a, b, c, d);
   ASSERT_STR_EQ(UTF8_JSON, payload);
   PASS();
-}
-
-int main(int argc, char **argv)
-{
-  GREATEST_MAIN_BEGIN();
-
-  RUN_TEST(expect_doubly_encoded_equal_original);
-
-  GREATEST_MAIN_END();
 }
