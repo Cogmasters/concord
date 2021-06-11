@@ -55,8 +55,8 @@ BOTX_EXES := $(patsubst %.c, %.bx, $(BOTX_SRC))
 BOTZ_SRC  := $(wildcard add-ons/bot-*.c)
 BOTZ_EXES := $(patsubst %.c, %.bz, $(BOTZ_SRC))
 
-TEST_SRC  := $(wildcard test/test-*.cpp test/test-*.c)
-TEST_EXES := $(filter %.exe, $(TEST_SRC:.cpp=.exe) $(TEST_SRC:.c=.exe))
+TEST_SRC  := $(wildcard test/test-*.c)
+TEST_EXES := $(filter %.exe, $(TEST_SRC:.c=.exe))
 
 LIBDISCORD_CFLAGS	:= -I./ -I./mujs  -I./sqlite3 -I./add-ons
 LIBDISCORD_LDFLAGS	:= -L./$(LIBDIR) -ldiscord -lpthread
