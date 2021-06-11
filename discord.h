@@ -35,7 +35,7 @@ typedef uint64_t u64_snowflake_t; // discord's snowflake datatype
 #define MAX_EMAIL_LEN         254 + 1
 #define MAX_REGION_LEN        16 + 1
 #define MAX_REASON_LEN        512 + 1
-#define MAX_MESSAGE_LEN       2000 + 1
+#define MAX_MESSAGE_LEN       4000 + 1
 #define MAX_PAYLOAD_LEN       4096 + 1
 
 /* EMBED LIMITS
