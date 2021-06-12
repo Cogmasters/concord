@@ -409,6 +409,14 @@ struct discord_guild_membership_screening;
 /* https://discord.com/developers/docs/resources/guild#modify-guild-member */
 /* This is defined at specs/discord/guild.modify-guild-member.json:8:22 */
 struct discord_modify_guild_member_params;
+/* This file is generated from specs/discord/guild.modify-guild.json, Please don't edit it. */
+/*
+
+*/
+
+/* https://discord.com/developers/docs/resources/guild#modify-guild-json-params */
+/* This is defined at specs/discord/guild.modify-guild.json:8:22 */
+struct discord_modify_guild_params;
 /* This file is generated from specs/discord/guild.role.create.json, Please don't edit it. */
 /*
 

@@ -432,6 +432,10 @@ extern bool discord_guild_membership_screening_field_type_has(enum discord_guild
 /*
 
 */
+/* This file is generated from specs/discord/guild.modify-guild.json, Please don't edit it. */
+/*
+
+*/
 /* This file is generated from specs/discord/guild.role.create.json, Please don't edit it. */
 /*
 

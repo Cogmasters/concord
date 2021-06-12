@@ -1,0 +1,53 @@
+{
+  "namespace": ["discord", "modify_guild"],
+  "comment": "",
+  "defs":
+  [
+    {
+      "comment":"https://discord.com/developers/docs/resources/guild#modify-guild-json-params",
+      "struct":"params",
+      "fields":
+      [
+        { "name": "name", "type":{ "base":"char", "dec":"*" }, 
+          "comment":"name of the guild (2-100) characters"},
+        { "name": "region", "type":{ "base":"char", "dec":"*" },
+          "option":true, "inject_if_not":null, "comment":"voice region id" },
+        { "name": "verification_level", "type":{ "base":"int" }, 
+          "option":true, "inject_if_not":0, "comment":"verification level"},
+        { "name": "default_message_notifications", "type":{ "base":"int" }, 
+          "option":true, "inject_if_not":0, "comment":"default message notification level"},
+        { "name": "explicit_content_filter", "type":{ "base":"int" }, 
+          "option":true, "inject_if_not":0, "comment":"explicit content filter level"},
+        { "name": "afk_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, 
+          "option":true, "inject_if_not":0, "comment":"id for afk channel"},
+        { "name": "afk_timeout", "type":{ "base":"int" }, 
+          "option":true, "inject_if_not":0, "comment":"afk timeout in seconds"},
+        { "name": "icon", "type":{ "base":"char", "dec":"*" }, 
+          "option":true, "inject_if_not":null, "comment":"base64 128x1128 image for the guild icon"},
+        { "name": "owner_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, 
+          "option":true, "inject_if_not":0, "comment":"user id to transfer guild ownership to (must be owner)"},
+        { "name": "splash", "type":{ "base":"char", "dec":"*" }, 
+          "option":true, "inject_if_not":null, "comment":"base64 16:9 png/jpeg image for the guild splash (when the server has the INVITE_SPLASH feature"},
+        { "name": "discovery_splash", "type":{ "base":"char", "dec":"*" }, 
+          "option":true, "inject_if_not":null, "comment":"base64 16:9 png/jpeg image for the guild discovery splash (when the server has the DISCOVERABLE feature)"},
+        { "name": "banner", "type":{ "base":"char", "dec":"*" }, 
+          "option":true, "inject_if_not":null, "comment":"	base64 16:9 png/jpeg image for the guild banner (when the server has the BANNER feature)"},
+        { "name": "system_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, 
+          "option":true, "inject_if_not":0, "comment":"	the id of the channel where guild notices such as welcome messages and boost events are posted"},
+        { "name": "system_channel_flags", "type":{ "base":"int", "int_alias":"enum discord_guild_system_channel_flags" }, 
+          "option":true, "inject_if_not":0, "comment":"system channel flags"},
+        { "name": "rules_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, 
+          "option":true, "inject_if_not":0, "comment":"the id of the channel where Community guilds display rules and/or guidelines"},
+        { "name": "public_updates_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, 
+          "option":true, "inject_if_not":0, "comment":"the id of the channel where admins and moderators of Community guilds receive notices from Discord"},
+        { "name": "preferred_locale", "type":{ "base":"char", "dec":"*" }, 
+          "comment":"the preferred locale of a Community guild used in server discovery and notices from Discord; defaults to \"en-US\""},
+        {"name":"features", "type": { "base":"ja_str", "dec":"ntl" }, 
+          "todo":true", "comment":"array of guild feature strings"},
+        { "name": "description", "type":{ "base":"char", "dec":"*" }, 
+          "comment":"the description for the guild, if the guild is discoverable"}
+      ]
+    }
+  ]
+}
+

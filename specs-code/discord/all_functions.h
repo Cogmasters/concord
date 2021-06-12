@@ -1306,6 +1306,30 @@ extern void discord_modify_guild_member_params_list_from_json_v(char *str, size_
 extern void discord_modify_guild_member_params_list_from_json(char *str, size_t len, struct discord_modify_guild_member_params ***p);
 extern size_t discord_modify_guild_member_params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_modify_guild_member_params_list_to_json(char *str, size_t len, struct discord_modify_guild_member_params **p);
+/* This file is generated from specs/discord/guild.modify-guild.json, Please don't edit it. */
+/*
+
+*/
+
+extern void discord_modify_guild_params_cleanup_v(void *p);
+extern void discord_modify_guild_params_cleanup(struct discord_modify_guild_params *p);
+extern void discord_modify_guild_params_init_v(void *p);
+extern void discord_modify_guild_params_init(struct discord_modify_guild_params *p);
+extern struct discord_modify_guild_params * discord_modify_guild_params_alloc();
+extern void discord_modify_guild_params_free_v(void *p);
+extern void discord_modify_guild_params_free(struct discord_modify_guild_params *p);
+extern void discord_modify_guild_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_modify_guild_params_from_json(char *json, size_t len, struct discord_modify_guild_params *p);
+extern size_t discord_modify_guild_params_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_modify_guild_params_to_json(char *json, size_t len, struct discord_modify_guild_params *p);
+extern size_t discord_modify_guild_params_to_query_v(char *json, size_t len, void *p);
+extern size_t discord_modify_guild_params_to_query(char *json, size_t len, struct discord_modify_guild_params *p);
+extern void discord_modify_guild_params_list_free_v(void **p);
+extern void discord_modify_guild_params_list_free(struct discord_modify_guild_params **p);
+extern void discord_modify_guild_params_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_modify_guild_params_list_from_json(char *str, size_t len, struct discord_modify_guild_params ***p);
+extern size_t discord_modify_guild_params_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_modify_guild_params_list_to_json(char *str, size_t len, struct discord_modify_guild_params **p);
 /* This file is generated from specs/discord/guild.role.create.json, Please don't edit it. */
 /*
 
