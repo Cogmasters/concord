@@ -181,13 +181,9 @@ discord_create_guild_channel(
     log_error("Missing 'guild_id");
     return ORCA_MISSING_PARAMETER;
   }
-  if (IS_EMPTY_STRING(params->name)) {
-    log_error("Missing channel name (params.name)");
-    return ORCA_BAD_PARAMETER;
-  }
-  if (!orka_str_bounds_check(params->topic, 1024)) {
-    log_error("'params.topic' exceeds threshold of 1024");
-    return ORCA_BAD_PARAMETER;
+  if (!params) {
+    log_error("Missing 'params");
+    return ORCA_MISSING_PARAMETER;
   }
 
   struct ua_resp_handle resp_handle = {
@@ -204,6 +200,33 @@ discord_create_guild_channel(
            &resp_handle,
            &req_body,
            HTTP_POST, 
+           "/guilds/%"PRIu64"/channels", guild_id);
+}
+
+ORCAcode 
+discord_modify_guild_channel_positions(
+  struct discord *client, 
+  const u64_snowflake_t guild_id, 
+  NTL_T(struct discord_modify_guild_channel_positions_params) params)
+{
+  if (!guild_id) {
+    log_error("Missing 'guild_id");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!params) {
+    log_error("Missing 'params");
+    return ORCA_MISSING_PARAMETER;
+  }
+
+  char payload[4096];
+  size_t ret = discord_modify_guild_channel_positions_params_list_to_json(payload, sizeof(payload), params);
+  struct sized_buffer req_body = { payload, ret };
+
+  return discord_adapter_run( 
+           &client->adapter,
+           NULL,
+           &req_body,
+           HTTP_PATCH, 
            "/guilds/%"PRIu64"/channels", guild_id);
 }
 
@@ -247,27 +270,26 @@ discord_list_guild_members(
     log_error("Missing 'guild_id'");
     return ORCA_MISSING_PARAMETER;
   }
-  if (!p_members) {
-    log_error("Missing 'p_members'");
-    return ORCA_MISSING_PARAMETER;
-  }
   if (!params) {
     log_error("Missing 'params'");
     return ORCA_MISSING_PARAMETER;
   }
-  if (params->limit < 1 || params->limit > 1000) {
-    log_error("'limit' value should be in an interval of (1-1000)");
-    return ORCA_BAD_PARAMETER;
+  if (!p_members) {
+    log_error("Missing 'p_members'");
+    return ORCA_MISSING_PARAMETER;
   }
 
-  char limit_query[64];
-  snprintf(limit_query, sizeof(limit_query),
-      "?limit=%d", params->limit);
-
-  char after_query[64] = "";
+  char query[1024]="";
+  size_t offset=0;
+  if (params->limit) {
+    offset += snprintf(query+offset, sizeof(query)-offset,
+        "?limit=%d", params->limit);
+    ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
+  }
   if (params->after) {
-    snprintf(after_query, sizeof(after_query),
-        "&after=%"PRIu64, params->after);
+    offset += snprintf(query+offset, sizeof(query)-offset,
+        "%safter=%"PRIu64, (*query)?"&":"?", params->after);
+    ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
   }
 
   struct ua_resp_handle resp_handle = { 
@@ -280,8 +302,8 @@ discord_list_guild_members(
            &resp_handle,
            NULL,
            HTTP_GET,
-           "/guilds/%"PRIu64"/members%s%s", 
-           guild_id, limit_query, after_query);
+           "/guilds/%"PRIu64"/members%s", 
+           guild_id, query);
 }
 
 ORCAcode 

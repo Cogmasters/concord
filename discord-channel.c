@@ -102,32 +102,32 @@ discord_get_channel_messages(
     log_error("Missing 'params'");
     return ORCA_MISSING_PARAMETER;
   }
-  if (params->limit < 1 || params->limit > 100) {
-    log_error("'limit' value should be in an interval of (1-100)");
-    return ORCA_BAD_PARAMETER;
-  }
   if (!p_messages) {
     log_error("Missing 'p_messages'");
     return ORCA_MISSING_PARAMETER;
   }
 
-  char limit_query[64];
-  snprintf(limit_query, sizeof(limit_query),
-      "?limit=%d", params->limit);
-  char around_query[64] = "";
+  char query[1024]="";
+  size_t offset=0;
+  if (params->limit) {
+    offset += snprintf(query+offset, sizeof(query)-offset,
+        "?limit=%d", params->limit);
+    ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
+  }
   if (params->around) {
-    snprintf(around_query, sizeof(around_query),
-        "&around=%" PRIu64 , params->around);
+    offset += snprintf(query+offset, sizeof(query)-offset,
+        "%saround=%"PRIu64, (*query)?"&":"?", params->around);
+    ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
   }
-  char before_query[64] = "";
   if (params->before) {
-    snprintf(before_query, sizeof(before_query),
-        "&before=%" PRIu64 , params->before);
+    offset += snprintf(query+offset, sizeof(query)-offset,
+        "%sbefore=%"PRIu64, (*query)?"&":"?", params->before);
+    ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
   }
-  char after_query[64] = "";
   if (params->after) {
-    snprintf(after_query, sizeof(after_query),
-        "&after=%" PRIu64 , params->after);
+    offset += snprintf(query+offset, sizeof(query)-offset,
+        "%safter=%"PRIu64, (*query)?"&":"?", params->after);
+    ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
   }
 
   struct ua_resp_handle resp_handle = { 
@@ -140,8 +140,7 @@ discord_get_channel_messages(
            &resp_handle,
            NULL,
            HTTP_GET, 
-           "/channels/%"PRIu64"/messages%s%s%s", 
-           channel_id, limit_query, around_query, before_query, after_query);
+           "/channels/%"PRIu64"/messages%s", channel_id, query);
 }
 
 ORCAcode

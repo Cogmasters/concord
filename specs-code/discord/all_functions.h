@@ -1282,6 +1282,30 @@ extern void discord_guild_membership_screening_list_from_json_v(char *str, size_
 extern void discord_guild_membership_screening_list_from_json(char *str, size_t len, struct discord_guild_membership_screening ***p);
 extern size_t discord_guild_membership_screening_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_guild_membership_screening_list_to_json(char *str, size_t len, struct discord_guild_membership_screening **p);
+/* This file is generated from specs/discord/guild.modify-guild-channel-positions.json, Please don't edit it. */
+/*
+
+*/
+
+extern void discord_modify_guild_channel_positions_params_cleanup_v(void *p);
+extern void discord_modify_guild_channel_positions_params_cleanup(struct discord_modify_guild_channel_positions_params *p);
+extern void discord_modify_guild_channel_positions_params_init_v(void *p);
+extern void discord_modify_guild_channel_positions_params_init(struct discord_modify_guild_channel_positions_params *p);
+extern struct discord_modify_guild_channel_positions_params * discord_modify_guild_channel_positions_params_alloc();
+extern void discord_modify_guild_channel_positions_params_free_v(void *p);
+extern void discord_modify_guild_channel_positions_params_free(struct discord_modify_guild_channel_positions_params *p);
+extern void discord_modify_guild_channel_positions_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_modify_guild_channel_positions_params_from_json(char *json, size_t len, struct discord_modify_guild_channel_positions_params *p);
+extern size_t discord_modify_guild_channel_positions_params_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_modify_guild_channel_positions_params_to_json(char *json, size_t len, struct discord_modify_guild_channel_positions_params *p);
+extern size_t discord_modify_guild_channel_positions_params_to_query_v(char *json, size_t len, void *p);
+extern size_t discord_modify_guild_channel_positions_params_to_query(char *json, size_t len, struct discord_modify_guild_channel_positions_params *p);
+extern void discord_modify_guild_channel_positions_params_list_free_v(void **p);
+extern void discord_modify_guild_channel_positions_params_list_free(struct discord_modify_guild_channel_positions_params **p);
+extern void discord_modify_guild_channel_positions_params_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_modify_guild_channel_positions_params_list_from_json(char *str, size_t len, struct discord_modify_guild_channel_positions_params ***p);
+extern size_t discord_modify_guild_channel_positions_params_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_modify_guild_channel_positions_params_list_to_json(char *str, size_t len, struct discord_modify_guild_channel_positions_params **p);
 /* This file is generated from specs/discord/guild.modify-guild-member.json, Please don't edit it. */
 /*
 

@@ -401,6 +401,14 @@ struct discord_guild_membership_screening_field;
 
 /* This is defined at specs/discord/guild.membership_screening.json:27:22 */
 struct discord_guild_membership_screening;
+/* This file is generated from specs/discord/guild.modify-guild-channel-positions.json, Please don't edit it. */
+/*
+
+*/
+
+/* https://discord.com/developers/docs/resources/guild#modify-guild-channel-positions-json-params */
+/* This is defined at specs/discord/guild.modify-guild-channel-positions.json:8:22 */
+struct discord_modify_guild_channel_positions_params;
 /* This file is generated from specs/discord/guild.modify-guild-member.json, Please don't edit it. */
 /*
 
