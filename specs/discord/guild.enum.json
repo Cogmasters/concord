@@ -103,7 +103,7 @@
         {"name":"name", "type":{"base":"char", "dec":"[MAX_NAME_LEN]"}},
         {"name":"icon", "type":{"base":"char", "dec":"*", "nullable":true}},
         {"name":"splash", "type":{"base":"char", "dec":"*", "nullable":true}},
-        {"name":"discovery", "type":{"base":"char", "dec":"*", "nullable":true}},
+        {"name":"discovery_splash", "type":{"base":"char", "dec":"*", "nullable":true}},
         {"name":"emojis", "type":{"base":"struct discord_emoji", "dec":"ntl"}},
         {"name":"features", "todo":true, "type":{"base":"char", "dec":"ntl"}},
         {"name":"approximate_member_count", "type":{"base":"int"}},

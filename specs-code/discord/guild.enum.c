@@ -378,9 +378,9 @@ void discord_guild_preview_from_json(char *json, size_t len, struct discord_guil
   */
                 "(splash):?s,"
   /* specs/discord/guild.enum.json:106:18
-     '{"name":"discovery", "type":{"base":"char", "dec":"*", "nullable":true}}'
+     '{"name":"discovery_splash", "type":{"base":"char", "dec":"*", "nullable":true}}'
   */
-                "(discovery):?s,"
+                "(discovery_splash):?s,"
   /* specs/discord/guild.enum.json:107:18
      '{"name":"emojis", "type":{"base":"struct discord_emoji", "dec":"ntl"}}'
   */
@@ -420,9 +420,9 @@ void discord_guild_preview_from_json(char *json, size_t len, struct discord_guil
   */
                 &p->splash,
   /* specs/discord/guild.enum.json:106:18
-     '{"name":"discovery", "type":{"base":"char", "dec":"*", "nullable":true}}'
+     '{"name":"discovery_splash", "type":{"base":"char", "dec":"*", "nullable":true}}'
   */
-                &p->discovery,
+                &p->discovery_splash,
   /* specs/discord/guild.enum.json:107:18
      '{"name":"emojis", "type":{"base":"struct discord_emoji", "dec":"ntl"}}'
   */
@@ -472,9 +472,9 @@ static void discord_guild_preview_use_default_inject_settings(struct discord_gui
   p->__M.arg_switches[3] = p->splash;
 
   /* specs/discord/guild.enum.json:106:18
-     '{"name":"discovery", "type":{"base":"char", "dec":"*", "nullable":true}}'
+     '{"name":"discovery_splash", "type":{"base":"char", "dec":"*", "nullable":true}}'
   */
-  p->__M.arg_switches[4] = p->discovery;
+  p->__M.arg_switches[4] = p->discovery_splash;
 
   /* specs/discord/guild.enum.json:107:18
      '{"name":"emojis", "type":{"base":"struct discord_emoji", "dec":"ntl"}}'
@@ -524,9 +524,9 @@ size_t discord_guild_preview_to_json(char *json, size_t len, struct discord_guil
   */
                 "(splash):s,"
   /* specs/discord/guild.enum.json:106:18
-     '{"name":"discovery", "type":{"base":"char", "dec":"*", "nullable":true}}'
+     '{"name":"discovery_splash", "type":{"base":"char", "dec":"*", "nullable":true}}'
   */
-                "(discovery):s,"
+                "(discovery_splash):s,"
   /* specs/discord/guild.enum.json:107:18
      '{"name":"emojis", "type":{"base":"struct discord_emoji", "dec":"ntl"}}'
   */
@@ -564,9 +564,9 @@ size_t discord_guild_preview_to_json(char *json, size_t len, struct discord_guil
   */
                 p->splash,
   /* specs/discord/guild.enum.json:106:18
-     '{"name":"discovery", "type":{"base":"char", "dec":"*", "nullable":true}}'
+     '{"name":"discovery_splash", "type":{"base":"char", "dec":"*", "nullable":true}}'
   */
-                p->discovery,
+                p->discovery_splash,
   /* specs/discord/guild.enum.json:107:18
      '{"name":"emojis", "type":{"base":"struct discord_emoji", "dec":"ntl"}}'
   */
@@ -647,10 +647,10 @@ void discord_guild_preview_cleanup(struct discord_guild_preview *d) {
   if (d->splash)
     free(d->splash);
   /* specs/discord/guild.enum.json:106:18
-     '{"name":"discovery", "type":{"base":"char", "dec":"*", "nullable":true}}'
+     '{"name":"discovery_splash", "type":{"base":"char", "dec":"*", "nullable":true}}'
   */
-  if (d->discovery)
-    free(d->discovery);
+  if (d->discovery_splash)
+    free(d->discovery_splash);
   /* specs/discord/guild.enum.json:107:18
      '{"name":"emojis", "type":{"base":"struct discord_emoji", "dec":"ntl"}}'
   */
@@ -693,7 +693,7 @@ void discord_guild_preview_init(struct discord_guild_preview *p) {
   */
 
   /* specs/discord/guild.enum.json:106:18
-     '{"name":"discovery", "type":{"base":"char", "dec":"*", "nullable":true}}'
+     '{"name":"discovery_splash", "type":{"base":"char", "dec":"*", "nullable":true}}'
   */
 
   /* specs/discord/guild.enum.json:107:18

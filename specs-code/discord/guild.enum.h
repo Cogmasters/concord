@@ -157,9 +157,9 @@ struct discord_guild_preview {
   char *splash;
 
   /* specs/discord/guild.enum.json:106:18
-     '{"name":"discovery", "type":{"base":"char", "dec":"*", "nullable":true}}'
+     '{"name":"discovery_splash", "type":{"base":"char", "dec":"*", "nullable":true}}'
   */
-  char *discovery;
+  char *discovery_splash;
 
   /* specs/discord/guild.enum.json:107:18
      '{"name":"emojis", "type":{"base":"struct discord_emoji", "dec":"ntl"}}'
