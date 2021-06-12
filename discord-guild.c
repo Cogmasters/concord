@@ -64,6 +64,34 @@ discord_get_guild(
 }
 
 ORCAcode
+discord_get_guild_preview(
+  struct discord *client, 
+  const u64_snowflake_t guild_id, 
+  struct discord_guild_preview *p_guild_preview)
+{
+  if (!guild_id) {
+    log_error("Missing 'guild_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!p_guild_preview) {
+    log_error("Missing 'p_guild_preview'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
+  struct ua_resp_handle resp_handle = { 
+    .ok_cb = &discord_guild_preview_from_json_v, 
+    .ok_obj = p_guild_preview 
+  };
+
+  return discord_adapter_run( 
+           &client->adapter,
+           &resp_handle,
+           NULL,
+           HTTP_GET, 
+           "/guilds/%"PRIu64"/preview", guild_id);
+}
+
+ORCAcode
 discord_modify_guild(
   struct discord *client,
   const u64_snowflake_t guild_id,
