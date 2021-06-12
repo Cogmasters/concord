@@ -10,10 +10,10 @@ void discord_create_guild_params_from_json(char *json, size_t len, struct discor
   size_t r=0;
   r=json_extract(json, len, 
   /* specs/discord/guild.create-guild.json:11:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[200+1]" }, 
+     '{ "name": "name", "type":{ "base":"char", "dec":"*" }, 
           "comment":"name of the guild (2-100) characters"}'
   */
-                "(name):s,"
+                "(name):?s,"
   /* specs/discord/guild.create-guild.json:13:20
      '{ "name": "region", "type":{ "base":"char", "dec":"*" },
           "option":true, "inject_if_not":null, "comment":"voice region id" }'
@@ -68,10 +68,10 @@ void discord_create_guild_params_from_json(char *json, size_t len, struct discor
                 "@record_defined"
                 "@record_null",
   /* specs/discord/guild.create-guild.json:11:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[200+1]" }, 
+     '{ "name": "name", "type":{ "base":"char", "dec":"*" }, 
           "comment":"name of the guild (2-100) characters"}'
   */
-                p->name,
+                &p->name,
   /* specs/discord/guild.create-guild.json:13:20
      '{ "name": "region", "type":{ "base":"char", "dec":"*" },
           "option":true, "inject_if_not":null, "comment":"voice region id" }'
@@ -132,7 +132,7 @@ static void discord_create_guild_params_use_default_inject_settings(struct disco
 {
   p->__M.enable_arg_switches = true;
   /* specs/discord/guild.create-guild.json:11:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[200+1]" }, 
+     '{ "name": "name", "type":{ "base":"char", "dec":"*" }, 
           "comment":"name of the guild (2-100) characters"}'
   */
   p->__M.arg_switches[0] = p->name;
@@ -214,7 +214,7 @@ size_t discord_create_guild_params_to_json(char *json, size_t len, struct discor
   discord_create_guild_params_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/discord/guild.create-guild.json:11:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[200+1]" }, 
+     '{ "name": "name", "type":{ "base":"char", "dec":"*" }, 
           "comment":"name of the guild (2-100) characters"}'
   */
                 "(name):s,"
@@ -270,7 +270,7 @@ size_t discord_create_guild_params_to_json(char *json, size_t len, struct discor
                 "(system_channel_id):|F|,"
                 "@arg_switches:b",
   /* specs/discord/guild.create-guild.json:11:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[200+1]" }, 
+     '{ "name": "name", "type":{ "base":"char", "dec":"*" }, 
           "comment":"name of the guild (2-100) characters"}'
   */
                 p->name,
@@ -367,10 +367,11 @@ size_t discord_create_guild_params_list_to_json_v(char *str, size_t len, void *p
 
 void discord_create_guild_params_cleanup(struct discord_create_guild_params *d) {
   /* specs/discord/guild.create-guild.json:11:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[200+1]" }, 
+     '{ "name": "name", "type":{ "base":"char", "dec":"*" }, 
           "comment":"name of the guild (2-100) characters"}'
   */
-  //p->name is a scalar
+  if (d->name)
+    free(d->name);
   /* specs/discord/guild.create-guild.json:13:20
      '{ "name": "region", "type":{ "base":"char", "dec":"*" },
           "option":true, "inject_if_not":null, "comment":"voice region id" }'
@@ -430,7 +431,7 @@ void discord_create_guild_params_cleanup(struct discord_create_guild_params *d) 
 void discord_create_guild_params_init(struct discord_create_guild_params *p) {
   memset(p, 0, sizeof(struct discord_create_guild_params));
   /* specs/discord/guild.create-guild.json:11:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[200+1]" }, 
+     '{ "name": "name", "type":{ "base":"char", "dec":"*" }, 
           "comment":"name of the guild (2-100) characters"}'
   */
 

@@ -2489,10 +2489,10 @@ struct discord_create_guild_channel_params {
 /* This is defined at specs/discord/guild.create-guild.json:8:22 */
 struct discord_create_guild_params {
   /* specs/discord/guild.create-guild.json:11:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[200+1]" }, 
+     '{ "name": "name", "type":{ "base":"char", "dec":"*" }, 
           "comment":"name of the guild (2-100) characters"}'
   */
-  char name[200+1]; // name of the guild (2-100) characters
+  char *name; // name of the guild (2-100) characters
 
   /* specs/discord/guild.create-guild.json:13:20
      '{ "name": "region", "type":{ "base":"char", "dec":"*" },
