@@ -988,6 +988,63 @@ discord_unpin_message(
 }
 
 ORCAcode
+discord_group_dm_add_recipient(
+  struct discord *client,
+  const u64_snowflake_t channel_id,
+  const u64_snowflake_t user_id,
+  struct discord_group_dm_add_recipient_params *params)
+{
+  if (!channel_id) {
+    log_error("Missing 'channel_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!user_id) {
+    log_error("Missing 'user_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!params) {
+    log_error("Missing 'params'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
+  char payload[MAX_PAYLOAD_LEN];
+  size_t ret = discord_group_dm_add_recipient_params_to_json(payload, sizeof(payload), params);
+  struct sized_buffer req_body = { payload, ret };
+
+  return discord_adapter_run(
+           &client->adapter,
+           NULL,
+           &req_body,
+           HTTP_PUT,
+           "/channels/%"PRIu64"/recipients/%"PRIu64, 
+           channel_id, user_id);
+}
+
+ORCAcode
+discord_group_dm_remove_recipient(
+  struct discord *client,
+  const u64_snowflake_t channel_id,
+  const u64_snowflake_t user_id)
+{
+  if (!channel_id) {
+    log_error("Missing 'channel_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!user_id) {
+    log_error("Missing 'user_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
+  return discord_adapter_run(
+           &client->adapter,
+           NULL,
+           NULL,
+           HTTP_DELETE,
+           "/channels/%"PRIu64"/recipients/%"PRIu64, 
+           channel_id, user_id);
+}
+
+ORCAcode
 discord_start_thread_with_message(
   struct discord *client,
   const u64_snowflake_t channel_id,

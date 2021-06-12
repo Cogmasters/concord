@@ -525,6 +525,8 @@ ORCAcode discord_follow_news_channel(struct discord *client, const u64_snowflake
 ORCAcode discord_get_pinned_messages(struct discord *client, const u64_snowflake_t channel_id, NTL_T(struct discord_message) *p_messages);
 ORCAcode discord_pin_message(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id);
 ORCAcode discord_unpin_message(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id);
+ORCAcode discord_group_dm_add_recipient(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t user_id, struct discord_group_dm_add_recipient_params *params);
+ORCAcode discord_group_dm_remove_recipient(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t user_id);
 ORCAcode discord_start_thread_with_message(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id, struct discord_start_thread_with_message_params *params, struct discord_channel *p_channel);
 ORCAcode discord_start_thread_without_message(struct discord *client, const u64_snowflake_t channel_id, struct discord_start_thread_without_message_params *params, struct discord_channel *p_channel);
 ORCAcode discord_join_thread(struct discord *client, const u64_snowflake_t channel_id);
