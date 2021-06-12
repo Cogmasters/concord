@@ -270,8 +270,56 @@ discord_list_guild_members(
     log_error("Missing 'guild_id'");
     return ORCA_MISSING_PARAMETER;
   }
-  if (!params) {
-    log_error("Missing 'params'");
+  if (!p_members) {
+    log_error("Missing 'p_members'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
+  struct ua_resp_handle resp_handle = { 
+    .ok_cb = &discord_guild_member_list_from_json_v, 
+    .ok_obj = p_members 
+  };
+
+  char query[1024]="", *equery="";
+  if (params) {
+    size_t offset=0;
+    if (params->limit) {
+      offset += snprintf(query+offset, sizeof(query)-offset,
+          "limit=%d", params->limit);
+      ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
+    }
+    if (params->after) {
+      offset += snprintf(query+offset, sizeof(query)-offset,
+          "%safter=%"PRIu64, (*query)?"&":"", params->after);
+      ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
+    }
+    if (*query) equery = url_encode(query);
+  }
+  
+  ORCAcode code;
+  code = discord_adapter_run( 
+           &client->adapter,
+           &resp_handle,
+           NULL,
+           HTTP_GET,
+           "/guilds/%"PRIu64"/members%s%s", 
+           guild_id, (*equery)?"?":"", equery);
+
+  if (!IS_EMPTY_STRING(equery))
+    free(equery);
+
+  return code;
+}
+
+ORCAcode
+discord_search_guild_members(
+  struct discord *client,
+  const u64_snowflake_t guild_id,
+  struct discord_search_guild_members_params *params,
+  NTL_T(struct discord_guild_member) *p_members)
+{
+  if (!guild_id) {
+    log_error("Missing 'guild_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!p_members) {
@@ -279,31 +327,40 @@ discord_list_guild_members(
     return ORCA_MISSING_PARAMETER;
   }
 
-  char query[1024]="";
-  size_t offset=0;
-  if (params->limit) {
-    offset += snprintf(query+offset, sizeof(query)-offset,
-        "?limit=%d", params->limit);
-    ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
-  }
-  if (params->after) {
-    offset += snprintf(query+offset, sizeof(query)-offset,
-        "%safter=%"PRIu64, (*query)?"&":"?", params->after);
-    ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
+  struct ua_resp_handle resp_handle = {
+    .ok_cb = &discord_guild_member_list_from_json_v,
+    .ok_obj = p_members
+  };
+
+  char query[1024]="", *equery="";
+  if (params) {
+    size_t offset=0;
+    if (params->query) {
+      offset += snprintf(query+offset, sizeof(query)-offset,
+          "query=%s", params->query);
+      ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
+    }
+    if (params->limit) {
+      offset += snprintf(query+offset, sizeof(query)-offset,
+          "%slimit=%d", (*query)?"&":"", params->limit);
+      ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
+    }
+    if (*query) equery = url_encode(query);
   }
 
-  struct ua_resp_handle resp_handle = { 
-    .ok_cb = &discord_guild_member_list_from_json_v, 
-    .ok_obj = p_members 
-  };
-  
-  return discord_adapter_run( 
+  ORCAcode code;
+  code = discord_adapter_run( 
            &client->adapter,
            &resp_handle,
            NULL,
            HTTP_GET,
-           "/guilds/%"PRIu64"/members%s", 
-           guild_id, query);
+           "/guilds/%"PRIu64"/members/search%s%s", 
+           guild_id, (*equery)?"?":"", equery);
+
+  if (!IS_EMPTY_STRING(equery))
+    free(equery);
+
+  return code;
 }
 
 ORCAcode 

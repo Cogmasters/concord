@@ -40,8 +40,9 @@ void on_list(
 
       if (cur >= end) { // to make sure no emoji is skipped
         *prev = '\0'; // end string before truncation
-        cur = text; // reset
-        --i; // retry current iteration
+        // reset for retry
+        cur = text;
+        --i;
 
         struct discord_create_message_params params = { .content = text };
         discord_create_message(client, msg->channel_id, &params, NULL);

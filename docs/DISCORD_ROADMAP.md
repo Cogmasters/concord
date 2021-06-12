@@ -117,6 +117,7 @@
 - [x] [Modify Guild Channel Position](https://discord.com/developers/docs/resources/guild#modify-guild-channel-positions)
 - [x] [Get Guild Member](https://discord.com/developers/docs/resources/guild#get-guild-member)
 - [x] [List Guild Members](https://discord.com/developers/docs/resources/guild#list-guild-members)
+- [x] [Search Guild Member](https://discord.com/developers/docs/resources/guild#search-guild-members)
 - [ ] [Add Guild Member](https://discord.com/developers/docs/resources/guild#add-guild-member)
 - [x] [Modify Guild Member](https://discord.com/developers/docs/resources/guild#modify-guild-member)
 - [ ] [Modify Current User Nick](https://discord.com/developers/docs/resources/guild#modify-current-user-nick)

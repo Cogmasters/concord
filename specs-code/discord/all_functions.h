@@ -1422,6 +1422,30 @@ extern void discord_guild_role_list_from_json_v(char *str, size_t len, void *p);
 extern void discord_guild_role_list_from_json(char *str, size_t len, struct discord_guild_role ***p);
 extern size_t discord_guild_role_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_guild_role_list_to_json(char *str, size_t len, struct discord_guild_role **p);
+/* This file is generated from specs/discord/guild.search-guild-members.json, Please don't edit it. */
+/*
+
+*/
+
+extern void discord_search_guild_members_params_cleanup_v(void *p);
+extern void discord_search_guild_members_params_cleanup(struct discord_search_guild_members_params *p);
+extern void discord_search_guild_members_params_init_v(void *p);
+extern void discord_search_guild_members_params_init(struct discord_search_guild_members_params *p);
+extern struct discord_search_guild_members_params * discord_search_guild_members_params_alloc();
+extern void discord_search_guild_members_params_free_v(void *p);
+extern void discord_search_guild_members_params_free(struct discord_search_guild_members_params *p);
+extern void discord_search_guild_members_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_search_guild_members_params_from_json(char *json, size_t len, struct discord_search_guild_members_params *p);
+extern size_t discord_search_guild_members_params_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_search_guild_members_params_to_json(char *json, size_t len, struct discord_search_guild_members_params *p);
+extern size_t discord_search_guild_members_params_to_query_v(char *json, size_t len, void *p);
+extern size_t discord_search_guild_members_params_to_query(char *json, size_t len, struct discord_search_guild_members_params *p);
+extern void discord_search_guild_members_params_list_free_v(void **p);
+extern void discord_search_guild_members_params_list_free(struct discord_search_guild_members_params **p);
+extern void discord_search_guild_members_params_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_search_guild_members_params_list_from_json(char *str, size_t len, struct discord_search_guild_members_params ***p);
+extern size_t discord_search_guild_members_params_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_search_guild_members_params_list_to_json(char *str, size_t len, struct discord_search_guild_members_params **p);
 /* This file is generated from specs/discord/guild.welcome_screen.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/resources/guild#welcome-screen-object

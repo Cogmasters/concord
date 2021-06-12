@@ -445,6 +445,14 @@ struct discord_guild_role_tags;
 /* Title: Role Object */
 /* This is defined at specs/discord/guild.role.json:19:22 */
 struct discord_guild_role;
+/* This file is generated from specs/discord/guild.search-guild-members.json, Please don't edit it. */
+/*
+
+*/
+
+/* https://discord.com/developers/docs/resources/guild#search-guild-members-query-string-params */
+/* This is defined at specs/discord/guild.search-guild-members.json:8:22 */
+struct discord_search_guild_members_params;
 /* This file is generated from specs/discord/guild.welcome_screen.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/resources/guild#welcome-screen-object

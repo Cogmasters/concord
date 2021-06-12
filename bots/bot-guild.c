@@ -259,8 +259,7 @@ void on_role_list(
   discord_create_message(client, msg->channel_id, &params, NULL);
 }
 
-void
-on_change_nick(
+void on_member_change_nick(
   struct discord *client,
   const struct discord_user *bot,
   const struct discord_message *msg)
@@ -282,6 +281,49 @@ on_change_nick(
       sprintf(text, "Couldn't change <@%"PRIu64"> nick", user_id);
   }
 
+  struct discord_create_message_params params = { .content = text };
+  discord_create_message(client, msg->channel_id, &params, NULL);
+}
+
+void on_member_search(
+  struct discord *client,
+  const struct discord_user *bot,
+  const struct discord_message *msg)
+{
+  if (msg->author->bot) return;
+
+  NTL_T(struct discord_guild_member) members=NULL;
+  ORCAcode code;
+  {
+    struct discord_search_guild_members_params params = { .query = msg->content };
+    code = discord_search_guild_members(client, msg->guild_id, &params, &members);
+  }
+
+  char text[MAX_MESSAGE_LEN];
+  if (ORCA_OK != code) {
+    sprintf(text, "No members matching '%s' found.", msg->content);
+  }
+  else {
+    char *cur = text;
+    char *end = &text[sizeof(text)-1];
+    char *prev;
+    for (size_t i=0; members[i]; ++i) {
+      prev = cur;
+      cur += snprintf(cur, end-cur, "<@!%"PRIu64">\n", members[i]->user->id);
+
+      if (cur >= end) { // to make sure no member is skipped
+        *prev = '\0'; // end string before truncation
+        // reset for retry
+        cur = text;
+        --i;
+
+        struct discord_create_message_params params = { .content = text };
+        discord_create_message(client, msg->channel_id, &params, NULL);
+        continue;
+      }
+    }
+    discord_guild_member_list_free(members);
+  }
   struct discord_create_message_params params = { .content = text };
   discord_create_message(client, msg->channel_id, &params, NULL);
 }
@@ -313,7 +355,8 @@ int main(int argc, char *argv[])
   discord_set_on_command(client, "role_member_add", &on_role_member_add);
   discord_set_on_command(client, "role_member_remove", &on_role_member_remove);
   discord_set_on_command(client, "role_list", &on_role_list);
-  discord_set_on_command(client, "change_nick", &on_change_nick);
+  discord_set_on_command(client, "member_change_nick", &on_member_change_nick);
+  discord_set_on_command(client, "member_search", &on_member_search);
 
   printf("\n\nThis bot demonstrates how easy it is to manipulate guild"
          " endpoints.\n"
@@ -325,7 +368,8 @@ int main(int argc, char *argv[])
          "6. Type 'guild.role_member_add <user_id> <role_id>' to assign role to user\n"
          "7. Type 'guild.role_member_remove <user_id> <role_id>' to remove role from user\n"
          "8. Type 'guild.role_list' to get a list of this guild roles\n"
-         "9. Type 'guild.change_nick <user_id> <nick>' to change user nick\n"
+         "9. Type 'guild.member_change_nick <user_id> <nick>' to change member nick\n"
+         "10. Type 'guild.member_search <nick>' to search for members matching a nick\n"
          "\nTYPE ANY KEY TO START BOT\n");
   fgetc(stdin); // wait for input
 

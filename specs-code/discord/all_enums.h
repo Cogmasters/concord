@@ -448,6 +448,10 @@ extern bool discord_guild_membership_screening_field_type_has(enum discord_guild
 /*
 https://discord.com/developers/docs/topics/permissions#role-object-role-structure
 */
+/* This file is generated from specs/discord/guild.search-guild-members.json, Please don't edit it. */
+/*
+
+*/
 /* This file is generated from specs/discord/guild.welcome_screen.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/resources/guild#welcome-screen-object
