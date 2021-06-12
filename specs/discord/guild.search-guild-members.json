@@ -8,7 +8,7 @@
       "struct":"params",
       "fields":
       [
-        { "name": "query", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null
+        { "name": "query", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null,
           "comment": "Query string to match username(s) and nickname(s) against." },
         { "name": "limit", "type":{ "base":"int" }, "inject_if_not":0, 
           "comment": "max number of members to return (1-1000)"}
