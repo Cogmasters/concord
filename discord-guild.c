@@ -64,6 +64,39 @@ discord_get_guild(
 }
 
 ORCAcode
+discord_modify_guild(
+  struct discord *client,
+  const u64_snowflake_t guild_id,
+  struct discord_modify_guild_params *params,
+  struct discord_guild *p_guild)
+{
+  if (!guild_id) {
+    log_error("Missing 'guild_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!params) {
+    log_error("Missing 'params'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
+  struct ua_resp_handle resp_handle = {
+    .ok_cb = p_guild ? discord_guild_from_json_v : NULL,
+    .ok_obj = p_guild
+  };
+
+  char payload[4096];
+  size_t ret = discord_modify_guild_params_to_json(payload, sizeof(payload), params);
+  struct sized_buffer req_body = { payload, ret };
+
+  return discord_adapter_run( 
+           &client->adapter,
+           &resp_handle,
+           &req_body,
+           HTTP_PATCH, 
+           "/guilds/%"PRIu64, guild_id);
+}
+
+ORCAcode
 discord_delete_guild(
   struct discord *client,
   const u64_snowflake_t guild_id)

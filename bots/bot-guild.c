@@ -57,21 +57,60 @@ void on_create(
   }
 
   char text[MAX_MESSAGE_LEN];
-  if (ORCA_OK == code) {
-    size_t offset = sprintf(text, "Succesfully created guild: %s\n", guild->name);
-    if (ORCA_OK == discord_delete_guild(client, guild->id))
-      sprintf(text + offset, "Aaaand its gone. Poof.");
-    else
-      sprintf(text + offset, "Couldn't delete it, ouch. Please delete it manually.");
-  }
-  else {
+  if (ORCA_OK == code)
+    sprintf(text, "%s (%"PRIu64") created.", guild->name, guild->id);
+  else
     sprintf(text, "Couldn't create guild.");
-  }
 
   struct discord_create_message_params params={ .content = text };
   discord_create_message(client, msg->channel_id, &params, NULL);
 
   discord_guild_free(guild);
+}
+
+void on_modify(
+  struct discord *client,
+  const struct discord_user *bot,
+  const struct discord_message *msg)
+{
+  if (msg->author->bot) return;
+
+  u64_snowflake_t guild_id=0;
+  char guild_name[MAX_NAME_LEN]="";
+  sscanf(msg->content, "%"SCNu64" %s", &guild_id, guild_name);
+
+  char text[MAX_MESSAGE_LEN];
+  struct discord_guild *guild = discord_guild_alloc();
+  {
+    struct discord_modify_guild_params params = { .name = guild_name };
+    if (ORCA_OK == discord_modify_guild(client, guild_id, &params, guild))
+      sprintf(text, "Renamed guild to %s.", guild->name);
+    else
+      sprintf(text, "Couldn't rename guild.");
+  }
+
+  struct discord_create_message_params params = { .content = text };
+  discord_create_message(client, msg->channel_id, &params, NULL);
+
+  discord_guild_free(guild);
+}
+
+void on_delete(
+  struct discord *client,
+  const struct discord_user *bot,
+  const struct discord_message *msg)
+{
+  if (msg->author->bot) return;
+
+  u64_snowflake_t guild_id=0;
+  sscanf(msg->content, "%"SCNu64, &guild_id);
+
+  struct discord_create_message_params params={0};
+  if (ORCA_OK == discord_delete_guild(client, guild_id))
+    params.content = "Succesfully deleted guild.";
+  else
+    params.content = "Couldn't delete guild.";
+  discord_create_message(client, msg->channel_id, &params, NULL);
 }
 
 void on_role_create(
@@ -267,6 +306,8 @@ int main(int argc, char *argv[])
 
   discord_set_prefix(client, "guild.");
   discord_set_on_command(client, "create", &on_create);
+  discord_set_on_command(client, "modify", &on_modify);
+  discord_set_on_command(client, "delete", &on_delete);
   discord_set_on_command(client, "role_create", &on_role_create);
   discord_set_on_command(client, "role_delete", &on_role_delete);
   discord_set_on_command(client, "role_member_add", &on_role_member_add);
@@ -276,13 +317,15 @@ int main(int argc, char *argv[])
 
   printf("\n\nThis bot demonstrates how easy it is to manipulate guild"
          " endpoints.\n"
-         "1. Type 'guild.create <?name>' to create a new guild (will be deleted afterwards)\n"
-         "2. Type 'guild.role_create <name>' to create a new role\n"
-         "3. Type 'guild.role_delete <role_id>' to delete\n"
-         "4. Type 'guild.role_member_add <user_id> <role_id>' to assign role to user\n"
-         "5. Type 'guild.role_member_remove <user_id> <role_id>' to remove role from user\n"
-         "6. Type 'guild.role_list' to get a list of this guild roles\n"
-         "7. Type 'guild.change_nick <user_id> <nick>' to change user nick\n"
+         "1. Type 'guild.create <?name>' to create a new guild\n"
+         "2. Type 'guild.modify <guild_id> <name>' to rename a guild\n"
+         "3. Type 'guild.delete <guild_id>' to delete guild\n"
+         "4. Type 'guild.role_create <name>' to create a new role\n"
+         "5. Type 'guild.role_delete <role_id>' to delete\n"
+         "6. Type 'guild.role_member_add <user_id> <role_id>' to assign role to user\n"
+         "7. Type 'guild.role_member_remove <user_id> <role_id>' to remove role from user\n"
+         "8. Type 'guild.role_list' to get a list of this guild roles\n"
+         "9. Type 'guild.change_nick <user_id> <nick>' to change user nick\n"
          "\nTYPE ANY KEY TO START BOT\n");
   fgetc(stdin); // wait for input
 
