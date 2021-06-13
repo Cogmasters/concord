@@ -120,7 +120,7 @@
 - [x] [Search Guild Member](https://discord.com/developers/docs/resources/guild#search-guild-members)
 - [ ] [Add Guild Member](https://discord.com/developers/docs/resources/guild#add-guild-member)
 - [x] [Modify Guild Member](https://discord.com/developers/docs/resources/guild#modify-guild-member)
-- [ ] [Modify Current User Nick](https://discord.com/developers/docs/resources/guild#modify-current-user-nick)
+- [x] [Modify Current User Nick](https://discord.com/developers/docs/resources/guild#modify-current-user-nick)
 - [x] [Add Guild Member Role](https://discord.com/developers/docs/resources/guild#add-guild-member-role)
 - [x] [Remove Guild Member Role](https://discord.com/developers/docs/resources/guild#remove-guild-member-role)
 - [X] [Get Guild Bans](https://discord.com/developers/docs/resources/guild#get-guild-bans)

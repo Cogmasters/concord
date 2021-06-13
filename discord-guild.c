@@ -403,6 +403,33 @@ discord_modify_guild_member(
 }
 
 ORCAcode
+discord_modify_current_user_nick(
+  struct discord *client,
+  const u64_snowflake_t guild_id,
+  const char nick[])
+{
+  if (!guild_id) {
+    log_error("Missing 'guild_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (IS_EMPTY_STRING(nick)) {
+    log_error("Missing 'nick'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
+  char payload[MAX_PAYLOAD_LEN];
+  size_t ret = json_inject(payload, sizeof(payload), "(nick):s", nick);
+  struct sized_buffer req_body = { payload, ret };
+
+  return discord_adapter_run(
+           &client->adapter,
+           NULL,
+           &req_body,
+           HTTP_PATCH,
+           "/guilds/%"PRIu64"/members/@me/nick", guild_id);
+}
+
+ORCAcode
 discord_add_guild_member_role(
   struct discord *client,
   const u64_snowflake_t guild_id,

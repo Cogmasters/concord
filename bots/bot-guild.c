@@ -271,7 +271,7 @@ void on_member_change_nick(
   sscanf(msg->content, "%"SCNu64" %s", &user_id, nick);
   char text[MAX_MESSAGE_LEN];
   if (!user_id || !*nick) {
-    sprintf(text, "Invalid format for `guild.change_nick <user_id> <nick>`");
+    sprintf(text, "Invalid format for `guild.member_change_nick <user_id> <nick>`");
   }
   else {
     struct discord_modify_guild_member_params params = { .nick = nick };
@@ -328,6 +328,28 @@ void on_member_search(
   discord_create_message(client, msg->channel_id, &params, NULL);
 }
 
+void on_bot_change_nick(
+  struct discord *client,
+  const struct discord_user *bot,
+  const struct discord_message *msg)
+{
+  if (msg->author->bot) return;
+
+  char text[MAX_MESSAGE_LEN];
+  if (!*msg->content) {
+    sprintf(text, "Invalid format for `guild.bot_change_nick <nick>`");
+  }
+  else {
+    if (ORCA_OK == discord_modify_current_user_nick(client, msg->guild_id, msg->content))
+      sprintf(text, "Succesfully changed <@%"PRIu64"> nick", bot->id);
+    else
+      sprintf(text, "Couldn't change <@%"PRIu64"> nick", bot->id);
+  }
+
+  struct discord_create_message_params params = { .content = text };
+  discord_create_message(client, msg->channel_id, &params, NULL);
+}
+
 int main(int argc, char *argv[])
 {
   const char *config_file;
@@ -357,6 +379,7 @@ int main(int argc, char *argv[])
   discord_set_on_command(client, "role_list", &on_role_list);
   discord_set_on_command(client, "member_change_nick", &on_member_change_nick);
   discord_set_on_command(client, "member_search", &on_member_search);
+  discord_set_on_command(client, "bot_change_nick", &on_bot_change_nick);
 
   printf("\n\nThis bot demonstrates how easy it is to manipulate guild"
          " endpoints.\n"
@@ -370,6 +393,7 @@ int main(int argc, char *argv[])
          "8. Type 'guild.role_list' to get a list of this guild roles\n"
          "9. Type 'guild.member_change_nick <user_id> <nick>' to change member nick\n"
          "10. Type 'guild.member_search <nick>' to search for members matching a nick\n"
+         "11. Type 'guild.bot_change_nick <nick>' to change bot nick\n"
          "\nTYPE ANY KEY TO START BOT\n");
   fgetc(stdin); // wait for input
 
