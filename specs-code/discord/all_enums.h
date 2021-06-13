@@ -297,6 +297,10 @@ enum discord_gateway_activity_types {
 extern char* discord_gateway_activity_types_to_string(enum discord_gateway_activity_types);
 extern enum discord_gateway_activity_types discord_gateway_activity_types_from_string(char*);
 extern bool discord_gateway_activity_types_has(enum discord_gateway_activity_types, char*);
+/* This file is generated from specs/discord/guild.add-guild-member.json, Please don't edit it. */
+/*
+
+*/
 /* This file is generated from specs/discord/guild.ban.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/resources/guild#ban-object

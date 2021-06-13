@@ -10,7 +10,7 @@ void discord_search_guild_members_params_from_json(char *json, size_t len, struc
   size_t r=0;
   r=json_extract(json, len, 
   /* specs/discord/guild.search-guild-members.json:11:20
-     '{ "name": "query", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null
+     '{ "name": "query", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null,
           "comment": "Query string to match username(s) and nickname(s) against." }'
   */
                 "(query):?s,"
@@ -23,7 +23,7 @@ void discord_search_guild_members_params_from_json(char *json, size_t len, struc
                 "@record_defined"
                 "@record_null",
   /* specs/discord/guild.search-guild-members.json:11:20
-     '{ "name": "query", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null
+     '{ "name": "query", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null,
           "comment": "Query string to match username(s) and nickname(s) against." }'
   */
                 &p->query,
@@ -42,7 +42,7 @@ static void discord_search_guild_members_params_use_default_inject_settings(stru
 {
   p->__M.enable_arg_switches = true;
   /* specs/discord/guild.search-guild-members.json:11:20
-     '{ "name": "query", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null
+     '{ "name": "query", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null,
           "comment": "Query string to match username(s) and nickname(s) against." }'
   */
   if (p->query != NULL)
@@ -63,7 +63,7 @@ size_t discord_search_guild_members_params_to_json(char *json, size_t len, struc
   discord_search_guild_members_params_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/discord/guild.search-guild-members.json:11:20
-     '{ "name": "query", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null
+     '{ "name": "query", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null,
           "comment": "Query string to match username(s) and nickname(s) against." }'
   */
                 "(query):s,"
@@ -74,7 +74,7 @@ size_t discord_search_guild_members_params_to_json(char *json, size_t len, struc
                 "(limit):d,"
                 "@arg_switches:b",
   /* specs/discord/guild.search-guild-members.json:11:20
-     '{ "name": "query", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null
+     '{ "name": "query", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null,
           "comment": "Query string to match username(s) and nickname(s) against." }'
   */
                 p->query,
@@ -126,7 +126,7 @@ size_t discord_search_guild_members_params_list_to_json_v(char *str, size_t len,
 
 void discord_search_guild_members_params_cleanup(struct discord_search_guild_members_params *d) {
   /* specs/discord/guild.search-guild-members.json:11:20
-     '{ "name": "query", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null
+     '{ "name": "query", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null,
           "comment": "Query string to match username(s) and nickname(s) against." }'
   */
   if (d->query)
@@ -141,7 +141,7 @@ void discord_search_guild_members_params_cleanup(struct discord_search_guild_mem
 void discord_search_guild_members_params_init(struct discord_search_guild_members_params *p) {
   memset(p, 0, sizeof(struct discord_search_guild_members_params));
   /* specs/discord/guild.search-guild-members.json:11:20
-     '{ "name": "query", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null
+     '{ "name": "query", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null,
           "comment": "Query string to match username(s) and nickname(s) against." }'
   */
 

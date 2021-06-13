@@ -7,10 +7,10 @@
 /* This is defined at specs/discord/guild.search-guild-members.json:8:22 */
 struct discord_search_guild_members_params {
   /* specs/discord/guild.search-guild-members.json:11:20
-     '{ "name": "query", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null
+     '{ "name": "query", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null,
           "comment": "Query string to match username(s) and nickname(s) against." }'
   */
-  char *query;
+  char *query; // Query string to match username(s) and nickname(s) against.
 
   /* specs/discord/guild.search-guild-members.json:13:20
      '{ "name": "limit", "type":{ "base":"int" }, "inject_if_not":0, 

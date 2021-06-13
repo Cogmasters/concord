@@ -972,6 +972,30 @@ extern size_t discord_gateway_activity_list_to_json_v(char *str, size_t len, voi
 extern size_t discord_gateway_activity_list_to_json(char *str, size_t len, struct discord_gateway_activity **p);
 
 
+/* This file is generated from specs/discord/guild.add-guild-member.json, Please don't edit it. */
+/*
+
+*/
+
+extern void discord_add_guild_member_params_cleanup_v(void *p);
+extern void discord_add_guild_member_params_cleanup(struct discord_add_guild_member_params *p);
+extern void discord_add_guild_member_params_init_v(void *p);
+extern void discord_add_guild_member_params_init(struct discord_add_guild_member_params *p);
+extern struct discord_add_guild_member_params * discord_add_guild_member_params_alloc();
+extern void discord_add_guild_member_params_free_v(void *p);
+extern void discord_add_guild_member_params_free(struct discord_add_guild_member_params *p);
+extern void discord_add_guild_member_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_add_guild_member_params_from_json(char *json, size_t len, struct discord_add_guild_member_params *p);
+extern size_t discord_add_guild_member_params_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_add_guild_member_params_to_json(char *json, size_t len, struct discord_add_guild_member_params *p);
+extern size_t discord_add_guild_member_params_to_query_v(char *json, size_t len, void *p);
+extern size_t discord_add_guild_member_params_to_query(char *json, size_t len, struct discord_add_guild_member_params *p);
+extern void discord_add_guild_member_params_list_free_v(void **p);
+extern void discord_add_guild_member_params_list_free(struct discord_add_guild_member_params **p);
+extern void discord_add_guild_member_params_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_add_guild_member_params_list_from_json(char *str, size_t len, struct discord_add_guild_member_params ***p);
+extern size_t discord_add_guild_member_params_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_add_guild_member_params_list_to_json(char *str, size_t len, struct discord_add_guild_member_params **p);
 /* This file is generated from specs/discord/guild.ban.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/resources/guild#ban-object

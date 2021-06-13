@@ -296,6 +296,14 @@ struct discord_gateway_identify_connection;
 struct discord_gateway_activity;
 
 
+/* This file is generated from specs/discord/guild.add-guild-member.json, Please don't edit it. */
+/*
+
+*/
+
+/* https://discord.com/developers/docs/resources/guild#add-guild-member-json-params */
+/* This is defined at specs/discord/guild.add-guild-member.json:8:22 */
+struct discord_add_guild_member_params;
 /* This file is generated from specs/discord/guild.ban.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/resources/guild#ban-object

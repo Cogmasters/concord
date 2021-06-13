@@ -2379,6 +2379,52 @@ struct discord_gateway_activity {
 };
 
 
+/* This file is generated from specs/discord/guild.add-guild-member.json, Please don't edit it. */
+/*
+
+*/
+
+/* https://discord.com/developers/docs/resources/guild#add-guild-member-json-params */
+/* This is defined at specs/discord/guild.add-guild-member.json:8:22 */
+struct discord_add_guild_member_params {
+  /* specs/discord/guild.add-guild-member.json:11:20
+     '{ "name": "access_token", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}'
+  */
+  char *access_token;
+
+  /* specs/discord/guild.add-guild-member.json:12:20
+     '{ "name": "nick", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}'
+  */
+  char *nick;
+
+  /* specs/discord/guild.add-guild-member.json:13:20
+     '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "inject_if_not":null}'
+  */
+  ja_u64 **roles;
+
+  /* specs/discord/guild.add-guild-member.json:14:20
+     '{ "name": "mute", "type":{ "base":"bool" }, "inject_if_not":false}'
+  */
+  bool mute;
+
+  /* specs/discord/guild.add-guild-member.json:15:20
+     '{ "name": "deaf", "type":{ "base":"bool" }, "inject_if_not":false}'
+  */
+  bool deaf;
+
+  // The following is metadata used to 
+  // 1. control which field should be extracted/injected
+  // 2. record which field is presented(defined) in JSON
+  // 3. record which field is null in JSON
+  struct {
+    bool enable_arg_switches;
+    bool enable_record_defined;
+    bool enable_record_null;
+    void *arg_switches[5];
+    void *record_defined[5];
+    void *record_null[5];
+  } __M; // metadata
+};
 /* This file is generated from specs/discord/guild.ban.json, Please don't edit it. */
 /*
 https://discord.com/developers/docs/resources/guild#ban-object
@@ -3664,10 +3710,10 @@ struct discord_guild_role {
 /* This is defined at specs/discord/guild.search-guild-members.json:8:22 */
 struct discord_search_guild_members_params {
   /* specs/discord/guild.search-guild-members.json:11:20
-     '{ "name": "query", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null
+     '{ "name": "query", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null,
           "comment": "Query string to match username(s) and nickname(s) against." }'
   */
-  char *query;
+  char *query; // Query string to match username(s) and nickname(s) against.
 
   /* specs/discord/guild.search-guild-members.json:13:20
      '{ "name": "limit", "type":{ "base":"int" }, "inject_if_not":0, 
