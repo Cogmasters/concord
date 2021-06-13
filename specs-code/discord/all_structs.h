@@ -3421,6 +3421,90 @@ struct discord_modify_guild_member_params {
     void *record_null[5];
   } __M; // metadata
 };
+/* This file is generated from specs/discord/guild.modify-guild-role-positions.json, Please don't edit it. */
+/*
+
+*/
+
+/* https://discord.com/developers/docs/resources/guild#modify-guild-role-positions-json-params */
+/* This is defined at specs/discord/guild.modify-guild-role-positions.json:8:22 */
+struct discord_modify_guild_role_positions_params {
+  /* specs/discord/guild.modify-guild-role-positions.json:11:20
+     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, 
+          "option":true, "inject_if_not":0, "comment":"role"}'
+  */
+  u64_snowflake_t id; // role
+
+  /* specs/discord/guild.modify-guild-role-positions.json:13:20
+     '{ "name": "position", "type":{ "base":"int" }, 
+          "option":true, "inject_if_not":0, "comment":"sorting position of the role"}'
+  */
+  int position; // sorting position of the role
+
+  // The following is metadata used to 
+  // 1. control which field should be extracted/injected
+  // 2. record which field is presented(defined) in JSON
+  // 3. record which field is null in JSON
+  struct {
+    bool enable_arg_switches;
+    bool enable_record_defined;
+    bool enable_record_null;
+    void *arg_switches[2];
+    void *record_defined[2];
+    void *record_null[2];
+  } __M; // metadata
+};
+/* This file is generated from specs/discord/guild.modify-guild-role.json, Please don't edit it. */
+/*
+
+*/
+
+/* https://discord.com/developers/docs/resources/guild#modify-guild-role-json-params */
+/* This is defined at specs/discord/guild.modify-guild-role.json:8:22 */
+struct discord_modify_guild_role_params {
+  /* specs/discord/guild.modify-guild-role.json:11:20
+     '{ "name": "name", "type":{ "base":"char", "dec":"*" }, 
+          "option":true, "inject_if_not":null, "comment":"name of the role"}'
+  */
+  char *name; // name of the role
+
+  /* specs/discord/guild.modify-guild-role.json:13:20
+     '{ "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags" }, 
+          "option":true, "inject_if_not":0, "comment":"bitwise value of the enabled/disabled permissions"}'
+  */
+  enum discord_permissions_bitwise_flags permissions; // bitwise value of the enabled/disabled permissions
+
+  /* specs/discord/guild.modify-guild-role.json:15:20
+     '{ "name": "color", "type":{ "base":"int" }, 
+          "option":true, "inject_if_not":0, "comment":"RGB color value"}'
+  */
+  int color; // RGB color value
+
+  /* specs/discord/guild.modify-guild-role.json:17:20
+     '{ "name": "hoist", "type":{ "base":"bool" }, 
+          "option":true, "inject_if_not":false, "comment":"whether the role should be displayed separately in the sidebar"}'
+  */
+  bool hoist; // whether the role should be displayed separately in the sidebar
+
+  /* specs/discord/guild.modify-guild-role.json:19:20
+     '{ "name": "mentionable", "type":{ "base":"bool" }, 
+          "option":true, "inject_if_not":false, "comment":"whether the role should be mentionable"}'
+  */
+  bool mentionable; // whether the role should be mentionable
+
+  // The following is metadata used to 
+  // 1. control which field should be extracted/injected
+  // 2. record which field is presented(defined) in JSON
+  // 3. record which field is null in JSON
+  struct {
+    bool enable_arg_switches;
+    bool enable_record_defined;
+    bool enable_record_null;
+    void *arg_switches[5];
+    void *record_defined[5];
+    void *record_null[5];
+  } __M; // metadata
+};
 /* This file is generated from specs/discord/guild.modify-guild.json, Please don't edit it. */
 /*
 
@@ -3586,9 +3670,9 @@ struct discord_create_guild_role_params {
   bool hoist;
 
   /* specs/discord/guild.role.create.json:16:20
-     '{ "name": "memtionable", "type":{ "base":"bool" }, "inject_if_not":false}'
+     '{ "name": "mentionable", "type":{ "base":"bool" }, "inject_if_not":false}'
   */
-  bool memtionable;
+  bool mentionable;
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected

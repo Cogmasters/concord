@@ -13,7 +13,7 @@
           "inject_if_not":0},
         { "name": "color", "type":{ "base":"int" }, "inject_if_not":0},
         { "name": "hoist", "type":{ "base":"bool" }, "inject_if_not":false},
-        { "name": "memtionable", "type":{ "base":"bool" }, "inject_if_not":false}
+        { "name": "mentionable", "type":{ "base":"bool" }, "inject_if_not":false}
       ]
     }
   ]

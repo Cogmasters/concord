@@ -1,0 +1,27 @@
+{
+  "namespace": ["discord", "modify_guild_role"],
+  "comment": "",
+  "defs":
+  [
+    {
+      "comment":"https://discord.com/developers/docs/resources/guild#modify-guild-role-json-params",
+      "struct":"params",
+      "fields":
+      [
+        { "name": "name", "type":{ "base":"char", "dec":"*" }, 
+          "option":true, "inject_if_not":null, "comment":"name of the role"},
+        { "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags" }, 
+          "option":true, "inject_if_not":0, "comment":"bitwise value of the enabled/disabled permissions"},
+        { "name": "color", "type":{ "base":"int" }, 
+          "option":true, "inject_if_not":0, "comment":"RGB color value"},
+        { "name": "hoist", "type":{ "base":"bool" }, 
+          "option":true, "inject_if_not":false, "comment":"whether the role should be displayed separately in the sidebar"},
+        { "name": "mentionable", "type":{ "base":"bool" }, 
+          "option":true, "inject_if_not":false, "comment":"whether the role should be mentionable"}
+      ]
+    }
+  ]
+}
+
+
+

@@ -425,6 +425,22 @@ struct discord_modify_guild_channel_positions_params;
 /* https://discord.com/developers/docs/resources/guild#modify-guild-member */
 /* This is defined at specs/discord/guild.modify-guild-member.json:8:22 */
 struct discord_modify_guild_member_params;
+/* This file is generated from specs/discord/guild.modify-guild-role-positions.json, Please don't edit it. */
+/*
+
+*/
+
+/* https://discord.com/developers/docs/resources/guild#modify-guild-role-positions-json-params */
+/* This is defined at specs/discord/guild.modify-guild-role-positions.json:8:22 */
+struct discord_modify_guild_role_positions_params;
+/* This file is generated from specs/discord/guild.modify-guild-role.json, Please don't edit it. */
+/*
+
+*/
+
+/* https://discord.com/developers/docs/resources/guild#modify-guild-role-json-params */
+/* This is defined at specs/discord/guild.modify-guild-role.json:8:22 */
+struct discord_modify_guild_role_params;
 /* This file is generated from specs/discord/guild.modify-guild.json, Please don't edit it. */
 /*
 

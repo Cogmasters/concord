@@ -28,9 +28,9 @@ struct discord_create_guild_role_params {
   bool hoist;
 
   /* specs/discord/guild.role.create.json:16:20
-     '{ "name": "memtionable", "type":{ "base":"bool" }, "inject_if_not":false}'
+     '{ "name": "mentionable", "type":{ "base":"bool" }, "inject_if_not":false}'
   */
-  bool memtionable;
+  bool mentionable;
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected

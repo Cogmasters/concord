@@ -27,9 +27,9 @@ void discord_create_guild_role_params_from_json(char *json, size_t len, struct d
   */
                 "(hoist):b,"
   /* specs/discord/guild.role.create.json:16:20
-     '{ "name": "memtionable", "type":{ "base":"bool" }, "inject_if_not":false}'
+     '{ "name": "mentionable", "type":{ "base":"bool" }, "inject_if_not":false}'
   */
-                "(memtionable):b,"
+                "(mentionable):b,"
                 "@arg_switches:b"
                 "@record_defined"
                 "@record_null",
@@ -51,9 +51,9 @@ void discord_create_guild_role_params_from_json(char *json, size_t len, struct d
   */
                 &p->hoist,
   /* specs/discord/guild.role.create.json:16:20
-     '{ "name": "memtionable", "type":{ "base":"bool" }, "inject_if_not":false}'
+     '{ "name": "mentionable", "type":{ "base":"bool" }, "inject_if_not":false}'
   */
-                &p->memtionable,
+                &p->mentionable,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
                 p->__M.record_null, sizeof(p->__M.record_null));
@@ -88,10 +88,10 @@ static void discord_create_guild_role_params_use_default_inject_settings(struct 
     p->__M.arg_switches[3] = &p->hoist;
 
   /* specs/discord/guild.role.create.json:16:20
-     '{ "name": "memtionable", "type":{ "base":"bool" }, "inject_if_not":false}'
+     '{ "name": "mentionable", "type":{ "base":"bool" }, "inject_if_not":false}'
   */
-  if (p->memtionable != false)
-    p->__M.arg_switches[4] = &p->memtionable;
+  if (p->mentionable != false)
+    p->__M.arg_switches[4] = &p->mentionable;
 
 }
 
@@ -118,9 +118,9 @@ size_t discord_create_guild_role_params_to_json(char *json, size_t len, struct d
   */
                 "(hoist):b,"
   /* specs/discord/guild.role.create.json:16:20
-     '{ "name": "memtionable", "type":{ "base":"bool" }, "inject_if_not":false}'
+     '{ "name": "mentionable", "type":{ "base":"bool" }, "inject_if_not":false}'
   */
-                "(memtionable):b,"
+                "(mentionable):b,"
                 "@arg_switches:b",
   /* specs/discord/guild.role.create.json:11:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }}'
@@ -140,9 +140,9 @@ size_t discord_create_guild_role_params_to_json(char *json, size_t len, struct d
   */
                 &p->hoist,
   /* specs/discord/guild.role.create.json:16:20
-     '{ "name": "memtionable", "type":{ "base":"bool" }, "inject_if_not":false}'
+     '{ "name": "mentionable", "type":{ "base":"bool" }, "inject_if_not":false}'
   */
-                &p->memtionable,
+                &p->mentionable,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
 }
@@ -204,9 +204,9 @@ void discord_create_guild_role_params_cleanup(struct discord_create_guild_role_p
   */
   //p->hoist is a scalar
   /* specs/discord/guild.role.create.json:16:20
-     '{ "name": "memtionable", "type":{ "base":"bool" }, "inject_if_not":false}'
+     '{ "name": "mentionable", "type":{ "base":"bool" }, "inject_if_not":false}'
   */
-  //p->memtionable is a scalar
+  //p->mentionable is a scalar
 }
 
 void discord_create_guild_role_params_init(struct discord_create_guild_role_params *p) {
@@ -229,7 +229,7 @@ void discord_create_guild_role_params_init(struct discord_create_guild_role_para
   */
 
   /* specs/discord/guild.role.create.json:16:20
-     '{ "name": "memtionable", "type":{ "base":"bool" }, "inject_if_not":false}'
+     '{ "name": "mentionable", "type":{ "base":"bool" }, "inject_if_not":false}'
   */
 
 }
