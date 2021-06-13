@@ -363,6 +363,45 @@ discord_search_guild_members(
   return code;
 }
 
+ORCAcode
+discord_add_guild_member(
+  struct discord *client,
+  const u64_snowflake_t guild_id,
+  const u64_snowflake_t user_id,
+  struct discord_add_guild_member_params *params,
+  struct discord_guild_member *p_member)
+{
+  if (!guild_id) {
+    log_error("Missing 'guild_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!user_id) {
+    log_error("Missing 'user_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!params || !params->access_token) {
+    log_error("Missing 'params.access_token'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
+  struct ua_resp_handle resp_handle = {
+    .ok_cb = p_member ? &discord_guild_member_from_json_v : NULL,
+    .ok_obj = p_member
+  };
+
+  char payload[MAX_PAYLOAD_LEN];
+  size_t ret = discord_add_guild_member_params_to_json(payload, sizeof(payload, params);
+  struct sized_buffer req_body = { payload, ret };
+
+  return discord_adapter_run( 
+           &client->adapter,
+           &resp_handle,
+           &req_body,
+           HTTP_PUT,
+           "/guilds/%"PRIu64"/members/%"PRIu64, 
+           guild_id, user_id);
+}
+
 ORCAcode 
 discord_modify_guild_member(
   struct discord *client, 
@@ -592,7 +631,7 @@ discord_create_guild_ban(
     return ORCA_BAD_PARAMETER;
   }
 
-  void *A[2]={}; // pointer availability array.
+  void *A[2]={0}; // pointer availability array.
   A[0] = (void *)&delete_message_days;
   if (!IS_EMPTY_STRING(reason)) {
     if (!orka_str_bounds_check(reason, MAX_REASON_LEN)) {
