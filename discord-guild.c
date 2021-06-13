@@ -390,7 +390,7 @@ discord_add_guild_member(
   };
 
   char payload[MAX_PAYLOAD_LEN];
-  size_t ret = discord_add_guild_member_params_to_json(payload, sizeof(payload, params);
+  size_t ret = discord_add_guild_member_params_to_json(payload, sizeof(payload), params);
   struct sized_buffer req_body = { payload, ret };
 
   return discord_adapter_run( 
@@ -752,6 +752,76 @@ discord_create_guild_role(
            &req_body,
            HTTP_POST, 
            "/guilds/%"PRIu64"/roles", guild_id);
+}
+
+ORCAcode
+discord_modify_guild_role_positions(
+  struct discord *client, 
+  const u64_snowflake_t guild_id,
+  NTL_T(struct discord_modify_guild_role_positions_params) params,
+  NTL_T(struct discord_guild_role) *p_roles)
+{
+  if (!guild_id) {
+    log_error("Missing 'guild_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!params) {
+    log_error("Missing 'params'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
+  struct ua_resp_handle resp_handle = {
+    .ok_cb = p_roles ? &discord_guild_role_list_from_json_v : NULL,
+    .ok_obj = p_roles
+  };
+
+  char payload[4096];
+  size_t ret = discord_modify_guild_role_positions_params_list_to_json(payload, sizeof(payload), params);
+  struct sized_buffer req_body = { payload, ret };
+
+  return discord_adapter_run( 
+           &client->adapter,
+           &resp_handle,
+           &req_body,
+           HTTP_PATCH, 
+           "/guilds/%"PRIu64"/roles", guild_id);
+}
+
+ORCAcode
+discord_modify_guild_role(
+  struct discord *client,
+  const u64_snowflake_t guild_id,
+  const u64_snowflake_t role_id,
+  struct discord_modify_guild_role_params *params,
+  struct discord_guild_role *p_role)
+{
+  if (!guild_id) {
+    log_error("Missing 'guild_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!role_id) {
+    log_error("Missing 'role_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
+  struct ua_resp_handle resp_handle = {
+    .ok_cb = p_role ? &discord_guild_role_from_json_v : NULL,
+    .ok_obj = p_role
+  };
+
+  char payload[MAX_PAYLOAD_LEN]="{}";
+  size_t ret=2;
+  if (params) {
+    ret = discord_modify_guild_role_params_to_json(payload, sizeof(payload), params);
+  }
+  struct sized_buffer req_body = { payload, ret };
+
+  return discord_adapter_run( 
+           &client->adapter,
+           &resp_handle,
+           &req_body,
+           HTTP_PATCH, 
+           "/guilds/%"PRIu64"/roles/%"PRIu64, guild_id, role_id);
 }
 
 ORCAcode 

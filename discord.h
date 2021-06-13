@@ -570,6 +570,8 @@ ORCAcode discord_create_guild_ban(struct discord *client, const u64_snowflake_t 
 ORCAcode discord_remove_guild_ban(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id, const char reason[]);
 ORCAcode discord_get_guild_roles(struct discord *client, const u64_snowflake_t guild_id, NTL_T(struct discord_guild_role) *p_roles);
 ORCAcode discord_create_guild_role(struct discord *client, const u64_snowflake_t guild_id, struct discord_create_guild_role_params *params, struct discord_guild_role *p_role);
+ORCAcode discord_modify_guild_role_positions(struct discord *client, const u64_snowflake_t guild_id, NTL_T(struct discord_modify_guild_role_positions_params) params, NTL_T(struct discord_guild_role) *p_roles);
+ORCAcode discord_modify_guild_role(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t role_id, struct discord_modify_guild_role_params *params, struct discord_guild_role *p_role);
 ORCAcode discord_delete_guild_role(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t role_id);
 
 // INVITE ENDPOINTS
