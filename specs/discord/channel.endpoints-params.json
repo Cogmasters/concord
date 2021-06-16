@@ -1,0 +1,127 @@
+{
+  "namespace": ["discord"],
+  "comment": "https://discord.com/developers/docs/resources/channel",
+  "defs":
+  [
+    {
+      "title":"Modify Channel",
+      "comment":"https://discord.com/developers/docs/resources/channel#modify-channel",
+      "namespace":["modify_channel"],
+      "struct":"params",
+      "fields":
+      [
+        { "name": "name", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null },
+        { "name": "icon", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null },
+        { "name": "type", "type":{ "base":"int" }},
+        { "name": "position", "type":{ "base":"int" }, "inject_if_not":0 },
+        { "name": "topic", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null },
+        { "name": "nsfw", "type":{ "base":"bool" }, "inject_if_not":false },
+        { "name": "rate_limit_per_user", "type":{ "base":"int" }, "inject_if_not":0 },
+        { "name": "bitrate", "type":{ "base":"int" }, "inject_if_not":0 },
+        { "name": "user_limit", "type":{ "base":"int" }, "inject_if_not":0 },
+        { "name": "permission_overwrites", "type":{ "base":"struct discord_channel_overwrite", "dec":"ntl" }, "inject_if_not":null },
+        { "name": "parent_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 },
+        { "name": "rtc_region", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null },
+        { "name": "video_quality_mode", "type":{ "base":"int" }, "inject_if_not":0 },
+        { "name": "archived", "type":{ "base":"bool" }, "inject_if_not":false },
+        { "name": "auto_archive_duration", "type":{ "base":"int" }, "inject_if_not":0 },
+        { "name": "locked", "type":{ "base":"bool" }, "inject_if_not":false }
+      ]
+    },
+    {
+      "title":"Get Reactions",
+      "comment":"https://discord.com/developers/docs/resources/channel#get-reactions",
+      "namespace": ["get_reactions"],
+      "struct":"params",
+      "fields":
+      [
+        { "name": "after", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "loc":"query"},
+        { "name": "limit", "type":{ "base":"int" }, "loc":"query"}
+      ]
+    },
+    {
+      "title":"Edit Channel Permissions",
+      "comment":"https://discord.com/developers/docs/resources/channel#edit-channel-permissions",
+      "namespace": ["edit_channel_permissions"],
+      "struct":"params",
+      "fields":
+      [
+        { "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"}, "comment":"permission bit set" },
+        { "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"}, "comment":"permission bit set" },
+        { "name": "type", "type":{ "base":"int" }}
+      ]
+    },
+    {
+      "title":"Follow News Channel",
+      "comment":"https://discord.com/developers/docs/resources/channel#follow-news-channel",
+      "namespace": ["follow_news_channel"],
+      "struct":"params",
+      "fields":
+      [
+        { "name": "webhook_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"} }
+      ]
+    },
+    {
+      "title":"Create Channel Invite",
+      "comment":"https://discord.com/developers/docs/resources/channel#create-channel-invite",
+      "namespace":["create_channel_invite"],
+      "struct":"params",
+      "fields":
+      [
+        { "name": "max_age", "type":{ "base":"int" }},
+        { "name": "max_uses", "type":{ "base":"int" }},
+        { "name": "temporary", "type":{ "base":"bool" }},
+        { "name": "unique", "type":{ "base":"bool" }},
+        { "name": "target_type", "type":{ "base":"int" }, "option":true, "inject_if_not":0 },
+        { "name": "target_user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "inject_if_not":0 },
+        { "name": "target_application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "inject_if_not":0 }
+      ]
+    },
+    {
+      "title":"Group DM Add Recipient",
+      "comment":"https://discord.com/developers/docs/resources/channel#group-dm-add-recipient",
+      "namespace": ["group_dm_add_recipient"],
+      "struct":"params",
+      "fields":
+      [
+        { "name": "access_token", "type":{ "base":"char", "dec":"*" }},
+        { "name": "nick", "type":{ "base":"char", "dec":"*" }}
+      ]
+    },
+    {
+      "title":"Start Thread with Message",
+      "comment":"https://discord.com/developers/docs/resources/channel#start-thread-with-message-json-params",
+      "namespace": ["start_thread_with_message"],
+      "struct":"params",
+      "fields":
+      [
+        { "name": "name", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null },
+        { "name": "auto_archive_duration", "type":{ "base":"int" }, "inject_if_not":0 }
+      ]
+    },
+    {
+      "title":"Start Thread without Message",
+      "comment":"https://discord.com/developers/docs/resources/channel#start-thread-without-message-json-params",
+      "namespace": ["start_thread_without_message"],
+      "struct":"params",
+      "fields":
+      [
+        { "name": "name", "type":{ "base":"char", "dec":"*" } },
+        { "name": "auto_archive_duration", "type":{ "base":"int" }, "inject_if_not":0 }
+      ]
+    },
+    {
+      "title":"List Active Threads",
+      "comment":"https://discord.com/developers/docs/resources/channel#list-active-threads-response-body",
+      "namespace": ["thread"],
+      "struct":"response_body",
+      "fields":
+      [
+        { "name": "threads", "type":{ "base":"struct discord_channel", "dec":"ntl" } },
+        { "name": "members", "type":{ "base":"struct discord_thread_member", "dec":"ntl" } },
+        { "name": "has_more", "type":{ "base":"bool" } }
+      ]
+    }
+  ]
+}
+

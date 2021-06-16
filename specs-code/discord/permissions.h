@@ -41,3 +41,137 @@ enum discord_permissions_bitwise_flags {
 extern char* discord_permissions_bitwise_flags_to_string(enum discord_permissions_bitwise_flags);
 extern enum discord_permissions_bitwise_flags discord_permissions_bitwise_flags_from_string(char*);
 extern bool discord_permissions_bitwise_flags_has(enum discord_permissions_bitwise_flags, char*);
+
+/* Title: Role Structure */
+/* https://discord.com/developers/docs/topics/permissions#role-object-role-structure */
+/* This is defined at specs/discord/permissions.json:49:22 */
+struct discord_permissions_role {
+  /* specs/discord/permissions.json:52:20
+     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
+  */
+  u64_snowflake_t id;
+
+  /* specs/discord/permissions.json:53:20
+     '{ "name": "name", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]" }}'
+  */
+  char name[MAX_NAME_LEN];
+
+  /* specs/discord/permissions.json:54:20
+     '{ "name": "color", "type":{ "base":"int" }}'
+  */
+  int color;
+
+  /* specs/discord/permissions.json:55:20
+     '{ "name": "hoist", "type":{ "base":"bool" }}'
+  */
+  bool hoist;
+
+  /* specs/discord/permissions.json:56:20
+     '{ "name": "position", "type":{ "base":"int" }}'
+  */
+  int position;
+
+  /* specs/discord/permissions.json:57:20
+     '{ "name": "permissions", "type":{ "base":"char", "dec":"*" }}'
+  */
+  char *permissions;
+
+  /* specs/discord/permissions.json:58:20
+     '{ "name": "managed", "type":{ "base":"bool" }}'
+  */
+  bool managed;
+
+  /* specs/discord/permissions.json:59:20
+     '{ "name": "mentionable", "type":{ "base":"bool" }}'
+  */
+  bool mentionable;
+
+  /* specs/discord/permissions.json:60:20
+     '{ "name": "tags", "type":{"base":"struct discord_permissions_role_tags", "dec":"*"}}'
+  */
+  struct discord_permissions_role_tags *tags;
+
+  // The following is metadata used to 
+  // 1. control which field should be extracted/injected
+  // 2. record which field is presented(defined) in JSON
+  // 3. record which field is null in JSON
+  struct {
+    bool enable_arg_switches;
+    bool enable_record_defined;
+    bool enable_record_null;
+    void *arg_switches[9];
+    void *record_defined[9];
+    void *record_null[9];
+  } __M; // metadata
+};
+extern void discord_permissions_role_cleanup_v(void *p);
+extern void discord_permissions_role_cleanup(struct discord_permissions_role *p);
+extern void discord_permissions_role_init_v(void *p);
+extern void discord_permissions_role_init(struct discord_permissions_role *p);
+extern struct discord_permissions_role * discord_permissions_role_alloc();
+extern void discord_permissions_role_free_v(void *p);
+extern void discord_permissions_role_free(struct discord_permissions_role *p);
+extern void discord_permissions_role_from_json_v(char *json, size_t len, void *p);
+extern void discord_permissions_role_from_json(char *json, size_t len, struct discord_permissions_role *p);
+extern size_t discord_permissions_role_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_permissions_role_to_json(char *json, size_t len, struct discord_permissions_role *p);
+extern size_t discord_permissions_role_to_query_v(char *json, size_t len, void *p);
+extern size_t discord_permissions_role_to_query(char *json, size_t len, struct discord_permissions_role *p);
+extern void discord_permissions_role_list_free_v(void **p);
+extern void discord_permissions_role_list_free(struct discord_permissions_role **p);
+extern void discord_permissions_role_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_permissions_role_list_from_json(char *str, size_t len, struct discord_permissions_role ***p);
+extern size_t discord_permissions_role_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_permissions_role_list_to_json(char *str, size_t len, struct discord_permissions_role **p);
+
+/* Title: Role Tags Structure */
+/* https://discord.com/developers/docs/topics/permissions#role-object-role-tags-structure */
+/* This is defined at specs/discord/permissions.json:67:22 */
+struct discord_permissions_role_tags {
+  /* specs/discord/permissions.json:70:20
+     '{ "name": "bot_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
+  */
+  u64_snowflake_t bot_id;
+
+  /* specs/discord/permissions.json:71:20
+     '{ "name": "integration_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
+  */
+  u64_snowflake_t integration_id;
+
+  /* specs/discord/permissions.json:72:20
+     '{ "name": "premium_subscriber", "type":{ "base":"int" }}'
+  */
+  int premium_subscriber;
+
+  // The following is metadata used to 
+  // 1. control which field should be extracted/injected
+  // 2. record which field is presented(defined) in JSON
+  // 3. record which field is null in JSON
+  struct {
+    bool enable_arg_switches;
+    bool enable_record_defined;
+    bool enable_record_null;
+    void *arg_switches[3];
+    void *record_defined[3];
+    void *record_null[3];
+  } __M; // metadata
+};
+extern void discord_permissions_role_tags_cleanup_v(void *p);
+extern void discord_permissions_role_tags_cleanup(struct discord_permissions_role_tags *p);
+extern void discord_permissions_role_tags_init_v(void *p);
+extern void discord_permissions_role_tags_init(struct discord_permissions_role_tags *p);
+extern struct discord_permissions_role_tags * discord_permissions_role_tags_alloc();
+extern void discord_permissions_role_tags_free_v(void *p);
+extern void discord_permissions_role_tags_free(struct discord_permissions_role_tags *p);
+extern void discord_permissions_role_tags_from_json_v(char *json, size_t len, void *p);
+extern void discord_permissions_role_tags_from_json(char *json, size_t len, struct discord_permissions_role_tags *p);
+extern size_t discord_permissions_role_tags_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_permissions_role_tags_to_json(char *json, size_t len, struct discord_permissions_role_tags *p);
+extern size_t discord_permissions_role_tags_to_query_v(char *json, size_t len, void *p);
+extern size_t discord_permissions_role_tags_to_query(char *json, size_t len, struct discord_permissions_role_tags *p);
+extern void discord_permissions_role_tags_list_free_v(void **p);
+extern void discord_permissions_role_tags_list_free(struct discord_permissions_role_tags **p);
+extern void discord_permissions_role_tags_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_permissions_role_tags_list_from_json(char *str, size_t len, struct discord_permissions_role_tags ***p);
+extern size_t discord_permissions_role_tags_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_permissions_role_tags_list_to_json(char *str, size_t len, struct discord_permissions_role_tags **p);

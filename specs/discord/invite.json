@@ -1,6 +1,6 @@
 {
   "namespace": ["discord"],
-  "comment": "https://discord.com/developers/docs/resources/invite#invite-object",
+  "comment": "https://discord.com/developers/docs/resources/invite",
   "defs":
   [
     {

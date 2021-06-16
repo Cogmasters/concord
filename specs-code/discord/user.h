@@ -1,6 +1,6 @@
 /* This file is generated from specs/discord/user.json, Please don't edit it. */
 /*
-https://discord.com/developers/docs/resources/user#user-object
+https://discord.com/developers/docs/resources/user
 */
 
 
@@ -33,69 +33,69 @@ extern enum discord_user_premium_types discord_user_premium_types_from_string(ch
 extern bool discord_user_premium_types_has(enum discord_user_premium_types, char*);
 
 /* Title: User Structure */
-/* This is defined at specs/discord/user.json:42:18 */
+/* This is defined at specs/discord/user.json:42:28 */
 struct discord_user {
-  /* specs/discord/user.json:45:14
+  /* specs/discord/user.json:45:24
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"} }'
   */
   u64_snowflake_t id;
 
-  /* specs/discord/user.json:46:14
+  /* specs/discord/user.json:46:24
      '{ "name": "username", "type":{ "base":"char", "dec":"[MAX_USERNAME_LEN]"}}'
   */
   char username[MAX_USERNAME_LEN];
 
-  /* specs/discord/user.json:47:14
+  /* specs/discord/user.json:47:24
      '{ "name": "discriminator", "type":{ "base":"char", "dec":"[MAX_DISCRIMINATOR_LEN]" }}'
   */
   char discriminator[MAX_DISCRIMINATOR_LEN];
 
-  /* specs/discord/user.json:48:14
+  /* specs/discord/user.json:48:24
      '{ "name": "avatar", "type":{ "base":"char", "dec":"[MAX_SHA256_LEN]" }}'
   */
   char avatar[MAX_SHA256_LEN];
 
-  /* specs/discord/user.json:49:14
+  /* specs/discord/user.json:49:24
      '{ "name": "bot", "type":{ "base":"bool" }}'
   */
   bool bot;
 
-  /* specs/discord/user.json:50:14
+  /* specs/discord/user.json:50:24
      '{ "name": "System", "json_key": "system", "type":{ "base":"bool" }}'
   */
   bool System;
 
-  /* specs/discord/user.json:51:14
+  /* specs/discord/user.json:51:24
      '{ "name": "mfa_enabled", "type":{ "base":"bool" }}'
   */
   bool mfa_enabled;
 
-  /* specs/discord/user.json:52:14
+  /* specs/discord/user.json:52:24
      '{ "name": "locale", "type":{ "base":"char", "dec":"[MAX_LOCALE_LEN]" }}'
   */
   char locale[MAX_LOCALE_LEN];
 
-  /* specs/discord/user.json:53:14
+  /* specs/discord/user.json:53:24
      '{ "name": "verified", "type":{ "base":"bool" }}'
   */
   bool verified;
 
-  /* specs/discord/user.json:54:14
+  /* specs/discord/user.json:54:24
      '{ "name": "email", "type":{ "base":"char", "dec":"[MAX_EMAIL_LEN]" }}'
   */
   char email[MAX_EMAIL_LEN];
 
-  /* specs/discord/user.json:55:14
+  /* specs/discord/user.json:55:24
      '{ "name": "flags", "type":{ "base":"int", "int_alias": "enum discord_user_flags" }}'
   */
   enum discord_user_flags flags;
 
-  /* specs/discord/user.json:56:14
+  /* specs/discord/user.json:56:24
      '{ "name": "premium_type", "type":{ "base":"int", "int_alias": "enum discord_user_premium_types" }}'
   */
   enum discord_user_premium_types premium_type;
 
-  /* specs/discord/user.json:57:14
+  /* specs/discord/user.json:57:24
      '{ "name": "public_flags", "type":{ "base":"int", "int_alias": "enum discord_user_flags" }}'
   */
   enum discord_user_flags public_flags;
@@ -144,49 +144,49 @@ extern bool discord_user_connection_visibility_types_has(enum discord_user_conne
 
 /* Title: Connection Structure */
 /* https://discord.com/developers/docs/resources/user#connection-object-connection-structure */
-/* This is defined at specs/discord/user.json:74:18 */
+/* This is defined at specs/discord/user.json:74:28 */
 struct discord_connection {
-  /* specs/discord/user.json:77:14
+  /* specs/discord/user.json:77:24
      '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
   */
   char *id; // @todo fixed size limit
 
-  /* specs/discord/user.json:78:14
+  /* specs/discord/user.json:78:24
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}}'
   */
   char *name;
 
-  /* specs/discord/user.json:79:14
+  /* specs/discord/user.json:79:24
      '{ "name": "type", "type":{ "base":"char", "dec":"*"}}'
   */
   char *type;
 
-  /* specs/discord/user.json:80:14
+  /* specs/discord/user.json:80:24
      '{ "name": "revoked", "type":{ "base":"bool"}}'
   */
   bool revoked;
 
-  /* specs/discord/user.json:81:16
+  /* specs/discord/user.json:81:24
      '{ "name": "integrations", "type": {"base":"struct discord_guild_integration", "dec":"ntl"}}'
   */
   struct discord_guild_integration **integrations;
 
-  /* specs/discord/user.json:82:14
+  /* specs/discord/user.json:82:24
      '{ "name": "verified", "type":{ "base":"bool" }}'
   */
   bool verified;
 
-  /* specs/discord/user.json:83:14
+  /* specs/discord/user.json:83:24
      '{ "name": "friend_sync", "type":{ "base":"bool" }}'
   */
   bool friend_sync;
 
-  /* specs/discord/user.json:84:14
+  /* specs/discord/user.json:84:24
      '{ "name": "show_activity", "type":{ "base":"bool" }}'
   */
   bool show_activity;
 
-  /* specs/discord/user.json:85:14
+  /* specs/discord/user.json:85:24
      '{ "name": "visibility", "type":{ "base":"int", "int_alias":"enum discord_user_connection_visibility_types" }}'
   */
   enum discord_user_connection_visibility_types visibility;

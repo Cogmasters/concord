@@ -1,10 +1,10 @@
-/* This file is generated from specs/discord/audit_log.get-guild-audit-log.json, Please don't edit it. */
+/* This file is generated from specs/discord/audit_log.endpoints-params.json, Please don't edit it. */
 /*
-
+https://discord.com/developers/docs/resources/audit-log
 */
 /* This file is generated from specs/discord/audit_log.json, Please don't edit it. */
 /*
-(null)
+https://discord.com/developers/docs/resources/audit-log
 */
 
 
@@ -47,29 +47,13 @@ enum discord_audit_log_events {
 extern char* discord_audit_log_events_to_string(enum discord_audit_log_events);
 extern enum discord_audit_log_events discord_audit_log_events_from_string(char*);
 extern bool discord_audit_log_events_has(enum discord_audit_log_events, char*);
-/* This file is generated from specs/discord/channel.create-channel-invite.json, Please don't edit it. */
+/* This file is generated from specs/discord/channel.endpoints-params.json, Please don't edit it. */
 /*
-
-*/
-/* This file is generated from specs/discord/channel.edit-channel-permissions.json, Please don't edit it. */
-/*
-
-*/
-/* This file is generated from specs/discord/channel.follow-news-channel.json, Please don't edit it. */
-/*
-
-*/
-/* This file is generated from specs/discord/channel.get-reactions.json, Please don't edit it. */
-/*
-
-*/
-/* This file is generated from specs/discord/channel.group-dm-add-recipient.json, Please don't edit it. */
-/*
-
+https://discord.com/developers/docs/resources/channel
 */
 /* This file is generated from specs/discord/channel.json, Please don't edit it. */
 /*
-https://discord.com/developers/docs/resources/channel#channel-object-channel-types
+https://discord.com/developers/docs/resources/channel
 */
 
 
@@ -85,10 +69,6 @@ enum discord_channel_types {
 extern char* discord_channel_types_to_string(enum discord_channel_types);
 extern enum discord_channel_types discord_channel_types_from_string(char*);
 extern bool discord_channel_types_has(enum discord_channel_types, char*);
-/* This file is generated from specs/discord/channel.message.json, Please don't edit it. */
-/*
-
-*/
 
 
 enum discord_message_sticker_format_types {
@@ -146,41 +126,17 @@ enum discord_message_types {
 extern char* discord_message_types_to_string(enum discord_message_types);
 extern enum discord_message_types discord_message_types_from_string(char*);
 extern bool discord_message_types_has(enum discord_message_types, char*);
-/* This file is generated from specs/discord/channel.modify-channel.json, Please don't edit it. */
-/*
-
-*/
-/* This file is generated from specs/discord/channel.objects.json, Please don't edit it. */
-/*
-https://discord.com/developers/docs/resources/channel#overwrite-object-overwrite-structure
-*/
-/* This file is generated from specs/discord/channel.start-thread-with-message.json, Please don't edit it. */
-/*
-
-*/
-/* This file is generated from specs/discord/channel.start-thread-without-message.json, Please don't edit it. */
-/*
-
-*/
-/* This file is generated from specs/discord/channel.thread-response-body.json, Please don't edit it. */
-/*
-
-*/
-/* This file is generated from specs/discord/emoji.create-guild-emoji.json, Please don't edit it. */
+/* This file is generated from specs/discord/emoji.endpoints-params.json, Please don't edit it. */
 /*
 
 */
 /* This file is generated from specs/discord/emoji.json, Please don't edit it. */
 /*
-https://discord.com/developers/docs/resources/emoji#emoji-object-emoji-structure
-*/
-/* This file is generated from specs/discord/emoji.modify-guild-emoji.json, Please don't edit it. */
-/*
-
+https://discord.com/developers/docs/resources/emoji
 */
 /* This file is generated from specs/discord/gateway.json, Please don't edit it. */
 /*
-(null)
+https://discord.com/developers/docs/topics/gateway
 */
 
 
@@ -297,25 +253,21 @@ enum discord_gateway_activity_types {
 extern char* discord_gateway_activity_types_to_string(enum discord_gateway_activity_types);
 extern enum discord_gateway_activity_types discord_gateway_activity_types_from_string(char*);
 extern bool discord_gateway_activity_types_has(enum discord_gateway_activity_types, char*);
-/* This file is generated from specs/discord/guild.add-guild-member.json, Please don't edit it. */
+/* This file is generated from specs/discord/guild-template.endpoints-params.json, Please don't edit it. */
 /*
-
+https://discord.com/developers/docs/resources/guild-template
 */
-/* This file is generated from specs/discord/guild.ban.json, Please don't edit it. */
+/* This file is generated from specs/discord/guild-template.json, Please don't edit it. */
 /*
-https://discord.com/developers/docs/resources/guild#ban-object
+https://discord.com/developers/docs/resources/guild-template
 */
-/* This file is generated from specs/discord/guild.create-channel.json, Please don't edit it. */
+/* This file is generated from specs/discord/guild.endpoints-params.json, Please don't edit it. */
 /*
-
+https://discord.com/developers/docs/resources/guild
 */
-/* This file is generated from specs/discord/guild.create-guild.json, Please don't edit it. */
+/* This file is generated from specs/discord/guild.json, Please don't edit it. */
 /*
-
-*/
-/* This file is generated from specs/discord/guild.enum.json, Please don't edit it. */
-/*
-https://discord.com/developers/docs/resources/guild#integration-object-integration-structure
+https://discord.com/developers/docs/resources/guild
 */
 
 
@@ -379,7 +331,7 @@ extern enum discord_guild_system_channel_flags discord_guild_system_channel_flag
 extern bool discord_guild_system_channel_flags_has(enum discord_guild_system_channel_flags, char*);
 
 
-enum discord_guild_guild_features {
+enum discord_guild_features {
   DISCORD_GUILD_INVITE_SPLASH = 0,
   DISCORD_GUILD_VIP_REGIONS = 1,
   DISCORD_GUILD_VANITY_URL = 2,
@@ -396,13 +348,9 @@ enum discord_guild_guild_features {
   DISCORD_GUILD_MEMBER_VERIFICATION_GATE_ENABLED = 13,
   DISCORD_GUILD_PREVIEW_ENABLED = 14,
 };
-extern char* discord_guild_guild_features_to_string(enum discord_guild_guild_features);
-extern enum discord_guild_guild_features discord_guild_guild_features_from_string(char*);
-extern bool discord_guild_guild_features_has(enum discord_guild_guild_features, char*);
-/* This file is generated from specs/discord/guild.integration.json, Please don't edit it. */
-/*
-https://discord.com/developers/docs/resources/guild#integration-object-integration-structure
-*/
+extern char* discord_guild_features_to_string(enum discord_guild_features);
+extern enum discord_guild_features discord_guild_features_from_string(char*);
+extern bool discord_guild_features_has(enum discord_guild_features, char*);
 
 
 enum discord_guild_integration_expire_behaviors {
@@ -412,69 +360,13 @@ enum discord_guild_integration_expire_behaviors {
 extern char* discord_guild_integration_expire_behaviors_to_string(enum discord_guild_integration_expire_behaviors);
 extern enum discord_guild_integration_expire_behaviors discord_guild_integration_expire_behaviors_from_string(char*);
 extern bool discord_guild_integration_expire_behaviors_has(enum discord_guild_integration_expire_behaviors, char*);
-/* This file is generated from specs/discord/guild.json, Please don't edit it. */
+/* This file is generated from specs/discord/invite.endpoints-params.json, Please don't edit it. */
 /*
-https://discord.com/developers/docs/resources/guild#guild-object-guild-structure
-*/
-/* This file is generated from specs/discord/guild.member.json, Please don't edit it. */
-/*
-https://discord.com/developers/docs/resources/guild#guild-member-object
-*/
-/* This file is generated from specs/discord/guild.membership_screening.json, Please don't edit it. */
-/*
-https://discord.com/developers/docs/resources/guild#membership-screening-object
-*/
-
-
-enum discord_guild_membership_screening_field_type {
-  DISCORD_GUILD_MEMBERSHIP_SCREENING_TERMS = 0,
-};
-extern char* discord_guild_membership_screening_field_type_to_string(enum discord_guild_membership_screening_field_type);
-extern enum discord_guild_membership_screening_field_type discord_guild_membership_screening_field_type_from_string(char*);
-extern bool discord_guild_membership_screening_field_type_has(enum discord_guild_membership_screening_field_type, char*);
-/* This file is generated from specs/discord/guild.modify-guild-channel-positions.json, Please don't edit it. */
-/*
-
-*/
-/* This file is generated from specs/discord/guild.modify-guild-member.json, Please don't edit it. */
-/*
-
-*/
-/* This file is generated from specs/discord/guild.modify-guild-role-positions.json, Please don't edit it. */
-/*
-
-*/
-/* This file is generated from specs/discord/guild.modify-guild-role.json, Please don't edit it. */
-/*
-
-*/
-/* This file is generated from specs/discord/guild.modify-guild.json, Please don't edit it. */
-/*
-
-*/
-/* This file is generated from specs/discord/guild.role.create.json, Please don't edit it. */
-/*
-
-*/
-/* This file is generated from specs/discord/guild.role.json, Please don't edit it. */
-/*
-https://discord.com/developers/docs/topics/permissions#role-object-role-structure
-*/
-/* This file is generated from specs/discord/guild.search-guild-members.json, Please don't edit it. */
-/*
-
-*/
-/* This file is generated from specs/discord/guild.welcome_screen.json, Please don't edit it. */
-/*
-https://discord.com/developers/docs/resources/guild#welcome-screen-object
-*/
-/* This file is generated from specs/discord/invite.get-invite.json, Please don't edit it. */
-/*
-https://discord.com/developers/docs/resources/invite#get-invite
+https://discord.com/developers/docs/resources/invite
 */
 /* This file is generated from specs/discord/invite.json, Please don't edit it. */
 /*
-https://discord.com/developers/docs/resources/invite#invite-object
+https://discord.com/developers/docs/resources/invite
 */
 
 
@@ -527,29 +419,13 @@ enum discord_permissions_bitwise_flags {
 extern char* discord_permissions_bitwise_flags_to_string(enum discord_permissions_bitwise_flags);
 extern enum discord_permissions_bitwise_flags discord_permissions_bitwise_flags_from_string(char*);
 extern bool discord_permissions_bitwise_flags_has(enum discord_permissions_bitwise_flags, char*);
-/* This file is generated from specs/discord/template.create-guild-from-template.json, Please don't edit it. */
+/* This file is generated from specs/discord/user.endpoints-params.json, Please don't edit it. */
 /*
-
-*/
-/* This file is generated from specs/discord/template.create-guild-template.json, Please don't edit it. */
-/*
-
-*/
-/* This file is generated from specs/discord/template.json, Please don't edit it. */
-/*
-https://discord.com/developers/docs/resources/template#template-object-template-structure
-*/
-/* This file is generated from specs/discord/template.modify-guild-template.json, Please don't edit it. */
-/*
-
-*/
-/* This file is generated from specs/discord/user.create-group-dm.json, Please don't edit it. */
-/*
-
+https://discord.com/developers/docs/resources/user
 */
 /* This file is generated from specs/discord/user.json, Please don't edit it. */
 /*
-https://discord.com/developers/docs/resources/user#user-object
+https://discord.com/developers/docs/resources/user
 */
 
 
@@ -589,13 +465,9 @@ enum discord_user_connection_visibility_types {
 extern char* discord_user_connection_visibility_types_to_string(enum discord_user_connection_visibility_types);
 extern enum discord_user_connection_visibility_types discord_user_connection_visibility_types_from_string(char*);
 extern bool discord_user_connection_visibility_types_has(enum discord_user_connection_visibility_types, char*);
-/* This file is generated from specs/discord/user.modify-curent-user.json, Please don't edit it. */
-/*
-
-*/
 /* This file is generated from specs/discord/voice-connections.json, Please don't edit it. */
 /*
-(null)
+https://discord.com/developers/docs/topics/voice-connections
 */
 
 
@@ -647,23 +519,15 @@ extern enum discord_voice_speaking_flags discord_voice_speaking_flags_from_strin
 extern bool discord_voice_speaking_flags_has(enum discord_voice_speaking_flags, char*);
 /* This file is generated from specs/discord/voice.json, Please don't edit it. */
 /*
-(null)
+https://discord.com/developers/docs/resources/voice
 */
-/* This file is generated from specs/discord/webhook.create-webhook.json, Please don't edit it. */
+/* This file is generated from specs/discord/webhook.endpoints-params.json, Please don't edit it. */
 /*
-
-*/
-/* This file is generated from specs/discord/webhook.edit-webhook-message.json, Please don't edit it. */
-/*
-
-*/
-/* This file is generated from specs/discord/webhook.execute-webhook.json, Please don't edit it. */
-/*
-
+https://discord.com/developers/docs/resources/webhook
 */
 /* This file is generated from specs/discord/webhook.json, Please don't edit it. */
 /*
-https://discord.com/developers/docs/resources/webhook#webhook-object-webhook-structure
+https://discord.com/developers/docs/resources/webhook
 */
 
 
@@ -674,7 +538,3 @@ enum discord_webhook_types {
 extern char* discord_webhook_types_to_string(enum discord_webhook_types);
 extern enum discord_webhook_types discord_webhook_types_from_string(char*);
 extern bool discord_webhook_types_has(enum discord_webhook_types, char*);
-/* This file is generated from specs/discord/webhook.modify-webhook.json, Please don't edit it. */
-/*
-
-*/

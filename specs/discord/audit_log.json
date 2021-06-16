@@ -1,5 +1,6 @@
 {
   "namespace": ["discord"],
+  "comment":"https://discord.com/developers/docs/resources/audit-log",
   "defs":
   [
     {

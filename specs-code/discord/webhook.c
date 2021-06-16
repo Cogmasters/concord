@@ -1,105 +1,86 @@
 /* This file is generated from specs/discord/webhook.json, Please don't edit it. */
 #include "specs.h"
 /*
-https://discord.com/developers/docs/resources/webhook#webhook-object-webhook-structure
+https://discord.com/developers/docs/resources/webhook
 */
-
-
-enum discord_webhook_types discord_webhook_types_from_string(char *s){
-  if(strcasecmp("INCOMING", s) == 0) return DISCORD_WEBHOOK_INCOMING;
-  if(strcasecmp("CHANNEL_FOLLOWER", s) == 0) return DISCORD_WEBHOOK_CHANNEL_FOLLOWER;
-  abort();
-}
-char* discord_webhook_types_to_string(enum discord_webhook_types v){
-  if (v == DISCORD_WEBHOOK_INCOMING) return "INCOMING";
-  if (v == DISCORD_WEBHOOK_CHANNEL_FOLLOWER) return "CHANNEL_FOLLOWER";
-
-  return (void*)0;
-}
-bool discord_webhook_types_has(enum discord_webhook_types v, char *s) {
-  enum discord_webhook_types v1 = discord_webhook_types_from_string(s);
-  if (v == v1) return true;
-  if (v == v1) return true;
-  return false;
-}
 
 void discord_webhook_from_json(char *json, size_t len, struct discord_webhook *p)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
   r=json_extract(json, len, 
-  /* specs/discord/webhook.json:21:20
+  /* specs/discord/webhook.json:12:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
                 "(id):F,"
-  /* specs/discord/webhook.json:22:20
+  /* specs/discord/webhook.json:13:20
      '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_webhook_types" }}'
   */
                 "(type):d,"
-  /* specs/discord/webhook.json:23:20
+  /* specs/discord/webhook.json:14:20
      '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
                 "(guild_id):F,"
-  /* specs/discord/webhook.json:24:20
+  /* specs/discord/webhook.json:15:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
                 "(channel_id):F,"
-  /* specs/discord/webhook.json:25:20
+  /* specs/discord/webhook.json:16:20
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }}'
   */
                 "(user):F,"
-  /* specs/discord/webhook.json:26:20
+  /* specs/discord/webhook.json:17:20
      '{ "name": "name", "type":{ "base":"char", "dec":"[WEBHOOK_NAME_LEN]" }}'
   */
                 "(name):s,"
-  /* specs/discord/webhook.json:27:20
+  /* specs/discord/webhook.json:18:20
      '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
   */
                 "(avatar):?s,"
-  /* specs/discord/webhook.json:28:20
+  /* specs/discord/webhook.json:19:20
      '{ "name": "token", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
   */
                 "(token):?s,"
-  /* specs/discord/webhook.json:29:20
+  /* specs/discord/webhook.json:20:20
      '{ "name": "application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
                 "(application_id):F,"
                 "@arg_switches:b"
                 "@record_defined"
                 "@record_null",
-  /* specs/discord/webhook.json:21:20
+  /* specs/discord/webhook.json:12:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
                 orka_strtoull, &p->id,
-  /* specs/discord/webhook.json:22:20
+  /* specs/discord/webhook.json:13:20
      '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_webhook_types" }}'
   */
                 &p->type,
-  /* specs/discord/webhook.json:23:20
+  /* specs/discord/webhook.json:14:20
      '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
                 orka_strtoull, &p->guild_id,
-  /* specs/discord/webhook.json:24:20
+  /* specs/discord/webhook.json:15:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
                 orka_strtoull, &p->channel_id,
-  /* specs/discord/webhook.json:25:20
+  /* specs/discord/webhook.json:16:20
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }}'
   */
                 discord_user_from_json, p->user,
-  /* specs/discord/webhook.json:26:20
+  /* specs/discord/webhook.json:17:20
      '{ "name": "name", "type":{ "base":"char", "dec":"[WEBHOOK_NAME_LEN]" }}'
   */
                 p->name,
-  /* specs/discord/webhook.json:27:20
+  /* specs/discord/webhook.json:18:20
      '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
   */
                 &p->avatar,
-  /* specs/discord/webhook.json:28:20
+  /* specs/discord/webhook.json:19:20
      '{ "name": "token", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
   */
                 &p->token,
-  /* specs/discord/webhook.json:29:20
+  /* specs/discord/webhook.json:20:20
      '{ "name": "application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
                 orka_strtoull, &p->application_id,
@@ -112,47 +93,47 @@ void discord_webhook_from_json(char *json, size_t len, struct discord_webhook *p
 static void discord_webhook_use_default_inject_settings(struct discord_webhook *p)
 {
   p->__M.enable_arg_switches = true;
-  /* specs/discord/webhook.json:21:20
+  /* specs/discord/webhook.json:12:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
   p->__M.arg_switches[0] = &p->id;
 
-  /* specs/discord/webhook.json:22:20
+  /* specs/discord/webhook.json:13:20
      '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_webhook_types" }}'
   */
   p->__M.arg_switches[1] = &p->type;
 
-  /* specs/discord/webhook.json:23:20
+  /* specs/discord/webhook.json:14:20
      '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
   p->__M.arg_switches[2] = &p->guild_id;
 
-  /* specs/discord/webhook.json:24:20
+  /* specs/discord/webhook.json:15:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
   p->__M.arg_switches[3] = &p->channel_id;
 
-  /* specs/discord/webhook.json:25:20
+  /* specs/discord/webhook.json:16:20
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }}'
   */
   p->__M.arg_switches[4] = p->user;
 
-  /* specs/discord/webhook.json:26:20
+  /* specs/discord/webhook.json:17:20
      '{ "name": "name", "type":{ "base":"char", "dec":"[WEBHOOK_NAME_LEN]" }}'
   */
   p->__M.arg_switches[5] = p->name;
 
-  /* specs/discord/webhook.json:27:20
+  /* specs/discord/webhook.json:18:20
      '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
   */
   p->__M.arg_switches[6] = p->avatar;
 
-  /* specs/discord/webhook.json:28:20
+  /* specs/discord/webhook.json:19:20
      '{ "name": "token", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
   */
   p->__M.arg_switches[7] = p->token;
 
-  /* specs/discord/webhook.json:29:20
+  /* specs/discord/webhook.json:20:20
      '{ "name": "application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
   p->__M.arg_switches[8] = &p->application_id;
@@ -164,76 +145,76 @@ size_t discord_webhook_to_json(char *json, size_t len, struct discord_webhook *p
   size_t r;
   discord_webhook_use_default_inject_settings(p);
   r=json_inject(json, len, 
-  /* specs/discord/webhook.json:21:20
+  /* specs/discord/webhook.json:12:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
                 "(id):|F|,"
-  /* specs/discord/webhook.json:22:20
+  /* specs/discord/webhook.json:13:20
      '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_webhook_types" }}'
   */
                 "(type):d,"
-  /* specs/discord/webhook.json:23:20
+  /* specs/discord/webhook.json:14:20
      '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
                 "(guild_id):|F|,"
-  /* specs/discord/webhook.json:24:20
+  /* specs/discord/webhook.json:15:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
                 "(channel_id):|F|,"
-  /* specs/discord/webhook.json:25:20
+  /* specs/discord/webhook.json:16:20
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }}'
   */
                 "(user):F,"
-  /* specs/discord/webhook.json:26:20
+  /* specs/discord/webhook.json:17:20
      '{ "name": "name", "type":{ "base":"char", "dec":"[WEBHOOK_NAME_LEN]" }}'
   */
                 "(name):s,"
-  /* specs/discord/webhook.json:27:20
+  /* specs/discord/webhook.json:18:20
      '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
   */
                 "(avatar):s,"
-  /* specs/discord/webhook.json:28:20
+  /* specs/discord/webhook.json:19:20
      '{ "name": "token", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
   */
                 "(token):s,"
-  /* specs/discord/webhook.json:29:20
+  /* specs/discord/webhook.json:20:20
      '{ "name": "application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
                 "(application_id):|F|,"
                 "@arg_switches:b",
-  /* specs/discord/webhook.json:21:20
+  /* specs/discord/webhook.json:12:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
                 orka_ulltostr, &p->id,
-  /* specs/discord/webhook.json:22:20
+  /* specs/discord/webhook.json:13:20
      '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_webhook_types" }}'
   */
                 &p->type,
-  /* specs/discord/webhook.json:23:20
+  /* specs/discord/webhook.json:14:20
      '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
                 orka_ulltostr, &p->guild_id,
-  /* specs/discord/webhook.json:24:20
+  /* specs/discord/webhook.json:15:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
                 orka_ulltostr, &p->channel_id,
-  /* specs/discord/webhook.json:25:20
+  /* specs/discord/webhook.json:16:20
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }}'
   */
                 discord_user_to_json, p->user,
-  /* specs/discord/webhook.json:26:20
+  /* specs/discord/webhook.json:17:20
      '{ "name": "name", "type":{ "base":"char", "dec":"[WEBHOOK_NAME_LEN]" }}'
   */
                 p->name,
-  /* specs/discord/webhook.json:27:20
+  /* specs/discord/webhook.json:18:20
      '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
   */
                 p->avatar,
-  /* specs/discord/webhook.json:28:20
+  /* specs/discord/webhook.json:19:20
      '{ "name": "token", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
   */
                 p->token,
-  /* specs/discord/webhook.json:29:20
+  /* specs/discord/webhook.json:20:20
      '{ "name": "application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
                 orka_ulltostr, &p->application_id,
@@ -279,42 +260,42 @@ size_t discord_webhook_list_to_json_v(char *str, size_t len, void *p){
 
 
 void discord_webhook_cleanup(struct discord_webhook *d) {
-  /* specs/discord/webhook.json:21:20
+  /* specs/discord/webhook.json:12:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
   //p->id is a scalar
-  /* specs/discord/webhook.json:22:20
+  /* specs/discord/webhook.json:13:20
      '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_webhook_types" }}'
   */
   //p->type is a scalar
-  /* specs/discord/webhook.json:23:20
+  /* specs/discord/webhook.json:14:20
      '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
   //p->guild_id is a scalar
-  /* specs/discord/webhook.json:24:20
+  /* specs/discord/webhook.json:15:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
   //p->channel_id is a scalar
-  /* specs/discord/webhook.json:25:20
+  /* specs/discord/webhook.json:16:20
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }}'
   */
   if (d->user)
     discord_user_free(d->user);
-  /* specs/discord/webhook.json:26:20
+  /* specs/discord/webhook.json:17:20
      '{ "name": "name", "type":{ "base":"char", "dec":"[WEBHOOK_NAME_LEN]" }}'
   */
   //p->name is a scalar
-  /* specs/discord/webhook.json:27:20
+  /* specs/discord/webhook.json:18:20
      '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
   */
   if (d->avatar)
     free(d->avatar);
-  /* specs/discord/webhook.json:28:20
+  /* specs/discord/webhook.json:19:20
      '{ "name": "token", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
   */
   if (d->token)
     free(d->token);
-  /* specs/discord/webhook.json:29:20
+  /* specs/discord/webhook.json:20:20
      '{ "name": "application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
   //p->application_id is a scalar
@@ -322,40 +303,40 @@ void discord_webhook_cleanup(struct discord_webhook *d) {
 
 void discord_webhook_init(struct discord_webhook *p) {
   memset(p, 0, sizeof(struct discord_webhook));
-  /* specs/discord/webhook.json:21:20
+  /* specs/discord/webhook.json:12:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
 
-  /* specs/discord/webhook.json:22:20
+  /* specs/discord/webhook.json:13:20
      '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_webhook_types" }}'
   */
 
-  /* specs/discord/webhook.json:23:20
+  /* specs/discord/webhook.json:14:20
      '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
 
-  /* specs/discord/webhook.json:24:20
+  /* specs/discord/webhook.json:15:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
 
-  /* specs/discord/webhook.json:25:20
+  /* specs/discord/webhook.json:16:20
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }}'
   */
   p->user = discord_user_alloc();
 
-  /* specs/discord/webhook.json:26:20
+  /* specs/discord/webhook.json:17:20
      '{ "name": "name", "type":{ "base":"char", "dec":"[WEBHOOK_NAME_LEN]" }}'
   */
 
-  /* specs/discord/webhook.json:27:20
+  /* specs/discord/webhook.json:18:20
      '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
   */
 
-  /* specs/discord/webhook.json:28:20
+  /* specs/discord/webhook.json:19:20
      '{ "name": "token", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
   */
 
-  /* specs/discord/webhook.json:29:20
+  /* specs/discord/webhook.json:20:20
      '{ "name": "application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
 
@@ -391,3 +372,22 @@ size_t discord_webhook_list_to_json(char *str, size_t len, struct discord_webhoo
   return ntl_to_buf(str, len, (void **)p, NULL, discord_webhook_to_json_v);
 }
 
+
+
+enum discord_webhook_types discord_webhook_types_from_string(char *s){
+  if(strcasecmp("INCOMING", s) == 0) return DISCORD_WEBHOOK_INCOMING;
+  if(strcasecmp("CHANNEL_FOLLOWER", s) == 0) return DISCORD_WEBHOOK_CHANNEL_FOLLOWER;
+  abort();
+}
+char* discord_webhook_types_to_string(enum discord_webhook_types v){
+  if (v == DISCORD_WEBHOOK_INCOMING) return "INCOMING";
+  if (v == DISCORD_WEBHOOK_CHANNEL_FOLLOWER) return "CHANNEL_FOLLOWER";
+
+  return (void*)0;
+}
+bool discord_webhook_types_has(enum discord_webhook_types v, char *s) {
+  enum discord_webhook_types v1 = discord_webhook_types_from_string(s);
+  if (v == v1) return true;
+  if (v == v1) return true;
+  return false;
+}

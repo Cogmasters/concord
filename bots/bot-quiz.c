@@ -128,7 +128,7 @@ close_existing_sessions(
   /* @sqlite simply fetching a database row by the user_id should be enough to get a ongoing session */
 
   /* Check if user already has a session role assigned to */
-  NTL_T(struct discord_guild_role) rls = NULL;
+  NTL_T(struct discord_permissions_role) rls = NULL;
   discord_get_guild_roles(client, guild_id, &rls);
 
   for (size_t i=0; rls[i]; ++i) {
@@ -152,7 +152,7 @@ close_existing_sessions(
     }
   }
 
-  discord_guild_role_list_free(rls);
+  discord_permissions_role_list_free(rls);
 }
 
 u64_snowflake_t
@@ -212,8 +212,8 @@ add_session_role(
   snprintf(text, sizeof(text), \
     "TMP%" PRIu64 "_%" PRIu64, member->user->id, channel_id);
 
-  struct discord_guild_role ret_role;
-  discord_guild_role_init(&ret_role);
+  struct discord_permissions_role ret_role;
+  discord_permissions_role_init(&ret_role);
   struct discord_create_guild_role_params params2 = {
     .name = text
   };

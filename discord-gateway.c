@@ -199,14 +199,14 @@ get_dispatch_event(char event_name[])
 static void
 on_guild_role_create(struct discord_gateway *gw, struct sized_buffer *data)
 {
-  struct discord_guild_role *role = discord_guild_role_alloc();
+  struct discord_permissions_role *role = discord_permissions_role_alloc();
 
   u64_snowflake_t guild_id = 0;
   json_extract(data->start, data->size,
     "(guild_id):s_as_u64"
     "(role):F", 
     &guild_id,
-    &discord_guild_role_from_json, role);
+    &discord_permissions_role_from_json, role);
 
   (*gw->cbs.on_guild_role_create)(
       gw->p_client, 
@@ -214,20 +214,20 @@ on_guild_role_create(struct discord_gateway *gw, struct sized_buffer *data)
       guild_id, 
       role);
 
-  discord_guild_role_free(role);
+  discord_permissions_role_free(role);
 }
 
 static void
 on_guild_role_update(struct discord_gateway *gw, struct sized_buffer *data)
 {
-  struct discord_guild_role *role = discord_guild_role_alloc();
+  struct discord_permissions_role *role = discord_permissions_role_alloc();
 
   u64_snowflake_t guild_id = 0;
   json_extract(data->start, data->size,
     "(guild_id):s_as_u64"
     "(role):F", 
     &guild_id,
-    &discord_guild_role_from_json, role);
+    &discord_permissions_role_from_json, role);
 
   (*gw->cbs.on_guild_role_update)(
       gw->p_client, 
@@ -235,7 +235,7 @@ on_guild_role_update(struct discord_gateway *gw, struct sized_buffer *data)
       guild_id, 
       role);
 
-  discord_guild_role_free(role);
+  discord_permissions_role_free(role);
 }
 
 static void

@@ -1,20 +1,11 @@
 {
   "namespace": ["discord"],
-  "comment": "https://discord.com/developers/docs/resources/webhook#webhook-object-webhook-structure", 
+  "comment": "https://discord.com/developers/docs/resources/webhook", 
   "defs":
   [
     {
-      "title":"Webhook Types",
-      "namespace":["webhook"],
-      "enum":"types",
-      "items":
-      [
-        {"name": "INCOMING", "value":1 },
-        {"name": "CHANNEL_FOLLOWER" }
-      ]
-    },	
-    {
       "title":"Webhook Structure",
+      "comment": "https://discord.com/developers/docs/resources/webhook#webhook-object-webhook-structure", 
       "struct":"webhook",
       "fields":
       [
@@ -27,6 +18,17 @@
         { "name": "avatar", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"},
         { "name": "token", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"},
         { "name": "application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}
+      ]
+    },
+    {
+      "title":"Webhook Types",
+      "comment":"https://discord.com/developers/docs/resources/webhook#webhook-object-webhook-types",
+      "namespace":["webhook"],
+      "enum":"types",
+      "items":
+      [
+        {"name": "INCOMING", "value":1 },
+        {"name": "CHANNEL_FOLLOWER" }
       ]
     }
   ]

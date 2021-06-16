@@ -1,6 +1,6 @@
 {
   "namespace": ["discord"],
-  "comment":"https://discord.com/developers/docs/resources/channel#channel-object-channel-types",
+  "comment":"https://discord.com/developers/docs/resources/channel",
   "defs":
   [
     {
@@ -20,8 +20,8 @@
       ]
     },
     {
-      "comment":"https://discord.com/developers/docs/resources/channel#channel-object-channel-structure",
       "title":"Channel Structure",
+      "comment":"https://discord.com/developers/docs/resources/channel#channel-object-channel-structure",
       "struct":"channel",
       "fields":
       [
@@ -34,9 +34,9 @@
         {"type":{"base":"struct discord_channel_overwrite", "dec":"ntl"}, "name":"permission_overwrites",
          "option":true, "inject_if_not":null }, 
         {"type":{"base":"char", "dec":"[MAX_NAME_LEN]"}, "name":"name", 
-         "option":true, "inject_if_not":""},
+         "option":true, "inject_if_not":null},
         {"type":{"base":"char", "dec":"[MAX_TOPIC_LEN]"}, "name":"topic",
-         "option":true, "inject_if_not":"" },
+         "option":true, "inject_if_not":null },
         {"type":{"base":"bool"}, "name":"nsfw", "option":true, "inject_if_not":false},
         {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"last_message_id",
          "option":true, "inject_if_not":0},
@@ -47,7 +47,7 @@
         {"type":{"base":"struct discord_user", "dec":"ntl"}, "name":"recipients",
          "option":true, "inject_if_not":null},
         {"type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}, "name":"icon",
-         "option":true, "inject_if_not":""},
+         "option":true, "inject_if_not":null},
         {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"owner_id",
          "option":true, "inject_if_not":0},
         {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"application_id",
@@ -58,7 +58,365 @@
          "option":true, "inject_if_not":0},
         {"type":{"base":"struct discord_message", "dec":"ntl"}, "name":"messages"}
       ]
+    },
+    {
+      "title":"Message Sticker Format Types",
+      "comment":"https://discord.com/developers/docs/resources/channel#message-object-message-sticker-format-types",
+      "namespace":["message", "sticker"], 
+      "enum":"format_types",
+      "items":
+      [
+        { "name": "PNG", "value":1},
+        { "name": "APNG", "value":2},
+        { "name": "LOTTIE", "value":3}
+      ]
+    },
+    {
+      "title":"Message Sticker Structure",
+      "comment":"https://discord.com/developers/docs/resources/channel#message-object-message-sticker-structure",
+      "namespace":["message"],
+      "struct":"sticker",
+      "fields": [
+        {"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}},
+        {"name":"pack_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}},
+        {"name":"name", "type":{"base":"char", "dec":"*"}},
+        {"name":"description", "type":{"base":"char", "dec":"*"}},
+        {"name":"tags", "type":{"base":"char", "dec":"*"}, "option":true, "inject_of_not":null},
+        {"name":"asset","type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}},
+        {"name":"preview_asset", "type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}, 
+         "option":true, "inject_if_not":null},
+        {"name":"type", "type":{"base":"int", "int_alias":"enum discord_message_sticker_format_types"}}
+      ]
+    },
+    {
+      "title":"Message Flags",
+      "comment":"https://discord.com/developers/docs/resources/channel#message-object-message-flags",
+      "namespace":["message"],
+      "enum":"flags",
+      "items":[
+        {"name":"CROSSPOSTED", "value":1, "comment":"1<<0"},
+        {"name":"IS_CROSSPOST", "value":2, "comment":"1<<1"},
+        {"name":"SUPRESS_EMBEDS", "value":4, "comment":"1<<2"},
+        {"name":"SOURCE_MESSAGE_DELETED", "value":8, "comment":"1<<3"},
+        {"name":"URGENT", "value":16, "comment":"1<<4"}
+      ]
+    },
+    {
+      "title":"Message Reference Structure",
+      "comment":"https://discord.com/developers/docs/resources/channel#message-object-message-reference-structure",
+      "namespace":["message"],
+      "struct":"reference",
+      "fields": [
+        {"name":"message_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "inject_if_not":0},
+        {"name":"channel_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "inject_if_not":0},
+        {"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "inject_if_not":0},
+        {"name":"fail_if_not_exists", "type":{"base":"bool"}, "option":true, "inject_if_not":false}
+      ]
+    },
+    {
+      "title":"Message Application Structure",
+      "comment":"https://discord.com/developers/docs/resources/channel#message-object-message-application-structure",
+      "namespace":["message"],
+      "struct":"application",
+      "fields": [
+        {"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}},
+        {"name":"cover_image", "type":{"base":"char", "dec":"*"}, "option":true, "inject_if_not":null},
+        {"name":"description", "type":{"base":"char", "dec":"*"}},
+        {"name":"icon", "type":{"base":"char", "dec":"*"}, "inject_if_not":null},
+        {"name":"name", "type":{"base":"char", "dec":"*"}}
+      ]
+    },
+    {
+      "title":"Message Activity Types",
+      "comment":"https://discord.com/developers/docs/resources/channel#message-object-message-activity-types",
+      "namespace":["message","activity"],
+      "enum":"types",
+      "items": [
+        {"name":"JOIN", "value":1},
+        {"name":"SPECTATE", "value":2},
+        {"name":"LISTEN", "value":3},
+        {"name":"JOIN_REQUEST", "value":5}
+      ]
+    },
+    {
+      "title":"Message Activity Structure",
+      "comment":"https://discord.com/developers/docs/resources/channel#message-object-message-activity-structure",
+      "namespace":["message"],
+      "struct":"activity",
+      "fields": [
+        {"name":"type", "type":{"base":"int", "int_alias":"enum discord_message_activity_types"}},
+        {"name":"party_id", "type":{"base":"char", "dec":"*"},
+         "option":true, "inject_if_not":null}
+      ]
+    },
+    {
+      "title":"Message Types",
+      "comment":"https://discord.com/developers/docs/resources/channel#message-object-message-types",
+      "namespace":["message"],
+      "enum":"types",
+      "items": [
+        {"name":"DEFAULT", "value":0},
+        {"name":"RECIPIENT_ADD", "value":1},
+        {"name":"RECIPIENT_REMOVE", "value":3},
+        {"name":"CALL", "value":5},
+        {"name":"CHANNEL_NAME_CHANGE", "value":5},
+        {"name":"CHANNEL_ICON_CHANGE", "value":5},
+        {"name":"CHANNEL_PINNED_MESSAGE","value":5},
+        {"name":"GUILD_MEMBER_JOIN","value":5},
+        {"name":"USER_PREMIUM_GUILD_SUBSCRIPTION","value":5},
+        {"name":"USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_1","value":9},
+        {"name":"USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_2","value":10},
+        {"name":"USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_3","value":11},
+        {"name":"CHANNEL_FOLLOW_ADD","value":12},
+        {"name":"GUILD_DISCOVERY_DISQUALIFIED","value":14},
+        {"name":"GUILD_DISCOVERY_REQUALIFIED","value":15},
+        {"name":"REPLY"   ,"value":19}, 
+        {"name":"APPLICATION_COMMAND","value":20}
+      ]
+    },
+    {
+      "title":"Message Structure",
+      "comment":"https://discord.com/developers/docs/resources/channel#message-object",
+      "disable_methods": ["from_json"],
+      "struct":"message",
+      "fields": [
+         {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"id"},
+         {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"channel_id"},
+         {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"guild_id", "option":true, "inject_if_not":0},
+         {"type":{"base":"struct discord_user", "dec":"*"}, "name":"author"},
+         {"type":{"base":"struct discord_guild_member", "dec":"*"}, "name":"member", "option":true, "comment":"partial guild member object"},
+         {"type":{"base":"char", "dec":"*"}, "name":"content"},
+         {"type":{"base":"char", "dec":"*", "converter":"iso8601"},"name":"timestamp"},
+         {"type":{"base":"char", "dec":"*", "converter":"iso8601"}, "name":"edited_timestamp", "inject_if_not":0},
+         {"type":{"base":"bool"}, "name":"tts"},
+         {"type":{"base":"bool"}, "name":"mention_everyone"},
+         {"type":{"base":"struct discord_user", "dec":"ntl"}, "name":"mentions", "comment":"array of user objects, with an additional partial member field"},
+         {"type":{"base":"ja_u64", "dec":"ntl"}, "name":"mention_roles", "comment":"array of role object ids"},
+         {"type":{"base":"struct discord_channel_mention", "dec":"ntl"}, "name":"mention_channels", "option":true },
+         {"type":{"base":"struct discord_channel_attachment", "dec":"ntl"}, "name":"attachments"},
+         {"type":{"base":"struct discord_embed", "dec":"ntl"}, "name":"embeds"},
+         {"type":{"base":"struct discord_channel_reaction","dec":"ntl"}, "name":"reactions", "option":true },
+         {"type":{"base":"char", "dec":"*"}, "name":"nonce", "comment":"integer or string", "option":true },
+         {"type":{"base":"bool"}, "name":"pinned"},
+         {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"webhook_id",
+          "option":true },
+         {"type":{"base":"int", "int_alias":"enum discord_message_types"}, "name":"type"},
+         {"type":{"base":"struct discord_message_activity", "dec":"*"}, "name":"activity", "option":true, "inject_if_not":null },
+         {"type":{"base":"struct discord_message_application", "dec":"ntl"}, "name":"application", "option":true, "inject_if_not":null },
+         {"type":{"base":"struct discord_message_reference", "dec":"*"}, "name":"message_reference", "option":true, "inject_if_not":null },
+         {"type":{"base":"int", "int_alias":"enum discord_message_flags"}, "name":"flags", "option":true, "inject_if_not":0 },
+         {"type":{"base":"struct discord_message_sticker", "dec":"ntl"}, "name":"stickers", "option":true, "inject_if_not":null, "comment":"array of sticker objects"},
+         {"type":{"base":"struct discord_message", "dec":"*"}, "name":"referenced_message", "lazy_init":true, "option":true", "inject_if_not":null,
+          "comment":"this will cause recursive allocation if allocating as the parent"}
+      ]
+    },
+    {
+      "title":"Followed Channel Structure",
+      "comment":"https://discord.com/developers/docs/resources/channel#followed-channel-object-followed-channel-structure",
+      "namespace":["channel"], 
+      "struct":"followed_channel",
+      "fields":
+      [
+        { "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
+        { "name": "webhook_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}
+      ]
+    },
+    {
+      "title":"Reaction Structure",
+      "comment": "https://discord.com/developers/docs/resources/channel#reaction-object-reaction-structure",
+      "namespace":["channel"], 
+      "struct":"reaction",
+      "fields":
+      [
+        { "name": "count", "type":{ "base":"int" }},
+        { "name": "me", "type":{ "base":"bool" }},
+        { "name": "emoji", "type":{ "base":"struct discord_emoji", "dec":"*" }, "comment":"partial emoji object"}
+      ]
+    },
+    {
+      "title":"Overwrite Structure",
+      "namespace":["channel"],
+      "disable_methods":["from_json", "to_json"],
+      "struct":"overwrite",
+      "fields":
+      [
+        { "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
+        { "name": "type", "type":{ "base":"int" }},
+        { "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"}, 
+          "comment":"permission bit set"},
+        { "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"}, 
+          "comment":"permission bit set"}
+      ]
+    },
+    {
+      "title":"Thread Metadata Object",
+      "comment": "https://discord.com/developers/docs/resources/channel#thread-metadata-object",
+      "namespace":["thread"], 
+      "struct":"metadata",
+      "fields":
+      [
+        { "name": "archived", "type":{ "base":"bool" }},
+        { "name": "archiver_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
+        { "name": "auto_archive_duration", "type":{ "base":"int" }},
+        { "name": "archive_timestamp", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }},
+        { "name": "locked", "type":{ "base":"bool" }}
+      ]
+    },
+    {
+      "title":"Thread Member Object",
+      "comment": "https://discord.com/developers/docs/resources/channel#thread-member-object",
+      "namespace":["thread"], 
+      "struct":"member",
+      "fields":
+      [
+        { "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
+        { "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
+        { "name": "join_timestamp", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }},
+        { "name": "flags", "type":{ "base":"int" }}
+      ]
+    },
+    {
+      "title":"Attachment Strcture",
+      "comment":"https://discord.com/developers/docs/resources/channel#attachment-object",
+      "namespace":["channel"], 
+      "struct":"attachment",
+      "fields":
+      [
+        { "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
+        { "name": "filename", "type":{ "base":"char", "dec":"[256]" }},
+        { "name": "size", "type":{ "base":"int" }},
+        { "name": "url", "type":{ "base":"char", "dec":"*" }},
+        { "name": "proxy_url", "type":{ "base":"char", "dec":"*" }},
+        { "name": "height", "type":{ "base":"int", "nullable":true }},
+        { "name": "width", "type":{ "base":"int", "nullable":true }}
+      ]
+    },
+    {
+      "title":"Channel Mention Structure",
+      "comment":"https://discord.com/developers/docs/resources/channel#channel-mention-object-channel-mention-structure",
+      "namespace":["channel"], 
+      "struct":"mention",
+      "fields":
+      [
+        { "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
+        { "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
+        { "name": "type", "type":{ "base":"int", "int_alias":"enum discord_channel_types" }},
+        { "name": "name", "type":{ "base":"char", "dec":"*" }}
+      ]
+    },
+    {
+      "title":"Allowed Mentions Structure",
+      "comment": "https://discord.com/developers/docs/resources/channel#allowed-mentions-object-allowed-mentions-structure",
+      "namespace":["channel"], 
+      "struct":"allowed_mentions",
+      "fields":
+      [
+        { "name": "parse", "type":{ "base":"ja_str", "dec":"ntl" }},
+        { "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"list of snowflakes"},
+        { "name": "users", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"list of snowflakes"},
+        { "name": "replied_user", "type":{ "base":"bool" }}
+      ]
+    },
+    {
+      "title":"Embed Structure",
+      "comment":"https://discord.com/developers/docs/resources/channel#embed-object-embed-structure",
+      "struct":"embed",
+      "fields":
+      [
+        { "name": "title", "type":{ "base":"char", "dec":"[EMBED_TITLE_LEN]" }, "option":true, "inject_if_not":null},
+        { "name": "type", "type":{ "base":"char", "dec":"[32]" }, "option":true, "inject_if_not":null},
+        { "name": "description", "type":{ "base":"char", "dec":"[EMBED_DESCRIPTION_LEN]"}, "option":true, "inject_if_not":null},
+        { "name": "url", "type":{ "base":"char", "dec":"*"}, "option":true, "inject_if_not":null},
+        { "name": "timestamp", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }, "option":true, "inject_if_not":0},
+        { "name": "color", "type":{ "base":"int" }, "option":true, "inject_if_not":0},
+        { "name": "footer", "type":{ "base":"struct discord_embed_footer", "dec":"*"}, "option":true, "inject_if_not":null},
+        { "name": "image", "type":{ "base":"struct discord_embed_image", "dec":"*"}, "inject_if_not":null},
+        { "name": "thumbnail", "type":{ "base":"struct discord_embed_thumbnail", "dec":"*"}, "inject_if_not":null},
+        { "name": "video", "type":{ "base":"struct discord_embed_video", "dec":"*"}, "inject_if_not":null},
+        { "name": "provider", "type":{ "base":"struct discord_embed_provider", "dec":"*"}, "inject_if_not":null},
+        { "name": "author", "type":{ "base":"struct discord_embed_author", "dec":"*"}, "inject_if_not":null},
+        { "name": "fields", "type":{ "base":"struct discord_embed_field", "dec":"ntl"}, "option":true, "inject_if_not":null}
+      ]
+    },
+    {
+      "title":"Embed Thumbnail Structure",
+      "comment": "https://discord.com/developers/docs/resources/channel#embed-object-embed-thumbnail-structure",
+      "namespace":["embed"],
+      "struct":"thumbnail",
+      "fields": [
+        { "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null},
+        { "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null},
+        { "name": "height", "type":{ "base":"int" }, "inject_if_not":0},
+        { "name": "width", "type":{ "base":"int" }, "inject_if_not":0}
+      ]
+    },
+    {
+      "title":"Embed Video Structure",
+      "comment":"https://discord.com/developers/docs/resources/channel#embed-object-embed-video-structure",
+      "namespace":["embed"],
+      "struct":"video",
+      "fields": [
+        { "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null},
+        { "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null},
+        { "name": "height", "type":{ "base":"int" }, "inject_if_not":0},
+        { "name": "width", "type":{ "base":"int" }, "inject_if_not":0}
+      ]
+    },
+    {
+      "title":"Embed Image Structure",
+      "comment": "https://discord.com/developers/docs/resources/channel#embed-object-embed-image-structure",
+      "namespace":["embed"],
+      "struct":"image",
+      "fields": [
+        { "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null},
+        { "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null},
+        { "name": "height", "type":{ "base":"int" }, "inject_if_not":0},
+        { "name": "width", "type":{ "base":"int" }, "inject_if_not":0}
+      ]
+    },
+    {
+      "title":"Embed Provider Structure",
+      "comment": "https://discord.com/developers/docs/resources/channel#embed-object-embed-provider-structure",
+      "namespace":["embed"],
+      "struct":"provider",
+      "fields": [
+        { "name": "name", "type":{"base":"char", "dec":"*"}, "inject_if_not":null},
+        { "name": "url", "type":{"base":"char", "dec":"*"}, "inject_if_not":null}
+      ]
+    },
+    {
+      "title":"Embed Author Structure",
+      "comment": "https://discord.com/developers/docs/resources/channel#embed-object-embed-author-structure",
+      "namespace":["embed"],
+      "struct":"author",
+      "fields": [
+        { "name": "name", "type":{ "base":"char", "dec":"[EMBED_AUTHOR_NAME_LEN]" }, "inject_if_not":null},
+        { "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null},
+        { "name": "icon_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null},
+        { "name": "proxy_icon_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}
+      ]
+    },
+    {
+      "title":"Embed Footer Structure",
+      "comment": "https://discord.com/developers/docs/resources/channel#embed-object-embed-footer-structure",
+      "namespace":["embed"],
+      "struct":"footer",
+      "fields": [
+        { "name": "text", "type": {"base":"char", "dec":"[EMBED_FOOTER_TEXT_LEN]"}, "inject_if_not":null},
+        { "name": "icon_url", "type": {"base":"char", "dec":"*" }, "option":true, "inject_if_not":null},
+        { "name": "proxy_icon_url", "type": {"base":"char", "dec":"*"}, "option":true, "inject_if_not":null}
+      ]
+    },
+    {
+      "title":"Embed Field Structure",
+      "comment": "https://discord.com/developers/docs/resources/channel#embed-object-embed-field-structure",
+      "namespace":["embed"],
+      "struct":"field",
+      "fields": [
+        { "name": "name", "type": { "base":"char", "dec":"[EMBED_FIELD_NAME_LEN]" }, "inject_if_not":null},
+        { "name": "value", "type": { "base":"char", "dec":"[EMBED_FIELD_VALUE_LEN]" }, "inject_if_not":null},
+        { "name": "Inline", "json_key":"inline", "type": { "base":"bool" }, "option":true}
+      ]
     }
   ]
 }
-

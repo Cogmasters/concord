@@ -1,6 +1,6 @@
 /* This file is generated from specs/discord/invite.json, Please don't edit it. */
 /*
-https://discord.com/developers/docs/resources/invite#invite-object
+https://discord.com/developers/docs/resources/invite
 */
 
 

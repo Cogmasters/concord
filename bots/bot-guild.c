@@ -17,7 +17,7 @@ void on_log_role_create(
   struct discord *client,
   const struct discord_user *bot,
   const u64_snowflake_t guild_id,
-  const struct discord_guild_role *role)
+  const struct discord_permissions_role *role)
 {
   log_warn("Role (%"PRIu64") created", role->id);
 }
@@ -26,7 +26,7 @@ void on_log_role_update(
   struct discord *client,
   const struct discord_user *bot,
   const u64_snowflake_t guild_id,
-  const struct discord_guild_role *role)
+  const struct discord_permissions_role *role)
 {
   log_warn("Role (%"PRIu64") updated", role->id);
 }
@@ -128,8 +128,8 @@ void on_role_create(
     sprintf(text, "Couldn't create role `%s`", name);
   }
   else {
-    struct discord_guild_role role;
-    discord_guild_role_init(&role);
+    struct discord_permissions_role role;
+    discord_permissions_role_init(&role);
 
     struct discord_create_guild_role_params params = { .name = name };
     if (ORCA_OK == discord_create_guild_role(client, msg->guild_id, &params, &role))
@@ -137,7 +137,7 @@ void on_role_create(
     else
       sprintf(text, "Couldn't create role `%s`", name);
 
-    discord_guild_role_cleanup(&role);
+    discord_permissions_role_cleanup(&role);
   }
 
   struct discord_create_message_params params = { .content = text };
@@ -226,7 +226,7 @@ void on_role_list(
 {
   if (msg->author->bot) return;
 
-  NTL_T(struct discord_guild_role) roles=NULL;
+  NTL_T(struct discord_permissions_role) roles=NULL;
   discord_get_guild_roles(client, msg->guild_id, &roles);
 
   char text[MAX_MESSAGE_LEN];
@@ -252,7 +252,7 @@ void on_role_list(
         continue;
       }
     }
-    discord_guild_role_list_free(roles);
+    discord_permissions_role_list_free(roles);
   }
 
   struct discord_create_message_params params = { .content = text };

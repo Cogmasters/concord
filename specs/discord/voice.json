@@ -1,9 +1,10 @@
 {
   "namespace": ["discord", "voice"],
+  "comment":"https://discord.com/developers/docs/resources/voice",
   "defs":
   [
     {
-      "title":"Voice State Object",
+      "title":"Voice State Structure",
       "comment": "https://discord.com/developers/docs/resources/voice#voice-state-object-voice-state-structure",
       "struct":"state",
       "fields":
@@ -23,7 +24,7 @@
       ]
     },
     {
-      "title":"Voice Region Object",
+      "title":"Voice Region Structure",
       "comment":"https://discord.com/developers/docs/resources/voice#voice-region-object-voice-region-structure",
       "struct":"region",
       "fields":

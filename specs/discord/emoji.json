@@ -1,16 +1,17 @@
 {
   "namespace": ["discord"],
-  "comment": "https://discord.com/developers/docs/resources/emoji#emoji-object-emoji-structure",
+  "comment": "https://discord.com/developers/docs/resources/emoji",
   "defs":
   [
     {
       "title":"Emoji Structure",
+      "comment": "https://discord.com/developers/docs/resources/emoji#emoji-object-emoji-structure",
       "struct":"emoji",
       "fields":
       [
         { "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}},
-        { "name": "name", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]"}},
-        { "name": "roles", "type":{ "base":"struct discord_guild_role", "dec":"ntl"}, "option":true,
+        { "name": "name", "type":{ "base":"char", "dec":"*"}},
+        { "name": "roles", "type":{ "base":"struct discord_permissions_role", "dec":"ntl"}, "option":true,
           "todo":true },
         { "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }, "option":true },
         { "name": "require_colons", "type":{ "base":"bool" }, "option":true},

@@ -1,0 +1,20 @@
+{
+  "namespace": ["discord"],
+  "comment": "https://discord.com/developers/docs/resources/invite",
+  "defs":
+  [
+    {
+      "title":"Get Invite",
+      "comment":"https://discord.com/developers/docs/resources/invite#get-invite-query-string-params",
+      "namespace": ["get_invite"],
+      "struct":"params",
+      "fields":
+      [
+        { "name": "with_counts", "type":{ "base":"bool" }, "comment":"whether the invite should contain approximate member counts"},
+        { "name": "with_expiration", "type":{ "base":"bool" }, "comment":"whether the invite should contain the expiration date"}
+      ]
+    }
+  ]
+}
+
+

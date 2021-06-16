@@ -1,0 +1,30 @@
+{
+  "namespace": ["discord"],
+  "comment": "",
+  "defs":
+  [
+    {
+      "title":"Create Guild Emoji",
+      "comment":"https://discord.com/developers/docs/resources/emoji#create-guild-emoji",
+      "namespace": ["create_guild_emoji"],
+      "struct":"params",
+      "fields":
+      [
+        { "name": "name", "type":{ "base":"char", "dec":"*"}},
+        { "name": "image", "type":{ "base":"char", "dec":"*"}, "comment":"Base64 Encoded Image Data"},
+        { "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"roles for which this emoji will be whitelisted"}
+      ]
+    },
+    {
+      "title":"Modify Guild Emoji",
+      "comment":"https://discord.com/developers/docs/resources/emoji#modify-guild-emoji",
+      "namespace": ["modify_guild_emoji"],
+      "struct":"params",
+      "fields":
+      [
+        { "name": "name", "type":{ "base":"char", "dec":"*"}},
+        { "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"roles for which this emoji will be whitelisted"}
+      ]
+    }
+  ]
+}

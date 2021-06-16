@@ -1,0 +1,88 @@
+{
+  "namespace": ["discord"],
+  "comment": "https://discord.com/developers/docs/resources/webhook",
+  "defs":
+  [
+    {
+      "title":"Create Webhook",
+      "comment":"https://discord.com/developers/docs/resources/webhook#create-webhook",
+      "namespace": ["create_webhook"],
+      "struct":"params",
+      "fields":
+      [
+        { "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"name of the webhook(1-80) chars" },
+        { "name": "avatar", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"base64 image for the default webhook avatar" }
+      ]
+    },
+    {
+      "title":"Modify Webhook",
+      "comment":"https://discord.com/developers/docs/resources/webhook#modify-webhook",
+      "namespace": ["modify_webhook"],
+      "struct":"params",
+      "fields":
+      [
+        { "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"name of the webhook(1-80) chars" },
+        { "name": "avatar", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"base64 image for the default webhook avatar" },
+        { "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"the new channel id this webhook should be moved to" }
+      ]
+    },
+    {
+      "title":"Execute Webhook",
+      "comment":"https://discord.com/developers/docs/resources/webhook#execute-webhook",
+      "namespace": ["execute_webhook"],
+      "struct":"params",
+      "fields":
+      [
+        
+        { "name": "wait", "type":{ "base":"bool"}, "loc":"query",
+          "comment":"	waits for server confirmation of message send before response, and returns the created message body (defaults to false; when false a message that is not saved does not return an error)",
+          "required":"one of content, file, embeds"
+        },
+        { "name": "content", "type":{ "base":"char", "dec":"*" }, 
+          "comment":"the message contents (up to 2000 characters)",
+          "required":false
+        },
+        { "name": "username", "type":{ "base":"char", "dec":"*" }, 
+          "comment":"override the default username of the webhook",
+          "required":false
+        },
+        { "name": "avatar_url", "type":{ "base":"char", "dec":"*" }, 
+          "comment":"override the default avatar of the webhook" },
+        { "name": "tts", "type":{ "base":"bool" }, 
+          "comment":"true if this is a TTS message",
+          "required":false
+        },
+        { "name": "file", "type":{ "base":"char", "dec":"*" }, 
+          "comment":"the contents of the file being sent",
+          "required":"one of content, file, embeds"
+        },
+        { "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"*" }, 
+          "comment":"embedded rich content",
+          "required":"one of content, file, embeds"
+        },
+        { "name": "payload_json", "type":{ "base":"char", "dec":"*" }, 
+          "comment":"See message create",
+          "required":"multipart/form-data only"
+        },
+        { "name": "allowed_mentions", 
+          "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" },
+          "comment":"allowed mentions for the message",
+          "required":"false"
+        }
+      ]
+    },
+    {
+      "title":"Edit Webhook Message",
+      "comment":"https://discord.com/developers/docs/resources/webhook#edit-webhook-message",
+      "namespace": ["edit_webhook_message"],
+      "struct":"params",
+      "fields":
+      [
+        { "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"name of the webhook(1-2000) chars" },
+        { "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, "comment":"array of up to 10 embeds objects" },
+        { "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message" }
+      ]
+    }
+  ]
+}
+

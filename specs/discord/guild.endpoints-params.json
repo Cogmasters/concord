@@ -1,0 +1,188 @@
+{
+  "namespace": ["discord"],
+  "comment": "https://discord.com/developers/docs/resources/guild",
+  "defs":
+  [
+    {
+      "comment":"https://discord.com/developers/docs/resources/guild#create-guild",
+      "namespace": ["create_guild"],
+      "struct":"params",
+      "fields":
+      [
+        { "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"name of the guild (2-100) characters"},
+        { "name": "region", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"voice region id" },
+        { "name": "icon", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"base64 128x1128 image for the guild icon"},
+        { "name": "verification_level", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"verification level"},
+        { "name": "default_message_notifications", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"default message notification level"},
+        { "name": "explicit_content_filter", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"explicit content filter level"},
+        { "name": "roles", "type":{ "base":"int" }, "todo":true, "comment":"new guild roles" },
+        { "name": "channels", "type":{ "base":"struct discord_channel", "dec":"ntl" }, "option":true, "inject_if_not":null, "comment":"array of partial channel objects"},
+        { "name": "afk_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"id for afk channel"},
+        { "name": "afk_timeout", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"afk timeout in seconds"},
+        { "name": "system_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"the id of the channel where guild notices such as welcome messages and boost events are posted"}
+      ]
+    },
+    {
+      "title":"Modify Guild",
+      "comment":"https://discord.com/developers/docs/resources/guild#modify-guild-json-params",
+      "namespace": ["modify_guild"],
+      "struct":"params",
+      "fields":
+      [
+        { "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"name of the guild (2-100) characters"},
+        { "name": "region", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"voice region id" },
+        { "name": "verification_level", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"verification level"},
+        { "name": "default_message_notifications", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"default message notification level"},
+        { "name": "explicit_content_filter", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"explicit content filter level"},
+        { "name": "afk_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"id for afk channel"},
+        { "name": "afk_timeout", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"afk timeout in seconds"},
+        { "name": "icon", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"base64 128x1128 image for the guild icon"},
+        { "name": "owner_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"user id to transfer guild ownership to (must be owner)"},
+        { "name": "splash", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"base64 16:9 png/jpeg image for the guild splash (when the server has the INVITE_SPLASH feature"},
+        { "name": "discovery_splash", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"base64 16:9 png/jpeg image for the guild discovery splash (when the server has the DISCOVERABLE feature)"},
+        { "name": "banner", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"	base64 16:9 png/jpeg image for the guild banner (when the server has the BANNER feature)"},
+        { "name": "system_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"	the id of the channel where guild notices such as welcome messages and boost events are posted"},
+        { "name": "system_channel_flags", "type":{ "base":"int", "int_alias":"enum discord_guild_system_channel_flags" }, "option":true, "inject_if_not":0, "comment":"system channel flags"},
+        { "name": "rules_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"the id of the channel where Community guilds display rules and/or guidelines"},
+        { "name": "public_updates_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"the id of the channel where admins and moderators of Community guilds receive notices from Discord"},
+        { "name": "preferred_locale", "type":{ "base":"char", "dec":"*" }, "comment":"the preferred locale of a Community guild used in server discovery and notices from Discord; defaults to \"en-US\""},
+        {"name":"features", "type": { "base":"ja_str", "dec":"ntl" }, "todo":true", "comment":"array of guild feature strings"},
+        { "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"the description for the guild, if the guild is discoverable"}
+      ]
+    },
+    {
+      "title":"Create Guild Channel",
+      "comment":"https://discord.com/developers/docs/resources/guild#create-guild-channel",
+      "namespace": ["create_guild_channel"],
+      "struct":"params",
+      "fields":
+      [
+        { "name": "name", "type":{ "base":"char", "dec":"*" }},
+        { "name": "type", "type":{ "base":"int" }},
+        { "name": "topic", "type":{ "base":"char", "dec":"*" }},
+        { "name": "bitrate", "type":{ "base":"int" }, "inject_if_not":0},
+        { "name": "user_limit", "type":{ "base":"int" }, "inject_if_not":0},
+        { "name": "rate_limit_per_user", "type":{ "base":"int" }, "inject_if_not":0},
+        { "name": "position", "type":{ "base":"int" } },
+        { "name": "permission_overwrites", "type":{ "base":"struct discord_channel_overwrite", "dec":"ntl" }, "inject_if_not":null},
+        { "name": "parent_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0},
+        { "name": "nsfw", "type":{ "base":"bool" }}
+      ]
+    },
+    {
+      "title":"Modify Guild Channel Positions",
+      "comment":"https://discord.com/developers/docs/resources/guild#modify-guild-channel-positions-json-params",
+      "namespace": ["modify_guild_channel_positions"],
+      "struct":"params",
+      "fields":
+      [
+        { "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"channel id"},
+        { "name": "position", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"sorting position of the channel"},
+        { "name": "lock_permissions", "type":{ "base":"bool" }, "option":true, "inject_if_not":false, "comment":"syncs the permission overwrites with the new parent, if moving to a new category"},
+        { "name": "parent_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"the new parent ID for the channel that is moved"}
+      ]
+    },
+    {
+      "title":"Search Guild Members",
+      "comment":"https://discord.com/developers/docs/resources/guild#search-guild-members-query-string-params",
+      "namespace": ["search_guild_members"],
+      "struct":"params",
+      "fields":
+      [
+        { "name": "query", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment": "Query string to match username(s) and nickname(s) against." },
+        { "name": "limit", "type":{ "base":"int" }, "inject_if_not":0, "comment": "max number of members to return (1-1000)"}
+      ]
+    },
+    {
+      "title":"Add Guild Member",
+      "comment":"https://discord.com/developers/docs/resources/guild#add-guild-member-json-params",
+      "namespace": ["add_guild_member"],
+      "struct":"params",
+      "fields":
+      [
+        { "name": "access_token", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null},
+        { "name": "nick", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null},
+        { "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "inject_if_not":null},
+        { "name": "mute", "type":{ "base":"bool" }, "inject_if_not":false},
+        { "name": "deaf", "type":{ "base":"bool" }, "inject_if_not":false}
+      ]
+    },
+    {
+      "title":"Modify Guild Member",
+      "comment":"https://discord.com/developers/docs/resources/guild#modify-guild-member",
+      "namespace": ["modify_guild_member"],
+      "struct":"params",
+      "fields":
+      [
+        { "name": "nick", "type":{ "base":"char", "dec":"*" }},
+        { "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "inject_if_not":null},
+        { "name": "mute", "type":{ "base":"bool" }, "inject_if_not":false},
+        { "name": "deaf", "type":{ "base":"bool" }, "inject_if_not":false},
+        { "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0}
+      ]
+    },
+    {
+      "title":"Create Guild Role",
+      "comment":"https://discord.com/developers/docs/resources/guild#create-guild-role",
+      "namespace": ["create_guild_role"],
+      "struct":"params",
+      "fields":
+      [
+        { "name": "name", "type":{ "base":"char", "dec":"*" }},
+        { "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags" }, "inject_if_not":0},
+        { "name": "color", "type":{ "base":"int" }, "inject_if_not":0},
+        { "name": "hoist", "type":{ "base":"bool" }, "inject_if_not":false},
+        { "name": "mentionable", "type":{ "base":"bool" }, "inject_if_not":false}
+      ]
+    },
+    {
+      "title":"Modify Guild Role Positions",
+      "comment":"https://discord.com/developers/docs/resources/guild#modify-guild-role-positions-json-params",
+      "namespace": ["modify_guild_role_positions"],
+      "struct":"params",
+      "fields":
+      [
+        { "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"role"},
+        { "name": "position", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"sorting position of the role"}
+      ]
+    },
+    {
+      "title":"Modify Guild Role",
+      "comment":"https://discord.com/developers/docs/resources/guild#modify-guild-role-json-params",
+      "namespace": ["modify_guild_role"],
+      "struct":"params",
+      "fields":
+      [
+        { "name": "name", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"name of the role"},
+        { "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags" }, "option":true, "inject_if_not":0, "comment":"bitwise value of the enabled/disabled permissions"},
+        { "name": "color", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"RGB color value"},
+        { "name": "hoist", "type":{ "base":"bool" }, "option":true, "inject_if_not":false, "comment":"whether the role should be displayed separately in the sidebar"},
+        { "name": "mentionable", "type":{ "base":"bool" }, "option":true, "inject_if_not":false, "comment":"whether the role should be mentionable"}
+      ]
+    },
+    {
+      "title":"Get Guild Prune Count",
+      "comment":"https://discord.com/developers/docs/resources/guild#get-guild-prune-count-query-string-params",
+      "namespace": ["get_guild_prune_count"],
+      "struct":"params",
+      "fields":
+      [
+        { "name": "days", "type":{ "base":"int" }, "inject_if_not":0},
+        { "name": "include_roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "inject_if_not":null}
+      ]
+    },
+    {
+      "title":"Begin Guild Prune",
+      "comment":"https://discord.com/developers/docs/resources/guild#begin-guild-prune-json-params",
+      "namespace": ["begin_guild_prune"],
+      "struct":"params",
+      "fields":
+      [
+        { "name": "days", "type":{ "base":"int" }, "inject_if_not":0},
+        { "name": "compute_prune_count", "type":{ "base":"bool" }, "inject_if_not":false},
+        { "name": "include_roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "inject_if_not":null},
+        { "name": "reason", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}
+      ]
+    }
+  ]
+}

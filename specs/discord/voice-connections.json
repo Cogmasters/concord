@@ -1,5 +1,6 @@
 {
   "namespace": ["discord", "voice"],
+  "comment":"https://discord.com/developers/docs/topics/voice-connections",
   "defs":
   [
     {

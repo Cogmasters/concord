@@ -1,6 +1,6 @@
 /* This file is generated from specs/discord/voice-connections.json, Please don't edit it. */
 /*
-(null)
+https://discord.com/developers/docs/topics/voice-connections
 */
 
 

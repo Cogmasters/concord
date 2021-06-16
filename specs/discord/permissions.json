@@ -42,6 +42,35 @@
         {"name": "MANAGE_WEBHOOKS", "value":0x20000000, "comment":"Allows management and editing of webhooks   T, V"},
         {"name": "MANAGE_EMOJIS", "value":0x40000000, "comment":"Allows management and editing of emojis"}
       ]
+    },
+    {
+      "title":"Role Structure",
+      "comment":"https://discord.com/developers/docs/topics/permissions#role-object-role-structure",
+      "struct":"role",
+      "fields":
+      [
+        { "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
+        { "name": "name", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]" }},
+        { "name": "color", "type":{ "base":"int" }},
+        { "name": "hoist", "type":{ "base":"bool" }},
+        { "name": "position", "type":{ "base":"int" }},
+        { "name": "permissions", "type":{ "base":"char", "dec":"*" }},
+        { "name": "managed", "type":{ "base":"bool" }},
+        { "name": "mentionable", "type":{ "base":"bool" }},
+        { "name": "tags", "type":{"base":"struct discord_permissions_role_tags", "dec":"*"}}
+      ]
+    },
+    {
+      "title":"Role Tags Structure",
+      "comment":"https://discord.com/developers/docs/topics/permissions#role-object-role-tags-structure",
+      "namespace":["role"],
+      "struct":"tags",
+      "fields":
+      [
+        { "name": "bot_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
+        { "name": "integration_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
+        { "name": "premium_subscriber", "type":{ "base":"int" }}
+      ]
     }
   ]
 }

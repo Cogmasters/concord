@@ -1,7 +1,7 @@
 /* This file is generated from specs/discord/invite.json, Please don't edit it. */
 #include "specs.h"
 /*
-https://discord.com/developers/docs/resources/invite#invite-object
+https://discord.com/developers/docs/resources/invite
 */
 
 
