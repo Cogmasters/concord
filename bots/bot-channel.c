@@ -118,32 +118,29 @@ void on_channel_start_thread(
   struct discord_channel *channel = discord_channel_alloc();
 
   char text[MAX_MESSAGE_LEN];
-  {
-    ORCAcode code;
-    char *name = "new_thread";
-    if (msg->message_reference->message_id) {
-      struct discord_start_thread_with_message_params params = { .name = name };
-      code = discord_start_thread_with_message(
-               client, 
-               msg->channel_id, 
-               msg->message_reference->message_id, 
-               &params, 
-               channel);
-    }
-    else {
-      struct discord_start_thread_without_message_params params = { .name = name };
-      code = discord_start_thread_without_message(
-              client, 
-              msg->channel_id, 
-              &params, 
-              channel);
-    }
-
-    if (ORCA_OK == code)
-      sprintf(text, "Created thread-channel <#%"PRIu64">", channel->id);
-    else
-      sprintf(text, "Couldn't create channel.");
+  ORCAcode code;
+  if (msg->message_reference->message_id) {
+    struct discord_start_thread_with_message_params params = { .name = "new_thread" };
+    code = discord_start_thread_with_message(
+             client, 
+             msg->channel_id, 
+             msg->message_reference->message_id, 
+             &params, 
+             channel);
   }
+  else {
+    struct discord_start_thread_without_message_params params = { .name = "new_thread" };
+    code = discord_start_thread_without_message(
+            client, 
+            msg->channel_id, 
+            &params, 
+            channel);
+  }
+
+  if (ORCA_OK == code)
+    sprintf(text, "Created thread-channel <#%"PRIu64">", channel->id);
+  else
+    sprintf(text, "Couldn't create channel.");
 
   struct discord_create_message_params params = { .content = text };
   discord_create_message(client, msg->channel_id, &params, NULL);
