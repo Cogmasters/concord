@@ -67,6 +67,9 @@ ifeq ($(BEARSSL),1)
 else ifeq ($(CC),stensal-c)
 	LIBDISCORD_LDFLAGS += -lcurl-bearssl -lbearssl -static
 	CFLAGS += -DBEARSSL
+else ifeq ($(CC),saiph-c)
+	LIBDISCORD_LDFLAGS += -lcurl-bearssl -lbearssl -static
+	CFLAGS += -DBEARSSL
 	#LIBDISCORD_LDFLAGS += -lcurl-ssl -lssl -lcrypto -lm -static
 else
 	LIBDISCORD_LDFLAGS += $(pkg-config --libs --cflags libcurl) -lcurl -lcrypto -lm
@@ -93,6 +96,8 @@ ifeq ($(DEBUG_JSON),1)
 endif
 
 ifeq ($(CC),stensal-c)
+	CFLAGS += -D_DEFAULT_SOURCE
+else ifeq ($(CC),saiph-c)
 	CFLAGS += -D_DEFAULT_SOURCE
 else
 	CFLAGS += -fPIC -D_XOPEN_SOURCE=700
