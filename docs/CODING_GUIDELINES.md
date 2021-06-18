@@ -1,6 +1,6 @@
 # CODING GUIDELINES
 
-In order to keep the code concise and easy to read, there are a few rules to follow. Feel free to use this coding guidelines outside of this project. (This is still a work in progress)
+In order to keep the code concise and easy to read, there are a few rules to follow. Feel free to use this coding guidelines outside of this project.
 
 ## Line Width
 
@@ -13,13 +13,13 @@ Overall we will stick with two space identation. But if readability becomes an i
 ```c
 for (int i=0; i < n; ++i) {
   if (something) {
-    //do something
+    ...
   }
   else if (something_else) {
-    //do something else
+    ...
   } 
   else {
-    //this is it
+    ...
   }
 }
 ```
@@ -38,7 +38,7 @@ if (IS_PAIR(a)) {
   if (IS_BASE_TWO(a)) {
     if (a > 100) {
       for (int i=0; i < a; ++i) {
-        //do something
+        ...
       }
     }
   }
@@ -53,7 +53,7 @@ if (!IS_BASE_TWO(a)) return;
 if (a <= 100) return;
 
 for (int i=0; i < a; ++i) {
-  //do something
+  ...
 }
 ```
 
@@ -68,19 +68,19 @@ Try to keep your switch statement similar to the following format:
 ```c
   switch (a) {
   case 0:
-      //do something
+      ...
       break;
   case 1:
-      //do another thing
+      ...
       break;
   case 2:
-      //do something else
+      ...
   /* fall through */
-  case 3:
-      //the other thing
+  case 3: case 4: case 5:
+      ...
       break;
   default:
-      ERROR("This shouldn't happen."); //leave this statement out if you are planning on using default
+      ...
       break;
   }
 ```
@@ -100,22 +100,18 @@ For example, a file called `test.h` should have:
 #ifndef TEST_H
 #define TEST_H
 
-//put code here
+// the code goes here
 
 #endif // TEST_H
 ```
 
 Don't use `pragam once` which is not supported by all C/C++ compilers
 
-## C vs C++
-We use both C and C++'s namespace to achive the best code clarity. Even thought we only use C++'s namespace, some files have to be named with
-.cpp, which have to observe the rules of C++.  This [link](https://stackoverflow.com/questions/31505402/does-c-contain-the-entire-c-language/31505447#31505447) has very good information about the difference between C and C++.
-
-## MISC
+## Miscellaneous
 For subjects that are not coverred here, we follow [Linux kernel coding style](https://www.kernel.org/doc/html/v4.10/process/coding-style.html#linux-kernel-coding-style)
 
 ## Commit and Merge
 To avoid creating redundant merge commits the following methods are recommanded:
-https://stackoverflow.com/questions/30052104/how-to-avoid-merge-commits-from-git-pull-when-pushing-to-remote
+* [How to avoid merge commits from git pull when pushing to remote](https://stackoverflow.com/questions/30052104/how-to-avoid-merge-commits-from-git-pull-when-pushing-to-remote)
 
 

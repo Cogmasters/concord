@@ -1,4 +1,5 @@
 # Semantic Commit Messages
+
 For organization purposes we standardize how our commits are staged.
 This section is copied from [link](https://gist.github.com/joshbuchea/6f47e86d2510bce28f8e7f42ae84c716) 
 to save you a click.
