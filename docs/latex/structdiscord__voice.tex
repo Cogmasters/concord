@@ -1,0 +1,269 @@
+\hypertarget{structdiscord__voice}{}\doxysection{discord\+\_\+voice Struct Reference}
+\label{structdiscord__voice}\index{discord\_voice@{discord\_voice}}
+
+
+Collaboration diagram for discord\+\_\+voice\+:
+% FIG 0
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} \mbox{\hyperlink{structdiscord__voice_a946b6f5215fb0a18d242b490396f18ee}{guild\+\_\+id}}
+\item 
+\mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} \mbox{\hyperlink{structdiscord__voice_ab89baa105408aca684a0b69b8b659400}{channel\+\_\+id}}
+\item 
+char \mbox{\hyperlink{structdiscord__voice_a548d14342c68517de160694706126ff4}{token}} \mbox{[}128\mbox{]}
+\item 
+char \mbox{\hyperlink{structdiscord__voice_a68abd0d516bd445d828497175f6ee618}{new\+\_\+token}} \mbox{[}128\mbox{]}
+\item 
+char \mbox{\hyperlink{structdiscord__voice_a76fd38580478a6e62b25666381c29d6b}{new\+\_\+url}} \mbox{[}512\mbox{]}
+\item 
+char \mbox{\hyperlink{structdiscord__voice_a2f6a4c2f8c462f59882978d0ec8b8a29}{session\+\_\+id}} \mbox{[}128\mbox{]}
+\item 
+\mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} \mbox{\hyperlink{structdiscord__voice_a461afcb154a43d603210134265de3a1e}{bot\+\_\+id}}
+\item 
+struct websockets $\ast$ \mbox{\hyperlink{structdiscord__voice_a2958941e90c1cb84f711a11195a393d8}{ws}}
+\item 
+\mbox{\Hypertarget{structdiscord__voice_a469b029791e324cdb91e609d03f7d7b4}\label{structdiscord__voice_a469b029791e324cdb91e609d03f7d7b4}} 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>bool \mbox{\hyperlink{structdiscord__voice_a99eb0b0f909a8fa2c500ed49a1e33f28}{enable}}\\
+\>unsigned char \mbox{\hyperlink{structdiscord__voice_a7d5b9ba1eb09d06ab6d54c61370b77bd}{attempt}}\\
+\>unsigned char \mbox{\hyperlink{structdiscord__voice_aef639043efbfb1dd93c21339c51071ae}{threshold}}\\
+\} \mbox{\hyperlink{structdiscord__voice_a469b029791e324cdb91e609d03f7d7b4}{reconnect}}\\
+
+\end{tabbing}\begin{DoxyCompactList}\small\item\em handle reconnect logic \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{structdiscord__voice_af4c4b869a6e815f45efbe9420a883990}{is\+\_\+resumable}}
+\item 
+bool \mbox{\hyperlink{structdiscord__voice_ad953547c1c3b864772a3473da13d620c}{is\+\_\+redirect}}
+\item 
+bool \mbox{\hyperlink{structdiscord__voice_adbbb211fe2a8a866f752dea5609bd881}{is\+\_\+ready}}
+\item 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>enum discord\_voice\_opcodes \mbox{\hyperlink{structdiscord__voice_a1fe496c3c65b88990da861f2e82cdd3e}{opcode}}\\
+\>struct sized\_buffer \mbox{\hyperlink{structdiscord__voice_ab8d897fac80970412831a772bfb94944}{event\_data}}\\
+\} \mbox{\hyperlink{structdiscord__voice_a38dec0a5842a26190652bea1effff005}{payload}}\\
+
+\end{tabbing}\item 
+\mbox{\Hypertarget{structdiscord__voice_aa4bbb2c0edf1c189f18174079d2284d5}\label{structdiscord__voice_aa4bbb2c0edf1c189f18174079d2284d5}} 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>\mbox{\hyperlink{discord_8h_a8c10c2449cb2148f47b8a032af96dd60}{u64\_unix\_ms\_t}} \mbox{\hyperlink{structdiscord__voice_add6f6addc5c21e7a654cf64cc427ddb8}{interval\_ms}}\\
+\>\mbox{\hyperlink{discord_8h_a8c10c2449cb2148f47b8a032af96dd60}{u64\_unix\_ms\_t}} \mbox{\hyperlink{structdiscord__voice_aac74c117b51d71568ac2e5908110a491}{tstamp}}\\
+\} {\bfseries hbeat}\\
+
+\end{tabbing}\item 
+int \mbox{\hyperlink{structdiscord__voice_a8dcb218e6dc77fe7fdc5ca2d50b6b952}{ping\+\_\+ms}}
+\item 
+struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$ \mbox{\hyperlink{structdiscord__voice_a830e416cbac95188543803f1006bb959}{p\+\_\+client}}
+\item 
+bool \mbox{\hyperlink{structdiscord__voice_ae770fb93fb2b623f4a214217d71702dd}{shutdown}}
+\item 
+\mbox{\Hypertarget{structdiscord__voice_aa45933a28dfd8d744d5fbb6ca8e235f1}\label{structdiscord__voice_aa45933a28dfd8d744d5fbb6ca8e235f1}} 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>int {\bfseries ssrc}\\
+\>int {\bfseries server\_port}\\
+\>char {\bfseries server\_ip} \mbox{[}CEE\_MAX\_IP\_ADDR\_STR\_LEN\mbox{]}\\
+\>char {\bfseries digest} \mbox{[}CEE\_SHA1\_STR\_LEN\mbox{]}\\
+\>char {\bfseries unique\_key} \mbox{[}128\mbox{]}\\
+\>int {\bfseries audio\_udp\_pid}\\
+\>uintmax\_t {\bfseries start\_time}\\
+\} {\bfseries udp\_service}\\
+
+\end{tabbing}\item 
+\mbox{\Hypertarget{structdiscord__voice_a30746750acaff0ff482d9aaa3850b9c0}\label{structdiscord__voice_a30746750acaff0ff482d9aaa3850b9c0}} 
+struct \mbox{\hyperlink{structdiscord__voice__cbs}{discord\+\_\+voice\+\_\+cbs}} $\ast$ {\bfseries p\+\_\+voice\+\_\+cbs}
+\item 
+uint64\+\_\+t \mbox{\hyperlink{structdiscord__voice_a21ae7915fc9ff2742292228724feb845}{message\+\_\+channel\+\_\+id}}
+\item 
+int \mbox{\hyperlink{structdiscord__voice_a9a85096944d2f4aa33811ee8488369a8}{recv\+\_\+interval}}
+\begin{DoxyCompactList}\small\item\em Interval to divide the received packets. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{structdiscord__voice_a7d5b9ba1eb09d06ab6d54c61370b77bd}\label{structdiscord__voice_a7d5b9ba1eb09d06ab6d54c61370b77bd}} 
+\index{discord\_voice@{discord\_voice}!attempt@{attempt}}
+\index{attempt@{attempt}!discord\_voice@{discord\_voice}}
+\doxysubsubsection{\texorpdfstring{attempt}{attempt}}
+{\footnotesize\ttfamily unsigned char discord\+\_\+voice\+::attempt}
+
+current reconnect attempt (resets to 0 when succesful) \mbox{\Hypertarget{structdiscord__voice_a461afcb154a43d603210134265de3a1e}\label{structdiscord__voice_a461afcb154a43d603210134265de3a1e}} 
+\index{discord\_voice@{discord\_voice}!bot\_id@{bot\_id}}
+\index{bot\_id@{bot\_id}!discord\_voice@{discord\_voice}}
+\doxysubsubsection{\texorpdfstring{bot\_id}{bot\_id}}
+{\footnotesize\ttfamily \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} discord\+\_\+voice\+::bot\+\_\+id}
+
+the bot user id \begin{DoxyNote}{Note}
+obtained from on\+\_\+voice\+\_\+state\+\_\+update() 
+\end{DoxyNote}
+\mbox{\Hypertarget{structdiscord__voice_ab89baa105408aca684a0b69b8b659400}\label{structdiscord__voice_ab89baa105408aca684a0b69b8b659400}} 
+\index{discord\_voice@{discord\_voice}!channel\_id@{channel\_id}}
+\index{channel\_id@{channel\_id}!discord\_voice@{discord\_voice}}
+\doxysubsubsection{\texorpdfstring{channel\_id}{channel\_id}}
+{\footnotesize\ttfamily \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} discord\+\_\+voice\+::channel\+\_\+id}
+
+the session channel id \begin{DoxyNote}{Note}
+obtained from discord\+\_\+join\+\_\+vc() 
+\end{DoxyNote}
+\mbox{\Hypertarget{structdiscord__voice_a99eb0b0f909a8fa2c500ed49a1e33f28}\label{structdiscord__voice_a99eb0b0f909a8fa2c500ed49a1e33f28}} 
+\index{discord\_voice@{discord\_voice}!enable@{enable}}
+\index{enable@{enable}!discord\_voice@{discord\_voice}}
+\doxysubsubsection{\texorpdfstring{enable}{enable}}
+{\footnotesize\ttfamily bool discord\+\_\+voice\+::enable}
+
+will attempt reconnecting if true \mbox{\Hypertarget{structdiscord__voice_ab8d897fac80970412831a772bfb94944}\label{structdiscord__voice_ab8d897fac80970412831a772bfb94944}} 
+\index{discord\_voice@{discord\_voice}!event\_data@{event\_data}}
+\index{event\_data@{event\_data}!discord\_voice@{discord\_voice}}
+\doxysubsubsection{\texorpdfstring{event\_data}{event\_data}}
+{\footnotesize\ttfamily struct sized\+\_\+buffer discord\+\_\+voice\+::event\+\_\+data}
+
+field \textquotesingle{}d\textquotesingle{} \mbox{\Hypertarget{structdiscord__voice_a946b6f5215fb0a18d242b490396f18ee}\label{structdiscord__voice_a946b6f5215fb0a18d242b490396f18ee}} 
+\index{discord\_voice@{discord\_voice}!guild\_id@{guild\_id}}
+\index{guild\_id@{guild\_id}!discord\_voice@{discord\_voice}}
+\doxysubsubsection{\texorpdfstring{guild\_id}{guild\_id}}
+{\footnotesize\ttfamily \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} discord\+\_\+voice\+::guild\+\_\+id}
+
+the session guild id \begin{DoxyNote}{Note}
+obtained from discord\+\_\+join\+\_\+vc() 
+\end{DoxyNote}
+\mbox{\Hypertarget{structdiscord__voice_add6f6addc5c21e7a654cf64cc427ddb8}\label{structdiscord__voice_add6f6addc5c21e7a654cf64cc427ddb8}} 
+\index{discord\_voice@{discord\_voice}!interval\_ms@{interval\_ms}}
+\index{interval\_ms@{interval\_ms}!discord\_voice@{discord\_voice}}
+\doxysubsubsection{\texorpdfstring{interval\_ms}{interval\_ms}}
+{\footnotesize\ttfamily \mbox{\hyperlink{discord_8h_a8c10c2449cb2148f47b8a032af96dd60}{u64\+\_\+unix\+\_\+ms\+\_\+t}} discord\+\_\+voice\+::interval\+\_\+ms}
+
+fixed interval between heartbeats \mbox{\Hypertarget{structdiscord__voice_adbbb211fe2a8a866f752dea5609bd881}\label{structdiscord__voice_adbbb211fe2a8a866f752dea5609bd881}} 
+\index{discord\_voice@{discord\_voice}!is\_ready@{is\_ready}}
+\index{is\_ready@{is\_ready}!discord\_voice@{discord\_voice}}
+\doxysubsubsection{\texorpdfstring{is\_ready}{is\_ready}}
+{\footnotesize\ttfamily bool discord\+\_\+voice\+::is\+\_\+ready}
+
+can start sending/receiving additional events to discord \mbox{\Hypertarget{structdiscord__voice_ad953547c1c3b864772a3473da13d620c}\label{structdiscord__voice_ad953547c1c3b864772a3473da13d620c}} 
+\index{discord\_voice@{discord\_voice}!is\_redirect@{is\_redirect}}
+\index{is\_redirect@{is\_redirect}!discord\_voice@{discord\_voice}}
+\doxysubsubsection{\texorpdfstring{is\_redirect}{is\_redirect}}
+{\footnotesize\ttfamily bool discord\+\_\+voice\+::is\+\_\+redirect}
+
+redirect to a different voice server \mbox{\Hypertarget{structdiscord__voice_af4c4b869a6e815f45efbe9420a883990}\label{structdiscord__voice_af4c4b869a6e815f45efbe9420a883990}} 
+\index{discord\_voice@{discord\_voice}!is\_resumable@{is\_resumable}}
+\index{is\_resumable@{is\_resumable}!discord\_voice@{discord\_voice}}
+\doxysubsubsection{\texorpdfstring{is\_resumable}{is\_resumable}}
+{\footnotesize\ttfamily bool discord\+\_\+voice\+::is\+\_\+resumable}
+
+will attempt to resume session if connection shutsdown \mbox{\Hypertarget{structdiscord__voice_a21ae7915fc9ff2742292228724feb845}\label{structdiscord__voice_a21ae7915fc9ff2742292228724feb845}} 
+\index{discord\_voice@{discord\_voice}!message\_channel\_id@{message\_channel\_id}}
+\index{message\_channel\_id@{message\_channel\_id}!discord\_voice@{discord\_voice}}
+\doxysubsubsection{\texorpdfstring{message\_channel\_id}{message\_channel\_id}}
+{\footnotesize\ttfamily uint64\+\_\+t discord\+\_\+voice\+::message\+\_\+channel\+\_\+id}
+
+used to communicate the status of the bot state changes \mbox{\Hypertarget{structdiscord__voice_a68abd0d516bd445d828497175f6ee618}\label{structdiscord__voice_a68abd0d516bd445d828497175f6ee618}} 
+\index{discord\_voice@{discord\_voice}!new\_token@{new\_token}}
+\index{new\_token@{new\_token}!discord\_voice@{discord\_voice}}
+\doxysubsubsection{\texorpdfstring{new\_token}{new\_token}}
+{\footnotesize\ttfamily char discord\+\_\+voice\+::new\+\_\+token\mbox{[}128\mbox{]}}
+
+the new session token after a voice region change \begin{DoxyNote}{Note}
+obtained from on\+\_\+voice\+\_\+server\+\_\+update() 
+\end{DoxyNote}
+\mbox{\Hypertarget{structdiscord__voice_a76fd38580478a6e62b25666381c29d6b}\label{structdiscord__voice_a76fd38580478a6e62b25666381c29d6b}} 
+\index{discord\_voice@{discord\_voice}!new\_url@{new\_url}}
+\index{new\_url@{new\_url}!discord\_voice@{discord\_voice}}
+\doxysubsubsection{\texorpdfstring{new\_url}{new\_url}}
+{\footnotesize\ttfamily char discord\+\_\+voice\+::new\+\_\+url\mbox{[}512\mbox{]}}
+
+the new url after a voice region change \begin{DoxyNote}{Note}
+obtained from on\+\_\+voice\+\_\+server\+\_\+update() 
+\end{DoxyNote}
+\mbox{\Hypertarget{structdiscord__voice_a1fe496c3c65b88990da861f2e82cdd3e}\label{structdiscord__voice_a1fe496c3c65b88990da861f2e82cdd3e}} 
+\index{discord\_voice@{discord\_voice}!opcode@{opcode}}
+\index{opcode@{opcode}!discord\_voice@{discord\_voice}}
+\doxysubsubsection{\texorpdfstring{opcode}{opcode}}
+{\footnotesize\ttfamily enum discord\+\_\+voice\+\_\+opcodes discord\+\_\+voice\+::opcode}
+
+field \textquotesingle{}op\textquotesingle{} \mbox{\Hypertarget{structdiscord__voice_a830e416cbac95188543803f1006bb959}\label{structdiscord__voice_a830e416cbac95188543803f1006bb959}} 
+\index{discord\_voice@{discord\_voice}!p\_client@{p\_client}}
+\index{p\_client@{p\_client}!discord\_voice@{discord\_voice}}
+\doxysubsubsection{\texorpdfstring{p\_client}{p\_client}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structdiscord}{discord}}$\ast$ discord\+\_\+voice\+::p\+\_\+client}
+
+pointer to client this struct is part of \mbox{\Hypertarget{structdiscord__voice_a38dec0a5842a26190652bea1effff005}\label{structdiscord__voice_a38dec0a5842a26190652bea1effff005}} 
+\index{discord\_voice@{discord\_voice}!payload@{payload}}
+\index{payload@{payload}!discord\_voice@{discord\_voice}}
+\doxysubsubsection{\texorpdfstring{payload}{payload}}
+{\footnotesize\ttfamily struct \{ ... \}  discord\+\_\+voice\+::payload}
+
+\begin{DoxySeeAlso}{See also}
+\href{https://discord.com/developers/docs/topics/voice-connections\#establishing-a-voice-websocket-connection-example-voice-ready-payload}{\texttt{ https\+://discord.\+com/developers/docs/topics/voice-\/connections\#establishing-\/a-\/voice-\/websocket-\/connection-\/example-\/voice-\/ready-\/payload}} 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{structdiscord__voice_a8dcb218e6dc77fe7fdc5ca2d50b6b952}\label{structdiscord__voice_a8dcb218e6dc77fe7fdc5ca2d50b6b952}} 
+\index{discord\_voice@{discord\_voice}!ping\_ms@{ping\_ms}}
+\index{ping\_ms@{ping\_ms}!discord\_voice@{discord\_voice}}
+\doxysubsubsection{\texorpdfstring{ping\_ms}{ping\_ms}}
+{\footnotesize\ttfamily int discord\+\_\+voice\+::ping\+\_\+ms}
+
+latency between client and websockets server, calculated by the interval between H\+E\+A\+R\+T\+B\+E\+AT and H\+E\+A\+R\+T\+B\+E\+A\+T\+\_\+\+A\+CK \mbox{\Hypertarget{structdiscord__voice_a9a85096944d2f4aa33811ee8488369a8}\label{structdiscord__voice_a9a85096944d2f4aa33811ee8488369a8}} 
+\index{discord\_voice@{discord\_voice}!recv\_interval@{recv\_interval}}
+\index{recv\_interval@{recv\_interval}!discord\_voice@{discord\_voice}}
+\doxysubsubsection{\texorpdfstring{recv\_interval}{recv\_interval}}
+{\footnotesize\ttfamily int discord\+\_\+voice\+::recv\+\_\+interval}
+
+
+
+Interval to divide the received packets. 
+
+0 store in one file n store packets received every n minutes in a new file \mbox{\Hypertarget{structdiscord__voice_a2f6a4c2f8c462f59882978d0ec8b8a29}\label{structdiscord__voice_a2f6a4c2f8c462f59882978d0ec8b8a29}} 
+\index{discord\_voice@{discord\_voice}!session\_id@{session\_id}}
+\index{session\_id@{session\_id}!discord\_voice@{discord\_voice}}
+\doxysubsubsection{\texorpdfstring{session\_id}{session\_id}}
+{\footnotesize\ttfamily char discord\+\_\+voice\+::session\+\_\+id\mbox{[}128\mbox{]}}
+
+\begin{DoxyNote}{Note}
+obtained from on\+\_\+voice\+\_\+state\+\_\+update() the session id 
+
+obtained from on\+\_\+voice\+\_\+state\+\_\+update() 
+\end{DoxyNote}
+\mbox{\Hypertarget{structdiscord__voice_ae770fb93fb2b623f4a214217d71702dd}\label{structdiscord__voice_ae770fb93fb2b623f4a214217d71702dd}} 
+\index{discord\_voice@{discord\_voice}!shutdown@{shutdown}}
+\index{shutdown@{shutdown}!discord\_voice@{discord\_voice}}
+\doxysubsubsection{\texorpdfstring{shutdown}{shutdown}}
+{\footnotesize\ttfamily bool discord\+\_\+voice\+::shutdown}
+
+if \#true shutdown websockets connection as soon as possible \mbox{\Hypertarget{structdiscord__voice_aef639043efbfb1dd93c21339c51071ae}\label{structdiscord__voice_aef639043efbfb1dd93c21339c51071ae}} 
+\index{discord\_voice@{discord\_voice}!threshold@{threshold}}
+\index{threshold@{threshold}!discord\_voice@{discord\_voice}}
+\doxysubsubsection{\texorpdfstring{threshold}{threshold}}
+{\footnotesize\ttfamily unsigned char discord\+\_\+voice\+::threshold}
+
+max amount of reconnects before giving up \mbox{\Hypertarget{structdiscord__voice_a548d14342c68517de160694706126ff4}\label{structdiscord__voice_a548d14342c68517de160694706126ff4}} 
+\index{discord\_voice@{discord\_voice}!token@{token}}
+\index{token@{token}!discord\_voice@{discord\_voice}}
+\doxysubsubsection{\texorpdfstring{token}{token}}
+{\footnotesize\ttfamily char discord\+\_\+voice\+::token\mbox{[}128\mbox{]}}
+
+\begin{DoxyNote}{Note}
+obtained from on\+\_\+voice\+\_\+server\+\_\+update() the session token 
+
+obtained from on\+\_\+voice\+\_\+server\+\_\+update() 
+\end{DoxyNote}
+\mbox{\Hypertarget{structdiscord__voice_aac74c117b51d71568ac2e5908110a491}\label{structdiscord__voice_aac74c117b51d71568ac2e5908110a491}} 
+\index{discord\_voice@{discord\_voice}!tstamp@{tstamp}}
+\index{tstamp@{tstamp}!discord\_voice@{discord\_voice}}
+\doxysubsubsection{\texorpdfstring{tstamp}{tstamp}}
+{\footnotesize\ttfamily \mbox{\hyperlink{discord_8h_a8c10c2449cb2148f47b8a032af96dd60}{u64\+\_\+unix\+\_\+ms\+\_\+t}} discord\+\_\+voice\+::tstamp}
+
+start pulse timestamp in milliseconds \mbox{\Hypertarget{structdiscord__voice_a2958941e90c1cb84f711a11195a393d8}\label{structdiscord__voice_a2958941e90c1cb84f711a11195a393d8}} 
+\index{discord\_voice@{discord\_voice}!ws@{ws}}
+\index{ws@{ws}!discord\_voice@{discord\_voice}}
+\doxysubsubsection{\texorpdfstring{ws}{ws}}
+{\footnotesize\ttfamily struct websockets$\ast$ discord\+\_\+voice\+::ws}
+
+the websockets handle that binds to Discord Voice Connections 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/lucasmull/\+Trabalho/orca/discord-\/voice-\/connections.\+h\end{DoxyCompactItemize}

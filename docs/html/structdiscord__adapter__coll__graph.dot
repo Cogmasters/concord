@@ -1,0 +1,23 @@
+digraph "discord_adapter"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="discord_adapter",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="The handle used for performing HTTP Requests."];
+  Node2 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" p_client" ,fontname="Helvetica"];
+  Node2 [label="discord",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structdiscord.html",tooltip="The Discord Client structure."];
+  Node3 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" voice_cbs" ,fontname="Helvetica"];
+  Node3 [label="discord_voice_cbs",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structdiscord__voice__cbs.html",tooltip=" "];
+  Node1 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" adapter" ,fontname="Helvetica"];
+  Node4 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" gw" ,fontname="Helvetica"];
+  Node4 [label="discord_gateway",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structdiscord__gateway.html",tooltip="The handle used for establishing a Discord Gateway connection via WebSockets."];
+  Node2 -> Node4 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" p_client" ,fontname="Helvetica"];
+  Node5 -> Node4 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" session" ,fontname="Helvetica"];
+  Node5 [label="discord_session",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structdiscord__session.html",tooltip=" "];
+  Node6 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" vcs" ,fontname="Helvetica"];
+  Node6 [label="discord_voice",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structdiscord__voice.html",tooltip=" "];
+  Node3 -> Node6 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" p_voice_cbs" ,fontname="Helvetica"];
+  Node2 -> Node6 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" p_client" ,fontname="Helvetica"];
+  Node7 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" buckets" ,fontname="Helvetica"];
+  Node7 [label="discord_bucket",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structdiscord__bucket.html",tooltip="The bucket struct that will handle ratelimiting."];
+}

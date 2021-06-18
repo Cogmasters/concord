@@ -1,0 +1,46 @@
+\hypertarget{structdiscord}{}\doxysection{discord Struct Reference}
+\label{structdiscord}\index{discord@{discord}}
+
+
+Collaboration diagram for discord\+:
+% FIG 0
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structdiscord_af3d2fe931cc6c487fb42ce7fe8db71a5}\label{structdiscord_af3d2fe931cc6c487fb42ce7fe8db71a5}} 
+struct sized\+\_\+buffer {\bfseries token}
+\item 
+\mbox{\Hypertarget{structdiscord_aa6b920cecb961738d00682cd25bcd14a}\label{structdiscord_aa6b920cecb961738d00682cd25bcd14a}} 
+struct \mbox{\hyperlink{structdiscord__adapter}{discord\+\_\+adapter}} {\bfseries adapter}
+\item 
+\mbox{\Hypertarget{structdiscord_ac439ecded3eac536b5de5dc24355a1d5}\label{structdiscord_ac439ecded3eac536b5de5dc24355a1d5}} 
+struct \mbox{\hyperlink{structdiscord__gateway}{discord\+\_\+gateway}} {\bfseries gw}
+\item 
+\mbox{\Hypertarget{structdiscord_a4fdac485645187a3aa014ef57a2c6aa4}\label{structdiscord_a4fdac485645187a3aa014ef57a2c6aa4}} 
+struct logconf {\bfseries config}
+\item 
+\mbox{\Hypertarget{structdiscord_ac5c305d5a60c14eece38a8cbd92d31d9}\label{structdiscord_ac5c305d5a60c14eece38a8cbd92d31d9}} 
+struct \mbox{\hyperlink{structdiscord__voice}{discord\+\_\+voice}} {\bfseries vcs} \mbox{[}N\+U\+M\+\_\+\+V\+CS\mbox{]}
+\item 
+\mbox{\Hypertarget{structdiscord_ae07c8a71cd17e60f6f6d26b9cdaa8345}\label{structdiscord_ae07c8a71cd17e60f6f6d26b9cdaa8345}} 
+struct \mbox{\hyperlink{structdiscord__voice__cbs}{discord\+\_\+voice\+\_\+cbs}} {\bfseries voice\+\_\+cbs}
+\item 
+void $\ast$ \mbox{\hyperlink{structdiscord_ad36541f87b8997a57c0467d29627e8d1}{data}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{structdiscord_ad36541f87b8997a57c0467d29627e8d1}\label{structdiscord_ad36541f87b8997a57c0467d29627e8d1}} 
+\index{discord@{discord}!data@{data}}
+\index{data@{data}!discord@{discord}}
+\doxysubsubsection{\texorpdfstring{data}{data}}
+{\footnotesize\ttfamily void$\ast$ discord\+::data}
+
+\begin{DoxySeeAlso}{See also}
+discord\+\_\+get\+\_\+data() and discord\+\_\+set\+\_\+data() 
+\end{DoxySeeAlso}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/lucasmull/\+Trabalho/orca/discord-\/internal.\+h\end{DoxyCompactItemize}

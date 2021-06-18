@@ -1,0 +1,71 @@
+\hypertarget{structdiscord__adapter}{}\doxysection{discord\+\_\+adapter Struct Reference}
+\label{structdiscord__adapter}\index{discord\_adapter@{discord\_adapter}}
+
+
+The handle used for performing H\+T\+TP Requests.  
+
+
+
+
+{\ttfamily \#include $<$discord-\/internal.\+h$>$}
+
+
+
+Collaboration diagram for discord\+\_\+adapter\+:
+% FIG 0
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+struct user\+\_\+agent $\ast$ \mbox{\hyperlink{structdiscord__adapter_a4bc3965220fb197fe1dab2237a8dec7d}{ua}}
+\item 
+\mbox{\Hypertarget{structdiscord__adapter_a4f678965ec7a3d58966e77a69a48d319}\label{structdiscord__adapter_a4f678965ec7a3d58966e77a69a48d319}} 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>struct \mbox{\hyperlink{structdiscord__bucket}{discord\_bucket}} $\ast$ \mbox{\hyperlink{structdiscord__adapter_a20ef4471bba9e6c4a2e064aa8e498747}{buckets}}\\
+\>pthread\_mutex\_t \mbox{\hyperlink{structdiscord__adapter_a6c82f5b486617094d1d1d0c79995e4ee}{lock}}\\
+\} {\bfseries ratelimit}\\
+
+\end{tabbing}\item 
+struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$ \mbox{\hyperlink{structdiscord__adapter_a19d5ff5b0b9843bf65d1cb080b9cb5a7}{p\+\_\+client}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The handle used for performing H\+T\+TP Requests. 
+
+This is a wrapper over struct user\+\_\+agent \begin{DoxySeeAlso}{See also}
+user-\/agent.\+h 
+\end{DoxySeeAlso}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{structdiscord__adapter_a20ef4471bba9e6c4a2e064aa8e498747}\label{structdiscord__adapter_a20ef4471bba9e6c4a2e064aa8e498747}} 
+\index{discord\_adapter@{discord\_adapter}!buckets@{buckets}}
+\index{buckets@{buckets}!discord\_adapter@{discord\_adapter}}
+\doxysubsubsection{\texorpdfstring{buckets}{buckets}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structdiscord__bucket}{discord\+\_\+bucket}}$\ast$ discord\+\_\+adapter\+::buckets}
+
+Endpoint/routes discovered, check a endpoint/bucket match with tree search functions \mbox{\Hypertarget{structdiscord__adapter_a6c82f5b486617094d1d1d0c79995e4ee}\label{structdiscord__adapter_a6c82f5b486617094d1d1d0c79995e4ee}} 
+\index{discord\_adapter@{discord\_adapter}!lock@{lock}}
+\index{lock@{lock}!discord\_adapter@{discord\_adapter}}
+\doxysubsubsection{\texorpdfstring{lock}{lock}}
+{\footnotesize\ttfamily pthread\+\_\+mutex\+\_\+t discord\+\_\+adapter\+::lock}
+
+Mutex used when adding to or searching for buckets \mbox{\Hypertarget{structdiscord__adapter_a19d5ff5b0b9843bf65d1cb080b9cb5a7}\label{structdiscord__adapter_a19d5ff5b0b9843bf65d1cb080b9cb5a7}} 
+\index{discord\_adapter@{discord\_adapter}!p\_client@{p\_client}}
+\index{p\_client@{p\_client}!discord\_adapter@{discord\_adapter}}
+\doxysubsubsection{\texorpdfstring{p\_client}{p\_client}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structdiscord}{discord}}$\ast$ discord\+\_\+adapter\+::p\+\_\+client}
+
+pointer to client this struct is part of \mbox{\Hypertarget{structdiscord__adapter_a4bc3965220fb197fe1dab2237a8dec7d}\label{structdiscord__adapter_a4bc3965220fb197fe1dab2237a8dec7d}} 
+\index{discord\_adapter@{discord\_adapter}!ua@{ua}}
+\index{ua@{ua}!discord\_adapter@{discord\_adapter}}
+\doxysubsubsection{\texorpdfstring{ua}{ua}}
+{\footnotesize\ttfamily struct user\+\_\+agent$\ast$ discord\+\_\+adapter\+::ua}
+
+The user agent handle for performing requests 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/lucasmull/\+Trabalho/orca/\mbox{\hyperlink{discord-internal_8h}{discord-\/internal.\+h}}\end{DoxyCompactItemize}

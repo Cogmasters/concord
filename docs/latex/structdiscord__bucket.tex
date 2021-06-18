@@ -1,0 +1,105 @@
+\hypertarget{structdiscord__bucket}{}\doxysection{discord\+\_\+bucket Struct Reference}
+\label{structdiscord__bucket}\index{discord\_bucket@{discord\_bucket}}
+
+
+The bucket struct that will handle ratelimiting.  
+
+
+
+
+{\ttfamily \#include $<$discord-\/internal.\+h$>$}
+
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+char \mbox{\hyperlink{structdiscord__bucket_ac67b2ad453a4224a780784e05f7669d8}{hash}} \mbox{[}128\mbox{]}
+\item 
+int \mbox{\hyperlink{structdiscord__bucket_ac945c8ad595f5fe1c0265156fb939813}{busy}}
+\item 
+int \mbox{\hyperlink{structdiscord__bucket_afbf7b738447cf6ce2ba70eada7b4c06a}{remaining}}
+\item 
+int64\+\_\+t \mbox{\hyperlink{structdiscord__bucket_a27851d72383d8f7ac3eadb75e4c7d9b8}{reset\+\_\+after\+\_\+ms}}
+\item 
+\mbox{\hyperlink{discord_8h_a8c10c2449cb2148f47b8a032af96dd60}{u64\+\_\+unix\+\_\+ms\+\_\+t}} \mbox{\hyperlink{structdiscord__bucket_a05dedaa37f1e2e10de0be17e5dd00904}{reset\+\_\+tstamp}}
+\item 
+\mbox{\hyperlink{discord_8h_a8c10c2449cb2148f47b8a032af96dd60}{u64\+\_\+unix\+\_\+ms\+\_\+t}} \mbox{\hyperlink{structdiscord__bucket_a157a3a73fb075e1bb721b5e35a798138}{update\+\_\+tstamp}}
+\item 
+pthread\+\_\+mutex\+\_\+t \mbox{\hyperlink{structdiscord__bucket_a268f5f36225ae82f4640704eea74adf2}{lock}}
+\item 
+\mbox{\Hypertarget{structdiscord__bucket_aa95f113e0b49e84dbc1aa3aea11d1d56}\label{structdiscord__bucket_aa95f113e0b49e84dbc1aa3aea11d1d56}} 
+pthread\+\_\+cond\+\_\+t {\bfseries cond}
+\item 
+char \mbox{\hyperlink{structdiscord__bucket_aeef4fc5b96d858c6ec5e2071a95d595f}{route}} \mbox{[}256\mbox{]}
+\item 
+U\+T\+\_\+hash\+\_\+handle \mbox{\hyperlink{structdiscord__bucket_a53523eeac146fe4f8e0aaea713b3ca1d}{hh}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The bucket struct that will handle ratelimiting. 
+
+\begin{DoxySeeAlso}{See also}
+\href{https://discord.com/developers/docs/topics/rate-limits}{\texttt{ https\+://discord.\+com/developers/docs/topics/rate-\/limits}} 
+\end{DoxySeeAlso}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{structdiscord__bucket_ac945c8ad595f5fe1c0265156fb939813}\label{structdiscord__bucket_ac945c8ad595f5fe1c0265156fb939813}} 
+\index{discord\_bucket@{discord\_bucket}!busy@{busy}}
+\index{busy@{busy}!discord\_bucket@{discord\_bucket}}
+\doxysubsubsection{\texorpdfstring{busy}{busy}}
+{\footnotesize\ttfamily int discord\+\_\+bucket\+::busy}
+
+amount of busy connections that have not yet finished its requests \mbox{\Hypertarget{structdiscord__bucket_ac67b2ad453a4224a780784e05f7669d8}\label{structdiscord__bucket_ac67b2ad453a4224a780784e05f7669d8}} 
+\index{discord\_bucket@{discord\_bucket}!hash@{hash}}
+\index{hash@{hash}!discord\_bucket@{discord\_bucket}}
+\doxysubsubsection{\texorpdfstring{hash}{hash}}
+{\footnotesize\ttfamily char discord\+\_\+bucket\+::hash\mbox{[}128\mbox{]}}
+
+the unique hash associated with this bucket \mbox{\Hypertarget{structdiscord__bucket_a53523eeac146fe4f8e0aaea713b3ca1d}\label{structdiscord__bucket_a53523eeac146fe4f8e0aaea713b3ca1d}} 
+\index{discord\_bucket@{discord\_bucket}!hh@{hh}}
+\index{hh@{hh}!discord\_bucket@{discord\_bucket}}
+\doxysubsubsection{\texorpdfstring{hh}{hh}}
+{\footnotesize\ttfamily U\+T\+\_\+hash\+\_\+handle discord\+\_\+bucket\+::hh}
+
+makes this structure hashable \mbox{\Hypertarget{structdiscord__bucket_a268f5f36225ae82f4640704eea74adf2}\label{structdiscord__bucket_a268f5f36225ae82f4640704eea74adf2}} 
+\index{discord\_bucket@{discord\_bucket}!lock@{lock}}
+\index{lock@{lock}!discord\_bucket@{discord\_bucket}}
+\doxysubsubsection{\texorpdfstring{lock}{lock}}
+{\footnotesize\ttfamily pthread\+\_\+mutex\+\_\+t discord\+\_\+bucket\+::lock}
+
+synchronize buckets between threads \mbox{\Hypertarget{structdiscord__bucket_afbf7b738447cf6ce2ba70eada7b4c06a}\label{structdiscord__bucket_afbf7b738447cf6ce2ba70eada7b4c06a}} 
+\index{discord\_bucket@{discord\_bucket}!remaining@{remaining}}
+\index{remaining@{remaining}!discord\_bucket@{discord\_bucket}}
+\doxysubsubsection{\texorpdfstring{remaining}{remaining}}
+{\footnotesize\ttfamily int discord\+\_\+bucket\+::remaining}
+
+connections this bucket can do before waiting for cooldown \mbox{\Hypertarget{structdiscord__bucket_a27851d72383d8f7ac3eadb75e4c7d9b8}\label{structdiscord__bucket_a27851d72383d8f7ac3eadb75e4c7d9b8}} 
+\index{discord\_bucket@{discord\_bucket}!reset\_after\_ms@{reset\_after\_ms}}
+\index{reset\_after\_ms@{reset\_after\_ms}!discord\_bucket@{discord\_bucket}}
+\doxysubsubsection{\texorpdfstring{reset\_after\_ms}{reset\_after\_ms}}
+{\footnotesize\ttfamily int64\+\_\+t discord\+\_\+bucket\+::reset\+\_\+after\+\_\+ms}
+
+how long until cooldown timer resets \mbox{\Hypertarget{structdiscord__bucket_a05dedaa37f1e2e10de0be17e5dd00904}\label{structdiscord__bucket_a05dedaa37f1e2e10de0be17e5dd00904}} 
+\index{discord\_bucket@{discord\_bucket}!reset\_tstamp@{reset\_tstamp}}
+\index{reset\_tstamp@{reset\_tstamp}!discord\_bucket@{discord\_bucket}}
+\doxysubsubsection{\texorpdfstring{reset\_tstamp}{reset\_tstamp}}
+{\footnotesize\ttfamily \mbox{\hyperlink{discord_8h_a8c10c2449cb2148f47b8a032af96dd60}{u64\+\_\+unix\+\_\+ms\+\_\+t}} discord\+\_\+bucket\+::reset\+\_\+tstamp}
+
+timestamp of when cooldown timer resets \mbox{\Hypertarget{structdiscord__bucket_aeef4fc5b96d858c6ec5e2071a95d595f}\label{structdiscord__bucket_aeef4fc5b96d858c6ec5e2071a95d595f}} 
+\index{discord\_bucket@{discord\_bucket}!route@{route}}
+\index{route@{route}!discord\_bucket@{discord\_bucket}}
+\doxysubsubsection{\texorpdfstring{route}{route}}
+{\footnotesize\ttfamily char discord\+\_\+bucket\+::route\mbox{[}256\mbox{]}}
+
+this bucket \textquotesingle{}key\textquotesingle{} \mbox{\Hypertarget{structdiscord__bucket_a157a3a73fb075e1bb721b5e35a798138}\label{structdiscord__bucket_a157a3a73fb075e1bb721b5e35a798138}} 
+\index{discord\_bucket@{discord\_bucket}!update\_tstamp@{update\_tstamp}}
+\index{update\_tstamp@{update\_tstamp}!discord\_bucket@{discord\_bucket}}
+\doxysubsubsection{\texorpdfstring{update\_tstamp}{update\_tstamp}}
+{\footnotesize\ttfamily \mbox{\hyperlink{discord_8h_a8c10c2449cb2148f47b8a032af96dd60}{u64\+\_\+unix\+\_\+ms\+\_\+t}} discord\+\_\+bucket\+::update\+\_\+tstamp}
+
+timestamp of the most recent request 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/lucasmull/\+Trabalho/orca/\mbox{\hyperlink{discord-internal_8h}{discord-\/internal.\+h}}\end{DoxyCompactItemize}

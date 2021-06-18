@@ -1,0 +1,82 @@
+\hypertarget{structdiscord__create__message__params}{}\doxysection{discord\+\_\+create\+\_\+message\+\_\+params Struct Reference}
+\label{structdiscord__create__message__params}\index{discord\_create\_message\_params@{discord\_create\_message\_params}}
+
+
+{\ttfamily \#include $<$discord.\+h$>$}
+
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+char $\ast$ \mbox{\hyperlink{structdiscord__create__message__params_ad37e7dc00bfba35b60e412eca42f7b96}{content}}
+\item 
+char $\ast$ \mbox{\hyperlink{structdiscord__create__message__params_a203cb4e6241783c653e85905b769b210}{nonce}}
+\item 
+bool \mbox{\hyperlink{structdiscord__create__message__params_a59a16fe3fe7a7b434ffc2ea9045a15a2}{tts}}
+\item 
+\mbox{\Hypertarget{structdiscord__create__message__params_a9307dec7aa37d8045d47d52f2b16eb46}\label{structdiscord__create__message__params_a9307dec7aa37d8045d47d52f2b16eb46}} 
+struct discord\+\_\+embed $\ast$ {\bfseries embed}
+\item 
+\mbox{\Hypertarget{structdiscord__create__message__params_a6fb10c38f15aa0fdc8d311e3245f35be}\label{structdiscord__create__message__params_a6fb10c38f15aa0fdc8d311e3245f35be}} 
+struct discord\+\_\+channel\+\_\+allowed\+\_\+mentions $\ast$ {\bfseries allowed\+\_\+mentions}
+\item 
+\mbox{\Hypertarget{structdiscord__create__message__params_ae075f1b2e5bc110b2f8d8ce1a8acc7eb}\label{structdiscord__create__message__params_ae075f1b2e5bc110b2f8d8ce1a8acc7eb}} 
+struct discord\+\_\+message\+\_\+reference $\ast$ {\bfseries message\+\_\+reference}
+\item 
+\mbox{\Hypertarget{structdiscord__create__message__params_a66ca6bff0da9b3df9a9be3824dbaec6e}\label{structdiscord__create__message__params_a66ca6bff0da9b3df9a9be3824dbaec6e}} 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>char $\ast$ \mbox{\hyperlink{structdiscord__create__message__params_a69305c4547bb2f287939d3846b7dfe72}{name}}\\
+\>char $\ast$ \mbox{\hyperlink{structdiscord__create__message__params_ad37e7dc00bfba35b60e412eca42f7b96}{content}}\\
+\>size\_t \mbox{\hyperlink{structdiscord__create__message__params_abf442ac5cf250cf57abd148daf9c09e6}{size}}\\
+\} {\bfseries file}\\
+
+\end{tabbing}\item 
+\mbox{\Hypertarget{structdiscord__create__message__params_a8b3fb41627d5c019f1cdc2495b2825f6}\label{structdiscord__create__message__params_a8b3fb41627d5c019f1cdc2495b2825f6}} 
+char $\ast$ {\bfseries payload\+\_\+json}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyRefDesc}{Todo}
+\item[\mbox{\hyperlink{todo__todo000021}{Todo}}]make this specs generated code @warn content-\/type sent is {\ttfamily application/json}, U\+N\+L\+E\+SS any {\ttfamily multipart/form-\/data} parameter is set \end{DoxyRefDesc}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{structdiscord__create__message__params_ad37e7dc00bfba35b60e412eca42f7b96}\label{structdiscord__create__message__params_ad37e7dc00bfba35b60e412eca42f7b96}} 
+\index{discord\_create\_message\_params@{discord\_create\_message\_params}!content@{content}}
+\index{content@{content}!discord\_create\_message\_params@{discord\_create\_message\_params}}
+\doxysubsubsection{\texorpdfstring{content}{content}}
+{\footnotesize\ttfamily char$\ast$ discord\+\_\+create\+\_\+message\+\_\+params\+::content}
+
+the content of the message being sent
+
+the contents of the file being sent (optional) \mbox{\Hypertarget{structdiscord__create__message__params_a69305c4547bb2f287939d3846b7dfe72}\label{structdiscord__create__message__params_a69305c4547bb2f287939d3846b7dfe72}} 
+\index{discord\_create\_message\_params@{discord\_create\_message\_params}!name@{name}}
+\index{name@{name}!discord\_create\_message\_params@{discord\_create\_message\_params}}
+\doxysubsubsection{\texorpdfstring{name}{name}}
+{\footnotesize\ttfamily char$\ast$ discord\+\_\+create\+\_\+message\+\_\+params\+::name}
+
+the name of the file being sent \mbox{\Hypertarget{structdiscord__create__message__params_a203cb4e6241783c653e85905b769b210}\label{structdiscord__create__message__params_a203cb4e6241783c653e85905b769b210}} 
+\index{discord\_create\_message\_params@{discord\_create\_message\_params}!nonce@{nonce}}
+\index{nonce@{nonce}!discord\_create\_message\_params@{discord\_create\_message\_params}}
+\doxysubsubsection{\texorpdfstring{nonce}{nonce}}
+{\footnotesize\ttfamily char$\ast$ discord\+\_\+create\+\_\+message\+\_\+params\+::nonce}
+
+the nonce of the message being sent \mbox{\Hypertarget{structdiscord__create__message__params_abf442ac5cf250cf57abd148daf9c09e6}\label{structdiscord__create__message__params_abf442ac5cf250cf57abd148daf9c09e6}} 
+\index{discord\_create\_message\_params@{discord\_create\_message\_params}!size@{size}}
+\index{size@{size}!discord\_create\_message\_params@{discord\_create\_message\_params}}
+\doxysubsubsection{\texorpdfstring{size}{size}}
+{\footnotesize\ttfamily size\+\_\+t discord\+\_\+create\+\_\+message\+\_\+params\+::size}
+
+the size of the file being sent (if content is set) \mbox{\Hypertarget{structdiscord__create__message__params_a59a16fe3fe7a7b434ffc2ea9045a15a2}\label{structdiscord__create__message__params_a59a16fe3fe7a7b434ffc2ea9045a15a2}} 
+\index{discord\_create\_message\_params@{discord\_create\_message\_params}!tts@{tts}}
+\index{tts@{tts}!discord\_create\_message\_params@{discord\_create\_message\_params}}
+\doxysubsubsection{\texorpdfstring{tts}{tts}}
+{\footnotesize\ttfamily bool discord\+\_\+create\+\_\+message\+\_\+params\+::tts}
+
+enable/disable text-\/to-\/speech 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/lucasmull/\+Trabalho/orca/\mbox{\hyperlink{discord_8h}{discord.\+h}}\end{DoxyCompactItemize}

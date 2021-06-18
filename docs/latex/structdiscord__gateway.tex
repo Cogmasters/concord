@@ -1,0 +1,460 @@
+\hypertarget{structdiscord__gateway}{}\doxysection{discord\+\_\+gateway Struct Reference}
+\label{structdiscord__gateway}\index{discord\_gateway@{discord\_gateway}}
+
+
+The handle used for establishing a Discord Gateway connection via Web\+Sockets.  
+
+
+
+
+{\ttfamily \#include $<$discord-\/internal.\+h$>$}
+
+
+
+Collaboration diagram for discord\+\_\+gateway\+:
+% FIG 0
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+struct websockets $\ast$ \mbox{\hyperlink{structdiscord__gateway_a14f4f4117925f91a02e3b9a47cb50475}{ws}}
+\item 
+\mbox{\Hypertarget{structdiscord__gateway_a539ec1f75df37441df5a1f792cffd719}\label{structdiscord__gateway_a539ec1f75df37441df5a1f792cffd719}} 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>bool \mbox{\hyperlink{structdiscord__gateway_ae1bca7721ed89ea3f64bdc28f63bcba7}{enable}}\\
+\>int \mbox{\hyperlink{structdiscord__gateway_a0c1cf462499400d561f776f98f3226d7}{attempt}}\\
+\>int \mbox{\hyperlink{structdiscord__gateway_a954b1a27b79a1e1eaa7944022dcaeed0}{threshold}}\\
+\} {\bfseries reconnect}\\
+
+\end{tabbing}\item 
+bool \mbox{\hyperlink{structdiscord__gateway_aa638bbbd9620716e2634b3886c51328a}{is\+\_\+resumable}}
+\item 
+bool \mbox{\hyperlink{structdiscord__gateway_a3a758f591a57c3bc1e48993da6bcaabb}{is\+\_\+ready}}
+\item 
+bool \mbox{\hyperlink{structdiscord__gateway_a776f9988eef3120151973b91b5d297f0}{shutdown}}
+\item 
+struct discord\+\_\+gateway\+\_\+identify $\ast$ \mbox{\hyperlink{structdiscord__gateway_af94e0262990b00c4ca80cb49cbd1455d}{id}}
+\item 
+char \mbox{\hyperlink{structdiscord__gateway_aaebae21be2a555770440eac6aaf60d39}{session\+\_\+id}} \mbox{[}512\mbox{]}
+\item 
+\mbox{\Hypertarget{structdiscord__gateway_a8ec268df36d88e0e6571bf3b6acae427}\label{structdiscord__gateway_a8ec268df36d88e0e6571bf3b6acae427}} 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>enum discord\_gateway\_opcodes \mbox{\hyperlink{structdiscord__gateway_a56baf6a6c365f558e2fa5b4602d88ea3}{opcode}}\\
+\>int \mbox{\hyperlink{structdiscord__gateway_a57b7fd95dfd9f28554324e733b9ce78f}{seq\_number}}\\
+\>char \mbox{\hyperlink{structdiscord__gateway_a9b1c71ec09a1866b5010f7e5a25c35a1}{event\_name}} \mbox{[}64\mbox{]}\\
+\>struct sized\_buffer \mbox{\hyperlink{structdiscord__gateway_a8fdc5ba5da309c2e50b87604f28d22c6}{event\_data}}\\
+\} {\bfseries payload}\\
+
+\end{tabbing}\item 
+\mbox{\Hypertarget{structdiscord__gateway_a3623cfe04e07f5df2bd6686481936b2d}\label{structdiscord__gateway_a3623cfe04e07f5df2bd6686481936b2d}} 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>\mbox{\hyperlink{discord_8h_a8c10c2449cb2148f47b8a032af96dd60}{u64\_unix\_ms\_t}} \mbox{\hyperlink{structdiscord__gateway_a1891f0120357a36d3aa3bd563bbe6568}{interval\_ms}}\\
+\>\mbox{\hyperlink{discord_8h_a8c10c2449cb2148f47b8a032af96dd60}{u64\_unix\_ms\_t}} \mbox{\hyperlink{structdiscord__gateway_a50c25b5da8238334fe1202455f416924}{tstamp}}\\
+\} {\bfseries hbeat}\\
+
+\end{tabbing}\item 
+struct \mbox{\hyperlink{structdiscord__session}{discord\+\_\+session}} \mbox{\hyperlink{structdiscord__gateway_a16a5f1506e49d402a70783033e07a6ff}{session}}
+\item 
+struct sized\+\_\+buffer \mbox{\hyperlink{structdiscord__gateway_a75e0773822f26760ac47acb62ee93139}{prefix}}
+\item 
+\mbox{\Hypertarget{structdiscord__gateway_a344f893b7ff7357e12b33057b30e388f}\label{structdiscord__gateway_a344f893b7ff7357e12b33057b30e388f}} 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>char $\ast$ \mbox{\hyperlink{structdiscord__gateway_acbd942573fb44bab8fe7b5870fb39d34}{start}}\\
+\>char size\_t {\bfseries size}\\
+\>\mbox{\hyperlink{discord_8h_afff2ce011cd5b8d20b703fb01c105559}{message\_cb}} $\ast$ {\bfseries cb}\\
+\} {\bfseries on\_default\_cmd}\\
+
+\end{tabbing}\item 
+\mbox{\Hypertarget{structdiscord__gateway_a0a3a379a10290a5b041c01578f6e0639}\label{structdiscord__gateway_a0a3a379a10290a5b041c01578f6e0639}} 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>char $\ast$ \mbox{\hyperlink{structdiscord__gateway_acbd942573fb44bab8fe7b5870fb39d34}{start}}\\
+\>char size\_t {\bfseries size}\\
+\>\mbox{\hyperlink{discord_8h_afff2ce011cd5b8d20b703fb01c105559}{message\_cb}} $\ast$ {\bfseries cb}\\
+\} $\ast$ {\bfseries on\_cmd}\\
+
+\end{tabbing}\item 
+\mbox{\Hypertarget{structdiscord__gateway_aaf1019e1a1035246fc8f986c106b3cfd}\label{structdiscord__gateway_aaf1019e1a1035246fc8f986c106b3cfd}} 
+size\+\_\+t {\bfseries num\+\_\+cmd}
+\item 
+\mbox{\Hypertarget{structdiscord__gateway_a991def0fa430457504dc64c35add9c1b}\label{structdiscord__gateway_a991def0fa430457504dc64c35add9c1b}} 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>\mbox{\hyperlink{discord_8h_afc8f66a3993c5edb45a00ef997223d52}{idle\_cb}} $\ast$ \mbox{\hyperlink{structdiscord__gateway_ad6b7de41b37cfbce59acf9e0ebfef749}{on\_idle}}\\
+\>\mbox{\hyperlink{discord_8h_a9d756b50a8f1472d73e3dcc32625aa93}{event\_raw\_cb}} $\ast$ \mbox{\hyperlink{structdiscord__gateway_ac917425f3a03ff9a424cd0346e4f3b61}{on\_event\_raw}}\\
+\>\mbox{\hyperlink{discord_8h_afc8f66a3993c5edb45a00ef997223d52}{idle\_cb}} $\ast$ \mbox{\hyperlink{structdiscord__gateway_a4df951285689c35658bc74f3d23dbb16}{on\_ready}}\\
+\>\mbox{\hyperlink{discord_8h_ad49541dbe38d41a0c6f72392511ffe7f}{guild\_role\_cb}} $\ast$ \mbox{\hyperlink{structdiscord__gateway_ac9d6d9255d04485ed496b0b873d446b5}{on\_guild\_role\_create}}\\
+\>\mbox{\hyperlink{discord_8h_ad49541dbe38d41a0c6f72392511ffe7f}{guild\_role\_cb}} $\ast$ \mbox{\hyperlink{structdiscord__gateway_a48022424440e1edd02720a8325ac2019}{on\_guild\_role\_update}}\\
+\>\mbox{\hyperlink{discord_8h_a57231f38324853b103aaeead055fb668}{guild\_role\_delete\_cb}} $\ast$ \mbox{\hyperlink{structdiscord__gateway_af56465c5e688a40cbe32d024d97e9c48}{on\_guild\_role\_delete}}\\
+\>\mbox{\hyperlink{discord_8h_a74d2fa7659645194427e13dc15490e45}{guild\_member\_cb}} $\ast$ \mbox{\hyperlink{structdiscord__gateway_ac2b89e5e474a685decb659257dc62c3e}{on\_guild\_member\_add}}\\
+\>\mbox{\hyperlink{discord_8h_a22a5a8767f0b3e13675c765fdd439936}{guild\_member\_remove\_cb}} $\ast$ \mbox{\hyperlink{structdiscord__gateway_ab76d72017a764caccfaba18964ebaf35}{on\_guild\_member\_remove}}\\
+\>\mbox{\hyperlink{discord_8h_a74d2fa7659645194427e13dc15490e45}{guild\_member\_cb}} $\ast$ \mbox{\hyperlink{structdiscord__gateway_a37fe0d922a6f6e1a806f3c34ae3260b7}{on\_guild\_member\_update}}\\
+\>\mbox{\hyperlink{discord_8h_a9e932235fc87b6fd16d5fccfa139edd6}{guild\_ban\_cb}} $\ast$ \mbox{\hyperlink{structdiscord__gateway_a490385f6b1a7b9b9f14fb2546c5b82e9}{on\_guild\_ban\_add}}\\
+\>\mbox{\hyperlink{discord_8h_a9e932235fc87b6fd16d5fccfa139edd6}{guild\_ban\_cb}} $\ast$ \mbox{\hyperlink{structdiscord__gateway_a8e7b73729ddf515d0724603598bd4615}{on\_guild\_ban\_remove}}\\
+\>\mbox{\hyperlink{discord_8h_ad256daeaf95441e9bebba72ed7532c93}{channel\_cb}} $\ast$ \mbox{\hyperlink{structdiscord__gateway_a98d4ad5bb2759cd4d2d41a74b7b9dae7}{on\_channel\_create}}\\
+\>\mbox{\hyperlink{discord_8h_ad256daeaf95441e9bebba72ed7532c93}{channel\_cb}} $\ast$ \mbox{\hyperlink{structdiscord__gateway_a2bb07d50b5382ac22d09a8683fba508a}{on\_channel\_update}}\\
+\>\mbox{\hyperlink{discord_8h_ad256daeaf95441e9bebba72ed7532c93}{channel\_cb}} $\ast$ \mbox{\hyperlink{structdiscord__gateway_a017196fde663561e1fefeb21b6bb0282}{on\_channel\_delete}}\\
+\>\mbox{\hyperlink{discord_8h_aa1e842764ae5f29946ffb777407c531e}{channel\_pins\_update\_cb}} $\ast$ \mbox{\hyperlink{structdiscord__gateway_a06d483e5787789d748597a9fd9ace3c5}{on\_channel\_pins\_update}}\\
+\>\mbox{\hyperlink{discord_8h_afff2ce011cd5b8d20b703fb01c105559}{message\_cb}} $\ast$ \mbox{\hyperlink{structdiscord__gateway_a1febea6775bdf069eced453b44184b50}{on\_message\_create}}\\
+\>sb\_message\_cb $\ast$ \mbox{\hyperlink{structdiscord__gateway_af747d62ba16af1be83cd9d60f1171f00}{sb\_on\_message\_create}}\\
+\>\mbox{\hyperlink{discord_8h_afff2ce011cd5b8d20b703fb01c105559}{message\_cb}} $\ast$ \mbox{\hyperlink{structdiscord__gateway_a46f2b8ccd178daeeb82c57d9b57fb20f}{on\_message\_update}}\\
+\>sb\_message\_cb $\ast$ \mbox{\hyperlink{structdiscord__gateway_a32ad1c84342e9c685bcfdf8ad5fc5f3e}{sb\_on\_message\_update}}\\
+\>\mbox{\hyperlink{discord_8h_a1a03c333f0c96ccfe855460837c39640}{message\_delete\_cb}} $\ast$ \mbox{\hyperlink{structdiscord__gateway_a74c443ca65a9f3028925232942c7b455}{on\_message\_delete}}\\
+\>\mbox{\hyperlink{discord_8h_a875e7449cd237f26e535809bd0d5a3a8}{message\_delete\_bulk\_cb}} $\ast$ \mbox{\hyperlink{structdiscord__gateway_aadb186a13bda2bd4e56f25c6916421ff}{on\_message\_delete\_bulk}}\\
+\>\mbox{\hyperlink{discord_8h_a51d3f330bfd81a53015878b954183142}{message\_reaction\_add\_cb}} $\ast$ \mbox{\hyperlink{structdiscord__gateway_a1217bdf22a14ba76bd21a5d813b5eea3}{on\_message\_reaction\_add}}\\
+\>\mbox{\hyperlink{discord_8h_aa78388a1f092c880ef99029f1b383237}{message\_reaction\_remove\_cb}} $\ast$ \mbox{\hyperlink{structdiscord__gateway_a5a6c4c094227033b26fc8b010851d570}{on\_message\_reaction\_remove}}\\
+\>\mbox{\hyperlink{discord_8h_a19d3292473ccf8bdd8dc15a8aa9e9b33}{message\_reaction\_remove\_all\_cb}} $\ast$ \mbox{\hyperlink{structdiscord__gateway_a0ea670a0823f3ed3918d96c02f88d700}{on\_message\_reaction\_remove\_all}}\\
+\>\mbox{\hyperlink{discord_8h_aaf01e5b91be0bc56135d1a2d7bede82e}{message\_reaction\_remove\_emoji\_cb}} $\ast$ \mbox{\hyperlink{structdiscord__gateway_a5679ee36dd21b1549f984e4142e6286d}{on\_message\_reaction\_remove\_emoji}}\\
+\>\mbox{\hyperlink{discord_8h_a4734edb5ea9ea55094487d199227f943}{voice\_state\_update\_cb}} $\ast$ \mbox{\hyperlink{structdiscord__gateway_a622577ab46ae74d2022c9bc3602d9ae6}{on\_voice\_state\_update}}\\
+\>\mbox{\hyperlink{discord_8h_aee86b0424b3c03c48b60fa99a0814d2f}{voice\_server\_update\_cb}} $\ast$ \mbox{\hyperlink{structdiscord__gateway_a7d5e918c974c095a54f5fdc3cdab1a06}{on\_voice\_server\_update}}\\
+\} {\bfseries cbs}\\
+
+\end{tabbing}\item 
+\mbox{\Hypertarget{structdiscord__gateway_af25812c7e011e9cab05ccf1be5da31ea}\label{structdiscord__gateway_af25812c7e011e9cab05ccf1be5da31ea}} 
+enum \mbox{\hyperlink{discord_8h_a1b11a8fb0bb025f18e2b7b207979b314}{discord\+\_\+event\+\_\+handling\+\_\+mode}}($\ast$ {\bfseries blocking\+\_\+event\+\_\+handler} )(void $\ast$cxt)
+\item 
+int \mbox{\hyperlink{structdiscord__gateway_aa69001076c00c9267f759d6d69eec050}{ping\+\_\+ms}}
+\item 
+\mbox{\Hypertarget{structdiscord__gateway_af1443d7a9ab0625e6421a2cbb6deb0cb}\label{structdiscord__gateway_af1443d7a9ab0625e6421a2cbb6deb0cb}} 
+pthread\+\_\+mutex\+\_\+t {\bfseries lock}
+\item 
+struct discord\+\_\+user $\ast$ \mbox{\hyperlink{structdiscord__gateway_ae8735fb2c3b4327b5e31bc706f9a719c}{bot}}
+\item 
+struct sized\+\_\+buffer \mbox{\hyperlink{structdiscord__gateway_a3595a1cbbd88f6a10d736d2f28e8ca3e}{sb\+\_\+bot}}
+\item 
+struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$ \mbox{\hyperlink{structdiscord__gateway_a9fb7b8ea8fc1eff0f4e817373d5c13c9}{p\+\_\+client}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The handle used for establishing a Discord Gateway connection via Web\+Sockets. 
+
+\begin{DoxyNote}{Note}
+A wrapper over struct websockets 
+\end{DoxyNote}
+\begin{DoxySeeAlso}{See also}
+websockets.\+h 
+\end{DoxySeeAlso}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{structdiscord__gateway_a0c1cf462499400d561f776f98f3226d7}\label{structdiscord__gateway_a0c1cf462499400d561f776f98f3226d7}} 
+\index{discord\_gateway@{discord\_gateway}!attempt@{attempt}}
+\index{attempt@{attempt}!discord\_gateway@{discord\_gateway}}
+\doxysubsubsection{\texorpdfstring{attempt}{attempt}}
+{\footnotesize\ttfamily int discord\+\_\+gateway\+::attempt}
+
+current reconnect attempt (resets to 0 when succesful) \mbox{\Hypertarget{structdiscord__gateway_ae8735fb2c3b4327b5e31bc706f9a719c}\label{structdiscord__gateway_ae8735fb2c3b4327b5e31bc706f9a719c}} 
+\index{discord\_gateway@{discord\_gateway}!bot@{bot}}
+\index{bot@{bot}!discord\_gateway@{discord\_gateway}}
+\doxysubsubsection{\texorpdfstring{bot}{bot}}
+{\footnotesize\ttfamily struct discord\+\_\+user$\ast$ discord\+\_\+gateway\+::bot}
+
+the bot user structure \mbox{\Hypertarget{structdiscord__gateway_ae1bca7721ed89ea3f64bdc28f63bcba7}\label{structdiscord__gateway_ae1bca7721ed89ea3f64bdc28f63bcba7}} 
+\index{discord\_gateway@{discord\_gateway}!enable@{enable}}
+\index{enable@{enable}!discord\_gateway@{discord\_gateway}}
+\doxysubsubsection{\texorpdfstring{enable}{enable}}
+{\footnotesize\ttfamily bool discord\+\_\+gateway\+::enable}
+
+will attempt reconnecting if true \mbox{\Hypertarget{structdiscord__gateway_a8fdc5ba5da309c2e50b87604f28d22c6}\label{structdiscord__gateway_a8fdc5ba5da309c2e50b87604f28d22c6}} 
+\index{discord\_gateway@{discord\_gateway}!event\_data@{event\_data}}
+\index{event\_data@{event\_data}!discord\_gateway@{discord\_gateway}}
+\doxysubsubsection{\texorpdfstring{event\_data}{event\_data}}
+{\footnotesize\ttfamily struct sized\+\_\+buffer discord\+\_\+gateway\+::event\+\_\+data}
+
+field \textquotesingle{}d\textquotesingle{} \mbox{\Hypertarget{structdiscord__gateway_a9b1c71ec09a1866b5010f7e5a25c35a1}\label{structdiscord__gateway_a9b1c71ec09a1866b5010f7e5a25c35a1}} 
+\index{discord\_gateway@{discord\_gateway}!event\_name@{event\_name}}
+\index{event\_name@{event\_name}!discord\_gateway@{discord\_gateway}}
+\doxysubsubsection{\texorpdfstring{event\_name}{event\_name}}
+{\footnotesize\ttfamily char discord\+\_\+gateway\+::event\+\_\+name\mbox{[}64\mbox{]}}
+
+field \textquotesingle{}t\textquotesingle{} \mbox{\Hypertarget{structdiscord__gateway_af94e0262990b00c4ca80cb49cbd1455d}\label{structdiscord__gateway_af94e0262990b00c4ca80cb49cbd1455d}} 
+\index{discord\_gateway@{discord\_gateway}!id@{id}}
+\index{id@{id}!discord\_gateway@{discord\_gateway}}
+\doxysubsubsection{\texorpdfstring{id}{id}}
+{\footnotesize\ttfamily struct discord\+\_\+gateway\+\_\+identify$\ast$ discord\+\_\+gateway\+::id}
+
+this info sent expecting a connection authentication \mbox{\Hypertarget{structdiscord__gateway_a1891f0120357a36d3aa3bd563bbe6568}\label{structdiscord__gateway_a1891f0120357a36d3aa3bd563bbe6568}} 
+\index{discord\_gateway@{discord\_gateway}!interval\_ms@{interval\_ms}}
+\index{interval\_ms@{interval\_ms}!discord\_gateway@{discord\_gateway}}
+\doxysubsubsection{\texorpdfstring{interval\_ms}{interval\_ms}}
+{\footnotesize\ttfamily \mbox{\hyperlink{discord_8h_a8c10c2449cb2148f47b8a032af96dd60}{u64\+\_\+unix\+\_\+ms\+\_\+t}} discord\+\_\+gateway\+::interval\+\_\+ms}
+
+fixed interval between heartbeats \mbox{\Hypertarget{structdiscord__gateway_a3a758f591a57c3bc1e48993da6bcaabb}\label{structdiscord__gateway_a3a758f591a57c3bc1e48993da6bcaabb}} 
+\index{discord\_gateway@{discord\_gateway}!is\_ready@{is\_ready}}
+\index{is\_ready@{is\_ready}!discord\_gateway@{discord\_gateway}}
+\doxysubsubsection{\texorpdfstring{is\_ready}{is\_ready}}
+{\footnotesize\ttfamily bool discord\+\_\+gateway\+::is\+\_\+ready}
+
+can start sending/receiving additional events to discord \mbox{\Hypertarget{structdiscord__gateway_aa638bbbd9620716e2634b3886c51328a}\label{structdiscord__gateway_aa638bbbd9620716e2634b3886c51328a}} 
+\index{discord\_gateway@{discord\_gateway}!is\_resumable@{is\_resumable}}
+\index{is\_resumable@{is\_resumable}!discord\_gateway@{discord\_gateway}}
+\doxysubsubsection{\texorpdfstring{is\_resumable}{is\_resumable}}
+{\footnotesize\ttfamily bool discord\+\_\+gateway\+::is\+\_\+resumable}
+
+will attempt to resume session if connection shutsdowns \mbox{\Hypertarget{structdiscord__gateway_a98d4ad5bb2759cd4d2d41a74b7b9dae7}\label{structdiscord__gateway_a98d4ad5bb2759cd4d2d41a74b7b9dae7}} 
+\index{discord\_gateway@{discord\_gateway}!on\_channel\_create@{on\_channel\_create}}
+\index{on\_channel\_create@{on\_channel\_create}!discord\_gateway@{discord\_gateway}}
+\doxysubsubsection{\texorpdfstring{on\_channel\_create}{on\_channel\_create}}
+{\footnotesize\ttfamily \mbox{\hyperlink{discord_8h_ad256daeaf95441e9bebba72ed7532c93}{channel\+\_\+cb}}$\ast$ discord\+\_\+gateway\+::on\+\_\+channel\+\_\+create}
+
+triggers when a channel is created \mbox{\Hypertarget{structdiscord__gateway_a017196fde663561e1fefeb21b6bb0282}\label{structdiscord__gateway_a017196fde663561e1fefeb21b6bb0282}} 
+\index{discord\_gateway@{discord\_gateway}!on\_channel\_delete@{on\_channel\_delete}}
+\index{on\_channel\_delete@{on\_channel\_delete}!discord\_gateway@{discord\_gateway}}
+\doxysubsubsection{\texorpdfstring{on\_channel\_delete}{on\_channel\_delete}}
+{\footnotesize\ttfamily \mbox{\hyperlink{discord_8h_ad256daeaf95441e9bebba72ed7532c93}{channel\+\_\+cb}}$\ast$ discord\+\_\+gateway\+::on\+\_\+channel\+\_\+delete}
+
+triggers when a channel is deleted \mbox{\Hypertarget{structdiscord__gateway_a06d483e5787789d748597a9fd9ace3c5}\label{structdiscord__gateway_a06d483e5787789d748597a9fd9ace3c5}} 
+\index{discord\_gateway@{discord\_gateway}!on\_channel\_pins\_update@{on\_channel\_pins\_update}}
+\index{on\_channel\_pins\_update@{on\_channel\_pins\_update}!discord\_gateway@{discord\_gateway}}
+\doxysubsubsection{\texorpdfstring{on\_channel\_pins\_update}{on\_channel\_pins\_update}}
+{\footnotesize\ttfamily \mbox{\hyperlink{discord_8h_aa1e842764ae5f29946ffb777407c531e}{channel\+\_\+pins\+\_\+update\+\_\+cb}}$\ast$ discord\+\_\+gateway\+::on\+\_\+channel\+\_\+pins\+\_\+update}
+
+triggers when a channel pinned messages updates \mbox{\Hypertarget{structdiscord__gateway_a2bb07d50b5382ac22d09a8683fba508a}\label{structdiscord__gateway_a2bb07d50b5382ac22d09a8683fba508a}} 
+\index{discord\_gateway@{discord\_gateway}!on\_channel\_update@{on\_channel\_update}}
+\index{on\_channel\_update@{on\_channel\_update}!discord\_gateway@{discord\_gateway}}
+\doxysubsubsection{\texorpdfstring{on\_channel\_update}{on\_channel\_update}}
+{\footnotesize\ttfamily \mbox{\hyperlink{discord_8h_ad256daeaf95441e9bebba72ed7532c93}{channel\+\_\+cb}}$\ast$ discord\+\_\+gateway\+::on\+\_\+channel\+\_\+update}
+
+triggers when a channel is updated \mbox{\Hypertarget{structdiscord__gateway_ac917425f3a03ff9a424cd0346e4f3b61}\label{structdiscord__gateway_ac917425f3a03ff9a424cd0346e4f3b61}} 
+\index{discord\_gateway@{discord\_gateway}!on\_event\_raw@{on\_event\_raw}}
+\index{on\_event\_raw@{on\_event\_raw}!discord\_gateway@{discord\_gateway}}
+\doxysubsubsection{\texorpdfstring{on\_event\_raw}{on\_event\_raw}}
+{\footnotesize\ttfamily \mbox{\hyperlink{discord_8h_a9d756b50a8f1472d73e3dcc32625aa93}{event\+\_\+raw\+\_\+cb}}$\ast$ discord\+\_\+gateway\+::on\+\_\+event\+\_\+raw}
+
+triggers for every event if set, receive its raw J\+S\+ON string \mbox{\Hypertarget{structdiscord__gateway_a490385f6b1a7b9b9f14fb2546c5b82e9}\label{structdiscord__gateway_a490385f6b1a7b9b9f14fb2546c5b82e9}} 
+\index{discord\_gateway@{discord\_gateway}!on\_guild\_ban\_add@{on\_guild\_ban\_add}}
+\index{on\_guild\_ban\_add@{on\_guild\_ban\_add}!discord\_gateway@{discord\_gateway}}
+\doxysubsubsection{\texorpdfstring{on\_guild\_ban\_add}{on\_guild\_ban\_add}}
+{\footnotesize\ttfamily \mbox{\hyperlink{discord_8h_a9e932235fc87b6fd16d5fccfa139edd6}{guild\+\_\+ban\+\_\+cb}}$\ast$ discord\+\_\+gateway\+::on\+\_\+guild\+\_\+ban\+\_\+add}
+
+triggers when a ban occurs \mbox{\Hypertarget{structdiscord__gateway_a8e7b73729ddf515d0724603598bd4615}\label{structdiscord__gateway_a8e7b73729ddf515d0724603598bd4615}} 
+\index{discord\_gateway@{discord\_gateway}!on\_guild\_ban\_remove@{on\_guild\_ban\_remove}}
+\index{on\_guild\_ban\_remove@{on\_guild\_ban\_remove}!discord\_gateway@{discord\_gateway}}
+\doxysubsubsection{\texorpdfstring{on\_guild\_ban\_remove}{on\_guild\_ban\_remove}}
+{\footnotesize\ttfamily \mbox{\hyperlink{discord_8h_a9e932235fc87b6fd16d5fccfa139edd6}{guild\+\_\+ban\+\_\+cb}}$\ast$ discord\+\_\+gateway\+::on\+\_\+guild\+\_\+ban\+\_\+remove}
+
+triggers when a ban is removed \mbox{\Hypertarget{structdiscord__gateway_ac2b89e5e474a685decb659257dc62c3e}\label{structdiscord__gateway_ac2b89e5e474a685decb659257dc62c3e}} 
+\index{discord\_gateway@{discord\_gateway}!on\_guild\_member\_add@{on\_guild\_member\_add}}
+\index{on\_guild\_member\_add@{on\_guild\_member\_add}!discord\_gateway@{discord\_gateway}}
+\doxysubsubsection{\texorpdfstring{on\_guild\_member\_add}{on\_guild\_member\_add}}
+{\footnotesize\ttfamily \mbox{\hyperlink{discord_8h_a74d2fa7659645194427e13dc15490e45}{guild\+\_\+member\+\_\+cb}}$\ast$ discord\+\_\+gateway\+::on\+\_\+guild\+\_\+member\+\_\+add}
+
+triggers when a guild member joins a guild \mbox{\Hypertarget{structdiscord__gateway_ab76d72017a764caccfaba18964ebaf35}\label{structdiscord__gateway_ab76d72017a764caccfaba18964ebaf35}} 
+\index{discord\_gateway@{discord\_gateway}!on\_guild\_member\_remove@{on\_guild\_member\_remove}}
+\index{on\_guild\_member\_remove@{on\_guild\_member\_remove}!discord\_gateway@{discord\_gateway}}
+\doxysubsubsection{\texorpdfstring{on\_guild\_member\_remove}{on\_guild\_member\_remove}}
+{\footnotesize\ttfamily \mbox{\hyperlink{discord_8h_a22a5a8767f0b3e13675c765fdd439936}{guild\+\_\+member\+\_\+remove\+\_\+cb}}$\ast$ discord\+\_\+gateway\+::on\+\_\+guild\+\_\+member\+\_\+remove}
+
+triggers when a guild member is removed from a guild \mbox{\Hypertarget{structdiscord__gateway_a37fe0d922a6f6e1a806f3c34ae3260b7}\label{structdiscord__gateway_a37fe0d922a6f6e1a806f3c34ae3260b7}} 
+\index{discord\_gateway@{discord\_gateway}!on\_guild\_member\_update@{on\_guild\_member\_update}}
+\index{on\_guild\_member\_update@{on\_guild\_member\_update}!discord\_gateway@{discord\_gateway}}
+\doxysubsubsection{\texorpdfstring{on\_guild\_member\_update}{on\_guild\_member\_update}}
+{\footnotesize\ttfamily \mbox{\hyperlink{discord_8h_a74d2fa7659645194427e13dc15490e45}{guild\+\_\+member\+\_\+cb}}$\ast$ discord\+\_\+gateway\+::on\+\_\+guild\+\_\+member\+\_\+update}
+
+triggers when a guild member status is updated (ex\+: receive role) \mbox{\Hypertarget{structdiscord__gateway_ac9d6d9255d04485ed496b0b873d446b5}\label{structdiscord__gateway_ac9d6d9255d04485ed496b0b873d446b5}} 
+\index{discord\_gateway@{discord\_gateway}!on\_guild\_role\_create@{on\_guild\_role\_create}}
+\index{on\_guild\_role\_create@{on\_guild\_role\_create}!discord\_gateway@{discord\_gateway}}
+\doxysubsubsection{\texorpdfstring{on\_guild\_role\_create}{on\_guild\_role\_create}}
+{\footnotesize\ttfamily \mbox{\hyperlink{discord_8h_ad49541dbe38d41a0c6f72392511ffe7f}{guild\+\_\+role\+\_\+cb}}$\ast$ discord\+\_\+gateway\+::on\+\_\+guild\+\_\+role\+\_\+create}
+
+triggers when a guild role is created \mbox{\Hypertarget{structdiscord__gateway_af56465c5e688a40cbe32d024d97e9c48}\label{structdiscord__gateway_af56465c5e688a40cbe32d024d97e9c48}} 
+\index{discord\_gateway@{discord\_gateway}!on\_guild\_role\_delete@{on\_guild\_role\_delete}}
+\index{on\_guild\_role\_delete@{on\_guild\_role\_delete}!discord\_gateway@{discord\_gateway}}
+\doxysubsubsection{\texorpdfstring{on\_guild\_role\_delete}{on\_guild\_role\_delete}}
+{\footnotesize\ttfamily \mbox{\hyperlink{discord_8h_a57231f38324853b103aaeead055fb668}{guild\+\_\+role\+\_\+delete\+\_\+cb}}$\ast$ discord\+\_\+gateway\+::on\+\_\+guild\+\_\+role\+\_\+delete}
+
+triggers when a guild role is deleted \mbox{\Hypertarget{structdiscord__gateway_a48022424440e1edd02720a8325ac2019}\label{structdiscord__gateway_a48022424440e1edd02720a8325ac2019}} 
+\index{discord\_gateway@{discord\_gateway}!on\_guild\_role\_update@{on\_guild\_role\_update}}
+\index{on\_guild\_role\_update@{on\_guild\_role\_update}!discord\_gateway@{discord\_gateway}}
+\doxysubsubsection{\texorpdfstring{on\_guild\_role\_update}{on\_guild\_role\_update}}
+{\footnotesize\ttfamily \mbox{\hyperlink{discord_8h_ad49541dbe38d41a0c6f72392511ffe7f}{guild\+\_\+role\+\_\+cb}}$\ast$ discord\+\_\+gateway\+::on\+\_\+guild\+\_\+role\+\_\+update}
+
+triggers when a guild role is updated \mbox{\Hypertarget{structdiscord__gateway_ad6b7de41b37cfbce59acf9e0ebfef749}\label{structdiscord__gateway_ad6b7de41b37cfbce59acf9e0ebfef749}} 
+\index{discord\_gateway@{discord\_gateway}!on\_idle@{on\_idle}}
+\index{on\_idle@{on\_idle}!discord\_gateway@{discord\_gateway}}
+\doxysubsubsection{\texorpdfstring{on\_idle}{on\_idle}}
+{\footnotesize\ttfamily \mbox{\hyperlink{discord_8h_afc8f66a3993c5edb45a00ef997223d52}{idle\+\_\+cb}}$\ast$ discord\+\_\+gateway\+::on\+\_\+idle}
+
+triggers on every event loop iteration \mbox{\Hypertarget{structdiscord__gateway_a1febea6775bdf069eced453b44184b50}\label{structdiscord__gateway_a1febea6775bdf069eced453b44184b50}} 
+\index{discord\_gateway@{discord\_gateway}!on\_message\_create@{on\_message\_create}}
+\index{on\_message\_create@{on\_message\_create}!discord\_gateway@{discord\_gateway}}
+\doxysubsubsection{\texorpdfstring{on\_message\_create}{on\_message\_create}}
+{\footnotesize\ttfamily \mbox{\hyperlink{discord_8h_afff2ce011cd5b8d20b703fb01c105559}{message\+\_\+cb}}$\ast$ discord\+\_\+gateway\+::on\+\_\+message\+\_\+create}
+
+triggers when a message is created \mbox{\Hypertarget{structdiscord__gateway_a74c443ca65a9f3028925232942c7b455}\label{structdiscord__gateway_a74c443ca65a9f3028925232942c7b455}} 
+\index{discord\_gateway@{discord\_gateway}!on\_message\_delete@{on\_message\_delete}}
+\index{on\_message\_delete@{on\_message\_delete}!discord\_gateway@{discord\_gateway}}
+\doxysubsubsection{\texorpdfstring{on\_message\_delete}{on\_message\_delete}}
+{\footnotesize\ttfamily \mbox{\hyperlink{discord_8h_a1a03c333f0c96ccfe855460837c39640}{message\+\_\+delete\+\_\+cb}}$\ast$ discord\+\_\+gateway\+::on\+\_\+message\+\_\+delete}
+
+triggers when a message is deleted \mbox{\Hypertarget{structdiscord__gateway_aadb186a13bda2bd4e56f25c6916421ff}\label{structdiscord__gateway_aadb186a13bda2bd4e56f25c6916421ff}} 
+\index{discord\_gateway@{discord\_gateway}!on\_message\_delete\_bulk@{on\_message\_delete\_bulk}}
+\index{on\_message\_delete\_bulk@{on\_message\_delete\_bulk}!discord\_gateway@{discord\_gateway}}
+\doxysubsubsection{\texorpdfstring{on\_message\_delete\_bulk}{on\_message\_delete\_bulk}}
+{\footnotesize\ttfamily \mbox{\hyperlink{discord_8h_a875e7449cd237f26e535809bd0d5a3a8}{message\+\_\+delete\+\_\+bulk\+\_\+cb}}$\ast$ discord\+\_\+gateway\+::on\+\_\+message\+\_\+delete\+\_\+bulk}
+
+triggers when a bulk of messages is deleted \mbox{\Hypertarget{structdiscord__gateway_a1217bdf22a14ba76bd21a5d813b5eea3}\label{structdiscord__gateway_a1217bdf22a14ba76bd21a5d813b5eea3}} 
+\index{discord\_gateway@{discord\_gateway}!on\_message\_reaction\_add@{on\_message\_reaction\_add}}
+\index{on\_message\_reaction\_add@{on\_message\_reaction\_add}!discord\_gateway@{discord\_gateway}}
+\doxysubsubsection{\texorpdfstring{on\_message\_reaction\_add}{on\_message\_reaction\_add}}
+{\footnotesize\ttfamily \mbox{\hyperlink{discord_8h_a51d3f330bfd81a53015878b954183142}{message\+\_\+reaction\+\_\+add\+\_\+cb}}$\ast$ discord\+\_\+gateway\+::on\+\_\+message\+\_\+reaction\+\_\+add}
+
+triggers when a reaction is added to a message \mbox{\Hypertarget{structdiscord__gateway_a5a6c4c094227033b26fc8b010851d570}\label{structdiscord__gateway_a5a6c4c094227033b26fc8b010851d570}} 
+\index{discord\_gateway@{discord\_gateway}!on\_message\_reaction\_remove@{on\_message\_reaction\_remove}}
+\index{on\_message\_reaction\_remove@{on\_message\_reaction\_remove}!discord\_gateway@{discord\_gateway}}
+\doxysubsubsection{\texorpdfstring{on\_message\_reaction\_remove}{on\_message\_reaction\_remove}}
+{\footnotesize\ttfamily \mbox{\hyperlink{discord_8h_aa78388a1f092c880ef99029f1b383237}{message\+\_\+reaction\+\_\+remove\+\_\+cb}}$\ast$ discord\+\_\+gateway\+::on\+\_\+message\+\_\+reaction\+\_\+remove}
+
+triggers when a reaction is removed from a message \mbox{\Hypertarget{structdiscord__gateway_a0ea670a0823f3ed3918d96c02f88d700}\label{structdiscord__gateway_a0ea670a0823f3ed3918d96c02f88d700}} 
+\index{discord\_gateway@{discord\_gateway}!on\_message\_reaction\_remove\_all@{on\_message\_reaction\_remove\_all}}
+\index{on\_message\_reaction\_remove\_all@{on\_message\_reaction\_remove\_all}!discord\_gateway@{discord\_gateway}}
+\doxysubsubsection{\texorpdfstring{on\_message\_reaction\_remove\_all}{on\_message\_reaction\_remove\_all}}
+{\footnotesize\ttfamily \mbox{\hyperlink{discord_8h_a19d3292473ccf8bdd8dc15a8aa9e9b33}{message\+\_\+reaction\+\_\+remove\+\_\+all\+\_\+cb}}$\ast$ discord\+\_\+gateway\+::on\+\_\+message\+\_\+reaction\+\_\+remove\+\_\+all}
+
+triggers when all reactions are removed from a message \mbox{\Hypertarget{structdiscord__gateway_a5679ee36dd21b1549f984e4142e6286d}\label{structdiscord__gateway_a5679ee36dd21b1549f984e4142e6286d}} 
+\index{discord\_gateway@{discord\_gateway}!on\_message\_reaction\_remove\_emoji@{on\_message\_reaction\_remove\_emoji}}
+\index{on\_message\_reaction\_remove\_emoji@{on\_message\_reaction\_remove\_emoji}!discord\_gateway@{discord\_gateway}}
+\doxysubsubsection{\texorpdfstring{on\_message\_reaction\_remove\_emoji}{on\_message\_reaction\_remove\_emoji}}
+{\footnotesize\ttfamily \mbox{\hyperlink{discord_8h_aaf01e5b91be0bc56135d1a2d7bede82e}{message\+\_\+reaction\+\_\+remove\+\_\+emoji\+\_\+cb}}$\ast$ discord\+\_\+gateway\+::on\+\_\+message\+\_\+reaction\+\_\+remove\+\_\+emoji}
+
+triggers when all occurences of a specific reaction is removed from a message \mbox{\Hypertarget{structdiscord__gateway_a46f2b8ccd178daeeb82c57d9b57fb20f}\label{structdiscord__gateway_a46f2b8ccd178daeeb82c57d9b57fb20f}} 
+\index{discord\_gateway@{discord\_gateway}!on\_message\_update@{on\_message\_update}}
+\index{on\_message\_update@{on\_message\_update}!discord\_gateway@{discord\_gateway}}
+\doxysubsubsection{\texorpdfstring{on\_message\_update}{on\_message\_update}}
+{\footnotesize\ttfamily \mbox{\hyperlink{discord_8h_afff2ce011cd5b8d20b703fb01c105559}{message\+\_\+cb}}$\ast$ discord\+\_\+gateway\+::on\+\_\+message\+\_\+update}
+
+trigger when a message is updated \mbox{\Hypertarget{structdiscord__gateway_a4df951285689c35658bc74f3d23dbb16}\label{structdiscord__gateway_a4df951285689c35658bc74f3d23dbb16}} 
+\index{discord\_gateway@{discord\_gateway}!on\_ready@{on\_ready}}
+\index{on\_ready@{on\_ready}!discord\_gateway@{discord\_gateway}}
+\doxysubsubsection{\texorpdfstring{on\_ready}{on\_ready}}
+{\footnotesize\ttfamily \mbox{\hyperlink{discord_8h_afc8f66a3993c5edb45a00ef997223d52}{idle\+\_\+cb}}$\ast$ discord\+\_\+gateway\+::on\+\_\+ready}
+
+triggers when connection first establishes \mbox{\Hypertarget{structdiscord__gateway_a7d5e918c974c095a54f5fdc3cdab1a06}\label{structdiscord__gateway_a7d5e918c974c095a54f5fdc3cdab1a06}} 
+\index{discord\_gateway@{discord\_gateway}!on\_voice\_server\_update@{on\_voice\_server\_update}}
+\index{on\_voice\_server\_update@{on\_voice\_server\_update}!discord\_gateway@{discord\_gateway}}
+\doxysubsubsection{\texorpdfstring{on\_voice\_server\_update}{on\_voice\_server\_update}}
+{\footnotesize\ttfamily \mbox{\hyperlink{discord_8h_aee86b0424b3c03c48b60fa99a0814d2f}{voice\+\_\+server\+\_\+update\+\_\+cb}}$\ast$ discord\+\_\+gateway\+::on\+\_\+voice\+\_\+server\+\_\+update}
+
+triggers when a voice server is updated \mbox{\Hypertarget{structdiscord__gateway_a622577ab46ae74d2022c9bc3602d9ae6}\label{structdiscord__gateway_a622577ab46ae74d2022c9bc3602d9ae6}} 
+\index{discord\_gateway@{discord\_gateway}!on\_voice\_state\_update@{on\_voice\_state\_update}}
+\index{on\_voice\_state\_update@{on\_voice\_state\_update}!discord\_gateway@{discord\_gateway}}
+\doxysubsubsection{\texorpdfstring{on\_voice\_state\_update}{on\_voice\_state\_update}}
+{\footnotesize\ttfamily \mbox{\hyperlink{discord_8h_a4734edb5ea9ea55094487d199227f943}{voice\+\_\+state\+\_\+update\+\_\+cb}}$\ast$ discord\+\_\+gateway\+::on\+\_\+voice\+\_\+state\+\_\+update}
+
+triggers when a voice state is updated \mbox{\Hypertarget{structdiscord__gateway_a56baf6a6c365f558e2fa5b4602d88ea3}\label{structdiscord__gateway_a56baf6a6c365f558e2fa5b4602d88ea3}} 
+\index{discord\_gateway@{discord\_gateway}!opcode@{opcode}}
+\index{opcode@{opcode}!discord\_gateway@{discord\_gateway}}
+\doxysubsubsection{\texorpdfstring{opcode}{opcode}}
+{\footnotesize\ttfamily enum discord\+\_\+gateway\+\_\+opcodes discord\+\_\+gateway\+::opcode}
+
+field \textquotesingle{}op\textquotesingle{} \mbox{\Hypertarget{structdiscord__gateway_a9fb7b8ea8fc1eff0f4e817373d5c13c9}\label{structdiscord__gateway_a9fb7b8ea8fc1eff0f4e817373d5c13c9}} 
+\index{discord\_gateway@{discord\_gateway}!p\_client@{p\_client}}
+\index{p\_client@{p\_client}!discord\_gateway@{discord\_gateway}}
+\doxysubsubsection{\texorpdfstring{p\_client}{p\_client}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structdiscord}{discord}}$\ast$ discord\+\_\+gateway\+::p\+\_\+client}
+
+pointer to client this struct is part of \mbox{\Hypertarget{structdiscord__gateway_aa69001076c00c9267f759d6d69eec050}\label{structdiscord__gateway_aa69001076c00c9267f759d6d69eec050}} 
+\index{discord\_gateway@{discord\_gateway}!ping\_ms@{ping\_ms}}
+\index{ping\_ms@{ping\_ms}!discord\_gateway@{discord\_gateway}}
+\doxysubsubsection{\texorpdfstring{ping\_ms}{ping\_ms}}
+{\footnotesize\ttfamily int discord\+\_\+gateway\+::ping\+\_\+ms}
+
+latency between client and websockets server, calculated by the interval between H\+E\+A\+R\+T\+B\+E\+AT and H\+E\+A\+R\+T\+B\+E\+A\+T\+\_\+\+A\+CK \mbox{\Hypertarget{structdiscord__gateway_a75e0773822f26760ac47acb62ee93139}\label{structdiscord__gateway_a75e0773822f26760ac47acb62ee93139}} 
+\index{discord\_gateway@{discord\_gateway}!prefix@{prefix}}
+\index{prefix@{prefix}!discord\_gateway@{discord\_gateway}}
+\doxysubsubsection{\texorpdfstring{prefix}{prefix}}
+{\footnotesize\ttfamily struct sized\+\_\+buffer discord\+\_\+gateway\+::prefix}
+
+the prefix expected before every command \begin{DoxySeeAlso}{See also}
+\mbox{\hyperlink{discord_8h_a13d9f16d62fea7cebdb6c24d57f685a1}{discord\+\_\+set\+\_\+prefix()}} 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{structdiscord__gateway_a3595a1cbbd88f6a10d736d2f28e8ca3e}\label{structdiscord__gateway_a3595a1cbbd88f6a10d736d2f28e8ca3e}} 
+\index{discord\_gateway@{discord\_gateway}!sb\_bot@{sb\_bot}}
+\index{sb\_bot@{sb\_bot}!discord\_gateway@{discord\_gateway}}
+\doxysubsubsection{\texorpdfstring{sb\_bot}{sb\_bot}}
+{\footnotesize\ttfamily struct sized\+\_\+buffer discord\+\_\+gateway\+::sb\+\_\+bot}
+
+\begin{DoxyRefDesc}{Todo}
+\item[\mbox{\hyperlink{todo__todo000013}{Todo}}]this is temporary \end{DoxyRefDesc}
+\mbox{\Hypertarget{structdiscord__gateway_af747d62ba16af1be83cd9d60f1171f00}\label{structdiscord__gateway_af747d62ba16af1be83cd9d60f1171f00}} 
+\index{discord\_gateway@{discord\_gateway}!sb\_on\_message\_create@{sb\_on\_message\_create}}
+\index{sb\_on\_message\_create@{sb\_on\_message\_create}!discord\_gateway@{discord\_gateway}}
+\doxysubsubsection{\texorpdfstring{sb\_on\_message\_create}{sb\_on\_message\_create}}
+{\footnotesize\ttfamily sb\+\_\+message\+\_\+cb$\ast$ discord\+\_\+gateway\+::sb\+\_\+on\+\_\+message\+\_\+create}
+
+\begin{DoxyRefDesc}{Todo}
+\item[\mbox{\hyperlink{todo__todo000014}{Todo}}]this is temporary \end{DoxyRefDesc}
+\mbox{\Hypertarget{structdiscord__gateway_a32ad1c84342e9c685bcfdf8ad5fc5f3e}\label{structdiscord__gateway_a32ad1c84342e9c685bcfdf8ad5fc5f3e}} 
+\index{discord\_gateway@{discord\_gateway}!sb\_on\_message\_update@{sb\_on\_message\_update}}
+\index{sb\_on\_message\_update@{sb\_on\_message\_update}!discord\_gateway@{discord\_gateway}}
+\doxysubsubsection{\texorpdfstring{sb\_on\_message\_update}{sb\_on\_message\_update}}
+{\footnotesize\ttfamily sb\+\_\+message\+\_\+cb$\ast$ discord\+\_\+gateway\+::sb\+\_\+on\+\_\+message\+\_\+update}
+
+\begin{DoxyRefDesc}{Todo}
+\item[\mbox{\hyperlink{todo__todo000015}{Todo}}]this is temporary \end{DoxyRefDesc}
+\mbox{\Hypertarget{structdiscord__gateway_a57b7fd95dfd9f28554324e733b9ce78f}\label{structdiscord__gateway_a57b7fd95dfd9f28554324e733b9ce78f}} 
+\index{discord\_gateway@{discord\_gateway}!seq\_number@{seq\_number}}
+\index{seq\_number@{seq\_number}!discord\_gateway@{discord\_gateway}}
+\doxysubsubsection{\texorpdfstring{seq\_number}{seq\_number}}
+{\footnotesize\ttfamily int discord\+\_\+gateway\+::seq\+\_\+number}
+
+field \textquotesingle{}s\textquotesingle{} \mbox{\Hypertarget{structdiscord__gateway_a16a5f1506e49d402a70783033e07a6ff}\label{structdiscord__gateway_a16a5f1506e49d402a70783033e07a6ff}} 
+\index{discord\_gateway@{discord\_gateway}!session@{session}}
+\index{session@{session}!discord\_gateway@{discord\_gateway}}
+\doxysubsubsection{\texorpdfstring{session}{session}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structdiscord__session}{discord\+\_\+session}} discord\+\_\+gateway\+::session}
+
+on-\/going Discord Gateway session \mbox{\Hypertarget{structdiscord__gateway_aaebae21be2a555770440eac6aaf60d39}\label{structdiscord__gateway_aaebae21be2a555770440eac6aaf60d39}} 
+\index{discord\_gateway@{discord\_gateway}!session\_id@{session\_id}}
+\index{session\_id@{session\_id}!discord\_gateway@{discord\_gateway}}
+\doxysubsubsection{\texorpdfstring{session\_id}{session\_id}}
+{\footnotesize\ttfamily char discord\+\_\+gateway\+::session\+\_\+id\mbox{[}512\mbox{]}}
+
+the session id (for resuming lost connections) \mbox{\Hypertarget{structdiscord__gateway_a776f9988eef3120151973b91b5d297f0}\label{structdiscord__gateway_a776f9988eef3120151973b91b5d297f0}} 
+\index{discord\_gateway@{discord\_gateway}!shutdown@{shutdown}}
+\index{shutdown@{shutdown}!discord\_gateway@{discord\_gateway}}
+\doxysubsubsection{\texorpdfstring{shutdown}{shutdown}}
+{\footnotesize\ttfamily bool discord\+\_\+gateway\+::shutdown}
+
+if \#true shutdown websockets connection as soon as possible \mbox{\Hypertarget{structdiscord__gateway_acbd942573fb44bab8fe7b5870fb39d34}\label{structdiscord__gateway_acbd942573fb44bab8fe7b5870fb39d34}} 
+\index{discord\_gateway@{discord\_gateway}!start@{start}}
+\index{start@{start}!discord\_gateway@{discord\_gateway}}
+\doxysubsubsection{\texorpdfstring{start}{start}}
+{\footnotesize\ttfamily char$\ast$ discord\+\_\+gateway\+::start}
+
+$<$ user\textquotesingle{}s command/callback pair and amount of callback pairs \begin{DoxySeeAlso}{See also}
+\mbox{\hyperlink{discord_8h_a996d04265f563d5be9c22cef411c11aa}{discord\+\_\+set\+\_\+on\+\_\+command()}} 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{structdiscord__gateway_a954b1a27b79a1e1eaa7944022dcaeed0}\label{structdiscord__gateway_a954b1a27b79a1e1eaa7944022dcaeed0}} 
+\index{discord\_gateway@{discord\_gateway}!threshold@{threshold}}
+\index{threshold@{threshold}!discord\_gateway@{discord\_gateway}}
+\doxysubsubsection{\texorpdfstring{threshold}{threshold}}
+{\footnotesize\ttfamily int discord\+\_\+gateway\+::threshold}
+
+max amount of reconnects before giving up \mbox{\Hypertarget{structdiscord__gateway_a50c25b5da8238334fe1202455f416924}\label{structdiscord__gateway_a50c25b5da8238334fe1202455f416924}} 
+\index{discord\_gateway@{discord\_gateway}!tstamp@{tstamp}}
+\index{tstamp@{tstamp}!discord\_gateway@{discord\_gateway}}
+\doxysubsubsection{\texorpdfstring{tstamp}{tstamp}}
+{\footnotesize\ttfamily \mbox{\hyperlink{discord_8h_a8c10c2449cb2148f47b8a032af96dd60}{u64\+\_\+unix\+\_\+ms\+\_\+t}} discord\+\_\+gateway\+::tstamp}
+
+start pulse timestamp in milliseconds \mbox{\Hypertarget{structdiscord__gateway_a14f4f4117925f91a02e3b9a47cb50475}\label{structdiscord__gateway_a14f4f4117925f91a02e3b9a47cb50475}} 
+\index{discord\_gateway@{discord\_gateway}!ws@{ws}}
+\index{ws@{ws}!discord\_gateway@{discord\_gateway}}
+\doxysubsubsection{\texorpdfstring{ws}{ws}}
+{\footnotesize\ttfamily struct websockets$\ast$ discord\+\_\+gateway\+::ws}
+
+the websockets handle that connects to Discord 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/lucasmull/\+Trabalho/orca/\mbox{\hyperlink{discord-internal_8h}{discord-\/internal.\+h}}\end{DoxyCompactItemize}

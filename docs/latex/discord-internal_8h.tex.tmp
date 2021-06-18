@@ -1,0 +1,326 @@
+\hypertarget{discord-internal_8h}{}\doxysection{/home/lucasmull/\+Trabalho/orca/discord-\/internal.h File Reference}
+\label{discord-internal_8h}\index{/home/lucasmull/Trabalho/orca/discord-\/internal.h@{/home/lucasmull/Trabalho/orca/discord-\/internal.h}}
+
+
+File containing internal functions and datatypes.  
+
+
+{\ttfamily \#include $<$inttypes.\+h$>$}\newline
+{\ttfamily \#include $<$pthread.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}uthash.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}json-\/scanf.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}json-\/actor.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}json-\/actor-\/boxed.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}logconf.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}user-\/agent.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}websockets.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}orka-\/utils.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}discord-\/voice-\/connections.\+h\char`\"{}}\newline
+Include dependency graph for discord-\/internal.h\+:
+% FIG 0
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structdiscord__adapter}{discord\+\_\+adapter}}
+\begin{DoxyCompactList}\small\item\em The handle used for performing H\+T\+TP Requests. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structdiscord__bucket}{discord\+\_\+bucket}}
+\begin{DoxyCompactList}\small\item\em The bucket struct that will handle ratelimiting. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structdiscord__gateway}{discord\+\_\+gateway}}
+\begin{DoxyCompactList}\small\item\em The handle used for establishing a Discord Gateway connection via Web\+Sockets. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structdiscord}{discord}}
+\begin{DoxyCompactList}\small\item\em The Discord Client structure. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structdiscord__event__cxt}{discord\+\_\+event\+\_\+cxt}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{discord-internal_8h_ab1440d1648385b0cce185551712f2a75}\label{discord-internal_8h_ab1440d1648385b0cce185551712f2a75}} 
+\#define {\bfseries N\+U\+M\+\_\+\+V\+CS}~512
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{discord-internal_8h_abcd9b5bb8e2b372bc109ec6c751d23ca}{discord\+\_\+adapter\+\_\+init}} (struct \mbox{\hyperlink{structdiscord__adapter}{discord\+\_\+adapter}} $\ast$adapter, struct logconf $\ast$config, struct sized\+\_\+buffer $\ast$token)
+\begin{DoxyCompactList}\small\item\em Initialize the fields of a Discord Adapter handle. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{discord-internal_8h_a38db97551a3760ca678f6d765ff37f98}{discord\+\_\+adapter\+\_\+cleanup}} (struct \mbox{\hyperlink{structdiscord__adapter}{discord\+\_\+adapter}} $\ast$adapter)
+\begin{DoxyCompactList}\small\item\em Free a Discord Adapter handle. \end{DoxyCompactList}\item 
+O\+R\+C\+Acode \mbox{\hyperlink{discord-internal_8h_ac929e6b0a7cc7029b1e3efbe6134519f}{discord\+\_\+adapter\+\_\+run}} (struct \mbox{\hyperlink{structdiscord__adapter}{discord\+\_\+adapter}} $\ast$adapter, struct ua\+\_\+resp\+\_\+handle $\ast$resp\+\_\+handle, struct sized\+\_\+buffer $\ast$req\+\_\+body, enum http\+\_\+method http\+\_\+method, char endpoint\mbox{[}$\,$\mbox{]},...)
+\begin{DoxyCompactList}\small\item\em Start a H\+T\+TP Request to Discord. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{discord-internal_8h_aed725e74b163eff80be830bb3fd9f42d}{discord\+\_\+buckets\+\_\+cleanup}} (struct \mbox{\hyperlink{structdiscord__adapter}{discord\+\_\+adapter}} $\ast$adapter)
+\begin{DoxyCompactList}\small\item\em Free client buckets. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{discord-internal_8h_a82c20ff44bc4a01a9f6a77b0aef49426}{discord\+\_\+bucket\+\_\+try\+\_\+cooldown}} (struct \mbox{\hyperlink{structdiscord__bucket}{discord\+\_\+bucket}} $\ast$bucket)
+\begin{DoxyCompactList}\small\item\em Check bucket for ratelimit cooldown. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structdiscord__bucket}{discord\+\_\+bucket}} $\ast$ \mbox{\hyperlink{discord-internal_8h_a7a744851301642d398b255b5e541de69}{discord\+\_\+bucket\+\_\+try\+\_\+get}} (struct \mbox{\hyperlink{structdiscord__adapter}{discord\+\_\+adapter}} $\ast$adapter, const char route\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Get existing bucket with {\ttfamily route}. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{discord-internal_8h_ae0e3506aff4c36827f13ee45e4ffe670}{discord\+\_\+bucket\+\_\+build}} (struct \mbox{\hyperlink{structdiscord__adapter}{discord\+\_\+adapter}} $\ast$adapter, struct \mbox{\hyperlink{structdiscord__bucket}{discord\+\_\+bucket}} $\ast$bucket, const char route\mbox{[}$\,$\mbox{]}, struct ua\+\_\+info $\ast$info)
+\begin{DoxyCompactList}\small\item\em Update the bucket with response header data. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{discord-internal_8h_aef325194684c5bce1d51f2da6d81dbfa}{discord\+\_\+gateway\+\_\+init}} (struct \mbox{\hyperlink{structdiscord__gateway}{discord\+\_\+gateway}} $\ast$gw, struct logconf $\ast$config, struct sized\+\_\+buffer $\ast$token)
+\item 
+void \mbox{\hyperlink{discord-internal_8h_ab66259b9988312a38de984c9c54e49f0}{discord\+\_\+gateway\+\_\+cleanup}} (struct \mbox{\hyperlink{structdiscord__gateway}{discord\+\_\+gateway}} $\ast$gw)
+\begin{DoxyCompactList}\small\item\em Free a Discord Gateway handle. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{discord-internal_8h_a95ba1ce5c14fdf852ffc33f1186ee4c2}{discord\+\_\+gateway\+\_\+run}} (struct \mbox{\hyperlink{structdiscord__gateway}{discord\+\_\+gateway}} $\ast$gw)
+\begin{DoxyCompactList}\small\item\em Start a Discord connection over Web\+Sockets. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{discord-internal_8h_a820b8262c06ee3bba05d1284d4bc6910}{discord\+\_\+gateway\+\_\+shutdown}} (struct \mbox{\hyperlink{structdiscord__gateway}{discord\+\_\+gateway}} $\ast$gw)
+\begin{DoxyCompactList}\small\item\em Gracefully exits a ongoing Discord connection over Web\+Sockets. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{discord-internal_8h_a44ee2f95d91bd642a68e074782ad4f13}{discord\+\_\+gateway\+\_\+reconnect}} (struct \mbox{\hyperlink{structdiscord__gateway}{discord\+\_\+gateway}} $\ast$gw, bool resume)
+\begin{DoxyCompactList}\small\item\em Gracefully reconnect a ongoing Discord connection over Web\+Sockets. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+File containing internal functions and datatypes. 
+
+\begin{DoxyAuthor}{Author}
+cee-\/studio 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+18 Jun 2021 
+\end{DoxyDate}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{discord-internal_8h_a38db97551a3760ca678f6d765ff37f98}\label{discord-internal_8h_a38db97551a3760ca678f6d765ff37f98}} 
+\index{discord-\/internal.h@{discord-\/internal.h}!discord\_adapter\_cleanup@{discord\_adapter\_cleanup}}
+\index{discord\_adapter\_cleanup@{discord\_adapter\_cleanup}!discord-\/internal.h@{discord-\/internal.h}}
+\doxysubsubsection{\texorpdfstring{discord\_adapter\_cleanup()}{discord\_adapter\_cleanup()}}
+{\footnotesize\ttfamily void discord\+\_\+adapter\+\_\+cleanup (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdiscord__adapter}{discord\+\_\+adapter}} $\ast$}]{adapter }\end{DoxyParamCaption})}
+
+
+
+Free a Discord Adapter handle. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em adapter} & a pointer to the adapter handle \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{discord-internal_8h_abcd9b5bb8e2b372bc109ec6c751d23ca}\label{discord-internal_8h_abcd9b5bb8e2b372bc109ec6c751d23ca}} 
+\index{discord-\/internal.h@{discord-\/internal.h}!discord\_adapter\_init@{discord\_adapter\_init}}
+\index{discord\_adapter\_init@{discord\_adapter\_init}!discord-\/internal.h@{discord-\/internal.h}}
+\doxysubsubsection{\texorpdfstring{discord\_adapter\_init()}{discord\_adapter\_init()}}
+{\footnotesize\ttfamily void discord\+\_\+adapter\+\_\+init (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdiscord__adapter}{discord\+\_\+adapter}} $\ast$}]{adapter,  }\item[{struct logconf $\ast$}]{config,  }\item[{struct sized\+\_\+buffer $\ast$}]{token }\end{DoxyParamCaption})}
+
+
+
+Initialize the fields of a Discord Adapter handle. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em adapter} & a pointer to the allocated handle \\
+\hline
+{\em config} & optional pointer to a pre-\/initialized logconf \\
+\hline
+{\em token} & the bot token \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+logconf.\+h 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{discord-internal_8h_ac929e6b0a7cc7029b1e3efbe6134519f}\label{discord-internal_8h_ac929e6b0a7cc7029b1e3efbe6134519f}} 
+\index{discord-\/internal.h@{discord-\/internal.h}!discord\_adapter\_run@{discord\_adapter\_run}}
+\index{discord\_adapter\_run@{discord\_adapter\_run}!discord-\/internal.h@{discord-\/internal.h}}
+\doxysubsubsection{\texorpdfstring{discord\_adapter\_run()}{discord\_adapter\_run()}}
+{\footnotesize\ttfamily O\+R\+C\+Acode discord\+\_\+adapter\+\_\+run (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdiscord__adapter}{discord\+\_\+adapter}} $\ast$}]{adapter,  }\item[{struct ua\+\_\+resp\+\_\+handle $\ast$}]{resp\+\_\+handle,  }\item[{struct sized\+\_\+buffer $\ast$}]{req\+\_\+body,  }\item[{enum http\+\_\+method}]{http\+\_\+method,  }\item[{char}]{endpoint\mbox{[}$\,$\mbox{]},  }\item[{}]{... }\end{DoxyParamCaption})}
+
+
+
+Start a H\+T\+TP Request to Discord. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em adapter} & the handle initialized with \mbox{\hyperlink{discord-internal_8h_abcd9b5bb8e2b372bc109ec6c751d23ca}{discord\+\_\+adapter\+\_\+init()}} \\
+\hline
+{\em resp\+\_\+handle} & the callbacks that will be triggered should the request fail or succeed \\
+\hline
+{\em req\+\_\+body} & the body sent for methods that require (ex\+: P\+O\+ST), leave as \#\+N\+U\+LL if unecessary \\
+\hline
+{\em http\+\_\+method} & the method in opcode format of the request being sent \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+user-\/agent.\+h 
+\end{DoxySeeAlso}
+
+\begin{DoxyParams}{Parameters}
+{\em endpoint} & the format endpoint that be appended to base\+\_\+url when performing a request, same behavior as printf() \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a code for checking on how the transfer went \#\+O\+R\+C\+A\+\_\+\+OK means the transfer was succesful 
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+Helper over ua\+\_\+run() 
+\end{DoxyNote}
+\begin{DoxySeeAlso}{See also}
+user-\/agent.\+h 
+
+logconf.\+h 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{discord-internal_8h_ae0e3506aff4c36827f13ee45e4ffe670}\label{discord-internal_8h_ae0e3506aff4c36827f13ee45e4ffe670}} 
+\index{discord-\/internal.h@{discord-\/internal.h}!discord\_bucket\_build@{discord\_bucket\_build}}
+\index{discord\_bucket\_build@{discord\_bucket\_build}!discord-\/internal.h@{discord-\/internal.h}}
+\doxysubsubsection{\texorpdfstring{discord\_bucket\_build()}{discord\_bucket\_build()}}
+{\footnotesize\ttfamily void discord\+\_\+bucket\+\_\+build (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdiscord__adapter}{discord\+\_\+adapter}} $\ast$}]{adapter,  }\item[{struct \mbox{\hyperlink{structdiscord__bucket}{discord\+\_\+bucket}} $\ast$}]{bucket,  }\item[{const char}]{route\mbox{[}$\,$\mbox{]},  }\item[{struct ua\+\_\+info $\ast$}]{info }\end{DoxyParamCaption})}
+
+
+
+Update the bucket with response header data. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em adapter} & the handle created with \mbox{\hyperlink{discord-internal_8h_abcd9b5bb8e2b372bc109ec6c751d23ca}{discord\+\_\+adapter\+\_\+init()}} \\
+\hline
+{\em bucket} & \#\+N\+U\+LL when bucket is first discovered \\
+\hline
+{\em route} & the route associated with the bucket \\
+\hline
+{\em info} & information struct regarding the current transfer \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+If the bucket was just discovered it will be created here. 
+\end{DoxyNote}
+\mbox{\Hypertarget{discord-internal_8h_a82c20ff44bc4a01a9f6a77b0aef49426}\label{discord-internal_8h_a82c20ff44bc4a01a9f6a77b0aef49426}} 
+\index{discord-\/internal.h@{discord-\/internal.h}!discord\_bucket\_try\_cooldown@{discord\_bucket\_try\_cooldown}}
+\index{discord\_bucket\_try\_cooldown@{discord\_bucket\_try\_cooldown}!discord-\/internal.h@{discord-\/internal.h}}
+\doxysubsubsection{\texorpdfstring{discord\_bucket\_try\_cooldown()}{discord\_bucket\_try\_cooldown()}}
+{\footnotesize\ttfamily void discord\+\_\+bucket\+\_\+try\+\_\+cooldown (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdiscord__bucket}{discord\+\_\+bucket}} $\ast$}]{bucket }\end{DoxyParamCaption})}
+
+
+
+Check bucket for ratelimit cooldown. 
+
+Check if connections from a bucket hit its threshold, and lock every connection associated with the bucket until cooldown time elapses 
+\begin{DoxyParams}{Parameters}
+{\em bucket} & check if a cooldown is necessary \\
+\hline
+\end{DoxyParams}
+\begin{DoxyRefDesc}{Todo}
+\item[\mbox{\hyperlink{todo__todo000016}{Todo}}]? add pthread\+\_\+broadcast() to avoid zombie threads \end{DoxyRefDesc}
+\mbox{\Hypertarget{discord-internal_8h_a7a744851301642d398b255b5e541de69}\label{discord-internal_8h_a7a744851301642d398b255b5e541de69}} 
+\index{discord-\/internal.h@{discord-\/internal.h}!discord\_bucket\_try\_get@{discord\_bucket\_try\_get}}
+\index{discord\_bucket\_try\_get@{discord\_bucket\_try\_get}!discord-\/internal.h@{discord-\/internal.h}}
+\doxysubsubsection{\texorpdfstring{discord\_bucket\_try\_get()}{discord\_bucket\_try\_get()}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structdiscord__bucket}{discord\+\_\+bucket}}$\ast$ discord\+\_\+bucket\+\_\+try\+\_\+get (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdiscord__adapter}{discord\+\_\+adapter}} $\ast$}]{adapter,  }\item[{const char}]{route\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Get existing bucket with {\ttfamily route}. 
+
+Check if bucket associated with {\ttfamily route} has already been discovered 
+\begin{DoxyParams}{Parameters}
+{\em adapter} & the handle created with \mbox{\hyperlink{discord-internal_8h_abcd9b5bb8e2b372bc109ec6c751d23ca}{discord\+\_\+adapter\+\_\+init()}} \\
+\hline
+{\em bucket} & check if a cooldown is necessary \\
+\hline
+{\em route} & that will be checked for a bucket match \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+bucket associated with route or \#\+N\+U\+LL if no match found 
+\end{DoxyReturn}
+\mbox{\Hypertarget{discord-internal_8h_aed725e74b163eff80be830bb3fd9f42d}\label{discord-internal_8h_aed725e74b163eff80be830bb3fd9f42d}} 
+\index{discord-\/internal.h@{discord-\/internal.h}!discord\_buckets\_cleanup@{discord\_buckets\_cleanup}}
+\index{discord\_buckets\_cleanup@{discord\_buckets\_cleanup}!discord-\/internal.h@{discord-\/internal.h}}
+\doxysubsubsection{\texorpdfstring{discord\_buckets\_cleanup()}{discord\_buckets\_cleanup()}}
+{\footnotesize\ttfamily void discord\+\_\+buckets\+\_\+cleanup (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdiscord__adapter}{discord\+\_\+adapter}} $\ast$}]{adapter }\end{DoxyParamCaption})}
+
+
+
+Free client buckets. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em adapter} & the client adapter containinig every bucket found \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{discord-internal_8h_ab66259b9988312a38de984c9c54e49f0}\label{discord-internal_8h_ab66259b9988312a38de984c9c54e49f0}} 
+\index{discord-\/internal.h@{discord-\/internal.h}!discord\_gateway\_cleanup@{discord\_gateway\_cleanup}}
+\index{discord\_gateway\_cleanup@{discord\_gateway\_cleanup}!discord-\/internal.h@{discord-\/internal.h}}
+\doxysubsubsection{\texorpdfstring{discord\_gateway\_cleanup()}{discord\_gateway\_cleanup()}}
+{\footnotesize\ttfamily void discord\+\_\+gateway\+\_\+cleanup (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdiscord__gateway}{discord\+\_\+gateway}} $\ast$}]{gw }\end{DoxyParamCaption})}
+
+
+
+Free a Discord Gateway handle. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em gw} & a pointer to the gateway handle \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{discord-internal_8h_aef325194684c5bce1d51f2da6d81dbfa}\label{discord-internal_8h_aef325194684c5bce1d51f2da6d81dbfa}} 
+\index{discord-\/internal.h@{discord-\/internal.h}!discord\_gateway\_init@{discord\_gateway\_init}}
+\index{discord\_gateway\_init@{discord\_gateway\_init}!discord-\/internal.h@{discord-\/internal.h}}
+\doxysubsubsection{\texorpdfstring{discord\_gateway\_init()}{discord\_gateway\_init()}}
+{\footnotesize\ttfamily void discord\+\_\+gateway\+\_\+init (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdiscord__gateway}{discord\+\_\+gateway}} $\ast$}]{gw,  }\item[{struct logconf $\ast$}]{config,  }\item[{struct sized\+\_\+buffer $\ast$}]{token }\end{DoxyParamCaption})}
+
+Wbrief Initialize the fields of Discord Gateway handle
+
+
+\begin{DoxyParams}{Parameters}
+{\em gw} & a pointer to the allocated handle \\
+\hline
+{\em config} & optional pointer to a initialized logconf \\
+\hline
+{\em the} & bot token \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+logconf.\+h 
+\end{DoxySeeAlso}
+hard limit for now\mbox{\Hypertarget{discord-internal_8h_a44ee2f95d91bd642a68e074782ad4f13}\label{discord-internal_8h_a44ee2f95d91bd642a68e074782ad4f13}} 
+\index{discord-\/internal.h@{discord-\/internal.h}!discord\_gateway\_reconnect@{discord\_gateway\_reconnect}}
+\index{discord\_gateway\_reconnect@{discord\_gateway\_reconnect}!discord-\/internal.h@{discord-\/internal.h}}
+\doxysubsubsection{\texorpdfstring{discord\_gateway\_reconnect()}{discord\_gateway\_reconnect()}}
+{\footnotesize\ttfamily void discord\+\_\+gateway\+\_\+reconnect (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdiscord__gateway}{discord\+\_\+gateway}} $\ast$}]{gw,  }\item[{bool}]{resume }\end{DoxyParamCaption})}
+
+
+
+Gracefully reconnect a ongoing Discord connection over Web\+Sockets. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em gw} & the handle initialized with \mbox{\hyperlink{discord-internal_8h_aef325194684c5bce1d51f2da6d81dbfa}{discord\+\_\+gateway\+\_\+init()}} \\
+\hline
+{\em resume} & \#\+T\+R\+UE to attempt to resume to previous session, \#\+F\+A\+L\+SE restart a fresh session \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+websockets.\+h 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{discord-internal_8h_a95ba1ce5c14fdf852ffc33f1186ee4c2}\label{discord-internal_8h_a95ba1ce5c14fdf852ffc33f1186ee4c2}} 
+\index{discord-\/internal.h@{discord-\/internal.h}!discord\_gateway\_run@{discord\_gateway\_run}}
+\index{discord\_gateway\_run@{discord\_gateway\_run}!discord-\/internal.h@{discord-\/internal.h}}
+\doxysubsubsection{\texorpdfstring{discord\_gateway\_run()}{discord\_gateway\_run()}}
+{\footnotesize\ttfamily void discord\+\_\+gateway\+\_\+run (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdiscord__gateway}{discord\+\_\+gateway}} $\ast$}]{gw }\end{DoxyParamCaption})}
+
+
+
+Start a Discord connection over Web\+Sockets. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em gw} & the handle initialized with \mbox{\hyperlink{discord-internal_8h_aef325194684c5bce1d51f2da6d81dbfa}{discord\+\_\+gateway\+\_\+init()}} \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+websockets.\+h 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{discord-internal_8h_a820b8262c06ee3bba05d1284d4bc6910}\label{discord-internal_8h_a820b8262c06ee3bba05d1284d4bc6910}} 
+\index{discord-\/internal.h@{discord-\/internal.h}!discord\_gateway\_shutdown@{discord\_gateway\_shutdown}}
+\index{discord\_gateway\_shutdown@{discord\_gateway\_shutdown}!discord-\/internal.h@{discord-\/internal.h}}
+\doxysubsubsection{\texorpdfstring{discord\_gateway\_shutdown()}{discord\_gateway\_shutdown()}}
+{\footnotesize\ttfamily void discord\+\_\+gateway\+\_\+shutdown (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdiscord__gateway}{discord\+\_\+gateway}} $\ast$}]{gw }\end{DoxyParamCaption})}
+
+
+
+Gracefully exits a ongoing Discord connection over Web\+Sockets. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em gw} & the handle initialized with \mbox{\hyperlink{discord-internal_8h_aef325194684c5bce1d51f2da6d81dbfa}{discord\+\_\+gateway\+\_\+init()}} \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+websockets.\+h 
+\end{DoxySeeAlso}

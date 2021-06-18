@@ -1,0 +1,54 @@
+\hypertarget{structdiscord__voice__cbs}{}\doxysection{discord\+\_\+voice\+\_\+cbs Struct Reference}
+\label{structdiscord__voice__cbs}\index{discord\_voice\_cbs@{discord\_voice\_cbs}}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+voice\+\_\+idle\+\_\+cb $\ast$ \mbox{\hyperlink{structdiscord__voice__cbs_a9161a0f8fbe5113a9883a513d345b4c1}{on\+\_\+idle}}
+\item 
+voice\+\_\+speaking\+\_\+cb $\ast$ \mbox{\hyperlink{structdiscord__voice__cbs_aa45c3814ccbeaa58ce3dac483d9bf743}{on\+\_\+speaking}}
+\item 
+voice\+\_\+client\+\_\+disconnect\+\_\+cb $\ast$ \mbox{\hyperlink{structdiscord__voice__cbs_acf8fffaf5573d0595162aeb1896de8ae}{on\+\_\+client\+\_\+disconnect}}
+\item 
+voice\+\_\+codec\+\_\+cb $\ast$ \mbox{\hyperlink{structdiscord__voice__cbs_a206567d196880747919ed6b2c1178a1b}{on\+\_\+codec}}
+\item 
+\mbox{\Hypertarget{structdiscord__voice__cbs_ae62741ed74a23e3f1254f46e30320178}\label{structdiscord__voice__cbs_ae62741ed74a23e3f1254f46e30320178}} 
+void($\ast$ {\bfseries on\+\_\+ready} )(struct \mbox{\hyperlink{structdiscord__voice}{discord\+\_\+voice}} $\ast$vc)
+\item 
+\mbox{\Hypertarget{structdiscord__voice__cbs_a6d391c94f0b0e12b939f7243a66bd21c}\label{structdiscord__voice__cbs_a6d391c94f0b0e12b939f7243a66bd21c}} 
+void($\ast$ {\bfseries on\+\_\+session\+\_\+descriptor} )(struct \mbox{\hyperlink{structdiscord__voice}{discord\+\_\+voice}} $\ast$vc)
+\item 
+\mbox{\Hypertarget{structdiscord__voice__cbs_a9b3c55499560220b93efedeba08df38f}\label{structdiscord__voice__cbs_a9b3c55499560220b93efedeba08df38f}} 
+void($\ast$ {\bfseries on\+\_\+udp\+\_\+server\+\_\+connected} )(struct \mbox{\hyperlink{structdiscord__voice}{discord\+\_\+voice}} $\ast$vc)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{structdiscord__voice__cbs_acf8fffaf5573d0595162aeb1896de8ae}\label{structdiscord__voice__cbs_acf8fffaf5573d0595162aeb1896de8ae}} 
+\index{discord\_voice\_cbs@{discord\_voice\_cbs}!on\_client\_disconnect@{on\_client\_disconnect}}
+\index{on\_client\_disconnect@{on\_client\_disconnect}!discord\_voice\_cbs@{discord\_voice\_cbs}}
+\doxysubsubsection{\texorpdfstring{on\_client\_disconnect}{on\_client\_disconnect}}
+{\footnotesize\ttfamily voice\+\_\+client\+\_\+disconnect\+\_\+cb$\ast$ discord\+\_\+voice\+\_\+cbs\+::on\+\_\+client\+\_\+disconnect}
+
+triggers when a user has disconnected from the voice channel \mbox{\Hypertarget{structdiscord__voice__cbs_a206567d196880747919ed6b2c1178a1b}\label{structdiscord__voice__cbs_a206567d196880747919ed6b2c1178a1b}} 
+\index{discord\_voice\_cbs@{discord\_voice\_cbs}!on\_codec@{on\_codec}}
+\index{on\_codec@{on\_codec}!discord\_voice\_cbs@{discord\_voice\_cbs}}
+\doxysubsubsection{\texorpdfstring{on\_codec}{on\_codec}}
+{\footnotesize\ttfamily voice\+\_\+codec\+\_\+cb$\ast$ discord\+\_\+voice\+\_\+cbs\+::on\+\_\+codec}
+
+triggers when a codec is received \mbox{\Hypertarget{structdiscord__voice__cbs_a9161a0f8fbe5113a9883a513d345b4c1}\label{structdiscord__voice__cbs_a9161a0f8fbe5113a9883a513d345b4c1}} 
+\index{discord\_voice\_cbs@{discord\_voice\_cbs}!on\_idle@{on\_idle}}
+\index{on\_idle@{on\_idle}!discord\_voice\_cbs@{discord\_voice\_cbs}}
+\doxysubsubsection{\texorpdfstring{on\_idle}{on\_idle}}
+{\footnotesize\ttfamily voice\+\_\+idle\+\_\+cb$\ast$ discord\+\_\+voice\+\_\+cbs\+::on\+\_\+idle}
+
+triggers on every event loop iteration \mbox{\Hypertarget{structdiscord__voice__cbs_aa45c3814ccbeaa58ce3dac483d9bf743}\label{structdiscord__voice__cbs_aa45c3814ccbeaa58ce3dac483d9bf743}} 
+\index{discord\_voice\_cbs@{discord\_voice\_cbs}!on\_speaking@{on\_speaking}}
+\index{on\_speaking@{on\_speaking}!discord\_voice\_cbs@{discord\_voice\_cbs}}
+\doxysubsubsection{\texorpdfstring{on\_speaking}{on\_speaking}}
+{\footnotesize\ttfamily voice\+\_\+speaking\+\_\+cb$\ast$ discord\+\_\+voice\+\_\+cbs\+::on\+\_\+speaking}
+
+triggers when a user start speaking 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/lucasmull/\+Trabalho/orca/discord-\/voice-\/connections.\+h\end{DoxyCompactItemize}

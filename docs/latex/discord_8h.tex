@@ -1,0 +1,1622 @@
+\hypertarget{discord_8h}{}\doxysection{/home/lucasmull/\+Trabalho/orca/discord.h File Reference}
+\label{discord_8h}\index{/home/lucasmull/Trabalho/orca/discord.h@{/home/lucasmull/Trabalho/orca/discord.h}}
+
+
+File containing public functions and datatypes.  
+
+
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}json-\/actor-\/boxed.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}logconf.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}specs-\/code/discord/all\+\_\+opaque\+\_\+struct.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}specs-\/code/discord/all\+\_\+enums.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}specs-\/code/discord/all\+\_\+structs.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}specs-\/code/discord/all\+\_\+functions.\+h\char`\"{}}\newline
+Include dependency graph for discord.\+h\+:
+% FIG 0
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structdiscord__session}{discord\+\_\+session}}
+\item 
+struct \mbox{\hyperlink{structdiscord__get__channel__messages__params}{discord\+\_\+get\+\_\+channel\+\_\+messages\+\_\+params}}
+\item 
+struct \mbox{\hyperlink{structdiscord__create__message__params}{discord\+\_\+create\+\_\+message\+\_\+params}}
+\item 
+struct \mbox{\hyperlink{structdiscord__edit__message__params}{discord\+\_\+edit\+\_\+message\+\_\+params}}
+\item 
+struct \mbox{\hyperlink{structdiscord__list__guild__members__params}{discord\+\_\+list\+\_\+guild\+\_\+members\+\_\+params}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{discord_8h_a273fbb535b3d35f36c0f8ae9d57365a9}\label{discord_8h_a273fbb535b3d35f36c0f8ae9d57365a9}} 
+\#define {\bfseries D\+I\+S\+C\+O\+R\+D\+\_\+\+A\+P\+I\+\_\+\+B\+A\+S\+E\+\_\+\+U\+RL}~\char`\"{}https\+://discord.\+com/api/v9\char`\"{}
+\item 
+\mbox{\Hypertarget{discord_8h_aaa0b7cd0af2a896c3546ee54502717e0}\label{discord_8h_aaa0b7cd0af2a896c3546ee54502717e0}} 
+\#define {\bfseries D\+I\+S\+C\+O\+R\+D\+\_\+\+G\+A\+T\+E\+W\+A\+Y\+\_\+\+U\+R\+L\+\_\+\+S\+U\+F\+F\+IX}~\char`\"{}?v=9\&encoding=json\char`\"{}
+\item 
+\mbox{\Hypertarget{discord_8h_a61da4eaabe6beb2fcfb5925a5a030696}\label{discord_8h_a61da4eaabe6beb2fcfb5925a5a030696}} 
+\#define {\bfseries D\+I\+S\+C\+O\+R\+D\+\_\+\+V\+O\+I\+C\+E\+\_\+\+C\+O\+N\+N\+E\+C\+T\+I\+O\+N\+S\+\_\+\+U\+R\+L\+\_\+\+S\+U\+F\+F\+IX}~\char`\"{}?v=4\char`\"{}
+\item 
+\mbox{\Hypertarget{discord_8h_af1dcfb8baeb87f34b18442cb46c18f42}\label{discord_8h_af1dcfb8baeb87f34b18442cb46c18f42}} 
+\#define {\bfseries S\+N\+O\+W\+F\+L\+A\+K\+E\+\_\+\+I\+N\+C\+R\+E\+M\+E\+NT}~12
+\item 
+\mbox{\Hypertarget{discord_8h_a980db23686965819f6605e71c31fd721}\label{discord_8h_a980db23686965819f6605e71c31fd721}} 
+\#define {\bfseries S\+N\+O\+W\+F\+L\+A\+K\+E\+\_\+\+P\+R\+O\+C\+E\+S\+S\+\_\+\+ID}~17
+\item 
+\mbox{\Hypertarget{discord_8h_ad4f1454777b11d3af2a05a43c1f08e3e}\label{discord_8h_ad4f1454777b11d3af2a05a43c1f08e3e}} 
+\#define {\bfseries S\+N\+O\+W\+F\+L\+A\+K\+E\+\_\+\+I\+N\+T\+E\+R\+N\+A\+L\+\_\+\+W\+O\+R\+K\+E\+R\+\_\+\+ID}~22
+\item 
+\mbox{\Hypertarget{discord_8h_a37ad9a53ad21fae19d16f4336c55564b}\label{discord_8h_a37ad9a53ad21fae19d16f4336c55564b}} 
+\#define {\bfseries S\+N\+O\+W\+F\+L\+A\+K\+E\+\_\+\+T\+I\+M\+E\+S\+T\+A\+MP}~64
+\item 
+\mbox{\Hypertarget{discord_8h_afd709f201d7643c3909621f620ea648a}\label{discord_8h_afd709f201d7643c3909621f620ea648a}} 
+\#define {\bfseries M\+A\+X\+\_\+\+N\+A\+M\+E\+\_\+\+L\+EN}~100 + 1
+\item 
+\mbox{\Hypertarget{discord_8h_a62f90ad17366b9e9c79f7737972cc609}\label{discord_8h_a62f90ad17366b9e9c79f7737972cc609}} 
+\#define {\bfseries M\+A\+X\+\_\+\+T\+O\+P\+I\+C\+\_\+\+L\+EN}~1024 + 1
+\item 
+\mbox{\Hypertarget{discord_8h_a3886a61a4fb4b2574ffa9180b27d222f}\label{discord_8h_a3886a61a4fb4b2574ffa9180b27d222f}} 
+\#define {\bfseries M\+A\+X\+\_\+\+D\+E\+S\+C\+R\+I\+P\+T\+I\+O\+N\+\_\+\+L\+EN}~2048 + 1
+\item 
+\mbox{\Hypertarget{discord_8h_a6c4647395896246d6710ba980c31666c}\label{discord_8h_a6c4647395896246d6710ba980c31666c}} 
+\#define {\bfseries M\+A\+X\+\_\+\+U\+S\+E\+R\+N\+A\+M\+E\+\_\+\+L\+EN}~32 + 1
+\item 
+\mbox{\Hypertarget{discord_8h_a0786b23978a93ab36b1f92aafa4c671a}\label{discord_8h_a0786b23978a93ab36b1f92aafa4c671a}} 
+\#define {\bfseries M\+A\+X\+\_\+\+D\+I\+S\+C\+R\+I\+M\+I\+N\+A\+T\+O\+R\+\_\+\+L\+EN}~4 + 1
+\item 
+\mbox{\Hypertarget{discord_8h_ad526e349cbbf2fcab2057fff904ed09a}\label{discord_8h_ad526e349cbbf2fcab2057fff904ed09a}} 
+\#define {\bfseries M\+A\+X\+\_\+\+S\+H\+A256\+\_\+\+L\+EN}~1024 + 1
+\item 
+\mbox{\Hypertarget{discord_8h_ac8e231944220d56ab4be14ea600b1c9f}\label{discord_8h_ac8e231944220d56ab4be14ea600b1c9f}} 
+\#define {\bfseries M\+A\+X\+\_\+\+L\+O\+C\+A\+L\+E\+\_\+\+L\+EN}~16 + 1
+\item 
+\mbox{\Hypertarget{discord_8h_a980191f11739df48037447c66d5595fd}\label{discord_8h_a980191f11739df48037447c66d5595fd}} 
+\#define {\bfseries M\+A\+X\+\_\+\+E\+M\+A\+I\+L\+\_\+\+L\+EN}~254 + 1
+\item 
+\mbox{\Hypertarget{discord_8h_ac99b7f50b98b3ecc645859362df7e7c1}\label{discord_8h_ac99b7f50b98b3ecc645859362df7e7c1}} 
+\#define {\bfseries M\+A\+X\+\_\+\+R\+E\+G\+I\+O\+N\+\_\+\+L\+EN}~16 + 1
+\item 
+\mbox{\Hypertarget{discord_8h_aa78629e0c1309fd93a07631b53363335}\label{discord_8h_aa78629e0c1309fd93a07631b53363335}} 
+\#define {\bfseries M\+A\+X\+\_\+\+R\+E\+A\+S\+O\+N\+\_\+\+L\+EN}~512 + 1
+\item 
+\mbox{\Hypertarget{discord_8h_aa3fbd1b7db5563bc97af47943afa34a4}\label{discord_8h_aa3fbd1b7db5563bc97af47943afa34a4}} 
+\#define {\bfseries M\+A\+X\+\_\+\+M\+E\+S\+S\+A\+G\+E\+\_\+\+L\+EN}~4000 + 1
+\item 
+\mbox{\Hypertarget{discord_8h_a58fffb055ae1b24f4d84fbd5be4c9899}\label{discord_8h_a58fffb055ae1b24f4d84fbd5be4c9899}} 
+\#define {\bfseries M\+A\+X\+\_\+\+P\+A\+Y\+L\+O\+A\+D\+\_\+\+L\+EN}~4096 + 1
+\item 
+\mbox{\Hypertarget{discord_8h_a9a915e9871f4197a54f4fae435b6cd1a}\label{discord_8h_a9a915e9871f4197a54f4fae435b6cd1a}} 
+\#define {\bfseries E\+M\+B\+E\+D\+\_\+\+T\+I\+T\+L\+E\+\_\+\+L\+EN}~256 + 1
+\item 
+\mbox{\Hypertarget{discord_8h_acd6b301bc9ab4bdb2869fd40c4bdcb3f}\label{discord_8h_acd6b301bc9ab4bdb2869fd40c4bdcb3f}} 
+\#define {\bfseries E\+M\+B\+E\+D\+\_\+\+D\+E\+S\+C\+R\+I\+P\+T\+I\+O\+N\+\_\+\+L\+EN}~2048 + 1
+\item 
+\mbox{\Hypertarget{discord_8h_aedbc7f60ea209f45d9b83bbb24ace840}\label{discord_8h_aedbc7f60ea209f45d9b83bbb24ace840}} 
+\#define {\bfseries E\+M\+B\+E\+D\+\_\+\+M\+A\+X\+\_\+\+F\+I\+E\+L\+DS}~25
+\item 
+\mbox{\Hypertarget{discord_8h_a07b2c9191d6d8c1da3ca45ae2cdb5f19}\label{discord_8h_a07b2c9191d6d8c1da3ca45ae2cdb5f19}} 
+\#define {\bfseries E\+M\+B\+E\+D\+\_\+\+F\+I\+E\+L\+D\+\_\+\+N\+A\+M\+E\+\_\+\+L\+EN}~256 + 1
+\item 
+\mbox{\Hypertarget{discord_8h_ac5dc64401006966467092dc1ef1ceaf5}\label{discord_8h_ac5dc64401006966467092dc1ef1ceaf5}} 
+\#define {\bfseries E\+M\+B\+E\+D\+\_\+\+F\+I\+E\+L\+D\+\_\+\+V\+A\+L\+U\+E\+\_\+\+L\+EN}~1024 + 1
+\item 
+\mbox{\Hypertarget{discord_8h_ac39bd965a74b4cd6b1662d4631221068}\label{discord_8h_ac39bd965a74b4cd6b1662d4631221068}} 
+\#define {\bfseries E\+M\+B\+E\+D\+\_\+\+F\+O\+O\+T\+E\+R\+\_\+\+T\+E\+X\+T\+\_\+\+L\+EN}~2048 + 1
+\item 
+\mbox{\Hypertarget{discord_8h_a3fb0fc808afbd66f0f4cd16b036c47a3}\label{discord_8h_a3fb0fc808afbd66f0f4cd16b036c47a3}} 
+\#define {\bfseries E\+M\+B\+E\+D\+\_\+\+A\+U\+T\+H\+O\+R\+\_\+\+N\+A\+M\+E\+\_\+\+L\+EN}~256 + 1
+\item 
+\mbox{\Hypertarget{discord_8h_a47f5f63e7637cab01ab660239283f493}\label{discord_8h_a47f5f63e7637cab01ab660239283f493}} 
+\#define {\bfseries W\+E\+B\+H\+O\+O\+K\+\_\+\+N\+A\+M\+E\+\_\+\+L\+EN}~80 + 1
+\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef uint64\+\_\+t \mbox{\hyperlink{discord_8h_a8c10c2449cb2148f47b8a032af96dd60}{u64\+\_\+unix\+\_\+ms\+\_\+t}}
+\item 
+typedef uint64\+\_\+t \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}}
+\item 
+typedef void() \mbox{\hyperlink{discord_8h_afc8f66a3993c5edb45a00ef997223d52}{idle\+\_\+cb}}(struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const struct discord\+\_\+user $\ast$bot)
+\begin{DoxyCompactList}\small\item\em Idle callback. \end{DoxyCompactList}\item 
+typedef void() \mbox{\hyperlink{discord_8h_a9d756b50a8f1472d73e3dcc32625aa93}{event\+\_\+raw\+\_\+cb}}(struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, enum discord\+\_\+gateway\+\_\+events event, struct sized\+\_\+buffer $\ast$sb\+\_\+bot, struct sized\+\_\+buffer $\ast$event\+\_\+data)
+\begin{DoxyCompactList}\small\item\em Raw Event callback. \end{DoxyCompactList}\item 
+typedef void() \mbox{\hyperlink{discord_8h_ad49541dbe38d41a0c6f72392511ffe7f}{guild\+\_\+role\+\_\+cb}}(struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const struct discord\+\_\+user $\ast$bot, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id, const struct discord\+\_\+permissions\+\_\+role $\ast$role)
+\begin{DoxyCompactList}\small\item\em Guild Role Create/\+Update callback. \end{DoxyCompactList}\item 
+typedef void() \mbox{\hyperlink{discord_8h_a57231f38324853b103aaeead055fb668}{guild\+\_\+role\+\_\+delete\+\_\+cb}}(struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const struct discord\+\_\+user $\ast$bot, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} role\+\_\+id)
+\begin{DoxyCompactList}\small\item\em Guild Role Delete callback. \end{DoxyCompactList}\item 
+typedef void() \mbox{\hyperlink{discord_8h_a74d2fa7659645194427e13dc15490e45}{guild\+\_\+member\+\_\+cb}}(struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const struct discord\+\_\+user $\ast$bot, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id, const struct discord\+\_\+guild\+\_\+member $\ast$member)
+\begin{DoxyCompactList}\small\item\em Guild Member Add/\+Update callback. \end{DoxyCompactList}\item 
+typedef void() \mbox{\hyperlink{discord_8h_a22a5a8767f0b3e13675c765fdd439936}{guild\+\_\+member\+\_\+remove\+\_\+cb}}(struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const struct discord\+\_\+user $\ast$bot, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id, const struct discord\+\_\+user $\ast$user)
+\begin{DoxyCompactList}\small\item\em Guild Member Remove callback. \end{DoxyCompactList}\item 
+typedef void() \mbox{\hyperlink{discord_8h_a9e932235fc87b6fd16d5fccfa139edd6}{guild\+\_\+ban\+\_\+cb}}(struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const struct discord\+\_\+user $\ast$bot, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id, const struct discord\+\_\+user $\ast$user)
+\begin{DoxyCompactList}\small\item\em Guild Ban Add/\+Remove callback. \end{DoxyCompactList}\item 
+typedef void() \mbox{\hyperlink{discord_8h_afff2ce011cd5b8d20b703fb01c105559}{message\+\_\+cb}}(struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const struct discord\+\_\+user $\ast$bot, const struct discord\+\_\+message $\ast$message)
+\begin{DoxyCompactList}\small\item\em Message Create/\+Update callback. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{discord_8h_a29c06e8bef1e4a359d079d3ce5cb6b54}\label{discord_8h_a29c06e8bef1e4a359d079d3ce5cb6b54}} 
+typedef void() {\bfseries sb\+\_\+message\+\_\+cb}(struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const struct discord\+\_\+user $\ast$bot, struct sized\+\_\+buffer $\ast$sb\+\_\+bot, const struct discord\+\_\+message $\ast$message, struct sized\+\_\+buffer $\ast$msg\+\_\+payload)
+\item 
+typedef void() \mbox{\hyperlink{discord_8h_a1a03c333f0c96ccfe855460837c39640}{message\+\_\+delete\+\_\+cb}}(struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const struct discord\+\_\+user $\ast$bot, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} channel\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id)
+\begin{DoxyCompactList}\small\item\em Message Delete callback. \end{DoxyCompactList}\item 
+typedef void() \mbox{\hyperlink{discord_8h_a875e7449cd237f26e535809bd0d5a3a8}{message\+\_\+delete\+\_\+bulk\+\_\+cb}}(struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const struct discord\+\_\+user $\ast$bot, const N\+T\+L\+\_\+T(ja\+\_\+u64) ids, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} channel\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id)
+\begin{DoxyCompactList}\small\item\em Message Delete Bulk callback. \end{DoxyCompactList}\item 
+typedef void() \mbox{\hyperlink{discord_8h_ad256daeaf95441e9bebba72ed7532c93}{channel\+\_\+cb}}(struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const struct discord\+\_\+user $\ast$bot, const struct discord\+\_\+channel $\ast$channel)
+\begin{DoxyCompactList}\small\item\em Channel Create/\+Update/\+Delete callback. \end{DoxyCompactList}\item 
+typedef void() \mbox{\hyperlink{discord_8h_aa1e842764ae5f29946ffb777407c531e}{channel\+\_\+pins\+\_\+update\+\_\+cb}}(struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const struct discord\+\_\+user $\ast$bot, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} channel\+\_\+id, const \mbox{\hyperlink{discord_8h_a8c10c2449cb2148f47b8a032af96dd60}{u64\+\_\+unix\+\_\+ms\+\_\+t}} last\+\_\+pin\+\_\+timestamp)
+\begin{DoxyCompactList}\small\item\em Channel Pins Update callback. \end{DoxyCompactList}\item 
+typedef void() \mbox{\hyperlink{discord_8h_a51d3f330bfd81a53015878b954183142}{message\+\_\+reaction\+\_\+add\+\_\+cb}}(struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const struct discord\+\_\+user $\ast$bot, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} user\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} channel\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} message\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id, const struct discord\+\_\+guild\+\_\+member $\ast$member, const struct discord\+\_\+emoji $\ast$emoji)
+\begin{DoxyCompactList}\small\item\em Message Reaction Add callback. \end{DoxyCompactList}\item 
+typedef void() \mbox{\hyperlink{discord_8h_aa78388a1f092c880ef99029f1b383237}{message\+\_\+reaction\+\_\+remove\+\_\+cb}}(struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const struct discord\+\_\+user $\ast$bot, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} user\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} channel\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} message\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id, const struct discord\+\_\+emoji $\ast$emoji)
+\begin{DoxyCompactList}\small\item\em Message Reaction Remove callback. \end{DoxyCompactList}\item 
+typedef void() \mbox{\hyperlink{discord_8h_a19d3292473ccf8bdd8dc15a8aa9e9b33}{message\+\_\+reaction\+\_\+remove\+\_\+all\+\_\+cb}}(struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const struct discord\+\_\+user $\ast$bot, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} channel\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} message\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id)
+\begin{DoxyCompactList}\small\item\em Message Reaction Remove All callback. \end{DoxyCompactList}\item 
+typedef void() \mbox{\hyperlink{discord_8h_aaf01e5b91be0bc56135d1a2d7bede82e}{message\+\_\+reaction\+\_\+remove\+\_\+emoji\+\_\+cb}}(struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const struct discord\+\_\+user $\ast$bot, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} channel\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} message\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id, const struct discord\+\_\+emoji $\ast$emoji)
+\begin{DoxyCompactList}\small\item\em Message Reaction Remove Emoji callback. \end{DoxyCompactList}\item 
+typedef void() \mbox{\hyperlink{discord_8h_a4734edb5ea9ea55094487d199227f943}{voice\+\_\+state\+\_\+update\+\_\+cb}}(struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const struct discord\+\_\+user $\ast$bot, const struct discord\+\_\+voice\+\_\+state $\ast$voice\+\_\+state)
+\begin{DoxyCompactList}\small\item\em Voice State Update callback. \end{DoxyCompactList}\item 
+typedef void() \mbox{\hyperlink{discord_8h_aee86b0424b3c03c48b60fa99a0814d2f}{voice\+\_\+server\+\_\+update\+\_\+cb}}(struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const struct discord\+\_\+user $\ast$bot, const char $\ast$token, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id, const char $\ast$endpoint)
+\begin{DoxyCompactList}\small\item\em Voice Server Update callback. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{discord_8h_a1b11a8fb0bb025f18e2b7b207979b314}{discord\+\_\+event\+\_\+handling\+\_\+mode}} \{ \mbox{\hyperlink{discord_8h_a1b11a8fb0bb025f18e2b7b207979b314a175d5035ef61079f0ddd410b4dc9eaca}{E\+V\+E\+N\+T\+\_\+\+I\+S\+\_\+\+H\+A\+N\+D\+L\+ED}}, 
+\mbox{\hyperlink{discord_8h_a1b11a8fb0bb025f18e2b7b207979b314a3bd84c32d5d80fe2635d4629e407637e}{E\+V\+E\+N\+T\+\_\+\+W\+I\+L\+L\+\_\+\+B\+E\+\_\+\+H\+A\+N\+D\+L\+E\+D\+\_\+\+I\+N\+\_\+\+M\+A\+I\+N\+\_\+\+T\+H\+R\+E\+AD}}, 
+\mbox{\hyperlink{discord_8h_a1b11a8fb0bb025f18e2b7b207979b314a2d6c7875eaa5d6caf320674bbe4392e4}{E\+V\+E\+N\+T\+\_\+\+W\+I\+L\+L\+\_\+\+B\+E\+\_\+\+H\+A\+N\+D\+L\+E\+D\+\_\+\+I\+N\+\_\+\+C\+H\+I\+L\+D\+\_\+\+T\+H\+R\+E\+AD}}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{discord_8h_a4df1c61716cd01011c7a7bde928a31ca}\label{discord_8h_a4df1c61716cd01011c7a7bde928a31ca}} 
+void \mbox{\hyperlink{discord_8h_a4df1c61716cd01011c7a7bde928a31ca}{discord\+\_\+global\+\_\+init}} ()
+\begin{DoxyCompactList}\small\item\em Initialize resources of globals used by \mbox{\hyperlink{discord_8h}{discord.\+h}}. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{discord_8h_aee069a2483ef9bf92f56b492ebedf1d8}\label{discord_8h_aee069a2483ef9bf92f56b492ebedf1d8}} 
+void \mbox{\hyperlink{discord_8h_aee069a2483ef9bf92f56b492ebedf1d8}{discord\+\_\+global\+\_\+cleanup}} ()
+\begin{DoxyCompactList}\small\item\em Free resources of globals used by \mbox{\hyperlink{discord_8h}{discord.\+h}}. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$ \mbox{\hyperlink{discord_8h_a445cca7dc5a28113760c7e55759845c7}{discord\+\_\+init}} (const char token\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Create a Discord Client handle by its token. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$ \mbox{\hyperlink{discord_8h_a23500a16c7afdb797c779b045ad20b10}{discord\+\_\+config\+\_\+init}} (const char config\+\_\+file\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Create a Discord Client handle by a bot.\+config file. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{discord_8h_a009d0e352a30c00f8b4765712fcfa5a9}{discord\+\_\+cleanup}} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client)
+\begin{DoxyCompactList}\small\item\em Free a Discord Client handle. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{discord_8h_ad49194134d7b9e656d3a96cb0b60cfec}{discord\+\_\+add\+\_\+intents}} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, enum discord\+\_\+gateway\+\_\+intents code)
+\begin{DoxyCompactList}\small\item\em Subscribe to Discord Gateway events. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{discord_8h_ac6a9d904378b46a72c64ade07ac02f43}{discord\+\_\+remove\+\_\+intents}} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, enum discord\+\_\+gateway\+\_\+intents code)
+\begin{DoxyCompactList}\small\item\em Unsubscribe from Discord Gateway events. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{discord_8h_a13d9f16d62fea7cebdb6c24d57f685a1}{discord\+\_\+set\+\_\+prefix}} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, char $\ast$prefix)
+\begin{DoxyCompactList}\small\item\em Set a mandatory prefix before commands. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{discord_8h_a996d04265f563d5be9c22cef411c11aa}{discord\+\_\+set\+\_\+on\+\_\+command}} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, char $\ast$command, \mbox{\hyperlink{discord_8h_afff2ce011cd5b8d20b703fb01c105559}{message\+\_\+cb}} $\ast$callback)
+\begin{DoxyCompactList}\small\item\em Set command/callback pair, the callback is triggered if someone types command in chat. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{discord_8h_a31400dfa84052b6c393c77a8039774f6}{discord\+\_\+set\+\_\+on\+\_\+event\+\_\+raw}} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, \mbox{\hyperlink{discord_8h_a9d756b50a8f1472d73e3dcc32625aa93}{event\+\_\+raw\+\_\+cb}} $\ast$callback)
+\begin{DoxyCompactList}\small\item\em Set a callback that triggers on any event the client is subscribed to. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{discord_8h_aa4499d5d0c24387a5acda0ea4be576ca}{discord\+\_\+set\+\_\+on\+\_\+idle}} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, \mbox{\hyperlink{discord_8h_afc8f66a3993c5edb45a00ef997223d52}{idle\+\_\+cb}} $\ast$callback)
+\begin{DoxyCompactList}\small\item\em Set a callback that triggers at every event-\/loop iteration. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{discord_8h_a99c81095365d9fb50a9bdcad36421677}{discord\+\_\+set\+\_\+on\+\_\+guild\+\_\+role\+\_\+create}} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, \mbox{\hyperlink{discord_8h_ad49541dbe38d41a0c6f72392511ffe7f}{guild\+\_\+role\+\_\+cb}} $\ast$callback)
+\begin{DoxyCompactList}\small\item\em Set a callback that triggers when a guild role is created. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{discord_8h_a2cdda4d8b073432fc1b9a8d802fb090a}{discord\+\_\+set\+\_\+on\+\_\+guild\+\_\+role\+\_\+update}} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, \mbox{\hyperlink{discord_8h_ad49541dbe38d41a0c6f72392511ffe7f}{guild\+\_\+role\+\_\+cb}} $\ast$callback)
+\begin{DoxyCompactList}\small\item\em Set a callback that triggers when a guild role is updated. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{discord_8h_a3fbe3c1f243fdfd000095c8220656c29}{discord\+\_\+set\+\_\+on\+\_\+guild\+\_\+role\+\_\+delete}} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, \mbox{\hyperlink{discord_8h_a57231f38324853b103aaeead055fb668}{guild\+\_\+role\+\_\+delete\+\_\+cb}} $\ast$callback)
+\begin{DoxyCompactList}\small\item\em Set a callback that triggers when a guild role is deleted. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{discord_8h_a42bcf77e80f22f330046ce410e907b63}{discord\+\_\+set\+\_\+on\+\_\+guild\+\_\+member\+\_\+add}} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, \mbox{\hyperlink{discord_8h_a74d2fa7659645194427e13dc15490e45}{guild\+\_\+member\+\_\+cb}} $\ast$callback)
+\begin{DoxyCompactList}\small\item\em Set a callback that triggers when a guild member is added. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{discord_8h_a6fa77e5994396e14a7c2a272b58a845a}{discord\+\_\+set\+\_\+on\+\_\+guild\+\_\+member\+\_\+update}} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, \mbox{\hyperlink{discord_8h_a74d2fa7659645194427e13dc15490e45}{guild\+\_\+member\+\_\+cb}} $\ast$callback)
+\begin{DoxyCompactList}\small\item\em Set a callback that triggers when a guild member is updated. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{discord_8h_af467bc80ddced49e63c0ab72020f97f3}{discord\+\_\+set\+\_\+on\+\_\+guild\+\_\+member\+\_\+remove}} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, \mbox{\hyperlink{discord_8h_a22a5a8767f0b3e13675c765fdd439936}{guild\+\_\+member\+\_\+remove\+\_\+cb}} $\ast$callback)
+\begin{DoxyCompactList}\small\item\em Set a callback that triggers when a guild member is removed. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{discord_8h_a94472926020ef36799062255db81bec3}{discord\+\_\+set\+\_\+on\+\_\+guild\+\_\+ban\+\_\+add}} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, \mbox{\hyperlink{discord_8h_a9e932235fc87b6fd16d5fccfa139edd6}{guild\+\_\+ban\+\_\+cb}} $\ast$callback)
+\begin{DoxyCompactList}\small\item\em Set a callback that triggers when a guild ban is added. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{discord_8h_a63c145f6ca3397795927f0e4ad09d93c}{discord\+\_\+set\+\_\+on\+\_\+guild\+\_\+ban\+\_\+remove}} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, \mbox{\hyperlink{discord_8h_a9e932235fc87b6fd16d5fccfa139edd6}{guild\+\_\+ban\+\_\+cb}} $\ast$callback)
+\begin{DoxyCompactList}\small\item\em Set a callback that triggers when a guild ban is removed. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{discord_8h_af3e3e920824c65e23bcc47e62cf906c4}{discord\+\_\+set\+\_\+on\+\_\+channel\+\_\+create}} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, \mbox{\hyperlink{discord_8h_ad256daeaf95441e9bebba72ed7532c93}{channel\+\_\+cb}} $\ast$callback)
+\begin{DoxyCompactList}\small\item\em Set a callback that triggers when a channel is created. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{discord_8h_a0c5c1e50ad4749a2dc7143030ef89d47}{discord\+\_\+set\+\_\+on\+\_\+channel\+\_\+update}} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, \mbox{\hyperlink{discord_8h_ad256daeaf95441e9bebba72ed7532c93}{channel\+\_\+cb}} $\ast$callback)
+\begin{DoxyCompactList}\small\item\em Set a callback that triggers when a channel is updated. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{discord_8h_a492b849d1661a82ff8ca16c3e829ddc6}{discord\+\_\+set\+\_\+on\+\_\+channel\+\_\+delete}} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, \mbox{\hyperlink{discord_8h_ad256daeaf95441e9bebba72ed7532c93}{channel\+\_\+cb}} $\ast$callback)
+\begin{DoxyCompactList}\small\item\em Set a callback that triggers when a channel is deleted. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{discord_8h_ab6e438a4977ee90ddaef9593aa393c38}{discord\+\_\+set\+\_\+on\+\_\+channel\+\_\+pins\+\_\+update}} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, \mbox{\hyperlink{discord_8h_aa1e842764ae5f29946ffb777407c531e}{channel\+\_\+pins\+\_\+update\+\_\+cb}} $\ast$callback)
+\begin{DoxyCompactList}\small\item\em Set a callback that triggers when some channel pins are updated. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{discord_8h_a16522ff016965c092436ceedb1d6da97}{discord\+\_\+set\+\_\+on\+\_\+message\+\_\+create}} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, \mbox{\hyperlink{discord_8h_afff2ce011cd5b8d20b703fb01c105559}{message\+\_\+cb}} $\ast$callback)
+\begin{DoxyCompactList}\small\item\em Set a callback that triggers when a message is created. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{discord_8h_a677d85b0e6427b8631e83e90435542d5}\label{discord_8h_a677d85b0e6427b8631e83e90435542d5}} 
+void {\bfseries discord\+\_\+set\+\_\+on\+\_\+sb\+\_\+message\+\_\+create} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, sb\+\_\+message\+\_\+cb $\ast$callback)
+\item 
+void \mbox{\hyperlink{discord_8h_a1bcf72b1836cbcd0ec8b197c156795cb}{discord\+\_\+set\+\_\+on\+\_\+message\+\_\+update}} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, \mbox{\hyperlink{discord_8h_afff2ce011cd5b8d20b703fb01c105559}{message\+\_\+cb}} $\ast$callback)
+\begin{DoxyCompactList}\small\item\em Set a callback that triggers when a message is updated. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{discord_8h_a3d2be94a7782f8cd3377224119b28439}\label{discord_8h_a3d2be94a7782f8cd3377224119b28439}} 
+void {\bfseries discord\+\_\+set\+\_\+on\+\_\+sb\+\_\+message\+\_\+update} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, sb\+\_\+message\+\_\+cb $\ast$callback)
+\item 
+void \mbox{\hyperlink{discord_8h_a72c3f46afdb0cf603ba426ae08bcadab}{discord\+\_\+set\+\_\+on\+\_\+message\+\_\+delete}} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, \mbox{\hyperlink{discord_8h_a1a03c333f0c96ccfe855460837c39640}{message\+\_\+delete\+\_\+cb}} $\ast$callback)
+\begin{DoxyCompactList}\small\item\em Set a callback that triggers when a message is deleted. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{discord_8h_ae43a88dc461e6284efba58665d80cc5c}\label{discord_8h_ae43a88dc461e6284efba58665d80cc5c}} 
+void {\bfseries discord\+\_\+set\+\_\+on\+\_\+message\+\_\+delete\+\_\+bulk} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, \mbox{\hyperlink{discord_8h_a875e7449cd237f26e535809bd0d5a3a8}{message\+\_\+delete\+\_\+bulk\+\_\+cb}} $\ast$callback)
+\item 
+void \mbox{\hyperlink{discord_8h_a9b6bf9e15ae6c2fe82f6c6bd1f4fc6c6}{discord\+\_\+set\+\_\+on\+\_\+message\+\_\+reaction\+\_\+add}} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, \mbox{\hyperlink{discord_8h_a51d3f330bfd81a53015878b954183142}{message\+\_\+reaction\+\_\+add\+\_\+cb}} $\ast$callback)
+\begin{DoxyCompactList}\small\item\em Set a callback that triggers when a message reaction is added. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{discord_8h_a76d53c80811f15b746ea0c9e13aac2e3}{discord\+\_\+set\+\_\+on\+\_\+message\+\_\+reaction\+\_\+remove}} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, \mbox{\hyperlink{discord_8h_aa78388a1f092c880ef99029f1b383237}{message\+\_\+reaction\+\_\+remove\+\_\+cb}} $\ast$callback)
+\begin{DoxyCompactList}\small\item\em Set a callback that triggers when a message reaction is removed. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{discord_8h_a69dc994bf6f5131411341cc43622bc26}{discord\+\_\+set\+\_\+on\+\_\+message\+\_\+reaction\+\_\+remove\+\_\+all}} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, \mbox{\hyperlink{discord_8h_a19d3292473ccf8bdd8dc15a8aa9e9b33}{message\+\_\+reaction\+\_\+remove\+\_\+all\+\_\+cb}} $\ast$callback)
+\begin{DoxyCompactList}\small\item\em Set a callback that triggers when all reaction from some message is removed. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{discord_8h_a2d213631154c13a336eb10ea607c775b}{discord\+\_\+set\+\_\+on\+\_\+message\+\_\+reaction\+\_\+remove\+\_\+emoji}} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, \mbox{\hyperlink{discord_8h_aaf01e5b91be0bc56135d1a2d7bede82e}{message\+\_\+reaction\+\_\+remove\+\_\+emoji\+\_\+cb}} $\ast$callback)
+\begin{DoxyCompactList}\small\item\em Set a callback that triggers when all instances of a particular reaction from some message is removed. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{discord_8h_a23f17f54bfca2562a453ea58d49e91ae}{discord\+\_\+set\+\_\+on\+\_\+ready}} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, \mbox{\hyperlink{discord_8h_afc8f66a3993c5edb45a00ef997223d52}{idle\+\_\+cb}} $\ast$callback)
+\begin{DoxyCompactList}\small\item\em Set a callback that triggers when the client is ready. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{discord_8h_a5347137109bd6e433587c7fb10752c68}{discord\+\_\+set\+\_\+on\+\_\+voice\+\_\+state\+\_\+update}} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, \mbox{\hyperlink{discord_8h_a4734edb5ea9ea55094487d199227f943}{voice\+\_\+state\+\_\+update\+\_\+cb}} $\ast$callback)
+\begin{DoxyCompactList}\small\item\em Set a callback that triggers when a voice state is updated. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{discord_8h_ac43f3a0ac189d07a6b9a83c3dec48420}{discord\+\_\+set\+\_\+on\+\_\+voice\+\_\+server\+\_\+update}} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, \mbox{\hyperlink{discord_8h_aee86b0424b3c03c48b60fa99a0814d2f}{voice\+\_\+server\+\_\+update\+\_\+cb}} $\ast$callback)
+\begin{DoxyCompactList}\small\item\em Set a callback that triggers when a voice server is updated. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{discord_8h_a3d7c81f03f681c7e5671489b8160aec7}{discord\+\_\+set\+\_\+voice\+\_\+cbs}} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, struct \mbox{\hyperlink{structdiscord__voice__cbs}{discord\+\_\+voice\+\_\+cbs}} $\ast$callbacks)
+\begin{DoxyCompactList}\small\item\em Helper to quickly set voice callbacks. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{discord_8h_a787bd2ecc48f00ec9a36a748feac5956}\label{discord_8h_a787bd2ecc48f00ec9a36a748feac5956}} 
+void {\bfseries discord\+\_\+set\+\_\+blocking\+\_\+event\+\_\+handler} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, enum \mbox{\hyperlink{discord_8h_a1b11a8fb0bb025f18e2b7b207979b314}{discord\+\_\+event\+\_\+handling\+\_\+mode}}($\ast$f)(void $\ast$cxt))
+\item 
+void \mbox{\hyperlink{discord_8h_ae0e3bf4cdf86e1737d53e16b802fc186}{discord\+\_\+run}} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client)
+\begin{DoxyCompactList}\small\item\em Start a connection to the Discord Gateway. \end{DoxyCompactList}\item 
+void $\ast$ \mbox{\hyperlink{discord_8h_a2fe34375b2ce557d8ac84a0794063b78}{discord\+\_\+set\+\_\+data}} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, void $\ast$data)
+\begin{DoxyCompactList}\small\item\em Keep some user arbitrary data, by associating it to the client. \end{DoxyCompactList}\item 
+void $\ast$ \mbox{\hyperlink{discord_8h_af7534e0384766754eeb77f573dac1a84}{discord\+\_\+get\+\_\+data}} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client)
+\begin{DoxyCompactList}\small\item\em Received user arbitrary data associated to the client. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{discord_8h_ac29f8303759532bce1df09376a80e6ab}{discord\+\_\+replace\+\_\+presence}} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, struct discord\+\_\+gateway\+\_\+status\+\_\+update $\ast$presence)
+\begin{DoxyCompactList}\small\item\em Replace the Client presence with a struct discord\+\_\+gateway\+\_\+status\+\_\+update. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{discord_8h_a09fa023f7aab5b9a053250115f1af903}{discord\+\_\+set\+\_\+presence}} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, struct discord\+\_\+gateway\+\_\+activity $\ast$activity, char status\mbox{[}$\,$\mbox{]}, bool afk)
+\begin{DoxyCompactList}\small\item\em Modify the Client presence state. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{discord_8h_a81d7889c378d15e3cbe5a8fffe1489a2}\label{discord_8h_a81d7889c378d15e3cbe5a8fffe1489a2}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+get\+\_\+guild\+\_\+audit\+\_\+log} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id, struct discord\+\_\+get\+\_\+guild\+\_\+audit\+\_\+log\+\_\+params $\ast$params, struct discord\+\_\+audit\+\_\+log $\ast$p\+\_\+audit\+\_\+log)
+\item 
+\mbox{\Hypertarget{discord_8h_a4c61fd80befb32ef0d13f3b0226139d4}\label{discord_8h_a4c61fd80befb32ef0d13f3b0226139d4}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+get\+\_\+channel} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} channel\+\_\+id, struct discord\+\_\+channel $\ast$p\+\_\+channel)
+\item 
+\mbox{\Hypertarget{discord_8h_a2feeb362e4787f63910fcabdfaf85111}\label{discord_8h_a2feeb362e4787f63910fcabdfaf85111}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+modify\+\_\+channel} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} channel\+\_\+id, struct discord\+\_\+modify\+\_\+channel\+\_\+params $\ast$params, struct discord\+\_\+channel $\ast$p\+\_\+channel)
+\item 
+\mbox{\Hypertarget{discord_8h_a797a880bdb31d6649a4fcc2f93493699}\label{discord_8h_a797a880bdb31d6649a4fcc2f93493699}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+delete\+\_\+channel} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} channel\+\_\+id, struct discord\+\_\+channel $\ast$p\+\_\+channel)
+\item 
+\mbox{\Hypertarget{discord_8h_af90f7c5d85a1cc39a89369dc5b386f7c}\label{discord_8h_af90f7c5d85a1cc39a89369dc5b386f7c}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+get\+\_\+channel\+\_\+messages} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} channel\+\_\+id, struct \mbox{\hyperlink{structdiscord__get__channel__messages__params}{discord\+\_\+get\+\_\+channel\+\_\+messages\+\_\+params}} $\ast$params, N\+T\+L\+\_\+T(struct discord\+\_\+message) $\ast$p\+\_\+messages)
+\item 
+\mbox{\Hypertarget{discord_8h_a8a4fd93a2bfbcd72fa782dc2240c8534}\label{discord_8h_a8a4fd93a2bfbcd72fa782dc2240c8534}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+get\+\_\+channel\+\_\+message} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} channel\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} message\+\_\+id, struct discord\+\_\+message $\ast$p\+\_\+message)
+\item 
+\mbox{\Hypertarget{discord_8h_aa3b677f10f01789f3a49f9b03bb33123}\label{discord_8h_aa3b677f10f01789f3a49f9b03bb33123}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+create\+\_\+message} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} channel\+\_\+id, struct \mbox{\hyperlink{structdiscord__create__message__params}{discord\+\_\+create\+\_\+message\+\_\+params}} $\ast$params, struct discord\+\_\+message $\ast$p\+\_\+message)
+\item 
+\mbox{\Hypertarget{discord_8h_af484b1df781540059ad41caa842f231e}\label{discord_8h_af484b1df781540059ad41caa842f231e}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+crosspost\+\_\+message} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} channel\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} message\+\_\+id, struct discord\+\_\+message $\ast$p\+\_\+message)
+\item 
+\mbox{\Hypertarget{discord_8h_af49cc2529120bceb09fc060fee2b0256}\label{discord_8h_af49cc2529120bceb09fc060fee2b0256}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+create\+\_\+reaction} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} channel\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} message\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} emoji\+\_\+id, const char emoji\+\_\+name\mbox{[}$\,$\mbox{]})
+\item 
+\mbox{\Hypertarget{discord_8h_a857928d288ba52cf0c85ed0a6ecfe019}\label{discord_8h_a857928d288ba52cf0c85ed0a6ecfe019}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+delete\+\_\+own\+\_\+reaction} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} channel\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} message\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} emoji\+\_\+id, const char emoji\+\_\+name\mbox{[}$\,$\mbox{]})
+\item 
+\mbox{\Hypertarget{discord_8h_adf871c1c3ed4a90b802413821414151b}\label{discord_8h_adf871c1c3ed4a90b802413821414151b}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+delete\+\_\+user\+\_\+reaction} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} channel\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} message\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} user\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} emoji\+\_\+id, const char emoji\+\_\+name\mbox{[}$\,$\mbox{]})
+\item 
+\mbox{\Hypertarget{discord_8h_a7d788ff362200e68008145c290186f17}\label{discord_8h_a7d788ff362200e68008145c290186f17}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+get\+\_\+reactions} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} channel\+\_\+id, \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} message\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} emoji\+\_\+id, const char emoji\+\_\+name\mbox{[}$\,$\mbox{]}, struct discord\+\_\+get\+\_\+reactions\+\_\+params $\ast$params, N\+T\+L\+\_\+T(struct discord\+\_\+user) $\ast$p\+\_\+users)
+\item 
+\mbox{\Hypertarget{discord_8h_a6ce2ea48ea01a30e082eb69feea5a6de}\label{discord_8h_a6ce2ea48ea01a30e082eb69feea5a6de}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+delete\+\_\+all\+\_\+reactions} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} channel\+\_\+id, \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} message\+\_\+id)
+\item 
+\mbox{\Hypertarget{discord_8h_ad31c0271bc31a09741f904d340b3a173}\label{discord_8h_ad31c0271bc31a09741f904d340b3a173}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+delete\+\_\+all\+\_\+reactions\+\_\+for\+\_\+emoji} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} channel\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} message\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} emoji\+\_\+id, const char emoji\+\_\+name\mbox{[}$\,$\mbox{]})
+\item 
+\mbox{\Hypertarget{discord_8h_a7d3e65f8daf9f708817edcb61777081b}\label{discord_8h_a7d3e65f8daf9f708817edcb61777081b}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+edit\+\_\+message} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} channel\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} message\+\_\+id, struct \mbox{\hyperlink{structdiscord__edit__message__params}{discord\+\_\+edit\+\_\+message\+\_\+params}} $\ast$params, struct discord\+\_\+message $\ast$p\+\_\+message)
+\item 
+\mbox{\Hypertarget{discord_8h_a51a56e2c2cea60b15f4e00d7c2a0d32c}\label{discord_8h_a51a56e2c2cea60b15f4e00d7c2a0d32c}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+delete\+\_\+message} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} channel\+\_\+id, \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} message\+\_\+id)
+\item 
+O\+R\+C\+Acode \mbox{\hyperlink{discord_8h_aacda48df5d68ed8d5cf6983f245f3224}{discord\+\_\+bulk\+\_\+delete\+\_\+messages}} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} channel\+\_\+id, N\+T\+L\+\_\+T(\mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}}) messages)
+\item 
+\mbox{\Hypertarget{discord_8h_aa9d5af25d40b777f55f309e09c7f04f2}\label{discord_8h_aa9d5af25d40b777f55f309e09c7f04f2}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+edit\+\_\+channel\+\_\+permissions} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} channel\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} overwrite\+\_\+id, struct discord\+\_\+edit\+\_\+channel\+\_\+permissions\+\_\+params $\ast$params)
+\item 
+\mbox{\Hypertarget{discord_8h_a8bee5d8b9cb72071e2b0fa967ee343ac}\label{discord_8h_a8bee5d8b9cb72071e2b0fa967ee343ac}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+get\+\_\+channel\+\_\+invites} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} channel\+\_\+id, N\+T\+L\+\_\+T(struct discord\+\_\+invite) $\ast$p\+\_\+invites)
+\item 
+\mbox{\Hypertarget{discord_8h_a136b83a1ba0801388b3f8f959cf0cba8}\label{discord_8h_a136b83a1ba0801388b3f8f959cf0cba8}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+create\+\_\+channel\+\_\+invite} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} channel\+\_\+id, struct discord\+\_\+create\+\_\+channel\+\_\+invite\+\_\+params $\ast$params, struct discord\+\_\+invite $\ast$p\+\_\+invite)
+\item 
+\mbox{\Hypertarget{discord_8h_affecffdb89121bc1169c6c35e44b8002}\label{discord_8h_affecffdb89121bc1169c6c35e44b8002}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+delete\+\_\+channel\+\_\+permission} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} channel\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} overwrite\+\_\+id)
+\item 
+\mbox{\Hypertarget{discord_8h_af71f7d651c475d86c938a1e48c857ad4}\label{discord_8h_af71f7d651c475d86c938a1e48c857ad4}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+trigger\+\_\+typing\+\_\+indicator} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} channel\+\_\+id)
+\item 
+\mbox{\Hypertarget{discord_8h_adcec0982f42c7a20b595f50732f77b50}\label{discord_8h_adcec0982f42c7a20b595f50732f77b50}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+follow\+\_\+news\+\_\+channel} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} channel\+\_\+id, struct discord\+\_\+follow\+\_\+news\+\_\+channel\+\_\+params $\ast$params, struct discord\+\_\+channel $\ast$p\+\_\+followed\+\_\+channel)
+\item 
+\mbox{\Hypertarget{discord_8h_a8a5afc6872af7a66aee556541b79b3bf}\label{discord_8h_a8a5afc6872af7a66aee556541b79b3bf}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+get\+\_\+pinned\+\_\+messages} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} channel\+\_\+id, N\+T\+L\+\_\+T(struct discord\+\_\+message) $\ast$p\+\_\+messages)
+\item 
+\mbox{\Hypertarget{discord_8h_a970be89edad8c0e7ff33114fcbe1ec99}\label{discord_8h_a970be89edad8c0e7ff33114fcbe1ec99}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+pin\+\_\+message} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} channel\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} message\+\_\+id)
+\item 
+\mbox{\Hypertarget{discord_8h_a3eaa78acf878cadf7a133ce35b75f8bf}\label{discord_8h_a3eaa78acf878cadf7a133ce35b75f8bf}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+unpin\+\_\+message} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} channel\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} message\+\_\+id)
+\item 
+\mbox{\Hypertarget{discord_8h_aead04c36e4b1579e97665e7ce760de9b}\label{discord_8h_aead04c36e4b1579e97665e7ce760de9b}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+group\+\_\+dm\+\_\+add\+\_\+recipient} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} channel\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} user\+\_\+id, struct discord\+\_\+group\+\_\+dm\+\_\+add\+\_\+recipient\+\_\+params $\ast$params)
+\item 
+\mbox{\Hypertarget{discord_8h_a94bf9c82a49c8ccb2565daafa775a3f2}\label{discord_8h_a94bf9c82a49c8ccb2565daafa775a3f2}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+group\+\_\+dm\+\_\+remove\+\_\+recipient} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} channel\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} user\+\_\+id)
+\item 
+\mbox{\Hypertarget{discord_8h_afd7ab361ee00797bd5d03fc87b71912b}\label{discord_8h_afd7ab361ee00797bd5d03fc87b71912b}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+start\+\_\+thread\+\_\+with\+\_\+message} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} channel\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} message\+\_\+id, struct discord\+\_\+start\+\_\+thread\+\_\+with\+\_\+message\+\_\+params $\ast$params, struct discord\+\_\+channel $\ast$p\+\_\+channel)
+\item 
+\mbox{\Hypertarget{discord_8h_a8dfdb19140983a835050fc051471e8e4}\label{discord_8h_a8dfdb19140983a835050fc051471e8e4}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+start\+\_\+thread\+\_\+without\+\_\+message} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} channel\+\_\+id, struct discord\+\_\+start\+\_\+thread\+\_\+without\+\_\+message\+\_\+params $\ast$params, struct discord\+\_\+channel $\ast$p\+\_\+channel)
+\item 
+\mbox{\Hypertarget{discord_8h_a65e786353ce28ff0ea7c3d23b3bfb767}\label{discord_8h_a65e786353ce28ff0ea7c3d23b3bfb767}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+join\+\_\+thread} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} channel\+\_\+id)
+\item 
+\mbox{\Hypertarget{discord_8h_a5a0a992e189d04f137fccdc1a7820b1e}\label{discord_8h_a5a0a992e189d04f137fccdc1a7820b1e}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+add\+\_\+thread\+\_\+member} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} channel\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} user\+\_\+id)
+\item 
+\mbox{\Hypertarget{discord_8h_a4c27c09c1e9bb6ace468eea814b24c7c}\label{discord_8h_a4c27c09c1e9bb6ace468eea814b24c7c}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+leave\+\_\+thread} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} channel\+\_\+id)
+\item 
+\mbox{\Hypertarget{discord_8h_a65aac5c74ee75974a0ecec19797a30ad}\label{discord_8h_a65aac5c74ee75974a0ecec19797a30ad}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+remove\+\_\+thread\+\_\+member} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} channel\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} user\+\_\+id)
+\item 
+\mbox{\Hypertarget{discord_8h_a24ebee6d22865c846631d11a4864d1ea}\label{discord_8h_a24ebee6d22865c846631d11a4864d1ea}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+list\+\_\+thread\+\_\+members} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} channel\+\_\+id, N\+T\+L\+\_\+T(struct discord\+\_\+thread\+\_\+member) $\ast$p\+\_\+thread\+\_\+members)
+\item 
+\mbox{\Hypertarget{discord_8h_a7ed819233455333ae5161fb25723d1c6}\label{discord_8h_a7ed819233455333ae5161fb25723d1c6}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+list\+\_\+active\+\_\+threads} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} channel\+\_\+id, struct discord\+\_\+thread\+\_\+response\+\_\+body $\ast$body)
+\item 
+\mbox{\Hypertarget{discord_8h_a57de1006b9809236287b99c8e8305619}\label{discord_8h_a57de1006b9809236287b99c8e8305619}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+list\+\_\+public\+\_\+archived\+\_\+threads} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} channel\+\_\+id, const \mbox{\hyperlink{discord_8h_a8c10c2449cb2148f47b8a032af96dd60}{u64\+\_\+unix\+\_\+ms\+\_\+t}} before, const int limit, struct discord\+\_\+thread\+\_\+response\+\_\+body $\ast$body)
+\item 
+\mbox{\Hypertarget{discord_8h_a779eae001e367bae8b907b9a573dcd4f}\label{discord_8h_a779eae001e367bae8b907b9a573dcd4f}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+list\+\_\+private\+\_\+archived\+\_\+threads} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} channel\+\_\+id, const \mbox{\hyperlink{discord_8h_a8c10c2449cb2148f47b8a032af96dd60}{u64\+\_\+unix\+\_\+ms\+\_\+t}} before, const int limit, struct discord\+\_\+thread\+\_\+response\+\_\+body $\ast$body)
+\item 
+\mbox{\Hypertarget{discord_8h_a201913be25fc9e390e3aded1ad4afe4e}\label{discord_8h_a201913be25fc9e390e3aded1ad4afe4e}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+list\+\_\+joined\+\_\+private\+\_\+archived\+\_\+threads} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} channel\+\_\+id, const \mbox{\hyperlink{discord_8h_a8c10c2449cb2148f47b8a032af96dd60}{u64\+\_\+unix\+\_\+ms\+\_\+t}} before, const int limit, struct discord\+\_\+thread\+\_\+response\+\_\+body $\ast$body)
+\item 
+\mbox{\Hypertarget{discord_8h_a31be70e0c762d4ffa5eb821085111287}\label{discord_8h_a31be70e0c762d4ffa5eb821085111287}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+list\+\_\+guild\+\_\+emojis} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id, N\+T\+L\+\_\+T(struct discord\+\_\+emoji) $\ast$p\+\_\+emojis)
+\item 
+\mbox{\Hypertarget{discord_8h_a03184800fc1b135d1e6ade3d2da2be64}\label{discord_8h_a03184800fc1b135d1e6ade3d2da2be64}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+get\+\_\+guild\+\_\+emoji} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} emoji\+\_\+id, struct discord\+\_\+emoji $\ast$p\+\_\+emoji)
+\item 
+\mbox{\Hypertarget{discord_8h_a562c3035ce2eedbbb63ca934e1de1c69}\label{discord_8h_a562c3035ce2eedbbb63ca934e1de1c69}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+create\+\_\+guild\+\_\+emoji} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id, struct discord\+\_\+create\+\_\+guild\+\_\+emoji\+\_\+params $\ast$params, struct discord\+\_\+emoji $\ast$p\+\_\+emoji)
+\item 
+\mbox{\Hypertarget{discord_8h_aea1e92fb201505151b37ee1c8f1b855f}\label{discord_8h_aea1e92fb201505151b37ee1c8f1b855f}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+modify\+\_\+guild\+\_\+emoji} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} emoji\+\_\+id, struct discord\+\_\+modify\+\_\+guild\+\_\+emoji\+\_\+params $\ast$params, struct discord\+\_\+emoji $\ast$p\+\_\+emoji)
+\item 
+\mbox{\Hypertarget{discord_8h_a14c2c659a70516e60d9abcff82d701dd}\label{discord_8h_a14c2c659a70516e60d9abcff82d701dd}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+delete\+\_\+guild\+\_\+emoji} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} emoji\+\_\+id)
+\item 
+\mbox{\Hypertarget{discord_8h_a75b25aef5d985983e6cc6f13f82606ee}\label{discord_8h_a75b25aef5d985983e6cc6f13f82606ee}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+create\+\_\+guild} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, struct discord\+\_\+create\+\_\+guild\+\_\+params $\ast$params, struct discord\+\_\+guild $\ast$p\+\_\+guild)
+\item 
+\mbox{\Hypertarget{discord_8h_a8545a8492c38b03a8ddf9fb1c8627ce1}\label{discord_8h_a8545a8492c38b03a8ddf9fb1c8627ce1}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+get\+\_\+guild} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id, struct discord\+\_\+guild $\ast$p\+\_\+guild)
+\item 
+\mbox{\Hypertarget{discord_8h_a0b8f6f9d6b2bf9aadf3350c397a23e2b}\label{discord_8h_a0b8f6f9d6b2bf9aadf3350c397a23e2b}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+get\+\_\+guild\+\_\+preview} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id, struct discord\+\_\+guild\+\_\+preview $\ast$p\+\_\+guild\+\_\+preview)
+\item 
+\mbox{\Hypertarget{discord_8h_a5e43a85d9a19cb7d48ccb4486581f3d9}\label{discord_8h_a5e43a85d9a19cb7d48ccb4486581f3d9}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+modify\+\_\+guild} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id, struct discord\+\_\+modify\+\_\+guild\+\_\+params $\ast$params, struct discord\+\_\+guild $\ast$p\+\_\+guild)
+\item 
+\mbox{\Hypertarget{discord_8h_ab38de653971be92d42b8667fbc77c3f9}\label{discord_8h_ab38de653971be92d42b8667fbc77c3f9}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+delete\+\_\+guild} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id)
+\item 
+\mbox{\Hypertarget{discord_8h_a5d250b5119970ccbac9b4e6993efc05c}\label{discord_8h_a5d250b5119970ccbac9b4e6993efc05c}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+get\+\_\+guild\+\_\+channels} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id, N\+T\+L\+\_\+T(struct discord\+\_\+channel) $\ast$p\+\_\+channels)
+\item 
+\mbox{\Hypertarget{discord_8h_acc4363c5911fc175c99e4f89a52cc759}\label{discord_8h_acc4363c5911fc175c99e4f89a52cc759}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+create\+\_\+guild\+\_\+channel} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id, struct discord\+\_\+create\+\_\+guild\+\_\+channel\+\_\+params $\ast$params, struct discord\+\_\+channel $\ast$p\+\_\+channel)
+\item 
+\mbox{\Hypertarget{discord_8h_a4b6b8d3d3bccc94791ff59e7577574cd}\label{discord_8h_a4b6b8d3d3bccc94791ff59e7577574cd}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+modify\+\_\+guild\+\_\+channel\+\_\+positions} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id, N\+T\+L\+\_\+T(struct discord\+\_\+modify\+\_\+guild\+\_\+channel\+\_\+positions\+\_\+params) params)
+\item 
+\mbox{\Hypertarget{discord_8h_a6858aeedb249dcc4df1e64c5fd10f51e}\label{discord_8h_a6858aeedb249dcc4df1e64c5fd10f51e}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+get\+\_\+guild\+\_\+member} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id, \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} user\+\_\+id, struct discord\+\_\+guild\+\_\+member $\ast$p\+\_\+member)
+\item 
+\mbox{\Hypertarget{discord_8h_a475eb63d7a38b9c905db4b2d04dba978}\label{discord_8h_a475eb63d7a38b9c905db4b2d04dba978}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+list\+\_\+guild\+\_\+members} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id, struct \mbox{\hyperlink{structdiscord__list__guild__members__params}{discord\+\_\+list\+\_\+guild\+\_\+members\+\_\+params}} $\ast$params, N\+T\+L\+\_\+T(struct discord\+\_\+guild\+\_\+member) $\ast$p\+\_\+members)
+\item 
+\mbox{\Hypertarget{discord_8h_a88fbcf3e1ffed70ac10f6fe6764e65e9}\label{discord_8h_a88fbcf3e1ffed70ac10f6fe6764e65e9}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+search\+\_\+guild\+\_\+members} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id, struct discord\+\_\+search\+\_\+guild\+\_\+members\+\_\+params $\ast$params, N\+T\+L\+\_\+T(struct discord\+\_\+guild\+\_\+member) $\ast$p\+\_\+members)
+\item 
+\mbox{\Hypertarget{discord_8h_a59a1ed3f73a1903f8937f9cee084737f}\label{discord_8h_a59a1ed3f73a1903f8937f9cee084737f}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+modify\+\_\+guild\+\_\+member} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} user\+\_\+id, struct discord\+\_\+modify\+\_\+guild\+\_\+member\+\_\+params $\ast$params, struct discord\+\_\+guild\+\_\+member $\ast$p\+\_\+member)
+\item 
+\mbox{\Hypertarget{discord_8h_a6b262457fd48cbe122d96db54059ff89}\label{discord_8h_a6b262457fd48cbe122d96db54059ff89}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+add\+\_\+guild\+\_\+member} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} user\+\_\+id, struct discord\+\_\+add\+\_\+guild\+\_\+member\+\_\+params $\ast$params, struct discord\+\_\+guild\+\_\+member $\ast$p\+\_\+member)
+\item 
+\mbox{\Hypertarget{discord_8h_aea2ec42f5084eb572db75d2ffaad1745}\label{discord_8h_aea2ec42f5084eb572db75d2ffaad1745}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+modify\+\_\+current\+\_\+user\+\_\+nick} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id, const char nick\mbox{[}$\,$\mbox{]})
+\item 
+\mbox{\Hypertarget{discord_8h_a67014912978ba78ed9b62aa2def15165}\label{discord_8h_a67014912978ba78ed9b62aa2def15165}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+add\+\_\+guild\+\_\+member\+\_\+role} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} user\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} role\+\_\+id)
+\item 
+\mbox{\Hypertarget{discord_8h_a3080df51104116e97d5f146a5504ae1b}\label{discord_8h_a3080df51104116e97d5f146a5504ae1b}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+remove\+\_\+guild\+\_\+member\+\_\+role} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} user\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} role\+\_\+id)
+\item 
+\mbox{\Hypertarget{discord_8h_a19158a3fd219d8bd35429dfd33a76957}\label{discord_8h_a19158a3fd219d8bd35429dfd33a76957}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+remove\+\_\+guild\+\_\+member} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} user\+\_\+id)
+\item 
+\mbox{\Hypertarget{discord_8h_a7c46ce0b465393d2c63f1fd03623d863}\label{discord_8h_a7c46ce0b465393d2c63f1fd03623d863}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+get\+\_\+guild\+\_\+bans} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id, N\+T\+L\+\_\+T(struct discord\+\_\+guild\+\_\+ban) $\ast$p\+\_\+bans)
+\item 
+\mbox{\Hypertarget{discord_8h_a3e569365b707b4261c81d5af34b4a7d5}\label{discord_8h_a3e569365b707b4261c81d5af34b4a7d5}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+get\+\_\+guild\+\_\+ban} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} user\+\_\+id, struct discord\+\_\+guild\+\_\+ban $\ast$p\+\_\+ban)
+\item 
+\mbox{\Hypertarget{discord_8h_a499cb0fe0d9e3a3eaebc7054fb181a77}\label{discord_8h_a499cb0fe0d9e3a3eaebc7054fb181a77}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+create\+\_\+guild\+\_\+ban} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} user\+\_\+id, int delete\+\_\+message\+\_\+days, const char reason\mbox{[}$\,$\mbox{]})
+\item 
+\mbox{\Hypertarget{discord_8h_a2cccfdb1085e35622fec63485d722345}\label{discord_8h_a2cccfdb1085e35622fec63485d722345}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+remove\+\_\+guild\+\_\+ban} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} user\+\_\+id, const char reason\mbox{[}$\,$\mbox{]})
+\item 
+\mbox{\Hypertarget{discord_8h_a7e7ddb378b29262f1538fbb68eab9d4f}\label{discord_8h_a7e7ddb378b29262f1538fbb68eab9d4f}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+get\+\_\+guild\+\_\+roles} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id, N\+T\+L\+\_\+T(struct discord\+\_\+permissions\+\_\+role) $\ast$p\+\_\+roles)
+\item 
+\mbox{\Hypertarget{discord_8h_ac4042feee4d8e2b323c2669d1f85af71}\label{discord_8h_ac4042feee4d8e2b323c2669d1f85af71}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+create\+\_\+guild\+\_\+role} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id, struct discord\+\_\+create\+\_\+guild\+\_\+role\+\_\+params $\ast$params, struct discord\+\_\+permissions\+\_\+role $\ast$p\+\_\+role)
+\item 
+\mbox{\Hypertarget{discord_8h_a05fea06d3662efcabfb1d86302e8c7b1}\label{discord_8h_a05fea06d3662efcabfb1d86302e8c7b1}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+modify\+\_\+guild\+\_\+role\+\_\+positions} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id, N\+T\+L\+\_\+T(struct discord\+\_\+modify\+\_\+guild\+\_\+role\+\_\+positions\+\_\+params) params, N\+T\+L\+\_\+T(struct discord\+\_\+permissions\+\_\+role) $\ast$p\+\_\+roles)
+\item 
+\mbox{\Hypertarget{discord_8h_afa5cc20214e30d1ac4c4aace95c66775}\label{discord_8h_afa5cc20214e30d1ac4c4aace95c66775}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+modify\+\_\+guild\+\_\+role} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} role\+\_\+id, struct discord\+\_\+modify\+\_\+guild\+\_\+role\+\_\+params $\ast$params, struct discord\+\_\+permissions\+\_\+role $\ast$p\+\_\+role)
+\item 
+\mbox{\Hypertarget{discord_8h_aa7f8d051db93343d52f7306a4778722c}\label{discord_8h_aa7f8d051db93343d52f7306a4778722c}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+delete\+\_\+guild\+\_\+role} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} role\+\_\+id)
+\item 
+\mbox{\Hypertarget{discord_8h_a9766dd277b518aeb212abb182bad60e6}\label{discord_8h_a9766dd277b518aeb212abb182bad60e6}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+get\+\_\+invite} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, char $\ast$invite\+\_\+code, struct discord\+\_\+get\+\_\+invite\+\_\+params $\ast$params, struct discord\+\_\+invite $\ast$p\+\_\+invite)
+\item 
+\mbox{\Hypertarget{discord_8h_a2bec8afddd6cd54d13920d4dcd609042}\label{discord_8h_a2bec8afddd6cd54d13920d4dcd609042}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+delete\+\_\+invite} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, char $\ast$invite\+\_\+code, struct discord\+\_\+invite $\ast$p\+\_\+invite)
+\item 
+\mbox{\Hypertarget{discord_8h_a99482b768d36c5d452f4900b80f7c942}\label{discord_8h_a99482b768d36c5d452f4900b80f7c942}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+get\+\_\+user} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} user\+\_\+id, struct discord\+\_\+user $\ast$p\+\_\+user)
+\item 
+\mbox{\Hypertarget{discord_8h_a29ae0a3b8edace612d4a1f5383157069}\label{discord_8h_a29ae0a3b8edace612d4a1f5383157069}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+modify\+\_\+current\+\_\+user} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, struct discord\+\_\+modify\+\_\+current\+\_\+user\+\_\+params $\ast$params, struct discord\+\_\+user $\ast$p\+\_\+user)
+\item 
+\mbox{\Hypertarget{discord_8h_a615ebbb1f300c0e85dae48b59f5695f5}\label{discord_8h_a615ebbb1f300c0e85dae48b59f5695f5}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+get\+\_\+current\+\_\+user} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, struct discord\+\_\+user $\ast$p\+\_\+user)
+\item 
+\mbox{\Hypertarget{discord_8h_a9bc0af2b5ca034d56c8b4dea20458a7e}\label{discord_8h_a9bc0af2b5ca034d56c8b4dea20458a7e}} 
+O\+R\+C\+Acode {\bfseries sb\+\_\+discord\+\_\+get\+\_\+current\+\_\+user} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, struct sized\+\_\+buffer $\ast$p\+\_\+sb\+\_\+user)
+\item 
+\mbox{\Hypertarget{discord_8h_a340bca2411f418416374ae1a75e20490}\label{discord_8h_a340bca2411f418416374ae1a75e20490}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+get\+\_\+current\+\_\+user\+\_\+guilds} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, N\+T\+L\+\_\+T(struct discord\+\_\+guild) $\ast$p\+\_\+guilds)
+\item 
+\mbox{\Hypertarget{discord_8h_a26b38c03b0115967f3774982d0ae6b1c}\label{discord_8h_a26b38c03b0115967f3774982d0ae6b1c}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+leave\+\_\+guild} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id)
+\item 
+\mbox{\Hypertarget{discord_8h_a2ef599cbac7a8b223ce7ffa858ff9091}\label{discord_8h_a2ef599cbac7a8b223ce7ffa858ff9091}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+create\+\_\+dm} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} recipient\+\_\+id, struct discord\+\_\+channel $\ast$p\+\_\+dm\+\_\+channel)
+\item 
+\mbox{\Hypertarget{discord_8h_ac416f5deadafcf143cc8a2c01b727d1c}\label{discord_8h_ac416f5deadafcf143cc8a2c01b727d1c}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+create\+\_\+group\+\_\+dm} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, struct discord\+\_\+create\+\_\+group\+\_\+dm\+\_\+params $\ast$params, struct discord\+\_\+channel $\ast$p\+\_\+dm\+\_\+channel)
+\item 
+\mbox{\Hypertarget{discord_8h_ad3723bff27b5f87f54332415225e0d18}\label{discord_8h_ad3723bff27b5f87f54332415225e0d18}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+get\+\_\+user\+\_\+connections} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, N\+T\+L\+\_\+T(struct discord\+\_\+connection) $\ast$p\+\_\+connections)
+\item 
+\mbox{\Hypertarget{discord_8h_a3035f1af2dfc1ebb7512f44253ee6168}\label{discord_8h_a3035f1af2dfc1ebb7512f44253ee6168}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+list\+\_\+voice\+\_\+regions} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, N\+T\+L\+\_\+T(struct discord\+\_\+voice\+\_\+region) $\ast$p\+\_\+voice\+\_\+regions)
+\item 
+\mbox{\Hypertarget{discord_8h_aceb2e973229ca1d060ca331d33997a74}\label{discord_8h_aceb2e973229ca1d060ca331d33997a74}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+get\+\_\+gateway} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, struct \mbox{\hyperlink{structdiscord__session}{discord\+\_\+session}} $\ast$p\+\_\+session)
+\item 
+\mbox{\Hypertarget{discord_8h_ab3c344ef40f1ff11a2f84688eb7f89a3}\label{discord_8h_ab3c344ef40f1ff11a2f84688eb7f89a3}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+get\+\_\+gateway\+\_\+bot} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, struct \mbox{\hyperlink{structdiscord__session}{discord\+\_\+session}} $\ast$p\+\_\+session)
+\item 
+\mbox{\Hypertarget{discord_8h_adfd0289ffc7f0fd0789d196c37691047}\label{discord_8h_adfd0289ffc7f0fd0789d196c37691047}} 
+void {\bfseries discord\+\_\+embed\+\_\+set\+\_\+thumbnail} (struct discord\+\_\+embed $\ast$embed, char url\mbox{[}$\,$\mbox{]}, char proxy\+\_\+url\mbox{[}$\,$\mbox{]}, int height, int width)
+\item 
+\mbox{\Hypertarget{discord_8h_abf8b562a89f81232fed3d0edcc81e994}\label{discord_8h_abf8b562a89f81232fed3d0edcc81e994}} 
+void {\bfseries discord\+\_\+embed\+\_\+set\+\_\+image} (struct discord\+\_\+embed $\ast$embed, char url\mbox{[}$\,$\mbox{]}, char proxy\+\_\+url\mbox{[}$\,$\mbox{]}, int height, int width)
+\item 
+\mbox{\Hypertarget{discord_8h_a2fc46ffee7990f81397c5d20a546cbae}\label{discord_8h_a2fc46ffee7990f81397c5d20a546cbae}} 
+void {\bfseries discord\+\_\+embed\+\_\+set\+\_\+video} (struct discord\+\_\+embed $\ast$embed, char url\mbox{[}$\,$\mbox{]}, char proxy\+\_\+url\mbox{[}$\,$\mbox{]}, int height, int width)
+\item 
+\mbox{\Hypertarget{discord_8h_a52f5dd61b9b425ff86c369e31517abfd}\label{discord_8h_a52f5dd61b9b425ff86c369e31517abfd}} 
+void {\bfseries discord\+\_\+embed\+\_\+set\+\_\+footer} (struct discord\+\_\+embed $\ast$embed, char text\mbox{[}$\,$\mbox{]}, char icon\+\_\+url\mbox{[}$\,$\mbox{]}, char proxy\+\_\+icon\+\_\+url\mbox{[}$\,$\mbox{]})
+\item 
+\mbox{\Hypertarget{discord_8h_affe4d5962731cfa56650237c18eebb03}\label{discord_8h_affe4d5962731cfa56650237c18eebb03}} 
+void {\bfseries discord\+\_\+embed\+\_\+set\+\_\+provider} (struct discord\+\_\+embed $\ast$embed, char name\mbox{[}$\,$\mbox{]}, char url\mbox{[}$\,$\mbox{]})
+\item 
+\mbox{\Hypertarget{discord_8h_aa2b36b3810b48f4d225d4277bb144670}\label{discord_8h_aa2b36b3810b48f4d225d4277bb144670}} 
+void {\bfseries discord\+\_\+embed\+\_\+set\+\_\+author} (struct discord\+\_\+embed $\ast$embed, char name\mbox{[}$\,$\mbox{]}, char url\mbox{[}$\,$\mbox{]}, char icon\+\_\+url\mbox{[}$\,$\mbox{]}, char proxy\+\_\+icon\+\_\+url\mbox{[}$\,$\mbox{]})
+\item 
+\mbox{\Hypertarget{discord_8h_ab038095175d60499df67139b6e7f8852}\label{discord_8h_ab038095175d60499df67139b6e7f8852}} 
+void {\bfseries discord\+\_\+embed\+\_\+add\+\_\+field} (struct discord\+\_\+embed $\ast$embed, char name\mbox{[}$\,$\mbox{]}, char value\mbox{[}$\,$\mbox{]}, bool Inline)
+\item 
+\mbox{\Hypertarget{discord_8h_a4160937d1ba6443480690bb911acf584}\label{discord_8h_a4160937d1ba6443480690bb911acf584}} 
+void {\bfseries discord\+\_\+overwrite\+\_\+append} (N\+T\+L\+\_\+T(struct discord\+\_\+channel\+\_\+overwrite) $\ast$permission\+\_\+overwrites, \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} id, int type, enum discord\+\_\+permissions\+\_\+bitwise\+\_\+flags allow, enum discord\+\_\+permissions\+\_\+bitwise\+\_\+flags deny)
+\item 
+\mbox{\Hypertarget{discord_8h_a52c5e4639cd54ed911d6c04f3a5c8daa}\label{discord_8h_a52c5e4639cd54ed911d6c04f3a5c8daa}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+get\+\_\+channel\+\_\+at\+\_\+pos} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id, const enum discord\+\_\+channel\+\_\+types type, const size\+\_\+t position, struct discord\+\_\+channel $\ast$p\+\_\+channel)
+\item 
+\mbox{\Hypertarget{discord_8h_acc3e6bb474a17a2f2556caadc29c51a7}\label{discord_8h_acc3e6bb474a17a2f2556caadc29c51a7}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+delete\+\_\+messages\+\_\+by\+\_\+author\+\_\+id} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} channel\+\_\+id, \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} author\+\_\+id)
+\item 
+\mbox{\Hypertarget{discord_8h_a7bca68b10bc07a82621a2bc20e2ac567}\label{discord_8h_a7bca68b10bc07a82621a2bc20e2ac567}} 
+O\+R\+C\+Acode {\bfseries discord\+\_\+disconnect\+\_\+guild\+\_\+member} (struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} user\+\_\+id, struct discord\+\_\+guild\+\_\+member $\ast$p\+\_\+member)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+File containing public functions and datatypes. 
+
+\begin{DoxyAuthor}{Author}
+cee-\/studio 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+18 Jun 2021 These symbols are organized in a intuitive fashion to be easily matched to the official Discord A\+PI docs. 
+\end{DoxyDate}
+\begin{DoxySeeAlso}{See also}
+\href{https://discord.com/developers/docs/intro}{\texttt{ https\+://discord.\+com/developers/docs/intro}} 
+\end{DoxySeeAlso}
+
+
+\doxysubsection{Typedef Documentation}
+\mbox{\Hypertarget{discord_8h_ad256daeaf95441e9bebba72ed7532c93}\label{discord_8h_ad256daeaf95441e9bebba72ed7532c93}} 
+\index{discord.h@{discord.h}!channel\_cb@{channel\_cb}}
+\index{channel\_cb@{channel\_cb}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{channel\_cb}{channel\_cb}}
+{\footnotesize\ttfamily typedef void() channel\+\_\+cb(struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const struct discord\+\_\+user $\ast$bot, const struct discord\+\_\+channel $\ast$channel)}
+
+
+
+Channel Create/\+Update/\+Delete callback. 
+
+\begin{DoxySeeAlso}{See also}
+\href{https://discord.com/developers/docs/topics/gateway\#channels}{\texttt{ https\+://discord.\+com/developers/docs/topics/gateway\#channels}} 
+
+\mbox{\hyperlink{discord_8h_af3e3e920824c65e23bcc47e62cf906c4}{discord\+\_\+set\+\_\+on\+\_\+channel\+\_\+create()}} 
+
+\mbox{\hyperlink{discord_8h_a0c5c1e50ad4749a2dc7143030ef89d47}{discord\+\_\+set\+\_\+on\+\_\+channel\+\_\+update()}} 
+
+\mbox{\hyperlink{discord_8h_a492b849d1661a82ff8ca16c3e829ddc6}{discord\+\_\+set\+\_\+on\+\_\+channel\+\_\+delete()}} 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{discord_8h_aa1e842764ae5f29946ffb777407c531e}\label{discord_8h_aa1e842764ae5f29946ffb777407c531e}} 
+\index{discord.h@{discord.h}!channel\_pins\_update\_cb@{channel\_pins\_update\_cb}}
+\index{channel\_pins\_update\_cb@{channel\_pins\_update\_cb}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{channel\_pins\_update\_cb}{channel\_pins\_update\_cb}}
+{\footnotesize\ttfamily typedef void() channel\+\_\+pins\+\_\+update\+\_\+cb(struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const struct discord\+\_\+user $\ast$bot, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} channel\+\_\+id, const \mbox{\hyperlink{discord_8h_a8c10c2449cb2148f47b8a032af96dd60}{u64\+\_\+unix\+\_\+ms\+\_\+t}} last\+\_\+pin\+\_\+timestamp)}
+
+
+
+Channel Pins Update callback. 
+
+\begin{DoxySeeAlso}{See also}
+\href{https://discord.com/developers/docs/topics/gateway\#channels}{\texttt{ https\+://discord.\+com/developers/docs/topics/gateway\#channels}} 
+
+\mbox{\hyperlink{discord_8h_ab6e438a4977ee90ddaef9593aa393c38}{discord\+\_\+set\+\_\+on\+\_\+channel\+\_\+pins\+\_\+update()}} 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{discord_8h_a9d756b50a8f1472d73e3dcc32625aa93}\label{discord_8h_a9d756b50a8f1472d73e3dcc32625aa93}} 
+\index{discord.h@{discord.h}!event\_raw\_cb@{event\_raw\_cb}}
+\index{event\_raw\_cb@{event\_raw\_cb}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{event\_raw\_cb}{event\_raw\_cb}}
+{\footnotesize\ttfamily typedef void() event\+\_\+raw\+\_\+cb(struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, enum discord\+\_\+gateway\+\_\+events event, struct sized\+\_\+buffer $\ast$sb\+\_\+bot, struct sized\+\_\+buffer $\ast$event\+\_\+data)}
+
+
+
+Raw Event callback. 
+
+If activated, this callback is triggered on any event. It is executed after every other callback has been checked. \begin{DoxySeeAlso}{See also}
+discord\+\_\+set\+\_\+on\+\_\+raw\+\_\+event() 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{discord_8h_a9e932235fc87b6fd16d5fccfa139edd6}\label{discord_8h_a9e932235fc87b6fd16d5fccfa139edd6}} 
+\index{discord.h@{discord.h}!guild\_ban\_cb@{guild\_ban\_cb}}
+\index{guild\_ban\_cb@{guild\_ban\_cb}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{guild\_ban\_cb}{guild\_ban\_cb}}
+{\footnotesize\ttfamily typedef void() guild\+\_\+ban\+\_\+cb(struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const struct discord\+\_\+user $\ast$bot, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id, const struct discord\+\_\+user $\ast$user)}
+
+
+
+Guild Ban Add/\+Remove callback. 
+
+\begin{DoxySeeAlso}{See also}
+\href{https://discord.com/developers/docs/topics/gateway\#guilds}{\texttt{ https\+://discord.\+com/developers/docs/topics/gateway\#guilds}} 
+
+\mbox{\hyperlink{discord_8h_a94472926020ef36799062255db81bec3}{discord\+\_\+set\+\_\+on\+\_\+guild\+\_\+ban\+\_\+add()}} 
+
+\mbox{\hyperlink{discord_8h_a63c145f6ca3397795927f0e4ad09d93c}{discord\+\_\+set\+\_\+on\+\_\+guild\+\_\+ban\+\_\+remove()}} 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{discord_8h_a74d2fa7659645194427e13dc15490e45}\label{discord_8h_a74d2fa7659645194427e13dc15490e45}} 
+\index{discord.h@{discord.h}!guild\_member\_cb@{guild\_member\_cb}}
+\index{guild\_member\_cb@{guild\_member\_cb}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{guild\_member\_cb}{guild\_member\_cb}}
+{\footnotesize\ttfamily typedef void() guild\+\_\+member\+\_\+cb(struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const struct discord\+\_\+user $\ast$bot, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id, const struct discord\+\_\+guild\+\_\+member $\ast$member)}
+
+
+
+Guild Member Add/\+Update callback. 
+
+\begin{DoxySeeAlso}{See also}
+\href{https://discord.com/developers/docs/topics/gateway\#guilds}{\texttt{ https\+://discord.\+com/developers/docs/topics/gateway\#guilds}} 
+
+\mbox{\hyperlink{discord_8h_a42bcf77e80f22f330046ce410e907b63}{discord\+\_\+set\+\_\+on\+\_\+guild\+\_\+member\+\_\+add()}} 
+
+\mbox{\hyperlink{discord_8h_a6fa77e5994396e14a7c2a272b58a845a}{discord\+\_\+set\+\_\+on\+\_\+guild\+\_\+member\+\_\+update()}} 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{discord_8h_a22a5a8767f0b3e13675c765fdd439936}\label{discord_8h_a22a5a8767f0b3e13675c765fdd439936}} 
+\index{discord.h@{discord.h}!guild\_member\_remove\_cb@{guild\_member\_remove\_cb}}
+\index{guild\_member\_remove\_cb@{guild\_member\_remove\_cb}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{guild\_member\_remove\_cb}{guild\_member\_remove\_cb}}
+{\footnotesize\ttfamily typedef void() guild\+\_\+member\+\_\+remove\+\_\+cb(struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const struct discord\+\_\+user $\ast$bot, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id, const struct discord\+\_\+user $\ast$user)}
+
+
+
+Guild Member Remove callback. 
+
+\begin{DoxySeeAlso}{See also}
+\href{https://discord.com/developers/docs/topics/gateway\#guilds}{\texttt{ https\+://discord.\+com/developers/docs/topics/gateway\#guilds}} 
+
+\mbox{\hyperlink{discord_8h_af467bc80ddced49e63c0ab72020f97f3}{discord\+\_\+set\+\_\+on\+\_\+guild\+\_\+member\+\_\+remove()}} 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{discord_8h_ad49541dbe38d41a0c6f72392511ffe7f}\label{discord_8h_ad49541dbe38d41a0c6f72392511ffe7f}} 
+\index{discord.h@{discord.h}!guild\_role\_cb@{guild\_role\_cb}}
+\index{guild\_role\_cb@{guild\_role\_cb}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{guild\_role\_cb}{guild\_role\_cb}}
+{\footnotesize\ttfamily typedef void() guild\+\_\+role\+\_\+cb(struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const struct discord\+\_\+user $\ast$bot, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id, const struct discord\+\_\+permissions\+\_\+role $\ast$role)}
+
+
+
+Guild Role Create/\+Update callback. 
+
+\begin{DoxySeeAlso}{See also}
+\href{https://discord.com/developers/docs/topics/gateway\#guilds}{\texttt{ https\+://discord.\+com/developers/docs/topics/gateway\#guilds}} 
+
+\mbox{\hyperlink{discord_8h_a99c81095365d9fb50a9bdcad36421677}{discord\+\_\+set\+\_\+on\+\_\+guild\+\_\+role\+\_\+create()}} 
+
+\mbox{\hyperlink{discord_8h_a2cdda4d8b073432fc1b9a8d802fb090a}{discord\+\_\+set\+\_\+on\+\_\+guild\+\_\+role\+\_\+update()}} 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{discord_8h_a57231f38324853b103aaeead055fb668}\label{discord_8h_a57231f38324853b103aaeead055fb668}} 
+\index{discord.h@{discord.h}!guild\_role\_delete\_cb@{guild\_role\_delete\_cb}}
+\index{guild\_role\_delete\_cb@{guild\_role\_delete\_cb}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{guild\_role\_delete\_cb}{guild\_role\_delete\_cb}}
+{\footnotesize\ttfamily typedef void() guild\+\_\+role\+\_\+delete\+\_\+cb(struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const struct discord\+\_\+user $\ast$bot, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} role\+\_\+id)}
+
+
+
+Guild Role Delete callback. 
+
+\begin{DoxySeeAlso}{See also}
+\href{https://discord.com/developers/docs/topics/gateway\#guilds}{\texttt{ https\+://discord.\+com/developers/docs/topics/gateway\#guilds}} 
+
+\mbox{\hyperlink{discord_8h_a3fbe3c1f243fdfd000095c8220656c29}{discord\+\_\+set\+\_\+on\+\_\+guild\+\_\+role\+\_\+delete()}} 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{discord_8h_afc8f66a3993c5edb45a00ef997223d52}\label{discord_8h_afc8f66a3993c5edb45a00ef997223d52}} 
+\index{discord.h@{discord.h}!idle\_cb@{idle\_cb}}
+\index{idle\_cb@{idle\_cb}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{idle\_cb}{idle\_cb}}
+{\footnotesize\ttfamily typedef void() idle\+\_\+cb(struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const struct discord\+\_\+user $\ast$bot)}
+
+
+
+Idle callback. 
+
+Runs on every Web\+Sockets loop iteration, no trigger required \begin{DoxySeeAlso}{See also}
+\mbox{\hyperlink{discord_8h_aa4499d5d0c24387a5acda0ea4be576ca}{discord\+\_\+set\+\_\+on\+\_\+idle()}} 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{discord_8h_afff2ce011cd5b8d20b703fb01c105559}\label{discord_8h_afff2ce011cd5b8d20b703fb01c105559}} 
+\index{discord.h@{discord.h}!message\_cb@{message\_cb}}
+\index{message\_cb@{message\_cb}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{message\_cb}{message\_cb}}
+{\footnotesize\ttfamily typedef void() message\+\_\+cb(struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const struct discord\+\_\+user $\ast$bot, const struct discord\+\_\+message $\ast$message)}
+
+
+
+Message Create/\+Update callback. 
+
+\begin{DoxySeeAlso}{See also}
+\href{https://discord.com/developers/docs/topics/gateway\#messages}{\texttt{ https\+://discord.\+com/developers/docs/topics/gateway\#messages}} 
+
+\mbox{\hyperlink{discord_8h_a16522ff016965c092436ceedb1d6da97}{discord\+\_\+set\+\_\+on\+\_\+message\+\_\+create()}} 
+
+\mbox{\hyperlink{discord_8h_a1bcf72b1836cbcd0ec8b197c156795cb}{discord\+\_\+set\+\_\+on\+\_\+message\+\_\+update()}} 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{discord_8h_a875e7449cd237f26e535809bd0d5a3a8}\label{discord_8h_a875e7449cd237f26e535809bd0d5a3a8}} 
+\index{discord.h@{discord.h}!message\_delete\_bulk\_cb@{message\_delete\_bulk\_cb}}
+\index{message\_delete\_bulk\_cb@{message\_delete\_bulk\_cb}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{message\_delete\_bulk\_cb}{message\_delete\_bulk\_cb}}
+{\footnotesize\ttfamily typedef void() message\+\_\+delete\+\_\+bulk\+\_\+cb(struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const struct discord\+\_\+user $\ast$bot, const N\+T\+L\+\_\+T(ja\+\_\+u64) ids, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} channel\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id)}
+
+
+
+Message Delete Bulk callback. 
+
+\begin{DoxySeeAlso}{See also}
+\href{https://discord.com/developers/docs/topics/gateway\#messages}{\texttt{ https\+://discord.\+com/developers/docs/topics/gateway\#messages}} 
+
+discord\+\_\+set\+\_\+on\+\_\+message\+\_\+delete\+\_\+bulk() 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{discord_8h_a1a03c333f0c96ccfe855460837c39640}\label{discord_8h_a1a03c333f0c96ccfe855460837c39640}} 
+\index{discord.h@{discord.h}!message\_delete\_cb@{message\_delete\_cb}}
+\index{message\_delete\_cb@{message\_delete\_cb}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{message\_delete\_cb}{message\_delete\_cb}}
+{\footnotesize\ttfamily typedef void() message\+\_\+delete\+\_\+cb(struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const struct discord\+\_\+user $\ast$bot, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} channel\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id)}
+
+
+
+Message Delete callback. 
+
+\begin{DoxySeeAlso}{See also}
+\href{https://discord.com/developers/docs/topics/gateway\#messages}{\texttt{ https\+://discord.\+com/developers/docs/topics/gateway\#messages}} 
+
+\mbox{\hyperlink{discord_8h_a72c3f46afdb0cf603ba426ae08bcadab}{discord\+\_\+set\+\_\+on\+\_\+message\+\_\+delete()}} 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{discord_8h_a51d3f330bfd81a53015878b954183142}\label{discord_8h_a51d3f330bfd81a53015878b954183142}} 
+\index{discord.h@{discord.h}!message\_reaction\_add\_cb@{message\_reaction\_add\_cb}}
+\index{message\_reaction\_add\_cb@{message\_reaction\_add\_cb}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{message\_reaction\_add\_cb}{message\_reaction\_add\_cb}}
+{\footnotesize\ttfamily typedef void() message\+\_\+reaction\+\_\+add\+\_\+cb(struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const struct discord\+\_\+user $\ast$bot, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} user\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} channel\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} message\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id, const struct discord\+\_\+guild\+\_\+member $\ast$member, const struct discord\+\_\+emoji $\ast$emoji)}
+
+
+
+Message Reaction Add callback. 
+
+\begin{DoxySeeAlso}{See also}
+\href{https://discord.com/developers/docs/topics/gateway\#messages}{\texttt{ https\+://discord.\+com/developers/docs/topics/gateway\#messages}} 
+
+\mbox{\hyperlink{discord_8h_a9b6bf9e15ae6c2fe82f6c6bd1f4fc6c6}{discord\+\_\+set\+\_\+on\+\_\+message\+\_\+reaction\+\_\+add()}} 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{discord_8h_a19d3292473ccf8bdd8dc15a8aa9e9b33}\label{discord_8h_a19d3292473ccf8bdd8dc15a8aa9e9b33}} 
+\index{discord.h@{discord.h}!message\_reaction\_remove\_all\_cb@{message\_reaction\_remove\_all\_cb}}
+\index{message\_reaction\_remove\_all\_cb@{message\_reaction\_remove\_all\_cb}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{message\_reaction\_remove\_all\_cb}{message\_reaction\_remove\_all\_cb}}
+{\footnotesize\ttfamily typedef void() message\+\_\+reaction\+\_\+remove\+\_\+all\+\_\+cb(struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const struct discord\+\_\+user $\ast$bot, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} channel\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} message\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id)}
+
+
+
+Message Reaction Remove All callback. 
+
+\begin{DoxySeeAlso}{See also}
+\href{https://discord.com/developers/docs/topics/gateway\#messages}{\texttt{ https\+://discord.\+com/developers/docs/topics/gateway\#messages}} 
+
+\mbox{\hyperlink{discord_8h_a69dc994bf6f5131411341cc43622bc26}{discord\+\_\+set\+\_\+on\+\_\+message\+\_\+reaction\+\_\+remove\+\_\+all()}} 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{discord_8h_aa78388a1f092c880ef99029f1b383237}\label{discord_8h_aa78388a1f092c880ef99029f1b383237}} 
+\index{discord.h@{discord.h}!message\_reaction\_remove\_cb@{message\_reaction\_remove\_cb}}
+\index{message\_reaction\_remove\_cb@{message\_reaction\_remove\_cb}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{message\_reaction\_remove\_cb}{message\_reaction\_remove\_cb}}
+{\footnotesize\ttfamily typedef void() message\+\_\+reaction\+\_\+remove\+\_\+cb(struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const struct discord\+\_\+user $\ast$bot, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} user\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} channel\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} message\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id, const struct discord\+\_\+emoji $\ast$emoji)}
+
+
+
+Message Reaction Remove callback. 
+
+\begin{DoxySeeAlso}{See also}
+\href{https://discord.com/developers/docs/topics/gateway\#messages}{\texttt{ https\+://discord.\+com/developers/docs/topics/gateway\#messages}} 
+
+\mbox{\hyperlink{discord_8h_a76d53c80811f15b746ea0c9e13aac2e3}{discord\+\_\+set\+\_\+on\+\_\+message\+\_\+reaction\+\_\+remove()}} 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{discord_8h_aaf01e5b91be0bc56135d1a2d7bede82e}\label{discord_8h_aaf01e5b91be0bc56135d1a2d7bede82e}} 
+\index{discord.h@{discord.h}!message\_reaction\_remove\_emoji\_cb@{message\_reaction\_remove\_emoji\_cb}}
+\index{message\_reaction\_remove\_emoji\_cb@{message\_reaction\_remove\_emoji\_cb}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{message\_reaction\_remove\_emoji\_cb}{message\_reaction\_remove\_emoji\_cb}}
+{\footnotesize\ttfamily typedef void() message\+\_\+reaction\+\_\+remove\+\_\+emoji\+\_\+cb(struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const struct discord\+\_\+user $\ast$bot, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} channel\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} message\+\_\+id, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id, const struct discord\+\_\+emoji $\ast$emoji)}
+
+
+
+Message Reaction Remove Emoji callback. 
+
+\begin{DoxySeeAlso}{See also}
+\href{https://discord.com/developers/docs/topics/gateway\#messages}{\texttt{ https\+://discord.\+com/developers/docs/topics/gateway\#messages}} 
+
+\mbox{\hyperlink{discord_8h_a2d213631154c13a336eb10ea607c775b}{discord\+\_\+set\+\_\+on\+\_\+message\+\_\+reaction\+\_\+remove\+\_\+emoji()}} 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}\label{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}} 
+\index{discord.h@{discord.h}!u64\_snowflake\_t@{u64\_snowflake\_t}}
+\index{u64\_snowflake\_t@{u64\_snowflake\_t}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{u64\_snowflake\_t}{u64\_snowflake\_t}}
+{\footnotesize\ttfamily typedef uint64\+\_\+t \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}}}
+
+snowflake datatype \mbox{\Hypertarget{discord_8h_a8c10c2449cb2148f47b8a032af96dd60}\label{discord_8h_a8c10c2449cb2148f47b8a032af96dd60}} 
+\index{discord.h@{discord.h}!u64\_unix\_ms\_t@{u64\_unix\_ms\_t}}
+\index{u64\_unix\_ms\_t@{u64\_unix\_ms\_t}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{u64\_unix\_ms\_t}{u64\_unix\_ms\_t}}
+{\footnotesize\ttfamily typedef uint64\+\_\+t \mbox{\hyperlink{discord_8h_a8c10c2449cb2148f47b8a032af96dd60}{u64\+\_\+unix\+\_\+ms\+\_\+t}}}
+
+unix time in ms \mbox{\Hypertarget{discord_8h_aee86b0424b3c03c48b60fa99a0814d2f}\label{discord_8h_aee86b0424b3c03c48b60fa99a0814d2f}} 
+\index{discord.h@{discord.h}!voice\_server\_update\_cb@{voice\_server\_update\_cb}}
+\index{voice\_server\_update\_cb@{voice\_server\_update\_cb}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{voice\_server\_update\_cb}{voice\_server\_update\_cb}}
+{\footnotesize\ttfamily typedef void() voice\+\_\+server\+\_\+update\+\_\+cb(struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const struct discord\+\_\+user $\ast$bot, const char $\ast$token, const \mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}} guild\+\_\+id, const char $\ast$endpoint)}
+
+
+
+Voice Server Update callback. 
+
+\begin{DoxySeeAlso}{See also}
+\href{https://discord.com/developers/docs/topics/gateway\#voice}{\texttt{ https\+://discord.\+com/developers/docs/topics/gateway\#voice}} 
+
+\mbox{\hyperlink{discord_8h_ac43f3a0ac189d07a6b9a83c3dec48420}{discord\+\_\+set\+\_\+on\+\_\+voice\+\_\+server\+\_\+update()}} 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{discord_8h_a4734edb5ea9ea55094487d199227f943}\label{discord_8h_a4734edb5ea9ea55094487d199227f943}} 
+\index{discord.h@{discord.h}!voice\_state\_update\_cb@{voice\_state\_update\_cb}}
+\index{voice\_state\_update\_cb@{voice\_state\_update\_cb}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{voice\_state\_update\_cb}{voice\_state\_update\_cb}}
+{\footnotesize\ttfamily typedef void() voice\+\_\+state\+\_\+update\+\_\+cb(struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$client, const struct discord\+\_\+user $\ast$bot, const struct discord\+\_\+voice\+\_\+state $\ast$voice\+\_\+state)}
+
+
+
+Voice State Update callback. 
+
+\begin{DoxySeeAlso}{See also}
+\href{https://discord.com/developers/docs/topics/gateway\#voice}{\texttt{ https\+://discord.\+com/developers/docs/topics/gateway\#voice}} 
+
+\mbox{\hyperlink{discord_8h_a5347137109bd6e433587c7fb10752c68}{discord\+\_\+set\+\_\+on\+\_\+voice\+\_\+state\+\_\+update()}} 
+\end{DoxySeeAlso}
+
+
+\doxysubsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{discord_8h_a1b11a8fb0bb025f18e2b7b207979b314}\label{discord_8h_a1b11a8fb0bb025f18e2b7b207979b314}} 
+\index{discord.h@{discord.h}!discord\_event\_handling\_mode@{discord\_event\_handling\_mode}}
+\index{discord\_event\_handling\_mode@{discord\_event\_handling\_mode}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{discord\_event\_handling\_mode}{discord\_event\_handling\_mode}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{discord_8h_a1b11a8fb0bb025f18e2b7b207979b314}{discord\+\_\+event\+\_\+handling\+\_\+mode}}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{EVENT\_IS\_HANDLED@{EVENT\_IS\_HANDLED}!discord.h@{discord.h}}\index{discord.h@{discord.h}!EVENT\_IS\_HANDLED@{EVENT\_IS\_HANDLED}}}\mbox{\Hypertarget{discord_8h_a1b11a8fb0bb025f18e2b7b207979b314a175d5035ef61079f0ddd410b4dc9eaca}\label{discord_8h_a1b11a8fb0bb025f18e2b7b207979b314a175d5035ef61079f0ddd410b4dc9eaca}} 
+E\+V\+E\+N\+T\+\_\+\+I\+S\+\_\+\+H\+A\+N\+D\+L\+ED&this event has been handled \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{EVENT\_WILL\_BE\_HANDLED\_IN\_MAIN\_THREAD@{EVENT\_WILL\_BE\_HANDLED\_IN\_MAIN\_THREAD}!discord.h@{discord.h}}\index{discord.h@{discord.h}!EVENT\_WILL\_BE\_HANDLED\_IN\_MAIN\_THREAD@{EVENT\_WILL\_BE\_HANDLED\_IN\_MAIN\_THREAD}}}\mbox{\Hypertarget{discord_8h_a1b11a8fb0bb025f18e2b7b207979b314a3bd84c32d5d80fe2635d4629e407637e}\label{discord_8h_a1b11a8fb0bb025f18e2b7b207979b314a3bd84c32d5d80fe2635d4629e407637e}} 
+E\+V\+E\+N\+T\+\_\+\+W\+I\+L\+L\+\_\+\+B\+E\+\_\+\+H\+A\+N\+D\+L\+E\+D\+\_\+\+I\+N\+\_\+\+M\+A\+I\+N\+\_\+\+T\+H\+R\+E\+AD&handle this event in main thread \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{EVENT\_WILL\_BE\_HANDLED\_IN\_CHILD\_THREAD@{EVENT\_WILL\_BE\_HANDLED\_IN\_CHILD\_THREAD}!discord.h@{discord.h}}\index{discord.h@{discord.h}!EVENT\_WILL\_BE\_HANDLED\_IN\_CHILD\_THREAD@{EVENT\_WILL\_BE\_HANDLED\_IN\_CHILD\_THREAD}}}\mbox{\Hypertarget{discord_8h_a1b11a8fb0bb025f18e2b7b207979b314a2d6c7875eaa5d6caf320674bbe4392e4}\label{discord_8h_a1b11a8fb0bb025f18e2b7b207979b314a2d6c7875eaa5d6caf320674bbe4392e4}} 
+E\+V\+E\+N\+T\+\_\+\+W\+I\+L\+L\+\_\+\+B\+E\+\_\+\+H\+A\+N\+D\+L\+E\+D\+\_\+\+I\+N\+\_\+\+C\+H\+I\+L\+D\+\_\+\+T\+H\+R\+E\+AD&handle this event in a child thread \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{discord_8h_ad49194134d7b9e656d3a96cb0b60cfec}\label{discord_8h_ad49194134d7b9e656d3a96cb0b60cfec}} 
+\index{discord.h@{discord.h}!discord\_add\_intents@{discord\_add\_intents}}
+\index{discord\_add\_intents@{discord\_add\_intents}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{discord\_add\_intents()}{discord\_add\_intents()}}
+{\footnotesize\ttfamily void discord\+\_\+add\+\_\+intents (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$}]{client,  }\item[{enum discord\+\_\+gateway\+\_\+intents}]{code }\end{DoxyParamCaption})}
+
+
+
+Subscribe to Discord Gateway events. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em client} & the client created with \mbox{\hyperlink{discord_8h_a445cca7dc5a28113760c7e55759845c7}{discord\+\_\+init()}} \\
+\hline
+{\em code} & the intents opcode, can be set as a bitmask operation (ex\+: A $\vert$ B $\vert$ C) \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+\href{https://discord.com/developers/docs/topics/gateway\#gateway-intents}{\texttt{ https\+://discord.\+com/developers/docs/topics/gateway\#gateway-\/intents}} 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{discord_8h_aacda48df5d68ed8d5cf6983f245f3224}\label{discord_8h_aacda48df5d68ed8d5cf6983f245f3224}} 
+\index{discord.h@{discord.h}!discord\_bulk\_delete\_messages@{discord\_bulk\_delete\_messages}}
+\index{discord\_bulk\_delete\_messages@{discord\_bulk\_delete\_messages}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{discord\_bulk\_delete\_messages()}{discord\_bulk\_delete\_messages()}}
+{\footnotesize\ttfamily O\+R\+C\+Acode discord\+\_\+bulk\+\_\+delete\+\_\+messages (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$}]{client,  }\item[{\mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}}}]{channel\+\_\+id,  }\item[{N\+T\+L\+\_\+T(\mbox{\hyperlink{discord_8h_a2aca4957fe0e14f7ab03fdaeb17d8fb9}{u64\+\_\+snowflake\+\_\+t}})}]{messages }\end{DoxyParamCaption})}
+
+\begin{DoxyRefDesc}{Todo}
+\item[\mbox{\hyperlink{todo__todo000001}{Todo}}]add duplicated ID verification \end{DoxyRefDesc}
+\mbox{\Hypertarget{discord_8h_a009d0e352a30c00f8b4765712fcfa5a9}\label{discord_8h_a009d0e352a30c00f8b4765712fcfa5a9}} 
+\index{discord.h@{discord.h}!discord\_cleanup@{discord\_cleanup}}
+\index{discord\_cleanup@{discord\_cleanup}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{discord\_cleanup()}{discord\_cleanup()}}
+{\footnotesize\ttfamily void discord\+\_\+cleanup (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$}]{client }\end{DoxyParamCaption})}
+
+
+
+Free a Discord Client handle. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em client} & the client created with \mbox{\hyperlink{discord_8h_a445cca7dc5a28113760c7e55759845c7}{discord\+\_\+init()}} \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{discord_8h_a23500a16c7afdb797c779b045ad20b10}\label{discord_8h_a23500a16c7afdb797c779b045ad20b10}} 
+\index{discord.h@{discord.h}!discord\_config\_init@{discord\_config\_init}}
+\index{discord\_config\_init@{discord\_config\_init}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{discord\_config\_init()}{discord\_config\_init()}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structdiscord}{discord}}$\ast$ discord\+\_\+config\+\_\+init (\begin{DoxyParamCaption}\item[{const char}]{config\+\_\+file\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Create a Discord Client handle by a bot.\+config file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em config\+\_\+file} & the bot.\+config file name \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the newly created Discord Client handle 
+\end{DoxyReturn}
+\mbox{\Hypertarget{discord_8h_af7534e0384766754eeb77f573dac1a84}\label{discord_8h_af7534e0384766754eeb77f573dac1a84}} 
+\index{discord.h@{discord.h}!discord\_get\_data@{discord\_get\_data}}
+\index{discord\_get\_data@{discord\_get\_data}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{discord\_get\_data()}{discord\_get\_data()}}
+{\footnotesize\ttfamily void$\ast$ discord\+\_\+get\+\_\+data (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$}]{client }\end{DoxyParamCaption})}
+
+
+
+Received user arbitrary data associated to the client. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em client} & the client created with \mbox{\hyperlink{discord_8h_a445cca7dc5a28113760c7e55759845c7}{discord\+\_\+init()}} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the arbitrary user data address @warn the user should provide his own locking mechanism to protect his data from race conditions 
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See also}
+\mbox{\hyperlink{discord_8h_a2fe34375b2ce557d8ac84a0794063b78}{discord\+\_\+set\+\_\+data()}} 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{discord_8h_a445cca7dc5a28113760c7e55759845c7}\label{discord_8h_a445cca7dc5a28113760c7e55759845c7}} 
+\index{discord.h@{discord.h}!discord\_init@{discord\_init}}
+\index{discord\_init@{discord\_init}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{discord\_init()}{discord\_init()}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structdiscord}{discord}}$\ast$ discord\+\_\+init (\begin{DoxyParamCaption}\item[{const char}]{token\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Create a Discord Client handle by its token. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em token} & the bot token \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the newly created Discord Client handle 
+\end{DoxyReturn}
+\mbox{\Hypertarget{discord_8h_ac6a9d904378b46a72c64ade07ac02f43}\label{discord_8h_ac6a9d904378b46a72c64ade07ac02f43}} 
+\index{discord.h@{discord.h}!discord\_remove\_intents@{discord\_remove\_intents}}
+\index{discord\_remove\_intents@{discord\_remove\_intents}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{discord\_remove\_intents()}{discord\_remove\_intents()}}
+{\footnotesize\ttfamily void discord\+\_\+remove\+\_\+intents (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$}]{client,  }\item[{enum discord\+\_\+gateway\+\_\+intents}]{code }\end{DoxyParamCaption})}
+
+
+
+Unsubscribe from Discord Gateway events. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em client} & the client created with \mbox{\hyperlink{discord_8h_a445cca7dc5a28113760c7e55759845c7}{discord\+\_\+init()}} \\
+\hline
+{\em code} & the intents opcode, can be set as a bitmask operation (ex\+: A $\vert$ B $\vert$ C) \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+\href{https://discord.com/developers/docs/topics/gateway\#gateway-intents}{\texttt{ https\+://discord.\+com/developers/docs/topics/gateway\#gateway-\/intents}} 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{discord_8h_ac29f8303759532bce1df09376a80e6ab}\label{discord_8h_ac29f8303759532bce1df09376a80e6ab}} 
+\index{discord.h@{discord.h}!discord\_replace\_presence@{discord\_replace\_presence}}
+\index{discord\_replace\_presence@{discord\_replace\_presence}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{discord\_replace\_presence()}{discord\_replace\_presence()}}
+{\footnotesize\ttfamily void discord\+\_\+replace\+\_\+presence (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$}]{client,  }\item[{struct discord\+\_\+gateway\+\_\+status\+\_\+update $\ast$}]{presence }\end{DoxyParamCaption})}
+
+
+
+Replace the Client presence with a struct discord\+\_\+gateway\+\_\+status\+\_\+update. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em client} & the client created with \mbox{\hyperlink{discord_8h_a445cca7dc5a28113760c7e55759845c7}{discord\+\_\+init()}} \\
+\hline
+{\em presence} & the presence to replace the client\textquotesingle{}s \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+\mbox{\hyperlink{discord_8h_a09fa023f7aab5b9a053250115f1af903}{discord\+\_\+set\+\_\+presence()}} is a more comprehensible alternative 
+\end{DoxyNote}
+\begin{DoxySeeAlso}{See also}
+\mbox{\hyperlink{discord_8h_a09fa023f7aab5b9a053250115f1af903}{discord\+\_\+set\+\_\+presence()}} 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{discord_8h_ae0e3bf4cdf86e1737d53e16b802fc186}\label{discord_8h_ae0e3bf4cdf86e1737d53e16b802fc186}} 
+\index{discord.h@{discord.h}!discord\_run@{discord\_run}}
+\index{discord\_run@{discord\_run}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{discord\_run()}{discord\_run()}}
+{\footnotesize\ttfamily void discord\+\_\+run (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$}]{client }\end{DoxyParamCaption})}
+
+
+
+Start a connection to the Discord Gateway. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em client} & the client created with \mbox{\hyperlink{discord_8h_a445cca7dc5a28113760c7e55759845c7}{discord\+\_\+init()}} \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{discord_8h_a2fe34375b2ce557d8ac84a0794063b78}\label{discord_8h_a2fe34375b2ce557d8ac84a0794063b78}} 
+\index{discord.h@{discord.h}!discord\_set\_data@{discord\_set\_data}}
+\index{discord\_set\_data@{discord\_set\_data}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{discord\_set\_data()}{discord\_set\_data()}}
+{\footnotesize\ttfamily void$\ast$ discord\+\_\+set\+\_\+data (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$}]{client,  }\item[{void $\ast$}]{data }\end{DoxyParamCaption})}
+
+
+
+Keep some user arbitrary data, by associating it to the client. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em client} & the client created with \mbox{\hyperlink{discord_8h_a445cca7dc5a28113760c7e55759845c7}{discord\+\_\+init()}} \\
+\hline
+{\em data} & user arbitrary data to be accessed via \mbox{\hyperlink{discord_8h_af7534e0384766754eeb77f573dac1a84}{discord\+\_\+get\+\_\+data()}} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the arbitrary user data address @warn the user should provide his own locking mechanism to protect his data from race conditions 
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See also}
+\mbox{\hyperlink{discord_8h_af7534e0384766754eeb77f573dac1a84}{discord\+\_\+get\+\_\+data()}} 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{discord_8h_af3e3e920824c65e23bcc47e62cf906c4}\label{discord_8h_af3e3e920824c65e23bcc47e62cf906c4}} 
+\index{discord.h@{discord.h}!discord\_set\_on\_channel\_create@{discord\_set\_on\_channel\_create}}
+\index{discord\_set\_on\_channel\_create@{discord\_set\_on\_channel\_create}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{discord\_set\_on\_channel\_create()}{discord\_set\_on\_channel\_create()}}
+{\footnotesize\ttfamily void discord\+\_\+set\+\_\+on\+\_\+channel\+\_\+create (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$}]{client,  }\item[{\mbox{\hyperlink{discord_8h_ad256daeaf95441e9bebba72ed7532c93}{channel\+\_\+cb}} $\ast$}]{callback }\end{DoxyParamCaption})}
+
+
+
+Set a callback that triggers when a channel is created. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em client} & the client created with \mbox{\hyperlink{discord_8h_a445cca7dc5a28113760c7e55759845c7}{discord\+\_\+init()}} \\
+\hline
+{\em callback} & the callback that will be executed \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+this function will automatically set intent(s) to make the callback triggerable 
+\end{DoxyNote}
+\mbox{\Hypertarget{discord_8h_a492b849d1661a82ff8ca16c3e829ddc6}\label{discord_8h_a492b849d1661a82ff8ca16c3e829ddc6}} 
+\index{discord.h@{discord.h}!discord\_set\_on\_channel\_delete@{discord\_set\_on\_channel\_delete}}
+\index{discord\_set\_on\_channel\_delete@{discord\_set\_on\_channel\_delete}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{discord\_set\_on\_channel\_delete()}{discord\_set\_on\_channel\_delete()}}
+{\footnotesize\ttfamily void discord\+\_\+set\+\_\+on\+\_\+channel\+\_\+delete (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$}]{client,  }\item[{\mbox{\hyperlink{discord_8h_ad256daeaf95441e9bebba72ed7532c93}{channel\+\_\+cb}} $\ast$}]{callback }\end{DoxyParamCaption})}
+
+
+
+Set a callback that triggers when a channel is deleted. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em client} & the client created with \mbox{\hyperlink{discord_8h_a445cca7dc5a28113760c7e55759845c7}{discord\+\_\+init()}} \\
+\hline
+{\em callback} & the callback that will be executed \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+this function will automatically set intent(s) to make the callback triggerable 
+\end{DoxyNote}
+\mbox{\Hypertarget{discord_8h_ab6e438a4977ee90ddaef9593aa393c38}\label{discord_8h_ab6e438a4977ee90ddaef9593aa393c38}} 
+\index{discord.h@{discord.h}!discord\_set\_on\_channel\_pins\_update@{discord\_set\_on\_channel\_pins\_update}}
+\index{discord\_set\_on\_channel\_pins\_update@{discord\_set\_on\_channel\_pins\_update}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{discord\_set\_on\_channel\_pins\_update()}{discord\_set\_on\_channel\_pins\_update()}}
+{\footnotesize\ttfamily void discord\+\_\+set\+\_\+on\+\_\+channel\+\_\+pins\+\_\+update (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$}]{client,  }\item[{\mbox{\hyperlink{discord_8h_aa1e842764ae5f29946ffb777407c531e}{channel\+\_\+pins\+\_\+update\+\_\+cb}} $\ast$}]{callback }\end{DoxyParamCaption})}
+
+
+
+Set a callback that triggers when some channel pins are updated. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em client} & the client created with \mbox{\hyperlink{discord_8h_a445cca7dc5a28113760c7e55759845c7}{discord\+\_\+init()}} \\
+\hline
+{\em callback} & the callback that will be executed \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+this function will automatically set intent(s) to make the callback triggerable 
+\end{DoxyNote}
+\mbox{\Hypertarget{discord_8h_a0c5c1e50ad4749a2dc7143030ef89d47}\label{discord_8h_a0c5c1e50ad4749a2dc7143030ef89d47}} 
+\index{discord.h@{discord.h}!discord\_set\_on\_channel\_update@{discord\_set\_on\_channel\_update}}
+\index{discord\_set\_on\_channel\_update@{discord\_set\_on\_channel\_update}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{discord\_set\_on\_channel\_update()}{discord\_set\_on\_channel\_update()}}
+{\footnotesize\ttfamily void discord\+\_\+set\+\_\+on\+\_\+channel\+\_\+update (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$}]{client,  }\item[{\mbox{\hyperlink{discord_8h_ad256daeaf95441e9bebba72ed7532c93}{channel\+\_\+cb}} $\ast$}]{callback }\end{DoxyParamCaption})}
+
+
+
+Set a callback that triggers when a channel is updated. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em client} & the client created with \mbox{\hyperlink{discord_8h_a445cca7dc5a28113760c7e55759845c7}{discord\+\_\+init()}} \\
+\hline
+{\em callback} & the callback that will be executed \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+this function will automatically set intent(s) to make the callback triggerable 
+\end{DoxyNote}
+\mbox{\Hypertarget{discord_8h_a996d04265f563d5be9c22cef411c11aa}\label{discord_8h_a996d04265f563d5be9c22cef411c11aa}} 
+\index{discord.h@{discord.h}!discord\_set\_on\_command@{discord\_set\_on\_command}}
+\index{discord\_set\_on\_command@{discord\_set\_on\_command}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{discord\_set\_on\_command()}{discord\_set\_on\_command()}}
+{\footnotesize\ttfamily void discord\+\_\+set\+\_\+on\+\_\+command (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$}]{client,  }\item[{char $\ast$}]{command,  }\item[{\mbox{\hyperlink{discord_8h_afff2ce011cd5b8d20b703fb01c105559}{message\+\_\+cb}} $\ast$}]{callback }\end{DoxyParamCaption})}
+
+
+
+Set command/callback pair, the callback is triggered if someone types command in chat. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em client} & the client created with \mbox{\hyperlink{discord_8h_a445cca7dc5a28113760c7e55759845c7}{discord\+\_\+init()}} \\
+\hline
+{\em command} & the command to trigger the callback \\
+\hline
+{\em callback} & the callback that will be executed \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+The command and any subjacent empty space is left out of discord\+\_\+message\+::content 
+\end{DoxyNote}
+\begin{DoxySeeAlso}{See also}
+\mbox{\hyperlink{discord_8h_a13d9f16d62fea7cebdb6c24d57f685a1}{discord\+\_\+set\+\_\+prefix()}} for changing a command prefix 
+\end{DoxySeeAlso}
+default command callback if prefix is detected, but command isn\textquotesingle{}t specified\mbox{\Hypertarget{discord_8h_a31400dfa84052b6c393c77a8039774f6}\label{discord_8h_a31400dfa84052b6c393c77a8039774f6}} 
+\index{discord.h@{discord.h}!discord\_set\_on\_event\_raw@{discord\_set\_on\_event\_raw}}
+\index{discord\_set\_on\_event\_raw@{discord\_set\_on\_event\_raw}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{discord\_set\_on\_event\_raw()}{discord\_set\_on\_event\_raw()}}
+{\footnotesize\ttfamily void discord\+\_\+set\+\_\+on\+\_\+event\+\_\+raw (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$}]{client,  }\item[{\mbox{\hyperlink{discord_8h_a9d756b50a8f1472d73e3dcc32625aa93}{event\+\_\+raw\+\_\+cb}} $\ast$}]{callback }\end{DoxyParamCaption})}
+
+
+
+Set a callback that triggers on any event the client is subscribed to. 
+
+\begin{DoxyNote}{Note}
+the callback will be executed last, after every other has been checked 
+
+this gives the raw J\+S\+ON payload associated with the event 
+\end{DoxyNote}
+
+\begin{DoxyParams}{Parameters}
+{\em client} & the client created with \mbox{\hyperlink{discord_8h_a445cca7dc5a28113760c7e55759845c7}{discord\+\_\+init()}} \\
+\hline
+{\em callback} & the callback that will be executed \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{discord_8h_a94472926020ef36799062255db81bec3}\label{discord_8h_a94472926020ef36799062255db81bec3}} 
+\index{discord.h@{discord.h}!discord\_set\_on\_guild\_ban\_add@{discord\_set\_on\_guild\_ban\_add}}
+\index{discord\_set\_on\_guild\_ban\_add@{discord\_set\_on\_guild\_ban\_add}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{discord\_set\_on\_guild\_ban\_add()}{discord\_set\_on\_guild\_ban\_add()}}
+{\footnotesize\ttfamily void discord\+\_\+set\+\_\+on\+\_\+guild\+\_\+ban\+\_\+add (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$}]{client,  }\item[{\mbox{\hyperlink{discord_8h_a9e932235fc87b6fd16d5fccfa139edd6}{guild\+\_\+ban\+\_\+cb}} $\ast$}]{callback }\end{DoxyParamCaption})}
+
+
+
+Set a callback that triggers when a guild ban is added. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em client} & the client created with \mbox{\hyperlink{discord_8h_a445cca7dc5a28113760c7e55759845c7}{discord\+\_\+init()}} \\
+\hline
+{\em callback} & the callback that will be executed \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+this function will automatically set intent(s) to make the callback triggerable 
+\end{DoxyNote}
+\mbox{\Hypertarget{discord_8h_a63c145f6ca3397795927f0e4ad09d93c}\label{discord_8h_a63c145f6ca3397795927f0e4ad09d93c}} 
+\index{discord.h@{discord.h}!discord\_set\_on\_guild\_ban\_remove@{discord\_set\_on\_guild\_ban\_remove}}
+\index{discord\_set\_on\_guild\_ban\_remove@{discord\_set\_on\_guild\_ban\_remove}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{discord\_set\_on\_guild\_ban\_remove()}{discord\_set\_on\_guild\_ban\_remove()}}
+{\footnotesize\ttfamily void discord\+\_\+set\+\_\+on\+\_\+guild\+\_\+ban\+\_\+remove (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$}]{client,  }\item[{\mbox{\hyperlink{discord_8h_a9e932235fc87b6fd16d5fccfa139edd6}{guild\+\_\+ban\+\_\+cb}} $\ast$}]{callback }\end{DoxyParamCaption})}
+
+
+
+Set a callback that triggers when a guild ban is removed. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em client} & the client created with \mbox{\hyperlink{discord_8h_a445cca7dc5a28113760c7e55759845c7}{discord\+\_\+init()}} \\
+\hline
+{\em callback} & the callback that will be executed \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+this function will automatically set intent(s) to make the callback triggerable 
+\end{DoxyNote}
+\mbox{\Hypertarget{discord_8h_a42bcf77e80f22f330046ce410e907b63}\label{discord_8h_a42bcf77e80f22f330046ce410e907b63}} 
+\index{discord.h@{discord.h}!discord\_set\_on\_guild\_member\_add@{discord\_set\_on\_guild\_member\_add}}
+\index{discord\_set\_on\_guild\_member\_add@{discord\_set\_on\_guild\_member\_add}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{discord\_set\_on\_guild\_member\_add()}{discord\_set\_on\_guild\_member\_add()}}
+{\footnotesize\ttfamily void discord\+\_\+set\+\_\+on\+\_\+guild\+\_\+member\+\_\+add (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$}]{client,  }\item[{\mbox{\hyperlink{discord_8h_a74d2fa7659645194427e13dc15490e45}{guild\+\_\+member\+\_\+cb}} $\ast$}]{callback }\end{DoxyParamCaption})}
+
+
+
+Set a callback that triggers when a guild member is added. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em client} & the client created with \mbox{\hyperlink{discord_8h_a445cca7dc5a28113760c7e55759845c7}{discord\+\_\+init()}} \\
+\hline
+{\em callback} & the callback that will be executed \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+this function will automatically set intent(s) to make the callback triggerable 
+\end{DoxyNote}
+\mbox{\Hypertarget{discord_8h_af467bc80ddced49e63c0ab72020f97f3}\label{discord_8h_af467bc80ddced49e63c0ab72020f97f3}} 
+\index{discord.h@{discord.h}!discord\_set\_on\_guild\_member\_remove@{discord\_set\_on\_guild\_member\_remove}}
+\index{discord\_set\_on\_guild\_member\_remove@{discord\_set\_on\_guild\_member\_remove}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{discord\_set\_on\_guild\_member\_remove()}{discord\_set\_on\_guild\_member\_remove()}}
+{\footnotesize\ttfamily void discord\+\_\+set\+\_\+on\+\_\+guild\+\_\+member\+\_\+remove (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$}]{client,  }\item[{\mbox{\hyperlink{discord_8h_a22a5a8767f0b3e13675c765fdd439936}{guild\+\_\+member\+\_\+remove\+\_\+cb}} $\ast$}]{callback }\end{DoxyParamCaption})}
+
+
+
+Set a callback that triggers when a guild member is removed. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em client} & the client created with \mbox{\hyperlink{discord_8h_a445cca7dc5a28113760c7e55759845c7}{discord\+\_\+init()}} \\
+\hline
+{\em callback} & the callback that will be executed \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+this function will automatically set intent(s) to make the callback triggerable 
+\end{DoxyNote}
+\mbox{\Hypertarget{discord_8h_a6fa77e5994396e14a7c2a272b58a845a}\label{discord_8h_a6fa77e5994396e14a7c2a272b58a845a}} 
+\index{discord.h@{discord.h}!discord\_set\_on\_guild\_member\_update@{discord\_set\_on\_guild\_member\_update}}
+\index{discord\_set\_on\_guild\_member\_update@{discord\_set\_on\_guild\_member\_update}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{discord\_set\_on\_guild\_member\_update()}{discord\_set\_on\_guild\_member\_update()}}
+{\footnotesize\ttfamily void discord\+\_\+set\+\_\+on\+\_\+guild\+\_\+member\+\_\+update (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$}]{client,  }\item[{\mbox{\hyperlink{discord_8h_a74d2fa7659645194427e13dc15490e45}{guild\+\_\+member\+\_\+cb}} $\ast$}]{callback }\end{DoxyParamCaption})}
+
+
+
+Set a callback that triggers when a guild member is updated. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em client} & the client created with \mbox{\hyperlink{discord_8h_a445cca7dc5a28113760c7e55759845c7}{discord\+\_\+init()}} \\
+\hline
+{\em callback} & the callback that will be executed \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+this function will automatically set intent(s) to make the callback triggerable 
+\end{DoxyNote}
+\mbox{\Hypertarget{discord_8h_a99c81095365d9fb50a9bdcad36421677}\label{discord_8h_a99c81095365d9fb50a9bdcad36421677}} 
+\index{discord.h@{discord.h}!discord\_set\_on\_guild\_role\_create@{discord\_set\_on\_guild\_role\_create}}
+\index{discord\_set\_on\_guild\_role\_create@{discord\_set\_on\_guild\_role\_create}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{discord\_set\_on\_guild\_role\_create()}{discord\_set\_on\_guild\_role\_create()}}
+{\footnotesize\ttfamily void discord\+\_\+set\+\_\+on\+\_\+guild\+\_\+role\+\_\+create (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$}]{client,  }\item[{\mbox{\hyperlink{discord_8h_ad49541dbe38d41a0c6f72392511ffe7f}{guild\+\_\+role\+\_\+cb}} $\ast$}]{callback }\end{DoxyParamCaption})}
+
+
+
+Set a callback that triggers when a guild role is created. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em client} & the client created with \mbox{\hyperlink{discord_8h_a445cca7dc5a28113760c7e55759845c7}{discord\+\_\+init()}} \\
+\hline
+{\em callback} & the callback that will be executed \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+this function will automatically set intent(s) to make the callback triggerable 
+\end{DoxyNote}
+\mbox{\Hypertarget{discord_8h_a3fbe3c1f243fdfd000095c8220656c29}\label{discord_8h_a3fbe3c1f243fdfd000095c8220656c29}} 
+\index{discord.h@{discord.h}!discord\_set\_on\_guild\_role\_delete@{discord\_set\_on\_guild\_role\_delete}}
+\index{discord\_set\_on\_guild\_role\_delete@{discord\_set\_on\_guild\_role\_delete}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{discord\_set\_on\_guild\_role\_delete()}{discord\_set\_on\_guild\_role\_delete()}}
+{\footnotesize\ttfamily void discord\+\_\+set\+\_\+on\+\_\+guild\+\_\+role\+\_\+delete (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$}]{client,  }\item[{\mbox{\hyperlink{discord_8h_a57231f38324853b103aaeead055fb668}{guild\+\_\+role\+\_\+delete\+\_\+cb}} $\ast$}]{callback }\end{DoxyParamCaption})}
+
+
+
+Set a callback that triggers when a guild role is deleted. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em client} & the client created with \mbox{\hyperlink{discord_8h_a445cca7dc5a28113760c7e55759845c7}{discord\+\_\+init()}} \\
+\hline
+{\em callback} & the callback that will be executed \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+this function will automatically set intent(s) to make the callback triggerable 
+\end{DoxyNote}
+\mbox{\Hypertarget{discord_8h_a2cdda4d8b073432fc1b9a8d802fb090a}\label{discord_8h_a2cdda4d8b073432fc1b9a8d802fb090a}} 
+\index{discord.h@{discord.h}!discord\_set\_on\_guild\_role\_update@{discord\_set\_on\_guild\_role\_update}}
+\index{discord\_set\_on\_guild\_role\_update@{discord\_set\_on\_guild\_role\_update}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{discord\_set\_on\_guild\_role\_update()}{discord\_set\_on\_guild\_role\_update()}}
+{\footnotesize\ttfamily void discord\+\_\+set\+\_\+on\+\_\+guild\+\_\+role\+\_\+update (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$}]{client,  }\item[{\mbox{\hyperlink{discord_8h_ad49541dbe38d41a0c6f72392511ffe7f}{guild\+\_\+role\+\_\+cb}} $\ast$}]{callback }\end{DoxyParamCaption})}
+
+
+
+Set a callback that triggers when a guild role is updated. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em client} & the client created with \mbox{\hyperlink{discord_8h_a445cca7dc5a28113760c7e55759845c7}{discord\+\_\+init()}} \\
+\hline
+{\em callback} & the callback that will be executed \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+this function will automatically set intent(s) to make the callback triggerable 
+\end{DoxyNote}
+\mbox{\Hypertarget{discord_8h_aa4499d5d0c24387a5acda0ea4be576ca}\label{discord_8h_aa4499d5d0c24387a5acda0ea4be576ca}} 
+\index{discord.h@{discord.h}!discord\_set\_on\_idle@{discord\_set\_on\_idle}}
+\index{discord\_set\_on\_idle@{discord\_set\_on\_idle}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{discord\_set\_on\_idle()}{discord\_set\_on\_idle()}}
+{\footnotesize\ttfamily void discord\+\_\+set\+\_\+on\+\_\+idle (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$}]{client,  }\item[{\mbox{\hyperlink{discord_8h_afc8f66a3993c5edb45a00ef997223d52}{idle\+\_\+cb}} $\ast$}]{callback }\end{DoxyParamCaption})}
+
+
+
+Set a callback that triggers at every event-\/loop iteration. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em client} & the client created with \mbox{\hyperlink{discord_8h_a445cca7dc5a28113760c7e55759845c7}{discord\+\_\+init()}} \\
+\hline
+{\em callback} & the callback that will be executed \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{discord_8h_a16522ff016965c092436ceedb1d6da97}\label{discord_8h_a16522ff016965c092436ceedb1d6da97}} 
+\index{discord.h@{discord.h}!discord\_set\_on\_message\_create@{discord\_set\_on\_message\_create}}
+\index{discord\_set\_on\_message\_create@{discord\_set\_on\_message\_create}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{discord\_set\_on\_message\_create()}{discord\_set\_on\_message\_create()}}
+{\footnotesize\ttfamily void discord\+\_\+set\+\_\+on\+\_\+message\+\_\+create (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$}]{client,  }\item[{\mbox{\hyperlink{discord_8h_afff2ce011cd5b8d20b703fb01c105559}{message\+\_\+cb}} $\ast$}]{callback }\end{DoxyParamCaption})}
+
+
+
+Set a callback that triggers when a message is created. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em client} & the client created with \mbox{\hyperlink{discord_8h_a445cca7dc5a28113760c7e55759845c7}{discord\+\_\+init()}} \\
+\hline
+{\em callback} & the callback that will be executed \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+this function will automatically set intent(s) to make the callback triggerable 
+\end{DoxyNote}
+\mbox{\Hypertarget{discord_8h_a72c3f46afdb0cf603ba426ae08bcadab}\label{discord_8h_a72c3f46afdb0cf603ba426ae08bcadab}} 
+\index{discord.h@{discord.h}!discord\_set\_on\_message\_delete@{discord\_set\_on\_message\_delete}}
+\index{discord\_set\_on\_message\_delete@{discord\_set\_on\_message\_delete}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{discord\_set\_on\_message\_delete()}{discord\_set\_on\_message\_delete()}}
+{\footnotesize\ttfamily void discord\+\_\+set\+\_\+on\+\_\+message\+\_\+delete (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$}]{client,  }\item[{\mbox{\hyperlink{discord_8h_a1a03c333f0c96ccfe855460837c39640}{message\+\_\+delete\+\_\+cb}} $\ast$}]{callback }\end{DoxyParamCaption})}
+
+
+
+Set a callback that triggers when a message is deleted. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em client} & the client created with \mbox{\hyperlink{discord_8h_a445cca7dc5a28113760c7e55759845c7}{discord\+\_\+init()}} \\
+\hline
+{\em callback} & the callback that will be executed \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+this function will automatically set intent(s) to make the callback triggerable 
+\end{DoxyNote}
+\mbox{\Hypertarget{discord_8h_a9b6bf9e15ae6c2fe82f6c6bd1f4fc6c6}\label{discord_8h_a9b6bf9e15ae6c2fe82f6c6bd1f4fc6c6}} 
+\index{discord.h@{discord.h}!discord\_set\_on\_message\_reaction\_add@{discord\_set\_on\_message\_reaction\_add}}
+\index{discord\_set\_on\_message\_reaction\_add@{discord\_set\_on\_message\_reaction\_add}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{discord\_set\_on\_message\_reaction\_add()}{discord\_set\_on\_message\_reaction\_add()}}
+{\footnotesize\ttfamily void discord\+\_\+set\+\_\+on\+\_\+message\+\_\+reaction\+\_\+add (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$}]{client,  }\item[{\mbox{\hyperlink{discord_8h_a51d3f330bfd81a53015878b954183142}{message\+\_\+reaction\+\_\+add\+\_\+cb}} $\ast$}]{callback }\end{DoxyParamCaption})}
+
+
+
+Set a callback that triggers when a message reaction is added. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em client} & the client created with \mbox{\hyperlink{discord_8h_a445cca7dc5a28113760c7e55759845c7}{discord\+\_\+init()}} \\
+\hline
+{\em callback} & the callback that will be executed \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+this function will automatically set intent(s) to make the callback triggerable 
+\end{DoxyNote}
+\mbox{\Hypertarget{discord_8h_a76d53c80811f15b746ea0c9e13aac2e3}\label{discord_8h_a76d53c80811f15b746ea0c9e13aac2e3}} 
+\index{discord.h@{discord.h}!discord\_set\_on\_message\_reaction\_remove@{discord\_set\_on\_message\_reaction\_remove}}
+\index{discord\_set\_on\_message\_reaction\_remove@{discord\_set\_on\_message\_reaction\_remove}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{discord\_set\_on\_message\_reaction\_remove()}{discord\_set\_on\_message\_reaction\_remove()}}
+{\footnotesize\ttfamily void discord\+\_\+set\+\_\+on\+\_\+message\+\_\+reaction\+\_\+remove (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$}]{client,  }\item[{\mbox{\hyperlink{discord_8h_aa78388a1f092c880ef99029f1b383237}{message\+\_\+reaction\+\_\+remove\+\_\+cb}} $\ast$}]{callback }\end{DoxyParamCaption})}
+
+
+
+Set a callback that triggers when a message reaction is removed. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em client} & the client created with \mbox{\hyperlink{discord_8h_a445cca7dc5a28113760c7e55759845c7}{discord\+\_\+init()}} \\
+\hline
+{\em callback} & the callback that will be executed \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+this function will automatically set intent(s) to make the callback triggerable 
+\end{DoxyNote}
+\mbox{\Hypertarget{discord_8h_a69dc994bf6f5131411341cc43622bc26}\label{discord_8h_a69dc994bf6f5131411341cc43622bc26}} 
+\index{discord.h@{discord.h}!discord\_set\_on\_message\_reaction\_remove\_all@{discord\_set\_on\_message\_reaction\_remove\_all}}
+\index{discord\_set\_on\_message\_reaction\_remove\_all@{discord\_set\_on\_message\_reaction\_remove\_all}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{discord\_set\_on\_message\_reaction\_remove\_all()}{discord\_set\_on\_message\_reaction\_remove\_all()}}
+{\footnotesize\ttfamily void discord\+\_\+set\+\_\+on\+\_\+message\+\_\+reaction\+\_\+remove\+\_\+all (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$}]{client,  }\item[{\mbox{\hyperlink{discord_8h_a19d3292473ccf8bdd8dc15a8aa9e9b33}{message\+\_\+reaction\+\_\+remove\+\_\+all\+\_\+cb}} $\ast$}]{callback }\end{DoxyParamCaption})}
+
+
+
+Set a callback that triggers when all reaction from some message is removed. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em client} & the client created with \mbox{\hyperlink{discord_8h_a445cca7dc5a28113760c7e55759845c7}{discord\+\_\+init()}} \\
+\hline
+{\em callback} & the callback that will be executed \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+this function will automatically set intent(s) to make the callback triggerable 
+\end{DoxyNote}
+\mbox{\Hypertarget{discord_8h_a2d213631154c13a336eb10ea607c775b}\label{discord_8h_a2d213631154c13a336eb10ea607c775b}} 
+\index{discord.h@{discord.h}!discord\_set\_on\_message\_reaction\_remove\_emoji@{discord\_set\_on\_message\_reaction\_remove\_emoji}}
+\index{discord\_set\_on\_message\_reaction\_remove\_emoji@{discord\_set\_on\_message\_reaction\_remove\_emoji}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{discord\_set\_on\_message\_reaction\_remove\_emoji()}{discord\_set\_on\_message\_reaction\_remove\_emoji()}}
+{\footnotesize\ttfamily void discord\+\_\+set\+\_\+on\+\_\+message\+\_\+reaction\+\_\+remove\+\_\+emoji (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$}]{client,  }\item[{\mbox{\hyperlink{discord_8h_aaf01e5b91be0bc56135d1a2d7bede82e}{message\+\_\+reaction\+\_\+remove\+\_\+emoji\+\_\+cb}} $\ast$}]{callback }\end{DoxyParamCaption})}
+
+
+
+Set a callback that triggers when all instances of a particular reaction from some message is removed. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em client} & the client created with \mbox{\hyperlink{discord_8h_a445cca7dc5a28113760c7e55759845c7}{discord\+\_\+init()}} \\
+\hline
+{\em callback} & the callback that will be executed \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+this function will automatically set intent(s) to make the callback triggerable 
+\end{DoxyNote}
+\mbox{\Hypertarget{discord_8h_a1bcf72b1836cbcd0ec8b197c156795cb}\label{discord_8h_a1bcf72b1836cbcd0ec8b197c156795cb}} 
+\index{discord.h@{discord.h}!discord\_set\_on\_message\_update@{discord\_set\_on\_message\_update}}
+\index{discord\_set\_on\_message\_update@{discord\_set\_on\_message\_update}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{discord\_set\_on\_message\_update()}{discord\_set\_on\_message\_update()}}
+{\footnotesize\ttfamily void discord\+\_\+set\+\_\+on\+\_\+message\+\_\+update (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$}]{client,  }\item[{\mbox{\hyperlink{discord_8h_afff2ce011cd5b8d20b703fb01c105559}{message\+\_\+cb}} $\ast$}]{callback }\end{DoxyParamCaption})}
+
+
+
+Set a callback that triggers when a message is updated. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em client} & the client created with \mbox{\hyperlink{discord_8h_a445cca7dc5a28113760c7e55759845c7}{discord\+\_\+init()}} \\
+\hline
+{\em callback} & the callback that will be executed \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+this function will automatically set intent(s) to make the callback triggerable 
+\end{DoxyNote}
+\mbox{\Hypertarget{discord_8h_a23f17f54bfca2562a453ea58d49e91ae}\label{discord_8h_a23f17f54bfca2562a453ea58d49e91ae}} 
+\index{discord.h@{discord.h}!discord\_set\_on\_ready@{discord\_set\_on\_ready}}
+\index{discord\_set\_on\_ready@{discord\_set\_on\_ready}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{discord\_set\_on\_ready()}{discord\_set\_on\_ready()}}
+{\footnotesize\ttfamily void discord\+\_\+set\+\_\+on\+\_\+ready (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$}]{client,  }\item[{\mbox{\hyperlink{discord_8h_afc8f66a3993c5edb45a00ef997223d52}{idle\+\_\+cb}} $\ast$}]{callback }\end{DoxyParamCaption})}
+
+
+
+Set a callback that triggers when the client is ready. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em client} & the client created with \mbox{\hyperlink{discord_8h_a445cca7dc5a28113760c7e55759845c7}{discord\+\_\+init()}} \\
+\hline
+{\em callback} & the callback that will be executed \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+this function will automatically set intent(s) to make the callback triggerable 
+\end{DoxyNote}
+\mbox{\Hypertarget{discord_8h_ac43f3a0ac189d07a6b9a83c3dec48420}\label{discord_8h_ac43f3a0ac189d07a6b9a83c3dec48420}} 
+\index{discord.h@{discord.h}!discord\_set\_on\_voice\_server\_update@{discord\_set\_on\_voice\_server\_update}}
+\index{discord\_set\_on\_voice\_server\_update@{discord\_set\_on\_voice\_server\_update}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{discord\_set\_on\_voice\_server\_update()}{discord\_set\_on\_voice\_server\_update()}}
+{\footnotesize\ttfamily void discord\+\_\+set\+\_\+on\+\_\+voice\+\_\+server\+\_\+update (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$}]{client,  }\item[{\mbox{\hyperlink{discord_8h_aee86b0424b3c03c48b60fa99a0814d2f}{voice\+\_\+server\+\_\+update\+\_\+cb}} $\ast$}]{callback }\end{DoxyParamCaption})}
+
+
+
+Set a callback that triggers when a voice server is updated. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em client} & the client created with \mbox{\hyperlink{discord_8h_a445cca7dc5a28113760c7e55759845c7}{discord\+\_\+init()}} \\
+\hline
+{\em callback} & the callback that will be executed \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+this function will automatically set intent(s) to make the callback triggerable 
+\end{DoxyNote}
+\mbox{\Hypertarget{discord_8h_a5347137109bd6e433587c7fb10752c68}\label{discord_8h_a5347137109bd6e433587c7fb10752c68}} 
+\index{discord.h@{discord.h}!discord\_set\_on\_voice\_state\_update@{discord\_set\_on\_voice\_state\_update}}
+\index{discord\_set\_on\_voice\_state\_update@{discord\_set\_on\_voice\_state\_update}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{discord\_set\_on\_voice\_state\_update()}{discord\_set\_on\_voice\_state\_update()}}
+{\footnotesize\ttfamily void discord\+\_\+set\+\_\+on\+\_\+voice\+\_\+state\+\_\+update (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$}]{client,  }\item[{\mbox{\hyperlink{discord_8h_a4734edb5ea9ea55094487d199227f943}{voice\+\_\+state\+\_\+update\+\_\+cb}} $\ast$}]{callback }\end{DoxyParamCaption})}
+
+
+
+Set a callback that triggers when a voice state is updated. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em client} & the client created with \mbox{\hyperlink{discord_8h_a445cca7dc5a28113760c7e55759845c7}{discord\+\_\+init()}} \\
+\hline
+{\em callback} & the callback that will be executed \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+this function will automatically set intent(s) to make the callback triggerable 
+\end{DoxyNote}
+\mbox{\Hypertarget{discord_8h_a13d9f16d62fea7cebdb6c24d57f685a1}\label{discord_8h_a13d9f16d62fea7cebdb6c24d57f685a1}} 
+\index{discord.h@{discord.h}!discord\_set\_prefix@{discord\_set\_prefix}}
+\index{discord\_set\_prefix@{discord\_set\_prefix}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{discord\_set\_prefix()}{discord\_set\_prefix()}}
+{\footnotesize\ttfamily void discord\+\_\+set\+\_\+prefix (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$}]{client,  }\item[{char $\ast$}]{prefix }\end{DoxyParamCaption})}
+
+
+
+Set a mandatory prefix before commands. 
+
+Example\+: If @i help is a command and @i ! prefix is set, the command will only be validated if @i !help is sent 
+\begin{DoxyParams}{Parameters}
+{\em client} & the client created with \mbox{\hyperlink{discord_8h_a445cca7dc5a28113760c7e55759845c7}{discord\+\_\+init()}} \\
+\hline
+{\em prefix} & the prefix that should accompany any command \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+\mbox{\hyperlink{discord_8h_a996d04265f563d5be9c22cef411c11aa}{discord\+\_\+set\+\_\+on\+\_\+command()}} 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{discord_8h_a09fa023f7aab5b9a053250115f1af903}\label{discord_8h_a09fa023f7aab5b9a053250115f1af903}} 
+\index{discord.h@{discord.h}!discord\_set\_presence@{discord\_set\_presence}}
+\index{discord\_set\_presence@{discord\_set\_presence}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{discord\_set\_presence()}{discord\_set\_presence()}}
+{\footnotesize\ttfamily void discord\+\_\+set\+\_\+presence (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$}]{client,  }\item[{struct discord\+\_\+gateway\+\_\+activity $\ast$}]{activity,  }\item[{char}]{status\mbox{[}$\,$\mbox{]},  }\item[{bool}]{afk }\end{DoxyParamCaption})}
+
+
+
+Modify the Client presence state. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em client} & the client created with \mbox{\hyperlink{discord_8h_a445cca7dc5a28113760c7e55759845c7}{discord\+\_\+init()}} \\
+\hline
+{\em activity} & the user current activities \\
+\hline
+{\em status} & either \char`\"{}idle\char`\"{},\char`\"{}dnd\char`\"{},\char`\"{}online\char`\"{}, or \char`\"{}offline\char`\"{} \\
+\hline
+{\em afk} & \#true or \#false \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{discord_8h_a3d7c81f03f681c7e5671489b8160aec7}\label{discord_8h_a3d7c81f03f681c7e5671489b8160aec7}} 
+\index{discord.h@{discord.h}!discord\_set\_voice\_cbs@{discord\_set\_voice\_cbs}}
+\index{discord\_set\_voice\_cbs@{discord\_set\_voice\_cbs}!discord.h@{discord.h}}
+\doxysubsubsection{\texorpdfstring{discord\_set\_voice\_cbs()}{discord\_set\_voice\_cbs()}}
+{\footnotesize\ttfamily void discord\+\_\+set\+\_\+voice\+\_\+cbs (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structdiscord}{discord}} $\ast$}]{client,  }\item[{struct \mbox{\hyperlink{structdiscord__voice__cbs}{discord\+\_\+voice\+\_\+cbs}} $\ast$}]{callbacks }\end{DoxyParamCaption})}
+
+
+
+Helper to quickly set voice callbacks. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em client} & the client created with \mbox{\hyperlink{discord_8h_a445cca7dc5a28113760c7e55759845c7}{discord\+\_\+init()}} \\
+\hline
+{\em callbacks} & the voice callbacks that will be executed \\
+\hline
+\end{DoxyParams}
