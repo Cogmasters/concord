@@ -8,8 +8,10 @@
 struct discord_voice; //forward
 
 /**
- * IDLE CALLBACK
- * @note runs on every WebSockets loop iteration, no trigger required
+ * @brief Idle callback
+ *
+ * Runs on every WebSockets loop iteration, no trigger required
+ * @see discord_set_voice_cbs()
  */
 typedef void (voice_idle_cb)(
   struct discord *client,
@@ -17,8 +19,10 @@ typedef void (voice_idle_cb)(
   const struct discord_user *bot);
 
 /**
- * VOICE SPEAKING CALLBACK
+ * @brief Voice Speaking callback
+ *
  * @see https://discord.com/developers/docs/topics/voice-connections#speaking
+ * @see discord_set_voice_cbs()
  */
 typedef void (voice_speaking_cb)(
     struct discord *client,
@@ -30,7 +34,10 @@ typedef void (voice_speaking_cb)(
     const int ssrc);
 
 /**
- * VOICE CLIENT DISCONNECT CALLBACK
+ * @brief Voice Client Disconnect callback
+ *
+ * @see https://discord.com/developers/docs/topics/voice-connections#speaking
+ * @see discord_set_voice_cbs()
  */
 typedef void (voice_client_disconnect_cb)(
     struct discord *client,
@@ -39,7 +46,10 @@ typedef void (voice_client_disconnect_cb)(
     const u64_snowflake_t user_id);
 
 /**
- * VOICE CODEC CALLBACK
+ * @brief Voice Codec callback
+ *
+ * @see https://discord.com/developers/docs/topics/voice-connections#speaking
+ * @see discord_set_voice_cbs()
  */
 typedef void (voice_codec_cb)(
     struct discord *client,
@@ -50,82 +60,65 @@ typedef void (voice_codec_cb)(
 
 
 struct discord_voice_cbs { /* CALLBACKS STRUCTURE */
-  // triggers on every event loop iteration
-  voice_idle_cb  *on_idle; /** @see discord_voice_set_on_idle() */
-
-  // triggers when a user start speaking
-  voice_speaking_cb *on_speaking;
-  // triggers when a user has disconnected from the voice channel
-  voice_client_disconnect_cb *on_client_disconnect;
-  // ? triggers when a codec is received
-  voice_codec_cb *on_codec;
+  voice_idle_cb  *on_idle; /**< triggers on every event loop iteration */
+  voice_speaking_cb *on_speaking; /**< triggers when a user start speaking */
+  voice_client_disconnect_cb *on_client_disconnect; /**< triggers when a user has disconnected from the voice channel */
+  voice_codec_cb *on_codec; /**< triggers when a codec is received */
 
   void (*on_ready)(struct discord_voice *vc);
   void (*on_session_descriptor)(struct discord_voice *vc);
   void (*on_udp_server_connected)(struct discord_voice *vc);
 };
 /**
- * The Discord Voice Connection structure, contain information
- *        correlating to its active session.
+ * @brief Discord Voice Connection handle, contain information
+ *        about its active session.
  *
- * @note VC structs are reused on a guild basis, because there can
- *        be only one active VC session per guild.
+ * @note @var discord_voice are reused on a guild basis, because there can
+ *        be only one active @var discord_voice session per guild.
  * @see discord_join_vc()
  * @see discord_voice_get_vc()
  */
 struct discord_voice {
-  /// @note obtained from discord_join_vc()
-  u64_snowflake_t guild_id;   // the session guild id
-  u64_snowflake_t channel_id; // the session channel id
+  u64_snowflake_t guild_id; /**< the session guild id @note obtained from discord_join_vc() */
+  u64_snowflake_t channel_id; /**< the session channel id @note obtained from discord_join_vc() */
   /// @note obtained from on_voice_server_update()
-
-  char token[128];            // the session token
-  char new_token[128];        // the new session token after a voice region change
-  char new_url[512];          // the new url after a voice region change
+  char token[128]; /**< the session token @note obtained from on_voice_server_update() */
+  char new_token[128]; /**< the new session token after a voice region change @note obtained from on_voice_server_update() */
+  char new_url[512]; /**< the new url after a voice region change @note obtained from on_voice_server_update() */
 
   /// @note obtained from on_voice_state_update()
-  char session_id[128];       // the session id
-  u64_snowflake_t bot_id;    // the bot user id
-  // the websockets handle that connects to Discord
-  struct websockets *ws;
-  // handle reconnect logic
+  char session_id[128]; /**< the session id @note obtained from on_voice_state_update() */
+  u64_snowflake_t bot_id; /**< the bot user id @note obtained from on_voice_state_update() */
+  struct websockets *ws; /**< the websockets handle that binds to Discord Voice Connections */
+  /// @brief handle reconnect logic
   struct { /* RECONNECT STRUCTURE */
-    // will attempt reconnecting if true
-    bool enable;
-    // current reconnect attempt (resets to 0 when succesful)
-    unsigned char attempt;
-    // max amount of reconnects before giving up
-    unsigned char threshold;
+    bool enable; /**< will attempt reconnecting if true */
+    unsigned char attempt; /**< current reconnect attempt (resets to 0 when succesful) */
+    unsigned char threshold; /**< max amount of reconnects before giving up */
   } reconnect;
-  // will attempt to resume session if connection shutsdown
-  bool is_resumable;
+  bool is_resumable; /**< will attempt to resume session if connection shutsdown */
 
-  // redirect to a different voice server
-  bool is_redirect;
-  // can start sending/receiving additional events to discord
-  bool is_ready;
+  bool is_redirect; /**< redirect to a different voice server */
+  bool is_ready; /**< can start sending/receiving additional events to discord */
 
-  /// @see https://discord.com/developers/docs/topics/voice-connections#establishing-a-voice-websocket-connection-example-voice-ready-payload
+  /**
+   * @see https://discord.com/developers/docs/topics/voice-connections#establishing-a-voice-websocket-connection-example-voice-ready-payload
+   */
   struct { /* VOICE PAYLOAD STRUCTURE */
-    enum discord_voice_opcodes opcode;   //field 'op'
-    struct sized_buffer event_data;      //field 'd'
+    enum discord_voice_opcodes opcode; /**<field 'op' */
+    struct sized_buffer event_data; /**<field 'd' */
   } payload;
 
   struct { /* HEARTBEAT STRUCTURE */
-    //fixed interval between heartbeats
-    u64_unix_ms_t interval_ms;
-    //start pulse timestamp in milliseconds
-    u64_unix_ms_t tstamp;
+    u64_unix_ms_t interval_ms; /**<fixed interval between heartbeats */
+    u64_unix_ms_t tstamp; /**<start pulse timestamp in milliseconds */
   } hbeat;
 
-  //latency between client and websockets server
-  /// @note calculated by interval response between HEARTBEAT and HEARTBEAT_ACK
-  int ping_ms; /** @todo implement discord_voice_ping_ms() */
+  int ping_ms; /**< latency between client and websockets server, calculated by the interval between HEARTBEAT and HEARTBEAT_ACK */
 
-  // pointer to client this struct is part of
-  struct discord *p_client;
+  struct discord *p_client; /**< pointer to client this struct is part of */
 
-  bool shutdown;
+  bool shutdown; /**< if #true shutdown websockets connection as soon as possible */
 
   struct {
     int ssrc;
@@ -139,24 +132,22 @@ struct discord_voice {
 
   struct discord_voice_cbs *p_voice_cbs;
 
-  // used to communicate the status of
-  // the bot state changes
-  uint64_t  message_channel_id;
+  uint64_t  message_channel_id; /**< used to communicate the status of the bot state changes */
 
-  /*
-   *  Interval to divide the received packets
-   *  0 store in one file
-   *  n store packets received every n minutes in a new file
+  /**
+   * @brief Interval to divide the received packets
+   *
+   * 0 store in one file
+   * n store packets received every n minutes in a new file
    */
   int recv_interval;
 };
 
 /**
- * Set a callback that triggers despite any event being detected. It
- *        is triggered every discord_connect_vs_ws() event loop iteration.
+ * @brief Set a callback that triggers at every event-loop iteration.
  *
  * @param vc the VC obtained with discord_join_vc()
- * @param callback the callback to run when triggered at every event loop iteration
+ * @param callback the callback that will be executed
  */
 void discord_voice_set_on_idle(struct discord_voice *vc, voice_idle_cb *callback);
 
@@ -168,14 +159,15 @@ enum discord_join_vc_status {
 };
 
 /**
- * Send a Voice State Update to Discord, in order to connect to the
- *        voice server. When succesful a VC will start running 
- * 
+ * @brief Send a Voice State Update to Discord
+ *
+ * Necessary to connect to the voice server. When succesful a new voice connection instance will start
  * @param client the client created with discord_init()
  * @param guild_id the guild that houses the voice channel
  * @param channel_id the voice channel the client wants to connect to
  * @param self_mute #true will join as mute 
  * @param self_deaf #true will join as deaf 
+ * @return a enum value of how the connection went
  */
 enum discord_join_vc_status discord_join_vc(
   struct discord *client,
@@ -186,8 +178,7 @@ enum discord_join_vc_status discord_join_vc(
   bool self_deaf);
 
 /**
- * Notify clients that you are speaking or have stopped speaking.
- * 
+ * @brief Notify clients that you are speaking or have stopped speaking.
  * @param vc the VC obtained with discord_join_vc()
  * @param flag @see https://discord.com/developers/docs/topics/voice-connections#speaking
  * @param delay Should be set to 0. https://github.com/discord/discord-api-docs/issues/859#issuecomment-466602485
@@ -195,45 +186,43 @@ enum discord_join_vc_status discord_join_vc(
 void discord_send_speaking(struct discord_voice *vc, enum discord_voice_speaking_flags flag, int delay);
 
 /**
- * Update the voice session with a new session_id
- * 
- * @todo move to discord-voice-connections-internal.h (make it private)
+ * @brief Update the voice session with a new session_id
  * 
  * @param client the client created with discord_init()
  * @param the voice state that has been updated
+ * @todo move to discord-internal.h
  */
 void _discord_on_voice_state_update(struct discord *client, struct discord_voice_state *vs);
 
 /**
- * Update the voice session with a new token and url
- * 
- * @todo move to discord-voice-connections-internal.h (make it private)
+ * @brief Update the voice session with a new token and url
  * 
  * @param client the client created with discord_init()
  * @param guild_id the guild that houses the voice channel
  * @param token the unique token identifier
  * @param endpoint unique wss url received
  *        @note will prepend it with "wss://" and append with "?v=4"
+ * @todo move to discord-internal.h
  */
 void _discord_on_voice_server_update(struct discord *client, u64_snowflake_t guild_id, char token[], char endpoint[]);
 
 /**
- * Gracefully exits a ongoing Discord Voice connection over WebSockets
- * @note Wraps around ws_set_action()
- *        @see websockets.h
+ * @brief Gracefully exits a ongoing Discord Voice connection
  * 
  * @param vc the VC obtained with discord_join_vc()
+ * @note Wraps around ws_set_action()
+ * @see websockets.h
  */
 void discord_voice_shutdown(struct discord_voice *vc);
 
 /**
- * Gracefully reconnect a ongoing Discord Voice connection over WebSockets
- * @note Wraps around ws_set_action()
- *        @see websockets.h
+ * @brief Gracefully reconnect a ongoing Discord Voice connection
  * 
  * @param vc the VC obtained with discord_join_vc()
  * @param resume #TRUE to attempt to resume to previous session,
  *        #FALSE restart a fresh session
+ * @note Wraps around ws_set_action()
+ * @see websockets.h
  */
 void discord_voice_reconnect(struct discord_voice *vc, bool resume);
 
@@ -245,6 +234,11 @@ void discord_voice_reconnect(struct discord_voice *vc, bool resume);
  */
 bool discord_voice_is_alive(struct discord_voice *vc);
 
-extern void discord_voice_connections_init(struct discord *client);
+/**
+ * @brief Initialize the fields of a Discord Voice Connections handle
+ *
+ * @param client the client created with discord_init()
+ */
+void discord_voice_connections_init(struct discord *client);
 
 #endif // DISCORD_VOICE_CONNECTIONS_H
