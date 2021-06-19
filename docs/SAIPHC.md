@@ -6,15 +6,19 @@
 
 Follow the installation steps [here](https://www.cee.studio/get_sdk.html). After this, there are some additional steps required to compile Orca:
 
-1. Download the additional libraries for Saiph-C to run [here](https://github.com/cee-studio/packages)
-2. For Orca, use these commands inside the packages folder to install the libraries instead:
+1. Download the additional libraries for Saiph-C from [here](https://github.com/cee-studio/packages)
+   ```
+   git clone https://github.com/cee-studio/packages.git
+   ```
+2. For Orca, use these commands inside the above `packages` folder to install the libraries instead:
     ```
     CC=saiph-c CXX=saiph-c++ make bearssl curl
     ./install.sh
     ```
-3. Saiph-C should be already used when doing `make` to build bots inside the Orca folder, but you can always use `saiph-c <name_of_C_file>` to build it instead. If Saiph-C is not used with the `make` command and you have Saiph-c installed, please contact us. A workaround should be instead to do:
+3. To build Orca:
    ```
-    CC=saiph-c make 
+    cd orca
+    CC=saiph-c make
    ```
 
 
