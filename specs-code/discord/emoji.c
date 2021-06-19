@@ -47,7 +47,7 @@ void discord_emoji_from_json(char *json, size_t len, struct discord_emoji *p)
   /* specs/discord/emoji.json:12:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}}'
   */
-                orka_strtoull, &p->id,
+                cee_strtoull, &p->id,
   /* specs/discord/emoji.json:13:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}}'
   */
@@ -168,7 +168,7 @@ size_t discord_emoji_to_json(char *json, size_t len, struct discord_emoji *p)
   /* specs/discord/emoji.json:12:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}}'
   */
-                orka_ulltostr, &p->id,
+                cee_ulltostr, &p->id,
   /* specs/discord/emoji.json:13:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}}'
   */

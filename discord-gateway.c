@@ -7,7 +7,7 @@
 #include "discord.h"
 #include "discord-internal.h"
 
-#include "orka-utils.h"
+#include "cee-utils.h"
 
 
 static void
@@ -146,7 +146,7 @@ on_hello(struct discord_gateway *gw)
 {
   log_info("on_hello:%.*s", gw->payload.event_data.size, gw->payload.event_data.start);
   gw->hbeat.interval_ms = 0;
-  gw->hbeat.tstamp = orka_timestamp_ms();
+  gw->hbeat.tstamp = cee_timestamp_ms();
 
   json_extract(gw->payload.event_data.start, gw->payload.event_data.size,
              "(heartbeat_interval):ld", &gw->hbeat.interval_ms);
@@ -404,7 +404,7 @@ on_channel_pins_update(struct discord_gateway *gw, struct sized_buffer *data)
     "(last_pin_timestamp):F",
     &guild_id, 
     &channel_id,
-    &orka_iso8601_to_unix_ms, &last_pin_timestamp);
+    &cee_iso8601_to_unix_ms, &last_pin_timestamp);
 
   (*gw->cbs.on_channel_pins_update)(
         gw->p_client, 
@@ -423,7 +423,7 @@ on_message_create(struct discord_gateway *gw, struct sized_buffer *data)
   if (gw->on_cmd \
       && STRNEQ(gw->prefix.start, msg->content, gw->prefix.size)) 
   {
-    struct cmd_cbs *cmd=NULL;
+    struct discord_gateway_cmd_cbs *cmd=NULL;
     for (size_t i=0; i < gw->num_cmd; ++i) {
       // check if command from channel matches set command
       if (STRNEQ(gw->on_cmd[i].start, \
@@ -915,7 +915,7 @@ static void
 on_heartbeat_ack(struct discord_gateway *gw)
 {
   // get request / response interval in milliseconds
-  gw->ping_ms = orka_timestamp_ms() - gw->hbeat.tstamp;
+  gw->ping_ms = cee_timestamp_ms() - gw->hbeat.tstamp;
   log_trace("PING: %d ms", gw->ping_ms);
 }
 
@@ -1069,7 +1069,7 @@ discord_gateway_init(struct discord_gateway *gw, struct logconf *config, struct 
   gw->id->properties->$os = strdup("POSIX");
   gw->id->properties->$browser = strdup("orca");
   gw->id->properties->$device = strdup("orca");
-  gw->id->presence->since = orka_timestamp_ms();
+  gw->id->presence->since = cee_timestamp_ms();
 
   gw->cbs.on_idle = &noop_idle_cb;
   gw->cbs.on_event_raw = &noop_event_raw_cb;

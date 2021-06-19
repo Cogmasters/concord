@@ -23,7 +23,7 @@ SPECS      	:= $(sort $(wildcard specs/*/*.json))
 SPECS_SUBDIR:= $(sort $(patsubst specs/%, %, $(dir $(SPECS))))
 SPECS_SRC   := $(patsubst specs/%, $(SPECSDIR)/%, $(SPECS:%.json=%.c))
 
-ACTOR_GEN_SRC = cee-utils/orka-utils.c 	\
+ACTOR_GEN_SRC = cee-utils/cee-utils.c 	\
 				cee-utils/json-actor.c 	\
 				cee-utils/ntl.c 			\
 				cee-utils/json-string.c 	\

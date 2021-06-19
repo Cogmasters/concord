@@ -5,7 +5,7 @@
 #include <pthread.h>
 
 #include "scheduler.h"
-#include "orka-utils.h"
+#include "cee-utils.h"
 
 
 struct task_s {
@@ -51,11 +51,11 @@ event_run(void *p_task)
 {
   struct task_s *task = p_task;
 
-  orka_sleep_ms(task->timeout_ms);
+  cee_sleep_ms(task->timeout_ms);
   while (is_alive(task)) {
     (*task->callback)(task->data);
     if (!task->repeat_ms) break; /* EARLY BREAK */
-    orka_sleep_ms(task->repeat_ms);
+    cee_sleep_ms(task->repeat_ms);
   }
   pthread_exit(NULL);
 }

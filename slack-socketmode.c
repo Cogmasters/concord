@@ -5,7 +5,7 @@
 #include "slack.h"
 #include "slack-internal.h"
 
-#include "orka-utils.h"
+#include "cee-utils.h"
 
 
 static void 

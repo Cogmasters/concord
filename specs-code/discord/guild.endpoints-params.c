@@ -89,7 +89,7 @@ void discord_create_guild_params_from_json(char *json, size_t len, struct discor
   /* specs/discord/guild.endpoints-params.json:20:20
      '{ "name": "afk_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"id for afk channel"}'
   */
-                orka_strtoull, &p->afk_channel_id,
+                cee_strtoull, &p->afk_channel_id,
   /* specs/discord/guild.endpoints-params.json:21:20
      '{ "name": "afk_timeout", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"afk timeout in seconds"}'
   */
@@ -97,7 +97,7 @@ void discord_create_guild_params_from_json(char *json, size_t len, struct discor
   /* specs/discord/guild.endpoints-params.json:22:20
      '{ "name": "system_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"the id of the channel where guild notices such as welcome messages and boost events are posted"}'
   */
-                orka_strtoull, &p->system_channel_id,
+                cee_strtoull, &p->system_channel_id,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
                 p->__M.record_null, sizeof(p->__M.record_null));
@@ -255,7 +255,7 @@ size_t discord_create_guild_params_to_json(char *json, size_t len, struct discor
   /* specs/discord/guild.endpoints-params.json:20:20
      '{ "name": "afk_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"id for afk channel"}'
   */
-                orka_ulltostr, &p->afk_channel_id,
+                cee_ulltostr, &p->afk_channel_id,
   /* specs/discord/guild.endpoints-params.json:21:20
      '{ "name": "afk_timeout", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"afk timeout in seconds"}'
   */
@@ -263,7 +263,7 @@ size_t discord_create_guild_params_to_json(char *json, size_t len, struct discor
   /* specs/discord/guild.endpoints-params.json:22:20
      '{ "name": "system_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"the id of the channel where guild notices such as welcome messages and boost events are posted"}'
   */
-                orka_ulltostr, &p->system_channel_id,
+                cee_ulltostr, &p->system_channel_id,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
 }
@@ -541,7 +541,7 @@ void discord_modify_guild_params_from_json(char *json, size_t len, struct discor
   /* specs/discord/guild.endpoints-params.json:37:20
      '{ "name": "afk_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"id for afk channel"}'
   */
-                orka_strtoull, &p->afk_channel_id,
+                cee_strtoull, &p->afk_channel_id,
   /* specs/discord/guild.endpoints-params.json:38:20
      '{ "name": "afk_timeout", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"afk timeout in seconds"}'
   */
@@ -553,7 +553,7 @@ void discord_modify_guild_params_from_json(char *json, size_t len, struct discor
   /* specs/discord/guild.endpoints-params.json:40:20
      '{ "name": "owner_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"user id to transfer guild ownership to (must be owner)"}'
   */
-                orka_strtoull, &p->owner_id,
+                cee_strtoull, &p->owner_id,
   /* specs/discord/guild.endpoints-params.json:41:20
      '{ "name": "splash", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"base64 16:9 png/jpeg image for the guild splash (when the server has the INVITE_SPLASH feature"}'
   */
@@ -569,7 +569,7 @@ void discord_modify_guild_params_from_json(char *json, size_t len, struct discor
   /* specs/discord/guild.endpoints-params.json:44:20
      '{ "name": "system_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"	the id of the channel where guild notices such as welcome messages and boost events are posted"}'
   */
-                orka_strtoull, &p->system_channel_id,
+                cee_strtoull, &p->system_channel_id,
   /* specs/discord/guild.endpoints-params.json:45:20
      '{ "name": "system_channel_flags", "type":{ "base":"int", "int_alias":"enum discord_guild_system_channel_flags" }, "option":true, "inject_if_not":0, "comment":"system channel flags"}'
   */
@@ -577,11 +577,11 @@ void discord_modify_guild_params_from_json(char *json, size_t len, struct discor
   /* specs/discord/guild.endpoints-params.json:46:20
      '{ "name": "rules_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"the id of the channel where Community guilds display rules and/or guidelines"}'
   */
-                orka_strtoull, &p->rules_channel_id,
+                cee_strtoull, &p->rules_channel_id,
   /* specs/discord/guild.endpoints-params.json:47:20
      '{ "name": "public_updates_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"the id of the channel where admins and moderators of Community guilds receive notices from Discord"}'
   */
-                orka_strtoull, &p->public_updates_channel_id,
+                cee_strtoull, &p->public_updates_channel_id,
   /* specs/discord/guild.endpoints-params.json:48:20
      '{ "name": "preferred_locale", "type":{ "base":"char", "dec":"*" }, "comment":"the preferred locale of a Community guild used in server discovery and notices from Discord; defaults to \"en-US\""}'
   */
@@ -817,7 +817,7 @@ size_t discord_modify_guild_params_to_json(char *json, size_t len, struct discor
   /* specs/discord/guild.endpoints-params.json:37:20
      '{ "name": "afk_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"id for afk channel"}'
   */
-                orka_ulltostr, &p->afk_channel_id,
+                cee_ulltostr, &p->afk_channel_id,
   /* specs/discord/guild.endpoints-params.json:38:20
      '{ "name": "afk_timeout", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"afk timeout in seconds"}'
   */
@@ -829,7 +829,7 @@ size_t discord_modify_guild_params_to_json(char *json, size_t len, struct discor
   /* specs/discord/guild.endpoints-params.json:40:20
      '{ "name": "owner_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"user id to transfer guild ownership to (must be owner)"}'
   */
-                orka_ulltostr, &p->owner_id,
+                cee_ulltostr, &p->owner_id,
   /* specs/discord/guild.endpoints-params.json:41:20
      '{ "name": "splash", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"base64 16:9 png/jpeg image for the guild splash (when the server has the INVITE_SPLASH feature"}'
   */
@@ -845,7 +845,7 @@ size_t discord_modify_guild_params_to_json(char *json, size_t len, struct discor
   /* specs/discord/guild.endpoints-params.json:44:20
      '{ "name": "system_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"	the id of the channel where guild notices such as welcome messages and boost events are posted"}'
   */
-                orka_ulltostr, &p->system_channel_id,
+                cee_ulltostr, &p->system_channel_id,
   /* specs/discord/guild.endpoints-params.json:45:20
      '{ "name": "system_channel_flags", "type":{ "base":"int", "int_alias":"enum discord_guild_system_channel_flags" }, "option":true, "inject_if_not":0, "comment":"system channel flags"}'
   */
@@ -853,11 +853,11 @@ size_t discord_modify_guild_params_to_json(char *json, size_t len, struct discor
   /* specs/discord/guild.endpoints-params.json:46:20
      '{ "name": "rules_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"the id of the channel where Community guilds display rules and/or guidelines"}'
   */
-                orka_ulltostr, &p->rules_channel_id,
+                cee_ulltostr, &p->rules_channel_id,
   /* specs/discord/guild.endpoints-params.json:47:20
      '{ "name": "public_updates_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"the id of the channel where admins and moderators of Community guilds receive notices from Discord"}'
   */
-                orka_ulltostr, &p->public_updates_channel_id,
+                cee_ulltostr, &p->public_updates_channel_id,
   /* specs/discord/guild.endpoints-params.json:48:20
      '{ "name": "preferred_locale", "type":{ "base":"char", "dec":"*" }, "comment":"the preferred locale of a Community guild used in server discovery and notices from Discord; defaults to \"en-US\""}'
   */
@@ -1191,7 +1191,7 @@ void discord_create_guild_channel_params_from_json(char *json, size_t len, struc
   /* specs/discord/guild.endpoints-params.json:68:20
      '{ "name": "parent_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0}'
   */
-                orka_strtoull, &p->parent_id,
+                cee_strtoull, &p->parent_id,
   /* specs/discord/guild.endpoints-params.json:69:20
      '{ "name": "nsfw", "type":{ "base":"bool" }}'
   */
@@ -1343,7 +1343,7 @@ size_t discord_create_guild_channel_params_to_json(char *json, size_t len, struc
   /* specs/discord/guild.endpoints-params.json:68:20
      '{ "name": "parent_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0}'
   */
-                orka_ulltostr, &p->parent_id,
+                cee_ulltostr, &p->parent_id,
   /* specs/discord/guild.endpoints-params.json:69:20
      '{ "name": "nsfw", "type":{ "base":"bool" }}'
   */
@@ -1537,7 +1537,7 @@ void discord_modify_guild_channel_positions_params_from_json(char *json, size_t 
   /* specs/discord/guild.endpoints-params.json:79:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"channel id"}'
   */
-                orka_strtoull, &p->id,
+                cee_strtoull, &p->id,
   /* specs/discord/guild.endpoints-params.json:80:20
      '{ "name": "position", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"sorting position of the channel"}'
   */
@@ -1549,7 +1549,7 @@ void discord_modify_guild_channel_positions_params_from_json(char *json, size_t 
   /* specs/discord/guild.endpoints-params.json:82:20
      '{ "name": "parent_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"the new parent ID for the channel that is moved"}'
   */
-                orka_strtoull, &p->parent_id,
+                cee_strtoull, &p->parent_id,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
                 p->__M.record_null, sizeof(p->__M.record_null));
@@ -1610,7 +1610,7 @@ size_t discord_modify_guild_channel_positions_params_to_json(char *json, size_t 
   /* specs/discord/guild.endpoints-params.json:79:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"channel id"}'
   */
-                orka_ulltostr, &p->id,
+                cee_ulltostr, &p->id,
   /* specs/discord/guild.endpoints-params.json:80:20
      '{ "name": "position", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"sorting position of the channel"}'
   */
@@ -1622,7 +1622,7 @@ size_t discord_modify_guild_channel_positions_params_to_json(char *json, size_t 
   /* specs/discord/guild.endpoints-params.json:82:20
      '{ "name": "parent_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"the new parent ID for the channel that is moved"}'
   */
-                orka_ulltostr, &p->parent_id,
+                cee_ulltostr, &p->parent_id,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
 }
@@ -2203,7 +2203,7 @@ void discord_modify_guild_member_params_from_json(char *json, size_t len, struct
   /* specs/discord/guild.endpoints-params.json:121:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0}'
   */
-                orka_strtoull, &p->channel_id,
+                cee_strtoull, &p->channel_id,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
                 p->__M.record_null, sizeof(p->__M.record_null));
@@ -2289,7 +2289,7 @@ size_t discord_modify_guild_member_params_to_json(char *json, size_t len, struct
   /* specs/discord/guild.endpoints-params.json:121:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0}'
   */
-                orka_ulltostr, &p->channel_id,
+                cee_ulltostr, &p->channel_id,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
 }
@@ -2684,7 +2684,7 @@ void discord_modify_guild_role_positions_params_from_json(char *json, size_t len
   /* specs/discord/guild.endpoints-params.json:145:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"role"}'
   */
-                orka_strtoull, &p->id,
+                cee_strtoull, &p->id,
   /* specs/discord/guild.endpoints-params.json:146:20
      '{ "name": "position", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"sorting position of the role"}'
   */
@@ -2729,7 +2729,7 @@ size_t discord_modify_guild_role_positions_params_to_json(char *json, size_t len
   /* specs/discord/guild.endpoints-params.json:145:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"role"}'
   */
-                orka_ulltostr, &p->id,
+                cee_ulltostr, &p->id,
   /* specs/discord/guild.endpoints-params.json:146:20
      '{ "name": "position", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"sorting position of the role"}'
   */

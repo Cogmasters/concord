@@ -23,7 +23,7 @@ reddit_search(
     log_error("Can't have both 'params.after' and 'params.before'");
     return ORCA_BAD_PARAMETER;
   }
-  if (!orka_str_bounds_check(params->category, 5)) {
+  if (!cee_str_bounds_check(params->category, 5)) {
     log_error("'params.category' should be no longer than 5 characters");
     return ORCA_BAD_PARAMETER;
   }
@@ -31,7 +31,7 @@ reddit_search(
     log_error("Missing 'params->q'");
     return ORCA_MISSING_PARAMETER;
   }
-  if (!orka_str_bounds_check(params->q, 512)) {
+  if (!cee_str_bounds_check(params->q, 512)) {
     log_error("'params.q' should be no longer than 512 characters");
     return ORCA_BAD_PARAMETER;
   }

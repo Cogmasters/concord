@@ -31,7 +31,7 @@ void discord_get_guild_audit_log_params_from_json(char *json, size_t len, struct
   /* specs/discord/audit_log.endpoints-params.json:11:20
      '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }'
   */
-                orka_strtoull, &p->user_id,
+                cee_strtoull, &p->user_id,
   /* specs/discord/audit_log.endpoints-params.json:12:20
      '{ "name": "action_type", "type":{ "base":"int", "int_alias":"enum discord_audit_log_events" }, "inject_if_not":0 }'
   */
@@ -39,7 +39,7 @@ void discord_get_guild_audit_log_params_from_json(char *json, size_t len, struct
   /* specs/discord/audit_log.endpoints-params.json:13:20
      '{ "name": "before", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }'
   */
-                orka_strtoull, &p->before,
+                cee_strtoull, &p->before,
   /* specs/discord/audit_log.endpoints-params.json:14:20
      '{ "name": "limit", "type":{ "base":"int" }, "inject_if_not":0 }'
   */
@@ -104,7 +104,7 @@ size_t discord_get_guild_audit_log_params_to_json(char *json, size_t len, struct
   /* specs/discord/audit_log.endpoints-params.json:11:20
      '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }'
   */
-                orka_ulltostr, &p->user_id,
+                cee_ulltostr, &p->user_id,
   /* specs/discord/audit_log.endpoints-params.json:12:20
      '{ "name": "action_type", "type":{ "base":"int", "int_alias":"enum discord_audit_log_events" }, "inject_if_not":0 }'
   */
@@ -112,7 +112,7 @@ size_t discord_get_guild_audit_log_params_to_json(char *json, size_t len, struct
   /* specs/discord/audit_log.endpoints-params.json:13:20
      '{ "name": "before", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }'
   */
-                orka_ulltostr, &p->before,
+                cee_ulltostr, &p->before,
   /* specs/discord/audit_log.endpoints-params.json:14:20
      '{ "name": "limit", "type":{ "base":"int" }, "inject_if_not":0 }'
   */

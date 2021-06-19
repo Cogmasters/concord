@@ -5,7 +5,7 @@
 #include <curl/curl.h>
 
 #include "github.h"
-#include "orka-utils.h"
+#include "cee-utils.h"
 #include "logconf.h"
 
 

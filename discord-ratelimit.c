@@ -8,7 +8,7 @@ https://discord.com/developers/docs/topics/rate-limits#rate-limits */
 #include "discord.h"
 #include "discord-internal.h"
 
-#include "orka-utils.h"
+#include "cee-utils.h"
 
 
 static struct discord_bucket*
@@ -70,7 +70,7 @@ discord_bucket_try_cooldown(struct discord_bucket *bucket)
     return; /* EARLY RETURN */
   }
 
-  u64_unix_ms_t curr_tstamp = orka_timestamp_ms();
+  u64_unix_ms_t curr_tstamp = cee_timestamp_ms();
   int64_t delay_ms = (int64_t)(bucket->reset_tstamp - curr_tstamp);
   if (delay_ms <= 0) { //no delay needed
     log_debug("[%s] Skipping cooldown because current timestamp"
@@ -88,7 +88,7 @@ discord_bucket_try_cooldown(struct discord_bucket *bucket)
 
   log_trace("[%s] RATELIMITING (wait %"PRId64" ms)", bucket->hash, delay_ms);
 
-  orka_sleep_ms(delay_ms); //sleep for delay amount (if any)
+  cee_sleep_ms(delay_ms); //sleep for delay amount (if any)
 
   pthread_mutex_unlock(&bucket->lock);
 }

@@ -138,7 +138,7 @@ void discord_user_from_json(char *json, size_t len, struct discord_user *p)
   /* specs/discord/user.json:45:24
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"} }'
   */
-                orka_strtoull, &p->id,
+                cee_strtoull, &p->id,
   /* specs/discord/user.json:46:24
      '{ "name": "username", "type":{ "base":"char", "dec":"[MAX_USERNAME_LEN]"}}'
   */
@@ -324,7 +324,7 @@ size_t discord_user_to_json(char *json, size_t len, struct discord_user *p)
   /* specs/discord/user.json:45:24
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"} }'
   */
-                orka_ulltostr, &p->id,
+                cee_ulltostr, &p->id,
   /* specs/discord/user.json:46:24
      '{ "name": "username", "type":{ "base":"char", "dec":"[MAX_USERNAME_LEN]"}}'
   */

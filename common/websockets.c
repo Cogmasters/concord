@@ -6,7 +6,7 @@
 #include "curl-websocket.h"
 
 #include "websockets.h"
-#include "orka-utils.h"
+#include "cee-utils.h"
 
 
 #define CURLE_CHECK(ws, ecode)                             \
@@ -493,7 +493,7 @@ ws_perform(struct websockets *ws, bool *p_is_running, uint64_t wait_ms)
    * @see ws_timestamp()
    */
   pthread_mutex_lock(&ws->lock);
-  ws->now_tstamp = orka_timestamp_ms();
+  ws->now_tstamp = cee_timestamp_ms();
   pthread_mutex_unlock(&ws->lock);
 
   /**
@@ -520,7 +520,7 @@ ws_perform(struct websockets *ws, bool *p_is_running, uint64_t wait_ms)
       if (numfds) {
         log_debug("curl_multi_wait returns %d pending file descriptors.",
                   numfds);
-        orka_sleep_ms(5);
+        cee_sleep_ms(5);
       }
       _ws_close(ws);
       ws->user_cmd = WS_USER_CMD_NONE;

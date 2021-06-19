@@ -10,7 +10,7 @@
 //#include <curl/curl.h> /* implicit */
 
 #include "user-agent.h"
-#include "orka-utils.h"
+#include "cee-utils.h"
 
 
 #define CURLE_CHECK(conn, ecode)                           \
@@ -568,7 +568,7 @@ send_request(struct user_agent *ua, struct _ua_conn *conn)
   pthread_mutex_lock(&ua->lock);
   
   // enforces global ratelimiting with ua_block_ms();
-  orka_sleep_ms(ua->blockuntil_tstamp - orka_timestamp_ms());
+  cee_sleep_ms(ua->blockuntil_tstamp - cee_timestamp_ms());
   CURLcode ecode;
   
   ecode = curl_easy_perform(conn->ehandle);
@@ -581,7 +581,7 @@ send_request(struct user_agent *ua, struct _ua_conn *conn)
 #else
   CURLE_CHECK(conn, ecode);
 #endif
-  conn->info.req_tstamp = orka_timestamp_ms();
+  conn->info.req_tstamp = cee_timestamp_ms();
 
   //get response's code
   int httpcode=0;
@@ -715,7 +715,7 @@ void
 ua_block_ms(struct user_agent *ua, const uint64_t wait_ms) 
 {
   pthread_mutex_lock(&ua->lock);
-  ua->blockuntil_tstamp = orka_timestamp_ms() + wait_ms;
+  ua->blockuntil_tstamp = cee_timestamp_ms() + wait_ms;
   pthread_mutex_unlock(&ua->lock);
 }
 

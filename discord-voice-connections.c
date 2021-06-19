@@ -6,7 +6,7 @@
 #include "discord.h"
 #include "discord-internal.h"
 #include "discord-voice-connections.h"
-#include "orka-utils.h"
+#include "cee-utils.h"
 
 static pthread_mutex_t client_lock = PTHREAD_MUTEX_INITIALIZER;
 
@@ -79,7 +79,7 @@ send_identify(struct discord_voice *vc)
 static void
 on_hello(struct discord_voice *vc)
 {
-  vc->hbeat.tstamp = orka_timestamp_ms();
+  vc->hbeat.tstamp = cee_timestamp_ms();
 
   float hbeat_interval = 0.0;
   json_extract(vc->payload.event_data.start, vc->payload.event_data.size,
@@ -200,7 +200,7 @@ static void
 on_heartbeat_ack(struct discord_voice *vc)
 {
   // get request / response interval in milliseconds
-  vc->ping_ms = orka_timestamp_ms() - vc->hbeat.tstamp;
+  vc->ping_ms = cee_timestamp_ms() - vc->hbeat.tstamp;
   log_trace("PING: %d ms", vc->ping_ms);
 }
 

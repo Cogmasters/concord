@@ -4,7 +4,7 @@
 
 #include "discord.h"
 #include "discord-internal.h"
-#include "orka-utils.h"
+#include "cee-utils.h"
 
 
 ORCAcode
@@ -237,7 +237,7 @@ discord_create_message(
         log_error("Missing 'content'");
         return ORCA_BAD_PARAMETER;
       }
-      if (!orka_str_bounds_check(params->content, MAX_MESSAGE_LEN)) {
+      if (!cee_str_bounds_check(params->content, MAX_MESSAGE_LEN)) {
         log_error("Content length exceeds %d characters threshold (%zu)",
             MAX_MESSAGE_LEN, strlen(params->content));
         return ORCA_BAD_PARAMETER;
@@ -514,7 +514,7 @@ discord_get_reactions(
       ret = query_inject(query, sizeof(query),
               "(after):F"
               "(limit):d",
-              &orka_ulltostr, &params->after,
+              &cee_ulltostr, &params->after,
               &params->limit);
     }
     else {
@@ -718,7 +718,7 @@ discord_bulk_delete_messages(struct discord *client, u64_snowflake_t channel_id,
     return ORCA_BAD_PARAMETER;
   }
 
-  u64_unix_ms_t now = orka_timestamp_ms();
+  u64_unix_ms_t now = cee_timestamp_ms();
   for(size_t i = 0; messages[i]; i++) {
     u64_unix_ms_t timestamp = (*messages[i] >> 22) + 1420070400000;
     if(now > timestamp && now - timestamp > 1209600000) {

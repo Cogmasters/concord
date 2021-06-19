@@ -26,8 +26,8 @@ logconf.h
 log.h
 ntl.c
 ntl.h
-orka-utils.c
-orka-utils.h
+cee-utils.c
+cee-utils.h
 utarray.h
 url-encode.h
 hmac.h

@@ -8,7 +8,7 @@
 #include "discord-internal.h" /* access struct logconf from struct discord */
 
 #include "user-agent.h"
-#include "orka-utils.h"
+#include "cee-utils.h"
 #include "json-actor.h"
 
 #define ELITEBGS_API_URL "https://elitebgs.app/api/ebgs/v5"
@@ -46,7 +46,7 @@ void ticks_from_json(char *str, size_t len, void *p_tick_ms)
   if (!ticks) return;
 
   json_extract(ticks[0]->start, ticks[0]->size, \
-      "(time):F", &orka_iso8601_to_unix_ms, tick_ms);
+      "(time):F", &cee_iso8601_to_unix_ms, tick_ms);
 
   free(ticks);
 }
@@ -267,7 +267,7 @@ void on_command(
 
   /* Set embed fields */
   strncpy(new_embed->title, msg->content, sizeof(new_embed->title));
-  new_embed->timestamp = orka_timestamp_ms();
+  new_embed->timestamp = cee_timestamp_ms();
   new_embed->color = 15844367; //gold
   discord_embed_set_footer(new_embed, 
       "designed & built by https://cee.dev",
@@ -278,7 +278,7 @@ void on_command(
               "(system):s"
               "(timeMax):F", 
               msg->content,
-              &orka_ulltostr, &tick_ms);
+              &cee_ulltostr, &tick_ms);
   ASSERT_S(ret < sizeof(query), "Out of bounds write attempt");
 
   discord_trigger_typing_indicator(client, msg->channel_id);

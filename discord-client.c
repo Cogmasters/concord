@@ -5,7 +5,7 @@
 
 #include "discord.h"
 #include "discord-internal.h"
-#include "orka-utils.h"
+#include "cee-utils.h"
 
 
 static void
@@ -32,7 +32,7 @@ discord_init(const char token[])
   logconf_setup(&new_client->config, NULL);
   new_client->token = (struct sized_buffer){
     .start = (char*)token,
-    .size = orka_str_bounds_check(token, 128) // avoid overflow
+    .size = cee_str_bounds_check(token, 128) // avoid overflow
   };
 
   _discord_init(new_client);
@@ -115,7 +115,7 @@ discord_set_prefix(struct discord *client, char *prefix)
 
   const size_t PREFIX_LEN = sizeof(client->gw.prefix);
   ssize_t len;
-  if (!(len = orka_str_bounds_check(prefix, PREFIX_LEN))) {
+  if (!(len = cee_str_bounds_check(prefix, PREFIX_LEN))) {
     log_error("Prefix length greater than threshold (%zu chars)", PREFIX_LEN);
     return;
   }
@@ -135,26 +135,24 @@ discord_set_on_command(struct discord *client, char *command, message_cb *callba
    */
   if (client->gw.prefix.size && IS_EMPTY_STRING(command)) 
   {
-    client->gw.on_default_cmd = (struct cmd_cbs){ .cb = callback };
+    client->gw.on_default_cmd.cb = callback;
     return; /* EARLY RETURN */
   }
 
   const size_t CMD_LEN = 64;
   ssize_t len;
-  if (!(len = orka_str_bounds_check(command, CMD_LEN))) 
+  if (!(len = cee_str_bounds_check(command, CMD_LEN))) 
   {
     log_error("Command length greater than threshold (%zu chars)", CMD_LEN);
     return;
   }
 
   ++client->gw.num_cmd;
-  client->gw.on_cmd = realloc(client->gw.on_cmd, client->gw.num_cmd * sizeof(struct cmd_cbs));
+  client->gw.on_cmd = realloc(client->gw.on_cmd, client->gw.num_cmd * sizeof *client->gw.on_cmd);
 
-  client->gw.on_cmd[client->gw.num_cmd-1] = (struct cmd_cbs){
-    .start = command,
-    .size = (size_t)len,
-    .cb = callback
-  };
+  client->gw.on_cmd[client->gw.num_cmd-1].start = command;
+  client->gw.on_cmd[client->gw.num_cmd-1].size = (size_t)len;
+  client->gw.on_cmd[client->gw.num_cmd-1].cb = callback;
 
   discord_add_intents(client, DISCORD_GATEWAY_GUILD_MESSAGES | DISCORD_GATEWAY_DIRECT_MESSAGES);
 }

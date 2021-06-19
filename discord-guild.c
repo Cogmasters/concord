@@ -4,7 +4,7 @@
 
 #include "discord.h"
 #include "discord-internal.h"
-#include "orka-utils.h"
+#include "cee-utils.h"
 
 
 ORCAcode
@@ -634,7 +634,7 @@ discord_create_guild_ban(
   void *A[2]={0}; // pointer availability array.
   A[0] = (void *)&delete_message_days;
   if (!IS_EMPTY_STRING(reason)) {
-    if (!orka_str_bounds_check(reason, MAX_REASON_LEN)) {
+    if (!cee_str_bounds_check(reason, MAX_REASON_LEN)) {
       log_error("Reason length exceeds %d characters threshold (%zu)",
           MAX_REASON_LEN, strlen(reason));
       return ORCA_BAD_PARAMETER;
@@ -680,7 +680,7 @@ discord_remove_guild_ban(
   char payload[MAX_PAYLOAD_LEN]="";
   size_t ret=0;
   if(!IS_EMPTY_STRING(reason)) {
-    if (!orka_str_bounds_check(reason, MAX_REASON_LEN)) {
+    if (!cee_str_bounds_check(reason, MAX_REASON_LEN)) {
       log_error("Reason length exceeds %d characters threshold (%zu)",
           MAX_REASON_LEN, strlen(reason));
       return ORCA_BAD_PARAMETER;

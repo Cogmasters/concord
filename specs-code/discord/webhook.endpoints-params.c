@@ -200,7 +200,7 @@ void discord_modify_webhook_params_from_json(char *json, size_t len, struct disc
   /* specs/discord/webhook.endpoints-params.json:26:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"the new channel id this webhook should be moved to" }'
   */
-                orka_strtoull, &p->channel_id,
+                cee_strtoull, &p->channel_id,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
                 p->__M.record_null, sizeof(p->__M.record_null));
@@ -257,7 +257,7 @@ size_t discord_modify_webhook_params_to_json(char *json, size_t len, struct disc
   /* specs/discord/webhook.endpoints-params.json:26:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"the new channel id this webhook should be moved to" }'
   */
-                orka_ulltostr, &p->channel_id,
+                cee_ulltostr, &p->channel_id,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
 }

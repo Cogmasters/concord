@@ -6,7 +6,7 @@
 #include <assert.h>
 
 #include "discord.h"
-#include "orka-utils.h"
+#include "cee-utils.h"
 #include "json-actor.h"
 
 
@@ -64,7 +64,7 @@ void
 parse_session_config()
 {
   size_t len;
-  char *json_payload = orka_load_whole_file("bot-quiz.json", &len);
+  char *json_payload = cee_load_whole_file("bot-quiz.json", &len);
   NTL_T(struct sized_buffer) t_questions = NULL;
 
   json_extract(json_payload, len,

@@ -75,7 +75,7 @@ void discord_guild_template_from_json(char *json, size_t len, struct discord_gui
   /* specs/discord/guild-template.json:16:20
      '{ "name": "creator_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
-                orka_strtoull, &p->creator_id,
+                cee_strtoull, &p->creator_id,
   /* specs/discord/guild-template.json:17:20
      '{ "name": "creator", "type":{ "base":"struct discord_user", "dec":"*" }}'
   */
@@ -83,15 +83,15 @@ void discord_guild_template_from_json(char *json, size_t len, struct discord_gui
   /* specs/discord/guild-template.json:18:20
      '{ "name": "created_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}'
   */
-                orka_iso8601_to_unix_ms, &p->created_at,
+                cee_iso8601_to_unix_ms, &p->created_at,
   /* specs/discord/guild-template.json:19:20
      '{ "name": "updated_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}'
   */
-                orka_iso8601_to_unix_ms, &p->updated_at,
+                cee_iso8601_to_unix_ms, &p->updated_at,
   /* specs/discord/guild-template.json:20:20
      '{ "name": "source_guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
-                orka_strtoull, &p->source_guild_id,
+                cee_strtoull, &p->source_guild_id,
   /* specs/discord/guild-template.json:21:20
      '{ "name": "serialized_source_guild", "type":{ "base":"struct discord_guild", "dec":"*" }}'
   */
@@ -235,7 +235,7 @@ size_t discord_guild_template_to_json(char *json, size_t len, struct discord_gui
   /* specs/discord/guild-template.json:16:20
      '{ "name": "creator_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
-                orka_ulltostr, &p->creator_id,
+                cee_ulltostr, &p->creator_id,
   /* specs/discord/guild-template.json:17:20
      '{ "name": "creator", "type":{ "base":"struct discord_user", "dec":"*" }}'
   */
@@ -243,15 +243,15 @@ size_t discord_guild_template_to_json(char *json, size_t len, struct discord_gui
   /* specs/discord/guild-template.json:18:20
      '{ "name": "created_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}'
   */
-                orka_unix_ms_to_iso8601, &p->created_at,
+                cee_unix_ms_to_iso8601, &p->created_at,
   /* specs/discord/guild-template.json:19:20
      '{ "name": "updated_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}'
   */
-                orka_unix_ms_to_iso8601, &p->updated_at,
+                cee_unix_ms_to_iso8601, &p->updated_at,
   /* specs/discord/guild-template.json:20:20
      '{ "name": "source_guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
-                orka_ulltostr, &p->source_guild_id,
+                cee_ulltostr, &p->source_guild_id,
   /* specs/discord/guild-template.json:21:20
      '{ "name": "serialized_source_guild", "type":{ "base":"struct discord_guild", "dec":"*" }}'
   */

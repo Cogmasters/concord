@@ -647,7 +647,7 @@ void discord_gateway_status_update_from_json(char *json, size_t len, struct disc
      '{ "name":"since","type":{"base":"char", "dec":"*", "converter":"iso8601"},
           "option":true, "inject_if_not":0 }'
   */
-                orka_iso8601_to_unix_ms, &p->since,
+                cee_iso8601_to_unix_ms, &p->since,
   /* specs/discord/gateway.json:137:19
      '{ "name":"activities","type":{"base":"struct discord_gateway_activity", "dec":"ntl"}, 
           "option":true, "inject_if_not":null}'
@@ -724,7 +724,7 @@ size_t discord_gateway_status_update_to_json(char *json, size_t len, struct disc
      '{ "name":"since","type":{"base":"char", "dec":"*", "converter":"iso8601"},
           "option":true, "inject_if_not":0 }'
   */
-                orka_unix_ms_to_iso8601, &p->since,
+                cee_unix_ms_to_iso8601, &p->since,
   /* specs/discord/gateway.json:137:19
      '{ "name":"activities","type":{"base":"struct discord_gateway_activity", "dec":"ntl"}, 
           "option":true, "inject_if_not":null}'
@@ -1111,12 +1111,12 @@ void discord_gateway_activity_from_json(char *json, size_t len, struct discord_g
      '{ "name":"created_at","type":{"base":"char", "dec":"*", "converter":"iso8601"},
           "option":true, "inject_if_not":0 }'
   */
-                orka_iso8601_to_unix_ms, &p->created_at,
+                cee_iso8601_to_unix_ms, &p->created_at,
   /* specs/discord/gateway.json:167:19
      '{ "name":"application_id","type":{"base":"char", "dec":"*", "converter":"snowflake" },
           "option":true, "inject_if_not":0 }'
   */
-                orka_strtoull, &p->application_id,
+                cee_strtoull, &p->application_id,
   /* specs/discord/gateway.json:169:19
      '{ "name":"details","type":{"base":"char", "dec":"*"},
           "option":true, "inject_if_not":null}'
@@ -1256,12 +1256,12 @@ size_t discord_gateway_activity_to_json(char *json, size_t len, struct discord_g
      '{ "name":"created_at","type":{"base":"char", "dec":"*", "converter":"iso8601"},
           "option":true, "inject_if_not":0 }'
   */
-                orka_unix_ms_to_iso8601, &p->created_at,
+                cee_unix_ms_to_iso8601, &p->created_at,
   /* specs/discord/gateway.json:167:19
      '{ "name":"application_id","type":{"base":"char", "dec":"*", "converter":"snowflake" },
           "option":true, "inject_if_not":0 }'
   */
-                orka_ulltostr, &p->application_id,
+                cee_ulltostr, &p->application_id,
   /* specs/discord/gateway.json:169:19
      '{ "name":"details","type":{"base":"char", "dec":"*"},
           "option":true, "inject_if_not":null}'

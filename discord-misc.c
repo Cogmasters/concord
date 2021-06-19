@@ -5,7 +5,7 @@
 
 #include "discord.h"
 #include "discord-internal.h"
-#include "orka-utils.h"
+#include "cee-utils.h"
 
 struct msg {
   u64_snowflake_t id;
@@ -37,7 +37,7 @@ discord_delete_messages_by_author_id(
     return code;
   }
 
-  u64_unix_ms_t now = orka_timestamp_ms();
+  u64_unix_ms_t now = cee_timestamp_ms();
 
   NTL_T(u64_snowflake_t) list = NULL;
   int count=0;
@@ -107,14 +107,14 @@ discord_message_from_json(char *json, size_t len, struct discord_message *p)
                 "@arg_switches:b"
                 "@record_defined"
                 "@record_null",
-                orka_strtoull, &p->id,
-                orka_strtoull, &p->channel_id,
-                orka_strtoull, &p->guild_id,
+                cee_strtoull, &p->id,
+                cee_strtoull, &p->channel_id,
+                cee_strtoull, &p->guild_id,
                 discord_user_from_json, p->author,
                 discord_guild_member_from_json, p->member,
                 &p->content,
-                orka_iso8601_to_unix_ms, &p->timestamp,
-                orka_iso8601_to_unix_ms, &p->edited_timestamp,
+                cee_iso8601_to_unix_ms, &p->timestamp,
+                cee_iso8601_to_unix_ms, &p->edited_timestamp,
                 &p->tts,
                 &p->mention_everyone,
                 discord_user_list_from_json, &p->mentions,
@@ -125,7 +125,7 @@ discord_message_from_json(char *json, size_t len, struct discord_message *p)
                 discord_channel_reaction_list_from_json, &p->reactions,
                 &p->nonce,
                 &p->pinned,
-                orka_strtoull, &p->webhook_id,
+                cee_strtoull, &p->webhook_id,
                 &p->type,
                 discord_message_activity_from_json, p->activity,
                 discord_message_application_list_from_json, &p->application,
@@ -159,7 +159,7 @@ void discord_channel_overwrite_from_json(char *json, size_t len, struct discord_
                  "@arg_switches:b"
                  "@record_defined"
                  "@record_null",
-                 orka_strtoull, &p->id,
+                 cee_strtoull, &p->id,
                  //&p->type,
                  &p->allow,
                  &p->deny,
@@ -180,7 +180,7 @@ discord_channel_overwrite_to_json(char *json, size_t len, struct discord_channel
                 "(allow):s_as_u64,"
                 "(deny):s_as_u64,"
                 "@arg_switches:b",
-                orka_ulltostr, &p->id,
+                cee_ulltostr, &p->id,
                 &p->type,
                 &p->allow,
                 &p->deny,
@@ -350,7 +350,7 @@ discord_embed_add_field(struct discord_embed *embed, char name[], char value[], 
   field->Inline = Inline;
 
   size_t ret;
-  if (!(ret = orka_str_bounds_check(name, sizeof(field->name)))) {
+  if (!(ret = cee_str_bounds_check(name, sizeof(field->name)))) {
     log_warn("'name' exceeds %d characters, truncation will occur", sizeof(field->name));
     snprintf(field->name, sizeof(field->name), "%.*s(...)", \
         (int)(sizeof(field->name)-6), name);
@@ -359,7 +359,7 @@ discord_embed_add_field(struct discord_embed *embed, char name[], char value[], 
     snprintf(field->name, sizeof(field->name), "%s", name);
   }
 
-  if (!(ret = orka_str_bounds_check(value, sizeof(field->value)))) {
+  if (!(ret = cee_str_bounds_check(value, sizeof(field->value)))) {
     log_warn("'value' exceeds %d characters, truncation will occur", sizeof(field->value));
     snprintf(field->value, sizeof(field->value), "%.*s(...)", \
         (int)(sizeof(field->value)-6), value);

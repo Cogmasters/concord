@@ -4,7 +4,7 @@
 #include <assert.h>
 
 #include "discord.h"
-#include "orka-utils.h" /* orka_load_whole_file() */
+#include "cee-utils.h" /* cee_load_whole_file() */
 
 #define JSON_FILE "bot-presence.json"
 
@@ -18,7 +18,7 @@ load_presence_from_json(struct discord *client, char filename[])
 {
   /* get contents of file to string */
   size_t len;
-  char *json_payload = orka_load_whole_file(filename, &len);
+  char *json_payload = cee_load_whole_file(filename, &len);
 
   struct discord_gateway_status_update *presence = discord_gateway_status_update_alloc();
   discord_gateway_status_update_from_json(json_payload, len, presence);

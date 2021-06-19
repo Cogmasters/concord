@@ -8,7 +8,7 @@
 
 #include "json-actor.h"
 #include "ntl.h"
-#include "orka-utils.h"
+#include "cee-utils.h"
 
 /*
  *
@@ -126,8 +126,8 @@ static void init_converters () {
   converters[0]->input_type = "char*";
   converters[0]->output_type = "u64_unix_ms_t";
   converters[0]->free = NULL;
-  converters[0]->extractor = "orka_iso8601_to_unix_ms";
-  converters[0]->injector = "orka_unix_ms_to_iso8601";
+  converters[0]->extractor = "cee_iso8601_to_unix_ms";
+  converters[0]->injector = "cee_unix_ms_to_iso8601";
   converters[0]->extractor_addrof = "&";
   converters[0]->injector_addrof = "&";
   converters[0]->converted_builtin_type = "uint64_t";
@@ -136,8 +136,8 @@ static void init_converters () {
   converters[1]->input_type = "char*";
   converters[1]->output_type = "u64_snowflake_t";
   converters[1]->free = NULL;
-  converters[1]->extractor = "orka_strtoull";
-  converters[1]->injector = "orka_ulltostr";
+  converters[1]->extractor = "cee_strtoull";
+  converters[1]->injector = "cee_ulltostr";
   converters[1]->extractor_addrof = "&";
   converters[1]->injector_addrof = "&";
   converters[1]->converted_builtin_type = "uint64_t";
@@ -151,7 +151,7 @@ static void init_converters () {
 static void load_converters(char *filename)
 {
   size_t len = 0;
-  char * data = orka_load_whole_file(filename, &len);
+  char * data = cee_load_whole_file(filename, &len);
   converter_file = strdup(filename);
 
   struct ntl_deserializer d = {
@@ -161,7 +161,7 @@ static void load_converters(char *filename)
     .elem_from_buf = (vcpsvp)load_converter
   };
   extract_ntl_from_json(data, len, &d);
-  //orka_str_to_ntl(data, len, &d);
+  //cee_str_to_ntl(data, len, &d);
 }
 
 static struct converter* get_converter(char *name) {
@@ -607,7 +607,7 @@ namespace_from_json(char *json, size_t size, NTL_T(name_t) *ns_p)
     .ntl_recipient_p = (ntl_t *)ns_p
   };
 
-  //return orka_str_to_ntl(json, size, &d0);
+  //return cee_str_to_ntl(json, size, &d0);
   return extract_ntl_from_json(json, size, &d0);
 }
 

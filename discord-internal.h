@@ -19,7 +19,7 @@
 #include "logconf.h" /* struct logconf */
 #include "user-agent.h"
 #include "websockets.h"
-#include "orka-utils.h"
+#include "cee-utils.h"
 #include "discord-voice-connections.h"
 
 /**
@@ -138,6 +138,12 @@ struct discord_bucket* discord_bucket_try_get(struct discord_adapter *adapter, c
  */
 void discord_bucket_build(struct discord_adapter *adapter, struct discord_bucket *bucket, const char route[], struct ua_info *info);
 
+struct discord_gateway_cmd_cbs {
+  char *start;
+  size_t size;
+  message_cb *cb;
+};
+
 /**
  * @brief The handle used for establishing a Discord Gateway connection
  *        via WebSockets
@@ -177,11 +183,7 @@ struct discord_gateway {
   struct discord_session session; /**< on-going Discord Gateway session */
 
   struct sized_buffer prefix; /**< the prefix expected before every command @see discord_set_prefix() */
-  struct { /**< user's command/callback pair and amount of callback pairs @see discord_set_on_command() */
-    char *start,
-    size_t size;
-    message_cb *cb;
-  } on_default_cmd, *on_cmd;
+  struct discord_gateway_cmd_cbs on_default_cmd, *on_cmd; /**< user's command/callback pair and amount of callback pairs @see discord_set_on_command() */
   size_t num_cmd; 
 
   struct { /* CALLBACKS STRUCTURE */

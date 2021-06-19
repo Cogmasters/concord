@@ -25,19 +25,19 @@ reddit_init(
   *new_client = (struct reddit){
     .username = {
       .start = (char*)username,
-      .size = orka_str_bounds_check(username, 128)
+      .size = cee_str_bounds_check(username, 128)
     },
     .password = {
       .start = (char*)password,
-      .size = orka_str_bounds_check(password, 128)
+      .size = cee_str_bounds_check(password, 128)
     },
     .client_id = {
       .start = (char*)client_id,
-      .size = orka_str_bounds_check(client_id, 128)
+      .size = cee_str_bounds_check(client_id, 128)
     },
     .client_secret = {
       .start = (char*)client_secret,
-      .size = orka_str_bounds_check(client_secret, 128)
+      .size = cee_str_bounds_check(client_secret, 128)
     }
   };
 

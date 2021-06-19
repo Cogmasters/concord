@@ -412,7 +412,7 @@ void discord_invite_metadata_from_json(char *json, size_t len, struct discord_in
   /* specs/discord/invite.json:43:20
      '{ "name": "created_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601"}}'
   */
-                orka_iso8601_to_unix_ms, &p->created_at,
+                cee_iso8601_to_unix_ms, &p->created_at,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
                 p->__M.record_null, sizeof(p->__M.record_null));
@@ -494,7 +494,7 @@ size_t discord_invite_metadata_to_json(char *json, size_t len, struct discord_in
   /* specs/discord/invite.json:43:20
      '{ "name": "created_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601"}}'
   */
-                orka_unix_ms_to_iso8601, &p->created_at,
+                cee_unix_ms_to_iso8601, &p->created_at,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
 }

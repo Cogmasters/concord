@@ -160,7 +160,7 @@ void discord_permissions_role_from_json(char *json, size_t len, struct discord_p
   /* specs/discord/permissions.json:52:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
-                orka_strtoull, &p->id,
+                cee_strtoull, &p->id,
   /* specs/discord/permissions.json:53:20
      '{ "name": "name", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]" }}'
   */
@@ -294,7 +294,7 @@ size_t discord_permissions_role_to_json(char *json, size_t len, struct discord_p
   /* specs/discord/permissions.json:52:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
-                orka_ulltostr, &p->id,
+                cee_ulltostr, &p->id,
   /* specs/discord/permissions.json:53:20
      '{ "name": "name", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]" }}'
   */
@@ -504,11 +504,11 @@ void discord_permissions_role_tags_from_json(char *json, size_t len, struct disc
   /* specs/discord/permissions.json:70:20
      '{ "name": "bot_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
-                orka_strtoull, &p->bot_id,
+                cee_strtoull, &p->bot_id,
   /* specs/discord/permissions.json:71:20
      '{ "name": "integration_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
-                orka_strtoull, &p->integration_id,
+                cee_strtoull, &p->integration_id,
   /* specs/discord/permissions.json:72:20
      '{ "name": "premium_subscriber", "type":{ "base":"int" }}'
   */
@@ -560,11 +560,11 @@ size_t discord_permissions_role_tags_to_json(char *json, size_t len, struct disc
   /* specs/discord/permissions.json:70:20
      '{ "name": "bot_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
-                orka_ulltostr, &p->bot_id,
+                cee_ulltostr, &p->bot_id,
   /* specs/discord/permissions.json:71:20
      '{ "name": "integration_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
-                orka_ulltostr, &p->integration_id,
+                cee_ulltostr, &p->integration_id,
   /* specs/discord/permissions.json:72:20
      '{ "name": "premium_subscriber", "type":{ "base":"int" }}'
   */

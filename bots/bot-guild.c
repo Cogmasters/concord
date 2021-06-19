@@ -5,7 +5,7 @@
 #include <assert.h>
 
 #include "discord.h"
-#include "orka-utils.h" // for orka_timestamp_ms()
+#include "cee-utils.h" // for cee_timestamp_ms()
 
 
 void on_ready(struct discord *client, const struct discord_user *bot) {

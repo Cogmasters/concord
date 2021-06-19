@@ -390,11 +390,11 @@ void discord_audit_log_entry_from_json(char *json, size_t len, struct discord_au
   /* specs/discord/audit_log.json:70:18
      '{"name":"user_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
   */
-                orka_strtoull, &p->user_id,
+                cee_strtoull, &p->user_id,
   /* specs/discord/audit_log.json:71:18
      '{"name":"id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
   */
-                orka_strtoull, &p->id,
+                cee_strtoull, &p->id,
   /* specs/discord/audit_log.json:72:18
      '{"name":"action_type", "type": {"base":"int", "c_base":"enum discord_audit_log_events"}}'
   */
@@ -498,11 +498,11 @@ size_t discord_audit_log_entry_to_json(char *json, size_t len, struct discord_au
   /* specs/discord/audit_log.json:70:18
      '{"name":"user_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
   */
-                orka_ulltostr, &p->user_id,
+                cee_ulltostr, &p->user_id,
   /* specs/discord/audit_log.json:71:18
      '{"name":"id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
   */
-                orka_ulltostr, &p->id,
+                cee_ulltostr, &p->id,
   /* specs/discord/audit_log.json:72:18
      '{"name":"action_type", "type": {"base":"int", "c_base":"enum discord_audit_log_events"}}'
   */
@@ -704,11 +704,11 @@ void discord_audit_log_entry_optional_info_from_json(char *json, size_t len, str
   /* specs/discord/audit_log.json:86:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" } }'
   */
-                orka_strtoull, &p->channel_id,
+                cee_strtoull, &p->channel_id,
   /* specs/discord/audit_log.json:87:20
      '{ "name": "message_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" } }'
   */
-                orka_strtoull, &p->message_id,
+                cee_strtoull, &p->message_id,
   /* specs/discord/audit_log.json:88:20
      '{ "name": "count", "type":{ "base":"char", "dec":"*" }, "comment":"@todo find fixed size limit"}'
   */
@@ -716,7 +716,7 @@ void discord_audit_log_entry_optional_info_from_json(char *json, size_t len, str
   /* specs/discord/audit_log.json:89:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
-                orka_strtoull, &p->id,
+                cee_strtoull, &p->id,
   /* specs/discord/audit_log.json:90:20
      '{ "name": "type", "type":{ "base":"char", "dec":"*" }, "comment":"@todo find fixed size limit"}'
   */
@@ -825,11 +825,11 @@ size_t discord_audit_log_entry_optional_info_to_json(char *json, size_t len, str
   /* specs/discord/audit_log.json:86:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" } }'
   */
-                orka_ulltostr, &p->channel_id,
+                cee_ulltostr, &p->channel_id,
   /* specs/discord/audit_log.json:87:20
      '{ "name": "message_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" } }'
   */
-                orka_ulltostr, &p->message_id,
+                cee_ulltostr, &p->message_id,
   /* specs/discord/audit_log.json:88:20
      '{ "name": "count", "type":{ "base":"char", "dec":"*" }, "comment":"@todo find fixed size limit"}'
   */
@@ -837,7 +837,7 @@ size_t discord_audit_log_entry_optional_info_to_json(char *json, size_t len, str
   /* specs/discord/audit_log.json:89:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
   */
-                orka_ulltostr, &p->id,
+                cee_ulltostr, &p->id,
   /* specs/discord/audit_log.json:90:20
      '{ "name": "type", "type":{ "base":"char", "dec":"*" }, "comment":"@todo find fixed size limit"}'
   */
@@ -1438,11 +1438,11 @@ void discord_audit_log_change_key_from_json(char *json, size_t len, struct disco
   /* specs/discord/audit_log.json:120:18
      '{"name":"banner_hash", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
   */
-                orka_strtoull, &p->banner_hash,
+                cee_strtoull, &p->banner_hash,
   /* specs/discord/audit_log.json:121:18
      '{"name":"owner_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
   */
-                orka_strtoull, &p->owner_id,
+                cee_strtoull, &p->owner_id,
   /* specs/discord/audit_log.json:122:18
      '{"name":"region", "type": {"base":"char", "dec":"[MAX_REGION_LEN]"}}'
   */
@@ -1454,7 +1454,7 @@ void discord_audit_log_change_key_from_json(char *json, size_t len, struct disco
   /* specs/discord/audit_log.json:124:18
      '{"name":"afk_channel_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
   */
-                orka_strtoull, &p->afk_channel_id,
+                cee_strtoull, &p->afk_channel_id,
   /* specs/discord/audit_log.json:125:18
      '{"name":"afk_timeout", "type": {"base":"int"}}'
   */
@@ -1462,11 +1462,11 @@ void discord_audit_log_change_key_from_json(char *json, size_t len, struct disco
   /* specs/discord/audit_log.json:126:18
      '{"name":"rules_channel_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
   */
-                orka_strtoull, &p->rules_channel_id,
+                cee_strtoull, &p->rules_channel_id,
   /* specs/discord/audit_log.json:127:18
      '{"name":"public_updates_channel_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
   */
-                orka_strtoull, &p->public_updates_channel_id,
+                cee_strtoull, &p->public_updates_channel_id,
   /* specs/discord/audit_log.json:128:18
      '{"name":"mfa_level", "type": {"base":"int"}}'
   */
@@ -1506,11 +1506,11 @@ void discord_audit_log_change_key_from_json(char *json, size_t len, struct disco
   /* specs/discord/audit_log.json:139:18
      '{"name":"widget_channel_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
   */
-                orka_strtoull, &p->widget_channel_id,
+                cee_strtoull, &p->widget_channel_id,
   /* specs/discord/audit_log.json:140:18
      '{"name":"system_channel_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
   */
-                orka_strtoull, &p->system_channel_id,
+                cee_strtoull, &p->system_channel_id,
   /* specs/discord/audit_log.json:141:18
      '{"name":"position", "type": {"base":"int"}}'
   */
@@ -1534,7 +1534,7 @@ void discord_audit_log_change_key_from_json(char *json, size_t len, struct disco
   /* specs/discord/audit_log.json:147:18
      '{"name":"application_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
   */
-                orka_strtoull, &p->application_id,
+                cee_strtoull, &p->application_id,
   /* specs/discord/audit_log.json:148:18
      '{"name":"rate_limit_per_user", "type": {"base":"int"}}'
   */
@@ -1610,7 +1610,7 @@ void discord_audit_log_change_key_from_json(char *json, size_t len, struct disco
   /* specs/discord/audit_log.json:166:18
      '{"name":"id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
   */
-                orka_strtoull, &p->id,
+                cee_strtoull, &p->id,
   /* specs/discord/audit_log.json:167:18
      '{"name":"type", "type": {"base":"char", "dec":"*"}, 
          "todo":true, "comment":"integer or string"}'
@@ -2163,11 +2163,11 @@ size_t discord_audit_log_change_key_to_json(char *json, size_t len, struct disco
   /* specs/discord/audit_log.json:120:18
      '{"name":"banner_hash", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
   */
-                orka_ulltostr, &p->banner_hash,
+                cee_ulltostr, &p->banner_hash,
   /* specs/discord/audit_log.json:121:18
      '{"name":"owner_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
   */
-                orka_ulltostr, &p->owner_id,
+                cee_ulltostr, &p->owner_id,
   /* specs/discord/audit_log.json:122:18
      '{"name":"region", "type": {"base":"char", "dec":"[MAX_REGION_LEN]"}}'
   */
@@ -2179,7 +2179,7 @@ size_t discord_audit_log_change_key_to_json(char *json, size_t len, struct disco
   /* specs/discord/audit_log.json:124:18
      '{"name":"afk_channel_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
   */
-                orka_ulltostr, &p->afk_channel_id,
+                cee_ulltostr, &p->afk_channel_id,
   /* specs/discord/audit_log.json:125:18
      '{"name":"afk_timeout", "type": {"base":"int"}}'
   */
@@ -2187,11 +2187,11 @@ size_t discord_audit_log_change_key_to_json(char *json, size_t len, struct disco
   /* specs/discord/audit_log.json:126:18
      '{"name":"rules_channel_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
   */
-                orka_ulltostr, &p->rules_channel_id,
+                cee_ulltostr, &p->rules_channel_id,
   /* specs/discord/audit_log.json:127:18
      '{"name":"public_updates_channel_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
   */
-                orka_ulltostr, &p->public_updates_channel_id,
+                cee_ulltostr, &p->public_updates_channel_id,
   /* specs/discord/audit_log.json:128:18
      '{"name":"mfa_level", "type": {"base":"int"}}'
   */
@@ -2231,11 +2231,11 @@ size_t discord_audit_log_change_key_to_json(char *json, size_t len, struct disco
   /* specs/discord/audit_log.json:139:18
      '{"name":"widget_channel_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
   */
-                orka_ulltostr, &p->widget_channel_id,
+                cee_ulltostr, &p->widget_channel_id,
   /* specs/discord/audit_log.json:140:18
      '{"name":"system_channel_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
   */
-                orka_ulltostr, &p->system_channel_id,
+                cee_ulltostr, &p->system_channel_id,
   /* specs/discord/audit_log.json:141:18
      '{"name":"position", "type": {"base":"int"}}'
   */
@@ -2259,7 +2259,7 @@ size_t discord_audit_log_change_key_to_json(char *json, size_t len, struct disco
   /* specs/discord/audit_log.json:147:18
      '{"name":"application_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
   */
-                orka_ulltostr, &p->application_id,
+                cee_ulltostr, &p->application_id,
   /* specs/discord/audit_log.json:148:18
      '{"name":"rate_limit_per_user", "type": {"base":"int"}}'
   */
@@ -2335,7 +2335,7 @@ size_t discord_audit_log_change_key_to_json(char *json, size_t len, struct disco
   /* specs/discord/audit_log.json:166:18
      '{"name":"id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
   */
-                orka_ulltostr, &p->id,
+                cee_ulltostr, &p->id,
   /* specs/discord/audit_log.json:167:18
      '{"name":"type", "type": {"base":"char", "dec":"*"}, 
          "todo":true, "comment":"integer or string"}'

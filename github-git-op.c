@@ -4,7 +4,7 @@
 
 #include "github-adapter.h"
 
-#include "orka-utils.h"
+#include "cee-utils.h"
 #include "json-actor.h"
 #include "github.h"
 
@@ -19,7 +19,7 @@ void
 github_config_init(struct github_config *data, char * username, char *file)
 {
   size_t len = 0;
-  char *json = orka_load_whole_file(file, &len);
+  char *json = cee_load_whole_file(file, &len);
   json_extract(json, len, "(owner):?s (repo):?s (default_branch):?s",
                &data->owner, &data->repo, &data->default_branch);
   data->username = username;
@@ -139,7 +139,7 @@ github_git_op_create_blobs(struct github_git_op *d, struct github_git_op_file **
   for (int i = 0; files[i]; i++) {
     fprintf(stderr, "===creating blob for %s===\n", files[i]->path);
     size_t len;
-    char *content = orka_load_whole_file(files[i]->path, &len);
+    char *content = cee_load_whole_file(files[i]->path, &len);
 
     d->body.size = json_ainject(&d->body.start,
                                      "(content) : .*s, (encoding) : |utf-8|",

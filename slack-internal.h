@@ -8,7 +8,7 @@
 #include "logconf.h" /* struct logconf */
 #include "user-agent.h"
 #include "websockets.h"
-#include "orka-utils.h"
+#include "cee-utils.h"
 
 struct slack_adapter {
   struct user_agent *ua;

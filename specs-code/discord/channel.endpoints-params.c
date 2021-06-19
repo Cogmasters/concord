@@ -119,7 +119,7 @@ void discord_modify_channel_params_from_json(char *json, size_t len, struct disc
   /* specs/discord/channel.endpoints-params.json:23:20
      '{ "name": "parent_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }'
   */
-                orka_strtoull, &p->parent_id,
+                cee_strtoull, &p->parent_id,
   /* specs/discord/channel.endpoints-params.json:24:20
      '{ "name": "rtc_region", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null }'
   */
@@ -359,7 +359,7 @@ size_t discord_modify_channel_params_to_json(char *json, size_t len, struct disc
   /* specs/discord/channel.endpoints-params.json:23:20
      '{ "name": "parent_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }'
   */
-                orka_ulltostr, &p->parent_id,
+                cee_ulltostr, &p->parent_id,
   /* specs/discord/channel.endpoints-params.json:24:20
      '{ "name": "rtc_region", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null }'
   */
@@ -611,7 +611,7 @@ void discord_get_reactions_params_from_json(char *json, size_t len, struct disco
   /* specs/discord/channel.endpoints-params.json:38:20
      '{ "name": "after", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "loc":"query"}'
   */
-                orka_strtoull, &p->after,
+                cee_strtoull, &p->after,
   /* specs/discord/channel.endpoints-params.json:39:20
      '{ "name": "limit", "type":{ "base":"int" }, "loc":"query"}'
   */
@@ -654,7 +654,7 @@ size_t discord_get_reactions_params_to_json(char *json, size_t len, struct disco
   /* specs/discord/channel.endpoints-params.json:38:20
      '{ "name": "after", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "loc":"query"}'
   */
-                orka_ulltostr, &p->after,
+                cee_ulltostr, &p->after,
   /* specs/discord/channel.endpoints-params.json:39:20
      '{ "name": "limit", "type":{ "base":"int" }, "loc":"query"}'
   */
@@ -960,7 +960,7 @@ void discord_follow_news_channel_params_from_json(char *json, size_t len, struct
   /* specs/discord/channel.endpoints-params.json:61:20
      '{ "name": "webhook_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"} }'
   */
-                orka_strtoull, &p->webhook_channel_id,
+                cee_strtoull, &p->webhook_channel_id,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
                 p->__M.record_null, sizeof(p->__M.record_null));
@@ -990,7 +990,7 @@ size_t discord_follow_news_channel_params_to_json(char *json, size_t len, struct
   /* specs/discord/channel.endpoints-params.json:61:20
      '{ "name": "webhook_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"} }'
   */
-                orka_ulltostr, &p->webhook_channel_id,
+                cee_ulltostr, &p->webhook_channel_id,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
 }
@@ -1137,11 +1137,11 @@ void discord_create_channel_invite_params_from_json(char *json, size_t len, stru
   /* specs/discord/channel.endpoints-params.json:76:20
      '{ "name": "target_user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "inject_if_not":0 }'
   */
-                orka_strtoull, &p->target_user_id,
+                cee_strtoull, &p->target_user_id,
   /* specs/discord/channel.endpoints-params.json:77:20
      '{ "name": "target_application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "inject_if_not":0 }'
   */
-                orka_strtoull, &p->target_application_id,
+                cee_strtoull, &p->target_application_id,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
                 p->__M.record_null, sizeof(p->__M.record_null));
@@ -1248,11 +1248,11 @@ size_t discord_create_channel_invite_params_to_json(char *json, size_t len, stru
   /* specs/discord/channel.endpoints-params.json:76:20
      '{ "name": "target_user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "inject_if_not":0 }'
   */
-                orka_ulltostr, &p->target_user_id,
+                cee_ulltostr, &p->target_user_id,
   /* specs/discord/channel.endpoints-params.json:77:20
      '{ "name": "target_application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "inject_if_not":0 }'
   */
-                orka_ulltostr, &p->target_application_id,
+                cee_ulltostr, &p->target_application_id,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
 }

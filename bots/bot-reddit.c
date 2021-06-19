@@ -9,7 +9,7 @@
 #include "discord.h"
 
 #include "json-actor.h" /* json_extract() */
-#include "orka-utils.h" /* orka_load_whole_file() */
+#include "cee-utils.h" /* cee_load_whole_file() */
 #include "scheduler.h"
 
 
@@ -371,7 +371,7 @@ void on_comment(
 
 void load_BOT(const char config_file[])
 {
-  BOT.json.start = orka_load_whole_file(SEARCH_PARAMS_FILE, &BOT.json.size);
+  BOT.json.start = cee_load_whole_file(SEARCH_PARAMS_FILE, &BOT.json.size);
   assert(NULL != BOT.json.start && "Missing json file!");
 
   bool enable=false;
@@ -397,12 +397,12 @@ void load_BOT(const char config_file[])
   assert(NULL != ja_q && "Missing 'keywords'");
 
   BOT.R.params.q = \
-    orka_join_strings((char**)(*ja_q), ntl_length((ntl_t)ja_q), " ", 512, 512);
+    cee_join_strings((char**)(*ja_q), ntl_length((ntl_t)ja_q), " ", 512, 512);
   assert(NULL != BOT.R.params.q && "Missing keywords");
 
   if (ja_sr) {
     BOT.R.srs = \
-      orka_join_strings((char**)(*ja_sr), ntl_length((ntl_t)ja_sr), "+", 19, 1024);
+      cee_join_strings((char**)(*ja_sr), ntl_length((ntl_t)ja_sr), "+", 19, 1024);
     assert(NULL != BOT.R.srs && "Missing subreddits");
   }
 
