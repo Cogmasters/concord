@@ -6,7 +6,7 @@
 
 Follow the installation steps [here](https://www.cee.studio/get_sdk.html). After this, there are some additional steps required to compile Orca:
 
-1. Download the additional libraries for Saiph-C from [here](https://github.com/cee-studio/packages)
+1. Download the additional libraries for Saiph-C from [here](https://github.com/cee-studio/packages) using the following command:
    ```
    git clone https://github.com/cee-studio/packages.git
    ```
