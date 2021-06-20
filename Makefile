@@ -67,7 +67,7 @@ ifeq ($(BEARSSL),1)
 else ifeq ($(CC),stensal-c)
 	LIBDISCORD_LDFLAGS += -lcurl-bearssl -lbearssl -static
 	CFLAGS += -DBEARSSL
-else ifeq ($(CC),saiph-c)
+else ifeq ($(CC),sfc)
 	LIBDISCORD_LDFLAGS += -lcurl-bearssl -lbearssl -static
 	CFLAGS += -DBEARSSL
 	#LIBDISCORD_LDFLAGS += -lcurl-ssl -lssl -lcrypto -lm -static
@@ -97,7 +97,7 @@ endif
 
 ifeq ($(CC),stensal-c)
 	CFLAGS += -D_DEFAULT_SOURCE
-else ifeq ($(CC),saiph-c)
+else ifeq ($(CC),sfc)
 	CFLAGS += -D_DEFAULT_SOURCE
 else
 	CFLAGS += -fPIC -D_XOPEN_SOURCE=700
