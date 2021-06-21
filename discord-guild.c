@@ -280,7 +280,7 @@ discord_list_guild_members(
     .ok_obj = p_members 
   };
 
-  char query[1024]="", *equery="";
+  char query[1024]="";
   if (params) {
     size_t offset=0;
     if (params->limit) {
@@ -293,22 +293,15 @@ discord_list_guild_members(
           "%safter=%"PRIu64, (*query)?"&":"", params->after);
       ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
     }
-    if (*query) equery = url_encode(query);
   }
   
-  ORCAcode code;
-  code = discord_adapter_run( 
+  return discord_adapter_run( 
            &client->adapter,
            &resp_handle,
            NULL,
            HTTP_GET,
            "/guilds/%"PRIu64"/members%s%s", 
-           guild_id, (*equery)?"?":"", equery);
-
-  if (!IS_EMPTY_STRING(equery))
-    free(equery);
-
-  return code;
+           guild_id, (*query)?"?":"", query);
 }
 
 ORCAcode
@@ -332,35 +325,29 @@ discord_search_guild_members(
     .ok_obj = p_members
   };
 
-  char query[1024]="", *equery="";
+  char query[1024]="";
   if (params) {
     size_t offset=0;
     if (params->query) {
-      offset += snprintf(query+offset, sizeof(query)-offset,
-          "query=%s", params->query);
+      char *pe_query = url_encode(params->query);
+      offset += snprintf(query+offset, sizeof(query)-offset, "query=%s", pe_query);
       ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
+      free(pe_query);
     }
     if (params->limit) {
       offset += snprintf(query+offset, sizeof(query)-offset,
           "%slimit=%d", (*query)?"&":"", params->limit);
       ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
     }
-    if (*query) equery = url_encode(query);
   }
 
-  ORCAcode code;
-  code = discord_adapter_run( 
+  return discord_adapter_run( 
            &client->adapter,
            &resp_handle,
            NULL,
            HTTP_GET,
            "/guilds/%"PRIu64"/members/search%s%s", 
-           guild_id, (*equery)?"?":"", equery);
-
-  if (!IS_EMPTY_STRING(equery))
-    free(equery);
-
-  return code;
+           guild_id, (*query)?"?":"", query);
 }
 
 ORCAcode
