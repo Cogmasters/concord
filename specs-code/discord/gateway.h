@@ -154,6 +154,7 @@ struct discord_gateway_identify {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -162,6 +163,7 @@ struct discord_gateway_identify {
     void *record_defined[8];
     void *record_null[8];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_gateway_identify_cleanup_v(void *p);
 extern void discord_gateway_identify_cleanup(struct discord_gateway_identify *p);
@@ -212,6 +214,7 @@ struct discord_gateway_status_update {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -220,6 +223,7 @@ struct discord_gateway_status_update {
     void *record_defined[4];
     void *record_null[4];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_gateway_status_update_cleanup_v(void *p);
 extern void discord_gateway_status_update_cleanup(struct discord_gateway_status_update *p);
@@ -264,6 +268,7 @@ struct discord_gateway_identify_connection {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -272,6 +277,7 @@ struct discord_gateway_identify_connection {
     void *record_defined[3];
     void *record_null[3];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_gateway_identify_connection_cleanup_v(void *p);
 extern void discord_gateway_identify_connection_cleanup(struct discord_gateway_identify_connection *p);
@@ -342,6 +348,7 @@ struct discord_gateway_activity {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -350,6 +357,7 @@ struct discord_gateway_activity {
     void *record_defined[8];
     void *record_null[8];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_gateway_activity_cleanup_v(void *p);
 extern void discord_gateway_activity_cleanup(struct discord_gateway_activity *p);

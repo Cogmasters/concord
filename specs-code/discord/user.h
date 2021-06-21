@@ -99,6 +99,7 @@ struct discord_user {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -107,6 +108,7 @@ struct discord_user {
     void *record_defined[13];
     void *record_null[13];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_user_cleanup_v(void *p);
 extern void discord_user_cleanup(struct discord_user *p);
@@ -184,6 +186,7 @@ struct discord_connection {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -192,6 +195,7 @@ struct discord_connection {
     void *record_defined[9];
     void *record_null[9];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_connection_cleanup_v(void *p);
 extern void discord_connection_cleanup(struct discord_connection *p);

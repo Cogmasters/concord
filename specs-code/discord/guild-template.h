@@ -63,6 +63,7 @@ struct discord_guild_template {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -71,6 +72,7 @@ struct discord_guild_template {
     void *record_defined[11];
     void *record_null[11];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_guild_template_cleanup_v(void *p);
 extern void discord_guild_template_cleanup(struct discord_guild_template *p);

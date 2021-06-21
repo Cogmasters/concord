@@ -43,6 +43,7 @@ struct reddit_comment_params {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -51,6 +52,7 @@ struct reddit_comment_params {
     void *record_defined[6];
     void *record_null[6];
   } __M; // metadata
+/// @endcond
 };
 /* This file is generated from specs/reddit/oauth2.json, Please don't edit it. */
 /**
@@ -92,6 +94,7 @@ struct reddit_access_token_params {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -100,6 +103,7 @@ struct reddit_access_token_params {
     void *record_defined[5];
     void *record_null[5];
   } __M; // metadata
+/// @endcond
 };
 /* This file is generated from specs/reddit/search.json, Please don't edit it. */
 /**
@@ -174,6 +178,7 @@ struct reddit_search_params {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -182,4 +187,5 @@ struct reddit_search_params {
     void *record_defined[13];
     void *record_null[13];
   } __M; // metadata
+/// @endcond
 };

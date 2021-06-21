@@ -27,6 +27,7 @@ struct discord_create_webhook_params {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -35,6 +36,7 @@ struct discord_create_webhook_params {
     void *record_defined[2];
     void *record_null[2];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_create_webhook_params_cleanup_v(void *p);
 extern void discord_create_webhook_params_cleanup(struct discord_create_webhook_params *p);
@@ -79,6 +81,7 @@ struct discord_modify_webhook_params {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -87,6 +90,7 @@ struct discord_modify_webhook_params {
     void *record_defined[3];
     void *record_null[3];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_modify_webhook_params_cleanup_v(void *p);
 extern void discord_modify_webhook_params_cleanup(struct discord_modify_webhook_params *p);
@@ -181,6 +185,7 @@ struct discord_execute_webhook_params {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -189,6 +194,7 @@ struct discord_execute_webhook_params {
     void *record_defined[9];
     void *record_null[9];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_execute_webhook_params_cleanup_v(void *p);
 extern void discord_execute_webhook_params_cleanup(struct discord_execute_webhook_params *p);
@@ -233,6 +239,7 @@ struct discord_edit_webhook_message_params {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -241,6 +248,7 @@ struct discord_edit_webhook_message_params {
     void *record_defined[3];
     void *record_null[3];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_edit_webhook_message_params_cleanup_v(void *p);
 extern void discord_edit_webhook_message_params_cleanup(struct discord_edit_webhook_message_params *p);

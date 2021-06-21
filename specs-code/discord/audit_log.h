@@ -35,6 +35,7 @@ struct discord_audit_log {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -43,6 +44,7 @@ struct discord_audit_log {
     void *record_defined[4];
     void *record_null[4];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_audit_log_cleanup_v(void *p);
 extern void discord_audit_log_cleanup(struct discord_audit_log *p);
@@ -144,6 +146,7 @@ struct discord_audit_log_entry {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -152,6 +155,7 @@ struct discord_audit_log_entry {
     void *record_defined[7];
     void *record_null[7];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_audit_log_entry_cleanup_v(void *p);
 extern void discord_audit_log_entry_cleanup(struct discord_audit_log_entry *p);
@@ -216,6 +220,7 @@ struct discord_audit_log_entry_optional_info {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -224,6 +229,7 @@ struct discord_audit_log_entry_optional_info {
     void *record_defined[8];
     void *record_null[8];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_audit_log_entry_optional_info_cleanup_v(void *p);
 extern void discord_audit_log_entry_optional_info_cleanup(struct discord_audit_log_entry_optional_info *p);
@@ -268,6 +274,7 @@ struct discord_audit_log_change {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -276,6 +283,7 @@ struct discord_audit_log_change {
     void *record_defined[3];
     void *record_null[3];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_audit_log_change_cleanup_v(void *p);
 extern void discord_audit_log_change_cleanup(struct discord_audit_log_change *p);
@@ -530,6 +538,7 @@ struct discord_audit_log_change_key {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -538,6 +547,7 @@ struct discord_audit_log_change_key {
     void *record_defined[54];
     void *record_null[54];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_audit_log_change_key_cleanup_v(void *p);
 extern void discord_audit_log_change_key_cleanup(struct discord_audit_log_change_key *p);

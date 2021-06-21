@@ -211,6 +211,7 @@ struct discord_guild {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -219,6 +220,7 @@ struct discord_guild {
     void *record_defined[46];
     void *record_null[46];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_guild_cleanup_v(void *p);
 extern void discord_guild_cleanup(struct discord_guild *p);
@@ -341,6 +343,7 @@ struct discord_guild_unavailable {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -349,6 +352,7 @@ struct discord_guild_unavailable {
     void *record_defined[2];
     void *record_null[2];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_guild_unavailable_cleanup_v(void *p);
 extern void discord_guild_unavailable_cleanup(struct discord_guild_unavailable *p);
@@ -421,6 +425,7 @@ struct discord_guild_preview {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -429,6 +434,7 @@ struct discord_guild_preview {
     void *record_defined[10];
     void *record_null[10];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_guild_preview_cleanup_v(void *p);
 extern void discord_guild_preview_cleanup(struct discord_guild_preview *p);
@@ -469,6 +475,7 @@ struct discord_guild_widget {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -477,6 +484,7 @@ struct discord_guild_widget {
     void *record_defined[2];
     void *record_null[2];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_guild_widget_cleanup_v(void *p);
 extern void discord_guild_widget_cleanup(struct discord_guild_widget *p);
@@ -545,6 +553,7 @@ struct discord_guild_member {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -553,6 +562,7 @@ struct discord_guild_member {
     void *record_defined[9];
     void *record_null[9];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_guild_member_cleanup_v(void *p);
 extern void discord_guild_member_cleanup(struct discord_guild_member *p);
@@ -645,6 +655,7 @@ struct discord_guild_integration {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -653,6 +664,7 @@ struct discord_guild_integration {
     void *record_defined[15];
     void *record_null[15];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_guild_integration_cleanup_v(void *p);
 extern void discord_guild_integration_cleanup(struct discord_guild_integration *p);
@@ -702,6 +714,7 @@ struct discord_guild_integration_account {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -710,6 +723,7 @@ struct discord_guild_integration_account {
     void *record_defined[2];
     void *record_null[2];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_guild_integration_account_cleanup_v(void *p);
 extern void discord_guild_integration_account_cleanup(struct discord_guild_integration_account *p);
@@ -766,6 +780,7 @@ struct discord_guild_integration_application {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -774,6 +789,7 @@ struct discord_guild_integration_application {
     void *record_defined[6];
     void *record_null[6];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_guild_integration_application_cleanup_v(void *p);
 extern void discord_guild_integration_application_cleanup(struct discord_guild_integration_application *p);
@@ -814,6 +830,7 @@ struct discord_guild_ban {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -822,6 +839,7 @@ struct discord_guild_ban {
     void *record_defined[2];
     void *record_null[2];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_guild_ban_cleanup_v(void *p);
 extern void discord_guild_ban_cleanup(struct discord_guild_ban *p);
@@ -862,6 +880,7 @@ struct discord_guild_welcome_screen {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -870,6 +889,7 @@ struct discord_guild_welcome_screen {
     void *record_defined[2];
     void *record_null[2];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_guild_welcome_screen_cleanup_v(void *p);
 extern void discord_guild_welcome_screen_cleanup(struct discord_guild_welcome_screen *p);
@@ -918,6 +938,7 @@ struct discord_guild_welcome_screen_channel {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -926,6 +947,7 @@ struct discord_guild_welcome_screen_channel {
     void *record_defined[4];
     void *record_null[4];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_guild_welcome_screen_channel_cleanup_v(void *p);
 extern void discord_guild_welcome_screen_channel_cleanup(struct discord_guild_welcome_screen_channel *p);

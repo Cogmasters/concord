@@ -71,6 +71,7 @@ struct reddit_search_params {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -79,6 +80,7 @@ struct reddit_search_params {
     void *record_defined[13];
     void *record_null[13];
   } __M; // metadata
+/// @endcond
 };
 extern void reddit_search_params_cleanup_v(void *p);
 extern void reddit_search_params_cleanup(struct reddit_search_params *p);

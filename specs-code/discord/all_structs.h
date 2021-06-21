@@ -33,6 +33,7 @@ struct discord_get_guild_audit_log_params {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -41,6 +42,7 @@ struct discord_get_guild_audit_log_params {
     void *record_defined[4];
     void *record_null[4];
   } __M; // metadata
+/// @endcond
 };
 /* This file is generated from specs/discord/audit_log.json, Please don't edit it. */
 /**
@@ -79,6 +81,7 @@ struct discord_audit_log {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -87,6 +90,7 @@ struct discord_audit_log {
     void *record_defined[4];
     void *record_null[4];
   } __M; // metadata
+/// @endcond
 };
 
 
@@ -130,6 +134,7 @@ struct discord_audit_log_entry {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -138,6 +143,7 @@ struct discord_audit_log_entry {
     void *record_defined[7];
     void *record_null[7];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -183,6 +189,7 @@ struct discord_audit_log_entry_optional_info {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -191,6 +198,7 @@ struct discord_audit_log_entry_optional_info {
     void *record_defined[8];
     void *record_null[8];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -216,6 +224,7 @@ struct discord_audit_log_change {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -224,6 +233,7 @@ struct discord_audit_log_change {
     void *record_defined[3];
     void *record_null[3];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -459,6 +469,7 @@ struct discord_audit_log_change_key {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -467,6 +478,7 @@ struct discord_audit_log_change_key {
     void *record_defined[54];
     void *record_null[54];
   } __M; // metadata
+/// @endcond
 };
 /* This file is generated from specs/discord/channel.endpoints-params.json, Please don't edit it. */
 /**
@@ -553,6 +565,7 @@ struct discord_modify_channel_params {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -561,6 +574,7 @@ struct discord_modify_channel_params {
     void *record_defined[16];
     void *record_null[16];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -582,6 +596,7 @@ struct discord_get_reactions_params {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -590,6 +605,7 @@ struct discord_get_reactions_params {
     void *record_defined[2];
     void *record_null[2];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -615,6 +631,7 @@ struct discord_edit_channel_permissions_params {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -623,6 +640,7 @@ struct discord_edit_channel_permissions_params {
     void *record_defined[3];
     void *record_null[3];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -640,6 +658,7 @@ struct discord_follow_news_channel_params {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -648,6 +667,7 @@ struct discord_follow_news_channel_params {
     void *record_defined[1];
     void *record_null[1];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -689,6 +709,7 @@ struct discord_create_channel_invite_params {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -697,6 +718,7 @@ struct discord_create_channel_invite_params {
     void *record_defined[7];
     void *record_null[7];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -718,6 +740,7 @@ struct discord_group_dm_add_recipient_params {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -726,6 +749,7 @@ struct discord_group_dm_add_recipient_params {
     void *record_defined[2];
     void *record_null[2];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -747,6 +771,7 @@ struct discord_start_thread_with_message_params {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -755,6 +780,7 @@ struct discord_start_thread_with_message_params {
     void *record_defined[2];
     void *record_null[2];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -776,6 +802,7 @@ struct discord_start_thread_without_message_params {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -784,6 +811,7 @@ struct discord_start_thread_without_message_params {
     void *record_defined[2];
     void *record_null[2];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -809,6 +837,7 @@ struct discord_thread_response_body {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -817,6 +846,7 @@ struct discord_thread_response_body {
     void *record_defined[3];
     void *record_null[3];
   } __M; // metadata
+/// @endcond
 };
 /* This file is generated from specs/discord/channel.json, Please don't edit it. */
 /**
@@ -930,6 +960,7 @@ struct discord_channel {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -938,6 +969,7 @@ struct discord_channel {
     void *record_defined[19];
     void *record_null[19];
   } __M; // metadata
+/// @endcond
 };
 
 
@@ -986,6 +1018,7 @@ struct discord_message_sticker {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -994,6 +1027,7 @@ struct discord_message_sticker {
     void *record_defined[8];
     void *record_null[8];
   } __M; // metadata
+/// @endcond
 };
 
 
@@ -1025,6 +1059,7 @@ struct discord_message_reference {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -1033,6 +1068,7 @@ struct discord_message_reference {
     void *record_defined[4];
     void *record_null[4];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -1066,6 +1102,7 @@ struct discord_message_application {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -1074,6 +1111,7 @@ struct discord_message_application {
     void *record_defined[5];
     void *record_null[5];
   } __M; // metadata
+/// @endcond
 };
 
 
@@ -1098,6 +1136,7 @@ struct discord_message_activity {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -1106,6 +1145,7 @@ struct discord_message_activity {
     void *record_defined[2];
     void *record_null[2];
   } __M; // metadata
+/// @endcond
 };
 
 
@@ -1227,6 +1267,7 @@ struct discord_message {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -1235,6 +1276,7 @@ struct discord_message {
     void *record_defined[26];
     void *record_null[26];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -1256,6 +1298,7 @@ struct discord_channel_followed_channel {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -1264,6 +1307,7 @@ struct discord_channel_followed_channel {
     void *record_defined[2];
     void *record_null[2];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -1289,6 +1333,7 @@ struct discord_channel_reaction {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -1297,6 +1342,7 @@ struct discord_channel_reaction {
     void *record_defined[3];
     void *record_null[3];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -1327,6 +1373,7 @@ struct discord_channel_overwrite {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -1335,6 +1382,7 @@ struct discord_channel_overwrite {
     void *record_defined[4];
     void *record_null[4];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -1368,6 +1416,7 @@ struct discord_thread_metadata {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -1376,6 +1425,7 @@ struct discord_thread_metadata {
     void *record_defined[5];
     void *record_null[5];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -1405,6 +1455,7 @@ struct discord_thread_member {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -1413,6 +1464,7 @@ struct discord_thread_member {
     void *record_defined[4];
     void *record_null[4];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -1454,6 +1506,7 @@ struct discord_channel_attachment {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -1462,6 +1515,7 @@ struct discord_channel_attachment {
     void *record_defined[7];
     void *record_null[7];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -1491,6 +1545,7 @@ struct discord_channel_mention {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -1499,6 +1554,7 @@ struct discord_channel_mention {
     void *record_defined[4];
     void *record_null[4];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -1528,6 +1584,7 @@ struct discord_channel_allowed_mentions {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -1536,6 +1593,7 @@ struct discord_channel_allowed_mentions {
     void *record_defined[4];
     void *record_null[4];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -1601,6 +1659,7 @@ struct discord_embed {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -1609,6 +1668,7 @@ struct discord_embed {
     void *record_defined[13];
     void *record_null[13];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -1638,6 +1698,7 @@ struct discord_embed_thumbnail {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -1646,6 +1707,7 @@ struct discord_embed_thumbnail {
     void *record_defined[4];
     void *record_null[4];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -1675,6 +1737,7 @@ struct discord_embed_video {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -1683,6 +1746,7 @@ struct discord_embed_video {
     void *record_defined[4];
     void *record_null[4];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -1712,6 +1776,7 @@ struct discord_embed_image {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -1720,6 +1785,7 @@ struct discord_embed_image {
     void *record_defined[4];
     void *record_null[4];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -1741,6 +1807,7 @@ struct discord_embed_provider {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -1749,6 +1816,7 @@ struct discord_embed_provider {
     void *record_defined[2];
     void *record_null[2];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -1778,6 +1846,7 @@ struct discord_embed_author {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -1786,6 +1855,7 @@ struct discord_embed_author {
     void *record_defined[4];
     void *record_null[4];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -1811,6 +1881,7 @@ struct discord_embed_footer {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -1819,6 +1890,7 @@ struct discord_embed_footer {
     void *record_defined[3];
     void *record_null[3];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -1844,6 +1916,7 @@ struct discord_embed_field {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -1852,6 +1925,7 @@ struct discord_embed_field {
     void *record_defined[3];
     void *record_null[3];
   } __M; // metadata
+/// @endcond
 };
 /* This file is generated from specs/discord/emoji.endpoints-params.json, Please don't edit it. */
 /**
@@ -1886,6 +1960,7 @@ struct discord_create_guild_emoji_params {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -1894,6 +1969,7 @@ struct discord_create_guild_emoji_params {
     void *record_defined[3];
     void *record_null[3];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -1915,6 +1991,7 @@ struct discord_modify_guild_emoji_params {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -1923,6 +2000,7 @@ struct discord_modify_guild_emoji_params {
     void *record_defined[2];
     void *record_null[2];
   } __M; // metadata
+/// @endcond
 };
 /* This file is generated from specs/discord/emoji.json, Please don't edit it. */
 /**
@@ -1978,6 +2056,7 @@ struct discord_emoji {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -1986,6 +2065,7 @@ struct discord_emoji {
     void *record_defined[8];
     void *record_null[8];
   } __M; // metadata
+/// @endcond
 };
 /* This file is generated from specs/discord/gateway.json, Please don't edit it. */
 /**
@@ -2048,6 +2128,7 @@ struct discord_gateway_identify {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -2056,6 +2137,7 @@ struct discord_gateway_identify {
     void *record_defined[8];
     void *record_null[8];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -2087,6 +2169,7 @@ struct discord_gateway_status_update {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -2095,6 +2178,7 @@ struct discord_gateway_status_update {
     void *record_defined[4];
     void *record_null[4];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -2120,6 +2204,7 @@ struct discord_gateway_identify_connection {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -2128,6 +2213,7 @@ struct discord_gateway_identify_connection {
     void *record_defined[3];
     void *record_null[3];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -2179,6 +2265,7 @@ struct discord_gateway_activity {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -2187,6 +2274,7 @@ struct discord_gateway_activity {
     void *record_defined[8];
     void *record_null[8];
   } __M; // metadata
+/// @endcond
 };
 
 
@@ -2219,6 +2307,7 @@ struct discord_create_guild_from_guild_template_params {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -2227,6 +2316,7 @@ struct discord_create_guild_from_guild_template_params {
     void *record_defined[2];
     void *record_null[2];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -2248,6 +2338,7 @@ struct discord_create_guild_template_params {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -2256,6 +2347,7 @@ struct discord_create_guild_template_params {
     void *record_defined[2];
     void *record_null[2];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -2277,6 +2369,7 @@ struct discord_modify_guild_template_params {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -2285,6 +2378,7 @@ struct discord_modify_guild_template_params {
     void *record_defined[2];
     void *record_null[2];
   } __M; // metadata
+/// @endcond
 };
 /* This file is generated from specs/discord/guild-template.json, Please don't edit it. */
 /**
@@ -2351,6 +2445,7 @@ struct discord_guild_template {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -2359,6 +2454,7 @@ struct discord_guild_template {
     void *record_defined[11];
     void *record_null[11];
   } __M; // metadata
+/// @endcond
 };
 /* This file is generated from specs/discord/guild.endpoints-params.json, Please don't edit it. */
 /**
@@ -2425,6 +2521,7 @@ struct discord_create_guild_params {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -2433,6 +2530,7 @@ struct discord_create_guild_params {
     void *record_defined[11];
     void *record_null[11];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -2522,6 +2620,7 @@ struct discord_modify_guild_params {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -2530,6 +2629,7 @@ struct discord_modify_guild_params {
     void *record_defined[19];
     void *record_null[19];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -2583,6 +2683,7 @@ struct discord_create_guild_channel_params {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -2591,6 +2692,7 @@ struct discord_create_guild_channel_params {
     void *record_defined[10];
     void *record_null[10];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -2620,6 +2722,7 @@ struct discord_modify_guild_channel_positions_params {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -2628,6 +2731,7 @@ struct discord_modify_guild_channel_positions_params {
     void *record_defined[4];
     void *record_null[4];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -2649,6 +2753,7 @@ struct discord_search_guild_members_params {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -2657,6 +2762,7 @@ struct discord_search_guild_members_params {
     void *record_defined[2];
     void *record_null[2];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -2690,6 +2796,7 @@ struct discord_add_guild_member_params {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -2698,6 +2805,7 @@ struct discord_add_guild_member_params {
     void *record_defined[5];
     void *record_null[5];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -2731,6 +2839,7 @@ struct discord_modify_guild_member_params {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -2739,6 +2848,7 @@ struct discord_modify_guild_member_params {
     void *record_defined[5];
     void *record_null[5];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -2772,6 +2882,7 @@ struct discord_create_guild_role_params {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -2780,6 +2891,7 @@ struct discord_create_guild_role_params {
     void *record_defined[5];
     void *record_null[5];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -2801,6 +2913,7 @@ struct discord_modify_guild_role_positions_params {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -2809,6 +2922,7 @@ struct discord_modify_guild_role_positions_params {
     void *record_defined[2];
     void *record_null[2];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -2842,6 +2956,7 @@ struct discord_modify_guild_role_params {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -2850,6 +2965,7 @@ struct discord_modify_guild_role_params {
     void *record_defined[5];
     void *record_null[5];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -2871,6 +2987,7 @@ struct discord_get_guild_prune_count_params {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -2879,6 +2996,7 @@ struct discord_get_guild_prune_count_params {
     void *record_defined[2];
     void *record_null[2];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -2908,6 +3026,7 @@ struct discord_begin_guild_prune_params {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -2916,6 +3035,7 @@ struct discord_begin_guild_prune_params {
     void *record_defined[4];
     void *record_null[4];
   } __M; // metadata
+/// @endcond
 };
 /* This file is generated from specs/discord/guild.json, Please don't edit it. */
 /**
@@ -3130,6 +3250,7 @@ struct discord_guild {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -3138,6 +3259,7 @@ struct discord_guild {
     void *record_defined[46];
     void *record_null[46];
   } __M; // metadata
+/// @endcond
 };
 
 
@@ -3173,6 +3295,7 @@ struct discord_guild_unavailable {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -3181,6 +3304,7 @@ struct discord_guild_unavailable {
     void *record_defined[2];
     void *record_null[2];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -3234,6 +3358,7 @@ struct discord_guild_preview {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -3242,6 +3367,7 @@ struct discord_guild_preview {
     void *record_defined[10];
     void *record_null[10];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -3263,6 +3389,7 @@ struct discord_guild_widget {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -3271,6 +3398,7 @@ struct discord_guild_widget {
     void *record_defined[2];
     void *record_null[2];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -3320,6 +3448,7 @@ struct discord_guild_member {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -3328,6 +3457,7 @@ struct discord_guild_member {
     void *record_defined[9];
     void *record_null[9];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -3401,6 +3531,7 @@ struct discord_guild_integration {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -3409,6 +3540,7 @@ struct discord_guild_integration {
     void *record_defined[15];
     void *record_null[15];
   } __M; // metadata
+/// @endcond
 };
 
 
@@ -3432,6 +3564,7 @@ struct discord_guild_integration_account {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -3440,6 +3573,7 @@ struct discord_guild_integration_account {
     void *record_defined[2];
     void *record_null[2];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -3477,6 +3611,7 @@ struct discord_guild_integration_application {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -3485,6 +3620,7 @@ struct discord_guild_integration_application {
     void *record_defined[6];
     void *record_null[6];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -3506,6 +3642,7 @@ struct discord_guild_ban {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -3514,6 +3651,7 @@ struct discord_guild_ban {
     void *record_defined[2];
     void *record_null[2];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -3535,6 +3673,7 @@ struct discord_guild_welcome_screen {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -3543,6 +3682,7 @@ struct discord_guild_welcome_screen {
     void *record_defined[2];
     void *record_null[2];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -3572,6 +3712,7 @@ struct discord_guild_welcome_screen_channel {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -3580,6 +3721,7 @@ struct discord_guild_welcome_screen_channel {
     void *record_defined[4];
     void *record_null[4];
   } __M; // metadata
+/// @endcond
 };
 /* This file is generated from specs/discord/invite.endpoints-params.json, Please don't edit it. */
 /**
@@ -3610,6 +3752,7 @@ struct discord_get_invite_params {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -3618,6 +3761,7 @@ struct discord_get_invite_params {
     void *record_defined[2];
     void *record_null[2];
   } __M; // metadata
+/// @endcond
 };
 /* This file is generated from specs/discord/invite.json, Please don't edit it. */
 /**
@@ -3674,6 +3818,7 @@ struct discord_invite {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -3682,6 +3827,7 @@ struct discord_invite {
     void *record_defined[8];
     void *record_null[8];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -3715,6 +3861,7 @@ struct discord_invite_metadata {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -3723,6 +3870,7 @@ struct discord_invite_metadata {
     void *record_defined[5];
     void *record_null[5];
   } __M; // metadata
+/// @endcond
 };
 /* This file is generated from specs/discord/permissions.json, Please don't edit it. */
 /**
@@ -3783,6 +3931,7 @@ struct discord_permissions_role {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -3791,6 +3940,7 @@ struct discord_permissions_role {
     void *record_defined[9];
     void *record_null[9];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -3816,6 +3966,7 @@ struct discord_permissions_role_tags {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -3824,6 +3975,7 @@ struct discord_permissions_role_tags {
     void *record_defined[3];
     void *record_null[3];
   } __M; // metadata
+/// @endcond
 };
 /* This file is generated from specs/discord/user.endpoints-params.json, Please don't edit it. */
 /**
@@ -3854,6 +4006,7 @@ struct discord_modify_current_user_params {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -3862,6 +4015,7 @@ struct discord_modify_current_user_params {
     void *record_defined[2];
     void *record_null[2];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -3885,6 +4039,7 @@ struct discord_create_group_dm_params {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -3893,6 +4048,7 @@ struct discord_create_group_dm_params {
     void *record_defined[2];
     void *record_null[2];
   } __M; // metadata
+/// @endcond
 };
 /* This file is generated from specs/discord/user.json, Please don't edit it. */
 /**
@@ -3970,6 +4126,7 @@ struct discord_user {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -3978,6 +4135,7 @@ struct discord_user {
     void *record_defined[13];
     void *record_null[13];
   } __M; // metadata
+/// @endcond
 };
 
 
@@ -4029,6 +4187,7 @@ struct discord_connection {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -4037,6 +4196,7 @@ struct discord_connection {
     void *record_defined[9];
     void *record_null[9];
   } __M; // metadata
+/// @endcond
 };
 /* This file is generated from specs/discord/voice-connections.json, Please don't edit it. */
 /**
@@ -4122,6 +4282,7 @@ struct discord_voice_state {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -4130,6 +4291,7 @@ struct discord_voice_state {
     void *record_defined[12];
     void *record_null[12];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -4167,6 +4329,7 @@ struct discord_voice_region {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -4175,6 +4338,7 @@ struct discord_voice_region {
     void *record_defined[6];
     void *record_null[6];
   } __M; // metadata
+/// @endcond
 };
 /* This file is generated from specs/discord/webhook.endpoints-params.json, Please don't edit it. */
 /**
@@ -4205,6 +4369,7 @@ struct discord_create_webhook_params {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -4213,6 +4378,7 @@ struct discord_create_webhook_params {
     void *record_defined[2];
     void *record_null[2];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -4238,6 +4404,7 @@ struct discord_modify_webhook_params {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -4246,6 +4413,7 @@ struct discord_modify_webhook_params {
     void *record_defined[3];
     void *record_null[3];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -4321,6 +4489,7 @@ struct discord_execute_webhook_params {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -4329,6 +4498,7 @@ struct discord_execute_webhook_params {
     void *record_defined[9];
     void *record_null[9];
   } __M; // metadata
+/// @endcond
 };
 
 /**
@@ -4354,6 +4524,7 @@ struct discord_edit_webhook_message_params {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -4362,6 +4533,7 @@ struct discord_edit_webhook_message_params {
     void *record_defined[3];
     void *record_null[3];
   } __M; // metadata
+/// @endcond
 };
 /* This file is generated from specs/discord/webhook.json, Please don't edit it. */
 /**
@@ -4420,6 +4592,7 @@ struct discord_webhook {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -4428,6 +4601,7 @@ struct discord_webhook {
     void *record_defined[9];
     void *record_null[9];
   } __M; // metadata
+/// @endcond
 };
 
 

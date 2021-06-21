@@ -63,6 +63,7 @@ struct discord_create_guild_params {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -71,6 +72,7 @@ struct discord_create_guild_params {
     void *record_defined[11];
     void *record_null[11];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_create_guild_params_cleanup_v(void *p);
 extern void discord_create_guild_params_cleanup(struct discord_create_guild_params *p);
@@ -179,6 +181,7 @@ struct discord_modify_guild_params {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -187,6 +190,7 @@ struct discord_modify_guild_params {
     void *record_defined[19];
     void *record_null[19];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_modify_guild_params_cleanup_v(void *p);
 extern void discord_modify_guild_params_cleanup(struct discord_modify_guild_params *p);
@@ -259,6 +263,7 @@ struct discord_create_guild_channel_params {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -267,6 +272,7 @@ struct discord_create_guild_channel_params {
     void *record_defined[10];
     void *record_null[10];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_create_guild_channel_params_cleanup_v(void *p);
 extern void discord_create_guild_channel_params_cleanup(struct discord_create_guild_channel_params *p);
@@ -315,6 +321,7 @@ struct discord_modify_guild_channel_positions_params {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -323,6 +330,7 @@ struct discord_modify_guild_channel_positions_params {
     void *record_defined[4];
     void *record_null[4];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_modify_guild_channel_positions_params_cleanup_v(void *p);
 extern void discord_modify_guild_channel_positions_params_cleanup(struct discord_modify_guild_channel_positions_params *p);
@@ -363,6 +371,7 @@ struct discord_search_guild_members_params {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -371,6 +380,7 @@ struct discord_search_guild_members_params {
     void *record_defined[2];
     void *record_null[2];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_search_guild_members_params_cleanup_v(void *p);
 extern void discord_search_guild_members_params_cleanup(struct discord_search_guild_members_params *p);
@@ -423,6 +433,7 @@ struct discord_add_guild_member_params {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -431,6 +442,7 @@ struct discord_add_guild_member_params {
     void *record_defined[5];
     void *record_null[5];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_add_guild_member_params_cleanup_v(void *p);
 extern void discord_add_guild_member_params_cleanup(struct discord_add_guild_member_params *p);
@@ -483,6 +495,7 @@ struct discord_modify_guild_member_params {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -491,6 +504,7 @@ struct discord_modify_guild_member_params {
     void *record_defined[5];
     void *record_null[5];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_modify_guild_member_params_cleanup_v(void *p);
 extern void discord_modify_guild_member_params_cleanup(struct discord_modify_guild_member_params *p);
@@ -543,6 +557,7 @@ struct discord_create_guild_role_params {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -551,6 +566,7 @@ struct discord_create_guild_role_params {
     void *record_defined[5];
     void *record_null[5];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_create_guild_role_params_cleanup_v(void *p);
 extern void discord_create_guild_role_params_cleanup(struct discord_create_guild_role_params *p);
@@ -591,6 +607,7 @@ struct discord_modify_guild_role_positions_params {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -599,6 +616,7 @@ struct discord_modify_guild_role_positions_params {
     void *record_defined[2];
     void *record_null[2];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_modify_guild_role_positions_params_cleanup_v(void *p);
 extern void discord_modify_guild_role_positions_params_cleanup(struct discord_modify_guild_role_positions_params *p);
@@ -651,6 +669,7 @@ struct discord_modify_guild_role_params {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -659,6 +678,7 @@ struct discord_modify_guild_role_params {
     void *record_defined[5];
     void *record_null[5];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_modify_guild_role_params_cleanup_v(void *p);
 extern void discord_modify_guild_role_params_cleanup(struct discord_modify_guild_role_params *p);
@@ -699,6 +719,7 @@ struct discord_get_guild_prune_count_params {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -707,6 +728,7 @@ struct discord_get_guild_prune_count_params {
     void *record_defined[2];
     void *record_null[2];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_get_guild_prune_count_params_cleanup_v(void *p);
 extern void discord_get_guild_prune_count_params_cleanup(struct discord_get_guild_prune_count_params *p);
@@ -755,6 +777,7 @@ struct discord_begin_guild_prune_params {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -763,6 +786,7 @@ struct discord_begin_guild_prune_params {
     void *record_defined[4];
     void *record_null[4];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_begin_guild_prune_params_cleanup_v(void *p);
 extern void discord_begin_guild_prune_params_cleanup(struct discord_begin_guild_prune_params *p);

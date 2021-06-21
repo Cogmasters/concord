@@ -122,6 +122,7 @@ struct discord_channel {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -130,6 +131,7 @@ struct discord_channel {
     void *record_defined[19];
     void *record_null[19];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_channel_cleanup_v(void *p);
 extern void discord_channel_cleanup(struct discord_channel *p);
@@ -205,6 +207,7 @@ struct discord_message_sticker {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -213,6 +216,7 @@ struct discord_message_sticker {
     void *record_defined[8];
     void *record_null[8];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_message_sticker_cleanup_v(void *p);
 extern void discord_message_sticker_cleanup(struct discord_message_sticker *p);
@@ -273,6 +277,7 @@ struct discord_message_reference {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -281,6 +286,7 @@ struct discord_message_reference {
     void *record_defined[4];
     void *record_null[4];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_message_reference_cleanup_v(void *p);
 extern void discord_message_reference_cleanup(struct discord_message_reference *p);
@@ -333,6 +339,7 @@ struct discord_message_application {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -341,6 +348,7 @@ struct discord_message_application {
     void *record_defined[5];
     void *record_null[5];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_message_application_cleanup_v(void *p);
 extern void discord_message_application_cleanup(struct discord_message_application *p);
@@ -393,6 +401,7 @@ struct discord_message_activity {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -401,6 +410,7 @@ struct discord_message_activity {
     void *record_defined[2];
     void *record_null[2];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_message_activity_cleanup_v(void *p);
 extern void discord_message_activity_cleanup(struct discord_message_activity *p);
@@ -563,6 +573,7 @@ struct discord_message {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -571,6 +582,7 @@ struct discord_message {
     void *record_defined[26];
     void *record_null[26];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_message_cleanup_v(void *p);
 extern void discord_message_cleanup(struct discord_message *p);
@@ -611,6 +623,7 @@ struct discord_channel_followed_channel {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -619,6 +632,7 @@ struct discord_channel_followed_channel {
     void *record_defined[2];
     void *record_null[2];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_channel_followed_channel_cleanup_v(void *p);
 extern void discord_channel_followed_channel_cleanup(struct discord_channel_followed_channel *p);
@@ -663,6 +677,7 @@ struct discord_channel_reaction {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -671,6 +686,7 @@ struct discord_channel_reaction {
     void *record_defined[3];
     void *record_null[3];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_channel_reaction_cleanup_v(void *p);
 extern void discord_channel_reaction_cleanup(struct discord_channel_reaction *p);
@@ -720,6 +736,7 @@ struct discord_channel_overwrite {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -728,6 +745,7 @@ struct discord_channel_overwrite {
     void *record_defined[4];
     void *record_null[4];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_channel_overwrite_cleanup_v(void *p);
 extern void discord_channel_overwrite_cleanup(struct discord_channel_overwrite *p);
@@ -780,6 +798,7 @@ struct discord_thread_metadata {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -788,6 +807,7 @@ struct discord_thread_metadata {
     void *record_defined[5];
     void *record_null[5];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_thread_metadata_cleanup_v(void *p);
 extern void discord_thread_metadata_cleanup(struct discord_thread_metadata *p);
@@ -836,6 +856,7 @@ struct discord_thread_member {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -844,6 +865,7 @@ struct discord_thread_member {
     void *record_defined[4];
     void *record_null[4];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_thread_member_cleanup_v(void *p);
 extern void discord_thread_member_cleanup(struct discord_thread_member *p);
@@ -904,6 +926,7 @@ struct discord_channel_attachment {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -912,6 +935,7 @@ struct discord_channel_attachment {
     void *record_defined[7];
     void *record_null[7];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_channel_attachment_cleanup_v(void *p);
 extern void discord_channel_attachment_cleanup(struct discord_channel_attachment *p);
@@ -960,6 +984,7 @@ struct discord_channel_mention {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -968,6 +993,7 @@ struct discord_channel_mention {
     void *record_defined[4];
     void *record_null[4];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_channel_mention_cleanup_v(void *p);
 extern void discord_channel_mention_cleanup(struct discord_channel_mention *p);
@@ -1016,6 +1042,7 @@ struct discord_channel_allowed_mentions {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -1024,6 +1051,7 @@ struct discord_channel_allowed_mentions {
     void *record_defined[4];
     void *record_null[4];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_channel_allowed_mentions_cleanup_v(void *p);
 extern void discord_channel_allowed_mentions_cleanup(struct discord_channel_allowed_mentions *p);
@@ -1108,6 +1136,7 @@ struct discord_embed {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -1116,6 +1145,7 @@ struct discord_embed {
     void *record_defined[13];
     void *record_null[13];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_embed_cleanup_v(void *p);
 extern void discord_embed_cleanup(struct discord_embed *p);
@@ -1164,6 +1194,7 @@ struct discord_embed_thumbnail {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -1172,6 +1203,7 @@ struct discord_embed_thumbnail {
     void *record_defined[4];
     void *record_null[4];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_embed_thumbnail_cleanup_v(void *p);
 extern void discord_embed_thumbnail_cleanup(struct discord_embed_thumbnail *p);
@@ -1220,6 +1252,7 @@ struct discord_embed_video {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -1228,6 +1261,7 @@ struct discord_embed_video {
     void *record_defined[4];
     void *record_null[4];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_embed_video_cleanup_v(void *p);
 extern void discord_embed_video_cleanup(struct discord_embed_video *p);
@@ -1276,6 +1310,7 @@ struct discord_embed_image {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -1284,6 +1319,7 @@ struct discord_embed_image {
     void *record_defined[4];
     void *record_null[4];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_embed_image_cleanup_v(void *p);
 extern void discord_embed_image_cleanup(struct discord_embed_image *p);
@@ -1324,6 +1360,7 @@ struct discord_embed_provider {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -1332,6 +1369,7 @@ struct discord_embed_provider {
     void *record_defined[2];
     void *record_null[2];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_embed_provider_cleanup_v(void *p);
 extern void discord_embed_provider_cleanup(struct discord_embed_provider *p);
@@ -1380,6 +1418,7 @@ struct discord_embed_author {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -1388,6 +1427,7 @@ struct discord_embed_author {
     void *record_defined[4];
     void *record_null[4];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_embed_author_cleanup_v(void *p);
 extern void discord_embed_author_cleanup(struct discord_embed_author *p);
@@ -1432,6 +1472,7 @@ struct discord_embed_footer {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -1440,6 +1481,7 @@ struct discord_embed_footer {
     void *record_defined[3];
     void *record_null[3];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_embed_footer_cleanup_v(void *p);
 extern void discord_embed_footer_cleanup(struct discord_embed_footer *p);
@@ -1484,6 +1526,7 @@ struct discord_embed_field {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -1492,6 +1535,7 @@ struct discord_embed_field {
     void *record_defined[3];
     void *record_null[3];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_embed_field_cleanup_v(void *p);
 extern void discord_embed_field_cleanup(struct discord_embed_field *p);

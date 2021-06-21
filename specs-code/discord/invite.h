@@ -59,6 +59,7 @@ struct discord_invite {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -67,6 +68,7 @@ struct discord_invite {
     void *record_defined[8];
     void *record_null[8];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_invite_cleanup_v(void *p);
 extern void discord_invite_cleanup(struct discord_invite *p);
@@ -119,6 +121,7 @@ struct discord_invite_metadata {
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
   // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
   struct {
     bool enable_arg_switches;
     bool enable_record_defined;
@@ -127,6 +130,7 @@ struct discord_invite_metadata {
     void *record_defined[5];
     void *record_null[5];
   } __M; // metadata
+/// @endcond
 };
 extern void discord_invite_metadata_cleanup_v(void *p);
 extern void discord_invite_metadata_cleanup(struct discord_invite_metadata *p);
