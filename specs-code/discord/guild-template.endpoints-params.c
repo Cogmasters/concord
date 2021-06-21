@@ -1,8 +1,13 @@
 /* This file is generated from specs/discord/guild-template.endpoints-params.json, Please don't edit it. */
+/**
+ * @file specs-code/discord/guild-template.endpoints-params.c
+ * @author cee-studio
+ * @date 21 Jun 2021
+ * @brief Specs generated file
+ * @see https://discord.com/developers/docs/resources/guild-template
+ */
+
 #include "specs.h"
-/*
-https://discord.com/developers/docs/resources/guild-template
-*/
 
 void discord_create_guild_from_guild_template_params_from_json(char *json, size_t len, struct discord_create_guild_from_guild_template_params *p)
 {
@@ -10,23 +15,19 @@ void discord_create_guild_from_guild_template_params_from_json(char *json, size_
   size_t r=0;
   r=json_extract(json, len, 
   /* specs/discord/guild-template.endpoints-params.json:13:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}'
-  */
+     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}' */
                 "(name):?s,"
   /* specs/discord/guild-template.endpoints-params.json:14:20
-     '{ "name": "icon", "type":{ "base":"char", "dec":"*" }, "comment":"base64 128x128 image for the guild icon"}'
-  */
+     '{ "name": "icon", "type":{ "base":"char", "dec":"*" }, "comment":"base64 128x128 image for the guild icon"}' */
                 "(icon):?s,"
                 "@arg_switches:b"
                 "@record_defined"
                 "@record_null",
   /* specs/discord/guild-template.endpoints-params.json:13:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}'
-  */
+     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}' */
                 &p->name,
   /* specs/discord/guild-template.endpoints-params.json:14:20
-     '{ "name": "icon", "type":{ "base":"char", "dec":"*" }, "comment":"base64 128x128 image for the guild icon"}'
-  */
+     '{ "name": "icon", "type":{ "base":"char", "dec":"*" }, "comment":"base64 128x128 image for the guild icon"}' */
                 &p->icon,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
@@ -38,13 +39,11 @@ static void discord_create_guild_from_guild_template_params_use_default_inject_s
 {
   p->__M.enable_arg_switches = true;
   /* specs/discord/guild-template.endpoints-params.json:13:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}'
-  */
+     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}' */
   p->__M.arg_switches[0] = p->name;
 
   /* specs/discord/guild-template.endpoints-params.json:14:20
-     '{ "name": "icon", "type":{ "base":"char", "dec":"*" }, "comment":"base64 128x128 image for the guild icon"}'
-  */
+     '{ "name": "icon", "type":{ "base":"char", "dec":"*" }, "comment":"base64 128x128 image for the guild icon"}' */
   p->__M.arg_switches[1] = p->icon;
 
 }
@@ -55,21 +54,17 @@ size_t discord_create_guild_from_guild_template_params_to_json(char *json, size_
   discord_create_guild_from_guild_template_params_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/discord/guild-template.endpoints-params.json:13:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}'
-  */
+     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}' */
                 "(name):s,"
   /* specs/discord/guild-template.endpoints-params.json:14:20
-     '{ "name": "icon", "type":{ "base":"char", "dec":"*" }, "comment":"base64 128x128 image for the guild icon"}'
-  */
+     '{ "name": "icon", "type":{ "base":"char", "dec":"*" }, "comment":"base64 128x128 image for the guild icon"}' */
                 "(icon):s,"
                 "@arg_switches:b",
   /* specs/discord/guild-template.endpoints-params.json:13:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}'
-  */
+     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}' */
                 p->name,
   /* specs/discord/guild-template.endpoints-params.json:14:20
-     '{ "name": "icon", "type":{ "base":"char", "dec":"*" }, "comment":"base64 128x128 image for the guild icon"}'
-  */
+     '{ "name": "icon", "type":{ "base":"char", "dec":"*" }, "comment":"base64 128x128 image for the guild icon"}' */
                 p->icon,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
@@ -114,13 +109,11 @@ size_t discord_create_guild_from_guild_template_params_list_to_json_v(char *str,
 
 void discord_create_guild_from_guild_template_params_cleanup(struct discord_create_guild_from_guild_template_params *d) {
   /* specs/discord/guild-template.endpoints-params.json:13:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}'
-  */
+     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}' */
   if (d->name)
     free(d->name);
   /* specs/discord/guild-template.endpoints-params.json:14:20
-     '{ "name": "icon", "type":{ "base":"char", "dec":"*" }, "comment":"base64 128x128 image for the guild icon"}'
-  */
+     '{ "name": "icon", "type":{ "base":"char", "dec":"*" }, "comment":"base64 128x128 image for the guild icon"}' */
   if (d->icon)
     free(d->icon);
 }
@@ -128,16 +121,14 @@ void discord_create_guild_from_guild_template_params_cleanup(struct discord_crea
 void discord_create_guild_from_guild_template_params_init(struct discord_create_guild_from_guild_template_params *p) {
   memset(p, 0, sizeof(struct discord_create_guild_from_guild_template_params));
   /* specs/discord/guild-template.endpoints-params.json:13:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}'
-  */
+     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}' */
 
   /* specs/discord/guild-template.endpoints-params.json:14:20
-     '{ "name": "icon", "type":{ "base":"char", "dec":"*" }, "comment":"base64 128x128 image for the guild icon"}'
-  */
+     '{ "name": "icon", "type":{ "base":"char", "dec":"*" }, "comment":"base64 128x128 image for the guild icon"}' */
 
 }
 struct discord_create_guild_from_guild_template_params* discord_create_guild_from_guild_template_params_alloc() {
-  struct discord_create_guild_from_guild_template_params *p= (struct discord_create_guild_from_guild_template_params*)malloc(sizeof(struct discord_create_guild_from_guild_template_params));
+  struct discord_create_guild_from_guild_template_params *p= malloc(sizeof(struct discord_create_guild_from_guild_template_params));
   discord_create_guild_from_guild_template_params_init(p);
   return p;
 }
@@ -174,23 +165,19 @@ void discord_create_guild_template_params_from_json(char *json, size_t len, stru
   size_t r=0;
   r=json_extract(json, len, 
   /* specs/discord/guild-template.endpoints-params.json:24:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}'
-  */
+     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}' */
                 "(name):?s,"
   /* specs/discord/guild-template.endpoints-params.json:25:20
-     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"description for the template (0-120) chars"}'
-  */
+     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"description for the template (0-120) chars"}' */
                 "(description):?s,"
                 "@arg_switches:b"
                 "@record_defined"
                 "@record_null",
   /* specs/discord/guild-template.endpoints-params.json:24:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}'
-  */
+     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}' */
                 &p->name,
   /* specs/discord/guild-template.endpoints-params.json:25:20
-     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"description for the template (0-120) chars"}'
-  */
+     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"description for the template (0-120) chars"}' */
                 &p->description,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
@@ -202,13 +189,11 @@ static void discord_create_guild_template_params_use_default_inject_settings(str
 {
   p->__M.enable_arg_switches = true;
   /* specs/discord/guild-template.endpoints-params.json:24:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}'
-  */
+     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}' */
   p->__M.arg_switches[0] = p->name;
 
   /* specs/discord/guild-template.endpoints-params.json:25:20
-     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"description for the template (0-120) chars"}'
-  */
+     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"description for the template (0-120) chars"}' */
   p->__M.arg_switches[1] = p->description;
 
 }
@@ -219,21 +204,17 @@ size_t discord_create_guild_template_params_to_json(char *json, size_t len, stru
   discord_create_guild_template_params_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/discord/guild-template.endpoints-params.json:24:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}'
-  */
+     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}' */
                 "(name):s,"
   /* specs/discord/guild-template.endpoints-params.json:25:20
-     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"description for the template (0-120) chars"}'
-  */
+     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"description for the template (0-120) chars"}' */
                 "(description):s,"
                 "@arg_switches:b",
   /* specs/discord/guild-template.endpoints-params.json:24:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}'
-  */
+     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}' */
                 p->name,
   /* specs/discord/guild-template.endpoints-params.json:25:20
-     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"description for the template (0-120) chars"}'
-  */
+     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"description for the template (0-120) chars"}' */
                 p->description,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
@@ -278,13 +259,11 @@ size_t discord_create_guild_template_params_list_to_json_v(char *str, size_t len
 
 void discord_create_guild_template_params_cleanup(struct discord_create_guild_template_params *d) {
   /* specs/discord/guild-template.endpoints-params.json:24:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}'
-  */
+     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}' */
   if (d->name)
     free(d->name);
   /* specs/discord/guild-template.endpoints-params.json:25:20
-     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"description for the template (0-120) chars"}'
-  */
+     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"description for the template (0-120) chars"}' */
   if (d->description)
     free(d->description);
 }
@@ -292,16 +271,14 @@ void discord_create_guild_template_params_cleanup(struct discord_create_guild_te
 void discord_create_guild_template_params_init(struct discord_create_guild_template_params *p) {
   memset(p, 0, sizeof(struct discord_create_guild_template_params));
   /* specs/discord/guild-template.endpoints-params.json:24:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}'
-  */
+     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}' */
 
   /* specs/discord/guild-template.endpoints-params.json:25:20
-     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"description for the template (0-120) chars"}'
-  */
+     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"description for the template (0-120) chars"}' */
 
 }
 struct discord_create_guild_template_params* discord_create_guild_template_params_alloc() {
-  struct discord_create_guild_template_params *p= (struct discord_create_guild_template_params*)malloc(sizeof(struct discord_create_guild_template_params));
+  struct discord_create_guild_template_params *p= malloc(sizeof(struct discord_create_guild_template_params));
   discord_create_guild_template_params_init(p);
   return p;
 }
@@ -338,23 +315,19 @@ void discord_modify_guild_template_params_from_json(char *json, size_t len, stru
   size_t r=0;
   r=json_extract(json, len, 
   /* specs/discord/guild-template.endpoints-params.json:35:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}'
-  */
+     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}' */
                 "(name):?s,"
   /* specs/discord/guild-template.endpoints-params.json:36:20
-     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"description for the template (0-120) chars"}'
-  */
+     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"description for the template (0-120) chars"}' */
                 "(description):?s,"
                 "@arg_switches:b"
                 "@record_defined"
                 "@record_null",
   /* specs/discord/guild-template.endpoints-params.json:35:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}'
-  */
+     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}' */
                 &p->name,
   /* specs/discord/guild-template.endpoints-params.json:36:20
-     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"description for the template (0-120) chars"}'
-  */
+     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"description for the template (0-120) chars"}' */
                 &p->description,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
@@ -366,13 +339,11 @@ static void discord_modify_guild_template_params_use_default_inject_settings(str
 {
   p->__M.enable_arg_switches = true;
   /* specs/discord/guild-template.endpoints-params.json:35:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}'
-  */
+     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}' */
   p->__M.arg_switches[0] = p->name;
 
   /* specs/discord/guild-template.endpoints-params.json:36:20
-     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"description for the template (0-120) chars"}'
-  */
+     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"description for the template (0-120) chars"}' */
   p->__M.arg_switches[1] = p->description;
 
 }
@@ -383,21 +354,17 @@ size_t discord_modify_guild_template_params_to_json(char *json, size_t len, stru
   discord_modify_guild_template_params_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/discord/guild-template.endpoints-params.json:35:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}'
-  */
+     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}' */
                 "(name):s,"
   /* specs/discord/guild-template.endpoints-params.json:36:20
-     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"description for the template (0-120) chars"}'
-  */
+     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"description for the template (0-120) chars"}' */
                 "(description):s,"
                 "@arg_switches:b",
   /* specs/discord/guild-template.endpoints-params.json:35:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}'
-  */
+     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}' */
                 p->name,
   /* specs/discord/guild-template.endpoints-params.json:36:20
-     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"description for the template (0-120) chars"}'
-  */
+     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"description for the template (0-120) chars"}' */
                 p->description,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
@@ -442,13 +409,11 @@ size_t discord_modify_guild_template_params_list_to_json_v(char *str, size_t len
 
 void discord_modify_guild_template_params_cleanup(struct discord_modify_guild_template_params *d) {
   /* specs/discord/guild-template.endpoints-params.json:35:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}'
-  */
+     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}' */
   if (d->name)
     free(d->name);
   /* specs/discord/guild-template.endpoints-params.json:36:20
-     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"description for the template (0-120) chars"}'
-  */
+     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"description for the template (0-120) chars"}' */
   if (d->description)
     free(d->description);
 }
@@ -456,16 +421,14 @@ void discord_modify_guild_template_params_cleanup(struct discord_modify_guild_te
 void discord_modify_guild_template_params_init(struct discord_modify_guild_template_params *p) {
   memset(p, 0, sizeof(struct discord_modify_guild_template_params));
   /* specs/discord/guild-template.endpoints-params.json:35:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}'
-  */
+     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}' */
 
   /* specs/discord/guild-template.endpoints-params.json:36:20
-     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"description for the template (0-120) chars"}'
-  */
+     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"description for the template (0-120) chars"}' */
 
 }
 struct discord_modify_guild_template_params* discord_modify_guild_template_params_alloc() {
-  struct discord_modify_guild_template_params *p= (struct discord_modify_guild_template_params*)malloc(sizeof(struct discord_modify_guild_template_params));
+  struct discord_modify_guild_template_params *p= malloc(sizeof(struct discord_modify_guild_template_params));
   discord_modify_guild_template_params_init(p);
   return p;
 }

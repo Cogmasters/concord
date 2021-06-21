@@ -1,8 +1,13 @@
 /* This file is generated from specs/discord/gateway.json, Please don't edit it. */
+/**
+ * @file specs-code/discord/gateway.c
+ * @author cee-studio
+ * @date 21 Jun 2021
+ * @brief Specs generated file
+ * @see https://discord.com/developers/docs/topics/gateway
+ */
+
 #include "specs.h"
-/*
-https://discord.com/developers/docs/topics/gateway
-*/
 
 
 enum discord_gateway_close_opcodes discord_gateway_close_opcodes_from_string(char *s){
@@ -287,69 +292,53 @@ void discord_gateway_identify_from_json(char *json, size_t len, struct discord_g
   size_t r=0;
   r=json_extract(json, len, 
   /* specs/discord/gateway.json:119:19
-     '{ "name":"token","type":{"base":"char", "dec":"*"}}'
-  */
+     '{ "name":"token","type":{"base":"char", "dec":"*"}}' */
                 "(token):?s,"
   /* specs/discord/gateway.json:120:19
-     '{ "name":"properties","type":{"base":"struct discord_gateway_identify_connection", "dec":"*"}}'
-  */
+     '{ "name":"properties","type":{"base":"struct discord_gateway_identify_connection", "dec":"*"}}' */
                 "(properties):F,"
   /* specs/discord/gateway.json:121:19
-     '{ "name":"compress","type":{"base":"bool"}}'
-  */
+     '{ "name":"compress","type":{"base":"bool"}}' */
                 "(compress):b,"
   /* specs/discord/gateway.json:122:19
-     '{ "name":"large_threshold","type":{"base":"int"}}'
-  */
+     '{ "name":"large_threshold","type":{"base":"int"}}' */
                 "(large_threshold):d,"
   /* specs/discord/gateway.json:123:19
-     '{ "name":"guild_subscriptions","type":{"base":"bool"}}'
-  */
+     '{ "name":"guild_subscriptions","type":{"base":"bool"}}' */
                 "(guild_subscriptions):b,"
   /* specs/discord/gateway.json:124:19
-     '{ "name":"shard","type":{"base":"int", "dec":"*"}, "todo":true}'
-  */
+     '{ "name":"shard","type":{"base":"int", "dec":"*"}, "todo":true}' */
   /* specs/discord/gateway.json:125:19
-     '{ "name":"presence","type":{"base":"struct discord_gateway_status_update", "dec":"*"}}'
-  */
+     '{ "name":"presence","type":{"base":"struct discord_gateway_status_update", "dec":"*"}}' */
                 "(presence):F,"
   /* specs/discord/gateway.json:126:19
-     '{ "name":"intents","type":{"base":"int"}}'
-  */
+     '{ "name":"intents","type":{"base":"int"}}' */
                 "(intents):d,"
                 "@arg_switches:b"
                 "@record_defined"
                 "@record_null",
   /* specs/discord/gateway.json:119:19
-     '{ "name":"token","type":{"base":"char", "dec":"*"}}'
-  */
+     '{ "name":"token","type":{"base":"char", "dec":"*"}}' */
                 &p->token,
   /* specs/discord/gateway.json:120:19
-     '{ "name":"properties","type":{"base":"struct discord_gateway_identify_connection", "dec":"*"}}'
-  */
+     '{ "name":"properties","type":{"base":"struct discord_gateway_identify_connection", "dec":"*"}}' */
                 discord_gateway_identify_connection_from_json, p->properties,
   /* specs/discord/gateway.json:121:19
-     '{ "name":"compress","type":{"base":"bool"}}'
-  */
+     '{ "name":"compress","type":{"base":"bool"}}' */
                 &p->compress,
   /* specs/discord/gateway.json:122:19
-     '{ "name":"large_threshold","type":{"base":"int"}}'
-  */
+     '{ "name":"large_threshold","type":{"base":"int"}}' */
                 &p->large_threshold,
   /* specs/discord/gateway.json:123:19
-     '{ "name":"guild_subscriptions","type":{"base":"bool"}}'
-  */
+     '{ "name":"guild_subscriptions","type":{"base":"bool"}}' */
                 &p->guild_subscriptions,
   /* specs/discord/gateway.json:124:19
-     '{ "name":"shard","type":{"base":"int", "dec":"*"}, "todo":true}'
-  */
+     '{ "name":"shard","type":{"base":"int", "dec":"*"}, "todo":true}' */
   /* specs/discord/gateway.json:125:19
-     '{ "name":"presence","type":{"base":"struct discord_gateway_status_update", "dec":"*"}}'
-  */
+     '{ "name":"presence","type":{"base":"struct discord_gateway_status_update", "dec":"*"}}' */
                 discord_gateway_status_update_from_json, p->presence,
   /* specs/discord/gateway.json:126:19
-     '{ "name":"intents","type":{"base":"int"}}'
-  */
+     '{ "name":"intents","type":{"base":"int"}}' */
                 &p->intents,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
@@ -361,42 +350,34 @@ static void discord_gateway_identify_use_default_inject_settings(struct discord_
 {
   p->__M.enable_arg_switches = true;
   /* specs/discord/gateway.json:119:19
-     '{ "name":"token","type":{"base":"char", "dec":"*"}}'
-  */
+     '{ "name":"token","type":{"base":"char", "dec":"*"}}' */
   p->__M.arg_switches[0] = p->token;
 
   /* specs/discord/gateway.json:120:19
-     '{ "name":"properties","type":{"base":"struct discord_gateway_identify_connection", "dec":"*"}}'
-  */
+     '{ "name":"properties","type":{"base":"struct discord_gateway_identify_connection", "dec":"*"}}' */
   p->__M.arg_switches[1] = p->properties;
 
   /* specs/discord/gateway.json:121:19
-     '{ "name":"compress","type":{"base":"bool"}}'
-  */
+     '{ "name":"compress","type":{"base":"bool"}}' */
   p->__M.arg_switches[2] = &p->compress;
 
   /* specs/discord/gateway.json:122:19
-     '{ "name":"large_threshold","type":{"base":"int"}}'
-  */
+     '{ "name":"large_threshold","type":{"base":"int"}}' */
   p->__M.arg_switches[3] = &p->large_threshold;
 
   /* specs/discord/gateway.json:123:19
-     '{ "name":"guild_subscriptions","type":{"base":"bool"}}'
-  */
+     '{ "name":"guild_subscriptions","type":{"base":"bool"}}' */
   p->__M.arg_switches[4] = &p->guild_subscriptions;
 
   /* specs/discord/gateway.json:124:19
-     '{ "name":"shard","type":{"base":"int", "dec":"*"}, "todo":true}'
-  */
+     '{ "name":"shard","type":{"base":"int", "dec":"*"}, "todo":true}' */
 
   /* specs/discord/gateway.json:125:19
-     '{ "name":"presence","type":{"base":"struct discord_gateway_status_update", "dec":"*"}}'
-  */
+     '{ "name":"presence","type":{"base":"struct discord_gateway_status_update", "dec":"*"}}' */
   p->__M.arg_switches[6] = p->presence;
 
   /* specs/discord/gateway.json:126:19
-     '{ "name":"intents","type":{"base":"int"}}'
-  */
+     '{ "name":"intents","type":{"base":"int"}}' */
   p->__M.arg_switches[7] = &p->intents;
 
 }
@@ -407,67 +388,51 @@ size_t discord_gateway_identify_to_json(char *json, size_t len, struct discord_g
   discord_gateway_identify_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/discord/gateway.json:119:19
-     '{ "name":"token","type":{"base":"char", "dec":"*"}}'
-  */
+     '{ "name":"token","type":{"base":"char", "dec":"*"}}' */
                 "(token):s,"
   /* specs/discord/gateway.json:120:19
-     '{ "name":"properties","type":{"base":"struct discord_gateway_identify_connection", "dec":"*"}}'
-  */
+     '{ "name":"properties","type":{"base":"struct discord_gateway_identify_connection", "dec":"*"}}' */
                 "(properties):F,"
   /* specs/discord/gateway.json:121:19
-     '{ "name":"compress","type":{"base":"bool"}}'
-  */
+     '{ "name":"compress","type":{"base":"bool"}}' */
                 "(compress):b,"
   /* specs/discord/gateway.json:122:19
-     '{ "name":"large_threshold","type":{"base":"int"}}'
-  */
+     '{ "name":"large_threshold","type":{"base":"int"}}' */
                 "(large_threshold):d,"
   /* specs/discord/gateway.json:123:19
-     '{ "name":"guild_subscriptions","type":{"base":"bool"}}'
-  */
+     '{ "name":"guild_subscriptions","type":{"base":"bool"}}' */
                 "(guild_subscriptions):b,"
   /* specs/discord/gateway.json:124:19
-     '{ "name":"shard","type":{"base":"int", "dec":"*"}, "todo":true}'
-  */
+     '{ "name":"shard","type":{"base":"int", "dec":"*"}, "todo":true}' */
   /* specs/discord/gateway.json:125:19
-     '{ "name":"presence","type":{"base":"struct discord_gateway_status_update", "dec":"*"}}'
-  */
+     '{ "name":"presence","type":{"base":"struct discord_gateway_status_update", "dec":"*"}}' */
                 "(presence):F,"
   /* specs/discord/gateway.json:126:19
-     '{ "name":"intents","type":{"base":"int"}}'
-  */
+     '{ "name":"intents","type":{"base":"int"}}' */
                 "(intents):d,"
                 "@arg_switches:b",
   /* specs/discord/gateway.json:119:19
-     '{ "name":"token","type":{"base":"char", "dec":"*"}}'
-  */
+     '{ "name":"token","type":{"base":"char", "dec":"*"}}' */
                 p->token,
   /* specs/discord/gateway.json:120:19
-     '{ "name":"properties","type":{"base":"struct discord_gateway_identify_connection", "dec":"*"}}'
-  */
+     '{ "name":"properties","type":{"base":"struct discord_gateway_identify_connection", "dec":"*"}}' */
                 discord_gateway_identify_connection_to_json, p->properties,
   /* specs/discord/gateway.json:121:19
-     '{ "name":"compress","type":{"base":"bool"}}'
-  */
+     '{ "name":"compress","type":{"base":"bool"}}' */
                 &p->compress,
   /* specs/discord/gateway.json:122:19
-     '{ "name":"large_threshold","type":{"base":"int"}}'
-  */
+     '{ "name":"large_threshold","type":{"base":"int"}}' */
                 &p->large_threshold,
   /* specs/discord/gateway.json:123:19
-     '{ "name":"guild_subscriptions","type":{"base":"bool"}}'
-  */
+     '{ "name":"guild_subscriptions","type":{"base":"bool"}}' */
                 &p->guild_subscriptions,
   /* specs/discord/gateway.json:124:19
-     '{ "name":"shard","type":{"base":"int", "dec":"*"}, "todo":true}'
-  */
+     '{ "name":"shard","type":{"base":"int", "dec":"*"}, "todo":true}' */
   /* specs/discord/gateway.json:125:19
-     '{ "name":"presence","type":{"base":"struct discord_gateway_status_update", "dec":"*"}}'
-  */
+     '{ "name":"presence","type":{"base":"struct discord_gateway_status_update", "dec":"*"}}' */
                 discord_gateway_status_update_to_json, p->presence,
   /* specs/discord/gateway.json:126:19
-     '{ "name":"intents","type":{"base":"int"}}'
-  */
+     '{ "name":"intents","type":{"base":"int"}}' */
                 &p->intents,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
@@ -512,81 +477,65 @@ size_t discord_gateway_identify_list_to_json_v(char *str, size_t len, void *p){
 
 void discord_gateway_identify_cleanup(struct discord_gateway_identify *d) {
   /* specs/discord/gateway.json:119:19
-     '{ "name":"token","type":{"base":"char", "dec":"*"}}'
-  */
+     '{ "name":"token","type":{"base":"char", "dec":"*"}}' */
   if (d->token)
     free(d->token);
   /* specs/discord/gateway.json:120:19
-     '{ "name":"properties","type":{"base":"struct discord_gateway_identify_connection", "dec":"*"}}'
-  */
+     '{ "name":"properties","type":{"base":"struct discord_gateway_identify_connection", "dec":"*"}}' */
   if (d->properties)
     discord_gateway_identify_connection_free(d->properties);
   /* specs/discord/gateway.json:121:19
-     '{ "name":"compress","type":{"base":"bool"}}'
-  */
-  //p->compress is a scalar
+     '{ "name":"compress","type":{"base":"bool"}}' */
+  // p->compress is a scalar
   /* specs/discord/gateway.json:122:19
-     '{ "name":"large_threshold","type":{"base":"int"}}'
-  */
-  //p->large_threshold is a scalar
+     '{ "name":"large_threshold","type":{"base":"int"}}' */
+  // p->large_threshold is a scalar
   /* specs/discord/gateway.json:123:19
-     '{ "name":"guild_subscriptions","type":{"base":"bool"}}'
-  */
-  //p->guild_subscriptions is a scalar
+     '{ "name":"guild_subscriptions","type":{"base":"bool"}}' */
+  // p->guild_subscriptions is a scalar
   /* specs/discord/gateway.json:124:19
-     '{ "name":"shard","type":{"base":"int", "dec":"*"}, "todo":true}'
-  */
-  //@todo p->(null)
+     '{ "name":"shard","type":{"base":"int", "dec":"*"}, "todo":true}' */
+  ///< @todo p->(null)
   /* specs/discord/gateway.json:125:19
-     '{ "name":"presence","type":{"base":"struct discord_gateway_status_update", "dec":"*"}}'
-  */
+     '{ "name":"presence","type":{"base":"struct discord_gateway_status_update", "dec":"*"}}' */
   if (d->presence)
     discord_gateway_status_update_free(d->presence);
   /* specs/discord/gateway.json:126:19
-     '{ "name":"intents","type":{"base":"int"}}'
-  */
-  //p->intents is a scalar
+     '{ "name":"intents","type":{"base":"int"}}' */
+  // p->intents is a scalar
 }
 
 void discord_gateway_identify_init(struct discord_gateway_identify *p) {
   memset(p, 0, sizeof(struct discord_gateway_identify));
   /* specs/discord/gateway.json:119:19
-     '{ "name":"token","type":{"base":"char", "dec":"*"}}'
-  */
+     '{ "name":"token","type":{"base":"char", "dec":"*"}}' */
 
   /* specs/discord/gateway.json:120:19
-     '{ "name":"properties","type":{"base":"struct discord_gateway_identify_connection", "dec":"*"}}'
-  */
+     '{ "name":"properties","type":{"base":"struct discord_gateway_identify_connection", "dec":"*"}}' */
   p->properties = discord_gateway_identify_connection_alloc();
 
   /* specs/discord/gateway.json:121:19
-     '{ "name":"compress","type":{"base":"bool"}}'
-  */
+     '{ "name":"compress","type":{"base":"bool"}}' */
 
   /* specs/discord/gateway.json:122:19
-     '{ "name":"large_threshold","type":{"base":"int"}}'
-  */
+     '{ "name":"large_threshold","type":{"base":"int"}}' */
 
   /* specs/discord/gateway.json:123:19
-     '{ "name":"guild_subscriptions","type":{"base":"bool"}}'
-  */
+     '{ "name":"guild_subscriptions","type":{"base":"bool"}}' */
 
   /* specs/discord/gateway.json:124:19
-     '{ "name":"shard","type":{"base":"int", "dec":"*"}, "todo":true}'
-  */
+     '{ "name":"shard","type":{"base":"int", "dec":"*"}, "todo":true}' */
 
   /* specs/discord/gateway.json:125:19
-     '{ "name":"presence","type":{"base":"struct discord_gateway_status_update", "dec":"*"}}'
-  */
+     '{ "name":"presence","type":{"base":"struct discord_gateway_status_update", "dec":"*"}}' */
   p->presence = discord_gateway_status_update_alloc();
 
   /* specs/discord/gateway.json:126:19
-     '{ "name":"intents","type":{"base":"int"}}'
-  */
+     '{ "name":"intents","type":{"base":"int"}}' */
 
 }
 struct discord_gateway_identify* discord_gateway_identify_alloc() {
-  struct discord_gateway_identify *p= (struct discord_gateway_identify*)malloc(sizeof(struct discord_gateway_identify));
+  struct discord_gateway_identify *p= malloc(sizeof(struct discord_gateway_identify));
   discord_gateway_identify_init(p);
   return p;
 }
@@ -624,42 +573,34 @@ void discord_gateway_status_update_from_json(char *json, size_t len, struct disc
   r=json_extract(json, len, 
   /* specs/discord/gateway.json:135:19
      '{ "name":"since","type":{"base":"char", "dec":"*", "converter":"iso8601"},
-          "option":true, "inject_if_not":0 }'
-  */
+          "option":true, "inject_if_not":0 }' */
                 "(since):F,"
   /* specs/discord/gateway.json:137:19
      '{ "name":"activities","type":{"base":"struct discord_gateway_activity", "dec":"ntl"}, 
-          "option":true, "inject_if_not":null}'
-  */
+          "option":true, "inject_if_not":null}' */
                 "(activities):F,"
   /* specs/discord/gateway.json:139:19
-     '{ "name":"status","type":{"base":"char", "dec":"[16]"}}'
-  */
+     '{ "name":"status","type":{"base":"char", "dec":"[16]"}}' */
                 "(status):s,"
   /* specs/discord/gateway.json:140:19
-     '{ "name":"afk","type":{"base":"bool"}}'
-  */
+     '{ "name":"afk","type":{"base":"bool"}}' */
                 "(afk):b,"
                 "@arg_switches:b"
                 "@record_defined"
                 "@record_null",
   /* specs/discord/gateway.json:135:19
      '{ "name":"since","type":{"base":"char", "dec":"*", "converter":"iso8601"},
-          "option":true, "inject_if_not":0 }'
-  */
+          "option":true, "inject_if_not":0 }' */
                 cee_iso8601_to_unix_ms, &p->since,
   /* specs/discord/gateway.json:137:19
      '{ "name":"activities","type":{"base":"struct discord_gateway_activity", "dec":"ntl"}, 
-          "option":true, "inject_if_not":null}'
-  */
+          "option":true, "inject_if_not":null}' */
                 discord_gateway_activity_list_from_json, &p->activities,
   /* specs/discord/gateway.json:139:19
-     '{ "name":"status","type":{"base":"char", "dec":"[16]"}}'
-  */
+     '{ "name":"status","type":{"base":"char", "dec":"[16]"}}' */
                 p->status,
   /* specs/discord/gateway.json:140:19
-     '{ "name":"afk","type":{"base":"bool"}}'
-  */
+     '{ "name":"afk","type":{"base":"bool"}}' */
                 &p->afk,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
@@ -672,26 +613,22 @@ static void discord_gateway_status_update_use_default_inject_settings(struct dis
   p->__M.enable_arg_switches = true;
   /* specs/discord/gateway.json:135:19
      '{ "name":"since","type":{"base":"char", "dec":"*", "converter":"iso8601"},
-          "option":true, "inject_if_not":0 }'
-  */
+          "option":true, "inject_if_not":0 }' */
   if (p->since != 0)
     p->__M.arg_switches[0] = &p->since;
 
   /* specs/discord/gateway.json:137:19
      '{ "name":"activities","type":{"base":"struct discord_gateway_activity", "dec":"ntl"}, 
-          "option":true, "inject_if_not":null}'
-  */
+          "option":true, "inject_if_not":null}' */
   if (p->activities != NULL)
     p->__M.arg_switches[1] = p->activities;
 
   /* specs/discord/gateway.json:139:19
-     '{ "name":"status","type":{"base":"char", "dec":"[16]"}}'
-  */
+     '{ "name":"status","type":{"base":"char", "dec":"[16]"}}' */
   p->__M.arg_switches[2] = p->status;
 
   /* specs/discord/gateway.json:140:19
-     '{ "name":"afk","type":{"base":"bool"}}'
-  */
+     '{ "name":"afk","type":{"base":"bool"}}' */
   p->__M.arg_switches[3] = &p->afk;
 
 }
@@ -703,40 +640,32 @@ size_t discord_gateway_status_update_to_json(char *json, size_t len, struct disc
   r=json_inject(json, len, 
   /* specs/discord/gateway.json:135:19
      '{ "name":"since","type":{"base":"char", "dec":"*", "converter":"iso8601"},
-          "option":true, "inject_if_not":0 }'
-  */
+          "option":true, "inject_if_not":0 }' */
                 "(since):|F|,"
   /* specs/discord/gateway.json:137:19
      '{ "name":"activities","type":{"base":"struct discord_gateway_activity", "dec":"ntl"}, 
-          "option":true, "inject_if_not":null}'
-  */
+          "option":true, "inject_if_not":null}' */
                 "(activities):F,"
   /* specs/discord/gateway.json:139:19
-     '{ "name":"status","type":{"base":"char", "dec":"[16]"}}'
-  */
+     '{ "name":"status","type":{"base":"char", "dec":"[16]"}}' */
                 "(status):s,"
   /* specs/discord/gateway.json:140:19
-     '{ "name":"afk","type":{"base":"bool"}}'
-  */
+     '{ "name":"afk","type":{"base":"bool"}}' */
                 "(afk):b,"
                 "@arg_switches:b",
   /* specs/discord/gateway.json:135:19
      '{ "name":"since","type":{"base":"char", "dec":"*", "converter":"iso8601"},
-          "option":true, "inject_if_not":0 }'
-  */
+          "option":true, "inject_if_not":0 }' */
                 cee_unix_ms_to_iso8601, &p->since,
   /* specs/discord/gateway.json:137:19
      '{ "name":"activities","type":{"base":"struct discord_gateway_activity", "dec":"ntl"}, 
-          "option":true, "inject_if_not":null}'
-  */
+          "option":true, "inject_if_not":null}' */
                 discord_gateway_activity_list_to_json, p->activities,
   /* specs/discord/gateway.json:139:19
-     '{ "name":"status","type":{"base":"char", "dec":"[16]"}}'
-  */
+     '{ "name":"status","type":{"base":"char", "dec":"[16]"}}' */
                 p->status,
   /* specs/discord/gateway.json:140:19
-     '{ "name":"afk","type":{"base":"bool"}}'
-  */
+     '{ "name":"afk","type":{"base":"bool"}}' */
                 &p->afk,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
@@ -782,48 +711,40 @@ size_t discord_gateway_status_update_list_to_json_v(char *str, size_t len, void 
 void discord_gateway_status_update_cleanup(struct discord_gateway_status_update *d) {
   /* specs/discord/gateway.json:135:19
      '{ "name":"since","type":{"base":"char", "dec":"*", "converter":"iso8601"},
-          "option":true, "inject_if_not":0 }'
-  */
-  //p->since is a scalar
+          "option":true, "inject_if_not":0 }' */
+  // p->since is a scalar
   /* specs/discord/gateway.json:137:19
      '{ "name":"activities","type":{"base":"struct discord_gateway_activity", "dec":"ntl"}, 
-          "option":true, "inject_if_not":null}'
-  */
+          "option":true, "inject_if_not":null}' */
   if (d->activities)
     discord_gateway_activity_list_free(d->activities);
   /* specs/discord/gateway.json:139:19
-     '{ "name":"status","type":{"base":"char", "dec":"[16]"}}'
-  */
-  //p->status is a scalar
+     '{ "name":"status","type":{"base":"char", "dec":"[16]"}}' */
+  // p->status is a scalar
   /* specs/discord/gateway.json:140:19
-     '{ "name":"afk","type":{"base":"bool"}}'
-  */
-  //p->afk is a scalar
+     '{ "name":"afk","type":{"base":"bool"}}' */
+  // p->afk is a scalar
 }
 
 void discord_gateway_status_update_init(struct discord_gateway_status_update *p) {
   memset(p, 0, sizeof(struct discord_gateway_status_update));
   /* specs/discord/gateway.json:135:19
      '{ "name":"since","type":{"base":"char", "dec":"*", "converter":"iso8601"},
-          "option":true, "inject_if_not":0 }'
-  */
+          "option":true, "inject_if_not":0 }' */
 
   /* specs/discord/gateway.json:137:19
      '{ "name":"activities","type":{"base":"struct discord_gateway_activity", "dec":"ntl"}, 
-          "option":true, "inject_if_not":null}'
-  */
+          "option":true, "inject_if_not":null}' */
 
   /* specs/discord/gateway.json:139:19
-     '{ "name":"status","type":{"base":"char", "dec":"[16]"}}'
-  */
+     '{ "name":"status","type":{"base":"char", "dec":"[16]"}}' */
 
   /* specs/discord/gateway.json:140:19
-     '{ "name":"afk","type":{"base":"bool"}}'
-  */
+     '{ "name":"afk","type":{"base":"bool"}}' */
 
 }
 struct discord_gateway_status_update* discord_gateway_status_update_alloc() {
-  struct discord_gateway_status_update *p= (struct discord_gateway_status_update*)malloc(sizeof(struct discord_gateway_status_update));
+  struct discord_gateway_status_update *p= malloc(sizeof(struct discord_gateway_status_update));
   discord_gateway_status_update_init(p);
   return p;
 }
@@ -860,31 +781,25 @@ void discord_gateway_identify_connection_from_json(char *json, size_t len, struc
   size_t r=0;
   r=json_extract(json, len, 
   /* specs/discord/gateway.json:150:19
-     '{ "name":"$os", "type":{"base":"char", "dec":"*"}}'
-  */
+     '{ "name":"$os", "type":{"base":"char", "dec":"*"}}' */
                 "($os):?s,"
   /* specs/discord/gateway.json:151:19
-     '{ "name":"$browser", "type":{"base":"char", "dec":"*"}}'
-  */
+     '{ "name":"$browser", "type":{"base":"char", "dec":"*"}}' */
                 "($browser):?s,"
   /* specs/discord/gateway.json:152:19
-     '{ "name":"$device", "type":{"base":"char", "dec":"*"}}'
-  */
+     '{ "name":"$device", "type":{"base":"char", "dec":"*"}}' */
                 "($device):?s,"
                 "@arg_switches:b"
                 "@record_defined"
                 "@record_null",
   /* specs/discord/gateway.json:150:19
-     '{ "name":"$os", "type":{"base":"char", "dec":"*"}}'
-  */
+     '{ "name":"$os", "type":{"base":"char", "dec":"*"}}' */
                 &p->$os,
   /* specs/discord/gateway.json:151:19
-     '{ "name":"$browser", "type":{"base":"char", "dec":"*"}}'
-  */
+     '{ "name":"$browser", "type":{"base":"char", "dec":"*"}}' */
                 &p->$browser,
   /* specs/discord/gateway.json:152:19
-     '{ "name":"$device", "type":{"base":"char", "dec":"*"}}'
-  */
+     '{ "name":"$device", "type":{"base":"char", "dec":"*"}}' */
                 &p->$device,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
@@ -896,18 +811,15 @@ static void discord_gateway_identify_connection_use_default_inject_settings(stru
 {
   p->__M.enable_arg_switches = true;
   /* specs/discord/gateway.json:150:19
-     '{ "name":"$os", "type":{"base":"char", "dec":"*"}}'
-  */
+     '{ "name":"$os", "type":{"base":"char", "dec":"*"}}' */
   p->__M.arg_switches[0] = p->$os;
 
   /* specs/discord/gateway.json:151:19
-     '{ "name":"$browser", "type":{"base":"char", "dec":"*"}}'
-  */
+     '{ "name":"$browser", "type":{"base":"char", "dec":"*"}}' */
   p->__M.arg_switches[1] = p->$browser;
 
   /* specs/discord/gateway.json:152:19
-     '{ "name":"$device", "type":{"base":"char", "dec":"*"}}'
-  */
+     '{ "name":"$device", "type":{"base":"char", "dec":"*"}}' */
   p->__M.arg_switches[2] = p->$device;
 
 }
@@ -918,29 +830,23 @@ size_t discord_gateway_identify_connection_to_json(char *json, size_t len, struc
   discord_gateway_identify_connection_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/discord/gateway.json:150:19
-     '{ "name":"$os", "type":{"base":"char", "dec":"*"}}'
-  */
+     '{ "name":"$os", "type":{"base":"char", "dec":"*"}}' */
                 "($os):s,"
   /* specs/discord/gateway.json:151:19
-     '{ "name":"$browser", "type":{"base":"char", "dec":"*"}}'
-  */
+     '{ "name":"$browser", "type":{"base":"char", "dec":"*"}}' */
                 "($browser):s,"
   /* specs/discord/gateway.json:152:19
-     '{ "name":"$device", "type":{"base":"char", "dec":"*"}}'
-  */
+     '{ "name":"$device", "type":{"base":"char", "dec":"*"}}' */
                 "($device):s,"
                 "@arg_switches:b",
   /* specs/discord/gateway.json:150:19
-     '{ "name":"$os", "type":{"base":"char", "dec":"*"}}'
-  */
+     '{ "name":"$os", "type":{"base":"char", "dec":"*"}}' */
                 p->$os,
   /* specs/discord/gateway.json:151:19
-     '{ "name":"$browser", "type":{"base":"char", "dec":"*"}}'
-  */
+     '{ "name":"$browser", "type":{"base":"char", "dec":"*"}}' */
                 p->$browser,
   /* specs/discord/gateway.json:152:19
-     '{ "name":"$device", "type":{"base":"char", "dec":"*"}}'
-  */
+     '{ "name":"$device", "type":{"base":"char", "dec":"*"}}' */
                 p->$device,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
@@ -985,18 +891,15 @@ size_t discord_gateway_identify_connection_list_to_json_v(char *str, size_t len,
 
 void discord_gateway_identify_connection_cleanup(struct discord_gateway_identify_connection *d) {
   /* specs/discord/gateway.json:150:19
-     '{ "name":"$os", "type":{"base":"char", "dec":"*"}}'
-  */
+     '{ "name":"$os", "type":{"base":"char", "dec":"*"}}' */
   if (d->$os)
     free(d->$os);
   /* specs/discord/gateway.json:151:19
-     '{ "name":"$browser", "type":{"base":"char", "dec":"*"}}'
-  */
+     '{ "name":"$browser", "type":{"base":"char", "dec":"*"}}' */
   if (d->$browser)
     free(d->$browser);
   /* specs/discord/gateway.json:152:19
-     '{ "name":"$device", "type":{"base":"char", "dec":"*"}}'
-  */
+     '{ "name":"$device", "type":{"base":"char", "dec":"*"}}' */
   if (d->$device)
     free(d->$device);
 }
@@ -1004,20 +907,17 @@ void discord_gateway_identify_connection_cleanup(struct discord_gateway_identify
 void discord_gateway_identify_connection_init(struct discord_gateway_identify_connection *p) {
   memset(p, 0, sizeof(struct discord_gateway_identify_connection));
   /* specs/discord/gateway.json:150:19
-     '{ "name":"$os", "type":{"base":"char", "dec":"*"}}'
-  */
+     '{ "name":"$os", "type":{"base":"char", "dec":"*"}}' */
 
   /* specs/discord/gateway.json:151:19
-     '{ "name":"$browser", "type":{"base":"char", "dec":"*"}}'
-  */
+     '{ "name":"$browser", "type":{"base":"char", "dec":"*"}}' */
 
   /* specs/discord/gateway.json:152:19
-     '{ "name":"$device", "type":{"base":"char", "dec":"*"}}'
-  */
+     '{ "name":"$device", "type":{"base":"char", "dec":"*"}}' */
 
 }
 struct discord_gateway_identify_connection* discord_gateway_identify_connection_alloc() {
-  struct discord_gateway_identify_connection *p= (struct discord_gateway_identify_connection*)malloc(sizeof(struct discord_gateway_identify_connection));
+  struct discord_gateway_identify_connection *p= malloc(sizeof(struct discord_gateway_identify_connection));
   discord_gateway_identify_connection_init(p);
   return p;
 }
@@ -1054,83 +954,67 @@ void discord_gateway_activity_from_json(char *json, size_t len, struct discord_g
   size_t r=0;
   r=json_extract(json, len, 
   /* specs/discord/gateway.json:161:19
-     '{ "name":"name","type":{"base":"char", "dec":"[512]"}}'
-  */
+     '{ "name":"name","type":{"base":"char", "dec":"[512]"}}' */
                 "(name):s,"
   /* specs/discord/gateway.json:162:19
-     '{ "name":"type","type":{"base":"int"}}'
-  */
+     '{ "name":"type","type":{"base":"int"}}' */
                 "(type):d,"
   /* specs/discord/gateway.json:163:19
      '{ "name":"url","type":{"base":"char", "dec":"*"},
-          "option":true, "inject_if_not":""}'
-  */
+          "option":true, "inject_if_not":""}' */
                 "(url):?s,"
   /* specs/discord/gateway.json:165:19
      '{ "name":"created_at","type":{"base":"char", "dec":"*", "converter":"iso8601"},
-          "option":true, "inject_if_not":0 }'
-  */
+          "option":true, "inject_if_not":0 }' */
                 "(created_at):F,"
   /* specs/discord/gateway.json:167:19
      '{ "name":"application_id","type":{"base":"char", "dec":"*", "converter":"snowflake" },
-          "option":true, "inject_if_not":0 }'
-  */
+          "option":true, "inject_if_not":0 }' */
                 "(application_id):F,"
   /* specs/discord/gateway.json:169:19
      '{ "name":"details","type":{"base":"char", "dec":"*"},
-          "option":true, "inject_if_not":null}'
-  */
+          "option":true, "inject_if_not":null}' */
                 "(details):?s,"
   /* specs/discord/gateway.json:171:19
      '{ "name":"state","type":{"base":"char", "dec":"*"},
-          "option":true, "inject_if_not":null}'
-  */
+          "option":true, "inject_if_not":null}' */
                 "(state):?s,"
   /* specs/discord/gateway.json:173:19
      '{ "name":"instance","type":{"base":"bool"},
-          "option":true, "inject_if_not":false}'
-  */
+          "option":true, "inject_if_not":false}' */
                 "(instance):b,"
                 "@arg_switches:b"
                 "@record_defined"
                 "@record_null",
   /* specs/discord/gateway.json:161:19
-     '{ "name":"name","type":{"base":"char", "dec":"[512]"}}'
-  */
+     '{ "name":"name","type":{"base":"char", "dec":"[512]"}}' */
                 p->name,
   /* specs/discord/gateway.json:162:19
-     '{ "name":"type","type":{"base":"int"}}'
-  */
+     '{ "name":"type","type":{"base":"int"}}' */
                 &p->type,
   /* specs/discord/gateway.json:163:19
      '{ "name":"url","type":{"base":"char", "dec":"*"},
-          "option":true, "inject_if_not":""}'
-  */
+          "option":true, "inject_if_not":""}' */
                 &p->url,
   /* specs/discord/gateway.json:165:19
      '{ "name":"created_at","type":{"base":"char", "dec":"*", "converter":"iso8601"},
-          "option":true, "inject_if_not":0 }'
-  */
+          "option":true, "inject_if_not":0 }' */
                 cee_iso8601_to_unix_ms, &p->created_at,
   /* specs/discord/gateway.json:167:19
      '{ "name":"application_id","type":{"base":"char", "dec":"*", "converter":"snowflake" },
-          "option":true, "inject_if_not":0 }'
-  */
+          "option":true, "inject_if_not":0 }' */
                 cee_strtoull, &p->application_id,
   /* specs/discord/gateway.json:169:19
      '{ "name":"details","type":{"base":"char", "dec":"*"},
-          "option":true, "inject_if_not":null}'
-  */
+          "option":true, "inject_if_not":null}' */
                 &p->details,
   /* specs/discord/gateway.json:171:19
      '{ "name":"state","type":{"base":"char", "dec":"*"},
-          "option":true, "inject_if_not":null}'
-  */
+          "option":true, "inject_if_not":null}' */
                 &p->state,
   /* specs/discord/gateway.json:173:19
      '{ "name":"instance","type":{"base":"bool"},
-          "option":true, "inject_if_not":false}'
-  */
+          "option":true, "inject_if_not":false}' */
                 &p->instance,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
@@ -1142,54 +1026,46 @@ static void discord_gateway_activity_use_default_inject_settings(struct discord_
 {
   p->__M.enable_arg_switches = true;
   /* specs/discord/gateway.json:161:19
-     '{ "name":"name","type":{"base":"char", "dec":"[512]"}}'
-  */
+     '{ "name":"name","type":{"base":"char", "dec":"[512]"}}' */
   p->__M.arg_switches[0] = p->name;
 
   /* specs/discord/gateway.json:162:19
-     '{ "name":"type","type":{"base":"int"}}'
-  */
+     '{ "name":"type","type":{"base":"int"}}' */
   p->__M.arg_switches[1] = &p->type;
 
   /* specs/discord/gateway.json:163:19
      '{ "name":"url","type":{"base":"char", "dec":"*"},
-          "option":true, "inject_if_not":""}'
-  */
+          "option":true, "inject_if_not":""}' */
   if (p->url != NULL && strlen(p->url) != 0)
     p->__M.arg_switches[2] = p->url;
 
   /* specs/discord/gateway.json:165:19
      '{ "name":"created_at","type":{"base":"char", "dec":"*", "converter":"iso8601"},
-          "option":true, "inject_if_not":0 }'
-  */
+          "option":true, "inject_if_not":0 }' */
   if (p->created_at != 0)
     p->__M.arg_switches[3] = &p->created_at;
 
   /* specs/discord/gateway.json:167:19
      '{ "name":"application_id","type":{"base":"char", "dec":"*", "converter":"snowflake" },
-          "option":true, "inject_if_not":0 }'
-  */
+          "option":true, "inject_if_not":0 }' */
   if (p->application_id != 0)
     p->__M.arg_switches[4] = &p->application_id;
 
   /* specs/discord/gateway.json:169:19
      '{ "name":"details","type":{"base":"char", "dec":"*"},
-          "option":true, "inject_if_not":null}'
-  */
+          "option":true, "inject_if_not":null}' */
   if (p->details != NULL)
     p->__M.arg_switches[5] = p->details;
 
   /* specs/discord/gateway.json:171:19
      '{ "name":"state","type":{"base":"char", "dec":"*"},
-          "option":true, "inject_if_not":null}'
-  */
+          "option":true, "inject_if_not":null}' */
   if (p->state != NULL)
     p->__M.arg_switches[6] = p->state;
 
   /* specs/discord/gateway.json:173:19
      '{ "name":"instance","type":{"base":"bool"},
-          "option":true, "inject_if_not":false}'
-  */
+          "option":true, "inject_if_not":false}' */
   if (p->instance != false)
     p->__M.arg_switches[7] = &p->instance;
 
@@ -1201,81 +1077,65 @@ size_t discord_gateway_activity_to_json(char *json, size_t len, struct discord_g
   discord_gateway_activity_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/discord/gateway.json:161:19
-     '{ "name":"name","type":{"base":"char", "dec":"[512]"}}'
-  */
+     '{ "name":"name","type":{"base":"char", "dec":"[512]"}}' */
                 "(name):s,"
   /* specs/discord/gateway.json:162:19
-     '{ "name":"type","type":{"base":"int"}}'
-  */
+     '{ "name":"type","type":{"base":"int"}}' */
                 "(type):d,"
   /* specs/discord/gateway.json:163:19
      '{ "name":"url","type":{"base":"char", "dec":"*"},
-          "option":true, "inject_if_not":""}'
-  */
+          "option":true, "inject_if_not":""}' */
                 "(url):s,"
   /* specs/discord/gateway.json:165:19
      '{ "name":"created_at","type":{"base":"char", "dec":"*", "converter":"iso8601"},
-          "option":true, "inject_if_not":0 }'
-  */
+          "option":true, "inject_if_not":0 }' */
                 "(created_at):|F|,"
   /* specs/discord/gateway.json:167:19
      '{ "name":"application_id","type":{"base":"char", "dec":"*", "converter":"snowflake" },
-          "option":true, "inject_if_not":0 }'
-  */
+          "option":true, "inject_if_not":0 }' */
                 "(application_id):|F|,"
   /* specs/discord/gateway.json:169:19
      '{ "name":"details","type":{"base":"char", "dec":"*"},
-          "option":true, "inject_if_not":null}'
-  */
+          "option":true, "inject_if_not":null}' */
                 "(details):s,"
   /* specs/discord/gateway.json:171:19
      '{ "name":"state","type":{"base":"char", "dec":"*"},
-          "option":true, "inject_if_not":null}'
-  */
+          "option":true, "inject_if_not":null}' */
                 "(state):s,"
   /* specs/discord/gateway.json:173:19
      '{ "name":"instance","type":{"base":"bool"},
-          "option":true, "inject_if_not":false}'
-  */
+          "option":true, "inject_if_not":false}' */
                 "(instance):b,"
                 "@arg_switches:b",
   /* specs/discord/gateway.json:161:19
-     '{ "name":"name","type":{"base":"char", "dec":"[512]"}}'
-  */
+     '{ "name":"name","type":{"base":"char", "dec":"[512]"}}' */
                 p->name,
   /* specs/discord/gateway.json:162:19
-     '{ "name":"type","type":{"base":"int"}}'
-  */
+     '{ "name":"type","type":{"base":"int"}}' */
                 &p->type,
   /* specs/discord/gateway.json:163:19
      '{ "name":"url","type":{"base":"char", "dec":"*"},
-          "option":true, "inject_if_not":""}'
-  */
+          "option":true, "inject_if_not":""}' */
                 p->url,
   /* specs/discord/gateway.json:165:19
      '{ "name":"created_at","type":{"base":"char", "dec":"*", "converter":"iso8601"},
-          "option":true, "inject_if_not":0 }'
-  */
+          "option":true, "inject_if_not":0 }' */
                 cee_unix_ms_to_iso8601, &p->created_at,
   /* specs/discord/gateway.json:167:19
      '{ "name":"application_id","type":{"base":"char", "dec":"*", "converter":"snowflake" },
-          "option":true, "inject_if_not":0 }'
-  */
+          "option":true, "inject_if_not":0 }' */
                 cee_ulltostr, &p->application_id,
   /* specs/discord/gateway.json:169:19
      '{ "name":"details","type":{"base":"char", "dec":"*"},
-          "option":true, "inject_if_not":null}'
-  */
+          "option":true, "inject_if_not":null}' */
                 p->details,
   /* specs/discord/gateway.json:171:19
      '{ "name":"state","type":{"base":"char", "dec":"*"},
-          "option":true, "inject_if_not":null}'
-  */
+          "option":true, "inject_if_not":null}' */
                 p->state,
   /* specs/discord/gateway.json:173:19
      '{ "name":"instance","type":{"base":"bool"},
-          "option":true, "inject_if_not":false}'
-  */
+          "option":true, "inject_if_not":false}' */
                 &p->instance,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
@@ -1320,91 +1180,75 @@ size_t discord_gateway_activity_list_to_json_v(char *str, size_t len, void *p){
 
 void discord_gateway_activity_cleanup(struct discord_gateway_activity *d) {
   /* specs/discord/gateway.json:161:19
-     '{ "name":"name","type":{"base":"char", "dec":"[512]"}}'
-  */
-  //p->name is a scalar
+     '{ "name":"name","type":{"base":"char", "dec":"[512]"}}' */
+  // p->name is a scalar
   /* specs/discord/gateway.json:162:19
-     '{ "name":"type","type":{"base":"int"}}'
-  */
-  //p->type is a scalar
+     '{ "name":"type","type":{"base":"int"}}' */
+  // p->type is a scalar
   /* specs/discord/gateway.json:163:19
      '{ "name":"url","type":{"base":"char", "dec":"*"},
-          "option":true, "inject_if_not":""}'
-  */
+          "option":true, "inject_if_not":""}' */
   if (d->url)
     free(d->url);
   /* specs/discord/gateway.json:165:19
      '{ "name":"created_at","type":{"base":"char", "dec":"*", "converter":"iso8601"},
-          "option":true, "inject_if_not":0 }'
-  */
-  //p->created_at is a scalar
+          "option":true, "inject_if_not":0 }' */
+  // p->created_at is a scalar
   /* specs/discord/gateway.json:167:19
      '{ "name":"application_id","type":{"base":"char", "dec":"*", "converter":"snowflake" },
-          "option":true, "inject_if_not":0 }'
-  */
-  //p->application_id is a scalar
+          "option":true, "inject_if_not":0 }' */
+  // p->application_id is a scalar
   /* specs/discord/gateway.json:169:19
      '{ "name":"details","type":{"base":"char", "dec":"*"},
-          "option":true, "inject_if_not":null}'
-  */
+          "option":true, "inject_if_not":null}' */
   if (d->details)
     free(d->details);
   /* specs/discord/gateway.json:171:19
      '{ "name":"state","type":{"base":"char", "dec":"*"},
-          "option":true, "inject_if_not":null}'
-  */
+          "option":true, "inject_if_not":null}' */
   if (d->state)
     free(d->state);
   /* specs/discord/gateway.json:173:19
      '{ "name":"instance","type":{"base":"bool"},
-          "option":true, "inject_if_not":false}'
-  */
-  //p->instance is a scalar
+          "option":true, "inject_if_not":false}' */
+  // p->instance is a scalar
 }
 
 void discord_gateway_activity_init(struct discord_gateway_activity *p) {
   memset(p, 0, sizeof(struct discord_gateway_activity));
   /* specs/discord/gateway.json:161:19
-     '{ "name":"name","type":{"base":"char", "dec":"[512]"}}'
-  */
+     '{ "name":"name","type":{"base":"char", "dec":"[512]"}}' */
 
   /* specs/discord/gateway.json:162:19
-     '{ "name":"type","type":{"base":"int"}}'
-  */
+     '{ "name":"type","type":{"base":"int"}}' */
 
   /* specs/discord/gateway.json:163:19
      '{ "name":"url","type":{"base":"char", "dec":"*"},
-          "option":true, "inject_if_not":""}'
-  */
+          "option":true, "inject_if_not":""}' */
 
   /* specs/discord/gateway.json:165:19
      '{ "name":"created_at","type":{"base":"char", "dec":"*", "converter":"iso8601"},
-          "option":true, "inject_if_not":0 }'
-  */
+          "option":true, "inject_if_not":0 }' */
 
   /* specs/discord/gateway.json:167:19
      '{ "name":"application_id","type":{"base":"char", "dec":"*", "converter":"snowflake" },
-          "option":true, "inject_if_not":0 }'
-  */
+          "option":true, "inject_if_not":0 }' */
 
   /* specs/discord/gateway.json:169:19
      '{ "name":"details","type":{"base":"char", "dec":"*"},
-          "option":true, "inject_if_not":null}'
-  */
+          "option":true, "inject_if_not":null}' */
 
   /* specs/discord/gateway.json:171:19
      '{ "name":"state","type":{"base":"char", "dec":"*"},
-          "option":true, "inject_if_not":null}'
-  */
+          "option":true, "inject_if_not":null}' */
 
   /* specs/discord/gateway.json:173:19
      '{ "name":"instance","type":{"base":"bool"},
-          "option":true, "inject_if_not":false}'
-  */
+          "option":true, "inject_if_not":false}' */
 
 }
 struct discord_gateway_activity* discord_gateway_activity_alloc() {
-  struct discord_gateway_activity *p= (struct discord_gateway_activity*)malloc(sizeof(struct discord_gateway_activity));
+  struct discord_gateway_activity *p= malloc(sizeof(struct discord_gateway_activity));
   discord_gateway_activity_init(p);
   return p;
 }

@@ -1,8 +1,13 @@
 /* This file is generated from specs/discord/invite.endpoints-params.json, Please don't edit it. */
+/**
+ * @file specs-code/discord/invite.endpoints-params.c
+ * @author cee-studio
+ * @date 21 Jun 2021
+ * @brief Specs generated file
+ * @see https://discord.com/developers/docs/resources/invite
+ */
+
 #include "specs.h"
-/*
-https://discord.com/developers/docs/resources/invite
-*/
 
 void discord_get_invite_params_from_json(char *json, size_t len, struct discord_get_invite_params *p)
 {
@@ -10,23 +15,19 @@ void discord_get_invite_params_from_json(char *json, size_t len, struct discord_
   size_t r=0;
   r=json_extract(json, len, 
   /* specs/discord/invite.endpoints-params.json:13:20
-     '{ "name": "with_counts", "type":{ "base":"bool" }, "comment":"whether the invite should contain approximate member counts"}'
-  */
+     '{ "name": "with_counts", "type":{ "base":"bool" }, "comment":"whether the invite should contain approximate member counts"}' */
                 "(with_counts):b,"
   /* specs/discord/invite.endpoints-params.json:14:20
-     '{ "name": "with_expiration", "type":{ "base":"bool" }, "comment":"whether the invite should contain the expiration date"}'
-  */
+     '{ "name": "with_expiration", "type":{ "base":"bool" }, "comment":"whether the invite should contain the expiration date"}' */
                 "(with_expiration):b,"
                 "@arg_switches:b"
                 "@record_defined"
                 "@record_null",
   /* specs/discord/invite.endpoints-params.json:13:20
-     '{ "name": "with_counts", "type":{ "base":"bool" }, "comment":"whether the invite should contain approximate member counts"}'
-  */
+     '{ "name": "with_counts", "type":{ "base":"bool" }, "comment":"whether the invite should contain approximate member counts"}' */
                 &p->with_counts,
   /* specs/discord/invite.endpoints-params.json:14:20
-     '{ "name": "with_expiration", "type":{ "base":"bool" }, "comment":"whether the invite should contain the expiration date"}'
-  */
+     '{ "name": "with_expiration", "type":{ "base":"bool" }, "comment":"whether the invite should contain the expiration date"}' */
                 &p->with_expiration,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
@@ -38,13 +39,11 @@ static void discord_get_invite_params_use_default_inject_settings(struct discord
 {
   p->__M.enable_arg_switches = true;
   /* specs/discord/invite.endpoints-params.json:13:20
-     '{ "name": "with_counts", "type":{ "base":"bool" }, "comment":"whether the invite should contain approximate member counts"}'
-  */
+     '{ "name": "with_counts", "type":{ "base":"bool" }, "comment":"whether the invite should contain approximate member counts"}' */
   p->__M.arg_switches[0] = &p->with_counts;
 
   /* specs/discord/invite.endpoints-params.json:14:20
-     '{ "name": "with_expiration", "type":{ "base":"bool" }, "comment":"whether the invite should contain the expiration date"}'
-  */
+     '{ "name": "with_expiration", "type":{ "base":"bool" }, "comment":"whether the invite should contain the expiration date"}' */
   p->__M.arg_switches[1] = &p->with_expiration;
 
 }
@@ -55,21 +54,17 @@ size_t discord_get_invite_params_to_json(char *json, size_t len, struct discord_
   discord_get_invite_params_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/discord/invite.endpoints-params.json:13:20
-     '{ "name": "with_counts", "type":{ "base":"bool" }, "comment":"whether the invite should contain approximate member counts"}'
-  */
+     '{ "name": "with_counts", "type":{ "base":"bool" }, "comment":"whether the invite should contain approximate member counts"}' */
                 "(with_counts):b,"
   /* specs/discord/invite.endpoints-params.json:14:20
-     '{ "name": "with_expiration", "type":{ "base":"bool" }, "comment":"whether the invite should contain the expiration date"}'
-  */
+     '{ "name": "with_expiration", "type":{ "base":"bool" }, "comment":"whether the invite should contain the expiration date"}' */
                 "(with_expiration):b,"
                 "@arg_switches:b",
   /* specs/discord/invite.endpoints-params.json:13:20
-     '{ "name": "with_counts", "type":{ "base":"bool" }, "comment":"whether the invite should contain approximate member counts"}'
-  */
+     '{ "name": "with_counts", "type":{ "base":"bool" }, "comment":"whether the invite should contain approximate member counts"}' */
                 &p->with_counts,
   /* specs/discord/invite.endpoints-params.json:14:20
-     '{ "name": "with_expiration", "type":{ "base":"bool" }, "comment":"whether the invite should contain the expiration date"}'
-  */
+     '{ "name": "with_expiration", "type":{ "base":"bool" }, "comment":"whether the invite should contain the expiration date"}' */
                 &p->with_expiration,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
@@ -114,28 +109,24 @@ size_t discord_get_invite_params_list_to_json_v(char *str, size_t len, void *p){
 
 void discord_get_invite_params_cleanup(struct discord_get_invite_params *d) {
   /* specs/discord/invite.endpoints-params.json:13:20
-     '{ "name": "with_counts", "type":{ "base":"bool" }, "comment":"whether the invite should contain approximate member counts"}'
-  */
-  //p->with_counts is a scalar
+     '{ "name": "with_counts", "type":{ "base":"bool" }, "comment":"whether the invite should contain approximate member counts"}' */
+  // p->with_counts is a scalar
   /* specs/discord/invite.endpoints-params.json:14:20
-     '{ "name": "with_expiration", "type":{ "base":"bool" }, "comment":"whether the invite should contain the expiration date"}'
-  */
-  //p->with_expiration is a scalar
+     '{ "name": "with_expiration", "type":{ "base":"bool" }, "comment":"whether the invite should contain the expiration date"}' */
+  // p->with_expiration is a scalar
 }
 
 void discord_get_invite_params_init(struct discord_get_invite_params *p) {
   memset(p, 0, sizeof(struct discord_get_invite_params));
   /* specs/discord/invite.endpoints-params.json:13:20
-     '{ "name": "with_counts", "type":{ "base":"bool" }, "comment":"whether the invite should contain approximate member counts"}'
-  */
+     '{ "name": "with_counts", "type":{ "base":"bool" }, "comment":"whether the invite should contain approximate member counts"}' */
 
   /* specs/discord/invite.endpoints-params.json:14:20
-     '{ "name": "with_expiration", "type":{ "base":"bool" }, "comment":"whether the invite should contain the expiration date"}'
-  */
+     '{ "name": "with_expiration", "type":{ "base":"bool" }, "comment":"whether the invite should contain the expiration date"}' */
 
 }
 struct discord_get_invite_params* discord_get_invite_params_alloc() {
-  struct discord_get_invite_params *p= (struct discord_get_invite_params*)malloc(sizeof(struct discord_get_invite_params));
+  struct discord_get_invite_params *p= malloc(sizeof(struct discord_get_invite_params));
   discord_get_invite_params_init(p);
   return p;
 }

@@ -1,20 +1,26 @@
 /* This file is generated from specs/discord/guild-template.endpoints-params.json, Please don't edit it. */
-/*
-https://discord.com/developers/docs/resources/guild-template
-*/
+/**
+ * @file specs-code/discord/guild-template.endpoints-params.h
+ * @author cee-studio
+ * @date 21 Jun 2021
+ * @brief Specs generated file
+ * @see https://discord.com/developers/docs/resources/guild-template
+ */
 
-/* Title: Create Guild From Guild Template */
-/* https://discord.com/developers/docs/resources/guild-template#create-guild-from-guild-template-json-params */
-/* This is defined at specs/discord/guild-template.endpoints-params.json:10:22 */
+
+/**
+ * @brief Create Guild From Guild Template
+ *
+ * @see https://discord.com/developers/docs/resources/guild-template#create-guild-from-guild-template-json-params
+ * @note defined at specs/discord/guild-template.endpoints-params.json:10:22
+ */
 struct discord_create_guild_from_guild_template_params {
   /* specs/discord/guild-template.endpoints-params.json:13:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}'
-  */
+     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}' */
   char *name; // name of the guild
 
   /* specs/discord/guild-template.endpoints-params.json:14:20
-     '{ "name": "icon", "type":{ "base":"char", "dec":"*" }, "comment":"base64 128x128 image for the guild icon"}'
-  */
+     '{ "name": "icon", "type":{ "base":"char", "dec":"*" }, "comment":"base64 128x128 image for the guild icon"}' */
   char *icon; // base64 128x128 image for the guild icon
 
   // The following is metadata used to 
@@ -50,18 +56,19 @@ extern void discord_create_guild_from_guild_template_params_list_from_json(char 
 extern size_t discord_create_guild_from_guild_template_params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_create_guild_from_guild_template_params_list_to_json(char *str, size_t len, struct discord_create_guild_from_guild_template_params **p);
 
-/* Title: Create Guild Template */
-/* https://discord.com/developers/docs/resources/guild-template#create-guild-template-json-params */
-/* This is defined at specs/discord/guild-template.endpoints-params.json:21:22 */
+/**
+ * @brief Create Guild Template
+ *
+ * @see https://discord.com/developers/docs/resources/guild-template#create-guild-template-json-params
+ * @note defined at specs/discord/guild-template.endpoints-params.json:21:22
+ */
 struct discord_create_guild_template_params {
   /* specs/discord/guild-template.endpoints-params.json:24:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}'
-  */
+     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}' */
   char *name; // name of the guild
 
   /* specs/discord/guild-template.endpoints-params.json:25:20
-     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"description for the template (0-120) chars"}'
-  */
+     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"description for the template (0-120) chars"}' */
   char *description; // description for the template (0-120) chars
 
   // The following is metadata used to 
@@ -97,18 +104,19 @@ extern void discord_create_guild_template_params_list_from_json(char *str, size_
 extern size_t discord_create_guild_template_params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_create_guild_template_params_list_to_json(char *str, size_t len, struct discord_create_guild_template_params **p);
 
-/* Title: Modify Guild Template */
-/* https://discord.com/developers/docs/resources/guild-template#modify-guild-template-json-params */
-/* This is defined at specs/discord/guild-template.endpoints-params.json:32:22 */
+/**
+ * @brief Modify Guild Template
+ *
+ * @see https://discord.com/developers/docs/resources/guild-template#modify-guild-template-json-params
+ * @note defined at specs/discord/guild-template.endpoints-params.json:32:22
+ */
 struct discord_modify_guild_template_params {
   /* specs/discord/guild-template.endpoints-params.json:35:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}'
-  */
+     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}' */
   char *name; // name of the guild
 
   /* specs/discord/guild-template.endpoints-params.json:36:20
-     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"description for the template (0-120) chars"}'
-  */
+     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"description for the template (0-120) chars"}' */
   char *description; // description for the template (0-120) chars
 
   // The following is metadata used to 

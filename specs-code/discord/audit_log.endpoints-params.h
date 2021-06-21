@@ -1,29 +1,32 @@
 /* This file is generated from specs/discord/audit_log.endpoints-params.json, Please don't edit it. */
-/*
-https://discord.com/developers/docs/resources/audit-log
-*/
+/**
+ * @file specs-code/discord/audit_log.endpoints-params.h
+ * @author cee-studio
+ * @date 21 Jun 2021
+ * @brief Specs generated file
+ * @see https://discord.com/developers/docs/resources/audit-log
+ */
 
-/* https://discord.com/developers/docs/resources/audit-log#get-guild-audit-log */
-/* This is defined at specs/discord/audit_log.endpoints-params.json:8:22 */
+
+/**
+ * @see https://discord.com/developers/docs/resources/audit-log#get-guild-audit-log
+ * @note defined at specs/discord/audit_log.endpoints-params.json:8:22
+ */
 struct discord_get_guild_audit_log_params {
   /* specs/discord/audit_log.endpoints-params.json:11:20
-     '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }'
-  */
+     '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }' */
   u64_snowflake_t user_id;
 
   /* specs/discord/audit_log.endpoints-params.json:12:20
-     '{ "name": "action_type", "type":{ "base":"int", "int_alias":"enum discord_audit_log_events" }, "inject_if_not":0 }'
-  */
+     '{ "name": "action_type", "type":{ "base":"int", "int_alias":"enum discord_audit_log_events" }, "inject_if_not":0 }' */
   enum discord_audit_log_events action_type;
 
   /* specs/discord/audit_log.endpoints-params.json:13:20
-     '{ "name": "before", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }'
-  */
+     '{ "name": "before", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }' */
   u64_snowflake_t before;
 
   /* specs/discord/audit_log.endpoints-params.json:14:20
-     '{ "name": "limit", "type":{ "base":"int" }, "inject_if_not":0 }'
-  */
+     '{ "name": "limit", "type":{ "base":"int" }, "inject_if_not":0 }' */
   int limit;
 
   // The following is metadata used to 

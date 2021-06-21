@@ -1,30 +1,34 @@
 /* This file is generated from specs/discord/audit_log.json, Please don't edit it. */
-/*
-https://discord.com/developers/docs/resources/audit-log
-*/
+/**
+ * @file specs-code/discord/audit_log.h
+ * @author cee-studio
+ * @date 21 Jun 2021
+ * @brief Specs generated file
+ * @see https://discord.com/developers/docs/resources/audit-log
+ */
 
-/* Title: Audit Log Structure */
-/* https://discord.com/developers/docs/resources/audit-log#audit-log-object-audit-log-structure */
-/* This is defined at specs/discord/audit_log.json:9:22 */
+
+/**
+ * @brief Audit Log Structure
+ *
+ * @see https://discord.com/developers/docs/resources/audit-log#audit-log-object-audit-log-structure
+ * @note defined at specs/discord/audit_log.json:9:22
+ */
 struct discord_audit_log {
   /* specs/discord/audit_log.json:12:18
-     '{"name":"webhooks", "type": { "base":"struct discord_webhook", "dec":"ntl" } }'
-  */
+     '{"name":"webhooks", "type": { "base":"struct discord_webhook", "dec":"ntl" } }' */
   struct discord_webhook **webhooks;
 
   /* specs/discord/audit_log.json:13:18
-     '{"name":"users", "type": { "base":"struct discord_user", "dec":"ntl"}}'
-  */
+     '{"name":"users", "type": { "base":"struct discord_user", "dec":"ntl"}}' */
   struct discord_user **users;
 
   /* specs/discord/audit_log.json:14:18
-     '{"name":"audit_log_entries", "type": { "base":"struct discord_audit_log_entry", "dec":"ntl"}}'
-  */
+     '{"name":"audit_log_entries", "type": { "base":"struct discord_audit_log_entry", "dec":"ntl"}}' */
   struct discord_audit_log_entry **audit_log_entries;
 
   /* specs/discord/audit_log.json:15:18
-     '{"name":"integrations", "type": { "base":"struct discord_guild_integration", "dec":"ntl"}}'
-  */
+     '{"name":"integrations", "type": { "base":"struct discord_guild_integration", "dec":"ntl"}}' */
   struct discord_guild_integration **integrations;
 
   // The following is metadata used to 
@@ -101,43 +105,39 @@ extern char* discord_audit_log_events_to_string(enum discord_audit_log_events);
 extern enum discord_audit_log_events discord_audit_log_events_from_string(char*);
 extern bool discord_audit_log_events_has(enum discord_audit_log_events, char*);
 
-/* Title: Audit Log Entry Structure */
-/* https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-entry-structure */
-/* This is defined at specs/discord/audit_log.json:65:22 */
+/**
+ * @brief Audit Log Entry Structure
+ *
+ * @see https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-entry-structure
+ * @note defined at specs/discord/audit_log.json:65:22
+ */
 struct discord_audit_log_entry {
   /* specs/discord/audit_log.json:68:18
-     '{"name":"target_id", "type": {"base":"char", "dec":"*"}}'
-  */
+     '{"name":"target_id", "type": {"base":"char", "dec":"*"}}' */
   char *target_id;
 
   /* specs/discord/audit_log.json:69:18
-     '{"name":"changes", "type": {"base":"struct discord_audit_log_change", "dec":"ntl"}}'
-  */
+     '{"name":"changes", "type": {"base":"struct discord_audit_log_change", "dec":"ntl"}}' */
   struct discord_audit_log_change **changes;
 
   /* specs/discord/audit_log.json:70:18
-     '{"name":"user_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
-  */
+     '{"name":"user_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}' */
   u64_snowflake_t user_id;
 
   /* specs/discord/audit_log.json:71:18
-     '{"name":"id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
-  */
+     '{"name":"id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}' */
   u64_snowflake_t id;
 
   /* specs/discord/audit_log.json:72:18
-     '{"name":"action_type", "type": {"base":"int", "c_base":"enum discord_audit_log_events"}}'
-  */
+     '{"name":"action_type", "type": {"base":"int", "c_base":"enum discord_audit_log_events"}}' */
   int action_type;
 
   /* specs/discord/audit_log.json:73:18
-     '{"name":"options", "type": {"base":"struct discord_audit_log_entry_optional_info", "dec":"ntl"}}'
-  */
+     '{"name":"options", "type": {"base":"struct discord_audit_log_entry_optional_info", "dec":"ntl"}}' */
   struct discord_audit_log_entry_optional_info **options;
 
   /* specs/discord/audit_log.json:74:18
-     '{"name":"reason", "type": {"base":"char", "dec":"[MAX_REASON_LEN]"}}'
-  */
+     '{"name":"reason", "type": {"base":"char", "dec":"[MAX_REASON_LEN]"}}' */
   char reason[MAX_REASON_LEN];
 
   // The following is metadata used to 
@@ -173,48 +173,43 @@ extern void discord_audit_log_entry_list_from_json(char *str, size_t len, struct
 extern size_t discord_audit_log_entry_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_audit_log_entry_list_to_json(char *str, size_t len, struct discord_audit_log_entry **p);
 
-/* Title: Optional Audit Entry Info Structure */
-/* https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-optional-audit-entry-info */
-/* This is defined at specs/discord/audit_log.json:81:22 */
+/**
+ * @brief Optional Audit Entry Info Structure
+ *
+ * @see https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-optional-audit-entry-info
+ * @note defined at specs/discord/audit_log.json:81:22
+ */
 struct discord_audit_log_entry_optional_info {
   /* specs/discord/audit_log.json:84:20
-     '{ "name": "delete_member_days", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"}'
-  */
+     '{ "name": "delete_member_days", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"}' */
   char *delete_member_days; // @todo find fixed size limit
 
   /* specs/discord/audit_log.json:85:20
-     '{ "name": "members_removed", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"}'
-  */
+     '{ "name": "members_removed", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"}' */
   char *members_removed; // @todo find fixed size limit
 
   /* specs/discord/audit_log.json:86:20
-     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" } }'
-  */
+     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" } }' */
   u64_snowflake_t channel_id;
 
   /* specs/discord/audit_log.json:87:20
-     '{ "name": "message_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" } }'
-  */
+     '{ "name": "message_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" } }' */
   u64_snowflake_t message_id;
 
   /* specs/discord/audit_log.json:88:20
-     '{ "name": "count", "type":{ "base":"char", "dec":"*" }, "comment":"@todo find fixed size limit"}'
-  */
+     '{ "name": "count", "type":{ "base":"char", "dec":"*" }, "comment":"@todo find fixed size limit"}' */
   char *count; // @todo find fixed size limit
 
   /* specs/discord/audit_log.json:89:20
-     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   u64_snowflake_t id;
 
   /* specs/discord/audit_log.json:90:20
-     '{ "name": "type", "type":{ "base":"char", "dec":"*" }, "comment":"@todo find fixed size limit"}'
-  */
+     '{ "name": "type", "type":{ "base":"char", "dec":"*" }, "comment":"@todo find fixed size limit"}' */
   char *type; // @todo find fixed size limit
 
   /* specs/discord/audit_log.json:91:20
-     '{ "name": "role", "type":{ "base":"char", "dec":"*" }, "comment":"@todo find fixed size limit"}'
-  */
+     '{ "name": "role", "type":{ "base":"char", "dec":"*" }, "comment":"@todo find fixed size limit"}' */
   char *role; // @todo find fixed size limit
 
   // The following is metadata used to 
@@ -250,23 +245,23 @@ extern void discord_audit_log_entry_optional_info_list_from_json(char *str, size
 extern size_t discord_audit_log_entry_optional_info_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_audit_log_entry_optional_info_list_to_json(char *str, size_t len, struct discord_audit_log_entry_optional_info **p);
 
-/* Title: Audit Log Change Structure */
-/* https://discord.com/developers/docs/resources/audit-log#audit-log-change-object-audit-log-change-structure */
-/* This is defined at specs/discord/audit_log.json:98:22 */
+/**
+ * @brief Audit Log Change Structure
+ *
+ * @see https://discord.com/developers/docs/resources/audit-log#audit-log-change-object-audit-log-change-structure
+ * @note defined at specs/discord/audit_log.json:98:22
+ */
 struct discord_audit_log_change {
   /* specs/discord/audit_log.json:101:18
-     '{"name":"new_value", "type": {"base":"char", "dec":"*"}}'
-  */
+     '{"name":"new_value", "type": {"base":"char", "dec":"*"}}' */
   char *new_value;
 
   /* specs/discord/audit_log.json:102:18
-     '{"name":"old_value", "type": {"base":"char", "dec":"*"}}'
-  */
+     '{"name":"old_value", "type": {"base":"char", "dec":"*"}}' */
   char *old_value;
 
   /* specs/discord/audit_log.json:103:18
-     '{"name":"key", "type":{"base":"char", "dec":"[64]"}}'
-  */
+     '{"name":"key", "type":{"base":"char", "dec":"[64]"}}' */
   char key[64];
 
   // The following is metadata used to 
@@ -302,284 +297,233 @@ extern void discord_audit_log_change_list_from_json(char *str, size_t len, struc
 extern size_t discord_audit_log_change_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_audit_log_change_list_to_json(char *str, size_t len, struct discord_audit_log_change **p);
 
-/* Title: Audit Log Change Key */
-/* https://discord.com/developers/docs/resources/audit-log#audit-log-change-object-audit-log-change-key */
-/* This is defined at specs/discord/audit_log.json:110:22 */
+/**
+ * @brief Audit Log Change Key
+ *
+ * @see https://discord.com/developers/docs/resources/audit-log#audit-log-change-object-audit-log-change-key
+ * @note defined at specs/discord/audit_log.json:110:22
+ */
 struct discord_audit_log_change_key {
   /* specs/discord/audit_log.json:113:18
-     '{"name":"name", "type": {"base":"char", "dec":"[MAX_NAME_LEN]"}}'
-  */
+     '{"name":"name", "type": {"base":"char", "dec":"[MAX_NAME_LEN]"}}' */
   char name[MAX_NAME_LEN];
 
   /* specs/discord/audit_log.json:114:18
-     '{"name":"description", "type": {"base":"char", "dec":"[MAX_DESCRIPTION_LEN]"}}'
-  */
+     '{"name":"description", "type": {"base":"char", "dec":"[MAX_DESCRIPTION_LEN]"}}' */
   char description[MAX_DESCRIPTION_LEN];
 
   /* specs/discord/audit_log.json:115:18
      '{"name":"icon_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"}, 
-         "comment":"icon changed" }'
-  */
+         "comment":"icon changed" }' */
   char icon_hash[MAX_SHA256_LEN]; // icon changed
 
   /* specs/discord/audit_log.json:117:18
      '{"name":"splash_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"},
-         "comment":"invite splash page artwork changed"}'
-  */
+         "comment":"invite splash page artwork changed"}' */
   char splash_hash[MAX_SHA256_LEN]; // invite splash page artwork changed
 
   /* specs/discord/audit_log.json:119:18
-     '{"name":"discovery_splash_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"}}'
-  */
+     '{"name":"discovery_splash_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"}}' */
   char discovery_splash_hash[MAX_SHA256_LEN];
 
   /* specs/discord/audit_log.json:120:18
-     '{"name":"banner_hash", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
-  */
+     '{"name":"banner_hash", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}' */
   u64_snowflake_t banner_hash;
 
   /* specs/discord/audit_log.json:121:18
-     '{"name":"owner_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
-  */
+     '{"name":"owner_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}' */
   u64_snowflake_t owner_id;
 
   /* specs/discord/audit_log.json:122:18
-     '{"name":"region", "type": {"base":"char", "dec":"[MAX_REGION_LEN]"}}'
-  */
+     '{"name":"region", "type": {"base":"char", "dec":"[MAX_REGION_LEN]"}}' */
   char region[MAX_REGION_LEN];
 
   /* specs/discord/audit_log.json:123:18
-     '{"name":"preferred_locale", "type": {"base":"char", "dec":"[MAX_LOCALE_LEN]"}}'
-  */
+     '{"name":"preferred_locale", "type": {"base":"char", "dec":"[MAX_LOCALE_LEN]"}}' */
   char preferred_locale[MAX_LOCALE_LEN];
 
   /* specs/discord/audit_log.json:124:18
-     '{"name":"afk_channel_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
-  */
+     '{"name":"afk_channel_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}' */
   u64_snowflake_t afk_channel_id;
 
   /* specs/discord/audit_log.json:125:18
-     '{"name":"afk_timeout", "type": {"base":"int"}}'
-  */
+     '{"name":"afk_timeout", "type": {"base":"int"}}' */
   int afk_timeout;
 
   /* specs/discord/audit_log.json:126:18
-     '{"name":"rules_channel_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
-  */
+     '{"name":"rules_channel_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}' */
   u64_snowflake_t rules_channel_id;
 
   /* specs/discord/audit_log.json:127:18
-     '{"name":"public_updates_channel_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
-  */
+     '{"name":"public_updates_channel_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}' */
   u64_snowflake_t public_updates_channel_id;
 
   /* specs/discord/audit_log.json:128:18
-     '{"name":"mfa_level", "type": {"base":"int"}}'
-  */
+     '{"name":"mfa_level", "type": {"base":"int"}}' */
   int mfa_level;
 
   /* specs/discord/audit_log.json:129:18
-     '{"name":"verification_level", "type": {"base":"int"}}'
-  */
+     '{"name":"verification_level", "type": {"base":"int"}}' */
   int verification_level;
 
   /* specs/discord/audit_log.json:130:18
-     '{"name":"explicit_content_filter", "type": {"base":"int"}}'
-  */
+     '{"name":"explicit_content_filter", "type": {"base":"int"}}' */
   int explicit_content_filter;
 
   /* specs/discord/audit_log.json:131:18
-     '{"name":"default_message_notifications", "type": {"base":"int"}}'
-  */
+     '{"name":"default_message_notifications", "type": {"base":"int"}}' */
   int default_message_notifications;
 
   /* specs/discord/audit_log.json:132:18
-     '{"name":"vanity_url", "type": {"base":"char", "dec":"*"}}'
-  */
+     '{"name":"vanity_url", "type": {"base":"char", "dec":"*"}}' */
   char *vanity_url;
 
   /* specs/discord/audit_log.json:133:18
      '{"name":"add", "json_key":"$add", "type": {"base":"char", "dec":"*"},
-         "todo":true }'
-  */
-  //@todo add (null);
+         "todo":true }' */
+  ///< @todo add (null);
 
   /* specs/discord/audit_log.json:135:18
      '{"name":"remove", "json_key":"$remove", "type": {"base":"char", "dec":"*"},
-         "todo":true }'
-  */
-  //@todo remove (null);
+         "todo":true }' */
+  ///< @todo remove (null);
 
   /* specs/discord/audit_log.json:137:18
-     '{"name":"prune_delete_days", "type": {"base":"int"}}'
-  */
+     '{"name":"prune_delete_days", "type": {"base":"int"}}' */
   int prune_delete_days;
 
   /* specs/discord/audit_log.json:138:18
-     '{"name":"widget_enabled", "type": {"base":"bool"}}'
-  */
+     '{"name":"widget_enabled", "type": {"base":"bool"}}' */
   bool widget_enabled;
 
   /* specs/discord/audit_log.json:139:18
-     '{"name":"widget_channel_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
-  */
+     '{"name":"widget_channel_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}' */
   u64_snowflake_t widget_channel_id;
 
   /* specs/discord/audit_log.json:140:18
-     '{"name":"system_channel_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
-  */
+     '{"name":"system_channel_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}' */
   u64_snowflake_t system_channel_id;
 
   /* specs/discord/audit_log.json:141:18
-     '{"name":"position", "type": {"base":"int"}}'
-  */
+     '{"name":"position", "type": {"base":"int"}}' */
   int position;
 
   /* specs/discord/audit_log.json:142:18
-     '{"name":"topic", "type": {"base":"char", "dec":"*"}}'
-  */
+     '{"name":"topic", "type": {"base":"char", "dec":"*"}}' */
   char *topic;
 
   /* specs/discord/audit_log.json:143:18
-     '{"name":"bitrate", "type": {"base":"int"}}'
-  */
+     '{"name":"bitrate", "type": {"base":"int"}}' */
   int bitrate;
 
   /* specs/discord/audit_log.json:144:18
      '{"name":"permission_overwrites", "type": {"base":"char", "dec":"*"},
-         "todo":true }'
-  */
-  //@todo permission_overwrites (null);
+         "todo":true }' */
+  ///< @todo permission_overwrites (null);
 
   /* specs/discord/audit_log.json:146:18
-     '{"name":"nsfw", "type": {"base":"bool"}}'
-  */
+     '{"name":"nsfw", "type": {"base":"bool"}}' */
   bool nsfw;
 
   /* specs/discord/audit_log.json:147:18
-     '{"name":"application_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
-  */
+     '{"name":"application_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}' */
   u64_snowflake_t application_id;
 
   /* specs/discord/audit_log.json:148:18
-     '{"name":"rate_limit_per_user", "type": {"base":"int"}}'
-  */
+     '{"name":"rate_limit_per_user", "type": {"base":"int"}}' */
   int rate_limit_per_user;
 
   /* specs/discord/audit_log.json:149:18
-     '{"name":"permissions", "type": {"base":"char", "dec":"*"}}'
-  */
+     '{"name":"permissions", "type": {"base":"char", "dec":"*"}}' */
   char *permissions;
 
   /* specs/discord/audit_log.json:150:18
-     '{"name":"color", "type": {"base":"int"}}'
-  */
+     '{"name":"color", "type": {"base":"int"}}' */
   int color;
 
   /* specs/discord/audit_log.json:151:18
-     '{"name":"hoist", "type": {"base":"bool"}}'
-  */
+     '{"name":"hoist", "type": {"base":"bool"}}' */
   bool hoist;
 
   /* specs/discord/audit_log.json:152:18
-     '{"name":"mentionable", "type": {"base":"bool"}}'
-  */
+     '{"name":"mentionable", "type": {"base":"bool"}}' */
   bool mentionable;
 
   /* specs/discord/audit_log.json:153:18
-     '{"name":"allow", "type": {"base":"char", "dec":"*"}}'
-  */
+     '{"name":"allow", "type": {"base":"char", "dec":"*"}}' */
   char *allow;
 
   /* specs/discord/audit_log.json:154:18
-     '{"name":"deny", "type": {"base":"char", "dec":"*"}}'
-  */
+     '{"name":"deny", "type": {"base":"char", "dec":"*"}}' */
   char *deny;
 
   /* specs/discord/audit_log.json:155:18
-     '{"name":"code", "type": {"base":"char", "dec":"*"}}'
-  */
+     '{"name":"code", "type": {"base":"char", "dec":"*"}}' */
   char *code;
 
   /* specs/discord/audit_log.json:156:18
-     '{"name":"channel_id", "type": {"base":"char", "dec":"*"}}'
-  */
+     '{"name":"channel_id", "type": {"base":"char", "dec":"*"}}' */
   char *channel_id;
 
   /* specs/discord/audit_log.json:157:18
-     '{"name":"inviter_id", "type": {"base":"char", "dec":"*"}}'
-  */
+     '{"name":"inviter_id", "type": {"base":"char", "dec":"*"}}' */
   char *inviter_id;
 
   /* specs/discord/audit_log.json:158:18
-     '{"name":"max_uses", "type": {"base":"char", "dec":"*"}}'
-  */
+     '{"name":"max_uses", "type": {"base":"char", "dec":"*"}}' */
   char *max_uses;
 
   /* specs/discord/audit_log.json:159:18
-     '{"name":"uses", "type": {"base":"char", "dec":"*"}}'
-  */
+     '{"name":"uses", "type": {"base":"char", "dec":"*"}}' */
   char *uses;
 
   /* specs/discord/audit_log.json:160:18
-     '{"name":"max_age", "type": {"base":"char", "dec":"*"}}'
-  */
+     '{"name":"max_age", "type": {"base":"char", "dec":"*"}}' */
   char *max_age;
 
   /* specs/discord/audit_log.json:161:18
-     '{"name":"temporary", "type": {"base":"char", "dec":"*"}}'
-  */
+     '{"name":"temporary", "type": {"base":"char", "dec":"*"}}' */
   char *temporary;
 
   /* specs/discord/audit_log.json:162:18
-     '{"name":"deaf", "type": {"base":"char", "dec":"*"}}'
-  */
+     '{"name":"deaf", "type": {"base":"char", "dec":"*"}}' */
   char *deaf;
 
   /* specs/discord/audit_log.json:163:18
-     '{"name":"mute", "type": {"base":"char", "dec":"*"}}'
-  */
+     '{"name":"mute", "type": {"base":"char", "dec":"*"}}' */
   char *mute;
 
   /* specs/discord/audit_log.json:164:18
-     '{"name":"nick", "type": {"base":"char", "dec":"*"}}'
-  */
+     '{"name":"nick", "type": {"base":"char", "dec":"*"}}' */
   char *nick;
 
   /* specs/discord/audit_log.json:165:18
-     '{"name":"avatar_hash", "type": {"base":"char", "dec":"*"}}'
-  */
+     '{"name":"avatar_hash", "type": {"base":"char", "dec":"*"}}' */
   char *avatar_hash;
 
   /* specs/discord/audit_log.json:166:18
-     '{"name":"id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}'
-  */
+     '{"name":"id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}' */
   u64_snowflake_t id;
 
   /* specs/discord/audit_log.json:167:18
      '{"name":"type", "type": {"base":"char", "dec":"*"}, 
-         "todo":true, "comment":"integer or string"}'
-  */
-  //@todo type integer or string;
+         "todo":true, "comment":"integer or string"}' */
+  ///< @todo type integer or string;
 
   /* specs/discord/audit_log.json:169:18
-     '{"name":"enable_emotions", "type": {"base":"bool"}}'
-  */
+     '{"name":"enable_emotions", "type": {"base":"bool"}}' */
   bool enable_emotions;
 
   /* specs/discord/audit_log.json:170:18
-     '{"name":"expire_behavior", "type": {"base":"int"}}'
-  */
+     '{"name":"expire_behavior", "type": {"base":"int"}}' */
   int expire_behavior;
 
   /* specs/discord/audit_log.json:171:18
-     '{"name":"expire_grace_period", "type": {"base":"int"}}'
-  */
+     '{"name":"expire_grace_period", "type": {"base":"int"}}' */
   int expire_grace_period;
 
   /* specs/discord/audit_log.json:172:18
-     '{"name":"user_limit", "type": {"base":"int" }}'
-  */
+     '{"name":"user_limit", "type": {"base":"int" }}' */
   int user_limit;
 
   // The following is metadata used to 

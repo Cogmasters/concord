@@ -1,55 +1,54 @@
 /* This file is generated from specs/discord/webhook.json, Please don't edit it. */
-/*
-https://discord.com/developers/docs/resources/webhook
-*/
+/**
+ * @file specs-code/discord/webhook.h
+ * @author cee-studio
+ * @date 21 Jun 2021
+ * @brief Specs generated file
+ * @see https://discord.com/developers/docs/resources/webhook
+ */
 
-/* Title: Webhook Structure */
-/* https://discord.com/developers/docs/resources/webhook#webhook-object-webhook-structure */
-/* This is defined at specs/discord/webhook.json:9:22 */
+
+/**
+ * @brief Webhook Structure
+ *
+ * @see https://discord.com/developers/docs/resources/webhook#webhook-object-webhook-structure
+ * @note defined at specs/discord/webhook.json:9:22
+ */
 struct discord_webhook {
   /* specs/discord/webhook.json:12:20
-     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   u64_snowflake_t id;
 
   /* specs/discord/webhook.json:13:20
-     '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_webhook_types" }}'
-  */
+     '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_webhook_types" }}' */
   enum discord_webhook_types type;
 
   /* specs/discord/webhook.json:14:20
-     '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   u64_snowflake_t guild_id;
 
   /* specs/discord/webhook.json:15:20
-     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   u64_snowflake_t channel_id;
 
   /* specs/discord/webhook.json:16:20
-     '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }}'
-  */
+     '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }}' */
   struct discord_user *user;
 
   /* specs/discord/webhook.json:17:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[WEBHOOK_NAME_LEN]" }}'
-  */
+     '{ "name": "name", "type":{ "base":"char", "dec":"[WEBHOOK_NAME_LEN]" }}' */
   char name[WEBHOOK_NAME_LEN];
 
   /* specs/discord/webhook.json:18:20
-     '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
-  */
+     '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}' */
   char *avatar; // @todo fixed size limit
 
   /* specs/discord/webhook.json:19:20
-     '{ "name": "token", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
-  */
+     '{ "name": "token", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}' */
   char *token; // @todo fixed size limit
 
   /* specs/discord/webhook.json:20:20
-     '{ "name": "application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   u64_snowflake_t application_id;
 
   // The following is metadata used to 

@@ -1,40 +1,42 @@
 /* This file is generated from specs/reddit/links_n_comments.json, Please don't edit it. */
-/*
+/**
+ * @file specs-code/reddit/links_n_comments.h
+ * @author cee-studio
+ * @date 21 Jun 2021
+ * @brief Specs generated file
+ * @see 
+ */
 
-*/
 
-/* Title: Comment */
-/* https://www.reddit.com/dev/api/#POST_api_comment */
-/* This is defined at specs/reddit/links_n_comments.json:10:22 */
+/**
+ * @brief Comment
+ *
+ * @see https://www.reddit.com/dev/api/#POST_api_comment
+ * @note defined at specs/reddit/links_n_comments.json:10:22
+ */
 struct reddit_comment_params {
   /* specs/reddit/links_n_comments.json:13:20
-     '{ "name": "api_type", "type":{ "base":"char", "dec":"*" }, "comment":"the string json" }'
-  */
+     '{ "name": "api_type", "type":{ "base":"char", "dec":"*" }, "comment":"the string json" }' */
   char *api_type; // the string json
 
   /* specs/reddit/links_n_comments.json:14:20
-     '{ "name": "return_rtjson", "type":{ "base":"bool" }, "comment":"boolean value" }'
-  */
+     '{ "name": "return_rtjson", "type":{ "base":"bool" }, "comment":"boolean value" }' */
   bool return_rtjson; // boolean value
 
   /* specs/reddit/links_n_comments.json:15:20
-     '{ "name": "richtext_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON data" }'
-  */
+     '{ "name": "richtext_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON data" }' */
   char *richtext_json; // JSON data
 
   /* specs/reddit/links_n_comments.json:16:20
-     '{ "name": "text", "type":{ "base":"char", "dec":"*" }, "comment":"raw markdown text" }'
-  */
+     '{ "name": "text", "type":{ "base":"char", "dec":"*" }, "comment":"raw markdown text" }' */
   char *text; // raw markdown text
 
   /* specs/reddit/links_n_comments.json:17:20
-     '{ "name": "thing_id", "type":{ "base":"char", "dec":"*" }, "comment":"fullname of parent thing" }'
-  */
+     '{ "name": "thing_id", "type":{ "base":"char", "dec":"*" }, "comment":"fullname of parent thing" }' */
   char *thing_id; // fullname of parent thing
 
   /* specs/reddit/links_n_comments.json:18:20
-     '{ "name": "uh", "type":{ "base":"char", "dec":"*" }, "comment":"a modhash" }'
-  */
+     '{ "name": "uh", "type":{ "base":"char", "dec":"*" }, "comment":"a modhash" }' */
   char *uh; // a modhash
 
   // The following is metadata used to 

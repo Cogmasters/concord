@@ -1,8 +1,13 @@
 /* This file is generated from specs/discord/voice-connections.json, Please don't edit it. */
+/**
+ * @file specs-code/discord/voice-connections.c
+ * @author cee-studio
+ * @date 21 Jun 2021
+ * @brief Specs generated file
+ * @see https://discord.com/developers/docs/topics/voice-connections
+ */
+
 #include "specs.h"
-/*
-https://discord.com/developers/docs/topics/voice-connections
-*/
 
 
 enum discord_voice_close_opcodes discord_voice_close_opcodes_from_string(char *s){

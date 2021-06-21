@@ -1,20 +1,26 @@
 /* This file is generated from specs/discord/user.endpoints-params.json, Please don't edit it. */
-/*
-https://discord.com/developers/docs/resources/user
-*/
+/**
+ * @file specs-code/discord/user.endpoints-params.h
+ * @author cee-studio
+ * @date 21 Jun 2021
+ * @brief Specs generated file
+ * @see https://discord.com/developers/docs/resources/user
+ */
 
-/* Title: Modify Current User */
-/* https://discord.com/developers/docs/resources/user#modify-current-user-json-params */
-/* This is defined at specs/discord/user.endpoints-params.json:10:22 */
+
+/**
+ * @brief Modify Current User
+ *
+ * @see https://discord.com/developers/docs/resources/user#modify-current-user-json-params
+ * @note defined at specs/discord/user.endpoints-params.json:10:22
+ */
 struct discord_modify_current_user_params {
   /* specs/discord/user.endpoints-params.json:13:20
-     '{ "name": "username", "type":{ "base":"char", "dec":"*" }}'
-  */
+     '{ "name": "username", "type":{ "base":"char", "dec":"*" }}' */
   char *username;
 
   /* specs/discord/user.endpoints-params.json:14:20
-     '{ "name": "avatar", "type":{ "base":"char", "dec":"*"}, "comment":"base64 encoded image data"}'
-  */
+     '{ "name": "avatar", "type":{ "base":"char", "dec":"*"}, "comment":"base64 encoded image data"}' */
   char *avatar; // base64 encoded image data
 
   // The following is metadata used to 
@@ -50,20 +56,21 @@ extern void discord_modify_current_user_params_list_from_json(char *str, size_t 
 extern size_t discord_modify_current_user_params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_modify_current_user_params_list_to_json(char *str, size_t len, struct discord_modify_current_user_params **p);
 
-/* Title: Create Group DM */
-/* https://discord.com/developers/docs/resources/user#create-group-dm-json-params */
-/* This is defined at specs/discord/user.endpoints-params.json:21:22 */
+/**
+ * @brief Create Group DM
+ *
+ * @see https://discord.com/developers/docs/resources/user#create-group-dm-json-params
+ * @note defined at specs/discord/user.endpoints-params.json:21:22
+ */
 struct discord_create_group_dm_params {
   /* specs/discord/user.endpoints-params.json:24:20
      '{ "name": "access_tokens", "type":{ "base":"ja_str", "dec":"ntl" }, 
-          "comment":"access tokens of users that have granted your app the gdm.join scope"}'
-  */
+          "comment":"access tokens of users that have granted your app the gdm.join scope"}' */
   ja_str **access_tokens; // access tokens of users that have granted your app the gdm.join scope
 
   /* specs/discord/user.endpoints-params.json:26:19
      '{ "name":"nicks", "type":{ "base":"ja_u64", "dec":"ntl"}, 
-          "comment":"ia dictionary of user ids to their respective nicknames"}'
-  */
+          "comment":"ia dictionary of user ids to their respective nicknames"}' */
   ja_u64 **nicks; // ia dictionary of user ids to their respective nicknames
 
   // The following is metadata used to 

@@ -1,8 +1,13 @@
 /* This file is generated from specs/discord/audit_log.endpoints-params.json, Please don't edit it. */
+/**
+ * @file specs-code/discord/audit_log.endpoints-params.c
+ * @author cee-studio
+ * @date 21 Jun 2021
+ * @brief Specs generated file
+ * @see https://discord.com/developers/docs/resources/audit-log
+ */
+
 #include "specs.h"
-/*
-https://discord.com/developers/docs/resources/audit-log
-*/
 
 void discord_get_guild_audit_log_params_from_json(char *json, size_t len, struct discord_get_guild_audit_log_params *p)
 {
@@ -10,39 +15,31 @@ void discord_get_guild_audit_log_params_from_json(char *json, size_t len, struct
   size_t r=0;
   r=json_extract(json, len, 
   /* specs/discord/audit_log.endpoints-params.json:11:20
-     '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }'
-  */
+     '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }' */
                 "(user_id):F,"
   /* specs/discord/audit_log.endpoints-params.json:12:20
-     '{ "name": "action_type", "type":{ "base":"int", "int_alias":"enum discord_audit_log_events" }, "inject_if_not":0 }'
-  */
+     '{ "name": "action_type", "type":{ "base":"int", "int_alias":"enum discord_audit_log_events" }, "inject_if_not":0 }' */
                 "(action_type):d,"
   /* specs/discord/audit_log.endpoints-params.json:13:20
-     '{ "name": "before", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }'
-  */
+     '{ "name": "before", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }' */
                 "(before):F,"
   /* specs/discord/audit_log.endpoints-params.json:14:20
-     '{ "name": "limit", "type":{ "base":"int" }, "inject_if_not":0 }'
-  */
+     '{ "name": "limit", "type":{ "base":"int" }, "inject_if_not":0 }' */
                 "(limit):d,"
                 "@arg_switches:b"
                 "@record_defined"
                 "@record_null",
   /* specs/discord/audit_log.endpoints-params.json:11:20
-     '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }'
-  */
+     '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }' */
                 cee_strtoull, &p->user_id,
   /* specs/discord/audit_log.endpoints-params.json:12:20
-     '{ "name": "action_type", "type":{ "base":"int", "int_alias":"enum discord_audit_log_events" }, "inject_if_not":0 }'
-  */
+     '{ "name": "action_type", "type":{ "base":"int", "int_alias":"enum discord_audit_log_events" }, "inject_if_not":0 }' */
                 &p->action_type,
   /* specs/discord/audit_log.endpoints-params.json:13:20
-     '{ "name": "before", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }'
-  */
+     '{ "name": "before", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }' */
                 cee_strtoull, &p->before,
   /* specs/discord/audit_log.endpoints-params.json:14:20
-     '{ "name": "limit", "type":{ "base":"int" }, "inject_if_not":0 }'
-  */
+     '{ "name": "limit", "type":{ "base":"int" }, "inject_if_not":0 }' */
                 &p->limit,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
@@ -54,26 +51,22 @@ static void discord_get_guild_audit_log_params_use_default_inject_settings(struc
 {
   p->__M.enable_arg_switches = true;
   /* specs/discord/audit_log.endpoints-params.json:11:20
-     '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }'
-  */
+     '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }' */
   if (p->user_id != 0)
     p->__M.arg_switches[0] = &p->user_id;
 
   /* specs/discord/audit_log.endpoints-params.json:12:20
-     '{ "name": "action_type", "type":{ "base":"int", "int_alias":"enum discord_audit_log_events" }, "inject_if_not":0 }'
-  */
+     '{ "name": "action_type", "type":{ "base":"int", "int_alias":"enum discord_audit_log_events" }, "inject_if_not":0 }' */
   if (p->action_type != 0)
     p->__M.arg_switches[1] = &p->action_type;
 
   /* specs/discord/audit_log.endpoints-params.json:13:20
-     '{ "name": "before", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }'
-  */
+     '{ "name": "before", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }' */
   if (p->before != 0)
     p->__M.arg_switches[2] = &p->before;
 
   /* specs/discord/audit_log.endpoints-params.json:14:20
-     '{ "name": "limit", "type":{ "base":"int" }, "inject_if_not":0 }'
-  */
+     '{ "name": "limit", "type":{ "base":"int" }, "inject_if_not":0 }' */
   if (p->limit != 0)
     p->__M.arg_switches[3] = &p->limit;
 
@@ -85,37 +78,29 @@ size_t discord_get_guild_audit_log_params_to_json(char *json, size_t len, struct
   discord_get_guild_audit_log_params_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/discord/audit_log.endpoints-params.json:11:20
-     '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }'
-  */
+     '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }' */
                 "(user_id):|F|,"
   /* specs/discord/audit_log.endpoints-params.json:12:20
-     '{ "name": "action_type", "type":{ "base":"int", "int_alias":"enum discord_audit_log_events" }, "inject_if_not":0 }'
-  */
+     '{ "name": "action_type", "type":{ "base":"int", "int_alias":"enum discord_audit_log_events" }, "inject_if_not":0 }' */
                 "(action_type):d,"
   /* specs/discord/audit_log.endpoints-params.json:13:20
-     '{ "name": "before", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }'
-  */
+     '{ "name": "before", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }' */
                 "(before):|F|,"
   /* specs/discord/audit_log.endpoints-params.json:14:20
-     '{ "name": "limit", "type":{ "base":"int" }, "inject_if_not":0 }'
-  */
+     '{ "name": "limit", "type":{ "base":"int" }, "inject_if_not":0 }' */
                 "(limit):d,"
                 "@arg_switches:b",
   /* specs/discord/audit_log.endpoints-params.json:11:20
-     '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }'
-  */
+     '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }' */
                 cee_ulltostr, &p->user_id,
   /* specs/discord/audit_log.endpoints-params.json:12:20
-     '{ "name": "action_type", "type":{ "base":"int", "int_alias":"enum discord_audit_log_events" }, "inject_if_not":0 }'
-  */
+     '{ "name": "action_type", "type":{ "base":"int", "int_alias":"enum discord_audit_log_events" }, "inject_if_not":0 }' */
                 &p->action_type,
   /* specs/discord/audit_log.endpoints-params.json:13:20
-     '{ "name": "before", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }'
-  */
+     '{ "name": "before", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }' */
                 cee_ulltostr, &p->before,
   /* specs/discord/audit_log.endpoints-params.json:14:20
-     '{ "name": "limit", "type":{ "base":"int" }, "inject_if_not":0 }'
-  */
+     '{ "name": "limit", "type":{ "base":"int" }, "inject_if_not":0 }' */
                 &p->limit,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
@@ -160,44 +145,36 @@ size_t discord_get_guild_audit_log_params_list_to_json_v(char *str, size_t len, 
 
 void discord_get_guild_audit_log_params_cleanup(struct discord_get_guild_audit_log_params *d) {
   /* specs/discord/audit_log.endpoints-params.json:11:20
-     '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }'
-  */
-  //p->user_id is a scalar
+     '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }' */
+  // p->user_id is a scalar
   /* specs/discord/audit_log.endpoints-params.json:12:20
-     '{ "name": "action_type", "type":{ "base":"int", "int_alias":"enum discord_audit_log_events" }, "inject_if_not":0 }'
-  */
-  //p->action_type is a scalar
+     '{ "name": "action_type", "type":{ "base":"int", "int_alias":"enum discord_audit_log_events" }, "inject_if_not":0 }' */
+  // p->action_type is a scalar
   /* specs/discord/audit_log.endpoints-params.json:13:20
-     '{ "name": "before", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }'
-  */
-  //p->before is a scalar
+     '{ "name": "before", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }' */
+  // p->before is a scalar
   /* specs/discord/audit_log.endpoints-params.json:14:20
-     '{ "name": "limit", "type":{ "base":"int" }, "inject_if_not":0 }'
-  */
-  //p->limit is a scalar
+     '{ "name": "limit", "type":{ "base":"int" }, "inject_if_not":0 }' */
+  // p->limit is a scalar
 }
 
 void discord_get_guild_audit_log_params_init(struct discord_get_guild_audit_log_params *p) {
   memset(p, 0, sizeof(struct discord_get_guild_audit_log_params));
   /* specs/discord/audit_log.endpoints-params.json:11:20
-     '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }'
-  */
+     '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }' */
 
   /* specs/discord/audit_log.endpoints-params.json:12:20
-     '{ "name": "action_type", "type":{ "base":"int", "int_alias":"enum discord_audit_log_events" }, "inject_if_not":0 }'
-  */
+     '{ "name": "action_type", "type":{ "base":"int", "int_alias":"enum discord_audit_log_events" }, "inject_if_not":0 }' */
 
   /* specs/discord/audit_log.endpoints-params.json:13:20
-     '{ "name": "before", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }'
-  */
+     '{ "name": "before", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }' */
 
   /* specs/discord/audit_log.endpoints-params.json:14:20
-     '{ "name": "limit", "type":{ "base":"int" }, "inject_if_not":0 }'
-  */
+     '{ "name": "limit", "type":{ "base":"int" }, "inject_if_not":0 }' */
 
 }
 struct discord_get_guild_audit_log_params* discord_get_guild_audit_log_params_alloc() {
-  struct discord_get_guild_audit_log_params *p= (struct discord_get_guild_audit_log_params*)malloc(sizeof(struct discord_get_guild_audit_log_params));
+  struct discord_get_guild_audit_log_params *p= malloc(sizeof(struct discord_get_guild_audit_log_params));
   discord_get_guild_audit_log_params_init(p);
   return p;
 }

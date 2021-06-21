@@ -29,7 +29,6 @@ int main(int argc, char **argv)
   char *s;
 
   char *config_file = NULL;
-  /*enum file_type type = FILE_SINGLE_FILE;*/
   struct emit_option eo = {
     .type = FILE_SINGLE_FILE
   };
@@ -86,11 +85,8 @@ int main(int argc, char **argv)
   struct jc_definition d;
   memset(&d, 0, sizeof(d));
   definition_from_json(s, len, &d);
-  //print_definition(stderr, &d);
-  FILE *fp = fopen(config_file, open_mode);
   d.spec_name = file;
-  gen_definition(fp, &eo, &d);
-  fclose(fp);
+  gen_definition(config_file, open_mode, &eo, &d);
 
   return EXIT_SUCCESS;
 }

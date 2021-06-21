@@ -1,7 +1,12 @@
 /* This file is generated from specs/discord/audit_log.endpoints-params.json, Please don't edit it. */
-/*
-https://discord.com/developers/docs/resources/audit-log
-*/
+/**
+ * @file specs-code/discord/all_functions.h
+ * @author cee-studio
+ * @date 21 Jun 2021
+ * @brief Specs generated file
+ * @see https://discord.com/developers/docs/resources/audit-log
+ */
+
 
 extern void discord_get_guild_audit_log_params_cleanup_v(void *p);
 extern void discord_get_guild_audit_log_params_cleanup(struct discord_get_guild_audit_log_params *p);
@@ -23,9 +28,14 @@ extern void discord_get_guild_audit_log_params_list_from_json(char *str, size_t 
 extern size_t discord_get_guild_audit_log_params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_get_guild_audit_log_params_list_to_json(char *str, size_t len, struct discord_get_guild_audit_log_params **p);
 /* This file is generated from specs/discord/audit_log.json, Please don't edit it. */
-/*
-https://discord.com/developers/docs/resources/audit-log
-*/
+/**
+ * @file specs-code/discord/all_functions.h
+ * @author cee-studio
+ * @date 21 Jun 2021
+ * @brief Specs generated file
+ * @see https://discord.com/developers/docs/resources/audit-log
+ */
+
 
 extern void discord_audit_log_cleanup_v(void *p);
 extern void discord_audit_log_cleanup(struct discord_audit_log *p);
@@ -129,9 +139,14 @@ extern void discord_audit_log_change_key_list_from_json(char *str, size_t len, s
 extern size_t discord_audit_log_change_key_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_audit_log_change_key_list_to_json(char *str, size_t len, struct discord_audit_log_change_key **p);
 /* This file is generated from specs/discord/channel.endpoints-params.json, Please don't edit it. */
-/*
-https://discord.com/developers/docs/resources/channel
-*/
+/**
+ * @file specs-code/discord/all_functions.h
+ * @author cee-studio
+ * @date 21 Jun 2021
+ * @brief Specs generated file
+ * @see https://discord.com/developers/docs/resources/channel
+ */
+
 
 extern void discord_modify_channel_params_cleanup_v(void *p);
 extern void discord_modify_channel_params_cleanup(struct discord_modify_channel_params *p);
@@ -313,9 +328,14 @@ extern void discord_thread_response_body_list_from_json(char *str, size_t len, s
 extern size_t discord_thread_response_body_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_thread_response_body_list_to_json(char *str, size_t len, struct discord_thread_response_body **p);
 /* This file is generated from specs/discord/channel.json, Please don't edit it. */
-/*
-https://discord.com/developers/docs/resources/channel
-*/
+/**
+ * @file specs-code/discord/all_functions.h
+ * @author cee-studio
+ * @date 21 Jun 2021
+ * @brief Specs generated file
+ * @see https://discord.com/developers/docs/resources/channel
+ */
+
 
 
 
@@ -767,9 +787,14 @@ extern void discord_embed_field_list_from_json(char *str, size_t len, struct dis
 extern size_t discord_embed_field_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_embed_field_list_to_json(char *str, size_t len, struct discord_embed_field **p);
 /* This file is generated from specs/discord/emoji.endpoints-params.json, Please don't edit it. */
-/*
+/**
+ * @file specs-code/discord/all_functions.h
+ * @author cee-studio
+ * @date 21 Jun 2021
+ * @brief Specs generated file
+ * @see 
+ */
 
-*/
 
 extern void discord_create_guild_emoji_params_cleanup_v(void *p);
 extern void discord_create_guild_emoji_params_cleanup(struct discord_create_guild_emoji_params *p);
@@ -811,9 +836,14 @@ extern void discord_modify_guild_emoji_params_list_from_json(char *str, size_t l
 extern size_t discord_modify_guild_emoji_params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_modify_guild_emoji_params_list_to_json(char *str, size_t len, struct discord_modify_guild_emoji_params **p);
 /* This file is generated from specs/discord/emoji.json, Please don't edit it. */
-/*
-https://discord.com/developers/docs/resources/emoji
-*/
+/**
+ * @file specs-code/discord/all_functions.h
+ * @author cee-studio
+ * @date 21 Jun 2021
+ * @brief Specs generated file
+ * @see https://discord.com/developers/docs/resources/emoji
+ */
+
 
 extern void discord_emoji_cleanup_v(void *p);
 extern void discord_emoji_cleanup(struct discord_emoji *p);
@@ -835,9 +865,14 @@ extern void discord_emoji_list_from_json(char *str, size_t len, struct discord_e
 extern size_t discord_emoji_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_emoji_list_to_json(char *str, size_t len, struct discord_emoji **p);
 /* This file is generated from specs/discord/gateway.json, Please don't edit it. */
-/*
-https://discord.com/developers/docs/topics/gateway
-*/
+/**
+ * @file specs-code/discord/all_functions.h
+ * @author cee-studio
+ * @date 21 Jun 2021
+ * @brief Specs generated file
+ * @see https://discord.com/developers/docs/topics/gateway
+ */
+
 
 
 
@@ -929,9 +964,14 @@ extern size_t discord_gateway_activity_list_to_json(char *str, size_t len, struc
 
 
 /* This file is generated from specs/discord/guild-template.endpoints-params.json, Please don't edit it. */
-/*
-https://discord.com/developers/docs/resources/guild-template
-*/
+/**
+ * @file specs-code/discord/all_functions.h
+ * @author cee-studio
+ * @date 21 Jun 2021
+ * @brief Specs generated file
+ * @see https://discord.com/developers/docs/resources/guild-template
+ */
+
 
 extern void discord_create_guild_from_guild_template_params_cleanup_v(void *p);
 extern void discord_create_guild_from_guild_template_params_cleanup(struct discord_create_guild_from_guild_template_params *p);
@@ -993,9 +1033,14 @@ extern void discord_modify_guild_template_params_list_from_json(char *str, size_
 extern size_t discord_modify_guild_template_params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_modify_guild_template_params_list_to_json(char *str, size_t len, struct discord_modify_guild_template_params **p);
 /* This file is generated from specs/discord/guild-template.json, Please don't edit it. */
-/*
-https://discord.com/developers/docs/resources/guild-template
-*/
+/**
+ * @file specs-code/discord/all_functions.h
+ * @author cee-studio
+ * @date 21 Jun 2021
+ * @brief Specs generated file
+ * @see https://discord.com/developers/docs/resources/guild-template
+ */
+
 
 extern void discord_guild_template_cleanup_v(void *p);
 extern void discord_guild_template_cleanup(struct discord_guild_template *p);
@@ -1017,9 +1062,14 @@ extern void discord_guild_template_list_from_json(char *str, size_t len, struct 
 extern size_t discord_guild_template_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_guild_template_list_to_json(char *str, size_t len, struct discord_guild_template **p);
 /* This file is generated from specs/discord/guild.endpoints-params.json, Please don't edit it. */
-/*
-https://discord.com/developers/docs/resources/guild
-*/
+/**
+ * @file specs-code/discord/all_functions.h
+ * @author cee-studio
+ * @date 21 Jun 2021
+ * @brief Specs generated file
+ * @see https://discord.com/developers/docs/resources/guild
+ */
+
 
 extern void discord_create_guild_params_cleanup_v(void *p);
 extern void discord_create_guild_params_cleanup(struct discord_create_guild_params *p);
@@ -1261,9 +1311,14 @@ extern void discord_begin_guild_prune_params_list_from_json(char *str, size_t le
 extern size_t discord_begin_guild_prune_params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_begin_guild_prune_params_list_to_json(char *str, size_t len, struct discord_begin_guild_prune_params **p);
 /* This file is generated from specs/discord/guild.json, Please don't edit it. */
-/*
-https://discord.com/developers/docs/resources/guild
-*/
+/**
+ * @file specs-code/discord/all_functions.h
+ * @author cee-studio
+ * @date 21 Jun 2021
+ * @brief Specs generated file
+ * @see https://discord.com/developers/docs/resources/guild
+ */
+
 
 extern void discord_guild_cleanup_v(void *p);
 extern void discord_guild_cleanup(struct discord_guild *p);
@@ -1501,9 +1556,14 @@ extern void discord_guild_welcome_screen_channel_list_from_json(char *str, size_
 extern size_t discord_guild_welcome_screen_channel_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_guild_welcome_screen_channel_list_to_json(char *str, size_t len, struct discord_guild_welcome_screen_channel **p);
 /* This file is generated from specs/discord/invite.endpoints-params.json, Please don't edit it. */
-/*
-https://discord.com/developers/docs/resources/invite
-*/
+/**
+ * @file specs-code/discord/all_functions.h
+ * @author cee-studio
+ * @date 21 Jun 2021
+ * @brief Specs generated file
+ * @see https://discord.com/developers/docs/resources/invite
+ */
+
 
 extern void discord_get_invite_params_cleanup_v(void *p);
 extern void discord_get_invite_params_cleanup(struct discord_get_invite_params *p);
@@ -1525,9 +1585,14 @@ extern void discord_get_invite_params_list_from_json(char *str, size_t len, stru
 extern size_t discord_get_invite_params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_get_invite_params_list_to_json(char *str, size_t len, struct discord_get_invite_params **p);
 /* This file is generated from specs/discord/invite.json, Please don't edit it. */
-/*
-https://discord.com/developers/docs/resources/invite
-*/
+/**
+ * @file specs-code/discord/all_functions.h
+ * @author cee-studio
+ * @date 21 Jun 2021
+ * @brief Specs generated file
+ * @see https://discord.com/developers/docs/resources/invite
+ */
+
 
 
 
@@ -1571,9 +1636,14 @@ extern void discord_invite_metadata_list_from_json(char *str, size_t len, struct
 extern size_t discord_invite_metadata_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_invite_metadata_list_to_json(char *str, size_t len, struct discord_invite_metadata **p);
 /* This file is generated from specs/discord/permissions.json, Please don't edit it. */
-/*
-https://discord.com/developers/docs/topics/permissions
-*/
+/**
+ * @file specs-code/discord/all_functions.h
+ * @author cee-studio
+ * @date 21 Jun 2021
+ * @brief Specs generated file
+ * @see https://discord.com/developers/docs/topics/permissions
+ */
+
 
 
 
@@ -1617,9 +1687,14 @@ extern void discord_permissions_role_tags_list_from_json(char *str, size_t len, 
 extern size_t discord_permissions_role_tags_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_permissions_role_tags_list_to_json(char *str, size_t len, struct discord_permissions_role_tags **p);
 /* This file is generated from specs/discord/user.endpoints-params.json, Please don't edit it. */
-/*
-https://discord.com/developers/docs/resources/user
-*/
+/**
+ * @file specs-code/discord/all_functions.h
+ * @author cee-studio
+ * @date 21 Jun 2021
+ * @brief Specs generated file
+ * @see https://discord.com/developers/docs/resources/user
+ */
+
 
 extern void discord_modify_current_user_params_cleanup_v(void *p);
 extern void discord_modify_current_user_params_cleanup(struct discord_modify_current_user_params *p);
@@ -1661,9 +1736,14 @@ extern void discord_create_group_dm_params_list_from_json(char *str, size_t len,
 extern size_t discord_create_group_dm_params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_create_group_dm_params_list_to_json(char *str, size_t len, struct discord_create_group_dm_params **p);
 /* This file is generated from specs/discord/user.json, Please don't edit it. */
-/*
-https://discord.com/developers/docs/resources/user
-*/
+/**
+ * @file specs-code/discord/all_functions.h
+ * @author cee-studio
+ * @date 21 Jun 2021
+ * @brief Specs generated file
+ * @see https://discord.com/developers/docs/resources/user
+ */
+
 
 
 
@@ -1711,9 +1791,14 @@ extern void discord_connection_list_from_json(char *str, size_t len, struct disc
 extern size_t discord_connection_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_connection_list_to_json(char *str, size_t len, struct discord_connection **p);
 /* This file is generated from specs/discord/voice-connections.json, Please don't edit it. */
-/*
-https://discord.com/developers/docs/topics/voice-connections
-*/
+/**
+ * @file specs-code/discord/all_functions.h
+ * @author cee-studio
+ * @date 21 Jun 2021
+ * @brief Specs generated file
+ * @see https://discord.com/developers/docs/topics/voice-connections
+ */
+
 
 
 
@@ -1721,9 +1806,14 @@ https://discord.com/developers/docs/topics/voice-connections
 
 
 /* This file is generated from specs/discord/voice.json, Please don't edit it. */
-/*
-https://discord.com/developers/docs/resources/voice
-*/
+/**
+ * @file specs-code/discord/all_functions.h
+ * @author cee-studio
+ * @date 21 Jun 2021
+ * @brief Specs generated file
+ * @see https://discord.com/developers/docs/resources/voice
+ */
+
 
 extern void discord_voice_state_cleanup_v(void *p);
 extern void discord_voice_state_cleanup(struct discord_voice_state *p);
@@ -1765,9 +1855,14 @@ extern void discord_voice_region_list_from_json(char *str, size_t len, struct di
 extern size_t discord_voice_region_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_voice_region_list_to_json(char *str, size_t len, struct discord_voice_region **p);
 /* This file is generated from specs/discord/webhook.endpoints-params.json, Please don't edit it. */
-/*
-https://discord.com/developers/docs/resources/webhook
-*/
+/**
+ * @file specs-code/discord/all_functions.h
+ * @author cee-studio
+ * @date 21 Jun 2021
+ * @brief Specs generated file
+ * @see https://discord.com/developers/docs/resources/webhook
+ */
+
 
 extern void discord_create_webhook_params_cleanup_v(void *p);
 extern void discord_create_webhook_params_cleanup(struct discord_create_webhook_params *p);
@@ -1849,9 +1944,14 @@ extern void discord_edit_webhook_message_params_list_from_json(char *str, size_t
 extern size_t discord_edit_webhook_message_params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_edit_webhook_message_params_list_to_json(char *str, size_t len, struct discord_edit_webhook_message_params **p);
 /* This file is generated from specs/discord/webhook.json, Please don't edit it. */
-/*
-https://discord.com/developers/docs/resources/webhook
-*/
+/**
+ * @file specs-code/discord/all_functions.h
+ * @author cee-studio
+ * @date 21 Jun 2021
+ * @brief Specs generated file
+ * @see https://discord.com/developers/docs/resources/webhook
+ */
+
 
 extern void discord_webhook_cleanup_v(void *p);
 extern void discord_webhook_cleanup(struct discord_webhook *p);

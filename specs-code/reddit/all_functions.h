@@ -1,7 +1,12 @@
 /* This file is generated from specs/reddit/links_n_comments.json, Please don't edit it. */
-/*
+/**
+ * @file specs-code/reddit/all_functions.h
+ * @author cee-studio
+ * @date 21 Jun 2021
+ * @brief Specs generated file
+ * @see 
+ */
 
-*/
 
 extern void reddit_comment_params_cleanup_v(void *p);
 extern void reddit_comment_params_cleanup(struct reddit_comment_params *p);
@@ -23,9 +28,14 @@ extern void reddit_comment_params_list_from_json(char *str, size_t len, struct r
 extern size_t reddit_comment_params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t reddit_comment_params_list_to_json(char *str, size_t len, struct reddit_comment_params **p);
 /* This file is generated from specs/reddit/oauth2.json, Please don't edit it. */
-/*
-https://github.com/reddit-archive/reddit/wiki/OAuth2-Quick-Start-Example
-*/
+/**
+ * @file specs-code/reddit/all_functions.h
+ * @author cee-studio
+ * @date 21 Jun 2021
+ * @brief Specs generated file
+ * @see https://github.com/reddit-archive/reddit/wiki/OAuth2-Quick-Start-Example
+ */
+
 
 extern void reddit_access_token_params_cleanup_v(void *p);
 extern void reddit_access_token_params_cleanup(struct reddit_access_token_params *p);
@@ -47,9 +57,14 @@ extern void reddit_access_token_params_list_from_json(char *str, size_t len, str
 extern size_t reddit_access_token_params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t reddit_access_token_params_list_to_json(char *str, size_t len, struct reddit_access_token_params **p);
 /* This file is generated from specs/reddit/search.json, Please don't edit it. */
-/*
+/**
+ * @file specs-code/reddit/all_functions.h
+ * @author cee-studio
+ * @date 21 Jun 2021
+ * @brief Specs generated file
+ * @see 
+ */
 
-*/
 
 extern void reddit_search_params_cleanup_v(void *p);
 extern void reddit_search_params_cleanup(struct reddit_search_params *p);

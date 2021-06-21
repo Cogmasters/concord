@@ -1,8 +1,13 @@
 /* This file is generated from specs/discord/webhook.json, Please don't edit it. */
+/**
+ * @file specs-code/discord/webhook.c
+ * @author cee-studio
+ * @date 21 Jun 2021
+ * @brief Specs generated file
+ * @see https://discord.com/developers/docs/resources/webhook
+ */
+
 #include "specs.h"
-/*
-https://discord.com/developers/docs/resources/webhook
-*/
 
 void discord_webhook_from_json(char *json, size_t len, struct discord_webhook *p)
 {
@@ -10,79 +15,61 @@ void discord_webhook_from_json(char *json, size_t len, struct discord_webhook *p
   size_t r=0;
   r=json_extract(json, len, 
   /* specs/discord/webhook.json:12:20
-     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 "(id):F,"
   /* specs/discord/webhook.json:13:20
-     '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_webhook_types" }}'
-  */
+     '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_webhook_types" }}' */
                 "(type):d,"
   /* specs/discord/webhook.json:14:20
-     '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 "(guild_id):F,"
   /* specs/discord/webhook.json:15:20
-     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 "(channel_id):F,"
   /* specs/discord/webhook.json:16:20
-     '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }}'
-  */
+     '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }}' */
                 "(user):F,"
   /* specs/discord/webhook.json:17:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[WEBHOOK_NAME_LEN]" }}'
-  */
+     '{ "name": "name", "type":{ "base":"char", "dec":"[WEBHOOK_NAME_LEN]" }}' */
                 "(name):s,"
   /* specs/discord/webhook.json:18:20
-     '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
-  */
+     '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}' */
                 "(avatar):?s,"
   /* specs/discord/webhook.json:19:20
-     '{ "name": "token", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
-  */
+     '{ "name": "token", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}' */
                 "(token):?s,"
   /* specs/discord/webhook.json:20:20
-     '{ "name": "application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 "(application_id):F,"
                 "@arg_switches:b"
                 "@record_defined"
                 "@record_null",
   /* specs/discord/webhook.json:12:20
-     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 cee_strtoull, &p->id,
   /* specs/discord/webhook.json:13:20
-     '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_webhook_types" }}'
-  */
+     '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_webhook_types" }}' */
                 &p->type,
   /* specs/discord/webhook.json:14:20
-     '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 cee_strtoull, &p->guild_id,
   /* specs/discord/webhook.json:15:20
-     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 cee_strtoull, &p->channel_id,
   /* specs/discord/webhook.json:16:20
-     '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }}'
-  */
+     '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }}' */
                 discord_user_from_json, p->user,
   /* specs/discord/webhook.json:17:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[WEBHOOK_NAME_LEN]" }}'
-  */
+     '{ "name": "name", "type":{ "base":"char", "dec":"[WEBHOOK_NAME_LEN]" }}' */
                 p->name,
   /* specs/discord/webhook.json:18:20
-     '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
-  */
+     '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}' */
                 &p->avatar,
   /* specs/discord/webhook.json:19:20
-     '{ "name": "token", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
-  */
+     '{ "name": "token", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}' */
                 &p->token,
   /* specs/discord/webhook.json:20:20
-     '{ "name": "application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 cee_strtoull, &p->application_id,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
@@ -94,48 +81,39 @@ static void discord_webhook_use_default_inject_settings(struct discord_webhook *
 {
   p->__M.enable_arg_switches = true;
   /* specs/discord/webhook.json:12:20
-     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   p->__M.arg_switches[0] = &p->id;
 
   /* specs/discord/webhook.json:13:20
-     '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_webhook_types" }}'
-  */
+     '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_webhook_types" }}' */
   p->__M.arg_switches[1] = &p->type;
 
   /* specs/discord/webhook.json:14:20
-     '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   p->__M.arg_switches[2] = &p->guild_id;
 
   /* specs/discord/webhook.json:15:20
-     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   p->__M.arg_switches[3] = &p->channel_id;
 
   /* specs/discord/webhook.json:16:20
-     '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }}'
-  */
+     '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }}' */
   p->__M.arg_switches[4] = p->user;
 
   /* specs/discord/webhook.json:17:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[WEBHOOK_NAME_LEN]" }}'
-  */
+     '{ "name": "name", "type":{ "base":"char", "dec":"[WEBHOOK_NAME_LEN]" }}' */
   p->__M.arg_switches[5] = p->name;
 
   /* specs/discord/webhook.json:18:20
-     '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
-  */
+     '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}' */
   p->__M.arg_switches[6] = p->avatar;
 
   /* specs/discord/webhook.json:19:20
-     '{ "name": "token", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
-  */
+     '{ "name": "token", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}' */
   p->__M.arg_switches[7] = p->token;
 
   /* specs/discord/webhook.json:20:20
-     '{ "name": "application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   p->__M.arg_switches[8] = &p->application_id;
 
 }
@@ -146,77 +124,59 @@ size_t discord_webhook_to_json(char *json, size_t len, struct discord_webhook *p
   discord_webhook_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/discord/webhook.json:12:20
-     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 "(id):|F|,"
   /* specs/discord/webhook.json:13:20
-     '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_webhook_types" }}'
-  */
+     '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_webhook_types" }}' */
                 "(type):d,"
   /* specs/discord/webhook.json:14:20
-     '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 "(guild_id):|F|,"
   /* specs/discord/webhook.json:15:20
-     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 "(channel_id):|F|,"
   /* specs/discord/webhook.json:16:20
-     '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }}'
-  */
+     '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }}' */
                 "(user):F,"
   /* specs/discord/webhook.json:17:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[WEBHOOK_NAME_LEN]" }}'
-  */
+     '{ "name": "name", "type":{ "base":"char", "dec":"[WEBHOOK_NAME_LEN]" }}' */
                 "(name):s,"
   /* specs/discord/webhook.json:18:20
-     '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
-  */
+     '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}' */
                 "(avatar):s,"
   /* specs/discord/webhook.json:19:20
-     '{ "name": "token", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
-  */
+     '{ "name": "token", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}' */
                 "(token):s,"
   /* specs/discord/webhook.json:20:20
-     '{ "name": "application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 "(application_id):|F|,"
                 "@arg_switches:b",
   /* specs/discord/webhook.json:12:20
-     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 cee_ulltostr, &p->id,
   /* specs/discord/webhook.json:13:20
-     '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_webhook_types" }}'
-  */
+     '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_webhook_types" }}' */
                 &p->type,
   /* specs/discord/webhook.json:14:20
-     '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 cee_ulltostr, &p->guild_id,
   /* specs/discord/webhook.json:15:20
-     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 cee_ulltostr, &p->channel_id,
   /* specs/discord/webhook.json:16:20
-     '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }}'
-  */
+     '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }}' */
                 discord_user_to_json, p->user,
   /* specs/discord/webhook.json:17:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[WEBHOOK_NAME_LEN]" }}'
-  */
+     '{ "name": "name", "type":{ "base":"char", "dec":"[WEBHOOK_NAME_LEN]" }}' */
                 p->name,
   /* specs/discord/webhook.json:18:20
-     '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
-  */
+     '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}' */
                 p->avatar,
   /* specs/discord/webhook.json:19:20
-     '{ "name": "token", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
-  */
+     '{ "name": "token", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}' */
                 p->token,
   /* specs/discord/webhook.json:20:20
-     '{ "name": "application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 cee_ulltostr, &p->application_id,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
@@ -261,88 +221,70 @@ size_t discord_webhook_list_to_json_v(char *str, size_t len, void *p){
 
 void discord_webhook_cleanup(struct discord_webhook *d) {
   /* specs/discord/webhook.json:12:20
-     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
-  //p->id is a scalar
+     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
+  // p->id is a scalar
   /* specs/discord/webhook.json:13:20
-     '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_webhook_types" }}'
-  */
-  //p->type is a scalar
+     '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_webhook_types" }}' */
+  // p->type is a scalar
   /* specs/discord/webhook.json:14:20
-     '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
-  //p->guild_id is a scalar
+     '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
+  // p->guild_id is a scalar
   /* specs/discord/webhook.json:15:20
-     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
-  //p->channel_id is a scalar
+     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
+  // p->channel_id is a scalar
   /* specs/discord/webhook.json:16:20
-     '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }}'
-  */
+     '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }}' */
   if (d->user)
     discord_user_free(d->user);
   /* specs/discord/webhook.json:17:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[WEBHOOK_NAME_LEN]" }}'
-  */
-  //p->name is a scalar
+     '{ "name": "name", "type":{ "base":"char", "dec":"[WEBHOOK_NAME_LEN]" }}' */
+  // p->name is a scalar
   /* specs/discord/webhook.json:18:20
-     '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
-  */
+     '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}' */
   if (d->avatar)
     free(d->avatar);
   /* specs/discord/webhook.json:19:20
-     '{ "name": "token", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
-  */
+     '{ "name": "token", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}' */
   if (d->token)
     free(d->token);
   /* specs/discord/webhook.json:20:20
-     '{ "name": "application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
-  //p->application_id is a scalar
+     '{ "name": "application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
+  // p->application_id is a scalar
 }
 
 void discord_webhook_init(struct discord_webhook *p) {
   memset(p, 0, sizeof(struct discord_webhook));
   /* specs/discord/webhook.json:12:20
-     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
 
   /* specs/discord/webhook.json:13:20
-     '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_webhook_types" }}'
-  */
+     '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_webhook_types" }}' */
 
   /* specs/discord/webhook.json:14:20
-     '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
 
   /* specs/discord/webhook.json:15:20
-     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
 
   /* specs/discord/webhook.json:16:20
-     '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }}'
-  */
+     '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }}' */
   p->user = discord_user_alloc();
 
   /* specs/discord/webhook.json:17:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[WEBHOOK_NAME_LEN]" }}'
-  */
+     '{ "name": "name", "type":{ "base":"char", "dec":"[WEBHOOK_NAME_LEN]" }}' */
 
   /* specs/discord/webhook.json:18:20
-     '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
-  */
+     '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}' */
 
   /* specs/discord/webhook.json:19:20
-     '{ "name": "token", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}'
-  */
+     '{ "name": "token", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}' */
 
   /* specs/discord/webhook.json:20:20
-     '{ "name": "application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
 
 }
 struct discord_webhook* discord_webhook_alloc() {
-  struct discord_webhook *p= (struct discord_webhook*)malloc(sizeof(struct discord_webhook));
+  struct discord_webhook *p= malloc(sizeof(struct discord_webhook));
   discord_webhook_init(p);
   return p;
 }

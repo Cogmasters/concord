@@ -1,70 +1,66 @@
 /* This file is generated from specs/discord/voice.json, Please don't edit it. */
-/*
-https://discord.com/developers/docs/resources/voice
-*/
+/**
+ * @file specs-code/discord/voice.h
+ * @author cee-studio
+ * @date 21 Jun 2021
+ * @brief Specs generated file
+ * @see https://discord.com/developers/docs/resources/voice
+ */
 
-/* Title: Voice State Structure */
-/* https://discord.com/developers/docs/resources/voice#voice-state-object-voice-state-structure */
-/* This is defined at specs/discord/voice.json:9:22 */
+
+/**
+ * @brief Voice State Structure
+ *
+ * @see https://discord.com/developers/docs/resources/voice#voice-state-object-voice-state-structure
+ * @note defined at specs/discord/voice.json:9:22
+ */
 struct discord_voice_state {
   /* specs/discord/voice.json:12:20
-     '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   u64_snowflake_t guild_id;
 
   /* specs/discord/voice.json:13:20
-     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}}'
-  */
+     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}}' */
   u64_snowflake_t channel_id;
 
   /* specs/discord/voice.json:14:20
-     '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   u64_snowflake_t user_id;
 
   /* specs/discord/voice.json:15:20
-     '{ "name": "member", "type":{ "base":"struct discord_guild_member", "dec":"*" }}'
-  */
+     '{ "name": "member", "type":{ "base":"struct discord_guild_member", "dec":"*" }}' */
   struct discord_guild_member *member;
 
   /* specs/discord/voice.json:16:20
-     '{ "name": "session_id", "type":{ "base":"char", "dec":"*" }}'
-  */
+     '{ "name": "session_id", "type":{ "base":"char", "dec":"*" }}' */
   char *session_id;
 
   /* specs/discord/voice.json:17:20
-     '{ "name": "deaf", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "deaf", "type":{ "base":"bool" }}' */
   bool deaf;
 
   /* specs/discord/voice.json:18:20
-     '{ "name": "mute", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "mute", "type":{ "base":"bool" }}' */
   bool mute;
 
   /* specs/discord/voice.json:19:20
-     '{ "name": "self_deaf", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "self_deaf", "type":{ "base":"bool" }}' */
   bool self_deaf;
 
   /* specs/discord/voice.json:20:20
-     '{ "name": "self_mute", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "self_mute", "type":{ "base":"bool" }}' */
   bool self_mute;
 
   /* specs/discord/voice.json:21:20
-     '{ "name": "self_stream", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "self_stream", "type":{ "base":"bool" }}' */
   bool self_stream;
 
   /* specs/discord/voice.json:22:20
-     '{ "name": "self_video", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "self_video", "type":{ "base":"bool" }}' */
   bool self_video;
 
   /* specs/discord/voice.json:23:20
-     '{ "name": "supress", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "supress", "type":{ "base":"bool" }}' */
   bool supress;
 
   // The following is metadata used to 
@@ -100,38 +96,35 @@ extern void discord_voice_state_list_from_json(char *str, size_t len, struct dis
 extern size_t discord_voice_state_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_voice_state_list_to_json(char *str, size_t len, struct discord_voice_state **p);
 
-/* Title: Voice Region Structure */
-/* https://discord.com/developers/docs/resources/voice#voice-region-object-voice-region-structure */
-/* This is defined at specs/discord/voice.json:29:22 */
+/**
+ * @brief Voice Region Structure
+ *
+ * @see https://discord.com/developers/docs/resources/voice#voice-region-object-voice-region-structure
+ * @note defined at specs/discord/voice.json:29:22
+ */
 struct discord_voice_region {
   /* specs/discord/voice.json:32:20
-     '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }'
-  */
+     '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }' */
   char *id; // @todo fixed size limit
 
   /* specs/discord/voice.json:33:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }'
-  */
+     '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }' */
   char *name; // @todo fixed size limit
 
   /* specs/discord/voice.json:34:20
-     '{ "name": "vip", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "vip", "type":{ "base":"bool" }}' */
   bool vip;
 
   /* specs/discord/voice.json:35:20
-     '{ "name": "optimal", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "optimal", "type":{ "base":"bool" }}' */
   bool optimal;
 
   /* specs/discord/voice.json:36:20
-     '{ "name": "deprecated", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "deprecated", "type":{ "base":"bool" }}' */
   bool deprecated;
 
   /* specs/discord/voice.json:37:20
-     '{ "name": "custom", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "custom", "type":{ "base":"bool" }}' */
   bool custom;
 
   // The following is metadata used to 

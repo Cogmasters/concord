@@ -1,8 +1,13 @@
 /* This file is generated from specs/discord/permissions.json, Please don't edit it. */
+/**
+ * @file specs-code/discord/permissions.c
+ * @author cee-studio
+ * @date 21 Jun 2021
+ * @brief Specs generated file
+ * @see https://discord.com/developers/docs/topics/permissions
+ */
+
 #include "specs.h"
-/*
-https://discord.com/developers/docs/topics/permissions
-*/
 
 
 enum discord_permissions_bitwise_flags discord_permissions_bitwise_flags_from_string(char *s){
@@ -119,79 +124,61 @@ void discord_permissions_role_from_json(char *json, size_t len, struct discord_p
   size_t r=0;
   r=json_extract(json, len, 
   /* specs/discord/permissions.json:52:20
-     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 "(id):F,"
   /* specs/discord/permissions.json:53:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]" }}'
-  */
+     '{ "name": "name", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]" }}' */
                 "(name):s,"
   /* specs/discord/permissions.json:54:20
-     '{ "name": "color", "type":{ "base":"int" }}'
-  */
+     '{ "name": "color", "type":{ "base":"int" }}' */
                 "(color):d,"
   /* specs/discord/permissions.json:55:20
-     '{ "name": "hoist", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "hoist", "type":{ "base":"bool" }}' */
                 "(hoist):b,"
   /* specs/discord/permissions.json:56:20
-     '{ "name": "position", "type":{ "base":"int" }}'
-  */
+     '{ "name": "position", "type":{ "base":"int" }}' */
                 "(position):d,"
   /* specs/discord/permissions.json:57:20
-     '{ "name": "permissions", "type":{ "base":"char", "dec":"*" }}'
-  */
+     '{ "name": "permissions", "type":{ "base":"char", "dec":"*" }}' */
                 "(permissions):?s,"
   /* specs/discord/permissions.json:58:20
-     '{ "name": "managed", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "managed", "type":{ "base":"bool" }}' */
                 "(managed):b,"
   /* specs/discord/permissions.json:59:20
-     '{ "name": "mentionable", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "mentionable", "type":{ "base":"bool" }}' */
                 "(mentionable):b,"
   /* specs/discord/permissions.json:60:20
-     '{ "name": "tags", "type":{"base":"struct discord_permissions_role_tags", "dec":"*"}}'
-  */
+     '{ "name": "tags", "type":{"base":"struct discord_permissions_role_tags", "dec":"*"}}' */
                 "(tags):F,"
                 "@arg_switches:b"
                 "@record_defined"
                 "@record_null",
   /* specs/discord/permissions.json:52:20
-     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 cee_strtoull, &p->id,
   /* specs/discord/permissions.json:53:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]" }}'
-  */
+     '{ "name": "name", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]" }}' */
                 p->name,
   /* specs/discord/permissions.json:54:20
-     '{ "name": "color", "type":{ "base":"int" }}'
-  */
+     '{ "name": "color", "type":{ "base":"int" }}' */
                 &p->color,
   /* specs/discord/permissions.json:55:20
-     '{ "name": "hoist", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "hoist", "type":{ "base":"bool" }}' */
                 &p->hoist,
   /* specs/discord/permissions.json:56:20
-     '{ "name": "position", "type":{ "base":"int" }}'
-  */
+     '{ "name": "position", "type":{ "base":"int" }}' */
                 &p->position,
   /* specs/discord/permissions.json:57:20
-     '{ "name": "permissions", "type":{ "base":"char", "dec":"*" }}'
-  */
+     '{ "name": "permissions", "type":{ "base":"char", "dec":"*" }}' */
                 &p->permissions,
   /* specs/discord/permissions.json:58:20
-     '{ "name": "managed", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "managed", "type":{ "base":"bool" }}' */
                 &p->managed,
   /* specs/discord/permissions.json:59:20
-     '{ "name": "mentionable", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "mentionable", "type":{ "base":"bool" }}' */
                 &p->mentionable,
   /* specs/discord/permissions.json:60:20
-     '{ "name": "tags", "type":{"base":"struct discord_permissions_role_tags", "dec":"*"}}'
-  */
+     '{ "name": "tags", "type":{"base":"struct discord_permissions_role_tags", "dec":"*"}}' */
                 discord_permissions_role_tags_from_json, p->tags,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
@@ -203,48 +190,39 @@ static void discord_permissions_role_use_default_inject_settings(struct discord_
 {
   p->__M.enable_arg_switches = true;
   /* specs/discord/permissions.json:52:20
-     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   p->__M.arg_switches[0] = &p->id;
 
   /* specs/discord/permissions.json:53:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]" }}'
-  */
+     '{ "name": "name", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]" }}' */
   p->__M.arg_switches[1] = p->name;
 
   /* specs/discord/permissions.json:54:20
-     '{ "name": "color", "type":{ "base":"int" }}'
-  */
+     '{ "name": "color", "type":{ "base":"int" }}' */
   p->__M.arg_switches[2] = &p->color;
 
   /* specs/discord/permissions.json:55:20
-     '{ "name": "hoist", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "hoist", "type":{ "base":"bool" }}' */
   p->__M.arg_switches[3] = &p->hoist;
 
   /* specs/discord/permissions.json:56:20
-     '{ "name": "position", "type":{ "base":"int" }}'
-  */
+     '{ "name": "position", "type":{ "base":"int" }}' */
   p->__M.arg_switches[4] = &p->position;
 
   /* specs/discord/permissions.json:57:20
-     '{ "name": "permissions", "type":{ "base":"char", "dec":"*" }}'
-  */
+     '{ "name": "permissions", "type":{ "base":"char", "dec":"*" }}' */
   p->__M.arg_switches[5] = p->permissions;
 
   /* specs/discord/permissions.json:58:20
-     '{ "name": "managed", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "managed", "type":{ "base":"bool" }}' */
   p->__M.arg_switches[6] = &p->managed;
 
   /* specs/discord/permissions.json:59:20
-     '{ "name": "mentionable", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "mentionable", "type":{ "base":"bool" }}' */
   p->__M.arg_switches[7] = &p->mentionable;
 
   /* specs/discord/permissions.json:60:20
-     '{ "name": "tags", "type":{"base":"struct discord_permissions_role_tags", "dec":"*"}}'
-  */
+     '{ "name": "tags", "type":{"base":"struct discord_permissions_role_tags", "dec":"*"}}' */
   p->__M.arg_switches[8] = p->tags;
 
 }
@@ -255,77 +233,59 @@ size_t discord_permissions_role_to_json(char *json, size_t len, struct discord_p
   discord_permissions_role_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/discord/permissions.json:52:20
-     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 "(id):|F|,"
   /* specs/discord/permissions.json:53:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]" }}'
-  */
+     '{ "name": "name", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]" }}' */
                 "(name):s,"
   /* specs/discord/permissions.json:54:20
-     '{ "name": "color", "type":{ "base":"int" }}'
-  */
+     '{ "name": "color", "type":{ "base":"int" }}' */
                 "(color):d,"
   /* specs/discord/permissions.json:55:20
-     '{ "name": "hoist", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "hoist", "type":{ "base":"bool" }}' */
                 "(hoist):b,"
   /* specs/discord/permissions.json:56:20
-     '{ "name": "position", "type":{ "base":"int" }}'
-  */
+     '{ "name": "position", "type":{ "base":"int" }}' */
                 "(position):d,"
   /* specs/discord/permissions.json:57:20
-     '{ "name": "permissions", "type":{ "base":"char", "dec":"*" }}'
-  */
+     '{ "name": "permissions", "type":{ "base":"char", "dec":"*" }}' */
                 "(permissions):s,"
   /* specs/discord/permissions.json:58:20
-     '{ "name": "managed", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "managed", "type":{ "base":"bool" }}' */
                 "(managed):b,"
   /* specs/discord/permissions.json:59:20
-     '{ "name": "mentionable", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "mentionable", "type":{ "base":"bool" }}' */
                 "(mentionable):b,"
   /* specs/discord/permissions.json:60:20
-     '{ "name": "tags", "type":{"base":"struct discord_permissions_role_tags", "dec":"*"}}'
-  */
+     '{ "name": "tags", "type":{"base":"struct discord_permissions_role_tags", "dec":"*"}}' */
                 "(tags):F,"
                 "@arg_switches:b",
   /* specs/discord/permissions.json:52:20
-     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 cee_ulltostr, &p->id,
   /* specs/discord/permissions.json:53:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]" }}'
-  */
+     '{ "name": "name", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]" }}' */
                 p->name,
   /* specs/discord/permissions.json:54:20
-     '{ "name": "color", "type":{ "base":"int" }}'
-  */
+     '{ "name": "color", "type":{ "base":"int" }}' */
                 &p->color,
   /* specs/discord/permissions.json:55:20
-     '{ "name": "hoist", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "hoist", "type":{ "base":"bool" }}' */
                 &p->hoist,
   /* specs/discord/permissions.json:56:20
-     '{ "name": "position", "type":{ "base":"int" }}'
-  */
+     '{ "name": "position", "type":{ "base":"int" }}' */
                 &p->position,
   /* specs/discord/permissions.json:57:20
-     '{ "name": "permissions", "type":{ "base":"char", "dec":"*" }}'
-  */
+     '{ "name": "permissions", "type":{ "base":"char", "dec":"*" }}' */
                 p->permissions,
   /* specs/discord/permissions.json:58:20
-     '{ "name": "managed", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "managed", "type":{ "base":"bool" }}' */
                 &p->managed,
   /* specs/discord/permissions.json:59:20
-     '{ "name": "mentionable", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "mentionable", "type":{ "base":"bool" }}' */
                 &p->mentionable,
   /* specs/discord/permissions.json:60:20
-     '{ "name": "tags", "type":{"base":"struct discord_permissions_role_tags", "dec":"*"}}'
-  */
+     '{ "name": "tags", "type":{"base":"struct discord_permissions_role_tags", "dec":"*"}}' */
                 discord_permissions_role_tags_to_json, p->tags,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
@@ -370,41 +330,32 @@ size_t discord_permissions_role_list_to_json_v(char *str, size_t len, void *p){
 
 void discord_permissions_role_cleanup(struct discord_permissions_role *d) {
   /* specs/discord/permissions.json:52:20
-     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
-  //p->id is a scalar
+     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
+  // p->id is a scalar
   /* specs/discord/permissions.json:53:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]" }}'
-  */
-  //p->name is a scalar
+     '{ "name": "name", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]" }}' */
+  // p->name is a scalar
   /* specs/discord/permissions.json:54:20
-     '{ "name": "color", "type":{ "base":"int" }}'
-  */
-  //p->color is a scalar
+     '{ "name": "color", "type":{ "base":"int" }}' */
+  // p->color is a scalar
   /* specs/discord/permissions.json:55:20
-     '{ "name": "hoist", "type":{ "base":"bool" }}'
-  */
-  //p->hoist is a scalar
+     '{ "name": "hoist", "type":{ "base":"bool" }}' */
+  // p->hoist is a scalar
   /* specs/discord/permissions.json:56:20
-     '{ "name": "position", "type":{ "base":"int" }}'
-  */
-  //p->position is a scalar
+     '{ "name": "position", "type":{ "base":"int" }}' */
+  // p->position is a scalar
   /* specs/discord/permissions.json:57:20
-     '{ "name": "permissions", "type":{ "base":"char", "dec":"*" }}'
-  */
+     '{ "name": "permissions", "type":{ "base":"char", "dec":"*" }}' */
   if (d->permissions)
     free(d->permissions);
   /* specs/discord/permissions.json:58:20
-     '{ "name": "managed", "type":{ "base":"bool" }}'
-  */
-  //p->managed is a scalar
+     '{ "name": "managed", "type":{ "base":"bool" }}' */
+  // p->managed is a scalar
   /* specs/discord/permissions.json:59:20
-     '{ "name": "mentionable", "type":{ "base":"bool" }}'
-  */
-  //p->mentionable is a scalar
+     '{ "name": "mentionable", "type":{ "base":"bool" }}' */
+  // p->mentionable is a scalar
   /* specs/discord/permissions.json:60:20
-     '{ "name": "tags", "type":{"base":"struct discord_permissions_role_tags", "dec":"*"}}'
-  */
+     '{ "name": "tags", "type":{"base":"struct discord_permissions_role_tags", "dec":"*"}}' */
   if (d->tags)
     discord_permissions_role_tags_free(d->tags);
 }
@@ -412,45 +363,36 @@ void discord_permissions_role_cleanup(struct discord_permissions_role *d) {
 void discord_permissions_role_init(struct discord_permissions_role *p) {
   memset(p, 0, sizeof(struct discord_permissions_role));
   /* specs/discord/permissions.json:52:20
-     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
 
   /* specs/discord/permissions.json:53:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]" }}'
-  */
+     '{ "name": "name", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]" }}' */
 
   /* specs/discord/permissions.json:54:20
-     '{ "name": "color", "type":{ "base":"int" }}'
-  */
+     '{ "name": "color", "type":{ "base":"int" }}' */
 
   /* specs/discord/permissions.json:55:20
-     '{ "name": "hoist", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "hoist", "type":{ "base":"bool" }}' */
 
   /* specs/discord/permissions.json:56:20
-     '{ "name": "position", "type":{ "base":"int" }}'
-  */
+     '{ "name": "position", "type":{ "base":"int" }}' */
 
   /* specs/discord/permissions.json:57:20
-     '{ "name": "permissions", "type":{ "base":"char", "dec":"*" }}'
-  */
+     '{ "name": "permissions", "type":{ "base":"char", "dec":"*" }}' */
 
   /* specs/discord/permissions.json:58:20
-     '{ "name": "managed", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "managed", "type":{ "base":"bool" }}' */
 
   /* specs/discord/permissions.json:59:20
-     '{ "name": "mentionable", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "mentionable", "type":{ "base":"bool" }}' */
 
   /* specs/discord/permissions.json:60:20
-     '{ "name": "tags", "type":{"base":"struct discord_permissions_role_tags", "dec":"*"}}'
-  */
+     '{ "name": "tags", "type":{"base":"struct discord_permissions_role_tags", "dec":"*"}}' */
   p->tags = discord_permissions_role_tags_alloc();
 
 }
 struct discord_permissions_role* discord_permissions_role_alloc() {
-  struct discord_permissions_role *p= (struct discord_permissions_role*)malloc(sizeof(struct discord_permissions_role));
+  struct discord_permissions_role *p= malloc(sizeof(struct discord_permissions_role));
   discord_permissions_role_init(p);
   return p;
 }
@@ -487,31 +429,25 @@ void discord_permissions_role_tags_from_json(char *json, size_t len, struct disc
   size_t r=0;
   r=json_extract(json, len, 
   /* specs/discord/permissions.json:70:20
-     '{ "name": "bot_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "bot_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 "(bot_id):F,"
   /* specs/discord/permissions.json:71:20
-     '{ "name": "integration_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "integration_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 "(integration_id):F,"
   /* specs/discord/permissions.json:72:20
-     '{ "name": "premium_subscriber", "type":{ "base":"int" }}'
-  */
+     '{ "name": "premium_subscriber", "type":{ "base":"int" }}' */
                 "(premium_subscriber):d,"
                 "@arg_switches:b"
                 "@record_defined"
                 "@record_null",
   /* specs/discord/permissions.json:70:20
-     '{ "name": "bot_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "bot_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 cee_strtoull, &p->bot_id,
   /* specs/discord/permissions.json:71:20
-     '{ "name": "integration_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "integration_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 cee_strtoull, &p->integration_id,
   /* specs/discord/permissions.json:72:20
-     '{ "name": "premium_subscriber", "type":{ "base":"int" }}'
-  */
+     '{ "name": "premium_subscriber", "type":{ "base":"int" }}' */
                 &p->premium_subscriber,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
@@ -523,18 +459,15 @@ static void discord_permissions_role_tags_use_default_inject_settings(struct dis
 {
   p->__M.enable_arg_switches = true;
   /* specs/discord/permissions.json:70:20
-     '{ "name": "bot_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "bot_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   p->__M.arg_switches[0] = &p->bot_id;
 
   /* specs/discord/permissions.json:71:20
-     '{ "name": "integration_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "integration_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   p->__M.arg_switches[1] = &p->integration_id;
 
   /* specs/discord/permissions.json:72:20
-     '{ "name": "premium_subscriber", "type":{ "base":"int" }}'
-  */
+     '{ "name": "premium_subscriber", "type":{ "base":"int" }}' */
   p->__M.arg_switches[2] = &p->premium_subscriber;
 
 }
@@ -545,29 +478,23 @@ size_t discord_permissions_role_tags_to_json(char *json, size_t len, struct disc
   discord_permissions_role_tags_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/discord/permissions.json:70:20
-     '{ "name": "bot_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "bot_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 "(bot_id):|F|,"
   /* specs/discord/permissions.json:71:20
-     '{ "name": "integration_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "integration_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 "(integration_id):|F|,"
   /* specs/discord/permissions.json:72:20
-     '{ "name": "premium_subscriber", "type":{ "base":"int" }}'
-  */
+     '{ "name": "premium_subscriber", "type":{ "base":"int" }}' */
                 "(premium_subscriber):d,"
                 "@arg_switches:b",
   /* specs/discord/permissions.json:70:20
-     '{ "name": "bot_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "bot_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 cee_ulltostr, &p->bot_id,
   /* specs/discord/permissions.json:71:20
-     '{ "name": "integration_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "integration_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 cee_ulltostr, &p->integration_id,
   /* specs/discord/permissions.json:72:20
-     '{ "name": "premium_subscriber", "type":{ "base":"int" }}'
-  */
+     '{ "name": "premium_subscriber", "type":{ "base":"int" }}' */
                 &p->premium_subscriber,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
@@ -612,36 +539,30 @@ size_t discord_permissions_role_tags_list_to_json_v(char *str, size_t len, void 
 
 void discord_permissions_role_tags_cleanup(struct discord_permissions_role_tags *d) {
   /* specs/discord/permissions.json:70:20
-     '{ "name": "bot_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
-  //p->bot_id is a scalar
+     '{ "name": "bot_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
+  // p->bot_id is a scalar
   /* specs/discord/permissions.json:71:20
-     '{ "name": "integration_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
-  //p->integration_id is a scalar
+     '{ "name": "integration_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
+  // p->integration_id is a scalar
   /* specs/discord/permissions.json:72:20
-     '{ "name": "premium_subscriber", "type":{ "base":"int" }}'
-  */
-  //p->premium_subscriber is a scalar
+     '{ "name": "premium_subscriber", "type":{ "base":"int" }}' */
+  // p->premium_subscriber is a scalar
 }
 
 void discord_permissions_role_tags_init(struct discord_permissions_role_tags *p) {
   memset(p, 0, sizeof(struct discord_permissions_role_tags));
   /* specs/discord/permissions.json:70:20
-     '{ "name": "bot_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "bot_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
 
   /* specs/discord/permissions.json:71:20
-     '{ "name": "integration_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "integration_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
 
   /* specs/discord/permissions.json:72:20
-     '{ "name": "premium_subscriber", "type":{ "base":"int" }}'
-  */
+     '{ "name": "premium_subscriber", "type":{ "base":"int" }}' */
 
 }
 struct discord_permissions_role_tags* discord_permissions_role_tags_alloc() {
-  struct discord_permissions_role_tags *p= (struct discord_permissions_role_tags*)malloc(sizeof(struct discord_permissions_role_tags));
+  struct discord_permissions_role_tags *p= malloc(sizeof(struct discord_permissions_role_tags));
   discord_permissions_role_tags_init(p);
   return p;
 }

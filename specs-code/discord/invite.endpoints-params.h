@@ -1,20 +1,26 @@
 /* This file is generated from specs/discord/invite.endpoints-params.json, Please don't edit it. */
-/*
-https://discord.com/developers/docs/resources/invite
-*/
+/**
+ * @file specs-code/discord/invite.endpoints-params.h
+ * @author cee-studio
+ * @date 21 Jun 2021
+ * @brief Specs generated file
+ * @see https://discord.com/developers/docs/resources/invite
+ */
 
-/* Title: Get Invite */
-/* https://discord.com/developers/docs/resources/invite#get-invite-query-string-params */
-/* This is defined at specs/discord/invite.endpoints-params.json:10:22 */
+
+/**
+ * @brief Get Invite
+ *
+ * @see https://discord.com/developers/docs/resources/invite#get-invite-query-string-params
+ * @note defined at specs/discord/invite.endpoints-params.json:10:22
+ */
 struct discord_get_invite_params {
   /* specs/discord/invite.endpoints-params.json:13:20
-     '{ "name": "with_counts", "type":{ "base":"bool" }, "comment":"whether the invite should contain approximate member counts"}'
-  */
+     '{ "name": "with_counts", "type":{ "base":"bool" }, "comment":"whether the invite should contain approximate member counts"}' */
   bool with_counts; // whether the invite should contain approximate member counts
 
   /* specs/discord/invite.endpoints-params.json:14:20
-     '{ "name": "with_expiration", "type":{ "base":"bool" }, "comment":"whether the invite should contain the expiration date"}'
-  */
+     '{ "name": "with_expiration", "type":{ "base":"bool" }, "comment":"whether the invite should contain the expiration date"}' */
   bool with_expiration; // whether the invite should contain the expiration date
 
   // The following is metadata used to 

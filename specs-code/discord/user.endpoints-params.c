@@ -1,8 +1,13 @@
 /* This file is generated from specs/discord/user.endpoints-params.json, Please don't edit it. */
+/**
+ * @file specs-code/discord/user.endpoints-params.c
+ * @author cee-studio
+ * @date 21 Jun 2021
+ * @brief Specs generated file
+ * @see https://discord.com/developers/docs/resources/user
+ */
+
 #include "specs.h"
-/*
-https://discord.com/developers/docs/resources/user
-*/
 
 void discord_modify_current_user_params_from_json(char *json, size_t len, struct discord_modify_current_user_params *p)
 {
@@ -10,23 +15,19 @@ void discord_modify_current_user_params_from_json(char *json, size_t len, struct
   size_t r=0;
   r=json_extract(json, len, 
   /* specs/discord/user.endpoints-params.json:13:20
-     '{ "name": "username", "type":{ "base":"char", "dec":"*" }}'
-  */
+     '{ "name": "username", "type":{ "base":"char", "dec":"*" }}' */
                 "(username):?s,"
   /* specs/discord/user.endpoints-params.json:14:20
-     '{ "name": "avatar", "type":{ "base":"char", "dec":"*"}, "comment":"base64 encoded image data"}'
-  */
+     '{ "name": "avatar", "type":{ "base":"char", "dec":"*"}, "comment":"base64 encoded image data"}' */
                 "(avatar):?s,"
                 "@arg_switches:b"
                 "@record_defined"
                 "@record_null",
   /* specs/discord/user.endpoints-params.json:13:20
-     '{ "name": "username", "type":{ "base":"char", "dec":"*" }}'
-  */
+     '{ "name": "username", "type":{ "base":"char", "dec":"*" }}' */
                 &p->username,
   /* specs/discord/user.endpoints-params.json:14:20
-     '{ "name": "avatar", "type":{ "base":"char", "dec":"*"}, "comment":"base64 encoded image data"}'
-  */
+     '{ "name": "avatar", "type":{ "base":"char", "dec":"*"}, "comment":"base64 encoded image data"}' */
                 &p->avatar,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
@@ -38,13 +39,11 @@ static void discord_modify_current_user_params_use_default_inject_settings(struc
 {
   p->__M.enable_arg_switches = true;
   /* specs/discord/user.endpoints-params.json:13:20
-     '{ "name": "username", "type":{ "base":"char", "dec":"*" }}'
-  */
+     '{ "name": "username", "type":{ "base":"char", "dec":"*" }}' */
   p->__M.arg_switches[0] = p->username;
 
   /* specs/discord/user.endpoints-params.json:14:20
-     '{ "name": "avatar", "type":{ "base":"char", "dec":"*"}, "comment":"base64 encoded image data"}'
-  */
+     '{ "name": "avatar", "type":{ "base":"char", "dec":"*"}, "comment":"base64 encoded image data"}' */
   p->__M.arg_switches[1] = p->avatar;
 
 }
@@ -55,21 +54,17 @@ size_t discord_modify_current_user_params_to_json(char *json, size_t len, struct
   discord_modify_current_user_params_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/discord/user.endpoints-params.json:13:20
-     '{ "name": "username", "type":{ "base":"char", "dec":"*" }}'
-  */
+     '{ "name": "username", "type":{ "base":"char", "dec":"*" }}' */
                 "(username):s,"
   /* specs/discord/user.endpoints-params.json:14:20
-     '{ "name": "avatar", "type":{ "base":"char", "dec":"*"}, "comment":"base64 encoded image data"}'
-  */
+     '{ "name": "avatar", "type":{ "base":"char", "dec":"*"}, "comment":"base64 encoded image data"}' */
                 "(avatar):s,"
                 "@arg_switches:b",
   /* specs/discord/user.endpoints-params.json:13:20
-     '{ "name": "username", "type":{ "base":"char", "dec":"*" }}'
-  */
+     '{ "name": "username", "type":{ "base":"char", "dec":"*" }}' */
                 p->username,
   /* specs/discord/user.endpoints-params.json:14:20
-     '{ "name": "avatar", "type":{ "base":"char", "dec":"*"}, "comment":"base64 encoded image data"}'
-  */
+     '{ "name": "avatar", "type":{ "base":"char", "dec":"*"}, "comment":"base64 encoded image data"}' */
                 p->avatar,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
@@ -114,13 +109,11 @@ size_t discord_modify_current_user_params_list_to_json_v(char *str, size_t len, 
 
 void discord_modify_current_user_params_cleanup(struct discord_modify_current_user_params *d) {
   /* specs/discord/user.endpoints-params.json:13:20
-     '{ "name": "username", "type":{ "base":"char", "dec":"*" }}'
-  */
+     '{ "name": "username", "type":{ "base":"char", "dec":"*" }}' */
   if (d->username)
     free(d->username);
   /* specs/discord/user.endpoints-params.json:14:20
-     '{ "name": "avatar", "type":{ "base":"char", "dec":"*"}, "comment":"base64 encoded image data"}'
-  */
+     '{ "name": "avatar", "type":{ "base":"char", "dec":"*"}, "comment":"base64 encoded image data"}' */
   if (d->avatar)
     free(d->avatar);
 }
@@ -128,16 +121,14 @@ void discord_modify_current_user_params_cleanup(struct discord_modify_current_us
 void discord_modify_current_user_params_init(struct discord_modify_current_user_params *p) {
   memset(p, 0, sizeof(struct discord_modify_current_user_params));
   /* specs/discord/user.endpoints-params.json:13:20
-     '{ "name": "username", "type":{ "base":"char", "dec":"*" }}'
-  */
+     '{ "name": "username", "type":{ "base":"char", "dec":"*" }}' */
 
   /* specs/discord/user.endpoints-params.json:14:20
-     '{ "name": "avatar", "type":{ "base":"char", "dec":"*"}, "comment":"base64 encoded image data"}'
-  */
+     '{ "name": "avatar", "type":{ "base":"char", "dec":"*"}, "comment":"base64 encoded image data"}' */
 
 }
 struct discord_modify_current_user_params* discord_modify_current_user_params_alloc() {
-  struct discord_modify_current_user_params *p= (struct discord_modify_current_user_params*)malloc(sizeof(struct discord_modify_current_user_params));
+  struct discord_modify_current_user_params *p= malloc(sizeof(struct discord_modify_current_user_params));
   discord_modify_current_user_params_init(p);
   return p;
 }
@@ -175,26 +166,22 @@ void discord_create_group_dm_params_from_json(char *json, size_t len, struct dis
   r=json_extract(json, len, 
   /* specs/discord/user.endpoints-params.json:24:20
      '{ "name": "access_tokens", "type":{ "base":"ja_str", "dec":"ntl" }, 
-          "comment":"access tokens of users that have granted your app the gdm.join scope"}'
-  */
+          "comment":"access tokens of users that have granted your app the gdm.join scope"}' */
                 "(access_tokens):F,"
   /* specs/discord/user.endpoints-params.json:26:19
      '{ "name":"nicks", "type":{ "base":"ja_u64", "dec":"ntl"}, 
-          "comment":"ia dictionary of user ids to their respective nicknames"}'
-  */
+          "comment":"ia dictionary of user ids to their respective nicknames"}' */
                 "(nicks):F,"
                 "@arg_switches:b"
                 "@record_defined"
                 "@record_null",
   /* specs/discord/user.endpoints-params.json:24:20
      '{ "name": "access_tokens", "type":{ "base":"ja_str", "dec":"ntl" }, 
-          "comment":"access tokens of users that have granted your app the gdm.join scope"}'
-  */
+          "comment":"access tokens of users that have granted your app the gdm.join scope"}' */
                 ja_str_list_from_json, &p->access_tokens,
   /* specs/discord/user.endpoints-params.json:26:19
      '{ "name":"nicks", "type":{ "base":"ja_u64", "dec":"ntl"}, 
-          "comment":"ia dictionary of user ids to their respective nicknames"}'
-  */
+          "comment":"ia dictionary of user ids to their respective nicknames"}' */
                 ja_u64_list_from_json, &p->nicks,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
@@ -207,14 +194,12 @@ static void discord_create_group_dm_params_use_default_inject_settings(struct di
   p->__M.enable_arg_switches = true;
   /* specs/discord/user.endpoints-params.json:24:20
      '{ "name": "access_tokens", "type":{ "base":"ja_str", "dec":"ntl" }, 
-          "comment":"access tokens of users that have granted your app the gdm.join scope"}'
-  */
+          "comment":"access tokens of users that have granted your app the gdm.join scope"}' */
   p->__M.arg_switches[0] = p->access_tokens;
 
   /* specs/discord/user.endpoints-params.json:26:19
      '{ "name":"nicks", "type":{ "base":"ja_u64", "dec":"ntl"}, 
-          "comment":"ia dictionary of user ids to their respective nicknames"}'
-  */
+          "comment":"ia dictionary of user ids to their respective nicknames"}' */
   p->__M.arg_switches[1] = p->nicks;
 
 }
@@ -226,24 +211,20 @@ size_t discord_create_group_dm_params_to_json(char *json, size_t len, struct dis
   r=json_inject(json, len, 
   /* specs/discord/user.endpoints-params.json:24:20
      '{ "name": "access_tokens", "type":{ "base":"ja_str", "dec":"ntl" }, 
-          "comment":"access tokens of users that have granted your app the gdm.join scope"}'
-  */
+          "comment":"access tokens of users that have granted your app the gdm.join scope"}' */
                 "(access_tokens):F,"
   /* specs/discord/user.endpoints-params.json:26:19
      '{ "name":"nicks", "type":{ "base":"ja_u64", "dec":"ntl"}, 
-          "comment":"ia dictionary of user ids to their respective nicknames"}'
-  */
+          "comment":"ia dictionary of user ids to their respective nicknames"}' */
                 "(nicks):F,"
                 "@arg_switches:b",
   /* specs/discord/user.endpoints-params.json:24:20
      '{ "name": "access_tokens", "type":{ "base":"ja_str", "dec":"ntl" }, 
-          "comment":"access tokens of users that have granted your app the gdm.join scope"}'
-  */
+          "comment":"access tokens of users that have granted your app the gdm.join scope"}' */
                 ja_str_list_to_json, p->access_tokens,
   /* specs/discord/user.endpoints-params.json:26:19
      '{ "name":"nicks", "type":{ "base":"ja_u64", "dec":"ntl"}, 
-          "comment":"ia dictionary of user ids to their respective nicknames"}'
-  */
+          "comment":"ia dictionary of user ids to their respective nicknames"}' */
                 ja_u64_list_to_json, p->nicks,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
@@ -289,14 +270,12 @@ size_t discord_create_group_dm_params_list_to_json_v(char *str, size_t len, void
 void discord_create_group_dm_params_cleanup(struct discord_create_group_dm_params *d) {
   /* specs/discord/user.endpoints-params.json:24:20
      '{ "name": "access_tokens", "type":{ "base":"ja_str", "dec":"ntl" }, 
-          "comment":"access tokens of users that have granted your app the gdm.join scope"}'
-  */
+          "comment":"access tokens of users that have granted your app the gdm.join scope"}' */
   if (d->access_tokens)
     ja_str_list_free(d->access_tokens);
   /* specs/discord/user.endpoints-params.json:26:19
      '{ "name":"nicks", "type":{ "base":"ja_u64", "dec":"ntl"}, 
-          "comment":"ia dictionary of user ids to their respective nicknames"}'
-  */
+          "comment":"ia dictionary of user ids to their respective nicknames"}' */
   if (d->nicks)
     ja_u64_list_free(d->nicks);
 }
@@ -305,17 +284,15 @@ void discord_create_group_dm_params_init(struct discord_create_group_dm_params *
   memset(p, 0, sizeof(struct discord_create_group_dm_params));
   /* specs/discord/user.endpoints-params.json:24:20
      '{ "name": "access_tokens", "type":{ "base":"ja_str", "dec":"ntl" }, 
-          "comment":"access tokens of users that have granted your app the gdm.join scope"}'
-  */
+          "comment":"access tokens of users that have granted your app the gdm.join scope"}' */
 
   /* specs/discord/user.endpoints-params.json:26:19
      '{ "name":"nicks", "type":{ "base":"ja_u64", "dec":"ntl"}, 
-          "comment":"ia dictionary of user ids to their respective nicknames"}'
-  */
+          "comment":"ia dictionary of user ids to their respective nicknames"}' */
 
 }
 struct discord_create_group_dm_params* discord_create_group_dm_params_alloc() {
-  struct discord_create_group_dm_params *p= (struct discord_create_group_dm_params*)malloc(sizeof(struct discord_create_group_dm_params));
+  struct discord_create_group_dm_params *p= malloc(sizeof(struct discord_create_group_dm_params));
   discord_create_group_dm_params_init(p);
   return p;
 }

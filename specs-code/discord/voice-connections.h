@@ -1,7 +1,12 @@
 /* This file is generated from specs/discord/voice-connections.json, Please don't edit it. */
-/*
-https://discord.com/developers/docs/topics/voice-connections
-*/
+/**
+ * @file specs-code/discord/voice-connections.h
+ * @author cee-studio
+ * @date 21 Jun 2021
+ * @brief Specs generated file
+ * @see https://discord.com/developers/docs/topics/voice-connections
+ */
+
 
 
 enum discord_voice_close_opcodes {

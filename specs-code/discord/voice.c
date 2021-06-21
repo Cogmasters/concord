@@ -1,8 +1,13 @@
 /* This file is generated from specs/discord/voice.json, Please don't edit it. */
+/**
+ * @file specs-code/discord/voice.c
+ * @author cee-studio
+ * @date 21 Jun 2021
+ * @brief Specs generated file
+ * @see https://discord.com/developers/docs/resources/voice
+ */
+
 #include "specs.h"
-/*
-https://discord.com/developers/docs/resources/voice
-*/
 
 void discord_voice_state_from_json(char *json, size_t len, struct discord_voice_state *p)
 {
@@ -10,103 +15,79 @@ void discord_voice_state_from_json(char *json, size_t len, struct discord_voice_
   size_t r=0;
   r=json_extract(json, len, 
   /* specs/discord/voice.json:12:20
-     '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 "(guild_id):F,"
   /* specs/discord/voice.json:13:20
-     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}}'
-  */
+     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}}' */
                 "(channel_id):F,"
   /* specs/discord/voice.json:14:20
-     '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 "(user_id):F,"
   /* specs/discord/voice.json:15:20
-     '{ "name": "member", "type":{ "base":"struct discord_guild_member", "dec":"*" }}'
-  */
+     '{ "name": "member", "type":{ "base":"struct discord_guild_member", "dec":"*" }}' */
                 "(member):F,"
   /* specs/discord/voice.json:16:20
-     '{ "name": "session_id", "type":{ "base":"char", "dec":"*" }}'
-  */
+     '{ "name": "session_id", "type":{ "base":"char", "dec":"*" }}' */
                 "(session_id):?s,"
   /* specs/discord/voice.json:17:20
-     '{ "name": "deaf", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "deaf", "type":{ "base":"bool" }}' */
                 "(deaf):b,"
   /* specs/discord/voice.json:18:20
-     '{ "name": "mute", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "mute", "type":{ "base":"bool" }}' */
                 "(mute):b,"
   /* specs/discord/voice.json:19:20
-     '{ "name": "self_deaf", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "self_deaf", "type":{ "base":"bool" }}' */
                 "(self_deaf):b,"
   /* specs/discord/voice.json:20:20
-     '{ "name": "self_mute", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "self_mute", "type":{ "base":"bool" }}' */
                 "(self_mute):b,"
   /* specs/discord/voice.json:21:20
-     '{ "name": "self_stream", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "self_stream", "type":{ "base":"bool" }}' */
                 "(self_stream):b,"
   /* specs/discord/voice.json:22:20
-     '{ "name": "self_video", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "self_video", "type":{ "base":"bool" }}' */
                 "(self_video):b,"
   /* specs/discord/voice.json:23:20
-     '{ "name": "supress", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "supress", "type":{ "base":"bool" }}' */
                 "(supress):b,"
                 "@arg_switches:b"
                 "@record_defined"
                 "@record_null",
   /* specs/discord/voice.json:12:20
-     '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 cee_strtoull, &p->guild_id,
   /* specs/discord/voice.json:13:20
-     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}}'
-  */
+     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}}' */
                 cee_strtoull, &p->channel_id,
   /* specs/discord/voice.json:14:20
-     '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 cee_strtoull, &p->user_id,
   /* specs/discord/voice.json:15:20
-     '{ "name": "member", "type":{ "base":"struct discord_guild_member", "dec":"*" }}'
-  */
+     '{ "name": "member", "type":{ "base":"struct discord_guild_member", "dec":"*" }}' */
                 discord_guild_member_from_json, p->member,
   /* specs/discord/voice.json:16:20
-     '{ "name": "session_id", "type":{ "base":"char", "dec":"*" }}'
-  */
+     '{ "name": "session_id", "type":{ "base":"char", "dec":"*" }}' */
                 &p->session_id,
   /* specs/discord/voice.json:17:20
-     '{ "name": "deaf", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "deaf", "type":{ "base":"bool" }}' */
                 &p->deaf,
   /* specs/discord/voice.json:18:20
-     '{ "name": "mute", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "mute", "type":{ "base":"bool" }}' */
                 &p->mute,
   /* specs/discord/voice.json:19:20
-     '{ "name": "self_deaf", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "self_deaf", "type":{ "base":"bool" }}' */
                 &p->self_deaf,
   /* specs/discord/voice.json:20:20
-     '{ "name": "self_mute", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "self_mute", "type":{ "base":"bool" }}' */
                 &p->self_mute,
   /* specs/discord/voice.json:21:20
-     '{ "name": "self_stream", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "self_stream", "type":{ "base":"bool" }}' */
                 &p->self_stream,
   /* specs/discord/voice.json:22:20
-     '{ "name": "self_video", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "self_video", "type":{ "base":"bool" }}' */
                 &p->self_video,
   /* specs/discord/voice.json:23:20
-     '{ "name": "supress", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "supress", "type":{ "base":"bool" }}' */
                 &p->supress,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
@@ -118,63 +99,51 @@ static void discord_voice_state_use_default_inject_settings(struct discord_voice
 {
   p->__M.enable_arg_switches = true;
   /* specs/discord/voice.json:12:20
-     '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   p->__M.arg_switches[0] = &p->guild_id;
 
   /* specs/discord/voice.json:13:20
-     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}}'
-  */
+     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}}' */
   p->__M.arg_switches[1] = &p->channel_id;
 
   /* specs/discord/voice.json:14:20
-     '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   p->__M.arg_switches[2] = &p->user_id;
 
   /* specs/discord/voice.json:15:20
-     '{ "name": "member", "type":{ "base":"struct discord_guild_member", "dec":"*" }}'
-  */
+     '{ "name": "member", "type":{ "base":"struct discord_guild_member", "dec":"*" }}' */
   p->__M.arg_switches[3] = p->member;
 
   /* specs/discord/voice.json:16:20
-     '{ "name": "session_id", "type":{ "base":"char", "dec":"*" }}'
-  */
+     '{ "name": "session_id", "type":{ "base":"char", "dec":"*" }}' */
   p->__M.arg_switches[4] = p->session_id;
 
   /* specs/discord/voice.json:17:20
-     '{ "name": "deaf", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "deaf", "type":{ "base":"bool" }}' */
   p->__M.arg_switches[5] = &p->deaf;
 
   /* specs/discord/voice.json:18:20
-     '{ "name": "mute", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "mute", "type":{ "base":"bool" }}' */
   p->__M.arg_switches[6] = &p->mute;
 
   /* specs/discord/voice.json:19:20
-     '{ "name": "self_deaf", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "self_deaf", "type":{ "base":"bool" }}' */
   p->__M.arg_switches[7] = &p->self_deaf;
 
   /* specs/discord/voice.json:20:20
-     '{ "name": "self_mute", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "self_mute", "type":{ "base":"bool" }}' */
   p->__M.arg_switches[8] = &p->self_mute;
 
   /* specs/discord/voice.json:21:20
-     '{ "name": "self_stream", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "self_stream", "type":{ "base":"bool" }}' */
   p->__M.arg_switches[9] = &p->self_stream;
 
   /* specs/discord/voice.json:22:20
-     '{ "name": "self_video", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "self_video", "type":{ "base":"bool" }}' */
   p->__M.arg_switches[10] = &p->self_video;
 
   /* specs/discord/voice.json:23:20
-     '{ "name": "supress", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "supress", "type":{ "base":"bool" }}' */
   p->__M.arg_switches[11] = &p->supress;
 
 }
@@ -185,101 +154,77 @@ size_t discord_voice_state_to_json(char *json, size_t len, struct discord_voice_
   discord_voice_state_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/discord/voice.json:12:20
-     '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 "(guild_id):|F|,"
   /* specs/discord/voice.json:13:20
-     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}}'
-  */
+     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}}' */
                 "(channel_id):|F|,"
   /* specs/discord/voice.json:14:20
-     '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 "(user_id):|F|,"
   /* specs/discord/voice.json:15:20
-     '{ "name": "member", "type":{ "base":"struct discord_guild_member", "dec":"*" }}'
-  */
+     '{ "name": "member", "type":{ "base":"struct discord_guild_member", "dec":"*" }}' */
                 "(member):F,"
   /* specs/discord/voice.json:16:20
-     '{ "name": "session_id", "type":{ "base":"char", "dec":"*" }}'
-  */
+     '{ "name": "session_id", "type":{ "base":"char", "dec":"*" }}' */
                 "(session_id):s,"
   /* specs/discord/voice.json:17:20
-     '{ "name": "deaf", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "deaf", "type":{ "base":"bool" }}' */
                 "(deaf):b,"
   /* specs/discord/voice.json:18:20
-     '{ "name": "mute", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "mute", "type":{ "base":"bool" }}' */
                 "(mute):b,"
   /* specs/discord/voice.json:19:20
-     '{ "name": "self_deaf", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "self_deaf", "type":{ "base":"bool" }}' */
                 "(self_deaf):b,"
   /* specs/discord/voice.json:20:20
-     '{ "name": "self_mute", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "self_mute", "type":{ "base":"bool" }}' */
                 "(self_mute):b,"
   /* specs/discord/voice.json:21:20
-     '{ "name": "self_stream", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "self_stream", "type":{ "base":"bool" }}' */
                 "(self_stream):b,"
   /* specs/discord/voice.json:22:20
-     '{ "name": "self_video", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "self_video", "type":{ "base":"bool" }}' */
                 "(self_video):b,"
   /* specs/discord/voice.json:23:20
-     '{ "name": "supress", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "supress", "type":{ "base":"bool" }}' */
                 "(supress):b,"
                 "@arg_switches:b",
   /* specs/discord/voice.json:12:20
-     '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 cee_ulltostr, &p->guild_id,
   /* specs/discord/voice.json:13:20
-     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}}'
-  */
+     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}}' */
                 cee_ulltostr, &p->channel_id,
   /* specs/discord/voice.json:14:20
-     '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 cee_ulltostr, &p->user_id,
   /* specs/discord/voice.json:15:20
-     '{ "name": "member", "type":{ "base":"struct discord_guild_member", "dec":"*" }}'
-  */
+     '{ "name": "member", "type":{ "base":"struct discord_guild_member", "dec":"*" }}' */
                 discord_guild_member_to_json, p->member,
   /* specs/discord/voice.json:16:20
-     '{ "name": "session_id", "type":{ "base":"char", "dec":"*" }}'
-  */
+     '{ "name": "session_id", "type":{ "base":"char", "dec":"*" }}' */
                 p->session_id,
   /* specs/discord/voice.json:17:20
-     '{ "name": "deaf", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "deaf", "type":{ "base":"bool" }}' */
                 &p->deaf,
   /* specs/discord/voice.json:18:20
-     '{ "name": "mute", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "mute", "type":{ "base":"bool" }}' */
                 &p->mute,
   /* specs/discord/voice.json:19:20
-     '{ "name": "self_deaf", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "self_deaf", "type":{ "base":"bool" }}' */
                 &p->self_deaf,
   /* specs/discord/voice.json:20:20
-     '{ "name": "self_mute", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "self_mute", "type":{ "base":"bool" }}' */
                 &p->self_mute,
   /* specs/discord/voice.json:21:20
-     '{ "name": "self_stream", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "self_stream", "type":{ "base":"bool" }}' */
                 &p->self_stream,
   /* specs/discord/voice.json:22:20
-     '{ "name": "self_video", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "self_video", "type":{ "base":"bool" }}' */
                 &p->self_video,
   /* specs/discord/voice.json:23:20
-     '{ "name": "supress", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "supress", "type":{ "base":"bool" }}' */
                 &p->supress,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
@@ -324,111 +269,87 @@ size_t discord_voice_state_list_to_json_v(char *str, size_t len, void *p){
 
 void discord_voice_state_cleanup(struct discord_voice_state *d) {
   /* specs/discord/voice.json:12:20
-     '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
-  //p->guild_id is a scalar
+     '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
+  // p->guild_id is a scalar
   /* specs/discord/voice.json:13:20
-     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}}'
-  */
-  //p->channel_id is a scalar
+     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}}' */
+  // p->channel_id is a scalar
   /* specs/discord/voice.json:14:20
-     '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
-  //p->user_id is a scalar
+     '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
+  // p->user_id is a scalar
   /* specs/discord/voice.json:15:20
-     '{ "name": "member", "type":{ "base":"struct discord_guild_member", "dec":"*" }}'
-  */
+     '{ "name": "member", "type":{ "base":"struct discord_guild_member", "dec":"*" }}' */
   if (d->member)
     discord_guild_member_free(d->member);
   /* specs/discord/voice.json:16:20
-     '{ "name": "session_id", "type":{ "base":"char", "dec":"*" }}'
-  */
+     '{ "name": "session_id", "type":{ "base":"char", "dec":"*" }}' */
   if (d->session_id)
     free(d->session_id);
   /* specs/discord/voice.json:17:20
-     '{ "name": "deaf", "type":{ "base":"bool" }}'
-  */
-  //p->deaf is a scalar
+     '{ "name": "deaf", "type":{ "base":"bool" }}' */
+  // p->deaf is a scalar
   /* specs/discord/voice.json:18:20
-     '{ "name": "mute", "type":{ "base":"bool" }}'
-  */
-  //p->mute is a scalar
+     '{ "name": "mute", "type":{ "base":"bool" }}' */
+  // p->mute is a scalar
   /* specs/discord/voice.json:19:20
-     '{ "name": "self_deaf", "type":{ "base":"bool" }}'
-  */
-  //p->self_deaf is a scalar
+     '{ "name": "self_deaf", "type":{ "base":"bool" }}' */
+  // p->self_deaf is a scalar
   /* specs/discord/voice.json:20:20
-     '{ "name": "self_mute", "type":{ "base":"bool" }}'
-  */
-  //p->self_mute is a scalar
+     '{ "name": "self_mute", "type":{ "base":"bool" }}' */
+  // p->self_mute is a scalar
   /* specs/discord/voice.json:21:20
-     '{ "name": "self_stream", "type":{ "base":"bool" }}'
-  */
-  //p->self_stream is a scalar
+     '{ "name": "self_stream", "type":{ "base":"bool" }}' */
+  // p->self_stream is a scalar
   /* specs/discord/voice.json:22:20
-     '{ "name": "self_video", "type":{ "base":"bool" }}'
-  */
-  //p->self_video is a scalar
+     '{ "name": "self_video", "type":{ "base":"bool" }}' */
+  // p->self_video is a scalar
   /* specs/discord/voice.json:23:20
-     '{ "name": "supress", "type":{ "base":"bool" }}'
-  */
-  //p->supress is a scalar
+     '{ "name": "supress", "type":{ "base":"bool" }}' */
+  // p->supress is a scalar
 }
 
 void discord_voice_state_init(struct discord_voice_state *p) {
   memset(p, 0, sizeof(struct discord_voice_state));
   /* specs/discord/voice.json:12:20
-     '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
 
   /* specs/discord/voice.json:13:20
-     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}}'
-  */
+     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}}' */
 
   /* specs/discord/voice.json:14:20
-     '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}'
-  */
+     '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
 
   /* specs/discord/voice.json:15:20
-     '{ "name": "member", "type":{ "base":"struct discord_guild_member", "dec":"*" }}'
-  */
+     '{ "name": "member", "type":{ "base":"struct discord_guild_member", "dec":"*" }}' */
   p->member = discord_guild_member_alloc();
 
   /* specs/discord/voice.json:16:20
-     '{ "name": "session_id", "type":{ "base":"char", "dec":"*" }}'
-  */
+     '{ "name": "session_id", "type":{ "base":"char", "dec":"*" }}' */
 
   /* specs/discord/voice.json:17:20
-     '{ "name": "deaf", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "deaf", "type":{ "base":"bool" }}' */
 
   /* specs/discord/voice.json:18:20
-     '{ "name": "mute", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "mute", "type":{ "base":"bool" }}' */
 
   /* specs/discord/voice.json:19:20
-     '{ "name": "self_deaf", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "self_deaf", "type":{ "base":"bool" }}' */
 
   /* specs/discord/voice.json:20:20
-     '{ "name": "self_mute", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "self_mute", "type":{ "base":"bool" }}' */
 
   /* specs/discord/voice.json:21:20
-     '{ "name": "self_stream", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "self_stream", "type":{ "base":"bool" }}' */
 
   /* specs/discord/voice.json:22:20
-     '{ "name": "self_video", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "self_video", "type":{ "base":"bool" }}' */
 
   /* specs/discord/voice.json:23:20
-     '{ "name": "supress", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "supress", "type":{ "base":"bool" }}' */
 
 }
 struct discord_voice_state* discord_voice_state_alloc() {
-  struct discord_voice_state *p= (struct discord_voice_state*)malloc(sizeof(struct discord_voice_state));
+  struct discord_voice_state *p= malloc(sizeof(struct discord_voice_state));
   discord_voice_state_init(p);
   return p;
 }
@@ -465,55 +386,43 @@ void discord_voice_region_from_json(char *json, size_t len, struct discord_voice
   size_t r=0;
   r=json_extract(json, len, 
   /* specs/discord/voice.json:32:20
-     '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }'
-  */
+     '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }' */
                 "(id):?s,"
   /* specs/discord/voice.json:33:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }'
-  */
+     '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }' */
                 "(name):?s,"
   /* specs/discord/voice.json:34:20
-     '{ "name": "vip", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "vip", "type":{ "base":"bool" }}' */
                 "(vip):b,"
   /* specs/discord/voice.json:35:20
-     '{ "name": "optimal", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "optimal", "type":{ "base":"bool" }}' */
                 "(optimal):b,"
   /* specs/discord/voice.json:36:20
-     '{ "name": "deprecated", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "deprecated", "type":{ "base":"bool" }}' */
                 "(deprecated):b,"
   /* specs/discord/voice.json:37:20
-     '{ "name": "custom", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "custom", "type":{ "base":"bool" }}' */
                 "(custom):b,"
                 "@arg_switches:b"
                 "@record_defined"
                 "@record_null",
   /* specs/discord/voice.json:32:20
-     '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }'
-  */
+     '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }' */
                 &p->id,
   /* specs/discord/voice.json:33:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }'
-  */
+     '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }' */
                 &p->name,
   /* specs/discord/voice.json:34:20
-     '{ "name": "vip", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "vip", "type":{ "base":"bool" }}' */
                 &p->vip,
   /* specs/discord/voice.json:35:20
-     '{ "name": "optimal", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "optimal", "type":{ "base":"bool" }}' */
                 &p->optimal,
   /* specs/discord/voice.json:36:20
-     '{ "name": "deprecated", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "deprecated", "type":{ "base":"bool" }}' */
                 &p->deprecated,
   /* specs/discord/voice.json:37:20
-     '{ "name": "custom", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "custom", "type":{ "base":"bool" }}' */
                 &p->custom,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
@@ -525,33 +434,27 @@ static void discord_voice_region_use_default_inject_settings(struct discord_voic
 {
   p->__M.enable_arg_switches = true;
   /* specs/discord/voice.json:32:20
-     '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }'
-  */
+     '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }' */
   p->__M.arg_switches[0] = p->id;
 
   /* specs/discord/voice.json:33:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }'
-  */
+     '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }' */
   p->__M.arg_switches[1] = p->name;
 
   /* specs/discord/voice.json:34:20
-     '{ "name": "vip", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "vip", "type":{ "base":"bool" }}' */
   p->__M.arg_switches[2] = &p->vip;
 
   /* specs/discord/voice.json:35:20
-     '{ "name": "optimal", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "optimal", "type":{ "base":"bool" }}' */
   p->__M.arg_switches[3] = &p->optimal;
 
   /* specs/discord/voice.json:36:20
-     '{ "name": "deprecated", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "deprecated", "type":{ "base":"bool" }}' */
   p->__M.arg_switches[4] = &p->deprecated;
 
   /* specs/discord/voice.json:37:20
-     '{ "name": "custom", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "custom", "type":{ "base":"bool" }}' */
   p->__M.arg_switches[5] = &p->custom;
 
 }
@@ -562,53 +465,41 @@ size_t discord_voice_region_to_json(char *json, size_t len, struct discord_voice
   discord_voice_region_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/discord/voice.json:32:20
-     '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }'
-  */
+     '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }' */
                 "(id):s,"
   /* specs/discord/voice.json:33:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }'
-  */
+     '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }' */
                 "(name):s,"
   /* specs/discord/voice.json:34:20
-     '{ "name": "vip", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "vip", "type":{ "base":"bool" }}' */
                 "(vip):b,"
   /* specs/discord/voice.json:35:20
-     '{ "name": "optimal", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "optimal", "type":{ "base":"bool" }}' */
                 "(optimal):b,"
   /* specs/discord/voice.json:36:20
-     '{ "name": "deprecated", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "deprecated", "type":{ "base":"bool" }}' */
                 "(deprecated):b,"
   /* specs/discord/voice.json:37:20
-     '{ "name": "custom", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "custom", "type":{ "base":"bool" }}' */
                 "(custom):b,"
                 "@arg_switches:b",
   /* specs/discord/voice.json:32:20
-     '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }'
-  */
+     '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }' */
                 p->id,
   /* specs/discord/voice.json:33:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }'
-  */
+     '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }' */
                 p->name,
   /* specs/discord/voice.json:34:20
-     '{ "name": "vip", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "vip", "type":{ "base":"bool" }}' */
                 &p->vip,
   /* specs/discord/voice.json:35:20
-     '{ "name": "optimal", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "optimal", "type":{ "base":"bool" }}' */
                 &p->optimal,
   /* specs/discord/voice.json:36:20
-     '{ "name": "deprecated", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "deprecated", "type":{ "base":"bool" }}' */
                 &p->deprecated,
   /* specs/discord/voice.json:37:20
-     '{ "name": "custom", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "custom", "type":{ "base":"bool" }}' */
                 &p->custom,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
@@ -653,62 +544,50 @@ size_t discord_voice_region_list_to_json_v(char *str, size_t len, void *p){
 
 void discord_voice_region_cleanup(struct discord_voice_region *d) {
   /* specs/discord/voice.json:32:20
-     '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }'
-  */
+     '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }' */
   if (d->id)
     free(d->id);
   /* specs/discord/voice.json:33:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }'
-  */
+     '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }' */
   if (d->name)
     free(d->name);
   /* specs/discord/voice.json:34:20
-     '{ "name": "vip", "type":{ "base":"bool" }}'
-  */
-  //p->vip is a scalar
+     '{ "name": "vip", "type":{ "base":"bool" }}' */
+  // p->vip is a scalar
   /* specs/discord/voice.json:35:20
-     '{ "name": "optimal", "type":{ "base":"bool" }}'
-  */
-  //p->optimal is a scalar
+     '{ "name": "optimal", "type":{ "base":"bool" }}' */
+  // p->optimal is a scalar
   /* specs/discord/voice.json:36:20
-     '{ "name": "deprecated", "type":{ "base":"bool" }}'
-  */
-  //p->deprecated is a scalar
+     '{ "name": "deprecated", "type":{ "base":"bool" }}' */
+  // p->deprecated is a scalar
   /* specs/discord/voice.json:37:20
-     '{ "name": "custom", "type":{ "base":"bool" }}'
-  */
-  //p->custom is a scalar
+     '{ "name": "custom", "type":{ "base":"bool" }}' */
+  // p->custom is a scalar
 }
 
 void discord_voice_region_init(struct discord_voice_region *p) {
   memset(p, 0, sizeof(struct discord_voice_region));
   /* specs/discord/voice.json:32:20
-     '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }'
-  */
+     '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }' */
 
   /* specs/discord/voice.json:33:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }'
-  */
+     '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }' */
 
   /* specs/discord/voice.json:34:20
-     '{ "name": "vip", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "vip", "type":{ "base":"bool" }}' */
 
   /* specs/discord/voice.json:35:20
-     '{ "name": "optimal", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "optimal", "type":{ "base":"bool" }}' */
 
   /* specs/discord/voice.json:36:20
-     '{ "name": "deprecated", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "deprecated", "type":{ "base":"bool" }}' */
 
   /* specs/discord/voice.json:37:20
-     '{ "name": "custom", "type":{ "base":"bool" }}'
-  */
+     '{ "name": "custom", "type":{ "base":"bool" }}' */
 
 }
 struct discord_voice_region* discord_voice_region_alloc() {
-  struct discord_voice_region *p= (struct discord_voice_region*)malloc(sizeof(struct discord_voice_region));
+  struct discord_voice_region *p= malloc(sizeof(struct discord_voice_region));
   discord_voice_region_init(p);
   return p;
 }
