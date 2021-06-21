@@ -229,7 +229,7 @@ struct discord_gateway {
 };
 
 /**
- * Wbrief Initialize the fields of Discord Gateway handle
+ * @brief Initialize the fields of Discord Gateway handle
  *
  * @param gw a pointer to the allocated handle
  * @param config optional pointer to a initialized logconf

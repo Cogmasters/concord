@@ -70,6 +70,7 @@ https://discord.com/developers/docs/resources/webhook#create-webhook */
 #include "specs-code/discord/all_functions.h"
 
 /** 
+ * @typedef idle_cb
  * @brief Idle callback
  *
  * Runs on every WebSockets loop iteration, no trigger required
@@ -78,6 +79,7 @@ https://discord.com/developers/docs/resources/webhook#create-webhook */
 typedef void (idle_cb)(struct discord *client, const struct discord_user *bot);
 
 /**
+ * @typedef event_raw_cb
  * @brief Raw Event callback
  *
  * If activated, this callback is triggered on any event.
@@ -91,6 +93,7 @@ typedef void (event_raw_cb)(
     struct sized_buffer *event_data);
 
 /**
+ * @typedef guild_role_cb
  * @brief Guild Role Create/Update callback
  *
  * @see https://discord.com/developers/docs/topics/gateway#guilds 
@@ -102,6 +105,7 @@ typedef void (guild_role_cb)(
     const u64_snowflake_t guild_id,
     const struct discord_permissions_role *role);
 /**
+ * @typedef guild_role_delete_cb
  * @brief Guild Role Delete callback
  *
  * @see https://discord.com/developers/docs/topics/gateway#guilds 
@@ -113,6 +117,7 @@ typedef void (guild_role_delete_cb)(
     const u64_snowflake_t role_id);
 
 /**
+ * @typedef guild_member_cb
  * @brief Guild Member Add/Update callback
  *
  * @see https://discord.com/developers/docs/topics/gateway#guilds 
@@ -124,6 +129,7 @@ typedef void (guild_member_cb)(
     const u64_snowflake_t guild_id, 
     const struct discord_guild_member *member);
 /**
+ * @typedef guild_member_remove_cb
  * @brief Guild Member Remove callback
  *
  * @see https://discord.com/developers/docs/topics/gateway#guilds 
@@ -135,6 +141,7 @@ typedef void (guild_member_remove_cb)(
     const struct discord_user *user);
 
 /**
+ * @typedef guild_ban_cb
  * @brief Guild Ban Add/Remove callback
  *
  * @see https://discord.com/developers/docs/topics/gateway#guilds 
@@ -147,6 +154,7 @@ typedef void (guild_ban_cb)(
     const struct discord_user *user);
 
 /**
+ * @typedef message_cb
  * @brief Message Create/Update callback
  *
  * @see https://discord.com/developers/docs/topics/gateway#messages 
@@ -163,6 +171,7 @@ typedef void (sb_message_cb)(
     struct sized_buffer *msg_payload);
 
 /**
+ * @typedef message_delete_cb
  * @brief Message Delete callback
  *
  * @see https://discord.com/developers/docs/topics/gateway#messages 
@@ -174,6 +183,7 @@ typedef void (message_delete_cb)(
     const u64_snowflake_t channel_id, 
     const u64_snowflake_t guild_id);
 /**
+ * @typedef message_delete_bulk_cb
  * @brief Message Delete Bulk callback
  *
  * @see https://discord.com/developers/docs/topics/gateway#messages 
@@ -186,6 +196,7 @@ typedef void (message_delete_bulk_cb)(
     const u64_snowflake_t guild_id);
 
 /**
+ * @typedef channel_cb
  * @brief Channel Create/Update/Delete callback
  *
  * @see https://discord.com/developers/docs/topics/gateway#channels 
@@ -197,6 +208,7 @@ typedef void (channel_cb)(
     struct discord *client, const struct discord_user *bot, 
     const struct discord_channel *channel);
 /**
+ * @typedef channel_pins_update_cb
  * @brief Channel Pins Update callback
  *
  * @see https://discord.com/developers/docs/topics/gateway#channels 
@@ -209,6 +221,7 @@ typedef void (channel_pins_update_cb)(
     const u64_unix_ms_t last_pin_timestamp);
 
 /**
+ * @typedef message_reaction_add_cb
  * @brief Message Reaction Add callback
  * @see https://discord.com/developers/docs/topics/gateway#messages 
  * @see discord_set_on_message_reaction_add() 
@@ -222,6 +235,7 @@ typedef void (message_reaction_add_cb)(
     const struct discord_guild_member *member, 
     const struct discord_emoji *emoji);
 /**
+ * @typedef message_reaction_remove_cb
  * @brief Message Reaction Remove callback
  * @see https://discord.com/developers/docs/topics/gateway#messages 
  * @see discord_set_on_message_reaction_remove() 
@@ -234,6 +248,7 @@ typedef void (message_reaction_remove_cb)(
     const u64_snowflake_t guild_id, 
     const struct discord_emoji *emoji);
 /**
+ * @typedef message_reaction_remove_all_cb
  * @brief Message Reaction Remove All callback
  * @see https://discord.com/developers/docs/topics/gateway#messages 
  * @see discord_set_on_message_reaction_remove_all() 
@@ -244,6 +259,7 @@ typedef void (message_reaction_remove_all_cb)(
     const u64_snowflake_t message_id, 
     const u64_snowflake_t guild_id);
 /**
+ * @typedef message_reaction_remove_emoji_cb
  * @brief Message Reaction Remove Emoji callback
  * @see https://discord.com/developers/docs/topics/gateway#messages 
  * @see discord_set_on_message_reaction_remove_emoji() 
@@ -256,6 +272,7 @@ typedef void (message_reaction_remove_emoji_cb)(
     const struct discord_emoji *emoji);
 
 /**
+ * @typedef voice_state_update_cb
  * @brief Voice State Update callback
  * @see https://discord.com/developers/docs/topics/gateway#voice
  * @see discord_set_on_voice_state_update() 
@@ -264,6 +281,7 @@ typedef void (voice_state_update_cb)(
     struct discord *client, const struct discord_user *bot,
     const struct discord_voice_state *voice_state);
 /**
+ * @typedef voice_server_update_cb
  * @brief Voice Server Update callback
  * @see https://discord.com/developers/docs/topics/gateway#voice
  * @see discord_set_on_voice_server_update() 
