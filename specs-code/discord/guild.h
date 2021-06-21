@@ -106,7 +106,7 @@ struct discord_guild {
   struct discord_emoji **emojis;
 
   /* specs/discord/guild.json:34:57
-     '{"type":{"base":"ja_str", "dec":"ntl"}, "name":"features", "todo":true", 
+     '{"type":{"base":"ja_str", "dec":"ntl"}, "name":"features", "todo":true, 
               "comment":"array of guild feature strings"}'
   */
   //@todo features array of guild feature strings;
@@ -157,7 +157,7 @@ struct discord_guild {
   int member_count;
 
   /* specs/discord/guild.json:45:71
-     '{"type":{"base":"struct discord_voice", "dec":"ntl"}, "name":"voice_states", "todo":true", 
+     '{"type":{"base":"struct discord_voice", "dec":"ntl"}, "name":"voice_states", "todo":true, 
          "comment":"array of partial voice state objects"}'
   */
   //@todo voice_states array of partial voice state objects;

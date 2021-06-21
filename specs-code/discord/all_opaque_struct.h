@@ -299,63 +299,64 @@ struct discord_guild_template;
 https://discord.com/developers/docs/resources/guild
 */
 
+/* Title: Create Guild */
 /* https://discord.com/developers/docs/resources/guild#create-guild */
-/* This is defined at specs/discord/guild.endpoints-params.json:9:22 */
+/* This is defined at specs/discord/guild.endpoints-params.json:10:22 */
 struct discord_create_guild_params;
 
 /* Title: Modify Guild */
 /* https://discord.com/developers/docs/resources/guild#modify-guild-json-params */
-/* This is defined at specs/discord/guild.endpoints-params.json:29:22 */
+/* This is defined at specs/discord/guild.endpoints-params.json:30:22 */
 struct discord_modify_guild_params;
 
 /* Title: Create Guild Channel */
 /* https://discord.com/developers/docs/resources/guild#create-guild-channel */
-/* This is defined at specs/discord/guild.endpoints-params.json:57:22 */
+/* This is defined at specs/discord/guild.endpoints-params.json:58:22 */
 struct discord_create_guild_channel_params;
 
 /* Title: Modify Guild Channel Positions */
 /* https://discord.com/developers/docs/resources/guild#modify-guild-channel-positions-json-params */
-/* This is defined at specs/discord/guild.endpoints-params.json:76:22 */
+/* This is defined at specs/discord/guild.endpoints-params.json:77:22 */
 struct discord_modify_guild_channel_positions_params;
 
 /* Title: Search Guild Members */
 /* https://discord.com/developers/docs/resources/guild#search-guild-members-query-string-params */
-/* This is defined at specs/discord/guild.endpoints-params.json:89:22 */
+/* This is defined at specs/discord/guild.endpoints-params.json:90:22 */
 struct discord_search_guild_members_params;
 
 /* Title: Add Guild Member */
 /* https://discord.com/developers/docs/resources/guild#add-guild-member-json-params */
-/* This is defined at specs/discord/guild.endpoints-params.json:100:22 */
+/* This is defined at specs/discord/guild.endpoints-params.json:101:22 */
 struct discord_add_guild_member_params;
 
 /* Title: Modify Guild Member */
 /* https://discord.com/developers/docs/resources/guild#modify-guild-member */
-/* This is defined at specs/discord/guild.endpoints-params.json:114:22 */
+/* This is defined at specs/discord/guild.endpoints-params.json:115:22 */
 struct discord_modify_guild_member_params;
 
 /* Title: Create Guild Role */
 /* https://discord.com/developers/docs/resources/guild#create-guild-role */
-/* This is defined at specs/discord/guild.endpoints-params.json:128:22 */
+/* This is defined at specs/discord/guild.endpoints-params.json:129:22 */
 struct discord_create_guild_role_params;
 
 /* Title: Modify Guild Role Positions */
 /* https://discord.com/developers/docs/resources/guild#modify-guild-role-positions-json-params */
-/* This is defined at specs/discord/guild.endpoints-params.json:142:22 */
+/* This is defined at specs/discord/guild.endpoints-params.json:143:22 */
 struct discord_modify_guild_role_positions_params;
 
 /* Title: Modify Guild Role */
 /* https://discord.com/developers/docs/resources/guild#modify-guild-role-json-params */
-/* This is defined at specs/discord/guild.endpoints-params.json:153:22 */
+/* This is defined at specs/discord/guild.endpoints-params.json:154:22 */
 struct discord_modify_guild_role_params;
 
 /* Title: Get Guild Prune Count */
 /* https://discord.com/developers/docs/resources/guild#get-guild-prune-count-query-string-params */
-/* This is defined at specs/discord/guild.endpoints-params.json:167:22 */
+/* This is defined at specs/discord/guild.endpoints-params.json:168:22 */
 struct discord_get_guild_prune_count_params;
 
 /* Title: Begin Guild Prune */
 /* https://discord.com/developers/docs/resources/guild#begin-guild-prune-json-params */
-/* This is defined at specs/discord/guild.endpoints-params.json:178:22 */
+/* This is defined at specs/discord/guild.endpoints-params.json:179:22 */
 struct discord_begin_guild_prune_params;
 /* This file is generated from specs/discord/guild.json, Please don't edit it. */
 /*

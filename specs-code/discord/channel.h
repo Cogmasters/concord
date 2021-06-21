@@ -595,7 +595,7 @@ struct discord_message {
   struct discord_message_sticker **stickers; // array of sticker objects
 
   /* specs/discord/channel.json:209:72
-     '{"type":{"base":"struct discord_message", "dec":"*"}, "name":"referenced_message", "lazy_init":true, "option":true", "inject_if_not":null,
+     '{"type":{"base":"struct discord_message", "dec":"*"}, "name":"referenced_message", "lazy_init":true, "option":true, "inject_if_not":null,
           "comment":"this will cause recursive allocation if allocating as the parent"}'
   */
   struct discord_message *referenced_message; // this will cause recursive allocation if allocating as the parent

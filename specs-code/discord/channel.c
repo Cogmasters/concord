@@ -2144,7 +2144,7 @@ static void discord_message_use_default_inject_settings(struct discord_message *
     p->__M.arg_switches[24] = p->stickers;
 
   /* specs/discord/channel.json:209:72
-     '{"type":{"base":"struct discord_message", "dec":"*"}, "name":"referenced_message", "lazy_init":true, "option":true", "inject_if_not":null,
+     '{"type":{"base":"struct discord_message", "dec":"*"}, "name":"referenced_message", "lazy_init":true, "option":true, "inject_if_not":null,
           "comment":"this will cause recursive allocation if allocating as the parent"}'
   */
   if (p->referenced_message != NULL)
@@ -2259,7 +2259,7 @@ size_t discord_message_to_json(char *json, size_t len, struct discord_message *p
   */
                 "(stickers):F,"
   /* specs/discord/channel.json:209:72
-     '{"type":{"base":"struct discord_message", "dec":"*"}, "name":"referenced_message", "lazy_init":true, "option":true", "inject_if_not":null,
+     '{"type":{"base":"struct discord_message", "dec":"*"}, "name":"referenced_message", "lazy_init":true, "option":true, "inject_if_not":null,
           "comment":"this will cause recursive allocation if allocating as the parent"}'
   */
                 "(referenced_message):F,"
@@ -2366,7 +2366,7 @@ size_t discord_message_to_json(char *json, size_t len, struct discord_message *p
   */
                 discord_message_sticker_list_to_json, p->stickers,
   /* specs/discord/channel.json:209:72
-     '{"type":{"base":"struct discord_message", "dec":"*"}, "name":"referenced_message", "lazy_init":true, "option":true", "inject_if_not":null,
+     '{"type":{"base":"struct discord_message", "dec":"*"}, "name":"referenced_message", "lazy_init":true, "option":true, "inject_if_not":null,
           "comment":"this will cause recursive allocation if allocating as the parent"}'
   */
                 discord_message_to_json, p->referenced_message,
@@ -2528,7 +2528,7 @@ void discord_message_cleanup(struct discord_message *d) {
   if (d->stickers)
     discord_message_sticker_list_free(d->stickers);
   /* specs/discord/channel.json:209:72
-     '{"type":{"base":"struct discord_message", "dec":"*"}, "name":"referenced_message", "lazy_init":true, "option":true", "inject_if_not":null,
+     '{"type":{"base":"struct discord_message", "dec":"*"}, "name":"referenced_message", "lazy_init":true, "option":true, "inject_if_not":null,
           "comment":"this will cause recursive allocation if allocating as the parent"}'
   */
   if (d->referenced_message)
@@ -2643,7 +2643,7 @@ void discord_message_init(struct discord_message *p) {
   */
 
   /* specs/discord/channel.json:209:72
-     '{"type":{"base":"struct discord_message", "dec":"*"}, "name":"referenced_message", "lazy_init":true, "option":true", "inject_if_not":null,
+     '{"type":{"base":"struct discord_message", "dec":"*"}, "name":"referenced_message", "lazy_init":true, "option":true, "inject_if_not":null,
           "comment":"this will cause recursive allocation if allocating as the parent"}'
   */
 

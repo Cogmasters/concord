@@ -88,7 +88,7 @@ void discord_guild_from_json(char *json, size_t len, struct discord_guild *p)
   */
                 "(emojis):F,"
   /* specs/discord/guild.json:34:57
-     '{"type":{"base":"ja_str", "dec":"ntl"}, "name":"features", "todo":true", 
+     '{"type":{"base":"ja_str", "dec":"ntl"}, "name":"features", "todo":true, 
               "comment":"array of guild feature strings"}'
   */
   /* specs/discord/guild.json:36:85
@@ -128,7 +128,7 @@ void discord_guild_from_json(char *json, size_t len, struct discord_guild *p)
   */
                 "(member_count):d,"
   /* specs/discord/guild.json:45:71
-     '{"type":{"base":"struct discord_voice", "dec":"ntl"}, "name":"voice_states", "todo":true", 
+     '{"type":{"base":"struct discord_voice", "dec":"ntl"}, "name":"voice_states", "todo":true, 
          "comment":"array of partial voice state objects"}'
   */
   /* specs/discord/guild.json:47:78
@@ -279,7 +279,7 @@ void discord_guild_from_json(char *json, size_t len, struct discord_guild *p)
   */
                 discord_emoji_list_from_json, &p->emojis,
   /* specs/discord/guild.json:34:57
-     '{"type":{"base":"ja_str", "dec":"ntl"}, "name":"features", "todo":true", 
+     '{"type":{"base":"ja_str", "dec":"ntl"}, "name":"features", "todo":true, 
               "comment":"array of guild feature strings"}'
   */
   /* specs/discord/guild.json:36:85
@@ -319,7 +319,7 @@ void discord_guild_from_json(char *json, size_t len, struct discord_guild *p)
   */
                 &p->member_count,
   /* specs/discord/guild.json:45:71
-     '{"type":{"base":"struct discord_voice", "dec":"ntl"}, "name":"voice_states", "todo":true", 
+     '{"type":{"base":"struct discord_voice", "dec":"ntl"}, "name":"voice_states", "todo":true, 
          "comment":"array of partial voice state objects"}'
   */
   /* specs/discord/guild.json:47:78
@@ -495,7 +495,7 @@ static void discord_guild_use_default_inject_settings(struct discord_guild *p)
   p->__M.arg_switches[18] = p->emojis;
 
   /* specs/discord/guild.json:34:57
-     '{"type":{"base":"ja_str", "dec":"ntl"}, "name":"features", "todo":true", 
+     '{"type":{"base":"ja_str", "dec":"ntl"}, "name":"features", "todo":true, 
               "comment":"array of guild feature strings"}'
   */
 
@@ -545,7 +545,7 @@ static void discord_guild_use_default_inject_settings(struct discord_guild *p)
   p->__M.arg_switches[28] = &p->member_count;
 
   /* specs/discord/guild.json:45:71
-     '{"type":{"base":"struct discord_voice", "dec":"ntl"}, "name":"voice_states", "todo":true", 
+     '{"type":{"base":"struct discord_voice", "dec":"ntl"}, "name":"voice_states", "todo":true, 
          "comment":"array of partial voice state objects"}'
   */
 
@@ -717,7 +717,7 @@ size_t discord_guild_to_json(char *json, size_t len, struct discord_guild *p)
   */
                 "(emojis):F,"
   /* specs/discord/guild.json:34:57
-     '{"type":{"base":"ja_str", "dec":"ntl"}, "name":"features", "todo":true", 
+     '{"type":{"base":"ja_str", "dec":"ntl"}, "name":"features", "todo":true, 
               "comment":"array of guild feature strings"}'
   */
   /* specs/discord/guild.json:36:85
@@ -757,7 +757,7 @@ size_t discord_guild_to_json(char *json, size_t len, struct discord_guild *p)
   */
                 "(member_count):d,"
   /* specs/discord/guild.json:45:71
-     '{"type":{"base":"struct discord_voice", "dec":"ntl"}, "name":"voice_states", "todo":true", 
+     '{"type":{"base":"struct discord_voice", "dec":"ntl"}, "name":"voice_states", "todo":true, 
          "comment":"array of partial voice state objects"}'
   */
   /* specs/discord/guild.json:47:78
@@ -906,7 +906,7 @@ size_t discord_guild_to_json(char *json, size_t len, struct discord_guild *p)
   */
                 discord_emoji_list_to_json, p->emojis,
   /* specs/discord/guild.json:34:57
-     '{"type":{"base":"ja_str", "dec":"ntl"}, "name":"features", "todo":true", 
+     '{"type":{"base":"ja_str", "dec":"ntl"}, "name":"features", "todo":true, 
               "comment":"array of guild feature strings"}'
   */
   /* specs/discord/guild.json:36:85
@@ -946,7 +946,7 @@ size_t discord_guild_to_json(char *json, size_t len, struct discord_guild *p)
   */
                 &p->member_count,
   /* specs/discord/guild.json:45:71
-     '{"type":{"base":"struct discord_voice", "dec":"ntl"}, "name":"voice_states", "todo":true", 
+     '{"type":{"base":"struct discord_voice", "dec":"ntl"}, "name":"voice_states", "todo":true, 
          "comment":"array of partial voice state objects"}'
   */
   /* specs/discord/guild.json:47:78
@@ -1142,7 +1142,7 @@ void discord_guild_cleanup(struct discord_guild *d) {
   if (d->emojis)
     discord_emoji_list_free(d->emojis);
   /* specs/discord/guild.json:34:57
-     '{"type":{"base":"ja_str", "dec":"ntl"}, "name":"features", "todo":true", 
+     '{"type":{"base":"ja_str", "dec":"ntl"}, "name":"features", "todo":true, 
               "comment":"array of guild feature strings"}'
   */
   //@todo p->(null)
@@ -1183,7 +1183,7 @@ void discord_guild_cleanup(struct discord_guild *d) {
   */
   //p->member_count is a scalar
   /* specs/discord/guild.json:45:71
-     '{"type":{"base":"struct discord_voice", "dec":"ntl"}, "name":"voice_states", "todo":true", 
+     '{"type":{"base":"struct discord_voice", "dec":"ntl"}, "name":"voice_states", "todo":true, 
          "comment":"array of partial voice state objects"}'
   */
   //@todo p->(null)
@@ -1344,7 +1344,7 @@ void discord_guild_init(struct discord_guild *p) {
   */
 
   /* specs/discord/guild.json:34:57
-     '{"type":{"base":"ja_str", "dec":"ntl"}, "name":"features", "todo":true", 
+     '{"type":{"base":"ja_str", "dec":"ntl"}, "name":"features", "todo":true, 
               "comment":"array of guild feature strings"}'
   */
 
@@ -1385,7 +1385,7 @@ void discord_guild_init(struct discord_guild *p) {
   */
 
   /* specs/discord/guild.json:45:71
-     '{"type":{"base":"struct discord_voice", "dec":"ntl"}, "name":"voice_states", "todo":true", 
+     '{"type":{"base":"struct discord_voice", "dec":"ntl"}, "name":"voice_states", "todo":true, 
          "comment":"array of partial voice state objects"}'
   */
 
