@@ -4,6 +4,7 @@
   "defs":
   [
     {
+      "title":"Create Guild",
       "comment":"https://discord.com/developers/docs/resources/guild#create-guild",
       "namespace": ["create_guild"],
       "struct":"params",
@@ -46,7 +47,7 @@
         { "name": "rules_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"the id of the channel where Community guilds display rules and/or guidelines"},
         { "name": "public_updates_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"the id of the channel where admins and moderators of Community guilds receive notices from Discord"},
         { "name": "preferred_locale", "type":{ "base":"char", "dec":"*" }, "comment":"the preferred locale of a Community guild used in server discovery and notices from Discord; defaults to \"en-US\""},
-        {"name":"features", "type": { "base":"ja_str", "dec":"ntl" }, "todo":true", "comment":"array of guild feature strings"},
+        {"name":"features", "type": { "base":"ja_str", "dec":"ntl" }, "todo":true, "comment":"array of guild feature strings"},
         { "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"the description for the guild, if the guild is discoverable"}
       ]
     },
