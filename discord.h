@@ -427,7 +427,7 @@ void discord_set_prefix(struct discord *client, char *prefix);
  * @note The command and any subjacent empty space is left out of discord_message#content
  * @see discord_set_prefix() for changing a command prefix
  */
-void discord_set_on_command(struct discord *client, char *command, message_cb *callback);
+void discord_set_on_command(struct discord *client, char *command, message_cb callback);
 
 /**
  * @brief Set a callback that triggers on any event the client is subscribed to. 
@@ -437,7 +437,7 @@ void discord_set_on_command(struct discord *client, char *command, message_cb *c
  * @param client the client created with discord_init()
  * @param callback the callback that will be executed
  */
-void discord_set_on_event_raw(struct discord *client, event_raw_cb *callback);
+void discord_set_on_event_raw(struct discord *client, event_raw_cb callback);
 
 /**
  * @brief Set a callback that triggers at every event-loop iteration.
@@ -445,7 +445,7 @@ void discord_set_on_event_raw(struct discord *client, event_raw_cb *callback);
  * @param client the client created with discord_init()
  * @param callback the callback that will be executed
  */
-void discord_set_on_idle(struct discord *client, idle_cb *callback);
+void discord_set_on_idle(struct discord *client, idle_cb callback);
 
 /**
  * @brief Set a callback that triggers when a guild role is created
@@ -454,7 +454,7 @@ void discord_set_on_idle(struct discord *client, idle_cb *callback);
  * @param callback the callback that will be executed
  * @note this function will automatically set intent(s) to make the callback triggerable
  */
-void discord_set_on_guild_role_create(struct discord *client, guild_role_cb *callback);
+void discord_set_on_guild_role_create(struct discord *client, guild_role_cb callback);
 /**
  * @brief Set a callback that triggers when a guild role is updated
  *
@@ -462,7 +462,7 @@ void discord_set_on_guild_role_create(struct discord *client, guild_role_cb *cal
  * @param callback the callback that will be executed
  * @note this function will automatically set intent(s) to make the callback triggerable
  */
-void discord_set_on_guild_role_update(struct discord *client, guild_role_cb *callback);
+void discord_set_on_guild_role_update(struct discord *client, guild_role_cb callback);
 /**
  * @brief Set a callback that triggers when a guild role is deleted
  *
@@ -470,7 +470,7 @@ void discord_set_on_guild_role_update(struct discord *client, guild_role_cb *cal
  * @param callback the callback that will be executed
  * @note this function will automatically set intent(s) to make the callback triggerable
  */
-void discord_set_on_guild_role_delete(struct discord *client, guild_role_delete_cb *callback);
+void discord_set_on_guild_role_delete(struct discord *client, guild_role_delete_cb callback);
 /**
  * @brief Set a callback that triggers when a guild member is added
  *
@@ -478,7 +478,7 @@ void discord_set_on_guild_role_delete(struct discord *client, guild_role_delete_
  * @param callback the callback that will be executed
  * @note this function will automatically set intent(s) to make the callback triggerable
  */
-void discord_set_on_guild_member_add(struct discord *client, guild_member_cb *callback);
+void discord_set_on_guild_member_add(struct discord *client, guild_member_cb callback);
 /**
  * @brief Set a callback that triggers when a guild member is updated
  *
@@ -486,7 +486,7 @@ void discord_set_on_guild_member_add(struct discord *client, guild_member_cb *ca
  * @param callback the callback that will be executed
  * @note this function will automatically set intent(s) to make the callback triggerable
  */
-void discord_set_on_guild_member_update(struct discord *client, guild_member_cb *callback);
+void discord_set_on_guild_member_update(struct discord *client, guild_member_cb callback);
 /**
  * @brief Set a callback that triggers when a guild member is removed
  *
@@ -494,7 +494,7 @@ void discord_set_on_guild_member_update(struct discord *client, guild_member_cb 
  * @param callback the callback that will be executed
  * @note this function will automatically set intent(s) to make the callback triggerable
  */
-void discord_set_on_guild_member_remove(struct discord *client, guild_member_remove_cb *callback);
+void discord_set_on_guild_member_remove(struct discord *client, guild_member_remove_cb callback);
 /**
  * @brief Set a callback that triggers when a guild ban is added
  *
@@ -502,7 +502,7 @@ void discord_set_on_guild_member_remove(struct discord *client, guild_member_rem
  * @param callback the callback that will be executed
  * @note this function will automatically set intent(s) to make the callback triggerable
  */
-void discord_set_on_guild_ban_add(struct discord *client, guild_ban_cb *callback);
+void discord_set_on_guild_ban_add(struct discord *client, guild_ban_cb callback);
 /**
  * @brief Set a callback that triggers when a guild ban is removed
  *
@@ -510,7 +510,7 @@ void discord_set_on_guild_ban_add(struct discord *client, guild_ban_cb *callback
  * @param callback the callback that will be executed
  * @note this function will automatically set intent(s) to make the callback triggerable
  */
-void discord_set_on_guild_ban_remove(struct discord *client, guild_ban_cb *callback);
+void discord_set_on_guild_ban_remove(struct discord *client, guild_ban_cb callback);
 /**
  * @brief Set a callback that triggers when a channel is created
  *
@@ -518,7 +518,7 @@ void discord_set_on_guild_ban_remove(struct discord *client, guild_ban_cb *callb
  * @param callback the callback that will be executed
  * @note this function will automatically set intent(s) to make the callback triggerable
  */
-void discord_set_on_channel_create(struct discord *client, channel_cb *callback);
+void discord_set_on_channel_create(struct discord *client, channel_cb callback);
 /**
  * @brief Set a callback that triggers when a channel is updated
  *
@@ -526,7 +526,7 @@ void discord_set_on_channel_create(struct discord *client, channel_cb *callback)
  * @param callback the callback that will be executed
  * @note this function will automatically set intent(s) to make the callback triggerable
  */
-void discord_set_on_channel_update(struct discord *client, channel_cb *callback);
+void discord_set_on_channel_update(struct discord *client, channel_cb callback);
 /**
  * @brief Set a callback that triggers when a channel is deleted
  *
@@ -534,7 +534,7 @@ void discord_set_on_channel_update(struct discord *client, channel_cb *callback)
  * @param callback the callback that will be executed
  * @note this function will automatically set intent(s) to make the callback triggerable
  */
-void discord_set_on_channel_delete(struct discord *client, channel_cb *callback);
+void discord_set_on_channel_delete(struct discord *client, channel_cb callback);
 /**
  * @brief Set a callback that triggers when some channel pins are updated
  *
@@ -542,7 +542,7 @@ void discord_set_on_channel_delete(struct discord *client, channel_cb *callback)
  * @param callback the callback that will be executed
  * @note this function will automatically set intent(s) to make the callback triggerable
  */
-void discord_set_on_channel_pins_update(struct discord *client, channel_pins_update_cb *callback);
+void discord_set_on_channel_pins_update(struct discord *client, channel_pins_update_cb callback);
 /**
  * @brief Set a callback that triggers when a message is created
  *
@@ -550,8 +550,8 @@ void discord_set_on_channel_pins_update(struct discord *client, channel_pins_upd
  * @param callback the callback that will be executed
  * @note this function will automatically set intent(s) to make the callback triggerable
  */
-void discord_set_on_message_create(struct discord *client, message_cb *callback);
-void discord_set_on_sb_message_create(struct discord *client, sb_message_cb *callback);
+void discord_set_on_message_create(struct discord *client, message_cb callback);
+void discord_set_on_sb_message_create(struct discord *client, sb_message_cb callback);
 /**
  * @brief Set a callback that triggers when a message is updated
  *
@@ -559,8 +559,8 @@ void discord_set_on_sb_message_create(struct discord *client, sb_message_cb *cal
  * @param callback the callback that will be executed
  * @note this function will automatically set intent(s) to make the callback triggerable
  */
-void discord_set_on_message_update(struct discord *client, message_cb *callback);
-void discord_set_on_sb_message_update(struct discord *client, sb_message_cb *callback);
+void discord_set_on_message_update(struct discord *client, message_cb callback);
+void discord_set_on_sb_message_update(struct discord *client, sb_message_cb callback);
 /**
  * @brief Set a callback that triggers when a message is deleted
  *
@@ -568,7 +568,7 @@ void discord_set_on_sb_message_update(struct discord *client, sb_message_cb *cal
  * @param callback the callback that will be executed
  * @note this function will automatically set intent(s) to make the callback triggerable
  */
-void discord_set_on_message_delete(struct discord *client, message_delete_cb *callback);
+void discord_set_on_message_delete(struct discord *client, message_delete_cb callback);
 /*
  * @brief Set a callback that triggers when a bulk of messages are deleted
  *
@@ -576,7 +576,7 @@ void discord_set_on_message_delete(struct discord *client, message_delete_cb *ca
  * @param callback the callback that will be executed
  * @note this function will automatically set intent(s) to make the callback triggerable
  */
-void discord_set_on_message_delete_bulk(struct discord *client, message_delete_bulk_cb *callback);
+void discord_set_on_message_delete_bulk(struct discord *client, message_delete_bulk_cb callback);
 /**
  * @brief Set a callback that triggers when a message reaction is added
  *
@@ -584,7 +584,7 @@ void discord_set_on_message_delete_bulk(struct discord *client, message_delete_b
  * @param callback the callback that will be executed
  * @note this function will automatically set intent(s) to make the callback triggerable
  */
-void discord_set_on_message_reaction_add(struct discord *client, message_reaction_add_cb *callback);
+void discord_set_on_message_reaction_add(struct discord *client, message_reaction_add_cb callback);
 /**
  * @brief Set a callback that triggers when a message reaction is removed
  *
@@ -592,7 +592,7 @@ void discord_set_on_message_reaction_add(struct discord *client, message_reactio
  * @param callback the callback that will be executed
  * @note this function will automatically set intent(s) to make the callback triggerable
  */
-void discord_set_on_message_reaction_remove(struct discord *client, message_reaction_remove_cb *callback);
+void discord_set_on_message_reaction_remove(struct discord *client, message_reaction_remove_cb callback);
 /**
  * @brief Set a callback that triggers when all reaction from some message is removed
  *
@@ -600,7 +600,7 @@ void discord_set_on_message_reaction_remove(struct discord *client, message_reac
  * @param callback the callback that will be executed
  * @note this function will automatically set intent(s) to make the callback triggerable
  */
-void discord_set_on_message_reaction_remove_all(struct discord *client, message_reaction_remove_all_cb* callback);
+void discord_set_on_message_reaction_remove_all(struct discord *client, message_reaction_remove_all_cb callback);
 /**
  * @brief Set a callback that triggers when all instances of a particular reaction from some message is removed
  *
@@ -608,7 +608,7 @@ void discord_set_on_message_reaction_remove_all(struct discord *client, message_
  * @param callback the callback that will be executed
  * @note this function will automatically set intent(s) to make the callback triggerable
  */
-void discord_set_on_message_reaction_remove_emoji(struct discord *client, message_reaction_remove_emoji_cb *callback);
+void discord_set_on_message_reaction_remove_emoji(struct discord *client, message_reaction_remove_emoji_cb callback);
 /**
  * @brief Set a callback that triggers when the client is ready
  *
@@ -616,7 +616,7 @@ void discord_set_on_message_reaction_remove_emoji(struct discord *client, messag
  * @param callback the callback that will be executed
  * @note this function will automatically set intent(s) to make the callback triggerable
  */
-void discord_set_on_ready(struct discord *client, idle_cb *callback);
+void discord_set_on_ready(struct discord *client, idle_cb callback);
 /**
  * @brief Set a callback that triggers when a voice state is updated
  *
@@ -624,7 +624,7 @@ void discord_set_on_ready(struct discord *client, idle_cb *callback);
  * @param callback the callback that will be executed
  * @note this function will automatically set intent(s) to make the callback triggerable
  */
-void discord_set_on_voice_state_update(struct discord *client, voice_state_update_cb *callback);
+void discord_set_on_voice_state_update(struct discord *client, voice_state_update_cb callback);
 /**
  * @brief Set a callback that triggers when a voice server is updated
  *
@@ -632,7 +632,7 @@ void discord_set_on_voice_state_update(struct discord *client, voice_state_updat
  * @param callback the callback that will be executed
  * @note this function will automatically set intent(s) to make the callback triggerable
  */
-void discord_set_on_voice_server_update(struct discord *client, voice_server_update_cb *callback);
+void discord_set_on_voice_server_update(struct discord *client, voice_server_update_cb callback);
 /**
  * @brief Helper to quickly set voice callbacks
  *

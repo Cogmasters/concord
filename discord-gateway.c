@@ -442,7 +442,7 @@ on_message_create(struct discord_gateway *gw, struct sized_buffer *data)
         ++msg->content;
       }
 
-      (cmd->cb)(gw->p_client, gw->bot, msg);
+      (*cmd->cb)(gw->p_client, gw->bot, msg);
 
       msg->content = tmp; // retrieve original ptr
     }

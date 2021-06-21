@@ -132,7 +132,7 @@ void discord_bucket_build(struct discord_adapter *adapter, struct discord_bucket
 struct discord_gateway_cmd_cbs {
   char *start;
   size_t size;
-  message_cb *cb;
+  message_cb cb;
 };
 
 /**
@@ -178,33 +178,33 @@ struct discord_gateway {
   size_t num_cmd; 
 
   struct { /* CALLBACKS STRUCTURE */
-    idle_cb *on_idle; ///< triggers on every event loop iteration
-    event_raw_cb *on_event_raw; ///< triggers for every event if set, receive its raw JSON string
-    idle_cb *on_ready; ///< triggers when connection first establishes
-    guild_role_cb *on_guild_role_create; ///< triggers when a guild role is created
-    guild_role_cb *on_guild_role_update; ///< triggers when a guild role is updated
-    guild_role_delete_cb *on_guild_role_delete; ///< triggers when a guild role is deleted
-    guild_member_cb *on_guild_member_add; ///< triggers when a guild member joins a guild
-    guild_member_remove_cb *on_guild_member_remove; ///< triggers when a guild member is removed from a guild
-    guild_member_cb *on_guild_member_update; ///< triggers when a guild member status is updated (ex: receive role)
-    guild_ban_cb *on_guild_ban_add; ///< triggers when a ban occurs
-    guild_ban_cb *on_guild_ban_remove; ///< triggers when a ban is removed
-    channel_cb *on_channel_create; ///< triggers when a channel is created
-    channel_cb *on_channel_update; ///< triggers when a channel is updated
-    channel_cb *on_channel_delete; ///< triggers when a channel is deleted
-    channel_pins_update_cb *on_channel_pins_update; ///< triggers when a channel pinned messages updates
-    message_cb *on_message_create; ///< triggers when a message is created
-    sb_message_cb *sb_on_message_create; ///< @todo this is temporary
-    message_cb *on_message_update; ///< trigger when a message is updated
-    sb_message_cb *sb_on_message_update; ///< @todo this is temporary
-    message_delete_cb *on_message_delete; ///< triggers when a message is deleted
-    message_delete_bulk_cb *on_message_delete_bulk; ///< triggers when a bulk of messages is deleted
-    message_reaction_add_cb *on_message_reaction_add; ///< triggers when a reaction is added to a message
-    message_reaction_remove_cb *on_message_reaction_remove; ///< triggers when a reaction is removed from a message
-    message_reaction_remove_all_cb *on_message_reaction_remove_all; ///< triggers when all reactions are removed from a message
-    message_reaction_remove_emoji_cb *on_message_reaction_remove_emoji; ///< triggers when all occurences of a specific reaction is removed from a message
-    voice_state_update_cb *on_voice_state_update; ///< triggers when a voice state is updated
-    voice_server_update_cb *on_voice_server_update; ///< triggers when a voice server is updated
+    idle_cb on_idle; ///< triggers on every event loop iteration
+    event_raw_cb on_event_raw; ///< triggers for every event if set, receive its raw JSON string
+    idle_cb on_ready; ///< triggers when connection first establishes
+    guild_role_cb on_guild_role_create; ///< triggers when a guild role is created
+    guild_role_cb on_guild_role_update; ///< triggers when a guild role is updated
+    guild_role_delete_cb on_guild_role_delete; ///< triggers when a guild role is deleted
+    guild_member_cb on_guild_member_add; ///< triggers when a guild member joins a guild
+    guild_member_remove_cb on_guild_member_remove; ///< triggers when a guild member is removed from a guild
+    guild_member_cb on_guild_member_update; ///< triggers when a guild member status is updated (ex: receive role)
+    guild_ban_cb on_guild_ban_add; ///< triggers when a ban occurs
+    guild_ban_cb on_guild_ban_remove; ///< triggers when a ban is removed
+    channel_cb on_channel_create; ///< triggers when a channel is created
+    channel_cb on_channel_update; ///< triggers when a channel is updated
+    channel_cb on_channel_delete; ///< triggers when a channel is deleted
+    channel_pins_update_cb on_channel_pins_update; ///< triggers when a channel pinned messages updates
+    message_cb on_message_create; ///< triggers when a message is created
+    sb_message_cb sb_on_message_create; ///< @todo this is temporary
+    message_cb on_message_update; ///< trigger when a message is updated
+    sb_message_cb sb_on_message_update; ///< @todo this is temporary
+    message_delete_cb on_message_delete; ///< triggers when a message is deleted
+    message_delete_bulk_cb on_message_delete_bulk; ///< triggers when a bulk of messages is deleted
+    message_reaction_add_cb on_message_reaction_add; ///< triggers when a reaction is added to a message
+    message_reaction_remove_cb on_message_reaction_remove; ///< triggers when a reaction is removed from a message
+    message_reaction_remove_all_cb on_message_reaction_remove_all; ///< triggers when all reactions are removed from a message
+    message_reaction_remove_emoji_cb on_message_reaction_remove_emoji; ///< triggers when all occurences of a specific reaction is removed from a message
+    voice_state_update_cb on_voice_state_update; ///< triggers when a voice state is updated
+    voice_server_update_cb on_voice_server_update; ///< triggers when a voice server is updated
   } cbs;
 
   enum discord_event_handling_mode (*blocking_event_handler)(void *cxt);

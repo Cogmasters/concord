@@ -67,10 +67,10 @@ typedef void (*voice_codec_cb)(
 
 
 struct discord_voice_cbs { /* CALLBACKS STRUCTURE */
-  voice_idle_cb  *on_idle; ///< triggers on every event loop iteration
-  voice_speaking_cb *on_speaking; ///< triggers when a user start speaking
-  voice_client_disconnect_cb *on_client_disconnect; ///< triggers when a user has disconnected from the voice channel
-  voice_codec_cb *on_codec; ///< triggers when a codec is received
+  voice_idle_cb  on_idle; ///< triggers on every event loop iteration
+  voice_speaking_cb on_speaking; ///< triggers when a user start speaking
+  voice_client_disconnect_cb on_client_disconnect; ///< triggers when a user has disconnected from the voice channel
+  voice_codec_cb on_codec; ///< triggers when a codec is received
 
   void (*on_ready)(struct discord_voice *vc);
   void (*on_session_descriptor)(struct discord_voice *vc);
