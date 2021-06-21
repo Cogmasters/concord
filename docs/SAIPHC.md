@@ -12,13 +12,13 @@ Follow the installation steps [here](https://www.cee.studio/get_sdk.html). After
    ```
 2. For Orca, use these commands inside the above `packages` folder to install the libraries instead:
     ```
-    CC=saiph-c CXX=saiph-c++ make bearssl curl
+    CC=sfc CXX=sfc++ make bearssl curl
     ./install.sh
     ```
 3. To build Orca:
    ```
     cd orca
-    CC=saiph-c make
+    CC=sfc make
    ```
 
 
