@@ -161,6 +161,8 @@ slack_socketmode_run(struct slack *client)
 
   ASSERT_S(WS_DISCONNECTED == ws_get_status(sm->ws), "Can't run websockets recursively");
 
+  ws_start(sm->ws);
+
   bool is_running;
   do {
     ws_perform(sm->ws, &is_running, 1);
@@ -169,9 +171,4 @@ slack_socketmode_run(struct slack *client)
     // connection established
     
   } while (is_running);
-}
-
-void
-slack_socketmode_shutdown(struct slack *client) {
-  /// @todo
 }
