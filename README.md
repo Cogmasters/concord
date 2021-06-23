@@ -49,6 +49,13 @@ Close the Terminal that bot-echo is running or type "Ctrl-C" to kill it.
 Instructions on how to make a ping-pong bot is found [here](/docs/BUILDING_A_BOT.md).
 
 
+## Discord C API Docs
+
+
+[Discord C API docs](https://orcaapi.readthedocs.io/en/dev/index.html).
+
+
+
 ## Participate in discussions and get tech support
 Join our discord server: https://discord.gg/2jfycwXVM3
 
