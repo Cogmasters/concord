@@ -44,6 +44,15 @@ Type any message in any public channel of the server that the bot is invited.
 Close the Terminal that bot-echo is running or type "Ctrl-C" to kill it.
 
 
+#### Debug Memory Errors
+* The recommanded method 
+  Using SaiphC to build your bot and all runtime memory errors will be reported. The [instruction](/docs/SAIPH.md).
+
+* Using valgrind, which is more convenient but cannot report all runtime memory errors. 
+```
+valgrind your-bot.exe 
+```
+
 ## Tutorial on how to make a bot
 
 Instructions on how to make a ping-pong bot is found [here](/docs/BUILDING_A_BOT.md).
@@ -51,8 +60,7 @@ Instructions on how to make a ping-pong bot is found [here](/docs/BUILDING_A_BOT
 
 ## Discord C API Docs
 
-
-[Discord C API docs](https://orcaapi.readthedocs.io/en/dev/index.html).
+[Discord C API docs](https://orcaapi.readthedocs.io/en/latest/index.html).
 
 
 
