@@ -45,8 +45,9 @@ Close the Terminal that bot-echo is running or type "Ctrl-C" to kill it.
 
 
 #### Debug Memory Errors
-* The recommanded method 
-  Using SaiphC to build your bot and all runtime memory errors will be reported. The [instruction](/docs/SAIPH.md).
+* The recommanded method: 
+  Using SaiphC to build your bot, and run the executable.  All runtime memory errors will be reported. 
+  The [instruction](/docs/SAIPH.md) to use SaiphC to build bots.
 
 * Using valgrind, which is more convenient but cannot report all runtime memory errors. 
 ```
