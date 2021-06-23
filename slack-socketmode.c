@@ -12,7 +12,7 @@ static void
 apps_connections_open_from_json(char str[], size_t len, void *p_url) 
 {
   bool status = false;
-  struct sized_buffer metadata = {0}, messages = {0};
+  struct sized_buffer metadata={0}, messages={0};
   json_extract(str, len, 
     "(ok):b"
     "(url):s"
@@ -54,6 +54,18 @@ slack_apps_connections_open(struct slack *client)
 }
 
 static void
+send_acknowledge(struct slack_socketmode *sm)
+{
+  char payload[512];
+  size_t ret = json_inject(payload, sizeof(payload), 
+                "(envelope_id):s", sm->text.envelope_id);
+  ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
+
+  log_info("Sending ACK(%zu bytes)", ret);
+  ws_send_text(sm->ws, payload, ret);
+}
+
+static void
 on_hello(struct slack_socketmode *sm)
 {
   struct slack *client = sm->p_client;
@@ -75,15 +87,18 @@ on_message(struct slack_socketmode *sm, struct sized_buffer *event)
 static void
 on_events_api(struct slack_socketmode *sm)
 {
-  struct sized_buffer t_event = {0}, t_type = {0};
+  struct sized_buffer t_event={0}, t_type={0};
   json_extract(sm->text.payload.start, sm->text.payload.size, 
       "(event):T", &t_event);
-  if (t_event.start) {
+
+  if (t_event.size) {
     json_extract(t_event.start, t_event.size, "(type):T", &t_type);
   }
 
-  if (STRNEQ("message", t_type.start, sizeof("message")-1))
-    on_message(sm, &t_event);
+  if (t_type.size) {
+    if (STRNEQ("message", t_type.start, sizeof("message")-1))
+      on_message(sm, &t_event);
+  }
 }
 
 static void
@@ -96,7 +111,7 @@ on_text_cb(void *p_sm, const char *text, size_t len)
 {
   struct slack_socketmode *sm = p_sm;
 
-  log_trace("ON_EVENT:\t%s", text);
+  log_trace("ON_EVENT(%zu bytes)", len);
 
   json_extract((char*)text, len, 
       "(payload):T"
@@ -108,11 +123,17 @@ on_text_cb(void *p_sm, const char *text, size_t len)
       sm->text.type,
       &sm->text.accepts_response_payload);
 
+  if (*sm->text.envelope_id) {
+    send_acknowledge(sm);
+  }
+
   // @todo just two events for testing purposes
   if (STREQ(sm->text.type, "hello"))
     on_hello(sm);
   if (STREQ(sm->text.type, "events_api"))
     on_events_api(sm);
+
+  memset(&sm->text, 0, sizeof(sm->text));
 }
 
 static void

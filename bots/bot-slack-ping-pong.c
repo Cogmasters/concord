@@ -9,23 +9,26 @@
 
 
 void on_hello(struct slack *client, char payload[], size_t len) {
-  fputs("\n\nSuccesfully connected to Slack!\n\n", stderr);
+  log_info("Succesfully connected to Slack!");
 }
 
 void on_message(struct slack *client, char payload[], size_t len) 
 {
-  char *text=NULL, *channel=NULL;
-  struct sized_buffer check_bot={0};
-  json_extract(payload, len, "(text):?s,(channel):?s,(bot_id):T", &text, &channel, &check_bot);
-  if (check_bot.start) return; // means message belongs to a bot
+  char *text=NULL, channel[256]="", bot_id[32]="";
 
-  if (strstr(text, "ping"))
-    slack_chat_post_message(client, channel, "pong");
-  else if (strstr(text, "pong"))
-    slack_chat_post_message(client, channel, "ping");
+  json_extract(payload, len, 
+    "(text):?s"
+    "(channel):s"
+    "(bot_id):s", 
+    &text, channel, bot_id);
 
-  if (text) free(text);
-  if (channel) free(channel);
+  if (text && !*bot_id && *channel) {
+    if (strstr(text, "ping"))
+      slack_chat_post_message(client, channel, "pong");
+    else if (strstr(text, "pong"))
+      slack_chat_post_message(client, channel, "ping");
+    free(text);
+  }
 }
 
 int main(int argc, char *argv[])
@@ -35,7 +38,6 @@ int main(int argc, char *argv[])
     config_file = argv[1];
   else
     config_file = "bot.config";
-
 
   struct slack *client = slack_config_init(config_file);
   assert(NULL != client && "Couldn't initialize client");
