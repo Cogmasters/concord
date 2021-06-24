@@ -2,8 +2,8 @@
 #define SLACK_H
 
 #include <stdbool.h>
-
 #include "json-actor-boxed.h"
+#include "logconf.h"
 
 struct slack; // forward declaration
 
