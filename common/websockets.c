@@ -26,7 +26,6 @@ struct websockets {
    * @note #WS_CONNECTING triggered at ws_start()
    * @note #WS_DISCONNECTING triggered when closing connection
    *        @see ws_on_close()
-   *        @see ws_close()
    * @see ws_get_status()
    * @see _ws_set_status()
    */
@@ -79,13 +78,13 @@ struct websockets {
 
   /**
    * Synchronization directives
-   * @param wthread_action will trigger #TRUE when ws_close() or
+   * @param wthread_action will trigger #TRUE when _ws_close() or
    *        ws_send_text() are being called outside the main-thread.
    *        Being #TRUE means the called function will be locked until
    *        the main-thread is not performing any socket read/write
    *        operations. The main-thread will then block itself until
    *        the worker-thread complete its operations.
-   *        @see ws_close()
+   *        @see _ws_close()
    *        @see ws_send_text()
    * @param tid the main-thread id, to decide whether synchronization
    *        is necessary.
@@ -425,33 +424,101 @@ ws_cleanup(struct websockets *ws)
 }
 
 bool
-ws_send_text(struct websockets *ws, char text[], size_t len)
+ws_send_binary(struct websockets *ws, const char msg[], size_t msglen)
 {
-  if (ws->tid != pthread_self()) {
-    log_fatal("ws_send_text can only be called from thread %u", ws->tid);
-    ABORT();
-  }
+  VASSERT_S(ws->tid == pthread_self(), "Can only be called from thread %u", ws->tid);
 
   log_http(
     ws->p_config, 
     ws,
     ws->base_url, 
     (struct sized_buffer){"", 0},
-    (struct sized_buffer){text, len},
+    (struct sized_buffer){(char*)msg, msglen},
+    "WS_SEND_BINARY");
+
+  if (WS_CONNECTED != ws->status) {
+    log_error("[%s] Failed to send '%.*s'", ws->tag, (int)msglen, msg);
+    return false;
+  }
+
+  log_trace("[%s] Sending BINARY(%zu bytes)", ws->tag, msglen);
+  if (!cws_send(ws->ehandle, false, msg, msglen)) {
+    log_error("[%s] Couldn't send BINARY(%zu bytes)", ws->tag, msglen);
+    return false;
+  }
+  return true;
+}
+
+bool
+ws_send_text(struct websockets *ws, const char text[], size_t len)
+{
+  VASSERT_S(ws->tid == pthread_self(), "Can only be called from thread %u", ws->tid);
+
+  log_http(
+    ws->p_config, 
+    ws,
+    ws->base_url, 
+    (struct sized_buffer){"", 0},
+    (struct sized_buffer){(char*)text, len},
     "WS_SEND_TEXT");
 
   if (WS_CONNECTED != ws->status) {
-    log_error("[%s] Failed to send '%.*s'", ws->tag, len, text);
+    log_error("[%s] Failed to send '%.*s'", ws->tag, (int)len, text);
     return false;
   }
 
   log_trace("[%s] Sending TEXT(%zu bytes)", ws->tag, len);
-  bool ret = cws_send(ws->ehandle, true, text, len);
-
-  if (false == ret)
+  if (!cws_send(ws->ehandle, true, text, len)) {
     log_error("[%s] Couldn't send TEXT(%zu bytes)", ws->tag, len);
+    return false;
+  }
+  return true;
+}
 
-  return ret;
+bool ws_ping(struct websockets *ws, const char *reason, size_t len)
+{
+  log_http(
+    ws->p_config, 
+    ws,
+    ws->base_url, 
+    (struct sized_buffer){"", 0},
+    (struct sized_buffer){(char*)reason, len},
+    "WS_SEND_PING");
+
+  if (WS_CONNECTED != ws->status) {
+    log_error("[%s] Failed to send '%.*s'", ws->tag, (int)len, reason);
+    return false;
+  }
+
+  log_debug("[%s] Sending PING: %.*s", ws->tag, (int)len, reason);
+  if (!cws_ping(ws->ehandle, reason, len)) {
+    log_error("[%s] Couldn't send PING: %.*s", ws->tag, (int)len, reason);
+    return false;
+  }
+  return true;
+}
+
+bool ws_pong(struct websockets *ws, const char *reason, size_t len)
+{
+  log_http(
+    ws->p_config, 
+    ws,
+    ws->base_url, 
+    (struct sized_buffer){"", 0},
+    (struct sized_buffer){(char*)reason, len},
+    "WS_SEND_PONG");
+
+  if (WS_CONNECTED != ws->status) {
+    log_error("[%s] Failed to send '%.*s'", ws->tag, (int)len, reason);
+    return false;
+  }
+
+  log_debug("[%s] Sending PONG: %.*s", ws->tag, (int)len, reason);
+  if (!cws_ping(ws->ehandle, reason, len)) {
+    log_error("[%s] Couldn't send PONG: %.*s", ws->tag, (int)len, reason);
+    return false;
+  }
+  return true;
 }
 
 /*

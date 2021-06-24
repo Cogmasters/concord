@@ -124,6 +124,18 @@ void ws_cleanup(struct websockets *ws);
 void ws_set_url(struct websockets *ws, const char base_url[], const char ws_protocols[]);
 
 /**
+ * @brief Send a binary message of given size.
+ *
+ * Binary messages do not need to include the null terminator (\0), they
+ * will be read up to @a msglen.
+ *
+ * @param ws the WebSockets handle created with ws_init()
+ * @param msg the pointer to memory (linear) to send.
+ * @param msglen the length in bytes of @a msg.
+ * @return true if sent, false on errors.
+ */
+bool ws_send_binary(struct websockets *ws, const char msg[], size_t msglen);
+/**
  * @brief Send a text message of given size.
  *
  * Text messages do not need to include the null terminator (\0), they
@@ -134,7 +146,27 @@ void ws_set_url(struct websockets *ws, const char base_url[], const char ws_prot
  * @param len the length in bytes of @a text.
  * @return true if sent, false on errors.
  */
-bool ws_send_text(struct websockets *ws, char text[], size_t len);
+bool ws_send_text(struct websockets *ws, const char text[], size_t len);
+/**
+ * Send a PING (opcode 0x9) frame with @a reason as payload.
+ *
+ * @param ws the WebSockets handle created with ws_init()
+ * @param reason NULL or some UTF-8 string null ('\0') terminated.
+ * @param len the length of @a reason in bytes. If SIZE_MAX, uses
+ *        strlen() on @a reason if it's not NULL.
+ * @return true if sent, false on errors.
+ */
+bool ws_ping(struct websockets *ws, const char reason[], size_t len);
+/**
+ * Send a PONG (opcode 0xA) frame with @a reason as payload.
+ *
+ * @param ws the WebSockets handle created with ws_init()
+ * @param reason NULL or some UTF-8 string null ('\0') terminated.
+ * @param len the length of @a reason in bytes. If SIZE_MAX, uses
+ *        strlen() on @a reason if it's not NULL.
+ * @return true if sent, false on errors.
+ */
+bool ws_pong(struct websockets *ws, const char reason[], size_t len);
 
 /**
  * @brief Signals connecting state before entering the WebSockets event loop
