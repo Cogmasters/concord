@@ -298,7 +298,7 @@ cws_custom_new(struct websockets *ws, const char ws_protocols[])
     .on_connect = &cws_on_connect_cb,
     .on_text = &cws_on_text_cb,
     .on_binary = &cws_on_binary_cb,
-    .on_ping = &cws_on_pong_cb,
+    .on_ping = &cws_on_ping_cb,
     .on_pong = &cws_on_pong_cb,
     .on_close = &cws_on_close_cb,
     .data = ws
