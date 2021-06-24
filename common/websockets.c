@@ -373,8 +373,8 @@ static void
 noop_on_binary(void *a, struct websockets *b, const void *c, size_t d)
 {return;}
 static void 
-noop_on_ping(void *a, struct websockets *ws, const char *b, size_t c) 
-{ ws_pong(ws, "Default PONG", sizeof("Default PONG")); }
+noop_on_ping(void *a, struct websockets *ws, const char *reason, size_t len) 
+{ ws_pong(ws, reason, len); }
 static void 
 noop_on_pong(void *a, struct websockets *b, const char *c, size_t d)
 {return;}
@@ -528,7 +528,7 @@ bool ws_pong(struct websockets *ws, const char *reason, size_t len)
   }
 
   log_debug("[%s] Sending PONG: %.*s", ws->tag, (int)len, reason);
-  if (!cws_ping(ws->ehandle, reason, len)) {
+  if (!cws_pong(ws->ehandle, reason, len)) {
     log_error("[%s] Couldn't send PONG: %.*s", ws->tag, (int)len, reason);
     return false;
   }
