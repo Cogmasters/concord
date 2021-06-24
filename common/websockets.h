@@ -61,7 +61,7 @@ struct ws_callbacks {
    *
    * @note It is not validated if matches the proposed protocols.
    */
-  void (*on_connect)(void *data, const char *protocols);
+  void (*on_connect)(void *data, struct websockets *ws, const char *protocols);
   /**
    * @brief Reports UTF-8 text messages.
    *
@@ -69,29 +69,29 @@ struct ws_callbacks {
    * not validated. If it's invalid, consider closing the connection
    * with WS_CLOSE_REASON_INCONSISTENT_DATA.
    */
-  void (*on_text)(void *data, const char *text, size_t len);
+  void (*on_text)(void *data, struct websockets *ws, const char *text, size_t len);
   /**
    * @brief reports binary data.
    */
-  void (*on_binary)(void *data, const void *mem, size_t len);
+  void (*on_binary)(void *data, struct websockets *ws, const void *mem, size_t len);
   /**
    * @brief reports PING.
    *
    * @note if provided you should reply with ws_pong(). If not
    * provided, pong is sent with the same message payload.
    */
-  void (*on_ping)(void *data, const char *reason, size_t len);
+  void (*on_ping)(void *data, struct websockets *ws, const char *reason, size_t len);
   /**
    * @brief reports PONG.
    */
-  void (*on_pong)(void *data, const char *reason, size_t len);
+  void (*on_pong)(void *data, struct websockets *ws, const char *reason, size_t len);
   /**
    * @brief reports server closed the connection with the given reason.
    *
    * Clients should not transmit any more data after the server is
    * closed
    */
-  void (*on_close)(void *data, enum ws_close_reason wscode, const char *reason, size_t len);
+  void (*on_close)(void *data, struct websockets *ws, enum ws_close_reason wscode, const char *reason, size_t len);
   /**
    * @brief user arbitrary data to be passed around callbacks
    */
@@ -148,7 +148,7 @@ bool ws_send_binary(struct websockets *ws, const char msg[], size_t msglen);
  */
 bool ws_send_text(struct websockets *ws, const char text[], size_t len);
 /**
- * Send a PING (opcode 0x9) frame with @a reason as payload.
+ * @brief Send a PING (opcode 0x9) frame with @a reason as payload.
  *
  * @param ws the WebSockets handle created with ws_init()
  * @param reason NULL or some UTF-8 string null ('\0') terminated.
@@ -158,7 +158,10 @@ bool ws_send_text(struct websockets *ws, const char text[], size_t len);
  */
 bool ws_ping(struct websockets *ws, const char reason[], size_t len);
 /**
- * Send a PONG (opcode 0xA) frame with @a reason as payload.
+ * @brief Send a PONG (opcode 0xA) frame with @a reason as payload.
+ *
+ * Note that pong is sent automatically if no "on_ping" callback is
+ * defined. If one is defined you must send pong manually.
  *
  * @param ws the WebSockets handle created with ws_init()
  * @param reason NULL or some UTF-8 string null ('\0') terminated.

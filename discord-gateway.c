@@ -920,12 +920,12 @@ on_heartbeat_ack(struct discord_gateway *gw)
 }
 
 static void
-on_connect_cb(void *p_gw, const char *ws_protocols) {
+on_connect_cb(void *p_gw, struct websockets *ws, const char *ws_protocols) {
   log_info("Connected, WS-Protocols: '%s'", ws_protocols);
 }
 
 static void
-on_close_cb(void *p_gw, enum ws_close_reason wscode, const char *reason, size_t len)
+on_close_cb(void *p_gw, struct websockets *ws, enum ws_close_reason wscode, const char *reason, size_t len)
 {
   struct discord_gateway *gw = p_gw;
   enum discord_gateway_close_opcodes opcode = (enum discord_gateway_close_opcodes)wscode;
@@ -976,7 +976,7 @@ on_close_cb(void *p_gw, enum ws_close_reason wscode, const char *reason, size_t 
 }
 
 static void
-on_text_cb(void *p_gw, const char *text, size_t len) 
+on_text_cb(void *p_gw, struct websockets *ws, const char *text, size_t len) 
 {
   struct discord_gateway *gw = p_gw;
 

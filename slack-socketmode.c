@@ -102,12 +102,24 @@ on_events_api(struct slack_socketmode *sm)
 }
 
 static void
-on_connect_cb(void *p_sm, const char *ws_protocols) {
+on_connect_cb(void *p_sm, struct websockets *ws, const char *ws_protocols) {
   log_info("Connected, WS-Protocols: '%s'", ws_protocols);
 }
 
 static void
-on_text_cb(void *p_sm, const char *text, size_t len) 
+on_close_cb(void *p_sm, struct websockets *ws, enum ws_close_reason wscode, const char *reason, size_t len)
+{
+  struct slack_socketmode *sm = p_sm;
+
+  log_warn("\n\t(code: %4d) : %zd bytes\n\t"
+           "REASON: '%s'", 
+           wscode, len, reason);
+
+  sm->is_ready = false; // reset
+}
+
+static void
+on_text_cb(void *p_sm, struct websockets *ws, const char *text, size_t len) 
 {
   struct slack_socketmode *sm = p_sm;
 
@@ -134,18 +146,6 @@ on_text_cb(void *p_sm, const char *text, size_t len)
     on_events_api(sm);
 
   memset(&sm->text, 0, sizeof(sm->text));
-}
-
-static void
-on_close_cb(void *p_sm, enum ws_close_reason wscode, const char *reason, size_t len)
-{
-  struct slack_socketmode *sm = p_sm;
-
-  log_warn("\n\t(code: %4d) : %zd bytes\n\t"
-           "REASON: '%s'", 
-           wscode, len, reason);
-
-  sm->is_ready = false; // reset
 }
 
 void

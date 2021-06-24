@@ -190,7 +190,7 @@ _ws_set_status(struct websockets *ws, enum ws_status status)
 static void // main-thread
 cws_on_connect_cb(void *p_ws, CURL *ehandle, const char *ws_protocols)
 {
-  log_trace("cws_on_connect_cb is called");
+  log_trace("cws_on_connect_cb() is called");
   struct websockets *ws = p_ws;
   _ws_set_status(ws, WS_CONNECTED);
 
@@ -202,13 +202,13 @@ cws_on_connect_cb(void *p_ws, CURL *ehandle, const char *ws_protocols)
     (struct sized_buffer){(char*)ws_protocols, strlen(ws_protocols)},
     "WS_RCV_CONNECT");
 
-  (*ws->cbs.on_connect)(ws->cbs.data, ws_protocols);
+  (*ws->cbs.on_connect)(ws->cbs.data, ws, ws_protocols);
 }
 
 static void // main-thread
 cws_on_close_cb(void *p_ws, CURL *ehandle, enum cws_close_reason cwscode, const char *reason, size_t len)
 {
-  log_info("cws_on_close_cb is called");
+  log_info("cws_on_close_cb() is called");
   struct websockets *ws = p_ws;
   _ws_set_status(ws, WS_DISCONNECTING);
 
@@ -221,7 +221,7 @@ cws_on_close_cb(void *p_ws, CURL *ehandle, enum cws_close_reason cwscode, const 
     "WS_RCV_CLOSE(%d)", cwscode);
 
   log_debug("[%s] Receive CLOSE(%d): %.*s", ws->tag, cwscode, (int)len, reason);
-  (*ws->cbs.on_close)(ws->cbs.data, cwscode, reason, len);
+  (*ws->cbs.on_close)(ws->cbs.data, ws, cwscode, reason, len);
   // will set status to WS_DISCONNECTED when is_running == false
 }
 
@@ -238,7 +238,7 @@ cws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
     (struct sized_buffer){(char*)text, len},
     "WS_RCV_TEXT");
 
-  (*ws->cbs.on_text)(ws->cbs.data, text, len);
+  (*ws->cbs.on_text)(ws->cbs.data, ws, text, len);
 }
 
 static void // main-thread
@@ -254,7 +254,7 @@ cws_on_binary_cb(void *p_ws, CURL *ehandle, const void *mem, size_t len)
     (struct sized_buffer){(char*)mem, len},
     "WS_RCV_BINARY");
 
-  (*ws->cbs.on_binary)(ws->cbs.data, mem, len);
+  (*ws->cbs.on_binary)(ws->cbs.data, ws, mem, len);
 }
 
 static void // main-thread
@@ -270,7 +270,7 @@ cws_on_ping_cb(void *p_ws, CURL *ehandle, const char *reason, size_t len)
     (struct sized_buffer){(char*)reason, len},
     "WS_RCV_PING");
 
-  (*ws->cbs.on_ping)(ws->cbs.data, reason, len);
+  (*ws->cbs.on_ping)(ws->cbs.data, ws, reason, len);
 }
 
 static void // main-thread
@@ -286,7 +286,7 @@ cws_on_pong_cb(void *p_ws, CURL *ehandle, const char *reason, size_t len)
     (struct sized_buffer){(char*)reason, len},
     "WS_RCV_PONG");
 
-  (*ws->cbs.on_pong)(ws->cbs.data, reason, len);
+  (*ws->cbs.on_pong)(ws->cbs.data, ws, reason, len);
 }
 
 /* init easy handle with some default opt */
@@ -321,7 +321,8 @@ cws_custom_new(struct websockets *ws, const char ws_protocols[])
   return new_ehandle;
 }
 
-static bool _ws_close(struct websockets *ws)
+static bool 
+_ws_close(struct websockets *ws)
 {
   static const char reason[] = "Client initializes close";
   static const enum cws_close_reason code = CWS_CLOSE_REASON_NO_REASON;
@@ -353,7 +354,8 @@ static bool _ws_close(struct websockets *ws)
   return true;
 }
 
-enum ws_status ws_get_status(struct websockets *ws)
+enum ws_status 
+ws_get_status(struct websockets *ws)
 {
   pthread_mutex_lock(&ws->lock);
   enum ws_status status = ws->status;
@@ -361,12 +363,24 @@ enum ws_status ws_get_status(struct websockets *ws)
   return status;
 }
 
-static void noop_on_connect(void *a, const char *b){return;}
-static void noop_on_text(void *a, const char *b, size_t c){return;}
-static void noop_on_binary(void *a, const void *b, size_t c){return;}
-static void noop_on_ping(void *a, const char *b, size_t c){return;}
-static void noop_on_pong(void *a, const char *b, size_t c){return;}
-static void noop_on_close(void *a, enum ws_close_reason b, const char *c, size_t d){return;}
+static void 
+noop_on_connect(void *a, struct websockets *b, const char *c)
+{return;}
+static void 
+noop_on_text(void *a, struct websockets *b, const char *c, size_t d)
+{return;}
+static void 
+noop_on_binary(void *a, struct websockets *b, const void *c, size_t d)
+{return;}
+static void 
+noop_on_ping(void *a, struct websockets *ws, const char *b, size_t c) 
+{ ws_pong(ws, "Default PONG", sizeof("Default PONG")); }
+static void 
+noop_on_pong(void *a, struct websockets *b, const char *c, size_t d)
+{return;}
+static void 
+noop_on_close(void *a, struct websockets *b, enum ws_close_reason c, const char *d, size_t e)
+{return;}
 
 struct websockets* // main-thread
 ws_init(struct ws_callbacks *cbs, struct logconf *config)

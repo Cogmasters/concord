@@ -205,12 +205,12 @@ on_heartbeat_ack(struct discord_voice *vc)
 }
 
 static void
-on_connect_cb(void *p_vc, const char *ws_protocols) {
+on_connect_cb(void *p_vc, struct websockets *ws, const char *ws_protocols) {
   log_info("Connected, WS-Protocols: '%s'", ws_protocols);
 }
 
 static void
-on_close_cb(void *p_vc, enum ws_close_reason wscode, const char *reason, size_t len)
+on_close_cb(void *p_vc, struct websockets *ws, enum ws_close_reason wscode, const char *reason, size_t len)
 {
   struct discord_voice *vc = p_vc;
   enum discord_voice_close_opcodes opcode = (enum discord_voice_close_opcodes)wscode;
@@ -265,7 +265,7 @@ on_close_cb(void *p_vc, enum ws_close_reason wscode, const char *reason, size_t 
 }
 
 static void
-on_text_cb(void *p_vc, const char *text, size_t len) 
+on_text_cb(void *p_vc, struct websockets *ws, const char *text, size_t len) 
 {
   struct discord_voice *vc = p_vc;
 
