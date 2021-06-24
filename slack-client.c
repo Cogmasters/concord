@@ -19,7 +19,9 @@ slack_config_init(const char config_file[])
     &new_client->adapter, 
     &new_client->config,
     &new_client->bot_token);
+#if 0
   slack_rtm_init(&new_client->rtm, &new_client->config);
+#endif
   slack_socketmode_init(&new_client->sm, &new_client->config);
 
   return new_client;
@@ -30,24 +32,26 @@ slack_cleanup(struct slack *client)
 {
   logconf_cleanup(&client->config);
   slack_adapter_cleanup(&client->adapter);
+#if 0
   slack_rtm_cleanup(&client->rtm);
+#endif
   slack_socketmode_cleanup(&client->sm);
 
   free(client);
 }
 
 void
-slack_set_on_idle(struct slack *client, idle_cb *callback) {
+slack_set_on_idle(struct slack *client, idle_cb callback) {
   client->cbs.on_hello = callback;
 }
 
 void
-slack_set_on_hello(struct slack *client, idle_cb *callback) {
+slack_set_on_hello(struct slack *client, idle_cb callback) {
   client->cbs.on_hello = callback;
 }
 
 void
-slack_set_on_message(struct slack *client, idle_cb *callback) {
+slack_set_on_message(struct slack *client, idle_cb callback) {
   client->cbs.on_message = callback;
 }
 

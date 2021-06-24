@@ -41,13 +41,11 @@ struct slack_socketmode {
   struct websockets *ws;
   bool is_ready;
 
-  char base_url[UA_MAX_URL_LEN];
-  struct { /* SLACK SOCKETMODE RESPONSE STRUCT */
-    struct sized_buffer payload;
-    char envelope_id[64];
-    char type[64];
-    bool accepts_response_payload;
-  } text;
+  struct { /* SOCKETMODE HEARTBEAT STRUCT */
+    uint64_t tstamp;
+    long interval_ms;
+  } hbeat;
+
   struct slack *p_client;
 };
 
@@ -66,9 +64,9 @@ struct slack {
   struct logconf config;
 
   struct { /* CALLBACKS STRUCTURE */
-    idle_cb *on_idle; //trigers in every event loop iteration
-    idle_cb *on_hello; //triggers when connections first establishes
-    idle_cb *on_message;
+    idle_cb on_idle; //trigers in every event loop iteration
+    idle_cb on_hello; //triggers when connections first establishes
+    idle_cb on_message;
   } cbs;
 };
 

@@ -8,15 +8,15 @@
 #include "json-actor.h"
 
 
-void on_hello(struct slack *client, char payload[], size_t len) {
+void on_hello(struct slack *client, const char payload[], const size_t len) {
   log_info("Succesfully connected to Slack!");
 }
 
-void on_message(struct slack *client, char payload[], size_t len) 
+void on_message(struct slack *client, const char payload[], const size_t len) 
 {
   char *text=NULL, channel[256]="", bot_id[32]="";
 
-  json_extract(payload, len, 
+  json_extract((char*)payload, len, 
     "(text):?s"
     "(channel):s"
     "(bot_id):s", 
