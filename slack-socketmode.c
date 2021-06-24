@@ -70,7 +70,7 @@ send_acknowledge(struct slack_socketmode *sm, const char envelope_id[])
                 "(envelope_id):s", envelope_id);
   ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
 
-  log_info("Sending ACK(%zu bytes)", ret);
+  log_trace("Sending ACK(%zu bytes)", ret);
   ws_send_text(sm->ws, payload, ret);
 }
 

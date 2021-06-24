@@ -6,6 +6,7 @@
 #include "slack.h"
 
 #include "json-actor.h"
+#include "log.h"
 
 
 void on_hello(struct slack *client, const char payload[], const size_t len) {
