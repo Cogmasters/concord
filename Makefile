@@ -95,16 +95,24 @@ ifeq ($(DEBUG_JSON),1)
 	CFLAGS += -D_STRICT_STATIC_DEBUG
 endif
 
+PREFIX ?= /usr/local
+
 ifeq ($(CC),stensal-c)
 	CFLAGS += -D_DEFAULT_SOURCE
+	D=$(shell dirname $(shell which stensal-c))
+	DEST=$(patsubst %/stensal/bin,%,$(D))
+	PREFIX=$(DEST)/usr
 else ifeq ($(CC),sfc)
 	CFLAGS += -D_DEFAULT_SOURCE
+	D=$(shell dirname $(shell which sfc))
+	DEST=$(patsubst %/stensal/bin,%,$(D))
+	PREFIX=$(DEST)/usr
 else
 	CFLAGS += -fPIC -D_XOPEN_SOURCE=700
 endif
 
 
-PREFIX ?= /usr/local
+
 
 .PHONY : install clean purge mujs
 .ONESHELL:
@@ -134,6 +142,7 @@ echo:
 	@echo SPECS_SUBDIR: $(SPECS_SUBDIR)
 	@echo BOTZ_SRC:     $(BOTZ_SRC)
 	@echo BOTZ_EXES:    $(BOTZ_EXES)
+	@echo DEST:         $(DEST)
 
 ##@todo should we split by categories (bot_discord, bot_github, etc)?
 bots: $(BOT_EXES)
