@@ -17,6 +17,7 @@ void on_message(struct slack *client, const char payload[], const size_t len)
 {
   char *text=NULL, channel[256]="", bot_id[32]="";
 
+  log_info("%.*s", len, payload);
   json_extract((char*)payload, len, 
     "(text):?s"
     "(channel):s"

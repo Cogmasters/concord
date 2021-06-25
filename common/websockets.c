@@ -527,7 +527,7 @@ bool ws_pong(struct websockets *ws, const char *reason, size_t len)
     return false;
   }
 
-  log_debug("[%s] Sending PONG: %.*s", ws->tag, (int)len, reason);
+  log_trace("[%s] Sending PONG: %.*s", ws->tag, (int)len, reason);
   if (!cws_pong(ws->ehandle, reason, len)) {
     log_error("[%s] Couldn't send PONG: %.*s", ws->tag, (int)len, reason);
     return false;
