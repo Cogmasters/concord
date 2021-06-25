@@ -262,6 +262,7 @@ cws_on_ping_cb(void *p_ws, CURL *ehandle, const char *reason, size_t len)
 {
   struct websockets *ws = p_ws;
 
+#if 0
   log_http(
     ws->p_config, 
     ws,
@@ -269,6 +270,7 @@ cws_on_ping_cb(void *p_ws, CURL *ehandle, const char *reason, size_t len)
     (struct sized_buffer){"", 0},
     (struct sized_buffer){(char*)reason, len},
     "WS_RCV_PING");
+#endif
 
   (*ws->cbs.on_ping)(ws->cbs.data, ws, reason, len);
 }
@@ -278,6 +280,7 @@ cws_on_pong_cb(void *p_ws, CURL *ehandle, const char *reason, size_t len)
 {
   struct websockets *ws = p_ws;
 
+#if 0
   log_http(
     ws->p_config, 
     ws,
@@ -285,6 +288,7 @@ cws_on_pong_cb(void *p_ws, CURL *ehandle, const char *reason, size_t len)
     (struct sized_buffer){"", 0},
     (struct sized_buffer){(char*)reason, len},
     "WS_RCV_PONG");
+#endif
 
   (*ws->cbs.on_pong)(ws->cbs.data, ws, reason, len);
 }
@@ -491,6 +495,7 @@ ws_send_text(struct websockets *ws, const char text[], size_t len)
 
 bool ws_ping(struct websockets *ws, const char *reason, size_t len)
 {
+#if 0
   log_http(
     ws->p_config, 
     ws,
@@ -498,6 +503,7 @@ bool ws_ping(struct websockets *ws, const char *reason, size_t len)
     (struct sized_buffer){"", 0},
     (struct sized_buffer){(char*)reason, len},
     "WS_SEND_PING");
+#endif
 
   if (WS_CONNECTED != ws->status) {
     log_error("[%s] Failed to send '%.*s'", ws->tag, (int)len, reason);
@@ -514,6 +520,7 @@ bool ws_ping(struct websockets *ws, const char *reason, size_t len)
 
 bool ws_pong(struct websockets *ws, const char *reason, size_t len)
 {
+#if 0
   log_http(
     ws->p_config, 
     ws,
@@ -521,6 +528,7 @@ bool ws_pong(struct websockets *ws, const char *reason, size_t len)
     (struct sized_buffer){"", 0},
     (struct sized_buffer){(char*)reason, len},
     "WS_SEND_PONG");
+#endif
 
   if (WS_CONNECTED != ws->status) {
     log_error("[%s] Failed to send '%.*s'", ws->tag, (int)len, reason);
