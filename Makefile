@@ -70,8 +70,8 @@ else ifeq ($(CC),stensal-c)
 else ifeq ($(CC),sfc)
 	LIBDISCORD_LDFLAGS += -lcurl-bearssl -lbearssl -static
 	CFLAGS += -DBEARSSL
-	#LIBDISCORD_LDFLAGS += -lcurl-ssl -lssl -lcrypto -lm -static
 else
+	CFLAGS += -Wno-unused-but-set-variable
 	LIBDISCORD_LDFLAGS += $(pkg-config --libs --cflags libcurl) -lcurl -lcrypto -lm
 endif
 
