@@ -14,6 +14,7 @@
 
 #include <stdbool.h>
 #include "json-actor-boxed.h"
+#include "types.h"
 #include "logconf.h"
 
 #define DISCORD_API_BASE_URL "https://discord.com/api/v9"
@@ -23,8 +24,6 @@
 /* FORWARD DECLARATIONS */
 struct discord;
 struct discord_voice_cbs;
-
-typedef uint64_t u64_unix_ms_t; ///< unix time in ms
 
 /* SNOWFLAKES
 https://discord.com/developers/docs/reference#snowflakes */

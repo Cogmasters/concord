@@ -3,6 +3,7 @@
 
 #include <stdbool.h>
 #include "json-actor-boxed.h"
+#include "types.h"
 #include "logconf.h"
 
 /// @see specs/discord for generated code specs 
