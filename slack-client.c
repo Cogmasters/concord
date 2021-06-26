@@ -91,17 +91,17 @@ slack_chat_post_message(struct slack *client, char channel[], char text[])
   }
 
   char payload[4096+1];
-  json_inject(payload, sizeof(payload), 
-      "(channel):s"
-      "(token):.*s"
-      "(text):s", 
-      channel, 
-      (int)client->bot_token.size, client->bot_token.start, 
-      text);
+  size_t ret = json_inject(payload, sizeof(payload), 
+                "(channel):s"
+                "(token):.*s"
+                "(text):s", 
+                channel, 
+                (int)client->bot_token.size, client->bot_token.start, 
+                text);
 
   ua_reqheader_add(client->adapter.ua, "Content-type", "application/json");
 
-  struct sized_buffer req_body = {payload, strlen(payload)};
+  struct sized_buffer req_body = { payload, ret };
 
   slack_adapter_run(
     &client->adapter,
@@ -110,4 +110,29 @@ slack_chat_post_message(struct slack *client, char channel[], char text[])
     HTTP_POST, "/chat.postMessage");
 
   ua_reqheader_add(client->adapter.ua, "Content-type", "application/x-www-form-urlencoded");
+}
+
+static void
+auth_test_from_json(char str[], size_t len, void *p_resp) 
+{
+  *(struct sized_buffer*)p_resp = (struct sized_buffer){ 
+                                    .start = strdup(str), 
+                                    .size = len 
+                                  }; 
+}
+
+// @todo move to slack-auth.c
+void
+slack_auth_test(struct slack *client, struct sized_buffer *p_resp)
+{
+  struct ua_resp_handle resp_handle = {
+    .ok_cb = p_resp ? &auth_test_from_json : NULL,
+    .ok_obj = p_resp
+  };
+
+  slack_adapter_run(
+    &client->adapter,
+    &resp_handle,
+    NULL,
+    HTTP_POST, "/auth.test");
 }
