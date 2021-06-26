@@ -100,6 +100,7 @@ struct ua_resp_body {
 };
 
 struct ua_info {
+  struct loginfo loginfo;
   /**
    * how the request went 
    *    equal 0 means success (2xx)

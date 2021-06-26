@@ -594,7 +594,7 @@ send_request(struct user_agent *ua, struct _ua_conn *conn)
 
   log_http(
     ua->p_config, 
-    NULL,
+    &conn->info.loginfo,
     ua,
     resp_url, 
     (struct sized_buffer){conn->info.resp_header.buf, conn->info.resp_header.length},
@@ -616,11 +616,12 @@ perform_request(
 
   /* triggers response related callbacks */
   if (httpcode >= 500) {
-    log_error("[%s] "ANSICOLOR("SERVER ERROR (%d)%s", ANSI_FG_RED)" - %s",
+    log_error("[%s] "ANSICOLOR("SERVER ERROR", ANSI_FG_RED)" (%d)%s - %s [@@@_%zu_@@@]",
         conn->tag,
         httpcode,
         http_code_print(httpcode),
-        http_reason_print(httpcode));
+        http_reason_print(httpcode),
+        conn->info.loginfo.counter);
 
     if (resp_handle) {
       if (resp_handle->err_cb) {
@@ -640,11 +641,12 @@ perform_request(
     return conn->info.code = httpcode;
   }
   if (httpcode >= 400) {
-    log_error("[%s] "ANSICOLOR("CLIENT ERROR (%d)%s", ANSI_FG_RED)" - %s",
+    log_error("[%s] "ANSICOLOR("CLIENT ERROR", ANSI_FG_RED)" (%d)%s - %s [@@@_%zu_@@@]",
         conn->tag,
         httpcode,
         http_code_print(httpcode),
-        http_reason_print(httpcode));
+        http_reason_print(httpcode),
+        conn->info.loginfo.counter);
 
     if (resp_handle) {
       if(resp_handle->err_cb) {
@@ -664,19 +666,21 @@ perform_request(
     return conn->info.code = httpcode;
   }
   if (httpcode >= 300) {
-    log_warn("[%s] "ANSICOLOR("REDIRECTING (%d)%s", ANSI_FG_YELLOW)" - %s",
+    log_warn("[%s] "ANSICOLOR("REDIRECTING", ANSI_FG_YELLOW)" (%d)%s - %s [@@@_%zu_@@@]",
         conn->tag,
         httpcode,
         http_code_print(httpcode),
-        http_reason_print(httpcode));
+        http_reason_print(httpcode),
+        conn->info.loginfo.counter);
     return conn->info.code = httpcode;
   }
   if (httpcode >= 200) {
-    log_info("[%s] "ANSICOLOR("SUCCESS (%d)%s", ANSI_FG_GREEN)" - %s",
+    log_info("[%s] "ANSICOLOR("SUCCESS", ANSI_FG_GREEN)" (%d)%s - %s [@@@_%zu_@@@]",
         conn->tag,
         httpcode,
         http_code_print(httpcode),
-        http_reason_print(httpcode));
+        http_reason_print(httpcode),
+        conn->info.loginfo.counter);
 
     if (resp_handle) {
       if (resp_handle->ok_cb) {
@@ -696,18 +700,22 @@ perform_request(
     return conn->info.code = ORCA_OK;
   }
   if (httpcode >= 100) {
-    log_info("[%s] "ANSICOLOR("INFO (%d)%s", ANSI_FG_GRAY)" - %s",
+    log_info("[%s] "ANSICOLOR("INFO", ANSI_FG_GRAY)" (%d)%s - %s [@@@_%zu_@@@]",
         conn->tag,
         httpcode,
         http_code_print(httpcode),
-        http_reason_print(httpcode));
+        http_reason_print(httpcode),
+        conn->info.loginfo.counter);
     return conn->info.code = httpcode;
   }
   if (!httpcode) {
-    log_error("[%s] No http response received by libcurl", conn->tag);
+    log_error("[%s] No http response received by libcurl", 
+        conn->tag);
     return conn->info.code = ORCA_NO_RESPONSE;
   }
-  log_error("[%s] Unusual HTTP response code: %d", conn->tag, httpcode);
+  log_error("[%s] Unusual HTTP response code: %d", 
+      conn->tag, 
+      httpcode);
   return conn->info.code = ORCA_UNUSUAL_HTTP_CODE;
 }
 
@@ -729,6 +737,7 @@ ua_vrun(
   struct sized_buffer *req_body,
   enum http_method http_method, char endpoint[], va_list args)
 {
+  const char *method_str = http_method_print(http_method);
   static struct sized_buffer blank_req_body = {"", 0};
   if (NULL == req_body) {
     req_body = &blank_req_body;
@@ -742,12 +751,17 @@ ua_vrun(
 
   log_http(
     ua->p_config, 
-    NULL,
+    &conn->info.loginfo,
     ua,
     conn->info.req_url, 
     (struct sized_buffer){buf, sizeof(buf)},
     *req_body,
-    "HTTP_SEND %s", http_method_print(http_method));
+    "HTTP_SEND_%s", method_str);
+
+  log_trace("[%s] "ANSICOLOR("SEND", ANSI_FG_GREEN)" %s [@@@_%zu_@@@]", 
+      conn->tag,
+      method_str,
+      conn->info.loginfo.counter);
 
   set_method(ua, conn, http_method, req_body); //set the request method
   ORCAcode code = perform_request(ua, conn, resp_handle);
