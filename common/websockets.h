@@ -12,6 +12,7 @@
 extern "C" {
 #endif // __cplusplus
 
+#include "types.h"
 #include "logconf.h" /* struct logconf */
 
 /* FORWARD DECLARATIONS */

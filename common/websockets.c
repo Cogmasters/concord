@@ -198,6 +198,7 @@ cws_on_connect_cb(void *p_ws, CURL *ehandle, const char *ws_protocols)
 
   log_http(
     ws->p_config, 
+    NULL,
     ws,
     ws->base_url, 
     (struct sized_buffer){"", 0},
@@ -218,6 +219,7 @@ cws_on_close_cb(void *p_ws, CURL *ehandle, enum cws_close_reason cwscode, const 
 
   log_http(
     ws->p_config, 
+    NULL,
     ws,
     ws->base_url, 
     (struct sized_buffer){"", 0},
@@ -237,6 +239,7 @@ cws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
 
   log_http(
     ws->p_config, 
+    NULL,
     ws,
     ws->base_url, 
     (struct sized_buffer){"", 0},
@@ -255,6 +258,7 @@ cws_on_binary_cb(void *p_ws, CURL *ehandle, const void *mem, size_t len)
 
   log_http(
     ws->p_config, 
+    NULL,
     ws,
     ws->base_url, 
     (struct sized_buffer){"", 0},
@@ -274,6 +278,7 @@ cws_on_ping_cb(void *p_ws, CURL *ehandle, const char *reason, size_t len)
 #if 0
   log_http(
     ws->p_config, 
+    NULL,
     ws,
     ws->base_url, 
     (struct sized_buffer){"", 0},
@@ -294,6 +299,7 @@ cws_on_pong_cb(void *p_ws, CURL *ehandle, const char *reason, size_t len)
 #if 0
   log_http(
     ws->p_config, 
+    NULL,
     ws,
     ws->base_url, 
     (struct sized_buffer){"", 0},
@@ -346,6 +352,7 @@ _ws_close(struct websockets *ws)
 
   log_http(
     ws->p_config, 
+    NULL,
     ws,
     ws->base_url, 
     (struct sized_buffer){"", 0},
@@ -461,6 +468,7 @@ ws_send_binary(struct websockets *ws, const char msg[], size_t msglen)
 
   log_http(
     ws->p_config, 
+    NULL,
     ws,
     ws->base_url, 
     (struct sized_buffer){"", 0},
@@ -488,6 +496,7 @@ ws_send_text(struct websockets *ws, const char text[], size_t len)
 
   log_http(
     ws->p_config, 
+    NULL,
     ws,
     ws->base_url, 
     (struct sized_buffer){"", 0},
@@ -512,6 +521,7 @@ bool ws_ping(struct websockets *ws, const char *reason, size_t len)
 #if 0
   log_http(
     ws->p_config, 
+    NULL,
     ws,
     ws->base_url, 
     (struct sized_buffer){"", 0},
@@ -537,6 +547,7 @@ bool ws_pong(struct websockets *ws, const char *reason, size_t len)
 #if 0
   log_http(
     ws->p_config, 
+    NULL,
     ws,
     ws->base_url, 
     (struct sized_buffer){"", 0},

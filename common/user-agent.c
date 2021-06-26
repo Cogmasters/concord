@@ -594,6 +594,7 @@ send_request(struct user_agent *ua, struct _ua_conn *conn)
 
   log_http(
     ua->p_config, 
+    NULL,
     ua,
     resp_url, 
     (struct sized_buffer){conn->info.resp_header.buf, conn->info.resp_header.length},
@@ -741,6 +742,7 @@ ua_vrun(
 
   log_http(
     ua->p_config, 
+    NULL,
     ua,
     conn->info.req_url, 
     (struct sized_buffer){buf, sizeof(buf)},

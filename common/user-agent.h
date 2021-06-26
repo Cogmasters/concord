@@ -8,6 +8,7 @@ extern "C" {
 #include <stdint.h> /* uint64_t */
 #include <curl/curl.h> 
 #include "ntl.h" /* struct sized_buffer */
+#include "types.h"
 #include "logconf.h"
 
 /* FORWARD DECLARATIONS */
