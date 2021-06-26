@@ -8,6 +8,7 @@
 #include "json-actor.h"
 #include "log.h"
 
+const char USER_ID[32];
 
 void on_hello(struct slack *client, const char payload[], const size_t len) {
   log_info("Succesfully connected to Slack!");
@@ -15,16 +16,16 @@ void on_hello(struct slack *client, const char payload[], const size_t len) {
 
 void on_message(struct slack *client, const char payload[], const size_t len) 
 {
-  char *text=NULL, channel[256]="", bot_id[32]="";
+  char *text=NULL, channel[256]="", user[32]="";
 
   log_info("%.*s", len, payload);
   json_extract((char*)payload, len, 
     "(text):?s"
     "(channel):s"
-    "(bot_id):s", 
-    &text, channel, bot_id);
+    "(user):s", 
+    &text, channel, user);
 
-  if (text && !*bot_id && *channel) {
+  if (text && strcmp(user, USER_ID) && *channel) {
     if (strstr(text, "ping"))
       slack_chat_post_message(client, channel, "pong");
     else if (strstr(text, "pong"))
@@ -43,6 +44,10 @@ int main(int argc, char *argv[])
 
   struct slack *client = slack_config_init(config_file);
   assert(NULL != client && "Couldn't initialize client");
+
+  struct sized_buffer text={0};
+  slack_auth_test(client, &text);
+  json_extract(text.start, text.size, "(user_id):s", (char*)USER_ID);
 
   slack_set_on_hello(client, &on_hello);
   slack_set_on_message(client, &on_message);
