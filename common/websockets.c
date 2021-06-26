@@ -190,8 +190,10 @@ _ws_set_status(struct websockets *ws, enum ws_status status)
 static void // main-thread
 cws_on_connect_cb(void *p_ws, CURL *ehandle, const char *ws_protocols)
 {
-  log_trace("cws_on_connect_cb() is called");
   struct websockets *ws = p_ws;
+
+  log_trace("[%s] RCV CONNECT (protocols '%s')", ws->tag, ws_protocols);
+
   _ws_set_status(ws, WS_CONNECTED);
 
   log_http(
@@ -208,8 +210,10 @@ cws_on_connect_cb(void *p_ws, CURL *ehandle, const char *ws_protocols)
 static void // main-thread
 cws_on_close_cb(void *p_ws, CURL *ehandle, enum cws_close_reason cwscode, const char *reason, size_t len)
 {
-  log_info("cws_on_close_cb() is called");
   struct websockets *ws = p_ws;
+
+  log_trace("[%s] RCV CLOSE(%d): %.*s", ws->tag, cwscode, (int)len, reason);
+
   _ws_set_status(ws, WS_DISCONNECTING);
 
   log_http(
@@ -220,7 +224,6 @@ cws_on_close_cb(void *p_ws, CURL *ehandle, enum cws_close_reason cwscode, const 
     (struct sized_buffer){(char*)reason, len},
     "WS_RCV_CLOSE(%d)", cwscode);
 
-  log_debug("[%s] Receive CLOSE(%d): %.*s", ws->tag, cwscode, (int)len, reason);
   (*ws->cbs.on_close)(ws->cbs.data, ws, cwscode, reason, len);
   // will set status to WS_DISCONNECTED when is_running == false
 }
@@ -229,6 +232,8 @@ static void // main-thread
 cws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
 {
   struct websockets *ws = p_ws;
+
+  log_trace("[%s] RCV TEXT (%zu bytes)", ws->tag, len);
 
   log_http(
     ws->p_config, 
@@ -246,6 +251,8 @@ cws_on_binary_cb(void *p_ws, CURL *ehandle, const void *mem, size_t len)
 {
   struct websockets *ws = p_ws;
 
+  log_trace("[%s] RCV BINARY (%zu bytes)", ws->tag, len);
+
   log_http(
     ws->p_config, 
     ws,
@@ -261,6 +268,8 @@ static void // main-thread
 cws_on_ping_cb(void *p_ws, CURL *ehandle, const char *reason, size_t len)
 {
   struct websockets *ws = p_ws;
+
+  log_trace("[%s] RCV PING (%zu bytes)", ws->tag, len);
 
 #if 0
   log_http(
@@ -279,6 +288,8 @@ static void // main-thread
 cws_on_pong_cb(void *p_ws, CURL *ehandle, const char *reason, size_t len)
 {
   struct websockets *ws = p_ws;
+
+  log_trace("[%s] RCV PONG (%zu bytes)", ws->tag, len);
 
 #if 0
   log_http(
@@ -331,7 +342,8 @@ _ws_close(struct websockets *ws)
   static const char reason[] = "Client initializes close";
   static const enum cws_close_reason code = CWS_CLOSE_REASON_NO_REASON;
 
-  log_debug("_ws_close is called");
+  log_debug("[%s] SEND CLOSE(%d): %s", ws->tag, code, reason);
+
   log_http(
     ws->p_config, 
     ws,
@@ -341,18 +353,17 @@ _ws_close(struct websockets *ws)
     "WS_SEND_CLOSE(%d)", code);
 
   if (WS_DISCONNECTED == ws->status) {
-    log_warn("[%s] Connection already closed", ws->tag);
+    log_warn("[%s] Failed at SEND CLOSE : Connection already closed", ws->tag);
     return false;
   }
   if (WS_DISCONNECTING == ws->status) {
-    log_warn("[%s] Close already taking place", ws->tag);
+    log_warn("[%s] Failed at SEND CLOSE : Close already taking place", ws->tag);
     return false;
   }
   _ws_set_status_nolock(ws, WS_DISCONNECTING);
 
-  log_debug("[%s] Sending CLOSE(%d): %s", ws->tag, code, reason);
   if (!cws_close(ws->ehandle, code, reason, sizeof(reason))) {
-    log_error("[%s] Couldn't send CLOSE(%d): %s", ws->tag, code, reason);
+    log_error("[%s] Failed at SEND CLOSE(%d): %s", ws->tag, code, reason);
     return false;
   }
   return true;
@@ -446,6 +457,8 @@ ws_send_binary(struct websockets *ws, const char msg[], size_t msglen)
 {
   VASSERT_S(ws->tid == pthread_self(), "Can only be called from thread %u", ws->tid);
 
+  log_trace("[%s] SEND BINARY (%zu bytes)", ws->tag, msglen);
+
   log_http(
     ws->p_config, 
     ws,
@@ -455,13 +468,12 @@ ws_send_binary(struct websockets *ws, const char msg[], size_t msglen)
     "WS_SEND_BINARY");
 
   if (WS_CONNECTED != ws->status) {
-    log_error("[%s] Failed to send '%.*s'", ws->tag, (int)msglen, msg);
+    log_error("[%s] Failed at SEND BINARY : No active connection", ws->tag);
     return false;
   }
 
-  log_trace("[%s] Sending BINARY(%zu bytes)", ws->tag, msglen);
   if (!cws_send(ws->ehandle, false, msg, msglen)) {
-    log_error("[%s] Couldn't send BINARY(%zu bytes)", ws->tag, msglen);
+    log_error("[%s] Failed at SEND BINARY.", ws->tag);
     return false;
   }
   return true;
@@ -472,6 +484,8 @@ ws_send_text(struct websockets *ws, const char text[], size_t len)
 {
   VASSERT_S(ws->tid == pthread_self(), "Can only be called from thread %u", ws->tid);
 
+  log_trace("[%s] SEND TEXT (%zu bytes)", ws->tag, len);
+
   log_http(
     ws->p_config, 
     ws,
@@ -481,13 +495,12 @@ ws_send_text(struct websockets *ws, const char text[], size_t len)
     "WS_SEND_TEXT");
 
   if (WS_CONNECTED != ws->status) {
-    log_error("[%s] Failed to send '%.*s'", ws->tag, (int)len, text);
+    log_error("[%s] Failed at SEND TEXT : No active connection", ws->tag);
     return false;
   }
 
-  log_trace("[%s] Sending TEXT(%zu bytes)", ws->tag, len);
   if (!cws_send(ws->ehandle, true, text, len)) {
-    log_error("[%s] Couldn't send TEXT(%zu bytes)", ws->tag, len);
+    log_error("[%s] Failed at SEND TEXT.", ws->tag);
     return false;
   }
   return true;
@@ -495,6 +508,7 @@ ws_send_text(struct websockets *ws, const char text[], size_t len)
 
 bool ws_ping(struct websockets *ws, const char *reason, size_t len)
 {
+  log_trace("[%s] SEND PING (%zu bytes)", ws->tag, len);
 #if 0
   log_http(
     ws->p_config, 
@@ -506,13 +520,12 @@ bool ws_ping(struct websockets *ws, const char *reason, size_t len)
 #endif
 
   if (WS_CONNECTED != ws->status) {
-    log_error("[%s] Failed to send '%.*s'", ws->tag, (int)len, reason);
+    log_error("[%s] Failed at SEND PING : No active connection", ws->tag);
     return false;
   }
 
-  log_debug("[%s] Sending PING: %.*s", ws->tag, (int)len, reason);
   if (!cws_ping(ws->ehandle, reason, len)) {
-    log_error("[%s] Couldn't send PING: %.*s", ws->tag, (int)len, reason);
+    log_error("[%s] Failed at SEND PING.", ws->tag);
     return false;
   }
   return true;
@@ -520,6 +533,7 @@ bool ws_ping(struct websockets *ws, const char *reason, size_t len)
 
 bool ws_pong(struct websockets *ws, const char *reason, size_t len)
 {
+  log_trace("[%s] SEND PONG (%zu bytes)", ws->tag, len);
 #if 0
   log_http(
     ws->p_config, 
@@ -531,13 +545,12 @@ bool ws_pong(struct websockets *ws, const char *reason, size_t len)
 #endif
 
   if (WS_CONNECTED != ws->status) {
-    log_error("[%s] Failed to send '%.*s'", ws->tag, (int)len, reason);
+    log_error("[%s] Failed at SEND PONG : No active connection", ws->tag);
     return false;
   }
 
-  log_trace("[%s] Sending PONG: %.*s", ws->tag, (int)len, reason);
   if (!cws_pong(ws->ehandle, reason, len)) {
-    log_error("[%s] Couldn't send PONG: %.*s", ws->tag, (int)len, reason);
+    log_error("[%s] Failed at SEND PONG.", ws->tag);
     return false;
   }
   return true;

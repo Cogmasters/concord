@@ -97,19 +97,19 @@ static void
 send_resume(struct discord_gateway *gw)
 {
   char payload[MAX_PAYLOAD_LEN];
-  int ret = json_inject(payload, sizeof(payload), 
-              "(op):6" // RESUME OPCODE
-              "(d):{"
-                "(token):s"
-                "(session_id):s"
-                "(seq):d"
-              "}",
-              gw->id->token,
-              gw->session_id, 
-              &gw->payload.seq_number);
+  size_t ret = json_inject(payload, sizeof(payload), 
+                "(op):6" // RESUME OPCODE
+                "(d):{"
+                  "(token):s"
+                  "(session_id):s"
+                  "(seq):d"
+                "}",
+                gw->id->token,
+                gw->session_id, 
+                &gw->payload.seq);
   ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
 
-  log_info("Sending RESUME:\n\t%s", payload);
+  log_info("s:%d "ANSICOLOR("SEND", ANSI_FG_BRIGHT_GREEN)" RESUME (%d bytes)", gw->payload.seq, ret);
   ws_send_text(gw->ws, payload, ret);
   gw->is_resumable = false; // reset
 }
@@ -128,13 +128,13 @@ send_identify(struct discord_gateway *gw)
   }
 
   char payload[MAX_PAYLOAD_LEN];
-  int ret = json_inject(payload, sizeof(payload), 
-              "(op):2" // IDENTIFY OPCODE
-              "(d):F",
-              &discord_gateway_identify_to_json_v, gw->id);
+  size_t ret = json_inject(payload, sizeof(payload), 
+                "(op):2" // IDENTIFY OPCODE
+                "(d):F",
+                &discord_gateway_identify_to_json_v, gw->id);
   ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
 
-  log_info("Sending IDENTIFY:\t\n%s", payload);
+  log_info("s:%d "ANSICOLOR("SEND", ANSI_FG_BRIGHT_GREEN)" IDENTIFY (%d bytes)", gw->payload.seq, ret);
   ws_send_text(gw->ws, payload, ret);
 
   //get timestamp for this identify
@@ -144,7 +144,6 @@ send_identify(struct discord_gateway *gw)
 static void
 on_hello(struct discord_gateway *gw)
 {
-  log_info("on_hello:%.*s", gw->payload.event_data.size, gw->payload.event_data.start);
   gw->hbeat.interval_ms = 0;
   gw->hbeat.tstamp = cee_timestamp_ms();
 
@@ -843,7 +842,7 @@ on_dispatch(struct discord_gateway *gw)
       log_info("Succesfully resumed a Discord session!");
       gw->is_ready = true;
       gw->reconnect.attempt = 0;
-      /// @todo implement
+      /// @todo add callback
       break;
   default:
       log_warn("Expected unimplemented GATEWAY_DISPATCH event (code: %d)", event);
@@ -887,27 +886,25 @@ on_dispatch(struct discord_gateway *gw)
 static void
 on_invalid_session(struct discord_gateway *gw)
 {
-  log_info("on_invalid_session:%.*s",
-           gw->payload.event_data.size, gw->payload.event_data.start);
-
-  gw->reconnect.enable = true;
   gw->is_resumable = strncmp(gw->payload.event_data.start,
                              "false", gw->payload.event_data.size);
+  gw->reconnect.enable = true;
 
   if (gw->is_resumable)
-    log_warn("on_invalid_session: is resumable");
+    log_info("Session is resumable");
   else
-    log_warn("on_invalid_session: is not resumable");
+    log_info("Session is not resumable");
+
   ws_exit_event_loop(gw->ws);
 }
 
 static void
 on_reconnect(struct discord_gateway *gw)
 {
-  log_info("on_reconnect:%.*s",
-           gw->payload.event_data.size, gw->payload.event_data.start);
   gw->is_resumable = true;
-  //gw->reconnect.enable = true;
+#if 0
+  gw->reconnect.enable = true;
+#endif
   ws_exit_event_loop(gw->ws);
 }
 
@@ -930,11 +927,11 @@ on_close_cb(void *p_gw, struct websockets *ws, enum ws_close_reason wscode, cons
   struct discord_gateway *gw = p_gw;
   enum discord_gateway_close_opcodes opcode = (enum discord_gateway_close_opcodes)wscode;
 
-  log_warn("on_close_cb " ANSICOLOR("%s",ANSI_FG_RED)" (code: %4d) : %zd bytes,"
-          "REASON: '%.*s'", close_opcode_print(opcode), opcode, len, len, reason);
+  log_warn("CLOSE "ANSICOLOR("%s",ANSI_FG_RED)" (code: %4d, %zu bytes): '%.*s'", 
+      close_opcode_print(opcode), opcode, len, (int)len, reason);
 
   if (gw->shutdown) {
-    log_warn("gateway was actively shutted down.");
+    log_warn("Gateway was shutdown");
     gw->reconnect.enable = false;
     gw->is_resumable = false;
     return;
@@ -954,21 +951,25 @@ on_close_cb(void *p_gw, struct websockets *ws, enum ws_close_reason wscode, cons
   case DISCORD_GATEWAY_CLOSE_REASON_INVALID_INTENTS:
   case DISCORD_GATEWAY_CLOSE_REASON_INVALID_SHARD:
   case DISCORD_GATEWAY_CLOSE_REASON_DISALLOWED_INTENTS:
+      log_warn("Gateway was shutdown");
       gw->is_resumable = false;
       gw->reconnect.enable = false;
       break;
   default: //websocket/clouflare opcodes
       if (WS_CLOSE_REASON_NORMAL == (enum ws_close_reason)opcode) {
-        //gw->is_resumable = true;
-        //gw->reconnect.enable = true;
+#if 0
+        gw->is_resumable = true;
+        gw->reconnect.enable = true;
+#endif
       }
       else {
-        log_warn("don't resume, but reconnect");
+        log_warn("Gateway will attempt to reconnect and start a new session");
         gw->is_resumable = false;
         gw->reconnect.enable = true;
       }
       break;
   case DISCORD_GATEWAY_CLOSE_REASON_SESSION_TIMED_OUT:
+      log_warn("Gateway will attempt to reconnect and resume current session");
       gw->reconnect.enable = true;
       gw->is_resumable = false;
       break;
@@ -980,24 +981,24 @@ on_text_cb(void *p_gw, struct websockets *ws, const char *text, size_t len)
 {
   struct discord_gateway *gw = p_gw;
 
-  int seq_number; //check value first, then assign
+  int seq=0; //check value first, then assign
   json_extract((char*)text, len,
               "(t):s (s):d (op):d (d):T",
                gw->payload.event_name,
-               &seq_number,
+               &seq,
                &gw->payload.opcode,
                &gw->payload.event_data);
 
-  if (seq_number) {
-    gw->payload.seq_number = seq_number;
+  if (seq) {
+    gw->payload.seq = seq;
   }
 
-  log_trace(ANSICOLOR("%s", ANSI_FG_BRIGHT_YELLOW)", EVENT:%s, SEQ:%d, DATA:%s%.*s", 
+  log_trace("s:%d "ANSICOLOR("RCV", ANSI_FG_BRIGHT_YELLOW)" %s%s%s (%zu bytes)", 
+            gw->payload.seq,
             opcode_print(gw->payload.opcode), 
-            *gw->payload.event_name ? gw->payload.event_name : "NULL",
-            gw->payload.seq_number,
-            gw->payload.event_data.size < 100 ? "" : "\n\t",
-            (int)gw->payload.event_data.size, gw->payload.event_data.start);
+            (*gw->payload.event_name) ? " -> " : "",
+            gw->payload.event_name,
+            len);
 
   switch (gw->payload.opcode) {
   case DISCORD_GATEWAY_DISPATCH:
@@ -1016,7 +1017,7 @@ on_text_cb(void *p_gw, struct websockets *ws, const char *text, size_t len)
       on_heartbeat_ack(gw);
       break;
   default:
-      log_error("Not yet implemented Gateway Event(code: %d)", gw->payload.opcode);
+      log_error("Not yet implemented Gateway Event (code: %d)", gw->payload.opcode);
       break;
   }
 }
@@ -1028,10 +1029,10 @@ send_heartbeat(struct discord_gateway *gw)
 {
   char payload[64];
   int ret = json_inject(payload, sizeof(payload), 
-              "(op):1, (d):d", &gw->payload.seq_number);
+              "(op):1, (d):d", &gw->payload.seq);
   ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
 
-  log_trace("Sending HEARTBEAT(%d bytes)", ret);
+  log_trace("s:%d "ANSICOLOR("SEND", ANSI_FG_BRIGHT_GREEN)" HEARTBEAT (%d bytes)", gw->payload.seq, ret);
   ws_send_text(gw->ws, payload, ret);
 }
 
@@ -1137,7 +1138,7 @@ event_loop(struct discord_gateway *gw)
   ws_start(gw->ws);
 
   if (!gw->session.remaining) {
-    log_fatal("Reach session starts threshold (%d),"
+    log_fatal("Reach sessions threshold (%d),"
               "Please wait %d seconds and try again",
               gw->session.total, gw->session.reset_after/1000);
     return;

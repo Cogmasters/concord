@@ -159,7 +159,7 @@ struct discord_gateway {
  // https://discord.com/developers/docs/topics/gateway#payloads-gateway-payload-structure
   struct { /* GATEWAY PAYLOAD STRUCTURE */
     enum discord_gateway_opcodes opcode; ///< field 'op'
-    int seq_number;                      ///< field 's'
+    int seq;                             ///< field 's'
     char event_name[64];                 ///< field 't'
     struct sized_buffer event_data;      ///< field 'd'
   } payload;
