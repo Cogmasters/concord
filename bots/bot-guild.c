@@ -259,6 +259,32 @@ void on_role_list(
   discord_create_message(client, msg->channel_id, &params, NULL);
 }
 
+void on_member_get(
+  struct discord *client,
+  const struct discord_user *bot,
+  const struct discord_message *msg)
+{
+  if (msg->author->bot) return;
+
+  u64_snowflake_t user_id=0;
+  sscanf(msg->content, "%"SCNu64, &user_id);
+  char text[MAX_MESSAGE_LEN];
+  if (!user_id) {
+    sprintf(text, "Invalid format for `guild.member_get <user_id>`");
+  }
+  else {
+    struct discord_guild_member *member = discord_guild_member_alloc();
+    if (ORCA_OK == discord_get_guild_member(client, msg->guild_id, msg->author->id, member))
+      sprintf(text, "Member <@%"PRIu64"> found!", user_id);
+    else
+      sprintf(text, "Couldn't find member");
+    discord_guild_member_free(member);
+  }
+
+  struct discord_create_message_params params = { .content = text };
+  discord_create_message(client, msg->channel_id, &params, NULL);
+}
+
 void on_member_change_nick(
   struct discord *client,
   const struct discord_user *bot,
@@ -377,6 +403,7 @@ int main(int argc, char *argv[])
   discord_set_on_command(client, "role_member_add", &on_role_member_add);
   discord_set_on_command(client, "role_member_remove", &on_role_member_remove);
   discord_set_on_command(client, "role_list", &on_role_list);
+  discord_set_on_command(client, "member_get", &on_member_get);
   discord_set_on_command(client, "member_change_nick", &on_member_change_nick);
   discord_set_on_command(client, "member_search", &on_member_search);
   discord_set_on_command(client, "bot_change_nick", &on_bot_change_nick);
@@ -391,9 +418,10 @@ int main(int argc, char *argv[])
          "6. Type 'guild.role_member_add <user_id> <role_id>' to assign role to user\n"
          "7. Type 'guild.role_member_remove <user_id> <role_id>' to remove role from user\n"
          "8. Type 'guild.role_list' to get a list of this guild roles\n"
-         "9. Type 'guild.member_change_nick <user_id> <nick>' to change member nick\n"
-         "10. Type 'guild.member_search <nick>' to search for members matching a nick\n"
-         "11. Type 'guild.bot_change_nick <nick>' to change bot nick\n"
+         "10. Type 'guild.member_get <id>' to fetch a member by his ID\n"
+         "11. Type 'guild.member_change_nick <user_id> <nick>' to change member nick\n"
+         "12. Type 'guild.member_search <nick>' to search for members matching a nick\n"
+         "13. Type 'guild.bot_change_nick <nick>' to change bot nick\n"
          "\nTYPE ANY KEY TO START BOT\n");
   fgetc(stdin); // wait for input
 
