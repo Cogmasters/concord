@@ -70,8 +70,10 @@ send_acknowledge(struct slack_socketmode *sm, const char envelope_id[])
                 "(envelope_id):s", envelope_id);
   ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
 
-  log_trace("Sending ACK(%zu bytes)", ret);
-  ws_send_text(sm->ws, payload, ret);
+  struct ws_info info={0};
+  ws_send_text(sm->ws, &info, payload, ret);
+
+  log_info(ANSICOLOR("SEND", ANSI_FG_BRIGHT_GREEN)" ACKNOWLEDGE (%d bytes) [@@@_%zu_@@@]", ret, info.loginfo.counter);
 }
 
 static void
@@ -124,31 +126,37 @@ on_events_api(struct slack_socketmode *sm, const char *text, size_t len)
 }
 
 static void
-on_connect_cb(void *p_sm, struct websockets *ws, const char *ws_protocols) {
+on_connect_cb(void *p_sm, struct websockets *ws, struct ws_info *info, const char *ws_protocols) {
   log_info("Connected, WS-Protocols: '%s'", ws_protocols);
 }
 
 static void
-on_close_cb(void *p_sm, struct websockets *ws, enum ws_close_reason wscode, const char *reason, size_t len)
+on_close_cb(void *p_sm, struct websockets *ws, struct ws_info *info, enum ws_close_reason wscode, const char *reason, size_t len)
 {
   struct slack_socketmode *sm = p_sm;
 
   sm->is_ready = false; // reset
 
-  log_warn("\n\t(code: %4d) : %zd bytes\n\t"
-           "REASON: '%s'", 
-           wscode, len, reason);
+  log_warn(ANSICOLOR("CLOSE",ANSI_FG_RED)" (code: %4d, %zu bytes): '%.*s'", 
+      wscode, len, (int)len, reason);
 }
 
 static void
-on_text_cb(void *p_sm, struct websockets *ws, const char *text, size_t len) 
+on_text_cb(void *p_sm, struct websockets *ws, struct ws_info *info, const char *text, size_t len) 
 {
   struct slack_socketmode *sm = p_sm;
 
-  log_trace("ON_EVENT(%zu bytes)", len);
+  char type[64]="", event_type[64]="";
+  json_extract((char*)text, len, 
+    "(type):s,(payload.event.type):s", type, event_type);
 
-  char type[64]="";
-  json_extract((char*)text, len, "(type):s", type);
+  log_trace(ANSICOLOR("RCV", ANSI_FG_BRIGHT_YELLOW)" %s%s%s (%zu bytes) [@@@_%zu_@@@]", 
+            type,
+            (*event_type) ? " -> " : "",
+            event_type,
+            len,
+            info->loginfo.counter);
+
 
   // @todo just two events for testing purposes
   if (STREQ(type, "hello"))

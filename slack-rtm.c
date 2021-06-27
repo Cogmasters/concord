@@ -51,12 +51,12 @@ on_message(struct slack_rtm *rtm, struct sized_buffer *payload)
 }
 
 static void
-on_connect_cb(void *p_rtm, struct websockets *ws, const char *ws_protocols) {
+on_connect_cb(void *p_rtm, struct websockets *ws, struct ws_info *info, const char *ws_protocols) {
   log_info("Connected, WS-Protocols: '%s'", ws_protocols);
 }
 
 static void
-on_text_cb(void *p_rtm, struct websockets *ws, const char *text, size_t len) 
+on_text_cb(void *p_rtm, struct websockets *ws, struct ws_info *info, const char *text, size_t len) 
 {
   struct slack_rtm *rtm = p_rtm;
 
@@ -74,7 +74,7 @@ on_text_cb(void *p_rtm, struct websockets *ws, const char *text, size_t len)
 }
 
 static void
-on_close_cb(void *p_rtm, struct websockets *ws, enum ws_close_reason wscode, const char *reason, size_t len)
+on_close_cb(void *p_rtm, struct websockets *ws, struct ws_info *info, enum ws_close_reason wscode, const char *reason, size_t len)
 {
   struct slack_rtm *rtm = p_rtm;
   log_warn("\n\t(code: %4d) : %zd bytes\n\t"

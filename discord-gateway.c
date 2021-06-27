@@ -96,6 +96,8 @@ close_opcode_print(enum discord_gateway_close_opcodes opcode)
 static void
 send_resume(struct discord_gateway *gw)
 {
+  gw->is_resumable = false; // reset
+
   char payload[MAX_PAYLOAD_LEN];
   size_t ret = json_inject(payload, sizeof(payload), 
                 "(op):6" // RESUME OPCODE
@@ -109,9 +111,10 @@ send_resume(struct discord_gateway *gw)
                 &gw->payload.seq);
   ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
 
-  log_info("s:%d "ANSICOLOR("SEND", ANSI_FG_BRIGHT_GREEN)" RESUME (%d bytes)", gw->payload.seq, ret);
-  ws_send_text(gw->ws, payload, ret);
-  gw->is_resumable = false; // reset
+  struct ws_info info={0};
+  ws_send_text(gw->ws, &info, payload, ret);
+
+  log_info(ANSICOLOR("SEND", ANSI_FG_BRIGHT_GREEN)" RESUME (%d bytes) [@@@_%zu_@@@]", ret, info.loginfo.counter);
 }
 
 static void
@@ -134,9 +137,11 @@ send_identify(struct discord_gateway *gw)
                 &discord_gateway_identify_to_json_v, gw->id);
   ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
 
-  log_info("s:%d "ANSICOLOR("SEND", ANSI_FG_BRIGHT_GREEN)" IDENTIFY (%d bytes)", gw->payload.seq, ret);
-  ws_send_text(gw->ws, payload, ret);
+  struct ws_info info={0};
+  ws_send_text(gw->ws, &info, payload, ret);
 
+  log_info(ANSICOLOR("SEND", ANSI_FG_BRIGHT_GREEN)" IDENTIFY (%d bytes) [@@@_%zu_@@@]", ret, info.loginfo.counter);
+  
   //get timestamp for this identify
   gw->session.identify_tstamp = ws_timestamp(gw->ws);
 }
@@ -917,17 +922,17 @@ on_heartbeat_ack(struct discord_gateway *gw)
 }
 
 static void
-on_connect_cb(void *p_gw, struct websockets *ws, const char *ws_protocols) {
+on_connect_cb(void *p_gw, struct websockets *ws, struct ws_info *info, const char *ws_protocols) {
   log_info("Connected, WS-Protocols: '%s'", ws_protocols);
 }
 
 static void
-on_close_cb(void *p_gw, struct websockets *ws, enum ws_close_reason wscode, const char *reason, size_t len)
+on_close_cb(void *p_gw, struct websockets *ws, struct ws_info *info, enum ws_close_reason wscode, const char *reason, size_t len)
 {
   struct discord_gateway *gw = p_gw;
   enum discord_gateway_close_opcodes opcode = (enum discord_gateway_close_opcodes)wscode;
 
-  log_warn("CLOSE "ANSICOLOR("%s",ANSI_FG_RED)" (code: %4d, %zu bytes): '%.*s'", 
+  log_warn(ANSICOLOR("CLOSE %s",ANSI_FG_RED)" (code: %4d, %zu bytes): '%.*s'", 
       close_opcode_print(opcode), opcode, len, (int)len, reason);
 
   if (gw->shutdown) {
@@ -977,7 +982,7 @@ on_close_cb(void *p_gw, struct websockets *ws, enum ws_close_reason wscode, cons
 }
 
 static void
-on_text_cb(void *p_gw, struct websockets *ws, const char *text, size_t len) 
+on_text_cb(void *p_gw, struct websockets *ws, struct ws_info *info, const char *text, size_t len) 
 {
   struct discord_gateway *gw = p_gw;
 
@@ -993,12 +998,12 @@ on_text_cb(void *p_gw, struct websockets *ws, const char *text, size_t len)
     gw->payload.seq = seq;
   }
 
-  log_trace("s:%d "ANSICOLOR("RCV", ANSI_FG_BRIGHT_YELLOW)" %s%s%s (%zu bytes)", 
-            gw->payload.seq,
+  log_trace(ANSICOLOR("RCV", ANSI_FG_BRIGHT_YELLOW)" %s%s%s (%zu bytes) [@@@_%zu_@@@]", 
             opcode_print(gw->payload.opcode), 
             (*gw->payload.event_name) ? " -> " : "",
             gw->payload.event_name,
-            len);
+            len,
+            info->loginfo.counter);
 
   switch (gw->payload.opcode) {
   case DISCORD_GATEWAY_DISPATCH:
@@ -1032,8 +1037,10 @@ send_heartbeat(struct discord_gateway *gw)
               "(op):1, (d):d", &gw->payload.seq);
   ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
 
-  log_trace("s:%d "ANSICOLOR("SEND", ANSI_FG_BRIGHT_GREEN)" HEARTBEAT (%d bytes)", gw->payload.seq, ret);
-  ws_send_text(gw->ws, payload, ret);
+  struct ws_info info={0};
+  ws_send_text(gw->ws, &info, payload, ret);
+
+  log_info(ANSICOLOR("SEND", ANSI_FG_BRIGHT_GREEN)" HEARTBEAT (%d bytes) [@@@_%zu_@@@]", ret, info.loginfo.counter);
 }
 
 static void noop_idle_cb(struct discord *a, const struct discord_user *b)

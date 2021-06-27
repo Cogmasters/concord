@@ -18,6 +18,11 @@ extern "C" {
 /* FORWARD DECLARATIONS */
 struct websockets;
 
+struct ws_info {
+  struct loginfo loginfo;
+  ORCAcode code;
+};
+
 /**
  * @brief The WebSockets client status
  *
@@ -62,7 +67,7 @@ struct ws_callbacks {
    *
    * @note It is not validated if matches the proposed protocols.
    */
-  void (*on_connect)(void *data, struct websockets *ws, const char *protocols);
+  void (*on_connect)(void *data, struct websockets *ws, struct ws_info *info, const char *protocols);
   /**
    * @brief Reports UTF-8 text messages.
    *
@@ -70,29 +75,29 @@ struct ws_callbacks {
    * not validated. If it's invalid, consider closing the connection
    * with WS_CLOSE_REASON_INCONSISTENT_DATA.
    */
-  void (*on_text)(void *data, struct websockets *ws, const char *text, size_t len);
+  void (*on_text)(void *data, struct websockets *ws, struct ws_info *info, const char *text, size_t len);
   /**
    * @brief reports binary data.
    */
-  void (*on_binary)(void *data, struct websockets *ws, const void *mem, size_t len);
+  void (*on_binary)(void *data, struct websockets *ws, struct ws_info *info, const void *mem, size_t len);
   /**
    * @brief reports PING.
    *
    * @note if provided you should reply with ws_pong(). If not
    * provided, pong is sent with the same message payload.
    */
-  void (*on_ping)(void *data, struct websockets *ws, const char *reason, size_t len);
+  void (*on_ping)(void *data, struct websockets *ws, struct ws_info *info, const char *reason, size_t len);
   /**
    * @brief reports PONG.
    */
-  void (*on_pong)(void *data, struct websockets *ws, const char *reason, size_t len);
+  void (*on_pong)(void *data, struct websockets *ws, struct ws_info *info, const char *reason, size_t len);
   /**
    * @brief reports server closed the connection with the given reason.
    *
    * Clients should not transmit any more data after the server is
    * closed
    */
-  void (*on_close)(void *data, struct websockets *ws, enum ws_close_reason wscode, const char *reason, size_t len);
+  void (*on_close)(void *data, struct websockets *ws, struct ws_info *info, enum ws_close_reason wscode, const char *reason, size_t len);
   /**
    * @brief user arbitrary data to be passed around callbacks
    */
@@ -131,11 +136,12 @@ void ws_set_url(struct websockets *ws, const char base_url[], const char ws_prot
  * will be read up to @a msglen.
  *
  * @param ws the WebSockets handle created with ws_init()
+ * @param info get information on how this transfer went
  * @param msg the pointer to memory (linear) to send.
  * @param msglen the length in bytes of @a msg.
  * @return true if sent, false on errors.
  */
-bool ws_send_binary(struct websockets *ws, const char msg[], size_t msglen);
+bool ws_send_binary(struct websockets *ws, struct ws_info *info, const char msg[], size_t msglen);
 /**
  * @brief Send a text message of given size.
  *
@@ -143,21 +149,23 @@ bool ws_send_binary(struct websockets *ws, const char msg[], size_t msglen);
  * will be read up to @a len.
  *
  * @param ws the WebSockets handle created with ws_init()
+ * @param info get information on how this transfer went
  * @param text the pointer to memory (linear) to send.
  * @param len the length in bytes of @a text.
  * @return true if sent, false on errors.
  */
-bool ws_send_text(struct websockets *ws, const char text[], size_t len);
+bool ws_send_text(struct websockets *ws, struct ws_info *info, const char text[], size_t len);
 /**
  * @brief Send a PING (opcode 0x9) frame with @a reason as payload.
  *
  * @param ws the WebSockets handle created with ws_init()
+ * @param info get information on how this transfer went
  * @param reason NULL or some UTF-8 string null ('\0') terminated.
  * @param len the length of @a reason in bytes. If SIZE_MAX, uses
  *        strlen() on @a reason if it's not NULL.
  * @return true if sent, false on errors.
  */
-bool ws_ping(struct websockets *ws, const char reason[], size_t len);
+bool ws_ping(struct websockets *ws, struct ws_info *info, const char reason[], size_t len);
 /**
  * @brief Send a PONG (opcode 0xA) frame with @a reason as payload.
  *
@@ -165,12 +173,13 @@ bool ws_ping(struct websockets *ws, const char reason[], size_t len);
  * defined. If one is defined you must send pong manually.
  *
  * @param ws the WebSockets handle created with ws_init()
+ * @param info get information on how this transfer went
  * @param reason NULL or some UTF-8 string null ('\0') terminated.
  * @param len the length of @a reason in bytes. If SIZE_MAX, uses
  *        strlen() on @a reason if it's not NULL.
  * @return true if sent, false on errors.
  */
-bool ws_pong(struct websockets *ws, const char reason[], size_t len);
+bool ws_pong(struct websockets *ws, struct ws_info *info, const char reason[], size_t len);
 
 /**
  * @brief Signals connecting state before entering the WebSockets event loop

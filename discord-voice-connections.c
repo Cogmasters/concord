@@ -51,7 +51,7 @@ send_resume(struct discord_voice *vc)
   ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
 
   log_debug("Sending VOICE_RESUME:\n\t%s", payload);
-  ws_send_text(vc->ws, payload, ret);
+  ws_send_text(vc->ws, NULL, payload, ret);
 }
 
 static void
@@ -73,7 +73,7 @@ send_identify(struct discord_voice *vc)
   ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
 
   log_info("sending VOICE_IDENTIFY:\n\t%s", payload);
-  ws_send_text(vc->ws, payload, ret);
+  ws_send_text(vc->ws, NULL, payload, ret);
 }
 
 static void
@@ -205,12 +205,12 @@ on_heartbeat_ack(struct discord_voice *vc)
 }
 
 static void
-on_connect_cb(void *p_vc, struct websockets *ws, const char *ws_protocols) {
+on_connect_cb(void *p_vc, struct websockets *ws, struct ws_info *info, const char *ws_protocols) {
   log_info("Connected, WS-Protocols: '%s'", ws_protocols);
 }
 
 static void
-on_close_cb(void *p_vc, struct websockets *ws, enum ws_close_reason wscode, const char *reason, size_t len)
+on_close_cb(void *p_vc, struct websockets *ws, struct ws_info *info, enum ws_close_reason wscode, const char *reason, size_t len)
 {
   struct discord_voice *vc = p_vc;
   enum discord_voice_close_opcodes opcode = (enum discord_voice_close_opcodes)wscode;
@@ -265,7 +265,7 @@ on_close_cb(void *p_vc, struct websockets *ws, enum ws_close_reason wscode, cons
 }
 
 static void
-on_text_cb(void *p_vc, struct websockets *ws, const char *text, size_t len) 
+on_text_cb(void *p_vc, struct websockets *ws, struct ws_info *info, const char *text, size_t len) 
 {
   struct discord_voice *vc = p_vc;
 
@@ -322,7 +322,7 @@ send_heartbeat(struct discord_voice *vc)
   ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
 
   log_trace("Sending VOICE_HEARTBEAT(%d bytes)", ret);
-  ws_send_text(vc->ws, payload, ret);
+  ws_send_text(vc->ws, NULL, payload, ret);
 }
 
 static void
@@ -386,7 +386,7 @@ discord_send_speaking(struct discord_voice *vc, enum discord_voice_speaking_flag
   ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
 
   log_info("Sending VOICE_SPEAKING(%d bytes)", ret);
-  ws_send_text(vc->ws, payload, ret);
+  ws_send_text(vc->ws, NULL, payload, ret);
 }
 
 static void
@@ -452,7 +452,7 @@ send_voice_state_update(
   }
   ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
   log_info(msg, payload);
-  ws_send_text(gw->ws, payload, ret);
+  ws_send_text(gw->ws, NULL, payload, ret);
 }
 
 enum discord_join_vc_status
