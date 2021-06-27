@@ -20,6 +20,8 @@ json-scanf.c
 json-scanf.h
 json-string.c
 json-struct.c
+cJSON.c
+cJSON.h
 log.c
 logconf.c
 logconf.h
