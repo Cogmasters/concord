@@ -4,8 +4,45 @@
 
 Join our Discord server: [![Discord](https://discord.com/api/guilds/562694099887587338/widget.png)](https://discord.gg/2jfycwXVM3)
 
-It provides an easy to use, easy to deploy, easy to debug way to build
-reliable Discord bots.
+Easy to use, easy to deploy, easy to debug way to build reliable Discord bots.
+
+
+### Design
+
+The primary design goals are:
+
+- easy to use for the end users: we use multi-threading and
+  synchronous IO to support concurrency so you only need to focus on
+  the logic.  We carefully craft the library to use computing
+  resources efficiently so performance should never be an issue.
+
+- easy to reason about the code: we use the most native data structures,
+   the simplest algorithms, and intuitive interfaces.
+
+- easy to debug (networking and logic) errors: extensive assertion 
+  and logging facilities.
+
+- superior reliability
+
+### Implementation
+
+Orca is implemented in plain C. The symbols are organized in a intuitive
+fashion to be easily identified by matching to the REST API docs.
+
+There are three purposes for this:
+
+1. Reduce the need of thoroughly documenting every Orca API
+2. Reduce our user's cognitive burden of having to read both Orca API
+documenation and supported REST API documentations. 
+3. The codebase becomes easier to navigate.
+
+Orca's implementation has minimum external dependencies to make bot
+deployment deadly simple.
+
+
+## Documentation
+
+[Orca Documentation](https://cee-studio.github.io/orca-docs/).
 
 
 ## Build
@@ -59,12 +96,6 @@ valgrind your-bot.exe
 Instructions on how to make a ping-pong bot is found [here](/docs/BUILDING_A_BOT.md).
 
 
-## Discord C API Docs
-
-[Discord C API docs](https://orcaapi.readthedocs.io/en/latest/index.html).
-
-
-
 ## Participate in discussions and get tech support
 Join our discord server: https://discord.gg/2jfycwXVM3
 
@@ -73,39 +104,6 @@ Check our Discord API's development [Roadmap](docs/DISCORD_ROADMAP.md) and [Codi
 
 If you are not familiar with git and are not comformtable with creating pull requests without introducing merge 
 commits, please check our [Commit Guidelines](docs/COMMIT_GUIDELINES.md).
-
-
-### Design
-
-The primary design goals are:
-
-- easy to use for the end users: we use multi-threading and
-  synchronous IO to support concurrency so you only need to focus on
-  the logic.  We carefully craft the library to use computing
-  resources efficiently so performance should never be an issue.
-
-- easy to reason about the code: we use the most native data structures,
-   the simplest algorithms, and intuitive interfaces.
-
-- easy to debug (networking and logic) errors: extensive assertion 
-  and logging facilities.
-
-- superior reliability
-
-### Implementation
-
-Orca is implemented in plain C. The symbols are organized in a intuitive
-fashion to be easily identified by matching to the REST API docs.
-
-There are three purposes for this:
-
-1.  Reduce the need of thoroughly documenting every Orca API
-2.  Reduce our user's cognitive burden of having to read both Orca API
-documenation and supported REST API documentations. 
-3. The codebase becomes easier to navigate.
-
-Orca's implementation has minimum external dependencies to make bot
-deployment deadly simple.
 
 Keywords:
 libdiscord, discord library in C.
