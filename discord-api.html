@@ -1,0 +1,1120 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Discord API Reference &mdash; Orca  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Welcome to Orca" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Orca
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Discord API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#clients">Clients</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#client">Client</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#datatypes">Datatypes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#primitives">Primitives</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#callbacks">Callbacks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#audit-log">Audit Log</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#channel">Channel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#emoji">Emoji</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#guild">Guild</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#guild-template">Guild Template</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#invite">Invite</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#user">User</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#voice">Voice</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#webhook">Webhook</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gateway">Gateway</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#macros">Macros</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#snowflake">Snowflake</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#embed-limits">Embed Limits</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#webhook-limits">Webhook Limits</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#general-limits">General Limits</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#functions">Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#client-functions">Client Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#initialization-cleanup">Initialization / Cleanup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-behaviour">Set Behaviour</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-event-callbacks">Set Event Callbacks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#miscellaneous">Miscellaneous</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Audit Log</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">Channel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">Emoji</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">Guild</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">Invite</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">User</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">Voice</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id8">Gateway</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#utility">Utility</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id9">Channel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id10">Guild</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#embed">Embed</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Orca</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Discord API Reference</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/discord-api.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="discord-api-reference">
+<h1>Discord API Reference<a class="headerlink" href="#discord-api-reference" title="Permalink to this headline">¶</a></h1>
+<p>The following section outlines the Discord API supported by Orca</p>
+<div class="section" id="clients">
+<h2>Clients<a class="headerlink" href="#clients" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="client">
+<h3>Client<a class="headerlink" href="#client" title="Permalink to this headline">¶</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenstruct: Cannot find class “discord” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+</div>
+</div>
+<div class="section" id="datatypes">
+<h2>Datatypes<a class="headerlink" href="#datatypes" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="primitives">
+<h3>Primitives<a class="headerlink" href="#primitives" title="Permalink to this headline">¶</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygentypedef: Cannot find typedef “u64_snowflake_t” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygentypedef: Cannot find typedef “u64_unix_ms_t” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+</div>
+<div class="section" id="callbacks">
+<h3>Callbacks<a class="headerlink" href="#callbacks" title="Permalink to this headline">¶</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygentypedef: Cannot find typedef “idle_cb” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygentypedef: Cannot find typedef “event_raw_cb” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygentypedef: Cannot find typedef “guild_role_cb” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygentypedef: Cannot find typedef “guild_role_delete_cb” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygentypedef: Cannot find typedef “guild_member_cb” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygentypedef: Cannot find typedef “guild_member_remove_cb” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygentypedef: Cannot find typedef “guild_ban_cb” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygentypedef: Cannot find typedef “message_cb” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygentypedef: Cannot find typedef “message_delete_cb” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygentypedef: Cannot find typedef “message_delete_bulk_cb” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygentypedef: Cannot find typedef “channel_cb” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygentypedef: Cannot find typedef “channel_pins_update_cb” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygentypedef: Cannot find typedef “message_reaction_add_cb” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygentypedef: Cannot find typedef “message_reaction_remove_cb” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygentypedef: Cannot find typedef “message_reaction_remove_all_cb” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygentypedef: Cannot find typedef “message_reaction_remove_emoji_cb” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygentypedef: Cannot find typedef “voice_state_update_cb” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygentypedef: Cannot find typedef “voice_server_update_cb” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+</div>
+<div class="section" id="audit-log">
+<h3>Audit Log<a class="headerlink" href="#audit-log" title="Permalink to this headline">¶</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfile: Cannot find file “specs-code/discord/audit_log.h </p>
+</div>
+</div>
+<div class="section" id="channel">
+<h3>Channel<a class="headerlink" href="#channel" title="Permalink to this headline">¶</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfile: Cannot find file “specs-code/discord/channel.h </p>
+</div>
+</div>
+<div class="section" id="emoji">
+<h3>Emoji<a class="headerlink" href="#emoji" title="Permalink to this headline">¶</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfile: Cannot find file “specs-code/discord/emoji.h </p>
+</div>
+</div>
+<div class="section" id="guild">
+<h3>Guild<a class="headerlink" href="#guild" title="Permalink to this headline">¶</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfile: Cannot find file “specs-code/discord/guild.h </p>
+</div>
+</div>
+<div class="section" id="guild-template">
+<h3>Guild Template<a class="headerlink" href="#guild-template" title="Permalink to this headline">¶</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfile: Cannot find file “specs-code/discord/guild-template.h </p>
+</div>
+</div>
+<div class="section" id="invite">
+<h3>Invite<a class="headerlink" href="#invite" title="Permalink to this headline">¶</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfile: Cannot find file “specs-code/discord/invite.h </p>
+</div>
+</div>
+<div class="section" id="user">
+<h3>User<a class="headerlink" href="#user" title="Permalink to this headline">¶</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfile: Cannot find file “specs-code/discord/user.h </p>
+</div>
+</div>
+<div class="section" id="voice">
+<h3>Voice<a class="headerlink" href="#voice" title="Permalink to this headline">¶</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfile: Cannot find file “specs-code/discord/voice.h </p>
+</div>
+</div>
+<div class="section" id="webhook">
+<h3>Webhook<a class="headerlink" href="#webhook" title="Permalink to this headline">¶</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfile: Cannot find file “specs-code/discord/webhook.h </p>
+</div>
+</div>
+<div class="section" id="gateway">
+<h3>Gateway<a class="headerlink" href="#gateway" title="Permalink to this headline">¶</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfile: Cannot find file “specs-code/discord/gateway.h </p>
+</div>
+</div>
+</div>
+<div class="section" id="macros">
+<h2>Macros<a class="headerlink" href="#macros" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="snowflake">
+<h3>Snowflake<a class="headerlink" href="#snowflake" title="Permalink to this headline">¶</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygendefine: Cannot find define “SNOWFLAKE_INCREMENT” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygendefine: Cannot find define “SNOWFLAKE_PROCESS_ID” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygendefine: Cannot find define “SNOWFLAKE_INTERNAL_WORKER_ID” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygendefine: Cannot find define “SNOWFLAKE_TIMESTAMP” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+</div>
+<div class="section" id="embed-limits">
+<h3>Embed Limits<a class="headerlink" href="#embed-limits" title="Permalink to this headline">¶</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygendefine: Cannot find define “EMBED_TITLE_LEN” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygendefine: Cannot find define “EMBED_DESCRIPTION_LEN” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygendefine: Cannot find define “EMBED_MAX_FIELDS” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygendefine: Cannot find define “EMBED_FIELD_NAME_LEN” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygendefine: Cannot find define “EMBED_FIELD_VALUE_LEN” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygendefine: Cannot find define “EMBED_FOOTER_TEXT_LEN” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygendefine: Cannot find define “EMBED_AUTHOR_NAME_LEN” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+</div>
+<div class="section" id="webhook-limits">
+<h3>Webhook Limits<a class="headerlink" href="#webhook-limits" title="Permalink to this headline">¶</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygendefine: Cannot find define “WEBHOOK_NAME_LEN” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+</div>
+<div class="section" id="general-limits">
+<h3>General Limits<a class="headerlink" href="#general-limits" title="Permalink to this headline">¶</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygendefine: Cannot find define “MAX_NAME_LEN” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygendefine: Cannot find define “MAX_TOPIC_LEN” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygendefine: Cannot find define “MAX_DESCRIPTION_LEN” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygendefine: Cannot find define “MAX_USERNAME_LEN” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygendefine: Cannot find define “MAX_DISCRIMINATOR_LEN” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygendefine: Cannot find define “MAX_SHA256_LEN” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygendefine: Cannot find define “MAX_LOCALE_LEN” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygendefine: Cannot find define “MAX_EMAIL_LEN” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygendefine: Cannot find define “MAX_REGION_LEN” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygendefine: Cannot find define “MAX_REASON_LEN” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygendefine: Cannot find define “MAX_MESSAGE_LEN” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygendefine: Cannot find define “MAX_PAYLOAD_LEN” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+</div>
+</div>
+<div class="section" id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="client-functions">
+<h3>Client Functions<a class="headerlink" href="#client-functions" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="initialization-cleanup">
+<h4>Initialization / Cleanup<a class="headerlink" href="#initialization-cleanup" title="Permalink to this headline">¶</a></h4>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_global_init” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_global_cleanup” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_init” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_config_init” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_cleanup” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_run” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+</div>
+<div class="section" id="set-behaviour">
+<h4>Set Behaviour<a class="headerlink" href="#set-behaviour" title="Permalink to this headline">¶</a></h4>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_add_intents” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_remove_intents” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_set_prefix” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+</div>
+<div class="section" id="set-event-callbacks">
+<h4>Set Event Callbacks<a class="headerlink" href="#set-event-callbacks" title="Permalink to this headline">¶</a></h4>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_set_on_command” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_set_on_event_raw” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_set_on_idle” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_set_on_guild_role_create” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_set_on_guild_role_update” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_set_on_guild_role_delete” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_set_on_guild_member_update” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_set_on_guild_ban_add” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_set_on_guild_ban_remove” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_set_on_channel_create” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_set_on_channel_update” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_set_on_channel_delete” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_set_on_channel_pins_update” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_set_on_message_create” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_set_on_message_update” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_set_on_message_delete” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_set_on_message_delete_bulk” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_set_on_message_reaction_add” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_set_on_message_reaction_remove” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_set_on_message_reaction_remove_all” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_set_on_message_reaction_remove_emoji” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_set_on_ready” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_set_on_voice_state_update” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_set_on_voice_server_update” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+</div>
+<div class="section" id="miscellaneous">
+<h4>Miscellaneous<a class="headerlink" href="#miscellaneous" title="Permalink to this headline">¶</a></h4>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_set_data” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_get_data” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_replace_presence” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_set_presence” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+</div>
+</div>
+<div class="section" id="id1">
+<h3>Audit Log<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_get_guild_audit_log” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+</div>
+<div class="section" id="id2">
+<h3>Channel<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_get_channel” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_modify_channel” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_delete_channel” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_get_channel_messages” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_get_channel_message” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_create_message” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_crosspost_message” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_create_reaction” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_delete_own_reaction” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_delete_user_reaction” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_get_reactions” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_delete_all_reactions” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_delete_all_reactions_for_emoji” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_edit_message” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_delete_message” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_bulk_delete_messages” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_edit_channel_permissions” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_get_channel_invites” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_create_channel_invite” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_delete_channel_permission” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_trigger_typing_indicator” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_follow_news_channel” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_get_pinned_messages” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_pin_message” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_unpin_message” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_group_dm_add_recipient” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_group_dm_remove_recipient” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_start_thread_with_message” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_start_thread_without_message” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_join_thread” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_add_thread_member” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_leave_thread” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_remove_thread_member” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_list_thread_members” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_list_active_threads” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_list_public_archived_threads” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_list_private_archived_threads” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_list_joined_private_archived_threads” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+</div>
+<div class="section" id="id3">
+<h3>Emoji<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_list_guild_emojis” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_get_guild_emoji” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_create_guild_emoji” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_modify_guild_emoji” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_delete_guild_emoji” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+</div>
+<div class="section" id="id4">
+<h3>Guild<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_create_guild” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_get_guild” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_get_guild_preview” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_modify_guild” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_delete_guild” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_get_guild_channels” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_create_guild_channel” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_modify_guild_channel_positions” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_get_guild_member” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_list_guild_members” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_search_guild_members” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_modify_guild_member” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_add_guild_member” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_modify_current_user_nick” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_add_guild_member_role” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_remove_guild_member_role” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_remove_guild_member” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_get_guild_bans” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_get_guild_ban” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_create_guild_ban” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_remove_guild_ban” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_get_guild_roles” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_create_guild_role” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_modify_guild_role_positions” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_modify_guild_role” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_delete_guild_role” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+</div>
+<div class="section" id="id5">
+<h3>Invite<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_get_invite” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_delete_invite” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+</div>
+<div class="section" id="id6">
+<h3>User<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_get_user” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_modify_current_user” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_get_current_user” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_get_current_user_guilds” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_leave_guild” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_create_dm” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_create_group_dm” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_get_user_connections” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+</div>
+<div class="section" id="id7">
+<h3>Voice<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_list_voice_regions” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+</div>
+<div class="section" id="id8">
+<h3>Gateway<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_get_gateway” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_get_gateway_bot” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+</div>
+<div class="section" id="utility">
+<h3>Utility<a class="headerlink" href="#utility" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id9">
+<h4>Channel<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h4>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_overwrite_append” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_get_channel_at_pos” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_delete_messages_by_author_id” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+</div>
+<div class="section" id="id10">
+<h4>Guild<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h4>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_disconnect_guild_member” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+</div>
+<div class="section" id="embed">
+<h4>Embed<a class="headerlink" href="#embed" title="Permalink to this headline">¶</a></h4>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_embed_set_thumbnail” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_embed_set_image” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_embed_set_video” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_embed_set_footer” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_embed_set_provider” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_embed_set_author” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “discord_embed_add_field” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to Orca" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Cee-Studio.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
