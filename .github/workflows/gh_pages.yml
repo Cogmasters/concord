@@ -13,13 +13,11 @@ jobs:
 
       - name: Dependencies
         run: |
-          echo "Clone Orca-Docs"
+          echo "Preparing Orca"
+          ./scripts/get-cee-utils.sh
+          echo "Preparing Orca-Docs"
           git clone https://github.com/cee-studio/orca-docs
-          echo "Clone Orca inside Orca-Docs"
-          cd orca-docs
-          git clone https://github.com/cee-studio/orca 
-          cd orca && ./scripts/get-cee-utils.sh && cd ..
-          cd ..
+          cp orca-docs/Doxyfile Doxyfile
           echo "Install Sphinx"
           pip install sphinx
           pip install sphinx_rtd_theme
@@ -28,8 +26,9 @@ jobs:
 
       - name: Doxygen Action
         uses: mattnotmitt/doxygen-action@v1.3.1
-        with:
-          working-directory: 'orca-docs/'
+
+      - name: Move XML to Orca-Docs
+        run: sudo mv docs/xml orca-docs/docs
 
       - name: Breathe Action
         run: make -C orca-docs/docs html
