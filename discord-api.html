@@ -1,212 +1,347 @@
 
-
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
-<head>
-  <meta charset="utf-8" />
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
-  <title>Discord API Reference &mdash; Orca  documentation</title>
-  
 
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-
-  
-  
-
-  
-  
-
-  
-
-  
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Discord API Reference &#8212; Orca  documentation</title>
     
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/doctools.js"></script>
-    
-    <script type="text/javascript" src="_static/js/theme.js"></script>
+  <link href="_static/css/theme.css" rel="stylesheet" />
+  <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
 
     
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Welcome to Orca" href="index.html" /> 
-</head>
-
-<body class="wy-body-for-nav">
-
-   
-  <div class="wy-grid-for-nav">
+    <link rel="prev" title="Welcome to Orca" href="index.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
     
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-          
-
-          
-            <a href="index.html" class="icon icon-home"> Orca
-          
-
-          
-          </a>
-
-          
-            
-            
-          
-
-          
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Discord API Reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#clients">Clients</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#client">Client</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#datatypes">Datatypes</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#primitives">Primitives</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#callbacks">Callbacks</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#audit-log">Audit Log</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#channel">Channel</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#emoji">Emoji</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#guild">Guild</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#guild-template">Guild Template</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#invite">Invite</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#user">User</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#voice">Voice</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#webhook">Webhook</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#gateway">Gateway</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#macros">Macros</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#snowflake">Snowflake</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#embed-limits">Embed Limits</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#webhook-limits">Webhook Limits</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#general-limits">General Limits</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#functions">Functions</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#client-functions">Client Functions</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#initialization-cleanup">Initialization / Cleanup</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#set-behaviour">Set Behaviour</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#set-event-callbacks">Set Event Callbacks</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#miscellaneous">Miscellaneous</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#id1">Audit Log</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id2">Channel</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id3">Emoji</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id4">Guild</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id5">Invite</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id6">User</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id7">Voice</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id8">Gateway</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#utility">Utility</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#id9">Channel</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id10">Guild</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#embed">Embed</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
-            
-          
-        </div>
-        
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">Orca</a>
-        
-      </nav>
-
-
-      <div class="wy-nav-content">
-        
-        <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
-  <ul class="wy-breadcrumbs">
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
     
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-        
-      <li>Discord API Reference</li>
+    <div class="container-fluid" id="banner"></div>
+
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+
+  <div id="navbar-start">
     
     
-      <li class="wy-breadcrumbs-aside">
-        
-          
-            <a href="_sources/discord-api.rst.txt" rel="nofollow"> View page source</a>
-          
-        
-      </li>
+<a class="navbar-brand" href="index.html">
+<p class="title">Orca</p>
+</a>
+
     
-  </ul>
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
 
   
-  <hr/>
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 current active nav-item">
+ <a class="current reference internal nav-link" href="#">
+  Discord API Reference
+ </a>
+</li>
+
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+      </ul>
+      </div>
+      
+    </div>
+  </div>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
             
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    
+  </div>
+</nav>
+            </div>
+            
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+            
+              
+              <div class="toc-item">
+                
+<div class="tocsection onthispage pt-5 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#clients">
+   Clients
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#client">
+     Client
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#datatypes">
+   Datatypes
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#primitives">
+     Primitives
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#callbacks">
+     Callbacks
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#audit-log">
+     Audit Log
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#channel">
+     Channel
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#emoji">
+     Emoji
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#guild">
+     Guild
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#guild-template">
+     Guild Template
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#invite">
+     Invite
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#user">
+     User
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#voice">
+     Voice
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#webhook">
+     Webhook
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#gateway">
+     Gateway
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#macros">
+   Macros
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#snowflake">
+     Snowflake
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#embed-limits">
+     Embed Limits
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#webhook-limits">
+     Webhook Limits
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#general-limits">
+     General Limits
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#functions">
+   Functions
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#client-functions">
+     Client Functions
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#initialization-cleanup">
+       Initialization / Cleanup
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#set-behaviour">
+       Set Behaviour
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#set-event-callbacks">
+       Set Event Callbacks
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#miscellaneous">
+       Miscellaneous
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id1">
+     Audit Log
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id2">
+     Channel
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id3">
+     Emoji
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id4">
+     Guild
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id5">
+     Invite
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id6">
+     User
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id7">
+     Voice
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id8">
+     Gateway
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#utility">
+     Utility
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#id9">
+       Channel
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#id10">
+       Guild
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#embed">
+       Embed
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+</nav>
+              </div>
+              
+              <div class="toc-item">
+                
+              </div>
+              
+            
+          </div>
+          
+
+          
+          
+            
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
   <div class="section" id="discord-api-reference">
 <h1>Discord API Reference<a class="headerlink" href="#discord-api-reference" title="Permalink to this headline">¶</a></h1>
 <p>The following section outlines the Discord API supported by Orca</p>
@@ -290,6 +425,20 @@
 </div>
 <div class="section" id="callbacks">
 <h3>Callbacks<a class="headerlink" href="#callbacks" title="Permalink to this headline">¶</a></h3>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.event_mode_cb">
+<span class="target" id="discord_8h_1a7e4ebba355562f881194f12b8bd8c026"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="n"><span class="pre">discord_event_handling_mode</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">event_mode_cb</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_user" title="discord_user"><span class="n"><span class="pre">discord_user</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">bot</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">sized_buffer</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">event_data</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_gateway_events" title="discord_gateway_events"><span class="n"><span class="pre">discord_gateway_events</span></span></a><span class="w"> </span><span class="n"><span class="pre">event</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.event_mode_cb" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Event Handling Mode callback. </p>
+<p>A very important callback that enables the user a fine-grained control of how each event is executed, blocking, non-blocking or ignored</p>
+<p><dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#discord_8h_1a20e77b8b734d2ac6a5777ac92649e5d6"><span class="std std-ref">discord_set_event_handler()</span></a> </p>
+</dd>
+<dt><strong>See</strong></dt><dd><p>discord_gateway_events </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
 <dl class="c type">
 <dt class="sig sig-object c" id="c.idle_cb">
 <span class="target" id="discord_8h_1aa6024f71dcb39c0ec64c54345db99d4d"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">idle_cb</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_user" title="discord_user"><span class="n"><span class="pre">discord_user</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">bot</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.idle_cb" title="Permalink to this definition">¶</a><br /></dt>
@@ -4330,22 +4479,22 @@
 <h3>Snowflake<a class="headerlink" href="#snowflake" title="Permalink to this headline">¶</a></h3>
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.SNOWFLAKE_INCREMENT">
-<span class="target" id="discord_8h_1af1dcfb8baeb87f34b18442cb46c18f42"></span><span class="sig-name descname"><span class="n"><span class="pre">SNOWFLAKE_INCREMENT</span></span></span><a class="headerlink" href="#c.SNOWFLAKE_INCREMENT" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1af1dcfb8baeb87f34b18442cb46c18f42"></span><span class="sig-name descname"><span class="n"><span class="pre">SNOWFLAKE_INCREMENT</span></span></span> <span class="pre">12</span><a class="headerlink" href="#c.SNOWFLAKE_INCREMENT" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.SNOWFLAKE_PROCESS_ID">
-<span class="target" id="discord_8h_1a980db23686965819f6605e71c31fd721"></span><span class="sig-name descname"><span class="n"><span class="pre">SNOWFLAKE_PROCESS_ID</span></span></span><a class="headerlink" href="#c.SNOWFLAKE_PROCESS_ID" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1a980db23686965819f6605e71c31fd721"></span><span class="sig-name descname"><span class="n"><span class="pre">SNOWFLAKE_PROCESS_ID</span></span></span> <span class="pre">17</span><a class="headerlink" href="#c.SNOWFLAKE_PROCESS_ID" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.SNOWFLAKE_INTERNAL_WORKER_ID">
-<span class="target" id="discord_8h_1ad4f1454777b11d3af2a05a43c1f08e3e"></span><span class="sig-name descname"><span class="n"><span class="pre">SNOWFLAKE_INTERNAL_WORKER_ID</span></span></span><a class="headerlink" href="#c.SNOWFLAKE_INTERNAL_WORKER_ID" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1ad4f1454777b11d3af2a05a43c1f08e3e"></span><span class="sig-name descname"><span class="n"><span class="pre">SNOWFLAKE_INTERNAL_WORKER_ID</span></span></span> <span class="pre">22</span><a class="headerlink" href="#c.SNOWFLAKE_INTERNAL_WORKER_ID" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.SNOWFLAKE_TIMESTAMP">
-<span class="target" id="discord_8h_1a37ad9a53ad21fae19d16f4336c55564b"></span><span class="sig-name descname"><span class="n"><span class="pre">SNOWFLAKE_TIMESTAMP</span></span></span><a class="headerlink" href="#c.SNOWFLAKE_TIMESTAMP" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1a37ad9a53ad21fae19d16f4336c55564b"></span><span class="sig-name descname"><span class="n"><span class="pre">SNOWFLAKE_TIMESTAMP</span></span></span> <span class="pre">64</span><a class="headerlink" href="#c.SNOWFLAKE_TIMESTAMP" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 </div>
@@ -4353,37 +4502,37 @@
 <h3>Embed Limits<a class="headerlink" href="#embed-limits" title="Permalink to this headline">¶</a></h3>
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.EMBED_TITLE_LEN">
-<span class="target" id="discord_8h_1a9a915e9871f4197a54f4fae435b6cd1a"></span><span class="sig-name descname"><span class="n"><span class="pre">EMBED_TITLE_LEN</span></span></span><a class="headerlink" href="#c.EMBED_TITLE_LEN" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1a9a915e9871f4197a54f4fae435b6cd1a"></span><span class="sig-name descname"><span class="n"><span class="pre">EMBED_TITLE_LEN</span></span></span> <span class="pre">256</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.EMBED_TITLE_LEN" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.EMBED_DESCRIPTION_LEN">
-<span class="target" id="discord_8h_1acd6b301bc9ab4bdb2869fd40c4bdcb3f"></span><span class="sig-name descname"><span class="n"><span class="pre">EMBED_DESCRIPTION_LEN</span></span></span><a class="headerlink" href="#c.EMBED_DESCRIPTION_LEN" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1acd6b301bc9ab4bdb2869fd40c4bdcb3f"></span><span class="sig-name descname"><span class="n"><span class="pre">EMBED_DESCRIPTION_LEN</span></span></span> <span class="pre">2048</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.EMBED_DESCRIPTION_LEN" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.EMBED_MAX_FIELDS">
-<span class="target" id="discord_8h_1aedbc7f60ea209f45d9b83bbb24ace840"></span><span class="sig-name descname"><span class="n"><span class="pre">EMBED_MAX_FIELDS</span></span></span><a class="headerlink" href="#c.EMBED_MAX_FIELDS" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1aedbc7f60ea209f45d9b83bbb24ace840"></span><span class="sig-name descname"><span class="n"><span class="pre">EMBED_MAX_FIELDS</span></span></span> <span class="pre">25</span><a class="headerlink" href="#c.EMBED_MAX_FIELDS" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.EMBED_FIELD_NAME_LEN">
-<span class="target" id="discord_8h_1a07b2c9191d6d8c1da3ca45ae2cdb5f19"></span><span class="sig-name descname"><span class="n"><span class="pre">EMBED_FIELD_NAME_LEN</span></span></span><a class="headerlink" href="#c.EMBED_FIELD_NAME_LEN" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1a07b2c9191d6d8c1da3ca45ae2cdb5f19"></span><span class="sig-name descname"><span class="n"><span class="pre">EMBED_FIELD_NAME_LEN</span></span></span> <span class="pre">256</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.EMBED_FIELD_NAME_LEN" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.EMBED_FIELD_VALUE_LEN">
-<span class="target" id="discord_8h_1ac5dc64401006966467092dc1ef1ceaf5"></span><span class="sig-name descname"><span class="n"><span class="pre">EMBED_FIELD_VALUE_LEN</span></span></span><a class="headerlink" href="#c.EMBED_FIELD_VALUE_LEN" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1ac5dc64401006966467092dc1ef1ceaf5"></span><span class="sig-name descname"><span class="n"><span class="pre">EMBED_FIELD_VALUE_LEN</span></span></span> <span class="pre">1024</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.EMBED_FIELD_VALUE_LEN" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.EMBED_FOOTER_TEXT_LEN">
-<span class="target" id="discord_8h_1ac39bd965a74b4cd6b1662d4631221068"></span><span class="sig-name descname"><span class="n"><span class="pre">EMBED_FOOTER_TEXT_LEN</span></span></span><a class="headerlink" href="#c.EMBED_FOOTER_TEXT_LEN" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1ac39bd965a74b4cd6b1662d4631221068"></span><span class="sig-name descname"><span class="n"><span class="pre">EMBED_FOOTER_TEXT_LEN</span></span></span> <span class="pre">2048</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.EMBED_FOOTER_TEXT_LEN" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.EMBED_AUTHOR_NAME_LEN">
-<span class="target" id="discord_8h_1a3fb0fc808afbd66f0f4cd16b036c47a3"></span><span class="sig-name descname"><span class="n"><span class="pre">EMBED_AUTHOR_NAME_LEN</span></span></span><a class="headerlink" href="#c.EMBED_AUTHOR_NAME_LEN" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1a3fb0fc808afbd66f0f4cd16b036c47a3"></span><span class="sig-name descname"><span class="n"><span class="pre">EMBED_AUTHOR_NAME_LEN</span></span></span> <span class="pre">256</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.EMBED_AUTHOR_NAME_LEN" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 </div>
@@ -4391,7 +4540,7 @@
 <h3>Webhook Limits<a class="headerlink" href="#webhook-limits" title="Permalink to this headline">¶</a></h3>
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.WEBHOOK_NAME_LEN">
-<span class="target" id="discord_8h_1a47f5f63e7637cab01ab660239283f493"></span><span class="sig-name descname"><span class="n"><span class="pre">WEBHOOK_NAME_LEN</span></span></span><a class="headerlink" href="#c.WEBHOOK_NAME_LEN" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1a47f5f63e7637cab01ab660239283f493"></span><span class="sig-name descname"><span class="n"><span class="pre">WEBHOOK_NAME_LEN</span></span></span> <span class="pre">80</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.WEBHOOK_NAME_LEN" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 </div>
@@ -4399,62 +4548,62 @@
 <h3>General Limits<a class="headerlink" href="#general-limits" title="Permalink to this headline">¶</a></h3>
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.MAX_NAME_LEN">
-<span class="target" id="discord_8h_1afd709f201d7643c3909621f620ea648a"></span><span class="sig-name descname"><span class="n"><span class="pre">MAX_NAME_LEN</span></span></span><a class="headerlink" href="#c.MAX_NAME_LEN" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1afd709f201d7643c3909621f620ea648a"></span><span class="sig-name descname"><span class="n"><span class="pre">MAX_NAME_LEN</span></span></span> <span class="pre">100</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.MAX_NAME_LEN" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.MAX_TOPIC_LEN">
-<span class="target" id="discord_8h_1a62f90ad17366b9e9c79f7737972cc609"></span><span class="sig-name descname"><span class="n"><span class="pre">MAX_TOPIC_LEN</span></span></span><a class="headerlink" href="#c.MAX_TOPIC_LEN" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1a62f90ad17366b9e9c79f7737972cc609"></span><span class="sig-name descname"><span class="n"><span class="pre">MAX_TOPIC_LEN</span></span></span> <span class="pre">1024</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.MAX_TOPIC_LEN" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.MAX_DESCRIPTION_LEN">
-<span class="target" id="discord_8h_1a3886a61a4fb4b2574ffa9180b27d222f"></span><span class="sig-name descname"><span class="n"><span class="pre">MAX_DESCRIPTION_LEN</span></span></span><a class="headerlink" href="#c.MAX_DESCRIPTION_LEN" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1a3886a61a4fb4b2574ffa9180b27d222f"></span><span class="sig-name descname"><span class="n"><span class="pre">MAX_DESCRIPTION_LEN</span></span></span> <span class="pre">2048</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.MAX_DESCRIPTION_LEN" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.MAX_USERNAME_LEN">
-<span class="target" id="discord_8h_1a6c4647395896246d6710ba980c31666c"></span><span class="sig-name descname"><span class="n"><span class="pre">MAX_USERNAME_LEN</span></span></span><a class="headerlink" href="#c.MAX_USERNAME_LEN" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1a6c4647395896246d6710ba980c31666c"></span><span class="sig-name descname"><span class="n"><span class="pre">MAX_USERNAME_LEN</span></span></span> <span class="pre">32</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.MAX_USERNAME_LEN" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.MAX_DISCRIMINATOR_LEN">
-<span class="target" id="discord_8h_1a0786b23978a93ab36b1f92aafa4c671a"></span><span class="sig-name descname"><span class="n"><span class="pre">MAX_DISCRIMINATOR_LEN</span></span></span><a class="headerlink" href="#c.MAX_DISCRIMINATOR_LEN" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1a0786b23978a93ab36b1f92aafa4c671a"></span><span class="sig-name descname"><span class="n"><span class="pre">MAX_DISCRIMINATOR_LEN</span></span></span> <span class="pre">4</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.MAX_DISCRIMINATOR_LEN" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.MAX_SHA256_LEN">
-<span class="target" id="discord_8h_1ad526e349cbbf2fcab2057fff904ed09a"></span><span class="sig-name descname"><span class="n"><span class="pre">MAX_SHA256_LEN</span></span></span><a class="headerlink" href="#c.MAX_SHA256_LEN" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1ad526e349cbbf2fcab2057fff904ed09a"></span><span class="sig-name descname"><span class="n"><span class="pre">MAX_SHA256_LEN</span></span></span> <span class="pre">1024</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.MAX_SHA256_LEN" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.MAX_LOCALE_LEN">
-<span class="target" id="discord_8h_1ac8e231944220d56ab4be14ea600b1c9f"></span><span class="sig-name descname"><span class="n"><span class="pre">MAX_LOCALE_LEN</span></span></span><a class="headerlink" href="#c.MAX_LOCALE_LEN" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1ac8e231944220d56ab4be14ea600b1c9f"></span><span class="sig-name descname"><span class="n"><span class="pre">MAX_LOCALE_LEN</span></span></span> <span class="pre">16</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.MAX_LOCALE_LEN" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.MAX_EMAIL_LEN">
-<span class="target" id="discord_8h_1a980191f11739df48037447c66d5595fd"></span><span class="sig-name descname"><span class="n"><span class="pre">MAX_EMAIL_LEN</span></span></span><a class="headerlink" href="#c.MAX_EMAIL_LEN" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1a980191f11739df48037447c66d5595fd"></span><span class="sig-name descname"><span class="n"><span class="pre">MAX_EMAIL_LEN</span></span></span> <span class="pre">254</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.MAX_EMAIL_LEN" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.MAX_REGION_LEN">
-<span class="target" id="discord_8h_1ac99b7f50b98b3ecc645859362df7e7c1"></span><span class="sig-name descname"><span class="n"><span class="pre">MAX_REGION_LEN</span></span></span><a class="headerlink" href="#c.MAX_REGION_LEN" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1ac99b7f50b98b3ecc645859362df7e7c1"></span><span class="sig-name descname"><span class="n"><span class="pre">MAX_REGION_LEN</span></span></span> <span class="pre">16</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.MAX_REGION_LEN" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.MAX_REASON_LEN">
-<span class="target" id="discord_8h_1aa78629e0c1309fd93a07631b53363335"></span><span class="sig-name descname"><span class="n"><span class="pre">MAX_REASON_LEN</span></span></span><a class="headerlink" href="#c.MAX_REASON_LEN" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1aa78629e0c1309fd93a07631b53363335"></span><span class="sig-name descname"><span class="n"><span class="pre">MAX_REASON_LEN</span></span></span> <span class="pre">512</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.MAX_REASON_LEN" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.MAX_MESSAGE_LEN">
-<span class="target" id="discord_8h_1aa3fbd1b7db5563bc97af47943afa34a4"></span><span class="sig-name descname"><span class="n"><span class="pre">MAX_MESSAGE_LEN</span></span></span><a class="headerlink" href="#c.MAX_MESSAGE_LEN" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1aa3fbd1b7db5563bc97af47943afa34a4"></span><span class="sig-name descname"><span class="n"><span class="pre">MAX_MESSAGE_LEN</span></span></span> <span class="pre">2000</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.MAX_MESSAGE_LEN" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.MAX_PAYLOAD_LEN">
-<span class="target" id="discord_8h_1a58fffb055ae1b24f4d84fbd5be4c9899"></span><span class="sig-name descname"><span class="n"><span class="pre">MAX_PAYLOAD_LEN</span></span></span><a class="headerlink" href="#c.MAX_PAYLOAD_LEN" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1a58fffb055ae1b24f4d84fbd5be4c9899"></span><span class="sig-name descname"><span class="n"><span class="pre">MAX_PAYLOAD_LEN</span></span></span> <span class="pre">4096</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.MAX_PAYLOAD_LEN" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 </div>
@@ -4590,6 +4739,72 @@
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>client</strong> – the client created with <a class="reference internal" href="#discord_8h_1a445cca7dc5a28113760c7e55759845c7"><span class="std std-ref">discord_init()</span></a> </p></li>
 <li><p><strong>prefix</strong> – the prefix that should accompany any command </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.discord_set_event_handler">
+<span class="target" id="discord_8h_1a20e77b8b734d2ac6a5777ac92649e5d6"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_event_handler</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="#c.event_mode_cb" title="event_mode_cb"><span class="n"><span class="pre">event_mode_cb</span></span></a><span class="w"> </span><span class="n"><span class="pre">fn</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_event_handler" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Specify how events should execute their callbacks, in a blocking or non-blocking fashion. </p>
+<p>This is a very important function that provides the user a more fine-grained control of the Discord Gateway’s event-loop. By default, every event callback will block the event-loop, but for a scalable bot application this is undesirable. To circumvent this the user can specify which events should be executed in parallel.</p>
+<p>In the following example code, a MESSAGE_CREATE event callback will be executed non-blocking and READY callback on the main thread, while anything else will be ignored and won’t be executed.</p>
+<p><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="p">...</span>
+<span class="k">enum</span> <span class="n">discord_event_handling_mode</span>
+<span class="n">handle_events</span><span class="p">(</span>
+  <span class="k">struct</span> <span class="n">discord</span> <span class="o">*</span><span class="n">client</span><span class="p">,</span>
+  <span class="k">struct</span> <span class="n">discord_user</span> <span class="o">*</span><span class="n">bot</span><span class="p">,</span>
+  <span class="k">struct</span> <span class="n">sized_buffer</span> <span class="o">*</span><span class="n">event_data</span><span class="p">,</span>
+  <span class="k">enum</span> <span class="n">discord_gateway_events</span> <span class="n">event</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="k">switch</span> <span class="p">(</span><span class="n">event</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">case</span> <span class="nl">DISCORD_GATEWAY_EVENTS_READY</span><span class="p">:</span>
+     <span class="k">return</span> <span class="n">EVENT_WILL_BE_HANDLED_IN_MAIN_THREAD</span><span class="p">;</span>
+  <span class="k">case</span> <span class="nl">DISCORD_GATEWAY_EVENTS_MESSAGE_CREATE</span><span class="p">:</span>
+     <span class="k">return</span> <span class="n">EVENT_WILL_BE_HANDLED_IN_CHILD_THREAD</span><span class="p">;</span>
+  <span class="k">default</span><span class="o">:</span>
+     <span class="k">return</span> <span class="n">EVENT_IS_HANDLED</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">main</span><span class="p">()</span>
+<span class="p">{</span>
+  <span class="k">struct</span> <span class="n">discord</span> <span class="o">*</span><span class="n">client</span> <span class="o">=</span> <span class="n">discord_init</span><span class="p">(</span><span class="n">TOKEN</span><span class="p">);</span>
+
+  <span class="n">discord_set_event_handler</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">handle_events</span><span class="p">);</span>
+
+  <span class="c1">// The following will be executed on main thread</span>
+  <span class="n">discord_set_on_ready</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">on_ready</span><span class="p">);</span>
+  <span class="c1">// The following will be executed in another thread</span>
+  <span class="n">discord_set_on_message_create</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">on_message_create</span><span class="p">);</span>
+  <span class="c1">// The following will be ignored</span>
+  <span class="n">discord_set_on_message_delete</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">on_message_delete</span><span class="p">);</span>
+  <span class="n">discord_set_on_channel_create</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">on_channel_create</span><span class="p">);</span>
+
+  <span class="n">discord_run</span><span class="p">(</span><span class="n">client</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</p>
+<p><dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#discord_8h_1a7e4ebba355562f881194f12b8bd8c026"><span class="std std-ref">event_mode_cb</span></a> </p>
+</dd>
+<dt><strong>See</strong></dt><dd><p>enum discord_event_handling_mode </p>
+</dd>
+<dt><strong>See</strong></dt><dd><p>enum discord_gateway_events </p>
+</dd>
+</dl>
+</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The user is responsible for providing his own locking mechanism to avoid race-condition on sensitive data. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client</strong> – the client created_with <a class="reference internal" href="#discord_8h_1a445cca7dc5a28113760c7e55759845c7"><span class="std std-ref">discord_init()</span></a> </p></li>
+<li><p><strong>fn</strong> – the function that will be executed</p></li>
 </ul>
 </dd>
 </dl>
@@ -5628,50 +5843,39 @@
 </div>
 
 
-           </div>
-           
-          </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to Orca" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-    </div>
+              </div>
+              
+              
+              <div class='prev-next-bottom'>
+                
+    <a class='left-prev' id="prev-link" href="index.html" title="previous page">Welcome to Orca</a>
 
-  <hr/>
+              </div>
+              
+          </main>
+          
 
-  <div role="contentinfo">
-    <p>
-        &#169; Copyright 2021, Cee-Studio.
-
-    </p>
-  </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
-
-</footer>
-        </div>
       </div>
-
-    </section>
-
-  </div>
+    </div>
   
+  <script src="_static/js/index.1c5a1a01449ed65a7b51.js"></script>
 
-  <script type="text/javascript">
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script>
-
-  
-  
+  <footer class="footer mt-5 mt-md-0">
+  <div class="container">
     
-   
-
-</body>
+    <div class="footer-item">
+      <p class="copyright">
+    &copy; Copyright 2021, Cee-Studio.<br/>
+</p>
+    </div>
+    
+    <div class="footer-item">
+      <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.2.<br/>
+</p>
+    </div>
+    
+  </div>
+</footer>
+  </body>
 </html>

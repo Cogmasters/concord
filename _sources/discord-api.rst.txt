@@ -23,6 +23,7 @@ Primitives
 Callbacks
 ~~~~~~~~~
 
+.. doxygentypedef:: event_mode_cb
 .. doxygentypedef:: idle_cb
 .. doxygentypedef:: event_raw_cb
 .. doxygentypedef:: guild_role_cb
@@ -167,6 +168,7 @@ Set Behaviour
 .. doxygenfunction:: discord_add_intents
 .. doxygenfunction:: discord_remove_intents
 .. doxygenfunction:: discord_set_prefix
+.. doxygenfunction:: discord_set_event_handler
 
 Set Event Callbacks
 ^^^^^^^^^^^^^^^^^^^
