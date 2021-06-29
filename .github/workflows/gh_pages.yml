@@ -20,7 +20,7 @@ jobs:
           cp orca-docs/Doxyfile Doxyfile
           echo "Install Sphinx"
           pip install sphinx
-          pip install sphinx_rtd_theme
+          pip install pydata_sphinx_theme
           echo "Install Breathe"
           pip install breathe
 
