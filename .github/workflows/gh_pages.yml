@@ -13,13 +13,11 @@ jobs:
 
       - name: Dependencies
         run: |
+          echo "Install cee-utils"
+          ./scripts/get-cee-utils.sh
           echo "Clone Orca-Docs"
           git clone https://github.com/cee-studio/orca-docs
-          echo "Install cee-utils"
-          cd orca-docs
-          git clone https://github.com/cee-studio/orca
-          cd orca && ./scripts/get-cee-utils.sh && cd ..
-          cd ..
+          cd orca-docs && ln -s ../../orca orca && cd ..
           echo "Install Sphinx"
           pip install sphinx
           pip install sphinx_rtd_theme
