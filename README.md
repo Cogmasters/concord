@@ -42,7 +42,7 @@ deployment deadly simple.
 
 ## Documentation
 
-[Orca Documentation](https://cee-studio.github.io/orca-docs/).
+[Orca Documentation](https://cee-studio.github.io/orca/).
 
 
 ## Build
