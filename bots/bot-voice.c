@@ -33,7 +33,13 @@ void on_voice_regions(
   discord_voice_region_list_free(voice_regions);
 }
 
-enum discord_event_handling_mode on_any_event(void *p_cxt) {
+enum discord_event_handling_mode 
+on_any_event(
+  struct discord *client,
+  struct discord_user *bot,
+  struct sized_buffer *event_data,
+  enum discord_gateway_events event) 
+{
   return EVENT_WILL_BE_HANDLED_IN_CHILD_THREAD;
 }
 
@@ -51,7 +57,7 @@ int main(int argc, char *argv[])
   assert(NULL != client);
 
   /* trigger event callbacks in a multi-threaded fashion */
-  discord_set_blocking_event_handler(client, &on_any_event);
+  discord_set_event_handler(client, &on_any_event);
 
   discord_set_prefix(client, "voice.");
   discord_set_on_command(client, "regions", &on_voice_regions);

@@ -865,7 +865,11 @@ on_dispatch(struct discord_gateway *gw)
   cxt.on_event = on_event;
   snprintf(cxt.event_name, sizeof(cxt.event_name), "%s", gw->payload.event_name);
 
-  enum discord_event_handling_mode mode = gw->blocking_event_handler(&cxt);
+  enum discord_event_handling_mode mode = gw->event_handler(
+                                            gw->p_client, 
+                                            gw->bot,
+                                            &cxt.data,
+                                            cxt.event);
   switch (mode) {
   case EVENT_IS_HANDLED: 
       return;
@@ -1047,7 +1051,7 @@ static void noop_idle_cb(struct discord *a, const struct discord_user *b)
 { return; }
 static void noop_event_raw_cb(struct discord *a, enum discord_gateway_events b, struct sized_buffer *c, struct sized_buffer *d)
 { return; }
-static enum discord_event_handling_mode noop_blocking_event_handler(void *a)
+static enum discord_event_handling_mode noop_event_handler(struct discord *a, struct discord_user *b, struct sized_buffer *c, enum discord_gateway_events d)
 { return EVENT_WILL_BE_HANDLED_IN_MAIN_THREAD; }
 
 void
@@ -1081,7 +1085,7 @@ discord_gateway_init(struct discord_gateway *gw, struct logconf *config, struct 
 
   gw->cbs.on_idle = &noop_idle_cb;
   gw->cbs.on_event_raw = &noop_event_raw_cb;
-  gw->blocking_event_handler = &noop_blocking_event_handler;
+  gw->event_handler = &noop_event_handler;
 
   gw->bot = discord_user_alloc();
 

@@ -157,6 +157,11 @@ discord_set_on_command(struct discord *client, char *command, message_cb callbac
   discord_add_intents(client, DISCORD_GATEWAY_GUILD_MESSAGES | DISCORD_GATEWAY_DIRECT_MESSAGES);
 }
 
+void 
+discord_set_event_handler(struct discord *client, event_mode_cb fn) {
+  client->gw.event_handler = fn;
+}
+
 void
 discord_set_on_idle(struct discord *client, idle_cb callback) {
   client->gw.cbs.on_idle = callback;
@@ -343,12 +348,6 @@ discord_set_voice_cbs(struct discord *client, struct discord_voice_cbs *callback
   if (callbacks->on_udp_server_connected)
     client->voice_cbs.on_udp_server_connected = callbacks->on_udp_server_connected;
   discord_add_intents(client, DISCORD_GATEWAY_GUILD_VOICE_STATES);
-}
-
-void
-discord_set_blocking_event_handler(struct discord *client, enum discord_event_handling_mode (*f)(void *cxt))
-{
-  client->gw.blocking_event_handler = f;
 }
 
 void

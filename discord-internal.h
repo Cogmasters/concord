@@ -207,7 +207,7 @@ struct discord_gateway {
     voice_server_update_cb on_voice_server_update; ///< triggers when a voice server is updated
   } cbs;
 
-  enum discord_event_handling_mode (*blocking_event_handler)(void *cxt);
+  event_mode_cb event_handler; ///< Handle context on how each event callback is executed @see discord_set_event_handler()
   
   int ping_ms; ///< latency between client and websockets server, calculated by the interval between HEARTBEAT and HEARTBEAT_ACK
 
@@ -288,9 +288,7 @@ struct discord_event_cxt {
   struct sized_buffer data; ///< a copy of payload data
   struct discord_gateway *p_gw; ///< the gateway client
   enum discord_gateway_events event;
-  void (*on_event)(
-    struct discord_gateway *gw,
-    struct sized_buffer *data);
+  void (*on_event)(struct discord_gateway *gw, struct sized_buffer *data);
   bool is_main_thread;
 };
 

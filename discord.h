@@ -67,6 +67,18 @@ https://discord.com/developers/docs/resources/webhook#create-webhook */
 #include "specs-code/discord/all_structs.h"
 #include "specs-code/discord/all_functions.h"
 
+
+/**
+ * @brief Event Handling Mode callback
+ *
+ * A very important callback that enables the user a fine-grained control 
+ * of how each event is executed, blocking, non-blocking or ignored
+ *
+ * @see discord_set_event_handler()
+ * @see discord_gateway_events
+ */
+typedef enum discord_event_handling_mode (*event_mode_cb)(struct discord *client, struct discord_user *bot, struct sized_buffer *event_data, enum discord_gateway_events event);
+
 /** 
  * @brief Idle callback
  *
@@ -416,6 +428,65 @@ void discord_remove_intents(struct discord *client, enum discord_gateway_intents
 void discord_set_prefix(struct discord *client, char *prefix);
 
 /**
+ * @brief Specify how events should execute their callbacks, in a blocking or non-blocking fashion
+ *
+ * This is a very important function that provides the user a more fine-grained
+ * control of the Discord Gateway's event-loop. By default, every event
+ * callback will block the event-loop, but for a scalable bot application this
+ * is undesirable. To circumvent this the user can specify which events
+ * should be executed in parallel.
+ *
+ * In the following example code, a MESSAGE_CREATE event callback will be executed non-blocking and READY callback on the main thread, while
+ * anything else will be ignored and won't be executed.
+ *
+ * @code{.c}
+ * ...
+ * enum discord_event_handling_mode
+ * handle_events(
+ *   struct discord *client,
+ *   struct discord_user *bot,
+ *   struct sized_buffer *event_data,
+ *   enum discord_gateway_events event)
+ * {
+ *   switch (event) {
+ *   case DISCORD_GATEWAY_EVENTS_READY:
+ *      return EVENT_WILL_BE_HANDLED_IN_MAIN_THREAD;
+ *   case DISCORD_GATEWAY_EVENTS_MESSAGE_CREATE:
+ *      return EVENT_WILL_BE_HANDLED_IN_CHILD_THREAD;
+ *   default:
+ *      return EVENT_IS_HANDLED;
+ *   }
+ * }
+ *
+ * int main()
+ * {
+ *   struct discord *client = discord_init(TOKEN);
+ *
+ *   discord_set_event_handler(client, &handle_events);
+ *
+ *   // The following will be executed on main thread
+ *   discord_set_on_ready(client, &on_ready);
+ *   // The following will be executed in another thread
+ *   discord_set_on_message_create(client, &on_message_create);
+ *   // The following will be ignored
+ *   discord_set_on_message_delete(client, &on_message_delete);
+ *   discord_set_on_channel_create(client, &on_channel_create);
+ *
+ *   discord_run(client);
+ * }
+ * @endcode
+ *
+ * @param client the client created_with discord_init()
+ * @param fn the function that will be executed
+ *
+ * @warning The user is responsible for providing his own locking mechanism to avoid race-condition on sensitive data.
+ * @see event_mode_cb
+ * @see enum discord_event_handling_mode
+ * @see enum discord_gateway_events
+ */
+void discord_set_event_handler(struct discord *client, event_mode_cb fn);
+
+/**
  * @brief Set command/callback pair, the callback is triggered if someone
  *        types command in chat.
  *
@@ -644,8 +715,6 @@ enum discord_event_handling_mode {
   EVENT_WILL_BE_HANDLED_IN_MAIN_THREAD, ///< handle this event in main thread
   EVENT_WILL_BE_HANDLED_IN_CHILD_THREAD ///< handle this event in a child thread
 };
-
-void discord_set_blocking_event_handler(struct discord *client, enum discord_event_handling_mode (*f)(void *cxt));
 
 /**
  * @brief Start a connection to the Discord Gateway
