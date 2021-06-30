@@ -1,11 +1,12 @@
 # Orca: a bot framework for Discord etc.
 
+[![Discord](https://discord.com/api/guilds/562694099887587338/widget.png)](https://discord.gg/2jfycwXVM3)
+
 **Please give a star if you like this project.**
 
-Join our Discord server: [![Discord](https://discord.com/api/guilds/562694099887587338/widget.png)](https://discord.gg/2jfycwXVM3)
+## About
 
 Easy to use, easy to deploy, easy to debug way to build reliable Discord bots.
-
 
 ### Design
 
@@ -40,14 +41,10 @@ Orca's implementation has minimum external dependencies to make bot
 deployment deadly simple.
 
 
-## Documentation
-
-[Orca Documentation](https://cee-studio.github.io/orca/).
-
-
 ## Build
 ### For Ubuntu and Debian
 #### Install dependencies:
+
 The only dependencies that is needed is curl-7.64.0 or higher built with openssl
 ```
 sudo apt-get install -y build-essential 
@@ -55,15 +52,52 @@ sudo apt-get install -y libcurl4-openssl-dev libssl-dev
 ```
 
 #### Compile
+
 ```
 make 
 ```
 
 ### For Windows
+
 * If you do not have Ubuntu or Debian but have Windows 10, you can install WSL2 and get either Ubuntu or Debian [here](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
 * If you have Windows but don't want to use WSL2, you can find a tutorial [here](/docs/BUILDING_WITH_WINDOWS.md)
 
-## Run bot-echo
+## Example usage
+
+```c
+#include <orca/discord.h>
+
+void on_ready(struct discord *client, const struct discord_user *bot) {
+  log_trace("Logged in as %s#%s!", bot->username, bot->discriminator);
+}
+
+void on_message(
+  struct discord *client, 
+  const struct discord_user *bot, 
+  const struct discord_message *msg
+){
+  if (0 == strcmp(msg->content, "ping")) {
+    struct discord_create_message_params params = {.content = "pong"};
+    discord_create_message(client, msg->channel_id, &params, NULL);
+  }
+}
+
+int main() 
+{
+  discord_global_init();
+  struct discord *client = discord_init(BOT_TOKEN);
+
+  discord_set_on_ready(client, &on_ready);
+  discord_set_on_message_create(client, &on_message);
+
+  discord_run(client);
+
+  discord_cleanup(client);
+  discord_global_cleanup();
+}
+```
+
+## Get started with bot-echo
 1. Get your bot token and paste it to `bot.config` to
    replace `YOUR-BOT-TOKEN`. There are 
    well written instructions from the [discord-irc](https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token) about 
@@ -80,7 +114,6 @@ Type any message in any public channel of the server that the bot is invited.
 #### Terminate bot-echo
 Close the Terminal that bot-echo is running or type "Ctrl-C" to kill it.
 
-
 #### Debug Memory Errors
 * The recommanded method: 
   Using SaiphC to build your bot, and run the executable.  All runtime memory errors will be reported. 
@@ -91,13 +124,11 @@ Close the Terminal that bot-echo is running or type "Ctrl-C" to kill it.
 valgrind your-bot.exe 
 ```
 
-## Tutorial on how to make a bot
+## Links
 
-Instructions on how to make a ping-pong bot is found [here](/docs/BUILDING_A_BOT.md).
-
-
-## Participate in discussions and get tech support
-Join our discord server: https://discord.gg/2jfycwXVM3
+- [Documentation](https://cee-studio.github.io/orca/)
+- [How to make a bot](/docs/BUILDING_A_BOT.md)
+- [Discord Server](https://discord.gg/2jfycwXVM3)
 
 ## Contributions are welcome!
 Check our Discord API's development [Roadmap](docs/DISCORD_ROADMAP.md) and [Coding Guidelines](docs/CODING_GUIDELINES.md) to get started
