@@ -46,5 +46,14 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
+      - name: Dependencies
+        run: |
+          echo Installing build-essential
+          sudo apt-get install -y build-essential 
+          echo Installing libcurl and libssl
+          sudo apt-get install -y libcurl4-openssl-dev libssl-dev
+
       - name: Run Makefile
-      run: make
+        run: |
+          git clone https://github.com/cee-studio/cee-utils
+          make
