@@ -144,7 +144,7 @@ endif
 .ONESHELL:
 
 
-all : mkdir $(ORCA_OBJS) | bots
+all : mkdir get_cee_utils $(ORCA_OBJS) | bots
 
 get_cee_utils:
 	if [[ ! -d cee-utils ]]; then \
