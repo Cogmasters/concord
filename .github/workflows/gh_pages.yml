@@ -40,3 +40,11 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
           publish_dir: ./orca-docs/docs/build/html
+
+  test-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+
+      -name: Run Makefile
+      run: make
