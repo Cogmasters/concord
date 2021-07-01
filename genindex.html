@@ -125,7 +125,6 @@
 
 <div class="genindex-jumpbox">
  <a href="#D"><strong>D</strong></a>
- | <a href="#M"><strong>M</strong></a>
  | <a href="#U"><strong>U</strong></a>
  
 </div>
@@ -448,6 +447,8 @@
 </li>
       <li><a href="discord-api.html#c.discord_channel_attachment.width">discord_channel_attachment.width (C var)</a>
 </li>
+      <li><a href="discord-api.html#c.discord_channel_cb">discord_channel_cb (C type)</a>
+</li>
       <li><a href="discord-api.html#c.discord_channel_followed_channel">discord_channel_followed_channel (C struct)</a>
 </li>
       <li><a href="discord-api.html#c.discord_channel_followed_channel.channel_id">discord_channel_followed_channel.channel_id (C var)</a>
@@ -473,6 +474,8 @@
       <li><a href="discord-api.html#c.discord_channel_overwrite.id">discord_channel_overwrite.id (C var)</a>
 </li>
       <li><a href="discord-api.html#c.discord_channel_overwrite.type">discord_channel_overwrite.type (C var)</a>
+</li>
+      <li><a href="discord-api.html#c.discord_channel_pins_update_cb">discord_channel_pins_update_cb (C type)</a>
 </li>
       <li><a href="discord-api.html#c.discord_channel_reaction">discord_channel_reaction (C struct)</a>
 </li>
@@ -614,6 +617,10 @@
 </li>
       <li><a href="discord-api.html#c.discord_embed_author.url">discord_embed_author.url (C var)</a>
 </li>
+      <li><a href="discord-api.html#c.DISCORD_EMBED_AUTHOR_NAME_LEN">DISCORD_EMBED_AUTHOR_NAME_LEN (C macro)</a>
+</li>
+      <li><a href="discord-api.html#c.DISCORD_EMBED_DESCRIPTION_LEN">DISCORD_EMBED_DESCRIPTION_LEN (C macro)</a>
+</li>
       <li><a href="discord-api.html#c.discord_embed_field">discord_embed_field (C struct)</a>
 </li>
       <li><a href="discord-api.html#c.discord_embed_field.Inline">discord_embed_field.Inline (C var)</a>
@@ -622,6 +629,10 @@
 </li>
       <li><a href="discord-api.html#c.discord_embed_field.value">discord_embed_field.value (C var)</a>
 </li>
+      <li><a href="discord-api.html#c.DISCORD_EMBED_FIELD_NAME_LEN">DISCORD_EMBED_FIELD_NAME_LEN (C macro)</a>
+</li>
+      <li><a href="discord-api.html#c.DISCORD_EMBED_FIELD_VALUE_LEN">DISCORD_EMBED_FIELD_VALUE_LEN (C macro)</a>
+</li>
       <li><a href="discord-api.html#c.discord_embed_footer">discord_embed_footer (C struct)</a>
 </li>
       <li><a href="discord-api.html#c.discord_embed_footer.icon_url">discord_embed_footer.icon_url (C var)</a>
@@ -629,6 +640,8 @@
       <li><a href="discord-api.html#c.discord_embed_footer.proxy_icon_url">discord_embed_footer.proxy_icon_url (C var)</a>
 </li>
       <li><a href="discord-api.html#c.discord_embed_footer.text">discord_embed_footer.text (C var)</a>
+</li>
+      <li><a href="discord-api.html#c.DISCORD_EMBED_FOOTER_TEXT_LEN">DISCORD_EMBED_FOOTER_TEXT_LEN (C macro)</a>
 </li>
       <li><a href="discord-api.html#c.discord_embed_image">discord_embed_image (C struct)</a>
 </li>
@@ -639,6 +652,8 @@
       <li><a href="discord-api.html#c.discord_embed_image.url">discord_embed_image.url (C var)</a>
 </li>
       <li><a href="discord-api.html#c.discord_embed_image.width">discord_embed_image.width (C var)</a>
+</li>
+      <li><a href="discord-api.html#c.DISCORD_EMBED_MAX_FIELDS">DISCORD_EMBED_MAX_FIELDS (C macro)</a>
 </li>
       <li><a href="discord-api.html#c.discord_embed_provider">discord_embed_provider (C struct)</a>
 </li>
@@ -668,6 +683,8 @@
 </li>
       <li><a href="discord-api.html#c.discord_embed_thumbnail.width">discord_embed_thumbnail.width (C var)</a>
 </li>
+      <li><a href="discord-api.html#c.DISCORD_EMBED_TITLE_LEN">DISCORD_EMBED_TITLE_LEN (C macro)</a>
+</li>
       <li><a href="discord-api.html#c.discord_embed_video">discord_embed_video (C struct)</a>
 </li>
       <li><a href="discord-api.html#c.discord_embed_video.height">discord_embed_video.height (C var)</a>
@@ -693,6 +710,10 @@
       <li><a href="discord-api.html#c.discord_emoji.require_colons">discord_emoji.require_colons (C var)</a>
 </li>
       <li><a href="discord-api.html#c.discord_emoji.user">discord_emoji.user (C var)</a>
+</li>
+      <li><a href="discord-api.html#c.discord_event_mode_cb">discord_event_mode_cb (C type)</a>
+</li>
+      <li><a href="discord-api.html#c.discord_event_raw_cb">discord_event_raw_cb (C type)</a>
 </li>
       <li><a href="discord-api.html#c.discord_follow_news_channel">discord_follow_news_channel (C function)</a>
 </li>
@@ -952,8 +973,6 @@
 </li>
       <li><a href="discord-api.html#c.discord_get_invite">discord_get_invite (C function)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="discord-api.html#c.discord_get_pinned_messages">discord_get_pinned_messages (C function)</a>
 </li>
       <li><a href="discord-api.html#c.discord_get_reactions">discord_get_reactions (C function)</a>
@@ -970,6 +989,8 @@
 </li>
       <li><a href="discord-api.html#c.discord_group_dm_remove_recipient">discord_group_dm_remove_recipient (C function)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="discord-api.html#c.discord_guild">discord_guild (C struct)</a>
 </li>
       <li><a href="discord-api.html#c.discord_guild.afk_channel_id">discord_guild.afk_channel_id (C var)</a>
@@ -1061,6 +1082,8 @@
       <li><a href="discord-api.html#c.discord_guild_ban.reason">discord_guild_ban.reason (C var)</a>
 </li>
       <li><a href="discord-api.html#c.discord_guild_ban.user">discord_guild_ban.user (C var)</a>
+</li>
+      <li><a href="discord-api.html#c.discord_guild_ban_cb">discord_guild_ban_cb (C type)</a>
 </li>
       <li><a href="discord-api.html#c.discord_guild_default_message_notification_level">discord_guild_default_message_notification_level (C enum)</a>
 </li>
@@ -1186,6 +1209,10 @@
 </li>
       <li><a href="discord-api.html#c.discord_guild_member.user">discord_guild_member.user (C var)</a>
 </li>
+      <li><a href="discord-api.html#c.discord_guild_member_cb">discord_guild_member_cb (C type)</a>
+</li>
+      <li><a href="discord-api.html#c.discord_guild_member_remove_cb">discord_guild_member_remove_cb (C type)</a>
+</li>
       <li><a href="discord-api.html#c.discord_guild_mfa_level">discord_guild_mfa_level (C enum)</a>
 </li>
       <li><a href="discord-api.html#c.discord_guild_mfa_level.DISCORD_GUILD_DISCORD_MFA_NONE">discord_guild_mfa_level.DISCORD_GUILD_DISCORD_MFA_NONE (C enumerator)</a>
@@ -1221,6 +1248,10 @@
       <li><a href="discord-api.html#c.discord_guild_preview.name">discord_guild_preview.name (C var)</a>
 </li>
       <li><a href="discord-api.html#c.discord_guild_preview.splash">discord_guild_preview.splash (C var)</a>
+</li>
+      <li><a href="discord-api.html#c.discord_guild_role_cb">discord_guild_role_cb (C type)</a>
+</li>
+      <li><a href="discord-api.html#c.discord_guild_role_delete_cb">discord_guild_role_delete_cb (C type)</a>
 </li>
       <li><a href="discord-api.html#c.discord_guild_system_channel_flags">discord_guild_system_channel_flags (C enum)</a>
 </li>
@@ -1292,6 +1323,8 @@
 </li>
       <li><a href="discord-api.html#c.discord_guild_widget.enabled">discord_guild_widget.enabled (C var)</a>
 </li>
+      <li><a href="discord-api.html#c.discord_idle_cb">discord_idle_cb (C type)</a>
+</li>
       <li><a href="discord-api.html#c.discord_init">discord_init (C function)</a>
 </li>
       <li><a href="discord-api.html#c.discord_invite">discord_invite (C struct)</a>
@@ -1349,6 +1382,22 @@
       <li><a href="discord-api.html#c.discord_list_thread_members">discord_list_thread_members (C function)</a>
 </li>
       <li><a href="discord-api.html#c.discord_list_voice_regions">discord_list_voice_regions (C function)</a>
+</li>
+      <li><a href="discord-api.html#c.DISCORD_MAX_DESCRIPTION_LEN">DISCORD_MAX_DESCRIPTION_LEN (C macro)</a>
+</li>
+      <li><a href="discord-api.html#c.DISCORD_MAX_DISCRIMINATOR_LEN">DISCORD_MAX_DISCRIMINATOR_LEN (C macro)</a>
+</li>
+      <li><a href="discord-api.html#c.DISCORD_MAX_MESSAGE_LEN">DISCORD_MAX_MESSAGE_LEN (C macro)</a>
+</li>
+      <li><a href="discord-api.html#c.DISCORD_MAX_NAME_LEN">DISCORD_MAX_NAME_LEN (C macro)</a>
+</li>
+      <li><a href="discord-api.html#c.DISCORD_MAX_PAYLOAD_LEN">DISCORD_MAX_PAYLOAD_LEN (C macro)</a>
+</li>
+      <li><a href="discord-api.html#c.DISCORD_MAX_REASON_LEN">DISCORD_MAX_REASON_LEN (C macro)</a>
+</li>
+      <li><a href="discord-api.html#c.DISCORD_MAX_TOPIC_LEN">DISCORD_MAX_TOPIC_LEN (C macro)</a>
+</li>
+      <li><a href="discord-api.html#c.DISCORD_MAX_USERNAME_LEN">DISCORD_MAX_USERNAME_LEN (C macro)</a>
 </li>
       <li><a href="discord-api.html#c.discord_message">discord_message (C struct)</a>
 </li>
@@ -1432,6 +1481,12 @@
 </li>
       <li><a href="discord-api.html#c.discord_message_application.name">discord_message_application.name (C var)</a>
 </li>
+      <li><a href="discord-api.html#c.discord_message_cb">discord_message_cb (C type)</a>
+</li>
+      <li><a href="discord-api.html#c.discord_message_delete_bulk_cb">discord_message_delete_bulk_cb (C type)</a>
+</li>
+      <li><a href="discord-api.html#c.discord_message_delete_cb">discord_message_delete_cb (C type)</a>
+</li>
       <li><a href="discord-api.html#c.discord_message_flags">discord_message_flags (C enum)</a>
 </li>
       <li><a href="discord-api.html#c.discord_message_flags.DISCORD_MESSAGE_CROSSPOSTED">discord_message_flags.DISCORD_MESSAGE_CROSSPOSTED (C enumerator)</a>
@@ -1443,6 +1498,14 @@
       <li><a href="discord-api.html#c.discord_message_flags.DISCORD_MESSAGE_SUPRESS_EMBEDS">discord_message_flags.DISCORD_MESSAGE_SUPRESS_EMBEDS (C enumerator)</a>
 </li>
       <li><a href="discord-api.html#c.discord_message_flags.DISCORD_MESSAGE_URGENT">discord_message_flags.DISCORD_MESSAGE_URGENT (C enumerator)</a>
+</li>
+      <li><a href="discord-api.html#c.discord_message_reaction_add_cb">discord_message_reaction_add_cb (C type)</a>
+</li>
+      <li><a href="discord-api.html#c.discord_message_reaction_remove_all_cb">discord_message_reaction_remove_all_cb (C type)</a>
+</li>
+      <li><a href="discord-api.html#c.discord_message_reaction_remove_cb">discord_message_reaction_remove_cb (C type)</a>
+</li>
+      <li><a href="discord-api.html#c.discord_message_reaction_remove_emoji_cb">discord_message_reaction_remove_emoji_cb (C type)</a>
 </li>
       <li><a href="discord-api.html#c.discord_message_reference">discord_message_reference (C struct)</a>
 </li>
@@ -1610,6 +1673,14 @@
 </li>
       <li><a href="discord-api.html#c.discord_set_presence">discord_set_presence (C function)</a>
 </li>
+      <li><a href="discord-api.html#c.DISCORD_SNOWFLAKE_INCREMENT">DISCORD_SNOWFLAKE_INCREMENT (C macro)</a>
+</li>
+      <li><a href="discord-api.html#c.DISCORD_SNOWFLAKE_INTERNAL_WORKER_ID">DISCORD_SNOWFLAKE_INTERNAL_WORKER_ID (C macro)</a>
+</li>
+      <li><a href="discord-api.html#c.DISCORD_SNOWFLAKE_PROCESS_ID">DISCORD_SNOWFLAKE_PROCESS_ID (C macro)</a>
+</li>
+      <li><a href="discord-api.html#c.DISCORD_SNOWFLAKE_TIMESTAMP">DISCORD_SNOWFLAKE_TIMESTAMP (C macro)</a>
+</li>
       <li><a href="discord-api.html#c.discord_start_thread_with_message">discord_start_thread_with_message (C function)</a>
 </li>
       <li><a href="discord-api.html#c.discord_start_thread_without_message">discord_start_thread_without_message (C function)</a>
@@ -1722,6 +1793,8 @@
 </li>
       <li><a href="discord-api.html#c.discord_voice_region.vip">discord_voice_region.vip (C var)</a>
 </li>
+      <li><a href="discord-api.html#c.discord_voice_server_update_cb">discord_voice_server_update_cb (C type)</a>
+</li>
       <li><a href="discord-api.html#c.discord_voice_state">discord_voice_state (C struct)</a>
 </li>
       <li><a href="discord-api.html#c.discord_voice_state.channel_id">discord_voice_state.channel_id (C var)</a>
@@ -1748,6 +1821,8 @@
 </li>
       <li><a href="discord-api.html#c.discord_voice_state.user_id">discord_voice_state.user_id (C var)</a>
 </li>
+      <li><a href="discord-api.html#c.discord_voice_state_update_cb">discord_voice_state_update_cb (C type)</a>
+</li>
       <li><a href="discord-api.html#c.discord_webhook">discord_webhook (C struct)</a>
 </li>
       <li><a href="discord-api.html#c.discord_webhook.application_id">discord_webhook.application_id (C var)</a>
@@ -1768,27 +1843,13 @@
 </li>
       <li><a href="discord-api.html#c.discord_webhook.user">discord_webhook.user (C var)</a>
 </li>
+      <li><a href="discord-api.html#c.DISCORD_WEBHOOK_NAME_LEN">DISCORD_WEBHOOK_NAME_LEN (C macro)</a>
+</li>
       <li><a href="discord-api.html#c.discord_webhook_types">discord_webhook_types (C enum)</a>
 </li>
       <li><a href="discord-api.html#c.discord_webhook_types.DISCORD_WEBHOOK_CHANNEL_FOLLOWER">discord_webhook_types.DISCORD_WEBHOOK_CHANNEL_FOLLOWER (C enumerator)</a>
 </li>
       <li><a href="discord-api.html#c.discord_webhook_types.DISCORD_WEBHOOK_INCOMING">discord_webhook_types.DISCORD_WEBHOOK_INCOMING (C enumerator)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="M">M</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="discord-api.html#c.MAX_EMAIL_LEN">MAX_EMAIL_LEN (C macro)</a>
-</li>
-      <li><a href="discord-api.html#c.MAX_LOCALE_LEN">MAX_LOCALE_LEN (C macro)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="discord-api.html#c.MAX_REGION_LEN">MAX_REGION_LEN (C macro)</a>
-</li>
-      <li><a href="discord-api.html#c.MAX_SHA256_LEN">MAX_SHA256_LEN (C macro)</a>
 </li>
   </ul></td>
 </tr></table>

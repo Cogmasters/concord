@@ -23,25 +23,25 @@ Primitives
 Callbacks
 ~~~~~~~~~
 
-.. doxygentypedef:: event_mode_cb
-.. doxygentypedef:: idle_cb
-.. doxygentypedef:: event_raw_cb
-.. doxygentypedef:: guild_role_cb
-.. doxygentypedef:: guild_role_delete_cb
-.. doxygentypedef:: guild_member_cb
-.. doxygentypedef:: guild_member_remove_cb
-.. doxygentypedef:: guild_ban_cb
-.. doxygentypedef:: message_cb
-.. doxygentypedef:: message_delete_cb
-.. doxygentypedef:: message_delete_bulk_cb
-.. doxygentypedef:: channel_cb
-.. doxygentypedef:: channel_pins_update_cb
-.. doxygentypedef:: message_reaction_add_cb
-.. doxygentypedef:: message_reaction_remove_cb
-.. doxygentypedef:: message_reaction_remove_all_cb
-.. doxygentypedef:: message_reaction_remove_emoji_cb
-.. doxygentypedef:: voice_state_update_cb
-.. doxygentypedef:: voice_server_update_cb
+.. doxygentypedef:: discord_event_mode_cb
+.. doxygentypedef:: discord_idle_cb
+.. doxygentypedef:: discord_event_raw_cb
+.. doxygentypedef:: discord_guild_role_cb
+.. doxygentypedef:: discord_guild_role_delete_cb
+.. doxygentypedef:: discord_guild_member_cb
+.. doxygentypedef:: discord_guild_member_remove_cb
+.. doxygentypedef:: discord_guild_ban_cb
+.. doxygentypedef:: discord_message_cb
+.. doxygentypedef:: discord_message_delete_cb
+.. doxygentypedef:: discord_message_delete_bulk_cb
+.. doxygentypedef:: discord_channel_cb
+.. doxygentypedef:: discord_channel_pins_update_cb
+.. doxygentypedef:: discord_message_reaction_add_cb
+.. doxygentypedef:: discord_message_reaction_remove_cb
+.. doxygentypedef:: discord_message_reaction_remove_all_cb
+.. doxygentypedef:: discord_message_reaction_remove_emoji_cb
+.. doxygentypedef:: discord_voice_state_update_cb
+.. doxygentypedef:: discord_voice_server_update_cb
 
 Audit Log
 ~~~~~~~~~
@@ -109,42 +109,38 @@ Macros
 Snowflake
 ~~~~~~~~~
 
-.. doxygendefine:: SNOWFLAKE_INCREMENT
-.. doxygendefine:: SNOWFLAKE_PROCESS_ID
-.. doxygendefine:: SNOWFLAKE_INTERNAL_WORKER_ID
-.. doxygendefine:: SNOWFLAKE_TIMESTAMP
+.. doxygendefine:: DISCORD_SNOWFLAKE_INCREMENT
+.. doxygendefine:: DISCORD_SNOWFLAKE_PROCESS_ID
+.. doxygendefine:: DISCORD_SNOWFLAKE_INTERNAL_WORKER_ID
+.. doxygendefine:: DISCORD_SNOWFLAKE_TIMESTAMP
 
 Embed Limits
 ~~~~~~~~~~~~
 
-.. doxygendefine:: EMBED_TITLE_LEN
-.. doxygendefine:: EMBED_DESCRIPTION_LEN
-.. doxygendefine:: EMBED_MAX_FIELDS
-.. doxygendefine:: EMBED_FIELD_NAME_LEN
-.. doxygendefine:: EMBED_FIELD_VALUE_LEN
-.. doxygendefine:: EMBED_FOOTER_TEXT_LEN
-.. doxygendefine:: EMBED_AUTHOR_NAME_LEN
+.. doxygendefine:: DISCORD_EMBED_TITLE_LEN
+.. doxygendefine:: DISCORD_EMBED_DESCRIPTION_LEN
+.. doxygendefine:: DISCORD_EMBED_MAX_FIELDS
+.. doxygendefine:: DISCORD_EMBED_FIELD_NAME_LEN
+.. doxygendefine:: DISCORD_EMBED_FIELD_VALUE_LEN
+.. doxygendefine:: DISCORD_EMBED_FOOTER_TEXT_LEN
+.. doxygendefine:: DISCORD_EMBED_AUTHOR_NAME_LEN
 
 Webhook Limits
 ~~~~~~~~~~~~~~
 
-.. doxygendefine:: WEBHOOK_NAME_LEN
+.. doxygendefine:: DISCORD_WEBHOOK_NAME_LEN
 
 General Limits
 ~~~~~~~~~~~~~~
 
-.. doxygendefine:: MAX_NAME_LEN
-.. doxygendefine:: MAX_TOPIC_LEN
-.. doxygendefine:: MAX_DESCRIPTION_LEN
-.. doxygendefine:: MAX_USERNAME_LEN
-.. doxygendefine:: MAX_DISCRIMINATOR_LEN
-.. doxygendefine:: MAX_SHA256_LEN
-.. doxygendefine:: MAX_LOCALE_LEN
-.. doxygendefine:: MAX_EMAIL_LEN
-.. doxygendefine:: MAX_REGION_LEN
-.. doxygendefine:: MAX_REASON_LEN
-.. doxygendefine:: MAX_MESSAGE_LEN
-.. doxygendefine:: MAX_PAYLOAD_LEN
+.. doxygendefine:: DISCORD_MAX_NAME_LEN
+.. doxygendefine:: DISCORD_MAX_TOPIC_LEN
+.. doxygendefine:: DISCORD_MAX_DESCRIPTION_LEN
+.. doxygendefine:: DISCORD_MAX_USERNAME_LEN
+.. doxygendefine:: DISCORD_MAX_DISCRIMINATOR_LEN
+.. doxygendefine:: DISCORD_MAX_REASON_LEN
+.. doxygendefine:: DISCORD_MAX_MESSAGE_LEN
+.. doxygendefine:: DISCORD_MAX_PAYLOAD_LEN
 
 Functions
 ---------
