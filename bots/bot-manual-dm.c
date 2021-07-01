@@ -27,10 +27,10 @@ void* read_input(void *p_client)
   pthread_detach(pthread_self());
   struct discord *client = p_client;
 
-  char buf[32 + MAX_MESSAGE_LEN];
+  char buf[32 + DISCORD_MAX_MESSAGE_LEN];
   u64_snowflake_t recipient_id;
   u64_snowflake_t dm_channel_id;
-  char msg[MAX_MESSAGE_LEN];
+  char msg[DISCORD_MAX_MESSAGE_LEN];
   while (1) {
     memset(buf, 0, sizeof(buf));
     fgets(buf, sizeof(buf), stdin);

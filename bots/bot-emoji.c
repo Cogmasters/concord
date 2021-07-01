@@ -21,7 +21,7 @@ void on_list(
   NTL_T(struct discord_emoji) emojis=NULL;
   discord_list_guild_emojis(client, msg->guild_id, &emojis);
 
-  char text[MAX_MESSAGE_LEN];
+  char text[DISCORD_MAX_MESSAGE_LEN];
   if (!emojis) {
     sprintf(text, "No guild emojis found.");
   }
@@ -63,7 +63,7 @@ void on_get(
 {
   if (msg->author->bot) return;
 
-  char text[MAX_MESSAGE_LEN];
+  char text[DISCORD_MAX_MESSAGE_LEN];
   u64_snowflake_t emoji_id=0;
   sscanf(msg->content, "%"SCNu64, &emoji_id);
   if (!emoji_id) {

@@ -71,7 +71,7 @@
         {"name":"id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}},
         {"name":"action_type", "type": {"base":"int", "c_base":"enum discord_audit_log_events"}},
         {"name":"options", "type": {"base":"struct discord_audit_log_entry_optional_info", "dec":"ntl"}},
-        {"name":"reason", "type": {"base":"char", "dec":"[MAX_REASON_LEN]"}}
+        {"name":"reason", "type": {"base":"char", "dec":"[DISCORD_MAX_REASON_LEN]"}}
       ]
     },
     {
@@ -110,8 +110,8 @@
       "struct":"change_key",
       "fields":
       [
-        {"name":"name", "type": {"base":"char", "dec":"[MAX_NAME_LEN]"}},
-        {"name":"description", "type": {"base":"char", "dec":"[MAX_DESCRIPTION_LEN]"}},
+        {"name":"name", "type": {"base":"char", "dec":"[DISCORD_MAX_NAME_LEN]"}},
+        {"name":"description", "type": {"base":"char", "dec":"[DISCORD_MAX_DESCRIPTION_LEN]"}},
         {"name":"icon_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"}, 
          "comment":"icon changed" },
         {"name":"splash_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"},

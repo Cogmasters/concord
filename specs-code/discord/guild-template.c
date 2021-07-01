@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/guild-template.c
  * @author cee-studio
- * @date 21 Jun 2021
+ * @date 30 Jun 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/guild-template
  */

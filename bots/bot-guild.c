@@ -56,7 +56,7 @@ void on_create(
     code = discord_create_guild(client, &params, guild);
   }
 
-  char text[MAX_MESSAGE_LEN];
+  char text[DISCORD_MAX_MESSAGE_LEN];
   if (ORCA_OK == code)
     sprintf(text, "%s (%"PRIu64") created.", guild->name, guild->id);
   else
@@ -76,10 +76,10 @@ void on_modify(
   if (msg->author->bot) return;
 
   u64_snowflake_t guild_id=0;
-  char guild_name[MAX_NAME_LEN]="";
+  char guild_name[DISCORD_MAX_NAME_LEN]="";
   sscanf(msg->content, "%"SCNu64" %s", &guild_id, guild_name);
 
-  char text[MAX_MESSAGE_LEN];
+  char text[DISCORD_MAX_MESSAGE_LEN];
   struct discord_guild *guild = discord_guild_alloc();
   {
     struct discord_modify_guild_params params = { .name = guild_name };
@@ -123,7 +123,7 @@ void on_role_create(
   char name[128]="";
   sscanf(msg->content, "%s", name);
 
-  char text[MAX_MESSAGE_LEN];
+  char text[DISCORD_MAX_MESSAGE_LEN];
   if (!*name) {
     sprintf(text, "Couldn't create role `%s`", name);
   }
@@ -154,7 +154,7 @@ void on_role_delete(
   u64_snowflake_t role_id=0;
   sscanf(msg->content, "%"SCNu64, &role_id);
 
-  char text[MAX_MESSAGE_LEN];
+  char text[DISCORD_MAX_MESSAGE_LEN];
   if (!role_id) {
     sprintf(text, "Invalid format for `guild.role_delete <role_id>`");
   }
@@ -179,7 +179,7 @@ void on_role_member_add(
   u64_snowflake_t user_id=0, role_id=0;
   sscanf(msg->content, "%"SCNu64" %"SCNu64, &user_id, &role_id);
 
-  char text[MAX_MESSAGE_LEN];
+  char text[DISCORD_MAX_MESSAGE_LEN];
   if (!user_id || !role_id) {
     sprintf(text, "Invalid format for `guild.role_member_add <user_id> <role_id>`");
   }
@@ -204,7 +204,7 @@ void on_role_member_remove(
   u64_snowflake_t user_id=0, role_id=0;
   sscanf(msg->content, "%"SCNu64" %"SCNu64, &user_id, &role_id);
 
-  char text[MAX_MESSAGE_LEN];
+  char text[DISCORD_MAX_MESSAGE_LEN];
   if (!user_id || !role_id) {
     sprintf(text, "Invalid format for `guild.role_member_remove <user_id> <role_id>`");
   }
@@ -229,7 +229,7 @@ void on_role_list(
   NTL_T(struct discord_permissions_role) roles=NULL;
   discord_get_guild_roles(client, msg->guild_id, &roles);
 
-  char text[MAX_MESSAGE_LEN];
+  char text[DISCORD_MAX_MESSAGE_LEN];
   if (!roles) {
     sprintf(text, "No guild roles found.");
   }
@@ -268,7 +268,7 @@ void on_member_get(
 
   u64_snowflake_t user_id=0;
   sscanf(msg->content, "%"SCNu64, &user_id);
-  char text[MAX_MESSAGE_LEN];
+  char text[DISCORD_MAX_MESSAGE_LEN];
   if (!user_id) {
     sprintf(text, "Invalid format for `guild.member_get <user_id>`");
   }
@@ -293,9 +293,9 @@ void on_member_change_nick(
   if (msg->author->bot) return;
 
   u64_snowflake_t user_id=0;
-  char nick[MAX_USERNAME_LEN]="";
+  char nick[DISCORD_MAX_USERNAME_LEN]="";
   sscanf(msg->content, "%"SCNu64" %s", &user_id, nick);
-  char text[MAX_MESSAGE_LEN];
+  char text[DISCORD_MAX_MESSAGE_LEN];
   if (!user_id || !*nick) {
     sprintf(text, "Invalid format for `guild.member_change_nick <user_id> <nick>`");
   }
@@ -325,7 +325,7 @@ void on_member_search(
     code = discord_search_guild_members(client, msg->guild_id, &params, &members);
   }
 
-  char text[MAX_MESSAGE_LEN];
+  char text[DISCORD_MAX_MESSAGE_LEN];
   if (ORCA_OK != code) {
     sprintf(text, "No members matching '%s' found.", msg->content);
   }
@@ -361,7 +361,7 @@ void on_bot_change_nick(
 {
   if (msg->author->bot) return;
 
-  char text[MAX_MESSAGE_LEN];
+  char text[DISCORD_MAX_MESSAGE_LEN];
   if (!*msg->content) {
     sprintf(text, "Invalid format for `guild.bot_change_nick <nick>`");
   }

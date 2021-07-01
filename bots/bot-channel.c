@@ -77,7 +77,7 @@ void on_channel_get_invites(
   NTL_T(struct discord_invite) invites=NULL;
   discord_get_channel_invites(client, msg->channel_id, &invites);
 
-  char text[MAX_MESSAGE_LEN];
+  char text[DISCORD_MAX_MESSAGE_LEN];
   snprintf(text, sizeof(text), "%zu invite links created.", ntl_length((ntl_t)invites));
   struct discord_create_message_params params = { .content = text };
   discord_create_message(client, msg->channel_id, &params, NULL);
@@ -96,7 +96,7 @@ void on_channel_create_invite(
 
   struct discord_invite *invite = discord_invite_alloc();
 
-  char text[MAX_MESSAGE_LEN];
+  char text[DISCORD_MAX_MESSAGE_LEN];
   if (ORCA_OK == discord_create_channel_invite(client, msg->channel_id, NULL, invite))
     sprintf(text, "https://discord.gg/%s", invite->code);
   else
@@ -117,7 +117,7 @@ void on_channel_start_thread(
 
   struct discord_channel *channel = discord_channel_alloc();
 
-  char text[MAX_MESSAGE_LEN];
+  char text[DISCORD_MAX_MESSAGE_LEN];
   ORCAcode code;
   if (msg->message_reference->message_id) {
     struct discord_start_thread_with_message_params params = { .name = "new_thread" };

@@ -27,39 +27,35 @@ struct discord_voice_cbs;
 
 /* SNOWFLAKES
 https://discord.com/developers/docs/reference#snowflakes */
-typedef uint64_t u64_snowflake_t; ///< snowflake datatype
-#define SNOWFLAKE_INCREMENT           12
-#define SNOWFLAKE_PROCESS_ID          17
-#define SNOWFLAKE_INTERNAL_WORKER_ID  22
-#define SNOWFLAKE_TIMESTAMP           64
+#define DISCORD_SNOWFLAKE_INCREMENT           12
+#define DISCORD_SNOWFLAKE_PROCESS_ID          17
+#define DISCORD_SNOWFLAKE_INTERNAL_WORKER_ID  22
+#define DISCORD_SNOWFLAKE_TIMESTAMP           64
 
-/* Size limits discovered from Discord docs and across the web */
-#define MAX_NAME_LEN          100 + 1
-#define MAX_TOPIC_LEN         1024 + 1
-#define MAX_DESCRIPTION_LEN   2048 + 1
-#define MAX_USERNAME_LEN      32 + 1
-#define MAX_DISCRIMINATOR_LEN 4 + 1
-#define MAX_SHA256_LEN        1024 + 1
-#define MAX_LOCALE_LEN        16 + 1
-#define MAX_EMAIL_LEN         254 + 1
-#define MAX_REGION_LEN        16 + 1
-#define MAX_REASON_LEN        512 + 1
-#define MAX_MESSAGE_LEN       2000 + 1
-#define MAX_PAYLOAD_LEN       4096 + 1
+/* Discord limits */
+#define DISCORD_MAX_NAME_LEN          100 + 1
+#define DISCORD_MAX_TOPIC_LEN         1024 + 1
+#define DISCORD_MAX_DESCRIPTION_LEN   2048 + 1
+#define DISCORD_MAX_USERNAME_LEN      32 + 1
+#define DISCORD_MAX_DISCRIMINATOR_LEN 4 + 1
+#define DISCORD_MAX_REASON_LEN        512 + 1
+#define DISCORD_MAX_MESSAGE_LEN       2000 + 1
+#define DISCORD_MAX_PAYLOAD_LEN       4096 + 1
+#define DISCORD_MAX_VOICE_CONNECTIONS 512
 
 /* EMBED LIMITS
 https://discord.com/developers/docs/resources/channel#embed-limits */
-#define EMBED_TITLE_LEN       256 + 1
-#define EMBED_DESCRIPTION_LEN 2048 + 1
-#define EMBED_MAX_FIELDS      25
-#define EMBED_FIELD_NAME_LEN  256 + 1
-#define EMBED_FIELD_VALUE_LEN 1024 + 1
-#define EMBED_FOOTER_TEXT_LEN 2048 + 1
-#define EMBED_AUTHOR_NAME_LEN 256 + 1
+#define DISCORD_EMBED_TITLE_LEN       256 + 1
+#define DISCORD_EMBED_DESCRIPTION_LEN 2048 + 1
+#define DISCORD_EMBED_MAX_FIELDS      25
+#define DISCORD_EMBED_FIELD_NAME_LEN  256 + 1
+#define DISCORD_EMBED_FIELD_VALUE_LEN 1024 + 1
+#define DISCORD_EMBED_FOOTER_TEXT_LEN 2048 + 1
+#define DISCORD_EMBED_AUTHOR_NAME_LEN 256 + 1
 
 /* WEBHOOK LIMITS
 https://discord.com/developers/docs/resources/webhook#create-webhook */
-#define WEBHOOK_NAME_LEN 80 + 1
+#define DISCORD_WEBHOOK_NAME_LEN 80 + 1
 
 // specs/discord for generated code specs 
 #include "specs-code/discord/all_opaque_struct.h"
@@ -77,7 +73,7 @@ https://discord.com/developers/docs/resources/webhook#create-webhook */
  * @see discord_set_event_handler()
  * @see discord_gateway_events
  */
-typedef enum discord_event_handling_mode (*event_mode_cb)(struct discord *client, struct discord_user *bot, struct sized_buffer *event_data, enum discord_gateway_events event);
+typedef enum discord_event_handling_mode (*discord_event_mode_cb)(struct discord *client, struct discord_user *bot, struct sized_buffer *event_data, enum discord_gateway_events event);
 
 /** 
  * @brief Idle callback
@@ -85,7 +81,7 @@ typedef enum discord_event_handling_mode (*event_mode_cb)(struct discord *client
  * Runs on every WebSockets loop iteration, no trigger required
  * @see discord_set_on_idle()
  */
-typedef void (*idle_cb)(struct discord *client, const struct discord_user *bot);
+typedef void (*discord_idle_cb)(struct discord *client, const struct discord_user *bot);
 
 /**
  * @brief Raw Event callback
@@ -94,7 +90,7 @@ typedef void (*idle_cb)(struct discord *client, const struct discord_user *bot);
  * It is executed after every other callback has been checked.
  * @see discord_set_on_raw_event()
  */
-typedef void (*event_raw_cb)(
+typedef void (*discord_event_raw_cb)(
     struct discord *client, 
     enum discord_gateway_events event, 
     struct sized_buffer *sb_bot, 
@@ -107,7 +103,7 @@ typedef void (*event_raw_cb)(
  * @see discord_set_on_guild_role_create() 
  * @see discord_set_on_guild_role_update() 
  */
-typedef void (*guild_role_cb)(
+typedef void (*discord_guild_role_cb)(
     struct discord *client, const struct discord_user *bot,
     const u64_snowflake_t guild_id,
     const struct discord_permissions_role *role);
@@ -117,7 +113,7 @@ typedef void (*guild_role_cb)(
  * @see https://discord.com/developers/docs/topics/gateway#guilds 
  * @see discord_set_on_guild_role_delete() 
  */
-typedef void (*guild_role_delete_cb)(
+typedef void (*discord_guild_role_delete_cb)(
     struct discord *client, const struct discord_user *bot,
     const u64_snowflake_t guild_id,
     const u64_snowflake_t role_id);
@@ -129,7 +125,7 @@ typedef void (*guild_role_delete_cb)(
  * @see discord_set_on_guild_member_add() 
  * @see discord_set_on_guild_member_update() 
  */
-typedef void (*guild_member_cb)(
+typedef void (*discord_guild_member_cb)(
     struct discord *client, const struct discord_user *bot, 
     const u64_snowflake_t guild_id, 
     const struct discord_guild_member *member);
@@ -139,7 +135,7 @@ typedef void (*guild_member_cb)(
  * @see https://discord.com/developers/docs/topics/gateway#guilds 
  * @see discord_set_on_guild_member_remove() 
  */
-typedef void (*guild_member_remove_cb)(
+typedef void (*discord_guild_member_remove_cb)(
     struct discord *client, const struct discord_user *bot, 
     const u64_snowflake_t guild_id, 
     const struct discord_user *user);
@@ -151,7 +147,7 @@ typedef void (*guild_member_remove_cb)(
  * @see discord_set_on_guild_ban_add() 
  * @see discord_set_on_guild_ban_remove() 
  */
-typedef void (*guild_ban_cb)(
+typedef void (*discord_guild_ban_cb)(
     struct discord *client, const struct discord_user *bot, 
     const u64_snowflake_t guild_id, 
     const struct discord_user *user);
@@ -163,10 +159,10 @@ typedef void (*guild_ban_cb)(
  * @see discord_set_on_message_create() 
  * @see discord_set_on_message_update() 
  */
-typedef void (*message_cb)(
+typedef void (*discord_message_cb)(
     struct discord *client, const struct discord_user *bot, 
     const struct discord_message *message);
-typedef void (*sb_message_cb)(
+typedef void (*discord_sb_message_cb)(
     struct discord *client, const struct discord_user *bot,
     struct sized_buffer *sb_bot,
     const struct discord_message *message,
@@ -178,7 +174,7 @@ typedef void (*sb_message_cb)(
  * @see https://discord.com/developers/docs/topics/gateway#messages 
  * @see discord_set_on_message_delete() 
  */
-typedef void (*message_delete_cb)(
+typedef void (*discord_message_delete_cb)(
     struct discord *client, const struct discord_user *bot, 
     const u64_snowflake_t id, 
     const u64_snowflake_t channel_id, 
@@ -189,7 +185,7 @@ typedef void (*message_delete_cb)(
  * @see https://discord.com/developers/docs/topics/gateway#messages 
  * @see discord_set_on_message_delete_bulk() 
  */
-typedef void (*message_delete_bulk_cb)(
+typedef void (*discord_message_delete_bulk_cb)(
     struct discord *client, const struct discord_user *bot, 
     const NTL_T(ja_u64) ids, 
     const u64_snowflake_t channel_id, 
@@ -203,7 +199,7 @@ typedef void (*message_delete_bulk_cb)(
  * @see discord_set_on_channel_update() 
  * @see discord_set_on_channel_delete() 
  */
-typedef void (*channel_cb)(
+typedef void (*discord_channel_cb)(
     struct discord *client, const struct discord_user *bot, 
     const struct discord_channel *channel);
 /**
@@ -212,7 +208,7 @@ typedef void (*channel_cb)(
  * @see https://discord.com/developers/docs/topics/gateway#channels 
  * @see discord_set_on_channel_pins_update() 
  */
-typedef void (*channel_pins_update_cb)(
+typedef void (*discord_channel_pins_update_cb)(
     struct discord *client, const struct discord_user *bot, 
     const u64_snowflake_t guild_id,
     const u64_snowflake_t channel_id,
@@ -223,7 +219,7 @@ typedef void (*channel_pins_update_cb)(
  * @see https://discord.com/developers/docs/topics/gateway#messages 
  * @see discord_set_on_message_reaction_add() 
  */
-typedef void (*message_reaction_add_cb)(
+typedef void (*discord_message_reaction_add_cb)(
     struct discord *client, const struct discord_user *bot, 
     const u64_snowflake_t user_id,
     const u64_snowflake_t channel_id, 
@@ -236,7 +232,7 @@ typedef void (*message_reaction_add_cb)(
  * @see https://discord.com/developers/docs/topics/gateway#messages 
  * @see discord_set_on_message_reaction_remove() 
  */
-typedef void (*message_reaction_remove_cb)(
+typedef void (*discord_message_reaction_remove_cb)(
     struct discord *client, const struct discord_user *bot, 
     const u64_snowflake_t user_id,
     const u64_snowflake_t channel_id, 
@@ -248,7 +244,7 @@ typedef void (*message_reaction_remove_cb)(
  * @see https://discord.com/developers/docs/topics/gateway#messages 
  * @see discord_set_on_message_reaction_remove_all() 
  */
-typedef void (*message_reaction_remove_all_cb)(
+typedef void (*discord_message_reaction_remove_all_cb)(
     struct discord *client, const struct discord_user *bot, 
     const u64_snowflake_t channel_id, 
     const u64_snowflake_t message_id, 
@@ -258,7 +254,7 @@ typedef void (*message_reaction_remove_all_cb)(
  * @see https://discord.com/developers/docs/topics/gateway#messages 
  * @see discord_set_on_message_reaction_remove_emoji() 
  */
-typedef void (*message_reaction_remove_emoji_cb)(
+typedef void (*discord_message_reaction_remove_emoji_cb)(
     struct discord *client, const struct discord_user *bot, 
     const u64_snowflake_t channel_id, 
     const u64_snowflake_t message_id, 
@@ -270,7 +266,7 @@ typedef void (*message_reaction_remove_emoji_cb)(
  * @see https://discord.com/developers/docs/topics/gateway#voice
  * @see discord_set_on_voice_state_update() 
  */
-typedef void (*voice_state_update_cb)(
+typedef void (*discord_voice_state_update_cb)(
     struct discord *client, const struct discord_user *bot,
     const struct discord_voice_state *voice_state);
 /**
@@ -278,7 +274,7 @@ typedef void (*voice_state_update_cb)(
  * @see https://discord.com/developers/docs/topics/gateway#voice
  * @see discord_set_on_voice_server_update() 
  */
-typedef void (*voice_server_update_cb)(
+typedef void (*discord_voice_server_update_cb)(
     struct discord *client, const struct discord_user *bot,
     const char *token,
     const u64_snowflake_t guild_id,
@@ -450,11 +446,11 @@ void discord_set_prefix(struct discord *client, char *prefix);
  * {
  *   switch (event) {
  *   case DISCORD_GATEWAY_EVENTS_READY:
- *      return EVENT_WILL_BE_HANDLED_IN_MAIN_THREAD;
+ *      return DISCORD_EVENT_MAIN_THREAD;
  *   case DISCORD_GATEWAY_EVENTS_MESSAGE_CREATE:
- *      return EVENT_WILL_BE_HANDLED_IN_CHILD_THREAD;
+ *      return DISCORD_EVENT_CHILD_THREAD;
  *   default:
- *      return EVENT_IS_HANDLED;
+ *      return DISCORD_EVENT_IGNORE;
  *   }
  * }
  *
@@ -484,7 +480,7 @@ void discord_set_prefix(struct discord *client, char *prefix);
  * @see enum discord_event_handling_mode
  * @see enum discord_gateway_events
  */
-void discord_set_event_handler(struct discord *client, event_mode_cb fn);
+void discord_set_event_handler(struct discord *client, discord_event_mode_cb fn);
 
 /**
  * @brief Set command/callback pair, the callback is triggered if someone
@@ -496,7 +492,7 @@ void discord_set_event_handler(struct discord *client, event_mode_cb fn);
  * @note The command and any subjacent empty space is left out of discord_message#content
  * @see discord_set_prefix() for changing a command prefix
  */
-void discord_set_on_command(struct discord *client, char *command, message_cb callback);
+void discord_set_on_command(struct discord *client, char *command, discord_message_cb callback);
 
 /**
  * @brief Set a callback that triggers on any event the client is subscribed to. 
@@ -506,7 +502,7 @@ void discord_set_on_command(struct discord *client, char *command, message_cb ca
  * @param client the client created with discord_init()
  * @param callback the callback that will be executed
  */
-void discord_set_on_event_raw(struct discord *client, event_raw_cb callback);
+void discord_set_on_event_raw(struct discord *client, discord_event_raw_cb callback);
 
 /**
  * @brief Set a callback that triggers at every event-loop iteration.
@@ -514,7 +510,7 @@ void discord_set_on_event_raw(struct discord *client, event_raw_cb callback);
  * @param client the client created with discord_init()
  * @param callback the callback that will be executed
  */
-void discord_set_on_idle(struct discord *client, idle_cb callback);
+void discord_set_on_idle(struct discord *client, discord_idle_cb callback);
 
 /**
  * @brief Set a callback that triggers when a guild role is created
@@ -523,7 +519,7 @@ void discord_set_on_idle(struct discord *client, idle_cb callback);
  * @param callback the callback that will be executed
  * @note this function will automatically set intent(s) to make the callback triggerable
  */
-void discord_set_on_guild_role_create(struct discord *client, guild_role_cb callback);
+void discord_set_on_guild_role_create(struct discord *client, discord_guild_role_cb callback);
 /**
  * @brief Set a callback that triggers when a guild role is updated
  *
@@ -531,7 +527,7 @@ void discord_set_on_guild_role_create(struct discord *client, guild_role_cb call
  * @param callback the callback that will be executed
  * @note this function will automatically set intent(s) to make the callback triggerable
  */
-void discord_set_on_guild_role_update(struct discord *client, guild_role_cb callback);
+void discord_set_on_guild_role_update(struct discord *client, discord_guild_role_cb callback);
 /**
  * @brief Set a callback that triggers when a guild role is deleted
  *
@@ -539,7 +535,7 @@ void discord_set_on_guild_role_update(struct discord *client, guild_role_cb call
  * @param callback the callback that will be executed
  * @note this function will automatically set intent(s) to make the callback triggerable
  */
-void discord_set_on_guild_role_delete(struct discord *client, guild_role_delete_cb callback);
+void discord_set_on_guild_role_delete(struct discord *client, discord_guild_role_delete_cb callback);
 /**
  * @brief Set a callback that triggers when a guild member is added
  *
@@ -547,7 +543,7 @@ void discord_set_on_guild_role_delete(struct discord *client, guild_role_delete_
  * @param callback the callback that will be executed
  * @note this function will automatically set intent(s) to make the callback triggerable
  */
-void discord_set_on_guild_member_add(struct discord *client, guild_member_cb callback);
+void discord_set_on_guild_member_add(struct discord *client, discord_guild_member_cb callback);
 /**
  * @brief Set a callback that triggers when a guild member is updated
  *
@@ -555,7 +551,7 @@ void discord_set_on_guild_member_add(struct discord *client, guild_member_cb cal
  * @param callback the callback that will be executed
  * @note this function will automatically set intent(s) to make the callback triggerable
  */
-void discord_set_on_guild_member_update(struct discord *client, guild_member_cb callback);
+void discord_set_on_guild_member_update(struct discord *client, discord_guild_member_cb callback);
 /**
  * @brief Set a callback that triggers when a guild member is removed
  *
@@ -563,7 +559,7 @@ void discord_set_on_guild_member_update(struct discord *client, guild_member_cb 
  * @param callback the callback that will be executed
  * @note this function will automatically set intent(s) to make the callback triggerable
  */
-void discord_set_on_guild_member_remove(struct discord *client, guild_member_remove_cb callback);
+void discord_set_on_guild_member_remove(struct discord *client, discord_guild_member_remove_cb callback);
 /**
  * @brief Set a callback that triggers when a guild ban is added
  *
@@ -571,7 +567,7 @@ void discord_set_on_guild_member_remove(struct discord *client, guild_member_rem
  * @param callback the callback that will be executed
  * @note this function will automatically set intent(s) to make the callback triggerable
  */
-void discord_set_on_guild_ban_add(struct discord *client, guild_ban_cb callback);
+void discord_set_on_guild_ban_add(struct discord *client, discord_guild_ban_cb callback);
 /**
  * @brief Set a callback that triggers when a guild ban is removed
  *
@@ -579,7 +575,7 @@ void discord_set_on_guild_ban_add(struct discord *client, guild_ban_cb callback)
  * @param callback the callback that will be executed
  * @note this function will automatically set intent(s) to make the callback triggerable
  */
-void discord_set_on_guild_ban_remove(struct discord *client, guild_ban_cb callback);
+void discord_set_on_guild_ban_remove(struct discord *client, discord_guild_ban_cb callback);
 /**
  * @brief Set a callback that triggers when a channel is created
  *
@@ -587,7 +583,7 @@ void discord_set_on_guild_ban_remove(struct discord *client, guild_ban_cb callba
  * @param callback the callback that will be executed
  * @note this function will automatically set intent(s) to make the callback triggerable
  */
-void discord_set_on_channel_create(struct discord *client, channel_cb callback);
+void discord_set_on_channel_create(struct discord *client, discord_channel_cb callback);
 /**
  * @brief Set a callback that triggers when a channel is updated
  *
@@ -595,7 +591,7 @@ void discord_set_on_channel_create(struct discord *client, channel_cb callback);
  * @param callback the callback that will be executed
  * @note this function will automatically set intent(s) to make the callback triggerable
  */
-void discord_set_on_channel_update(struct discord *client, channel_cb callback);
+void discord_set_on_channel_update(struct discord *client, discord_channel_cb callback);
 /**
  * @brief Set a callback that triggers when a channel is deleted
  *
@@ -603,7 +599,7 @@ void discord_set_on_channel_update(struct discord *client, channel_cb callback);
  * @param callback the callback that will be executed
  * @note this function will automatically set intent(s) to make the callback triggerable
  */
-void discord_set_on_channel_delete(struct discord *client, channel_cb callback);
+void discord_set_on_channel_delete(struct discord *client, discord_channel_cb callback);
 /**
  * @brief Set a callback that triggers when some channel pins are updated
  *
@@ -611,7 +607,7 @@ void discord_set_on_channel_delete(struct discord *client, channel_cb callback);
  * @param callback the callback that will be executed
  * @note this function will automatically set intent(s) to make the callback triggerable
  */
-void discord_set_on_channel_pins_update(struct discord *client, channel_pins_update_cb callback);
+void discord_set_on_channel_pins_update(struct discord *client, discord_channel_pins_update_cb callback);
 /**
  * @brief Set a callback that triggers when a message is created
  *
@@ -619,8 +615,8 @@ void discord_set_on_channel_pins_update(struct discord *client, channel_pins_upd
  * @param callback the callback that will be executed
  * @note this function will automatically set intent(s) to make the callback triggerable
  */
-void discord_set_on_message_create(struct discord *client, message_cb callback);
-void discord_set_on_sb_message_create(struct discord *client, sb_message_cb callback);
+void discord_set_on_message_create(struct discord *client, discord_message_cb callback);
+void discord_set_on_sb_message_create(struct discord *client, discord_sb_message_cb callback);
 /**
  * @brief Set a callback that triggers when a message is updated
  *
@@ -628,8 +624,8 @@ void discord_set_on_sb_message_create(struct discord *client, sb_message_cb call
  * @param callback the callback that will be executed
  * @note this function will automatically set intent(s) to make the callback triggerable
  */
-void discord_set_on_message_update(struct discord *client, message_cb callback);
-void discord_set_on_sb_message_update(struct discord *client, sb_message_cb callback);
+void discord_set_on_message_update(struct discord *client, discord_message_cb callback);
+void discord_set_on_sb_message_update(struct discord *client, discord_sb_message_cb callback);
 /**
  * @brief Set a callback that triggers when a message is deleted
  *
@@ -637,7 +633,7 @@ void discord_set_on_sb_message_update(struct discord *client, sb_message_cb call
  * @param callback the callback that will be executed
  * @note this function will automatically set intent(s) to make the callback triggerable
  */
-void discord_set_on_message_delete(struct discord *client, message_delete_cb callback);
+void discord_set_on_message_delete(struct discord *client, discord_message_delete_cb callback);
 /*
  * @brief Set a callback that triggers when a bulk of messages are deleted
  *
@@ -645,7 +641,7 @@ void discord_set_on_message_delete(struct discord *client, message_delete_cb cal
  * @param callback the callback that will be executed
  * @note this function will automatically set intent(s) to make the callback triggerable
  */
-void discord_set_on_message_delete_bulk(struct discord *client, message_delete_bulk_cb callback);
+void discord_set_on_message_delete_bulk(struct discord *client, discord_message_delete_bulk_cb callback);
 /**
  * @brief Set a callback that triggers when a message reaction is added
  *
@@ -653,7 +649,7 @@ void discord_set_on_message_delete_bulk(struct discord *client, message_delete_b
  * @param callback the callback that will be executed
  * @note this function will automatically set intent(s) to make the callback triggerable
  */
-void discord_set_on_message_reaction_add(struct discord *client, message_reaction_add_cb callback);
+void discord_set_on_message_reaction_add(struct discord *client, discord_message_reaction_add_cb callback);
 /**
  * @brief Set a callback that triggers when a message reaction is removed
  *
@@ -661,7 +657,7 @@ void discord_set_on_message_reaction_add(struct discord *client, message_reactio
  * @param callback the callback that will be executed
  * @note this function will automatically set intent(s) to make the callback triggerable
  */
-void discord_set_on_message_reaction_remove(struct discord *client, message_reaction_remove_cb callback);
+void discord_set_on_message_reaction_remove(struct discord *client, discord_message_reaction_remove_cb callback);
 /**
  * @brief Set a callback that triggers when all reaction from some message is removed
  *
@@ -669,7 +665,7 @@ void discord_set_on_message_reaction_remove(struct discord *client, message_reac
  * @param callback the callback that will be executed
  * @note this function will automatically set intent(s) to make the callback triggerable
  */
-void discord_set_on_message_reaction_remove_all(struct discord *client, message_reaction_remove_all_cb callback);
+void discord_set_on_message_reaction_remove_all(struct discord *client, discord_message_reaction_remove_all_cb callback);
 /**
  * @brief Set a callback that triggers when all instances of a particular reaction from some message is removed
  *
@@ -677,7 +673,7 @@ void discord_set_on_message_reaction_remove_all(struct discord *client, message_
  * @param callback the callback that will be executed
  * @note this function will automatically set intent(s) to make the callback triggerable
  */
-void discord_set_on_message_reaction_remove_emoji(struct discord *client, message_reaction_remove_emoji_cb callback);
+void discord_set_on_message_reaction_remove_emoji(struct discord *client, discord_message_reaction_remove_emoji_cb callback);
 /**
  * @brief Set a callback that triggers when the client is ready
  *
@@ -685,7 +681,7 @@ void discord_set_on_message_reaction_remove_emoji(struct discord *client, messag
  * @param callback the callback that will be executed
  * @note this function will automatically set intent(s) to make the callback triggerable
  */
-void discord_set_on_ready(struct discord *client, idle_cb callback);
+void discord_set_on_ready(struct discord *client, discord_idle_cb callback);
 /**
  * @brief Set a callback that triggers when a voice state is updated
  *
@@ -693,7 +689,7 @@ void discord_set_on_ready(struct discord *client, idle_cb callback);
  * @param callback the callback that will be executed
  * @note this function will automatically set intent(s) to make the callback triggerable
  */
-void discord_set_on_voice_state_update(struct discord *client, voice_state_update_cb callback);
+void discord_set_on_voice_state_update(struct discord *client, discord_voice_state_update_cb callback);
 /**
  * @brief Set a callback that triggers when a voice server is updated
  *
@@ -701,7 +697,7 @@ void discord_set_on_voice_state_update(struct discord *client, voice_state_updat
  * @param callback the callback that will be executed
  * @note this function will automatically set intent(s) to make the callback triggerable
  */
-void discord_set_on_voice_server_update(struct discord *client, voice_server_update_cb callback);
+void discord_set_on_voice_server_update(struct discord *client, discord_voice_server_update_cb callback);
 /**
  * @brief Helper to quickly set voice callbacks
  *
@@ -711,9 +707,9 @@ void discord_set_on_voice_server_update(struct discord *client, voice_server_upd
 void discord_set_voice_cbs(struct discord *client, struct discord_voice_cbs *callbacks);
 
 enum discord_event_handling_mode {
-  EVENT_IS_HANDLED,  ///< this event has been handled
-  EVENT_WILL_BE_HANDLED_IN_MAIN_THREAD, ///< handle this event in main thread
-  EVENT_WILL_BE_HANDLED_IN_CHILD_THREAD ///< handle this event in a child thread
+  DISCORD_EVENT_IGNORE,  ///< this event has been handled
+  DISCORD_EVENT_MAIN_THREAD, ///< handle this event in main thread
+  DISCORD_EVENT_CHILD_THREAD ///< handle this event in a child thread
 };
 
 /**

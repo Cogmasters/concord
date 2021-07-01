@@ -79,8 +79,8 @@ embed_reddit_search_result(
   
   ///@todo add check to make sure embed is not over 6000 characters
   json_item_t *data;
-  char title[EMBED_TITLE_LEN + 1]; // +1 to trigger auto-truncation
-  char permalink[EMBED_FIELD_VALUE_LEN + 1];
+  char title[DISCORD_EMBED_TITLE_LEN + 1]; // +1 to trigger auto-truncation
+  char permalink[DISCORD_EMBED_FIELD_VALUE_LEN + 1];
   size_t n_size = json_size(children);
   for (size_t i=0; i < n_size; ++i) {
     data = json_get_child(json_get_byindex(children, i), "data");
@@ -96,7 +96,7 @@ embed_reddit_search_result(
   }
   snprintf(embed->description, sizeof(embed->description), "%zu results", n_size);
 
-  char footer[EMBED_FOOTER_TEXT_LEN];
+  char footer[DISCORD_EMBED_FOOTER_TEXT_LEN];
   snprintf(footer, sizeof(footer), "🔎 %s\t🔗 %s", keywords, subreddits);
   discord_embed_set_footer(embed, footer, NULL, NULL);
 
@@ -463,7 +463,7 @@ on_any_event(
   struct sized_buffer *event_data,
   enum discord_gateway_events event) 
 {
-  return EVENT_WILL_BE_HANDLED_IN_CHILD_THREAD;
+  return DISCORD_EVENT_CHILD_THREAD;
 }
 
 int main(int argc, char *argv[])

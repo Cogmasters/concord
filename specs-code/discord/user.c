@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/user.c
  * @author cee-studio
- * @date 21 Jun 2021
+ * @date 30 Jun 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/user
  */
@@ -89,10 +89,10 @@ void discord_user_from_json(char *json, size_t len, struct discord_user *p)
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"} }' */
                 "(id):F,"
   /* specs/discord/user.json:46:24
-     '{ "name": "username", "type":{ "base":"char", "dec":"[MAX_USERNAME_LEN]"}}' */
+     '{ "name": "username", "type":{ "base":"char", "dec":"[DISCORD_MAX_USERNAME_LEN]"}}' */
                 "(username):s,"
   /* specs/discord/user.json:47:24
-     '{ "name": "discriminator", "type":{ "base":"char", "dec":"[MAX_DISCRIMINATOR_LEN]" }}' */
+     '{ "name": "discriminator", "type":{ "base":"char", "dec":"[DISCORD_MAX_DISCRIMINATOR_LEN]" }}' */
                 "(discriminator):s,"
   /* specs/discord/user.json:48:24
      '{ "name": "avatar", "type":{ "base":"char", "dec":"[MAX_SHA256_LEN]" }}' */
@@ -131,10 +131,10 @@ void discord_user_from_json(char *json, size_t len, struct discord_user *p)
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"} }' */
                 cee_strtoull, &p->id,
   /* specs/discord/user.json:46:24
-     '{ "name": "username", "type":{ "base":"char", "dec":"[MAX_USERNAME_LEN]"}}' */
+     '{ "name": "username", "type":{ "base":"char", "dec":"[DISCORD_MAX_USERNAME_LEN]"}}' */
                 p->username,
   /* specs/discord/user.json:47:24
-     '{ "name": "discriminator", "type":{ "base":"char", "dec":"[MAX_DISCRIMINATOR_LEN]" }}' */
+     '{ "name": "discriminator", "type":{ "base":"char", "dec":"[DISCORD_MAX_DISCRIMINATOR_LEN]" }}' */
                 p->discriminator,
   /* specs/discord/user.json:48:24
      '{ "name": "avatar", "type":{ "base":"char", "dec":"[MAX_SHA256_LEN]" }}' */
@@ -180,11 +180,11 @@ static void discord_user_use_default_inject_settings(struct discord_user *p)
   p->__M.arg_switches[0] = &p->id;
 
   /* specs/discord/user.json:46:24
-     '{ "name": "username", "type":{ "base":"char", "dec":"[MAX_USERNAME_LEN]"}}' */
+     '{ "name": "username", "type":{ "base":"char", "dec":"[DISCORD_MAX_USERNAME_LEN]"}}' */
   p->__M.arg_switches[1] = p->username;
 
   /* specs/discord/user.json:47:24
-     '{ "name": "discriminator", "type":{ "base":"char", "dec":"[MAX_DISCRIMINATOR_LEN]" }}' */
+     '{ "name": "discriminator", "type":{ "base":"char", "dec":"[DISCORD_MAX_DISCRIMINATOR_LEN]" }}' */
   p->__M.arg_switches[2] = p->discriminator;
 
   /* specs/discord/user.json:48:24
@@ -238,10 +238,10 @@ size_t discord_user_to_json(char *json, size_t len, struct discord_user *p)
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"} }' */
                 "(id):|F|,"
   /* specs/discord/user.json:46:24
-     '{ "name": "username", "type":{ "base":"char", "dec":"[MAX_USERNAME_LEN]"}}' */
+     '{ "name": "username", "type":{ "base":"char", "dec":"[DISCORD_MAX_USERNAME_LEN]"}}' */
                 "(username):s,"
   /* specs/discord/user.json:47:24
-     '{ "name": "discriminator", "type":{ "base":"char", "dec":"[MAX_DISCRIMINATOR_LEN]" }}' */
+     '{ "name": "discriminator", "type":{ "base":"char", "dec":"[DISCORD_MAX_DISCRIMINATOR_LEN]" }}' */
                 "(discriminator):s,"
   /* specs/discord/user.json:48:24
      '{ "name": "avatar", "type":{ "base":"char", "dec":"[MAX_SHA256_LEN]" }}' */
@@ -278,10 +278,10 @@ size_t discord_user_to_json(char *json, size_t len, struct discord_user *p)
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"} }' */
                 cee_ulltostr, &p->id,
   /* specs/discord/user.json:46:24
-     '{ "name": "username", "type":{ "base":"char", "dec":"[MAX_USERNAME_LEN]"}}' */
+     '{ "name": "username", "type":{ "base":"char", "dec":"[DISCORD_MAX_USERNAME_LEN]"}}' */
                 p->username,
   /* specs/discord/user.json:47:24
-     '{ "name": "discriminator", "type":{ "base":"char", "dec":"[MAX_DISCRIMINATOR_LEN]" }}' */
+     '{ "name": "discriminator", "type":{ "base":"char", "dec":"[DISCORD_MAX_DISCRIMINATOR_LEN]" }}' */
                 p->discriminator,
   /* specs/discord/user.json:48:24
      '{ "name": "avatar", "type":{ "base":"char", "dec":"[MAX_SHA256_LEN]" }}' */
@@ -359,10 +359,10 @@ void discord_user_cleanup(struct discord_user *d) {
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"} }' */
   // p->id is a scalar
   /* specs/discord/user.json:46:24
-     '{ "name": "username", "type":{ "base":"char", "dec":"[MAX_USERNAME_LEN]"}}' */
+     '{ "name": "username", "type":{ "base":"char", "dec":"[DISCORD_MAX_USERNAME_LEN]"}}' */
   // p->username is a scalar
   /* specs/discord/user.json:47:24
-     '{ "name": "discriminator", "type":{ "base":"char", "dec":"[MAX_DISCRIMINATOR_LEN]" }}' */
+     '{ "name": "discriminator", "type":{ "base":"char", "dec":"[DISCORD_MAX_DISCRIMINATOR_LEN]" }}' */
   // p->discriminator is a scalar
   /* specs/discord/user.json:48:24
      '{ "name": "avatar", "type":{ "base":"char", "dec":"[MAX_SHA256_LEN]" }}' */
@@ -402,10 +402,10 @@ void discord_user_init(struct discord_user *p) {
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"} }' */
 
   /* specs/discord/user.json:46:24
-     '{ "name": "username", "type":{ "base":"char", "dec":"[MAX_USERNAME_LEN]"}}' */
+     '{ "name": "username", "type":{ "base":"char", "dec":"[DISCORD_MAX_USERNAME_LEN]"}}' */
 
   /* specs/discord/user.json:47:24
-     '{ "name": "discriminator", "type":{ "base":"char", "dec":"[MAX_DISCRIMINATOR_LEN]" }}' */
+     '{ "name": "discriminator", "type":{ "base":"char", "dec":"[DISCORD_MAX_DISCRIMINATOR_LEN]" }}' */
 
   /* specs/discord/user.json:48:24
      '{ "name": "avatar", "type":{ "base":"char", "dec":"[MAX_SHA256_LEN]" }}' */

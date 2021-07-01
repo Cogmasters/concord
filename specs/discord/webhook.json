@@ -14,7 +14,7 @@
         { "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
         { "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
         { "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }},
-        { "name": "name", "type":{ "base":"char", "dec":"[WEBHOOK_NAME_LEN]" }},
+        { "name": "name", "type":{ "base":"char", "dec":"[DISCORD_WEBHOOK_NAME_LEN]" }},
         { "name": "avatar", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"},
         { "name": "token", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"},
         { "name": "application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}

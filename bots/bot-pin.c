@@ -55,7 +55,7 @@ void on_get_pins(
   NTL_T(struct discord_message) msgs=NULL;
   discord_get_pinned_messages(client, msg->channel_id, &msgs);
 
-  char text[MAX_MESSAGE_LEN];
+  char text[DISCORD_MAX_MESSAGE_LEN];
   if (!msgs) {
     sprintf(text, "No pinned messages in <#%"PRIu64">", msg->channel_id);
   }

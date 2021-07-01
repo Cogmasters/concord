@@ -20,7 +20,7 @@ void on_invite_get(
 
   struct discord_invite *invite = discord_invite_alloc();
 
-  char text[MAX_MESSAGE_LEN];
+  char text[DISCORD_MAX_MESSAGE_LEN];
   {
     struct discord_get_invite_params params = {
       .with_counts = true,

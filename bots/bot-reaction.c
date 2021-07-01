@@ -32,7 +32,7 @@ void on_get_users(
         &users);
   }
 
-  char text[MAX_MESSAGE_LEN];
+  char text[DISCORD_MAX_MESSAGE_LEN];
   if (!users) {
     snprintf(text, sizeof(text), "Nobody reacted with '%s'!", msg->content);
   }

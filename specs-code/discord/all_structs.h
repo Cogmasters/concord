@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/all_structs.h
  * @author cee-studio
- * @date 21 Jun 2021
+ * @date 30 Jun 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/audit-log
  */
@@ -48,7 +48,7 @@ struct discord_get_guild_audit_log_params {
 /**
  * @file specs-code/discord/all_structs.h
  * @author cee-studio
- * @date 21 Jun 2021
+ * @date 30 Jun 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/audit-log
  */
@@ -127,8 +127,8 @@ struct discord_audit_log_entry {
   struct discord_audit_log_entry_optional_info **options;
 
   /* specs/discord/audit_log.json:74:18
-     '{"name":"reason", "type": {"base":"char", "dec":"[MAX_REASON_LEN]"}}' */
-  char reason[MAX_REASON_LEN];
+     '{"name":"reason", "type": {"base":"char", "dec":"[DISCORD_MAX_REASON_LEN]"}}' */
+  char reason[DISCORD_MAX_REASON_LEN];
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -244,12 +244,12 @@ struct discord_audit_log_change {
  */
 struct discord_audit_log_change_key {
   /* specs/discord/audit_log.json:113:18
-     '{"name":"name", "type": {"base":"char", "dec":"[MAX_NAME_LEN]"}}' */
-  char name[MAX_NAME_LEN];
+     '{"name":"name", "type": {"base":"char", "dec":"[DISCORD_MAX_NAME_LEN]"}}' */
+  char name[DISCORD_MAX_NAME_LEN];
 
   /* specs/discord/audit_log.json:114:18
-     '{"name":"description", "type": {"base":"char", "dec":"[MAX_DESCRIPTION_LEN]"}}' */
-  char description[MAX_DESCRIPTION_LEN];
+     '{"name":"description", "type": {"base":"char", "dec":"[DISCORD_MAX_DESCRIPTION_LEN]"}}' */
+  char description[DISCORD_MAX_DESCRIPTION_LEN];
 
   /* specs/discord/audit_log.json:115:18
      '{"name":"icon_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"}, 
@@ -484,7 +484,7 @@ struct discord_audit_log_change_key {
 /**
  * @file specs-code/discord/all_structs.h
  * @author cee-studio
- * @date 21 Jun 2021
+ * @date 30 Jun 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/channel
  */
@@ -852,7 +852,7 @@ struct discord_thread_response_body {
 /**
  * @file specs-code/discord/all_structs.h
  * @author cee-studio
- * @date 21 Jun 2021
+ * @date 30 Jun 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/channel
  */
@@ -890,15 +890,15 @@ struct discord_channel {
          "option":true, "inject_if_not":null }' */
   struct discord_channel_overwrite **permission_overwrites;
 
-  /* specs/discord/channel.json:36:66
-     '{"type":{"base":"char", "dec":"[MAX_NAME_LEN]"}, "name":"name", 
+  /* specs/discord/channel.json:36:74
+     '{"type":{"base":"char", "dec":"[DISCORD_MAX_NAME_LEN]"}, "name":"name", 
          "option":true, "inject_if_not":null}' */
-  char name[MAX_NAME_LEN];
+  char name[DISCORD_MAX_NAME_LEN];
 
-  /* specs/discord/channel.json:38:67
-     '{"type":{"base":"char", "dec":"[MAX_TOPIC_LEN]"}, "name":"topic",
+  /* specs/discord/channel.json:38:75
+     '{"type":{"base":"char", "dec":"[DISCORD_MAX_TOPIC_LEN]"}, "name":"topic",
          "option":true, "inject_if_not":null }' */
-  char topic[MAX_TOPIC_LEN];
+  char topic[DISCORD_MAX_TOPIC_LEN];
 
   /* specs/discord/channel.json:40:42
      '{"type":{"base":"bool"}, "name":"nsfw", "option":true, "inject_if_not":false}' */
@@ -1604,16 +1604,16 @@ struct discord_channel_allowed_mentions {
  */
 struct discord_embed {
   /* specs/discord/channel.json:326:20
-     '{ "name": "title", "type":{ "base":"char", "dec":"[EMBED_TITLE_LEN]" }, "option":true, "inject_if_not":null}' */
-  char title[EMBED_TITLE_LEN];
+     '{ "name": "title", "type":{ "base":"char", "dec":"[DISCORD_EMBED_TITLE_LEN]" }, "option":true, "inject_if_not":null}' */
+  char title[DISCORD_EMBED_TITLE_LEN];
 
   /* specs/discord/channel.json:327:20
      '{ "name": "type", "type":{ "base":"char", "dec":"[32]" }, "option":true, "inject_if_not":null}' */
   char type[32];
 
   /* specs/discord/channel.json:328:20
-     '{ "name": "description", "type":{ "base":"char", "dec":"[EMBED_DESCRIPTION_LEN]"}, "option":true, "inject_if_not":null}' */
-  char description[EMBED_DESCRIPTION_LEN];
+     '{ "name": "description", "type":{ "base":"char", "dec":"[DISCORD_EMBED_DESCRIPTION_LEN]"}, "option":true, "inject_if_not":null}' */
+  char description[DISCORD_EMBED_DESCRIPTION_LEN];
 
   /* specs/discord/channel.json:329:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*"}, "option":true, "inject_if_not":null}' */
@@ -1827,8 +1827,8 @@ struct discord_embed_provider {
  */
 struct discord_embed_author {
   /* specs/discord/channel.json:393:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[EMBED_AUTHOR_NAME_LEN]" }, "inject_if_not":null}' */
-  char name[EMBED_AUTHOR_NAME_LEN];
+     '{ "name": "name", "type":{ "base":"char", "dec":"[DISCORD_EMBED_AUTHOR_NAME_LEN]" }, "inject_if_not":null}' */
+  char name[DISCORD_EMBED_AUTHOR_NAME_LEN];
 
   /* specs/discord/channel.json:394:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
@@ -1866,8 +1866,8 @@ struct discord_embed_author {
  */
 struct discord_embed_footer {
   /* specs/discord/channel.json:405:20
-     '{ "name": "text", "type": {"base":"char", "dec":"[EMBED_FOOTER_TEXT_LEN]"}, "inject_if_not":null}' */
-  char text[EMBED_FOOTER_TEXT_LEN];
+     '{ "name": "text", "type": {"base":"char", "dec":"[DISCORD_EMBED_FOOTER_TEXT_LEN]"}, "inject_if_not":null}' */
+  char text[DISCORD_EMBED_FOOTER_TEXT_LEN];
 
   /* specs/discord/channel.json:406:20
      '{ "name": "icon_url", "type": {"base":"char", "dec":"*" }, "option":true, "inject_if_not":null}' */
@@ -1901,12 +1901,12 @@ struct discord_embed_footer {
  */
 struct discord_embed_field {
   /* specs/discord/channel.json:416:20
-     '{ "name": "name", "type": { "base":"char", "dec":"[EMBED_FIELD_NAME_LEN]" }, "inject_if_not":null}' */
-  char name[EMBED_FIELD_NAME_LEN];
+     '{ "name": "name", "type": { "base":"char", "dec":"[DISCORD_EMBED_FIELD_NAME_LEN]" }, "inject_if_not":null}' */
+  char name[DISCORD_EMBED_FIELD_NAME_LEN];
 
   /* specs/discord/channel.json:417:20
-     '{ "name": "value", "type": { "base":"char", "dec":"[EMBED_FIELD_VALUE_LEN]" }, "inject_if_not":null}' */
-  char value[EMBED_FIELD_VALUE_LEN];
+     '{ "name": "value", "type": { "base":"char", "dec":"[DISCORD_EMBED_FIELD_VALUE_LEN]" }, "inject_if_not":null}' */
+  char value[DISCORD_EMBED_FIELD_VALUE_LEN];
 
   /* specs/discord/channel.json:418:20
      '{ "name": "Inline", "json_key":"inline", "type": { "base":"bool" }, "option":true}' */
@@ -1931,7 +1931,7 @@ struct discord_embed_field {
 /**
  * @file specs-code/discord/all_structs.h
  * @author cee-studio
- * @date 21 Jun 2021
+ * @date 30 Jun 2021
  * @brief Specs generated file
  * @see 
  */
@@ -2006,7 +2006,7 @@ struct discord_modify_guild_emoji_params {
 /**
  * @file specs-code/discord/all_structs.h
  * @author cee-studio
- * @date 21 Jun 2021
+ * @date 30 Jun 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/emoji
  */
@@ -2071,7 +2071,7 @@ struct discord_emoji {
 /**
  * @file specs-code/discord/all_structs.h
  * @author cee-studio
- * @date 21 Jun 2021
+ * @date 30 Jun 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/topics/gateway
  */
@@ -2282,7 +2282,7 @@ struct discord_gateway_activity {
 /**
  * @file specs-code/discord/all_structs.h
  * @author cee-studio
- * @date 21 Jun 2021
+ * @date 30 Jun 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/guild-template
  */
@@ -2384,7 +2384,7 @@ struct discord_modify_guild_template_params {
 /**
  * @file specs-code/discord/all_structs.h
  * @author cee-studio
- * @date 21 Jun 2021
+ * @date 30 Jun 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/guild-template
  */
@@ -2460,7 +2460,7 @@ struct discord_guild_template {
 /**
  * @file specs-code/discord/all_structs.h
  * @author cee-studio
- * @date 21 Jun 2021
+ * @date 30 Jun 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/guild
  */
@@ -3041,7 +3041,7 @@ struct discord_begin_guild_prune_params {
 /**
  * @file specs-code/discord/all_structs.h
  * @author cee-studio
- * @date 21 Jun 2021
+ * @date 30 Jun 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/guild
  */
@@ -3058,9 +3058,9 @@ struct discord_guild {
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"id"}' */
   u64_snowflake_t id;
 
-  /* specs/discord/guild.json:13:66
-     '{"type":{"base":"char", "dec":"[MAX_NAME_LEN]"}, "name":"name"}' */
-  char name[MAX_NAME_LEN];
+  /* specs/discord/guild.json:13:74
+     '{"type":{"base":"char", "dec":"[DISCORD_MAX_NAME_LEN]"}, "name":"name"}' */
+  char name[DISCORD_MAX_NAME_LEN];
 
   /* specs/discord/guild.json:14:70
      '{"type":{"base":"char", "dec":"*", "nullable":true}, "name":"icon"}' */
@@ -3319,8 +3319,8 @@ struct discord_guild_preview {
   u64_snowflake_t id;
 
   /* specs/discord/guild.json:174:18
-     '{"name":"name", "type":{"base":"char", "dec":"[MAX_NAME_LEN]"}}' */
-  char name[MAX_NAME_LEN];
+     '{"name":"name", "type":{"base":"char", "dec":"[DISCORD_MAX_NAME_LEN]"}}' */
+  char name[DISCORD_MAX_NAME_LEN];
 
   /* specs/discord/guild.json:175:18
      '{"name":"icon", "type":{"base":"char", "dec":"*", "nullable":true}}' */
@@ -3351,8 +3351,8 @@ struct discord_guild_preview {
   int approximate_presence_count;
 
   /* specs/discord/guild.json:182:18
-     '{"name":"description", "type":{"base":"char", "dec":"[MAX_DESCRIPTION_LEN]"}}' */
-  char description[MAX_DESCRIPTION_LEN];
+     '{"name":"description", "type":{"base":"char", "dec":"[DISCORD_MAX_DESCRIPTION_LEN]"}}' */
+  char description[DISCORD_MAX_DESCRIPTION_LEN];
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -3413,8 +3413,8 @@ struct discord_guild_member {
   struct discord_user *user;
 
   /* specs/discord/guild.json:203:20
-     '{ "name": "nick", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]"}, "option":true}' */
-  char nick[MAX_NAME_LEN];
+     '{ "name": "nick", "type":{ "base":"char", "dec":"[DISCORD_MAX_NAME_LEN]"}, "option":true}' */
+  char nick[DISCORD_MAX_NAME_LEN];
 
   /* specs/discord/guild.json:204:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl"}, "comment":"array of role object ids"}' */
@@ -3631,8 +3631,8 @@ struct discord_guild_integration_application {
  */
 struct discord_guild_ban {
   /* specs/discord/guild.json:278:20
-     '{ "name": "reason", "type":{ "base":"char", "dec":"[MAX_REASON_LEN]" }}' */
-  char reason[MAX_REASON_LEN];
+     '{ "name": "reason", "type":{ "base":"char", "dec":"[DISCORD_MAX_REASON_LEN]" }}' */
+  char reason[DISCORD_MAX_REASON_LEN];
 
   /* specs/discord/guild.json:279:20
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*"}, "comment":"partial user object"}' */
@@ -3727,7 +3727,7 @@ struct discord_guild_welcome_screen_channel {
 /**
  * @file specs-code/discord/all_structs.h
  * @author cee-studio
- * @date 21 Jun 2021
+ * @date 30 Jun 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/invite
  */
@@ -3767,7 +3767,7 @@ struct discord_get_invite_params {
 /**
  * @file specs-code/discord/all_structs.h
  * @author cee-studio
- * @date 21 Jun 2021
+ * @date 30 Jun 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/invite
  */
@@ -3876,7 +3876,7 @@ struct discord_invite_metadata {
 /**
  * @file specs-code/discord/all_structs.h
  * @author cee-studio
- * @date 21 Jun 2021
+ * @date 30 Jun 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/topics/permissions
  */
@@ -3896,8 +3896,8 @@ struct discord_permissions_role {
   u64_snowflake_t id;
 
   /* specs/discord/permissions.json:53:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]" }}' */
-  char name[MAX_NAME_LEN];
+     '{ "name": "name", "type":{ "base":"char", "dec":"[DISCORD_MAX_NAME_LEN]" }}' */
+  char name[DISCORD_MAX_NAME_LEN];
 
   /* specs/discord/permissions.json:54:20
      '{ "name": "color", "type":{ "base":"int" }}' */
@@ -3981,7 +3981,7 @@ struct discord_permissions_role_tags {
 /**
  * @file specs-code/discord/all_structs.h
  * @author cee-studio
- * @date 21 Jun 2021
+ * @date 30 Jun 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/user
  */
@@ -4054,7 +4054,7 @@ struct discord_create_group_dm_params {
 /**
  * @file specs-code/discord/all_structs.h
  * @author cee-studio
- * @date 21 Jun 2021
+ * @date 30 Jun 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/user
  */
@@ -4075,12 +4075,12 @@ struct discord_user {
   u64_snowflake_t id;
 
   /* specs/discord/user.json:46:24
-     '{ "name": "username", "type":{ "base":"char", "dec":"[MAX_USERNAME_LEN]"}}' */
-  char username[MAX_USERNAME_LEN];
+     '{ "name": "username", "type":{ "base":"char", "dec":"[DISCORD_MAX_USERNAME_LEN]"}}' */
+  char username[DISCORD_MAX_USERNAME_LEN];
 
   /* specs/discord/user.json:47:24
-     '{ "name": "discriminator", "type":{ "base":"char", "dec":"[MAX_DISCRIMINATOR_LEN]" }}' */
-  char discriminator[MAX_DISCRIMINATOR_LEN];
+     '{ "name": "discriminator", "type":{ "base":"char", "dec":"[DISCORD_MAX_DISCRIMINATOR_LEN]" }}' */
+  char discriminator[DISCORD_MAX_DISCRIMINATOR_LEN];
 
   /* specs/discord/user.json:48:24
      '{ "name": "avatar", "type":{ "base":"char", "dec":"[MAX_SHA256_LEN]" }}' */
@@ -4202,7 +4202,7 @@ struct discord_connection {
 /**
  * @file specs-code/discord/all_structs.h
  * @author cee-studio
- * @date 21 Jun 2021
+ * @date 30 Jun 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/topics/voice-connections
  */
@@ -4217,7 +4217,7 @@ struct discord_connection {
 /**
  * @file specs-code/discord/all_structs.h
  * @author cee-studio
- * @date 21 Jun 2021
+ * @date 30 Jun 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/voice
  */
@@ -4344,7 +4344,7 @@ struct discord_voice_region {
 /**
  * @file specs-code/discord/all_structs.h
  * @author cee-studio
- * @date 21 Jun 2021
+ * @date 30 Jun 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/webhook
  */
@@ -4539,7 +4539,7 @@ struct discord_edit_webhook_message_params {
 /**
  * @file specs-code/discord/all_structs.h
  * @author cee-studio
- * @date 21 Jun 2021
+ * @date 30 Jun 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/webhook
  */
@@ -4573,8 +4573,8 @@ struct discord_webhook {
   struct discord_user *user;
 
   /* specs/discord/webhook.json:17:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[WEBHOOK_NAME_LEN]" }}' */
-  char name[WEBHOOK_NAME_LEN];
+     '{ "name": "name", "type":{ "base":"char", "dec":"[DISCORD_WEBHOOK_NAME_LEN]" }}' */
+  char name[DISCORD_WEBHOOK_NAME_LEN];
 
   /* specs/discord/webhook.json:18:20
      '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}' */

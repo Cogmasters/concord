@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/guild.c
  * @author cee-studio
- * @date 21 Jun 2021
+ * @date 30 Jun 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/guild
  */
@@ -17,8 +17,8 @@ void discord_guild_from_json(char *json, size_t len, struct discord_guild *p)
   /* specs/discord/guild.json:12:78
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"id"}' */
                 "(id):F,"
-  /* specs/discord/guild.json:13:66
-     '{"type":{"base":"char", "dec":"[MAX_NAME_LEN]"}, "name":"name"}' */
+  /* specs/discord/guild.json:13:74
+     '{"type":{"base":"char", "dec":"[DISCORD_MAX_NAME_LEN]"}, "name":"name"}' */
                 "(name):s,"
   /* specs/discord/guild.json:14:70
      '{"type":{"base":"char", "dec":"*", "nullable":true}, "name":"icon"}' */
@@ -162,8 +162,8 @@ void discord_guild_from_json(char *json, size_t len, struct discord_guild *p)
   /* specs/discord/guild.json:12:78
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"id"}' */
                 cee_strtoull, &p->id,
-  /* specs/discord/guild.json:13:66
-     '{"type":{"base":"char", "dec":"[MAX_NAME_LEN]"}, "name":"name"}' */
+  /* specs/discord/guild.json:13:74
+     '{"type":{"base":"char", "dec":"[DISCORD_MAX_NAME_LEN]"}, "name":"name"}' */
                 p->name,
   /* specs/discord/guild.json:14:70
      '{"type":{"base":"char", "dec":"*", "nullable":true}, "name":"icon"}' */
@@ -314,8 +314,8 @@ static void discord_guild_use_default_inject_settings(struct discord_guild *p)
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"id"}' */
   p->__M.arg_switches[0] = &p->id;
 
-  /* specs/discord/guild.json:13:66
-     '{"type":{"base":"char", "dec":"[MAX_NAME_LEN]"}, "name":"name"}' */
+  /* specs/discord/guild.json:13:74
+     '{"type":{"base":"char", "dec":"[DISCORD_MAX_NAME_LEN]"}, "name":"name"}' */
   p->__M.arg_switches[1] = p->name;
 
   /* specs/discord/guild.json:14:70
@@ -508,8 +508,8 @@ size_t discord_guild_to_json(char *json, size_t len, struct discord_guild *p)
   /* specs/discord/guild.json:12:78
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"id"}' */
                 "(id):|F|,"
-  /* specs/discord/guild.json:13:66
-     '{"type":{"base":"char", "dec":"[MAX_NAME_LEN]"}, "name":"name"}' */
+  /* specs/discord/guild.json:13:74
+     '{"type":{"base":"char", "dec":"[DISCORD_MAX_NAME_LEN]"}, "name":"name"}' */
                 "(name):s,"
   /* specs/discord/guild.json:14:70
      '{"type":{"base":"char", "dec":"*", "nullable":true}, "name":"icon"}' */
@@ -651,8 +651,8 @@ size_t discord_guild_to_json(char *json, size_t len, struct discord_guild *p)
   /* specs/discord/guild.json:12:78
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"id"}' */
                 cee_ulltostr, &p->id,
-  /* specs/discord/guild.json:13:66
-     '{"type":{"base":"char", "dec":"[MAX_NAME_LEN]"}, "name":"name"}' */
+  /* specs/discord/guild.json:13:74
+     '{"type":{"base":"char", "dec":"[DISCORD_MAX_NAME_LEN]"}, "name":"name"}' */
                 p->name,
   /* specs/discord/guild.json:14:70
      '{"type":{"base":"char", "dec":"*", "nullable":true}, "name":"icon"}' */
@@ -835,8 +835,8 @@ void discord_guild_cleanup(struct discord_guild *d) {
   /* specs/discord/guild.json:12:78
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"id"}' */
   // p->id is a scalar
-  /* specs/discord/guild.json:13:66
-     '{"type":{"base":"char", "dec":"[MAX_NAME_LEN]"}, "name":"name"}' */
+  /* specs/discord/guild.json:13:74
+     '{"type":{"base":"char", "dec":"[DISCORD_MAX_NAME_LEN]"}, "name":"name"}' */
   // p->name is a scalar
   /* specs/discord/guild.json:14:70
      '{"type":{"base":"char", "dec":"*", "nullable":true}, "name":"icon"}' */
@@ -996,8 +996,8 @@ void discord_guild_init(struct discord_guild *p) {
   /* specs/discord/guild.json:12:78
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"id"}' */
 
-  /* specs/discord/guild.json:13:66
-     '{"type":{"base":"char", "dec":"[MAX_NAME_LEN]"}, "name":"name"}' */
+  /* specs/discord/guild.json:13:74
+     '{"type":{"base":"char", "dec":"[DISCORD_MAX_NAME_LEN]"}, "name":"name"}' */
 
   /* specs/discord/guild.json:14:70
      '{"type":{"base":"char", "dec":"*", "nullable":true}, "name":"icon"}' */
@@ -1520,7 +1520,7 @@ void discord_guild_preview_from_json(char *json, size_t len, struct discord_guil
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}}' */
                 "(id):F,"
   /* specs/discord/guild.json:174:18
-     '{"name":"name", "type":{"base":"char", "dec":"[MAX_NAME_LEN]"}}' */
+     '{"name":"name", "type":{"base":"char", "dec":"[DISCORD_MAX_NAME_LEN]"}}' */
                 "(name):s,"
   /* specs/discord/guild.json:175:18
      '{"name":"icon", "type":{"base":"char", "dec":"*", "nullable":true}}' */
@@ -1543,7 +1543,7 @@ void discord_guild_preview_from_json(char *json, size_t len, struct discord_guil
      '{"name":"approximate_presence_count", "type":{"base":"int"}}' */
                 "(approximate_presence_count):d,"
   /* specs/discord/guild.json:182:18
-     '{"name":"description", "type":{"base":"char", "dec":"[MAX_DESCRIPTION_LEN]"}}' */
+     '{"name":"description", "type":{"base":"char", "dec":"[DISCORD_MAX_DESCRIPTION_LEN]"}}' */
                 "(description):s,"
                 "@arg_switches:b"
                 "@record_defined"
@@ -1552,7 +1552,7 @@ void discord_guild_preview_from_json(char *json, size_t len, struct discord_guil
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}}' */
                 cee_strtoull, &p->id,
   /* specs/discord/guild.json:174:18
-     '{"name":"name", "type":{"base":"char", "dec":"[MAX_NAME_LEN]"}}' */
+     '{"name":"name", "type":{"base":"char", "dec":"[DISCORD_MAX_NAME_LEN]"}}' */
                 p->name,
   /* specs/discord/guild.json:175:18
      '{"name":"icon", "type":{"base":"char", "dec":"*", "nullable":true}}' */
@@ -1575,7 +1575,7 @@ void discord_guild_preview_from_json(char *json, size_t len, struct discord_guil
      '{"name":"approximate_presence_count", "type":{"base":"int"}}' */
                 &p->approximate_presence_count,
   /* specs/discord/guild.json:182:18
-     '{"name":"description", "type":{"base":"char", "dec":"[MAX_DESCRIPTION_LEN]"}}' */
+     '{"name":"description", "type":{"base":"char", "dec":"[DISCORD_MAX_DESCRIPTION_LEN]"}}' */
                 p->description,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
@@ -1591,7 +1591,7 @@ static void discord_guild_preview_use_default_inject_settings(struct discord_gui
   p->__M.arg_switches[0] = &p->id;
 
   /* specs/discord/guild.json:174:18
-     '{"name":"name", "type":{"base":"char", "dec":"[MAX_NAME_LEN]"}}' */
+     '{"name":"name", "type":{"base":"char", "dec":"[DISCORD_MAX_NAME_LEN]"}}' */
   p->__M.arg_switches[1] = p->name;
 
   /* specs/discord/guild.json:175:18
@@ -1622,7 +1622,7 @@ static void discord_guild_preview_use_default_inject_settings(struct discord_gui
   p->__M.arg_switches[8] = &p->approximate_presence_count;
 
   /* specs/discord/guild.json:182:18
-     '{"name":"description", "type":{"base":"char", "dec":"[MAX_DESCRIPTION_LEN]"}}' */
+     '{"name":"description", "type":{"base":"char", "dec":"[DISCORD_MAX_DESCRIPTION_LEN]"}}' */
   p->__M.arg_switches[9] = p->description;
 
 }
@@ -1636,7 +1636,7 @@ size_t discord_guild_preview_to_json(char *json, size_t len, struct discord_guil
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}}' */
                 "(id):|F|,"
   /* specs/discord/guild.json:174:18
-     '{"name":"name", "type":{"base":"char", "dec":"[MAX_NAME_LEN]"}}' */
+     '{"name":"name", "type":{"base":"char", "dec":"[DISCORD_MAX_NAME_LEN]"}}' */
                 "(name):s,"
   /* specs/discord/guild.json:175:18
      '{"name":"icon", "type":{"base":"char", "dec":"*", "nullable":true}}' */
@@ -1659,14 +1659,14 @@ size_t discord_guild_preview_to_json(char *json, size_t len, struct discord_guil
      '{"name":"approximate_presence_count", "type":{"base":"int"}}' */
                 "(approximate_presence_count):d,"
   /* specs/discord/guild.json:182:18
-     '{"name":"description", "type":{"base":"char", "dec":"[MAX_DESCRIPTION_LEN]"}}' */
+     '{"name":"description", "type":{"base":"char", "dec":"[DISCORD_MAX_DESCRIPTION_LEN]"}}' */
                 "(description):s,"
                 "@arg_switches:b",
   /* specs/discord/guild.json:173:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}}' */
                 cee_ulltostr, &p->id,
   /* specs/discord/guild.json:174:18
-     '{"name":"name", "type":{"base":"char", "dec":"[MAX_NAME_LEN]"}}' */
+     '{"name":"name", "type":{"base":"char", "dec":"[DISCORD_MAX_NAME_LEN]"}}' */
                 p->name,
   /* specs/discord/guild.json:175:18
      '{"name":"icon", "type":{"base":"char", "dec":"*", "nullable":true}}' */
@@ -1689,7 +1689,7 @@ size_t discord_guild_preview_to_json(char *json, size_t len, struct discord_guil
      '{"name":"approximate_presence_count", "type":{"base":"int"}}' */
                 &p->approximate_presence_count,
   /* specs/discord/guild.json:182:18
-     '{"name":"description", "type":{"base":"char", "dec":"[MAX_DESCRIPTION_LEN]"}}' */
+     '{"name":"description", "type":{"base":"char", "dec":"[DISCORD_MAX_DESCRIPTION_LEN]"}}' */
                 p->description,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
@@ -1737,7 +1737,7 @@ void discord_guild_preview_cleanup(struct discord_guild_preview *d) {
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}}' */
   // p->id is a scalar
   /* specs/discord/guild.json:174:18
-     '{"name":"name", "type":{"base":"char", "dec":"[MAX_NAME_LEN]"}}' */
+     '{"name":"name", "type":{"base":"char", "dec":"[DISCORD_MAX_NAME_LEN]"}}' */
   // p->name is a scalar
   /* specs/discord/guild.json:175:18
      '{"name":"icon", "type":{"base":"char", "dec":"*", "nullable":true}}' */
@@ -1765,7 +1765,7 @@ void discord_guild_preview_cleanup(struct discord_guild_preview *d) {
      '{"name":"approximate_presence_count", "type":{"base":"int"}}' */
   // p->approximate_presence_count is a scalar
   /* specs/discord/guild.json:182:18
-     '{"name":"description", "type":{"base":"char", "dec":"[MAX_DESCRIPTION_LEN]"}}' */
+     '{"name":"description", "type":{"base":"char", "dec":"[DISCORD_MAX_DESCRIPTION_LEN]"}}' */
   // p->description is a scalar
 }
 
@@ -1775,7 +1775,7 @@ void discord_guild_preview_init(struct discord_guild_preview *p) {
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}}' */
 
   /* specs/discord/guild.json:174:18
-     '{"name":"name", "type":{"base":"char", "dec":"[MAX_NAME_LEN]"}}' */
+     '{"name":"name", "type":{"base":"char", "dec":"[DISCORD_MAX_NAME_LEN]"}}' */
 
   /* specs/discord/guild.json:175:18
      '{"name":"icon", "type":{"base":"char", "dec":"*", "nullable":true}}' */
@@ -1799,7 +1799,7 @@ void discord_guild_preview_init(struct discord_guild_preview *p) {
      '{"name":"approximate_presence_count", "type":{"base":"int"}}' */
 
   /* specs/discord/guild.json:182:18
-     '{"name":"description", "type":{"base":"char", "dec":"[MAX_DESCRIPTION_LEN]"}}' */
+     '{"name":"description", "type":{"base":"char", "dec":"[DISCORD_MAX_DESCRIPTION_LEN]"}}' */
 
 }
 struct discord_guild_preview* discord_guild_preview_alloc() {
@@ -1991,7 +1991,7 @@ void discord_guild_member_from_json(char *json, size_t len, struct discord_guild
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }, "option":true}' */
                 "(user):F,"
   /* specs/discord/guild.json:203:20
-     '{ "name": "nick", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]"}, "option":true}' */
+     '{ "name": "nick", "type":{ "base":"char", "dec":"[DISCORD_MAX_NAME_LEN]"}, "option":true}' */
                 "(nick):s,"
   /* specs/discord/guild.json:204:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl"}, "comment":"array of role object ids"}' */
@@ -2021,7 +2021,7 @@ void discord_guild_member_from_json(char *json, size_t len, struct discord_guild
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }, "option":true}' */
                 discord_user_from_json, p->user,
   /* specs/discord/guild.json:203:20
-     '{ "name": "nick", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]"}, "option":true}' */
+     '{ "name": "nick", "type":{ "base":"char", "dec":"[DISCORD_MAX_NAME_LEN]"}, "option":true}' */
                 p->nick,
   /* specs/discord/guild.json:204:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl"}, "comment":"array of role object ids"}' */
@@ -2058,7 +2058,7 @@ static void discord_guild_member_use_default_inject_settings(struct discord_guil
   p->__M.arg_switches[0] = p->user;
 
   /* specs/discord/guild.json:203:20
-     '{ "name": "nick", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]"}, "option":true}' */
+     '{ "name": "nick", "type":{ "base":"char", "dec":"[DISCORD_MAX_NAME_LEN]"}, "option":true}' */
   p->__M.arg_switches[1] = p->nick;
 
   /* specs/discord/guild.json:204:20
@@ -2100,7 +2100,7 @@ size_t discord_guild_member_to_json(char *json, size_t len, struct discord_guild
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }, "option":true}' */
                 "(user):F,"
   /* specs/discord/guild.json:203:20
-     '{ "name": "nick", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]"}, "option":true}' */
+     '{ "name": "nick", "type":{ "base":"char", "dec":"[DISCORD_MAX_NAME_LEN]"}, "option":true}' */
                 "(nick):s,"
   /* specs/discord/guild.json:204:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl"}, "comment":"array of role object ids"}' */
@@ -2128,7 +2128,7 @@ size_t discord_guild_member_to_json(char *json, size_t len, struct discord_guild
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }, "option":true}' */
                 discord_user_to_json, p->user,
   /* specs/discord/guild.json:203:20
-     '{ "name": "nick", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]"}, "option":true}' */
+     '{ "name": "nick", "type":{ "base":"char", "dec":"[DISCORD_MAX_NAME_LEN]"}, "option":true}' */
                 p->nick,
   /* specs/discord/guild.json:204:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl"}, "comment":"array of role object ids"}' */
@@ -2198,7 +2198,7 @@ void discord_guild_member_cleanup(struct discord_guild_member *d) {
   if (d->user)
     discord_user_free(d->user);
   /* specs/discord/guild.json:203:20
-     '{ "name": "nick", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]"}, "option":true}' */
+     '{ "name": "nick", "type":{ "base":"char", "dec":"[DISCORD_MAX_NAME_LEN]"}, "option":true}' */
   // p->nick is a scalar
   /* specs/discord/guild.json:204:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl"}, "comment":"array of role object ids"}' */
@@ -2232,7 +2232,7 @@ void discord_guild_member_init(struct discord_guild_member *p) {
   p->user = discord_user_alloc();
 
   /* specs/discord/guild.json:203:20
-     '{ "name": "nick", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]"}, "option":true}' */
+     '{ "name": "nick", "type":{ "base":"char", "dec":"[DISCORD_MAX_NAME_LEN]"}, "option":true}' */
 
   /* specs/discord/guild.json:204:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl"}, "comment":"array of role object ids"}' */
@@ -3145,7 +3145,7 @@ void discord_guild_ban_from_json(char *json, size_t len, struct discord_guild_ba
   size_t r=0;
   r=json_extract(json, len, 
   /* specs/discord/guild.json:278:20
-     '{ "name": "reason", "type":{ "base":"char", "dec":"[MAX_REASON_LEN]" }}' */
+     '{ "name": "reason", "type":{ "base":"char", "dec":"[DISCORD_MAX_REASON_LEN]" }}' */
                 "(reason):s,"
   /* specs/discord/guild.json:279:20
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*"}, "comment":"partial user object"}' */
@@ -3154,7 +3154,7 @@ void discord_guild_ban_from_json(char *json, size_t len, struct discord_guild_ba
                 "@record_defined"
                 "@record_null",
   /* specs/discord/guild.json:278:20
-     '{ "name": "reason", "type":{ "base":"char", "dec":"[MAX_REASON_LEN]" }}' */
+     '{ "name": "reason", "type":{ "base":"char", "dec":"[DISCORD_MAX_REASON_LEN]" }}' */
                 p->reason,
   /* specs/discord/guild.json:279:20
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*"}, "comment":"partial user object"}' */
@@ -3169,7 +3169,7 @@ static void discord_guild_ban_use_default_inject_settings(struct discord_guild_b
 {
   p->__M.enable_arg_switches = true;
   /* specs/discord/guild.json:278:20
-     '{ "name": "reason", "type":{ "base":"char", "dec":"[MAX_REASON_LEN]" }}' */
+     '{ "name": "reason", "type":{ "base":"char", "dec":"[DISCORD_MAX_REASON_LEN]" }}' */
   p->__M.arg_switches[0] = p->reason;
 
   /* specs/discord/guild.json:279:20
@@ -3184,14 +3184,14 @@ size_t discord_guild_ban_to_json(char *json, size_t len, struct discord_guild_ba
   discord_guild_ban_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/discord/guild.json:278:20
-     '{ "name": "reason", "type":{ "base":"char", "dec":"[MAX_REASON_LEN]" }}' */
+     '{ "name": "reason", "type":{ "base":"char", "dec":"[DISCORD_MAX_REASON_LEN]" }}' */
                 "(reason):s,"
   /* specs/discord/guild.json:279:20
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*"}, "comment":"partial user object"}' */
                 "(user):F,"
                 "@arg_switches:b",
   /* specs/discord/guild.json:278:20
-     '{ "name": "reason", "type":{ "base":"char", "dec":"[MAX_REASON_LEN]" }}' */
+     '{ "name": "reason", "type":{ "base":"char", "dec":"[DISCORD_MAX_REASON_LEN]" }}' */
                 p->reason,
   /* specs/discord/guild.json:279:20
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*"}, "comment":"partial user object"}' */
@@ -3239,7 +3239,7 @@ size_t discord_guild_ban_list_to_json_v(char *str, size_t len, void *p){
 
 void discord_guild_ban_cleanup(struct discord_guild_ban *d) {
   /* specs/discord/guild.json:278:20
-     '{ "name": "reason", "type":{ "base":"char", "dec":"[MAX_REASON_LEN]" }}' */
+     '{ "name": "reason", "type":{ "base":"char", "dec":"[DISCORD_MAX_REASON_LEN]" }}' */
   // p->reason is a scalar
   /* specs/discord/guild.json:279:20
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*"}, "comment":"partial user object"}' */
@@ -3250,7 +3250,7 @@ void discord_guild_ban_cleanup(struct discord_guild_ban *d) {
 void discord_guild_ban_init(struct discord_guild_ban *p) {
   memset(p, 0, sizeof(struct discord_guild_ban));
   /* specs/discord/guild.json:278:20
-     '{ "name": "reason", "type":{ "base":"char", "dec":"[MAX_REASON_LEN]" }}' */
+     '{ "name": "reason", "type":{ "base":"char", "dec":"[DISCORD_MAX_REASON_LEN]" }}' */
 
   /* specs/discord/guild.json:279:20
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*"}, "comment":"partial user object"}' */

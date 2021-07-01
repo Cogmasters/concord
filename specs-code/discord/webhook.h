@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/webhook.h
  * @author cee-studio
- * @date 21 Jun 2021
+ * @date 30 Jun 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/webhook
  */
@@ -36,8 +36,8 @@ struct discord_webhook {
   struct discord_user *user;
 
   /* specs/discord/webhook.json:17:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[WEBHOOK_NAME_LEN]" }}' */
-  char name[WEBHOOK_NAME_LEN];
+     '{ "name": "name", "type":{ "base":"char", "dec":"[DISCORD_WEBHOOK_NAME_LEN]" }}' */
+  char name[DISCORD_WEBHOOK_NAME_LEN];
 
   /* specs/discord/webhook.json:18:20
      '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}' */

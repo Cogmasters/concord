@@ -280,7 +280,7 @@ void send_next_question(
   struct session *session, 
   struct question *question)
 {
-  char text[MAX_PAYLOAD_LEN];
+  char text[DISCORD_MAX_PAYLOAD_LEN];
   if (session->curr_question == g_session.questions_per_session) {
     sprintf(text, "You got %d out of %d! (%.1f%%)", \
       session->hits, g_session.questions_per_session,

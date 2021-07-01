@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/audit_log.h
  * @author cee-studio
- * @date 21 Jun 2021
+ * @date 30 Jun 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/audit-log
  */
@@ -139,8 +139,8 @@ struct discord_audit_log_entry {
   struct discord_audit_log_entry_optional_info **options;
 
   /* specs/discord/audit_log.json:74:18
-     '{"name":"reason", "type": {"base":"char", "dec":"[MAX_REASON_LEN]"}}' */
-  char reason[MAX_REASON_LEN];
+     '{"name":"reason", "type": {"base":"char", "dec":"[DISCORD_MAX_REASON_LEN]"}}' */
+  char reason[DISCORD_MAX_REASON_LEN];
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -313,12 +313,12 @@ extern size_t discord_audit_log_change_list_to_json(char *str, size_t len, struc
  */
 struct discord_audit_log_change_key {
   /* specs/discord/audit_log.json:113:18
-     '{"name":"name", "type": {"base":"char", "dec":"[MAX_NAME_LEN]"}}' */
-  char name[MAX_NAME_LEN];
+     '{"name":"name", "type": {"base":"char", "dec":"[DISCORD_MAX_NAME_LEN]"}}' */
+  char name[DISCORD_MAX_NAME_LEN];
 
   /* specs/discord/audit_log.json:114:18
-     '{"name":"description", "type": {"base":"char", "dec":"[MAX_DESCRIPTION_LEN]"}}' */
-  char description[MAX_DESCRIPTION_LEN];
+     '{"name":"description", "type": {"base":"char", "dec":"[DISCORD_MAX_DESCRIPTION_LEN]"}}' */
+  char description[DISCORD_MAX_DESCRIPTION_LEN];
 
   /* specs/discord/audit_log.json:115:18
      '{"name":"icon_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"}, 

@@ -66,7 +66,7 @@ discord_modify_current_user(struct discord *client, struct discord_modify_curren
     .ok_obj = p_user
   };
 
-  char payload[MAX_PAYLOAD_LEN];
+  char payload[DISCORD_MAX_PAYLOAD_LEN];
   size_t ret = discord_modify_current_user_params_to_json(payload, sizeof(payload), params);
 
   struct sized_buffer req_body = { payload, ret };

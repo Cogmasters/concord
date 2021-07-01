@@ -2,7 +2,7 @@
 /**
  * @file specs-code/reddit/all_structs.h
  * @author cee-studio
- * @date 21 Jun 2021
+ * @date 30 Jun 2021
  * @brief Specs generated file
  * @see 
  */
@@ -58,7 +58,7 @@ struct reddit_comment_params {
 /**
  * @file specs-code/reddit/all_structs.h
  * @author cee-studio
- * @date 21 Jun 2021
+ * @date 30 Jun 2021
  * @brief Specs generated file
  * @see https://github.com/reddit-archive/reddit/wiki/OAuth2-Quick-Start-Example
  */
@@ -109,7 +109,7 @@ struct reddit_access_token_params {
 /**
  * @file specs-code/reddit/all_structs.h
  * @author cee-studio
- * @date 21 Jun 2021
+ * @date 30 Jun 2021
  * @brief Specs generated file
  * @see 
  */

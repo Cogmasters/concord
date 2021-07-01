@@ -98,7 +98,7 @@ send_resume(struct discord_gateway *gw)
 {
   gw->is_resumable = false; // reset
 
-  char payload[MAX_PAYLOAD_LEN];
+  char payload[DISCORD_MAX_PAYLOAD_LEN];
   size_t ret = json_inject(payload, sizeof(payload), 
                 "(op):6" // RESUME OPCODE
                 "(d):{"
@@ -130,7 +130,7 @@ send_identify(struct discord_gateway *gw)
     gw->session.concurrent = 0;
   }
 
-  char payload[MAX_PAYLOAD_LEN];
+  char payload[DISCORD_MAX_PAYLOAD_LEN];
   size_t ret = json_inject(payload, sizeof(payload), 
                 "(op):2" // IDENTIFY OPCODE
                 "(d):F",
@@ -871,13 +871,13 @@ on_dispatch(struct discord_gateway *gw)
                                             &cxt.data,
                                             cxt.event);
   switch (mode) {
-  case EVENT_IS_HANDLED: 
+  case DISCORD_EVENT_IGNORE: 
       return;
-  case EVENT_WILL_BE_HANDLED_IN_MAIN_THREAD:
+  case DISCORD_EVENT_MAIN_THREAD:
       cxt.is_main_thread = true;
       dispatch_run(&cxt);
       return;
-  case EVENT_WILL_BE_HANDLED_IN_CHILD_THREAD: {
+  case DISCORD_EVENT_CHILD_THREAD: {
       cxt.is_main_thread = false;
       struct discord_event_cxt *cxt_p = malloc(sizeof(struct discord_event_cxt));
       memcpy(cxt_p, &cxt, sizeof(cxt));
@@ -1052,7 +1052,7 @@ static void noop_idle_cb(struct discord *a, const struct discord_user *b)
 static void noop_event_raw_cb(struct discord *a, enum discord_gateway_events b, struct sized_buffer *c, struct sized_buffer *d)
 { return; }
 static enum discord_event_handling_mode noop_event_handler(struct discord *a, struct discord_user *b, struct sized_buffer *c, enum discord_gateway_events d)
-{ return EVENT_WILL_BE_HANDLED_IN_MAIN_THREAD; }
+{ return DISCORD_EVENT_MAIN_THREAD; }
 
 void
 discord_gateway_init(struct discord_gateway *gw, struct logconf *config, struct sized_buffer *token)

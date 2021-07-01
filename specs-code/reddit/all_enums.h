@@ -2,7 +2,7 @@
 /**
  * @file specs-code/reddit/all_enums.h
  * @author cee-studio
- * @date 21 Jun 2021
+ * @date 30 Jun 2021
  * @brief Specs generated file
  * @see 
  */
@@ -11,7 +11,7 @@
 /**
  * @file specs-code/reddit/all_enums.h
  * @author cee-studio
- * @date 21 Jun 2021
+ * @date 30 Jun 2021
  * @brief Specs generated file
  * @see https://github.com/reddit-archive/reddit/wiki/OAuth2-Quick-Start-Example
  */
@@ -20,7 +20,7 @@
 /**
  * @file specs-code/reddit/all_enums.h
  * @author cee-studio
- * @date 21 Jun 2021
+ * @date 30 Jun 2021
  * @brief Specs generated file
  * @see 
  */

@@ -99,7 +99,7 @@ void embed_from_json(char *str, size_t len, void *p_embed)
 
   json_extract(str, len, "(docs):[L]", &l_docs);
 
-  char field_value[EMBED_FIELD_VALUE_LEN];
+  char field_value[DISCORD_EMBED_FIELD_VALUE_LEN];
   for (size_t i=0; l_docs[i]; ++i) 
   {
     json_extract(l_docs[i]->start, l_docs[i]->size,

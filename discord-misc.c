@@ -205,7 +205,7 @@ discord_embed_set_footer(
   }
 
   struct discord_embed_footer *new_footer = discord_embed_footer_alloc();
-  strncpy(new_footer->text, text, EMBED_FOOTER_TEXT_LEN);
+  strncpy(new_footer->text, text, DISCORD_EMBED_FOOTER_TEXT_LEN);
   if (icon_url)
     asprintf(&new_footer->icon_url, "%s", icon_url);
   if (proxy_icon_url)
@@ -300,7 +300,7 @@ discord_embed_set_provider(struct discord_embed *embed, char name[], char url[])
   if (url)
     asprintf(&new_provider->url, "%s", url);
   if (!IS_EMPTY_STRING(name))
-    strncpy(new_provider->name, name, EMBED_AUTHOR_NAME_LEN);
+    strncpy(new_provider->name, name, DISCORD_EMBED_AUTHOR_NAME_LEN);
 
   embed->provider = new_provider;
 }
@@ -319,7 +319,7 @@ discord_embed_set_author(
 
   struct discord_embed_author *new_author = discord_embed_author_alloc();
   if (!IS_EMPTY_STRING(name))
-    strncpy(new_author->name, name, EMBED_AUTHOR_NAME_LEN);
+    strncpy(new_author->name, name, DISCORD_EMBED_AUTHOR_NAME_LEN);
 
   if (url)
     asprintf(&new_author->url, "%s", url);
@@ -333,8 +333,8 @@ discord_embed_set_author(
 void
 discord_embed_add_field(struct discord_embed *embed, char name[], char value[], bool Inline)
 {
-  if (ntl_length((ntl_t)embed->fields) >= EMBED_MAX_FIELDS) {
-    log_error("Reach embed fields threshold (max %d)", EMBED_MAX_FIELDS);
+  if (ntl_length((ntl_t)embed->fields) >= DISCORD_EMBED_MAX_FIELDS) {
+    log_error("Reach embed fields threshold (max %d)", DISCORD_EMBED_MAX_FIELDS);
     return;
   }
   if (IS_EMPTY_STRING(name)) {
@@ -462,7 +462,7 @@ discord_disconnect_guild_member(
     .ok_obj = p_member,
   };
 
-  char payload[MAX_PAYLOAD_LEN];
+  char payload[DISCORD_MAX_PAYLOAD_LEN];
   size_t ret = json_inject(payload, sizeof(payload), "(channel_id):null");
   struct sized_buffer req_body = { payload, ret };
 

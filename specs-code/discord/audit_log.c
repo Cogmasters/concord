@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/audit_log.c
  * @author cee-studio
- * @date 21 Jun 2021
+ * @date 30 Jun 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/audit-log
  */
@@ -344,7 +344,7 @@ void discord_audit_log_entry_from_json(char *json, size_t len, struct discord_au
      '{"name":"options", "type": {"base":"struct discord_audit_log_entry_optional_info", "dec":"ntl"}}' */
                 "(options):F,"
   /* specs/discord/audit_log.json:74:18
-     '{"name":"reason", "type": {"base":"char", "dec":"[MAX_REASON_LEN]"}}' */
+     '{"name":"reason", "type": {"base":"char", "dec":"[DISCORD_MAX_REASON_LEN]"}}' */
                 "(reason):s,"
                 "@arg_switches:b"
                 "@record_defined"
@@ -368,7 +368,7 @@ void discord_audit_log_entry_from_json(char *json, size_t len, struct discord_au
      '{"name":"options", "type": {"base":"struct discord_audit_log_entry_optional_info", "dec":"ntl"}}' */
                 discord_audit_log_entry_optional_info_list_from_json, &p->options,
   /* specs/discord/audit_log.json:74:18
-     '{"name":"reason", "type": {"base":"char", "dec":"[MAX_REASON_LEN]"}}' */
+     '{"name":"reason", "type": {"base":"char", "dec":"[DISCORD_MAX_REASON_LEN]"}}' */
                 p->reason,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
@@ -404,7 +404,7 @@ static void discord_audit_log_entry_use_default_inject_settings(struct discord_a
   p->__M.arg_switches[5] = p->options;
 
   /* specs/discord/audit_log.json:74:18
-     '{"name":"reason", "type": {"base":"char", "dec":"[MAX_REASON_LEN]"}}' */
+     '{"name":"reason", "type": {"base":"char", "dec":"[DISCORD_MAX_REASON_LEN]"}}' */
   p->__M.arg_switches[6] = p->reason;
 
 }
@@ -433,7 +433,7 @@ size_t discord_audit_log_entry_to_json(char *json, size_t len, struct discord_au
      '{"name":"options", "type": {"base":"struct discord_audit_log_entry_optional_info", "dec":"ntl"}}' */
                 "(options):F,"
   /* specs/discord/audit_log.json:74:18
-     '{"name":"reason", "type": {"base":"char", "dec":"[MAX_REASON_LEN]"}}' */
+     '{"name":"reason", "type": {"base":"char", "dec":"[DISCORD_MAX_REASON_LEN]"}}' */
                 "(reason):s,"
                 "@arg_switches:b",
   /* specs/discord/audit_log.json:68:18
@@ -455,7 +455,7 @@ size_t discord_audit_log_entry_to_json(char *json, size_t len, struct discord_au
      '{"name":"options", "type": {"base":"struct discord_audit_log_entry_optional_info", "dec":"ntl"}}' */
                 discord_audit_log_entry_optional_info_list_to_json, p->options,
   /* specs/discord/audit_log.json:74:18
-     '{"name":"reason", "type": {"base":"char", "dec":"[MAX_REASON_LEN]"}}' */
+     '{"name":"reason", "type": {"base":"char", "dec":"[DISCORD_MAX_REASON_LEN]"}}' */
                 p->reason,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
@@ -521,7 +521,7 @@ void discord_audit_log_entry_cleanup(struct discord_audit_log_entry *d) {
   if (d->options)
     discord_audit_log_entry_optional_info_list_free(d->options);
   /* specs/discord/audit_log.json:74:18
-     '{"name":"reason", "type": {"base":"char", "dec":"[MAX_REASON_LEN]"}}' */
+     '{"name":"reason", "type": {"base":"char", "dec":"[DISCORD_MAX_REASON_LEN]"}}' */
   // p->reason is a scalar
 }
 
@@ -546,7 +546,7 @@ void discord_audit_log_entry_init(struct discord_audit_log_entry *p) {
      '{"name":"options", "type": {"base":"struct discord_audit_log_entry_optional_info", "dec":"ntl"}}' */
 
   /* specs/discord/audit_log.json:74:18
-     '{"name":"reason", "type": {"base":"char", "dec":"[MAX_REASON_LEN]"}}' */
+     '{"name":"reason", "type": {"base":"char", "dec":"[DISCORD_MAX_REASON_LEN]"}}' */
 
 }
 struct discord_audit_log_entry* discord_audit_log_entry_alloc() {
@@ -1044,10 +1044,10 @@ void discord_audit_log_change_key_from_json(char *json, size_t len, struct disco
   size_t r=0;
   r=json_extract(json, len, 
   /* specs/discord/audit_log.json:113:18
-     '{"name":"name", "type": {"base":"char", "dec":"[MAX_NAME_LEN]"}}' */
+     '{"name":"name", "type": {"base":"char", "dec":"[DISCORD_MAX_NAME_LEN]"}}' */
                 "(name):s,"
   /* specs/discord/audit_log.json:114:18
-     '{"name":"description", "type": {"base":"char", "dec":"[MAX_DESCRIPTION_LEN]"}}' */
+     '{"name":"description", "type": {"base":"char", "dec":"[DISCORD_MAX_DESCRIPTION_LEN]"}}' */
                 "(description):s,"
   /* specs/discord/audit_log.json:115:18
      '{"name":"icon_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"}, 
@@ -1211,10 +1211,10 @@ void discord_audit_log_change_key_from_json(char *json, size_t len, struct disco
                 "@record_defined"
                 "@record_null",
   /* specs/discord/audit_log.json:113:18
-     '{"name":"name", "type": {"base":"char", "dec":"[MAX_NAME_LEN]"}}' */
+     '{"name":"name", "type": {"base":"char", "dec":"[DISCORD_MAX_NAME_LEN]"}}' */
                 p->name,
   /* specs/discord/audit_log.json:114:18
-     '{"name":"description", "type": {"base":"char", "dec":"[MAX_DESCRIPTION_LEN]"}}' */
+     '{"name":"description", "type": {"base":"char", "dec":"[DISCORD_MAX_DESCRIPTION_LEN]"}}' */
                 p->description,
   /* specs/discord/audit_log.json:115:18
      '{"name":"icon_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"}, 
@@ -1384,11 +1384,11 @@ static void discord_audit_log_change_key_use_default_inject_settings(struct disc
 {
   p->__M.enable_arg_switches = true;
   /* specs/discord/audit_log.json:113:18
-     '{"name":"name", "type": {"base":"char", "dec":"[MAX_NAME_LEN]"}}' */
+     '{"name":"name", "type": {"base":"char", "dec":"[DISCORD_MAX_NAME_LEN]"}}' */
   p->__M.arg_switches[0] = p->name;
 
   /* specs/discord/audit_log.json:114:18
-     '{"name":"description", "type": {"base":"char", "dec":"[MAX_DESCRIPTION_LEN]"}}' */
+     '{"name":"description", "type": {"base":"char", "dec":"[DISCORD_MAX_DESCRIPTION_LEN]"}}' */
   p->__M.arg_switches[1] = p->description;
 
   /* specs/discord/audit_log.json:115:18
@@ -1609,10 +1609,10 @@ size_t discord_audit_log_change_key_to_json(char *json, size_t len, struct disco
   discord_audit_log_change_key_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/discord/audit_log.json:113:18
-     '{"name":"name", "type": {"base":"char", "dec":"[MAX_NAME_LEN]"}}' */
+     '{"name":"name", "type": {"base":"char", "dec":"[DISCORD_MAX_NAME_LEN]"}}' */
                 "(name):s,"
   /* specs/discord/audit_log.json:114:18
-     '{"name":"description", "type": {"base":"char", "dec":"[MAX_DESCRIPTION_LEN]"}}' */
+     '{"name":"description", "type": {"base":"char", "dec":"[DISCORD_MAX_DESCRIPTION_LEN]"}}' */
                 "(description):s,"
   /* specs/discord/audit_log.json:115:18
      '{"name":"icon_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"}, 
@@ -1774,10 +1774,10 @@ size_t discord_audit_log_change_key_to_json(char *json, size_t len, struct disco
                 "(user_limit):d,"
                 "@arg_switches:b",
   /* specs/discord/audit_log.json:113:18
-     '{"name":"name", "type": {"base":"char", "dec":"[MAX_NAME_LEN]"}}' */
+     '{"name":"name", "type": {"base":"char", "dec":"[DISCORD_MAX_NAME_LEN]"}}' */
                 p->name,
   /* specs/discord/audit_log.json:114:18
-     '{"name":"description", "type": {"base":"char", "dec":"[MAX_DESCRIPTION_LEN]"}}' */
+     '{"name":"description", "type": {"base":"char", "dec":"[DISCORD_MAX_DESCRIPTION_LEN]"}}' */
                 p->description,
   /* specs/discord/audit_log.json:115:18
      '{"name":"icon_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"}, 
@@ -1980,10 +1980,10 @@ size_t discord_audit_log_change_key_list_to_json_v(char *str, size_t len, void *
 
 void discord_audit_log_change_key_cleanup(struct discord_audit_log_change_key *d) {
   /* specs/discord/audit_log.json:113:18
-     '{"name":"name", "type": {"base":"char", "dec":"[MAX_NAME_LEN]"}}' */
+     '{"name":"name", "type": {"base":"char", "dec":"[DISCORD_MAX_NAME_LEN]"}}' */
   // p->name is a scalar
   /* specs/discord/audit_log.json:114:18
-     '{"name":"description", "type": {"base":"char", "dec":"[MAX_DESCRIPTION_LEN]"}}' */
+     '{"name":"description", "type": {"base":"char", "dec":"[DISCORD_MAX_DESCRIPTION_LEN]"}}' */
   // p->description is a scalar
   /* specs/discord/audit_log.json:115:18
      '{"name":"icon_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"}, 
@@ -2168,10 +2168,10 @@ void discord_audit_log_change_key_cleanup(struct discord_audit_log_change_key *d
 void discord_audit_log_change_key_init(struct discord_audit_log_change_key *p) {
   memset(p, 0, sizeof(struct discord_audit_log_change_key));
   /* specs/discord/audit_log.json:113:18
-     '{"name":"name", "type": {"base":"char", "dec":"[MAX_NAME_LEN]"}}' */
+     '{"name":"name", "type": {"base":"char", "dec":"[DISCORD_MAX_NAME_LEN]"}}' */
 
   /* specs/discord/audit_log.json:114:18
-     '{"name":"description", "type": {"base":"char", "dec":"[MAX_DESCRIPTION_LEN]"}}' */
+     '{"name":"description", "type": {"base":"char", "dec":"[DISCORD_MAX_DESCRIPTION_LEN]"}}' */
 
   /* specs/discord/audit_log.json:115:18
      '{"name":"icon_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"}, 

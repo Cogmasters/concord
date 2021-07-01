@@ -53,7 +53,7 @@ discord_modify_channel(
     .ok_obj = p_channel
   };
 
-  char payload[MAX_PAYLOAD_LEN];
+  char payload[DISCORD_MAX_PAYLOAD_LEN];
   size_t ret = discord_modify_channel_params_to_json(payload, sizeof(payload), params);
 
   struct sized_buffer req_body = { payload, ret };
@@ -230,9 +230,9 @@ discord_create_message(
         log_error("Missing 'content'");
         return ORCA_BAD_PARAMETER;
       }
-      if (!cee_str_bounds_check(params->content, MAX_MESSAGE_LEN)) {
+      if (!cee_str_bounds_check(params->content, DISCORD_MAX_MESSAGE_LEN)) {
         log_error("Content length exceeds %d characters threshold (%zu)",
-            MAX_MESSAGE_LEN, strlen(params->content));
+            DISCORD_MAX_MESSAGE_LEN, strlen(params->content));
         return ORCA_BAD_PARAMETER;
       }
     }
@@ -764,7 +764,7 @@ discord_edit_channel_permissions(
     return ORCA_MISSING_PARAMETER;
   }
 
-  char payload[MAX_PAYLOAD_LEN];
+  char payload[DISCORD_MAX_PAYLOAD_LEN];
   size_t ret = discord_edit_channel_permissions_params_to_json(payload, sizeof(payload), params);
   struct sized_buffer req_body = { payload, ret };
 
@@ -822,7 +822,7 @@ discord_create_channel_invite(
     .ok_obj = p_invite
   };
 
-  char payload[MAX_PAYLOAD_LEN];
+  char payload[DISCORD_MAX_PAYLOAD_LEN];
   size_t ret;
   if (params)
     ret = discord_create_channel_invite_params_to_json(payload, sizeof(payload), params);
@@ -1005,7 +1005,7 @@ discord_group_dm_add_recipient(
     return ORCA_MISSING_PARAMETER;
   }
 
-  char payload[MAX_PAYLOAD_LEN];
+  char payload[DISCORD_MAX_PAYLOAD_LEN];
   size_t ret = discord_group_dm_add_recipient_params_to_json(payload, sizeof(payload), params);
   struct sized_buffer req_body = { payload, ret };
 
@@ -1068,7 +1068,7 @@ discord_start_thread_with_message(
     .ok_obj = p_channel
   };
 
-  char payload[MAX_PAYLOAD_LEN];
+  char payload[DISCORD_MAX_PAYLOAD_LEN];
   size_t ret = discord_start_thread_with_message_params_to_json(payload, sizeof(payload), params);
   struct sized_buffer req_body = { payload, ret };
 
@@ -1102,7 +1102,7 @@ discord_start_thread_without_message(
     .ok_obj = p_channel
   };
 
-  char payload[MAX_PAYLOAD_LEN];
+  char payload[DISCORD_MAX_PAYLOAD_LEN];
   size_t ret = discord_start_thread_without_message_params_to_json(payload, sizeof(payload), params);
   struct sized_buffer req_body = { payload, ret };
 

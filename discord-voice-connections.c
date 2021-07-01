@@ -37,7 +37,7 @@ send_resume(struct discord_voice *vc)
 {
   vc->is_resumable = false; // reset
 
-  char payload[MAX_PAYLOAD_LEN];
+  char payload[DISCORD_MAX_PAYLOAD_LEN];
   int ret = json_inject(payload, sizeof(payload), 
               "(op):7" // RESUME OPCODE
               "(d):{"
@@ -57,7 +57,7 @@ send_resume(struct discord_voice *vc)
 static void
 send_identify(struct discord_voice *vc)
 {
-  char payload[MAX_PAYLOAD_LEN];
+  char payload[DISCORD_MAX_PAYLOAD_LEN];
   int ret = json_inject(payload, sizeof(payload), 
               "(op):0" // IDENTIFY OPCODE
               "(d):{"
@@ -470,7 +470,7 @@ discord_join_vc(
   bool found_a_running_vcs = false;
   pthread_mutex_lock(&client_lock);
   struct discord_voice *vc=NULL;
-  for (size_t i=0; i < NUM_VCS; ++i) {
+  for (size_t i=0; i < DISCORD_MAX_VOICE_CONNECTIONS; ++i) {
     if (0 == client->vcs[i].guild_id) {
       log_debug("found an unused vcs at %d", i);
       vc = client->vcs+i;
@@ -515,7 +515,7 @@ _discord_on_voice_state_update(struct discord *client, struct discord_voice_stat
   log_info("on_voice_state_update");
   pthread_mutex_lock(&client_lock);
   struct discord_voice *vc=NULL;
-  for (int i=0; i < NUM_VCS; ++i) {
+  for (int i=0; i < DISCORD_MAX_VOICE_CONNECTIONS; ++i) {
     if (vs->guild_id == client->vcs[i].guild_id) {
       vc = client->vcs+i;
       if (vs->channel_id) {
@@ -635,7 +635,7 @@ _discord_on_voice_server_update(struct discord *client, u64_snowflake_t guild_id
   log_info("on_voice_server_update is called");
   struct discord_voice *vc = NULL;
   pthread_mutex_lock(&client_lock);
-  for (size_t i=0; i < NUM_VCS; ++i) {
+  for (size_t i=0; i < DISCORD_MAX_VOICE_CONNECTIONS; ++i) {
     if (guild_id == client->vcs[i].guild_id) {
       vc = client->vcs+i;
       break;
@@ -705,7 +705,7 @@ discord_voice_connections_init(struct discord *client)
   client->voice_cbs.on_speaking = noop_on_speaking;
   client->voice_cbs.on_udp_server_connected = noop_on_udp_server_connected;
 
-  for (int i=0; i < NUM_VCS; ++i) {
+  for (int i=0; i < DISCORD_MAX_VOICE_CONNECTIONS; ++i) {
     client->vcs[i].p_voice_cbs = &client->voice_cbs;
   }
 }

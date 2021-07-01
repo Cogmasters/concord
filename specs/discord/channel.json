@@ -33,9 +33,9 @@
          "option":true, "inject_if_not":0 },
         {"type":{"base":"struct discord_channel_overwrite", "dec":"ntl"}, "name":"permission_overwrites",
          "option":true, "inject_if_not":null }, 
-        {"type":{"base":"char", "dec":"[MAX_NAME_LEN]"}, "name":"name", 
+        {"type":{"base":"char", "dec":"[DISCORD_MAX_NAME_LEN]"}, "name":"name", 
          "option":true, "inject_if_not":null},
-        {"type":{"base":"char", "dec":"[MAX_TOPIC_LEN]"}, "name":"topic",
+        {"type":{"base":"char", "dec":"[DISCORD_MAX_TOPIC_LEN]"}, "name":"topic",
          "option":true, "inject_if_not":null },
         {"type":{"base":"bool"}, "name":"nsfw", "option":true, "inject_if_not":false},
         {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"last_message_id",
@@ -323,9 +323,9 @@
       "struct":"embed",
       "fields":
       [
-        { "name": "title", "type":{ "base":"char", "dec":"[EMBED_TITLE_LEN]" }, "option":true, "inject_if_not":null},
+        { "name": "title", "type":{ "base":"char", "dec":"[DISCORD_EMBED_TITLE_LEN]" }, "option":true, "inject_if_not":null},
         { "name": "type", "type":{ "base":"char", "dec":"[32]" }, "option":true, "inject_if_not":null},
-        { "name": "description", "type":{ "base":"char", "dec":"[EMBED_DESCRIPTION_LEN]"}, "option":true, "inject_if_not":null},
+        { "name": "description", "type":{ "base":"char", "dec":"[DISCORD_EMBED_DESCRIPTION_LEN]"}, "option":true, "inject_if_not":null},
         { "name": "url", "type":{ "base":"char", "dec":"*"}, "option":true, "inject_if_not":null},
         { "name": "timestamp", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }, "option":true, "inject_if_not":0},
         { "name": "color", "type":{ "base":"int" }, "option":true, "inject_if_not":0},
@@ -390,7 +390,7 @@
       "namespace":["embed"],
       "struct":"author",
       "fields": [
-        { "name": "name", "type":{ "base":"char", "dec":"[EMBED_AUTHOR_NAME_LEN]" }, "inject_if_not":null},
+        { "name": "name", "type":{ "base":"char", "dec":"[DISCORD_EMBED_AUTHOR_NAME_LEN]" }, "inject_if_not":null},
         { "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null},
         { "name": "icon_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null},
         { "name": "proxy_icon_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}
@@ -402,7 +402,7 @@
       "namespace":["embed"],
       "struct":"footer",
       "fields": [
-        { "name": "text", "type": {"base":"char", "dec":"[EMBED_FOOTER_TEXT_LEN]"}, "inject_if_not":null},
+        { "name": "text", "type": {"base":"char", "dec":"[DISCORD_EMBED_FOOTER_TEXT_LEN]"}, "inject_if_not":null},
         { "name": "icon_url", "type": {"base":"char", "dec":"*" }, "option":true, "inject_if_not":null},
         { "name": "proxy_icon_url", "type": {"base":"char", "dec":"*"}, "option":true, "inject_if_not":null}
       ]
@@ -413,8 +413,8 @@
       "namespace":["embed"],
       "struct":"field",
       "fields": [
-        { "name": "name", "type": { "base":"char", "dec":"[EMBED_FIELD_NAME_LEN]" }, "inject_if_not":null},
-        { "name": "value", "type": { "base":"char", "dec":"[EMBED_FIELD_VALUE_LEN]" }, "inject_if_not":null},
+        { "name": "name", "type": { "base":"char", "dec":"[DISCORD_EMBED_FIELD_NAME_LEN]" }, "inject_if_not":null},
+        { "name": "value", "type": { "base":"char", "dec":"[DISCORD_EMBED_FIELD_VALUE_LEN]" }, "inject_if_not":null},
         { "name": "Inline", "json_key":"inline", "type": { "base":"bool" }, "option":true}
       ]
     }

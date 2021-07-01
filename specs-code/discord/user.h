@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/user.h
  * @author cee-studio
- * @date 21 Jun 2021
+ * @date 30 Jun 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/user
  */
@@ -48,12 +48,12 @@ struct discord_user {
   u64_snowflake_t id;
 
   /* specs/discord/user.json:46:24
-     '{ "name": "username", "type":{ "base":"char", "dec":"[MAX_USERNAME_LEN]"}}' */
-  char username[MAX_USERNAME_LEN];
+     '{ "name": "username", "type":{ "base":"char", "dec":"[DISCORD_MAX_USERNAME_LEN]"}}' */
+  char username[DISCORD_MAX_USERNAME_LEN];
 
   /* specs/discord/user.json:47:24
-     '{ "name": "discriminator", "type":{ "base":"char", "dec":"[MAX_DISCRIMINATOR_LEN]" }}' */
-  char discriminator[MAX_DISCRIMINATOR_LEN];
+     '{ "name": "discriminator", "type":{ "base":"char", "dec":"[DISCORD_MAX_DISCRIMINATOR_LEN]" }}' */
+  char discriminator[DISCORD_MAX_DISCRIMINATOR_LEN];
 
   /* specs/discord/user.json:48:24
      '{ "name": "avatar", "type":{ "base":"char", "dec":"[MAX_SHA256_LEN]" }}' */

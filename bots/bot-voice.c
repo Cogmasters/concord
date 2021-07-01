@@ -40,7 +40,7 @@ on_any_event(
   struct sized_buffer *event_data,
   enum discord_gateway_events event) 
 {
-  return EVENT_WILL_BE_HANDLED_IN_CHILD_THREAD;
+  return DISCORD_EVENT_CHILD_THREAD;
 }
 
 int main(int argc, char *argv[])

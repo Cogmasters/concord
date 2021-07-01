@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/permissions.h
  * @author cee-studio
- * @date 21 Jun 2021
+ * @date 30 Jun 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/topics/permissions
  */
@@ -59,8 +59,8 @@ struct discord_permissions_role {
   u64_snowflake_t id;
 
   /* specs/discord/permissions.json:53:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]" }}' */
-  char name[MAX_NAME_LEN];
+     '{ "name": "name", "type":{ "base":"char", "dec":"[DISCORD_MAX_NAME_LEN]" }}' */
+  char name[DISCORD_MAX_NAME_LEN];
 
   /* specs/discord/permissions.json:54:20
      '{ "name": "color", "type":{ "base":"int" }}' */

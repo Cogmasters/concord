@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/permissions.c
  * @author cee-studio
- * @date 21 Jun 2021
+ * @date 30 Jun 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/topics/permissions
  */
@@ -127,7 +127,7 @@ void discord_permissions_role_from_json(char *json, size_t len, struct discord_p
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 "(id):F,"
   /* specs/discord/permissions.json:53:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]" }}' */
+     '{ "name": "name", "type":{ "base":"char", "dec":"[DISCORD_MAX_NAME_LEN]" }}' */
                 "(name):s,"
   /* specs/discord/permissions.json:54:20
      '{ "name": "color", "type":{ "base":"int" }}' */
@@ -157,7 +157,7 @@ void discord_permissions_role_from_json(char *json, size_t len, struct discord_p
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 cee_strtoull, &p->id,
   /* specs/discord/permissions.json:53:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]" }}' */
+     '{ "name": "name", "type":{ "base":"char", "dec":"[DISCORD_MAX_NAME_LEN]" }}' */
                 p->name,
   /* specs/discord/permissions.json:54:20
      '{ "name": "color", "type":{ "base":"int" }}' */
@@ -194,7 +194,7 @@ static void discord_permissions_role_use_default_inject_settings(struct discord_
   p->__M.arg_switches[0] = &p->id;
 
   /* specs/discord/permissions.json:53:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]" }}' */
+     '{ "name": "name", "type":{ "base":"char", "dec":"[DISCORD_MAX_NAME_LEN]" }}' */
   p->__M.arg_switches[1] = p->name;
 
   /* specs/discord/permissions.json:54:20
@@ -236,7 +236,7 @@ size_t discord_permissions_role_to_json(char *json, size_t len, struct discord_p
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 "(id):|F|,"
   /* specs/discord/permissions.json:53:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]" }}' */
+     '{ "name": "name", "type":{ "base":"char", "dec":"[DISCORD_MAX_NAME_LEN]" }}' */
                 "(name):s,"
   /* specs/discord/permissions.json:54:20
      '{ "name": "color", "type":{ "base":"int" }}' */
@@ -264,7 +264,7 @@ size_t discord_permissions_role_to_json(char *json, size_t len, struct discord_p
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 cee_ulltostr, &p->id,
   /* specs/discord/permissions.json:53:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]" }}' */
+     '{ "name": "name", "type":{ "base":"char", "dec":"[DISCORD_MAX_NAME_LEN]" }}' */
                 p->name,
   /* specs/discord/permissions.json:54:20
      '{ "name": "color", "type":{ "base":"int" }}' */
@@ -333,7 +333,7 @@ void discord_permissions_role_cleanup(struct discord_permissions_role *d) {
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   // p->id is a scalar
   /* specs/discord/permissions.json:53:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]" }}' */
+     '{ "name": "name", "type":{ "base":"char", "dec":"[DISCORD_MAX_NAME_LEN]" }}' */
   // p->name is a scalar
   /* specs/discord/permissions.json:54:20
      '{ "name": "color", "type":{ "base":"int" }}' */
@@ -366,7 +366,7 @@ void discord_permissions_role_init(struct discord_permissions_role *p) {
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
 
   /* specs/discord/permissions.json:53:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]" }}' */
+     '{ "name": "name", "type":{ "base":"char", "dec":"[DISCORD_MAX_NAME_LEN]" }}' */
 
   /* specs/discord/permissions.json:54:20
      '{ "name": "color", "type":{ "base":"int" }}' */

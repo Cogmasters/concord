@@ -191,7 +191,7 @@ discord_create_guild_channel(
     .ok_obj = p_channel,
   };
 
-  char payload[MAX_PAYLOAD_LEN];
+  char payload[DISCORD_MAX_PAYLOAD_LEN];
   size_t ret = discord_create_guild_channel_params_to_json(payload, sizeof(payload), params);
   struct sized_buffer req_body = { payload, ret };
 
@@ -376,7 +376,7 @@ discord_add_guild_member(
     .ok_obj = p_member
   };
 
-  char payload[MAX_PAYLOAD_LEN];
+  char payload[DISCORD_MAX_PAYLOAD_LEN];
   size_t ret = discord_add_guild_member_params_to_json(payload, sizeof(payload), params);
   struct sized_buffer req_body = { payload, ret };
 
@@ -415,7 +415,7 @@ discord_modify_guild_member(
     .ok_obj = p_member,
   };
 
-  char payload[MAX_PAYLOAD_LEN];
+  char payload[DISCORD_MAX_PAYLOAD_LEN];
   size_t ret = discord_modify_guild_member_params_to_json(payload, sizeof(payload), params);
 
   struct sized_buffer req_body = { payload, ret };
@@ -443,7 +443,7 @@ discord_modify_current_user_nick(
     return ORCA_MISSING_PARAMETER;
   }
 
-  char payload[MAX_PAYLOAD_LEN];
+  char payload[DISCORD_MAX_PAYLOAD_LEN];
   size_t ret = json_inject(payload, sizeof(payload), "(nick):s", nick);
   struct sized_buffer req_body = { payload, ret };
 
@@ -621,16 +621,16 @@ discord_create_guild_ban(
   void *A[2]={0}; // pointer availability array.
   A[0] = (void *)&delete_message_days;
   if (!IS_EMPTY_STRING(reason)) {
-    if (!cee_str_bounds_check(reason, MAX_REASON_LEN)) {
+    if (!cee_str_bounds_check(reason, DISCORD_MAX_REASON_LEN)) {
       log_error("Reason length exceeds %d characters threshold (%zu)",
-          MAX_REASON_LEN, strlen(reason));
+          DISCORD_MAX_REASON_LEN, strlen(reason));
       return ORCA_BAD_PARAMETER;
     }
     A[1] = (void *)reason;
   }
 
 
-  char payload[MAX_PAYLOAD_LEN];
+  char payload[DISCORD_MAX_PAYLOAD_LEN];
   size_t ret = json_inject(payload, sizeof(payload),
                         "(delete_message_days):d"
                         "(reason):s"
@@ -664,12 +664,12 @@ discord_remove_guild_ban(
     return ORCA_MISSING_PARAMETER;
   }
 
-  char payload[MAX_PAYLOAD_LEN]="";
+  char payload[DISCORD_MAX_PAYLOAD_LEN]="";
   size_t ret=0;
   if(!IS_EMPTY_STRING(reason)) {
-    if (!cee_str_bounds_check(reason, MAX_REASON_LEN)) {
+    if (!cee_str_bounds_check(reason, DISCORD_MAX_REASON_LEN)) {
       log_error("Reason length exceeds %d characters threshold (%zu)",
-          MAX_REASON_LEN, strlen(reason));
+          DISCORD_MAX_REASON_LEN, strlen(reason));
       return ORCA_BAD_PARAMETER;
     }
     ret = json_inject(payload, sizeof(payload), "(reason):s", reason);
@@ -729,7 +729,7 @@ discord_create_guild_role(
     .ok_obj = p_role,
   };
 
-  char payload[MAX_PAYLOAD_LEN];
+  char payload[DISCORD_MAX_PAYLOAD_LEN];
   size_t ret = discord_create_guild_role_params_to_json(payload, sizeof(payload), params);
   struct sized_buffer req_body = { payload, ret };
 
@@ -796,7 +796,7 @@ discord_modify_guild_role(
     .ok_obj = p_role
   };
 
-  char payload[MAX_PAYLOAD_LEN]="{}";
+  char payload[DISCORD_MAX_PAYLOAD_LEN]="{}";
   size_t ret=2;
   if (params) {
     ret = discord_modify_guild_role_params_to_json(payload, sizeof(payload), params);

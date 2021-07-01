@@ -43,8 +43,8 @@
           "fields":
           [
             { "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"} },
-            { "name": "username", "type":{ "base":"char", "dec":"[MAX_USERNAME_LEN]"}},
-            { "name": "discriminator", "type":{ "base":"char", "dec":"[MAX_DISCRIMINATOR_LEN]" }},
+            { "name": "username", "type":{ "base":"char", "dec":"[DISCORD_MAX_USERNAME_LEN]"}},
+            { "name": "discriminator", "type":{ "base":"char", "dec":"[DISCORD_MAX_DISCRIMINATOR_LEN]" }},
             { "name": "avatar", "type":{ "base":"char", "dec":"[MAX_SHA256_LEN]" }},
             { "name": "bot", "type":{ "base":"bool" }},
             { "name": "System", "json_key": "system", "type":{ "base":"bool" }},

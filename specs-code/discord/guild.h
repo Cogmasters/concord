@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/guild.h
  * @author cee-studio
- * @date 21 Jun 2021
+ * @date 30 Jun 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/guild
  */
@@ -19,9 +19,9 @@ struct discord_guild {
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"id"}' */
   u64_snowflake_t id;
 
-  /* specs/discord/guild.json:13:66
-     '{"type":{"base":"char", "dec":"[MAX_NAME_LEN]"}, "name":"name"}' */
-  char name[MAX_NAME_LEN];
+  /* specs/discord/guild.json:13:74
+     '{"type":{"base":"char", "dec":"[DISCORD_MAX_NAME_LEN]"}, "name":"name"}' */
+  char name[DISCORD_MAX_NAME_LEN];
 
   /* specs/discord/guild.json:14:70
      '{"type":{"base":"char", "dec":"*", "nullable":true}, "name":"icon"}' */
@@ -386,8 +386,8 @@ struct discord_guild_preview {
   u64_snowflake_t id;
 
   /* specs/discord/guild.json:174:18
-     '{"name":"name", "type":{"base":"char", "dec":"[MAX_NAME_LEN]"}}' */
-  char name[MAX_NAME_LEN];
+     '{"name":"name", "type":{"base":"char", "dec":"[DISCORD_MAX_NAME_LEN]"}}' */
+  char name[DISCORD_MAX_NAME_LEN];
 
   /* specs/discord/guild.json:175:18
      '{"name":"icon", "type":{"base":"char", "dec":"*", "nullable":true}}' */
@@ -418,8 +418,8 @@ struct discord_guild_preview {
   int approximate_presence_count;
 
   /* specs/discord/guild.json:182:18
-     '{"name":"description", "type":{"base":"char", "dec":"[MAX_DESCRIPTION_LEN]"}}' */
-  char description[MAX_DESCRIPTION_LEN];
+     '{"name":"description", "type":{"base":"char", "dec":"[DISCORD_MAX_DESCRIPTION_LEN]"}}' */
+  char description[DISCORD_MAX_DESCRIPTION_LEN];
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -518,8 +518,8 @@ struct discord_guild_member {
   struct discord_user *user;
 
   /* specs/discord/guild.json:203:20
-     '{ "name": "nick", "type":{ "base":"char", "dec":"[MAX_NAME_LEN]"}, "option":true}' */
-  char nick[MAX_NAME_LEN];
+     '{ "name": "nick", "type":{ "base":"char", "dec":"[DISCORD_MAX_NAME_LEN]"}, "option":true}' */
+  char nick[DISCORD_MAX_NAME_LEN];
 
   /* specs/discord/guild.json:204:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl"}, "comment":"array of role object ids"}' */
@@ -819,8 +819,8 @@ extern size_t discord_guild_integration_application_list_to_json(char *str, size
  */
 struct discord_guild_ban {
   /* specs/discord/guild.json:278:20
-     '{ "name": "reason", "type":{ "base":"char", "dec":"[MAX_REASON_LEN]" }}' */
-  char reason[MAX_REASON_LEN];
+     '{ "name": "reason", "type":{ "base":"char", "dec":"[DISCORD_MAX_REASON_LEN]" }}' */
+  char reason[DISCORD_MAX_REASON_LEN];
 
   /* specs/discord/guild.json:279:20
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*"}, "comment":"partial user object"}' */

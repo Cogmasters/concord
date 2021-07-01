@@ -6,6 +6,7 @@ extern "C" {
 #endif // __cplusplus
 
 typedef uint64_t u64_unix_ms_t; ///< unix time in ms
+typedef uint64_t u64_snowflake_t; ///< snowflake datatype
 
 /**
  * @todo add more error codes and a strerror()
@@ -17,6 +18,12 @@ typedef int ORCAcode;
 #define ORCA_MISSING_PARAMETER  -3
 #define ORCA_BAD_PARAMETER      -4
 #define ORCA_BAD_JSON           -5
+
+/* Size limits discovered from the web */
+#define MAX_SHA256_LEN        1024 + 1
+#define MAX_LOCALE_LEN        16 + 1
+#define MAX_EMAIL_LEN         254 + 1
+#define MAX_REGION_LEN        16 + 1
 
 #ifdef __cplusplus
 }

@@ -103,7 +103,7 @@ on_default(
   }
 
   size_t fsize = strlen(pathtmp);
-  if (fsize > 2000) { // MAX MESSAGE LEN is 2000 bytes
+  if (fsize > DISCORD_MAX_MESSAGE_LEN) { // MAX MESSAGE LEN is 2000 bytes
     params.file.content = pathtmp;
     params.file.size = fsize;
   }

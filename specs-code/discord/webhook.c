@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/webhook.c
  * @author cee-studio
- * @date 21 Jun 2021
+ * @date 30 Jun 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/webhook
  */
@@ -30,7 +30,7 @@ void discord_webhook_from_json(char *json, size_t len, struct discord_webhook *p
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }}' */
                 "(user):F,"
   /* specs/discord/webhook.json:17:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[WEBHOOK_NAME_LEN]" }}' */
+     '{ "name": "name", "type":{ "base":"char", "dec":"[DISCORD_WEBHOOK_NAME_LEN]" }}' */
                 "(name):s,"
   /* specs/discord/webhook.json:18:20
      '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}' */
@@ -60,7 +60,7 @@ void discord_webhook_from_json(char *json, size_t len, struct discord_webhook *p
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }}' */
                 discord_user_from_json, p->user,
   /* specs/discord/webhook.json:17:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[WEBHOOK_NAME_LEN]" }}' */
+     '{ "name": "name", "type":{ "base":"char", "dec":"[DISCORD_WEBHOOK_NAME_LEN]" }}' */
                 p->name,
   /* specs/discord/webhook.json:18:20
      '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}' */
@@ -101,7 +101,7 @@ static void discord_webhook_use_default_inject_settings(struct discord_webhook *
   p->__M.arg_switches[4] = p->user;
 
   /* specs/discord/webhook.json:17:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[WEBHOOK_NAME_LEN]" }}' */
+     '{ "name": "name", "type":{ "base":"char", "dec":"[DISCORD_WEBHOOK_NAME_LEN]" }}' */
   p->__M.arg_switches[5] = p->name;
 
   /* specs/discord/webhook.json:18:20
@@ -139,7 +139,7 @@ size_t discord_webhook_to_json(char *json, size_t len, struct discord_webhook *p
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }}' */
                 "(user):F,"
   /* specs/discord/webhook.json:17:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[WEBHOOK_NAME_LEN]" }}' */
+     '{ "name": "name", "type":{ "base":"char", "dec":"[DISCORD_WEBHOOK_NAME_LEN]" }}' */
                 "(name):s,"
   /* specs/discord/webhook.json:18:20
      '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}' */
@@ -167,7 +167,7 @@ size_t discord_webhook_to_json(char *json, size_t len, struct discord_webhook *p
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }}' */
                 discord_user_to_json, p->user,
   /* specs/discord/webhook.json:17:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[WEBHOOK_NAME_LEN]" }}' */
+     '{ "name": "name", "type":{ "base":"char", "dec":"[DISCORD_WEBHOOK_NAME_LEN]" }}' */
                 p->name,
   /* specs/discord/webhook.json:18:20
      '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}' */
@@ -237,7 +237,7 @@ void discord_webhook_cleanup(struct discord_webhook *d) {
   if (d->user)
     discord_user_free(d->user);
   /* specs/discord/webhook.json:17:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[WEBHOOK_NAME_LEN]" }}' */
+     '{ "name": "name", "type":{ "base":"char", "dec":"[DISCORD_WEBHOOK_NAME_LEN]" }}' */
   // p->name is a scalar
   /* specs/discord/webhook.json:18:20
      '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}' */
@@ -271,7 +271,7 @@ void discord_webhook_init(struct discord_webhook *p) {
   p->user = discord_user_alloc();
 
   /* specs/discord/webhook.json:17:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[WEBHOOK_NAME_LEN]" }}' */
+     '{ "name": "name", "type":{ "base":"char", "dec":"[DISCORD_WEBHOOK_NAME_LEN]" }}' */
 
   /* specs/discord/webhook.json:18:20
      '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}' */
