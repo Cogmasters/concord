@@ -382,7 +382,7 @@
 
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord.vcs">
-<span class="target" id="structdiscord_1ac5c305d5a60c14eece38a8cbd92d31d9"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">discord_voice</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">vcs</span></span></span><span class="p"><span class="pre">[</span></span><span class="n"><span class="pre">NUM_VCS</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord.vcs" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="structdiscord_1a1aadae4252d9c16d2b296f295ee9a9ad"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">discord_voice</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">vcs</span></span></span><span class="p"><span class="pre">[</span></span><span class="n"><span class="pre">DISCORD_MAX_VOICE_CONNECTIONS</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord.vcs" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c var">
@@ -412,7 +412,7 @@
 <h3>Primitives<a class="headerlink" href="#primitives" title="Permalink to this headline">¶</a></h3>
 <dl class="c type">
 <dt class="sig sig-object c" id="c.u64_snowflake_t">
-<span class="target" id="discord_8h_1a2aca4957fe0e14f7ab03fdaeb17d8fb9"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">u64_snowflake_t</span></span></span><a class="headerlink" href="#c.u64_snowflake_t" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="types_8h_1a2aca4957fe0e14f7ab03fdaeb17d8fb9"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">u64_snowflake_t</span></span></span><a class="headerlink" href="#c.u64_snowflake_t" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>snowflake datatype </p>
 </dd></dl>
 
@@ -425,262 +425,82 @@
 </div>
 <div class="section" id="callbacks">
 <h3>Callbacks<a class="headerlink" href="#callbacks" title="Permalink to this headline">¶</a></h3>
-<dl class="c type">
-<dt class="sig sig-object c" id="c.event_mode_cb">
-<span class="target" id="discord_8h_1a7e4ebba355562f881194f12b8bd8c026"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="n"><span class="pre">discord_event_handling_mode</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">event_mode_cb</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_user" title="discord_user"><span class="n"><span class="pre">discord_user</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">bot</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">sized_buffer</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">event_data</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_gateway_events" title="discord_gateway_events"><span class="n"><span class="pre">discord_gateway_events</span></span></a><span class="w"> </span><span class="n"><span class="pre">event</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.event_mode_cb" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Event Handling Mode callback. </p>
-<p>A very important callback that enables the user a fine-grained control of how each event is executed, blocking, non-blocking or ignored</p>
-<p><dl class="simple">
-<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#discord_8h_1a20e77b8b734d2ac6a5777ac92649e5d6"><span class="std std-ref">discord_set_event_handler()</span></a> </p>
-</dd>
-<dt><strong>See</strong></dt><dd><p>discord_gateway_events </p>
-</dd>
-</dl>
-</p>
-</dd></dl>
-
-<dl class="c type">
-<dt class="sig sig-object c" id="c.idle_cb">
-<span class="target" id="discord_8h_1aa6024f71dcb39c0ec64c54345db99d4d"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">idle_cb</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_user" title="discord_user"><span class="n"><span class="pre">discord_user</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">bot</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.idle_cb" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Idle callback. </p>
-<p>Runs on every WebSockets loop iteration, no trigger required <dl class="simple">
-<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#discord_8h_1a4443df5f4a9eaa41359f02526e430ec4"><span class="std std-ref">discord_set_on_idle()</span></a> </p>
-</dd>
-</dl>
-</p>
-</dd></dl>
-
-<dl class="c type">
-<dt class="sig sig-object c" id="c.event_raw_cb">
-<span class="target" id="discord_8h_1a8f20a10f04ffbb31be7905357b9a9d62"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">event_raw_cb</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_gateway_events" title="discord_gateway_events"><span class="n"><span class="pre">discord_gateway_events</span></span></a><span class="w"> </span><span class="n"><span class="pre">event</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">sized_buffer</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">sb_bot</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">sized_buffer</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">event_data</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.event_raw_cb" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Raw Event callback. </p>
-<p>If activated, this callback is triggered on any event. It is executed after every other callback has been checked. <dl class="simple">
-<dt><strong>See</strong></dt><dd><p>discord_set_on_raw_event() </p>
-</dd>
-</dl>
-</p>
-</dd></dl>
-
-<dl class="c type">
-<dt class="sig sig-object c" id="c.guild_role_cb">
-<span class="target" id="discord_8h_1ac58124712e6bbf7b463fde803ae1dc11"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">guild_role_cb</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_user" title="discord_user"><span class="n"><span class="pre">discord_user</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">bot</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">guild_id</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">discord_permissions_role</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">role</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.guild_role_cb" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Guild Role Create/Update callback. </p>
-<p><dl class="simple">
-<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/topics/gateway#guilds">https://discord.com/developers/docs/topics/gateway#guilds</a> </p>
-</dd>
-<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#discord_8h_1a3de823033a1c470df8a5ed4d9ca4f310"><span class="std std-ref">discord_set_on_guild_role_create()</span></a> </p>
-</dd>
-<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#discord_8h_1a05fadb09a337ef7225bedae18ed51c84"><span class="std std-ref">discord_set_on_guild_role_update()</span></a> </p>
-</dd>
-</dl>
-</p>
-</dd></dl>
-
-<dl class="c type">
-<dt class="sig sig-object c" id="c.guild_role_delete_cb">
-<span class="target" id="discord_8h_1afa19686270ac753f3b3e27f288fb5426"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">guild_role_delete_cb</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_user" title="discord_user"><span class="n"><span class="pre">discord_user</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">bot</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">guild_id</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">role_id</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.guild_role_delete_cb" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Guild Role Delete callback. </p>
-<p><dl class="simple">
-<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/topics/gateway#guilds">https://discord.com/developers/docs/topics/gateway#guilds</a> </p>
-</dd>
-<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#discord_8h_1af2154ae1af97007eb632b189b44d40a4"><span class="std std-ref">discord_set_on_guild_role_delete()</span></a> </p>
-</dd>
-</dl>
-</p>
-</dd></dl>
-
-<dl class="c type">
-<dt class="sig sig-object c" id="c.guild_member_cb">
-<span class="target" id="discord_8h_1a602cbe3cae7dd709ee856b3864e31428"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">guild_member_cb</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_user" title="discord_user"><span class="n"><span class="pre">discord_user</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">bot</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">guild_id</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_guild_member" title="discord_guild_member"><span class="n"><span class="pre">discord_guild_member</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">member</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.guild_member_cb" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Guild Member Add/Update callback. </p>
-<p><dl class="simple">
-<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/topics/gateway#guilds">https://discord.com/developers/docs/topics/gateway#guilds</a> </p>
-</dd>
-<dt><strong>See</strong></dt><dd><p>discord_set_on_guild_member_add() </p>
-</dd>
-<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#discord_8h_1a12cbab84c421e8ef5b00912798628efe"><span class="std std-ref">discord_set_on_guild_member_update()</span></a> </p>
-</dd>
-</dl>
-</p>
-</dd></dl>
-
-<dl class="c type">
-<dt class="sig sig-object c" id="c.guild_member_remove_cb">
-<span class="target" id="discord_8h_1a8e5a6efff766f4bc2f9b3f054b0d6cb5"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">guild_member_remove_cb</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_user" title="discord_user"><span class="n"><span class="pre">discord_user</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">bot</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">guild_id</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_user" title="discord_user"><span class="n"><span class="pre">discord_user</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.guild_member_remove_cb" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Guild Member Remove callback. </p>
-<p><dl class="simple">
-<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/topics/gateway#guilds">https://discord.com/developers/docs/topics/gateway#guilds</a> </p>
-</dd>
-<dt><strong>See</strong></dt><dd><p>discord_set_on_guild_member_remove() </p>
-</dd>
-</dl>
-</p>
-</dd></dl>
-
-<dl class="c type">
-<dt class="sig sig-object c" id="c.guild_ban_cb">
-<span class="target" id="discord_8h_1a57bf59c4201163786579c5c7e2a7e4e9"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">guild_ban_cb</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_user" title="discord_user"><span class="n"><span class="pre">discord_user</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">bot</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">guild_id</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_user" title="discord_user"><span class="n"><span class="pre">discord_user</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">user</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.guild_ban_cb" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Guild Ban Add/Remove callback. </p>
-<p><dl class="simple">
-<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/topics/gateway#guilds">https://discord.com/developers/docs/topics/gateway#guilds</a> </p>
-</dd>
-<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#discord_8h_1add4c47788cb0072988ff6e368fca6960"><span class="std std-ref">discord_set_on_guild_ban_add()</span></a> </p>
-</dd>
-<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#discord_8h_1af9be0fd11d15f439b6bc68ab4de4510e"><span class="std std-ref">discord_set_on_guild_ban_remove()</span></a> </p>
-</dd>
-</dl>
-</p>
-</dd></dl>
-
-<dl class="c type">
-<dt class="sig sig-object c" id="c.message_cb">
-<span class="target" id="discord_8h_1af60102e757272cd21561552553d7ed6c"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">message_cb</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_user" title="discord_user"><span class="n"><span class="pre">discord_user</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">bot</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_message" title="discord_message"><span class="n"><span class="pre">discord_message</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.message_cb" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Message Create/Update callback. </p>
-<p><dl class="simple">
-<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/topics/gateway#messages">https://discord.com/developers/docs/topics/gateway#messages</a> </p>
-</dd>
-<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#discord_8h_1ad914e6caa7dbbd7aec3180566bf55f70"><span class="std std-ref">discord_set_on_message_create()</span></a> </p>
-</dd>
-<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#discord_8h_1a884fbf821859d06f41229ae56b2eb167"><span class="std std-ref">discord_set_on_message_update()</span></a> </p>
-</dd>
-</dl>
-</p>
-</dd></dl>
-
-<dl class="c type">
-<dt class="sig sig-object c" id="c.message_delete_cb">
-<span class="target" id="discord_8h_1acb22f042e31a06c7af88ada4ec91d87a"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">message_delete_cb</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_user" title="discord_user"><span class="n"><span class="pre">discord_user</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">bot</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">channel_id</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">guild_id</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.message_delete_cb" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Message Delete callback. </p>
-<p><dl class="simple">
-<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/topics/gateway#messages">https://discord.com/developers/docs/topics/gateway#messages</a> </p>
-</dd>
-<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#discord_8h_1ae93475f1c811ddc800ea942e155361a4"><span class="std std-ref">discord_set_on_message_delete()</span></a> </p>
-</dd>
-</dl>
-</p>
-</dd></dl>
-
-<dl class="c type">
-<dt class="sig sig-object c" id="c.message_delete_bulk_cb">
-<span class="target" id="discord_8h_1a71379d1b5ae970c00d00ea0b5094eb6a"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">message_delete_bulk_cb</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_user" title="discord_user"><span class="n"><span class="pre">discord_user</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">bot</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">ja_u64</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ids</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">channel_id</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">guild_id</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.message_delete_bulk_cb" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Message Delete Bulk callback. </p>
-<p><dl class="simple">
-<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/topics/gateway#messages">https://discord.com/developers/docs/topics/gateway#messages</a> </p>
-</dd>
-<dt><strong>See</strong></dt><dd><p>discord_set_on_message_delete_bulk() </p>
-</dd>
-</dl>
-</p>
-</dd></dl>
-
-<dl class="c type">
-<dt class="sig sig-object c" id="c.channel_cb">
-<span class="target" id="discord_8h_1a9b5e92598d5d59eb54041f7de01026a9"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">channel_cb</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_user" title="discord_user"><span class="n"><span class="pre">discord_user</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">bot</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_channel" title="discord_channel"><span class="n"><span class="pre">discord_channel</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">channel</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.channel_cb" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Channel Create/Update/Delete callback. </p>
-<p><dl class="simple">
-<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/topics/gateway#channels">https://discord.com/developers/docs/topics/gateway#channels</a> </p>
-</dd>
-<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#discord_8h_1a25359212be0d27759e190363e2ca9a05"><span class="std std-ref">discord_set_on_channel_create()</span></a> </p>
-</dd>
-<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#discord_8h_1a8c3d97fc9f02b7e35f0a98d0c49b43d2"><span class="std std-ref">discord_set_on_channel_update()</span></a> </p>
-</dd>
-<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#discord_8h_1aa36bbde0437bd4a0accf97b692cbec76"><span class="std std-ref">discord_set_on_channel_delete()</span></a> </p>
-</dd>
-</dl>
-</p>
-</dd></dl>
-
-<dl class="c type">
-<dt class="sig sig-object c" id="c.channel_pins_update_cb">
-<span class="target" id="discord_8h_1a539e73881b4d88003356b62cd61ceba0"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">channel_pins_update_cb</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_user" title="discord_user"><span class="n"><span class="pre">discord_user</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">bot</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">guild_id</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">channel_id</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.u64_unix_ms_t" title="u64_unix_ms_t"><span class="n"><span class="pre">u64_unix_ms_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">last_pin_timestamp</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.channel_pins_update_cb" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Channel Pins Update callback. </p>
-<p><dl class="simple">
-<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/topics/gateway#channels">https://discord.com/developers/docs/topics/gateway#channels</a> </p>
-</dd>
-<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#discord_8h_1a847d0f4b555649279c190f73c463b733"><span class="std std-ref">discord_set_on_channel_pins_update()</span></a> </p>
-</dd>
-</dl>
-</p>
-</dd></dl>
-
-<dl class="c type">
-<dt class="sig sig-object c" id="c.message_reaction_add_cb">
-<span class="target" id="discord_8h_1a099535fb1a7295890b87699b176359f2"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">message_reaction_add_cb</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_user" title="discord_user"><span class="n"><span class="pre">discord_user</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">bot</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">channel_id</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">message_id</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">guild_id</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_guild_member" title="discord_guild_member"><span class="n"><span class="pre">discord_guild_member</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">member</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_emoji" title="discord_emoji"><span class="n"><span class="pre">discord_emoji</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">emoji</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.message_reaction_add_cb" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Message Reaction Add callback. </p>
-<p><dl class="simple">
-<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/topics/gateway#messages">https://discord.com/developers/docs/topics/gateway#messages</a> </p>
-</dd>
-<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#discord_8h_1af7001a661938cec0dd49553f11768027"><span class="std std-ref">discord_set_on_message_reaction_add()</span></a> </p>
-</dd>
-</dl>
-</p>
-</dd></dl>
-
-<dl class="c type">
-<dt class="sig sig-object c" id="c.message_reaction_remove_cb">
-<span class="target" id="discord_8h_1aa875d3975041e5d18776a1ce3d07f77c"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">message_reaction_remove_cb</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_user" title="discord_user"><span class="n"><span class="pre">discord_user</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">bot</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">channel_id</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">message_id</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">guild_id</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_emoji" title="discord_emoji"><span class="n"><span class="pre">discord_emoji</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">emoji</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.message_reaction_remove_cb" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Message Reaction Remove callback. </p>
-<p><dl class="simple">
-<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/topics/gateway#messages">https://discord.com/developers/docs/topics/gateway#messages</a> </p>
-</dd>
-<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#discord_8h_1a73979494b4645a6bf6543e7e1469b217"><span class="std std-ref">discord_set_on_message_reaction_remove()</span></a> </p>
-</dd>
-</dl>
-</p>
-</dd></dl>
-
-<dl class="c type">
-<dt class="sig sig-object c" id="c.message_reaction_remove_all_cb">
-<span class="target" id="discord_8h_1ac6121d813f8b9613a37273cc869d8fdf"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">message_reaction_remove_all_cb</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_user" title="discord_user"><span class="n"><span class="pre">discord_user</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">bot</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">channel_id</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">message_id</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">guild_id</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.message_reaction_remove_all_cb" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Message Reaction Remove All callback. </p>
-<p><dl class="simple">
-<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/topics/gateway#messages">https://discord.com/developers/docs/topics/gateway#messages</a> </p>
-</dd>
-<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#discord_8h_1aa5dd86ef8f745c56b678c5fd833bb26b"><span class="std std-ref">discord_set_on_message_reaction_remove_all()</span></a> </p>
-</dd>
-</dl>
-</p>
-</dd></dl>
-
-<dl class="c type">
-<dt class="sig sig-object c" id="c.message_reaction_remove_emoji_cb">
-<span class="target" id="discord_8h_1ac5348c83c33c983f8e5bf1001fd4964a"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">message_reaction_remove_emoji_cb</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_user" title="discord_user"><span class="n"><span class="pre">discord_user</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">bot</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">channel_id</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">message_id</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">guild_id</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_emoji" title="discord_emoji"><span class="n"><span class="pre">discord_emoji</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">emoji</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.message_reaction_remove_emoji_cb" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Message Reaction Remove Emoji callback. </p>
-<p><dl class="simple">
-<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/topics/gateway#messages">https://discord.com/developers/docs/topics/gateway#messages</a> </p>
-</dd>
-<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#discord_8h_1a40a44248af2e93570212f7267aa2f59a"><span class="std std-ref">discord_set_on_message_reaction_remove_emoji()</span></a> </p>
-</dd>
-</dl>
-</p>
-</dd></dl>
-
-<dl class="c type">
-<dt class="sig sig-object c" id="c.voice_state_update_cb">
-<span class="target" id="discord_8h_1a6e03b806ba4bedeb5241aaa25d55f494"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">voice_state_update_cb</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_user" title="discord_user"><span class="n"><span class="pre">discord_user</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">bot</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_voice_state" title="discord_voice_state"><span class="n"><span class="pre">discord_voice_state</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">voice_state</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.voice_state_update_cb" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Voice State Update callback. </p>
-<p><dl class="simple">
-<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/topics/gateway#voice">https://discord.com/developers/docs/topics/gateway#voice</a> </p>
-</dd>
-<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#discord_8h_1a28f375d4f388b75508fe945ed60483be"><span class="std std-ref">discord_set_on_voice_state_update()</span></a> </p>
-</dd>
-</dl>
-</p>
-</dd></dl>
-
-<dl class="c type">
-<dt class="sig sig-object c" id="c.voice_server_update_cb">
-<span class="target" id="discord_8h_1a4d8b39af4010e2c186de8ea6f4d8d70d"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">voice_server_update_cb</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_user" title="discord_user"><span class="n"><span class="pre">discord_user</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">bot</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">token</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">guild_id</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">endpoint</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.voice_server_update_cb" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Voice Server Update callback. </p>
-<p><dl class="simple">
-<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/topics/gateway#voice">https://discord.com/developers/docs/topics/gateway#voice</a> </p>
-</dd>
-<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#discord_8h_1a593c6d6b022820d5f361fba2637fd004"><span class="std std-ref">discord_set_on_voice_server_update()</span></a> </p>
-</dd>
-</dl>
-</p>
-</dd></dl>
-
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygentypedef: Cannot find typedef “event_mode_cb” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygentypedef: Cannot find typedef “idle_cb” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygentypedef: Cannot find typedef “event_raw_cb” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygentypedef: Cannot find typedef “guild_role_cb” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygentypedef: Cannot find typedef “guild_role_delete_cb” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygentypedef: Cannot find typedef “guild_member_cb” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygentypedef: Cannot find typedef “guild_member_remove_cb” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygentypedef: Cannot find typedef “guild_ban_cb” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygentypedef: Cannot find typedef “message_cb” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygentypedef: Cannot find typedef “message_delete_cb” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygentypedef: Cannot find typedef “message_delete_bulk_cb” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygentypedef: Cannot find typedef “channel_cb” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygentypedef: Cannot find typedef “channel_pins_update_cb” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygentypedef: Cannot find typedef “message_reaction_add_cb” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygentypedef: Cannot find typedef “message_reaction_remove_cb” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygentypedef: Cannot find typedef “message_reaction_remove_all_cb” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygentypedef: Cannot find typedef “message_reaction_remove_emoji_cb” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygentypedef: Cannot find typedef “voice_state_update_cb” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygentypedef: Cannot find typedef “voice_server_update_cb” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
 </div>
 <div class="section" id="audit-log">
 <h3>Audit Log<a class="headerlink" href="#audit-log" title="Permalink to this headline">¶</a></h3>
@@ -752,7 +572,7 @@
 
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_audit_log_entry.reason">
-<span class="target" id="structdiscord__audit__log__entry_1a37f635b59bf8d69f8be3edabd4007211"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reason</span></span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#c.MAX_REASON_LEN" title="MAX_REASON_LEN"><span class="n"><span class="pre">MAX_REASON_LEN</span></span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_audit_log_entry.reason" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="structdiscord__audit__log__entry_1abd0078e1250426805ef839cffc7e3f7c"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reason</span></span></span><span class="p"><span class="pre">[</span></span><span class="n"><span class="pre">DISCORD_MAX_REASON_LEN</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_audit_log_entry.reason" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 </div>
@@ -839,12 +659,12 @@
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_audit_log_change_key.name">
-<span class="target" id="structdiscord__audit__log__change__key_1a8619685a54af7b80d11abd2dd82a15eb"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#c.MAX_NAME_LEN" title="MAX_NAME_LEN"><span class="n"><span class="pre">MAX_NAME_LEN</span></span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_audit_log_change_key.name" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="structdiscord__audit__log__change__key_1a4e95eecf3f2830b43a5e1ceb8d7bec44"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><span class="p"><span class="pre">[</span></span><span class="n"><span class="pre">DISCORD_MAX_NAME_LEN</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_audit_log_change_key.name" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_audit_log_change_key.description">
-<span class="target" id="structdiscord__audit__log__change__key_1ab4489a859c0203312f50cd6846624c17"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">description</span></span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#c.MAX_DESCRIPTION_LEN" title="MAX_DESCRIPTION_LEN"><span class="n"><span class="pre">MAX_DESCRIPTION_LEN</span></span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_audit_log_change_key.description" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="structdiscord__audit__log__change__key_1a963f117bc8eaf1d1ec76a00d29a17b86"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">description</span></span></span><span class="p"><span class="pre">[</span></span><span class="n"><span class="pre">DISCORD_MAX_DESCRIPTION_LEN</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_audit_log_change_key.description" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c var">
@@ -1336,12 +1156,12 @@
 
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_channel.name">
-<span class="target" id="structdiscord__channel_1abf82332a3063d81a4cc92129217b7ee3"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#c.MAX_NAME_LEN" title="MAX_NAME_LEN"><span class="n"><span class="pre">MAX_NAME_LEN</span></span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_channel.name" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="structdiscord__channel_1abada9427b2f4af236db38f6a1fe784a7"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><span class="p"><span class="pre">[</span></span><span class="n"><span class="pre">DISCORD_MAX_NAME_LEN</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_channel.name" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_channel.topic">
-<span class="target" id="structdiscord__channel_1a40137d531ffef3cc1ad6c0cd75dddd73"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">topic</span></span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#c.MAX_TOPIC_LEN" title="MAX_TOPIC_LEN"><span class="n"><span class="pre">MAX_TOPIC_LEN</span></span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_channel.topic" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="structdiscord__channel_1aebba7160218b0c91fa36fd63085a78c3"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">topic</span></span></span><span class="p"><span class="pre">[</span></span><span class="n"><span class="pre">DISCORD_MAX_TOPIC_LEN</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_channel.topic" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c var">
@@ -1922,7 +1742,7 @@
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_embed.title">
-<span class="target" id="structdiscord__embed_1ad0622fb2a78bac021bdc03b39f7ec27b"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">title</span></span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#c.EMBED_TITLE_LEN" title="EMBED_TITLE_LEN"><span class="n"><span class="pre">EMBED_TITLE_LEN</span></span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_embed.title" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="structdiscord__embed_1a2c34364d69225dcb625c561d3152089f"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">title</span></span></span><span class="p"><span class="pre">[</span></span><span class="n"><span class="pre">DISCORD_EMBED_TITLE_LEN</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_embed.title" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c var">
@@ -1932,7 +1752,7 @@
 
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_embed.description">
-<span class="target" id="structdiscord__embed_1acfe8dfa689eaea2d8af11218c681a7c4"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">description</span></span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#c.EMBED_DESCRIPTION_LEN" title="EMBED_DESCRIPTION_LEN"><span class="n"><span class="pre">EMBED_DESCRIPTION_LEN</span></span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_embed.description" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="structdiscord__embed_1a79bffcad1d5673c7fb85009fdb48bd91"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">description</span></span></span><span class="p"><span class="pre">[</span></span><span class="n"><span class="pre">DISCORD_EMBED_DESCRIPTION_LEN</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_embed.description" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c var">
@@ -2102,7 +1922,7 @@
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_embed_author.name">
-<span class="target" id="structdiscord__embed__author_1a7659f0231502ded4f591dfd253e04a2b"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#c.EMBED_AUTHOR_NAME_LEN" title="EMBED_AUTHOR_NAME_LEN"><span class="n"><span class="pre">EMBED_AUTHOR_NAME_LEN</span></span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_embed_author.name" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="structdiscord__embed__author_1a36ad8a6c93339ee1caad570bebf6cea1"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><span class="p"><span class="pre">[</span></span><span class="n"><span class="pre">DISCORD_EMBED_AUTHOR_NAME_LEN</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_embed_author.name" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c var">
@@ -2131,7 +1951,7 @@
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_embed_footer.text">
-<span class="target" id="structdiscord__embed__footer_1a00cb4ac2f6c797c975035e596467930b"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">text</span></span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#c.EMBED_FOOTER_TEXT_LEN" title="EMBED_FOOTER_TEXT_LEN"><span class="n"><span class="pre">EMBED_FOOTER_TEXT_LEN</span></span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_embed_footer.text" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="structdiscord__embed__footer_1ab59617d0ec7d3786e8d07d3cfe3b3ba4"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">text</span></span></span><span class="p"><span class="pre">[</span></span><span class="n"><span class="pre">DISCORD_EMBED_FOOTER_TEXT_LEN</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_embed_footer.text" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c var">
@@ -2155,12 +1975,12 @@
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_embed_field.name">
-<span class="target" id="structdiscord__embed__field_1acb6eca0aa08913adb35ab65a42f99ad6"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#c.EMBED_FIELD_NAME_LEN" title="EMBED_FIELD_NAME_LEN"><span class="n"><span class="pre">EMBED_FIELD_NAME_LEN</span></span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_embed_field.name" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="structdiscord__embed__field_1a97b8c1721f24217b5fe3e2d47f85668b"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><span class="p"><span class="pre">[</span></span><span class="n"><span class="pre">DISCORD_EMBED_FIELD_NAME_LEN</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_embed_field.name" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_embed_field.value">
-<span class="target" id="structdiscord__embed__field_1a56899094f7644db0938283b361ec2d69"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">value</span></span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#c.EMBED_FIELD_VALUE_LEN" title="EMBED_FIELD_VALUE_LEN"><span class="n"><span class="pre">EMBED_FIELD_VALUE_LEN</span></span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_embed_field.value" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="structdiscord__embed__field_1a3c239e9e1fb5058116522cbf24fa1c86"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">value</span></span></span><span class="p"><span class="pre">[</span></span><span class="n"><span class="pre">DISCORD_EMBED_FIELD_VALUE_LEN</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_embed_field.value" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c var">
@@ -2457,7 +2277,7 @@
 
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_guild.name">
-<span class="target" id="structdiscord__guild_1a899fae40ef087860ad5bd8af9e2d058b"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#c.MAX_NAME_LEN" title="MAX_NAME_LEN"><span class="n"><span class="pre">MAX_NAME_LEN</span></span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_guild.name" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="structdiscord__guild_1a1985ba93093dcc84a90309ab9f2d6617"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><span class="p"><span class="pre">[</span></span><span class="n"><span class="pre">DISCORD_MAX_NAME_LEN</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_guild.name" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c var">
@@ -2727,7 +2547,7 @@
 
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_guild_preview.name">
-<span class="target" id="structdiscord__guild__preview_1a1df7a9ea747d758214219012f1c94c2a"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#c.MAX_NAME_LEN" title="MAX_NAME_LEN"><span class="n"><span class="pre">MAX_NAME_LEN</span></span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_guild_preview.name" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="structdiscord__guild__preview_1aea6b5667179cb5f49211a62735bdd414"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><span class="p"><span class="pre">[</span></span><span class="n"><span class="pre">DISCORD_MAX_NAME_LEN</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_guild_preview.name" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c var">
@@ -2770,7 +2590,7 @@
 
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_guild_preview.description">
-<span class="target" id="structdiscord__guild__preview_1a84d59bea8b8cdfff5e77a6195613ca86"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">description</span></span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#c.MAX_DESCRIPTION_LEN" title="MAX_DESCRIPTION_LEN"><span class="n"><span class="pre">MAX_DESCRIPTION_LEN</span></span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_guild_preview.description" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="structdiscord__guild__preview_1a0cecaa527dd19d3ffc614652602621bc"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">description</span></span></span><span class="p"><span class="pre">[</span></span><span class="n"><span class="pre">DISCORD_MAX_DESCRIPTION_LEN</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_guild_preview.description" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 </div>
@@ -2808,7 +2628,7 @@
 
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_guild_member.nick">
-<span class="target" id="structdiscord__guild__member_1abf797495eed74873417dc8a5e2ba2c42"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nick</span></span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#c.MAX_NAME_LEN" title="MAX_NAME_LEN"><span class="n"><span class="pre">MAX_NAME_LEN</span></span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_guild_member.nick" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="structdiscord__guild__member_1aec7b47743c85dd1727e8350cda19d467"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nick</span></span></span><span class="p"><span class="pre">[</span></span><span class="n"><span class="pre">DISCORD_MAX_NAME_LEN</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_guild_member.nick" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c var">
@@ -2999,7 +2819,7 @@
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_guild_ban.reason">
-<span class="target" id="structdiscord__guild__ban_1adfd00f49df9be5ab4336d6ea3ab0f0a9"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reason</span></span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#c.MAX_REASON_LEN" title="MAX_REASON_LEN"><span class="n"><span class="pre">MAX_REASON_LEN</span></span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_guild_ban.reason" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="structdiscord__guild__ban_1afc0fd301a6e6b3788dfbb4414f6f986c"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reason</span></span></span><span class="p"><span class="pre">[</span></span><span class="n"><span class="pre">DISCORD_MAX_REASON_LEN</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_guild_ban.reason" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c var">
@@ -3470,12 +3290,12 @@
 
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_user.username">
-<span class="target" id="structdiscord__user_1ab5312f28e527992eec0e31ba0b09b616"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">username</span></span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#c.MAX_USERNAME_LEN" title="MAX_USERNAME_LEN"><span class="n"><span class="pre">MAX_USERNAME_LEN</span></span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_user.username" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="structdiscord__user_1ada18d3ae2da260b8408821b879634e3c"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">username</span></span></span><span class="p"><span class="pre">[</span></span><span class="n"><span class="pre">DISCORD_MAX_USERNAME_LEN</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_user.username" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_user.discriminator">
-<span class="target" id="structdiscord__user_1ab5a6272c992004b45884665c3633bf5a"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discriminator</span></span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#c.MAX_DISCRIMINATOR_LEN" title="MAX_DISCRIMINATOR_LEN"><span class="n"><span class="pre">MAX_DISCRIMINATOR_LEN</span></span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_user.discriminator" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="structdiscord__user_1aa70b57ee38cc31342c7ce5d962c05d92"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discriminator</span></span></span><span class="p"><span class="pre">[</span></span><span class="n"><span class="pre">DISCORD_MAX_DISCRIMINATOR_LEN</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_user.discriminator" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c var">
@@ -3840,7 +3660,7 @@
 
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_webhook.name">
-<span class="target" id="structdiscord__webhook_1a0d89ac7d57ccde12fc7219fa2cfc7216"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#c.WEBHOOK_NAME_LEN" title="WEBHOOK_NAME_LEN"><span class="n"><span class="pre">WEBHOOK_NAME_LEN</span></span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_webhook.name" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="structdiscord__webhook_1a4fa3ac90ac3038e08ae9e3823db809ce"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><span class="p"><span class="pre">[</span></span><span class="n"><span class="pre">DISCORD_WEBHOOK_NAME_LEN</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_webhook.name" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c var">
@@ -4477,135 +4297,115 @@
 <h2>Macros<a class="headerlink" href="#macros" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="snowflake">
 <h3>Snowflake<a class="headerlink" href="#snowflake" title="Permalink to this headline">¶</a></h3>
-<dl class="c macro">
-<dt class="sig sig-object c" id="c.SNOWFLAKE_INCREMENT">
-<span class="target" id="discord_8h_1af1dcfb8baeb87f34b18442cb46c18f42"></span><span class="sig-name descname"><span class="n"><span class="pre">SNOWFLAKE_INCREMENT</span></span></span> <span class="pre">12</span><a class="headerlink" href="#c.SNOWFLAKE_INCREMENT" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
-<dl class="c macro">
-<dt class="sig sig-object c" id="c.SNOWFLAKE_PROCESS_ID">
-<span class="target" id="discord_8h_1a980db23686965819f6605e71c31fd721"></span><span class="sig-name descname"><span class="n"><span class="pre">SNOWFLAKE_PROCESS_ID</span></span></span> <span class="pre">17</span><a class="headerlink" href="#c.SNOWFLAKE_PROCESS_ID" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
-<dl class="c macro">
-<dt class="sig sig-object c" id="c.SNOWFLAKE_INTERNAL_WORKER_ID">
-<span class="target" id="discord_8h_1ad4f1454777b11d3af2a05a43c1f08e3e"></span><span class="sig-name descname"><span class="n"><span class="pre">SNOWFLAKE_INTERNAL_WORKER_ID</span></span></span> <span class="pre">22</span><a class="headerlink" href="#c.SNOWFLAKE_INTERNAL_WORKER_ID" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
-<dl class="c macro">
-<dt class="sig sig-object c" id="c.SNOWFLAKE_TIMESTAMP">
-<span class="target" id="discord_8h_1a37ad9a53ad21fae19d16f4336c55564b"></span><span class="sig-name descname"><span class="n"><span class="pre">SNOWFLAKE_TIMESTAMP</span></span></span> <span class="pre">64</span><a class="headerlink" href="#c.SNOWFLAKE_TIMESTAMP" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygendefine: Cannot find define “SNOWFLAKE_INCREMENT” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygendefine: Cannot find define “SNOWFLAKE_PROCESS_ID” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygendefine: Cannot find define “SNOWFLAKE_INTERNAL_WORKER_ID” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygendefine: Cannot find define “SNOWFLAKE_TIMESTAMP” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
 </div>
 <div class="section" id="embed-limits">
 <h3>Embed Limits<a class="headerlink" href="#embed-limits" title="Permalink to this headline">¶</a></h3>
-<dl class="c macro">
-<dt class="sig sig-object c" id="c.EMBED_TITLE_LEN">
-<span class="target" id="discord_8h_1a9a915e9871f4197a54f4fae435b6cd1a"></span><span class="sig-name descname"><span class="n"><span class="pre">EMBED_TITLE_LEN</span></span></span> <span class="pre">256</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.EMBED_TITLE_LEN" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
-<dl class="c macro">
-<dt class="sig sig-object c" id="c.EMBED_DESCRIPTION_LEN">
-<span class="target" id="discord_8h_1acd6b301bc9ab4bdb2869fd40c4bdcb3f"></span><span class="sig-name descname"><span class="n"><span class="pre">EMBED_DESCRIPTION_LEN</span></span></span> <span class="pre">2048</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.EMBED_DESCRIPTION_LEN" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
-<dl class="c macro">
-<dt class="sig sig-object c" id="c.EMBED_MAX_FIELDS">
-<span class="target" id="discord_8h_1aedbc7f60ea209f45d9b83bbb24ace840"></span><span class="sig-name descname"><span class="n"><span class="pre">EMBED_MAX_FIELDS</span></span></span> <span class="pre">25</span><a class="headerlink" href="#c.EMBED_MAX_FIELDS" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
-<dl class="c macro">
-<dt class="sig sig-object c" id="c.EMBED_FIELD_NAME_LEN">
-<span class="target" id="discord_8h_1a07b2c9191d6d8c1da3ca45ae2cdb5f19"></span><span class="sig-name descname"><span class="n"><span class="pre">EMBED_FIELD_NAME_LEN</span></span></span> <span class="pre">256</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.EMBED_FIELD_NAME_LEN" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
-<dl class="c macro">
-<dt class="sig sig-object c" id="c.EMBED_FIELD_VALUE_LEN">
-<span class="target" id="discord_8h_1ac5dc64401006966467092dc1ef1ceaf5"></span><span class="sig-name descname"><span class="n"><span class="pre">EMBED_FIELD_VALUE_LEN</span></span></span> <span class="pre">1024</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.EMBED_FIELD_VALUE_LEN" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
-<dl class="c macro">
-<dt class="sig sig-object c" id="c.EMBED_FOOTER_TEXT_LEN">
-<span class="target" id="discord_8h_1ac39bd965a74b4cd6b1662d4631221068"></span><span class="sig-name descname"><span class="n"><span class="pre">EMBED_FOOTER_TEXT_LEN</span></span></span> <span class="pre">2048</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.EMBED_FOOTER_TEXT_LEN" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
-<dl class="c macro">
-<dt class="sig sig-object c" id="c.EMBED_AUTHOR_NAME_LEN">
-<span class="target" id="discord_8h_1a3fb0fc808afbd66f0f4cd16b036c47a3"></span><span class="sig-name descname"><span class="n"><span class="pre">EMBED_AUTHOR_NAME_LEN</span></span></span> <span class="pre">256</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.EMBED_AUTHOR_NAME_LEN" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygendefine: Cannot find define “EMBED_TITLE_LEN” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygendefine: Cannot find define “EMBED_DESCRIPTION_LEN” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygendefine: Cannot find define “EMBED_MAX_FIELDS” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygendefine: Cannot find define “EMBED_FIELD_NAME_LEN” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygendefine: Cannot find define “EMBED_FIELD_VALUE_LEN” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygendefine: Cannot find define “EMBED_FOOTER_TEXT_LEN” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygendefine: Cannot find define “EMBED_AUTHOR_NAME_LEN” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
 </div>
 <div class="section" id="webhook-limits">
 <h3>Webhook Limits<a class="headerlink" href="#webhook-limits" title="Permalink to this headline">¶</a></h3>
-<dl class="c macro">
-<dt class="sig sig-object c" id="c.WEBHOOK_NAME_LEN">
-<span class="target" id="discord_8h_1a47f5f63e7637cab01ab660239283f493"></span><span class="sig-name descname"><span class="n"><span class="pre">WEBHOOK_NAME_LEN</span></span></span> <span class="pre">80</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.WEBHOOK_NAME_LEN" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygendefine: Cannot find define “WEBHOOK_NAME_LEN” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
 </div>
 <div class="section" id="general-limits">
 <h3>General Limits<a class="headerlink" href="#general-limits" title="Permalink to this headline">¶</a></h3>
-<dl class="c macro">
-<dt class="sig sig-object c" id="c.MAX_NAME_LEN">
-<span class="target" id="discord_8h_1afd709f201d7643c3909621f620ea648a"></span><span class="sig-name descname"><span class="n"><span class="pre">MAX_NAME_LEN</span></span></span> <span class="pre">100</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.MAX_NAME_LEN" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
-<dl class="c macro">
-<dt class="sig sig-object c" id="c.MAX_TOPIC_LEN">
-<span class="target" id="discord_8h_1a62f90ad17366b9e9c79f7737972cc609"></span><span class="sig-name descname"><span class="n"><span class="pre">MAX_TOPIC_LEN</span></span></span> <span class="pre">1024</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.MAX_TOPIC_LEN" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
-<dl class="c macro">
-<dt class="sig sig-object c" id="c.MAX_DESCRIPTION_LEN">
-<span class="target" id="discord_8h_1a3886a61a4fb4b2574ffa9180b27d222f"></span><span class="sig-name descname"><span class="n"><span class="pre">MAX_DESCRIPTION_LEN</span></span></span> <span class="pre">2048</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.MAX_DESCRIPTION_LEN" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
-<dl class="c macro">
-<dt class="sig sig-object c" id="c.MAX_USERNAME_LEN">
-<span class="target" id="discord_8h_1a6c4647395896246d6710ba980c31666c"></span><span class="sig-name descname"><span class="n"><span class="pre">MAX_USERNAME_LEN</span></span></span> <span class="pre">32</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.MAX_USERNAME_LEN" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
-<dl class="c macro">
-<dt class="sig sig-object c" id="c.MAX_DISCRIMINATOR_LEN">
-<span class="target" id="discord_8h_1a0786b23978a93ab36b1f92aafa4c671a"></span><span class="sig-name descname"><span class="n"><span class="pre">MAX_DISCRIMINATOR_LEN</span></span></span> <span class="pre">4</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.MAX_DISCRIMINATOR_LEN" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygendefine: Cannot find define “MAX_NAME_LEN” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygendefine: Cannot find define “MAX_TOPIC_LEN” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygendefine: Cannot find define “MAX_DESCRIPTION_LEN” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygendefine: Cannot find define “MAX_USERNAME_LEN” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygendefine: Cannot find define “MAX_DISCRIMINATOR_LEN” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.MAX_SHA256_LEN">
-<span class="target" id="discord_8h_1ad526e349cbbf2fcab2057fff904ed09a"></span><span class="sig-name descname"><span class="n"><span class="pre">MAX_SHA256_LEN</span></span></span> <span class="pre">1024</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.MAX_SHA256_LEN" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="types_8h_1ad526e349cbbf2fcab2057fff904ed09a"></span><span class="sig-name descname"><span class="n"><span class="pre">MAX_SHA256_LEN</span></span></span> <span class="pre">1024</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.MAX_SHA256_LEN" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.MAX_LOCALE_LEN">
-<span class="target" id="discord_8h_1ac8e231944220d56ab4be14ea600b1c9f"></span><span class="sig-name descname"><span class="n"><span class="pre">MAX_LOCALE_LEN</span></span></span> <span class="pre">16</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.MAX_LOCALE_LEN" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="types_8h_1ac8e231944220d56ab4be14ea600b1c9f"></span><span class="sig-name descname"><span class="n"><span class="pre">MAX_LOCALE_LEN</span></span></span> <span class="pre">16</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.MAX_LOCALE_LEN" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.MAX_EMAIL_LEN">
-<span class="target" id="discord_8h_1a980191f11739df48037447c66d5595fd"></span><span class="sig-name descname"><span class="n"><span class="pre">MAX_EMAIL_LEN</span></span></span> <span class="pre">254</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.MAX_EMAIL_LEN" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="types_8h_1a980191f11739df48037447c66d5595fd"></span><span class="sig-name descname"><span class="n"><span class="pre">MAX_EMAIL_LEN</span></span></span> <span class="pre">254</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.MAX_EMAIL_LEN" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.MAX_REGION_LEN">
-<span class="target" id="discord_8h_1ac99b7f50b98b3ecc645859362df7e7c1"></span><span class="sig-name descname"><span class="n"><span class="pre">MAX_REGION_LEN</span></span></span> <span class="pre">16</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.MAX_REGION_LEN" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="types_8h_1ac99b7f50b98b3ecc645859362df7e7c1"></span><span class="sig-name descname"><span class="n"><span class="pre">MAX_REGION_LEN</span></span></span> <span class="pre">16</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.MAX_REGION_LEN" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
-<dl class="c macro">
-<dt class="sig sig-object c" id="c.MAX_REASON_LEN">
-<span class="target" id="discord_8h_1aa78629e0c1309fd93a07631b53363335"></span><span class="sig-name descname"><span class="n"><span class="pre">MAX_REASON_LEN</span></span></span> <span class="pre">512</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.MAX_REASON_LEN" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
-<dl class="c macro">
-<dt class="sig sig-object c" id="c.MAX_MESSAGE_LEN">
-<span class="target" id="discord_8h_1aa3fbd1b7db5563bc97af47943afa34a4"></span><span class="sig-name descname"><span class="n"><span class="pre">MAX_MESSAGE_LEN</span></span></span> <span class="pre">2000</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.MAX_MESSAGE_LEN" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
-<dl class="c macro">
-<dt class="sig sig-object c" id="c.MAX_PAYLOAD_LEN">
-<span class="target" id="discord_8h_1a58fffb055ae1b24f4d84fbd5be4c9899"></span><span class="sig-name descname"><span class="n"><span class="pre">MAX_PAYLOAD_LEN</span></span></span> <span class="pre">4096</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.MAX_PAYLOAD_LEN" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygendefine: Cannot find define “MAX_REASON_LEN” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygendefine: Cannot find define “MAX_MESSAGE_LEN” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygendefine: Cannot find define “MAX_PAYLOAD_LEN” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
 </div>
 </div>
 <div class="section" id="functions">
@@ -4730,7 +4530,7 @@
 <span class="target" id="discord_8h_1a13d9f16d62fea7cebdb6c24d57f685a1"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_prefix</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">prefix</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_prefix" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Set a mandatory prefix before commands. </p>
 <p>Example: If <em>‘help’</em> is a command and <em>‘!’</em> prefix is set, the command will only be validated if <em>‘!help’</em> is sent <dl class="simple">
-<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#discord_8h_1a28cfdb8955c229cb220fcc797435e5dc"><span class="std std-ref">discord_set_on_command()</span></a> </p>
+<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#discord_8h_1a8942a360ffe8758c458a2ab6fa391228"><span class="std std-ref">discord_set_on_command()</span></a> </p>
 </dd>
 </dl>
 </p>
@@ -4746,7 +4546,7 @@
 
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_set_event_handler">
-<span class="target" id="discord_8h_1a20e77b8b734d2ac6a5777ac92649e5d6"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_event_handler</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="#c.event_mode_cb" title="event_mode_cb"><span class="n"><span class="pre">event_mode_cb</span></span></a><span class="w"> </span><span class="n"><span class="pre">fn</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_event_handler" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1a7f3b98d64e12d6693de56f983f3bc269"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_event_handler</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="n"><span class="pre">discord_event_mode_cb</span></span><span class="w"> </span><span class="n"><span class="pre">fn</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_event_handler" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Specify how events should execute their callbacks, in a blocking or non-blocking fashion. </p>
 <p>This is a very important function that provides the user a more fine-grained control of the Discord Gateway’s event-loop. By default, every event callback will block the event-loop, but for a scalable bot application this is undesirable. To circumvent this the user can specify which events should be executed in parallel.</p>
 <p>In the following example code, a MESSAGE_CREATE event callback will be executed non-blocking and READY callback on the main thread, while anything else will be ignored and won’t be executed.</p>
@@ -4760,11 +4560,11 @@
 <span class="p">{</span>
   <span class="k">switch</span> <span class="p">(</span><span class="n">event</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">case</span> <span class="nl">DISCORD_GATEWAY_EVENTS_READY</span><span class="p">:</span>
-     <span class="k">return</span> <span class="n">EVENT_WILL_BE_HANDLED_IN_MAIN_THREAD</span><span class="p">;</span>
+     <span class="k">return</span> <span class="n">DISCORD_EVENT_MAIN_THREAD</span><span class="p">;</span>
   <span class="k">case</span> <span class="nl">DISCORD_GATEWAY_EVENTS_MESSAGE_CREATE</span><span class="p">:</span>
-     <span class="k">return</span> <span class="n">EVENT_WILL_BE_HANDLED_IN_CHILD_THREAD</span><span class="p">;</span>
+     <span class="k">return</span> <span class="n">DISCORD_EVENT_CHILD_THREAD</span><span class="p">;</span>
   <span class="k">default</span><span class="o">:</span>
-     <span class="k">return</span> <span class="n">EVENT_IS_HANDLED</span><span class="p">;</span>
+     <span class="k">return</span> <span class="n">DISCORD_EVENT_IGNORE</span><span class="p">;</span>
   <span class="p">}</span>
 <span class="p">}</span>
 
@@ -4788,7 +4588,7 @@
 </div>
 </p>
 <p><dl class="simple">
-<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#discord_8h_1a7e4ebba355562f881194f12b8bd8c026"><span class="std std-ref">event_mode_cb</span></a> </p>
+<dt><strong>See</strong></dt><dd><p>event_mode_cb </p>
 </dd>
 <dt><strong>See</strong></dt><dd><p>enum discord_event_handling_mode </p>
 </dd>
@@ -4815,7 +4615,7 @@
 <h4>Set Event Callbacks<a class="headerlink" href="#set-event-callbacks" title="Permalink to this headline">¶</a></h4>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_set_on_command">
-<span class="target" id="discord_8h_1a28cfdb8955c229cb220fcc797435e5dc"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_on_command</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">command</span></span>, <a class="reference internal" href="#c.message_cb" title="message_cb"><span class="n"><span class="pre">message_cb</span></span></a><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_on_command" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1a8942a360ffe8758c458a2ab6fa391228"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_on_command</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">command</span></span>, <span class="n"><span class="pre">discord_message_cb</span></span><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_on_command" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Set command/callback pair, the callback is triggered if someone types command in chat. </p>
 <p><dl class="simple">
 <dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#discord_8h_1a13d9f16d62fea7cebdb6c24d57f685a1"><span class="std std-ref">discord_set_prefix()</span></a> for changing a command prefix </p>
@@ -4839,7 +4639,7 @@
 
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_set_on_event_raw">
-<span class="target" id="discord_8h_1adc8e7e6c11ec5017bcdc6d8af6f46c24"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_on_event_raw</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="#c.event_raw_cb" title="event_raw_cb"><span class="n"><span class="pre">event_raw_cb</span></span></a><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_on_event_raw" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1aec1ef3de9344465ec27b3b9f9f93a71b"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_on_event_raw</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="n"><span class="pre">discord_event_raw_cb</span></span><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_on_event_raw" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Set a callback that triggers on any event the client is subscribed to. </p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -4861,7 +4661,7 @@
 
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_set_on_idle">
-<span class="target" id="discord_8h_1a4443df5f4a9eaa41359f02526e430ec4"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_on_idle</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="#c.idle_cb" title="idle_cb"><span class="n"><span class="pre">idle_cb</span></span></a><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_on_idle" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1a6c5efc8b544d4706138ba02b8ddd32b2"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_on_idle</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="n"><span class="pre">discord_idle_cb</span></span><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_on_idle" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Set a callback that triggers at every event-loop iteration. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -4875,7 +4675,7 @@
 
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_set_on_guild_role_create">
-<span class="target" id="discord_8h_1a3de823033a1c470df8a5ed4d9ca4f310"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_on_guild_role_create</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="#c.guild_role_cb" title="guild_role_cb"><span class="n"><span class="pre">guild_role_cb</span></span></a><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_on_guild_role_create" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1abb7e1c6816761eb486ef4f037dee1165"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_on_guild_role_create</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="n"><span class="pre">discord_guild_role_cb</span></span><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_on_guild_role_create" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Set a callback that triggers when a guild role is created. </p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -4893,7 +4693,7 @@
 
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_set_on_guild_role_update">
-<span class="target" id="discord_8h_1a05fadb09a337ef7225bedae18ed51c84"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_on_guild_role_update</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="#c.guild_role_cb" title="guild_role_cb"><span class="n"><span class="pre">guild_role_cb</span></span></a><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_on_guild_role_update" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1ae9750e4eeb80af6c4ad41cf8901c1122"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_on_guild_role_update</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="n"><span class="pre">discord_guild_role_cb</span></span><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_on_guild_role_update" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Set a callback that triggers when a guild role is updated. </p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -4911,7 +4711,7 @@
 
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_set_on_guild_role_delete">
-<span class="target" id="discord_8h_1af2154ae1af97007eb632b189b44d40a4"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_on_guild_role_delete</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="#c.guild_role_delete_cb" title="guild_role_delete_cb"><span class="n"><span class="pre">guild_role_delete_cb</span></span></a><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_on_guild_role_delete" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1a33608ca7f1b7b39a5cdc0e338cb3d3a7"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_on_guild_role_delete</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="n"><span class="pre">discord_guild_role_delete_cb</span></span><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_on_guild_role_delete" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Set a callback that triggers when a guild role is deleted. </p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -4929,7 +4729,7 @@
 
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_set_on_guild_member_update">
-<span class="target" id="discord_8h_1a12cbab84c421e8ef5b00912798628efe"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_on_guild_member_update</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="#c.guild_member_cb" title="guild_member_cb"><span class="n"><span class="pre">guild_member_cb</span></span></a><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_on_guild_member_update" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1a93dfefa7c76e783a8baef9ceff9ca147"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_on_guild_member_update</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="n"><span class="pre">discord_guild_member_cb</span></span><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_on_guild_member_update" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Set a callback that triggers when a guild member is updated. </p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -4947,7 +4747,7 @@
 
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_set_on_guild_ban_add">
-<span class="target" id="discord_8h_1add4c47788cb0072988ff6e368fca6960"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_on_guild_ban_add</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="#c.guild_ban_cb" title="guild_ban_cb"><span class="n"><span class="pre">guild_ban_cb</span></span></a><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_on_guild_ban_add" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1ad948254cbb834f385c4e6daef0494d0e"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_on_guild_ban_add</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="n"><span class="pre">discord_guild_ban_cb</span></span><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_on_guild_ban_add" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Set a callback that triggers when a guild ban is added. </p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -4965,7 +4765,7 @@
 
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_set_on_guild_ban_remove">
-<span class="target" id="discord_8h_1af9be0fd11d15f439b6bc68ab4de4510e"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_on_guild_ban_remove</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="#c.guild_ban_cb" title="guild_ban_cb"><span class="n"><span class="pre">guild_ban_cb</span></span></a><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_on_guild_ban_remove" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1aecf1b9da033153bd9faa2cdab3b29b72"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_on_guild_ban_remove</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="n"><span class="pre">discord_guild_ban_cb</span></span><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_on_guild_ban_remove" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Set a callback that triggers when a guild ban is removed. </p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -4983,7 +4783,7 @@
 
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_set_on_channel_create">
-<span class="target" id="discord_8h_1a25359212be0d27759e190363e2ca9a05"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_on_channel_create</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="#c.channel_cb" title="channel_cb"><span class="n"><span class="pre">channel_cb</span></span></a><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_on_channel_create" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1a151c8f449668af5e309472bb6def1aa3"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_on_channel_create</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="n"><span class="pre">discord_channel_cb</span></span><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_on_channel_create" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Set a callback that triggers when a channel is created. </p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -5001,7 +4801,7 @@
 
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_set_on_channel_update">
-<span class="target" id="discord_8h_1a8c3d97fc9f02b7e35f0a98d0c49b43d2"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_on_channel_update</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="#c.channel_cb" title="channel_cb"><span class="n"><span class="pre">channel_cb</span></span></a><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_on_channel_update" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1a838e118fa1bdf706c830e037cb6e3285"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_on_channel_update</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="n"><span class="pre">discord_channel_cb</span></span><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_on_channel_update" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Set a callback that triggers when a channel is updated. </p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -5019,7 +4819,7 @@
 
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_set_on_channel_delete">
-<span class="target" id="discord_8h_1aa36bbde0437bd4a0accf97b692cbec76"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_on_channel_delete</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="#c.channel_cb" title="channel_cb"><span class="n"><span class="pre">channel_cb</span></span></a><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_on_channel_delete" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1a5d05722282f97efd14df7be810fdda59"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_on_channel_delete</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="n"><span class="pre">discord_channel_cb</span></span><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_on_channel_delete" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Set a callback that triggers when a channel is deleted. </p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -5037,7 +4837,7 @@
 
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_set_on_channel_pins_update">
-<span class="target" id="discord_8h_1a847d0f4b555649279c190f73c463b733"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_on_channel_pins_update</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="#c.channel_pins_update_cb" title="channel_pins_update_cb"><span class="n"><span class="pre">channel_pins_update_cb</span></span></a><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_on_channel_pins_update" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1a481558c7aa5e7fcb280f0fce44dd6192"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_on_channel_pins_update</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="n"><span class="pre">discord_channel_pins_update_cb</span></span><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_on_channel_pins_update" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Set a callback that triggers when some channel pins are updated. </p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -5055,7 +4855,7 @@
 
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_set_on_message_create">
-<span class="target" id="discord_8h_1ad914e6caa7dbbd7aec3180566bf55f70"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_on_message_create</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="#c.message_cb" title="message_cb"><span class="n"><span class="pre">message_cb</span></span></a><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_on_message_create" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1a2d051c57b778cb12c7540b7fe2895d26"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_on_message_create</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="n"><span class="pre">discord_message_cb</span></span><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_on_message_create" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Set a callback that triggers when a message is created. </p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -5073,7 +4873,7 @@
 
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_set_on_message_update">
-<span class="target" id="discord_8h_1a884fbf821859d06f41229ae56b2eb167"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_on_message_update</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="#c.message_cb" title="message_cb"><span class="n"><span class="pre">message_cb</span></span></a><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_on_message_update" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1a537adc8736cdd85256f85fef413757f5"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_on_message_update</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="n"><span class="pre">discord_message_cb</span></span><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_on_message_update" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Set a callback that triggers when a message is updated. </p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -5091,7 +4891,7 @@
 
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_set_on_message_delete">
-<span class="target" id="discord_8h_1ae93475f1c811ddc800ea942e155361a4"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_on_message_delete</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="#c.message_delete_cb" title="message_delete_cb"><span class="n"><span class="pre">message_delete_cb</span></span></a><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_on_message_delete" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1a2f1fde2d381a910e2e6775b8e345a8dd"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_on_message_delete</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="n"><span class="pre">discord_message_delete_cb</span></span><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_on_message_delete" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Set a callback that triggers when a message is deleted. </p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -5109,12 +4909,12 @@
 
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_set_on_message_delete_bulk">
-<span class="target" id="discord_8h_1a6426f68a4596e6dc6d91d37620f4daaf"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_on_message_delete_bulk</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="#c.message_delete_bulk_cb" title="message_delete_bulk_cb"><span class="n"><span class="pre">message_delete_bulk_cb</span></span></a><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_on_message_delete_bulk" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1aa1f1f62b1b39d49cda7a84e7b8801c0b"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_on_message_delete_bulk</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="n"><span class="pre">discord_message_delete_bulk_cb</span></span><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_on_message_delete_bulk" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_set_on_message_reaction_add">
-<span class="target" id="discord_8h_1af7001a661938cec0dd49553f11768027"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_on_message_reaction_add</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="#c.message_reaction_add_cb" title="message_reaction_add_cb"><span class="n"><span class="pre">message_reaction_add_cb</span></span></a><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_on_message_reaction_add" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1a92528d5f450ed4e5e6e391f028f303de"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_on_message_reaction_add</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="n"><span class="pre">discord_message_reaction_add_cb</span></span><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_on_message_reaction_add" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Set a callback that triggers when a message reaction is added. </p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -5132,7 +4932,7 @@
 
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_set_on_message_reaction_remove">
-<span class="target" id="discord_8h_1a73979494b4645a6bf6543e7e1469b217"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_on_message_reaction_remove</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="#c.message_reaction_remove_cb" title="message_reaction_remove_cb"><span class="n"><span class="pre">message_reaction_remove_cb</span></span></a><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_on_message_reaction_remove" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1aa5c62e678cdef083661a1cabbc302268"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_on_message_reaction_remove</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="n"><span class="pre">discord_message_reaction_remove_cb</span></span><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_on_message_reaction_remove" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Set a callback that triggers when a message reaction is removed. </p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -5150,7 +4950,7 @@
 
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_set_on_message_reaction_remove_all">
-<span class="target" id="discord_8h_1aa5dd86ef8f745c56b678c5fd833bb26b"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_on_message_reaction_remove_all</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="#c.message_reaction_remove_all_cb" title="message_reaction_remove_all_cb"><span class="n"><span class="pre">message_reaction_remove_all_cb</span></span></a><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_on_message_reaction_remove_all" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1a012c3d64a0411246accb0b17c3d719bb"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_on_message_reaction_remove_all</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="n"><span class="pre">discord_message_reaction_remove_all_cb</span></span><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_on_message_reaction_remove_all" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Set a callback that triggers when all reaction from some message is removed. </p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -5168,7 +4968,7 @@
 
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_set_on_message_reaction_remove_emoji">
-<span class="target" id="discord_8h_1a40a44248af2e93570212f7267aa2f59a"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_on_message_reaction_remove_emoji</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="#c.message_reaction_remove_emoji_cb" title="message_reaction_remove_emoji_cb"><span class="n"><span class="pre">message_reaction_remove_emoji_cb</span></span></a><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_on_message_reaction_remove_emoji" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1a0d640619985404312ec5917a1dc89a1e"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_on_message_reaction_remove_emoji</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="n"><span class="pre">discord_message_reaction_remove_emoji_cb</span></span><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_on_message_reaction_remove_emoji" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Set a callback that triggers when all instances of a particular reaction from some message is removed. </p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -5186,7 +4986,7 @@
 
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_set_on_ready">
-<span class="target" id="discord_8h_1abc5f51a566ea739c4cfc9d44c01a7a88"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_on_ready</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="#c.idle_cb" title="idle_cb"><span class="n"><span class="pre">idle_cb</span></span></a><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_on_ready" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1a33960e319eeb56b03e7ceb3716bc4dda"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_on_ready</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="n"><span class="pre">discord_idle_cb</span></span><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_on_ready" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Set a callback that triggers when the client is ready. </p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -5204,7 +5004,7 @@
 
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_set_on_voice_state_update">
-<span class="target" id="discord_8h_1a28f375d4f388b75508fe945ed60483be"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_on_voice_state_update</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="#c.voice_state_update_cb" title="voice_state_update_cb"><span class="n"><span class="pre">voice_state_update_cb</span></span></a><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_on_voice_state_update" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1a6bea8f85faa7c2e85d0a119e8713cc44"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_on_voice_state_update</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="n"><span class="pre">discord_voice_state_update_cb</span></span><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_on_voice_state_update" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Set a callback that triggers when a voice state is updated. </p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -5222,7 +5022,7 @@
 
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_set_on_voice_server_update">
-<span class="target" id="discord_8h_1a593c6d6b022820d5f361fba2637fd004"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_on_voice_server_update</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="#c.voice_server_update_cb" title="voice_server_update_cb"><span class="n"><span class="pre">voice_server_update_cb</span></span></a><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_on_voice_server_update" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1a240ca0c4e785f8b5a5022189747688c8"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_on_voice_server_update</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="n"><span class="pre">discord_voice_server_update_cb</span></span><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_on_voice_server_update" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Set a callback that triggers when a voice server is updated. </p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
