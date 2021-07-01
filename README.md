@@ -69,7 +69,7 @@ sudo make install
 #include <orca/discord.h>
 
 void on_ready(struct discord *client, const struct discord_user *bot) {
-  log_trace("Logged in as %s#%s!", bot->username, bot->discriminator);
+  log_info("Logged in as %s#%s!", bot->username, bot->discriminator);
 }
 
 void on_message(
@@ -78,25 +78,19 @@ void on_message(
   const struct discord_message *msg
 ){
   if (0 == strcmp(msg->content, "ping")) {
-    struct discord_create_message_params params = {.content = "pong"};
+    struct discord_create_message_params params = { .content = "pong" };
     discord_create_message(client, msg->channel_id, &params, NULL);
   }
 }
 
-int main() 
-{
-  discord_global_init();
+int main(void) {
   struct discord *client = discord_init(BOT_TOKEN);
-
   discord_set_on_ready(client, &on_ready);
   discord_set_on_message_create(client, &on_message);
-
   discord_run(client);
-
-  discord_cleanup(client);
-  discord_global_cleanup();
 }
 ```
+*This is a minimalistic example, refer to `bots/` for a better overview.*
 
 ## Get started with bot-echo
 1. Get your bot token and paste it to `bot.config` to
