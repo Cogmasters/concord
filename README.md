@@ -54,7 +54,8 @@ sudo apt-get install -y libcurl4-openssl-dev libssl-dev
 #### Compile
 
 ```
-make 
+make
+sudo make install
 ```
 
 ### For Windows
