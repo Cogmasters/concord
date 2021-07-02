@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/guild.h
  * @author cee-studio
- * @date 30 Jun 2021
+ * @date 01 Jul 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/guild
  */
@@ -88,7 +88,7 @@ struct discord_guild {
   /* specs/discord/guild.json:31:82
      '{"type":{"base":"struct discord_permissions_role", "dec":"ntl"}, "name":"roles", "todo":true, 
               "comment":"array of role objects"}' */
-  ///< @todo roles array of role objects;
+  // @todo roles array of role objects;
 
   /* specs/discord/guild.json:33:71
      '{"type":{"base":"struct discord_emoji", "dec":"ntl"}, "name":"emojis"}' */
@@ -97,7 +97,7 @@ struct discord_guild {
   /* specs/discord/guild.json:34:57
      '{"type":{"base":"ja_str", "dec":"ntl"}, "name":"features", "todo":true, 
               "comment":"array of guild feature strings"}' */
-  ///< @todo features array of guild feature strings;
+  // @todo features array of guild feature strings;
 
   /* specs/discord/guild.json:36:85
      '{"type":{"base":"int", "int_alias":"enum discord_guild_mfa_level"}, "name":"mfa_level"}' */
@@ -138,7 +138,7 @@ struct discord_guild {
   /* specs/discord/guild.json:45:71
      '{"type":{"base":"struct discord_voice", "dec":"ntl"}, "name":"voice_states", "todo":true, 
          "comment":"array of partial voice state objects"}' */
-  ///< @todo voice_states array of partial voice state objects;
+  // @todo voice_states array of partial voice state objects;
 
   /* specs/discord/guild.json:47:78
      '{"type":{"base":"struct discord_guild_member", "dec":"ntl"}, "name":"members", "option":true}' */
@@ -147,12 +147,12 @@ struct discord_guild {
   /* specs/discord/guild.json:48:73
      '{"type":{"base":"struct discord_channel", "dec":"ntl"}, "name":"channels", "option":true,
          "comment":"array of channel objects"}' */
-  struct discord_channel **channels; // array of channel objects
+  struct discord_channel **channels; ///< array of channel objects
 
   /* specs/discord/guild.json:50:41
      '{"type":{"base":"int"}, "name":"presences", "todo":true, "option":true,
          "comment":"array of partial presence update objects"}' */
-  ///< @todo presences array of partial presence update objects;
+  // @todo presences array of partial presence update objects;
 
   /* specs/discord/guild.json:52:41
      '{"type":{"base":"int"}, "name":"max_presences", "option":true}' */
@@ -407,7 +407,7 @@ struct discord_guild_preview {
 
   /* specs/discord/guild.json:179:18
      '{"name":"features", "todo":true, "type":{"base":"char", "dec":"ntl"}}' */
-  ///< @todo features (null);
+  // @todo features (null);
 
   /* specs/discord/guild.json:180:18
      '{"name":"approximate_member_count", "type":{"base":"int"}}' */
@@ -523,7 +523,7 @@ struct discord_guild_member {
 
   /* specs/discord/guild.json:204:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl"}, "comment":"array of role object ids"}' */
-  ja_u64 **roles; // array of role object ids
+  ja_u64 **roles; ///< array of role object ids
 
   /* specs/discord/guild.json:205:20
      '{ "name": "joined_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}' */
@@ -824,7 +824,7 @@ struct discord_guild_ban {
 
   /* specs/discord/guild.json:279:20
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*"}, "comment":"partial user object"}' */
-  struct discord_user *user; // partial user object
+  struct discord_user *user; ///< partial user object
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -870,7 +870,7 @@ extern size_t discord_guild_ban_list_to_json(char *str, size_t len, struct disco
 struct discord_guild_welcome_screen {
   /* specs/discord/guild.json:289:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}' */
-  char *description; // @todo fixed size limit
+  char *description; ///< @todo fixed size limit
 
   /* specs/discord/guild.json:290:20
      '{ "name": "welcome_channels", "type":{ "base":"struct discord_guild_welcome_screen_channel", "dec":"ntl" }, "todo":false }' */

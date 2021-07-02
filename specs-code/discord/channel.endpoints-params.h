@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/channel.endpoints-params.h
  * @author cee-studio
- * @date 30 Jun 2021
+ * @date 01 Jul 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/channel
  */
@@ -173,11 +173,11 @@ extern size_t discord_get_reactions_params_list_to_json(char *str, size_t len, s
 struct discord_edit_channel_permissions_params {
   /* specs/discord/channel.endpoints-params.json:49:20
      '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"}, "comment":"permission bit set" }' */
-  enum discord_permissions_bitwise_flags allow; // permission bit set
+  enum discord_permissions_bitwise_flags allow; ///< permission bit set
 
   /* specs/discord/channel.endpoints-params.json:50:20
      '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"}, "comment":"permission bit set" }' */
-  enum discord_permissions_bitwise_flags deny; // permission bit set
+  enum discord_permissions_bitwise_flags deny; ///< permission bit set
 
   /* specs/discord/channel.endpoints-params.json:51:20
      '{ "name": "type", "type":{ "base":"int" }}' */

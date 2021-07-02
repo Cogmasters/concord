@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/emoji.endpoints-params.c
  * @author cee-studio
- * @date 30 Jun 2021
+ * @date 01 Jul 2021
  * @brief Specs generated file
  * @see 
  */

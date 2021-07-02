@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/webhook.h
  * @author cee-studio
- * @date 30 Jun 2021
+ * @date 01 Jul 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/webhook
  */
@@ -41,11 +41,11 @@ struct discord_webhook {
 
   /* specs/discord/webhook.json:18:20
      '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}' */
-  char *avatar; // @todo fixed size limit
+  char *avatar; ///< @todo fixed size limit
 
   /* specs/discord/webhook.json:19:20
      '{ "name": "token", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}' */
-  char *token; // @todo fixed size limit
+  char *token; ///< @todo fixed size limit
 
   /* specs/discord/webhook.json:20:20
      '{ "name": "application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */

@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/guild.endpoints-params.h
  * @author cee-studio
- * @date 30 Jun 2021
+ * @date 01 Jul 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/guild
  */
@@ -17,47 +17,47 @@
 struct discord_create_guild_params {
   /* specs/discord/guild.endpoints-params.json:13:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"name of the guild (2-100) characters"}' */
-  char *name; // name of the guild (2-100) characters
+  char *name; ///< name of the guild (2-100) characters
 
   /* specs/discord/guild.endpoints-params.json:14:20
      '{ "name": "region", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"voice region id" }' */
-  char *region; // voice region id
+  char *region; ///< voice region id
 
   /* specs/discord/guild.endpoints-params.json:15:20
      '{ "name": "icon", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"base64 128x1128 image for the guild icon"}' */
-  char *icon; // base64 128x1128 image for the guild icon
+  char *icon; ///< base64 128x1128 image for the guild icon
 
   /* specs/discord/guild.endpoints-params.json:16:20
      '{ "name": "verification_level", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"verification level"}' */
-  int verification_level; // verification level
+  int verification_level; ///< verification level
 
   /* specs/discord/guild.endpoints-params.json:17:20
      '{ "name": "default_message_notifications", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"default message notification level"}' */
-  int default_message_notifications; // default message notification level
+  int default_message_notifications; ///< default message notification level
 
   /* specs/discord/guild.endpoints-params.json:18:20
      '{ "name": "explicit_content_filter", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"explicit content filter level"}' */
-  int explicit_content_filter; // explicit content filter level
+  int explicit_content_filter; ///< explicit content filter level
 
   /* specs/discord/guild.endpoints-params.json:19:20
      '{ "name": "roles", "type":{ "base":"int" }, "todo":true, "comment":"new guild roles" }' */
-  ///< @todo roles new guild roles;
+  // @todo roles new guild roles;
 
   /* specs/discord/guild.endpoints-params.json:20:20
      '{ "name": "channels", "type":{ "base":"struct discord_channel", "dec":"ntl" }, "option":true, "inject_if_not":null, "comment":"array of partial channel objects"}' */
-  struct discord_channel **channels; // array of partial channel objects
+  struct discord_channel **channels; ///< array of partial channel objects
 
   /* specs/discord/guild.endpoints-params.json:21:20
      '{ "name": "afk_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"id for afk channel"}' */
-  u64_snowflake_t afk_channel_id; // id for afk channel
+  u64_snowflake_t afk_channel_id; ///< id for afk channel
 
   /* specs/discord/guild.endpoints-params.json:22:20
      '{ "name": "afk_timeout", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"afk timeout in seconds"}' */
-  int afk_timeout; // afk timeout in seconds
+  int afk_timeout; ///< afk timeout in seconds
 
   /* specs/discord/guild.endpoints-params.json:23:20
      '{ "name": "system_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"the id of the channel where guild notices such as welcome messages and boost events are posted"}' */
-  u64_snowflake_t system_channel_id; // the id of the channel where guild notices such as welcome messages and boost events are posted
+  u64_snowflake_t system_channel_id; ///< the id of the channel where guild notices such as welcome messages and boost events are posted
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -103,79 +103,79 @@ extern size_t discord_create_guild_params_list_to_json(char *str, size_t len, st
 struct discord_modify_guild_params {
   /* specs/discord/guild.endpoints-params.json:33:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"name of the guild (2-100) characters"}' */
-  char *name; // name of the guild (2-100) characters
+  char *name; ///< name of the guild (2-100) characters
 
   /* specs/discord/guild.endpoints-params.json:34:20
      '{ "name": "region", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"voice region id" }' */
-  char *region; // voice region id
+  char *region; ///< voice region id
 
   /* specs/discord/guild.endpoints-params.json:35:20
      '{ "name": "verification_level", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"verification level"}' */
-  int verification_level; // verification level
+  int verification_level; ///< verification level
 
   /* specs/discord/guild.endpoints-params.json:36:20
      '{ "name": "default_message_notifications", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"default message notification level"}' */
-  int default_message_notifications; // default message notification level
+  int default_message_notifications; ///< default message notification level
 
   /* specs/discord/guild.endpoints-params.json:37:20
      '{ "name": "explicit_content_filter", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"explicit content filter level"}' */
-  int explicit_content_filter; // explicit content filter level
+  int explicit_content_filter; ///< explicit content filter level
 
   /* specs/discord/guild.endpoints-params.json:38:20
      '{ "name": "afk_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"id for afk channel"}' */
-  u64_snowflake_t afk_channel_id; // id for afk channel
+  u64_snowflake_t afk_channel_id; ///< id for afk channel
 
   /* specs/discord/guild.endpoints-params.json:39:20
      '{ "name": "afk_timeout", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"afk timeout in seconds"}' */
-  int afk_timeout; // afk timeout in seconds
+  int afk_timeout; ///< afk timeout in seconds
 
   /* specs/discord/guild.endpoints-params.json:40:20
      '{ "name": "icon", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"base64 128x1128 image for the guild icon"}' */
-  char *icon; // base64 128x1128 image for the guild icon
+  char *icon; ///< base64 128x1128 image for the guild icon
 
   /* specs/discord/guild.endpoints-params.json:41:20
      '{ "name": "owner_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"user id to transfer guild ownership to (must be owner)"}' */
-  u64_snowflake_t owner_id; // user id to transfer guild ownership to (must be owner)
+  u64_snowflake_t owner_id; ///< user id to transfer guild ownership to (must be owner)
 
   /* specs/discord/guild.endpoints-params.json:42:20
      '{ "name": "splash", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"base64 16:9 png/jpeg image for the guild splash (when the server has the INVITE_SPLASH feature"}' */
-  char *splash; // base64 16:9 png/jpeg image for the guild splash (when the server has the INVITE_SPLASH feature
+  char *splash; ///< base64 16:9 png/jpeg image for the guild splash (when the server has the INVITE_SPLASH feature
 
   /* specs/discord/guild.endpoints-params.json:43:20
      '{ "name": "discovery_splash", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"base64 16:9 png/jpeg image for the guild discovery splash (when the server has the DISCOVERABLE feature)"}' */
-  char *discovery_splash; // base64 16:9 png/jpeg image for the guild discovery splash (when the server has the DISCOVERABLE feature)
+  char *discovery_splash; ///< base64 16:9 png/jpeg image for the guild discovery splash (when the server has the DISCOVERABLE feature)
 
   /* specs/discord/guild.endpoints-params.json:44:20
      '{ "name": "banner", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"	base64 16:9 png/jpeg image for the guild banner (when the server has the BANNER feature)"}' */
-  char *banner; // cannot unescape an ill-formed-string 	base64 16:9 png/jpeg image for the guild banner (wh
+  char *banner; ///< cannot unescape an ill-formed-string 	base64 16:9 png/jpeg image for the guild banner (wh
 
   /* specs/discord/guild.endpoints-params.json:45:20
      '{ "name": "system_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"	the id of the channel where guild notices such as welcome messages and boost events are posted"}' */
-  u64_snowflake_t system_channel_id; // cannot unescape an ill-formed-string 	the id of the channel where guild notices such as welcome
+  u64_snowflake_t system_channel_id; ///< cannot unescape an ill-formed-string 	the id of the channel where guild notices such as welcome
 
   /* specs/discord/guild.endpoints-params.json:46:20
      '{ "name": "system_channel_flags", "type":{ "base":"int", "int_alias":"enum discord_guild_system_channel_flags" }, "option":true, "inject_if_not":0, "comment":"system channel flags"}' */
-  enum discord_guild_system_channel_flags system_channel_flags; // system channel flags
+  enum discord_guild_system_channel_flags system_channel_flags; ///< system channel flags
 
   /* specs/discord/guild.endpoints-params.json:47:20
      '{ "name": "rules_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"the id of the channel where Community guilds display rules and/or guidelines"}' */
-  u64_snowflake_t rules_channel_id; // the id of the channel where Community guilds display rules and/or guidelines
+  u64_snowflake_t rules_channel_id; ///< the id of the channel where Community guilds display rules and/or guidelines
 
   /* specs/discord/guild.endpoints-params.json:48:20
      '{ "name": "public_updates_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"the id of the channel where admins and moderators of Community guilds receive notices from Discord"}' */
-  u64_snowflake_t public_updates_channel_id; // the id of the channel where admins and moderators of Community guilds receive notices from Discord
+  u64_snowflake_t public_updates_channel_id; ///< the id of the channel where admins and moderators of Community guilds receive notices from Discord
 
   /* specs/discord/guild.endpoints-params.json:49:20
      '{ "name": "preferred_locale", "type":{ "base":"char", "dec":"*" }, "comment":"the preferred locale of a Community guild used in server discovery and notices from Discord; defaults to \"en-US\""}' */
-  char *preferred_locale; // the preferred locale of a Community guild used in server discovery and notices from Discord; defaults to "en-US"
+  char *preferred_locale; ///< the preferred locale of a Community guild used in server discovery and notices from Discord; defaults to "en-US"
 
   /* specs/discord/guild.endpoints-params.json:50:18
      '{"name":"features", "type": { "base":"ja_str", "dec":"ntl" }, "todo":true, "comment":"array of guild feature strings"}' */
-  ///< @todo features array of guild feature strings;
+  // @todo features array of guild feature strings;
 
   /* specs/discord/guild.endpoints-params.json:51:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"the description for the guild, if the guild is discoverable"}' */
-  char *description; // the description for the guild, if the guild is discoverable
+  char *description; ///< the description for the guild, if the guild is discoverable
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -303,19 +303,19 @@ extern size_t discord_create_guild_channel_params_list_to_json(char *str, size_t
 struct discord_modify_guild_channel_positions_params {
   /* specs/discord/guild.endpoints-params.json:80:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"channel id"}' */
-  u64_snowflake_t id; // channel id
+  u64_snowflake_t id; ///< channel id
 
   /* specs/discord/guild.endpoints-params.json:81:20
      '{ "name": "position", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"sorting position of the channel"}' */
-  int position; // sorting position of the channel
+  int position; ///< sorting position of the channel
 
   /* specs/discord/guild.endpoints-params.json:82:20
      '{ "name": "lock_permissions", "type":{ "base":"bool" }, "option":true, "inject_if_not":false, "comment":"syncs the permission overwrites with the new parent, if moving to a new category"}' */
-  bool lock_permissions; // syncs the permission overwrites with the new parent, if moving to a new category
+  bool lock_permissions; ///< syncs the permission overwrites with the new parent, if moving to a new category
 
   /* specs/discord/guild.endpoints-params.json:83:20
      '{ "name": "parent_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"the new parent ID for the channel that is moved"}' */
-  u64_snowflake_t parent_id; // the new parent ID for the channel that is moved
+  u64_snowflake_t parent_id; ///< the new parent ID for the channel that is moved
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -361,11 +361,11 @@ extern size_t discord_modify_guild_channel_positions_params_list_to_json(char *s
 struct discord_search_guild_members_params {
   /* specs/discord/guild.endpoints-params.json:93:20
      '{ "name": "query", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment": "Query string to match username(s) and nickname(s) against." }' */
-  char *query; // Query string to match username(s) and nickname(s) against.
+  char *query; ///< Query string to match username(s) and nickname(s) against.
 
   /* specs/discord/guild.endpoints-params.json:94:20
      '{ "name": "limit", "type":{ "base":"int" }, "inject_if_not":0, "comment": "max number of members to return (1-1000)"}' */
-  int limit; // max number of members to return (1-1000)
+  int limit; ///< max number of members to return (1-1000)
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -597,11 +597,11 @@ extern size_t discord_create_guild_role_params_list_to_json(char *str, size_t le
 struct discord_modify_guild_role_positions_params {
   /* specs/discord/guild.endpoints-params.json:146:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"role"}' */
-  u64_snowflake_t id; // role
+  u64_snowflake_t id; ///< role
 
   /* specs/discord/guild.endpoints-params.json:147:20
      '{ "name": "position", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"sorting position of the role"}' */
-  int position; // sorting position of the role
+  int position; ///< sorting position of the role
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -647,23 +647,23 @@ extern size_t discord_modify_guild_role_positions_params_list_to_json(char *str,
 struct discord_modify_guild_role_params {
   /* specs/discord/guild.endpoints-params.json:157:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"name of the role"}' */
-  char *name; // name of the role
+  char *name; ///< name of the role
 
   /* specs/discord/guild.endpoints-params.json:158:20
      '{ "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags" }, "option":true, "inject_if_not":0, "comment":"bitwise value of the enabled/disabled permissions"}' */
-  enum discord_permissions_bitwise_flags permissions; // bitwise value of the enabled/disabled permissions
+  enum discord_permissions_bitwise_flags permissions; ///< bitwise value of the enabled/disabled permissions
 
   /* specs/discord/guild.endpoints-params.json:159:20
      '{ "name": "color", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"RGB color value"}' */
-  int color; // RGB color value
+  int color; ///< RGB color value
 
   /* specs/discord/guild.endpoints-params.json:160:20
      '{ "name": "hoist", "type":{ "base":"bool" }, "option":true, "inject_if_not":false, "comment":"whether the role should be displayed separately in the sidebar"}' */
-  bool hoist; // whether the role should be displayed separately in the sidebar
+  bool hoist; ///< whether the role should be displayed separately in the sidebar
 
   /* specs/discord/guild.endpoints-params.json:161:20
      '{ "name": "mentionable", "type":{ "base":"bool" }, "option":true, "inject_if_not":false, "comment":"whether the role should be mentionable"}' */
-  bool mentionable; // whether the role should be mentionable
+  bool mentionable; ///< whether the role should be mentionable
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected

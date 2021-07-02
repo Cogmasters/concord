@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/emoji.c
  * @author cee-studio
- * @date 30 Jun 2021
+ * @date 01 Jul 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/emoji
  */
@@ -214,7 +214,7 @@ void discord_emoji_cleanup(struct discord_emoji *d) {
   /* specs/discord/emoji.json:14:20
      '{ "name": "roles", "type":{ "base":"struct discord_permissions_role", "dec":"ntl"}, "option":true,
           "todo":true }' */
-  ///< @todo p->(null)
+  // @todo p->(null)
   /* specs/discord/emoji.json:16:20
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }, "option":true }' */
   if (d->user)

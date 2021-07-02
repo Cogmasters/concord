@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/audit_log.c
  * @author cee-studio
- * @date 30 Jun 2021
+ * @date 01 Jul 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/audit-log
  */
@@ -2039,11 +2039,11 @@ void discord_audit_log_change_key_cleanup(struct discord_audit_log_change_key *d
   /* specs/discord/audit_log.json:133:18
      '{"name":"add", "json_key":"$add", "type": {"base":"char", "dec":"*"},
          "todo":true }' */
-  ///< @todo p->(null)
+  // @todo p->(null)
   /* specs/discord/audit_log.json:135:18
      '{"name":"remove", "json_key":"$remove", "type": {"base":"char", "dec":"*"},
          "todo":true }' */
-  ///< @todo p->(null)
+  // @todo p->(null)
   /* specs/discord/audit_log.json:137:18
      '{"name":"prune_delete_days", "type": {"base":"int"}}' */
   // p->prune_delete_days is a scalar
@@ -2069,7 +2069,7 @@ void discord_audit_log_change_key_cleanup(struct discord_audit_log_change_key *d
   /* specs/discord/audit_log.json:144:18
      '{"name":"permission_overwrites", "type": {"base":"char", "dec":"*"},
          "todo":true }' */
-  ///< @todo p->(null)
+  // @todo p->(null)
   /* specs/discord/audit_log.json:146:18
      '{"name":"nsfw", "type": {"base":"bool"}}' */
   // p->nsfw is a scalar
@@ -2150,7 +2150,7 @@ void discord_audit_log_change_key_cleanup(struct discord_audit_log_change_key *d
   /* specs/discord/audit_log.json:167:18
      '{"name":"type", "type": {"base":"char", "dec":"*"}, 
          "todo":true, "comment":"integer or string"}' */
-  ///< @todo p->(null)
+  // @todo p->(null)
   /* specs/discord/audit_log.json:169:18
      '{"name":"enable_emotions", "type": {"base":"bool"}}' */
   // p->enable_emotions is a scalar

@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/invite.endpoints-params.h
  * @author cee-studio
- * @date 30 Jun 2021
+ * @date 01 Jul 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/invite
  */
@@ -17,11 +17,11 @@
 struct discord_get_invite_params {
   /* specs/discord/invite.endpoints-params.json:13:20
      '{ "name": "with_counts", "type":{ "base":"bool" }, "comment":"whether the invite should contain approximate member counts"}' */
-  bool with_counts; // whether the invite should contain approximate member counts
+  bool with_counts; ///< whether the invite should contain approximate member counts
 
   /* specs/discord/invite.endpoints-params.json:14:20
      '{ "name": "with_expiration", "type":{ "base":"bool" }, "comment":"whether the invite should contain the expiration date"}' */
-  bool with_expiration; // whether the invite should contain the expiration date
+  bool with_expiration; ///< whether the invite should contain the expiration date
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected

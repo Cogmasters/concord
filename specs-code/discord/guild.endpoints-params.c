@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/guild.endpoints-params.c
  * @author cee-studio
- * @date 30 Jun 2021
+ * @date 01 Jul 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/guild
  */
@@ -279,7 +279,7 @@ void discord_create_guild_params_cleanup(struct discord_create_guild_params *d) 
   // p->explicit_content_filter is a scalar
   /* specs/discord/guild.endpoints-params.json:19:20
      '{ "name": "roles", "type":{ "base":"int" }, "todo":true, "comment":"new guild roles" }' */
-  ///< @todo p->(null)
+  // @todo p->(null)
   /* specs/discord/guild.endpoints-params.json:20:20
      '{ "name": "channels", "type":{ "base":"struct discord_channel", "dec":"ntl" }, "option":true, "inject_if_not":null, "comment":"array of partial channel objects"}' */
   if (d->channels)
@@ -804,7 +804,7 @@ void discord_modify_guild_params_cleanup(struct discord_modify_guild_params *d) 
     free(d->preferred_locale);
   /* specs/discord/guild.endpoints-params.json:50:18
      '{"name":"features", "type": { "base":"ja_str", "dec":"ntl" }, "todo":true, "comment":"array of guild feature strings"}' */
-  ///< @todo p->(null)
+  // @todo p->(null)
   /* specs/discord/guild.endpoints-params.json:51:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"the description for the guild, if the guild is discoverable"}' */
   if (d->description)

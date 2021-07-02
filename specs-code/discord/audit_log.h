@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/audit_log.h
  * @author cee-studio
- * @date 30 Jun 2021
+ * @date 01 Jul 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/audit-log
  */
@@ -186,11 +186,11 @@ extern size_t discord_audit_log_entry_list_to_json(char *str, size_t len, struct
 struct discord_audit_log_entry_optional_info {
   /* specs/discord/audit_log.json:84:20
      '{ "name": "delete_member_days", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"}' */
-  char *delete_member_days; // @todo find fixed size limit
+  char *delete_member_days; ///< @todo find fixed size limit
 
   /* specs/discord/audit_log.json:85:20
      '{ "name": "members_removed", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"}' */
-  char *members_removed; // @todo find fixed size limit
+  char *members_removed; ///< @todo find fixed size limit
 
   /* specs/discord/audit_log.json:86:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" } }' */
@@ -202,7 +202,7 @@ struct discord_audit_log_entry_optional_info {
 
   /* specs/discord/audit_log.json:88:20
      '{ "name": "count", "type":{ "base":"char", "dec":"*" }, "comment":"@todo find fixed size limit"}' */
-  char *count; // @todo find fixed size limit
+  char *count; ///< @todo find fixed size limit
 
   /* specs/discord/audit_log.json:89:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
@@ -210,11 +210,11 @@ struct discord_audit_log_entry_optional_info {
 
   /* specs/discord/audit_log.json:90:20
      '{ "name": "type", "type":{ "base":"char", "dec":"*" }, "comment":"@todo find fixed size limit"}' */
-  char *type; // @todo find fixed size limit
+  char *type; ///< @todo find fixed size limit
 
   /* specs/discord/audit_log.json:91:20
      '{ "name": "role", "type":{ "base":"char", "dec":"*" }, "comment":"@todo find fixed size limit"}' */
-  char *role; // @todo find fixed size limit
+  char *role; ///< @todo find fixed size limit
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -323,12 +323,12 @@ struct discord_audit_log_change_key {
   /* specs/discord/audit_log.json:115:18
      '{"name":"icon_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"}, 
          "comment":"icon changed" }' */
-  char icon_hash[MAX_SHA256_LEN]; // icon changed
+  char icon_hash[MAX_SHA256_LEN]; ///< icon changed
 
   /* specs/discord/audit_log.json:117:18
      '{"name":"splash_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"},
          "comment":"invite splash page artwork changed"}' */
-  char splash_hash[MAX_SHA256_LEN]; // invite splash page artwork changed
+  char splash_hash[MAX_SHA256_LEN]; ///< invite splash page artwork changed
 
   /* specs/discord/audit_log.json:119:18
      '{"name":"discovery_splash_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"}}' */
@@ -389,12 +389,12 @@ struct discord_audit_log_change_key {
   /* specs/discord/audit_log.json:133:18
      '{"name":"add", "json_key":"$add", "type": {"base":"char", "dec":"*"},
          "todo":true }' */
-  ///< @todo add (null);
+  // @todo add (null);
 
   /* specs/discord/audit_log.json:135:18
      '{"name":"remove", "json_key":"$remove", "type": {"base":"char", "dec":"*"},
          "todo":true }' */
-  ///< @todo remove (null);
+  // @todo remove (null);
 
   /* specs/discord/audit_log.json:137:18
      '{"name":"prune_delete_days", "type": {"base":"int"}}' */
@@ -427,7 +427,7 @@ struct discord_audit_log_change_key {
   /* specs/discord/audit_log.json:144:18
      '{"name":"permission_overwrites", "type": {"base":"char", "dec":"*"},
          "todo":true }' */
-  ///< @todo permission_overwrites (null);
+  // @todo permission_overwrites (null);
 
   /* specs/discord/audit_log.json:146:18
      '{"name":"nsfw", "type": {"base":"bool"}}' */
@@ -516,7 +516,7 @@ struct discord_audit_log_change_key {
   /* specs/discord/audit_log.json:167:18
      '{"name":"type", "type": {"base":"char", "dec":"*"}, 
          "todo":true, "comment":"integer or string"}' */
-  ///< @todo type integer or string;
+  // @todo type integer or string;
 
   /* specs/discord/audit_log.json:169:18
      '{"name":"enable_emotions", "type": {"base":"bool"}}' */

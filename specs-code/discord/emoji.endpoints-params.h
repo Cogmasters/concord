@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/emoji.endpoints-params.h
  * @author cee-studio
- * @date 30 Jun 2021
+ * @date 01 Jul 2021
  * @brief Specs generated file
  * @see 
  */
@@ -21,11 +21,11 @@ struct discord_create_guild_emoji_params {
 
   /* specs/discord/emoji.endpoints-params.json:14:20
      '{ "name": "image", "type":{ "base":"char", "dec":"*"}, "comment":"Base64 Encoded Image Data"}' */
-  char *image; // Base64 Encoded Image Data
+  char *image; ///< Base64 Encoded Image Data
 
   /* specs/discord/emoji.endpoints-params.json:15:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"roles for which this emoji will be whitelisted"}' */
-  ja_u64 **roles; // roles for which this emoji will be whitelisted
+  ja_u64 **roles; ///< roles for which this emoji will be whitelisted
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -75,7 +75,7 @@ struct discord_modify_guild_emoji_params {
 
   /* specs/discord/emoji.endpoints-params.json:26:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"roles for which this emoji will be whitelisted"}' */
-  ja_u64 **roles; // roles for which this emoji will be whitelisted
+  ja_u64 **roles; ///< roles for which this emoji will be whitelisted
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected

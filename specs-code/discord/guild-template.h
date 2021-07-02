@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/guild-template.h
  * @author cee-studio
- * @date 30 Jun 2021
+ * @date 01 Jul 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/guild-template
  */
@@ -17,15 +17,15 @@
 struct discord_guild_template {
   /* specs/discord/guild-template.json:12:20
      '{ "name": "code", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"}' */
-  char *code; // @todo find fixed size limit
+  char *code; ///< @todo find fixed size limit
 
   /* specs/discord/guild-template.json:13:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"}' */
-  char *name; // @todo find fixed size limit
+  char *name; ///< @todo find fixed size limit
 
   /* specs/discord/guild-template.json:14:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment": "@todo find fixed size limit"}' */
-  char *description; // @todo find fixed size limit
+  char *description; ///< @todo find fixed size limit
 
   /* specs/discord/guild-template.json:15:20
      '{ "name": "usage_count", "type":{ "base":"int"}}' */

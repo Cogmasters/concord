@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/guild.c
  * @author cee-studio
- * @date 30 Jun 2021
+ * @date 01 Jul 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/guild
  */
@@ -892,7 +892,7 @@ void discord_guild_cleanup(struct discord_guild *d) {
   /* specs/discord/guild.json:31:82
      '{"type":{"base":"struct discord_permissions_role", "dec":"ntl"}, "name":"roles", "todo":true, 
               "comment":"array of role objects"}' */
-  ///< @todo p->(null)
+  // @todo p->(null)
   /* specs/discord/guild.json:33:71
      '{"type":{"base":"struct discord_emoji", "dec":"ntl"}, "name":"emojis"}' */
   if (d->emojis)
@@ -900,7 +900,7 @@ void discord_guild_cleanup(struct discord_guild *d) {
   /* specs/discord/guild.json:34:57
      '{"type":{"base":"ja_str", "dec":"ntl"}, "name":"features", "todo":true, 
               "comment":"array of guild feature strings"}' */
-  ///< @todo p->(null)
+  // @todo p->(null)
   /* specs/discord/guild.json:36:85
      '{"type":{"base":"int", "int_alias":"enum discord_guild_mfa_level"}, "name":"mfa_level"}' */
   // p->mfa_level is a scalar
@@ -931,7 +931,7 @@ void discord_guild_cleanup(struct discord_guild *d) {
   /* specs/discord/guild.json:45:71
      '{"type":{"base":"struct discord_voice", "dec":"ntl"}, "name":"voice_states", "todo":true, 
          "comment":"array of partial voice state objects"}' */
-  ///< @todo p->(null)
+  // @todo p->(null)
   /* specs/discord/guild.json:47:78
      '{"type":{"base":"struct discord_guild_member", "dec":"ntl"}, "name":"members", "option":true}' */
   if (d->members)
@@ -944,7 +944,7 @@ void discord_guild_cleanup(struct discord_guild *d) {
   /* specs/discord/guild.json:50:41
      '{"type":{"base":"int"}, "name":"presences", "todo":true, "option":true,
          "comment":"array of partial presence update objects"}' */
-  ///< @todo p->(null)
+  // @todo p->(null)
   /* specs/discord/guild.json:52:41
      '{"type":{"base":"int"}, "name":"max_presences", "option":true}' */
   // p->max_presences is a scalar
@@ -1757,7 +1757,7 @@ void discord_guild_preview_cleanup(struct discord_guild_preview *d) {
     discord_emoji_list_free(d->emojis);
   /* specs/discord/guild.json:179:18
      '{"name":"features", "todo":true, "type":{"base":"char", "dec":"ntl"}}' */
-  ///< @todo p->(null)
+  // @todo p->(null)
   /* specs/discord/guild.json:180:18
      '{"name":"approximate_member_count", "type":{"base":"int"}}' */
   // p->approximate_member_count is a scalar

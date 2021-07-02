@@ -2,7 +2,7 @@
 /**
  * @file specs-code/reddit/oauth2.h
  * @author cee-studio
- * @date 30 Jun 2021
+ * @date 01 Jul 2021
  * @brief Specs generated file
  * @see https://github.com/reddit-archive/reddit/wiki/OAuth2-Quick-Start-Example
  */
@@ -16,23 +16,23 @@
 struct reddit_access_token_params {
   /* specs/reddit/oauth2.json:12:20
      '{ "name": "grant_type", "type":{ "base":"char", "dec":"*" }, "comment":"'password' for script type apps, 'refresh_token' for renewing access token and 'authorization_code' for webapps"}' */
-  char *grant_type; // 'password' for script type apps, 'refresh_token' for renewing access token and 'authorization_code' for webapps
+  char *grant_type; ///< 'password' for script type apps, 'refresh_token' for renewing access token and 'authorization_code' for webapps
 
   /* specs/reddit/oauth2.json:13:20
      '{ "name": "username", "type":{ "base":"char", "dec":"*" }, "comment":"username for script app"}' */
-  char *username; // username for script app
+  char *username; ///< username for script app
 
   /* specs/reddit/oauth2.json:14:20
      '{ "name": "password", "type":{ "base":"char", "dec":"*" }, "comment":"password for script app"}' */
-  char *password; // password for script app
+  char *password; ///< password for script app
 
   /* specs/reddit/oauth2.json:15:20
      '{ "name": "code", "type":{ "base":"char", "dec":"*" }, "comment":"the code retrieved by the webapp"}' */
-  char *code; // the code retrieved by the webapp
+  char *code; ///< the code retrieved by the webapp
 
   /* specs/reddit/oauth2.json:16:20
      '{ "name": "redirect_uri", "type":{ "base":"char", "dec":"*" }, "comment":"redirect uri for webapp"}' */
-  char *redirect_uri; // redirect uri for webapp
+  char *redirect_uri; ///< redirect uri for webapp
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected

@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/user.endpoints-params.h
  * @author cee-studio
- * @date 30 Jun 2021
+ * @date 01 Jul 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/user
  */
@@ -21,7 +21,7 @@ struct discord_modify_current_user_params {
 
   /* specs/discord/user.endpoints-params.json:14:20
      '{ "name": "avatar", "type":{ "base":"char", "dec":"*"}, "comment":"base64 encoded image data"}' */
-  char *avatar; // base64 encoded image data
+  char *avatar; ///< base64 encoded image data
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -68,12 +68,12 @@ struct discord_create_group_dm_params {
   /* specs/discord/user.endpoints-params.json:24:20
      '{ "name": "access_tokens", "type":{ "base":"ja_str", "dec":"ntl" }, 
           "comment":"access tokens of users that have granted your app the gdm.join scope"}' */
-  ja_str **access_tokens; // access tokens of users that have granted your app the gdm.join scope
+  ja_str **access_tokens; ///< access tokens of users that have granted your app the gdm.join scope
 
   /* specs/discord/user.endpoints-params.json:26:19
      '{ "name":"nicks", "type":{ "base":"ja_u64", "dec":"ntl"}, 
           "comment":"ia dictionary of user ids to their respective nicknames"}' */
-  ja_u64 **nicks; // ia dictionary of user ids to their respective nicknames
+  ja_u64 **nicks; ///< ia dictionary of user ids to their respective nicknames
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected

@@ -2,7 +2,7 @@
 /**
  * @file specs-code/reddit/all_functions.h
  * @author cee-studio
- * @date 30 Jun 2021
+ * @date 01 Jul 2021
  * @brief Specs generated file
  * @see 
  */
@@ -31,7 +31,7 @@ extern size_t reddit_comment_params_list_to_json(char *str, size_t len, struct r
 /**
  * @file specs-code/reddit/all_functions.h
  * @author cee-studio
- * @date 30 Jun 2021
+ * @date 01 Jul 2021
  * @brief Specs generated file
  * @see https://github.com/reddit-archive/reddit/wiki/OAuth2-Quick-Start-Example
  */
@@ -60,7 +60,7 @@ extern size_t reddit_access_token_params_list_to_json(char *str, size_t len, str
 /**
  * @file specs-code/reddit/all_functions.h
  * @author cee-studio
- * @date 30 Jun 2021
+ * @date 01 Jul 2021
  * @brief Specs generated file
  * @see 
  */

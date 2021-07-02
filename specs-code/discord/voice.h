@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/voice.h
  * @author cee-studio
- * @date 30 Jun 2021
+ * @date 01 Jul 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/voice
  */
@@ -107,11 +107,11 @@ extern size_t discord_voice_state_list_to_json(char *str, size_t len, struct dis
 struct discord_voice_region {
   /* specs/discord/voice.json:32:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }' */
-  char *id; // @todo fixed size limit
+  char *id; ///< @todo fixed size limit
 
   /* specs/discord/voice.json:33:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }' */
-  char *name; // @todo fixed size limit
+  char *name; ///< @todo fixed size limit
 
   /* specs/discord/voice.json:34:20
      '{ "name": "vip", "type":{ "base":"bool" }}' */

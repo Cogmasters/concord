@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/channel.h
  * @author cee-studio
- * @date 30 Jun 2021
+ * @date 01 Jul 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/channel
  */
@@ -481,7 +481,7 @@ struct discord_message {
 
   /* specs/discord/channel.json:187:77
      '{"type":{"base":"struct discord_guild_member", "dec":"*"}, "name":"member", "option":true, "comment":"partial guild member object"}' */
-  struct discord_guild_member *member; // partial guild member object
+  struct discord_guild_member *member; ///< partial guild member object
 
   /* specs/discord/channel.json:188:54
      '{"type":{"base":"char", "dec":"*"}, "name":"content"}' */
@@ -505,11 +505,11 @@ struct discord_message {
 
   /* specs/discord/channel.json:193:71
      '{"type":{"base":"struct discord_user", "dec":"ntl"}, "name":"mentions", "comment":"array of user objects, with an additional partial member field"}' */
-  struct discord_user **mentions; // array of user objects, with an additional partial member field
+  struct discord_user **mentions; ///< array of user objects, with an additional partial member field
 
   /* specs/discord/channel.json:194:58
      '{"type":{"base":"ja_u64", "dec":"ntl"}, "name":"mention_roles", "comment":"array of role object ids"}' */
-  ja_u64 **mention_roles; // array of role object ids
+  ja_u64 **mention_roles; ///< array of role object ids
 
   /* specs/discord/channel.json:195:82
      '{"type":{"base":"struct discord_channel_mention", "dec":"ntl"}, "name":"mention_channels", "option":true }' */
@@ -529,7 +529,7 @@ struct discord_message {
 
   /* specs/discord/channel.json:199:54
      '{"type":{"base":"char", "dec":"*"}, "name":"nonce", "comment":"integer or string", "option":true }' */
-  char *nonce; // integer or string
+  char *nonce; ///< integer or string
 
   /* specs/discord/channel.json:200:43
      '{"type":{"base":"bool"}, "name":"pinned"}' */
@@ -562,12 +562,12 @@ struct discord_message {
 
   /* specs/discord/channel.json:208:82
      '{"type":{"base":"struct discord_message_sticker", "dec":"ntl"}, "name":"stickers", "option":true, "inject_if_not":null, "comment":"array of sticker objects"}' */
-  struct discord_message_sticker **stickers; // array of sticker objects
+  struct discord_message_sticker **stickers; ///< array of sticker objects
 
   /* specs/discord/channel.json:209:72
      '{"type":{"base":"struct discord_message", "dec":"*"}, "name":"referenced_message", "lazy_init":true, "option":true, "inject_if_not":null,
           "comment":"this will cause recursive allocation if allocating as the parent"}' */
-  struct discord_message *referenced_message; // this will cause recursive allocation if allocating as the parent
+  struct discord_message *referenced_message; ///< this will cause recursive allocation if allocating as the parent
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -671,7 +671,7 @@ struct discord_channel_reaction {
 
   /* specs/discord/channel.json:233:20
      '{ "name": "emoji", "type":{ "base":"struct discord_emoji", "dec":"*" }, "comment":"partial emoji object"}' */
-  struct discord_emoji *emoji; // partial emoji object
+  struct discord_emoji *emoji; ///< partial emoji object
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -725,12 +725,12 @@ struct discord_channel_overwrite {
   /* specs/discord/channel.json:245:20
      '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"}, 
           "comment":"permission bit set"}' */
-  enum discord_permissions_bitwise_flags allow; // permission bit set
+  enum discord_permissions_bitwise_flags allow; ///< permission bit set
 
   /* specs/discord/channel.json:247:20
      '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"}, 
           "comment":"permission bit set"}' */
-  enum discord_permissions_bitwise_flags deny; // permission bit set
+  enum discord_permissions_bitwise_flags deny; ///< permission bit set
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -1028,11 +1028,11 @@ struct discord_channel_allowed_mentions {
 
   /* specs/discord/channel.json:315:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"list of snowflakes"}' */
-  ja_u64 **roles; // list of snowflakes
+  ja_u64 **roles; ///< list of snowflakes
 
   /* specs/discord/channel.json:316:20
      '{ "name": "users", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"list of snowflakes"}' */
-  ja_u64 **users; // list of snowflakes
+  ja_u64 **users; ///< list of snowflakes
 
   /* specs/discord/channel.json:317:20
      '{ "name": "replied_user", "type":{ "base":"bool" }}' */

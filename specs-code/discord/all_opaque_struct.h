@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date 30 Jun 2021
+ * @date 01 Jul 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/audit-log
  */
@@ -17,7 +17,7 @@ struct discord_get_guild_audit_log_params;
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date 30 Jun 2021
+ * @date 01 Jul 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/audit-log
  */
@@ -68,7 +68,7 @@ struct discord_audit_log_change_key;
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date 30 Jun 2021
+ * @date 01 Jul 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/channel
  */
@@ -149,7 +149,7 @@ struct discord_thread_response_body;
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date 30 Jun 2021
+ * @date 01 Jul 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/channel
  */
@@ -343,7 +343,7 @@ struct discord_embed_field;
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date 30 Jun 2021
+ * @date 01 Jul 2021
  * @brief Specs generated file
  * @see 
  */
@@ -368,7 +368,7 @@ struct discord_modify_guild_emoji_params;
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date 30 Jun 2021
+ * @date 01 Jul 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/emoji
  */
@@ -385,7 +385,7 @@ struct discord_emoji;
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date 30 Jun 2021
+ * @date 01 Jul 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/topics/gateway
  */
@@ -436,7 +436,7 @@ struct discord_gateway_activity;
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date 30 Jun 2021
+ * @date 01 Jul 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/guild-template
  */
@@ -469,7 +469,7 @@ struct discord_modify_guild_template_params;
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date 30 Jun 2021
+ * @date 01 Jul 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/guild-template
  */
@@ -486,7 +486,7 @@ struct discord_guild_template;
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date 30 Jun 2021
+ * @date 01 Jul 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/guild
  */
@@ -591,7 +591,7 @@ struct discord_begin_guild_prune_params;
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date 30 Jun 2021
+ * @date 01 Jul 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/guild
  */
@@ -704,7 +704,7 @@ struct discord_guild_welcome_screen_channel;
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date 30 Jun 2021
+ * @date 01 Jul 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/invite
  */
@@ -721,7 +721,7 @@ struct discord_get_invite_params;
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date 30 Jun 2021
+ * @date 01 Jul 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/invite
  */
@@ -748,7 +748,7 @@ struct discord_invite_metadata;
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date 30 Jun 2021
+ * @date 01 Jul 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/topics/permissions
  */
@@ -775,7 +775,7 @@ struct discord_permissions_role_tags;
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date 30 Jun 2021
+ * @date 01 Jul 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/user
  */
@@ -800,7 +800,7 @@ struct discord_create_group_dm_params;
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date 30 Jun 2021
+ * @date 01 Jul 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/user
  */
@@ -830,7 +830,7 @@ struct discord_connection;
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date 30 Jun 2021
+ * @date 01 Jul 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/topics/voice-connections
  */
@@ -845,7 +845,7 @@ struct discord_connection;
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date 30 Jun 2021
+ * @date 01 Jul 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/voice
  */
@@ -870,7 +870,7 @@ struct discord_voice_region;
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date 30 Jun 2021
+ * @date 01 Jul 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/webhook
  */
@@ -911,7 +911,7 @@ struct discord_edit_webhook_message_params;
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date 30 Jun 2021
+ * @date 01 Jul 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/webhook
  */

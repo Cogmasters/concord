@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/gateway.h
  * @author cee-studio
- * @date 30 Jun 2021
+ * @date 01 Jul 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/topics/gateway
  */
@@ -140,7 +140,7 @@ struct discord_gateway_identify {
 
   /* specs/discord/gateway.json:124:19
      '{ "name":"shard","type":{"base":"int", "dec":"*"}, "todo":true}' */
-  ///< @todo shard (null);
+  // @todo shard (null);
 
   /* specs/discord/gateway.json:125:19
      '{ "name":"presence","type":{"base":"struct discord_gateway_status_update", "dec":"*"}}' */

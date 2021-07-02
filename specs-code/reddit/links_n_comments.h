@@ -2,7 +2,7 @@
 /**
  * @file specs-code/reddit/links_n_comments.h
  * @author cee-studio
- * @date 30 Jun 2021
+ * @date 01 Jul 2021
  * @brief Specs generated file
  * @see 
  */
@@ -17,27 +17,27 @@
 struct reddit_comment_params {
   /* specs/reddit/links_n_comments.json:13:20
      '{ "name": "api_type", "type":{ "base":"char", "dec":"*" }, "comment":"the string json" }' */
-  char *api_type; // the string json
+  char *api_type; ///< the string json
 
   /* specs/reddit/links_n_comments.json:14:20
      '{ "name": "return_rtjson", "type":{ "base":"bool" }, "comment":"boolean value" }' */
-  bool return_rtjson; // boolean value
+  bool return_rtjson; ///< boolean value
 
   /* specs/reddit/links_n_comments.json:15:20
      '{ "name": "richtext_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON data" }' */
-  char *richtext_json; // JSON data
+  char *richtext_json; ///< JSON data
 
   /* specs/reddit/links_n_comments.json:16:20
      '{ "name": "text", "type":{ "base":"char", "dec":"*" }, "comment":"raw markdown text" }' */
-  char *text; // raw markdown text
+  char *text; ///< raw markdown text
 
   /* specs/reddit/links_n_comments.json:17:20
      '{ "name": "thing_id", "type":{ "base":"char", "dec":"*" }, "comment":"fullname of parent thing" }' */
-  char *thing_id; // fullname of parent thing
+  char *thing_id; ///< fullname of parent thing
 
   /* specs/reddit/links_n_comments.json:18:20
      '{ "name": "uh", "type":{ "base":"char", "dec":"*" }, "comment":"a modhash" }' */
-  char *uh; // a modhash
+  char *uh; ///< a modhash
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected

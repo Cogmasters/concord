@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/invite.h
  * @author cee-studio
- * @date 30 Jun 2021
+ * @date 01 Jul 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/invite
  */
@@ -25,15 +25,15 @@ extern bool discord_invite_target_user_types_has(enum discord_invite_target_user
 struct discord_invite {
   /* specs/discord/invite.json:22:20
      '{ "name": "code", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}' */
-  char *code; // @todo fixed size limit
+  char *code; ///< @todo fixed size limit
 
   /* specs/discord/invite.json:23:20
      '{ "name": "guild", "type":{ "base":"struct discord_guild", "dec":"*"}, "comment":"partial guild object"}' */
-  struct discord_guild *guild; // partial guild object
+  struct discord_guild *guild; ///< partial guild object
 
   /* specs/discord/invite.json:24:20
      '{ "name": "channel", "type":{ "base":"struct discord_channel", "dec":"*"}, "comment":"partial channel object"}' */
-  struct discord_channel *channel; // partial channel object
+  struct discord_channel *channel; ///< partial channel object
 
   /* specs/discord/invite.json:25:20
      '{ "name": "inviter", "type":{ "base":"struct discord_user", "dec":"*"}}' */
@@ -41,7 +41,7 @@ struct discord_invite {
 
   /* specs/discord/invite.json:26:20
      '{ "name": "target_user", "type":{ "base":"struct discord_user", "dec":"*"}, "comment":"partial user object"}' */
-  struct discord_user *target_user; // partial user object
+  struct discord_user *target_user; ///< partial user object
 
   /* specs/discord/invite.json:27:20
      '{ "name": "target_user_type", "type":{ "base":"int", "int_alias":"enum discord_invite_target_user_types" }}' */

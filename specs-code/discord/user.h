@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/user.h
  * @author cee-studio
- * @date 30 Jun 2021
+ * @date 01 Jul 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/user
  */
@@ -148,7 +148,7 @@ extern bool discord_user_connection_visibility_types_has(enum discord_user_conne
 struct discord_connection {
   /* specs/discord/user.json:77:24
      '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}' */
-  char *id; // @todo fixed size limit
+  char *id; ///< @todo fixed size limit
 
   /* specs/discord/user.json:78:24
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}}' */
