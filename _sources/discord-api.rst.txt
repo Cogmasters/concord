@@ -10,6 +10,7 @@ Client
 ~~~~~~
 
 .. doxygenstruct:: discord
+.. doxygenenum:: discord_event_handling_mode
 
 Datatypes
 ---------
@@ -106,41 +107,10 @@ Gateway
 Macros
 ------
 
-Snowflake
-~~~~~~~~~
-
-.. doxygendefine:: DISCORD_SNOWFLAKE_INCREMENT
-.. doxygendefine:: DISCORD_SNOWFLAKE_PROCESS_ID
-.. doxygendefine:: DISCORD_SNOWFLAKE_INTERNAL_WORKER_ID
-.. doxygendefine:: DISCORD_SNOWFLAKE_TIMESTAMP
-
-Embed Limits
-~~~~~~~~~~~~
-
-.. doxygendefine:: DISCORD_EMBED_TITLE_LEN
-.. doxygendefine:: DISCORD_EMBED_DESCRIPTION_LEN
-.. doxygendefine:: DISCORD_EMBED_MAX_FIELDS
-.. doxygendefine:: DISCORD_EMBED_FIELD_NAME_LEN
-.. doxygendefine:: DISCORD_EMBED_FIELD_VALUE_LEN
-.. doxygendefine:: DISCORD_EMBED_FOOTER_TEXT_LEN
-.. doxygendefine:: DISCORD_EMBED_AUTHOR_NAME_LEN
-
-Webhook Limits
-~~~~~~~~~~~~~~
-
-.. doxygendefine:: DISCORD_WEBHOOK_NAME_LEN
-
-General Limits
-~~~~~~~~~~~~~~
-
-.. doxygendefine:: DISCORD_MAX_NAME_LEN
-.. doxygendefine:: DISCORD_MAX_TOPIC_LEN
-.. doxygendefine:: DISCORD_MAX_DESCRIPTION_LEN
-.. doxygendefine:: DISCORD_MAX_USERNAME_LEN
-.. doxygendefine:: DISCORD_MAX_DISCRIMINATOR_LEN
-.. doxygendefine:: DISCORD_MAX_REASON_LEN
-.. doxygendefine:: DISCORD_MAX_MESSAGE_LEN
-.. doxygendefine:: DISCORD_MAX_PAYLOAD_LEN
+.. doxygengroup:: Snowflake
+.. doxygengroup:: GeneralLimits
+.. doxygengroup:: EmbedLimits
+.. doxygengroup:: WebhookLimits
 
 Functions
 ---------
@@ -194,8 +164,8 @@ Set Event Callbacks
 .. doxygenfunction:: discord_set_on_voice_state_update
 .. doxygenfunction:: discord_set_on_voice_server_update
 
-Miscellaneous
-^^^^^^^^^^^^^
+Misc
+^^^^
 
 .. doxygenfunction:: discord_set_data
 .. doxygenfunction:: discord_get_data
@@ -205,139 +175,57 @@ Miscellaneous
 Audit Log
 ~~~~~~~~~
 
-.. doxygenfunction:: discord_get_guild_audit_log
+.. doxygengroup:: AuditLogEndpoints
 
 Channel
 ~~~~~~~
 
-.. doxygenfunction:: discord_get_channel
-.. doxygenfunction:: discord_modify_channel
-.. doxygenfunction:: discord_delete_channel
-.. doxygenfunction:: discord_get_channel_messages
-.. doxygenfunction:: discord_get_channel_message
-.. doxygenfunction:: discord_create_message
-.. doxygenfunction:: discord_crosspost_message
-.. doxygenfunction:: discord_create_reaction
-.. doxygenfunction:: discord_delete_own_reaction
-.. doxygenfunction:: discord_delete_user_reaction
-.. doxygenfunction:: discord_get_reactions
-.. doxygenfunction:: discord_delete_all_reactions
-.. doxygenfunction:: discord_delete_all_reactions_for_emoji
-.. doxygenfunction:: discord_edit_message
-.. doxygenfunction:: discord_delete_message
-.. doxygenfunction:: discord_bulk_delete_messages
-.. doxygenfunction:: discord_edit_channel_permissions
-.. doxygenfunction:: discord_get_channel_invites
-.. doxygenfunction:: discord_create_channel_invite
-.. doxygenfunction:: discord_delete_channel_permission
-.. doxygenfunction:: discord_trigger_typing_indicator
-.. doxygenfunction:: discord_follow_news_channel
-.. doxygenfunction:: discord_get_pinned_messages
-.. doxygenfunction:: discord_pin_message
-.. doxygenfunction:: discord_unpin_message
-.. doxygenfunction:: discord_group_dm_add_recipient
-.. doxygenfunction:: discord_group_dm_remove_recipient
-.. doxygenfunction:: discord_start_thread_with_message
-.. doxygenfunction:: discord_start_thread_without_message
-.. doxygenfunction:: discord_join_thread
-.. doxygenfunction:: discord_add_thread_member
-.. doxygenfunction:: discord_leave_thread
-.. doxygenfunction:: discord_remove_thread_member
-.. doxygenfunction:: discord_list_thread_members
-.. doxygenfunction:: discord_list_active_threads
-.. doxygenfunction:: discord_list_public_archived_threads
-.. doxygenfunction:: discord_list_private_archived_threads
-.. doxygenfunction:: discord_list_joined_private_archived_threads
+.. doxygengroup:: ChannelEndpoints
 
 Emoji
 ~~~~~
 
-.. doxygenfunction:: discord_list_guild_emojis
-.. doxygenfunction:: discord_get_guild_emoji
-.. doxygenfunction:: discord_create_guild_emoji
-.. doxygenfunction:: discord_modify_guild_emoji
-.. doxygenfunction:: discord_delete_guild_emoji
+.. doxygengroup:: EmojiEndpoints
 
 Guild
 ~~~~~
 
-.. doxygenfunction:: discord_create_guild
-.. doxygenfunction:: discord_get_guild
-.. doxygenfunction:: discord_get_guild_preview
-.. doxygenfunction:: discord_modify_guild
-.. doxygenfunction:: discord_delete_guild
-.. doxygenfunction:: discord_get_guild_channels
-.. doxygenfunction:: discord_create_guild_channel
-.. doxygenfunction:: discord_modify_guild_channel_positions
-.. doxygenfunction:: discord_get_guild_member
-.. doxygenfunction:: discord_list_guild_members
-.. doxygenfunction:: discord_search_guild_members
-.. doxygenfunction:: discord_modify_guild_member
-.. doxygenfunction:: discord_add_guild_member
-.. doxygenfunction:: discord_modify_current_user_nick
-.. doxygenfunction:: discord_add_guild_member_role
-.. doxygenfunction:: discord_remove_guild_member_role
-.. doxygenfunction:: discord_remove_guild_member
-.. doxygenfunction:: discord_get_guild_bans
-.. doxygenfunction:: discord_get_guild_ban
-.. doxygenfunction:: discord_create_guild_ban
-.. doxygenfunction:: discord_remove_guild_ban
-.. doxygenfunction:: discord_get_guild_roles
-.. doxygenfunction:: discord_create_guild_role
-.. doxygenfunction:: discord_modify_guild_role_positions
-.. doxygenfunction:: discord_modify_guild_role
-.. doxygenfunction:: discord_delete_guild_role
+.. doxygengroup:: GuildEndpoints
 
 Invite
 ~~~~~~
 
-.. doxygenfunction:: discord_get_invite
-.. doxygenfunction:: discord_delete_invite
+.. doxygengroup:: InviteEndpoints
 
 User
 ~~~~
 
-.. doxygenfunction:: discord_get_user
-.. doxygenfunction:: discord_modify_current_user
-.. doxygenfunction:: discord_get_current_user
-.. doxygenfunction:: discord_get_current_user_guilds
-.. doxygenfunction:: discord_leave_guild
-.. doxygenfunction:: discord_create_dm
-.. doxygenfunction:: discord_create_group_dm
-.. doxygenfunction:: discord_get_user_connections
+.. doxygengroup:: UserEndpoints
 
 Voice
 ~~~~~
 
-.. doxygenfunction:: discord_list_voice_regions
+.. doxygengroup:: VoiceEndpoints
 
 Gateway
 ~~~~~~~
 
-.. doxygenfunction:: discord_get_gateway
-.. doxygenfunction:: discord_get_gateway_bot
+.. doxygengroup:: GatewayEndpoints
 
-Utility
-~~~~~~~
+Misc
+~~~~
 
 Channel
 ^^^^^^^
-.. doxygenfunction:: discord_overwrite_append
-.. doxygenfunction:: discord_get_channel_at_pos
-.. doxygenfunction:: discord_delete_messages_by_author_id
+
+.. doxygengroup:: ChannelMisc
 
 Guild
 ^^^^^
 
-.. doxygenfunction:: discord_disconnect_guild_member
+.. doxygengroup:: GuildMisc
 
 Embed
 ^^^^^
 
-.. doxygenfunction:: discord_embed_set_thumbnail
-.. doxygenfunction:: discord_embed_set_image
-.. doxygenfunction:: discord_embed_set_video
-.. doxygenfunction:: discord_embed_set_footer
-.. doxygenfunction:: discord_embed_set_provider
-.. doxygenfunction:: discord_embed_set_author
-.. doxygenfunction:: discord_embed_add_field
+.. doxygengroup:: EmbedMisc
