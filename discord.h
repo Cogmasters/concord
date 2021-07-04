@@ -25,14 +25,17 @@
 struct discord;
 struct discord_voice_cbs;
 
-/* SNOWFLAKES
-https://discord.com/developers/docs/reference#snowflakes */
+/** @defgroup Snowflake
+ *  @see https://discord.com/developers/docs/reference#snowflakes
+ *  @{ */
 #define DISCORD_SNOWFLAKE_INCREMENT           12
 #define DISCORD_SNOWFLAKE_PROCESS_ID          17
 #define DISCORD_SNOWFLAKE_INTERNAL_WORKER_ID  22
 #define DISCORD_SNOWFLAKE_TIMESTAMP           64
+/** @} */
 
-/* Discord limits */
+/** @defgroup GeneralLimits
+ *  @{ */
 #define DISCORD_MAX_NAME_LEN          100 + 1
 #define DISCORD_MAX_TOPIC_LEN         1024 + 1
 #define DISCORD_MAX_DESCRIPTION_LEN   2048 + 1
@@ -42,9 +45,11 @@ https://discord.com/developers/docs/reference#snowflakes */
 #define DISCORD_MAX_MESSAGE_LEN       2000 + 1
 #define DISCORD_MAX_PAYLOAD_LEN       4096 + 1
 #define DISCORD_MAX_VOICE_CONNECTIONS 512
+/** @} */
 
-/* EMBED LIMITS
-https://discord.com/developers/docs/resources/channel#embed-limits */
+/** @defgroup EmbedLimits
+ *  @see https://discord.com/developers/docs/resources/channel#embed-limits 
+ *  @{ */
 #define DISCORD_EMBED_TITLE_LEN       256 + 1
 #define DISCORD_EMBED_DESCRIPTION_LEN 2048 + 1
 #define DISCORD_EMBED_MAX_FIELDS      25
@@ -52,10 +57,13 @@ https://discord.com/developers/docs/resources/channel#embed-limits */
 #define DISCORD_EMBED_FIELD_VALUE_LEN 1024 + 1
 #define DISCORD_EMBED_FOOTER_TEXT_LEN 2048 + 1
 #define DISCORD_EMBED_AUTHOR_NAME_LEN 256 + 1
+/** @} */
 
-/* WEBHOOK LIMITS
-https://discord.com/developers/docs/resources/webhook#create-webhook */
+/** @defgroup WebhookLimits
+ *  @see https://discord.com/developers/docs/resources/webhook#create-webhook-json-params
+ *  @{ */
 #define DISCORD_WEBHOOK_NAME_LEN 80 + 1
+/** @} */
 
 // specs/discord for generated code specs 
 #include "specs-code/discord/all_opaque_struct.h"
@@ -67,8 +75,8 @@ https://discord.com/developers/docs/resources/webhook#create-webhook */
 /**
  * @brief Event Handling Mode callback
  *
- * A very important callback that enables the user a fine-grained control 
- * of how each event is executed, blocking, non-blocking or ignored
+ * A very important callback that enables the user with a fine-grained control 
+ * of how each event is handled: blocking, non-blocking or ignored
  *
  * @see discord_set_event_handler()
  * @see discord_gateway_events
@@ -88,7 +96,7 @@ typedef void (*discord_idle_cb)(struct discord *client, const struct discord_use
  *
  * If activated, this callback is triggered on any event.
  * It is executed after every other callback has been checked.
- * @see discord_set_on_raw_event()
+ * @see discord_set_on_event_raw()
  */
 typedef void (*discord_event_raw_cb)(
     struct discord *client, 
@@ -424,6 +432,17 @@ void discord_remove_intents(struct discord *client, enum discord_gateway_intents
 void discord_set_prefix(struct discord *client, char *prefix);
 
 /**
+ * @brief return value of discord_set_event_handler() callback
+ *
+ * @see discord_set_event_handler()
+ */
+enum discord_event_handling_mode {
+  DISCORD_EVENT_IGNORE,  ///< this event has been handled
+  DISCORD_EVENT_MAIN_THREAD, ///< handle this event in main thread
+  DISCORD_EVENT_CHILD_THREAD ///< handle this event in a child thread
+};
+
+/**
  * @brief Specify how events should execute their callbacks, in a blocking or non-blocking fashion
  *
  * This is a very important function that provides the user a more fine-grained
@@ -706,12 +725,6 @@ void discord_set_on_voice_server_update(struct discord *client, discord_voice_se
  */
 void discord_set_voice_cbs(struct discord *client, struct discord_voice_cbs *callbacks);
 
-enum discord_event_handling_mode {
-  DISCORD_EVENT_IGNORE,  ///< this event has been handled
-  DISCORD_EVENT_MAIN_THREAD, ///< handle this event in main thread
-  DISCORD_EVENT_CHILD_THREAD ///< handle this event in a child thread
-};
-
 /**
  * @brief Start a connection to the Discord Gateway
  *
@@ -766,10 +779,13 @@ void discord_set_presence(struct discord *client, struct discord_gateway_activit
  /* * * * * * * * * * * * * * * * */
 /* * * * ENDPOINT FUNCTIONS * * * */
 
-// AUDIT LOG ENDPOINTS
+/** @defgroup AuditLogEndpoints
+ *  @{ */
 ORCAcode discord_get_guild_audit_log(struct discord *client, const u64_snowflake_t guild_id, struct discord_get_guild_audit_log_params *params, struct discord_audit_log *p_audit_log);
+/** @} */
 
-// CHANNEL ENDPOINTS
+/** @defgroup ChannelEndpoints
+ *  @{ */
 ORCAcode discord_get_channel(struct discord *client, const u64_snowflake_t channel_id, struct discord_channel *p_channel);
 ORCAcode discord_modify_channel(struct discord *client, const u64_snowflake_t channel_id, struct discord_modify_channel_params *params, struct discord_channel *p_channel);
 ORCAcode discord_delete_channel(struct discord *client, const u64_snowflake_t channel_id, struct discord_channel *p_channel);
@@ -808,15 +824,19 @@ ORCAcode discord_list_active_threads(struct discord *client, const u64_snowflake
 ORCAcode discord_list_public_archived_threads(struct discord *client, const u64_snowflake_t channel_id, const u64_unix_ms_t before, const int limit, struct discord_thread_response_body *body);
 ORCAcode discord_list_private_archived_threads(struct discord *client, const u64_snowflake_t channel_id, const u64_unix_ms_t before, const int limit, struct discord_thread_response_body *body);
 ORCAcode discord_list_joined_private_archived_threads(struct discord *client, const u64_snowflake_t channel_id, const u64_unix_ms_t before, const int limit, struct discord_thread_response_body *body);
+/** @} */
 
-// EMOJI ENDPOINTS
+/** @defgroup EmojiEndpoints
+ *  @{ */
 ORCAcode discord_list_guild_emojis(struct discord *client, const u64_snowflake_t guild_id, NTL_T(struct discord_emoji) *p_emojis);
 ORCAcode discord_get_guild_emoji(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t emoji_id, struct discord_emoji *p_emoji);
 ORCAcode discord_create_guild_emoji(struct discord *client, const u64_snowflake_t guild_id, struct discord_create_guild_emoji_params *params, struct discord_emoji *p_emoji);
 ORCAcode discord_modify_guild_emoji(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t emoji_id, struct discord_modify_guild_emoji_params *params, struct discord_emoji *p_emoji);
 ORCAcode discord_delete_guild_emoji(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t emoji_id);
+/** @} */
 
-// GUILD ENDPOINTS
+/** @defgroup GuildEndpoints
+ *  @{ */
 ORCAcode discord_create_guild(struct discord *client, struct discord_create_guild_params *params, struct discord_guild *p_guild);
 ORCAcode discord_get_guild(struct discord *client, const u64_snowflake_t guild_id, struct discord_guild *p_guild);
 ORCAcode discord_get_guild_preview(struct discord *client, const u64_snowflake_t guild_id, struct discord_guild_preview *p_guild_preview);
@@ -843,12 +863,16 @@ ORCAcode discord_create_guild_role(struct discord *client, const u64_snowflake_t
 ORCAcode discord_modify_guild_role_positions(struct discord *client, const u64_snowflake_t guild_id, NTL_T(struct discord_modify_guild_role_positions_params) params, NTL_T(struct discord_permissions_role) *p_roles);
 ORCAcode discord_modify_guild_role(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t role_id, struct discord_modify_guild_role_params *params, struct discord_permissions_role *p_role);
 ORCAcode discord_delete_guild_role(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t role_id);
+/** @} */
 
-// INVITE ENDPOINTS
+/** @defgroup InviteEndpoints
+ *  @{ */
 ORCAcode discord_get_invite(struct discord *client, char *invite_code, struct discord_get_invite_params *params, struct discord_invite *p_invite);
 ORCAcode discord_delete_invite(struct discord *client, char *invite_code, struct discord_invite *p_invite);
+/** @} */
 
-// USER ENDPOINTS
+/** @defgroup UserEndpoints
+ *  @{ */
 ORCAcode discord_get_user(struct discord *client, const u64_snowflake_t user_id, struct discord_user *p_user);
 ORCAcode discord_modify_current_user(struct discord *client, struct discord_modify_current_user_params *params, struct discord_user *p_user);
 ORCAcode discord_get_current_user(struct discord *client, struct discord_user *p_user);
@@ -858,19 +882,25 @@ ORCAcode discord_leave_guild(struct discord *client, const u64_snowflake_t guild
 ORCAcode discord_create_dm(struct discord *client, const u64_snowflake_t recipient_id, struct discord_channel *p_dm_channel);
 ORCAcode discord_create_group_dm(struct discord *client, struct discord_create_group_dm_params *params, struct discord_channel *p_dm_channel);
 ORCAcode discord_get_user_connections(struct discord *client, NTL_T(struct discord_connection) *p_connections);
+/** @} */
 
-// VOICE ENDPOINTS
+/** @defgroup VoiceEndpoints
+ *  @{ */
 ORCAcode discord_list_voice_regions(struct discord *client, NTL_T(struct discord_voice_region) *p_voice_regions);
+/** @} */
 
-// GATEWAY ENDPOINTS
+/** @defgroup GatewayEndpoints
+ *  @{ */
 ORCAcode discord_get_gateway(struct discord *client, struct discord_session *p_session);
 ORCAcode discord_get_gateway_bot(struct discord *client, struct discord_session *p_session);
+/** @} */
 
 
 /* * * * * * * * * * * * * * * * * * * */
 /* * * * MISCELLANEOUS FUNCTIONS * * * */
 
-// EMBED MISC
+/** @defgroup EmbedMisc
+ *  @{ */
 void discord_embed_set_thumbnail(struct discord_embed *embed, char url[], char proxy_url[], int height, int width);
 void discord_embed_set_image(struct discord_embed *embed, char url[], char proxy_url[], int height, int width);
 void discord_embed_set_video(struct discord_embed *embed, char url[], char proxy_url[], int height, int width);
@@ -878,18 +908,18 @@ void discord_embed_set_footer(struct discord_embed *embed, char text[], char ico
 void discord_embed_set_provider(struct discord_embed *embed, char name[], char url[]);
 void discord_embed_set_author(struct discord_embed *embed, char name[], char url[], char icon_url[], char proxy_icon_url[]);
 void discord_embed_add_field(struct discord_embed *embed, char name[], char value[], bool Inline);
+/** @} */
 
-// CHANNEL MISC
+/** @defgroup ChannelMisc
+ *  @{ */
 void discord_overwrite_append(NTL_T(struct discord_channel_overwrite) *permission_overwrites, u64_snowflake_t id, int type, enum discord_permissions_bitwise_flags allow, enum discord_permissions_bitwise_flags deny);
 ORCAcode discord_get_channel_at_pos(struct discord *client, const u64_snowflake_t guild_id, const enum discord_channel_types type, const size_t position, struct discord_channel *p_channel);
 ORCAcode discord_delete_messages_by_author_id(struct discord *client, u64_snowflake_t channel_id, u64_snowflake_t author_id);
+/** @} */
 
-// GUILD MISC
+/** @defgroup GuildMisc
+ *  @{ */
 ORCAcode discord_disconnect_guild_member(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id, struct discord_guild_member *p_member);
-
-
-#ifdef _DISCORD_ADD_ONS
-#include "discord-voice-connections.h"
-#endif
+/** @} */
 
 #endif // DISCORD_H
