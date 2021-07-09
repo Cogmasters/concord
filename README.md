@@ -1,6 +1,13 @@
-# Orca: a bot framework for Discord etc.
-
-[![Discord](https://discord.com/api/guilds/562694099887587338/widget.png)](https://discord.gg/2jfycwXVM3)
+<div align="center">
+  <br />
+  <p>
+    <a href="https://cee-studio.github.io/orca"><img src="https://raw.githubusercontent.com/cee-studio/orca-docs/541187418158067130f13e151d25ed2eafb8df52/docs/source/images/logo-light.svg" width="546" alt="orca" style="background-color:red;" /></a>
+  </p>
+  <br />
+  <p>
+    <a href="https://discord.gg/2jfycwXVM3"><img src="https://img.shields.io/discord/562694099887587338?color=5865F2&logo=discord&logoColor=white" alt="Discord server" /></a>
+  </p>
+</div>
 
 **Please give a star if you like this project.**
 
@@ -9,8 +16,6 @@
 Easy to use, easy to deploy, easy to debug way to build reliable Discord bots.
 
 ### Design
-
-The primary design goals are:
 
 - easy to use for the end users: we use multi-threading and
   synchronous IO to support concurrency so you only need to focus on
@@ -128,7 +133,7 @@ valgrind your-bot.exe
 ## Contributions are welcome!
 Check our Discord API's development [Roadmap](docs/DISCORD_ROADMAP.md) and [Coding Guidelines](docs/CODING_GUIDELINES.md) to get started
 
-If you are not familiar with git and are not comformtable with creating pull requests without introducing merge 
+If you are not familiar with git and are not comfortable with creating pull requests without introducing merge 
 commits, please check our [Commit Guidelines](docs/COMMIT_GUIDELINES.md).
 
 Keywords:
