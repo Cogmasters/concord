@@ -6,6 +6,8 @@
 Welcome to Orca
 ===============
 
+.. image:: /images/logo.svg
+
 A bot framework that is easy to reason about, easy to debug, and easy to use.
 
 **Features:**
@@ -27,7 +29,7 @@ Supported APIs
 .. toctree::
    :maxdepth: 1
 
-   Discord API Reference <discord-api>
+   Discord <discord-api>
 
 Help
 ----
