@@ -1,7 +1,7 @@
 <div align="center">
   <br />
   <p>
-    <a href="https://cee-studio.github.io/orca"><img src="https://raw.githubusercontent.com/cee-studio/orca-docs/079bbbc5f2a27f457c324b1334b3644095db31ff/docs/source/images/logo-light.svg" width="546" alt="orca" style="background-color:red;" /></a>
+    <a href="https://cee-studio.github.io/orca"><img src="https://raw.githubusercontent.com/cee-studio/orca-docs/1f3aee92c6d29ba8a51651cebc524c037ce9ae7d/docs/source/images/logo.svg" width="546" alt="orca" style="background-color:red;" /></a>
   </p>
   <br />
   <p>
