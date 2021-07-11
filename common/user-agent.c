@@ -184,7 +184,7 @@ http_method_eval(char method[])
 }
 
 void
-ua_reqheader_add(struct user_agent *ua, char field[],  char value[])
+ua_reqheader_add(struct user_agent *ua, const char field[],  const char value[])
 {
   char buf[4096];
   size_t ret = snprintf(buf, sizeof(buf), "%s: %s", field, value);
@@ -223,7 +223,7 @@ ua_reqheader_add(struct user_agent *ua, char field[],  char value[])
  * @todo needs to be tested
  */
 void
-ua_reqheader_del(struct user_agent *ua, char field[])
+ua_reqheader_del(struct user_agent *ua, const char field[])
 {
   struct curl_slist *node = ua->req_header;
   size_t field_len = strlen(field);

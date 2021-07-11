@@ -4,20 +4,19 @@
 #include <string.h>
 
 #include "mujs.h"
-#include "js-addons.h"
+#include "jso.h"
 
 
-ORCAcode js_ua_run(
+ORCAcode jso_ua_run(
   js_State *J, 
   struct user_agent *ua, 
-  struct sized_buffer *resp_body,
+  struct ua_info *p_info,
   int *p_nparam)
 {
   int nparam = js_gettop(J);
   *p_nparam = nparam;
   log_debug("n# of parameters: %d", nparam);
 
-  enum http_method method;
   if (!js_isstring(J, 1)) {
     log_fatal("expect a METHOD string");
     exit(1);
@@ -27,14 +26,14 @@ ORCAcode js_ua_run(
     exit(1);
   }
 
-  char *strmethod = (char *)js_tostring(J, 1);
+  char *strmethod = (char*)js_tostring(J, 1);
   log_debug("method: %s", strmethod);
-  method = http_method_eval(strmethod);
+  enum http_method method = http_method_eval(strmethod);
 
-  char *endpoint = (char *)js_tostring(J, 2);
+  char *endpoint = (char*)js_tostring(J, 2);
   log_debug("endpoint: %s", endpoint);
 
-  struct sized_buffer req_body={};
+  struct sized_buffer req_body={0};
   if (4 == nparam) { // has body
     if (js_isobject(J, 3) || js_isstring(J, 3)) {
       req_body.start = (char *)js_tostring(J, 3);
@@ -43,15 +42,10 @@ ORCAcode js_ua_run(
     }
   }
 
-  struct ua_info info={}; // extract transfer info
-  ORCAcode code = ua_run(
-                    ua, 
-                    &info, 
-                    NULL, 
-                    &req_body, 
-                    method, endpoint, "");
-
-  *resp_body = ua_info_get_resp_body(&info);
-
-  return code;
+  return ua_run(
+          ua, 
+          p_info, 
+          NULL, 
+          &req_body, 
+          method, endpoint, "");
 }

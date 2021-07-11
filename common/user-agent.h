@@ -131,8 +131,8 @@ char* http_reason_print(int httpcode);
 char* http_method_print(enum http_method method);
 enum http_method http_method_eval(char method[]);
 
-void ua_reqheader_add(struct user_agent *ua, char field[], char value[]);
-void ua_reqheader_del(struct user_agent *ua, char field[]);
+void ua_reqheader_add(struct user_agent *ua, const char field[], const char value[]);
+void ua_reqheader_del(struct user_agent *ua, const char field[]);
 char* ua_reqheader_str(struct user_agent *ua, char *buf, size_t bufsize);
 
 void ua_easy_setopt(struct user_agent *ua, void *data, void (setopt_cb)(CURL *ehandle, void *data));

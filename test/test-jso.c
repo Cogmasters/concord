@@ -2,20 +2,22 @@
 #include <stdlib.h>
 
 #include "mujs.h"
-#include "js-addons.h"
+#include "jso.h"
 
 const char *handle=NULL; /* handle to stowed away js function */
 
 void js_request(js_State *J)
 {
-  struct logconf config={};
+  struct logconf config={0};
   logconf_setup(&config, NULL);
   struct user_agent *ua = ua_init(&config);
   ua_set_url(ua, "http://www.example.com/");
-  struct sized_buffer resp_body={};
+  struct ua_info info={0};
   int nparam=0;
-  js_ua_run(J, ua, &resp_body, &nparam);
+  jso_ua_run(J, ua, &info, &nparam);
+  struct sized_buffer resp_body = ua_info_get_resp_body(&info);
   fprintf(stderr, "%.*s\n", (int)resp_body.size, resp_body.start);
+  ua_info_cleanup(&info);
   ua_cleanup(ua);
 }
 
