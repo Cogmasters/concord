@@ -141,7 +141,7 @@ discord_adapter_run(
     }
 
     pthread_mutex_lock(&adapter->ratelimit.lock);
-    discord_bucket_build(adapter, bucket, route, &info);
+    discord_bucket_build(adapter, bucket, route, code, &info);
     pthread_mutex_unlock(&adapter->ratelimit.lock);
     
     ua_info_cleanup(&info);

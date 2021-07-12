@@ -124,10 +124,11 @@ struct discord_bucket* discord_bucket_try_get(struct discord_adapter *adapter, c
  * @param adapter the handle created with discord_adapter_init()
  * @param bucket NULL when bucket is first discovered
  * @param route the route associated with the bucket
- * @param info information struct regarding the current transfer
+ * @param code numerical information for the current transfer
+ * @param info informational struct containing details on the current transfer
  * @note If the bucket was just discovered it will be created here.
  */
-void discord_bucket_build(struct discord_adapter *adapter, struct discord_bucket *bucket, const char route[], struct ua_info *info);
+void discord_bucket_build(struct discord_adapter *adapter, struct discord_bucket *bucket, const char route[], ORCAcode code, struct ua_info *info);
 
 struct discord_gateway_cmd_cbs {
   char *start;

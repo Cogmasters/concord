@@ -111,12 +111,12 @@ discord_bucket_try_get(struct discord_adapter *adapter, const char route[])
 /* attempt to parse rate limit's header fields to the bucket
  *  linked with the connection which was performed */
 static void
-parse_ratelimits(struct discord_bucket *bucket, struct ua_info *info)
+parse_ratelimits(struct discord_bucket *bucket, ORCAcode code, struct ua_info *info)
 { 
   pthread_mutex_lock(&bucket->lock);
   --bucket->busy;
 
-  if (ORCA_OK == info->code && bucket->update_tstamp < info->req_tstamp) 
+  if (ORCA_OK == code && bucket->update_tstamp < info->req_tstamp) 
   {
     bucket->update_tstamp = info->req_tstamp;
 
@@ -152,7 +152,7 @@ parse_ratelimits(struct discord_bucket *bucket, struct ua_info *info)
  * If no match is found then a new bucket is created and linked to the
  *  route*/
 static void
-match_route(struct discord_adapter *adapter, const char route[], struct ua_info *info)
+match_route(struct discord_adapter *adapter, const char route[], ORCAcode code, struct ua_info *info)
 {
   struct sized_buffer hash = ua_info_respheader_field(info, "x-ratelimit-bucket");
   if (!hash.size) {
@@ -174,18 +174,18 @@ match_route(struct discord_adapter *adapter, const char route[], struct ua_info 
   //assign new route and update bucket ratelimit fields
   log_debug("[%s] Assign new route '%s' to bucket", bucket->hash, bucket->route);
   HASH_ADD_STR(adapter->ratelimit.buckets, route, bucket);
-  parse_ratelimits(bucket, info);
+  parse_ratelimits(bucket, code, info);
 }
 
 /* Attempt to build and/or update bucket's rate limiting information. */
 void
-discord_bucket_build(struct discord_adapter *adapter, struct discord_bucket *bucket, const char route[], struct ua_info *info)
+discord_bucket_build(struct discord_adapter *adapter, struct discord_bucket *bucket, const char route[], ORCAcode code, struct ua_info *info)
 {
   /* no bucket means first time using this route.  attempt to 
    *  establish a route between it and a bucket via its unique hash 
    *  (will create a new bucket if it can't establish a route) */
   if (!bucket)
-    match_route(adapter, route, info);
+    match_route(adapter, route, code, info);
   else // update the bucket rate limit values
-    parse_ratelimits(bucket, info);
+    parse_ratelimits(bucket, code, info);
 }

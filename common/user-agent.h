@@ -102,12 +102,9 @@ struct ua_resp_body {
 struct ua_info {
   struct loginfo loginfo;
   /**
-   * how the request went 
-   *    equal 0 means success (2xx)
-   *    greater than 0 means failure (check value for http code)
-   *    lesser than 0 means failure from specialized error codes
+   * The HTTP response code
    */
-  ORCAcode code;
+  int httpcode;
   /** 
    * request's url
    */

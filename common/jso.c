@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "user-agent.h"
 #include "mujs.h"
 #include "jso.h"
 

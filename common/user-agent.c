@@ -421,7 +421,7 @@ static void
 conn_reset(struct _ua_conn *conn)
 {
   conn->is_busy = false;
-  conn->info.code = 0;
+  conn->info.httpcode = 0;
   conn->info.req_tstamp = 0;
   conn->info.resp_body.length = 0;
   conn->info.resp_header.length = 0;
@@ -612,15 +612,15 @@ perform_request(
   struct _ua_conn *conn, 
   struct ua_resp_handle *resp_handle)
 {
-  int httpcode = send_request(ua, conn);
+  conn->info.httpcode = send_request(ua, conn);
 
   /* triggers response related callbacks */
-  if (httpcode >= 500) {
+  if (conn->info.httpcode >= 500) {
     log_error("[%s] "ANSICOLOR("SERVER ERROR", ANSI_FG_RED)" (%d)%s - %s [@@@_%zu_@@@]",
         conn->tag,
-        httpcode,
-        http_code_print(httpcode),
-        http_reason_print(httpcode),
+        conn->info.httpcode,
+        http_code_print(conn->info.httpcode),
+        http_reason_print(conn->info.httpcode),
         conn->info.loginfo.counter);
 
     if (resp_handle) {
@@ -638,14 +638,14 @@ perform_request(
           resp_handle->err_obj);
       }
     }
-    return conn->info.code = httpcode;
+    return conn->info.httpcode;
   }
-  if (httpcode >= 400) {
+  if (conn->info.httpcode >= 400) {
     log_error("[%s] "ANSICOLOR("CLIENT ERROR", ANSI_FG_RED)" (%d)%s - %s [@@@_%zu_@@@]",
         conn->tag,
-        httpcode,
-        http_code_print(httpcode),
-        http_reason_print(httpcode),
+        conn->info.httpcode,
+        http_code_print(conn->info.httpcode),
+        http_reason_print(conn->info.httpcode),
         conn->info.loginfo.counter);
 
     if (resp_handle) {
@@ -663,23 +663,23 @@ perform_request(
           resp_handle->err_obj);
       }
     }
-    return conn->info.code = httpcode;
+    return conn->info.httpcode;
   }
-  if (httpcode >= 300) {
+  if (conn->info.httpcode >= 300) {
     log_warn("[%s] "ANSICOLOR("REDIRECTING", ANSI_FG_YELLOW)" (%d)%s - %s [@@@_%zu_@@@]",
         conn->tag,
-        httpcode,
-        http_code_print(httpcode),
-        http_reason_print(httpcode),
+        conn->info.httpcode,
+        http_code_print(conn->info.httpcode),
+        http_reason_print(conn->info.httpcode),
         conn->info.loginfo.counter);
-    return conn->info.code = httpcode;
+    return conn->info.httpcode;
   }
-  if (httpcode >= 200) {
+  if (conn->info.httpcode >= 200) {
     log_info("[%s] "ANSICOLOR("SUCCESS", ANSI_FG_GREEN)" (%d)%s - %s [@@@_%zu_@@@]",
         conn->tag,
-        httpcode,
-        http_code_print(httpcode),
-        http_reason_print(httpcode),
+        conn->info.httpcode,
+        http_code_print(conn->info.httpcode),
+        http_reason_print(conn->info.httpcode),
         conn->info.loginfo.counter);
 
     if (resp_handle) {
@@ -697,26 +697,26 @@ perform_request(
           resp_handle->ok_obj);
       }
     }
-    return conn->info.code = ORCA_OK;
+    return ORCA_OK;
   }
-  if (httpcode >= 100) {
+  if (conn->info.httpcode >= 100) {
     log_info("[%s] "ANSICOLOR("INFO", ANSI_FG_GRAY)" (%d)%s - %s [@@@_%zu_@@@]",
         conn->tag,
-        httpcode,
-        http_code_print(httpcode),
-        http_reason_print(httpcode),
+        conn->info.httpcode,
+        http_code_print(conn->info.httpcode),
+        http_reason_print(conn->info.httpcode),
         conn->info.loginfo.counter);
-    return conn->info.code = httpcode;
+    return conn->info.httpcode;
   }
-  if (!httpcode) {
+  if (!conn->info.httpcode) {
     log_error("[%s] No http response received by libcurl", 
         conn->tag);
-    return conn->info.code = ORCA_NO_RESPONSE;
+    return ORCA_NO_RESPONSE;
   }
   log_error("[%s] Unusual HTTP response code: %d", 
       conn->tag, 
-      httpcode);
-  return conn->info.code = ORCA_UNUSUAL_HTTP_CODE;
+      conn->info.httpcode);
+  return ORCA_UNUSUAL_HTTP_CODE;
 }
 
 // make the main thread wait for a specified amount of time
