@@ -55,6 +55,11 @@ make
 sudo make install
 ```
 
+#### Standalone executable
+```
+gcc your-bot.c -o your-bot.exe -ldiscord -lcurl -lcrypto -lpthread -lm
+```
+
 ### For Windows
 
 * If you do not have Ubuntu or Debian but have Windows 10, you can install WSL2 and get either Ubuntu or Debian [here](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
