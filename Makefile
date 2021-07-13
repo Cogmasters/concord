@@ -6,11 +6,11 @@ SPECSDIR     := specs-code
 ACTOR_OBJDIR := actor_obj
 
 PREFIX ?= /usr/local
-SHELL := /bin/bash
+SHELL  := /bin/bash
 
 # common/utils src
 CEE_UTILS_SRC  := $(wildcard cee-utils/*.c) 
-COMMON_SRC  := $(wildcard common/*.c) $(wildcard common/**/*.c)
+COMMON_SRC     := $(wildcard common/*.c) $(wildcard common/**/*.c)
 
 # API specific src
 DISCORD_SRC := $(wildcard discord-*.c)
@@ -21,29 +21,29 @@ REDDIT_SRC  := $(wildcard reddit-*.c)
 DB_SRC      := $(wildcard sqlite3/*.c)
 
 # specs src
-SPECS      	:= $(sort $(wildcard specs/*/*.json))
-SPECS_SRC   := $(patsubst specs/%, $(SPECSDIR)/%, $(SPECS:%.json=%.c))
-SPECS_SUBDIR:= $(sort $(patsubst specs/%, %, $(dir $(SPECS))))
+SPECS      	 := $(sort $(wildcard specs/*/*.json))
+SPECS_SRC    := $(patsubst specs/%, $(SPECSDIR)/%, $(SPECS:%.json=%.c))
+SPECS_SUBDIR := $(sort $(patsubst specs/%, %, $(dir $(SPECS))))
 
 # generated code src
-ACTOR_GEN_SRC = cee-utils/cee-utils.c 	\
-				cee-utils/json-actor.c 	\
-				cee-utils/ntl.c 			\
-				cee-utils/json-string.c 	\
-				cee-utils/json-scanf.c 	\
-				cee-utils/json-struct.c 	\
-				cee-utils/json-printf.c 	\
-				cee-utils/log.c \
-				specs/specs-gen.c
+ACTOR_GEN_SRC = cee-utils/cee-utils.c   \
+				        cee-utils/json-actor.c  \
+				        cee-utils/ntl.c 			  \
+				        cee-utils/json-string.c \
+				        cee-utils/json-scanf.c 	\
+				        cee-utils/json-struct.c \
+				        cee-utils/json-printf.c \
+				        cee-utils/log.c         \
+				        specs/specs-gen.c
 
 
-DB_OBJS      := $(DB_SRC:%=$(OBJDIR)/%.o)
-SPECS_OBJS   := $(SPECS_SRC:%=$(OBJDIR)/%.o)
+DB_OBJS        := $(DB_SRC:%=$(OBJDIR)/%.o)
+SPECS_OBJS     := $(SPECS_SRC:%=$(OBJDIR)/%.o)
 ACTOR_GEN_OBJS := $(ACTOR_GEN_SRC:%=$(ACTOR_OBJDIR)/%.o)
 
 # utils objects
 CEE_UTILS_OBJS  := $(CEE_UTILS_SRC:%=$(OBJDIR)/%.o)
-COMMON_OBJS  := $(COMMON_SRC:%=$(OBJDIR)/%.o)
+COMMON_OBJS     := $(COMMON_SRC:%=$(OBJDIR)/%.o)
 
 # API objects
 DISCORD_OBJS := $(DISCORD_SRC:%=$(OBJDIR)/%.o)
@@ -71,21 +71,25 @@ LIBREDDIT_CFLAGS	:=
 
 # API libs ldflags
 LIBDISCORD_LDFLAGS := -ldiscord
-LIBGITHUB_LDFLAGS	:= -lgithub
-LIBREDDIT_LDFLAGS	:= -lreddit
+LIBGITHUB_LDFLAGS	 := -lgithub
+LIBREDDIT_LDFLAGS	 := -lreddit
 
 # API libs
 LIBDISCORD := $(LIBDIR)/libdiscord.a
-LIBGITHUB := $(LIBDIR)/libgithub.a
-LIBREDDIT := $(LIBDIR)/libreddit.a
+LIBGITHUB  := $(LIBDIR)/libgithub.a
+LIBREDDIT  := $(LIBDIR)/libreddit.a
 
 # general-purpose flags
-LIBORCA_CFLAGS := $(LIBDISCORD_CFLAGS) $(LIBGITHUB_CFLAGS) $(LIBREDDIT_CFLAGS)
+LIBORCA_CFLAGS  := $(LIBDISCORD_CFLAGS) $(LIBGITHUB_CFLAGS) $(LIBREDDIT_CFLAGS)
 LIBORCA_LDFLAGS := $(LIBDISCORD_LDFLAGS) $(LIBGITHUB_LDFLAGS) $(LIBREDDIT_LDFLAGS)
-LIBORCA := $(LIBDISCORD) $(LIBGITHUB) $(LIBREDDIT)
+LIBORCA         := $(LIBDISCORD) $(LIBGITHUB) $(LIBREDDIT)
 
 LIBS_CFLAGS  += $(LIBORCA_CFLAGS) -I./mujs -I./sqlite3
 LIBS_LDFLAGS += -L./$(LIBDIR) $(LIBORCA_LDFLAGS) -lpthread
+
+CFLAGS += -Wall -std=c11 -O0 -g \
+	-Wno-unused-function \
+	-I. -I./cee-utils -I./common -I./common/third-party -DLOG_USE_COLOR
 
 ifeq ($(BEARSSL),1)
 	LIBS_LDFLAGS += -lbearssl -static
@@ -101,16 +105,15 @@ else
 	CFLAGS += -Wno-unused-but-set-variable
 endif
 
-CFLAGS += -Wall -std=c11 -O0 -g \
-	-Wno-unused-function \
-	-I. -I./cee-utils -I./common -I./common/third-party -DLOG_USE_COLOR
-ifneq ($(release),1)
+ifeq ($(static_debug),1)
 	CFLAGS +=  -D_STATIC_DEBUG
+else ifeq ($(static_debug),2) 
+	CFLAGS +=  -D_STRICT_STATIC_DEBUG
+else ifeq ($(static_debug),3) 
+	CFLAGS +=  -D_STATIC_DEBUG -D_STRICT_STATIC_DEBUG
 endif
-ifeq ($(DEBUG_JSON),1)
-	CFLAGS += -D_STRICT_STATIC_DEBUG
-endif
-ifeq ($(ADDONS),1)
+
+ifeq ($(addons),1)
 	# prepare addon flags
 	ADDONS_SRC := $(wildcard add-ons/*.c)
 	ADDONS_OBJS := $(ADDONS_SRC:%=$(OBJDIR)/%.o)
@@ -139,8 +142,6 @@ else ifeq ($(CC),sfc)
 else
 	CFLAGS += -fPIC -D_XOPEN_SOURCE=700
 endif
-
-
 
 
 .PHONY : install clean purge mujs
