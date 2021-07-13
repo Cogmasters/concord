@@ -2,11 +2,10 @@
    sphinx-quickstart on Sun Jun 20 10:59:18 2021.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
-
-Welcome to Orca
-===============
-
-.. image:: /images/logo.svg
+..
+  Welcome to Orca
+  ===============
+.. image:: /images/logo-dropshadow.svg
 
 A bot framework that is easy to reason about, easy to debug, and easy to use.
 
