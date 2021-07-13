@@ -63,10 +63,11 @@ sudo make install
 ## Example usage
 
 ```c
+#include <string.h> // strcmp()
 #include <orca/discord.h>
 
 void on_ready(struct discord *client, const struct discord_user *bot) {
-  log_info("Logged in as %s#%s!", bot->username, bot->discriminator);
+  log_info("Logged in as %s!", bot->username);
 }
 
 void on_message(struct discord *client, const struct discord_user *bot, const struct discord_message *msg) {
@@ -76,7 +77,7 @@ void on_message(struct discord *client, const struct discord_user *bot, const st
   }
 }
 
-int main(void) {
+int main() {
   struct discord *client = discord_init(BOT_TOKEN);
   discord_set_on_ready(client, &on_ready);
   discord_set_on_message_create(client, &on_message);
@@ -100,12 +101,12 @@ int main(void) {
 Type a message in any channel the bot is part of.
 
 ### Terminate bot-echo
-Close the Terminal or type "Ctrl-C" to kill it.
+Close the Terminal or type `Ctrl-C` to kill the process.
 
 ## Debug Memory Errors
 * The recommended method: 
   Using SaiphC to build your bot, and run the executable.  All runtime memory errors will be reported. 
-  The [instruction](/docs/SAIPH.md) to use SaiphC to build bots.
+  The [instruction](docs/SAIPHC.md) to use SaiphC to build bots.
 
 * Using valgrind, which is more convenient but cannot report all runtime memory errors. 
 ```
@@ -115,7 +116,7 @@ valgrind ./your-bot.exe
 ## Links
 
 - [Documentation](https://cee-studio.github.io/orca/)
-- [How to make a bot](/docs/BUILDING_A_BOT.md)
+- [How to make a bot](docs/BUILDING_A_BOT.md)
 - [Discord Server](https://discord.gg/2jfycwXVM3)
 
 ## Contributions are welcome!
