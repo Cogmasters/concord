@@ -26,8 +26,8 @@ Orca's implementation has minimum external dependencies to make bot deployment d
 ### Design
 
 - Easy to use for the end users: we provide internal synchronization
-  so that the user may provide scalability for his application without
-  having to worry excessively about race-conditions. All transfers made
+  so that the user may provide scalability to his applications without
+  having to excessively worry about race-conditions. All transfers made
   with Orca are thread-safe by nature.
 
 - Easy to reason about the code: we use the most native data structures,
