@@ -13,8 +13,10 @@ A bot framework that is easy to reason about, easy to debug, and easy to use.
 
 - Easy to use for the end users
 
-  - We use multi-threading and synchronous IO to support concurrency so you only need to focus on the logic.
-  - We carefully craft the library to use computing resources efficiently so performance should never be an issue.
+  - We provide internal synchronization so that the user may provide
+    scalability to his applications without having to excessively worry
+    about race-conditions. All transfers made with Orca are thread-safe by nature.
+
 - Easy to reason about the code
 
   - We use the most native data structures, the simplest algorithms, and intuitive interfaces.

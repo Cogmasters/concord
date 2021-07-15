@@ -173,8 +173,9 @@
 <ul class="simple">
 <li><p>Easy to use for the end users</p>
 <ul>
-<li><p>We use multi-threading and synchronous IO to support concurrency so you only need to focus on the logic.</p></li>
-<li><p>We carefully craft the library to use computing resources efficiently so performance should never be an issue.</p></li>
+<li><p>We provide internal synchronization so that the user may provide
+scalability to his applications without having to excessively worry
+about race-conditions. All transfers made with Orca are thread-safe by nature.</p></li>
 </ul>
 </li>
 <li><p>Easy to reason about the code</p>
