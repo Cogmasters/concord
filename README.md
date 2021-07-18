@@ -122,6 +122,7 @@ valgrind ./your-bot.exe
 
 - [Documentation](https://cee-studio.github.io/orca/)
 - [How to make a bot](docs/BUILDING_A_BOT.md)
+- [Project outline](docs/PROJECT_OUTLINE.md)
 - [Discord Server](https://discord.gg/2jfycwXVM3)
 
 ## Contributions are welcome!
