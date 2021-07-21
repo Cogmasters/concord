@@ -214,6 +214,18 @@ discord_embed_set_footer(
   embed->footer = new_footer;
 }
 
+
+void discord_embed_set_title(
+  struct discord_embed *embed, 
+  char format[], 
+  ...)
+{
+  va_list args;
+  va_start(args, format);
+  vsnprintf(embed->title, sizeof(embed->title), format, args);
+  va_end(args);
+}
+
 void
 discord_embed_set_thumbnail(
   struct discord_embed *embed, 

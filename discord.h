@@ -907,6 +907,7 @@ void discord_embed_set_video(struct discord_embed *embed, char url[], char proxy
 void discord_embed_set_footer(struct discord_embed *embed, char text[], char icon_url[], char proxy_icon_url[]);
 void discord_embed_set_provider(struct discord_embed *embed, char name[], char url[]);
 void discord_embed_set_author(struct discord_embed *embed, char name[], char url[], char icon_url[], char proxy_icon_url[]);
+void discord_embed_set_title(struct discord_embed *embed, char format[], ...);
 void discord_embed_add_field(struct discord_embed *embed, char name[], char value[], bool Inline);
 /** @} */
 
