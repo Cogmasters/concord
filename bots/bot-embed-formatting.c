@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
   discord_set_on_ready(client, &on_ready);
   discord_set_on_command(client, "format embed", &on_command);
 
-  printf("\n\nThis bot demonstrates how easy it is to format embed text for embeds.\n"
+  printf("\n\nThis bot demonstrates how easy it is to format the title text for embeds.\n"
          "Type 'format embed' in any channel to trigger the bot\n"
          "\nTYPE ANY KEY TO START BOT\n");
   fgetc(stdin);
