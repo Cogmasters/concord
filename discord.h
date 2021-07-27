@@ -1,7 +1,7 @@
 /**
  * @file discord.h
  * @author cee-studio
- * @date 18 Jun 2021
+ * @date 27 Jul 2021
  * @brief File containing public functions and datatypes
  *
  * These symbols are organized in a intuitive fashion to be easily 
@@ -65,7 +65,7 @@ struct discord_voice_cbs;
 #define DISCORD_WEBHOOK_NAME_LEN 80 + 1
 /** @} */
 
-// specs/discord for generated code specs 
+// see specs/discord/ for specs
 #include "specs-code/discord/all_opaque_struct.h"
 #include "specs-code/discord/all_enums.h"
 #include "specs-code/discord/all_structs.h"
@@ -782,23 +782,189 @@ void discord_set_presence(struct discord *client, struct discord_gateway_activit
 
 /** @defgroup AuditLogEndpoints
  *  @{ */
+/**
+ * @brief @b GET /guilds/{guild.id}/audit-logs
+ *
+ * Returns an audit log object for the guild. 
+ * @param client the client created with discord_init()
+ * @param guild_id the guild to retrieve the audit log from
+ * @param params request parameters
+ * @param p_audit_log the audit log object if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ * @note Requires the 'VIEW_AUDIT_LOG' permission
+ * @see https://discord.com/developers/docs/resources/audit-log#get-guild-audit-log
+ */
 ORCAcode discord_get_guild_audit_log(struct discord *client, const u64_snowflake_t guild_id, struct discord_get_guild_audit_log_params *params, struct discord_audit_log *p_audit_log);
 /** @} */
 
 /** @defgroup ChannelEndpoints
  *  @{ */
+/**
+ * @brief @b GET /channels/{channel.id}
+ *
+ * Get a channel by ID. Returns a channel object. If the channel is a thread, a thread member object is included in the returned result.
+ * @param client the client created with discord_init()
+ * @param channel_id the channel to be retrieved
+ * @param p_channel the channel object if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ * @see https://discord.com/developers/docs/resources/channel#get-channel
+ */
 ORCAcode discord_get_channel(struct discord *client, const u64_snowflake_t channel_id, struct discord_channel *p_channel);
+/**
+ * @brief @b PATCH /channels/{channel.id}
+ *
+ * Update a channel's settings.
+ * @param client the client created with discord_init()
+ * @param channel_id the channel to be modified
+ * @param params request parameters
+ * @param p_channel the channel object if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ * @see https://discord.com/developers/docs/resources/channel#modify-channel
+ */
 ORCAcode discord_modify_channel(struct discord *client, const u64_snowflake_t channel_id, struct discord_modify_channel_params *params, struct discord_channel *p_channel);
+/**
+ * @brief @b DELETE /channels/{channel.id}
+ *
+ * Delete a channel, or close a private message.
+ * @param client the client created with discord_init()
+ * @param channel_id the channel to be deleted
+ * @param p_channel the channel object if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ * @note Requires the MANAGE_CHANNELS permission for the guild, or MANAGE_THREADS if the channel is a thread. Deleting a category does not delete its child channels; they will have their parent_id removed and a Channel Update Gateway event will fire for each of them.
+ * @note Fires a Channel Delete Gateway event (or Thread Delete if the channel was a thread).
+ * @see https://discord.com/developers/docs/resources/channel#deleteclose-channel
+ */
 ORCAcode discord_delete_channel(struct discord *client, const u64_snowflake_t channel_id, struct discord_channel *p_channel);
+/**
+ * @brief @b GET /channels/{channel.id}/messages
+ *
+ * Returns the messages for a channel.
+ * @param client the client created with discord_init()
+ * @param channel_id the channel to get messages from
+ * @param params request parameters
+ * @param p_messages the null-terminated array of messages if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ * @note If operating on a guild channel, this endpoint requires the VIEW_CHANNEL permission to be present on the current user.
+ * @note If the current user is missing the 'READ_MESSAGE_HISTORY' permission in the channel then this will return no messages (since they cannot read the message history).
+ * @note The before, after, and around keys are mutually exclusive, only one may be passed at a time.
+ * @see https://discord.com/developers/docs/resources/channel#get-channel-messages
+ */
 ORCAcode discord_get_channel_messages(struct discord *client, const u64_snowflake_t channel_id, struct discord_get_channel_messages_params *params, NTL_T(struct discord_message) *p_messages);
+/**
+ * @brief @b GET /channels/{channel.id}/messages/{message.id}
+ *
+ * Returns a specific message in the channel.
+ * @param client the client created with discord_init()
+ * @param channel_id the channel where the message resides
+ * @param message_id the message itself
+ * @param p_message the message object if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ * @note If operating on a guild channel, this endpoint requires the 'READ_MESSAGE_HISTORY' permission to be present on the current user.
+ * @see https://discord.com/developers/docs/resources/channel#get-channel-message
+ */
 ORCAcode discord_get_channel_message(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id, struct discord_message *p_message);
+/**
+ * @brief @b POST /channels/{channel.id}/messages
+ *
+ * Post a message to a guild text or DM channel. Fires a Message Create Gateway event.
+ * @param client the client created with discord_init()
+ * @param channel_id the channel to send the message at
+ * @param params request parameters
+ * @param p_message the message object if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ * @see https://discord.com/developers/docs/resources/channel#create-message
+ */
 ORCAcode discord_create_message(struct discord *client, const u64_snowflake_t channel_id, struct discord_create_message_params *params, struct discord_message *p_message);
+/**
+ * @brief @b POST /channels/{channel.id}/messages/{message.id}/crosspost
+ *
+ * Crosspost a message in a News Channel to following channels. This endpoint requires the 'SEND_MESSAGES' permission, if the current user sent the message, or additionally the 'MANAGE_MESSAGES' permission, for all other messages, to be present for the current user.
+ * @param client the client created with discord_init()
+ * @param channel_id the news channel that will crosspost
+ * @param message_id the message that will crospost
+ * @param p_message the message object if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ * @see https://discord.com/developers/docs/resources/channel#crosspost-message
+ */
 ORCAcode discord_crosspost_message(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id, struct discord_message *p_message);
+/**
+ * @brief @b PUT /channels/{channel.id}/messages/{message.id}/reactions/{emoji}/@me
+ *
+ * Create a reaction for the message.
+ * @param client the client created with discord_init()
+ * @param channel_id the channel that the message belongs to
+ * @param message_id the message to receive a reaction
+ * @param emoji_id the emoji id (leave as 0 if not a custom emoji)
+ * @param emoji_name the emoji name
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ * @see https://discord.com/developers/docs/resources/channel#create-reaction
+ */
 ORCAcode discord_create_reaction(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id, const u64_snowflake_t emoji_id, const char emoji_name[]);
+/**
+ * @brief @b DELETE /channels/{channel.id}/messages/{message.id}/reactions/{emoji}/@me
+ *
+ * Delete a reaction the current user has made for the message.
+ * @param client the client created with discord_init()
+ * @param channel_id the channel that the message belongs to
+ * @param message_id the message to have a reaction deleted
+ * @param emoji_id the emoji id (leave as 0 if not a custom emoji)
+ * @param emoji_name the emoji name
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ * @see https://discord.com/developers/docs/resources/channel#delete-own-reaction
+ */
 ORCAcode discord_delete_own_reaction(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id, const u64_snowflake_t emoji_id, const char emoji_name[]);
+/**
+ * @brief @b DELETE /channels/{channel.id}/messages/{message.id}/reactions/{emoji}/{user.id}
+ *
+ * Deletes another user's reaction.
+ * @param client the client created with discord_init()
+ * @param channel_id the channel that the message belongs to
+ * @param message_id the message to have a reaction deleted
+ * @param user_id the user the reaction belongs to
+ * @param emoji_id the emoji id (leave as 0 if not a custom emoji)
+ * @param emoji_name the emoji name
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ * @see https://discord.com/developers/docs/resources/channel#delete-user-reaction
+ */
 ORCAcode discord_delete_user_reaction(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id, const u64_snowflake_t user_id, const u64_snowflake_t emoji_id, const char emoji_name[]);
+/**
+ * @brief @b GET /channels/{channel.id}/messages/{message.id}/reactions/{emoji}
+ *
+ * Get a list of users that reacted with this emoji.
+ * @param client the client created with discord_init()
+ * @param channel_id the channel that the message belongs to
+ * @param message_id the message reacted to
+ * @param emoji_id the emoji id (leave as 0 if not a custom emoji)
+ * @param emoji_name the emoji name
+ * @param params request parameters
+ * @param p_users the null-terminated array of users if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ * @see https://discord.com/developers/docs/resources/channel#get-reactions
+ */
 ORCAcode discord_get_reactions(struct discord *client, u64_snowflake_t channel_id, u64_snowflake_t message_id, const u64_snowflake_t emoji_id, const char emoji_name[], struct discord_get_reactions_params *params, NTL_T(struct discord_user) *p_users);
+/**
+ * @brief @b DELETE /channels/{channel.id}/messages/{message.id}/reactions
+ *
+ * Deletes all reactions on a message.
+ * @param client the client created with discord_init()
+ * @param channel_id the channel that the message belongs to
+ * @param message_id the message that will be purged of reactions
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ * @see https://discord.com/developers/docs/resources/channel#delete-all-reactions
+ */
 ORCAcode discord_delete_all_reactions(struct discord *client, u64_snowflake_t channel_id, u64_snowflake_t message_id);
+/**
+ * @brief @b DELETE /channels/{channel.id}/messages/{message.id}/reactions/{emoji}
+ *
+ * Deletes all the reactions for a given emoji on a message.
+ * @param client the client created with discord_init()
+ * @param channel_id the channel that the message belongs to
+ * @param message_id the message that will be purged of reactions from particular emoji
+ * @param emoji_id the emoji id (leave as 0 if not a custom emoji)
+ * @param emoji_name the emoji name
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ * @see https://discord.com/developers/docs/resources/channel#delete-all-reactions-for-emoji
+ */
 ORCAcode discord_delete_all_reactions_for_emoji(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id, const u64_snowflake_t emoji_id, const char emoji_name[]);
 ORCAcode discord_edit_message(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id, struct discord_edit_message_params *params, struct discord_message *p_message);
 ORCAcode discord_delete_message(struct discord *client, u64_snowflake_t channel_id, u64_snowflake_t message_id);
