@@ -11,9 +11,11 @@
 
 
 static void
-discord_session_from_json(char *str, size_t len, void *p_session)
+discord_session_from_json(char *str, size_t len, void *pp)
 {
-  struct discord_session *session = p_session;
+  struct discord_session **p_session = pp;
+  if (!*p_session) *p_session = calloc(1, sizeof **p_session);
+  struct discord_session *session = *p_session;
   json_extract(str, len,
       "(url):s"
       "(shards):d"
@@ -37,14 +39,12 @@ discord_get_gateway(struct discord *client, struct discord_session *p_session)
     return ORCA_MISSING_PARAMETER;
   }
 
-  struct ua_resp_handle resp_handle = { 
-    .ok_cb = &discord_session_from_json, 
-    .ok_obj = p_session 
-  };
-
   return discord_adapter_run( 
            &client->adapter,
-           &resp_handle,
+           &(struct ua_resp_handle){
+             .ok_cb = &discord_session_from_json, 
+             .ok_obj = &p_session 
+           },
            NULL,
            HTTP_GET,
            "/gateway");
@@ -58,23 +58,21 @@ discord_get_gateway_bot(struct discord *client, struct discord_session *p_sessio
     return ORCA_MISSING_PARAMETER;
   }
 
-  struct ua_resp_handle resp_handle = { 
-    .ok_cb = &discord_session_from_json, 
-    .ok_obj = p_session
-  };
-
   return discord_adapter_run( 
            &client->adapter,
-           &resp_handle,
+           &(struct ua_resp_handle){
+             .ok_cb = &discord_session_from_json, 
+             .ok_obj = &p_session 
+           },
            NULL,
            HTTP_GET,
            "/gateway/bot");
 }
 
-static char*
+static const char*
 opcode_print(enum discord_gateway_opcodes opcode)
 {
-  char *str = discord_gateway_opcodes_to_string(opcode);
+  const char *str = discord_gateway_opcodes_to_string(opcode);
   if (NULL == str) {
     log_warn("Invalid Gateway opcode (code: %d)", opcode);
     str = "Invalid Gateway opcode";
@@ -82,10 +80,10 @@ opcode_print(enum discord_gateway_opcodes opcode)
   return str;
 }
 
-static char*
+static const char*
 close_opcode_print(enum discord_gateway_close_opcodes opcode)
 {
-  char *str = discord_gateway_close_opcodes_to_string(opcode);
+  const char *str = discord_gateway_close_opcodes_to_string(opcode);
   if (str) return str;
   str = ws_close_opcode_print((enum ws_close_reason)opcode);
   if (str) return str;
@@ -203,14 +201,14 @@ get_dispatch_event(char event_name[])
 static void
 on_guild_role_create(struct discord_gateway *gw, struct sized_buffer *data)
 {
-  struct discord_permissions_role *role = discord_permissions_role_alloc();
+  struct discord_permissions_role *role=NULL;
 
   u64_snowflake_t guild_id = 0;
   json_extract(data->start, data->size,
     "(guild_id):s_as_u64"
     "(role):F", 
     &guild_id,
-    &discord_permissions_role_from_json, role);
+    &discord_permissions_role_from_json, &role);
 
   (*gw->cbs.on_guild_role_create)(
       gw->p_client, 
@@ -224,14 +222,14 @@ on_guild_role_create(struct discord_gateway *gw, struct sized_buffer *data)
 static void
 on_guild_role_update(struct discord_gateway *gw, struct sized_buffer *data)
 {
-  struct discord_permissions_role *role = discord_permissions_role_alloc();
+  struct discord_permissions_role *role=NULL;
 
   u64_snowflake_t guild_id = 0;
   json_extract(data->start, data->size,
     "(guild_id):s_as_u64"
     "(role):F", 
     &guild_id,
-    &discord_permissions_role_from_json, role);
+    &discord_permissions_role_from_json, &role);
 
   (*gw->cbs.on_guild_role_update)(
       gw->p_client, 
@@ -262,8 +260,8 @@ on_guild_role_delete(struct discord_gateway *gw, struct sized_buffer *data)
 static void
 on_guild_member_add(struct discord_gateway *gw, struct sized_buffer *data)
 {
-  struct discord_guild_member *member = discord_guild_member_alloc();
-  discord_guild_member_from_json(data->start, data->size, member);
+  struct discord_guild_member *member=NULL;
+  discord_guild_member_from_json(data->start, data->size, &member);
 
   u64_snowflake_t guild_id = 0;
   json_extract(data->start, data->size, "(guild_id):s_as_u64", &guild_id);
@@ -280,8 +278,8 @@ on_guild_member_add(struct discord_gateway *gw, struct sized_buffer *data)
 static void
 on_guild_member_update(struct discord_gateway *gw, struct sized_buffer *data)
 {
-  struct discord_guild_member *member = discord_guild_member_alloc();
-  discord_guild_member_from_json(data->start, data->size, member);
+  struct discord_guild_member *member=NULL;
+  discord_guild_member_from_json(data->start, data->size, &member);
 
   u64_snowflake_t guild_id = 0;
   json_extract(data->start, data->size, "(guild_id):s_as_u64", &guild_id);
@@ -299,12 +297,12 @@ static void
 on_guild_member_remove(struct discord_gateway *gw, struct sized_buffer *data)
 {
   u64_snowflake_t guild_id = 0;
-  struct discord_user *user = discord_user_alloc();
+  struct discord_user *user=NULL;
   json_extract(data->start, data->size,
     "(guild_id):s_as_u64"
     "(user):F", 
     &guild_id,
-    &discord_user_from_json, user);
+    &discord_user_from_json, &user);
 
   (*gw->cbs.on_guild_member_remove)(
         gw->p_client, 
@@ -319,12 +317,12 @@ static void
 on_guild_ban_add(struct discord_gateway *gw, struct sized_buffer *data)
 {
   u64_snowflake_t guild_id = 0;
-  struct discord_user *user = discord_user_alloc();
+  struct discord_user *user=NULL;
   json_extract(data->start, data->size,
     "(guild_id):s_as_u64"
     "(user):F", 
     &guild_id,
-    &discord_user_from_json, user);
+    &discord_user_from_json, &user);
 
   (*gw->cbs.on_guild_ban_add)(
         gw->p_client, 
@@ -339,12 +337,12 @@ static void
 on_guild_ban_remove(struct discord_gateway *gw, struct sized_buffer *data)
 {
   u64_snowflake_t guild_id = 0;
-  struct discord_user *user = discord_user_alloc();
+  struct discord_user *user=NULL;
   json_extract(data->start, data->size,
     "(guild_id):s_as_u64"
     "(user):F", 
     &guild_id,
-    &discord_user_from_json, user);
+    &discord_user_from_json, &user);
 
   (*gw->cbs.on_guild_ban_remove)(
         gw->p_client, 
@@ -358,8 +356,8 @@ on_guild_ban_remove(struct discord_gateway *gw, struct sized_buffer *data)
 static void
 on_channel_create(struct discord_gateway *gw, struct sized_buffer *data)
 {
-  struct discord_channel *channel = discord_channel_alloc();
-  discord_channel_from_json(data->start, data->size, channel);
+  struct discord_channel *channel=NULL;
+  discord_channel_from_json(data->start, data->size, &channel);
 
   (*gw->cbs.on_channel_create)(
         gw->p_client, 
@@ -372,8 +370,8 @@ on_channel_create(struct discord_gateway *gw, struct sized_buffer *data)
 static void
 on_channel_update(struct discord_gateway *gw, struct sized_buffer *data)
 {
-  struct discord_channel *channel = discord_channel_alloc();
-  discord_channel_from_json(data->start, data->size, channel);
+  struct discord_channel *channel=NULL;
+  discord_channel_from_json(data->start, data->size, &channel);
 
   (*gw->cbs.on_channel_update)(
         gw->p_client, 
@@ -386,8 +384,8 @@ on_channel_update(struct discord_gateway *gw, struct sized_buffer *data)
 static void
 on_channel_delete(struct discord_gateway *gw, struct sized_buffer *data)
 {
-  struct discord_channel *channel = discord_channel_alloc();
-  discord_channel_from_json(data->start, data->size, channel);
+  struct discord_channel *channel=NULL;
+  discord_channel_from_json(data->start, data->size, &channel);
 
   (*gw->cbs.on_channel_delete)(
         gw->p_client, 
@@ -421,8 +419,8 @@ on_channel_pins_update(struct discord_gateway *gw, struct sized_buffer *data)
 static void
 on_message_create(struct discord_gateway *gw, struct sized_buffer *data)
 {
-  struct discord_message *msg = discord_message_alloc();
-  discord_message_from_json(data->start, data->size, msg);
+  struct discord_message *msg=NULL;
+  discord_message_from_json(data->start, data->size, &msg);
 
   if (gw->on_cmd \
       && STRNEQ(gw->prefix.start, msg->content, gw->prefix.size)) 
@@ -469,8 +467,8 @@ on_message_create(struct discord_gateway *gw, struct sized_buffer *data)
 static void
 on_message_update(struct discord_gateway *gw, struct sized_buffer *data)
 {
-  struct discord_message *msg = discord_message_alloc();
-  discord_message_from_json(data->start, data->size, msg);
+  struct discord_message *msg=NULL;
+  discord_message_from_json(data->start, data->size, &msg);
 
   if (gw->cbs.sb_on_message_update)
     (*gw->cbs.sb_on_message_update)(
@@ -523,8 +521,8 @@ static void
 on_message_reaction_add(struct discord_gateway *gw, struct sized_buffer *data)
 {
   u64_snowflake_t user_id=0, message_id=0, channel_id=0, guild_id=0;
-  struct discord_guild_member *member = discord_guild_member_alloc();
-  struct discord_emoji *emoji = discord_emoji_alloc();
+  struct discord_guild_member *member=NULL;
+  struct discord_emoji *emoji=NULL;
 
   json_extract(data->start, data->size,
       "(user_id):s_as_u64"
@@ -535,8 +533,8 @@ on_message_reaction_add(struct discord_gateway *gw, struct sized_buffer *data)
       "(guild_id):s_as_u64",
       &user_id,
       &message_id,
-      &discord_guild_member_from_json, member,
-      &discord_emoji_from_json, emoji,
+      &discord_guild_member_from_json, &member,
+      &discord_emoji_from_json, &emoji,
       &channel_id,
       &guild_id);
 
@@ -556,7 +554,7 @@ static void
 on_message_reaction_remove(struct discord_gateway *gw, struct sized_buffer *data)
 {
   u64_snowflake_t user_id=0, message_id=0, channel_id=0, guild_id=0;
-  struct discord_emoji *emoji = discord_emoji_alloc();
+  struct discord_emoji *emoji=NULL;
 
   json_extract(data->start, data->size,
       "(user_id):s_as_u64"
@@ -566,7 +564,7 @@ on_message_reaction_remove(struct discord_gateway *gw, struct sized_buffer *data
       "(guild_id):s_as_u64",
       &user_id,
       &message_id,
-      &discord_emoji_from_json, emoji,
+      &discord_emoji_from_json, &emoji,
       &channel_id,
       &guild_id);
 
@@ -602,7 +600,7 @@ static void
 on_message_reaction_remove_emoji(struct discord_gateway *gw, struct sized_buffer *data)
 {
   u64_snowflake_t channel_id=0, guild_id=0, message_id=0;
-  struct discord_emoji *emoji = discord_emoji_alloc();
+  struct discord_emoji *emoji=NULL;
   json_extract(data->start, data->size,
       "(channel_id):s_as_u64"
       "(guild_id):s_as_u64"
@@ -611,7 +609,7 @@ on_message_reaction_remove_emoji(struct discord_gateway *gw, struct sized_buffer
       &channel_id,
       &guild_id,
       &message_id,
-      &discord_emoji_from_json, emoji);
+      &discord_emoji_from_json, &emoji);
 
     (*gw->cbs.on_message_reaction_remove_emoji)(gw->p_client, gw->bot, 
         channel_id, 
@@ -623,8 +621,8 @@ on_message_reaction_remove_emoji(struct discord_gateway *gw, struct sized_buffer
 static void
 on_voice_state_update(struct discord_gateway *gw, struct sized_buffer *data)
 {
-  struct discord_voice_state *vs = discord_voice_state_alloc();
-  discord_voice_state_from_json(data->start, data->size, vs);
+  struct discord_voice_state *vs=NULL;
+  discord_voice_state_from_json(data->start, data->size, &vs);
 
   if (vs->user_id == gw->bot->id) {
     // we only care about the voice_state_update of bot
@@ -682,11 +680,10 @@ dispatch_run(void *p_cxt)
       &cxt->p_gw->sb_bot, 
       &cxt->data);
 
+  free(cxt->data.start);
   if (!is_main_thread) {
     log_info("Thread " ANSICOLOR("exits", ANSI_FG_RED) " from serving %s",
              cxt->event_name);
-
-    free(cxt->data.start);
     free(cxt);
     pthread_exit(NULL);
   }
@@ -872,6 +869,7 @@ on_dispatch(struct discord_gateway *gw)
                                             cxt.event);
   switch (mode) {
   case DISCORD_EVENT_IGNORE: 
+      free(cxt.data.start);
       return;
   case DISCORD_EVENT_MAIN_THREAD:
       cxt.is_main_thread = true;
@@ -904,7 +902,7 @@ on_invalid_session(struct discord_gateway *gw)
   else
     log_info("Session is not resumable");
 
-  ws_exit_event_loop(gw->ws);
+  ws_close(gw->ws, WS_CLOSE_REASON_NORMAL, "", 0);
 }
 
 static void
@@ -914,7 +912,7 @@ on_reconnect(struct discord_gateway *gw)
 #if 0
   gw->reconnect.enable = true;
 #endif
-  ws_exit_event_loop(gw->ws);
+  ws_close(gw->ws, WS_CLOSE_REASON_NORMAL, "", 0);
 }
 
 static void
@@ -1078,9 +1076,9 @@ discord_gateway_init(struct discord_gateway *gw, struct logconf *config, struct 
   gw->id = discord_gateway_identify_alloc();
   asprintf(&gw->id->token, "%.*s", (int)token->size, token->start);
 
-  gw->id->properties->$os = strdup("POSIX");
-  gw->id->properties->$browser = strdup("orca");
-  gw->id->properties->$device = strdup("orca");
+  gw->id->properties->os = strdup("POSIX");
+  gw->id->properties->browser = strdup("orca");
+  gw->id->properties->device = strdup("orca");
   gw->id->presence->since = cee_timestamp_ms();
 
   gw->cbs.on_idle = &noop_idle_cb;
@@ -1207,7 +1205,7 @@ discord_gateway_shutdown(struct discord_gateway *gw)
   gw->reconnect.enable = false;
   gw->is_resumable = false;
   gw->shutdown = true;
-  ws_exit_event_loop(gw->ws);
+  ws_close(gw->ws, WS_CLOSE_REASON_NORMAL, "", 0);
 }
 
 void
@@ -1215,5 +1213,5 @@ discord_gateway_reconnect(struct discord_gateway *gw, bool resume)
 {
   gw->reconnect.enable = true;
   gw->is_resumable = resume;
-  ws_exit_event_loop(gw->ws);
+  ws_close(gw->ws, WS_CLOSE_REASON_NORMAL, "", 0);
 }

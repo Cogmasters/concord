@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/channel.endpoints-params.h
  * @author cee-studio
- * @date 01 Jul 2021
+ * @date Jul 27 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/channel
  */
@@ -101,8 +101,8 @@ extern void discord_modify_channel_params_init(struct discord_modify_channel_par
 extern struct discord_modify_channel_params * discord_modify_channel_params_alloc();
 extern void discord_modify_channel_params_free_v(void *p);
 extern void discord_modify_channel_params_free(struct discord_modify_channel_params *p);
-extern void discord_modify_channel_params_from_json_v(char *json, size_t len, void *p);
-extern void discord_modify_channel_params_from_json(char *json, size_t len, struct discord_modify_channel_params *p);
+extern void discord_modify_channel_params_from_json_v(char *json, size_t len, void *pp);
+extern void discord_modify_channel_params_from_json(char *json, size_t len, struct discord_modify_channel_params **pp);
 extern size_t discord_modify_channel_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_modify_channel_params_to_json(char *json, size_t len, struct discord_modify_channel_params *p);
 extern size_t discord_modify_channel_params_to_query_v(char *json, size_t len, void *p);
@@ -151,8 +151,8 @@ extern void discord_get_reactions_params_init(struct discord_get_reactions_param
 extern struct discord_get_reactions_params * discord_get_reactions_params_alloc();
 extern void discord_get_reactions_params_free_v(void *p);
 extern void discord_get_reactions_params_free(struct discord_get_reactions_params *p);
-extern void discord_get_reactions_params_from_json_v(char *json, size_t len, void *p);
-extern void discord_get_reactions_params_from_json(char *json, size_t len, struct discord_get_reactions_params *p);
+extern void discord_get_reactions_params_from_json_v(char *json, size_t len, void *pp);
+extern void discord_get_reactions_params_from_json(char *json, size_t len, struct discord_get_reactions_params **pp);
 extern size_t discord_get_reactions_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_get_reactions_params_to_json(char *json, size_t len, struct discord_get_reactions_params *p);
 extern size_t discord_get_reactions_params_to_query_v(char *json, size_t len, void *p);
@@ -205,8 +205,8 @@ extern void discord_edit_channel_permissions_params_init(struct discord_edit_cha
 extern struct discord_edit_channel_permissions_params * discord_edit_channel_permissions_params_alloc();
 extern void discord_edit_channel_permissions_params_free_v(void *p);
 extern void discord_edit_channel_permissions_params_free(struct discord_edit_channel_permissions_params *p);
-extern void discord_edit_channel_permissions_params_from_json_v(char *json, size_t len, void *p);
-extern void discord_edit_channel_permissions_params_from_json(char *json, size_t len, struct discord_edit_channel_permissions_params *p);
+extern void discord_edit_channel_permissions_params_from_json_v(char *json, size_t len, void *pp);
+extern void discord_edit_channel_permissions_params_from_json(char *json, size_t len, struct discord_edit_channel_permissions_params **pp);
 extern size_t discord_edit_channel_permissions_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_edit_channel_permissions_params_to_json(char *json, size_t len, struct discord_edit_channel_permissions_params *p);
 extern size_t discord_edit_channel_permissions_params_to_query_v(char *json, size_t len, void *p);
@@ -251,8 +251,8 @@ extern void discord_follow_news_channel_params_init(struct discord_follow_news_c
 extern struct discord_follow_news_channel_params * discord_follow_news_channel_params_alloc();
 extern void discord_follow_news_channel_params_free_v(void *p);
 extern void discord_follow_news_channel_params_free(struct discord_follow_news_channel_params *p);
-extern void discord_follow_news_channel_params_from_json_v(char *json, size_t len, void *p);
-extern void discord_follow_news_channel_params_from_json(char *json, size_t len, struct discord_follow_news_channel_params *p);
+extern void discord_follow_news_channel_params_from_json_v(char *json, size_t len, void *pp);
+extern void discord_follow_news_channel_params_from_json(char *json, size_t len, struct discord_follow_news_channel_params **pp);
 extern size_t discord_follow_news_channel_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_follow_news_channel_params_to_json(char *json, size_t len, struct discord_follow_news_channel_params *p);
 extern size_t discord_follow_news_channel_params_to_query_v(char *json, size_t len, void *p);
@@ -321,8 +321,8 @@ extern void discord_create_channel_invite_params_init(struct discord_create_chan
 extern struct discord_create_channel_invite_params * discord_create_channel_invite_params_alloc();
 extern void discord_create_channel_invite_params_free_v(void *p);
 extern void discord_create_channel_invite_params_free(struct discord_create_channel_invite_params *p);
-extern void discord_create_channel_invite_params_from_json_v(char *json, size_t len, void *p);
-extern void discord_create_channel_invite_params_from_json(char *json, size_t len, struct discord_create_channel_invite_params *p);
+extern void discord_create_channel_invite_params_from_json_v(char *json, size_t len, void *pp);
+extern void discord_create_channel_invite_params_from_json(char *json, size_t len, struct discord_create_channel_invite_params **pp);
 extern size_t discord_create_channel_invite_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_create_channel_invite_params_to_json(char *json, size_t len, struct discord_create_channel_invite_params *p);
 extern size_t discord_create_channel_invite_params_to_query_v(char *json, size_t len, void *p);
@@ -371,8 +371,8 @@ extern void discord_group_dm_add_recipient_params_init(struct discord_group_dm_a
 extern struct discord_group_dm_add_recipient_params * discord_group_dm_add_recipient_params_alloc();
 extern void discord_group_dm_add_recipient_params_free_v(void *p);
 extern void discord_group_dm_add_recipient_params_free(struct discord_group_dm_add_recipient_params *p);
-extern void discord_group_dm_add_recipient_params_from_json_v(char *json, size_t len, void *p);
-extern void discord_group_dm_add_recipient_params_from_json(char *json, size_t len, struct discord_group_dm_add_recipient_params *p);
+extern void discord_group_dm_add_recipient_params_from_json_v(char *json, size_t len, void *pp);
+extern void discord_group_dm_add_recipient_params_from_json(char *json, size_t len, struct discord_group_dm_add_recipient_params **pp);
 extern size_t discord_group_dm_add_recipient_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_group_dm_add_recipient_params_to_json(char *json, size_t len, struct discord_group_dm_add_recipient_params *p);
 extern size_t discord_group_dm_add_recipient_params_to_query_v(char *json, size_t len, void *p);
@@ -421,8 +421,8 @@ extern void discord_start_thread_with_message_params_init(struct discord_start_t
 extern struct discord_start_thread_with_message_params * discord_start_thread_with_message_params_alloc();
 extern void discord_start_thread_with_message_params_free_v(void *p);
 extern void discord_start_thread_with_message_params_free(struct discord_start_thread_with_message_params *p);
-extern void discord_start_thread_with_message_params_from_json_v(char *json, size_t len, void *p);
-extern void discord_start_thread_with_message_params_from_json(char *json, size_t len, struct discord_start_thread_with_message_params *p);
+extern void discord_start_thread_with_message_params_from_json_v(char *json, size_t len, void *pp);
+extern void discord_start_thread_with_message_params_from_json(char *json, size_t len, struct discord_start_thread_with_message_params **pp);
 extern size_t discord_start_thread_with_message_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_start_thread_with_message_params_to_json(char *json, size_t len, struct discord_start_thread_with_message_params *p);
 extern size_t discord_start_thread_with_message_params_to_query_v(char *json, size_t len, void *p);
@@ -471,8 +471,8 @@ extern void discord_start_thread_without_message_params_init(struct discord_star
 extern struct discord_start_thread_without_message_params * discord_start_thread_without_message_params_alloc();
 extern void discord_start_thread_without_message_params_free_v(void *p);
 extern void discord_start_thread_without_message_params_free(struct discord_start_thread_without_message_params *p);
-extern void discord_start_thread_without_message_params_from_json_v(char *json, size_t len, void *p);
-extern void discord_start_thread_without_message_params_from_json(char *json, size_t len, struct discord_start_thread_without_message_params *p);
+extern void discord_start_thread_without_message_params_from_json_v(char *json, size_t len, void *pp);
+extern void discord_start_thread_without_message_params_from_json(char *json, size_t len, struct discord_start_thread_without_message_params **pp);
 extern size_t discord_start_thread_without_message_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_start_thread_without_message_params_to_json(char *json, size_t len, struct discord_start_thread_without_message_params *p);
 extern size_t discord_start_thread_without_message_params_to_query_v(char *json, size_t len, void *p);
@@ -525,8 +525,8 @@ extern void discord_thread_response_body_init(struct discord_thread_response_bod
 extern struct discord_thread_response_body * discord_thread_response_body_alloc();
 extern void discord_thread_response_body_free_v(void *p);
 extern void discord_thread_response_body_free(struct discord_thread_response_body *p);
-extern void discord_thread_response_body_from_json_v(char *json, size_t len, void *p);
-extern void discord_thread_response_body_from_json(char *json, size_t len, struct discord_thread_response_body *p);
+extern void discord_thread_response_body_from_json_v(char *json, size_t len, void *pp);
+extern void discord_thread_response_body_from_json(char *json, size_t len, struct discord_thread_response_body **pp);
 extern size_t discord_thread_response_body_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_thread_response_body_to_json(char *json, size_t len, struct discord_thread_response_body *p);
 extern size_t discord_thread_response_body_to_query_v(char *json, size_t len, void *p);

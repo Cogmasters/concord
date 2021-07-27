@@ -14,14 +14,12 @@ discord_list_voice_regions(struct discord *client, NTL_T(struct discord_voice_re
     return ORCA_MISSING_PARAMETER;
   }
 
-  struct ua_resp_handle resp_handle = { 
-    .ok_cb = &discord_voice_region_list_from_json_v, 
-    .ok_obj = p_voice_regions 
-  };
-
   return discord_adapter_run(
            &client->adapter,
-           &resp_handle,
+           &(struct ua_resp_handle){
+             .ok_cb = &discord_voice_region_list_from_json_v, 
+             .ok_obj = p_voice_regions 
+           },
            NULL,
            HTTP_GET,
            "/voice/regions");

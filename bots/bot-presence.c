@@ -9,7 +9,7 @@
 #define JSON_FILE "bot-presence.json"
 
 void on_ready(struct discord *client, const struct discord_user *bot) {
-  fprintf(stderr, "\n\nPresence-Bot succesfully connected to Discord as %s#%s!\n\n",
+  log_info("Presence-Bot succesfully connected to Discord as %s#%s!",
       bot->username, bot->discriminator);
 }
 
@@ -20,13 +20,12 @@ load_presence_from_json(struct discord *client, char filename[])
   size_t len;
   char *json_payload = cee_load_whole_file(filename, &len);
 
-  struct discord_gateway_status_update *presence = discord_gateway_status_update_alloc();
-  discord_gateway_status_update_from_json(json_payload, len, presence);
+  struct discord_gateway_status_update *presence=NULL;
+  discord_gateway_status_update_from_json(json_payload, len, &presence);
 
   discord_replace_presence(client, presence);
 
   free(json_payload);
-  discord_gateway_status_update_free(presence);
 }
 
 int main(int argc, char *argv[])

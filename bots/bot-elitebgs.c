@@ -245,10 +245,8 @@ void embed_from_json(char *str, size_t len, void *p_embed)
 
 void on_ready(struct discord *client, const struct discord_user *bot)
 {
-  fprintf(stderr, "\n\nEliteBGS-Bot succesfully connected to Discord as %s#%s!\n\n",
+  log_info("EliteBGS-Bot succesfully connected to Discord as %s#%s!",
       bot->username, bot->discriminator);
-
-  (void)client;
 }
 
 void on_command(

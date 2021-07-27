@@ -7,7 +7,7 @@
 
 
 void on_ready(struct discord *client, const struct discord_user *bot) {
-  fprintf(stderr, "\n\nChannel-Bot succesfully connected to Discord as %s#%s!\n\n",
+  log_info("Channel-Bot succesfully connected to Discord as %s#%s!",
       bot->username, bot->discriminator);
 }
 
@@ -119,7 +119,7 @@ void on_channel_start_thread(
 
   char text[DISCORD_MAX_MESSAGE_LEN];
   ORCAcode code;
-  if (msg->message_reference->message_id) {
+  if (msg->message_reference) {
     struct discord_start_thread_with_message_params params = { .name = "new_thread" };
     code = discord_start_thread_with_message(
              client, 

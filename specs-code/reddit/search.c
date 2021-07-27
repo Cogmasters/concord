@@ -2,17 +2,19 @@
 /**
  * @file specs-code/reddit/search.c
  * @author cee-studio
- * @date 01 Jul 2021
+ * @date Jul 27 2021
  * @brief Specs generated file
  * @see 
  */
 
 #include "specs.h"
 
-void reddit_search_params_from_json(char *json, size_t len, struct reddit_search_params *p)
+void reddit_search_params_from_json(char *json, size_t len, struct reddit_search_params **pp)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
+  if (!*pp) *pp = calloc(1, sizeof **pp);
+  struct reddit_search_params *p = *pp;
   r=json_extract(json, len, 
   /* specs/reddit/search.json:13:20
      '{ "name": "after", "type":{ "base":"char", "dec":"*" }, "comment":"fullname of a thing"}' */
@@ -262,8 +264,8 @@ void reddit_search_params_free_v(void *p) {
  reddit_search_params_free((struct reddit_search_params *)p);
 };
 
-void reddit_search_params_from_json_v(char *json, size_t len, void *p) {
- reddit_search_params_from_json(json, len, (struct reddit_search_params*)p);
+void reddit_search_params_from_json_v(char *json, size_t len, void *pp) {
+ reddit_search_params_from_json(json, len, (struct reddit_search_params**)pp);
 }
 
 size_t reddit_search_params_to_json_v(char *json, size_t len, void *p) {
@@ -396,10 +398,10 @@ void reddit_search_params_list_from_json(char *str, size_t len, struct reddit_se
   struct ntl_deserializer d;
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct reddit_search_params);
-  d.init_elem = reddit_search_params_init_v;
+  d.init_elem = NULL;
   d.elem_from_buf = reddit_search_params_from_json_v;
   d.ntl_recipient_p= (void***)p;
-  extract_ntl_from_json(str, len, &d);
+  extract_ntl_from_json2(str, len, &d);
 }
 
 size_t reddit_search_params_list_to_json(char *str, size_t len, struct reddit_search_params **p)

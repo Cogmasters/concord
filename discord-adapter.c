@@ -127,7 +127,7 @@ discord_adapter_run(
                     message, &retry_after);
 
         if (retry_after >= 0) { // retry after attribute received
-          log_warn("%s (wait: %.2lf ms)", message, 1000*retry_after);
+          log_warn("GLOBAL RATELIMITING (wait: %.2lf ms) : %s", 1000*retry_after, message);
           ua_block_ms(adapter->ua, (uint64_t)(1000*retry_after));
         }
         else { // no retry after included, we should abort

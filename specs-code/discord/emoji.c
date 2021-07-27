@@ -2,17 +2,19 @@
 /**
  * @file specs-code/discord/emoji.c
  * @author cee-studio
- * @date 01 Jul 2021
+ * @date Jul 27 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/emoji
  */
 
 #include "specs.h"
 
-void discord_emoji_from_json(char *json, size_t len, struct discord_emoji *p)
+void discord_emoji_from_json(char *json, size_t len, struct discord_emoji **pp)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
+  if (!*pp) *pp = calloc(1, sizeof **pp);
+  struct discord_emoji *p = *pp;
   r=json_extract(json, len, 
   /* specs/discord/emoji.json:12:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}}' */
@@ -52,7 +54,7 @@ void discord_emoji_from_json(char *json, size_t len, struct discord_emoji *p)
           "todo":true }' */
   /* specs/discord/emoji.json:16:20
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }, "option":true }' */
-                discord_user_from_json, p->user,
+                discord_user_from_json, &p->user,
   /* specs/discord/emoji.json:17:20
      '{ "name": "require_colons", "type":{ "base":"bool" }, "option":true}' */
                 &p->require_colons,
@@ -182,8 +184,8 @@ void discord_emoji_free_v(void *p) {
  discord_emoji_free((struct discord_emoji *)p);
 };
 
-void discord_emoji_from_json_v(char *json, size_t len, void *p) {
- discord_emoji_from_json(json, len, (struct discord_emoji*)p);
+void discord_emoji_from_json_v(char *json, size_t len, void *pp) {
+ discord_emoji_from_json(json, len, (struct discord_emoji**)pp);
 }
 
 size_t discord_emoji_to_json_v(char *json, size_t len, void *p) {
@@ -282,10 +284,10 @@ void discord_emoji_list_from_json(char *str, size_t len, struct discord_emoji **
   struct ntl_deserializer d;
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_emoji);
-  d.init_elem = discord_emoji_init_v;
+  d.init_elem = NULL;
   d.elem_from_buf = discord_emoji_from_json_v;
   d.ntl_recipient_p= (void***)p;
-  extract_ntl_from_json(str, len, &d);
+  extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_emoji_list_to_json(char *str, size_t len, struct discord_emoji **p)

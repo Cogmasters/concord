@@ -328,13 +328,14 @@ struct discord_get_channel_messages_params {
 struct discord_create_message_params {
   // common to @b application/json and @b multipart/form-data parameters
   char *content; ///< the content of the message being sent
-  char *nonce; ///< the nonce of the message being sent
   bool tts; ///< enable/disable text-to-speech
   
   // parameters for @b application/json
-  struct discord_embed *embed;
+  NTL_T(struct discord_embed) embeds;
+  struct discord_embed *embed; ///< deprecated
   struct discord_channel_allowed_mentions *allowed_mentions;
   struct discord_message_reference *message_reference;
+  NTL_T(struct discord_component) components;
   
   // parameters for @b multipart/form-data
   // @note if just name field is set, will search for file in working directory

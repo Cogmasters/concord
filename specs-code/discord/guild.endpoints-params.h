@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/guild.endpoints-params.h
  * @author cee-studio
- * @date 01 Jul 2021
+ * @date Jul 27 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/guild
  */
@@ -81,8 +81,8 @@ extern void discord_create_guild_params_init(struct discord_create_guild_params 
 extern struct discord_create_guild_params * discord_create_guild_params_alloc();
 extern void discord_create_guild_params_free_v(void *p);
 extern void discord_create_guild_params_free(struct discord_create_guild_params *p);
-extern void discord_create_guild_params_from_json_v(char *json, size_t len, void *p);
-extern void discord_create_guild_params_from_json(char *json, size_t len, struct discord_create_guild_params *p);
+extern void discord_create_guild_params_from_json_v(char *json, size_t len, void *pp);
+extern void discord_create_guild_params_from_json(char *json, size_t len, struct discord_create_guild_params **pp);
 extern size_t discord_create_guild_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_create_guild_params_to_json(char *json, size_t len, struct discord_create_guild_params *p);
 extern size_t discord_create_guild_params_to_query_v(char *json, size_t len, void *p);
@@ -199,8 +199,8 @@ extern void discord_modify_guild_params_init(struct discord_modify_guild_params 
 extern struct discord_modify_guild_params * discord_modify_guild_params_alloc();
 extern void discord_modify_guild_params_free_v(void *p);
 extern void discord_modify_guild_params_free(struct discord_modify_guild_params *p);
-extern void discord_modify_guild_params_from_json_v(char *json, size_t len, void *p);
-extern void discord_modify_guild_params_from_json(char *json, size_t len, struct discord_modify_guild_params *p);
+extern void discord_modify_guild_params_from_json_v(char *json, size_t len, void *pp);
+extern void discord_modify_guild_params_from_json(char *json, size_t len, struct discord_modify_guild_params **pp);
 extern size_t discord_modify_guild_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_modify_guild_params_to_json(char *json, size_t len, struct discord_modify_guild_params *p);
 extern size_t discord_modify_guild_params_to_query_v(char *json, size_t len, void *p);
@@ -281,8 +281,8 @@ extern void discord_create_guild_channel_params_init(struct discord_create_guild
 extern struct discord_create_guild_channel_params * discord_create_guild_channel_params_alloc();
 extern void discord_create_guild_channel_params_free_v(void *p);
 extern void discord_create_guild_channel_params_free(struct discord_create_guild_channel_params *p);
-extern void discord_create_guild_channel_params_from_json_v(char *json, size_t len, void *p);
-extern void discord_create_guild_channel_params_from_json(char *json, size_t len, struct discord_create_guild_channel_params *p);
+extern void discord_create_guild_channel_params_from_json_v(char *json, size_t len, void *pp);
+extern void discord_create_guild_channel_params_from_json(char *json, size_t len, struct discord_create_guild_channel_params **pp);
 extern size_t discord_create_guild_channel_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_create_guild_channel_params_to_json(char *json, size_t len, struct discord_create_guild_channel_params *p);
 extern size_t discord_create_guild_channel_params_to_query_v(char *json, size_t len, void *p);
@@ -339,8 +339,8 @@ extern void discord_modify_guild_channel_positions_params_init(struct discord_mo
 extern struct discord_modify_guild_channel_positions_params * discord_modify_guild_channel_positions_params_alloc();
 extern void discord_modify_guild_channel_positions_params_free_v(void *p);
 extern void discord_modify_guild_channel_positions_params_free(struct discord_modify_guild_channel_positions_params *p);
-extern void discord_modify_guild_channel_positions_params_from_json_v(char *json, size_t len, void *p);
-extern void discord_modify_guild_channel_positions_params_from_json(char *json, size_t len, struct discord_modify_guild_channel_positions_params *p);
+extern void discord_modify_guild_channel_positions_params_from_json_v(char *json, size_t len, void *pp);
+extern void discord_modify_guild_channel_positions_params_from_json(char *json, size_t len, struct discord_modify_guild_channel_positions_params **pp);
 extern size_t discord_modify_guild_channel_positions_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_modify_guild_channel_positions_params_to_json(char *json, size_t len, struct discord_modify_guild_channel_positions_params *p);
 extern size_t discord_modify_guild_channel_positions_params_to_query_v(char *json, size_t len, void *p);
@@ -389,8 +389,8 @@ extern void discord_search_guild_members_params_init(struct discord_search_guild
 extern struct discord_search_guild_members_params * discord_search_guild_members_params_alloc();
 extern void discord_search_guild_members_params_free_v(void *p);
 extern void discord_search_guild_members_params_free(struct discord_search_guild_members_params *p);
-extern void discord_search_guild_members_params_from_json_v(char *json, size_t len, void *p);
-extern void discord_search_guild_members_params_from_json(char *json, size_t len, struct discord_search_guild_members_params *p);
+extern void discord_search_guild_members_params_from_json_v(char *json, size_t len, void *pp);
+extern void discord_search_guild_members_params_from_json(char *json, size_t len, struct discord_search_guild_members_params **pp);
 extern size_t discord_search_guild_members_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_search_guild_members_params_to_json(char *json, size_t len, struct discord_search_guild_members_params *p);
 extern size_t discord_search_guild_members_params_to_query_v(char *json, size_t len, void *p);
@@ -451,8 +451,8 @@ extern void discord_add_guild_member_params_init(struct discord_add_guild_member
 extern struct discord_add_guild_member_params * discord_add_guild_member_params_alloc();
 extern void discord_add_guild_member_params_free_v(void *p);
 extern void discord_add_guild_member_params_free(struct discord_add_guild_member_params *p);
-extern void discord_add_guild_member_params_from_json_v(char *json, size_t len, void *p);
-extern void discord_add_guild_member_params_from_json(char *json, size_t len, struct discord_add_guild_member_params *p);
+extern void discord_add_guild_member_params_from_json_v(char *json, size_t len, void *pp);
+extern void discord_add_guild_member_params_from_json(char *json, size_t len, struct discord_add_guild_member_params **pp);
 extern size_t discord_add_guild_member_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_add_guild_member_params_to_json(char *json, size_t len, struct discord_add_guild_member_params *p);
 extern size_t discord_add_guild_member_params_to_query_v(char *json, size_t len, void *p);
@@ -513,8 +513,8 @@ extern void discord_modify_guild_member_params_init(struct discord_modify_guild_
 extern struct discord_modify_guild_member_params * discord_modify_guild_member_params_alloc();
 extern void discord_modify_guild_member_params_free_v(void *p);
 extern void discord_modify_guild_member_params_free(struct discord_modify_guild_member_params *p);
-extern void discord_modify_guild_member_params_from_json_v(char *json, size_t len, void *p);
-extern void discord_modify_guild_member_params_from_json(char *json, size_t len, struct discord_modify_guild_member_params *p);
+extern void discord_modify_guild_member_params_from_json_v(char *json, size_t len, void *pp);
+extern void discord_modify_guild_member_params_from_json(char *json, size_t len, struct discord_modify_guild_member_params **pp);
 extern size_t discord_modify_guild_member_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_modify_guild_member_params_to_json(char *json, size_t len, struct discord_modify_guild_member_params *p);
 extern size_t discord_modify_guild_member_params_to_query_v(char *json, size_t len, void *p);
@@ -575,8 +575,8 @@ extern void discord_create_guild_role_params_init(struct discord_create_guild_ro
 extern struct discord_create_guild_role_params * discord_create_guild_role_params_alloc();
 extern void discord_create_guild_role_params_free_v(void *p);
 extern void discord_create_guild_role_params_free(struct discord_create_guild_role_params *p);
-extern void discord_create_guild_role_params_from_json_v(char *json, size_t len, void *p);
-extern void discord_create_guild_role_params_from_json(char *json, size_t len, struct discord_create_guild_role_params *p);
+extern void discord_create_guild_role_params_from_json_v(char *json, size_t len, void *pp);
+extern void discord_create_guild_role_params_from_json(char *json, size_t len, struct discord_create_guild_role_params **pp);
 extern size_t discord_create_guild_role_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_create_guild_role_params_to_json(char *json, size_t len, struct discord_create_guild_role_params *p);
 extern size_t discord_create_guild_role_params_to_query_v(char *json, size_t len, void *p);
@@ -625,8 +625,8 @@ extern void discord_modify_guild_role_positions_params_init(struct discord_modif
 extern struct discord_modify_guild_role_positions_params * discord_modify_guild_role_positions_params_alloc();
 extern void discord_modify_guild_role_positions_params_free_v(void *p);
 extern void discord_modify_guild_role_positions_params_free(struct discord_modify_guild_role_positions_params *p);
-extern void discord_modify_guild_role_positions_params_from_json_v(char *json, size_t len, void *p);
-extern void discord_modify_guild_role_positions_params_from_json(char *json, size_t len, struct discord_modify_guild_role_positions_params *p);
+extern void discord_modify_guild_role_positions_params_from_json_v(char *json, size_t len, void *pp);
+extern void discord_modify_guild_role_positions_params_from_json(char *json, size_t len, struct discord_modify_guild_role_positions_params **pp);
 extern size_t discord_modify_guild_role_positions_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_modify_guild_role_positions_params_to_json(char *json, size_t len, struct discord_modify_guild_role_positions_params *p);
 extern size_t discord_modify_guild_role_positions_params_to_query_v(char *json, size_t len, void *p);
@@ -687,8 +687,8 @@ extern void discord_modify_guild_role_params_init(struct discord_modify_guild_ro
 extern struct discord_modify_guild_role_params * discord_modify_guild_role_params_alloc();
 extern void discord_modify_guild_role_params_free_v(void *p);
 extern void discord_modify_guild_role_params_free(struct discord_modify_guild_role_params *p);
-extern void discord_modify_guild_role_params_from_json_v(char *json, size_t len, void *p);
-extern void discord_modify_guild_role_params_from_json(char *json, size_t len, struct discord_modify_guild_role_params *p);
+extern void discord_modify_guild_role_params_from_json_v(char *json, size_t len, void *pp);
+extern void discord_modify_guild_role_params_from_json(char *json, size_t len, struct discord_modify_guild_role_params **pp);
 extern size_t discord_modify_guild_role_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_modify_guild_role_params_to_json(char *json, size_t len, struct discord_modify_guild_role_params *p);
 extern size_t discord_modify_guild_role_params_to_query_v(char *json, size_t len, void *p);
@@ -737,8 +737,8 @@ extern void discord_get_guild_prune_count_params_init(struct discord_get_guild_p
 extern struct discord_get_guild_prune_count_params * discord_get_guild_prune_count_params_alloc();
 extern void discord_get_guild_prune_count_params_free_v(void *p);
 extern void discord_get_guild_prune_count_params_free(struct discord_get_guild_prune_count_params *p);
-extern void discord_get_guild_prune_count_params_from_json_v(char *json, size_t len, void *p);
-extern void discord_get_guild_prune_count_params_from_json(char *json, size_t len, struct discord_get_guild_prune_count_params *p);
+extern void discord_get_guild_prune_count_params_from_json_v(char *json, size_t len, void *pp);
+extern void discord_get_guild_prune_count_params_from_json(char *json, size_t len, struct discord_get_guild_prune_count_params **pp);
 extern size_t discord_get_guild_prune_count_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_get_guild_prune_count_params_to_json(char *json, size_t len, struct discord_get_guild_prune_count_params *p);
 extern size_t discord_get_guild_prune_count_params_to_query_v(char *json, size_t len, void *p);
@@ -795,8 +795,8 @@ extern void discord_begin_guild_prune_params_init(struct discord_begin_guild_pru
 extern struct discord_begin_guild_prune_params * discord_begin_guild_prune_params_alloc();
 extern void discord_begin_guild_prune_params_free_v(void *p);
 extern void discord_begin_guild_prune_params_free(struct discord_begin_guild_prune_params *p);
-extern void discord_begin_guild_prune_params_from_json_v(char *json, size_t len, void *p);
-extern void discord_begin_guild_prune_params_from_json(char *json, size_t len, struct discord_begin_guild_prune_params *p);
+extern void discord_begin_guild_prune_params_from_json_v(char *json, size_t len, void *pp);
+extern void discord_begin_guild_prune_params_from_json(char *json, size_t len, struct discord_begin_guild_prune_params **pp);
 extern size_t discord_begin_guild_prune_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_begin_guild_prune_params_to_json(char *json, size_t len, struct discord_begin_guild_prune_params *p);
 extern size_t discord_begin_guild_prune_params_to_query_v(char *json, size_t len, void *p);

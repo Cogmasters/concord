@@ -10,10 +10,10 @@
 
 static pthread_mutex_t client_lock = PTHREAD_MUTEX_INITIALIZER;
 
-static char*
+static const char*
 opcode_print(enum discord_voice_opcodes opcode)
 {
-  char *str = discord_voice_opcodes_to_string(opcode);
+  const char *str = discord_voice_opcodes_to_string(opcode);
   if (NULL == str) {
     log_warn("Invalid Voice opcode (code: %d)", opcode);
     str = "Invalid Voice opcode";
@@ -21,10 +21,10 @@ opcode_print(enum discord_voice_opcodes opcode)
   return str;
 }
 
-static char*
+static const char*
 close_opcode_print(enum discord_voice_close_opcodes opcode)
 {
-  char *str = discord_voice_close_opcodes_to_string(opcode);
+  const char *str = discord_voice_close_opcodes_to_string(opcode);
   if (str) return str;
   str = ws_close_opcode_print((enum ws_close_reason)opcode);
   if (str) return str;
@@ -662,7 +662,7 @@ _discord_on_voice_server_update(struct discord *client, u64_snowflake_t guild_id
     log_info("Voice ws uses token %s", vc->new_token);
     // exits the current event_loop to redirect
     vc->is_redirect = true;
-    ws_exit_event_loop(vc->ws);
+    ws_close(vc->ws, WS_CLOSE_REASON_NORMAL, "", 0);
   }
   else {
     log_info("Voice ws uses " ANSICOLOR("%s", ANSI_FG_RED), vc->new_url);
@@ -717,7 +717,7 @@ discord_voice_shutdown(struct discord_voice *vc)
   vc->reconnect.enable = false;
   vc->is_resumable = false;
   vc->shutdown = true;
-  ws_exit_event_loop(vc->ws);
+  ws_close(vc->ws, WS_CLOSE_REASON_NORMAL, "", 0);
 
   send_voice_state_update(
     &vc->p_client->gw, 
@@ -732,7 +732,7 @@ discord_voice_reconnect(struct discord_voice *vc, bool resume)
 {
   vc->reconnect.enable = true;
   vc->is_resumable = resume;
-  ws_exit_event_loop(vc->ws);
+  ws_close(vc->ws, WS_CLOSE_REASON_NORMAL, "", 0);
 }
 
 bool

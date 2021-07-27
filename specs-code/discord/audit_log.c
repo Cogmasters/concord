@@ -2,17 +2,19 @@
 /**
  * @file specs-code/discord/audit_log.c
  * @author cee-studio
- * @date 01 Jul 2021
+ * @date Jul 27 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/audit-log
  */
 
 #include "specs.h"
 
-void discord_audit_log_from_json(char *json, size_t len, struct discord_audit_log *p)
+void discord_audit_log_from_json(char *json, size_t len, struct discord_audit_log **pp)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
+  if (!*pp) *pp = calloc(1, sizeof **pp);
+  struct discord_audit_log *p = *pp;
   r=json_extract(json, len, 
   /* specs/discord/audit_log.json:12:18
      '{"name":"webhooks", "type": { "base":"struct discord_webhook", "dec":"ntl" } }' */
@@ -118,8 +120,8 @@ void discord_audit_log_free_v(void *p) {
  discord_audit_log_free((struct discord_audit_log *)p);
 };
 
-void discord_audit_log_from_json_v(char *json, size_t len, void *p) {
- discord_audit_log_from_json(json, len, (struct discord_audit_log*)p);
+void discord_audit_log_from_json_v(char *json, size_t len, void *pp) {
+ discord_audit_log_from_json(json, len, (struct discord_audit_log**)pp);
 }
 
 size_t discord_audit_log_to_json_v(char *json, size_t len, void *p) {
@@ -193,10 +195,10 @@ void discord_audit_log_list_from_json(char *str, size_t len, struct discord_audi
   struct ntl_deserializer d;
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_audit_log);
-  d.init_elem = discord_audit_log_init_v;
+  d.init_elem = NULL;
   d.elem_from_buf = discord_audit_log_from_json_v;
   d.ntl_recipient_p= (void***)p;
-  extract_ntl_from_json(str, len, &d);
+  extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_audit_log_list_to_json(char *str, size_t len, struct discord_audit_log **p)
@@ -320,10 +322,12 @@ bool discord_audit_log_events_has(enum discord_audit_log_events v, char *s) {
   return false;
 }
 
-void discord_audit_log_entry_from_json(char *json, size_t len, struct discord_audit_log_entry *p)
+void discord_audit_log_entry_from_json(char *json, size_t len, struct discord_audit_log_entry **pp)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
+  if (!*pp) *pp = calloc(1, sizeof **pp);
+  struct discord_audit_log_entry *p = *pp;
   r=json_extract(json, len, 
   /* specs/discord/audit_log.json:68:18
      '{"name":"target_id", "type": {"base":"char", "dec":"*"}}' */
@@ -477,8 +481,8 @@ void discord_audit_log_entry_free_v(void *p) {
  discord_audit_log_entry_free((struct discord_audit_log_entry *)p);
 };
 
-void discord_audit_log_entry_from_json_v(char *json, size_t len, void *p) {
- discord_audit_log_entry_from_json(json, len, (struct discord_audit_log_entry*)p);
+void discord_audit_log_entry_from_json_v(char *json, size_t len, void *pp) {
+ discord_audit_log_entry_from_json(json, len, (struct discord_audit_log_entry**)pp);
 }
 
 size_t discord_audit_log_entry_to_json_v(char *json, size_t len, void *p) {
@@ -569,10 +573,10 @@ void discord_audit_log_entry_list_from_json(char *str, size_t len, struct discor
   struct ntl_deserializer d;
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_audit_log_entry);
-  d.init_elem = discord_audit_log_entry_init_v;
+  d.init_elem = NULL;
   d.elem_from_buf = discord_audit_log_entry_from_json_v;
   d.ntl_recipient_p= (void***)p;
-  extract_ntl_from_json(str, len, &d);
+  extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_audit_log_entry_list_to_json(char *str, size_t len, struct discord_audit_log_entry **p)
@@ -581,10 +585,12 @@ size_t discord_audit_log_entry_list_to_json(char *str, size_t len, struct discor
 }
 
 
-void discord_audit_log_entry_optional_info_from_json(char *json, size_t len, struct discord_audit_log_entry_optional_info *p)
+void discord_audit_log_entry_optional_info_from_json(char *json, size_t len, struct discord_audit_log_entry_optional_info **pp)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
+  if (!*pp) *pp = calloc(1, sizeof **pp);
+  struct discord_audit_log_entry_optional_info *p = *pp;
   r=json_extract(json, len, 
   /* specs/discord/audit_log.json:84:20
      '{ "name": "delete_member_days", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"}' */
@@ -754,8 +760,8 @@ void discord_audit_log_entry_optional_info_free_v(void *p) {
  discord_audit_log_entry_optional_info_free((struct discord_audit_log_entry_optional_info *)p);
 };
 
-void discord_audit_log_entry_optional_info_from_json_v(char *json, size_t len, void *p) {
- discord_audit_log_entry_optional_info_from_json(json, len, (struct discord_audit_log_entry_optional_info*)p);
+void discord_audit_log_entry_optional_info_from_json_v(char *json, size_t len, void *pp) {
+ discord_audit_log_entry_optional_info_from_json(json, len, (struct discord_audit_log_entry_optional_info**)pp);
 }
 
 size_t discord_audit_log_entry_optional_info_to_json_v(char *json, size_t len, void *p) {
@@ -854,10 +860,10 @@ void discord_audit_log_entry_optional_info_list_from_json(char *str, size_t len,
   struct ntl_deserializer d;
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_audit_log_entry_optional_info);
-  d.init_elem = discord_audit_log_entry_optional_info_init_v;
+  d.init_elem = NULL;
   d.elem_from_buf = discord_audit_log_entry_optional_info_from_json_v;
   d.ntl_recipient_p= (void***)p;
-  extract_ntl_from_json(str, len, &d);
+  extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_audit_log_entry_optional_info_list_to_json(char *str, size_t len, struct discord_audit_log_entry_optional_info **p)
@@ -866,10 +872,12 @@ size_t discord_audit_log_entry_optional_info_list_to_json(char *str, size_t len,
 }
 
 
-void discord_audit_log_change_from_json(char *json, size_t len, struct discord_audit_log_change *p)
+void discord_audit_log_change_from_json(char *json, size_t len, struct discord_audit_log_change **pp)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
+  if (!*pp) *pp = calloc(1, sizeof **pp);
+  struct discord_audit_log_change *p = *pp;
   r=json_extract(json, len, 
   /* specs/discord/audit_log.json:101:18
      '{"name":"new_value", "type": {"base":"char", "dec":"*"}}' */
@@ -959,8 +967,8 @@ void discord_audit_log_change_free_v(void *p) {
  discord_audit_log_change_free((struct discord_audit_log_change *)p);
 };
 
-void discord_audit_log_change_from_json_v(char *json, size_t len, void *p) {
- discord_audit_log_change_from_json(json, len, (struct discord_audit_log_change*)p);
+void discord_audit_log_change_from_json_v(char *json, size_t len, void *pp) {
+ discord_audit_log_change_from_json(json, len, (struct discord_audit_log_change**)pp);
 }
 
 size_t discord_audit_log_change_to_json_v(char *json, size_t len, void *p) {
@@ -1026,10 +1034,10 @@ void discord_audit_log_change_list_from_json(char *str, size_t len, struct disco
   struct ntl_deserializer d;
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_audit_log_change);
-  d.init_elem = discord_audit_log_change_init_v;
+  d.init_elem = NULL;
   d.elem_from_buf = discord_audit_log_change_from_json_v;
   d.ntl_recipient_p= (void***)p;
-  extract_ntl_from_json(str, len, &d);
+  extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_audit_log_change_list_to_json(char *str, size_t len, struct discord_audit_log_change **p)
@@ -1038,10 +1046,12 @@ size_t discord_audit_log_change_list_to_json(char *str, size_t len, struct disco
 }
 
 
-void discord_audit_log_change_key_from_json(char *json, size_t len, struct discord_audit_log_change_key *p)
+void discord_audit_log_change_key_from_json(char *json, size_t len, struct discord_audit_log_change_key **pp)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
+  if (!*pp) *pp = calloc(1, sizeof **pp);
+  struct discord_audit_log_change_key *p = *pp;
   r=json_extract(json, len, 
   /* specs/discord/audit_log.json:113:18
      '{"name":"name", "type": {"base":"char", "dec":"[DISCORD_MAX_NAME_LEN]"}}' */
@@ -1957,8 +1967,8 @@ void discord_audit_log_change_key_free_v(void *p) {
  discord_audit_log_change_key_free((struct discord_audit_log_change_key *)p);
 };
 
-void discord_audit_log_change_key_from_json_v(char *json, size_t len, void *p) {
- discord_audit_log_change_key_from_json(json, len, (struct discord_audit_log_change_key*)p);
+void discord_audit_log_change_key_from_json_v(char *json, size_t len, void *pp) {
+ discord_audit_log_change_key_from_json(json, len, (struct discord_audit_log_change_key**)pp);
 }
 
 size_t discord_audit_log_change_key_to_json_v(char *json, size_t len, void *p) {
@@ -2356,10 +2366,10 @@ void discord_audit_log_change_key_list_from_json(char *str, size_t len, struct d
   struct ntl_deserializer d;
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_audit_log_change_key);
-  d.init_elem = discord_audit_log_change_key_init_v;
+  d.init_elem = NULL;
   d.elem_from_buf = discord_audit_log_change_key_from_json_v;
   d.ntl_recipient_p= (void***)p;
-  extract_ntl_from_json(str, len, &d);
+  extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_audit_log_change_key_list_to_json(char *str, size_t len, struct discord_audit_log_change_key **p)

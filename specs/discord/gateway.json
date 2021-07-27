@@ -147,9 +147,9 @@
       "struct":"connection",
       "fields":
       [
-        { "name":"$os", "type":{"base":"char", "dec":"*"}},
-        { "name":"$browser", "type":{"base":"char", "dec":"*"}},
-        { "name":"$device", "type":{"base":"char", "dec":"*"}}
+        { "name":"os", "json_key":"$os", "type":{"base":"char", "dec":"*"}},
+        { "name":"browser", "json_key":"$browser", "type":{"base":"char", "dec":"*"}},
+        { "name":"device", "json_key":"$device", "type":{"base":"char", "dec":"*"}}
       ]
     },
     {

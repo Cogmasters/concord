@@ -68,16 +68,14 @@ reddit_access_token(
     return ORCA_BAD_PARAMETER;
   }
 
-  struct sized_buffer resp_body={0};
-  struct sized_buffer req_body = { query, ret };
-
   ua_set_url(client->adapter.ua, BASE_API_URL);
 
+  struct sized_buffer resp_body={0};
   ORCAcode code;
   code = reddit_adapter_run(
            &client->adapter,
            &resp_body,
-           &req_body,
+           &(struct sized_buffer){ query, ret },
            HTTP_POST, "/api/v1/access_token");
 
   char access_token[64], token_type[64];

@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date 01 Jul 2021
+ * @date Jul 27 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/audit-log
  */
@@ -17,7 +17,7 @@ struct discord_get_guild_audit_log_params;
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date 01 Jul 2021
+ * @date Jul 27 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/audit-log
  */
@@ -68,7 +68,7 @@ struct discord_audit_log_change_key;
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date 01 Jul 2021
+ * @date Jul 27 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/channel
  */
@@ -149,7 +149,7 @@ struct discord_thread_response_body;
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date 01 Jul 2021
+ * @date Jul 27 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/channel
  */
@@ -209,7 +209,7 @@ struct discord_message_activity;
  * @brief Message Structure
  *
  * @see https://discord.com/developers/docs/resources/channel#message-object
- * @note defined at specs/discord/channel.json:181:22
+ * @note defined at specs/discord/channel.json:180:22
  */
 struct discord_message;
 
@@ -217,7 +217,7 @@ struct discord_message;
  * @brief Followed Channel Structure
  *
  * @see https://discord.com/developers/docs/resources/channel#followed-channel-object-followed-channel-structure
- * @note defined at specs/discord/channel.json:217:22
+ * @note defined at specs/discord/channel.json:218:22
  */
 struct discord_channel_followed_channel;
 
@@ -225,7 +225,7 @@ struct discord_channel_followed_channel;
  * @brief Reaction Structure
  *
  * @see https://discord.com/developers/docs/resources/channel#reaction-object-reaction-structure
- * @note defined at specs/discord/channel.json:228:22
+ * @note defined at specs/discord/channel.json:229:22
  */
 struct discord_channel_reaction;
 
@@ -343,7 +343,7 @@ struct discord_embed_field;
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date 01 Jul 2021
+ * @date Jul 27 2021
  * @brief Specs generated file
  * @see 
  */
@@ -368,7 +368,7 @@ struct discord_modify_guild_emoji_params;
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date 01 Jul 2021
+ * @date Jul 27 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/emoji
  */
@@ -385,7 +385,7 @@ struct discord_emoji;
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date 01 Jul 2021
+ * @date Jul 27 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/topics/gateway
  */
@@ -436,7 +436,7 @@ struct discord_gateway_activity;
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date 01 Jul 2021
+ * @date Jul 27 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/guild-template
  */
@@ -469,7 +469,7 @@ struct discord_modify_guild_template_params;
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date 01 Jul 2021
+ * @date Jul 27 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/guild-template
  */
@@ -486,7 +486,7 @@ struct discord_guild_template;
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date 01 Jul 2021
+ * @date Jul 27 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/guild
  */
@@ -591,7 +591,7 @@ struct discord_begin_guild_prune_params;
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date 01 Jul 2021
+ * @date Jul 27 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/guild
  */
@@ -704,7 +704,7 @@ struct discord_guild_welcome_screen_channel;
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date 01 Jul 2021
+ * @date Jul 27 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/invite
  */
@@ -721,7 +721,7 @@ struct discord_get_invite_params;
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date 01 Jul 2021
+ * @date Jul 27 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/invite
  */
@@ -744,11 +744,56 @@ struct discord_invite;
  * @note defined at specs/discord/invite.json:36:22
  */
 struct discord_invite_metadata;
+/* This file is generated from specs/discord/message_components.json, Please don't edit it. */
+/**
+ * @file specs-code/discord/all_opaque_struct.h
+ * @author cee-studio
+ * @date Jul 27 2021
+ * @brief Specs generated file
+ * @see https://discord.com/developers/docs/interactions/message-components#message-components
+ */
+
+
+/**
+ * @brief Component Structure
+ *
+ * @see https://discord.com/developers/docs/interactions/message-components#component-object-component-structure
+ * @note defined at specs/discord/message_components.json:9:22
+ */
+struct discord_component;
+
+
+
+/**
+ * @brief Button Structure
+ *
+ * @see https://discord.com/developers/docs/interactions/message-components#button-object-button-structure
+ * @note defined at specs/discord/message_components.json:41:22
+ */
+struct discord_button;
+
+
+
+/**
+ * @brief Select Menu Structure
+ *
+ * @see https://discord.com/developers/docs/interactions/message-components#select-menu-object-select-menu-structure
+ * @note defined at specs/discord/message_components.json:70:22
+ */
+struct discord_select_menu;
+
+/**
+ * @brief Select Option Structure
+ *
+ * @see https://discord.com/developers/docs/interactions/message-components#select-menu-object-select-option-structure
+ * @note defined at specs/discord/message_components.json:85:22
+ */
+struct discord_select_option;
 /* This file is generated from specs/discord/permissions.json, Please don't edit it. */
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date 01 Jul 2021
+ * @date Jul 27 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/topics/permissions
  */
@@ -771,11 +816,126 @@ struct discord_permissions_role;
  * @note defined at specs/discord/permissions.json:67:22
  */
 struct discord_permissions_role_tags;
+/* This file is generated from specs/discord/slash_commands.json, Please don't edit it. */
+/**
+ * @file specs-code/discord/all_opaque_struct.h
+ * @author cee-studio
+ * @date Jul 27 2021
+ * @brief Specs generated file
+ * @see https://discord.com/developers/docs/interactions/slash-commands#data-models-and-types
+ */
+
+
+/**
+ * @brief Application Command Structure
+ *
+ * @see https://discord.com/developers/docs/interactions/slash-commands#application-command-object-application-command-structure
+ * @note defined at specs/discord/slash_commands.json:9:22
+ */
+struct discord_application_command;
+
+/**
+ * @brief Application Command Option Structure
+ *
+ * @see https://discord.com/developers/docs/interactions/slash-commands#application-command-object-application-command-option-structure
+ * @note defined at specs/discord/slash_commands.json:25:22
+ */
+struct discord_application_command_option;
+
+
+
+/**
+ * @brief Application Command Option Choice Structure
+ *
+ * @see https://discord.com/developers/docs/interactions/slash-commands#application-command-object-application-command-option-choice-structure
+ * @note defined at specs/discord/slash_commands.json:58:22
+ */
+struct discord_application_command_option_choice;
+
+/**
+ * @brief Guild Application Command Permissions Structure
+ *
+ * @see https://discord.com/developers/docs/interactions/slash-commands#application-command-permissions-object-guild-application-command-permissions-structure
+ * @note defined at specs/discord/slash_commands.json:69:22
+ */
+struct discord_guild_application_command_permissions;
+
+/**
+ * @brief Application Command Permissions Structure
+ *
+ * @see https://discord.com/developers/docs/interactions/slash-commands#application-command-permissions-object-guild-application-command-permissions-structure
+ * @note defined at specs/discord/slash_commands.json:82:22
+ */
+struct discord_application_command_permissions;
+
+
+
+/**
+ * @brief Interaction Structure
+ *
+ * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-object-interaction-structure
+ * @note defined at specs/discord/slash_commands.json:104:22
+ */
+struct discord_interaction;
+
+
+
+/**
+ * @brief Application Command Interaction Data Structure
+ *
+ * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-object-application-command-interaction-data-structure
+ * @note defined at specs/discord/slash_commands.json:134:22
+ */
+struct discord_application_command_interaction_data;
+
+/**
+ * @brief Application Command Interaction Data Resolved Structure
+ *
+ * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-object-application-command-interaction-data-resolved-structure
+ * @note defined at specs/discord/slash_commands.json:149:22
+ */
+struct discord_application_command_interaction_data_resolved;
+
+/**
+ * @brief Application Command Interaction Data Option Structure
+ *
+ * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-object-application-command-interaction-data-option-structure
+ * @note defined at specs/discord/slash_commands.json:162:22
+ */
+struct discord_application_command_interaction_data_option;
+
+/**
+ * @brief Interaction Response Structure
+ *
+ * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-response-object-interaction-response-structure
+ * @note defined at specs/discord/slash_commands.json:175:22
+ */
+struct discord_interaction_response;
+
+
+
+/**
+ * @brief Interaction Application Command Callback Data Structure
+ *
+ * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-response-object-interaction-application-command-callback-data-structure
+ * @note defined at specs/discord/slash_commands.json:200:22
+ */
+struct discord_interaction_application_command_callback_data;
+
+
+
+/**
+ * @brief Message Interaction Structure
+ *
+ * @see https://discord.com/developers/docs/interactions/slash-commands#message-interaction-object-message-interaction-structure
+ * @note defined at specs/discord/slash_commands.json:225:22
+ */
+struct discord_message_interaction;
 /* This file is generated from specs/discord/user.endpoints-params.json, Please don't edit it. */
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date 01 Jul 2021
+ * @date Jul 27 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/user
  */
@@ -800,7 +960,7 @@ struct discord_create_group_dm_params;
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date 01 Jul 2021
+ * @date Jul 27 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/user
  */
@@ -830,7 +990,7 @@ struct discord_connection;
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date 01 Jul 2021
+ * @date Jul 27 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/topics/voice-connections
  */
@@ -845,7 +1005,7 @@ struct discord_connection;
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date 01 Jul 2021
+ * @date Jul 27 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/voice
  */
@@ -870,7 +1030,7 @@ struct discord_voice_region;
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date 01 Jul 2021
+ * @date Jul 27 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/webhook
  */
@@ -911,7 +1071,7 @@ struct discord_edit_webhook_message_params;
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date 01 Jul 2021
+ * @date Jul 27 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/webhook
  */

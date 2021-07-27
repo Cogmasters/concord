@@ -2,7 +2,7 @@
 /**
  * @file specs-code/reddit/links_n_comments.h
  * @author cee-studio
- * @date 01 Jul 2021
+ * @date Jul 27 2021
  * @brief Specs generated file
  * @see 
  */
@@ -61,8 +61,8 @@ extern void reddit_comment_params_init(struct reddit_comment_params *p);
 extern struct reddit_comment_params * reddit_comment_params_alloc();
 extern void reddit_comment_params_free_v(void *p);
 extern void reddit_comment_params_free(struct reddit_comment_params *p);
-extern void reddit_comment_params_from_json_v(char *json, size_t len, void *p);
-extern void reddit_comment_params_from_json(char *json, size_t len, struct reddit_comment_params *p);
+extern void reddit_comment_params_from_json_v(char *json, size_t len, void *pp);
+extern void reddit_comment_params_from_json(char *json, size_t len, struct reddit_comment_params **pp);
 extern size_t reddit_comment_params_to_json_v(char *json, size_t len, void *p);
 extern size_t reddit_comment_params_to_json(char *json, size_t len, struct reddit_comment_params *p);
 extern size_t reddit_comment_params_to_query_v(char *json, size_t len, void *p);

@@ -177,7 +177,6 @@
     {
       "title":"Message Structure",
       "comment":"https://discord.com/developers/docs/resources/channel#message-object",
-      "disable_methods": ["from_json"],
       "struct":"message",
       "fields": [
          {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"id"},
@@ -198,16 +197,18 @@
          {"type":{"base":"struct discord_channel_reaction","dec":"ntl"}, "name":"reactions", "option":true },
          {"type":{"base":"char", "dec":"*"}, "name":"nonce", "comment":"integer or string", "option":true },
          {"type":{"base":"bool"}, "name":"pinned"},
-         {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"webhook_id",
-          "option":true },
+         {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"webhook_id", "option":true },
          {"type":{"base":"int", "int_alias":"enum discord_message_types"}, "name":"type"},
          {"type":{"base":"struct discord_message_activity", "dec":"*"}, "name":"activity", "option":true, "inject_if_not":null },
          {"type":{"base":"struct discord_message_application", "dec":"ntl"}, "name":"application", "option":true, "inject_if_not":null },
          {"type":{"base":"struct discord_message_reference", "dec":"*"}, "name":"message_reference", "option":true, "inject_if_not":null },
          {"type":{"base":"int", "int_alias":"enum discord_message_flags"}, "name":"flags", "option":true, "inject_if_not":0 },
-         {"type":{"base":"struct discord_message_sticker", "dec":"ntl"}, "name":"stickers", "option":true, "inject_if_not":null, "comment":"array of sticker objects"},
-         {"type":{"base":"struct discord_message", "dec":"*"}, "name":"referenced_message", "lazy_init":true, "option":true, "inject_if_not":null,
-          "comment":"this will cause recursive allocation if allocating as the parent"}
+         {"type":{"base":"struct discord_message", "dec":"*"}, "name":"referenced_message", "lazy_init":true, "option":true, "inject_if_not":null, "comment":"this will cause recursive allocation if allocating as the parent"},
+         {"type":{"base":"struct discord_message_interaction", "dec":"*"}, "name":"interaction", "option":true, "inject_if_not":null, "comment":"the message associated with the message_reference"},
+         {"type":{"base":"struct discord_channel", "dec":"*"}, "name":"thread", "option":true, "inject_if_not":null, "comment":"the channel that was started from this message, includes thread member obejct"},
+         {"type":{"base":"struct discord_component", "dec":"ntl"}, "name":"components", "option":true, "inject_if_not":null, "comment":"sent if the message contains components like buttons, actions rows, or other interactive components"},
+         {"type":{"base":"struct discord_message_sticker", "dec":"ntl"}, "name":"sticker_items", "option":true, "inject_if_not":null, "comment":"sent if the message contains stickets"},
+         {"type":{"base":"struct discord_message_sticker", "dec":"ntl"}, "name":"stickers", "option":true, "inject_if_not":null, "comment":"[DEPRECATED] array of sticker objects"}
       ]
     },
     {
@@ -236,7 +237,6 @@
     {
       "title":"Overwrite Structure",
       "namespace":["channel"],
-      "disable_methods":["from_json", "to_json"],
       "struct":"overwrite",
       "fields":
       [

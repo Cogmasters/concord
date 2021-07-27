@@ -49,7 +49,7 @@ struct user_agent {
   struct logconf *p_config;
   /**
    * user arbitrary data accessed by setopt_cb
-   * @see ua_easy_setopt()
+   * @see ua_curl_easy_setopt()
    */
   void *data;
   void (*setopt_cb)(CURL *ehandle, void *data);
@@ -58,7 +58,7 @@ struct user_agent {
    *
    * @todo this is temporary, we should implement a non-curl reliant 
    *        way of sending MIME type data 
-   * @see ua_mime_setopt()
+   * @see ua_curl_mime_setopt()
    */
   void *data2;
   curl_mime *mime; 
@@ -87,7 +87,7 @@ struct _ua_conn {
   char tag[32];
 };
 
-char*
+const char*
 http_code_print(int httpcode)
 {
   switch (httpcode) {
@@ -113,7 +113,7 @@ http_code_print(int httpcode)
   }
 }
 
-char*
+const char*
 http_reason_print(int httpcode)
 {
   switch (httpcode) {
@@ -156,7 +156,7 @@ http_reason_print(int httpcode)
   }
 }
 
-char*
+const char*
 http_method_print(enum http_method method)
 {
   switch(method) {
@@ -345,14 +345,14 @@ conn_respbody_cb(char *buf, size_t size, size_t nmemb, void *p_userdata)
 }
 
 void
-ua_easy_setopt(struct user_agent *ua, void *data, void (setopt_cb)(CURL *ehandle, void *data)) 
+ua_curl_easy_setopt(struct user_agent *ua, void *data, void (setopt_cb)(CURL *ehandle, void *data)) 
 {
   ua->setopt_cb = setopt_cb;
   ua->data = data;
 }
 
 void
-ua_mime_setopt(struct user_agent *ua, void *data, curl_mime* (mime_cb)(CURL *ehandle, void *data)) 
+ua_curl_mime_setopt(struct user_agent *ua, void *data, curl_mime* (mime_cb)(CURL *ehandle, void *data)) 
 {
   ua->mime_cb = mime_cb;
   ua->data2 = data;
@@ -393,11 +393,6 @@ conn_init(struct user_agent *ua)
   //set ptr to response header to be filled at callback
   ecode = curl_easy_setopt(new_ehandle, CURLOPT_HEADERDATA, &new_conn->info.resp_header);
   CURLE_CHECK(new_conn, ecode);
-
-#if defined(__stensal__)
-  ecode = curl_easy_setopt(new_ehandle, CURLOPT_TIMEOUT, 20L);
-  CURLE_CHECK(new_conn, ecode);
-#endif
 
   // execute user-defined curl_easy_setopts
   if (ua->setopt_cb) {
@@ -615,7 +610,7 @@ perform_request(
   conn->info.httpcode = send_request(ua, conn);
 
   /* triggers response related callbacks */
-  if (conn->info.httpcode >= 500) {
+  if (conn->info.httpcode >= 500 && conn->info.httpcode < 600) {
     log_error("[%s] "ANSICOLOR("SERVER ERROR", ANSI_FG_RED)" (%d)%s - %s [@@@_%zu_@@@]",
         conn->tag,
         conn->info.httpcode,

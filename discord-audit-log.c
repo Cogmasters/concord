@@ -23,11 +23,6 @@ discord_get_guild_audit_log(
     return ORCA_MISSING_PARAMETER;
   }
 
-  struct ua_resp_handle resp_handle = { 
-    .ok_cb = &discord_audit_log_from_json_v, 
-    .ok_obj = p_audit_log
-  };
-
   char query[1024]="";
   size_t offset=0;
   if (params) {
@@ -55,7 +50,10 @@ discord_get_guild_audit_log(
 
   return discord_adapter_run( 
            &client->adapter,
-           &resp_handle,
+           &(struct ua_resp_handle){ 
+             .ok_cb = p_audit_log ? &discord_audit_log_from_json_v : NULL,
+             .ok_obj = &p_audit_log
+           },
            NULL,
            HTTP_GET,
            "/guilds/%"PRIu64"/audit-logs%s", guild_id, query);

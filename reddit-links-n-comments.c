@@ -51,11 +51,9 @@ reddit_comment(
     ASSERT_S(ret < sizeof(query), "Out of bounds write attempt");
   }
     
-  struct sized_buffer req_body = { query, ret };
-
   return reddit_adapter_run(
     &client->adapter,
     p_resp_body,
-    &req_body,
+    &(struct sized_buffer){ query, ret },
     HTTP_POST, "/api/comment");
 }

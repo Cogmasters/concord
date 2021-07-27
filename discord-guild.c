@@ -18,19 +18,16 @@ discord_create_guild(
     return ORCA_MISSING_PARAMETER;
   }
 
-  struct ua_resp_handle resp_handle = {
-    .ok_cb = p_guild ? &discord_guild_from_json_v : NULL,
-    .ok_obj = p_guild
-  };
-
   char payload[4096];
   size_t ret = discord_create_guild_params_to_json(payload, sizeof(payload), params);
-  struct sized_buffer req_body = { payload, ret };
 
   return discord_adapter_run( 
            &client->adapter,
-           &resp_handle,
-           &req_body,
+           &(struct ua_resp_handle){
+             .ok_cb = p_guild ? &discord_guild_from_json_v : NULL,
+             .ok_obj = &p_guild
+           },
+           &(struct sized_buffer){ payload, ret },
            HTTP_POST, 
            "/guilds");
 }
@@ -50,14 +47,12 @@ discord_get_guild(
     return ORCA_MISSING_PARAMETER;
   }
 
-  struct ua_resp_handle resp_handle = { 
-    .ok_cb = &discord_guild_from_json_v, 
-    .ok_obj = p_guild 
-  };
-
   return discord_adapter_run( 
            &client->adapter,
-           &resp_handle,
+           &(struct ua_resp_handle){ 
+             .ok_cb = &discord_guild_from_json_v, 
+             .ok_obj = &p_guild 
+           },
            NULL,
            HTTP_GET, 
            "/guilds/%"PRIu64, guild_id);
@@ -78,14 +73,12 @@ discord_get_guild_preview(
     return ORCA_MISSING_PARAMETER;
   }
 
-  struct ua_resp_handle resp_handle = { 
-    .ok_cb = &discord_guild_preview_from_json_v, 
-    .ok_obj = p_guild_preview 
-  };
-
   return discord_adapter_run( 
            &client->adapter,
-           &resp_handle,
+           &(struct ua_resp_handle){ 
+             .ok_cb = &discord_guild_preview_from_json_v, 
+             .ok_obj = &p_guild_preview
+           },
            NULL,
            HTTP_GET, 
            "/guilds/%"PRIu64"/preview", guild_id);
@@ -107,19 +100,16 @@ discord_modify_guild(
     return ORCA_MISSING_PARAMETER;
   }
 
-  struct ua_resp_handle resp_handle = {
-    .ok_cb = p_guild ? discord_guild_from_json_v : NULL,
-    .ok_obj = p_guild
-  };
-
   char payload[4096];
   size_t ret = discord_modify_guild_params_to_json(payload, sizeof(payload), params);
-  struct sized_buffer req_body = { payload, ret };
 
   return discord_adapter_run( 
            &client->adapter,
-           &resp_handle,
-           &req_body,
+           &(struct ua_resp_handle){
+             .ok_cb = p_guild ? &discord_guild_from_json_v : NULL,
+             .ok_obj = &p_guild
+           },
+           &(struct sized_buffer){ payload, ret },
            HTTP_PATCH, 
            "/guilds/%"PRIu64, guild_id);
 }
@@ -157,14 +147,12 @@ discord_get_guild_channels(
     return ORCA_MISSING_PARAMETER;
   }
 
-  struct ua_resp_handle resp_handle = { 
-    .ok_cb = &discord_channel_list_from_json_v, 
-    .ok_obj = p_channels 
-  };
-
   return discord_adapter_run( 
            &client->adapter,
-           &resp_handle,
+           &(struct ua_resp_handle){
+             .ok_cb = &discord_channel_list_from_json_v, 
+             .ok_obj = p_channels 
+           },
            NULL,
            HTTP_GET, 
            "/guilds/%"PRIu64"/channels", guild_id);
@@ -186,19 +174,16 @@ discord_create_guild_channel(
     return ORCA_MISSING_PARAMETER;
   }
 
-  struct ua_resp_handle resp_handle = {
-    .ok_cb = p_channel ? &discord_channel_from_json_v : NULL,
-    .ok_obj = p_channel,
-  };
-
   char payload[DISCORD_MAX_PAYLOAD_LEN];
   size_t ret = discord_create_guild_channel_params_to_json(payload, sizeof(payload), params);
-  struct sized_buffer req_body = { payload, ret };
 
   return discord_adapter_run( 
            &client->adapter,
-           &resp_handle,
-           &req_body,
+           &(struct ua_resp_handle){
+             .ok_cb = p_channel ? &discord_channel_from_json_v : NULL,
+             .ok_obj = &p_channel
+           },
+           &(struct sized_buffer){ payload, ret },
            HTTP_POST, 
            "/guilds/%"PRIu64"/channels", guild_id);
 }
@@ -220,12 +205,11 @@ discord_modify_guild_channel_positions(
 
   char payload[4096];
   size_t ret = discord_modify_guild_channel_positions_params_list_to_json(payload, sizeof(payload), params);
-  struct sized_buffer req_body = { payload, ret };
 
   return discord_adapter_run( 
            &client->adapter,
            NULL,
-           &req_body,
+           &(struct sized_buffer){ payload, ret },
            HTTP_PATCH, 
            "/guilds/%"PRIu64"/channels", guild_id);
 }
@@ -246,14 +230,12 @@ discord_get_guild_member(struct discord *client, u64_snowflake_t guild_id, u64_s
     return ORCA_MISSING_PARAMETER;
   }
 
-  struct ua_resp_handle resp_handle = {
-    .ok_cb = discord_guild_member_from_json_v, 
-    .ok_obj = p_member
-  };
-
   return discord_adapter_run(
            &client->adapter,
-           &resp_handle,
+           &(struct ua_resp_handle){
+             .ok_cb = discord_guild_member_from_json_v, 
+             .ok_obj = &p_member
+           },
            NULL,
            HTTP_GET, 
            "/guilds/%"PRIu64"/members/%"PRIu64, guild_id, user_id);
@@ -275,11 +257,6 @@ discord_list_guild_members(
     return ORCA_MISSING_PARAMETER;
   }
 
-  struct ua_resp_handle resp_handle = { 
-    .ok_cb = &discord_guild_member_list_from_json_v, 
-    .ok_obj = p_members 
-  };
-
   char query[1024]="";
   if (params) {
     size_t offset=0;
@@ -297,7 +274,10 @@ discord_list_guild_members(
   
   return discord_adapter_run( 
            &client->adapter,
-           &resp_handle,
+           &(struct ua_resp_handle){ 
+             .ok_cb = &discord_guild_member_list_from_json_v, 
+             .ok_obj = p_members 
+           },
            NULL,
            HTTP_GET,
            "/guilds/%"PRIu64"/members%s%s", 
@@ -320,11 +300,6 @@ discord_search_guild_members(
     return ORCA_MISSING_PARAMETER;
   }
 
-  struct ua_resp_handle resp_handle = {
-    .ok_cb = &discord_guild_member_list_from_json_v,
-    .ok_obj = p_members
-  };
-
   char query[1024]="";
   if (params) {
     size_t offset=0;
@@ -343,7 +318,10 @@ discord_search_guild_members(
 
   return discord_adapter_run( 
            &client->adapter,
-           &resp_handle,
+           &(struct ua_resp_handle){ 
+             .ok_cb = &discord_guild_member_list_from_json_v, 
+             .ok_obj = p_members 
+           },
            NULL,
            HTTP_GET,
            "/guilds/%"PRIu64"/members/search%s%s", 
@@ -371,19 +349,16 @@ discord_add_guild_member(
     return ORCA_MISSING_PARAMETER;
   }
 
-  struct ua_resp_handle resp_handle = {
-    .ok_cb = p_member ? &discord_guild_member_from_json_v : NULL,
-    .ok_obj = p_member
-  };
-
   char payload[DISCORD_MAX_PAYLOAD_LEN];
   size_t ret = discord_add_guild_member_params_to_json(payload, sizeof(payload), params);
-  struct sized_buffer req_body = { payload, ret };
 
   return discord_adapter_run( 
            &client->adapter,
-           &resp_handle,
-           &req_body,
+           &(struct ua_resp_handle){
+             .ok_cb = discord_guild_member_from_json_v, 
+             .ok_obj = &p_member
+           },
+           &(struct sized_buffer){ payload, ret },
            HTTP_PUT,
            "/guilds/%"PRIu64"/members/%"PRIu64, 
            guild_id, user_id);
@@ -410,20 +385,16 @@ discord_modify_guild_member(
     return ORCA_MISSING_PARAMETER;
   }
 
-  struct ua_resp_handle resp_handle = {
-    .ok_cb = p_member ? &discord_guild_member_from_json_v : NULL,
-    .ok_obj = p_member,
-  };
-
   char payload[DISCORD_MAX_PAYLOAD_LEN];
   size_t ret = discord_modify_guild_member_params_to_json(payload, sizeof(payload), params);
 
-  struct sized_buffer req_body = { payload, ret };
-
   return discord_adapter_run( 
            &client->adapter,
-           &resp_handle,
-           &req_body,
+           &(struct ua_resp_handle){
+             .ok_cb = p_member ? &discord_guild_member_from_json_v : NULL,
+             .ok_obj = &p_member,
+           },
+           &(struct sized_buffer){ payload, ret },
            HTTP_PATCH, 
            "/guilds/%"PRIu64"/members/%"PRIu64, guild_id, user_id);
 }
@@ -445,12 +416,11 @@ discord_modify_current_user_nick(
 
   char payload[DISCORD_MAX_PAYLOAD_LEN];
   size_t ret = json_inject(payload, sizeof(payload), "(nick):s", nick);
-  struct sized_buffer req_body = { payload, ret };
 
   return discord_adapter_run(
            &client->adapter,
            NULL,
-           &req_body,
+           &(struct sized_buffer){ payload, ret },
            HTTP_PATCH,
            "/guilds/%"PRIu64"/members/@me/nick", guild_id);
 }
@@ -551,14 +521,12 @@ discord_get_guild_bans(
     return ORCA_MISSING_PARAMETER;
   }
 
-  struct ua_resp_handle resp_handle = { 
-    .ok_cb = &discord_guild_ban_list_from_json_v, 
-    .ok_obj = p_bans 
-  };
-
   return discord_adapter_run( 
            &client->adapter,
-           &resp_handle,
+           &(struct ua_resp_handle){ 
+             .ok_cb = &discord_guild_ban_list_from_json_v, 
+             .ok_obj = p_bans 
+           },
            NULL,
            HTTP_GET, 
            "/guilds/%"PRIu64"/bans", guild_id);
@@ -584,14 +552,12 @@ discord_get_guild_ban(
     return ORCA_MISSING_PARAMETER;
   }
 
-  struct ua_resp_handle resp_handle = { 
-    .ok_cb = &discord_guild_ban_from_json_v, 
-    .ok_obj = p_ban
-  };
-
   return discord_adapter_run( 
            &client->adapter,
-           &resp_handle,
+           &(struct ua_resp_handle){
+             .ok_cb = &discord_guild_ban_from_json_v, 
+             .ok_obj = &p_ban
+           },
            NULL,
            HTTP_GET, 
            "/guilds/%"PRIu64"/bans/%"PRIu64, guild_id, user_id);
@@ -639,12 +605,10 @@ discord_create_guild_ban(
                         reason,
                         A, sizeof(A));
 
-  struct sized_buffer req_body = { payload, ret };
-
   return discord_adapter_run( 
            &client->adapter,
            NULL,
-           &req_body,
+           &(struct sized_buffer){ payload, ret },
            HTTP_PUT, 
            "/guilds/%"PRIu64"/bans/%"PRIu64, guild_id, user_id);
 }
@@ -674,12 +638,11 @@ discord_remove_guild_ban(
     }
     ret = json_inject(payload, sizeof(payload), "(reason):s", reason);
   }
-  struct sized_buffer req_body = { payload, ret };
 
   return discord_adapter_run( 
            &client->adapter,
            NULL,
-           &req_body,
+           &(struct sized_buffer){ payload, ret },
            HTTP_DELETE, 
            "/guilds/%"PRIu64"/bans/%"PRIu64, guild_id, user_id);
 }
@@ -699,14 +662,12 @@ discord_get_guild_roles(
     return ORCA_MISSING_PARAMETER;
   }
 
-  struct ua_resp_handle resp_handle = { 
-    .ok_cb = &discord_permissions_role_list_from_json_v, 
-    .ok_obj = p_roles 
-  };
-
   return discord_adapter_run( 
            &client->adapter,
-           &resp_handle,
+           &(struct ua_resp_handle){
+             .ok_cb = &discord_permissions_role_list_from_json_v, 
+             .ok_obj = p_roles 
+           },
            NULL,
            HTTP_GET, 
            "/guilds/%"PRIu64"/roles", guild_id);
@@ -724,19 +685,16 @@ discord_create_guild_role(
     return ORCA_MISSING_PARAMETER;
   }
 
-  struct ua_resp_handle resp_handle = {
-    .ok_cb = p_role ? &discord_permissions_role_from_json_v : NULL,
-    .ok_obj = p_role,
-  };
-
   char payload[DISCORD_MAX_PAYLOAD_LEN];
   size_t ret = discord_create_guild_role_params_to_json(payload, sizeof(payload), params);
-  struct sized_buffer req_body = { payload, ret };
 
   return discord_adapter_run( 
            &client->adapter,
-           &resp_handle,
-           &req_body,
+           &(struct ua_resp_handle){
+             .ok_cb = p_role ? &discord_permissions_role_from_json_v : NULL, 
+             .ok_obj = &p_role
+           },
+           &(struct sized_buffer){ payload, ret },
            HTTP_POST, 
            "/guilds/%"PRIu64"/roles", guild_id);
 }
@@ -757,19 +715,16 @@ discord_modify_guild_role_positions(
     return ORCA_MISSING_PARAMETER;
   }
 
-  struct ua_resp_handle resp_handle = {
-    .ok_cb = p_roles ? &discord_permissions_role_list_from_json_v : NULL,
-    .ok_obj = p_roles
-  };
-
   char payload[4096];
   size_t ret = discord_modify_guild_role_positions_params_list_to_json(payload, sizeof(payload), params);
-  struct sized_buffer req_body = { payload, ret };
 
   return discord_adapter_run( 
            &client->adapter,
-           &resp_handle,
-           &req_body,
+           &(struct ua_resp_handle){
+             .ok_cb = p_roles ? &discord_permissions_role_list_from_json_v : NULL, 
+             .ok_obj = p_roles 
+           },
+           &(struct sized_buffer){ payload, ret },
            HTTP_PATCH, 
            "/guilds/%"PRIu64"/roles", guild_id);
 }
@@ -791,22 +746,19 @@ discord_modify_guild_role(
     return ORCA_MISSING_PARAMETER;
   }
 
-  struct ua_resp_handle resp_handle = {
-    .ok_cb = p_role ? &discord_permissions_role_from_json_v : NULL,
-    .ok_obj = p_role
-  };
-
   char payload[DISCORD_MAX_PAYLOAD_LEN]="{}";
   size_t ret=2;
   if (params) {
     ret = discord_modify_guild_role_params_to_json(payload, sizeof(payload), params);
   }
-  struct sized_buffer req_body = { payload, ret };
 
   return discord_adapter_run( 
            &client->adapter,
-           &resp_handle,
-           &req_body,
+           &(struct ua_resp_handle){
+             .ok_cb = p_role ? &discord_permissions_role_from_json_v : NULL, 
+             .ok_obj = &p_role
+           },
+           &(struct sized_buffer){ payload, ret },
            HTTP_PATCH, 
            "/guilds/%"PRIu64"/roles/%"PRIu64, guild_id, role_id);
 }

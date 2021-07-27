@@ -1,3 +1,10 @@
+/**
+ * @file user-agent.h
+ * @author cee-studio
+ * @date 18 Jul 2021
+ * @brief File containing internal functions and datatypes for HTTP Requests interfacing
+ */
+
 #ifndef USER_AGENT_H
 #define USER_AGENT_H
 
@@ -8,11 +15,10 @@ extern "C" {
 #include <stdint.h> /* uint64_t */
 #include <curl/curl.h> 
 #include "ntl.h" /* struct sized_buffer */
-#include "types.h"
-#include "logconf.h"
+#include "types.h" /* ORCAcode */
+#include "logconf.h" /* logging facilities */
 
-/* FORWARD DECLARATIONS */
-struct user_agent; // the user agent that perform requests
+struct user_agent; // forward declaration
 
 //possible http methods
 enum http_method {
@@ -123,17 +129,17 @@ struct ua_info {
   struct ua_resp_body resp_body;
 };
 
-char* http_code_print(int httpcode);
-char* http_reason_print(int httpcode);
-char* http_method_print(enum http_method method);
+const char* http_code_print(int httpcode);
+const char* http_reason_print(int httpcode);
+const char* http_method_print(enum http_method method);
 enum http_method http_method_eval(char method[]);
 
 void ua_reqheader_add(struct user_agent *ua, const char field[], const char value[]);
 void ua_reqheader_del(struct user_agent *ua, const char field[]);
 char* ua_reqheader_str(struct user_agent *ua, char *buf, size_t bufsize);
 
-void ua_easy_setopt(struct user_agent *ua, void *data, void (setopt_cb)(CURL *ehandle, void *data));
-void ua_mime_setopt(struct user_agent *ua, void *data, curl_mime* (mime_cb)(CURL *ehandle, void *data)); // @todo this is temporary
+void ua_curl_easy_setopt(struct user_agent *ua, void *data, void (setopt_cb)(CURL *ehandle, void *data));
+void ua_curl_mime_setopt(struct user_agent *ua, void *data, curl_mime* (mime_cb)(CURL *ehandle, void *data)); // @todo this is temporary
 
 struct user_agent* ua_init(struct logconf *conf);
 void ua_cleanup(struct user_agent *ua);

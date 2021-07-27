@@ -8,7 +8,7 @@
 
 
 void on_ready(struct discord *client, const struct discord_user *bot) {
-  fprintf(stderr, "\n\nEcho-Bot succesfully connected to Discord as %s#%s!\n\n",
+  log_info("Echo-Bot succesfully connected to Discord as %s#%s!",
       bot->username, bot->discriminator);
 }
 

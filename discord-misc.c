@@ -71,124 +71,6 @@ discord_delete_messages_by_author_id(
 }
 
 void
-discord_message_from_json(char *json, size_t len, struct discord_message *p)
-{
-  p->referenced_message = discord_message_alloc();
-
-  static size_t ret=0; // used for debugging
-  size_t r=0;
-  r=json_extract(json, len, 
-                "(id):F,"
-                "(channel_id):F,"
-                "(guild_id):F,"
-                "(author):F,"
-                "(member):F,"
-                "(content):?s,"
-                "(timestamp):F,"
-                "(edited_timestamp):F,"
-                "(tts):b,"
-                "(mention_everyone):b,"
-                "(mentions):F,"
-                "(mention_roles):F,"
-                "(mention_channels):F,"
-                "(attachments):F,"
-                "(embeds):F,"
-                "(reactions):F,"
-                "(nonce):?s,"
-                "(pinned):b,"
-                "(webhook_id):F,"
-                "(type):d,"
-                "(activity):F,"
-                "(application):F,"
-                "(message_reference):F,"
-                "(flags):d,"
-                "(stickers):F,"
-                "(referenced_message):F,"
-                "@arg_switches:b"
-                "@record_defined"
-                "@record_null",
-                cee_strtoull, &p->id,
-                cee_strtoull, &p->channel_id,
-                cee_strtoull, &p->guild_id,
-                discord_user_from_json, p->author,
-                discord_guild_member_from_json, p->member,
-                &p->content,
-                cee_iso8601_to_unix_ms, &p->timestamp,
-                cee_iso8601_to_unix_ms, &p->edited_timestamp,
-                &p->tts,
-                &p->mention_everyone,
-                discord_user_list_from_json, &p->mentions,
-                ja_u64_list_from_json, &p->mention_roles,
-                discord_channel_mention_list_from_json, &p->mention_channels,
-                discord_channel_attachment_list_from_json, &p->attachments,
-                discord_embed_list_from_json, &p->embeds,
-                discord_channel_reaction_list_from_json, &p->reactions,
-                &p->nonce,
-                &p->pinned,
-                cee_strtoull, &p->webhook_id,
-                &p->type,
-                discord_message_activity_from_json, p->activity,
-                discord_message_application_list_from_json, &p->application,
-                discord_message_reference_from_json, p->message_reference,
-                &p->flags,
-                discord_message_sticker_list_from_json, &p->stickers,
-                discord_message_from_json, p->referenced_message,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
-                p->__M.record_defined, sizeof(p->__M.record_defined),
-                p->__M.record_null, sizeof(p->__M.record_null));
-
-  if(!p->referenced_message->id) {
-    discord_message_free(p->referenced_message);
-    p->referenced_message = NULL;
-  }
-  ret = r;
-}
-
-void discord_channel_overwrite_from_json(char *json, size_t len, struct discord_channel_overwrite *p)
-{
-  static size_t ret=0; //used for debugging
-  size_t r=0;
-
-  r=json_extract(json, len,
-                 "(id):F,"
-                 //"(type):s," @todo
-                 //"(allow_new):s," @todo
-                 "(allow):lld,"
-                 //"(deny_new):s," @todo
-                 "(deny):lld,"
-                 "@arg_switches:b"
-                 "@record_defined"
-                 "@record_null",
-                 cee_strtoull, &p->id,
-                 //&p->type,
-                 &p->allow,
-                 &p->deny,
-                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
-                 p->__M.record_defined, sizeof(p->__M.record_defined),
-                 p->__M.record_null, sizeof(p->__M.record_null));
-  ret = r;
-  (void)ret;
-}
-
-size_t 
-discord_channel_overwrite_to_json(char *json, size_t len, struct discord_channel_overwrite *p)
-{
-  size_t r;
-  r=json_inject(json, len,
-                "(id):|F|,"
-                "(type):d,"
-                "(allow):s_as_u64,"
-                "(deny):s_as_u64,"
-                "@arg_switches:b",
-                cee_ulltostr, &p->id,
-                &p->type,
-                &p->allow,
-                &p->deny,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
-  return r;
-}
-
-void
 discord_embed_set_footer(
   struct discord_embed *embed, 
   char text[], 
@@ -469,19 +351,16 @@ discord_disconnect_guild_member(
     return ORCA_MISSING_PARAMETER;
   }
 
-  struct ua_resp_handle resp_handle = {
-    .ok_cb = p_member ? &discord_guild_member_from_json_v : NULL,
-    .ok_obj = p_member,
-  };
-
   char payload[DISCORD_MAX_PAYLOAD_LEN];
   size_t ret = json_inject(payload, sizeof(payload), "(channel_id):null");
-  struct sized_buffer req_body = { payload, ret };
 
   return discord_adapter_run( 
            &client->adapter,
-           &resp_handle,
-           &req_body,
+           &(struct ua_resp_handle){
+             .ok_cb = p_member ? &discord_guild_member_from_json_v : NULL,
+             .ok_obj = &p_member,
+           },
+           &(struct sized_buffer){ payload, ret },
            HTTP_PATCH, 
            "/guilds/%"PRIu64"/members/%"PRIu64, guild_id, user_id);
 }

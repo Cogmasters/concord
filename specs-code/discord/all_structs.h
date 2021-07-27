@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/all_structs.h
  * @author cee-studio
- * @date 01 Jul 2021
+ * @date Jul 27 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/audit-log
  */
@@ -48,7 +48,7 @@ struct discord_get_guild_audit_log_params {
 /**
  * @file specs-code/discord/all_structs.h
  * @author cee-studio
- * @date 01 Jul 2021
+ * @date Jul 27 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/audit-log
  */
@@ -484,7 +484,7 @@ struct discord_audit_log_change_key {
 /**
  * @file specs-code/discord/all_structs.h
  * @author cee-studio
- * @date 01 Jul 2021
+ * @date Jul 27 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/channel
  */
@@ -852,7 +852,7 @@ struct discord_thread_response_body {
 /**
  * @file specs-code/discord/all_structs.h
  * @author cee-studio
- * @date 01 Jul 2021
+ * @date Jul 27 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/channel
  */
@@ -1154,114 +1154,128 @@ struct discord_message_activity {
  * @brief Message Structure
  *
  * @see https://discord.com/developers/docs/resources/channel#message-object
- * @note defined at specs/discord/channel.json:181:22
+ * @note defined at specs/discord/channel.json:180:22
  */
 struct discord_message {
-  /* specs/discord/channel.json:183:79
+  /* specs/discord/channel.json:182:79
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"id"}' */
   u64_snowflake_t id;
 
-  /* specs/discord/channel.json:184:79
+  /* specs/discord/channel.json:183:79
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"channel_id"}' */
   u64_snowflake_t channel_id;
 
-  /* specs/discord/channel.json:185:79
+  /* specs/discord/channel.json:184:79
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"guild_id", "option":true, "inject_if_not":0}' */
   u64_snowflake_t guild_id;
 
-  /* specs/discord/channel.json:186:69
+  /* specs/discord/channel.json:185:69
      '{"type":{"base":"struct discord_user", "dec":"*"}, "name":"author"}' */
   struct discord_user *author;
 
-  /* specs/discord/channel.json:187:77
+  /* specs/discord/channel.json:186:77
      '{"type":{"base":"struct discord_guild_member", "dec":"*"}, "name":"member", "option":true, "comment":"partial guild member object"}' */
   struct discord_guild_member *member; ///< partial guild member object
 
-  /* specs/discord/channel.json:188:54
+  /* specs/discord/channel.json:187:54
      '{"type":{"base":"char", "dec":"*"}, "name":"content"}' */
   char *content;
 
-  /* specs/discord/channel.json:189:76
+  /* specs/discord/channel.json:188:76
      '{"type":{"base":"char", "dec":"*", "converter":"iso8601"},"name":"timestamp"}' */
   u64_unix_ms_t timestamp;
 
-  /* specs/discord/channel.json:190:77
+  /* specs/discord/channel.json:189:77
      '{"type":{"base":"char", "dec":"*", "converter":"iso8601"}, "name":"edited_timestamp", "inject_if_not":0}' */
   u64_unix_ms_t edited_timestamp;
 
-  /* specs/discord/channel.json:191:43
+  /* specs/discord/channel.json:190:43
      '{"type":{"base":"bool"}, "name":"tts"}' */
   bool tts;
 
-  /* specs/discord/channel.json:192:43
+  /* specs/discord/channel.json:191:43
      '{"type":{"base":"bool"}, "name":"mention_everyone"}' */
   bool mention_everyone;
 
-  /* specs/discord/channel.json:193:71
+  /* specs/discord/channel.json:192:71
      '{"type":{"base":"struct discord_user", "dec":"ntl"}, "name":"mentions", "comment":"array of user objects, with an additional partial member field"}' */
   struct discord_user **mentions; ///< array of user objects, with an additional partial member field
 
-  /* specs/discord/channel.json:194:58
+  /* specs/discord/channel.json:193:58
      '{"type":{"base":"ja_u64", "dec":"ntl"}, "name":"mention_roles", "comment":"array of role object ids"}' */
   ja_u64 **mention_roles; ///< array of role object ids
 
-  /* specs/discord/channel.json:195:82
+  /* specs/discord/channel.json:194:82
      '{"type":{"base":"struct discord_channel_mention", "dec":"ntl"}, "name":"mention_channels", "option":true }' */
   struct discord_channel_mention **mention_channels;
 
-  /* specs/discord/channel.json:196:85
+  /* specs/discord/channel.json:195:85
      '{"type":{"base":"struct discord_channel_attachment", "dec":"ntl"}, "name":"attachments"}' */
   struct discord_channel_attachment **attachments;
 
-  /* specs/discord/channel.json:197:72
+  /* specs/discord/channel.json:196:72
      '{"type":{"base":"struct discord_embed", "dec":"ntl"}, "name":"embeds"}' */
   struct discord_embed **embeds;
 
-  /* specs/discord/channel.json:198:82
+  /* specs/discord/channel.json:197:82
      '{"type":{"base":"struct discord_channel_reaction","dec":"ntl"}, "name":"reactions", "option":true }' */
   struct discord_channel_reaction **reactions;
 
-  /* specs/discord/channel.json:199:54
+  /* specs/discord/channel.json:198:54
      '{"type":{"base":"char", "dec":"*"}, "name":"nonce", "comment":"integer or string", "option":true }' */
   char *nonce; ///< integer or string
 
-  /* specs/discord/channel.json:200:43
+  /* specs/discord/channel.json:199:43
      '{"type":{"base":"bool"}, "name":"pinned"}' */
   bool pinned;
 
-  /* specs/discord/channel.json:201:79
-     '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"webhook_id",
-          "option":true }' */
+  /* specs/discord/channel.json:200:79
+     '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"webhook_id", "option":true }' */
   u64_snowflake_t webhook_id;
 
-  /* specs/discord/channel.json:203:84
+  /* specs/discord/channel.json:201:84
      '{"type":{"base":"int", "int_alias":"enum discord_message_types"}, "name":"type"}' */
   enum discord_message_types type;
 
-  /* specs/discord/channel.json:204:81
+  /* specs/discord/channel.json:202:81
      '{"type":{"base":"struct discord_message_activity", "dec":"*"}, "name":"activity", "option":true, "inject_if_not":null }' */
   struct discord_message_activity *activity;
 
-  /* specs/discord/channel.json:205:86
+  /* specs/discord/channel.json:203:86
      '{"type":{"base":"struct discord_message_application", "dec":"ntl"}, "name":"application", "option":true, "inject_if_not":null }' */
   struct discord_message_application **application;
 
-  /* specs/discord/channel.json:206:82
+  /* specs/discord/channel.json:204:82
      '{"type":{"base":"struct discord_message_reference", "dec":"*"}, "name":"message_reference", "option":true, "inject_if_not":null }' */
   struct discord_message_reference *message_reference;
 
-  /* specs/discord/channel.json:207:84
+  /* specs/discord/channel.json:205:84
      '{"type":{"base":"int", "int_alias":"enum discord_message_flags"}, "name":"flags", "option":true, "inject_if_not":0 }' */
   enum discord_message_flags flags;
 
-  /* specs/discord/channel.json:208:82
-     '{"type":{"base":"struct discord_message_sticker", "dec":"ntl"}, "name":"stickers", "option":true, "inject_if_not":null, "comment":"array of sticker objects"}' */
-  struct discord_message_sticker **stickers; ///< array of sticker objects
-
-  /* specs/discord/channel.json:209:72
-     '{"type":{"base":"struct discord_message", "dec":"*"}, "name":"referenced_message", "lazy_init":true, "option":true, "inject_if_not":null,
-          "comment":"this will cause recursive allocation if allocating as the parent"}' */
+  /* specs/discord/channel.json:206:72
+     '{"type":{"base":"struct discord_message", "dec":"*"}, "name":"referenced_message", "lazy_init":true, "option":true, "inject_if_not":null, "comment":"this will cause recursive allocation if allocating as the parent"}' */
   struct discord_message *referenced_message; ///< this will cause recursive allocation if allocating as the parent
+
+  /* specs/discord/channel.json:207:84
+     '{"type":{"base":"struct discord_message_interaction", "dec":"*"}, "name":"interaction", "option":true, "inject_if_not":null, "comment":"the message associated with the message_reference"}' */
+  struct discord_message_interaction *interaction; ///< the message associated with the message_reference
+
+  /* specs/discord/channel.json:208:72
+     '{"type":{"base":"struct discord_channel", "dec":"*"}, "name":"thread", "option":true, "inject_if_not":null, "comment":"the channel that was started from this message, includes thread member obejct"}' */
+  struct discord_channel *thread; ///< the channel that was started from this message, includes thread member obejct
+
+  /* specs/discord/channel.json:209:76
+     '{"type":{"base":"struct discord_component", "dec":"ntl"}, "name":"components", "option":true, "inject_if_not":null, "comment":"sent if the message contains components like buttons, actions rows, or other interactive components"}' */
+  struct discord_component **components; ///< sent if the message contains components like buttons, actions rows, or other interactive components
+
+  /* specs/discord/channel.json:210:82
+     '{"type":{"base":"struct discord_message_sticker", "dec":"ntl"}, "name":"sticker_items", "option":true, "inject_if_not":null, "comment":"sent if the message contains stickets"}' */
+  struct discord_message_sticker **sticker_items; ///< sent if the message contains stickets
+
+  /* specs/discord/channel.json:211:82
+     '{"type":{"base":"struct discord_message_sticker", "dec":"ntl"}, "name":"stickers", "option":true, "inject_if_not":null, "comment":"[DEPRECATED] array of sticker objects"}' */
+  struct discord_message_sticker **stickers; ///< [DEPRECATED] array of sticker objects
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -1272,9 +1286,9 @@ struct discord_message {
     bool enable_arg_switches;
     bool enable_record_defined;
     bool enable_record_null;
-    void *arg_switches[26];
-    void *record_defined[26];
-    void *record_null[26];
+    void *arg_switches[30];
+    void *record_defined[30];
+    void *record_null[30];
   } __M; // metadata
 /// @endcond
 };
@@ -1283,14 +1297,14 @@ struct discord_message {
  * @brief Followed Channel Structure
  *
  * @see https://discord.com/developers/docs/resources/channel#followed-channel-object-followed-channel-structure
- * @note defined at specs/discord/channel.json:217:22
+ * @note defined at specs/discord/channel.json:218:22
  */
 struct discord_channel_followed_channel {
-  /* specs/discord/channel.json:220:20
+  /* specs/discord/channel.json:221:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   u64_snowflake_t channel_id;
 
-  /* specs/discord/channel.json:221:20
+  /* specs/discord/channel.json:222:20
      '{ "name": "webhook_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   u64_snowflake_t webhook_id;
 
@@ -1314,18 +1328,18 @@ struct discord_channel_followed_channel {
  * @brief Reaction Structure
  *
  * @see https://discord.com/developers/docs/resources/channel#reaction-object-reaction-structure
- * @note defined at specs/discord/channel.json:228:22
+ * @note defined at specs/discord/channel.json:229:22
  */
 struct discord_channel_reaction {
-  /* specs/discord/channel.json:231:20
+  /* specs/discord/channel.json:232:20
      '{ "name": "count", "type":{ "base":"int" }}' */
   int count;
 
-  /* specs/discord/channel.json:232:20
+  /* specs/discord/channel.json:233:20
      '{ "name": "me", "type":{ "base":"bool" }}' */
   bool me;
 
-  /* specs/discord/channel.json:233:20
+  /* specs/discord/channel.json:234:20
      '{ "name": "emoji", "type":{ "base":"struct discord_emoji", "dec":"*" }, "comment":"partial emoji object"}' */
   struct discord_emoji *emoji; ///< partial emoji object
 
@@ -1931,7 +1945,7 @@ struct discord_embed_field {
 /**
  * @file specs-code/discord/all_structs.h
  * @author cee-studio
- * @date 01 Jul 2021
+ * @date Jul 27 2021
  * @brief Specs generated file
  * @see 
  */
@@ -2006,7 +2020,7 @@ struct discord_modify_guild_emoji_params {
 /**
  * @file specs-code/discord/all_structs.h
  * @author cee-studio
- * @date 01 Jul 2021
+ * @date Jul 27 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/emoji
  */
@@ -2071,7 +2085,7 @@ struct discord_emoji {
 /**
  * @file specs-code/discord/all_structs.h
  * @author cee-studio
- * @date 01 Jul 2021
+ * @date Jul 27 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/topics/gateway
  */
@@ -2189,16 +2203,16 @@ struct discord_gateway_status_update {
  */
 struct discord_gateway_identify_connection {
   /* specs/discord/gateway.json:150:19
-     '{ "name":"$os", "type":{"base":"char", "dec":"*"}}' */
-  char *$os;
+     '{ "name":"os", "json_key":"$os", "type":{"base":"char", "dec":"*"}}' */
+  char *os;
 
   /* specs/discord/gateway.json:151:19
-     '{ "name":"$browser", "type":{"base":"char", "dec":"*"}}' */
-  char *$browser;
+     '{ "name":"browser", "json_key":"$browser", "type":{"base":"char", "dec":"*"}}' */
+  char *browser;
 
   /* specs/discord/gateway.json:152:19
-     '{ "name":"$device", "type":{"base":"char", "dec":"*"}}' */
-  char *$device;
+     '{ "name":"device", "json_key":"$device", "type":{"base":"char", "dec":"*"}}' */
+  char *device;
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -2282,7 +2296,7 @@ struct discord_gateway_activity {
 /**
  * @file specs-code/discord/all_structs.h
  * @author cee-studio
- * @date 01 Jul 2021
+ * @date Jul 27 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/guild-template
  */
@@ -2384,7 +2398,7 @@ struct discord_modify_guild_template_params {
 /**
  * @file specs-code/discord/all_structs.h
  * @author cee-studio
- * @date 01 Jul 2021
+ * @date Jul 27 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/guild-template
  */
@@ -2460,7 +2474,7 @@ struct discord_guild_template {
 /**
  * @file specs-code/discord/all_structs.h
  * @author cee-studio
- * @date 01 Jul 2021
+ * @date Jul 27 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/guild
  */
@@ -3041,7 +3055,7 @@ struct discord_begin_guild_prune_params {
 /**
  * @file specs-code/discord/all_structs.h
  * @author cee-studio
- * @date 01 Jul 2021
+ * @date Jul 27 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/guild
  */
@@ -3727,7 +3741,7 @@ struct discord_guild_welcome_screen_channel {
 /**
  * @file specs-code/discord/all_structs.h
  * @author cee-studio
- * @date 01 Jul 2021
+ * @date Jul 27 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/invite
  */
@@ -3767,7 +3781,7 @@ struct discord_get_invite_params {
 /**
  * @file specs-code/discord/all_structs.h
  * @author cee-studio
- * @date 01 Jul 2021
+ * @date Jul 27 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/invite
  */
@@ -3872,11 +3886,240 @@ struct discord_invite_metadata {
   } __M; // metadata
 /// @endcond
 };
+/* This file is generated from specs/discord/message_components.json, Please don't edit it. */
+/**
+ * @file specs-code/discord/all_structs.h
+ * @author cee-studio
+ * @date Jul 27 2021
+ * @brief Specs generated file
+ * @see https://discord.com/developers/docs/interactions/message-components#message-components
+ */
+
+
+/**
+ * @brief Component Structure
+ *
+ * @see https://discord.com/developers/docs/interactions/message-components#component-object-component-structure
+ * @note defined at specs/discord/message_components.json:9:22
+ */
+struct discord_component {
+  /* specs/discord/message_components.json:12:18
+     '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_component_types"}, "inject_if_not":0, "comment":"component type"}' */
+  enum discord_component_types type; ///< component type
+
+  /* specs/discord/message_components.json:13:18
+     '{"name":"custom_id", "type":{"base":"char", "dec":"[100+1]"}, "inject_if_not":"", "comment":"a developer-defined identifier for the component, max 100 characters"}' */
+  char custom_id[100+1]; ///< a developer-defined identifier for the component, max 100 characters
+
+  /* specs/discord/message_components.json:14:18
+     '{"name":"disabled", "type":{"base":"bool"}, "option":true, "inject_if_not":false, "comment":"whether the component is disabled, default false"}' */
+  bool disabled; ///< whether the component is disabled, default false
+
+  /* specs/discord/message_components.json:15:18
+     '{"name":"style", "type":{"base":"int", "int_alias":"enum discord_button_styles"}, "option":true, "inject_if_not":0, "comment":"one of button styles"}' */
+  enum discord_button_styles style; ///< one of button styles
+
+  /* specs/discord/message_components.json:16:18
+     '{"name":"label", "type":{"base":"char", "dec":"[80+1]"}, "option":true, "comment":"text that appears on the button, max 80 characters", "inject_if_not":""}' */
+  char label[80+1]; ///< text that appears on the button, max 80 characters
+
+  /* specs/discord/message_components.json:17:18
+     '{"name":"emoji", "type":{"base":"struct discord_emoji", "dec":"*"}, "option":true, "comment":"name, id and animated", "inject_if_not":null}' */
+  struct discord_emoji *emoji; ///< name, id and animated
+
+  /* specs/discord/message_components.json:18:18
+     '{"name":"url", "type":{"base":"char", "dec":"*"}, "option":true, "comment":"a url for link-style buttons", "inject_if_not":null}' */
+  char *url; ///< a url for link-style buttons
+
+  /* specs/discord/message_components.json:19:18
+     '{"name":"options", "type":{"base":"struct discord_select_option", "dec":"ntl"}, "option":true, "comment":"the choices in the select, max 25", "inject_if_not":null}' */
+  struct discord_select_option **options; ///< the choices in the select, max 25
+
+  /* specs/discord/message_components.json:20:18
+     '{"name":"placeholder", "type":{"base":"char", "dec":"[100+1]"}, "option":true, "comment":"custom placeholder text if nothing is selected, max 100 characters", "inject_if_not":""}' */
+  char placeholder[100+1]; ///< custom placeholder text if nothing is selected, max 100 characters
+
+  /* specs/discord/message_components.json:21:18
+     '{"name":"min_values", "type":{"base":"int"}, "option":true, "inject_if_not":0, "comment":"the minimum number of items that must be chosen; default 1, min 0, max 25"}' */
+  int min_values; ///< the minimum number of items that must be chosen; default 1, min 0, max 25
+
+  /* specs/discord/message_components.json:22:18
+     '{"name":"max_values", "type":{"base":"int"}, "option":true, "inject_if_not":0, "comment":"the maximum number of items that must be chosen; default 1, min 0, max 25"}' */
+  int max_values; ///< the maximum number of items that must be chosen; default 1, min 0, max 25
+
+  /* specs/discord/message_components.json:23:18
+     '{"name":"components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "option":true, "comment":"a list of child components", "inject_if_not":null}' */
+  struct discord_component **components; ///< a list of child components
+
+  // The following is metadata used to 
+  // 1. control which field should be extracted/injected
+  // 2. record which field is presented(defined) in JSON
+  // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
+  struct {
+    bool enable_arg_switches;
+    bool enable_record_defined;
+    bool enable_record_null;
+    void *arg_switches[12];
+    void *record_defined[12];
+    void *record_null[12];
+  } __M; // metadata
+/// @endcond
+};
+
+
+
+/**
+ * @brief Button Structure
+ *
+ * @see https://discord.com/developers/docs/interactions/message-components#button-object-button-structure
+ * @note defined at specs/discord/message_components.json:41:22
+ */
+struct discord_button {
+  /* specs/discord/message_components.json:44:18
+     '{"name":"type", "type": {"base":"int", "int_alias":"enum discord_component_types"}, "inject_if_not":0, "comment": "2 for a button"}' */
+  enum discord_component_types type; ///< 2 for a button
+
+  /* specs/discord/message_components.json:45:18
+     '{"name":"style", "type": {"base":"int", "int_alias":"enum discord_button_styles"}, "inject_if_not":0, "comment": "one of button styles"}' */
+  enum discord_button_styles style; ///< one of button styles
+
+  /* specs/discord/message_components.json:46:18
+     '{"name":"label", "type":{"base":"char", "dec":"[80+1]"}, "option":true, "comment":"text that appears on the button, max 80 characters", "inject_if_not":""}' */
+  char label[80+1]; ///< text that appears on the button, max 80 characters
+
+  /* specs/discord/message_components.json:47:18
+     '{"name":"emoji", "type":{ "base":"struct discord_emoji", "dec":"*" }, "option":true, "comment":"name, id and animated", "inject_if_not":null}' */
+  struct discord_emoji *emoji; ///< name, id and animated
+
+  /* specs/discord/message_components.json:48:18
+     '{"name":"custom_id", "type":{"base":"char", "dec":"[100+1]"}, "option":true, "comment":"a developer-defined identifier for the component, max 100 characters", "inject_if_not":""}' */
+  char custom_id[100+1]; ///< a developer-defined identifier for the component, max 100 characters
+
+  /* specs/discord/message_components.json:49:18
+     '{"name":"url", "type":{"base":"char", "dec":"*"}, "option":true, "comment":"a url for link-style buttons", "inject_if_not":null}' */
+  char *url; ///< a url for link-style buttons
+
+  /* specs/discord/message_components.json:50:18
+     '{"name":"disabled", "type":{"base":"bool"}, "option":true, "inject_if_not":false, "comment":"whether the component is disabled, default false"}' */
+  bool disabled; ///< whether the component is disabled, default false
+
+  // The following is metadata used to 
+  // 1. control which field should be extracted/injected
+  // 2. record which field is presented(defined) in JSON
+  // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
+  struct {
+    bool enable_arg_switches;
+    bool enable_record_defined;
+    bool enable_record_null;
+    void *arg_switches[7];
+    void *record_defined[7];
+    void *record_null[7];
+  } __M; // metadata
+/// @endcond
+};
+
+
+
+/**
+ * @brief Select Menu Structure
+ *
+ * @see https://discord.com/developers/docs/interactions/message-components#select-menu-object-select-menu-structure
+ * @note defined at specs/discord/message_components.json:70:22
+ */
+struct discord_select_menu {
+  /* specs/discord/message_components.json:73:18
+     '{"name":"type", "type": {"base":"int", "int_alias":"enum discord_component_types"}, "inject_if_not":0, "comment": "3 for a select menu"}' */
+  enum discord_component_types type; ///< 3 for a select menu
+
+  /* specs/discord/message_components.json:74:18
+     '{"name":"custom_id", "type":{"base":"char", "dec":"[100+1]"}, "comment":"a developer-defined identifier for the component, max 100 characters", "inject_if_not":""}' */
+  char custom_id[100+1]; ///< a developer-defined identifier for the component, max 100 characters
+
+  /* specs/discord/message_components.json:75:18
+     '{"name":"options", "type":{"base":"struct discord_select_option", "dec":"ntl"}, "comment":"the choices in the select, max 25"}' */
+  struct discord_select_option **options; ///< the choices in the select, max 25
+
+  /* specs/discord/message_components.json:76:18
+     '{"name":"placeholder", "type":{"base":"char", "dec":"[100+1]"}, "option":true, "comment":"custom placeholder text if nothing is selected, max 100 characters", "inject_if_not":""}' */
+  char placeholder[100+1]; ///< custom placeholder text if nothing is selected, max 100 characters
+
+  /* specs/discord/message_components.json:77:18
+     '{"name":"min_values", "type":{"base":"int"}, "option":true, "inject_if_not":0, "comment":"the minimum number of items that must be chosen; default 1, min 0, max 25"}' */
+  int min_values; ///< the minimum number of items that must be chosen; default 1, min 0, max 25
+
+  /* specs/discord/message_components.json:78:18
+     '{"name":"max_values", "type":{"base":"int"}, "option":true, "inject_if_not":0, "comment":"the maximum number of items that must be chosen; default 1, min 0, max 25"}' */
+  int max_values; ///< the maximum number of items that must be chosen; default 1, min 0, max 25
+
+  /* specs/discord/message_components.json:79:18
+     '{"name":"disabled", "type":{"base":"bool"}, "option":true, "inject_if_not":false, "comment":"disable the select, default false"}' */
+  bool disabled; ///< disable the select, default false
+
+  // The following is metadata used to 
+  // 1. control which field should be extracted/injected
+  // 2. record which field is presented(defined) in JSON
+  // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
+  struct {
+    bool enable_arg_switches;
+    bool enable_record_defined;
+    bool enable_record_null;
+    void *arg_switches[7];
+    void *record_defined[7];
+    void *record_null[7];
+  } __M; // metadata
+/// @endcond
+};
+
+/**
+ * @brief Select Option Structure
+ *
+ * @see https://discord.com/developers/docs/interactions/message-components#select-menu-object-select-option-structure
+ * @note defined at specs/discord/message_components.json:85:22
+ */
+struct discord_select_option {
+  /* specs/discord/message_components.json:88:18
+     '{"name":"label", "type":{"base":"char", "dec":"[25+1]"}, "inject_if_not":"", "comment":"the user-facing name of the option, max 25 characters"}' */
+  char label[25+1]; ///< the user-facing name of the option, max 25 characters
+
+  /* specs/discord/message_components.json:89:18
+     '{"name":"value", "type":{"base":"char", "dec":"[100+1]"}, "inject_if_not":"", "comment":"the dev define value of the option, max 100 characters"}' */
+  char value[100+1]; ///< the dev define value of the option, max 100 characters
+
+  /* specs/discord/message_components.json:90:18
+     '{"name":"description", "type":{"base":"char", "dec":"[50+1]"}, "inject_if_not":"", "option":true, "comment":"a additional description of the option, max 50 characters"}' */
+  char description[50+1]; ///< a additional description of the option, max 50 characters
+
+  /* specs/discord/message_components.json:91:18
+     '{"name":"emoji", "type":{"base":"struct discord_emoji", "dec":"*"}, "inject_if_not":null, "option":true, "comment":"name, id and animated"}' */
+  struct discord_emoji *emoji; ///< name, id and animated
+
+  /* specs/discord/message_components.json:92:18
+     '{"name":"Default", "json_key":"default", "type":{"base":"bool"}, "option":true, "comment":"will render this option as selected by default"}' */
+  bool Default; ///< will render this option as selected by default
+
+  // The following is metadata used to 
+  // 1. control which field should be extracted/injected
+  // 2. record which field is presented(defined) in JSON
+  // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
+  struct {
+    bool enable_arg_switches;
+    bool enable_record_defined;
+    bool enable_record_null;
+    void *arg_switches[5];
+    void *record_defined[5];
+    void *record_null[5];
+  } __M; // metadata
+/// @endcond
+};
 /* This file is generated from specs/discord/permissions.json, Please don't edit it. */
 /**
  * @file specs-code/discord/all_structs.h
  * @author cee-studio
- * @date 01 Jul 2021
+ * @date Jul 27 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/topics/permissions
  */
@@ -3977,11 +4220,534 @@ struct discord_permissions_role_tags {
   } __M; // metadata
 /// @endcond
 };
+/* This file is generated from specs/discord/slash_commands.json, Please don't edit it. */
+/**
+ * @file specs-code/discord/all_structs.h
+ * @author cee-studio
+ * @date Jul 27 2021
+ * @brief Specs generated file
+ * @see https://discord.com/developers/docs/interactions/slash-commands#data-models-and-types
+ */
+
+
+/**
+ * @brief Application Command Structure
+ *
+ * @see https://discord.com/developers/docs/interactions/slash-commands#application-command-object-application-command-structure
+ * @note defined at specs/discord/slash_commands.json:9:22
+ */
+struct discord_application_command {
+  /* specs/discord/slash_commands.json:12:18
+     '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"unique id of the command"}' */
+  u64_snowflake_t id; ///< unique id of the command
+
+  /* specs/discord/slash_commands.json:13:18
+     '{"name":"application_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"unique id of the parent application"}' */
+  u64_snowflake_t application_id; ///< unique id of the parent application
+
+  /* specs/discord/slash_commands.json:14:18
+     '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "comment":"unique id of the command, if not global","inject_if_not":0}' */
+  u64_snowflake_t guild_id; ///< unique id of the command, if not global
+
+  /* specs/discord/slash_commands.json:15:18
+     '{"name":"name", "type":{"base":"char", "dec":"[32+1]"}, "comment":"1-32 lowercase character"}' */
+  char name[32+1]; ///< 1-32 lowercase character
+
+  /* specs/discord/slash_commands.json:16:18
+     '{"name":"description", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character description"}' */
+  char description[100+1]; ///< 1-100 character description
+
+  /* specs/discord/slash_commands.json:17:18
+     '{"name":"options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "option":true, "comment":"the parameters for the command", "inject_if_not":null}' */
+  struct discord_application_command_option **options; ///< the parameters for the command
+
+  /* specs/discord/slash_commands.json:18:18
+     '{"name":"default_permission", "type":{"base":"bool"}, "option":true, "inject_if_not":true, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
+  bool default_permission; ///< whether the command is enabled by default when the app is added to a guild
+
+  // The following is metadata used to 
+  // 1. control which field should be extracted/injected
+  // 2. record which field is presented(defined) in JSON
+  // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
+  struct {
+    bool enable_arg_switches;
+    bool enable_record_defined;
+    bool enable_record_null;
+    void *arg_switches[7];
+    void *record_defined[7];
+    void *record_null[7];
+  } __M; // metadata
+/// @endcond
+};
+
+/**
+ * @brief Application Command Option Structure
+ *
+ * @see https://discord.com/developers/docs/interactions/slash-commands#application-command-object-application-command-option-structure
+ * @note defined at specs/discord/slash_commands.json:25:22
+ */
+struct discord_application_command_option {
+  /* specs/discord/slash_commands.json:28:18
+     '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types"}, "comment":"value of application command option type"}' */
+  enum discord_application_command_option_types type; ///< value of application command option type
+
+  /* specs/discord/slash_commands.json:29:18
+     '{"name":"name", "type":{"base":"char", "dec":"[32+1]"}, "comment":"1-32 lowercase character"}' */
+  char name[32+1]; ///< 1-32 lowercase character
+
+  /* specs/discord/slash_commands.json:30:18
+     '{"name":"description", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character description"}' */
+  char description[100+1]; ///< 1-100 character description
+
+  /* specs/discord/slash_commands.json:31:18
+     '{"name":"required", "type":{"base":"bool"}, "option":true, "inject_if_not":false, "comment":"if the paramter is required or optional -- default false"}' */
+  bool required; ///< if the paramter is required or optional -- default false
+
+  /* specs/discord/slash_commands.json:32:18
+     '{"name":"choices", "type":{"base":"struct discord_application_command_option_choice", "dec":"ntl"}, "option":true, "comment":"choices for string and int types for the user to pick from", "inject_if_not":null}' */
+  struct discord_application_command_option_choice **choices; ///< choices for string and int types for the user to pick from
+
+  /* specs/discord/slash_commands.json:33:18
+     '{"name":"options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "option":true, "comment":"if the option is a subcommand or subcommand group type, this nested options will be the parameters", "inject_if_not":null}' */
+  struct discord_application_command_option **options; ///< if the option is a subcommand or subcommand group type, this nested options will be the parameters
+
+  // The following is metadata used to 
+  // 1. control which field should be extracted/injected
+  // 2. record which field is presented(defined) in JSON
+  // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
+  struct {
+    bool enable_arg_switches;
+    bool enable_record_defined;
+    bool enable_record_null;
+    void *arg_switches[6];
+    void *record_defined[6];
+    void *record_null[6];
+  } __M; // metadata
+/// @endcond
+};
+
+
+
+/**
+ * @brief Application Command Option Choice Structure
+ *
+ * @see https://discord.com/developers/docs/interactions/slash-commands#application-command-object-application-command-option-choice-structure
+ * @note defined at specs/discord/slash_commands.json:58:22
+ */
+struct discord_application_command_option_choice {
+  /* specs/discord/slash_commands.json:61:18
+     '{"name":"name", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character choice name"}' */
+  char name[100+1]; ///< 1-100 character choice name
+
+  /* specs/discord/slash_commands.json:62:18
+     '{"name":"value", "type":{"base":"char", "dec":"[100+1]"}, "comment":"value of choice, up to 100 characters"}' */
+  char value[100+1]; ///< value of choice, up to 100 characters
+
+  // The following is metadata used to 
+  // 1. control which field should be extracted/injected
+  // 2. record which field is presented(defined) in JSON
+  // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
+  struct {
+    bool enable_arg_switches;
+    bool enable_record_defined;
+    bool enable_record_null;
+    void *arg_switches[2];
+    void *record_defined[2];
+    void *record_null[2];
+  } __M; // metadata
+/// @endcond
+};
+
+/**
+ * @brief Guild Application Command Permissions Structure
+ *
+ * @see https://discord.com/developers/docs/interactions/slash-commands#application-command-permissions-object-guild-application-command-permissions-structure
+ * @note defined at specs/discord/slash_commands.json:69:22
+ */
+struct discord_guild_application_command_permissions {
+  /* specs/discord/slash_commands.json:72:18
+     '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the command"}' */
+  u64_snowflake_t id; ///< the id of the command
+
+  /* specs/discord/slash_commands.json:73:18
+     '{"name":"application_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the parent application the command belongs to"}' */
+  u64_snowflake_t application_id; ///< the id of the parent application the command belongs to
+
+  /* specs/discord/slash_commands.json:74:18
+     '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the guild"}' */
+  u64_snowflake_t guild_id; ///< the id of the guild
+
+  /* specs/discord/slash_commands.json:75:18
+     '{"name":"permissions", "type":{"base":"struct discord_application_command_permissions", "dec":"ntl"}, "comment":"the permissions for the command in the guild"}' */
+  struct discord_application_command_permissions **permissions; ///< the permissions for the command in the guild
+
+  // The following is metadata used to 
+  // 1. control which field should be extracted/injected
+  // 2. record which field is presented(defined) in JSON
+  // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
+  struct {
+    bool enable_arg_switches;
+    bool enable_record_defined;
+    bool enable_record_null;
+    void *arg_switches[4];
+    void *record_defined[4];
+    void *record_null[4];
+  } __M; // metadata
+/// @endcond
+};
+
+/**
+ * @brief Application Command Permissions Structure
+ *
+ * @see https://discord.com/developers/docs/interactions/slash-commands#application-command-permissions-object-guild-application-command-permissions-structure
+ * @note defined at specs/discord/slash_commands.json:82:22
+ */
+struct discord_application_command_permissions {
+  /* specs/discord/slash_commands.json:85:18
+     '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the command"}' */
+  u64_snowflake_t id; ///< the id of the command
+
+  /* specs/discord/slash_commands.json:86:18
+     '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_permission_types"}, "comment":"role or user"}' */
+  enum discord_application_command_permission_types type; ///< role or user
+
+  /* specs/discord/slash_commands.json:87:18
+     '{"name":"permission", "type":{"base":"bool"}, "comment":"true to allow, false, to disallow"}' */
+  bool permission; ///< true to allow, false, to disallow
+
+  // The following is metadata used to 
+  // 1. control which field should be extracted/injected
+  // 2. record which field is presented(defined) in JSON
+  // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
+  struct {
+    bool enable_arg_switches;
+    bool enable_record_defined;
+    bool enable_record_null;
+    void *arg_switches[3];
+    void *record_defined[3];
+    void *record_null[3];
+  } __M; // metadata
+/// @endcond
+};
+
+
+
+/**
+ * @brief Interaction Structure
+ *
+ * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-object-interaction-structure
+ * @note defined at specs/discord/slash_commands.json:104:22
+ */
+struct discord_interaction {
+  /* specs/discord/slash_commands.json:107:18
+     '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the interaction"}' */
+  u64_snowflake_t id; ///< id of the interaction
+
+  /* specs/discord/slash_commands.json:108:18
+     '{"name":"application_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the application this iteraction is for"}' */
+  u64_snowflake_t application_id; ///< id of the application this iteraction is for
+
+  /* specs/discord/slash_commands.json:109:18
+     '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_interaction_request_types"}, "comment":"the request type of the interaction"}' */
+  enum discord_interaction_request_types type; ///< the request type of the interaction
+
+  /* specs/discord/slash_commands.json:110:18
+     '{"name":"data", "type":{"base":"struct discord_application_command_interaction_data", "dec":"*"}, "option":true, "comment":"the command data payload", "inject_if_not":null}' */
+  struct discord_application_command_interaction_data *data; ///< the command data payload
+
+  /* specs/discord/slash_commands.json:111:18
+     '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "comment":"the guild it was sent from","inject_if_not":0}' */
+  u64_snowflake_t guild_id; ///< the guild it was sent from
+
+  /* specs/discord/slash_commands.json:112:18
+     '{"name":"channel_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "comment":"the channel it was sent from","inject_if_not":0}' */
+  u64_snowflake_t channel_id; ///< the channel it was sent from
+
+  /* specs/discord/slash_commands.json:113:18
+     '{"name":"member", "type":{"base":"struct discord_guild_member", "dec":"*"}, "option":true, "comment":"guild member data for the invoking user, including permissions", "inject_if_not":null}' */
+  struct discord_guild_member *member; ///< guild member data for the invoking user, including permissions
+
+  /* specs/discord/slash_commands.json:114:18
+     '{"name":"user", "type":{"base":"struct discord_user", "dec":"*"}, "option":true, "comment":"user object for the invoking user, if invoked in a DM", "inject_if_not":null}' */
+  struct discord_user *user; ///< user object for the invoking user, if invoked in a DM
+
+  /* specs/discord/slash_commands.json:115:18
+     '{"name":"token", "type":{"base":"char", "dec":"*"}, "option":true, "comment":"a continuation token for responding to the interaction", "inject_if_not":null}' */
+  char *token; ///< a continuation token for responding to the interaction
+
+  // The following is metadata used to 
+  // 1. control which field should be extracted/injected
+  // 2. record which field is presented(defined) in JSON
+  // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
+  struct {
+    bool enable_arg_switches;
+    bool enable_record_defined;
+    bool enable_record_null;
+    void *arg_switches[9];
+    void *record_defined[9];
+    void *record_null[9];
+  } __M; // metadata
+/// @endcond
+};
+
+
+
+/**
+ * @brief Application Command Interaction Data Structure
+ *
+ * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-object-application-command-interaction-data-structure
+ * @note defined at specs/discord/slash_commands.json:134:22
+ */
+struct discord_application_command_interaction_data {
+  /* specs/discord/slash_commands.json:137:18
+     '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the ID of the invoked command"}' */
+  u64_snowflake_t id; ///< the ID of the invoked command
+
+  /* specs/discord/slash_commands.json:138:18
+     '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"the name of the invoked command"}' */
+  char *name; ///< the name of the invoked command
+
+  /* specs/discord/slash_commands.json:139:18
+     '{"name":"resolved", "type":{"base":"struct discord_application_command_interaction_data_resolved", "dec":"*"}, "option":true, "comment":"converted users + roles + channels", "inject_if_not":null}' */
+  struct discord_application_command_interaction_data_resolved *resolved; ///< converted users + roles + channels
+
+  /* specs/discord/slash_commands.json:140:18
+     '{"name":"options", "type":{"base":"struct discord_application_command_interaction_data_option", "dec":"ntl"}, "option":true, "comment":"the params + values from the user", "inject_if_not":null}' */
+  struct discord_application_command_interaction_data_option **options; ///< the params + values from the user
+
+  /* specs/discord/slash_commands.json:141:18
+     '{"name":"custom_id", "type":{"base":"char", "dec":"[100+1]"}, "comment":"a developer-defined identifier for the component, max 100 characters"}' */
+  char custom_id[100+1]; ///< a developer-defined identifier for the component, max 100 characters
+
+  /* specs/discord/slash_commands.json:142:18
+     '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_component_types"}, "comment":"component type"}' */
+  enum discord_component_types type; ///< component type
+
+  // The following is metadata used to 
+  // 1. control which field should be extracted/injected
+  // 2. record which field is presented(defined) in JSON
+  // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
+  struct {
+    bool enable_arg_switches;
+    bool enable_record_defined;
+    bool enable_record_null;
+    void *arg_switches[6];
+    void *record_defined[6];
+    void *record_null[6];
+  } __M; // metadata
+/// @endcond
+};
+
+/**
+ * @brief Application Command Interaction Data Resolved Structure
+ *
+ * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-object-application-command-interaction-data-resolved-structure
+ * @note defined at specs/discord/slash_commands.json:149:22
+ */
+struct discord_application_command_interaction_data_resolved {
+  /* specs/discord/slash_commands.json:152:18
+     '{"name":"users", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the ids and User objects", "inject_if_not":null}' */
+  ja_str **users; ///< the ids and User objects
+
+  /* specs/discord/slash_commands.json:153:18
+     '{"name":"members", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the ids and partial Member objects", "inject_if_not":null}' */
+  ja_str **members; ///< the ids and partial Member objects
+
+  /* specs/discord/slash_commands.json:154:18
+     '{"name":"roles", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the ids and Role objects", "inject_if_not":null}' */
+  ja_str **roles; ///< the ids and Role objects
+
+  /* specs/discord/slash_commands.json:155:18
+     '{"name":"channels", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the ids and partial Channel objects", "inject_if_not":null}' */
+  ja_str **channels; ///< the ids and partial Channel objects
+
+  // The following is metadata used to 
+  // 1. control which field should be extracted/injected
+  // 2. record which field is presented(defined) in JSON
+  // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
+  struct {
+    bool enable_arg_switches;
+    bool enable_record_defined;
+    bool enable_record_null;
+    void *arg_switches[4];
+    void *record_defined[4];
+    void *record_null[4];
+  } __M; // metadata
+/// @endcond
+};
+
+/**
+ * @brief Application Command Interaction Data Option Structure
+ *
+ * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-object-application-command-interaction-data-option-structure
+ * @note defined at specs/discord/slash_commands.json:162:22
+ */
+struct discord_application_command_interaction_data_option {
+  /* specs/discord/slash_commands.json:165:18
+     '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"the name of the parameter"}' */
+  char *name; ///< the name of the parameter
+
+  /* specs/discord/slash_commands.json:166:18
+     '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types"}, "comment":"value of application command option type"}' */
+  enum discord_application_command_option_types type; ///< value of application command option type
+
+  /* specs/discord/slash_commands.json:167:18
+     '{"name":"value", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types"}, "comment":"the value of the pair"}' */
+  enum discord_application_command_option_types value; ///< the value of the pair
+
+  /* specs/discord/slash_commands.json:168:18
+     '{"name":"options", "type":{"base":"struct discord_application_command_interaction_data_option", "dec":"ntl"}, "option":true, "comment":"present if this option is a group or subcommand", "inject_if_not":null}' */
+  struct discord_application_command_interaction_data_option **options; ///< present if this option is a group or subcommand
+
+  // The following is metadata used to 
+  // 1. control which field should be extracted/injected
+  // 2. record which field is presented(defined) in JSON
+  // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
+  struct {
+    bool enable_arg_switches;
+    bool enable_record_defined;
+    bool enable_record_null;
+    void *arg_switches[4];
+    void *record_defined[4];
+    void *record_null[4];
+  } __M; // metadata
+/// @endcond
+};
+
+/**
+ * @brief Interaction Response Structure
+ *
+ * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-response-object-interaction-response-structure
+ * @note defined at specs/discord/slash_commands.json:175:22
+ */
+struct discord_interaction_response {
+  /* specs/discord/slash_commands.json:178:18
+     '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_interaction_callback_types"}, "comment":"the type of response"}' */
+  enum discord_interaction_callback_types type; ///< the type of response
+
+  /* specs/discord/slash_commands.json:179:18
+     '{"name":"data", "type":{"base":"struct discord_interaction_application_command_callback_data", "dec":"*"}, "option":true, "comment":"an optional response message", "inject_if_not":null}' */
+  struct discord_interaction_application_command_callback_data *data; ///< an optional response message
+
+  // The following is metadata used to 
+  // 1. control which field should be extracted/injected
+  // 2. record which field is presented(defined) in JSON
+  // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
+  struct {
+    bool enable_arg_switches;
+    bool enable_record_defined;
+    bool enable_record_null;
+    void *arg_switches[2];
+    void *record_defined[2];
+    void *record_null[2];
+  } __M; // metadata
+/// @endcond
+};
+
+
+
+/**
+ * @brief Interaction Application Command Callback Data Structure
+ *
+ * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-response-object-interaction-application-command-callback-data-structure
+ * @note defined at specs/discord/slash_commands.json:200:22
+ */
+struct discord_interaction_application_command_callback_data {
+  /* specs/discord/slash_commands.json:203:18
+     '{"name":"tts", "type":{"base":"bool"}, "option":true, "comment":"is the response TTS"}' */
+  bool tts; ///< is the response TTS
+
+  /* specs/discord/slash_commands.json:204:18
+     '{"name":"content", "type":{"base":"char", "dec":"*"}, "option":true, "comment":"message content", "inject_if_not":null}' */
+  char *content; ///< message content
+
+  /* specs/discord/slash_commands.json:205:18
+     '{"name":"embeds", "type":{"base":"struct discord_embed", "dec":"ntl"}, "option":true, "comment":"support up to 10 embeds", "inject_if_not":null}' */
+  struct discord_embed **embeds; ///< support up to 10 embeds
+
+  /* specs/discord/slash_commands.json:206:18
+     '{"name":"allowed_mentions", "type":{"base":"struct discord_allowed_mentions", "dec":"*"}, "option":true, "comment":"allowed mentions object", "inject_if_not":null, "todo": true}' */
+  // @todo allowed_mentions allowed mentions object;
+
+  /* specs/discord/slash_commands.json:207:18
+     '{"name":"flags", "type":{"base":"int", "int_alias":"enum discord_interaction_application_command_callback_data_flags"}, "option":true, "comment":"interaction application command callback data flags", "inject_if_not":0}' */
+  enum discord_interaction_application_command_callback_data_flags flags; ///< interaction application command callback data flags
+
+  /* specs/discord/slash_commands.json:208:18
+     '{"name":"components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "option":true, "comment":"message components", "inject_if_not":null}' */
+  struct discord_component **components; ///< message components
+
+  // The following is metadata used to 
+  // 1. control which field should be extracted/injected
+  // 2. record which field is presented(defined) in JSON
+  // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
+  struct {
+    bool enable_arg_switches;
+    bool enable_record_defined;
+    bool enable_record_null;
+    void *arg_switches[6];
+    void *record_defined[6];
+    void *record_null[6];
+  } __M; // metadata
+/// @endcond
+};
+
+
+
+/**
+ * @brief Message Interaction Structure
+ *
+ * @see https://discord.com/developers/docs/interactions/slash-commands#message-interaction-object-message-interaction-structure
+ * @note defined at specs/discord/slash_commands.json:225:22
+ */
+struct discord_message_interaction {
+  /* specs/discord/slash_commands.json:228:18
+     '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the interaction"}' */
+  u64_snowflake_t id; ///< id of the interaction
+
+  /* specs/discord/slash_commands.json:229:18
+     '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_interaction_request_types"}, "comment":"the request type of the interaction"}' */
+  enum discord_interaction_request_types type; ///< the request type of the interaction
+
+  /* specs/discord/slash_commands.json:230:18
+     '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"the name of the application command"}' */
+  char *name; ///< the name of the application command
+
+  /* specs/discord/slash_commands.json:231:18
+     '{"name":"user", "type":{"base":"struct discord_user", "dec":"*"}, "comment":"the user who invoked the interaction"}' */
+  struct discord_user *user; ///< the user who invoked the interaction
+
+  // The following is metadata used to 
+  // 1. control which field should be extracted/injected
+  // 2. record which field is presented(defined) in JSON
+  // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
+  struct {
+    bool enable_arg_switches;
+    bool enable_record_defined;
+    bool enable_record_null;
+    void *arg_switches[4];
+    void *record_defined[4];
+    void *record_null[4];
+  } __M; // metadata
+/// @endcond
+};
 /* This file is generated from specs/discord/user.endpoints-params.json, Please don't edit it. */
 /**
  * @file specs-code/discord/all_structs.h
  * @author cee-studio
- * @date 01 Jul 2021
+ * @date Jul 27 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/user
  */
@@ -4054,7 +4820,7 @@ struct discord_create_group_dm_params {
 /**
  * @file specs-code/discord/all_structs.h
  * @author cee-studio
- * @date 01 Jul 2021
+ * @date Jul 27 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/user
  */
@@ -4202,7 +4968,7 @@ struct discord_connection {
 /**
  * @file specs-code/discord/all_structs.h
  * @author cee-studio
- * @date 01 Jul 2021
+ * @date Jul 27 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/topics/voice-connections
  */
@@ -4217,7 +4983,7 @@ struct discord_connection {
 /**
  * @file specs-code/discord/all_structs.h
  * @author cee-studio
- * @date 01 Jul 2021
+ * @date Jul 27 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/voice
  */
@@ -4344,7 +5110,7 @@ struct discord_voice_region {
 /**
  * @file specs-code/discord/all_structs.h
  * @author cee-studio
- * @date 01 Jul 2021
+ * @date Jul 27 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/webhook
  */
@@ -4539,7 +5305,7 @@ struct discord_edit_webhook_message_params {
 /**
  * @file specs-code/discord/all_structs.h
  * @author cee-studio
- * @date 01 Jul 2021
+ * @date Jul 27 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/webhook
  */

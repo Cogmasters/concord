@@ -72,9 +72,11 @@ void on_get_my_audit_log(
   struct discord_create_message_params params;
   if (size) {
     params = (struct discord_create_message_params){
-      .file.name = "audit.json",
-      .file.content = audit_json,
-      .file.size = size
+      .file = {
+        .name = "audit.json",
+        .content = audit_json,
+        .size = size
+      }
     };
   }
   else {

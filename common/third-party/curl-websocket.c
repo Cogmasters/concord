@@ -374,10 +374,10 @@ cws_close(CURL *easy, enum cws_close_reason reason, const char *reason_text, siz
         return false;
     }
 #if defined(__stensal__)
-    curl_easy_setopt(easy, CURLOPT_TIMEOUT, 20L); // never time out
+    curl_easy_setopt(easy, CURLOPT_TIMEOUT, 150L);
 #else
-    curl_easy_setopt(easy, CURLOPT_TIMEOUT, 2L);
-#endif    
+    curl_easy_setopt(easy, CURLOPT_TIMEOUT, 15L);
+#endif
     priv = (struct cws_data *)p;
 
     if (reason == 0) {

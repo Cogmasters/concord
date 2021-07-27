@@ -5,7 +5,7 @@
 
 
 void on_ready(struct discord *client, const struct discord_user *bot) {
-  fprintf(stderr, "\n\nPingPong-Bot succesfully connected to Discord as %s#%s!\n\n",
+  log_info("PingPong-Bot succesfully connected to Discord as %s#%s!",
       bot->username, bot->discriminator);
 }
 

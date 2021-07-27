@@ -2,17 +2,19 @@
 /**
  * @file specs-code/discord/webhook.c
  * @author cee-studio
- * @date 01 Jul 2021
+ * @date Jul 27 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/webhook
  */
 
 #include "specs.h"
 
-void discord_webhook_from_json(char *json, size_t len, struct discord_webhook *p)
+void discord_webhook_from_json(char *json, size_t len, struct discord_webhook **pp)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
+  if (!*pp) *pp = calloc(1, sizeof **pp);
+  struct discord_webhook *p = *pp;
   r=json_extract(json, len, 
   /* specs/discord/webhook.json:12:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
@@ -58,7 +60,7 @@ void discord_webhook_from_json(char *json, size_t len, struct discord_webhook *p
                 cee_strtoull, &p->channel_id,
   /* specs/discord/webhook.json:16:20
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }}' */
-                discord_user_from_json, p->user,
+                discord_user_from_json, &p->user,
   /* specs/discord/webhook.json:17:20
      '{ "name": "name", "type":{ "base":"char", "dec":"[DISCORD_WEBHOOK_NAME_LEN]" }}' */
                 p->name,
@@ -198,8 +200,8 @@ void discord_webhook_free_v(void *p) {
  discord_webhook_free((struct discord_webhook *)p);
 };
 
-void discord_webhook_from_json_v(char *json, size_t len, void *p) {
- discord_webhook_from_json(json, len, (struct discord_webhook*)p);
+void discord_webhook_from_json_v(char *json, size_t len, void *pp) {
+ discord_webhook_from_json(json, len, (struct discord_webhook**)pp);
 }
 
 size_t discord_webhook_to_json_v(char *json, size_t len, void *p) {
@@ -303,10 +305,10 @@ void discord_webhook_list_from_json(char *str, size_t len, struct discord_webhoo
   struct ntl_deserializer d;
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_webhook);
-  d.init_elem = discord_webhook_init_v;
+  d.init_elem = NULL;
   d.elem_from_buf = discord_webhook_from_json_v;
   d.ntl_recipient_p= (void***)p;
-  extract_ntl_from_json(str, len, &d);
+  extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_webhook_list_to_json(char *str, size_t len, struct discord_webhook **p)

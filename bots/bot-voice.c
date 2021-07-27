@@ -7,7 +7,7 @@
 
 
 void on_ready(struct discord *client, const struct discord_user *bot) {
-  fprintf(stderr, "\n\nVoice-Bot succesfully connected to Discord as %s#%s!\n\n",
+  log_info("Voice-Bot succesfully connected to Discord as %s#%s!",
       bot->username, bot->discriminator);
 }
 
@@ -20,7 +20,7 @@ void on_voice_regions(
   NTL_T(struct discord_voice_region) voice_regions=NULL;
   discord_list_voice_regions(client, &voice_regions);
   if (!voice_regions) {
-    fprintf(stderr, "Could not obtain voice regions\n");
+    log_error("Could not obtain voice regions");
     return;
   }
 

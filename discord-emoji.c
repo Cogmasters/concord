@@ -22,14 +22,12 @@ discord_list_guild_emojis(
     return ORCA_MISSING_PARAMETER;
   }
 
-  struct ua_resp_handle resp_handle = { 
-    .ok_cb = &discord_emoji_list_from_json_v, 
-    .ok_obj = p_emojis
-  };
-
   return discord_adapter_run( 
            &client->adapter,
-           &resp_handle,
+           &(struct ua_resp_handle){ 
+             .ok_cb = &discord_emoji_list_from_json_v, 
+             .ok_obj = &p_emojis
+           },
            NULL,
            HTTP_GET,
            "/guilds/%"PRIu64"/emojis", guild_id);
@@ -55,14 +53,12 @@ discord_get_guild_emoji(
     return ORCA_MISSING_PARAMETER;
   }
 
-  struct ua_resp_handle resp_handle = { 
-    .ok_cb = &discord_emoji_from_json_v, 
-    .ok_obj = p_emoji
-  };
-
   return discord_adapter_run( 
            &client->adapter,
-           &resp_handle,
+           &(struct ua_resp_handle){ 
+             .ok_cb = &discord_emoji_from_json_v, 
+             .ok_obj = &p_emoji
+           },
            NULL,
            HTTP_GET,
            "/guilds/%"PRIu64"/emojis/%"PRIu64, guild_id, emoji_id);
@@ -84,11 +80,6 @@ discord_create_guild_emoji(
     return ORCA_MISSING_PARAMETER;
   }
 
-  struct ua_resp_handle resp_handle = {
-    .ok_cb = p_emoji ? &discord_emoji_from_json_v : NULL,
-    .ok_obj = p_emoji
-  };
-
   char *payload=NULL;
   size_t ret = json_ainject(&payload, 
                   "(name):s,(image):s,(roles):F",
@@ -101,13 +92,14 @@ discord_create_guild_emoji(
     return ORCA_BAD_JSON;
   }
 
-  struct sized_buffer req_body = { payload, ret };
-
   ORCAcode code;
   code = discord_adapter_run(
            &client->adapter,
-           &resp_handle,
-           &req_body,
+           &(struct ua_resp_handle){
+             .ok_cb = p_emoji ? &discord_emoji_from_json_v : NULL,
+             .ok_obj = &p_emoji
+           },
+           &(struct sized_buffer){ payload, ret },
            HTTP_POST,
            "/guilds/%"PRIu64"/emojis", guild_id);
 
@@ -137,11 +129,6 @@ discord_modify_guild_emoji(
     return ORCA_MISSING_PARAMETER;
   }
 
-  struct ua_resp_handle resp_handle = {
-    .ok_cb = p_emoji ? &discord_emoji_from_json_v : NULL,
-    .ok_obj = p_emoji
-  };
-
   void *A[2]={}; // pointer availability array
   if (params->name)
     A[0] = params->name;
@@ -162,13 +149,14 @@ discord_modify_guild_emoji(
     return ORCA_BAD_JSON;
   }
 
-  struct sized_buffer req_body = { payload, ret };
-
   ORCAcode code;
   code = discord_adapter_run(
            &client->adapter,
-           &resp_handle,
-           &req_body,
+           &(struct ua_resp_handle){
+             .ok_cb = p_emoji ? &discord_emoji_from_json_v : NULL,
+             .ok_obj = &p_emoji
+           },
+           &(struct sized_buffer){ payload, ret },
            HTTP_PATCH,
            "/guilds/%"PRIu64"/emojis/%"PRIu64, guild_id, emoji_id);
 

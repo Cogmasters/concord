@@ -35,7 +35,7 @@ struct {
 
 
 void on_ready(struct discord *client, const struct discord_user *bot) {
-  fprintf(stderr, "\n\nReddit-Bot succesfully connected to Discord as %s#%s!\n\n",
+  log_info("Reddit-Bot succesfully connected to Discord as %s#%s!",
       bot->username, bot->discriminator);
 }
 
@@ -47,7 +47,7 @@ embed_reddit_search_result(
   char sort[],
   char keywords[])
 {
-  struct sized_buffer search_json={0};
+  struct sized_buffer resp_body={0};
   { // anonymous block
     struct reddit_search_params params = { 
       .q = (keywords && *keywords) ? keywords : NULL,
@@ -60,7 +60,7 @@ embed_reddit_search_result(
       params.restrict_sr = true;
     else
       subreddits = "all";
-    reddit_search(BOT.R.client, &params, subreddits, &search_json);
+    reddit_search(BOT.R.client, &params, subreddits, &resp_body);
   }
 
   struct discord_embed *embed = discord_embed_alloc();
@@ -73,7 +73,7 @@ embed_reddit_search_result(
       "https://cee.dev",
       "https://cee.dev/static/images/cee.png", NULL);
 
-  json_item_t *root = json_parse(search_json.start, search_json.size);
+  json_item_t *root = json_parse(resp_body.start, resp_body.size);
   json_item_t *children = json_get_child(root, "data.children");
   if (!children) return NULL;
   

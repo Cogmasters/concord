@@ -2,7 +2,7 @@
  * @file websockets.h
  * @author cee-studio
  * @date 21 Jun 2021
- * @brief File containing internal functions and datatypes for WebSockets client
+ * @brief File containing internal functions and datatypes for WebSockets interfacing
  */
 
 #ifndef WEBSOCKETS_H
@@ -12,15 +12,17 @@
 extern "C" {
 #endif // __cplusplus
 
-#include "types.h"
-#include "logconf.h" /* struct logconf */
+#include "types.h" /* ORCAcode */
+#include "logconf.h" /* logging facilities */
 
-/* FORWARD DECLARATIONS */
-struct websockets;
+struct websockets; // forward declaration
 
+/**
+ * @brief Stores info on the latest transfer performed via websockets
+ */
 struct ws_info {
-  struct loginfo loginfo;
-  ORCAcode code;
+  struct loginfo loginfo; ///< logging info
+  ORCAcode code; ///< how the transfer went @todo implement
 };
 
 /**
@@ -35,12 +37,9 @@ enum ws_status {
   WS_CONNECTING,       ///< client in the process of connecting from ws
 };
 
-enum ws_user_cmd {
-  WS_USER_CMD_NONE,
-  WS_USER_CMD_EXIT,
-};
-
 /** 
+ * @brief WebSockets CLOSE opcodes
+ * @see ws_close_opcode_print()
  * @see https://tools.ietf.org/html/rfc6455#section-7.4.1 
  */
 enum ws_close_reason {
@@ -61,6 +60,9 @@ enum ws_close_reason {
     WS_CLOSE_REASON_PRIVATE_END          = 4999
 };
 
+/**
+ * @brief WebSockets callbacks
+ */
 struct ws_callbacks {
   /**
    * @brief Called upon connection
@@ -202,15 +204,6 @@ void ws_start(struct websockets *ws);
 void ws_perform(struct websockets *ws, _Bool *is_running, uint64_t wait_ms);
 
 /**
- * @brief The WebSockets handle concept of "now"
- *
- * @param ws the WebSockets handle created with ws_init()
- * @return the timestamp in milliseconds from when ws_perform() was last called
- * @note the timestamp is updated at every ws_perform() call
- */
-uint64_t ws_timestamp(struct websockets *ws);
-
-/**
  * @brief Returns the WebSockets handle connection status
  *
  * @param ws the WebSockets handle created with ws_init()
@@ -224,11 +217,22 @@ enum ws_status ws_get_status(struct websockets *ws);
  * @param opcode the opcode to be converted to string
  * @return a read-only string literal of the opcode
  */
-char* ws_close_opcode_print(enum ws_close_reason opcode);
+const char* ws_close_opcode_print(enum ws_close_reason opcode);
+
+/**
+ * @brief The WebSockets event-loop concept of "now"
+ *
+ * @param ws the WebSockets handle created with ws_init()
+ * @return the timestamp in milliseconds from when ws_perform() was last called
+ * @note the timestamp is updated at the start of each event-loop iteration
+ */
+uint64_t ws_timestamp(struct websockets *ws);
 
 /**
  * @brief Check if a WebSockets connection is alive
  *
+ * This will only return true if the connection status is
+ *        different than WS_DISCONNECTED
  * @param ws the WebSockets handle created with ws_init()
  * @return TRUE if WebSockets status is different than
  *        WS_DISCONNECTED, FALSE otherwise.
@@ -236,15 +240,33 @@ char* ws_close_opcode_print(enum ws_close_reason opcode);
 bool ws_is_alive(struct websockets *ws);
 
 /**
- * @brief Check if WebSockets connection is active
+ * @brief Check if WebSockets connection is functional
  *
+ * This will only return true if the connection status is
+ *        WS_CONNECTED
  * @param ws the WebSockets handle created with ws_init()
- * @return true if is function, false otherwise
+ * @return true if is functional, false otherwise
  */
 bool ws_is_functional(struct websockets *ws);
 
-void ws_exit_event_loop(struct websockets *ws);
+/**
+ * @brief Thread-safe way to stop websockets connection
+ *
+ * This will activate a internal WS_USER_CMD_EXIT flag that will
+ *        force disconnect when the next iteration begins.
+ * @note it will create a copy of the reason string
+ * @param ws the WebSockets handle created with ws_init()
+ * @param code the WebSockets CLOSE opcode
+ * @param reason the close reason
+ * @param lean the reason length
+ */
+void ws_close(struct websockets *ws, const enum ws_close_reason code, const char reason[], const size_t len);
 
+/**
+ * @brief Check if current thread is the same as the event-loop main-thread
+ * @param ws the WebSockets handle created with ws_init()
+ * @return true if its the same thread, false otherwise
+ */
 bool ws_same_thread(struct websockets *ws);
 
 #ifdef __cplusplus

@@ -27,20 +27,16 @@ discord_get_invite(
     return ORCA_MISSING_PARAMETER;
   }
 
-  struct ua_resp_handle resp_handle = { 
-    .ok_cb = &discord_invite_from_json_v, 
-    .ok_obj = p_invite
-  };
-
   char payload[DISCORD_MAX_PAYLOAD_LEN];
   size_t ret = discord_get_invite_params_to_json(payload, sizeof(payload), params);
 
-  struct sized_buffer req_body = { payload, ret };
-
   return discord_adapter_run( 
            &client->adapter,
-           &resp_handle,
-           &req_body,
+           &(struct ua_resp_handle){
+             .ok_cb = &discord_invite_from_json_v, 
+             .ok_obj = &p_invite
+           },
+           &(struct sized_buffer){ payload, ret },
            HTTP_GET, 
            "/invites/%s", invite_code);
 }
@@ -56,14 +52,12 @@ discord_delete_invite(
     return ORCA_MISSING_PARAMETER;
   }
 
-  struct ua_resp_handle resp_handle = { 
-    .ok_cb = p_invite ? &discord_invite_from_json_v : NULL, 
-    .ok_obj = p_invite
-  };
-
   return discord_adapter_run( 
            &client->adapter,
-           &resp_handle,
+           &(struct ua_resp_handle){
+             .ok_cb = p_invite ? &discord_invite_from_json_v : NULL, 
+             .ok_obj = &p_invite
+           },
            NULL,
            HTTP_DELETE, 
            "/invites/%s", invite_code);

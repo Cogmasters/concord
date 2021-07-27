@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/permissions.c
  * @author cee-studio
- * @date 01 Jul 2021
+ * @date Jul 27 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/topics/permissions
  */
@@ -118,10 +118,12 @@ bool discord_permissions_bitwise_flags_has(enum discord_permissions_bitwise_flag
   return false;
 }
 
-void discord_permissions_role_from_json(char *json, size_t len, struct discord_permissions_role *p)
+void discord_permissions_role_from_json(char *json, size_t len, struct discord_permissions_role **pp)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
+  if (!*pp) *pp = calloc(1, sizeof **pp);
+  struct discord_permissions_role *p = *pp;
   r=json_extract(json, len, 
   /* specs/discord/permissions.json:52:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
@@ -179,7 +181,7 @@ void discord_permissions_role_from_json(char *json, size_t len, struct discord_p
                 &p->mentionable,
   /* specs/discord/permissions.json:60:20
      '{ "name": "tags", "type":{"base":"struct discord_permissions_role_tags", "dec":"*"}}' */
-                discord_permissions_role_tags_from_json, p->tags,
+                discord_permissions_role_tags_from_json, &p->tags,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
                 p->__M.record_null, sizeof(p->__M.record_null));
@@ -307,8 +309,8 @@ void discord_permissions_role_free_v(void *p) {
  discord_permissions_role_free((struct discord_permissions_role *)p);
 };
 
-void discord_permissions_role_from_json_v(char *json, size_t len, void *p) {
- discord_permissions_role_from_json(json, len, (struct discord_permissions_role*)p);
+void discord_permissions_role_from_json_v(char *json, size_t len, void *pp) {
+ discord_permissions_role_from_json(json, len, (struct discord_permissions_role**)pp);
 }
 
 size_t discord_permissions_role_to_json_v(char *json, size_t len, void *p) {
@@ -411,10 +413,10 @@ void discord_permissions_role_list_from_json(char *str, size_t len, struct disco
   struct ntl_deserializer d;
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_permissions_role);
-  d.init_elem = discord_permissions_role_init_v;
+  d.init_elem = NULL;
   d.elem_from_buf = discord_permissions_role_from_json_v;
   d.ntl_recipient_p= (void***)p;
-  extract_ntl_from_json(str, len, &d);
+  extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_permissions_role_list_to_json(char *str, size_t len, struct discord_permissions_role **p)
@@ -423,10 +425,12 @@ size_t discord_permissions_role_list_to_json(char *str, size_t len, struct disco
 }
 
 
-void discord_permissions_role_tags_from_json(char *json, size_t len, struct discord_permissions_role_tags *p)
+void discord_permissions_role_tags_from_json(char *json, size_t len, struct discord_permissions_role_tags **pp)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
+  if (!*pp) *pp = calloc(1, sizeof **pp);
+  struct discord_permissions_role_tags *p = *pp;
   r=json_extract(json, len, 
   /* specs/discord/permissions.json:70:20
      '{ "name": "bot_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
@@ -516,8 +520,8 @@ void discord_permissions_role_tags_free_v(void *p) {
  discord_permissions_role_tags_free((struct discord_permissions_role_tags *)p);
 };
 
-void discord_permissions_role_tags_from_json_v(char *json, size_t len, void *p) {
- discord_permissions_role_tags_from_json(json, len, (struct discord_permissions_role_tags*)p);
+void discord_permissions_role_tags_from_json_v(char *json, size_t len, void *pp) {
+ discord_permissions_role_tags_from_json(json, len, (struct discord_permissions_role_tags**)pp);
 }
 
 size_t discord_permissions_role_tags_to_json_v(char *json, size_t len, void *p) {
@@ -581,10 +585,10 @@ void discord_permissions_role_tags_list_from_json(char *str, size_t len, struct 
   struct ntl_deserializer d;
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_permissions_role_tags);
-  d.init_elem = discord_permissions_role_tags_init_v;
+  d.init_elem = NULL;
   d.elem_from_buf = discord_permissions_role_tags_from_json_v;
   d.ntl_recipient_p= (void***)p;
-  extract_ntl_from_json(str, len, &d);
+  extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_permissions_role_tags_list_to_json(char *str, size_t len, struct discord_permissions_role_tags **p)

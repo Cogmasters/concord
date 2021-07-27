@@ -2,17 +2,19 @@
 /**
  * @file specs-code/discord/channel.endpoints-params.c
  * @author cee-studio
- * @date 01 Jul 2021
+ * @date Jul 27 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/channel
  */
 
 #include "specs.h"
 
-void discord_modify_channel_params_from_json(char *json, size_t len, struct discord_modify_channel_params *p)
+void discord_modify_channel_params_from_json(char *json, size_t len, struct discord_modify_channel_params **pp)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
+  if (!*pp) *pp = calloc(1, sizeof **pp);
+  struct discord_modify_channel_params *p = *pp;
   r=json_extract(json, len, 
   /* specs/discord/channel.endpoints-params.json:13:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null }' */
@@ -325,8 +327,8 @@ void discord_modify_channel_params_free_v(void *p) {
  discord_modify_channel_params_free((struct discord_modify_channel_params *)p);
 };
 
-void discord_modify_channel_params_from_json_v(char *json, size_t len, void *p) {
- discord_modify_channel_params_from_json(json, len, (struct discord_modify_channel_params*)p);
+void discord_modify_channel_params_from_json_v(char *json, size_t len, void *pp) {
+ discord_modify_channel_params_from_json(json, len, (struct discord_modify_channel_params**)pp);
 }
 
 size_t discord_modify_channel_params_to_json_v(char *json, size_t len, void *p) {
@@ -473,10 +475,10 @@ void discord_modify_channel_params_list_from_json(char *str, size_t len, struct 
   struct ntl_deserializer d;
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_modify_channel_params);
-  d.init_elem = discord_modify_channel_params_init_v;
+  d.init_elem = NULL;
   d.elem_from_buf = discord_modify_channel_params_from_json_v;
   d.ntl_recipient_p= (void***)p;
-  extract_ntl_from_json(str, len, &d);
+  extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_modify_channel_params_list_to_json(char *str, size_t len, struct discord_modify_channel_params **p)
@@ -485,10 +487,12 @@ size_t discord_modify_channel_params_list_to_json(char *str, size_t len, struct 
 }
 
 
-void discord_get_reactions_params_from_json(char *json, size_t len, struct discord_get_reactions_params *p)
+void discord_get_reactions_params_from_json(char *json, size_t len, struct discord_get_reactions_params **pp)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
+  if (!*pp) *pp = calloc(1, sizeof **pp);
+  struct discord_get_reactions_params *p = *pp;
   r=json_extract(json, len, 
   /* specs/discord/channel.endpoints-params.json:38:20
      '{ "name": "after", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "loc":"query"}' */
@@ -562,8 +566,8 @@ void discord_get_reactions_params_free_v(void *p) {
  discord_get_reactions_params_free((struct discord_get_reactions_params *)p);
 };
 
-void discord_get_reactions_params_from_json_v(char *json, size_t len, void *p) {
- discord_get_reactions_params_from_json(json, len, (struct discord_get_reactions_params*)p);
+void discord_get_reactions_params_from_json_v(char *json, size_t len, void *pp) {
+ discord_get_reactions_params_from_json(json, len, (struct discord_get_reactions_params**)pp);
 }
 
 size_t discord_get_reactions_params_to_json_v(char *json, size_t len, void *p) {
@@ -621,10 +625,10 @@ void discord_get_reactions_params_list_from_json(char *str, size_t len, struct d
   struct ntl_deserializer d;
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_get_reactions_params);
-  d.init_elem = discord_get_reactions_params_init_v;
+  d.init_elem = NULL;
   d.elem_from_buf = discord_get_reactions_params_from_json_v;
   d.ntl_recipient_p= (void***)p;
-  extract_ntl_from_json(str, len, &d);
+  extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_get_reactions_params_list_to_json(char *str, size_t len, struct discord_get_reactions_params **p)
@@ -633,10 +637,12 @@ size_t discord_get_reactions_params_list_to_json(char *str, size_t len, struct d
 }
 
 
-void discord_edit_channel_permissions_params_from_json(char *json, size_t len, struct discord_edit_channel_permissions_params *p)
+void discord_edit_channel_permissions_params_from_json(char *json, size_t len, struct discord_edit_channel_permissions_params **pp)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
+  if (!*pp) *pp = calloc(1, sizeof **pp);
+  struct discord_edit_channel_permissions_params *p = *pp;
   r=json_extract(json, len, 
   /* specs/discord/channel.endpoints-params.json:49:20
      '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"}, "comment":"permission bit set" }' */
@@ -726,8 +732,8 @@ void discord_edit_channel_permissions_params_free_v(void *p) {
  discord_edit_channel_permissions_params_free((struct discord_edit_channel_permissions_params *)p);
 };
 
-void discord_edit_channel_permissions_params_from_json_v(char *json, size_t len, void *p) {
- discord_edit_channel_permissions_params_from_json(json, len, (struct discord_edit_channel_permissions_params*)p);
+void discord_edit_channel_permissions_params_from_json_v(char *json, size_t len, void *pp) {
+ discord_edit_channel_permissions_params_from_json(json, len, (struct discord_edit_channel_permissions_params**)pp);
 }
 
 size_t discord_edit_channel_permissions_params_to_json_v(char *json, size_t len, void *p) {
@@ -791,10 +797,10 @@ void discord_edit_channel_permissions_params_list_from_json(char *str, size_t le
   struct ntl_deserializer d;
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_edit_channel_permissions_params);
-  d.init_elem = discord_edit_channel_permissions_params_init_v;
+  d.init_elem = NULL;
   d.elem_from_buf = discord_edit_channel_permissions_params_from_json_v;
   d.ntl_recipient_p= (void***)p;
-  extract_ntl_from_json(str, len, &d);
+  extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_edit_channel_permissions_params_list_to_json(char *str, size_t len, struct discord_edit_channel_permissions_params **p)
@@ -803,10 +809,12 @@ size_t discord_edit_channel_permissions_params_list_to_json(char *str, size_t le
 }
 
 
-void discord_follow_news_channel_params_from_json(char *json, size_t len, struct discord_follow_news_channel_params *p)
+void discord_follow_news_channel_params_from_json(char *json, size_t len, struct discord_follow_news_channel_params **pp)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
+  if (!*pp) *pp = calloc(1, sizeof **pp);
+  struct discord_follow_news_channel_params *p = *pp;
   r=json_extract(json, len, 
   /* specs/discord/channel.endpoints-params.json:61:20
      '{ "name": "webhook_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"} }' */
@@ -864,8 +872,8 @@ void discord_follow_news_channel_params_free_v(void *p) {
  discord_follow_news_channel_params_free((struct discord_follow_news_channel_params *)p);
 };
 
-void discord_follow_news_channel_params_from_json_v(char *json, size_t len, void *p) {
- discord_follow_news_channel_params_from_json(json, len, (struct discord_follow_news_channel_params*)p);
+void discord_follow_news_channel_params_from_json_v(char *json, size_t len, void *pp) {
+ discord_follow_news_channel_params_from_json(json, len, (struct discord_follow_news_channel_params**)pp);
 }
 
 size_t discord_follow_news_channel_params_to_json_v(char *json, size_t len, void *p) {
@@ -917,10 +925,10 @@ void discord_follow_news_channel_params_list_from_json(char *str, size_t len, st
   struct ntl_deserializer d;
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_follow_news_channel_params);
-  d.init_elem = discord_follow_news_channel_params_init_v;
+  d.init_elem = NULL;
   d.elem_from_buf = discord_follow_news_channel_params_from_json_v;
   d.ntl_recipient_p= (void***)p;
-  extract_ntl_from_json(str, len, &d);
+  extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_follow_news_channel_params_list_to_json(char *str, size_t len, struct discord_follow_news_channel_params **p)
@@ -929,10 +937,12 @@ size_t discord_follow_news_channel_params_list_to_json(char *str, size_t len, st
 }
 
 
-void discord_create_channel_invite_params_from_json(char *json, size_t len, struct discord_create_channel_invite_params *p)
+void discord_create_channel_invite_params_from_json(char *json, size_t len, struct discord_create_channel_invite_params **pp)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
+  if (!*pp) *pp = calloc(1, sizeof **pp);
+  struct discord_create_channel_invite_params *p = *pp;
   r=json_extract(json, len, 
   /* specs/discord/channel.endpoints-params.json:71:20
      '{ "name": "max_age", "type":{ "base":"int" }}' */
@@ -1089,8 +1099,8 @@ void discord_create_channel_invite_params_free_v(void *p) {
  discord_create_channel_invite_params_free((struct discord_create_channel_invite_params *)p);
 };
 
-void discord_create_channel_invite_params_from_json_v(char *json, size_t len, void *p) {
- discord_create_channel_invite_params_from_json(json, len, (struct discord_create_channel_invite_params*)p);
+void discord_create_channel_invite_params_from_json_v(char *json, size_t len, void *pp) {
+ discord_create_channel_invite_params_from_json(json, len, (struct discord_create_channel_invite_params**)pp);
 }
 
 size_t discord_create_channel_invite_params_to_json_v(char *json, size_t len, void *p) {
@@ -1178,10 +1188,10 @@ void discord_create_channel_invite_params_list_from_json(char *str, size_t len, 
   struct ntl_deserializer d;
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_create_channel_invite_params);
-  d.init_elem = discord_create_channel_invite_params_init_v;
+  d.init_elem = NULL;
   d.elem_from_buf = discord_create_channel_invite_params_from_json_v;
   d.ntl_recipient_p= (void***)p;
-  extract_ntl_from_json(str, len, &d);
+  extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_create_channel_invite_params_list_to_json(char *str, size_t len, struct discord_create_channel_invite_params **p)
@@ -1190,10 +1200,12 @@ size_t discord_create_channel_invite_params_list_to_json(char *str, size_t len, 
 }
 
 
-void discord_group_dm_add_recipient_params_from_json(char *json, size_t len, struct discord_group_dm_add_recipient_params *p)
+void discord_group_dm_add_recipient_params_from_json(char *json, size_t len, struct discord_group_dm_add_recipient_params **pp)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
+  if (!*pp) *pp = calloc(1, sizeof **pp);
+  struct discord_group_dm_add_recipient_params *p = *pp;
   r=json_extract(json, len, 
   /* specs/discord/channel.endpoints-params.json:87:20
      '{ "name": "access_token", "type":{ "base":"char", "dec":"*" }}' */
@@ -1267,8 +1279,8 @@ void discord_group_dm_add_recipient_params_free_v(void *p) {
  discord_group_dm_add_recipient_params_free((struct discord_group_dm_add_recipient_params *)p);
 };
 
-void discord_group_dm_add_recipient_params_from_json_v(char *json, size_t len, void *p) {
- discord_group_dm_add_recipient_params_from_json(json, len, (struct discord_group_dm_add_recipient_params*)p);
+void discord_group_dm_add_recipient_params_from_json_v(char *json, size_t len, void *pp) {
+ discord_group_dm_add_recipient_params_from_json(json, len, (struct discord_group_dm_add_recipient_params**)pp);
 }
 
 size_t discord_group_dm_add_recipient_params_to_json_v(char *json, size_t len, void *p) {
@@ -1328,10 +1340,10 @@ void discord_group_dm_add_recipient_params_list_from_json(char *str, size_t len,
   struct ntl_deserializer d;
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_group_dm_add_recipient_params);
-  d.init_elem = discord_group_dm_add_recipient_params_init_v;
+  d.init_elem = NULL;
   d.elem_from_buf = discord_group_dm_add_recipient_params_from_json_v;
   d.ntl_recipient_p= (void***)p;
-  extract_ntl_from_json(str, len, &d);
+  extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_group_dm_add_recipient_params_list_to_json(char *str, size_t len, struct discord_group_dm_add_recipient_params **p)
@@ -1340,10 +1352,12 @@ size_t discord_group_dm_add_recipient_params_list_to_json(char *str, size_t len,
 }
 
 
-void discord_start_thread_with_message_params_from_json(char *json, size_t len, struct discord_start_thread_with_message_params *p)
+void discord_start_thread_with_message_params_from_json(char *json, size_t len, struct discord_start_thread_with_message_params **pp)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
+  if (!*pp) *pp = calloc(1, sizeof **pp);
+  struct discord_start_thread_with_message_params *p = *pp;
   r=json_extract(json, len, 
   /* specs/discord/channel.endpoints-params.json:98:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null }' */
@@ -1419,8 +1433,8 @@ void discord_start_thread_with_message_params_free_v(void *p) {
  discord_start_thread_with_message_params_free((struct discord_start_thread_with_message_params *)p);
 };
 
-void discord_start_thread_with_message_params_from_json_v(char *json, size_t len, void *p) {
- discord_start_thread_with_message_params_from_json(json, len, (struct discord_start_thread_with_message_params*)p);
+void discord_start_thread_with_message_params_from_json_v(char *json, size_t len, void *pp) {
+ discord_start_thread_with_message_params_from_json(json, len, (struct discord_start_thread_with_message_params**)pp);
 }
 
 size_t discord_start_thread_with_message_params_to_json_v(char *json, size_t len, void *p) {
@@ -1479,10 +1493,10 @@ void discord_start_thread_with_message_params_list_from_json(char *str, size_t l
   struct ntl_deserializer d;
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_start_thread_with_message_params);
-  d.init_elem = discord_start_thread_with_message_params_init_v;
+  d.init_elem = NULL;
   d.elem_from_buf = discord_start_thread_with_message_params_from_json_v;
   d.ntl_recipient_p= (void***)p;
-  extract_ntl_from_json(str, len, &d);
+  extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_start_thread_with_message_params_list_to_json(char *str, size_t len, struct discord_start_thread_with_message_params **p)
@@ -1491,10 +1505,12 @@ size_t discord_start_thread_with_message_params_list_to_json(char *str, size_t l
 }
 
 
-void discord_start_thread_without_message_params_from_json(char *json, size_t len, struct discord_start_thread_without_message_params *p)
+void discord_start_thread_without_message_params_from_json(char *json, size_t len, struct discord_start_thread_without_message_params **pp)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
+  if (!*pp) *pp = calloc(1, sizeof **pp);
+  struct discord_start_thread_without_message_params *p = *pp;
   r=json_extract(json, len, 
   /* specs/discord/channel.endpoints-params.json:109:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" } }' */
@@ -1569,8 +1585,8 @@ void discord_start_thread_without_message_params_free_v(void *p) {
  discord_start_thread_without_message_params_free((struct discord_start_thread_without_message_params *)p);
 };
 
-void discord_start_thread_without_message_params_from_json_v(char *json, size_t len, void *p) {
- discord_start_thread_without_message_params_from_json(json, len, (struct discord_start_thread_without_message_params*)p);
+void discord_start_thread_without_message_params_from_json_v(char *json, size_t len, void *pp) {
+ discord_start_thread_without_message_params_from_json(json, len, (struct discord_start_thread_without_message_params**)pp);
 }
 
 size_t discord_start_thread_without_message_params_to_json_v(char *json, size_t len, void *p) {
@@ -1629,10 +1645,10 @@ void discord_start_thread_without_message_params_list_from_json(char *str, size_
   struct ntl_deserializer d;
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_start_thread_without_message_params);
-  d.init_elem = discord_start_thread_without_message_params_init_v;
+  d.init_elem = NULL;
   d.elem_from_buf = discord_start_thread_without_message_params_from_json_v;
   d.ntl_recipient_p= (void***)p;
-  extract_ntl_from_json(str, len, &d);
+  extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_start_thread_without_message_params_list_to_json(char *str, size_t len, struct discord_start_thread_without_message_params **p)
@@ -1641,10 +1657,12 @@ size_t discord_start_thread_without_message_params_list_to_json(char *str, size_
 }
 
 
-void discord_thread_response_body_from_json(char *json, size_t len, struct discord_thread_response_body *p)
+void discord_thread_response_body_from_json(char *json, size_t len, struct discord_thread_response_body **pp)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
+  if (!*pp) *pp = calloc(1, sizeof **pp);
+  struct discord_thread_response_body *p = *pp;
   r=json_extract(json, len, 
   /* specs/discord/channel.endpoints-params.json:120:20
      '{ "name": "threads", "type":{ "base":"struct discord_channel", "dec":"ntl" } }' */
@@ -1734,8 +1752,8 @@ void discord_thread_response_body_free_v(void *p) {
  discord_thread_response_body_free((struct discord_thread_response_body *)p);
 };
 
-void discord_thread_response_body_from_json_v(char *json, size_t len, void *p) {
- discord_thread_response_body_from_json(json, len, (struct discord_thread_response_body*)p);
+void discord_thread_response_body_from_json_v(char *json, size_t len, void *pp) {
+ discord_thread_response_body_from_json(json, len, (struct discord_thread_response_body**)pp);
 }
 
 size_t discord_thread_response_body_to_json_v(char *json, size_t len, void *p) {
@@ -1801,10 +1819,10 @@ void discord_thread_response_body_list_from_json(char *str, size_t len, struct d
   struct ntl_deserializer d;
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_thread_response_body);
-  d.init_elem = discord_thread_response_body_init_v;
+  d.init_elem = NULL;
   d.elem_from_buf = discord_thread_response_body_from_json_v;
   d.ntl_recipient_p= (void***)p;
-  extract_ntl_from_json(str, len, &d);
+  extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_thread_response_body_list_to_json(char *str, size_t len, struct discord_thread_response_body **p)

@@ -31,7 +31,7 @@ github_adapter_init(struct github_adapter *adapter, char username[], char token[
   ua_set_url(adapter->ua, BASE_API_URL);
   ua_reqheader_add(adapter->ua, "Accept", "application/vnd.github.v3+json");
 
-  ua_easy_setopt(adapter->ua, adapter, &curl_easy_setopt_cb);
+  ua_curl_easy_setopt(adapter->ua, adapter, &curl_easy_setopt_cb);
   adapter->username = username;
   adapter->token = token;
 }

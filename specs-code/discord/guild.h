@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/guild.h
  * @author cee-studio
- * @date 01 Jul 2021
+ * @date Jul 27 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/guild
  */
@@ -229,8 +229,8 @@ extern void discord_guild_init(struct discord_guild *p);
 extern struct discord_guild * discord_guild_alloc();
 extern void discord_guild_free_v(void *p);
 extern void discord_guild_free(struct discord_guild *p);
-extern void discord_guild_from_json_v(char *json, size_t len, void *p);
-extern void discord_guild_from_json(char *json, size_t len, struct discord_guild *p);
+extern void discord_guild_from_json_v(char *json, size_t len, void *pp);
+extern void discord_guild_from_json(char *json, size_t len, struct discord_guild **pp);
 extern size_t discord_guild_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_guild_to_json(char *json, size_t len, struct discord_guild *p);
 extern size_t discord_guild_to_query_v(char *json, size_t len, void *p);
@@ -361,8 +361,8 @@ extern void discord_guild_unavailable_init(struct discord_guild_unavailable *p);
 extern struct discord_guild_unavailable * discord_guild_unavailable_alloc();
 extern void discord_guild_unavailable_free_v(void *p);
 extern void discord_guild_unavailable_free(struct discord_guild_unavailable *p);
-extern void discord_guild_unavailable_from_json_v(char *json, size_t len, void *p);
-extern void discord_guild_unavailable_from_json(char *json, size_t len, struct discord_guild_unavailable *p);
+extern void discord_guild_unavailable_from_json_v(char *json, size_t len, void *pp);
+extern void discord_guild_unavailable_from_json(char *json, size_t len, struct discord_guild_unavailable **pp);
 extern size_t discord_guild_unavailable_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_guild_unavailable_to_json(char *json, size_t len, struct discord_guild_unavailable *p);
 extern size_t discord_guild_unavailable_to_query_v(char *json, size_t len, void *p);
@@ -443,8 +443,8 @@ extern void discord_guild_preview_init(struct discord_guild_preview *p);
 extern struct discord_guild_preview * discord_guild_preview_alloc();
 extern void discord_guild_preview_free_v(void *p);
 extern void discord_guild_preview_free(struct discord_guild_preview *p);
-extern void discord_guild_preview_from_json_v(char *json, size_t len, void *p);
-extern void discord_guild_preview_from_json(char *json, size_t len, struct discord_guild_preview *p);
+extern void discord_guild_preview_from_json_v(char *json, size_t len, void *pp);
+extern void discord_guild_preview_from_json(char *json, size_t len, struct discord_guild_preview **pp);
 extern size_t discord_guild_preview_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_guild_preview_to_json(char *json, size_t len, struct discord_guild_preview *p);
 extern size_t discord_guild_preview_to_query_v(char *json, size_t len, void *p);
@@ -493,8 +493,8 @@ extern void discord_guild_widget_init(struct discord_guild_widget *p);
 extern struct discord_guild_widget * discord_guild_widget_alloc();
 extern void discord_guild_widget_free_v(void *p);
 extern void discord_guild_widget_free(struct discord_guild_widget *p);
-extern void discord_guild_widget_from_json_v(char *json, size_t len, void *p);
-extern void discord_guild_widget_from_json(char *json, size_t len, struct discord_guild_widget *p);
+extern void discord_guild_widget_from_json_v(char *json, size_t len, void *pp);
+extern void discord_guild_widget_from_json(char *json, size_t len, struct discord_guild_widget **pp);
 extern size_t discord_guild_widget_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_guild_widget_to_json(char *json, size_t len, struct discord_guild_widget *p);
 extern size_t discord_guild_widget_to_query_v(char *json, size_t len, void *p);
@@ -571,8 +571,8 @@ extern void discord_guild_member_init(struct discord_guild_member *p);
 extern struct discord_guild_member * discord_guild_member_alloc();
 extern void discord_guild_member_free_v(void *p);
 extern void discord_guild_member_free(struct discord_guild_member *p);
-extern void discord_guild_member_from_json_v(char *json, size_t len, void *p);
-extern void discord_guild_member_from_json(char *json, size_t len, struct discord_guild_member *p);
+extern void discord_guild_member_from_json_v(char *json, size_t len, void *pp);
+extern void discord_guild_member_from_json(char *json, size_t len, struct discord_guild_member **pp);
 extern size_t discord_guild_member_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_guild_member_to_json(char *json, size_t len, struct discord_guild_member *p);
 extern size_t discord_guild_member_to_query_v(char *json, size_t len, void *p);
@@ -673,8 +673,8 @@ extern void discord_guild_integration_init(struct discord_guild_integration *p);
 extern struct discord_guild_integration * discord_guild_integration_alloc();
 extern void discord_guild_integration_free_v(void *p);
 extern void discord_guild_integration_free(struct discord_guild_integration *p);
-extern void discord_guild_integration_from_json_v(char *json, size_t len, void *p);
-extern void discord_guild_integration_from_json(char *json, size_t len, struct discord_guild_integration *p);
+extern void discord_guild_integration_from_json_v(char *json, size_t len, void *pp);
+extern void discord_guild_integration_from_json(char *json, size_t len, struct discord_guild_integration **pp);
 extern size_t discord_guild_integration_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_guild_integration_to_json(char *json, size_t len, struct discord_guild_integration *p);
 extern size_t discord_guild_integration_to_query_v(char *json, size_t len, void *p);
@@ -732,8 +732,8 @@ extern void discord_guild_integration_account_init(struct discord_guild_integrat
 extern struct discord_guild_integration_account * discord_guild_integration_account_alloc();
 extern void discord_guild_integration_account_free_v(void *p);
 extern void discord_guild_integration_account_free(struct discord_guild_integration_account *p);
-extern void discord_guild_integration_account_from_json_v(char *json, size_t len, void *p);
-extern void discord_guild_integration_account_from_json(char *json, size_t len, struct discord_guild_integration_account *p);
+extern void discord_guild_integration_account_from_json_v(char *json, size_t len, void *pp);
+extern void discord_guild_integration_account_from_json(char *json, size_t len, struct discord_guild_integration_account **pp);
 extern size_t discord_guild_integration_account_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_guild_integration_account_to_json(char *json, size_t len, struct discord_guild_integration_account *p);
 extern size_t discord_guild_integration_account_to_query_v(char *json, size_t len, void *p);
@@ -798,8 +798,8 @@ extern void discord_guild_integration_application_init(struct discord_guild_inte
 extern struct discord_guild_integration_application * discord_guild_integration_application_alloc();
 extern void discord_guild_integration_application_free_v(void *p);
 extern void discord_guild_integration_application_free(struct discord_guild_integration_application *p);
-extern void discord_guild_integration_application_from_json_v(char *json, size_t len, void *p);
-extern void discord_guild_integration_application_from_json(char *json, size_t len, struct discord_guild_integration_application *p);
+extern void discord_guild_integration_application_from_json_v(char *json, size_t len, void *pp);
+extern void discord_guild_integration_application_from_json(char *json, size_t len, struct discord_guild_integration_application **pp);
 extern size_t discord_guild_integration_application_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_guild_integration_application_to_json(char *json, size_t len, struct discord_guild_integration_application *p);
 extern size_t discord_guild_integration_application_to_query_v(char *json, size_t len, void *p);
@@ -848,8 +848,8 @@ extern void discord_guild_ban_init(struct discord_guild_ban *p);
 extern struct discord_guild_ban * discord_guild_ban_alloc();
 extern void discord_guild_ban_free_v(void *p);
 extern void discord_guild_ban_free(struct discord_guild_ban *p);
-extern void discord_guild_ban_from_json_v(char *json, size_t len, void *p);
-extern void discord_guild_ban_from_json(char *json, size_t len, struct discord_guild_ban *p);
+extern void discord_guild_ban_from_json_v(char *json, size_t len, void *pp);
+extern void discord_guild_ban_from_json(char *json, size_t len, struct discord_guild_ban **pp);
 extern size_t discord_guild_ban_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_guild_ban_to_json(char *json, size_t len, struct discord_guild_ban *p);
 extern size_t discord_guild_ban_to_query_v(char *json, size_t len, void *p);
@@ -898,8 +898,8 @@ extern void discord_guild_welcome_screen_init(struct discord_guild_welcome_scree
 extern struct discord_guild_welcome_screen * discord_guild_welcome_screen_alloc();
 extern void discord_guild_welcome_screen_free_v(void *p);
 extern void discord_guild_welcome_screen_free(struct discord_guild_welcome_screen *p);
-extern void discord_guild_welcome_screen_from_json_v(char *json, size_t len, void *p);
-extern void discord_guild_welcome_screen_from_json(char *json, size_t len, struct discord_guild_welcome_screen *p);
+extern void discord_guild_welcome_screen_from_json_v(char *json, size_t len, void *pp);
+extern void discord_guild_welcome_screen_from_json(char *json, size_t len, struct discord_guild_welcome_screen **pp);
 extern size_t discord_guild_welcome_screen_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_guild_welcome_screen_to_json(char *json, size_t len, struct discord_guild_welcome_screen *p);
 extern size_t discord_guild_welcome_screen_to_query_v(char *json, size_t len, void *p);
@@ -956,8 +956,8 @@ extern void discord_guild_welcome_screen_channel_init(struct discord_guild_welco
 extern struct discord_guild_welcome_screen_channel * discord_guild_welcome_screen_channel_alloc();
 extern void discord_guild_welcome_screen_channel_free_v(void *p);
 extern void discord_guild_welcome_screen_channel_free(struct discord_guild_welcome_screen_channel *p);
-extern void discord_guild_welcome_screen_channel_from_json_v(char *json, size_t len, void *p);
-extern void discord_guild_welcome_screen_channel_from_json(char *json, size_t len, struct discord_guild_welcome_screen_channel *p);
+extern void discord_guild_welcome_screen_channel_from_json_v(char *json, size_t len, void *pp);
+extern void discord_guild_welcome_screen_channel_from_json(char *json, size_t len, struct discord_guild_welcome_screen_channel **pp);
 extern size_t discord_guild_welcome_screen_channel_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_guild_welcome_screen_channel_to_json(char *json, size_t len, struct discord_guild_welcome_screen_channel *p);
 extern size_t discord_guild_welcome_screen_channel_to_query_v(char *json, size_t len, void *p);

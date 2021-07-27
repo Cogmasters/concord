@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/gateway.h
  * @author cee-studio
- * @date 01 Jul 2021
+ * @date Jul 27 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/topics/gateway
  */
@@ -172,8 +172,8 @@ extern void discord_gateway_identify_init(struct discord_gateway_identify *p);
 extern struct discord_gateway_identify * discord_gateway_identify_alloc();
 extern void discord_gateway_identify_free_v(void *p);
 extern void discord_gateway_identify_free(struct discord_gateway_identify *p);
-extern void discord_gateway_identify_from_json_v(char *json, size_t len, void *p);
-extern void discord_gateway_identify_from_json(char *json, size_t len, struct discord_gateway_identify *p);
+extern void discord_gateway_identify_from_json_v(char *json, size_t len, void *pp);
+extern void discord_gateway_identify_from_json(char *json, size_t len, struct discord_gateway_identify **pp);
 extern size_t discord_gateway_identify_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_gateway_identify_to_json(char *json, size_t len, struct discord_gateway_identify *p);
 extern size_t discord_gateway_identify_to_query_v(char *json, size_t len, void *p);
@@ -232,8 +232,8 @@ extern void discord_gateway_status_update_init(struct discord_gateway_status_upd
 extern struct discord_gateway_status_update * discord_gateway_status_update_alloc();
 extern void discord_gateway_status_update_free_v(void *p);
 extern void discord_gateway_status_update_free(struct discord_gateway_status_update *p);
-extern void discord_gateway_status_update_from_json_v(char *json, size_t len, void *p);
-extern void discord_gateway_status_update_from_json(char *json, size_t len, struct discord_gateway_status_update *p);
+extern void discord_gateway_status_update_from_json_v(char *json, size_t len, void *pp);
+extern void discord_gateway_status_update_from_json(char *json, size_t len, struct discord_gateway_status_update **pp);
 extern size_t discord_gateway_status_update_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_gateway_status_update_to_json(char *json, size_t len, struct discord_gateway_status_update *p);
 extern size_t discord_gateway_status_update_to_query_v(char *json, size_t len, void *p);
@@ -253,16 +253,16 @@ extern size_t discord_gateway_status_update_list_to_json(char *str, size_t len, 
  */
 struct discord_gateway_identify_connection {
   /* specs/discord/gateway.json:150:19
-     '{ "name":"$os", "type":{"base":"char", "dec":"*"}}' */
-  char *$os;
+     '{ "name":"os", "json_key":"$os", "type":{"base":"char", "dec":"*"}}' */
+  char *os;
 
   /* specs/discord/gateway.json:151:19
-     '{ "name":"$browser", "type":{"base":"char", "dec":"*"}}' */
-  char *$browser;
+     '{ "name":"browser", "json_key":"$browser", "type":{"base":"char", "dec":"*"}}' */
+  char *browser;
 
   /* specs/discord/gateway.json:152:19
-     '{ "name":"$device", "type":{"base":"char", "dec":"*"}}' */
-  char *$device;
+     '{ "name":"device", "json_key":"$device", "type":{"base":"char", "dec":"*"}}' */
+  char *device;
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -286,8 +286,8 @@ extern void discord_gateway_identify_connection_init(struct discord_gateway_iden
 extern struct discord_gateway_identify_connection * discord_gateway_identify_connection_alloc();
 extern void discord_gateway_identify_connection_free_v(void *p);
 extern void discord_gateway_identify_connection_free(struct discord_gateway_identify_connection *p);
-extern void discord_gateway_identify_connection_from_json_v(char *json, size_t len, void *p);
-extern void discord_gateway_identify_connection_from_json(char *json, size_t len, struct discord_gateway_identify_connection *p);
+extern void discord_gateway_identify_connection_from_json_v(char *json, size_t len, void *pp);
+extern void discord_gateway_identify_connection_from_json(char *json, size_t len, struct discord_gateway_identify_connection **pp);
 extern size_t discord_gateway_identify_connection_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_gateway_identify_connection_to_json(char *json, size_t len, struct discord_gateway_identify_connection *p);
 extern size_t discord_gateway_identify_connection_to_query_v(char *json, size_t len, void *p);
@@ -366,8 +366,8 @@ extern void discord_gateway_activity_init(struct discord_gateway_activity *p);
 extern struct discord_gateway_activity * discord_gateway_activity_alloc();
 extern void discord_gateway_activity_free_v(void *p);
 extern void discord_gateway_activity_free(struct discord_gateway_activity *p);
-extern void discord_gateway_activity_from_json_v(char *json, size_t len, void *p);
-extern void discord_gateway_activity_from_json(char *json, size_t len, struct discord_gateway_activity *p);
+extern void discord_gateway_activity_from_json_v(char *json, size_t len, void *pp);
+extern void discord_gateway_activity_from_json(char *json, size_t len, struct discord_gateway_activity **pp);
 extern size_t discord_gateway_activity_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_gateway_activity_to_json(char *json, size_t len, struct discord_gateway_activity *p);
 extern size_t discord_gateway_activity_to_query_v(char *json, size_t len, void *p);

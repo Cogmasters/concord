@@ -18,6 +18,7 @@
 #pragma warning(disable:4996) /* _CRT_SECURE_NO_WARNINGS */
 #pragma warning(disable:4244) /* implicit conversion from double to int */
 #pragma warning(disable:4267) /* implicit conversion of int to smaller int */
+#pragma warning(disable:4090) /* broken const warnings */
 #define inline __inline
 #if _MSC_VER < 1900 /* MSVC 2015 */
 #define snprintf jsW_snprintf
@@ -114,11 +115,13 @@ void js_fmtexp(char *p, int e);
 int js_grisu2(double v, char *buffer, int *K);
 double js_strtod(const char *as, char **aas);
 
+double js_strtol(const char *s, char **ep, int radix);
+
 /* Private stack functions */
 
 void js_newarguments(js_State *J);
 void js_newfunction(js_State *J, js_Function *function, js_Environment *scope);
-void js_newscript(js_State *J, js_Function *fun, js_Environment *scope, int type);
+void js_newscript(js_State *J, js_Function *function, js_Environment *scope);
 void js_loadeval(js_State *J, const char *filename, const char *source);
 
 js_Regexp *js_toregexp(js_State *J, int idx);

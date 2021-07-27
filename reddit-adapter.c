@@ -35,7 +35,7 @@ reddit_adapter_init(struct reddit_adapter *adapter, struct logconf *config)
   ua_set_url(adapter->ua, BASE_API_URL);
   logconf_add_id(config, adapter->ua, "REDDIT_HTTP");
 
-  ua_easy_setopt(adapter->ua, adapter->p_client, &curl_setopt_cb);
+  ua_curl_easy_setopt(adapter->ua, adapter->p_client, &curl_setopt_cb);
 
   char auth[512];
   snprintf(auth, sizeof(auth), "orca:github.com/cee-studio/orca:v.0 (by /u/%.*s)",
@@ -50,12 +50,13 @@ reddit_adapter_cleanup(struct reddit_adapter *adapter) {
   ua_cleanup(adapter->ua);
 }
 
-static void
-get_response(char *str, size_t len, void *p_json)
+static void 
+sized_buffer_from_json(char *json, size_t len, void *pp) 
 {
-  struct sized_buffer *json = p_json;
-  asprintf(&json->start, "%.*s", (int)len, str);
-  json->size = len;
+  if (!*(struct sized_buffer**)pp) 
+    *(struct sized_buffer**)pp = calloc(1, sizeof(struct sized_buffer));
+  struct sized_buffer *p = *(struct sized_buffer**)pp;
+  p->size = asprintf(&p->start, "%.*s", (int)len, json);
 }
 
 /* template function for performing requests */
@@ -69,17 +70,14 @@ reddit_adapter_run(
   va_list args;
   va_start(args, endpoint);
 
-  struct ua_resp_handle resp_handle = {
-    .ok_cb = resp_body ? &get_response : NULL,
-    .ok_obj = resp_body,
-  };
-
   ORCAcode code;
-
   code = ua_vrun(
            adapter->ua,
            NULL,
-           &resp_handle,
+           &(struct ua_resp_handle){
+             .ok_cb = resp_body ? &sized_buffer_from_json : NULL,
+             .ok_obj = &resp_body
+           },
            req_body,
            http_method, endpoint, args);
 

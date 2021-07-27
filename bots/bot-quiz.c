@@ -113,7 +113,7 @@ parse_session_config()
 
 void 
 on_ready(struct discord *client, const struct discord_user *bot) {
-  fprintf(stderr, "\n\nQuiz-Bot succesfully connected to Discord as %s#%s!\n\n",
+  log_info("Quiz-Bot succesfully connected to Discord as %s#%s!",
       bot->username, bot->discriminator);
 }
 

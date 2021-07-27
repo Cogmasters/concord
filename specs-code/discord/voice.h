@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/voice.h
  * @author cee-studio
- * @date 01 Jul 2021
+ * @date Jul 27 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/voice
  */
@@ -85,8 +85,8 @@ extern void discord_voice_state_init(struct discord_voice_state *p);
 extern struct discord_voice_state * discord_voice_state_alloc();
 extern void discord_voice_state_free_v(void *p);
 extern void discord_voice_state_free(struct discord_voice_state *p);
-extern void discord_voice_state_from_json_v(char *json, size_t len, void *p);
-extern void discord_voice_state_from_json(char *json, size_t len, struct discord_voice_state *p);
+extern void discord_voice_state_from_json_v(char *json, size_t len, void *pp);
+extern void discord_voice_state_from_json(char *json, size_t len, struct discord_voice_state **pp);
 extern size_t discord_voice_state_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_voice_state_to_json(char *json, size_t len, struct discord_voice_state *p);
 extern size_t discord_voice_state_to_query_v(char *json, size_t len, void *p);
@@ -151,8 +151,8 @@ extern void discord_voice_region_init(struct discord_voice_region *p);
 extern struct discord_voice_region * discord_voice_region_alloc();
 extern void discord_voice_region_free_v(void *p);
 extern void discord_voice_region_free(struct discord_voice_region *p);
-extern void discord_voice_region_from_json_v(char *json, size_t len, void *p);
-extern void discord_voice_region_from_json(char *json, size_t len, struct discord_voice_region *p);
+extern void discord_voice_region_from_json_v(char *json, size_t len, void *pp);
+extern void discord_voice_region_from_json(char *json, size_t len, struct discord_voice_region **pp);
 extern size_t discord_voice_region_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_voice_region_to_json(char *json, size_t len, struct discord_voice_region *p);
 extern size_t discord_voice_region_to_query_v(char *json, size_t len, void *p);

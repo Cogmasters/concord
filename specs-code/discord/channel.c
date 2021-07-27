@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/channel.c
  * @author cee-studio
- * @date 01 Jul 2021
+ * @date Jul 27 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/channel
  */
@@ -43,10 +43,12 @@ bool discord_channel_types_has(enum discord_channel_types v, char *s) {
   return false;
 }
 
-void discord_channel_from_json(char *json, size_t len, struct discord_channel *p)
+void discord_channel_from_json(char *json, size_t len, struct discord_channel **pp)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
+  if (!*pp) *pp = calloc(1, sizeof **pp);
+  struct discord_channel *p = *pp;
   r=json_extract(json, len, 
   /* specs/discord/channel.json:28:78
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"id"}' */
@@ -473,8 +475,8 @@ void discord_channel_free_v(void *p) {
  discord_channel_free((struct discord_channel *)p);
 };
 
-void discord_channel_from_json_v(char *json, size_t len, void *p) {
- discord_channel_from_json(json, len, (struct discord_channel*)p);
+void discord_channel_from_json_v(char *json, size_t len, void *pp) {
+ discord_channel_from_json(json, len, (struct discord_channel**)pp);
 }
 
 size_t discord_channel_to_json_v(char *json, size_t len, void *p) {
@@ -663,10 +665,10 @@ void discord_channel_list_from_json(char *str, size_t len, struct discord_channe
   struct ntl_deserializer d;
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_channel);
-  d.init_elem = discord_channel_init_v;
+  d.init_elem = NULL;
   d.elem_from_buf = discord_channel_from_json_v;
   d.ntl_recipient_p= (void***)p;
-  extract_ntl_from_json(str, len, &d);
+  extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_channel_list_to_json(char *str, size_t len, struct discord_channel **p)
@@ -697,10 +699,12 @@ bool discord_message_sticker_format_types_has(enum discord_message_sticker_forma
   return false;
 }
 
-void discord_message_sticker_from_json(char *json, size_t len, struct discord_message_sticker *p)
+void discord_message_sticker_from_json(char *json, size_t len, struct discord_message_sticker **pp)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
+  if (!*pp) *pp = calloc(1, sizeof **pp);
+  struct discord_message_sticker *p = *pp;
   r=json_extract(json, len, 
   /* specs/discord/channel.json:80:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}}' */
@@ -876,8 +880,8 @@ void discord_message_sticker_free_v(void *p) {
  discord_message_sticker_free((struct discord_message_sticker *)p);
 };
 
-void discord_message_sticker_from_json_v(char *json, size_t len, void *p) {
- discord_message_sticker_from_json(json, len, (struct discord_message_sticker*)p);
+void discord_message_sticker_from_json_v(char *json, size_t len, void *pp) {
+ discord_message_sticker_from_json(json, len, (struct discord_message_sticker**)pp);
 }
 
 size_t discord_message_sticker_to_json_v(char *json, size_t len, void *p) {
@@ -976,10 +980,10 @@ void discord_message_sticker_list_from_json(char *str, size_t len, struct discor
   struct ntl_deserializer d;
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_message_sticker);
-  d.init_elem = discord_message_sticker_init_v;
+  d.init_elem = NULL;
   d.elem_from_buf = discord_message_sticker_from_json_v;
   d.ntl_recipient_p= (void***)p;
-  extract_ntl_from_json(str, len, &d);
+  extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_message_sticker_list_to_json(char *str, size_t len, struct discord_message_sticker **p)
@@ -1016,10 +1020,12 @@ bool discord_message_flags_has(enum discord_message_flags v, char *s) {
   return false;
 }
 
-void discord_message_reference_from_json(char *json, size_t len, struct discord_message_reference *p)
+void discord_message_reference_from_json(char *json, size_t len, struct discord_message_reference **pp)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
+  if (!*pp) *pp = calloc(1, sizeof **pp);
+  struct discord_message_reference *p = *pp;
   r=json_extract(json, len, 
   /* specs/discord/channel.json:110:18
      '{"name":"message_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "inject_if_not":0}' */
@@ -1129,8 +1135,8 @@ void discord_message_reference_free_v(void *p) {
  discord_message_reference_free((struct discord_message_reference *)p);
 };
 
-void discord_message_reference_from_json_v(char *json, size_t len, void *p) {
- discord_message_reference_from_json(json, len, (struct discord_message_reference*)p);
+void discord_message_reference_from_json_v(char *json, size_t len, void *pp) {
+ discord_message_reference_from_json(json, len, (struct discord_message_reference**)pp);
 }
 
 size_t discord_message_reference_to_json_v(char *json, size_t len, void *p) {
@@ -1200,10 +1206,10 @@ void discord_message_reference_list_from_json(char *str, size_t len, struct disc
   struct ntl_deserializer d;
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_message_reference);
-  d.init_elem = discord_message_reference_init_v;
+  d.init_elem = NULL;
   d.elem_from_buf = discord_message_reference_from_json_v;
   d.ntl_recipient_p= (void***)p;
-  extract_ntl_from_json(str, len, &d);
+  extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_message_reference_list_to_json(char *str, size_t len, struct discord_message_reference **p)
@@ -1212,10 +1218,12 @@ size_t discord_message_reference_list_to_json(char *str, size_t len, struct disc
 }
 
 
-void discord_message_application_from_json(char *json, size_t len, struct discord_message_application *p)
+void discord_message_application_from_json(char *json, size_t len, struct discord_message_application **pp)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
+  if (!*pp) *pp = calloc(1, sizeof **pp);
+  struct discord_message_application *p = *pp;
   r=json_extract(json, len, 
   /* specs/discord/channel.json:122:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}}' */
@@ -1339,8 +1347,8 @@ void discord_message_application_free_v(void *p) {
  discord_message_application_free((struct discord_message_application *)p);
 };
 
-void discord_message_application_from_json_v(char *json, size_t len, void *p) {
- discord_message_application_from_json(json, len, (struct discord_message_application*)p);
+void discord_message_application_from_json_v(char *json, size_t len, void *pp) {
+ discord_message_application_from_json(json, len, (struct discord_message_application**)pp);
 }
 
 size_t discord_message_application_to_json_v(char *json, size_t len, void *p) {
@@ -1420,10 +1428,10 @@ void discord_message_application_list_from_json(char *str, size_t len, struct di
   struct ntl_deserializer d;
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_message_application);
-  d.init_elem = discord_message_application_init_v;
+  d.init_elem = NULL;
   d.elem_from_buf = discord_message_application_from_json_v;
   d.ntl_recipient_p= (void***)p;
-  extract_ntl_from_json(str, len, &d);
+  extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_message_application_list_to_json(char *str, size_t len, struct discord_message_application **p)
@@ -1457,10 +1465,12 @@ bool discord_message_activity_types_has(enum discord_message_activity_types v, c
   return false;
 }
 
-void discord_message_activity_from_json(char *json, size_t len, struct discord_message_activity *p)
+void discord_message_activity_from_json(char *json, size_t len, struct discord_message_activity **pp)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
+  if (!*pp) *pp = calloc(1, sizeof **pp);
+  struct discord_message_activity *p = *pp;
   r=json_extract(json, len, 
   /* specs/discord/channel.json:147:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_message_activity_types"}}' */
@@ -1540,8 +1550,8 @@ void discord_message_activity_free_v(void *p) {
  discord_message_activity_free((struct discord_message_activity *)p);
 };
 
-void discord_message_activity_from_json_v(char *json, size_t len, void *p) {
- discord_message_activity_from_json(json, len, (struct discord_message_activity*)p);
+void discord_message_activity_from_json_v(char *json, size_t len, void *pp) {
+ discord_message_activity_from_json(json, len, (struct discord_message_activity**)pp);
 }
 
 size_t discord_message_activity_to_json_v(char *json, size_t len, void *p) {
@@ -1602,10 +1612,10 @@ void discord_message_activity_list_from_json(char *str, size_t len, struct disco
   struct ntl_deserializer d;
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_message_activity);
-  d.init_elem = discord_message_activity_init_v;
+  d.init_elem = NULL;
   d.elem_from_buf = discord_message_activity_from_json_v;
   d.ntl_recipient_p= (void***)p;
-  extract_ntl_from_json(str, len, &d);
+  extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_message_activity_list_to_json(char *str, size_t len, struct discord_message_activity **p)
@@ -1678,68 +1688,196 @@ bool discord_message_types_has(enum discord_message_types v, char *s) {
   return false;
 }
 
-
-/* This method is disabled at specs/discord/channel.json:180:31 */
-void discord_message_from_json_disabled(char *json, size_t len, struct discord_message *p)
+void discord_message_from_json(char *json, size_t len, struct discord_message **pp)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
+  if (!*pp) *pp = calloc(1, sizeof **pp);
+  struct discord_message *p = *pp;
   r=json_extract(json, len, 
+  /* specs/discord/channel.json:182:79
+     '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"id"}' */
                 "(id):F,"
+  /* specs/discord/channel.json:183:79
+     '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"channel_id"}' */
                 "(channel_id):F,"
+  /* specs/discord/channel.json:184:79
+     '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"guild_id", "option":true, "inject_if_not":0}' */
                 "(guild_id):F,"
+  /* specs/discord/channel.json:185:69
+     '{"type":{"base":"struct discord_user", "dec":"*"}, "name":"author"}' */
                 "(author):F,"
+  /* specs/discord/channel.json:186:77
+     '{"type":{"base":"struct discord_guild_member", "dec":"*"}, "name":"member", "option":true, "comment":"partial guild member object"}' */
                 "(member):F,"
+  /* specs/discord/channel.json:187:54
+     '{"type":{"base":"char", "dec":"*"}, "name":"content"}' */
                 "(content):?s,"
+  /* specs/discord/channel.json:188:76
+     '{"type":{"base":"char", "dec":"*", "converter":"iso8601"},"name":"timestamp"}' */
                 "(timestamp):F,"
+  /* specs/discord/channel.json:189:77
+     '{"type":{"base":"char", "dec":"*", "converter":"iso8601"}, "name":"edited_timestamp", "inject_if_not":0}' */
                 "(edited_timestamp):F,"
+  /* specs/discord/channel.json:190:43
+     '{"type":{"base":"bool"}, "name":"tts"}' */
                 "(tts):b,"
+  /* specs/discord/channel.json:191:43
+     '{"type":{"base":"bool"}, "name":"mention_everyone"}' */
                 "(mention_everyone):b,"
+  /* specs/discord/channel.json:192:71
+     '{"type":{"base":"struct discord_user", "dec":"ntl"}, "name":"mentions", "comment":"array of user objects, with an additional partial member field"}' */
                 "(mentions):F,"
+  /* specs/discord/channel.json:193:58
+     '{"type":{"base":"ja_u64", "dec":"ntl"}, "name":"mention_roles", "comment":"array of role object ids"}' */
                 "(mention_roles):F,"
+  /* specs/discord/channel.json:194:82
+     '{"type":{"base":"struct discord_channel_mention", "dec":"ntl"}, "name":"mention_channels", "option":true }' */
                 "(mention_channels):F,"
+  /* specs/discord/channel.json:195:85
+     '{"type":{"base":"struct discord_channel_attachment", "dec":"ntl"}, "name":"attachments"}' */
                 "(attachments):F,"
+  /* specs/discord/channel.json:196:72
+     '{"type":{"base":"struct discord_embed", "dec":"ntl"}, "name":"embeds"}' */
                 "(embeds):F,"
+  /* specs/discord/channel.json:197:82
+     '{"type":{"base":"struct discord_channel_reaction","dec":"ntl"}, "name":"reactions", "option":true }' */
                 "(reactions):F,"
+  /* specs/discord/channel.json:198:54
+     '{"type":{"base":"char", "dec":"*"}, "name":"nonce", "comment":"integer or string", "option":true }' */
                 "(nonce):?s,"
+  /* specs/discord/channel.json:199:43
+     '{"type":{"base":"bool"}, "name":"pinned"}' */
                 "(pinned):b,"
+  /* specs/discord/channel.json:200:79
+     '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"webhook_id", "option":true }' */
                 "(webhook_id):F,"
+  /* specs/discord/channel.json:201:84
+     '{"type":{"base":"int", "int_alias":"enum discord_message_types"}, "name":"type"}' */
                 "(type):d,"
+  /* specs/discord/channel.json:202:81
+     '{"type":{"base":"struct discord_message_activity", "dec":"*"}, "name":"activity", "option":true, "inject_if_not":null }' */
                 "(activity):F,"
+  /* specs/discord/channel.json:203:86
+     '{"type":{"base":"struct discord_message_application", "dec":"ntl"}, "name":"application", "option":true, "inject_if_not":null }' */
                 "(application):F,"
+  /* specs/discord/channel.json:204:82
+     '{"type":{"base":"struct discord_message_reference", "dec":"*"}, "name":"message_reference", "option":true, "inject_if_not":null }' */
                 "(message_reference):F,"
+  /* specs/discord/channel.json:205:84
+     '{"type":{"base":"int", "int_alias":"enum discord_message_flags"}, "name":"flags", "option":true, "inject_if_not":0 }' */
                 "(flags):d,"
-                "(stickers):F,"
+  /* specs/discord/channel.json:206:72
+     '{"type":{"base":"struct discord_message", "dec":"*"}, "name":"referenced_message", "lazy_init":true, "option":true, "inject_if_not":null, "comment":"this will cause recursive allocation if allocating as the parent"}' */
                 "(referenced_message):F,"
+  /* specs/discord/channel.json:207:84
+     '{"type":{"base":"struct discord_message_interaction", "dec":"*"}, "name":"interaction", "option":true, "inject_if_not":null, "comment":"the message associated with the message_reference"}' */
+                "(interaction):F,"
+  /* specs/discord/channel.json:208:72
+     '{"type":{"base":"struct discord_channel", "dec":"*"}, "name":"thread", "option":true, "inject_if_not":null, "comment":"the channel that was started from this message, includes thread member obejct"}' */
+                "(thread):F,"
+  /* specs/discord/channel.json:209:76
+     '{"type":{"base":"struct discord_component", "dec":"ntl"}, "name":"components", "option":true, "inject_if_not":null, "comment":"sent if the message contains components like buttons, actions rows, or other interactive components"}' */
+                "(components):F,"
+  /* specs/discord/channel.json:210:82
+     '{"type":{"base":"struct discord_message_sticker", "dec":"ntl"}, "name":"sticker_items", "option":true, "inject_if_not":null, "comment":"sent if the message contains stickets"}' */
+                "(sticker_items):F,"
+  /* specs/discord/channel.json:211:82
+     '{"type":{"base":"struct discord_message_sticker", "dec":"ntl"}, "name":"stickers", "option":true, "inject_if_not":null, "comment":"[DEPRECATED] array of sticker objects"}' */
+                "(stickers):F,"
                 "@arg_switches:b"
                 "@record_defined"
                 "@record_null",
+  /* specs/discord/channel.json:182:79
+     '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"id"}' */
                 cee_strtoull, &p->id,
+  /* specs/discord/channel.json:183:79
+     '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"channel_id"}' */
                 cee_strtoull, &p->channel_id,
+  /* specs/discord/channel.json:184:79
+     '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"guild_id", "option":true, "inject_if_not":0}' */
                 cee_strtoull, &p->guild_id,
-                discord_user_from_json, p->author,
-                discord_guild_member_from_json, p->member,
+  /* specs/discord/channel.json:185:69
+     '{"type":{"base":"struct discord_user", "dec":"*"}, "name":"author"}' */
+                discord_user_from_json, &p->author,
+  /* specs/discord/channel.json:186:77
+     '{"type":{"base":"struct discord_guild_member", "dec":"*"}, "name":"member", "option":true, "comment":"partial guild member object"}' */
+                discord_guild_member_from_json, &p->member,
+  /* specs/discord/channel.json:187:54
+     '{"type":{"base":"char", "dec":"*"}, "name":"content"}' */
                 &p->content,
+  /* specs/discord/channel.json:188:76
+     '{"type":{"base":"char", "dec":"*", "converter":"iso8601"},"name":"timestamp"}' */
                 cee_iso8601_to_unix_ms, &p->timestamp,
+  /* specs/discord/channel.json:189:77
+     '{"type":{"base":"char", "dec":"*", "converter":"iso8601"}, "name":"edited_timestamp", "inject_if_not":0}' */
                 cee_iso8601_to_unix_ms, &p->edited_timestamp,
+  /* specs/discord/channel.json:190:43
+     '{"type":{"base":"bool"}, "name":"tts"}' */
                 &p->tts,
+  /* specs/discord/channel.json:191:43
+     '{"type":{"base":"bool"}, "name":"mention_everyone"}' */
                 &p->mention_everyone,
+  /* specs/discord/channel.json:192:71
+     '{"type":{"base":"struct discord_user", "dec":"ntl"}, "name":"mentions", "comment":"array of user objects, with an additional partial member field"}' */
                 discord_user_list_from_json, &p->mentions,
+  /* specs/discord/channel.json:193:58
+     '{"type":{"base":"ja_u64", "dec":"ntl"}, "name":"mention_roles", "comment":"array of role object ids"}' */
                 ja_u64_list_from_json, &p->mention_roles,
+  /* specs/discord/channel.json:194:82
+     '{"type":{"base":"struct discord_channel_mention", "dec":"ntl"}, "name":"mention_channels", "option":true }' */
                 discord_channel_mention_list_from_json, &p->mention_channels,
+  /* specs/discord/channel.json:195:85
+     '{"type":{"base":"struct discord_channel_attachment", "dec":"ntl"}, "name":"attachments"}' */
                 discord_channel_attachment_list_from_json, &p->attachments,
+  /* specs/discord/channel.json:196:72
+     '{"type":{"base":"struct discord_embed", "dec":"ntl"}, "name":"embeds"}' */
                 discord_embed_list_from_json, &p->embeds,
+  /* specs/discord/channel.json:197:82
+     '{"type":{"base":"struct discord_channel_reaction","dec":"ntl"}, "name":"reactions", "option":true }' */
                 discord_channel_reaction_list_from_json, &p->reactions,
+  /* specs/discord/channel.json:198:54
+     '{"type":{"base":"char", "dec":"*"}, "name":"nonce", "comment":"integer or string", "option":true }' */
                 &p->nonce,
+  /* specs/discord/channel.json:199:43
+     '{"type":{"base":"bool"}, "name":"pinned"}' */
                 &p->pinned,
+  /* specs/discord/channel.json:200:79
+     '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"webhook_id", "option":true }' */
                 cee_strtoull, &p->webhook_id,
+  /* specs/discord/channel.json:201:84
+     '{"type":{"base":"int", "int_alias":"enum discord_message_types"}, "name":"type"}' */
                 &p->type,
-                discord_message_activity_from_json, p->activity,
+  /* specs/discord/channel.json:202:81
+     '{"type":{"base":"struct discord_message_activity", "dec":"*"}, "name":"activity", "option":true, "inject_if_not":null }' */
+                discord_message_activity_from_json, &p->activity,
+  /* specs/discord/channel.json:203:86
+     '{"type":{"base":"struct discord_message_application", "dec":"ntl"}, "name":"application", "option":true, "inject_if_not":null }' */
                 discord_message_application_list_from_json, &p->application,
-                discord_message_reference_from_json, p->message_reference,
+  /* specs/discord/channel.json:204:82
+     '{"type":{"base":"struct discord_message_reference", "dec":"*"}, "name":"message_reference", "option":true, "inject_if_not":null }' */
+                discord_message_reference_from_json, &p->message_reference,
+  /* specs/discord/channel.json:205:84
+     '{"type":{"base":"int", "int_alias":"enum discord_message_flags"}, "name":"flags", "option":true, "inject_if_not":0 }' */
                 &p->flags,
+  /* specs/discord/channel.json:206:72
+     '{"type":{"base":"struct discord_message", "dec":"*"}, "name":"referenced_message", "lazy_init":true, "option":true, "inject_if_not":null, "comment":"this will cause recursive allocation if allocating as the parent"}' */
+                discord_message_from_json, &p->referenced_message,
+  /* specs/discord/channel.json:207:84
+     '{"type":{"base":"struct discord_message_interaction", "dec":"*"}, "name":"interaction", "option":true, "inject_if_not":null, "comment":"the message associated with the message_reference"}' */
+                discord_message_interaction_from_json, &p->interaction,
+  /* specs/discord/channel.json:208:72
+     '{"type":{"base":"struct discord_channel", "dec":"*"}, "name":"thread", "option":true, "inject_if_not":null, "comment":"the channel that was started from this message, includes thread member obejct"}' */
+                discord_channel_from_json, &p->thread,
+  /* specs/discord/channel.json:209:76
+     '{"type":{"base":"struct discord_component", "dec":"ntl"}, "name":"components", "option":true, "inject_if_not":null, "comment":"sent if the message contains components like buttons, actions rows, or other interactive components"}' */
+                discord_component_list_from_json, &p->components,
+  /* specs/discord/channel.json:210:82
+     '{"type":{"base":"struct discord_message_sticker", "dec":"ntl"}, "name":"sticker_items", "option":true, "inject_if_not":null, "comment":"sent if the message contains stickets"}' */
+                discord_message_sticker_list_from_json, &p->sticker_items,
+  /* specs/discord/channel.json:211:82
+     '{"type":{"base":"struct discord_message_sticker", "dec":"ntl"}, "name":"stickers", "option":true, "inject_if_not":null, "comment":"[DEPRECATED] array of sticker objects"}' */
                 discord_message_sticker_list_from_json, &p->stickers,
-                discord_message_from_json, p->referenced_message,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
                 p->__M.record_null, sizeof(p->__M.record_null));
@@ -1749,119 +1887,137 @@ void discord_message_from_json_disabled(char *json, size_t len, struct discord_m
 static void discord_message_use_default_inject_settings(struct discord_message *p)
 {
   p->__M.enable_arg_switches = true;
-  /* specs/discord/channel.json:183:79
+  /* specs/discord/channel.json:182:79
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"id"}' */
   p->__M.arg_switches[0] = &p->id;
 
-  /* specs/discord/channel.json:184:79
+  /* specs/discord/channel.json:183:79
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"channel_id"}' */
   p->__M.arg_switches[1] = &p->channel_id;
 
-  /* specs/discord/channel.json:185:79
+  /* specs/discord/channel.json:184:79
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"guild_id", "option":true, "inject_if_not":0}' */
   if (p->guild_id != 0)
     p->__M.arg_switches[2] = &p->guild_id;
 
-  /* specs/discord/channel.json:186:69
+  /* specs/discord/channel.json:185:69
      '{"type":{"base":"struct discord_user", "dec":"*"}, "name":"author"}' */
   p->__M.arg_switches[3] = p->author;
 
-  /* specs/discord/channel.json:187:77
+  /* specs/discord/channel.json:186:77
      '{"type":{"base":"struct discord_guild_member", "dec":"*"}, "name":"member", "option":true, "comment":"partial guild member object"}' */
   p->__M.arg_switches[4] = p->member;
 
-  /* specs/discord/channel.json:188:54
+  /* specs/discord/channel.json:187:54
      '{"type":{"base":"char", "dec":"*"}, "name":"content"}' */
   p->__M.arg_switches[5] = p->content;
 
-  /* specs/discord/channel.json:189:76
+  /* specs/discord/channel.json:188:76
      '{"type":{"base":"char", "dec":"*", "converter":"iso8601"},"name":"timestamp"}' */
   p->__M.arg_switches[6] = &p->timestamp;
 
-  /* specs/discord/channel.json:190:77
+  /* specs/discord/channel.json:189:77
      '{"type":{"base":"char", "dec":"*", "converter":"iso8601"}, "name":"edited_timestamp", "inject_if_not":0}' */
   if (p->edited_timestamp != 0)
     p->__M.arg_switches[7] = &p->edited_timestamp;
 
-  /* specs/discord/channel.json:191:43
+  /* specs/discord/channel.json:190:43
      '{"type":{"base":"bool"}, "name":"tts"}' */
   p->__M.arg_switches[8] = &p->tts;
 
-  /* specs/discord/channel.json:192:43
+  /* specs/discord/channel.json:191:43
      '{"type":{"base":"bool"}, "name":"mention_everyone"}' */
   p->__M.arg_switches[9] = &p->mention_everyone;
 
-  /* specs/discord/channel.json:193:71
+  /* specs/discord/channel.json:192:71
      '{"type":{"base":"struct discord_user", "dec":"ntl"}, "name":"mentions", "comment":"array of user objects, with an additional partial member field"}' */
   p->__M.arg_switches[10] = p->mentions;
 
-  /* specs/discord/channel.json:194:58
+  /* specs/discord/channel.json:193:58
      '{"type":{"base":"ja_u64", "dec":"ntl"}, "name":"mention_roles", "comment":"array of role object ids"}' */
   p->__M.arg_switches[11] = p->mention_roles;
 
-  /* specs/discord/channel.json:195:82
+  /* specs/discord/channel.json:194:82
      '{"type":{"base":"struct discord_channel_mention", "dec":"ntl"}, "name":"mention_channels", "option":true }' */
   p->__M.arg_switches[12] = p->mention_channels;
 
-  /* specs/discord/channel.json:196:85
+  /* specs/discord/channel.json:195:85
      '{"type":{"base":"struct discord_channel_attachment", "dec":"ntl"}, "name":"attachments"}' */
   p->__M.arg_switches[13] = p->attachments;
 
-  /* specs/discord/channel.json:197:72
+  /* specs/discord/channel.json:196:72
      '{"type":{"base":"struct discord_embed", "dec":"ntl"}, "name":"embeds"}' */
   p->__M.arg_switches[14] = p->embeds;
 
-  /* specs/discord/channel.json:198:82
+  /* specs/discord/channel.json:197:82
      '{"type":{"base":"struct discord_channel_reaction","dec":"ntl"}, "name":"reactions", "option":true }' */
   p->__M.arg_switches[15] = p->reactions;
 
-  /* specs/discord/channel.json:199:54
+  /* specs/discord/channel.json:198:54
      '{"type":{"base":"char", "dec":"*"}, "name":"nonce", "comment":"integer or string", "option":true }' */
   p->__M.arg_switches[16] = p->nonce;
 
-  /* specs/discord/channel.json:200:43
+  /* specs/discord/channel.json:199:43
      '{"type":{"base":"bool"}, "name":"pinned"}' */
   p->__M.arg_switches[17] = &p->pinned;
 
-  /* specs/discord/channel.json:201:79
-     '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"webhook_id",
-          "option":true }' */
+  /* specs/discord/channel.json:200:79
+     '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"webhook_id", "option":true }' */
   p->__M.arg_switches[18] = &p->webhook_id;
 
-  /* specs/discord/channel.json:203:84
+  /* specs/discord/channel.json:201:84
      '{"type":{"base":"int", "int_alias":"enum discord_message_types"}, "name":"type"}' */
   p->__M.arg_switches[19] = &p->type;
 
-  /* specs/discord/channel.json:204:81
+  /* specs/discord/channel.json:202:81
      '{"type":{"base":"struct discord_message_activity", "dec":"*"}, "name":"activity", "option":true, "inject_if_not":null }' */
   if (p->activity != NULL)
     p->__M.arg_switches[20] = p->activity;
 
-  /* specs/discord/channel.json:205:86
+  /* specs/discord/channel.json:203:86
      '{"type":{"base":"struct discord_message_application", "dec":"ntl"}, "name":"application", "option":true, "inject_if_not":null }' */
   if (p->application != NULL)
     p->__M.arg_switches[21] = p->application;
 
-  /* specs/discord/channel.json:206:82
+  /* specs/discord/channel.json:204:82
      '{"type":{"base":"struct discord_message_reference", "dec":"*"}, "name":"message_reference", "option":true, "inject_if_not":null }' */
   if (p->message_reference != NULL)
     p->__M.arg_switches[22] = p->message_reference;
 
-  /* specs/discord/channel.json:207:84
+  /* specs/discord/channel.json:205:84
      '{"type":{"base":"int", "int_alias":"enum discord_message_flags"}, "name":"flags", "option":true, "inject_if_not":0 }' */
   if (p->flags != 0)
     p->__M.arg_switches[23] = &p->flags;
 
-  /* specs/discord/channel.json:208:82
-     '{"type":{"base":"struct discord_message_sticker", "dec":"ntl"}, "name":"stickers", "option":true, "inject_if_not":null, "comment":"array of sticker objects"}' */
-  if (p->stickers != NULL)
-    p->__M.arg_switches[24] = p->stickers;
-
-  /* specs/discord/channel.json:209:72
-     '{"type":{"base":"struct discord_message", "dec":"*"}, "name":"referenced_message", "lazy_init":true, "option":true, "inject_if_not":null,
-          "comment":"this will cause recursive allocation if allocating as the parent"}' */
+  /* specs/discord/channel.json:206:72
+     '{"type":{"base":"struct discord_message", "dec":"*"}, "name":"referenced_message", "lazy_init":true, "option":true, "inject_if_not":null, "comment":"this will cause recursive allocation if allocating as the parent"}' */
   if (p->referenced_message != NULL)
-    p->__M.arg_switches[25] = p->referenced_message;
+    p->__M.arg_switches[24] = p->referenced_message;
+
+  /* specs/discord/channel.json:207:84
+     '{"type":{"base":"struct discord_message_interaction", "dec":"*"}, "name":"interaction", "option":true, "inject_if_not":null, "comment":"the message associated with the message_reference"}' */
+  if (p->interaction != NULL)
+    p->__M.arg_switches[25] = p->interaction;
+
+  /* specs/discord/channel.json:208:72
+     '{"type":{"base":"struct discord_channel", "dec":"*"}, "name":"thread", "option":true, "inject_if_not":null, "comment":"the channel that was started from this message, includes thread member obejct"}' */
+  if (p->thread != NULL)
+    p->__M.arg_switches[26] = p->thread;
+
+  /* specs/discord/channel.json:209:76
+     '{"type":{"base":"struct discord_component", "dec":"ntl"}, "name":"components", "option":true, "inject_if_not":null, "comment":"sent if the message contains components like buttons, actions rows, or other interactive components"}' */
+  if (p->components != NULL)
+    p->__M.arg_switches[27] = p->components;
+
+  /* specs/discord/channel.json:210:82
+     '{"type":{"base":"struct discord_message_sticker", "dec":"ntl"}, "name":"sticker_items", "option":true, "inject_if_not":null, "comment":"sent if the message contains stickets"}' */
+  if (p->sticker_items != NULL)
+    p->__M.arg_switches[28] = p->sticker_items;
+
+  /* specs/discord/channel.json:211:82
+     '{"type":{"base":"struct discord_message_sticker", "dec":"ntl"}, "name":"stickers", "option":true, "inject_if_not":null, "comment":"[DEPRECATED] array of sticker objects"}' */
+  if (p->stickers != NULL)
+    p->__M.arg_switches[29] = p->stickers;
 
 }
 
@@ -1870,167 +2026,187 @@ size_t discord_message_to_json(char *json, size_t len, struct discord_message *p
   size_t r;
   discord_message_use_default_inject_settings(p);
   r=json_inject(json, len, 
-  /* specs/discord/channel.json:183:79
+  /* specs/discord/channel.json:182:79
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"id"}' */
                 "(id):|F|,"
-  /* specs/discord/channel.json:184:79
+  /* specs/discord/channel.json:183:79
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"channel_id"}' */
                 "(channel_id):|F|,"
-  /* specs/discord/channel.json:185:79
+  /* specs/discord/channel.json:184:79
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"guild_id", "option":true, "inject_if_not":0}' */
                 "(guild_id):|F|,"
-  /* specs/discord/channel.json:186:69
+  /* specs/discord/channel.json:185:69
      '{"type":{"base":"struct discord_user", "dec":"*"}, "name":"author"}' */
                 "(author):F,"
-  /* specs/discord/channel.json:187:77
+  /* specs/discord/channel.json:186:77
      '{"type":{"base":"struct discord_guild_member", "dec":"*"}, "name":"member", "option":true, "comment":"partial guild member object"}' */
                 "(member):F,"
-  /* specs/discord/channel.json:188:54
+  /* specs/discord/channel.json:187:54
      '{"type":{"base":"char", "dec":"*"}, "name":"content"}' */
                 "(content):s,"
-  /* specs/discord/channel.json:189:76
+  /* specs/discord/channel.json:188:76
      '{"type":{"base":"char", "dec":"*", "converter":"iso8601"},"name":"timestamp"}' */
                 "(timestamp):|F|,"
-  /* specs/discord/channel.json:190:77
+  /* specs/discord/channel.json:189:77
      '{"type":{"base":"char", "dec":"*", "converter":"iso8601"}, "name":"edited_timestamp", "inject_if_not":0}' */
                 "(edited_timestamp):|F|,"
-  /* specs/discord/channel.json:191:43
+  /* specs/discord/channel.json:190:43
      '{"type":{"base":"bool"}, "name":"tts"}' */
                 "(tts):b,"
-  /* specs/discord/channel.json:192:43
+  /* specs/discord/channel.json:191:43
      '{"type":{"base":"bool"}, "name":"mention_everyone"}' */
                 "(mention_everyone):b,"
-  /* specs/discord/channel.json:193:71
+  /* specs/discord/channel.json:192:71
      '{"type":{"base":"struct discord_user", "dec":"ntl"}, "name":"mentions", "comment":"array of user objects, with an additional partial member field"}' */
                 "(mentions):F,"
-  /* specs/discord/channel.json:194:58
+  /* specs/discord/channel.json:193:58
      '{"type":{"base":"ja_u64", "dec":"ntl"}, "name":"mention_roles", "comment":"array of role object ids"}' */
                 "(mention_roles):F,"
-  /* specs/discord/channel.json:195:82
+  /* specs/discord/channel.json:194:82
      '{"type":{"base":"struct discord_channel_mention", "dec":"ntl"}, "name":"mention_channels", "option":true }' */
                 "(mention_channels):F,"
-  /* specs/discord/channel.json:196:85
+  /* specs/discord/channel.json:195:85
      '{"type":{"base":"struct discord_channel_attachment", "dec":"ntl"}, "name":"attachments"}' */
                 "(attachments):F,"
-  /* specs/discord/channel.json:197:72
+  /* specs/discord/channel.json:196:72
      '{"type":{"base":"struct discord_embed", "dec":"ntl"}, "name":"embeds"}' */
                 "(embeds):F,"
-  /* specs/discord/channel.json:198:82
+  /* specs/discord/channel.json:197:82
      '{"type":{"base":"struct discord_channel_reaction","dec":"ntl"}, "name":"reactions", "option":true }' */
                 "(reactions):F,"
-  /* specs/discord/channel.json:199:54
+  /* specs/discord/channel.json:198:54
      '{"type":{"base":"char", "dec":"*"}, "name":"nonce", "comment":"integer or string", "option":true }' */
                 "(nonce):s,"
-  /* specs/discord/channel.json:200:43
+  /* specs/discord/channel.json:199:43
      '{"type":{"base":"bool"}, "name":"pinned"}' */
                 "(pinned):b,"
-  /* specs/discord/channel.json:201:79
-     '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"webhook_id",
-          "option":true }' */
+  /* specs/discord/channel.json:200:79
+     '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"webhook_id", "option":true }' */
                 "(webhook_id):|F|,"
-  /* specs/discord/channel.json:203:84
+  /* specs/discord/channel.json:201:84
      '{"type":{"base":"int", "int_alias":"enum discord_message_types"}, "name":"type"}' */
                 "(type):d,"
-  /* specs/discord/channel.json:204:81
+  /* specs/discord/channel.json:202:81
      '{"type":{"base":"struct discord_message_activity", "dec":"*"}, "name":"activity", "option":true, "inject_if_not":null }' */
                 "(activity):F,"
-  /* specs/discord/channel.json:205:86
+  /* specs/discord/channel.json:203:86
      '{"type":{"base":"struct discord_message_application", "dec":"ntl"}, "name":"application", "option":true, "inject_if_not":null }' */
                 "(application):F,"
-  /* specs/discord/channel.json:206:82
+  /* specs/discord/channel.json:204:82
      '{"type":{"base":"struct discord_message_reference", "dec":"*"}, "name":"message_reference", "option":true, "inject_if_not":null }' */
                 "(message_reference):F,"
-  /* specs/discord/channel.json:207:84
+  /* specs/discord/channel.json:205:84
      '{"type":{"base":"int", "int_alias":"enum discord_message_flags"}, "name":"flags", "option":true, "inject_if_not":0 }' */
                 "(flags):d,"
-  /* specs/discord/channel.json:208:82
-     '{"type":{"base":"struct discord_message_sticker", "dec":"ntl"}, "name":"stickers", "option":true, "inject_if_not":null, "comment":"array of sticker objects"}' */
-                "(stickers):F,"
-  /* specs/discord/channel.json:209:72
-     '{"type":{"base":"struct discord_message", "dec":"*"}, "name":"referenced_message", "lazy_init":true, "option":true, "inject_if_not":null,
-          "comment":"this will cause recursive allocation if allocating as the parent"}' */
+  /* specs/discord/channel.json:206:72
+     '{"type":{"base":"struct discord_message", "dec":"*"}, "name":"referenced_message", "lazy_init":true, "option":true, "inject_if_not":null, "comment":"this will cause recursive allocation if allocating as the parent"}' */
                 "(referenced_message):F,"
+  /* specs/discord/channel.json:207:84
+     '{"type":{"base":"struct discord_message_interaction", "dec":"*"}, "name":"interaction", "option":true, "inject_if_not":null, "comment":"the message associated with the message_reference"}' */
+                "(interaction):F,"
+  /* specs/discord/channel.json:208:72
+     '{"type":{"base":"struct discord_channel", "dec":"*"}, "name":"thread", "option":true, "inject_if_not":null, "comment":"the channel that was started from this message, includes thread member obejct"}' */
+                "(thread):F,"
+  /* specs/discord/channel.json:209:76
+     '{"type":{"base":"struct discord_component", "dec":"ntl"}, "name":"components", "option":true, "inject_if_not":null, "comment":"sent if the message contains components like buttons, actions rows, or other interactive components"}' */
+                "(components):F,"
+  /* specs/discord/channel.json:210:82
+     '{"type":{"base":"struct discord_message_sticker", "dec":"ntl"}, "name":"sticker_items", "option":true, "inject_if_not":null, "comment":"sent if the message contains stickets"}' */
+                "(sticker_items):F,"
+  /* specs/discord/channel.json:211:82
+     '{"type":{"base":"struct discord_message_sticker", "dec":"ntl"}, "name":"stickers", "option":true, "inject_if_not":null, "comment":"[DEPRECATED] array of sticker objects"}' */
+                "(stickers):F,"
                 "@arg_switches:b",
-  /* specs/discord/channel.json:183:79
+  /* specs/discord/channel.json:182:79
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"id"}' */
                 cee_ulltostr, &p->id,
-  /* specs/discord/channel.json:184:79
+  /* specs/discord/channel.json:183:79
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"channel_id"}' */
                 cee_ulltostr, &p->channel_id,
-  /* specs/discord/channel.json:185:79
+  /* specs/discord/channel.json:184:79
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"guild_id", "option":true, "inject_if_not":0}' */
                 cee_ulltostr, &p->guild_id,
-  /* specs/discord/channel.json:186:69
+  /* specs/discord/channel.json:185:69
      '{"type":{"base":"struct discord_user", "dec":"*"}, "name":"author"}' */
                 discord_user_to_json, p->author,
-  /* specs/discord/channel.json:187:77
+  /* specs/discord/channel.json:186:77
      '{"type":{"base":"struct discord_guild_member", "dec":"*"}, "name":"member", "option":true, "comment":"partial guild member object"}' */
                 discord_guild_member_to_json, p->member,
-  /* specs/discord/channel.json:188:54
+  /* specs/discord/channel.json:187:54
      '{"type":{"base":"char", "dec":"*"}, "name":"content"}' */
                 p->content,
-  /* specs/discord/channel.json:189:76
+  /* specs/discord/channel.json:188:76
      '{"type":{"base":"char", "dec":"*", "converter":"iso8601"},"name":"timestamp"}' */
                 cee_unix_ms_to_iso8601, &p->timestamp,
-  /* specs/discord/channel.json:190:77
+  /* specs/discord/channel.json:189:77
      '{"type":{"base":"char", "dec":"*", "converter":"iso8601"}, "name":"edited_timestamp", "inject_if_not":0}' */
                 cee_unix_ms_to_iso8601, &p->edited_timestamp,
-  /* specs/discord/channel.json:191:43
+  /* specs/discord/channel.json:190:43
      '{"type":{"base":"bool"}, "name":"tts"}' */
                 &p->tts,
-  /* specs/discord/channel.json:192:43
+  /* specs/discord/channel.json:191:43
      '{"type":{"base":"bool"}, "name":"mention_everyone"}' */
                 &p->mention_everyone,
-  /* specs/discord/channel.json:193:71
+  /* specs/discord/channel.json:192:71
      '{"type":{"base":"struct discord_user", "dec":"ntl"}, "name":"mentions", "comment":"array of user objects, with an additional partial member field"}' */
                 discord_user_list_to_json, p->mentions,
-  /* specs/discord/channel.json:194:58
+  /* specs/discord/channel.json:193:58
      '{"type":{"base":"ja_u64", "dec":"ntl"}, "name":"mention_roles", "comment":"array of role object ids"}' */
                 ja_u64_list_to_json, p->mention_roles,
-  /* specs/discord/channel.json:195:82
+  /* specs/discord/channel.json:194:82
      '{"type":{"base":"struct discord_channel_mention", "dec":"ntl"}, "name":"mention_channels", "option":true }' */
                 discord_channel_mention_list_to_json, p->mention_channels,
-  /* specs/discord/channel.json:196:85
+  /* specs/discord/channel.json:195:85
      '{"type":{"base":"struct discord_channel_attachment", "dec":"ntl"}, "name":"attachments"}' */
                 discord_channel_attachment_list_to_json, p->attachments,
-  /* specs/discord/channel.json:197:72
+  /* specs/discord/channel.json:196:72
      '{"type":{"base":"struct discord_embed", "dec":"ntl"}, "name":"embeds"}' */
                 discord_embed_list_to_json, p->embeds,
-  /* specs/discord/channel.json:198:82
+  /* specs/discord/channel.json:197:82
      '{"type":{"base":"struct discord_channel_reaction","dec":"ntl"}, "name":"reactions", "option":true }' */
                 discord_channel_reaction_list_to_json, p->reactions,
-  /* specs/discord/channel.json:199:54
+  /* specs/discord/channel.json:198:54
      '{"type":{"base":"char", "dec":"*"}, "name":"nonce", "comment":"integer or string", "option":true }' */
                 p->nonce,
-  /* specs/discord/channel.json:200:43
+  /* specs/discord/channel.json:199:43
      '{"type":{"base":"bool"}, "name":"pinned"}' */
                 &p->pinned,
-  /* specs/discord/channel.json:201:79
-     '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"webhook_id",
-          "option":true }' */
+  /* specs/discord/channel.json:200:79
+     '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"webhook_id", "option":true }' */
                 cee_ulltostr, &p->webhook_id,
-  /* specs/discord/channel.json:203:84
+  /* specs/discord/channel.json:201:84
      '{"type":{"base":"int", "int_alias":"enum discord_message_types"}, "name":"type"}' */
                 &p->type,
-  /* specs/discord/channel.json:204:81
+  /* specs/discord/channel.json:202:81
      '{"type":{"base":"struct discord_message_activity", "dec":"*"}, "name":"activity", "option":true, "inject_if_not":null }' */
                 discord_message_activity_to_json, p->activity,
-  /* specs/discord/channel.json:205:86
+  /* specs/discord/channel.json:203:86
      '{"type":{"base":"struct discord_message_application", "dec":"ntl"}, "name":"application", "option":true, "inject_if_not":null }' */
                 discord_message_application_list_to_json, p->application,
-  /* specs/discord/channel.json:206:82
+  /* specs/discord/channel.json:204:82
      '{"type":{"base":"struct discord_message_reference", "dec":"*"}, "name":"message_reference", "option":true, "inject_if_not":null }' */
                 discord_message_reference_to_json, p->message_reference,
-  /* specs/discord/channel.json:207:84
+  /* specs/discord/channel.json:205:84
      '{"type":{"base":"int", "int_alias":"enum discord_message_flags"}, "name":"flags", "option":true, "inject_if_not":0 }' */
                 &p->flags,
-  /* specs/discord/channel.json:208:82
-     '{"type":{"base":"struct discord_message_sticker", "dec":"ntl"}, "name":"stickers", "option":true, "inject_if_not":null, "comment":"array of sticker objects"}' */
-                discord_message_sticker_list_to_json, p->stickers,
-  /* specs/discord/channel.json:209:72
-     '{"type":{"base":"struct discord_message", "dec":"*"}, "name":"referenced_message", "lazy_init":true, "option":true, "inject_if_not":null,
-          "comment":"this will cause recursive allocation if allocating as the parent"}' */
+  /* specs/discord/channel.json:206:72
+     '{"type":{"base":"struct discord_message", "dec":"*"}, "name":"referenced_message", "lazy_init":true, "option":true, "inject_if_not":null, "comment":"this will cause recursive allocation if allocating as the parent"}' */
                 discord_message_to_json, p->referenced_message,
+  /* specs/discord/channel.json:207:84
+     '{"type":{"base":"struct discord_message_interaction", "dec":"*"}, "name":"interaction", "option":true, "inject_if_not":null, "comment":"the message associated with the message_reference"}' */
+                discord_message_interaction_to_json, p->interaction,
+  /* specs/discord/channel.json:208:72
+     '{"type":{"base":"struct discord_channel", "dec":"*"}, "name":"thread", "option":true, "inject_if_not":null, "comment":"the channel that was started from this message, includes thread member obejct"}' */
+                discord_channel_to_json, p->thread,
+  /* specs/discord/channel.json:209:76
+     '{"type":{"base":"struct discord_component", "dec":"ntl"}, "name":"components", "option":true, "inject_if_not":null, "comment":"sent if the message contains components like buttons, actions rows, or other interactive components"}' */
+                discord_component_list_to_json, p->components,
+  /* specs/discord/channel.json:210:82
+     '{"type":{"base":"struct discord_message_sticker", "dec":"ntl"}, "name":"sticker_items", "option":true, "inject_if_not":null, "comment":"sent if the message contains stickets"}' */
+                discord_message_sticker_list_to_json, p->sticker_items,
+  /* specs/discord/channel.json:211:82
+     '{"type":{"base":"struct discord_message_sticker", "dec":"ntl"}, "name":"stickers", "option":true, "inject_if_not":null, "comment":"[DEPRECATED] array of sticker objects"}' */
+                discord_message_sticker_list_to_json, p->stickers,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
 }
@@ -2051,8 +2227,8 @@ void discord_message_free_v(void *p) {
  discord_message_free((struct discord_message *)p);
 };
 
-void discord_message_from_json_v(char *json, size_t len, void *p) {
- discord_message_from_json(json, len, (struct discord_message*)p);
+void discord_message_from_json_v(char *json, size_t len, void *pp) {
+ discord_message_from_json(json, len, (struct discord_message**)pp);
 }
 
 size_t discord_message_to_json_v(char *json, size_t len, void *p) {
@@ -2073,188 +2249,214 @@ size_t discord_message_list_to_json_v(char *str, size_t len, void *p){
 
 
 void discord_message_cleanup(struct discord_message *d) {
-  /* specs/discord/channel.json:183:79
+  /* specs/discord/channel.json:182:79
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"id"}' */
   // p->id is a scalar
-  /* specs/discord/channel.json:184:79
+  /* specs/discord/channel.json:183:79
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"channel_id"}' */
   // p->channel_id is a scalar
-  /* specs/discord/channel.json:185:79
+  /* specs/discord/channel.json:184:79
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"guild_id", "option":true, "inject_if_not":0}' */
   // p->guild_id is a scalar
-  /* specs/discord/channel.json:186:69
+  /* specs/discord/channel.json:185:69
      '{"type":{"base":"struct discord_user", "dec":"*"}, "name":"author"}' */
   if (d->author)
     discord_user_free(d->author);
-  /* specs/discord/channel.json:187:77
+  /* specs/discord/channel.json:186:77
      '{"type":{"base":"struct discord_guild_member", "dec":"*"}, "name":"member", "option":true, "comment":"partial guild member object"}' */
   if (d->member)
     discord_guild_member_free(d->member);
-  /* specs/discord/channel.json:188:54
+  /* specs/discord/channel.json:187:54
      '{"type":{"base":"char", "dec":"*"}, "name":"content"}' */
   if (d->content)
     free(d->content);
-  /* specs/discord/channel.json:189:76
+  /* specs/discord/channel.json:188:76
      '{"type":{"base":"char", "dec":"*", "converter":"iso8601"},"name":"timestamp"}' */
   // p->timestamp is a scalar
-  /* specs/discord/channel.json:190:77
+  /* specs/discord/channel.json:189:77
      '{"type":{"base":"char", "dec":"*", "converter":"iso8601"}, "name":"edited_timestamp", "inject_if_not":0}' */
   // p->edited_timestamp is a scalar
-  /* specs/discord/channel.json:191:43
+  /* specs/discord/channel.json:190:43
      '{"type":{"base":"bool"}, "name":"tts"}' */
   // p->tts is a scalar
-  /* specs/discord/channel.json:192:43
+  /* specs/discord/channel.json:191:43
      '{"type":{"base":"bool"}, "name":"mention_everyone"}' */
   // p->mention_everyone is a scalar
-  /* specs/discord/channel.json:193:71
+  /* specs/discord/channel.json:192:71
      '{"type":{"base":"struct discord_user", "dec":"ntl"}, "name":"mentions", "comment":"array of user objects, with an additional partial member field"}' */
   if (d->mentions)
     discord_user_list_free(d->mentions);
-  /* specs/discord/channel.json:194:58
+  /* specs/discord/channel.json:193:58
      '{"type":{"base":"ja_u64", "dec":"ntl"}, "name":"mention_roles", "comment":"array of role object ids"}' */
   if (d->mention_roles)
     ja_u64_list_free(d->mention_roles);
-  /* specs/discord/channel.json:195:82
+  /* specs/discord/channel.json:194:82
      '{"type":{"base":"struct discord_channel_mention", "dec":"ntl"}, "name":"mention_channels", "option":true }' */
   if (d->mention_channels)
     discord_channel_mention_list_free(d->mention_channels);
-  /* specs/discord/channel.json:196:85
+  /* specs/discord/channel.json:195:85
      '{"type":{"base":"struct discord_channel_attachment", "dec":"ntl"}, "name":"attachments"}' */
   if (d->attachments)
     discord_channel_attachment_list_free(d->attachments);
-  /* specs/discord/channel.json:197:72
+  /* specs/discord/channel.json:196:72
      '{"type":{"base":"struct discord_embed", "dec":"ntl"}, "name":"embeds"}' */
   if (d->embeds)
     discord_embed_list_free(d->embeds);
-  /* specs/discord/channel.json:198:82
+  /* specs/discord/channel.json:197:82
      '{"type":{"base":"struct discord_channel_reaction","dec":"ntl"}, "name":"reactions", "option":true }' */
   if (d->reactions)
     discord_channel_reaction_list_free(d->reactions);
-  /* specs/discord/channel.json:199:54
+  /* specs/discord/channel.json:198:54
      '{"type":{"base":"char", "dec":"*"}, "name":"nonce", "comment":"integer or string", "option":true }' */
   if (d->nonce)
     free(d->nonce);
-  /* specs/discord/channel.json:200:43
+  /* specs/discord/channel.json:199:43
      '{"type":{"base":"bool"}, "name":"pinned"}' */
   // p->pinned is a scalar
-  /* specs/discord/channel.json:201:79
-     '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"webhook_id",
-          "option":true }' */
+  /* specs/discord/channel.json:200:79
+     '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"webhook_id", "option":true }' */
   // p->webhook_id is a scalar
-  /* specs/discord/channel.json:203:84
+  /* specs/discord/channel.json:201:84
      '{"type":{"base":"int", "int_alias":"enum discord_message_types"}, "name":"type"}' */
   // p->type is a scalar
-  /* specs/discord/channel.json:204:81
+  /* specs/discord/channel.json:202:81
      '{"type":{"base":"struct discord_message_activity", "dec":"*"}, "name":"activity", "option":true, "inject_if_not":null }' */
   if (d->activity)
     discord_message_activity_free(d->activity);
-  /* specs/discord/channel.json:205:86
+  /* specs/discord/channel.json:203:86
      '{"type":{"base":"struct discord_message_application", "dec":"ntl"}, "name":"application", "option":true, "inject_if_not":null }' */
   if (d->application)
     discord_message_application_list_free(d->application);
-  /* specs/discord/channel.json:206:82
+  /* specs/discord/channel.json:204:82
      '{"type":{"base":"struct discord_message_reference", "dec":"*"}, "name":"message_reference", "option":true, "inject_if_not":null }' */
   if (d->message_reference)
     discord_message_reference_free(d->message_reference);
-  /* specs/discord/channel.json:207:84
+  /* specs/discord/channel.json:205:84
      '{"type":{"base":"int", "int_alias":"enum discord_message_flags"}, "name":"flags", "option":true, "inject_if_not":0 }' */
   // p->flags is a scalar
-  /* specs/discord/channel.json:208:82
-     '{"type":{"base":"struct discord_message_sticker", "dec":"ntl"}, "name":"stickers", "option":true, "inject_if_not":null, "comment":"array of sticker objects"}' */
-  if (d->stickers)
-    discord_message_sticker_list_free(d->stickers);
-  /* specs/discord/channel.json:209:72
-     '{"type":{"base":"struct discord_message", "dec":"*"}, "name":"referenced_message", "lazy_init":true, "option":true, "inject_if_not":null,
-          "comment":"this will cause recursive allocation if allocating as the parent"}' */
+  /* specs/discord/channel.json:206:72
+     '{"type":{"base":"struct discord_message", "dec":"*"}, "name":"referenced_message", "lazy_init":true, "option":true, "inject_if_not":null, "comment":"this will cause recursive allocation if allocating as the parent"}' */
   if (d->referenced_message)
     discord_message_free(d->referenced_message);
+  /* specs/discord/channel.json:207:84
+     '{"type":{"base":"struct discord_message_interaction", "dec":"*"}, "name":"interaction", "option":true, "inject_if_not":null, "comment":"the message associated with the message_reference"}' */
+  if (d->interaction)
+    discord_message_interaction_free(d->interaction);
+  /* specs/discord/channel.json:208:72
+     '{"type":{"base":"struct discord_channel", "dec":"*"}, "name":"thread", "option":true, "inject_if_not":null, "comment":"the channel that was started from this message, includes thread member obejct"}' */
+  if (d->thread)
+    discord_channel_free(d->thread);
+  /* specs/discord/channel.json:209:76
+     '{"type":{"base":"struct discord_component", "dec":"ntl"}, "name":"components", "option":true, "inject_if_not":null, "comment":"sent if the message contains components like buttons, actions rows, or other interactive components"}' */
+  if (d->components)
+    discord_component_list_free(d->components);
+  /* specs/discord/channel.json:210:82
+     '{"type":{"base":"struct discord_message_sticker", "dec":"ntl"}, "name":"sticker_items", "option":true, "inject_if_not":null, "comment":"sent if the message contains stickets"}' */
+  if (d->sticker_items)
+    discord_message_sticker_list_free(d->sticker_items);
+  /* specs/discord/channel.json:211:82
+     '{"type":{"base":"struct discord_message_sticker", "dec":"ntl"}, "name":"stickers", "option":true, "inject_if_not":null, "comment":"[DEPRECATED] array of sticker objects"}' */
+  if (d->stickers)
+    discord_message_sticker_list_free(d->stickers);
 }
 
 void discord_message_init(struct discord_message *p) {
   memset(p, 0, sizeof(struct discord_message));
-  /* specs/discord/channel.json:183:79
+  /* specs/discord/channel.json:182:79
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"id"}' */
 
-  /* specs/discord/channel.json:184:79
+  /* specs/discord/channel.json:183:79
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"channel_id"}' */
 
-  /* specs/discord/channel.json:185:79
+  /* specs/discord/channel.json:184:79
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"guild_id", "option":true, "inject_if_not":0}' */
 
-  /* specs/discord/channel.json:186:69
+  /* specs/discord/channel.json:185:69
      '{"type":{"base":"struct discord_user", "dec":"*"}, "name":"author"}' */
   p->author = discord_user_alloc();
 
-  /* specs/discord/channel.json:187:77
+  /* specs/discord/channel.json:186:77
      '{"type":{"base":"struct discord_guild_member", "dec":"*"}, "name":"member", "option":true, "comment":"partial guild member object"}' */
   p->member = discord_guild_member_alloc();
 
-  /* specs/discord/channel.json:188:54
+  /* specs/discord/channel.json:187:54
      '{"type":{"base":"char", "dec":"*"}, "name":"content"}' */
 
-  /* specs/discord/channel.json:189:76
+  /* specs/discord/channel.json:188:76
      '{"type":{"base":"char", "dec":"*", "converter":"iso8601"},"name":"timestamp"}' */
 
-  /* specs/discord/channel.json:190:77
+  /* specs/discord/channel.json:189:77
      '{"type":{"base":"char", "dec":"*", "converter":"iso8601"}, "name":"edited_timestamp", "inject_if_not":0}' */
 
-  /* specs/discord/channel.json:191:43
+  /* specs/discord/channel.json:190:43
      '{"type":{"base":"bool"}, "name":"tts"}' */
 
-  /* specs/discord/channel.json:192:43
+  /* specs/discord/channel.json:191:43
      '{"type":{"base":"bool"}, "name":"mention_everyone"}' */
 
-  /* specs/discord/channel.json:193:71
+  /* specs/discord/channel.json:192:71
      '{"type":{"base":"struct discord_user", "dec":"ntl"}, "name":"mentions", "comment":"array of user objects, with an additional partial member field"}' */
 
-  /* specs/discord/channel.json:194:58
+  /* specs/discord/channel.json:193:58
      '{"type":{"base":"ja_u64", "dec":"ntl"}, "name":"mention_roles", "comment":"array of role object ids"}' */
 
-  /* specs/discord/channel.json:195:82
+  /* specs/discord/channel.json:194:82
      '{"type":{"base":"struct discord_channel_mention", "dec":"ntl"}, "name":"mention_channels", "option":true }' */
 
-  /* specs/discord/channel.json:196:85
+  /* specs/discord/channel.json:195:85
      '{"type":{"base":"struct discord_channel_attachment", "dec":"ntl"}, "name":"attachments"}' */
 
-  /* specs/discord/channel.json:197:72
+  /* specs/discord/channel.json:196:72
      '{"type":{"base":"struct discord_embed", "dec":"ntl"}, "name":"embeds"}' */
 
-  /* specs/discord/channel.json:198:82
+  /* specs/discord/channel.json:197:82
      '{"type":{"base":"struct discord_channel_reaction","dec":"ntl"}, "name":"reactions", "option":true }' */
 
-  /* specs/discord/channel.json:199:54
+  /* specs/discord/channel.json:198:54
      '{"type":{"base":"char", "dec":"*"}, "name":"nonce", "comment":"integer or string", "option":true }' */
 
-  /* specs/discord/channel.json:200:43
+  /* specs/discord/channel.json:199:43
      '{"type":{"base":"bool"}, "name":"pinned"}' */
 
-  /* specs/discord/channel.json:201:79
-     '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"webhook_id",
-          "option":true }' */
+  /* specs/discord/channel.json:200:79
+     '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"webhook_id", "option":true }' */
 
-  /* specs/discord/channel.json:203:84
+  /* specs/discord/channel.json:201:84
      '{"type":{"base":"int", "int_alias":"enum discord_message_types"}, "name":"type"}' */
 
-  /* specs/discord/channel.json:204:81
+  /* specs/discord/channel.json:202:81
      '{"type":{"base":"struct discord_message_activity", "dec":"*"}, "name":"activity", "option":true, "inject_if_not":null }' */
   p->activity = discord_message_activity_alloc();
 
-  /* specs/discord/channel.json:205:86
+  /* specs/discord/channel.json:203:86
      '{"type":{"base":"struct discord_message_application", "dec":"ntl"}, "name":"application", "option":true, "inject_if_not":null }' */
 
-  /* specs/discord/channel.json:206:82
+  /* specs/discord/channel.json:204:82
      '{"type":{"base":"struct discord_message_reference", "dec":"*"}, "name":"message_reference", "option":true, "inject_if_not":null }' */
   p->message_reference = discord_message_reference_alloc();
 
-  /* specs/discord/channel.json:207:84
+  /* specs/discord/channel.json:205:84
      '{"type":{"base":"int", "int_alias":"enum discord_message_flags"}, "name":"flags", "option":true, "inject_if_not":0 }' */
 
-  /* specs/discord/channel.json:208:82
-     '{"type":{"base":"struct discord_message_sticker", "dec":"ntl"}, "name":"stickers", "option":true, "inject_if_not":null, "comment":"array of sticker objects"}' */
+  /* specs/discord/channel.json:206:72
+     '{"type":{"base":"struct discord_message", "dec":"*"}, "name":"referenced_message", "lazy_init":true, "option":true, "inject_if_not":null, "comment":"this will cause recursive allocation if allocating as the parent"}' */
 
-  /* specs/discord/channel.json:209:72
-     '{"type":{"base":"struct discord_message", "dec":"*"}, "name":"referenced_message", "lazy_init":true, "option":true, "inject_if_not":null,
-          "comment":"this will cause recursive allocation if allocating as the parent"}' */
+  /* specs/discord/channel.json:207:84
+     '{"type":{"base":"struct discord_message_interaction", "dec":"*"}, "name":"interaction", "option":true, "inject_if_not":null, "comment":"the message associated with the message_reference"}' */
+  p->interaction = discord_message_interaction_alloc();
+
+  /* specs/discord/channel.json:208:72
+     '{"type":{"base":"struct discord_channel", "dec":"*"}, "name":"thread", "option":true, "inject_if_not":null, "comment":"the channel that was started from this message, includes thread member obejct"}' */
+  p->thread = discord_channel_alloc();
+
+  /* specs/discord/channel.json:209:76
+     '{"type":{"base":"struct discord_component", "dec":"ntl"}, "name":"components", "option":true, "inject_if_not":null, "comment":"sent if the message contains components like buttons, actions rows, or other interactive components"}' */
+
+  /* specs/discord/channel.json:210:82
+     '{"type":{"base":"struct discord_message_sticker", "dec":"ntl"}, "name":"sticker_items", "option":true, "inject_if_not":null, "comment":"sent if the message contains stickets"}' */
+
+  /* specs/discord/channel.json:211:82
+     '{"type":{"base":"struct discord_message_sticker", "dec":"ntl"}, "name":"stickers", "option":true, "inject_if_not":null, "comment":"[DEPRECATED] array of sticker objects"}' */
 
 }
 struct discord_message* discord_message_alloc() {
@@ -2277,10 +2479,10 @@ void discord_message_list_from_json(char *str, size_t len, struct discord_messag
   struct ntl_deserializer d;
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_message);
-  d.init_elem = discord_message_init_v;
+  d.init_elem = NULL;
   d.elem_from_buf = discord_message_from_json_v;
   d.ntl_recipient_p= (void***)p;
-  extract_ntl_from_json(str, len, &d);
+  extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_message_list_to_json(char *str, size_t len, struct discord_message **p)
@@ -2289,24 +2491,26 @@ size_t discord_message_list_to_json(char *str, size_t len, struct discord_messag
 }
 
 
-void discord_channel_followed_channel_from_json(char *json, size_t len, struct discord_channel_followed_channel *p)
+void discord_channel_followed_channel_from_json(char *json, size_t len, struct discord_channel_followed_channel **pp)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
+  if (!*pp) *pp = calloc(1, sizeof **pp);
+  struct discord_channel_followed_channel *p = *pp;
   r=json_extract(json, len, 
-  /* specs/discord/channel.json:220:20
+  /* specs/discord/channel.json:221:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 "(channel_id):F,"
-  /* specs/discord/channel.json:221:20
+  /* specs/discord/channel.json:222:20
      '{ "name": "webhook_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 "(webhook_id):F,"
                 "@arg_switches:b"
                 "@record_defined"
                 "@record_null",
-  /* specs/discord/channel.json:220:20
+  /* specs/discord/channel.json:221:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 cee_strtoull, &p->channel_id,
-  /* specs/discord/channel.json:221:20
+  /* specs/discord/channel.json:222:20
      '{ "name": "webhook_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 cee_strtoull, &p->webhook_id,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
@@ -2318,11 +2522,11 @@ void discord_channel_followed_channel_from_json(char *json, size_t len, struct d
 static void discord_channel_followed_channel_use_default_inject_settings(struct discord_channel_followed_channel *p)
 {
   p->__M.enable_arg_switches = true;
-  /* specs/discord/channel.json:220:20
+  /* specs/discord/channel.json:221:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   p->__M.arg_switches[0] = &p->channel_id;
 
-  /* specs/discord/channel.json:221:20
+  /* specs/discord/channel.json:222:20
      '{ "name": "webhook_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   p->__M.arg_switches[1] = &p->webhook_id;
 
@@ -2333,17 +2537,17 @@ size_t discord_channel_followed_channel_to_json(char *json, size_t len, struct d
   size_t r;
   discord_channel_followed_channel_use_default_inject_settings(p);
   r=json_inject(json, len, 
-  /* specs/discord/channel.json:220:20
+  /* specs/discord/channel.json:221:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 "(channel_id):|F|,"
-  /* specs/discord/channel.json:221:20
+  /* specs/discord/channel.json:222:20
      '{ "name": "webhook_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 "(webhook_id):|F|,"
                 "@arg_switches:b",
-  /* specs/discord/channel.json:220:20
+  /* specs/discord/channel.json:221:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 cee_ulltostr, &p->channel_id,
-  /* specs/discord/channel.json:221:20
+  /* specs/discord/channel.json:222:20
      '{ "name": "webhook_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 cee_ulltostr, &p->webhook_id,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
@@ -2366,8 +2570,8 @@ void discord_channel_followed_channel_free_v(void *p) {
  discord_channel_followed_channel_free((struct discord_channel_followed_channel *)p);
 };
 
-void discord_channel_followed_channel_from_json_v(char *json, size_t len, void *p) {
- discord_channel_followed_channel_from_json(json, len, (struct discord_channel_followed_channel*)p);
+void discord_channel_followed_channel_from_json_v(char *json, size_t len, void *pp) {
+ discord_channel_followed_channel_from_json(json, len, (struct discord_channel_followed_channel**)pp);
 }
 
 size_t discord_channel_followed_channel_to_json_v(char *json, size_t len, void *p) {
@@ -2388,20 +2592,20 @@ size_t discord_channel_followed_channel_list_to_json_v(char *str, size_t len, vo
 
 
 void discord_channel_followed_channel_cleanup(struct discord_channel_followed_channel *d) {
-  /* specs/discord/channel.json:220:20
+  /* specs/discord/channel.json:221:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   // p->channel_id is a scalar
-  /* specs/discord/channel.json:221:20
+  /* specs/discord/channel.json:222:20
      '{ "name": "webhook_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   // p->webhook_id is a scalar
 }
 
 void discord_channel_followed_channel_init(struct discord_channel_followed_channel *p) {
   memset(p, 0, sizeof(struct discord_channel_followed_channel));
-  /* specs/discord/channel.json:220:20
+  /* specs/discord/channel.json:221:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
 
-  /* specs/discord/channel.json:221:20
+  /* specs/discord/channel.json:222:20
      '{ "name": "webhook_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
 
 }
@@ -2425,10 +2629,10 @@ void discord_channel_followed_channel_list_from_json(char *str, size_t len, stru
   struct ntl_deserializer d;
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_channel_followed_channel);
-  d.init_elem = discord_channel_followed_channel_init_v;
+  d.init_elem = NULL;
   d.elem_from_buf = discord_channel_followed_channel_from_json_v;
   d.ntl_recipient_p= (void***)p;
-  extract_ntl_from_json(str, len, &d);
+  extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_channel_followed_channel_list_to_json(char *str, size_t len, struct discord_channel_followed_channel **p)
@@ -2437,32 +2641,34 @@ size_t discord_channel_followed_channel_list_to_json(char *str, size_t len, stru
 }
 
 
-void discord_channel_reaction_from_json(char *json, size_t len, struct discord_channel_reaction *p)
+void discord_channel_reaction_from_json(char *json, size_t len, struct discord_channel_reaction **pp)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
+  if (!*pp) *pp = calloc(1, sizeof **pp);
+  struct discord_channel_reaction *p = *pp;
   r=json_extract(json, len, 
-  /* specs/discord/channel.json:231:20
+  /* specs/discord/channel.json:232:20
      '{ "name": "count", "type":{ "base":"int" }}' */
                 "(count):d,"
-  /* specs/discord/channel.json:232:20
+  /* specs/discord/channel.json:233:20
      '{ "name": "me", "type":{ "base":"bool" }}' */
                 "(me):b,"
-  /* specs/discord/channel.json:233:20
+  /* specs/discord/channel.json:234:20
      '{ "name": "emoji", "type":{ "base":"struct discord_emoji", "dec":"*" }, "comment":"partial emoji object"}' */
                 "(emoji):F,"
                 "@arg_switches:b"
                 "@record_defined"
                 "@record_null",
-  /* specs/discord/channel.json:231:20
+  /* specs/discord/channel.json:232:20
      '{ "name": "count", "type":{ "base":"int" }}' */
                 &p->count,
-  /* specs/discord/channel.json:232:20
+  /* specs/discord/channel.json:233:20
      '{ "name": "me", "type":{ "base":"bool" }}' */
                 &p->me,
-  /* specs/discord/channel.json:233:20
+  /* specs/discord/channel.json:234:20
      '{ "name": "emoji", "type":{ "base":"struct discord_emoji", "dec":"*" }, "comment":"partial emoji object"}' */
-                discord_emoji_from_json, p->emoji,
+                discord_emoji_from_json, &p->emoji,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
                 p->__M.record_null, sizeof(p->__M.record_null));
@@ -2472,15 +2678,15 @@ void discord_channel_reaction_from_json(char *json, size_t len, struct discord_c
 static void discord_channel_reaction_use_default_inject_settings(struct discord_channel_reaction *p)
 {
   p->__M.enable_arg_switches = true;
-  /* specs/discord/channel.json:231:20
+  /* specs/discord/channel.json:232:20
      '{ "name": "count", "type":{ "base":"int" }}' */
   p->__M.arg_switches[0] = &p->count;
 
-  /* specs/discord/channel.json:232:20
+  /* specs/discord/channel.json:233:20
      '{ "name": "me", "type":{ "base":"bool" }}' */
   p->__M.arg_switches[1] = &p->me;
 
-  /* specs/discord/channel.json:233:20
+  /* specs/discord/channel.json:234:20
      '{ "name": "emoji", "type":{ "base":"struct discord_emoji", "dec":"*" }, "comment":"partial emoji object"}' */
   p->__M.arg_switches[2] = p->emoji;
 
@@ -2491,23 +2697,23 @@ size_t discord_channel_reaction_to_json(char *json, size_t len, struct discord_c
   size_t r;
   discord_channel_reaction_use_default_inject_settings(p);
   r=json_inject(json, len, 
-  /* specs/discord/channel.json:231:20
+  /* specs/discord/channel.json:232:20
      '{ "name": "count", "type":{ "base":"int" }}' */
                 "(count):d,"
-  /* specs/discord/channel.json:232:20
+  /* specs/discord/channel.json:233:20
      '{ "name": "me", "type":{ "base":"bool" }}' */
                 "(me):b,"
-  /* specs/discord/channel.json:233:20
+  /* specs/discord/channel.json:234:20
      '{ "name": "emoji", "type":{ "base":"struct discord_emoji", "dec":"*" }, "comment":"partial emoji object"}' */
                 "(emoji):F,"
                 "@arg_switches:b",
-  /* specs/discord/channel.json:231:20
+  /* specs/discord/channel.json:232:20
      '{ "name": "count", "type":{ "base":"int" }}' */
                 &p->count,
-  /* specs/discord/channel.json:232:20
+  /* specs/discord/channel.json:233:20
      '{ "name": "me", "type":{ "base":"bool" }}' */
                 &p->me,
-  /* specs/discord/channel.json:233:20
+  /* specs/discord/channel.json:234:20
      '{ "name": "emoji", "type":{ "base":"struct discord_emoji", "dec":"*" }, "comment":"partial emoji object"}' */
                 discord_emoji_to_json, p->emoji,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
@@ -2530,8 +2736,8 @@ void discord_channel_reaction_free_v(void *p) {
  discord_channel_reaction_free((struct discord_channel_reaction *)p);
 };
 
-void discord_channel_reaction_from_json_v(char *json, size_t len, void *p) {
- discord_channel_reaction_from_json(json, len, (struct discord_channel_reaction*)p);
+void discord_channel_reaction_from_json_v(char *json, size_t len, void *pp) {
+ discord_channel_reaction_from_json(json, len, (struct discord_channel_reaction**)pp);
 }
 
 size_t discord_channel_reaction_to_json_v(char *json, size_t len, void *p) {
@@ -2552,13 +2758,13 @@ size_t discord_channel_reaction_list_to_json_v(char *str, size_t len, void *p){
 
 
 void discord_channel_reaction_cleanup(struct discord_channel_reaction *d) {
-  /* specs/discord/channel.json:231:20
+  /* specs/discord/channel.json:232:20
      '{ "name": "count", "type":{ "base":"int" }}' */
   // p->count is a scalar
-  /* specs/discord/channel.json:232:20
+  /* specs/discord/channel.json:233:20
      '{ "name": "me", "type":{ "base":"bool" }}' */
   // p->me is a scalar
-  /* specs/discord/channel.json:233:20
+  /* specs/discord/channel.json:234:20
      '{ "name": "emoji", "type":{ "base":"struct discord_emoji", "dec":"*" }, "comment":"partial emoji object"}' */
   if (d->emoji)
     discord_emoji_free(d->emoji);
@@ -2566,13 +2772,13 @@ void discord_channel_reaction_cleanup(struct discord_channel_reaction *d) {
 
 void discord_channel_reaction_init(struct discord_channel_reaction *p) {
   memset(p, 0, sizeof(struct discord_channel_reaction));
-  /* specs/discord/channel.json:231:20
+  /* specs/discord/channel.json:232:20
      '{ "name": "count", "type":{ "base":"int" }}' */
 
-  /* specs/discord/channel.json:232:20
+  /* specs/discord/channel.json:233:20
      '{ "name": "me", "type":{ "base":"bool" }}' */
 
-  /* specs/discord/channel.json:233:20
+  /* specs/discord/channel.json:234:20
      '{ "name": "emoji", "type":{ "base":"struct discord_emoji", "dec":"*" }, "comment":"partial emoji object"}' */
   p->emoji = discord_emoji_alloc();
 
@@ -2597,10 +2803,10 @@ void discord_channel_reaction_list_from_json(char *str, size_t len, struct disco
   struct ntl_deserializer d;
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_channel_reaction);
-  d.init_elem = discord_channel_reaction_init_v;
+  d.init_elem = NULL;
   d.elem_from_buf = discord_channel_reaction_from_json_v;
   d.ntl_recipient_p= (void***)p;
-  extract_ntl_from_json(str, len, &d);
+  extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_channel_reaction_list_to_json(char *str, size_t len, struct discord_channel_reaction **p)
@@ -2609,23 +2815,43 @@ size_t discord_channel_reaction_list_to_json(char *str, size_t len, struct disco
 }
 
 
-
-/* This method is disabled at specs/discord/channel.json:239:30 */
-void discord_channel_overwrite_from_json_disabled(char *json, size_t len, struct discord_channel_overwrite *p)
+void discord_channel_overwrite_from_json(char *json, size_t len, struct discord_channel_overwrite **pp)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
+  if (!*pp) *pp = calloc(1, sizeof **pp);
+  struct discord_channel_overwrite *p = *pp;
   r=json_extract(json, len, 
+  /* specs/discord/channel.json:243:20
+     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 "(id):F,"
+  /* specs/discord/channel.json:244:20
+     '{ "name": "type", "type":{ "base":"int" }}' */
                 "(type):d,"
+  /* specs/discord/channel.json:245:20
+     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"}, 
+          "comment":"permission bit set"}' */
                 "(allow):s_as_hex_uint,"
+  /* specs/discord/channel.json:247:20
+     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"}, 
+          "comment":"permission bit set"}' */
                 "(deny):s_as_hex_uint,"
                 "@arg_switches:b"
                 "@record_defined"
                 "@record_null",
+  /* specs/discord/channel.json:243:20
+     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 cee_strtoull, &p->id,
+  /* specs/discord/channel.json:244:20
+     '{ "name": "type", "type":{ "base":"int" }}' */
                 &p->type,
+  /* specs/discord/channel.json:245:20
+     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"}, 
+          "comment":"permission bit set"}' */
                 &p->allow,
+  /* specs/discord/channel.json:247:20
+     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"}, 
+          "comment":"permission bit set"}' */
                 &p->deny,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
@@ -2656,21 +2882,39 @@ static void discord_channel_overwrite_use_default_inject_settings(struct discord
 
 }
 
-
-/* This method is disabled at specs/discord/channel.json:239:30 */
-size_t discord_channel_overwrite_to_json_disabled(char *json, size_t len, struct discord_channel_overwrite *p)
+size_t discord_channel_overwrite_to_json(char *json, size_t len, struct discord_channel_overwrite *p)
 {
   size_t r;
   discord_channel_overwrite_use_default_inject_settings(p);
   r=json_inject(json, len, 
+  /* specs/discord/channel.json:243:20
+     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 "(id):|F|,"
+  /* specs/discord/channel.json:244:20
+     '{ "name": "type", "type":{ "base":"int" }}' */
                 "(type):d,"
+  /* specs/discord/channel.json:245:20
+     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"}, 
+          "comment":"permission bit set"}' */
                 "(allow):s_as_hex_uint,"
+  /* specs/discord/channel.json:247:20
+     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"}, 
+          "comment":"permission bit set"}' */
                 "(deny):s_as_hex_uint,"
                 "@arg_switches:b",
+  /* specs/discord/channel.json:243:20
+     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 cee_ulltostr, &p->id,
+  /* specs/discord/channel.json:244:20
+     '{ "name": "type", "type":{ "base":"int" }}' */
                 &p->type,
+  /* specs/discord/channel.json:245:20
+     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"}, 
+          "comment":"permission bit set"}' */
                 &p->allow,
+  /* specs/discord/channel.json:247:20
+     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"}, 
+          "comment":"permission bit set"}' */
                 &p->deny,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
@@ -2692,8 +2936,8 @@ void discord_channel_overwrite_free_v(void *p) {
  discord_channel_overwrite_free((struct discord_channel_overwrite *)p);
 };
 
-void discord_channel_overwrite_from_json_v(char *json, size_t len, void *p) {
- discord_channel_overwrite_from_json(json, len, (struct discord_channel_overwrite*)p);
+void discord_channel_overwrite_from_json_v(char *json, size_t len, void *pp) {
+ discord_channel_overwrite_from_json(json, len, (struct discord_channel_overwrite**)pp);
 }
 
 size_t discord_channel_overwrite_to_json_v(char *json, size_t len, void *p) {
@@ -2767,10 +3011,10 @@ void discord_channel_overwrite_list_from_json(char *str, size_t len, struct disc
   struct ntl_deserializer d;
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_channel_overwrite);
-  d.init_elem = discord_channel_overwrite_init_v;
+  d.init_elem = NULL;
   d.elem_from_buf = discord_channel_overwrite_from_json_v;
   d.ntl_recipient_p= (void***)p;
-  extract_ntl_from_json(str, len, &d);
+  extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_channel_overwrite_list_to_json(char *str, size_t len, struct discord_channel_overwrite **p)
@@ -2779,10 +3023,12 @@ size_t discord_channel_overwrite_list_to_json(char *str, size_t len, struct disc
 }
 
 
-void discord_thread_metadata_from_json(char *json, size_t len, struct discord_thread_metadata *p)
+void discord_thread_metadata_from_json(char *json, size_t len, struct discord_thread_metadata **pp)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
+  if (!*pp) *pp = calloc(1, sizeof **pp);
+  struct discord_thread_metadata *p = *pp;
   r=json_extract(json, len, 
   /* specs/discord/channel.json:258:20
      '{ "name": "archived", "type":{ "base":"bool" }}' */
@@ -2904,8 +3150,8 @@ void discord_thread_metadata_free_v(void *p) {
  discord_thread_metadata_free((struct discord_thread_metadata *)p);
 };
 
-void discord_thread_metadata_from_json_v(char *json, size_t len, void *p) {
- discord_thread_metadata_from_json(json, len, (struct discord_thread_metadata*)p);
+void discord_thread_metadata_from_json_v(char *json, size_t len, void *pp) {
+ discord_thread_metadata_from_json(json, len, (struct discord_thread_metadata**)pp);
 }
 
 size_t discord_thread_metadata_to_json_v(char *json, size_t len, void *p) {
@@ -2981,10 +3227,10 @@ void discord_thread_metadata_list_from_json(char *str, size_t len, struct discor
   struct ntl_deserializer d;
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_thread_metadata);
-  d.init_elem = discord_thread_metadata_init_v;
+  d.init_elem = NULL;
   d.elem_from_buf = discord_thread_metadata_from_json_v;
   d.ntl_recipient_p= (void***)p;
-  extract_ntl_from_json(str, len, &d);
+  extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_thread_metadata_list_to_json(char *str, size_t len, struct discord_thread_metadata **p)
@@ -2993,10 +3239,12 @@ size_t discord_thread_metadata_list_to_json(char *str, size_t len, struct discor
 }
 
 
-void discord_thread_member_from_json(char *json, size_t len, struct discord_thread_member *p)
+void discord_thread_member_from_json(char *json, size_t len, struct discord_thread_member **pp)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
+  if (!*pp) *pp = calloc(1, sizeof **pp);
+  struct discord_thread_member *p = *pp;
   r=json_extract(json, len, 
   /* specs/discord/channel.json:272:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
@@ -3102,8 +3350,8 @@ void discord_thread_member_free_v(void *p) {
  discord_thread_member_free((struct discord_thread_member *)p);
 };
 
-void discord_thread_member_from_json_v(char *json, size_t len, void *p) {
- discord_thread_member_from_json(json, len, (struct discord_thread_member*)p);
+void discord_thread_member_from_json_v(char *json, size_t len, void *pp) {
+ discord_thread_member_from_json(json, len, (struct discord_thread_member**)pp);
 }
 
 size_t discord_thread_member_to_json_v(char *json, size_t len, void *p) {
@@ -3173,10 +3421,10 @@ void discord_thread_member_list_from_json(char *str, size_t len, struct discord_
   struct ntl_deserializer d;
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_thread_member);
-  d.init_elem = discord_thread_member_init_v;
+  d.init_elem = NULL;
   d.elem_from_buf = discord_thread_member_from_json_v;
   d.ntl_recipient_p= (void***)p;
-  extract_ntl_from_json(str, len, &d);
+  extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_thread_member_list_to_json(char *str, size_t len, struct discord_thread_member **p)
@@ -3185,10 +3433,12 @@ size_t discord_thread_member_list_to_json(char *str, size_t len, struct discord_
 }
 
 
-void discord_channel_attachment_from_json(char *json, size_t len, struct discord_channel_attachment *p)
+void discord_channel_attachment_from_json(char *json, size_t len, struct discord_channel_attachment **pp)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
+  if (!*pp) *pp = calloc(1, sizeof **pp);
+  struct discord_channel_attachment *p = *pp;
   r=json_extract(json, len, 
   /* specs/discord/channel.json:285:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
@@ -3342,8 +3592,8 @@ void discord_channel_attachment_free_v(void *p) {
  discord_channel_attachment_free((struct discord_channel_attachment *)p);
 };
 
-void discord_channel_attachment_from_json_v(char *json, size_t len, void *p) {
- discord_channel_attachment_from_json(json, len, (struct discord_channel_attachment*)p);
+void discord_channel_attachment_from_json_v(char *json, size_t len, void *pp) {
+ discord_channel_attachment_from_json(json, len, (struct discord_channel_attachment**)pp);
 }
 
 size_t discord_channel_attachment_to_json_v(char *json, size_t len, void *p) {
@@ -3433,10 +3683,10 @@ void discord_channel_attachment_list_from_json(char *str, size_t len, struct dis
   struct ntl_deserializer d;
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_channel_attachment);
-  d.init_elem = discord_channel_attachment_init_v;
+  d.init_elem = NULL;
   d.elem_from_buf = discord_channel_attachment_from_json_v;
   d.ntl_recipient_p= (void***)p;
-  extract_ntl_from_json(str, len, &d);
+  extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_channel_attachment_list_to_json(char *str, size_t len, struct discord_channel_attachment **p)
@@ -3445,10 +3695,12 @@ size_t discord_channel_attachment_list_to_json(char *str, size_t len, struct dis
 }
 
 
-void discord_channel_mention_from_json(char *json, size_t len, struct discord_channel_mention *p)
+void discord_channel_mention_from_json(char *json, size_t len, struct discord_channel_mention **pp)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
+  if (!*pp) *pp = calloc(1, sizeof **pp);
+  struct discord_channel_mention *p = *pp;
   r=json_extract(json, len, 
   /* specs/discord/channel.json:301:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
@@ -3554,8 +3806,8 @@ void discord_channel_mention_free_v(void *p) {
  discord_channel_mention_free((struct discord_channel_mention *)p);
 };
 
-void discord_channel_mention_from_json_v(char *json, size_t len, void *p) {
- discord_channel_mention_from_json(json, len, (struct discord_channel_mention*)p);
+void discord_channel_mention_from_json_v(char *json, size_t len, void *pp) {
+ discord_channel_mention_from_json(json, len, (struct discord_channel_mention**)pp);
 }
 
 size_t discord_channel_mention_to_json_v(char *json, size_t len, void *p) {
@@ -3626,10 +3878,10 @@ void discord_channel_mention_list_from_json(char *str, size_t len, struct discor
   struct ntl_deserializer d;
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_channel_mention);
-  d.init_elem = discord_channel_mention_init_v;
+  d.init_elem = NULL;
   d.elem_from_buf = discord_channel_mention_from_json_v;
   d.ntl_recipient_p= (void***)p;
-  extract_ntl_from_json(str, len, &d);
+  extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_channel_mention_list_to_json(char *str, size_t len, struct discord_channel_mention **p)
@@ -3638,10 +3890,12 @@ size_t discord_channel_mention_list_to_json(char *str, size_t len, struct discor
 }
 
 
-void discord_channel_allowed_mentions_from_json(char *json, size_t len, struct discord_channel_allowed_mentions *p)
+void discord_channel_allowed_mentions_from_json(char *json, size_t len, struct discord_channel_allowed_mentions **pp)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
+  if (!*pp) *pp = calloc(1, sizeof **pp);
+  struct discord_channel_allowed_mentions *p = *pp;
   r=json_extract(json, len, 
   /* specs/discord/channel.json:314:20
      '{ "name": "parse", "type":{ "base":"ja_str", "dec":"ntl" }}' */
@@ -3747,8 +4001,8 @@ void discord_channel_allowed_mentions_free_v(void *p) {
  discord_channel_allowed_mentions_free((struct discord_channel_allowed_mentions *)p);
 };
 
-void discord_channel_allowed_mentions_from_json_v(char *json, size_t len, void *p) {
- discord_channel_allowed_mentions_from_json(json, len, (struct discord_channel_allowed_mentions*)p);
+void discord_channel_allowed_mentions_from_json_v(char *json, size_t len, void *pp) {
+ discord_channel_allowed_mentions_from_json(json, len, (struct discord_channel_allowed_mentions**)pp);
 }
 
 size_t discord_channel_allowed_mentions_to_json_v(char *json, size_t len, void *p) {
@@ -3821,10 +4075,10 @@ void discord_channel_allowed_mentions_list_from_json(char *str, size_t len, stru
   struct ntl_deserializer d;
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_channel_allowed_mentions);
-  d.init_elem = discord_channel_allowed_mentions_init_v;
+  d.init_elem = NULL;
   d.elem_from_buf = discord_channel_allowed_mentions_from_json_v;
   d.ntl_recipient_p= (void***)p;
-  extract_ntl_from_json(str, len, &d);
+  extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_channel_allowed_mentions_list_to_json(char *str, size_t len, struct discord_channel_allowed_mentions **p)
@@ -3833,10 +4087,12 @@ size_t discord_channel_allowed_mentions_list_to_json(char *str, size_t len, stru
 }
 
 
-void discord_embed_from_json(char *json, size_t len, struct discord_embed *p)
+void discord_embed_from_json(char *json, size_t len, struct discord_embed **pp)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
+  if (!*pp) *pp = calloc(1, sizeof **pp);
+  struct discord_embed *p = *pp;
   r=json_extract(json, len, 
   /* specs/discord/channel.json:326:20
      '{ "name": "title", "type":{ "base":"char", "dec":"[DISCORD_EMBED_TITLE_LEN]" }, "option":true, "inject_if_not":null}' */
@@ -3900,22 +4156,22 @@ void discord_embed_from_json(char *json, size_t len, struct discord_embed *p)
                 &p->color,
   /* specs/discord/channel.json:332:20
      '{ "name": "footer", "type":{ "base":"struct discord_embed_footer", "dec":"*"}, "option":true, "inject_if_not":null}' */
-                discord_embed_footer_from_json, p->footer,
+                discord_embed_footer_from_json, &p->footer,
   /* specs/discord/channel.json:333:20
      '{ "name": "image", "type":{ "base":"struct discord_embed_image", "dec":"*"}, "inject_if_not":null}' */
-                discord_embed_image_from_json, p->image,
+                discord_embed_image_from_json, &p->image,
   /* specs/discord/channel.json:334:20
      '{ "name": "thumbnail", "type":{ "base":"struct discord_embed_thumbnail", "dec":"*"}, "inject_if_not":null}' */
-                discord_embed_thumbnail_from_json, p->thumbnail,
+                discord_embed_thumbnail_from_json, &p->thumbnail,
   /* specs/discord/channel.json:335:20
      '{ "name": "video", "type":{ "base":"struct discord_embed_video", "dec":"*"}, "inject_if_not":null}' */
-                discord_embed_video_from_json, p->video,
+                discord_embed_video_from_json, &p->video,
   /* specs/discord/channel.json:336:20
      '{ "name": "provider", "type":{ "base":"struct discord_embed_provider", "dec":"*"}, "inject_if_not":null}' */
-                discord_embed_provider_from_json, p->provider,
+                discord_embed_provider_from_json, &p->provider,
   /* specs/discord/channel.json:337:20
      '{ "name": "author", "type":{ "base":"struct discord_embed_author", "dec":"*"}, "inject_if_not":null}' */
-                discord_embed_author_from_json, p->author,
+                discord_embed_author_from_json, &p->author,
   /* specs/discord/channel.json:338:20
      '{ "name": "fields", "type":{ "base":"struct discord_embed_field", "dec":"ntl"}, "option":true, "inject_if_not":null}' */
                 discord_embed_field_list_from_json, &p->fields,
@@ -4099,8 +4355,8 @@ void discord_embed_free_v(void *p) {
  discord_embed_free((struct discord_embed *)p);
 };
 
-void discord_embed_from_json_v(char *json, size_t len, void *p) {
- discord_embed_from_json(json, len, (struct discord_embed*)p);
+void discord_embed_from_json_v(char *json, size_t len, void *pp) {
+ discord_embed_from_json(json, len, (struct discord_embed**)pp);
 }
 
 size_t discord_embed_to_json_v(char *json, size_t len, void *p) {
@@ -4238,10 +4494,10 @@ void discord_embed_list_from_json(char *str, size_t len, struct discord_embed **
   struct ntl_deserializer d;
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_embed);
-  d.init_elem = discord_embed_init_v;
+  d.init_elem = NULL;
   d.elem_from_buf = discord_embed_from_json_v;
   d.ntl_recipient_p= (void***)p;
-  extract_ntl_from_json(str, len, &d);
+  extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_embed_list_to_json(char *str, size_t len, struct discord_embed **p)
@@ -4250,10 +4506,12 @@ size_t discord_embed_list_to_json(char *str, size_t len, struct discord_embed **
 }
 
 
-void discord_embed_thumbnail_from_json(char *json, size_t len, struct discord_embed_thumbnail *p)
+void discord_embed_thumbnail_from_json(char *json, size_t len, struct discord_embed_thumbnail **pp)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
+  if (!*pp) *pp = calloc(1, sizeof **pp);
+  struct discord_embed_thumbnail *p = *pp;
   r=json_extract(json, len, 
   /* specs/discord/channel.json:347:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
@@ -4363,8 +4621,8 @@ void discord_embed_thumbnail_free_v(void *p) {
  discord_embed_thumbnail_free((struct discord_embed_thumbnail *)p);
 };
 
-void discord_embed_thumbnail_from_json_v(char *json, size_t len, void *p) {
- discord_embed_thumbnail_from_json(json, len, (struct discord_embed_thumbnail*)p);
+void discord_embed_thumbnail_from_json_v(char *json, size_t len, void *pp) {
+ discord_embed_thumbnail_from_json(json, len, (struct discord_embed_thumbnail**)pp);
 }
 
 size_t discord_embed_thumbnail_to_json_v(char *json, size_t len, void *p) {
@@ -4436,10 +4694,10 @@ void discord_embed_thumbnail_list_from_json(char *str, size_t len, struct discor
   struct ntl_deserializer d;
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_embed_thumbnail);
-  d.init_elem = discord_embed_thumbnail_init_v;
+  d.init_elem = NULL;
   d.elem_from_buf = discord_embed_thumbnail_from_json_v;
   d.ntl_recipient_p= (void***)p;
-  extract_ntl_from_json(str, len, &d);
+  extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_embed_thumbnail_list_to_json(char *str, size_t len, struct discord_embed_thumbnail **p)
@@ -4448,10 +4706,12 @@ size_t discord_embed_thumbnail_list_to_json(char *str, size_t len, struct discor
 }
 
 
-void discord_embed_video_from_json(char *json, size_t len, struct discord_embed_video *p)
+void discord_embed_video_from_json(char *json, size_t len, struct discord_embed_video **pp)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
+  if (!*pp) *pp = calloc(1, sizeof **pp);
+  struct discord_embed_video *p = *pp;
   r=json_extract(json, len, 
   /* specs/discord/channel.json:359:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
@@ -4561,8 +4821,8 @@ void discord_embed_video_free_v(void *p) {
  discord_embed_video_free((struct discord_embed_video *)p);
 };
 
-void discord_embed_video_from_json_v(char *json, size_t len, void *p) {
- discord_embed_video_from_json(json, len, (struct discord_embed_video*)p);
+void discord_embed_video_from_json_v(char *json, size_t len, void *pp) {
+ discord_embed_video_from_json(json, len, (struct discord_embed_video**)pp);
 }
 
 size_t discord_embed_video_to_json_v(char *json, size_t len, void *p) {
@@ -4634,10 +4894,10 @@ void discord_embed_video_list_from_json(char *str, size_t len, struct discord_em
   struct ntl_deserializer d;
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_embed_video);
-  d.init_elem = discord_embed_video_init_v;
+  d.init_elem = NULL;
   d.elem_from_buf = discord_embed_video_from_json_v;
   d.ntl_recipient_p= (void***)p;
-  extract_ntl_from_json(str, len, &d);
+  extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_embed_video_list_to_json(char *str, size_t len, struct discord_embed_video **p)
@@ -4646,10 +4906,12 @@ size_t discord_embed_video_list_to_json(char *str, size_t len, struct discord_em
 }
 
 
-void discord_embed_image_from_json(char *json, size_t len, struct discord_embed_image *p)
+void discord_embed_image_from_json(char *json, size_t len, struct discord_embed_image **pp)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
+  if (!*pp) *pp = calloc(1, sizeof **pp);
+  struct discord_embed_image *p = *pp;
   r=json_extract(json, len, 
   /* specs/discord/channel.json:371:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
@@ -4759,8 +5021,8 @@ void discord_embed_image_free_v(void *p) {
  discord_embed_image_free((struct discord_embed_image *)p);
 };
 
-void discord_embed_image_from_json_v(char *json, size_t len, void *p) {
- discord_embed_image_from_json(json, len, (struct discord_embed_image*)p);
+void discord_embed_image_from_json_v(char *json, size_t len, void *pp) {
+ discord_embed_image_from_json(json, len, (struct discord_embed_image**)pp);
 }
 
 size_t discord_embed_image_to_json_v(char *json, size_t len, void *p) {
@@ -4832,10 +5094,10 @@ void discord_embed_image_list_from_json(char *str, size_t len, struct discord_em
   struct ntl_deserializer d;
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_embed_image);
-  d.init_elem = discord_embed_image_init_v;
+  d.init_elem = NULL;
   d.elem_from_buf = discord_embed_image_from_json_v;
   d.ntl_recipient_p= (void***)p;
-  extract_ntl_from_json(str, len, &d);
+  extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_embed_image_list_to_json(char *str, size_t len, struct discord_embed_image **p)
@@ -4844,10 +5106,12 @@ size_t discord_embed_image_list_to_json(char *str, size_t len, struct discord_em
 }
 
 
-void discord_embed_provider_from_json(char *json, size_t len, struct discord_embed_provider *p)
+void discord_embed_provider_from_json(char *json, size_t len, struct discord_embed_provider **pp)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
+  if (!*pp) *pp = calloc(1, sizeof **pp);
+  struct discord_embed_provider *p = *pp;
   r=json_extract(json, len, 
   /* specs/discord/channel.json:383:20
      '{ "name": "name", "type":{"base":"char", "dec":"*"}, "inject_if_not":null}' */
@@ -4923,8 +5187,8 @@ void discord_embed_provider_free_v(void *p) {
  discord_embed_provider_free((struct discord_embed_provider *)p);
 };
 
-void discord_embed_provider_from_json_v(char *json, size_t len, void *p) {
- discord_embed_provider_from_json(json, len, (struct discord_embed_provider*)p);
+void discord_embed_provider_from_json_v(char *json, size_t len, void *pp) {
+ discord_embed_provider_from_json(json, len, (struct discord_embed_provider**)pp);
 }
 
 size_t discord_embed_provider_to_json_v(char *json, size_t len, void *p) {
@@ -4984,10 +5248,10 @@ void discord_embed_provider_list_from_json(char *str, size_t len, struct discord
   struct ntl_deserializer d;
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_embed_provider);
-  d.init_elem = discord_embed_provider_init_v;
+  d.init_elem = NULL;
   d.elem_from_buf = discord_embed_provider_from_json_v;
   d.ntl_recipient_p= (void***)p;
-  extract_ntl_from_json(str, len, &d);
+  extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_embed_provider_list_to_json(char *str, size_t len, struct discord_embed_provider **p)
@@ -4996,10 +5260,12 @@ size_t discord_embed_provider_list_to_json(char *str, size_t len, struct discord
 }
 
 
-void discord_embed_author_from_json(char *json, size_t len, struct discord_embed_author *p)
+void discord_embed_author_from_json(char *json, size_t len, struct discord_embed_author **pp)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
+  if (!*pp) *pp = calloc(1, sizeof **pp);
+  struct discord_embed_author *p = *pp;
   r=json_extract(json, len, 
   /* specs/discord/channel.json:393:20
      '{ "name": "name", "type":{ "base":"char", "dec":"[DISCORD_EMBED_AUTHOR_NAME_LEN]" }, "inject_if_not":null}' */
@@ -5109,8 +5375,8 @@ void discord_embed_author_free_v(void *p) {
  discord_embed_author_free((struct discord_embed_author *)p);
 };
 
-void discord_embed_author_from_json_v(char *json, size_t len, void *p) {
- discord_embed_author_from_json(json, len, (struct discord_embed_author*)p);
+void discord_embed_author_from_json_v(char *json, size_t len, void *pp) {
+ discord_embed_author_from_json(json, len, (struct discord_embed_author**)pp);
 }
 
 size_t discord_embed_author_to_json_v(char *json, size_t len, void *p) {
@@ -5183,10 +5449,10 @@ void discord_embed_author_list_from_json(char *str, size_t len, struct discord_e
   struct ntl_deserializer d;
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_embed_author);
-  d.init_elem = discord_embed_author_init_v;
+  d.init_elem = NULL;
   d.elem_from_buf = discord_embed_author_from_json_v;
   d.ntl_recipient_p= (void***)p;
-  extract_ntl_from_json(str, len, &d);
+  extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_embed_author_list_to_json(char *str, size_t len, struct discord_embed_author **p)
@@ -5195,10 +5461,12 @@ size_t discord_embed_author_list_to_json(char *str, size_t len, struct discord_e
 }
 
 
-void discord_embed_footer_from_json(char *json, size_t len, struct discord_embed_footer *p)
+void discord_embed_footer_from_json(char *json, size_t len, struct discord_embed_footer **pp)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
+  if (!*pp) *pp = calloc(1, sizeof **pp);
+  struct discord_embed_footer *p = *pp;
   r=json_extract(json, len, 
   /* specs/discord/channel.json:405:20
      '{ "name": "text", "type": {"base":"char", "dec":"[DISCORD_EMBED_FOOTER_TEXT_LEN]"}, "inject_if_not":null}' */
@@ -5291,8 +5559,8 @@ void discord_embed_footer_free_v(void *p) {
  discord_embed_footer_free((struct discord_embed_footer *)p);
 };
 
-void discord_embed_footer_from_json_v(char *json, size_t len, void *p) {
- discord_embed_footer_from_json(json, len, (struct discord_embed_footer*)p);
+void discord_embed_footer_from_json_v(char *json, size_t len, void *pp) {
+ discord_embed_footer_from_json(json, len, (struct discord_embed_footer**)pp);
 }
 
 size_t discord_embed_footer_to_json_v(char *json, size_t len, void *p) {
@@ -5358,10 +5626,10 @@ void discord_embed_footer_list_from_json(char *str, size_t len, struct discord_e
   struct ntl_deserializer d;
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_embed_footer);
-  d.init_elem = discord_embed_footer_init_v;
+  d.init_elem = NULL;
   d.elem_from_buf = discord_embed_footer_from_json_v;
   d.ntl_recipient_p= (void***)p;
-  extract_ntl_from_json(str, len, &d);
+  extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_embed_footer_list_to_json(char *str, size_t len, struct discord_embed_footer **p)
@@ -5370,10 +5638,12 @@ size_t discord_embed_footer_list_to_json(char *str, size_t len, struct discord_e
 }
 
 
-void discord_embed_field_from_json(char *json, size_t len, struct discord_embed_field *p)
+void discord_embed_field_from_json(char *json, size_t len, struct discord_embed_field **pp)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
+  if (!*pp) *pp = calloc(1, sizeof **pp);
+  struct discord_embed_field *p = *pp;
   r=json_extract(json, len, 
   /* specs/discord/channel.json:416:20
      '{ "name": "name", "type": { "base":"char", "dec":"[DISCORD_EMBED_FIELD_NAME_LEN]" }, "inject_if_not":null}' */
@@ -5465,8 +5735,8 @@ void discord_embed_field_free_v(void *p) {
  discord_embed_field_free((struct discord_embed_field *)p);
 };
 
-void discord_embed_field_from_json_v(char *json, size_t len, void *p) {
- discord_embed_field_from_json(json, len, (struct discord_embed_field*)p);
+void discord_embed_field_from_json_v(char *json, size_t len, void *pp) {
+ discord_embed_field_from_json(json, len, (struct discord_embed_field**)pp);
 }
 
 size_t discord_embed_field_to_json_v(char *json, size_t len, void *p) {
@@ -5530,10 +5800,10 @@ void discord_embed_field_list_from_json(char *str, size_t len, struct discord_em
   struct ntl_deserializer d;
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_embed_field);
-  d.init_elem = discord_embed_field_init_v;
+  d.init_elem = NULL;
   d.elem_from_buf = discord_embed_field_from_json_v;
   d.ntl_recipient_p= (void***)p;
-  extract_ntl_from_json(str, len, &d);
+  extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_embed_field_list_to_json(char *str, size_t len, struct discord_embed_field **p)

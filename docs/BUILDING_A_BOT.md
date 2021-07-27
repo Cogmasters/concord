@@ -17,7 +17,7 @@ The entire code of ping-pong bot is below. We will go over it in further down:
 
 
 void on_ready(struct discord *client, const struct discord_user *me) {
-  fprintf(stderr, "\n\nPingPong-Bot succesfully connected to Discord as %s#%s!\n\n",
+  log_info("PingPong-Bot succesfully connected to Discord as %s#%s!",
       bot->username, bot->discriminator);
 }
 
@@ -27,8 +27,7 @@ void on_ping(
   const struct discord_message *msg)
 {
   // make sure bot doesn't echoes other bots
-  if (msg->author->bot)
-    return;
+  if (msg->author->bot) return;
 
   struct discord_create_message_params params = {.content = "pong"};
   discord_create_message(client, msg->channel_id, &params, NULL);
@@ -71,7 +70,7 @@ You can set it automatically by initializing it with the bot.config file located
 ```
 Or you can initialize directly with discord_init() by giving it the bot token, like so:
 ```c
-  struct discord *client = discord_init("BOT_TOKEN_HERE");
+  struct discord *client = discord_init(BOT_TOKEN);
 ```
 
 ## discord_global_init
@@ -95,13 +94,13 @@ Returns `struct discord`: the client structure
 |:----------------|:--------------------------|
 |char[]| the bot token string|
 
-# Starting up the bot
+# Starting the bot
 ```c
 discord_set_on_ready(client, &on_ready);
 discord_set_on_command(client, "ping", &on_ping);
 discord_set_on_command(client, "pong", &on_pong);
 
-discord_run(struct discord*);
+discord_run(client);
 ```
 
 ## discord_set_on_ready

@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/emoji.endpoints-params.h
  * @author cee-studio
- * @date 01 Jul 2021
+ * @date Jul 27 2021
  * @brief Specs generated file
  * @see 
  */
@@ -49,8 +49,8 @@ extern void discord_create_guild_emoji_params_init(struct discord_create_guild_e
 extern struct discord_create_guild_emoji_params * discord_create_guild_emoji_params_alloc();
 extern void discord_create_guild_emoji_params_free_v(void *p);
 extern void discord_create_guild_emoji_params_free(struct discord_create_guild_emoji_params *p);
-extern void discord_create_guild_emoji_params_from_json_v(char *json, size_t len, void *p);
-extern void discord_create_guild_emoji_params_from_json(char *json, size_t len, struct discord_create_guild_emoji_params *p);
+extern void discord_create_guild_emoji_params_from_json_v(char *json, size_t len, void *pp);
+extern void discord_create_guild_emoji_params_from_json(char *json, size_t len, struct discord_create_guild_emoji_params **pp);
 extern size_t discord_create_guild_emoji_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_create_guild_emoji_params_to_json(char *json, size_t len, struct discord_create_guild_emoji_params *p);
 extern size_t discord_create_guild_emoji_params_to_query_v(char *json, size_t len, void *p);
@@ -99,8 +99,8 @@ extern void discord_modify_guild_emoji_params_init(struct discord_modify_guild_e
 extern struct discord_modify_guild_emoji_params * discord_modify_guild_emoji_params_alloc();
 extern void discord_modify_guild_emoji_params_free_v(void *p);
 extern void discord_modify_guild_emoji_params_free(struct discord_modify_guild_emoji_params *p);
-extern void discord_modify_guild_emoji_params_from_json_v(char *json, size_t len, void *p);
-extern void discord_modify_guild_emoji_params_from_json(char *json, size_t len, struct discord_modify_guild_emoji_params *p);
+extern void discord_modify_guild_emoji_params_from_json_v(char *json, size_t len, void *pp);
+extern void discord_modify_guild_emoji_params_from_json(char *json, size_t len, struct discord_modify_guild_emoji_params **pp);
 extern size_t discord_modify_guild_emoji_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_modify_guild_emoji_params_to_json(char *json, size_t len, struct discord_modify_guild_emoji_params *p);
 extern size_t discord_modify_guild_emoji_params_to_query_v(char *json, size_t len, void *p);

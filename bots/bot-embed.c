@@ -10,7 +10,7 @@
 
 
 void on_ready(struct discord *client, const struct discord_user *bot) {
-  fprintf(stderr, "\n\nEmbed-Bot succesfully connected to Discord as %s#%s!\n\n",
+  log_info("Embed-Bot succesfully connected to Discord as %s#%s!",
       bot->username, bot->discriminator);
 }
 
@@ -34,8 +34,8 @@ load_embed_from_json(char filename[])
   size_t len;
   char *json_payload = cee_load_whole_file(filename, &len);
 
-  struct discord_embed *new_embed = discord_embed_alloc();
-  discord_embed_from_json(json_payload, len, new_embed);
+  struct discord_embed *new_embed=NULL;
+  discord_embed_from_json(json_payload, len, &new_embed);
 
   new_embed->timestamp = cee_timestamp_ms(); // get current timestamp
 

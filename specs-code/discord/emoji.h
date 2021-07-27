@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/emoji.h
  * @author cee-studio
- * @date 01 Jul 2021
+ * @date Jul 27 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/emoji
  */
@@ -70,8 +70,8 @@ extern void discord_emoji_init(struct discord_emoji *p);
 extern struct discord_emoji * discord_emoji_alloc();
 extern void discord_emoji_free_v(void *p);
 extern void discord_emoji_free(struct discord_emoji *p);
-extern void discord_emoji_from_json_v(char *json, size_t len, void *p);
-extern void discord_emoji_from_json(char *json, size_t len, struct discord_emoji *p);
+extern void discord_emoji_from_json_v(char *json, size_t len, void *pp);
+extern void discord_emoji_from_json(char *json, size_t len, struct discord_emoji **pp);
 extern size_t discord_emoji_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_emoji_to_json(char *json, size_t len, struct discord_emoji *p);
 extern size_t discord_emoji_to_query_v(char *json, size_t len, void *p);
