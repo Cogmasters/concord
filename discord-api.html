@@ -1702,15 +1702,39 @@
 <dd></dd></dl>
 
 <dl class="c var">
-<dt class="sig sig-object c" id="c.discord_message.stickers">
-<span class="target" id="structdiscord__message_1adb6528b3066e5e5ab0d13abfc111882b"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_message_sticker" title="discord_message_sticker"><span class="n"><span class="pre">discord_message_sticker</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">stickers</span></span></span><a class="headerlink" href="#c.discord_message.stickers" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>array of sticker objects </p>
-</dd></dl>
-
-<dl class="c var">
 <dt class="sig sig-object c" id="c.discord_message.referenced_message">
 <span class="target" id="structdiscord__message_1a985926879f0a05f4487c18b74a1dc6d5"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_message" title="discord_message"><span class="n"><span class="pre">discord_message</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">referenced_message</span></span></span><a class="headerlink" href="#c.discord_message.referenced_message" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>this will cause recursive allocation if allocating as the parent </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_message.interaction">
+<span class="target" id="structdiscord__message_1a61201eedef29ca05775190c82487d69a"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">discord_message_interaction</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">interaction</span></span></span><a class="headerlink" href="#c.discord_message.interaction" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the message associated with the message_reference </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_message.thread">
+<span class="target" id="structdiscord__message_1a0cf481b0e351625aaf1105b8110525a6"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_channel" title="discord_channel"><span class="n"><span class="pre">discord_channel</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">thread</span></span></span><a class="headerlink" href="#c.discord_message.thread" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the channel that was started from this message, includes thread member obejct </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_message.components">
+<span class="target" id="structdiscord__message_1ab6cda9510ae4b9211f7427f9c244036e"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">discord_component</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">components</span></span></span><a class="headerlink" href="#c.discord_message.components" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>sent if the message contains components like buttons, actions rows, or other interactive components </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_message.sticker_items">
+<span class="target" id="structdiscord__message_1a36123b2cc096eb5a12fa7429434097af"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_message_sticker" title="discord_message_sticker"><span class="n"><span class="pre">discord_message_sticker</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">sticker_items</span></span></span><a class="headerlink" href="#c.discord_message.sticker_items" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>sent if the message contains stickets </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_message.stickers">
+<span class="target" id="structdiscord__message_1adb6528b3066e5e5ab0d13abfc111882b"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_message_sticker" title="discord_message_sticker"><span class="n"><span class="pre">discord_message_sticker</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">stickers</span></span></span><a class="headerlink" href="#c.discord_message.stickers" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>[DEPRECATED] array of sticker objects </p>
 </dd></dl>
 
 </div>
@@ -4036,18 +4060,18 @@
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
 <dl class="c var">
-<dt class="sig sig-object c">
-<span class="target" id="structdiscord__gateway__identify__connection_1a83e1ac280363660a49bc611df8c69ecb"></span><span class="sig-name descname"><span class="pre">char</span> <span class="pre">*</span> <span class="pre">$os</span></span></dt>
+<dt class="sig sig-object c" id="c.discord_gateway_identify_connection.os">
+<span class="target" id="structdiscord__gateway__identify__connection_1a957084912a67c839850ca62e430468be"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">os</span></span></span><a class="headerlink" href="#c.discord_gateway_identify_connection.os" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c var">
-<dt class="sig sig-object c">
-<span class="target" id="structdiscord__gateway__identify__connection_1ad2a4c5b2369086e171194afba3fe1e5e"></span><span class="sig-name descname"><span class="pre">char</span> <span class="pre">*</span> <span class="pre">$browser</span></span></dt>
+<dt class="sig sig-object c" id="c.discord_gateway_identify_connection.browser">
+<span class="target" id="structdiscord__gateway__identify__connection_1ad58ed2cb002d7db120d20dcd9664fbb8"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">browser</span></span></span><a class="headerlink" href="#c.discord_gateway_identify_connection.browser" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c var">
-<dt class="sig sig-object c">
-<span class="target" id="structdiscord__gateway__identify__connection_1a7b123ab8c17f737af3961bfd4c87b2bf"></span><span class="sig-name descname"><span class="pre">char</span> <span class="pre">*</span> <span class="pre">$device</span></span></dt>
+<dt class="sig sig-object c" id="c.discord_gateway_identify_connection.device">
+<span class="target" id="structdiscord__gateway__identify__connection_1a445fec9c032f392b2d0b857ed306192c"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">device</span></span></span><a class="headerlink" href="#c.discord_gateway_identify_connection.device" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 </div>
@@ -6053,7 +6077,7 @@
     
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.1.1.<br/>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.1.2.<br/>
 </p>
     </div>
     
