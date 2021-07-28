@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date Jul 27 2021
+ * @date Jul 28 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/audit-log
  */
@@ -17,7 +17,7 @@ struct discord_get_guild_audit_log_params;
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date Jul 27 2021
+ * @date Jul 28 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/audit-log
  */
@@ -68,7 +68,7 @@ struct discord_audit_log_change_key;
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date Jul 27 2021
+ * @date Jul 28 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/channel
  */
@@ -142,14 +142,14 @@ struct discord_start_thread_without_message_params;
  * @brief List Active Threads
  *
  * @see https://discord.com/developers/docs/resources/channel#list-active-threads-response-body
- * @note defined at specs/discord/channel.endpoints-params.json:117:22
+ * @note defined at specs/discord/channel.endpoints-params.json:118:22
  */
 struct discord_thread_response_body;
 /* This file is generated from specs/discord/channel.json, Please don't edit it. */
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date Jul 27 2021
+ * @date Jul 28 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/channel
  */
@@ -161,7 +161,7 @@ struct discord_thread_response_body;
  * @brief Channel Structure
  *
  * @see https://discord.com/developers/docs/resources/channel#channel-object-channel-structure
- * @note defined at specs/discord/channel.json:25:22
+ * @note defined at specs/discord/channel.json:29:22
  */
 struct discord_channel;
 
@@ -171,7 +171,7 @@ struct discord_channel;
  * @brief Message Sticker Structure
  *
  * @see https://discord.com/developers/docs/resources/channel#message-object-message-sticker-structure
- * @note defined at specs/discord/channel.json:78:22
+ * @note defined at specs/discord/channel.json:82:22
  */
 struct discord_message_sticker;
 
@@ -181,7 +181,7 @@ struct discord_message_sticker;
  * @brief Message Reference Structure
  *
  * @see https://discord.com/developers/docs/resources/channel#message-object-message-reference-structure
- * @note defined at specs/discord/channel.json:108:22
+ * @note defined at specs/discord/channel.json:112:22
  */
 struct discord_message_reference;
 
@@ -189,7 +189,7 @@ struct discord_message_reference;
  * @brief Message Application Structure
  *
  * @see https://discord.com/developers/docs/resources/channel#message-object-message-application-structure
- * @note defined at specs/discord/channel.json:120:22
+ * @note defined at specs/discord/channel.json:124:22
  */
 struct discord_message_application;
 
@@ -199,7 +199,7 @@ struct discord_message_application;
  * @brief Message Activity Structure
  *
  * @see https://discord.com/developers/docs/resources/channel#message-object-message-activity-structure
- * @note defined at specs/discord/channel.json:145:22
+ * @note defined at specs/discord/channel.json:149:22
  */
 struct discord_message_activity;
 
@@ -209,7 +209,7 @@ struct discord_message_activity;
  * @brief Message Structure
  *
  * @see https://discord.com/developers/docs/resources/channel#message-object
- * @note defined at specs/discord/channel.json:180:22
+ * @note defined at specs/discord/channel.json:184:22
  */
 struct discord_message;
 
@@ -217,7 +217,7 @@ struct discord_message;
  * @brief Followed Channel Structure
  *
  * @see https://discord.com/developers/docs/resources/channel#followed-channel-object-followed-channel-structure
- * @note defined at specs/discord/channel.json:218:22
+ * @note defined at specs/discord/channel.json:222:22
  */
 struct discord_channel_followed_channel;
 
@@ -225,14 +225,14 @@ struct discord_channel_followed_channel;
  * @brief Reaction Structure
  *
  * @see https://discord.com/developers/docs/resources/channel#reaction-object-reaction-structure
- * @note defined at specs/discord/channel.json:229:22
+ * @note defined at specs/discord/channel.json:233:22
  */
 struct discord_channel_reaction;
 
 /**
  * @brief Overwrite Structure
  *
- * @note defined at specs/discord/channel.json:240:22
+ * @note defined at specs/discord/channel.json:244:22
  */
 struct discord_channel_overwrite;
 
@@ -240,7 +240,7 @@ struct discord_channel_overwrite;
  * @brief Thread Metadata Object
  *
  * @see https://discord.com/developers/docs/resources/channel#thread-metadata-object
- * @note defined at specs/discord/channel.json:255:22
+ * @note defined at specs/discord/channel.json:259:22
  */
 struct discord_thread_metadata;
 
@@ -248,7 +248,7 @@ struct discord_thread_metadata;
  * @brief Thread Member Object
  *
  * @see https://discord.com/developers/docs/resources/channel#thread-member-object
- * @note defined at specs/discord/channel.json:269:22
+ * @note defined at specs/discord/channel.json:273:22
  */
 struct discord_thread_member;
 
@@ -256,7 +256,7 @@ struct discord_thread_member;
  * @brief Attachment Strcture
  *
  * @see https://discord.com/developers/docs/resources/channel#attachment-object
- * @note defined at specs/discord/channel.json:282:22
+ * @note defined at specs/discord/channel.json:286:22
  */
 struct discord_channel_attachment;
 
@@ -264,7 +264,7 @@ struct discord_channel_attachment;
  * @brief Channel Mention Structure
  *
  * @see https://discord.com/developers/docs/resources/channel#channel-mention-object-channel-mention-structure
- * @note defined at specs/discord/channel.json:298:22
+ * @note defined at specs/discord/channel.json:302:22
  */
 struct discord_channel_mention;
 
@@ -272,7 +272,7 @@ struct discord_channel_mention;
  * @brief Allowed Mentions Structure
  *
  * @see https://discord.com/developers/docs/resources/channel#allowed-mentions-object-allowed-mentions-structure
- * @note defined at specs/discord/channel.json:311:22
+ * @note defined at specs/discord/channel.json:315:22
  */
 struct discord_channel_allowed_mentions;
 
@@ -280,7 +280,7 @@ struct discord_channel_allowed_mentions;
  * @brief Embed Structure
  *
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-structure
- * @note defined at specs/discord/channel.json:323:22
+ * @note defined at specs/discord/channel.json:327:22
  */
 struct discord_embed;
 
@@ -288,7 +288,7 @@ struct discord_embed;
  * @brief Embed Thumbnail Structure
  *
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-thumbnail-structure
- * @note defined at specs/discord/channel.json:345:22
+ * @note defined at specs/discord/channel.json:349:22
  */
 struct discord_embed_thumbnail;
 
@@ -296,7 +296,7 @@ struct discord_embed_thumbnail;
  * @brief Embed Video Structure
  *
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-video-structure
- * @note defined at specs/discord/channel.json:357:22
+ * @note defined at specs/discord/channel.json:361:22
  */
 struct discord_embed_video;
 
@@ -304,7 +304,7 @@ struct discord_embed_video;
  * @brief Embed Image Structure
  *
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-image-structure
- * @note defined at specs/discord/channel.json:369:22
+ * @note defined at specs/discord/channel.json:373:22
  */
 struct discord_embed_image;
 
@@ -312,7 +312,7 @@ struct discord_embed_image;
  * @brief Embed Provider Structure
  *
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-provider-structure
- * @note defined at specs/discord/channel.json:381:22
+ * @note defined at specs/discord/channel.json:385:22
  */
 struct discord_embed_provider;
 
@@ -320,7 +320,7 @@ struct discord_embed_provider;
  * @brief Embed Author Structure
  *
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-author-structure
- * @note defined at specs/discord/channel.json:391:22
+ * @note defined at specs/discord/channel.json:395:22
  */
 struct discord_embed_author;
 
@@ -328,7 +328,7 @@ struct discord_embed_author;
  * @brief Embed Footer Structure
  *
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-footer-structure
- * @note defined at specs/discord/channel.json:403:22
+ * @note defined at specs/discord/channel.json:407:22
  */
 struct discord_embed_footer;
 
@@ -336,14 +336,14 @@ struct discord_embed_footer;
  * @brief Embed Field Structure
  *
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-field-structure
- * @note defined at specs/discord/channel.json:414:22
+ * @note defined at specs/discord/channel.json:418:22
  */
 struct discord_embed_field;
 /* This file is generated from specs/discord/emoji.endpoints-params.json, Please don't edit it. */
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date Jul 27 2021
+ * @date Jul 28 2021
  * @brief Specs generated file
  * @see 
  */
@@ -368,7 +368,7 @@ struct discord_modify_guild_emoji_params;
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date Jul 27 2021
+ * @date Jul 28 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/emoji
  */
@@ -385,7 +385,7 @@ struct discord_emoji;
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date Jul 27 2021
+ * @date Jul 28 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/topics/gateway
  */
@@ -436,7 +436,7 @@ struct discord_gateway_activity;
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date Jul 27 2021
+ * @date Jul 28 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/guild-template
  */
@@ -469,7 +469,7 @@ struct discord_modify_guild_template_params;
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date Jul 27 2021
+ * @date Jul 28 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/guild-template
  */
@@ -486,7 +486,7 @@ struct discord_guild_template;
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date Jul 27 2021
+ * @date Jul 28 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/guild
  */
@@ -591,7 +591,7 @@ struct discord_begin_guild_prune_params;
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date Jul 27 2021
+ * @date Jul 28 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/guild
  */
@@ -704,7 +704,7 @@ struct discord_guild_welcome_screen_channel;
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date Jul 27 2021
+ * @date Jul 28 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/invite
  */
@@ -721,7 +721,7 @@ struct discord_get_invite_params;
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date Jul 27 2021
+ * @date Jul 28 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/invite
  */
@@ -748,7 +748,7 @@ struct discord_invite_metadata;
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date Jul 27 2021
+ * @date Jul 28 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/interactions/message-components#message-components
  */
@@ -793,7 +793,7 @@ struct discord_select_option;
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date Jul 27 2021
+ * @date Jul 28 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/topics/permissions
  */
@@ -820,7 +820,7 @@ struct discord_permissions_role_tags;
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date Jul 27 2021
+ * @date Jul 28 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/interactions/slash-commands#data-models-and-types
  */
@@ -935,7 +935,7 @@ struct discord_message_interaction;
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date Jul 27 2021
+ * @date Jul 28 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/user
  */
@@ -960,7 +960,7 @@ struct discord_create_group_dm_params;
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date Jul 27 2021
+ * @date Jul 28 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/user
  */
@@ -990,7 +990,7 @@ struct discord_connection;
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date Jul 27 2021
+ * @date Jul 28 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/topics/voice-connections
  */
@@ -1005,7 +1005,7 @@ struct discord_connection;
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date Jul 27 2021
+ * @date Jul 28 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/voice
  */
@@ -1030,7 +1030,7 @@ struct discord_voice_region;
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date Jul 27 2021
+ * @date Jul 28 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/webhook
  */
@@ -1071,7 +1071,7 @@ struct discord_edit_webhook_message_params;
 /**
  * @file specs-code/discord/all_opaque_struct.h
  * @author cee-studio
- * @date Jul 27 2021
+ * @date Jul 28 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/webhook
  */

@@ -11,12 +11,16 @@
       "items":
       [
         { "name": "GUILD_TEXT", "value":0}, 
-        { "name": "DM"},
-        { "name": "GUILD_VOICE"},
-        { "name": "GROUP_DM"},
-        { "name": "GUILD_CATEGORY"},
-        { "name": "GUILD_NEWS"},
-        { "name": "GUILD_STORE"}
+        { "name": "DM", "value":1},
+        { "name": "GUILD_VOICE", "value":2},
+        { "name": "GROUP_DM", "value":3},
+        { "name": "GUILD_CATEGORY", "value":4},
+        { "name": "GUILD_NEWS", "value":5},
+        { "name": "GUILD_STORE", "value":6},
+        { "name": "GUILD_NEWS_THREAD", "value":10},
+        { "name": "GUILD_PUBLIC_THREAD", "value":11},
+        { "name": "GUILD_PRIVATE_THREAD", "value":12},
+        { "name": "GUILD_STAGE_VOICE", "value":13}
       ]
     },
     {

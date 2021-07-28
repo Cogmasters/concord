@@ -107,7 +107,8 @@
       "fields":
       [
         { "name": "name", "type":{ "base":"char", "dec":"*" } },
-        { "name": "auto_archive_duration", "type":{ "base":"int" }, "inject_if_not":0 }
+        { "name": "auto_archive_duration", "type":{ "base":"int" }, "inject_if_not":0 },
+        { "name": "type", "type":{ "base":"int", "int_alias":"enum discord_channel_types" } }
       ]
     },
     {

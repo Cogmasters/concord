@@ -2,7 +2,7 @@
 /**
  * @file specs-code/reddit/oauth2.h
  * @author cee-studio
- * @date Jul 27 2021
+ * @date Jul 28 2021
  * @brief Specs generated file
  * @see https://github.com/reddit-archive/reddit/wiki/OAuth2-Quick-Start-Example
  */

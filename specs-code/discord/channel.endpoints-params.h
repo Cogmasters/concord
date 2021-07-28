@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/channel.endpoints-params.h
  * @author cee-studio
- * @date Jul 27 2021
+ * @date Jul 28 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/channel
  */
@@ -449,6 +449,10 @@ struct discord_start_thread_without_message_params {
      '{ "name": "auto_archive_duration", "type":{ "base":"int" }, "inject_if_not":0 }' */
   int auto_archive_duration;
 
+  /* specs/discord/channel.endpoints-params.json:111:20
+     '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_channel_types" } }' */
+  enum discord_channel_types type;
+
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
   // 2. record which field is presented(defined) in JSON
@@ -458,9 +462,9 @@ struct discord_start_thread_without_message_params {
     bool enable_arg_switches;
     bool enable_record_defined;
     bool enable_record_null;
-    void *arg_switches[2];
-    void *record_defined[2];
-    void *record_null[2];
+    void *arg_switches[3];
+    void *record_defined[3];
+    void *record_null[3];
   } __M; // metadata
 /// @endcond
 };
@@ -488,18 +492,18 @@ extern size_t discord_start_thread_without_message_params_list_to_json(char *str
  * @brief List Active Threads
  *
  * @see https://discord.com/developers/docs/resources/channel#list-active-threads-response-body
- * @note defined at specs/discord/channel.endpoints-params.json:117:22
+ * @note defined at specs/discord/channel.endpoints-params.json:118:22
  */
 struct discord_thread_response_body {
-  /* specs/discord/channel.endpoints-params.json:120:20
+  /* specs/discord/channel.endpoints-params.json:121:20
      '{ "name": "threads", "type":{ "base":"struct discord_channel", "dec":"ntl" } }' */
   struct discord_channel **threads;
 
-  /* specs/discord/channel.endpoints-params.json:121:20
+  /* specs/discord/channel.endpoints-params.json:122:20
      '{ "name": "members", "type":{ "base":"struct discord_thread_member", "dec":"ntl" } }' */
   struct discord_thread_member **members;
 
-  /* specs/discord/channel.endpoints-params.json:122:20
+  /* specs/discord/channel.endpoints-params.json:123:20
      '{ "name": "has_more", "type":{ "base":"bool" } }' */
   bool has_more;
 

@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/channel.endpoints-params.c
  * @author cee-studio
- * @date Jul 27 2021
+ * @date Jul 28 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/channel
  */
@@ -1518,6 +1518,9 @@ void discord_start_thread_without_message_params_from_json(char *json, size_t le
   /* specs/discord/channel.endpoints-params.json:110:20
      '{ "name": "auto_archive_duration", "type":{ "base":"int" }, "inject_if_not":0 }' */
                 "(auto_archive_duration):d,"
+  /* specs/discord/channel.endpoints-params.json:111:20
+     '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_channel_types" } }' */
+                "(type):d,"
                 "@arg_switches:b"
                 "@record_defined"
                 "@record_null",
@@ -1527,6 +1530,9 @@ void discord_start_thread_without_message_params_from_json(char *json, size_t le
   /* specs/discord/channel.endpoints-params.json:110:20
      '{ "name": "auto_archive_duration", "type":{ "base":"int" }, "inject_if_not":0 }' */
                 &p->auto_archive_duration,
+  /* specs/discord/channel.endpoints-params.json:111:20
+     '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_channel_types" } }' */
+                &p->type,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
                 p->__M.record_null, sizeof(p->__M.record_null));
@@ -1545,6 +1551,10 @@ static void discord_start_thread_without_message_params_use_default_inject_setti
   if (p->auto_archive_duration != 0)
     p->__M.arg_switches[1] = &p->auto_archive_duration;
 
+  /* specs/discord/channel.endpoints-params.json:111:20
+     '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_channel_types" } }' */
+  p->__M.arg_switches[2] = &p->type;
+
 }
 
 size_t discord_start_thread_without_message_params_to_json(char *json, size_t len, struct discord_start_thread_without_message_params *p)
@@ -1558,6 +1568,9 @@ size_t discord_start_thread_without_message_params_to_json(char *json, size_t le
   /* specs/discord/channel.endpoints-params.json:110:20
      '{ "name": "auto_archive_duration", "type":{ "base":"int" }, "inject_if_not":0 }' */
                 "(auto_archive_duration):d,"
+  /* specs/discord/channel.endpoints-params.json:111:20
+     '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_channel_types" } }' */
+                "(type):d,"
                 "@arg_switches:b",
   /* specs/discord/channel.endpoints-params.json:109:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" } }' */
@@ -1565,6 +1578,9 @@ size_t discord_start_thread_without_message_params_to_json(char *json, size_t le
   /* specs/discord/channel.endpoints-params.json:110:20
      '{ "name": "auto_archive_duration", "type":{ "base":"int" }, "inject_if_not":0 }' */
                 &p->auto_archive_duration,
+  /* specs/discord/channel.endpoints-params.json:111:20
+     '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_channel_types" } }' */
+                &p->type,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
 }
@@ -1614,6 +1630,9 @@ void discord_start_thread_without_message_params_cleanup(struct discord_start_th
   /* specs/discord/channel.endpoints-params.json:110:20
      '{ "name": "auto_archive_duration", "type":{ "base":"int" }, "inject_if_not":0 }' */
   // p->auto_archive_duration is a scalar
+  /* specs/discord/channel.endpoints-params.json:111:20
+     '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_channel_types" } }' */
+  // p->type is a scalar
 }
 
 void discord_start_thread_without_message_params_init(struct discord_start_thread_without_message_params *p) {
@@ -1623,6 +1642,9 @@ void discord_start_thread_without_message_params_init(struct discord_start_threa
 
   /* specs/discord/channel.endpoints-params.json:110:20
      '{ "name": "auto_archive_duration", "type":{ "base":"int" }, "inject_if_not":0 }' */
+
+  /* specs/discord/channel.endpoints-params.json:111:20
+     '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_channel_types" } }' */
 
 }
 struct discord_start_thread_without_message_params* discord_start_thread_without_message_params_alloc() {
@@ -1664,25 +1686,25 @@ void discord_thread_response_body_from_json(char *json, size_t len, struct disco
   if (!*pp) *pp = calloc(1, sizeof **pp);
   struct discord_thread_response_body *p = *pp;
   r=json_extract(json, len, 
-  /* specs/discord/channel.endpoints-params.json:120:20
+  /* specs/discord/channel.endpoints-params.json:121:20
      '{ "name": "threads", "type":{ "base":"struct discord_channel", "dec":"ntl" } }' */
                 "(threads):F,"
-  /* specs/discord/channel.endpoints-params.json:121:20
+  /* specs/discord/channel.endpoints-params.json:122:20
      '{ "name": "members", "type":{ "base":"struct discord_thread_member", "dec":"ntl" } }' */
                 "(members):F,"
-  /* specs/discord/channel.endpoints-params.json:122:20
+  /* specs/discord/channel.endpoints-params.json:123:20
      '{ "name": "has_more", "type":{ "base":"bool" } }' */
                 "(has_more):b,"
                 "@arg_switches:b"
                 "@record_defined"
                 "@record_null",
-  /* specs/discord/channel.endpoints-params.json:120:20
+  /* specs/discord/channel.endpoints-params.json:121:20
      '{ "name": "threads", "type":{ "base":"struct discord_channel", "dec":"ntl" } }' */
                 discord_channel_list_from_json, &p->threads,
-  /* specs/discord/channel.endpoints-params.json:121:20
+  /* specs/discord/channel.endpoints-params.json:122:20
      '{ "name": "members", "type":{ "base":"struct discord_thread_member", "dec":"ntl" } }' */
                 discord_thread_member_list_from_json, &p->members,
-  /* specs/discord/channel.endpoints-params.json:122:20
+  /* specs/discord/channel.endpoints-params.json:123:20
      '{ "name": "has_more", "type":{ "base":"bool" } }' */
                 &p->has_more,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
@@ -1694,15 +1716,15 @@ void discord_thread_response_body_from_json(char *json, size_t len, struct disco
 static void discord_thread_response_body_use_default_inject_settings(struct discord_thread_response_body *p)
 {
   p->__M.enable_arg_switches = true;
-  /* specs/discord/channel.endpoints-params.json:120:20
+  /* specs/discord/channel.endpoints-params.json:121:20
      '{ "name": "threads", "type":{ "base":"struct discord_channel", "dec":"ntl" } }' */
   p->__M.arg_switches[0] = p->threads;
 
-  /* specs/discord/channel.endpoints-params.json:121:20
+  /* specs/discord/channel.endpoints-params.json:122:20
      '{ "name": "members", "type":{ "base":"struct discord_thread_member", "dec":"ntl" } }' */
   p->__M.arg_switches[1] = p->members;
 
-  /* specs/discord/channel.endpoints-params.json:122:20
+  /* specs/discord/channel.endpoints-params.json:123:20
      '{ "name": "has_more", "type":{ "base":"bool" } }' */
   p->__M.arg_switches[2] = &p->has_more;
 
@@ -1713,23 +1735,23 @@ size_t discord_thread_response_body_to_json(char *json, size_t len, struct disco
   size_t r;
   discord_thread_response_body_use_default_inject_settings(p);
   r=json_inject(json, len, 
-  /* specs/discord/channel.endpoints-params.json:120:20
+  /* specs/discord/channel.endpoints-params.json:121:20
      '{ "name": "threads", "type":{ "base":"struct discord_channel", "dec":"ntl" } }' */
                 "(threads):F,"
-  /* specs/discord/channel.endpoints-params.json:121:20
+  /* specs/discord/channel.endpoints-params.json:122:20
      '{ "name": "members", "type":{ "base":"struct discord_thread_member", "dec":"ntl" } }' */
                 "(members):F,"
-  /* specs/discord/channel.endpoints-params.json:122:20
+  /* specs/discord/channel.endpoints-params.json:123:20
      '{ "name": "has_more", "type":{ "base":"bool" } }' */
                 "(has_more):b,"
                 "@arg_switches:b",
-  /* specs/discord/channel.endpoints-params.json:120:20
+  /* specs/discord/channel.endpoints-params.json:121:20
      '{ "name": "threads", "type":{ "base":"struct discord_channel", "dec":"ntl" } }' */
                 discord_channel_list_to_json, p->threads,
-  /* specs/discord/channel.endpoints-params.json:121:20
+  /* specs/discord/channel.endpoints-params.json:122:20
      '{ "name": "members", "type":{ "base":"struct discord_thread_member", "dec":"ntl" } }' */
                 discord_thread_member_list_to_json, p->members,
-  /* specs/discord/channel.endpoints-params.json:122:20
+  /* specs/discord/channel.endpoints-params.json:123:20
      '{ "name": "has_more", "type":{ "base":"bool" } }' */
                 &p->has_more,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
@@ -1774,28 +1796,28 @@ size_t discord_thread_response_body_list_to_json_v(char *str, size_t len, void *
 
 
 void discord_thread_response_body_cleanup(struct discord_thread_response_body *d) {
-  /* specs/discord/channel.endpoints-params.json:120:20
+  /* specs/discord/channel.endpoints-params.json:121:20
      '{ "name": "threads", "type":{ "base":"struct discord_channel", "dec":"ntl" } }' */
   if (d->threads)
     discord_channel_list_free(d->threads);
-  /* specs/discord/channel.endpoints-params.json:121:20
+  /* specs/discord/channel.endpoints-params.json:122:20
      '{ "name": "members", "type":{ "base":"struct discord_thread_member", "dec":"ntl" } }' */
   if (d->members)
     discord_thread_member_list_free(d->members);
-  /* specs/discord/channel.endpoints-params.json:122:20
+  /* specs/discord/channel.endpoints-params.json:123:20
      '{ "name": "has_more", "type":{ "base":"bool" } }' */
   // p->has_more is a scalar
 }
 
 void discord_thread_response_body_init(struct discord_thread_response_body *p) {
   memset(p, 0, sizeof(struct discord_thread_response_body));
-  /* specs/discord/channel.endpoints-params.json:120:20
+  /* specs/discord/channel.endpoints-params.json:121:20
      '{ "name": "threads", "type":{ "base":"struct discord_channel", "dec":"ntl" } }' */
 
-  /* specs/discord/channel.endpoints-params.json:121:20
+  /* specs/discord/channel.endpoints-params.json:122:20
      '{ "name": "members", "type":{ "base":"struct discord_thread_member", "dec":"ntl" } }' */
 
-  /* specs/discord/channel.endpoints-params.json:122:20
+  /* specs/discord/channel.endpoints-params.json:123:20
      '{ "name": "has_more", "type":{ "base":"bool" } }' */
 
 }

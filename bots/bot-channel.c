@@ -120,20 +120,23 @@ void on_channel_start_thread(
   char text[DISCORD_MAX_MESSAGE_LEN];
   ORCAcode code;
   if (msg->message_reference) {
-    struct discord_start_thread_with_message_params params = { .name = "new_thread" };
     code = discord_start_thread_with_message(
              client, 
              msg->channel_id, 
              msg->message_reference->message_id, 
-             &params, 
+             &(struct discord_start_thread_with_message_params){ 
+               .name = "new_thread"
+             },
              channel);
   }
   else {
-    struct discord_start_thread_without_message_params params = { .name = "new_thread" };
     code = discord_start_thread_without_message(
             client, 
             msg->channel_id, 
-            &params, 
+            &(struct discord_start_thread_without_message_params){
+              .name = "new_thread", 
+              .type = DISCORD_CHANNEL_GUILD_PUBLIC_THREAD
+            },
             channel);
   }
 
