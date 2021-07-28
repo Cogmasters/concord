@@ -175,6 +175,7 @@ static void reprvalue(js_State *J, js_Buffer **sb)
 			break;
 		case JS_CFUNCTION:
 		case JS_CSCRIPT:
+		case JS_CEVAL:
 			reprfun(J, sb, obj->u.f.function);
 			break;
 		case JS_CCFUNCTION:
@@ -219,10 +220,9 @@ static void reprvalue(js_State *J, js_Buffer **sb)
 			js_puts(J, sb, js_tostring(J, -1));
 			js_pop(J, 1);
 			js_putc(J, sb, '(');
-			if (js_hasproperty(J, -1, "message")) {
-				reprvalue(J, sb);
-				js_pop(J, 1);
-			}
+			js_getproperty(J, -1, "message");
+			reprstr(J, sb, js_tostring(J, -1));
+			js_pop(J, 1);
 			js_puts(J, sb, "))");
 			break;
 		case JS_CMATH:

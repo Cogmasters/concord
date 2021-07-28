@@ -491,154 +491,103 @@ static void Dp_toISOString(js_State *J)
 static void Dp_getFullYear(js_State *J)
 {
 	double t = js_todate(J, 0);
-	if (isnan(t))
-		js_pushnumber(J, NAN);
-	else
-		js_pushnumber(J, YearFromTime(LocalTime(t)));
+	js_pushnumber(J, YearFromTime(LocalTime(t)));
 }
 
 static void Dp_getMonth(js_State *J)
 {
 	double t = js_todate(J, 0);
-	if (isnan(t))
-		js_pushnumber(J, NAN);
-	else
-		js_pushnumber(J, MonthFromTime(LocalTime(t)));
+	js_pushnumber(J, MonthFromTime(LocalTime(t)));
 }
 
 static void Dp_getDate(js_State *J)
 {
 	double t = js_todate(J, 0);
-	if (isnan(t))
-		js_pushnumber(J, NAN);
-	else
-		js_pushnumber(J, DateFromTime(LocalTime(t)));
+	js_pushnumber(J, DateFromTime(LocalTime(t)));
 }
 
 static void Dp_getDay(js_State *J)
 {
 	double t = js_todate(J, 0);
-	if (isnan(t))
-		js_pushnumber(J, NAN);
-	else
-		js_pushnumber(J, WeekDay(LocalTime(t)));
+	js_pushnumber(J, WeekDay(LocalTime(t)));
 }
 
 static void Dp_getHours(js_State *J)
 {
 	double t = js_todate(J, 0);
-	if (isnan(t))
-		js_pushnumber(J, NAN);
-	else
-		js_pushnumber(J, HourFromTime(LocalTime(t)));
+	js_pushnumber(J, HourFromTime(LocalTime(t)));
 }
 
 static void Dp_getMinutes(js_State *J)
 {
 	double t = js_todate(J, 0);
-	if (isnan(t))
-		js_pushnumber(J, NAN);
-	else
-		js_pushnumber(J, MinFromTime(LocalTime(t)));
+	js_pushnumber(J, MinFromTime(LocalTime(t)));
 }
 
 static void Dp_getSeconds(js_State *J)
 {
 	double t = js_todate(J, 0);
-	if (isnan(t))
-		js_pushnumber(J, NAN);
-	else
-		js_pushnumber(J, SecFromTime(LocalTime(t)));
+	js_pushnumber(J, SecFromTime(LocalTime(t)));
 }
 
 static void Dp_getMilliseconds(js_State *J)
 {
 	double t = js_todate(J, 0);
-	if (isnan(t))
-		js_pushnumber(J, NAN);
-	else
-		js_pushnumber(J, msFromTime(LocalTime(t)));
+	js_pushnumber(J, msFromTime(LocalTime(t)));
 }
 
 static void Dp_getUTCFullYear(js_State *J)
 {
 	double t = js_todate(J, 0);
-	if (isnan(t))
-		js_pushnumber(J, NAN);
-	else
-		js_pushnumber(J, YearFromTime(t));
+	js_pushnumber(J, YearFromTime(t));
 }
 
 static void Dp_getUTCMonth(js_State *J)
 {
 	double t = js_todate(J, 0);
-	if (isnan(t))
-		js_pushnumber(J, NAN);
-	else
-		js_pushnumber(J, MonthFromTime(t));
+	js_pushnumber(J, MonthFromTime(t));
 }
 
 static void Dp_getUTCDate(js_State *J)
 {
 	double t = js_todate(J, 0);
-	if (isnan(t))
-		js_pushnumber(J, NAN);
-	else
-		js_pushnumber(J, DateFromTime(t));
+	js_pushnumber(J, DateFromTime(t));
 }
 
 static void Dp_getUTCDay(js_State *J)
 {
 	double t = js_todate(J, 0);
-	if (isnan(t))
-		js_pushnumber(J, NAN);
-	else
-		js_pushnumber(J, WeekDay(t));
+	js_pushnumber(J, WeekDay(t));
 }
 
 static void Dp_getUTCHours(js_State *J)
 {
 	double t = js_todate(J, 0);
-	if (isnan(t))
-		js_pushnumber(J, NAN);
-	else
-		js_pushnumber(J, HourFromTime(t));
+	js_pushnumber(J, HourFromTime(t));
 }
 
 static void Dp_getUTCMinutes(js_State *J)
 {
 	double t = js_todate(J, 0);
-	if (isnan(t))
-		js_pushnumber(J, NAN);
-	else
-		js_pushnumber(J, MinFromTime(t));
+	js_pushnumber(J, MinFromTime(t));
 }
 
 static void Dp_getUTCSeconds(js_State *J)
 {
 	double t = js_todate(J, 0);
-	if (isnan(t))
-		js_pushnumber(J, NAN);
-	else
-		js_pushnumber(J, SecFromTime(t));
+	js_pushnumber(J, SecFromTime(t));
 }
 
 static void Dp_getUTCMilliseconds(js_State *J)
 {
 	double t = js_todate(J, 0);
-	if (isnan(t))
-		js_pushnumber(J, NAN);
-	else
-		js_pushnumber(J, msFromTime(t));
+	js_pushnumber(J, msFromTime(t));
 }
 
 static void Dp_getTimezoneOffset(js_State *J)
 {
 	double t = js_todate(J, 0);
-	if (isnan(t))
-		js_pushnumber(J, NAN);
-	else
-		js_pushnumber(J, (t - LocalTime(t)) / msPerMinute);
+	js_pushnumber(J, (t - LocalTime(t)) / msPerMinute);
 }
 
 static void Dp_setTime(js_State *J)
