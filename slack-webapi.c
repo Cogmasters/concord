@@ -1,0 +1,73 @@
+#define _GNU_SOURCE /* asprintf() */
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdarg.h>
+
+#include "slack.h"
+#include "slack-internal.h"
+#include "cee-utils.h"
+
+#define SLACK_BASE_API_URL "https://slack.com/api"
+
+
+void
+slack_webapi_init(struct slack_webapi *webapi, struct logconf *config, struct sized_buffer *token)
+{
+  webapi->ua = ua_init(config);
+  ua_set_url(webapi->ua, SLACK_BASE_API_URL);
+  logconf_add_id(config, webapi->ua, "SLACK_WEBAPI");
+
+  if (STRNEQ("YOUR-BOT-TOKEN", token->start, token->size)) {
+    token->start = NULL;
+  }
+  ASSERT_S(NULL != token->start, "Missing bot token");
+
+  char auth[128];
+  int ret = snprintf(auth, sizeof(auth), "Bearer %.*s", (int)token->size, token->start);
+  ASSERT_S(ret < sizeof(auth), "Out of bounds write attempt");
+
+  ua_reqheader_add(webapi->ua, "Authorization", auth);
+  ua_reqheader_add(webapi->ua, "Content-type", "application/x-www-form-urlencoded");
+}
+
+void
+slack_webapi_cleanup(struct slack_webapi *webapi) {
+  ua_cleanup(webapi->ua);
+}
+
+static void 
+sized_buffer_from_json(char *json, size_t len, void *pp) 
+{
+  if (!*(struct sized_buffer**)pp) 
+    *(struct sized_buffer**)pp = calloc(1, sizeof(struct sized_buffer));
+  struct sized_buffer *p = *(struct sized_buffer**)pp;
+  p->size = asprintf(&p->start, "%.*s", (int)len, json);
+}
+
+/* template function for performing requests */
+ORCAcode
+slack_webapi_run(
+  struct slack_webapi *webapi, 
+  struct sized_buffer *resp_body,
+  struct sized_buffer *req_body,
+  enum http_method http_method, char endpoint[], ...)
+{
+  va_list args;
+  va_start(args, endpoint);
+
+  ORCAcode code;
+  code = ua_vrun(
+           webapi->ua,
+           NULL,
+           &(struct ua_resp_handle){
+             .ok_cb = resp_body ? &sized_buffer_from_json : NULL,
+             .ok_obj = &resp_body
+           },
+           req_body,
+           http_method, endpoint, args);
+
+  va_end(args);
+
+  return code;
+}

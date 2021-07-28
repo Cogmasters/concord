@@ -22,25 +22,30 @@ SPECS_SUBDIR := $(sort $(patsubst specs/%, %, $(dir $(SPECS))))
 # APIs objs
 DISCORD_SRC  := $(wildcard discord-*.c $(SPECSDIR)/discord/*.c)
 DISCORD_OBJS := $(DISCORD_SRC:%=$(OBJDIR)/%.o)
-REDDIT_SRC   := $(wildcard reddit-*.c $(SPECSDIR)/reddit/*.c)
-REDDIT_OBJS  := $(REDDIT_SRC:%=$(OBJDIR)/%.o)
 GITHUB_SRC   := $(wildcard github-*.c)
 GITHUB_OBJS  := $(GITHUB_SRC:%=$(OBJDIR)/%.o)
+REDDIT_SRC   := $(wildcard reddit-*.c $(SPECSDIR)/reddit/*.c)
+REDDIT_OBJS  := $(REDDIT_SRC:%=$(OBJDIR)/%.o)
+SLACK_SRC    := $(wildcard slack-*.c)
+SLACK_OBJS   := $(SLACK_SRC:%=$(OBJDIR)/%.o)
 
 # API libs cflags
 LIBDISCORD_CFLAGS :=
 LIBGITHUB_CFLAG   :=
 LIBREDDIT_CFLAGS  :=
+LIBSLACK_CFLAGS   :=
 
 # API libs ldflags
 LIBDISCORD_LDFLAGS := -ldiscord
 LIBGITHUB_LDFLAGS  := -lgithub
 LIBREDDIT_LDFLAGS  := -lreddit
+LIBSLACK_LDFLAGS   := -lslack
 
 # API libs
 LIBDISCORD := $(LIBADDONS) $(LIBDIR)/libdiscord.a
 LIBGITHUB  := $(LIBADDONS) $(LIBDIR)/libgithub.a
 LIBREDDIT  := $(LIBADDONS) $(LIBDIR)/libreddit.a
+LIBSLACK   := $(LIBADDONS) $(LIBDIR)/libslack.a
 
 # Code generator
 SPECSGEN_CC     ?= gcc
@@ -126,25 +131,26 @@ $(SPECSGEN_OBJDIR)/%.c.o : %.c
 $(OBJDIR)/%.c.o : %.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 $(BOTS_DIR)/%.exe: $(BOTS_DIR)/%.c
-	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBDISCORD_LDFLAGS) $(LIBREDDIT_LDFLAGS) $(LIBGITHUB_LDFLAGS) $(LIBS_LDFLAGS)
+	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBDISCORD_LDFLAGS) $(LIBGITHUB_LDFLAGS) $(LIBREDDIT_LDFLAGS) $(LIBSLACK_LDFLAGS) $(LIBS_LDFLAGS)
 %.exe: %.c mujs all_api_libs
-	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBDISCORD_LDFLAGS) $(LIBREDDIT_LDFLAGS) $(LIBGITHUB_LDFLAGS) -lmujs -lsqlite3 $(LIBS_LDFLAGS)
+	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBDISCORD_LDFLAGS) $(LIBGITHUB_LDFLAGS) $(LIBREDDIT_LDFLAGS) $(LIBSLACK_LDFLAGS) -lmujs -lsqlite3 $(LIBS_LDFLAGS)
 %.bx: %.c mujs all_api_libs
-	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBDISCORD_LDFLAGS) -lmujs -lsqlite3 $(LIBS_LDFLAGS)
+	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBDISCORD_LDFLAGS) $(LIBSLACK_LDFLAGS) -lmujs -lsqlite3 $(LIBS_LDFLAGS)
 %.bz:%.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBS_LDFLAGS) 
 
 
-all: discord reddit github
-test: discord reddit github mujs $(TEST_EXES)
+all: discord github reddit slack
+test: discord github reddit slack mujs $(TEST_EXES)
 
 botx:
-	@ $(MAKE) addons=1 all mujs all_api_libs
-	@ $(MAKE) addons=1 $(BOTX_EXES)
+	@ $(MAKE) all mujs all_api_libs
+	@ $(MAKE) $(BOTX_EXES)
 
 discord: common $(DISCORD_OBJS) $(LIBDISCORD)
-reddit: common $(REDDIT_OBJS) $(LIBREDDIT)
 github: common $(GITHUB_OBJS) $(LIBGITHUB)
+reddit: common $(REDDIT_OBJS) $(LIBREDDIT)
+slack: common $(SLACK_OBJS) $(LIBSLACK)
 
 common: cee_utils $(COMMON_OBJS)
 cee_utils: $(CEE_UTILS_OBJS) | $(CEE_UTILS_DIR)
@@ -154,8 +160,9 @@ specs: $(SPECS_OBJS)
 $(CEE_UTILS_OBJS): | $(OBJDIR)
 $(COMMON_OBJS): | $(OBJDIR)
 $(DISCORD_OBJS): | $(OBJDIR)
-$(REDDIT_OBJS): | $(OBJDIR)
 $(GITHUB_OBJS): | $(OBJDIR)
+$(REDDIT_OBJS): | $(OBJDIR)
+$(SLACK_OBJS): | $(OBJDIR)
 $(SPECS_OBJS): | $(OBJDIR)
 $(SPECSGEN_OBJS): | $(SPECSGEN_OBJDIR)
 
@@ -180,10 +187,11 @@ $(CEE_UTILS_DIR):
 	fi
 
 $(OBJDIR) :
-	mkdir -p $(OBJDIR)/$(CEE_UTILS_DIR)                                                                      \
-	         $(OBJDIR)/$(COMMON_DIR)/third-party                                                             \
-	         $(addprefix $(SPECSDIR)/, $(SPECS_SUBDIR)) $(addprefix $(OBJDIR)/$(SPECSDIR)/, $(SPECS_SUBDIR)) \
-	         $(OBJDIR)/$(TEST_DIR)                                                                           \
+	mkdir -p $(OBJDIR)/$(CEE_UTILS_DIR)                           \
+	         $(OBJDIR)/$(COMMON_DIR)/third-party                  \
+	         $(addprefix $(SPECSDIR)/, $(SPECS_SUBDIR))           \
+					 $(addprefix $(OBJDIR)/$(SPECSDIR)/, $(SPECS_SUBDIR)) \
+	         $(OBJDIR)/$(TEST_DIR)                                \
 	         $(OBJDIR)/add-ons
 
 $(SPECSGEN_OBJDIR) : | $(OBJDIR)
@@ -208,7 +216,7 @@ specs-gen.exe: $(SPECSGEN_OBJS) | $(SPECSGEN_OBJDIR)
 	mkdir -p bin
 	mv $@ ./bin
 
-all_api_libs : $(LIBDISCORD) $(LIBGITHUB) $(LIBREDDIT) $(LIBADDONS)
+all_api_libs : $(LIBDISCORD) $(LIBGITHUB) $(LIBREDDIT) $(LIBSLACK) $(LIBADDONS)
 
 # API libraries compilation
 $(LIBDISCORD) : $(CEE_UTILS_OBJS) $(COMMON_OBJS) $(DISCORD_OBJS) | $(LIBDIR)
@@ -216,6 +224,8 @@ $(LIBDISCORD) : $(CEE_UTILS_OBJS) $(COMMON_OBJS) $(DISCORD_OBJS) | $(LIBDIR)
 $(LIBGITHUB) : $(CEE_UTILS_OBJS) $(COMMON_OBJS) $(GITHUB_OBJS) | $(LIBDIR)
 	$(AR) -cvq $@ $^
 $(LIBREDDIT) : $(CEE_UTILS_OBJS) $(COMMON_OBJS) $(REDDIT_OBJS) | $(LIBDIR)
+	$(AR) -cvq $@ $^
+$(LIBSLACK) : $(CEE_UTILS_OBJS) $(COMMON_OBJS) $(SLACK_OBJS) | $(LIBDIR)
 	$(AR) -cvq $@ $^
 $(LIBADDONS) : $(CEE_UTILS_OBJS) $(COMMON_OBJS) $(ADDONS_OBJS) | $(LIBDIR)
 	$(AR) -cvq $@ $^
