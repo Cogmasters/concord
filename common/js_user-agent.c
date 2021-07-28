@@ -246,10 +246,8 @@ jsua_run(js_State *J, struct user_agent *ua, struct ua_info *p_info)
 
   struct sized_buffer req_body={0};
   if (js_isobject(J, 3) || js_isstring(J, 3)) {
-    req_body = (struct sized_buffer){
-      .start = (char *)js_tostring(J, 3),
-      .size = strlen(req_body.start)
-    };
+    req_body.start = (char *)js_tostring(J, 3);
+    req_body.size = strlen(req_body.start);
   }
 
   // @todo map Error codes to JS Error objects
