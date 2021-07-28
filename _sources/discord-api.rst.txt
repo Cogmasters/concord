@@ -80,6 +80,24 @@ Invite
 .. doxygenfile:: specs-code/discord/invite.h
     :sections: briefdescription innerclass enum public-type public-attrib
 
+Message Components
+~~~~~~~~~~~~~~~~~~
+
+.. doxygenfile:: specs-code/discord/message_components.h
+    :sections: briefdescription innerclass enum public-type public-attrib
+
+Permissions
+~~~~~~~~~~~
+
+.. doxygenfile:: specs-code/discord/permissions.h
+    :sections: briefdescription innerclass enum public-type public-attrib
+
+Slash Commands
+~~~~~~~~~~~~~~
+
+.. doxygenfile:: specs-code/discord/slash_commands.h
+    :sections: briefdescription innerclass enum public-type public-attrib
+
 User
 ~~~~
 
