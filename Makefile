@@ -77,9 +77,10 @@ TEST_EXES := $(filter %.exe, $(TEST_SRC:.c=.exe))
 LIBS_CFLAGS  += -I./mujs -I./$(DB_DIR)
 LIBS_LDFLAGS += -L./$(LIBDIR) -lpthread -lm
 
-CFLAGS += -std=c11 -O0 -g                                                          \
-          -Wall -Wno-unused-function                                               \
-          -I. -I./$(CEE_UTILS_DIR) -I./$(COMMON_DIR) -I./$(COMMON_DIR)/third-party \
+CFLAGS += -std=c11 -O0 -g                                 \
+          -Wall -Wno-unused-function                      \
+          -I. -I./$(CEE_UTILS_DIR)                        \
+					-I./$(COMMON_DIR) -I./$(COMMON_DIR)/third-party \
           -DLOG_USE_COLOR
 
 ifeq ($(addons),1)
@@ -134,16 +135,17 @@ $(OBJDIR)/%.c.o : %.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 $(BOTS_DIR)/%.exe: $(BOTS_DIR)/%.c all_api_libs
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBDISCORD_LDFLAGS) $(LIBREDDIT_LDFLAGS) $(LIBGITHUB_LDFLAGS) $(LIBS_LDFLAGS)
-%.exe: %.c all_api_libs mujs
+%.exe: %.c all_api_libs
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBDISCORD_LDFLAGS) $(LIBREDDIT_LDFLAGS) $(LIBGITHUB_LDFLAGS) -lmujs -lsqlite3 $(LIBS_LDFLAGS)
-%.bx:%.c all_api_libs mujs
+%.bx: %.c botx
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBDISCORD_LDFLAGS) -lmujs -lsqlite3 $(LIBS_LDFLAGS)
 %.bz:%.c all_api_libs
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBS_LDFLAGS) 
 
 
 all: discord reddit github bots
-test: discord reddit github $(TEST_EXES)
+test: discord reddit github mujs $(TEST_EXES)
+
 botx: discord $(BOTX_EXES)
 
 discord: common $(DISCORD_OBJS) $(LIBDISCORD)
@@ -170,7 +172,6 @@ echo:
 	@ echo PREFIX: $(PREFIX)
 	@ echo BOTS_EXES: $(BOTS_EXES)
 	@ echo SPECS: $(SPECS)
-	@ echo SPECS_SRC: $(SPECS_SRC)
 	@ echo SPECS_OBJS: $(SPECS_OBJS)
 	@ echo SPECS_SUBDIR: $(SPECS_SUBDIR)
 
@@ -227,7 +228,7 @@ $(LIBADDONS) : $(CEE_UTILS_OBJS) $(COMMON_OBJS) $(ADDONS_OBJS) | $(LIBDIR)
 	$(AR) -cvq $@ $^
 
 mujs:
-	$(MAKE) -C mujs static
+	$(MAKE) -C mujs
 	mkdir -p $(LIBDIR)
 	cp mujs/build/release/libmujs.a $(LIBDIR)
 
