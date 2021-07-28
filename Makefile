@@ -127,7 +127,7 @@ $(OBJDIR)/%.c.o : %.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 $(BOTS_DIR)/%.exe: $(BOTS_DIR)/%.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBDISCORD_LDFLAGS) $(LIBREDDIT_LDFLAGS) $(LIBGITHUB_LDFLAGS) $(LIBS_LDFLAGS)
-%.exe: %.c all_api_libs
+%.exe: %.c mujs all_api_libs
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBDISCORD_LDFLAGS) $(LIBREDDIT_LDFLAGS) $(LIBGITHUB_LDFLAGS) -lmujs -lsqlite3 $(LIBS_LDFLAGS)
 %.bx: %.c mujs all_api_libs
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBDISCORD_LDFLAGS) -lmujs -lsqlite3 $(LIBS_LDFLAGS)
