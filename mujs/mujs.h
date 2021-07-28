@@ -88,6 +88,17 @@ enum {
 	JS_DONTCONF = 4,
 };
 
+/* enum for js_type() */
+enum {
+  JS_ISUNDEFINED,
+  JS_ISNULL,
+  JS_ISBOOLEAN,
+  JS_ISNUMBER,
+  JS_ISSTRING,
+  JS_ISFUNCTION,
+  JS_ISOBJECT
+};
+
 void js_report(js_State *J, const char *message);
 
 void js_newerror(js_State *J, const char *message);
@@ -220,6 +231,7 @@ int js_equal(js_State *J);
 int js_strictequal(js_State *J);
 int js_instanceof(js_State *J);
 const char *js_typeof(js_State *J, int idx);
+int js_type(js_State *J, int idx);
 
 void js_repr(js_State *J, int idx);
 const char *js_torepr(js_State *J, int idx);
