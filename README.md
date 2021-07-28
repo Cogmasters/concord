@@ -100,7 +100,8 @@ int main() {
    about how to get your bot token and it to a server.
 2. Invite your bot to a testing server. We can invite your
    bot to our testing servers at our [Discord Server](https://discord.gg/2jfycwXVM3).
-3. Run `./bot-echo.exe` in the same folder as `bot.config`
+3. Run `make bots`
+4. Go to `bots/` folder and run `./bot-echo.exe`
 
 ### Test bot-echo
 Type a message in any channel the bot is part of.

@@ -127,24 +127,24 @@ $(OBJDIR)/%.c.o : %.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 $(BOTS_DIR)/%.exe: $(BOTS_DIR)/%.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBDISCORD_LDFLAGS) $(LIBREDDIT_LDFLAGS) $(LIBGITHUB_LDFLAGS) $(LIBS_LDFLAGS)
-%.exe: %.c
+%.exe: %.c all_api_libs
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBDISCORD_LDFLAGS) $(LIBREDDIT_LDFLAGS) $(LIBGITHUB_LDFLAGS) -lmujs -lsqlite3 $(LIBS_LDFLAGS)
-%.bx: %.c
+%.bx: %.c mujs all_api_libs
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBDISCORD_LDFLAGS) -lmujs -lsqlite3 $(LIBS_LDFLAGS)
 %.bz:%.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBS_LDFLAGS) 
 
 
-all: discord reddit github bots
-test: discord reddit github mujs all_api_libs $(TEST_EXES)
+all: discord reddit github
+test: discord reddit github mujs $(TEST_EXES)
 
 botx:
-	$(MAKE) addons=1 discord mujs all_api_libs
-	$(MAKE) $(BOTX_EXES)
+	@ $(MAKE) addons=1 all mujs all_api_libs
+	@ $(MAKE) addons=1 $(BOTX_EXES)
 
 discord: common $(DISCORD_OBJS) $(LIBDISCORD)
 reddit: common $(REDDIT_OBJS) $(LIBREDDIT)
-github: common $(GITHUB_OBJS)
+github: common $(GITHUB_OBJS) $(LIBGITHUB)
 
 common: cee_utils $(COMMON_OBJS)
 cee_utils: $(CEE_UTILS_OBJS) | $(CEE_UTILS_DIR)
@@ -170,7 +170,9 @@ echo:
 specs_gen: cee_utils | $(SPECS_OBJS)
 	@ $(MAKE) clean specs_clean clean_specs_gen all_headers specs
 
-bots: all_api_libs $(BOTS_EXES)
+bots:
+	@ $(MAKE) all
+	@ $(MAKE) $(BOTS_EXES)
 
 $(CEE_UTILS_DIR):
 	if [[ ! -d $@ ]]; then        \
@@ -247,5 +249,5 @@ purge : clean
 	rm -rf $(SPECSGEN_OBJDIR)
 	rm -rf $(CEE_UTILS_DIR)
 
-.PHONY : all install clean purge mujs botx
+.PHONY : all install clean purge mujs bots botx
 .ONESHELL:
