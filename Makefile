@@ -5,11 +5,6 @@ CC     ?= gcc
 OBJDIR := obj
 LIBDIR := lib
 
-# DB
-DB_DIR  := sqlite3
-DB_SRC  := $(wildcard $(DB_DIR)/*.c)
-DB_OBJS := $(DB_SRC:%=$(OBJDIR)/%.o)
-
 # common/utils
 CEE_UTILS_DIR  := cee-utils
 CEE_UTILS_SRC  := $(wildcard $(CEE_UTILS_DIR)/*.c) 
@@ -74,7 +69,7 @@ TEST_SRC  := $(wildcard $(TEST_DIR)/test-*.c)
 TEST_EXES := $(filter %.exe, $(TEST_SRC:.c=.exe))
 
 
-LIBS_CFLAGS  += -I./mujs -I./$(DB_DIR)
+LIBS_CFLAGS  += -I./mujs
 LIBS_LDFLAGS += -L./$(LIBDIR) -lpthread -lm
 
 CFLAGS += -std=c11 -O0 -g                                 \
@@ -125,28 +120,27 @@ else
 endif
 
 
-.PHONY : all install clean purge mujs
-.ONESHELL:
-
 #generic compilation
 $(SPECSGEN_OBJDIR)/%.c.o : %.c
 	$(SPECSGEN_CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 $(OBJDIR)/%.c.o : %.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
-$(BOTS_DIR)/%.exe: $(BOTS_DIR)/%.c all_api_libs
+$(BOTS_DIR)/%.exe: $(BOTS_DIR)/%.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBDISCORD_LDFLAGS) $(LIBREDDIT_LDFLAGS) $(LIBGITHUB_LDFLAGS) $(LIBS_LDFLAGS)
-%.exe: %.c all_api_libs
+%.exe: %.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBDISCORD_LDFLAGS) $(LIBREDDIT_LDFLAGS) $(LIBGITHUB_LDFLAGS) -lmujs -lsqlite3 $(LIBS_LDFLAGS)
-%.bx: %.c botx
+%.bx: %.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBDISCORD_LDFLAGS) -lmujs -lsqlite3 $(LIBS_LDFLAGS)
-%.bz:%.c all_api_libs
+%.bz:%.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBS_LDFLAGS) 
 
 
 all: discord reddit github bots
-test: discord reddit github mujs $(TEST_EXES)
+test: discord reddit github mujs all_api_libs $(TEST_EXES)
 
-botx: discord $(BOTX_EXES)
+botx:
+	$(MAKE) addons=1 discord mujs all_api_libs
+	$(MAKE) $(BOTX_EXES)
 
 discord: common $(DISCORD_OBJS) $(LIBDISCORD)
 reddit: common $(REDDIT_OBJS) $(LIBREDDIT)
@@ -156,8 +150,6 @@ common: cee_utils $(COMMON_OBJS)
 cee_utils: $(CEE_UTILS_OBJS) | $(CEE_UTILS_DIR)
 
 specs: $(SPECS_OBJS)
-
-db: $(DB_OBJS) | $(OBJDIR)
 
 $(CEE_UTILS_OBJS): | $(OBJDIR)
 $(COMMON_OBJS): | $(OBJDIR)
@@ -178,7 +170,7 @@ echo:
 specs_gen: cee_utils | $(SPECS_OBJS)
 	@ $(MAKE) clean specs_clean clean_specs_gen all_headers specs
 
-bots: $(BOTS_EXES)
+bots: all_api_libs $(BOTS_EXES)
 
 $(CEE_UTILS_DIR):
 	if [[ ! -d $@ ]]; then        \
@@ -190,7 +182,6 @@ $(OBJDIR) :
 	         $(OBJDIR)/$(COMMON_DIR)/third-party                                                             \
 	         $(addprefix $(SPECSDIR)/, $(SPECS_SUBDIR)) $(addprefix $(OBJDIR)/$(SPECSDIR)/, $(SPECS_SUBDIR)) \
 	         $(OBJDIR)/$(TEST_DIR)                                                                           \
-	         $(OBJDIR)/$(DB_DIR)                                                                             \
 	         $(OBJDIR)/add-ons
 
 $(SPECSGEN_OBJDIR) : | $(OBJDIR)
@@ -255,3 +246,6 @@ purge : clean
 	rm -rf $(LIBDIR)
 	rm -rf $(SPECSGEN_OBJDIR)
 	rm -rf $(CEE_UTILS_DIR)
+
+.PHONY : all install clean purge mujs botx
+.ONESHELL:
