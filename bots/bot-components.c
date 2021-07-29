@@ -84,18 +84,16 @@ void on_designated_init(
 {
   if (msg->author->bot) return;
 
-  struct discord_create_message_params params = 
-  {
+  struct discord_create_message_params params = {
     .content = "Mason is looking for new arena partners. What classes do you play?",
-    .components = (struct discord_component*[]){ // NULL-TERMINATED ARRAY
+    .components = (struct discord_component*[]){ // 1st LEVEL ARRAY START
       &(struct discord_component){ 
         .type = DISCORD_COMPONENT_ACTION_ROW,
-        .components = (struct discord_component*[]){ // NULL-TERMINATED ARRAY
+        .components = (struct discord_component*[]){ // 2nd LEVEL ARRAY START
           &(struct discord_component){
             .type = DISCORD_COMPONENT_SELECT_MENU,
             .custom_id = "class_select_1",
-            .options = (struct discord_select_option*[])
-            {
+            .options = (struct discord_select_option*[]){ // 3rd LEVEL ARRAY START
               &(struct discord_select_option){
                 .label = "Rogue",
                 .value = "rogue",
@@ -123,19 +121,18 @@ void on_designated_init(
                   .id = 625891303795982337ULL
                 }
               },
-              (struct discord_select_option*){ NULL }
+              (struct discord_select_option*){ NULL } // 3rd LEVEL ARRAY END
             },
             .placeholder = "Choose a class",
             .min_values = 1,
             .max_values = 3
           },
-          (struct discord_component*){ NULL }
+          (struct discord_component*){ NULL } // 2nd LEVEL ARRAY END
         }
       }, 
-      (struct discord_component*){ NULL }
+      (struct discord_component*){ NULL } // 1st LEVEL ARRAY END
     }
   };
-
   discord_create_message(client, msg->channel_id, &params, NULL);
 }
 
@@ -146,48 +143,61 @@ void on_dynamic_init(
 {
   if (msg->author->bot) return;
 
-  struct discord_component *select = discord_component_alloc();   
-  select->type = DISCORD_COMPONENT_SELECT_MENU;
-  snprintf(select->custom_id, sizeof(select->custom_id), "class_select_1");
+  struct discord_component action;
+  struct discord_component select;
+  struct discord_select_option option;
 
-  struct discord_select_option *option1 = discord_select_option_alloc();
-  snprintf(option1->label, sizeof(option1->label), "Rogue");
-  snprintf(option1->value, sizeof(option1->value), "rogue");
-  snprintf(option1->description, sizeof(option1->description), "Sneak n stab");
-  option1->emoji->name = strdup("rogue");
-  option1->emoji->id = 625891304148303894ULL;
-  ntl_append2((ntl_t*)&select->options, sizeof(struct discord_select_option), option1);
+  // initialize the action component
+  discord_component_init(&action);   
+  action.type = DISCORD_COMPONENT_ACTION_ROW;
 
-  struct discord_select_option *option2 = discord_select_option_alloc();
-  snprintf(option2->label, sizeof(option2->label), "Mage");
-  snprintf(option2->value, sizeof(option2->value), "mage");
-  snprintf(option2->description, sizeof(option2->description), "Turn 'em into a sheep");
-  option2->emoji->name = strdup("mage");
-  option2->emoji->id = 625891304081063986ULL;
-  ntl_append2((ntl_t*)&select->options, sizeof(struct discord_select_option), option2);
+  // initialize the select menu structure
+  discord_component_init(&select);   
+  select.type = DISCORD_COMPONENT_SELECT_MENU;
+  snprintf(select.custom_id, sizeof(select.custom_id), "class_select_1");
 
-  struct discord_select_option *option3 = discord_select_option_alloc();
-  snprintf(option3->label, sizeof(option3->label), "Priest");
-  snprintf(option3->value, sizeof(option3->value), "priest");
-  snprintf(option3->description, sizeof(option3->description), "You get heals when I'm done doing damage");
-  option3->emoji->name = strdup("priest");
-  option3->emoji->id = 625891303795982337ULL;
-  ntl_append2((ntl_t*)&select->options, sizeof(struct discord_select_option), option3);
+  // initialize 1st option and append to select.options
+  discord_select_option_init(&option);
+  snprintf(option.label, sizeof(option.label), "Rogue");
+  snprintf(option.value, sizeof(option.value), "rogue");
+  snprintf(option.description, sizeof(option.description), "Sneak n stab");
+  option.emoji->name = strdup("rogue");
+  option.emoji->id = 625891304148303894ULL;
+  ntl_append2((ntl_t*)&select.options, sizeof(struct discord_select_option), &option);
 
-  struct discord_component *action = discord_component_alloc();   
-  action->type = DISCORD_COMPONENT_ACTION_ROW;
-  ntl_append2((ntl_t*)&action->components, sizeof(struct discord_component), select);
+  // initialize 2nd option and append to select.options
+  discord_select_option_init(&option); // init fresh
+  snprintf(option.label, sizeof(option.label), "Mage");
+  snprintf(option.value, sizeof(option.value), "mage");
+  snprintf(option.description, sizeof(option.description), "Turn 'em into a sheep");
+  option.emoji->name = strdup("mage");
+  option.emoji->id = 625891304081063986ULL;
+  ntl_append2((ntl_t*)&select.options, sizeof(struct discord_select_option), &option);
 
+  // initialize 3rd option and append to select.options
+  discord_select_option_init(&option); // init fresh
+  snprintf(option.label, sizeof(option.label), "Priest");
+  snprintf(option.value, sizeof(option.value), "priest");
+  snprintf(option.description, sizeof(option.description), "You get heals when I'm done doing damage");
+  option.emoji->name = strdup("priest");
+  option.emoji->id = 625891303795982337ULL;
+  ntl_append2((ntl_t*)&select.options, sizeof(struct discord_select_option), &option);
+
+  // append the select menu to action.components
+  ntl_append2((ntl_t*)&action.components, sizeof(struct discord_component), &select);
+
+  // apend action to message.components
   NTL_T(struct discord_component) components = NULL;
-  ntl_append2((ntl_t*)&components, sizeof(struct discord_component), action);
+  ntl_append2((ntl_t*)&components, sizeof(struct discord_component), &action);
+
 
   struct discord_create_message_params params = { 
     .content = "Mason is looking for new arena partners. What classes do you play?",
     .components = components
   };
-
   discord_create_message(client, msg->channel_id, &params, NULL);
 
+  // free 'message.components' and its inner structs
   discord_component_list_free(components);
 }
 
