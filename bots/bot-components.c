@@ -7,52 +7,49 @@
 #include "cee-utils.h"
 
 char JSON_STRING[] = \
-"{\n"
-"    \"content\": \"Mason is looking for new arena partners. What classes do you play?\",\n"
-"    \"components\": [\n"
-"        {\n"
-"            \"type\": 1,\n"
-"            \"components\": [\n"
-"                {\n"
-"                    \"type\": 3,\n"
-"                    \"custom_id\": \"class_select_1\",\n"
-"                    \"options\":[\n"
-"                        {\n"
-"                            \"label\": \"Rogue\",\n"
-"                            \"value\": \"rogue\",\n"
-"                            \"description\": \"Sneak n stab\",\n"
-"                            \"emoji\": {\n"
-"                                \"name\": \"rogue\",\n"
-"                                \"id\": \"625891304148303894\"\n"
-"                            }\n"
-"                        },\n"
-"                        {\n"
-"                            \"label\": \"Mage\",\n"
-"                            \"value\": \"mage\",\n"
-"                            \"description\": \"Turn 'em into a sheep\",\n"
-"                            \"emoji\": {\n"
-"                                \"name\": \"mage\",\n"
-"                                \"id\": \"625891304081063986\"\n"
-"                            }\n"
-"                        },\n"
-"                        {\n"
-"                            \"label\": \"Priest\",\n"
-"                            \"value\": \"priest\",\n"
-"                            \"description\": \"You get heals when I'm done doing damage\",\n"
-"                            \"emoji\": {\n"
-"                                \"name\": \"priest\",\n"
-"                                \"id\": \"625891303795982337\"\n"
-"                            }\n"
+"[\n"
+"    {\n"
+"        \"type\": 1,\n"
+"        \"components\": [\n"
+"            {\n"
+"                \"type\": 3,\n"
+"                \"custom_id\": \"class_select_1\",\n"
+"                \"options\":[\n"
+"                    {\n"
+"                        \"label\": \"Rogue\",\n"
+"                        \"value\": \"rogue\",\n"
+"                        \"description\": \"Sneak n stab\",\n"
+"                        \"emoji\": {\n"
+"                            \"name\": \"rogue\",\n"
+"                            \"id\": \"625891304148303894\"\n"
 "                        }\n"
-"                    ],\n"
-"                    \"placeholder\": \"Choose a class\",\n"
-"                    \"min_values\": 1,\n"
-"                    \"max_values\": 3\n"
-"                }\n"
-"            ]\n"
-"        }\n"
-"    ]\n"
-"}\n"
+"                    },\n"
+"                    {\n"
+"                        \"label\": \"Mage\",\n"
+"                        \"value\": \"mage\",\n"
+"                        \"description\": \"Turn 'em into a sheep\",\n"
+"                        \"emoji\": {\n"
+"                            \"name\": \"mage\",\n"
+"                            \"id\": \"625891304081063986\"\n"
+"                        }\n"
+"                    },\n"
+"                    {\n"
+"                        \"label\": \"Priest\",\n"
+"                        \"value\": \"priest\",\n"
+"                        \"description\": \"You get heals when I'm done doing damage\",\n"
+"                        \"emoji\": {\n"
+"                            \"name\": \"priest\",\n"
+"                            \"id\": \"625891303795982337\"\n"
+"                        }\n"
+"                    }\n"
+"                ],\n"
+"                \"placeholder\": \"Choose a class\",\n"
+"                \"min_values\": 1,\n"
+"                \"max_values\": 3\n"
+"            }\n"
+"        ]\n"
+"    }\n"
+"]\n"
 ;
 
 
@@ -68,16 +65,16 @@ void on_from_json_init(
 {
   if (msg->author->bot) return;
 
-  struct discord_message *loaded_msg=NULL;
-  discord_message_from_json(JSON_STRING, sizeof(JSON_STRING), &loaded_msg);
+  NTL_T(struct discord_component) components=NULL;
+  discord_component_list_from_json(JSON_STRING, sizeof(JSON_STRING), &components);
 
   struct discord_create_message_params params = {
-    .content = loaded_msg->content,
-    .components = loaded_msg->components
+    .content = "Mason is looking for new arena partners. What classes do you play?",
+    .components = components
   };
   discord_create_message(client, msg->channel_id, &params, NULL);
 
-  discord_message_free(loaded_msg);
+  discord_component_list_free(components);
 }
 
 void on_designated_init(
