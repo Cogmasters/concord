@@ -26,7 +26,8 @@
  * @brief The handle used for performing HTTP Requests 
  *
  * This is a wrapper over struct user_agent
- * @see user-agent.h 
+ * @li \c Initializer discord_adapter_init()
+ * @li \c Cleanup discord_adapter_cleanup() 
  */
 struct discord_adapter {
   struct user_agent *ua; ///< The user agent handle for performing requests
@@ -43,7 +44,6 @@ struct discord_adapter {
  * @param adapter a pointer to the allocated handle
  * @param config optional pointer to a pre-initialized logconf
  * @param token the bot token
- * @see logconf.h
  */
 void discord_adapter_init(struct discord_adapter *adapter, struct logconf *config, struct sized_buffer *token);
 
@@ -64,7 +64,6 @@ void discord_adapter_cleanup(struct discord_adapter *adapter);
  * @param endpoint the format endpoint that be appended to base_url when performing a request, same behavior as printf()
  * @return a code for checking on how the transfer went ORCA_OK means the transfer was succesful
  * @note Helper over ua_run()
- * @see user-agent.h
  */
 ORCAcode discord_adapter_run(
   struct discord_adapter *adapter, 
@@ -75,6 +74,8 @@ ORCAcode discord_adapter_run(
 
 /**
  * @brief The bucket struct that will handle ratelimiting 
+ * @li \c Initializer discord_bucket_build() 
+ * @li \c Cleanup discord_buckets_cleanup() 
  *
  * @see https://discord.com/developers/docs/topics/rate-limits
  */
@@ -140,8 +141,9 @@ struct discord_gateway_cmd_cbs {
  * @brief The handle used for establishing a Discord Gateway connection
  *        via WebSockets
  *
+ * @li \c Initializer discord_gateway_init()
+ * @li \c Cleanup discord_gateway_cleanup() 
  * @note A wrapper over struct websockets
- * @see websockets.h 
  */
 struct discord_gateway {
   struct websockets *ws; ///< the websockets handle that connects to Discord
@@ -226,7 +228,6 @@ struct discord_gateway {
  * @param gw a pointer to the allocated handle
  * @param config optional pointer to a initialized logconf
  * @param token the bot token
- * @see logconf.h
  */
 void discord_gateway_init(struct discord_gateway *gw, struct logconf *config, struct sized_buffer *token);
 
@@ -241,7 +242,6 @@ void discord_gateway_cleanup(struct discord_gateway *gw);
  * @brief Start a Discord connection over WebSockets
  *
  * @param gw the handle initialized with discord_gateway_init()
- * @see websockets.h
  */
 void discord_gateway_run(struct discord_gateway *gw);
 
@@ -249,7 +249,6 @@ void discord_gateway_run(struct discord_gateway *gw);
  * @brief Gracefully exits a ongoing Discord connection over WebSockets
  *
  * @param gw the handle initialized with discord_gateway_init()
- * @see websockets.h
  */
 void discord_gateway_shutdown(struct discord_gateway *gw);
 
@@ -259,17 +258,21 @@ void discord_gateway_shutdown(struct discord_gateway *gw);
  * @param gw the handle initialized with discord_gateway_init()
  * @param resume true to attempt to resume to previous session,
  *        false restart a fresh session
- * @see websockets.h
  */
 void discord_gateway_reconnect(struct discord_gateway *gw, bool resume);
 
 
 /**
- * @brief The Discord Client structure
+ * @brief The Discord opaque structure handler
  *
  * Used to access/perform public functions from discord.h 
+ * @li \c Initializer discord_init(), discord_config_init()
+ * @li \c Cleanup discord_cleanup() 
+ * @see discord_run()
+ * @note defined at discord-internal.h
  */
 struct discord {
+  /// @privatesection
   struct sized_buffer token; ///< the bot token
   struct discord_adapter adapter; ///< the HTTP adapter for performing requests
   struct discord_gateway gw; ///< the WebSockets handle for establishing a connection to Discord

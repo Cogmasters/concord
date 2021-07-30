@@ -2,7 +2,7 @@
  * @file websockets.h
  * @author cee-studio
  * @date 21 Jun 2021
- * @brief File containing internal functions and datatypes for WebSockets interfacing
+ * @brief Internal functions and datatypes for WebSockets interfacing
  */
 
 #ifndef WEBSOCKETS_H
@@ -15,7 +15,17 @@ extern "C" {
 #include "types.h" /* ORCAcode */
 #include "logconf.h" /* logging facilities */
 
-struct websockets; // forward declaration
+/** @defgroup Datatypes
+ *  @{ */
+
+/**
+ * @struct websockets
+ *
+ * @brief Opaque handler for WebSockets
+ * @li \c Initializer ws_init()
+ * @li \c Cleanup ws_cleanup() 
+ */
+struct websockets;
 
 /**
  * @brief Stores info on the latest transfer performed via websockets
@@ -105,6 +115,11 @@ struct ws_callbacks {
    */
   void *data;
 };
+
+/** @} defgroup Datatypes*/
+
+/** @defgroup Functions
+ *  @{ */
 
 /**
  * @brief Create a new (CURL-based) WebSockets handle
@@ -258,7 +273,7 @@ bool ws_is_functional(struct websockets *ws);
  * @param ws the WebSockets handle created with ws_init()
  * @param code the WebSockets CLOSE opcode
  * @param reason the close reason
- * @param lean the reason length
+ * @param len the reason length
  */
 void ws_close(struct websockets *ws, const enum ws_close_reason code, const char reason[], const size_t len);
 
@@ -268,6 +283,8 @@ void ws_close(struct websockets *ws, const enum ws_close_reason code, const char
  * @return true if its the same thread, false otherwise
  */
 bool ws_same_thread(struct websockets *ws);
+
+/** @} defgroup Functions*/
 
 #ifdef __cplusplus
 }
