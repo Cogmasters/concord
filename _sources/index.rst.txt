@@ -7,7 +7,7 @@
   ===============
 .. image:: /images/logo-dropshadow.svg
 
-A bot framework that is easy to reason about, easy to debug, and easy to use.
+A Multi-REST API library that is easy to reason about, easy to debug, and easy to use.
 
 **Features:**
 
@@ -30,7 +30,23 @@ Supported APIs
 .. toctree::
    :maxdepth: 1
 
-   Discord <discord-api>
+   Discord <discord_api>
+
+- (TODO) GitHub
+
+- (TODO) Reddit
+
+- (TODO) Slack
+
+Interfacing with Orca
+---------------------
+
+.. toctree::
+   :maxdepth: 1
+
+   WebSockets <websockets_api>
+
+- (TODO) User-Agent
 
 Help
 ----

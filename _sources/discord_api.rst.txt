@@ -203,41 +203,49 @@ Audit Log
 ~~~~~~~~~
 
 .. doxygengroup:: AuditLogEndpoints
+    :content-only:
 
 Channel
 ~~~~~~~
 
 .. doxygengroup:: ChannelEndpoints
+    :content-only:
 
 Emoji
 ~~~~~
 
 .. doxygengroup:: EmojiEndpoints
+    :content-only:
 
 Guild
 ~~~~~
 
 .. doxygengroup:: GuildEndpoints
+    :content-only:
 
 Invite
 ~~~~~~
 
 .. doxygengroup:: InviteEndpoints
+    :content-only:
 
 User
 ~~~~
 
 .. doxygengroup:: UserEndpoints
+    :content-only:
 
 Voice
 ~~~~~
 
 .. doxygengroup:: VoiceEndpoints
+    :content-only:
 
 Gateway
 ~~~~~~~
 
 .. doxygengroup:: GatewayEndpoints
+    :content-only:
 
 Misc
 ~~~~
@@ -246,13 +254,16 @@ Channel
 ^^^^^^^
 
 .. doxygengroup:: ChannelMisc
+    :content-only:
 
 Guild
 ^^^^^
 
 .. doxygengroup:: GuildMisc
+    :content-only:
 
 Embed
 ^^^^^
 
 .. doxygengroup:: EmbedMisc
+    :content-only:

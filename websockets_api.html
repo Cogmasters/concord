@@ -1,0 +1,736 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WebSockets Reference &#8212; Orca  documentation</title>
+    
+  <link href="_static/css/theme.css" rel="stylesheet" />
+  <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="https://raw.githubusercontent.com/cee-studio/orca-docs/master/docs/source/images/icon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Discord API Reference" href="discord_api.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+
+  <div id="navbar-start">
+    
+    
+<a class="navbar-brand" href="index.html">
+<p class="title">Orca</p>
+</a>
+
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="discord_api.html">
+  Discord
+ </a>
+</li>
+
+<li class="toctree-l1 current active nav-item">
+ <a class="current reference internal nav-link" href="#">
+  WebSockets
+ </a>
+</li>
+
+    
+    <li class="nav-item">
+        <a class="nav-link nav-external" href="https://www.cee.studio/">SaiphC<i class="fas fa-external-link-alt"></i></a>
+    </li>
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/cee-studio/orca" rel="noopener" target="_blank" title="GitHub">
+            <span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label>
+          </a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+            
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    
+  </div>
+</nav>
+            </div>
+            
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+            
+              
+              <div class="toc-item">
+                
+<div class="tocsection onthispage pt-5 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#datatypes">
+   Datatypes
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#functions">
+   Functions
+  </a>
+ </li>
+</ul>
+
+</nav>
+              </div>
+              
+              <div class="toc-item">
+                
+
+<div class="tocsection editthispage">
+    <a href="https://github.com/cee-studio/orca-docs/edit/master/docs/source/websockets_api.rst">
+        <i class="fas fa-pencil-alt"></i> Edit this page
+    </a>
+</div>
+
+              </div>
+              
+            
+          </div>
+          
+
+          
+          
+            
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <div class="section" id="websockets-reference">
+<h1>WebSockets Reference<a class="headerlink" href="#websockets-reference" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="datatypes">
+<h2>Datatypes<a class="headerlink" href="#datatypes" title="Permalink to this headline">¶</a></h2>
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.ws_status">
+<span class="target" id="group__Datatypes_1ga2c98aa4435bf623cdba0e8bab4303b26"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ws_status</span></span></span><a class="headerlink" href="#c.ws_status" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The WebSockets client status. </p>
+<p><dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#group__Functions_1gacdd4872611e9c663ffbfd3c67deb0b79"><span class="std std-ref">ws_get_status()</span></a> </p>
+</dd>
+</dl>
+</p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.ws_status.WS_DISCONNECTED">
+<span class="target" id="group__Datatypes_1gga2c98aa4435bf623cdba0e8bab4303b26ab3328538fd15fe5c3195a5d56e3e4889"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WS_DISCONNECTED</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#c.ws_status.WS_DISCONNECTED" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>client disconnected from ws </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.ws_status.WS_CONNECTED">
+<span class="target" id="group__Datatypes_1gga2c98aa4435bf623cdba0e8bab4303b26af9564bb4cc0e631f03b8a7d7c1a204c9"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WS_CONNECTED</span></span></span><a class="headerlink" href="#c.ws_status.WS_CONNECTED" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>client connected to ws </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.ws_status.WS_DISCONNECTING">
+<span class="target" id="group__Datatypes_1gga2c98aa4435bf623cdba0e8bab4303b26a857733861369d2ba346cfb281b04cac2"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WS_DISCONNECTING</span></span></span><a class="headerlink" href="#c.ws_status.WS_DISCONNECTING" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>client in the process of disconnecting to ws </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.ws_status.WS_CONNECTING">
+<span class="target" id="group__Datatypes_1gga2c98aa4435bf623cdba0e8bab4303b26ab2299292b41bdeeefe3157b6911bb2e1"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WS_CONNECTING</span></span></span><a class="headerlink" href="#c.ws_status.WS_CONNECTING" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>client in the process of connecting from ws </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.ws_close_reason">
+<span class="target" id="group__Datatypes_1ga92591a76da29adffd6f3a95bb12db08d"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ws_close_reason</span></span></span><a class="headerlink" href="#c.ws_close_reason" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>WebSockets CLOSE opcodes. </p>
+<p><dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#group__Functions_1gafbed7f290a231ae386d36fdf5cb0e194"><span class="std std-ref">ws_close_opcode_print()</span></a> </p>
+</dd>
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://tools.ietf.org/html/rfc6455#section-7.4.1">https://tools.ietf.org/html/rfc6455#section-7.4.1</a> </p>
+</dd>
+</dl>
+</p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.ws_close_reason.WS_CLOSE_REASON_NORMAL">
+<span class="target" id="group__Datatypes_1gga92591a76da29adffd6f3a95bb12db08dad1772606ee741d54ded353a12160662b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WS_CLOSE_REASON_NORMAL</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1000</span></span><a class="headerlink" href="#c.ws_close_reason.WS_CLOSE_REASON_NORMAL" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.ws_close_reason.WS_CLOSE_REASON_GOING_AWAY">
+<span class="target" id="group__Datatypes_1gga92591a76da29adffd6f3a95bb12db08da94283316304aae0b5712a9a59186d75c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WS_CLOSE_REASON_GOING_AWAY</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1001</span></span><a class="headerlink" href="#c.ws_close_reason.WS_CLOSE_REASON_GOING_AWAY" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.ws_close_reason.WS_CLOSE_REASON_PROTOCOL_ERROR">
+<span class="target" id="group__Datatypes_1gga92591a76da29adffd6f3a95bb12db08dae645cfc9260227ddfc36e66798a963d7"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WS_CLOSE_REASON_PROTOCOL_ERROR</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1002</span></span><a class="headerlink" href="#c.ws_close_reason.WS_CLOSE_REASON_PROTOCOL_ERROR" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.ws_close_reason.WS_CLOSE_REASON_UNEXPECTED_DATA">
+<span class="target" id="group__Datatypes_1gga92591a76da29adffd6f3a95bb12db08da49da0f1f57cca8bdfee319d4156f47e0"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WS_CLOSE_REASON_UNEXPECTED_DATA</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1003</span></span><a class="headerlink" href="#c.ws_close_reason.WS_CLOSE_REASON_UNEXPECTED_DATA" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.ws_close_reason.WS_CLOSE_REASON_NO_REASON">
+<span class="target" id="group__Datatypes_1gga92591a76da29adffd6f3a95bb12db08da7838574f5ed9d26bd1a71abe37fc1e76"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WS_CLOSE_REASON_NO_REASON</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1005</span></span><a class="headerlink" href="#c.ws_close_reason.WS_CLOSE_REASON_NO_REASON" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.ws_close_reason.WS_CLOSE_REASON_ABRUPTLY">
+<span class="target" id="group__Datatypes_1gga92591a76da29adffd6f3a95bb12db08da07cdaa342b879e8d97926290684f6f89"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WS_CLOSE_REASON_ABRUPTLY</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1006</span></span><a class="headerlink" href="#c.ws_close_reason.WS_CLOSE_REASON_ABRUPTLY" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.ws_close_reason.WS_CLOSE_REASON_INCONSISTENT_DATA">
+<span class="target" id="group__Datatypes_1gga92591a76da29adffd6f3a95bb12db08da00714687bc9f1ff9ea0598af0d340aa6"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WS_CLOSE_REASON_INCONSISTENT_DATA</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1007</span></span><a class="headerlink" href="#c.ws_close_reason.WS_CLOSE_REASON_INCONSISTENT_DATA" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.ws_close_reason.WS_CLOSE_REASON_POLICY_VIOLATION">
+<span class="target" id="group__Datatypes_1gga92591a76da29adffd6f3a95bb12db08dac5c2d38da697e860557b1a551be1eccd"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WS_CLOSE_REASON_POLICY_VIOLATION</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1008</span></span><a class="headerlink" href="#c.ws_close_reason.WS_CLOSE_REASON_POLICY_VIOLATION" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.ws_close_reason.WS_CLOSE_REASON_TOO_BIG">
+<span class="target" id="group__Datatypes_1gga92591a76da29adffd6f3a95bb12db08da21c33734a73745af101c87312d3af95e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WS_CLOSE_REASON_TOO_BIG</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1009</span></span><a class="headerlink" href="#c.ws_close_reason.WS_CLOSE_REASON_TOO_BIG" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.ws_close_reason.WS_CLOSE_REASON_MISSING_EXTENSION">
+<span class="target" id="group__Datatypes_1gga92591a76da29adffd6f3a95bb12db08da3590c6bcfa0874bcdd11886c9e595ff4"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WS_CLOSE_REASON_MISSING_EXTENSION</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1010</span></span><a class="headerlink" href="#c.ws_close_reason.WS_CLOSE_REASON_MISSING_EXTENSION" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.ws_close_reason.WS_CLOSE_REASON_SERVER_ERROR">
+<span class="target" id="group__Datatypes_1gga92591a76da29adffd6f3a95bb12db08daef57e1b1bff1b1ee0e36920b399b7f09"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WS_CLOSE_REASON_SERVER_ERROR</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1011</span></span><a class="headerlink" href="#c.ws_close_reason.WS_CLOSE_REASON_SERVER_ERROR" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.ws_close_reason.WS_CLOSE_REASON_IANA_REGISTRY_START">
+<span class="target" id="group__Datatypes_1gga92591a76da29adffd6f3a95bb12db08dac5f77696fbdaa99138d8258a3858fbfb"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WS_CLOSE_REASON_IANA_REGISTRY_START</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">3000</span></span><a class="headerlink" href="#c.ws_close_reason.WS_CLOSE_REASON_IANA_REGISTRY_START" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.ws_close_reason.WS_CLOSE_REASON_IANA_REGISTRY_END">
+<span class="target" id="group__Datatypes_1gga92591a76da29adffd6f3a95bb12db08dad75cd713b4e838c5a5ab06eff6649074"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WS_CLOSE_REASON_IANA_REGISTRY_END</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">3999</span></span><a class="headerlink" href="#c.ws_close_reason.WS_CLOSE_REASON_IANA_REGISTRY_END" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.ws_close_reason.WS_CLOSE_REASON_PRIVATE_START">
+<span class="target" id="group__Datatypes_1gga92591a76da29adffd6f3a95bb12db08da37d152d001a7b6513077dfc126349d95"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WS_CLOSE_REASON_PRIVATE_START</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">4000</span></span><a class="headerlink" href="#c.ws_close_reason.WS_CLOSE_REASON_PRIVATE_START" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.ws_close_reason.WS_CLOSE_REASON_PRIVATE_END">
+<span class="target" id="group__Datatypes_1gga92591a76da29adffd6f3a95bb12db08dab3a0ee03638d537a30fd9db837afdc86"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WS_CLOSE_REASON_PRIVATE_END</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">4999</span></span><a class="headerlink" href="#c.ws_close_reason.WS_CLOSE_REASON_PRIVATE_END" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.ws_info">
+<span class="target" id="structws__info"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ws_info</span></span></span><a class="headerlink" href="#c.ws_info" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;websockets.h&gt;</em><p>Stores info on the latest transfer performed via websockets. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.ws_info.loginfo">
+<span class="target" id="structws__info_1a4b43e5c8eae30fcccf9abdecd3267d17"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.ws_info.loginfo" title="loginfo"><span class="n"><span class="pre">loginfo</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">loginfo</span></span></span><a class="headerlink" href="#c.ws_info.loginfo" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>logging info </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.ws_info.code">
+<span class="target" id="structws__info_1a8fb102864965c14cc434f9c257d93e49"></span><span class="n"><span class="pre">ORCAcode</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">code</span></span></span><a class="headerlink" href="#c.ws_info.code" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>how the transfer went </p>
+<p><dl>
+<dt class="sig sig-object cpp">
+<em><span class="pre">Todo:</span></em></dt>
+<dd><p>implement </p>
+</dd></dl>
+
+</p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.ws_callbacks">
+<span class="target" id="structws__callbacks"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ws_callbacks</span></span></span><a class="headerlink" href="#c.ws_callbacks" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;websockets.h&gt;</em><p>WebSockets callbacks. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.ws_callbacks.on_connect">
+<span class="target" id="structws__callbacks_1ad70d4c2f2693cc48219fcf8838d42df7"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">on_connect</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.websockets" title="websockets"><span class="n"><span class="pre">websockets</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ws</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.ws_info" title="ws_info"><span class="n"><span class="pre">ws_info</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">protocols</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.ws_callbacks.on_connect" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Called upon connection. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It is not validated if matches the proposed protocols. </p>
+</div>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.ws_callbacks.on_text">
+<span class="target" id="structws__callbacks_1aa34b447d6d50815d1836a703daa6a908"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">on_text</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.websockets" title="websockets"><span class="n"><span class="pre">websockets</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ws</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.ws_info" title="ws_info"><span class="n"><span class="pre">ws_info</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">len</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.ws_callbacks.on_text" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Reports UTF-8 text messages. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>it’s guaranteed to be NULL (\0) terminated, but the UTF-8 is not validated. If it’s invalid, consider closing the connection with WS_CLOSE_REASON_INCONSISTENT_DATA. </p>
+</div>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.ws_callbacks.on_binary">
+<span class="target" id="structws__callbacks_1acb1ab79ea01d8c6471d04075f982d07e"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">on_binary</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.websockets" title="websockets"><span class="n"><span class="pre">websockets</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ws</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.ws_info" title="ws_info"><span class="n"><span class="pre">ws_info</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">mem</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">len</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.ws_callbacks.on_binary" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>reports binary data. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.ws_callbacks.on_ping">
+<span class="target" id="structws__callbacks_1ae57a9a9d2b8a55cf3313af6b428d51c4"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">on_ping</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.websockets" title="websockets"><span class="n"><span class="pre">websockets</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ws</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.ws_info" title="ws_info"><span class="n"><span class="pre">ws_info</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">reason</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">len</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.ws_callbacks.on_ping" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>reports PING. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>if provided you should reply with <a class="reference internal" href="#group__Functions_1ga05815c7f0d0a923afd7f0e96c2411131"><span class="std std-ref">ws_pong()</span></a>. If not provided, pong is sent with the same message payload. </p>
+</div>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.ws_callbacks.on_pong">
+<span class="target" id="structws__callbacks_1a7ea0359da5a0e051cd315a8637ea9107"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">on_pong</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.websockets" title="websockets"><span class="n"><span class="pre">websockets</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ws</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.ws_info" title="ws_info"><span class="n"><span class="pre">ws_info</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">reason</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">len</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.ws_callbacks.on_pong" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>reports PONG. </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.ws_callbacks.on_close">
+<span class="target" id="structws__callbacks_1a01d9ba22f708696c3cf35bed2dad5cd4"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">on_close</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.websockets" title="websockets"><span class="n"><span class="pre">websockets</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ws</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.ws_info" title="ws_info"><span class="n"><span class="pre">ws_info</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">info</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.ws_close_reason" title="ws_close_reason"><span class="n"><span class="pre">ws_close_reason</span></span></a><span class="w"> </span><span class="n"><span class="pre">wscode</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">reason</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">len</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.ws_callbacks.on_close" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>reports server closed the connection with the given reason. </p>
+<p>Clients should not transmit any more data after the server is closed </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.ws_callbacks.data">
+<span class="target" id="structws__callbacks_1a3f24a596e673c6ed86ae31c22703e512"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">data</span></span></span><a class="headerlink" href="#c.ws_callbacks.data" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>user arbitrary data to be passed around callbacks </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.websockets">
+<span class="target" id="structwebsockets"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">websockets</span></span></span><a class="headerlink" href="#c.websockets" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;websockets.h&gt;</em><p>Opaque handler for WebSockets. </p>
+<p><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Initializer</span></code> <a class="reference internal" href="#group__Functions_1ga4ff8bbffc8cf3172ff02f5233315796b"><span class="std std-ref">ws_init()</span></a> </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Cleanup</span></code> <a class="reference internal" href="#group__Functions_1gad45b500790fffec540211cda5d1dbd0f"><span class="std std-ref">ws_cleanup()</span></a> </p></li>
+</ul>
+</p>
+</dd></dl>
+
+</div>
+<div class="section" id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.ws_init">
+<span class="target" id="group__Functions_1ga4ff8bbffc8cf3172ff02f5233315796b"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.websockets" title="websockets"><span class="n"><span class="pre">websockets</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">ws_init</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.ws_callbacks" title="ws_callbacks"><span class="n"><span class="pre">ws_callbacks</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">cbs</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">logconf</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">config</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ws_init" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Create a new (CURL-based) WebSockets handle. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cbs</strong> – set of functions to call back when server report events. </p></li>
+<li><p><strong>config</strong> – optional pointer to a pre-initialized logconf </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>newly created WebSockets handle, free with <a class="reference internal" href="#group__Functions_1gad45b500790fffec540211cda5d1dbd0f"><span class="std std-ref">ws_cleanup()</span></a> </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.ws_cleanup">
+<span class="target" id="group__Functions_1gad45b500790fffec540211cda5d1dbd0f"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ws_cleanup</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.websockets" title="websockets"><span class="n"><span class="pre">websockets</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ws</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ws_cleanup" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Free a WebSockets handle created with <a class="reference internal" href="#group__Functions_1ga4ff8bbffc8cf3172ff02f5233315796b"><span class="std std-ref">ws_init()</span></a> </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ws</strong> – the WebSockets handle created with <a class="reference internal" href="#group__Functions_1ga4ff8bbffc8cf3172ff02f5233315796b"><span class="std std-ref">ws_init()</span></a> </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.ws_set_url">
+<span class="target" id="group__Functions_1gac709a5d97d06af442ec647d3ff275cbf"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ws_set_url</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.websockets" title="websockets"><span class="n"><span class="pre">websockets</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ws</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="n"><span class="pre">base_url</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="n"><span class="pre">ws_protocols</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ws_set_url" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set the URL for the WebSockets handle to connect. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ws</strong> – the WebSockets handle created with <a class="reference internal" href="#group__Functions_1ga4ff8bbffc8cf3172ff02f5233315796b"><span class="std std-ref">ws_init()</span></a> </p></li>
+<li><p><strong>base_url</strong> – the URL to connect, such as ws://echo.websockets.org </p></li>
+<li><p><strong>ws_protocols</strong> – NULL or something like “chat”, “superchat”,… </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.ws_send_binary">
+<span class="target" id="group__Functions_1ga0984231cfbfede5def311aacce707779"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ws_send_binary</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.websockets" title="websockets"><span class="n"><span class="pre">websockets</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ws</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.ws_info" title="ws_info"><span class="n"><span class="pre">ws_info</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">info</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="n"><span class="pre">msg</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">msglen</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ws_send_binary" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Send a binary message of given size. </p>
+<p>Binary messages do not need to include the null terminator (\0), they will be read up to <em>msglen</em>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ws</strong> – the WebSockets handle created with <a class="reference internal" href="#group__Functions_1ga4ff8bbffc8cf3172ff02f5233315796b"><span class="std std-ref">ws_init()</span></a> </p></li>
+<li><p><strong>info</strong> – get information on how this transfer went </p></li>
+<li><p><strong>msg</strong> – the pointer to memory (linear) to send. </p></li>
+<li><p><strong>msglen</strong> – the length in bytes of <em>msg</em>. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>true if sent, false on errors. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.ws_send_text">
+<span class="target" id="group__Functions_1ga317a2eeff2ac2c04752e1990910ec902"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ws_send_text</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.websockets" title="websockets"><span class="n"><span class="pre">websockets</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ws</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.ws_info" title="ws_info"><span class="n"><span class="pre">ws_info</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">info</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">len</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ws_send_text" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Send a text message of given size. </p>
+<p>Text messages do not need to include the null terminator (\0), they will be read up to <em>len</em>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ws</strong> – the WebSockets handle created with <a class="reference internal" href="#group__Functions_1ga4ff8bbffc8cf3172ff02f5233315796b"><span class="std std-ref">ws_init()</span></a> </p></li>
+<li><p><strong>info</strong> – get information on how this transfer went </p></li>
+<li><p><strong>text</strong> – the pointer to memory (linear) to send. </p></li>
+<li><p><strong>len</strong> – the length in bytes of <em>text</em>. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>true if sent, false on errors. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.ws_ping">
+<span class="target" id="group__Functions_1ga75b6ebdc56cbb00850d9d848cce238be"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ws_ping</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.websockets" title="websockets"><span class="n"><span class="pre">websockets</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ws</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.ws_info" title="ws_info"><span class="n"><span class="pre">ws_info</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">info</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="n"><span class="pre">reason</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">len</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ws_ping" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Send a PING (opcode 0x9) frame with <em>reason</em> as payload. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ws</strong> – the WebSockets handle created with <a class="reference internal" href="#group__Functions_1ga4ff8bbffc8cf3172ff02f5233315796b"><span class="std std-ref">ws_init()</span></a> </p></li>
+<li><p><strong>info</strong> – get information on how this transfer went </p></li>
+<li><p><strong>reason</strong> – NULL or some UTF-8 string null (‘\0’) terminated. </p></li>
+<li><p><strong>len</strong> – the length of <em>reason</em> in bytes. If SIZE_MAX, uses strlen() on <em>reason</em> if it’s not NULL. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>true if sent, false on errors. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.ws_pong">
+<span class="target" id="group__Functions_1ga05815c7f0d0a923afd7f0e96c2411131"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ws_pong</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.websockets" title="websockets"><span class="n"><span class="pre">websockets</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ws</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.ws_info" title="ws_info"><span class="n"><span class="pre">ws_info</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">info</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="n"><span class="pre">reason</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">len</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ws_pong" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Send a PONG (opcode 0xA) frame with <em>reason</em> as payload. </p>
+<p>Note that pong is sent automatically if no “on_ping” callback is defined. If one is defined you must send pong manually.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ws</strong> – the WebSockets handle created with <a class="reference internal" href="#group__Functions_1ga4ff8bbffc8cf3172ff02f5233315796b"><span class="std std-ref">ws_init()</span></a> </p></li>
+<li><p><strong>info</strong> – get information on how this transfer went </p></li>
+<li><p><strong>reason</strong> – NULL or some UTF-8 string null (‘\0’) terminated. </p></li>
+<li><p><strong>len</strong> – the length of <em>reason</em> in bytes. If SIZE_MAX, uses strlen() on <em>reason</em> if it’s not NULL. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>true if sent, false on errors. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.ws_start">
+<span class="target" id="group__Functions_1ga66074fd9ea27d36bafd1dcd9a8fe8cc8"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ws_start</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.websockets" title="websockets"><span class="n"><span class="pre">websockets</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ws</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ws_start" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Signals connecting state before entering the WebSockets event loop. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Helper over _ws_set_status(ws, WS_CONNECTING) </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ws</strong> – the WebSockets handle created with <a class="reference internal" href="#group__Functions_1ga4ff8bbffc8cf3172ff02f5233315796b"><span class="std std-ref">ws_init()</span></a> </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.ws_perform">
+<span class="target" id="group__Functions_1ga0ee64c7a7e5fc1c34a311bb4777bdafc"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ws_perform</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.websockets" title="websockets"><span class="n"><span class="pre">websockets</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ws</span></span>, <span class="kt"><span class="pre">_Bool</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">is_running</span></span>, <span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="n"><span class="pre">wait_ms</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ws_perform" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Reads/Write available data from WebSockets. </p>
+<p>Helper over curl_multi_perform()</p>
+<p><dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://curl.se/libcurl/c/curl_multi_perform.html">https://curl.se/libcurl/c/curl_multi_perform.html</a> </p>
+</dd>
+</dl>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ws</strong> – the WebSockets handle created with <a class="reference internal" href="#group__Functions_1ga4ff8bbffc8cf3172ff02f5233315796b"><span class="std std-ref">ws_init()</span></a> </p></li>
+<li><p><strong>is_running</strong> – receives true if the client is running and false otherwise </p></li>
+<li><p><strong>wait_ms</strong> – limit amount in milliseconds to wait for until activity </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.ws_get_status">
+<span class="target" id="group__Functions_1gacdd4872611e9c663ffbfd3c67deb0b79"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.ws_status" title="ws_status"><span class="n"><span class="pre">ws_status</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ws_get_status</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.websockets" title="websockets"><span class="n"><span class="pre">websockets</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ws</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ws_get_status" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns the WebSockets handle connection status. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ws</strong> – the WebSockets handle created with <a class="reference internal" href="#group__Functions_1ga4ff8bbffc8cf3172ff02f5233315796b"><span class="std std-ref">ws_init()</span></a> </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a ws_status opcode </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.ws_close_opcode_print">
+<span class="target" id="group__Functions_1gafbed7f290a231ae386d36fdf5cb0e194"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">ws_close_opcode_print</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.ws_close_reason" title="ws_close_reason"><span class="n"><span class="pre">ws_close_reason</span></span></a><span class="w"> </span><span class="n"><span class="pre">opcode</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ws_close_opcode_print" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns a enum ws_close_reason opcode in a string format. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>opcode</strong> – the opcode to be converted to string </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a read-only string literal of the opcode </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.ws_timestamp">
+<span class="target" id="group__Functions_1ga65d5b02ac193585416446eae1061c93d"></span><span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ws_timestamp</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.websockets" title="websockets"><span class="n"><span class="pre">websockets</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ws</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ws_timestamp" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The WebSockets event-loop concept of “now”. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>the timestamp is updated at the start of each event-loop iteration </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ws</strong> – the WebSockets handle created with <a class="reference internal" href="#group__Functions_1ga4ff8bbffc8cf3172ff02f5233315796b"><span class="std std-ref">ws_init()</span></a> </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the timestamp in milliseconds from when <a class="reference internal" href="#group__Functions_1ga0ee64c7a7e5fc1c34a311bb4777bdafc"><span class="std std-ref">ws_perform()</span></a> was last called </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.ws_is_alive">
+<span class="target" id="group__Functions_1gacc7d4f818e65c5af96619d507fd27b49"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ws_is_alive</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.websockets" title="websockets"><span class="n"><span class="pre">websockets</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ws</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ws_is_alive" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Check if a WebSockets connection is alive. </p>
+<p>This will only return true if the connection status is different than WS_DISCONNECTED </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ws</strong> – the WebSockets handle created with <a class="reference internal" href="#group__Functions_1ga4ff8bbffc8cf3172ff02f5233315796b"><span class="std std-ref">ws_init()</span></a> </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>TRUE if WebSockets status is different than WS_DISCONNECTED, FALSE otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.ws_is_functional">
+<span class="target" id="group__Functions_1ga3e893a76e1030e2e81e8e2981cec3dc2"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ws_is_functional</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.websockets" title="websockets"><span class="n"><span class="pre">websockets</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ws</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ws_is_functional" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Check if WebSockets connection is functional. </p>
+<p>This will only return true if the connection status is WS_CONNECTED </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ws</strong> – the WebSockets handle created with <a class="reference internal" href="#group__Functions_1ga4ff8bbffc8cf3172ff02f5233315796b"><span class="std std-ref">ws_init()</span></a> </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>true if is functional, false otherwise </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.ws_close">
+<span class="target" id="group__Functions_1ga5602d429e6169eddd6941589de2fd52f"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ws_close</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.websockets" title="websockets"><span class="n"><span class="pre">websockets</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ws</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.ws_close_reason" title="ws_close_reason"><span class="n"><span class="pre">ws_close_reason</span></span></a><span class="w"> </span><span class="n"><span class="pre">code</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="n"><span class="pre">reason</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">len</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ws_close" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Thread-safe way to stop websockets connection. </p>
+<p>This will activate a internal WS_USER_CMD_EXIT flag that will force disconnect when the next iteration begins. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>it will create a copy of the reason string </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ws</strong> – the WebSockets handle created with <a class="reference internal" href="#group__Functions_1ga4ff8bbffc8cf3172ff02f5233315796b"><span class="std std-ref">ws_init()</span></a> </p></li>
+<li><p><strong>code</strong> – the WebSockets CLOSE opcode </p></li>
+<li><p><strong>reason</strong> – the close reason </p></li>
+<li><p><strong>len</strong> – the reason length </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.ws_same_thread">
+<span class="target" id="group__Functions_1gad8c8d337b38d18386668ce800013f172"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ws_same_thread</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.websockets" title="websockets"><span class="n"><span class="pre">websockets</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ws</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ws_same_thread" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Check if current thread is the same as the event-loop main-thread. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ws</strong> – the WebSockets handle created with <a class="reference internal" href="#group__Functions_1ga4ff8bbffc8cf3172ff02f5233315796b"><span class="std std-ref">ws_init()</span></a> </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>true if its the same thread, false otherwise </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+
+
+              </div>
+              
+              
+              <div class='prev-next-bottom'>
+                
+    <a class='left-prev' id="prev-link" href="discord_api.html" title="previous page">Discord API Reference</a>
+
+              </div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+  
+  <script src="_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  <footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    
+    <div class="footer-item">
+      <p class="copyright">
+    &copy; Copyright 2021, Cee-Studio.<br/>
+</p>
+    </div>
+    
+    <div class="footer-item">
+      <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.1.2.<br/>
+</p>
+    </div>
+    
+  </div>
+</footer>
+  </body>
+</html>
