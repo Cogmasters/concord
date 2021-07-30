@@ -18,7 +18,8 @@ void on_invite_get(
 {
   if (msg->author->bot) return;
 
-  struct discord_invite *invite = discord_invite_alloc();
+  struct discord_invite invite;
+  discord_invite_init(&invite);
 
   char text[DISCORD_MAX_MESSAGE_LEN];
   {
@@ -27,8 +28,8 @@ void on_invite_get(
       .with_expiration = true
     };
 
-    if (ORCA_OK == discord_get_invite(client, msg->content, &params, invite))
-      sprintf(text, "https://discord.gg/%s", invite->code);
+    if (ORCA_OK == discord_get_invite(client, msg->content, &params, &invite))
+      sprintf(text, "https://discord.gg/%s", invite.code);
     else
       sprintf(text, "Couldn't create invite.");
   }
@@ -36,7 +37,7 @@ void on_invite_get(
   struct discord_create_message_params params = { .content = text };
   discord_create_message(client, msg->channel_id, &params, NULL);
 
-  discord_invite_free(invite);
+  discord_invite_cleanup(&invite);
 }
 
 void on_invite_delete(

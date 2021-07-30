@@ -261,13 +261,14 @@ void on_command(
   update_last_tick_ms(&tick_ms);
 
   /* Initialize embed struct that will be loaded to  */
-  struct discord_embed *new_embed = discord_embed_alloc();
+  struct discord_embed new_embed;
+  discord_embed_init(&new_embed);
 
   /* Set embed fields */
-  strncpy(new_embed->title, msg->content, sizeof(new_embed->title));
-  new_embed->timestamp = cee_timestamp_ms();
-  new_embed->color = 15844367; //gold
-  discord_embed_set_footer(new_embed, 
+  strncpy(new_embed.title, msg->content, sizeof(new_embed.title));
+  new_embed.timestamp = cee_timestamp_ms();
+  new_embed.color = 15844367; //gold
+  discord_embed_set_footer(&new_embed, 
       "designed & built by https://cee.dev",
       "https://cee.dev/static/images/cee.png", NULL);
 
@@ -282,26 +283,27 @@ void on_command(
   discord_trigger_typing_indicator(client, msg->channel_id);
 
   /* Fetch factions from ELITEBGS API */
-  struct ua_resp_handle resp_handle = \
-    { .ok_cb = &embed_from_json, .ok_obj = (void*)new_embed};
   ua_run(
     g_elitebgs_ua, 
     NULL,
-    &resp_handle,
+    &(struct ua_resp_handle){
+      .ok_cb = &embed_from_json,
+      .ok_obj = &new_embed
+    },
     NULL,
     HTTP_GET,
     "/factions%s", query);
 
   /* Send embed to channel if embed was loaded */
   struct discord_create_message_params params = {0};
-  if (new_embed->fields)
-    params.embed = new_embed;
+  if (new_embed.fields)
+    params.embed = &new_embed;
   else 
     params.content = "System does not exist or could not be found.";
   discord_create_message(client, msg->channel_id, &params, NULL);
 
   /* Cleanup resources */
-  discord_embed_free(new_embed);
+  discord_embed_cleanup(&new_embed);
 }
 
 int main(int argc, char *argv[])
@@ -333,8 +335,9 @@ int main(int argc, char *argv[])
   fgetc(stdin); // wait for input
 
   /* Set bot presence activity */
-  struct discord_gateway_activity *new_activity;
-  new_activity = discord_gateway_activity_alloc();
+  struct discord_gateway_activity *new_activity = malloc(sizeof *new_activity);
+  discord_gateway_activity_init(new_activity);
+
   strcpy(new_activity->name, "cee.dev");
   new_activity->type = 0; // Playing
   discord_set_presence(client, new_activity, "online", false);

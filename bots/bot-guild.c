@@ -47,25 +47,27 @@ void on_create(
 {
   if (msg->author->bot) return;
 
-  struct discord_guild *guild = discord_guild_alloc();
+  struct discord_guild guild;
+  discord_guild_init(&guild);
+
   ORCAcode code;
   {
     struct discord_create_guild_params params = { 
       .name = *msg->content ? msg->content : "TestGuild" 
     };
-    code = discord_create_guild(client, &params, guild);
+    code = discord_create_guild(client, &params, &guild);
   }
 
   char text[DISCORD_MAX_MESSAGE_LEN];
   if (ORCA_OK == code)
-    sprintf(text, "%s (%"PRIu64") created.", guild->name, guild->id);
+    sprintf(text, "%s (%"PRIu64") created.", guild.name, guild.id);
   else
     sprintf(text, "Couldn't create guild.");
 
   struct discord_create_message_params params={ .content = text };
   discord_create_message(client, msg->channel_id, &params, NULL);
 
-  discord_guild_free(guild);
+  discord_guild_cleanup(&guild);
 }
 
 void on_modify(
@@ -80,11 +82,12 @@ void on_modify(
   sscanf(msg->content, "%"SCNu64" %s", &guild_id, guild_name);
 
   char text[DISCORD_MAX_MESSAGE_LEN];
-  struct discord_guild *guild = discord_guild_alloc();
+  struct discord_guild guild;
+  discord_guild_init(&guild);
   {
     struct discord_modify_guild_params params = { .name = guild_name };
-    if (ORCA_OK == discord_modify_guild(client, guild_id, &params, guild))
-      sprintf(text, "Renamed guild to %s.", guild->name);
+    if (ORCA_OK == discord_modify_guild(client, guild_id, &params, &guild))
+      sprintf(text, "Renamed guild to %s.", guild.name);
     else
       sprintf(text, "Couldn't rename guild.");
   }
@@ -92,7 +95,7 @@ void on_modify(
   struct discord_create_message_params params = { .content = text };
   discord_create_message(client, msg->channel_id, &params, NULL);
 
-  discord_guild_free(guild);
+  discord_guild_cleanup(&guild);
 }
 
 void on_delete(
@@ -273,12 +276,14 @@ void on_member_get(
     sprintf(text, "Invalid format for `guild.member_get <user_id>`");
   }
   else {
-    struct discord_guild_member *member = discord_guild_member_alloc();
-    if (ORCA_OK == discord_get_guild_member(client, msg->guild_id, msg->author->id, member))
+    struct discord_guild_member member;
+    discord_guild_member_init(&member);
+
+    if (ORCA_OK == discord_get_guild_member(client, msg->guild_id, msg->author->id, &member))
       sprintf(text, "Member <@%"PRIu64"> found!", user_id);
     else
       sprintf(text, "Couldn't find member");
-    discord_guild_member_free(member);
+    discord_guild_member_cleanup(&member);
   }
 
   struct discord_create_message_params params = { .content = text };

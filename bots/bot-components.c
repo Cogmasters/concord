@@ -143,6 +143,7 @@ void on_dynamic_init(
 {
   if (msg->author->bot) return;
 
+  NTL_T(struct discord_component) components=NULL;
   struct discord_component action;
   struct discord_component select;
   struct discord_select_option option;
@@ -155,6 +156,9 @@ void on_dynamic_init(
   discord_component_init(&select);   
   select.type = DISCORD_COMPONENT_SELECT_MENU;
   snprintf(select.custom_id, sizeof(select.custom_id), "class_select_1");
+  snprintf(select.placeholder, sizeof(select.placeholder), "Choose a class");
+  select.min_values = 1;
+  select.max_values = 3;
 
   // initialize 1st option and append to select.options
   discord_select_option_init(&option);
@@ -187,7 +191,6 @@ void on_dynamic_init(
   ntl_append2((ntl_t*)&action.components, sizeof(struct discord_component), &select);
 
   // apend action to message.components
-  NTL_T(struct discord_component) components = NULL;
   ntl_append2((ntl_t*)&components, sizeof(struct discord_component), &action);
 
 

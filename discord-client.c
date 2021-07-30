@@ -355,7 +355,9 @@ discord_replace_presence(struct discord *client, struct discord_gateway_status_u
 {
   if (NULL == presence) return;
 
-  discord_gateway_status_update_free(client->gw.id->presence);
+  discord_gateway_status_update_cleanup(client->gw.id->presence);
+  free(client->gw.id->presence);
+
   client->gw.id->presence = presence;
 }
 

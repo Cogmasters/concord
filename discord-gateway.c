@@ -216,7 +216,8 @@ on_guild_role_create(struct discord_gateway *gw, struct sized_buffer *data)
       guild_id, 
       role);
 
-  discord_permissions_role_free(role);
+  discord_permissions_role_cleanup(role);
+  free(role);
 }
 
 static void
@@ -237,7 +238,8 @@ on_guild_role_update(struct discord_gateway *gw, struct sized_buffer *data)
       guild_id, 
       role);
 
-  discord_permissions_role_free(role);
+  discord_permissions_role_cleanup(role);
+  free(role);
 }
 
 static void
@@ -272,7 +274,8 @@ on_guild_member_add(struct discord_gateway *gw, struct sized_buffer *data)
       guild_id,
       member);
 
-  discord_guild_member_free(member);
+  discord_guild_member_cleanup(member);
+  free(member);
 }
 
 static void
@@ -290,7 +293,8 @@ on_guild_member_update(struct discord_gateway *gw, struct sized_buffer *data)
       guild_id, 
       member);
 
-  discord_guild_member_free(member);
+  discord_guild_member_cleanup(member);
+  free(member);
 }
 
 static void
@@ -310,7 +314,8 @@ on_guild_member_remove(struct discord_gateway *gw, struct sized_buffer *data)
         guild_id, 
         user);
 
-  discord_user_free(user);
+  discord_user_cleanup(user);
+  free(user);
 }
 
 static void
@@ -330,7 +335,8 @@ on_guild_ban_add(struct discord_gateway *gw, struct sized_buffer *data)
         guild_id, 
         user);
 
-  discord_user_free(user);
+  discord_user_cleanup(user);
+  free(user);
 }
 
 static void
@@ -350,7 +356,8 @@ on_guild_ban_remove(struct discord_gateway *gw, struct sized_buffer *data)
         guild_id, 
         user);
 
-  discord_user_free(user);
+  discord_user_cleanup(user);
+  free(user);
 }
 
 static void
@@ -364,7 +371,8 @@ on_channel_create(struct discord_gateway *gw, struct sized_buffer *data)
         gw->bot, 
         channel);
 
-  discord_channel_free(channel);
+  discord_channel_cleanup(channel);
+  free(channel);
 }
 
 static void
@@ -378,7 +386,8 @@ on_channel_update(struct discord_gateway *gw, struct sized_buffer *data)
         gw->bot, 
         channel);
 
-  discord_channel_free(channel);
+  discord_channel_cleanup(channel);
+  free(channel);
 }
 
 static void
@@ -392,7 +401,8 @@ on_channel_delete(struct discord_gateway *gw, struct sized_buffer *data)
         gw->bot, 
         channel);
 
-  discord_channel_free(channel);
+  discord_channel_cleanup(channel);
+  free(channel);
 }
 
 static void
@@ -449,7 +459,8 @@ on_message_create(struct discord_gateway *gw, struct sized_buffer *data)
       msg->content = tmp; // retrieve original ptr
     }
 
-    discord_message_free(msg);
+    discord_message_cleanup(msg);
+    free(msg);
     return; /* EARLY RETURN */
   }
 
@@ -461,7 +472,8 @@ on_message_create(struct discord_gateway *gw, struct sized_buffer *data)
   else if (gw->cbs.on_message_create)
     (*gw->cbs.on_message_create)(gw->p_client, gw->bot, msg);
 
-  discord_message_free(msg);
+  discord_message_cleanup(msg);
+  free(msg);
 }
 
 static void
@@ -478,7 +490,8 @@ on_message_update(struct discord_gateway *gw, struct sized_buffer *data)
   else if (gw->cbs.on_message_update)
     (*gw->cbs.on_message_update)(gw->p_client, gw->bot, msg);
 
-  discord_message_free(msg);
+  discord_message_cleanup(msg);
+  free(msg);
 }
 
 static void
@@ -546,8 +559,10 @@ on_message_reaction_add(struct discord_gateway *gw, struct sized_buffer *data)
       member, 
       emoji);
 
-  discord_guild_member_free(member);
-  discord_emoji_free(emoji);
+  discord_guild_member_cleanup(member);
+  free(member);
+  discord_emoji_cleanup(emoji);
+  free(emoji);
 }
 
 static void
@@ -575,7 +590,8 @@ on_message_reaction_remove(struct discord_gateway *gw, struct sized_buffer *data
       guild_id, 
       emoji);
 
-  discord_emoji_free(emoji);
+  discord_emoji_cleanup(emoji);
+  free(emoji);
 }
 
 static void
@@ -632,7 +648,8 @@ on_voice_state_update(struct discord_gateway *gw, struct sized_buffer *data)
   if (gw->cbs.on_voice_state_update)
     (*gw->cbs.on_voice_state_update)(gw->p_client, gw->bot, vs);
 
-  discord_voice_state_free(vs);
+  discord_voice_state_cleanup(vs);
+  free(vs);
 }
 
 static void
@@ -1073,7 +1090,8 @@ discord_gateway_init(struct discord_gateway *gw, struct logconf *config, struct 
   }
   ASSERT_S(NULL != token->start, "Missing bot token");
 
-  gw->id = discord_gateway_identify_alloc();
+  gw->id = malloc(sizeof *gw->id);
+  discord_gateway_identify_init(gw->id);
   asprintf(&gw->id->token, "%.*s", (int)token->size, token->start);
 
   gw->id->properties->os = strdup("POSIX");
@@ -1085,7 +1103,8 @@ discord_gateway_init(struct discord_gateway *gw, struct logconf *config, struct 
   gw->cbs.on_event_raw = &noop_event_raw_cb;
   gw->event_handler = &noop_event_handler;
 
-  gw->bot = discord_user_alloc();
+  gw->bot = malloc(sizeof *gw->bot);
+  discord_user_init(gw->bot);
 
   if (gw->p_client) {
     discord_set_presence(gw->p_client, NULL, "online", false);
@@ -1114,13 +1133,18 @@ discord_gateway_init(struct discord_gateway *gw, struct logconf *config, struct 
 void
 discord_gateway_cleanup(struct discord_gateway *gw)
 {
-  discord_user_free(gw->bot);
+  discord_user_cleanup(gw->bot);
+  free(gw->bot);
+
   free(gw->sb_bot.start);
-  discord_gateway_identify_free(gw->id);
+
+  discord_gateway_identify_cleanup(gw->id);
+  free(gw->id);
+
+  if (gw->on_cmd) free(gw->on_cmd);
+
   ws_cleanup(gw->ws);
-  if (gw->on_cmd) {
-    free(gw->on_cmd);
-  }
+
   pthread_mutex_destroy(&gw->lock);
 }
 
@@ -1135,11 +1159,9 @@ event_loop(struct discord_gateway *gw)
 
   // build URL that will be used to connect to Discord
   char url[1024];
-  size_t ret = snprintf(url, sizeof(url),                            \
-      "%s%s"DISCORD_GATEWAY_URL_SUFFIX,                              \
-                 gw->session.url,                                    \
-                 ('/' == gw->session.url[strlen(gw->session.url)-1]) \
-                    ? "" : "/");
+  size_t ret = snprintf(url, sizeof(url), "%s%s"DISCORD_GATEWAY_URL_SUFFIX,
+                 gw->session.url,                                       
+                 ('/' == gw->session.url[strlen(gw->session.url)-1]) ? "" : "/");
   ASSERT_S(ret < sizeof(url), "Out of bounds write attempt");
 
   ws_set_url(gw->ws, url, NULL);

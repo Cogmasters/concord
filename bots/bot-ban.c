@@ -17,14 +17,15 @@ void on_guild_ban_add(
     const u64_snowflake_t guild_id,
     const struct discord_user *user)
 {
-  struct discord_channel *general = discord_channel_alloc();
-  discord_get_channel_at_pos(client, guild_id, DISCORD_CHANNEL_GUILD_TEXT, 0, general);
+  struct discord_channel general;
+  discord_channel_init(&general);
+  discord_get_channel_at_pos(client, guild_id, DISCORD_CHANNEL_GUILD_TEXT, 0, &general);
 
   char text[128];
   snprintf(text, sizeof(text), "User `%s` has been banned.", user->username);
   struct discord_create_message_params params = { .content = text };
-  discord_create_message(client, general->id, &params, NULL);
-  discord_channel_free(general);
+  discord_create_message(client, general.id, &params, NULL);
+  discord_channel_cleanup(&general);
 }
 
 void on_guild_ban_remove(
@@ -33,14 +34,15 @@ void on_guild_ban_remove(
     const u64_snowflake_t guild_id,
     const struct discord_user *user)
 {
-  struct discord_channel *general = discord_channel_alloc();
-  discord_get_channel_at_pos(client, guild_id, DISCORD_CHANNEL_GUILD_TEXT, 0, general);
+  struct discord_channel general;
+  discord_channel_init(&general);
+  discord_get_channel_at_pos(client, guild_id, DISCORD_CHANNEL_GUILD_TEXT, 0, &general);
 
   char text[128];
   snprintf(text, sizeof(text), "User `%s` has been unbanned.", user->username);
   struct discord_create_message_params params = { .content = text };
-  discord_create_message(client, general->id, &params, NULL);
-  discord_channel_free(general);
+  discord_create_message(client, general.id, &params, NULL);
+  discord_channel_cleanup(&general);
 }
 
 void on_ban(

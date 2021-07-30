@@ -258,20 +258,22 @@ void start_new_session(
   }
 #endif
 
-  struct discord_message *ret_msg = discord_message_alloc();
+  struct discord_message ret_msg;
+  discord_message_init(&ret_msg);
+
   struct discord_create_message_params params = {
     .content = "Would you like to start?"
   };
-  discord_create_message(client, session_channel_id, &params, ret_msg);
+  discord_create_message(client, session_channel_id, &params, &ret_msg);
 
   discord_create_reaction(
     client, 
     session_channel_id, 
-    ret_msg->id, 
+    ret_msg.id, 
     0, 
     g_session.reaction_emoji);
 
-  discord_message_free(ret_msg);
+  discord_message_cleanup(&ret_msg);
 }
 
 void send_next_question(
@@ -303,21 +305,22 @@ void send_next_question(
       'A'+ i, question->answers[i].desc);
   }
 
-  struct discord_message *ret_msg = discord_message_alloc();
+  struct discord_message ret_msg;
+  discord_message_init(&ret_msg);
   struct discord_create_message_params params = {
     .content = text
   };
-  discord_create_message(client, channel_id, &params, ret_msg);
+  discord_create_message(client, channel_id, &params, &ret_msg);
 
   for (int i=0; i < question->num_answers; ++i) {
     discord_create_reaction(
       client, 
       channel_id, 
-      ret_msg->id, 
+      ret_msg.id, 
       0, 
       ALPHA_EMOJI[i]);
   }
-  discord_message_free(ret_msg);
+  discord_message_cleanup(&ret_msg);
 
   session->status = RUNNING;
 }

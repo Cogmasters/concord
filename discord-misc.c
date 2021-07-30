@@ -83,10 +83,13 @@ discord_embed_set_footer(
   }
 
   if (embed->footer) {
+    discord_embed_footer_cleanup(embed->footer);
     free(embed->footer);
   }
 
-  struct discord_embed_footer *new_footer = discord_embed_footer_alloc();
+  struct discord_embed_footer *new_footer = malloc(sizeof *new_footer);
+  discord_embed_footer_init(new_footer);
+
   strncpy(new_footer->text, text, DISCORD_EMBED_FOOTER_TEXT_LEN);
   if (icon_url)
     asprintf(&new_footer->icon_url, "%s", icon_url);
@@ -117,10 +120,13 @@ discord_embed_set_thumbnail(
   int width)
 {
   if (embed->thumbnail) {
+    discord_embed_thumbnail_cleanup(embed->thumbnail);
     free(embed->thumbnail);
   }
 
-  struct discord_embed_thumbnail *new_thumbnail = discord_embed_thumbnail_alloc();
+  struct discord_embed_thumbnail *new_thumbnail = malloc(sizeof *new_thumbnail);
+  discord_embed_thumbnail_init(new_thumbnail);
+
   if (url)
     asprintf(&new_thumbnail->url, "%s", url);
   if (proxy_url)
@@ -142,10 +148,13 @@ discord_embed_set_image(
   int width)
 {
   if (embed->image) {
+    discord_embed_image_cleanup(embed->image);
     free(embed->image);
   }
 
-  struct discord_embed_image *new_image = discord_embed_image_alloc();
+  struct discord_embed_image *new_image = malloc(sizeof *new_image);
+  discord_embed_image_init(new_image);
+
   if (url)
     asprintf(&new_image->url, "%s", url);
   if (proxy_url)
@@ -167,10 +176,13 @@ discord_embed_set_video(
   int width)
 {
   if (embed->video) {
+    discord_embed_video_cleanup(embed->video);
     free(embed->video);
   }
 
-  struct discord_embed_video *new_video = discord_embed_video_alloc();
+  struct discord_embed_video *new_video = malloc(sizeof *new_video);
+  discord_embed_video_init(new_video);
+
   if (url)
     asprintf(&new_video->url, "%s", url);
   if (proxy_url)
@@ -187,10 +199,13 @@ void
 discord_embed_set_provider(struct discord_embed *embed, char name[], char url[])
 {
   if (embed->provider) {
+    discord_embed_provider_cleanup(embed->provider);
     free(embed->provider);
   }
 
-  struct discord_embed_provider *new_provider = discord_embed_provider_alloc();
+  struct discord_embed_provider *new_provider = malloc(sizeof *new_provider);
+  discord_embed_provider_init(new_provider);
+
   if (url)
     asprintf(&new_provider->url, "%s", url);
   if (!IS_EMPTY_STRING(name))
@@ -208,10 +223,13 @@ discord_embed_set_author(
   char proxy_icon_url[])
 {
   if (embed->author) {
+    discord_embed_author_cleanup(embed->author);
     free(embed->author);
   }
 
-  struct discord_embed_author *new_author = discord_embed_author_alloc();
+  struct discord_embed_author *new_author = malloc(sizeof *new_author);
+  discord_embed_author_init(new_author);
+
   if (!IS_EMPTY_STRING(name))
     strncpy(new_author->name, name, DISCORD_EMBED_AUTHOR_NAME_LEN);
 
@@ -240,31 +258,31 @@ discord_embed_add_field(struct discord_embed *embed, char name[], char value[], 
     return;
   }
 
-  struct discord_embed_field *field = discord_embed_field_alloc();
-  field->Inline = Inline;
+  struct discord_embed_field field;
+  discord_embed_field_init(&field);
+
+  field.Inline = Inline;
 
   size_t ret;
-  if (!(ret = cee_str_bounds_check(name, sizeof(field->name)))) {
-    log_warn("'name' exceeds %d characters, truncation will occur", sizeof(field->name));
-    snprintf(field->name, sizeof(field->name), "%.*s(...)", \
-        (int)(sizeof(field->name)-6), name);
+  if (!(ret = cee_str_bounds_check(name, sizeof(field.name)))) {
+    log_warn("'name' exceeds %d characters, truncation will occur", sizeof(field.name));
+    snprintf(field.name, sizeof(field.name), "%.*s(...)", \
+        (int)(sizeof(field.name)-6), name);
   }
   else {
-    snprintf(field->name, sizeof(field->name), "%s", name);
+    snprintf(field.name, sizeof(field.name), "%s", name);
   }
 
-  if (!(ret = cee_str_bounds_check(value, sizeof(field->value)))) {
-    log_warn("'value' exceeds %d characters, truncation will occur", sizeof(field->value));
-    snprintf(field->value, sizeof(field->value), "%.*s(...)", \
-        (int)(sizeof(field->value)-6), value);
+  if (!(ret = cee_str_bounds_check(value, sizeof(field.value)))) {
+    log_warn("'value' exceeds %d characters, truncation will occur", sizeof(field.value));
+    snprintf(field.value, sizeof(field.value), "%.*s(...)", \
+        (int)(sizeof(field.value)-6), value);
   }
   else {
-    snprintf(field->value, sizeof(field->value), "%s", value);
+    snprintf(field.value, sizeof(field.value), "%s", value);
   }
 
-  ntl_append2((ntl_t*)&embed->fields, sizeof(struct discord_embed_field), field);
-
-  discord_embed_field_free(field);
+  ntl_append2((ntl_t*)&embed->fields, sizeof(struct discord_embed_field), &field);
 }
 
 void
@@ -286,6 +304,7 @@ discord_overwrite_append(
 
   struct discord_channel_overwrite new_overwrite;
   discord_channel_overwrite_init(&new_overwrite);
+
   new_overwrite.id = id;
   new_overwrite.type = type;
   new_overwrite.allow = allow;
@@ -325,9 +344,7 @@ discord_get_channel_at_pos(
     if (type == channels[i]->type && j++ == position) {
       memcpy(p_channel, channels[i], sizeof(struct discord_channel));
       // avoid double freeing
-      p_channel->permission_overwrites = NULL;
-      p_channel->recipients = NULL;
-      p_channel->messages = NULL;
+      memset(channels[i], 0, sizeof(struct discord_channel));
       break; /* EARLY BREAK */
     }
   }

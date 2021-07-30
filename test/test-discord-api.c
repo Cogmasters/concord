@@ -18,11 +18,11 @@ int main(int argc, char *argv[])
   struct discord *client = discord_config_init(config_file);
   assert(NULL != client);
 
-  struct discord_user *me = discord_user_alloc(); 
-  assert(NULL != me);
+  struct discord_user me;
+  discord_user_init(&me); 
 
-  discord_get_current_user(client, me);
-  printf("Greetings, %s#%s!\n", me->username, me->discriminator);
+  discord_get_current_user(client, &me);
+  printf("Greetings, %s#%s!\n", me.username, me.discriminator);
 
   NTL_T(struct discord_guild) guilds = NULL;
   discord_get_current_user_guilds(client, &guilds);
@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
   }
 
   discord_guild_list_free(guilds);
-  discord_user_free(me);
+  discord_user_cleanup(&me);
 
   discord_cleanup(client);
 

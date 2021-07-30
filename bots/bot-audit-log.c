@@ -56,18 +56,19 @@ void on_get_my_audit_log(
     sscanf(msg->content, "%d", &event);
   }
 
-  struct discord_audit_log *audit_log = discord_audit_log_alloc();
+  struct discord_audit_log audit_log;
+  discord_audit_log_init(&audit_log);
   {
     struct discord_get_guild_audit_log_params params = {
       .user_id = msg->author->id,
       .action_type = (enum discord_audit_log_events)event
     };
-    discord_get_guild_audit_log(client, msg->guild_id, &params, audit_log);
+    discord_get_guild_audit_log(client, msg->guild_id, &params, &audit_log);
   }
 
   char audit_json[4096];
   size_t size;
-  size = discord_audit_log_to_json(audit_json, sizeof(audit_json), audit_log);
+  size = discord_audit_log_to_json(audit_json, sizeof(audit_json), &audit_log);
 
   struct discord_create_message_params params;
   if (size) {
@@ -86,7 +87,7 @@ void on_get_my_audit_log(
   }
   discord_create_message(client, msg->channel_id, &params, NULL);
 
-  discord_audit_log_free(audit_log);
+  discord_audit_log_cleanup(&audit_log);
 }
 
 int main(int argc, char *argv[])

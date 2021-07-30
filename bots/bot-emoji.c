@@ -70,15 +70,18 @@ void on_get(
     sprintf(text, "Missing 'emoji_id'");
   }
   else {
-    struct discord_emoji *emoji = discord_emoji_alloc();
-    discord_get_guild_emoji(client, msg->guild_id, emoji_id, emoji);
-    if (emoji->id)
+    struct discord_emoji emoji;
+    discord_emoji_init(&emoji);
+
+    discord_get_guild_emoji(client, msg->guild_id, emoji_id, &emoji);
+    if (emoji.id)
       sprintf(text, "Here you go: <%s:%s:%"PRIu64">", \
-          emoji->animated ? "a" : "",                 \
-          emoji->name, emoji->id);
+          emoji.animated ? "a" : "",                  \
+          emoji.name, emoji.id);
     else
       sprintf(text, "Unknown emoji");
-    discord_emoji_free(emoji);
+
+    discord_emoji_cleanup(&emoji);
   }
 
   struct discord_create_message_params params = { .content = text };

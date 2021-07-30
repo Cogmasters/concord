@@ -63,12 +63,13 @@ embed_reddit_search_result(
     reddit_search(BOT.R.client, &params, subreddits, &resp_body);
   }
 
-  struct discord_embed *embed = discord_embed_alloc();
+  struct discord_embed *embed = malloc(sizeof *embed);
+  discord_embed_init(embed);
+
   embed->color = 0xff0000; // RED
   snprintf(embed->title, sizeof(embed->title), "Reddit Search");
   discord_embed_set_thumbnail(embed, EMBED_THUMBNAIL, NULL, 100, 100);
-  discord_embed_set_author(
-      embed,
+  discord_embed_set_author(embed,
       "designed & built by https://cee.dev",
       "https://cee.dev",
       "https://cee.dev/static/images/cee.png", NULL);
@@ -88,8 +89,7 @@ embed_reddit_search_result(
         json_get_string(json_get_child(data, "title"), NULL));
     snprintf(permalink, sizeof(permalink), "https://reddit.com%s", \
         json_get_string(json_get_child(data, "permalink"), NULL));
-    discord_embed_add_field(
-      embed, 
+    discord_embed_add_field(embed, 
       title,
       permalink,
       false);
@@ -118,15 +118,16 @@ void on_reaction_add(
   if (member->user->bot) return;
 
   struct discord_create_message_params params={0};
-  struct discord_message *msg = discord_message_alloc();
+  struct discord_message msg;
+  discord_message_init(&msg);
 
-  discord_get_channel_message(client, channel_id, message_id, msg);
+  discord_get_channel_message(client, channel_id, message_id, &msg);
 
-  if (msg->author->id == bot->id && msg->embeds) {
+  if (msg.author->id == bot->id && msg.embeds) {
     char keywords[512]="", subreddits[1024]="";
-    struct discord_embed *embed = msg->embeds[0];
+    struct discord_embed *embed = msg.embeds[0];
     if (!embed->fields) {
-      discord_message_free(msg);
+      discord_message_cleanup(&msg);
       return; /* EARLY RETURN */
     }
     sscanf(embed->footer->text, "🔎 %[^\t]\t🔗 %[^\n]", keywords, subreddits);
@@ -149,17 +150,20 @@ void on_reaction_add(
         discord_create_message(client, channel_id, &params, NULL);
       }
       else {
-        struct discord_message *ret = discord_message_alloc();
+        struct discord_message ret;
+        discord_message_init(&ret);
 
         discord_delete_message(client, channel_id, message_id);
 
-        discord_create_message(client, channel_id, &params, ret);
-        discord_create_reaction(client, channel_id, ret->id, 0, "⬅️");
-        discord_create_reaction(client, channel_id, ret->id, 0, "➡️");
-        discord_create_reaction(client, channel_id, ret->id, 0, "❌");
+        discord_create_message(client, channel_id, &params, &ret);
+        discord_create_reaction(client, channel_id, ret.id, 0, "⬅️");
+        discord_create_reaction(client, channel_id, ret.id, 0, "➡️");
+        discord_create_reaction(client, channel_id, ret.id, 0, "❌");
 
-        discord_embed_free(params.embed);
-        discord_message_free(ret);
+        discord_embed_cleanup(params.embed);
+        free(params.embed);
+
+        discord_message_cleanup(&ret);
       }
     }
     else if (0 == strcmp(emoji->name, "➡️"))
@@ -181,17 +185,20 @@ void on_reaction_add(
         discord_create_message(client, channel_id, &params, NULL);
       }
       else {
-        struct discord_message *ret = discord_message_alloc();
+        struct discord_message ret;
+        discord_message_init(&ret);
 
         discord_delete_message(client, channel_id, message_id);
 
-        discord_create_message(client, channel_id, &params, ret);
-        discord_create_reaction(client, channel_id, ret->id, 0, "⬅️");
-        discord_create_reaction(client, channel_id, ret->id, 0, "➡️");
-        discord_create_reaction(client, channel_id, ret->id, 0, "❌");
+        discord_create_message(client, channel_id, &params, &ret);
+        discord_create_reaction(client, channel_id, ret.id, 0, "⬅️");
+        discord_create_reaction(client, channel_id, ret.id, 0, "➡️");
+        discord_create_reaction(client, channel_id, ret.id, 0, "❌");
 
-        discord_embed_free(params.embed);
-        discord_message_free(ret);
+        discord_embed_cleanup(params.embed);
+        free(params.embed);
+
+        discord_message_cleanup(&ret);
       }
     }
     else if (0 == strcmp(emoji->name, "❌")) {
@@ -199,7 +206,7 @@ void on_reaction_add(
     }
   }
 
-  discord_message_free(msg);
+  discord_message_cleanup(&msg);
 }
 
 
@@ -286,17 +293,20 @@ void on_search(
     return; /* EARLY RETURN */
   }
 
-  struct discord_message *ret = discord_message_alloc();
-  discord_create_message(client, msg->channel_id, &params, ret);
+  struct discord_message ret;
+  discord_message_init(&ret);
+
+  discord_create_message(client, msg->channel_id, &params, &ret);
 
   if (params.embed) { // succesfully sent a embed
-    discord_create_reaction(client, msg->channel_id, ret->id, 0, "⬅️");
-    discord_create_reaction(client, msg->channel_id, ret->id, 0, "➡️");
-    discord_create_reaction(client, msg->channel_id, ret->id, 0, "❌");
-    discord_embed_free(params.embed);
+    discord_create_reaction(client, msg->channel_id, ret.id, 0, "⬅️");
+    discord_create_reaction(client, msg->channel_id, ret.id, 0, "➡️");
+    discord_create_reaction(client, msg->channel_id, ret.id, 0, "❌");
+    discord_embed_cleanup(params.embed);
+    free(params.embed);
   }
 
-  discord_message_free(ret);
+  discord_message_cleanup(&ret);
 }
 
 void refresh_reddit_access_token_cb(void *data) 
@@ -328,24 +338,28 @@ void search_reddit_cb(void *data)
   if (BOT.R.params.before) {
     if (strcmp(before, BOT.R.params.before)) {
       log_trace("Search couldn't fetch new results");
-      discord_embed_free(embed);
+      discord_embed_cleanup(embed);
+      free(embed);
       return; /* EARLY RETURN */
     }
     free(BOT.R.params.before);
   }
   asprintf(&BOT.R.params.before, "t3_%s", before);
 
-  struct discord_message *ret = discord_message_alloc();
+  struct discord_message ret;
+  discord_message_init(&ret);
+
   struct discord_create_message_params params = { .embed = embed };
   for (size_t i=0; BOT.D.channel_ids[i]; ++i) {
-    discord_create_message(BOT.D.client, *BOT.D.channel_ids[i], &params, ret);
-    discord_create_reaction(BOT.D.client, *BOT.D.channel_ids[i], ret->id, 0, "⬅️");
-    discord_create_reaction(BOT.D.client, *BOT.D.channel_ids[i], ret->id, 0, "➡️");
-    discord_create_reaction(BOT.D.client, *BOT.D.channel_ids[i], ret->id, 0, "❌");
+    discord_create_message(BOT.D.client, *BOT.D.channel_ids[i], &params, &ret);
+    discord_create_reaction(BOT.D.client, *BOT.D.channel_ids[i], ret.id, 0, "⬅️");
+    discord_create_reaction(BOT.D.client, *BOT.D.channel_ids[i], ret.id, 0, "➡️");
+    discord_create_reaction(BOT.D.client, *BOT.D.channel_ids[i], ret.id, 0, "❌");
   }
 
-  discord_message_free(ret);
-  discord_embed_free(embed);
+  discord_message_cleanup(&ret);
+  discord_embed_cleanup(embed);
+  free(embed);
 }
 
 void on_comment(
