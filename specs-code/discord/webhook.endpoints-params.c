@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/webhook.endpoints-params.c
  * @author cee-studio
- * @date Jul 28 2021
+ * @date Jul 30 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/webhook
  */
@@ -85,10 +85,6 @@ void discord_create_webhook_params_init_v(void *p) {
   discord_create_webhook_params_init((struct discord_create_webhook_params *)p);
 }
 
-void discord_create_webhook_params_free_v(void *p) {
- discord_create_webhook_params_free((struct discord_create_webhook_params *)p);
-};
-
 void discord_create_webhook_params_from_json_v(char *json, size_t len, void *pp) {
  discord_create_webhook_params_from_json(json, len, (struct discord_create_webhook_params**)pp);
 }
@@ -130,17 +126,6 @@ void discord_create_webhook_params_init(struct discord_create_webhook_params *p)
      '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"base64 image for the default webhook avatar" }' */
 
 }
-struct discord_create_webhook_params* discord_create_webhook_params_alloc() {
-  struct discord_create_webhook_params *p= malloc(sizeof(struct discord_create_webhook_params));
-  discord_create_webhook_params_init(p);
-  return p;
-}
-
-void discord_create_webhook_params_free(struct discord_create_webhook_params *p) {
-  discord_create_webhook_params_cleanup(p);
-  free(p);
-}
-
 void discord_create_webhook_params_list_free(struct discord_create_webhook_params **p) {
   ntl_free((void**)p, (vfvp)discord_create_webhook_params_cleanup);
 }
@@ -254,10 +239,6 @@ void discord_modify_webhook_params_init_v(void *p) {
   discord_modify_webhook_params_init((struct discord_modify_webhook_params *)p);
 }
 
-void discord_modify_webhook_params_free_v(void *p) {
- discord_modify_webhook_params_free((struct discord_modify_webhook_params *)p);
-};
-
 void discord_modify_webhook_params_from_json_v(char *json, size_t len, void *pp) {
  discord_modify_webhook_params_from_json(json, len, (struct discord_modify_webhook_params**)pp);
 }
@@ -305,17 +286,6 @@ void discord_modify_webhook_params_init(struct discord_modify_webhook_params *p)
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"the new channel id this webhook should be moved to" }' */
 
 }
-struct discord_modify_webhook_params* discord_modify_webhook_params_alloc() {
-  struct discord_modify_webhook_params *p= malloc(sizeof(struct discord_modify_webhook_params));
-  discord_modify_webhook_params_init(p);
-  return p;
-}
-
-void discord_modify_webhook_params_free(struct discord_modify_webhook_params *p) {
-  discord_modify_webhook_params_cleanup(p);
-  free(p);
-}
-
 void discord_modify_webhook_params_list_free(struct discord_modify_webhook_params **p) {
   ntl_free((void**)p, (vfvp)discord_modify_webhook_params_cleanup);
 }
@@ -654,10 +624,6 @@ void discord_execute_webhook_params_init_v(void *p) {
   discord_execute_webhook_params_init((struct discord_execute_webhook_params *)p);
 }
 
-void discord_execute_webhook_params_free_v(void *p) {
- discord_execute_webhook_params_free((struct discord_execute_webhook_params *)p);
-};
-
 void discord_execute_webhook_params_from_json_v(char *json, size_t len, void *pp) {
  discord_execute_webhook_params_from_json(json, len, (struct discord_execute_webhook_params**)pp);
 }
@@ -723,8 +689,10 @@ void discord_execute_webhook_params_cleanup(struct discord_execute_webhook_param
           "comment":"embedded rich content",
           "required":"one of content, file, embeds"
         }' */
-  if (d->embeds)
-    discord_embed_free(d->embeds);
+  if (d->embeds) {
+    discord_embed_cleanup(d->embeds);
+    free(d->embeds);
+  }
   /* specs/discord/webhook.endpoints-params.json:63:20
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, 
           "comment":"See message create",
@@ -738,8 +706,10 @@ void discord_execute_webhook_params_cleanup(struct discord_execute_webhook_param
           "comment":"allowed mentions for the message",
           "required":"false"
         }' */
-  if (d->allowed_mentions)
-    discord_channel_allowed_mentions_free(d->allowed_mentions);
+  if (d->allowed_mentions) {
+    discord_channel_allowed_mentions_cleanup(d->allowed_mentions);
+    free(d->allowed_mentions);
+  }
 }
 
 void discord_execute_webhook_params_init(struct discord_execute_webhook_params *p) {
@@ -783,7 +753,8 @@ void discord_execute_webhook_params_init(struct discord_execute_webhook_params *
           "comment":"embedded rich content",
           "required":"one of content, file, embeds"
         }' */
-  p->embeds = discord_embed_alloc();
+  p->embeds = malloc(sizeof *p->embeds);
+  discord_embed_init(p->embeds);
 
   /* specs/discord/webhook.endpoints-params.json:63:20
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, 
@@ -797,20 +768,10 @@ void discord_execute_webhook_params_init(struct discord_execute_webhook_params *
           "comment":"allowed mentions for the message",
           "required":"false"
         }' */
-  p->allowed_mentions = discord_channel_allowed_mentions_alloc();
+  p->allowed_mentions = malloc(sizeof *p->allowed_mentions);
+  discord_channel_allowed_mentions_init(p->allowed_mentions);
 
 }
-struct discord_execute_webhook_params* discord_execute_webhook_params_alloc() {
-  struct discord_execute_webhook_params *p= malloc(sizeof(struct discord_execute_webhook_params));
-  discord_execute_webhook_params_init(p);
-  return p;
-}
-
-void discord_execute_webhook_params_free(struct discord_execute_webhook_params *p) {
-  discord_execute_webhook_params_cleanup(p);
-  free(p);
-}
-
 void discord_execute_webhook_params_list_free(struct discord_execute_webhook_params **p) {
   ntl_free((void**)p, (vfvp)discord_execute_webhook_params_cleanup);
 }
@@ -923,10 +884,6 @@ void discord_edit_webhook_message_params_init_v(void *p) {
   discord_edit_webhook_message_params_init((struct discord_edit_webhook_message_params *)p);
 }
 
-void discord_edit_webhook_message_params_free_v(void *p) {
- discord_edit_webhook_message_params_free((struct discord_edit_webhook_message_params *)p);
-};
-
 void discord_edit_webhook_message_params_from_json_v(char *json, size_t len, void *pp) {
  discord_edit_webhook_message_params_from_json(json, len, (struct discord_edit_webhook_message_params**)pp);
 }
@@ -959,8 +916,10 @@ void discord_edit_webhook_message_params_cleanup(struct discord_edit_webhook_mes
     discord_embed_list_free(d->embeds);
   /* specs/discord/webhook.endpoints-params.json:83:20
      '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message" }' */
-  if (d->allowed_mentions)
-    discord_channel_allowed_mentions_free(d->allowed_mentions);
+  if (d->allowed_mentions) {
+    discord_channel_allowed_mentions_cleanup(d->allowed_mentions);
+    free(d->allowed_mentions);
+  }
 }
 
 void discord_edit_webhook_message_params_init(struct discord_edit_webhook_message_params *p) {
@@ -973,20 +932,10 @@ void discord_edit_webhook_message_params_init(struct discord_edit_webhook_messag
 
   /* specs/discord/webhook.endpoints-params.json:83:20
      '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message" }' */
-  p->allowed_mentions = discord_channel_allowed_mentions_alloc();
+  p->allowed_mentions = malloc(sizeof *p->allowed_mentions);
+  discord_channel_allowed_mentions_init(p->allowed_mentions);
 
 }
-struct discord_edit_webhook_message_params* discord_edit_webhook_message_params_alloc() {
-  struct discord_edit_webhook_message_params *p= malloc(sizeof(struct discord_edit_webhook_message_params));
-  discord_edit_webhook_message_params_init(p);
-  return p;
-}
-
-void discord_edit_webhook_message_params_free(struct discord_edit_webhook_message_params *p) {
-  discord_edit_webhook_message_params_cleanup(p);
-  free(p);
-}
-
 void discord_edit_webhook_message_params_list_free(struct discord_edit_webhook_message_params **p) {
   ntl_free((void**)p, (vfvp)discord_edit_webhook_message_params_cleanup);
 }

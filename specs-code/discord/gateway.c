@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/gateway.c
  * @author cee-studio
- * @date Jul 28 2021
+ * @date Jul 30 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/topics/gateway
  */
@@ -452,10 +452,6 @@ void discord_gateway_identify_init_v(void *p) {
   discord_gateway_identify_init((struct discord_gateway_identify *)p);
 }
 
-void discord_gateway_identify_free_v(void *p) {
- discord_gateway_identify_free((struct discord_gateway_identify *)p);
-};
-
 void discord_gateway_identify_from_json_v(char *json, size_t len, void *pp) {
  discord_gateway_identify_from_json(json, len, (struct discord_gateway_identify**)pp);
 }
@@ -484,8 +480,10 @@ void discord_gateway_identify_cleanup(struct discord_gateway_identify *d) {
     free(d->token);
   /* specs/discord/gateway.json:120:19
      '{ "name":"properties","type":{"base":"struct discord_gateway_identify_connection", "dec":"*"}}' */
-  if (d->properties)
-    discord_gateway_identify_connection_free(d->properties);
+  if (d->properties) {
+    discord_gateway_identify_connection_cleanup(d->properties);
+    free(d->properties);
+  }
   /* specs/discord/gateway.json:121:19
      '{ "name":"compress","type":{"base":"bool"}}' */
   // p->compress is a scalar
@@ -500,8 +498,10 @@ void discord_gateway_identify_cleanup(struct discord_gateway_identify *d) {
   // @todo p->(null)
   /* specs/discord/gateway.json:125:19
      '{ "name":"presence","type":{"base":"struct discord_gateway_status_update", "dec":"*"}}' */
-  if (d->presence)
-    discord_gateway_status_update_free(d->presence);
+  if (d->presence) {
+    discord_gateway_status_update_cleanup(d->presence);
+    free(d->presence);
+  }
   /* specs/discord/gateway.json:126:19
      '{ "name":"intents","type":{"base":"int"}}' */
   // p->intents is a scalar
@@ -514,7 +514,8 @@ void discord_gateway_identify_init(struct discord_gateway_identify *p) {
 
   /* specs/discord/gateway.json:120:19
      '{ "name":"properties","type":{"base":"struct discord_gateway_identify_connection", "dec":"*"}}' */
-  p->properties = discord_gateway_identify_connection_alloc();
+  p->properties = malloc(sizeof *p->properties);
+  discord_gateway_identify_connection_init(p->properties);
 
   /* specs/discord/gateway.json:121:19
      '{ "name":"compress","type":{"base":"bool"}}' */
@@ -530,23 +531,13 @@ void discord_gateway_identify_init(struct discord_gateway_identify *p) {
 
   /* specs/discord/gateway.json:125:19
      '{ "name":"presence","type":{"base":"struct discord_gateway_status_update", "dec":"*"}}' */
-  p->presence = discord_gateway_status_update_alloc();
+  p->presence = malloc(sizeof *p->presence);
+  discord_gateway_status_update_init(p->presence);
 
   /* specs/discord/gateway.json:126:19
      '{ "name":"intents","type":{"base":"int"}}' */
 
 }
-struct discord_gateway_identify* discord_gateway_identify_alloc() {
-  struct discord_gateway_identify *p= malloc(sizeof(struct discord_gateway_identify));
-  discord_gateway_identify_init(p);
-  return p;
-}
-
-void discord_gateway_identify_free(struct discord_gateway_identify *p) {
-  discord_gateway_identify_cleanup(p);
-  free(p);
-}
-
 void discord_gateway_identify_list_free(struct discord_gateway_identify **p) {
   ntl_free((void**)p, (vfvp)discord_gateway_identify_cleanup);
 }
@@ -687,10 +678,6 @@ void discord_gateway_status_update_init_v(void *p) {
   discord_gateway_status_update_init((struct discord_gateway_status_update *)p);
 }
 
-void discord_gateway_status_update_free_v(void *p) {
- discord_gateway_status_update_free((struct discord_gateway_status_update *)p);
-};
-
 void discord_gateway_status_update_from_json_v(char *json, size_t len, void *pp) {
  discord_gateway_status_update_from_json(json, len, (struct discord_gateway_status_update**)pp);
 }
@@ -747,17 +734,6 @@ void discord_gateway_status_update_init(struct discord_gateway_status_update *p)
      '{ "name":"afk","type":{"base":"bool"}}' */
 
 }
-struct discord_gateway_status_update* discord_gateway_status_update_alloc() {
-  struct discord_gateway_status_update *p= malloc(sizeof(struct discord_gateway_status_update));
-  discord_gateway_status_update_init(p);
-  return p;
-}
-
-void discord_gateway_status_update_free(struct discord_gateway_status_update *p) {
-  discord_gateway_status_update_cleanup(p);
-  free(p);
-}
-
 void discord_gateway_status_update_list_free(struct discord_gateway_status_update **p) {
   ntl_free((void**)p, (vfvp)discord_gateway_status_update_cleanup);
 }
@@ -870,10 +846,6 @@ void discord_gateway_identify_connection_init_v(void *p) {
   discord_gateway_identify_connection_init((struct discord_gateway_identify_connection *)p);
 }
 
-void discord_gateway_identify_connection_free_v(void *p) {
- discord_gateway_identify_connection_free((struct discord_gateway_identify_connection *)p);
-};
-
 void discord_gateway_identify_connection_from_json_v(char *json, size_t len, void *pp) {
  discord_gateway_identify_connection_from_json(json, len, (struct discord_gateway_identify_connection**)pp);
 }
@@ -922,17 +894,6 @@ void discord_gateway_identify_connection_init(struct discord_gateway_identify_co
      '{ "name":"device", "json_key":"$device", "type":{"base":"char", "dec":"*"}}' */
 
 }
-struct discord_gateway_identify_connection* discord_gateway_identify_connection_alloc() {
-  struct discord_gateway_identify_connection *p= malloc(sizeof(struct discord_gateway_identify_connection));
-  discord_gateway_identify_connection_init(p);
-  return p;
-}
-
-void discord_gateway_identify_connection_free(struct discord_gateway_identify_connection *p) {
-  discord_gateway_identify_connection_cleanup(p);
-  free(p);
-}
-
 void discord_gateway_identify_connection_list_free(struct discord_gateway_identify_connection **p) {
   ntl_free((void**)p, (vfvp)discord_gateway_identify_connection_cleanup);
 }
@@ -1161,10 +1122,6 @@ void discord_gateway_activity_init_v(void *p) {
   discord_gateway_activity_init((struct discord_gateway_activity *)p);
 }
 
-void discord_gateway_activity_free_v(void *p) {
- discord_gateway_activity_free((struct discord_gateway_activity *)p);
-};
-
 void discord_gateway_activity_from_json_v(char *json, size_t len, void *pp) {
  discord_gateway_activity_from_json(json, len, (struct discord_gateway_activity**)pp);
 }
@@ -1255,17 +1212,6 @@ void discord_gateway_activity_init(struct discord_gateway_activity *p) {
           "option":true, "inject_if_not":false}' */
 
 }
-struct discord_gateway_activity* discord_gateway_activity_alloc() {
-  struct discord_gateway_activity *p= malloc(sizeof(struct discord_gateway_activity));
-  discord_gateway_activity_init(p);
-  return p;
-}
-
-void discord_gateway_activity_free(struct discord_gateway_activity *p) {
-  discord_gateway_activity_cleanup(p);
-  free(p);
-}
-
 void discord_gateway_activity_list_free(struct discord_gateway_activity **p) {
   ntl_free((void**)p, (vfvp)discord_gateway_activity_cleanup);
 }

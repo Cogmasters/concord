@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/audit_log.c
  * @author cee-studio
- * @date Jul 28 2021
+ * @date Jul 30 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/audit-log
  */
@@ -116,10 +116,6 @@ void discord_audit_log_init_v(void *p) {
   discord_audit_log_init((struct discord_audit_log *)p);
 }
 
-void discord_audit_log_free_v(void *p) {
- discord_audit_log_free((struct discord_audit_log *)p);
-};
-
 void discord_audit_log_from_json_v(char *json, size_t len, void *pp) {
  discord_audit_log_from_json(json, len, (struct discord_audit_log**)pp);
 }
@@ -175,17 +171,6 @@ void discord_audit_log_init(struct discord_audit_log *p) {
      '{"name":"integrations", "type": { "base":"struct discord_guild_integration", "dec":"ntl"}}' */
 
 }
-struct discord_audit_log* discord_audit_log_alloc() {
-  struct discord_audit_log *p= malloc(sizeof(struct discord_audit_log));
-  discord_audit_log_init(p);
-  return p;
-}
-
-void discord_audit_log_free(struct discord_audit_log *p) {
-  discord_audit_log_cleanup(p);
-  free(p);
-}
-
 void discord_audit_log_list_free(struct discord_audit_log **p) {
   ntl_free((void**)p, (vfvp)discord_audit_log_cleanup);
 }
@@ -477,10 +462,6 @@ void discord_audit_log_entry_init_v(void *p) {
   discord_audit_log_entry_init((struct discord_audit_log_entry *)p);
 }
 
-void discord_audit_log_entry_free_v(void *p) {
- discord_audit_log_entry_free((struct discord_audit_log_entry *)p);
-};
-
 void discord_audit_log_entry_from_json_v(char *json, size_t len, void *pp) {
  discord_audit_log_entry_from_json(json, len, (struct discord_audit_log_entry**)pp);
 }
@@ -553,17 +534,6 @@ void discord_audit_log_entry_init(struct discord_audit_log_entry *p) {
      '{"name":"reason", "type": {"base":"char", "dec":"[DISCORD_MAX_REASON_LEN]"}}' */
 
 }
-struct discord_audit_log_entry* discord_audit_log_entry_alloc() {
-  struct discord_audit_log_entry *p= malloc(sizeof(struct discord_audit_log_entry));
-  discord_audit_log_entry_init(p);
-  return p;
-}
-
-void discord_audit_log_entry_free(struct discord_audit_log_entry *p) {
-  discord_audit_log_entry_cleanup(p);
-  free(p);
-}
-
 void discord_audit_log_entry_list_free(struct discord_audit_log_entry **p) {
   ntl_free((void**)p, (vfvp)discord_audit_log_entry_cleanup);
 }
@@ -756,10 +726,6 @@ void discord_audit_log_entry_optional_info_init_v(void *p) {
   discord_audit_log_entry_optional_info_init((struct discord_audit_log_entry_optional_info *)p);
 }
 
-void discord_audit_log_entry_optional_info_free_v(void *p) {
- discord_audit_log_entry_optional_info_free((struct discord_audit_log_entry_optional_info *)p);
-};
-
 void discord_audit_log_entry_optional_info_from_json_v(char *json, size_t len, void *pp) {
  discord_audit_log_entry_optional_info_from_json(json, len, (struct discord_audit_log_entry_optional_info**)pp);
 }
@@ -840,17 +806,6 @@ void discord_audit_log_entry_optional_info_init(struct discord_audit_log_entry_o
      '{ "name": "role", "type":{ "base":"char", "dec":"*" }, "comment":"@todo find fixed size limit"}' */
 
 }
-struct discord_audit_log_entry_optional_info* discord_audit_log_entry_optional_info_alloc() {
-  struct discord_audit_log_entry_optional_info *p= malloc(sizeof(struct discord_audit_log_entry_optional_info));
-  discord_audit_log_entry_optional_info_init(p);
-  return p;
-}
-
-void discord_audit_log_entry_optional_info_free(struct discord_audit_log_entry_optional_info *p) {
-  discord_audit_log_entry_optional_info_cleanup(p);
-  free(p);
-}
-
 void discord_audit_log_entry_optional_info_list_free(struct discord_audit_log_entry_optional_info **p) {
   ntl_free((void**)p, (vfvp)discord_audit_log_entry_optional_info_cleanup);
 }
@@ -963,10 +918,6 @@ void discord_audit_log_change_init_v(void *p) {
   discord_audit_log_change_init((struct discord_audit_log_change *)p);
 }
 
-void discord_audit_log_change_free_v(void *p) {
- discord_audit_log_change_free((struct discord_audit_log_change *)p);
-};
-
 void discord_audit_log_change_from_json_v(char *json, size_t len, void *pp) {
  discord_audit_log_change_from_json(json, len, (struct discord_audit_log_change**)pp);
 }
@@ -1014,17 +965,6 @@ void discord_audit_log_change_init(struct discord_audit_log_change *p) {
      '{"name":"key", "type":{"base":"char", "dec":"[64]"}}' */
 
 }
-struct discord_audit_log_change* discord_audit_log_change_alloc() {
-  struct discord_audit_log_change *p= malloc(sizeof(struct discord_audit_log_change));
-  discord_audit_log_change_init(p);
-  return p;
-}
-
-void discord_audit_log_change_free(struct discord_audit_log_change *p) {
-  discord_audit_log_change_cleanup(p);
-  free(p);
-}
-
 void discord_audit_log_change_list_free(struct discord_audit_log_change **p) {
   ntl_free((void**)p, (vfvp)discord_audit_log_change_cleanup);
 }
@@ -1963,10 +1903,6 @@ void discord_audit_log_change_key_init_v(void *p) {
   discord_audit_log_change_key_init((struct discord_audit_log_change_key *)p);
 }
 
-void discord_audit_log_change_key_free_v(void *p) {
- discord_audit_log_change_key_free((struct discord_audit_log_change_key *)p);
-};
-
 void discord_audit_log_change_key_from_json_v(char *json, size_t len, void *pp) {
  discord_audit_log_change_key_from_json(json, len, (struct discord_audit_log_change_key**)pp);
 }
@@ -2346,17 +2282,6 @@ void discord_audit_log_change_key_init(struct discord_audit_log_change_key *p) {
      '{"name":"user_limit", "type": {"base":"int" }}' */
 
 }
-struct discord_audit_log_change_key* discord_audit_log_change_key_alloc() {
-  struct discord_audit_log_change_key *p= malloc(sizeof(struct discord_audit_log_change_key));
-  discord_audit_log_change_key_init(p);
-  return p;
-}
-
-void discord_audit_log_change_key_free(struct discord_audit_log_change_key *p) {
-  discord_audit_log_change_key_cleanup(p);
-  free(p);
-}
-
 void discord_audit_log_change_key_list_free(struct discord_audit_log_change_key **p) {
   ntl_free((void**)p, (vfvp)discord_audit_log_change_key_cleanup);
 }

@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/user.c
  * @author cee-studio
- * @date Jul 28 2021
+ * @date Jul 30 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/user
  */
@@ -331,10 +331,6 @@ void discord_user_init_v(void *p) {
   discord_user_init((struct discord_user *)p);
 }
 
-void discord_user_free_v(void *p) {
- discord_user_free((struct discord_user *)p);
-};
-
 void discord_user_from_json_v(char *json, size_t len, void *pp) {
  discord_user_from_json(json, len, (struct discord_user**)pp);
 }
@@ -440,17 +436,6 @@ void discord_user_init(struct discord_user *p) {
      '{ "name": "public_flags", "type":{ "base":"int", "int_alias": "enum discord_user_flags" }}' */
 
 }
-struct discord_user* discord_user_alloc() {
-  struct discord_user *p= malloc(sizeof(struct discord_user));
-  discord_user_init(p);
-  return p;
-}
-
-void discord_user_free(struct discord_user *p) {
-  discord_user_cleanup(p);
-  free(p);
-}
-
 void discord_user_list_free(struct discord_user **p) {
   ntl_free((void**)p, (vfvp)discord_user_cleanup);
 }
@@ -678,10 +663,6 @@ void discord_connection_init_v(void *p) {
   discord_connection_init((struct discord_connection *)p);
 }
 
-void discord_connection_free_v(void *p) {
- discord_connection_free((struct discord_connection *)p);
-};
-
 void discord_connection_from_json_v(char *json, size_t len, void *pp) {
  discord_connection_from_json(json, len, (struct discord_connection**)pp);
 }
@@ -767,17 +748,6 @@ void discord_connection_init(struct discord_connection *p) {
      '{ "name": "visibility", "type":{ "base":"int", "int_alias":"enum discord_user_connection_visibility_types" }}' */
 
 }
-struct discord_connection* discord_connection_alloc() {
-  struct discord_connection *p= malloc(sizeof(struct discord_connection));
-  discord_connection_init(p);
-  return p;
-}
-
-void discord_connection_free(struct discord_connection *p) {
-  discord_connection_cleanup(p);
-  free(p);
-}
-
 void discord_connection_list_free(struct discord_connection **p) {
   ntl_free((void**)p, (vfvp)discord_connection_cleanup);
 }

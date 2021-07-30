@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/webhook.c
  * @author cee-studio
- * @date Jul 28 2021
+ * @date Jul 30 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/webhook
  */
@@ -196,10 +196,6 @@ void discord_webhook_init_v(void *p) {
   discord_webhook_init((struct discord_webhook *)p);
 }
 
-void discord_webhook_free_v(void *p) {
- discord_webhook_free((struct discord_webhook *)p);
-};
-
 void discord_webhook_from_json_v(char *json, size_t len, void *pp) {
  discord_webhook_from_json(json, len, (struct discord_webhook**)pp);
 }
@@ -236,8 +232,10 @@ void discord_webhook_cleanup(struct discord_webhook *d) {
   // p->channel_id is a scalar
   /* specs/discord/webhook.json:16:20
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }}' */
-  if (d->user)
-    discord_user_free(d->user);
+  if (d->user) {
+    discord_user_cleanup(d->user);
+    free(d->user);
+  }
   /* specs/discord/webhook.json:17:20
      '{ "name": "name", "type":{ "base":"char", "dec":"[DISCORD_WEBHOOK_NAME_LEN]" }}' */
   // p->name is a scalar
@@ -270,7 +268,8 @@ void discord_webhook_init(struct discord_webhook *p) {
 
   /* specs/discord/webhook.json:16:20
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }}' */
-  p->user = discord_user_alloc();
+  p->user = malloc(sizeof *p->user);
+  discord_user_init(p->user);
 
   /* specs/discord/webhook.json:17:20
      '{ "name": "name", "type":{ "base":"char", "dec":"[DISCORD_WEBHOOK_NAME_LEN]" }}' */
@@ -285,17 +284,6 @@ void discord_webhook_init(struct discord_webhook *p) {
      '{ "name": "application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
 
 }
-struct discord_webhook* discord_webhook_alloc() {
-  struct discord_webhook *p= malloc(sizeof(struct discord_webhook));
-  discord_webhook_init(p);
-  return p;
-}
-
-void discord_webhook_free(struct discord_webhook *p) {
-  discord_webhook_cleanup(p);
-  free(p);
-}
-
 void discord_webhook_list_free(struct discord_webhook **p) {
   ntl_free((void**)p, (vfvp)discord_webhook_cleanup);
 }

@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/user.endpoints-params.c
  * @author cee-studio
- * @date Jul 28 2021
+ * @date Jul 30 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/user
  */
@@ -84,10 +84,6 @@ void discord_modify_current_user_params_init_v(void *p) {
   discord_modify_current_user_params_init((struct discord_modify_current_user_params *)p);
 }
 
-void discord_modify_current_user_params_free_v(void *p) {
- discord_modify_current_user_params_free((struct discord_modify_current_user_params *)p);
-};
-
 void discord_modify_current_user_params_from_json_v(char *json, size_t len, void *pp) {
  discord_modify_current_user_params_from_json(json, len, (struct discord_modify_current_user_params**)pp);
 }
@@ -129,17 +125,6 @@ void discord_modify_current_user_params_init(struct discord_modify_current_user_
      '{ "name": "avatar", "type":{ "base":"char", "dec":"*"}, "comment":"base64 encoded image data"}' */
 
 }
-struct discord_modify_current_user_params* discord_modify_current_user_params_alloc() {
-  struct discord_modify_current_user_params *p= malloc(sizeof(struct discord_modify_current_user_params));
-  discord_modify_current_user_params_init(p);
-  return p;
-}
-
-void discord_modify_current_user_params_free(struct discord_modify_current_user_params *p) {
-  discord_modify_current_user_params_cleanup(p);
-  free(p);
-}
-
 void discord_modify_current_user_params_list_free(struct discord_modify_current_user_params **p) {
   ntl_free((void**)p, (vfvp)discord_modify_current_user_params_cleanup);
 }
@@ -246,10 +231,6 @@ void discord_create_group_dm_params_init_v(void *p) {
   discord_create_group_dm_params_init((struct discord_create_group_dm_params *)p);
 }
 
-void discord_create_group_dm_params_free_v(void *p) {
- discord_create_group_dm_params_free((struct discord_create_group_dm_params *)p);
-};
-
 void discord_create_group_dm_params_from_json_v(char *json, size_t len, void *pp) {
  discord_create_group_dm_params_from_json(json, len, (struct discord_create_group_dm_params**)pp);
 }
@@ -295,17 +276,6 @@ void discord_create_group_dm_params_init(struct discord_create_group_dm_params *
           "comment":"ia dictionary of user ids to their respective nicknames"}' */
 
 }
-struct discord_create_group_dm_params* discord_create_group_dm_params_alloc() {
-  struct discord_create_group_dm_params *p= malloc(sizeof(struct discord_create_group_dm_params));
-  discord_create_group_dm_params_init(p);
-  return p;
-}
-
-void discord_create_group_dm_params_free(struct discord_create_group_dm_params *p) {
-  discord_create_group_dm_params_cleanup(p);
-  free(p);
-}
-
 void discord_create_group_dm_params_list_free(struct discord_create_group_dm_params **p) {
   ntl_free((void**)p, (vfvp)discord_create_group_dm_params_cleanup);
 }

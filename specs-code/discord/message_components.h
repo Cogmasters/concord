@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/message_components.h
  * @author cee-studio
- * @date Jul 28 2021
+ * @date Jul 30 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/interactions/message-components#message-components
  */
@@ -82,9 +82,6 @@ extern void discord_component_cleanup_v(void *p);
 extern void discord_component_cleanup(struct discord_component *p);
 extern void discord_component_init_v(void *p);
 extern void discord_component_init(struct discord_component *p);
-extern struct discord_component * discord_component_alloc();
-extern void discord_component_free_v(void *p);
-extern void discord_component_free(struct discord_component *p);
 extern void discord_component_from_json_v(char *json, size_t len, void *pp);
 extern void discord_component_from_json(char *json, size_t len, struct discord_component **pp);
 extern size_t discord_component_to_json_v(char *json, size_t len, void *p);
@@ -162,9 +159,6 @@ extern void discord_button_cleanup_v(void *p);
 extern void discord_button_cleanup(struct discord_button *p);
 extern void discord_button_init_v(void *p);
 extern void discord_button_init(struct discord_button *p);
-extern struct discord_button * discord_button_alloc();
-extern void discord_button_free_v(void *p);
-extern void discord_button_free(struct discord_button *p);
 extern void discord_button_from_json_v(char *json, size_t len, void *pp);
 extern void discord_button_from_json(char *json, size_t len, struct discord_button **pp);
 extern size_t discord_button_to_json_v(char *json, size_t len, void *p);
@@ -244,9 +238,6 @@ extern void discord_select_menu_cleanup_v(void *p);
 extern void discord_select_menu_cleanup(struct discord_select_menu *p);
 extern void discord_select_menu_init_v(void *p);
 extern void discord_select_menu_init(struct discord_select_menu *p);
-extern struct discord_select_menu * discord_select_menu_alloc();
-extern void discord_select_menu_free_v(void *p);
-extern void discord_select_menu_free(struct discord_select_menu *p);
 extern void discord_select_menu_from_json_v(char *json, size_t len, void *pp);
 extern void discord_select_menu_from_json(char *json, size_t len, struct discord_select_menu **pp);
 extern size_t discord_select_menu_to_json_v(char *json, size_t len, void *p);
@@ -306,9 +297,6 @@ extern void discord_select_option_cleanup_v(void *p);
 extern void discord_select_option_cleanup(struct discord_select_option *p);
 extern void discord_select_option_init_v(void *p);
 extern void discord_select_option_init(struct discord_select_option *p);
-extern struct discord_select_option * discord_select_option_alloc();
-extern void discord_select_option_free_v(void *p);
-extern void discord_select_option_free(struct discord_select_option *p);
 extern void discord_select_option_from_json_v(char *json, size_t len, void *pp);
 extern void discord_select_option_from_json(char *json, size_t len, struct discord_select_option **pp);
 extern size_t discord_select_option_to_json_v(char *json, size_t len, void *p);

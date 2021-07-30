@@ -2,7 +2,7 @@
 /**
  * @file specs-code/reddit/all_functions.h
  * @author cee-studio
- * @date Jul 28 2021
+ * @date Jul 30 2021
  * @brief Specs generated file
  * @see 
  */
@@ -12,9 +12,6 @@ extern void reddit_comment_params_cleanup_v(void *p);
 extern void reddit_comment_params_cleanup(struct reddit_comment_params *p);
 extern void reddit_comment_params_init_v(void *p);
 extern void reddit_comment_params_init(struct reddit_comment_params *p);
-extern struct reddit_comment_params * reddit_comment_params_alloc();
-extern void reddit_comment_params_free_v(void *p);
-extern void reddit_comment_params_free(struct reddit_comment_params *p);
 extern void reddit_comment_params_from_json_v(char *json, size_t len, void *pp);
 extern void reddit_comment_params_from_json(char *json, size_t len, struct reddit_comment_params **pp);
 extern size_t reddit_comment_params_to_json_v(char *json, size_t len, void *p);
@@ -31,7 +28,7 @@ extern size_t reddit_comment_params_list_to_json(char *str, size_t len, struct r
 /**
  * @file specs-code/reddit/all_functions.h
  * @author cee-studio
- * @date Jul 28 2021
+ * @date Jul 30 2021
  * @brief Specs generated file
  * @see https://github.com/reddit-archive/reddit/wiki/OAuth2-Quick-Start-Example
  */
@@ -41,9 +38,6 @@ extern void reddit_access_token_params_cleanup_v(void *p);
 extern void reddit_access_token_params_cleanup(struct reddit_access_token_params *p);
 extern void reddit_access_token_params_init_v(void *p);
 extern void reddit_access_token_params_init(struct reddit_access_token_params *p);
-extern struct reddit_access_token_params * reddit_access_token_params_alloc();
-extern void reddit_access_token_params_free_v(void *p);
-extern void reddit_access_token_params_free(struct reddit_access_token_params *p);
 extern void reddit_access_token_params_from_json_v(char *json, size_t len, void *pp);
 extern void reddit_access_token_params_from_json(char *json, size_t len, struct reddit_access_token_params **pp);
 extern size_t reddit_access_token_params_to_json_v(char *json, size_t len, void *p);
@@ -60,7 +54,7 @@ extern size_t reddit_access_token_params_list_to_json(char *str, size_t len, str
 /**
  * @file specs-code/reddit/all_functions.h
  * @author cee-studio
- * @date Jul 28 2021
+ * @date Jul 30 2021
  * @brief Specs generated file
  * @see 
  */
@@ -70,9 +64,6 @@ extern void reddit_search_params_cleanup_v(void *p);
 extern void reddit_search_params_cleanup(struct reddit_search_params *p);
 extern void reddit_search_params_init_v(void *p);
 extern void reddit_search_params_init(struct reddit_search_params *p);
-extern struct reddit_search_params * reddit_search_params_alloc();
-extern void reddit_search_params_free_v(void *p);
-extern void reddit_search_params_free(struct reddit_search_params *p);
 extern void reddit_search_params_from_json_v(char *json, size_t len, void *pp);
 extern void reddit_search_params_from_json(char *json, size_t len, struct reddit_search_params **pp);
 extern size_t reddit_search_params_to_json_v(char *json, size_t len, void *p);

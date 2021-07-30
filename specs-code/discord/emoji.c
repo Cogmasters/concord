@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/emoji.c
  * @author cee-studio
- * @date Jul 28 2021
+ * @date Jul 30 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/emoji
  */
@@ -180,10 +180,6 @@ void discord_emoji_init_v(void *p) {
   discord_emoji_init((struct discord_emoji *)p);
 }
 
-void discord_emoji_free_v(void *p) {
- discord_emoji_free((struct discord_emoji *)p);
-};
-
 void discord_emoji_from_json_v(char *json, size_t len, void *pp) {
  discord_emoji_from_json(json, len, (struct discord_emoji**)pp);
 }
@@ -219,8 +215,10 @@ void discord_emoji_cleanup(struct discord_emoji *d) {
   // @todo p->(null)
   /* specs/discord/emoji.json:16:20
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }, "option":true }' */
-  if (d->user)
-    discord_user_free(d->user);
+  if (d->user) {
+    discord_user_cleanup(d->user);
+    free(d->user);
+  }
   /* specs/discord/emoji.json:17:20
      '{ "name": "require_colons", "type":{ "base":"bool" }, "option":true}' */
   // p->require_colons is a scalar
@@ -249,7 +247,8 @@ void discord_emoji_init(struct discord_emoji *p) {
 
   /* specs/discord/emoji.json:16:20
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }, "option":true }' */
-  p->user = discord_user_alloc();
+  p->user = malloc(sizeof *p->user);
+  discord_user_init(p->user);
 
   /* specs/discord/emoji.json:17:20
      '{ "name": "require_colons", "type":{ "base":"bool" }, "option":true}' */
@@ -264,17 +263,6 @@ void discord_emoji_init(struct discord_emoji *p) {
      '{ "name": "available", "type":{ "base":"bool" }, "option":true}' */
 
 }
-struct discord_emoji* discord_emoji_alloc() {
-  struct discord_emoji *p= malloc(sizeof(struct discord_emoji));
-  discord_emoji_init(p);
-  return p;
-}
-
-void discord_emoji_free(struct discord_emoji *p) {
-  discord_emoji_cleanup(p);
-  free(p);
-}
-
 void discord_emoji_list_free(struct discord_emoji **p) {
   ntl_free((void**)p, (vfvp)discord_emoji_cleanup);
 }

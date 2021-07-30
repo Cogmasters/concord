@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/channel.endpoints-params.c
  * @author cee-studio
- * @date Jul 28 2021
+ * @date Jul 30 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/channel
  */
@@ -323,10 +323,6 @@ void discord_modify_channel_params_init_v(void *p) {
   discord_modify_channel_params_init((struct discord_modify_channel_params *)p);
 }
 
-void discord_modify_channel_params_free_v(void *p) {
- discord_modify_channel_params_free((struct discord_modify_channel_params *)p);
-};
-
 void discord_modify_channel_params_from_json_v(char *json, size_t len, void *pp) {
  discord_modify_channel_params_from_json(json, len, (struct discord_modify_channel_params**)pp);
 }
@@ -455,17 +451,6 @@ void discord_modify_channel_params_init(struct discord_modify_channel_params *p)
      '{ "name": "locked", "type":{ "base":"bool" }, "inject_if_not":false }' */
 
 }
-struct discord_modify_channel_params* discord_modify_channel_params_alloc() {
-  struct discord_modify_channel_params *p= malloc(sizeof(struct discord_modify_channel_params));
-  discord_modify_channel_params_init(p);
-  return p;
-}
-
-void discord_modify_channel_params_free(struct discord_modify_channel_params *p) {
-  discord_modify_channel_params_cleanup(p);
-  free(p);
-}
-
 void discord_modify_channel_params_list_free(struct discord_modify_channel_params **p) {
   ntl_free((void**)p, (vfvp)discord_modify_channel_params_cleanup);
 }
@@ -562,10 +547,6 @@ void discord_get_reactions_params_init_v(void *p) {
   discord_get_reactions_params_init((struct discord_get_reactions_params *)p);
 }
 
-void discord_get_reactions_params_free_v(void *p) {
- discord_get_reactions_params_free((struct discord_get_reactions_params *)p);
-};
-
 void discord_get_reactions_params_from_json_v(char *json, size_t len, void *pp) {
  discord_get_reactions_params_from_json(json, len, (struct discord_get_reactions_params**)pp);
 }
@@ -605,17 +586,6 @@ void discord_get_reactions_params_init(struct discord_get_reactions_params *p) {
      '{ "name": "limit", "type":{ "base":"int" }, "loc":"query"}' */
 
 }
-struct discord_get_reactions_params* discord_get_reactions_params_alloc() {
-  struct discord_get_reactions_params *p= malloc(sizeof(struct discord_get_reactions_params));
-  discord_get_reactions_params_init(p);
-  return p;
-}
-
-void discord_get_reactions_params_free(struct discord_get_reactions_params *p) {
-  discord_get_reactions_params_cleanup(p);
-  free(p);
-}
-
 void discord_get_reactions_params_list_free(struct discord_get_reactions_params **p) {
   ntl_free((void**)p, (vfvp)discord_get_reactions_params_cleanup);
 }
@@ -728,10 +698,6 @@ void discord_edit_channel_permissions_params_init_v(void *p) {
   discord_edit_channel_permissions_params_init((struct discord_edit_channel_permissions_params *)p);
 }
 
-void discord_edit_channel_permissions_params_free_v(void *p) {
- discord_edit_channel_permissions_params_free((struct discord_edit_channel_permissions_params *)p);
-};
-
 void discord_edit_channel_permissions_params_from_json_v(char *json, size_t len, void *pp) {
  discord_edit_channel_permissions_params_from_json(json, len, (struct discord_edit_channel_permissions_params**)pp);
 }
@@ -777,17 +743,6 @@ void discord_edit_channel_permissions_params_init(struct discord_edit_channel_pe
      '{ "name": "type", "type":{ "base":"int" }}' */
 
 }
-struct discord_edit_channel_permissions_params* discord_edit_channel_permissions_params_alloc() {
-  struct discord_edit_channel_permissions_params *p= malloc(sizeof(struct discord_edit_channel_permissions_params));
-  discord_edit_channel_permissions_params_init(p);
-  return p;
-}
-
-void discord_edit_channel_permissions_params_free(struct discord_edit_channel_permissions_params *p) {
-  discord_edit_channel_permissions_params_cleanup(p);
-  free(p);
-}
-
 void discord_edit_channel_permissions_params_list_free(struct discord_edit_channel_permissions_params **p) {
   ntl_free((void**)p, (vfvp)discord_edit_channel_permissions_params_cleanup);
 }
@@ -868,10 +823,6 @@ void discord_follow_news_channel_params_init_v(void *p) {
   discord_follow_news_channel_params_init((struct discord_follow_news_channel_params *)p);
 }
 
-void discord_follow_news_channel_params_free_v(void *p) {
- discord_follow_news_channel_params_free((struct discord_follow_news_channel_params *)p);
-};
-
 void discord_follow_news_channel_params_from_json_v(char *json, size_t len, void *pp) {
  discord_follow_news_channel_params_from_json(json, len, (struct discord_follow_news_channel_params**)pp);
 }
@@ -905,17 +856,6 @@ void discord_follow_news_channel_params_init(struct discord_follow_news_channel_
      '{ "name": "webhook_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"} }' */
 
 }
-struct discord_follow_news_channel_params* discord_follow_news_channel_params_alloc() {
-  struct discord_follow_news_channel_params *p= malloc(sizeof(struct discord_follow_news_channel_params));
-  discord_follow_news_channel_params_init(p);
-  return p;
-}
-
-void discord_follow_news_channel_params_free(struct discord_follow_news_channel_params *p) {
-  discord_follow_news_channel_params_cleanup(p);
-  free(p);
-}
-
 void discord_follow_news_channel_params_list_free(struct discord_follow_news_channel_params **p) {
   ntl_free((void**)p, (vfvp)discord_follow_news_channel_params_cleanup);
 }
@@ -1095,10 +1035,6 @@ void discord_create_channel_invite_params_init_v(void *p) {
   discord_create_channel_invite_params_init((struct discord_create_channel_invite_params *)p);
 }
 
-void discord_create_channel_invite_params_free_v(void *p) {
- discord_create_channel_invite_params_free((struct discord_create_channel_invite_params *)p);
-};
-
 void discord_create_channel_invite_params_from_json_v(char *json, size_t len, void *pp) {
  discord_create_channel_invite_params_from_json(json, len, (struct discord_create_channel_invite_params**)pp);
 }
@@ -1168,17 +1104,6 @@ void discord_create_channel_invite_params_init(struct discord_create_channel_inv
      '{ "name": "target_application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "inject_if_not":0 }' */
 
 }
-struct discord_create_channel_invite_params* discord_create_channel_invite_params_alloc() {
-  struct discord_create_channel_invite_params *p= malloc(sizeof(struct discord_create_channel_invite_params));
-  discord_create_channel_invite_params_init(p);
-  return p;
-}
-
-void discord_create_channel_invite_params_free(struct discord_create_channel_invite_params *p) {
-  discord_create_channel_invite_params_cleanup(p);
-  free(p);
-}
-
 void discord_create_channel_invite_params_list_free(struct discord_create_channel_invite_params **p) {
   ntl_free((void**)p, (vfvp)discord_create_channel_invite_params_cleanup);
 }
@@ -1275,10 +1200,6 @@ void discord_group_dm_add_recipient_params_init_v(void *p) {
   discord_group_dm_add_recipient_params_init((struct discord_group_dm_add_recipient_params *)p);
 }
 
-void discord_group_dm_add_recipient_params_free_v(void *p) {
- discord_group_dm_add_recipient_params_free((struct discord_group_dm_add_recipient_params *)p);
-};
-
 void discord_group_dm_add_recipient_params_from_json_v(char *json, size_t len, void *pp) {
  discord_group_dm_add_recipient_params_from_json(json, len, (struct discord_group_dm_add_recipient_params**)pp);
 }
@@ -1320,17 +1241,6 @@ void discord_group_dm_add_recipient_params_init(struct discord_group_dm_add_reci
      '{ "name": "nick", "type":{ "base":"char", "dec":"*" }}' */
 
 }
-struct discord_group_dm_add_recipient_params* discord_group_dm_add_recipient_params_alloc() {
-  struct discord_group_dm_add_recipient_params *p= malloc(sizeof(struct discord_group_dm_add_recipient_params));
-  discord_group_dm_add_recipient_params_init(p);
-  return p;
-}
-
-void discord_group_dm_add_recipient_params_free(struct discord_group_dm_add_recipient_params *p) {
-  discord_group_dm_add_recipient_params_cleanup(p);
-  free(p);
-}
-
 void discord_group_dm_add_recipient_params_list_free(struct discord_group_dm_add_recipient_params **p) {
   ntl_free((void**)p, (vfvp)discord_group_dm_add_recipient_params_cleanup);
 }
@@ -1429,10 +1339,6 @@ void discord_start_thread_with_message_params_init_v(void *p) {
   discord_start_thread_with_message_params_init((struct discord_start_thread_with_message_params *)p);
 }
 
-void discord_start_thread_with_message_params_free_v(void *p) {
- discord_start_thread_with_message_params_free((struct discord_start_thread_with_message_params *)p);
-};
-
 void discord_start_thread_with_message_params_from_json_v(char *json, size_t len, void *pp) {
  discord_start_thread_with_message_params_from_json(json, len, (struct discord_start_thread_with_message_params**)pp);
 }
@@ -1473,17 +1379,6 @@ void discord_start_thread_with_message_params_init(struct discord_start_thread_w
      '{ "name": "auto_archive_duration", "type":{ "base":"int" }, "inject_if_not":0 }' */
 
 }
-struct discord_start_thread_with_message_params* discord_start_thread_with_message_params_alloc() {
-  struct discord_start_thread_with_message_params *p= malloc(sizeof(struct discord_start_thread_with_message_params));
-  discord_start_thread_with_message_params_init(p);
-  return p;
-}
-
-void discord_start_thread_with_message_params_free(struct discord_start_thread_with_message_params *p) {
-  discord_start_thread_with_message_params_cleanup(p);
-  free(p);
-}
-
 void discord_start_thread_with_message_params_list_free(struct discord_start_thread_with_message_params **p) {
   ntl_free((void**)p, (vfvp)discord_start_thread_with_message_params_cleanup);
 }
@@ -1597,10 +1492,6 @@ void discord_start_thread_without_message_params_init_v(void *p) {
   discord_start_thread_without_message_params_init((struct discord_start_thread_without_message_params *)p);
 }
 
-void discord_start_thread_without_message_params_free_v(void *p) {
- discord_start_thread_without_message_params_free((struct discord_start_thread_without_message_params *)p);
-};
-
 void discord_start_thread_without_message_params_from_json_v(char *json, size_t len, void *pp) {
  discord_start_thread_without_message_params_from_json(json, len, (struct discord_start_thread_without_message_params**)pp);
 }
@@ -1647,17 +1538,6 @@ void discord_start_thread_without_message_params_init(struct discord_start_threa
      '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_channel_types" } }' */
 
 }
-struct discord_start_thread_without_message_params* discord_start_thread_without_message_params_alloc() {
-  struct discord_start_thread_without_message_params *p= malloc(sizeof(struct discord_start_thread_without_message_params));
-  discord_start_thread_without_message_params_init(p);
-  return p;
-}
-
-void discord_start_thread_without_message_params_free(struct discord_start_thread_without_message_params *p) {
-  discord_start_thread_without_message_params_cleanup(p);
-  free(p);
-}
-
 void discord_start_thread_without_message_params_list_free(struct discord_start_thread_without_message_params **p) {
   ntl_free((void**)p, (vfvp)discord_start_thread_without_message_params_cleanup);
 }
@@ -1770,10 +1650,6 @@ void discord_thread_response_body_init_v(void *p) {
   discord_thread_response_body_init((struct discord_thread_response_body *)p);
 }
 
-void discord_thread_response_body_free_v(void *p) {
- discord_thread_response_body_free((struct discord_thread_response_body *)p);
-};
-
 void discord_thread_response_body_from_json_v(char *json, size_t len, void *pp) {
  discord_thread_response_body_from_json(json, len, (struct discord_thread_response_body**)pp);
 }
@@ -1821,17 +1697,6 @@ void discord_thread_response_body_init(struct discord_thread_response_body *p) {
      '{ "name": "has_more", "type":{ "base":"bool" } }' */
 
 }
-struct discord_thread_response_body* discord_thread_response_body_alloc() {
-  struct discord_thread_response_body *p= malloc(sizeof(struct discord_thread_response_body));
-  discord_thread_response_body_init(p);
-  return p;
-}
-
-void discord_thread_response_body_free(struct discord_thread_response_body *p) {
-  discord_thread_response_body_cleanup(p);
-  free(p);
-}
-
 void discord_thread_response_body_list_free(struct discord_thread_response_body **p) {
   ntl_free((void**)p, (vfvp)discord_thread_response_body_cleanup);
 }

@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/user.h
  * @author cee-studio
- * @date Jul 28 2021
+ * @date Jul 30 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/user
  */
@@ -114,9 +114,6 @@ extern void discord_user_cleanup_v(void *p);
 extern void discord_user_cleanup(struct discord_user *p);
 extern void discord_user_init_v(void *p);
 extern void discord_user_init(struct discord_user *p);
-extern struct discord_user * discord_user_alloc();
-extern void discord_user_free_v(void *p);
-extern void discord_user_free(struct discord_user *p);
 extern void discord_user_from_json_v(char *json, size_t len, void *pp);
 extern void discord_user_from_json(char *json, size_t len, struct discord_user **pp);
 extern size_t discord_user_to_json_v(char *json, size_t len, void *p);
@@ -201,9 +198,6 @@ extern void discord_connection_cleanup_v(void *p);
 extern void discord_connection_cleanup(struct discord_connection *p);
 extern void discord_connection_init_v(void *p);
 extern void discord_connection_init(struct discord_connection *p);
-extern struct discord_connection * discord_connection_alloc();
-extern void discord_connection_free_v(void *p);
-extern void discord_connection_free(struct discord_connection *p);
 extern void discord_connection_from_json_v(char *json, size_t len, void *pp);
 extern void discord_connection_from_json(char *json, size_t len, struct discord_connection **pp);
 extern size_t discord_connection_to_json_v(char *json, size_t len, void *p);

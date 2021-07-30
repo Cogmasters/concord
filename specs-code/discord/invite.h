@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/invite.h
  * @author cee-studio
- * @date Jul 28 2021
+ * @date Jul 30 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/invite
  */
@@ -74,9 +74,6 @@ extern void discord_invite_cleanup_v(void *p);
 extern void discord_invite_cleanup(struct discord_invite *p);
 extern void discord_invite_init_v(void *p);
 extern void discord_invite_init(struct discord_invite *p);
-extern struct discord_invite * discord_invite_alloc();
-extern void discord_invite_free_v(void *p);
-extern void discord_invite_free(struct discord_invite *p);
 extern void discord_invite_from_json_v(char *json, size_t len, void *pp);
 extern void discord_invite_from_json(char *json, size_t len, struct discord_invite **pp);
 extern size_t discord_invite_to_json_v(char *json, size_t len, void *p);
@@ -136,9 +133,6 @@ extern void discord_invite_metadata_cleanup_v(void *p);
 extern void discord_invite_metadata_cleanup(struct discord_invite_metadata *p);
 extern void discord_invite_metadata_init_v(void *p);
 extern void discord_invite_metadata_init(struct discord_invite_metadata *p);
-extern struct discord_invite_metadata * discord_invite_metadata_alloc();
-extern void discord_invite_metadata_free_v(void *p);
-extern void discord_invite_metadata_free(struct discord_invite_metadata *p);
 extern void discord_invite_metadata_from_json_v(char *json, size_t len, void *pp);
 extern void discord_invite_metadata_from_json(char *json, size_t len, struct discord_invite_metadata **pp);
 extern size_t discord_invite_metadata_to_json_v(char *json, size_t len, void *p);

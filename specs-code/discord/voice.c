@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/voice.c
  * @author cee-studio
- * @date Jul 28 2021
+ * @date Jul 30 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/voice
  */
@@ -244,10 +244,6 @@ void discord_voice_state_init_v(void *p) {
   discord_voice_state_init((struct discord_voice_state *)p);
 }
 
-void discord_voice_state_free_v(void *p) {
- discord_voice_state_free((struct discord_voice_state *)p);
-};
-
 void discord_voice_state_from_json_v(char *json, size_t len, void *pp) {
  discord_voice_state_from_json(json, len, (struct discord_voice_state**)pp);
 }
@@ -281,8 +277,10 @@ void discord_voice_state_cleanup(struct discord_voice_state *d) {
   // p->user_id is a scalar
   /* specs/discord/voice.json:15:20
      '{ "name": "member", "type":{ "base":"struct discord_guild_member", "dec":"*" }}' */
-  if (d->member)
-    discord_guild_member_free(d->member);
+  if (d->member) {
+    discord_guild_member_cleanup(d->member);
+    free(d->member);
+  }
   /* specs/discord/voice.json:16:20
      '{ "name": "session_id", "type":{ "base":"char", "dec":"*" }}' */
   if (d->session_id)
@@ -323,7 +321,8 @@ void discord_voice_state_init(struct discord_voice_state *p) {
 
   /* specs/discord/voice.json:15:20
      '{ "name": "member", "type":{ "base":"struct discord_guild_member", "dec":"*" }}' */
-  p->member = discord_guild_member_alloc();
+  p->member = malloc(sizeof *p->member);
+  discord_guild_member_init(p->member);
 
   /* specs/discord/voice.json:16:20
      '{ "name": "session_id", "type":{ "base":"char", "dec":"*" }}' */
@@ -350,17 +349,6 @@ void discord_voice_state_init(struct discord_voice_state *p) {
      '{ "name": "supress", "type":{ "base":"bool" }}' */
 
 }
-struct discord_voice_state* discord_voice_state_alloc() {
-  struct discord_voice_state *p= malloc(sizeof(struct discord_voice_state));
-  discord_voice_state_init(p);
-  return p;
-}
-
-void discord_voice_state_free(struct discord_voice_state *p) {
-  discord_voice_state_cleanup(p);
-  free(p);
-}
-
 void discord_voice_state_list_free(struct discord_voice_state **p) {
   ntl_free((void**)p, (vfvp)discord_voice_state_cleanup);
 }
@@ -521,10 +509,6 @@ void discord_voice_region_init_v(void *p) {
   discord_voice_region_init((struct discord_voice_region *)p);
 }
 
-void discord_voice_region_free_v(void *p) {
- discord_voice_region_free((struct discord_voice_region *)p);
-};
-
 void discord_voice_region_from_json_v(char *json, size_t len, void *pp) {
  discord_voice_region_from_json(json, len, (struct discord_voice_region**)pp);
 }
@@ -590,17 +574,6 @@ void discord_voice_region_init(struct discord_voice_region *p) {
      '{ "name": "custom", "type":{ "base":"bool" }}' */
 
 }
-struct discord_voice_region* discord_voice_region_alloc() {
-  struct discord_voice_region *p= malloc(sizeof(struct discord_voice_region));
-  discord_voice_region_init(p);
-  return p;
-}
-
-void discord_voice_region_free(struct discord_voice_region *p) {
-  discord_voice_region_cleanup(p);
-  free(p);
-}
-
 void discord_voice_region_list_free(struct discord_voice_region **p) {
   ntl_free((void**)p, (vfvp)discord_voice_region_cleanup);
 }

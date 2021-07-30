@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/invite.endpoints-params.h
  * @author cee-studio
- * @date Jul 28 2021
+ * @date Jul 30 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/invite
  */
@@ -42,9 +42,6 @@ extern void discord_get_invite_params_cleanup_v(void *p);
 extern void discord_get_invite_params_cleanup(struct discord_get_invite_params *p);
 extern void discord_get_invite_params_init_v(void *p);
 extern void discord_get_invite_params_init(struct discord_get_invite_params *p);
-extern struct discord_get_invite_params * discord_get_invite_params_alloc();
-extern void discord_get_invite_params_free_v(void *p);
-extern void discord_get_invite_params_free(struct discord_get_invite_params *p);
 extern void discord_get_invite_params_from_json_v(char *json, size_t len, void *pp);
 extern void discord_get_invite_params_from_json(char *json, size_t len, struct discord_get_invite_params **pp);
 extern size_t discord_get_invite_params_to_json_v(char *json, size_t len, void *p);

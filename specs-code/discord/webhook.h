@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/webhook.h
  * @author cee-studio
- * @date Jul 28 2021
+ * @date Jul 30 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/webhook
  */
@@ -70,9 +70,6 @@ extern void discord_webhook_cleanup_v(void *p);
 extern void discord_webhook_cleanup(struct discord_webhook *p);
 extern void discord_webhook_init_v(void *p);
 extern void discord_webhook_init(struct discord_webhook *p);
-extern struct discord_webhook * discord_webhook_alloc();
-extern void discord_webhook_free_v(void *p);
-extern void discord_webhook_free(struct discord_webhook *p);
 extern void discord_webhook_from_json_v(char *json, size_t len, void *pp);
 extern void discord_webhook_from_json(char *json, size_t len, struct discord_webhook **pp);
 extern size_t discord_webhook_to_json_v(char *json, size_t len, void *p);

@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/slash_commands.c
  * @author cee-studio
- * @date Jul 28 2021
+ * @date Jul 30 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/interactions/slash-commands#data-models-and-types
  */
@@ -167,10 +167,6 @@ void discord_application_command_init_v(void *p) {
   discord_application_command_init((struct discord_application_command *)p);
 }
 
-void discord_application_command_free_v(void *p) {
- discord_application_command_free((struct discord_application_command *)p);
-};
-
 void discord_application_command_from_json_v(char *json, size_t len, void *pp) {
  discord_application_command_from_json(json, len, (struct discord_application_command**)pp);
 }
@@ -241,17 +237,6 @@ void discord_application_command_init(struct discord_application_command *p) {
      '{"name":"default_permission", "type":{"base":"bool"}, "option":true, "inject_if_not":true, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
 
 }
-struct discord_application_command* discord_application_command_alloc() {
-  struct discord_application_command *p= malloc(sizeof(struct discord_application_command));
-  discord_application_command_init(p);
-  return p;
-}
-
-void discord_application_command_free(struct discord_application_command *p) {
-  discord_application_command_cleanup(p);
-  free(p);
-}
-
 void discord_application_command_list_free(struct discord_application_command **p) {
   ntl_free((void**)p, (vfvp)discord_application_command_cleanup);
 }
@@ -415,10 +400,6 @@ void discord_application_command_option_init_v(void *p) {
   discord_application_command_option_init((struct discord_application_command_option *)p);
 }
 
-void discord_application_command_option_free_v(void *p) {
- discord_application_command_option_free((struct discord_application_command_option *)p);
-};
-
 void discord_application_command_option_from_json_v(char *json, size_t len, void *pp) {
  discord_application_command_option_from_json(json, len, (struct discord_application_command_option**)pp);
 }
@@ -484,17 +465,6 @@ void discord_application_command_option_init(struct discord_application_command_
      '{"name":"options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "option":true, "comment":"if the option is a subcommand or subcommand group type, this nested options will be the parameters", "inject_if_not":null}' */
 
 }
-struct discord_application_command_option* discord_application_command_option_alloc() {
-  struct discord_application_command_option *p= malloc(sizeof(struct discord_application_command_option));
-  discord_application_command_option_init(p);
-  return p;
-}
-
-void discord_application_command_option_free(struct discord_application_command_option *p) {
-  discord_application_command_option_cleanup(p);
-  free(p);
-}
-
 void discord_application_command_option_list_free(struct discord_application_command_option **p) {
   ntl_free((void**)p, (vfvp)discord_application_command_option_cleanup);
 }
@@ -631,10 +601,6 @@ void discord_application_command_option_choice_init_v(void *p) {
   discord_application_command_option_choice_init((struct discord_application_command_option_choice *)p);
 }
 
-void discord_application_command_option_choice_free_v(void *p) {
- discord_application_command_option_choice_free((struct discord_application_command_option_choice *)p);
-};
-
 void discord_application_command_option_choice_from_json_v(char *json, size_t len, void *pp) {
  discord_application_command_option_choice_from_json(json, len, (struct discord_application_command_option_choice**)pp);
 }
@@ -674,17 +640,6 @@ void discord_application_command_option_choice_init(struct discord_application_c
      '{"name":"value", "type":{"base":"char", "dec":"[100+1]"}, "comment":"value of choice, up to 100 characters"}' */
 
 }
-struct discord_application_command_option_choice* discord_application_command_option_choice_alloc() {
-  struct discord_application_command_option_choice *p= malloc(sizeof(struct discord_application_command_option_choice));
-  discord_application_command_option_choice_init(p);
-  return p;
-}
-
-void discord_application_command_option_choice_free(struct discord_application_command_option_choice *p) {
-  discord_application_command_option_choice_cleanup(p);
-  free(p);
-}
-
 void discord_application_command_option_choice_list_free(struct discord_application_command_option_choice **p) {
   ntl_free((void**)p, (vfvp)discord_application_command_option_choice_cleanup);
 }
@@ -813,10 +768,6 @@ void discord_guild_application_command_permissions_init_v(void *p) {
   discord_guild_application_command_permissions_init((struct discord_guild_application_command_permissions *)p);
 }
 
-void discord_guild_application_command_permissions_free_v(void *p) {
- discord_guild_application_command_permissions_free((struct discord_guild_application_command_permissions *)p);
-};
-
 void discord_guild_application_command_permissions_from_json_v(char *json, size_t len, void *pp) {
  discord_guild_application_command_permissions_from_json(json, len, (struct discord_guild_application_command_permissions**)pp);
 }
@@ -869,17 +820,6 @@ void discord_guild_application_command_permissions_init(struct discord_guild_app
      '{"name":"permissions", "type":{"base":"struct discord_application_command_permissions", "dec":"ntl"}, "comment":"the permissions for the command in the guild"}' */
 
 }
-struct discord_guild_application_command_permissions* discord_guild_application_command_permissions_alloc() {
-  struct discord_guild_application_command_permissions *p= malloc(sizeof(struct discord_guild_application_command_permissions));
-  discord_guild_application_command_permissions_init(p);
-  return p;
-}
-
-void discord_guild_application_command_permissions_free(struct discord_guild_application_command_permissions *p) {
-  discord_guild_application_command_permissions_cleanup(p);
-  free(p);
-}
-
 void discord_guild_application_command_permissions_list_free(struct discord_guild_application_command_permissions **p) {
   ntl_free((void**)p, (vfvp)discord_guild_application_command_permissions_cleanup);
 }
@@ -992,10 +932,6 @@ void discord_application_command_permissions_init_v(void *p) {
   discord_application_command_permissions_init((struct discord_application_command_permissions *)p);
 }
 
-void discord_application_command_permissions_free_v(void *p) {
- discord_application_command_permissions_free((struct discord_application_command_permissions *)p);
-};
-
 void discord_application_command_permissions_from_json_v(char *json, size_t len, void *pp) {
  discord_application_command_permissions_from_json(json, len, (struct discord_application_command_permissions**)pp);
 }
@@ -1041,17 +977,6 @@ void discord_application_command_permissions_init(struct discord_application_com
      '{"name":"permission", "type":{"base":"bool"}, "comment":"true to allow, false, to disallow"}' */
 
 }
-struct discord_application_command_permissions* discord_application_command_permissions_alloc() {
-  struct discord_application_command_permissions *p= malloc(sizeof(struct discord_application_command_permissions));
-  discord_application_command_permissions_init(p);
-  return p;
-}
-
-void discord_application_command_permissions_free(struct discord_application_command_permissions *p) {
-  discord_application_command_permissions_cleanup(p);
-  free(p);
-}
-
 void discord_application_command_permissions_list_free(struct discord_application_command_permissions **p) {
   ntl_free((void**)p, (vfvp)discord_application_command_permissions_cleanup);
 }
@@ -1285,10 +1210,6 @@ void discord_interaction_init_v(void *p) {
   discord_interaction_init((struct discord_interaction *)p);
 }
 
-void discord_interaction_free_v(void *p) {
- discord_interaction_free((struct discord_interaction *)p);
-};
-
 void discord_interaction_from_json_v(char *json, size_t len, void *pp) {
  discord_interaction_from_json(json, len, (struct discord_interaction**)pp);
 }
@@ -1322,8 +1243,10 @@ void discord_interaction_cleanup(struct discord_interaction *d) {
   // p->type is a scalar
   /* specs/discord/slash_commands.json:110:18
      '{"name":"data", "type":{"base":"struct discord_application_command_interaction_data", "dec":"*"}, "option":true, "comment":"the command data payload", "inject_if_not":null}' */
-  if (d->data)
-    discord_application_command_interaction_data_free(d->data);
+  if (d->data) {
+    discord_application_command_interaction_data_cleanup(d->data);
+    free(d->data);
+  }
   /* specs/discord/slash_commands.json:111:18
      '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "comment":"the guild it was sent from","inject_if_not":0}' */
   // p->guild_id is a scalar
@@ -1332,12 +1255,16 @@ void discord_interaction_cleanup(struct discord_interaction *d) {
   // p->channel_id is a scalar
   /* specs/discord/slash_commands.json:113:18
      '{"name":"member", "type":{"base":"struct discord_guild_member", "dec":"*"}, "option":true, "comment":"guild member data for the invoking user, including permissions", "inject_if_not":null}' */
-  if (d->member)
-    discord_guild_member_free(d->member);
+  if (d->member) {
+    discord_guild_member_cleanup(d->member);
+    free(d->member);
+  }
   /* specs/discord/slash_commands.json:114:18
      '{"name":"user", "type":{"base":"struct discord_user", "dec":"*"}, "option":true, "comment":"user object for the invoking user, if invoked in a DM", "inject_if_not":null}' */
-  if (d->user)
-    discord_user_free(d->user);
+  if (d->user) {
+    discord_user_cleanup(d->user);
+    free(d->user);
+  }
   /* specs/discord/slash_commands.json:115:18
      '{"name":"token", "type":{"base":"char", "dec":"*"}, "option":true, "comment":"a continuation token for responding to the interaction", "inject_if_not":null}' */
   if (d->token)
@@ -1357,7 +1284,8 @@ void discord_interaction_init(struct discord_interaction *p) {
 
   /* specs/discord/slash_commands.json:110:18
      '{"name":"data", "type":{"base":"struct discord_application_command_interaction_data", "dec":"*"}, "option":true, "comment":"the command data payload", "inject_if_not":null}' */
-  p->data = discord_application_command_interaction_data_alloc();
+  p->data = malloc(sizeof *p->data);
+  discord_application_command_interaction_data_init(p->data);
 
   /* specs/discord/slash_commands.json:111:18
      '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "comment":"the guild it was sent from","inject_if_not":0}' */
@@ -1367,27 +1295,18 @@ void discord_interaction_init(struct discord_interaction *p) {
 
   /* specs/discord/slash_commands.json:113:18
      '{"name":"member", "type":{"base":"struct discord_guild_member", "dec":"*"}, "option":true, "comment":"guild member data for the invoking user, including permissions", "inject_if_not":null}' */
-  p->member = discord_guild_member_alloc();
+  p->member = malloc(sizeof *p->member);
+  discord_guild_member_init(p->member);
 
   /* specs/discord/slash_commands.json:114:18
      '{"name":"user", "type":{"base":"struct discord_user", "dec":"*"}, "option":true, "comment":"user object for the invoking user, if invoked in a DM", "inject_if_not":null}' */
-  p->user = discord_user_alloc();
+  p->user = malloc(sizeof *p->user);
+  discord_user_init(p->user);
 
   /* specs/discord/slash_commands.json:115:18
      '{"name":"token", "type":{"base":"char", "dec":"*"}, "option":true, "comment":"a continuation token for responding to the interaction", "inject_if_not":null}' */
 
 }
-struct discord_interaction* discord_interaction_alloc() {
-  struct discord_interaction *p= malloc(sizeof(struct discord_interaction));
-  discord_interaction_init(p);
-  return p;
-}
-
-void discord_interaction_free(struct discord_interaction *p) {
-  discord_interaction_cleanup(p);
-  free(p);
-}
-
 void discord_interaction_list_free(struct discord_interaction **p) {
   ntl_free((void**)p, (vfvp)discord_interaction_cleanup);
 }
@@ -1572,10 +1491,6 @@ void discord_application_command_interaction_data_init_v(void *p) {
   discord_application_command_interaction_data_init((struct discord_application_command_interaction_data *)p);
 }
 
-void discord_application_command_interaction_data_free_v(void *p) {
- discord_application_command_interaction_data_free((struct discord_application_command_interaction_data *)p);
-};
-
 void discord_application_command_interaction_data_from_json_v(char *json, size_t len, void *pp) {
  discord_application_command_interaction_data_from_json(json, len, (struct discord_application_command_interaction_data**)pp);
 }
@@ -1607,8 +1522,10 @@ void discord_application_command_interaction_data_cleanup(struct discord_applica
     free(d->name);
   /* specs/discord/slash_commands.json:139:18
      '{"name":"resolved", "type":{"base":"struct discord_application_command_interaction_data_resolved", "dec":"*"}, "option":true, "comment":"converted users + roles + channels", "inject_if_not":null}' */
-  if (d->resolved)
-    discord_application_command_interaction_data_resolved_free(d->resolved);
+  if (d->resolved) {
+    discord_application_command_interaction_data_resolved_cleanup(d->resolved);
+    free(d->resolved);
+  }
   /* specs/discord/slash_commands.json:140:18
      '{"name":"options", "type":{"base":"struct discord_application_command_interaction_data_option", "dec":"ntl"}, "option":true, "comment":"the params + values from the user", "inject_if_not":null}' */
   if (d->options)
@@ -1631,7 +1548,8 @@ void discord_application_command_interaction_data_init(struct discord_applicatio
 
   /* specs/discord/slash_commands.json:139:18
      '{"name":"resolved", "type":{"base":"struct discord_application_command_interaction_data_resolved", "dec":"*"}, "option":true, "comment":"converted users + roles + channels", "inject_if_not":null}' */
-  p->resolved = discord_application_command_interaction_data_resolved_alloc();
+  p->resolved = malloc(sizeof *p->resolved);
+  discord_application_command_interaction_data_resolved_init(p->resolved);
 
   /* specs/discord/slash_commands.json:140:18
      '{"name":"options", "type":{"base":"struct discord_application_command_interaction_data_option", "dec":"ntl"}, "option":true, "comment":"the params + values from the user", "inject_if_not":null}' */
@@ -1643,17 +1561,6 @@ void discord_application_command_interaction_data_init(struct discord_applicatio
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_component_types"}, "comment":"component type"}' */
 
 }
-struct discord_application_command_interaction_data* discord_application_command_interaction_data_alloc() {
-  struct discord_application_command_interaction_data *p= malloc(sizeof(struct discord_application_command_interaction_data));
-  discord_application_command_interaction_data_init(p);
-  return p;
-}
-
-void discord_application_command_interaction_data_free(struct discord_application_command_interaction_data *p) {
-  discord_application_command_interaction_data_cleanup(p);
-  free(p);
-}
-
 void discord_application_command_interaction_data_list_free(struct discord_application_command_interaction_data **p) {
   ntl_free((void**)p, (vfvp)discord_application_command_interaction_data_cleanup);
 }
@@ -1786,10 +1693,6 @@ void discord_application_command_interaction_data_resolved_init_v(void *p) {
   discord_application_command_interaction_data_resolved_init((struct discord_application_command_interaction_data_resolved *)p);
 }
 
-void discord_application_command_interaction_data_resolved_free_v(void *p) {
- discord_application_command_interaction_data_resolved_free((struct discord_application_command_interaction_data_resolved *)p);
-};
-
 void discord_application_command_interaction_data_resolved_from_json_v(char *json, size_t len, void *pp) {
  discord_application_command_interaction_data_resolved_from_json(json, len, (struct discord_application_command_interaction_data_resolved**)pp);
 }
@@ -1845,17 +1748,6 @@ void discord_application_command_interaction_data_resolved_init(struct discord_a
      '{"name":"channels", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the ids and partial Channel objects", "inject_if_not":null}' */
 
 }
-struct discord_application_command_interaction_data_resolved* discord_application_command_interaction_data_resolved_alloc() {
-  struct discord_application_command_interaction_data_resolved *p= malloc(sizeof(struct discord_application_command_interaction_data_resolved));
-  discord_application_command_interaction_data_resolved_init(p);
-  return p;
-}
-
-void discord_application_command_interaction_data_resolved_free(struct discord_application_command_interaction_data_resolved *p) {
-  discord_application_command_interaction_data_resolved_cleanup(p);
-  free(p);
-}
-
 void discord_application_command_interaction_data_resolved_list_free(struct discord_application_command_interaction_data_resolved **p) {
   ntl_free((void**)p, (vfvp)discord_application_command_interaction_data_resolved_cleanup);
 }
@@ -1985,10 +1877,6 @@ void discord_application_command_interaction_data_option_init_v(void *p) {
   discord_application_command_interaction_data_option_init((struct discord_application_command_interaction_data_option *)p);
 }
 
-void discord_application_command_interaction_data_option_free_v(void *p) {
- discord_application_command_interaction_data_option_free((struct discord_application_command_interaction_data_option *)p);
-};
-
 void discord_application_command_interaction_data_option_from_json_v(char *json, size_t len, void *pp) {
  discord_application_command_interaction_data_option_from_json(json, len, (struct discord_application_command_interaction_data_option**)pp);
 }
@@ -2042,17 +1930,6 @@ void discord_application_command_interaction_data_option_init(struct discord_app
      '{"name":"options", "type":{"base":"struct discord_application_command_interaction_data_option", "dec":"ntl"}, "option":true, "comment":"present if this option is a group or subcommand", "inject_if_not":null}' */
 
 }
-struct discord_application_command_interaction_data_option* discord_application_command_interaction_data_option_alloc() {
-  struct discord_application_command_interaction_data_option *p= malloc(sizeof(struct discord_application_command_interaction_data_option));
-  discord_application_command_interaction_data_option_init(p);
-  return p;
-}
-
-void discord_application_command_interaction_data_option_free(struct discord_application_command_interaction_data_option *p) {
-  discord_application_command_interaction_data_option_cleanup(p);
-  free(p);
-}
-
 void discord_application_command_interaction_data_option_list_free(struct discord_application_command_interaction_data_option **p) {
   ntl_free((void**)p, (vfvp)discord_application_command_interaction_data_option_cleanup);
 }
@@ -2150,10 +2027,6 @@ void discord_interaction_response_init_v(void *p) {
   discord_interaction_response_init((struct discord_interaction_response *)p);
 }
 
-void discord_interaction_response_free_v(void *p) {
- discord_interaction_response_free((struct discord_interaction_response *)p);
-};
-
 void discord_interaction_response_from_json_v(char *json, size_t len, void *pp) {
  discord_interaction_response_from_json(json, len, (struct discord_interaction_response**)pp);
 }
@@ -2181,8 +2054,10 @@ void discord_interaction_response_cleanup(struct discord_interaction_response *d
   // p->type is a scalar
   /* specs/discord/slash_commands.json:179:18
      '{"name":"data", "type":{"base":"struct discord_interaction_application_command_callback_data", "dec":"*"}, "option":true, "comment":"an optional response message", "inject_if_not":null}' */
-  if (d->data)
-    discord_interaction_application_command_callback_data_free(d->data);
+  if (d->data) {
+    discord_interaction_application_command_callback_data_cleanup(d->data);
+    free(d->data);
+  }
 }
 
 void discord_interaction_response_init(struct discord_interaction_response *p) {
@@ -2192,20 +2067,10 @@ void discord_interaction_response_init(struct discord_interaction_response *p) {
 
   /* specs/discord/slash_commands.json:179:18
      '{"name":"data", "type":{"base":"struct discord_interaction_application_command_callback_data", "dec":"*"}, "option":true, "comment":"an optional response message", "inject_if_not":null}' */
-  p->data = discord_interaction_application_command_callback_data_alloc();
+  p->data = malloc(sizeof *p->data);
+  discord_interaction_application_command_callback_data_init(p->data);
 
 }
-struct discord_interaction_response* discord_interaction_response_alloc() {
-  struct discord_interaction_response *p= malloc(sizeof(struct discord_interaction_response));
-  discord_interaction_response_init(p);
-  return p;
-}
-
-void discord_interaction_response_free(struct discord_interaction_response *p) {
-  discord_interaction_response_cleanup(p);
-  free(p);
-}
-
 void discord_interaction_response_list_free(struct discord_interaction_response **p) {
   ntl_free((void**)p, (vfvp)discord_interaction_response_cleanup);
 }
@@ -2393,10 +2258,6 @@ void discord_interaction_application_command_callback_data_init_v(void *p) {
   discord_interaction_application_command_callback_data_init((struct discord_interaction_application_command_callback_data *)p);
 }
 
-void discord_interaction_application_command_callback_data_free_v(void *p) {
- discord_interaction_application_command_callback_data_free((struct discord_interaction_application_command_callback_data *)p);
-};
-
 void discord_interaction_application_command_callback_data_from_json_v(char *json, size_t len, void *pp) {
  discord_interaction_application_command_callback_data_from_json(json, len, (struct discord_interaction_application_command_callback_data**)pp);
 }
@@ -2463,17 +2324,6 @@ void discord_interaction_application_command_callback_data_init(struct discord_i
      '{"name":"components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "option":true, "comment":"message components", "inject_if_not":null}' */
 
 }
-struct discord_interaction_application_command_callback_data* discord_interaction_application_command_callback_data_alloc() {
-  struct discord_interaction_application_command_callback_data *p= malloc(sizeof(struct discord_interaction_application_command_callback_data));
-  discord_interaction_application_command_callback_data_init(p);
-  return p;
-}
-
-void discord_interaction_application_command_callback_data_free(struct discord_interaction_application_command_callback_data *p) {
-  discord_interaction_application_command_callback_data_cleanup(p);
-  free(p);
-}
-
 void discord_interaction_application_command_callback_data_list_free(struct discord_interaction_application_command_callback_data **p) {
   ntl_free((void**)p, (vfvp)discord_interaction_application_command_callback_data_cleanup);
 }
@@ -2618,10 +2468,6 @@ void discord_message_interaction_init_v(void *p) {
   discord_message_interaction_init((struct discord_message_interaction *)p);
 }
 
-void discord_message_interaction_free_v(void *p) {
- discord_message_interaction_free((struct discord_message_interaction *)p);
-};
-
 void discord_message_interaction_from_json_v(char *json, size_t len, void *pp) {
  discord_message_interaction_from_json(json, len, (struct discord_message_interaction**)pp);
 }
@@ -2656,8 +2502,10 @@ void discord_message_interaction_cleanup(struct discord_message_interaction *d) 
     free(d->name);
   /* specs/discord/slash_commands.json:231:18
      '{"name":"user", "type":{"base":"struct discord_user", "dec":"*"}, "comment":"the user who invoked the interaction"}' */
-  if (d->user)
-    discord_user_free(d->user);
+  if (d->user) {
+    discord_user_cleanup(d->user);
+    free(d->user);
+  }
 }
 
 void discord_message_interaction_init(struct discord_message_interaction *p) {
@@ -2673,20 +2521,10 @@ void discord_message_interaction_init(struct discord_message_interaction *p) {
 
   /* specs/discord/slash_commands.json:231:18
      '{"name":"user", "type":{"base":"struct discord_user", "dec":"*"}, "comment":"the user who invoked the interaction"}' */
-  p->user = discord_user_alloc();
+  p->user = malloc(sizeof *p->user);
+  discord_user_init(p->user);
 
 }
-struct discord_message_interaction* discord_message_interaction_alloc() {
-  struct discord_message_interaction *p= malloc(sizeof(struct discord_message_interaction));
-  discord_message_interaction_init(p);
-  return p;
-}
-
-void discord_message_interaction_free(struct discord_message_interaction *p) {
-  discord_message_interaction_cleanup(p);
-  free(p);
-}
-
 void discord_message_interaction_list_free(struct discord_message_interaction **p) {
   ntl_free((void**)p, (vfvp)discord_message_interaction_cleanup);
 }

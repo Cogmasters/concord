@@ -2,7 +2,7 @@
 /**
  * @file specs-code/reddit/links_n_comments.c
  * @author cee-studio
- * @date Jul 28 2021
+ * @date Jul 30 2021
  * @brief Specs generated file
  * @see 
  */
@@ -148,10 +148,6 @@ void reddit_comment_params_init_v(void *p) {
   reddit_comment_params_init((struct reddit_comment_params *)p);
 }
 
-void reddit_comment_params_free_v(void *p) {
- reddit_comment_params_free((struct reddit_comment_params *)p);
-};
-
 void reddit_comment_params_from_json_v(char *json, size_t len, void *pp) {
  reddit_comment_params_from_json(json, len, (struct reddit_comment_params**)pp);
 }
@@ -220,17 +216,6 @@ void reddit_comment_params_init(struct reddit_comment_params *p) {
      '{ "name": "uh", "type":{ "base":"char", "dec":"*" }, "comment":"a modhash" }' */
 
 }
-struct reddit_comment_params* reddit_comment_params_alloc() {
-  struct reddit_comment_params *p= malloc(sizeof(struct reddit_comment_params));
-  reddit_comment_params_init(p);
-  return p;
-}
-
-void reddit_comment_params_free(struct reddit_comment_params *p) {
-  reddit_comment_params_cleanup(p);
-  free(p);
-}
-
 void reddit_comment_params_list_free(struct reddit_comment_params **p) {
   ntl_free((void**)p, (vfvp)reddit_comment_params_cleanup);
 }

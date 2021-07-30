@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/guild.c
  * @author cee-studio
- * @date Jul 28 2021
+ * @date Jul 30 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/guild
  */
@@ -808,10 +808,6 @@ void discord_guild_init_v(void *p) {
   discord_guild_init((struct discord_guild *)p);
 }
 
-void discord_guild_free_v(void *p) {
- discord_guild_free((struct discord_guild *)p);
-};
-
 void discord_guild_from_json_v(char *json, size_t len, void *pp) {
  discord_guild_from_json(json, len, (struct discord_guild**)pp);
 }
@@ -989,8 +985,10 @@ void discord_guild_cleanup(struct discord_guild *d) {
   // p->approximate_presence_count is a scalar
   /* specs/discord/guild.json:65:84
      '{"type":{"base":"struct discord_guild_welcome_screen", "dec":"*"}, "name":"welcome_screen", "option":true}' */
-  if (d->welcome_screen)
-    discord_guild_welcome_screen_free(d->welcome_screen);
+  if (d->welcome_screen) {
+    discord_guild_welcome_screen_cleanup(d->welcome_screen);
+    free(d->welcome_screen);
+  }
 }
 
 void discord_guild_init(struct discord_guild *p) {
@@ -1140,20 +1138,10 @@ void discord_guild_init(struct discord_guild *p) {
 
   /* specs/discord/guild.json:65:84
      '{"type":{"base":"struct discord_guild_welcome_screen", "dec":"*"}, "name":"welcome_screen", "option":true}' */
-  p->welcome_screen = discord_guild_welcome_screen_alloc();
+  p->welcome_screen = malloc(sizeof *p->welcome_screen);
+  discord_guild_welcome_screen_init(p->welcome_screen);
 
 }
-struct discord_guild* discord_guild_alloc() {
-  struct discord_guild *p= malloc(sizeof(struct discord_guild));
-  discord_guild_init(p);
-  return p;
-}
-
-void discord_guild_free(struct discord_guild *p) {
-  discord_guild_cleanup(p);
-  free(p);
-}
-
 void discord_guild_list_free(struct discord_guild **p) {
   ntl_free((void**)p, (vfvp)discord_guild_cleanup);
 }
@@ -1440,10 +1428,6 @@ void discord_guild_unavailable_init_v(void *p) {
   discord_guild_unavailable_init((struct discord_guild_unavailable *)p);
 }
 
-void discord_guild_unavailable_free_v(void *p) {
- discord_guild_unavailable_free((struct discord_guild_unavailable *)p);
-};
-
 void discord_guild_unavailable_from_json_v(char *json, size_t len, void *pp) {
  discord_guild_unavailable_from_json(json, len, (struct discord_guild_unavailable**)pp);
 }
@@ -1483,17 +1467,6 @@ void discord_guild_unavailable_init(struct discord_guild_unavailable *p) {
      '{"name":"unavailable", "type":{"base":"bool"}}' */
 
 }
-struct discord_guild_unavailable* discord_guild_unavailable_alloc() {
-  struct discord_guild_unavailable *p= malloc(sizeof(struct discord_guild_unavailable));
-  discord_guild_unavailable_init(p);
-  return p;
-}
-
-void discord_guild_unavailable_free(struct discord_guild_unavailable *p) {
-  discord_guild_unavailable_cleanup(p);
-  free(p);
-}
-
 void discord_guild_unavailable_list_free(struct discord_guild_unavailable **p) {
   ntl_free((void**)p, (vfvp)discord_guild_unavailable_cleanup);
 }
@@ -1713,10 +1686,6 @@ void discord_guild_preview_init_v(void *p) {
   discord_guild_preview_init((struct discord_guild_preview *)p);
 }
 
-void discord_guild_preview_free_v(void *p) {
- discord_guild_preview_free((struct discord_guild_preview *)p);
-};
-
 void discord_guild_preview_from_json_v(char *json, size_t len, void *pp) {
  discord_guild_preview_from_json(json, len, (struct discord_guild_preview**)pp);
 }
@@ -1808,17 +1777,6 @@ void discord_guild_preview_init(struct discord_guild_preview *p) {
      '{"name":"description", "type":{"base":"char", "dec":"[DISCORD_MAX_DESCRIPTION_LEN]"}}' */
 
 }
-struct discord_guild_preview* discord_guild_preview_alloc() {
-  struct discord_guild_preview *p= malloc(sizeof(struct discord_guild_preview));
-  discord_guild_preview_init(p);
-  return p;
-}
-
-void discord_guild_preview_free(struct discord_guild_preview *p) {
-  discord_guild_preview_cleanup(p);
-  free(p);
-}
-
 void discord_guild_preview_list_free(struct discord_guild_preview **p) {
   ntl_free((void**)p, (vfvp)discord_guild_preview_cleanup);
 }
@@ -1915,10 +1873,6 @@ void discord_guild_widget_init_v(void *p) {
   discord_guild_widget_init((struct discord_guild_widget *)p);
 }
 
-void discord_guild_widget_free_v(void *p) {
- discord_guild_widget_free((struct discord_guild_widget *)p);
-};
-
 void discord_guild_widget_from_json_v(char *json, size_t len, void *pp) {
  discord_guild_widget_from_json(json, len, (struct discord_guild_widget**)pp);
 }
@@ -1958,17 +1912,6 @@ void discord_guild_widget_init(struct discord_guild_widget *p) {
      '{"name":"channel_id", "type":{"base":"char", "dec":"*", "converter":"snowflake", "nullable":true}}' */
 
 }
-struct discord_guild_widget* discord_guild_widget_alloc() {
-  struct discord_guild_widget *p= malloc(sizeof(struct discord_guild_widget));
-  discord_guild_widget_init(p);
-  return p;
-}
-
-void discord_guild_widget_free(struct discord_guild_widget *p) {
-  discord_guild_widget_cleanup(p);
-  free(p);
-}
-
 void discord_guild_widget_list_free(struct discord_guild_widget **p) {
   ntl_free((void**)p, (vfvp)discord_guild_widget_cleanup);
 }
@@ -2177,10 +2120,6 @@ void discord_guild_member_init_v(void *p) {
   discord_guild_member_init((struct discord_guild_member *)p);
 }
 
-void discord_guild_member_free_v(void *p) {
- discord_guild_member_free((struct discord_guild_member *)p);
-};
-
 void discord_guild_member_from_json_v(char *json, size_t len, void *pp) {
  discord_guild_member_from_json(json, len, (struct discord_guild_member**)pp);
 }
@@ -2205,8 +2144,10 @@ size_t discord_guild_member_list_to_json_v(char *str, size_t len, void *p){
 void discord_guild_member_cleanup(struct discord_guild_member *d) {
   /* specs/discord/guild.json:202:20
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }, "option":true}' */
-  if (d->user)
-    discord_user_free(d->user);
+  if (d->user) {
+    discord_user_cleanup(d->user);
+    free(d->user);
+  }
   /* specs/discord/guild.json:203:20
      '{ "name": "nick", "type":{ "base":"char", "dec":"[DISCORD_MAX_NAME_LEN]"}, "option":true}' */
   // p->nick is a scalar
@@ -2239,7 +2180,8 @@ void discord_guild_member_init(struct discord_guild_member *p) {
   memset(p, 0, sizeof(struct discord_guild_member));
   /* specs/discord/guild.json:202:20
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }, "option":true}' */
-  p->user = discord_user_alloc();
+  p->user = malloc(sizeof *p->user);
+  discord_user_init(p->user);
 
   /* specs/discord/guild.json:203:20
      '{ "name": "nick", "type":{ "base":"char", "dec":"[DISCORD_MAX_NAME_LEN]"}, "option":true}' */
@@ -2266,17 +2208,6 @@ void discord_guild_member_init(struct discord_guild_member *p) {
      '{ "name": "permissions", "type":{ "base":"char", "dec":"*"}, "option":true}' */
 
 }
-struct discord_guild_member* discord_guild_member_alloc() {
-  struct discord_guild_member *p= malloc(sizeof(struct discord_guild_member));
-  discord_guild_member_init(p);
-  return p;
-}
-
-void discord_guild_member_free(struct discord_guild_member *p) {
-  discord_guild_member_cleanup(p);
-  free(p);
-}
-
 void discord_guild_member_list_free(struct discord_guild_member **p) {
   ntl_free((void**)p, (vfvp)discord_guild_member_cleanup);
 }
@@ -2581,10 +2512,6 @@ void discord_guild_integration_init_v(void *p) {
   discord_guild_integration_init((struct discord_guild_integration *)p);
 }
 
-void discord_guild_integration_free_v(void *p) {
- discord_guild_integration_free((struct discord_guild_integration *)p);
-};
-
 void discord_guild_integration_from_json_v(char *json, size_t len, void *pp) {
  discord_guild_integration_from_json(json, len, (struct discord_guild_integration**)pp);
 }
@@ -2638,12 +2565,16 @@ void discord_guild_integration_cleanup(struct discord_guild_integration *d) {
   // p->expire_grace_period is a scalar
   /* specs/discord/guild.json:229:20
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*"}, "opt":true}' */
-  if (d->user)
-    discord_user_free(d->user);
+  if (d->user) {
+    discord_user_cleanup(d->user);
+    free(d->user);
+  }
   /* specs/discord/guild.json:230:20
      '{ "name": "account", "type":{ "base":"struct discord_guild_integration_account", "dec":"*"}}' */
-  if (d->account)
-    discord_guild_integration_account_free(d->account);
+  if (d->account) {
+    discord_guild_integration_account_cleanup(d->account);
+    free(d->account);
+  }
   /* specs/discord/guild.json:231:20
      '{ "name": "synced_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601"}}' */
   // p->synced_at is a scalar
@@ -2655,8 +2586,10 @@ void discord_guild_integration_cleanup(struct discord_guild_integration *d) {
   // p->revoked is a scalar
   /* specs/discord/guild.json:234:20
      '{ "name": "application", "type":{ "base":"struct discord_guild_integration_application", "dec":"*" }}' */
-  if (d->application)
-    discord_guild_integration_application_free(d->application);
+  if (d->application) {
+    discord_guild_integration_application_cleanup(d->application);
+    free(d->application);
+  }
 }
 
 void discord_guild_integration_init(struct discord_guild_integration *p) {
@@ -2690,11 +2623,13 @@ void discord_guild_integration_init(struct discord_guild_integration *p) {
 
   /* specs/discord/guild.json:229:20
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*"}, "opt":true}' */
-  p->user = discord_user_alloc();
+  p->user = malloc(sizeof *p->user);
+  discord_user_init(p->user);
 
   /* specs/discord/guild.json:230:20
      '{ "name": "account", "type":{ "base":"struct discord_guild_integration_account", "dec":"*"}}' */
-  p->account = discord_guild_integration_account_alloc();
+  p->account = malloc(sizeof *p->account);
+  discord_guild_integration_account_init(p->account);
 
   /* specs/discord/guild.json:231:20
      '{ "name": "synced_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601"}}' */
@@ -2707,20 +2642,10 @@ void discord_guild_integration_init(struct discord_guild_integration *p) {
 
   /* specs/discord/guild.json:234:20
      '{ "name": "application", "type":{ "base":"struct discord_guild_integration_application", "dec":"*" }}' */
-  p->application = discord_guild_integration_application_alloc();
+  p->application = malloc(sizeof *p->application);
+  discord_guild_integration_application_init(p->application);
 
 }
-struct discord_guild_integration* discord_guild_integration_alloc() {
-  struct discord_guild_integration *p= malloc(sizeof(struct discord_guild_integration));
-  discord_guild_integration_init(p);
-  return p;
-}
-
-void discord_guild_integration_free(struct discord_guild_integration *p) {
-  discord_guild_integration_cleanup(p);
-  free(p);
-}
-
 void discord_guild_integration_list_free(struct discord_guild_integration **p) {
   ntl_free((void**)p, (vfvp)discord_guild_integration_cleanup);
 }
@@ -2836,10 +2761,6 @@ void discord_guild_integration_account_init_v(void *p) {
   discord_guild_integration_account_init((struct discord_guild_integration_account *)p);
 }
 
-void discord_guild_integration_account_free_v(void *p) {
- discord_guild_integration_account_free((struct discord_guild_integration_account *)p);
-};
-
 void discord_guild_integration_account_from_json_v(char *json, size_t len, void *pp) {
  discord_guild_integration_account_from_json(json, len, (struct discord_guild_integration_account**)pp);
 }
@@ -2880,17 +2801,6 @@ void discord_guild_integration_account_init(struct discord_guild_integration_acc
      '{ "name":"name", "type":{ "base":"char", "dec":"*" }}' */
 
 }
-struct discord_guild_integration_account* discord_guild_integration_account_alloc() {
-  struct discord_guild_integration_account *p= malloc(sizeof(struct discord_guild_integration_account));
-  discord_guild_integration_account_init(p);
-  return p;
-}
-
-void discord_guild_integration_account_free(struct discord_guild_integration_account *p) {
-  discord_guild_integration_account_cleanup(p);
-  free(p);
-}
-
 void discord_guild_integration_account_list_free(struct discord_guild_integration_account **p) {
   ntl_free((void**)p, (vfvp)discord_guild_integration_account_cleanup);
 }
@@ -3051,10 +2961,6 @@ void discord_guild_integration_application_init_v(void *p) {
   discord_guild_integration_application_init((struct discord_guild_integration_application *)p);
 }
 
-void discord_guild_integration_application_free_v(void *p) {
- discord_guild_integration_application_free((struct discord_guild_integration_application *)p);
-};
-
 void discord_guild_integration_application_from_json_v(char *json, size_t len, void *pp) {
  discord_guild_integration_application_from_json(json, len, (struct discord_guild_integration_application**)pp);
 }
@@ -3097,8 +3003,10 @@ void discord_guild_integration_application_cleanup(struct discord_guild_integrat
     free(d->summary);
   /* specs/discord/guild.json:268:19
      '{ "name":"bot", "type":{ "base":"struct discord_user", "dec":"*" }, "option":true}' */
-  if (d->bot)
-    discord_user_free(d->bot);
+  if (d->bot) {
+    discord_user_cleanup(d->bot);
+    free(d->bot);
+  }
 }
 
 void discord_guild_integration_application_init(struct discord_guild_integration_application *p) {
@@ -3120,20 +3028,10 @@ void discord_guild_integration_application_init(struct discord_guild_integration
 
   /* specs/discord/guild.json:268:19
      '{ "name":"bot", "type":{ "base":"struct discord_user", "dec":"*" }, "option":true}' */
-  p->bot = discord_user_alloc();
+  p->bot = malloc(sizeof *p->bot);
+  discord_user_init(p->bot);
 
 }
-struct discord_guild_integration_application* discord_guild_integration_application_alloc() {
-  struct discord_guild_integration_application *p= malloc(sizeof(struct discord_guild_integration_application));
-  discord_guild_integration_application_init(p);
-  return p;
-}
-
-void discord_guild_integration_application_free(struct discord_guild_integration_application *p) {
-  discord_guild_integration_application_cleanup(p);
-  free(p);
-}
-
 void discord_guild_integration_application_list_free(struct discord_guild_integration_application **p) {
   ntl_free((void**)p, (vfvp)discord_guild_integration_application_cleanup);
 }
@@ -3230,10 +3128,6 @@ void discord_guild_ban_init_v(void *p) {
   discord_guild_ban_init((struct discord_guild_ban *)p);
 }
 
-void discord_guild_ban_free_v(void *p) {
- discord_guild_ban_free((struct discord_guild_ban *)p);
-};
-
 void discord_guild_ban_from_json_v(char *json, size_t len, void *pp) {
  discord_guild_ban_from_json(json, len, (struct discord_guild_ban**)pp);
 }
@@ -3261,8 +3155,10 @@ void discord_guild_ban_cleanup(struct discord_guild_ban *d) {
   // p->reason is a scalar
   /* specs/discord/guild.json:279:20
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*"}, "comment":"partial user object"}' */
-  if (d->user)
-    discord_user_free(d->user);
+  if (d->user) {
+    discord_user_cleanup(d->user);
+    free(d->user);
+  }
 }
 
 void discord_guild_ban_init(struct discord_guild_ban *p) {
@@ -3272,20 +3168,10 @@ void discord_guild_ban_init(struct discord_guild_ban *p) {
 
   /* specs/discord/guild.json:279:20
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*"}, "comment":"partial user object"}' */
-  p->user = discord_user_alloc();
+  p->user = malloc(sizeof *p->user);
+  discord_user_init(p->user);
 
 }
-struct discord_guild_ban* discord_guild_ban_alloc() {
-  struct discord_guild_ban *p= malloc(sizeof(struct discord_guild_ban));
-  discord_guild_ban_init(p);
-  return p;
-}
-
-void discord_guild_ban_free(struct discord_guild_ban *p) {
-  discord_guild_ban_cleanup(p);
-  free(p);
-}
-
 void discord_guild_ban_list_free(struct discord_guild_ban **p) {
   ntl_free((void**)p, (vfvp)discord_guild_ban_cleanup);
 }
@@ -3382,10 +3268,6 @@ void discord_guild_welcome_screen_init_v(void *p) {
   discord_guild_welcome_screen_init((struct discord_guild_welcome_screen *)p);
 }
 
-void discord_guild_welcome_screen_free_v(void *p) {
- discord_guild_welcome_screen_free((struct discord_guild_welcome_screen *)p);
-};
-
 void discord_guild_welcome_screen_from_json_v(char *json, size_t len, void *pp) {
  discord_guild_welcome_screen_from_json(json, len, (struct discord_guild_welcome_screen**)pp);
 }
@@ -3427,17 +3309,6 @@ void discord_guild_welcome_screen_init(struct discord_guild_welcome_screen *p) {
      '{ "name": "welcome_channels", "type":{ "base":"struct discord_guild_welcome_screen_channel", "dec":"ntl" }, "todo":false }' */
 
 }
-struct discord_guild_welcome_screen* discord_guild_welcome_screen_alloc() {
-  struct discord_guild_welcome_screen *p= malloc(sizeof(struct discord_guild_welcome_screen));
-  discord_guild_welcome_screen_init(p);
-  return p;
-}
-
-void discord_guild_welcome_screen_free(struct discord_guild_welcome_screen *p) {
-  discord_guild_welcome_screen_cleanup(p);
-  free(p);
-}
-
 void discord_guild_welcome_screen_list_free(struct discord_guild_welcome_screen **p) {
   ntl_free((void**)p, (vfvp)discord_guild_welcome_screen_cleanup);
 }
@@ -3566,10 +3437,6 @@ void discord_guild_welcome_screen_channel_init_v(void *p) {
   discord_guild_welcome_screen_channel_init((struct discord_guild_welcome_screen_channel *)p);
 }
 
-void discord_guild_welcome_screen_channel_free_v(void *p) {
- discord_guild_welcome_screen_channel_free((struct discord_guild_welcome_screen_channel *)p);
-};
-
 void discord_guild_welcome_screen_channel_from_json_v(char *json, size_t len, void *pp) {
  discord_guild_welcome_screen_channel_from_json(json, len, (struct discord_guild_welcome_screen_channel**)pp);
 }
@@ -3623,17 +3490,6 @@ void discord_guild_welcome_screen_channel_init(struct discord_guild_welcome_scre
      '{ "name": "emoji_name", "type":{ "base":"char", "dec":"*" }}' */
 
 }
-struct discord_guild_welcome_screen_channel* discord_guild_welcome_screen_channel_alloc() {
-  struct discord_guild_welcome_screen_channel *p= malloc(sizeof(struct discord_guild_welcome_screen_channel));
-  discord_guild_welcome_screen_channel_init(p);
-  return p;
-}
-
-void discord_guild_welcome_screen_channel_free(struct discord_guild_welcome_screen_channel *p) {
-  discord_guild_welcome_screen_channel_cleanup(p);
-  free(p);
-}
-
 void discord_guild_welcome_screen_channel_list_free(struct discord_guild_welcome_screen_channel **p) {
   ntl_free((void**)p, (vfvp)discord_guild_welcome_screen_channel_cleanup);
 }

@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/emoji.endpoints-params.c
  * @author cee-studio
- * @date Jul 28 2021
+ * @date Jul 30 2021
  * @brief Specs generated file
  * @see 
  */
@@ -100,10 +100,6 @@ void discord_create_guild_emoji_params_init_v(void *p) {
   discord_create_guild_emoji_params_init((struct discord_create_guild_emoji_params *)p);
 }
 
-void discord_create_guild_emoji_params_free_v(void *p) {
- discord_create_guild_emoji_params_free((struct discord_create_guild_emoji_params *)p);
-};
-
 void discord_create_guild_emoji_params_from_json_v(char *json, size_t len, void *pp) {
  discord_create_guild_emoji_params_from_json(json, len, (struct discord_create_guild_emoji_params**)pp);
 }
@@ -152,17 +148,6 @@ void discord_create_guild_emoji_params_init(struct discord_create_guild_emoji_pa
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"roles for which this emoji will be whitelisted"}' */
 
 }
-struct discord_create_guild_emoji_params* discord_create_guild_emoji_params_alloc() {
-  struct discord_create_guild_emoji_params *p= malloc(sizeof(struct discord_create_guild_emoji_params));
-  discord_create_guild_emoji_params_init(p);
-  return p;
-}
-
-void discord_create_guild_emoji_params_free(struct discord_create_guild_emoji_params *p) {
-  discord_create_guild_emoji_params_cleanup(p);
-  free(p);
-}
-
 void discord_create_guild_emoji_params_list_free(struct discord_create_guild_emoji_params **p) {
   ntl_free((void**)p, (vfvp)discord_create_guild_emoji_params_cleanup);
 }
@@ -259,10 +244,6 @@ void discord_modify_guild_emoji_params_init_v(void *p) {
   discord_modify_guild_emoji_params_init((struct discord_modify_guild_emoji_params *)p);
 }
 
-void discord_modify_guild_emoji_params_free_v(void *p) {
- discord_modify_guild_emoji_params_free((struct discord_modify_guild_emoji_params *)p);
-};
-
 void discord_modify_guild_emoji_params_from_json_v(char *json, size_t len, void *pp) {
  discord_modify_guild_emoji_params_from_json(json, len, (struct discord_modify_guild_emoji_params**)pp);
 }
@@ -304,17 +285,6 @@ void discord_modify_guild_emoji_params_init(struct discord_modify_guild_emoji_pa
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"roles for which this emoji will be whitelisted"}' */
 
 }
-struct discord_modify_guild_emoji_params* discord_modify_guild_emoji_params_alloc() {
-  struct discord_modify_guild_emoji_params *p= malloc(sizeof(struct discord_modify_guild_emoji_params));
-  discord_modify_guild_emoji_params_init(p);
-  return p;
-}
-
-void discord_modify_guild_emoji_params_free(struct discord_modify_guild_emoji_params *p) {
-  discord_modify_guild_emoji_params_cleanup(p);
-  free(p);
-}
-
 void discord_modify_guild_emoji_params_list_free(struct discord_modify_guild_emoji_params **p) {
   ntl_free((void**)p, (vfvp)discord_modify_guild_emoji_params_cleanup);
 }

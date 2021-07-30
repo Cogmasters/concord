@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/invite.endpoints-params.c
  * @author cee-studio
- * @date Jul 28 2021
+ * @date Jul 30 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/invite
  */
@@ -84,10 +84,6 @@ void discord_get_invite_params_init_v(void *p) {
   discord_get_invite_params_init((struct discord_get_invite_params *)p);
 }
 
-void discord_get_invite_params_free_v(void *p) {
- discord_get_invite_params_free((struct discord_get_invite_params *)p);
-};
-
 void discord_get_invite_params_from_json_v(char *json, size_t len, void *pp) {
  discord_get_invite_params_from_json(json, len, (struct discord_get_invite_params**)pp);
 }
@@ -127,17 +123,6 @@ void discord_get_invite_params_init(struct discord_get_invite_params *p) {
      '{ "name": "with_expiration", "type":{ "base":"bool" }, "comment":"whether the invite should contain the expiration date"}' */
 
 }
-struct discord_get_invite_params* discord_get_invite_params_alloc() {
-  struct discord_get_invite_params *p= malloc(sizeof(struct discord_get_invite_params));
-  discord_get_invite_params_init(p);
-  return p;
-}
-
-void discord_get_invite_params_free(struct discord_get_invite_params *p) {
-  discord_get_invite_params_cleanup(p);
-  free(p);
-}
-
 void discord_get_invite_params_list_free(struct discord_get_invite_params **p) {
   ntl_free((void**)p, (vfvp)discord_get_invite_params_cleanup);
 }

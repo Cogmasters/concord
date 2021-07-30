@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/guild-template.endpoints-params.c
  * @author cee-studio
- * @date Jul 28 2021
+ * @date Jul 30 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/guild-template
  */
@@ -84,10 +84,6 @@ void discord_create_guild_from_guild_template_params_init_v(void *p) {
   discord_create_guild_from_guild_template_params_init((struct discord_create_guild_from_guild_template_params *)p);
 }
 
-void discord_create_guild_from_guild_template_params_free_v(void *p) {
- discord_create_guild_from_guild_template_params_free((struct discord_create_guild_from_guild_template_params *)p);
-};
-
 void discord_create_guild_from_guild_template_params_from_json_v(char *json, size_t len, void *pp) {
  discord_create_guild_from_guild_template_params_from_json(json, len, (struct discord_create_guild_from_guild_template_params**)pp);
 }
@@ -129,17 +125,6 @@ void discord_create_guild_from_guild_template_params_init(struct discord_create_
      '{ "name": "icon", "type":{ "base":"char", "dec":"*" }, "comment":"base64 128x128 image for the guild icon"}' */
 
 }
-struct discord_create_guild_from_guild_template_params* discord_create_guild_from_guild_template_params_alloc() {
-  struct discord_create_guild_from_guild_template_params *p= malloc(sizeof(struct discord_create_guild_from_guild_template_params));
-  discord_create_guild_from_guild_template_params_init(p);
-  return p;
-}
-
-void discord_create_guild_from_guild_template_params_free(struct discord_create_guild_from_guild_template_params *p) {
-  discord_create_guild_from_guild_template_params_cleanup(p);
-  free(p);
-}
-
 void discord_create_guild_from_guild_template_params_list_free(struct discord_create_guild_from_guild_template_params **p) {
   ntl_free((void**)p, (vfvp)discord_create_guild_from_guild_template_params_cleanup);
 }
@@ -236,10 +221,6 @@ void discord_create_guild_template_params_init_v(void *p) {
   discord_create_guild_template_params_init((struct discord_create_guild_template_params *)p);
 }
 
-void discord_create_guild_template_params_free_v(void *p) {
- discord_create_guild_template_params_free((struct discord_create_guild_template_params *)p);
-};
-
 void discord_create_guild_template_params_from_json_v(char *json, size_t len, void *pp) {
  discord_create_guild_template_params_from_json(json, len, (struct discord_create_guild_template_params**)pp);
 }
@@ -281,17 +262,6 @@ void discord_create_guild_template_params_init(struct discord_create_guild_templ
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"description for the template (0-120) chars"}' */
 
 }
-struct discord_create_guild_template_params* discord_create_guild_template_params_alloc() {
-  struct discord_create_guild_template_params *p= malloc(sizeof(struct discord_create_guild_template_params));
-  discord_create_guild_template_params_init(p);
-  return p;
-}
-
-void discord_create_guild_template_params_free(struct discord_create_guild_template_params *p) {
-  discord_create_guild_template_params_cleanup(p);
-  free(p);
-}
-
 void discord_create_guild_template_params_list_free(struct discord_create_guild_template_params **p) {
   ntl_free((void**)p, (vfvp)discord_create_guild_template_params_cleanup);
 }
@@ -388,10 +358,6 @@ void discord_modify_guild_template_params_init_v(void *p) {
   discord_modify_guild_template_params_init((struct discord_modify_guild_template_params *)p);
 }
 
-void discord_modify_guild_template_params_free_v(void *p) {
- discord_modify_guild_template_params_free((struct discord_modify_guild_template_params *)p);
-};
-
 void discord_modify_guild_template_params_from_json_v(char *json, size_t len, void *pp) {
  discord_modify_guild_template_params_from_json(json, len, (struct discord_modify_guild_template_params**)pp);
 }
@@ -433,17 +399,6 @@ void discord_modify_guild_template_params_init(struct discord_modify_guild_templ
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"description for the template (0-120) chars"}' */
 
 }
-struct discord_modify_guild_template_params* discord_modify_guild_template_params_alloc() {
-  struct discord_modify_guild_template_params *p= malloc(sizeof(struct discord_modify_guild_template_params));
-  discord_modify_guild_template_params_init(p);
-  return p;
-}
-
-void discord_modify_guild_template_params_free(struct discord_modify_guild_template_params *p) {
-  discord_modify_guild_template_params_cleanup(p);
-  free(p);
-}
-
 void discord_modify_guild_template_params_list_free(struct discord_modify_guild_template_params **p) {
   ntl_free((void**)p, (vfvp)discord_modify_guild_template_params_cleanup);
 }

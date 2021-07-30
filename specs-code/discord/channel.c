@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/channel.c
  * @author cee-studio
- * @date Jul 28 2021
+ * @date Jul 30 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/channel
  */
@@ -483,10 +483,6 @@ void discord_channel_init_v(void *p) {
   discord_channel_init((struct discord_channel *)p);
 }
 
-void discord_channel_free_v(void *p) {
- discord_channel_free((struct discord_channel *)p);
-};
-
 void discord_channel_from_json_v(char *json, size_t len, void *pp) {
  discord_channel_from_json(json, len, (struct discord_channel**)pp);
 }
@@ -657,17 +653,6 @@ void discord_channel_init(struct discord_channel *p) {
      '{"type":{"base":"struct discord_message", "dec":"ntl"}, "name":"messages"}' */
 
 }
-struct discord_channel* discord_channel_alloc() {
-  struct discord_channel *p= malloc(sizeof(struct discord_channel));
-  discord_channel_init(p);
-  return p;
-}
-
-void discord_channel_free(struct discord_channel *p) {
-  discord_channel_cleanup(p);
-  free(p);
-}
-
 void discord_channel_list_free(struct discord_channel **p) {
   ntl_free((void**)p, (vfvp)discord_channel_cleanup);
 }
@@ -888,10 +873,6 @@ void discord_message_sticker_init_v(void *p) {
   discord_message_sticker_init((struct discord_message_sticker *)p);
 }
 
-void discord_message_sticker_free_v(void *p) {
- discord_message_sticker_free((struct discord_message_sticker *)p);
-};
-
 void discord_message_sticker_from_json_v(char *json, size_t len, void *pp) {
  discord_message_sticker_from_json(json, len, (struct discord_message_sticker**)pp);
 }
@@ -972,17 +953,6 @@ void discord_message_sticker_init(struct discord_message_sticker *p) {
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_message_sticker_format_types"}}' */
 
 }
-struct discord_message_sticker* discord_message_sticker_alloc() {
-  struct discord_message_sticker *p= malloc(sizeof(struct discord_message_sticker));
-  discord_message_sticker_init(p);
-  return p;
-}
-
-void discord_message_sticker_free(struct discord_message_sticker *p) {
-  discord_message_sticker_cleanup(p);
-  free(p);
-}
-
 void discord_message_sticker_list_free(struct discord_message_sticker **p) {
   ntl_free((void**)p, (vfvp)discord_message_sticker_cleanup);
 }
@@ -1143,10 +1113,6 @@ void discord_message_reference_init_v(void *p) {
   discord_message_reference_init((struct discord_message_reference *)p);
 }
 
-void discord_message_reference_free_v(void *p) {
- discord_message_reference_free((struct discord_message_reference *)p);
-};
-
 void discord_message_reference_from_json_v(char *json, size_t len, void *pp) {
  discord_message_reference_from_json(json, len, (struct discord_message_reference**)pp);
 }
@@ -1198,17 +1164,6 @@ void discord_message_reference_init(struct discord_message_reference *p) {
      '{"name":"fail_if_not_exists", "type":{"base":"bool"}, "option":true, "inject_if_not":false}' */
 
 }
-struct discord_message_reference* discord_message_reference_alloc() {
-  struct discord_message_reference *p= malloc(sizeof(struct discord_message_reference));
-  discord_message_reference_init(p);
-  return p;
-}
-
-void discord_message_reference_free(struct discord_message_reference *p) {
-  discord_message_reference_cleanup(p);
-  free(p);
-}
-
 void discord_message_reference_list_free(struct discord_message_reference **p) {
   ntl_free((void**)p, (vfvp)discord_message_reference_cleanup);
 }
@@ -1355,10 +1310,6 @@ void discord_message_application_init_v(void *p) {
   discord_message_application_init((struct discord_message_application *)p);
 }
 
-void discord_message_application_free_v(void *p) {
- discord_message_application_free((struct discord_message_application *)p);
-};
-
 void discord_message_application_from_json_v(char *json, size_t len, void *pp) {
  discord_message_application_from_json(json, len, (struct discord_message_application**)pp);
 }
@@ -1420,17 +1371,6 @@ void discord_message_application_init(struct discord_message_application *p) {
      '{"name":"name", "type":{"base":"char", "dec":"*"}}' */
 
 }
-struct discord_message_application* discord_message_application_alloc() {
-  struct discord_message_application *p= malloc(sizeof(struct discord_message_application));
-  discord_message_application_init(p);
-  return p;
-}
-
-void discord_message_application_free(struct discord_message_application *p) {
-  discord_message_application_cleanup(p);
-  free(p);
-}
-
 void discord_message_application_list_free(struct discord_message_application **p) {
   ntl_free((void**)p, (vfvp)discord_message_application_cleanup);
 }
@@ -1558,10 +1498,6 @@ void discord_message_activity_init_v(void *p) {
   discord_message_activity_init((struct discord_message_activity *)p);
 }
 
-void discord_message_activity_free_v(void *p) {
- discord_message_activity_free((struct discord_message_activity *)p);
-};
-
 void discord_message_activity_from_json_v(char *json, size_t len, void *pp) {
  discord_message_activity_from_json(json, len, (struct discord_message_activity**)pp);
 }
@@ -1604,17 +1540,6 @@ void discord_message_activity_init(struct discord_message_activity *p) {
          "option":true, "inject_if_not":null}' */
 
 }
-struct discord_message_activity* discord_message_activity_alloc() {
-  struct discord_message_activity *p= malloc(sizeof(struct discord_message_activity));
-  discord_message_activity_init(p);
-  return p;
-}
-
-void discord_message_activity_free(struct discord_message_activity *p) {
-  discord_message_activity_cleanup(p);
-  free(p);
-}
-
 void discord_message_activity_list_free(struct discord_message_activity **p) {
   ntl_free((void**)p, (vfvp)discord_message_activity_cleanup);
 }
@@ -2235,10 +2160,6 @@ void discord_message_init_v(void *p) {
   discord_message_init((struct discord_message *)p);
 }
 
-void discord_message_free_v(void *p) {
- discord_message_free((struct discord_message *)p);
-};
-
 void discord_message_from_json_v(char *json, size_t len, void *pp) {
  discord_message_from_json(json, len, (struct discord_message**)pp);
 }
@@ -2272,12 +2193,16 @@ void discord_message_cleanup(struct discord_message *d) {
   // p->guild_id is a scalar
   /* specs/discord/channel.json:189:69
      '{"type":{"base":"struct discord_user", "dec":"*"}, "name":"author"}' */
-  if (d->author)
-    discord_user_free(d->author);
+  if (d->author) {
+    discord_user_cleanup(d->author);
+    free(d->author);
+  }
   /* specs/discord/channel.json:190:77
      '{"type":{"base":"struct discord_guild_member", "dec":"*"}, "name":"member", "option":true, "comment":"partial guild member object"}' */
-  if (d->member)
-    discord_guild_member_free(d->member);
+  if (d->member) {
+    discord_guild_member_cleanup(d->member);
+    free(d->member);
+  }
   /* specs/discord/channel.json:191:54
      '{"type":{"base":"char", "dec":"*"}, "name":"content"}' */
   if (d->content)
@@ -2333,31 +2258,41 @@ void discord_message_cleanup(struct discord_message *d) {
   // p->type is a scalar
   /* specs/discord/channel.json:206:81
      '{"type":{"base":"struct discord_message_activity", "dec":"*"}, "name":"activity", "option":true, "inject_if_not":null }' */
-  if (d->activity)
-    discord_message_activity_free(d->activity);
+  if (d->activity) {
+    discord_message_activity_cleanup(d->activity);
+    free(d->activity);
+  }
   /* specs/discord/channel.json:207:86
      '{"type":{"base":"struct discord_message_application", "dec":"ntl"}, "name":"application", "option":true, "inject_if_not":null }' */
   if (d->application)
     discord_message_application_list_free(d->application);
   /* specs/discord/channel.json:208:82
      '{"type":{"base":"struct discord_message_reference", "dec":"*"}, "name":"message_reference", "option":true, "inject_if_not":null }' */
-  if (d->message_reference)
-    discord_message_reference_free(d->message_reference);
+  if (d->message_reference) {
+    discord_message_reference_cleanup(d->message_reference);
+    free(d->message_reference);
+  }
   /* specs/discord/channel.json:209:84
      '{"type":{"base":"int", "int_alias":"enum discord_message_flags"}, "name":"flags", "option":true, "inject_if_not":0 }' */
   // p->flags is a scalar
   /* specs/discord/channel.json:210:72
      '{"type":{"base":"struct discord_message", "dec":"*"}, "name":"referenced_message", "lazy_init":true, "option":true, "inject_if_not":null, "comment":"this will cause recursive allocation if allocating as the parent"}' */
-  if (d->referenced_message)
-    discord_message_free(d->referenced_message);
+  if (d->referenced_message) {
+    discord_message_cleanup(d->referenced_message);
+    free(d->referenced_message);
+  }
   /* specs/discord/channel.json:211:84
      '{"type":{"base":"struct discord_message_interaction", "dec":"*"}, "name":"interaction", "option":true, "inject_if_not":null, "comment":"the message associated with the message_reference"}' */
-  if (d->interaction)
-    discord_message_interaction_free(d->interaction);
+  if (d->interaction) {
+    discord_message_interaction_cleanup(d->interaction);
+    free(d->interaction);
+  }
   /* specs/discord/channel.json:212:72
      '{"type":{"base":"struct discord_channel", "dec":"*"}, "name":"thread", "option":true, "inject_if_not":null, "comment":"the channel that was started from this message, includes thread member obejct"}' */
-  if (d->thread)
-    discord_channel_free(d->thread);
+  if (d->thread) {
+    discord_channel_cleanup(d->thread);
+    free(d->thread);
+  }
   /* specs/discord/channel.json:213:76
      '{"type":{"base":"struct discord_component", "dec":"ntl"}, "name":"components", "option":true, "inject_if_not":null, "comment":"sent if the message contains components like buttons, actions rows, or other interactive components"}' */
   if (d->components)
@@ -2385,11 +2320,13 @@ void discord_message_init(struct discord_message *p) {
 
   /* specs/discord/channel.json:189:69
      '{"type":{"base":"struct discord_user", "dec":"*"}, "name":"author"}' */
-  p->author = discord_user_alloc();
+  p->author = malloc(sizeof *p->author);
+  discord_user_init(p->author);
 
   /* specs/discord/channel.json:190:77
      '{"type":{"base":"struct discord_guild_member", "dec":"*"}, "name":"member", "option":true, "comment":"partial guild member object"}' */
-  p->member = discord_guild_member_alloc();
+  p->member = malloc(sizeof *p->member);
+  discord_guild_member_init(p->member);
 
   /* specs/discord/channel.json:191:54
      '{"type":{"base":"char", "dec":"*"}, "name":"content"}' */
@@ -2438,14 +2375,16 @@ void discord_message_init(struct discord_message *p) {
 
   /* specs/discord/channel.json:206:81
      '{"type":{"base":"struct discord_message_activity", "dec":"*"}, "name":"activity", "option":true, "inject_if_not":null }' */
-  p->activity = discord_message_activity_alloc();
+  p->activity = malloc(sizeof *p->activity);
+  discord_message_activity_init(p->activity);
 
   /* specs/discord/channel.json:207:86
      '{"type":{"base":"struct discord_message_application", "dec":"ntl"}, "name":"application", "option":true, "inject_if_not":null }' */
 
   /* specs/discord/channel.json:208:82
      '{"type":{"base":"struct discord_message_reference", "dec":"*"}, "name":"message_reference", "option":true, "inject_if_not":null }' */
-  p->message_reference = discord_message_reference_alloc();
+  p->message_reference = malloc(sizeof *p->message_reference);
+  discord_message_reference_init(p->message_reference);
 
   /* specs/discord/channel.json:209:84
      '{"type":{"base":"int", "int_alias":"enum discord_message_flags"}, "name":"flags", "option":true, "inject_if_not":0 }' */
@@ -2455,11 +2394,13 @@ void discord_message_init(struct discord_message *p) {
 
   /* specs/discord/channel.json:211:84
      '{"type":{"base":"struct discord_message_interaction", "dec":"*"}, "name":"interaction", "option":true, "inject_if_not":null, "comment":"the message associated with the message_reference"}' */
-  p->interaction = discord_message_interaction_alloc();
+  p->interaction = malloc(sizeof *p->interaction);
+  discord_message_interaction_init(p->interaction);
 
   /* specs/discord/channel.json:212:72
      '{"type":{"base":"struct discord_channel", "dec":"*"}, "name":"thread", "option":true, "inject_if_not":null, "comment":"the channel that was started from this message, includes thread member obejct"}' */
-  p->thread = discord_channel_alloc();
+  p->thread = malloc(sizeof *p->thread);
+  discord_channel_init(p->thread);
 
   /* specs/discord/channel.json:213:76
      '{"type":{"base":"struct discord_component", "dec":"ntl"}, "name":"components", "option":true, "inject_if_not":null, "comment":"sent if the message contains components like buttons, actions rows, or other interactive components"}' */
@@ -2471,17 +2412,6 @@ void discord_message_init(struct discord_message *p) {
      '{"type":{"base":"struct discord_message_sticker", "dec":"ntl"}, "name":"stickers", "option":true, "inject_if_not":null, "comment":"[DEPRECATED] array of sticker objects"}' */
 
 }
-struct discord_message* discord_message_alloc() {
-  struct discord_message *p= malloc(sizeof(struct discord_message));
-  discord_message_init(p);
-  return p;
-}
-
-void discord_message_free(struct discord_message *p) {
-  discord_message_cleanup(p);
-  free(p);
-}
-
 void discord_message_list_free(struct discord_message **p) {
   ntl_free((void**)p, (vfvp)discord_message_cleanup);
 }
@@ -2578,10 +2508,6 @@ void discord_channel_followed_channel_init_v(void *p) {
   discord_channel_followed_channel_init((struct discord_channel_followed_channel *)p);
 }
 
-void discord_channel_followed_channel_free_v(void *p) {
- discord_channel_followed_channel_free((struct discord_channel_followed_channel *)p);
-};
-
 void discord_channel_followed_channel_from_json_v(char *json, size_t len, void *pp) {
  discord_channel_followed_channel_from_json(json, len, (struct discord_channel_followed_channel**)pp);
 }
@@ -2621,17 +2547,6 @@ void discord_channel_followed_channel_init(struct discord_channel_followed_chann
      '{ "name": "webhook_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
 
 }
-struct discord_channel_followed_channel* discord_channel_followed_channel_alloc() {
-  struct discord_channel_followed_channel *p= malloc(sizeof(struct discord_channel_followed_channel));
-  discord_channel_followed_channel_init(p);
-  return p;
-}
-
-void discord_channel_followed_channel_free(struct discord_channel_followed_channel *p) {
-  discord_channel_followed_channel_cleanup(p);
-  free(p);
-}
-
 void discord_channel_followed_channel_list_free(struct discord_channel_followed_channel **p) {
   ntl_free((void**)p, (vfvp)discord_channel_followed_channel_cleanup);
 }
@@ -2744,10 +2659,6 @@ void discord_channel_reaction_init_v(void *p) {
   discord_channel_reaction_init((struct discord_channel_reaction *)p);
 }
 
-void discord_channel_reaction_free_v(void *p) {
- discord_channel_reaction_free((struct discord_channel_reaction *)p);
-};
-
 void discord_channel_reaction_from_json_v(char *json, size_t len, void *pp) {
  discord_channel_reaction_from_json(json, len, (struct discord_channel_reaction**)pp);
 }
@@ -2778,8 +2689,10 @@ void discord_channel_reaction_cleanup(struct discord_channel_reaction *d) {
   // p->me is a scalar
   /* specs/discord/channel.json:238:20
      '{ "name": "emoji", "type":{ "base":"struct discord_emoji", "dec":"*" }, "comment":"partial emoji object"}' */
-  if (d->emoji)
-    discord_emoji_free(d->emoji);
+  if (d->emoji) {
+    discord_emoji_cleanup(d->emoji);
+    free(d->emoji);
+  }
 }
 
 void discord_channel_reaction_init(struct discord_channel_reaction *p) {
@@ -2792,20 +2705,10 @@ void discord_channel_reaction_init(struct discord_channel_reaction *p) {
 
   /* specs/discord/channel.json:238:20
      '{ "name": "emoji", "type":{ "base":"struct discord_emoji", "dec":"*" }, "comment":"partial emoji object"}' */
-  p->emoji = discord_emoji_alloc();
+  p->emoji = malloc(sizeof *p->emoji);
+  discord_emoji_init(p->emoji);
 
 }
-struct discord_channel_reaction* discord_channel_reaction_alloc() {
-  struct discord_channel_reaction *p= malloc(sizeof(struct discord_channel_reaction));
-  discord_channel_reaction_init(p);
-  return p;
-}
-
-void discord_channel_reaction_free(struct discord_channel_reaction *p) {
-  discord_channel_reaction_cleanup(p);
-  free(p);
-}
-
 void discord_channel_reaction_list_free(struct discord_channel_reaction **p) {
   ntl_free((void**)p, (vfvp)discord_channel_reaction_cleanup);
 }
@@ -2944,10 +2847,6 @@ void discord_channel_overwrite_init_v(void *p) {
   discord_channel_overwrite_init((struct discord_channel_overwrite *)p);
 }
 
-void discord_channel_overwrite_free_v(void *p) {
- discord_channel_overwrite_free((struct discord_channel_overwrite *)p);
-};
-
 void discord_channel_overwrite_from_json_v(char *json, size_t len, void *pp) {
  discord_channel_overwrite_from_json(json, len, (struct discord_channel_overwrite**)pp);
 }
@@ -3003,17 +2902,6 @@ void discord_channel_overwrite_init(struct discord_channel_overwrite *p) {
           "comment":"permission bit set"}' */
 
 }
-struct discord_channel_overwrite* discord_channel_overwrite_alloc() {
-  struct discord_channel_overwrite *p= malloc(sizeof(struct discord_channel_overwrite));
-  discord_channel_overwrite_init(p);
-  return p;
-}
-
-void discord_channel_overwrite_free(struct discord_channel_overwrite *p) {
-  discord_channel_overwrite_cleanup(p);
-  free(p);
-}
-
 void discord_channel_overwrite_list_free(struct discord_channel_overwrite **p) {
   ntl_free((void**)p, (vfvp)discord_channel_overwrite_cleanup);
 }
@@ -3158,10 +3046,6 @@ void discord_thread_metadata_init_v(void *p) {
   discord_thread_metadata_init((struct discord_thread_metadata *)p);
 }
 
-void discord_thread_metadata_free_v(void *p) {
- discord_thread_metadata_free((struct discord_thread_metadata *)p);
-};
-
 void discord_thread_metadata_from_json_v(char *json, size_t len, void *pp) {
  discord_thread_metadata_from_json(json, len, (struct discord_thread_metadata**)pp);
 }
@@ -3219,17 +3103,6 @@ void discord_thread_metadata_init(struct discord_thread_metadata *p) {
      '{ "name": "locked", "type":{ "base":"bool" }}' */
 
 }
-struct discord_thread_metadata* discord_thread_metadata_alloc() {
-  struct discord_thread_metadata *p= malloc(sizeof(struct discord_thread_metadata));
-  discord_thread_metadata_init(p);
-  return p;
-}
-
-void discord_thread_metadata_free(struct discord_thread_metadata *p) {
-  discord_thread_metadata_cleanup(p);
-  free(p);
-}
-
 void discord_thread_metadata_list_free(struct discord_thread_metadata **p) {
   ntl_free((void**)p, (vfvp)discord_thread_metadata_cleanup);
 }
@@ -3358,10 +3231,6 @@ void discord_thread_member_init_v(void *p) {
   discord_thread_member_init((struct discord_thread_member *)p);
 }
 
-void discord_thread_member_free_v(void *p) {
- discord_thread_member_free((struct discord_thread_member *)p);
-};
-
 void discord_thread_member_from_json_v(char *json, size_t len, void *pp) {
  discord_thread_member_from_json(json, len, (struct discord_thread_member**)pp);
 }
@@ -3413,17 +3282,6 @@ void discord_thread_member_init(struct discord_thread_member *p) {
      '{ "name": "flags", "type":{ "base":"int" }}' */
 
 }
-struct discord_thread_member* discord_thread_member_alloc() {
-  struct discord_thread_member *p= malloc(sizeof(struct discord_thread_member));
-  discord_thread_member_init(p);
-  return p;
-}
-
-void discord_thread_member_free(struct discord_thread_member *p) {
-  discord_thread_member_cleanup(p);
-  free(p);
-}
-
 void discord_thread_member_list_free(struct discord_thread_member **p) {
   ntl_free((void**)p, (vfvp)discord_thread_member_cleanup);
 }
@@ -3600,10 +3458,6 @@ void discord_channel_attachment_init_v(void *p) {
   discord_channel_attachment_init((struct discord_channel_attachment *)p);
 }
 
-void discord_channel_attachment_free_v(void *p) {
- discord_channel_attachment_free((struct discord_channel_attachment *)p);
-};
-
 void discord_channel_attachment_from_json_v(char *json, size_t len, void *pp) {
  discord_channel_attachment_from_json(json, len, (struct discord_channel_attachment**)pp);
 }
@@ -3675,17 +3529,6 @@ void discord_channel_attachment_init(struct discord_channel_attachment *p) {
      '{ "name": "width", "type":{ "base":"int", "nullable":true }}' */
 
 }
-struct discord_channel_attachment* discord_channel_attachment_alloc() {
-  struct discord_channel_attachment *p= malloc(sizeof(struct discord_channel_attachment));
-  discord_channel_attachment_init(p);
-  return p;
-}
-
-void discord_channel_attachment_free(struct discord_channel_attachment *p) {
-  discord_channel_attachment_cleanup(p);
-  free(p);
-}
-
 void discord_channel_attachment_list_free(struct discord_channel_attachment **p) {
   ntl_free((void**)p, (vfvp)discord_channel_attachment_cleanup);
 }
@@ -3814,10 +3657,6 @@ void discord_channel_mention_init_v(void *p) {
   discord_channel_mention_init((struct discord_channel_mention *)p);
 }
 
-void discord_channel_mention_free_v(void *p) {
- discord_channel_mention_free((struct discord_channel_mention *)p);
-};
-
 void discord_channel_mention_from_json_v(char *json, size_t len, void *pp) {
  discord_channel_mention_from_json(json, len, (struct discord_channel_mention**)pp);
 }
@@ -3870,17 +3709,6 @@ void discord_channel_mention_init(struct discord_channel_mention *p) {
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }}' */
 
 }
-struct discord_channel_mention* discord_channel_mention_alloc() {
-  struct discord_channel_mention *p= malloc(sizeof(struct discord_channel_mention));
-  discord_channel_mention_init(p);
-  return p;
-}
-
-void discord_channel_mention_free(struct discord_channel_mention *p) {
-  discord_channel_mention_cleanup(p);
-  free(p);
-}
-
 void discord_channel_mention_list_free(struct discord_channel_mention **p) {
   ntl_free((void**)p, (vfvp)discord_channel_mention_cleanup);
 }
@@ -4009,10 +3837,6 @@ void discord_channel_allowed_mentions_init_v(void *p) {
   discord_channel_allowed_mentions_init((struct discord_channel_allowed_mentions *)p);
 }
 
-void discord_channel_allowed_mentions_free_v(void *p) {
- discord_channel_allowed_mentions_free((struct discord_channel_allowed_mentions *)p);
-};
-
 void discord_channel_allowed_mentions_from_json_v(char *json, size_t len, void *pp) {
  discord_channel_allowed_mentions_from_json(json, len, (struct discord_channel_allowed_mentions**)pp);
 }
@@ -4067,17 +3891,6 @@ void discord_channel_allowed_mentions_init(struct discord_channel_allowed_mentio
      '{ "name": "replied_user", "type":{ "base":"bool" }}' */
 
 }
-struct discord_channel_allowed_mentions* discord_channel_allowed_mentions_alloc() {
-  struct discord_channel_allowed_mentions *p= malloc(sizeof(struct discord_channel_allowed_mentions));
-  discord_channel_allowed_mentions_init(p);
-  return p;
-}
-
-void discord_channel_allowed_mentions_free(struct discord_channel_allowed_mentions *p) {
-  discord_channel_allowed_mentions_cleanup(p);
-  free(p);
-}
-
 void discord_channel_allowed_mentions_list_free(struct discord_channel_allowed_mentions **p) {
   ntl_free((void**)p, (vfvp)discord_channel_allowed_mentions_cleanup);
 }
@@ -4363,10 +4176,6 @@ void discord_embed_init_v(void *p) {
   discord_embed_init((struct discord_embed *)p);
 }
 
-void discord_embed_free_v(void *p) {
- discord_embed_free((struct discord_embed *)p);
-};
-
 void discord_embed_from_json_v(char *json, size_t len, void *pp) {
  discord_embed_from_json(json, len, (struct discord_embed**)pp);
 }
@@ -4410,28 +4219,40 @@ void discord_embed_cleanup(struct discord_embed *d) {
   // p->color is a scalar
   /* specs/discord/channel.json:336:20
      '{ "name": "footer", "type":{ "base":"struct discord_embed_footer", "dec":"*"}, "option":true, "inject_if_not":null}' */
-  if (d->footer)
-    discord_embed_footer_free(d->footer);
+  if (d->footer) {
+    discord_embed_footer_cleanup(d->footer);
+    free(d->footer);
+  }
   /* specs/discord/channel.json:337:20
      '{ "name": "image", "type":{ "base":"struct discord_embed_image", "dec":"*"}, "inject_if_not":null}' */
-  if (d->image)
-    discord_embed_image_free(d->image);
+  if (d->image) {
+    discord_embed_image_cleanup(d->image);
+    free(d->image);
+  }
   /* specs/discord/channel.json:338:20
      '{ "name": "thumbnail", "type":{ "base":"struct discord_embed_thumbnail", "dec":"*"}, "inject_if_not":null}' */
-  if (d->thumbnail)
-    discord_embed_thumbnail_free(d->thumbnail);
+  if (d->thumbnail) {
+    discord_embed_thumbnail_cleanup(d->thumbnail);
+    free(d->thumbnail);
+  }
   /* specs/discord/channel.json:339:20
      '{ "name": "video", "type":{ "base":"struct discord_embed_video", "dec":"*"}, "inject_if_not":null}' */
-  if (d->video)
-    discord_embed_video_free(d->video);
+  if (d->video) {
+    discord_embed_video_cleanup(d->video);
+    free(d->video);
+  }
   /* specs/discord/channel.json:340:20
      '{ "name": "provider", "type":{ "base":"struct discord_embed_provider", "dec":"*"}, "inject_if_not":null}' */
-  if (d->provider)
-    discord_embed_provider_free(d->provider);
+  if (d->provider) {
+    discord_embed_provider_cleanup(d->provider);
+    free(d->provider);
+  }
   /* specs/discord/channel.json:341:20
      '{ "name": "author", "type":{ "base":"struct discord_embed_author", "dec":"*"}, "inject_if_not":null}' */
-  if (d->author)
-    discord_embed_author_free(d->author);
+  if (d->author) {
+    discord_embed_author_cleanup(d->author);
+    free(d->author);
+  }
   /* specs/discord/channel.json:342:20
      '{ "name": "fields", "type":{ "base":"struct discord_embed_field", "dec":"ntl"}, "option":true, "inject_if_not":null}' */
   if (d->fields)
@@ -4460,43 +4281,38 @@ void discord_embed_init(struct discord_embed *p) {
 
   /* specs/discord/channel.json:336:20
      '{ "name": "footer", "type":{ "base":"struct discord_embed_footer", "dec":"*"}, "option":true, "inject_if_not":null}' */
-  p->footer = discord_embed_footer_alloc();
+  p->footer = malloc(sizeof *p->footer);
+  discord_embed_footer_init(p->footer);
 
   /* specs/discord/channel.json:337:20
      '{ "name": "image", "type":{ "base":"struct discord_embed_image", "dec":"*"}, "inject_if_not":null}' */
-  p->image = discord_embed_image_alloc();
+  p->image = malloc(sizeof *p->image);
+  discord_embed_image_init(p->image);
 
   /* specs/discord/channel.json:338:20
      '{ "name": "thumbnail", "type":{ "base":"struct discord_embed_thumbnail", "dec":"*"}, "inject_if_not":null}' */
-  p->thumbnail = discord_embed_thumbnail_alloc();
+  p->thumbnail = malloc(sizeof *p->thumbnail);
+  discord_embed_thumbnail_init(p->thumbnail);
 
   /* specs/discord/channel.json:339:20
      '{ "name": "video", "type":{ "base":"struct discord_embed_video", "dec":"*"}, "inject_if_not":null}' */
-  p->video = discord_embed_video_alloc();
+  p->video = malloc(sizeof *p->video);
+  discord_embed_video_init(p->video);
 
   /* specs/discord/channel.json:340:20
      '{ "name": "provider", "type":{ "base":"struct discord_embed_provider", "dec":"*"}, "inject_if_not":null}' */
-  p->provider = discord_embed_provider_alloc();
+  p->provider = malloc(sizeof *p->provider);
+  discord_embed_provider_init(p->provider);
 
   /* specs/discord/channel.json:341:20
      '{ "name": "author", "type":{ "base":"struct discord_embed_author", "dec":"*"}, "inject_if_not":null}' */
-  p->author = discord_embed_author_alloc();
+  p->author = malloc(sizeof *p->author);
+  discord_embed_author_init(p->author);
 
   /* specs/discord/channel.json:342:20
      '{ "name": "fields", "type":{ "base":"struct discord_embed_field", "dec":"ntl"}, "option":true, "inject_if_not":null}' */
 
 }
-struct discord_embed* discord_embed_alloc() {
-  struct discord_embed *p= malloc(sizeof(struct discord_embed));
-  discord_embed_init(p);
-  return p;
-}
-
-void discord_embed_free(struct discord_embed *p) {
-  discord_embed_cleanup(p);
-  free(p);
-}
-
 void discord_embed_list_free(struct discord_embed **p) {
   ntl_free((void**)p, (vfvp)discord_embed_cleanup);
 }
@@ -4629,10 +4445,6 @@ void discord_embed_thumbnail_init_v(void *p) {
   discord_embed_thumbnail_init((struct discord_embed_thumbnail *)p);
 }
 
-void discord_embed_thumbnail_free_v(void *p) {
- discord_embed_thumbnail_free((struct discord_embed_thumbnail *)p);
-};
-
 void discord_embed_thumbnail_from_json_v(char *json, size_t len, void *pp) {
  discord_embed_thumbnail_from_json(json, len, (struct discord_embed_thumbnail**)pp);
 }
@@ -4686,17 +4498,6 @@ void discord_embed_thumbnail_init(struct discord_embed_thumbnail *p) {
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}' */
 
 }
-struct discord_embed_thumbnail* discord_embed_thumbnail_alloc() {
-  struct discord_embed_thumbnail *p= malloc(sizeof(struct discord_embed_thumbnail));
-  discord_embed_thumbnail_init(p);
-  return p;
-}
-
-void discord_embed_thumbnail_free(struct discord_embed_thumbnail *p) {
-  discord_embed_thumbnail_cleanup(p);
-  free(p);
-}
-
 void discord_embed_thumbnail_list_free(struct discord_embed_thumbnail **p) {
   ntl_free((void**)p, (vfvp)discord_embed_thumbnail_cleanup);
 }
@@ -4829,10 +4630,6 @@ void discord_embed_video_init_v(void *p) {
   discord_embed_video_init((struct discord_embed_video *)p);
 }
 
-void discord_embed_video_free_v(void *p) {
- discord_embed_video_free((struct discord_embed_video *)p);
-};
-
 void discord_embed_video_from_json_v(char *json, size_t len, void *pp) {
  discord_embed_video_from_json(json, len, (struct discord_embed_video**)pp);
 }
@@ -4886,17 +4683,6 @@ void discord_embed_video_init(struct discord_embed_video *p) {
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}' */
 
 }
-struct discord_embed_video* discord_embed_video_alloc() {
-  struct discord_embed_video *p= malloc(sizeof(struct discord_embed_video));
-  discord_embed_video_init(p);
-  return p;
-}
-
-void discord_embed_video_free(struct discord_embed_video *p) {
-  discord_embed_video_cleanup(p);
-  free(p);
-}
-
 void discord_embed_video_list_free(struct discord_embed_video **p) {
   ntl_free((void**)p, (vfvp)discord_embed_video_cleanup);
 }
@@ -5029,10 +4815,6 @@ void discord_embed_image_init_v(void *p) {
   discord_embed_image_init((struct discord_embed_image *)p);
 }
 
-void discord_embed_image_free_v(void *p) {
- discord_embed_image_free((struct discord_embed_image *)p);
-};
-
 void discord_embed_image_from_json_v(char *json, size_t len, void *pp) {
  discord_embed_image_from_json(json, len, (struct discord_embed_image**)pp);
 }
@@ -5086,17 +4868,6 @@ void discord_embed_image_init(struct discord_embed_image *p) {
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}' */
 
 }
-struct discord_embed_image* discord_embed_image_alloc() {
-  struct discord_embed_image *p= malloc(sizeof(struct discord_embed_image));
-  discord_embed_image_init(p);
-  return p;
-}
-
-void discord_embed_image_free(struct discord_embed_image *p) {
-  discord_embed_image_cleanup(p);
-  free(p);
-}
-
 void discord_embed_image_list_free(struct discord_embed_image **p) {
   ntl_free((void**)p, (vfvp)discord_embed_image_cleanup);
 }
@@ -5195,10 +4966,6 @@ void discord_embed_provider_init_v(void *p) {
   discord_embed_provider_init((struct discord_embed_provider *)p);
 }
 
-void discord_embed_provider_free_v(void *p) {
- discord_embed_provider_free((struct discord_embed_provider *)p);
-};
-
 void discord_embed_provider_from_json_v(char *json, size_t len, void *pp) {
  discord_embed_provider_from_json(json, len, (struct discord_embed_provider**)pp);
 }
@@ -5240,17 +5007,6 @@ void discord_embed_provider_init(struct discord_embed_provider *p) {
      '{ "name": "url", "type":{"base":"char", "dec":"*"}, "inject_if_not":null}' */
 
 }
-struct discord_embed_provider* discord_embed_provider_alloc() {
-  struct discord_embed_provider *p= malloc(sizeof(struct discord_embed_provider));
-  discord_embed_provider_init(p);
-  return p;
-}
-
-void discord_embed_provider_free(struct discord_embed_provider *p) {
-  discord_embed_provider_cleanup(p);
-  free(p);
-}
-
 void discord_embed_provider_list_free(struct discord_embed_provider **p) {
   ntl_free((void**)p, (vfvp)discord_embed_provider_cleanup);
 }
@@ -5383,10 +5139,6 @@ void discord_embed_author_init_v(void *p) {
   discord_embed_author_init((struct discord_embed_author *)p);
 }
 
-void discord_embed_author_free_v(void *p) {
- discord_embed_author_free((struct discord_embed_author *)p);
-};
-
 void discord_embed_author_from_json_v(char *json, size_t len, void *pp) {
  discord_embed_author_from_json(json, len, (struct discord_embed_author**)pp);
 }
@@ -5441,17 +5193,6 @@ void discord_embed_author_init(struct discord_embed_author *p) {
      '{ "name": "proxy_icon_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
 
 }
-struct discord_embed_author* discord_embed_author_alloc() {
-  struct discord_embed_author *p= malloc(sizeof(struct discord_embed_author));
-  discord_embed_author_init(p);
-  return p;
-}
-
-void discord_embed_author_free(struct discord_embed_author *p) {
-  discord_embed_author_cleanup(p);
-  free(p);
-}
-
 void discord_embed_author_list_free(struct discord_embed_author **p) {
   ntl_free((void**)p, (vfvp)discord_embed_author_cleanup);
 }
@@ -5567,10 +5308,6 @@ void discord_embed_footer_init_v(void *p) {
   discord_embed_footer_init((struct discord_embed_footer *)p);
 }
 
-void discord_embed_footer_free_v(void *p) {
- discord_embed_footer_free((struct discord_embed_footer *)p);
-};
-
 void discord_embed_footer_from_json_v(char *json, size_t len, void *pp) {
  discord_embed_footer_from_json(json, len, (struct discord_embed_footer**)pp);
 }
@@ -5618,17 +5355,6 @@ void discord_embed_footer_init(struct discord_embed_footer *p) {
      '{ "name": "proxy_icon_url", "type": {"base":"char", "dec":"*"}, "option":true, "inject_if_not":null}' */
 
 }
-struct discord_embed_footer* discord_embed_footer_alloc() {
-  struct discord_embed_footer *p= malloc(sizeof(struct discord_embed_footer));
-  discord_embed_footer_init(p);
-  return p;
-}
-
-void discord_embed_footer_free(struct discord_embed_footer *p) {
-  discord_embed_footer_cleanup(p);
-  free(p);
-}
-
 void discord_embed_footer_list_free(struct discord_embed_footer **p) {
   ntl_free((void**)p, (vfvp)discord_embed_footer_cleanup);
 }
@@ -5743,10 +5469,6 @@ void discord_embed_field_init_v(void *p) {
   discord_embed_field_init((struct discord_embed_field *)p);
 }
 
-void discord_embed_field_free_v(void *p) {
- discord_embed_field_free((struct discord_embed_field *)p);
-};
-
 void discord_embed_field_from_json_v(char *json, size_t len, void *pp) {
  discord_embed_field_from_json(json, len, (struct discord_embed_field**)pp);
 }
@@ -5792,17 +5514,6 @@ void discord_embed_field_init(struct discord_embed_field *p) {
      '{ "name": "Inline", "json_key":"inline", "type": { "base":"bool" }, "option":true}' */
 
 }
-struct discord_embed_field* discord_embed_field_alloc() {
-  struct discord_embed_field *p= malloc(sizeof(struct discord_embed_field));
-  discord_embed_field_init(p);
-  return p;
-}
-
-void discord_embed_field_free(struct discord_embed_field *p) {
-  discord_embed_field_cleanup(p);
-  free(p);
-}
-
 void discord_embed_field_list_free(struct discord_embed_field **p) {
   ntl_free((void**)p, (vfvp)discord_embed_field_cleanup);
 }

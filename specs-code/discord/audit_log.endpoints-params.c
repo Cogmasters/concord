@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/audit_log.endpoints-params.c
  * @author cee-studio
- * @date Jul 28 2021
+ * @date Jul 30 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/audit-log
  */
@@ -120,10 +120,6 @@ void discord_get_guild_audit_log_params_init_v(void *p) {
   discord_get_guild_audit_log_params_init((struct discord_get_guild_audit_log_params *)p);
 }
 
-void discord_get_guild_audit_log_params_free_v(void *p) {
- discord_get_guild_audit_log_params_free((struct discord_get_guild_audit_log_params *)p);
-};
-
 void discord_get_guild_audit_log_params_from_json_v(char *json, size_t len, void *pp) {
  discord_get_guild_audit_log_params_from_json(json, len, (struct discord_get_guild_audit_log_params**)pp);
 }
@@ -175,17 +171,6 @@ void discord_get_guild_audit_log_params_init(struct discord_get_guild_audit_log_
      '{ "name": "limit", "type":{ "base":"int" }, "inject_if_not":0 }' */
 
 }
-struct discord_get_guild_audit_log_params* discord_get_guild_audit_log_params_alloc() {
-  struct discord_get_guild_audit_log_params *p= malloc(sizeof(struct discord_get_guild_audit_log_params));
-  discord_get_guild_audit_log_params_init(p);
-  return p;
-}
-
-void discord_get_guild_audit_log_params_free(struct discord_get_guild_audit_log_params *p) {
-  discord_get_guild_audit_log_params_cleanup(p);
-  free(p);
-}
-
 void discord_get_guild_audit_log_params_list_free(struct discord_get_guild_audit_log_params **p) {
   ntl_free((void**)p, (vfvp)discord_get_guild_audit_log_params_cleanup);
 }

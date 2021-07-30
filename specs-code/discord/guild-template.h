@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/guild-template.h
  * @author cee-studio
- * @date Jul 28 2021
+ * @date Jul 30 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/guild-template
  */
@@ -78,9 +78,6 @@ extern void discord_guild_template_cleanup_v(void *p);
 extern void discord_guild_template_cleanup(struct discord_guild_template *p);
 extern void discord_guild_template_init_v(void *p);
 extern void discord_guild_template_init(struct discord_guild_template *p);
-extern struct discord_guild_template * discord_guild_template_alloc();
-extern void discord_guild_template_free_v(void *p);
-extern void discord_guild_template_free(struct discord_guild_template *p);
 extern void discord_guild_template_from_json_v(char *json, size_t len, void *pp);
 extern void discord_guild_template_from_json(char *json, size_t len, struct discord_guild_template **pp);
 extern size_t discord_guild_template_to_json_v(char *json, size_t len, void *p);

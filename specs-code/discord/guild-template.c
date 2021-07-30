@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/guild-template.c
  * @author cee-studio
- * @date Jul 28 2021
+ * @date Jul 30 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/guild-template
  */
@@ -228,10 +228,6 @@ void discord_guild_template_init_v(void *p) {
   discord_guild_template_init((struct discord_guild_template *)p);
 }
 
-void discord_guild_template_free_v(void *p) {
- discord_guild_template_free((struct discord_guild_template *)p);
-};
-
 void discord_guild_template_from_json_v(char *json, size_t len, void *pp) {
  discord_guild_template_from_json(json, len, (struct discord_guild_template**)pp);
 }
@@ -274,8 +270,10 @@ void discord_guild_template_cleanup(struct discord_guild_template *d) {
   // p->creator_id is a scalar
   /* specs/discord/guild-template.json:17:20
      '{ "name": "creator", "type":{ "base":"struct discord_user", "dec":"*" }}' */
-  if (d->creator)
-    discord_user_free(d->creator);
+  if (d->creator) {
+    discord_user_cleanup(d->creator);
+    free(d->creator);
+  }
   /* specs/discord/guild-template.json:18:20
      '{ "name": "created_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}' */
   // p->created_at is a scalar
@@ -287,8 +285,10 @@ void discord_guild_template_cleanup(struct discord_guild_template *d) {
   // p->source_guild_id is a scalar
   /* specs/discord/guild-template.json:21:20
      '{ "name": "serialized_source_guild", "type":{ "base":"struct discord_guild", "dec":"*" }}' */
-  if (d->serialized_source_guild)
-    discord_guild_free(d->serialized_source_guild);
+  if (d->serialized_source_guild) {
+    discord_guild_cleanup(d->serialized_source_guild);
+    free(d->serialized_source_guild);
+  }
   /* specs/discord/guild-template.json:22:20
      '{ "name": "is_dirty", "type":{ "base":"bool" }}' */
   // p->is_dirty is a scalar
@@ -313,7 +313,8 @@ void discord_guild_template_init(struct discord_guild_template *p) {
 
   /* specs/discord/guild-template.json:17:20
      '{ "name": "creator", "type":{ "base":"struct discord_user", "dec":"*" }}' */
-  p->creator = discord_user_alloc();
+  p->creator = malloc(sizeof *p->creator);
+  discord_user_init(p->creator);
 
   /* specs/discord/guild-template.json:18:20
      '{ "name": "created_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}' */
@@ -326,23 +327,13 @@ void discord_guild_template_init(struct discord_guild_template *p) {
 
   /* specs/discord/guild-template.json:21:20
      '{ "name": "serialized_source_guild", "type":{ "base":"struct discord_guild", "dec":"*" }}' */
-  p->serialized_source_guild = discord_guild_alloc();
+  p->serialized_source_guild = malloc(sizeof *p->serialized_source_guild);
+  discord_guild_init(p->serialized_source_guild);
 
   /* specs/discord/guild-template.json:22:20
      '{ "name": "is_dirty", "type":{ "base":"bool" }}' */
 
 }
-struct discord_guild_template* discord_guild_template_alloc() {
-  struct discord_guild_template *p= malloc(sizeof(struct discord_guild_template));
-  discord_guild_template_init(p);
-  return p;
-}
-
-void discord_guild_template_free(struct discord_guild_template *p) {
-  discord_guild_template_cleanup(p);
-  free(p);
-}
-
 void discord_guild_template_list_free(struct discord_guild_template **p) {
   ntl_free((void**)p, (vfvp)discord_guild_template_cleanup);
 }

@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/voice-connections.c
  * @author cee-studio
- * @date Jul 28 2021
+ * @date Jul 30 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/topics/voice-connections
  */

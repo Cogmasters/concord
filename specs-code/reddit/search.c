@@ -2,7 +2,7 @@
 /**
  * @file specs-code/reddit/search.c
  * @author cee-studio
- * @date Jul 28 2021
+ * @date Jul 30 2021
  * @brief Specs generated file
  * @see 
  */
@@ -260,10 +260,6 @@ void reddit_search_params_init_v(void *p) {
   reddit_search_params_init((struct reddit_search_params *)p);
 }
 
-void reddit_search_params_free_v(void *p) {
- reddit_search_params_free((struct reddit_search_params *)p);
-};
-
 void reddit_search_params_from_json_v(char *json, size_t len, void *pp) {
  reddit_search_params_from_json(json, len, (struct reddit_search_params**)pp);
 }
@@ -378,17 +374,6 @@ void reddit_search_params_init(struct reddit_search_params *p) {
      '{ "name": "type", "type":{ "base":"char", "dec":"*" }, "comment":"(optional) comma-delimited list of result types (sr, link, user)"}' */
 
 }
-struct reddit_search_params* reddit_search_params_alloc() {
-  struct reddit_search_params *p= malloc(sizeof(struct reddit_search_params));
-  reddit_search_params_init(p);
-  return p;
-}
-
-void reddit_search_params_free(struct reddit_search_params *p) {
-  reddit_search_params_cleanup(p);
-  free(p);
-}
-
 void reddit_search_params_list_free(struct reddit_search_params **p) {
   ntl_free((void**)p, (vfvp)reddit_search_params_cleanup);
 }

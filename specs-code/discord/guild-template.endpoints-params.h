@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/guild-template.endpoints-params.h
  * @author cee-studio
- * @date Jul 28 2021
+ * @date Jul 30 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/guild-template
  */
@@ -42,9 +42,6 @@ extern void discord_create_guild_from_guild_template_params_cleanup_v(void *p);
 extern void discord_create_guild_from_guild_template_params_cleanup(struct discord_create_guild_from_guild_template_params *p);
 extern void discord_create_guild_from_guild_template_params_init_v(void *p);
 extern void discord_create_guild_from_guild_template_params_init(struct discord_create_guild_from_guild_template_params *p);
-extern struct discord_create_guild_from_guild_template_params * discord_create_guild_from_guild_template_params_alloc();
-extern void discord_create_guild_from_guild_template_params_free_v(void *p);
-extern void discord_create_guild_from_guild_template_params_free(struct discord_create_guild_from_guild_template_params *p);
 extern void discord_create_guild_from_guild_template_params_from_json_v(char *json, size_t len, void *pp);
 extern void discord_create_guild_from_guild_template_params_from_json(char *json, size_t len, struct discord_create_guild_from_guild_template_params **pp);
 extern size_t discord_create_guild_from_guild_template_params_to_json_v(char *json, size_t len, void *p);
@@ -92,9 +89,6 @@ extern void discord_create_guild_template_params_cleanup_v(void *p);
 extern void discord_create_guild_template_params_cleanup(struct discord_create_guild_template_params *p);
 extern void discord_create_guild_template_params_init_v(void *p);
 extern void discord_create_guild_template_params_init(struct discord_create_guild_template_params *p);
-extern struct discord_create_guild_template_params * discord_create_guild_template_params_alloc();
-extern void discord_create_guild_template_params_free_v(void *p);
-extern void discord_create_guild_template_params_free(struct discord_create_guild_template_params *p);
 extern void discord_create_guild_template_params_from_json_v(char *json, size_t len, void *pp);
 extern void discord_create_guild_template_params_from_json(char *json, size_t len, struct discord_create_guild_template_params **pp);
 extern size_t discord_create_guild_template_params_to_json_v(char *json, size_t len, void *p);
@@ -142,9 +136,6 @@ extern void discord_modify_guild_template_params_cleanup_v(void *p);
 extern void discord_modify_guild_template_params_cleanup(struct discord_modify_guild_template_params *p);
 extern void discord_modify_guild_template_params_init_v(void *p);
 extern void discord_modify_guild_template_params_init(struct discord_modify_guild_template_params *p);
-extern struct discord_modify_guild_template_params * discord_modify_guild_template_params_alloc();
-extern void discord_modify_guild_template_params_free_v(void *p);
-extern void discord_modify_guild_template_params_free(struct discord_modify_guild_template_params *p);
 extern void discord_modify_guild_template_params_from_json_v(char *json, size_t len, void *pp);
 extern void discord_modify_guild_template_params_from_json(char *json, size_t len, struct discord_modify_guild_template_params **pp);
 extern size_t discord_modify_guild_template_params_to_json_v(char *json, size_t len, void *p);

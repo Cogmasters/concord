@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/permissions.c
  * @author cee-studio
- * @date Jul 28 2021
+ * @date Jul 30 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/topics/permissions
  */
@@ -305,10 +305,6 @@ void discord_permissions_role_init_v(void *p) {
   discord_permissions_role_init((struct discord_permissions_role *)p);
 }
 
-void discord_permissions_role_free_v(void *p) {
- discord_permissions_role_free((struct discord_permissions_role *)p);
-};
-
 void discord_permissions_role_from_json_v(char *json, size_t len, void *pp) {
  discord_permissions_role_from_json(json, len, (struct discord_permissions_role**)pp);
 }
@@ -358,8 +354,10 @@ void discord_permissions_role_cleanup(struct discord_permissions_role *d) {
   // p->mentionable is a scalar
   /* specs/discord/permissions.json:60:20
      '{ "name": "tags", "type":{"base":"struct discord_permissions_role_tags", "dec":"*"}}' */
-  if (d->tags)
-    discord_permissions_role_tags_free(d->tags);
+  if (d->tags) {
+    discord_permissions_role_tags_cleanup(d->tags);
+    free(d->tags);
+  }
 }
 
 void discord_permissions_role_init(struct discord_permissions_role *p) {
@@ -390,20 +388,10 @@ void discord_permissions_role_init(struct discord_permissions_role *p) {
 
   /* specs/discord/permissions.json:60:20
      '{ "name": "tags", "type":{"base":"struct discord_permissions_role_tags", "dec":"*"}}' */
-  p->tags = discord_permissions_role_tags_alloc();
+  p->tags = malloc(sizeof *p->tags);
+  discord_permissions_role_tags_init(p->tags);
 
 }
-struct discord_permissions_role* discord_permissions_role_alloc() {
-  struct discord_permissions_role *p= malloc(sizeof(struct discord_permissions_role));
-  discord_permissions_role_init(p);
-  return p;
-}
-
-void discord_permissions_role_free(struct discord_permissions_role *p) {
-  discord_permissions_role_cleanup(p);
-  free(p);
-}
-
 void discord_permissions_role_list_free(struct discord_permissions_role **p) {
   ntl_free((void**)p, (vfvp)discord_permissions_role_cleanup);
 }
@@ -516,10 +504,6 @@ void discord_permissions_role_tags_init_v(void *p) {
   discord_permissions_role_tags_init((struct discord_permissions_role_tags *)p);
 }
 
-void discord_permissions_role_tags_free_v(void *p) {
- discord_permissions_role_tags_free((struct discord_permissions_role_tags *)p);
-};
-
 void discord_permissions_role_tags_from_json_v(char *json, size_t len, void *pp) {
  discord_permissions_role_tags_from_json(json, len, (struct discord_permissions_role_tags**)pp);
 }
@@ -565,17 +549,6 @@ void discord_permissions_role_tags_init(struct discord_permissions_role_tags *p)
      '{ "name": "premium_subscriber", "type":{ "base":"int" }}' */
 
 }
-struct discord_permissions_role_tags* discord_permissions_role_tags_alloc() {
-  struct discord_permissions_role_tags *p= malloc(sizeof(struct discord_permissions_role_tags));
-  discord_permissions_role_tags_init(p);
-  return p;
-}
-
-void discord_permissions_role_tags_free(struct discord_permissions_role_tags *p) {
-  discord_permissions_role_tags_cleanup(p);
-  free(p);
-}
-
 void discord_permissions_role_tags_list_free(struct discord_permissions_role_tags **p) {
   ntl_free((void**)p, (vfvp)discord_permissions_role_tags_cleanup);
 }

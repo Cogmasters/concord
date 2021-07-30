@@ -2,7 +2,7 @@
 /**
  * @file specs-code/reddit/oauth2.c
  * @author cee-studio
- * @date Jul 28 2021
+ * @date Jul 30 2021
  * @brief Specs generated file
  * @see https://github.com/reddit-archive/reddit/wiki/OAuth2-Quick-Start-Example
  */
@@ -132,10 +132,6 @@ void reddit_access_token_params_init_v(void *p) {
   reddit_access_token_params_init((struct reddit_access_token_params *)p);
 }
 
-void reddit_access_token_params_free_v(void *p) {
- reddit_access_token_params_free((struct reddit_access_token_params *)p);
-};
-
 void reddit_access_token_params_from_json_v(char *json, size_t len, void *pp) {
  reddit_access_token_params_from_json(json, len, (struct reddit_access_token_params**)pp);
 }
@@ -198,17 +194,6 @@ void reddit_access_token_params_init(struct reddit_access_token_params *p) {
      '{ "name": "redirect_uri", "type":{ "base":"char", "dec":"*" }, "comment":"redirect uri for webapp"}' */
 
 }
-struct reddit_access_token_params* reddit_access_token_params_alloc() {
-  struct reddit_access_token_params *p= malloc(sizeof(struct reddit_access_token_params));
-  reddit_access_token_params_init(p);
-  return p;
-}
-
-void reddit_access_token_params_free(struct reddit_access_token_params *p) {
-  reddit_access_token_params_cleanup(p);
-  free(p);
-}
-
 void reddit_access_token_params_list_free(struct reddit_access_token_params **p) {
   ntl_free((void**)p, (vfvp)reddit_access_token_params_cleanup);
 }

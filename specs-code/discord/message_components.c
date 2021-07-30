@@ -2,7 +2,7 @@
 /**
  * @file specs-code/discord/message_components.c
  * @author cee-studio
- * @date Jul 28 2021
+ * @date Jul 30 2021
  * @brief Specs generated file
  * @see https://discord.com/developers/docs/interactions/message-components#message-components
  */
@@ -256,10 +256,6 @@ void discord_component_init_v(void *p) {
   discord_component_init((struct discord_component *)p);
 }
 
-void discord_component_free_v(void *p) {
- discord_component_free((struct discord_component *)p);
-};
-
 void discord_component_from_json_v(char *json, size_t len, void *pp) {
  discord_component_from_json(json, len, (struct discord_component**)pp);
 }
@@ -299,8 +295,10 @@ void discord_component_cleanup(struct discord_component *d) {
   // p->label is a scalar
   /* specs/discord/message_components.json:17:18
      '{"name":"emoji", "type":{"base":"struct discord_emoji", "dec":"*"}, "option":true, "comment":"name, id and animated", "inject_if_not":null}' */
-  if (d->emoji)
-    discord_emoji_free(d->emoji);
+  if (d->emoji) {
+    discord_emoji_cleanup(d->emoji);
+    free(d->emoji);
+  }
   /* specs/discord/message_components.json:18:18
      '{"name":"url", "type":{"base":"char", "dec":"*"}, "option":true, "comment":"a url for link-style buttons", "inject_if_not":null}' */
   if (d->url)
@@ -343,7 +341,8 @@ void discord_component_init(struct discord_component *p) {
 
   /* specs/discord/message_components.json:17:18
      '{"name":"emoji", "type":{"base":"struct discord_emoji", "dec":"*"}, "option":true, "comment":"name, id and animated", "inject_if_not":null}' */
-  p->emoji = discord_emoji_alloc();
+  p->emoji = malloc(sizeof *p->emoji);
+  discord_emoji_init(p->emoji);
 
   /* specs/discord/message_components.json:18:18
      '{"name":"url", "type":{"base":"char", "dec":"*"}, "option":true, "comment":"a url for link-style buttons", "inject_if_not":null}' */
@@ -364,17 +363,6 @@ void discord_component_init(struct discord_component *p) {
      '{"name":"components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "option":true, "comment":"a list of child components", "inject_if_not":null}' */
 
 }
-struct discord_component* discord_component_alloc() {
-  struct discord_component *p= malloc(sizeof(struct discord_component));
-  discord_component_init(p);
-  return p;
-}
-
-void discord_component_free(struct discord_component *p) {
-  discord_component_cleanup(p);
-  free(p);
-}
-
 void discord_component_list_free(struct discord_component **p) {
   ntl_free((void**)p, (vfvp)discord_component_cleanup);
 }
@@ -580,10 +568,6 @@ void discord_button_init_v(void *p) {
   discord_button_init((struct discord_button *)p);
 }
 
-void discord_button_free_v(void *p) {
- discord_button_free((struct discord_button *)p);
-};
-
 void discord_button_from_json_v(char *json, size_t len, void *pp) {
  discord_button_from_json(json, len, (struct discord_button**)pp);
 }
@@ -617,8 +601,10 @@ void discord_button_cleanup(struct discord_button *d) {
   // p->label is a scalar
   /* specs/discord/message_components.json:47:18
      '{"name":"emoji", "type":{ "base":"struct discord_emoji", "dec":"*" }, "option":true, "comment":"name, id and animated", "inject_if_not":null}' */
-  if (d->emoji)
-    discord_emoji_free(d->emoji);
+  if (d->emoji) {
+    discord_emoji_cleanup(d->emoji);
+    free(d->emoji);
+  }
   /* specs/discord/message_components.json:48:18
      '{"name":"custom_id", "type":{"base":"char", "dec":"[100+1]"}, "option":true, "comment":"a developer-defined identifier for the component, max 100 characters", "inject_if_not":""}' */
   // p->custom_id is a scalar
@@ -644,7 +630,8 @@ void discord_button_init(struct discord_button *p) {
 
   /* specs/discord/message_components.json:47:18
      '{"name":"emoji", "type":{ "base":"struct discord_emoji", "dec":"*" }, "option":true, "comment":"name, id and animated", "inject_if_not":null}' */
-  p->emoji = discord_emoji_alloc();
+  p->emoji = malloc(sizeof *p->emoji);
+  discord_emoji_init(p->emoji);
 
   /* specs/discord/message_components.json:48:18
      '{"name":"custom_id", "type":{"base":"char", "dec":"[100+1]"}, "option":true, "comment":"a developer-defined identifier for the component, max 100 characters", "inject_if_not":""}' */
@@ -656,17 +643,6 @@ void discord_button_init(struct discord_button *p) {
      '{"name":"disabled", "type":{"base":"bool"}, "option":true, "inject_if_not":false, "comment":"whether the component is disabled, default false"}' */
 
 }
-struct discord_button* discord_button_alloc() {
-  struct discord_button *p= malloc(sizeof(struct discord_button));
-  discord_button_init(p);
-  return p;
-}
-
-void discord_button_free(struct discord_button *p) {
-  discord_button_cleanup(p);
-  free(p);
-}
-
 void discord_button_list_free(struct discord_button **p) {
   ntl_free((void**)p, (vfvp)discord_button_cleanup);
 }
@@ -877,10 +853,6 @@ void discord_select_menu_init_v(void *p) {
   discord_select_menu_init((struct discord_select_menu *)p);
 }
 
-void discord_select_menu_free_v(void *p) {
- discord_select_menu_free((struct discord_select_menu *)p);
-};
-
 void discord_select_menu_from_json_v(char *json, size_t len, void *pp) {
  discord_select_menu_from_json(json, len, (struct discord_select_menu**)pp);
 }
@@ -951,17 +923,6 @@ void discord_select_menu_init(struct discord_select_menu *p) {
      '{"name":"disabled", "type":{"base":"bool"}, "option":true, "inject_if_not":false, "comment":"disable the select, default false"}' */
 
 }
-struct discord_select_menu* discord_select_menu_alloc() {
-  struct discord_select_menu *p= malloc(sizeof(struct discord_select_menu));
-  discord_select_menu_init(p);
-  return p;
-}
-
-void discord_select_menu_free(struct discord_select_menu *p) {
-  discord_select_menu_cleanup(p);
-  free(p);
-}
-
 void discord_select_menu_list_free(struct discord_select_menu **p) {
   ntl_free((void**)p, (vfvp)discord_select_menu_cleanup);
 }
@@ -1110,10 +1071,6 @@ void discord_select_option_init_v(void *p) {
   discord_select_option_init((struct discord_select_option *)p);
 }
 
-void discord_select_option_free_v(void *p) {
- discord_select_option_free((struct discord_select_option *)p);
-};
-
 void discord_select_option_from_json_v(char *json, size_t len, void *pp) {
  discord_select_option_from_json(json, len, (struct discord_select_option**)pp);
 }
@@ -1147,8 +1104,10 @@ void discord_select_option_cleanup(struct discord_select_option *d) {
   // p->description is a scalar
   /* specs/discord/message_components.json:91:18
      '{"name":"emoji", "type":{"base":"struct discord_emoji", "dec":"*"}, "inject_if_not":null, "option":true, "comment":"name, id and animated"}' */
-  if (d->emoji)
-    discord_emoji_free(d->emoji);
+  if (d->emoji) {
+    discord_emoji_cleanup(d->emoji);
+    free(d->emoji);
+  }
   /* specs/discord/message_components.json:92:18
      '{"name":"Default", "json_key":"default", "type":{"base":"bool"}, "option":true, "comment":"will render this option as selected by default"}' */
   // p->Default is a scalar
@@ -1167,23 +1126,13 @@ void discord_select_option_init(struct discord_select_option *p) {
 
   /* specs/discord/message_components.json:91:18
      '{"name":"emoji", "type":{"base":"struct discord_emoji", "dec":"*"}, "inject_if_not":null, "option":true, "comment":"name, id and animated"}' */
-  p->emoji = discord_emoji_alloc();
+  p->emoji = malloc(sizeof *p->emoji);
+  discord_emoji_init(p->emoji);
 
   /* specs/discord/message_components.json:92:18
      '{"name":"Default", "json_key":"default", "type":{"base":"bool"}, "option":true, "comment":"will render this option as selected by default"}' */
 
 }
-struct discord_select_option* discord_select_option_alloc() {
-  struct discord_select_option *p= malloc(sizeof(struct discord_select_option));
-  discord_select_option_init(p);
-  return p;
-}
-
-void discord_select_option_free(struct discord_select_option *p) {
-  discord_select_option_cleanup(p);
-  free(p);
-}
-
 void discord_select_option_list_free(struct discord_select_option **p) {
   ntl_free((void**)p, (vfvp)discord_select_option_cleanup);
 }
