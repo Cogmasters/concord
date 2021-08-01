@@ -57,79 +57,79 @@ Audit Log
 ~~~~~~~~~
 
 .. doxygenfile:: specs-code/discord/audit_log.h
-    :sections: briefdescription innerclass enum public-type public-attrib
+    :sections: detaileddescription briefdescription innerclass enum public-type public-attrib
 
 Channel
 ~~~~~~~
 
 .. doxygenfile:: specs-code/discord/channel.h
-    :sections: briefdescription innerclass enum public-type public-attrib
+    :sections: detaileddescription briefdescription innerclass enum public-type public-attrib
 
 Emoji
 ~~~~~
 
 .. doxygenfile:: specs-code/discord/emoji.h
-    :sections: briefdescription innerclass enum public-type public-attrib
+    :sections: detaileddescription briefdescription innerclass enum public-type public-attrib
 
 Guild
 ~~~~~
 
 .. doxygenfile:: specs-code/discord/guild.h
-    :sections: briefdescription innerclass enum public-type public-attrib
+    :sections: detaileddescription briefdescription innerclass enum public-type public-attrib
 
 Guild Template
 ~~~~~~~~~~~~~~
 
 .. doxygenfile:: specs-code/discord/guild-template.h
-    :sections: briefdescription innerclass enum public-type public-attrib
+    :sections: detaileddescription briefdescription innerclass enum public-type public-attrib
 
 Invite
 ~~~~~~
 
 .. doxygenfile:: specs-code/discord/invite.h
-    :sections: briefdescription innerclass enum public-type public-attrib
+    :sections: detaileddescription briefdescription innerclass enum public-type public-attrib
 
 Message Components
 ~~~~~~~~~~~~~~~~~~
 
 .. doxygenfile:: specs-code/discord/message_components.h
-    :sections: briefdescription innerclass enum public-type public-attrib
+    :sections: detaileddescription briefdescription innerclass enum public-type public-attrib
 
 Permissions
 ~~~~~~~~~~~
 
 .. doxygenfile:: specs-code/discord/permissions.h
-    :sections: briefdescription innerclass enum public-type public-attrib
+    :sections: detaileddescription briefdescription innerclass enum public-type public-attrib
 
 Slash Commands
 ~~~~~~~~~~~~~~
 
 .. doxygenfile:: specs-code/discord/slash_commands.h
-    :sections: briefdescription innerclass enum public-type public-attrib
+    :sections: detaileddescription briefdescription innerclass enum public-type public-attrib
 
 User
 ~~~~
 
 .. doxygenfile:: specs-code/discord/user.h
-    :sections: briefdescription innerclass enum public-type public-attrib
+    :sections: detaileddescription briefdescription innerclass enum public-type public-attrib
 
 Voice
 ~~~~~
 
 .. doxygenfile:: specs-code/discord/voice.h
-    :sections: briefdescription innerclass enum public-type public-attrib
+    :sections: detaileddescription briefdescription innerclass enum public-type public-attrib
 
 Webhook
 ~~~~~~~
 
 .. doxygenfile:: specs-code/discord/webhook.h
-    :sections: briefdescription innerclass enum public-type public-attrib
+    :sections: detaileddescription briefdescription innerclass enum public-type public-attrib
 
 Gateway
 ~~~~~~~
 
 .. doxygenfile:: specs-code/discord/gateway.h
-    :sections: briefdescription innerclass enum public-type public-attrib
+    :sections: detaileddescription briefdescription innerclass enum public-type public-attrib
 
 Macros
 ------

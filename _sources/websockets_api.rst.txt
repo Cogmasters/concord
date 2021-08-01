@@ -11,13 +11,16 @@ WebSockets Reference
 Datatypes
 ---------
 
-.. doxygengroup:: Datatypes
-    :content-only:
+.. doxygenstruct:: websockets
+.. doxygenstruct:: ws_info
+.. doxygenstruct:: ws_callbacks
+.. doxygenenum:: ws_status
+.. doxygenenum:: ws_close_reason
 
 Functions
 ---------
 
-.. doxygengroup:: Functions
-    :content-only:
+.. doxygenfile:: common/websockets.h
+    :sections: detaileddescription briefdescription func
 
 
