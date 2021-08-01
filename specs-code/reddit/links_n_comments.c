@@ -1,9 +1,6 @@
 /* This file is generated from specs/reddit/links_n_comments.json, Please don't edit it. */
 /**
  * @file specs-code/reddit/links_n_comments.c
- * @author cee-studio
- * @date Jul 30 2021
- * @brief Specs generated file
  * @see 
  */
 

@@ -1,9 +1,6 @@
 /* This file is generated from specs/discord/invite.json, Please don't edit it. */
 /**
  * @file specs-code/discord/invite.h
- * @author cee-studio
- * @date Jul 30 2021
- * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/invite
  */
 
@@ -16,11 +13,18 @@ extern char* discord_invite_target_user_types_to_string(enum discord_invite_targ
 extern enum discord_invite_target_user_types discord_invite_target_user_types_from_string(char*);
 extern bool discord_invite_target_user_types_has(enum discord_invite_target_user_types, char*);
 
+// Invite Structure
+// defined at specs/discord/invite.json:19:22
 /**
- * @brief Invite Structure
- *
  * @see https://discord.com/developers/docs/resources/invite#invite-object-invite-structure
- * @note defined at specs/discord/invite.json:19:22
+ * - Initializer:
+ *   - <tt> discord_invite_init(struct discord_invite*) </tt>
+ * - Cleanup:
+ *   - <tt> discord_invite_cleanup(struct discord_invite*) discord_invite_list_free(struct discord_invite**) </tt>
+ * - JSON Decoder:
+ *   - <tt> discord_invite_from_json(struct discord_invite**) discord_invite_list_from_json(struct discord_invite***) </tt>
+ * - JSON Encoder:
+ *   - <tt> discord_invite_to_json(struct discord_invite*) discord_invite_list_to_json(struct discord_invite**) </tt>
  */
 struct discord_invite {
   /* specs/discord/invite.json:22:20
@@ -87,11 +91,18 @@ extern void discord_invite_list_from_json(char *str, size_t len, struct discord_
 extern size_t discord_invite_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_invite_list_to_json(char *str, size_t len, struct discord_invite **p);
 
+// Invite Metadata Structure
+// defined at specs/discord/invite.json:36:22
 /**
- * @brief Invite Metadata Structure
- *
  * @see https://discord.com/developers/docs/resources/invite#invite-metadata-object
- * @note defined at specs/discord/invite.json:36:22
+ * - Initializer:
+ *   - <tt> discord_invite_metadata_init(struct discord_invite_metadata*) </tt>
+ * - Cleanup:
+ *   - <tt> discord_invite_metadata_cleanup(struct discord_invite_metadata*) discord_invite_metadata_list_free(struct discord_invite_metadata**) </tt>
+ * - JSON Decoder:
+ *   - <tt> discord_invite_metadata_from_json(struct discord_invite_metadata**) discord_invite_metadata_list_from_json(struct discord_invite_metadata***) </tt>
+ * - JSON Encoder:
+ *   - <tt> discord_invite_metadata_to_json(struct discord_invite_metadata*) discord_invite_metadata_list_to_json(struct discord_invite_metadata**) </tt>
  */
 struct discord_invite_metadata {
   /* specs/discord/invite.json:39:20

@@ -1,9 +1,6 @@
 /* This file is generated from specs/discord/invite.endpoints-params.json, Please don't edit it. */
 /**
  * @file specs-code/discord/invite.endpoints-params.c
- * @author cee-studio
- * @date Jul 30 2021
- * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/invite
  */
 

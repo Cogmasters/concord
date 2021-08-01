@@ -1,8 +1,5 @@
 /**
  * @file websockets.h
- * @author cee-studio
- * @date 21 Jun 2021
- * @brief Internal functions and datatypes for WebSockets interfacing
  */
 
 #ifndef WEBSOCKETS_H
@@ -15,15 +12,14 @@ extern "C" {
 #include "types.h" /* ORCAcode */
 #include "logconf.h" /* logging facilities */
 
-/** @defgroup Datatypes
- *  @{ */
-
 /**
  * @struct websockets
  *
  * @brief Opaque handler for WebSockets
- * @li \c Initializer ws_init()
- * @li \c Cleanup ws_cleanup() 
+ * - Initializer:
+ *   - ws_init()
+ * - Cleanup:
+ *   - ws_cleanup() 
  */
 struct websockets;
 
@@ -115,11 +111,6 @@ struct ws_callbacks {
    */
   void *data;
 };
-
-/** @} defgroup Datatypes*/
-
-/** @defgroup Functions
- *  @{ */
 
 /**
  * @brief Create a new (CURL-based) WebSockets handle
@@ -284,7 +275,6 @@ void ws_close(struct websockets *ws, const enum ws_close_reason code, const char
  */
 bool ws_same_thread(struct websockets *ws);
 
-/** @} defgroup Functions*/
 
 #ifdef __cplusplus
 }

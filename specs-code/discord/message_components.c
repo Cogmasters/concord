@@ -1,9 +1,6 @@
 /* This file is generated from specs/discord/message_components.json, Please don't edit it. */
 /**
  * @file specs-code/discord/message_components.c
- * @author cee-studio
- * @date Jul 30 2021
- * @brief Specs generated file
  * @see https://discord.com/developers/docs/interactions/message-components#message-components
  */
 

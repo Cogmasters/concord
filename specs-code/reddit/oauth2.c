@@ -1,9 +1,6 @@
 /* This file is generated from specs/reddit/oauth2.json, Please don't edit it. */
 /**
  * @file specs-code/reddit/oauth2.c
- * @author cee-studio
- * @date Jul 30 2021
- * @brief Specs generated file
  * @see https://github.com/reddit-archive/reddit/wiki/OAuth2-Quick-Start-Example
  */
 

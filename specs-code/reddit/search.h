@@ -1,18 +1,22 @@
 /* This file is generated from specs/reddit/search.json, Please don't edit it. */
 /**
  * @file specs-code/reddit/search.h
- * @author cee-studio
- * @date Jul 30 2021
- * @brief Specs generated file
  * @see 
  */
 
 
+// Search
+// defined at specs/reddit/search.json:10:22
 /**
- * @brief Search
- *
  * @see https://www.reddit.com/dev/api/#GET_search
- * @note defined at specs/reddit/search.json:10:22
+ * - Initializer:
+ *   - <tt> reddit_search_params_init(struct reddit_search_params*) </tt>
+ * - Cleanup:
+ *   - <tt> reddit_search_params_cleanup(struct reddit_search_params*) reddit_search_params_list_free(struct reddit_search_params**) </tt>
+ * - JSON Decoder:
+ *   - <tt> reddit_search_params_from_json(struct reddit_search_params**) reddit_search_params_list_from_json(struct reddit_search_params***) </tt>
+ * - JSON Encoder:
+ *   - <tt> reddit_search_params_to_json(struct reddit_search_params*) reddit_search_params_list_to_json(struct reddit_search_params**) </tt>
  */
 struct reddit_search_params {
   /* specs/reddit/search.json:13:20

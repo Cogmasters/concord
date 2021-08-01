@@ -1,9 +1,6 @@
 /* This file is generated from specs/discord/emoji.json, Please don't edit it. */
 /**
  * @file specs-code/discord/emoji.c
- * @author cee-studio
- * @date Jul 30 2021
- * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/emoji
  */
 

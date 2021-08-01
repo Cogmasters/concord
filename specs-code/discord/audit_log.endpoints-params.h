@@ -1,16 +1,21 @@
 /* This file is generated from specs/discord/audit_log.endpoints-params.json, Please don't edit it. */
 /**
  * @file specs-code/discord/audit_log.endpoints-params.h
- * @author cee-studio
- * @date Jul 30 2021
- * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/audit-log
  */
 
 
+// defined at specs/discord/audit_log.endpoints-params.json:8:22
 /**
  * @see https://discord.com/developers/docs/resources/audit-log#get-guild-audit-log
- * @note defined at specs/discord/audit_log.endpoints-params.json:8:22
+ * - Initializer:
+ *   - <tt> discord_get_guild_audit_log_params_init(struct discord_get_guild_audit_log_params*) </tt>
+ * - Cleanup:
+ *   - <tt> discord_get_guild_audit_log_params_cleanup(struct discord_get_guild_audit_log_params*) discord_get_guild_audit_log_params_list_free(struct discord_get_guild_audit_log_params**) </tt>
+ * - JSON Decoder:
+ *   - <tt> discord_get_guild_audit_log_params_from_json(struct discord_get_guild_audit_log_params**) discord_get_guild_audit_log_params_list_from_json(struct discord_get_guild_audit_log_params***) </tt>
+ * - JSON Encoder:
+ *   - <tt> discord_get_guild_audit_log_params_to_json(struct discord_get_guild_audit_log_params*) discord_get_guild_audit_log_params_list_to_json(struct discord_get_guild_audit_log_params**) </tt>
  */
 struct discord_get_guild_audit_log_params {
   /* specs/discord/audit_log.endpoints-params.json:11:20

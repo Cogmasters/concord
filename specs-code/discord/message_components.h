@@ -1,18 +1,22 @@
 /* This file is generated from specs/discord/message_components.json, Please don't edit it. */
 /**
  * @file specs-code/discord/message_components.h
- * @author cee-studio
- * @date Jul 30 2021
- * @brief Specs generated file
  * @see https://discord.com/developers/docs/interactions/message-components#message-components
  */
 
 
+// Component Structure
+// defined at specs/discord/message_components.json:9:22
 /**
- * @brief Component Structure
- *
  * @see https://discord.com/developers/docs/interactions/message-components#component-object-component-structure
- * @note defined at specs/discord/message_components.json:9:22
+ * - Initializer:
+ *   - <tt> discord_component_init(struct discord_component*) </tt>
+ * - Cleanup:
+ *   - <tt> discord_component_cleanup(struct discord_component*) discord_component_list_free(struct discord_component**) </tt>
+ * - JSON Decoder:
+ *   - <tt> discord_component_from_json(struct discord_component**) discord_component_list_from_json(struct discord_component***) </tt>
+ * - JSON Encoder:
+ *   - <tt> discord_component_to_json(struct discord_component*) discord_component_list_to_json(struct discord_component**) </tt>
  */
 struct discord_component {
   /* specs/discord/message_components.json:12:18
@@ -105,11 +109,18 @@ extern char* discord_component_types_to_string(enum discord_component_types);
 extern enum discord_component_types discord_component_types_from_string(char*);
 extern bool discord_component_types_has(enum discord_component_types, char*);
 
+// Button Structure
+// defined at specs/discord/message_components.json:41:22
 /**
- * @brief Button Structure
- *
  * @see https://discord.com/developers/docs/interactions/message-components#button-object-button-structure
- * @note defined at specs/discord/message_components.json:41:22
+ * - Initializer:
+ *   - <tt> discord_button_init(struct discord_button*) </tt>
+ * - Cleanup:
+ *   - <tt> discord_button_cleanup(struct discord_button*) discord_button_list_free(struct discord_button**) </tt>
+ * - JSON Decoder:
+ *   - <tt> discord_button_from_json(struct discord_button**) discord_button_list_from_json(struct discord_button***) </tt>
+ * - JSON Encoder:
+ *   - <tt> discord_button_to_json(struct discord_button*) discord_button_list_to_json(struct discord_button**) </tt>
  */
 struct discord_button {
   /* specs/discord/message_components.json:44:18
@@ -184,11 +195,18 @@ extern char* discord_button_styles_to_string(enum discord_button_styles);
 extern enum discord_button_styles discord_button_styles_from_string(char*);
 extern bool discord_button_styles_has(enum discord_button_styles, char*);
 
+// Select Menu Structure
+// defined at specs/discord/message_components.json:70:22
 /**
- * @brief Select Menu Structure
- *
  * @see https://discord.com/developers/docs/interactions/message-components#select-menu-object-select-menu-structure
- * @note defined at specs/discord/message_components.json:70:22
+ * - Initializer:
+ *   - <tt> discord_select_menu_init(struct discord_select_menu*) </tt>
+ * - Cleanup:
+ *   - <tt> discord_select_menu_cleanup(struct discord_select_menu*) discord_select_menu_list_free(struct discord_select_menu**) </tt>
+ * - JSON Decoder:
+ *   - <tt> discord_select_menu_from_json(struct discord_select_menu**) discord_select_menu_list_from_json(struct discord_select_menu***) </tt>
+ * - JSON Encoder:
+ *   - <tt> discord_select_menu_to_json(struct discord_select_menu*) discord_select_menu_list_to_json(struct discord_select_menu**) </tt>
  */
 struct discord_select_menu {
   /* specs/discord/message_components.json:73:18
@@ -251,11 +269,18 @@ extern void discord_select_menu_list_from_json(char *str, size_t len, struct dis
 extern size_t discord_select_menu_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_select_menu_list_to_json(char *str, size_t len, struct discord_select_menu **p);
 
+// Select Option Structure
+// defined at specs/discord/message_components.json:85:22
 /**
- * @brief Select Option Structure
- *
  * @see https://discord.com/developers/docs/interactions/message-components#select-menu-object-select-option-structure
- * @note defined at specs/discord/message_components.json:85:22
+ * - Initializer:
+ *   - <tt> discord_select_option_init(struct discord_select_option*) </tt>
+ * - Cleanup:
+ *   - <tt> discord_select_option_cleanup(struct discord_select_option*) discord_select_option_list_free(struct discord_select_option**) </tt>
+ * - JSON Decoder:
+ *   - <tt> discord_select_option_from_json(struct discord_select_option**) discord_select_option_list_from_json(struct discord_select_option***) </tt>
+ * - JSON Encoder:
+ *   - <tt> discord_select_option_to_json(struct discord_select_option*) discord_select_option_list_to_json(struct discord_select_option**) </tt>
  */
 struct discord_select_option {
   /* specs/discord/message_components.json:88:18

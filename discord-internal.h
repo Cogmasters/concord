@@ -26,8 +26,10 @@
  * @brief The handle used for performing HTTP Requests 
  *
  * This is a wrapper over struct user_agent
- * @li \c Initializer discord_adapter_init()
- * @li \c Cleanup discord_adapter_cleanup() 
+ * - Initializer:
+ *   - discord_adapter_init()
+ * - Cleanup:
+ *   - discord_adapter_cleanup()
  */
 struct discord_adapter {
   struct user_agent *ua; ///< The user agent handle for performing requests
@@ -74,9 +76,11 @@ ORCAcode discord_adapter_run(
 
 /**
  * @brief The bucket struct that will handle ratelimiting 
- * @li \c Initializer discord_bucket_build() 
- * @li \c Cleanup discord_buckets_cleanup() 
  *
+ * - Initializer:
+ *   - discord_bucket_build()
+ * - Cleanup:
+ *   - discord_buckets_cleanup()
  * @see https://discord.com/developers/docs/topics/rate-limits
  */
 struct discord_bucket {
@@ -140,9 +144,10 @@ struct discord_gateway_cmd_cbs {
 /**
  * @brief The handle used for establishing a Discord Gateway connection
  *        via WebSockets
- *
- * @li \c Initializer discord_gateway_init()
- * @li \c Cleanup discord_gateway_cleanup() 
+ * - Initializer:
+ *   - discord_gateway_init()
+ * - Cleanup:
+ *   - discord_gateway_cleanup()
  * @note A wrapper over struct websockets
  */
 struct discord_gateway {
@@ -266,8 +271,10 @@ void discord_gateway_reconnect(struct discord_gateway *gw, bool resume);
  * @brief The Discord opaque structure handler
  *
  * Used to access/perform public functions from discord.h 
- * @li \c Initializer discord_init(), discord_config_init()
- * @li \c Cleanup discord_cleanup() 
+ * - Initializer:
+ *   - discord_init(), discord_config_init()
+ * - Cleanup:
+ *   - discord_cleanup()
  * @see discord_run()
  * @note defined at discord-internal.h
  */

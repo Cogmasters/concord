@@ -1,9 +1,6 @@
 /* This file is generated from specs/reddit/links_n_comments.json, Please don't edit it. */
 /**
  * @file specs-code/reddit/all_functions.h
- * @author cee-studio
- * @date Jul 30 2021
- * @brief Specs generated file
  * @see 
  */
 
@@ -27,9 +24,6 @@ extern size_t reddit_comment_params_list_to_json(char *str, size_t len, struct r
 /* This file is generated from specs/reddit/oauth2.json, Please don't edit it. */
 /**
  * @file specs-code/reddit/all_functions.h
- * @author cee-studio
- * @date Jul 30 2021
- * @brief Specs generated file
  * @see https://github.com/reddit-archive/reddit/wiki/OAuth2-Quick-Start-Example
  */
 
@@ -53,9 +47,6 @@ extern size_t reddit_access_token_params_list_to_json(char *str, size_t len, str
 /* This file is generated from specs/reddit/search.json, Please don't edit it. */
 /**
  * @file specs-code/reddit/all_functions.h
- * @author cee-studio
- * @date Jul 30 2021
- * @brief Specs generated file
  * @see 
  */
 

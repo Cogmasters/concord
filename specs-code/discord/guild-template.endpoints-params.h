@@ -1,18 +1,22 @@
 /* This file is generated from specs/discord/guild-template.endpoints-params.json, Please don't edit it. */
 /**
  * @file specs-code/discord/guild-template.endpoints-params.h
- * @author cee-studio
- * @date Jul 30 2021
- * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/guild-template
  */
 
 
+// Create Guild From Guild Template
+// defined at specs/discord/guild-template.endpoints-params.json:10:22
 /**
- * @brief Create Guild From Guild Template
- *
  * @see https://discord.com/developers/docs/resources/guild-template#create-guild-from-guild-template-json-params
- * @note defined at specs/discord/guild-template.endpoints-params.json:10:22
+ * - Initializer:
+ *   - <tt> discord_create_guild_from_guild_template_params_init(struct discord_create_guild_from_guild_template_params*) </tt>
+ * - Cleanup:
+ *   - <tt> discord_create_guild_from_guild_template_params_cleanup(struct discord_create_guild_from_guild_template_params*) discord_create_guild_from_guild_template_params_list_free(struct discord_create_guild_from_guild_template_params**) </tt>
+ * - JSON Decoder:
+ *   - <tt> discord_create_guild_from_guild_template_params_from_json(struct discord_create_guild_from_guild_template_params**) discord_create_guild_from_guild_template_params_list_from_json(struct discord_create_guild_from_guild_template_params***) </tt>
+ * - JSON Encoder:
+ *   - <tt> discord_create_guild_from_guild_template_params_to_json(struct discord_create_guild_from_guild_template_params*) discord_create_guild_from_guild_template_params_list_to_json(struct discord_create_guild_from_guild_template_params**) </tt>
  */
 struct discord_create_guild_from_guild_template_params {
   /* specs/discord/guild-template.endpoints-params.json:13:20
@@ -55,11 +59,18 @@ extern void discord_create_guild_from_guild_template_params_list_from_json(char 
 extern size_t discord_create_guild_from_guild_template_params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_create_guild_from_guild_template_params_list_to_json(char *str, size_t len, struct discord_create_guild_from_guild_template_params **p);
 
+// Create Guild Template
+// defined at specs/discord/guild-template.endpoints-params.json:21:22
 /**
- * @brief Create Guild Template
- *
  * @see https://discord.com/developers/docs/resources/guild-template#create-guild-template-json-params
- * @note defined at specs/discord/guild-template.endpoints-params.json:21:22
+ * - Initializer:
+ *   - <tt> discord_create_guild_template_params_init(struct discord_create_guild_template_params*) </tt>
+ * - Cleanup:
+ *   - <tt> discord_create_guild_template_params_cleanup(struct discord_create_guild_template_params*) discord_create_guild_template_params_list_free(struct discord_create_guild_template_params**) </tt>
+ * - JSON Decoder:
+ *   - <tt> discord_create_guild_template_params_from_json(struct discord_create_guild_template_params**) discord_create_guild_template_params_list_from_json(struct discord_create_guild_template_params***) </tt>
+ * - JSON Encoder:
+ *   - <tt> discord_create_guild_template_params_to_json(struct discord_create_guild_template_params*) discord_create_guild_template_params_list_to_json(struct discord_create_guild_template_params**) </tt>
  */
 struct discord_create_guild_template_params {
   /* specs/discord/guild-template.endpoints-params.json:24:20
@@ -102,11 +113,18 @@ extern void discord_create_guild_template_params_list_from_json(char *str, size_
 extern size_t discord_create_guild_template_params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_create_guild_template_params_list_to_json(char *str, size_t len, struct discord_create_guild_template_params **p);
 
+// Modify Guild Template
+// defined at specs/discord/guild-template.endpoints-params.json:32:22
 /**
- * @brief Modify Guild Template
- *
  * @see https://discord.com/developers/docs/resources/guild-template#modify-guild-template-json-params
- * @note defined at specs/discord/guild-template.endpoints-params.json:32:22
+ * - Initializer:
+ *   - <tt> discord_modify_guild_template_params_init(struct discord_modify_guild_template_params*) </tt>
+ * - Cleanup:
+ *   - <tt> discord_modify_guild_template_params_cleanup(struct discord_modify_guild_template_params*) discord_modify_guild_template_params_list_free(struct discord_modify_guild_template_params**) </tt>
+ * - JSON Decoder:
+ *   - <tt> discord_modify_guild_template_params_from_json(struct discord_modify_guild_template_params**) discord_modify_guild_template_params_list_from_json(struct discord_modify_guild_template_params***) </tt>
+ * - JSON Encoder:
+ *   - <tt> discord_modify_guild_template_params_to_json(struct discord_modify_guild_template_params*) discord_modify_guild_template_params_list_to_json(struct discord_modify_guild_template_params**) </tt>
  */
 struct discord_modify_guild_template_params {
   /* specs/discord/guild-template.endpoints-params.json:35:20

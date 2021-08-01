@@ -1,9 +1,6 @@
 /* This file is generated from specs/discord/gateway.json, Please don't edit it. */
 /**
  * @file specs-code/discord/gateway.c
- * @author cee-studio
- * @date Jul 30 2021
- * @brief Specs generated file
  * @see https://discord.com/developers/docs/topics/gateway
  */
 

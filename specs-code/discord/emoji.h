@@ -1,18 +1,22 @@
 /* This file is generated from specs/discord/emoji.json, Please don't edit it. */
 /**
  * @file specs-code/discord/emoji.h
- * @author cee-studio
- * @date Jul 30 2021
- * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/emoji
  */
 
 
+// Emoji Structure
+// defined at specs/discord/emoji.json:9:22
 /**
- * @brief Emoji Structure
- *
  * @see https://discord.com/developers/docs/resources/emoji#emoji-object-emoji-structure
- * @note defined at specs/discord/emoji.json:9:22
+ * - Initializer:
+ *   - <tt> discord_emoji_init(struct discord_emoji*) </tt>
+ * - Cleanup:
+ *   - <tt> discord_emoji_cleanup(struct discord_emoji*) discord_emoji_list_free(struct discord_emoji**) </tt>
+ * - JSON Decoder:
+ *   - <tt> discord_emoji_from_json(struct discord_emoji**) discord_emoji_list_from_json(struct discord_emoji***) </tt>
+ * - JSON Encoder:
+ *   - <tt> discord_emoji_to_json(struct discord_emoji*) discord_emoji_list_to_json(struct discord_emoji**) </tt>
  */
 struct discord_emoji {
   /* specs/discord/emoji.json:12:20

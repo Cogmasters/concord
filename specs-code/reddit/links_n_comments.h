@@ -1,18 +1,22 @@
 /* This file is generated from specs/reddit/links_n_comments.json, Please don't edit it. */
 /**
  * @file specs-code/reddit/links_n_comments.h
- * @author cee-studio
- * @date Jul 30 2021
- * @brief Specs generated file
  * @see 
  */
 
 
+// Comment
+// defined at specs/reddit/links_n_comments.json:10:22
 /**
- * @brief Comment
- *
  * @see https://www.reddit.com/dev/api/#POST_api_comment
- * @note defined at specs/reddit/links_n_comments.json:10:22
+ * - Initializer:
+ *   - <tt> reddit_comment_params_init(struct reddit_comment_params*) </tt>
+ * - Cleanup:
+ *   - <tt> reddit_comment_params_cleanup(struct reddit_comment_params*) reddit_comment_params_list_free(struct reddit_comment_params**) </tt>
+ * - JSON Decoder:
+ *   - <tt> reddit_comment_params_from_json(struct reddit_comment_params**) reddit_comment_params_list_from_json(struct reddit_comment_params***) </tt>
+ * - JSON Encoder:
+ *   - <tt> reddit_comment_params_to_json(struct reddit_comment_params*) reddit_comment_params_list_to_json(struct reddit_comment_params**) </tt>
  */
 struct reddit_comment_params {
   /* specs/reddit/links_n_comments.json:13:20

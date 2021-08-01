@@ -1,18 +1,22 @@
 /* This file is generated from specs/discord/user.endpoints-params.json, Please don't edit it. */
 /**
  * @file specs-code/discord/user.endpoints-params.h
- * @author cee-studio
- * @date Jul 30 2021
- * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/user
  */
 
 
+// Modify Current User
+// defined at specs/discord/user.endpoints-params.json:10:22
 /**
- * @brief Modify Current User
- *
  * @see https://discord.com/developers/docs/resources/user#modify-current-user-json-params
- * @note defined at specs/discord/user.endpoints-params.json:10:22
+ * - Initializer:
+ *   - <tt> discord_modify_current_user_params_init(struct discord_modify_current_user_params*) </tt>
+ * - Cleanup:
+ *   - <tt> discord_modify_current_user_params_cleanup(struct discord_modify_current_user_params*) discord_modify_current_user_params_list_free(struct discord_modify_current_user_params**) </tt>
+ * - JSON Decoder:
+ *   - <tt> discord_modify_current_user_params_from_json(struct discord_modify_current_user_params**) discord_modify_current_user_params_list_from_json(struct discord_modify_current_user_params***) </tt>
+ * - JSON Encoder:
+ *   - <tt> discord_modify_current_user_params_to_json(struct discord_modify_current_user_params*) discord_modify_current_user_params_list_to_json(struct discord_modify_current_user_params**) </tt>
  */
 struct discord_modify_current_user_params {
   /* specs/discord/user.endpoints-params.json:13:20
@@ -55,11 +59,18 @@ extern void discord_modify_current_user_params_list_from_json(char *str, size_t 
 extern size_t discord_modify_current_user_params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_modify_current_user_params_list_to_json(char *str, size_t len, struct discord_modify_current_user_params **p);
 
+// Create Group DM
+// defined at specs/discord/user.endpoints-params.json:21:22
 /**
- * @brief Create Group DM
- *
  * @see https://discord.com/developers/docs/resources/user#create-group-dm-json-params
- * @note defined at specs/discord/user.endpoints-params.json:21:22
+ * - Initializer:
+ *   - <tt> discord_create_group_dm_params_init(struct discord_create_group_dm_params*) </tt>
+ * - Cleanup:
+ *   - <tt> discord_create_group_dm_params_cleanup(struct discord_create_group_dm_params*) discord_create_group_dm_params_list_free(struct discord_create_group_dm_params**) </tt>
+ * - JSON Decoder:
+ *   - <tt> discord_create_group_dm_params_from_json(struct discord_create_group_dm_params**) discord_create_group_dm_params_list_from_json(struct discord_create_group_dm_params***) </tt>
+ * - JSON Encoder:
+ *   - <tt> discord_create_group_dm_params_to_json(struct discord_create_group_dm_params*) discord_create_group_dm_params_list_to_json(struct discord_create_group_dm_params**) </tt>
  */
 struct discord_create_group_dm_params {
   /* specs/discord/user.endpoints-params.json:24:20

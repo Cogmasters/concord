@@ -1,18 +1,22 @@
 /* This file is generated from specs/discord/voice.json, Please don't edit it. */
 /**
  * @file specs-code/discord/voice.h
- * @author cee-studio
- * @date Jul 30 2021
- * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/voice
  */
 
 
+// Voice State Structure
+// defined at specs/discord/voice.json:9:22
 /**
- * @brief Voice State Structure
- *
  * @see https://discord.com/developers/docs/resources/voice#voice-state-object-voice-state-structure
- * @note defined at specs/discord/voice.json:9:22
+ * - Initializer:
+ *   - <tt> discord_voice_state_init(struct discord_voice_state*) </tt>
+ * - Cleanup:
+ *   - <tt> discord_voice_state_cleanup(struct discord_voice_state*) discord_voice_state_list_free(struct discord_voice_state**) </tt>
+ * - JSON Decoder:
+ *   - <tt> discord_voice_state_from_json(struct discord_voice_state**) discord_voice_state_list_from_json(struct discord_voice_state***) </tt>
+ * - JSON Encoder:
+ *   - <tt> discord_voice_state_to_json(struct discord_voice_state*) discord_voice_state_list_to_json(struct discord_voice_state**) </tt>
  */
 struct discord_voice_state {
   /* specs/discord/voice.json:12:20
@@ -95,11 +99,18 @@ extern void discord_voice_state_list_from_json(char *str, size_t len, struct dis
 extern size_t discord_voice_state_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_voice_state_list_to_json(char *str, size_t len, struct discord_voice_state **p);
 
+// Voice Region Structure
+// defined at specs/discord/voice.json:29:22
 /**
- * @brief Voice Region Structure
- *
  * @see https://discord.com/developers/docs/resources/voice#voice-region-object-voice-region-structure
- * @note defined at specs/discord/voice.json:29:22
+ * - Initializer:
+ *   - <tt> discord_voice_region_init(struct discord_voice_region*) </tt>
+ * - Cleanup:
+ *   - <tt> discord_voice_region_cleanup(struct discord_voice_region*) discord_voice_region_list_free(struct discord_voice_region**) </tt>
+ * - JSON Decoder:
+ *   - <tt> discord_voice_region_from_json(struct discord_voice_region**) discord_voice_region_list_from_json(struct discord_voice_region***) </tt>
+ * - JSON Encoder:
+ *   - <tt> discord_voice_region_to_json(struct discord_voice_region*) discord_voice_region_list_to_json(struct discord_voice_region**) </tt>
  */
 struct discord_voice_region {
   /* specs/discord/voice.json:32:20

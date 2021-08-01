@@ -1,9 +1,6 @@
 /* This file is generated from specs/reddit/search.json, Please don't edit it. */
 /**
  * @file specs-code/reddit/search.c
- * @author cee-studio
- * @date Jul 30 2021
- * @brief Specs generated file
  * @see 
  */
 

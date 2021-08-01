@@ -888,7 +888,7 @@ ORCAcode discord_create_message(struct discord *client, const u64_snowflake_t ch
  */
 ORCAcode discord_crosspost_message(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id, struct discord_message *p_message);
 /**
- * @brief @b PUT /channels/{channel.id}/messages/{message.id}/reactions/{emoji}/@me
+ * @brief @b PUT /channels/{channel.id}/messages/{message.id}/reactions/{emoji}/@@me
  *
  * Create a reaction for the message.
  * @param client the client created with discord_init()
@@ -901,7 +901,7 @@ ORCAcode discord_crosspost_message(struct discord *client, const u64_snowflake_t
  */
 ORCAcode discord_create_reaction(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id, const u64_snowflake_t emoji_id, const char emoji_name[]);
 /**
- * @brief @b DELETE /channels/{channel.id}/messages/{message.id}/reactions/{emoji}/@me
+ * @brief @b DELETE /channels/{channel.id}/messages/{message.id}/reactions/{emoji}/@@me
  *
  * Delete a reaction the current user has made for the message.
  * @param client the client created with discord_init()

@@ -1,9 +1,6 @@
 /* This file is generated from specs/discord/audit_log.endpoints-params.json, Please don't edit it. */
 /**
  * @file specs-code/discord/all_functions.h
- * @author cee-studio
- * @date Jul 30 2021
- * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/audit-log
  */
 
@@ -27,9 +24,6 @@ extern size_t discord_get_guild_audit_log_params_list_to_json(char *str, size_t 
 /* This file is generated from specs/discord/audit_log.json, Please don't edit it. */
 /**
  * @file specs-code/discord/all_functions.h
- * @author cee-studio
- * @date Jul 30 2021
- * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/audit-log
  */
 
@@ -123,9 +117,6 @@ extern size_t discord_audit_log_change_key_list_to_json(char *str, size_t len, s
 /* This file is generated from specs/discord/channel.endpoints-params.json, Please don't edit it. */
 /**
  * @file specs-code/discord/all_functions.h
- * @author cee-studio
- * @date Jul 30 2021
- * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/channel
  */
 
@@ -285,9 +276,6 @@ extern size_t discord_thread_response_body_list_to_json(char *str, size_t len, s
 /* This file is generated from specs/discord/channel.json, Please don't edit it. */
 /**
  * @file specs-code/discord/all_functions.h
- * @author cee-studio
- * @date Jul 30 2021
- * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/channel
  */
 
@@ -678,9 +666,6 @@ extern size_t discord_embed_field_list_to_json(char *str, size_t len, struct dis
 /* This file is generated from specs/discord/emoji.endpoints-params.json, Please don't edit it. */
 /**
  * @file specs-code/discord/all_functions.h
- * @author cee-studio
- * @date Jul 30 2021
- * @brief Specs generated file
  * @see 
  */
 
@@ -721,9 +706,6 @@ extern size_t discord_modify_guild_emoji_params_list_to_json(char *str, size_t l
 /* This file is generated from specs/discord/emoji.json, Please don't edit it. */
 /**
  * @file specs-code/discord/all_functions.h
- * @author cee-studio
- * @date Jul 30 2021
- * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/emoji
  */
 
@@ -747,9 +729,6 @@ extern size_t discord_emoji_list_to_json(char *str, size_t len, struct discord_e
 /* This file is generated from specs/discord/gateway.json, Please don't edit it. */
 /**
  * @file specs-code/discord/all_functions.h
- * @author cee-studio
- * @date Jul 30 2021
- * @brief Specs generated file
  * @see https://discord.com/developers/docs/topics/gateway
  */
 
@@ -834,9 +813,6 @@ extern size_t discord_gateway_activity_list_to_json(char *str, size_t len, struc
 /* This file is generated from specs/discord/guild-template.endpoints-params.json, Please don't edit it. */
 /**
  * @file specs-code/discord/all_functions.h
- * @author cee-studio
- * @date Jul 30 2021
- * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/guild-template
  */
 
@@ -894,9 +870,6 @@ extern size_t discord_modify_guild_template_params_list_to_json(char *str, size_
 /* This file is generated from specs/discord/guild-template.json, Please don't edit it. */
 /**
  * @file specs-code/discord/all_functions.h
- * @author cee-studio
- * @date Jul 30 2021
- * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/guild-template
  */
 
@@ -920,9 +893,6 @@ extern size_t discord_guild_template_list_to_json(char *str, size_t len, struct 
 /* This file is generated from specs/discord/guild.endpoints-params.json, Please don't edit it. */
 /**
  * @file specs-code/discord/all_functions.h
- * @author cee-studio
- * @date Jul 30 2021
- * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/guild
  */
 
@@ -1133,9 +1103,6 @@ extern size_t discord_begin_guild_prune_params_list_to_json(char *str, size_t le
 /* This file is generated from specs/discord/guild.json, Please don't edit it. */
 /**
  * @file specs-code/discord/all_functions.h
- * @author cee-studio
- * @date Jul 30 2021
- * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/guild
  */
 
@@ -1345,9 +1312,6 @@ extern size_t discord_guild_welcome_screen_channel_list_to_json(char *str, size_
 /* This file is generated from specs/discord/invite.endpoints-params.json, Please don't edit it. */
 /**
  * @file specs-code/discord/all_functions.h
- * @author cee-studio
- * @date Jul 30 2021
- * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/invite
  */
 
@@ -1371,9 +1335,6 @@ extern size_t discord_get_invite_params_list_to_json(char *str, size_t len, stru
 /* This file is generated from specs/discord/invite.json, Please don't edit it. */
 /**
  * @file specs-code/discord/all_functions.h
- * @author cee-studio
- * @date Jul 30 2021
- * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/invite
  */
 
@@ -1416,9 +1377,6 @@ extern size_t discord_invite_metadata_list_to_json(char *str, size_t len, struct
 /* This file is generated from specs/discord/message_components.json, Please don't edit it. */
 /**
  * @file specs-code/discord/all_functions.h
- * @author cee-studio
- * @date Jul 30 2021
- * @brief Specs generated file
  * @see https://discord.com/developers/docs/interactions/message-components#message-components
  */
 
@@ -1497,9 +1455,6 @@ extern size_t discord_select_option_list_to_json(char *str, size_t len, struct d
 /* This file is generated from specs/discord/permissions.json, Please don't edit it. */
 /**
  * @file specs-code/discord/all_functions.h
- * @author cee-studio
- * @date Jul 30 2021
- * @brief Specs generated file
  * @see https://discord.com/developers/docs/topics/permissions
  */
 
@@ -1542,9 +1497,6 @@ extern size_t discord_permissions_role_tags_list_to_json(char *str, size_t len, 
 /* This file is generated from specs/discord/slash_commands.json, Please don't edit it. */
 /**
  * @file specs-code/discord/all_functions.h
- * @author cee-studio
- * @date Jul 30 2021
- * @brief Specs generated file
  * @see https://discord.com/developers/docs/interactions/slash-commands#data-models-and-types
  */
 
@@ -1765,9 +1717,6 @@ extern size_t discord_message_interaction_list_to_json(char *str, size_t len, st
 /* This file is generated from specs/discord/user.endpoints-params.json, Please don't edit it. */
 /**
  * @file specs-code/discord/all_functions.h
- * @author cee-studio
- * @date Jul 30 2021
- * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/user
  */
 
@@ -1808,9 +1757,6 @@ extern size_t discord_create_group_dm_params_list_to_json(char *str, size_t len,
 /* This file is generated from specs/discord/user.json, Please don't edit it. */
 /**
  * @file specs-code/discord/all_functions.h
- * @author cee-studio
- * @date Jul 30 2021
- * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/user
  */
 
@@ -1857,9 +1803,6 @@ extern size_t discord_connection_list_to_json(char *str, size_t len, struct disc
 /* This file is generated from specs/discord/voice-connections.json, Please don't edit it. */
 /**
  * @file specs-code/discord/all_functions.h
- * @author cee-studio
- * @date Jul 30 2021
- * @brief Specs generated file
  * @see https://discord.com/developers/docs/topics/voice-connections
  */
 
@@ -1872,9 +1815,6 @@ extern size_t discord_connection_list_to_json(char *str, size_t len, struct disc
 /* This file is generated from specs/discord/voice.json, Please don't edit it. */
 /**
  * @file specs-code/discord/all_functions.h
- * @author cee-studio
- * @date Jul 30 2021
- * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/voice
  */
 
@@ -1915,9 +1855,6 @@ extern size_t discord_voice_region_list_to_json(char *str, size_t len, struct di
 /* This file is generated from specs/discord/webhook.endpoints-params.json, Please don't edit it. */
 /**
  * @file specs-code/discord/all_functions.h
- * @author cee-studio
- * @date Jul 30 2021
- * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/webhook
  */
 
@@ -1992,9 +1929,6 @@ extern size_t discord_edit_webhook_message_params_list_to_json(char *str, size_t
 /* This file is generated from specs/discord/webhook.json, Please don't edit it. */
 /**
  * @file specs-code/discord/all_functions.h
- * @author cee-studio
- * @date Jul 30 2021
- * @brief Specs generated file
  * @see https://discord.com/developers/docs/resources/webhook
  */
 
