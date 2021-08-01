@@ -10,13 +10,16 @@
 /**
  * @see https://discord.com/developers/docs/resources/invite#get-invite-query-string-params
  * - Initializer:
- *   - <tt> discord_get_invite_params_init(struct discord_get_invite_params*) </tt>
+ *   - <tt>discord_get_invite_params_init(struct discord_get_invite_params*)</tt>
  * - Cleanup:
- *   - <tt> discord_get_invite_params_cleanup(struct discord_get_invite_params*) discord_get_invite_params_list_free(struct discord_get_invite_params**) </tt>
+ *   - <tt>discord_get_invite_params_cleanup(struct discord_get_invite_params*)</tt>
+ *   - <tt>discord_get_invite_params_list_free(struct discord_get_invite_params**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_get_invite_params_from_json(struct discord_get_invite_params**) discord_get_invite_params_list_from_json(struct discord_get_invite_params***) </tt>
+ *   - <tt>discord_get_invite_params_from_json(char *rbuf, size_t len, struct discord_get_invite_params**)</tt>
+ *   - <tt>discord_get_invite_params_list_from_json(char *rbuf, size_t len, struct discord_get_invite_params***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_get_invite_params_to_json(struct discord_get_invite_params*) discord_get_invite_params_list_to_json(struct discord_get_invite_params**) </tt>
+ *   - <tt>discord_get_invite_params_to_json(char *wbuf, size_t len, struct discord_get_invite_params *p)</tt>
+ *   - <tt>discord_get_invite_params_list_to_json(char *wbuf, size_t len, struct discord_get_invite_params**)</tt>
  */
 struct discord_get_invite_params {
   /* specs/discord/invite.endpoints-params.json:13:20

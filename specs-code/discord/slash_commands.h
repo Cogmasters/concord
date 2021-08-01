@@ -10,13 +10,16 @@
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#application-command-object-application-command-structure
  * - Initializer:
- *   - <tt> discord_application_command_init(struct discord_application_command*) </tt>
+ *   - <tt>discord_application_command_init(struct discord_application_command*)</tt>
  * - Cleanup:
- *   - <tt> discord_application_command_cleanup(struct discord_application_command*) discord_application_command_list_free(struct discord_application_command**) </tt>
+ *   - <tt>discord_application_command_cleanup(struct discord_application_command*)</tt>
+ *   - <tt>discord_application_command_list_free(struct discord_application_command**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_application_command_from_json(struct discord_application_command**) discord_application_command_list_from_json(struct discord_application_command***) </tt>
+ *   - <tt>discord_application_command_from_json(char *rbuf, size_t len, struct discord_application_command**)</tt>
+ *   - <tt>discord_application_command_list_from_json(char *rbuf, size_t len, struct discord_application_command***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_application_command_to_json(struct discord_application_command*) discord_application_command_list_to_json(struct discord_application_command**) </tt>
+ *   - <tt>discord_application_command_to_json(char *wbuf, size_t len, struct discord_application_command *p)</tt>
+ *   - <tt>discord_application_command_list_to_json(char *wbuf, size_t len, struct discord_application_command**)</tt>
  */
 struct discord_application_command {
   /* specs/discord/slash_commands.json:12:18
@@ -84,13 +87,16 @@ extern size_t discord_application_command_list_to_json(char *str, size_t len, st
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#application-command-object-application-command-option-structure
  * - Initializer:
- *   - <tt> discord_application_command_option_init(struct discord_application_command_option*) </tt>
+ *   - <tt>discord_application_command_option_init(struct discord_application_command_option*)</tt>
  * - Cleanup:
- *   - <tt> discord_application_command_option_cleanup(struct discord_application_command_option*) discord_application_command_option_list_free(struct discord_application_command_option**) </tt>
+ *   - <tt>discord_application_command_option_cleanup(struct discord_application_command_option*)</tt>
+ *   - <tt>discord_application_command_option_list_free(struct discord_application_command_option**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_application_command_option_from_json(struct discord_application_command_option**) discord_application_command_option_list_from_json(struct discord_application_command_option***) </tt>
+ *   - <tt>discord_application_command_option_from_json(char *rbuf, size_t len, struct discord_application_command_option**)</tt>
+ *   - <tt>discord_application_command_option_list_from_json(char *rbuf, size_t len, struct discord_application_command_option***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_application_command_option_to_json(struct discord_application_command_option*) discord_application_command_option_list_to_json(struct discord_application_command_option**) </tt>
+ *   - <tt>discord_application_command_option_to_json(char *wbuf, size_t len, struct discord_application_command_option *p)</tt>
+ *   - <tt>discord_application_command_option_list_to_json(char *wbuf, size_t len, struct discord_application_command_option**)</tt>
  */
 struct discord_application_command_option {
   /* specs/discord/slash_commands.json:28:18
@@ -170,13 +176,16 @@ extern bool discord_application_command_option_types_has(enum discord_applicatio
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#application-command-object-application-command-option-choice-structure
  * - Initializer:
- *   - <tt> discord_application_command_option_choice_init(struct discord_application_command_option_choice*) </tt>
+ *   - <tt>discord_application_command_option_choice_init(struct discord_application_command_option_choice*)</tt>
  * - Cleanup:
- *   - <tt> discord_application_command_option_choice_cleanup(struct discord_application_command_option_choice*) discord_application_command_option_choice_list_free(struct discord_application_command_option_choice**) </tt>
+ *   - <tt>discord_application_command_option_choice_cleanup(struct discord_application_command_option_choice*)</tt>
+ *   - <tt>discord_application_command_option_choice_list_free(struct discord_application_command_option_choice**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_application_command_option_choice_from_json(struct discord_application_command_option_choice**) discord_application_command_option_choice_list_from_json(struct discord_application_command_option_choice***) </tt>
+ *   - <tt>discord_application_command_option_choice_from_json(char *rbuf, size_t len, struct discord_application_command_option_choice**)</tt>
+ *   - <tt>discord_application_command_option_choice_list_from_json(char *rbuf, size_t len, struct discord_application_command_option_choice***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_application_command_option_choice_to_json(struct discord_application_command_option_choice*) discord_application_command_option_choice_list_to_json(struct discord_application_command_option_choice**) </tt>
+ *   - <tt>discord_application_command_option_choice_to_json(char *wbuf, size_t len, struct discord_application_command_option_choice *p)</tt>
+ *   - <tt>discord_application_command_option_choice_list_to_json(char *wbuf, size_t len, struct discord_application_command_option_choice**)</tt>
  */
 struct discord_application_command_option_choice {
   /* specs/discord/slash_commands.json:61:18
@@ -224,13 +233,16 @@ extern size_t discord_application_command_option_choice_list_to_json(char *str, 
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#application-command-permissions-object-guild-application-command-permissions-structure
  * - Initializer:
- *   - <tt> discord_guild_application_command_permissions_init(struct discord_guild_application_command_permissions*) </tt>
+ *   - <tt>discord_guild_application_command_permissions_init(struct discord_guild_application_command_permissions*)</tt>
  * - Cleanup:
- *   - <tt> discord_guild_application_command_permissions_cleanup(struct discord_guild_application_command_permissions*) discord_guild_application_command_permissions_list_free(struct discord_guild_application_command_permissions**) </tt>
+ *   - <tt>discord_guild_application_command_permissions_cleanup(struct discord_guild_application_command_permissions*)</tt>
+ *   - <tt>discord_guild_application_command_permissions_list_free(struct discord_guild_application_command_permissions**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_guild_application_command_permissions_from_json(struct discord_guild_application_command_permissions**) discord_guild_application_command_permissions_list_from_json(struct discord_guild_application_command_permissions***) </tt>
+ *   - <tt>discord_guild_application_command_permissions_from_json(char *rbuf, size_t len, struct discord_guild_application_command_permissions**)</tt>
+ *   - <tt>discord_guild_application_command_permissions_list_from_json(char *rbuf, size_t len, struct discord_guild_application_command_permissions***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_guild_application_command_permissions_to_json(struct discord_guild_application_command_permissions*) discord_guild_application_command_permissions_list_to_json(struct discord_guild_application_command_permissions**) </tt>
+ *   - <tt>discord_guild_application_command_permissions_to_json(char *wbuf, size_t len, struct discord_guild_application_command_permissions *p)</tt>
+ *   - <tt>discord_guild_application_command_permissions_list_to_json(char *wbuf, size_t len, struct discord_guild_application_command_permissions**)</tt>
  */
 struct discord_guild_application_command_permissions {
   /* specs/discord/slash_commands.json:72:18
@@ -286,13 +298,16 @@ extern size_t discord_guild_application_command_permissions_list_to_json(char *s
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#application-command-permissions-object-guild-application-command-permissions-structure
  * - Initializer:
- *   - <tt> discord_application_command_permissions_init(struct discord_application_command_permissions*) </tt>
+ *   - <tt>discord_application_command_permissions_init(struct discord_application_command_permissions*)</tt>
  * - Cleanup:
- *   - <tt> discord_application_command_permissions_cleanup(struct discord_application_command_permissions*) discord_application_command_permissions_list_free(struct discord_application_command_permissions**) </tt>
+ *   - <tt>discord_application_command_permissions_cleanup(struct discord_application_command_permissions*)</tt>
+ *   - <tt>discord_application_command_permissions_list_free(struct discord_application_command_permissions**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_application_command_permissions_from_json(struct discord_application_command_permissions**) discord_application_command_permissions_list_from_json(struct discord_application_command_permissions***) </tt>
+ *   - <tt>discord_application_command_permissions_from_json(char *rbuf, size_t len, struct discord_application_command_permissions**)</tt>
+ *   - <tt>discord_application_command_permissions_list_from_json(char *rbuf, size_t len, struct discord_application_command_permissions***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_application_command_permissions_to_json(struct discord_application_command_permissions*) discord_application_command_permissions_list_to_json(struct discord_application_command_permissions**) </tt>
+ *   - <tt>discord_application_command_permissions_to_json(char *wbuf, size_t len, struct discord_application_command_permissions *p)</tt>
+ *   - <tt>discord_application_command_permissions_list_to_json(char *wbuf, size_t len, struct discord_application_command_permissions**)</tt>
  */
 struct discord_application_command_permissions {
   /* specs/discord/slash_commands.json:85:18
@@ -353,13 +368,16 @@ extern bool discord_application_command_permission_types_has(enum discord_applic
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-object-interaction-structure
  * - Initializer:
- *   - <tt> discord_interaction_init(struct discord_interaction*) </tt>
+ *   - <tt>discord_interaction_init(struct discord_interaction*)</tt>
  * - Cleanup:
- *   - <tt> discord_interaction_cleanup(struct discord_interaction*) discord_interaction_list_free(struct discord_interaction**) </tt>
+ *   - <tt>discord_interaction_cleanup(struct discord_interaction*)</tt>
+ *   - <tt>discord_interaction_list_free(struct discord_interaction**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_interaction_from_json(struct discord_interaction**) discord_interaction_list_from_json(struct discord_interaction***) </tt>
+ *   - <tt>discord_interaction_from_json(char *rbuf, size_t len, struct discord_interaction**)</tt>
+ *   - <tt>discord_interaction_list_from_json(char *rbuf, size_t len, struct discord_interaction***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_interaction_to_json(struct discord_interaction*) discord_interaction_list_to_json(struct discord_interaction**) </tt>
+ *   - <tt>discord_interaction_to_json(char *wbuf, size_t len, struct discord_interaction *p)</tt>
+ *   - <tt>discord_interaction_list_to_json(char *wbuf, size_t len, struct discord_interaction**)</tt>
  */
 struct discord_interaction {
   /* specs/discord/slash_commands.json:107:18
@@ -445,13 +463,16 @@ extern bool discord_interaction_request_types_has(enum discord_interaction_reque
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-object-application-command-interaction-data-structure
  * - Initializer:
- *   - <tt> discord_application_command_interaction_data_init(struct discord_application_command_interaction_data*) </tt>
+ *   - <tt>discord_application_command_interaction_data_init(struct discord_application_command_interaction_data*)</tt>
  * - Cleanup:
- *   - <tt> discord_application_command_interaction_data_cleanup(struct discord_application_command_interaction_data*) discord_application_command_interaction_data_list_free(struct discord_application_command_interaction_data**) </tt>
+ *   - <tt>discord_application_command_interaction_data_cleanup(struct discord_application_command_interaction_data*)</tt>
+ *   - <tt>discord_application_command_interaction_data_list_free(struct discord_application_command_interaction_data**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_application_command_interaction_data_from_json(struct discord_application_command_interaction_data**) discord_application_command_interaction_data_list_from_json(struct discord_application_command_interaction_data***) </tt>
+ *   - <tt>discord_application_command_interaction_data_from_json(char *rbuf, size_t len, struct discord_application_command_interaction_data**)</tt>
+ *   - <tt>discord_application_command_interaction_data_list_from_json(char *rbuf, size_t len, struct discord_application_command_interaction_data***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_application_command_interaction_data_to_json(struct discord_application_command_interaction_data*) discord_application_command_interaction_data_list_to_json(struct discord_application_command_interaction_data**) </tt>
+ *   - <tt>discord_application_command_interaction_data_to_json(char *wbuf, size_t len, struct discord_application_command_interaction_data *p)</tt>
+ *   - <tt>discord_application_command_interaction_data_list_to_json(char *wbuf, size_t len, struct discord_application_command_interaction_data**)</tt>
  */
 struct discord_application_command_interaction_data {
   /* specs/discord/slash_commands.json:137:18
@@ -515,13 +536,16 @@ extern size_t discord_application_command_interaction_data_list_to_json(char *st
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-object-application-command-interaction-data-resolved-structure
  * - Initializer:
- *   - <tt> discord_application_command_interaction_data_resolved_init(struct discord_application_command_interaction_data_resolved*) </tt>
+ *   - <tt>discord_application_command_interaction_data_resolved_init(struct discord_application_command_interaction_data_resolved*)</tt>
  * - Cleanup:
- *   - <tt> discord_application_command_interaction_data_resolved_cleanup(struct discord_application_command_interaction_data_resolved*) discord_application_command_interaction_data_resolved_list_free(struct discord_application_command_interaction_data_resolved**) </tt>
+ *   - <tt>discord_application_command_interaction_data_resolved_cleanup(struct discord_application_command_interaction_data_resolved*)</tt>
+ *   - <tt>discord_application_command_interaction_data_resolved_list_free(struct discord_application_command_interaction_data_resolved**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_application_command_interaction_data_resolved_from_json(struct discord_application_command_interaction_data_resolved**) discord_application_command_interaction_data_resolved_list_from_json(struct discord_application_command_interaction_data_resolved***) </tt>
+ *   - <tt>discord_application_command_interaction_data_resolved_from_json(char *rbuf, size_t len, struct discord_application_command_interaction_data_resolved**)</tt>
+ *   - <tt>discord_application_command_interaction_data_resolved_list_from_json(char *rbuf, size_t len, struct discord_application_command_interaction_data_resolved***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_application_command_interaction_data_resolved_to_json(struct discord_application_command_interaction_data_resolved*) discord_application_command_interaction_data_resolved_list_to_json(struct discord_application_command_interaction_data_resolved**) </tt>
+ *   - <tt>discord_application_command_interaction_data_resolved_to_json(char *wbuf, size_t len, struct discord_application_command_interaction_data_resolved *p)</tt>
+ *   - <tt>discord_application_command_interaction_data_resolved_list_to_json(char *wbuf, size_t len, struct discord_application_command_interaction_data_resolved**)</tt>
  */
 struct discord_application_command_interaction_data_resolved {
   /* specs/discord/slash_commands.json:152:18
@@ -577,13 +601,16 @@ extern size_t discord_application_command_interaction_data_resolved_list_to_json
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-object-application-command-interaction-data-option-structure
  * - Initializer:
- *   - <tt> discord_application_command_interaction_data_option_init(struct discord_application_command_interaction_data_option*) </tt>
+ *   - <tt>discord_application_command_interaction_data_option_init(struct discord_application_command_interaction_data_option*)</tt>
  * - Cleanup:
- *   - <tt> discord_application_command_interaction_data_option_cleanup(struct discord_application_command_interaction_data_option*) discord_application_command_interaction_data_option_list_free(struct discord_application_command_interaction_data_option**) </tt>
+ *   - <tt>discord_application_command_interaction_data_option_cleanup(struct discord_application_command_interaction_data_option*)</tt>
+ *   - <tt>discord_application_command_interaction_data_option_list_free(struct discord_application_command_interaction_data_option**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_application_command_interaction_data_option_from_json(struct discord_application_command_interaction_data_option**) discord_application_command_interaction_data_option_list_from_json(struct discord_application_command_interaction_data_option***) </tt>
+ *   - <tt>discord_application_command_interaction_data_option_from_json(char *rbuf, size_t len, struct discord_application_command_interaction_data_option**)</tt>
+ *   - <tt>discord_application_command_interaction_data_option_list_from_json(char *rbuf, size_t len, struct discord_application_command_interaction_data_option***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_application_command_interaction_data_option_to_json(struct discord_application_command_interaction_data_option*) discord_application_command_interaction_data_option_list_to_json(struct discord_application_command_interaction_data_option**) </tt>
+ *   - <tt>discord_application_command_interaction_data_option_to_json(char *wbuf, size_t len, struct discord_application_command_interaction_data_option *p)</tt>
+ *   - <tt>discord_application_command_interaction_data_option_list_to_json(char *wbuf, size_t len, struct discord_application_command_interaction_data_option**)</tt>
  */
 struct discord_application_command_interaction_data_option {
   /* specs/discord/slash_commands.json:165:18
@@ -639,13 +666,16 @@ extern size_t discord_application_command_interaction_data_option_list_to_json(c
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-response-object-interaction-response-structure
  * - Initializer:
- *   - <tt> discord_interaction_response_init(struct discord_interaction_response*) </tt>
+ *   - <tt>discord_interaction_response_init(struct discord_interaction_response*)</tt>
  * - Cleanup:
- *   - <tt> discord_interaction_response_cleanup(struct discord_interaction_response*) discord_interaction_response_list_free(struct discord_interaction_response**) </tt>
+ *   - <tt>discord_interaction_response_cleanup(struct discord_interaction_response*)</tt>
+ *   - <tt>discord_interaction_response_list_free(struct discord_interaction_response**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_interaction_response_from_json(struct discord_interaction_response**) discord_interaction_response_list_from_json(struct discord_interaction_response***) </tt>
+ *   - <tt>discord_interaction_response_from_json(char *rbuf, size_t len, struct discord_interaction_response**)</tt>
+ *   - <tt>discord_interaction_response_list_from_json(char *rbuf, size_t len, struct discord_interaction_response***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_interaction_response_to_json(struct discord_interaction_response*) discord_interaction_response_list_to_json(struct discord_interaction_response**) </tt>
+ *   - <tt>discord_interaction_response_to_json(char *wbuf, size_t len, struct discord_interaction_response *p)</tt>
+ *   - <tt>discord_interaction_response_list_to_json(char *wbuf, size_t len, struct discord_interaction_response**)</tt>
  */
 struct discord_interaction_response {
   /* specs/discord/slash_commands.json:178:18
@@ -705,13 +735,16 @@ extern bool discord_interaction_callback_types_has(enum discord_interaction_call
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-response-object-interaction-application-command-callback-data-structure
  * - Initializer:
- *   - <tt> discord_interaction_application_command_callback_data_init(struct discord_interaction_application_command_callback_data*) </tt>
+ *   - <tt>discord_interaction_application_command_callback_data_init(struct discord_interaction_application_command_callback_data*)</tt>
  * - Cleanup:
- *   - <tt> discord_interaction_application_command_callback_data_cleanup(struct discord_interaction_application_command_callback_data*) discord_interaction_application_command_callback_data_list_free(struct discord_interaction_application_command_callback_data**) </tt>
+ *   - <tt>discord_interaction_application_command_callback_data_cleanup(struct discord_interaction_application_command_callback_data*)</tt>
+ *   - <tt>discord_interaction_application_command_callback_data_list_free(struct discord_interaction_application_command_callback_data**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_interaction_application_command_callback_data_from_json(struct discord_interaction_application_command_callback_data**) discord_interaction_application_command_callback_data_list_from_json(struct discord_interaction_application_command_callback_data***) </tt>
+ *   - <tt>discord_interaction_application_command_callback_data_from_json(char *rbuf, size_t len, struct discord_interaction_application_command_callback_data**)</tt>
+ *   - <tt>discord_interaction_application_command_callback_data_list_from_json(char *rbuf, size_t len, struct discord_interaction_application_command_callback_data***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_interaction_application_command_callback_data_to_json(struct discord_interaction_application_command_callback_data*) discord_interaction_application_command_callback_data_list_to_json(struct discord_interaction_application_command_callback_data**) </tt>
+ *   - <tt>discord_interaction_application_command_callback_data_to_json(char *wbuf, size_t len, struct discord_interaction_application_command_callback_data *p)</tt>
+ *   - <tt>discord_interaction_application_command_callback_data_list_to_json(char *wbuf, size_t len, struct discord_interaction_application_command_callback_data**)</tt>
  */
 struct discord_interaction_application_command_callback_data {
   /* specs/discord/slash_commands.json:203:18
@@ -783,13 +816,16 @@ extern bool discord_interaction_application_command_callback_data_flags_has(enum
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#message-interaction-object-message-interaction-structure
  * - Initializer:
- *   - <tt> discord_message_interaction_init(struct discord_message_interaction*) </tt>
+ *   - <tt>discord_message_interaction_init(struct discord_message_interaction*)</tt>
  * - Cleanup:
- *   - <tt> discord_message_interaction_cleanup(struct discord_message_interaction*) discord_message_interaction_list_free(struct discord_message_interaction**) </tt>
+ *   - <tt>discord_message_interaction_cleanup(struct discord_message_interaction*)</tt>
+ *   - <tt>discord_message_interaction_list_free(struct discord_message_interaction**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_message_interaction_from_json(struct discord_message_interaction**) discord_message_interaction_list_from_json(struct discord_message_interaction***) </tt>
+ *   - <tt>discord_message_interaction_from_json(char *rbuf, size_t len, struct discord_message_interaction**)</tt>
+ *   - <tt>discord_message_interaction_list_from_json(char *rbuf, size_t len, struct discord_message_interaction***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_message_interaction_to_json(struct discord_message_interaction*) discord_message_interaction_list_to_json(struct discord_message_interaction**) </tt>
+ *   - <tt>discord_message_interaction_to_json(char *wbuf, size_t len, struct discord_message_interaction *p)</tt>
+ *   - <tt>discord_message_interaction_list_to_json(char *wbuf, size_t len, struct discord_message_interaction**)</tt>
  */
 struct discord_message_interaction {
   /* specs/discord/slash_commands.json:228:18

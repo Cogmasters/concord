@@ -113,13 +113,16 @@ extern bool discord_gateway_events_has(enum discord_gateway_events, char*);
 /**
  * @see https://discord.com/developers/docs/topics/gateway#identify-identify-structure
  * - Initializer:
- *   - <tt> discord_gateway_identify_init(struct discord_gateway_identify*) </tt>
+ *   - <tt>discord_gateway_identify_init(struct discord_gateway_identify*)</tt>
  * - Cleanup:
- *   - <tt> discord_gateway_identify_cleanup(struct discord_gateway_identify*) discord_gateway_identify_list_free(struct discord_gateway_identify**) </tt>
+ *   - <tt>discord_gateway_identify_cleanup(struct discord_gateway_identify*)</tt>
+ *   - <tt>discord_gateway_identify_list_free(struct discord_gateway_identify**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_gateway_identify_from_json(struct discord_gateway_identify**) discord_gateway_identify_list_from_json(struct discord_gateway_identify***) </tt>
+ *   - <tt>discord_gateway_identify_from_json(char *rbuf, size_t len, struct discord_gateway_identify**)</tt>
+ *   - <tt>discord_gateway_identify_list_from_json(char *rbuf, size_t len, struct discord_gateway_identify***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_gateway_identify_to_json(struct discord_gateway_identify*) discord_gateway_identify_list_to_json(struct discord_gateway_identify**) </tt>
+ *   - <tt>discord_gateway_identify_to_json(char *wbuf, size_t len, struct discord_gateway_identify *p)</tt>
+ *   - <tt>discord_gateway_identify_list_to_json(char *wbuf, size_t len, struct discord_gateway_identify**)</tt>
  */
 struct discord_gateway_identify {
   /* specs/discord/gateway.json:119:19
@@ -191,13 +194,16 @@ extern size_t discord_gateway_identify_list_to_json(char *str, size_t len, struc
 /**
  * @see https://discord.com/developers/docs/topics/gateway#update-status-gateway-status-update-structure
  * - Initializer:
- *   - <tt> discord_gateway_status_update_init(struct discord_gateway_status_update*) </tt>
+ *   - <tt>discord_gateway_status_update_init(struct discord_gateway_status_update*)</tt>
  * - Cleanup:
- *   - <tt> discord_gateway_status_update_cleanup(struct discord_gateway_status_update*) discord_gateway_status_update_list_free(struct discord_gateway_status_update**) </tt>
+ *   - <tt>discord_gateway_status_update_cleanup(struct discord_gateway_status_update*)</tt>
+ *   - <tt>discord_gateway_status_update_list_free(struct discord_gateway_status_update**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_gateway_status_update_from_json(struct discord_gateway_status_update**) discord_gateway_status_update_list_from_json(struct discord_gateway_status_update***) </tt>
+ *   - <tt>discord_gateway_status_update_from_json(char *rbuf, size_t len, struct discord_gateway_status_update**)</tt>
+ *   - <tt>discord_gateway_status_update_list_from_json(char *rbuf, size_t len, struct discord_gateway_status_update***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_gateway_status_update_to_json(struct discord_gateway_status_update*) discord_gateway_status_update_list_to_json(struct discord_gateway_status_update**) </tt>
+ *   - <tt>discord_gateway_status_update_to_json(char *wbuf, size_t len, struct discord_gateway_status_update *p)</tt>
+ *   - <tt>discord_gateway_status_update_list_to_json(char *wbuf, size_t len, struct discord_gateway_status_update**)</tt>
  */
 struct discord_gateway_status_update {
   /* specs/discord/gateway.json:135:19
@@ -255,13 +261,16 @@ extern size_t discord_gateway_status_update_list_to_json(char *str, size_t len, 
 /**
  * @see https://discord.com/developers/docs/topics/gateway#identify-identify-connection-properties
  * - Initializer:
- *   - <tt> discord_gateway_identify_connection_init(struct discord_gateway_identify_connection*) </tt>
+ *   - <tt>discord_gateway_identify_connection_init(struct discord_gateway_identify_connection*)</tt>
  * - Cleanup:
- *   - <tt> discord_gateway_identify_connection_cleanup(struct discord_gateway_identify_connection*) discord_gateway_identify_connection_list_free(struct discord_gateway_identify_connection**) </tt>
+ *   - <tt>discord_gateway_identify_connection_cleanup(struct discord_gateway_identify_connection*)</tt>
+ *   - <tt>discord_gateway_identify_connection_list_free(struct discord_gateway_identify_connection**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_gateway_identify_connection_from_json(struct discord_gateway_identify_connection**) discord_gateway_identify_connection_list_from_json(struct discord_gateway_identify_connection***) </tt>
+ *   - <tt>discord_gateway_identify_connection_from_json(char *rbuf, size_t len, struct discord_gateway_identify_connection**)</tt>
+ *   - <tt>discord_gateway_identify_connection_list_from_json(char *rbuf, size_t len, struct discord_gateway_identify_connection***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_gateway_identify_connection_to_json(struct discord_gateway_identify_connection*) discord_gateway_identify_connection_list_to_json(struct discord_gateway_identify_connection**) </tt>
+ *   - <tt>discord_gateway_identify_connection_to_json(char *wbuf, size_t len, struct discord_gateway_identify_connection *p)</tt>
+ *   - <tt>discord_gateway_identify_connection_list_to_json(char *wbuf, size_t len, struct discord_gateway_identify_connection**)</tt>
  */
 struct discord_gateway_identify_connection {
   /* specs/discord/gateway.json:150:19
@@ -313,13 +322,16 @@ extern size_t discord_gateway_identify_connection_list_to_json(char *str, size_t
 /**
  * @see https://discord.com/developers/docs/topics/gateway#activity-object-activity-structure
  * - Initializer:
- *   - <tt> discord_gateway_activity_init(struct discord_gateway_activity*) </tt>
+ *   - <tt>discord_gateway_activity_init(struct discord_gateway_activity*)</tt>
  * - Cleanup:
- *   - <tt> discord_gateway_activity_cleanup(struct discord_gateway_activity*) discord_gateway_activity_list_free(struct discord_gateway_activity**) </tt>
+ *   - <tt>discord_gateway_activity_cleanup(struct discord_gateway_activity*)</tt>
+ *   - <tt>discord_gateway_activity_list_free(struct discord_gateway_activity**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_gateway_activity_from_json(struct discord_gateway_activity**) discord_gateway_activity_list_from_json(struct discord_gateway_activity***) </tt>
+ *   - <tt>discord_gateway_activity_from_json(char *rbuf, size_t len, struct discord_gateway_activity**)</tt>
+ *   - <tt>discord_gateway_activity_list_from_json(char *rbuf, size_t len, struct discord_gateway_activity***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_gateway_activity_to_json(struct discord_gateway_activity*) discord_gateway_activity_list_to_json(struct discord_gateway_activity**) </tt>
+ *   - <tt>discord_gateway_activity_to_json(char *wbuf, size_t len, struct discord_gateway_activity *p)</tt>
+ *   - <tt>discord_gateway_activity_list_to_json(char *wbuf, size_t len, struct discord_gateway_activity**)</tt>
  */
 struct discord_gateway_activity {
   /* specs/discord/gateway.json:161:19

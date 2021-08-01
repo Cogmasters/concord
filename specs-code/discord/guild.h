@@ -10,13 +10,16 @@
 /**
  * @see https://discord.com/developers/docs/resources/guild#guild-object-guild-structure
  * - Initializer:
- *   - <tt> discord_guild_init(struct discord_guild*) </tt>
+ *   - <tt>discord_guild_init(struct discord_guild*)</tt>
  * - Cleanup:
- *   - <tt> discord_guild_cleanup(struct discord_guild*) discord_guild_list_free(struct discord_guild**) </tt>
+ *   - <tt>discord_guild_cleanup(struct discord_guild*)</tt>
+ *   - <tt>discord_guild_list_free(struct discord_guild**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_guild_from_json(struct discord_guild**) discord_guild_list_from_json(struct discord_guild***) </tt>
+ *   - <tt>discord_guild_from_json(char *rbuf, size_t len, struct discord_guild**)</tt>
+ *   - <tt>discord_guild_list_from_json(char *rbuf, size_t len, struct discord_guild***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_guild_to_json(struct discord_guild*) discord_guild_list_to_json(struct discord_guild**) </tt>
+ *   - <tt>discord_guild_to_json(char *wbuf, size_t len, struct discord_guild *p)</tt>
+ *   - <tt>discord_guild_list_to_json(char *wbuf, size_t len, struct discord_guild**)</tt>
  */
 struct discord_guild {
   /* specs/discord/guild.json:12:78
@@ -330,13 +333,16 @@ extern bool discord_guild_features_has(enum discord_guild_features, char*);
 /**
  * @see https://discord.com/developers/docs/resources/guild#unavailable-guild-object
  * - Initializer:
- *   - <tt> discord_guild_unavailable_init(struct discord_guild_unavailable*) </tt>
+ *   - <tt>discord_guild_unavailable_init(struct discord_guild_unavailable*)</tt>
  * - Cleanup:
- *   - <tt> discord_guild_unavailable_cleanup(struct discord_guild_unavailable*) discord_guild_unavailable_list_free(struct discord_guild_unavailable**) </tt>
+ *   - <tt>discord_guild_unavailable_cleanup(struct discord_guild_unavailable*)</tt>
+ *   - <tt>discord_guild_unavailable_list_free(struct discord_guild_unavailable**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_guild_unavailable_from_json(struct discord_guild_unavailable**) discord_guild_unavailable_list_from_json(struct discord_guild_unavailable***) </tt>
+ *   - <tt>discord_guild_unavailable_from_json(char *rbuf, size_t len, struct discord_guild_unavailable**)</tt>
+ *   - <tt>discord_guild_unavailable_list_from_json(char *rbuf, size_t len, struct discord_guild_unavailable***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_guild_unavailable_to_json(struct discord_guild_unavailable*) discord_guild_unavailable_list_to_json(struct discord_guild_unavailable**) </tt>
+ *   - <tt>discord_guild_unavailable_to_json(char *wbuf, size_t len, struct discord_guild_unavailable *p)</tt>
+ *   - <tt>discord_guild_unavailable_list_to_json(char *wbuf, size_t len, struct discord_guild_unavailable**)</tt>
  */
 struct discord_guild_unavailable {
   /* specs/discord/guild.json:163:18
@@ -384,13 +390,16 @@ extern size_t discord_guild_unavailable_list_to_json(char *str, size_t len, stru
 /**
  * @see https://discord.com/developers/docs/resources/guild#guild-preview-object
  * - Initializer:
- *   - <tt> discord_guild_preview_init(struct discord_guild_preview*) </tt>
+ *   - <tt>discord_guild_preview_init(struct discord_guild_preview*)</tt>
  * - Cleanup:
- *   - <tt> discord_guild_preview_cleanup(struct discord_guild_preview*) discord_guild_preview_list_free(struct discord_guild_preview**) </tt>
+ *   - <tt>discord_guild_preview_cleanup(struct discord_guild_preview*)</tt>
+ *   - <tt>discord_guild_preview_list_free(struct discord_guild_preview**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_guild_preview_from_json(struct discord_guild_preview**) discord_guild_preview_list_from_json(struct discord_guild_preview***) </tt>
+ *   - <tt>discord_guild_preview_from_json(char *rbuf, size_t len, struct discord_guild_preview**)</tt>
+ *   - <tt>discord_guild_preview_list_from_json(char *rbuf, size_t len, struct discord_guild_preview***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_guild_preview_to_json(struct discord_guild_preview*) discord_guild_preview_list_to_json(struct discord_guild_preview**) </tt>
+ *   - <tt>discord_guild_preview_to_json(char *wbuf, size_t len, struct discord_guild_preview *p)</tt>
+ *   - <tt>discord_guild_preview_list_to_json(char *wbuf, size_t len, struct discord_guild_preview**)</tt>
  */
 struct discord_guild_preview {
   /* specs/discord/guild.json:173:18
@@ -470,13 +479,16 @@ extern size_t discord_guild_preview_list_to_json(char *str, size_t len, struct d
 /**
  * @see https://discord.com/developers/docs/resources/guild#guild-widget-object
  * - Initializer:
- *   - <tt> discord_guild_widget_init(struct discord_guild_widget*) </tt>
+ *   - <tt>discord_guild_widget_init(struct discord_guild_widget*)</tt>
  * - Cleanup:
- *   - <tt> discord_guild_widget_cleanup(struct discord_guild_widget*) discord_guild_widget_list_free(struct discord_guild_widget**) </tt>
+ *   - <tt>discord_guild_widget_cleanup(struct discord_guild_widget*)</tt>
+ *   - <tt>discord_guild_widget_list_free(struct discord_guild_widget**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_guild_widget_from_json(struct discord_guild_widget**) discord_guild_widget_list_from_json(struct discord_guild_widget***) </tt>
+ *   - <tt>discord_guild_widget_from_json(char *rbuf, size_t len, struct discord_guild_widget**)</tt>
+ *   - <tt>discord_guild_widget_list_from_json(char *rbuf, size_t len, struct discord_guild_widget***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_guild_widget_to_json(struct discord_guild_widget*) discord_guild_widget_list_to_json(struct discord_guild_widget**) </tt>
+ *   - <tt>discord_guild_widget_to_json(char *wbuf, size_t len, struct discord_guild_widget *p)</tt>
+ *   - <tt>discord_guild_widget_list_to_json(char *wbuf, size_t len, struct discord_guild_widget**)</tt>
  */
 struct discord_guild_widget {
   /* specs/discord/guild.json:191:18
@@ -524,13 +536,16 @@ extern size_t discord_guild_widget_list_to_json(char *str, size_t len, struct di
 /**
  * @see https://discord.com/developers/docs/resources/guild#guild-member-object
  * - Initializer:
- *   - <tt> discord_guild_member_init(struct discord_guild_member*) </tt>
+ *   - <tt>discord_guild_member_init(struct discord_guild_member*)</tt>
  * - Cleanup:
- *   - <tt> discord_guild_member_cleanup(struct discord_guild_member*) discord_guild_member_list_free(struct discord_guild_member**) </tt>
+ *   - <tt>discord_guild_member_cleanup(struct discord_guild_member*)</tt>
+ *   - <tt>discord_guild_member_list_free(struct discord_guild_member**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_guild_member_from_json(struct discord_guild_member**) discord_guild_member_list_from_json(struct discord_guild_member***) </tt>
+ *   - <tt>discord_guild_member_from_json(char *rbuf, size_t len, struct discord_guild_member**)</tt>
+ *   - <tt>discord_guild_member_list_from_json(char *rbuf, size_t len, struct discord_guild_member***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_guild_member_to_json(struct discord_guild_member*) discord_guild_member_list_to_json(struct discord_guild_member**) </tt>
+ *   - <tt>discord_guild_member_to_json(char *wbuf, size_t len, struct discord_guild_member *p)</tt>
+ *   - <tt>discord_guild_member_list_to_json(char *wbuf, size_t len, struct discord_guild_member**)</tt>
  */
 struct discord_guild_member {
   /* specs/discord/guild.json:202:20
@@ -606,13 +621,16 @@ extern size_t discord_guild_member_list_to_json(char *str, size_t len, struct di
 /**
  * @see https://discord.com/developers/docs/resources/guild#integration-object-integration-structure
  * - Initializer:
- *   - <tt> discord_guild_integration_init(struct discord_guild_integration*) </tt>
+ *   - <tt>discord_guild_integration_init(struct discord_guild_integration*)</tt>
  * - Cleanup:
- *   - <tt> discord_guild_integration_cleanup(struct discord_guild_integration*) discord_guild_integration_list_free(struct discord_guild_integration**) </tt>
+ *   - <tt>discord_guild_integration_cleanup(struct discord_guild_integration*)</tt>
+ *   - <tt>discord_guild_integration_list_free(struct discord_guild_integration**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_guild_integration_from_json(struct discord_guild_integration**) discord_guild_integration_list_from_json(struct discord_guild_integration***) </tt>
+ *   - <tt>discord_guild_integration_from_json(char *rbuf, size_t len, struct discord_guild_integration**)</tt>
+ *   - <tt>discord_guild_integration_list_from_json(char *rbuf, size_t len, struct discord_guild_integration***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_guild_integration_to_json(struct discord_guild_integration*) discord_guild_integration_list_to_json(struct discord_guild_integration**) </tt>
+ *   - <tt>discord_guild_integration_to_json(char *wbuf, size_t len, struct discord_guild_integration *p)</tt>
+ *   - <tt>discord_guild_integration_list_to_json(char *wbuf, size_t len, struct discord_guild_integration**)</tt>
  */
 struct discord_guild_integration {
   /* specs/discord/guild.json:220:20
@@ -721,13 +739,16 @@ extern bool discord_guild_integration_expire_behaviors_has(enum discord_guild_in
 /**
  * @see https://discord.com/developers/docs/resources/guild#integration-account-object-integration-account-structure
  * - Initializer:
- *   - <tt> discord_guild_integration_account_init(struct discord_guild_integration_account*) </tt>
+ *   - <tt>discord_guild_integration_account_init(struct discord_guild_integration_account*)</tt>
  * - Cleanup:
- *   - <tt> discord_guild_integration_account_cleanup(struct discord_guild_integration_account*) discord_guild_integration_account_list_free(struct discord_guild_integration_account**) </tt>
+ *   - <tt>discord_guild_integration_account_cleanup(struct discord_guild_integration_account*)</tt>
+ *   - <tt>discord_guild_integration_account_list_free(struct discord_guild_integration_account**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_guild_integration_account_from_json(struct discord_guild_integration_account**) discord_guild_integration_account_list_from_json(struct discord_guild_integration_account***) </tt>
+ *   - <tt>discord_guild_integration_account_from_json(char *rbuf, size_t len, struct discord_guild_integration_account**)</tt>
+ *   - <tt>discord_guild_integration_account_list_from_json(char *rbuf, size_t len, struct discord_guild_integration_account***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_guild_integration_account_to_json(struct discord_guild_integration_account*) discord_guild_integration_account_list_to_json(struct discord_guild_integration_account**) </tt>
+ *   - <tt>discord_guild_integration_account_to_json(char *wbuf, size_t len, struct discord_guild_integration_account *p)</tt>
+ *   - <tt>discord_guild_integration_account_list_to_json(char *wbuf, size_t len, struct discord_guild_integration_account**)</tt>
  */
 struct discord_guild_integration_account {
   /* specs/discord/guild.json:253:19
@@ -775,13 +796,16 @@ extern size_t discord_guild_integration_account_list_to_json(char *str, size_t l
 /**
  * @see https://discord.com/developers/docs/resources/guild#integration-application-object-integration-application-structure
  * - Initializer:
- *   - <tt> discord_guild_integration_application_init(struct discord_guild_integration_application*) </tt>
+ *   - <tt>discord_guild_integration_application_init(struct discord_guild_integration_application*)</tt>
  * - Cleanup:
- *   - <tt> discord_guild_integration_application_cleanup(struct discord_guild_integration_application*) discord_guild_integration_application_list_free(struct discord_guild_integration_application**) </tt>
+ *   - <tt>discord_guild_integration_application_cleanup(struct discord_guild_integration_application*)</tt>
+ *   - <tt>discord_guild_integration_application_list_free(struct discord_guild_integration_application**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_guild_integration_application_from_json(struct discord_guild_integration_application**) discord_guild_integration_application_list_from_json(struct discord_guild_integration_application***) </tt>
+ *   - <tt>discord_guild_integration_application_from_json(char *rbuf, size_t len, struct discord_guild_integration_application**)</tt>
+ *   - <tt>discord_guild_integration_application_list_from_json(char *rbuf, size_t len, struct discord_guild_integration_application***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_guild_integration_application_to_json(struct discord_guild_integration_application*) discord_guild_integration_application_list_to_json(struct discord_guild_integration_application**) </tt>
+ *   - <tt>discord_guild_integration_application_to_json(char *wbuf, size_t len, struct discord_guild_integration_application *p)</tt>
+ *   - <tt>discord_guild_integration_application_list_to_json(char *wbuf, size_t len, struct discord_guild_integration_application**)</tt>
  */
 struct discord_guild_integration_application {
   /* specs/discord/guild.json:263:19
@@ -845,13 +869,16 @@ extern size_t discord_guild_integration_application_list_to_json(char *str, size
 /**
  * @see https://discord.com/developers/docs/resources/guild#ban-object
  * - Initializer:
- *   - <tt> discord_guild_ban_init(struct discord_guild_ban*) </tt>
+ *   - <tt>discord_guild_ban_init(struct discord_guild_ban*)</tt>
  * - Cleanup:
- *   - <tt> discord_guild_ban_cleanup(struct discord_guild_ban*) discord_guild_ban_list_free(struct discord_guild_ban**) </tt>
+ *   - <tt>discord_guild_ban_cleanup(struct discord_guild_ban*)</tt>
+ *   - <tt>discord_guild_ban_list_free(struct discord_guild_ban**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_guild_ban_from_json(struct discord_guild_ban**) discord_guild_ban_list_from_json(struct discord_guild_ban***) </tt>
+ *   - <tt>discord_guild_ban_from_json(char *rbuf, size_t len, struct discord_guild_ban**)</tt>
+ *   - <tt>discord_guild_ban_list_from_json(char *rbuf, size_t len, struct discord_guild_ban***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_guild_ban_to_json(struct discord_guild_ban*) discord_guild_ban_list_to_json(struct discord_guild_ban**) </tt>
+ *   - <tt>discord_guild_ban_to_json(char *wbuf, size_t len, struct discord_guild_ban *p)</tt>
+ *   - <tt>discord_guild_ban_list_to_json(char *wbuf, size_t len, struct discord_guild_ban**)</tt>
  */
 struct discord_guild_ban {
   /* specs/discord/guild.json:278:20
@@ -899,13 +926,16 @@ extern size_t discord_guild_ban_list_to_json(char *str, size_t len, struct disco
 /**
  * @see https://discord.com/developers/docs/resources/guild#welcome-screen-object-welcome-screen-structure
  * - Initializer:
- *   - <tt> discord_guild_welcome_screen_init(struct discord_guild_welcome_screen*) </tt>
+ *   - <tt>discord_guild_welcome_screen_init(struct discord_guild_welcome_screen*)</tt>
  * - Cleanup:
- *   - <tt> discord_guild_welcome_screen_cleanup(struct discord_guild_welcome_screen*) discord_guild_welcome_screen_list_free(struct discord_guild_welcome_screen**) </tt>
+ *   - <tt>discord_guild_welcome_screen_cleanup(struct discord_guild_welcome_screen*)</tt>
+ *   - <tt>discord_guild_welcome_screen_list_free(struct discord_guild_welcome_screen**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_guild_welcome_screen_from_json(struct discord_guild_welcome_screen**) discord_guild_welcome_screen_list_from_json(struct discord_guild_welcome_screen***) </tt>
+ *   - <tt>discord_guild_welcome_screen_from_json(char *rbuf, size_t len, struct discord_guild_welcome_screen**)</tt>
+ *   - <tt>discord_guild_welcome_screen_list_from_json(char *rbuf, size_t len, struct discord_guild_welcome_screen***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_guild_welcome_screen_to_json(struct discord_guild_welcome_screen*) discord_guild_welcome_screen_list_to_json(struct discord_guild_welcome_screen**) </tt>
+ *   - <tt>discord_guild_welcome_screen_to_json(char *wbuf, size_t len, struct discord_guild_welcome_screen *p)</tt>
+ *   - <tt>discord_guild_welcome_screen_list_to_json(char *wbuf, size_t len, struct discord_guild_welcome_screen**)</tt>
  */
 struct discord_guild_welcome_screen {
   /* specs/discord/guild.json:289:20
@@ -953,13 +983,16 @@ extern size_t discord_guild_welcome_screen_list_to_json(char *str, size_t len, s
 /**
  * @see https://discord.com/developers/docs/resources/guild#welcome-screen-object-welcome-screen-channel-structure
  * - Initializer:
- *   - <tt> discord_guild_welcome_screen_channel_init(struct discord_guild_welcome_screen_channel*) </tt>
+ *   - <tt>discord_guild_welcome_screen_channel_init(struct discord_guild_welcome_screen_channel*)</tt>
  * - Cleanup:
- *   - <tt> discord_guild_welcome_screen_channel_cleanup(struct discord_guild_welcome_screen_channel*) discord_guild_welcome_screen_channel_list_free(struct discord_guild_welcome_screen_channel**) </tt>
+ *   - <tt>discord_guild_welcome_screen_channel_cleanup(struct discord_guild_welcome_screen_channel*)</tt>
+ *   - <tt>discord_guild_welcome_screen_channel_list_free(struct discord_guild_welcome_screen_channel**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_guild_welcome_screen_channel_from_json(struct discord_guild_welcome_screen_channel**) discord_guild_welcome_screen_channel_list_from_json(struct discord_guild_welcome_screen_channel***) </tt>
+ *   - <tt>discord_guild_welcome_screen_channel_from_json(char *rbuf, size_t len, struct discord_guild_welcome_screen_channel**)</tt>
+ *   - <tt>discord_guild_welcome_screen_channel_list_from_json(char *rbuf, size_t len, struct discord_guild_welcome_screen_channel***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_guild_welcome_screen_channel_to_json(struct discord_guild_welcome_screen_channel*) discord_guild_welcome_screen_channel_list_to_json(struct discord_guild_welcome_screen_channel**) </tt>
+ *   - <tt>discord_guild_welcome_screen_channel_to_json(char *wbuf, size_t len, struct discord_guild_welcome_screen_channel *p)</tt>
+ *   - <tt>discord_guild_welcome_screen_channel_list_to_json(char *wbuf, size_t len, struct discord_guild_welcome_screen_channel**)</tt>
  */
 struct discord_guild_welcome_screen_channel {
   /* specs/discord/guild.json:300:20

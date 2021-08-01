@@ -10,13 +10,16 @@
 /**
  * @see https://discord.com/developers/docs/resources/emoji#create-guild-emoji
  * - Initializer:
- *   - <tt> discord_create_guild_emoji_params_init(struct discord_create_guild_emoji_params*) </tt>
+ *   - <tt>discord_create_guild_emoji_params_init(struct discord_create_guild_emoji_params*)</tt>
  * - Cleanup:
- *   - <tt> discord_create_guild_emoji_params_cleanup(struct discord_create_guild_emoji_params*) discord_create_guild_emoji_params_list_free(struct discord_create_guild_emoji_params**) </tt>
+ *   - <tt>discord_create_guild_emoji_params_cleanup(struct discord_create_guild_emoji_params*)</tt>
+ *   - <tt>discord_create_guild_emoji_params_list_free(struct discord_create_guild_emoji_params**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_create_guild_emoji_params_from_json(struct discord_create_guild_emoji_params**) discord_create_guild_emoji_params_list_from_json(struct discord_create_guild_emoji_params***) </tt>
+ *   - <tt>discord_create_guild_emoji_params_from_json(char *rbuf, size_t len, struct discord_create_guild_emoji_params**)</tt>
+ *   - <tt>discord_create_guild_emoji_params_list_from_json(char *rbuf, size_t len, struct discord_create_guild_emoji_params***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_create_guild_emoji_params_to_json(struct discord_create_guild_emoji_params*) discord_create_guild_emoji_params_list_to_json(struct discord_create_guild_emoji_params**) </tt>
+ *   - <tt>discord_create_guild_emoji_params_to_json(char *wbuf, size_t len, struct discord_create_guild_emoji_params *p)</tt>
+ *   - <tt>discord_create_guild_emoji_params_list_to_json(char *wbuf, size_t len, struct discord_create_guild_emoji_params**)</tt>
  */
 struct discord_create_guild_emoji_params {
   /* specs/discord/emoji.endpoints-params.json:13:20
@@ -68,13 +71,16 @@ extern size_t discord_create_guild_emoji_params_list_to_json(char *str, size_t l
 /**
  * @see https://discord.com/developers/docs/resources/emoji#modify-guild-emoji
  * - Initializer:
- *   - <tt> discord_modify_guild_emoji_params_init(struct discord_modify_guild_emoji_params*) </tt>
+ *   - <tt>discord_modify_guild_emoji_params_init(struct discord_modify_guild_emoji_params*)</tt>
  * - Cleanup:
- *   - <tt> discord_modify_guild_emoji_params_cleanup(struct discord_modify_guild_emoji_params*) discord_modify_guild_emoji_params_list_free(struct discord_modify_guild_emoji_params**) </tt>
+ *   - <tt>discord_modify_guild_emoji_params_cleanup(struct discord_modify_guild_emoji_params*)</tt>
+ *   - <tt>discord_modify_guild_emoji_params_list_free(struct discord_modify_guild_emoji_params**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_modify_guild_emoji_params_from_json(struct discord_modify_guild_emoji_params**) discord_modify_guild_emoji_params_list_from_json(struct discord_modify_guild_emoji_params***) </tt>
+ *   - <tt>discord_modify_guild_emoji_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_emoji_params**)</tt>
+ *   - <tt>discord_modify_guild_emoji_params_list_from_json(char *rbuf, size_t len, struct discord_modify_guild_emoji_params***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_modify_guild_emoji_params_to_json(struct discord_modify_guild_emoji_params*) discord_modify_guild_emoji_params_list_to_json(struct discord_modify_guild_emoji_params**) </tt>
+ *   - <tt>discord_modify_guild_emoji_params_to_json(char *wbuf, size_t len, struct discord_modify_guild_emoji_params *p)</tt>
+ *   - <tt>discord_modify_guild_emoji_params_list_to_json(char *wbuf, size_t len, struct discord_modify_guild_emoji_params**)</tt>
  */
 struct discord_modify_guild_emoji_params {
   /* specs/discord/emoji.endpoints-params.json:25:20

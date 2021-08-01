@@ -10,13 +10,16 @@
 /**
  * @see https://discord.com/developers/docs/resources/webhook#create-webhook
  * - Initializer:
- *   - <tt> discord_create_webhook_params_init(struct discord_create_webhook_params*) </tt>
+ *   - <tt>discord_create_webhook_params_init(struct discord_create_webhook_params*)</tt>
  * - Cleanup:
- *   - <tt> discord_create_webhook_params_cleanup(struct discord_create_webhook_params*) discord_create_webhook_params_list_free(struct discord_create_webhook_params**) </tt>
+ *   - <tt>discord_create_webhook_params_cleanup(struct discord_create_webhook_params*)</tt>
+ *   - <tt>discord_create_webhook_params_list_free(struct discord_create_webhook_params**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_create_webhook_params_from_json(struct discord_create_webhook_params**) discord_create_webhook_params_list_from_json(struct discord_create_webhook_params***) </tt>
+ *   - <tt>discord_create_webhook_params_from_json(char *rbuf, size_t len, struct discord_create_webhook_params**)</tt>
+ *   - <tt>discord_create_webhook_params_list_from_json(char *rbuf, size_t len, struct discord_create_webhook_params***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_create_webhook_params_to_json(struct discord_create_webhook_params*) discord_create_webhook_params_list_to_json(struct discord_create_webhook_params**) </tt>
+ *   - <tt>discord_create_webhook_params_to_json(char *wbuf, size_t len, struct discord_create_webhook_params *p)</tt>
+ *   - <tt>discord_create_webhook_params_list_to_json(char *wbuf, size_t len, struct discord_create_webhook_params**)</tt>
  */
 struct discord_create_webhook_params {
   /* specs/discord/webhook.endpoints-params.json:13:20
@@ -64,13 +67,16 @@ extern size_t discord_create_webhook_params_list_to_json(char *str, size_t len, 
 /**
  * @see https://discord.com/developers/docs/resources/webhook#modify-webhook
  * - Initializer:
- *   - <tt> discord_modify_webhook_params_init(struct discord_modify_webhook_params*) </tt>
+ *   - <tt>discord_modify_webhook_params_init(struct discord_modify_webhook_params*)</tt>
  * - Cleanup:
- *   - <tt> discord_modify_webhook_params_cleanup(struct discord_modify_webhook_params*) discord_modify_webhook_params_list_free(struct discord_modify_webhook_params**) </tt>
+ *   - <tt>discord_modify_webhook_params_cleanup(struct discord_modify_webhook_params*)</tt>
+ *   - <tt>discord_modify_webhook_params_list_free(struct discord_modify_webhook_params**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_modify_webhook_params_from_json(struct discord_modify_webhook_params**) discord_modify_webhook_params_list_from_json(struct discord_modify_webhook_params***) </tt>
+ *   - <tt>discord_modify_webhook_params_from_json(char *rbuf, size_t len, struct discord_modify_webhook_params**)</tt>
+ *   - <tt>discord_modify_webhook_params_list_from_json(char *rbuf, size_t len, struct discord_modify_webhook_params***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_modify_webhook_params_to_json(struct discord_modify_webhook_params*) discord_modify_webhook_params_list_to_json(struct discord_modify_webhook_params**) </tt>
+ *   - <tt>discord_modify_webhook_params_to_json(char *wbuf, size_t len, struct discord_modify_webhook_params *p)</tt>
+ *   - <tt>discord_modify_webhook_params_list_to_json(char *wbuf, size_t len, struct discord_modify_webhook_params**)</tt>
  */
 struct discord_modify_webhook_params {
   /* specs/discord/webhook.endpoints-params.json:24:20
@@ -122,13 +128,16 @@ extern size_t discord_modify_webhook_params_list_to_json(char *str, size_t len, 
 /**
  * @see https://discord.com/developers/docs/resources/webhook#execute-webhook
  * - Initializer:
- *   - <tt> discord_execute_webhook_params_init(struct discord_execute_webhook_params*) </tt>
+ *   - <tt>discord_execute_webhook_params_init(struct discord_execute_webhook_params*)</tt>
  * - Cleanup:
- *   - <tt> discord_execute_webhook_params_cleanup(struct discord_execute_webhook_params*) discord_execute_webhook_params_list_free(struct discord_execute_webhook_params**) </tt>
+ *   - <tt>discord_execute_webhook_params_cleanup(struct discord_execute_webhook_params*)</tt>
+ *   - <tt>discord_execute_webhook_params_list_free(struct discord_execute_webhook_params**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_execute_webhook_params_from_json(struct discord_execute_webhook_params**) discord_execute_webhook_params_list_from_json(struct discord_execute_webhook_params***) </tt>
+ *   - <tt>discord_execute_webhook_params_from_json(char *rbuf, size_t len, struct discord_execute_webhook_params**)</tt>
+ *   - <tt>discord_execute_webhook_params_list_from_json(char *rbuf, size_t len, struct discord_execute_webhook_params***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_execute_webhook_params_to_json(struct discord_execute_webhook_params*) discord_execute_webhook_params_list_to_json(struct discord_execute_webhook_params**) </tt>
+ *   - <tt>discord_execute_webhook_params_to_json(char *wbuf, size_t len, struct discord_execute_webhook_params *p)</tt>
+ *   - <tt>discord_execute_webhook_params_list_to_json(char *wbuf, size_t len, struct discord_execute_webhook_params**)</tt>
  */
 struct discord_execute_webhook_params {
   /* specs/discord/webhook.endpoints-params.json:37:20
@@ -230,13 +239,16 @@ extern size_t discord_execute_webhook_params_list_to_json(char *str, size_t len,
 /**
  * @see https://discord.com/developers/docs/resources/webhook#edit-webhook-message
  * - Initializer:
- *   - <tt> discord_edit_webhook_message_params_init(struct discord_edit_webhook_message_params*) </tt>
+ *   - <tt>discord_edit_webhook_message_params_init(struct discord_edit_webhook_message_params*)</tt>
  * - Cleanup:
- *   - <tt> discord_edit_webhook_message_params_cleanup(struct discord_edit_webhook_message_params*) discord_edit_webhook_message_params_list_free(struct discord_edit_webhook_message_params**) </tt>
+ *   - <tt>discord_edit_webhook_message_params_cleanup(struct discord_edit_webhook_message_params*)</tt>
+ *   - <tt>discord_edit_webhook_message_params_list_free(struct discord_edit_webhook_message_params**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_edit_webhook_message_params_from_json(struct discord_edit_webhook_message_params**) discord_edit_webhook_message_params_list_from_json(struct discord_edit_webhook_message_params***) </tt>
+ *   - <tt>discord_edit_webhook_message_params_from_json(char *rbuf, size_t len, struct discord_edit_webhook_message_params**)</tt>
+ *   - <tt>discord_edit_webhook_message_params_list_from_json(char *rbuf, size_t len, struct discord_edit_webhook_message_params***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_edit_webhook_message_params_to_json(struct discord_edit_webhook_message_params*) discord_edit_webhook_message_params_list_to_json(struct discord_edit_webhook_message_params**) </tt>
+ *   - <tt>discord_edit_webhook_message_params_to_json(char *wbuf, size_t len, struct discord_edit_webhook_message_params *p)</tt>
+ *   - <tt>discord_edit_webhook_message_params_list_to_json(char *wbuf, size_t len, struct discord_edit_webhook_message_params**)</tt>
  */
 struct discord_edit_webhook_message_params {
   /* specs/discord/webhook.endpoints-params.json:81:20

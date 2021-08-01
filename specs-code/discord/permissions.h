@@ -49,13 +49,16 @@ extern bool discord_permissions_bitwise_flags_has(enum discord_permissions_bitwi
 /**
  * @see https://discord.com/developers/docs/topics/permissions#role-object-role-structure
  * - Initializer:
- *   - <tt> discord_permissions_role_init(struct discord_permissions_role*) </tt>
+ *   - <tt>discord_permissions_role_init(struct discord_permissions_role*)</tt>
  * - Cleanup:
- *   - <tt> discord_permissions_role_cleanup(struct discord_permissions_role*) discord_permissions_role_list_free(struct discord_permissions_role**) </tt>
+ *   - <tt>discord_permissions_role_cleanup(struct discord_permissions_role*)</tt>
+ *   - <tt>discord_permissions_role_list_free(struct discord_permissions_role**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_permissions_role_from_json(struct discord_permissions_role**) discord_permissions_role_list_from_json(struct discord_permissions_role***) </tt>
+ *   - <tt>discord_permissions_role_from_json(char *rbuf, size_t len, struct discord_permissions_role**)</tt>
+ *   - <tt>discord_permissions_role_list_from_json(char *rbuf, size_t len, struct discord_permissions_role***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_permissions_role_to_json(struct discord_permissions_role*) discord_permissions_role_list_to_json(struct discord_permissions_role**) </tt>
+ *   - <tt>discord_permissions_role_to_json(char *wbuf, size_t len, struct discord_permissions_role *p)</tt>
+ *   - <tt>discord_permissions_role_list_to_json(char *wbuf, size_t len, struct discord_permissions_role**)</tt>
  */
 struct discord_permissions_role {
   /* specs/discord/permissions.json:52:20
@@ -131,13 +134,16 @@ extern size_t discord_permissions_role_list_to_json(char *str, size_t len, struc
 /**
  * @see https://discord.com/developers/docs/topics/permissions#role-object-role-tags-structure
  * - Initializer:
- *   - <tt> discord_permissions_role_tags_init(struct discord_permissions_role_tags*) </tt>
+ *   - <tt>discord_permissions_role_tags_init(struct discord_permissions_role_tags*)</tt>
  * - Cleanup:
- *   - <tt> discord_permissions_role_tags_cleanup(struct discord_permissions_role_tags*) discord_permissions_role_tags_list_free(struct discord_permissions_role_tags**) </tt>
+ *   - <tt>discord_permissions_role_tags_cleanup(struct discord_permissions_role_tags*)</tt>
+ *   - <tt>discord_permissions_role_tags_list_free(struct discord_permissions_role_tags**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_permissions_role_tags_from_json(struct discord_permissions_role_tags**) discord_permissions_role_tags_list_from_json(struct discord_permissions_role_tags***) </tt>
+ *   - <tt>discord_permissions_role_tags_from_json(char *rbuf, size_t len, struct discord_permissions_role_tags**)</tt>
+ *   - <tt>discord_permissions_role_tags_list_from_json(char *rbuf, size_t len, struct discord_permissions_role_tags***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_permissions_role_tags_to_json(struct discord_permissions_role_tags*) discord_permissions_role_tags_list_to_json(struct discord_permissions_role_tags**) </tt>
+ *   - <tt>discord_permissions_role_tags_to_json(char *wbuf, size_t len, struct discord_permissions_role_tags *p)</tt>
+ *   - <tt>discord_permissions_role_tags_list_to_json(char *wbuf, size_t len, struct discord_permissions_role_tags**)</tt>
  */
 struct discord_permissions_role_tags {
   /* specs/discord/permissions.json:70:20

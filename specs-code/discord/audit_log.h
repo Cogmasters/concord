@@ -10,13 +10,16 @@
 /**
  * @see https://discord.com/developers/docs/resources/audit-log#audit-log-object-audit-log-structure
  * - Initializer:
- *   - <tt> discord_audit_log_init(struct discord_audit_log*) </tt>
+ *   - <tt>discord_audit_log_init(struct discord_audit_log*)</tt>
  * - Cleanup:
- *   - <tt> discord_audit_log_cleanup(struct discord_audit_log*) discord_audit_log_list_free(struct discord_audit_log**) </tt>
+ *   - <tt>discord_audit_log_cleanup(struct discord_audit_log*)</tt>
+ *   - <tt>discord_audit_log_list_free(struct discord_audit_log**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_audit_log_from_json(struct discord_audit_log**) discord_audit_log_list_from_json(struct discord_audit_log***) </tt>
+ *   - <tt>discord_audit_log_from_json(char *rbuf, size_t len, struct discord_audit_log**)</tt>
+ *   - <tt>discord_audit_log_list_from_json(char *rbuf, size_t len, struct discord_audit_log***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_audit_log_to_json(struct discord_audit_log*) discord_audit_log_list_to_json(struct discord_audit_log**) </tt>
+ *   - <tt>discord_audit_log_to_json(char *wbuf, size_t len, struct discord_audit_log *p)</tt>
+ *   - <tt>discord_audit_log_list_to_json(char *wbuf, size_t len, struct discord_audit_log**)</tt>
  */
 struct discord_audit_log {
   /* specs/discord/audit_log.json:12:18
@@ -113,13 +116,16 @@ extern bool discord_audit_log_events_has(enum discord_audit_log_events, char*);
 /**
  * @see https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-entry-structure
  * - Initializer:
- *   - <tt> discord_audit_log_entry_init(struct discord_audit_log_entry*) </tt>
+ *   - <tt>discord_audit_log_entry_init(struct discord_audit_log_entry*)</tt>
  * - Cleanup:
- *   - <tt> discord_audit_log_entry_cleanup(struct discord_audit_log_entry*) discord_audit_log_entry_list_free(struct discord_audit_log_entry**) </tt>
+ *   - <tt>discord_audit_log_entry_cleanup(struct discord_audit_log_entry*)</tt>
+ *   - <tt>discord_audit_log_entry_list_free(struct discord_audit_log_entry**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_audit_log_entry_from_json(struct discord_audit_log_entry**) discord_audit_log_entry_list_from_json(struct discord_audit_log_entry***) </tt>
+ *   - <tt>discord_audit_log_entry_from_json(char *rbuf, size_t len, struct discord_audit_log_entry**)</tt>
+ *   - <tt>discord_audit_log_entry_list_from_json(char *rbuf, size_t len, struct discord_audit_log_entry***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_audit_log_entry_to_json(struct discord_audit_log_entry*) discord_audit_log_entry_list_to_json(struct discord_audit_log_entry**) </tt>
+ *   - <tt>discord_audit_log_entry_to_json(char *wbuf, size_t len, struct discord_audit_log_entry *p)</tt>
+ *   - <tt>discord_audit_log_entry_list_to_json(char *wbuf, size_t len, struct discord_audit_log_entry**)</tt>
  */
 struct discord_audit_log_entry {
   /* specs/discord/audit_log.json:68:18
@@ -187,13 +193,16 @@ extern size_t discord_audit_log_entry_list_to_json(char *str, size_t len, struct
 /**
  * @see https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-optional-audit-entry-info
  * - Initializer:
- *   - <tt> discord_audit_log_entry_optional_info_init(struct discord_audit_log_entry_optional_info*) </tt>
+ *   - <tt>discord_audit_log_entry_optional_info_init(struct discord_audit_log_entry_optional_info*)</tt>
  * - Cleanup:
- *   - <tt> discord_audit_log_entry_optional_info_cleanup(struct discord_audit_log_entry_optional_info*) discord_audit_log_entry_optional_info_list_free(struct discord_audit_log_entry_optional_info**) </tt>
+ *   - <tt>discord_audit_log_entry_optional_info_cleanup(struct discord_audit_log_entry_optional_info*)</tt>
+ *   - <tt>discord_audit_log_entry_optional_info_list_free(struct discord_audit_log_entry_optional_info**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_audit_log_entry_optional_info_from_json(struct discord_audit_log_entry_optional_info**) discord_audit_log_entry_optional_info_list_from_json(struct discord_audit_log_entry_optional_info***) </tt>
+ *   - <tt>discord_audit_log_entry_optional_info_from_json(char *rbuf, size_t len, struct discord_audit_log_entry_optional_info**)</tt>
+ *   - <tt>discord_audit_log_entry_optional_info_list_from_json(char *rbuf, size_t len, struct discord_audit_log_entry_optional_info***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_audit_log_entry_optional_info_to_json(struct discord_audit_log_entry_optional_info*) discord_audit_log_entry_optional_info_list_to_json(struct discord_audit_log_entry_optional_info**) </tt>
+ *   - <tt>discord_audit_log_entry_optional_info_to_json(char *wbuf, size_t len, struct discord_audit_log_entry_optional_info *p)</tt>
+ *   - <tt>discord_audit_log_entry_optional_info_list_to_json(char *wbuf, size_t len, struct discord_audit_log_entry_optional_info**)</tt>
  */
 struct discord_audit_log_entry_optional_info {
   /* specs/discord/audit_log.json:84:20
@@ -265,13 +274,16 @@ extern size_t discord_audit_log_entry_optional_info_list_to_json(char *str, size
 /**
  * @see https://discord.com/developers/docs/resources/audit-log#audit-log-change-object-audit-log-change-structure
  * - Initializer:
- *   - <tt> discord_audit_log_change_init(struct discord_audit_log_change*) </tt>
+ *   - <tt>discord_audit_log_change_init(struct discord_audit_log_change*)</tt>
  * - Cleanup:
- *   - <tt> discord_audit_log_change_cleanup(struct discord_audit_log_change*) discord_audit_log_change_list_free(struct discord_audit_log_change**) </tt>
+ *   - <tt>discord_audit_log_change_cleanup(struct discord_audit_log_change*)</tt>
+ *   - <tt>discord_audit_log_change_list_free(struct discord_audit_log_change**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_audit_log_change_from_json(struct discord_audit_log_change**) discord_audit_log_change_list_from_json(struct discord_audit_log_change***) </tt>
+ *   - <tt>discord_audit_log_change_from_json(char *rbuf, size_t len, struct discord_audit_log_change**)</tt>
+ *   - <tt>discord_audit_log_change_list_from_json(char *rbuf, size_t len, struct discord_audit_log_change***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_audit_log_change_to_json(struct discord_audit_log_change*) discord_audit_log_change_list_to_json(struct discord_audit_log_change**) </tt>
+ *   - <tt>discord_audit_log_change_to_json(char *wbuf, size_t len, struct discord_audit_log_change *p)</tt>
+ *   - <tt>discord_audit_log_change_list_to_json(char *wbuf, size_t len, struct discord_audit_log_change**)</tt>
  */
 struct discord_audit_log_change {
   /* specs/discord/audit_log.json:101:18
@@ -323,13 +335,16 @@ extern size_t discord_audit_log_change_list_to_json(char *str, size_t len, struc
 /**
  * @see https://discord.com/developers/docs/resources/audit-log#audit-log-change-object-audit-log-change-key
  * - Initializer:
- *   - <tt> discord_audit_log_change_key_init(struct discord_audit_log_change_key*) </tt>
+ *   - <tt>discord_audit_log_change_key_init(struct discord_audit_log_change_key*)</tt>
  * - Cleanup:
- *   - <tt> discord_audit_log_change_key_cleanup(struct discord_audit_log_change_key*) discord_audit_log_change_key_list_free(struct discord_audit_log_change_key**) </tt>
+ *   - <tt>discord_audit_log_change_key_cleanup(struct discord_audit_log_change_key*)</tt>
+ *   - <tt>discord_audit_log_change_key_list_free(struct discord_audit_log_change_key**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_audit_log_change_key_from_json(struct discord_audit_log_change_key**) discord_audit_log_change_key_list_from_json(struct discord_audit_log_change_key***) </tt>
+ *   - <tt>discord_audit_log_change_key_from_json(char *rbuf, size_t len, struct discord_audit_log_change_key**)</tt>
+ *   - <tt>discord_audit_log_change_key_list_from_json(char *rbuf, size_t len, struct discord_audit_log_change_key***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_audit_log_change_key_to_json(struct discord_audit_log_change_key*) discord_audit_log_change_key_list_to_json(struct discord_audit_log_change_key**) </tt>
+ *   - <tt>discord_audit_log_change_key_to_json(char *wbuf, size_t len, struct discord_audit_log_change_key *p)</tt>
+ *   - <tt>discord_audit_log_change_key_list_to_json(char *wbuf, size_t len, struct discord_audit_log_change_key**)</tt>
  */
 struct discord_audit_log_change_key {
   /* specs/discord/audit_log.json:113:18

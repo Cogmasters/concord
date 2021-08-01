@@ -28,13 +28,16 @@ extern bool discord_channel_types_has(enum discord_channel_types, char*);
 /**
  * @see https://discord.com/developers/docs/resources/channel#channel-object-channel-structure
  * - Initializer:
- *   - <tt> discord_channel_init(struct discord_channel*) </tt>
+ *   - <tt>discord_channel_init(struct discord_channel*)</tt>
  * - Cleanup:
- *   - <tt> discord_channel_cleanup(struct discord_channel*) discord_channel_list_free(struct discord_channel**) </tt>
+ *   - <tt>discord_channel_cleanup(struct discord_channel*)</tt>
+ *   - <tt>discord_channel_list_free(struct discord_channel**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_channel_from_json(struct discord_channel**) discord_channel_list_from_json(struct discord_channel***) </tt>
+ *   - <tt>discord_channel_from_json(char *rbuf, size_t len, struct discord_channel**)</tt>
+ *   - <tt>discord_channel_list_from_json(char *rbuf, size_t len, struct discord_channel***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_channel_to_json(struct discord_channel*) discord_channel_list_to_json(struct discord_channel**) </tt>
+ *   - <tt>discord_channel_to_json(char *wbuf, size_t len, struct discord_channel *p)</tt>
+ *   - <tt>discord_channel_list_to_json(char *wbuf, size_t len, struct discord_channel**)</tt>
  */
 struct discord_channel {
   /* specs/discord/channel.json:32:78
@@ -173,13 +176,16 @@ extern bool discord_message_sticker_format_types_has(enum discord_message_sticke
 /**
  * @see https://discord.com/developers/docs/resources/channel#message-object-message-sticker-structure
  * - Initializer:
- *   - <tt> discord_message_sticker_init(struct discord_message_sticker*) </tt>
+ *   - <tt>discord_message_sticker_init(struct discord_message_sticker*)</tt>
  * - Cleanup:
- *   - <tt> discord_message_sticker_cleanup(struct discord_message_sticker*) discord_message_sticker_list_free(struct discord_message_sticker**) </tt>
+ *   - <tt>discord_message_sticker_cleanup(struct discord_message_sticker*)</tt>
+ *   - <tt>discord_message_sticker_list_free(struct discord_message_sticker**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_message_sticker_from_json(struct discord_message_sticker**) discord_message_sticker_list_from_json(struct discord_message_sticker***) </tt>
+ *   - <tt>discord_message_sticker_from_json(char *rbuf, size_t len, struct discord_message_sticker**)</tt>
+ *   - <tt>discord_message_sticker_list_from_json(char *rbuf, size_t len, struct discord_message_sticker***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_message_sticker_to_json(struct discord_message_sticker*) discord_message_sticker_list_to_json(struct discord_message_sticker**) </tt>
+ *   - <tt>discord_message_sticker_to_json(char *wbuf, size_t len, struct discord_message_sticker *p)</tt>
+ *   - <tt>discord_message_sticker_list_to_json(char *wbuf, size_t len, struct discord_message_sticker**)</tt>
  */
 struct discord_message_sticker {
   /* specs/discord/channel.json:84:18
@@ -264,13 +270,16 @@ extern bool discord_message_flags_has(enum discord_message_flags, char*);
 /**
  * @see https://discord.com/developers/docs/resources/channel#message-object-message-reference-structure
  * - Initializer:
- *   - <tt> discord_message_reference_init(struct discord_message_reference*) </tt>
+ *   - <tt>discord_message_reference_init(struct discord_message_reference*)</tt>
  * - Cleanup:
- *   - <tt> discord_message_reference_cleanup(struct discord_message_reference*) discord_message_reference_list_free(struct discord_message_reference**) </tt>
+ *   - <tt>discord_message_reference_cleanup(struct discord_message_reference*)</tt>
+ *   - <tt>discord_message_reference_list_free(struct discord_message_reference**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_message_reference_from_json(struct discord_message_reference**) discord_message_reference_list_from_json(struct discord_message_reference***) </tt>
+ *   - <tt>discord_message_reference_from_json(char *rbuf, size_t len, struct discord_message_reference**)</tt>
+ *   - <tt>discord_message_reference_list_from_json(char *rbuf, size_t len, struct discord_message_reference***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_message_reference_to_json(struct discord_message_reference*) discord_message_reference_list_to_json(struct discord_message_reference**) </tt>
+ *   - <tt>discord_message_reference_to_json(char *wbuf, size_t len, struct discord_message_reference *p)</tt>
+ *   - <tt>discord_message_reference_list_to_json(char *wbuf, size_t len, struct discord_message_reference**)</tt>
  */
 struct discord_message_reference {
   /* specs/discord/channel.json:114:18
@@ -326,13 +335,16 @@ extern size_t discord_message_reference_list_to_json(char *str, size_t len, stru
 /**
  * @see https://discord.com/developers/docs/resources/channel#message-object-message-application-structure
  * - Initializer:
- *   - <tt> discord_message_application_init(struct discord_message_application*) </tt>
+ *   - <tt>discord_message_application_init(struct discord_message_application*)</tt>
  * - Cleanup:
- *   - <tt> discord_message_application_cleanup(struct discord_message_application*) discord_message_application_list_free(struct discord_message_application**) </tt>
+ *   - <tt>discord_message_application_cleanup(struct discord_message_application*)</tt>
+ *   - <tt>discord_message_application_list_free(struct discord_message_application**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_message_application_from_json(struct discord_message_application**) discord_message_application_list_from_json(struct discord_message_application***) </tt>
+ *   - <tt>discord_message_application_from_json(char *rbuf, size_t len, struct discord_message_application**)</tt>
+ *   - <tt>discord_message_application_list_from_json(char *rbuf, size_t len, struct discord_message_application***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_message_application_to_json(struct discord_message_application*) discord_message_application_list_to_json(struct discord_message_application**) </tt>
+ *   - <tt>discord_message_application_to_json(char *wbuf, size_t len, struct discord_message_application *p)</tt>
+ *   - <tt>discord_message_application_list_to_json(char *wbuf, size_t len, struct discord_message_application**)</tt>
  */
 struct discord_message_application {
   /* specs/discord/channel.json:126:18
@@ -403,13 +415,16 @@ extern bool discord_message_activity_types_has(enum discord_message_activity_typ
 /**
  * @see https://discord.com/developers/docs/resources/channel#message-object-message-activity-structure
  * - Initializer:
- *   - <tt> discord_message_activity_init(struct discord_message_activity*) </tt>
+ *   - <tt>discord_message_activity_init(struct discord_message_activity*)</tt>
  * - Cleanup:
- *   - <tt> discord_message_activity_cleanup(struct discord_message_activity*) discord_message_activity_list_free(struct discord_message_activity**) </tt>
+ *   - <tt>discord_message_activity_cleanup(struct discord_message_activity*)</tt>
+ *   - <tt>discord_message_activity_list_free(struct discord_message_activity**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_message_activity_from_json(struct discord_message_activity**) discord_message_activity_list_from_json(struct discord_message_activity***) </tt>
+ *   - <tt>discord_message_activity_from_json(char *rbuf, size_t len, struct discord_message_activity**)</tt>
+ *   - <tt>discord_message_activity_list_from_json(char *rbuf, size_t len, struct discord_message_activity***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_message_activity_to_json(struct discord_message_activity*) discord_message_activity_list_to_json(struct discord_message_activity**) </tt>
+ *   - <tt>discord_message_activity_to_json(char *wbuf, size_t len, struct discord_message_activity *p)</tt>
+ *   - <tt>discord_message_activity_list_to_json(char *wbuf, size_t len, struct discord_message_activity**)</tt>
  */
 struct discord_message_activity {
   /* specs/discord/channel.json:151:18
@@ -482,13 +497,16 @@ extern bool discord_message_types_has(enum discord_message_types, char*);
 /**
  * @see https://discord.com/developers/docs/resources/channel#message-object
  * - Initializer:
- *   - <tt> discord_message_init(struct discord_message*) </tt>
+ *   - <tt>discord_message_init(struct discord_message*)</tt>
  * - Cleanup:
- *   - <tt> discord_message_cleanup(struct discord_message*) discord_message_list_free(struct discord_message**) </tt>
+ *   - <tt>discord_message_cleanup(struct discord_message*)</tt>
+ *   - <tt>discord_message_list_free(struct discord_message**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_message_from_json(struct discord_message**) discord_message_list_from_json(struct discord_message***) </tt>
+ *   - <tt>discord_message_from_json(char *rbuf, size_t len, struct discord_message**)</tt>
+ *   - <tt>discord_message_list_from_json(char *rbuf, size_t len, struct discord_message***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_message_to_json(struct discord_message*) discord_message_list_to_json(struct discord_message**) </tt>
+ *   - <tt>discord_message_to_json(char *wbuf, size_t len, struct discord_message *p)</tt>
+ *   - <tt>discord_message_list_to_json(char *wbuf, size_t len, struct discord_message**)</tt>
  */
 struct discord_message {
   /* specs/discord/channel.json:186:79
@@ -648,13 +666,16 @@ extern size_t discord_message_list_to_json(char *str, size_t len, struct discord
 /**
  * @see https://discord.com/developers/docs/resources/channel#followed-channel-object-followed-channel-structure
  * - Initializer:
- *   - <tt> discord_channel_followed_channel_init(struct discord_channel_followed_channel*) </tt>
+ *   - <tt>discord_channel_followed_channel_init(struct discord_channel_followed_channel*)</tt>
  * - Cleanup:
- *   - <tt> discord_channel_followed_channel_cleanup(struct discord_channel_followed_channel*) discord_channel_followed_channel_list_free(struct discord_channel_followed_channel**) </tt>
+ *   - <tt>discord_channel_followed_channel_cleanup(struct discord_channel_followed_channel*)</tt>
+ *   - <tt>discord_channel_followed_channel_list_free(struct discord_channel_followed_channel**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_channel_followed_channel_from_json(struct discord_channel_followed_channel**) discord_channel_followed_channel_list_from_json(struct discord_channel_followed_channel***) </tt>
+ *   - <tt>discord_channel_followed_channel_from_json(char *rbuf, size_t len, struct discord_channel_followed_channel**)</tt>
+ *   - <tt>discord_channel_followed_channel_list_from_json(char *rbuf, size_t len, struct discord_channel_followed_channel***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_channel_followed_channel_to_json(struct discord_channel_followed_channel*) discord_channel_followed_channel_list_to_json(struct discord_channel_followed_channel**) </tt>
+ *   - <tt>discord_channel_followed_channel_to_json(char *wbuf, size_t len, struct discord_channel_followed_channel *p)</tt>
+ *   - <tt>discord_channel_followed_channel_list_to_json(char *wbuf, size_t len, struct discord_channel_followed_channel**)</tt>
  */
 struct discord_channel_followed_channel {
   /* specs/discord/channel.json:225:20
@@ -702,13 +723,16 @@ extern size_t discord_channel_followed_channel_list_to_json(char *str, size_t le
 /**
  * @see https://discord.com/developers/docs/resources/channel#reaction-object-reaction-structure
  * - Initializer:
- *   - <tt> discord_channel_reaction_init(struct discord_channel_reaction*) </tt>
+ *   - <tt>discord_channel_reaction_init(struct discord_channel_reaction*)</tt>
  * - Cleanup:
- *   - <tt> discord_channel_reaction_cleanup(struct discord_channel_reaction*) discord_channel_reaction_list_free(struct discord_channel_reaction**) </tt>
+ *   - <tt>discord_channel_reaction_cleanup(struct discord_channel_reaction*)</tt>
+ *   - <tt>discord_channel_reaction_list_free(struct discord_channel_reaction**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_channel_reaction_from_json(struct discord_channel_reaction**) discord_channel_reaction_list_from_json(struct discord_channel_reaction***) </tt>
+ *   - <tt>discord_channel_reaction_from_json(char *rbuf, size_t len, struct discord_channel_reaction**)</tt>
+ *   - <tt>discord_channel_reaction_list_from_json(char *rbuf, size_t len, struct discord_channel_reaction***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_channel_reaction_to_json(struct discord_channel_reaction*) discord_channel_reaction_list_to_json(struct discord_channel_reaction**) </tt>
+ *   - <tt>discord_channel_reaction_to_json(char *wbuf, size_t len, struct discord_channel_reaction *p)</tt>
+ *   - <tt>discord_channel_reaction_list_to_json(char *wbuf, size_t len, struct discord_channel_reaction**)</tt>
  */
 struct discord_channel_reaction {
   /* specs/discord/channel.json:236:20
@@ -759,13 +783,16 @@ extern size_t discord_channel_reaction_list_to_json(char *str, size_t len, struc
 // defined at specs/discord/channel.json:244:22
 /**
  * - Initializer:
- *   - <tt> discord_channel_overwrite_init(struct discord_channel_overwrite*) </tt>
+ *   - <tt>discord_channel_overwrite_init(struct discord_channel_overwrite*)</tt>
  * - Cleanup:
- *   - <tt> discord_channel_overwrite_cleanup(struct discord_channel_overwrite*) discord_channel_overwrite_list_free(struct discord_channel_overwrite**) </tt>
+ *   - <tt>discord_channel_overwrite_cleanup(struct discord_channel_overwrite*)</tt>
+ *   - <tt>discord_channel_overwrite_list_free(struct discord_channel_overwrite**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_channel_overwrite_from_json(struct discord_channel_overwrite**) discord_channel_overwrite_list_from_json(struct discord_channel_overwrite***) </tt>
+ *   - <tt>discord_channel_overwrite_from_json(char *rbuf, size_t len, struct discord_channel_overwrite**)</tt>
+ *   - <tt>discord_channel_overwrite_list_from_json(char *rbuf, size_t len, struct discord_channel_overwrite***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_channel_overwrite_to_json(struct discord_channel_overwrite*) discord_channel_overwrite_list_to_json(struct discord_channel_overwrite**) </tt>
+ *   - <tt>discord_channel_overwrite_to_json(char *wbuf, size_t len, struct discord_channel_overwrite *p)</tt>
+ *   - <tt>discord_channel_overwrite_list_to_json(char *wbuf, size_t len, struct discord_channel_overwrite**)</tt>
  */
 struct discord_channel_overwrite {
   /* specs/discord/channel.json:247:20
@@ -823,13 +850,16 @@ extern size_t discord_channel_overwrite_list_to_json(char *str, size_t len, stru
 /**
  * @see https://discord.com/developers/docs/resources/channel#thread-metadata-object
  * - Initializer:
- *   - <tt> discord_thread_metadata_init(struct discord_thread_metadata*) </tt>
+ *   - <tt>discord_thread_metadata_init(struct discord_thread_metadata*)</tt>
  * - Cleanup:
- *   - <tt> discord_thread_metadata_cleanup(struct discord_thread_metadata*) discord_thread_metadata_list_free(struct discord_thread_metadata**) </tt>
+ *   - <tt>discord_thread_metadata_cleanup(struct discord_thread_metadata*)</tt>
+ *   - <tt>discord_thread_metadata_list_free(struct discord_thread_metadata**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_thread_metadata_from_json(struct discord_thread_metadata**) discord_thread_metadata_list_from_json(struct discord_thread_metadata***) </tt>
+ *   - <tt>discord_thread_metadata_from_json(char *rbuf, size_t len, struct discord_thread_metadata**)</tt>
+ *   - <tt>discord_thread_metadata_list_from_json(char *rbuf, size_t len, struct discord_thread_metadata***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_thread_metadata_to_json(struct discord_thread_metadata*) discord_thread_metadata_list_to_json(struct discord_thread_metadata**) </tt>
+ *   - <tt>discord_thread_metadata_to_json(char *wbuf, size_t len, struct discord_thread_metadata *p)</tt>
+ *   - <tt>discord_thread_metadata_list_to_json(char *wbuf, size_t len, struct discord_thread_metadata**)</tt>
  */
 struct discord_thread_metadata {
   /* specs/discord/channel.json:262:20
@@ -889,13 +919,16 @@ extern size_t discord_thread_metadata_list_to_json(char *str, size_t len, struct
 /**
  * @see https://discord.com/developers/docs/resources/channel#thread-member-object
  * - Initializer:
- *   - <tt> discord_thread_member_init(struct discord_thread_member*) </tt>
+ *   - <tt>discord_thread_member_init(struct discord_thread_member*)</tt>
  * - Cleanup:
- *   - <tt> discord_thread_member_cleanup(struct discord_thread_member*) discord_thread_member_list_free(struct discord_thread_member**) </tt>
+ *   - <tt>discord_thread_member_cleanup(struct discord_thread_member*)</tt>
+ *   - <tt>discord_thread_member_list_free(struct discord_thread_member**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_thread_member_from_json(struct discord_thread_member**) discord_thread_member_list_from_json(struct discord_thread_member***) </tt>
+ *   - <tt>discord_thread_member_from_json(char *rbuf, size_t len, struct discord_thread_member**)</tt>
+ *   - <tt>discord_thread_member_list_from_json(char *rbuf, size_t len, struct discord_thread_member***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_thread_member_to_json(struct discord_thread_member*) discord_thread_member_list_to_json(struct discord_thread_member**) </tt>
+ *   - <tt>discord_thread_member_to_json(char *wbuf, size_t len, struct discord_thread_member *p)</tt>
+ *   - <tt>discord_thread_member_list_to_json(char *wbuf, size_t len, struct discord_thread_member**)</tt>
  */
 struct discord_thread_member {
   /* specs/discord/channel.json:276:20
@@ -951,13 +984,16 @@ extern size_t discord_thread_member_list_to_json(char *str, size_t len, struct d
 /**
  * @see https://discord.com/developers/docs/resources/channel#attachment-object
  * - Initializer:
- *   - <tt> discord_channel_attachment_init(struct discord_channel_attachment*) </tt>
+ *   - <tt>discord_channel_attachment_init(struct discord_channel_attachment*)</tt>
  * - Cleanup:
- *   - <tt> discord_channel_attachment_cleanup(struct discord_channel_attachment*) discord_channel_attachment_list_free(struct discord_channel_attachment**) </tt>
+ *   - <tt>discord_channel_attachment_cleanup(struct discord_channel_attachment*)</tt>
+ *   - <tt>discord_channel_attachment_list_free(struct discord_channel_attachment**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_channel_attachment_from_json(struct discord_channel_attachment**) discord_channel_attachment_list_from_json(struct discord_channel_attachment***) </tt>
+ *   - <tt>discord_channel_attachment_from_json(char *rbuf, size_t len, struct discord_channel_attachment**)</tt>
+ *   - <tt>discord_channel_attachment_list_from_json(char *rbuf, size_t len, struct discord_channel_attachment***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_channel_attachment_to_json(struct discord_channel_attachment*) discord_channel_attachment_list_to_json(struct discord_channel_attachment**) </tt>
+ *   - <tt>discord_channel_attachment_to_json(char *wbuf, size_t len, struct discord_channel_attachment *p)</tt>
+ *   - <tt>discord_channel_attachment_list_to_json(char *wbuf, size_t len, struct discord_channel_attachment**)</tt>
  */
 struct discord_channel_attachment {
   /* specs/discord/channel.json:289:20
@@ -1025,13 +1061,16 @@ extern size_t discord_channel_attachment_list_to_json(char *str, size_t len, str
 /**
  * @see https://discord.com/developers/docs/resources/channel#channel-mention-object-channel-mention-structure
  * - Initializer:
- *   - <tt> discord_channel_mention_init(struct discord_channel_mention*) </tt>
+ *   - <tt>discord_channel_mention_init(struct discord_channel_mention*)</tt>
  * - Cleanup:
- *   - <tt> discord_channel_mention_cleanup(struct discord_channel_mention*) discord_channel_mention_list_free(struct discord_channel_mention**) </tt>
+ *   - <tt>discord_channel_mention_cleanup(struct discord_channel_mention*)</tt>
+ *   - <tt>discord_channel_mention_list_free(struct discord_channel_mention**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_channel_mention_from_json(struct discord_channel_mention**) discord_channel_mention_list_from_json(struct discord_channel_mention***) </tt>
+ *   - <tt>discord_channel_mention_from_json(char *rbuf, size_t len, struct discord_channel_mention**)</tt>
+ *   - <tt>discord_channel_mention_list_from_json(char *rbuf, size_t len, struct discord_channel_mention***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_channel_mention_to_json(struct discord_channel_mention*) discord_channel_mention_list_to_json(struct discord_channel_mention**) </tt>
+ *   - <tt>discord_channel_mention_to_json(char *wbuf, size_t len, struct discord_channel_mention *p)</tt>
+ *   - <tt>discord_channel_mention_list_to_json(char *wbuf, size_t len, struct discord_channel_mention**)</tt>
  */
 struct discord_channel_mention {
   /* specs/discord/channel.json:305:20
@@ -1087,13 +1126,16 @@ extern size_t discord_channel_mention_list_to_json(char *str, size_t len, struct
 /**
  * @see https://discord.com/developers/docs/resources/channel#allowed-mentions-object-allowed-mentions-structure
  * - Initializer:
- *   - <tt> discord_channel_allowed_mentions_init(struct discord_channel_allowed_mentions*) </tt>
+ *   - <tt>discord_channel_allowed_mentions_init(struct discord_channel_allowed_mentions*)</tt>
  * - Cleanup:
- *   - <tt> discord_channel_allowed_mentions_cleanup(struct discord_channel_allowed_mentions*) discord_channel_allowed_mentions_list_free(struct discord_channel_allowed_mentions**) </tt>
+ *   - <tt>discord_channel_allowed_mentions_cleanup(struct discord_channel_allowed_mentions*)</tt>
+ *   - <tt>discord_channel_allowed_mentions_list_free(struct discord_channel_allowed_mentions**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_channel_allowed_mentions_from_json(struct discord_channel_allowed_mentions**) discord_channel_allowed_mentions_list_from_json(struct discord_channel_allowed_mentions***) </tt>
+ *   - <tt>discord_channel_allowed_mentions_from_json(char *rbuf, size_t len, struct discord_channel_allowed_mentions**)</tt>
+ *   - <tt>discord_channel_allowed_mentions_list_from_json(char *rbuf, size_t len, struct discord_channel_allowed_mentions***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_channel_allowed_mentions_to_json(struct discord_channel_allowed_mentions*) discord_channel_allowed_mentions_list_to_json(struct discord_channel_allowed_mentions**) </tt>
+ *   - <tt>discord_channel_allowed_mentions_to_json(char *wbuf, size_t len, struct discord_channel_allowed_mentions *p)</tt>
+ *   - <tt>discord_channel_allowed_mentions_list_to_json(char *wbuf, size_t len, struct discord_channel_allowed_mentions**)</tt>
  */
 struct discord_channel_allowed_mentions {
   /* specs/discord/channel.json:318:20
@@ -1149,13 +1191,16 @@ extern size_t discord_channel_allowed_mentions_list_to_json(char *str, size_t le
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-structure
  * - Initializer:
- *   - <tt> discord_embed_init(struct discord_embed*) </tt>
+ *   - <tt>discord_embed_init(struct discord_embed*)</tt>
  * - Cleanup:
- *   - <tt> discord_embed_cleanup(struct discord_embed*) discord_embed_list_free(struct discord_embed**) </tt>
+ *   - <tt>discord_embed_cleanup(struct discord_embed*)</tt>
+ *   - <tt>discord_embed_list_free(struct discord_embed**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_embed_from_json(struct discord_embed**) discord_embed_list_from_json(struct discord_embed***) </tt>
+ *   - <tt>discord_embed_from_json(char *rbuf, size_t len, struct discord_embed**)</tt>
+ *   - <tt>discord_embed_list_from_json(char *rbuf, size_t len, struct discord_embed***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_embed_to_json(struct discord_embed*) discord_embed_list_to_json(struct discord_embed**) </tt>
+ *   - <tt>discord_embed_to_json(char *wbuf, size_t len, struct discord_embed *p)</tt>
+ *   - <tt>discord_embed_list_to_json(char *wbuf, size_t len, struct discord_embed**)</tt>
  */
 struct discord_embed {
   /* specs/discord/channel.json:330:20
@@ -1247,13 +1292,16 @@ extern size_t discord_embed_list_to_json(char *str, size_t len, struct discord_e
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-thumbnail-structure
  * - Initializer:
- *   - <tt> discord_embed_thumbnail_init(struct discord_embed_thumbnail*) </tt>
+ *   - <tt>discord_embed_thumbnail_init(struct discord_embed_thumbnail*)</tt>
  * - Cleanup:
- *   - <tt> discord_embed_thumbnail_cleanup(struct discord_embed_thumbnail*) discord_embed_thumbnail_list_free(struct discord_embed_thumbnail**) </tt>
+ *   - <tt>discord_embed_thumbnail_cleanup(struct discord_embed_thumbnail*)</tt>
+ *   - <tt>discord_embed_thumbnail_list_free(struct discord_embed_thumbnail**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_embed_thumbnail_from_json(struct discord_embed_thumbnail**) discord_embed_thumbnail_list_from_json(struct discord_embed_thumbnail***) </tt>
+ *   - <tt>discord_embed_thumbnail_from_json(char *rbuf, size_t len, struct discord_embed_thumbnail**)</tt>
+ *   - <tt>discord_embed_thumbnail_list_from_json(char *rbuf, size_t len, struct discord_embed_thumbnail***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_embed_thumbnail_to_json(struct discord_embed_thumbnail*) discord_embed_thumbnail_list_to_json(struct discord_embed_thumbnail**) </tt>
+ *   - <tt>discord_embed_thumbnail_to_json(char *wbuf, size_t len, struct discord_embed_thumbnail *p)</tt>
+ *   - <tt>discord_embed_thumbnail_list_to_json(char *wbuf, size_t len, struct discord_embed_thumbnail**)</tt>
  */
 struct discord_embed_thumbnail {
   /* specs/discord/channel.json:351:20
@@ -1309,13 +1357,16 @@ extern size_t discord_embed_thumbnail_list_to_json(char *str, size_t len, struct
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-video-structure
  * - Initializer:
- *   - <tt> discord_embed_video_init(struct discord_embed_video*) </tt>
+ *   - <tt>discord_embed_video_init(struct discord_embed_video*)</tt>
  * - Cleanup:
- *   - <tt> discord_embed_video_cleanup(struct discord_embed_video*) discord_embed_video_list_free(struct discord_embed_video**) </tt>
+ *   - <tt>discord_embed_video_cleanup(struct discord_embed_video*)</tt>
+ *   - <tt>discord_embed_video_list_free(struct discord_embed_video**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_embed_video_from_json(struct discord_embed_video**) discord_embed_video_list_from_json(struct discord_embed_video***) </tt>
+ *   - <tt>discord_embed_video_from_json(char *rbuf, size_t len, struct discord_embed_video**)</tt>
+ *   - <tt>discord_embed_video_list_from_json(char *rbuf, size_t len, struct discord_embed_video***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_embed_video_to_json(struct discord_embed_video*) discord_embed_video_list_to_json(struct discord_embed_video**) </tt>
+ *   - <tt>discord_embed_video_to_json(char *wbuf, size_t len, struct discord_embed_video *p)</tt>
+ *   - <tt>discord_embed_video_list_to_json(char *wbuf, size_t len, struct discord_embed_video**)</tt>
  */
 struct discord_embed_video {
   /* specs/discord/channel.json:363:20
@@ -1371,13 +1422,16 @@ extern size_t discord_embed_video_list_to_json(char *str, size_t len, struct dis
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-image-structure
  * - Initializer:
- *   - <tt> discord_embed_image_init(struct discord_embed_image*) </tt>
+ *   - <tt>discord_embed_image_init(struct discord_embed_image*)</tt>
  * - Cleanup:
- *   - <tt> discord_embed_image_cleanup(struct discord_embed_image*) discord_embed_image_list_free(struct discord_embed_image**) </tt>
+ *   - <tt>discord_embed_image_cleanup(struct discord_embed_image*)</tt>
+ *   - <tt>discord_embed_image_list_free(struct discord_embed_image**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_embed_image_from_json(struct discord_embed_image**) discord_embed_image_list_from_json(struct discord_embed_image***) </tt>
+ *   - <tt>discord_embed_image_from_json(char *rbuf, size_t len, struct discord_embed_image**)</tt>
+ *   - <tt>discord_embed_image_list_from_json(char *rbuf, size_t len, struct discord_embed_image***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_embed_image_to_json(struct discord_embed_image*) discord_embed_image_list_to_json(struct discord_embed_image**) </tt>
+ *   - <tt>discord_embed_image_to_json(char *wbuf, size_t len, struct discord_embed_image *p)</tt>
+ *   - <tt>discord_embed_image_list_to_json(char *wbuf, size_t len, struct discord_embed_image**)</tt>
  */
 struct discord_embed_image {
   /* specs/discord/channel.json:375:20
@@ -1433,13 +1487,16 @@ extern size_t discord_embed_image_list_to_json(char *str, size_t len, struct dis
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-provider-structure
  * - Initializer:
- *   - <tt> discord_embed_provider_init(struct discord_embed_provider*) </tt>
+ *   - <tt>discord_embed_provider_init(struct discord_embed_provider*)</tt>
  * - Cleanup:
- *   - <tt> discord_embed_provider_cleanup(struct discord_embed_provider*) discord_embed_provider_list_free(struct discord_embed_provider**) </tt>
+ *   - <tt>discord_embed_provider_cleanup(struct discord_embed_provider*)</tt>
+ *   - <tt>discord_embed_provider_list_free(struct discord_embed_provider**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_embed_provider_from_json(struct discord_embed_provider**) discord_embed_provider_list_from_json(struct discord_embed_provider***) </tt>
+ *   - <tt>discord_embed_provider_from_json(char *rbuf, size_t len, struct discord_embed_provider**)</tt>
+ *   - <tt>discord_embed_provider_list_from_json(char *rbuf, size_t len, struct discord_embed_provider***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_embed_provider_to_json(struct discord_embed_provider*) discord_embed_provider_list_to_json(struct discord_embed_provider**) </tt>
+ *   - <tt>discord_embed_provider_to_json(char *wbuf, size_t len, struct discord_embed_provider *p)</tt>
+ *   - <tt>discord_embed_provider_list_to_json(char *wbuf, size_t len, struct discord_embed_provider**)</tt>
  */
 struct discord_embed_provider {
   /* specs/discord/channel.json:387:20
@@ -1487,13 +1544,16 @@ extern size_t discord_embed_provider_list_to_json(char *str, size_t len, struct 
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-author-structure
  * - Initializer:
- *   - <tt> discord_embed_author_init(struct discord_embed_author*) </tt>
+ *   - <tt>discord_embed_author_init(struct discord_embed_author*)</tt>
  * - Cleanup:
- *   - <tt> discord_embed_author_cleanup(struct discord_embed_author*) discord_embed_author_list_free(struct discord_embed_author**) </tt>
+ *   - <tt>discord_embed_author_cleanup(struct discord_embed_author*)</tt>
+ *   - <tt>discord_embed_author_list_free(struct discord_embed_author**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_embed_author_from_json(struct discord_embed_author**) discord_embed_author_list_from_json(struct discord_embed_author***) </tt>
+ *   - <tt>discord_embed_author_from_json(char *rbuf, size_t len, struct discord_embed_author**)</tt>
+ *   - <tt>discord_embed_author_list_from_json(char *rbuf, size_t len, struct discord_embed_author***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_embed_author_to_json(struct discord_embed_author*) discord_embed_author_list_to_json(struct discord_embed_author**) </tt>
+ *   - <tt>discord_embed_author_to_json(char *wbuf, size_t len, struct discord_embed_author *p)</tt>
+ *   - <tt>discord_embed_author_list_to_json(char *wbuf, size_t len, struct discord_embed_author**)</tt>
  */
 struct discord_embed_author {
   /* specs/discord/channel.json:397:20
@@ -1549,13 +1609,16 @@ extern size_t discord_embed_author_list_to_json(char *str, size_t len, struct di
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-footer-structure
  * - Initializer:
- *   - <tt> discord_embed_footer_init(struct discord_embed_footer*) </tt>
+ *   - <tt>discord_embed_footer_init(struct discord_embed_footer*)</tt>
  * - Cleanup:
- *   - <tt> discord_embed_footer_cleanup(struct discord_embed_footer*) discord_embed_footer_list_free(struct discord_embed_footer**) </tt>
+ *   - <tt>discord_embed_footer_cleanup(struct discord_embed_footer*)</tt>
+ *   - <tt>discord_embed_footer_list_free(struct discord_embed_footer**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_embed_footer_from_json(struct discord_embed_footer**) discord_embed_footer_list_from_json(struct discord_embed_footer***) </tt>
+ *   - <tt>discord_embed_footer_from_json(char *rbuf, size_t len, struct discord_embed_footer**)</tt>
+ *   - <tt>discord_embed_footer_list_from_json(char *rbuf, size_t len, struct discord_embed_footer***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_embed_footer_to_json(struct discord_embed_footer*) discord_embed_footer_list_to_json(struct discord_embed_footer**) </tt>
+ *   - <tt>discord_embed_footer_to_json(char *wbuf, size_t len, struct discord_embed_footer *p)</tt>
+ *   - <tt>discord_embed_footer_list_to_json(char *wbuf, size_t len, struct discord_embed_footer**)</tt>
  */
 struct discord_embed_footer {
   /* specs/discord/channel.json:409:20
@@ -1607,13 +1670,16 @@ extern size_t discord_embed_footer_list_to_json(char *str, size_t len, struct di
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-field-structure
  * - Initializer:
- *   - <tt> discord_embed_field_init(struct discord_embed_field*) </tt>
+ *   - <tt>discord_embed_field_init(struct discord_embed_field*)</tt>
  * - Cleanup:
- *   - <tt> discord_embed_field_cleanup(struct discord_embed_field*) discord_embed_field_list_free(struct discord_embed_field**) </tt>
+ *   - <tt>discord_embed_field_cleanup(struct discord_embed_field*)</tt>
+ *   - <tt>discord_embed_field_list_free(struct discord_embed_field**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_embed_field_from_json(struct discord_embed_field**) discord_embed_field_list_from_json(struct discord_embed_field***) </tt>
+ *   - <tt>discord_embed_field_from_json(char *rbuf, size_t len, struct discord_embed_field**)</tt>
+ *   - <tt>discord_embed_field_list_from_json(char *rbuf, size_t len, struct discord_embed_field***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_embed_field_to_json(struct discord_embed_field*) discord_embed_field_list_to_json(struct discord_embed_field**) </tt>
+ *   - <tt>discord_embed_field_to_json(char *wbuf, size_t len, struct discord_embed_field *p)</tt>
+ *   - <tt>discord_embed_field_list_to_json(char *wbuf, size_t len, struct discord_embed_field**)</tt>
  */
 struct discord_embed_field {
   /* specs/discord/channel.json:420:20

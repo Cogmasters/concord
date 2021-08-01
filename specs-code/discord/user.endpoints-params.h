@@ -10,13 +10,16 @@
 /**
  * @see https://discord.com/developers/docs/resources/user#modify-current-user-json-params
  * - Initializer:
- *   - <tt> discord_modify_current_user_params_init(struct discord_modify_current_user_params*) </tt>
+ *   - <tt>discord_modify_current_user_params_init(struct discord_modify_current_user_params*)</tt>
  * - Cleanup:
- *   - <tt> discord_modify_current_user_params_cleanup(struct discord_modify_current_user_params*) discord_modify_current_user_params_list_free(struct discord_modify_current_user_params**) </tt>
+ *   - <tt>discord_modify_current_user_params_cleanup(struct discord_modify_current_user_params*)</tt>
+ *   - <tt>discord_modify_current_user_params_list_free(struct discord_modify_current_user_params**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_modify_current_user_params_from_json(struct discord_modify_current_user_params**) discord_modify_current_user_params_list_from_json(struct discord_modify_current_user_params***) </tt>
+ *   - <tt>discord_modify_current_user_params_from_json(char *rbuf, size_t len, struct discord_modify_current_user_params**)</tt>
+ *   - <tt>discord_modify_current_user_params_list_from_json(char *rbuf, size_t len, struct discord_modify_current_user_params***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_modify_current_user_params_to_json(struct discord_modify_current_user_params*) discord_modify_current_user_params_list_to_json(struct discord_modify_current_user_params**) </tt>
+ *   - <tt>discord_modify_current_user_params_to_json(char *wbuf, size_t len, struct discord_modify_current_user_params *p)</tt>
+ *   - <tt>discord_modify_current_user_params_list_to_json(char *wbuf, size_t len, struct discord_modify_current_user_params**)</tt>
  */
 struct discord_modify_current_user_params {
   /* specs/discord/user.endpoints-params.json:13:20
@@ -64,13 +67,16 @@ extern size_t discord_modify_current_user_params_list_to_json(char *str, size_t 
 /**
  * @see https://discord.com/developers/docs/resources/user#create-group-dm-json-params
  * - Initializer:
- *   - <tt> discord_create_group_dm_params_init(struct discord_create_group_dm_params*) </tt>
+ *   - <tt>discord_create_group_dm_params_init(struct discord_create_group_dm_params*)</tt>
  * - Cleanup:
- *   - <tt> discord_create_group_dm_params_cleanup(struct discord_create_group_dm_params*) discord_create_group_dm_params_list_free(struct discord_create_group_dm_params**) </tt>
+ *   - <tt>discord_create_group_dm_params_cleanup(struct discord_create_group_dm_params*)</tt>
+ *   - <tt>discord_create_group_dm_params_list_free(struct discord_create_group_dm_params**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_create_group_dm_params_from_json(struct discord_create_group_dm_params**) discord_create_group_dm_params_list_from_json(struct discord_create_group_dm_params***) </tt>
+ *   - <tt>discord_create_group_dm_params_from_json(char *rbuf, size_t len, struct discord_create_group_dm_params**)</tt>
+ *   - <tt>discord_create_group_dm_params_list_from_json(char *rbuf, size_t len, struct discord_create_group_dm_params***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_create_group_dm_params_to_json(struct discord_create_group_dm_params*) discord_create_group_dm_params_list_to_json(struct discord_create_group_dm_params**) </tt>
+ *   - <tt>discord_create_group_dm_params_to_json(char *wbuf, size_t len, struct discord_create_group_dm_params *p)</tt>
+ *   - <tt>discord_create_group_dm_params_list_to_json(char *wbuf, size_t len, struct discord_create_group_dm_params**)</tt>
  */
 struct discord_create_group_dm_params {
   /* specs/discord/user.endpoints-params.json:24:20

@@ -10,13 +10,16 @@
 /**
  * @see https://discord.com/developers/docs/resources/guild-template#guild-template-object-guild-template-structure
  * - Initializer:
- *   - <tt> discord_guild_template_init(struct discord_guild_template*) </tt>
+ *   - <tt>discord_guild_template_init(struct discord_guild_template*)</tt>
  * - Cleanup:
- *   - <tt> discord_guild_template_cleanup(struct discord_guild_template*) discord_guild_template_list_free(struct discord_guild_template**) </tt>
+ *   - <tt>discord_guild_template_cleanup(struct discord_guild_template*)</tt>
+ *   - <tt>discord_guild_template_list_free(struct discord_guild_template**)</tt>
  * - JSON Decoder:
- *   - <tt> discord_guild_template_from_json(struct discord_guild_template**) discord_guild_template_list_from_json(struct discord_guild_template***) </tt>
+ *   - <tt>discord_guild_template_from_json(char *rbuf, size_t len, struct discord_guild_template**)</tt>
+ *   - <tt>discord_guild_template_list_from_json(char *rbuf, size_t len, struct discord_guild_template***)</tt>
  * - JSON Encoder:
- *   - <tt> discord_guild_template_to_json(struct discord_guild_template*) discord_guild_template_list_to_json(struct discord_guild_template**) </tt>
+ *   - <tt>discord_guild_template_to_json(char *wbuf, size_t len, struct discord_guild_template *p)</tt>
+ *   - <tt>discord_guild_template_list_to_json(char *wbuf, size_t len, struct discord_guild_template**)</tt>
  */
 struct discord_guild_template {
   /* specs/discord/guild-template.json:12:20

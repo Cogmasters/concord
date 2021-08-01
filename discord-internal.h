@@ -81,6 +81,7 @@ ORCAcode discord_adapter_run(
  *   - discord_bucket_build()
  * - Cleanup:
  *   - discord_buckets_cleanup()
+ *
  * @see https://discord.com/developers/docs/topics/rate-limits
  */
 struct discord_bucket {
@@ -148,6 +149,7 @@ struct discord_gateway_cmd_cbs {
  *   - discord_gateway_init()
  * - Cleanup:
  *   - discord_gateway_cleanup()
+ *
  * @note A wrapper over struct websockets
  */
 struct discord_gateway {
@@ -275,6 +277,7 @@ void discord_gateway_reconnect(struct discord_gateway *gw, bool resume);
  *   - discord_init(), discord_config_init()
  * - Cleanup:
  *   - discord_cleanup()
+ *
  * @see discord_run()
  * @note defined at discord-internal.h
  */
