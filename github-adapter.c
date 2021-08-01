@@ -9,7 +9,7 @@
 #include "json-scanf.h"
 #include "cee-utils.h"
 
-#define BASE_API_URL   "https://api.github.com"
+#define GITHUB_BASE_API_URL "https://api.github.com"
 
 void
 github_adapter_cleanup(struct github_adapter *adapter) {
@@ -28,7 +28,7 @@ void
 github_adapter_init(struct github_adapter *adapter, char username[], char token[])
 {
   adapter->ua = ua_init(NULL);
-  ua_set_url(adapter->ua, BASE_API_URL);
+  ua_set_url(adapter->ua, GITHUB_BASE_API_URL);
   ua_reqheader_add(adapter->ua, "Accept", "application/vnd.github.v3+json");
 
   ua_curl_easy_setopt(adapter->ua, adapter, &curl_easy_setopt_cb);
