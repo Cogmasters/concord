@@ -9,6 +9,7 @@
 // defined at specs/discord/channel.endpoints-params.json:10:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#modify-channel
+
  * - Initializer:
  *   - <tt>discord_modify_channel_params_init(struct discord_modify_channel_params*)</tt>
  * - Cleanup:
@@ -122,6 +123,7 @@ extern size_t discord_modify_channel_params_list_to_json(char *str, size_t len, 
 // defined at specs/discord/channel.endpoints-params.json:35:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#get-reactions
+
  * - Initializer:
  *   - <tt>discord_get_reactions_params_init(struct discord_get_reactions_params*)</tt>
  * - Cleanup:
@@ -179,6 +181,7 @@ extern size_t discord_get_reactions_params_list_to_json(char *str, size_t len, s
 // defined at specs/discord/channel.endpoints-params.json:46:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#edit-channel-permissions
+
  * - Initializer:
  *   - <tt>discord_edit_channel_permissions_params_init(struct discord_edit_channel_permissions_params*)</tt>
  * - Cleanup:
@@ -240,6 +243,7 @@ extern size_t discord_edit_channel_permissions_params_list_to_json(char *str, si
 // defined at specs/discord/channel.endpoints-params.json:58:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#follow-news-channel
+
  * - Initializer:
  *   - <tt>discord_follow_news_channel_params_init(struct discord_follow_news_channel_params*)</tt>
  * - Cleanup:
@@ -293,6 +297,7 @@ extern size_t discord_follow_news_channel_params_list_to_json(char *str, size_t 
 // defined at specs/discord/channel.endpoints-params.json:68:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#create-channel-invite
+
  * - Initializer:
  *   - <tt>discord_create_channel_invite_params_init(struct discord_create_channel_invite_params*)</tt>
  * - Cleanup:
@@ -370,6 +375,7 @@ extern size_t discord_create_channel_invite_params_list_to_json(char *str, size_
 // defined at specs/discord/channel.endpoints-params.json:84:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#group-dm-add-recipient
+
  * - Initializer:
  *   - <tt>discord_group_dm_add_recipient_params_init(struct discord_group_dm_add_recipient_params*)</tt>
  * - Cleanup:
@@ -427,6 +433,7 @@ extern size_t discord_group_dm_add_recipient_params_list_to_json(char *str, size
 // defined at specs/discord/channel.endpoints-params.json:95:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#start-thread-with-message-json-params
+
  * - Initializer:
  *   - <tt>discord_start_thread_with_message_params_init(struct discord_start_thread_with_message_params*)</tt>
  * - Cleanup:
@@ -484,6 +491,7 @@ extern size_t discord_start_thread_with_message_params_list_to_json(char *str, s
 // defined at specs/discord/channel.endpoints-params.json:106:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#start-thread-without-message-json-params
+
  * - Initializer:
  *   - <tt>discord_start_thread_without_message_params_init(struct discord_start_thread_without_message_params*)</tt>
  * - Cleanup:
@@ -545,6 +553,7 @@ extern size_t discord_start_thread_without_message_params_list_to_json(char *str
 // defined at specs/discord/channel.endpoints-params.json:118:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#list-active-threads-response-body
+
  * - Initializer:
  *   - <tt>discord_thread_response_body_init(struct discord_thread_response_body*)</tt>
  * - Cleanup:

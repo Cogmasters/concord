@@ -9,6 +9,7 @@
 // defined at specs/discord/emoji.json:9:22
 /**
  * @see https://discord.com/developers/docs/resources/emoji#emoji-object-emoji-structure
+
  * - Initializer:
  *   - <tt>discord_emoji_init(struct discord_emoji*)</tt>
  * - Cleanup:

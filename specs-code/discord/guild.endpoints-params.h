@@ -9,6 +9,7 @@
 // defined at specs/discord/guild.endpoints-params.json:10:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#create-guild
+
  * - Initializer:
  *   - <tt>discord_create_guild_params_init(struct discord_create_guild_params*)</tt>
  * - Cleanup:
@@ -102,6 +103,7 @@ extern size_t discord_create_guild_params_list_to_json(char *str, size_t len, st
 // defined at specs/discord/guild.endpoints-params.json:30:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#modify-guild-json-params
+
  * - Initializer:
  *   - <tt>discord_modify_guild_params_init(struct discord_modify_guild_params*)</tt>
  * - Cleanup:
@@ -227,6 +229,7 @@ extern size_t discord_modify_guild_params_list_to_json(char *str, size_t len, st
 // defined at specs/discord/guild.endpoints-params.json:58:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#create-guild-channel
+
  * - Initializer:
  *   - <tt>discord_create_guild_channel_params_init(struct discord_create_guild_channel_params*)</tt>
  * - Cleanup:
@@ -316,6 +319,7 @@ extern size_t discord_create_guild_channel_params_list_to_json(char *str, size_t
 // defined at specs/discord/guild.endpoints-params.json:77:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#modify-guild-channel-positions-json-params
+
  * - Initializer:
  *   - <tt>discord_modify_guild_channel_positions_params_init(struct discord_modify_guild_channel_positions_params*)</tt>
  * - Cleanup:
@@ -381,6 +385,7 @@ extern size_t discord_modify_guild_channel_positions_params_list_to_json(char *s
 // defined at specs/discord/guild.endpoints-params.json:90:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#search-guild-members-query-string-params
+
  * - Initializer:
  *   - <tt>discord_search_guild_members_params_init(struct discord_search_guild_members_params*)</tt>
  * - Cleanup:
@@ -438,6 +443,7 @@ extern size_t discord_search_guild_members_params_list_to_json(char *str, size_t
 // defined at specs/discord/guild.endpoints-params.json:101:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#add-guild-member-json-params
+
  * - Initializer:
  *   - <tt>discord_add_guild_member_params_init(struct discord_add_guild_member_params*)</tt>
  * - Cleanup:
@@ -507,6 +513,7 @@ extern size_t discord_add_guild_member_params_list_to_json(char *str, size_t len
 // defined at specs/discord/guild.endpoints-params.json:115:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#modify-guild-member
+
  * - Initializer:
  *   - <tt>discord_modify_guild_member_params_init(struct discord_modify_guild_member_params*)</tt>
  * - Cleanup:
@@ -576,6 +583,7 @@ extern size_t discord_modify_guild_member_params_list_to_json(char *str, size_t 
 // defined at specs/discord/guild.endpoints-params.json:129:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#create-guild-role
+
  * - Initializer:
  *   - <tt>discord_create_guild_role_params_init(struct discord_create_guild_role_params*)</tt>
  * - Cleanup:
@@ -645,6 +653,7 @@ extern size_t discord_create_guild_role_params_list_to_json(char *str, size_t le
 // defined at specs/discord/guild.endpoints-params.json:143:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#modify-guild-role-positions-json-params
+
  * - Initializer:
  *   - <tt>discord_modify_guild_role_positions_params_init(struct discord_modify_guild_role_positions_params*)</tt>
  * - Cleanup:
@@ -702,6 +711,7 @@ extern size_t discord_modify_guild_role_positions_params_list_to_json(char *str,
 // defined at specs/discord/guild.endpoints-params.json:154:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#modify-guild-role-json-params
+
  * - Initializer:
  *   - <tt>discord_modify_guild_role_params_init(struct discord_modify_guild_role_params*)</tt>
  * - Cleanup:
@@ -771,6 +781,7 @@ extern size_t discord_modify_guild_role_params_list_to_json(char *str, size_t le
 // defined at specs/discord/guild.endpoints-params.json:168:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#get-guild-prune-count-query-string-params
+
  * - Initializer:
  *   - <tt>discord_get_guild_prune_count_params_init(struct discord_get_guild_prune_count_params*)</tt>
  * - Cleanup:
@@ -828,6 +839,7 @@ extern size_t discord_get_guild_prune_count_params_list_to_json(char *str, size_
 // defined at specs/discord/guild.endpoints-params.json:179:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#begin-guild-prune-json-params
+
  * - Initializer:
  *   - <tt>discord_begin_guild_prune_params_init(struct discord_begin_guild_prune_params*)</tt>
  * - Cleanup:

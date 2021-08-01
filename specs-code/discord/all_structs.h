@@ -8,6 +8,7 @@
 // defined at specs/discord/audit_log.endpoints-params.json:8:22
 /**
  * @see https://discord.com/developers/docs/resources/audit-log#get-guild-audit-log
+
  * - Initializer:
  *   - <tt>discord_get_guild_audit_log_params_init(struct discord_get_guild_audit_log_params*)</tt>
  * - Cleanup:
@@ -63,6 +64,7 @@ struct discord_get_guild_audit_log_params {
 // defined at specs/discord/audit_log.json:9:22
 /**
  * @see https://discord.com/developers/docs/resources/audit-log#audit-log-object-audit-log-structure
+
  * - Initializer:
  *   - <tt>discord_audit_log_init(struct discord_audit_log*)</tt>
  * - Cleanup:
@@ -114,6 +116,7 @@ struct discord_audit_log {
 // defined at specs/discord/audit_log.json:65:22
 /**
  * @see https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-entry-structure
+
  * - Initializer:
  *   - <tt>discord_audit_log_entry_init(struct discord_audit_log_entry*)</tt>
  * - Cleanup:
@@ -175,6 +178,7 @@ struct discord_audit_log_entry {
 // defined at specs/discord/audit_log.json:81:22
 /**
  * @see https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-optional-audit-entry-info
+
  * - Initializer:
  *   - <tt>discord_audit_log_entry_optional_info_init(struct discord_audit_log_entry_optional_info*)</tt>
  * - Cleanup:
@@ -240,6 +244,7 @@ struct discord_audit_log_entry_optional_info {
 // defined at specs/discord/audit_log.json:98:22
 /**
  * @see https://discord.com/developers/docs/resources/audit-log#audit-log-change-object-audit-log-change-structure
+
  * - Initializer:
  *   - <tt>discord_audit_log_change_init(struct discord_audit_log_change*)</tt>
  * - Cleanup:
@@ -285,6 +290,7 @@ struct discord_audit_log_change {
 // defined at specs/discord/audit_log.json:110:22
 /**
  * @see https://discord.com/developers/docs/resources/audit-log#audit-log-change-object-audit-log-change-key
+
  * - Initializer:
  *   - <tt>discord_audit_log_change_key_init(struct discord_audit_log_change_key*)</tt>
  * - Cleanup:
@@ -546,6 +552,7 @@ struct discord_audit_log_change_key {
 // defined at specs/discord/channel.endpoints-params.json:10:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#modify-channel
+
  * - Initializer:
  *   - <tt>discord_modify_channel_params_init(struct discord_modify_channel_params*)</tt>
  * - Cleanup:
@@ -643,6 +650,7 @@ struct discord_modify_channel_params {
 // defined at specs/discord/channel.endpoints-params.json:35:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#get-reactions
+
  * - Initializer:
  *   - <tt>discord_get_reactions_params_init(struct discord_get_reactions_params*)</tt>
  * - Cleanup:
@@ -684,6 +692,7 @@ struct discord_get_reactions_params {
 // defined at specs/discord/channel.endpoints-params.json:46:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#edit-channel-permissions
+
  * - Initializer:
  *   - <tt>discord_edit_channel_permissions_params_init(struct discord_edit_channel_permissions_params*)</tt>
  * - Cleanup:
@@ -729,6 +738,7 @@ struct discord_edit_channel_permissions_params {
 // defined at specs/discord/channel.endpoints-params.json:58:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#follow-news-channel
+
  * - Initializer:
  *   - <tt>discord_follow_news_channel_params_init(struct discord_follow_news_channel_params*)</tt>
  * - Cleanup:
@@ -766,6 +776,7 @@ struct discord_follow_news_channel_params {
 // defined at specs/discord/channel.endpoints-params.json:68:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#create-channel-invite
+
  * - Initializer:
  *   - <tt>discord_create_channel_invite_params_init(struct discord_create_channel_invite_params*)</tt>
  * - Cleanup:
@@ -827,6 +838,7 @@ struct discord_create_channel_invite_params {
 // defined at specs/discord/channel.endpoints-params.json:84:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#group-dm-add-recipient
+
  * - Initializer:
  *   - <tt>discord_group_dm_add_recipient_params_init(struct discord_group_dm_add_recipient_params*)</tt>
  * - Cleanup:
@@ -868,6 +880,7 @@ struct discord_group_dm_add_recipient_params {
 // defined at specs/discord/channel.endpoints-params.json:95:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#start-thread-with-message-json-params
+
  * - Initializer:
  *   - <tt>discord_start_thread_with_message_params_init(struct discord_start_thread_with_message_params*)</tt>
  * - Cleanup:
@@ -909,6 +922,7 @@ struct discord_start_thread_with_message_params {
 // defined at specs/discord/channel.endpoints-params.json:106:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#start-thread-without-message-json-params
+
  * - Initializer:
  *   - <tt>discord_start_thread_without_message_params_init(struct discord_start_thread_without_message_params*)</tt>
  * - Cleanup:
@@ -954,6 +968,7 @@ struct discord_start_thread_without_message_params {
 // defined at specs/discord/channel.endpoints-params.json:118:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#list-active-threads-response-body
+
  * - Initializer:
  *   - <tt>discord_thread_response_body_init(struct discord_thread_response_body*)</tt>
  * - Cleanup:
@@ -1007,6 +1022,7 @@ struct discord_thread_response_body {
 // defined at specs/discord/channel.json:29:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#channel-object-channel-structure
+
  * - Initializer:
  *   - <tt>discord_channel_init(struct discord_channel*)</tt>
  * - Cleanup:
@@ -1131,6 +1147,7 @@ struct discord_channel {
 // defined at specs/discord/channel.json:82:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#message-object-message-sticker-structure
+
  * - Initializer:
  *   - <tt>discord_message_sticker_init(struct discord_message_sticker*)</tt>
  * - Cleanup:
@@ -1199,6 +1216,7 @@ struct discord_message_sticker {
 // defined at specs/discord/channel.json:112:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#message-object-message-reference-structure
+
  * - Initializer:
  *   - <tt>discord_message_reference_init(struct discord_message_reference*)</tt>
  * - Cleanup:
@@ -1248,6 +1266,7 @@ struct discord_message_reference {
 // defined at specs/discord/channel.json:124:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#message-object-message-application-structure
+
  * - Initializer:
  *   - <tt>discord_message_application_init(struct discord_message_application*)</tt>
  * - Cleanup:
@@ -1303,6 +1322,7 @@ struct discord_message_application {
 // defined at specs/discord/channel.json:149:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#message-object-message-activity-structure
+
  * - Initializer:
  *   - <tt>discord_message_activity_init(struct discord_message_activity*)</tt>
  * - Cleanup:
@@ -1347,6 +1367,7 @@ struct discord_message_activity {
 // defined at specs/discord/channel.json:184:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#message-object
+
  * - Initializer:
  *   - <tt>discord_message_init(struct discord_message*)</tt>
  * - Cleanup:
@@ -1500,6 +1521,7 @@ struct discord_message {
 // defined at specs/discord/channel.json:222:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#followed-channel-object-followed-channel-structure
+
  * - Initializer:
  *   - <tt>discord_channel_followed_channel_init(struct discord_channel_followed_channel*)</tt>
  * - Cleanup:
@@ -1541,6 +1563,7 @@ struct discord_channel_followed_channel {
 // defined at specs/discord/channel.json:233:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#reaction-object-reaction-structure
+
  * - Initializer:
  *   - <tt>discord_channel_reaction_init(struct discord_channel_reaction*)</tt>
  * - Cleanup:
@@ -1636,6 +1659,7 @@ struct discord_channel_overwrite {
 // defined at specs/discord/channel.json:259:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#thread-metadata-object
+
  * - Initializer:
  *   - <tt>discord_thread_metadata_init(struct discord_thread_metadata*)</tt>
  * - Cleanup:
@@ -1689,6 +1713,7 @@ struct discord_thread_metadata {
 // defined at specs/discord/channel.json:273:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#thread-member-object
+
  * - Initializer:
  *   - <tt>discord_thread_member_init(struct discord_thread_member*)</tt>
  * - Cleanup:
@@ -1738,6 +1763,7 @@ struct discord_thread_member {
 // defined at specs/discord/channel.json:286:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#attachment-object
+
  * - Initializer:
  *   - <tt>discord_channel_attachment_init(struct discord_channel_attachment*)</tt>
  * - Cleanup:
@@ -1799,6 +1825,7 @@ struct discord_channel_attachment {
 // defined at specs/discord/channel.json:302:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#channel-mention-object-channel-mention-structure
+
  * - Initializer:
  *   - <tt>discord_channel_mention_init(struct discord_channel_mention*)</tt>
  * - Cleanup:
@@ -1848,6 +1875,7 @@ struct discord_channel_mention {
 // defined at specs/discord/channel.json:315:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#allowed-mentions-object-allowed-mentions-structure
+
  * - Initializer:
  *   - <tt>discord_channel_allowed_mentions_init(struct discord_channel_allowed_mentions*)</tt>
  * - Cleanup:
@@ -1897,6 +1925,7 @@ struct discord_channel_allowed_mentions {
 // defined at specs/discord/channel.json:327:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-structure
+
  * - Initializer:
  *   - <tt>discord_embed_init(struct discord_embed*)</tt>
  * - Cleanup:
@@ -1982,6 +2011,7 @@ struct discord_embed {
 // defined at specs/discord/channel.json:349:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-thumbnail-structure
+
  * - Initializer:
  *   - <tt>discord_embed_thumbnail_init(struct discord_embed_thumbnail*)</tt>
  * - Cleanup:
@@ -2031,6 +2061,7 @@ struct discord_embed_thumbnail {
 // defined at specs/discord/channel.json:361:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-video-structure
+
  * - Initializer:
  *   - <tt>discord_embed_video_init(struct discord_embed_video*)</tt>
  * - Cleanup:
@@ -2080,6 +2111,7 @@ struct discord_embed_video {
 // defined at specs/discord/channel.json:373:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-image-structure
+
  * - Initializer:
  *   - <tt>discord_embed_image_init(struct discord_embed_image*)</tt>
  * - Cleanup:
@@ -2129,6 +2161,7 @@ struct discord_embed_image {
 // defined at specs/discord/channel.json:385:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-provider-structure
+
  * - Initializer:
  *   - <tt>discord_embed_provider_init(struct discord_embed_provider*)</tt>
  * - Cleanup:
@@ -2170,6 +2203,7 @@ struct discord_embed_provider {
 // defined at specs/discord/channel.json:395:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-author-structure
+
  * - Initializer:
  *   - <tt>discord_embed_author_init(struct discord_embed_author*)</tt>
  * - Cleanup:
@@ -2219,6 +2253,7 @@ struct discord_embed_author {
 // defined at specs/discord/channel.json:407:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-footer-structure
+
  * - Initializer:
  *   - <tt>discord_embed_footer_init(struct discord_embed_footer*)</tt>
  * - Cleanup:
@@ -2264,6 +2299,7 @@ struct discord_embed_footer {
 // defined at specs/discord/channel.json:418:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-field-structure
+
  * - Initializer:
  *   - <tt>discord_embed_field_init(struct discord_embed_field*)</tt>
  * - Cleanup:
@@ -2315,6 +2351,7 @@ struct discord_embed_field {
 // defined at specs/discord/emoji.endpoints-params.json:10:22
 /**
  * @see https://discord.com/developers/docs/resources/emoji#create-guild-emoji
+
  * - Initializer:
  *   - <tt>discord_create_guild_emoji_params_init(struct discord_create_guild_emoji_params*)</tt>
  * - Cleanup:
@@ -2360,6 +2397,7 @@ struct discord_create_guild_emoji_params {
 // defined at specs/discord/emoji.endpoints-params.json:22:22
 /**
  * @see https://discord.com/developers/docs/resources/emoji#modify-guild-emoji
+
  * - Initializer:
  *   - <tt>discord_modify_guild_emoji_params_init(struct discord_modify_guild_emoji_params*)</tt>
  * - Cleanup:
@@ -2407,6 +2445,7 @@ struct discord_modify_guild_emoji_params {
 // defined at specs/discord/emoji.json:9:22
 /**
  * @see https://discord.com/developers/docs/resources/emoji#emoji-object-emoji-structure
+
  * - Initializer:
  *   - <tt>discord_emoji_init(struct discord_emoji*)</tt>
  * - Cleanup:
@@ -2487,6 +2526,7 @@ struct discord_emoji {
 // defined at specs/discord/gateway.json:116:22
 /**
  * @see https://discord.com/developers/docs/topics/gateway#identify-identify-structure
+
  * - Initializer:
  *   - <tt>discord_gateway_identify_init(struct discord_gateway_identify*)</tt>
  * - Cleanup:
@@ -2552,6 +2592,7 @@ struct discord_gateway_identify {
 // defined at specs/discord/gateway.json:132:22
 /**
  * @see https://discord.com/developers/docs/topics/gateway#update-status-gateway-status-update-structure
+
  * - Initializer:
  *   - <tt>discord_gateway_status_update_init(struct discord_gateway_status_update*)</tt>
  * - Cleanup:
@@ -2603,6 +2644,7 @@ struct discord_gateway_status_update {
 // defined at specs/discord/gateway.json:147:22
 /**
  * @see https://discord.com/developers/docs/topics/gateway#identify-identify-connection-properties
+
  * - Initializer:
  *   - <tt>discord_gateway_identify_connection_init(struct discord_gateway_identify_connection*)</tt>
  * - Cleanup:
@@ -2648,6 +2690,7 @@ struct discord_gateway_identify_connection {
 // defined at specs/discord/gateway.json:158:22
 /**
  * @see https://discord.com/developers/docs/topics/gateway#activity-object-activity-structure
+
  * - Initializer:
  *   - <tt>discord_gateway_activity_init(struct discord_gateway_activity*)</tt>
  * - Cleanup:
@@ -2727,6 +2770,7 @@ struct discord_gateway_activity {
 // defined at specs/discord/guild-template.endpoints-params.json:10:22
 /**
  * @see https://discord.com/developers/docs/resources/guild-template#create-guild-from-guild-template-json-params
+
  * - Initializer:
  *   - <tt>discord_create_guild_from_guild_template_params_init(struct discord_create_guild_from_guild_template_params*)</tt>
  * - Cleanup:
@@ -2768,6 +2812,7 @@ struct discord_create_guild_from_guild_template_params {
 // defined at specs/discord/guild-template.endpoints-params.json:21:22
 /**
  * @see https://discord.com/developers/docs/resources/guild-template#create-guild-template-json-params
+
  * - Initializer:
  *   - <tt>discord_create_guild_template_params_init(struct discord_create_guild_template_params*)</tt>
  * - Cleanup:
@@ -2809,6 +2854,7 @@ struct discord_create_guild_template_params {
 // defined at specs/discord/guild-template.endpoints-params.json:32:22
 /**
  * @see https://discord.com/developers/docs/resources/guild-template#modify-guild-template-json-params
+
  * - Initializer:
  *   - <tt>discord_modify_guild_template_params_init(struct discord_modify_guild_template_params*)</tt>
  * - Cleanup:
@@ -2856,6 +2902,7 @@ struct discord_modify_guild_template_params {
 // defined at specs/discord/guild-template.json:9:22
 /**
  * @see https://discord.com/developers/docs/resources/guild-template#guild-template-object-guild-template-structure
+
  * - Initializer:
  *   - <tt>discord_guild_template_init(struct discord_guild_template*)</tt>
  * - Cleanup:
@@ -2939,6 +2986,7 @@ struct discord_guild_template {
 // defined at specs/discord/guild.endpoints-params.json:10:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#create-guild
+
  * - Initializer:
  *   - <tt>discord_create_guild_params_init(struct discord_create_guild_params*)</tt>
  * - Cleanup:
@@ -3016,6 +3064,7 @@ struct discord_create_guild_params {
 // defined at specs/discord/guild.endpoints-params.json:30:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#modify-guild-json-params
+
  * - Initializer:
  *   - <tt>discord_modify_guild_params_init(struct discord_modify_guild_params*)</tt>
  * - Cleanup:
@@ -3125,6 +3174,7 @@ struct discord_modify_guild_params {
 // defined at specs/discord/guild.endpoints-params.json:58:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#create-guild-channel
+
  * - Initializer:
  *   - <tt>discord_create_guild_channel_params_init(struct discord_create_guild_channel_params*)</tt>
  * - Cleanup:
@@ -3198,6 +3248,7 @@ struct discord_create_guild_channel_params {
 // defined at specs/discord/guild.endpoints-params.json:77:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#modify-guild-channel-positions-json-params
+
  * - Initializer:
  *   - <tt>discord_modify_guild_channel_positions_params_init(struct discord_modify_guild_channel_positions_params*)</tt>
  * - Cleanup:
@@ -3247,6 +3298,7 @@ struct discord_modify_guild_channel_positions_params {
 // defined at specs/discord/guild.endpoints-params.json:90:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#search-guild-members-query-string-params
+
  * - Initializer:
  *   - <tt>discord_search_guild_members_params_init(struct discord_search_guild_members_params*)</tt>
  * - Cleanup:
@@ -3288,6 +3340,7 @@ struct discord_search_guild_members_params {
 // defined at specs/discord/guild.endpoints-params.json:101:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#add-guild-member-json-params
+
  * - Initializer:
  *   - <tt>discord_add_guild_member_params_init(struct discord_add_guild_member_params*)</tt>
  * - Cleanup:
@@ -3341,6 +3394,7 @@ struct discord_add_guild_member_params {
 // defined at specs/discord/guild.endpoints-params.json:115:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#modify-guild-member
+
  * - Initializer:
  *   - <tt>discord_modify_guild_member_params_init(struct discord_modify_guild_member_params*)</tt>
  * - Cleanup:
@@ -3394,6 +3448,7 @@ struct discord_modify_guild_member_params {
 // defined at specs/discord/guild.endpoints-params.json:129:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#create-guild-role
+
  * - Initializer:
  *   - <tt>discord_create_guild_role_params_init(struct discord_create_guild_role_params*)</tt>
  * - Cleanup:
@@ -3447,6 +3502,7 @@ struct discord_create_guild_role_params {
 // defined at specs/discord/guild.endpoints-params.json:143:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#modify-guild-role-positions-json-params
+
  * - Initializer:
  *   - <tt>discord_modify_guild_role_positions_params_init(struct discord_modify_guild_role_positions_params*)</tt>
  * - Cleanup:
@@ -3488,6 +3544,7 @@ struct discord_modify_guild_role_positions_params {
 // defined at specs/discord/guild.endpoints-params.json:154:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#modify-guild-role-json-params
+
  * - Initializer:
  *   - <tt>discord_modify_guild_role_params_init(struct discord_modify_guild_role_params*)</tt>
  * - Cleanup:
@@ -3541,6 +3598,7 @@ struct discord_modify_guild_role_params {
 // defined at specs/discord/guild.endpoints-params.json:168:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#get-guild-prune-count-query-string-params
+
  * - Initializer:
  *   - <tt>discord_get_guild_prune_count_params_init(struct discord_get_guild_prune_count_params*)</tt>
  * - Cleanup:
@@ -3582,6 +3640,7 @@ struct discord_get_guild_prune_count_params {
 // defined at specs/discord/guild.endpoints-params.json:179:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#begin-guild-prune-json-params
+
  * - Initializer:
  *   - <tt>discord_begin_guild_prune_params_init(struct discord_begin_guild_prune_params*)</tt>
  * - Cleanup:
@@ -3637,6 +3696,7 @@ struct discord_begin_guild_prune_params {
 // defined at specs/discord/guild.json:9:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#guild-object-guild-structure
+
  * - Initializer:
  *   - <tt>discord_guild_init(struct discord_guild*)</tt>
  * - Cleanup:
@@ -3876,6 +3936,7 @@ struct discord_guild {
 // defined at specs/discord/guild.json:161:23
 /**
  * @see https://discord.com/developers/docs/resources/guild#unavailable-guild-object
+
  * - Initializer:
  *   - <tt>discord_guild_unavailable_init(struct discord_guild_unavailable*)</tt>
  * - Cleanup:
@@ -3917,6 +3978,7 @@ struct discord_guild_unavailable {
 // defined at specs/discord/guild.json:171:23
 /**
  * @see https://discord.com/developers/docs/resources/guild#guild-preview-object
+
  * - Initializer:
  *   - <tt>discord_guild_preview_init(struct discord_guild_preview*)</tt>
  * - Cleanup:
@@ -3990,6 +4052,7 @@ struct discord_guild_preview {
 // defined at specs/discord/guild.json:189:23
 /**
  * @see https://discord.com/developers/docs/resources/guild#guild-widget-object
+
  * - Initializer:
  *   - <tt>discord_guild_widget_init(struct discord_guild_widget*)</tt>
  * - Cleanup:
@@ -4031,6 +4094,7 @@ struct discord_guild_widget {
 // defined at specs/discord/guild.json:199:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#guild-member-object
+
  * - Initializer:
  *   - <tt>discord_guild_member_init(struct discord_guild_member*)</tt>
  * - Cleanup:
@@ -4100,6 +4164,7 @@ struct discord_guild_member {
 // defined at specs/discord/guild.json:217:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#integration-object-integration-structure
+
  * - Initializer:
  *   - <tt>discord_guild_integration_init(struct discord_guild_integration*)</tt>
  * - Cleanup:
@@ -4195,6 +4260,7 @@ struct discord_guild_integration {
 // defined at specs/discord/guild.json:251:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#integration-account-object-integration-account-structure
+
  * - Initializer:
  *   - <tt>discord_guild_integration_account_init(struct discord_guild_integration_account*)</tt>
  * - Cleanup:
@@ -4236,6 +4302,7 @@ struct discord_guild_integration_account {
 // defined at specs/discord/guild.json:261:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#integration-application-object-integration-application-structure
+
  * - Initializer:
  *   - <tt>discord_guild_integration_application_init(struct discord_guild_integration_application*)</tt>
  * - Cleanup:
@@ -4293,6 +4360,7 @@ struct discord_guild_integration_application {
 // defined at specs/discord/guild.json:275:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#ban-object
+
  * - Initializer:
  *   - <tt>discord_guild_ban_init(struct discord_guild_ban*)</tt>
  * - Cleanup:
@@ -4334,6 +4402,7 @@ struct discord_guild_ban {
 // defined at specs/discord/guild.json:286:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#welcome-screen-object-welcome-screen-structure
+
  * - Initializer:
  *   - <tt>discord_guild_welcome_screen_init(struct discord_guild_welcome_screen*)</tt>
  * - Cleanup:
@@ -4375,6 +4444,7 @@ struct discord_guild_welcome_screen {
 // defined at specs/discord/guild.json:297:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#welcome-screen-object-welcome-screen-channel-structure
+
  * - Initializer:
  *   - <tt>discord_guild_welcome_screen_channel_init(struct discord_guild_welcome_screen_channel*)</tt>
  * - Cleanup:
@@ -4430,6 +4500,7 @@ struct discord_guild_welcome_screen_channel {
 // defined at specs/discord/invite.endpoints-params.json:10:22
 /**
  * @see https://discord.com/developers/docs/resources/invite#get-invite-query-string-params
+
  * - Initializer:
  *   - <tt>discord_get_invite_params_init(struct discord_get_invite_params*)</tt>
  * - Cleanup:
@@ -4479,6 +4550,7 @@ struct discord_get_invite_params {
 // defined at specs/discord/invite.json:19:22
 /**
  * @see https://discord.com/developers/docs/resources/invite#invite-object-invite-structure
+
  * - Initializer:
  *   - <tt>discord_invite_init(struct discord_invite*)</tt>
  * - Cleanup:
@@ -4544,6 +4616,7 @@ struct discord_invite {
 // defined at specs/discord/invite.json:36:22
 /**
  * @see https://discord.com/developers/docs/resources/invite#invite-metadata-object
+
  * - Initializer:
  *   - <tt>discord_invite_metadata_init(struct discord_invite_metadata*)</tt>
  * - Cleanup:
@@ -4603,6 +4676,7 @@ struct discord_invite_metadata {
 // defined at specs/discord/message_components.json:9:22
 /**
  * @see https://discord.com/developers/docs/interactions/message-components#component-object-component-structure
+
  * - Initializer:
  *   - <tt>discord_component_init(struct discord_component*)</tt>
  * - Cleanup:
@@ -4686,6 +4760,7 @@ struct discord_component {
 // defined at specs/discord/message_components.json:41:22
 /**
  * @see https://discord.com/developers/docs/interactions/message-components#button-object-button-structure
+
  * - Initializer:
  *   - <tt>discord_button_init(struct discord_button*)</tt>
  * - Cleanup:
@@ -4749,6 +4824,7 @@ struct discord_button {
 // defined at specs/discord/message_components.json:70:22
 /**
  * @see https://discord.com/developers/docs/interactions/message-components#select-menu-object-select-menu-structure
+
  * - Initializer:
  *   - <tt>discord_select_menu_init(struct discord_select_menu*)</tt>
  * - Cleanup:
@@ -4810,6 +4886,7 @@ struct discord_select_menu {
 // defined at specs/discord/message_components.json:85:22
 /**
  * @see https://discord.com/developers/docs/interactions/message-components#select-menu-object-select-option-structure
+
  * - Initializer:
  *   - <tt>discord_select_option_init(struct discord_select_option*)</tt>
  * - Cleanup:
@@ -4871,6 +4948,7 @@ struct discord_select_option {
 // defined at specs/discord/permissions.json:49:22
 /**
  * @see https://discord.com/developers/docs/topics/permissions#role-object-role-structure
+
  * - Initializer:
  *   - <tt>discord_permissions_role_init(struct discord_permissions_role*)</tt>
  * - Cleanup:
@@ -4940,6 +5018,7 @@ struct discord_permissions_role {
 // defined at specs/discord/permissions.json:67:22
 /**
  * @see https://discord.com/developers/docs/topics/permissions#role-object-role-tags-structure
+
  * - Initializer:
  *   - <tt>discord_permissions_role_tags_init(struct discord_permissions_role_tags*)</tt>
  * - Cleanup:
@@ -4991,6 +5070,7 @@ struct discord_permissions_role_tags {
 // defined at specs/discord/slash_commands.json:9:22
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#application-command-object-application-command-structure
+
  * - Initializer:
  *   - <tt>discord_application_command_init(struct discord_application_command*)</tt>
  * - Cleanup:
@@ -5052,6 +5132,7 @@ struct discord_application_command {
 // defined at specs/discord/slash_commands.json:25:22
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#application-command-object-application-command-option-structure
+
  * - Initializer:
  *   - <tt>discord_application_command_option_init(struct discord_application_command_option*)</tt>
  * - Cleanup:
@@ -5111,6 +5192,7 @@ struct discord_application_command_option {
 // defined at specs/discord/slash_commands.json:58:22
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#application-command-object-application-command-option-choice-structure
+
  * - Initializer:
  *   - <tt>discord_application_command_option_choice_init(struct discord_application_command_option_choice*)</tt>
  * - Cleanup:
@@ -5152,6 +5234,7 @@ struct discord_application_command_option_choice {
 // defined at specs/discord/slash_commands.json:69:22
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#application-command-permissions-object-guild-application-command-permissions-structure
+
  * - Initializer:
  *   - <tt>discord_guild_application_command_permissions_init(struct discord_guild_application_command_permissions*)</tt>
  * - Cleanup:
@@ -5201,6 +5284,7 @@ struct discord_guild_application_command_permissions {
 // defined at specs/discord/slash_commands.json:82:22
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#application-command-permissions-object-guild-application-command-permissions-structure
+
  * - Initializer:
  *   - <tt>discord_application_command_permissions_init(struct discord_application_command_permissions*)</tt>
  * - Cleanup:
@@ -5248,6 +5332,7 @@ struct discord_application_command_permissions {
 // defined at specs/discord/slash_commands.json:104:22
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-object-interaction-structure
+
  * - Initializer:
  *   - <tt>discord_interaction_init(struct discord_interaction*)</tt>
  * - Cleanup:
@@ -5319,6 +5404,7 @@ struct discord_interaction {
 // defined at specs/discord/slash_commands.json:134:22
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-object-application-command-interaction-data-structure
+
  * - Initializer:
  *   - <tt>discord_application_command_interaction_data_init(struct discord_application_command_interaction_data*)</tt>
  * - Cleanup:
@@ -5376,6 +5462,7 @@ struct discord_application_command_interaction_data {
 // defined at specs/discord/slash_commands.json:149:22
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-object-application-command-interaction-data-resolved-structure
+
  * - Initializer:
  *   - <tt>discord_application_command_interaction_data_resolved_init(struct discord_application_command_interaction_data_resolved*)</tt>
  * - Cleanup:
@@ -5425,6 +5512,7 @@ struct discord_application_command_interaction_data_resolved {
 // defined at specs/discord/slash_commands.json:162:22
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-object-application-command-interaction-data-option-structure
+
  * - Initializer:
  *   - <tt>discord_application_command_interaction_data_option_init(struct discord_application_command_interaction_data_option*)</tt>
  * - Cleanup:
@@ -5474,6 +5562,7 @@ struct discord_application_command_interaction_data_option {
 // defined at specs/discord/slash_commands.json:175:22
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-response-object-interaction-response-structure
+
  * - Initializer:
  *   - <tt>discord_interaction_response_init(struct discord_interaction_response*)</tt>
  * - Cleanup:
@@ -5517,6 +5606,7 @@ struct discord_interaction_response {
 // defined at specs/discord/slash_commands.json:200:22
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-response-object-interaction-application-command-callback-data-structure
+
  * - Initializer:
  *   - <tt>discord_interaction_application_command_callback_data_init(struct discord_interaction_application_command_callback_data*)</tt>
  * - Cleanup:
@@ -5576,6 +5666,7 @@ struct discord_interaction_application_command_callback_data {
 // defined at specs/discord/slash_commands.json:225:22
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#message-interaction-object-message-interaction-structure
+
  * - Initializer:
  *   - <tt>discord_message_interaction_init(struct discord_message_interaction*)</tt>
  * - Cleanup:
@@ -5631,6 +5722,7 @@ struct discord_message_interaction {
 // defined at specs/discord/user.endpoints-params.json:10:22
 /**
  * @see https://discord.com/developers/docs/resources/user#modify-current-user-json-params
+
  * - Initializer:
  *   - <tt>discord_modify_current_user_params_init(struct discord_modify_current_user_params*)</tt>
  * - Cleanup:
@@ -5672,6 +5764,7 @@ struct discord_modify_current_user_params {
 // defined at specs/discord/user.endpoints-params.json:21:22
 /**
  * @see https://discord.com/developers/docs/resources/user#create-group-dm-json-params
+
  * - Initializer:
  *   - <tt>discord_create_group_dm_params_init(struct discord_create_group_dm_params*)</tt>
  * - Cleanup:
@@ -5811,6 +5904,7 @@ struct discord_user {
 // defined at specs/discord/user.json:74:28
 /**
  * @see https://discord.com/developers/docs/resources/user#connection-object-connection-structure
+
  * - Initializer:
  *   - <tt>discord_connection_init(struct discord_connection*)</tt>
  * - Cleanup:
@@ -5898,6 +5992,7 @@ struct discord_connection {
 // defined at specs/discord/voice.json:9:22
 /**
  * @see https://discord.com/developers/docs/resources/voice#voice-state-object-voice-state-structure
+
  * - Initializer:
  *   - <tt>discord_voice_state_init(struct discord_voice_state*)</tt>
  * - Cleanup:
@@ -5979,6 +6074,7 @@ struct discord_voice_state {
 // defined at specs/discord/voice.json:29:22
 /**
  * @see https://discord.com/developers/docs/resources/voice#voice-region-object-voice-region-structure
+
  * - Initializer:
  *   - <tt>discord_voice_region_init(struct discord_voice_region*)</tt>
  * - Cleanup:
@@ -6042,6 +6138,7 @@ struct discord_voice_region {
 // defined at specs/discord/webhook.endpoints-params.json:10:22
 /**
  * @see https://discord.com/developers/docs/resources/webhook#create-webhook
+
  * - Initializer:
  *   - <tt>discord_create_webhook_params_init(struct discord_create_webhook_params*)</tt>
  * - Cleanup:
@@ -6083,6 +6180,7 @@ struct discord_create_webhook_params {
 // defined at specs/discord/webhook.endpoints-params.json:21:22
 /**
  * @see https://discord.com/developers/docs/resources/webhook#modify-webhook
+
  * - Initializer:
  *   - <tt>discord_modify_webhook_params_init(struct discord_modify_webhook_params*)</tt>
  * - Cleanup:
@@ -6128,6 +6226,7 @@ struct discord_modify_webhook_params {
 // defined at specs/discord/webhook.endpoints-params.json:33:22
 /**
  * @see https://discord.com/developers/docs/resources/webhook#execute-webhook
+
  * - Initializer:
  *   - <tt>discord_execute_webhook_params_init(struct discord_execute_webhook_params*)</tt>
  * - Cleanup:
@@ -6223,6 +6322,7 @@ struct discord_execute_webhook_params {
 // defined at specs/discord/webhook.endpoints-params.json:78:22
 /**
  * @see https://discord.com/developers/docs/resources/webhook#edit-webhook-message
+
  * - Initializer:
  *   - <tt>discord_edit_webhook_message_params_init(struct discord_edit_webhook_message_params*)</tt>
  * - Cleanup:
@@ -6274,6 +6374,7 @@ struct discord_edit_webhook_message_params {
 // defined at specs/discord/webhook.json:9:22
 /**
  * @see https://discord.com/developers/docs/resources/webhook#webhook-object-webhook-structure
+
  * - Initializer:
  *   - <tt>discord_webhook_init(struct discord_webhook*)</tt>
  * - Cleanup:

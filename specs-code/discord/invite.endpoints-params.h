@@ -9,6 +9,7 @@
 // defined at specs/discord/invite.endpoints-params.json:10:22
 /**
  * @see https://discord.com/developers/docs/resources/invite#get-invite-query-string-params
+
  * - Initializer:
  *   - <tt>discord_get_invite_params_init(struct discord_get_invite_params*)</tt>
  * - Cleanup:

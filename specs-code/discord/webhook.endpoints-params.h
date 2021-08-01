@@ -9,6 +9,7 @@
 // defined at specs/discord/webhook.endpoints-params.json:10:22
 /**
  * @see https://discord.com/developers/docs/resources/webhook#create-webhook
+
  * - Initializer:
  *   - <tt>discord_create_webhook_params_init(struct discord_create_webhook_params*)</tt>
  * - Cleanup:
@@ -66,6 +67,7 @@ extern size_t discord_create_webhook_params_list_to_json(char *str, size_t len, 
 // defined at specs/discord/webhook.endpoints-params.json:21:22
 /**
  * @see https://discord.com/developers/docs/resources/webhook#modify-webhook
+
  * - Initializer:
  *   - <tt>discord_modify_webhook_params_init(struct discord_modify_webhook_params*)</tt>
  * - Cleanup:
@@ -127,6 +129,7 @@ extern size_t discord_modify_webhook_params_list_to_json(char *str, size_t len, 
 // defined at specs/discord/webhook.endpoints-params.json:33:22
 /**
  * @see https://discord.com/developers/docs/resources/webhook#execute-webhook
+
  * - Initializer:
  *   - <tt>discord_execute_webhook_params_init(struct discord_execute_webhook_params*)</tt>
  * - Cleanup:
@@ -238,6 +241,7 @@ extern size_t discord_execute_webhook_params_list_to_json(char *str, size_t len,
 // defined at specs/discord/webhook.endpoints-params.json:78:22
 /**
  * @see https://discord.com/developers/docs/resources/webhook#edit-webhook-message
+
  * - Initializer:
  *   - <tt>discord_edit_webhook_message_params_init(struct discord_edit_webhook_message_params*)</tt>
  * - Cleanup:

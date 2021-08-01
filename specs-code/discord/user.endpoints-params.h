@@ -9,6 +9,7 @@
 // defined at specs/discord/user.endpoints-params.json:10:22
 /**
  * @see https://discord.com/developers/docs/resources/user#modify-current-user-json-params
+
  * - Initializer:
  *   - <tt>discord_modify_current_user_params_init(struct discord_modify_current_user_params*)</tt>
  * - Cleanup:
@@ -66,6 +67,7 @@ extern size_t discord_modify_current_user_params_list_to_json(char *str, size_t 
 // defined at specs/discord/user.endpoints-params.json:21:22
 /**
  * @see https://discord.com/developers/docs/resources/user#create-group-dm-json-params
+
  * - Initializer:
  *   - <tt>discord_create_group_dm_params_init(struct discord_create_group_dm_params*)</tt>
  * - Cleanup:

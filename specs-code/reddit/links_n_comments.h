@@ -9,6 +9,7 @@
 // defined at specs/reddit/links_n_comments.json:10:22
 /**
  * @see https://www.reddit.com/dev/api/#POST_api_comment
+
  * - Initializer:
  *   - <tt>reddit_comment_params_init(struct reddit_comment_params*)</tt>
  * - Cleanup:

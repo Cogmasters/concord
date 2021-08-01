@@ -9,6 +9,7 @@
 // defined at specs/discord/voice.json:9:22
 /**
  * @see https://discord.com/developers/docs/resources/voice#voice-state-object-voice-state-structure
+
  * - Initializer:
  *   - <tt>discord_voice_state_init(struct discord_voice_state*)</tt>
  * - Cleanup:
@@ -106,6 +107,7 @@ extern size_t discord_voice_state_list_to_json(char *str, size_t len, struct dis
 // defined at specs/discord/voice.json:29:22
 /**
  * @see https://discord.com/developers/docs/resources/voice#voice-region-object-voice-region-structure
+
  * - Initializer:
  *   - <tt>discord_voice_region_init(struct discord_voice_region*)</tt>
  * - Cleanup:

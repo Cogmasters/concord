@@ -9,6 +9,7 @@
 // defined at specs/reddit/search.json:10:22
 /**
  * @see https://www.reddit.com/dev/api/#GET_search
+
  * - Initializer:
  *   - <tt>reddit_search_params_init(struct reddit_search_params*)</tt>
  * - Cleanup:

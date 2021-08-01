@@ -112,6 +112,7 @@ extern bool discord_gateway_events_has(enum discord_gateway_events, char*);
 // defined at specs/discord/gateway.json:116:22
 /**
  * @see https://discord.com/developers/docs/topics/gateway#identify-identify-structure
+
  * - Initializer:
  *   - <tt>discord_gateway_identify_init(struct discord_gateway_identify*)</tt>
  * - Cleanup:
@@ -193,6 +194,7 @@ extern size_t discord_gateway_identify_list_to_json(char *str, size_t len, struc
 // defined at specs/discord/gateway.json:132:22
 /**
  * @see https://discord.com/developers/docs/topics/gateway#update-status-gateway-status-update-structure
+
  * - Initializer:
  *   - <tt>discord_gateway_status_update_init(struct discord_gateway_status_update*)</tt>
  * - Cleanup:
@@ -260,6 +262,7 @@ extern size_t discord_gateway_status_update_list_to_json(char *str, size_t len, 
 // defined at specs/discord/gateway.json:147:22
 /**
  * @see https://discord.com/developers/docs/topics/gateway#identify-identify-connection-properties
+
  * - Initializer:
  *   - <tt>discord_gateway_identify_connection_init(struct discord_gateway_identify_connection*)</tt>
  * - Cleanup:
@@ -321,6 +324,7 @@ extern size_t discord_gateway_identify_connection_list_to_json(char *str, size_t
 // defined at specs/discord/gateway.json:158:22
 /**
  * @see https://discord.com/developers/docs/topics/gateway#activity-object-activity-structure
+
  * - Initializer:
  *   - <tt>discord_gateway_activity_init(struct discord_gateway_activity*)</tt>
  * - Cleanup:

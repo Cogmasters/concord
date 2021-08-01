@@ -8,6 +8,7 @@
 // defined at specs/discord/audit_log.endpoints-params.json:8:22
 /**
  * @see https://discord.com/developers/docs/resources/audit-log#get-guild-audit-log
+
  * - Initializer:
  *   - <tt>discord_get_guild_audit_log_params_init(struct discord_get_guild_audit_log_params*)</tt>
  * - Cleanup:

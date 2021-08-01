@@ -17,6 +17,7 @@ extern bool discord_invite_target_user_types_has(enum discord_invite_target_user
 // defined at specs/discord/invite.json:19:22
 /**
  * @see https://discord.com/developers/docs/resources/invite#invite-object-invite-structure
+
  * - Initializer:
  *   - <tt>discord_invite_init(struct discord_invite*)</tt>
  * - Cleanup:
@@ -98,6 +99,7 @@ extern size_t discord_invite_list_to_json(char *str, size_t len, struct discord_
 // defined at specs/discord/invite.json:36:22
 /**
  * @see https://discord.com/developers/docs/resources/invite#invite-metadata-object
+
  * - Initializer:
  *   - <tt>discord_invite_metadata_init(struct discord_invite_metadata*)</tt>
  * - Cleanup:

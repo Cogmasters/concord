@@ -9,6 +9,7 @@
 // defined at specs/discord/emoji.endpoints-params.json:10:22
 /**
  * @see https://discord.com/developers/docs/resources/emoji#create-guild-emoji
+
  * - Initializer:
  *   - <tt>discord_create_guild_emoji_params_init(struct discord_create_guild_emoji_params*)</tt>
  * - Cleanup:
@@ -70,6 +71,7 @@ extern size_t discord_create_guild_emoji_params_list_to_json(char *str, size_t l
 // defined at specs/discord/emoji.endpoints-params.json:22:22
 /**
  * @see https://discord.com/developers/docs/resources/emoji#modify-guild-emoji
+
  * - Initializer:
  *   - <tt>discord_modify_guild_emoji_params_init(struct discord_modify_guild_emoji_params*)</tt>
  * - Cleanup:

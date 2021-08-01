@@ -27,6 +27,7 @@ extern bool discord_channel_types_has(enum discord_channel_types, char*);
 // defined at specs/discord/channel.json:29:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#channel-object-channel-structure
+
  * - Initializer:
  *   - <tt>discord_channel_init(struct discord_channel*)</tt>
  * - Cleanup:
@@ -175,6 +176,7 @@ extern bool discord_message_sticker_format_types_has(enum discord_message_sticke
 // defined at specs/discord/channel.json:82:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#message-object-message-sticker-structure
+
  * - Initializer:
  *   - <tt>discord_message_sticker_init(struct discord_message_sticker*)</tt>
  * - Cleanup:
@@ -269,6 +271,7 @@ extern bool discord_message_flags_has(enum discord_message_flags, char*);
 // defined at specs/discord/channel.json:112:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#message-object-message-reference-structure
+
  * - Initializer:
  *   - <tt>discord_message_reference_init(struct discord_message_reference*)</tt>
  * - Cleanup:
@@ -334,6 +337,7 @@ extern size_t discord_message_reference_list_to_json(char *str, size_t len, stru
 // defined at specs/discord/channel.json:124:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#message-object-message-application-structure
+
  * - Initializer:
  *   - <tt>discord_message_application_init(struct discord_message_application*)</tt>
  * - Cleanup:
@@ -414,6 +418,7 @@ extern bool discord_message_activity_types_has(enum discord_message_activity_typ
 // defined at specs/discord/channel.json:149:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#message-object-message-activity-structure
+
  * - Initializer:
  *   - <tt>discord_message_activity_init(struct discord_message_activity*)</tt>
  * - Cleanup:
@@ -496,6 +501,7 @@ extern bool discord_message_types_has(enum discord_message_types, char*);
 // defined at specs/discord/channel.json:184:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#message-object
+
  * - Initializer:
  *   - <tt>discord_message_init(struct discord_message*)</tt>
  * - Cleanup:
@@ -665,6 +671,7 @@ extern size_t discord_message_list_to_json(char *str, size_t len, struct discord
 // defined at specs/discord/channel.json:222:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#followed-channel-object-followed-channel-structure
+
  * - Initializer:
  *   - <tt>discord_channel_followed_channel_init(struct discord_channel_followed_channel*)</tt>
  * - Cleanup:
@@ -722,6 +729,7 @@ extern size_t discord_channel_followed_channel_list_to_json(char *str, size_t le
 // defined at specs/discord/channel.json:233:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#reaction-object-reaction-structure
+
  * - Initializer:
  *   - <tt>discord_channel_reaction_init(struct discord_channel_reaction*)</tt>
  * - Cleanup:
@@ -849,6 +857,7 @@ extern size_t discord_channel_overwrite_list_to_json(char *str, size_t len, stru
 // defined at specs/discord/channel.json:259:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#thread-metadata-object
+
  * - Initializer:
  *   - <tt>discord_thread_metadata_init(struct discord_thread_metadata*)</tt>
  * - Cleanup:
@@ -918,6 +927,7 @@ extern size_t discord_thread_metadata_list_to_json(char *str, size_t len, struct
 // defined at specs/discord/channel.json:273:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#thread-member-object
+
  * - Initializer:
  *   - <tt>discord_thread_member_init(struct discord_thread_member*)</tt>
  * - Cleanup:
@@ -983,6 +993,7 @@ extern size_t discord_thread_member_list_to_json(char *str, size_t len, struct d
 // defined at specs/discord/channel.json:286:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#attachment-object
+
  * - Initializer:
  *   - <tt>discord_channel_attachment_init(struct discord_channel_attachment*)</tt>
  * - Cleanup:
@@ -1060,6 +1071,7 @@ extern size_t discord_channel_attachment_list_to_json(char *str, size_t len, str
 // defined at specs/discord/channel.json:302:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#channel-mention-object-channel-mention-structure
+
  * - Initializer:
  *   - <tt>discord_channel_mention_init(struct discord_channel_mention*)</tt>
  * - Cleanup:
@@ -1125,6 +1137,7 @@ extern size_t discord_channel_mention_list_to_json(char *str, size_t len, struct
 // defined at specs/discord/channel.json:315:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#allowed-mentions-object-allowed-mentions-structure
+
  * - Initializer:
  *   - <tt>discord_channel_allowed_mentions_init(struct discord_channel_allowed_mentions*)</tt>
  * - Cleanup:
@@ -1190,6 +1203,7 @@ extern size_t discord_channel_allowed_mentions_list_to_json(char *str, size_t le
 // defined at specs/discord/channel.json:327:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-structure
+
  * - Initializer:
  *   - <tt>discord_embed_init(struct discord_embed*)</tt>
  * - Cleanup:
@@ -1291,6 +1305,7 @@ extern size_t discord_embed_list_to_json(char *str, size_t len, struct discord_e
 // defined at specs/discord/channel.json:349:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-thumbnail-structure
+
  * - Initializer:
  *   - <tt>discord_embed_thumbnail_init(struct discord_embed_thumbnail*)</tt>
  * - Cleanup:
@@ -1356,6 +1371,7 @@ extern size_t discord_embed_thumbnail_list_to_json(char *str, size_t len, struct
 // defined at specs/discord/channel.json:361:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-video-structure
+
  * - Initializer:
  *   - <tt>discord_embed_video_init(struct discord_embed_video*)</tt>
  * - Cleanup:
@@ -1421,6 +1437,7 @@ extern size_t discord_embed_video_list_to_json(char *str, size_t len, struct dis
 // defined at specs/discord/channel.json:373:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-image-structure
+
  * - Initializer:
  *   - <tt>discord_embed_image_init(struct discord_embed_image*)</tt>
  * - Cleanup:
@@ -1486,6 +1503,7 @@ extern size_t discord_embed_image_list_to_json(char *str, size_t len, struct dis
 // defined at specs/discord/channel.json:385:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-provider-structure
+
  * - Initializer:
  *   - <tt>discord_embed_provider_init(struct discord_embed_provider*)</tt>
  * - Cleanup:
@@ -1543,6 +1561,7 @@ extern size_t discord_embed_provider_list_to_json(char *str, size_t len, struct 
 // defined at specs/discord/channel.json:395:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-author-structure
+
  * - Initializer:
  *   - <tt>discord_embed_author_init(struct discord_embed_author*)</tt>
  * - Cleanup:
@@ -1608,6 +1627,7 @@ extern size_t discord_embed_author_list_to_json(char *str, size_t len, struct di
 // defined at specs/discord/channel.json:407:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-footer-structure
+
  * - Initializer:
  *   - <tt>discord_embed_footer_init(struct discord_embed_footer*)</tt>
  * - Cleanup:
@@ -1669,6 +1689,7 @@ extern size_t discord_embed_footer_list_to_json(char *str, size_t len, struct di
 // defined at specs/discord/channel.json:418:22
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-field-structure
+
  * - Initializer:
  *   - <tt>discord_embed_field_init(struct discord_embed_field*)</tt>
  * - Cleanup:

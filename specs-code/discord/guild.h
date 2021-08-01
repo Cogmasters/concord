@@ -9,6 +9,7 @@
 // defined at specs/discord/guild.json:9:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#guild-object-guild-structure
+
  * - Initializer:
  *   - <tt>discord_guild_init(struct discord_guild*)</tt>
  * - Cleanup:
@@ -332,6 +333,7 @@ extern bool discord_guild_features_has(enum discord_guild_features, char*);
 // defined at specs/discord/guild.json:161:23
 /**
  * @see https://discord.com/developers/docs/resources/guild#unavailable-guild-object
+
  * - Initializer:
  *   - <tt>discord_guild_unavailable_init(struct discord_guild_unavailable*)</tt>
  * - Cleanup:
@@ -389,6 +391,7 @@ extern size_t discord_guild_unavailable_list_to_json(char *str, size_t len, stru
 // defined at specs/discord/guild.json:171:23
 /**
  * @see https://discord.com/developers/docs/resources/guild#guild-preview-object
+
  * - Initializer:
  *   - <tt>discord_guild_preview_init(struct discord_guild_preview*)</tt>
  * - Cleanup:
@@ -478,6 +481,7 @@ extern size_t discord_guild_preview_list_to_json(char *str, size_t len, struct d
 // defined at specs/discord/guild.json:189:23
 /**
  * @see https://discord.com/developers/docs/resources/guild#guild-widget-object
+
  * - Initializer:
  *   - <tt>discord_guild_widget_init(struct discord_guild_widget*)</tt>
  * - Cleanup:
@@ -535,6 +539,7 @@ extern size_t discord_guild_widget_list_to_json(char *str, size_t len, struct di
 // defined at specs/discord/guild.json:199:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#guild-member-object
+
  * - Initializer:
  *   - <tt>discord_guild_member_init(struct discord_guild_member*)</tt>
  * - Cleanup:
@@ -620,6 +625,7 @@ extern size_t discord_guild_member_list_to_json(char *str, size_t len, struct di
 // defined at specs/discord/guild.json:217:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#integration-object-integration-structure
+
  * - Initializer:
  *   - <tt>discord_guild_integration_init(struct discord_guild_integration*)</tt>
  * - Cleanup:
@@ -738,6 +744,7 @@ extern bool discord_guild_integration_expire_behaviors_has(enum discord_guild_in
 // defined at specs/discord/guild.json:251:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#integration-account-object-integration-account-structure
+
  * - Initializer:
  *   - <tt>discord_guild_integration_account_init(struct discord_guild_integration_account*)</tt>
  * - Cleanup:
@@ -795,6 +802,7 @@ extern size_t discord_guild_integration_account_list_to_json(char *str, size_t l
 // defined at specs/discord/guild.json:261:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#integration-application-object-integration-application-structure
+
  * - Initializer:
  *   - <tt>discord_guild_integration_application_init(struct discord_guild_integration_application*)</tt>
  * - Cleanup:
@@ -868,6 +876,7 @@ extern size_t discord_guild_integration_application_list_to_json(char *str, size
 // defined at specs/discord/guild.json:275:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#ban-object
+
  * - Initializer:
  *   - <tt>discord_guild_ban_init(struct discord_guild_ban*)</tt>
  * - Cleanup:
@@ -925,6 +934,7 @@ extern size_t discord_guild_ban_list_to_json(char *str, size_t len, struct disco
 // defined at specs/discord/guild.json:286:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#welcome-screen-object-welcome-screen-structure
+
  * - Initializer:
  *   - <tt>discord_guild_welcome_screen_init(struct discord_guild_welcome_screen*)</tt>
  * - Cleanup:
@@ -982,6 +992,7 @@ extern size_t discord_guild_welcome_screen_list_to_json(char *str, size_t len, s
 // defined at specs/discord/guild.json:297:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#welcome-screen-object-welcome-screen-channel-structure
+
  * - Initializer:
  *   - <tt>discord_guild_welcome_screen_channel_init(struct discord_guild_welcome_screen_channel*)</tt>
  * - Cleanup:

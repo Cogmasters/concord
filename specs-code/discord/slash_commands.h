@@ -9,6 +9,7 @@
 // defined at specs/discord/slash_commands.json:9:22
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#application-command-object-application-command-structure
+
  * - Initializer:
  *   - <tt>discord_application_command_init(struct discord_application_command*)</tt>
  * - Cleanup:
@@ -86,6 +87,7 @@ extern size_t discord_application_command_list_to_json(char *str, size_t len, st
 // defined at specs/discord/slash_commands.json:25:22
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#application-command-object-application-command-option-structure
+
  * - Initializer:
  *   - <tt>discord_application_command_option_init(struct discord_application_command_option*)</tt>
  * - Cleanup:
@@ -175,6 +177,7 @@ extern bool discord_application_command_option_types_has(enum discord_applicatio
 // defined at specs/discord/slash_commands.json:58:22
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#application-command-object-application-command-option-choice-structure
+
  * - Initializer:
  *   - <tt>discord_application_command_option_choice_init(struct discord_application_command_option_choice*)</tt>
  * - Cleanup:
@@ -232,6 +235,7 @@ extern size_t discord_application_command_option_choice_list_to_json(char *str, 
 // defined at specs/discord/slash_commands.json:69:22
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#application-command-permissions-object-guild-application-command-permissions-structure
+
  * - Initializer:
  *   - <tt>discord_guild_application_command_permissions_init(struct discord_guild_application_command_permissions*)</tt>
  * - Cleanup:
@@ -297,6 +301,7 @@ extern size_t discord_guild_application_command_permissions_list_to_json(char *s
 // defined at specs/discord/slash_commands.json:82:22
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#application-command-permissions-object-guild-application-command-permissions-structure
+
  * - Initializer:
  *   - <tt>discord_application_command_permissions_init(struct discord_application_command_permissions*)</tt>
  * - Cleanup:
@@ -367,6 +372,7 @@ extern bool discord_application_command_permission_types_has(enum discord_applic
 // defined at specs/discord/slash_commands.json:104:22
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-object-interaction-structure
+
  * - Initializer:
  *   - <tt>discord_interaction_init(struct discord_interaction*)</tt>
  * - Cleanup:
@@ -462,6 +468,7 @@ extern bool discord_interaction_request_types_has(enum discord_interaction_reque
 // defined at specs/discord/slash_commands.json:134:22
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-object-application-command-interaction-data-structure
+
  * - Initializer:
  *   - <tt>discord_application_command_interaction_data_init(struct discord_application_command_interaction_data*)</tt>
  * - Cleanup:
@@ -535,6 +542,7 @@ extern size_t discord_application_command_interaction_data_list_to_json(char *st
 // defined at specs/discord/slash_commands.json:149:22
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-object-application-command-interaction-data-resolved-structure
+
  * - Initializer:
  *   - <tt>discord_application_command_interaction_data_resolved_init(struct discord_application_command_interaction_data_resolved*)</tt>
  * - Cleanup:
@@ -600,6 +608,7 @@ extern size_t discord_application_command_interaction_data_resolved_list_to_json
 // defined at specs/discord/slash_commands.json:162:22
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-object-application-command-interaction-data-option-structure
+
  * - Initializer:
  *   - <tt>discord_application_command_interaction_data_option_init(struct discord_application_command_interaction_data_option*)</tt>
  * - Cleanup:
@@ -665,6 +674,7 @@ extern size_t discord_application_command_interaction_data_option_list_to_json(c
 // defined at specs/discord/slash_commands.json:175:22
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-response-object-interaction-response-structure
+
  * - Initializer:
  *   - <tt>discord_interaction_response_init(struct discord_interaction_response*)</tt>
  * - Cleanup:
@@ -734,6 +744,7 @@ extern bool discord_interaction_callback_types_has(enum discord_interaction_call
 // defined at specs/discord/slash_commands.json:200:22
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-response-object-interaction-application-command-callback-data-structure
+
  * - Initializer:
  *   - <tt>discord_interaction_application_command_callback_data_init(struct discord_interaction_application_command_callback_data*)</tt>
  * - Cleanup:
@@ -815,6 +826,7 @@ extern bool discord_interaction_application_command_callback_data_flags_has(enum
 // defined at specs/discord/slash_commands.json:225:22
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#message-interaction-object-message-interaction-structure
+
  * - Initializer:
  *   - <tt>discord_message_interaction_init(struct discord_message_interaction*)</tt>
  * - Cleanup:

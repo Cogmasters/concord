@@ -14,8 +14,8 @@ extern "C" {
 
 /**
  * @struct websockets
- *
  * @brief Opaque handler for WebSockets
+ *
  * - Initializer:
  *   - ws_init()
  * - Cleanup:

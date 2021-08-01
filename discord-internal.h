@@ -26,6 +26,7 @@
  * @brief The handle used for performing HTTP Requests 
  *
  * This is a wrapper over struct user_agent
+ *
  * - Initializer:
  *   - discord_adapter_init()
  * - Cleanup:
@@ -145,6 +146,7 @@ struct discord_gateway_cmd_cbs {
 /**
  * @brief The handle used for establishing a Discord Gateway connection
  *        via WebSockets
+ *
  * - Initializer:
  *   - discord_gateway_init()
  * - Cleanup:
@@ -273,6 +275,7 @@ void discord_gateway_reconnect(struct discord_gateway *gw, bool resume);
  * @brief The Discord opaque structure handler
  *
  * Used to access/perform public functions from discord.h 
+ *
  * - Initializer:
  *   - discord_init(), discord_config_init()
  * - Cleanup:

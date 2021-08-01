@@ -9,6 +9,7 @@
 // defined at specs/discord/guild-template.json:9:22
 /**
  * @see https://discord.com/developers/docs/resources/guild-template#guild-template-object-guild-template-structure
+
  * - Initializer:
  *   - <tt>discord_guild_template_init(struct discord_guild_template*)</tt>
  * - Cleanup:

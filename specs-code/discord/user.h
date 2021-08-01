@@ -147,6 +147,7 @@ extern bool discord_user_connection_visibility_types_has(enum discord_user_conne
 // defined at specs/discord/user.json:74:28
 /**
  * @see https://discord.com/developers/docs/resources/user#connection-object-connection-structure
+
  * - Initializer:
  *   - <tt>discord_connection_init(struct discord_connection*)</tt>
  * - Cleanup:

@@ -9,6 +9,7 @@
 // defined at specs/discord/audit_log.json:9:22
 /**
  * @see https://discord.com/developers/docs/resources/audit-log#audit-log-object-audit-log-structure
+
  * - Initializer:
  *   - <tt>discord_audit_log_init(struct discord_audit_log*)</tt>
  * - Cleanup:
@@ -115,6 +116,7 @@ extern bool discord_audit_log_events_has(enum discord_audit_log_events, char*);
 // defined at specs/discord/audit_log.json:65:22
 /**
  * @see https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-entry-structure
+
  * - Initializer:
  *   - <tt>discord_audit_log_entry_init(struct discord_audit_log_entry*)</tt>
  * - Cleanup:
@@ -192,6 +194,7 @@ extern size_t discord_audit_log_entry_list_to_json(char *str, size_t len, struct
 // defined at specs/discord/audit_log.json:81:22
 /**
  * @see https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-optional-audit-entry-info
+
  * - Initializer:
  *   - <tt>discord_audit_log_entry_optional_info_init(struct discord_audit_log_entry_optional_info*)</tt>
  * - Cleanup:
@@ -273,6 +276,7 @@ extern size_t discord_audit_log_entry_optional_info_list_to_json(char *str, size
 // defined at specs/discord/audit_log.json:98:22
 /**
  * @see https://discord.com/developers/docs/resources/audit-log#audit-log-change-object-audit-log-change-structure
+
  * - Initializer:
  *   - <tt>discord_audit_log_change_init(struct discord_audit_log_change*)</tt>
  * - Cleanup:
@@ -334,6 +338,7 @@ extern size_t discord_audit_log_change_list_to_json(char *str, size_t len, struc
 // defined at specs/discord/audit_log.json:110:22
 /**
  * @see https://discord.com/developers/docs/resources/audit-log#audit-log-change-object-audit-log-change-key
+
  * - Initializer:
  *   - <tt>discord_audit_log_change_key_init(struct discord_audit_log_change_key*)</tt>
  * - Cleanup:

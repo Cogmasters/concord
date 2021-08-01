@@ -9,6 +9,7 @@
 // defined at specs/discord/webhook.json:9:22
 /**
  * @see https://discord.com/developers/docs/resources/webhook#webhook-object-webhook-structure
+
  * - Initializer:
  *   - <tt>discord_webhook_init(struct discord_webhook*)</tt>
  * - Cleanup:

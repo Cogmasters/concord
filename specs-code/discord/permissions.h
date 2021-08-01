@@ -48,6 +48,7 @@ extern bool discord_permissions_bitwise_flags_has(enum discord_permissions_bitwi
 // defined at specs/discord/permissions.json:49:22
 /**
  * @see https://discord.com/developers/docs/topics/permissions#role-object-role-structure
+
  * - Initializer:
  *   - <tt>discord_permissions_role_init(struct discord_permissions_role*)</tt>
  * - Cleanup:
@@ -133,6 +134,7 @@ extern size_t discord_permissions_role_list_to_json(char *str, size_t len, struc
 // defined at specs/discord/permissions.json:67:22
 /**
  * @see https://discord.com/developers/docs/topics/permissions#role-object-role-tags-structure
+
  * - Initializer:
  *   - <tt>discord_permissions_role_tags_init(struct discord_permissions_role_tags*)</tt>
  * - Cleanup:
