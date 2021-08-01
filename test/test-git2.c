@@ -59,15 +59,19 @@ int main (int argc, char ** argv)
   struct logconf config = {0};
   logconf_setup(&config, config_file);
   struct sized_buffer username = logconf_get_field(&config, "github.username");
+  if (!username.size) {
+    fprintf(stderr, "Missing username\n");
+    return EXIT_FAILURE;
+  }
+
   struct sized_buffer token = logconf_get_field(&config, "github.token");
-  if (!username.start || !token.start) {
-    PRINT("Missing username or token");
+  if (!token.size) {
+    fprintf(stderr, "Missing token\n");
     return EXIT_FAILURE;
   }
 
   char *usernamecpy = strndup(username.start, username.size);
-  char *tokencpy = strndup(username.start, username.size);
-
+  char *tokencpy = strndup(token.start, token.size);
   struct github_git_op *data = github_git_op_init(usernamecpy, tokencpy, ".cee-repo");
 
   github_git_op_update_my_fork(data);
