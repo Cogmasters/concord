@@ -9,16 +9,16 @@
 // defined at specs/reddit/oauth2.json:9:22
 /**
  * - Initializer:
- *   - <tt>reddit_access_token_params_init(struct reddit_access_token_params*)</tt>
+ *   - <tt> reddit_access_token_params_init(struct reddit_access_token_params *) </tt>
  * - Cleanup:
- *   - <tt>reddit_access_token_params_cleanup(struct reddit_access_token_params*)</tt>
- *   - <tt>reddit_access_token_params_list_free(struct reddit_access_token_params**)</tt>
+ *   - <tt> reddit_access_token_params_cleanup(struct reddit_access_token_params *) </tt>
+ *   - <tt> reddit_access_token_params_list_free(struct reddit_access_token_params **) </tt>
  * - JSON Decoder:
- *   - <tt>reddit_access_token_params_from_json(char *rbuf, size_t len, struct reddit_access_token_params**)</tt>
- *   - <tt>reddit_access_token_params_list_from_json(char *rbuf, size_t len, struct reddit_access_token_params***)</tt>
+ *   - <tt> reddit_access_token_params_from_json(char *rbuf, size_t len, struct reddit_access_token_params **) </tt>
+ *   - <tt> reddit_access_token_params_list_from_json(char *rbuf, size_t len, struct reddit_access_token_params ***) </tt>
  * - JSON Encoder:
- *   - <tt>reddit_access_token_params_to_json(char *wbuf, size_t len, struct reddit_access_token_params*)</tt>
- *   - <tt>reddit_access_token_params_list_to_json(char *wbuf, size_t len, struct reddit_access_token_params**)</tt>
+ *   - <tt> reddit_access_token_params_to_json(char *wbuf, size_t len, struct reddit_access_token_params *) </tt>
+ *   - <tt> reddit_access_token_params_list_to_json(char *wbuf, size_t len, struct reddit_access_token_params **) </tt>
  */
 struct reddit_access_token_params {
   /* specs/reddit/oauth2.json:12:20

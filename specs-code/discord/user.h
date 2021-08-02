@@ -38,16 +38,16 @@ extern bool discord_user_premium_types_has(enum discord_user_premium_types, char
 // defined at specs/discord/user.json:42:28
 /**
  * - Initializer:
- *   - <tt>discord_user_init(struct discord_user*)</tt>
+ *   - <tt> discord_user_init(struct discord_user *) </tt>
  * - Cleanup:
- *   - <tt>discord_user_cleanup(struct discord_user*)</tt>
- *   - <tt>discord_user_list_free(struct discord_user**)</tt>
+ *   - <tt> discord_user_cleanup(struct discord_user *) </tt>
+ *   - <tt> discord_user_list_free(struct discord_user **) </tt>
  * - JSON Decoder:
- *   - <tt>discord_user_from_json(char *rbuf, size_t len, struct discord_user**)</tt>
- *   - <tt>discord_user_list_from_json(char *rbuf, size_t len, struct discord_user***)</tt>
+ *   - <tt> discord_user_from_json(char *rbuf, size_t len, struct discord_user **) </tt>
+ *   - <tt> discord_user_list_from_json(char *rbuf, size_t len, struct discord_user ***) </tt>
  * - JSON Encoder:
- *   - <tt>discord_user_to_json(char *wbuf, size_t len, struct discord_user*)</tt>
- *   - <tt>discord_user_list_to_json(char *wbuf, size_t len, struct discord_user**)</tt>
+ *   - <tt> discord_user_to_json(char *wbuf, size_t len, struct discord_user *) </tt>
+ *   - <tt> discord_user_list_to_json(char *wbuf, size_t len, struct discord_user **) </tt>
  */
 struct discord_user {
   /* specs/discord/user.json:45:24
@@ -147,18 +147,18 @@ extern bool discord_user_connection_visibility_types_has(enum discord_user_conne
 // defined at specs/discord/user.json:74:28
 /**
  * @see https://discord.com/developers/docs/resources/user#connection-object-connection-structure
-
+ *
  * - Initializer:
- *   - <tt>discord_connection_init(struct discord_connection*)</tt>
+ *   - <tt> discord_connection_init(struct discord_connection *) </tt>
  * - Cleanup:
- *   - <tt>discord_connection_cleanup(struct discord_connection*)</tt>
- *   - <tt>discord_connection_list_free(struct discord_connection**)</tt>
+ *   - <tt> discord_connection_cleanup(struct discord_connection *) </tt>
+ *   - <tt> discord_connection_list_free(struct discord_connection **) </tt>
  * - JSON Decoder:
- *   - <tt>discord_connection_from_json(char *rbuf, size_t len, struct discord_connection**)</tt>
- *   - <tt>discord_connection_list_from_json(char *rbuf, size_t len, struct discord_connection***)</tt>
+ *   - <tt> discord_connection_from_json(char *rbuf, size_t len, struct discord_connection **) </tt>
+ *   - <tt> discord_connection_list_from_json(char *rbuf, size_t len, struct discord_connection ***) </tt>
  * - JSON Encoder:
- *   - <tt>discord_connection_to_json(char *wbuf, size_t len, struct discord_connection*)</tt>
- *   - <tt>discord_connection_list_to_json(char *wbuf, size_t len, struct discord_connection**)</tt>
+ *   - <tt> discord_connection_to_json(char *wbuf, size_t len, struct discord_connection *) </tt>
+ *   - <tt> discord_connection_list_to_json(char *wbuf, size_t len, struct discord_connection **) </tt>
  */
 struct discord_connection {
   /* specs/discord/user.json:77:24

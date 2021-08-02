@@ -9,18 +9,18 @@
 // defined at specs/discord/guild.endpoints-params.json:10:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#create-guild
-
+ *
  * - Initializer:
- *   - <tt>discord_create_guild_params_init(struct discord_create_guild_params*)</tt>
+ *   - <tt> discord_create_guild_params_init(struct discord_create_guild_params *) </tt>
  * - Cleanup:
- *   - <tt>discord_create_guild_params_cleanup(struct discord_create_guild_params*)</tt>
- *   - <tt>discord_create_guild_params_list_free(struct discord_create_guild_params**)</tt>
+ *   - <tt> discord_create_guild_params_cleanup(struct discord_create_guild_params *) </tt>
+ *   - <tt> discord_create_guild_params_list_free(struct discord_create_guild_params **) </tt>
  * - JSON Decoder:
- *   - <tt>discord_create_guild_params_from_json(char *rbuf, size_t len, struct discord_create_guild_params**)</tt>
- *   - <tt>discord_create_guild_params_list_from_json(char *rbuf, size_t len, struct discord_create_guild_params***)</tt>
+ *   - <tt> discord_create_guild_params_from_json(char *rbuf, size_t len, struct discord_create_guild_params **) </tt>
+ *   - <tt> discord_create_guild_params_list_from_json(char *rbuf, size_t len, struct discord_create_guild_params ***) </tt>
  * - JSON Encoder:
- *   - <tt>discord_create_guild_params_to_json(char *wbuf, size_t len, struct discord_create_guild_params*)</tt>
- *   - <tt>discord_create_guild_params_list_to_json(char *wbuf, size_t len, struct discord_create_guild_params**)</tt>
+ *   - <tt> discord_create_guild_params_to_json(char *wbuf, size_t len, struct discord_create_guild_params *) </tt>
+ *   - <tt> discord_create_guild_params_list_to_json(char *wbuf, size_t len, struct discord_create_guild_params **) </tt>
  */
 struct discord_create_guild_params {
   /* specs/discord/guild.endpoints-params.json:13:20
@@ -103,18 +103,18 @@ extern size_t discord_create_guild_params_list_to_json(char *str, size_t len, st
 // defined at specs/discord/guild.endpoints-params.json:30:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#modify-guild-json-params
-
+ *
  * - Initializer:
- *   - <tt>discord_modify_guild_params_init(struct discord_modify_guild_params*)</tt>
+ *   - <tt> discord_modify_guild_params_init(struct discord_modify_guild_params *) </tt>
  * - Cleanup:
- *   - <tt>discord_modify_guild_params_cleanup(struct discord_modify_guild_params*)</tt>
- *   - <tt>discord_modify_guild_params_list_free(struct discord_modify_guild_params**)</tt>
+ *   - <tt> discord_modify_guild_params_cleanup(struct discord_modify_guild_params *) </tt>
+ *   - <tt> discord_modify_guild_params_list_free(struct discord_modify_guild_params **) </tt>
  * - JSON Decoder:
- *   - <tt>discord_modify_guild_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_params**)</tt>
- *   - <tt>discord_modify_guild_params_list_from_json(char *rbuf, size_t len, struct discord_modify_guild_params***)</tt>
+ *   - <tt> discord_modify_guild_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_params **) </tt>
+ *   - <tt> discord_modify_guild_params_list_from_json(char *rbuf, size_t len, struct discord_modify_guild_params ***) </tt>
  * - JSON Encoder:
- *   - <tt>discord_modify_guild_params_to_json(char *wbuf, size_t len, struct discord_modify_guild_params*)</tt>
- *   - <tt>discord_modify_guild_params_list_to_json(char *wbuf, size_t len, struct discord_modify_guild_params**)</tt>
+ *   - <tt> discord_modify_guild_params_to_json(char *wbuf, size_t len, struct discord_modify_guild_params *) </tt>
+ *   - <tt> discord_modify_guild_params_list_to_json(char *wbuf, size_t len, struct discord_modify_guild_params **) </tt>
  */
 struct discord_modify_guild_params {
   /* specs/discord/guild.endpoints-params.json:33:20
@@ -229,18 +229,18 @@ extern size_t discord_modify_guild_params_list_to_json(char *str, size_t len, st
 // defined at specs/discord/guild.endpoints-params.json:58:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#create-guild-channel
-
+ *
  * - Initializer:
- *   - <tt>discord_create_guild_channel_params_init(struct discord_create_guild_channel_params*)</tt>
+ *   - <tt> discord_create_guild_channel_params_init(struct discord_create_guild_channel_params *) </tt>
  * - Cleanup:
- *   - <tt>discord_create_guild_channel_params_cleanup(struct discord_create_guild_channel_params*)</tt>
- *   - <tt>discord_create_guild_channel_params_list_free(struct discord_create_guild_channel_params**)</tt>
+ *   - <tt> discord_create_guild_channel_params_cleanup(struct discord_create_guild_channel_params *) </tt>
+ *   - <tt> discord_create_guild_channel_params_list_free(struct discord_create_guild_channel_params **) </tt>
  * - JSON Decoder:
- *   - <tt>discord_create_guild_channel_params_from_json(char *rbuf, size_t len, struct discord_create_guild_channel_params**)</tt>
- *   - <tt>discord_create_guild_channel_params_list_from_json(char *rbuf, size_t len, struct discord_create_guild_channel_params***)</tt>
+ *   - <tt> discord_create_guild_channel_params_from_json(char *rbuf, size_t len, struct discord_create_guild_channel_params **) </tt>
+ *   - <tt> discord_create_guild_channel_params_list_from_json(char *rbuf, size_t len, struct discord_create_guild_channel_params ***) </tt>
  * - JSON Encoder:
- *   - <tt>discord_create_guild_channel_params_to_json(char *wbuf, size_t len, struct discord_create_guild_channel_params*)</tt>
- *   - <tt>discord_create_guild_channel_params_list_to_json(char *wbuf, size_t len, struct discord_create_guild_channel_params**)</tt>
+ *   - <tt> discord_create_guild_channel_params_to_json(char *wbuf, size_t len, struct discord_create_guild_channel_params *) </tt>
+ *   - <tt> discord_create_guild_channel_params_list_to_json(char *wbuf, size_t len, struct discord_create_guild_channel_params **) </tt>
  */
 struct discord_create_guild_channel_params {
   /* specs/discord/guild.endpoints-params.json:61:20
@@ -319,18 +319,18 @@ extern size_t discord_create_guild_channel_params_list_to_json(char *str, size_t
 // defined at specs/discord/guild.endpoints-params.json:77:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#modify-guild-channel-positions-json-params
-
+ *
  * - Initializer:
- *   - <tt>discord_modify_guild_channel_positions_params_init(struct discord_modify_guild_channel_positions_params*)</tt>
+ *   - <tt> discord_modify_guild_channel_positions_params_init(struct discord_modify_guild_channel_positions_params *) </tt>
  * - Cleanup:
- *   - <tt>discord_modify_guild_channel_positions_params_cleanup(struct discord_modify_guild_channel_positions_params*)</tt>
- *   - <tt>discord_modify_guild_channel_positions_params_list_free(struct discord_modify_guild_channel_positions_params**)</tt>
+ *   - <tt> discord_modify_guild_channel_positions_params_cleanup(struct discord_modify_guild_channel_positions_params *) </tt>
+ *   - <tt> discord_modify_guild_channel_positions_params_list_free(struct discord_modify_guild_channel_positions_params **) </tt>
  * - JSON Decoder:
- *   - <tt>discord_modify_guild_channel_positions_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_channel_positions_params**)</tt>
- *   - <tt>discord_modify_guild_channel_positions_params_list_from_json(char *rbuf, size_t len, struct discord_modify_guild_channel_positions_params***)</tt>
+ *   - <tt> discord_modify_guild_channel_positions_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_channel_positions_params **) </tt>
+ *   - <tt> discord_modify_guild_channel_positions_params_list_from_json(char *rbuf, size_t len, struct discord_modify_guild_channel_positions_params ***) </tt>
  * - JSON Encoder:
- *   - <tt>discord_modify_guild_channel_positions_params_to_json(char *wbuf, size_t len, struct discord_modify_guild_channel_positions_params*)</tt>
- *   - <tt>discord_modify_guild_channel_positions_params_list_to_json(char *wbuf, size_t len, struct discord_modify_guild_channel_positions_params**)</tt>
+ *   - <tt> discord_modify_guild_channel_positions_params_to_json(char *wbuf, size_t len, struct discord_modify_guild_channel_positions_params *) </tt>
+ *   - <tt> discord_modify_guild_channel_positions_params_list_to_json(char *wbuf, size_t len, struct discord_modify_guild_channel_positions_params **) </tt>
  */
 struct discord_modify_guild_channel_positions_params {
   /* specs/discord/guild.endpoints-params.json:80:20
@@ -385,18 +385,18 @@ extern size_t discord_modify_guild_channel_positions_params_list_to_json(char *s
 // defined at specs/discord/guild.endpoints-params.json:90:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#search-guild-members-query-string-params
-
+ *
  * - Initializer:
- *   - <tt>discord_search_guild_members_params_init(struct discord_search_guild_members_params*)</tt>
+ *   - <tt> discord_search_guild_members_params_init(struct discord_search_guild_members_params *) </tt>
  * - Cleanup:
- *   - <tt>discord_search_guild_members_params_cleanup(struct discord_search_guild_members_params*)</tt>
- *   - <tt>discord_search_guild_members_params_list_free(struct discord_search_guild_members_params**)</tt>
+ *   - <tt> discord_search_guild_members_params_cleanup(struct discord_search_guild_members_params *) </tt>
+ *   - <tt> discord_search_guild_members_params_list_free(struct discord_search_guild_members_params **) </tt>
  * - JSON Decoder:
- *   - <tt>discord_search_guild_members_params_from_json(char *rbuf, size_t len, struct discord_search_guild_members_params**)</tt>
- *   - <tt>discord_search_guild_members_params_list_from_json(char *rbuf, size_t len, struct discord_search_guild_members_params***)</tt>
+ *   - <tt> discord_search_guild_members_params_from_json(char *rbuf, size_t len, struct discord_search_guild_members_params **) </tt>
+ *   - <tt> discord_search_guild_members_params_list_from_json(char *rbuf, size_t len, struct discord_search_guild_members_params ***) </tt>
  * - JSON Encoder:
- *   - <tt>discord_search_guild_members_params_to_json(char *wbuf, size_t len, struct discord_search_guild_members_params*)</tt>
- *   - <tt>discord_search_guild_members_params_list_to_json(char *wbuf, size_t len, struct discord_search_guild_members_params**)</tt>
+ *   - <tt> discord_search_guild_members_params_to_json(char *wbuf, size_t len, struct discord_search_guild_members_params *) </tt>
+ *   - <tt> discord_search_guild_members_params_list_to_json(char *wbuf, size_t len, struct discord_search_guild_members_params **) </tt>
  */
 struct discord_search_guild_members_params {
   /* specs/discord/guild.endpoints-params.json:93:20
@@ -443,18 +443,18 @@ extern size_t discord_search_guild_members_params_list_to_json(char *str, size_t
 // defined at specs/discord/guild.endpoints-params.json:101:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#add-guild-member-json-params
-
+ *
  * - Initializer:
- *   - <tt>discord_add_guild_member_params_init(struct discord_add_guild_member_params*)</tt>
+ *   - <tt> discord_add_guild_member_params_init(struct discord_add_guild_member_params *) </tt>
  * - Cleanup:
- *   - <tt>discord_add_guild_member_params_cleanup(struct discord_add_guild_member_params*)</tt>
- *   - <tt>discord_add_guild_member_params_list_free(struct discord_add_guild_member_params**)</tt>
+ *   - <tt> discord_add_guild_member_params_cleanup(struct discord_add_guild_member_params *) </tt>
+ *   - <tt> discord_add_guild_member_params_list_free(struct discord_add_guild_member_params **) </tt>
  * - JSON Decoder:
- *   - <tt>discord_add_guild_member_params_from_json(char *rbuf, size_t len, struct discord_add_guild_member_params**)</tt>
- *   - <tt>discord_add_guild_member_params_list_from_json(char *rbuf, size_t len, struct discord_add_guild_member_params***)</tt>
+ *   - <tt> discord_add_guild_member_params_from_json(char *rbuf, size_t len, struct discord_add_guild_member_params **) </tt>
+ *   - <tt> discord_add_guild_member_params_list_from_json(char *rbuf, size_t len, struct discord_add_guild_member_params ***) </tt>
  * - JSON Encoder:
- *   - <tt>discord_add_guild_member_params_to_json(char *wbuf, size_t len, struct discord_add_guild_member_params*)</tt>
- *   - <tt>discord_add_guild_member_params_list_to_json(char *wbuf, size_t len, struct discord_add_guild_member_params**)</tt>
+ *   - <tt> discord_add_guild_member_params_to_json(char *wbuf, size_t len, struct discord_add_guild_member_params *) </tt>
+ *   - <tt> discord_add_guild_member_params_list_to_json(char *wbuf, size_t len, struct discord_add_guild_member_params **) </tt>
  */
 struct discord_add_guild_member_params {
   /* specs/discord/guild.endpoints-params.json:104:20
@@ -513,18 +513,18 @@ extern size_t discord_add_guild_member_params_list_to_json(char *str, size_t len
 // defined at specs/discord/guild.endpoints-params.json:115:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#modify-guild-member
-
+ *
  * - Initializer:
- *   - <tt>discord_modify_guild_member_params_init(struct discord_modify_guild_member_params*)</tt>
+ *   - <tt> discord_modify_guild_member_params_init(struct discord_modify_guild_member_params *) </tt>
  * - Cleanup:
- *   - <tt>discord_modify_guild_member_params_cleanup(struct discord_modify_guild_member_params*)</tt>
- *   - <tt>discord_modify_guild_member_params_list_free(struct discord_modify_guild_member_params**)</tt>
+ *   - <tt> discord_modify_guild_member_params_cleanup(struct discord_modify_guild_member_params *) </tt>
+ *   - <tt> discord_modify_guild_member_params_list_free(struct discord_modify_guild_member_params **) </tt>
  * - JSON Decoder:
- *   - <tt>discord_modify_guild_member_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_member_params**)</tt>
- *   - <tt>discord_modify_guild_member_params_list_from_json(char *rbuf, size_t len, struct discord_modify_guild_member_params***)</tt>
+ *   - <tt> discord_modify_guild_member_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_member_params **) </tt>
+ *   - <tt> discord_modify_guild_member_params_list_from_json(char *rbuf, size_t len, struct discord_modify_guild_member_params ***) </tt>
  * - JSON Encoder:
- *   - <tt>discord_modify_guild_member_params_to_json(char *wbuf, size_t len, struct discord_modify_guild_member_params*)</tt>
- *   - <tt>discord_modify_guild_member_params_list_to_json(char *wbuf, size_t len, struct discord_modify_guild_member_params**)</tt>
+ *   - <tt> discord_modify_guild_member_params_to_json(char *wbuf, size_t len, struct discord_modify_guild_member_params *) </tt>
+ *   - <tt> discord_modify_guild_member_params_list_to_json(char *wbuf, size_t len, struct discord_modify_guild_member_params **) </tt>
  */
 struct discord_modify_guild_member_params {
   /* specs/discord/guild.endpoints-params.json:118:20
@@ -583,18 +583,18 @@ extern size_t discord_modify_guild_member_params_list_to_json(char *str, size_t 
 // defined at specs/discord/guild.endpoints-params.json:129:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#create-guild-role
-
+ *
  * - Initializer:
- *   - <tt>discord_create_guild_role_params_init(struct discord_create_guild_role_params*)</tt>
+ *   - <tt> discord_create_guild_role_params_init(struct discord_create_guild_role_params *) </tt>
  * - Cleanup:
- *   - <tt>discord_create_guild_role_params_cleanup(struct discord_create_guild_role_params*)</tt>
- *   - <tt>discord_create_guild_role_params_list_free(struct discord_create_guild_role_params**)</tt>
+ *   - <tt> discord_create_guild_role_params_cleanup(struct discord_create_guild_role_params *) </tt>
+ *   - <tt> discord_create_guild_role_params_list_free(struct discord_create_guild_role_params **) </tt>
  * - JSON Decoder:
- *   - <tt>discord_create_guild_role_params_from_json(char *rbuf, size_t len, struct discord_create_guild_role_params**)</tt>
- *   - <tt>discord_create_guild_role_params_list_from_json(char *rbuf, size_t len, struct discord_create_guild_role_params***)</tt>
+ *   - <tt> discord_create_guild_role_params_from_json(char *rbuf, size_t len, struct discord_create_guild_role_params **) </tt>
+ *   - <tt> discord_create_guild_role_params_list_from_json(char *rbuf, size_t len, struct discord_create_guild_role_params ***) </tt>
  * - JSON Encoder:
- *   - <tt>discord_create_guild_role_params_to_json(char *wbuf, size_t len, struct discord_create_guild_role_params*)</tt>
- *   - <tt>discord_create_guild_role_params_list_to_json(char *wbuf, size_t len, struct discord_create_guild_role_params**)</tt>
+ *   - <tt> discord_create_guild_role_params_to_json(char *wbuf, size_t len, struct discord_create_guild_role_params *) </tt>
+ *   - <tt> discord_create_guild_role_params_list_to_json(char *wbuf, size_t len, struct discord_create_guild_role_params **) </tt>
  */
 struct discord_create_guild_role_params {
   /* specs/discord/guild.endpoints-params.json:132:20
@@ -653,18 +653,18 @@ extern size_t discord_create_guild_role_params_list_to_json(char *str, size_t le
 // defined at specs/discord/guild.endpoints-params.json:143:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#modify-guild-role-positions-json-params
-
+ *
  * - Initializer:
- *   - <tt>discord_modify_guild_role_positions_params_init(struct discord_modify_guild_role_positions_params*)</tt>
+ *   - <tt> discord_modify_guild_role_positions_params_init(struct discord_modify_guild_role_positions_params *) </tt>
  * - Cleanup:
- *   - <tt>discord_modify_guild_role_positions_params_cleanup(struct discord_modify_guild_role_positions_params*)</tt>
- *   - <tt>discord_modify_guild_role_positions_params_list_free(struct discord_modify_guild_role_positions_params**)</tt>
+ *   - <tt> discord_modify_guild_role_positions_params_cleanup(struct discord_modify_guild_role_positions_params *) </tt>
+ *   - <tt> discord_modify_guild_role_positions_params_list_free(struct discord_modify_guild_role_positions_params **) </tt>
  * - JSON Decoder:
- *   - <tt>discord_modify_guild_role_positions_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_role_positions_params**)</tt>
- *   - <tt>discord_modify_guild_role_positions_params_list_from_json(char *rbuf, size_t len, struct discord_modify_guild_role_positions_params***)</tt>
+ *   - <tt> discord_modify_guild_role_positions_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_role_positions_params **) </tt>
+ *   - <tt> discord_modify_guild_role_positions_params_list_from_json(char *rbuf, size_t len, struct discord_modify_guild_role_positions_params ***) </tt>
  * - JSON Encoder:
- *   - <tt>discord_modify_guild_role_positions_params_to_json(char *wbuf, size_t len, struct discord_modify_guild_role_positions_params*)</tt>
- *   - <tt>discord_modify_guild_role_positions_params_list_to_json(char *wbuf, size_t len, struct discord_modify_guild_role_positions_params**)</tt>
+ *   - <tt> discord_modify_guild_role_positions_params_to_json(char *wbuf, size_t len, struct discord_modify_guild_role_positions_params *) </tt>
+ *   - <tt> discord_modify_guild_role_positions_params_list_to_json(char *wbuf, size_t len, struct discord_modify_guild_role_positions_params **) </tt>
  */
 struct discord_modify_guild_role_positions_params {
   /* specs/discord/guild.endpoints-params.json:146:20
@@ -711,18 +711,18 @@ extern size_t discord_modify_guild_role_positions_params_list_to_json(char *str,
 // defined at specs/discord/guild.endpoints-params.json:154:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#modify-guild-role-json-params
-
+ *
  * - Initializer:
- *   - <tt>discord_modify_guild_role_params_init(struct discord_modify_guild_role_params*)</tt>
+ *   - <tt> discord_modify_guild_role_params_init(struct discord_modify_guild_role_params *) </tt>
  * - Cleanup:
- *   - <tt>discord_modify_guild_role_params_cleanup(struct discord_modify_guild_role_params*)</tt>
- *   - <tt>discord_modify_guild_role_params_list_free(struct discord_modify_guild_role_params**)</tt>
+ *   - <tt> discord_modify_guild_role_params_cleanup(struct discord_modify_guild_role_params *) </tt>
+ *   - <tt> discord_modify_guild_role_params_list_free(struct discord_modify_guild_role_params **) </tt>
  * - JSON Decoder:
- *   - <tt>discord_modify_guild_role_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_role_params**)</tt>
- *   - <tt>discord_modify_guild_role_params_list_from_json(char *rbuf, size_t len, struct discord_modify_guild_role_params***)</tt>
+ *   - <tt> discord_modify_guild_role_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_role_params **) </tt>
+ *   - <tt> discord_modify_guild_role_params_list_from_json(char *rbuf, size_t len, struct discord_modify_guild_role_params ***) </tt>
  * - JSON Encoder:
- *   - <tt>discord_modify_guild_role_params_to_json(char *wbuf, size_t len, struct discord_modify_guild_role_params*)</tt>
- *   - <tt>discord_modify_guild_role_params_list_to_json(char *wbuf, size_t len, struct discord_modify_guild_role_params**)</tt>
+ *   - <tt> discord_modify_guild_role_params_to_json(char *wbuf, size_t len, struct discord_modify_guild_role_params *) </tt>
+ *   - <tt> discord_modify_guild_role_params_list_to_json(char *wbuf, size_t len, struct discord_modify_guild_role_params **) </tt>
  */
 struct discord_modify_guild_role_params {
   /* specs/discord/guild.endpoints-params.json:157:20
@@ -781,18 +781,18 @@ extern size_t discord_modify_guild_role_params_list_to_json(char *str, size_t le
 // defined at specs/discord/guild.endpoints-params.json:168:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#get-guild-prune-count-query-string-params
-
+ *
  * - Initializer:
- *   - <tt>discord_get_guild_prune_count_params_init(struct discord_get_guild_prune_count_params*)</tt>
+ *   - <tt> discord_get_guild_prune_count_params_init(struct discord_get_guild_prune_count_params *) </tt>
  * - Cleanup:
- *   - <tt>discord_get_guild_prune_count_params_cleanup(struct discord_get_guild_prune_count_params*)</tt>
- *   - <tt>discord_get_guild_prune_count_params_list_free(struct discord_get_guild_prune_count_params**)</tt>
+ *   - <tt> discord_get_guild_prune_count_params_cleanup(struct discord_get_guild_prune_count_params *) </tt>
+ *   - <tt> discord_get_guild_prune_count_params_list_free(struct discord_get_guild_prune_count_params **) </tt>
  * - JSON Decoder:
- *   - <tt>discord_get_guild_prune_count_params_from_json(char *rbuf, size_t len, struct discord_get_guild_prune_count_params**)</tt>
- *   - <tt>discord_get_guild_prune_count_params_list_from_json(char *rbuf, size_t len, struct discord_get_guild_prune_count_params***)</tt>
+ *   - <tt> discord_get_guild_prune_count_params_from_json(char *rbuf, size_t len, struct discord_get_guild_prune_count_params **) </tt>
+ *   - <tt> discord_get_guild_prune_count_params_list_from_json(char *rbuf, size_t len, struct discord_get_guild_prune_count_params ***) </tt>
  * - JSON Encoder:
- *   - <tt>discord_get_guild_prune_count_params_to_json(char *wbuf, size_t len, struct discord_get_guild_prune_count_params*)</tt>
- *   - <tt>discord_get_guild_prune_count_params_list_to_json(char *wbuf, size_t len, struct discord_get_guild_prune_count_params**)</tt>
+ *   - <tt> discord_get_guild_prune_count_params_to_json(char *wbuf, size_t len, struct discord_get_guild_prune_count_params *) </tt>
+ *   - <tt> discord_get_guild_prune_count_params_list_to_json(char *wbuf, size_t len, struct discord_get_guild_prune_count_params **) </tt>
  */
 struct discord_get_guild_prune_count_params {
   /* specs/discord/guild.endpoints-params.json:171:20
@@ -839,18 +839,18 @@ extern size_t discord_get_guild_prune_count_params_list_to_json(char *str, size_
 // defined at specs/discord/guild.endpoints-params.json:179:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#begin-guild-prune-json-params
-
+ *
  * - Initializer:
- *   - <tt>discord_begin_guild_prune_params_init(struct discord_begin_guild_prune_params*)</tt>
+ *   - <tt> discord_begin_guild_prune_params_init(struct discord_begin_guild_prune_params *) </tt>
  * - Cleanup:
- *   - <tt>discord_begin_guild_prune_params_cleanup(struct discord_begin_guild_prune_params*)</tt>
- *   - <tt>discord_begin_guild_prune_params_list_free(struct discord_begin_guild_prune_params**)</tt>
+ *   - <tt> discord_begin_guild_prune_params_cleanup(struct discord_begin_guild_prune_params *) </tt>
+ *   - <tt> discord_begin_guild_prune_params_list_free(struct discord_begin_guild_prune_params **) </tt>
  * - JSON Decoder:
- *   - <tt>discord_begin_guild_prune_params_from_json(char *rbuf, size_t len, struct discord_begin_guild_prune_params**)</tt>
- *   - <tt>discord_begin_guild_prune_params_list_from_json(char *rbuf, size_t len, struct discord_begin_guild_prune_params***)</tt>
+ *   - <tt> discord_begin_guild_prune_params_from_json(char *rbuf, size_t len, struct discord_begin_guild_prune_params **) </tt>
+ *   - <tt> discord_begin_guild_prune_params_list_from_json(char *rbuf, size_t len, struct discord_begin_guild_prune_params ***) </tt>
  * - JSON Encoder:
- *   - <tt>discord_begin_guild_prune_params_to_json(char *wbuf, size_t len, struct discord_begin_guild_prune_params*)</tt>
- *   - <tt>discord_begin_guild_prune_params_list_to_json(char *wbuf, size_t len, struct discord_begin_guild_prune_params**)</tt>
+ *   - <tt> discord_begin_guild_prune_params_to_json(char *wbuf, size_t len, struct discord_begin_guild_prune_params *) </tt>
+ *   - <tt> discord_begin_guild_prune_params_list_to_json(char *wbuf, size_t len, struct discord_begin_guild_prune_params **) </tt>
  */
 struct discord_begin_guild_prune_params {
   /* specs/discord/guild.endpoints-params.json:182:20
