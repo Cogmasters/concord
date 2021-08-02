@@ -1,27 +1,32 @@
 {
-  "title": "TITLE OF EMBED",
-  "description": "DESCRIPTION OF EMBED",
-  "url": "https://discord.com/developers/docs/resources/channel#embed-object-embed-structure",
+  "title": "Orca",
+  "description": "Multi-REST Api library",
+  "url": "https://github.com/cee-studio/orca",
   "color": 3447003,
   "footer": {
-    "text": "HERE WE HAVE A FOOTER TEXT",
-    "icon_url": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/489b579d-e5e4-4f99-9d62-ac459d1c1448/dccibj5-aa15e7b3-3eed-469c-b93a-5c572c72f842.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOiIsImlzcyI6InVybjphcHA6Iiwib2JqIjpbW3sicGF0aCI6IlwvZlwvNDg5YjU3OWQtZTVlNC00Zjk5LTlkNjItYWM0NTlkMWMxNDQ4XC9kY2NpYmo1LWFhMTVlN2IzLTNlZWQtNDY5Yy1iOTNhLTVjNTcyYzcyZjg0Mi5wbmcifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6ZmlsZS5kb3dubG9hZCJdfQ.GAj7N063VoDfaGou-OSQh01E1m9Uep8l37oe7SIJ-U8"
+    "text": "github.com/cee-studio/orca",
+    "icon_url": "https://raw.githubusercontent.com/cee-studio/orca-docs/master/docs/source/images/icon.svg"
   },
   "image": {
-    "url": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/489b579d-e5e4-4f99-9d62-ac459d1c1448/dccibj5-aa15e7b3-3eed-469c-b93a-5c572c72f842.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOiIsImlzcyI6InVybjphcHA6Iiwib2JqIjpbW3sicGF0aCI6IlwvZlwvNDg5YjU3OWQtZTVlNC00Zjk5LTlkNjItYWM0NTlkMWMxNDQ4XC9kY2NpYmo1LWFhMTVlN2IzLTNlZWQtNDY5Yy1iOTNhLTVjNTcyYzcyZjg0Mi5wbmcifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6ZmlsZS5kb3dubG9hZCJdfQ.GAj7N063VoDfaGou-OSQh01E1m9Uep8l37oe7SIJ-U8"
-  },
-  "provider": {
-    "name": "THE PROVIDER NAME",
-    "url": "https://discord.com/developers/docs/resources/channel#embed-object-embed-provider-structure"
+    "url": "https://github.com/cee-studio/orca-docs/blob/master/docs/source/images/social-preview.png?raw=true"
   },
   "author": {
-    "name": "THE AUTHOR NAME",
-    "value": "THE VALUE OF THE FIELD"
+    "name": "cee-studio",
+    "url": "https://github.com/cee-studio",
+    "icon_url": "https://cee.dev/static/images/cee.png"
   },
   "fields": [
-    {"name":"field1", "value":"VALUE OF FIELD1"},
-    {"name":"field2", "value":"VALUE OF FIELD2"},
-    {"name":"field3", "value":"VALUE OF FIELD3"},
-    {"name":"field4", "value":"VALUE OF FIELD4"}
+    {
+      "name":"Want to learn more?", 
+      "value":"Read our [documentation](https://cee-studio.github.io/orca/discord_api.html#c.discord_embed)!"
+    },
+    {
+      "name":"Having troubles troubleshooting?", 
+      "value":"Debug with [Saiph-C](https://www.cee.studio/)"
+    },
+    {
+      "name":"Looking for support?", 
+      "value":"Join our server [here](https://discord.gg/x4hhGQYu)!"
+    }
   ]
 }
