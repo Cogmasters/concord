@@ -5,6 +5,7 @@
   The following files contains the documentation used to generate this page: 
   - common/websockets.h
 
+====================
 WebSockets Reference
 ====================
 

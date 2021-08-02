@@ -2,8 +2,7 @@
    sphinx-quickstart on Sun Jun 20 10:59:18 2021.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
-..
-  Welcome to Orca
+..  Welcome to Orca
   ===============
 .. image:: /images/logo-dropshadow.svg
 
@@ -24,29 +23,15 @@ A Multi-REST API library that is easy to reason about, easy to debug, and easy t
 
   - Extensive assertion and logging facilities.
 
-Supported APIs
---------------
+Documentation
+-------------
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
 
-   Discord <discord_api>
+   apis/index
 
-- (TODO) GitHub
-
-- (TODO) Reddit
-
-- (TODO) Slack
-
-Interfacing with Orca
----------------------
-
-.. toctree::
-   :maxdepth: 1
-
-   WebSockets <websockets_api>
-
-- (TODO) User-Agent
+   common/index
 
 Help
 ----
