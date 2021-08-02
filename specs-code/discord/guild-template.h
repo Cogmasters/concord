@@ -19,7 +19,7 @@
  *   - <tt>discord_guild_template_from_json(char *rbuf, size_t len, struct discord_guild_template**)</tt>
  *   - <tt>discord_guild_template_list_from_json(char *rbuf, size_t len, struct discord_guild_template***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_guild_template_to_json(char *wbuf, size_t len, struct discord_guild_template *p)</tt>
+ *   - <tt>discord_guild_template_to_json(char *wbuf, size_t len, struct discord_guild_template*)</tt>
  *   - <tt>discord_guild_template_list_to_json(char *wbuf, size_t len, struct discord_guild_template**)</tt>
  */
 struct discord_guild_template {

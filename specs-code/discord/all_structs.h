@@ -18,7 +18,7 @@
  *   - <tt>discord_get_guild_audit_log_params_from_json(char *rbuf, size_t len, struct discord_get_guild_audit_log_params**)</tt>
  *   - <tt>discord_get_guild_audit_log_params_list_from_json(char *rbuf, size_t len, struct discord_get_guild_audit_log_params***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_get_guild_audit_log_params_to_json(char *wbuf, size_t len, struct discord_get_guild_audit_log_params *p)</tt>
+ *   - <tt>discord_get_guild_audit_log_params_to_json(char *wbuf, size_t len, struct discord_get_guild_audit_log_params*)</tt>
  *   - <tt>discord_get_guild_audit_log_params_list_to_json(char *wbuf, size_t len, struct discord_get_guild_audit_log_params**)</tt>
  */
 struct discord_get_guild_audit_log_params {
@@ -74,7 +74,7 @@ struct discord_get_guild_audit_log_params {
  *   - <tt>discord_audit_log_from_json(char *rbuf, size_t len, struct discord_audit_log**)</tt>
  *   - <tt>discord_audit_log_list_from_json(char *rbuf, size_t len, struct discord_audit_log***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_audit_log_to_json(char *wbuf, size_t len, struct discord_audit_log *p)</tt>
+ *   - <tt>discord_audit_log_to_json(char *wbuf, size_t len, struct discord_audit_log*)</tt>
  *   - <tt>discord_audit_log_list_to_json(char *wbuf, size_t len, struct discord_audit_log**)</tt>
  */
 struct discord_audit_log {
@@ -126,7 +126,7 @@ struct discord_audit_log {
  *   - <tt>discord_audit_log_entry_from_json(char *rbuf, size_t len, struct discord_audit_log_entry**)</tt>
  *   - <tt>discord_audit_log_entry_list_from_json(char *rbuf, size_t len, struct discord_audit_log_entry***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_audit_log_entry_to_json(char *wbuf, size_t len, struct discord_audit_log_entry *p)</tt>
+ *   - <tt>discord_audit_log_entry_to_json(char *wbuf, size_t len, struct discord_audit_log_entry*)</tt>
  *   - <tt>discord_audit_log_entry_list_to_json(char *wbuf, size_t len, struct discord_audit_log_entry**)</tt>
  */
 struct discord_audit_log_entry {
@@ -188,7 +188,7 @@ struct discord_audit_log_entry {
  *   - <tt>discord_audit_log_entry_optional_info_from_json(char *rbuf, size_t len, struct discord_audit_log_entry_optional_info**)</tt>
  *   - <tt>discord_audit_log_entry_optional_info_list_from_json(char *rbuf, size_t len, struct discord_audit_log_entry_optional_info***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_audit_log_entry_optional_info_to_json(char *wbuf, size_t len, struct discord_audit_log_entry_optional_info *p)</tt>
+ *   - <tt>discord_audit_log_entry_optional_info_to_json(char *wbuf, size_t len, struct discord_audit_log_entry_optional_info*)</tt>
  *   - <tt>discord_audit_log_entry_optional_info_list_to_json(char *wbuf, size_t len, struct discord_audit_log_entry_optional_info**)</tt>
  */
 struct discord_audit_log_entry_optional_info {
@@ -254,7 +254,7 @@ struct discord_audit_log_entry_optional_info {
  *   - <tt>discord_audit_log_change_from_json(char *rbuf, size_t len, struct discord_audit_log_change**)</tt>
  *   - <tt>discord_audit_log_change_list_from_json(char *rbuf, size_t len, struct discord_audit_log_change***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_audit_log_change_to_json(char *wbuf, size_t len, struct discord_audit_log_change *p)</tt>
+ *   - <tt>discord_audit_log_change_to_json(char *wbuf, size_t len, struct discord_audit_log_change*)</tt>
  *   - <tt>discord_audit_log_change_list_to_json(char *wbuf, size_t len, struct discord_audit_log_change**)</tt>
  */
 struct discord_audit_log_change {
@@ -300,7 +300,7 @@ struct discord_audit_log_change {
  *   - <tt>discord_audit_log_change_key_from_json(char *rbuf, size_t len, struct discord_audit_log_change_key**)</tt>
  *   - <tt>discord_audit_log_change_key_list_from_json(char *rbuf, size_t len, struct discord_audit_log_change_key***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_audit_log_change_key_to_json(char *wbuf, size_t len, struct discord_audit_log_change_key *p)</tt>
+ *   - <tt>discord_audit_log_change_key_to_json(char *wbuf, size_t len, struct discord_audit_log_change_key*)</tt>
  *   - <tt>discord_audit_log_change_key_list_to_json(char *wbuf, size_t len, struct discord_audit_log_change_key**)</tt>
  */
 struct discord_audit_log_change_key {
@@ -562,7 +562,7 @@ struct discord_audit_log_change_key {
  *   - <tt>discord_modify_channel_params_from_json(char *rbuf, size_t len, struct discord_modify_channel_params**)</tt>
  *   - <tt>discord_modify_channel_params_list_from_json(char *rbuf, size_t len, struct discord_modify_channel_params***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_modify_channel_params_to_json(char *wbuf, size_t len, struct discord_modify_channel_params *p)</tt>
+ *   - <tt>discord_modify_channel_params_to_json(char *wbuf, size_t len, struct discord_modify_channel_params*)</tt>
  *   - <tt>discord_modify_channel_params_list_to_json(char *wbuf, size_t len, struct discord_modify_channel_params**)</tt>
  */
 struct discord_modify_channel_params {
@@ -660,7 +660,7 @@ struct discord_modify_channel_params {
  *   - <tt>discord_get_reactions_params_from_json(char *rbuf, size_t len, struct discord_get_reactions_params**)</tt>
  *   - <tt>discord_get_reactions_params_list_from_json(char *rbuf, size_t len, struct discord_get_reactions_params***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_get_reactions_params_to_json(char *wbuf, size_t len, struct discord_get_reactions_params *p)</tt>
+ *   - <tt>discord_get_reactions_params_to_json(char *wbuf, size_t len, struct discord_get_reactions_params*)</tt>
  *   - <tt>discord_get_reactions_params_list_to_json(char *wbuf, size_t len, struct discord_get_reactions_params**)</tt>
  */
 struct discord_get_reactions_params {
@@ -702,7 +702,7 @@ struct discord_get_reactions_params {
  *   - <tt>discord_edit_channel_permissions_params_from_json(char *rbuf, size_t len, struct discord_edit_channel_permissions_params**)</tt>
  *   - <tt>discord_edit_channel_permissions_params_list_from_json(char *rbuf, size_t len, struct discord_edit_channel_permissions_params***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_edit_channel_permissions_params_to_json(char *wbuf, size_t len, struct discord_edit_channel_permissions_params *p)</tt>
+ *   - <tt>discord_edit_channel_permissions_params_to_json(char *wbuf, size_t len, struct discord_edit_channel_permissions_params*)</tt>
  *   - <tt>discord_edit_channel_permissions_params_list_to_json(char *wbuf, size_t len, struct discord_edit_channel_permissions_params**)</tt>
  */
 struct discord_edit_channel_permissions_params {
@@ -748,7 +748,7 @@ struct discord_edit_channel_permissions_params {
  *   - <tt>discord_follow_news_channel_params_from_json(char *rbuf, size_t len, struct discord_follow_news_channel_params**)</tt>
  *   - <tt>discord_follow_news_channel_params_list_from_json(char *rbuf, size_t len, struct discord_follow_news_channel_params***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_follow_news_channel_params_to_json(char *wbuf, size_t len, struct discord_follow_news_channel_params *p)</tt>
+ *   - <tt>discord_follow_news_channel_params_to_json(char *wbuf, size_t len, struct discord_follow_news_channel_params*)</tt>
  *   - <tt>discord_follow_news_channel_params_list_to_json(char *wbuf, size_t len, struct discord_follow_news_channel_params**)</tt>
  */
 struct discord_follow_news_channel_params {
@@ -786,7 +786,7 @@ struct discord_follow_news_channel_params {
  *   - <tt>discord_create_channel_invite_params_from_json(char *rbuf, size_t len, struct discord_create_channel_invite_params**)</tt>
  *   - <tt>discord_create_channel_invite_params_list_from_json(char *rbuf, size_t len, struct discord_create_channel_invite_params***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_create_channel_invite_params_to_json(char *wbuf, size_t len, struct discord_create_channel_invite_params *p)</tt>
+ *   - <tt>discord_create_channel_invite_params_to_json(char *wbuf, size_t len, struct discord_create_channel_invite_params*)</tt>
  *   - <tt>discord_create_channel_invite_params_list_to_json(char *wbuf, size_t len, struct discord_create_channel_invite_params**)</tt>
  */
 struct discord_create_channel_invite_params {
@@ -848,7 +848,7 @@ struct discord_create_channel_invite_params {
  *   - <tt>discord_group_dm_add_recipient_params_from_json(char *rbuf, size_t len, struct discord_group_dm_add_recipient_params**)</tt>
  *   - <tt>discord_group_dm_add_recipient_params_list_from_json(char *rbuf, size_t len, struct discord_group_dm_add_recipient_params***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_group_dm_add_recipient_params_to_json(char *wbuf, size_t len, struct discord_group_dm_add_recipient_params *p)</tt>
+ *   - <tt>discord_group_dm_add_recipient_params_to_json(char *wbuf, size_t len, struct discord_group_dm_add_recipient_params*)</tt>
  *   - <tt>discord_group_dm_add_recipient_params_list_to_json(char *wbuf, size_t len, struct discord_group_dm_add_recipient_params**)</tt>
  */
 struct discord_group_dm_add_recipient_params {
@@ -890,7 +890,7 @@ struct discord_group_dm_add_recipient_params {
  *   - <tt>discord_start_thread_with_message_params_from_json(char *rbuf, size_t len, struct discord_start_thread_with_message_params**)</tt>
  *   - <tt>discord_start_thread_with_message_params_list_from_json(char *rbuf, size_t len, struct discord_start_thread_with_message_params***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_start_thread_with_message_params_to_json(char *wbuf, size_t len, struct discord_start_thread_with_message_params *p)</tt>
+ *   - <tt>discord_start_thread_with_message_params_to_json(char *wbuf, size_t len, struct discord_start_thread_with_message_params*)</tt>
  *   - <tt>discord_start_thread_with_message_params_list_to_json(char *wbuf, size_t len, struct discord_start_thread_with_message_params**)</tt>
  */
 struct discord_start_thread_with_message_params {
@@ -932,7 +932,7 @@ struct discord_start_thread_with_message_params {
  *   - <tt>discord_start_thread_without_message_params_from_json(char *rbuf, size_t len, struct discord_start_thread_without_message_params**)</tt>
  *   - <tt>discord_start_thread_without_message_params_list_from_json(char *rbuf, size_t len, struct discord_start_thread_without_message_params***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_start_thread_without_message_params_to_json(char *wbuf, size_t len, struct discord_start_thread_without_message_params *p)</tt>
+ *   - <tt>discord_start_thread_without_message_params_to_json(char *wbuf, size_t len, struct discord_start_thread_without_message_params*)</tt>
  *   - <tt>discord_start_thread_without_message_params_list_to_json(char *wbuf, size_t len, struct discord_start_thread_without_message_params**)</tt>
  */
 struct discord_start_thread_without_message_params {
@@ -978,7 +978,7 @@ struct discord_start_thread_without_message_params {
  *   - <tt>discord_thread_response_body_from_json(char *rbuf, size_t len, struct discord_thread_response_body**)</tt>
  *   - <tt>discord_thread_response_body_list_from_json(char *rbuf, size_t len, struct discord_thread_response_body***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_thread_response_body_to_json(char *wbuf, size_t len, struct discord_thread_response_body *p)</tt>
+ *   - <tt>discord_thread_response_body_to_json(char *wbuf, size_t len, struct discord_thread_response_body*)</tt>
  *   - <tt>discord_thread_response_body_list_to_json(char *wbuf, size_t len, struct discord_thread_response_body**)</tt>
  */
 struct discord_thread_response_body {
@@ -1032,7 +1032,7 @@ struct discord_thread_response_body {
  *   - <tt>discord_channel_from_json(char *rbuf, size_t len, struct discord_channel**)</tt>
  *   - <tt>discord_channel_list_from_json(char *rbuf, size_t len, struct discord_channel***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_channel_to_json(char *wbuf, size_t len, struct discord_channel *p)</tt>
+ *   - <tt>discord_channel_to_json(char *wbuf, size_t len, struct discord_channel*)</tt>
  *   - <tt>discord_channel_list_to_json(char *wbuf, size_t len, struct discord_channel**)</tt>
  */
 struct discord_channel {
@@ -1157,7 +1157,7 @@ struct discord_channel {
  *   - <tt>discord_message_sticker_from_json(char *rbuf, size_t len, struct discord_message_sticker**)</tt>
  *   - <tt>discord_message_sticker_list_from_json(char *rbuf, size_t len, struct discord_message_sticker***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_message_sticker_to_json(char *wbuf, size_t len, struct discord_message_sticker *p)</tt>
+ *   - <tt>discord_message_sticker_to_json(char *wbuf, size_t len, struct discord_message_sticker*)</tt>
  *   - <tt>discord_message_sticker_list_to_json(char *wbuf, size_t len, struct discord_message_sticker**)</tt>
  */
 struct discord_message_sticker {
@@ -1226,7 +1226,7 @@ struct discord_message_sticker {
  *   - <tt>discord_message_reference_from_json(char *rbuf, size_t len, struct discord_message_reference**)</tt>
  *   - <tt>discord_message_reference_list_from_json(char *rbuf, size_t len, struct discord_message_reference***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_message_reference_to_json(char *wbuf, size_t len, struct discord_message_reference *p)</tt>
+ *   - <tt>discord_message_reference_to_json(char *wbuf, size_t len, struct discord_message_reference*)</tt>
  *   - <tt>discord_message_reference_list_to_json(char *wbuf, size_t len, struct discord_message_reference**)</tt>
  */
 struct discord_message_reference {
@@ -1276,7 +1276,7 @@ struct discord_message_reference {
  *   - <tt>discord_message_application_from_json(char *rbuf, size_t len, struct discord_message_application**)</tt>
  *   - <tt>discord_message_application_list_from_json(char *rbuf, size_t len, struct discord_message_application***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_message_application_to_json(char *wbuf, size_t len, struct discord_message_application *p)</tt>
+ *   - <tt>discord_message_application_to_json(char *wbuf, size_t len, struct discord_message_application*)</tt>
  *   - <tt>discord_message_application_list_to_json(char *wbuf, size_t len, struct discord_message_application**)</tt>
  */
 struct discord_message_application {
@@ -1332,7 +1332,7 @@ struct discord_message_application {
  *   - <tt>discord_message_activity_from_json(char *rbuf, size_t len, struct discord_message_activity**)</tt>
  *   - <tt>discord_message_activity_list_from_json(char *rbuf, size_t len, struct discord_message_activity***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_message_activity_to_json(char *wbuf, size_t len, struct discord_message_activity *p)</tt>
+ *   - <tt>discord_message_activity_to_json(char *wbuf, size_t len, struct discord_message_activity*)</tt>
  *   - <tt>discord_message_activity_list_to_json(char *wbuf, size_t len, struct discord_message_activity**)</tt>
  */
 struct discord_message_activity {
@@ -1377,7 +1377,7 @@ struct discord_message_activity {
  *   - <tt>discord_message_from_json(char *rbuf, size_t len, struct discord_message**)</tt>
  *   - <tt>discord_message_list_from_json(char *rbuf, size_t len, struct discord_message***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_message_to_json(char *wbuf, size_t len, struct discord_message *p)</tt>
+ *   - <tt>discord_message_to_json(char *wbuf, size_t len, struct discord_message*)</tt>
  *   - <tt>discord_message_list_to_json(char *wbuf, size_t len, struct discord_message**)</tt>
  */
 struct discord_message {
@@ -1531,7 +1531,7 @@ struct discord_message {
  *   - <tt>discord_channel_followed_channel_from_json(char *rbuf, size_t len, struct discord_channel_followed_channel**)</tt>
  *   - <tt>discord_channel_followed_channel_list_from_json(char *rbuf, size_t len, struct discord_channel_followed_channel***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_channel_followed_channel_to_json(char *wbuf, size_t len, struct discord_channel_followed_channel *p)</tt>
+ *   - <tt>discord_channel_followed_channel_to_json(char *wbuf, size_t len, struct discord_channel_followed_channel*)</tt>
  *   - <tt>discord_channel_followed_channel_list_to_json(char *wbuf, size_t len, struct discord_channel_followed_channel**)</tt>
  */
 struct discord_channel_followed_channel {
@@ -1573,7 +1573,7 @@ struct discord_channel_followed_channel {
  *   - <tt>discord_channel_reaction_from_json(char *rbuf, size_t len, struct discord_channel_reaction**)</tt>
  *   - <tt>discord_channel_reaction_list_from_json(char *rbuf, size_t len, struct discord_channel_reaction***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_channel_reaction_to_json(char *wbuf, size_t len, struct discord_channel_reaction *p)</tt>
+ *   - <tt>discord_channel_reaction_to_json(char *wbuf, size_t len, struct discord_channel_reaction*)</tt>
  *   - <tt>discord_channel_reaction_list_to_json(char *wbuf, size_t len, struct discord_channel_reaction**)</tt>
  */
 struct discord_channel_reaction {
@@ -1617,7 +1617,7 @@ struct discord_channel_reaction {
  *   - <tt>discord_channel_overwrite_from_json(char *rbuf, size_t len, struct discord_channel_overwrite**)</tt>
  *   - <tt>discord_channel_overwrite_list_from_json(char *rbuf, size_t len, struct discord_channel_overwrite***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_channel_overwrite_to_json(char *wbuf, size_t len, struct discord_channel_overwrite *p)</tt>
+ *   - <tt>discord_channel_overwrite_to_json(char *wbuf, size_t len, struct discord_channel_overwrite*)</tt>
  *   - <tt>discord_channel_overwrite_list_to_json(char *wbuf, size_t len, struct discord_channel_overwrite**)</tt>
  */
 struct discord_channel_overwrite {
@@ -1669,7 +1669,7 @@ struct discord_channel_overwrite {
  *   - <tt>discord_thread_metadata_from_json(char *rbuf, size_t len, struct discord_thread_metadata**)</tt>
  *   - <tt>discord_thread_metadata_list_from_json(char *rbuf, size_t len, struct discord_thread_metadata***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_thread_metadata_to_json(char *wbuf, size_t len, struct discord_thread_metadata *p)</tt>
+ *   - <tt>discord_thread_metadata_to_json(char *wbuf, size_t len, struct discord_thread_metadata*)</tt>
  *   - <tt>discord_thread_metadata_list_to_json(char *wbuf, size_t len, struct discord_thread_metadata**)</tt>
  */
 struct discord_thread_metadata {
@@ -1723,7 +1723,7 @@ struct discord_thread_metadata {
  *   - <tt>discord_thread_member_from_json(char *rbuf, size_t len, struct discord_thread_member**)</tt>
  *   - <tt>discord_thread_member_list_from_json(char *rbuf, size_t len, struct discord_thread_member***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_thread_member_to_json(char *wbuf, size_t len, struct discord_thread_member *p)</tt>
+ *   - <tt>discord_thread_member_to_json(char *wbuf, size_t len, struct discord_thread_member*)</tt>
  *   - <tt>discord_thread_member_list_to_json(char *wbuf, size_t len, struct discord_thread_member**)</tt>
  */
 struct discord_thread_member {
@@ -1773,7 +1773,7 @@ struct discord_thread_member {
  *   - <tt>discord_channel_attachment_from_json(char *rbuf, size_t len, struct discord_channel_attachment**)</tt>
  *   - <tt>discord_channel_attachment_list_from_json(char *rbuf, size_t len, struct discord_channel_attachment***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_channel_attachment_to_json(char *wbuf, size_t len, struct discord_channel_attachment *p)</tt>
+ *   - <tt>discord_channel_attachment_to_json(char *wbuf, size_t len, struct discord_channel_attachment*)</tt>
  *   - <tt>discord_channel_attachment_list_to_json(char *wbuf, size_t len, struct discord_channel_attachment**)</tt>
  */
 struct discord_channel_attachment {
@@ -1835,7 +1835,7 @@ struct discord_channel_attachment {
  *   - <tt>discord_channel_mention_from_json(char *rbuf, size_t len, struct discord_channel_mention**)</tt>
  *   - <tt>discord_channel_mention_list_from_json(char *rbuf, size_t len, struct discord_channel_mention***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_channel_mention_to_json(char *wbuf, size_t len, struct discord_channel_mention *p)</tt>
+ *   - <tt>discord_channel_mention_to_json(char *wbuf, size_t len, struct discord_channel_mention*)</tt>
  *   - <tt>discord_channel_mention_list_to_json(char *wbuf, size_t len, struct discord_channel_mention**)</tt>
  */
 struct discord_channel_mention {
@@ -1885,7 +1885,7 @@ struct discord_channel_mention {
  *   - <tt>discord_channel_allowed_mentions_from_json(char *rbuf, size_t len, struct discord_channel_allowed_mentions**)</tt>
  *   - <tt>discord_channel_allowed_mentions_list_from_json(char *rbuf, size_t len, struct discord_channel_allowed_mentions***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_channel_allowed_mentions_to_json(char *wbuf, size_t len, struct discord_channel_allowed_mentions *p)</tt>
+ *   - <tt>discord_channel_allowed_mentions_to_json(char *wbuf, size_t len, struct discord_channel_allowed_mentions*)</tt>
  *   - <tt>discord_channel_allowed_mentions_list_to_json(char *wbuf, size_t len, struct discord_channel_allowed_mentions**)</tt>
  */
 struct discord_channel_allowed_mentions {
@@ -1935,7 +1935,7 @@ struct discord_channel_allowed_mentions {
  *   - <tt>discord_embed_from_json(char *rbuf, size_t len, struct discord_embed**)</tt>
  *   - <tt>discord_embed_list_from_json(char *rbuf, size_t len, struct discord_embed***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_embed_to_json(char *wbuf, size_t len, struct discord_embed *p)</tt>
+ *   - <tt>discord_embed_to_json(char *wbuf, size_t len, struct discord_embed*)</tt>
  *   - <tt>discord_embed_list_to_json(char *wbuf, size_t len, struct discord_embed**)</tt>
  */
 struct discord_embed {
@@ -2021,7 +2021,7 @@ struct discord_embed {
  *   - <tt>discord_embed_thumbnail_from_json(char *rbuf, size_t len, struct discord_embed_thumbnail**)</tt>
  *   - <tt>discord_embed_thumbnail_list_from_json(char *rbuf, size_t len, struct discord_embed_thumbnail***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_embed_thumbnail_to_json(char *wbuf, size_t len, struct discord_embed_thumbnail *p)</tt>
+ *   - <tt>discord_embed_thumbnail_to_json(char *wbuf, size_t len, struct discord_embed_thumbnail*)</tt>
  *   - <tt>discord_embed_thumbnail_list_to_json(char *wbuf, size_t len, struct discord_embed_thumbnail**)</tt>
  */
 struct discord_embed_thumbnail {
@@ -2071,7 +2071,7 @@ struct discord_embed_thumbnail {
  *   - <tt>discord_embed_video_from_json(char *rbuf, size_t len, struct discord_embed_video**)</tt>
  *   - <tt>discord_embed_video_list_from_json(char *rbuf, size_t len, struct discord_embed_video***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_embed_video_to_json(char *wbuf, size_t len, struct discord_embed_video *p)</tt>
+ *   - <tt>discord_embed_video_to_json(char *wbuf, size_t len, struct discord_embed_video*)</tt>
  *   - <tt>discord_embed_video_list_to_json(char *wbuf, size_t len, struct discord_embed_video**)</tt>
  */
 struct discord_embed_video {
@@ -2121,7 +2121,7 @@ struct discord_embed_video {
  *   - <tt>discord_embed_image_from_json(char *rbuf, size_t len, struct discord_embed_image**)</tt>
  *   - <tt>discord_embed_image_list_from_json(char *rbuf, size_t len, struct discord_embed_image***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_embed_image_to_json(char *wbuf, size_t len, struct discord_embed_image *p)</tt>
+ *   - <tt>discord_embed_image_to_json(char *wbuf, size_t len, struct discord_embed_image*)</tt>
  *   - <tt>discord_embed_image_list_to_json(char *wbuf, size_t len, struct discord_embed_image**)</tt>
  */
 struct discord_embed_image {
@@ -2171,7 +2171,7 @@ struct discord_embed_image {
  *   - <tt>discord_embed_provider_from_json(char *rbuf, size_t len, struct discord_embed_provider**)</tt>
  *   - <tt>discord_embed_provider_list_from_json(char *rbuf, size_t len, struct discord_embed_provider***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_embed_provider_to_json(char *wbuf, size_t len, struct discord_embed_provider *p)</tt>
+ *   - <tt>discord_embed_provider_to_json(char *wbuf, size_t len, struct discord_embed_provider*)</tt>
  *   - <tt>discord_embed_provider_list_to_json(char *wbuf, size_t len, struct discord_embed_provider**)</tt>
  */
 struct discord_embed_provider {
@@ -2213,7 +2213,7 @@ struct discord_embed_provider {
  *   - <tt>discord_embed_author_from_json(char *rbuf, size_t len, struct discord_embed_author**)</tt>
  *   - <tt>discord_embed_author_list_from_json(char *rbuf, size_t len, struct discord_embed_author***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_embed_author_to_json(char *wbuf, size_t len, struct discord_embed_author *p)</tt>
+ *   - <tt>discord_embed_author_to_json(char *wbuf, size_t len, struct discord_embed_author*)</tt>
  *   - <tt>discord_embed_author_list_to_json(char *wbuf, size_t len, struct discord_embed_author**)</tt>
  */
 struct discord_embed_author {
@@ -2263,7 +2263,7 @@ struct discord_embed_author {
  *   - <tt>discord_embed_footer_from_json(char *rbuf, size_t len, struct discord_embed_footer**)</tt>
  *   - <tt>discord_embed_footer_list_from_json(char *rbuf, size_t len, struct discord_embed_footer***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_embed_footer_to_json(char *wbuf, size_t len, struct discord_embed_footer *p)</tt>
+ *   - <tt>discord_embed_footer_to_json(char *wbuf, size_t len, struct discord_embed_footer*)</tt>
  *   - <tt>discord_embed_footer_list_to_json(char *wbuf, size_t len, struct discord_embed_footer**)</tt>
  */
 struct discord_embed_footer {
@@ -2309,7 +2309,7 @@ struct discord_embed_footer {
  *   - <tt>discord_embed_field_from_json(char *rbuf, size_t len, struct discord_embed_field**)</tt>
  *   - <tt>discord_embed_field_list_from_json(char *rbuf, size_t len, struct discord_embed_field***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_embed_field_to_json(char *wbuf, size_t len, struct discord_embed_field *p)</tt>
+ *   - <tt>discord_embed_field_to_json(char *wbuf, size_t len, struct discord_embed_field*)</tt>
  *   - <tt>discord_embed_field_list_to_json(char *wbuf, size_t len, struct discord_embed_field**)</tt>
  */
 struct discord_embed_field {
@@ -2361,7 +2361,7 @@ struct discord_embed_field {
  *   - <tt>discord_create_guild_emoji_params_from_json(char *rbuf, size_t len, struct discord_create_guild_emoji_params**)</tt>
  *   - <tt>discord_create_guild_emoji_params_list_from_json(char *rbuf, size_t len, struct discord_create_guild_emoji_params***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_create_guild_emoji_params_to_json(char *wbuf, size_t len, struct discord_create_guild_emoji_params *p)</tt>
+ *   - <tt>discord_create_guild_emoji_params_to_json(char *wbuf, size_t len, struct discord_create_guild_emoji_params*)</tt>
  *   - <tt>discord_create_guild_emoji_params_list_to_json(char *wbuf, size_t len, struct discord_create_guild_emoji_params**)</tt>
  */
 struct discord_create_guild_emoji_params {
@@ -2407,7 +2407,7 @@ struct discord_create_guild_emoji_params {
  *   - <tt>discord_modify_guild_emoji_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_emoji_params**)</tt>
  *   - <tt>discord_modify_guild_emoji_params_list_from_json(char *rbuf, size_t len, struct discord_modify_guild_emoji_params***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_modify_guild_emoji_params_to_json(char *wbuf, size_t len, struct discord_modify_guild_emoji_params *p)</tt>
+ *   - <tt>discord_modify_guild_emoji_params_to_json(char *wbuf, size_t len, struct discord_modify_guild_emoji_params*)</tt>
  *   - <tt>discord_modify_guild_emoji_params_list_to_json(char *wbuf, size_t len, struct discord_modify_guild_emoji_params**)</tt>
  */
 struct discord_modify_guild_emoji_params {
@@ -2455,7 +2455,7 @@ struct discord_modify_guild_emoji_params {
  *   - <tt>discord_emoji_from_json(char *rbuf, size_t len, struct discord_emoji**)</tt>
  *   - <tt>discord_emoji_list_from_json(char *rbuf, size_t len, struct discord_emoji***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_emoji_to_json(char *wbuf, size_t len, struct discord_emoji *p)</tt>
+ *   - <tt>discord_emoji_to_json(char *wbuf, size_t len, struct discord_emoji*)</tt>
  *   - <tt>discord_emoji_list_to_json(char *wbuf, size_t len, struct discord_emoji**)</tt>
  */
 struct discord_emoji {
@@ -2536,7 +2536,7 @@ struct discord_emoji {
  *   - <tt>discord_gateway_identify_from_json(char *rbuf, size_t len, struct discord_gateway_identify**)</tt>
  *   - <tt>discord_gateway_identify_list_from_json(char *rbuf, size_t len, struct discord_gateway_identify***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_gateway_identify_to_json(char *wbuf, size_t len, struct discord_gateway_identify *p)</tt>
+ *   - <tt>discord_gateway_identify_to_json(char *wbuf, size_t len, struct discord_gateway_identify*)</tt>
  *   - <tt>discord_gateway_identify_list_to_json(char *wbuf, size_t len, struct discord_gateway_identify**)</tt>
  */
 struct discord_gateway_identify {
@@ -2602,7 +2602,7 @@ struct discord_gateway_identify {
  *   - <tt>discord_gateway_status_update_from_json(char *rbuf, size_t len, struct discord_gateway_status_update**)</tt>
  *   - <tt>discord_gateway_status_update_list_from_json(char *rbuf, size_t len, struct discord_gateway_status_update***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_gateway_status_update_to_json(char *wbuf, size_t len, struct discord_gateway_status_update *p)</tt>
+ *   - <tt>discord_gateway_status_update_to_json(char *wbuf, size_t len, struct discord_gateway_status_update*)</tt>
  *   - <tt>discord_gateway_status_update_list_to_json(char *wbuf, size_t len, struct discord_gateway_status_update**)</tt>
  */
 struct discord_gateway_status_update {
@@ -2654,7 +2654,7 @@ struct discord_gateway_status_update {
  *   - <tt>discord_gateway_identify_connection_from_json(char *rbuf, size_t len, struct discord_gateway_identify_connection**)</tt>
  *   - <tt>discord_gateway_identify_connection_list_from_json(char *rbuf, size_t len, struct discord_gateway_identify_connection***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_gateway_identify_connection_to_json(char *wbuf, size_t len, struct discord_gateway_identify_connection *p)</tt>
+ *   - <tt>discord_gateway_identify_connection_to_json(char *wbuf, size_t len, struct discord_gateway_identify_connection*)</tt>
  *   - <tt>discord_gateway_identify_connection_list_to_json(char *wbuf, size_t len, struct discord_gateway_identify_connection**)</tt>
  */
 struct discord_gateway_identify_connection {
@@ -2700,7 +2700,7 @@ struct discord_gateway_identify_connection {
  *   - <tt>discord_gateway_activity_from_json(char *rbuf, size_t len, struct discord_gateway_activity**)</tt>
  *   - <tt>discord_gateway_activity_list_from_json(char *rbuf, size_t len, struct discord_gateway_activity***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_gateway_activity_to_json(char *wbuf, size_t len, struct discord_gateway_activity *p)</tt>
+ *   - <tt>discord_gateway_activity_to_json(char *wbuf, size_t len, struct discord_gateway_activity*)</tt>
  *   - <tt>discord_gateway_activity_list_to_json(char *wbuf, size_t len, struct discord_gateway_activity**)</tt>
  */
 struct discord_gateway_activity {
@@ -2780,7 +2780,7 @@ struct discord_gateway_activity {
  *   - <tt>discord_create_guild_from_guild_template_params_from_json(char *rbuf, size_t len, struct discord_create_guild_from_guild_template_params**)</tt>
  *   - <tt>discord_create_guild_from_guild_template_params_list_from_json(char *rbuf, size_t len, struct discord_create_guild_from_guild_template_params***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_create_guild_from_guild_template_params_to_json(char *wbuf, size_t len, struct discord_create_guild_from_guild_template_params *p)</tt>
+ *   - <tt>discord_create_guild_from_guild_template_params_to_json(char *wbuf, size_t len, struct discord_create_guild_from_guild_template_params*)</tt>
  *   - <tt>discord_create_guild_from_guild_template_params_list_to_json(char *wbuf, size_t len, struct discord_create_guild_from_guild_template_params**)</tt>
  */
 struct discord_create_guild_from_guild_template_params {
@@ -2822,7 +2822,7 @@ struct discord_create_guild_from_guild_template_params {
  *   - <tt>discord_create_guild_template_params_from_json(char *rbuf, size_t len, struct discord_create_guild_template_params**)</tt>
  *   - <tt>discord_create_guild_template_params_list_from_json(char *rbuf, size_t len, struct discord_create_guild_template_params***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_create_guild_template_params_to_json(char *wbuf, size_t len, struct discord_create_guild_template_params *p)</tt>
+ *   - <tt>discord_create_guild_template_params_to_json(char *wbuf, size_t len, struct discord_create_guild_template_params*)</tt>
  *   - <tt>discord_create_guild_template_params_list_to_json(char *wbuf, size_t len, struct discord_create_guild_template_params**)</tt>
  */
 struct discord_create_guild_template_params {
@@ -2864,7 +2864,7 @@ struct discord_create_guild_template_params {
  *   - <tt>discord_modify_guild_template_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_template_params**)</tt>
  *   - <tt>discord_modify_guild_template_params_list_from_json(char *rbuf, size_t len, struct discord_modify_guild_template_params***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_modify_guild_template_params_to_json(char *wbuf, size_t len, struct discord_modify_guild_template_params *p)</tt>
+ *   - <tt>discord_modify_guild_template_params_to_json(char *wbuf, size_t len, struct discord_modify_guild_template_params*)</tt>
  *   - <tt>discord_modify_guild_template_params_list_to_json(char *wbuf, size_t len, struct discord_modify_guild_template_params**)</tt>
  */
 struct discord_modify_guild_template_params {
@@ -2912,7 +2912,7 @@ struct discord_modify_guild_template_params {
  *   - <tt>discord_guild_template_from_json(char *rbuf, size_t len, struct discord_guild_template**)</tt>
  *   - <tt>discord_guild_template_list_from_json(char *rbuf, size_t len, struct discord_guild_template***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_guild_template_to_json(char *wbuf, size_t len, struct discord_guild_template *p)</tt>
+ *   - <tt>discord_guild_template_to_json(char *wbuf, size_t len, struct discord_guild_template*)</tt>
  *   - <tt>discord_guild_template_list_to_json(char *wbuf, size_t len, struct discord_guild_template**)</tt>
  */
 struct discord_guild_template {
@@ -2996,7 +2996,7 @@ struct discord_guild_template {
  *   - <tt>discord_create_guild_params_from_json(char *rbuf, size_t len, struct discord_create_guild_params**)</tt>
  *   - <tt>discord_create_guild_params_list_from_json(char *rbuf, size_t len, struct discord_create_guild_params***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_create_guild_params_to_json(char *wbuf, size_t len, struct discord_create_guild_params *p)</tt>
+ *   - <tt>discord_create_guild_params_to_json(char *wbuf, size_t len, struct discord_create_guild_params*)</tt>
  *   - <tt>discord_create_guild_params_list_to_json(char *wbuf, size_t len, struct discord_create_guild_params**)</tt>
  */
 struct discord_create_guild_params {
@@ -3074,7 +3074,7 @@ struct discord_create_guild_params {
  *   - <tt>discord_modify_guild_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_params**)</tt>
  *   - <tt>discord_modify_guild_params_list_from_json(char *rbuf, size_t len, struct discord_modify_guild_params***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_modify_guild_params_to_json(char *wbuf, size_t len, struct discord_modify_guild_params *p)</tt>
+ *   - <tt>discord_modify_guild_params_to_json(char *wbuf, size_t len, struct discord_modify_guild_params*)</tt>
  *   - <tt>discord_modify_guild_params_list_to_json(char *wbuf, size_t len, struct discord_modify_guild_params**)</tt>
  */
 struct discord_modify_guild_params {
@@ -3184,7 +3184,7 @@ struct discord_modify_guild_params {
  *   - <tt>discord_create_guild_channel_params_from_json(char *rbuf, size_t len, struct discord_create_guild_channel_params**)</tt>
  *   - <tt>discord_create_guild_channel_params_list_from_json(char *rbuf, size_t len, struct discord_create_guild_channel_params***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_create_guild_channel_params_to_json(char *wbuf, size_t len, struct discord_create_guild_channel_params *p)</tt>
+ *   - <tt>discord_create_guild_channel_params_to_json(char *wbuf, size_t len, struct discord_create_guild_channel_params*)</tt>
  *   - <tt>discord_create_guild_channel_params_list_to_json(char *wbuf, size_t len, struct discord_create_guild_channel_params**)</tt>
  */
 struct discord_create_guild_channel_params {
@@ -3258,7 +3258,7 @@ struct discord_create_guild_channel_params {
  *   - <tt>discord_modify_guild_channel_positions_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_channel_positions_params**)</tt>
  *   - <tt>discord_modify_guild_channel_positions_params_list_from_json(char *rbuf, size_t len, struct discord_modify_guild_channel_positions_params***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_modify_guild_channel_positions_params_to_json(char *wbuf, size_t len, struct discord_modify_guild_channel_positions_params *p)</tt>
+ *   - <tt>discord_modify_guild_channel_positions_params_to_json(char *wbuf, size_t len, struct discord_modify_guild_channel_positions_params*)</tt>
  *   - <tt>discord_modify_guild_channel_positions_params_list_to_json(char *wbuf, size_t len, struct discord_modify_guild_channel_positions_params**)</tt>
  */
 struct discord_modify_guild_channel_positions_params {
@@ -3308,7 +3308,7 @@ struct discord_modify_guild_channel_positions_params {
  *   - <tt>discord_search_guild_members_params_from_json(char *rbuf, size_t len, struct discord_search_guild_members_params**)</tt>
  *   - <tt>discord_search_guild_members_params_list_from_json(char *rbuf, size_t len, struct discord_search_guild_members_params***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_search_guild_members_params_to_json(char *wbuf, size_t len, struct discord_search_guild_members_params *p)</tt>
+ *   - <tt>discord_search_guild_members_params_to_json(char *wbuf, size_t len, struct discord_search_guild_members_params*)</tt>
  *   - <tt>discord_search_guild_members_params_list_to_json(char *wbuf, size_t len, struct discord_search_guild_members_params**)</tt>
  */
 struct discord_search_guild_members_params {
@@ -3350,7 +3350,7 @@ struct discord_search_guild_members_params {
  *   - <tt>discord_add_guild_member_params_from_json(char *rbuf, size_t len, struct discord_add_guild_member_params**)</tt>
  *   - <tt>discord_add_guild_member_params_list_from_json(char *rbuf, size_t len, struct discord_add_guild_member_params***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_add_guild_member_params_to_json(char *wbuf, size_t len, struct discord_add_guild_member_params *p)</tt>
+ *   - <tt>discord_add_guild_member_params_to_json(char *wbuf, size_t len, struct discord_add_guild_member_params*)</tt>
  *   - <tt>discord_add_guild_member_params_list_to_json(char *wbuf, size_t len, struct discord_add_guild_member_params**)</tt>
  */
 struct discord_add_guild_member_params {
@@ -3404,7 +3404,7 @@ struct discord_add_guild_member_params {
  *   - <tt>discord_modify_guild_member_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_member_params**)</tt>
  *   - <tt>discord_modify_guild_member_params_list_from_json(char *rbuf, size_t len, struct discord_modify_guild_member_params***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_modify_guild_member_params_to_json(char *wbuf, size_t len, struct discord_modify_guild_member_params *p)</tt>
+ *   - <tt>discord_modify_guild_member_params_to_json(char *wbuf, size_t len, struct discord_modify_guild_member_params*)</tt>
  *   - <tt>discord_modify_guild_member_params_list_to_json(char *wbuf, size_t len, struct discord_modify_guild_member_params**)</tt>
  */
 struct discord_modify_guild_member_params {
@@ -3458,7 +3458,7 @@ struct discord_modify_guild_member_params {
  *   - <tt>discord_create_guild_role_params_from_json(char *rbuf, size_t len, struct discord_create_guild_role_params**)</tt>
  *   - <tt>discord_create_guild_role_params_list_from_json(char *rbuf, size_t len, struct discord_create_guild_role_params***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_create_guild_role_params_to_json(char *wbuf, size_t len, struct discord_create_guild_role_params *p)</tt>
+ *   - <tt>discord_create_guild_role_params_to_json(char *wbuf, size_t len, struct discord_create_guild_role_params*)</tt>
  *   - <tt>discord_create_guild_role_params_list_to_json(char *wbuf, size_t len, struct discord_create_guild_role_params**)</tt>
  */
 struct discord_create_guild_role_params {
@@ -3512,7 +3512,7 @@ struct discord_create_guild_role_params {
  *   - <tt>discord_modify_guild_role_positions_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_role_positions_params**)</tt>
  *   - <tt>discord_modify_guild_role_positions_params_list_from_json(char *rbuf, size_t len, struct discord_modify_guild_role_positions_params***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_modify_guild_role_positions_params_to_json(char *wbuf, size_t len, struct discord_modify_guild_role_positions_params *p)</tt>
+ *   - <tt>discord_modify_guild_role_positions_params_to_json(char *wbuf, size_t len, struct discord_modify_guild_role_positions_params*)</tt>
  *   - <tt>discord_modify_guild_role_positions_params_list_to_json(char *wbuf, size_t len, struct discord_modify_guild_role_positions_params**)</tt>
  */
 struct discord_modify_guild_role_positions_params {
@@ -3554,7 +3554,7 @@ struct discord_modify_guild_role_positions_params {
  *   - <tt>discord_modify_guild_role_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_role_params**)</tt>
  *   - <tt>discord_modify_guild_role_params_list_from_json(char *rbuf, size_t len, struct discord_modify_guild_role_params***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_modify_guild_role_params_to_json(char *wbuf, size_t len, struct discord_modify_guild_role_params *p)</tt>
+ *   - <tt>discord_modify_guild_role_params_to_json(char *wbuf, size_t len, struct discord_modify_guild_role_params*)</tt>
  *   - <tt>discord_modify_guild_role_params_list_to_json(char *wbuf, size_t len, struct discord_modify_guild_role_params**)</tt>
  */
 struct discord_modify_guild_role_params {
@@ -3608,7 +3608,7 @@ struct discord_modify_guild_role_params {
  *   - <tt>discord_get_guild_prune_count_params_from_json(char *rbuf, size_t len, struct discord_get_guild_prune_count_params**)</tt>
  *   - <tt>discord_get_guild_prune_count_params_list_from_json(char *rbuf, size_t len, struct discord_get_guild_prune_count_params***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_get_guild_prune_count_params_to_json(char *wbuf, size_t len, struct discord_get_guild_prune_count_params *p)</tt>
+ *   - <tt>discord_get_guild_prune_count_params_to_json(char *wbuf, size_t len, struct discord_get_guild_prune_count_params*)</tt>
  *   - <tt>discord_get_guild_prune_count_params_list_to_json(char *wbuf, size_t len, struct discord_get_guild_prune_count_params**)</tt>
  */
 struct discord_get_guild_prune_count_params {
@@ -3650,7 +3650,7 @@ struct discord_get_guild_prune_count_params {
  *   - <tt>discord_begin_guild_prune_params_from_json(char *rbuf, size_t len, struct discord_begin_guild_prune_params**)</tt>
  *   - <tt>discord_begin_guild_prune_params_list_from_json(char *rbuf, size_t len, struct discord_begin_guild_prune_params***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_begin_guild_prune_params_to_json(char *wbuf, size_t len, struct discord_begin_guild_prune_params *p)</tt>
+ *   - <tt>discord_begin_guild_prune_params_to_json(char *wbuf, size_t len, struct discord_begin_guild_prune_params*)</tt>
  *   - <tt>discord_begin_guild_prune_params_list_to_json(char *wbuf, size_t len, struct discord_begin_guild_prune_params**)</tt>
  */
 struct discord_begin_guild_prune_params {
@@ -3706,7 +3706,7 @@ struct discord_begin_guild_prune_params {
  *   - <tt>discord_guild_from_json(char *rbuf, size_t len, struct discord_guild**)</tt>
  *   - <tt>discord_guild_list_from_json(char *rbuf, size_t len, struct discord_guild***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_guild_to_json(char *wbuf, size_t len, struct discord_guild *p)</tt>
+ *   - <tt>discord_guild_to_json(char *wbuf, size_t len, struct discord_guild*)</tt>
  *   - <tt>discord_guild_list_to_json(char *wbuf, size_t len, struct discord_guild**)</tt>
  */
 struct discord_guild {
@@ -3946,7 +3946,7 @@ struct discord_guild {
  *   - <tt>discord_guild_unavailable_from_json(char *rbuf, size_t len, struct discord_guild_unavailable**)</tt>
  *   - <tt>discord_guild_unavailable_list_from_json(char *rbuf, size_t len, struct discord_guild_unavailable***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_guild_unavailable_to_json(char *wbuf, size_t len, struct discord_guild_unavailable *p)</tt>
+ *   - <tt>discord_guild_unavailable_to_json(char *wbuf, size_t len, struct discord_guild_unavailable*)</tt>
  *   - <tt>discord_guild_unavailable_list_to_json(char *wbuf, size_t len, struct discord_guild_unavailable**)</tt>
  */
 struct discord_guild_unavailable {
@@ -3988,7 +3988,7 @@ struct discord_guild_unavailable {
  *   - <tt>discord_guild_preview_from_json(char *rbuf, size_t len, struct discord_guild_preview**)</tt>
  *   - <tt>discord_guild_preview_list_from_json(char *rbuf, size_t len, struct discord_guild_preview***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_guild_preview_to_json(char *wbuf, size_t len, struct discord_guild_preview *p)</tt>
+ *   - <tt>discord_guild_preview_to_json(char *wbuf, size_t len, struct discord_guild_preview*)</tt>
  *   - <tt>discord_guild_preview_list_to_json(char *wbuf, size_t len, struct discord_guild_preview**)</tt>
  */
 struct discord_guild_preview {
@@ -4062,7 +4062,7 @@ struct discord_guild_preview {
  *   - <tt>discord_guild_widget_from_json(char *rbuf, size_t len, struct discord_guild_widget**)</tt>
  *   - <tt>discord_guild_widget_list_from_json(char *rbuf, size_t len, struct discord_guild_widget***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_guild_widget_to_json(char *wbuf, size_t len, struct discord_guild_widget *p)</tt>
+ *   - <tt>discord_guild_widget_to_json(char *wbuf, size_t len, struct discord_guild_widget*)</tt>
  *   - <tt>discord_guild_widget_list_to_json(char *wbuf, size_t len, struct discord_guild_widget**)</tt>
  */
 struct discord_guild_widget {
@@ -4104,7 +4104,7 @@ struct discord_guild_widget {
  *   - <tt>discord_guild_member_from_json(char *rbuf, size_t len, struct discord_guild_member**)</tt>
  *   - <tt>discord_guild_member_list_from_json(char *rbuf, size_t len, struct discord_guild_member***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_guild_member_to_json(char *wbuf, size_t len, struct discord_guild_member *p)</tt>
+ *   - <tt>discord_guild_member_to_json(char *wbuf, size_t len, struct discord_guild_member*)</tt>
  *   - <tt>discord_guild_member_list_to_json(char *wbuf, size_t len, struct discord_guild_member**)</tt>
  */
 struct discord_guild_member {
@@ -4174,7 +4174,7 @@ struct discord_guild_member {
  *   - <tt>discord_guild_integration_from_json(char *rbuf, size_t len, struct discord_guild_integration**)</tt>
  *   - <tt>discord_guild_integration_list_from_json(char *rbuf, size_t len, struct discord_guild_integration***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_guild_integration_to_json(char *wbuf, size_t len, struct discord_guild_integration *p)</tt>
+ *   - <tt>discord_guild_integration_to_json(char *wbuf, size_t len, struct discord_guild_integration*)</tt>
  *   - <tt>discord_guild_integration_list_to_json(char *wbuf, size_t len, struct discord_guild_integration**)</tt>
  */
 struct discord_guild_integration {
@@ -4270,7 +4270,7 @@ struct discord_guild_integration {
  *   - <tt>discord_guild_integration_account_from_json(char *rbuf, size_t len, struct discord_guild_integration_account**)</tt>
  *   - <tt>discord_guild_integration_account_list_from_json(char *rbuf, size_t len, struct discord_guild_integration_account***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_guild_integration_account_to_json(char *wbuf, size_t len, struct discord_guild_integration_account *p)</tt>
+ *   - <tt>discord_guild_integration_account_to_json(char *wbuf, size_t len, struct discord_guild_integration_account*)</tt>
  *   - <tt>discord_guild_integration_account_list_to_json(char *wbuf, size_t len, struct discord_guild_integration_account**)</tt>
  */
 struct discord_guild_integration_account {
@@ -4312,7 +4312,7 @@ struct discord_guild_integration_account {
  *   - <tt>discord_guild_integration_application_from_json(char *rbuf, size_t len, struct discord_guild_integration_application**)</tt>
  *   - <tt>discord_guild_integration_application_list_from_json(char *rbuf, size_t len, struct discord_guild_integration_application***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_guild_integration_application_to_json(char *wbuf, size_t len, struct discord_guild_integration_application *p)</tt>
+ *   - <tt>discord_guild_integration_application_to_json(char *wbuf, size_t len, struct discord_guild_integration_application*)</tt>
  *   - <tt>discord_guild_integration_application_list_to_json(char *wbuf, size_t len, struct discord_guild_integration_application**)</tt>
  */
 struct discord_guild_integration_application {
@@ -4370,7 +4370,7 @@ struct discord_guild_integration_application {
  *   - <tt>discord_guild_ban_from_json(char *rbuf, size_t len, struct discord_guild_ban**)</tt>
  *   - <tt>discord_guild_ban_list_from_json(char *rbuf, size_t len, struct discord_guild_ban***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_guild_ban_to_json(char *wbuf, size_t len, struct discord_guild_ban *p)</tt>
+ *   - <tt>discord_guild_ban_to_json(char *wbuf, size_t len, struct discord_guild_ban*)</tt>
  *   - <tt>discord_guild_ban_list_to_json(char *wbuf, size_t len, struct discord_guild_ban**)</tt>
  */
 struct discord_guild_ban {
@@ -4412,7 +4412,7 @@ struct discord_guild_ban {
  *   - <tt>discord_guild_welcome_screen_from_json(char *rbuf, size_t len, struct discord_guild_welcome_screen**)</tt>
  *   - <tt>discord_guild_welcome_screen_list_from_json(char *rbuf, size_t len, struct discord_guild_welcome_screen***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_guild_welcome_screen_to_json(char *wbuf, size_t len, struct discord_guild_welcome_screen *p)</tt>
+ *   - <tt>discord_guild_welcome_screen_to_json(char *wbuf, size_t len, struct discord_guild_welcome_screen*)</tt>
  *   - <tt>discord_guild_welcome_screen_list_to_json(char *wbuf, size_t len, struct discord_guild_welcome_screen**)</tt>
  */
 struct discord_guild_welcome_screen {
@@ -4454,7 +4454,7 @@ struct discord_guild_welcome_screen {
  *   - <tt>discord_guild_welcome_screen_channel_from_json(char *rbuf, size_t len, struct discord_guild_welcome_screen_channel**)</tt>
  *   - <tt>discord_guild_welcome_screen_channel_list_from_json(char *rbuf, size_t len, struct discord_guild_welcome_screen_channel***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_guild_welcome_screen_channel_to_json(char *wbuf, size_t len, struct discord_guild_welcome_screen_channel *p)</tt>
+ *   - <tt>discord_guild_welcome_screen_channel_to_json(char *wbuf, size_t len, struct discord_guild_welcome_screen_channel*)</tt>
  *   - <tt>discord_guild_welcome_screen_channel_list_to_json(char *wbuf, size_t len, struct discord_guild_welcome_screen_channel**)</tt>
  */
 struct discord_guild_welcome_screen_channel {
@@ -4510,7 +4510,7 @@ struct discord_guild_welcome_screen_channel {
  *   - <tt>discord_get_invite_params_from_json(char *rbuf, size_t len, struct discord_get_invite_params**)</tt>
  *   - <tt>discord_get_invite_params_list_from_json(char *rbuf, size_t len, struct discord_get_invite_params***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_get_invite_params_to_json(char *wbuf, size_t len, struct discord_get_invite_params *p)</tt>
+ *   - <tt>discord_get_invite_params_to_json(char *wbuf, size_t len, struct discord_get_invite_params*)</tt>
  *   - <tt>discord_get_invite_params_list_to_json(char *wbuf, size_t len, struct discord_get_invite_params**)</tt>
  */
 struct discord_get_invite_params {
@@ -4560,7 +4560,7 @@ struct discord_get_invite_params {
  *   - <tt>discord_invite_from_json(char *rbuf, size_t len, struct discord_invite**)</tt>
  *   - <tt>discord_invite_list_from_json(char *rbuf, size_t len, struct discord_invite***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_invite_to_json(char *wbuf, size_t len, struct discord_invite *p)</tt>
+ *   - <tt>discord_invite_to_json(char *wbuf, size_t len, struct discord_invite*)</tt>
  *   - <tt>discord_invite_list_to_json(char *wbuf, size_t len, struct discord_invite**)</tt>
  */
 struct discord_invite {
@@ -4626,7 +4626,7 @@ struct discord_invite {
  *   - <tt>discord_invite_metadata_from_json(char *rbuf, size_t len, struct discord_invite_metadata**)</tt>
  *   - <tt>discord_invite_metadata_list_from_json(char *rbuf, size_t len, struct discord_invite_metadata***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_invite_metadata_to_json(char *wbuf, size_t len, struct discord_invite_metadata *p)</tt>
+ *   - <tt>discord_invite_metadata_to_json(char *wbuf, size_t len, struct discord_invite_metadata*)</tt>
  *   - <tt>discord_invite_metadata_list_to_json(char *wbuf, size_t len, struct discord_invite_metadata**)</tt>
  */
 struct discord_invite_metadata {
@@ -4686,7 +4686,7 @@ struct discord_invite_metadata {
  *   - <tt>discord_component_from_json(char *rbuf, size_t len, struct discord_component**)</tt>
  *   - <tt>discord_component_list_from_json(char *rbuf, size_t len, struct discord_component***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_component_to_json(char *wbuf, size_t len, struct discord_component *p)</tt>
+ *   - <tt>discord_component_to_json(char *wbuf, size_t len, struct discord_component*)</tt>
  *   - <tt>discord_component_list_to_json(char *wbuf, size_t len, struct discord_component**)</tt>
  */
 struct discord_component {
@@ -4770,7 +4770,7 @@ struct discord_component {
  *   - <tt>discord_button_from_json(char *rbuf, size_t len, struct discord_button**)</tt>
  *   - <tt>discord_button_list_from_json(char *rbuf, size_t len, struct discord_button***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_button_to_json(char *wbuf, size_t len, struct discord_button *p)</tt>
+ *   - <tt>discord_button_to_json(char *wbuf, size_t len, struct discord_button*)</tt>
  *   - <tt>discord_button_list_to_json(char *wbuf, size_t len, struct discord_button**)</tt>
  */
 struct discord_button {
@@ -4834,7 +4834,7 @@ struct discord_button {
  *   - <tt>discord_select_menu_from_json(char *rbuf, size_t len, struct discord_select_menu**)</tt>
  *   - <tt>discord_select_menu_list_from_json(char *rbuf, size_t len, struct discord_select_menu***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_select_menu_to_json(char *wbuf, size_t len, struct discord_select_menu *p)</tt>
+ *   - <tt>discord_select_menu_to_json(char *wbuf, size_t len, struct discord_select_menu*)</tt>
  *   - <tt>discord_select_menu_list_to_json(char *wbuf, size_t len, struct discord_select_menu**)</tt>
  */
 struct discord_select_menu {
@@ -4896,7 +4896,7 @@ struct discord_select_menu {
  *   - <tt>discord_select_option_from_json(char *rbuf, size_t len, struct discord_select_option**)</tt>
  *   - <tt>discord_select_option_list_from_json(char *rbuf, size_t len, struct discord_select_option***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_select_option_to_json(char *wbuf, size_t len, struct discord_select_option *p)</tt>
+ *   - <tt>discord_select_option_to_json(char *wbuf, size_t len, struct discord_select_option*)</tt>
  *   - <tt>discord_select_option_list_to_json(char *wbuf, size_t len, struct discord_select_option**)</tt>
  */
 struct discord_select_option {
@@ -4958,7 +4958,7 @@ struct discord_select_option {
  *   - <tt>discord_permissions_role_from_json(char *rbuf, size_t len, struct discord_permissions_role**)</tt>
  *   - <tt>discord_permissions_role_list_from_json(char *rbuf, size_t len, struct discord_permissions_role***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_permissions_role_to_json(char *wbuf, size_t len, struct discord_permissions_role *p)</tt>
+ *   - <tt>discord_permissions_role_to_json(char *wbuf, size_t len, struct discord_permissions_role*)</tt>
  *   - <tt>discord_permissions_role_list_to_json(char *wbuf, size_t len, struct discord_permissions_role**)</tt>
  */
 struct discord_permissions_role {
@@ -5028,7 +5028,7 @@ struct discord_permissions_role {
  *   - <tt>discord_permissions_role_tags_from_json(char *rbuf, size_t len, struct discord_permissions_role_tags**)</tt>
  *   - <tt>discord_permissions_role_tags_list_from_json(char *rbuf, size_t len, struct discord_permissions_role_tags***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_permissions_role_tags_to_json(char *wbuf, size_t len, struct discord_permissions_role_tags *p)</tt>
+ *   - <tt>discord_permissions_role_tags_to_json(char *wbuf, size_t len, struct discord_permissions_role_tags*)</tt>
  *   - <tt>discord_permissions_role_tags_list_to_json(char *wbuf, size_t len, struct discord_permissions_role_tags**)</tt>
  */
 struct discord_permissions_role_tags {
@@ -5080,7 +5080,7 @@ struct discord_permissions_role_tags {
  *   - <tt>discord_application_command_from_json(char *rbuf, size_t len, struct discord_application_command**)</tt>
  *   - <tt>discord_application_command_list_from_json(char *rbuf, size_t len, struct discord_application_command***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_application_command_to_json(char *wbuf, size_t len, struct discord_application_command *p)</tt>
+ *   - <tt>discord_application_command_to_json(char *wbuf, size_t len, struct discord_application_command*)</tt>
  *   - <tt>discord_application_command_list_to_json(char *wbuf, size_t len, struct discord_application_command**)</tt>
  */
 struct discord_application_command {
@@ -5142,7 +5142,7 @@ struct discord_application_command {
  *   - <tt>discord_application_command_option_from_json(char *rbuf, size_t len, struct discord_application_command_option**)</tt>
  *   - <tt>discord_application_command_option_list_from_json(char *rbuf, size_t len, struct discord_application_command_option***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_application_command_option_to_json(char *wbuf, size_t len, struct discord_application_command_option *p)</tt>
+ *   - <tt>discord_application_command_option_to_json(char *wbuf, size_t len, struct discord_application_command_option*)</tt>
  *   - <tt>discord_application_command_option_list_to_json(char *wbuf, size_t len, struct discord_application_command_option**)</tt>
  */
 struct discord_application_command_option {
@@ -5202,7 +5202,7 @@ struct discord_application_command_option {
  *   - <tt>discord_application_command_option_choice_from_json(char *rbuf, size_t len, struct discord_application_command_option_choice**)</tt>
  *   - <tt>discord_application_command_option_choice_list_from_json(char *rbuf, size_t len, struct discord_application_command_option_choice***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_application_command_option_choice_to_json(char *wbuf, size_t len, struct discord_application_command_option_choice *p)</tt>
+ *   - <tt>discord_application_command_option_choice_to_json(char *wbuf, size_t len, struct discord_application_command_option_choice*)</tt>
  *   - <tt>discord_application_command_option_choice_list_to_json(char *wbuf, size_t len, struct discord_application_command_option_choice**)</tt>
  */
 struct discord_application_command_option_choice {
@@ -5244,7 +5244,7 @@ struct discord_application_command_option_choice {
  *   - <tt>discord_guild_application_command_permissions_from_json(char *rbuf, size_t len, struct discord_guild_application_command_permissions**)</tt>
  *   - <tt>discord_guild_application_command_permissions_list_from_json(char *rbuf, size_t len, struct discord_guild_application_command_permissions***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_guild_application_command_permissions_to_json(char *wbuf, size_t len, struct discord_guild_application_command_permissions *p)</tt>
+ *   - <tt>discord_guild_application_command_permissions_to_json(char *wbuf, size_t len, struct discord_guild_application_command_permissions*)</tt>
  *   - <tt>discord_guild_application_command_permissions_list_to_json(char *wbuf, size_t len, struct discord_guild_application_command_permissions**)</tt>
  */
 struct discord_guild_application_command_permissions {
@@ -5294,7 +5294,7 @@ struct discord_guild_application_command_permissions {
  *   - <tt>discord_application_command_permissions_from_json(char *rbuf, size_t len, struct discord_application_command_permissions**)</tt>
  *   - <tt>discord_application_command_permissions_list_from_json(char *rbuf, size_t len, struct discord_application_command_permissions***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_application_command_permissions_to_json(char *wbuf, size_t len, struct discord_application_command_permissions *p)</tt>
+ *   - <tt>discord_application_command_permissions_to_json(char *wbuf, size_t len, struct discord_application_command_permissions*)</tt>
  *   - <tt>discord_application_command_permissions_list_to_json(char *wbuf, size_t len, struct discord_application_command_permissions**)</tt>
  */
 struct discord_application_command_permissions {
@@ -5342,7 +5342,7 @@ struct discord_application_command_permissions {
  *   - <tt>discord_interaction_from_json(char *rbuf, size_t len, struct discord_interaction**)</tt>
  *   - <tt>discord_interaction_list_from_json(char *rbuf, size_t len, struct discord_interaction***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_interaction_to_json(char *wbuf, size_t len, struct discord_interaction *p)</tt>
+ *   - <tt>discord_interaction_to_json(char *wbuf, size_t len, struct discord_interaction*)</tt>
  *   - <tt>discord_interaction_list_to_json(char *wbuf, size_t len, struct discord_interaction**)</tt>
  */
 struct discord_interaction {
@@ -5414,7 +5414,7 @@ struct discord_interaction {
  *   - <tt>discord_application_command_interaction_data_from_json(char *rbuf, size_t len, struct discord_application_command_interaction_data**)</tt>
  *   - <tt>discord_application_command_interaction_data_list_from_json(char *rbuf, size_t len, struct discord_application_command_interaction_data***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_application_command_interaction_data_to_json(char *wbuf, size_t len, struct discord_application_command_interaction_data *p)</tt>
+ *   - <tt>discord_application_command_interaction_data_to_json(char *wbuf, size_t len, struct discord_application_command_interaction_data*)</tt>
  *   - <tt>discord_application_command_interaction_data_list_to_json(char *wbuf, size_t len, struct discord_application_command_interaction_data**)</tt>
  */
 struct discord_application_command_interaction_data {
@@ -5472,7 +5472,7 @@ struct discord_application_command_interaction_data {
  *   - <tt>discord_application_command_interaction_data_resolved_from_json(char *rbuf, size_t len, struct discord_application_command_interaction_data_resolved**)</tt>
  *   - <tt>discord_application_command_interaction_data_resolved_list_from_json(char *rbuf, size_t len, struct discord_application_command_interaction_data_resolved***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_application_command_interaction_data_resolved_to_json(char *wbuf, size_t len, struct discord_application_command_interaction_data_resolved *p)</tt>
+ *   - <tt>discord_application_command_interaction_data_resolved_to_json(char *wbuf, size_t len, struct discord_application_command_interaction_data_resolved*)</tt>
  *   - <tt>discord_application_command_interaction_data_resolved_list_to_json(char *wbuf, size_t len, struct discord_application_command_interaction_data_resolved**)</tt>
  */
 struct discord_application_command_interaction_data_resolved {
@@ -5522,7 +5522,7 @@ struct discord_application_command_interaction_data_resolved {
  *   - <tt>discord_application_command_interaction_data_option_from_json(char *rbuf, size_t len, struct discord_application_command_interaction_data_option**)</tt>
  *   - <tt>discord_application_command_interaction_data_option_list_from_json(char *rbuf, size_t len, struct discord_application_command_interaction_data_option***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_application_command_interaction_data_option_to_json(char *wbuf, size_t len, struct discord_application_command_interaction_data_option *p)</tt>
+ *   - <tt>discord_application_command_interaction_data_option_to_json(char *wbuf, size_t len, struct discord_application_command_interaction_data_option*)</tt>
  *   - <tt>discord_application_command_interaction_data_option_list_to_json(char *wbuf, size_t len, struct discord_application_command_interaction_data_option**)</tt>
  */
 struct discord_application_command_interaction_data_option {
@@ -5572,7 +5572,7 @@ struct discord_application_command_interaction_data_option {
  *   - <tt>discord_interaction_response_from_json(char *rbuf, size_t len, struct discord_interaction_response**)</tt>
  *   - <tt>discord_interaction_response_list_from_json(char *rbuf, size_t len, struct discord_interaction_response***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_interaction_response_to_json(char *wbuf, size_t len, struct discord_interaction_response *p)</tt>
+ *   - <tt>discord_interaction_response_to_json(char *wbuf, size_t len, struct discord_interaction_response*)</tt>
  *   - <tt>discord_interaction_response_list_to_json(char *wbuf, size_t len, struct discord_interaction_response**)</tt>
  */
 struct discord_interaction_response {
@@ -5616,7 +5616,7 @@ struct discord_interaction_response {
  *   - <tt>discord_interaction_application_command_callback_data_from_json(char *rbuf, size_t len, struct discord_interaction_application_command_callback_data**)</tt>
  *   - <tt>discord_interaction_application_command_callback_data_list_from_json(char *rbuf, size_t len, struct discord_interaction_application_command_callback_data***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_interaction_application_command_callback_data_to_json(char *wbuf, size_t len, struct discord_interaction_application_command_callback_data *p)</tt>
+ *   - <tt>discord_interaction_application_command_callback_data_to_json(char *wbuf, size_t len, struct discord_interaction_application_command_callback_data*)</tt>
  *   - <tt>discord_interaction_application_command_callback_data_list_to_json(char *wbuf, size_t len, struct discord_interaction_application_command_callback_data**)</tt>
  */
 struct discord_interaction_application_command_callback_data {
@@ -5676,7 +5676,7 @@ struct discord_interaction_application_command_callback_data {
  *   - <tt>discord_message_interaction_from_json(char *rbuf, size_t len, struct discord_message_interaction**)</tt>
  *   - <tt>discord_message_interaction_list_from_json(char *rbuf, size_t len, struct discord_message_interaction***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_message_interaction_to_json(char *wbuf, size_t len, struct discord_message_interaction *p)</tt>
+ *   - <tt>discord_message_interaction_to_json(char *wbuf, size_t len, struct discord_message_interaction*)</tt>
  *   - <tt>discord_message_interaction_list_to_json(char *wbuf, size_t len, struct discord_message_interaction**)</tt>
  */
 struct discord_message_interaction {
@@ -5732,7 +5732,7 @@ struct discord_message_interaction {
  *   - <tt>discord_modify_current_user_params_from_json(char *rbuf, size_t len, struct discord_modify_current_user_params**)</tt>
  *   - <tt>discord_modify_current_user_params_list_from_json(char *rbuf, size_t len, struct discord_modify_current_user_params***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_modify_current_user_params_to_json(char *wbuf, size_t len, struct discord_modify_current_user_params *p)</tt>
+ *   - <tt>discord_modify_current_user_params_to_json(char *wbuf, size_t len, struct discord_modify_current_user_params*)</tt>
  *   - <tt>discord_modify_current_user_params_list_to_json(char *wbuf, size_t len, struct discord_modify_current_user_params**)</tt>
  */
 struct discord_modify_current_user_params {
@@ -5774,7 +5774,7 @@ struct discord_modify_current_user_params {
  *   - <tt>discord_create_group_dm_params_from_json(char *rbuf, size_t len, struct discord_create_group_dm_params**)</tt>
  *   - <tt>discord_create_group_dm_params_list_from_json(char *rbuf, size_t len, struct discord_create_group_dm_params***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_create_group_dm_params_to_json(char *wbuf, size_t len, struct discord_create_group_dm_params *p)</tt>
+ *   - <tt>discord_create_group_dm_params_to_json(char *wbuf, size_t len, struct discord_create_group_dm_params*)</tt>
  *   - <tt>discord_create_group_dm_params_list_to_json(char *wbuf, size_t len, struct discord_create_group_dm_params**)</tt>
  */
 struct discord_create_group_dm_params {
@@ -5826,7 +5826,7 @@ struct discord_create_group_dm_params {
  *   - <tt>discord_user_from_json(char *rbuf, size_t len, struct discord_user**)</tt>
  *   - <tt>discord_user_list_from_json(char *rbuf, size_t len, struct discord_user***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_user_to_json(char *wbuf, size_t len, struct discord_user *p)</tt>
+ *   - <tt>discord_user_to_json(char *wbuf, size_t len, struct discord_user*)</tt>
  *   - <tt>discord_user_list_to_json(char *wbuf, size_t len, struct discord_user**)</tt>
  */
 struct discord_user {
@@ -5914,7 +5914,7 @@ struct discord_user {
  *   - <tt>discord_connection_from_json(char *rbuf, size_t len, struct discord_connection**)</tt>
  *   - <tt>discord_connection_list_from_json(char *rbuf, size_t len, struct discord_connection***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_connection_to_json(char *wbuf, size_t len, struct discord_connection *p)</tt>
+ *   - <tt>discord_connection_to_json(char *wbuf, size_t len, struct discord_connection*)</tt>
  *   - <tt>discord_connection_list_to_json(char *wbuf, size_t len, struct discord_connection**)</tt>
  */
 struct discord_connection {
@@ -6002,7 +6002,7 @@ struct discord_connection {
  *   - <tt>discord_voice_state_from_json(char *rbuf, size_t len, struct discord_voice_state**)</tt>
  *   - <tt>discord_voice_state_list_from_json(char *rbuf, size_t len, struct discord_voice_state***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_voice_state_to_json(char *wbuf, size_t len, struct discord_voice_state *p)</tt>
+ *   - <tt>discord_voice_state_to_json(char *wbuf, size_t len, struct discord_voice_state*)</tt>
  *   - <tt>discord_voice_state_list_to_json(char *wbuf, size_t len, struct discord_voice_state**)</tt>
  */
 struct discord_voice_state {
@@ -6084,7 +6084,7 @@ struct discord_voice_state {
  *   - <tt>discord_voice_region_from_json(char *rbuf, size_t len, struct discord_voice_region**)</tt>
  *   - <tt>discord_voice_region_list_from_json(char *rbuf, size_t len, struct discord_voice_region***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_voice_region_to_json(char *wbuf, size_t len, struct discord_voice_region *p)</tt>
+ *   - <tt>discord_voice_region_to_json(char *wbuf, size_t len, struct discord_voice_region*)</tt>
  *   - <tt>discord_voice_region_list_to_json(char *wbuf, size_t len, struct discord_voice_region**)</tt>
  */
 struct discord_voice_region {
@@ -6148,7 +6148,7 @@ struct discord_voice_region {
  *   - <tt>discord_create_webhook_params_from_json(char *rbuf, size_t len, struct discord_create_webhook_params**)</tt>
  *   - <tt>discord_create_webhook_params_list_from_json(char *rbuf, size_t len, struct discord_create_webhook_params***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_create_webhook_params_to_json(char *wbuf, size_t len, struct discord_create_webhook_params *p)</tt>
+ *   - <tt>discord_create_webhook_params_to_json(char *wbuf, size_t len, struct discord_create_webhook_params*)</tt>
  *   - <tt>discord_create_webhook_params_list_to_json(char *wbuf, size_t len, struct discord_create_webhook_params**)</tt>
  */
 struct discord_create_webhook_params {
@@ -6190,7 +6190,7 @@ struct discord_create_webhook_params {
  *   - <tt>discord_modify_webhook_params_from_json(char *rbuf, size_t len, struct discord_modify_webhook_params**)</tt>
  *   - <tt>discord_modify_webhook_params_list_from_json(char *rbuf, size_t len, struct discord_modify_webhook_params***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_modify_webhook_params_to_json(char *wbuf, size_t len, struct discord_modify_webhook_params *p)</tt>
+ *   - <tt>discord_modify_webhook_params_to_json(char *wbuf, size_t len, struct discord_modify_webhook_params*)</tt>
  *   - <tt>discord_modify_webhook_params_list_to_json(char *wbuf, size_t len, struct discord_modify_webhook_params**)</tt>
  */
 struct discord_modify_webhook_params {
@@ -6236,7 +6236,7 @@ struct discord_modify_webhook_params {
  *   - <tt>discord_execute_webhook_params_from_json(char *rbuf, size_t len, struct discord_execute_webhook_params**)</tt>
  *   - <tt>discord_execute_webhook_params_list_from_json(char *rbuf, size_t len, struct discord_execute_webhook_params***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_execute_webhook_params_to_json(char *wbuf, size_t len, struct discord_execute_webhook_params *p)</tt>
+ *   - <tt>discord_execute_webhook_params_to_json(char *wbuf, size_t len, struct discord_execute_webhook_params*)</tt>
  *   - <tt>discord_execute_webhook_params_list_to_json(char *wbuf, size_t len, struct discord_execute_webhook_params**)</tt>
  */
 struct discord_execute_webhook_params {
@@ -6332,7 +6332,7 @@ struct discord_execute_webhook_params {
  *   - <tt>discord_edit_webhook_message_params_from_json(char *rbuf, size_t len, struct discord_edit_webhook_message_params**)</tt>
  *   - <tt>discord_edit_webhook_message_params_list_from_json(char *rbuf, size_t len, struct discord_edit_webhook_message_params***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_edit_webhook_message_params_to_json(char *wbuf, size_t len, struct discord_edit_webhook_message_params *p)</tt>
+ *   - <tt>discord_edit_webhook_message_params_to_json(char *wbuf, size_t len, struct discord_edit_webhook_message_params*)</tt>
  *   - <tt>discord_edit_webhook_message_params_list_to_json(char *wbuf, size_t len, struct discord_edit_webhook_message_params**)</tt>
  */
 struct discord_edit_webhook_message_params {
@@ -6384,7 +6384,7 @@ struct discord_edit_webhook_message_params {
  *   - <tt>discord_webhook_from_json(char *rbuf, size_t len, struct discord_webhook**)</tt>
  *   - <tt>discord_webhook_list_from_json(char *rbuf, size_t len, struct discord_webhook***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_webhook_to_json(char *wbuf, size_t len, struct discord_webhook *p)</tt>
+ *   - <tt>discord_webhook_to_json(char *wbuf, size_t len, struct discord_webhook*)</tt>
  *   - <tt>discord_webhook_list_to_json(char *wbuf, size_t len, struct discord_webhook**)</tt>
  */
 struct discord_webhook {

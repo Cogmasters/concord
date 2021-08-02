@@ -122,7 +122,7 @@ extern bool discord_gateway_events_has(enum discord_gateway_events, char*);
  *   - <tt>discord_gateway_identify_from_json(char *rbuf, size_t len, struct discord_gateway_identify**)</tt>
  *   - <tt>discord_gateway_identify_list_from_json(char *rbuf, size_t len, struct discord_gateway_identify***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_gateway_identify_to_json(char *wbuf, size_t len, struct discord_gateway_identify *p)</tt>
+ *   - <tt>discord_gateway_identify_to_json(char *wbuf, size_t len, struct discord_gateway_identify*)</tt>
  *   - <tt>discord_gateway_identify_list_to_json(char *wbuf, size_t len, struct discord_gateway_identify**)</tt>
  */
 struct discord_gateway_identify {
@@ -204,7 +204,7 @@ extern size_t discord_gateway_identify_list_to_json(char *str, size_t len, struc
  *   - <tt>discord_gateway_status_update_from_json(char *rbuf, size_t len, struct discord_gateway_status_update**)</tt>
  *   - <tt>discord_gateway_status_update_list_from_json(char *rbuf, size_t len, struct discord_gateway_status_update***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_gateway_status_update_to_json(char *wbuf, size_t len, struct discord_gateway_status_update *p)</tt>
+ *   - <tt>discord_gateway_status_update_to_json(char *wbuf, size_t len, struct discord_gateway_status_update*)</tt>
  *   - <tt>discord_gateway_status_update_list_to_json(char *wbuf, size_t len, struct discord_gateway_status_update**)</tt>
  */
 struct discord_gateway_status_update {
@@ -272,7 +272,7 @@ extern size_t discord_gateway_status_update_list_to_json(char *str, size_t len, 
  *   - <tt>discord_gateway_identify_connection_from_json(char *rbuf, size_t len, struct discord_gateway_identify_connection**)</tt>
  *   - <tt>discord_gateway_identify_connection_list_from_json(char *rbuf, size_t len, struct discord_gateway_identify_connection***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_gateway_identify_connection_to_json(char *wbuf, size_t len, struct discord_gateway_identify_connection *p)</tt>
+ *   - <tt>discord_gateway_identify_connection_to_json(char *wbuf, size_t len, struct discord_gateway_identify_connection*)</tt>
  *   - <tt>discord_gateway_identify_connection_list_to_json(char *wbuf, size_t len, struct discord_gateway_identify_connection**)</tt>
  */
 struct discord_gateway_identify_connection {
@@ -334,7 +334,7 @@ extern size_t discord_gateway_identify_connection_list_to_json(char *str, size_t
  *   - <tt>discord_gateway_activity_from_json(char *rbuf, size_t len, struct discord_gateway_activity**)</tt>
  *   - <tt>discord_gateway_activity_list_from_json(char *rbuf, size_t len, struct discord_gateway_activity***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_gateway_activity_to_json(char *wbuf, size_t len, struct discord_gateway_activity *p)</tt>
+ *   - <tt>discord_gateway_activity_to_json(char *wbuf, size_t len, struct discord_gateway_activity*)</tt>
  *   - <tt>discord_gateway_activity_list_to_json(char *wbuf, size_t len, struct discord_gateway_activity**)</tt>
  */
 struct discord_gateway_activity {

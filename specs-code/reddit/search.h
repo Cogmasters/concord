@@ -19,7 +19,7 @@
  *   - <tt>reddit_search_params_from_json(char *rbuf, size_t len, struct reddit_search_params**)</tt>
  *   - <tt>reddit_search_params_list_from_json(char *rbuf, size_t len, struct reddit_search_params***)</tt>
  * - JSON Encoder:
- *   - <tt>reddit_search_params_to_json(char *wbuf, size_t len, struct reddit_search_params *p)</tt>
+ *   - <tt>reddit_search_params_to_json(char *wbuf, size_t len, struct reddit_search_params*)</tt>
  *   - <tt>reddit_search_params_list_to_json(char *wbuf, size_t len, struct reddit_search_params**)</tt>
  */
 struct reddit_search_params {

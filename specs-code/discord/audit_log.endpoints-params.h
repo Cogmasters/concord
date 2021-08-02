@@ -18,7 +18,7 @@
  *   - <tt>discord_get_guild_audit_log_params_from_json(char *rbuf, size_t len, struct discord_get_guild_audit_log_params**)</tt>
  *   - <tt>discord_get_guild_audit_log_params_list_from_json(char *rbuf, size_t len, struct discord_get_guild_audit_log_params***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_get_guild_audit_log_params_to_json(char *wbuf, size_t len, struct discord_get_guild_audit_log_params *p)</tt>
+ *   - <tt>discord_get_guild_audit_log_params_to_json(char *wbuf, size_t len, struct discord_get_guild_audit_log_params*)</tt>
  *   - <tt>discord_get_guild_audit_log_params_list_to_json(char *wbuf, size_t len, struct discord_get_guild_audit_log_params**)</tt>
  */
 struct discord_get_guild_audit_log_params {

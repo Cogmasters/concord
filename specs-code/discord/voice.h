@@ -19,7 +19,7 @@
  *   - <tt>discord_voice_state_from_json(char *rbuf, size_t len, struct discord_voice_state**)</tt>
  *   - <tt>discord_voice_state_list_from_json(char *rbuf, size_t len, struct discord_voice_state***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_voice_state_to_json(char *wbuf, size_t len, struct discord_voice_state *p)</tt>
+ *   - <tt>discord_voice_state_to_json(char *wbuf, size_t len, struct discord_voice_state*)</tt>
  *   - <tt>discord_voice_state_list_to_json(char *wbuf, size_t len, struct discord_voice_state**)</tt>
  */
 struct discord_voice_state {
@@ -117,7 +117,7 @@ extern size_t discord_voice_state_list_to_json(char *str, size_t len, struct dis
  *   - <tt>discord_voice_region_from_json(char *rbuf, size_t len, struct discord_voice_region**)</tt>
  *   - <tt>discord_voice_region_list_from_json(char *rbuf, size_t len, struct discord_voice_region***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_voice_region_to_json(char *wbuf, size_t len, struct discord_voice_region *p)</tt>
+ *   - <tt>discord_voice_region_to_json(char *wbuf, size_t len, struct discord_voice_region*)</tt>
  *   - <tt>discord_voice_region_list_to_json(char *wbuf, size_t len, struct discord_voice_region**)</tt>
  */
 struct discord_voice_region {

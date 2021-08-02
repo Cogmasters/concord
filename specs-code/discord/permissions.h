@@ -58,7 +58,7 @@ extern bool discord_permissions_bitwise_flags_has(enum discord_permissions_bitwi
  *   - <tt>discord_permissions_role_from_json(char *rbuf, size_t len, struct discord_permissions_role**)</tt>
  *   - <tt>discord_permissions_role_list_from_json(char *rbuf, size_t len, struct discord_permissions_role***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_permissions_role_to_json(char *wbuf, size_t len, struct discord_permissions_role *p)</tt>
+ *   - <tt>discord_permissions_role_to_json(char *wbuf, size_t len, struct discord_permissions_role*)</tt>
  *   - <tt>discord_permissions_role_list_to_json(char *wbuf, size_t len, struct discord_permissions_role**)</tt>
  */
 struct discord_permissions_role {
@@ -144,7 +144,7 @@ extern size_t discord_permissions_role_list_to_json(char *str, size_t len, struc
  *   - <tt>discord_permissions_role_tags_from_json(char *rbuf, size_t len, struct discord_permissions_role_tags**)</tt>
  *   - <tt>discord_permissions_role_tags_list_from_json(char *rbuf, size_t len, struct discord_permissions_role_tags***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_permissions_role_tags_to_json(char *wbuf, size_t len, struct discord_permissions_role_tags *p)</tt>
+ *   - <tt>discord_permissions_role_tags_to_json(char *wbuf, size_t len, struct discord_permissions_role_tags*)</tt>
  *   - <tt>discord_permissions_role_tags_list_to_json(char *wbuf, size_t len, struct discord_permissions_role_tags**)</tt>
  */
 struct discord_permissions_role_tags {

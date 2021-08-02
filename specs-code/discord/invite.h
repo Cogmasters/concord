@@ -27,7 +27,7 @@ extern bool discord_invite_target_user_types_has(enum discord_invite_target_user
  *   - <tt>discord_invite_from_json(char *rbuf, size_t len, struct discord_invite**)</tt>
  *   - <tt>discord_invite_list_from_json(char *rbuf, size_t len, struct discord_invite***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_invite_to_json(char *wbuf, size_t len, struct discord_invite *p)</tt>
+ *   - <tt>discord_invite_to_json(char *wbuf, size_t len, struct discord_invite*)</tt>
  *   - <tt>discord_invite_list_to_json(char *wbuf, size_t len, struct discord_invite**)</tt>
  */
 struct discord_invite {
@@ -109,7 +109,7 @@ extern size_t discord_invite_list_to_json(char *str, size_t len, struct discord_
  *   - <tt>discord_invite_metadata_from_json(char *rbuf, size_t len, struct discord_invite_metadata**)</tt>
  *   - <tt>discord_invite_metadata_list_from_json(char *rbuf, size_t len, struct discord_invite_metadata***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_invite_metadata_to_json(char *wbuf, size_t len, struct discord_invite_metadata *p)</tt>
+ *   - <tt>discord_invite_metadata_to_json(char *wbuf, size_t len, struct discord_invite_metadata*)</tt>
  *   - <tt>discord_invite_metadata_list_to_json(char *wbuf, size_t len, struct discord_invite_metadata**)</tt>
  */
 struct discord_invite_metadata {

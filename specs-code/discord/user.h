@@ -46,7 +46,7 @@ extern bool discord_user_premium_types_has(enum discord_user_premium_types, char
  *   - <tt>discord_user_from_json(char *rbuf, size_t len, struct discord_user**)</tt>
  *   - <tt>discord_user_list_from_json(char *rbuf, size_t len, struct discord_user***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_user_to_json(char *wbuf, size_t len, struct discord_user *p)</tt>
+ *   - <tt>discord_user_to_json(char *wbuf, size_t len, struct discord_user*)</tt>
  *   - <tt>discord_user_list_to_json(char *wbuf, size_t len, struct discord_user**)</tt>
  */
 struct discord_user {
@@ -157,7 +157,7 @@ extern bool discord_user_connection_visibility_types_has(enum discord_user_conne
  *   - <tt>discord_connection_from_json(char *rbuf, size_t len, struct discord_connection**)</tt>
  *   - <tt>discord_connection_list_from_json(char *rbuf, size_t len, struct discord_connection***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_connection_to_json(char *wbuf, size_t len, struct discord_connection *p)</tt>
+ *   - <tt>discord_connection_to_json(char *wbuf, size_t len, struct discord_connection*)</tt>
  *   - <tt>discord_connection_list_to_json(char *wbuf, size_t len, struct discord_connection**)</tt>
  */
 struct discord_connection {

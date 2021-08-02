@@ -19,7 +19,7 @@
  *   - <tt>discord_application_command_from_json(char *rbuf, size_t len, struct discord_application_command**)</tt>
  *   - <tt>discord_application_command_list_from_json(char *rbuf, size_t len, struct discord_application_command***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_application_command_to_json(char *wbuf, size_t len, struct discord_application_command *p)</tt>
+ *   - <tt>discord_application_command_to_json(char *wbuf, size_t len, struct discord_application_command*)</tt>
  *   - <tt>discord_application_command_list_to_json(char *wbuf, size_t len, struct discord_application_command**)</tt>
  */
 struct discord_application_command {
@@ -97,7 +97,7 @@ extern size_t discord_application_command_list_to_json(char *str, size_t len, st
  *   - <tt>discord_application_command_option_from_json(char *rbuf, size_t len, struct discord_application_command_option**)</tt>
  *   - <tt>discord_application_command_option_list_from_json(char *rbuf, size_t len, struct discord_application_command_option***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_application_command_option_to_json(char *wbuf, size_t len, struct discord_application_command_option *p)</tt>
+ *   - <tt>discord_application_command_option_to_json(char *wbuf, size_t len, struct discord_application_command_option*)</tt>
  *   - <tt>discord_application_command_option_list_to_json(char *wbuf, size_t len, struct discord_application_command_option**)</tt>
  */
 struct discord_application_command_option {
@@ -187,7 +187,7 @@ extern bool discord_application_command_option_types_has(enum discord_applicatio
  *   - <tt>discord_application_command_option_choice_from_json(char *rbuf, size_t len, struct discord_application_command_option_choice**)</tt>
  *   - <tt>discord_application_command_option_choice_list_from_json(char *rbuf, size_t len, struct discord_application_command_option_choice***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_application_command_option_choice_to_json(char *wbuf, size_t len, struct discord_application_command_option_choice *p)</tt>
+ *   - <tt>discord_application_command_option_choice_to_json(char *wbuf, size_t len, struct discord_application_command_option_choice*)</tt>
  *   - <tt>discord_application_command_option_choice_list_to_json(char *wbuf, size_t len, struct discord_application_command_option_choice**)</tt>
  */
 struct discord_application_command_option_choice {
@@ -245,7 +245,7 @@ extern size_t discord_application_command_option_choice_list_to_json(char *str, 
  *   - <tt>discord_guild_application_command_permissions_from_json(char *rbuf, size_t len, struct discord_guild_application_command_permissions**)</tt>
  *   - <tt>discord_guild_application_command_permissions_list_from_json(char *rbuf, size_t len, struct discord_guild_application_command_permissions***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_guild_application_command_permissions_to_json(char *wbuf, size_t len, struct discord_guild_application_command_permissions *p)</tt>
+ *   - <tt>discord_guild_application_command_permissions_to_json(char *wbuf, size_t len, struct discord_guild_application_command_permissions*)</tt>
  *   - <tt>discord_guild_application_command_permissions_list_to_json(char *wbuf, size_t len, struct discord_guild_application_command_permissions**)</tt>
  */
 struct discord_guild_application_command_permissions {
@@ -311,7 +311,7 @@ extern size_t discord_guild_application_command_permissions_list_to_json(char *s
  *   - <tt>discord_application_command_permissions_from_json(char *rbuf, size_t len, struct discord_application_command_permissions**)</tt>
  *   - <tt>discord_application_command_permissions_list_from_json(char *rbuf, size_t len, struct discord_application_command_permissions***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_application_command_permissions_to_json(char *wbuf, size_t len, struct discord_application_command_permissions *p)</tt>
+ *   - <tt>discord_application_command_permissions_to_json(char *wbuf, size_t len, struct discord_application_command_permissions*)</tt>
  *   - <tt>discord_application_command_permissions_list_to_json(char *wbuf, size_t len, struct discord_application_command_permissions**)</tt>
  */
 struct discord_application_command_permissions {
@@ -382,7 +382,7 @@ extern bool discord_application_command_permission_types_has(enum discord_applic
  *   - <tt>discord_interaction_from_json(char *rbuf, size_t len, struct discord_interaction**)</tt>
  *   - <tt>discord_interaction_list_from_json(char *rbuf, size_t len, struct discord_interaction***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_interaction_to_json(char *wbuf, size_t len, struct discord_interaction *p)</tt>
+ *   - <tt>discord_interaction_to_json(char *wbuf, size_t len, struct discord_interaction*)</tt>
  *   - <tt>discord_interaction_list_to_json(char *wbuf, size_t len, struct discord_interaction**)</tt>
  */
 struct discord_interaction {
@@ -478,7 +478,7 @@ extern bool discord_interaction_request_types_has(enum discord_interaction_reque
  *   - <tt>discord_application_command_interaction_data_from_json(char *rbuf, size_t len, struct discord_application_command_interaction_data**)</tt>
  *   - <tt>discord_application_command_interaction_data_list_from_json(char *rbuf, size_t len, struct discord_application_command_interaction_data***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_application_command_interaction_data_to_json(char *wbuf, size_t len, struct discord_application_command_interaction_data *p)</tt>
+ *   - <tt>discord_application_command_interaction_data_to_json(char *wbuf, size_t len, struct discord_application_command_interaction_data*)</tt>
  *   - <tt>discord_application_command_interaction_data_list_to_json(char *wbuf, size_t len, struct discord_application_command_interaction_data**)</tt>
  */
 struct discord_application_command_interaction_data {
@@ -552,7 +552,7 @@ extern size_t discord_application_command_interaction_data_list_to_json(char *st
  *   - <tt>discord_application_command_interaction_data_resolved_from_json(char *rbuf, size_t len, struct discord_application_command_interaction_data_resolved**)</tt>
  *   - <tt>discord_application_command_interaction_data_resolved_list_from_json(char *rbuf, size_t len, struct discord_application_command_interaction_data_resolved***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_application_command_interaction_data_resolved_to_json(char *wbuf, size_t len, struct discord_application_command_interaction_data_resolved *p)</tt>
+ *   - <tt>discord_application_command_interaction_data_resolved_to_json(char *wbuf, size_t len, struct discord_application_command_interaction_data_resolved*)</tt>
  *   - <tt>discord_application_command_interaction_data_resolved_list_to_json(char *wbuf, size_t len, struct discord_application_command_interaction_data_resolved**)</tt>
  */
 struct discord_application_command_interaction_data_resolved {
@@ -618,7 +618,7 @@ extern size_t discord_application_command_interaction_data_resolved_list_to_json
  *   - <tt>discord_application_command_interaction_data_option_from_json(char *rbuf, size_t len, struct discord_application_command_interaction_data_option**)</tt>
  *   - <tt>discord_application_command_interaction_data_option_list_from_json(char *rbuf, size_t len, struct discord_application_command_interaction_data_option***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_application_command_interaction_data_option_to_json(char *wbuf, size_t len, struct discord_application_command_interaction_data_option *p)</tt>
+ *   - <tt>discord_application_command_interaction_data_option_to_json(char *wbuf, size_t len, struct discord_application_command_interaction_data_option*)</tt>
  *   - <tt>discord_application_command_interaction_data_option_list_to_json(char *wbuf, size_t len, struct discord_application_command_interaction_data_option**)</tt>
  */
 struct discord_application_command_interaction_data_option {
@@ -684,7 +684,7 @@ extern size_t discord_application_command_interaction_data_option_list_to_json(c
  *   - <tt>discord_interaction_response_from_json(char *rbuf, size_t len, struct discord_interaction_response**)</tt>
  *   - <tt>discord_interaction_response_list_from_json(char *rbuf, size_t len, struct discord_interaction_response***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_interaction_response_to_json(char *wbuf, size_t len, struct discord_interaction_response *p)</tt>
+ *   - <tt>discord_interaction_response_to_json(char *wbuf, size_t len, struct discord_interaction_response*)</tt>
  *   - <tt>discord_interaction_response_list_to_json(char *wbuf, size_t len, struct discord_interaction_response**)</tt>
  */
 struct discord_interaction_response {
@@ -754,7 +754,7 @@ extern bool discord_interaction_callback_types_has(enum discord_interaction_call
  *   - <tt>discord_interaction_application_command_callback_data_from_json(char *rbuf, size_t len, struct discord_interaction_application_command_callback_data**)</tt>
  *   - <tt>discord_interaction_application_command_callback_data_list_from_json(char *rbuf, size_t len, struct discord_interaction_application_command_callback_data***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_interaction_application_command_callback_data_to_json(char *wbuf, size_t len, struct discord_interaction_application_command_callback_data *p)</tt>
+ *   - <tt>discord_interaction_application_command_callback_data_to_json(char *wbuf, size_t len, struct discord_interaction_application_command_callback_data*)</tt>
  *   - <tt>discord_interaction_application_command_callback_data_list_to_json(char *wbuf, size_t len, struct discord_interaction_application_command_callback_data**)</tt>
  */
 struct discord_interaction_application_command_callback_data {
@@ -836,7 +836,7 @@ extern bool discord_interaction_application_command_callback_data_flags_has(enum
  *   - <tt>discord_message_interaction_from_json(char *rbuf, size_t len, struct discord_message_interaction**)</tt>
  *   - <tt>discord_message_interaction_list_from_json(char *rbuf, size_t len, struct discord_message_interaction***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_message_interaction_to_json(char *wbuf, size_t len, struct discord_message_interaction *p)</tt>
+ *   - <tt>discord_message_interaction_to_json(char *wbuf, size_t len, struct discord_message_interaction*)</tt>
  *   - <tt>discord_message_interaction_list_to_json(char *wbuf, size_t len, struct discord_message_interaction**)</tt>
  */
 struct discord_message_interaction {

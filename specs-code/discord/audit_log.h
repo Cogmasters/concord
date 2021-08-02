@@ -19,7 +19,7 @@
  *   - <tt>discord_audit_log_from_json(char *rbuf, size_t len, struct discord_audit_log**)</tt>
  *   - <tt>discord_audit_log_list_from_json(char *rbuf, size_t len, struct discord_audit_log***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_audit_log_to_json(char *wbuf, size_t len, struct discord_audit_log *p)</tt>
+ *   - <tt>discord_audit_log_to_json(char *wbuf, size_t len, struct discord_audit_log*)</tt>
  *   - <tt>discord_audit_log_list_to_json(char *wbuf, size_t len, struct discord_audit_log**)</tt>
  */
 struct discord_audit_log {
@@ -126,7 +126,7 @@ extern bool discord_audit_log_events_has(enum discord_audit_log_events, char*);
  *   - <tt>discord_audit_log_entry_from_json(char *rbuf, size_t len, struct discord_audit_log_entry**)</tt>
  *   - <tt>discord_audit_log_entry_list_from_json(char *rbuf, size_t len, struct discord_audit_log_entry***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_audit_log_entry_to_json(char *wbuf, size_t len, struct discord_audit_log_entry *p)</tt>
+ *   - <tt>discord_audit_log_entry_to_json(char *wbuf, size_t len, struct discord_audit_log_entry*)</tt>
  *   - <tt>discord_audit_log_entry_list_to_json(char *wbuf, size_t len, struct discord_audit_log_entry**)</tt>
  */
 struct discord_audit_log_entry {
@@ -204,7 +204,7 @@ extern size_t discord_audit_log_entry_list_to_json(char *str, size_t len, struct
  *   - <tt>discord_audit_log_entry_optional_info_from_json(char *rbuf, size_t len, struct discord_audit_log_entry_optional_info**)</tt>
  *   - <tt>discord_audit_log_entry_optional_info_list_from_json(char *rbuf, size_t len, struct discord_audit_log_entry_optional_info***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_audit_log_entry_optional_info_to_json(char *wbuf, size_t len, struct discord_audit_log_entry_optional_info *p)</tt>
+ *   - <tt>discord_audit_log_entry_optional_info_to_json(char *wbuf, size_t len, struct discord_audit_log_entry_optional_info*)</tt>
  *   - <tt>discord_audit_log_entry_optional_info_list_to_json(char *wbuf, size_t len, struct discord_audit_log_entry_optional_info**)</tt>
  */
 struct discord_audit_log_entry_optional_info {
@@ -286,7 +286,7 @@ extern size_t discord_audit_log_entry_optional_info_list_to_json(char *str, size
  *   - <tt>discord_audit_log_change_from_json(char *rbuf, size_t len, struct discord_audit_log_change**)</tt>
  *   - <tt>discord_audit_log_change_list_from_json(char *rbuf, size_t len, struct discord_audit_log_change***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_audit_log_change_to_json(char *wbuf, size_t len, struct discord_audit_log_change *p)</tt>
+ *   - <tt>discord_audit_log_change_to_json(char *wbuf, size_t len, struct discord_audit_log_change*)</tt>
  *   - <tt>discord_audit_log_change_list_to_json(char *wbuf, size_t len, struct discord_audit_log_change**)</tt>
  */
 struct discord_audit_log_change {
@@ -348,7 +348,7 @@ extern size_t discord_audit_log_change_list_to_json(char *str, size_t len, struc
  *   - <tt>discord_audit_log_change_key_from_json(char *rbuf, size_t len, struct discord_audit_log_change_key**)</tt>
  *   - <tt>discord_audit_log_change_key_list_from_json(char *rbuf, size_t len, struct discord_audit_log_change_key***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_audit_log_change_key_to_json(char *wbuf, size_t len, struct discord_audit_log_change_key *p)</tt>
+ *   - <tt>discord_audit_log_change_key_to_json(char *wbuf, size_t len, struct discord_audit_log_change_key*)</tt>
  *   - <tt>discord_audit_log_change_key_list_to_json(char *wbuf, size_t len, struct discord_audit_log_change_key**)</tt>
  */
 struct discord_audit_log_change_key {

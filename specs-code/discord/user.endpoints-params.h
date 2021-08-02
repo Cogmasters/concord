@@ -19,7 +19,7 @@
  *   - <tt>discord_modify_current_user_params_from_json(char *rbuf, size_t len, struct discord_modify_current_user_params**)</tt>
  *   - <tt>discord_modify_current_user_params_list_from_json(char *rbuf, size_t len, struct discord_modify_current_user_params***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_modify_current_user_params_to_json(char *wbuf, size_t len, struct discord_modify_current_user_params *p)</tt>
+ *   - <tt>discord_modify_current_user_params_to_json(char *wbuf, size_t len, struct discord_modify_current_user_params*)</tt>
  *   - <tt>discord_modify_current_user_params_list_to_json(char *wbuf, size_t len, struct discord_modify_current_user_params**)</tt>
  */
 struct discord_modify_current_user_params {
@@ -77,7 +77,7 @@ extern size_t discord_modify_current_user_params_list_to_json(char *str, size_t 
  *   - <tt>discord_create_group_dm_params_from_json(char *rbuf, size_t len, struct discord_create_group_dm_params**)</tt>
  *   - <tt>discord_create_group_dm_params_list_from_json(char *rbuf, size_t len, struct discord_create_group_dm_params***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_create_group_dm_params_to_json(char *wbuf, size_t len, struct discord_create_group_dm_params *p)</tt>
+ *   - <tt>discord_create_group_dm_params_to_json(char *wbuf, size_t len, struct discord_create_group_dm_params*)</tt>
  *   - <tt>discord_create_group_dm_params_list_to_json(char *wbuf, size_t len, struct discord_create_group_dm_params**)</tt>
  */
 struct discord_create_group_dm_params {

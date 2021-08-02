@@ -19,7 +19,7 @@
  *   - <tt>discord_create_guild_from_guild_template_params_from_json(char *rbuf, size_t len, struct discord_create_guild_from_guild_template_params**)</tt>
  *   - <tt>discord_create_guild_from_guild_template_params_list_from_json(char *rbuf, size_t len, struct discord_create_guild_from_guild_template_params***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_create_guild_from_guild_template_params_to_json(char *wbuf, size_t len, struct discord_create_guild_from_guild_template_params *p)</tt>
+ *   - <tt>discord_create_guild_from_guild_template_params_to_json(char *wbuf, size_t len, struct discord_create_guild_from_guild_template_params*)</tt>
  *   - <tt>discord_create_guild_from_guild_template_params_list_to_json(char *wbuf, size_t len, struct discord_create_guild_from_guild_template_params**)</tt>
  */
 struct discord_create_guild_from_guild_template_params {
@@ -77,7 +77,7 @@ extern size_t discord_create_guild_from_guild_template_params_list_to_json(char 
  *   - <tt>discord_create_guild_template_params_from_json(char *rbuf, size_t len, struct discord_create_guild_template_params**)</tt>
  *   - <tt>discord_create_guild_template_params_list_from_json(char *rbuf, size_t len, struct discord_create_guild_template_params***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_create_guild_template_params_to_json(char *wbuf, size_t len, struct discord_create_guild_template_params *p)</tt>
+ *   - <tt>discord_create_guild_template_params_to_json(char *wbuf, size_t len, struct discord_create_guild_template_params*)</tt>
  *   - <tt>discord_create_guild_template_params_list_to_json(char *wbuf, size_t len, struct discord_create_guild_template_params**)</tt>
  */
 struct discord_create_guild_template_params {
@@ -135,7 +135,7 @@ extern size_t discord_create_guild_template_params_list_to_json(char *str, size_
  *   - <tt>discord_modify_guild_template_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_template_params**)</tt>
  *   - <tt>discord_modify_guild_template_params_list_from_json(char *rbuf, size_t len, struct discord_modify_guild_template_params***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_modify_guild_template_params_to_json(char *wbuf, size_t len, struct discord_modify_guild_template_params *p)</tt>
+ *   - <tt>discord_modify_guild_template_params_to_json(char *wbuf, size_t len, struct discord_modify_guild_template_params*)</tt>
  *   - <tt>discord_modify_guild_template_params_list_to_json(char *wbuf, size_t len, struct discord_modify_guild_template_params**)</tt>
  */
 struct discord_modify_guild_template_params {

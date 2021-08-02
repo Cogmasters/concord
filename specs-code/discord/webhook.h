@@ -19,7 +19,7 @@
  *   - <tt>discord_webhook_from_json(char *rbuf, size_t len, struct discord_webhook**)</tt>
  *   - <tt>discord_webhook_list_from_json(char *rbuf, size_t len, struct discord_webhook***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_webhook_to_json(char *wbuf, size_t len, struct discord_webhook *p)</tt>
+ *   - <tt>discord_webhook_to_json(char *wbuf, size_t len, struct discord_webhook*)</tt>
  *   - <tt>discord_webhook_list_to_json(char *wbuf, size_t len, struct discord_webhook**)</tt>
  */
 struct discord_webhook {

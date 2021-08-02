@@ -19,7 +19,7 @@
  *   - <tt>discord_component_from_json(char *rbuf, size_t len, struct discord_component**)</tt>
  *   - <tt>discord_component_list_from_json(char *rbuf, size_t len, struct discord_component***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_component_to_json(char *wbuf, size_t len, struct discord_component *p)</tt>
+ *   - <tt>discord_component_to_json(char *wbuf, size_t len, struct discord_component*)</tt>
  *   - <tt>discord_component_list_to_json(char *wbuf, size_t len, struct discord_component**)</tt>
  */
 struct discord_component {
@@ -127,7 +127,7 @@ extern bool discord_component_types_has(enum discord_component_types, char*);
  *   - <tt>discord_button_from_json(char *rbuf, size_t len, struct discord_button**)</tt>
  *   - <tt>discord_button_list_from_json(char *rbuf, size_t len, struct discord_button***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_button_to_json(char *wbuf, size_t len, struct discord_button *p)</tt>
+ *   - <tt>discord_button_to_json(char *wbuf, size_t len, struct discord_button*)</tt>
  *   - <tt>discord_button_list_to_json(char *wbuf, size_t len, struct discord_button**)</tt>
  */
 struct discord_button {
@@ -217,7 +217,7 @@ extern bool discord_button_styles_has(enum discord_button_styles, char*);
  *   - <tt>discord_select_menu_from_json(char *rbuf, size_t len, struct discord_select_menu**)</tt>
  *   - <tt>discord_select_menu_list_from_json(char *rbuf, size_t len, struct discord_select_menu***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_select_menu_to_json(char *wbuf, size_t len, struct discord_select_menu *p)</tt>
+ *   - <tt>discord_select_menu_to_json(char *wbuf, size_t len, struct discord_select_menu*)</tt>
  *   - <tt>discord_select_menu_list_to_json(char *wbuf, size_t len, struct discord_select_menu**)</tt>
  */
 struct discord_select_menu {
@@ -295,7 +295,7 @@ extern size_t discord_select_menu_list_to_json(char *str, size_t len, struct dis
  *   - <tt>discord_select_option_from_json(char *rbuf, size_t len, struct discord_select_option**)</tt>
  *   - <tt>discord_select_option_list_from_json(char *rbuf, size_t len, struct discord_select_option***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_select_option_to_json(char *wbuf, size_t len, struct discord_select_option *p)</tt>
+ *   - <tt>discord_select_option_to_json(char *wbuf, size_t len, struct discord_select_option*)</tt>
  *   - <tt>discord_select_option_list_to_json(char *wbuf, size_t len, struct discord_select_option**)</tt>
  */
 struct discord_select_option {

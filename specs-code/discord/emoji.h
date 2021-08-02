@@ -19,7 +19,7 @@
  *   - <tt>discord_emoji_from_json(char *rbuf, size_t len, struct discord_emoji**)</tt>
  *   - <tt>discord_emoji_list_from_json(char *rbuf, size_t len, struct discord_emoji***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_emoji_to_json(char *wbuf, size_t len, struct discord_emoji *p)</tt>
+ *   - <tt>discord_emoji_to_json(char *wbuf, size_t len, struct discord_emoji*)</tt>
  *   - <tt>discord_emoji_list_to_json(char *wbuf, size_t len, struct discord_emoji**)</tt>
  */
 struct discord_emoji {

@@ -37,7 +37,7 @@ extern bool discord_channel_types_has(enum discord_channel_types, char*);
  *   - <tt>discord_channel_from_json(char *rbuf, size_t len, struct discord_channel**)</tt>
  *   - <tt>discord_channel_list_from_json(char *rbuf, size_t len, struct discord_channel***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_channel_to_json(char *wbuf, size_t len, struct discord_channel *p)</tt>
+ *   - <tt>discord_channel_to_json(char *wbuf, size_t len, struct discord_channel*)</tt>
  *   - <tt>discord_channel_list_to_json(char *wbuf, size_t len, struct discord_channel**)</tt>
  */
 struct discord_channel {
@@ -186,7 +186,7 @@ extern bool discord_message_sticker_format_types_has(enum discord_message_sticke
  *   - <tt>discord_message_sticker_from_json(char *rbuf, size_t len, struct discord_message_sticker**)</tt>
  *   - <tt>discord_message_sticker_list_from_json(char *rbuf, size_t len, struct discord_message_sticker***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_message_sticker_to_json(char *wbuf, size_t len, struct discord_message_sticker *p)</tt>
+ *   - <tt>discord_message_sticker_to_json(char *wbuf, size_t len, struct discord_message_sticker*)</tt>
  *   - <tt>discord_message_sticker_list_to_json(char *wbuf, size_t len, struct discord_message_sticker**)</tt>
  */
 struct discord_message_sticker {
@@ -281,7 +281,7 @@ extern bool discord_message_flags_has(enum discord_message_flags, char*);
  *   - <tt>discord_message_reference_from_json(char *rbuf, size_t len, struct discord_message_reference**)</tt>
  *   - <tt>discord_message_reference_list_from_json(char *rbuf, size_t len, struct discord_message_reference***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_message_reference_to_json(char *wbuf, size_t len, struct discord_message_reference *p)</tt>
+ *   - <tt>discord_message_reference_to_json(char *wbuf, size_t len, struct discord_message_reference*)</tt>
  *   - <tt>discord_message_reference_list_to_json(char *wbuf, size_t len, struct discord_message_reference**)</tt>
  */
 struct discord_message_reference {
@@ -347,7 +347,7 @@ extern size_t discord_message_reference_list_to_json(char *str, size_t len, stru
  *   - <tt>discord_message_application_from_json(char *rbuf, size_t len, struct discord_message_application**)</tt>
  *   - <tt>discord_message_application_list_from_json(char *rbuf, size_t len, struct discord_message_application***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_message_application_to_json(char *wbuf, size_t len, struct discord_message_application *p)</tt>
+ *   - <tt>discord_message_application_to_json(char *wbuf, size_t len, struct discord_message_application*)</tt>
  *   - <tt>discord_message_application_list_to_json(char *wbuf, size_t len, struct discord_message_application**)</tt>
  */
 struct discord_message_application {
@@ -428,7 +428,7 @@ extern bool discord_message_activity_types_has(enum discord_message_activity_typ
  *   - <tt>discord_message_activity_from_json(char *rbuf, size_t len, struct discord_message_activity**)</tt>
  *   - <tt>discord_message_activity_list_from_json(char *rbuf, size_t len, struct discord_message_activity***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_message_activity_to_json(char *wbuf, size_t len, struct discord_message_activity *p)</tt>
+ *   - <tt>discord_message_activity_to_json(char *wbuf, size_t len, struct discord_message_activity*)</tt>
  *   - <tt>discord_message_activity_list_to_json(char *wbuf, size_t len, struct discord_message_activity**)</tt>
  */
 struct discord_message_activity {
@@ -511,7 +511,7 @@ extern bool discord_message_types_has(enum discord_message_types, char*);
  *   - <tt>discord_message_from_json(char *rbuf, size_t len, struct discord_message**)</tt>
  *   - <tt>discord_message_list_from_json(char *rbuf, size_t len, struct discord_message***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_message_to_json(char *wbuf, size_t len, struct discord_message *p)</tt>
+ *   - <tt>discord_message_to_json(char *wbuf, size_t len, struct discord_message*)</tt>
  *   - <tt>discord_message_list_to_json(char *wbuf, size_t len, struct discord_message**)</tt>
  */
 struct discord_message {
@@ -681,7 +681,7 @@ extern size_t discord_message_list_to_json(char *str, size_t len, struct discord
  *   - <tt>discord_channel_followed_channel_from_json(char *rbuf, size_t len, struct discord_channel_followed_channel**)</tt>
  *   - <tt>discord_channel_followed_channel_list_from_json(char *rbuf, size_t len, struct discord_channel_followed_channel***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_channel_followed_channel_to_json(char *wbuf, size_t len, struct discord_channel_followed_channel *p)</tt>
+ *   - <tt>discord_channel_followed_channel_to_json(char *wbuf, size_t len, struct discord_channel_followed_channel*)</tt>
  *   - <tt>discord_channel_followed_channel_list_to_json(char *wbuf, size_t len, struct discord_channel_followed_channel**)</tt>
  */
 struct discord_channel_followed_channel {
@@ -739,7 +739,7 @@ extern size_t discord_channel_followed_channel_list_to_json(char *str, size_t le
  *   - <tt>discord_channel_reaction_from_json(char *rbuf, size_t len, struct discord_channel_reaction**)</tt>
  *   - <tt>discord_channel_reaction_list_from_json(char *rbuf, size_t len, struct discord_channel_reaction***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_channel_reaction_to_json(char *wbuf, size_t len, struct discord_channel_reaction *p)</tt>
+ *   - <tt>discord_channel_reaction_to_json(char *wbuf, size_t len, struct discord_channel_reaction*)</tt>
  *   - <tt>discord_channel_reaction_list_to_json(char *wbuf, size_t len, struct discord_channel_reaction**)</tt>
  */
 struct discord_channel_reaction {
@@ -799,7 +799,7 @@ extern size_t discord_channel_reaction_list_to_json(char *str, size_t len, struc
  *   - <tt>discord_channel_overwrite_from_json(char *rbuf, size_t len, struct discord_channel_overwrite**)</tt>
  *   - <tt>discord_channel_overwrite_list_from_json(char *rbuf, size_t len, struct discord_channel_overwrite***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_channel_overwrite_to_json(char *wbuf, size_t len, struct discord_channel_overwrite *p)</tt>
+ *   - <tt>discord_channel_overwrite_to_json(char *wbuf, size_t len, struct discord_channel_overwrite*)</tt>
  *   - <tt>discord_channel_overwrite_list_to_json(char *wbuf, size_t len, struct discord_channel_overwrite**)</tt>
  */
 struct discord_channel_overwrite {
@@ -867,7 +867,7 @@ extern size_t discord_channel_overwrite_list_to_json(char *str, size_t len, stru
  *   - <tt>discord_thread_metadata_from_json(char *rbuf, size_t len, struct discord_thread_metadata**)</tt>
  *   - <tt>discord_thread_metadata_list_from_json(char *rbuf, size_t len, struct discord_thread_metadata***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_thread_metadata_to_json(char *wbuf, size_t len, struct discord_thread_metadata *p)</tt>
+ *   - <tt>discord_thread_metadata_to_json(char *wbuf, size_t len, struct discord_thread_metadata*)</tt>
  *   - <tt>discord_thread_metadata_list_to_json(char *wbuf, size_t len, struct discord_thread_metadata**)</tt>
  */
 struct discord_thread_metadata {
@@ -937,7 +937,7 @@ extern size_t discord_thread_metadata_list_to_json(char *str, size_t len, struct
  *   - <tt>discord_thread_member_from_json(char *rbuf, size_t len, struct discord_thread_member**)</tt>
  *   - <tt>discord_thread_member_list_from_json(char *rbuf, size_t len, struct discord_thread_member***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_thread_member_to_json(char *wbuf, size_t len, struct discord_thread_member *p)</tt>
+ *   - <tt>discord_thread_member_to_json(char *wbuf, size_t len, struct discord_thread_member*)</tt>
  *   - <tt>discord_thread_member_list_to_json(char *wbuf, size_t len, struct discord_thread_member**)</tt>
  */
 struct discord_thread_member {
@@ -1003,7 +1003,7 @@ extern size_t discord_thread_member_list_to_json(char *str, size_t len, struct d
  *   - <tt>discord_channel_attachment_from_json(char *rbuf, size_t len, struct discord_channel_attachment**)</tt>
  *   - <tt>discord_channel_attachment_list_from_json(char *rbuf, size_t len, struct discord_channel_attachment***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_channel_attachment_to_json(char *wbuf, size_t len, struct discord_channel_attachment *p)</tt>
+ *   - <tt>discord_channel_attachment_to_json(char *wbuf, size_t len, struct discord_channel_attachment*)</tt>
  *   - <tt>discord_channel_attachment_list_to_json(char *wbuf, size_t len, struct discord_channel_attachment**)</tt>
  */
 struct discord_channel_attachment {
@@ -1081,7 +1081,7 @@ extern size_t discord_channel_attachment_list_to_json(char *str, size_t len, str
  *   - <tt>discord_channel_mention_from_json(char *rbuf, size_t len, struct discord_channel_mention**)</tt>
  *   - <tt>discord_channel_mention_list_from_json(char *rbuf, size_t len, struct discord_channel_mention***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_channel_mention_to_json(char *wbuf, size_t len, struct discord_channel_mention *p)</tt>
+ *   - <tt>discord_channel_mention_to_json(char *wbuf, size_t len, struct discord_channel_mention*)</tt>
  *   - <tt>discord_channel_mention_list_to_json(char *wbuf, size_t len, struct discord_channel_mention**)</tt>
  */
 struct discord_channel_mention {
@@ -1147,7 +1147,7 @@ extern size_t discord_channel_mention_list_to_json(char *str, size_t len, struct
  *   - <tt>discord_channel_allowed_mentions_from_json(char *rbuf, size_t len, struct discord_channel_allowed_mentions**)</tt>
  *   - <tt>discord_channel_allowed_mentions_list_from_json(char *rbuf, size_t len, struct discord_channel_allowed_mentions***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_channel_allowed_mentions_to_json(char *wbuf, size_t len, struct discord_channel_allowed_mentions *p)</tt>
+ *   - <tt>discord_channel_allowed_mentions_to_json(char *wbuf, size_t len, struct discord_channel_allowed_mentions*)</tt>
  *   - <tt>discord_channel_allowed_mentions_list_to_json(char *wbuf, size_t len, struct discord_channel_allowed_mentions**)</tt>
  */
 struct discord_channel_allowed_mentions {
@@ -1213,7 +1213,7 @@ extern size_t discord_channel_allowed_mentions_list_to_json(char *str, size_t le
  *   - <tt>discord_embed_from_json(char *rbuf, size_t len, struct discord_embed**)</tt>
  *   - <tt>discord_embed_list_from_json(char *rbuf, size_t len, struct discord_embed***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_embed_to_json(char *wbuf, size_t len, struct discord_embed *p)</tt>
+ *   - <tt>discord_embed_to_json(char *wbuf, size_t len, struct discord_embed*)</tt>
  *   - <tt>discord_embed_list_to_json(char *wbuf, size_t len, struct discord_embed**)</tt>
  */
 struct discord_embed {
@@ -1315,7 +1315,7 @@ extern size_t discord_embed_list_to_json(char *str, size_t len, struct discord_e
  *   - <tt>discord_embed_thumbnail_from_json(char *rbuf, size_t len, struct discord_embed_thumbnail**)</tt>
  *   - <tt>discord_embed_thumbnail_list_from_json(char *rbuf, size_t len, struct discord_embed_thumbnail***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_embed_thumbnail_to_json(char *wbuf, size_t len, struct discord_embed_thumbnail *p)</tt>
+ *   - <tt>discord_embed_thumbnail_to_json(char *wbuf, size_t len, struct discord_embed_thumbnail*)</tt>
  *   - <tt>discord_embed_thumbnail_list_to_json(char *wbuf, size_t len, struct discord_embed_thumbnail**)</tt>
  */
 struct discord_embed_thumbnail {
@@ -1381,7 +1381,7 @@ extern size_t discord_embed_thumbnail_list_to_json(char *str, size_t len, struct
  *   - <tt>discord_embed_video_from_json(char *rbuf, size_t len, struct discord_embed_video**)</tt>
  *   - <tt>discord_embed_video_list_from_json(char *rbuf, size_t len, struct discord_embed_video***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_embed_video_to_json(char *wbuf, size_t len, struct discord_embed_video *p)</tt>
+ *   - <tt>discord_embed_video_to_json(char *wbuf, size_t len, struct discord_embed_video*)</tt>
  *   - <tt>discord_embed_video_list_to_json(char *wbuf, size_t len, struct discord_embed_video**)</tt>
  */
 struct discord_embed_video {
@@ -1447,7 +1447,7 @@ extern size_t discord_embed_video_list_to_json(char *str, size_t len, struct dis
  *   - <tt>discord_embed_image_from_json(char *rbuf, size_t len, struct discord_embed_image**)</tt>
  *   - <tt>discord_embed_image_list_from_json(char *rbuf, size_t len, struct discord_embed_image***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_embed_image_to_json(char *wbuf, size_t len, struct discord_embed_image *p)</tt>
+ *   - <tt>discord_embed_image_to_json(char *wbuf, size_t len, struct discord_embed_image*)</tt>
  *   - <tt>discord_embed_image_list_to_json(char *wbuf, size_t len, struct discord_embed_image**)</tt>
  */
 struct discord_embed_image {
@@ -1513,7 +1513,7 @@ extern size_t discord_embed_image_list_to_json(char *str, size_t len, struct dis
  *   - <tt>discord_embed_provider_from_json(char *rbuf, size_t len, struct discord_embed_provider**)</tt>
  *   - <tt>discord_embed_provider_list_from_json(char *rbuf, size_t len, struct discord_embed_provider***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_embed_provider_to_json(char *wbuf, size_t len, struct discord_embed_provider *p)</tt>
+ *   - <tt>discord_embed_provider_to_json(char *wbuf, size_t len, struct discord_embed_provider*)</tt>
  *   - <tt>discord_embed_provider_list_to_json(char *wbuf, size_t len, struct discord_embed_provider**)</tt>
  */
 struct discord_embed_provider {
@@ -1571,7 +1571,7 @@ extern size_t discord_embed_provider_list_to_json(char *str, size_t len, struct 
  *   - <tt>discord_embed_author_from_json(char *rbuf, size_t len, struct discord_embed_author**)</tt>
  *   - <tt>discord_embed_author_list_from_json(char *rbuf, size_t len, struct discord_embed_author***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_embed_author_to_json(char *wbuf, size_t len, struct discord_embed_author *p)</tt>
+ *   - <tt>discord_embed_author_to_json(char *wbuf, size_t len, struct discord_embed_author*)</tt>
  *   - <tt>discord_embed_author_list_to_json(char *wbuf, size_t len, struct discord_embed_author**)</tt>
  */
 struct discord_embed_author {
@@ -1637,7 +1637,7 @@ extern size_t discord_embed_author_list_to_json(char *str, size_t len, struct di
  *   - <tt>discord_embed_footer_from_json(char *rbuf, size_t len, struct discord_embed_footer**)</tt>
  *   - <tt>discord_embed_footer_list_from_json(char *rbuf, size_t len, struct discord_embed_footer***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_embed_footer_to_json(char *wbuf, size_t len, struct discord_embed_footer *p)</tt>
+ *   - <tt>discord_embed_footer_to_json(char *wbuf, size_t len, struct discord_embed_footer*)</tt>
  *   - <tt>discord_embed_footer_list_to_json(char *wbuf, size_t len, struct discord_embed_footer**)</tt>
  */
 struct discord_embed_footer {
@@ -1699,7 +1699,7 @@ extern size_t discord_embed_footer_list_to_json(char *str, size_t len, struct di
  *   - <tt>discord_embed_field_from_json(char *rbuf, size_t len, struct discord_embed_field**)</tt>
  *   - <tt>discord_embed_field_list_from_json(char *rbuf, size_t len, struct discord_embed_field***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_embed_field_to_json(char *wbuf, size_t len, struct discord_embed_field *p)</tt>
+ *   - <tt>discord_embed_field_to_json(char *wbuf, size_t len, struct discord_embed_field*)</tt>
  *   - <tt>discord_embed_field_list_to_json(char *wbuf, size_t len, struct discord_embed_field**)</tt>
  */
 struct discord_embed_field {

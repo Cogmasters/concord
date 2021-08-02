@@ -19,7 +19,7 @@
  *   - <tt>discord_get_invite_params_from_json(char *rbuf, size_t len, struct discord_get_invite_params**)</tt>
  *   - <tt>discord_get_invite_params_list_from_json(char *rbuf, size_t len, struct discord_get_invite_params***)</tt>
  * - JSON Encoder:
- *   - <tt>discord_get_invite_params_to_json(char *wbuf, size_t len, struct discord_get_invite_params *p)</tt>
+ *   - <tt>discord_get_invite_params_to_json(char *wbuf, size_t len, struct discord_get_invite_params*)</tt>
  *   - <tt>discord_get_invite_params_list_to_json(char *wbuf, size_t len, struct discord_get_invite_params**)</tt>
  */
 struct discord_get_invite_params {
