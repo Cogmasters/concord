@@ -30,7 +30,7 @@ When you write new functionality or fix bugs, it is important that you don't fid
 
 ### Patch Against Recent Source 
 
-Please try to get the latest available sources to make your patches against. It makes the lives of the developers so much easier. The very best is if you get the most up-to-date sources from the git repository, but the latest release archive is quite OK as well!
+Please try to get the latest available sources to make your patches against. It makes the lives of the developers so much easier.
 
 ### Documentation
 
