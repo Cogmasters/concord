@@ -2,13 +2,17 @@
 
 In order to keep the code concise and easy to read, there are a few rules to follow. Feel free to use this coding guidelines outside of this project.
 
+## Naming
+
+Try using a non-confusing naming scheme for your new functions and variable names. It doesn't necessarily have to mean that you should use the same as in other places of the code, just that the names should be logical, understandable and be named according to what they're used for. File-local functions should be made static. We like lower case names.
+
 ## Line Width
 
 Try to use lines that are at most 80 characters long. This is an amount of text that is easy to fit in most monitors. Don't be afraid to break a long function into many lines.
 
 ## Indentation
 
-Overall we will stick with two space identation. But if readability becomes an issue, your better judgment should tell you wether you need more or less identation. For compactness and readability this is the preferred identation style:
+We use only spaces for identation, never TABs. We use two spaces for each new open brace. If readability becomes an issue, your better judgment should tell you wether you need more or less identation. For compactness and readability this is the preferred identation style:
 
 ```c
 for (int i=0; i < n; ++i) {
@@ -24,6 +28,79 @@ for (int i=0; i < n; ++i) {
 }
 ```
 Use your surrounding code as a guide.
+
+## Braces
+
+In if/while/do/for expressions, we write the open brace on the same line as the keyword and we then set the closing brace on the same indentation level as the initial keyword. Like this:
+
+```c
+if (age < 40) {
+  ...
+}
+```
+
+You may omit the braces if they would contain only a one-line statement:
+
+```c
+if (!x) continue;
+```
+OR
+```c
+if (!x)
+  continue;
+```
+
+For functions the opening brace should be on a separate line:
+
+```c
+int main(int argc, char *argv[])
+{
+  return 0;
+}
+```
+
+## 'else' on the following line
+
+When adding an else clause to a conditional expression using braces, we add it on a new line after the closing brace. Like this:
+
+```c
+if (age < 40) {
+  ...
+}
+else {
+  ...
+}
+```
+
+## Space before parentheses
+
+When writing expressions using if/while/do/for, there shall be no space between the keyword and the open parenthesis. Like this:
+
+```c
+while (1) {
+  ...
+}
+```
+
+## No typedefed structs
+
+Use structs by all means, but do not typedef them. Use the `struct` name way of identifying them:
+
+```c
+struct something {
+   void *valid;
+   size_t way_to_write;
+};
+struct something instance;
+```
+Not okay:
+```c
+typedef struct {
+   void *wrong;
+   size_t way_to_write;
+} something;
+something instance;
+```
 
 ## Conditional Statements
 

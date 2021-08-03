@@ -1,10 +1,11 @@
 # Project Outline
+
 An explanation of important folders for developers who would like to contribute to Orca.
 
 | directory            | meaning                                                              |
 |----------------------|:---------------------------------------------------------------------|
 | bots/                | Example bots for new users                                           |
-| common/              | Common code used to build Orca                                       |
+| common/              | The backbone to wrap APIs using Orca                                 |
 | docs/                | Guidelines, roadmap, and other important information regarding Orca  |
 | licenses/            | License for Orca, and some other libraries used by Orca              |
 | mujs/                | An embedded JavaScript engine                                        |

@@ -123,14 +123,10 @@ valgrind ./your-bot.exe
 
 - [Documentation](https://cee-studio.github.io/orca/)
 - [How to make a bot](docs/BUILDING_A_BOT.md)
-- [Project outline](docs/PROJECT_OUTLINE.md)
+- [Contributing](docs/CONTRIBUTING.md)
 - [Discord Server](https://discord.gg/2jfycwXVM3)
 
-## Contributions are welcome!
-Check our Discord API's development [Roadmap](docs/DISCORD_ROADMAP.md) and [Coding Guidelines](docs/CODING_GUIDELINES.md) to get started
+## Contributing
+Check our [Contributing Guidelines](docs/CONTRIBUTING.md) to get started! If you are here for the Discord API, please check our [Discord API Roadmap](docs/DISCORD_ROADMAP.md).
 
-If you are not familiar with git and are not comfortable with creating pull requests without introducing merge 
-commits, please check our [Commit Guidelines](docs/COMMIT_GUIDELINES.md).
-
-
-**Please give a star if you like this project!**
+**Give us a star if you like this project!**
