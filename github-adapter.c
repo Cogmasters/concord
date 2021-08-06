@@ -4,7 +4,7 @@
 #include <stdarg.h>
 
 #include "github.h"
-#include "github-adapter.h"
+#include "github-internal.h"
 
 #include "json-scanf.h"
 #include "cee-utils.h"
@@ -19,36 +19,44 @@ github_adapter_cleanup(struct github_adapter *adapter) {
 static void
 curl_easy_setopt_cb(CURL *ehandle, void *data)
 {
-  struct github_adapter *adapter = data;
-  curl_easy_setopt(ehandle, CURLOPT_USERNAME, adapter->username);
-  curl_easy_setopt(ehandle, CURLOPT_USERPWD, adapter->token);
+  struct github_presets *presets = data;
+  curl_easy_setopt(ehandle, CURLOPT_USERNAME, presets->username);
+  curl_easy_setopt(ehandle, CURLOPT_USERPWD, presets->token);
 }
 
 void
-github_adapter_init(struct github_adapter *adapter, char username[], char token[])
+github_adapter_init(struct github_adapter *adapter, struct logconf *config, struct github_presets *presets)
 {
-  adapter->ua = ua_init(NULL);
+  adapter->ua = ua_init(config);
   ua_set_url(adapter->ua, GITHUB_BASE_API_URL);
   ua_reqheader_add(adapter->ua, "Accept", "application/vnd.github.v3+json");
+  ua_curl_easy_setopt(adapter->ua, presets, &curl_easy_setopt_cb);
+}
 
-  ua_curl_easy_setopt(adapter->ua, adapter, &curl_easy_setopt_cb);
-  adapter->username = username;
-  adapter->token = token;
+static void
+__log_error(char *str, size_t len, void *p) {
+  log_error("%.*s", (int)len, str);
 }
 
 /* template function for performing requests */
-void github_adapter_run(
+ORCAcode 
+github_adapter_run(
   struct github_adapter *adapter,
   struct ua_resp_handle *resp_handle,
   struct sized_buffer *req_body,
-  enum http_method http_method,
-  char endpoint[],
-  ...)
+  enum http_method http_method, char endpoint[], ...)
 {
   va_list args;
   va_start(args, endpoint);
 
-  ua_vrun(
+  /* IF UNSET, SET TO DEFAULT ERROR HANDLING CALLBACKS */
+  if (resp_handle && !resp_handle->err_cb) {
+    resp_handle->err_cb = &__log_error;
+    resp_handle->err_obj = NULL;
+  }
+
+  ORCAcode code;
+  code = ua_vrun(
     adapter->ua,
     NULL,
     resp_handle,
@@ -56,4 +64,6 @@ void github_adapter_run(
     http_method, endpoint, args);
 
   va_end(args);
+
+  return code;
 }

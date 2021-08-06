@@ -6,7 +6,6 @@
 
 #include "github.h"
 #include "cee-utils.h"
-#include "logconf.h"
 
 
 static
@@ -48,45 +47,38 @@ int main (int argc, char ** argv)
     exit(EXIT_FAILURE);
   }
 
-
-  struct github_git_op_file ** files = NULL;
-  files = (struct github_git_op_file**)ntl_calloc(argc-optind, sizeof(struct github_git_op_file));
+  ORCAcode code;
+  NTL_T(struct github_file) files = (void*)ntl_calloc(argc - optind, sizeof(struct github_file));
   for (int i = 0; files[i]; ++i)
     files[i]->path = argv[optind + i];
 
   curl_global_init(CURL_GLOBAL_ALL);
+  struct github *client = github_config_init(config_file, ".cee-repo");
 
-  struct logconf config = {0};
-  logconf_setup(&config, config_file);
-  struct sized_buffer username = logconf_get_field(&config, "github.username");
-  if (!username.size) {
-    fprintf(stderr, "Missing username\n");
-    return EXIT_FAILURE;
-  }
+  code = github_update_my_fork(client, NULL);
+  if (code != ORCA_OK) return EXIT_FAILURE;
 
-  struct sized_buffer token = logconf_get_field(&config, "github.token");
-  if (!token.size) {
-    fprintf(stderr, "Missing token\n");
-    return EXIT_FAILURE;
-  }
+  code = github_create_blobs(client, files);
+  if (code != ORCA_OK) return EXIT_FAILURE;
 
-  char *usernamecpy = strndup(username.start, username.size);
-  char *tokencpy = strndup(token.start, token.size);
-  struct github_git_op *data = github_git_op_init(usernamecpy, tokencpy, ".cee-repo");
-
-  github_git_op_update_my_fork(data);
-  github_git_op_create_blobs(data, files);
-  char * head_commit_sha = github_git_op_get_head_commit(data);
-  char * base_tree_sha = github_git_op_get_tree_sha(data, head_commit_sha);
-  char * tree_sha = github_git_op_create_tree(data, base_tree_sha, files);
-  char * commit_sha =
-    github_git_op_create_a_commit(data, tree_sha, head_commit_sha, commit_msg);
+  char *head_commit_sha=NULL, *base_tree_sha=NULL, *tree_sha=NULL, *commit_sha=NULL;
+  code = github_get_head_commit(client, &head_commit_sha);
+  if (code != ORCA_OK) return EXIT_FAILURE;
+  code = github_get_tree_sha(client, head_commit_sha, &base_tree_sha);
+  if (code != ORCA_OK) return EXIT_FAILURE;
+  code = github_create_tree(client, base_tree_sha, files, &tree_sha);
+  if (code != ORCA_OK) return EXIT_FAILURE;
+  code = github_create_a_commit(client, tree_sha, head_commit_sha, commit_msg, &commit_sha);
+  if (code != ORCA_OK) return EXIT_FAILURE;
 
   char new_branch[256];
   snprintf(new_branch, sizeof(new_branch), "n%ld", time(NULL));
-  github_git_op_create_a_branch(data, head_commit_sha, new_branch);
-  github_git_op_update_a_commit(data, new_branch, commit_sha);
-  github_git_op_create_a_pull_request(data, new_branch, commit_msg);
+  code = github_create_a_branch(client, head_commit_sha, new_branch);
+  if (code != ORCA_OK) return EXIT_FAILURE;
+  code = github_update_a_commit(client, new_branch, commit_sha);
+  if (code != ORCA_OK) return EXIT_FAILURE;
+  code = github_create_a_pull_request(client, new_branch, commit_msg);
+  if (code != ORCA_OK) return EXIT_FAILURE;
 
-  return 0;
+  return EXIT_SUCCESS;
 }
