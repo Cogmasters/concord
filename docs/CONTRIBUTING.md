@@ -6,7 +6,7 @@ This document intention is to provide guidelines on how to best contribute to th
 
 ### Join the Community
 
-Skip over to our [Discord Server](https://discord.gg/Q4Ub3wuF), our community will be more than happy to assist you with your questions!
+Skip over to our [Discord Server](https://discord.gg/Q4Ub3wuF), we will be more than happy to assist you!
 
 ### License and copyright
 
@@ -34,7 +34,7 @@ Please try to get the latest available sources to make your patches against. It 
 
 ### Documentation
 
-Writing docs is dead boring and one of the big problems with many open source projects. But someone's gotta do it! Please get yourself familiarized with [Doxygen](https://www.doxygen.nl/manual/docblocks.html) and use the surrounding code as a guide when documenting your patch. Once the patch is approved a automated [workflow](.github/workflows/gh_pages.yml) will automatically updated our documentation with your changes. If you wish to patch how the documentation is generated instead, please head to [orca-docs](https://github.com/cee-studio/orca-docs) and submit your changes there.
+Writing docs is dead boring and one of the big problems with many open source projects. But someone's gotta do it! Please get yourself familiarized with [Doxygen syntax](https://www.doxygen.nl/manual/docblocks.html) and use the surrounding code as a guide when documenting your patch. Once the patch is approved a automated [workflow](.github/workflows/gh_pages.yml) will automatically updated our documentation with your changes. If you wish to patch how the documentation is generated and rendered, please head to [orca-docs](https://github.com/cee-studio/orca-docs) and submit your changes there.
 
 ### Test Cases
 
