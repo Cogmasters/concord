@@ -55,7 +55,6 @@ SPECSGEN_SRC    := $(CEE_UTILS_DIR)/cee-utils.c   \
                    $(CEE_UTILS_DIR)/ntl.c         \
                    $(CEE_UTILS_DIR)/json-string.c \
                    $(CEE_UTILS_DIR)/json-scanf.c  \
-                   $(CEE_UTILS_DIR)/json-struct.c \
                    $(CEE_UTILS_DIR)/json-printf.c \
                    $(CEE_UTILS_DIR)/log.c         \
                    specs/specs-gen.c
