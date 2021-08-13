@@ -155,7 +155,7 @@ slack: common $(SLACK_OBJS) $(LIBSLACK)
 common: cee_utils $(COMMON_OBJS)
 cee_utils: $(CEE_UTILS_OBJS) | $(CEE_UTILS_DIR)
 
-specs: $(SPECS_OBJS)
+specs: $(SPECSGEN_OBJS)
 
 $(CEE_UTILS_OBJS): | $(OBJDIR)
 $(COMMON_OBJS): | $(OBJDIR)
@@ -163,7 +163,7 @@ $(DISCORD_OBJS): | $(OBJDIR)
 $(GITHUB_OBJS): | $(OBJDIR)
 $(REDDIT_OBJS): | $(OBJDIR)
 $(SLACK_OBJS): | $(OBJDIR)
-$(SPECS_OBJS): | $(OBJDIR)
+$(SPECSGEN_OBJS): | $(OBJDIR)
 $(SPECSGEN_OBJS): | $(SPECSGEN_OBJDIR)
 
 echo:
@@ -171,10 +171,10 @@ echo:
 	@ echo PREFIX: $(PREFIX)
 	@ echo BOTS_EXES: $(BOTS_EXES)
 	@ echo SPECS: $(SPECS)
-	@ echo SPECS_OBJS: $(SPECS_OBJS)
+	@ echo SPECSGEN_OBJS: $(SPECSGEN_OBJS)
 	@ echo SPECS_SUBDIR: $(SPECS_SUBDIR)
 
-specs_gen: cee_utils | $(SPECS_OBJS)
+specs_gen: cee_utils | $(SPECSGEN_OBJS)
 	@ $(MAKE) clean specs_clean clean_specs_gen all_headers specs
 
 bots:
