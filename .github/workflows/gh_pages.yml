@@ -55,5 +55,7 @@ jobs:
 
       - name: Run Makefile
         run: |
+          make purge
           git clone https://github.com/cee-studio/cee-utils
+          make specs_gen
           make
