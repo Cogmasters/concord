@@ -25,16 +25,16 @@
 struct discord;
 struct discord_voice_cbs;
 
-/** @defgroup Snowflake
+/** @defgroup DiscordLimitsSnowflake
  *  @see https://discord.com/developers/docs/reference#snowflakes
  *  @{ */
 #define DISCORD_SNOWFLAKE_INCREMENT           12
 #define DISCORD_SNOWFLAKE_PROCESS_ID          17
 #define DISCORD_SNOWFLAKE_INTERNAL_WORKER_ID  22
 #define DISCORD_SNOWFLAKE_TIMESTAMP           64
-/** @} */
+/** @} DiscordLimitsSnowflake */
 
-/** @defgroup GeneralLimits
+/** @defgroup DiscordLimitsGeneral
  *  @{ */
 #define DISCORD_MAX_NAME_LEN          100 + 1
 #define DISCORD_MAX_TOPIC_LEN         1024 + 1
@@ -45,9 +45,9 @@ struct discord_voice_cbs;
 #define DISCORD_MAX_MESSAGE_LEN       2000 + 1
 #define DISCORD_MAX_PAYLOAD_LEN       4096 + 1
 #define DISCORD_MAX_VOICE_CONNECTIONS 512
-/** @} */
+/** @} DiscordLimitsGeneral */
 
-/** @defgroup EmbedLimits
+/** @defgroup DiscordLimitsEmbed
  *  @see https://discord.com/developers/docs/resources/channel#embed-limits 
  *  @{ */
 #define DISCORD_EMBED_TITLE_LEN       256 + 1
@@ -57,13 +57,13 @@ struct discord_voice_cbs;
 #define DISCORD_EMBED_FIELD_VALUE_LEN 1024 + 1
 #define DISCORD_EMBED_FOOTER_TEXT_LEN 2048 + 1
 #define DISCORD_EMBED_AUTHOR_NAME_LEN 256 + 1
-/** @} */
+/** @} DiscordLimitsEmbed */
 
-/** @defgroup WebhookLimits
+/** @defgroup DiscordLimitsWebhook
  *  @see https://discord.com/developers/docs/resources/webhook#create-webhook-json-params
  *  @{ */
 #define DISCORD_WEBHOOK_NAME_LEN 80 + 1
-/** @} */
+/** @} DiscordLimitsWebhook */
 
 // see specs/discord/ for specs
 #include "specs-code/discord/all_opaque_struct.h"
@@ -72,6 +72,9 @@ struct discord_voice_cbs;
 #include "specs-code/discord/all_functions.h"
 
 
+/** @defgroup DiscordCallbacksGeneral
+ *  @brief General-purpose callbacks
+ *  @{ */
 /**
  * @brief Event Handling Mode callback
  *
@@ -103,11 +106,14 @@ typedef void (*discord_event_raw_cb)(
     enum discord_gateway_events event, 
     struct sized_buffer *sb_bot, 
     struct sized_buffer *event_data);
+/** @} DiscordCallbacksGeneral */
 
+/** @defgroup DiscordCallbacksGuild
+ *  @brief Guild-event callbacks
+ *  @see https://discord.com/developers/docs/topics/gateway#guilds 
+ *  @{ */
 /**
  * @brief Guild Role Create/Update callback
- *
- * @see https://discord.com/developers/docs/topics/gateway#guilds 
  * @see discord_set_on_guild_role_create() 
  * @see discord_set_on_guild_role_update() 
  */
@@ -117,8 +123,6 @@ typedef void (*discord_guild_role_cb)(
     const struct discord_permissions_role *role);
 /**
  * @brief Guild Role Delete callback
- *
- * @see https://discord.com/developers/docs/topics/gateway#guilds 
  * @see discord_set_on_guild_role_delete() 
  */
 typedef void (*discord_guild_role_delete_cb)(
@@ -128,8 +132,6 @@ typedef void (*discord_guild_role_delete_cb)(
 
 /**
  * @brief Guild Member Add/Update callback
- *
- * @see https://discord.com/developers/docs/topics/gateway#guilds 
  * @see discord_set_on_guild_member_add() 
  * @see discord_set_on_guild_member_update() 
  */
@@ -139,8 +141,6 @@ typedef void (*discord_guild_member_cb)(
     const struct discord_guild_member *member);
 /**
  * @brief Guild Member Remove callback
- *
- * @see https://discord.com/developers/docs/topics/gateway#guilds 
  * @see discord_set_on_guild_member_remove() 
  */
 typedef void (*discord_guild_member_remove_cb)(
@@ -150,8 +150,6 @@ typedef void (*discord_guild_member_remove_cb)(
 
 /**
  * @brief Guild Ban Add/Remove callback
- *
- * @see https://discord.com/developers/docs/topics/gateway#guilds 
  * @see discord_set_on_guild_ban_add() 
  * @see discord_set_on_guild_ban_remove() 
  */
@@ -159,11 +157,14 @@ typedef void (*discord_guild_ban_cb)(
     struct discord *client, const struct discord_user *bot, 
     const u64_snowflake_t guild_id, 
     const struct discord_user *user);
+/** @} DiscordCallbacksGuild */
 
+/** @defgroup DiscordCallbacksMessage
+ *  @brief Message-event callbacks
+ *  @see https://discord.com/developers/docs/topics/gateway#messages 
+ *  @{ */
 /**
  * @brief Message Create/Update callback
- *
- * @see https://discord.com/developers/docs/topics/gateway#messages 
  * @see discord_set_on_message_create() 
  * @see discord_set_on_message_update() 
  */
@@ -178,8 +179,6 @@ typedef void (*discord_sb_message_cb)(
 
 /**
  * @brief Message Delete callback
- *
- * @see https://discord.com/developers/docs/topics/gateway#messages 
  * @see discord_set_on_message_delete() 
  */
 typedef void (*discord_message_delete_cb)(
@@ -189,8 +188,6 @@ typedef void (*discord_message_delete_cb)(
     const u64_snowflake_t guild_id);
 /**
  * @brief Message Delete Bulk callback
- *
- * @see https://discord.com/developers/docs/topics/gateway#messages 
  * @see discord_set_on_message_delete_bulk() 
  */
 typedef void (*discord_message_delete_bulk_cb)(
@@ -200,31 +197,7 @@ typedef void (*discord_message_delete_bulk_cb)(
     const u64_snowflake_t guild_id);
 
 /**
- * @brief Channel Create/Update/Delete callback
- *
- * @see https://discord.com/developers/docs/topics/gateway#channels 
- * @see discord_set_on_channel_create() 
- * @see discord_set_on_channel_update() 
- * @see discord_set_on_channel_delete() 
- */
-typedef void (*discord_channel_cb)(
-    struct discord *client, const struct discord_user *bot, 
-    const struct discord_channel *channel);
-/**
- * @brief Channel Pins Update callback
- *
- * @see https://discord.com/developers/docs/topics/gateway#channels 
- * @see discord_set_on_channel_pins_update() 
- */
-typedef void (*discord_channel_pins_update_cb)(
-    struct discord *client, const struct discord_user *bot, 
-    const u64_snowflake_t guild_id,
-    const u64_snowflake_t channel_id,
-    const u64_unix_ms_t last_pin_timestamp);
-
-/**
  * @brief Message Reaction Add callback
- * @see https://discord.com/developers/docs/topics/gateway#messages 
  * @see discord_set_on_message_reaction_add() 
  */
 typedef void (*discord_message_reaction_add_cb)(
@@ -237,7 +210,6 @@ typedef void (*discord_message_reaction_add_cb)(
     const struct discord_emoji *emoji);
 /**
  * @brief Message Reaction Remove callback
- * @see https://discord.com/developers/docs/topics/gateway#messages 
  * @see discord_set_on_message_reaction_remove() 
  */
 typedef void (*discord_message_reaction_remove_cb)(
@@ -249,7 +221,6 @@ typedef void (*discord_message_reaction_remove_cb)(
     const struct discord_emoji *emoji);
 /**
  * @brief Message Reaction Remove All callback
- * @see https://discord.com/developers/docs/topics/gateway#messages 
  * @see discord_set_on_message_reaction_remove_all() 
  */
 typedef void (*discord_message_reaction_remove_all_cb)(
@@ -259,7 +230,6 @@ typedef void (*discord_message_reaction_remove_all_cb)(
     const u64_snowflake_t guild_id);
 /**
  * @brief Message Reaction Remove Emoji callback
- * @see https://discord.com/developers/docs/topics/gateway#messages 
  * @see discord_set_on_message_reaction_remove_emoji() 
  */
 typedef void (*discord_message_reaction_remove_emoji_cb)(
@@ -268,10 +238,14 @@ typedef void (*discord_message_reaction_remove_emoji_cb)(
     const u64_snowflake_t message_id, 
     const u64_snowflake_t guild_id,
     const struct discord_emoji *emoji);
+/** @} DiscordCallbacksMessage */
 
+/** @defgroup DiscordCallbacksVoice
+ *  @brief Voice-event callbacks
+ *  @see https://discord.com/developers/docs/topics/gateway#voice
+ *  @{ */
 /**
  * @brief Voice State Update callback
- * @see https://discord.com/developers/docs/topics/gateway#voice
  * @see discord_set_on_voice_state_update() 
  */
 typedef void (*discord_voice_state_update_cb)(
@@ -279,7 +253,6 @@ typedef void (*discord_voice_state_update_cb)(
     const struct discord_voice_state *voice_state);
 /**
  * @brief Voice Server Update callback
- * @see https://discord.com/developers/docs/topics/gateway#voice
  * @see discord_set_on_voice_server_update() 
  */
 typedef void (*discord_voice_server_update_cb)(
@@ -287,6 +260,34 @@ typedef void (*discord_voice_server_update_cb)(
     const char *token,
     const u64_snowflake_t guild_id,
     const char *endpoint);
+/** @} DiscordCallbacksVoice */
+
+/** @defgroup DiscordCallbacksChannel
+ *  @brief Channel-event callbacks
+ *  @see https://discord.com/developers/docs/topics/gateway#channels 
+ *  @{ */
+/**
+ * @brief Channel Create/Update/Delete callback
+ *
+ * @see discord_set_on_channel_create() 
+ * @see discord_set_on_channel_update() 
+ * @see discord_set_on_channel_delete() 
+ */
+typedef void (*discord_channel_cb)(
+    struct discord *client, const struct discord_user *bot, 
+    const struct discord_channel *channel);
+/**
+ * @brief Channel Pins Update callback
+ *
+ * @see discord_set_on_channel_pins_update() 
+ */
+typedef void (*discord_channel_pins_update_cb)(
+    struct discord *client, const struct discord_user *bot, 
+    const u64_snowflake_t guild_id,
+    const u64_snowflake_t channel_id,
+    const u64_unix_ms_t last_pin_timestamp);
+/** @} DiscordCallbacksChannel */
+
 
 /**
  * @todo make this specs generated code
@@ -780,7 +781,7 @@ void discord_set_presence(struct discord *client, struct discord_gateway_activit
  /* * * * * * * * * * * * * * * * */
 /* * * * ENDPOINT FUNCTIONS * * * */
 
-/** @defgroup AuditLogEndpoints
+/** @defgroup DiscordEndpointsAuditLog
  *  @{ */
 /**
  * @brief @b GET /guilds/{guild.id}/audit-logs
@@ -795,9 +796,9 @@ void discord_set_presence(struct discord *client, struct discord_gateway_activit
  * @see https://discord.com/developers/docs/resources/audit-log#get-guild-audit-log
  */
 ORCAcode discord_get_guild_audit_log(struct discord *client, const u64_snowflake_t guild_id, struct discord_get_guild_audit_log_params *params, struct discord_audit_log *p_audit_log);
-/** @} */
+/** @} DiscordEndpointsAuditLog */
 
-/** @defgroup ChannelEndpoints
+/** @defgroup DiscordEndpointsChannel
  *  @{ */
 /**
  * @brief @b GET /channels/{channel.id}
@@ -991,18 +992,18 @@ ORCAcode discord_list_active_threads(struct discord *client, const u64_snowflake
 ORCAcode discord_list_public_archived_threads(struct discord *client, const u64_snowflake_t channel_id, const u64_unix_ms_t before, const int limit, struct discord_thread_response_body *body);
 ORCAcode discord_list_private_archived_threads(struct discord *client, const u64_snowflake_t channel_id, const u64_unix_ms_t before, const int limit, struct discord_thread_response_body *body);
 ORCAcode discord_list_joined_private_archived_threads(struct discord *client, const u64_snowflake_t channel_id, const u64_unix_ms_t before, const int limit, struct discord_thread_response_body *body);
-/** @} */
+/** @} DiscordEndpointsChannel */
 
-/** @defgroup EmojiEndpoints
+/** @defgroup DiscordEndpointsEmoji
  *  @{ */
 ORCAcode discord_list_guild_emojis(struct discord *client, const u64_snowflake_t guild_id, NTL_T(struct discord_emoji) *p_emojis);
 ORCAcode discord_get_guild_emoji(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t emoji_id, struct discord_emoji *p_emoji);
 ORCAcode discord_create_guild_emoji(struct discord *client, const u64_snowflake_t guild_id, struct discord_create_guild_emoji_params *params, struct discord_emoji *p_emoji);
 ORCAcode discord_modify_guild_emoji(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t emoji_id, struct discord_modify_guild_emoji_params *params, struct discord_emoji *p_emoji);
 ORCAcode discord_delete_guild_emoji(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t emoji_id);
-/** @} */
+/** @} DiscordEndpointsEmoji */
 
-/** @defgroup GuildEndpoints
+/** @defgroup DiscordEndpointsGuild
  *  @{ */
 ORCAcode discord_create_guild(struct discord *client, struct discord_create_guild_params *params, struct discord_guild *p_guild);
 ORCAcode discord_get_guild(struct discord *client, const u64_snowflake_t guild_id, struct discord_guild *p_guild);
@@ -1030,15 +1031,15 @@ ORCAcode discord_create_guild_role(struct discord *client, const u64_snowflake_t
 ORCAcode discord_modify_guild_role_positions(struct discord *client, const u64_snowflake_t guild_id, NTL_T(struct discord_modify_guild_role_positions_params) params, NTL_T(struct discord_permissions_role) *p_roles);
 ORCAcode discord_modify_guild_role(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t role_id, struct discord_modify_guild_role_params *params, struct discord_permissions_role *p_role);
 ORCAcode discord_delete_guild_role(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t role_id);
-/** @} */
+/** @} DiscordEndpointsGuild */
 
-/** @defgroup InviteEndpoints
+/** @defgroup DiscordEndpointsInvite
  *  @{ */
 ORCAcode discord_get_invite(struct discord *client, char *invite_code, struct discord_get_invite_params *params, struct discord_invite *p_invite);
 ORCAcode discord_delete_invite(struct discord *client, char *invite_code, struct discord_invite *p_invite);
-/** @} */
+/** @} DiscordEndpointsInvite */
 
-/** @defgroup UserEndpoints
+/** @defgroup DiscordEndpointsUser
  *  @{ */
 ORCAcode discord_get_user(struct discord *client, const u64_snowflake_t user_id, struct discord_user *p_user);
 ORCAcode discord_modify_current_user(struct discord *client, struct discord_modify_current_user_params *params, struct discord_user *p_user);
@@ -1049,24 +1050,24 @@ ORCAcode discord_leave_guild(struct discord *client, const u64_snowflake_t guild
 ORCAcode discord_create_dm(struct discord *client, const u64_snowflake_t recipient_id, struct discord_channel *p_dm_channel);
 ORCAcode discord_create_group_dm(struct discord *client, struct discord_create_group_dm_params *params, struct discord_channel *p_dm_channel);
 ORCAcode discord_get_user_connections(struct discord *client, NTL_T(struct discord_connection) *p_connections);
-/** @} */
+/** @} DiscordEndpointsUser */
 
-/** @defgroup VoiceEndpoints
+/** @defgroup DiscordEndpointsVoice
  *  @{ */
 ORCAcode discord_list_voice_regions(struct discord *client, NTL_T(struct discord_voice_region) *p_voice_regions);
-/** @} */
+/** @} DiscordEndpointsVoice */
 
-/** @defgroup GatewayEndpoints
+/** @defgroup DiscordEndpointsGateway
  *  @{ */
 ORCAcode discord_get_gateway(struct discord *client, struct discord_session *p_session);
 ORCAcode discord_get_gateway_bot(struct discord *client, struct discord_session *p_session);
-/** @} */
+/** @} DiscordEndpointsGateway */
 
 
 /* * * * * * * * * * * * * * * * * * * */
 /* * * * MISCELLANEOUS FUNCTIONS * * * */
 
-/** @defgroup EmbedMisc
+/** @defgroup DiscordMiscEmbed
  *  @{ */
 void discord_embed_set_thumbnail(struct discord_embed *embed, char url[], char proxy_url[], int height, int width);
 void discord_embed_set_image(struct discord_embed *embed, char url[], char proxy_url[], int height, int width);
@@ -1076,18 +1077,18 @@ void discord_embed_set_provider(struct discord_embed *embed, char name[], char u
 void discord_embed_set_author(struct discord_embed *embed, char name[], char url[], char icon_url[], char proxy_icon_url[]);
 void discord_embed_set_title(struct discord_embed *embed, char format[], ...);
 void discord_embed_add_field(struct discord_embed *embed, char name[], char value[], bool Inline);
-/** @} */
+/** @} DiscordMiscEmbed */
 
-/** @defgroup ChannelMisc
+/** @defgroup DiscordMiscChannel
  *  @{ */
 void discord_overwrite_append(NTL_T(struct discord_channel_overwrite) *permission_overwrites, u64_snowflake_t id, int type, enum discord_permissions_bitwise_flags allow, enum discord_permissions_bitwise_flags deny);
 ORCAcode discord_get_channel_at_pos(struct discord *client, const u64_snowflake_t guild_id, const enum discord_channel_types type, const size_t position, struct discord_channel *p_channel);
 ORCAcode discord_delete_messages_by_author_id(struct discord *client, u64_snowflake_t channel_id, u64_snowflake_t author_id);
-/** @} */
+/** @} DiscordMiscChannel */
 
-/** @defgroup GuildMisc
+/** @defgroup DiscordMiscGuild
  *  @{ */
 ORCAcode discord_disconnect_guild_member(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id, struct discord_guild_member *p_member);
-/** @} */
+/** @} DiscordMiscGuild */
 
 #endif // DISCORD_H
