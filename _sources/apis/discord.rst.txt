@@ -33,25 +33,11 @@ Primitives
 Callbacks
 ~~~~~~~~~
 
-.. doxygentypedef:: discord_event_mode_cb
-.. doxygentypedef:: discord_idle_cb
-.. doxygentypedef:: discord_event_raw_cb
-.. doxygentypedef:: discord_guild_role_cb
-.. doxygentypedef:: discord_guild_role_delete_cb
-.. doxygentypedef:: discord_guild_member_cb
-.. doxygentypedef:: discord_guild_member_remove_cb
-.. doxygentypedef:: discord_guild_ban_cb
-.. doxygentypedef:: discord_message_cb
-.. doxygentypedef:: discord_message_delete_cb
-.. doxygentypedef:: discord_message_delete_bulk_cb
-.. doxygentypedef:: discord_channel_cb
-.. doxygentypedef:: discord_channel_pins_update_cb
-.. doxygentypedef:: discord_message_reaction_add_cb
-.. doxygentypedef:: discord_message_reaction_remove_cb
-.. doxygentypedef:: discord_message_reaction_remove_all_cb
-.. doxygentypedef:: discord_message_reaction_remove_emoji_cb
-.. doxygentypedef:: discord_voice_state_update_cb
-.. doxygentypedef:: discord_voice_server_update_cb
+.. doxygengroup:: DiscordCallbacksGeneral
+.. doxygengroup:: DiscordCallbacksGuild
+.. doxygengroup:: DiscordCallbacksMessage
+.. doxygengroup:: DiscordCallbacksChannel
+.. doxygengroup:: DiscordCallbacksVoice
 
 Audit Log
 ~~~~~~~~~
@@ -134,10 +120,10 @@ Gateway
 Macros
 ------
 
-.. doxygengroup:: Snowflake
-.. doxygengroup:: GeneralLimits
-.. doxygengroup:: EmbedLimits
-.. doxygengroup:: WebhookLimits
+.. doxygengroup:: DiscordLimitsSnowflake
+.. doxygengroup:: DiscordLimitsGeneral
+.. doxygengroup:: DiscordLimitsEmbed
+.. doxygengroup:: DiscordLimitsWebhook
 
 Functions
 ---------
@@ -202,49 +188,49 @@ Misc
 Audit Log
 ~~~~~~~~~
 
-.. doxygengroup:: AuditLogEndpoints
+.. doxygengroup:: DiscordEndpointsAuditLog
     :content-only:
 
 Channel
 ~~~~~~~
 
-.. doxygengroup:: ChannelEndpoints
+.. doxygengroup:: DiscordEndpointsChannel
     :content-only:
 
 Emoji
 ~~~~~
 
-.. doxygengroup:: EmojiEndpoints
+.. doxygengroup:: DiscordEndpointsEmoji
     :content-only:
 
 Guild
 ~~~~~
 
-.. doxygengroup:: GuildEndpoints
+.. doxygengroup:: DiscordEndpointsGuild
     :content-only:
 
 Invite
 ~~~~~~
 
-.. doxygengroup:: InviteEndpoints
+.. doxygengroup:: DiscordEndpointsInvite
     :content-only:
 
 User
 ~~~~
 
-.. doxygengroup:: UserEndpoints
+.. doxygengroup:: DiscordEndpointsUser
     :content-only:
 
 Voice
 ~~~~~
 
-.. doxygengroup:: VoiceEndpoints
+.. doxygengroup:: DiscordEndpointsVoice
     :content-only:
 
 Gateway
 ~~~~~~~
 
-.. doxygengroup:: GatewayEndpoints
+.. doxygengroup:: DiscordEndpointsGateway
     :content-only:
 
 Misc
@@ -253,17 +239,17 @@ Misc
 Channel
 ^^^^^^^
 
-.. doxygengroup:: ChannelMisc
+.. doxygengroup:: DiscordMiscChannel
     :content-only:
 
 Guild
 ^^^^^
 
-.. doxygengroup:: GuildMisc
+.. doxygengroup:: DiscordMiscGuild
     :content-only:
 
 Embed
 ^^^^^
 
-.. doxygengroup:: EmbedMisc
+.. doxygengroup:: DiscordMiscEmbed
     :content-only:
