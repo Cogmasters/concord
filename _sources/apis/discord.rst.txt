@@ -24,12 +24,6 @@ Client
 Datatypes
 ---------
 
-Primitives
-~~~~~~~~~~
-
-.. doxygentypedef:: u64_snowflake_t
-.. doxygentypedef:: u64_unix_ms_t
-
 Callbacks
 ~~~~~~~~~
 

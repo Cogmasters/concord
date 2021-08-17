@@ -1,0 +1,363 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Orca Types Reference &#8212; Orca  documentation</title>
+    
+  <link href="../_static/css/theme.css" rel="stylesheet" />
+  <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="https://raw.githubusercontent.com/cee-studio/orca-docs/master/docs/source/images/icon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="WebSockets Reference" href="websockets.html" />
+    <link rel="prev" title="Building with Orca" href="index.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+
+  <div id="navbar-start">
+    
+    
+<a class="navbar-brand" href="../index.html">
+<p class="title">Orca</p>
+</a>
+
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../apis/index.html">
+  Supported APIs
+ </a>
+</li>
+
+<li class="toctree-l1 current active nav-item">
+ <a class="reference internal nav-link" href="index.html">
+  Building with Orca
+ </a>
+</li>
+
+    
+    <li class="nav-item">
+        <a class="nav-link nav-external" href="https://www.cee.studio/">SaiphC<i class="fas fa-external-link-alt"></i></a>
+    </li>
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/cee-studio/orca" rel="noopener" target="_blank" title="GitHub">
+            <span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label>
+          </a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+            
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Types
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="websockets.html">
+   WebSockets
+  </a>
+ </li>
+</ul>
+
+  </div>
+</nav>
+            </div>
+            
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+            
+              
+              <div class="toc-item">
+                
+<div class="tocsection onthispage pt-5 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#primitives">
+   Primitives
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#error-codes">
+   Error Codes
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#limits">
+   Limits
+  </a>
+ </li>
+</ul>
+
+</nav>
+              </div>
+              
+              <div class="toc-item">
+                
+
+<div class="tocsection editthispage">
+    <a href="https://github.com/cee-studio/orca-docs/edit/master/docs/source/common/types.rst">
+        <i class="fas fa-pencil-alt"></i> Edit this page
+    </a>
+</div>
+
+              </div>
+              
+            
+          </div>
+          
+
+          
+          
+            
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <div class="section" id="orca-types-reference">
+<h1>Orca Types Reference<a class="headerlink" href="#orca-types-reference" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="primitives">
+<h2>Primitives<a class="headerlink" href="#primitives" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="group__OrcaTypes"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">OrcaTypes</span></span></dt>
+<dd><p>Commonly used datatypes with various APIs. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-typedefs">Typedefs</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.u64_unix_ms_t">
+<span class="target" id="group__OrcaTypes_1ga8c10c2449cb2148f47b8a032af96dd60"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">u64_unix_ms_t</span></span></span><a class="headerlink" href="#c.u64_unix_ms_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>unix time in ms </p>
+</dd></dl>
+
+<dl class="c type">
+<dt class="sig sig-object c" id="c.u64_snowflake_t">
+<span class="target" id="group__OrcaTypes_1ga2aca4957fe0e14f7ab03fdaeb17d8fb9"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">u64_snowflake_t</span></span></span><a class="headerlink" href="#c.u64_snowflake_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>snowflake datatype </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="error-codes">
+<h2>Error Codes<a class="headerlink" href="#error-codes" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="group__OrcaCodes"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">OrcaCodes</span></span></dt>
+<dd><p>Error code returned by Orca REST functions. </p>
+<p><dl>
+<dt class="sig sig-object cpp">
+<em><span class="pre">Todo:</span></em></dt>
+<dd><p>add origins links</p>
+</dd></dl>
+
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.ORCA_OK">
+<span class="target" id="group__OrcaCodes_1gab234ec8eeddc7f0abf7324b995fcfcb4"></span><span class="sig-name descname"><span class="n"><span class="pre">ORCA_OK</span></span></span> <span class="pre">0</span><a class="headerlink" href="#c.ORCA_OK" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>request was a success </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.ORCA_NO_RESPONSE">
+<span class="target" id="group__OrcaCodes_1ga8880e92512783e988d4755f9f03c4580"></span><span class="sig-name descname"><span class="n"><span class="pre">ORCA_NO_RESPONSE</span></span></span> <span class="pre">-1</span><a class="headerlink" href="#c.ORCA_NO_RESPONSE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>failure connecting to API’s url </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.ORCA_UNUSUAL_HTTP_CODE">
+<span class="target" id="group__OrcaCodes_1ga110d8f5a1faaf13ba1a763b7b260c82b"></span><span class="sig-name descname"><span class="n"><span class="pre">ORCA_UNUSUAL_HTTP_CODE</span></span></span> <span class="pre">-2</span><a class="headerlink" href="#c.ORCA_UNUSUAL_HTTP_CODE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>received a non-standard http code </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.ORCA_MISSING_PARAMETER">
+<span class="target" id="group__OrcaCodes_1gafc0b28e6e4fc98109015eb537f207bd7"></span><span class="sig-name descname"><span class="n"><span class="pre">ORCA_MISSING_PARAMETER</span></span></span> <span class="pre">-3</span><a class="headerlink" href="#c.ORCA_MISSING_PARAMETER" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>missing a mandatory function parameter </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.ORCA_BAD_PARAMETER">
+<span class="target" id="group__OrcaCodes_1gaf21cf4909ec6435f4d6ced88922bcea8"></span><span class="sig-name descname"><span class="n"><span class="pre">ORCA_BAD_PARAMETER</span></span></span> <span class="pre">-4</span><a class="headerlink" href="#c.ORCA_BAD_PARAMETER" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>unexpected value for parameter </p>
+</dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.ORCA_BAD_JSON">
+<span class="target" id="group__OrcaCodes_1ga641eec95dca09556c3cbf01121015e28"></span><span class="sig-name descname"><span class="n"><span class="pre">ORCA_BAD_JSON</span></span></span> <span class="pre">-5</span><a class="headerlink" href="#c.ORCA_BAD_JSON" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>internal failure when encoding or decoding JSON </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-typedefs">Typedefs</p>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.ORCAcode">
+<span class="target" id="group__OrcaCodes_1ga9cf2c634d026f2b4665d1859fe596b90"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ORCAcode</span></span></span><a class="headerlink" href="#c.ORCAcode" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the error code datatype </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="limits">
+<h2>Limits<a class="headerlink" href="#limits" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="group__OrcaLimits"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">OrcaLimits</span></span></dt>
+<dd><p>Limits discovered across the web. </p>
+<p><dl>
+<dt class="sig sig-object cpp">
+<em><span class="pre">Todo:</span></em></dt>
+<dd><p>add reference links</p>
+</dd></dl>
+
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.ORCA_LIMITS_SHA256">
+<span class="target" id="group__OrcaLimits_1ga9a53399e4608bf68e17284abd681e7ec"></span><span class="sig-name descname"><span class="n"><span class="pre">ORCA_LIMITS_SHA256</span></span></span> <span class="pre">1024</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.ORCA_LIMITS_SHA256" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.ORCA_LIMITS_LOCALE">
+<span class="target" id="group__OrcaLimits_1ga2e4dbb65d307bbaa9926e24d246b5c57"></span><span class="sig-name descname"><span class="n"><span class="pre">ORCA_LIMITS_LOCALE</span></span></span> <span class="pre">16</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.ORCA_LIMITS_LOCALE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.ORCA_LIMITS_EMAIL">
+<span class="target" id="group__OrcaLimits_1ga97bc9ad1de9ed51089928ea66d8442d4"></span><span class="sig-name descname"><span class="n"><span class="pre">ORCA_LIMITS_EMAIL</span></span></span> <span class="pre">254</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.ORCA_LIMITS_EMAIL" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.ORCA_LIMITS_REGION">
+<span class="target" id="group__OrcaLimits_1gaef17459f932a9385f06fd6c57a7d4db6"></span><span class="sig-name descname"><span class="n"><span class="pre">ORCA_LIMITS_REGION</span></span></span> <span class="pre">16</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.ORCA_LIMITS_REGION" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+</div>
+
+
+              </div>
+              
+              
+              <div class='prev-next-bottom'>
+                
+    <a class='left-prev' id="prev-link" href="index.html" title="previous page">Building with Orca</a>
+    <a class='right-next' id="next-link" href="websockets.html" title="next page">WebSockets Reference</a>
+
+              </div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+  
+  <script src="../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  <footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    
+    <div class="footer-item">
+      <p class="copyright">
+    &copy; Copyright 2021, Cee-Studio.<br/>
+</p>
+    </div>
+    
+    <div class="footer-item">
+      <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.1.2.<br/>
+</p>
+    </div>
+    
+  </div>
+</footer>
+  </body>
+</html>
