@@ -361,18 +361,18 @@ struct discord_audit_log_change_key {
   char description[DISCORD_MAX_DESCRIPTION_LEN];
 
   /* specs/discord/audit_log.json:115:18
-     '{"name":"icon_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"}, 
+     '{"name":"icon_hash", "type": {"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}, 
          "comment":"icon changed" }' */
-  char icon_hash[MAX_SHA256_LEN]; ///< icon changed
+  char icon_hash[ORCA_LIMITS_SHA256]; ///< icon changed
 
   /* specs/discord/audit_log.json:117:18
-     '{"name":"splash_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"},
+     '{"name":"splash_hash", "type": {"base":"char", "dec":"[ORCA_LIMITS_SHA256]"},
          "comment":"invite splash page artwork changed"}' */
-  char splash_hash[MAX_SHA256_LEN]; ///< invite splash page artwork changed
+  char splash_hash[ORCA_LIMITS_SHA256]; ///< invite splash page artwork changed
 
   /* specs/discord/audit_log.json:119:18
-     '{"name":"discovery_splash_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"}}' */
-  char discovery_splash_hash[MAX_SHA256_LEN];
+     '{"name":"discovery_splash_hash", "type": {"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}}' */
+  char discovery_splash_hash[ORCA_LIMITS_SHA256];
 
   /* specs/discord/audit_log.json:120:18
      '{"name":"banner_hash", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}' */
@@ -383,12 +383,12 @@ struct discord_audit_log_change_key {
   u64_snowflake_t owner_id;
 
   /* specs/discord/audit_log.json:122:18
-     '{"name":"region", "type": {"base":"char", "dec":"[MAX_REGION_LEN]"}}' */
-  char region[MAX_REGION_LEN];
+     '{"name":"region", "type": {"base":"char", "dec":"[ORCA_LIMITS_REGION]"}}' */
+  char region[ORCA_LIMITS_REGION];
 
   /* specs/discord/audit_log.json:123:18
-     '{"name":"preferred_locale", "type": {"base":"char", "dec":"[MAX_LOCALE_LEN]"}}' */
-  char preferred_locale[MAX_LOCALE_LEN];
+     '{"name":"preferred_locale", "type": {"base":"char", "dec":"[ORCA_LIMITS_LOCALE]"}}' */
+  char preferred_locale[ORCA_LIMITS_LOCALE];
 
   /* specs/discord/audit_log.json:124:18
      '{"name":"afk_channel_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}' */

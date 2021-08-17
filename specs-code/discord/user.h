@@ -63,8 +63,8 @@ struct discord_user {
   char discriminator[DISCORD_MAX_DISCRIMINATOR_LEN];
 
   /* specs/discord/user.json:48:24
-     '{ "name": "avatar", "type":{ "base":"char", "dec":"[MAX_SHA256_LEN]" }}' */
-  char avatar[MAX_SHA256_LEN];
+     '{ "name": "avatar", "type":{ "base":"char", "dec":"[ORCA_LIMITS_SHA256]" }}' */
+  char avatar[ORCA_LIMITS_SHA256];
 
   /* specs/discord/user.json:49:24
      '{ "name": "bot", "type":{ "base":"bool" }}' */
@@ -79,16 +79,16 @@ struct discord_user {
   bool mfa_enabled;
 
   /* specs/discord/user.json:52:24
-     '{ "name": "locale", "type":{ "base":"char", "dec":"[MAX_LOCALE_LEN]" }}' */
-  char locale[MAX_LOCALE_LEN];
+     '{ "name": "locale", "type":{ "base":"char", "dec":"[ORCA_LIMITS_LOCALE]" }}' */
+  char locale[ORCA_LIMITS_LOCALE];
 
   /* specs/discord/user.json:53:24
      '{ "name": "verified", "type":{ "base":"bool" }}' */
   bool verified;
 
   /* specs/discord/user.json:54:24
-     '{ "name": "email", "type":{ "base":"char", "dec":"[MAX_EMAIL_LEN]" }}' */
-  char email[MAX_EMAIL_LEN];
+     '{ "name": "email", "type":{ "base":"char", "dec":"[ORCA_LIMITS_EMAIL]" }}' */
+  char email[ORCA_LIMITS_EMAIL];
 
   /* specs/discord/user.json:55:24
      '{ "name": "flags", "type":{ "base":"int", "int_alias": "enum discord_user_flags" }}' */

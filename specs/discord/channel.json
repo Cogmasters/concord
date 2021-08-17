@@ -50,7 +50,7 @@
          "option":true, "inject_if_not":0},
         {"type":{"base":"struct discord_user", "dec":"ntl"}, "name":"recipients",
          "option":true, "inject_if_not":null},
-        {"type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}, "name":"icon",
+        {"type":{"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}, "name":"icon",
          "option":true, "inject_if_not":null},
         {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"owner_id",
          "option":true, "inject_if_not":0},
@@ -86,8 +86,8 @@
         {"name":"name", "type":{"base":"char", "dec":"*"}},
         {"name":"description", "type":{"base":"char", "dec":"*"}},
         {"name":"tags", "type":{"base":"char", "dec":"*"}, "option":true, "inject_of_not":null},
-        {"name":"asset","type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}},
-        {"name":"preview_asset", "type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}, 
+        {"name":"asset","type":{"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}},
+        {"name":"preview_asset", "type":{"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}, 
          "option":true, "inject_if_not":null},
         {"name":"type", "type":{"base":"int", "int_alias":"enum discord_message_sticker_format_types"}}
       ]

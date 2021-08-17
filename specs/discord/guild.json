@@ -18,7 +18,7 @@
         {"type":{"base":"bool"}, "name":"owner", "option":true},
         {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"owner_id"},
         {"type":{"base":"int"}, "name":"permissions", "option":true},
-        {"type":{"base":"char", "dec":"[MAX_REGION_LEN]"}, "name":"region"},
+        {"type":{"base":"char", "dec":"[ORCA_LIMITS_REGION]"}, "name":"region"},
         {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"afk_channel_id"},
         {"type":{"base":"int"}, "name":"afk_timeout"},
         {"type":{"base":"bool"}, "name":"widget_enabled", "option":true},
@@ -56,7 +56,7 @@
         {"type":{"base":"char", "dec":"*", "nullable":true}, "name":"banner"},
         {"type":{"base":"int", "int_alias":"enum discord_guild_premium_tier"}, "name":"premium_tier"},
         {"type":{"base":"int"}, "name":"premium_subscription_count", "option":true},
-        {"type":{"base":"char", "dec":"[MAX_LOCALE_LEN]"}, "name":"preferred_locale"},
+        {"type":{"base":"char", "dec":"[ORCA_LIMITS_LOCALE]"}, "name":"preferred_locale"},
         {"type":{"base":"char", "dec":"*", "converter":"snowflake", "nullable":true}, 
          "name":"public_updates_channel_id"},
         {"type":{"base":"int"}, "name":"max_video_channel_users", "option":true},
@@ -262,7 +262,7 @@
       "fields": [
         { "name":"id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
         { "name":"name", "type":{ "base":"char", "dec":"*" }},
-        { "name":"icon", "type":{ "base":"char", "dec":"[MAX_SHA256_LEN]" }},
+        { "name":"icon", "type":{ "base":"char", "dec":"[ORCA_LIMITS_SHA256]" }},
         { "name":"description", "type":{ "base":"char", "dec":"*" }},
         { "name":"summary", "type":{ "base":"char", "dec":"*" }},
         { "name":"bot", "type":{ "base":"struct discord_user", "dec":"*" }, "option":true}

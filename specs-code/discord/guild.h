@@ -59,9 +59,9 @@ struct discord_guild {
      '{"type":{"base":"int"}, "name":"permissions", "option":true}' */
   int permissions;
 
-  /* specs/discord/guild.json:21:68
-     '{"type":{"base":"char", "dec":"[MAX_REGION_LEN]"}, "name":"region"}' */
-  char region[MAX_REGION_LEN];
+  /* specs/discord/guild.json:21:72
+     '{"type":{"base":"char", "dec":"[ORCA_LIMITS_REGION]"}, "name":"region"}' */
+  char region[ORCA_LIMITS_REGION];
 
   /* specs/discord/guild.json:22:78
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"afk_channel_id"}' */
@@ -190,9 +190,9 @@ struct discord_guild {
      '{"type":{"base":"int"}, "name":"premium_subscription_count", "option":true}' */
   int premium_subscription_count;
 
-  /* specs/discord/guild.json:59:68
-     '{"type":{"base":"char", "dec":"[MAX_LOCALE_LEN]"}, "name":"preferred_locale"}' */
-  char preferred_locale[MAX_LOCALE_LEN];
+  /* specs/discord/guild.json:59:72
+     '{"type":{"base":"char", "dec":"[ORCA_LIMITS_LOCALE]"}, "name":"preferred_locale"}' */
+  char preferred_locale[ORCA_LIMITS_LOCALE];
 
   /* specs/discord/guild.json:61:27
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake", "nullable":true}, 
@@ -825,8 +825,8 @@ struct discord_guild_integration_application {
   char *name;
 
   /* specs/discord/guild.json:265:19
-     '{ "name":"icon", "type":{ "base":"char", "dec":"[MAX_SHA256_LEN]" }}' */
-  char icon[MAX_SHA256_LEN];
+     '{ "name":"icon", "type":{ "base":"char", "dec":"[ORCA_LIMITS_SHA256]" }}' */
+  char icon[ORCA_LIMITS_SHA256];
 
   /* specs/discord/guild.json:266:19
      '{ "name":"description", "type":{ "base":"char", "dec":"*" }}' */

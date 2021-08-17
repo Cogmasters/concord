@@ -94,7 +94,7 @@ void discord_user_from_json(char *json, size_t len, struct discord_user **pp)
      '{ "name": "discriminator", "type":{ "base":"char", "dec":"[DISCORD_MAX_DISCRIMINATOR_LEN]" }}' */
                 "(discriminator):s,"
   /* specs/discord/user.json:48:24
-     '{ "name": "avatar", "type":{ "base":"char", "dec":"[MAX_SHA256_LEN]" }}' */
+     '{ "name": "avatar", "type":{ "base":"char", "dec":"[ORCA_LIMITS_SHA256]" }}' */
                 "(avatar):s,"
   /* specs/discord/user.json:49:24
      '{ "name": "bot", "type":{ "base":"bool" }}' */
@@ -106,13 +106,13 @@ void discord_user_from_json(char *json, size_t len, struct discord_user **pp)
      '{ "name": "mfa_enabled", "type":{ "base":"bool" }}' */
                 "(mfa_enabled):b,"
   /* specs/discord/user.json:52:24
-     '{ "name": "locale", "type":{ "base":"char", "dec":"[MAX_LOCALE_LEN]" }}' */
+     '{ "name": "locale", "type":{ "base":"char", "dec":"[ORCA_LIMITS_LOCALE]" }}' */
                 "(locale):s,"
   /* specs/discord/user.json:53:24
      '{ "name": "verified", "type":{ "base":"bool" }}' */
                 "(verified):b,"
   /* specs/discord/user.json:54:24
-     '{ "name": "email", "type":{ "base":"char", "dec":"[MAX_EMAIL_LEN]" }}' */
+     '{ "name": "email", "type":{ "base":"char", "dec":"[ORCA_LIMITS_EMAIL]" }}' */
                 "(email):s,"
   /* specs/discord/user.json:55:24
      '{ "name": "flags", "type":{ "base":"int", "int_alias": "enum discord_user_flags" }}' */
@@ -136,7 +136,7 @@ void discord_user_from_json(char *json, size_t len, struct discord_user **pp)
      '{ "name": "discriminator", "type":{ "base":"char", "dec":"[DISCORD_MAX_DISCRIMINATOR_LEN]" }}' */
                 p->discriminator,
   /* specs/discord/user.json:48:24
-     '{ "name": "avatar", "type":{ "base":"char", "dec":"[MAX_SHA256_LEN]" }}' */
+     '{ "name": "avatar", "type":{ "base":"char", "dec":"[ORCA_LIMITS_SHA256]" }}' */
                 p->avatar,
   /* specs/discord/user.json:49:24
      '{ "name": "bot", "type":{ "base":"bool" }}' */
@@ -148,13 +148,13 @@ void discord_user_from_json(char *json, size_t len, struct discord_user **pp)
      '{ "name": "mfa_enabled", "type":{ "base":"bool" }}' */
                 &p->mfa_enabled,
   /* specs/discord/user.json:52:24
-     '{ "name": "locale", "type":{ "base":"char", "dec":"[MAX_LOCALE_LEN]" }}' */
+     '{ "name": "locale", "type":{ "base":"char", "dec":"[ORCA_LIMITS_LOCALE]" }}' */
                 p->locale,
   /* specs/discord/user.json:53:24
      '{ "name": "verified", "type":{ "base":"bool" }}' */
                 &p->verified,
   /* specs/discord/user.json:54:24
-     '{ "name": "email", "type":{ "base":"char", "dec":"[MAX_EMAIL_LEN]" }}' */
+     '{ "name": "email", "type":{ "base":"char", "dec":"[ORCA_LIMITS_EMAIL]" }}' */
                 p->email,
   /* specs/discord/user.json:55:24
      '{ "name": "flags", "type":{ "base":"int", "int_alias": "enum discord_user_flags" }}' */
@@ -187,7 +187,7 @@ static void discord_user_use_default_inject_settings(struct discord_user *p)
   p->__M.arg_switches[2] = p->discriminator;
 
   /* specs/discord/user.json:48:24
-     '{ "name": "avatar", "type":{ "base":"char", "dec":"[MAX_SHA256_LEN]" }}' */
+     '{ "name": "avatar", "type":{ "base":"char", "dec":"[ORCA_LIMITS_SHA256]" }}' */
   p->__M.arg_switches[3] = p->avatar;
 
   /* specs/discord/user.json:49:24
@@ -203,7 +203,7 @@ static void discord_user_use_default_inject_settings(struct discord_user *p)
   p->__M.arg_switches[6] = &p->mfa_enabled;
 
   /* specs/discord/user.json:52:24
-     '{ "name": "locale", "type":{ "base":"char", "dec":"[MAX_LOCALE_LEN]" }}' */
+     '{ "name": "locale", "type":{ "base":"char", "dec":"[ORCA_LIMITS_LOCALE]" }}' */
   p->__M.arg_switches[7] = p->locale;
 
   /* specs/discord/user.json:53:24
@@ -211,7 +211,7 @@ static void discord_user_use_default_inject_settings(struct discord_user *p)
   p->__M.arg_switches[8] = &p->verified;
 
   /* specs/discord/user.json:54:24
-     '{ "name": "email", "type":{ "base":"char", "dec":"[MAX_EMAIL_LEN]" }}' */
+     '{ "name": "email", "type":{ "base":"char", "dec":"[ORCA_LIMITS_EMAIL]" }}' */
   p->__M.arg_switches[9] = p->email;
 
   /* specs/discord/user.json:55:24
@@ -243,7 +243,7 @@ size_t discord_user_to_json(char *json, size_t len, struct discord_user *p)
      '{ "name": "discriminator", "type":{ "base":"char", "dec":"[DISCORD_MAX_DISCRIMINATOR_LEN]" }}' */
                 "(discriminator):s,"
   /* specs/discord/user.json:48:24
-     '{ "name": "avatar", "type":{ "base":"char", "dec":"[MAX_SHA256_LEN]" }}' */
+     '{ "name": "avatar", "type":{ "base":"char", "dec":"[ORCA_LIMITS_SHA256]" }}' */
                 "(avatar):s,"
   /* specs/discord/user.json:49:24
      '{ "name": "bot", "type":{ "base":"bool" }}' */
@@ -255,13 +255,13 @@ size_t discord_user_to_json(char *json, size_t len, struct discord_user *p)
      '{ "name": "mfa_enabled", "type":{ "base":"bool" }}' */
                 "(mfa_enabled):b,"
   /* specs/discord/user.json:52:24
-     '{ "name": "locale", "type":{ "base":"char", "dec":"[MAX_LOCALE_LEN]" }}' */
+     '{ "name": "locale", "type":{ "base":"char", "dec":"[ORCA_LIMITS_LOCALE]" }}' */
                 "(locale):s,"
   /* specs/discord/user.json:53:24
      '{ "name": "verified", "type":{ "base":"bool" }}' */
                 "(verified):b,"
   /* specs/discord/user.json:54:24
-     '{ "name": "email", "type":{ "base":"char", "dec":"[MAX_EMAIL_LEN]" }}' */
+     '{ "name": "email", "type":{ "base":"char", "dec":"[ORCA_LIMITS_EMAIL]" }}' */
                 "(email):s,"
   /* specs/discord/user.json:55:24
      '{ "name": "flags", "type":{ "base":"int", "int_alias": "enum discord_user_flags" }}' */
@@ -283,7 +283,7 @@ size_t discord_user_to_json(char *json, size_t len, struct discord_user *p)
      '{ "name": "discriminator", "type":{ "base":"char", "dec":"[DISCORD_MAX_DISCRIMINATOR_LEN]" }}' */
                 p->discriminator,
   /* specs/discord/user.json:48:24
-     '{ "name": "avatar", "type":{ "base":"char", "dec":"[MAX_SHA256_LEN]" }}' */
+     '{ "name": "avatar", "type":{ "base":"char", "dec":"[ORCA_LIMITS_SHA256]" }}' */
                 p->avatar,
   /* specs/discord/user.json:49:24
      '{ "name": "bot", "type":{ "base":"bool" }}' */
@@ -295,13 +295,13 @@ size_t discord_user_to_json(char *json, size_t len, struct discord_user *p)
      '{ "name": "mfa_enabled", "type":{ "base":"bool" }}' */
                 &p->mfa_enabled,
   /* specs/discord/user.json:52:24
-     '{ "name": "locale", "type":{ "base":"char", "dec":"[MAX_LOCALE_LEN]" }}' */
+     '{ "name": "locale", "type":{ "base":"char", "dec":"[ORCA_LIMITS_LOCALE]" }}' */
                 p->locale,
   /* specs/discord/user.json:53:24
      '{ "name": "verified", "type":{ "base":"bool" }}' */
                 &p->verified,
   /* specs/discord/user.json:54:24
-     '{ "name": "email", "type":{ "base":"char", "dec":"[MAX_EMAIL_LEN]" }}' */
+     '{ "name": "email", "type":{ "base":"char", "dec":"[ORCA_LIMITS_EMAIL]" }}' */
                 p->email,
   /* specs/discord/user.json:55:24
      '{ "name": "flags", "type":{ "base":"int", "int_alias": "enum discord_user_flags" }}' */
@@ -360,7 +360,7 @@ void discord_user_cleanup(struct discord_user *d) {
      '{ "name": "discriminator", "type":{ "base":"char", "dec":"[DISCORD_MAX_DISCRIMINATOR_LEN]" }}' */
   // p->discriminator is a scalar
   /* specs/discord/user.json:48:24
-     '{ "name": "avatar", "type":{ "base":"char", "dec":"[MAX_SHA256_LEN]" }}' */
+     '{ "name": "avatar", "type":{ "base":"char", "dec":"[ORCA_LIMITS_SHA256]" }}' */
   // p->avatar is a scalar
   /* specs/discord/user.json:49:24
      '{ "name": "bot", "type":{ "base":"bool" }}' */
@@ -372,13 +372,13 @@ void discord_user_cleanup(struct discord_user *d) {
      '{ "name": "mfa_enabled", "type":{ "base":"bool" }}' */
   // p->mfa_enabled is a scalar
   /* specs/discord/user.json:52:24
-     '{ "name": "locale", "type":{ "base":"char", "dec":"[MAX_LOCALE_LEN]" }}' */
+     '{ "name": "locale", "type":{ "base":"char", "dec":"[ORCA_LIMITS_LOCALE]" }}' */
   // p->locale is a scalar
   /* specs/discord/user.json:53:24
      '{ "name": "verified", "type":{ "base":"bool" }}' */
   // p->verified is a scalar
   /* specs/discord/user.json:54:24
-     '{ "name": "email", "type":{ "base":"char", "dec":"[MAX_EMAIL_LEN]" }}' */
+     '{ "name": "email", "type":{ "base":"char", "dec":"[ORCA_LIMITS_EMAIL]" }}' */
   // p->email is a scalar
   /* specs/discord/user.json:55:24
      '{ "name": "flags", "type":{ "base":"int", "int_alias": "enum discord_user_flags" }}' */
@@ -403,7 +403,7 @@ void discord_user_init(struct discord_user *p) {
      '{ "name": "discriminator", "type":{ "base":"char", "dec":"[DISCORD_MAX_DISCRIMINATOR_LEN]" }}' */
 
   /* specs/discord/user.json:48:24
-     '{ "name": "avatar", "type":{ "base":"char", "dec":"[MAX_SHA256_LEN]" }}' */
+     '{ "name": "avatar", "type":{ "base":"char", "dec":"[ORCA_LIMITS_SHA256]" }}' */
 
   /* specs/discord/user.json:49:24
      '{ "name": "bot", "type":{ "base":"bool" }}' */
@@ -415,13 +415,13 @@ void discord_user_init(struct discord_user *p) {
      '{ "name": "mfa_enabled", "type":{ "base":"bool" }}' */
 
   /* specs/discord/user.json:52:24
-     '{ "name": "locale", "type":{ "base":"char", "dec":"[MAX_LOCALE_LEN]" }}' */
+     '{ "name": "locale", "type":{ "base":"char", "dec":"[ORCA_LIMITS_LOCALE]" }}' */
 
   /* specs/discord/user.json:53:24
      '{ "name": "verified", "type":{ "base":"bool" }}' */
 
   /* specs/discord/user.json:54:24
-     '{ "name": "email", "type":{ "base":"char", "dec":"[MAX_EMAIL_LEN]" }}' */
+     '{ "name": "email", "type":{ "base":"char", "dec":"[ORCA_LIMITS_EMAIL]" }}' */
 
   /* specs/discord/user.json:55:24
      '{ "name": "flags", "type":{ "base":"int", "int_alias": "enum discord_user_flags" }}' */

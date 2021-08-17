@@ -313,18 +313,18 @@ struct discord_audit_log_change_key {
   char description[DISCORD_MAX_DESCRIPTION_LEN];
 
   /* specs/discord/audit_log.json:115:18
-     '{"name":"icon_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"}, 
+     '{"name":"icon_hash", "type": {"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}, 
          "comment":"icon changed" }' */
-  char icon_hash[MAX_SHA256_LEN]; ///< icon changed
+  char icon_hash[ORCA_LIMITS_SHA256]; ///< icon changed
 
   /* specs/discord/audit_log.json:117:18
-     '{"name":"splash_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"},
+     '{"name":"splash_hash", "type": {"base":"char", "dec":"[ORCA_LIMITS_SHA256]"},
          "comment":"invite splash page artwork changed"}' */
-  char splash_hash[MAX_SHA256_LEN]; ///< invite splash page artwork changed
+  char splash_hash[ORCA_LIMITS_SHA256]; ///< invite splash page artwork changed
 
   /* specs/discord/audit_log.json:119:18
-     '{"name":"discovery_splash_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"}}' */
-  char discovery_splash_hash[MAX_SHA256_LEN];
+     '{"name":"discovery_splash_hash", "type": {"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}}' */
+  char discovery_splash_hash[ORCA_LIMITS_SHA256];
 
   /* specs/discord/audit_log.json:120:18
      '{"name":"banner_hash", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}' */
@@ -335,12 +335,12 @@ struct discord_audit_log_change_key {
   u64_snowflake_t owner_id;
 
   /* specs/discord/audit_log.json:122:18
-     '{"name":"region", "type": {"base":"char", "dec":"[MAX_REGION_LEN]"}}' */
-  char region[MAX_REGION_LEN];
+     '{"name":"region", "type": {"base":"char", "dec":"[ORCA_LIMITS_REGION]"}}' */
+  char region[ORCA_LIMITS_REGION];
 
   /* specs/discord/audit_log.json:123:18
-     '{"name":"preferred_locale", "type": {"base":"char", "dec":"[MAX_LOCALE_LEN]"}}' */
-  char preferred_locale[MAX_LOCALE_LEN];
+     '{"name":"preferred_locale", "type": {"base":"char", "dec":"[ORCA_LIMITS_LOCALE]"}}' */
+  char preferred_locale[ORCA_LIMITS_LOCALE];
 
   /* specs/discord/audit_log.json:124:18
      '{"name":"afk_channel_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}' */
@@ -1096,10 +1096,10 @@ struct discord_channel {
          "option":true, "inject_if_not":null}' */
   struct discord_user **recipients;
 
-  /* specs/discord/channel.json:53:68
-     '{"type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}, "name":"icon",
+  /* specs/discord/channel.json:53:72
+     '{"type":{"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}, "name":"icon",
          "option":true, "inject_if_not":null}' */
-  char icon[MAX_SHA256_LEN];
+  char icon[ORCA_LIMITS_SHA256];
 
   /* specs/discord/channel.json:55:78
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"owner_id",
@@ -1182,13 +1182,13 @@ struct discord_message_sticker {
   char *tags;
 
   /* specs/discord/channel.json:89:18
-     '{"name":"asset","type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}}' */
-  char asset[MAX_SHA256_LEN];
+     '{"name":"asset","type":{"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}}' */
+  char asset[ORCA_LIMITS_SHA256];
 
   /* specs/discord/channel.json:90:18
-     '{"name":"preview_asset", "type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}, 
+     '{"name":"preview_asset", "type":{"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}, 
          "option":true, "inject_if_not":null}' */
-  char preview_asset[MAX_SHA256_LEN];
+  char preview_asset[ORCA_LIMITS_SHA256];
 
   /* specs/discord/channel.json:92:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_message_sticker_format_types"}}' */
@@ -3746,9 +3746,9 @@ struct discord_guild {
      '{"type":{"base":"int"}, "name":"permissions", "option":true}' */
   int permissions;
 
-  /* specs/discord/guild.json:21:68
-     '{"type":{"base":"char", "dec":"[MAX_REGION_LEN]"}, "name":"region"}' */
-  char region[MAX_REGION_LEN];
+  /* specs/discord/guild.json:21:72
+     '{"type":{"base":"char", "dec":"[ORCA_LIMITS_REGION]"}, "name":"region"}' */
+  char region[ORCA_LIMITS_REGION];
 
   /* specs/discord/guild.json:22:78
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"afk_channel_id"}' */
@@ -3877,9 +3877,9 @@ struct discord_guild {
      '{"type":{"base":"int"}, "name":"premium_subscription_count", "option":true}' */
   int premium_subscription_count;
 
-  /* specs/discord/guild.json:59:68
-     '{"type":{"base":"char", "dec":"[MAX_LOCALE_LEN]"}, "name":"preferred_locale"}' */
-  char preferred_locale[MAX_LOCALE_LEN];
+  /* specs/discord/guild.json:59:72
+     '{"type":{"base":"char", "dec":"[ORCA_LIMITS_LOCALE]"}, "name":"preferred_locale"}' */
+  char preferred_locale[ORCA_LIMITS_LOCALE];
 
   /* specs/discord/guild.json:61:27
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake", "nullable":true}, 
@@ -4325,8 +4325,8 @@ struct discord_guild_integration_application {
   char *name;
 
   /* specs/discord/guild.json:265:19
-     '{ "name":"icon", "type":{ "base":"char", "dec":"[MAX_SHA256_LEN]" }}' */
-  char icon[MAX_SHA256_LEN];
+     '{ "name":"icon", "type":{ "base":"char", "dec":"[ORCA_LIMITS_SHA256]" }}' */
+  char icon[ORCA_LIMITS_SHA256];
 
   /* specs/discord/guild.json:266:19
      '{ "name":"description", "type":{ "base":"char", "dec":"*" }}' */
@@ -5843,8 +5843,8 @@ struct discord_user {
   char discriminator[DISCORD_MAX_DISCRIMINATOR_LEN];
 
   /* specs/discord/user.json:48:24
-     '{ "name": "avatar", "type":{ "base":"char", "dec":"[MAX_SHA256_LEN]" }}' */
-  char avatar[MAX_SHA256_LEN];
+     '{ "name": "avatar", "type":{ "base":"char", "dec":"[ORCA_LIMITS_SHA256]" }}' */
+  char avatar[ORCA_LIMITS_SHA256];
 
   /* specs/discord/user.json:49:24
      '{ "name": "bot", "type":{ "base":"bool" }}' */
@@ -5859,16 +5859,16 @@ struct discord_user {
   bool mfa_enabled;
 
   /* specs/discord/user.json:52:24
-     '{ "name": "locale", "type":{ "base":"char", "dec":"[MAX_LOCALE_LEN]" }}' */
-  char locale[MAX_LOCALE_LEN];
+     '{ "name": "locale", "type":{ "base":"char", "dec":"[ORCA_LIMITS_LOCALE]" }}' */
+  char locale[ORCA_LIMITS_LOCALE];
 
   /* specs/discord/user.json:53:24
      '{ "name": "verified", "type":{ "base":"bool" }}' */
   bool verified;
 
   /* specs/discord/user.json:54:24
-     '{ "name": "email", "type":{ "base":"char", "dec":"[MAX_EMAIL_LEN]" }}' */
-  char email[MAX_EMAIL_LEN];
+     '{ "name": "email", "type":{ "base":"char", "dec":"[ORCA_LIMITS_EMAIL]" }}' */
+  char email[ORCA_LIMITS_EMAIL];
 
   /* specs/discord/user.json:55:24
      '{ "name": "flags", "type":{ "base":"int", "int_alias": "enum discord_user_flags" }}' */

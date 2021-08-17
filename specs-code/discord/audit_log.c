@@ -997,15 +997,15 @@ void discord_audit_log_change_key_from_json(char *json, size_t len, struct disco
      '{"name":"description", "type": {"base":"char", "dec":"[DISCORD_MAX_DESCRIPTION_LEN]"}}' */
                 "(description):s,"
   /* specs/discord/audit_log.json:115:18
-     '{"name":"icon_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"}, 
+     '{"name":"icon_hash", "type": {"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}, 
          "comment":"icon changed" }' */
                 "(icon_hash):s,"
   /* specs/discord/audit_log.json:117:18
-     '{"name":"splash_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"},
+     '{"name":"splash_hash", "type": {"base":"char", "dec":"[ORCA_LIMITS_SHA256]"},
          "comment":"invite splash page artwork changed"}' */
                 "(splash_hash):s,"
   /* specs/discord/audit_log.json:119:18
-     '{"name":"discovery_splash_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"}}' */
+     '{"name":"discovery_splash_hash", "type": {"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}}' */
                 "(discovery_splash_hash):s,"
   /* specs/discord/audit_log.json:120:18
      '{"name":"banner_hash", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}' */
@@ -1014,10 +1014,10 @@ void discord_audit_log_change_key_from_json(char *json, size_t len, struct disco
      '{"name":"owner_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}' */
                 "(owner_id):F,"
   /* specs/discord/audit_log.json:122:18
-     '{"name":"region", "type": {"base":"char", "dec":"[MAX_REGION_LEN]"}}' */
+     '{"name":"region", "type": {"base":"char", "dec":"[ORCA_LIMITS_REGION]"}}' */
                 "(region):s,"
   /* specs/discord/audit_log.json:123:18
-     '{"name":"preferred_locale", "type": {"base":"char", "dec":"[MAX_LOCALE_LEN]"}}' */
+     '{"name":"preferred_locale", "type": {"base":"char", "dec":"[ORCA_LIMITS_LOCALE]"}}' */
                 "(preferred_locale):s,"
   /* specs/discord/audit_log.json:124:18
      '{"name":"afk_channel_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}' */
@@ -1164,15 +1164,15 @@ void discord_audit_log_change_key_from_json(char *json, size_t len, struct disco
      '{"name":"description", "type": {"base":"char", "dec":"[DISCORD_MAX_DESCRIPTION_LEN]"}}' */
                 p->description,
   /* specs/discord/audit_log.json:115:18
-     '{"name":"icon_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"}, 
+     '{"name":"icon_hash", "type": {"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}, 
          "comment":"icon changed" }' */
                 p->icon_hash,
   /* specs/discord/audit_log.json:117:18
-     '{"name":"splash_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"},
+     '{"name":"splash_hash", "type": {"base":"char", "dec":"[ORCA_LIMITS_SHA256]"},
          "comment":"invite splash page artwork changed"}' */
                 p->splash_hash,
   /* specs/discord/audit_log.json:119:18
-     '{"name":"discovery_splash_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"}}' */
+     '{"name":"discovery_splash_hash", "type": {"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}}' */
                 p->discovery_splash_hash,
   /* specs/discord/audit_log.json:120:18
      '{"name":"banner_hash", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}' */
@@ -1181,10 +1181,10 @@ void discord_audit_log_change_key_from_json(char *json, size_t len, struct disco
      '{"name":"owner_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}' */
                 cee_strtoull, &p->owner_id,
   /* specs/discord/audit_log.json:122:18
-     '{"name":"region", "type": {"base":"char", "dec":"[MAX_REGION_LEN]"}}' */
+     '{"name":"region", "type": {"base":"char", "dec":"[ORCA_LIMITS_REGION]"}}' */
                 p->region,
   /* specs/discord/audit_log.json:123:18
-     '{"name":"preferred_locale", "type": {"base":"char", "dec":"[MAX_LOCALE_LEN]"}}' */
+     '{"name":"preferred_locale", "type": {"base":"char", "dec":"[ORCA_LIMITS_LOCALE]"}}' */
                 p->preferred_locale,
   /* specs/discord/audit_log.json:124:18
      '{"name":"afk_channel_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}' */
@@ -1339,17 +1339,17 @@ static void discord_audit_log_change_key_use_default_inject_settings(struct disc
   p->__M.arg_switches[1] = p->description;
 
   /* specs/discord/audit_log.json:115:18
-     '{"name":"icon_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"}, 
+     '{"name":"icon_hash", "type": {"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}, 
          "comment":"icon changed" }' */
   p->__M.arg_switches[2] = p->icon_hash;
 
   /* specs/discord/audit_log.json:117:18
-     '{"name":"splash_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"},
+     '{"name":"splash_hash", "type": {"base":"char", "dec":"[ORCA_LIMITS_SHA256]"},
          "comment":"invite splash page artwork changed"}' */
   p->__M.arg_switches[3] = p->splash_hash;
 
   /* specs/discord/audit_log.json:119:18
-     '{"name":"discovery_splash_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"}}' */
+     '{"name":"discovery_splash_hash", "type": {"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}}' */
   p->__M.arg_switches[4] = p->discovery_splash_hash;
 
   /* specs/discord/audit_log.json:120:18
@@ -1361,11 +1361,11 @@ static void discord_audit_log_change_key_use_default_inject_settings(struct disc
   p->__M.arg_switches[6] = &p->owner_id;
 
   /* specs/discord/audit_log.json:122:18
-     '{"name":"region", "type": {"base":"char", "dec":"[MAX_REGION_LEN]"}}' */
+     '{"name":"region", "type": {"base":"char", "dec":"[ORCA_LIMITS_REGION]"}}' */
   p->__M.arg_switches[7] = p->region;
 
   /* specs/discord/audit_log.json:123:18
-     '{"name":"preferred_locale", "type": {"base":"char", "dec":"[MAX_LOCALE_LEN]"}}' */
+     '{"name":"preferred_locale", "type": {"base":"char", "dec":"[ORCA_LIMITS_LOCALE]"}}' */
   p->__M.arg_switches[8] = p->preferred_locale;
 
   /* specs/discord/audit_log.json:124:18
@@ -1562,15 +1562,15 @@ size_t discord_audit_log_change_key_to_json(char *json, size_t len, struct disco
      '{"name":"description", "type": {"base":"char", "dec":"[DISCORD_MAX_DESCRIPTION_LEN]"}}' */
                 "(description):s,"
   /* specs/discord/audit_log.json:115:18
-     '{"name":"icon_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"}, 
+     '{"name":"icon_hash", "type": {"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}, 
          "comment":"icon changed" }' */
                 "(icon_hash):s,"
   /* specs/discord/audit_log.json:117:18
-     '{"name":"splash_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"},
+     '{"name":"splash_hash", "type": {"base":"char", "dec":"[ORCA_LIMITS_SHA256]"},
          "comment":"invite splash page artwork changed"}' */
                 "(splash_hash):s,"
   /* specs/discord/audit_log.json:119:18
-     '{"name":"discovery_splash_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"}}' */
+     '{"name":"discovery_splash_hash", "type": {"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}}' */
                 "(discovery_splash_hash):s,"
   /* specs/discord/audit_log.json:120:18
      '{"name":"banner_hash", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}' */
@@ -1579,10 +1579,10 @@ size_t discord_audit_log_change_key_to_json(char *json, size_t len, struct disco
      '{"name":"owner_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}' */
                 "(owner_id):|F|,"
   /* specs/discord/audit_log.json:122:18
-     '{"name":"region", "type": {"base":"char", "dec":"[MAX_REGION_LEN]"}}' */
+     '{"name":"region", "type": {"base":"char", "dec":"[ORCA_LIMITS_REGION]"}}' */
                 "(region):s,"
   /* specs/discord/audit_log.json:123:18
-     '{"name":"preferred_locale", "type": {"base":"char", "dec":"[MAX_LOCALE_LEN]"}}' */
+     '{"name":"preferred_locale", "type": {"base":"char", "dec":"[ORCA_LIMITS_LOCALE]"}}' */
                 "(preferred_locale):s,"
   /* specs/discord/audit_log.json:124:18
      '{"name":"afk_channel_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}' */
@@ -1727,15 +1727,15 @@ size_t discord_audit_log_change_key_to_json(char *json, size_t len, struct disco
      '{"name":"description", "type": {"base":"char", "dec":"[DISCORD_MAX_DESCRIPTION_LEN]"}}' */
                 p->description,
   /* specs/discord/audit_log.json:115:18
-     '{"name":"icon_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"}, 
+     '{"name":"icon_hash", "type": {"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}, 
          "comment":"icon changed" }' */
                 p->icon_hash,
   /* specs/discord/audit_log.json:117:18
-     '{"name":"splash_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"},
+     '{"name":"splash_hash", "type": {"base":"char", "dec":"[ORCA_LIMITS_SHA256]"},
          "comment":"invite splash page artwork changed"}' */
                 p->splash_hash,
   /* specs/discord/audit_log.json:119:18
-     '{"name":"discovery_splash_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"}}' */
+     '{"name":"discovery_splash_hash", "type": {"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}}' */
                 p->discovery_splash_hash,
   /* specs/discord/audit_log.json:120:18
      '{"name":"banner_hash", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}' */
@@ -1744,10 +1744,10 @@ size_t discord_audit_log_change_key_to_json(char *json, size_t len, struct disco
      '{"name":"owner_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}' */
                 cee_ulltostr, &p->owner_id,
   /* specs/discord/audit_log.json:122:18
-     '{"name":"region", "type": {"base":"char", "dec":"[MAX_REGION_LEN]"}}' */
+     '{"name":"region", "type": {"base":"char", "dec":"[ORCA_LIMITS_REGION]"}}' */
                 p->region,
   /* specs/discord/audit_log.json:123:18
-     '{"name":"preferred_locale", "type": {"base":"char", "dec":"[MAX_LOCALE_LEN]"}}' */
+     '{"name":"preferred_locale", "type": {"base":"char", "dec":"[ORCA_LIMITS_LOCALE]"}}' */
                 p->preferred_locale,
   /* specs/discord/audit_log.json:124:18
      '{"name":"afk_channel_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}' */
@@ -1929,15 +1929,15 @@ void discord_audit_log_change_key_cleanup(struct discord_audit_log_change_key *d
      '{"name":"description", "type": {"base":"char", "dec":"[DISCORD_MAX_DESCRIPTION_LEN]"}}' */
   // p->description is a scalar
   /* specs/discord/audit_log.json:115:18
-     '{"name":"icon_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"}, 
+     '{"name":"icon_hash", "type": {"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}, 
          "comment":"icon changed" }' */
   // p->icon_hash is a scalar
   /* specs/discord/audit_log.json:117:18
-     '{"name":"splash_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"},
+     '{"name":"splash_hash", "type": {"base":"char", "dec":"[ORCA_LIMITS_SHA256]"},
          "comment":"invite splash page artwork changed"}' */
   // p->splash_hash is a scalar
   /* specs/discord/audit_log.json:119:18
-     '{"name":"discovery_splash_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"}}' */
+     '{"name":"discovery_splash_hash", "type": {"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}}' */
   // p->discovery_splash_hash is a scalar
   /* specs/discord/audit_log.json:120:18
      '{"name":"banner_hash", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}' */
@@ -1946,10 +1946,10 @@ void discord_audit_log_change_key_cleanup(struct discord_audit_log_change_key *d
      '{"name":"owner_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}' */
   // p->owner_id is a scalar
   /* specs/discord/audit_log.json:122:18
-     '{"name":"region", "type": {"base":"char", "dec":"[MAX_REGION_LEN]"}}' */
+     '{"name":"region", "type": {"base":"char", "dec":"[ORCA_LIMITS_REGION]"}}' */
   // p->region is a scalar
   /* specs/discord/audit_log.json:123:18
-     '{"name":"preferred_locale", "type": {"base":"char", "dec":"[MAX_LOCALE_LEN]"}}' */
+     '{"name":"preferred_locale", "type": {"base":"char", "dec":"[ORCA_LIMITS_LOCALE]"}}' */
   // p->preferred_locale is a scalar
   /* specs/discord/audit_log.json:124:18
      '{"name":"afk_channel_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}' */
@@ -2117,15 +2117,15 @@ void discord_audit_log_change_key_init(struct discord_audit_log_change_key *p) {
      '{"name":"description", "type": {"base":"char", "dec":"[DISCORD_MAX_DESCRIPTION_LEN]"}}' */
 
   /* specs/discord/audit_log.json:115:18
-     '{"name":"icon_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"}, 
+     '{"name":"icon_hash", "type": {"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}, 
          "comment":"icon changed" }' */
 
   /* specs/discord/audit_log.json:117:18
-     '{"name":"splash_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"},
+     '{"name":"splash_hash", "type": {"base":"char", "dec":"[ORCA_LIMITS_SHA256]"},
          "comment":"invite splash page artwork changed"}' */
 
   /* specs/discord/audit_log.json:119:18
-     '{"name":"discovery_splash_hash", "type": {"base":"char", "dec":"[MAX_SHA256_LEN]"}}' */
+     '{"name":"discovery_splash_hash", "type": {"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}}' */
 
   /* specs/discord/audit_log.json:120:18
      '{"name":"banner_hash", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}' */
@@ -2134,10 +2134,10 @@ void discord_audit_log_change_key_init(struct discord_audit_log_change_key *p) {
      '{"name":"owner_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}' */
 
   /* specs/discord/audit_log.json:122:18
-     '{"name":"region", "type": {"base":"char", "dec":"[MAX_REGION_LEN]"}}' */
+     '{"name":"region", "type": {"base":"char", "dec":"[ORCA_LIMITS_REGION]"}}' */
 
   /* specs/discord/audit_log.json:123:18
-     '{"name":"preferred_locale", "type": {"base":"char", "dec":"[MAX_LOCALE_LEN]"}}' */
+     '{"name":"preferred_locale", "type": {"base":"char", "dec":"[ORCA_LIMITS_LOCALE]"}}' */
 
   /* specs/discord/audit_log.json:124:18
      '{"name":"afk_channel_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}}' */

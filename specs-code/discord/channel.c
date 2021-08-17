@@ -106,8 +106,8 @@ void discord_channel_from_json(char *json, size_t len, struct discord_channel **
      '{"type":{"base":"struct discord_user", "dec":"ntl"}, "name":"recipients",
          "option":true, "inject_if_not":null}' */
                 "(recipients):F,"
-  /* specs/discord/channel.json:53:68
-     '{"type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}, "name":"icon",
+  /* specs/discord/channel.json:53:72
+     '{"type":{"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}, "name":"icon",
          "option":true, "inject_if_not":null}' */
                 "(icon):s,"
   /* specs/discord/channel.json:55:78
@@ -179,8 +179,8 @@ void discord_channel_from_json(char *json, size_t len, struct discord_channel **
      '{"type":{"base":"struct discord_user", "dec":"ntl"}, "name":"recipients",
          "option":true, "inject_if_not":null}' */
                 discord_user_list_from_json, &p->recipients,
-  /* specs/discord/channel.json:53:68
-     '{"type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}, "name":"icon",
+  /* specs/discord/channel.json:53:72
+     '{"type":{"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}, "name":"icon",
          "option":true, "inject_if_not":null}' */
                 p->icon,
   /* specs/discord/channel.json:55:78
@@ -282,8 +282,8 @@ static void discord_channel_use_default_inject_settings(struct discord_channel *
   if (p->recipients != NULL)
     p->__M.arg_switches[12] = p->recipients;
 
-  /* specs/discord/channel.json:53:68
-     '{"type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}, "name":"icon",
+  /* specs/discord/channel.json:53:72
+     '{"type":{"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}, "name":"icon",
          "option":true, "inject_if_not":null}' */
   if (p->icon != NULL)
     p->__M.arg_switches[13] = p->icon;
@@ -370,8 +370,8 @@ size_t discord_channel_to_json(char *json, size_t len, struct discord_channel *p
      '{"type":{"base":"struct discord_user", "dec":"ntl"}, "name":"recipients",
          "option":true, "inject_if_not":null}' */
                 "(recipients):F,"
-  /* specs/discord/channel.json:53:68
-     '{"type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}, "name":"icon",
+  /* specs/discord/channel.json:53:72
+     '{"type":{"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}, "name":"icon",
          "option":true, "inject_if_not":null}' */
                 "(icon):s,"
   /* specs/discord/channel.json:55:78
@@ -441,8 +441,8 @@ size_t discord_channel_to_json(char *json, size_t len, struct discord_channel *p
      '{"type":{"base":"struct discord_user", "dec":"ntl"}, "name":"recipients",
          "option":true, "inject_if_not":null}' */
                 discord_user_list_to_json, p->recipients,
-  /* specs/discord/channel.json:53:68
-     '{"type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}, "name":"icon",
+  /* specs/discord/channel.json:53:72
+     '{"type":{"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}, "name":"icon",
          "option":true, "inject_if_not":null}' */
                 p->icon,
   /* specs/discord/channel.json:55:78
@@ -551,8 +551,8 @@ void discord_channel_cleanup(struct discord_channel *d) {
          "option":true, "inject_if_not":null}' */
   if (d->recipients)
     discord_user_list_free(d->recipients);
-  /* specs/discord/channel.json:53:68
-     '{"type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}, "name":"icon",
+  /* specs/discord/channel.json:53:72
+     '{"type":{"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}, "name":"icon",
          "option":true, "inject_if_not":null}' */
   // p->icon is a scalar
   /* specs/discord/channel.json:55:78
@@ -626,8 +626,8 @@ void discord_channel_init(struct discord_channel *p) {
      '{"type":{"base":"struct discord_user", "dec":"ntl"}, "name":"recipients",
          "option":true, "inject_if_not":null}' */
 
-  /* specs/discord/channel.json:53:68
-     '{"type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}, "name":"icon",
+  /* specs/discord/channel.json:53:72
+     '{"type":{"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}, "name":"icon",
          "option":true, "inject_if_not":null}' */
 
   /* specs/discord/channel.json:55:78
@@ -716,10 +716,10 @@ void discord_message_sticker_from_json(char *json, size_t len, struct discord_me
      '{"name":"tags", "type":{"base":"char", "dec":"*"}, "option":true, "inject_of_not":null}' */
                 "(tags):?s,"
   /* specs/discord/channel.json:89:18
-     '{"name":"asset","type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}}' */
+     '{"name":"asset","type":{"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}}' */
                 "(asset):s,"
   /* specs/discord/channel.json:90:18
-     '{"name":"preview_asset", "type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}, 
+     '{"name":"preview_asset", "type":{"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}, 
          "option":true, "inject_if_not":null}' */
                 "(preview_asset):s,"
   /* specs/discord/channel.json:92:18
@@ -744,10 +744,10 @@ void discord_message_sticker_from_json(char *json, size_t len, struct discord_me
      '{"name":"tags", "type":{"base":"char", "dec":"*"}, "option":true, "inject_of_not":null}' */
                 &p->tags,
   /* specs/discord/channel.json:89:18
-     '{"name":"asset","type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}}' */
+     '{"name":"asset","type":{"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}}' */
                 p->asset,
   /* specs/discord/channel.json:90:18
-     '{"name":"preview_asset", "type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}, 
+     '{"name":"preview_asset", "type":{"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}, 
          "option":true, "inject_if_not":null}' */
                 p->preview_asset,
   /* specs/discord/channel.json:92:18
@@ -783,11 +783,11 @@ static void discord_message_sticker_use_default_inject_settings(struct discord_m
   p->__M.arg_switches[4] = p->tags;
 
   /* specs/discord/channel.json:89:18
-     '{"name":"asset","type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}}' */
+     '{"name":"asset","type":{"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}}' */
   p->__M.arg_switches[5] = p->asset;
 
   /* specs/discord/channel.json:90:18
-     '{"name":"preview_asset", "type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}, 
+     '{"name":"preview_asset", "type":{"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}, 
          "option":true, "inject_if_not":null}' */
   if (p->preview_asset != NULL)
     p->__M.arg_switches[6] = p->preview_asset;
@@ -819,10 +819,10 @@ size_t discord_message_sticker_to_json(char *json, size_t len, struct discord_me
      '{"name":"tags", "type":{"base":"char", "dec":"*"}, "option":true, "inject_of_not":null}' */
                 "(tags):s,"
   /* specs/discord/channel.json:89:18
-     '{"name":"asset","type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}}' */
+     '{"name":"asset","type":{"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}}' */
                 "(asset):s,"
   /* specs/discord/channel.json:90:18
-     '{"name":"preview_asset", "type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}, 
+     '{"name":"preview_asset", "type":{"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}, 
          "option":true, "inject_if_not":null}' */
                 "(preview_asset):s,"
   /* specs/discord/channel.json:92:18
@@ -845,10 +845,10 @@ size_t discord_message_sticker_to_json(char *json, size_t len, struct discord_me
      '{"name":"tags", "type":{"base":"char", "dec":"*"}, "option":true, "inject_of_not":null}' */
                 p->tags,
   /* specs/discord/channel.json:89:18
-     '{"name":"asset","type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}}' */
+     '{"name":"asset","type":{"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}}' */
                 p->asset,
   /* specs/discord/channel.json:90:18
-     '{"name":"preview_asset", "type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}, 
+     '{"name":"preview_asset", "type":{"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}, 
          "option":true, "inject_if_not":null}' */
                 p->preview_asset,
   /* specs/discord/channel.json:92:18
@@ -911,10 +911,10 @@ void discord_message_sticker_cleanup(struct discord_message_sticker *d) {
   if (d->tags)
     free(d->tags);
   /* specs/discord/channel.json:89:18
-     '{"name":"asset","type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}}' */
+     '{"name":"asset","type":{"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}}' */
   // p->asset is a scalar
   /* specs/discord/channel.json:90:18
-     '{"name":"preview_asset", "type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}, 
+     '{"name":"preview_asset", "type":{"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}, 
          "option":true, "inject_if_not":null}' */
   // p->preview_asset is a scalar
   /* specs/discord/channel.json:92:18
@@ -940,10 +940,10 @@ void discord_message_sticker_init(struct discord_message_sticker *p) {
      '{"name":"tags", "type":{"base":"char", "dec":"*"}, "option":true, "inject_of_not":null}' */
 
   /* specs/discord/channel.json:89:18
-     '{"name":"asset","type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}}' */
+     '{"name":"asset","type":{"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}}' */
 
   /* specs/discord/channel.json:90:18
-     '{"name":"preview_asset", "type":{"base":"char", "dec":"[MAX_SHA256_LEN]"}, 
+     '{"name":"preview_asset", "type":{"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}, 
          "option":true, "inject_if_not":null}' */
 
   /* specs/discord/channel.json:92:18

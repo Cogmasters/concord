@@ -1,3 +1,7 @@
+/**
+ * @file types.h
+ */
+
 #ifndef TYPES_H
 #define TYPES_H
 
@@ -5,25 +9,35 @@
 extern "C" {
 #endif // __cplusplus
 
-typedef uint64_t u64_unix_ms_t; ///< unix time in ms
+/** @defgroup OrcaTypes
+ *  @brief Commonly used datatypes with various APIs
+ *  @{ */
+typedef uint64_t u64_unix_ms_t;   ///< unix time in ms
 typedef uint64_t u64_snowflake_t; ///< snowflake datatype
+/** @} OrcaTypes */
 
-/**
- * @todo add more error codes and a strerror()
- */
-typedef int ORCAcode;
-#define ORCA_OK                  0
-#define ORCA_NO_RESPONSE        -1
-#define ORCA_UNUSUAL_HTTP_CODE  -2
-#define ORCA_MISSING_PARAMETER  -3
-#define ORCA_BAD_PARAMETER      -4
-#define ORCA_BAD_JSON           -5
+/** @defgroup OrcaCodes
+ *  @brief Error code returned by Orca REST functions
+ *  @todo add origins links
+ *  @{ */
+typedef int ORCAcode;             ///< the error code datatype
+#define ORCA_OK                 0 ///< request was a success
+#define ORCA_NO_RESPONSE       -1 ///< failure connecting to API's url
+#define ORCA_UNUSUAL_HTTP_CODE -2 ///< received a non-standard http code
+#define ORCA_MISSING_PARAMETER -3 ///< missing a mandatory function parameter
+#define ORCA_BAD_PARAMETER     -4 ///< unexpected value for parameter
+#define ORCA_BAD_JSON          -5 ///< internal failure when encoding or decoding JSON
+/** @} OrcaCodes */
 
-/* Size limits discovered from the web */
-#define MAX_SHA256_LEN        1024 + 1
-#define MAX_LOCALE_LEN        16 + 1
-#define MAX_EMAIL_LEN         254 + 1
-#define MAX_REGION_LEN        16 + 1
+/** @defgroup OrcaLimits
+ *  @brief Limits discovered across the web
+ *  @todo add reference links
+ *  @{ */
+#define ORCA_LIMITS_SHA256 1024 + 1
+#define ORCA_LIMITS_LOCALE 16 + 1
+#define ORCA_LIMITS_EMAIL  254 + 1
+#define ORCA_LIMITS_REGION 16 + 1
+/** @} OrcaLimits */
 
 #ifdef __cplusplus
 }
