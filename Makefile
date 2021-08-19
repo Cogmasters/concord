@@ -8,19 +8,17 @@ LIBDIR := lib
 # common/utils
 CEE_UTILS_DIR  := cee-utils
 CEE_UTILS_SRC  := $(wildcard $(CEE_UTILS_DIR)/*.c) 
-CEE_UTILS_OBJS := $(CEE_UTILS_SRC:%=$(OBJDIR)/%.o)
+CEE_UTILS_OBJS := $(CEE_UTILS_SRC:%.c=$(OBJDIR)/%.o)
 
 COMMON_DIR  := common
 COMMON_SRC  := $(wildcard $(COMMON_DIR)/*.c) $(wildcard $(COMMON_DIR)/**/*.c)
-COMMON_OBJS := $(COMMON_SRC:%=$(OBJDIR)/%.o)
+COMMON_OBJS := $(COMMON_SRC:%.c=$(OBJDIR)/%.o)
 
 # Specs
 SPECS_RDIR := specs
 SPECS_WDIR := specs-code
 SPECS_JSON := $(sort $(wildcard $(SPECS_RDIR)/*/*.json))
 SPECS_APIS := $(sort $(patsubst $(SPECS_RDIR)/%, %, $(dir $(SPECS_JSON))))
-SPECS_C    := $(patsubst $(SPECS_RDIR)/%, $(SPECS_WDIR)/%, $(SPECS_JSON:%.json=%.c))
-SPECS_H    := $(patsubst $(SPECS_RDIR)/%, $(SPECS_WDIR)/%, $(SPECS_JSON:%.json=%.h))
 
 # Specs code-generator dependencies
 SPECSDEPS_OBJDIR  := specs_obj
@@ -32,18 +30,18 @@ SPECSDEPS_SRC     := $(CEE_UTILS_DIR)/cee-utils.c   \
                      $(CEE_UTILS_DIR)/json-printf.c \
                      $(CEE_UTILS_DIR)/log.c         \
                      $(SPECS_RDIR)/specs-gen.c
-SPECSDEPS_OBJS    := $(SPECSDEPS_SRC:%=$(SPECSDEPS_OBJDIR)/%.o)
+SPECSDEPS_OBJS    := $(SPECSDEPS_SRC:%.c=$(SPECSDEPS_OBJDIR)/%.o)
 
 
 # APIs objs
-DISCORD_SRC  = $(wildcard discord-*.c $(SPECS_WDIR)/discord/*.c)
-DISCORD_OBJS = $(DISCORD_SRC:%=$(OBJDIR)/%.o)
-GITHUB_SRC   = $(wildcard github-*.c) $(SPECS_WDIR)/github/*.c
-GITHUB_OBJS  = $(GITHUB_SRC:%=$(OBJDIR)/%.o)
-REDDIT_SRC   = $(wildcard reddit-*.c $(SPECS_WDIR)/reddit/*.c)
-REDDIT_OBJS  = $(REDDIT_SRC:%=$(OBJDIR)/%.o)
-SLACK_SRC    = $(wildcard slack-*.c)
-SLACK_OBJS   = $(SLACK_SRC:%=$(OBJDIR)/%.o)
+DISCORD_SRC  := $(wildcard discord-*.c $(SPECS_WDIR)/discord/*.c)
+DISCORD_OBJS := $(DISCORD_SRC:%.c=$(OBJDIR)/%.o)
+GITHUB_SRC   := $(wildcard github-*.c $(SPECS_WDIR)/github/*.c)
+GITHUB_OBJS  := $(GITHUB_SRC:%.c=$(OBJDIR)/%.o)
+REDDIT_SRC   := $(wildcard reddit-*.c $(SPECS_WDIR)/reddit/*.c)
+REDDIT_OBJS  := $(REDDIT_SRC:%.c=$(OBJDIR)/%.o)
+SLACK_SRC    := $(wildcard slack-*.c)
+SLACK_OBJS   := $(SLACK_SRC:%.c=$(OBJDIR)/%.o)
 
 # API libs cflags
 LIBDISCORD_CFLAGS :=
@@ -88,7 +86,7 @@ CFLAGS += -std=c11 -O0 -g                                 \
 ifeq ($(addons),1)
 	# prepare addon flags
 	ADDONS_SRC      := $(wildcard add-ons/*.c)
-	ADDONS_OBJS     := $(ADDONS_SRC:%=$(OBJDIR)/%.o)
+	ADDONS_OBJS     := $(ADDONS_SRC:%.c=$(OBJDIR)/%.o)
 	ADDONS_BOTS_SRC := $(wildcard add-ons/*_bots/*.c)
 	LIBADDONS       := $(LIBDIR)/libaddons.a
 
@@ -127,20 +125,10 @@ else
 endif
 
 
-# specs compilation
-$(SPECSDEPS_OBJDIR)/%.c.o : %.c          # compile specs dependencies
-	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
-$(SPECS_WDIR)/%.c : $(SPECS_RDIR)/%.json # generate source files
-	./bin/specs-gen.exe -c -o $@ $<
-$(SPECS_WDIR)/%.h : $(SPECS_RDIR)/%.json # generate header files
-	./bin/specs-gen.exe -d -o $@ $<
-	./bin/specs-gen.exe -S -a -o $(dir $@)all_structs.h $<
-	./bin/specs-gen.exe -E -a -o $(dir $@)all_enums.h $<
-	./bin/specs-gen.exe -F -a -o $(dir $@)all_functions.h $<
-	./bin/specs-gen.exe -O -a -o $(dir $@)all_opaque_struct.h $<
-
 # generic compilation
-$(OBJDIR)/%.c.o : %.c
+$(SPECSDEPS_OBJDIR)/%.o : %.c
+	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
+$(OBJDIR)/%.o : %.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 $(BOTS_DIR)/%.exe: $(BOTS_DIR)/%.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBDISCORD_LDFLAGS) $(LIBGITHUB_LDFLAGS) $(LIBREDDIT_LDFLAGS) $(LIBSLACK_LDFLAGS) $(LIBS_LDFLAGS)
@@ -183,15 +171,24 @@ echo:
 	@ echo SPECSDEPS_OBJS: $(SPECSDEPS_OBJS)
 	@ echo SPECSDEPS_OBJDIR: $(SPECSDEPS_OBJDIR)
 	@ echo SPECS_APIS: $(SPECS_APIS)
+	@ echo DISCORD_OBJS: $(DISCORD_OBJS)
 
-specs_gen :
-	$(MAKE) clean specsdeps_clean specs_clean
-	$(MAKE) specs_deps
-	$(MAKE) specs_code
-specs_code : specs_deps $(SPECS_C) $(SPECS_H)
-specs_deps : cee_utils | $(SPECSDEPS_OBJS)
-	@ $(CC) -o specs-gen.exe $(SPECSDEPS_OBJS) -lm
-	@ mkdir -p bin && mv specs-gen.exe ./bin
+specs_gen: cee_utils | $(SPECSDEPS_OBJS)
+	@ $(MAKE) clean specsdeps_clean specs_clean specs_code
+
+specs_code: specs-gen.exe
+	rm -rf $(SPECS_WDIR)/*/all_*
+	$(foreach var, $(SPECS_JSON),./bin/specs-gen.exe -S -a -o $(patsubst $(SPECS_RDIR)/%, $(SPECS_WDIR)/%, $(dir $(var))all_structs.h) $(var);)
+	$(foreach var, $(SPECS_JSON),./bin/specs-gen.exe -E -a -o $(patsubst $(SPECS_RDIR)/%, $(SPECS_WDIR)/%, $(dir $(var))all_enums.h) $(var);)
+	$(foreach var, $(SPECS_JSON),./bin/specs-gen.exe -F -a -o $(patsubst $(SPECS_RDIR)/%, $(SPECS_WDIR)/%, $(dir $(var))all_functions.h) $(var);)
+	$(foreach var, $(SPECS_JSON),./bin/specs-gen.exe -O -a -o $(patsubst $(SPECS_RDIR)/%, $(SPECS_WDIR)/%, $(dir $(var))all_opaque_struct.h) $(var);)
+	$(foreach var, $(SPECS_JSON),./bin/specs-gen.exe -c -o $(patsubst $(SPECS_RDIR)/%, $(SPECS_WDIR)/%, $(var:%.json=%.c)) $(var);)
+	$(foreach var, $(SPECS_JSON),./bin/specs-gen.exe -d -o $(patsubst $(SPECS_RDIR)/%, $(SPECS_WDIR)/%, $(var:%.json=%.h)) $(var);)
+
+specs-gen.exe: cee_utils $(SPECSDEPS_OBJS) | $(SPECSDEPS_OBJDIR)
+	$(CC) -o $@ $(SPECSDEPS_OBJS) -lm
+	mkdir -p bin
+	mv $@ ./bin
 
 bots:
 	@ $(MAKE) all
@@ -206,7 +203,7 @@ $(OBJDIR) :
 	mkdir -p $(OBJDIR)/$(CEE_UTILS_DIR)                           \
 	         $(OBJDIR)/$(COMMON_DIR)/third-party                  \
 	         $(addprefix $(SPECS_WDIR)/, $(SPECS_APIS))           \
-					 $(addprefix $(OBJDIR)/$(SPECS_WDIR)/, $(SPECS_APIS)) \
+	         $(addprefix $(OBJDIR)/$(SPECS_WDIR)/, $(SPECS_APIS)) \
 	         $(OBJDIR)/$(TEST_DIR)                                \
 	         $(OBJDIR)/add-ons
 
