@@ -37,11 +37,9 @@ slack_webapi_cleanup(struct slack_webapi *webapi) {
 }
 
 static void 
-sized_buffer_from_json(char *json, size_t len, void *pp) 
+sized_buffer_from_json(char *json, size_t len, void *data) 
 {
-  if (!*(struct sized_buffer**)pp) 
-    *(struct sized_buffer**)pp = calloc(1, sizeof(struct sized_buffer));
-  struct sized_buffer *p = *(struct sized_buffer**)pp;
+  struct sized_buffer *p = data;
   p->size = asprintf(&p->start, "%.*s", (int)len, json);
 }
 
@@ -62,7 +60,7 @@ slack_webapi_run(
            NULL,
            &(struct ua_resp_handle){
              .ok_cb = resp_body ? &sized_buffer_from_json : NULL,
-             .ok_obj = &resp_body
+             .ok_obj = resp_body
            },
            req_body,
            http_method, endpoint, args);
