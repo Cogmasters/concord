@@ -5,6 +5,7 @@
 #include <math.h>
 
 #include "cee-utils.h"
+#include "cee-utils/ntl.h"
 #include "json-actor.h"
 
 #include "github.h"
@@ -40,6 +41,12 @@ _github_presets_init(
   presets->token = token;
 
 }
+
+void github_write_json(char *json, size_t len, void *user_obj) {
+    struct sized_buffer *new_user_obj = user_obj;
+    new_user_obj->size = asprintf(&new_user_obj->start, "%.*s", (int) len, json);
+}
+
 
 ORCAcode
 github_fill_repo_config(struct github *client, char *repo_config) {
@@ -536,7 +543,7 @@ github_create_a_pull_request(struct github *client, char *branch, char *pull_msg
 }
 
 ORCAcode
-github_get_user(struct github *client, struct github_user* user, char *username) {
+github_get_user(struct github *client, char *username, struct github_user* user) {
   log_info("===get-user===");
 
   if (!username) {
@@ -558,4 +565,34 @@ github_get_user(struct github *client, struct github_user* user, char *username)
           HTTP_GET,
           "/users/%s",
           username);
+}
+
+
+ORCAcode
+github_get_repository(struct github *client, char* owner, char* repo, struct sized_buffer* output) {
+  log_info("===get-repository===");
+
+  if (!repo) {
+    log_error("Missing 'repo'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
+  if (!output) {
+    log_error("Missing 'repo'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
+
+  return github_adapter_run(
+          &client->adapter,
+          &(struct ua_resp_handle){
+            .ok_cb = &github_write_json,
+            .ok_obj = output
+          },
+          NULL,
+          HTTP_GET,
+          "/repos/%s/%s",
+          owner,
+          repo
+  );
 }

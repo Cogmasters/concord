@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
   struct github_user user;
   github_user_init(&user);
 
-  github_get_user(client, &user, "LucasMull");
+  github_get_user(client, "LucasMull", &user);
 
   github_user_cleanup(&user);
 }

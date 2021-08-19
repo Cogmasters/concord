@@ -11,6 +11,9 @@
 #include "specs-code/github/all_structs.h"
 #include "specs-code/github/all_functions.h"
 
+/* This limit is fairly arbitrary, find the maximum at a later time. */
+#define GITHUB_MAXIMUM_REPO_TOPICS 30
+
 struct github_file {
   char *path;
   char *sha;
@@ -18,6 +21,7 @@ struct github_file {
 
 struct github* github_init(const char username[], const char token[], const char repo_config[]);
 struct github* github_config_init(const char config_file[], const char repo_config[]);
+void github_write_json(char *json, size_t len, void *user_obj);
 
 ORCAcode github_update_my_fork(struct github *client, char **p_sha);
 ORCAcode github_get_head_commit(struct github *client, char **p_sha);
@@ -28,7 +32,8 @@ ORCAcode github_create_a_commit(struct github *client, char *tree_sha, char *par
 ORCAcode github_create_a_branch(struct github *client, char *head_commit_sha, char *branch);
 ORCAcode github_update_a_commit(struct github *client, char *branch, char *commit_sha);
 ORCAcode github_create_a_pull_request(struct github *client, char *branch, char *pull_msg);
-ORCAcode github_get_user(struct github *client, struct github_user* user, char *username);
+ORCAcode github_get_user(struct github *client, char *username, struct github_user* user);
 ORCAcode github_fill_repo_config(struct github *client, char *repo_config);
+ORCAcode github_get_repository(struct github *client, char* owner, char* repo, struct sized_buffer* output);
 
 #endif // GITHUB_V3_H
