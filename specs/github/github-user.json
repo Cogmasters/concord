@@ -1,0 +1,37 @@
+{
+    "title":"User Object",
+    "namespace": ["github"],
+    "comment": "https://docs.github.com/en/rest/reference/users#get-a-user",
+    "defs":
+    [
+        {
+            "title": "User Structure",
+            "struct": "user",
+            "fields":
+            [
+                { "name": "login", "type":{ "base":"char", "dec":"*"}},
+                { "name": "id", "type":{ "base":"int"}},
+                { "name": "node_id", "type":{ "base":"char", "dec":"*"}},
+                { "name": "avatar_url", "type":{ "base":"char", "dec":"*"}},
+                { "name": "gravatar_id", "type":{ "base":"char", "dec":"*"}},
+                { "name": "html_url", "type":{ "base":"char", "dec":"*"}},
+                { "name": "type", "type":{ "base":"char", "dec":"*"}},
+                { "name": "site_admin", "type":{ "base":"bool"}},
+                { "name": "name", "type":{ "base":"char", "dec":"*"}},
+                { "name": "company", "type":{ "base":"char", "dec":"*"}},
+                { "name": "blog", "type":{ "base":"char", "dec":"*"}},
+                { "name": "location", "type":{ "base":"char", "dec":"*"}},
+                { "name": "email", "type":{ "base":"char", "dec":"*"}},
+                { "name": "hireable", "type":{ "base":"char", "dec":"*"}},
+                { "name": "bio", "type":{ "base":"char", "dec":"*"}},
+                { "name": "public_repos", "type":{ "base":"int"}},
+                { "name": "public_gists", "type":{ "base":"int"}},
+                { "name": "followers", "type":{ "base":"int"}},
+                { "name": "following", "type":{ "base":"int"}},
+                { "name": "created_at", "type":{ "base":"char", "dec":"*"}},
+                { "name": "updated_at", "type":{ "base":"char", "dec":"*"}}
+            ]
+        }
+    ]
+}
+

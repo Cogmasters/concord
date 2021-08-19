@@ -6,7 +6,7 @@
 #include "types.h"
 #include "logconf.h"
 
-/// @see specs/discord for generated code specs 
+/// @see specs/reddit for generated code specs 
 #include "specs-code/reddit/all_opaque_struct.h"
 #include "specs-code/reddit/all_enums.h"
 #include "specs-code/reddit/all_structs.h"

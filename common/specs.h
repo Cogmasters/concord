@@ -8,4 +8,5 @@
 #include "json-actor-boxed.h"
 #include "discord.h"
 #include "reddit.h"
+#include "github.h"
 #include "cee-utils.h"

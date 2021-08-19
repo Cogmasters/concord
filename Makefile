@@ -38,7 +38,7 @@ SPECSDEPS_OBJS    := $(SPECSDEPS_SRC:%=$(SPECSDEPS_OBJDIR)/%.o)
 # APIs objs
 DISCORD_SRC  = $(wildcard discord-*.c $(SPECS_WDIR)/discord/*.c)
 DISCORD_OBJS = $(DISCORD_SRC:%=$(OBJDIR)/%.o)
-GITHUB_SRC   = $(wildcard github-*.c)
+GITHUB_SRC   = $(wildcard github-*.c) $(SPECS_WDIR)/github/*.c
 GITHUB_OBJS  = $(GITHUB_SRC:%=$(OBJDIR)/%.o)
 REDDIT_SRC   = $(wildcard reddit-*.c $(SPECS_WDIR)/reddit/*.c)
 REDDIT_OBJS  = $(REDDIT_SRC:%=$(OBJDIR)/%.o)
@@ -242,10 +242,12 @@ install :
 	mkdir -p $(PREFIX)/include/orca
 	install -d $(PREFIX)/lib/
 	install -m 644 $(LIBDISCORD) $(PREFIX)/lib/
+	install -m 644 $(LIBGITHUB) $(PREFIX)/lib/
 	install -d $(PREFIX)/include/orca/
 	install -m 644 *.h $(CEE_UTILS_DIR)/*.h $(COMMON_DIR)/*.h $(COMMON_DIR)/**/*.h $(PREFIX)/include/orca/
 	install -d $(PREFIX)/include/orca/$(SPECS_WDIR)/discord/
-	install -m 644 $(SPECS_WDIR)/discord/*.h $(PREFIX)/include/orca/$(SPECS_WDIR)/discord/
+	install -d $(PREFIX)/include/orca/$(SPECS_WDIR)/github/
+	install -m 644 $(SPECS_WDIR)/github/*.h $(PREFIX)/include/orca/$(SPECS_WDIR)/github/
 
 specs_clean :
 	rm -rf $(SPECS_WDIR)

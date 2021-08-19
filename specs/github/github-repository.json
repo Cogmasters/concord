@@ -1,0 +1,45 @@
+{
+    "title":"Repository Object",
+    "namespace": ["github"],
+    "comment": "https://docs.github.com/en/rest/reference/repos#get-a-repository",
+    "defs":
+    [
+        {
+            "title": "Repository Structure",
+            "struct": "repository",
+            "fields":
+            [
+                { "name": "id", "type":{ "base":"int"}},
+                { "name": "node_id", "type":{ "base":"char", "dec":"*"}},
+                { "name": "name", "type":{ "base":"char", "dec":"*"}},
+                { "name": "full_name", "type":{ "base":"char", "dec":"*"}},
+                { "name": "private", "type":{ "base":"bool"}},
+                { "type": {"base":"struct github_user", "dec":"*"}, "name":"owner"},
+                { "name": "html_url", "type":{ "base":"char", "dec":"*"}},
+                { "name": "description", "type":{ "base":"char", "dec":"*"}},
+                { "name": "created_at", "type":{ "base":"char", "dec":"*"}},
+                { "name": "updated_at", "type":{ "base":"char", "dec":"*"}},
+                { "name": "pushed_at", "type":{ "base":"char", "dec":"*"}},
+                { "name": "homepage", "type":{ "base":"char", "dec":"*"}},
+                { "name": "size", "type":{ "base": "int"}},
+                { "name": "stargazers_count", "type":{ "base": "int"}},
+                { "name": "watchers_count", "type":{ "base": "int"}},
+                { "name": "language", "type":{ "base":"char", "dec":"*"}},
+                { "name": "has_issues", "type":{ "base":"bool"}},
+                { "name": "has_projects", "type":{ "base":"bool"}},
+                { "name": "has_downloads", "type":{ "base":"bool"}},
+                { "name": "has_wiki", "type":{ "base":"bool"}},
+                { "name": "has_pages", "type":{ "base":"bool"}},
+                { "name": "forks_count", "type":{ "base": "int"}},
+                { "name": "archived", "type":{ "base":"bool"}},
+                { "name": "disabled", "type":{ "base":"bool"}},
+                { "name": "open_issues_count", "type":{ "base": "int"}},
+                { "type": {"base":"struct github_license", "dec":"*"}, "name":"license"},
+                { "name": "forks", "type":{ "base": "int"}},
+                { "name": "open_issues", "type":{ "base": "int"}},
+                { "name": "watchers", "type":{ "base": "int"}},
+                { "name": "default_branch", "type":{ "base":"char", "dec":"*"}},
+            ]
+        }
+    ]
+}

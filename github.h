@@ -6,6 +6,11 @@
 #include "types.h"
 #include "logconf.h"
 
+#include "specs-code/github/all_opaque_struct.h"
+#include "specs-code/github/all_enums.h"
+#include "specs-code/github/all_structs.h"
+#include "specs-code/github/all_functions.h"
+
 struct github_file {
   char *path;
   char *sha;
@@ -23,5 +28,7 @@ ORCAcode github_create_a_commit(struct github *client, char *tree_sha, char *par
 ORCAcode github_create_a_branch(struct github *client, char *head_commit_sha, char *branch);
 ORCAcode github_update_a_commit(struct github *client, char *branch, char *commit_sha);
 ORCAcode github_create_a_pull_request(struct github *client, char *branch, char *pull_msg);
+ORCAcode github_get_user(struct github *client, struct github_user* user, char *username);
+ORCAcode github_fill_repo_config(struct github *client, char *repo_config);
 
 #endif // GITHUB_V3_H

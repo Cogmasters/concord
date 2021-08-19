@@ -39,6 +39,10 @@ typedef int ORCAcode;             ///< the error code datatype
 #define ORCA_LIMITS_REGION 16 + 1
 /** @} OrcaLimits */
 
+/* Github error codes */
+#define ORCAGITHUB_JSON     1
+#define ORCAGITHUB_BAD_AUTH 2
+
 #ifdef __cplusplus
 }
 #endif // __cplusplus

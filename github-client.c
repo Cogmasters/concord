@@ -18,16 +18,48 @@ _github_presets_init(
   char *token, 
   const char *repo_config)
 {
-  size_t len = 0;
-  char *json = cee_load_whole_file(repo_config, &len);
-  json_extract(json, len, 
-    "(owner):?s,(repo):?s,(default_branch):?s",
-    &presets->owner, &presets->repo, &presets->default_branch);
+
+  presets->owner = NULL;
+  presets->repo = NULL;
+  presets->default_branch = NULL;
+
+  /* Optionally fill in the repo_config. Can be
+   * done later with github_fill_repo_config. */
+  if(repo_config) {
+    size_t len = 0;
+    char *json = cee_load_whole_file(repo_config, &len);
+
+    json_extract(json, len, 
+        "(owner):?s,(repo):?s,(default_branch):?s",
+        &presets->owner, &presets->repo, &presets->default_branch);
+
+    free(json);
+  }
 
   presets->username = username;
   presets->token = token;
 
-  free(json);
+}
+
+ORCAcode
+github_fill_repo_config(struct github *client, char *repo_config) {
+    log_info("===github-fill-repo-config===");
+
+    if(!repo_config) {
+        log_error("repo_config is NULL.");
+        return ORCA_MISSING_PARAMETER;
+    }
+
+    size_t len = 0;
+    char *json = cee_load_whole_file(repo_config, &len);
+
+    json_extract(json, len, 
+        "(owner):?s,(repo):?s,(default_branch):?s",
+        &client->presets.owner, &client->presets.repo, &client->presets.default_branch);
+
+    free(json);
+
+    return ORCA_OK;
 }
 
 static void
@@ -93,6 +125,16 @@ ORCAcode
 github_update_my_fork(struct github *client, char **p_sha)
 {
   log_info("===update-my-fork===");
+
+  if (!client->presets.username) {
+    log_error("Missing 'username'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!client->presets.default_branch) {
+    log_error("Missing 'default_branch'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
   char *sha=NULL;
   ORCAcode code;
   code = github_adapter_run(
@@ -111,7 +153,7 @@ github_update_my_fork(struct github *client, char **p_sha)
     log_error("Couldn't fetch sha");
     return code;
   }
-  
+
   char payload[2048];
   size_t ret = json_inject(payload, sizeof(payload), "(sha):s", sha);
 
@@ -136,6 +178,14 @@ github_get_head_commit(struct github *client, char **p_sha)
 {
   if (!p_sha) {
     log_error("Missing 'p_sha'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!client->presets.username) {
+    log_error("Missing 'username'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!client->presets.default_branch) {
+    log_error("Missing 'default_branch'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -165,6 +215,14 @@ github_get_tree_sha(struct github *client, char *commit_sha, char **p_sha)
     log_error("Missing 'p_sha'");
     return ORCA_MISSING_PARAMETER;
   }
+  if (!client->presets.username) {
+    log_error("Missing 'username'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!client->presets.repo) {
+    log_error("Missing 'repo'");
+    return ORCA_MISSING_PARAMETER;
+  }
 
   return github_adapter_run(
            &client->adapter, 
@@ -184,6 +242,14 @@ github_create_blobs(struct github *client, NTL_T(struct github_file) files)
 {
   if (!files) {
     log_error("Missing 'files'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!client->presets.username) {
+    log_error("Missing 'username'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!client->presets.repo) {
+    log_error("Missing 'repo'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -266,6 +332,14 @@ github_create_tree(
     log_error("Missing 'files'");
     return ORCA_MISSING_PARAMETER;
   }
+  if (!client->presets.username) {
+    log_error("Missing 'username'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!client->presets.repo) {
+    log_error("Missing 'repo'");
+    return ORCA_MISSING_PARAMETER;
+  }
 
   char payload[2048];
   size_t ret;
@@ -309,6 +383,14 @@ github_create_a_commit(
     log_error("Missing 'commit_msg'");
     return ORCA_MISSING_PARAMETER;
   }
+  if (!client->presets.username) {
+    log_error("Missing 'username'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!client->presets.repo) {
+    log_error("Missing 'repo'");
+    return ORCA_MISSING_PARAMETER;
+  }
 
   char payload[4096];
   size_t ret;
@@ -348,6 +430,14 @@ github_create_a_branch(
     log_error("Missing 'branch'");
     return ORCA_MISSING_PARAMETER;
   }
+  if (!client->presets.username) {
+    log_error("Missing 'username'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!client->presets.repo) {
+    log_error("Missing 'repo'");
+    return ORCA_MISSING_PARAMETER;
+  }
 
   char payload[4096];
   size_t ret;
@@ -379,6 +469,14 @@ github_update_a_commit(struct github *client, char *branch, char *commit_sha)
     log_error("Missing 'commit_sha'");
     return ORCA_MISSING_PARAMETER;
   }
+  if (!client->presets.username) {
+    log_error("Missing 'username'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!client->presets.repo) {
+    log_error("Missing 'repo'");
+    return ORCA_MISSING_PARAMETER;
+  }
 
   char payload[512];
   size_t ret;
@@ -407,6 +505,14 @@ github_create_a_pull_request(struct github *client, char *branch, char *pull_msg
     log_error("Missing 'pull_msg'");
     return ORCA_MISSING_PARAMETER;
   }
+  if (!client->presets.username) {
+    log_error("Missing 'username'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!client->presets.default_branch) {
+    log_error("Missing 'default_branch'");
+    return ORCA_MISSING_PARAMETER;
+  }
 
   char payload[4096];
   size_t ret;
@@ -427,4 +533,29 @@ github_create_a_pull_request(struct github *client, char *branch, char *pull_msg
            HTTP_POST, "/repos/%s/%s/pulls", 
            client->presets.owner, 
            client->presets.repo);
+}
+
+ORCAcode
+github_get_user(struct github *client, struct github_user* user, char *username) {
+  log_info("===get-user===");
+
+  if (!username) {
+    log_error("Missing 'username'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!user) {
+    log_error("Missing 'user'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
+  return github_adapter_run(
+          &client->adapter,
+          &(struct ua_resp_handle){
+            .ok_cb = &github_user_from_json_v,
+            .ok_obj = &user
+          },
+          NULL,
+          HTTP_GET,
+          "/users/%s",
+          username);
 }
