@@ -4,7 +4,8 @@
  * @see https://discord.com/developers/docs/resources/audit-log
  */
 
-#include "specs.h"
+#include "specs-deps.h"
+#include "discord.h"
 
 void discord_audit_log_from_json(char *json, size_t len, struct discord_audit_log **pp)
 {

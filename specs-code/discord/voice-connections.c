@@ -4,7 +4,8 @@
  * @see https://discord.com/developers/docs/topics/voice-connections
  */
 
-#include "specs.h"
+#include "specs-deps.h"
+#include "discord.h"
 
 
 enum discord_voice_close_opcodes discord_voice_close_opcodes_from_string(char *s){

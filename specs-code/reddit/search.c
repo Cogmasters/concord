@@ -4,7 +4,8 @@
  * @see 
  */
 
-#include "specs.h"
+#include "specs-deps.h"
+#include "reddit.h"
 
 void reddit_search_params_from_json(char *json, size_t len, struct reddit_search_params **pp)
 {

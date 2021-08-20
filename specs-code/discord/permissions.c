@@ -4,7 +4,8 @@
  * @see https://discord.com/developers/docs/topics/permissions
  */
 
-#include "specs.h"
+#include "specs-deps.h"
+#include "discord.h"
 
 
 enum discord_permissions_bitwise_flags discord_permissions_bitwise_flags_from_string(char *s){

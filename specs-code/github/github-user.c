@@ -4,7 +4,8 @@
  * @see https://docs.github.com/en/rest/reference/users#get-a-user
  */
 
-#include "specs.h"
+#include "specs-deps.h"
+#include "github.h"
 
 void github_user_from_json(char *json, size_t len, struct github_user **pp)
 {

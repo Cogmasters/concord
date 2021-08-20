@@ -4,7 +4,8 @@
  * @see https://discord.com/developers/docs/interactions/slash-commands#data-models-and-types
  */
 
-#include "specs.h"
+#include "specs-deps.h"
+#include "discord.h"
 
 void discord_application_command_from_json(char *json, size_t len, struct discord_application_command **pp)
 {

@@ -4,7 +4,8 @@
  * @see https://discord.com/developers/docs/resources/channel
  */
 
-#include "specs.h"
+#include "specs-deps.h"
+#include "discord.h"
 
 
 enum discord_channel_types discord_channel_types_from_string(char *s){

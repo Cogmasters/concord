@@ -4,7 +4,8 @@
  * @see https://discord.com/developers/docs/interactions/message-components#message-components
  */
 
-#include "specs.h"
+#include "specs-deps.h"
+#include "discord.h"
 
 void discord_component_from_json(char *json, size_t len, struct discord_component **pp)
 {

@@ -4,7 +4,8 @@
  * @see https://discord.com/developers/docs/resources/invite
  */
 
-#include "specs.h"
+#include "specs-deps.h"
+#include "discord.h"
 
 
 enum discord_invite_target_user_types discord_invite_target_user_types_from_string(char *s){

@@ -4,7 +4,8 @@
  * @see https://discord.com/developers/docs/resources/invite
  */
 
-#include "specs.h"
+#include "specs-deps.h"
+#include "discord.h"
 
 void discord_get_invite_params_from_json(char *json, size_t len, struct discord_get_invite_params **pp)
 {

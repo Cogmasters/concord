@@ -4,7 +4,8 @@
  * @see https://discord.com/developers/docs/resources/webhook
  */
 
-#include "specs.h"
+#include "specs-deps.h"
+#include "discord.h"
 
 void discord_webhook_from_json(char *json, size_t len, struct discord_webhook **pp)
 {

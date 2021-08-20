@@ -4,7 +4,8 @@
  * @see https://discord.com/developers/docs/resources/user
  */
 
-#include "specs.h"
+#include "specs-deps.h"
+#include "discord.h"
 
 
 enum discord_user_flags discord_user_flags_from_string(char *s){

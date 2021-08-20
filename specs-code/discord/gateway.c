@@ -4,7 +4,8 @@
  * @see https://discord.com/developers/docs/topics/gateway
  */
 
-#include "specs.h"
+#include "specs-deps.h"
+#include "discord.h"
 
 
 enum discord_gateway_close_opcodes discord_gateway_close_opcodes_from_string(char *s){

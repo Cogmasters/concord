@@ -4,7 +4,8 @@
  * @see https://discord.com/developers/docs/resources/channel
  */
 
-#include "specs.h"
+#include "specs-deps.h"
+#include "discord.h"
 
 void discord_modify_channel_params_from_json(char *json, size_t len, struct discord_modify_channel_params **pp)
 {
