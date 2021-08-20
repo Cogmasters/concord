@@ -177,12 +177,15 @@ specs_gen: cee_utils | $(SPECSDEPS_OBJS)
 	@ $(MAKE) clean specsdeps_clean specs_clean specs_code
 
 specs_code: specs-gen.exe
-	rm -rf $(SPECS_WDIR)/*/all_*
-	$(foreach var, $(SPECS_JSON),./bin/specs-gen.exe -S -a -o $(patsubst $(SPECS_RDIR)/%, $(SPECS_WDIR)/%, $(dir $(var))all_structs.h) $(var);)
-	$(foreach var, $(SPECS_JSON),./bin/specs-gen.exe -E -a -o $(patsubst $(SPECS_RDIR)/%, $(SPECS_WDIR)/%, $(dir $(var))all_enums.h) $(var);)
-	$(foreach var, $(SPECS_JSON),./bin/specs-gen.exe -F -a -o $(patsubst $(SPECS_RDIR)/%, $(SPECS_WDIR)/%, $(dir $(var))all_functions.h) $(var);)
-	$(foreach var, $(SPECS_JSON),./bin/specs-gen.exe -O -a -o $(patsubst $(SPECS_RDIR)/%, $(SPECS_WDIR)/%, $(dir $(var))all_opaque_struct.h) $(var);)
+	rm -rf $(SPECS_WDIR)/*/one-specs.h
+	# Generate concatenated headers
+	$(foreach var, $(SPECS_JSON),./bin/specs-gen.exe -O -a -o $(patsubst $(SPECS_RDIR)/%, $(SPECS_WDIR)/%, $(dir $(var))one-specs.h) $(var);)
+	$(foreach var, $(SPECS_JSON),./bin/specs-gen.exe -E -a -o $(patsubst $(SPECS_RDIR)/%, $(SPECS_WDIR)/%, $(dir $(var))one-specs.h) $(var);)
+	$(foreach var, $(SPECS_JSON),./bin/specs-gen.exe -S -a -o $(patsubst $(SPECS_RDIR)/%, $(SPECS_WDIR)/%, $(dir $(var))one-specs.h) $(var);)
+	$(foreach var, $(SPECS_JSON),./bin/specs-gen.exe -F -a -o $(patsubst $(SPECS_RDIR)/%, $(SPECS_WDIR)/%, $(dir $(var))one-specs.h) $(var);)
+	# Generate source files
 	$(foreach var, $(SPECS_JSON),./bin/specs-gen.exe -c -o $(patsubst $(SPECS_RDIR)/%, $(SPECS_WDIR)/%, $(var:%.json=%.c)) $(var);)
+	# Generate header files
 	$(foreach var, $(SPECS_JSON),./bin/specs-gen.exe -d -o $(patsubst $(SPECS_RDIR)/%, $(SPECS_WDIR)/%, $(var:%.json=%.h)) $(var);)
 
 specs-gen.exe: cee_utils $(SPECSDEPS_OBJS) | $(SPECSDEPS_OBJDIR)

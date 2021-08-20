@@ -66,11 +66,7 @@ struct discord_voice_cbs;
 /** @} DiscordLimitsWebhook */
 
 // see specs/discord/ for specs
-#include "specs-code/discord/all_opaque_struct.h"
-#include "specs-code/discord/all_enums.h"
-#include "specs-code/discord/all_structs.h"
-#include "specs-code/discord/all_functions.h"
-
+#include "specs-code/discord/one-specs.h"
 
 /** @defgroup DiscordCallbacksGeneral
  *  @brief General-purpose callbacks

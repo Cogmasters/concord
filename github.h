@@ -6,10 +6,7 @@
 #include "types.h"
 #include "logconf.h"
 
-#include "specs-code/github/all_opaque_struct.h"
-#include "specs-code/github/all_enums.h"
-#include "specs-code/github/all_structs.h"
-#include "specs-code/github/all_functions.h"
+#include "specs-code/github/one-specs.h"
 
 /* This limit is fairly arbitrary, find the maximum at a later time. */
 #define GITHUB_MAXIMUM_REPO_TOPICS 30

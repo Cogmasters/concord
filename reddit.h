@@ -7,10 +7,7 @@
 #include "logconf.h"
 
 /// @see specs/reddit for generated code specs 
-#include "specs-code/reddit/all_opaque_struct.h"
-#include "specs-code/reddit/all_enums.h"
-#include "specs-code/reddit/all_structs.h"
-#include "specs-code/reddit/all_functions.h"
+#include "specs-code/reddit/one-specs.h"
 
 struct reddit* reddit_init(const char username[], const char password[], const char client_id[], const char client_secret[]);
 struct reddit* reddit_config_init(const char config_file[]);
