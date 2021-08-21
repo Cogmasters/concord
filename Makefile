@@ -18,7 +18,7 @@ COMMON_OBJS := $(COMMON_SRC:%.c=$(OBJDIR)/%.o)
 SPECS_RDIR := specs
 SPECS_WDIR := specs-code
 SPECS_JSON := $(sort $(wildcard $(SPECS_RDIR)/*/*.json))
-SPECS_APIS := $(sort $(patsubst $(SPECS_RDIR)/%, %, $(dir $(SPECS_JSON))))
+SPECS_APIS := $(sort $(patsubst $(SPECS_RDIR)/%/, %, $(dir $(SPECS_JSON))))
 
 # Specs code-generator dependencies
 SPECSDEPS_OBJDIR  := specs_obj
@@ -124,6 +124,13 @@ else
 	CFLAGS += -fPIC -D_XOPEN_SOURCE=700
 endif
 
+# for breaking lines when printing inside a foreach
+# see https://stackoverflow.com/questions/29651388/insert-a-new-line-in-a-makefile-foreach-loop
+blank :=
+define \n
+
+$(blank)
+endef
 
 # generic compilation
 $(SPECSDEPS_OBJDIR)/%.o : %.c
@@ -178,15 +185,25 @@ specs_gen: cee_utils | $(SPECSDEPS_OBJS)
 
 specs_code: specs-gen.exe
 	rm -rf $(SPECS_WDIR)/*/one-specs.h
-	# Generate concatenated headers
-	$(foreach var, $(SPECS_JSON),./bin/specs-gen.exe -O -a -o $(patsubst $(SPECS_RDIR)/%, $(SPECS_WDIR)/%, $(dir $(var))one-specs.h) $(var);)
-	$(foreach var, $(SPECS_JSON),./bin/specs-gen.exe -E -a -o $(patsubst $(SPECS_RDIR)/%, $(SPECS_WDIR)/%, $(dir $(var))one-specs.h) $(var);)
-	$(foreach var, $(SPECS_JSON),./bin/specs-gen.exe -S -a -o $(patsubst $(SPECS_RDIR)/%, $(SPECS_WDIR)/%, $(dir $(var))one-specs.h) $(var);)
-	$(foreach var, $(SPECS_JSON),./bin/specs-gen.exe -F -a -o $(patsubst $(SPECS_RDIR)/%, $(SPECS_WDIR)/%, $(dir $(var))one-specs.h) $(var);)
-	# Generate source files
-	$(foreach var, $(SPECS_JSON),./bin/specs-gen.exe -c -o $(patsubst $(SPECS_RDIR)/%, $(SPECS_WDIR)/%, $(var:%.json=%.c)) $(var);)
 	# Generate header files
-	$(foreach var, $(SPECS_JSON),./bin/specs-gen.exe -d -o $(patsubst $(SPECS_RDIR)/%, $(SPECS_WDIR)/%, $(var:%.json=%.h)) $(var);)
+	$(foreach var, $(SPECS_JSON), \
+	    ./bin/specs-gen.exe -h -o $(patsubst $(SPECS_RDIR)/%, $(SPECS_WDIR)/%, $(var:%.json=%.h)) $(var)$(\n))
+
+	# Generate source files
+	$(foreach var, $(SPECS_JSON), \
+	    ./bin/specs-gen.exe -c -o $(patsubst $(SPECS_RDIR)/%, $(SPECS_WDIR)/%, $(var:%.json=%.c)) \
+	    -i specs-deps.h \
+	    -i $(filter $(SPECS_APIS), $(subst /, ,$(dir $(var)))).h $(var)$(\n))
+	
+	# Generate concatenated headers
+	$(foreach var, $(SPECS_JSON), \
+	    ./bin/specs-gen.exe -O -a -o $(patsubst $(SPECS_RDIR)/%, $(SPECS_WDIR)/%, $(dir $(var))one-specs.h) $(var)$(\n))
+	$(foreach var, $(SPECS_JSON), \
+	    ./bin/specs-gen.exe -E -a -o $(patsubst $(SPECS_RDIR)/%, $(SPECS_WDIR)/%, $(dir $(var))one-specs.h) $(var)$(\n))
+	$(foreach var, $(SPECS_JSON), \
+	    ./bin/specs-gen.exe -S -a -o $(patsubst $(SPECS_RDIR)/%, $(SPECS_WDIR)/%, $(dir $(var))one-specs.h) $(var)$(\n))
+	$(foreach var, $(SPECS_JSON), \
+	    ./bin/specs-gen.exe -F -a -o $(patsubst $(SPECS_RDIR)/%, $(SPECS_WDIR)/%, $(dir $(var))one-specs.h) $(var)$(\n))
 
 specs-gen.exe: cee_utils $(SPECSDEPS_OBJS) | $(SPECSDEPS_OBJDIR)
 	$(CC) -o $@ $(SPECSDEPS_OBJS) -lm
