@@ -4,7 +4,13 @@
  * @see https://discord.com/developers/docs/resources/user
  */
 
-#include "specs-deps.h"
+#include <stdbool.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include "json-actor.h"
+#include "json-actor-boxed.h"
+#include "cee-utils.h"
 #include "discord.h"
 
 void discord_modify_current_user_params_from_json(char *json, size_t len, struct discord_modify_current_user_params **pp)

@@ -4,7 +4,13 @@
  * @see https://discord.com/developers/docs/resources/guild-template
  */
 
-#include "specs-deps.h"
+#include <stdbool.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include "json-actor.h"
+#include "json-actor-boxed.h"
+#include "cee-utils.h"
 #include "discord.h"
 
 void discord_create_guild_from_guild_template_params_from_json(char *json, size_t len, struct discord_create_guild_from_guild_template_params **pp)

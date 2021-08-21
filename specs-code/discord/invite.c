@@ -4,7 +4,13 @@
  * @see https://discord.com/developers/docs/resources/invite
  */
 
-#include "specs-deps.h"
+#include <stdbool.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include "json-actor.h"
+#include "json-actor-boxed.h"
+#include "cee-utils.h"
 #include "discord.h"
 
 

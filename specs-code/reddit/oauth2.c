@@ -4,7 +4,13 @@
  * @see https://github.com/reddit-archive/reddit/wiki/OAuth2-Quick-Start-Example
  */
 
-#include "specs-deps.h"
+#include <stdbool.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+#include "json-actor.h"
+#include "json-actor-boxed.h"
+#include "cee-utils.h"
 #include "reddit.h"
 
 void reddit_access_token_params_from_json(char *json, size_t len, struct reddit_access_token_params **pp)
