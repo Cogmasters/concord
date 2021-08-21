@@ -10,7 +10,7 @@
 static void print_usage(char *prog)
 {
   fprintf(stderr,
-          "Usage: %s [-h|-c|-d|-f] -o output-file input-file\n"
+          "Usage: %s [-h|-c|-d|-f] -o output-file -i include-headers input-file \n"
           "      -h generate header\n"
           "      -c generate data and function definitions\n"
           "      -d generate data and function declarations\n"
@@ -35,41 +35,45 @@ int main(int argc, char **argv)
   };
 
   char *open_mode = "w";
+  NTL_T(name_t) incl_headers = NULL;
 
   int opt;
-  while (-1 != (opt = getopt(argc, argv, "ahcdfSEFOo:"))) {
+  while (-1 != (opt = getopt(argc, argv, "ahcdfSEFOo:i:"))) {
     switch (opt) {
-      case 'a':
+    case 'a':
         open_mode = "a";
         break;
-      case 'o':
+    case 'o':
         config_file = strdup(optarg);
         break;
-      case 'h':
+    case 'i':
+        ntl_append2((ntl_t*)&incl_headers, sizeof(name_t), optarg);
+        break;
+    case 'h':
         eo.type = FILE_HEADER;
         break;
-      case 'c':
+    case 'c':
         eo.type = FILE_CODE;
         break;
-      case 'd':
+    case 'd':
         eo.type = FILE_DECLARATION;
         break;
-      case 'f':
+    case 'f':
         eo.type = FILE_DEFINITION;
         break;
-      case 'S':
+    case 'S':
         eo.type = FILE_STRUCT_DECLARATION;
         break;
-      case 'E':
+    case 'E':
         eo.type = FILE_ENUM_DECLARATION;
         break;
-      case 'F':
+    case 'F':
         eo.type = FILE_FUN_DECLARATION;
         break;
-      case 'O':
+    case 'O':
         eo.type = FILE_OPAQUE_STRUCT_DECLARATION;
         break;
-      default: /* '?' */
+    default: /* '?' */
         print_usage(argv[0]);
     }
   }
@@ -87,6 +91,7 @@ int main(int argc, char **argv)
   memset(&d, 0, sizeof(d));
   definition_from_json(s, len, &d);
   d.spec_name = file;
+  d.incl_headers = incl_headers;
   gen_definition(config_file, open_mode, &eo, &d);
 
   return EXIT_SUCCESS;
